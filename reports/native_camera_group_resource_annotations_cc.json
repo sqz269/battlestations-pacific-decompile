@@ -1,0 +1,1626 @@
+{
+  "packet": "orch4_native_camera_group_resource_cc",
+  "entries": [
+    {
+      "address": "00b868b0",
+      "name": "BSP_ResourceItem_ConstructReferenceBase",
+      "before_comment": {
+        "address": "00b868b0",
+        "function_name": "BSP_ResourceItem_ConstructReferenceBase",
+        "comment": "[BSP reconstruction 00b868b0]\nECX item,EAXsame,RET. vtable00ceb130 thenrefcount+4=1 thenvtable00d631a0. New Note parser00719000 overwrites primaryvtable00cfd860. Original ABI: ECX item, EAX same, RET. Writes initial vtable00ceb130, refcount+4=1, final vtable00d631a0.. Evidence: docs/RESOURCE_NOTE_PARSER.md; reports/resource_note_parser_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation."
+      },
+      "before_documentation": {
+        "hash": "af87d22f64683854fbd9556fe312655416b820804d12898df91d68500d51f4d2",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b868b0",
+        "function_name": "BSP_ResourceItem_ConstructReferenceBase",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00b868b0]\nECX item,EAXsame,RET. vtable00ceb130 thenrefcount+4=1 thenvtable00d631a0. New Note parser00719000 overwrites primaryvtable00cfd860. Original ABI: ECX item, EAX same, RET. Writes initial vtable00ceb130, refcount+4=1, final vtable00d631a0.. Evidence: docs/RESOURCE_NOTE_PARSER.md; reports/resource_note_parser_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.",
+        "parameters": [],
+        "local_variables": [],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 100.0
+      },
+      "evidence": "CC camera and GroupParams items:12 complete ordinary bodies894bytes/278instructions, nine support bodies24instructions;39 direct transfers and one indirect call, all instruction owners verified. Two three-cell predicates matchB86950 after only address substitutions. Actual item constructors, concrete readers/parsers, scalar deletion and current captured dispatch/type/reference bindings are source-backed. Group reader stores ST0 directly then skips/detaches payload; camera preserves every original x87 store/load around shared host _CIatan, TargetName current-header assignment and child/name cleanup states. Parser allocation cleanup is disarmed before reading; no completed-item rollback. Strict standalone MSVC Win32 compile and one controlled-child fixture passed:12 copied original bodies/30 direct/9 absolute relocations, eleven paired payloads, current token cells, scalar flags2, two source failure paths, actual manager/six parser registrations and raw root dispatch then item slot deletion/canonical manager drain. Project source registration/build awaits shared startup.cmake lease release. Original CRT atan/CPU/error identity, native ABI/FH3/SEH/private spills/faults, allocation failure, lazy pool recreation, token startup, remaining parsers/container destruction, executable admission and gameplay remain open. Original normal paths share source dependencies; original GroupParams table slot20 binds copied reader; original EH guarded out. Names hypotheses. docs/NATIVE_CAMERA_GROUP_RESOURCE_CC.md; reports/native_camera_group_resource_cc.json. Complete 22B. ECX actual item; EAX captured item; RET. Source construct_native_resource_item_base_00b868b0.",
+      "prototype": "void* __fastcall BSP_ResourceItem_ConstructReferenceBase(void* actual_item, void* unused_edx)",
+      "prototype_result": "Successfully set prototype for function at 00b868b0 with __fastcall calling convention",
+      "ledger_name_output": "00b868b0 -> BSP_ResourceItem_ConstructReferenceBase\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00b868b0\", \"name\": \"BSP_ResourceItem_ConstructReferenceBase\", \"evidence\": \"ECX item,EAXsame,RET. vtable00ceb130 thenrefcount+4=1 thenvtable00d631a0. New Note parser00719000 overwrites primaryvtable00cfd860. Original ABI: ECX item, EAX same, RET. Writes initial vtable00ceb130, refcount+4=1, final vtable00d631a0.. Evidence: docs/RESOURCE_NOTE_PARSER.md; reports/resource_note_parser_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\"})\n",
+      "ledger_function_output": "00b868b0 function construct_native_resource_item_base_00b868b0\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00b868b0",
+        "function_name": "BSP_ResourceItem_ConstructReferenceBase",
+        "comment": "[BSP reconstruction 00b868b0]\nECX item,EAXsame,RET. vtable00ceb130 thenrefcount+4=1 thenvtable00d631a0. New Note parser00719000 overwrites primaryvtable00cfd860. Original ABI: ECX item, EAX same, RET. Writes initial vtable00ceb130, refcount+4=1, final vtable00d631a0.. Evidence: docs/RESOURCE_NOTE_PARSER.md; reports/resource_note_parser_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\n\n[BSP reconstruction 00b868b0] CC update\nCC camera and GroupParams items:12 complete ordinary bodies894bytes/278instructions, nine support bodies24instructions;39 direct transfers and one indirect call, all instruction owners verified. Two three-cell predicates matchB86950 after only address substitutions. Actual item constructors, concrete readers/parsers, scalar deletion and current captured dispatch/type/reference bindings are source-backed. Group reader stores ST0 directly then skips/detaches payload; camera preserves every original x87 store/load around shared host _CIatan, TargetName current-header assignment and child/name cleanup states. Parser allocation cleanup is disarmed before reading; no completed-item rollback. Strict standalone MSVC Win32 compile and one controlled-child fixture passed:12 copied original bodies/30 direct/9 absolute relocations, eleven paired payloads, current token cells, scalar flags2, two source failure paths, actual manager/six parser registrations and raw root dispatch then item slot deletion/canonical manager drain. Project source registration/build awaits shared startup.cmake lease release. Original CRT atan/CPU/error identity, native ABI/FH3/SEH/private spills/faults, allocation failure, lazy pool recreation, token startup, remaining parsers/container destruction, executable admission and gameplay remain open. Original normal paths share source dependencies; original GroupParams table slot20 binds copied reader; original EH guarded out. Names hypotheses. docs/NATIVE_CAMERA_GROUP_RESOURCE_CC.md; reports/native_camera_group_resource_cc.json. Complete 22B. ECX actual item; EAX captured item; RET. Source construct_native_resource_item_base_00b868b0."
+      }
+    },
+    {
+      "address": "00b86890",
+      "name": "BSP_ResourceItem_DestroyReferenceBase",
+      "before_comment": {
+        "address": "00b86890",
+        "function_name": "BSP_ResourceItem_DestroyReferenceBase",
+        "comment": "[BSP reconstruction 00b86890]\nECXitem;noadjustment. Setsvtable00d5c104 thenTAIL JMP00bd30f0 (basevt00ceb130,RET). Existing CG_adjustor_thunk label is classification, not recoveredsymbol; matchedbody has no thisadjustment. Original ABI: ECX item; no explicit stack arguments; writes vtable00d5c104 then tail JMP00bd30f0, which writes00ceb130 and RET. No pointer adjustment in this body.. Evidence: docs/RESOURCE_NOTE_PARSER.md; reports/resource_note_parser_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation."
+      },
+      "before_documentation": {
+        "hash": "c8b475c3b63defedc0f49e3201d922c8cae57d2600dc91c376cbefe918e98aa9",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b86890",
+        "function_name": "BSP_ResourceItem_DestroyReferenceBase",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00b86890]\nECXitem;noadjustment. Setsvtable00d5c104 thenTAIL JMP00bd30f0 (basevt00ceb130,RET). Existing CG_adjustor_thunk label is classification, not recoveredsymbol; matchedbody has no thisadjustment. Original ABI: ECX item; no explicit stack arguments; writes vtable00d5c104 then tail JMP00bd30f0, which writes00ceb130 and RET. No pointer adjustment in this body.. Evidence: docs/RESOURCE_NOTE_PARSER.md; reports/resource_note_parser_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.",
+        "parameters": [],
+        "local_variables": [],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 100.0
+      },
+      "evidence": "CC camera and GroupParams items:12 complete ordinary bodies894bytes/278instructions, nine support bodies24instructions;39 direct transfers and one indirect call, all instruction owners verified. Two three-cell predicates matchB86950 after only address substitutions. Actual item constructors, concrete readers/parsers, scalar deletion and current captured dispatch/type/reference bindings are source-backed. Group reader stores ST0 directly then skips/detaches payload; camera preserves every original x87 store/load around shared host _CIatan, TargetName current-header assignment and child/name cleanup states. Parser allocation cleanup is disarmed before reading; no completed-item rollback. Strict standalone MSVC Win32 compile and one controlled-child fixture passed:12 copied original bodies/30 direct/9 absolute relocations, eleven paired payloads, current token cells, scalar flags2, two source failure paths, actual manager/six parser registrations and raw root dispatch then item slot deletion/canonical manager drain. Project source registration/build awaits shared startup.cmake lease release. Original CRT atan/CPU/error identity, native ABI/FH3/SEH/private spills/faults, allocation failure, lazy pool recreation, token startup, remaining parsers/container destruction, executable admission and gameplay remain open. Original normal paths share source dependencies; original GroupParams table slot20 binds copied reader; original EH guarded out. Names hypotheses. docs/NATIVE_CAMERA_GROUP_RESOURCE_CC.md; reports/native_camera_group_resource_cc.json. Complete 11B. ECX actual item; RET. Source destroy_native_resource_item_base_00b86890.",
+      "prototype": "void __fastcall BSP_ResourceItem_DestroyReferenceBase(void* actual_item, void* unused_edx)",
+      "prototype_result": "Successfully set prototype for function at 00b86890 with __fastcall calling convention",
+      "ledger_name_output": "00b86890 -> BSP_ResourceItem_DestroyReferenceBase\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00b86890\", \"name\": \"BSP_ResourceItem_DestroyReferenceBase\", \"evidence\": \"ECXitem;noadjustment. Setsvtable00d5c104 thenTAIL JMP00bd30f0 (basevt00ceb130,RET). Existing CG_adjustor_thunk label is classification, not recoveredsymbol; matchedbody has no thisadjustment. Original ABI: ECX item; no explicit stack arguments; writes vtable00d5c104 then tail JMP00bd30f0, which writes00ceb130 and RET. No pointer adjustment in this body.. Evidence: docs/RESOURCE_NOTE_PARSER.md; reports/resource_note_parser_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\"})\n",
+      "ledger_function_output": "00b86890 function destroy_native_resource_item_base_00b86890\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00b86890",
+        "function_name": "BSP_ResourceItem_DestroyReferenceBase",
+        "comment": "[BSP reconstruction 00b86890]\nECXitem;noadjustment. Setsvtable00d5c104 thenTAIL JMP00bd30f0 (basevt00ceb130,RET). Existing CG_adjustor_thunk label is classification, not recoveredsymbol; matchedbody has no thisadjustment. Original ABI: ECX item; no explicit stack arguments; writes vtable00d5c104 then tail JMP00bd30f0, which writes00ceb130 and RET. No pointer adjustment in this body.. Evidence: docs/RESOURCE_NOTE_PARSER.md; reports/resource_note_parser_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\n\n[BSP reconstruction 00b86890] CC update\nCC camera and GroupParams items:12 complete ordinary bodies894bytes/278instructions, nine support bodies24instructions;39 direct transfers and one indirect call, all instruction owners verified. Two three-cell predicates matchB86950 after only address substitutions. Actual item constructors, concrete readers/parsers, scalar deletion and current captured dispatch/type/reference bindings are source-backed. Group reader stores ST0 directly then skips/detaches payload; camera preserves every original x87 store/load around shared host _CIatan, TargetName current-header assignment and child/name cleanup states. Parser allocation cleanup is disarmed before reading; no completed-item rollback. Strict standalone MSVC Win32 compile and one controlled-child fixture passed:12 copied original bodies/30 direct/9 absolute relocations, eleven paired payloads, current token cells, scalar flags2, two source failure paths, actual manager/six parser registrations and raw root dispatch then item slot deletion/canonical manager drain. Project source registration/build awaits shared startup.cmake lease release. Original CRT atan/CPU/error identity, native ABI/FH3/SEH/private spills/faults, allocation failure, lazy pool recreation, token startup, remaining parsers/container destruction, executable admission and gameplay remain open. Original normal paths share source dependencies; original GroupParams table slot20 binds copied reader; original EH guarded out. Names hypotheses. docs/NATIVE_CAMERA_GROUP_RESOURCE_CC.md; reports/native_camera_group_resource_cc.json. Complete 11B. ECX actual item; RET. Source destroy_native_resource_item_base_00b86890."
+      }
+    },
+    {
+      "address": "00b8e5a0",
+      "name": "BSP_ConstructNativeGroupParamsItem_00b8e5a0",
+      "before_comment": {
+        "address": "00b8e5a0",
+        "function_name": "FUN_00b8e5a0"
+      },
+      "before_documentation": {
+        "hash": "5fb2320c2be81ab3ef98ec77eabdcb62d5f54a739ff85633c2d169f490db887c",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b8e5a0",
+        "function_name": "FUN_00b8e5a0",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 50.0
+      },
+      "evidence": "CC camera and GroupParams items:12 complete ordinary bodies894bytes/278instructions, nine support bodies24instructions;39 direct transfers and one indirect call, all instruction owners verified. Two three-cell predicates matchB86950 after only address substitutions. Actual item constructors, concrete readers/parsers, scalar deletion and current captured dispatch/type/reference bindings are source-backed. Group reader stores ST0 directly then skips/detaches payload; camera preserves every original x87 store/load around shared host _CIatan, TargetName current-header assignment and child/name cleanup states. Parser allocation cleanup is disarmed before reading; no completed-item rollback. Strict standalone MSVC Win32 compile and one controlled-child fixture passed:12 copied original bodies/30 direct/9 absolute relocations, eleven paired payloads, current token cells, scalar flags2, two source failure paths, actual manager/six parser registrations and raw root dispatch then item slot deletion/canonical manager drain. Project source registration/build awaits shared startup.cmake lease release. Original CRT atan/CPU/error identity, native ABI/FH3/SEH/private spills/faults, allocation failure, lazy pool recreation, token startup, remaining parsers/container destruction, executable admission and gameplay remain open. Original normal paths share source dependencies; original GroupParams table slot20 binds copied reader; original EH guarded out. Names hypotheses. docs/NATIVE_CAMERA_GROUP_RESOURCE_CC.md; reports/native_camera_group_resource_cc.json. Complete 18B. ECX actual item; EAX captured item; RET. Source construct_native_group_params_item_00b8e5a0.",
+      "prototype": "void* __fastcall BSP_ConstructNativeGroupParamsItem_00b8e5a0(void* actual_item, void* unused_edx)",
+      "prototype_result": "Successfully set prototype for function at 00b8e5a0 with __fastcall calling convention",
+      "ledger_name_output": "00b8e5a0 -> BSP_ConstructNativeGroupParamsItem_00b8e5a0\n",
+      "ledger_function_output": "00b8e5a0 function construct_native_group_params_item_00b8e5a0\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00b8e5a0",
+        "function_name": "BSP_ConstructNativeGroupParamsItem_00b8e5a0",
+        "comment": "\n\n[BSP reconstruction 00b8e5a0] CC update\nCC camera and GroupParams items:12 complete ordinary bodies894bytes/278instructions, nine support bodies24instructions;39 direct transfers and one indirect call, all instruction owners verified. Two three-cell predicates matchB86950 after only address substitutions. Actual item constructors, concrete readers/parsers, scalar deletion and current captured dispatch/type/reference bindings are source-backed. Group reader stores ST0 directly then skips/detaches payload; camera preserves every original x87 store/load around shared host _CIatan, TargetName current-header assignment and child/name cleanup states. Parser allocation cleanup is disarmed before reading; no completed-item rollback. Strict standalone MSVC Win32 compile and one controlled-child fixture passed:12 copied original bodies/30 direct/9 absolute relocations, eleven paired payloads, current token cells, scalar flags2, two source failure paths, actual manager/six parser registrations and raw root dispatch then item slot deletion/canonical manager drain. Project source registration/build awaits shared startup.cmake lease release. Original CRT atan/CPU/error identity, native ABI/FH3/SEH/private spills/faults, allocation failure, lazy pool recreation, token startup, remaining parsers/container destruction, executable admission and gameplay remain open. Original normal paths share source dependencies; original GroupParams table slot20 binds copied reader; original EH guarded out. Names hypotheses. docs/NATIVE_CAMERA_GROUP_RESOURCE_CC.md; reports/native_camera_group_resource_cc.json. Complete 18B. ECX actual item; EAX captured item; RET. Source construct_native_group_params_item_00b8e5a0."
+      }
+    },
+    {
+      "address": "00b8e580",
+      "name": "BSP_GroupParamsItem_ReadFloatAndSkip",
+      "before_comment": {
+        "address": "00b8e580",
+        "function_name": "BSP_GroupParamsItem_ReadFloatAndSkip",
+        "comment": "[BSP reconstruction 00b8e580]\nReadFloat; FSTP item+8; explicitly SkipAndDetach remaining payload. Original ABI: ECX item; stack node handle; RET4. Evidence: docs/MESH_SUBSET_LOD_FIELDS.md; reports/mesh_subset_lod_fields_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation."
+      },
+      "before_documentation": {
+        "hash": "7bcbce35af5a723a2175cae56d23d20de82312e85444c6da60a9b489e0b23f1e",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b8e580",
+        "function_name": "BSP_GroupParamsItem_ReadFloatAndSkip",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00b8e580]\nReadFloat; FSTP item+8; explicitly SkipAndDetach remaining payload. Original ABI: ECX item; stack node handle; RET4. Evidence: docs/MESH_SUBSET_LOD_FIELDS.md; reports/mesh_subset_lod_fields_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation.",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "unused_edx",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "fVar1",
+            "type": "float",
+            "storage": "(VARIABLE, 0x0, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 100.0
+      },
+      "evidence": "CC camera and GroupParams items:12 complete ordinary bodies894bytes/278instructions, nine support bodies24instructions;39 direct transfers and one indirect call, all instruction owners verified. Two three-cell predicates matchB86950 after only address substitutions. Actual item constructors, concrete readers/parsers, scalar deletion and current captured dispatch/type/reference bindings are source-backed. Group reader stores ST0 directly then skips/detaches payload; camera preserves every original x87 store/load around shared host _CIatan, TargetName current-header assignment and child/name cleanup states. Parser allocation cleanup is disarmed before reading; no completed-item rollback. Strict standalone MSVC Win32 compile and one controlled-child fixture passed:12 copied original bodies/30 direct/9 absolute relocations, eleven paired payloads, current token cells, scalar flags2, two source failure paths, actual manager/six parser registrations and raw root dispatch then item slot deletion/canonical manager drain. Project source registration/build awaits shared startup.cmake lease release. Original CRT atan/CPU/error identity, native ABI/FH3/SEH/private spills/faults, allocation failure, lazy pool recreation, token startup, remaining parsers/container destruction, executable admission and gameplay remain open. Original normal paths share source dependencies; original GroupParams table slot20 binds copied reader; original EH guarded out. Names hypotheses. docs/NATIVE_CAMERA_GROUP_RESOURCE_CC.md; reports/native_camera_group_resource_cc.json. Complete 30B. ECX actual item; stacked handle; RET4. Source read_native_group_params_item_00b8e580.",
+      "prototype": "void __fastcall BSP_GroupParamsItem_ReadFloatAndSkip(void* actual_item, void* unused_edx, void* actual_handle)",
+      "prototype_result": "Successfully set prototype for function at 00b8e580 with __fastcall calling convention",
+      "ledger_name_output": "00b8e580 -> BSP_GroupParamsItem_ReadFloatAndSkip\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00b8e580\", \"name\": \"BSP_GroupParamsItem_ReadFloatAndSkip\", \"evidence\": \"ReadFloat; FSTP item+8; explicitly SkipAndDetach remaining payload. Original ABI: ECX item; stack node handle; RET4. Evidence: docs/MESH_SUBSET_LOD_FIELDS.md; reports/mesh_subset_lod_fields_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation.\"})\n",
+      "ledger_function_output": "00b8e580 function read_native_group_params_item_00b8e580\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00b8e580",
+        "function_name": "BSP_GroupParamsItem_ReadFloatAndSkip",
+        "comment": "[BSP reconstruction 00b8e580]\nReadFloat; FSTP item+8; explicitly SkipAndDetach remaining payload. Original ABI: ECX item; stack node handle; RET4. Evidence: docs/MESH_SUBSET_LOD_FIELDS.md; reports/mesh_subset_lod_fields_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation.\n\n[BSP reconstruction 00b8e580] CC update\nCC camera and GroupParams items:12 complete ordinary bodies894bytes/278instructions, nine support bodies24instructions;39 direct transfers and one indirect call, all instruction owners verified. Two three-cell predicates matchB86950 after only address substitutions. Actual item constructors, concrete readers/parsers, scalar deletion and current captured dispatch/type/reference bindings are source-backed. Group reader stores ST0 directly then skips/detaches payload; camera preserves every original x87 store/load around shared host _CIatan, TargetName current-header assignment and child/name cleanup states. Parser allocation cleanup is disarmed before reading; no completed-item rollback. Strict standalone MSVC Win32 compile and one controlled-child fixture passed:12 copied original bodies/30 direct/9 absolute relocations, eleven paired payloads, current token cells, scalar flags2, two source failure paths, actual manager/six parser registrations and raw root dispatch then item slot deletion/canonical manager drain. Project source registration/build awaits shared startup.cmake lease release. Original CRT atan/CPU/error identity, native ABI/FH3/SEH/private spills/faults, allocation failure, lazy pool recreation, token startup, remaining parsers/container destruction, executable admission and gameplay remain open. Original normal paths share source dependencies; original GroupParams table slot20 binds copied reader; original EH guarded out. Names hypotheses. docs/NATIVE_CAMERA_GROUP_RESOURCE_CC.md; reports/native_camera_group_resource_cc.json. Complete 30B. ECX actual item; stacked handle; RET4. Source read_native_group_params_item_00b8e580."
+      }
+    },
+    {
+      "address": "00b8eb50",
+      "name": "BSP_GroupParamsParser_ParseItem",
+      "before_comment": {
+        "address": "00b8eb50",
+        "function_name": "BSP_GroupParamsParser_ParseItem",
+        "comment": "[BSP reconstruction 00b8eb50]\nAllocate0x0c;00b868b0 base ctor; vtable00d634b0; call item vtable+0x20. Original ABI: Incoming ECX unused; stack node handle; EAX item; RET4. Evidence: docs/MESH_SUBSET_LOD_FIELDS.md; reports/mesh_subset_lod_fields_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation."
+      },
+      "before_documentation": {
+        "hash": "3e6224261aa94ff600e3d444ae4db205eda1fcf8bcf481094701cd858039463b",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b8eb50",
+        "function_name": "BSP_GroupParamsParser_ParseItem",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00b8eb50]\nAllocate0x0c;00b868b0 base ctor; vtable00d634b0; call item vtable+0x20. Original ABI: Incoming ECX unused; stack node handle; EAX item; RET4. Evidence: docs/MESH_SUBSET_LOD_FIELDS.md; reports/mesh_subset_lod_fields_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation.",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "piVar1",
+            "type": "int *",
+            "storage": "(register, 0x18, 4)"
+          },
+          {
+            "name": "actual_item",
+            "type": "int *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "local_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "pcStack_8",
+            "type": "undefined *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "local_4",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "uVar2",
+            "type": "undefined8",
+            "storage": "(VARIABLE, 0x0, 8)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 66,
+            "name": "LAB_00b8eb92"
+          },
+          {
+            "relative_offset": 68,
+            "name": "LAB_00b8eb94"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "evidence": "CC camera and GroupParams items:12 complete ordinary bodies894bytes/278instructions, nine support bodies24instructions;39 direct transfers and one indirect call, all instruction owners verified. Two three-cell predicates matchB86950 after only address substitutions. Actual item constructors, concrete readers/parsers, scalar deletion and current captured dispatch/type/reference bindings are source-backed. Group reader stores ST0 directly then skips/detaches payload; camera preserves every original x87 store/load around shared host _CIatan, TargetName current-header assignment and child/name cleanup states. Parser allocation cleanup is disarmed before reading; no completed-item rollback. Strict standalone MSVC Win32 compile and one controlled-child fixture passed:12 copied original bodies/30 direct/9 absolute relocations, eleven paired payloads, current token cells, scalar flags2, two source failure paths, actual manager/six parser registrations and raw root dispatch then item slot deletion/canonical manager drain. Project source registration/build awaits shared startup.cmake lease release. Original CRT atan/CPU/error identity, native ABI/FH3/SEH/private spills/faults, allocation failure, lazy pool recreation, token startup, remaining parsers/container destruction, executable admission and gameplay remain open. Original normal paths share source dependencies; original GroupParams table slot20 binds copied reader; original EH guarded out. Names hypotheses. docs/NATIVE_CAMERA_GROUP_RESOURCE_CC.md; reports/native_camera_group_resource_cc.json. Complete 110B. ECX parser ignored; stacked handle; EAX captured item; RET4. Source parse_native_group_params_item_00b8eb50.",
+      "prototype": "void* __fastcall BSP_GroupParamsParser_ParseItem(void* unused_ecx, void* unused_edx, void* actual_handle)",
+      "prototype_result": "Successfully set prototype for function at 00b8eb50 with __fastcall calling convention",
+      "ledger_name_output": "00b8eb50 -> BSP_GroupParamsParser_ParseItem\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00b8eb50\", \"name\": \"BSP_GroupParamsParser_ParseItem\", \"evidence\": \"Allocate0x0c;00b868b0 base ctor; vtable00d634b0; call item vtable+0x20. Original ABI: Incoming ECX unused; stack node handle; EAX item; RET4. Evidence: docs/MESH_SUBSET_LOD_FIELDS.md; reports/mesh_subset_lod_fields_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation.\"})\n",
+      "ledger_function_output": "00b8eb50 function parse_native_group_params_item_00b8eb50\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00b8eb50",
+        "function_name": "BSP_GroupParamsParser_ParseItem",
+        "comment": "[BSP reconstruction 00b8eb50]\nAllocate0x0c;00b868b0 base ctor; vtable00d634b0; call item vtable+0x20. Original ABI: Incoming ECX unused; stack node handle; EAX item; RET4. Evidence: docs/MESH_SUBSET_LOD_FIELDS.md; reports/mesh_subset_lod_fields_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation.\n\n[BSP reconstruction 00b8eb50] CC update\nCC camera and GroupParams items:12 complete ordinary bodies894bytes/278instructions, nine support bodies24instructions;39 direct transfers and one indirect call, all instruction owners verified. Two three-cell predicates matchB86950 after only address substitutions. Actual item constructors, concrete readers/parsers, scalar deletion and current captured dispatch/type/reference bindings are source-backed. Group reader stores ST0 directly then skips/detaches payload; camera preserves every original x87 store/load around shared host _CIatan, TargetName current-header assignment and child/name cleanup states. Parser allocation cleanup is disarmed before reading; no completed-item rollback. Strict standalone MSVC Win32 compile and one controlled-child fixture passed:12 copied original bodies/30 direct/9 absolute relocations, eleven paired payloads, current token cells, scalar flags2, two source failure paths, actual manager/six parser registrations and raw root dispatch then item slot deletion/canonical manager drain. Project source registration/build awaits shared startup.cmake lease release. Original CRT atan/CPU/error identity, native ABI/FH3/SEH/private spills/faults, allocation failure, lazy pool recreation, token startup, remaining parsers/container destruction, executable admission and gameplay remain open. Original normal paths share source dependencies; original GroupParams table slot20 binds copied reader; original EH guarded out. Names hypotheses. docs/NATIVE_CAMERA_GROUP_RESOURCE_CC.md; reports/native_camera_group_resource_cc.json. Complete 110B. ECX parser ignored; stacked handle; EAX captured item; RET4. Source parse_native_group_params_item_00b8eb50."
+      }
+    },
+    {
+      "address": "00b8ebc0",
+      "name": "CG_scalar_deleting_dtor_00b8ebc0",
+      "before_comment": {
+        "address": "00b8ebc0",
+        "function_name": "CG_scalar_deleting_dtor_00b8ebc0",
+        "comment": ""
+      },
+      "before_documentation": {
+        "hash": "4a8d186092ee86c4f7ad3ceaa567be0aa64e70057f2968b51f413abd7447a706",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b8ebc0",
+        "function_name": "CG_scalar_deleting_dtor_00b8ebc0",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "",
+        "parameters": [],
+        "local_variables": [],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 24,
+            "name": "LAB_00b8ebd8"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "evidence": "CC camera and GroupParams items:12 complete ordinary bodies894bytes/278instructions, nine support bodies24instructions;39 direct transfers and one indirect call, all instruction owners verified. Two three-cell predicates matchB86950 after only address substitutions. Actual item constructors, concrete readers/parsers, scalar deletion and current captured dispatch/type/reference bindings are source-backed. Group reader stores ST0 directly then skips/detaches payload; camera preserves every original x87 store/load around shared host _CIatan, TargetName current-header assignment and child/name cleanup states. Parser allocation cleanup is disarmed before reading; no completed-item rollback. Strict standalone MSVC Win32 compile and one controlled-child fixture passed:12 copied original bodies/30 direct/9 absolute relocations, eleven paired payloads, current token cells, scalar flags2, two source failure paths, actual manager/six parser registrations and raw root dispatch then item slot deletion/canonical manager drain. Project source registration/build awaits shared startup.cmake lease release. Original CRT atan/CPU/error identity, native ABI/FH3/SEH/private spills/faults, allocation failure, lazy pool recreation, token startup, remaining parsers/container destruction, executable admission and gameplay remain open. Original normal paths share source dependencies; original GroupParams table slot20 binds copied reader; original EH guarded out. Names hypotheses. docs/NATIVE_CAMERA_GROUP_RESOURCE_CC.md; reports/native_camera_group_resource_cc.json. Complete 30B. ECX actual item; stacked flags; EAX captured item; RET4. Source delete_native_group_params_item_00b8ebc0.",
+      "prototype": "void* __fastcall CG_scalar_deleting_dtor_00b8ebc0(void* actual_item, void* unused_edx, uint flags)",
+      "prototype_result": "Successfully set prototype for function at 00b8ebc0 with __fastcall calling convention",
+      "ledger_name_output": "00b8ebc0 -> CG_scalar_deleting_dtor_00b8ebc0\n",
+      "ledger_function_output": "00b8ebc0 function delete_native_group_params_item_00b8ebc0\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00b8ebc0",
+        "function_name": "CG_scalar_deleting_dtor_00b8ebc0",
+        "comment": "\n\n[BSP reconstruction 00b8ebc0] CC update\nCC camera and GroupParams items:12 complete ordinary bodies894bytes/278instructions, nine support bodies24instructions;39 direct transfers and one indirect call, all instruction owners verified. Two three-cell predicates matchB86950 after only address substitutions. Actual item constructors, concrete readers/parsers, scalar deletion and current captured dispatch/type/reference bindings are source-backed. Group reader stores ST0 directly then skips/detaches payload; camera preserves every original x87 store/load around shared host _CIatan, TargetName current-header assignment and child/name cleanup states. Parser allocation cleanup is disarmed before reading; no completed-item rollback. Strict standalone MSVC Win32 compile and one controlled-child fixture passed:12 copied original bodies/30 direct/9 absolute relocations, eleven paired payloads, current token cells, scalar flags2, two source failure paths, actual manager/six parser registrations and raw root dispatch then item slot deletion/canonical manager drain. Project source registration/build awaits shared startup.cmake lease release. Original CRT atan/CPU/error identity, native ABI/FH3/SEH/private spills/faults, allocation failure, lazy pool recreation, token startup, remaining parsers/container destruction, executable admission and gameplay remain open. Original normal paths share source dependencies; original GroupParams table slot20 binds copied reader; original EH guarded out. Names hypotheses. docs/NATIVE_CAMERA_GROUP_RESOURCE_CC.md; reports/native_camera_group_resource_cc.json. Complete 30B. ECX actual item; stacked flags; EAX captured item; RET4. Source delete_native_group_params_item_00b8ebc0."
+      }
+    },
+    {
+      "address": "00b8e5c0",
+      "name": "BSP_GroupParamsItem_MatchesType_00b8e5c0",
+      "before_comment": {
+        "address": "00b8e5c0",
+        "function_name": "BSP_GroupParamsItem_MatchesType_00b8e5c0",
+        "comment": ""
+      },
+      "before_documentation": {
+        "hash": "f58185f24c08315547326633f7d831d79032495a9e2845419dc6c3399c26b9f0",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b8e5c0",
+        "function_name": "BSP_GroupParamsItem_MatchesType_00b8e5c0",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "piVar1",
+            "type": "int *",
+            "storage": "(register, 0x0, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 16,
+            "name": "LAB_00b8e5d0"
+          },
+          {
+            "relative_offset": 35,
+            "name": "LAB_00b8e5e3"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "evidence": "CC camera and GroupParams items:12 complete ordinary bodies894bytes/278instructions, nine support bodies24instructions;39 direct transfers and one indirect call, all instruction owners verified. Two three-cell predicates matchB86950 after only address substitutions. Actual item constructors, concrete readers/parsers, scalar deletion and current captured dispatch/type/reference bindings are source-backed. Group reader stores ST0 directly then skips/detaches payload; camera preserves every original x87 store/load around shared host _CIatan, TargetName current-header assignment and child/name cleanup states. Parser allocation cleanup is disarmed before reading; no completed-item rollback. Strict standalone MSVC Win32 compile and one controlled-child fixture passed:12 copied original bodies/30 direct/9 absolute relocations, eleven paired payloads, current token cells, scalar flags2, two source failure paths, actual manager/six parser registrations and raw root dispatch then item slot deletion/canonical manager drain. Project source registration/build awaits shared startup.cmake lease release. Original CRT atan/CPU/error identity, native ABI/FH3/SEH/private spills/faults, allocation failure, lazy pool recreation, token startup, remaining parsers/container destruction, executable admission and gameplay remain open. Original normal paths share source dependencies; original GroupParams table slot20 binds copied reader; original EH guarded out. Names hypotheses. docs/NATIVE_CAMERA_GROUP_RESOURCE_CC.md; reports/native_camera_group_resource_cc.json. Complete 40B. ECX ignored; stacked token; AL Boolean, upper EAX unspecified; RET4. Source matches_native_group_params_type_00b8e5c0.",
+      "prototype": "byte __fastcall BSP_GroupParamsItem_MatchesType_00b8e5c0(void* unused_ecx, void* unused_edx, uint token)",
+      "prototype_result": "Successfully set prototype for function at 00b8e5c0 with __fastcall calling convention",
+      "ledger_name_output": "00b8e5c0 -> BSP_GroupParamsItem_MatchesType_00b8e5c0\n",
+      "ledger_function_output": "00b8e5c0 function matches_native_group_params_type_00b8e5c0\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00b8e5c0",
+        "function_name": "BSP_GroupParamsItem_MatchesType_00b8e5c0",
+        "comment": "\n\n[BSP reconstruction 00b8e5c0] CC update\nCC camera and GroupParams items:12 complete ordinary bodies894bytes/278instructions, nine support bodies24instructions;39 direct transfers and one indirect call, all instruction owners verified. Two three-cell predicates matchB86950 after only address substitutions. Actual item constructors, concrete readers/parsers, scalar deletion and current captured dispatch/type/reference bindings are source-backed. Group reader stores ST0 directly then skips/detaches payload; camera preserves every original x87 store/load around shared host _CIatan, TargetName current-header assignment and child/name cleanup states. Parser allocation cleanup is disarmed before reading; no completed-item rollback. Strict standalone MSVC Win32 compile and one controlled-child fixture passed:12 copied original bodies/30 direct/9 absolute relocations, eleven paired payloads, current token cells, scalar flags2, two source failure paths, actual manager/six parser registrations and raw root dispatch then item slot deletion/canonical manager drain. Project source registration/build awaits shared startup.cmake lease release. Original CRT atan/CPU/error identity, native ABI/FH3/SEH/private spills/faults, allocation failure, lazy pool recreation, token startup, remaining parsers/container destruction, executable admission and gameplay remain open. Original normal paths share source dependencies; original GroupParams table slot20 binds copied reader; original EH guarded out. Names hypotheses. docs/NATIVE_CAMERA_GROUP_RESOURCE_CC.md; reports/native_camera_group_resource_cc.json. Complete 40B. ECX ignored; stacked token; AL Boolean, upper EAX unspecified; RET4. Source matches_native_group_params_type_00b8e5c0."
+      }
+    },
+    {
+      "address": "00b8b0b0",
+      "name": "BSP_ReadNativeCameraItem_00b8b0b0",
+      "before_comment": {
+        "address": "00b8b0b0",
+        "function_name": "FUN_00b8b0b0"
+      },
+      "before_documentation": {
+        "hash": "8a369e24c1777e90b3fe71e0e6d2d0b28a8ece1d1f89ebcb6a631ab4b2713c00",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b8b0b0",
+        "function_name": "FUN_00b8b0b0",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "pcStack_8",
+            "type": "undefined *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "extraout_EDX_03",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "extraout_EDX_04",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "extraout_EDX_05",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "extraout_EDX_06",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "extraout_EDX",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "extraout_EDX_00",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "extraout_EDX_01",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "extraout_EDX_02",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "puVar4",
+            "type": "uint *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "iVar5",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "unused_edx",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "unused_edx_00",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "handle",
+            "type": "void *",
+            "storage": "(unique, 0x10000191, 4)"
+          },
+          {
+            "name": "local_10",
+            "type": "int",
+            "storage": "(stack, 0xfffffffffffffff0, 4)"
+          },
+          {
+            "name": "cVar1",
+            "type": "char",
+            "storage": "(register, 0x0, 1)"
+          },
+          {
+            "name": "local_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "local_18",
+            "type": "float",
+            "storage": "(stack, 0xffffffffffffffe8, 4)"
+          },
+          {
+            "name": "uVar2",
+            "type": "uint",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "iVar3",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "local_14",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffec, 4)"
+          },
+          {
+            "name": "local_4",
+            "type": "int",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "fVar7",
+            "type": "float10",
+            "storage": "(register, 0x1100, 10)"
+          },
+          {
+            "name": "fVar8",
+            "type": "float",
+            "storage": "(VARIABLE, 0x0, 4)"
+          },
+          {
+            "name": "uVar9",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffd0, 4)"
+          },
+          {
+            "name": "pvVar6",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "unused_edx_01",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "extraout_EDX_07",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "this",
+            "type": "uint *",
+            "storage": "(register, 0x1c, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 128,
+            "name": "LAB_00b8b130"
+          },
+          {
+            "relative_offset": 132,
+            "name": "LAB_00b8b134"
+          },
+          {
+            "relative_offset": 245,
+            "name": "LAB_00b8b1a5"
+          },
+          {
+            "relative_offset": 282,
+            "name": "LAB_00b8b1ca"
+          },
+          {
+            "relative_offset": 291,
+            "name": "LAB_00b8b1d3"
+          },
+          {
+            "relative_offset": 325,
+            "name": "LAB_00b8b1f5"
+          }
+        ],
+        "completeness_score": 50.0
+      },
+      "evidence": "CC camera and GroupParams items:12 complete ordinary bodies894bytes/278instructions, nine support bodies24instructions;39 direct transfers and one indirect call, all instruction owners verified. Two three-cell predicates matchB86950 after only address substitutions. Actual item constructors, concrete readers/parsers, scalar deletion and current captured dispatch/type/reference bindings are source-backed. Group reader stores ST0 directly then skips/detaches payload; camera preserves every original x87 store/load around shared host _CIatan, TargetName current-header assignment and child/name cleanup states. Parser allocation cleanup is disarmed before reading; no completed-item rollback. Strict standalone MSVC Win32 compile and one controlled-child fixture passed:12 copied original bodies/30 direct/9 absolute relocations, eleven paired payloads, current token cells, scalar flags2, two source failure paths, actual manager/six parser registrations and raw root dispatch then item slot deletion/canonical manager drain. Project source registration/build awaits shared startup.cmake lease release. Original CRT atan/CPU/error identity, native ABI/FH3/SEH/private spills/faults, allocation failure, lazy pool recreation, token startup, remaining parsers/container destruction, executable admission and gameplay remain open. Original normal paths share source dependencies; original GroupParams table slot20 binds copied reader; original EH guarded out. Names hypotheses. docs/NATIVE_CAMERA_GROUP_RESOURCE_CC.md; reports/native_camera_group_resource_cc.json. Complete 344B. ECX actual item; stacked handle; RET4. Source read_native_camera_item_00b8b0b0.",
+      "prototype": "void __fastcall BSP_ReadNativeCameraItem_00b8b0b0(void* actual_item, void* unused_edx, void* actual_handle)",
+      "prototype_result": "Successfully set prototype for function at 00b8b0b0 with __fastcall calling convention",
+      "ledger_name_output": "00b8b0b0 -> BSP_ReadNativeCameraItem_00b8b0b0\n",
+      "ledger_function_output": "00b8b0b0 function read_native_camera_item_00b8b0b0\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00b8b0b0",
+        "function_name": "BSP_ReadNativeCameraItem_00b8b0b0",
+        "comment": "\n\n[BSP reconstruction 00b8b0b0] CC update\nCC camera and GroupParams items:12 complete ordinary bodies894bytes/278instructions, nine support bodies24instructions;39 direct transfers and one indirect call, all instruction owners verified. Two three-cell predicates matchB86950 after only address substitutions. Actual item constructors, concrete readers/parsers, scalar deletion and current captured dispatch/type/reference bindings are source-backed. Group reader stores ST0 directly then skips/detaches payload; camera preserves every original x87 store/load around shared host _CIatan, TargetName current-header assignment and child/name cleanup states. Parser allocation cleanup is disarmed before reading; no completed-item rollback. Strict standalone MSVC Win32 compile and one controlled-child fixture passed:12 copied original bodies/30 direct/9 absolute relocations, eleven paired payloads, current token cells, scalar flags2, two source failure paths, actual manager/six parser registrations and raw root dispatch then item slot deletion/canonical manager drain. Project source registration/build awaits shared startup.cmake lease release. Original CRT atan/CPU/error identity, native ABI/FH3/SEH/private spills/faults, allocation failure, lazy pool recreation, token startup, remaining parsers/container destruction, executable admission and gameplay remain open. Original normal paths share source dependencies; original GroupParams table slot20 binds copied reader; original EH guarded out. Names hypotheses. docs/NATIVE_CAMERA_GROUP_RESOURCE_CC.md; reports/native_camera_group_resource_cc.json. Complete 344B. ECX actual item; stacked handle; RET4. Source read_native_camera_item_00b8b0b0."
+      }
+    },
+    {
+      "address": "00b8b240",
+      "name": "BSP_ParseNativeCameraItem_00b8b240",
+      "before_comment": {
+        "address": "00b8b240",
+        "function_name": "FUN_00b8b240"
+      },
+      "before_documentation": {
+        "hash": "da08453cb4000a2811ef902bf4905bbae21bf8bd207bd5e80112499711ce6f68",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b8b240",
+        "function_name": "FUN_00b8b240",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "unused_edx",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "extraout_EDX",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "pcStack_8",
+            "type": "undefined *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "local_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "local_4",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "uVar1",
+            "type": "undefined8",
+            "storage": "(VARIABLE, 0x0, 8)"
+          },
+          {
+            "name": "actual_item",
+            "type": "undefined4 *",
+            "storage": "(register, 0x18, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 80,
+            "name": "LAB_00b8b290"
+          },
+          {
+            "relative_offset": 82,
+            "name": "LAB_00b8b292"
+          }
+        ],
+        "completeness_score": 50.0
+      },
+      "evidence": "CC camera and GroupParams items:12 complete ordinary bodies894bytes/278instructions, nine support bodies24instructions;39 direct transfers and one indirect call, all instruction owners verified. Two three-cell predicates matchB86950 after only address substitutions. Actual item constructors, concrete readers/parsers, scalar deletion and current captured dispatch/type/reference bindings are source-backed. Group reader stores ST0 directly then skips/detaches payload; camera preserves every original x87 store/load around shared host _CIatan, TargetName current-header assignment and child/name cleanup states. Parser allocation cleanup is disarmed before reading; no completed-item rollback. Strict standalone MSVC Win32 compile and one controlled-child fixture passed:12 copied original bodies/30 direct/9 absolute relocations, eleven paired payloads, current token cells, scalar flags2, two source failure paths, actual manager/six parser registrations and raw root dispatch then item slot deletion/canonical manager drain. Project source registration/build awaits shared startup.cmake lease release. Original CRT atan/CPU/error identity, native ABI/FH3/SEH/private spills/faults, allocation failure, lazy pool recreation, token startup, remaining parsers/container destruction, executable admission and gameplay remain open. Original normal paths share source dependencies; original GroupParams table slot20 binds copied reader; original EH guarded out. Names hypotheses. docs/NATIVE_CAMERA_GROUP_RESOURCE_CC.md; reports/native_camera_group_resource_cc.json. Complete 122B. ECX parser ignored; stacked handle; EAX captured item; RET4. Source parse_native_camera_item_00b8b240.",
+      "prototype": "void* __fastcall BSP_ParseNativeCameraItem_00b8b240(void* unused_ecx, void* unused_edx, void* actual_handle)",
+      "prototype_result": "Successfully set prototype for function at 00b8b240 with __fastcall calling convention",
+      "ledger_name_output": "00b8b240 -> BSP_ParseNativeCameraItem_00b8b240\n",
+      "ledger_function_output": "00b8b240 function parse_native_camera_item_00b8b240\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00b8b240",
+        "function_name": "BSP_ParseNativeCameraItem_00b8b240",
+        "comment": "\n\n[BSP reconstruction 00b8b240] CC update\nCC camera and GroupParams items:12 complete ordinary bodies894bytes/278instructions, nine support bodies24instructions;39 direct transfers and one indirect call, all instruction owners verified. Two three-cell predicates matchB86950 after only address substitutions. Actual item constructors, concrete readers/parsers, scalar deletion and current captured dispatch/type/reference bindings are source-backed. Group reader stores ST0 directly then skips/detaches payload; camera preserves every original x87 store/load around shared host _CIatan, TargetName current-header assignment and child/name cleanup states. Parser allocation cleanup is disarmed before reading; no completed-item rollback. Strict standalone MSVC Win32 compile and one controlled-child fixture passed:12 copied original bodies/30 direct/9 absolute relocations, eleven paired payloads, current token cells, scalar flags2, two source failure paths, actual manager/six parser registrations and raw root dispatch then item slot deletion/canonical manager drain. Project source registration/build awaits shared startup.cmake lease release. Original CRT atan/CPU/error identity, native ABI/FH3/SEH/private spills/faults, allocation failure, lazy pool recreation, token startup, remaining parsers/container destruction, executable admission and gameplay remain open. Original normal paths share source dependencies; original GroupParams table slot20 binds copied reader; original EH guarded out. Names hypotheses. docs/NATIVE_CAMERA_GROUP_RESOURCE_CC.md; reports/native_camera_group_resource_cc.json. Complete 122B. ECX parser ignored; stacked handle; EAX captured item; RET4. Source parse_native_camera_item_00b8b240."
+      }
+    },
+    {
+      "address": "00b8aa60",
+      "name": "BSP_DestroyNativeCameraItem_00b8aa60",
+      "before_comment": {
+        "address": "00b8aa60",
+        "function_name": "FUN_00b8aa60"
+      },
+      "before_documentation": {
+        "hash": "a8dc563e10d5a8941447376508179bf4ed7fd258b50bdcf26ae2bf78d101047a",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b8aa60",
+        "function_name": "FUN_00b8aa60",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "iVar1",
+            "type": "int",
+            "storage": "(register, 0x4, 4)"
+          },
+          {
+            "name": "pvStack_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "pcStack_8",
+            "type": "undefined *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "local_4",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "extraout_EDX",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "iVar2",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffe0, 4)"
+          },
+          {
+            "name": "uVar3",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffe8, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 66,
+            "name": "LAB_00b8aaa2"
+          }
+        ],
+        "completeness_score": 50.0
+      },
+      "evidence": "CC camera and GroupParams items:12 complete ordinary bodies894bytes/278instructions, nine support bodies24instructions;39 direct transfers and one indirect call, all instruction owners verified. Two three-cell predicates matchB86950 after only address substitutions. Actual item constructors, concrete readers/parsers, scalar deletion and current captured dispatch/type/reference bindings are source-backed. Group reader stores ST0 directly then skips/detaches payload; camera preserves every original x87 store/load around shared host _CIatan, TargetName current-header assignment and child/name cleanup states. Parser allocation cleanup is disarmed before reading; no completed-item rollback. Strict standalone MSVC Win32 compile and one controlled-child fixture passed:12 copied original bodies/30 direct/9 absolute relocations, eleven paired payloads, current token cells, scalar flags2, two source failure paths, actual manager/six parser registrations and raw root dispatch then item slot deletion/canonical manager drain. Project source registration/build awaits shared startup.cmake lease release. Original CRT atan/CPU/error identity, native ABI/FH3/SEH/private spills/faults, allocation failure, lazy pool recreation, token startup, remaining parsers/container destruction, executable admission and gameplay remain open. Original normal paths share source dependencies; original GroupParams table slot20 binds copied reader; original EH guarded out. Names hypotheses. docs/NATIVE_CAMERA_GROUP_RESOURCE_CC.md; reports/native_camera_group_resource_cc.json. Complete 97B. ECX actual item; RET. Source destroy_native_camera_item_00b8aa60.",
+      "prototype": "void __fastcall BSP_DestroyNativeCameraItem_00b8aa60(void* actual_item, void* unused_edx)",
+      "prototype_result": "Successfully set prototype for function at 00b8aa60 with __fastcall calling convention",
+      "ledger_name_output": "00b8aa60 -> BSP_DestroyNativeCameraItem_00b8aa60\n",
+      "ledger_function_output": "00b8aa60 function destroy_native_camera_item_00b8aa60\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00b8aa60",
+        "function_name": "BSP_DestroyNativeCameraItem_00b8aa60",
+        "comment": "\n\n[BSP reconstruction 00b8aa60] CC update\nCC camera and GroupParams items:12 complete ordinary bodies894bytes/278instructions, nine support bodies24instructions;39 direct transfers and one indirect call, all instruction owners verified. Two three-cell predicates matchB86950 after only address substitutions. Actual item constructors, concrete readers/parsers, scalar deletion and current captured dispatch/type/reference bindings are source-backed. Group reader stores ST0 directly then skips/detaches payload; camera preserves every original x87 store/load around shared host _CIatan, TargetName current-header assignment and child/name cleanup states. Parser allocation cleanup is disarmed before reading; no completed-item rollback. Strict standalone MSVC Win32 compile and one controlled-child fixture passed:12 copied original bodies/30 direct/9 absolute relocations, eleven paired payloads, current token cells, scalar flags2, two source failure paths, actual manager/six parser registrations and raw root dispatch then item slot deletion/canonical manager drain. Project source registration/build awaits shared startup.cmake lease release. Original CRT atan/CPU/error identity, native ABI/FH3/SEH/private spills/faults, allocation failure, lazy pool recreation, token startup, remaining parsers/container destruction, executable admission and gameplay remain open. Original normal paths share source dependencies; original GroupParams table slot20 binds copied reader; original EH guarded out. Names hypotheses. docs/NATIVE_CAMERA_GROUP_RESOURCE_CC.md; reports/native_camera_group_resource_cc.json. Complete 97B. ECX actual item; RET. Source destroy_native_camera_item_00b8aa60."
+      }
+    },
+    {
+      "address": "00b8b2c0",
+      "name": "CG_scalar_deleting_dtor_00b8b2c0",
+      "before_comment": {
+        "address": "00b8b2c0",
+        "function_name": "CG_scalar_deleting_dtor_00b8b2c0",
+        "comment": ""
+      },
+      "before_documentation": {
+        "hash": "91e4718dbb451d97dd06d7f5283b45bb8ef330cbc9947aadbab0bee635159320",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b8b2c0",
+        "function_name": "CG_scalar_deleting_dtor_00b8b2c0",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "",
+        "parameters": [],
+        "local_variables": [],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 24,
+            "name": "LAB_00b8b2d8"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "evidence": "CC camera and GroupParams items:12 complete ordinary bodies894bytes/278instructions, nine support bodies24instructions;39 direct transfers and one indirect call, all instruction owners verified. Two three-cell predicates matchB86950 after only address substitutions. Actual item constructors, concrete readers/parsers, scalar deletion and current captured dispatch/type/reference bindings are source-backed. Group reader stores ST0 directly then skips/detaches payload; camera preserves every original x87 store/load around shared host _CIatan, TargetName current-header assignment and child/name cleanup states. Parser allocation cleanup is disarmed before reading; no completed-item rollback. Strict standalone MSVC Win32 compile and one controlled-child fixture passed:12 copied original bodies/30 direct/9 absolute relocations, eleven paired payloads, current token cells, scalar flags2, two source failure paths, actual manager/six parser registrations and raw root dispatch then item slot deletion/canonical manager drain. Project source registration/build awaits shared startup.cmake lease release. Original CRT atan/CPU/error identity, native ABI/FH3/SEH/private spills/faults, allocation failure, lazy pool recreation, token startup, remaining parsers/container destruction, executable admission and gameplay remain open. Original normal paths share source dependencies; original GroupParams table slot20 binds copied reader; original EH guarded out. Names hypotheses. docs/NATIVE_CAMERA_GROUP_RESOURCE_CC.md; reports/native_camera_group_resource_cc.json. Complete 30B. ECX actual item; stacked flags; EAX captured item; RET4. Source delete_native_camera_item_00b8b2c0.",
+      "prototype": "void* __fastcall CG_scalar_deleting_dtor_00b8b2c0(void* actual_item, void* unused_edx, uint flags)",
+      "prototype_result": "Successfully set prototype for function at 00b8b2c0 with __fastcall calling convention",
+      "ledger_name_output": "00b8b2c0 -> CG_scalar_deleting_dtor_00b8b2c0\n",
+      "ledger_function_output": "00b8b2c0 function delete_native_camera_item_00b8b2c0\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00b8b2c0",
+        "function_name": "CG_scalar_deleting_dtor_00b8b2c0",
+        "comment": "\n\n[BSP reconstruction 00b8b2c0] CC update\nCC camera and GroupParams items:12 complete ordinary bodies894bytes/278instructions, nine support bodies24instructions;39 direct transfers and one indirect call, all instruction owners verified. Two three-cell predicates matchB86950 after only address substitutions. Actual item constructors, concrete readers/parsers, scalar deletion and current captured dispatch/type/reference bindings are source-backed. Group reader stores ST0 directly then skips/detaches payload; camera preserves every original x87 store/load around shared host _CIatan, TargetName current-header assignment and child/name cleanup states. Parser allocation cleanup is disarmed before reading; no completed-item rollback. Strict standalone MSVC Win32 compile and one controlled-child fixture passed:12 copied original bodies/30 direct/9 absolute relocations, eleven paired payloads, current token cells, scalar flags2, two source failure paths, actual manager/six parser registrations and raw root dispatch then item slot deletion/canonical manager drain. Project source registration/build awaits shared startup.cmake lease release. Original CRT atan/CPU/error identity, native ABI/FH3/SEH/private spills/faults, allocation failure, lazy pool recreation, token startup, remaining parsers/container destruction, executable admission and gameplay remain open. Original normal paths share source dependencies; original GroupParams table slot20 binds copied reader; original EH guarded out. Names hypotheses. docs/NATIVE_CAMERA_GROUP_RESOURCE_CC.md; reports/native_camera_group_resource_cc.json. Complete 30B. ECX actual item; stacked flags; EAX captured item; RET4. Source delete_native_camera_item_00b8b2c0."
+      }
+    },
+    {
+      "address": "00b8aa30",
+      "name": "BSP_CameraItem_MatchesType_00b8aa30",
+      "before_comment": {
+        "address": "00b8aa30",
+        "function_name": "BSP_CameraItem_MatchesType_00b8aa30",
+        "comment": ""
+      },
+      "before_documentation": {
+        "hash": "f58185f24c08315547326633f7d831d79032495a9e2845419dc6c3399c26b9f0",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b8aa30",
+        "function_name": "BSP_CameraItem_MatchesType_00b8aa30",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "piVar1",
+            "type": "int *",
+            "storage": "(register, 0x0, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 16,
+            "name": "LAB_00b8aa40"
+          },
+          {
+            "relative_offset": 35,
+            "name": "LAB_00b8aa53"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "evidence": "CC camera and GroupParams items:12 complete ordinary bodies894bytes/278instructions, nine support bodies24instructions;39 direct transfers and one indirect call, all instruction owners verified. Two three-cell predicates matchB86950 after only address substitutions. Actual item constructors, concrete readers/parsers, scalar deletion and current captured dispatch/type/reference bindings are source-backed. Group reader stores ST0 directly then skips/detaches payload; camera preserves every original x87 store/load around shared host _CIatan, TargetName current-header assignment and child/name cleanup states. Parser allocation cleanup is disarmed before reading; no completed-item rollback. Strict standalone MSVC Win32 compile and one controlled-child fixture passed:12 copied original bodies/30 direct/9 absolute relocations, eleven paired payloads, current token cells, scalar flags2, two source failure paths, actual manager/six parser registrations and raw root dispatch then item slot deletion/canonical manager drain. Project source registration/build awaits shared startup.cmake lease release. Original CRT atan/CPU/error identity, native ABI/FH3/SEH/private spills/faults, allocation failure, lazy pool recreation, token startup, remaining parsers/container destruction, executable admission and gameplay remain open. Original normal paths share source dependencies; original GroupParams table slot20 binds copied reader; original EH guarded out. Names hypotheses. docs/NATIVE_CAMERA_GROUP_RESOURCE_CC.md; reports/native_camera_group_resource_cc.json. Complete 40B. ECX ignored; stacked token; AL Boolean, upper EAX unspecified; RET4. Source matches_native_camera_type_00b8aa30.",
+      "prototype": "byte __fastcall BSP_CameraItem_MatchesType_00b8aa30(void* unused_ecx, void* unused_edx, uint token)",
+      "prototype_result": "Successfully set prototype for function at 00b8aa30 with __fastcall calling convention",
+      "ledger_name_output": "00b8aa30 -> BSP_CameraItem_MatchesType_00b8aa30\n",
+      "ledger_function_output": "00b8aa30 function matches_native_camera_type_00b8aa30\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00b8aa30",
+        "function_name": "BSP_CameraItem_MatchesType_00b8aa30",
+        "comment": "\n\n[BSP reconstruction 00b8aa30] CC update\nCC camera and GroupParams items:12 complete ordinary bodies894bytes/278instructions, nine support bodies24instructions;39 direct transfers and one indirect call, all instruction owners verified. Two three-cell predicates matchB86950 after only address substitutions. Actual item constructors, concrete readers/parsers, scalar deletion and current captured dispatch/type/reference bindings are source-backed. Group reader stores ST0 directly then skips/detaches payload; camera preserves every original x87 store/load around shared host _CIatan, TargetName current-header assignment and child/name cleanup states. Parser allocation cleanup is disarmed before reading; no completed-item rollback. Strict standalone MSVC Win32 compile and one controlled-child fixture passed:12 copied original bodies/30 direct/9 absolute relocations, eleven paired payloads, current token cells, scalar flags2, two source failure paths, actual manager/six parser registrations and raw root dispatch then item slot deletion/canonical manager drain. Project source registration/build awaits shared startup.cmake lease release. Original CRT atan/CPU/error identity, native ABI/FH3/SEH/private spills/faults, allocation failure, lazy pool recreation, token startup, remaining parsers/container destruction, executable admission and gameplay remain open. Original normal paths share source dependencies; original GroupParams table slot20 binds copied reader; original EH guarded out. Names hypotheses. docs/NATIVE_CAMERA_GROUP_RESOURCE_CC.md; reports/native_camera_group_resource_cc.json. Complete 40B. ECX ignored; stacked token; AL Boolean, upper EAX unspecified; RET4. Source matches_native_camera_type_00b8aa30."
+      }
+    },
+    {
+      "address": "00cc28d0",
+      "name": "Unwind@00cc28d0",
+      "before_comment": {
+        "address": "00cc28d0",
+        "function_name": "Unwind@00cc28d0"
+      },
+      "before_documentation": {
+        "hash": "ceb09f5d0998ca7550e96f747eb1510ddd7fa64d0dd3b26c0f52e63402e8e0d3",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00cc28d0",
+        "function_name": "Unwind@00cc28d0",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "unaff_EBP",
+            "type": "int",
+            "storage": "(register, 0x14, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 80.0
+      },
+      "evidence": "CC camera and GroupParams items:12 complete ordinary bodies894bytes/278instructions, nine support bodies24instructions;39 direct transfers and one indirect call, all instruction owners verified. Two three-cell predicates matchB86950 after only address substitutions. Actual item constructors, concrete readers/parsers, scalar deletion and current captured dispatch/type/reference bindings are source-backed. Group reader stores ST0 directly then skips/detaches payload; camera preserves every original x87 store/load around shared host _CIatan, TargetName current-header assignment and child/name cleanup states. Parser allocation cleanup is disarmed before reading; no completed-item rollback. Strict standalone MSVC Win32 compile and one controlled-child fixture passed:12 copied original bodies/30 direct/9 absolute relocations, eleven paired payloads, current token cells, scalar flags2, two source failure paths, actual manager/six parser registrations and raw root dispatch then item slot deletion/canonical manager drain. Project source registration/build awaits shared startup.cmake lease release. Original CRT atan/CPU/error identity, native ABI/FH3/SEH/private spills/faults, allocation failure, lazy pool recreation, token startup, remaining parsers/container destruction, executable admission and gameplay remain open. Original normal paths share source dependencies; original GroupParams table slot20 binds copied reader; original EH guarded out. Names hypotheses. docs/NATIVE_CAMERA_GROUP_RESOURCE_CC.md; reports/native_camera_group_resource_cc.json. Complete unwind or dispatch handler; support evidence only.",
+      "ledger_name_output": "00cc28d0 -> Unwind@00cc28d0\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00cc28d0",
+        "function_name": "Unwind@00cc28d0",
+        "comment": "\n\n[BSP reconstruction 00cc28d0] CC update\nCC camera and GroupParams items:12 complete ordinary bodies894bytes/278instructions, nine support bodies24instructions;39 direct transfers and one indirect call, all instruction owners verified. Two three-cell predicates matchB86950 after only address substitutions. Actual item constructors, concrete readers/parsers, scalar deletion and current captured dispatch/type/reference bindings are source-backed. Group reader stores ST0 directly then skips/detaches payload; camera preserves every original x87 store/load around shared host _CIatan, TargetName current-header assignment and child/name cleanup states. Parser allocation cleanup is disarmed before reading; no completed-item rollback. Strict standalone MSVC Win32 compile and one controlled-child fixture passed:12 copied original bodies/30 direct/9 absolute relocations, eleven paired payloads, current token cells, scalar flags2, two source failure paths, actual manager/six parser registrations and raw root dispatch then item slot deletion/canonical manager drain. Project source registration/build awaits shared startup.cmake lease release. Original CRT atan/CPU/error identity, native ABI/FH3/SEH/private spills/faults, allocation failure, lazy pool recreation, token startup, remaining parsers/container destruction, executable admission and gameplay remain open. Original normal paths share source dependencies; original GroupParams table slot20 binds copied reader; original EH guarded out. Names hypotheses. docs/NATIVE_CAMERA_GROUP_RESOURCE_CC.md; reports/native_camera_group_resource_cc.json. Complete unwind or dispatch handler; support evidence only."
+      }
+    },
+    {
+      "address": "00cc28d8",
+      "name": "BSP_CameraItemDestroy_EH_00cc28d8",
+      "before_comment": {
+        "address": "00cc28d8",
+        "function_name": "BSP_CameraItemDestroy_EH_00cc28d8",
+        "comment": ""
+      },
+      "before_documentation": {
+        "hash": "f0f2f68cf1132ae80dae34c6f69542164e987ef3beaddd17388b21e68e3a2bc1",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00cc28d8",
+        "function_name": "BSP_CameraItemDestroy_EH_00cc28d8",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "",
+        "parameters": [],
+        "local_variables": [],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 100.0
+      },
+      "evidence": "CC camera and GroupParams items:12 complete ordinary bodies894bytes/278instructions, nine support bodies24instructions;39 direct transfers and one indirect call, all instruction owners verified. Two three-cell predicates matchB86950 after only address substitutions. Actual item constructors, concrete readers/parsers, scalar deletion and current captured dispatch/type/reference bindings are source-backed. Group reader stores ST0 directly then skips/detaches payload; camera preserves every original x87 store/load around shared host _CIatan, TargetName current-header assignment and child/name cleanup states. Parser allocation cleanup is disarmed before reading; no completed-item rollback. Strict standalone MSVC Win32 compile and one controlled-child fixture passed:12 copied original bodies/30 direct/9 absolute relocations, eleven paired payloads, current token cells, scalar flags2, two source failure paths, actual manager/six parser registrations and raw root dispatch then item slot deletion/canonical manager drain. Project source registration/build awaits shared startup.cmake lease release. Original CRT atan/CPU/error identity, native ABI/FH3/SEH/private spills/faults, allocation failure, lazy pool recreation, token startup, remaining parsers/container destruction, executable admission and gameplay remain open. Original normal paths share source dependencies; original GroupParams table slot20 binds copied reader; original EH guarded out. Names hypotheses. docs/NATIVE_CAMERA_GROUP_RESOURCE_CC.md; reports/native_camera_group_resource_cc.json. Complete unwind or dispatch handler; support evidence only.",
+      "ledger_name_output": "00cc28d8 -> BSP_CameraItemDestroy_EH_00cc28d8\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00cc28d8",
+        "function_name": "BSP_CameraItemDestroy_EH_00cc28d8",
+        "comment": "\n\n[BSP reconstruction 00cc28d8] CC update\nCC camera and GroupParams items:12 complete ordinary bodies894bytes/278instructions, nine support bodies24instructions;39 direct transfers and one indirect call, all instruction owners verified. Two three-cell predicates matchB86950 after only address substitutions. Actual item constructors, concrete readers/parsers, scalar deletion and current captured dispatch/type/reference bindings are source-backed. Group reader stores ST0 directly then skips/detaches payload; camera preserves every original x87 store/load around shared host _CIatan, TargetName current-header assignment and child/name cleanup states. Parser allocation cleanup is disarmed before reading; no completed-item rollback. Strict standalone MSVC Win32 compile and one controlled-child fixture passed:12 copied original bodies/30 direct/9 absolute relocations, eleven paired payloads, current token cells, scalar flags2, two source failure paths, actual manager/six parser registrations and raw root dispatch then item slot deletion/canonical manager drain. Project source registration/build awaits shared startup.cmake lease release. Original CRT atan/CPU/error identity, native ABI/FH3/SEH/private spills/faults, allocation failure, lazy pool recreation, token startup, remaining parsers/container destruction, executable admission and gameplay remain open. Original normal paths share source dependencies; original GroupParams table slot20 binds copied reader; original EH guarded out. Names hypotheses. docs/NATIVE_CAMERA_GROUP_RESOURCE_CC.md; reports/native_camera_group_resource_cc.json. Complete unwind or dispatch handler; support evidence only."
+      }
+    },
+    {
+      "address": "00cc2960",
+      "name": "Unwind@00cc2960",
+      "before_comment": {
+        "address": "00cc2960",
+        "function_name": "Unwind@00cc2960"
+      },
+      "before_documentation": {
+        "hash": "53b86aea9df3cafd1f75414d5408204710ce3a0cc9072525c12ebf19c2adc51f",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00cc2960",
+        "function_name": "Unwind@00cc2960",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "unaff_EBP",
+            "type": "int",
+            "storage": "(register, 0x14, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 80.0
+      },
+      "evidence": "CC camera and GroupParams items:12 complete ordinary bodies894bytes/278instructions, nine support bodies24instructions;39 direct transfers and one indirect call, all instruction owners verified. Two three-cell predicates matchB86950 after only address substitutions. Actual item constructors, concrete readers/parsers, scalar deletion and current captured dispatch/type/reference bindings are source-backed. Group reader stores ST0 directly then skips/detaches payload; camera preserves every original x87 store/load around shared host _CIatan, TargetName current-header assignment and child/name cleanup states. Parser allocation cleanup is disarmed before reading; no completed-item rollback. Strict standalone MSVC Win32 compile and one controlled-child fixture passed:12 copied original bodies/30 direct/9 absolute relocations, eleven paired payloads, current token cells, scalar flags2, two source failure paths, actual manager/six parser registrations and raw root dispatch then item slot deletion/canonical manager drain. Project source registration/build awaits shared startup.cmake lease release. Original CRT atan/CPU/error identity, native ABI/FH3/SEH/private spills/faults, allocation failure, lazy pool recreation, token startup, remaining parsers/container destruction, executable admission and gameplay remain open. Original normal paths share source dependencies; original GroupParams table slot20 binds copied reader; original EH guarded out. Names hypotheses. docs/NATIVE_CAMERA_GROUP_RESOURCE_CC.md; reports/native_camera_group_resource_cc.json. Complete unwind or dispatch handler; support evidence only.",
+      "ledger_name_output": "00cc2960 -> Unwind@00cc2960\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00cc2960",
+        "function_name": "Unwind@00cc2960",
+        "comment": "\n\n[BSP reconstruction 00cc2960] CC update\nCC camera and GroupParams items:12 complete ordinary bodies894bytes/278instructions, nine support bodies24instructions;39 direct transfers and one indirect call, all instruction owners verified. Two three-cell predicates matchB86950 after only address substitutions. Actual item constructors, concrete readers/parsers, scalar deletion and current captured dispatch/type/reference bindings are source-backed. Group reader stores ST0 directly then skips/detaches payload; camera preserves every original x87 store/load around shared host _CIatan, TargetName current-header assignment and child/name cleanup states. Parser allocation cleanup is disarmed before reading; no completed-item rollback. Strict standalone MSVC Win32 compile and one controlled-child fixture passed:12 copied original bodies/30 direct/9 absolute relocations, eleven paired payloads, current token cells, scalar flags2, two source failure paths, actual manager/six parser registrations and raw root dispatch then item slot deletion/canonical manager drain. Project source registration/build awaits shared startup.cmake lease release. Original CRT atan/CPU/error identity, native ABI/FH3/SEH/private spills/faults, allocation failure, lazy pool recreation, token startup, remaining parsers/container destruction, executable admission and gameplay remain open. Original normal paths share source dependencies; original GroupParams table slot20 binds copied reader; original EH guarded out. Names hypotheses. docs/NATIVE_CAMERA_GROUP_RESOURCE_CC.md; reports/native_camera_group_resource_cc.json. Complete unwind or dispatch handler; support evidence only."
+      }
+    },
+    {
+      "address": "00cc2968",
+      "name": "Unwind@00cc2968",
+      "before_comment": {
+        "address": "00cc2968",
+        "function_name": "Unwind@00cc2968"
+      },
+      "before_documentation": {
+        "hash": "057951bd43669b8b872216970cd8748d9791d21e7386006a98412175dd6aa427",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00cc2968",
+        "function_name": "Unwind@00cc2968",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "unaff_EBP",
+            "type": "int",
+            "storage": "(register, 0x14, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 80.0
+      },
+      "evidence": "CC camera and GroupParams items:12 complete ordinary bodies894bytes/278instructions, nine support bodies24instructions;39 direct transfers and one indirect call, all instruction owners verified. Two three-cell predicates matchB86950 after only address substitutions. Actual item constructors, concrete readers/parsers, scalar deletion and current captured dispatch/type/reference bindings are source-backed. Group reader stores ST0 directly then skips/detaches payload; camera preserves every original x87 store/load around shared host _CIatan, TargetName current-header assignment and child/name cleanup states. Parser allocation cleanup is disarmed before reading; no completed-item rollback. Strict standalone MSVC Win32 compile and one controlled-child fixture passed:12 copied original bodies/30 direct/9 absolute relocations, eleven paired payloads, current token cells, scalar flags2, two source failure paths, actual manager/six parser registrations and raw root dispatch then item slot deletion/canonical manager drain. Project source registration/build awaits shared startup.cmake lease release. Original CRT atan/CPU/error identity, native ABI/FH3/SEH/private spills/faults, allocation failure, lazy pool recreation, token startup, remaining parsers/container destruction, executable admission and gameplay remain open. Original normal paths share source dependencies; original GroupParams table slot20 binds copied reader; original EH guarded out. Names hypotheses. docs/NATIVE_CAMERA_GROUP_RESOURCE_CC.md; reports/native_camera_group_resource_cc.json. Complete unwind or dispatch handler; support evidence only.",
+      "ledger_name_output": "00cc2968 -> Unwind@00cc2968\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00cc2968",
+        "function_name": "Unwind@00cc2968",
+        "comment": "\n\n[BSP reconstruction 00cc2968] CC update\nCC camera and GroupParams items:12 complete ordinary bodies894bytes/278instructions, nine support bodies24instructions;39 direct transfers and one indirect call, all instruction owners verified. Two three-cell predicates matchB86950 after only address substitutions. Actual item constructors, concrete readers/parsers, scalar deletion and current captured dispatch/type/reference bindings are source-backed. Group reader stores ST0 directly then skips/detaches payload; camera preserves every original x87 store/load around shared host _CIatan, TargetName current-header assignment and child/name cleanup states. Parser allocation cleanup is disarmed before reading; no completed-item rollback. Strict standalone MSVC Win32 compile and one controlled-child fixture passed:12 copied original bodies/30 direct/9 absolute relocations, eleven paired payloads, current token cells, scalar flags2, two source failure paths, actual manager/six parser registrations and raw root dispatch then item slot deletion/canonical manager drain. Project source registration/build awaits shared startup.cmake lease release. Original CRT atan/CPU/error identity, native ABI/FH3/SEH/private spills/faults, allocation failure, lazy pool recreation, token startup, remaining parsers/container destruction, executable admission and gameplay remain open. Original normal paths share source dependencies; original GroupParams table slot20 binds copied reader; original EH guarded out. Names hypotheses. docs/NATIVE_CAMERA_GROUP_RESOURCE_CC.md; reports/native_camera_group_resource_cc.json. Complete unwind or dispatch handler; support evidence only."
+      }
+    },
+    {
+      "address": "00cc2970",
+      "name": "BSP_CameraItemRead_EH_00cc2970",
+      "before_comment": {
+        "address": "00cc2970",
+        "function_name": "BSP_CameraItemRead_EH_00cc2970",
+        "comment": ""
+      },
+      "before_documentation": {
+        "hash": "f0f2f68cf1132ae80dae34c6f69542164e987ef3beaddd17388b21e68e3a2bc1",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00cc2970",
+        "function_name": "BSP_CameraItemRead_EH_00cc2970",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "",
+        "parameters": [],
+        "local_variables": [],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 100.0
+      },
+      "evidence": "CC camera and GroupParams items:12 complete ordinary bodies894bytes/278instructions, nine support bodies24instructions;39 direct transfers and one indirect call, all instruction owners verified. Two three-cell predicates matchB86950 after only address substitutions. Actual item constructors, concrete readers/parsers, scalar deletion and current captured dispatch/type/reference bindings are source-backed. Group reader stores ST0 directly then skips/detaches payload; camera preserves every original x87 store/load around shared host _CIatan, TargetName current-header assignment and child/name cleanup states. Parser allocation cleanup is disarmed before reading; no completed-item rollback. Strict standalone MSVC Win32 compile and one controlled-child fixture passed:12 copied original bodies/30 direct/9 absolute relocations, eleven paired payloads, current token cells, scalar flags2, two source failure paths, actual manager/six parser registrations and raw root dispatch then item slot deletion/canonical manager drain. Project source registration/build awaits shared startup.cmake lease release. Original CRT atan/CPU/error identity, native ABI/FH3/SEH/private spills/faults, allocation failure, lazy pool recreation, token startup, remaining parsers/container destruction, executable admission and gameplay remain open. Original normal paths share source dependencies; original GroupParams table slot20 binds copied reader; original EH guarded out. Names hypotheses. docs/NATIVE_CAMERA_GROUP_RESOURCE_CC.md; reports/native_camera_group_resource_cc.json. Complete unwind or dispatch handler; support evidence only.",
+      "ledger_name_output": "00cc2970 -> BSP_CameraItemRead_EH_00cc2970\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00cc2970",
+        "function_name": "BSP_CameraItemRead_EH_00cc2970",
+        "comment": "\n\n[BSP reconstruction 00cc2970] CC update\nCC camera and GroupParams items:12 complete ordinary bodies894bytes/278instructions, nine support bodies24instructions;39 direct transfers and one indirect call, all instruction owners verified. Two three-cell predicates matchB86950 after only address substitutions. Actual item constructors, concrete readers/parsers, scalar deletion and current captured dispatch/type/reference bindings are source-backed. Group reader stores ST0 directly then skips/detaches payload; camera preserves every original x87 store/load around shared host _CIatan, TargetName current-header assignment and child/name cleanup states. Parser allocation cleanup is disarmed before reading; no completed-item rollback. Strict standalone MSVC Win32 compile and one controlled-child fixture passed:12 copied original bodies/30 direct/9 absolute relocations, eleven paired payloads, current token cells, scalar flags2, two source failure paths, actual manager/six parser registrations and raw root dispatch then item slot deletion/canonical manager drain. Project source registration/build awaits shared startup.cmake lease release. Original CRT atan/CPU/error identity, native ABI/FH3/SEH/private spills/faults, allocation failure, lazy pool recreation, token startup, remaining parsers/container destruction, executable admission and gameplay remain open. Original normal paths share source dependencies; original GroupParams table slot20 binds copied reader; original EH guarded out. Names hypotheses. docs/NATIVE_CAMERA_GROUP_RESOURCE_CC.md; reports/native_camera_group_resource_cc.json. Complete unwind or dispatch handler; support evidence only."
+      }
+    },
+    {
+      "address": "00cc2980",
+      "name": "Unwind@00cc2980",
+      "before_comment": {
+        "address": "00cc2980",
+        "function_name": "Unwind@00cc2980",
+        "comment": ""
+      },
+      "before_documentation": {
+        "hash": "5c9cd88f200a6524c1e9155f5f2323390db18031344564aab6f6375453d4a84f",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00cc2980",
+        "function_name": "Unwind@00cc2980",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "unaff_EBP",
+            "type": "int",
+            "storage": "(register, 0x14, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 100.0
+      },
+      "evidence": "CC camera and GroupParams items:12 complete ordinary bodies894bytes/278instructions, nine support bodies24instructions;39 direct transfers and one indirect call, all instruction owners verified. Two three-cell predicates matchB86950 after only address substitutions. Actual item constructors, concrete readers/parsers, scalar deletion and current captured dispatch/type/reference bindings are source-backed. Group reader stores ST0 directly then skips/detaches payload; camera preserves every original x87 store/load around shared host _CIatan, TargetName current-header assignment and child/name cleanup states. Parser allocation cleanup is disarmed before reading; no completed-item rollback. Strict standalone MSVC Win32 compile and one controlled-child fixture passed:12 copied original bodies/30 direct/9 absolute relocations, eleven paired payloads, current token cells, scalar flags2, two source failure paths, actual manager/six parser registrations and raw root dispatch then item slot deletion/canonical manager drain. Project source registration/build awaits shared startup.cmake lease release. Original CRT atan/CPU/error identity, native ABI/FH3/SEH/private spills/faults, allocation failure, lazy pool recreation, token startup, remaining parsers/container destruction, executable admission and gameplay remain open. Original normal paths share source dependencies; original GroupParams table slot20 binds copied reader; original EH guarded out. Names hypotheses. docs/NATIVE_CAMERA_GROUP_RESOURCE_CC.md; reports/native_camera_group_resource_cc.json. Complete unwind or dispatch handler; support evidence only.",
+      "ledger_name_output": "00cc2980 -> Unwind@00cc2980\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00cc2980",
+        "function_name": "Unwind@00cc2980",
+        "comment": "\n\n[BSP reconstruction 00cc2980] CC update\nCC camera and GroupParams items:12 complete ordinary bodies894bytes/278instructions, nine support bodies24instructions;39 direct transfers and one indirect call, all instruction owners verified. Two three-cell predicates matchB86950 after only address substitutions. Actual item constructors, concrete readers/parsers, scalar deletion and current captured dispatch/type/reference bindings are source-backed. Group reader stores ST0 directly then skips/detaches payload; camera preserves every original x87 store/load around shared host _CIatan, TargetName current-header assignment and child/name cleanup states. Parser allocation cleanup is disarmed before reading; no completed-item rollback. Strict standalone MSVC Win32 compile and one controlled-child fixture passed:12 copied original bodies/30 direct/9 absolute relocations, eleven paired payloads, current token cells, scalar flags2, two source failure paths, actual manager/six parser registrations and raw root dispatch then item slot deletion/canonical manager drain. Project source registration/build awaits shared startup.cmake lease release. Original CRT atan/CPU/error identity, native ABI/FH3/SEH/private spills/faults, allocation failure, lazy pool recreation, token startup, remaining parsers/container destruction, executable admission and gameplay remain open. Original normal paths share source dependencies; original GroupParams table slot20 binds copied reader; original EH guarded out. Names hypotheses. docs/NATIVE_CAMERA_GROUP_RESOURCE_CC.md; reports/native_camera_group_resource_cc.json. Complete unwind or dispatch handler; support evidence only."
+      }
+    },
+    {
+      "address": "00cc298b",
+      "name": "BSP_CameraItemParse_EH_00cc298b",
+      "before_comment": {
+        "address": "00cc298b",
+        "function_name": "BSP_CameraItemParse_EH_00cc298b",
+        "comment": ""
+      },
+      "before_documentation": {
+        "hash": "f0f2f68cf1132ae80dae34c6f69542164e987ef3beaddd17388b21e68e3a2bc1",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00cc298b",
+        "function_name": "BSP_CameraItemParse_EH_00cc298b",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "",
+        "parameters": [],
+        "local_variables": [],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 100.0
+      },
+      "evidence": "CC camera and GroupParams items:12 complete ordinary bodies894bytes/278instructions, nine support bodies24instructions;39 direct transfers and one indirect call, all instruction owners verified. Two three-cell predicates matchB86950 after only address substitutions. Actual item constructors, concrete readers/parsers, scalar deletion and current captured dispatch/type/reference bindings are source-backed. Group reader stores ST0 directly then skips/detaches payload; camera preserves every original x87 store/load around shared host _CIatan, TargetName current-header assignment and child/name cleanup states. Parser allocation cleanup is disarmed before reading; no completed-item rollback. Strict standalone MSVC Win32 compile and one controlled-child fixture passed:12 copied original bodies/30 direct/9 absolute relocations, eleven paired payloads, current token cells, scalar flags2, two source failure paths, actual manager/six parser registrations and raw root dispatch then item slot deletion/canonical manager drain. Project source registration/build awaits shared startup.cmake lease release. Original CRT atan/CPU/error identity, native ABI/FH3/SEH/private spills/faults, allocation failure, lazy pool recreation, token startup, remaining parsers/container destruction, executable admission and gameplay remain open. Original normal paths share source dependencies; original GroupParams table slot20 binds copied reader; original EH guarded out. Names hypotheses. docs/NATIVE_CAMERA_GROUP_RESOURCE_CC.md; reports/native_camera_group_resource_cc.json. Complete unwind or dispatch handler; support evidence only.",
+      "ledger_name_output": "00cc298b -> BSP_CameraItemParse_EH_00cc298b\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00cc298b",
+        "function_name": "BSP_CameraItemParse_EH_00cc298b",
+        "comment": "\n\n[BSP reconstruction 00cc298b] CC update\nCC camera and GroupParams items:12 complete ordinary bodies894bytes/278instructions, nine support bodies24instructions;39 direct transfers and one indirect call, all instruction owners verified. Two three-cell predicates matchB86950 after only address substitutions. Actual item constructors, concrete readers/parsers, scalar deletion and current captured dispatch/type/reference bindings are source-backed. Group reader stores ST0 directly then skips/detaches payload; camera preserves every original x87 store/load around shared host _CIatan, TargetName current-header assignment and child/name cleanup states. Parser allocation cleanup is disarmed before reading; no completed-item rollback. Strict standalone MSVC Win32 compile and one controlled-child fixture passed:12 copied original bodies/30 direct/9 absolute relocations, eleven paired payloads, current token cells, scalar flags2, two source failure paths, actual manager/six parser registrations and raw root dispatch then item slot deletion/canonical manager drain. Project source registration/build awaits shared startup.cmake lease release. Original CRT atan/CPU/error identity, native ABI/FH3/SEH/private spills/faults, allocation failure, lazy pool recreation, token startup, remaining parsers/container destruction, executable admission and gameplay remain open. Original normal paths share source dependencies; original GroupParams table slot20 binds copied reader; original EH guarded out. Names hypotheses. docs/NATIVE_CAMERA_GROUP_RESOURCE_CC.md; reports/native_camera_group_resource_cc.json. Complete unwind or dispatch handler; support evidence only."
+      }
+    },
+    {
+      "address": "00cc2aa0",
+      "name": "Unwind@00cc2aa0",
+      "before_comment": {
+        "address": "00cc2aa0",
+        "function_name": "Unwind@00cc2aa0",
+        "comment": ""
+      },
+      "before_documentation": {
+        "hash": "5c9cd88f200a6524c1e9155f5f2323390db18031344564aab6f6375453d4a84f",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00cc2aa0",
+        "function_name": "Unwind@00cc2aa0",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "unaff_EBP",
+            "type": "int",
+            "storage": "(register, 0x14, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 100.0
+      },
+      "evidence": "CC camera and GroupParams items:12 complete ordinary bodies894bytes/278instructions, nine support bodies24instructions;39 direct transfers and one indirect call, all instruction owners verified. Two three-cell predicates matchB86950 after only address substitutions. Actual item constructors, concrete readers/parsers, scalar deletion and current captured dispatch/type/reference bindings are source-backed. Group reader stores ST0 directly then skips/detaches payload; camera preserves every original x87 store/load around shared host _CIatan, TargetName current-header assignment and child/name cleanup states. Parser allocation cleanup is disarmed before reading; no completed-item rollback. Strict standalone MSVC Win32 compile and one controlled-child fixture passed:12 copied original bodies/30 direct/9 absolute relocations, eleven paired payloads, current token cells, scalar flags2, two source failure paths, actual manager/six parser registrations and raw root dispatch then item slot deletion/canonical manager drain. Project source registration/build awaits shared startup.cmake lease release. Original CRT atan/CPU/error identity, native ABI/FH3/SEH/private spills/faults, allocation failure, lazy pool recreation, token startup, remaining parsers/container destruction, executable admission and gameplay remain open. Original normal paths share source dependencies; original GroupParams table slot20 binds copied reader; original EH guarded out. Names hypotheses. docs/NATIVE_CAMERA_GROUP_RESOURCE_CC.md; reports/native_camera_group_resource_cc.json. Complete unwind or dispatch handler; support evidence only.",
+      "ledger_name_output": "00cc2aa0 -> Unwind@00cc2aa0\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00cc2aa0",
+        "function_name": "Unwind@00cc2aa0",
+        "comment": "\n\n[BSP reconstruction 00cc2aa0] CC update\nCC camera and GroupParams items:12 complete ordinary bodies894bytes/278instructions, nine support bodies24instructions;39 direct transfers and one indirect call, all instruction owners verified. Two three-cell predicates matchB86950 after only address substitutions. Actual item constructors, concrete readers/parsers, scalar deletion and current captured dispatch/type/reference bindings are source-backed. Group reader stores ST0 directly then skips/detaches payload; camera preserves every original x87 store/load around shared host _CIatan, TargetName current-header assignment and child/name cleanup states. Parser allocation cleanup is disarmed before reading; no completed-item rollback. Strict standalone MSVC Win32 compile and one controlled-child fixture passed:12 copied original bodies/30 direct/9 absolute relocations, eleven paired payloads, current token cells, scalar flags2, two source failure paths, actual manager/six parser registrations and raw root dispatch then item slot deletion/canonical manager drain. Project source registration/build awaits shared startup.cmake lease release. Original CRT atan/CPU/error identity, native ABI/FH3/SEH/private spills/faults, allocation failure, lazy pool recreation, token startup, remaining parsers/container destruction, executable admission and gameplay remain open. Original normal paths share source dependencies; original GroupParams table slot20 binds copied reader; original EH guarded out. Names hypotheses. docs/NATIVE_CAMERA_GROUP_RESOURCE_CC.md; reports/native_camera_group_resource_cc.json. Complete unwind or dispatch handler; support evidence only."
+      }
+    },
+    {
+      "address": "00cc2aab",
+      "name": "BSP_GroupParamsItemParse_EH_00cc2aab",
+      "before_comment": {
+        "address": "00cc2aab",
+        "function_name": "BSP_GroupParamsItemParse_EH_00cc2aab",
+        "comment": ""
+      },
+      "before_documentation": {
+        "hash": "f0f2f68cf1132ae80dae34c6f69542164e987ef3beaddd17388b21e68e3a2bc1",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00cc2aab",
+        "function_name": "BSP_GroupParamsItemParse_EH_00cc2aab",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "",
+        "parameters": [],
+        "local_variables": [],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 100.0
+      },
+      "evidence": "CC camera and GroupParams items:12 complete ordinary bodies894bytes/278instructions, nine support bodies24instructions;39 direct transfers and one indirect call, all instruction owners verified. Two three-cell predicates matchB86950 after only address substitutions. Actual item constructors, concrete readers/parsers, scalar deletion and current captured dispatch/type/reference bindings are source-backed. Group reader stores ST0 directly then skips/detaches payload; camera preserves every original x87 store/load around shared host _CIatan, TargetName current-header assignment and child/name cleanup states. Parser allocation cleanup is disarmed before reading; no completed-item rollback. Strict standalone MSVC Win32 compile and one controlled-child fixture passed:12 copied original bodies/30 direct/9 absolute relocations, eleven paired payloads, current token cells, scalar flags2, two source failure paths, actual manager/six parser registrations and raw root dispatch then item slot deletion/canonical manager drain. Project source registration/build awaits shared startup.cmake lease release. Original CRT atan/CPU/error identity, native ABI/FH3/SEH/private spills/faults, allocation failure, lazy pool recreation, token startup, remaining parsers/container destruction, executable admission and gameplay remain open. Original normal paths share source dependencies; original GroupParams table slot20 binds copied reader; original EH guarded out. Names hypotheses. docs/NATIVE_CAMERA_GROUP_RESOURCE_CC.md; reports/native_camera_group_resource_cc.json. Complete unwind or dispatch handler; support evidence only.",
+      "ledger_name_output": "00cc2aab -> BSP_GroupParamsItemParse_EH_00cc2aab\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00cc2aab",
+        "function_name": "BSP_GroupParamsItemParse_EH_00cc2aab",
+        "comment": "\n\n[BSP reconstruction 00cc2aab] CC update\nCC camera and GroupParams items:12 complete ordinary bodies894bytes/278instructions, nine support bodies24instructions;39 direct transfers and one indirect call, all instruction owners verified. Two three-cell predicates matchB86950 after only address substitutions. Actual item constructors, concrete readers/parsers, scalar deletion and current captured dispatch/type/reference bindings are source-backed. Group reader stores ST0 directly then skips/detaches payload; camera preserves every original x87 store/load around shared host _CIatan, TargetName current-header assignment and child/name cleanup states. Parser allocation cleanup is disarmed before reading; no completed-item rollback. Strict standalone MSVC Win32 compile and one controlled-child fixture passed:12 copied original bodies/30 direct/9 absolute relocations, eleven paired payloads, current token cells, scalar flags2, two source failure paths, actual manager/six parser registrations and raw root dispatch then item slot deletion/canonical manager drain. Project source registration/build awaits shared startup.cmake lease release. Original CRT atan/CPU/error identity, native ABI/FH3/SEH/private spills/faults, allocation failure, lazy pool recreation, token startup, remaining parsers/container destruction, executable admission and gameplay remain open. Original normal paths share source dependencies; original GroupParams table slot20 binds copied reader; original EH guarded out. Names hypotheses. docs/NATIVE_CAMERA_GROUP_RESOURCE_CC.md; reports/native_camera_group_resource_cc.json. Complete unwind or dispatch handler; support evidence only."
+      }
+    }
+  ],
+  "actions": [
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00b868b0",
+        "prototype": "void* __fastcall BSP_ResourceItem_ConstructReferenceBase(void* actual_item, void* unused_edx)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00b868b0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b868b0",
+        "new_name": "BSP_ResourceItem_ConstructReferenceBase"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b868b0 from 'BSP_ResourceItem_ConstructReferenceBase' to 'BSP_ResourceItem_ConstructReferenceBase'\", \"warnings\": [\"Function name 'BSP_ResourceItem_ConstructReferenceBase' \\u2014 main part 'ResourceItem_ConstructReferenceBase' is not PascalCase. Expected: ResourceitemConstructreferencebase\", \"Function name 'BSP_ResourceItem_ConstructReferenceBase' \\u2014 main part 'ResourceItem_ConstructReferenceBase' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_ResourceItem_ConstructReferenceBase' does not start with a recognized verb. First word 'Resource' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b868b0",
+        "new_name": "BSP_ResourceItem_ConstructReferenceBase"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b868b0 from 'BSP_ResourceItem_ConstructReferenceBase' to 'BSP_ResourceItem_ConstructReferenceBase'\", \"warnings\": [\"Function name 'BSP_ResourceItem_ConstructReferenceBase' \\u2014 main part 'ResourceItem_ConstructReferenceBase' is not PascalCase. Expected: ResourceitemConstructreferencebase\", \"Function name 'BSP_ResourceItem_ConstructReferenceBase' \\u2014 main part 'ResourceItem_ConstructReferenceBase' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_ResourceItem_ConstructReferenceBase' does not start with a recognized verb. First word 'Resource' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00b868b0",
+        "comment": "[BSP reconstruction 00b868b0]\nECX item,EAXsame,RET. vtable00ceb130 thenrefcount+4=1 thenvtable00d631a0. New Note parser00719000 overwrites primaryvtable00cfd860. Original ABI: ECX item, EAX same, RET. Writes initial vtable00ceb130, refcount+4=1, final vtable00d631a0.. Evidence: docs/RESOURCE_NOTE_PARSER.md; reports/resource_note_parser_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\n\n[BSP reconstruction 00b868b0] CC update\nCC camera and GroupParams items:12 complete ordinary bodies894bytes/278instructions, nine support bodies24instructions;39 direct transfers and one indirect call, all instruction owners verified. Two three-cell predicates matchB86950 after only address substitutions. Actual item constructors, concrete readers/parsers, scalar deletion and current captured dispatch/type/reference bindings are source-backed. Group reader stores ST0 directly then skips/detaches payload; camera preserves every original x87 store/load around shared host _CIatan, TargetName current-header assignment and child/name cleanup states. Parser allocation cleanup is disarmed before reading; no completed-item rollback. Strict standalone MSVC Win32 compile and one controlled-child fixture passed:12 copied original bodies/30 direct/9 absolute relocations, eleven paired payloads, current token cells, scalar flags2, two source failure paths, actual manager/six parser registrations and raw root dispatch then item slot deletion/canonical manager drain. Project source registration/build awaits shared startup.cmake lease release. Original CRT atan/CPU/error identity, native ABI/FH3/SEH/private spills/faults, allocation failure, lazy pool recreation, token startup, remaining parsers/container destruction, executable admission and gameplay remain open. Original normal paths share source dependencies; original GroupParams table slot20 binds copied reader; original EH guarded out. Names hypotheses. docs/NATIVE_CAMERA_GROUP_RESOURCE_CC.md; reports/native_camera_group_resource_cc.json. Complete 22B. ECX actual item; EAX captured item; RET. Source construct_native_resource_item_base_00b868b0."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00b868b0\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00b86890",
+        "prototype": "void __fastcall BSP_ResourceItem_DestroyReferenceBase(void* actual_item, void* unused_edx)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00b86890 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b86890",
+        "new_name": "BSP_ResourceItem_DestroyReferenceBase"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b86890 from 'BSP_ResourceItem_DestroyReferenceBase' to 'BSP_ResourceItem_DestroyReferenceBase'\", \"warnings\": [\"Function name 'BSP_ResourceItem_DestroyReferenceBase' \\u2014 main part 'ResourceItem_DestroyReferenceBase' is not PascalCase. Expected: ResourceitemDestroyreferencebase\", \"Function name 'BSP_ResourceItem_DestroyReferenceBase' \\u2014 main part 'ResourceItem_DestroyReferenceBase' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_ResourceItem_DestroyReferenceBase' does not start with a recognized verb. First word 'Resource' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b86890",
+        "new_name": "BSP_ResourceItem_DestroyReferenceBase"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b86890 from 'BSP_ResourceItem_DestroyReferenceBase' to 'BSP_ResourceItem_DestroyReferenceBase'\", \"warnings\": [\"Function name 'BSP_ResourceItem_DestroyReferenceBase' \\u2014 main part 'ResourceItem_DestroyReferenceBase' is not PascalCase. Expected: ResourceitemDestroyreferencebase\", \"Function name 'BSP_ResourceItem_DestroyReferenceBase' \\u2014 main part 'ResourceItem_DestroyReferenceBase' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_ResourceItem_DestroyReferenceBase' does not start with a recognized verb. First word 'Resource' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00b86890",
+        "comment": "[BSP reconstruction 00b86890]\nECXitem;noadjustment. Setsvtable00d5c104 thenTAIL JMP00bd30f0 (basevt00ceb130,RET). Existing CG_adjustor_thunk label is classification, not recoveredsymbol; matchedbody has no thisadjustment. Original ABI: ECX item; no explicit stack arguments; writes vtable00d5c104 then tail JMP00bd30f0, which writes00ceb130 and RET. No pointer adjustment in this body.. Evidence: docs/RESOURCE_NOTE_PARSER.md; reports/resource_note_parser_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\n\n[BSP reconstruction 00b86890] CC update\nCC camera and GroupParams items:12 complete ordinary bodies894bytes/278instructions, nine support bodies24instructions;39 direct transfers and one indirect call, all instruction owners verified. Two three-cell predicates matchB86950 after only address substitutions. Actual item constructors, concrete readers/parsers, scalar deletion and current captured dispatch/type/reference bindings are source-backed. Group reader stores ST0 directly then skips/detaches payload; camera preserves every original x87 store/load around shared host _CIatan, TargetName current-header assignment and child/name cleanup states. Parser allocation cleanup is disarmed before reading; no completed-item rollback. Strict standalone MSVC Win32 compile and one controlled-child fixture passed:12 copied original bodies/30 direct/9 absolute relocations, eleven paired payloads, current token cells, scalar flags2, two source failure paths, actual manager/six parser registrations and raw root dispatch then item slot deletion/canonical manager drain. Project source registration/build awaits shared startup.cmake lease release. Original CRT atan/CPU/error identity, native ABI/FH3/SEH/private spills/faults, allocation failure, lazy pool recreation, token startup, remaining parsers/container destruction, executable admission and gameplay remain open. Original normal paths share source dependencies; original GroupParams table slot20 binds copied reader; original EH guarded out. Names hypotheses. docs/NATIVE_CAMERA_GROUP_RESOURCE_CC.md; reports/native_camera_group_resource_cc.json. Complete 11B. ECX actual item; RET. Source destroy_native_resource_item_base_00b86890."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00b86890\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00b8e5a0",
+        "prototype": "void* __fastcall BSP_ConstructNativeGroupParamsItem_00b8e5a0(void* actual_item, void* unused_edx)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00b8e5a0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b8e5a0",
+        "new_name": "BSP_ConstructNativeGroupParamsItem_00b8e5a0"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b8e5a0 from 'BSP_ConstructNativeGroupParamsItem_00b8e5a0' to 'BSP_ConstructNativeGroupParamsItem_00b8e5a0'\", \"warnings\": [\"Function name 'BSP_ConstructNativeGroupParamsItem_00b8e5a0' \\u2014 main part 'ConstructNativeGroupParamsItem_00b8e5a0' is not PascalCase. Expected: Constructnativegroupparamsitem00b8e5a0\", \"Function name 'BSP_ConstructNativeGroupParamsItem_00b8e5a0' \\u2014 main part 'ConstructNativeGroupParamsItem_00b8e5a0' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_ConstructNativeGroupParamsItem_00b8e5a0' does not start with a recognized verb. First word 'Construct' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b8e5a0",
+        "new_name": "BSP_ConstructNativeGroupParamsItem_00b8e5a0"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b8e5a0 from 'BSP_ConstructNativeGroupParamsItem_00b8e5a0' to 'BSP_ConstructNativeGroupParamsItem_00b8e5a0'\", \"warnings\": [\"Function name 'BSP_ConstructNativeGroupParamsItem_00b8e5a0' \\u2014 main part 'ConstructNativeGroupParamsItem_00b8e5a0' is not PascalCase. Expected: Constructnativegroupparamsitem00b8e5a0\", \"Function name 'BSP_ConstructNativeGroupParamsItem_00b8e5a0' \\u2014 main part 'ConstructNativeGroupParamsItem_00b8e5a0' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_ConstructNativeGroupParamsItem_00b8e5a0' does not start with a recognized verb. First word 'Construct' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00b8e5a0",
+        "comment": "\n\n[BSP reconstruction 00b8e5a0] CC update\nCC camera and GroupParams items:12 complete ordinary bodies894bytes/278instructions, nine support bodies24instructions;39 direct transfers and one indirect call, all instruction owners verified. Two three-cell predicates matchB86950 after only address substitutions. Actual item constructors, concrete readers/parsers, scalar deletion and current captured dispatch/type/reference bindings are source-backed. Group reader stores ST0 directly then skips/detaches payload; camera preserves every original x87 store/load around shared host _CIatan, TargetName current-header assignment and child/name cleanup states. Parser allocation cleanup is disarmed before reading; no completed-item rollback. Strict standalone MSVC Win32 compile and one controlled-child fixture passed:12 copied original bodies/30 direct/9 absolute relocations, eleven paired payloads, current token cells, scalar flags2, two source failure paths, actual manager/six parser registrations and raw root dispatch then item slot deletion/canonical manager drain. Project source registration/build awaits shared startup.cmake lease release. Original CRT atan/CPU/error identity, native ABI/FH3/SEH/private spills/faults, allocation failure, lazy pool recreation, token startup, remaining parsers/container destruction, executable admission and gameplay remain open. Original normal paths share source dependencies; original GroupParams table slot20 binds copied reader; original EH guarded out. Names hypotheses. docs/NATIVE_CAMERA_GROUP_RESOURCE_CC.md; reports/native_camera_group_resource_cc.json. Complete 18B. ECX actual item; EAX captured item; RET. Source construct_native_group_params_item_00b8e5a0."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00b8e5a0\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00b8e580",
+        "prototype": "void __fastcall BSP_GroupParamsItem_ReadFloatAndSkip(void* actual_item, void* unused_edx, void* actual_handle)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00b8e580 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b8e580",
+        "new_name": "BSP_GroupParamsItem_ReadFloatAndSkip"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b8e580 from 'BSP_GroupParamsItem_ReadFloatAndSkip' to 'BSP_GroupParamsItem_ReadFloatAndSkip'\", \"warnings\": [\"Function name 'BSP_GroupParamsItem_ReadFloatAndSkip' \\u2014 main part 'GroupParamsItem_ReadFloatAndSkip' is not PascalCase. Expected: GroupparamsitemReadfloatandskip\", \"Function name 'BSP_GroupParamsItem_ReadFloatAndSkip' \\u2014 main part 'GroupParamsItem_ReadFloatAndSkip' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_GroupParamsItem_ReadFloatAndSkip' does not start with a recognized verb. First word 'Group' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b8e580",
+        "new_name": "BSP_GroupParamsItem_ReadFloatAndSkip"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b8e580 from 'BSP_GroupParamsItem_ReadFloatAndSkip' to 'BSP_GroupParamsItem_ReadFloatAndSkip'\", \"warnings\": [\"Function name 'BSP_GroupParamsItem_ReadFloatAndSkip' \\u2014 main part 'GroupParamsItem_ReadFloatAndSkip' is not PascalCase. Expected: GroupparamsitemReadfloatandskip\", \"Function name 'BSP_GroupParamsItem_ReadFloatAndSkip' \\u2014 main part 'GroupParamsItem_ReadFloatAndSkip' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_GroupParamsItem_ReadFloatAndSkip' does not start with a recognized verb. First word 'Group' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00b8e580",
+        "comment": "[BSP reconstruction 00b8e580]\nReadFloat; FSTP item+8; explicitly SkipAndDetach remaining payload. Original ABI: ECX item; stack node handle; RET4. Evidence: docs/MESH_SUBSET_LOD_FIELDS.md; reports/mesh_subset_lod_fields_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation.\n\n[BSP reconstruction 00b8e580] CC update\nCC camera and GroupParams items:12 complete ordinary bodies894bytes/278instructions, nine support bodies24instructions;39 direct transfers and one indirect call, all instruction owners verified. Two three-cell predicates matchB86950 after only address substitutions. Actual item constructors, concrete readers/parsers, scalar deletion and current captured dispatch/type/reference bindings are source-backed. Group reader stores ST0 directly then skips/detaches payload; camera preserves every original x87 store/load around shared host _CIatan, TargetName current-header assignment and child/name cleanup states. Parser allocation cleanup is disarmed before reading; no completed-item rollback. Strict standalone MSVC Win32 compile and one controlled-child fixture passed:12 copied original bodies/30 direct/9 absolute relocations, eleven paired payloads, current token cells, scalar flags2, two source failure paths, actual manager/six parser registrations and raw root dispatch then item slot deletion/canonical manager drain. Project source registration/build awaits shared startup.cmake lease release. Original CRT atan/CPU/error identity, native ABI/FH3/SEH/private spills/faults, allocation failure, lazy pool recreation, token startup, remaining parsers/container destruction, executable admission and gameplay remain open. Original normal paths share source dependencies; original GroupParams table slot20 binds copied reader; original EH guarded out. Names hypotheses. docs/NATIVE_CAMERA_GROUP_RESOURCE_CC.md; reports/native_camera_group_resource_cc.json. Complete 30B. ECX actual item; stacked handle; RET4. Source read_native_group_params_item_00b8e580."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00b8e580\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00b8eb50",
+        "prototype": "void* __fastcall BSP_GroupParamsParser_ParseItem(void* unused_ecx, void* unused_edx, void* actual_handle)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00b8eb50 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b8eb50",
+        "new_name": "BSP_GroupParamsParser_ParseItem"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b8eb50 from 'BSP_GroupParamsParser_ParseItem' to 'BSP_GroupParamsParser_ParseItem'\", \"warnings\": [\"Function name 'BSP_GroupParamsParser_ParseItem' \\u2014 main part 'GroupParamsParser_ParseItem' is not PascalCase. Expected: GroupparamsparserParseitem\", \"Function name 'BSP_GroupParamsParser_ParseItem' \\u2014 main part 'GroupParamsParser_ParseItem' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_GroupParamsParser_ParseItem' does not start with a recognized verb. First word 'Group' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b8eb50",
+        "new_name": "BSP_GroupParamsParser_ParseItem"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b8eb50 from 'BSP_GroupParamsParser_ParseItem' to 'BSP_GroupParamsParser_ParseItem'\", \"warnings\": [\"Function name 'BSP_GroupParamsParser_ParseItem' \\u2014 main part 'GroupParamsParser_ParseItem' is not PascalCase. Expected: GroupparamsparserParseitem\", \"Function name 'BSP_GroupParamsParser_ParseItem' \\u2014 main part 'GroupParamsParser_ParseItem' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_GroupParamsParser_ParseItem' does not start with a recognized verb. First word 'Group' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00b8eb50",
+        "comment": "[BSP reconstruction 00b8eb50]\nAllocate0x0c;00b868b0 base ctor; vtable00d634b0; call item vtable+0x20. Original ABI: Incoming ECX unused; stack node handle; EAX item; RET4. Evidence: docs/MESH_SUBSET_LOD_FIELDS.md; reports/mesh_subset_lod_fields_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation.\n\n[BSP reconstruction 00b8eb50] CC update\nCC camera and GroupParams items:12 complete ordinary bodies894bytes/278instructions, nine support bodies24instructions;39 direct transfers and one indirect call, all instruction owners verified. Two three-cell predicates matchB86950 after only address substitutions. Actual item constructors, concrete readers/parsers, scalar deletion and current captured dispatch/type/reference bindings are source-backed. Group reader stores ST0 directly then skips/detaches payload; camera preserves every original x87 store/load around shared host _CIatan, TargetName current-header assignment and child/name cleanup states. Parser allocation cleanup is disarmed before reading; no completed-item rollback. Strict standalone MSVC Win32 compile and one controlled-child fixture passed:12 copied original bodies/30 direct/9 absolute relocations, eleven paired payloads, current token cells, scalar flags2, two source failure paths, actual manager/six parser registrations and raw root dispatch then item slot deletion/canonical manager drain. Project source registration/build awaits shared startup.cmake lease release. Original CRT atan/CPU/error identity, native ABI/FH3/SEH/private spills/faults, allocation failure, lazy pool recreation, token startup, remaining parsers/container destruction, executable admission and gameplay remain open. Original normal paths share source dependencies; original GroupParams table slot20 binds copied reader; original EH guarded out. Names hypotheses. docs/NATIVE_CAMERA_GROUP_RESOURCE_CC.md; reports/native_camera_group_resource_cc.json. Complete 110B. ECX parser ignored; stacked handle; EAX captured item; RET4. Source parse_native_group_params_item_00b8eb50."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00b8eb50\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00b8ebc0",
+        "prototype": "void* __fastcall CG_scalar_deleting_dtor_00b8ebc0(void* actual_item, void* unused_edx, uint flags)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00b8ebc0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b8ebc0",
+        "new_name": "CG_scalar_deleting_dtor_00b8ebc0"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b8ebc0 from 'CG_scalar_deleting_dtor_00b8ebc0' to 'CG_scalar_deleting_dtor_00b8ebc0'\", \"warnings\": [\"Function name 'CG_scalar_deleting_dtor_00b8ebc0' \\u2014 main part 'CG_scalar_deleting_dtor_00b8ebc0' is not PascalCase. Expected: CgScalarDeletingDtor00b8ebc0\", \"Function name 'CG_scalar_deleting_dtor_00b8ebc0' \\u2014 main part 'CG_scalar_deleting_dtor_00b8ebc0' contains underscores. Use PascalCase after the module prefix.\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b8ebc0",
+        "new_name": "CG_scalar_deleting_dtor_00b8ebc0"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b8ebc0 from 'CG_scalar_deleting_dtor_00b8ebc0' to 'CG_scalar_deleting_dtor_00b8ebc0'\", \"warnings\": [\"Function name 'CG_scalar_deleting_dtor_00b8ebc0' \\u2014 main part 'CG_scalar_deleting_dtor_00b8ebc0' is not PascalCase. Expected: CgScalarDeletingDtor00b8ebc0\", \"Function name 'CG_scalar_deleting_dtor_00b8ebc0' \\u2014 main part 'CG_scalar_deleting_dtor_00b8ebc0' contains underscores. Use PascalCase after the module prefix.\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00b8ebc0",
+        "comment": "\n\n[BSP reconstruction 00b8ebc0] CC update\nCC camera and GroupParams items:12 complete ordinary bodies894bytes/278instructions, nine support bodies24instructions;39 direct transfers and one indirect call, all instruction owners verified. Two three-cell predicates matchB86950 after only address substitutions. Actual item constructors, concrete readers/parsers, scalar deletion and current captured dispatch/type/reference bindings are source-backed. Group reader stores ST0 directly then skips/detaches payload; camera preserves every original x87 store/load around shared host _CIatan, TargetName current-header assignment and child/name cleanup states. Parser allocation cleanup is disarmed before reading; no completed-item rollback. Strict standalone MSVC Win32 compile and one controlled-child fixture passed:12 copied original bodies/30 direct/9 absolute relocations, eleven paired payloads, current token cells, scalar flags2, two source failure paths, actual manager/six parser registrations and raw root dispatch then item slot deletion/canonical manager drain. Project source registration/build awaits shared startup.cmake lease release. Original CRT atan/CPU/error identity, native ABI/FH3/SEH/private spills/faults, allocation failure, lazy pool recreation, token startup, remaining parsers/container destruction, executable admission and gameplay remain open. Original normal paths share source dependencies; original GroupParams table slot20 binds copied reader; original EH guarded out. Names hypotheses. docs/NATIVE_CAMERA_GROUP_RESOURCE_CC.md; reports/native_camera_group_resource_cc.json. Complete 30B. ECX actual item; stacked flags; EAX captured item; RET4. Source delete_native_group_params_item_00b8ebc0."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00b8ebc0\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00b8e5c0",
+        "prototype": "byte __fastcall BSP_GroupParamsItem_MatchesType_00b8e5c0(void* unused_ecx, void* unused_edx, uint token)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00b8e5c0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b8e5c0",
+        "new_name": "BSP_GroupParamsItem_MatchesType_00b8e5c0"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b8e5c0 from 'BSP_GroupParamsItem_MatchesType_00b8e5c0' to 'BSP_GroupParamsItem_MatchesType_00b8e5c0'\", \"warnings\": [\"Function name 'BSP_GroupParamsItem_MatchesType_00b8e5c0' \\u2014 main part 'GroupParamsItem_MatchesType_00b8e5c0' is not PascalCase. Expected: GroupparamsitemMatchestype00b8e5c0\", \"Function name 'BSP_GroupParamsItem_MatchesType_00b8e5c0' \\u2014 main part 'GroupParamsItem_MatchesType_00b8e5c0' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_GroupParamsItem_MatchesType_00b8e5c0' does not start with a recognized verb. First word 'Group' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b8e5c0",
+        "new_name": "BSP_GroupParamsItem_MatchesType_00b8e5c0"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b8e5c0 from 'BSP_GroupParamsItem_MatchesType_00b8e5c0' to 'BSP_GroupParamsItem_MatchesType_00b8e5c0'\", \"warnings\": [\"Function name 'BSP_GroupParamsItem_MatchesType_00b8e5c0' \\u2014 main part 'GroupParamsItem_MatchesType_00b8e5c0' is not PascalCase. Expected: GroupparamsitemMatchestype00b8e5c0\", \"Function name 'BSP_GroupParamsItem_MatchesType_00b8e5c0' \\u2014 main part 'GroupParamsItem_MatchesType_00b8e5c0' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_GroupParamsItem_MatchesType_00b8e5c0' does not start with a recognized verb. First word 'Group' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00b8e5c0",
+        "comment": "\n\n[BSP reconstruction 00b8e5c0] CC update\nCC camera and GroupParams items:12 complete ordinary bodies894bytes/278instructions, nine support bodies24instructions;39 direct transfers and one indirect call, all instruction owners verified. Two three-cell predicates matchB86950 after only address substitutions. Actual item constructors, concrete readers/parsers, scalar deletion and current captured dispatch/type/reference bindings are source-backed. Group reader stores ST0 directly then skips/detaches payload; camera preserves every original x87 store/load around shared host _CIatan, TargetName current-header assignment and child/name cleanup states. Parser allocation cleanup is disarmed before reading; no completed-item rollback. Strict standalone MSVC Win32 compile and one controlled-child fixture passed:12 copied original bodies/30 direct/9 absolute relocations, eleven paired payloads, current token cells, scalar flags2, two source failure paths, actual manager/six parser registrations and raw root dispatch then item slot deletion/canonical manager drain. Project source registration/build awaits shared startup.cmake lease release. Original CRT atan/CPU/error identity, native ABI/FH3/SEH/private spills/faults, allocation failure, lazy pool recreation, token startup, remaining parsers/container destruction, executable admission and gameplay remain open. Original normal paths share source dependencies; original GroupParams table slot20 binds copied reader; original EH guarded out. Names hypotheses. docs/NATIVE_CAMERA_GROUP_RESOURCE_CC.md; reports/native_camera_group_resource_cc.json. Complete 40B. ECX ignored; stacked token; AL Boolean, upper EAX unspecified; RET4. Source matches_native_group_params_type_00b8e5c0."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00b8e5c0\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00b8b0b0",
+        "prototype": "void __fastcall BSP_ReadNativeCameraItem_00b8b0b0(void* actual_item, void* unused_edx, void* actual_handle)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00b8b0b0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b8b0b0",
+        "new_name": "BSP_ReadNativeCameraItem_00b8b0b0"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b8b0b0 from 'BSP_ReadNativeCameraItem_00b8b0b0' to 'BSP_ReadNativeCameraItem_00b8b0b0'\", \"warnings\": [\"Function name 'BSP_ReadNativeCameraItem_00b8b0b0' \\u2014 main part 'ReadNativeCameraItem_00b8b0b0' is not PascalCase. Expected: Readnativecameraitem00b8b0b0\", \"Function name 'BSP_ReadNativeCameraItem_00b8b0b0' \\u2014 main part 'ReadNativeCameraItem_00b8b0b0' contains underscores. Use PascalCase after the module prefix.\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b8b0b0",
+        "new_name": "BSP_ReadNativeCameraItem_00b8b0b0"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b8b0b0 from 'BSP_ReadNativeCameraItem_00b8b0b0' to 'BSP_ReadNativeCameraItem_00b8b0b0'\", \"warnings\": [\"Function name 'BSP_ReadNativeCameraItem_00b8b0b0' \\u2014 main part 'ReadNativeCameraItem_00b8b0b0' is not PascalCase. Expected: Readnativecameraitem00b8b0b0\", \"Function name 'BSP_ReadNativeCameraItem_00b8b0b0' \\u2014 main part 'ReadNativeCameraItem_00b8b0b0' contains underscores. Use PascalCase after the module prefix.\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00b8b0b0",
+        "comment": "\n\n[BSP reconstruction 00b8b0b0] CC update\nCC camera and GroupParams items:12 complete ordinary bodies894bytes/278instructions, nine support bodies24instructions;39 direct transfers and one indirect call, all instruction owners verified. Two three-cell predicates matchB86950 after only address substitutions. Actual item constructors, concrete readers/parsers, scalar deletion and current captured dispatch/type/reference bindings are source-backed. Group reader stores ST0 directly then skips/detaches payload; camera preserves every original x87 store/load around shared host _CIatan, TargetName current-header assignment and child/name cleanup states. Parser allocation cleanup is disarmed before reading; no completed-item rollback. Strict standalone MSVC Win32 compile and one controlled-child fixture passed:12 copied original bodies/30 direct/9 absolute relocations, eleven paired payloads, current token cells, scalar flags2, two source failure paths, actual manager/six parser registrations and raw root dispatch then item slot deletion/canonical manager drain. Project source registration/build awaits shared startup.cmake lease release. Original CRT atan/CPU/error identity, native ABI/FH3/SEH/private spills/faults, allocation failure, lazy pool recreation, token startup, remaining parsers/container destruction, executable admission and gameplay remain open. Original normal paths share source dependencies; original GroupParams table slot20 binds copied reader; original EH guarded out. Names hypotheses. docs/NATIVE_CAMERA_GROUP_RESOURCE_CC.md; reports/native_camera_group_resource_cc.json. Complete 344B. ECX actual item; stacked handle; RET4. Source read_native_camera_item_00b8b0b0."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00b8b0b0\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00b8b240",
+        "prototype": "void* __fastcall BSP_ParseNativeCameraItem_00b8b240(void* unused_ecx, void* unused_edx, void* actual_handle)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00b8b240 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b8b240",
+        "new_name": "BSP_ParseNativeCameraItem_00b8b240"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b8b240 from 'BSP_ParseNativeCameraItem_00b8b240' to 'BSP_ParseNativeCameraItem_00b8b240'\", \"warnings\": [\"Function name 'BSP_ParseNativeCameraItem_00b8b240' \\u2014 main part 'ParseNativeCameraItem_00b8b240' is not PascalCase. Expected: Parsenativecameraitem00b8b240\", \"Function name 'BSP_ParseNativeCameraItem_00b8b240' \\u2014 main part 'ParseNativeCameraItem_00b8b240' contains underscores. Use PascalCase after the module prefix.\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b8b240",
+        "new_name": "BSP_ParseNativeCameraItem_00b8b240"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b8b240 from 'BSP_ParseNativeCameraItem_00b8b240' to 'BSP_ParseNativeCameraItem_00b8b240'\", \"warnings\": [\"Function name 'BSP_ParseNativeCameraItem_00b8b240' \\u2014 main part 'ParseNativeCameraItem_00b8b240' is not PascalCase. Expected: Parsenativecameraitem00b8b240\", \"Function name 'BSP_ParseNativeCameraItem_00b8b240' \\u2014 main part 'ParseNativeCameraItem_00b8b240' contains underscores. Use PascalCase after the module prefix.\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00b8b240",
+        "comment": "\n\n[BSP reconstruction 00b8b240] CC update\nCC camera and GroupParams items:12 complete ordinary bodies894bytes/278instructions, nine support bodies24instructions;39 direct transfers and one indirect call, all instruction owners verified. Two three-cell predicates matchB86950 after only address substitutions. Actual item constructors, concrete readers/parsers, scalar deletion and current captured dispatch/type/reference bindings are source-backed. Group reader stores ST0 directly then skips/detaches payload; camera preserves every original x87 store/load around shared host _CIatan, TargetName current-header assignment and child/name cleanup states. Parser allocation cleanup is disarmed before reading; no completed-item rollback. Strict standalone MSVC Win32 compile and one controlled-child fixture passed:12 copied original bodies/30 direct/9 absolute relocations, eleven paired payloads, current token cells, scalar flags2, two source failure paths, actual manager/six parser registrations and raw root dispatch then item slot deletion/canonical manager drain. Project source registration/build awaits shared startup.cmake lease release. Original CRT atan/CPU/error identity, native ABI/FH3/SEH/private spills/faults, allocation failure, lazy pool recreation, token startup, remaining parsers/container destruction, executable admission and gameplay remain open. Original normal paths share source dependencies; original GroupParams table slot20 binds copied reader; original EH guarded out. Names hypotheses. docs/NATIVE_CAMERA_GROUP_RESOURCE_CC.md; reports/native_camera_group_resource_cc.json. Complete 122B. ECX parser ignored; stacked handle; EAX captured item; RET4. Source parse_native_camera_item_00b8b240."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00b8b240\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00b8aa60",
+        "prototype": "void __fastcall BSP_DestroyNativeCameraItem_00b8aa60(void* actual_item, void* unused_edx)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00b8aa60 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b8aa60",
+        "new_name": "BSP_DestroyNativeCameraItem_00b8aa60"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b8aa60 from 'BSP_DestroyNativeCameraItem_00b8aa60' to 'BSP_DestroyNativeCameraItem_00b8aa60'\", \"warnings\": [\"Function name 'BSP_DestroyNativeCameraItem_00b8aa60' \\u2014 main part 'DestroyNativeCameraItem_00b8aa60' is not PascalCase. Expected: Destroynativecameraitem00b8aa60\", \"Function name 'BSP_DestroyNativeCameraItem_00b8aa60' \\u2014 main part 'DestroyNativeCameraItem_00b8aa60' contains underscores. Use PascalCase after the module prefix.\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b8aa60",
+        "new_name": "BSP_DestroyNativeCameraItem_00b8aa60"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b8aa60 from 'BSP_DestroyNativeCameraItem_00b8aa60' to 'BSP_DestroyNativeCameraItem_00b8aa60'\", \"warnings\": [\"Function name 'BSP_DestroyNativeCameraItem_00b8aa60' \\u2014 main part 'DestroyNativeCameraItem_00b8aa60' is not PascalCase. Expected: Destroynativecameraitem00b8aa60\", \"Function name 'BSP_DestroyNativeCameraItem_00b8aa60' \\u2014 main part 'DestroyNativeCameraItem_00b8aa60' contains underscores. Use PascalCase after the module prefix.\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00b8aa60",
+        "comment": "\n\n[BSP reconstruction 00b8aa60] CC update\nCC camera and GroupParams items:12 complete ordinary bodies894bytes/278instructions, nine support bodies24instructions;39 direct transfers and one indirect call, all instruction owners verified. Two three-cell predicates matchB86950 after only address substitutions. Actual item constructors, concrete readers/parsers, scalar deletion and current captured dispatch/type/reference bindings are source-backed. Group reader stores ST0 directly then skips/detaches payload; camera preserves every original x87 store/load around shared host _CIatan, TargetName current-header assignment and child/name cleanup states. Parser allocation cleanup is disarmed before reading; no completed-item rollback. Strict standalone MSVC Win32 compile and one controlled-child fixture passed:12 copied original bodies/30 direct/9 absolute relocations, eleven paired payloads, current token cells, scalar flags2, two source failure paths, actual manager/six parser registrations and raw root dispatch then item slot deletion/canonical manager drain. Project source registration/build awaits shared startup.cmake lease release. Original CRT atan/CPU/error identity, native ABI/FH3/SEH/private spills/faults, allocation failure, lazy pool recreation, token startup, remaining parsers/container destruction, executable admission and gameplay remain open. Original normal paths share source dependencies; original GroupParams table slot20 binds copied reader; original EH guarded out. Names hypotheses. docs/NATIVE_CAMERA_GROUP_RESOURCE_CC.md; reports/native_camera_group_resource_cc.json. Complete 97B. ECX actual item; RET. Source destroy_native_camera_item_00b8aa60."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00b8aa60\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00b8b2c0",
+        "prototype": "void* __fastcall CG_scalar_deleting_dtor_00b8b2c0(void* actual_item, void* unused_edx, uint flags)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00b8b2c0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b8b2c0",
+        "new_name": "CG_scalar_deleting_dtor_00b8b2c0"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b8b2c0 from 'CG_scalar_deleting_dtor_00b8b2c0' to 'CG_scalar_deleting_dtor_00b8b2c0'\", \"warnings\": [\"Function name 'CG_scalar_deleting_dtor_00b8b2c0' \\u2014 main part 'CG_scalar_deleting_dtor_00b8b2c0' is not PascalCase. Expected: CgScalarDeletingDtor00b8b2c0\", \"Function name 'CG_scalar_deleting_dtor_00b8b2c0' \\u2014 main part 'CG_scalar_deleting_dtor_00b8b2c0' contains underscores. Use PascalCase after the module prefix.\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b8b2c0",
+        "new_name": "CG_scalar_deleting_dtor_00b8b2c0"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b8b2c0 from 'CG_scalar_deleting_dtor_00b8b2c0' to 'CG_scalar_deleting_dtor_00b8b2c0'\", \"warnings\": [\"Function name 'CG_scalar_deleting_dtor_00b8b2c0' \\u2014 main part 'CG_scalar_deleting_dtor_00b8b2c0' is not PascalCase. Expected: CgScalarDeletingDtor00b8b2c0\", \"Function name 'CG_scalar_deleting_dtor_00b8b2c0' \\u2014 main part 'CG_scalar_deleting_dtor_00b8b2c0' contains underscores. Use PascalCase after the module prefix.\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00b8b2c0",
+        "comment": "\n\n[BSP reconstruction 00b8b2c0] CC update\nCC camera and GroupParams items:12 complete ordinary bodies894bytes/278instructions, nine support bodies24instructions;39 direct transfers and one indirect call, all instruction owners verified. Two three-cell predicates matchB86950 after only address substitutions. Actual item constructors, concrete readers/parsers, scalar deletion and current captured dispatch/type/reference bindings are source-backed. Group reader stores ST0 directly then skips/detaches payload; camera preserves every original x87 store/load around shared host _CIatan, TargetName current-header assignment and child/name cleanup states. Parser allocation cleanup is disarmed before reading; no completed-item rollback. Strict standalone MSVC Win32 compile and one controlled-child fixture passed:12 copied original bodies/30 direct/9 absolute relocations, eleven paired payloads, current token cells, scalar flags2, two source failure paths, actual manager/six parser registrations and raw root dispatch then item slot deletion/canonical manager drain. Project source registration/build awaits shared startup.cmake lease release. Original CRT atan/CPU/error identity, native ABI/FH3/SEH/private spills/faults, allocation failure, lazy pool recreation, token startup, remaining parsers/container destruction, executable admission and gameplay remain open. Original normal paths share source dependencies; original GroupParams table slot20 binds copied reader; original EH guarded out. Names hypotheses. docs/NATIVE_CAMERA_GROUP_RESOURCE_CC.md; reports/native_camera_group_resource_cc.json. Complete 30B. ECX actual item; stacked flags; EAX captured item; RET4. Source delete_native_camera_item_00b8b2c0."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00b8b2c0\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00b8aa30",
+        "prototype": "byte __fastcall BSP_CameraItem_MatchesType_00b8aa30(void* unused_ecx, void* unused_edx, uint token)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00b8aa30 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b8aa30",
+        "new_name": "BSP_CameraItem_MatchesType_00b8aa30"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b8aa30 from 'BSP_CameraItem_MatchesType_00b8aa30' to 'BSP_CameraItem_MatchesType_00b8aa30'\", \"warnings\": [\"Function name 'BSP_CameraItem_MatchesType_00b8aa30' \\u2014 main part 'CameraItem_MatchesType_00b8aa30' is not PascalCase. Expected: CameraitemMatchestype00b8aa30\", \"Function name 'BSP_CameraItem_MatchesType_00b8aa30' \\u2014 main part 'CameraItem_MatchesType_00b8aa30' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_CameraItem_MatchesType_00b8aa30' does not start with a recognized verb. First word 'Camera' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b8aa30",
+        "new_name": "BSP_CameraItem_MatchesType_00b8aa30"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b8aa30 from 'BSP_CameraItem_MatchesType_00b8aa30' to 'BSP_CameraItem_MatchesType_00b8aa30'\", \"warnings\": [\"Function name 'BSP_CameraItem_MatchesType_00b8aa30' \\u2014 main part 'CameraItem_MatchesType_00b8aa30' is not PascalCase. Expected: CameraitemMatchestype00b8aa30\", \"Function name 'BSP_CameraItem_MatchesType_00b8aa30' \\u2014 main part 'CameraItem_MatchesType_00b8aa30' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_CameraItem_MatchesType_00b8aa30' does not start with a recognized verb. First word 'Camera' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00b8aa30",
+        "comment": "\n\n[BSP reconstruction 00b8aa30] CC update\nCC camera and GroupParams items:12 complete ordinary bodies894bytes/278instructions, nine support bodies24instructions;39 direct transfers and one indirect call, all instruction owners verified. Two three-cell predicates matchB86950 after only address substitutions. Actual item constructors, concrete readers/parsers, scalar deletion and current captured dispatch/type/reference bindings are source-backed. Group reader stores ST0 directly then skips/detaches payload; camera preserves every original x87 store/load around shared host _CIatan, TargetName current-header assignment and child/name cleanup states. Parser allocation cleanup is disarmed before reading; no completed-item rollback. Strict standalone MSVC Win32 compile and one controlled-child fixture passed:12 copied original bodies/30 direct/9 absolute relocations, eleven paired payloads, current token cells, scalar flags2, two source failure paths, actual manager/six parser registrations and raw root dispatch then item slot deletion/canonical manager drain. Project source registration/build awaits shared startup.cmake lease release. Original CRT atan/CPU/error identity, native ABI/FH3/SEH/private spills/faults, allocation failure, lazy pool recreation, token startup, remaining parsers/container destruction, executable admission and gameplay remain open. Original normal paths share source dependencies; original GroupParams table slot20 binds copied reader; original EH guarded out. Names hypotheses. docs/NATIVE_CAMERA_GROUP_RESOURCE_CC.md; reports/native_camera_group_resource_cc.json. Complete 40B. ECX ignored; stacked token; AL Boolean, upper EAX unspecified; RET4. Source matches_native_camera_type_00b8aa30."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00b8aa30\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00cc28d0",
+        "new_name": "Unwind@00cc28d0"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00cc28d0 from 'Unwind@00cc28d0' to 'Unwind@00cc28d0'\", \"warnings\": [\"Function name 'Unwind@00cc28d0' \\u2014 main part 'Unwind@00cc28d0' is not PascalCase. Expected: Unwind@00cc28d0\", \"Function name 'Unwind@00cc28d0' does not start with a recognized verb. First word 'Unwind@00cc28d0' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00cc28d0",
+        "comment": "\n\n[BSP reconstruction 00cc28d0] CC update\nCC camera and GroupParams items:12 complete ordinary bodies894bytes/278instructions, nine support bodies24instructions;39 direct transfers and one indirect call, all instruction owners verified. Two three-cell predicates matchB86950 after only address substitutions. Actual item constructors, concrete readers/parsers, scalar deletion and current captured dispatch/type/reference bindings are source-backed. Group reader stores ST0 directly then skips/detaches payload; camera preserves every original x87 store/load around shared host _CIatan, TargetName current-header assignment and child/name cleanup states. Parser allocation cleanup is disarmed before reading; no completed-item rollback. Strict standalone MSVC Win32 compile and one controlled-child fixture passed:12 copied original bodies/30 direct/9 absolute relocations, eleven paired payloads, current token cells, scalar flags2, two source failure paths, actual manager/six parser registrations and raw root dispatch then item slot deletion/canonical manager drain. Project source registration/build awaits shared startup.cmake lease release. Original CRT atan/CPU/error identity, native ABI/FH3/SEH/private spills/faults, allocation failure, lazy pool recreation, token startup, remaining parsers/container destruction, executable admission and gameplay remain open. Original normal paths share source dependencies; original GroupParams table slot20 binds copied reader; original EH guarded out. Names hypotheses. docs/NATIVE_CAMERA_GROUP_RESOURCE_CC.md; reports/native_camera_group_resource_cc.json. Complete unwind or dispatch handler; support evidence only."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00cc28d0\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00cc28d8",
+        "new_name": "BSP_CameraItemDestroy_EH_00cc28d8"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00cc28d8 from 'BSP_CameraItemDestroy_EH_00cc28d8' to 'BSP_CameraItemDestroy_EH_00cc28d8'\", \"warnings\": [\"Function name 'BSP_CameraItemDestroy_EH_00cc28d8' \\u2014 main part 'CameraItemDestroy_EH_00cc28d8' is not PascalCase. Expected: CameraitemdestroyEh00cc28d8\", \"Function name 'BSP_CameraItemDestroy_EH_00cc28d8' \\u2014 main part 'CameraItemDestroy_EH_00cc28d8' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_CameraItemDestroy_EH_00cc28d8' does not start with a recognized verb. First word 'Camera' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00cc28d8",
+        "comment": "\n\n[BSP reconstruction 00cc28d8] CC update\nCC camera and GroupParams items:12 complete ordinary bodies894bytes/278instructions, nine support bodies24instructions;39 direct transfers and one indirect call, all instruction owners verified. Two three-cell predicates matchB86950 after only address substitutions. Actual item constructors, concrete readers/parsers, scalar deletion and current captured dispatch/type/reference bindings are source-backed. Group reader stores ST0 directly then skips/detaches payload; camera preserves every original x87 store/load around shared host _CIatan, TargetName current-header assignment and child/name cleanup states. Parser allocation cleanup is disarmed before reading; no completed-item rollback. Strict standalone MSVC Win32 compile and one controlled-child fixture passed:12 copied original bodies/30 direct/9 absolute relocations, eleven paired payloads, current token cells, scalar flags2, two source failure paths, actual manager/six parser registrations and raw root dispatch then item slot deletion/canonical manager drain. Project source registration/build awaits shared startup.cmake lease release. Original CRT atan/CPU/error identity, native ABI/FH3/SEH/private spills/faults, allocation failure, lazy pool recreation, token startup, remaining parsers/container destruction, executable admission and gameplay remain open. Original normal paths share source dependencies; original GroupParams table slot20 binds copied reader; original EH guarded out. Names hypotheses. docs/NATIVE_CAMERA_GROUP_RESOURCE_CC.md; reports/native_camera_group_resource_cc.json. Complete unwind or dispatch handler; support evidence only."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00cc28d8\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00cc2960",
+        "new_name": "Unwind@00cc2960"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00cc2960 from 'Unwind@00cc2960' to 'Unwind@00cc2960'\", \"warnings\": [\"Function name 'Unwind@00cc2960' \\u2014 main part 'Unwind@00cc2960' is not PascalCase. Expected: Unwind@00cc2960\", \"Function name 'Unwind@00cc2960' does not start with a recognized verb. First word 'Unwind@00cc2960' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00cc2960",
+        "comment": "\n\n[BSP reconstruction 00cc2960] CC update\nCC camera and GroupParams items:12 complete ordinary bodies894bytes/278instructions, nine support bodies24instructions;39 direct transfers and one indirect call, all instruction owners verified. Two three-cell predicates matchB86950 after only address substitutions. Actual item constructors, concrete readers/parsers, scalar deletion and current captured dispatch/type/reference bindings are source-backed. Group reader stores ST0 directly then skips/detaches payload; camera preserves every original x87 store/load around shared host _CIatan, TargetName current-header assignment and child/name cleanup states. Parser allocation cleanup is disarmed before reading; no completed-item rollback. Strict standalone MSVC Win32 compile and one controlled-child fixture passed:12 copied original bodies/30 direct/9 absolute relocations, eleven paired payloads, current token cells, scalar flags2, two source failure paths, actual manager/six parser registrations and raw root dispatch then item slot deletion/canonical manager drain. Project source registration/build awaits shared startup.cmake lease release. Original CRT atan/CPU/error identity, native ABI/FH3/SEH/private spills/faults, allocation failure, lazy pool recreation, token startup, remaining parsers/container destruction, executable admission and gameplay remain open. Original normal paths share source dependencies; original GroupParams table slot20 binds copied reader; original EH guarded out. Names hypotheses. docs/NATIVE_CAMERA_GROUP_RESOURCE_CC.md; reports/native_camera_group_resource_cc.json. Complete unwind or dispatch handler; support evidence only."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00cc2960\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00cc2968",
+        "new_name": "Unwind@00cc2968"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00cc2968 from 'Unwind@00cc2968' to 'Unwind@00cc2968'\", \"warnings\": [\"Function name 'Unwind@00cc2968' \\u2014 main part 'Unwind@00cc2968' is not PascalCase. Expected: Unwind@00cc2968\", \"Function name 'Unwind@00cc2968' does not start with a recognized verb. First word 'Unwind@00cc2968' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00cc2968",
+        "comment": "\n\n[BSP reconstruction 00cc2968] CC update\nCC camera and GroupParams items:12 complete ordinary bodies894bytes/278instructions, nine support bodies24instructions;39 direct transfers and one indirect call, all instruction owners verified. Two three-cell predicates matchB86950 after only address substitutions. Actual item constructors, concrete readers/parsers, scalar deletion and current captured dispatch/type/reference bindings are source-backed. Group reader stores ST0 directly then skips/detaches payload; camera preserves every original x87 store/load around shared host _CIatan, TargetName current-header assignment and child/name cleanup states. Parser allocation cleanup is disarmed before reading; no completed-item rollback. Strict standalone MSVC Win32 compile and one controlled-child fixture passed:12 copied original bodies/30 direct/9 absolute relocations, eleven paired payloads, current token cells, scalar flags2, two source failure paths, actual manager/six parser registrations and raw root dispatch then item slot deletion/canonical manager drain. Project source registration/build awaits shared startup.cmake lease release. Original CRT atan/CPU/error identity, native ABI/FH3/SEH/private spills/faults, allocation failure, lazy pool recreation, token startup, remaining parsers/container destruction, executable admission and gameplay remain open. Original normal paths share source dependencies; original GroupParams table slot20 binds copied reader; original EH guarded out. Names hypotheses. docs/NATIVE_CAMERA_GROUP_RESOURCE_CC.md; reports/native_camera_group_resource_cc.json. Complete unwind or dispatch handler; support evidence only."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00cc2968\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00cc2970",
+        "new_name": "BSP_CameraItemRead_EH_00cc2970"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00cc2970 from 'BSP_CameraItemRead_EH_00cc2970' to 'BSP_CameraItemRead_EH_00cc2970'\", \"warnings\": [\"Function name 'BSP_CameraItemRead_EH_00cc2970' \\u2014 main part 'CameraItemRead_EH_00cc2970' is not PascalCase. Expected: CameraitemreadEh00cc2970\", \"Function name 'BSP_CameraItemRead_EH_00cc2970' \\u2014 main part 'CameraItemRead_EH_00cc2970' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_CameraItemRead_EH_00cc2970' does not start with a recognized verb. First word 'Camera' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00cc2970",
+        "comment": "\n\n[BSP reconstruction 00cc2970] CC update\nCC camera and GroupParams items:12 complete ordinary bodies894bytes/278instructions, nine support bodies24instructions;39 direct transfers and one indirect call, all instruction owners verified. Two three-cell predicates matchB86950 after only address substitutions. Actual item constructors, concrete readers/parsers, scalar deletion and current captured dispatch/type/reference bindings are source-backed. Group reader stores ST0 directly then skips/detaches payload; camera preserves every original x87 store/load around shared host _CIatan, TargetName current-header assignment and child/name cleanup states. Parser allocation cleanup is disarmed before reading; no completed-item rollback. Strict standalone MSVC Win32 compile and one controlled-child fixture passed:12 copied original bodies/30 direct/9 absolute relocations, eleven paired payloads, current token cells, scalar flags2, two source failure paths, actual manager/six parser registrations and raw root dispatch then item slot deletion/canonical manager drain. Project source registration/build awaits shared startup.cmake lease release. Original CRT atan/CPU/error identity, native ABI/FH3/SEH/private spills/faults, allocation failure, lazy pool recreation, token startup, remaining parsers/container destruction, executable admission and gameplay remain open. Original normal paths share source dependencies; original GroupParams table slot20 binds copied reader; original EH guarded out. Names hypotheses. docs/NATIVE_CAMERA_GROUP_RESOURCE_CC.md; reports/native_camera_group_resource_cc.json. Complete unwind or dispatch handler; support evidence only."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00cc2970\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00cc2980",
+        "new_name": "Unwind@00cc2980"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00cc2980 from 'Unwind@00cc2980' to 'Unwind@00cc2980'\", \"warnings\": [\"Function name 'Unwind@00cc2980' \\u2014 main part 'Unwind@00cc2980' is not PascalCase. Expected: Unwind@00cc2980\", \"Function name 'Unwind@00cc2980' does not start with a recognized verb. First word 'Unwind@00cc2980' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00cc2980",
+        "comment": "\n\n[BSP reconstruction 00cc2980] CC update\nCC camera and GroupParams items:12 complete ordinary bodies894bytes/278instructions, nine support bodies24instructions;39 direct transfers and one indirect call, all instruction owners verified. Two three-cell predicates matchB86950 after only address substitutions. Actual item constructors, concrete readers/parsers, scalar deletion and current captured dispatch/type/reference bindings are source-backed. Group reader stores ST0 directly then skips/detaches payload; camera preserves every original x87 store/load around shared host _CIatan, TargetName current-header assignment and child/name cleanup states. Parser allocation cleanup is disarmed before reading; no completed-item rollback. Strict standalone MSVC Win32 compile and one controlled-child fixture passed:12 copied original bodies/30 direct/9 absolute relocations, eleven paired payloads, current token cells, scalar flags2, two source failure paths, actual manager/six parser registrations and raw root dispatch then item slot deletion/canonical manager drain. Project source registration/build awaits shared startup.cmake lease release. Original CRT atan/CPU/error identity, native ABI/FH3/SEH/private spills/faults, allocation failure, lazy pool recreation, token startup, remaining parsers/container destruction, executable admission and gameplay remain open. Original normal paths share source dependencies; original GroupParams table slot20 binds copied reader; original EH guarded out. Names hypotheses. docs/NATIVE_CAMERA_GROUP_RESOURCE_CC.md; reports/native_camera_group_resource_cc.json. Complete unwind or dispatch handler; support evidence only."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00cc2980\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00cc298b",
+        "new_name": "BSP_CameraItemParse_EH_00cc298b"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00cc298b from 'BSP_CameraItemParse_EH_00cc298b' to 'BSP_CameraItemParse_EH_00cc298b'\", \"warnings\": [\"Function name 'BSP_CameraItemParse_EH_00cc298b' \\u2014 main part 'CameraItemParse_EH_00cc298b' is not PascalCase. Expected: CameraitemparseEh00cc298b\", \"Function name 'BSP_CameraItemParse_EH_00cc298b' \\u2014 main part 'CameraItemParse_EH_00cc298b' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_CameraItemParse_EH_00cc298b' does not start with a recognized verb. First word 'Camera' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00cc298b",
+        "comment": "\n\n[BSP reconstruction 00cc298b] CC update\nCC camera and GroupParams items:12 complete ordinary bodies894bytes/278instructions, nine support bodies24instructions;39 direct transfers and one indirect call, all instruction owners verified. Two three-cell predicates matchB86950 after only address substitutions. Actual item constructors, concrete readers/parsers, scalar deletion and current captured dispatch/type/reference bindings are source-backed. Group reader stores ST0 directly then skips/detaches payload; camera preserves every original x87 store/load around shared host _CIatan, TargetName current-header assignment and child/name cleanup states. Parser allocation cleanup is disarmed before reading; no completed-item rollback. Strict standalone MSVC Win32 compile and one controlled-child fixture passed:12 copied original bodies/30 direct/9 absolute relocations, eleven paired payloads, current token cells, scalar flags2, two source failure paths, actual manager/six parser registrations and raw root dispatch then item slot deletion/canonical manager drain. Project source registration/build awaits shared startup.cmake lease release. Original CRT atan/CPU/error identity, native ABI/FH3/SEH/private spills/faults, allocation failure, lazy pool recreation, token startup, remaining parsers/container destruction, executable admission and gameplay remain open. Original normal paths share source dependencies; original GroupParams table slot20 binds copied reader; original EH guarded out. Names hypotheses. docs/NATIVE_CAMERA_GROUP_RESOURCE_CC.md; reports/native_camera_group_resource_cc.json. Complete unwind or dispatch handler; support evidence only."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00cc298b\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00cc2aa0",
+        "new_name": "Unwind@00cc2aa0"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00cc2aa0 from 'Unwind@00cc2aa0' to 'Unwind@00cc2aa0'\", \"warnings\": [\"Function name 'Unwind@00cc2aa0' \\u2014 main part 'Unwind@00cc2aa0' is not PascalCase. Expected: Unwind@00cc2aa0\", \"Function name 'Unwind@00cc2aa0' does not start with a recognized verb. First word 'Unwind@00cc2aa0' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00cc2aa0",
+        "comment": "\n\n[BSP reconstruction 00cc2aa0] CC update\nCC camera and GroupParams items:12 complete ordinary bodies894bytes/278instructions, nine support bodies24instructions;39 direct transfers and one indirect call, all instruction owners verified. Two three-cell predicates matchB86950 after only address substitutions. Actual item constructors, concrete readers/parsers, scalar deletion and current captured dispatch/type/reference bindings are source-backed. Group reader stores ST0 directly then skips/detaches payload; camera preserves every original x87 store/load around shared host _CIatan, TargetName current-header assignment and child/name cleanup states. Parser allocation cleanup is disarmed before reading; no completed-item rollback. Strict standalone MSVC Win32 compile and one controlled-child fixture passed:12 copied original bodies/30 direct/9 absolute relocations, eleven paired payloads, current token cells, scalar flags2, two source failure paths, actual manager/six parser registrations and raw root dispatch then item slot deletion/canonical manager drain. Project source registration/build awaits shared startup.cmake lease release. Original CRT atan/CPU/error identity, native ABI/FH3/SEH/private spills/faults, allocation failure, lazy pool recreation, token startup, remaining parsers/container destruction, executable admission and gameplay remain open. Original normal paths share source dependencies; original GroupParams table slot20 binds copied reader; original EH guarded out. Names hypotheses. docs/NATIVE_CAMERA_GROUP_RESOURCE_CC.md; reports/native_camera_group_resource_cc.json. Complete unwind or dispatch handler; support evidence only."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00cc2aa0\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00cc2aab",
+        "new_name": "BSP_GroupParamsItemParse_EH_00cc2aab"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00cc2aab from 'BSP_GroupParamsItemParse_EH_00cc2aab' to 'BSP_GroupParamsItemParse_EH_00cc2aab'\", \"warnings\": [\"Function name 'BSP_GroupParamsItemParse_EH_00cc2aab' \\u2014 main part 'GroupParamsItemParse_EH_00cc2aab' is not PascalCase. Expected: GroupparamsitemparseEh00cc2aab\", \"Function name 'BSP_GroupParamsItemParse_EH_00cc2aab' \\u2014 main part 'GroupParamsItemParse_EH_00cc2aab' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_GroupParamsItemParse_EH_00cc2aab' does not start with a recognized verb. First word 'Group' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00cc2aab",
+        "comment": "\n\n[BSP reconstruction 00cc2aab] CC update\nCC camera and GroupParams items:12 complete ordinary bodies894bytes/278instructions, nine support bodies24instructions;39 direct transfers and one indirect call, all instruction owners verified. Two three-cell predicates matchB86950 after only address substitutions. Actual item constructors, concrete readers/parsers, scalar deletion and current captured dispatch/type/reference bindings are source-backed. Group reader stores ST0 directly then skips/detaches payload; camera preserves every original x87 store/load around shared host _CIatan, TargetName current-header assignment and child/name cleanup states. Parser allocation cleanup is disarmed before reading; no completed-item rollback. Strict standalone MSVC Win32 compile and one controlled-child fixture passed:12 copied original bodies/30 direct/9 absolute relocations, eleven paired payloads, current token cells, scalar flags2, two source failure paths, actual manager/six parser registrations and raw root dispatch then item slot deletion/canonical manager drain. Project source registration/build awaits shared startup.cmake lease release. Original CRT atan/CPU/error identity, native ABI/FH3/SEH/private spills/faults, allocation failure, lazy pool recreation, token startup, remaining parsers/container destruction, executable admission and gameplay remain open. Original normal paths share source dependencies; original GroupParams table slot20 binds copied reader; original EH guarded out. Names hypotheses. docs/NATIVE_CAMERA_GROUP_RESOURCE_CC.md; reports/native_camera_group_resource_cc.json. Complete unwind or dispatch handler; support evidence only."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00cc2aab\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": "{\"success\": true, \"program\": \"battlestationspacific.exe\", \"message\": \"Program saved successfully\"}"
+    }
+  ],
+  "saved": true,
+  "exports_refreshed": true
+}
