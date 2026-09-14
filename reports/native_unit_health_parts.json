@@ -1,0 +1,946 @@
+{
+  "packet": "orch6_unit_health_parts_z",
+  "base_commit": "9442ed648ee8f3cfda0c95d4b38e394384790fa2",
+  "status": "reconstructed_complete_normal_caller_required_providers_native_byte_fixture_tested",
+  "ghidra": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "worker_mode": "strict read-only verified BSP CLI",
+    "worker_mutations": [],
+    "root_supporting_definition_receipt": "reports/orch6_z_function_definitions.json in integrator checkout; root defined006D1DF0 and0080DF80 after worker raw audit",
+    "prior_metadata": "local/health_parts_0087bcc0_proto.txt and _comments.txt",
+    "annotation_owner": "primary integrator"
+  },
+  "routines": [
+    {
+      "address": "0087bcc0",
+      "end_inclusive": "0087bf73",
+      "bytes": 692,
+      "name": "initialize_native_unit_health_parts_0087bcc0",
+      "source": "src/native_unit_health_parts.cpp",
+      "coverage": "complete normal caller, source allocation cleanup; complete native providers required",
+      "abi": "ECX unit, saves EBX EBP ESI EDI, bare RET; native handlerC967E6 states0/1",
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "0087bcdc",
+      "native": "0077f0e0",
+      "function": "0087bcc0",
+      "contract": "Whole activation/list registration and kind-dependent property setup, ECX canonical unit; RET. Body read, suspect inherited STL pseudocode metadata; required provider retains address name."
+    },
+    {
+      "address": "0087bd4f",
+      "native": "0087b460",
+      "function": "0087bcc0",
+      "contract": "Whole actual checked pointer-vector resize, ECX unit+344; count and zero fill; RET8. No canonical STL port."
+    },
+    {
+      "address": "0087bd95",
+      "native": "00bf6713",
+      "function": "0087bcc0",
+      "contract": "Whole CRT invalid parameter operation; may return. Capture/reload rules preserve returning-handler mutation."
+    },
+    {
+      "address": "0087bdb4",
+      "native": "00bf6713",
+      "function": "0087bcc0",
+      "contract": "Whole CRT invalid parameter operation; may return. Capture/reload rules preserve returning-handler mutation."
+    },
+    {
+      "address": "0087bdda",
+      "native": "parent+vtableb0",
+      "function": "0087bcc0",
+      "contract": "ECX captured parent, no stack args, EAX result. Fresh table for repeated call; checked profiles resolve006D1DF0..F6 MOV EAX,[ECX+360];RET.",
+      "resolved_profiles": {
+        "00cfc3d0": "006d1df0",
+        "00d0bf80": "006d1df0"
+      }
+    },
+    {
+      "address": "0087bdf3",
+      "native": "parent+vtableb0",
+      "function": "0087bcc0",
+      "contract": "ECX captured parent, no stack args, EAX result. Fresh table for repeated call; checked profiles resolve006D1DF0..F6 MOV EAX,[ECX+360];RET.",
+      "resolved_profiles": {
+        "00cfc3d0": "006d1df0",
+        "00d0bf80": "006d1df0"
+      }
+    },
+    {
+      "address": "0087be11",
+      "native": "unit+vtable5c",
+      "function": "0087bcc0",
+      "contract": "Current table; ECX canonical unit, stack kind27, RET4, AL boolean. Tail preserves short circuit and reloads model afterward."
+    },
+    {
+      "address": "0087be1c",
+      "native": "00bf681b",
+      "function": "0087bcc0",
+      "contract": "Whole malloc/new-handler/throw allocator; cdecl 1AC-byte request, ADD ESP,4. Native null branch retained."
+    },
+    {
+      "address": "0087be4b",
+      "native": "unit+vtable190",
+      "function": "0087bcc0",
+      "contract": "ECX unit, NO stack argument; current selected entry. Checked0080DF80 MOV EAX,6;RET leaves pre-pushed detail for next call.",
+      "resolved_profiles": {
+        "00cfc3d0": "0080df80",
+        "00d0bf80": "0080df80"
+      }
+    },
+    {
+      "address": "0087be52",
+      "native": "part_set+vtable08",
+      "function": "0087bcc0",
+      "contract": "ECX captured class+50 object, selector first and detail second, required RET8. Table captured before unit190; entry read after. Concrete target/producer unresolved, required address/slot provider."
+    },
+    {
+      "address": "0087be58",
+      "native": "007135c0",
+      "function": "0087bcc0",
+      "contract": "Whole1AC part-model constructor, ECX allocation, unit then selected part set, RET8; complete native internal lifetime/EH required, not existing field projection."
+    },
+    {
+      "address": "0087be5f",
+      "native": "00bf681b",
+      "function": "0087bcc0",
+      "contract": "Whole malloc/new-handler/throw allocator; cdecl 1AC-byte request, ADD ESP,4. Native null branch retained."
+    },
+    {
+      "address": "0087be8e",
+      "native": "unit+vtable190",
+      "function": "0087bcc0",
+      "contract": "ECX unit, NO stack argument; current selected entry. Checked0080DF80 MOV EAX,6;RET leaves pre-pushed detail for next call.",
+      "resolved_profiles": {
+        "00cfc3d0": "0080df80",
+        "00d0bf80": "0080df80"
+      }
+    },
+    {
+      "address": "0087be95",
+      "native": "part_set+vtable08",
+      "function": "0087bcc0",
+      "contract": "ECX captured class+50 object, selector first and detail second, required RET8. Table captured before unit190; entry read after. Concrete target/producer unresolved, required address/slot provider."
+    },
+    {
+      "address": "0087be9b",
+      "native": "007135c0",
+      "function": "0087bcc0",
+      "contract": "Whole1AC part-model constructor, ECX allocation, unit then selected part set, RET8; complete native internal lifetime/EH required, not existing field projection."
+    },
+    {
+      "address": "0087becb",
+      "native": "00876ec0",
+      "function": "0087bcc0",
+      "contract": "Whole state/group update and conditional world announcement; ECX unit, saved state or0, RET4; saved numbering/current holder reloaded afterward."
+    },
+    {
+      "address": "0087bed9",
+      "native": "00876ec0",
+      "function": "0087bcc0",
+      "contract": "Whole state/group update and conditional world announcement; ECX unit, saved state or0, RET4; saved numbering/current holder reloaded afterward."
+    },
+    {
+      "address": "0087befb",
+      "native": "008f2260",
+      "function": "0087bcc0",
+      "contract": "Whole current native property-bag Numbering lookup including native string/map lifetime, ECX bag, key, RET4."
+    },
+    {
+      "address": "0087bf27",
+      "native": "unit+vtable5c",
+      "function": "0087bcc0",
+      "contract": "Current table; ECX canonical unit, stack kind6, RET4, AL boolean. Tail preserves short circuit and reloads model afterward."
+    },
+    {
+      "address": "0087bf36",
+      "native": "unit+vtable5c",
+      "function": "0087bcc0",
+      "contract": "Current table; ECX canonical unit, stack kind27, RET4, AL boolean. Tail preserves short circuit and reloads model afterward."
+    },
+    {
+      "address": "0087bf43",
+      "native": "00711be0",
+      "function": "0087bcc0",
+      "contract": "Whole wrapper, ECX current model, numbering, RET4. Reads model+160 then+0C and passes EDX numbering to00711A20 recursive material update."
+    },
+    {
+      "address": "00c967d4",
+      "native": "00bf65ac",
+      "function": "00c967d0",
+      "contract": "Saved allocation [EBP-10] free; cdecl, POP ECX atD9 then RET atDA. Ghidra body truncates after CALL."
+    },
+    {
+      "address": "00c967df",
+      "native": "00bf65ac",
+      "function": "00c967db",
+      "contract": "Saved allocation [EBP-10] free; cdecl, POP ECX atE4 then RET atE5. Ghidra body truncates after CALL."
+    }
+  ],
+  "supporting_leaf_evidence": [
+    {
+      "entry": "006d1df0",
+      "end_inclusive": "006d1df6",
+      "bytes": 7,
+      "initial_state": "no_ghidra_function",
+      "current_state": "root defined after raw audit",
+      "body": "MOV EAX,[ECX+360]; RET",
+      "profiles": [
+        "00cfc3d0+B0",
+        "00d0bf80+B0"
+      ]
+    },
+    {
+      "entry": "0080df80",
+      "end_inclusive": "0080df85",
+      "bytes": 6,
+      "initial_state": "no_ghidra_function",
+      "current_state": "root defined after raw audit",
+      "body": "MOV EAX,6; RET",
+      "profiles": [
+        "00cfc3d0+190",
+        "00d0bf80+190"
+      ]
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "entry": "00c967e6",
+      "end_inclusive": "00c967ef",
+      "bytes": 10,
+      "kind": "handler",
+      "native_tail_target": "00bf6b43",
+      "body": "MOV EAX,DC8BD4; JMP BF6B43",
+      "not_executed": true
+    },
+    {
+      "entry": "00c967d9",
+      "end_inclusive": "00c967da",
+      "bytes": 2,
+      "kind": "missing_funclet_tail",
+      "containing_intended_start": "00c967d0",
+      "full_span": "00c967d0..00c967da",
+      "body": "POP ECX; RET",
+      "not_executed": true
+    },
+    {
+      "entry": "00c967e4",
+      "end_inclusive": "00c967e5",
+      "bytes": 2,
+      "kind": "missing_funclet_tail",
+      "containing_intended_start": "00c967db",
+      "full_span": "00c967db..00c967e5",
+      "body": "POP ECX; RET",
+      "not_executed": true
+    }
+  ],
+  "corrections": [
+    {
+      "was": "unit_initial_condition helper status reconstructed_ledger_backfilled_from_source implied full87BCC0",
+      "is": "partial_projection; separate complete caller requires full providers",
+      "evidence": "Original692-byte body versus old helper values-only implementation; missing branches labelled in header/source/docs and ledger."
+    },
+    {
+      "was": "detail passed as argument of unit virtual190, one-argument part-set virtual8",
+      "is": "unit190 no args returns selector; virtual8 receives selector then detail, RET8",
+      "evidence": "87BE42..58 /87BE85..9B and CFC3D0/D0BF80+190->80DF80 MOV EAX,6 RET. Native-byte fixtures bridge selector with bare RET and model8 with RET8."
+    },
+    {
+      "was": "health+370 may be constant-one based on unverified pseudocode",
+      "is": "health+370 and max+36C both store classHP+48 XMM0",
+      "evidence": "87BCFC,87BD01,87BD11; compiled source+51..82 MOVSS sequence and paired cases."
+    },
+    {
+      "was": "property holder+04 refs/refcount",
+      "is": "kind discriminator,2 means saved record; +08 is bag only for bag kinds",
+      "evidence": "Existing corrected NativeUnitScenePropertyHolderView;87BEBC CMP[holder+4],2 and saved+58/+5C reads."
+    },
+    {
+      "was": "old helper clamps reversed part spans to zero",
+      "is": "native signed DWORD subtraction/divide48, then unsigned comparisons",
+      "evidence": "87BD2D..43 and87BD7B..91; new source signed_word() preserves subtraction bits without clamp."
+    }
+  ],
+  "allocation_eh": {
+    "handler": "00c967e6",
+    "funcinfo": "00dc8bd4",
+    "max_state": 2,
+    "unwind_map": "00dc8bc4",
+    "entries": [
+      [
+        -1,
+        "00c967d0"
+      ],
+      [
+        -1,
+        "00c967db"
+      ]
+    ],
+    "saved_allocation": "EBP-10",
+    "source_cleanup": "C++ catch frees saved allocation and rethrows for selection/constructor exceptions",
+    "original_eh_seh_tested": false,
+    "constructor_internal_cleanup_tested": false
+  },
+  "binding_contract": {
+    "actual_storage": [
+      "NativeUnitObserverAlias canonical unit",
+      "same model360 and propertyC0 cells as NativeUnitSceneInitializationView",
+      "actual unit health/marker/condition/numbering/parent fields",
+      "actual classHP/Armour/48-byte descriptors and class50 identity",
+      "actual checked pointer-vector header identity and live begin/end refs"
+    ],
+    "reused": [
+      "bsp/unit_parts.hpp",
+      "bsp/unit_hit_path.hpp constants",
+      "NativeUnitScenePropertyHolderView"
+    ],
+    "no_substitutes": [
+      "No padded native production unit or new owner",
+      "No render data/count array substituted for debug vector begin/end",
+      "No semantic bag or default model/table",
+      "No STL/library/canonical render port"
+    ],
+    "remaining": [
+      "Complete0077F0E0,0087B460,007135C0,00876EC0,008F2260,00711BE0 and CRT provider bindings",
+      "Class+50 producer and actual dynamic part-set virtual8 target",
+      "Actual canonical-unit/runtime field binding; no source GameUnitsHost binding implemented"
+    ]
+  },
+  "validation": {
+    "build": "PASS Release MSVC Win32 scripts/build.ps1",
+    "existing_ctests": "PASS2/2 reconstructed_math and native_math_differential",
+    "seeds": "PASS8/8 verify-seeds live/disk",
+    "fixture": "PASS5 paired full692-byte original-caller/source cases and one source-only constructor cleanup",
+    "fixture_cases": [
+      {
+        "case": 0,
+        "match": true,
+        "native_valid": true,
+        "source_valid": true,
+        "native": [
+          0,
+          0,
+          0,
+          2147483648,
+          1116897280,
+          1116897280,
+          1065353216,
+          1,
+          5,
+          200,
+          248,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          5,
+          10,
+          20,
+          40,
+          41,
+          43
+        ],
+        "source": [
+          0,
+          0,
+          0,
+          2147483648,
+          1116897280,
+          1116897280,
+          1065353216,
+          1,
+          5,
+          200,
+          248,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          5,
+          10,
+          20,
+          40,
+          41,
+          43
+        ]
+      },
+      {
+        "case": 1,
+        "match": true,
+        "native_valid": true,
+        "source_valid": true,
+        "native": [
+          1,
+          3,
+          12,
+          2147483648,
+          1116897280,
+          1116897280,
+          1065353216,
+          1,
+          5,
+          200,
+          248,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          14,
+          10,
+          20,
+          40,
+          41,
+          43,
+          77,
+          110,
+          90,
+          100,
+          120,
+          144,
+          56,
+          77,
+          172
+        ],
+        "source": [
+          1,
+          3,
+          12,
+          2147483648,
+          1116897280,
+          1116897280,
+          1065353216,
+          1,
+          5,
+          200,
+          248,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          14,
+          10,
+          20,
+          40,
+          41,
+          43,
+          77,
+          110,
+          90,
+          100,
+          120,
+          144,
+          56,
+          77,
+          172
+        ]
+      },
+      {
+        "case": 2,
+        "match": true,
+        "native_valid": true,
+        "source_valid": true,
+        "native": [
+          2,
+          3,
+          9,
+          2147483648,
+          1116897280,
+          1116897280,
+          1065353216,
+          1,
+          5,
+          200,
+          248,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          14,
+          10,
+          20,
+          40,
+          41,
+          43,
+          77,
+          110,
+          90,
+          100,
+          120,
+          140,
+          150,
+          56,
+          169
+        ],
+        "source": [
+          2,
+          3,
+          9,
+          2147483648,
+          1116897280,
+          1116897280,
+          1065353216,
+          1,
+          5,
+          200,
+          248,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          14,
+          10,
+          20,
+          40,
+          41,
+          43,
+          77,
+          110,
+          90,
+          100,
+          120,
+          140,
+          150,
+          56,
+          169
+        ]
+      },
+      {
+        "case": 3,
+        "match": true,
+        "native_valid": true,
+        "source_valid": true,
+        "native": [
+          3,
+          0,
+          1,
+          2147483648,
+          1116897280,
+          1116897280,
+          1065353216,
+          1,
+          5,
+          200,
+          248,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          8,
+          10,
+          20,
+          40,
+          41,
+          43,
+          77,
+          110,
+          140
+        ],
+        "source": [
+          3,
+          0,
+          1,
+          2147483648,
+          1116897280,
+          1116897280,
+          1065353216,
+          1,
+          5,
+          200,
+          248,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          8,
+          10,
+          20,
+          40,
+          41,
+          43,
+          77,
+          110,
+          140
+        ]
+      },
+      {
+        "case": 4,
+        "match": true,
+        "native_valid": true,
+        "source_valid": true,
+        "native": [
+          4,
+          3,
+          9,
+          2147483648,
+          1116897280,
+          1116897280,
+          1065353216,
+          1,
+          5,
+          200,
+          0,
+          0,
+          0,
+          0,
+          348,
+          0,
+          0,
+          0,
+          17,
+          10,
+          20,
+          30,
+          31,
+          40,
+          41,
+          43,
+          77,
+          110,
+          90,
+          100,
+          120,
+          140,
+          150,
+          56,
+          77,
+          169
+        ],
+        "source": [
+          4,
+          3,
+          9,
+          2147483648,
+          1116897280,
+          1116897280,
+          1065353216,
+          1,
+          5,
+          200,
+          0,
+          0,
+          0,
+          0,
+          348,
+          0,
+          0,
+          0,
+          17,
+          10,
+          20,
+          30,
+          31,
+          40,
+          41,
+          43,
+          77,
+          110,
+          90,
+          100,
+          120,
+          140,
+          150,
+          56,
+          77,
+          169
+        ]
+      },
+      {
+        "case": "source_ctor_cleanup",
+        "match": true,
+        "native_eh_tested": false
+      }
+    ],
+    "native_byte_evidence": {
+      "project_file": "C:/Users/sqz269/bsp.gpr",
+      "program_path": "/battlestationspacific.exe",
+      "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "spans": [
+        {
+          "address": "0087bcc0",
+          "length": 384,
+          "sha256": "a4a39ed36d6b665a409ff1b1e0fd1dff26854ae017fa4d1f0197fd050975c0c1",
+          "live_matches_disk": true
+        },
+        {
+          "address": "0087be40",
+          "length": 308,
+          "sha256": "1a9280a38ac435633ef6d57e47989d99a0f540057c41cce03fc682c323421ba8",
+          "live_matches_disk": true
+        },
+        {
+          "address": "0077f0e0",
+          "length": 365,
+          "sha256": "0948c0dbecea6dee651a997ee02ac77f731a7be789253f9c2b626b980125a038",
+          "live_matches_disk": true
+        },
+        {
+          "address": "0087b460",
+          "length": 179,
+          "sha256": "a93f14bbe1d8a966bb8b749074f3b8b5aea7a8e9e73629677d61ab41c3bafce2",
+          "live_matches_disk": true
+        },
+        {
+          "address": "00bf6713",
+          "length": 16,
+          "sha256": "cd349dae43dbf63016fe6ea9339dab15c59041e3224e48cf8a53004224b45e77",
+          "live_matches_disk": true
+        },
+        {
+          "address": "00bf681b",
+          "length": 105,
+          "sha256": "d5c7a9d6341492cef7ab7c27605308fee31e0cc40f32907febdef6eee917c2b1",
+          "live_matches_disk": true
+        },
+        {
+          "address": "007135c0",
+          "length": 356,
+          "sha256": "61cc4457032508218c120f796ae7eaa238e73f27e24162d91e69487a0e414a96",
+          "live_matches_disk": true
+        },
+        {
+          "address": "00876ec0",
+          "length": 196,
+          "sha256": "510df028ccd2a1db2170d0bfd59002fbfee98210895754c42aeeded9fdedb770",
+          "live_matches_disk": true
+        },
+        {
+          "address": "008f2260",
+          "length": 375,
+          "sha256": "7b0295606bec49517eadd28efd0e1dbfa487b7437a0be1348bfd829c58de782a",
+          "live_matches_disk": true
+        },
+        {
+          "address": "00711be0",
+          "length": 21,
+          "sha256": "d2aedc036649e522e83dab63641aa66e0f08be864dafc1c48b6dc059e4e1667f",
+          "live_matches_disk": true
+        },
+        {
+          "address": "00bf65ac",
+          "length": 5,
+          "sha256": "901f036d0ec6475be7f50c9243861104afeab65061759b3109d41419c26ae979",
+          "live_matches_disk": true
+        },
+        {
+          "address": "006d1df0",
+          "length": 7,
+          "sha256": "b4d96908a7feea555f1afbc51caf04a41a12764711b59d5cca5ebf4c6dcb6639",
+          "live_matches_disk": true
+        },
+        {
+          "address": "0080df80",
+          "length": 6,
+          "sha256": "23334c82ef0133c65cc0394d318a2637276496cb9b99f6dd580d0ee4f6c9e7b5",
+          "live_matches_disk": true
+        },
+        {
+          "address": "00c967d0",
+          "length": 11,
+          "sha256": "e02be340d46efdfcc7e81297e9e725555bda67a6068ac4d0c24700b30bd9fb22",
+          "live_matches_disk": true
+        },
+        {
+          "address": "00c967db",
+          "length": 11,
+          "sha256": "87e5df5d812d6a39bc5eed585d0eeb26d4a25c45e1867ba483cfe986df7f9ad5",
+          "live_matches_disk": true
+        },
+        {
+          "address": "00c967e6",
+          "length": 10,
+          "sha256": "8b8827608fc74072ce54e31189d9d17b3bcc2a9d02d6da0f2ab1b4d1e6e49737",
+          "live_matches_disk": true
+        },
+        {
+          "address": "00dc8bc4",
+          "length": 56,
+          "sha256": "546aa03a22c8e2dc15983703fecbceb296fd4943571c9d8cbcb23fb54370e53a",
+          "live_matches_disk": true
+        },
+        {
+          "address": "00d0bf80",
+          "length": 384,
+          "sha256": "d0dc9a82a359ca7a63d1d4b46f35b9a5baf42a750f624b7d7fc4e4ac2c467c2c",
+          "live_matches_disk": true
+        },
+        {
+          "address": "00d0c100",
+          "length": 20,
+          "sha256": "15b0f3b7f7841ccc30236c6b1df9a3d5ecc0da3493077d78dc86424e9c4bcd98",
+          "live_matches_disk": true
+        },
+        {
+          "address": "00cfc3d0",
+          "length": 384,
+          "sha256": "728cdcb091e5d53fecb06e520489943f714f6074c55a5553855ac14bbfdea3c4",
+          "live_matches_disk": true
+        },
+        {
+          "address": "00cfc550",
+          "length": 20,
+          "sha256": "15b0f3b7f7841ccc30236c6b1df9a3d5ecc0da3493077d78dc86424e9c4bcd98",
+          "live_matches_disk": true
+        },
+        {
+          "address": "00ced9e0",
+          "length": 4,
+          "sha256": "1db1f0f344b58605d168fb4a2fc7df167d331adc0dc13979949425d10bb577bf",
+          "live_matches_disk": true
+        },
+        {
+          "address": "00d7a24c",
+          "length": 4,
+          "sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c",
+          "live_matches_disk": true
+        },
+        {
+          "address": "00d0e130",
+          "length": 10,
+          "sha256": "d2e8ad406770d8234a1576fc86a97f619759685b21c30dc875eb9f293dd49dce",
+          "live_matches_disk": true
+        }
+      ],
+      "relocations": [
+        {
+          "offset": 3,
+          "kind": "absolute_push",
+          "site": "0087bcc2",
+          "target": "00c967e6"
+        },
+        {
+          "offset": 29,
+          "kind": "rel32_call",
+          "site": "0087bcdc",
+          "target": "0077f0e0"
+        },
+        {
+          "offset": 48,
+          "kind": "absolute_global",
+          "site": "0087bcec",
+          "target": "00d7a24c"
+        },
+        {
+          "offset": 144,
+          "kind": "rel32_call",
+          "site": "0087bd4f",
+          "target": "0087b460"
+        },
+        {
+          "offset": 214,
+          "kind": "rel32_call",
+          "site": "0087bd95",
+          "target": "00bf6713"
+        },
+        {
+          "offset": 245,
+          "kind": "rel32_call",
+          "site": "0087bdb4",
+          "target": "00bf6713"
+        },
+        {
+          "offset": 349,
+          "kind": "rel32_call",
+          "site": "0087be1c",
+          "target": "00bf681b"
+        },
+        {
+          "offset": 374,
+          "kind": "absolute_global",
+          "site": "0087be34",
+          "target": "00ced9e0"
+        },
+        {
+          "offset": 409,
+          "kind": "rel32_call",
+          "site": "0087be58",
+          "target": "007135c0"
+        },
+        {
+          "offset": 416,
+          "kind": "rel32_call",
+          "site": "0087be5f",
+          "target": "00bf681b"
+        },
+        {
+          "offset": 476,
+          "kind": "rel32_call",
+          "site": "0087be9b",
+          "target": "007135c0"
+        },
+        {
+          "offset": 524,
+          "kind": "rel32_call",
+          "site": "0087becb",
+          "target": "00876ec0"
+        },
+        {
+          "offset": 538,
+          "kind": "rel32_call",
+          "site": "0087bed9",
+          "target": "00876ec0"
+        },
+        {
+          "offset": 565,
+          "kind": "absolute_push",
+          "site": "0087bef4",
+          "target": "00d0e130"
+        },
+        {
+          "offset": 572,
+          "kind": "rel32_call",
+          "site": "0087befb",
+          "target": "008f2260"
+        },
+        {
+          "offset": 644,
+          "kind": "rel32_call",
+          "site": "0087bf43",
+          "target": "00711be0"
+        }
+      ],
+      "decoder": "5.0.7",
+      "boundary": "Complete 692-byte caller. Native providers bridged, not executed; native EH not tested."
+    },
+    "source_codegen": "local/health_parts_source_disasm.txt; MOVSS order+51..82; unit table before FLD/FLD1+22B/+22F, pure part-table lookup then selected unit+190 at+23F, FSTP+245, dispatch+251, saved model table+8 reload+26C",
+    "fixture_manifest": "local/health_parts_probe_manifest.json",
+    "review_manifest": "local/health_parts_review_manifest.json",
+    "mechanical_call_checks": "PASS14 direct rows (12 caller,2 funclet calls),0failed;9indirect rows separately reviewed and bridged",
+    "fixture_hashes": 359,
+    "post_fixture_source_tool_object_library_output_drift": false,
+    "retained_exact_inputs": "local/health_parts_retained/; content-addressed exact copies, mapped by retained_inputs in review manifest"
+  },
+  "limits": [
+    "New C++ ABI, full required provider composition only",
+    "All native fixture callees are explicit bridges; original callee bodies retained but not executed",
+    "Native FH3/SEH faults and constructor internal cleanup untested",
+    "No runtime scene admission/frame log, native unit owner binding, binary replacement or gameplay validation"
+  ]
+}

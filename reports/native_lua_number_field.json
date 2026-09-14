@@ -1,0 +1,289 @@
+{
+  "packet": "orch6_lua_number_field_z",
+  "module": "native_lua_number_field",
+  "functions": [
+    {
+      "address": "00b67400",
+      "name": "BSP_LuaObject_SetNumberField",
+      "original_name": "FUN_00b67400",
+      "coverage": "complete",
+      "body_inclusive": [
+        "00b67400",
+        "00b67455"
+      ],
+      "bytes": 86,
+      "native_abi": "ECX actual LuaObject; stack NativeString pointer, float32; RET8",
+      "source": "src/native_lua_number_field.cpp"
+    }
+  ],
+  "host_steps": [
+    {
+      "function": "00b67400",
+      "address": "00b6740d",
+      "native": "00a672f0"
+    },
+    {
+      "function": "00b67400",
+      "address": "00b6742c",
+      "native": "00a67a10"
+    },
+    {
+      "function": "00b67400",
+      "address": "00b67440",
+      "native": "00a679d0"
+    },
+    {
+      "function": "00b67400",
+      "address": "00b6744d",
+      "native": "00a67e10"
+    }
+  ],
+  "incoming_calls": [
+    {
+      "address": "00436950",
+      "native": "00b67400",
+      "function": "00436730"
+    },
+    {
+      "address": "00436f03",
+      "native": "00b67400",
+      "function": "00436c50"
+    },
+    {
+      "address": "00438426",
+      "native": "00b67400",
+      "function": "00438020"
+    },
+    {
+      "address": "0088ba95",
+      "native": "00b67400",
+      "function": "0088ba30"
+    },
+    {
+      "address": "0088bb0a",
+      "native": "00b67400",
+      "function": "0088ba30"
+    },
+    {
+      "address": "0088bb7f",
+      "native": "00b67400",
+      "function": "0088ba30"
+    },
+    {
+      "address": "0088dd92",
+      "native": "00b67400",
+      "function": "0088dc10"
+    },
+    {
+      "address": "0088de0b",
+      "native": "00b67400",
+      "function": "0088dc10"
+    },
+    {
+      "address": "0088de84",
+      "native": "00b67400",
+      "function": "0088dc10"
+    },
+    {
+      "address": "0088defd",
+      "native": "00b67400",
+      "function": "0088dc10"
+    },
+    {
+      "address": "0088df76",
+      "native": "00b67400",
+      "function": "0088dc10"
+    },
+    {
+      "address": "008af401",
+      "native": "00b67400",
+      "function": "008af260"
+    },
+    {
+      "address": "008af478",
+      "native": "00b67400",
+      "function": "008af260"
+    },
+    {
+      "address": "008af4ef",
+      "native": "00b67400",
+      "function": "008af260"
+    },
+    {
+      "address": "008af58e",
+      "native": "00b67400",
+      "function": "008af260"
+    },
+    {
+      "address": "008af605",
+      "native": "00b67400",
+      "function": "008af260"
+    },
+    {
+      "address": "008af67c",
+      "native": "00b67400",
+      "function": "008af260"
+    },
+    {
+      "address": "008afa9f",
+      "native": "00b67400",
+      "function": "008af700"
+    },
+    {
+      "address": "008afaf1",
+      "native": "00b67400",
+      "function": "008af700"
+    },
+    {
+      "address": "008afb43",
+      "native": "00b67400",
+      "function": "008af700"
+    },
+    {
+      "address": "008bf9d6",
+      "native": "00b67400",
+      "function": "008bf6a0"
+    },
+    {
+      "address": "00928de6",
+      "native": "00b67400",
+      "function": "00928c80"
+    },
+    {
+      "address": "00928e32",
+      "native": "00b67400",
+      "function": "00928c80"
+    },
+    {
+      "address": "00928e7e",
+      "native": "00b67400",
+      "function": "00928c80"
+    },
+    {
+      "address": "00bd6ec9",
+      "native": "00b67400",
+      "function": "00bd6e60"
+    },
+    {
+      "address": "00bd6f39",
+      "native": "00b67400",
+      "function": "00bd6e60"
+    },
+    {
+      "address": "00bd6fa9",
+      "native": "00b67400",
+      "function": "00bd6e60"
+    },
+    {
+      "address": "00bd7069",
+      "native": "00b67400",
+      "function": "00bd7000"
+    },
+    {
+      "address": "00bd70d9",
+      "native": "00b67400",
+      "function": "00bd7000"
+    },
+    {
+      "address": "00bd7322",
+      "native": "00b67400",
+      "function": "00bd7180"
+    }
+  ],
+  "no_ghidra_function": [],
+  "evidence": {
+    "spans": {
+      "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "spans": [
+        {
+          "address": "00b67400",
+          "length": 86,
+          "sha256": "9b8ba44c3a4980773cc4f83eee88e281d8cfcd232cf760b6cd85c9a2e7dbec86",
+          "live_disk_equal": true,
+          "hex": "568bf18b068b4804ba02000000e8defeefff8b4424088b088b400485c07505b82cff0801518b0e8b49048bd0e8df05f0ffd944240c8b168b4a0483ec08dd1c24e88b05f0ff8b068b56088b4804e8be09f0ff5ec20800"
+        },
+        {
+          "address": "00a672f0",
+          "length": 75,
+          "sha256": "927fe5325fffb6e905d3d432257c969ac4b339c5f7235f2d974894bffc98a5f8",
+          "live_disk_equal": true,
+          "hex": "568bf18b46088bc82b4e0cc1f90403ca81f9000800007e0433c05ec38b4e1c578bfac1e7042bc83bcf7f078bcee82e1a00008b56088b76148d043a3946085f7303894608b8010000005ec3"
+        },
+        {
+          "address": "00a67a10",
+          "length": 64,
+          "sha256": "473ec2f341ec760b9c913d0340ad461d3b86dc5bb9c28b41d477d675d309baf1",
+          "live_disk_equal": true,
+          "hex": "558bec53568bf18b46108b48443b4840578bda72078bcee8b45400008b55088b7e08528bd38bcee8d48200008907c7470804000000834608105f5e5b5dc20400"
+        },
+        {
+          "address": "00a679d0",
+          "length": 26,
+          "sha256": "08d57f74691a9845035beb5e501710ca78ebf4b7b10c180132978e0c59cfeebf",
+          "live_disk_equal": true,
+          "hex": "558bec8b4108dd4508dd18c7400803000000834108105dc20800"
+        },
+        {
+          "address": "00a67e10",
+          "length": 36,
+          "sha256": "15570d1fb4900660e2f30ef0fdeba8440b74c5f33869444979820ccbcd9a240e",
+          "live_disk_equal": true,
+          "hex": "568bc28bf1e816f4ffff8b4e088d51f05283c1e0518bd08bcee8d2560000834608e05ec3"
+        },
+        {
+          "address": "0108ff2c",
+          "length": 1,
+          "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d",
+          "live_disk_equal": true,
+          "hex": "00"
+        }
+      ]
+    },
+    "all_call_contexts": "local/number_field_z/all_call_contexts.txt",
+    "source_codegen": "local/number_field_z/production_disasm.txt",
+    "relocation_proof": "local/number_field_z/relocation_proof.json",
+    "manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\number_field_z\\manifest.json",
+      "size": 155142,
+      "sha256": "f7185c45456f74cee4131a268bd48e7612ba8d70b37f6a2d9cfa01867731177d"
+    }
+  },
+  "validation": {
+    "win32_build": "passed",
+    "existing_ctests": "2/2 passed",
+    "seed_verification": "8 live/disk seed checks passed",
+    "native_source_pairs": 27,
+    "numeric_pairs": 24,
+    "rebind_pairs": 2,
+    "empty_key_pairs": 1,
+    "fixture_results": "local/number_field_z/results.csv",
+    "probe": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\number_field_z\\probe.exe",
+      "size": 48128,
+      "sha256": "1d2515eaa17d159b2ec68d3077aaf1d6acdc57098deafcef519bc42d1f9f18a3"
+    },
+    "source_object": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\build\\win32\\bsp_core.dir\\Release\\native_lua_number_field.obj",
+      "size": 1710,
+      "sha256": "31353d1457a57e3958d2a619bdeebf6b221c53d6e5f33b5bf1490028ee8b4afb"
+    },
+    "source_revision_base": "9442ed648ee8f3cfda0c95d4b38e394384790fa2",
+    "source_state": "own uncommitted source content retained by hash",
+    "new_repository_tests": 0,
+    "direct_call_rows": 34,
+    "failed_call_rows": 0,
+    "compiled_inputs_retained_by_hash": true
+  },
+  "limits": [
+    "Linked Lua5.1.1 C API substituted at four native ABI boundaries; original Lua library machine code not executed.",
+    "All x87 exceptions masked; tested sticky exception bits and final number bits under four rounding modes. Native unmasked traps, private frame aliases, full FPU status/control ABI and hardware faults unproved.",
+    "Source ABI differs. Native Lua longjmp and invalid owner/index or null-string nonzero-length memory domains not exercised.",
+    "GameUnitsHost has no binding to this path yet; mission gameplay execution of this new provider unproved."
+  ],
+  "ghidra_annotation": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\number_field_z\\annotation_receipt.json",
+    "size": 2676,
+    "sha256": "b7e0ee211679187fda2ac8e58d1b3c91937e737624299461d4819a60efb63e88"
+  }
+}
