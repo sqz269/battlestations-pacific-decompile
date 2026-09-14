@@ -178,6 +178,10 @@ struct GameUnitsSummary {
     // short to normalise. `heading_change` sums |delta atan2(row2.x, row2.z)|
     // over every free-flight step, so it is the total turning a plane did
     // rather than the net - a plane that turns and turns back still shows it.
+    // 0099ACD0's think gate firing, and 007BB920 committing a command block
+    // into the live control axes. Both stay 0 while no plane is ticked.
+    unsigned long long pilot_thinks{0};
+    unsigned long long pilot_commits{0};
     unsigned long long plane_pose_rotations{0};
     double plane_heading_change{0.0};
     unsigned long long generic_tick_calls{0}; //00953CC0 with available live inputs

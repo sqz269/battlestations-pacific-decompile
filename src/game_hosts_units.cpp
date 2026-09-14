@@ -16,6 +16,7 @@
 #include "bsp/plane_advance_pose.hpp"
 #include "bsp/plane_angular_velocity.hpp"
 #include "bsp/plane_control_rate.hpp"
+#include "bsp/pilot_plan_slots.hpp"
 
 #include "bsp/game_hosts.hpp"
 #include "bsp/game_observer_runtime.hpp"
@@ -275,7 +276,21 @@ struct GameUnitSlot {
     // note for the axis order; plane_advance_pose.hpp had it swapped until
     // packet cc7_plane_control_targets.
     float plane_live_controls[3]{0.0f, 0.0f, 0.0f};
+    // unit+9F0h and +9F4h. 007CFEB0 sets the throttle to 1.0f at construction
+    // and 007CFEA4 zeroes the air brake.
+    float plane_live_throttle{1.0f};
+    float plane_live_air_brake{0.0f};
     float plane_latched_controls[3]{0.0f, 0.0f, 0.0f};
+    // The pilot bot's five plan slots (plan+274h, stride 0Ch) and the think
+    // accumulator 0099ACD0 keeps at bot+70h. The tick gates on the accumulator
+    // reaching 0.09 s and then passes the ACCUMULATED interval down, not the
+    // frame delta - docs/PILOT_BOT_TICK_GATES.md.
+    bsp::PilotPlanSlot plan_slots[5]{};
+    float pilot_think_accumulator_70{0.0f};
+    // unit+9FCh..+A10h, the pending command block, and the byte at unit+A14h
+    // that 007B8C90 sets and 007BB920 clears.
+    float pilot_command_block[5]{0.0f, 0.0f, 0.0f, 0.0f, 0.0f};
+    bool pilot_command_pending_a14{false};
     // The plane row's rate and acceleration keys, read once at creation.
     bsp::PlaneControlClass plane_class;
     // desc+184h StallSpd, the divisor the control authority ramp uses. The
@@ -2119,6 +2134,11 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     }
                     void free_flight_007cc2f0(float step) override {
                         ++owner_.summary.plane_arm_free_flight;
+                        // 007CE040 calls 007BB920 at 007CE865 and the latch
+                        // 007B9770 at 007CE96F, in that address order with the
+                        // motion arm between, so the think and commit run first
+                        // and control_step_007da710's latch runs last.
+                        pilot_think_and_commit(step);
                         // The class field the law actually depends on. StallSpd
                         // is the only authored one; everything else is a
                         // PlaneGlobals default the mirror fills at load.
@@ -2206,6 +2226,92 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     // those into this angular velocity and is reconstructed
                     // (bsp::plane_control_axis_step_007da710), the path to them
                     // is not.
+                    // 0099ACD0's think gate and the stage of its tick that this
+                    // host can support, then 007BB920's commit.
+                    //
+                    // What is here: the accumulator at bot+70h and its 0.09 s
+                    // threshold (gate 6), 0099B450's seed, 0099BC00's slew and
+                    // clamp, 007B8C90's command block with its pending byte, and
+                    // 007BB920 -> 007BB6E0's quantisation into the live block.
+                    //
+                    // What is NOT here, named rather than glossed:
+                    //
+                    // * **The planner.** 0099D300 fills the slots' `desired`
+                    //   fields, and nothing does that here, so every slot keeps
+                    //   `desired == current` from the seed, every slew returns
+                    //   the live value bit-exactly, and the quantised result is
+                    //   what was already there. The whole stage is a faithful
+                    //   no-op until a planner exists.
+                    // * **0099BF30's band repair**, which runs between the slew
+                    //   and the command block and is the LAST WRITER of all five
+                    //   command floats (docs/PILOT_PLAN_SLOT_PIPELINE.md). Its
+                    //   body is unread, so this passes the slew result straight
+                    //   through - which is an assumption, not a recovered
+                    //   behaviour, and is the reason this pipeline is not yet
+                    //   claimed faithful end to end.
+                    // * **Eleven of the twelve gates** in
+                    //   docs/PILOT_BOT_TICK_GATES.md. This host has no bot
+                    //   object, no task vector and no per-slot state to gate on,
+                    //   so only the think interval is modelled. A plane here
+                    //   thinks unconditionally; the native's would also need a
+                    //   live task.
+                    void pilot_think_and_commit(float step) {
+                        // Gate 6, 0099AD0F..0099AD29. The accumulator absorbs
+                        // the frame delta and the tick fires when it reaches
+                        // 0.09 s; the value passed downstream is the accumulated
+                        // interval, not `step`.
+                        unit_.pilot_think_accumulator_70 += step;
+                        if (unit_.pilot_think_accumulator_70 >= bsp::kPilotThinkInterval) {
+                            const float elapsed = unit_.pilot_think_accumulator_70;
+                            unit_.pilot_think_accumulator_70 = 0.0f;   // 0099AD75
+
+                            // 0099B450, seeded from the live block in the plan's
+                            // own axis order.
+                            float live[5];
+                            live[bsp::kPilotSlotYaw] = unit_.plane_live_controls[0];
+                            live[bsp::kPilotSlotPitch] = unit_.plane_live_controls[1];
+                            live[bsp::kPilotSlotRoll] = unit_.plane_live_controls[2];
+                            live[bsp::kPilotSlotThrottle] = unit_.plane_live_throttle;
+                            live[bsp::kPilotSlotAirBrake] = unit_.plane_live_air_brake;
+                            bsp::pilot_seed_plan_slots_0099b450(unit_.plan_slots, live);
+
+                            // 0099D300 would run here.
+
+                            // 0099BEE0 -> 0099BC00.
+                            bsp::pilot_evaluate_plan_slots_0099bc00(
+                                unit_.plan_slots, unit_.pilot_command_block,
+                                bsp::kPilotSlewRate, elapsed);
+                            // 0099BF30 would run here.
+                            // 007B8C90: the block is published and the byte set.
+                            unit_.pilot_command_pending_a14 = true;
+                            ++owner_.summary.pilot_thinks;
+                        }
+
+                        // 007BB920, gated on unit+A14h. The two overrides it
+                        // applies - air brake full when the flight state is not
+                        // one of {7,6,4,5}, throttle full under a vtable test -
+                        // are not modelled: this host's plane is always in state
+                        // 7 for the first, and the second needs 00C24h and a
+                        // vtable slot it does not have.
+                        if (!unit_.pilot_command_pending_a14) {
+                            return;
+                        }
+                        // 007BB6E0, one axis at a time, into the live block.
+                        unit_.plane_live_controls[0] = bsp::pilot_quantize_control_axis_007bb6e0(
+                            unit_.pilot_command_block[bsp::kPilotCmdYaw]);
+                        unit_.plane_live_controls[1] = bsp::pilot_quantize_control_axis_007bb6e0(
+                            unit_.pilot_command_block[bsp::kPilotCmdPitch]);
+                        unit_.plane_live_controls[2] = bsp::pilot_quantize_control_axis_007bb6e0(
+                            unit_.pilot_command_block[bsp::kPilotCmdRoll]);
+                        unit_.plane_live_throttle = bsp::pilot_quantize_control_axis_007bb6e0(
+                            unit_.pilot_command_block[bsp::kPilotCmdThrottle]);
+                        unit_.plane_live_air_brake = bsp::pilot_quantize_control_axis_007bb6e0(
+                            unit_.pilot_command_block[bsp::kPilotCmdAirBrake]);
+                        unit_.pilot_command_pending_a14 = false;   // 007BB990
+                        ++owner_.summary.pilot_commits;
+                        owner_.record("Plane::commit_pilot_command", 0x007bb920u);
+                    }
+
                     void advance_pose_0085e4d0(float step) {
                         bsp::AdvanceMatrix live{};
                         const float* const rows[3] = {unit_.motion.pose_row0,
@@ -3343,12 +3449,14 @@ void GameUnitsHost::report() {
         host.summary.plane_arm_none);
     host.log.notef("summary mission plane motion: distance_moved=%.2f m "
         "pose_right_reference=%llu pose_collapsed=%llu "
-        "pose_rotations=%llu heading_change=%.3f rad",
+        "pose_rotations=%llu heading_change=%.3f rad thinks=%llu commits=%llu",
         host.summary.plane_distance_moved,
         host.summary.plane_pose_right_reference,
         host.summary.plane_pose_collapsed,
         host.summary.plane_pose_rotations,
-        host.summary.plane_heading_change);
+        host.summary.plane_heading_change,
+        host.summary.pilot_thinks,
+        host.summary.pilot_commits);
     host.commands.report();
 }
 
