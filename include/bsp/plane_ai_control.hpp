@@ -261,8 +261,12 @@ struct PlaneSpeedFactor {
                                       // against 5.0f; this interpolation's x range is 3..6.
     float forward_speed = 0.0f;  // 007D99C0 BSP_PlaneFlight_ForwardSpeed(sub), 007D9AB4
     float max_speed = 0.0f;      // class+184h, in the speed block, 007D9ABC
-    float dyn_c0 = 0.0f;         // [controller+10h]+C0h, 007D9AFC: a field of the dynamics
-                                 // block that include/bsp/plane_flight.hpp does not record.
+    float dyn_c0 = 0.0f;         // [controller+10h]+C0h, 007D9AFC. **Runtime-only**: three
+                                 // producers, all per-tick physics — 007DB2A4 copies a source
+                                 // scalar in, 007DC6C5 zeroes it or takes a computed value,
+                                 // and 007D902F decays it in the integrator's tail. Nothing
+                                 // authored reaches it, so a host that does not run the plane
+                                 // integrator cannot supply it and must refuse the yaw axis.
     float bomb_load = 1.0f;      // 007C0F40, above
 };
 // Nothing in the image writes 00F8731C or 00F87320, so the ratio interpolation's two
