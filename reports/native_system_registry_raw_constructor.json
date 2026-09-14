@@ -1,0 +1,1304 @@
+{
+  "packet": "orch5_native_system_registry_raw_constructor",
+  "status": "raw_context_constructor_cleanup_implemented_strict_win32_build_two_ctests_seven_case_source_fixture_passed",
+  "base_commit": "0a7c5c7035e01af98bc9136db86c5817a9dca690",
+  "input_evidence_commit": "4c73a48882c1307fe6078840f878035a51e0c132",
+  "owned_addresses": [
+    "00b5bf70",
+    "00b5b9e0",
+    "00b5ba80",
+    "00b5bbc0",
+    "00b5bd10",
+    "00b5bed0",
+    "00b5bf50",
+    "00b38310"
+  ],
+  "owned_files": [
+    "include/bsp/native_system_constant_registry.hpp",
+    "src/native_system_constant_registry.cpp",
+    "include/bsp/native_compiled_shader_owner.hpp",
+    "src/native_compiled_shader_owner.cpp",
+    "docs/NATIVE_SYSTEM_REGISTRY_RAW_CONSTRUCTOR.md",
+    "reports/native_system_registry_raw_constructor.json"
+  ],
+  "source_ledger_shards": [
+    "config/names/00b30000.jsonl",
+    "config/names/00b50000.jsonl",
+    "config/reconstruction/00b30000.jsonl",
+    "config/reconstruction/00b50000.jsonl"
+  ],
+  "native_identity": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "native_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "native_bodies": [
+    {
+      "name": "constructor",
+      "start": "00b5bf70",
+      "end": "00b5defb",
+      "bytes": 8076,
+      "sha256": "0456f34770332748dbb1a0f72da428e7279f38142fd2b1e028ad43dd70d911c0",
+      "live_equals_disk": true
+    },
+    {
+      "name": "base_constructor",
+      "start": "00b5b9e0",
+      "end": "00b5ba70",
+      "bytes": 145,
+      "sha256": "db337f728c36467b76e7f4e572e92911572a3b6a0c3c94395da444d29439f7aa",
+      "live_equals_disk": true
+    },
+    {
+      "name": "base_destructor",
+      "start": "00b5ba80",
+      "end": "00b5bb18",
+      "bytes": 153,
+      "sha256": "5e2a3d1944325cff6edee1f0a105e96a08ae26a4c4e2754f7e20e6d9eb614b76",
+      "live_equals_disk": true
+    },
+    {
+      "name": "record_constructor",
+      "start": "00b5bbc0",
+      "end": "00b5bc5c",
+      "bytes": 157,
+      "sha256": "da6724ad442dac952ef1b6e01da052deaaeff5f78df27a010ea3752237e0eb32",
+      "live_equals_disk": true
+    },
+    {
+      "name": "reserve",
+      "start": "00b5bd10",
+      "end": "00b5be06",
+      "bytes": 247,
+      "sha256": "203950785446f0898407ad34cf11542b362f005ffdabb50dffbf02afc4357e5d",
+      "live_equals_disk": true
+    },
+    {
+      "name": "append",
+      "start": "00b5bed0",
+      "end": "00b5bf3e",
+      "bytes": 111,
+      "sha256": "d7cb10f397f14cfcf6ea997f1c29b9c064d9c4d52ccb8223e339099b4473e4d5",
+      "live_equals_disk": true
+    },
+    {
+      "name": "array_destructor",
+      "start": "00b5bf50",
+      "end": "00b5bf66",
+      "bytes": 23,
+      "sha256": "1073d5ff3d57c86ec94624b7d13b051fddd34dab9e6d2e19670ab6770f793171",
+      "live_equals_disk": true
+    },
+    {
+      "name": "record_copy",
+      "start": "00b38310",
+      "end": "00b38381",
+      "bytes": 114,
+      "sha256": "c57892fb36f1500a30fc213f786048f3af0838533131e001d52aeb0e8e90b619",
+      "live_equals_disk": true
+    }
+  ],
+  "native_input_manifest": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\local\\output\\raw_registry_inputs\\manifest.json",
+    "sha256": "bed50e531c6edc1673a9ed364051c5df632ea4686ec70abc5349a93cae4d3f34",
+    "files": 91,
+    "verified_unchanged": true
+  },
+  "native_input_complete_report": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\local\\output\\raw_registry_inputs\\native_system_registry_unwind_evidence.json",
+    "role": "exact_prior_evidence_report",
+    "bytes": 194618,
+    "sha256": "0ee69613f7a32b127adbad5964ba9fc44da416729b09a8f7ae6d532428dd3895",
+    "mtime_ns": 1789372114855563700
+  },
+  "parent_gate": {
+    "verified": true,
+    "spans": [
+      {
+        "name": "parent_call_site",
+        "start": "00b3282e",
+        "size": 64,
+        "live_equals_disk": true,
+        "sha256": "0f7d2db560714b16bd7f6db5368de18c91ec0b19b1add219fe120b5da04b6ed6"
+      },
+      {
+        "name": "parent_free_funclet",
+        "start": "00cbded9",
+        "size": 20,
+        "live_equals_disk": true,
+        "sha256": "ced2061162e83195990e45806fd7506217b9ff8aeb0c7053cd4217001c4d5b8c"
+      }
+    ],
+    "schedule": [
+      "B32833 allocates10h",
+      "B3283B captures EAX at steadyESP+0C",
+      "B32841 arms parentstate27",
+      "B3284D calls B5BF70 withECX=fresh",
+      "CBDED9 loads[FH3EBP-460h] and calls BF65AC atCBDEE0",
+      "parent nextstate24; no registry destructor or host Operation retirement"
+    ]
+  },
+  "api": {
+    "context": "NativeSystemConstantRegistryRawContext { void* volatile& current_registry_0108fe94; NativeStringRawPoolContext& strings; }",
+    "constructor": "construct_native_system_constant_registry_00b5bf70(void* fresh16, NativeSystemConstantRegistryRawContext&)",
+    "storage": "Caller owns fresh DWORD-aligned10h storage. Fixed source-local8h name/20h record/state. No heap continuation, binding or retained Operation.",
+    "domain": "Same actual0108FE94/01090AA0/01090AA8/01090AA4 cells; provider calls and cleanup require valid native readable storage/current array extents.",
+    "success": "Same owner returned/published/registered,52 actual20h records,capacity64.",
+    "failure": "Recovered armed-child cleanup; owner never freed or retained by source metadata. Parent owns subsequent free. Native leaks and failed-base publication/registration are preserved."
+  },
+  "source_changes": [
+    "Added raw-context overloads for constructor/base ctor/base dtor/record ctor/reserve/append and B5BF50 array dtor.",
+    "B38310 raw-pool overload shares the complete copy implementation with the preserved NativeStringStorage overload; no local record-copy EH.",
+    "Reused the one52-literal shader_system_registry.inc table; no CMake/source append.",
+    "Preserved every existing NativeSystemConstantRegistryOperation/Binding API and failed-operation guard behavior."
+  ],
+  "outer_fh3": {
+    "handler": "00cc1113",
+    "func_info": "00df9ab4",
+    "map": "00df9ad8",
+    "states": 106,
+    "frame": "A=aligned FH3 establisher; owner[A-3C],nameA-38,recordA-30,state[A-4]; body EBP becomesowner+4.",
+    "groups": [
+      {
+        "state": 0,
+        "action": "00cc0dc0",
+        "receiver": "captured owner",
+        "target": "00b5ba80",
+        "next_state": -1
+      },
+      {
+        "state": 1,
+        "action": "00cc0dc8",
+        "receiver": "captured owner+4",
+        "target": "00b5bf50",
+        "next_state": 0
+      },
+      {
+        "state": "2+2*n,n=0..51",
+        "action": "00cc0dd3+10h*n",
+        "receiver": "CURRENT local name header",
+        "target": "0041dd20",
+        "next_state": 1
+      },
+      {
+        "state": "3+2*n,n=0..51",
+        "action": "00cc0ddb+10h*n",
+        "receiver": "CURRENT local record",
+        "target": "00b34cc0",
+        "next_state": "2+2*n"
+      }
+    ],
+    "disarming": "Even after name resize/copy; odd after B5BBC0 returns; even before record return;1 before captured name return; normal frame unlink leaves1."
+  },
+  "child_fh3_maps": [
+    {
+      "name": "base_constructor",
+      "handler": "00cc0ca0",
+      "func_info": "00df9954",
+      "words": [
+        "19930522",
+        "00000002",
+        "00df9944",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000001"
+      ],
+      "map": "00df9944",
+      "states": [
+        {
+          "state": 0,
+          "next_state": -1,
+          "action": "00cc0c90",
+          "end_exclusive": "00cc0c98",
+          "bytes_hex": "8b4de8e9981775ff",
+          "assembly": [
+            {
+              "address": "00cc0c90",
+              "mnemonic": "mov",
+              "operands": "ecx, dword ptr [ebp - 0x18]"
+            },
+            {
+              "address": "00cc0c93",
+              "mnemonic": "jmp",
+              "operands": "0x412430"
+            }
+          ]
+        },
+        {
+          "state": 1,
+          "next_state": 0,
+          "action": "00cc0c98",
+          "end_exclusive": "00cc0ca0",
+          "bytes_hex": "8d4dece9401275ff",
+          "assembly": [
+            {
+              "address": "00cc0c98",
+              "mnemonic": "lea",
+              "operands": "ecx, [ebp - 0x14]"
+            },
+            {
+              "address": "00cc0c9b",
+              "mnemonic": "jmp",
+              "operands": "0x411ee0"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "base_destructor",
+      "handler": "00cc0cc0",
+      "func_info": "00df9988",
+      "words": [
+        "19930522",
+        "00000002",
+        "00df9978",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000001"
+      ],
+      "map": "00df9978",
+      "states": [
+        {
+          "state": 0,
+          "next_state": -1,
+          "action": "00cc0cb0",
+          "end_exclusive": "00cc0cb8",
+          "bytes_hex": "8b4de8e9781775ff",
+          "assembly": [
+            {
+              "address": "00cc0cb0",
+              "mnemonic": "mov",
+              "operands": "ecx, dword ptr [ebp - 0x18]"
+            },
+            {
+              "address": "00cc0cb3",
+              "mnemonic": "jmp",
+              "operands": "0x412430"
+            }
+          ]
+        },
+        {
+          "state": 1,
+          "next_state": 0,
+          "action": "00cc0cb8",
+          "end_exclusive": "00cc0cc0",
+          "bytes_hex": "8d4dece9201275ff",
+          "assembly": [
+            {
+              "address": "00cc0cb8",
+              "mnemonic": "lea",
+              "operands": "ecx, [ebp - 0x14]"
+            },
+            {
+              "address": "00cc0cbb",
+              "mnemonic": "jmp",
+              "operands": "0x411ee0"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "record_constructor",
+      "handler": "00cc0cfb",
+      "func_info": "00df99e0",
+      "words": [
+        "19930522",
+        "00000001",
+        "00df99d8",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000001"
+      ],
+      "map": "00df99d8",
+      "states": [
+        {
+          "state": 0,
+          "next_state": -1,
+          "action": "00cc0cf0",
+          "end_exclusive": "00cc0cfb",
+          "bytes_hex": "8b4df083c114e925d075ff",
+          "assembly": [
+            {
+              "address": "00cc0cf0",
+              "mnemonic": "mov",
+              "operands": "ecx, dword ptr [ebp - 0x10]"
+            },
+            {
+              "address": "00cc0cf3",
+              "mnemonic": "add",
+              "operands": "ecx, 0x14"
+            },
+            {
+              "address": "00cc0cf6",
+              "mnemonic": "jmp",
+              "operands": "0x41dd20"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "reserve",
+      "handler": "00cc0d47",
+      "func_info": "00df9a38",
+      "words": [
+        "19930522",
+        "00000001",
+        "00df9a30",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000001"
+      ],
+      "map": "00df9a30",
+      "states": [
+        {
+          "state": 0,
+          "next_state": -1,
+          "action": "00cc0d30",
+          "end_exclusive": "00cc0d47",
+          "bytes_hex": "8b45e8c1e0050345ec508b4df051e8ed0374ff83c408c3",
+          "assembly": [
+            {
+              "address": "00cc0d30",
+              "mnemonic": "mov",
+              "operands": "eax, dword ptr [ebp - 0x18]"
+            },
+            {
+              "address": "00cc0d33",
+              "mnemonic": "shl",
+              "operands": "eax, 5"
+            },
+            {
+              "address": "00cc0d36",
+              "mnemonic": "add",
+              "operands": "eax, dword ptr [ebp - 0x14]"
+            },
+            {
+              "address": "00cc0d39",
+              "mnemonic": "push",
+              "operands": "eax"
+            },
+            {
+              "address": "00cc0d3a",
+              "mnemonic": "mov",
+              "operands": "ecx, dword ptr [ebp - 0x10]"
+            },
+            {
+              "address": "00cc0d3d",
+              "mnemonic": "push",
+              "operands": "ecx"
+            },
+            {
+              "address": "00cc0d3e",
+              "mnemonic": "call",
+              "operands": "0x401130"
+            },
+            {
+              "address": "00cc0d43",
+              "mnemonic": "add",
+              "operands": "esp, 8"
+            },
+            {
+              "address": "00cc0d46",
+              "mnemonic": "ret",
+              "operands": ""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "resize",
+      "handler": "00cc0d79",
+      "func_info": "00df9a64",
+      "words": [
+        "19930522",
+        "00000001",
+        "00df9a5c",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000001"
+      ],
+      "map": "00df9a5c",
+      "states": [
+        {
+          "state": 0,
+          "next_state": -1,
+          "action": "00cc0d60",
+          "end_exclusive": "00cc0d79",
+          "bytes_hex": "8b4504c1e0058b4dec0301508b55f052e8bb0374ff83c408c3",
+          "assembly": [
+            {
+              "address": "00cc0d60",
+              "mnemonic": "mov",
+              "operands": "eax, dword ptr [ebp + 4]"
+            },
+            {
+              "address": "00cc0d63",
+              "mnemonic": "shl",
+              "operands": "eax, 5"
+            },
+            {
+              "address": "00cc0d66",
+              "mnemonic": "mov",
+              "operands": "ecx, dword ptr [ebp - 0x14]"
+            },
+            {
+              "address": "00cc0d69",
+              "mnemonic": "add",
+              "operands": "eax, dword ptr [ecx]"
+            },
+            {
+              "address": "00cc0d6b",
+              "mnemonic": "push",
+              "operands": "eax"
+            },
+            {
+              "address": "00cc0d6c",
+              "mnemonic": "mov",
+              "operands": "edx, dword ptr [ebp - 0x10]"
+            },
+            {
+              "address": "00cc0d6f",
+              "mnemonic": "push",
+              "operands": "edx"
+            },
+            {
+              "address": "00cc0d70",
+              "mnemonic": "call",
+              "operands": "0x401130"
+            },
+            {
+              "address": "00cc0d75",
+              "mnemonic": "add",
+              "operands": "esp, 8"
+            },
+            {
+              "address": "00cc0d78",
+              "mnemonic": "ret",
+              "operands": ""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "append",
+      "handler": "00cc0dac",
+      "func_info": "00df9a90",
+      "words": [
+        "19930522",
+        "00000001",
+        "00df9a88",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000001"
+      ],
+      "map": "00df9a88",
+      "states": [
+        {
+          "state": 0,
+          "next_state": -1,
+          "action": "00cc0d90",
+          "end_exclusive": "00cc0dac",
+          "bytes_hex": "8b45ec8b4804c1e1058b55ec030a518b45f050e8880374ff83c408c3",
+          "assembly": [
+            {
+              "address": "00cc0d90",
+              "mnemonic": "mov",
+              "operands": "eax, dword ptr [ebp - 0x14]"
+            },
+            {
+              "address": "00cc0d93",
+              "mnemonic": "mov",
+              "operands": "ecx, dword ptr [eax + 4]"
+            },
+            {
+              "address": "00cc0d96",
+              "mnemonic": "shl",
+              "operands": "ecx, 5"
+            },
+            {
+              "address": "00cc0d99",
+              "mnemonic": "mov",
+              "operands": "edx, dword ptr [ebp - 0x14]"
+            },
+            {
+              "address": "00cc0d9c",
+              "mnemonic": "add",
+              "operands": "ecx, dword ptr [edx]"
+            },
+            {
+              "address": "00cc0d9e",
+              "mnemonic": "push",
+              "operands": "ecx"
+            },
+            {
+              "address": "00cc0d9f",
+              "mnemonic": "mov",
+              "operands": "eax, dword ptr [ebp - 0x10]"
+            },
+            {
+              "address": "00cc0da2",
+              "mnemonic": "push",
+              "operands": "eax"
+            },
+            {
+              "address": "00cc0da3",
+              "mnemonic": "call",
+              "operands": "0x401130"
+            },
+            {
+              "address": "00cc0da8",
+              "mnemonic": "add",
+              "operands": "esp, 8"
+            },
+            {
+              "address": "00cc0dab",
+              "mnemonic": "ret",
+              "operands": ""
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "native_ownership_limits": [
+    "B5B9E0 failure: only captured guard/root cleanup; publication/registration may remain; outer state-1 does not run B5BA80.",
+    "B5BBC0 independently destroys the current partial record string on failure before outer record state is armed.",
+    "401130 is RET: reserve/append placement cleanup does not free acquired arrays or strings.",
+    "Reserve failed copy leaves fresh array/copied strings unpublished; outer array cleanup uses CURRENT old array/count.",
+    "Append count increments only after copy; uncounted partial-string acquisition is excluded from array string destruction.",
+    "Normal released record/name headers and freed array data/capacity remain stale.",
+    "BCFCA0 nulls only the first matching slot; manager array length is preserved."
+  ],
+  "validation": {
+    "strict_build": {
+      "command": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build.ps1",
+      "configuration": "MSVC Win32 Release",
+      "flags": [
+        "/W4",
+        "/WX",
+        "/fp:strict"
+      ],
+      "exit_code": 0,
+      "seed_verification_before_configure": true,
+      "ctests": [
+        {
+          "name": "reconstructed_math",
+          "passed": true
+        },
+        {
+          "name": "native_math_differential",
+          "passed": true
+        }
+      ],
+      "source_changed_after_build": false
+    },
+    "fixture": {
+      "source": "local/output/raw_registry_probe.cpp",
+      "build_command": "local/output/build_raw_registry_probe.cmd",
+      "flags": [
+        "/MD",
+        "/EHsc",
+        "/O2",
+        "/W4",
+        "/WX",
+        "/link",
+        "/MANIFEST:EMBED"
+      ],
+      "exit_code": 0,
+      "cases": [
+        "CASE normal52 pass caught=0 construction_getters=386 string_allocations=219 returned=219 outstanding_strings=0 outstanding_array_bytes=0 cleanup_tail=135,134,133,132,131,130",
+        "CASE base_registered_then_throw pass caught=1 construction_getters=0 string_allocations=0 returned=0 outstanding_strings=0 outstanding_array_bytes=0 cleanup_tail=",
+        "CASE first_name_getter_state1 pass caught=1 construction_getters=1 string_allocations=0 returned=0 outstanding_strings=0 outstanding_array_bytes=0 cleanup_tail=",
+        "CASE child_partial_string_state2 pass caught=1 construction_getters=4 string_allocations=2 returned=2 outstanding_strings=0 outstanding_array_bytes=0 cleanup_tail=2,1",
+        "CASE reserve_copy_state7 pass caught=1 construction_getters=20 string_allocations=10 returned=9 outstanding_strings=1 outstanding_array_bytes=128 cleanup_tail=5,4,9,8,7,6",
+        "CASE normal_record_release_disarmed pass caught=1 construction_getters=6 string_allocations=3 returned=2 outstanding_strings=1 outstanding_array_bytes=0 cleanup_tail=1,3",
+        "CASE normal_name_release_disarmed pass caught=1 construction_getters=6 string_allocations=3 returned=2 outstanding_strings=1 outstanding_array_bytes=0 cleanup_tail=2,3"
+      ],
+      "real_providers": "Actual14h manager/getter/registration/unregister, real tracked sections, actual8AD4A0h pool/getter/ring allocation and returns.",
+      "instrumentation": "Test-only5-byte entry JMP hooks temporarily restore original linked provider code for actual calls. One-shot getter/registration failures; partial-record case throws after real resize has published its header. Production has no hooks.",
+      "scope": "Source C++ cleanup and native-state ownership effects; no original FH3 exception execution or feasibility claim for each injected provider exception.",
+      "initial_failure": "Fixture incorrectly expected BCFCA0 unregister to shrink count; source review established null slot with retained length. Fixed fixture only; prior failure log retained.",
+      "parent_owner_free": "All cases free caller allocation without Operation; failed-base case frees before diagnostic unregister of its retained pointer.",
+      "native_leaks": "Reserve copy state7:128-byte unpublished buffer plus1string. Already-disarmed normal record/name returns:1string each. Assertions precede explicit diagnostic disposal."
+    },
+    "original_fh3_executed": false,
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "validated_artifact_manifest": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\local\\output\\raw_registry_validated_artifacts\\manifest.json",
+    "sha256": "d0493a4329e6f868d5285c10f51f05c9688803a7a62604aaf9a70138a6e5fb7e",
+    "artifact_count": 66,
+    "loaded_module_count": 7
+  },
+  "source_and_built_artifacts": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\include\\bsp\\native_system_constant_registry.hpp",
+      "role": "source_or_build_or_analysis_input",
+      "bytes": 9485,
+      "sha256": "4a8b55e1032f17d19b9964d4e058db4641650f5ddb227243c58c8044ea586e10",
+      "mtime_ns": 1789371812161919200,
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\local\\output\\raw_registry_validated_artifacts\\include\\bsp\\native_system_constant_registry.hpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\src\\native_system_constant_registry.cpp",
+      "role": "source_or_build_or_analysis_input",
+      "bytes": 24009,
+      "sha256": "30d189cb0ca66e14768fc5813f428e65e263c92d2639bde87ec5fdb8f1f4fdea",
+      "mtime_ns": 1789371903592498700,
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\local\\output\\raw_registry_validated_artifacts\\src\\native_system_constant_registry.cpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\include\\bsp\\native_compiled_shader_owner.hpp",
+      "role": "source_or_build_or_analysis_input",
+      "bytes": 7737,
+      "sha256": "63c878ea70f397478a4b37a0405d9fbd7a462f5e7d5546f02c253a0bb9dfbd7b",
+      "mtime_ns": 1789371812161919200,
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\local\\output\\raw_registry_validated_artifacts\\include\\bsp\\native_compiled_shader_owner.hpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\src\\native_compiled_shader_owner.cpp",
+      "role": "source_or_build_or_analysis_input",
+      "bytes": 11363,
+      "sha256": "0cae9e6766b659f5f496bada4dcdec8653ae6547f9152f6dcb6db6ddc09fae34",
+      "mtime_ns": 1789371812161919200,
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\local\\output\\raw_registry_validated_artifacts\\src\\native_compiled_shader_owner.cpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\src\\shader_system_registry.inc",
+      "role": "source_or_build_or_analysis_input",
+      "bytes": 1772,
+      "sha256": "84b5c00d64b789455c0d964ca073fa255ded5c7205b11661d7b5894abcba2b0b",
+      "mtime_ns": 1789371416240204000,
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\local\\output\\raw_registry_validated_artifacts\\src\\shader_system_registry.inc"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\include\\bsp\\native_string.hpp",
+      "role": "source_or_build_or_analysis_input",
+      "bytes": 8019,
+      "sha256": "80013e5a7350120f32fcad1ce54db9b0923ad5b49cc2152823d858534331378f",
+      "mtime_ns": 1789371415429212400,
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\local\\output\\raw_registry_validated_artifacts\\include\\bsp\\native_string.hpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\src\\native_string.cpp",
+      "role": "source_or_build_or_analysis_input",
+      "bytes": 8311,
+      "sha256": "0e8819d3a6442fc48c879e85c00899a72beabdc51b3e94a11836ab5314d5e60c",
+      "mtime_ns": 1789371416204047000,
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\local\\output\\raw_registry_validated_artifacts\\src\\native_string.cpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\include\\bsp\\native_string_pool_owner.hpp",
+      "role": "source_or_build_or_analysis_input",
+      "bytes": 5893,
+      "sha256": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff",
+      "mtime_ns": 1789371415430210900,
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\local\\output\\raw_registry_validated_artifacts\\include\\bsp\\native_string_pool_owner.hpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\src\\native_string_pool_owner.cpp",
+      "role": "source_or_build_or_analysis_input",
+      "bytes": 8443,
+      "sha256": "cb52fde795918995689a26567d513e9f3cf75eeb27600eb60c431c37fdd21d6e",
+      "mtime_ns": 1789371416205044600,
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\local\\output\\raw_registry_validated_artifacts\\src\\native_string_pool_owner.cpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\include\\bsp\\native_string_pool_storage.hpp",
+      "role": "source_or_build_or_analysis_input",
+      "bytes": 2805,
+      "sha256": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d",
+      "mtime_ns": 1789371415430210900,
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\local\\output\\raw_registry_validated_artifacts\\include\\bsp\\native_string_pool_storage.hpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\src\\native_string_pool_storage.cpp",
+      "role": "source_or_build_or_analysis_input",
+      "bytes": 5103,
+      "sha256": "5cb79a6ce240205b3f1c81f1fbd6edd49cc1c05f8a20ee8dca8913f44c9095d5",
+      "mtime_ns": 1789371416205044600,
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\local\\output\\raw_registry_validated_artifacts\\src\\native_string_pool_storage.cpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\include\\bsp\\sound_lifetime_access.hpp",
+      "role": "source_or_build_or_analysis_input",
+      "bytes": 2344,
+      "sha256": "671982c50e334f3991871d750535e4a888e3c9f679b44c8bb4fe020e47ea9094",
+      "mtime_ns": 1789371415471775800,
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\local\\output\\raw_registry_validated_artifacts\\include\\bsp\\sound_lifetime_access.hpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\include\\bsp\\singleton_lifetime.hpp",
+      "role": "source_or_build_or_analysis_input",
+      "bytes": 4372,
+      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "mtime_ns": 1789371415469775300,
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\local\\output\\raw_registry_validated_artifacts\\include\\bsp\\singleton_lifetime.hpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\src\\singleton_lifetime.cpp",
+      "role": "source_or_build_or_analysis_input",
+      "bytes": 13257,
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "mtime_ns": 1789371416250201500,
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\local\\output\\raw_registry_validated_artifacts\\src\\singleton_lifetime.cpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\include\\bsp\\native_singleton_publication.hpp",
+      "role": "source_or_build_or_analysis_input",
+      "bytes": 2293,
+      "sha256": "0ba3bb843ec6048790eb768f46e6cfeb99c8fae8c3e3f3ae59a0e14cca1e72f5",
+      "mtime_ns": 1789371415428211000,
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\local\\output\\raw_registry_validated_artifacts\\include\\bsp\\native_singleton_publication.hpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\src\\native_singleton_publication.cpp",
+      "role": "source_or_build_or_analysis_input",
+      "bytes": 4127,
+      "sha256": "db69108414a5aa844b80b04ca82819139f1dccc422d6f3a954512a4375d07c8a",
+      "mtime_ns": 1789371416202037600,
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\local\\output\\raw_registry_validated_artifacts\\src\\native_singleton_publication.cpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\include\\bsp\\native_singleton_removal_reorder.hpp",
+      "role": "source_or_build_or_analysis_input",
+      "bytes": 1705,
+      "sha256": "289eb8fb612bdec0fb04611d980130d7c99101fdc577f1225b14f01aaac1deee",
+      "mtime_ns": 1789371415428211000,
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\local\\output\\raw_registry_validated_artifacts\\include\\bsp\\native_singleton_removal_reorder.hpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\src\\native_singleton_removal_reorder.cpp",
+      "role": "source_or_build_or_analysis_input",
+      "bytes": 7844,
+      "sha256": "9ada933439fc79e11749a07ba549b816173d22ae53f10ef9e1cf4f86a4bddbf2",
+      "mtime_ns": 1789371416202037600,
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\local\\output\\raw_registry_validated_artifacts\\src\\native_singleton_removal_reorder.cpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\include\\bsp\\native_singleton_vector_registration_wrappers.hpp",
+      "role": "source_or_build_or_analysis_input",
+      "bytes": 2373,
+      "sha256": "04d669c9167de50ba74557cc6651ab4dbdc753b8c6f40fdb3a743f65948eab35",
+      "mtime_ns": 1789371415429212400,
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\local\\output\\raw_registry_validated_artifacts\\include\\bsp\\native_singleton_vector_registration_wrappers.hpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\src\\native_singleton_vector_registration_wrappers.cpp",
+      "role": "source_or_build_or_analysis_input",
+      "bytes": 4283,
+      "sha256": "cd191614f5de77becc8a0a9a73f9c3ebfc1cfd86bb87fdf10a7965d0a5839a90",
+      "mtime_ns": 1789371416203044100,
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\local\\output\\raw_registry_validated_artifacts\\src\\native_singleton_vector_registration_wrappers.cpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\include\\bsp\\native_diagnostic_sink_lifetime.hpp",
+      "role": "source_or_build_or_analysis_input",
+      "bytes": 1471,
+      "sha256": "17bf59a7aee1bda0ceb66989c177ed8e32f207c55087f10b5ecfaaa275791af6",
+      "mtime_ns": 1789371415376633100,
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\local\\output\\raw_registry_validated_artifacts\\include\\bsp\\native_diagnostic_sink_lifetime.hpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\src\\native_diagnostic_sink_lifetime.cpp",
+      "role": "source_or_build_or_analysis_input",
+      "bytes": 3472,
+      "sha256": "c74781854e773ffdf76f46b823b6751ca795709f277fefc874a2bdfdefd63131",
+      "mtime_ns": 1789371416142237800,
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\local\\output\\raw_registry_validated_artifacts\\src\\native_diagnostic_sink_lifetime.cpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\include\\bsp\\native_render_service_base.hpp",
+      "role": "source_or_build_or_analysis_input",
+      "bytes": 2361,
+      "sha256": "9bb9796506476fbd7f64ee5eb43588ffae142d385dfe24ba5274fdb4a0bbc82a",
+      "mtime_ns": 1789371415416143600,
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\local\\output\\raw_registry_validated_artifacts\\include\\bsp\\native_render_service_base.hpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\src\\native_render_service_base.cpp",
+      "role": "source_or_build_or_analysis_input",
+      "bytes": 4563,
+      "sha256": "ff129b13b2e39cad4f9615b94529f8f5bf49321da4e3e935e17952ec41e2cdaf",
+      "mtime_ns": 1789371416189014300,
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\local\\output\\raw_registry_validated_artifacts\\src\\native_render_service_base.cpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\include\\bsp\\native_tracked_critical_section_release.hpp",
+      "role": "source_or_build_or_analysis_input",
+      "bytes": 794,
+      "sha256": "18b0e5714789372271086226d298c35bfb0eb36f6045a0ee5a13befdd20af430",
+      "mtime_ns": 1789371415432210100,
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\local\\output\\raw_registry_validated_artifacts\\include\\bsp\\native_tracked_critical_section_release.hpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\src\\native_tracked_critical_section_release.cpp",
+      "role": "source_or_build_or_analysis_input",
+      "bytes": 1637,
+      "sha256": "16cf4e2d5f0e3dceeee9610a603c73af1abebe6d975d8f3283a0e2699666f38b",
+      "mtime_ns": 1789371416209557600,
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\local\\output\\raw_registry_validated_artifacts\\src\\native_tracked_critical_section_release.cpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\CMakeLists.txt",
+      "role": "source_or_build_or_analysis_input",
+      "bytes": 14869,
+      "sha256": "0bad51a21cd02eb4d8b196a345a3f86418d0dab144d66912f0ad8db06881c5a8",
+      "mtime_ns": 1789371414934091700,
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\local\\output\\raw_registry_validated_artifacts\\CMakeLists.txt"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\cmake\\startup.cmake",
+      "role": "source_or_build_or_analysis_input",
+      "bytes": 113129,
+      "sha256": "9ba2706d47267b34fe22415c46006944e52f56df0240283e19e2c2b1f0ce7f62",
+      "mtime_ns": 1789371418787826000,
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\local\\output\\raw_registry_validated_artifacts\\cmake\\startup.cmake"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\scripts\\build.ps1",
+      "role": "source_or_build_or_analysis_input",
+      "bytes": 1657,
+      "sha256": "87b1f7f177977e4800c6e427c13cc916779f412daa7490f37fbb1b50cb3d295c",
+      "mtime_ns": 1789371416047836400,
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\local\\output\\raw_registry_validated_artifacts\\scripts\\build.ps1"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\config\\target.json",
+      "role": "source_or_build_or_analysis_input",
+      "bytes": 405,
+      "sha256": "626d61b987acdf60ffb156c9a753df9632453dc26d6cbdfab5740df26f93dbb2",
+      "mtime_ns": 1789371418822577800,
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\local\\output\\raw_registry_validated_artifacts\\config\\target.json"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\tools\\bsp.py",
+      "role": "source_or_build_or_analysis_input",
+      "bytes": 63768,
+      "sha256": "848a26c48d64002df10da7e233d14968baa51f097fdd08474eb2169c4f0e9d61",
+      "mtime_ns": 1789371418869167200,
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\local\\output\\raw_registry_validated_artifacts\\tools\\bsp.py"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\tools\\ghidra_export.py",
+      "role": "source_or_build_or_analysis_input",
+      "bytes": 13401,
+      "sha256": "f94c057376298ef4e97fd9f5f98eec20a5fcdad886a777373977a90a09179eee",
+      "mtime_ns": 1789371416278008600,
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\local\\output\\raw_registry_validated_artifacts\\tools\\ghidra_export.py"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\tools\\ledger.py",
+      "role": "source_or_build_or_analysis_input",
+      "bytes": 7610,
+      "sha256": "de883bb8bcb4d364b2abbddd88f2a22936f3cda29c3233304172674fa5c06ba9",
+      "mtime_ns": 1789371416280008300,
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\local\\output\\raw_registry_validated_artifacts\\tools\\ledger.py"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\tools\\workspace.py",
+      "role": "source_or_build_or_analysis_input",
+      "bytes": 1371,
+      "sha256": "611a2f0613f2172438bc5cf87161bae9566b31abcfcc334e54af9aba10df8140",
+      "mtime_ns": 1789371416283008000,
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\local\\output\\raw_registry_validated_artifacts\\tools\\workspace.py"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\tools\\coordination.py",
+      "role": "source_or_build_or_analysis_input",
+      "bytes": 16128,
+      "sha256": "109e148de66538b99c3440f42a5c404c8a7b19df130d0d83a84fd758d478e00d",
+      "mtime_ns": 1789371416278008600,
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\local\\output\\raw_registry_validated_artifacts\\tools\\coordination.py"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\docs\\NATIVE_SYSTEM_REGISTRY_RAW_CONSTRUCTOR.md",
+      "role": "source_or_build_or_analysis_input",
+      "bytes": 10538,
+      "sha256": "abc161173e4e5bc9b303125be64d9ba5ec2e8fd2ad7e1f2a77ae9afbe0868615",
+      "mtime_ns": 1789372616487986100,
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\local\\output\\raw_registry_validated_artifacts\\docs\\NATIVE_SYSTEM_REGISTRY_RAW_CONSTRUCTOR.md"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\local\\output\\raw_registry_build.log",
+      "role": "fixture_or_validation_capture",
+      "bytes": 46582,
+      "sha256": "5141dabbd1f37411cd619a20410e3f36d4bcf1ea812050604ea523b7fa6842a7",
+      "mtime_ns": 1789372442066297600,
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\local\\output\\raw_registry_validated_artifacts\\local\\output\\raw_registry_build.log"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\local\\output\\raw_registry_probe.cpp",
+      "role": "fixture_or_validation_capture",
+      "bytes": 14111,
+      "sha256": "3e0fcbfa624fd1ffa2a003534fd6f0817b5786183759d1a443d3a05796110c84",
+      "mtime_ns": 1789399134402025200,
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\local\\output\\raw_registry_validated_artifacts\\local\\output\\raw_registry_probe.cpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\local\\output\\build_raw_registry_probe.cmd",
+      "role": "fixture_or_validation_capture",
+      "bytes": 508,
+      "sha256": "a36d6766568a72d742f641df293009079c32eaa05ac72a801880e7666d0e0794",
+      "mtime_ns": 1789372319260343800,
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\local\\output\\raw_registry_validated_artifacts\\local\\output\\build_raw_registry_probe.cmd"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\local\\output\\raw_registry_probe_compile.log",
+      "role": "fixture_or_validation_capture",
+      "bytes": 531,
+      "sha256": "33dd194824a093a3e0f0aa9ac5b402cdddcdaede0f2dd61f0158585c982a1a15",
+      "mtime_ns": 1789399137626525200,
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\local\\output\\raw_registry_validated_artifacts\\local\\output\\raw_registry_probe_compile.log"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\local\\output\\raw_registry_probe_run.log",
+      "role": "fixture_or_validation_capture",
+      "bytes": 2224,
+      "sha256": "596b96fa9e731c327aa2a9a741dbb78e2276143b9fc0ef91e5088e433f657130",
+      "mtime_ns": 1789399138692496800,
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\local\\output\\raw_registry_validated_artifacts\\local\\output\\raw_registry_probe_run.log"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\local\\output\\raw_registry_probe_initial_expectation_failure.log",
+      "role": "fixture_or_validation_capture",
+      "bytes": 51,
+      "sha256": "2b4d407fde2970bfec9174662dcd5c32a4e827529582e5791162e5d7df325aab",
+      "mtime_ns": 1789372521908995900,
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\local\\output\\raw_registry_validated_artifacts\\local\\output\\raw_registry_probe_initial_expectation_failure.log"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\local\\output\\raw_registry_probe.obj",
+      "role": "fixture_or_validation_capture",
+      "bytes": 157779,
+      "sha256": "ba5e16e382cac6864da12a793314f92622a17cca2eaa937cda18526f836d616b",
+      "mtime_ns": 1789399138460831700,
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\local\\output\\raw_registry_validated_artifacts\\local\\output\\raw_registry_probe.obj"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\local\\output\\raw_registry_probe.exe",
+      "role": "fixture_or_validation_capture",
+      "bytes": 35840,
+      "sha256": "bbd6f84aaf1b24667d122f34d37b317f2ca440f5dc8b7981fa42944433e27699",
+      "mtime_ns": 1789399138545021000,
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\local\\output\\raw_registry_validated_artifacts\\local\\output\\raw_registry_probe.exe"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\local\\output\\raw_registry_probe.map",
+      "role": "fixture_or_validation_capture",
+      "bytes": 78637,
+      "sha256": "04790db9eb65735a6fc8434cf17f6483f4c2fc3fb4662e4b1a8d15cfc0be91a7",
+      "mtime_ns": 1789399138546024700,
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\local\\output\\raw_registry_validated_artifacts\\local\\output\\raw_registry_probe.map"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\local\\output\\raw_registry_previous_ledger_rows.json",
+      "role": "fixture_or_validation_capture",
+      "bytes": 14302,
+      "sha256": "6b7b36e1ea1e903d624edc14e9caf372abe6a6e0757bfb77b41382f2e0900ffb",
+      "mtime_ns": 1789399096244604700,
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\local\\output\\raw_registry_validated_artifacts\\local\\output\\raw_registry_previous_ledger_rows.json"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\local\\output\\raw_registry_ledger_receipts.txt",
+      "role": "fixture_or_validation_capture",
+      "bytes": 14659,
+      "sha256": "52587169e1d913403ae7ec1c36bc9028a8583d736b1f1eaebc95304284ba8e30",
+      "mtime_ns": 1789399099491115400,
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\local\\output\\raw_registry_validated_artifacts\\local\\output\\raw_registry_ledger_receipts.txt"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\local\\output\\capture_registry_inputs.py",
+      "role": "fixture_or_validation_capture",
+      "bytes": 2777,
+      "sha256": "8e871f13f06928fc7f95267888ca7711460e992eea64d889180df98dd9779a95",
+      "mtime_ns": 1789372100727975500,
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\local\\output\\raw_registry_validated_artifacts\\local\\output\\capture_registry_inputs.py"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\local\\output\\record_raw_registry_ledger.py",
+      "role": "fixture_or_validation_capture",
+      "bytes": 4139,
+      "sha256": "ba3c64a3f925ed67e34c5a336b9fd66b034b0d81a8a9740fa095628d04590a09",
+      "mtime_ns": 1789399094266680700,
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\local\\output\\raw_registry_validated_artifacts\\local\\output\\record_raw_registry_ledger.py"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\local\\output\\finalize_raw_registry_report.py",
+      "role": "fixture_or_validation_capture",
+      "bytes": 14533,
+      "sha256": "0be8b4293806b621a54ee92e576c63be80c76f4e8abc43c75290f3312e56e866",
+      "mtime_ns": 1789399285477722800,
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\local\\output\\raw_registry_validated_artifacts\\local\\output\\finalize_raw_registry_report.py"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\local\\seed_reference.hpp",
+      "role": "built_or_configured_artifact_not_a_loaded_runtime_module",
+      "bytes": 2995,
+      "sha256": "26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c",
+      "mtime_ns": 1789371966653606300,
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\local\\output\\raw_registry_validated_artifacts\\local\\seed_reference.hpp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\build\\win32\\Release\\bsp_core.lib",
+      "role": "built_or_configured_artifact_not_a_loaded_runtime_module",
+      "bytes": 57647534,
+      "sha256": "8ea1b5dee7f55c42e3e99c587b6ff5dcbf2a3124a7c3b0e10b5e9f62a837fe2e",
+      "mtime_ns": 1789372411085310500,
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\local\\output\\raw_registry_validated_artifacts\\build\\win32\\Release\\bsp_core.lib"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\build\\win32\\bsp_core.dir\\Release\\native_system_constant_registry.obj",
+      "role": "built_or_configured_artifact_not_a_loaded_runtime_module",
+      "bytes": 85506,
+      "sha256": "958e44289b4b3dc6c95324afb59953ac8c4cbf01491a981bf4eaa2e4592e871f",
+      "mtime_ns": 1789372071435237900,
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\local\\output\\raw_registry_validated_artifacts\\build\\win32\\bsp_core.dir\\Release\\native_system_constant_registry.obj"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\build\\win32\\bsp_core.dir\\Release\\native_compiled_shader_owner.obj",
+      "role": "built_or_configured_artifact_not_a_loaded_runtime_module",
+      "bytes": 48552,
+      "sha256": "abbe5c1de85bcb1eab919891d08fc0f82862d2a9288032c7d2e08b424a160c77",
+      "mtime_ns": 1789372202930568500,
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\local\\output\\raw_registry_validated_artifacts\\build\\win32\\bsp_core.dir\\Release\\native_compiled_shader_owner.obj"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\build\\win32\\Release\\bsp_math_tests.exe",
+      "role": "built_or_configured_artifact_not_a_loaded_runtime_module",
+      "bytes": 530944,
+      "sha256": "2c3d13ff659db7ba93f555c8686862d0d1b14220d681861ecb133947c27c88b0",
+      "mtime_ns": 1789372414408935800,
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\local\\output\\raw_registry_validated_artifacts\\build\\win32\\Release\\bsp_math_tests.exe"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\build\\win32\\Release\\bsp_native_math_tests.exe",
+      "role": "built_or_configured_artifact_not_a_loaded_runtime_module",
+      "bytes": 18432,
+      "sha256": "7632eab31b015c24d1a5c8ef212f037edc6fcea00e4d0aa68a757062aa06dd2f",
+      "mtime_ns": 1789372411870698300,
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\local\\output\\raw_registry_validated_artifacts\\build\\win32\\Release\\bsp_native_math_tests.exe"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\build\\win32\\bsp_core.vcxproj",
+      "role": "built_or_configured_artifact_not_a_loaded_runtime_module",
+      "bytes": 285329,
+      "sha256": "7a3cfd9fd2b42da7e1c2a4bc69d65ab03061c6d54f5ab77ab6cfba2f86b3237e",
+      "mtime_ns": 1789371985361739600,
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\local\\output\\raw_registry_validated_artifacts\\build\\win32\\bsp_core.vcxproj"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\build\\win32\\CMakeCache.txt",
+      "role": "built_or_configured_artifact_not_a_loaded_runtime_module",
+      "bytes": 19079,
+      "sha256": "fa4e920fb8664b71ad3f4190cfb9dc9a9483a526aaab3b3766f8500c75e5dcd0",
+      "mtime_ns": 1789371985248608400,
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\local\\output\\raw_registry_validated_artifacts\\build\\win32\\CMakeCache.txt"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\build\\win32\\CMakeFiles\\4.2.3-msvc3\\CMakeCXXCompiler.cmake",
+      "role": "built_or_configured_artifact_not_a_loaded_runtime_module",
+      "bytes": 6498,
+      "sha256": "1e335b70d73e508c6038c58b3dee1b26845afbe82697b05b9a0a759c1ae68854",
+      "mtime_ns": 1789371979039091000,
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\local\\output\\raw_registry_validated_artifacts\\build\\win32\\CMakeFiles\\4.2.3-msvc3\\CMakeCXXCompiler.cmake"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\build\\win32\\Testing\\Temporary\\LastTest.log",
+      "role": "built_or_configured_artifact_not_a_loaded_runtime_module",
+      "bytes": 1833,
+      "sha256": "cfc32e5fa00af0b255262978a103c64f3e66912d4cd874f37c63a394df12de13",
+      "mtime_ns": 1789372442066297600,
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\local\\output\\raw_registry_validated_artifacts\\build\\win32\\Testing\\Temporary\\LastTest.log"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\cl.exe",
+      "role": "compiler_linker_tool",
+      "bytes": 891752,
+      "sha256": "95db52a9c9bd300131474769df7d32b342725b1e1574e0fc83a266479b196938",
+      "mtime_ns": 1779576140544398700,
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\local\\output\\raw_registry_validated_artifacts\\external\\cl.exe-95db52a9c9bd"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\link.exe",
+      "role": "compiler_linker_tool",
+      "bytes": 3698016,
+      "sha256": "36186698fc03d62a1151e48c55d5c17170b94b4621a2faa11189d08182e11a81",
+      "mtime_ns": 1779576140635586800,
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\local\\output\\raw_registry_validated_artifacts\\external\\link.exe-36186698fc03"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx86\\x86\\cl.exe",
+      "role": "compiler_linker_tool",
+      "bytes": 830824,
+      "sha256": "33ee095d65686e5f4caedd7d52b74fbba8447b2ef4b07019a9dca58c5cb74e5c",
+      "mtime_ns": 1779576134591637100,
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\local\\output\\raw_registry_validated_artifacts\\external\\cl.exe-33ee095d6568"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx86\\x86\\link.exe",
+      "role": "compiler_linker_tool",
+      "bytes": 3208544,
+      "sha256": "b00f360e373955590d61ca2a5e43f504365edf555d9e80d28fd1cbc0bcd59438",
+      "mtime_ns": 1779576134683531200,
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\local\\output\\raw_registry_validated_artifacts\\external\\link.exe-b00f360e3739"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin\\cmake.exe",
+      "role": "build_test_tool",
+      "bytes": 14060088,
+      "sha256": "d8173552e9d943c20feadd74d0437371f49d45c3d53a20dae2655ecc2493392c",
+      "mtime_ns": 1779245827700461300,
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\local\\output\\raw_registry_validated_artifacts\\external\\cmake.exe-d8173552e9d9"
+    },
+    {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin\\ctest.exe",
+      "role": "build_test_tool",
+      "bytes": 15152224,
+      "sha256": "4d00d31a10d004edb8d7f39bcd47d0a94da1cd4464e9d2246d199f0cf6c7852b",
+      "mtime_ns": 1779245827851482900,
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\local\\output\\raw_registry_validated_artifacts\\external\\ctest.exe-4d00d31a10d0"
+    }
+  ],
+  "actually_loaded_runtime_modules": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\local\\output\\raw_registry_probe.exe",
+      "role": "actually_loaded_fixture_module",
+      "bytes": 35840,
+      "sha256": "bbd6f84aaf1b24667d122f34d37b317f2ca440f5dc8b7981fa42944433e27699",
+      "mtime_ns": 1789399138545021000,
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\local\\output\\raw_registry_validated_artifacts\\local\\output\\raw_registry_probe.exe",
+      "reported_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\local\\output\\raw_registry_probe.exe",
+      "resolved_path": "\\\\?\\J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\local\\output\\raw_registry_probe.exe",
+      "loaded_machine": "014c",
+      "file_machine": "014c"
+    },
+    {
+      "path": "C:\\Windows\\SysWOW64\\ntdll.dll",
+      "role": "actually_loaded_fixture_module",
+      "bytes": 1822400,
+      "sha256": "7e15bd30890e9bf93b47fc894a68b2445618ee7528eb39584a263b21e112f9df",
+      "mtime_ns": 1788920801048632500,
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\local\\output\\raw_registry_validated_artifacts\\external\\ntdll.dll-7e15bd30890e",
+      "reported_path": "C:\\WINDOWS\\SYSTEM32\\ntdll.dll",
+      "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\ntdll.dll",
+      "loaded_machine": "014c",
+      "file_machine": "014c"
+    },
+    {
+      "path": "C:\\Windows\\SysWOW64\\kernel32.dll",
+      "role": "actually_loaded_fixture_module",
+      "bytes": 687472,
+      "sha256": "bafd9e061964642802d62f1eb694e7e4af60de739a8df1a492f90006dc5680f3",
+      "mtime_ns": 1788920799772677800,
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\local\\output\\raw_registry_validated_artifacts\\external\\kernel32.dll-bafd9e061964",
+      "reported_path": "C:\\WINDOWS\\System32\\KERNEL32.DLL",
+      "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\kernel32.dll",
+      "loaded_machine": "014c",
+      "file_machine": "014c"
+    },
+    {
+      "path": "C:\\Windows\\SysWOW64\\KernelBase.dll",
+      "role": "actually_loaded_fixture_module",
+      "bytes": 2974168,
+      "sha256": "85ad413ff860898f9e511f2e63c0e30f7aed1275fd1fd44fa90801211d328253",
+      "mtime_ns": 1788920799842272000,
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\local\\output\\raw_registry_validated_artifacts\\external\\KernelBase.dll-85ad413ff860",
+      "reported_path": "C:\\WINDOWS\\System32\\KERNELBASE.dll",
+      "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\KernelBase.dll",
+      "loaded_machine": "014c",
+      "file_machine": "014c"
+    },
+    {
+      "path": "C:\\Windows\\SysWOW64\\ucrtbase.dll",
+      "role": "actually_loaded_fixture_module",
+      "bytes": 1114240,
+      "sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+      "mtime_ns": 1788920804563876700,
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\local\\output\\raw_registry_validated_artifacts\\external\\ucrtbase.dll-60c5a497b52d",
+      "reported_path": "C:\\WINDOWS\\System32\\ucrtbase.dll",
+      "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\ucrtbase.dll",
+      "loaded_machine": "014c",
+      "file_machine": "014c"
+    },
+    {
+      "path": "C:\\Windows\\SysWOW64\\vcruntime140.dll",
+      "role": "actually_loaded_fixture_module",
+      "bytes": 123328,
+      "sha256": "2fa6efc053203460a23d3a25158f227d895d2dadc63acc1a372da97c3a4281c3",
+      "mtime_ns": 1779872592000000000,
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\local\\output\\raw_registry_validated_artifacts\\external\\vcruntime140.dll-2fa6efc05320",
+      "reported_path": "C:\\WINDOWS\\SYSTEM32\\VCRUNTIME140.dll",
+      "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\vcruntime140.dll",
+      "loaded_machine": "014c",
+      "file_machine": "014c"
+    },
+    {
+      "path": "C:\\Windows\\SysWOW64\\msvcp140.dll",
+      "role": "actually_loaded_fixture_module",
+      "bytes": 618944,
+      "sha256": "f0cda2a0cf1fe6fbbf579b9098462329d3aaa7513a207af2e0f33b01456e388a",
+      "mtime_ns": 1779872588000000000,
+      "immutable_copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-system-registry-raw-constructor\\local\\output\\raw_registry_validated_artifacts\\external\\msvcp140.dll-f0cda2a0cf1f",
+      "reported_path": "C:\\WINDOWS\\SYSTEM32\\MSVCP140.dll",
+      "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\msvcp140.dll",
+      "loaded_machine": "014c",
+      "file_machine": "014c"
+    }
+  ],
+  "runtime_distinction": "bsp_core.lib is a linked static artifact, not a loaded module. Runtime files are resolved inside32-bit fixture with GetFinalPathNameByHandle; PE machine014c checked against loaded image before hashing physical SysWOW64 paths.",
+  "terminal_gap": {
+    "legacy_binding": "Admits raw-created owner but destroy_registered creates legacy Operation; B5DF00/B5DF70 allocate ArrayOperation and use NativeStringStorage; no operation-free exceptional teardown.",
+    "raw_available": "B5BF50 current-array cleanup plus B5BA80 base cleanup compose successful manual cleanup; not complete raw destructor/scalar entry.",
+    "missing_addresses": [
+      "00b5df00",
+      "00b5df70",
+      "00b5bb20"
+    ],
+    "canonical_gap": "Pinned NativeSingletonDeletionBindings/BD0400 map has no D62A3C/D626F4 profile/context route.",
+    "expanded": false
+  },
+  "ghidra": {
+    "worker_writes": false,
+    "missing_tail": "B5BF50 saved body wasB5BF50..B5BF61; native complete23bytes throughB5BF66. Root notified to repair after lease release.",
+    "other_owned_body_extents_match": true
+  },
+  "remaining_boundaries": [
+    "Original FH3/SEH stack maps, spill aliasing, hardware-fault cleanup and CRT throw identity not reproduced.",
+    "Secondary C++ exception during noexcept cleanup terminates; native secondary-exception behavior unproved.",
+    "Invalid native extents, pointer faults, arbitrary concurrency and callbacks violating actual provider domains excluded.",
+    "Legacy retained-operation callers and canonical terminal profiles require separate migration."
+  ],
+  "memory_use": "Historical workflow only; task facts verified in current worktree and pinned native captures."
+}
