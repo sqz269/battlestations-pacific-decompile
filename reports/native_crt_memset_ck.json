@@ -1,0 +1,568 @@
+{
+  "packet": "orch2_native_crt_memset_ck",
+  "base": "5c80806cc011d29830cde3a87ff46c7dd5bd5c26",
+  "session": "01a08db7-951a-7110-a1fc-c27ce3f611af",
+  "utc": "2026-09-14T15:56:53.174290+00:00",
+  "status": "complete_read_only_three_body_discovery_source_ready_with_explicit_native_domains",
+  "target": "C:/Users/sqz269/bsp.gpr /battlestationspacific.exe",
+  "installed_pe": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "size": 12223752,
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "sha512": "7b545a4c47fae14af6c50a1d4d0d2904c1b85f84b9a24d1516b95d77945693fc36b1f6bb9effb7fa29b22b06ebcafc230cdf97f5c332266a3de8dd83bdc29a97"
+  },
+  "native_spans": [
+    {
+      "address": "00bf79f0",
+      "end_exclusive": "00bf7a6a",
+      "pe_live_equal": true,
+      "size": 122,
+      "sha256": "b9e1edde26458c7ed52bb293c2d578ea48c97301ff3c007acccf94e11cd313c5",
+      "sha512": "3287a143d8c6aaac231c268b91b765d90954a846bed3d38596aa70503c75504c32dc014d17c7937e1d8291984725e86a4ebadb27eb85aa02fe610389a94ecb43"
+    },
+    {
+      "address": "00c0c965",
+      "end_exclusive": "00c0c9f4",
+      "pe_live_equal": true,
+      "size": 143,
+      "sha256": "2c6ec9692bbbf045d50cf27b5f58068d75ca3b1556c0c2b0d022637af2beee0d",
+      "sha512": "122917c148919ad24e217e7b47457f68068be4b641871a81603822635887e4cd2f5d60e8ecb33d0a175bb5ba22ecb637a9f69bda752f97319679941bc7cc0512"
+    },
+    {
+      "address": "00c0c90e",
+      "end_exclusive": "00c0c965",
+      "pe_live_equal": true,
+      "size": 87,
+      "sha256": "38b144566672d63b2e444be8c0520f9a9182e6029d33320c977a51f6b67a4637",
+      "sha512": "22629205a401bf4b6e1bccf48874339e84b910e5d2be79f9de1b4add800fc3d20a67bf6222694d352b9bdf3cbde4e23ea7b07c6e9406c199a2aba19a8dde0626"
+    }
+  ],
+  "functions": [
+    {
+      "address": "00bf79f0",
+      "name": "_memset",
+      "physical_bytes": 122,
+      "executable_bytes": 122,
+      "instructions": 47,
+      "missing_bytes_classified": 0,
+      "listing_omissions": 0
+    },
+    {
+      "address": "00c0c965",
+      "name": "__VEC_memzero",
+      "physical_bytes": 143,
+      "executable_bytes": 143,
+      "instructions": 60,
+      "missing_bytes_classified": 0,
+      "listing_omissions": 0
+    },
+    {
+      "address": "00c0c90e",
+      "name": "fastzero_I",
+      "physical_bytes": 87,
+      "executable_bytes": 79,
+      "instructions": 24,
+      "missing_bytes_classified": 8,
+      "listing_omissions": 0
+    }
+  ],
+  "calls": [
+    {
+      "address": "00bf7a17",
+      "native": "00c0c965",
+      "function": "00bf79f0",
+      "kind": "tail_jump",
+      "instruction": "jmp 0xc0c965"
+    },
+    {
+      "address": "00c0c996",
+      "native": "00c0c90e",
+      "function": "00c0c965",
+      "kind": "call",
+      "instruction": "call 0xc0c90e"
+    },
+    {
+      "address": "00c0c9e2",
+      "native": "00c0c965",
+      "function": "00c0c965",
+      "kind": "call",
+      "instruction": "call 0xc0c965"
+    }
+  ],
+  "indirect_calls": [],
+  "physical_classification": {
+    "physical_bytes": 352,
+    "executable_bytes": 344,
+    "instructions": 131,
+    "jump_tables": [],
+    "padding_bytes": 8,
+    "padding": [
+      {
+        "address": "00c0c926",
+        "end_exclusive": "00c0c92e",
+        "bytes": "8da4240000000090",
+        "reason": "Unconditional JMP C0C924->C0C92E skips self-LEA ESP,[ESP] and NOP."
+      }
+    ],
+    "listing_omissions": 0
+  },
+  "abi": {
+    "00bf79f0": {
+      "calling_convention": "cdecl",
+      "arguments": [
+        "destination entryESP+4",
+        "fill int entryESP+8 (reads low byte only)",
+        "uint32 count entryESP+C"
+      ],
+      "return": "EAX original destination; RET/caller cleanup",
+      "registers": "EDI saved only scalar; EBP/EBX/ESI untouched; EAX/ECX/EDX/arithmetic flags volatile; DF unchanged.",
+      "tail": "BF7A17 JMP C0C965 before any stack change, preserving three original args and return."
+    },
+    "00c0c965": {
+      "calling_convention": "cdecl",
+      "arguments": [
+        "destination EBP+8",
+        "ignored middle DWORD EBP+C",
+        "uint32 count EBP+10"
+      ],
+      "saved_signature_problem": "Current signature says zero args; complete assembly proves three-word caller frame and never reads middle word.",
+      "return": "EAX original destination; RET/caller cleanup",
+      "frame": "10h local frame, EDI/EBP saved/restored; EBX/ESI untouched; DF unchanged; no stack realignment/EH.",
+      "engine_call": "C0C996 pushes bulk then destination, calls C0C90E, ADD ESP8; reload destination and saved tail afterward.",
+      "recursion": "C0C9E2 pushes wrapped n-prefix, explicit zero middle word, destination+prefix; real selfcall, ADD ESP0C, reload original destination."
+    },
+    "00c0c90e": {
+      "calling_convention": "cdecl",
+      "arguments": [
+        "destination EBP+8",
+        "uint32 byte count EBP+C"
+      ],
+      "saved_signature_problem": "Current signature omits actual two args.",
+      "return": "No meaningful return contract; incoming EAX unchanged. RET/caller cleanup.",
+      "registers": "Saves/restores EBP/EDI; EAX/EDX/EBX/ESI untouched; ECX/XMM0 clobbered. PXOR zeros XMM0, ECX0 after valid positive-loop completion; DF neither read nor changed.",
+      "frame": "4-byte local saved EDI; no feature/global/API/EH/stack realignment."
+    }
+  },
+  "outer_schedule": [
+    "Read count then destination. Zero branch rereads destination and returns before fill-byte/feature/destination access.",
+    "XOR EAX0 then read low fill byte. Only AL0, unsigned n>=256, current actual109EEA4!=0 selects vector tail, in that order.",
+    "Scalar push EDI; n1..3 explicit ascending byte loop. n>=4 computes wrapped -D &3 and emits positive prefix before pattern replication.",
+    "Replicate AL with SHL8/ADD then SHL16/ADD; remaining n&3 to EDX, logical n>>2 to ECX. Positive bulk REP STOSD then positive remainder byte loop.",
+    "Scalar return reloads original destination at ESP+8 before restoring EDI. No DF change, overflow/null repair or owner."
+  ],
+  "dispatcher_schedule": {
+    "remainder": "Signed int32 pointer remainder modulo16 via CDQ/XOR/SUB/AND/XOR/SUB; no unsigned modulo replacement.",
+    "aligned": "Tail=n&127; if n!=tail call actual engine on n-tail. Positive tail REP STOSB at D+n-tail. Aligned zero skips both.",
+    "misaligned": "Prefix16-remainder is1..15 for positive representations,17..31 for negative; write entire prefix before wrapped n-prefix and recursive call.",
+    "short_limit": "Direct misaligned short/zero calls may overrun prefix and wrap remaining count. Outer unsigned n>=256 gate supplies enough prefix count in valid nonwrapping extents."
+  },
+  "engine_schedule": {
+    "entry": "SHR count7, PXOR XMM0, unconditional JMP over8 padding bytes into first iteration; no zero guard.",
+    "writes": "Eight MOVDQA stores at +0,+10,+20,+30,+40,+50,+60,+70 hex in order, then LEA D+80, DEC ECX/JNE.",
+    "count": "For direct n>=128, writes floor(n/128)*128 bytes; dispatcher supplies positive128 multiple. Direct n<128 executes first128-byte iteration then loop-count underflow.",
+    "domain": "Actual CPU/OS SSE2 support; 16-byte aligned destination and sufficient writable mapped extent. No destination loads or private state."
+  },
+  "feature_evidence": {
+    "commit": "ee7a0e08c90e0f20f876f1dc10d64d6fc3bb01f6",
+    "report": {
+      "path": "local/native_crt_memset_ck/accepted_feature_by.json",
+      "size": 66889,
+      "sha256": "92778e36b0b564b0b2b22209f0ea4c025b60b612a9c122528ef622d91526ee5d",
+      "sha512": "9a8e7e53355305e9cea7b489e9ecbfb8b3f4c41f20bf89ecda01f00dffffc4f8b352a0876ec6146f7e0112f9df2a170431c1f973a674c558dcc081c7fd23007a"
+    },
+    "feature_word": {
+      "address": "0109eea4",
+      "pe_backing": "section virtual zero-fill",
+      "value": 0,
+      "live_pe_equal": true,
+      "size": 4,
+      "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+      "sha512": "ec2d57691d9b2d40182ac565032054b7d784ba96b18bcb5be0bb4e70e3fb041eff582c8af66ee50256539f2181d7f9e53627c0189da7e75a4d5ef10ea93b20b3"
+    },
+    "setter_pointer": {
+      "address": "00ce3700",
+      "value": "00c27b7c",
+      "live_pe_equal": true,
+      "qualification": "Actual data reference to setter; startup walker/call order not recovered in this packet.",
+      "size": 4,
+      "sha256": "a5ab3148a3173d70bca5edcdd4d31d1d9c0cb6cccfc515d5a795d7a3d2bcb4f5",
+      "sha512": "b6a8e2840a9d20533f4a2e61d68260788770ca388dc22c4e1843bf54a33b8d568d06bcd3d900df6bdc1638464c366f0b4ba939b9af899ec2e999fd9b024ff960"
+    },
+    "owner_limit": "Reused complete BY predicate/setter/startup/SEH4 frontier, not rediscovered or mutated. Actual canonical word publication/owner stays separate. No CPU API/projected state substitute."
+  },
+  "minimum_next_source_packet": {
+    "smallest": "C0C90E complete79-byte code/87 physical engine; preserves two-argument cdecl and unguarded positive-chunk domain.",
+    "provider_pair": "C0C90E+C0C965 with actual two-argument engine call and real three-argument recursive selfcall.",
+    "whole_chain": "All3 complete bodies, real pair and explicit borrowed actual feature-word reference at outer entry; no host memset or synthetic CPU owner.",
+    "outer_proposed_interface": "New four-argument naked cdecl(D,fill,n,const volatile uint32& actual109EEA4).",
+    "feature_replacement": "At original gated BF7A0E: MOV EAX,[ESP+10h]; CMP DWORD PTR[EAX],0; MOV EAX,0; JE scalar. EAX proven0 is live scalar pattern; MOV restores it without changing comparison flags.",
+    "do_not": "Do not apply memmove dead-EAX reasoning, insert XOR between CMP/JE, read reference before count/fill gates, change middle dispatcher argument shape, clamp signed prefix, add short guard or new feature owner.",
+    "tail_abi": "No stack change before actual C0C965 tail JMP. Same return and first3 words; four-argument caller removes16 bytes including extra reference.",
+    "limitations": "New source ABI, active-frame nonalias, changed instruction/fault locations; no original binary placement/frame/async-fault/gameplay claim. DF0 for reached REP paths; actual SSE2 support for reached vector instructions."
+  },
+  "source_queries": {
+    "exact": {
+      "path": "local/native_crt_memset_ck/source_search.json",
+      "size": 323,
+      "sha256": "41c799b11da4bd7f6145bc6ec1ffd53a077a919b59ee53f804fc1e2efa842839",
+      "sha512": "1d10591055663bafedd52eed7093ff4a4780287a4905f134fdf659749aa40b79b2f73223b60adb3ad45ffe7c59578e54c32b91b29a366dd8fdc06afd221abf27"
+    },
+    "indexed": [
+      {
+        "path": "local/native_crt_memset_ck/00bf79f0_source_lookup.json",
+        "size": 761,
+        "sha256": "cc25ee6553a57a911b3aad3088f34472e64e6f15f313bd48831fa439ee4f9c5b",
+        "sha512": "9df51ee981e69f2256c68faa824594055a43a22af1b9550a2ac4f6d7a3f63efccd1c4490c0bee43c6a4289eef53499cb33577131f99acfdf94a746a597d99072"
+      },
+      {
+        "path": "local/native_crt_memset_ck/00c0c965_source_lookup.json",
+        "size": 522,
+        "sha256": "16846211fe9ced8776faea877a6a0eddc7239b0c1b0bcfc3bc686732e2148a9d",
+        "sha512": "dcbcd1b63bfe0f194e30823cbe922555e2cce4978f76df77d787a104b3f5c73d4f5e19440074d176d48a10d1eb3f2d16dcf11337e4609dda2b6232e91acae0a6"
+      },
+      {
+        "path": "local/native_crt_memset_ck/00c0c90e_source_lookup.json",
+        "size": 458,
+        "sha256": "c73d3046e965ced26e4a5039cce9421843c15aac0ac77ccc8096345639ad42b2",
+        "sha512": "486d9f3ea29e46aa77590ebe717588d341a958e338619d699ccb269a00d2615ac9c93d4a2a505e5540e0b4a0d674858cedcb805d9b68b8e6854fc6c410ec656d"
+      }
+    ]
+  },
+  "validation": {
+    "live_pe_equal_all": true,
+    "spans": 3,
+    "physical_bytes": 352,
+    "executable_bytes": 344,
+    "instructions": 131,
+    "direct_and_tail_calls": 3,
+    "indirect_calls": 0,
+    "listing_omissions": 0,
+    "source_changes": false,
+    "builds": false,
+    "tests": false,
+    "native_execution": false,
+    "ghidra_mutations": false,
+    "settings_changes": false,
+    "flow_repair": false,
+    "push": false,
+    "direct_listing_checker": {
+      "path": "local/native_crt_memset_ck/direct_call_check.json",
+      "size": 263,
+      "sha256": "a38078f6186f2ba969e66f48d89084d09a44f9b1fef85a65464ddf661edcfe35",
+      "sha512": "0f319ee81c88ee5f5e1c0c1481d5aaf429af469f423fe582045a7e0ef9b86b86bce52887d7861ff563d85ce0c8721cfaeb5a64b2e3370ef7d63559f56112ac60"
+    }
+  },
+  "document": {
+    "path": "docs/NATIVE_CRT_MEMSET_CK.md",
+    "size": 7688,
+    "sha256": "fb9400b8c9f2863162ef326c00e6ede8bcde744e621960d0f4ce296eee5ecae7",
+    "sha512": "cc11751ad3bd8ba07b2d1eae9b1e45eabb3b9117fd486765c8e7a7355a3110fc20dccc8c8f74b1d4729c5b8a927b2a35debaf5255e0f1a0129dcdbd21f2c504c"
+  },
+  "inventory_passes": [
+    {
+      "entries": 46,
+      "path": "local/native_crt_memset_ck/whole_local_pass1.json",
+      "size": 14624,
+      "sha256": "13164f79c7d1520bbe993a35356ca32ffd6f2ee62103c7314d3f0a41c361be26",
+      "sha512": "5894f069ac5f5a2c4e22016545e0e68939ec56e7e25b2f2d0c91fa7c40e5545e84f1bd2229a80b30af230503d1e75620852785ba30a79199d58aed2a174a9d0b"
+    },
+    {
+      "entries": 46,
+      "path": "local/native_crt_memset_ck/whole_local_pass2.json",
+      "size": 14624,
+      "sha256": "13164f79c7d1520bbe993a35356ca32ffd6f2ee62103c7314d3f0a41c361be26",
+      "sha512": "5894f069ac5f5a2c4e22016545e0e68939ec56e7e25b2f2d0c91fa7c40e5545e84f1bd2229a80b30af230503d1e75620852785ba30a79199d58aed2a174a9d0b"
+    }
+  ],
+  "local_artifacts": [
+    {
+      "path": "local/native_crt_memset_ck/00bf79f0_bytes_000.json",
+      "size": 802,
+      "sha256": "2a254613d28849d5780a1247261a4bdac6d7e25b88996fa47a610aaa3bfd8107",
+      "sha512": "ef59044f0cfad91999c9729f2e2d755813d91e5e11ecbc0cc46b3e022867395d79ef65345c9a25a5bbfc0e61592754425ec86992f0c192ea6ed4883a3380e76d"
+    },
+    {
+      "path": "local/native_crt_memset_ck/00bf79f0_bytes_000.txt",
+      "size": 584,
+      "sha256": "50371c4351e1191a9a1edc3bbc3e5d4f6671e9d47d7ba568a76aba3fe2f6282f",
+      "sha512": "a3bda9c4c1bc61b121ad47b5d03370e2d5637f8e3ad6176d73a6011a74127fee8f1e7550fbb7b92af3b0003be94afb699cd8bee0262354692403718b60e56292"
+    },
+    {
+      "path": "local/native_crt_memset_ck/00bf79f0_listing.json",
+      "size": 1472,
+      "sha256": "da3c4f43d95a5de789af2a691d28a014431854e4132363ac52d1be39af6fc8fe",
+      "sha512": "fd8c36c0c264c6c415333afc609cb987a3714b0c4bcf2792501326cfdd3cd5c08e21db91e251119863963c7fe325c81a4cb9d6b2332db1f3a9680b4b1eebd5cb"
+    },
+    {
+      "path": "local/native_crt_memset_ck/00bf79f0_listing.txt",
+      "size": 1216,
+      "sha256": "ebc5ab1dd7469bbcba32cf6a0f616db5a0040db4a45a253e313b518198db0924",
+      "sha512": "e1183949f9ce939a066c0f33b3cb9503852741e1daf8b3891141676a51d85e9f674ec3cb280d8387130c5883b1178655a82c9e39a95178db7631f0f6876b4916"
+    },
+    {
+      "path": "local/native_crt_memset_ck/00bf79f0_live.bin",
+      "size": 122,
+      "sha256": "b9e1edde26458c7ed52bb293c2d578ea48c97301ff3c007acccf94e11cd313c5",
+      "sha512": "3287a143d8c6aaac231c268b91b765d90954a846bed3d38596aa70503c75504c32dc014d17c7937e1d8291984725e86a4ebadb27eb85aa02fe610389a94ecb43"
+    },
+    {
+      "path": "local/native_crt_memset_ck/00bf79f0_pe.bin",
+      "size": 122,
+      "sha256": "b9e1edde26458c7ed52bb293c2d578ea48c97301ff3c007acccf94e11cd313c5",
+      "sha512": "3287a143d8c6aaac231c268b91b765d90954a846bed3d38596aa70503c75504c32dc014d17c7937e1d8291984725e86a4ebadb27eb85aa02fe610389a94ecb43"
+    },
+    {
+      "path": "local/native_crt_memset_ck/00bf79f0_physical_decode.json",
+      "size": 5174,
+      "sha256": "5bb8c51b5f6945d89daf2458fc0f61137610a6eee7b5bd4378720c21ad4461cb",
+      "sha512": "2cc587c498a285315c43be0f4eeae001f56ae3404408c6e8e951456d05eedeee858873e4d933cbb83aa2817c037106006a89a4d10a9037c43c9eb35c8d7d089b"
+    },
+    {
+      "path": "local/native_crt_memset_ck/00bf79f0_physical_decode.txt",
+      "size": 2154,
+      "sha256": "9f9f92b0abada992a4b15e3fd9edb9b4183f0442c1a4ce5da2bcb0b582c36502",
+      "sha512": "2bfa160bbf6129ac897f90dec319d94104eff2d15ea357eec9c779e65644e5ad419fd214a4b386d1ee507da53dbb0822f0154e295b77123f1d8c76ab7954d7cc"
+    },
+    {
+      "path": "local/native_crt_memset_ck/00bf79f0_proto.json",
+      "size": 1528,
+      "sha256": "5a486c09c1080e8d094cab3c7a7dc307dead673634bcf8b482339bb98ee8c6de",
+      "sha512": "86770b4f9f621b6d40bef97225f4a3130942aef7f74198869b32bf6e12244d33b7bfcc818ba57d09dffb893e86de62d1fa0535d36e4f6cc40c4b73e8322bacac"
+    },
+    {
+      "path": "local/native_crt_memset_ck/00bf79f0_proto.txt",
+      "size": 1224,
+      "sha256": "7387f1dd71fae787151b859eac2817572444e38ce24767083bdd71fb536e8ed8",
+      "sha512": "b9531d64adb1fc3756c8c0cabcd5de904a6ad48fd3fac7613d68e5caa9b3f2e56860253e6bcd87b80e4fdf3062dfaf83f174507537e6e0fe42fb6e8b9df71bfc"
+    },
+    {
+      "path": "local/native_crt_memset_ck/00bf79f0_source_lookup.json",
+      "size": 761,
+      "sha256": "cc25ee6553a57a911b3aad3088f34472e64e6f15f313bd48831fa439ee4f9c5b",
+      "sha512": "9df51ee981e69f2256c68faa824594055a43a22af1b9550a2ac4f6d7a3f63efccd1c4490c0bee43c6a4289eef53499cb33577131f99acfdf94a746a597d99072"
+    },
+    {
+      "path": "local/native_crt_memset_ck/00c0c90e_bytes_000.json",
+      "size": 635,
+      "sha256": "6ae6a3b358f86c9974a7255e3ac955887046768019a73379927467696e72a4b4",
+      "sha512": "dfcca9976bd1c2e76f9317270015ef6a934095280970602ec8afab1ef8c5fe66b826ac9ac9eadf84a0c3cc8c4f99a976890f19fc43f5d85e9a71d2bf77536d53"
+    },
+    {
+      "path": "local/native_crt_memset_ck/00c0c90e_bytes_000.txt",
+      "size": 420,
+      "sha256": "cd7e03d8216bac4bfab02b72fedf920e4f7d1e44dc88896bd6c819f25bf7999b",
+      "sha512": "e09eb127db31f930d70475f8f79fcf9b57ab53f3db4f6f959dd35a25621045d5d0d15152fb6f51946a9d4a13dbec64db5f4d616f4283ce7c1f8980f207105c58"
+    },
+    {
+      "path": "local/native_crt_memset_ck/00c0c90e_listing.json",
+      "size": 1051,
+      "sha256": "4702769bf32546d1cd6b2c7165d3c55a5e9a2e90b9036a1181f19a821a6639b4",
+      "sha512": "e77825e2fd2bad45761f9a1165d1488372598193b52d789b1002ac8b93019e37f2fed675e3d92a198516caf32dd6806e0b848545aa95f3930274f2c34213e4f5"
+    },
+    {
+      "path": "local/native_crt_memset_ck/00c0c90e_listing.txt",
+      "size": 818,
+      "sha256": "000d3e9d348242f29f5b3755feac13bbf62ebe951654c649828761fa845e8416",
+      "sha512": "0bdd64a698007263dea79fda0d8c4aa1d98d5746b6d35e04f8aa451f989e5c3e99185adbe1f380eedb2d20438303736d9ef03adbbbcd2df7d9eaf7f461f9b41f"
+    },
+    {
+      "path": "local/native_crt_memset_ck/00c0c90e_live.bin",
+      "size": 87,
+      "sha256": "38b144566672d63b2e444be8c0520f9a9182e6029d33320c977a51f6b67a4637",
+      "sha512": "22629205a401bf4b6e1bccf48874339e84b910e5d2be79f9de1b4add800fc3d20a67bf6222694d352b9bdf3cbde4e23ea7b07c6e9406c199a2aba19a8dde0626"
+    },
+    {
+      "path": "local/native_crt_memset_ck/00c0c90e_pe.bin",
+      "size": 87,
+      "sha256": "38b144566672d63b2e444be8c0520f9a9182e6029d33320c977a51f6b67a4637",
+      "sha512": "22629205a401bf4b6e1bccf48874339e84b910e5d2be79f9de1b4add800fc3d20a67bf6222694d352b9bdf3cbde4e23ea7b07c6e9406c199a2aba19a8dde0626"
+    },
+    {
+      "path": "local/native_crt_memset_ck/00c0c90e_physical_decode.json",
+      "size": 3094,
+      "sha256": "63b9c7133891181fdd555c2ffcfbce3fddb1d94dae6ca070ddf28fb61ea3d45a",
+      "sha512": "2a7cdd986368cc5eae236a90a8399bc9252dfb63f473517e1d9c0d9d221aa4a95917675e1045953f090a2f657d5ac16869f16cef4643c652e80807a53c019465"
+    },
+    {
+      "path": "local/native_crt_memset_ck/00c0c90e_physical_decode.txt",
+      "size": 1383,
+      "sha256": "bc07a58185191f776a364ba896b35fccbbb6e053c509db21aac029fb845272a6",
+      "sha512": "0c41373a479277679f8a28d817ef6e5665177317185b86f15306fd63ca26203e24eed88097b03d22ab172d0dbe52fbfd46206a08876d3694531186d3634b0f4e"
+    },
+    {
+      "path": "local/native_crt_memset_ck/00c0c90e_proto.json",
+      "size": 1039,
+      "sha256": "9c6ed9dbb9b2ae28d35ca426c68c6a7640ab4f984652d26206edaf1b43b76520",
+      "sha512": "054149eae295435cf3ba67483d65b6b79cd0867f62526dabe68a7854c8e2a7d215543c75c3fa84eb6998110bfc9f3f5309004bcd256dde6b59b4e80042f7584d"
+    },
+    {
+      "path": "local/native_crt_memset_ck/00c0c90e_proto.txt",
+      "size": 758,
+      "sha256": "36f17f1a7ed4f5679d408da6085010b1cf93cba73799053f4e03feb6813d3444",
+      "sha512": "e49f9cc328e8470f07f24fafc4d10e87c80718201c9eb8a1b994f8d14ae745136b73a1ca15609f0491ed15f5de4197337d39bd177163999a8ee2ba3c6a6e05af"
+    },
+    {
+      "path": "local/native_crt_memset_ck/00c0c90e_source_lookup.json",
+      "size": 458,
+      "sha256": "c73d3046e965ced26e4a5039cce9421843c15aac0ac77ccc8096345639ad42b2",
+      "sha512": "486d9f3ea29e46aa77590ebe717588d341a958e338619d699ccb269a00d2615ac9c93d4a2a505e5540e0b4a0d674858cedcb805d9b68b8e6854fc6c410ec656d"
+    },
+    {
+      "path": "local/native_crt_memset_ck/00c0c965_bytes_000.json",
+      "size": 826,
+      "sha256": "24dbfba35b5aec29158f31c6b2afc1ab6c28a428da36aa90f30a3827696c2260",
+      "sha512": "7840e7c6a5c53669637bd72a9a854b35a1e9b528a9349fc60582cb67463ed7934c8da669817cd78ec78ccf4c6891a93c373a3cade9291d0d2f2a9e572e4cd7e7"
+    },
+    {
+      "path": "local/native_crt_memset_ck/00c0c965_bytes_000.txt",
+      "size": 608,
+      "sha256": "cafba3d04028d2401c88e1a0bcedda3ca8b0fcb83c63a943ab882a33d0d8cf6e",
+      "sha512": "95e77cb054ce45932aaeb4c6ae19910bff0053a7a48051cc7e79a65af788c4d9016b7ace98a8e8af418ae3797844c6e43f6bf6f0a9dafcfbae49fb677aef2b95"
+    },
+    {
+      "path": "local/native_crt_memset_ck/00c0c965_bytes_128.json",
+      "size": 282,
+      "sha256": "b0a270cca899b21729492c74cbdaa1c082b789e9fe4ea45e4c3e3803da9a77ea",
+      "sha512": "0b33e4be96d38b637fc51879c2e1c66cf73ac001f3ef4f93120c639d6c59e0d30f900635228687825c380f59ce5319bfc8fe023f1153faabd8ee82881c276b23"
+    },
+    {
+      "path": "local/native_crt_memset_ck/00c0c965_bytes_128.txt",
+      "size": 72,
+      "sha256": "c2193f332717748bf6cfec16dd3927da3574441269f9b89b6c86d162f28cc5b4",
+      "sha512": "4b60b8bd01dab4eceb4dbce919a8c1a1ef1acc32f05e154679993c9a182fce28498813c4bb833de26d306a0d8b9932222320a42b6bf61d66d2f0d600ad762754"
+    },
+    {
+      "path": "local/native_crt_memset_ck/00c0c965_listing.json",
+      "size": 1998,
+      "sha256": "a7485e863b5676ac4b5fb79e4a6e8c23677c7fb617952ae977b7111dbcceefc7",
+      "sha512": "ddbc222798140f6e116d5bd03e0cf694598bcf0420ae647db8d726b204c46c5f63ee45b24c963da2dd90adcc5ca4816c26061e57d64f2d448c26a1bf4db91c9b"
+    },
+    {
+      "path": "local/native_crt_memset_ck/00c0c965_listing.txt",
+      "size": 1729,
+      "sha256": "854ad8b149c1b6225bd0555b9e18adf2b8c5a23388573d3ced663c1566915b9d",
+      "sha512": "d2af18742c3ee03cd5b7fa3c0f7effee85d55041ea355e8d65d8f358a262f78f71bda851fc58f2b276a5b8c10dc3e6d3b1685d8705e1527bef62a9f491cdece3"
+    },
+    {
+      "path": "local/native_crt_memset_ck/00c0c965_live.bin",
+      "size": 143,
+      "sha256": "2c6ec9692bbbf045d50cf27b5f58068d75ca3b1556c0c2b0d022637af2beee0d",
+      "sha512": "122917c148919ad24e217e7b47457f68068be4b641871a81603822635887e4cd2f5d60e8ecb33d0a175bb5ba22ecb637a9f69bda752f97319679941bc7cc0512"
+    },
+    {
+      "path": "local/native_crt_memset_ck/00c0c965_pe.bin",
+      "size": 143,
+      "sha256": "2c6ec9692bbbf045d50cf27b5f58068d75ca3b1556c0c2b0d022637af2beee0d",
+      "sha512": "122917c148919ad24e217e7b47457f68068be4b641871a81603822635887e4cd2f5d60e8ecb33d0a175bb5ba22ecb637a9f69bda752f97319679941bc7cc0512"
+    },
+    {
+      "path": "local/native_crt_memset_ck/00c0c965_physical_decode.json",
+      "size": 6786,
+      "sha256": "0a01dfe67136586802538ed458940afbf91c9caef4c65f0167ed2bb1b3fd8bc1",
+      "sha512": "33de2d30b8dd411b5a5aea6962f2c8a1b6887c79ef9b886edc822a53b83b7f3ef8428ca2a17277b2d970f2dafcd7d15464349fa49b04b7b23e9c03266aa6cd69"
+    },
+    {
+      "path": "local/native_crt_memset_ck/00c0c965_physical_decode.txt",
+      "size": 2957,
+      "sha256": "ab2e31362eac7e2070a7a5dcb66d6721bf9707eb3185c3ddd78d8f63e1a2f08d",
+      "sha512": "c2c25f2327d766fb908d30e6ad8bbe87e7ded7d4291e631a3853c256c28f2fffc445fdd6dbf08dbfaf21f3ebfdd5930bb864fa42dd3da1f27d79489a6397bdc4"
+    },
+    {
+      "path": "local/native_crt_memset_ck/00c0c965_proto.json",
+      "size": 1399,
+      "sha256": "e6634d675ecb178e5009ae64b759bc003d7c3516bd494e660a8e21953a17c8be",
+      "sha512": "174a4ebb7b4a39a043079648ce8e931d3439dca80dbeb15de93e98b6635dfd2516025cc7a1e2fd28d789775892dd199f095a8027d150685c6680d5d48bc2e177"
+    },
+    {
+      "path": "local/native_crt_memset_ck/00c0c965_proto.txt",
+      "size": 1096,
+      "sha256": "899d36e283106d246301c9845dfac71fe04c37c807dea8185e1a315466169f87",
+      "sha512": "655025ee7a43a2b353da440671090c692b0f16b8928f7e8b5f173c91ff8f89648016cb47ba1f4655b0a2914500bfa24511af70955ebd697269e86bdc43cd648d"
+    },
+    {
+      "path": "local/native_crt_memset_ck/00c0c965_source_lookup.json",
+      "size": 522,
+      "sha256": "16846211fe9ced8776faea877a6a0eddc7239b0c1b0bcfc3bc686732e2148a9d",
+      "sha512": "dcbcd1b63bfe0f194e30823cbe922555e2cce4978f76df77d787a104b3f5c73d4f5e19440074d176d48a10d1eb3f2d16dcf11337e4609dda2b6232e91acae0a6"
+    },
+    {
+      "path": "local/native_crt_memset_ck/accepted_feature_by.json",
+      "size": 66889,
+      "sha256": "92778e36b0b564b0b2b22209f0ea4c025b60b612a9c122528ef622d91526ee5d",
+      "sha512": "9a8e7e53355305e9cea7b489e9ecbfb8b3f4c41f20bf89ecda01f00dffffc4f8b352a0876ec6146f7e0112f9df2a170431c1f973a674c558dcc081c7fd23007a"
+    },
+    {
+      "path": "local/native_crt_memset_ck/call_check_correction.json",
+      "size": 312,
+      "sha256": "19438a9ce8bbee9d98dad3113630d7de4a72be0abd0c57b13ea8f49e543946bd",
+      "sha512": "049498ffb0cdf3a443c18dafb8e3643d03b75a790660199958b5f582e497a523a21ed82670f0df6a0704a5b4a2f2d031912e0b10b4d801cbd2fda76eaca4b57c"
+    },
+    {
+      "path": "local/native_crt_memset_ck/capture.json",
+      "size": 1683,
+      "sha256": "daa4b6b5459beea9901730375c5d180d297ad2d90a64be74b6caad6ddf627d88",
+      "sha512": "18a33f552ead0444d735fe6df6cc49900f0fdcb95167cfcf2d348f0dded6c3e0437e63443dda01cef1f2fe7acee26e3283c27d8c235a917d8168bf736ad8d6b8"
+    },
+    {
+      "path": "local/native_crt_memset_ck/capture.py",
+      "size": 3254,
+      "sha256": "31411e3a5404774c0b55ffb69ce21ff1198b3e31cf8016b5973447de8b20ed2f",
+      "sha512": "b8e97d7f3d90e88a8dbf16699fa02f7dd086ca05ce60bfba8461e2520766d4f9c24a4e5c492850895418881be5bb1787645493e84ae3a79a939aa0be3aa4ccdf"
+    },
+    {
+      "path": "local/native_crt_memset_ck/classification.json",
+      "size": 1477,
+      "sha256": "5684e8f11e74ec3be9dc7317ba11196666813c57b698e8cf0e3f46f7c92c4070",
+      "sha512": "885e1a3a8a2b956a457fbac178f398cc17905702e967406526dd57dc74879344fc402b3fd25334478941f4b518f20658aa9fef4234cf28684b6ad70bf7815bbd"
+    },
+    {
+      "path": "local/native_crt_memset_ck/classified_code.json",
+      "size": 14832,
+      "sha256": "4390266ab47183c728029dee5e4b09a94bce008e8f4308a1d2ced7e584c25763",
+      "sha512": "92de2e1be20aed2837eda2772806ffa3fcce4f0d0f512a8a06f6fa54a087ab65fc6f32bba7c435fd820ad4b309a49c69473855ab45b38f476d7bd86fcbfe1886"
+    },
+    {
+      "path": "local/native_crt_memset_ck/commit_message.txt",
+      "size": 366,
+      "sha256": "55adf28245c3af2948fe061c41618ac02665d403a5ed862f160aaa1e81624f49",
+      "sha512": "b0d523f131ca00400cd2ea7df8d17c3c2dbbd7f5a071f010d62cbf604196147cff636d3044c15cd482ed207318d0e1ee604ecf07c68a3db038974c6bca00bf02"
+    },
+    {
+      "path": "local/native_crt_memset_ck/direct_call_check.json",
+      "size": 263,
+      "sha256": "a38078f6186f2ba969e66f48d89084d09a44f9b1fef85a65464ddf661edcfe35",
+      "sha512": "0f319ee81c88ee5f5e1c0c1481d5aaf429af469f423fe582045a7e0ef9b86b86bce52887d7861ff563d85ce0c8721cfaeb5a64b2e3370ef7d63559f56112ac60"
+    },
+    {
+      "path": "local/native_crt_memset_ck/direct_call_check_initial_kind_error.json",
+      "size": 355,
+      "sha256": "689bc12000d042db674048f0665a8fe937fd05f8017983b357c9998bb44a6e1c",
+      "sha512": "eeb9e503e42f15c5fe53a6c5b284c3f69ae08491b2b4d8255514da0399fd2b1366643865475cd0ce6b5ecfe84bd06a7d8448546ffa0a0c2f599133c680ea9c0f"
+    },
+    {
+      "path": "local/native_crt_memset_ck/finalize.py",
+      "size": 12490,
+      "sha256": "c7f0b736a0c0fbf4cb14c46a92b46b1728de0480eb86c77ee5f8b82b91f06c53",
+      "sha512": "6cdceb48edd1117599e4293ba397504c47f3d2e6ad6cc23e7c2c3ab11bdfaa5070e634b1a8e223e70201caa05fcd7cbcc6f018556aae66cf1e4ae65b5ef017cb"
+    },
+    {
+      "path": "local/native_crt_memset_ck/source_search.json",
+      "size": 323,
+      "sha256": "41c799b11da4bd7f6145bc6ec1ffd53a077a919b59ee53f804fc1e2efa842839",
+      "sha512": "1d10591055663bafedd52eed7093ff4a4780287a4905f134fdf659749aa40b79b2f73223b60adb3ad45ffe7c59578e54c32b91b29a366dd8fdc06afd221abf27"
+    },
+    {
+      "path": "local/native_crt_memset_ck/whole_local_pass1.json",
+      "size": 14624,
+      "sha256": "13164f79c7d1520bbe993a35356ca32ffd6f2ee62103c7314d3f0a41c361be26",
+      "sha512": "5894f069ac5f5a2c4e22016545e0e68939ec56e7e25b2f2d0c91fa7c40e5545e84f1bd2229a80b30af230503d1e75620852785ba30a79199d58aed2a174a9d0b"
+    },
+    {
+      "path": "local/native_crt_memset_ck/whole_local_pass2.json",
+      "size": 14624,
+      "sha256": "13164f79c7d1520bbe993a35356ca32ffd6f2ee62103c7314d3f0a41c361be26",
+      "sha512": "5894f069ac5f5a2c4e22016545e0e68939ec56e7e25b2f2d0c91fa7c40e5545e84f1bd2229a80b30af230503d1e75620852785ba30a79199d58aed2a174a9d0b"
+    }
+  ],
+  "inventory_protocol": "Two independent whole-local path and SHA256/SHA512 passes agree; only the two manifests exclude themselves, and the report includes both. Report outside local avoids circular hashes."
+}
