@@ -270,3 +270,35 @@ The block-copy angle is narrowed, not closed. Control first, per this document's
 region holds zero of either. Thirteen `REP MOVSD` sites sit in the wider vehicle-class region with
 their destinations untraced, so the block-copy hypothesis survives, as do SIB-indexed writes and
 write-then-alias.
+
+## Closed to byte search: 39 block copies, none can reach `+50h`
+
+The `memcpy`/`REP MOVSD` hypothesis - the last byte-reachable form - is now excluded by arithmetic
+rather than by another empty scan. `docs/MODEL_REACHES_UNIT.md` traced every candidate:
+
+* **The thirteen in the vehicle-class region** each copy `0x10` or `0x11` dwords, **64 or 68 bytes**.
+  Nine take a **stack** destination (`LEA EDI,[ESP+…]`, `LEA EDI,[EBP-…]`, `MOV EDI,ESP`) and cannot
+  be class descriptors at all. The other four take an object at its **base**, so they cover
+  `+00h`..`+43h` and stop **twelve bytes short of `+50h`**. Those four are by-value copies of a
+  68-byte struct, and three of the stack sites confirm that size independently by pairing
+  `SUB ESP,44h` with `MOV ECX,11h` - so `0x44` is the type's size, not an artefact of the loop.
+* **The twenty-six in the model and part-collision region** carry counts of 9, 15, 16, 18 and 19
+  dwords, **at most 76 bytes**, so the largest reaches `+4Bh` and still falls short. The bucketing
+  there is heuristic rather than per-site traced; the count bound is exact and covers all
+  twenty-six.
+
+**39 block copies across both regions, none exceeding 76 bytes, none starting below a destination's
+base.** With the earlier scans - `MOV` register and immediate in both encodings, `LEA`, `MOVSS`, all
+negative in the class region and all with non-zero image-wide controls - **the byte-reachable space
+for a writer of `class+50h` is exhausted.**
+
+What remains is named rather than implied, and none of it can be reached by scanning:
+
+1. a **SIB-indexed** write, `[reg+reg*n+50h]`, which every scan here skips by design;
+2. a write on an object **later aliased** to the class;
+3. a writer in a **module outside `battlestationspacific.exe`** - this installation carries mod
+   artefacts and that was never excluded.
+
+All three need the call graph or a runtime observation. **This line is closed to byte search.** The
+zero is proved faithful, the feature gap is bounded, and the missing writer is now a call-graph
+question rather than a scanning one.
