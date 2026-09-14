@@ -1905,7 +1905,13 @@
       "00bea680"
     ],
     "qualification": "New context-bearing Win32 source interfaces only, after pin e956fc7a name source is integrated. Raw scalar/string dependencies exist in baseline. Use real existing source providers, no invented allocation/virtual-read stub. Existing singleton_lifetime_allocate/free permitted only as explicit host CRT semantic projection, not native CRT identity. Explicit source approval still required.",
-    "contract_document": "docs/NATIVE_RAW_NODE_CONSTRUCTOR_FRONTIER_BJ.md"
+    "contract_document": "docs/NATIVE_RAW_NODE_CONSTRUCTOR_FRONTIER_BJ.md",
+    "publication_order": [
+      "BE4620 publishes actual count before constructing its output string",
+      "After BE4620 returns, BF0510 debits parent remaining budget",
+      "After BF0510 returns, BEA250 copies returned temporary into node name"
+    ],
+    "wrapper_allocation_contract": "BEA680 preserves its explicit null-allocation branch, publishing zero to fresh output storage. If BEA250 throws, its member/base unwind runs first, then BEA680 frees the saved allocation through matched BF65AC/free only; it does not invoke BE9DF0 or any node destructor."
   },
   "blocked": [
     "No exact native heap0109E1BC/mode0109ED7C/newmode0109E314/encoded-handler0109DE44 source binding; host CRT malloc/free do not establish identity.",
@@ -1974,7 +1980,7 @@
     "parent+C=parent",
     "name+10/+14=0",
     "depth+18=parent[18]+1",
-    "BF0510 actual-count/name publication through parent+20",
+    "BE4620 publishes actual count before output construction; after provider returns BF0510 debits parent+20; BEA250 then copies returned temporary into node name",
     "assign returned name using captured header/current fields",
     "disarm temporary then pool return",
     "BF0280 payload; write+1C then+20",
@@ -2713,5 +2719,12 @@
         "sha512": "5d2df4e14bb8ca403ba4ff398988d94e69963977f11b1db8a469bf023332475401af3ce606fc731049febf1ba6247aa9e1349cba9b62773af641509c842fb1e4"
       }
     ]
-  }
+  },
+  "corrections": [
+    {
+      "was": "Name provider described actual-count publication and parent-budget debit together before returned string construction.",
+      "is": "BE4620 publishes actual count before output construction; BF0510 debits parent budget only after BE4620 returns; BEA250 copies the returned temporary afterward.",
+      "evidence": "Existing retained name-source pin e956fc7a and constructor call row BEA2BC; no new native evidence or call-row changes."
+    }
+  ]
 }
