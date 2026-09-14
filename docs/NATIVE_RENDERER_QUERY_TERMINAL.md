@@ -92,3 +92,11 @@ The immutable archive separates source/library/tool/probe inputs from measured
 loaded runtime DLLs and actual guard-provider modules. Canonical paths are measured
 in the x86 process; later disk/archive hashes are not mapped-image hashes.
 Neither these local fixtures nor the build establish game integration or gameplay.
+
+## Integrated validation at 7cbd532e
+
+Six original/source query entries, three lifetime paths, aliased/empty removal and base/null-invoker edges passed. The source-only throwing COM Release case retains publication and restores the base; original exceptional execution remains unproved. The combined strict Win32 build, eight seed checks and both CTests passed.
+The four final-library probes,134 direct/tail rows, twelve saved/read-back
+annotations and58 live/PE spans are retained in `local/checkpoints/7cbd532e/native-renderer-destructor-wave/validation.json`
+(SHA256 `559269e15cbe10ee773e9bc8dcd8372695dc890a33b9254553319ff8e6a39fb2`). Full parent execution and application/gameplay
+validation remain open.

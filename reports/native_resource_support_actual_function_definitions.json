@@ -1,0 +1,108 @@
+{
+ "events": [
+  {
+   "recreate": "00cbeda8",
+   "previous": "Function: Unwind@00cbeda8 at 00cbeda8\nSignature: undefined Unwind@00cbeda8(void)\nEntry: 00cbeda8\nBody: 00cbeda8 - 00cbedb0",
+   "plate": null
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "00cbeda8"
+   },
+   "result": {
+    "success": true,
+    "address": "00cbeda8",
+    "deleted_function": "Unwind@00cbeda8",
+    "body_size": 9,
+    "message": "Function 'Unwind@00cbeda8' deleted at 00cbeda8"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00cbeda8",
+    "end_address": "00cbedb3"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00cbeda8",
+    "end_address": "00cbedb2",
+    "bytes_disassembled": 11,
+    "message": "Successfully disassembled 11 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00cbeda8",
+    "disassemble_first": false
+   },
+   "result": {
+    "success": true,
+    "address": "00cbeda8",
+    "function_name": "Unwind@00cbeda8",
+    "entry_point": "00cbeda8",
+    "body_size": 11,
+    "message": "Function created successfully at 00cbeda8"
+   }
+  },
+  {
+   "defined": "00cbeda8",
+   "end": "00cbedb3",
+   "name": null,
+   "after": "Function: Unwind@00cbeda8 at 00cbeda8\nSignature: undefined Unwind@00cbeda8(void)\nEntry: 00cbeda8\nBody: 00cbeda8 - 00cbedb2"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00cbedb3",
+    "end_address": "00cbedbd"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00cbedb3",
+    "end_address": "00cbedbc",
+    "bytes_disassembled": 10,
+    "message": "Successfully disassembled 10 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00cbedb3",
+    "disassemble_first": false
+   },
+   "result": {
+    "success": true,
+    "address": "00cbedb3",
+    "function_name": "FUN_00cbedb3",
+    "entry_point": "00cbedb3",
+    "body_size": 10,
+    "message": "Function created successfully at 00cbedb3"
+   }
+  },
+  {
+   "defined": "00cbedb3",
+   "end": "00cbedbd",
+   "name": null,
+   "after": "Function: FUN_00cbedb3 at 00cbedb3\nSignature: undefined FUN_00cbedb3(void)\nEntry: 00cbedb3\nBody: 00cbedb3 - 00cbedbc"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}

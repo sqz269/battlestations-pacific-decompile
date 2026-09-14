@@ -1,0 +1,52 @@
+{
+ "repairs": [
+  {
+   "function": "00b339f0",
+   "owner": "agent/orch5-native-renderer-destructor",
+   "when": "2026-09-14T17:00:05Z",
+   "decompile_lines_before": 14,
+   "gaps": [
+    {
+     "site": "00b33a00",
+     "mnemonic": "CALL",
+     "operands": "0x00bf65ac",
+     "gap_start": "00b33a05",
+     "gap_end_exclusive": "00b33a08",
+     "bytes": 3,
+     "after_call": true,
+     "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+    }
+   ],
+   "events": [
+    {
+     "gap": {
+      "site": "00b33a00",
+      "mnemonic": "CALL",
+      "operands": "0x00bf65ac",
+      "gap_start": "00b33a05",
+      "gap_end_exclusive": "00b33a08",
+      "bytes": 3,
+      "after_call": true,
+      "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+     },
+     "clear": "Success: Cleared flow override at 00b33a00 (was: CALL_RETURN, now: NONE)",
+     "disassemble": "Successfully disassembled 3 byte(s)"
+    },
+    {
+     "explicit_tail_call": "00b33a00",
+     "clear": {
+      "status": "success",
+      "message": "Success: Cleared flow override at 00b33a00 (was: NONE, now: NONE)"
+     }
+    }
+   ],
+   "explicit_tail_end_exclusive": "00b33a0e",
+   "explicit_body_sha256": "d50d0fc83672f67e16f2a71aae535e03b8add49defff2df5f4536306e4b238f6",
+   "body_before": "Function: CG_scalar_deleting_dtor_00b339f0 at 00b339f0\nSignature: undefined CG_scalar_deleting_dtor_00b339f0(void)\nEntry: 00b339f0\nBody: 00b339f0 - 00b33a0d",
+   "decompile_lines_after": 11,
+   "gaps_remaining": 0,
+   "body_after": "Function: CG_scalar_deleting_dtor_00b339f0 at 00b339f0\nSignature: undefined CG_scalar_deleting_dtor_00b339f0(void)\nEntry: 00b339f0\nBody: 00b339f0 - 00b33a0d",
+   "stored_body_tail_complete": true
+  }
+ ]
+}

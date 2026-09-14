@@ -34,3 +34,28 @@ also retains three outer providers after debug-line integration. Full parent
 execution, original FH3/SEH identity, application adoption and gameplay remain
 unvalidated. See `reports/native_renderer_constructor.json` for the exact
 integration checkpoint and scoped validation.
+
+## Destructor and actual manager integration
+
+The full B32920 destructor, B339F0 scalar delete and B32900 secondary adjustor
+are implemented in `native_renderer_destructor`, including the 29-state source
+cleanup schedule. Query terminal cleanup is substantive, and physical,
+surface, layout and shader lifetime contexts can now borrow actual-AA0
+resource support. Canonical manager drain dispatches D62B64 support owners
+through B61D60 using the popped owner and the current publication cell.
+
+These changes resolve the earlier query/support source gaps. The final parent
+probe covers linking and import resolution only; it does not invoke either
+parent. Full execution still needs a valid initialized renderer/device graph
+and the documented live subobjects, preimages and borrowed contexts. Static
+caller evidence identifies +19E4 as a generated debug-sphere model and +19E8
+as a generated sprite model; +19E0's writer remains unproved. Canonical model
+bindings and the actual factory composition remain separate requirements.
+
+The nested material-effect +C4 descriptor needs D61A44/B46930/B458A0 cleanup;
+its sampler children use D621F4/B56FC0/B56EA0/B56DE0 and an actual state-list
+pool. Their raw integration is being recovered independently. Existing
+retained-operation/noexcept boundaries, physical-lock and shader-construction
+projected contexts, three outer EndFrame providers, original FH3/SEH identity,
+application adoption and gameplay remain open. See
+`reports/native_renderer_destructor.json` for the pinned validation scope.

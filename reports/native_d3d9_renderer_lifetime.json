@@ -1,6 +1,6 @@
 {
   "packet": "orch5_native_d3d9_renderer_lifetime",
-  "status": "full_parent_evidence_and_complete_constructor_source_integrated_destructor_and_adoption_incomplete",
+  "status": "complete_parent_source_and_actual_manager_support_integrated_runtime_adoption_unvalidated",
   "project": "C:/Users/sqz269/bsp.gpr",
   "program": "/battlestationspacific.exe",
   "original_PE": {
@@ -833,13 +833,13 @@
   "flow_repair": "reports/native_d3d9_renderer_flow_repair.json",
   "function_definition": "reports/native_d3d9_renderer_function_definitions.json",
   "remaining_boundaries": [
-    "Complete B32410 source is integrated; its link/import probe does not invoke the constructor or establish full parent lifetime execution",
-    "Full B32920/B339F0/B32900 destructor source and query terminal dependencies are being reconstructed separately",
-    "Physical/surface/layout/shader lifetime resource support still needs actual-AA0 manager access for full parent composition",
-    "Raw registry B5BF50 zero-resize requires nonnegative current count and capacity; caller supplied live subobjects, scratch preimages and control bindings remain required",
-    "EndFrame retains actual queue B1EBE0, B2BB90 and B2B580 providers after substantive B28D00 debug-line integration",
-    "Original FH3/SEH/register ABI and application/gameplay behavior remain unvalidated",
-    "Nested material-effect descriptor current table[0] dispatch needs a genuinely callable reconstructed descriptor domain (or null descriptor); original EXE table words cannot be invoked as host callbacks"
+    "Complete B32410/B32920/B339F0/B32900 source exists; parent probes cover link/import resolution only and do not invoke constructor/destructor",
+    "Execution requires a valid initialized renderer/device graph with documented live subobjects, scratch preimages, canonical bindings and shared actual publication cells",
+    "Static B4C700 callers identify generated models at19E4/19E8;19E0 writer and complete actual model-factory composition remain open",
+    "Nested material-effect descriptor D61A44/B46930/B458A0 and sampler D621F4/B56FC0/B56EA0/B56DE0 raw terminal integration remains independent unfinished work",
+    "Existing inner retained-operation/noexcept boundaries and projected physical-lock/shader-construction contexts remain explicit",
+    "EndFrame still needs actual B1EBE0, B2BB90 and B2B580 outer providers",
+    "Original private-frame/CRT/FH3/SEH/register ABI, application adoption and gameplay remain unvalidated"
   ],
   "integrator_validation": {
     "direct_call_rows": 91,
@@ -877,6 +877,29 @@
       "sha256": "64c19259048ada5f8868750e99c793c0b95674ea7f391b124b8ed2e613ae8fe0",
       "code_commit": "425b3b4843efe2a3f7032340461002fb83798fc9",
       "artifacts": 3439
+    }
+  },
+  "remaining_boundaries_before_destructor_integration": [
+    "Complete B32410 source is integrated; its link/import probe does not invoke the constructor or establish full parent lifetime execution",
+    "Full B32920/B339F0/B32900 destructor source and query terminal dependencies are being reconstructed separately",
+    "Physical/surface/layout/shader lifetime resource support still needs actual-AA0 manager access for full parent composition",
+    "Raw registry B5BF50 zero-resize requires nonnegative current count and capacity; caller supplied live subobjects, scratch preimages and control bindings remain required",
+    "EndFrame retains actual queue B1EBE0, B2BB90 and B2B580 providers after substantive B28D00 debug-line integration",
+    "Original FH3/SEH/register ABI and application/gameplay behavior remain unvalidated",
+    "Nested material-effect descriptor current table[0] dispatch needs a genuinely callable reconstructed descriptor domain (or null descriptor); original EXE table words cannot be invoked as host callbacks"
+  ],
+  "destructor_integration_correction": {
+    "source": "src/native_renderer_destructor.cpp",
+    "report": "reports/native_renderer_destructor.json",
+    "actual_query_source_integrated": true,
+    "actual_AA0_resource_support_integrated": true,
+    "canonical_D62B64_manager_drain_integrated": true,
+    "parent_executed": false,
+    "checkpoint": {
+      "path": "local/checkpoints/7cbd532e/native-renderer-destructor-wave/validation.json",
+      "sha256": "559269e15cbe10ee773e9bc8dcd8372695dc890a33b9254553319ff8e6a39fb2",
+      "code_commit": "7cbd532eca2ea23ac162bb80257c9e75c02f6594",
+      "artifacts": 3422
     }
   }
 }

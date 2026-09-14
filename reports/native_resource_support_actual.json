@@ -361,5 +361,43 @@
       "Canonical BD0400 dispatch in the captured base lacks D62B64 -> B61D60 with borrowed actual0108FEDC cell. This packet fixture explicitly unregisters BCFCA0 and invokes existing delete_native_resource_support_00b61d60 before empty-manager teardown; full AA0 drain is not claimed.",
       "No original active-renderer, original FH3 execution, installed game, visual or drop-in binary replacement validation."
     ]
+  },
+  "orch5_destructor_wave_integration": {
+    "code_commit": "7cbd532eca2ea23ac162bb80257c9e75c02f6594",
+    "checkpoint": {
+      "path": "local/checkpoints/7cbd532e/native-renderer-destructor-wave/validation.json",
+      "sha256": "559269e15cbe10ee773e9bc8dcd8372695dc890a33b9254553319ff8e6a39fb2",
+      "code_commit": "7cbd532eca2ea23ac162bb80257c9e75c02f6594",
+      "artifacts": 3422
+    },
+    "strict_msvc_win32_build": true,
+    "verified_native_seeds": 8,
+    "ctests_passed": 2,
+    "fixture_program": "local/native_renderer_destructor_integration/renderer_support_actual_probe.exe",
+    "fixture_scope": "Shared legacy and actual-AA0 resource-support source checks passed, including borrowed identity and postpublication validation failure retaining the owner. The native publication operands and captured-section exit before final reload were independently checked. Original getter/FH3 execution remains unproved.",
+    "saved_annotation_journal": "local/ghidra-annotations-20260914T174702Z.json",
+    "native_byte_review": {
+      "spans": 58,
+      "bytes": 6518,
+      "scope": "combined packet and explicit dependency/context spans; includes overlaps"
+    },
+    "call_site_review": {
+      "rows_checked": 134,
+      "failures": 0,
+      "scope": "combined numeric direct/tail rows; indirect dispatch and original exception execution excluded"
+    },
+    "saved_flow_and_definition_records": [
+      "reports/native_renderer_query_terminal_flow_repair.json",
+      "reports/native_resource_support_actual_flow_repair.json",
+      "reports/native_resource_support_actual_function_definitions.json",
+      "reports/native_resource_support_drain_flow_repair.json",
+      "reports/native_renderer_destructor_flow_repair.json",
+      "reports/native_renderer_destructor_function_definitions.json"
+    ],
+    "constructor_executed": false,
+    "destructor_executed": false,
+    "full_renderer_lifetime_validated": false,
+    "original_fh3_seh_abi_validated": false,
+    "game_validated": false
   }
 }

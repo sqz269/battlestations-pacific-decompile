@@ -111,3 +111,11 @@ contains immutable native/base-source inputs. The final validated archive holds
 the compiler-read source closure, libraries, fixture, tools and separately
 identified modules actually loaded by that fixture. Build/hash agreement does
 not establish original ABI, SEH, game or visual parity.
+
+## Integrated validation at 7cbd532e
+
+Shared legacy and actual-AA0 resource-support source checks passed, including borrowed identity and postpublication validation failure retaining the owner. The native publication operands and captured-section exit before final reload were independently checked. Original getter/FH3 execution remains unproved. The combined strict Win32 build, eight seed checks and both CTests passed.
+The four final-library probes,134 direct/tail rows, twelve saved/read-back
+annotations and58 live/PE spans are retained in `local/checkpoints/7cbd532e/native-renderer-destructor-wave/validation.json`
+(SHA256 `559269e15cbe10ee773e9bc8dcd8372695dc890a33b9254553319ff8e6a39fb2`). Full parent execution and application/gameplay
+validation remain open.

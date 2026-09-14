@@ -161,3 +161,11 @@ Final configured build, dependency commits, link/import-only probe and immutable
 artifact hashes are recorded in the report. No full parent destructor or parent
 exception path was executed. Child fixtures and linked symbols remain distinct
 from complete renderer runtime or shutdown validation.
+
+## Integrated validation at 7cbd532e
+
+Complete renderer destructor and both deleting wrappers passed final-library linking and import resolution. The probe did NOT invoke the destructor. Independent static review checked all29 cleanup receivers, ten COM call patterns, thirteen inline array cleanup blocks, sixteen profiles and four model-return call gates. The combined strict Win32 build, eight seed checks and both CTests passed.
+The four final-library probes,134 direct/tail rows, twelve saved/read-back
+annotations and58 live/PE spans are retained in `local/checkpoints/7cbd532e/native-renderer-destructor-wave/validation.json`
+(SHA256 `559269e15cbe10ee773e9bc8dcd8372695dc890a33b9254553319ff8e6a39fb2`). Full parent execution and application/gameplay
+validation remain open.

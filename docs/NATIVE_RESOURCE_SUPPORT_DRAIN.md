@@ -58,3 +58,11 @@ not execute original manager FH3/SEH exceptions or establish native ABI identity
 Source/library/tool artifacts and measured runtime DLL files are archived
 separately; later file hashes are not mapped-image hashes. No game validation is
 claimed.
+
+## Integrated validation at 7cbd532e
+
+Actual-AA0 getter registration and canonical manager drain passed with rebound publication, concrete D62B64 deletion and released manager vector/section storage. Original/source scalar flags2 retention matched; flags1 shared free is source checked. The combined strict Win32 build, eight seed checks and both CTests passed.
+The four final-library probes,134 direct/tail rows, twelve saved/read-back
+annotations and58 live/PE spans are retained in `local/checkpoints/7cbd532e/native-renderer-destructor-wave/validation.json`
+(SHA256 `559269e15cbe10ee773e9bc8dcd8372695dc890a33b9254553319ff8e6a39fb2`). Full parent execution and application/gameplay
+validation remain open.
