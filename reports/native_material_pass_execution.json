@@ -31,7 +31,8 @@
       "native_sha256": "73a42931d4f4d385cbf29137d38a8c5ed4a17d34a9c11f217f5331b2636c84d8",
       "live_equals_pe": true,
       "source": "execute_native_material_pass_00b454d0",
-      "coverage": "complete body orchestration; downstream linkage incomplete"
+      "coverage": "complete body orchestration; actual provider chain linked, derived runtime unexecuted",
+      "worker_coverage": "complete body orchestration; downstream linkage incomplete"
     },
     {
       "address": "00B44750",
@@ -40,7 +41,8 @@
       "native_sha256": "f7eb5a9057acf5af9e2b25b4a707e2f1824ef829a72469b0c794913103b750bd",
       "live_equals_pe": true,
       "source": "bind_native_material_pass_geometry_00b44750",
-      "coverage": "complete body orchestration; downstream linkage incomplete"
+      "coverage": "complete body orchestration; actual provider chain linked, derived runtime unexecuted",
+      "worker_coverage": "complete body orchestration; downstream linkage incomplete"
     },
     {
       "address": "00B43410",
@@ -49,7 +51,8 @@
       "native_sha256": "0dca81aa71a05c9c00cf5656a12f976cbefe8f0415eb9bc73e290cce0673399c",
       "live_equals_pe": true,
       "source": "apply_native_material_pass_00b43410",
-      "coverage": "complete body orchestration; downstream linkage incomplete"
+      "coverage": "complete body orchestration; actual provider chain linked, derived runtime unexecuted",
+      "worker_coverage": "complete body orchestration; downstream linkage incomplete"
     },
     {
       "address": "00B1BFA0",
@@ -549,14 +552,119 @@
       ]
     }
   ],
-  "unresolved_concrete_dependencies": [
+  "unresolved_concrete_dependencies": [],
+  "validation": {
+    "source_commit": "d91f24d39e2e7aeeb461724508ff1b8c86fce63e",
+    "strict_win32_build": true,
+    "existing_ctests_passed": 2,
+    "native_seed_matches": 8,
+    "numeric_call_rows": 123,
+    "numeric_call_failures": 0,
+    "fresh_live_PE_spans": 40,
+    "fresh_live_PE_bytes": 5487,
+    "retained_fixture_cases": [
+      "CH/CJ vector",
+      "CN diagnostic pool/draw",
+      "BQ raw string pool",
+      "original/source base RET4 and queue getter"
+    ],
+    "retained_fixture_exits": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "probe": {
+      "source_commit": "d91f24d39e2e7aeeb461724508ff1b8c86fce63e",
+      "driver_exit": 0,
+      "combined_library_sha256": "9835992cdcaad72d04628fc3c50681dcb9b97535bec51874133fac07d6cabe79",
+      "cases": [
+        "chcj",
+        "clcn",
+        "bq",
+        "pass"
+      ],
+      "scope": "Existing retained tests only. Pass original/source RET4 and raw context getter; forced real derived-pass link. Diagnostic source vector/pool/draw behavior. Derived pass, full native diagnostics, exception injection, native FH3 and game execution are not claimed.",
+      "full_derived_pass_link": {
+        "forced_symbols": [
+          "?execute_native_material_pass_current08@bsp@@YAXPAX0AAUNativeMaterialPassExecutionContext@1@AAUNativeMaterialPassExecutionFrame@1@@Z",
+          "?execute_native_material_pass_00b454d0@bsp@@YAXPAX0AAUNativeMaterialPassExecutionContext@1@AAUNativeMaterialPassExecutionFrame@1@@Z"
+        ],
+        "retained_symbols": [
+          "execute_native_material_pass_current08",
+          "execute_native_material_pass_00b454d0",
+          "bind_native_material_pass_geometry_00b44750",
+          "apply_native_material_pass_00b43410",
+          "build_native_material_constants_00b42350",
+          "record_native_material_diagnostics_draw_00b16f80"
+        ],
+        "link_exit": 0,
+        "fixture_exit": 0,
+        "map_sha256": "b87b3d7850a7579915ff01cdf9ad822cebe079a1ca6128ccf56d07c0cd355b60",
+        "scope": "Actual current-profile dispatcher, derived wrapper, geometry, state/draw, constants and diagnostics retained. Runtime still only base/getter fixture."
+      }
+    },
+    "derived_parent_linked": true,
+    "derived_parent_executed": false,
+    "game_validated": false,
+    "call_gate": {
+      "path": "local\\native_pass_parent_integration\\call_gate.log",
+      "sha256": "6bcfd6f59d8d24fee1cfcac2779dd682118d0eb99e64637bb188675b7757df39"
+    },
+    "native_audit": {
+      "path": "local\\native_pass_parent_integration\\native_audit.json",
+      "sha256": "fb0a19f55b049dac0e93ddbdca0c0ff1202e37257db28f190a69ac57908d49b2"
+    },
+    "independent_review": {
+      "sha256": "ea116e510b5ec86260a19cb0f27c48a150b359ae23a7c34cfeeadba64069cc39",
+      "concrete_source_corrections": 0
+    },
+    "catch_ownership": "Nine call rows now name their actual catch function and retain parent_function. B1479B stored body was restored to B1479B..B147BC; B147BD still belongs to B145E0. No callee no-return change or native EH runtime claim.",
+    "limitations": [
+      "Full derived pass execution",
+      "Native diagnostic parent execution",
+      "Injected constructor/cleanup failure",
+      "Private register/stack integration and original FH3/SEH",
+      "Gameplay"
+    ],
+    "checkpoint": {
+      "path": "local/checkpoints/d91f24d3/native-material-pass-wave/validation.json",
+      "sha256": "4af98f8bbde114bc1a3ffbc5de7ecc5d219faa1fa83f59f9cb35aa61bbec75e3",
+      "source_commit": "d91f24d39e2e7aeeb461724508ff1b8c86fce63e",
+      "artifacts": 3751,
+      "runtime_module_observations": 28,
+      "unique_runtime_modules": 11
+    },
+    "source_manifest_sha256": "6f846b859329b01a7ddb6170f263a47cad07cde623a16b74aface089ff353ff8",
+    "annotation_journal": "local/ghidra-annotations-20260914T201549Z.json",
+    "frozen_worker_archive_sha256": "8371862f9b3e5f91e4d81828710d430a529bd02e82b42f3785c8e3ff1f94732a"
+  },
+  "evidence_dir": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-pass-execution\\local\\verification\\pass_execution",
+  "definition_record": "reports/native_material_pass_execution_function_definitions.json",
+  "annotation_pending_primary": [],
+  "source_manifest": [
     {
-      "native": "00B42350",
-      "symbol": "build_native_material_constants_00b42350",
-      "status": "assigned independent raw body packet; declaration only here"
+      "path": "include/bsp/native_material_pass_execution.hpp",
+      "sha256": "3353f9f23c8d112b1cbcd23d0d93798fa3e8da9df1cd299009f19b309356fb37"
+    },
+    {
+      "path": "src/native_material_pass_execution.cpp",
+      "sha256": "c2619bf04f9228d13cf2a54611383137bdb62a3c2458d385200b4f767a840384"
+    },
+    {
+      "path": "src/native_material_pass_execution_leaves.cpp",
+      "sha256": "0a158acac87958f0479eb316c711d2b3a711171f9fa4946c27ab76f93b053168"
+    },
+    {
+      "path": "docs/NATIVE_MATERIAL_PASS_EXECUTION.md",
+      "sha256": "28412b2f84c8f2d1903389da3371a33ddc3e0928a27585db002d38222c438c05"
+    },
+    {
+      "path": "cmake/startup.cmake",
+      "sha256": "b355ca55b1909a8cb4fbef58edeeef988200cf8babc2e5bb2249dcb7190369c9"
     }
   ],
-  "validation": {
+  "worker_validation": {
     "strict_source_compile_exit": 0,
     "source_compile_log": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-pass-execution\\local\\verification\\pass_execution\\compile_source.log",
     "full_build": "passed strict MSVC Win32 Release /MD /fp:strict; both existing CTests passed",
@@ -618,9 +726,23 @@
     },
     "final_source_commit": "e5e2b90a35e669048ff56645babac2fd52a468a5"
   },
-  "evidence_dir": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-pass-execution\\local\\verification\\pass_execution",
-  "definition_record": "reports/native_material_pass_execution_function_definitions.json",
-  "annotation_pending_primary": [
+  "worker_unresolved_concrete_dependencies": [
+    {
+      "native": "00B42350",
+      "symbol": "build_native_material_constants_00b42350",
+      "status": "assigned independent raw body packet; declaration only here"
+    }
+  ],
+  "resolved_at_parent_integration": [
+    {
+      "native": "00B42350",
+      "symbol": "build_native_material_constants_00b42350",
+      "source_commit": "7da09ce91112fde1f29644ad2da177b4915be447",
+      "published_commit": "89f78d515ca4dcfc5844a147b22281ce722afc8c",
+      "status": "Actual provider linked through current-profile dispatcher, derived wrapper, geometry and apply."
+    }
+  ],
+  "worker_annotation_pending_primary": [
     {
       "address": "00B5E5E0",
       "name": "BSP_MaterialPassBase_IgnoreEntry"
@@ -630,7 +752,13 @@
       "name": "BSP_MaterialPass_DrawEntry"
     }
   ],
-  "source_manifest": [
+  "annotation_integrated": {
+    "addresses": 30,
+    "new_descriptive_names": 2,
+    "saved_readback": true,
+    "preserved_existing_comments": true
+  },
+  "worker_source_manifest": [
     {
       "path": "include/bsp/native_material_pass_execution.hpp",
       "sha256": "3353f9f23c8d112b1cbcd23d0d93798fa3e8da9df1cd299009f19b309356fb37"

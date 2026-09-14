@@ -124,3 +124,33 @@ Full build, existing CTests and final artifact capture are recorded in the repor
 when complete. A static archive build cannot establish linked B44750/B43410
 execution while their two concrete downstream providers are absent. No game,
 active-renderer, full derived-pass or original EH execution is claimed.
+
+
+## Parent integration validation (2026-09-14)
+
+Integrated code d91f24d3 contains the actual B42350 constant builder previously
+published in 89f78d51. The current-profile dispatcher, B454D0 wrapper, B44750
+geometry path, B43410 apply path, B42350 constants and B16F80 diagnostics now
+link together in the retained executable. The earlier unresolved-provider
+status above describes the worker snapshot; the integrated link is complete.
+
+Strict Win32 build, both existing CTests, eight original native seeds, 123
+numeric call-site rows and 40 fresh live-Ghidra/installed-PE spans (5,487 bytes)
+passed. Existing CH/CJ, CN and BQ fixtures were recompiled against the combined
+library and passed. The pass fixture again compared the complete original
+RET4 body and raw queue getter with source. Forced-link map entries establish
+the full derived dependency chain; that derived path was not executed.
+
+Nine diagnostic call rows now identify the separate catch functions while
+retaining their logical parent. Catch_All@00b1479b had a truncated stored body
+after _free even though its call-site flow override was already NONE. Its
+original name/signature/comment were preserved when restoring the exact
+34-byte range B1479B..B147BC, ending at the rethrow call. B147BD remains in
+the normal B145E0 body. The parent listing and CRT signatures remain unchanged.
+This analysis repair supplies no native EH execution evidence.
+
+Thirty owned names/comments were saved, read back and re-exported, including
+the two previously unnamed virtual leaves. Full derived/native diagnostic
+execution, injected cleanup failures, original private ABI/FH3 and gameplay
+remain outside this validation. The report retains the original worker
+validation separately and points to the immutable integrated checkpoint.
