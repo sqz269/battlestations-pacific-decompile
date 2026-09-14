@@ -8,6 +8,7 @@
 namespace bsp::game {
 class GameHostLog;
 class GameObserverRuntime;
+class GameNativeVfsRuntime;
 
 // One application-owned raw14h manager, raw10h effect owner and raw8h factory.
 // Private publications outlive the menu and all shutdown calls. Admitted
@@ -26,6 +27,15 @@ public:
     void probe_gameplay_effect_memory(const char* label);
     SoundLifetimeAccess sound_lifetime() noexcept;
     void bind_sound_runtime(GameSoundRuntime*) noexcept;
+    // Borrow the same application dispatch table when composing raw VFS
+    // services. Bind their contexts before any corresponding owner registers.
+    NativeSingletonDeletionBindings& native_deletion_bindings() noexcept {
+        return deletion_bindings_;
+    }
+    // Attach before VFS core registration and retain through shutdown. The
+    // runtime retires immediately after the raw drain while this host's table
+    // and publication cells still exist; shutdown then clears this pointer.
+    void bind_vfs_runtime(GameNativeVfsRuntime*) noexcept;
     // Install stable borrowed services before registration. They remain valid
     // until shutdown returns; scalar flags1 consumes the online allocation.
     // Input callers retain SDK references until all raw device owners finish.
@@ -57,6 +67,7 @@ public:
     void shutdown();
 
 private:
+    void retire_vfs_after_drain() noexcept;
     GameHostLog& log_;
     void* volatile manager_publication_01090aa0_{nullptr};
     void* volatile input_settings_publication_00e198e8_{nullptr};
@@ -67,6 +78,7 @@ private:
     NativeGameResourceFactoryContext game_resource_factory_context_{
         manager_publication_01090aa0_, game_resource_factory_publication_00e19b90_};
     NativeSingletonDeletionBindings deletion_bindings_;
+    GameNativeVfsRuntime* vfs_runtime_{};
     std::unique_ptr<GameObserverRuntime> observers_;
 };
 } // namespace bsp::game

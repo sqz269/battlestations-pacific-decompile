@@ -1,0 +1,532 @@
+{
+  "tested_commit": "dd86c2152a814a352ee0e2f3c3b503fc678b0008",
+  "passed": true,
+  "strict_msvc_win32_build_passed": true,
+  "existing_ctests_passed": 2,
+  "seed_spans_passed": 8,
+  "build_input_count": 2514,
+  "build_input_manifest_sha256": "ce245d2b9a93959f38b0b68bd01af3778811a86cf5fa97b3c389e14dcaddeb6a",
+  "build_input_scope": "All tracked src/include/tests/cmake/scripts/CMake inputs; system SDK/compiler and downloaded dependency trees outside tracked pins; resulting three libraries separately pinned.",
+  "source_header_sha256": {
+    "include/bsp/native_cockpit_construction_block.hpp": "f7d39d48cf096ef0fdc11d3aac49ba0f0dcfc8ab7d058961916a4fad3be3bb9d",
+    "src/native_cockpit_construction_block.cpp": "82b94ea93e18ed2a1bb765d37daab6a48ce501c4ce0ced8b612a3cf95a3c6ca1",
+    "include/bsp/native_cockpit_helper_construction.hpp": "0b025465f114ed105d886b2d5963dc2e2e869dc4b46f02c1aae76b8846c07669",
+    "src/native_cockpit_helper_construction.cpp": "a72d1f60a8cda7b68cbb5fe3b9fcf6f87b60bbb36e528d34448d3d0157d752da"
+  },
+  "libraries": {
+    "bsp_core.lib": "fc80a2d6140964d87425f30c1c66243bdbd6d075bdf86cfe38187b7aa1455ad1",
+    "bsp_lua511.lib": "71e114b0ff6244852d678a5779fcbf28589bdcecbad811aff228ffd5007fe8c7",
+    "bsp_zlib121.lib": "f3f934925213a2ffb81f3aec2afbb065c1733cf43b28dddf31db6a69185c4102"
+  },
+  "build_log_sha256": "796b07c4eec7eedba082bcf0ae808b3749c1af3b13b735c24577682df73a660b",
+  "primary_source_review": {
+    "combined_source_commit": "b5a7ab253243ca13e24100f18bf5ec1498b3967c",
+    "constructor_commit": "9cbe5b7d4756d662227809d937df4eea8db8bfd9",
+    "block_commit": "125e6c93e07a527fb989a48142f546c7b3bb7461",
+    "findings": [],
+    "reviewed_source_hashes": {
+      "include/bsp/native_cockpit_helper_construction.hpp": "0b025465f114ed105d886b2d5963dc2e2e869dc4b46f02c1aae76b8846c07669",
+      "src/native_cockpit_helper_construction.cpp": "0b32ce57bd8d34761c614e49ac3e0032b4a7d423d8da79bbeba71247ef2ed365",
+      "include/bsp/native_cockpit_construction_block.hpp": "f7d39d48cf096ef0fdc11d3aac49ba0f0dcfc8ab7d058961916a4fad3be3bb9d",
+      "src/native_cockpit_construction_block.cpp": "82b94ea93e18ed2a1bb765d37daab6a48ce501c4ce0ced8b612a3cf95a3c6ca1"
+    },
+    "dependency_pins_checked": 31,
+    "constructor_doc_report_hashes": {
+      "docs/NATIVE_COCKPIT_HELPER_CONSTRUCTION.md": "0c4170432a87f830be6a5f2c9f11b484b7a042d576f96ecd6db50d71f5e750b2",
+      "reports/native_cockpit_helper_construction.json": "0da0f484ba5ba5ee0714b93fe07d14be23ef9e64db6a8f9c825cd9c620a3ecf9"
+    },
+    "native_spans": [
+      {
+        "address": "00b3c800",
+        "bytes": 339,
+        "sha256": "21fc45bafe861070036aad3aedb79758e5e3a50bb275e3f189cde9e8fea9d3df",
+        "live_PE_equal": true
+      },
+      {
+        "address": "00cbece0",
+        "bytes": 8,
+        "sha256": "1283f85fb1d094d0fda8cc0c852390bc5389998d87bd83cb4c16054ab0897914",
+        "live_PE_equal": true
+      },
+      {
+        "address": "00cbece8",
+        "bytes": 8,
+        "sha256": "49cf8696b65376013d319af4fc859693cd94f8f296c462947a1a6e0fd004187c",
+        "live_PE_equal": true
+      },
+      {
+        "address": "00cbecf0",
+        "bytes": 25,
+        "sha256": "bc0cf6d7c4082e9ccc1ffd76a73578efad08f32706a361ef80b760953e01dfb1",
+        "live_PE_equal": true
+      },
+      {
+        "address": "00cbed09",
+        "bytes": 11,
+        "sha256": "9a9ae1f76d499becf3a0e632807122ceef35d452aaeec6b3c576ffb94180873a",
+        "live_PE_equal": true
+      },
+      {
+        "address": "00cbed14",
+        "bytes": 10,
+        "sha256": "cc6903656c2e5b6f1933d49dfdd23e81bf31b55e15a53f1edd6c05ea722613bd",
+        "live_PE_equal": true
+      },
+      {
+        "address": "00df74c4",
+        "bytes": 76,
+        "sha256": "10e0aa079616c9a5c835fec74d80e2360a4395ec474e4fab68e87050adcf1860",
+        "live_PE_equal": true
+      }
+    ],
+    "review_scope": [
+      "Complete block and constructor header/source/doc/report read by primary",
+      "All constructor normal instructions, scoped EH map/funclets and three current indirect dispatch sites inspected",
+      "Only preconstructed host credits move; no duplicate native retain or cleanup; live survivors pin persistent block",
+      "Raw string cleanup cannot retry after normal return throw; raw camera return only before completion",
+      "Current camera resolved from canonical runtime after x87 spill; final decrement uses captured local viewport",
+      "Current final IAT/table inputs explicit; arbitrary profiles and unrestricted native FH3 remain outside the proved domain"
+    ],
+    "build_fixture_and_generated_x87": "pending combined build and current-library fixture",
+    "new_candidate_native_bodies": 1,
+    "new_candidate_native_bytes": 339,
+    "game_validated": false,
+    "post_build_integration_review": {
+      "tested_commit": "59e84616a3bc5ccc065fdf094738319e88d41004",
+      "source_correction_commit": "71c2d636",
+      "constructor_cpp_sha256": "a72d1f60a8cda7b68cbb5fe3b9fcf6f87b60bbb36e528d34448d3d0157d752da",
+      "constructor_author_correction_review": "No blocking concerns; delivered by /root/registry_admission_impl_bh; header unchanged.",
+      "composition_review": "J:/PROG/bsp-evidence/orch3-cockpit-construction-bj-20260913/source_composition_review.json",
+      "composition_review_sha256": "02a61c37cc63c8c0db0521c40dc0daba2add216a0cdf371e6c7ab0b4fd2e3b38",
+      "findings": [],
+      "generated_x87_review": "local/bj-generated-x87.json",
+      "historic_cpp_pin_note": "reviewed_source_hashes above records the pre-correction candidate. The current constructor cpp pin is this integration override.",
+      "revalidated_combined_commit": "dd86c2152a814a352ee0e2f3c3b503fc678b0008",
+      "revalidated_scope": "Four cockpit source/header hashes and generated object/listing unchanged; full combined build with 2514 inputs and both existing CTests passed; fixture replay recorded separately against current libraries."
+    }
+  },
+  "independent_source_review": {
+    "schema": "bsp.external_source_composition_review.v1",
+    "packet": "orch3_cockpit_construction_bj",
+    "reviewer": "/root/cockpit_registry_admission_bh",
+    "review_kind": "independent read-only block/body composition audit; reviewer authored the unchanged block",
+    "review_date": "2026-09-13",
+    "repository": "J:/PROG/battlestations-pacific-decompile-orch3-20260910",
+    "tested_commit": "59e84616a3bc5ccc065fdf094738319e88d41004",
+    "observed_head": "59e84616a3bc5ccc065fdf094738319e88d41004",
+    "observed_worktree_clean": true,
+    "result": "no_findings_within_stated_domain",
+    "findings": [],
+    "source_files": [
+      {
+        "path": "include/bsp/native_cockpit_construction_block.hpp",
+        "sha256": "f7d39d48cf096ef0fdc11d3aac49ba0f0dcfc8ab7d058961916a4fad3be3bb9d"
+      },
+      {
+        "path": "src/native_cockpit_construction_block.cpp",
+        "sha256": "82b94ea93e18ed2a1bb765d37daab6a48ce501c4ce0ced8b612a3cf95a3c6ca1"
+      },
+      {
+        "path": "include/bsp/native_cockpit_helper_construction.hpp",
+        "sha256": "0b025465f114ed105d886b2d5963dc2e2e869dc4b46f02c1aae76b8846c07669"
+      },
+      {
+        "path": "src/native_cockpit_helper_construction.cpp",
+        "sha256": "a72d1f60a8cda7b68cbb5fe3b9fcf6f87b60bbb36e528d34448d3d0157d752da"
+      }
+    ],
+    "review_basis": {
+      "block_commit": "125e6c93e07a527fb989a48142f546c7b3bb7461",
+      "constructor_commit_prefix": "9cbe5b7d",
+      "reviewed_atomic_correction_commit_prefix": "71c2d636",
+      "method": "Read the current constructor header/body and correction diff. Verify the exact unchanged block hashes, reuse the previously read block/provider contracts, and verify that the relevant camera, viewport, scene and lifetime provider files have no changes from the block commit to tested HEAD. Inspect and hash the existing built object listing without executing or regenerating it.",
+      "new_native_analysis": false,
+      "ghidra_operations": [],
+      "native_body_credit": 0,
+      "parent_reported_validation": "Full MSVC Win32 build and two CTests passed at the tested commit. This reviewer did not run them.",
+      "fixture_validation": "Separate fixture worker and primary responsibility; no fixture outcome is inferred by this review."
+    },
+    "checks": [
+      {
+        "topic": "Explicit attempt and four reservations",
+        "conclusion": "The block owns exactly two stable viewport records and reserves scene, lifetime, first viewport and replacement viewport admissions during preparation. Constructor input checks and validate_prepared run before the outer token is moved and execution begins. Scene credit enters in-place owner preparation; viewport[0] enters raw B71A80; lifetime credit enters success-only reference construction; viewport[1] enters the replacement factory. Every consume uses this attempt's field, with no ambient next-slot mechanism or new host allocation on the supported path.",
+        "source_anchors": [
+          "include/bsp/native_cockpit_construction_block.hpp:18-46",
+          "include/bsp/native_cockpit_construction_block.hpp:72-74",
+          "src/native_cockpit_construction_block.cpp:87-122",
+          "src/native_cockpit_helper_construction.cpp:81-91",
+          "src/native_cockpit_helper_construction.cpp:126-137",
+          "src/native_cockpit_helper_construction.cpp:189-191",
+          "src/native_camera_owner.cpp:266-299"
+        ]
+      },
+      {
+        "topic": "Move, cancellation and settlement",
+        "conclusion": "Prepared moves transfer the capability; moving an executing attempt is rejected. Prepared cancellation releases credits and forgets only unexposed cancelled/unused records, returning the block to idle. Constructor-local destruction after execution cancels only remaining credits and marks the block settled. It preserves all camera companions and published viewport records; it performs no native release, pool return or object deletion.",
+        "source_anchors": [
+          "src/native_cockpit_construction_block.cpp:12-68",
+          "src/native_cockpit_helper_construction.cpp:86-88",
+          "src/native_cockpit_helper_construction.cpp:227"
+        ]
+      },
+      {
+        "topic": "Prepared owner abandonment and camera survivors",
+        "conclusion": "Before camera completion, constructor cleanup resets only an owner still in prepared phase, ending unused typed/scene preparation before returning the raw pool slot. A callee-unwound dead owner remains in the block for explicit reset. Late B71A80 failure can leave viewport[0] live after camera typed storage ends; settlement preserves that record and reset rejects it using Storage::phase without reading ended camera storage. After successful B71A80, camera_completed prevents a diagnostic during reference admission from freeing the live camera or returning its slot; the resulting unsupported diagnostic can pin the block for external recovery.",
+        "source_anchors": [
+          "src/native_cockpit_helper_construction.cpp:128-137",
+          "src/native_cockpit_helper_construction.cpp:199-225",
+          "src/native_camera_owner.cpp:120-121",
+          "src/native_camera_owner.cpp:176-181",
+          "src/native_cockpit_construction_block.cpp:136-156"
+        ]
+      },
+      {
+        "topic": "Native cleanup versus host settlement",
+        "conclusion": "The string live bit is cleared before normal or unwinding string return. Camera publication switches to base state before normal string cleanup. The replacement factory owns failure of its raw viewport construction; after successful factory return the caller switches to base state and has no automatic local viewport release on a subsequent exception. Constructor catch performs only its projected string/raw-camera/helper-base cleanup, then rethrows; nested throwing cleanup terminates. Token settlement remains outside that native cleanup and does not add survivor releases.",
+        "source_anchors": [
+          "src/native_cockpit_helper_construction.cpp:25-31",
+          "src/native_cockpit_helper_construction.cpp:139-147",
+          "src/native_cockpit_helper_construction.cpp:189-225",
+          "src/native_viewport_owner.cpp:92-109",
+          "src/native_cockpit_construction_block.cpp:36-68"
+        ]
+      },
+      {
+        "topic": "Current canonical camera and captured final viewport",
+        "conclusion": "Each configuration/replacement operation reloads the helper's current camera key and resolves its live canonical NativeCameraReference, permitting a callback to substitute another supported camera without falling back to the original block owner. Final release uses the captured replacement allocation, not a later camera viewport. It reads the current borrowed decrement IAT cell at the release site, then checks the current concrete profile/table only on zero. The explicit release context supplies those current inputs without introducing a shared registry API or extra native retain.",
+        "source_anchors": [
+          "src/native_cockpit_helper_construction.cpp:33-67",
+          "src/native_cockpit_helper_construction.cpp:149-198",
+          "include/bsp/native_cockpit_helper_construction.hpp:6-16"
+        ]
+      },
+      {
+        "topic": "Persistent retirement and host-quiescent reset",
+        "conclusion": "The reference disposal callback is fixed to the stable block before publication and only marks retirement after native camera deletion and identity-only runtime unbind. It validates host reference/owner identity and dead phase without reading the returned native pool slot. Reset requires settled phase, retired reference/dead owner where present, and both records unused/cancelled/retired. It destroys the retired reference before the dead owner and forgets inert viewport records only under caller-established host quiescence. Live orphans, prepared/executing reuse and destruction of a non-idle block are rejected; helper deletion does not authorize reclaiming the block.",
+        "source_anchors": [
+          "src/native_cockpit_helper_construction.cpp:134-137",
+          "src/native_camera_reference.cpp:76-91",
+          "src/native_cockpit_construction_block.cpp:124-164",
+          "src/native_viewport_registry.cpp:93-120"
+        ]
+      },
+      {
+        "topic": "Corrected atomic lifetime and preserved words",
+        "conclusion": "The correction copies only the four preserved uint32 words from offsets +10/+14/+1C/+20, starts NativeCockpitHelperStorage normally, restores those scalar words and stores the atomic count through its API. No whole-object atomic representation restore remains. The actual built listing starts the count at zero at object offset 0xDF, then writes explicit base profile/count1/helper profile and zeroed fields before the first native call at 0x12F. This transient count0 is acceptable only for caller-owned unused private prepublication storage with no observer/callback; it is not instruction-for-instruction native store parity.",
+        "source_anchors": [
+          "src/native_cockpit_helper_construction.cpp:93-118",
+          "include/bsp/native_cockpit_helper_construction.hpp:23-29",
+          "local/bj-constructor-object.disasm.txt:617-643"
+        ]
+      }
+    ],
+    "existing_build_artifacts": {
+      "metadata": "local/bj-generated-x87.json",
+      "object": "build/win32/bsp_core.dir/Release/native_cockpit_helper_construction.obj",
+      "object_sha256": "f04d045f03985f645fd72d8b33b73b065db18937f2790cbb05e0bd7048f040ec",
+      "listing": "local/bj-constructor-object.disasm.txt",
+      "listing_sha256": "3ee46088b6f42d9b3c29e574a5cde0eaa3dcffd87bd00460a06666c5a627699b",
+      "hashes_independently_verified": true,
+      "primary_x87_review": "Metadata records three FLD/FSTP sequences and their camera-key timing; the primary independently reviewed them. This composition review did not repeat full x87/native analysis."
+    },
+    "material_limits": [
+      "Supported operation requires one externally serialized callback/reentrancy domain, one fixed installed canonical viewport registry, matching scene/lifetime/runtime providers, fixed live preparation references and nonnull supported native allocation. It does not add concurrency or provider mutation guarantees.",
+      "Nested construction requires a different stable block prepared before native events and consumes its own admissions. Current-camera substitution must remain in the same canonical supported runtime. No duplicate identity or ambient admission fallback is accepted.",
+      "Host contract diagnostics, termination on protocol misuse and exceptions in the native operation projection are distinct. Unexpected post-camera reference admission failure preserves the native survivor and may make reset impossible without external recovery.",
+      "The actual 24h helper allocation and stable preallocated helper owner/reference storage remain caller responsibilities. Helper companions are bound only after constructor success. This block neither supplies nor automatically reclaims them.",
+      "A live viewport orphan remains live indefinitely until an actual native terminal event; the block has no orphan accessor or ownership authority and performs no automatic cleanup. Reclaiming retired records additionally requires proof that inert semantic frame/cache borrows have ended.",
+      "Native captured viewport liveness through renderer/decrement callbacks is a caller/provider contract. This implementation does not insert retains, defer native destruction or invent renderer inputs to satisfy it.",
+      "The callable CE2220 binding and concrete D5E5F8 table must remain valid. Unsupported profile/slot changes are host diagnostics, not generalized native virtual dispatch coverage.",
+      "This is a new explicit MSVC Win32 host interface and C++ exception projection, not original calling-convention, FH3/SEH, arbitrary floating-exception or native write-trace equivalence. No game validation or complete reconstruction claim follows.",
+      "No tests, builds, game/probe execution, Ghidra writes or repository edits were performed by this audit. The only authored artifact is this external review JSON; fixture and publication decisions remain with the primary."
+    ]
+  },
+  "generated_x87_review": {
+    "object": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\bsp_core.dir\\Release\\native_cockpit_helper_construction.obj",
+    "object_sha256": "f04d045f03985f645fd72d8b33b73b065db18937f2790cbb05e0bd7048f040ec",
+    "dumpbin": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\dumpbin.exe",
+    "listing": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\bj-constructor-object.disasm.txt",
+    "listing_sha256": "3ee46088b6f42d9b3c29e574a5cde0eaa3dcffd87bd00460a06666c5a627699b",
+    "manual_instruction_review": "passed",
+    "tested_commit": "dd86c2152a814a352ee0e2f3c3b503fc678b0008",
+    "source_sha256": "a72d1f60a8cda7b68cbb5fe3b9fcf6f87b60bbb36e528d34448d3d0157d752da",
+    "scope": "Actual Release object from the full combined build. New host cdecl ABI; no original register ABI or unrestricted floating-exception parity claim.",
+    "reviewed_sequences": [
+      {
+        "kind": "near",
+        "input": "third cdecl argument EBX+10 -> EBP-74",
+        "fld32": "0x22e",
+        "fresh_camera_key": "0x233",
+        "fstp32": "0x239",
+        "canonical_lookup": "0x24b",
+        "scalar_leaf": "0x25b"
+      },
+      {
+        "kind": "far",
+        "input": "fourth cdecl argument EBX+14 -> EBP-78",
+        "fld32": "0x269",
+        "fresh_camera_key": "0x26e",
+        "fstp32": "0x274",
+        "canonical_lookup": "0x283",
+        "scalar_leaf": "0x293"
+      },
+      {
+        "kind": "depth",
+        "fld1": "0x2c0",
+        "fstp32": "0x2c2",
+        "fresh_camera_key": "0x2cb",
+        "canonical_lookup": "0x2da",
+        "scalar_leaf": "0x2ea"
+      }
+    ],
+    "key_conclusion": "Near/far use current borrowed float32 cells and capture helper+0C before the spill; depth spills FLD1 before fresh +0C. No x87 value remains live across canonical lookup/RTTI.",
+    "atomic_lifetime_note": "MSVC emits count0 at object+0xdf while beginning the atomic lifetime, before explicit CEB130/count1/D61854/zero-field writes and before the first native call at+0x12f. Untouched scalar words are preserved. This is private unused host lifetime preparation, not an instruction-for-instruction native store trace.",
+    "reused_identical_object_review_from": "59e84616a3bc5ccc065fdf094738319e88d41004",
+    "identical_object_revalidation_commits": [
+      "549b36761b49a69162dd874651cb2e50a3925927"
+    ],
+    "combined_build_revalidation": [
+      {
+        "from_tested_commit": "ed1db4a245241ed7e946f3233d7e696ca258b3b3",
+        "to_tested_commit": "071927194fe949176b4881fdd3e434803d5c6958",
+        "actual_object_and_listing_byte_identical": true,
+        "scope": "Reused instruction review after checking the actual current build object and saved listing hashes."
+      },
+      {
+        "from_tested_commit": "071927194fe949176b4881fdd3e434803d5c6958",
+        "to_tested_commit": "dd86c2152a814a352ee0e2f3c3b503fc678b0008",
+        "actual_object_and_listing_byte_identical": true
+      }
+    ]
+  },
+  "primary_fixture_review": {
+    "tested_commit": "dd86c2152a814a352ee0e2f3c3b503fc678b0008",
+    "passed": true,
+    "findings": [],
+    "reviewer": "Primary integrator; preserved worker draft completed and reviewed locally",
+    "run_command": [
+      "C:/Program Files/PowerShell/7/pwsh.exe",
+      "-NoProfile",
+      "-File",
+      "C:\\Users\\sqz269\\bsp-bj-cockpit-constructor\\current\\run.ps1",
+      "-ExpectedCommit",
+      "dd86c2152a814a352ee0e2f3c3b503fc678b0008"
+    ],
+    "fixture_artifacts": {
+      "build.log": "25d4f66c7c01d5b35c220cb97ffdd1608405f4ab45160497e6cc7ea3079676cf",
+      "compile.cmd": "c94d6081fece902e1b702b896ee493c1b513dbd37f961b7683d0aef3a126e6db",
+      "inherited-run.ps1": "c809e4686947731f5b6aed9dc9dfd33dc947bdeb5a64ae4c8a26d930484da1aa",
+      "input-pins-before.json": "5662ae0210f02c9334e3fe14df2b0eca22b304042e883d62dc69360456b74a39",
+      "input-pins.json": "5662ae0210f02c9334e3fe14df2b0eca22b304042e883d62dc69360456b74a39",
+      "mapped_code_after.bin": "1f6aac1dd2592a7777f2ddb0825c52b27390169f7dda67cf64b839bea771a71e",
+      "mapped_code_before.bin": "1f6aac1dd2592a7777f2ddb0825c52b27390169f7dda67cf64b839bea771a71e",
+      "native_camera_owner_spans.hpp": "0a6d0f2e68d500a2067be69e01c5257cd81262298ccd2e0ce8d230cf8d0df321",
+      "original_helper_pre_free.bin": "cacb87f9bdbbb13506ab5376765813fc35591db3ac6541f6c79a5206a689124d",
+      "original_snapshots.bin": "a02c17e69439af7db5fd690ff876147c8e52c760c3d31dca922001a96c6bc1b5",
+      "probe.cpp": "17f09101031c82566e7c07d7928fc2d53da8290ba569fe9d211e1f3226021624",
+      "probe.exe": "3632f765d8211a81c13ff7a45b6899ac3ea86f02aa3a5f5443433ca432b27149",
+      "probe.obj": "6b38675b6f0cd04624d61b6c0fa932d8bb0776cdb51a5826887addfdc5f8c93b",
+      "run.log": "c1e124bd561857d4b38ae7be6fcfebef50c5fd11dc8f8d025207f9dcbf94b62d",
+      "run.ps1": "96aeb1fe155e3f080ad064c14b66ab77676f6d92c9aad40e25151f3b0fe51611",
+      "source_early_failure_helper.bin": "ef8032873075fb49a19d92676948138b301cde07f149a9eee75f552675848549",
+      "source_helper_pre_free.bin": "cacb87f9bdbbb13506ab5376765813fc35591db3ac6541f6c79a5206a689124d",
+      "source_snapshots.bin": "a02c17e69439af7db5fd690ff876147c8e52c760c3d31dca922001a96c6bc1b5",
+      "span-preparation.json": "b6e40caca41cbcd9adff28925afd0484f529b9bdd1bbefbcc72c29beecc8545c"
+    },
+    "required_success_lines": [
+      "PASS native B3C800 through helper terminal cw027f live_checkpoints12 camera_bytes13392 helper_bytes432 events12",
+      "PASS source B3C800 through helper terminal cw027f live_checkpoints12 camera_bytes13392 helper_bytes432 events12",
+      "PASS source B3C800 renderer2 failure: block settled/reset once, local and camera names returned, raw slot and failed viewport freed; no native FH3 execution",
+      "PASS immutable mapped original code 9492 bytes",
+      "PASS focused original/source B3C800 constructor-through-terminal pair and source renderer2 failure; caller-owned block reset once, no manual camera/view registration or replacement; actual helper pre-free36 bytes, live camera/viewport checkpoints and ordered events; native B71930 with concrete B71770 provider boundary; +08/+18 zero; no native FH3/full-callee-closure/game proof"
+    ],
+    "native_differential_scope": "One full mapped-original/source B3C800 constructor-through-helper-terminal pair at x87CW027F: 12 live checkpoints, 13392 camera bytes and 432 helper snapshot bytes per path, 12 ordered events, 14736 identical normalized snapshot bytes per path and 36 identical normalized helper bytes before free. The 9492 mapped code bytes remain unchanged after both paths and the failure observation.",
+    "source_failure_scope": "One source-only renderer-call2 failure verifies unregistered first-viewport cancellation/free, both local/camera raw-string returns, exact primed camera slot/pool return, helper base/count1/zero camera representation, absence of helper companions, settled block and one explicit host-quiescent reset before caller-owned helper free. No original FH3 exception path is executed.",
+    "recipe_sources": {
+      "C:\\Users\\sqz269\\bsp-bj-cockpit-constructor\\prepare_probe.py": "23e391df956c62d109aad6e43b8ba9cc3942d3d2b03437f8074d3f61dca0f73e",
+      "C:\\Users\\sqz269\\bsp-bj-cockpit-constructor\\prepare_spans.py": "109b6da674f1a6096c6cf28b4d27e68bf25516a2f823b813b270276cc60fbbd5"
+    },
+    "checks": [
+      "Read complete probe, current-library recipe and new mapping generator. Verified three inherited baseline files byte-for-byte against sealed BI archive742ea7fd.",
+      "Full original B3C800339bytes execute; mapped B71930 supplies exact original static pool identity to concrete B71770 source allocator boundary. Source static pool and environment pool use the same host pool. Each path primes/returns the selected raw slot before capture.",
+      "Helper raw storage is unconstructed before B3C800; its four preserved words have distinct sentinels. Stable optional helper companions and persistent block storage exist before native events. Constructor alone creates canonical camera lifetime and both viewport registrations/replacement.",
+      "Six renderer callbacks exercise fresh global/captured receiver/current table behavior; no completed first view exists during viewport construction. Local raw name has returned before replacement callbacks.",
+      "Raw camera/helper/view state and x87/SSE state are compared at12live checkpoints. Address normalization is limited to mapped-image relocation, actual pool-relative name buffers and known allocation identities.",
+      "Actual helper count-zero dispatch terminates through camera/viewport/retained-owner cleanup and returns slot/names before helper free; source owner/reference retirement precedes explicit later destruction of host companions and block reset.",
+      "Source renderer2 failure has no manual native cleanup substitution: constructor cleanup and factory cancellation happen before observed caller slot/helper handling. No late orphan cleanup or original FH3 is invented.",
+      "Only probe.cpp compiles, with current3libraries and embedded manifest; all2522inputs unchanged before/after and initial source inputs match the build stamp. Snapshot and helper comparison files independently compared byte-for-byte; mapped code immutable."
+    ],
+    "independent_review_status": "Passed current combined artifact revalidation; scoped behavioral review explicitly reused",
+    "material_limits": [
+      "Concrete B71770 pool allocation and existing raw-string/CRT/renderer boundaries are hooked; this is not a complete original-callee closure.",
+      "One successful CW027F case and one source failure; helper+08/+18 remain zero. Current-camera substitution and late orphan survival are separate contracts, not exercised here.",
+      "Source helper companion binding has zero guarded host-new attempts. Whole constructor/provider allocation freedom is not inferred.",
+      "Private unused atomic count0 startup precedes explicitcount1 and callbacks; no native write-trace parity claim.",
+      "New source ABI and C++ cleanup projection; no original replacement ABI, native FH3/SEH, arbitrary destructive callbacks, concurrency or gameplay proof."
+    ],
+    "independent_review_path": "J:\\PROG\\bsp-evidence\\orch3-cockpit-construction-bj-20260913\\fixture_review_entity_merge.json",
+    "independent_review_sha256": "5cf634b3a22b7946210bf7dd4e31f10a474b2f5b516cb38d1d78dc453871537d"
+  },
+  "independent_fixture_review": {
+    "tested_commit": "dd86c2152a814a352ee0e2f3c3b503fc678b0008",
+    "reviewed_utc": "2026-09-14T03:59:07.466842+00:00",
+    "findings": [],
+    "scope": "Mechanical revalidation only. Reuses scoped behavioral, ownership and original-mapping review from 549b3676 and artifact review at 07192719. One native/source B3C800 constructor-through-helper-terminal pair and one source-only renderer2 failure; no native FH3, unrestricted ABI, full callee closure or game proof. Reviewer ran no build/probe and edited no existing files.",
+    "prior_review": "J:\\PROG\\bsp-evidence\\orch3-cockpit-construction-bj-20260913\\fixture_review_gun_merge.json",
+    "prior_review_sha256": "14be2fc6a84da688a2f9e956b85cb4fdc370d8459e52c6a41d808351f85d3c4f",
+    "sealed_prior_attempt": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\bj-validated-attempt-07192719.zip",
+    "sealed_prior_attempt_sha256": "94564e6b6c02211e3085bb11c193f7c4ab33467c7eef024bc685807f05f219d3",
+    "delta_source_and_build": [
+      "cmake/startup.cmake",
+      "include/bsp/ship_sub_entity_list.hpp",
+      "src/ship_sub_entity_list.cpp"
+    ],
+    "remaining_delta": "names/docs/reports only",
+    "build_registration": [
+      "+cmake_language(DEFER DIRECTORY \"${CMAKE_SOURCE_DIR}\" CALL target_sources bsp_game PRIVATE src/ship_sub_entity_list.cpp)"
+    ],
+    "prior_source_inputs_unchanged": 2495,
+    "prior_source_changes": [],
+    "BJ_four_sources_unchanged": true,
+    "fixture_recipe_probe_spans_preparation_unchanged": true,
+    "constructor_object_sha256": "f04d045f03985f645fd72d8b33b73b065db18937f2790cbb05e0bd7048f040ec",
+    "constructor_listing_sha256": "3ee46088b6f42d9b3c29e574a5cde0eaa3dcffd87bd00460a06666c5a627699b",
+    "constructor_artifacts_unchanged": true,
+    "build_inputs": 2514,
+    "full_Win32_and_two_CTests_passed": true,
+    "three_linked_libraries_unchanged": {
+      "bsp_core.lib": "fc80a2d6140964d87425f30c1c66243bdbd6d075bdf86cfe38187b7aa1455ad1",
+      "bsp_lua511.lib": "71e114b0ff6244852d678a5779fcbf28589bdcecbad811aff228ffd5007fe8c7",
+      "bsp_zlib121.lib": "f3f934925213a2ffb81f3aec2afbb065c1733cf43b28dddf31db6a69185c4102"
+    },
+    "fixture_pins": 2522,
+    "before_after_current_inputs_equal": true,
+    "initial_sources_match_build_stamp": true,
+    "before_after_pins_sha256": "5662ae0210f02c9334e3fe14df2b0eca22b304042e883d62dc69360456b74a39",
+    "build_stamp_sha256": "ce245d2b9a93959f38b0b68bd01af3778811a86cf5fa97b3c389e14dcaddeb6a",
+    "generated_metadata_sha256": "807f78bca285ef1b2bbb8e7e5c961f2b5afa5b28de4af19ad94f916c9f1d699a",
+    "same_five_fixture_PASS_lines": true,
+    "run_log_sha256": "c1e124bd561857d4b38ae7be6fcfebef50c5fd11dc8f8d025207f9dcbf94b62d",
+    "artifact_pairs": [
+      {
+        "files": [
+          "original_snapshots.bin",
+          "source_snapshots.bin"
+        ],
+        "bytes": 14736,
+        "equal": true,
+        "sha256": "a02c17e69439af7db5fd690ff876147c8e52c760c3d31dca922001a96c6bc1b5"
+      },
+      {
+        "files": [
+          "original_helper_pre_free.bin",
+          "source_helper_pre_free.bin"
+        ],
+        "bytes": 36,
+        "equal": true,
+        "sha256": "cacb87f9bdbbb13506ab5376765813fc35591db3ac6541f6c79a5206a689124d"
+      },
+      {
+        "files": [
+          "mapped_code_before.bin",
+          "mapped_code_after.bin"
+        ],
+        "bytes": 9492,
+        "equal": true,
+        "sha256": "1f6aac1dd2592a7777f2ddb0825c52b27390169f7dda67cf64b839bea771a71e"
+      }
+    ]
+  },
+  "fixture": {
+    "folder": "C:\\Users\\sqz269\\bsp-bj-cockpit-constructor\\current",
+    "passed": true,
+    "current_library_only": true,
+    "input_pins_unchanged": 2522,
+    "compile_command": "@echo off\ncall \"C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\Tools\\VsDevCmd.bat\" -arch=x86 -host_arch=x64 >nul\nif errorlevel 1 exit /b 1\ncl /nologo /std:c++17 /EHsc /O2 /Oy- /MD /fp:strict /W4 /WX /I\"J:/PROG/battlestations-pacific-decompile-orch3-20260910/include\" \"C:\\Users\\sqz269\\bsp-bj-cockpit-constructor\\current/probe.cpp\" /Fe:\"C:\\Users\\sqz269\\bsp-bj-cockpit-constructor\\current/probe.exe\" /link /MANIFEST:EMBED \"J:/PROG/battlestations-pacific-decompile-orch3-20260910/build/win32/Release/bsp_core.lib\" \"J:/PROG/battlestations-pacific-decompile-orch3-20260910/build/win32/Release/bsp_lua511.lib\" \"J:/PROG/battlestations-pacific-decompile-orch3-20260910/build/win32/Release/bsp_zlib121.lib\" user32.lib d3d9.lib psapi.lib shell32.lib advapi32.lib /OPT:REF /INCREMENTAL:NO\nexit /b %errorlevel%\n",
+    "run_output": "PASS native B3C800 through helper terminal cw027f live_checkpoints12 camera_bytes13392 helper_bytes432 events12\nPASS source B3C800 through helper terminal cw027f live_checkpoints12 camera_bytes13392 helper_bytes432 events12\nPASS source B3C800 renderer2 failure: block settled/reset once, local and camera names returned, raw slot and failed viewport freed; no native FH3 execution\nPASS immutable mapped original code 9492 bytes\nPASS focused original/source B3C800 constructor-through-terminal pair and source renderer2 failure; caller-owned block reset once, no manual camera/view registration or replacement; actual helper pre-free36 bytes, live camera/viewport checkpoints and ordered events; native B71930 with concrete B71770 provider boundary; +08/+18 zero; no native FH3/full-callee-closure/game proof\n",
+    "artifacts": {
+      "build.log": "25d4f66c7c01d5b35c220cb97ffdd1608405f4ab45160497e6cc7ea3079676cf",
+      "compile.cmd": "c94d6081fece902e1b702b896ee493c1b513dbd37f961b7683d0aef3a126e6db",
+      "inherited-run.ps1": "c809e4686947731f5b6aed9dc9dfd33dc947bdeb5a64ae4c8a26d930484da1aa",
+      "input-pins-before.json": "5662ae0210f02c9334e3fe14df2b0eca22b304042e883d62dc69360456b74a39",
+      "input-pins.json": "5662ae0210f02c9334e3fe14df2b0eca22b304042e883d62dc69360456b74a39",
+      "mapped_code_after.bin": "1f6aac1dd2592a7777f2ddb0825c52b27390169f7dda67cf64b839bea771a71e",
+      "mapped_code_before.bin": "1f6aac1dd2592a7777f2ddb0825c52b27390169f7dda67cf64b839bea771a71e",
+      "native_camera_owner_spans.hpp": "0a6d0f2e68d500a2067be69e01c5257cd81262298ccd2e0ce8d230cf8d0df321",
+      "original_helper_pre_free.bin": "cacb87f9bdbbb13506ab5376765813fc35591db3ac6541f6c79a5206a689124d",
+      "original_snapshots.bin": "a02c17e69439af7db5fd690ff876147c8e52c760c3d31dca922001a96c6bc1b5",
+      "probe.cpp": "17f09101031c82566e7c07d7928fc2d53da8290ba569fe9d211e1f3226021624",
+      "probe.exe": "3632f765d8211a81c13ff7a45b6899ac3ea86f02aa3a5f5443433ca432b27149",
+      "probe.obj": "6b38675b6f0cd04624d61b6c0fa932d8bb0776cdb51a5826887addfdc5f8c93b",
+      "run.log": "c1e124bd561857d4b38ae7be6fcfebef50c5fd11dc8f8d025207f9dcbf94b62d",
+      "run.ps1": "96aeb1fe155e3f080ad064c14b66ab77676f6d92c9aad40e25151f3b0fe51611",
+      "source_early_failure_helper.bin": "ef8032873075fb49a19d92676948138b301cde07f149a9eee75f552675848549",
+      "source_helper_pre_free.bin": "cacb87f9bdbbb13506ab5376765813fc35591db3ac6541f6c79a5206a689124d",
+      "source_snapshots.bin": "a02c17e69439af7db5fd690ff876147c8e52c760c3d31dca922001a96c6bc1b5",
+      "span-preparation.json": "b6e40caca41cbcd9adff28925afd0484f529b9bdd1bbefbcc72c29beecc8545c"
+    }
+  },
+  "original_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "original_prototype": "00b3c800 BSP_CockpitHelper_Construct  void * __thiscall BSP_CockpitHelper_Construct(void * this)  body 00b3c800 - 00b3c952\n",
+  "new_native_bodies": 1,
+  "new_native_bytes": 339,
+  "native_differential_scope": "One full mapped-original/source B3C800 constructor-through-helper-terminal pair at x87CW027F: 12 live checkpoints, 13392 camera bytes and 432 helper snapshot bytes per path, 12 ordered events, 14736 identical normalized snapshot bytes per path and 36 identical normalized helper bytes before free. The 9492 mapped code bytes remain unchanged after both paths and the failure observation.",
+  "source_failure_scope": "One source-only renderer-call2 failure verifies unregistered first-viewport cancellation/free, both local/camera raw-string returns, exact primed camera slot/pool return, helper base/count1/zero camera representation, absence of helper companions, settled block and one explicit host-quiescent reset before caller-owned helper free. No original FH3 exception path is executed.",
+  "native_fh3_validated": false,
+  "original_binary_abi_validated": false,
+  "game_validated": false,
+  "ghidra_annotation_status": "Saved append-only evidence, unchanged original name/prototype, previous comments preserved and export refreshed",
+  "final_archive": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\bj-validated-attempt-dd86c215.zip",
+    "sha256": "c9697c5a4069b6d8e6a206c599b85370502bb50c095127129234f7cd6ff753bd",
+    "verified_members": 2573
+  },
+  "ghidra_annotation_audit": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "address": "00b3c800",
+    "prototype_changed": false,
+    "name_changed": false,
+    "before_comments": [
+      {
+        "address": "00b3c800",
+        "annotation": {
+          "address": "00b3c800",
+          "function_name": "BSP_CockpitHelper_Construct",
+          "comment": "[BSP reconstruction 00b3c800]\nDescriptive hypothesis, not a recovered symbol. Static constructor contract over actual24h helper,12directcalls/twoindirecteffects andfive-state EH metadata. Preserve10/14/1C/20, rawstring/currentpoolreturn, rawcamera andviewport allocation domains, originalx87materializations andfreshhelper0Cloads. Publishedcamera surviveslatefailure. Concrete persistentcompanion/registry admission andviewportview lifetimes remain implementationgates. No reconstructedB3C800 body, nativeFH3/SEH, binaryABI or gameplaycredit. Evidence docs/NATIVE_COCKPIT_CONSTRUCTION_COMPOSITION_BG.md; reports/native_cockpit_construction_composition_bg.json."
+        }
+      }
+    ],
+    "before_prototype": "00b3c800 BSP_CockpitHelper_Construct  void * __thiscall BSP_CockpitHelper_Construct(void * this)  body 00b3c800 - 00b3c952\n",
+    "pending_stage": null,
+    "passed": true,
+    "before_comment_preserved": true,
+    "after_prototype": "00b3c800 BSP_CockpitHelper_Construct  void * __thiscall BSP_CockpitHelper_Construct(void * this)  body 00b3c800 - 00b3c952",
+    "exported": true,
+    "saved_by_annotation_tool": true,
+    "mutation_scope": "Append reviewed evidence; retain existing name, prototype and all previous comments.",
+    "ledger_entry": {
+      "address": "00b3c800",
+      "name": "construct_native_cockpit_helper_00b3c800",
+      "cpp_symbol": "construct_native_cockpit_helper_00b3c800",
+      "source": "src/native_cockpit_helper_construction.cpp",
+      "header": "include/bsp/native_cockpit_helper_construction.hpp",
+      "report": "reports/native_cockpit_constructor_bj_validation.json",
+      "doc": "docs/NATIVE_COCKPIT_CONSTRUCTOR_BJ_INTEGRATION.md",
+      "native_end_exclusive": "00b3c953",
+      "native_bytes": 339,
+      "original_abi": "ECX actual24h helper; no stack arguments; RET; EAX actual helper",
+      "native_prototype": "void * __thiscall BSP_CockpitHelper_Construct(void * this)",
+      "native_calling_convention": "__thiscall",
+      "status": "complete_actual_binding_body_build_and_bounded_native_fixture_passed",
+      "coverage": "complete body in preadmitted actual binding domain; C++ exception projection",
+      "tested_commit": "549b36761b49a69162dd874651cb2e50a3925927",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. BJ implements the complete 00b3c800..00b3c952 constructor over private unused actual24h helper storage. A separately persistent preadmitted block carries scene, camera lifetime and two canonical viewport records through actual pool/string/camera/configuration/replacement calls, projected native cleanup and explicit host-quiescent reset. Preserves the four untouched scalar words, fresh helper camera loads, three reviewed generated x87 materializations and captured final viewport release. MSVC typed atomic startup briefly initializes count0 before explicit count1 and before publication/callback; this is not native store-trace parity. Exact combined Win32 build, existing checks and current-library actual constructor fixture passed in the recorded domain. Original mapped execution and source-only failure projection have separate scopes; new host C++ interface, no native FH3/SEH, original replacement ABI or gameplay claim. Evidence: docs/NATIVE_COCKPIT_CONSTRUCTOR_BJ_INTEGRATION.md; reports/native_cockpit_constructor_bj_validation.json; docs/NATIVE_COCKPIT_HELPER_CONSTRUCTION.md; reports/native_cockpit_helper_construction.json.",
+      "native_sha256": "21fc45bafe861070036aad3aedb79758e5e3a50bb275e3f189cde9e8fea9d3df",
+      "live_PE_equal": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "native_fh3_validated": false
+    }
+  }
+}

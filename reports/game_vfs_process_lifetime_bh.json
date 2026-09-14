@@ -1,0 +1,59 @@
+{
+  "packet": "orch4_game_vfs_process_lifetime_bh",
+  "status": "source_lifetime_boundary_verified_migration_required",
+  "source_revision": "20d1ea03c068bf0a83df81a565401bf15a3074f7",
+  "documentation": "docs/GAME_VFS_PROCESS_LIFETIME_BH.md",
+  "source_hashes": {
+    "include/bsp/game_hosts_singletons.hpp": "0d28e5dafc89202d543d757780a39ca03485e3c0acc305f8031b5b124468e512",
+    "src/game_hosts_singletons.cpp": "32f46e14b9d1fa2ef7c82c179ae4f66bd9e9e7a42c8bbb015a582bbbab17ffcf",
+    "include/bsp/game_hosts.hpp": "6450346a2fa9faedd9c964b735f19652b106c5b949dfb799958eb3b989e8a7d9",
+    "src/game_hosts.cpp": "4bd96b3cf84309f1da8839eaebabc9bbd953f0571731f22bd27b1ac2d2d68b0a",
+    "include/bsp/game_hosts_vfs.hpp": "f91ed5d75e9261fc8475fdc3985036465e03689d432d12f6b9f37cc3bfb80098",
+    "src/game_hosts_vfs.cpp": "15adc5e96a9f3abce9955a97cd09879f58837d97ee4378e318896c1a28194d79",
+    "include/bsp/native_vfs_owner_services.hpp": "2df162f0937d2c9b34c790609d92c3e41ef8cc6ae49977ec0fcd6e07b699a128",
+    "include/bsp/native_stream_type_ids.hpp": "fe99f6ed873cdfae84f3df91aca2b1ade64060d6abfa35cd2ed6834b2b772222",
+    "include/bsp/native_physical_provider_pool_lifecycle.hpp": "04175010f383b41ebaa628a2044af2cb408ed85636cb049bd7913c4f50c57e53",
+    "include/bsp/game_native_vfs_runtime.hpp": "f89239fafa76d62a766994f6b83de91fd59df5c75c6793f0be3e0cf943192792",
+    "src/game_native_vfs_runtime.cpp": "c4f03576b82b737f0d798cb12052668b1295f8484a32cdc7d98223e898be95d8"
+  },
+  "calls": [],
+  "native_addresses_claimed": [],
+  "findings": [
+    {
+      "source": "include/bsp/game_hosts_singletons.hpp",
+      "finding": "One application raw manager publication and private deletion binding; VFS must share them."
+    },
+    {
+      "source": "src/game_hosts.cpp",
+      "finding": "Both explicit008F8449 and exceptional destructor call same raw shutdown. Destructor deletes singleton host before VFS, requiring VFS retirement while binding remains alive."
+    },
+    {
+      "source": "include/bsp/native_physical_provider_pool_lifecycle.hpp",
+      "finding": "Separate one-static-owner0109DBF0/E188B4 CRT lifetime; fixture direct init/destroy is not production CRT registration."
+    },
+    {
+      "source": "include/bsp/native_stream_type_ids.hpp",
+      "finding": "Counter and root guard/descriptor must be common with shared process types; do not create VFS-private descriptor copies."
+    },
+    {
+      "source": "src/game_native_vfs_runtime.cpp",
+      "finding": "Bound retained contexts and no-retry registration require owner retention through failure/drain; retire accesses deletion binding and publication references."
+    },
+    {
+      "source": "src/game_hosts_vfs.cpp",
+      "finding": "Current VFS still uses projected manager/factory tokens; phase2 graph is available but production migration not applied."
+    }
+  ],
+  "validation": {
+    "read_only_source_audit": true,
+    "production_changes": false,
+    "build_required": false,
+    "runtime_executed": false,
+    "game_validated": false
+  },
+  "next_packet_contracts": [
+    "Process pool/type storage and raw singleton attachment plus post-drain retirement",
+    "All projected-manager consumer migration with raw owned-read/Lua/locale services",
+    "Normal/exceptional executable startup and CRT-exit validation"
+  ]
+}

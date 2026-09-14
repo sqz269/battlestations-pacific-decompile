@@ -1,0 +1,47 @@
+{
+  "packet": "orch4_vfs_open_failure_bh",
+  "source_revision": "edb531ed2feac4475f6e200d9e3b0b04ff8f4099",
+  "integration_report": "reports/native_vfs_handoff_bh_validation.json",
+  "observed_before_fix": {
+    "exception": "c0000005",
+    "instruction_pointer": "00530620",
+    "attempted_execute_address": "00530620",
+    "trigger": "missing read with numeric startup callback",
+    "evidence": "Recorded diagnostic during combined probe in this integration turn; final log supersedes the diagnostic run"
+  },
+  "native_sequence": [
+    {
+      "address": "00bdf423",
+      "operation": "MOV ECX,[0109CEEC]"
+    },
+    {
+      "address": "00bdf429",
+      "operation": "MOV EDX,[ECX+90]"
+    },
+    {
+      "address": "00bdf432",
+      "operation": "CALL EDX"
+    }
+  ],
+  "exact_supported_target": "00530620",
+  "existing_source_body": "ignore_native_vfs_mount_failure_00530620",
+  "new_source_binding": "NativeVfsRuntimeBindings::open_failure_entry",
+  "missing_reads_passed": 2,
+  "raw_callable_path_preserved": true,
+  "unknown_identity_rejected": true,
+  "game_validated": false,
+  "live_disk_spans": [
+    {
+      "address": "00bdf423",
+      "hex": "8b0decce09018b919000000083c408ffd2",
+      "sha256": "a1f07da5a9c9c7c636b487026b06015b332ad4dfcbb9a549d9a7dc6d60fcf024",
+      "live_read_verified_with": "bsp.py ghidra bytes"
+    },
+    {
+      "address": "00530620",
+      "hex": "c3",
+      "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+      "live_read_verified_with": "bsp.py ghidra bytes"
+    }
+  ]
+}

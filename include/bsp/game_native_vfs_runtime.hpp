@@ -4,6 +4,8 @@
 #include <cstddef>
 #include <cstdint>
 #include <memory>
+#include <optional>
+#include <vector>
 
 namespace bsp {
 class NativeVfsOwnerServices;
@@ -75,6 +77,11 @@ public:
     // open returns false; unsupported profiles propagate as source errors.
     bool read(const char* path, void* output, std::uint32_t capacity,
         std::uint32_t& bytes_read);
+    // Open through this runtime's raw manager and own the complete file bytes.
+    // nullopt means no stream opened; an opened empty file is an engaged empty
+    // vector. Length, allocation, read, and stream-release failures throw.
+    // Partial reads are retried; reaching zero before length is a short read.
+    std::optional<std::vector<std::uint8_t>> read_all(const char* path);
     // Call only after the shared 01090AA0 drain. Remove this bundle's borrowed
     // dispatch bindings and clear its matching VFS publication before teardown.
     void retire_after_shared_drain() noexcept;

@@ -1,0 +1,224 @@
+{
+  "packet": "cc7_hit_shape_hull_segment",
+  "owner": "agent/cc7-hit-hull-segment",
+  "doc": "docs/HIT_HULL_SEGMENT.md",
+  "program": "/battlestationspacific.exe",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "summary": "The producer of a real hull-segment index exists. It is the unit-part collision shape's segment trace, vtable 00CFD768 slot 0 = 00724510, forwarding to 00723E90, which copies element+4h into record+30h and element+8h into record+34h from the 2Ch-byte geometry element 00723D60 returned, and stores the element pointer itself into record+38h. Both values are authored geometry data, which is why no immediate-store byte scan finds them. On the sphere side the same two element fields plus the test's distance become a 10h-byte entry that 006D2E30 appends to the record. 006D2E30 settles the array layout from the producer: +3Ch is the pointer, +40h the count, +44h the capacity, stride 10h, growth capacity*2+2. The node vtable[0Ch] override 0070F090 allocates nothing; the allocation is three frames below it.",
+  "answers": {
+    "real_hull_segment_producer": "yes: 00724510 -> 00723E90, stores at 00723F5F..00723F6C",
+    "part_hit_array_producer": "006D2E30, reached as 0070F090 -> 0098AAE0 -> 0070F720 -> 00723F80 -> 006D2E30",
+    "layout_verdict": "+3Ch pointer, +40h count, +44h capacity; docs/HIT_NARROWPHASE.md and docs/UNIT_HIT_PATH.md are correct, the ledger evidence on 00925050 is wrong",
+    "index_meaning": "an index into the unit parts object *(unit+1018h): the signed gate byte at parts+34Ch+index and the float at parts+310h[index]"
+  },
+  "routines": [
+    {
+      "address": "00724510",
+      "native": "00724510",
+      "name": "BSP_UnitPartCollisionShape_TraceSegment",
+      "body": "00724510-0072453c",
+      "abi": "__thiscall(shape in ECX; const float3* from, const float3* to, HitRecord* record) returning bool, RET 0xc at 0072453a",
+      "coverage": "complete",
+      "evidence": "Slot 0 of shape vtable 00CFD768, the fourth row of docs/COLLISION_SHAPES.md's class table and the only slot-0 body that is neither a purecall, a XOR AL,AL stub, nor a writer of -1. MOV EAX,[ECX+1Ch] at 00724514 is the owning collision node and MOV ECX,[ECX+24h] at 00724517 is the geometry, which becomes the callee's this. The five pushes reverse to (node+50h, node+90h, from, to, record); TEST AL,AL / SETNZ AL normalises the result."
+    },
+    {
+      "address": "00723e90",
+      "native": "00723e90",
+      "name": "BSP_GeomMesh_TraceSegmentIntoHitRecord",
+      "body": "00723e90-00723f77",
+      "abi": "__thiscall(geometry in ECX; const Mtx* toWorld, const Mtx* toLocal, const float3* from, const float3* to, HitRecord* record) returning bool, RET 0x14 at 00723f24 and 00723f75",
+      "coverage": "complete",
+      "evidence": "THE PRODUCER. Transforms both endpoints by the second argument (EDI holds it across both 004142E0 calls at 00723E99 and 00723EBC while ECX changes from stack arg 4 to stack arg 3), calls 00723D60 with ECX = the incoming this (MOV ESI,ECX at 00723E9E, MOV ECX,ESI at 00723F0A), and on a non-null return transforms the local hit point back by the first argument and writes record+8h/+0Ch/+10h at 00723F44/4F/5A, record+30h = element+4h at 00723F5F/62, record+38h = the element pointer at 00723F68, record+34h = element+8h at 00723F65/6C. On a null return 00723F1B jumps to XOR AL,AL and no field is written. Ghidra renders this with five parameters and no this; the ECX use is only visible in the listing."
+    },
+    {
+      "address": "00723d60",
+      "native": "00723d60",
+      "name": "BSP_GeomMesh_TraceSegmentClosestElement",
+      "body": "00723d60-00723e86",
+      "abi": "__thiscall(geometry in ECX; const float3* from, const float3* to, float3* outHit) returning const Element*, RET 0xc at 00723e84",
+      "coverage": "complete",
+      "evidence": "count = ((geom+10h) - (geom+0Ch)) / 2Ch (IMUL 0x2E8BA2E9 / SAR EDX,3 at 00723DA4). Copies the far endpoint into its own frame at 00723D67..00723D8D, then for each element calls 00723AA0 with ECX = [geom+0Ch] + offset (ADD ECX,EBP at 00723E03) and the three pushes (from, &farEnd, outHit); on a hit it shortens the far end to the hit point and keeps [geom+0Ch]+EBP as the result. Returns 0 when nothing hit, which is why the caller's TEST ESI,ESI doubles as the hit test."
+    },
+    {
+      "address": "00723aa0",
+      "native": "00723aa0",
+      "name": "BSP_GeomMeshElement_TraceSegment",
+      "body": "00723aa0-00723b60",
+      "abi": "__thiscall(element in ECX; const float3* from, const float3* to, float3* outHit) returning bool, RET 0xc at 00723b56 and 00723b5e",
+      "coverage": "partial: the leaf 007238e0 was not read",
+      "evidence": "Copies both endpoints onto its frame, bounds them through 00722B20, and computes the element's triangle count as ([element+18h] - [element+14h]) >> 1, a uint16 index list. Forwards to 007238E0 with that count and writes the hit point back on success. Establishes element+14h/+18h as the per-element triangle-index range."
+    },
+    {
+      "address": "00723f80",
+      "native": "00723f80",
+      "name": "BSP_GeomMesh_CollectSphereHits",
+      "body": "00723f80-007240da",
+      "abi": "__thiscall(geometry in ECX; void* bodyF0 /*arg 1, use unread*/, const Mtx* toLocal /*arg 2, its slot is reused as the out-distance*/, const float3* centre, const float* radius, HitRecord* record) returning bool, RET 0x14 at 007240d8",
+      "coverage": "complete",
+      "evidence": "The sphere analogue of 00723E90 over the same 2Ch-stride element vector, but it keeps EVERY overlap instead of the closest. Transforms the centre once (ECX = stack arg 3 at 00723F92), then per element calls 00723B70 with ECX = the element and the three pushes (&localCentre, &radiusSlot at 00724020, &arg2slot at 0072401B). The 10h-byte entry is assembled at [ESP+14h]: +0h = element+4h (00724078/7C), +4h = element+8h (007240A4/B1), +8h = 0 (00724044), +0Ch = the float 00723B70 wrote into the second argument slot (0072403E/4C). The second argument slot is reused as the out-distance after the one-time transform."
+    },
+    {
+      "address": "00723b70",
+      "native": "00723b70",
+      "name": "BSP_GeomMeshElement_TestSphere",
+      "body": "00723b70-00723d5a",
+      "abi": "__thiscall(element in ECX; const float3* centre, const float* radius, float* outDistance) returning bool, RET 0xc at 00723ba4, 00723d4e and 00723d58",
+      "coverage": "partial: 0085bf90 and 0085df60 were not read",
+      "evidence": "Rejects at once when radius*radius < 0085BF90(element+24h), then walks the same uint16 list at [element+14h, element+18h), each index selecting a 6-byte triangle from [mesh+2Ch, mesh+30h) and its three uint16s selecting 0Ch-byte vertices from [mesh+1Ch, mesh+20h), where mesh is [element+0Ch]. This pins the element's mesh pointer and both vector strides."
+    },
+    {
+      "address": "006d2e30",
+      "native": "006d2e30",
+      "name": "BSP_HitRecord_AppendPartHit",
+      "body": "006d2e30-006d2ece",
+      "abi": "__thiscall(record in ECX; const HitPartEntry* entry) returning void, RET 0x4 at 006d2ece",
+      "coverage": "complete",
+      "evidence": "THE PART-HIT ARRAY PRODUCER, and the routine that settles the layout. 006D2E36 compares [ESI+40h] with [ESI+44h]; on equality 006D2E3B LEA EAX,[EAX+EAX*1+2] doubles the capacity plus two, 006D2E3F stores it to +44h, 006D2E42 SHL EAX,4 sizes operator_new, the loop at 006D2E56..006D2E8C copies [ESI+40h] entries of 10h bytes out of [ESI+3Ch], the old buffer is freed at 006D2E98 and the new one published to [ESI+3Ch] at 006D2EA0. The entry then lands at [ESI+3Ch] + [ESI+40h]*10h (006D2EA4..006D2EC6) and 006D2EC9 bumps [ESI+40h]. So +3Ch is the pointer, +40h the count, +44h the capacity, never the array."
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00724530",
+      "native": "00723e90",
+      "function": "00724510",
+      "method": "trace_segment_into_record",
+      "args": "this = [shape+24h], the geometry; five pushes (node+50h, node+90h, from, to, record)",
+      "ret": "bool",
+      "gate": "none; slot 0 of shape vtable 00CFD768"
+    },
+    {
+      "address": "00723f12",
+      "native": "00723d60",
+      "function": "00723e90",
+      "method": "closest_element",
+      "args": "this = ESI, the incoming geometry (MOV ECX,ESI at 00723F0A); three pushes (&localFrom, &localTo, &localHit)",
+      "ret": "const Element*, 0 on a miss",
+      "gate": "none"
+    },
+    {
+      "address": "00723ea5",
+      "native": "004142e0",
+      "function": "00723e90",
+      "method": "transform_affine_point",
+      "args": "this = stack arg 4 (the segment end); pushes &tmp and stack arg 2 (the inverse-world matrix)",
+      "ret": "void",
+      "gate": "none"
+    },
+    {
+      "address": "00723ed8",
+      "native": "004142e0",
+      "function": "00723e90",
+      "method": "transform_affine_point",
+      "args": "this = stack arg 3 (the segment start); the same matrix in EDI",
+      "ret": "void",
+      "gate": "none"
+    },
+    {
+      "address": "00723f35",
+      "native": "004142e0",
+      "function": "00723e90",
+      "method": "transform_affine_point",
+      "args": "this = the local hit point; pushes the destination and stack arg 1 (the world matrix)",
+      "ret": "void",
+      "gate": "only on the hit path, after 00723F1B"
+    },
+    {
+      "address": "00723e06",
+      "native": "00723aa0",
+      "function": "00723d60",
+      "method": "element_trace_segment",
+      "args": "this = [geom+0Ch] + EBP, the element (ADD ECX,EBP at 00723E03); pushes (from, &farEnd, outHit)",
+      "ret": "bool",
+      "gate": "inside the element loop, after the inlined bounds check"
+    },
+    {
+      "address": "0072402c",
+      "native": "00723b70",
+      "function": "00723f80",
+      "method": "element_test_sphere",
+      "args": "this = [geom+0Ch] + EBP (ADD ECX,EBP at 00724029); pushes (&localCentre, &radiusSlot, &outDistanceSlot)",
+      "ret": "bool",
+      "gate": "inside the element loop"
+    },
+    {
+      "address": "007240b5",
+      "native": "006d2e30",
+      "function": "00723f80",
+      "method": "append_part_hit",
+      "args": "this = [ESP+48h] = stack arg 5, the HitRecord (MOV ECX at 007240AD); one push, &entry at [ESP+14h]",
+      "ret": "void",
+      "gate": "only when 00723B70 returned true"
+    },
+    {
+      "address": "00723f9b",
+      "native": "004142e0",
+      "function": "00723f80",
+      "method": "transform_affine_point",
+      "args": "this = stack arg 3 (the sphere centre); pushes &tmp and stack arg 2 (the inverse-world matrix)",
+      "ret": "void",
+      "gate": "once, before the element loop"
+    },
+    {
+      "address": "0070f749",
+      "native": "00b6e0d0",
+      "function": "0070f720",
+      "method": "node_inverse_world_matrix",
+      "args": "this = [shape+20h], the collision body (MOV ECX at 0070F746); the three arguments 0070F720 already pushed at 0070F73C, 0070F742 and 0070F745 (record, radius, centre)",
+      "ret": "the inverse-world matrix in EAX; it does NOT clean the three pushes",
+      "gate": "after the [shape+20h] refresh"
+    },
+    {
+      "address": "0070f759",
+      "native": "00723f80",
+      "function": "0070f720",
+      "method": "collect_sphere_hits",
+      "args": "this = [shape+24h], the geometry (MOV ECX at 0070F74E); five slots (body+F0h pushed at 0070F758, the matrix at 0070F751, and the centre, radius and record 0070F720 left on the stack across 00B6E0D0)",
+      "ret": "bool",
+      "gate": "none; slot 4 of shape vtable 00CFD768"
+    },
+    {
+      "address": "0082703e",
+      "native": "0092d1f0",
+      "function": "00826f10",
+      "method": "apply_part_damage",
+      "args": "this = *(unit+1018h) (MOV ECX,[EDI+1018h] at 00827026, a load); PUSH EBP = [hit+34h] read at 00826FE1, then &direction and the hull damage",
+      "ret": "void",
+      "gate": "CMP dword ptr [ESI+30h],0Dh at 00826FAC, hullDamage > 0, class Mass >= 100.0; external, owned by docs/SHIP_HIT_RECORD.md"
+    }
+  ],
+  "no_ghidra_function": [],
+  "corrections": [
+    {
+      "target": "ledger evidence on 00925050 BSP_HitRecord_Assign",
+      "was": "reallocates the part array at dest+44h",
+      "is": "the part array pointer is dest+3Ch; dest+40h is the count and dest+44h is the capacity",
+      "evidence": "The producer 006D2E30 writes the operator_new result to [ESI+3Ch] at 006D2EA0, indexes [ESI+3Ch] + [ESI+40h]*10h at 006D2EAA, bumps [ESI+40h] at 006D2EC9 and only ever compares and stores a scalar in [ESI+44h] (006D2E36, 006D2E3F). 00925050's own body agrees: param_1[0xf] (+3Ch) is the operator_new / _free / copy target, param_1[0x10] (+40h) the count, param_1[0x11] (+44h) the capacity grown only when it is smaller than the source count. The copy constructor 00923ED0 does the same with an exactly-sized allocation. docs/HIT_NARROWPHASE.md and docs/UNIT_HIT_PATH.md are correct as written; no file of theirs is edited here."
+    },
+    {
+      "target": "docs/HIT_NARROWPHASE.md open items 1 and 2",
+      "was": "the shape vtable[0] that writes a real hull segment index into record+34h is unattributed, and record+38h has no writer",
+      "is": "00724510 -> 00723E90 writes both; record+38h is the address of the 2Ch-byte geometry element that was hit (MOV [EAX+38h],ESI at 00723F68)",
+      "evidence": "docs/HIT_HULL_SEGMENT.md sections 0 and 1a. The doc is not edited here; it belongs to another packet."
+    },
+    {
+      "target": "docs/COLLISION_SHAPES.md's description of the unit-part shape record",
+      "was": "dest+24h is the owner back-pointer",
+      "is": "dest+24h is the geometry the shape traces against: 00724517 MOV ECX,[ECX+24h] makes it the this of 00723E90, and 0070F720 does the same for 00723F80. 00712440 fills it from the first dword of an 8-byte {geometry, transform} pair in the vector at [node+160h]+40h",
+      "evidence": "docs/HIT_HULL_SEGMENT.md sections 1a and 6. The doc is not edited here."
+    }
+  ],
+  "negative_results": [
+    "No immediate store of 0Dh into a record's +30h or an entry's +0h exists in the image. Scanning C7 ?? ?? 0D 00 00 00 over the whole program returns eight sites (004477E8, 00465F46, 006EA808, 007487A9, 007827D0, 007B95AB, 007BCB01, 00851022) and none of them is at +30h or +0h of a hit record. The kind code is authored geometry data, read out of element+4h.",
+    "The byte scan the packet brief started from cannot reach the answer. 89 ?? 34 (every MOV [reg+34h], r32 with a disp8 and no SIB) matches 471 sites in 374 functions; the subset that also writes +30h is 207 functions. The producer's store is 89 50 34 at 00723F6C, a different base and source register from the 89 4E 34 that was scanned. The producer was found through docs/COLLISION_SHAPES.md's shape vtable table, not through a scan.",
+    "No writer of element+4h or element+8h was found. The geometry loader is unattributed; see docs/HIT_HULL_SEGMENT.md section 6 item 1."
+  ],
+  "unread": [
+    "007238e0 - the leaf segment/triangle test 00723AA0 calls",
+    "0085bf90 and 0085df60 - the sphere reject scalar and its helper",
+    "0098aae0 - the base node sphere pass that walks node+D0h; contract only",
+    "00b6db70, 00b6e0d0 - the transform refresh and inverse-matrix accessor 0070F720 uses",
+    "the loader that fills the vector at [node+160h]+40h with {geometry, transform} pairs",
+    "00cea174 - whether it is a sixth shape vtable that docs/COLLISION_SHAPES.md's slot-8 sweep missed, or whether 0087FEC0 is not a shape slot at all; unresolved, and the packet's answer does not depend on it"
+  ],
+  "runtime_evidence": "none. The rebuilt bsp_game.exe reports part=0 on the current tree, so the executable does not reach this producer and docs/WORKER_VERIFICATION_CHECKLIST.md rule 6 does not apply. Every claim here is static."
+}
