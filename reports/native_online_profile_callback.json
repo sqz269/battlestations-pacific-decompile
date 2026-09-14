@@ -460,5 +460,42 @@
       }
     ]
   },
-  "ghidra_integrator_actions": "Worker made zero Ghidra writes. Preserve comments, record old values, annotate four addresses and producer slot evidence under write lock, then refresh exports."
+  "ghidra_integrator_actions": "Worker made zero Ghidra writes. Preserve comments, record old values, annotate four addresses and producer slot evidence under write lock, then refresh exports.",
+  "integrator_validation": {
+    "code_commit": "708e70c96b97e76e3eca1bde53e339246cb72ea1",
+    "checkpoint": {
+      "path": "local/checkpoints/708e70c9/native-online-pump-default/validation.json",
+      "sha256": "e5ad416dc64065a43b0bfe74e4c511c1ffa19de01e71e9a9b983f824e0e03f46",
+      "artifacts": 3182,
+      "code_commit": "708e70c96b97e76e3eca1bde53e339246cb72ea1"
+    },
+    "default_build": {
+      "target": "MSVC Win32 Release",
+      "ctests_passed": 2
+    },
+    "registered_library_fixtures": {
+      "programs": 4,
+      "original_pump_cases": 10,
+      "original_achievement_cases": 13,
+      "original_reset_cases": 2,
+      "isolated_actual_exit_children": 2
+    },
+    "call_checks": {
+      "checked": 115,
+      "failed": 0
+    },
+    "saved_ghidra_annotations": 14,
+    "prior_comments_preserved": true,
+    "worker_source_unchanged_after_review": true,
+    "limits": [
+      "Explicit semantic C++ interfaces over borrowed actual storage, not original ABI/FH3/SEH substitution or game validation.",
+      "No original DLL/account/network request, live installer/process launch, or actual owner construction/lifetime was validated.",
+      "NativeOnlineSigninRuntime clock provider retains its explicit failed-QPC boundary; UI locale resolver retains its valid-text semantic domain.",
+      "F8ABF0 is established only null in the image; nonnull C++ hooks require a caller-supplied normalized cdecl thunk.",
+      "Nonnull F8A2FC calls the actual current vtable28. Native A43180/A430E0 and their gameplay dependencies remain external.",
+      "Original A409F0 fixture redirects five direct children to the same reconstructed raw child functions. Original A40110 and native FH3 delivery are not executed.",
+      "Actual pool NativeStringStorage adapter retains its documented noexcept-release/getter exception boundary. Root inline returns use throwing raw pool composition.",
+      "Source retains failed operation headers and refuses replay; a second cleanup exception is recorded, not claimed to reproduce native EH dispatch."
+    ]
+  }
 }

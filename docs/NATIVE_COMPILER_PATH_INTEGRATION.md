@@ -353,3 +353,28 @@ to the same canonical source provider; original FH3 delivery remains untested.
 Actual manager lifetime, full notification/pump/cache/compiler composition and
 gameplay remain open. Earlier sampler and shader fixtures retain their separate
 exact-commit checkpoints.
+
+## Raw online dispatcher and pump integration
+
+The exact code commit `708e70c96b97e76e3eca1bde53e339246cb72ea1` adds14 complete normal bodies in six
+registered modules. The full A40110 dispatcher and A409F0 frame pump share
+one actual3F0 manager with raw achievements, sign-in UI and notification
+leaves. The startup-installed callback18 is737D60 and now reaches actual
+profile headers through current manager/game/pool publications. Independent
+review corrected returning CRT guards, ignored move results, explicit SDK
+stack preimages and overlapping profile copies before integration.
+
+The combined Win32 build, both CTests, four registered-library fixture programs
+and two fake-update child exits passed. The ten original/source pump cases
+cover float rounding, unordered comparisons, current clock/state reloads and
+post-callback timestamp stores. All115 direct call rows pass;14 saved
+annotations retain prior comments, with refreshed exports and no required
+body repairs. Checkpoint `local/checkpoints/708e70c9/native-online-pump-default/validation.json` contains 3182
+verified artifacts and pins three immutable worker archives.
+
+This batch is on `agent/orch5-20260911`; it does not establish main integration
+or gameplay. Raw owner base A3F530/A3F5D0/A3F670 is the next bounded packet.
+Full derived construction/lifetime needs real IPC services, native WSADATA
+failure-output handling and actual singleton deletion binding. F8A2FC's
+current virtual28 remains a genuine external client dependency. Earlier
+sampler, shader and raw storage checkpoints retain their separate scope.

@@ -38,3 +38,28 @@ client virtual behavior, original ABI/FH3/SEH and gameplay remain open. The
 clock's failed-QPC boundary and UI locale's valid-text semantic domain remain
 explicit dependencies. See `reports/native_online_pump.json` for exact spans,
 call sites and the final registered-library validation checkpoint.
+
+## Integrated library evidence
+
+At `708e70c96b97e76e3eca1bde53e339246cb72ea1` all six wave sources are registered once in the default
+Win32 target. `scripts/build.ps1` and both existing CTests passed. Four focused
+fixture programs were compiled and run against that exact `bsp_core.lib`:
+13 copied-original achievement cases, two copied-original reset cases and UI
+preimage/cleanup checks, the leaf/profile fake-call fixture, and ten
+copied-original pump cases plus dispatcher partial-output/cleanup checks.
+Two isolated child runs use fake SDK/Shell calls and actual `_exit(0)`.
+The six packet reports have115 checked direct call rows and zero failures.
+Fourteen saved names/comments were read back with prior comments preserved;
+exports were refreshed. No listing repair was required for these14 bodies.
+
+Immutable checkpoint: `local/checkpoints/708e70c9/native-online-pump-default/validation.json`; SHA256 `e5ad416dc64065a43b0bfe74e4c511c1ffa19de01e71e9a9b983f824e0e03f46`;
+3182 artifacts. It pins exact sources, build objects and
+libraries, compiler include records, actually searched libraries, mapped
+32-bit runtime modules, command/stdout/exit evidence, original byte spans and
+three verified worker archives. The worker fixtures retain their original
+C++20 harness requirement; the earlier C++17 harness invocation failure is
+preserved separately. Production source was unchanged by that harness fix.
+
+The full raw3F0 manager construction/destruction, real SDK asynchronous
+lifetimes, client virtual behavior, original ABI/FH3/SEH and gameplay remain
+open. The UI's locale and clock-provider boundaries remain as documented.
