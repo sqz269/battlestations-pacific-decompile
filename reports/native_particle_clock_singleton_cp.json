@@ -1,0 +1,223 @@
+{
+  "packet": "orch3_particle_clock_singleton_cp",
+  "source_base_commit": "0f9ec7d961f0b5cf3630351e061f9842363fb39c",
+  "credit": {
+    "new_functions": 0,
+    "new_bytes": 0,
+    "kind": "raw actual-storage upgrade of existing typed full-function record"
+  },
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "installed_pe": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "installed_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "live_function_count": 64036
+  },
+  "native_parent": {
+    "address": "004de4b0",
+    "inclusive_end": "004de576",
+    "bytes": 199,
+    "sha256": "fa1f9c042b0a54c37c68547e0fed4dc02526fdfe6a8911e5b66e46ed9d541ec2",
+    "live_name": "BSP_ParticleClock_GetSingleton",
+    "native_entry": "no arguments; EAX actual published owner",
+    "current_source": "src/system_time_constants.cpp",
+    "current_source_signature": "ParticleClock* particle_clock_singleton_004de4b0(ParticleClock* volatile& global_00f8d420, ParticleClockLifetimeAccess&)",
+    "source_classification": "typed_only; no complete raw actual-storage 1Ch owner entry",
+    "direct_call_sites": 6,
+    "unique_direct_providers": 5
+  },
+  "native_internal_callsite_hashes": [
+    {
+      "address": "004de4d9",
+      "length": 5,
+      "bytes_hex": "e8726ef3ff",
+      "sha256": "d2cd49c1155489186597e786e10d6e6d47f08359e656b4997a734e441d67ea11",
+      "meaning": "first 00415350 manager lookup"
+    },
+    {
+      "address": "004de4f2",
+      "length": 6,
+      "bytes_hex": "ff151822ce00",
+      "sha256": "0f92679d97f4d0c50de32874ee090073d895111278b87a023a475a613691e4ad",
+      "meaning": "current EnterCriticalSection IAT cell 00CE2218"
+    },
+    {
+      "address": "004de50a",
+      "length": 5,
+      "bytes_hex": "e80c837100",
+      "sha256": "4be51501656fee4642dd9c4a67cf04018574e627d9fb7884d5f008903a6343fb",
+      "meaning": "00BF681B allocation after PUSH 1Ch"
+    },
+    {
+      "address": "004de53f",
+      "length": 5,
+      "bytes_hex": "e80c6ef3ff",
+      "sha256": "8ab85a4faf4a3a6dccc29d7a6446bc907f5d6ba83709fdc0420ed57b980c90dc",
+      "meaning": "second 00415350 manager lookup after publication"
+    },
+    {
+      "address": "004de54d",
+      "length": 5,
+      "bytes_hex": "e8de266f00",
+      "sha256": "5018307bbbda98040e1fd3ea47d446d6666d3260352e649357c785aa7e03284f",
+      "meaning": "00BD0C30 registration with freshly reloaded publication"
+    },
+    {
+      "address": "004de55b",
+      "length": 6,
+      "bytes_hex": "ff151022ce00",
+      "sha256": "6d0be259232d793e8a51fd87581eed39beecf1796ea4780d03b1b5d1009e9ea4",
+      "meaning": "current LeaveCriticalSection IAT cell 00CE2210"
+    }
+  ],
+  "native_caller_callsite_hashes": [
+    {
+      "address": "004deed5",
+      "length": 5,
+      "bytes_hex": "e8d6f5ffff",
+      "sha256": "9807aee324a2e14c42c67f5cb428d42ca0738aaa9b58246f95d07f8f22a90595",
+      "meaning": "BSP_Game_ConstructWorld"
+    },
+    {
+      "address": "004df2c4",
+      "length": 5,
+      "bytes_hex": "e8e7f1ffff",
+      "sha256": "4a6ce4c84702aca387330e49bf53e10f567ed4fbc37e347ac0e1ab0342bf8bde",
+      "meaning": "BSP_Game_ConstructWorld"
+    },
+    {
+      "address": "00b46cc2",
+      "length": 5,
+      "bytes_hex": "e8e97799ff",
+      "sha256": "48794c62773090aa350295de33a80a0a6d0edcd0b87efdc2c159ce463e326495",
+      "meaning": "B46A70 caller; next instruction reads returned owner+18"
+    },
+    {
+      "address": "00b3b2ba",
+      "length": 5,
+      "bytes_hex": "e8f1319aff",
+      "sha256": "16e0f5da25819ac2daa219bc60f7299b2612c1becf459c51a070e43ef03ece5c",
+      "meaning": "BSP_ShaderBuilder_AddDescriptorSamplers"
+    },
+    {
+      "address": "00b33a13",
+      "length": 5,
+      "bytes_hex": "e898aa9aff",
+      "sha256": "2bbc32012dd3f2ed0f99ce7cc424c4790c31a492fab8f6060b059b3907412f96",
+      "meaning": "FUN_00b33a10"
+    },
+    {
+      "address": "004e53a6",
+      "length": 5,
+      "bytes_hex": "e80591ffff",
+      "sha256": "2b6fb8cc9d3496153ea90538bdf1c1316daa09b7c9dc458fd65ec8d5bd01722b",
+      "meaning": "BSP_Game_OnMove"
+    }
+  ],
+  "native_eh": {
+    "handler": "00c66fa8",
+    "frame_handler": "00bf6b43",
+    "funcinfo": "00d8fce0",
+    "funcinfo_sha256": "b2d8a0606ad7c501002989f8ba0d2d6f3c4c660061465b0867a5cb63458cd188",
+    "magic": "19930522",
+    "max_state": 1,
+    "unwind_map": "00d8fcd8",
+    "unwind_map_sha256": "9700e96f083c28d079b37be4fae1e32af0cdb4c65bde5b89877e6f16b76c3f3e",
+    "state0_action": "00c66fa0",
+    "state0_action_sha256": "50949e60146da85ba7bb37f081f397b928789a46cfcb4559e1f164bad3e58497",
+    "cleanup_target": "00411ee0",
+    "cleanup_source": "src/native_diagnostic_sink_lifetime.cpp",
+    "cleanup_source_signature": "void destroy_native_singleton_guard_00411ee0(void* actual_8byte_guard)",
+    "arm_after_enter_increment": "004de4fc",
+    "source_limit": "raw guard destructor exists; host C++ catch is not native private FH3/SEH interception"
+  },
+  "source_interface": "NativeParticleClockStorage* get_native_particle_clock_singleton_004de4b0(void* volatile& actual_manager_publication_01090aa0, NativeParticleClockStorage* volatile& actual_particle_publication_00f8d420)",
+  "native_interface": "no arguments; EAX actual owner, plain RET",
+  "actual_owner": {
+    "size_bytes": 28,
+    "stores_in_order": [
+      "+04=00CE7D08",
+      "+08=0",
+      "+0C=0",
+      "+10=0",
+      "+14=0",
+      "+00=00CE7D38",
+      "+04=00CE7D24"
+    ],
+    "unwritten_offset": "+18",
+    "publication": "mutable 00F8D420; captured initial read for fast return, current lock recheck, publish even null, fresh registration argument reload, final post-release reload",
+    "manager": "borrowed mutable 01090AA0; first lookup supplies captured +10 section, second lookup supplies registration manager",
+    "guard": "actual eight-byte profile/section; Enter then tracked section+18 increment; state0 then current recheck; decrement before Leave; exceptional raw 00411EE0 cleanup"
+  },
+  "direct_provider_contracts": {
+    "00415350": "void* get_native_singleton_manager_00415350(void* volatile& actual_manager_publication_01090aa0)",
+    "00BD0C30": "void __fastcall register_native_singleton_object_00bd0c30(void* owner, void* unused_edx, void* object)",
+    "00411EE0": "void destroy_native_singleton_guard_00411ee0(void* actual_8byte_guard)",
+    "00BF681B": "void* singleton_lifetime_allocate(const SingletonAllocationRequest&); native_bytes=host_bytes=0x1c; concrete host CRT boundary",
+    "00CE2218": "native current EnterCriticalSection IAT cell; source calls real host Win32 API",
+    "00CE2210": "native current LeaveCriticalSection IAT cell; source calls real host Win32 API"
+  },
+  "source_and_provider_sha256": {
+    "include/bsp/system_time_constants.hpp": "36d88206bf9dbf4e6cceaab5e0aa6bf4b71172305b79bb98a571063add672ba9",
+    "src/system_time_constants.cpp": "4281c8bba03dc6726c29a84441b4a52da98b0143ee0aa3bd7e3018bb8192e45c",
+    "include/bsp/particle_clock_lifetime.hpp": "b54ea8e3be7dd654e869ff009d6adb812f5acfc6029d903dac18006a01341919",
+    "src/particle_clock_lifetime.cpp": "841a2eace4497456da6e8dfbf39f51fb83ae52e668a87797a314a8243256ed89",
+    "include/bsp/render_tail.hpp": "7ded157910928589128f7a1569d18e42877ed2c943649957612fa6060b4646fc",
+    "src/render_tail.cpp": "41c44beddd52b87c71ba8a4809ff1e289fa30e0a9bc4375152360a7aff9712b0",
+    "include/bsp/native_singleton_publication.hpp": "0ba3bb843ec6048790eb768f46e6cfeb99c8fae8c3e3f3ae59a0e14cca1e72f5",
+    "src/native_singleton_publication.cpp": "db69108414a5aa844b80b04ca82819139f1dccc422d6f3a954512a4375d07c8a",
+    "include/bsp/native_singleton_vector_registration_wrappers.hpp": "04d669c9167de50ba74557cc6651ab4dbdc753b8c6f40fdb3a743f65948eab35",
+    "src/native_singleton_vector_registration_wrappers.cpp": "cd191614f5de77becc8a0a9a73f9c3ebfc1cfd86bb87fdf10a7965d0a5839a90",
+    "include/bsp/native_diagnostic_sink_lifetime.hpp": "17bf59a7aee1bda0ceb66989c177ed8e32f207c55087f10b5ecfaaa275791af6",
+    "src/native_diagnostic_sink_lifetime.cpp": "c74781854e773ffdf76f46b823b6751ca795709f277fefc874a2bdfdefd63131",
+    "include/bsp/singleton_lifetime.hpp": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+    "src/singleton_lifetime.cpp": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+    "include/bsp/native_singleton_vector_reserve_construct.hpp": "0ab5b32557f19fbd2887065378af01a95f2be959855d8de1249a896a9754579d",
+    "src/native_singleton_vector_reserve_construct.cpp": "105cce16ac4886cdc5c2359ae1837a3126445842e46268c55d34ae42f9186f29",
+    "include/bsp/native_particle_clock_singleton.hpp": "cf420be7c1082e3ab237e8ca3585d94721a5afb6ad2cf05da64706d44d298602",
+    "src/native_particle_clock_singleton.cpp": "970a49f005290b55e6a5dd8b67525a9d7324ae1b3928590e0dbe1b68f97d073d",
+    "cmake/startup.cmake": "e0a1edb4f29a5a003bdd0aa888ca1f9367f7b2c6e0966396dfc5ef3bea5cc6cf"
+  },
+  "generated_object": {
+    "path": "build/win32/bsp_core.dir/Release/native_particle_clock_singleton.obj",
+    "size_bytes": 3612,
+    "sha256": "a463875407f681d1f6f4af8ceb5d8158f964eddbae65d1eb57545770bce5e30d",
+    "dumpbin_evidence": "local/cp-generated-object.txt",
+    "dumpbin_sha256": "3d838b073f11d9f05a1953cabe7177a161385258c0f780cc782d69988f16758d",
+    "review": {
+      "function_body_code": "text offsets 00000000..00000111, catch 00000112..00000126; source ABI has two stack references, host EH/security prologue",
+      "initial_publication_read": "00000034, captured EAX fast return at 000000F6",
+      "first_manager_lookup": "0000003F; captured manager+10 section at 00000047",
+      "enter_and_increment": "EnterCriticalSection IAT call 00000059; captured section+18 load/inc/store 0000005F..00000063",
+      "second_publication_recheck": "volatile comparison 00000066",
+      "source_eh_state_store": "00000069; after recheck comparison, unlike native state0 store before recheck",
+      "allocator": "concrete singleton_lifetime_allocate call 0000008B with native/host 1Ch request",
+      "owner_stores": [
+        "00000099 +04=CE7D08",
+        "000000A2 +08=0",
+        "000000A9 +0C=0",
+        "000000B0 +10=0",
+        "000000B7 +14=0",
+        "000000BE +00=CE7D38",
+        "000000C4 +04=CE7D24"
+      ],
+      "owner_plus_18": "no store",
+      "publication_and_registration": "publish 000000CC, second manager call 000000CE, fresh publication reload 000000D8, register call 000000DD",
+      "release_and_return": "captured section+18 decrement/store 000000E6..000000EB; LeaveCriticalSection IAT call 000000EE; final publication reload 000000F4",
+      "catch": "raw 00411EE0 provider call 00000116 then host __CxxThrowException; native private FH3 map not reproduced",
+      "relocations": "symbolic provider/Win32/host-EH relocations; original game-local targets and current IAT addresses are not embedded"
+    }
+  },
+  "validation": {
+    "build": "./scripts/build.ps1: Win32 Release bsp_core and bsp_game built, exit 0",
+    "ctest": "reconstructed_math: 1/1 passed, 0.08 seconds total, invoked by scripts/build.ps1",
+    "native_span": "installed PE 199-byte span and live Ghidra listing reviewed; generated object schedule reviewed with explicit EH-state difference"
+  },
+  "limits": [
+    "Source takes two borrowed publication-cell references, unlike native no-argument plain RET ABI.",
+    "Host malloc/_callnewh/new-handler/exception identities and Win32 imports differ from original BF681B and current CE2218/CE2210 IAT.",
+    "Source C++ catch does not reproduce private C66FA8 FH3/SEH interception and hardware-fault unwind.",
+    "Native vtable DWORDs are identity values, not host-callable C++ vtables; mixed-owner destruction is unproven.",
+    "First +18 shader value, B19A10 setter, full B46A70 composition, game runtime and gameplay are unvalidated."
+  ]
+}
