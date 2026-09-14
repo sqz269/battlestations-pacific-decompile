@@ -1,0 +1,1952 @@
+{
+  "packet": "orch2_native_crt_ptd_frontier_bn",
+  "base": "45980f8a3a0512d10cf4f874fff2fde1eb59ee5e",
+  "status": "discovery_only_complete_bounded_spans_with_listing_omissions_qualified",
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_home": "J:/tools/ghidra_12.0.4_PUBLIC",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "installed_pe": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "size": 12223752,
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "sha512": "7b545a4c47fae14af6c50a1d4d0d2904c1b85f84b9a24d1516b95d77945693fc36b1f6bb9effb7fa29b22b06ebcafc230cdf97f5c332266a3de8dd83bdc29a97"
+  },
+  "provenance": {
+    "pinned_watson_commit": "ed185cb2dfdf1ba045dbf30ebfd47f083eeece80",
+    "pinned_artifacts_size_sha256_sha512_verified": 135,
+    "cookie_source_preserved": "47260b0cd08e9474bfd42a5e0f054fecbdbbd4c9",
+    "reused_complete_function_spans": [
+      {
+        "address": "00c051b7",
+        "length": 119,
+        "evidence": "Pinned complete PE/live bytes, current installed PE unchanged; no fresh live capture.",
+        "size": 119,
+        "sha256": "ccbdbe41ce6650660cd55232a4c1dff2445bfafa036dc2d2e3f2c9c2df7d9a1e",
+        "sha512": "49666385af1195dd0477d5b72e3ad3dcd447e5649bc8a2f6894c39f6c8059e695ec62c8ef5923dbcd7c8cb14e05fb9b23f49ef50eb552bbaf66bac97654d3eb7"
+      },
+      {
+        "address": "00c05070",
+        "length": 50,
+        "evidence": "Pinned complete PE/live bytes, current installed PE unchanged; no fresh live capture.",
+        "size": 50,
+        "sha256": "c56216e301258d74d1f73f4e30645d811c2e7a3cda5bef15b09e94735394ba81",
+        "sha512": "12a8542babb1ed2256cf0b44dce9fb028682940b1003673953a8032a657daeaa4c6c4b9cf8c8097840e163f4bbb0be02b369371f6bc2510df66fc51748a6b35e"
+      },
+      {
+        "address": "00bffb8b",
+        "length": 19,
+        "evidence": "Pinned complete PE/live bytes, current installed PE unchanged; no fresh live capture.",
+        "size": 19,
+        "sha256": "84aca6584c13d6f07ced37568fc45be0c65f51583ba9a70f7cc98d62b2d94a5c",
+        "sha512": "f830061596947bd1f07c6ded1e7f62ce3bf4525385591f70331722ec429daebfedd62ffb92526fefaddf26c8df34c8ef0719d39c629ca8d98f45ef2e77cc5ef6"
+      }
+    ],
+    "qualification": "Three retained complete PE/live bodies reused; installed PE rechecked. No recapture of all22 baseline spans."
+  },
+  "new_native_contracts": [
+    {
+      "entry": "00c0190b",
+      "name": "___addlocaleref",
+      "bytes": 134,
+      "abi": "One cdecl pointer at entry ESP+4; EBX/EBP/ESI/EDI saved; plain RET.",
+      "ownership": "Ordered increments of actual referenced LONG counts; no allocation/lock/release/private state.",
+      "end_exclusive": "00c01991"
+    },
+    {
+      "entry": "00c050f8",
+      "name": "LIBCRT_unmatched_00c050f8",
+      "bytes": 182,
+      "abi": "SEH4-prolog-adjusted EBP+8 PTD and EBP+Ch optional locale; epilog4 and plain RET.",
+      "ownership": "Publishes actual exception-action, mbcinfo and selected locale pointers; lock12 finally releases only the lock.",
+      "end_exclusive": "00c051ae"
+    },
+    {
+      "entry": "00c051ae",
+      "name": "LIBCRT_unmatched_00c051ae",
+      "bytes": 9,
+      "abi": "No arguments; push12/call C11B31/pop ECX/RET.",
+      "ownership": "Normal and SEH4 finally target for lock12.",
+      "end_exclusive": "00c051b7"
+    },
+    {
+      "entry": "00c11a93",
+      "name": "__mtinitlocks",
+      "bytes": 73,
+      "abi": "No arguments, EAX0/1; ESI/EDI preserved; plain RET.",
+      "ownership": "Publishes pointers to actual static pool before per-entry critical-section initialization.",
+      "end_exclusive": "00c11adc"
+    },
+    {
+      "entry": "00c11b31",
+      "name": "LIBCRT_unmatched_00c11b31",
+      "bytes": 21,
+      "abi": "One cdecl index at entry ESP+4; EBP preserved; plain RET.",
+      "ownership": "Actual indexed table pointer passed to LeaveCriticalSection; no range/null checks.",
+      "end_exclusive": "00c11b46"
+    },
+    {
+      "entry": "00c11b5e",
+      "name": "LIBCRT_unmatched_00c11b5e",
+      "bytes": 186,
+      "abi": "SEH4-prolog-adjusted EBP+8 index; EAX0/1; epilog4 and plain RET.",
+      "ownership": "18h native allocation before lock10, then recheck/init/publish or free; real errno12 on allocation/init failure.",
+      "end_exclusive": "00c11c18"
+    },
+    {
+      "entry": "00c11c18",
+      "name": "LIBCRT_unmatched_00c11c18",
+      "bytes": 9,
+      "abi": "No arguments; push10/call C11B31/pop ECX/RET.",
+      "ownership": "Normal and SEH4 finally target for lock10.",
+      "end_exclusive": "00c11c21"
+    },
+    {
+      "entry": "00c11c21",
+      "name": "__lock",
+      "bytes": 49,
+      "abi": "One cdecl index at entry ESP+4; EBP/ESI saved; plain RET.",
+      "ownership": "Load actual pointer, lazily initialize if null, then real EnterCriticalSection.",
+      "end_exclusive": "00c11c52"
+    }
+  ],
+  "new_spans": [
+    {
+      "address": "00c050f8",
+      "length": 182,
+      "kind": "complete native function",
+      "live_pe_equal": true,
+      "size": 182,
+      "sha256": "e289ed4df47dae16cea290c87591877b124ab95d041b8fdf6f0ebd51572ad342",
+      "sha512": "8f2b3329e8efe18cba99b0b5d337ee593fbd76e9bb2a99580fbc704171f8c88e24dc7db94cfd4cf4b4af53ab1a63c8973b09a59a57823d4a589693283efcd987"
+    },
+    {
+      "address": "00c051ae",
+      "length": 9,
+      "kind": "complete native function",
+      "live_pe_equal": true,
+      "size": 9,
+      "sha256": "2fd64db3a43cdc5147db5de2bbb04b4cd8468fd7b2f4722dd30ea23aeb06f1d4",
+      "sha512": "70d7d54e1e9f7fd2d5db0ab31fcd2a15a0dda6d046bcc2593b509eb38944dd6fa8c49ceb5cc276159aa49525166c37c728d2ba0a6849d76ab70e29ce08fdac1c"
+    },
+    {
+      "address": "00c0190b",
+      "length": 134,
+      "kind": "complete native function",
+      "live_pe_equal": true,
+      "size": 134,
+      "sha256": "4b74a738b889b9e8e8ed2d27869ef7bdf53860e9f7cae006de98919ab0cb6b05",
+      "sha512": "325d2d1b8946067505ee4ca118c83197d68675048f0bce07705b3fd7fb6bd9d575276fb57f2471a2d29782b039f4d8cd50aeb4c7e307097c0d2d2bbc75c1741d"
+    },
+    {
+      "address": "00c11b31",
+      "length": 21,
+      "kind": "complete native function",
+      "live_pe_equal": true,
+      "size": 21,
+      "sha256": "79a3d82c9ad3f43182f2d65bf6c207f932615a621ab8b35db6fdcc467d324d56",
+      "sha512": "d2156491a51719a19a18d2b6ba1c70298b3e44cafd2ec1d9d7c14d4082987dbbadb49f433b9dc68c3f86d57d266f5a775540b92e49612e1bc1bed70aaa596f86"
+    },
+    {
+      "address": "00c11c21",
+      "length": 49,
+      "kind": "complete native function",
+      "live_pe_equal": true,
+      "size": 49,
+      "sha256": "b02c4573212abb78581b610296b1ae8a133d9790a58512b09ab646b4a78e2798",
+      "sha512": "b0064e773489c53594404995299b29b318973daee162442e1697755645edbec4758f3bb4134ff0232457d696c71113cb4edbafc39f64725fa219c81f5a45dfe1"
+    },
+    {
+      "address": "00c11b5e",
+      "length": 186,
+      "kind": "complete native function",
+      "live_pe_equal": true,
+      "size": 186,
+      "sha256": "4867b1073c65694f072a11986820e398fd904ef4b392db165374ace232f1d8d9",
+      "sha512": "46aca76df16cbaddac1b634e1182160b912537b449f4be024dc7f3755e70ef555a2775c27687b5c2c5c16ab962ea6741a1726c4f737d6f2020dce38af51307f6"
+    },
+    {
+      "address": "00c11a93",
+      "length": 73,
+      "kind": "complete native function",
+      "live_pe_equal": true,
+      "size": 73,
+      "sha256": "d0b673aecf3e98c1b52317938672a25f5a8022f1cb169eb5e662f4a7364c7450",
+      "sha512": "317df4e74cf8f45e3eb27ef875cf2cf7b5bb21d91be270a8a488c75b96855be5cd9e6e0b84743a014b1f5fe8c94472d3debc71be5cc4d6af213c6eb4cc077a64"
+    },
+    {
+      "address": "00c11c18",
+      "length": 9,
+      "kind": "complete native function",
+      "live_pe_equal": true,
+      "size": 9,
+      "sha256": "7c8670c564d00524ac491f13c55e55718cd88f082aaecb91b1a141f2e86a4042",
+      "sha512": "f474b32dbd54f695bdd252b00a95bfb5b1eb59c59967c70db931943cb80140dc3de068a0b700f00f4075ccfdbac03f465d9dc22103a40823c7de7c8653f9e216"
+    },
+    {
+      "address": "00e162b0",
+      "length": 4,
+      "kind": "current locale pointer",
+      "live_pe_equal": true,
+      "size": 4,
+      "sha256": "66754af05722b2f881e346b4c134ff8c668ad5ec24816b5cb7e3e2312fef4df7",
+      "sha512": "6a66b5e056139effa5740bb5960c0cd9f3776eaf5d89af178bec6d06e0c27c844c815380bac97377afeede9e44cecaa6c7ea000f0cdc6ba809b9ad377fc22a11"
+    },
+    {
+      "address": "00e161d8",
+      "length": 216,
+      "kind": "initial locale record",
+      "live_pe_equal": true,
+      "size": 216,
+      "sha256": "323c791df2cb5c01ac4c1d8a8ef2de6a67935bdb4d4eb3f31948ed146ce64c8d",
+      "sha512": "7d8674806ee409bcaefa56ac292613d07a800f786b6ad3b2dbbd9cb299b02a7b43e42a103c63da359de8bf25e5d64e348d2b8835cd25bb7333bd271f53310835"
+    },
+    {
+      "address": "00e15aa4",
+      "length": 4,
+      "kind": "initial time locale reference count",
+      "live_pe_equal": true,
+      "size": 4,
+      "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+      "sha512": "ec2d57691d9b2d40182ac565032054b7d784ba96b18bcb5be0bb4e70e3fb041eff582c8af66ee50256539f2181d7f9e53627c0189da7e75a4d5ef10ea93b20b3"
+    },
+    {
+      "address": "00e15ca8",
+      "length": 4,
+      "kind": "static mbcinfo count",
+      "live_pe_equal": true,
+      "size": 4,
+      "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+      "sha512": "ec2d57691d9b2d40182ac565032054b7d784ba96b18bcb5be0bb4e70e3fb041eff582c8af66ee50256539f2181d7f9e53627c0189da7e75a4d5ef10ea93b20b3"
+    },
+    {
+      "address": "00e161d0",
+      "length": 8,
+      "kind": "actual narrow C locale sentinel",
+      "live_pe_equal": true,
+      "size": 8,
+      "sha256": "d17053f62f3264b3a99a5d2180d4c3abcc0eb49c86d997963cbec3d60007f833",
+      "sha512": "c8a30bdcd22035d9fe2df0de992fb4b803ad6391d94c415680969d0bf2c62f8666ca4815aced3b1b76515cd3ebb01e57cd0d2d99b806879ecb17d1f86962eef4"
+    },
+    {
+      "address": "00e16478",
+      "length": 288,
+      "kind": "36 lock table pointer/type pairs",
+      "live_pe_equal": true,
+      "size": 288,
+      "sha256": "2a42b9cd37b5c11ab78cc633ffd65479d77dd8e54eaffb8fe5929630a6801299",
+      "sha512": "31a3b3289f2c821df8825d6fd4a70e63febd14958470483024eba3724a8c03424b2d0ecf7493fefe0e50fe8c3ee3fc3717f7c060710071f7c57450d8f1babc11"
+    },
+    {
+      "address": "00e032b0",
+      "length": 28,
+      "kind": "C050F8 SEH4 scope table",
+      "live_pe_equal": true,
+      "size": 28,
+      "sha256": "1325ba6aa93454c68cdc6ff6ade130f0e694c8ec667eb69beb4a8b60f1aa89e0",
+      "sha512": "df2922542f6bc9aa75cdef2f7fd4f74436ce80e5778d4e4227ff8c29d06291e528ca13bb72622400b99be4abc69636019ffcc5a04b0f493473a9d00ee178524d"
+    },
+    {
+      "address": "00e03678",
+      "length": 28,
+      "kind": "C11B5E SEH4 scope table",
+      "live_pe_equal": true,
+      "size": 28,
+      "sha256": "3faa67b6de3d9dca8cd2ca6ed26a6f264b627393403de734770e9e023e8ccd25",
+      "sha512": "a56b0f0c86d709ede264256fd95a3e9ca336ea6a600ab7bb042ae752dc741a24b0c53bf3bfe856dda9078785cc65d61cb80e8645851c9afbdf4c7c93b5fad029"
+    },
+    {
+      "address": "00e16840",
+      "length": 12,
+      "kind": "PTD exception-action table prefix only",
+      "live_pe_equal": true,
+      "size": 12,
+      "sha256": "58b04902f7a90e9fd0ccb010f3ea1924c0538c857252447b370764744decaa83",
+      "sha512": "1ef5a1e151911c6da6e93f28a6e81412bad422aa7ead7814a072b0e05a63c800675607bc1169a58b0724df94a12ae33e27ab95f17d22586ade1d79cbc6daac7c"
+    },
+    {
+      "address": "00e15afc",
+      "length": 8,
+      "kind": "PTD index and getter-cache TLS index",
+      "live_pe_equal": true,
+      "size": 8,
+      "sha256": "12a3ae445661ce5dee78d0650d33362dec29c4f82af05e7e57fb595bbbacf0ca",
+      "sha512": "d0e784dd6dfb1a1f64da68379c349e5d7b5354d2a7312694b9d736b1410f408f5d5fd50924acef6cc6d78653917972bc0551fa11712de9ccdfbe4ef988962bf0"
+    },
+    {
+      "address": "0109de34",
+      "length": 16,
+      "kind": "FLS allocation/getter/setter/free words",
+      "live_pe_equal": true,
+      "size": 16,
+      "sha256": "374708fff7719dd5979ec875d56cd2286f6d3cf7ec317a3b25632aab28ec37bb",
+      "sha512": "0b6cbac838dfe7f47ea1bd0df00ec282fdf45510c92161072ccfb84035390c4da743d9c3b954eaa1b0f86fc9861b23cc6c8667ab232c11c686432ebb5c8c3f27"
+    },
+    {
+      "address": "00e159e8",
+      "length": 4,
+      "kind": "fallback errno word",
+      "live_pe_equal": true,
+      "size": 4,
+      "sha256": "42f4aeb81c1ef81f771f3de8abca9dcf66901c575530e7672e4b1146474ae650",
+      "sha512": "2b504f7dea06c706b789f94ad7bea5b2e65befd005a433b67dddffb1ae849ed1640df27d6dc86f3fd36e058dad41d726ad93ad4bf05432533e8a253afde94a05"
+    },
+    {
+      "address": "0109e1c0",
+      "length": 336,
+      "kind": "complete static lock pool,14 Win32 critical sections",
+      "live_pe_equal": true,
+      "size": 336,
+      "sha256": "52a3e0804d93dc525ec3c67ef8ac5b01756ecf0513e36f3c19435e4c82cb5d29",
+      "sha512": "d856bd0027d55e816a21bb57493f522e467a53bfec2e5d1721aca062a52d9bd077d75a5f304fec4443e4d0c187b1e7f209409b5e8e158fdeed434ed3b6848b1a"
+    },
+    {
+      "address": "00c05484",
+      "length": 220,
+      "kind": "external __mtinit publication excerpt, not complete function",
+      "live_pe_equal": true,
+      "size": 220,
+      "sha256": "fa1c2e129c60967a9587b695658d662cd9599528c7cbeace92ad0d41fd94fd91",
+      "sha512": "00a74df2b280a14d029d214fd24608c3b888e75c6696535d0e8490772d964bedc1a77de2b6ed99ab26210430187502487d4937cd87496d4c9093a3185d61252c"
+    }
+  ],
+  "calls": [
+    {
+      "address": "00c050ff",
+      "native": "00c07c00",
+      "function": "00c050f8"
+    },
+    {
+      "address": "00c05126",
+      "native": "00c04efb",
+      "function": "00c050f8"
+    },
+    {
+      "address": "00c05177",
+      "native": "00c11c21",
+      "function": "00c050f8"
+    },
+    {
+      "address": "00c05196",
+      "native": "00c0190b",
+      "function": "00c050f8"
+    },
+    {
+      "address": "00c051a3",
+      "native": "00c051ae",
+      "function": "00c050f8"
+    },
+    {
+      "address": "00c051a8",
+      "native": "00c07c45",
+      "function": "00c050f8"
+    },
+    {
+      "address": "00c051b0",
+      "native": "00c11b31",
+      "function": "00c051ae"
+    },
+    {
+      "address": "00c11c35",
+      "native": "00c11b5e",
+      "function": "00c11c21"
+    },
+    {
+      "address": "00c11c41",
+      "native": "00bfba09",
+      "function": "00c11c21"
+    },
+    {
+      "address": "00c11b65",
+      "native": "00c07c00",
+      "function": "00c11b5e"
+    },
+    {
+      "address": "00c11b7a",
+      "native": "00c05b68",
+      "function": "00c11b5e"
+    },
+    {
+      "address": "00c11b81",
+      "native": "00c059a8",
+      "function": "00c11b5e"
+    },
+    {
+      "address": "00c11b8b",
+      "native": "00bfba53",
+      "function": "00c11b5e"
+    },
+    {
+      "address": "00c11ba6",
+      "native": "00c0481a",
+      "function": "00c11b5e"
+    },
+    {
+      "address": "00c11bb2",
+      "native": "00bffb8b",
+      "function": "00c11b5e"
+    },
+    {
+      "address": "00c11bc3",
+      "native": "00c11c21",
+      "function": "00c11b5e"
+    },
+    {
+      "address": "00c11bd6",
+      "native": "00c17653",
+      "function": "00c11b5e"
+    },
+    {
+      "address": "00c11be2",
+      "native": "00bf9dc8",
+      "function": "00c11b5e"
+    },
+    {
+      "address": "00c11bfd",
+      "native": "00bf9dc8",
+      "function": "00c11b5e"
+    },
+    {
+      "address": "00c11c0a",
+      "native": "00c11c18",
+      "function": "00c11b5e"
+    },
+    {
+      "address": "00c11c12",
+      "native": "00c07c45",
+      "function": "00c11b5e"
+    },
+    {
+      "address": "00c11ab9",
+      "native": "00c17653",
+      "function": "00c11a93"
+    },
+    {
+      "address": "00c11c1a",
+      "native": "00c11b31",
+      "function": "00c11c18"
+    },
+    {
+      "address": "00c051c7",
+      "native": "00c05070",
+      "function": "00c051b7"
+    },
+    {
+      "address": "00c051db",
+      "native": "00c0485a",
+      "function": "00c051b7"
+    },
+    {
+      "address": "00c051f5",
+      "native": "00c04fde",
+      "function": "00c051b7"
+    },
+    {
+      "address": "00c05204",
+      "native": "00c050f8",
+      "function": "00c051b7"
+    },
+    {
+      "address": "00c0521a",
+      "native": "00bf9dc8",
+      "function": "00c051b7"
+    },
+    {
+      "address": "00c05089",
+      "native": "00c04fde",
+      "function": "00c05070"
+    },
+    {
+      "address": "00bffb8b",
+      "native": "00c051b7",
+      "function": "00bffb8b"
+    },
+    {
+      "address": "00c054e8",
+      "native": "00c11a93",
+      "function": "00c053dc",
+      "scope": "External parent publication excerpt only."
+    },
+    {
+      "address": "00c05515",
+      "native": "00c0485a",
+      "function": "00c053dc",
+      "scope": "External parent publication excerpt only."
+    },
+    {
+      "address": "00c0553e",
+      "native": "00c050f8",
+      "function": "00c053dc",
+      "scope": "External parent publication excerpt only."
+    }
+  ],
+  "listing_omitted_direct_calls": [
+    {
+      "site": "00c11be8",
+      "target": "00bffb8b",
+      "caller": "00c11b5e",
+      "instruction": "e89edffeff",
+      "evidence": "Complete installed PE and live bytes; omitted in live listing; kept outside listing-verifier successes."
+    }
+  ],
+  "indirect_calls": [
+    {
+      "site": "00c05109",
+      "caller": "00c050f8",
+      "operand": "dword ptr [0xce215c]",
+      "instruction": "ff155c21ce00",
+      "iat": "00ce215c",
+      "dll": "KERNEL32.dll",
+      "name": "GetModuleHandleA",
+      "qualification": "Installed PE import and native register/operand load verified."
+    },
+    {
+      "site": "00c0513d",
+      "caller": "00c050f8",
+      "operand": "ebx",
+      "instruction": "ffd3",
+      "iat": "00ce20f4",
+      "dll": "KERNEL32.dll",
+      "name": "GetProcAddress",
+      "qualification": "Installed PE import and native register/operand load verified."
+    },
+    {
+      "site": "00c0514d",
+      "caller": "00c050f8",
+      "operand": "ebx",
+      "instruction": "ffd3",
+      "iat": "00ce20f4",
+      "dll": "KERNEL32.dll",
+      "name": "GetProcAddress",
+      "qualification": "Installed PE import and native register/operand load verified."
+    },
+    {
+      "site": "00c0516f",
+      "caller": "00c050f8",
+      "operand": "dword ptr [0xce221c]",
+      "instruction": "ff151c22ce00",
+      "iat": "00ce221c",
+      "dll": "KERNEL32.dll",
+      "name": "InterlockedIncrement",
+      "qualification": "Installed PE import and native register/operand load verified."
+    },
+    {
+      "site": "00c0191a",
+      "caller": "00c0190b",
+      "operand": "edi",
+      "instruction": "ffd7",
+      "iat": "00ce221c",
+      "dll": "KERNEL32.dll",
+      "name": "InterlockedIncrement",
+      "qualification": "Installed PE import and native register/operand load verified."
+    },
+    {
+      "site": "00c01927",
+      "caller": "00c0190b",
+      "operand": "edi",
+      "instruction": "ffd7",
+      "iat": "00ce221c",
+      "dll": "KERNEL32.dll",
+      "name": "InterlockedIncrement",
+      "qualification": "Installed PE import and native register/operand load verified."
+    },
+    {
+      "site": "00c01934",
+      "caller": "00c0190b",
+      "operand": "edi",
+      "instruction": "ffd7",
+      "iat": "00ce221c",
+      "dll": "KERNEL32.dll",
+      "name": "InterlockedIncrement",
+      "qualification": "Installed PE import and native register/operand load verified."
+    },
+    {
+      "site": "00c01941",
+      "caller": "00c0190b",
+      "operand": "edi",
+      "instruction": "ffd7",
+      "iat": "00ce221c",
+      "dll": "KERNEL32.dll",
+      "name": "InterlockedIncrement",
+      "qualification": "Installed PE import and native register/operand load verified."
+    },
+    {
+      "site": "00c0194e",
+      "caller": "00c0190b",
+      "operand": "edi",
+      "instruction": "ffd7",
+      "iat": "00ce221c",
+      "dll": "KERNEL32.dll",
+      "name": "InterlockedIncrement",
+      "qualification": "Installed PE import and native register/operand load verified."
+    },
+    {
+      "site": "00c01966",
+      "caller": "00c0190b",
+      "operand": "edi",
+      "instruction": "ffd7",
+      "iat": "00ce221c",
+      "dll": "KERNEL32.dll",
+      "name": "InterlockedIncrement",
+      "qualification": "Installed PE import and native register/operand load verified."
+    },
+    {
+      "site": "00c01976",
+      "caller": "00c0190b",
+      "operand": "edi",
+      "instruction": "ffd7",
+      "iat": "00ce221c",
+      "dll": "KERNEL32.dll",
+      "name": "InterlockedIncrement",
+      "qualification": "Installed PE import and native register/operand load verified."
+    },
+    {
+      "site": "00c0198a",
+      "caller": "00c0190b",
+      "operand": "edi",
+      "instruction": "ffd7",
+      "iat": "00ce221c",
+      "dll": "KERNEL32.dll",
+      "name": "InterlockedIncrement",
+      "qualification": "Installed PE import and native register/operand load verified."
+    },
+    {
+      "site": "00c11b3e",
+      "caller": "00c11b31",
+      "operand": "dword ptr [0xce2210]",
+      "instruction": "ff151022ce00",
+      "iat": "00ce2210",
+      "dll": "KERNEL32.dll",
+      "name": "LeaveCriticalSection",
+      "qualification": "Installed PE import and native register/operand load verified."
+    },
+    {
+      "site": "00c11c49",
+      "caller": "00c11c21",
+      "operand": "dword ptr [0xce2218]",
+      "instruction": "ff151822ce00",
+      "iat": "00ce2218",
+      "dll": "KERNEL32.dll",
+      "name": "EnterCriticalSection",
+      "qualification": "Installed PE import and native register/operand load verified."
+    },
+    {
+      "site": "00c051b9",
+      "caller": "00c051b7",
+      "operand": "dword ptr [0xce2258]",
+      "instruction": "ff155822ce00",
+      "iat": "00ce2258",
+      "dll": "KERNEL32.dll",
+      "name": "GetLastError",
+      "qualification": "Installed PE import and native register/operand load verified."
+    },
+    {
+      "site": "00c051cc",
+      "caller": "00c051b7",
+      "operand": "eax",
+      "instruction": "ffd0",
+      "qualification": "Actual getter/setter returned through existing pointer decoder; owning TLS words remain external."
+    },
+    {
+      "site": "00c051fb",
+      "caller": "00c051b7",
+      "operand": "eax",
+      "instruction": "ffd0",
+      "qualification": "Actual getter/setter returned through existing pointer decoder; owning TLS words remain external."
+    },
+    {
+      "site": "00c0520b",
+      "caller": "00c051b7",
+      "operand": "dword ptr [0xce223c]",
+      "instruction": "ff153c22ce00",
+      "iat": "00ce223c",
+      "dll": "KERNEL32.dll",
+      "name": "GetCurrentThreadId",
+      "qualification": "Installed PE import and native register/operand load verified."
+    },
+    {
+      "site": "00c05223",
+      "caller": "00c051b7",
+      "operand": "dword ptr [0xce22bc]",
+      "instruction": "ff15bc22ce00",
+      "iat": "00ce22bc",
+      "dll": "KERNEL32.dll",
+      "name": "SetLastError",
+      "qualification": "Installed PE import and native register/operand load verified."
+    },
+    {
+      "site": "00c05077",
+      "caller": "00c05070",
+      "operand": "dword ptr [0xce20bc]",
+      "instruction": "ff15bc20ce00",
+      "iat": "00ce20bc",
+      "dll": "KERNEL32.dll",
+      "name": "TlsGetValue",
+      "qualification": "Installed PE import and native register/operand load verified."
+    },
+    {
+      "site": "00c05098",
+      "caller": "00c05070",
+      "operand": "dword ptr [0xce20b4]",
+      "instruction": "ff15b420ce00",
+      "iat": "00ce20b4",
+      "dll": "KERNEL32.dll",
+      "name": "TlsSetValue",
+      "qualification": "Installed PE import and native register/operand load verified."
+    }
+  ],
+  "ptd_field_order": [
+    "Call GetModuleHandleA KERNEL32.DLL before PTD writes.",
+    "PTD+5c=actual E16840; PTD+14 DWORD=1.",
+    "Nonnull module and nonzero existing C04EFB gate: GetProcAddress EncodePointer then DecodePointer, store results (even null) at +1f8 then +1fc; skipped paths preserve fields.",
+    "PTD+70 DWORD=1; +c8 byte=43; +14b byte=43.",
+    "PTD+68=actual E15CA8; InterlockedIncrement(E15CA8).",
+    "Acquire indexed lock12; only after successful return set SEH try level0.",
+    "PTD+6c=second argument, including null; null path reloads current E162B0 and stores it at +6c.",
+    "Reload +6c for C0190B; try level=-2; C051AE release12; SEH epilog."
+  ],
+  "ptd_publication": {
+    "provider": "C051B7 uses actual getter through C05070, C0485A(1,214h), then decoded actual setter before C050F8(PTD,0).",
+    "post_initializer": "GetCurrentThreadId, OR PTD+4 withffffffff, then store thread ID atPTD+0.",
+    "errno": "BFFB8B returns PTD+8 or actual E159E8 fallback word; no private errno.",
+    "failure": "Setter failure: BF9DC8 free, C0521f POP ECX, C05220 XOR ESI,ESI, restore saved LastError, return null.",
+    "last_error": "Returning C051B7 paths restore captured GetLastError; no added restoration or rollback on exceptional exits.",
+    "tls_indices": {
+      "ptd": "00e15afc",
+      "getter_cache": "00e15b00"
+    },
+    "backend_words": {
+      "allocate": "0109de34",
+      "get": "0109de38",
+      "set": "0109de3c",
+      "free": "0109de40"
+    },
+    "original_owner": "C053DC __mtinit selects real FLS APIs or its TLS fallback, seeds getter cache, encodes backend words, initializes locks, then allocates/publishes initial PTD.",
+    "cleanup_owner": "C05246 is passed as the actual registered PTD cleanup callback. Its full ownership/release body remains external."
+  },
+  "addlocaleref": {
+    "first": "InterlockedIncrement(root)",
+    "optional_count_pointer_offsets_in_order": [
+      "b0",
+      "b8",
+      "b4",
+      "c0"
+    ],
+    "categories": {
+      "iterations": 6,
+      "q": "50h+10h*i",
+      "narrow": "[root+q-8] != actualE161D0 and [root+q]!=0 -> increment*[root+q]",
+      "wide": "[root+q-4]!=0 and [root+q+4]!=0 -> increment*[root+q+4]"
+    },
+    "last": "Reload [root+d4] and unconditionally increment LONG at pointed object+b4.",
+    "alias": "Repeated targets get repeated increments; preserve later pointer loads after previous increments. No snapshot/dedup/string-content substitute.",
+    "null_and_overflow": "Only recorded optional guards; root/time pointer unguarded; no overflow repair/error translation.",
+    "api": "Actual InterlockedIncrement at IAT00ce221c cached in EDI.",
+    "initial_locale": "00e161d8",
+    "initial_time_locale": "00e159f0",
+    "initial_words": {
+      "00": "00000001",
+      "b0": "00000000",
+      "b8": "00000000",
+      "b4": "00000000",
+      "c0": "00000000",
+      "d4": "00e159f0"
+    },
+    "initial_categories": [
+      [
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000000"
+      ],
+      [
+        "00e161d0",
+        "00000000",
+        "00000000",
+        "00000000"
+      ],
+      [
+        "00e161d0",
+        "00000000",
+        "00000000",
+        "00000000"
+      ],
+      [
+        "00e161d0",
+        "00000000",
+        "00000000",
+        "00000000"
+      ],
+      [
+        "00e161d0",
+        "00000000",
+        "00000000",
+        "00000000"
+      ],
+      [
+        "00e161d0",
+        "00000000",
+        "00000000",
+        "00000000"
+      ]
+    ],
+    "state_qualification": "Original PE and saved-analysis database state, not running-process observations."
+  },
+  "lock_ownership": {
+    "table": "00e16478",
+    "entries": 36,
+    "stride": 8,
+    "layout": [
+      "critical-section pointer",
+      "type DWORD"
+    ],
+    "original_table": [
+      {
+        "index": 0,
+        "pointer": "00000000",
+        "type": 1
+      },
+      {
+        "index": 1,
+        "pointer": "00000000",
+        "type": 1
+      },
+      {
+        "index": 2,
+        "pointer": "00000000",
+        "type": 0
+      },
+      {
+        "index": 3,
+        "pointer": "00000000",
+        "type": 1
+      },
+      {
+        "index": 4,
+        "pointer": "00000000",
+        "type": 1
+      },
+      {
+        "index": 5,
+        "pointer": "00000000",
+        "type": 0
+      },
+      {
+        "index": 6,
+        "pointer": "00000000",
+        "type": 1
+      },
+      {
+        "index": 7,
+        "pointer": "00000000",
+        "type": 1
+      },
+      {
+        "index": 8,
+        "pointer": "00000000",
+        "type": 1
+      },
+      {
+        "index": 9,
+        "pointer": "00000000",
+        "type": 0
+      },
+      {
+        "index": 10,
+        "pointer": "00000000",
+        "type": 1
+      },
+      {
+        "index": 11,
+        "pointer": "00000000",
+        "type": 0
+      },
+      {
+        "index": 12,
+        "pointer": "00000000",
+        "type": 1
+      },
+      {
+        "index": 13,
+        "pointer": "00000000",
+        "type": 1
+      },
+      {
+        "index": 14,
+        "pointer": "00000000",
+        "type": 1
+      },
+      {
+        "index": 15,
+        "pointer": "00000000",
+        "type": 0
+      },
+      {
+        "index": 16,
+        "pointer": "00000000",
+        "type": 1
+      },
+      {
+        "index": 17,
+        "pointer": "00000000",
+        "type": 1
+      },
+      {
+        "index": 18,
+        "pointer": "00000000",
+        "type": 1
+      },
+      {
+        "index": 19,
+        "pointer": "00000000",
+        "type": 0
+      },
+      {
+        "index": 20,
+        "pointer": "00000000",
+        "type": 0
+      },
+      {
+        "index": 21,
+        "pointer": "00000000",
+        "type": 0
+      },
+      {
+        "index": 22,
+        "pointer": "00000000",
+        "type": 0
+      },
+      {
+        "index": 23,
+        "pointer": "00000000",
+        "type": 0
+      },
+      {
+        "index": 24,
+        "pointer": "00000000",
+        "type": 0
+      },
+      {
+        "index": 25,
+        "pointer": "00000000",
+        "type": 0
+      },
+      {
+        "index": 26,
+        "pointer": "00000000",
+        "type": 0
+      },
+      {
+        "index": 27,
+        "pointer": "00000000",
+        "type": 0
+      },
+      {
+        "index": 28,
+        "pointer": "00000000",
+        "type": 0
+      },
+      {
+        "index": 29,
+        "pointer": "00000000",
+        "type": 0
+      },
+      {
+        "index": 30,
+        "pointer": "00000000",
+        "type": 0
+      },
+      {
+        "index": 31,
+        "pointer": "00000000",
+        "type": 0
+      },
+      {
+        "index": 32,
+        "pointer": "00000000",
+        "type": 0
+      },
+      {
+        "index": 33,
+        "pointer": "00000000",
+        "type": 0
+      },
+      {
+        "index": 34,
+        "pointer": "00000000",
+        "type": 0
+      },
+      {
+        "index": 35,
+        "pointer": "00000000",
+        "type": 0
+      }
+    ],
+    "static_pool": "0109e1c0",
+    "static_pool_bytes": 336,
+    "critical_section_bytes": 24,
+    "static_binding_after_success": {
+      "0": "0109e1c0",
+      "1": "0109e1d8",
+      "3": "0109e1f0",
+      "4": "0109e208",
+      "6": "0109e220",
+      "7": "0109e238",
+      "8": "0109e250",
+      "10": "0109e268",
+      "12": "0109e280",
+      "13": "0109e298",
+      "14": "0109e2b0",
+      "16": "0109e2c8",
+      "17": "0109e2e0",
+      "18": "0109e2f8"
+    },
+    "initialization_order": "For type exactly1, publish next static pointer, advance pool by18h, call C17653(pointer,4000); failure clears only current pointer and returns0.",
+    "startup": "C053DC call C054e8->C11A93 precedes initial calloc and setter publication; actual success required.",
+    "lock12": {
+      "pointer_word": "00e164d8",
+      "static_target_after_success": "0109e280"
+    },
+    "lock10": {
+      "pointer_word": "00e164c8",
+      "static_target_after_success": "0109e268"
+    },
+    "lazy_init": "C11B5E requires original heap0109e1bc; C0481A(18h) before acquiring lock10; recheck pointer, free loser or initialize through C17653 before pointer publication.",
+    "error_ownership": "Failed malloc/init uses actual BFFB8B errno12. Missing heap calls C05B68, C059A8(1e), BFBA53(ff), then continues if providers return. C11C21 calls BFBA09(11) on init failure then continues if provider returns.",
+    "unwind": "C050F8 scope E032B0->C051AE unlock12; C11B5E scope E03678->C11C18 unlock10; records activate only after lock acquisition. No reference/allocation rollback invented.",
+    "scope_words": {
+      "00e032b0": [
+        "fffffffe",
+        "00000000",
+        "ffffffd4",
+        "00000000",
+        "fffffffe",
+        "00000000",
+        "00c051ae"
+      ],
+      "00e03678": [
+        "fffffffe",
+        "00000000",
+        "ffffffd4",
+        "00000000",
+        "fffffffe",
+        "00000000",
+        "00c11c18"
+      ]
+    }
+  },
+  "listing_corrections_without_mutation": [
+    {
+      "range": "00c0521f..00c05221",
+      "bytes": "5933f6",
+      "meaning": "POP ECX; XOR ESI,ESI after setter-failure free. Reused accepted PE/live bytes."
+    },
+    {
+      "range": "00c11be7..00c11bf7",
+      "bytes": "59e89edffeffc7000c000000895de4eb0b",
+      "meaning": "POP ECX; CALL BFFB8B; errno=12; saved result=0; jump common finally."
+    },
+    {
+      "range": "00c11c02",
+      "bytes": "59",
+      "meaning": "POP ECX after freeing race-losing critical-section allocation."
+    }
+  ],
+  "source_availability": {
+    "existing": [
+      {
+        "entry": "00c04efb",
+        "source": "src/native_crt_pointer_decode_support.cpp",
+        "qualification": "Qualified actual module gate; borrows OS/errno/invalid-parameter context."
+      },
+      {
+        "entry": "00c04fde",
+        "source": "src/native_crt_pointer_decode.cpp",
+        "qualification": "Qualified pointer decoder; actual current TLS/PTD state remains borrowed."
+      },
+      {
+        "source": "include/bsp/legacy_crt_math.hpp",
+        "qualification": "Caller-bound errno accessor, not original BFFB8B/PTD ownership."
+      }
+    ],
+    "no_exact_source_or_reconstruction_at_base": [
+      "00c0190b",
+      "00c050f8",
+      "00c051ae",
+      "00c11a93",
+      "00c11b31",
+      "00c11b5e",
+      "00c11c18",
+      "00c11c21",
+      "00c051b7",
+      "00c05070",
+      "00c0481a",
+      "00c0485a",
+      "00c17653"
+    ],
+    "existing_source_hashes": [
+      {
+        "path": "include/bsp/native_crt_pointer_decode_support.hpp",
+        "size": 2673,
+        "sha256": "dfc566daa6960a69680ea6897fce1b94127f3df0972cdaf645cf67a9f128e722",
+        "sha512": "3741b65ae831f4b48124d394c923a9d4cb2ec9469c29824a2674d56cca878aa9662a83afeda486bbb1286c9131186262f8c0f6b62e476bc6f76eb959adcf2d96"
+      },
+      {
+        "path": "src/native_crt_pointer_decode_support.cpp",
+        "size": 4315,
+        "sha256": "ac0eab56cd6a829cecb42157b0b3ff83124725fa0bead4aac2c29bc334fc9f37",
+        "sha512": "8314158c43543e6f136a40536004e45a9da4b79d94a701ebf89fa8948e6d4b7602914d50d5fd78c5f57f5b6c2b9fd2915e939b6d298ae87071fecbda5faa22bb"
+      },
+      {
+        "path": "include/bsp/native_crt_pointer_decode.hpp",
+        "size": 2327,
+        "sha256": "b1e901d739c07419b55441988bf42177b0e6ace3ef27ef1251ecb3b36fb48a7f",
+        "sha512": "f4ef7cb2e66db39a9a3eb3f762526d49441d2284331191a538650e193474f04c6b746f86386579655f39d78151eb9fe8df9f2a9e79bfaaabeab1cfcf0e15eb15"
+      },
+      {
+        "path": "src/native_crt_pointer_decode.cpp",
+        "size": 2271,
+        "sha256": "7a689a80bea666aa0941662a1bbde17500c92d1f7fd671c364aa2b3e0bf365c7",
+        "sha512": "99804a9bbd4aed649121531b0b3baaaebad762f6462ae86fc371bacf6042e995645352be3927d6e3afcd3213334693103d000ecf6d2c1630702f113dce855ddd"
+      },
+      {
+        "path": "include/bsp/legacy_crt_math.hpp",
+        "size": 1108,
+        "sha256": "52f6b22f16ee3fda8d8ee6d8a14e3bbabcf24e72393418579fab6204523efe39",
+        "sha512": "f22e83e4a862abdedb8e3fd67ecf367110756276327fd4e1955d7f1898bff1079f53b4da92b65d58160fa35460b5f5a425c381c5dcf691c3dffb4e15bb8d29f9"
+      }
+    ],
+    "external_providers": [
+      "C17653 actual critical-section initializer",
+      "C0481A native malloc wrapper",
+      "C0485A native calloc wrapper/C1C50F calloc implementation",
+      "BF9DC8 matching native free domain",
+      "C07C00/C07C45 actual SEH4 frame helpers",
+      "C05246 registered PTD cleanup",
+      "canonical TLS/FLS words/indices and locale/exception-action object owners",
+      "BFBA09 and C05B68/C059A8/BFBA53 native error/termination chain"
+    ]
+  },
+  "next_smallest_source_packet": {
+    "primary": [
+      "00c0190b"
+    ],
+    "bytes": 134,
+    "contract": "Complete ordered Win32 atomic reference acquisition over actual borrowed locale/count memory and actual sentinel identity. Preserve aliases and live reloads; no new callbacks/state.",
+    "secondary_ready_leaf": "C11B31[21] can use borrowed actual indexed lock table and real LeaveCriticalSection. C051AE/C11C18[9 each] compose it but do not establish native SEH frame ownership.",
+    "not_closed": "Full C050F8/C051B7/BFFB8B path: critical-section initializer, native calloc/free, canonical TLS/errno and locale/cleanup/frame ownership remain.",
+    "do_not": "Do not split early C050F8 stores into a claimed complete initializer or substitute host allocation, errno or generic callbacks."
+  },
+  "validation": {
+    "new_complete_function_bodies": 8,
+    "new_complete_function_bytes": 663,
+    "new_code_data_spans": 22,
+    "direct_call_rows_checked": 33,
+    "direct_call_failures": 0,
+    "raw_listing_omitted_calls_separately_qualified": 1,
+    "indirect_sites_separately_qualified": 21,
+    "log": "local/native_crt_ptd_frontier_bn/verify_calls.txt",
+    "cpp_changed": false,
+    "tests_added_or_run": false,
+    "runtime_executed": false,
+    "ghidra_mutated": false,
+    "abi_compatible_claimed": false,
+    "game_validated": false
+  },
+  "local_inventory": {
+    "directory": "local/native_crt_ptd_frontier_bn",
+    "files": 129,
+    "bytes": 215788,
+    "passes": 2,
+    "algorithms": [
+      "sha256",
+      "sha512"
+    ],
+    "complete_path_set_checked": true,
+    "method": "Whole-file read pass then independent chunked read pass; inventory lives in report outside local directory.",
+    "artifacts": [
+      {
+        "path": "local/native_crt_ptd_frontier_bn/00c0190b_asm.txt",
+        "size": 1515,
+        "sha256": "4d40d714ea3949b045f69cbe224ab2eb392a61e32aa2822c8b09ce88b15fe208",
+        "sha512": "b95545eeff65550bf9d720bc639ca3628a55b54d13a2292c17974e147e87a4bf7e1980a6c01346407f029efe19068a66725e8cf85b69afd97f1cf8757248b4bf"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/00c0190b_bytes.txt",
+        "size": 653,
+        "sha256": "117eb9e087348854c4475c5a3e352622fb77b15b91af95232bd5f135944ae87d",
+        "sha512": "d84e1a05cff0050286e33dc0a4c306186da392922d0af437d70002ce2956bf40a4c53d37b03dccd6561ad5af38c0c5e4b00574e92afb084e929c897241d4253f"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/00c0190b_decompile.txt",
+        "size": 1094,
+        "sha256": "be80ae558aedcfe9287c049a4d89ed72ad8887267dead693df81cd9ac427bd8d",
+        "sha512": "9f1ea2fd65834a448ee877184b1e586339ee353dfada5baa54f0fecd46bd6e0f1eca95cfa11698f9a7330f89f639798df689c4e49029669b1c088b9166c86ca3"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/00c0190b_live.bin",
+        "size": 134,
+        "sha256": "4b74a738b889b9e8e8ed2d27869ef7bdf53860e9f7cae006de98919ab0cb6b05",
+        "sha512": "325d2d1b8946067505ee4ca118c83197d68675048f0bce07705b3fd7fb6bd9d575276fb57f2471a2d29782b039f4d8cd50aeb4c7e307097c0d2d2bbc75c1741d"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/00c0190b_pe.bin",
+        "size": 134,
+        "sha256": "4b74a738b889b9e8e8ed2d27869ef7bdf53860e9f7cae006de98919ab0cb6b05",
+        "sha512": "325d2d1b8946067505ee4ca118c83197d68675048f0bce07705b3fd7fb6bd9d575276fb57f2471a2d29782b039f4d8cd50aeb4c7e307097c0d2d2bbc75c1741d"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/00c0190b_proto.txt",
+        "size": 287,
+        "sha256": "979e3af3e3475d9d66132f429c66945ff0a3c73b901024e8cfdb32171eec2280",
+        "sha512": "8df99891c938d7dbf2a2c30611be6517e1ba3b442fcbb57af54a9c2bac6785f4ace4e66768aa19a2e3978f348f3d9e6ed1562202001f50f1c90c119e52e63000"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/00c0190b_raw.txt",
+        "size": 1520,
+        "sha256": "6b55150ac2226803e91c2e86e270c2d9edd48f238597b4438831fac283b8e2d1",
+        "sha512": "a7672d37f27acf7e277932386fbae4dfdde63bb16fd27a4accb7ae1c0c65aaaddcabeb70a54b10f666f2b98eb495d5dcb61eece6aec91ce3ca10112ed3a28245"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/00c050f8_asm.txt",
+        "size": 1597,
+        "sha256": "859147ec4c0112317475a55de163171ed6658ba816edd8ada87b8d849d4325b9",
+        "sha512": "87ac382751f28d8168ae059053c581f6324a303eba3a921cd379881ae1f98f81fc4d25df5e6f63fbdf958849f98ad3d7fe82a46bd1788bae6951af28e0650552"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/00c050f8_bytes.txt",
+        "size": 884,
+        "sha256": "1f79cd11c1de8f8a6021512be51fe871a5c7547d319209397daca8fee5cc18b7",
+        "sha512": "bbd0ceb59de6182cc4de2335f7f70d6ef3d3aac9b819cb6acd97210299189876abe2d9d96c53a61f61152f90551110cf1b38a043ba83bc47c5b53bb46f0b1f01"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/00c050f8_decompile.txt",
+        "size": 1407,
+        "sha256": "9466f1f5ada5aacf0923ac857354560129d6993739aef2d7689f3ad5d25d9e7d",
+        "sha512": "0a8beceb0686e63dd54db56b0a4632333715cb9452ad01d1d736ec4bc84c9ca234947eb1a5c199db4056a7813bb7b7af9106c4aceddcc134349b84cb9ef4c642"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/00c050f8_live.bin",
+        "size": 182,
+        "sha256": "e289ed4df47dae16cea290c87591877b124ab95d041b8fdf6f0ebd51572ad342",
+        "sha512": "8f2b3329e8efe18cba99b0b5d337ee593fbd76e9bb2a99580fbc704171f8c88e24dc7db94cfd4cf4b4af53ab1a63c8973b09a59a57823d4a589693283efcd987"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/00c050f8_pe.bin",
+        "size": 182,
+        "sha256": "e289ed4df47dae16cea290c87591877b124ab95d041b8fdf6f0ebd51572ad342",
+        "sha512": "8f2b3329e8efe18cba99b0b5d337ee593fbd76e9bb2a99580fbc704171f8c88e24dc7db94cfd4cf4b4af53ab1a63c8973b09a59a57823d4a589693283efcd987"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/00c050f8_proto.txt",
+        "size": 317,
+        "sha256": "b58b1d92860876c13f95b1987722e4f5c5b61c12e2e65c8f4cf8921ce001f211",
+        "sha512": "66d040a74e33e78511ea8ff94c1e19fb2bb2568bb97004b5203ac53acb1473c6c7a80440b5a042c85f6e6daec8d845e66f54a9e5eb71bf356db70f5bae39e464"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/00c050f8_raw.txt",
+        "size": 1625,
+        "sha256": "68b19b644c75f9a28c5f84c6aa7b0e4bda447dee3daff578e351a517a3e19b44",
+        "sha512": "2cdc8c79525c79d517a8fa6af96494cb5481f5d56ceb56892ccd8220e34df6c53c1b1b5f20c51f5a44eec75002457d92d216fa657fe54eb60fa93b6ece59d959"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/00c051ae_asm.txt",
+        "size": 85,
+        "sha256": "c60abc06e2b03142b6700dbd940efa56a8f81ed15894b1e2885a96c8db5fb365",
+        "sha512": "fe5abdffa0fb04527b57a0e82ebbffa5d815f3213304f7d8356a834bf42717040bb4e66166fac5bd2b87d1bcd23aae3c96f5cdbd4002a3a28f53c41de6ae9c48"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/00c051ae_bytes.txt",
+        "size": 49,
+        "sha256": "be2aa5a53bd8bf11ba748829e1b09bae559ed71080c51beee8a02a56cbc5823c",
+        "sha512": "8f2536b0f8be9e4088b655aae9ec644ba86ab35f770a09702e0b7e511dfcd0542ce5d6cee9ff98db7f77fc701d5b5e9f913a8d8fa74a5e0787c1f88d5580b18c"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/00c051ae_live.bin",
+        "size": 9,
+        "sha256": "2fd64db3a43cdc5147db5de2bbb04b4cd8468fd7b2f4722dd30ea23aeb06f1d4",
+        "sha512": "70d7d54e1e9f7fd2d5db0ab31fcd2a15a0dda6d046bcc2593b509eb38944dd6fa8c49ceb5cc276159aa49525166c37c728d2ba0a6849d76ab70e29ce08fdac1c"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/00c051ae_pe.bin",
+        "size": 9,
+        "sha256": "2fd64db3a43cdc5147db5de2bbb04b4cd8468fd7b2f4722dd30ea23aeb06f1d4",
+        "sha512": "70d7d54e1e9f7fd2d5db0ab31fcd2a15a0dda6d046bcc2593b509eb38944dd6fa8c49ceb5cc276159aa49525166c37c728d2ba0a6849d76ab70e29ce08fdac1c"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/00c051ae_proto.txt",
+        "size": 317,
+        "sha256": "ec3c73071823e343a3f4cf38e73668d2e4d69637b51bfa5e2fc18a3d4bd0f52a",
+        "sha512": "fddd78c64d845b2ae2aac1f87f0da4484c6b4ade3c5bc281b61e5aae539f7eb6aa369049469512f475c67d93910371045d6e2250c9a60c6e12a48792def1af39"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/00c051ae_raw.txt",
+        "size": 163,
+        "sha256": "71cb74491bc496207fd16a9484c3a322dbbbcaa4a9b8e1214685f976b6745810",
+        "sha512": "8e79f680a7a0baf33968a060cccda35316b59526f9afe31ce28c6b07fcb7da29b347c7f06898d64ce1b2f35cb043bd9e6ccb60071f9e94a01e946264089959ce"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/00c053dc_caller_excerpt.txt",
+        "size": 2040,
+        "sha256": "9f88d1248f847f6542e53ad0098ff4111fa6439794672adca8ad2a1131ca531f",
+        "sha512": "0f040ca757462f9314f4bd38dd9509e36b2b548477b9f22d32890554818237c094dddd29a6aea1d9e9f5b27f98063b234b9c13b2a270fccb3079f6ee0c66dccd"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/00c053dc_publication_asm_excerpt.txt",
+        "size": 1607,
+        "sha256": "af6d153e52d5be1f7028a4ba6dbe4d6bf8d81c10bd8af3b2da9043f69646756b",
+        "sha512": "7f08ecc7855da07139dc47c89d03e91d3833eaeb66063aeb9559ef5f811919f13cca9d2e7f1ab669388768b1f84a6554af969f03400e19bb2d4c74c66e1e67c6"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/00c053dc_publication_tail_excerpt.txt",
+        "size": 215,
+        "sha256": "08a71daa955cdb996bfc9b27a2ede1573b021ecb4287f5ad0549f0538136615d",
+        "sha512": "bce9b9d4faec8e898f95f459f643fa8f0340235b9e272261a6b5bc99227365a01764c988a50452f9ae908b09e3aecc6381143536858708022445ce5b889a8ee3"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/00c05484_bytes.txt",
+        "size": 1062,
+        "sha256": "593f1059e7b1c1746fa0d91d0cc97b3b93198073019cee9234daeeaaa61a7b78",
+        "sha512": "f6ea547929e5e8d1535f826569bcda00749b5d7f2e00194121a5e416be71f3e6f63e6e7a269c37bddb70446a63b53c6d9c88cf42daffe98adf96c4b1b9281b3d"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/00c05484_live.bin",
+        "size": 220,
+        "sha256": "fa1c2e129c60967a9587b695658d662cd9599528c7cbeace92ad0d41fd94fd91",
+        "sha512": "00a74df2b280a14d029d214fd24608c3b888e75c6696535d0e8490772d964bedc1a77de2b6ed99ab26210430187502487d4937cd87496d4c9093a3185d61252c"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/00c05484_pe.bin",
+        "size": 220,
+        "sha256": "fa1c2e129c60967a9587b695658d662cd9599528c7cbeace92ad0d41fd94fd91",
+        "sha512": "00a74df2b280a14d029d214fd24608c3b888e75c6696535d0e8490772d964bedc1a77de2b6ed99ab26210430187502487d4937cd87496d4c9093a3185d61252c"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/00c11a93_asm.txt",
+        "size": 724,
+        "sha256": "ac9cc2ce8a991493b120eddde9161a5318ea3bfc304b795bb21ef758efe65fba",
+        "sha512": "bc2966e45cf776aa4e08a1838551481c3720cf4dfddbbc6281bd8f5bbc8e0aedda0951b1b286cc197c52f10e2df7f73aafcb35a0acef54ba9723f9e5fb230cbe"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/00c11a93_bytes.txt",
+        "size": 357,
+        "sha256": "f804dea77c898756fac16c570083535f097d47a43d4a2928b01db5d80ec7a6b2",
+        "sha512": "f2b4898d1bb7357f77225933c7ea8ceb2e295a5aff2cdb3c2260fd235d24a1fbce5e60c600f2d3a12519da2ee241a3633fa0bd07ec482fc5d6023a86065a4781"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/00c11a93_decompile.txt",
+        "size": 616,
+        "sha256": "e520f7b1f7bd4c965618a26d50c562dcb4fb071b7ea326bf9c94f859ce35a7f5",
+        "sha512": "99cfc19873eddbb6d9ac640e6ed3ad087d6c829b62bccf221e55ca7fb8647d9a3360a38a0f07f41080543a8e06351487350ca7604c662d494dde03e4aa5af7e5"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/00c11a93_live.bin",
+        "size": 73,
+        "sha256": "d0b673aecf3e98c1b52317938672a25f5a8022f1cb169eb5e662f4a7364c7450",
+        "sha512": "317df4e74cf8f45e3eb27ef875cf2cf7b5bb21d91be270a8a488c75b96855be5cd9e6e0b84743a014b1f5fe8c94472d3debc71be5cc4d6af213c6eb4cc077a64"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/00c11a93_pe.bin",
+        "size": 73,
+        "sha256": "d0b673aecf3e98c1b52317938672a25f5a8022f1cb169eb5e662f4a7364c7450",
+        "sha512": "317df4e74cf8f45e3eb27ef875cf2cf7b5bb21d91be270a8a488c75b96855be5cd9e6e0b84743a014b1f5fe8c94472d3debc71be5cc4d6af213c6eb4cc077a64"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/00c11a93_proto.txt",
+        "size": 283,
+        "sha256": "8e2a8e5f20c1eff1bc14cdfd9b77957da1720dde7075ad116c3c7736db91ce9e",
+        "sha512": "3bfc23d514971e74e0b0fd48d51bb120041d2319dbb472fc025bedd3bc0f5c1b4c3a188345771385190ca27f1e755efab48b4a611102bd1a69f9fbcd0f9adfc8"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/00c11a93_raw.txt",
+        "size": 760,
+        "sha256": "98e116a43c37a72040a2b2a8e86abbdb9c565ca5e97f95438ae107a9da6ba4c2",
+        "sha512": "f401e663e6f253beeb8e4d74d2aad55d6aadd8388b0f69418853f3672fb3602f804ded7f94e2b989e019742c7aa647269af121b06ce41a55c249a85cd842670b"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/00c11b31_asm.txt",
+        "size": 211,
+        "sha256": "a5eb92ceb09cd213bef009356f5d2dea316893f1a4397243fb174f2e34a8486e",
+        "sha512": "cc6d41fcef12bc438c16a8631e262379927e32228b07533424981e41c4e14896915df1ff209df3a8a0a223482dfda429ad136d368241f42c793e705862ff6b82"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/00c11b31_bytes.txt",
+        "size": 110,
+        "sha256": "65a72b91a9496e34513c7a2d430bdb2e7eab566012114975e72276156fcc5133",
+        "sha512": "a9473cc0bc2b0e6f2968fb6ab5b5ae31f5410d3d186a664c518f3caf19f2d10ff26529fae0ca10ec59e33d0f5e50addd7d293220a307c5dfaf9fb34dfdb35d00"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/00c11b31_live.bin",
+        "size": 21,
+        "sha256": "79a3d82c9ad3f43182f2d65bf6c207f932615a621ab8b35db6fdcc467d324d56",
+        "sha512": "d2156491a51719a19a18d2b6ba1c70298b3e44cafd2ec1d9d7c14d4082987dbbadb49f433b9dc68c3f86d57d266f5a775540b92e49612e1bc1bed70aaa596f86"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/00c11b31_pe.bin",
+        "size": 21,
+        "sha256": "79a3d82c9ad3f43182f2d65bf6c207f932615a621ab8b35db6fdcc467d324d56",
+        "sha512": "d2156491a51719a19a18d2b6ba1c70298b3e44cafd2ec1d9d7c14d4082987dbbadb49f433b9dc68c3f86d57d266f5a775540b92e49612e1bc1bed70aaa596f86"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/00c11b31_proto.txt",
+        "size": 317,
+        "sha256": "80793a7b53c543c0dd3d32c8f4613baea154013af07c6dcbfa9a0670b2996e54",
+        "sha512": "393a586d2444cb20c751ddf6105f8ab295129502d7021f31999887a579436244f5fdf2c7a98154ca384ffe9b2a4e2b694f1e6510d1e3aed0ecfbca092edc6b96"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/00c11b31_raw.txt",
+        "size": 284,
+        "sha256": "0e23488ec44c0f09615ff091c951a3175124e672dd3f509a06696aa4159e419e",
+        "sha512": "47013c01514c7ec5be887fba39ce098ff87f8fcdb21c3f6be46071cc0a973f87b4160f0670a636cad903f79870f5fbe2cae9825a239b9fde667dae06e45561eb"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/00c11b5e_asm.txt",
+        "size": 1547,
+        "sha256": "1c4b155466490caffa1ee3a605a456932288301de4e7e7981d4aa69736f79d01",
+        "sha512": "c104911545efe47b4ee92acc3ae45dea35d9a941c462540c6f6b7dd589d197f761b3f07ace2ba2839b9256a87750da212a4f21476b18292da3d23823372f2510"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/00c11b5e_bytes.txt",
+        "size": 900,
+        "sha256": "c81f18a35b8c9c5b779eb59b446b142f4cc90b6f91496743394fbd3c045235fd",
+        "sha512": "79fb4a5742fac1782b4aaca76cbf3097135496c1b30106092bee1eacde0c685f5b650d6fcbe9c2bf485e6665213ef477a0600c35e1f72ee7e50293b7112be976"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/00c11b5e_decompile.txt",
+        "size": 1339,
+        "sha256": "31dec8e3839b15ebb4950ccfcae86e6fcfbaac38b2bb7a3d903003c3a4698cca",
+        "sha512": "23eb6744ec6851a32f339f4d299c83aa9f558b8580b8e1793d5f3ea3627aaead0c587a0baaa39d2f33055ba49f89dfacf9bf94e75bb2fc93aa846a3f111da676"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/00c11b5e_live.bin",
+        "size": 186,
+        "sha256": "4867b1073c65694f072a11986820e398fd904ef4b392db165374ace232f1d8d9",
+        "sha512": "46aca76df16cbaddac1b634e1182160b912537b449f4be024dc7f3755e70ef555a2775c27687b5c2c5c16ab962ea6741a1726c4f737d6f2020dce38af51307f6"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/00c11b5e_pe.bin",
+        "size": 186,
+        "sha256": "4867b1073c65694f072a11986820e398fd904ef4b392db165374ace232f1d8d9",
+        "sha512": "46aca76df16cbaddac1b634e1182160b912537b449f4be024dc7f3755e70ef555a2775c27687b5c2c5c16ab962ea6741a1726c4f737d6f2020dce38af51307f6"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/00c11b5e_proto.txt",
+        "size": 317,
+        "sha256": "486a618baab36cd15b8c09a404b467435bd326cbb864cdb6fd43a506fee9d21d",
+        "sha512": "280fd0e92b0a659a3055475727f7c0c4b14c124eade488834a4c059e23e96f64c2d747b21d40533a01fdb7b854cdf06df4ff787fa697b7923cf7cecba61909f5"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/00c11b5e_raw.txt",
+        "size": 1706,
+        "sha256": "477cd82613ed2933a40e17e326581b81e48f62d14743ef3c8105e32dcfb5608d",
+        "sha512": "93d96fe2120224c554bc68cb67ad6b2bf23a5a381df9b4799248c988ebf4489e853c20854d66301ddb0c4b98e1bf091874f327e1d10750dd4784c4a5ef6773b8"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/00c11be1_failure_tail.txt",
+        "size": 373,
+        "sha256": "dfee0c11733a1b174896e855fa8ecd8f69ad89ed96ae37d62012b4a8ae0404af",
+        "sha512": "c483b31386d95037ebc0943b1cd43c9e3b8c65ccec3d803217f760f03842b7938786555e6b67658c74000e6911185fbb14b5631a4fe040b7da2fa3c2ef7624de"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/00c11c18_asm.txt",
+        "size": 85,
+        "sha256": "963f743093ee19a461159e3eb9307b8bb50dfd82ee3cfc5033d588ad95a9de1a",
+        "sha512": "c5277b26b9d2596670a93980102320bda7d2237b91589d1d9f2e282298f8f6d7378a05ebcb267cf0330cdcc9b0aab27b8264473ec9cd2210a93f23ba87053043"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/00c11c18_bytes.txt",
+        "size": 49,
+        "sha256": "31a719a9a8ef4b5b785310aafceed501928b28c793429f26f5e5cdbcbd93695f",
+        "sha512": "0e4cb401fb79915e7643a11e809bb1cfa3172108b3cf212ebae8fd090d5774b755c9d23665d4057cc1d15140a777a0a1135106a799591b60f9a45acfd7c0a846"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/00c11c18_live.bin",
+        "size": 9,
+        "sha256": "7c8670c564d00524ac491f13c55e55718cd88f082aaecb91b1a141f2e86a4042",
+        "sha512": "f474b32dbd54f695bdd252b00a95bfb5b1eb59c59967c70db931943cb80140dc3de068a0b700f00f4075ccfdbac03f465d9dc22103a40823c7de7c8653f9e216"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/00c11c18_pe.bin",
+        "size": 9,
+        "sha256": "7c8670c564d00524ac491f13c55e55718cd88f082aaecb91b1a141f2e86a4042",
+        "sha512": "f474b32dbd54f695bdd252b00a95bfb5b1eb59c59967c70db931943cb80140dc3de068a0b700f00f4075ccfdbac03f465d9dc22103a40823c7de7c8653f9e216"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/00c11c18_proto.txt",
+        "size": 317,
+        "sha256": "04ca0f2450f3da8e531c3384a486f1cf29198159d7ec2579c70f90fb2c088ab8",
+        "sha512": "23624d1f1faf6515d84cc6e4e8db9550edba7b46811389b860558dba261fbce76ed0234f4cf54449c8a9bb07edbd7b2935be1b9f9e56560b8937c24ab3525b7c"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/00c11c18_raw.txt",
+        "size": 163,
+        "sha256": "6958b8733749e59841470bfd4baafa3f9e79adfbac252dd588dc273ecd1189de",
+        "sha512": "4983defaea76fd333c413eeefbc220a41d7c6ada440e4f38150abd57bef938306d63e92f6bd9dae48a38fdab9d85242e935130047b388dd5a0b28a21f7e9030d"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/00c11c21_asm.txt",
+        "size": 532,
+        "sha256": "b32324634fe312a7568a94da3185aea3462734ccf10c5eda56b6a47538fc24ac",
+        "sha512": "9c6a0000efabc6bb4c81fcb0a7569bd16dfb2ab1fc114c6da9e052e7c23af9ae2799fd7d47585ceb6de33cdcd44c4dbe65cec354b15a2eda33dd89cb88267388"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/00c11c21_bytes.txt",
+        "size": 248,
+        "sha256": "d00dc57d5abe41987e68e6e3c7aa8a93f0992c76bb69c805394b2a7944da91f9",
+        "sha512": "7c497247f1b5ce76fc1b79d77cb9bcfdba08b6c07b36b698fe489f39c7752362f5ed0d5a91203df22d635869a712e08fe34f7118df312c9e30b43890d66127bb"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/00c11c21_decompile.txt",
+        "size": 394,
+        "sha256": "609241837055429a89cdab48485891d44c2e82fdac0e23654c754c89000f8006",
+        "sha512": "f625ef8f0b0a1c99f4d78660e5d9c8d88ce5e665cff7f079d50567feb7b1055d6efac70fbfc1426c0b7d9f12f211a831af55f6a143a1547723dd3a082de00fb0"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/00c11c21_live.bin",
+        "size": 49,
+        "sha256": "b02c4573212abb78581b610296b1ae8a133d9790a58512b09ab646b4a78e2798",
+        "sha512": "b0064e773489c53594404995299b29b318973daee162442e1697755645edbec4758f3bb4134ff0232457d696c71113cb4edbafc39f64725fa219c81f5a45dfe1"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/00c11c21_pe.bin",
+        "size": 49,
+        "sha256": "b02c4573212abb78581b610296b1ae8a133d9790a58512b09ab646b4a78e2798",
+        "sha512": "b0064e773489c53594404995299b29b318973daee162442e1697755645edbec4758f3bb4134ff0232457d696c71113cb4edbafc39f64725fa219c81f5a45dfe1"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/00c11c21_proto.txt",
+        "size": 268,
+        "sha256": "71f414d4ab4a6ebc41bc7ad606d5b76f399ba598b11e9ab11054e36ea2f6f046",
+        "sha512": "febae2c1858bdbb6c960eff19c9e1d9dbcd6a801608279854f64eab0f2b14fb7e35aa5bf4fef87d0e35319055111abb3aa8ad7e5f02bceed1f1c56b423e3f02f"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/00c11c21_raw.txt",
+        "size": 566,
+        "sha256": "0056ed1cd8d0202ca38ba54ba8a75c8ff1fe963672fd555c665b9a4827592952",
+        "sha512": "abb9deecd0169cdc6a625aad7164d4c43af7c3fb70e1c695ddc65323aadffe84c34062d4f54c4da1964abd4a77ee43222d8e94901eb44210849eac1a8b6805e6"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/00e032b0_bytes.txt",
+        "size": 138,
+        "sha256": "2fc7df3037b9e0a403cc26c82c33d9e8ac03bdb88bb6dd7a7b3cab0fd158270f",
+        "sha512": "f74cc418a78a9625f447561ea5550097e47330fe6e02aaa84bb4cfeef541554133bc27f8c188e81aa0e3d4036ccafbb889f248899139bfb10019c317315d4afb"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/00e032b0_live.bin",
+        "size": 28,
+        "sha256": "1325ba6aa93454c68cdc6ff6ade130f0e694c8ec667eb69beb4a8b60f1aa89e0",
+        "sha512": "df2922542f6bc9aa75cdef2f7fd4f74436ce80e5778d4e4227ff8c29d06291e528ca13bb72622400b99be4abc69636019ffcc5a04b0f493473a9d00ee178524d"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/00e032b0_pe.bin",
+        "size": 28,
+        "sha256": "1325ba6aa93454c68cdc6ff6ade130f0e694c8ec667eb69beb4a8b60f1aa89e0",
+        "sha512": "df2922542f6bc9aa75cdef2f7fd4f74436ce80e5778d4e4227ff8c29d06291e528ca13bb72622400b99be4abc69636019ffcc5a04b0f493473a9d00ee178524d"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/00e03678_bytes.txt",
+        "size": 138,
+        "sha256": "10387023f4428c3bb6168314d2affc6ed9cc18f3e6af82465966b3327afad9ab",
+        "sha512": "6da60df77ce003669820a89e2261ec34a0f4fce0db7311831519c4d415769ba511272a665f4216a150ab894f42c66f8942f866d4defd913913cadeeeb5ba3d06"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/00e03678_live.bin",
+        "size": 28,
+        "sha256": "3faa67b6de3d9dca8cd2ca6ed26a6f264b627393403de734770e9e023e8ccd25",
+        "sha512": "a56b0f0c86d709ede264256fd95a3e9ca336ea6a600ab7bb042ae752dc741a24b0c53bf3bfe856dda9078785cc65d61cb80e8645851c9afbdf4c7c93b5fad029"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/00e03678_pe.bin",
+        "size": 28,
+        "sha256": "3faa67b6de3d9dca8cd2ca6ed26a6f264b627393403de734770e9e023e8ccd25",
+        "sha512": "a56b0f0c86d709ede264256fd95a3e9ca336ea6a600ab7bb042ae752dc741a24b0c53bf3bfe856dda9078785cc65d61cb80e8645851c9afbdf4c7c93b5fad029"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/00e159e8_bytes.txt",
+        "size": 29,
+        "sha256": "d5c7489b482750f0382687a3618e6f837ae7d60a4010f703aafb5a1b06244143",
+        "sha512": "a486239e66948cb1047695a69d2b7ebf33719256cac06db2590543109c8b1e93f0ef94558ce91afebc9afa1257842e9cde1eb89e317cdd712ba06421ca02e1b2"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/00e159e8_live.bin",
+        "size": 4,
+        "sha256": "42f4aeb81c1ef81f771f3de8abca9dcf66901c575530e7672e4b1146474ae650",
+        "sha512": "2b504f7dea06c706b789f94ad7bea5b2e65befd005a433b67dddffb1ae849ed1640df27d6dc86f3fd36e058dad41d726ad93ad4bf05432533e8a253afde94a05"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/00e159e8_pe.bin",
+        "size": 4,
+        "sha256": "42f4aeb81c1ef81f771f3de8abca9dcf66901c575530e7672e4b1146474ae650",
+        "sha512": "2b504f7dea06c706b789f94ad7bea5b2e65befd005a433b67dddffb1ae849ed1640df27d6dc86f3fd36e058dad41d726ad93ad4bf05432533e8a253afde94a05"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/00e15aa4_bytes.txt",
+        "size": 29,
+        "sha256": "c5ad4187dfde5176c0716cc685d89ab9d866c351e5bd7c4a5d98bc229956beb6",
+        "sha512": "1162ec4baf62af34c7a07db9fde1adb88b4c2a7d747ab6dbf3654b7782303233719f72cdb76a72de10d32c810278103eb46e1a0653ed180aef0c39e6e56c2399"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/00e15aa4_live.bin",
+        "size": 4,
+        "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+        "sha512": "ec2d57691d9b2d40182ac565032054b7d784ba96b18bcb5be0bb4e70e3fb041eff582c8af66ee50256539f2181d7f9e53627c0189da7e75a4d5ef10ea93b20b3"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/00e15aa4_pe.bin",
+        "size": 4,
+        "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+        "sha512": "ec2d57691d9b2d40182ac565032054b7d784ba96b18bcb5be0bb4e70e3fb041eff582c8af66ee50256539f2181d7f9e53627c0189da7e75a4d5ef10ea93b20b3"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/00e15afc_bytes.txt",
+        "size": 45,
+        "sha256": "eb97a57fbda7d0fcb58cef2213642978cc9cf2c38be204796ca037aabe508089",
+        "sha512": "d598a1b6ad5c20c938eb656ca3265177c12dcd82dd0b65528e4ff6d3a1d3acbe58a9c7b31f32129b0f8b913a957cd0d75bdcc81627c45048bca1a45e0a9d918e"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/00e15afc_live.bin",
+        "size": 8,
+        "sha256": "12a3ae445661ce5dee78d0650d33362dec29c4f82af05e7e57fb595bbbacf0ca",
+        "sha512": "d0e784dd6dfb1a1f64da68379c349e5d7b5354d2a7312694b9d736b1410f408f5d5fd50924acef6cc6d78653917972bc0551fa11712de9ccdfbe4ef988962bf0"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/00e15afc_pe.bin",
+        "size": 8,
+        "sha256": "12a3ae445661ce5dee78d0650d33362dec29c4f82af05e7e57fb595bbbacf0ca",
+        "sha512": "d0e784dd6dfb1a1f64da68379c349e5d7b5354d2a7312694b9d736b1410f408f5d5fd50924acef6cc6d78653917972bc0551fa11712de9ccdfbe4ef988962bf0"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/00e15ca8_bytes.txt",
+        "size": 29,
+        "sha256": "7a205bb6d72d5bff7f96eb7763c51d01b359dc686f8029a4dc107c25a760cd86",
+        "sha512": "25aef7ddd22c3c1ac0a447386352a718eef69770b5df189ef8afab297eba73a6b33c3427c81db9397a0747d514c8e0e6b47840ef2c336012d395709a78fb364f"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/00e15ca8_live.bin",
+        "size": 4,
+        "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+        "sha512": "ec2d57691d9b2d40182ac565032054b7d784ba96b18bcb5be0bb4e70e3fb041eff582c8af66ee50256539f2181d7f9e53627c0189da7e75a4d5ef10ea93b20b3"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/00e15ca8_pe.bin",
+        "size": 4,
+        "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+        "sha512": "ec2d57691d9b2d40182ac565032054b7d784ba96b18bcb5be0bb4e70e3fb041eff582c8af66ee50256539f2181d7f9e53627c0189da7e75a4d5ef10ea93b20b3"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/00e161d0_bytes.txt",
+        "size": 45,
+        "sha256": "d882f464a426a73f642ea8b0793fe20edb63fc8c3280c2e39ad578ba0453146c",
+        "sha512": "56c77babda82a2dd44a222993a82423ccc83ef4ec0fb945f95c4b0e8304db00e555409c2e7561a4f1f340c2b8c4a666f80c1134ea180c22ba02e5bcdfc7637ed"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/00e161d0_live.bin",
+        "size": 8,
+        "sha256": "d17053f62f3264b3a99a5d2180d4c3abcc0eb49c86d997963cbec3d60007f833",
+        "sha512": "c8a30bdcd22035d9fe2df0de992fb4b803ad6391d94c415680969d0bf2c62f8666ca4815aced3b1b76515cd3ebb01e57cd0d2d99b806879ecb17d1f86962eef4"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/00e161d0_pe.bin",
+        "size": 8,
+        "sha256": "d17053f62f3264b3a99a5d2180d4c3abcc0eb49c86d997963cbec3d60007f833",
+        "sha512": "c8a30bdcd22035d9fe2df0de992fb4b803ad6391d94c415680969d0bf2c62f8666ca4815aced3b1b76515cd3ebb01e57cd0d2d99b806879ecb17d1f86962eef4"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/00e161d8_bytes.txt",
+        "size": 1046,
+        "sha256": "b9c411c38e07f13e05aec465339f74775c0939615589913875bef6a60503a7c6",
+        "sha512": "950b8a164d3e59ebf4966f173ef8a9e364d00efa55ea120d21655750f0f48766709e96f78569f22ffc8a8a82710524d86833e7f8eaab81646682e7abff76caef"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/00e161d8_live.bin",
+        "size": 216,
+        "sha256": "323c791df2cb5c01ac4c1d8a8ef2de6a67935bdb4d4eb3f31948ed146ce64c8d",
+        "sha512": "7d8674806ee409bcaefa56ac292613d07a800f786b6ad3b2dbbd9cb299b02a7b43e42a103c63da359de8bf25e5d64e348d2b8835cd25bb7333bd271f53310835"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/00e161d8_pe.bin",
+        "size": 216,
+        "sha256": "323c791df2cb5c01ac4c1d8a8ef2de6a67935bdb4d4eb3f31948ed146ce64c8d",
+        "sha512": "7d8674806ee409bcaefa56ac292613d07a800f786b6ad3b2dbbd9cb299b02a7b43e42a103c63da359de8bf25e5d64e348d2b8835cd25bb7333bd271f53310835"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/00e162b0_bytes.txt",
+        "size": 29,
+        "sha256": "13a7fd0c9c6a51cb0e6326a57394f9449a7edcc9c532be088318b68cc29acf98",
+        "sha512": "3f5787ce80085eb43bbbe3ac2350f15dd6c974ce2fddc6fa64187fe30c1f93ac9e9f6090455bac8fcc206a083175e19aa837dc62be2953dc6f1d2da97837608a"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/00e162b0_live.bin",
+        "size": 4,
+        "sha256": "66754af05722b2f881e346b4c134ff8c668ad5ec24816b5cb7e3e2312fef4df7",
+        "sha512": "6a66b5e056139effa5740bb5960c0cd9f3776eaf5d89af178bec6d06e0c27c844c815380bac97377afeede9e44cecaa6c7ea000f0cdc6ba809b9ad377fc22a11"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/00e162b0_pe.bin",
+        "size": 4,
+        "sha256": "66754af05722b2f881e346b4c134ff8c668ad5ec24816b5cb7e3e2312fef4df7",
+        "sha512": "6a66b5e056139effa5740bb5960c0cd9f3776eaf5d89af178bec6d06e0c27c844c815380bac97377afeede9e44cecaa6c7ea000f0cdc6ba809b9ad377fc22a11"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/00e16478_bytes.txt",
+        "size": 1386,
+        "sha256": "8190199309452238bc735cd83fab3df2be7b624e6928ed55bba022c5ee72e36b",
+        "sha512": "ae44575af7f57e48605519de7c14424ee86bba38f216058ed592d3630177038477ef7f6a2b5c86ee92dc5491cba45ce50e12f3c130983f4fd8cf17803eb9b115"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/00e16478_live.bin",
+        "size": 288,
+        "sha256": "2a42b9cd37b5c11ab78cc633ffd65479d77dd8e54eaffb8fe5929630a6801299",
+        "sha512": "31a3b3289f2c821df8825d6fd4a70e63febd14958470483024eba3724a8c03424b2d0ecf7493fefe0e50fe8c3ee3fc3717f7c060710071f7c57450d8f1babc11"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/00e16478_pe.bin",
+        "size": 288,
+        "sha256": "2a42b9cd37b5c11ab78cc633ffd65479d77dd8e54eaffb8fe5929630a6801299",
+        "sha512": "31a3b3289f2c821df8825d6fd4a70e63febd14958470483024eba3724a8c03424b2d0ecf7493fefe0e50fe8c3ee3fc3717f7c060710071f7c57450d8f1babc11"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/00e16840_bytes.txt",
+        "size": 61,
+        "sha256": "24281bec3f8cbd76da98ffb2ad7e77027c7062eb57238a45060c0dc9d606c739",
+        "sha512": "87ec9112684fad030167a679e292ef206ea2d0f3b4952512c7c241bae4721fa602a091fa37cb7fdedf6f8afb71bf7d71ce26ba9bcec409fc7f05525f0752d6fe"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/00e16840_live.bin",
+        "size": 12,
+        "sha256": "58b04902f7a90e9fd0ccb010f3ea1924c0538c857252447b370764744decaa83",
+        "sha512": "1ef5a1e151911c6da6e93f28a6e81412bad422aa7ead7814a072b0e05a63c800675607bc1169a58b0724df94a12ae33e27ab95f17d22586ade1d79cbc6daac7c"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/00e16840_pe.bin",
+        "size": 12,
+        "sha256": "58b04902f7a90e9fd0ccb010f3ea1924c0538c857252447b370764744decaa83",
+        "sha512": "1ef5a1e151911c6da6e93f28a6e81412bad422aa7ead7814a072b0e05a63c800675607bc1169a58b0724df94a12ae33e27ab95f17d22586ade1d79cbc6daac7c"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/0109de34_bytes.txt",
+        "size": 77,
+        "sha256": "32ded4419623f7ec737b67cc3070a0bac9a42e0c689cdc79e8dc16c3ebc9b078",
+        "sha512": "7c2f0d914a947a54e58bfbe9fbd8f694f0a5c59fcd92522966a17908a0dc8fe2b6a1be6f88cd044e8fb0fd88be057dbd850052569fcb6f11166f1ce6b5900af4"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/0109de34_live.bin",
+        "size": 16,
+        "sha256": "374708fff7719dd5979ec875d56cd2286f6d3cf7ec317a3b25632aab28ec37bb",
+        "sha512": "0b6cbac838dfe7f47ea1bd0df00ec282fdf45510c92161072ccfb84035390c4da743d9c3b954eaa1b0f86fc9861b23cc6c8667ab232c11c686432ebb5c8c3f27"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/0109de34_pe.bin",
+        "size": 16,
+        "sha256": "374708fff7719dd5979ec875d56cd2286f6d3cf7ec317a3b25632aab28ec37bb",
+        "sha512": "0b6cbac838dfe7f47ea1bd0df00ec282fdf45510c92161072ccfb84035390c4da743d9c3b954eaa1b0f86fc9861b23cc6c8667ab232c11c686432ebb5c8c3f27"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/0109e1c0_bytes.txt",
+        "size": 1617,
+        "sha256": "cdf5362793caa585083be9f30db6fb875b59a23491962ae3d1ca233e72aaed7c",
+        "sha512": "ff1a15df4d3576ab0684d7973fee7e513863ae093bbf421974f125f419ce7c7fdeb796e797849615a8af6c5011b42e3c178e108940d2c9bc4129288aca0d0ba3"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/0109e1c0_live.bin",
+        "size": 336,
+        "sha256": "52a3e0804d93dc525ec3c67ef8ac5b01756ecf0513e36f3c19435e4c82cb5d29",
+        "sha512": "d856bd0027d55e816a21bb57493f522e467a53bfec2e5d1721aca062a52d9bd077d75a5f304fec4443e4d0c187b1e7f209409b5e8e158fdeed434ed3b6848b1a"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/0109e1c0_pe.bin",
+        "size": 336,
+        "sha256": "52a3e0804d93dc525ec3c67ef8ac5b01756ecf0513e36f3c19435e4c82cb5d29",
+        "sha512": "d856bd0027d55e816a21bb57493f522e467a53bfec2e5d1721aca062a52d9bd077d75a5f304fec4443e4d0c187b1e7f209409b5e8e158fdeed434ed3b6848b1a"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/analysis.json",
+        "size": 12507,
+        "sha256": "dd0443c0ef4c12368ec8eb9eb88f22529a27c799e182f1e61c1e6c64146ed920",
+        "sha512": "1de2b329aeb3b955e4fe76b28e8660ea9592e4c4b167a8636a3cf3392e251ad9002c07be39802f3569af8d69f25a86224f83627b8b7e42d237674764487b1047"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/analyze.py",
+        "size": 6068,
+        "sha256": "07f6a6b5a000497f3c50718b15469aa35f090acfbc764116082ad469539acc39",
+        "sha512": "2bcb22722b5471683cb0c7c154a90a26c50b2118404821fae210715a2bae84459b666d20c35d7fc83a2dce178828b483bf458ec0bbe1f4b1314b6237add901e1"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/call_report.json",
+        "size": 3639,
+        "sha256": "6f94f76d5748615839efbde62d9e68a18fcf02c40c10d1c35775385a862d51ea",
+        "sha512": "7c40c7e92414b43d8c09d1c4a13090b6e50566aa301f0ccc85466b2d38aa813ba2c337191cdbb6b9de9bee4ce9c19ff4b5a014fd6ced6e458b419ae089da977c"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/capture.py",
+        "size": 6769,
+        "sha256": "aad1b918796e37a0df48dcf1907e602fa6ca48b86df5eec0da2d2410bea0aa49",
+        "sha512": "5fe950781064290220bb8d3a6bc02fb9010cbf93ac537b75dbe3f750c9b8d93aae8289ae67fb79669c8ffcb06eb1aa34724c38d4b9f8d57a76436837c6c9392d"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/capture_summary.json",
+        "size": 13084,
+        "sha256": "307075813579b54c27a89e1352a502b2be2e8ad5c7e252b0c491ba6dcc5cb6ce",
+        "sha512": "d9106c58362bd12778f64a50d1a45e13f29402dd55876201204868318ca5c291307199c8bb81008b3f5627eda987e0167f62a8d5bd39ec8585c8e330d03b321d"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/commit_message.txt",
+        "size": 544,
+        "sha256": "ad562a1ba47c5273ae736651aa6e3ac6cce47ea80fcd2c668f1e966adaf2a4c1",
+        "sha512": "f45d825fa693ab92f95a470ad465158fe5ab0a4713ec42f95a2a5b6554fea10ebff4f88187dee901b42b2eec54d8a86113d933811abb008ffbd53a87cce9ba4a"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/inventory.py",
+        "size": 2271,
+        "sha256": "850151a5250f550dca7520f420b865364494c17195348e4acc68eb4428dfd6fd",
+        "sha512": "b349d11ffac3dad2a38f608ebef7354e630a057a53aba62f9fd8b42a660b670c143f3321f1d778927b7f205dafdcb0804f0e404fc246d9963098b6f88c97a244"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/missing_exact_source_scan.txt",
+        "size": 299,
+        "sha256": "11eaa303a68ec92daab38640d283f1cc2073a941c5e8a160875e996835240a88",
+        "sha512": "0e419a55ec0cf5864e5a85d661818b012b3bc3ce20bb96d9faa6000e3d4053a69e08f24eaeecf237d2ed937153a5e42658a31edf0b692453b259b70d88ac9f44"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/pinned/00bffb8b_asm.txt",
+        "size": 165,
+        "sha256": "1a5fe9df3df70541aef8ea38a2f6173e6e2b8ca836a264f03ed4aa1aa462cb01",
+        "sha512": "db9d39956ddee4458e385a362ab80bf85703e8e2b05455b775de0c8264dbf340b0cc7d578ab752c65142f5e4b2aa0ad96c0e3e709dca251daea9dc1492d0b274"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/pinned/00bffb8b_bytes_0000.txt",
+        "size": 102,
+        "sha256": "72d87e59eeb17eb9e2bf786dece5698f1bec49b8e5df364fb09a1b834f107977",
+        "sha512": "9ac2ee0a93014dd53296b1e1f184fdafffd154ad35d99ce27b1cc9d21a4d43560c7ee45052c19f13ba624be3877b75cce92f6d27a19b17c3625ba21d16c4d85f"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/pinned/00bffb8b_live.bin",
+        "size": 19,
+        "sha256": "84aca6584c13d6f07ced37568fc45be0c65f51583ba9a70f7cc98d62b2d94a5c",
+        "sha512": "f830061596947bd1f07c6ded1e7f62ce3bf4525385591f70331722ec429daebfedd62ffb92526fefaddf26c8df34c8ef0719d39c629ca8d98f45ef2e77cc5ef6"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/pinned/00bffb8b_pe.bin",
+        "size": 19,
+        "sha256": "84aca6584c13d6f07ced37568fc45be0c65f51583ba9a70f7cc98d62b2d94a5c",
+        "sha512": "f830061596947bd1f07c6ded1e7f62ce3bf4525385591f70331722ec429daebfedd62ffb92526fefaddf26c8df34c8ef0719d39c629ca8d98f45ef2e77cc5ef6"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/pinned/00c05070_asm.txt",
+        "size": 450,
+        "sha256": "ccd7aa6b9e4d7da4affbe8133d651775cd5d99d7c7eafb6e1902ae4c91f362e8",
+        "sha512": "339a6559289029927b2e1c0b3834cfcb710e830b0003a86a69d00f6a2c47ced8b109c7758076ac8676bb4ab683361896ee3e2f2c0dac6373c47e427b6303e045"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/pinned/00c05070_bytes_0000.txt",
+        "size": 252,
+        "sha256": "2e85a38a8935dc5af1131036e1df0ac48b4c22c6916a5558a8929608e3592b47",
+        "sha512": "318b9b667d63d9bc11853effcac65426ff89487a47fff38cad96744446a7e5e54395347e1682cb6055ddc5b53ab24b7c26f37c2c9561a3f22ca521554ce8acbb"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/pinned/00c05070_live.bin",
+        "size": 50,
+        "sha256": "c56216e301258d74d1f73f4e30645d811c2e7a3cda5bef15b09e94735394ba81",
+        "sha512": "12a8542babb1ed2256cf0b44dce9fb028682940b1003673953a8032a657daeaa4c6c4b9cf8c8097840e163f4bbb0be02b369371f6bc2510df66fc51748a6b35e"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/pinned/00c05070_pe.bin",
+        "size": 50,
+        "sha256": "c56216e301258d74d1f73f4e30645d811c2e7a3cda5bef15b09e94735394ba81",
+        "sha512": "12a8542babb1ed2256cf0b44dce9fb028682940b1003673953a8032a657daeaa4c6c4b9cf8c8097840e163f4bbb0be02b369371f6bc2510df66fc51748a6b35e"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/pinned/00c051b7_asm.txt",
+        "size": 1130,
+        "sha256": "2d92d4e0e25572fe5e7f969e48451e17b7bc99be5cf4a4884773613f5476362b",
+        "sha512": "98acf3696ad282ebe0b6e8e9dbd90c00bd1ad3d72658ad7a92ac6fe06c9706ac99b6fa87b670eea57a1b94e9eaf747432f9bca0e0bc8f6f52f7972432b266a39"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/pinned/00c051b7_bytes_0000.txt",
+        "size": 580,
+        "sha256": "1e49b26b517b114e8fce780560e783cc8eb218140a3826adae701e320aa2f0d3",
+        "sha512": "c9b8302459535b83f882928758c5eb50dd6c11636e67d2b9aad32c8fb8dda619c7d50a0c2e936b39bd6560533995700cffda2efc45c7931395c3f19480c09ec2"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/pinned/00c051b7_live.bin",
+        "size": 119,
+        "sha256": "ccbdbe41ce6650660cd55232a4c1dff2445bfafa036dc2d2e3f2c9c2df7d9a1e",
+        "sha512": "49666385af1195dd0477d5b72e3ad3dcd447e5649bc8a2f6894c39f6c8059e695ec62c8ef5923dbcd7c8cb14e05fb9b23f49ef50eb552bbaf66bac97654d3eb7"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/pinned/00c051b7_pe.bin",
+        "size": 119,
+        "sha256": "ccbdbe41ce6650660cd55232a4c1dff2445bfafa036dc2d2e3f2c9c2df7d9a1e",
+        "sha512": "49666385af1195dd0477d5b72e3ad3dcd447e5649bc8a2f6894c39f6c8059e695ec62c8ef5923dbcd7c8cb14e05fb9b23f49ef50eb552bbaf66bac97654d3eb7"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/pinned_watson_report.json",
+        "size": 95086,
+        "sha256": "7f2271fc61aec5c8cd02a34d8d87d9f052ba37ef9ef125b186f5e0a2286123d5",
+        "sha512": "19ed96cc66d549d767ffed7ddf1467fab72a7eb5c2ade61eb9793c639f1592e2ce7df79272009fb676f0e04b8bebf6208bf9de9a1ce4c57b3a208d64241bc556"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/report.py",
+        "size": 12138,
+        "sha256": "e06ede99bb9d4f74959a019369d920605d096c377d4efb7779cdd25daf432ad4",
+        "sha512": "afb44dac1938f02a8e811d5a615ae6e897339cefa9a47fb78e10990a2dd74c5fcbd833815c7fcf8b3db0b796d1f10b1c873321b465b92dfa04036d5b265696a2"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/source/docs/NATIVE_CRT_PTD_FRONTIER_BN.md",
+        "size": 9856,
+        "sha256": "43a820d2841ca88c5f7fede15374b0453e6620b63877ac24f3cd0d6506b21c2b",
+        "sha512": "4035a70e3f08c7279c1d50564a3accb9b723b52361e6bc68dbb5f354effc3a94d3ea609ccbb14f989a12852fc7a17b6303827c44e5d8ccdd4e04f649a5955270"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/source/include/bsp/legacy_crt_math.hpp",
+        "size": 1108,
+        "sha256": "52f6b22f16ee3fda8d8ee6d8a14e3bbabcf24e72393418579fab6204523efe39",
+        "sha512": "f22e83e4a862abdedb8e3fd67ecf367110756276327fd4e1955d7f1898bff1079f53b4da92b65d58160fa35460b5f5a425c381c5dcf691c3dffb4e15bb8d29f9"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/source/include/bsp/native_crt_pointer_decode.hpp",
+        "size": 2327,
+        "sha256": "b1e901d739c07419b55441988bf42177b0e6ace3ef27ef1251ecb3b36fb48a7f",
+        "sha512": "f4ef7cb2e66db39a9a3eb3f762526d49441d2284331191a538650e193474f04c6b746f86386579655f39d78151eb9fe8df9f2a9e79bfaaabeab1cfcf0e15eb15"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/source/include/bsp/native_crt_pointer_decode_support.hpp",
+        "size": 2673,
+        "sha256": "dfc566daa6960a69680ea6897fce1b94127f3df0972cdaf645cf67a9f128e722",
+        "sha512": "3741b65ae831f4b48124d394c923a9d4cb2ec9469c29824a2674d56cca878aa9662a83afeda486bbb1286c9131186262f8c0f6b62e476bc6f76eb959adcf2d96"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/source/src/native_crt_pointer_decode.cpp",
+        "size": 2271,
+        "sha256": "7a689a80bea666aa0941662a1bbde17500c92d1f7fd671c364aa2b3e0bf365c7",
+        "sha512": "99804a9bbd4aed649121531b0b3baaaebad762f6462ae86fc371bacf6042e995645352be3927d6e3afcd3213334693103d000ecf6d2c1630702f113dce855ddd"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/source/src/native_crt_pointer_decode_support.cpp",
+        "size": 4315,
+        "sha256": "ac0eab56cd6a829cecb42157b0b3ff83124725fa0bead4aac2c29bc334fc9f37",
+        "sha512": "8314158c43543e6f136a40536004e45a9da4b79d94a701ebf89fa8948e6d4b7602914d50d5fd78c5f57f5b6c2b9fd2915e939b6d298ae87071fecbda5faa22bb"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/target.json",
+        "size": 455,
+        "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+        "sha512": "4d63e102f408469c1bc103bc636873befeb5b8e7ced9254b7a64b03c91ed378680a0ac2c4f585b4f36bd572aa79a26404ae5595cddd1a1499be16d6188d7545c"
+      },
+      {
+        "path": "local/native_crt_ptd_frontier_bn/verify_calls.txt",
+        "size": 73,
+        "sha256": "99b6898447a2cf3f490a130154caf3588fa9306246596ad3f73ada34385aa9d0",
+        "sha512": "3cc27b4126090b869e2d0671f52c2776abe91387d7560420811781e2d64628ac1928d6181ff65ff3a7db2066e55ca3018036977b13823ba08d1dbfcc11392bff"
+      }
+    ]
+  }
+}
