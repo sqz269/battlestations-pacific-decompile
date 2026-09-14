@@ -18,7 +18,8 @@ The original listing reads `object.owner_00->state_04` before each Lua call.
 It reads key length, then key data *after* `lua_checkstack`; a null data pointer
 selects the empty byte at `0108FF2C`. For the final `lua_settable`, it reloads
 owner, then index08, then the owner's state04. The source makes those loads in
-that order, using volatile lvalue reads for the native object fields. It
+that order, using ordered volatile reads for both fields of the established
+actual8h NativeString header and the native object fields. It
 ignores the `lua_checkstack` return just as the original does. The primitive
 pushes are left on the same Lua stack until `lua_settable` consumes them. No
 kind gate, table copy, private registry reference or duplicate stack slot is
@@ -26,12 +27,14 @@ introduced. The layout comes from the existing actual14h object and actual8h
 NativeString declarations; callers pass both globals wrappers (`00B67980`)
 and tracked table wrappers (`00927B40`/`00B67800`).
 
-All **36 direct original calls** were checked in their containing function
+All **36 incoming direct original calls** were checked in their containing function
 listings. The report has an `address`/`native`/`function` row for each, and
 `local/lua_setter_call_contexts.txt` retains the nine preceding instructions
 at every site, including the key producer and ECX object setup. The 22 indexed
 callers of `00B67580` contain 32 calls. The live `xrefs` display stopped at 25;
 the remaining sites were recovered by walking those complete caller listings.
+The report also carries all eight outgoing Lua-primitive call sites from the
+two wrapper bodies, for **44 mechanically checked direct calls** in total.
 
 | Setter | Containing function start and direct call sites |
 | --- | --- |
@@ -59,7 +62,8 @@ interfaces over the native layout; they are not drop-in `__thiscall` exports.
 `00B67400` number-field conversion belongs to a separate integrator packet.
 
 Live Ghidra bytes equal the installed PE at both complete 80-byte spans.
-`verify_report_calls.py` accepted all 36 direct call rows. After
+`verify_report_calls.py` accepted all 44 direct call rows (36 incoming,
+eight outgoing). After
 `ghidra_export.py verify-seeds` matched all eight seed spans, the MSVC Win32
 Release `scripts/build.ps1` and both existing CTests passed. One ignored
 native-byte replay relocates the two installed bodies and redirects their
@@ -70,5 +74,17 @@ index before the next setter. The runner, original bytes, source, executable,
 toolchain, linked libraries, included SDK headers, call contexts and logs are
 frozen and hashed under `local/lua_setter_evidence_manifest.json`. The probe
 relocates the two `0108FF2C` empty-byte immediate loads to its own empty byte.
+Its ABI bridges follow the native callee listings retained in
+`local/lua_setter_bridge_abi.txt`: `lua_checkstack` takes ECX state/EDX count
+and returns without stack cleanup; `lua_pushlstring` takes ECX state/EDX data
+and `RET 4` for length; `lua_pushlightuserdata` takes ECX state/EDX pointer
+and returns; `lua_createtable` takes ECX state/EDX array count and `RET 4`
+for record count; `lua_settable` takes ECX state/EDX index and returns. The
+optimized candidate object's ordered loads are retained separately in
+`local/lua_setter_production_disasm.txt`; the earlier probe and object are
+preserved under `local/lua_setter_prior_proof`.
+The final object has key length at source-wrapper offset `+1C` and key data
+at `+1E` in both functions; its final stores load owner, then index, then
+state at `+41/+43/+47` for lightuserdata and `+42/+47/+4A` for the new table.
 This proves the two wrapper bodies against the same stock Lua 5.1.1 runtime;
 it does not execute the game's private Lua internals or validate gameplay.

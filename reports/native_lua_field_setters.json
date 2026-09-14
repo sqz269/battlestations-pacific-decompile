@@ -226,19 +226,49 @@
       "function": "00bd7180"
     }
   ],
+  "outgoing_calls": [
+    {"address": "00b6753d", "native": "00a672f0", "function": "00b67530"},
+    {"address": "00b6755c", "native": "00a67a10", "function": "00b67530"},
+    {"address": "00b6756a", "native": "00a67be0", "function": "00b67530"},
+    {"address": "00b67577", "native": "00a67e10", "function": "00b67530"},
+    {"address": "00b6758d", "native": "00a672f0", "function": "00b67580"},
+    {"address": "00b675ac", "native": "00a67a10", "function": "00b67580"},
+    {"address": "00b675ba", "native": "00a67d10", "function": "00b67580"},
+    {"address": "00b675c7", "native": "00a67e10", "function": "00b67580"}
+  ],
   "no_ghidra_function": [],
   "live_disk_byte_equality": true,
   "corrections": [
     {
       "was": "The live Ghidra xrefs response displayed 25 SetNewTable sites.",
       "is": "Full listings for all 22 indexed caller functions contain 32 direct SetNewTable sites.",
-      "evidence": "local/lua_setter_call_contexts.txt and 36/36 passing verify_report_calls.py rows"
+      "evidence": "local/lua_setter_call_contexts.txt and 36/36 incoming passing verify_report_calls.py rows"
+    },
+    {
+      "was": "C++ NativeString getters expressed the key loads after checkstack but did not enforce the native length-then-data machine load order.",
+      "is": "Ordered volatile reads of the established actual eight-byte NativeString header, then the current owner/state load before lua_pushlstring.",
+      "evidence": "local/lua_setter_production_disasm.txt: final optimized MSVC Win32 object disassembly; key length +1Ch before data +1Eh in both wrappers"
     }
   ],
   "original_failure_scope": "Neither body installs an SEH/EH frame or checks lua_checkstack's return. Lua API failure/longjmp can leave the stack after an earlier push. No native rollback exists in these bodies.",
   "source_failure_scope": "Uses the real Lua 5.1.1 API and actual object storage with no early guard or rollback. Source C++ interface is not original ABI; original game's private Lua internals, allocator/longjmp environment and invalid NativeString headers are not claimed identical.",
-  "call_boundary_proof": "local/lua_setter_call_contexts.txt: 36 direct CALL instructions captured from all 22 indexed table callers and 4 lightuserdata callers with 9 preceding listing instructions each; Ghidra proto and verify_report_calls.py validate containing functions.",
+  "call_boundary_proof": "local/lua_setter_call_contexts.txt: 36 incoming direct CALL instructions captured from all 22 indexed table callers and 4 lightuserdata callers with 9 preceding listing instructions each; outgoing_calls adds all eight Lua primitive CALL instructions. Ghidra proto and verify_report_calls.py validate all 44 containing functions and call boundaries.",
   "evidence_manifest": "local/lua_setter_evidence_manifest.json",
+  "prior_proof": "local/lua_setter_prior_proof/inputs/frozen with the earlier manifest, object, executable, source and logs",
+  "optimized_codegen": {
+    "object": "build/win32/bsp_core.dir/Release/native_lua_field_setters.obj",
+    "disassembly": "local/lua_setter_production_disasm.txt",
+    "lightuserdata": "checkstack +0F; key length +1C then data +1E; owner/state reload before pushlstring +2E and lightuserdata +3C; final owner +41, index +43, state +47, settable +4B",
+    "new_table": "checkstack +0F; key length +1C then data +1E; owner/state reload before pushlstring +2E and createtable +3D; final owner +42, index +47, state +4A, tail jump to settable +55"
+  },
+  "original_lua_callee_abi": {
+    "evidence": "local/lua_setter_bridge_abi.txt",
+    "00a672f0": "ECX state, EDX count, RET 0",
+    "00a67a10": "ECX state, EDX key data, stack length, RET 4",
+    "00a67be0": "ECX state, EDX lightuserdata pointer, RET 0",
+    "00a67d10": "ECX state, EDX array count, stack record count, RET 4",
+    "00a67e10": "ECX state, EDX table index, RET 0"
+  },
   "native_byte_probe": {
     "source": "local/lua_setter_probe.cpp",
     "data": "local/lua_setter_probe_data.hpp",
@@ -249,11 +279,11 @@
     "relocations": "eight original CALL rel32 operands redirected to recovered-ABI Lua 5.1.1 bridges; two original 0108FF2C immediate loads redirected to the fixture's empty byte"
   },
   "checks": {
-    "report_calls": "36 checked, 0 failed",
+    "report_calls": "44 checked, 0 failed (36 incoming, 8 outgoing)",
     "verify_seeds": "8/8 live/disk matches",
-    "build": "MSVC Win32 Release scripts/build.ps1 passed",
-    "ctests": "2/2 passed",
-    "focused_native_differential": "5/5 original byte/source cases passed",
+    "build": "corrected MSVC Win32 Release scripts/build.ps1 passed",
+    "ctests": "corrected 2/2 passed",
+    "focused_native_differential": "corrected 5/5 original byte/source cases passed",
     "game_runtime": "not_run"
   }
 }
