@@ -2093,6 +2093,24 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // PlaneGlobals default the mirror fills at load.
                         bsp::PlaneFreeFlightClass cls;
                         bsp::PlaneFreeFlightTuning tuning;
+                        // Every field of PlaneFreeFlightTuning is a Dynamics/*
+                        // row inside the 00F872F0 mirror, and the mirror is now
+                        // filled from the installation's PlaneGlobals.lua by the
+                        // recovered 007E2A20. Its struct defaults stay as the
+                        // fallback for a run where the data file did not load;
+                        // when it did, the authored numbers win.
+                        if (owner_.lua.plane_globals_loaded()) {
+                            const bsp::GameTuningBlock& g = owner_.lua.plane_globals();
+                            tuning.ceiling = g.dynamics_ceiling;
+                            tuning.ceiling_force = g.dynamics_ceiling_force;
+                            tuning.drag_func_power = g.dynamics_drag_func_power;
+                            tuning.drag_range_min = g.dynamics_spd_multipliers_drag_range_min;
+                            tuning.drag_range_max = g.dynamics_spd_multipliers_drag_range_max;
+                            tuning.level_flight = g.dynamics_spd_multipliers_level_flight;
+                            tuning.lost_drag_time = g.dynamics_dead_meat_lost_drag_time;
+                            tuning.extra_gravity_mul = g.dynamics_dead_meat_extra_gravity_mul;
+                            tuning.accel_cheat_mul = g.dynamics_accel_cheat_mul;
+                        }
                         bsp::PlaneFreeFlightState state;
                         for (int i = 0; i < 3; ++i) {
                             state.world_velocity[i] = unit_.plane_world_velocity[i];
