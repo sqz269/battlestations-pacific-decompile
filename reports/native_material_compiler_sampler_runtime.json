@@ -210,7 +210,13 @@
       "LIMIT source-only full path; real D3DX/COM and existing source child providers shared; one source0 sampler consumes supplied entry DWORD; original sampler/leaf no-growth only; no source1, original parent FH3, teardown or game claim"
     ],
     "loaded_module_count": 80,
-    "earlier_preliminary_check": "The initial sampler run used pinned prior runtime libraries plus an explicit strict compiler TU. Only the final direct fresh-archive run is claimed by final driver/map/executable pins; unused earlier local object/dependency artifacts are retained as historical outputs."
+    "earlier_preliminary_check": "The initial sampler run used pinned prior runtime libraries plus an explicit strict compiler TU. Only the final direct fresh-archive run is claimed by final driver/map/executable pins; unused earlier local object/dependency artifacts are retained as historical outputs.",
+    "loaded_module_machine": "All80 actually loaded image files verified as PE machine014c.",
+    "numeric_calls": {
+      "rows_checked": 1,
+      "failed": 0,
+      "log": "local/verification/material_compiler_sampler_runtime/report_calls.json"
+    }
   },
   "limits": [
     "No original complete compiler/FH3/SEH or original B5F100 growth execution.",
@@ -219,9 +225,21 @@
     "No terminal teardown, drawing, shader cross-stage draw compatibility or gameplay validation."
   ],
   "closure": {
-    "state": "awaiting immutable final archive after evidence commit",
+    "state": "complete_immutable_compiler_link_tool_runtime_closure",
     "report_excluded_to_avoid_self_hash": true,
     "freeze_command": "python local/verification/material_compiler_sampler_runtime/freeze.py *> local/verification/material_compiler_sampler_runtime_freeze.log",
-    "freeze_driver_log_outside_archive": "local/verification/material_compiler_sampler_runtime_freeze.log"
+    "freeze_driver_log_outside_archive": "local/verification/material_compiler_sampler_runtime_freeze.log",
+    "manifest": "J:\\PROG\\battlestations-pacific-decompile-orch5-material-compiler-sampler-runtime\\local\\verification\\material_compiler_sampler_runtime_frozen_20260914\\manifest.json",
+    "sha256": "53fde43a92d7fdb80f9c46bfb176060df0ca5e84f26250b4d1e07d8c22c4f84d",
+    "artifacts": 7726,
+    "total_bytes": 867089957,
+    "compiled_translation_units": 1318,
+    "actual_loaded_modules": 80,
+    "source_commit": "ba81a9c538b1bd13838fa4ce616369c293f42a59",
+    "manifest_sha256": "53fde43a92d7fdb80f9c46bfb176060df0ca5e84f26250b4d1e07d8c22c4f84d",
+    "recorded_read_path_occurrences": 229379,
+    "manifest_resource_id": 24,
+    "freeze_driver_log_sha256": "70e866e1248811062ee718fdfc0d334d5342562a0831206bb5afac5dd85183c8",
+    "final_metadata_scope": "Report-only archive pins after frozen source commit; fixture, production source, binary and all frozen inputs remain unchanged."
   }
 }
