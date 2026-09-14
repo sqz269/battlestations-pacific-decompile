@@ -66,17 +66,95 @@ there. The twelve string immediates were read as evidence of the model *arriving
 evidence of it being *used* - and the distinction is exactly what a byte census of `[class+50h]`
 settles and a list of string literals cannot.
 
-**The real gate is the producer of `class+50h`, and it was searched for and not found.** The packet
-ruled out `009633C0`, `00960230` and `00964020` by inspection, and byte scans for
-`MOV [reg+50h], reg` and for every `CALL [reg+20h]` / `MOV reg,[reg+20h]; CALL reg` form turned up
-no candidate in the vehicle-class code. Neither the writer of that field nor the invoker of vtable
-slot 8 is known. This matches an open item already recorded in `docs/UNIT_PARTS.md`.
+**The real gate is the producer of `class+50h`, and it is still not found.**
+
+~~byte scans for `MOV [reg+50h], reg` and for every `CALL [reg+20h]` form turned up no candidate~~ -
+**two of those negatives were vacuous, and this document published them as evidence.**
+`docs/MODEL_HANDLE_PRODUCER.md` counted the encodings image-wide:
+
+| form | occurrences in `.text` |
+| --- | --- |
+| `MOV [reg+50h], reg` **disp32** | **0** |
+| `MOV [reg+50h], reg` disp8 | 244 |
+| `CALL dword ptr [reg+20h]` | **0** |
+| `MOV r,[reg+20h]` then `CALL r` | 287 |
+
+`50h` is 80, which fits a signed disp8, so MSVC never emits the disp32 form for it; and this
+compiler always emits the load-then-call pair for a virtual. **A scan for either zero row returns
+nothing regardless of what the code does**, so neither could ever have supported a conclusion.
+Confirmed here directly: `scan-bytes '89 ?? 50'` returns hits across the image, `'89 ?? 50 00 00 00'`
+returns none.
+
+**The rule that follows applies to every offset search on this image: count both encodings and check
+the total is non-zero before reading anything into an empty result.** An empty scan is only evidence
+once the pattern is known to occur somewhere.
+
+What *is* settled: `class+50h` is null-initialised at construction (`0087C6A3` in
+`BSP_DamageableClass_ConstructBase`), and nothing writes it in any form or window scanned - `MOV`
+register and immediate in **both** encodings, `LEA` (the out-parameter form, 119 image-wide and none
+in the class region), and `MOVSS`. The earlier exclusion of `00960230` now stands on byte evidence
+rather than inspection: its `00962981` hit is the middle of a field-by-field copy of a ~`5Ch`-byte
+record inside a Lua iteration loop.
+
+Explicitly **not** excluded, and one of these must hold it since the shipped game loads models: a
+`memcpy`/`REP MOVSD` covering the field, a SIB-indexed write (every scan skips those by design), a
+write on an object later aliased to the class, or a window outside the two searched.
+
+Two corrections to this document's own text while we are here: `0082FE30` occupies slot 8 on
+**eight** class vtables, not the five listed above; and the invoker of that slot is also unfound -
+none of the six slot-`+20h` dispatches in the class region is on a descriptor. The cheapest next
+step is the **twenty callers of `BSP_VehicleClass_GetOrCreate`**, listed in
+`docs/MODEL_HANDLE_PRODUCER.md`, of which exactly one has been checked.
 
 What the packet does give is the consumption contract: sixteen descriptor fields mapped from twelve
 named node groups, all of them **point data** rather than mesh data. Worth keeping for whoever
 builds the model path, and worth noting that a missing `debarkation` node synthesises a twelve-point
 ring from the class box half-extents rather than leaving the field empty, and that `wave` is
 dereferenced at `0083089D` with no null check unlike every other optional group here.
+
+## RESOLVED: the model reaches the UNIT, not the class
+
+`docs/MODEL_REACHES_UNIT.md` closes the question this document has been circling, and the answer is
+that **`class+50h` was a red herring** - which is why all five negatives above were true.
+
+* **The parser is registered.** `00717E80` registers the `GeomMesh` singleton. The parse entry
+  `00727A90` is `5Fh` bytes: allocate a `0x50`-byte mesh, construct it, decode the payload with
+  `00727310`, and **return it**. It is handed back to the resource manager rather than written onto
+  any class - exactly consistent with every absence recorded above.
+* **The decoded mesh is a constructor argument to a per-unit collision shape**, landing at
+  `shape+24h`:
+
+```
+0070F6F7  MOV [EAX],     0CFD768h      ; the shape vtable
+0070F700  MOV [EAX+20h], EDX
+0070F706  MOV [EAX+24h], ECX           ; the mesh, passed in
+0070F70C  RET 0Ch
+```
+
+* **The consumer chain is complete.** `BSP_UnitPartCollisionShape_TraceSegment` takes the mesh from
+  `shape+24h` and two frames from `shape+1Ch` into the hit-record tracer and the element walk that
+  fills `hit+30h`/`hit+34h` - the very pair `docs/HIT_NARROWPHASE.md` records as stuck at kind `0Ah`
+  and index `-1`.
+
+**So the fix is a different shape from the one this document assumed.** It is a **constructor call
+with a mesh**, not a field write on a class descriptor, and the four-packet order below was built on
+the wrong model. The steps that survive are the narrowphase one and the controller-slot one.
+
+Still open, and named rather than assumed:
+
+1. **Who calls the primary constructor.** Ghidra has no function start for it (`0070F6D0`-`0070F70C`
+   is inside `FUN_0070F4D0`'s span), so the entry has to be defined before callers can be listed.
+   Confirmed here: `disasm-raw` at `0070F6D0` gives `MOVUPS [EAX+10h],XMM0`, which is mid-body, and
+   at `0070F6F7` it mis-syncs entirely.
+2. **That `00727A90`'s return is what `shape+24h` expects.** Consistent by size - `0x50` covers the
+   `mesh+0Ch` walk and the `mesh+28h` ordinal list - but not proved, and it should be before
+   anything is wired on it.
+3. **Who requests a `GeomMesh` from the resource manager** at all.
+
+One trap recorded with it, worth repeating because it nearly produced a wrong reading: the shape
+vtable at `00CFD768` sits in `.rdata` between the strings `"shape"`, `"leader"` and `"num_"`, and
+`00CFD760` **is** the string `"leader"`. The table reads as a name table until you check that its
+neighbours are code addresses.
 
 ## Packet order, smallest first
 
