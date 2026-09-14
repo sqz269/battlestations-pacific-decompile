@@ -484,13 +484,14 @@ void GameScriptOrdersHost::entity_issue_command(void* entity,
     if (index >= units_.count()) return;
     if (!logged_path_) {
         logged_path_ = true;
-        log_.notef("the mission script's navigator bindings now issue through the same "
-            "path an authored scene command takes: 008a30d0 / 008a2f20 hand 0077d600 a "
-            "fixed command object and the descriptor 0088a810 built, and 0077d600 builds "
-            "MT_COMMAND and routes it. What it reaches is 00816e30, whose own arms "
-            "00816f7c..00817330 hold `moveto` and `attackmove` and are projected nowhere "
-            "(docs/CRUISE_COMMAND.md), so the command stops one hop short of a weapon "
-            "director slot. That block is packet `entity_command_arms`");
+        log_.notef("the mission script's bindings issue through the same path an "
+            "authored scene command takes: the binding hands 0077d600 a command object "
+            "and the descriptor 0088a810 built, and 0077d600 builds MT_COMMAND and "
+            "routes it through 00816e30's arms. This note used to end `so the command "
+            "stops one hop short of a weapon director slot`, which was true before "
+            "packet `entity_command_arms` projected those arms and is not true now - "
+            "the run's own `reached_director` counter is the authority, and it matches "
+            "`issued` (docs/ENTITY_COMMAND_ARMS.md)");
     }
     const char* name = command_name_of(command_object);
     std::string target_name;
