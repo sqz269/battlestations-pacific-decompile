@@ -1,0 +1,74 @@
+{
+  "packet": "orch2_crt_memory_cj_annotations",
+  "status": "five_source_functions_and_one_reader_merge_annotation_saved_refreshed_combined_validation_pending",
+  "source_functions": 5,
+  "original_body_bytes": 2009,
+  "executable_native_bytes": 1843,
+  "skipped_padding_bytes": 46,
+  "table_bytes": 120,
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe"
+  },
+  "annotation_log": {
+    "path": "local/ghidra-annotations-20260914T163714Z.json",
+    "sha256": "ae8ab2ee2cf680b2982a33aa3cf81dd97b26651aa46e0506e3d7f22c66128b9a"
+  },
+  "before": {
+    "path": "local/cj_integration/ghidra-before.json",
+    "sha256": "a828fd60b458c6fee00742de11f8e753bab93f3792ffc01877a96b7ea63f6248"
+  },
+  "after": {
+    "path": "local/cj_integration/ghidra-after.json",
+    "sha256": "fc41affe6223ea1aea3ceb913effb7a5834fe51bc909503dbee0b742f356b3af"
+  },
+  "exports": {
+    "path": "local/cj_integration/exports-refresh.log",
+    "sha256": "b4da86bdeee3fa3ee7bda44b86d607c3a1404012385fa3fa2100cbe4afdb50fe"
+  },
+  "functions": [
+    {
+      "address": "00bf87e0",
+      "old_name": "_memmove",
+      "name": "_memmove",
+      "original_body_bytes": 869,
+      "added_evidence": "CJ/CF complete _memmove source: all247 native executable instructions/711code bytes, six tables120B and38padding bytes accounted. Original unsigned overlap direction, forward count/actual0109EEA4/alignment gates, backward STD/REP MOVSD/CLD regions and all scalar align/unroll/tails retained. Eight finite selector ladders replace16 table sites, covering38 cases/30 targets; no incoming arithmetic flags consumed before overwrite or return at those targets. New4arg cdecl(D,S,n,actualwordref), deadEAX gate reads current actual word; restore ESI/EDI/EBP then E9tail to real3arg CC vector dispatcher, source caller cleans16. Current988B/316instructions, actual sole provider REL32+42h. Complete source/current compiler/archive and independent mapping accepted. One retained source-only n26 backward-overlap probe checked64 bytes, returnedD and DF0; all1350 linked CF/CC bytes bound to final objects. No original function/feature owner/runtime execution from that fixture. Original869B layout, table reads, arithmetic return flags, ABI/frame/fault-PC/async DF recovery differ or remain unclaimed. Requires valid nonwrapping buffers disjoint from active frames/arguments, DF0 and actual SSE2 for reached vector path. reports/native_crt_memmove_cf.json."
+    },
+    {
+      "address": "00c11d68",
+      "old_name": "___sbh_free_block",
+      "name": "___sbh_free_block",
+      "original_body_bytes": 788,
+      "added_evidence": "CJ/CG complete SBH free source:259native instructions/788B. Read metadata/region/header before already-free return, capture successor header then predecessor footer, successor-first coalesce/unlink, predecessor unchanged-class ring retention, ordered neighbor reloads, masks/bytecounts/tags/groupcount and cache eviction. SAR4/decrement class clamp is UNSIGNED63, unlike allocation signed clamp. Actual canonical NativeCrtSbhState plus separate actual0109EEA4 reference; no heap/lock/SEH/state owner. Current1513B/537instructions proves one actual VirtualFree IAT capture+43Dh after group+43Bh before region+452h, same captured value calls+468h/+558h. Real HeapFree+579h, actual complete4arg CF compaction+5A7h with16-byte cleanup; ignored API results/current canonical reloads retained. Current count decrement is load/registerDEC/store; local descriptor adjustment arithmetic may move after rover store, final observable cache publications remain ordered. Requires actual bootstrapped coherent SBH/external lock4, stable native cells, DF0/conditionalSSE2 and active-frame nonalias copy domain. Rejected first compiler emission fully retained. No free/copy execution, original2arg ABI/frame/fault/atomic identity or gameplay claim. reports/native_crt_sbh_free_cg.json."
+    },
+    {
+      "address": "00bf79f0",
+      "old_name": "_memset",
+      "name": "_memset",
+      "original_body_bytes": 122,
+      "added_evidence": "CJ/CL complete _memset outer source:47native instructions/122B, new127B/49instructions. Count thenD loads; zero bypasses fill/feature/buffer reads. Low fill byte only, then unsigned count>=256, then actual current0109EEA4 gate. EAX0 is LIVE scalar fill: new fourth reference access uses literal MOV EAX,[ESP+10h];CMP DWORD[EAX],0;MOV EAX,0, preserving actual comparison flags for JE. E9tail before PUSHEDI reaches real3slot vector dispatcher, untouched return/D/fill/n frame plus ignored fourth word; new caller cleans16. Scalar prefix, SHL/ADD pattern replication, REP STOSD/positive byte tail and originalD returns exact. Full transformed emitted bytes and targets verified. New4arg source is not original3arg ABI; valid writable nonwrapping/frame-nonalias buffers, actual canonical feature cell, DF0 for STOS and conditionalactualSSE2 required. No new test or memset execution, feature/bootstrap/frame/fault identity or gameplay claim. reports/native_crt_memset_cl.json."
+    },
+    {
+      "address": "00c0c965",
+      "old_name": "__VEC_memzero",
+      "name": "__VEC_memzero",
+      "original_body_bytes": 143,
+      "added_evidence": "CJ/CL complete __VEC_memzero:60instructions/143B. Actual cdecl(D,ignoredmiddle,n)->originalD; saved prototype incomplete, recovered from EBP+8/+10 and actual callers, never reads EBP+C. Exact10hframe, signed CDQ/XOR/SUB/AND/XOR/SUB pointer remainder. Aligned bulk calls actual2arg engine then REP STOSB tail; nonzero remainder prefix16-r is written BEFORE count subtraction and actual3arg self-call. Positiveprefix1..15/negative17..31, no shortcount repair. Exact143 bytes outside real zero-addend REL32+32h engine/+7Eh self;8/12-byte cleanup. Preserve EBP/EBX/ESI/EDI, require DF0/valid writable nonwrapping activeframe-nonalias extents and conditionalactualSSE2. No CPU API/private state or native feature/frame owner; no function execution/gameplay. reports/native_crt_memset_cl.json."
+    },
+    {
+      "address": "00c0c90e",
+      "old_name": "fastzero_I",
+      "name": "fastzero_I",
+      "original_body_bytes": 87,
+      "added_evidence": "CJ/CL complete fastzero_I:87physical=79executed-code bytes/24instructions plus8skipped LEA-ESP/NOP padding atC0C926..92D. Actual2arg cdecl(D,n), count>>7; PXOR XMM0 then unconditionally enter eight aligned MOVDQA stores, advance128/DEC/JNE. Requires actualSSE2,16aligned valid writable nonwrapping extent and intended positive128multiple. Direct>=128 truncates to floor(n/128) chunks;zero/sub128 writes firstchunk thenunderflows; no guard. EAX/EDX/EBX/ESI/EBP/EDI preserved, ECX/XMM0 clobbered, DF unchanged. Naked source all87native bytes exact including skippedpadding, no calls/relocs/private writable state. Correct library name retained; savedzeroarg prototype not ABI evidence. No source/native execution, original placement/frame/fault-PC identity or gameplay claim. reports/native_crt_memset_cl.json."
+    },
+    {
+      "address": "00bea150",
+      "old_name": "BSP_StructuredReader_Construct",
+      "name": "BSP_StructuredReader_Construct",
+      "original_body_bytes": 101,
+      "added_evidence": "CJ merge synchronization preserves both BM/BN raw-reader constructor specialization evidence and incoming BP actual resource-reader storage/lifetime evidence under BSP_StructuredReader_Construct. Normal exact BF09A0 base, ten string headers at+10 stride8, then +60=0,+64=FFFFFFFF,+68=0,+6C=0 agree. Distinct source interfaces and reconstruction records retained. Direct specialization has actual callfree/no-throw provider precondition; resource owner uses explicit pool/stream services and qualified __try/__finally base unwind. Normal lifetime fixture evidence does not prove getter-failure/remaining-element unwind/secondary termination or native FH3/TLS/CLR/frame/ABI/gameplay identity. Prior comments and both evidence sets preserved."
+    }
+  ],
+  "qualification": "Correct library names and prior comments retained. Complete memmove/free/memset source contracts and both reader constructor evidence sets preserved. Canonical state/bootstrap/lock/frame/feature/SEH ownership remains external; new interfaces and static code identities do not establish native execution or gameplay. Twenty-three-stem current candidate acceptance is separate."
+}
