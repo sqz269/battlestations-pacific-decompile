@@ -112,6 +112,50 @@ builds the model path, and worth noting that a missing `debarkation` node synthe
 ring from the class box half-extents rather than leaving the field empty, and that `wave` is
 dereferenced at `0083089D` with no null check unlike every other optional group here.
 
+## RESOLVED: the model reaches the UNIT, not the class
+
+`docs/MODEL_REACHES_UNIT.md` closes the question this document has been circling, and the answer is
+that **`class+50h` was a red herring** - which is why all five negatives above were true.
+
+* **The parser is registered.** `00717E80` registers the `GeomMesh` singleton. The parse entry
+  `00727A90` is `5Fh` bytes: allocate a `0x50`-byte mesh, construct it, decode the payload with
+  `00727310`, and **return it**. It is handed back to the resource manager rather than written onto
+  any class - exactly consistent with every absence recorded above.
+* **The decoded mesh is a constructor argument to a per-unit collision shape**, landing at
+  `shape+24h`:
+
+```
+0070F6F7  MOV [EAX],     0CFD768h      ; the shape vtable
+0070F700  MOV [EAX+20h], EDX
+0070F706  MOV [EAX+24h], ECX           ; the mesh, passed in
+0070F70C  RET 0Ch
+```
+
+* **The consumer chain is complete.** `BSP_UnitPartCollisionShape_TraceSegment` takes the mesh from
+  `shape+24h` and two frames from `shape+1Ch` into the hit-record tracer and the element walk that
+  fills `hit+30h`/`hit+34h` - the very pair `docs/HIT_NARROWPHASE.md` records as stuck at kind `0Ah`
+  and index `-1`.
+
+**So the fix is a different shape from the one this document assumed.** It is a **constructor call
+with a mesh**, not a field write on a class descriptor, and the four-packet order below was built on
+the wrong model. The steps that survive are the narrowphase one and the controller-slot one.
+
+Still open, and named rather than assumed:
+
+1. **Who calls the primary constructor.** Ghidra has no function start for it (`0070F6D0`-`0070F70C`
+   is inside `FUN_0070F4D0`'s span), so the entry has to be defined before callers can be listed.
+   Confirmed here: `disasm-raw` at `0070F6D0` gives `MOVUPS [EAX+10h],XMM0`, which is mid-body, and
+   at `0070F6F7` it mis-syncs entirely.
+2. **That `00727A90`'s return is what `shape+24h` expects.** Consistent by size - `0x50` covers the
+   `mesh+0Ch` walk and the `mesh+28h` ordinal list - but not proved, and it should be before
+   anything is wired on it.
+3. **Who requests a `GeomMesh` from the resource manager** at all.
+
+One trap recorded with it, worth repeating because it nearly produced a wrong reading: the shape
+vtable at `00CFD768` sits in `.rdata` between the strings `"shape"`, `"leader"` and `"num_"`, and
+`00CFD760` **is** the string `"leader"`. The table reads as a name table until you check that its
+neighbours are code addresses.
+
 ## Packet order, smallest first
 
 1. ~~`ship_class_bind_model_data`~~ **DONE, and it answered "none of the above"** -
