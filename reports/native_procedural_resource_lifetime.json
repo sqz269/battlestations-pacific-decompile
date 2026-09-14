@@ -1,0 +1,413 @@
+{
+  "packet": "orch5_native_procedural_resource_lifetime",
+  "base_commit": "abfc4761e44ab10204871d37618fca226fabb9bd",
+  "source": "src/native_procedural_resource_lifetime.cpp",
+  "header": "include/bsp/native_procedural_resource_lifetime.hpp",
+  "documentation": "docs/NATIVE_PROCEDURAL_RESOURCE_LIFETIME.md",
+  "analysis": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "ghidra_worker_writes": false
+  },
+  "original_pe": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+  "original_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "routines": [
+    {
+      "address": "00bbc6d0",
+      "end_inclusive": "00bbc6ed",
+      "bytes": 30,
+      "sha256": "7e255976b8de2c032cbd5fe24d74ba9862c012453cd9dee6a473c09b6e9ec5c7",
+      "matches_live_ghidra_and_installed_pe": true,
+      "name": "BSP_CausticsTextureSource_ScalarDelete",
+      "previous_name": "CG_scalar_deleting_dtor_00bbc6d0",
+      "original_abi": "ECX owner; stacked flags; EAX captured owner; RET4",
+      "coverage": "complete normal body; source C++ exception cleanup for C304A0",
+      "original_fixture_entry_executed": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00bbc7f0",
+      "end_inclusive": "00bbc80d",
+      "bytes": 30,
+      "sha256": "73d21946bb0bc7e392a7b10e0dc7193b88ed39dcf1944b1f60ff52f915b8d62f",
+      "matches_live_ghidra_and_installed_pe": true,
+      "name": "BSP_ShoreWaveTextureSource_ScalarDelete",
+      "previous_name": "CG_scalar_deleting_dtor_00bbc7f0",
+      "original_abi": "ECX owner; stacked flags; EAX captured owner; RET4",
+      "coverage": "complete normal body; source C++ exception cleanup for C304A0",
+      "original_fixture_entry_executed": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00c304a0",
+      "end_inclusive": "00c3054b",
+      "bytes": 172,
+      "sha256": "0a6910b2f3d70c95dc9afd4e0dfef9fc9c55cbe201e8cb68469e0afc86c735f1",
+      "matches_live_ghidra_and_installed_pe": true,
+      "name": "BSP_ProceduralTextureSource_Destroy",
+      "previous_name": "FUN_00c304a0",
+      "original_abi": "ECX owner; RET",
+      "coverage": "complete normal body; source C++ exception cleanup for C304A0",
+      "original_fixture_entry_executed": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00737390",
+      "end_inclusive": "007373df",
+      "bytes": 80,
+      "sha256": "49fb1569fb5ef002c8f3b8f0e2d79d5247ae2e032365b7ad52e55af27316e4c5",
+      "matches_live_ghidra_and_installed_pe": true,
+      "name": "BSP_ProceduralPointerArray_Resize",
+      "previous_name": "FUN_00737390",
+      "original_abi": "ECX actual12-byte data/count/capacity header; stacked signed count; RET4",
+      "coverage": "complete normal body; source C++ exception cleanup for C304A0",
+      "original_fixture_entry_executed": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00b19750",
+      "end_inclusive": "00b1975a",
+      "bytes": 11,
+      "sha256": "3361a36c37aa721fe2b55389623448b46a05cb63f00dd24ee205541a17f34ee7",
+      "matches_live_ghidra_and_installed_pe": true,
+      "name": "BSP_ProceduralTextureSource_DestroyBase",
+      "previous_name": "CG_adjustor_thunk_00b19750",
+      "original_abi": "ECX owner; no adjustment; stamp then tail JMP BD30F0",
+      "coverage": "complete normal body; source C++ exception cleanup for C304A0",
+      "original_fixture_entry_executed": true,
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00bbc6d3",
+      "native": "00c304a0",
+      "function": "00bbc6d0"
+    },
+    {
+      "address": "00bbc6e0",
+      "native": "00bf65ac",
+      "function": "00bbc6d0"
+    },
+    {
+      "address": "00bbc7f3",
+      "native": "00c304a0",
+      "function": "00bbc7f0"
+    },
+    {
+      "address": "00bbc800",
+      "native": "00bf65ac",
+      "function": "00bbc7f0"
+    },
+    {
+      "address": "00c3051c",
+      "native": "00737390",
+      "function": "00c304a0"
+    },
+    {
+      "address": "00c30524",
+      "native": "00bf6989",
+      "function": "00c304a0"
+    },
+    {
+      "address": "00c30536",
+      "native": "00b19750",
+      "function": "00c304a0"
+    },
+    {
+      "address": "0073739e",
+      "native": "00735ff0",
+      "function": "00737390"
+    },
+    {
+      "address": "00b19756",
+      "native": "00bd30f0",
+      "function": "00b19750",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00cc7eb3",
+      "native": "00c30260",
+      "function": "00cc7eb0",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00cc7ebe",
+      "native": "00737bf0",
+      "function": "00cc7eb8",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00c30260",
+      "native": "00b19750",
+      "function": "00c30260",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00737bf5",
+      "native": "00737390",
+      "function": "00737bf0"
+    },
+    {
+      "address": "00737bfd",
+      "native": "00bf6989",
+      "function": "00737bf0"
+    },
+    {
+      "address": "00c304ee",
+      "native": "InterlockedDecrement via IAT 00ce2220",
+      "function": "00c304a0",
+      "contract": "actual child+04 sequentially consistent decrement"
+    },
+    {
+      "address": "00c304fa",
+      "native": "current child profile+vtable00",
+      "function": "00c304a0",
+      "contract": "zero-only canonical owner terminal; same actual+04; current BD30E0 then current BBC6D0/BBC7F0 for admitted procedural resources"
+    }
+  ],
+  "evidence_spans": [
+    {
+      "address": "00bbc6d0",
+      "end_inclusive": "00bbc6ed",
+      "bytes": 30,
+      "sha256": "7e255976b8de2c032cbd5fe24d74ba9862c012453cd9dee6a473c09b6e9ec5c7",
+      "matches_live_ghidra_and_installed_pe": true
+    },
+    {
+      "address": "00bbc7f0",
+      "end_inclusive": "00bbc80d",
+      "bytes": 30,
+      "sha256": "73d21946bb0bc7e392a7b10e0dc7193b88ed39dcf1944b1f60ff52f915b8d62f",
+      "matches_live_ghidra_and_installed_pe": true
+    },
+    {
+      "address": "00c304a0",
+      "end_inclusive": "00c3054b",
+      "bytes": 172,
+      "sha256": "0a6910b2f3d70c95dc9afd4e0dfef9fc9c55cbe201e8cb68469e0afc86c735f1",
+      "matches_live_ghidra_and_installed_pe": true
+    },
+    {
+      "address": "00737390",
+      "end_inclusive": "007373df",
+      "bytes": 80,
+      "sha256": "49fb1569fb5ef002c8f3b8f0e2d79d5247ae2e032365b7ad52e55af27316e4c5",
+      "matches_live_ghidra_and_installed_pe": true
+    },
+    {
+      "address": "00b19750",
+      "end_inclusive": "00b1975a",
+      "bytes": 11,
+      "sha256": "3361a36c37aa721fe2b55389623448b46a05cb63f00dd24ee205541a17f34ee7",
+      "matches_live_ghidra_and_installed_pe": true
+    },
+    {
+      "address": "00bd30f0",
+      "end_inclusive": "00bd30f6",
+      "bytes": 7,
+      "sha256": "8daac2aa1112cc210d755933c76c5b27923094750190fdb37502dbc648eb7d16",
+      "matches_live_ghidra_and_installed_pe": true
+    },
+    {
+      "address": "00bbc6f0",
+      "end_inclusive": "00bbc73f",
+      "bytes": 80,
+      "sha256": "310c1fb7dad8d55e21d7f1b328a82539bf058e2c355451fe447951ab14510cfd",
+      "matches_live_ghidra_and_installed_pe": true
+    },
+    {
+      "address": "00bbc810",
+      "end_inclusive": "00bbc85f",
+      "bytes": 80,
+      "sha256": "4a25637fc7034fdce68be05e3ff0478dc5b433e444c8a15dadcc94df49613455",
+      "matches_live_ghidra_and_installed_pe": true
+    },
+    {
+      "address": "00b19980",
+      "end_inclusive": "00b19995",
+      "bytes": 22,
+      "sha256": "b26833e11b0634915df7b20def4a02519ef23fed4c8cd5afd3d127926d230b40",
+      "matches_live_ghidra_and_installed_pe": true
+    },
+    {
+      "address": "00c30470",
+      "end_inclusive": "00c30492",
+      "bytes": 35,
+      "sha256": "29ebfb40b0ac77a7989972ffa487f27a7311848508fc89c18b583e896469c4c0",
+      "matches_live_ghidra_and_installed_pe": true
+    },
+    {
+      "address": "00d64478",
+      "end_inclusive": "00d6447f",
+      "bytes": 8,
+      "sha256": "c916f226b74b983b1bde5e98659bbdacc5206ed84aa7eb64017209cee7933624",
+      "matches_live_ghidra_and_installed_pe": true
+    },
+    {
+      "address": "00d644b4",
+      "end_inclusive": "00d644bb",
+      "bytes": 8,
+      "sha256": "1670667b0edfaefa9793b4f65435dd7b2cc609320a6ab580fcb28dbe55f46421",
+      "matches_live_ghidra_and_installed_pe": true
+    },
+    {
+      "address": "00e03bcc",
+      "end_inclusive": "00e03bff",
+      "bytes": 52,
+      "sha256": "e1028cdbc22bf47666539e7b9a6727d1e35b8780a5689cd963c974aba6d85e4b",
+      "matches_live_ghidra_and_installed_pe": true
+    },
+    {
+      "address": "00cc7eb0",
+      "end_inclusive": "00cc7eb7",
+      "bytes": 8,
+      "sha256": "be4714b8b4f9ae9fa6c397c695e4814f52bd5a6576d204fb81d2c35f1abcff15",
+      "matches_live_ghidra_and_installed_pe": true
+    },
+    {
+      "address": "00cc7eb8",
+      "end_inclusive": "00cc7ec2",
+      "bytes": 11,
+      "sha256": "f994ea9668fa044143bca7fea520876ab8ee0a04468f356a4ab5c5e15b71f9b3",
+      "matches_live_ghidra_and_installed_pe": true
+    },
+    {
+      "address": "00cc7ec3",
+      "end_inclusive": "00cc7ed1",
+      "bytes": 15,
+      "sha256": "f6c1008c4b33b99f5a804543fdbe12d7984f3b57efb51609aeb356be2339671b",
+      "matches_live_ghidra_and_installed_pe": true
+    },
+    {
+      "address": "00c30260",
+      "end_inclusive": "00c30264",
+      "bytes": 5,
+      "sha256": "25db60e698e74f0c0c57b59e5676dacd082c1fea16d4a10ba5018f3c631ea3ce",
+      "matches_live_ghidra_and_installed_pe": true
+    },
+    {
+      "address": "00737bf0",
+      "end_inclusive": "00737c06",
+      "bytes": 23,
+      "sha256": "f0708457aa9430f4450c62b17f36d912acc425d0f9e1d4fa57d19c8c8a9e83f9",
+      "matches_live_ghidra_and_installed_pe": true
+    }
+  ],
+  "corrections": [
+    {
+      "was": "C304A0 ends at C30528 in Ghidra because free is treated as no-return",
+      "evidence": "installed PE/live bytes C304A0..C3054B; fixture executes full original normal path",
+      "is": "returning normal body ends C3054B; CALL B19750 at C30536"
+    },
+    {
+      "was": "BBC6D0/BBC7F0 listings omit BBC6E5..BBC6E7 / BBC805..BBC807",
+      "evidence": "83 c4 04 in installed PE and live bytes; original fixture RET4 check",
+      "is": "ADD ESP,4 after returning free; bodies end BBC6ED/BBC80D"
+    },
+    {
+      "was": "B19750 named CG_adjustor_thunk",
+      "evidence": "MOV [ECX],D5C104; JMP BD30F0",
+      "is": "no pointer adjustment; D5C104 stamp then BD30F0 CEB130 stamp"
+    },
+    {
+      "was": "potential payload/string interpretation at +08/+0C",
+      "evidence": "complete body reads +10/+14 vector and child+04 only; fixture preserves sentinel words",
+      "is": "neither field is consumed by C304A0"
+    }
+  ],
+  "provider_contracts": {
+    "identity": "caller-owned SAME NativeRenderActualOwners; no added map, shadow count, automatic registration or retain",
+    "fresh_admission": "actual factory allocation -> companion borrows +04 -> caller registers canonical binding -> actual sampler 4DDB40 decrement -> current BD30E0 -> current scalar deleter -> retirement removes SAME binding",
+    "profiles": {
+      "00d64478": [
+        "00bd30e0",
+        "00bbc6d0"
+      ],
+      "00d644b4": [
+        "00bd30e0",
+        "00bbc7f0"
+      ]
+    },
+    "unwind": "E03BDC/map E03BCC: state1 CC7EB8 ->737BF0(owner+10) resize0/current free; state0 CC7EB0 ->C30260 ->B19750. Source catches preserve effects, not native FH3 delivery.",
+    "failure": "already-decremented unresolved zero child retained after array/base cleanup; scalar free skipped; caller resolves obligations before diagnostic acknowledgement; failed replay and unacknowledged retirement rejected"
+  },
+  "pending_root_ghidra": [
+    {
+      "address": "00c304a0",
+      "old_end_inclusive": "00c30528",
+      "end_inclusive": "00c3054b",
+      "repair": "return flow after free, disassemble tail, repair body"
+    },
+    {
+      "address": "00bbc6d0",
+      "end_inclusive": "00bbc6ed",
+      "gap_inclusive": [
+        "00bbc6e5",
+        "00bbc6e7"
+      ],
+      "repair": "return flow/ADD ESP,4 listing gap"
+    },
+    {
+      "address": "00bbc7f0",
+      "end_inclusive": "00bbc80d",
+      "gap_inclusive": [
+        "00bbc805",
+        "00bbc807"
+      ],
+      "repair": "return flow/ADD ESP,4 listing gap"
+    },
+    {
+      "address": "00737bf0",
+      "old_end_inclusive": "00737c01",
+      "end_inclusive": "00737c06",
+      "optional": true,
+      "owned": false,
+      "repair": "root needs separate lease; return flow and cleanup tail"
+    }
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 Release MSVC Win32 passed",
+    "ctest": {
+      "passed": 2,
+      "failed": 0
+    },
+    "seeds": "8 verified against live Ghidra and installed PE",
+    "fixture_runner": "local/run_native_procedural_resource_probe.ps1",
+    "library_root_argument": true,
+    "fixture": "four full original/source factory/vector/destructor/scalar schedules; flags0/3; current-array/count mutation; shared count; both fresh factory profiles admitted via actual sampler release including current profile change",
+    "fixture_original_boundary": "all five original packet bodies execute; original factories/base constructors and BD30F0 also execute. Allocator, reserve and canonical child terminal are existing concrete source providers; native FH3 handler is not called.",
+    "source_failure": "unresolved actual zero child triggers vector/base cleanup and skipped scalar free; replay rejected; caller manually resolves retained child and owner before acknowledgement",
+    "fixture_status": "passed",
+    "failed_retirement_exit": 77,
+    "report_calls_expected": 14,
+    "report_calls_status": "14 direct rows checked, 1 expected pre-repair failure: C30536 outside truncated C304A0 body",
+    "game_validated": false,
+    "normal_exit": 0,
+    "report_calls_exit": 1,
+    "report_calls_unexpected_failures": 0,
+    "fixture_toolchain": "local/procedural-toolchain.json",
+    "library_sha256": "a77366582532f558e0ad3cb84da995f1e3873b23b036b4ab4f5b753b339c8405"
+  },
+  "evidence_totals": {
+    "implemented_normal_code_bytes": 323,
+    "all_verified_spans": 18,
+    "all_verified_bytes": 677
+  },
+  "limits": [
+    "No native FH3/SEH/hardware-fault identity or binary ABI replacement",
+    "No game/runtime renderer validation",
+    "Original child terminal itself is replaced by existing canonical source provider in normal differential schedules",
+    "Caller must admit exactly one companion to the existing canonical owner domain; terminal callbacks and profile dependencies must not throw",
+    "Singleton-manager admission/drain and full loader/platform integration remain outside this packet"
+  ],
+  "artifact_manifest": "local/native-procedural-resource-final/manifest.json",
+  "source_sha256": "1aeca5d85a4960807040ed991036a8f3df949f751cb8853634a1753b558737ec",
+  "header_sha256": "6e9e4e5cd70e7fa9d0e150f0cf235d03754c916c2dbd14bb9e886dc10f498b3b",
+  "documentation_sha256": "767b7e57d9ef1cf25cef6397227a8edf82bbf40571db3ca962e7c651aa3ea187"
+}
