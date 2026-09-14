@@ -99,3 +99,5 @@ records the exact scope and hashes.
 ## Integrated validation
 
 Commit `686a4506eecda8ae61da6d18d19494b307686452` passes the Win32 build and both existing CTests. All 112 comparisons pass against that library. The 120-frame USN01 compatibility run passes its finite trajectory, unchanged Airfield2, avoidance, generic tick, participant, world-list and observer/pending-owner teardown checks. The preserved executable has SHA-256 `a967129008de58eb9eaeec7460b11d9837a403428c0b52a0bbeb2d837644a251`. The mission run does not establish collision-builder admission or gameplay parity. The report references an immutable manifest retaining original bytes, fixture output, linked objects, compilation dependencies and mission artifacts.
+
+After merging separately published loading-owner work, combined commit `fb1a0424b95e77615a901533cc7ba74fd1b29862` passes the build, both CTests and the same 120-frame compatibility checks. Its executable SHA-256 is `3f24d061eb5064f1c244bb49887405c51c09eb5b9aad176e306c5bbe4213bc8a`. All 5 production objects linked into the collision fixture remain byte-identical to the sealed proof. The additional integration manifest is retained separately.
