@@ -138,8 +138,10 @@ void pilot_move_to_range_008a4590(PilotOrderHost& host) {
 
     // 008A4708 FSTP float [ESP+54h]: the descriptor's +14h, not a fourth
     // argument to 0077D600. include/bsp/scene_deferred_refs.hpp calls the
-    // field `reserved` and says "always 0"; this binding writes it.
-    target.reserved = pilot_move_to_range_008a46dc(
+    // field `reserved` and said "always 0"; this binding writes it, so it
+    // is now named `trailing` after the EntityOrderMessage field 0077D600
+    // forwards it into.
+    target.trailing = pilot_move_to_range_008a46dc(
         host.argument_count(), host.argument_as_float(kPilotOrderOptionArgument));
 
     // 008A471C-008A472A. Same class literal as PilotMoveTo.
@@ -167,7 +169,7 @@ void pilot_retreat_008a4300(PilotOrderHost& host) {
     target.position_valid = 1;  // 008A445E MOV byte [desc+1h],1
     target.object_id = 0;       // 008A4475 MOV word [desc+2h],BX
     target.object = nullptr;    // 008A446D MOV dword [desc+4h],EBX
-    target.reserved = 0.0f;     // 008A447E MOVSS [desc+14h],XMM0
+    target.trailing = 0.0f;     // 008A447E MOVSS [desc+14h],XMM0
     pilot_retreat_position_008a443e(zone, target.position);
 
     // 008A444B/008A44EA/008A44EF then 008A4532.

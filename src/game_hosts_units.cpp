@@ -1789,7 +1789,7 @@ bool GameUnitsHost::issue_player_command(const std::string& token,
         target.position[0] = point[0];
         target.position[1] = point[1];
         target.position[2] = point[2];
-        target.reserved = 0.0f;       // 0088A8C7
+        target.trailing = 0.0f;       // 0088A8C7
         char label[64];
         std::snprintf(label, sizeof(label), "(%.1f, %.1f)",
             static_cast<double>(point[0]), static_cast<double>(point[2]));
