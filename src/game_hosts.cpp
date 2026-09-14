@@ -915,7 +915,7 @@ struct GameStartupHost::SoundServices {
           platform(app.input_backend_00f8bbf4_, app.input_runtime_, online_00f8abe8, xlive),
           dialog({alternate_00f8bbcc, format_counts_00e12ef0, one_00d7a24c,
               fade_00ce3dc8, &null_integer_format_01090ab4}),
-          core({app.vfs_->manager()->context(), app.vfs_->search_registrations(),
+          core({app.vfs_->context(), app.vfs_->search_registrations(),
               app.scripts_->files(), app.scripts_->runtime(), app.scripts_->globals(),
               app.clock_, crt_string_storage(), platform.load_events(),
               app.singletons_->sound_lifetime(), crt, dialog,
@@ -1012,7 +1012,23 @@ GameStartupHost::GameStartupHost(GameHostLog& log, HINSTANCE instance,
     singletons_ = singletons.release();
 }
 
+void GameStartupHost::exit_if_native_vfs_interrupted() noexcept {
+    if (!vfs_ || !vfs_->requires_process_retention()) return;
+    try {
+        log_.notef("native VFS interrupted at %08x; cleanup is unrecovered; retaining application and mapped data until process exit",
+            vfs_->failure_site());
+        log_.close();
+    } catch (...) {
+        std::fputs("bsp_game: interrupted native VFS requires process exit\n", stderr);
+        std::fflush(stderr);
+    }
+    // std::exit would run the native physical-pool CRT cleanup against the
+    // retained graph. _Exit performs no CRT cleanup; the OS reclaims it.
+    std::_Exit(1);
+}
+
 GameStartupHost::~GameStartupHost() {
+    exit_if_native_vfs_interrupted();
     delete loop_callbacks_;
     delete frame_host_;
     // The sprite bridge holds textures created on the device, so it goes before the
@@ -1110,6 +1126,7 @@ void GameStartupHost::game_explorer_release() {
 }
 
 void GameStartupHost::exit_process(int code) {
+    exit_if_native_vfs_interrupted();
     log_.implemented("StartupHost::exit_process", "008f82f0");
     std::exit(code); // 008F82F0 calls genuine CRT exit, including atexit callbacks.
 }
@@ -1258,9 +1275,11 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
 
     // Phase 2, VFS, mounts and packages (0073d604-0073d899). The hardware probe at 0073d610
     // is inside this gate, not before it; milestone 1 recorded it one phase early.
-    vfs_ = new GameVfsHost(log_, false, options_.hardware_probe_commit);
+    if (!native_data_) throw std::runtime_error("Production VFS requires verified native data");
+    vfs_ = new GameVfsHost(log_, *singletons_, *native_data_,
+        std::filesystem::current_path() / "battlestationspacific.exe", options_.hardware_probe_commit);
     VfsStartupState vfs_state;
-    run_vfs_startup_phase2(vfs_state, *vfs_);
+    vfs_->phase2(vfs_state);
 
     // Phase 3, platform, window and save storage (0073d8c0-0073d988).
     construct_win32_platform_00becda0(platform_, nullptr);
@@ -1287,7 +1306,7 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
         command_line.file_access_log ? 1 : 0);
 
     // Factory tail 0073d94f-0073d98d follows platform/save and command-line setup.
-    run_vfs_startup_factory_tail(vfs_state, *vfs_, command_line.cached_load);
+    vfs_->factory_tail(vfs_state, command_line.cached_load);
 
     summary_.vfs_ready = vfs_->ready();
     summary_.mounts_requested = vfs_->mounts().size();
@@ -1295,16 +1314,14 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
     for (const GameMountRecord& mount : vfs_->mounts()) {
         if (std::strcmp(mount.status, "created") == 0) ++summary_.mounts_created;
     }
-    summary_.package_entries = vfs_->package_entries_enumerated();
-    summary_.package_mounts = vfs_->package_entries_mounted();
+    summary_.package_scans_completed = vfs_->package_scans_completed();
     summary_.cached_load = vfs_->cached_load();
-    log_.notef("vfs mounts requested=%zu created=%zu package entries=%zu mounted=%zu",
-        summary_.mounts_requested, summary_.mounts_created, summary_.package_entries,
-        summary_.package_mounts);
+    log_.notef("vfs loose mounts requested=%zu created=%zu package scans=%zu",
+        summary_.mounts_requested, summary_.mounts_created, summary_.package_scans_completed);
 
     // Renderer constructor0073da88, input getter0073da94/loader0073da9b,
     // then settings0073daa5. The same Direct3D API survives into device creation.
-    if (!vfs_->manager()) throw std::runtime_error("Script/settings startup requires the mounted VFS");
+    if (!vfs_->ready()) throw std::runtime_error("Script/settings startup requires the mounted VFS");
     renderer_api_ = Direct3DCreate9(D3D_SDK_VERSION);
     if (!renderer_api_) throw std::runtime_error("Renderer Direct3DCreate9 failed");
     log_.implemented("RendererHost::direct3d_create", "00b32410");
@@ -1325,7 +1342,7 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
         renderer_full_capabilities_.texture_formats_1b68.size(),
         renderer_full_capabilities_.declaration_types_1b5c.size());
 
-    scripts_ = new GameScriptHost(log_, vfs_->manager()->context(), content_suffixes_,
+    scripts_ = new GameScriptHost(log_, vfs_->context(), content_suffixes_,
         make_initial_lua_runtime_globals_0108ff20());
     summary_.input_scripts_ready = scripts_->input().data_tables_started();
     summary_.input_devices = scripts_->input().settings().devices.size();
@@ -1335,7 +1352,7 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
     // Phase 5, the settings block at 00f88980 filled by 008d8190 at 0073daa5. It runs before
     // window creation at 0073dc0f, which is the ordering constraint the whole phase exists
     // for: arguments 7, 8, 3, 4 and 9 of 00becee0 are read straight out of this block.
-    settings_host_ = new GameSettingsBinding(log_, vfs_->manager()->context(),
+    settings_host_ = new GameSettingsBinding(log_, vfs_->context(),
         vfs_->search_registrations(), content_suffixes_, profile_hints_, *renderer_api_,
         renderer_capabilities_, options_.settings_personal_root);
     auto& settings_host = *settings_host_;
@@ -1365,7 +1382,7 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
     log_.implemented("Phase 5 streamed_dialog_initialize", "0073db2b");
 
     // Native parser registration0073db41..db69 follows settings loading.
-    run_vfs_startup_phase6(vfs_state, *vfs_);
+    vfs_->phase6(vfs_state);
 
     // Native73DB7E/73DB8E reload the same current alternate publication for
     // each direct store. Do not maintain separate music/speech gain copies.
@@ -1641,6 +1658,7 @@ void GameStartupHost::release_platform_window() noexcept {
 }
 
 void GameStartupHost::application_shutdown() {
+    exit_if_native_vfs_interrupted();
     // Native00737f30's full singleton teardown remains unbound. Retained C++
     // input/locale/settings owners close later in dependency order at destruction.
     log_.implemented("StartupHost::application_shutdown", "00737f30");
@@ -1732,6 +1750,7 @@ void GameStartupHost::application_destruct() {
 }
 
 void GameStartupHost::destroy_singleton_lifetime_manager() {
+    exit_if_native_vfs_interrupted();
     log_.implemented("StartupHost::destroy_singleton_lifetime_manager", "008f8449");
     singletons_->shutdown();
     if (input_) input_->core.release_sdk_after_native_drain();

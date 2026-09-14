@@ -222,15 +222,15 @@ struct GameFrontendHost::Impl {
     // 00bdf4c0 then 00bdf310, the same read the font resources use.
     bool read(const std::string& requested, std::shared_ptr<MemoryStream>& stream,
         std::string& error) {
-        VfsProviderManager* manager_ptr = vfs.manager();
+        auto* manager_ptr = vfs.ready() ? &vfs.context() : nullptr;
         if (manager_ptr == nullptr) { error = "no mounted VFS"; return false; }
         std::string resolved = requested;
-        if (!resolve_existing_resource_00bdf4c0_fragment(manager_ptr->context(),
+        if (!resolve_existing_resource_00bdf4c0_fragment(*manager_ptr,
                 vfs.search_registrations(), resolved)) {
             error = "cannot resolve " + requested;
             return false;
         }
-        VfsMemoryOpen opened = open_resource_memory_00bdf310_fragment(manager_ptr->context(),
+        VfsMemoryOpen opened = open_resource_memory_00bdf310_fragment(*manager_ptr,
             resolved, 2);
         if (!opened.provider_opened || !opened.stream || !opened.stream->fully_initialized()) {
             error = "cannot read " + resolved + ": " + opened.error;

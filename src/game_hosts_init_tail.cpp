@@ -331,17 +331,17 @@ void GameDecalTable::run() {
     // 00bdf310 opens it into memory, the same pair every other asset takes.
     std::string text;
     {
-        VfsProviderManager* manager = vfs_.manager();
+        auto* manager = vfs_.ready() ? &vfs_.context() : nullptr;
         std::string resolved = kDecalTablePath;
         if (manager == nullptr
-            || !resolve_existing_resource_00bdf4c0_fragment(manager->context(),
+            || !resolve_existing_resource_00bdf4c0_fragment(*manager,
                 vfs_.search_registrations(), resolved)) {
             summary_.error = "cannot resolve the decal table";
             log_.notef("decal table %s not resolved", kDecalTablePath);
             log_.unimplemented("Phase 9 decal_definitions", "00740840");
             return;
         }
-        VfsMemoryOpen opened = open_resource_memory_00bdf310_fragment(manager->context(),
+        VfsMemoryOpen opened = open_resource_memory_00bdf310_fragment(*manager,
             resolved, 2);
         if (!opened.provider_opened || !opened.stream || !opened.stream->fully_initialized()) {
             summary_.error = opened.error.empty() ? "cannot open the decal table" : opened.error;

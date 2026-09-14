@@ -23,6 +23,7 @@
 #include <array>
 #include <cstdio>
 #include <cstring>
+#include <cwchar>
 #include <filesystem>
 #include <fstream>
 #include <memory>
@@ -106,6 +107,8 @@ std::wstring child_arguments() {
     std::wstring result;
     try {
         for (int index = 1; index < count; ++index) {
+            if (std::wcsncmp(arguments[index], L"--bsp-native-data-handoff=", 26) == 0)
+                throw std::invalid_argument("The --bsp-native-data-handoff= prefix is reserved for the child bootstrap");
             if (!result.empty()) result.push_back(L' ');
             result += quote_argument(arguments[index]);
         }
@@ -206,9 +209,9 @@ void report_summary(bsp::game::GameHostLog& log, const bsp::game::GameRunSummary
         static_cast<unsigned long>(summary.device_result), summary.back_buffer_width,
         summary.back_buffer_height, summary.frames_presented,
         summary.loop_finished ? 1 : 0, summary.exit_code);
-    log.notef("summary vfs_ready=%d mounts=%zu/%zu package_entries=%zu package_mounts=%zu "
+    log.notef("summary vfs_ready=%d loose_mounts=%zu/%zu package_scans=%zu "
         "cachedload=%d probes=%zu/%zu", summary.vfs_ready ? 1 : 0, summary.mounts_created,
-        summary.mounts_requested, summary.package_entries, summary.package_mounts,
+        summary.mounts_requested, summary.package_scans_completed,
         summary.cached_load ? 1 : 0, summary.probes_resolved, summary.probes_requested);
     log.notef("summary options_file=%d path=%s language=%s resolution=%dx%d fullscreen=%d "
         "vsync=%d antialias=%d", summary.options_file_present ? 1 : 0,
@@ -431,6 +434,7 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
         log.notef("startup failed: %s", error.what());
     }
 
+    host->exit_if_native_vfs_interrupted();
     bsp::game::GameRunSummary summary = host->summary();
     summary.exit_code = result;
     // A run that asked for a frame count only succeeds when the device presented them.
