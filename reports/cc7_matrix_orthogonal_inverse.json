@@ -1,0 +1,190 @@
+{
+  "packet": "cc7_matrix_orthogonal_inverse",
+  "owner": "agent/cc7-matrix-inverse",
+  "date": "2026-09-13",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra": "read-only: no renames, comments, prototypes, function creation or saves",
+  "docs": ["docs/MATRIX_ORTHOGONAL_INVERSE.md"],
+  "sources": ["include/bsp/matrix_orthogonal_inverse.hpp", "src/matrix_orthogonal_inverse.cpp"],
+  "answer": "00B63D50 is a true affine inverse and the ledger name BSP_Matrix_BuildOrthogonalScaledAffineInverse describes its arithmetic correctly. The 145-instruction body is branch-free and leaf. It computes N[i][j] = M[j][i] / (M[j][0]^2 + M[j][1]^2 + M[j][2]^2) for i,j < 3 - the transpose of the basis with each column divided by the squared length of the source ROW it came from - then N[3][j] = -(M[3] . column j of N) for the translation, then forces the fourth column to (0,0,0,1) from the zeroed XMM0 and the float 1.0 at 00D7A24C. R*C = I exactly when the three source basis rows are mutually orthogonal and non-zero: per-axis scale and a mirrored, negative-determinant basis both invert correctly, which is what makes 'OrthogonalScaled' the right word and rules out both a plain transpose and a uniform-scale-only inverse. There is no degenerate-scale guard, no early out and no mirrored-basis path, so a sheared basis silently yields a non-inverse and a zero-length row divides by zero. It is not safe in place: 00B63E52 writes destination+10h before 00B63E5E reads source+10h.",
+  "verification": {
+    "body_coverage": "complete. All 145 instructions of 00B63D50..00B63F09 were read contiguously from the Ghidra listing in three pages (1-45, 45-90, 90-145) with no gap. Branch-freedom, leaf status and the absence of any EAX write were established by filtering the whole 145-instruction listing for Jcc/CALL/LOOP/EAX, not by inspecting one region.",
+    "abi_evidence": "SUB ESP,18h at 00B63D50 balanced by ADD ESP,18h at 00B63F06, then 00B63F09 RET with no immediate: __fastcall, no stack arguments, callee cleans nothing. First EDX use is a read (00B63D53 FLD [EDX+4]); first ECX use is a write (00B63E4B FSTP [ECX]). No EBX/ESI/EDI/EBP touched, so no saves.",
+    "constants_read_from_image": "00D7A24C = 00 00 80 3f = 1.0f (float) and 00D7A250 = 00 00 00 00 00 00 f0 bf = -1.0 (double), both read with ghidra bytes rather than carried over from a prior doc.",
+    "call_sites": "exhaustive by construction: local/scan_b63d50_sites.py scans every E8/E9 rel32 in the PE's .text on disk for a target of 00B63D50 and returns exactly 71 sites. Ghidra's xrefs answer is capped at 25 and was not used as the set. 62 of the 71 are LEA EDX,[reg+0CCh] / LEA ECX,[reg+110h]; the nine others are tabulated in the doc.",
+    "numeric": "local/verify_b63d50.py re-implements the listing in Python with an explicit float32 rounding at each observed spill and multiplies M*N and N*M over 18 independently constructed yaw/pitch/roll bases x 4 scale regimes, each with a non-zero translation. Max deviation over all 16 entries: orthonormal 8.881e-07, uniform scale 2.5 8.814e-07, per-axis (0.5,3.0,1.75) 4.823e-06, mirrored (1,-1,1) 1.465e-07. Sheared rows (0.3 off-diagonal) deviate 3.000e-01 - not an inverse. Identity in gives identity out bit-exact except a -0.0f translation row from the FCHS at 00B63E9C. The FSUBP operand order (ST(1) = ST(1) - ST(0)) is confirmed by this check rather than assumed: the reversed reading would break row 3 of M*N, which comes back as (0,0,0,1).",
+    "cpp_check": "the same round trip runs in tests/math_tests.cpp inside the existing reconstructed_math test: < 1.0e-6 for an orthonormal yaw basis, < 1.0e-5 for a per-axis-scaled one, and the shear residual > 0.25.",
+    "not_run_time_validated": "bsp_game.exe was not run against this path. No claim here depends on a per-frame behaviour."
+  },
+  "routines": [
+    {
+      "address": "00b63d50",
+      "name": "BSP_Matrix_BuildOrthogonalScaledAffineInverse",
+      "abi": "__fastcall(float* destination /*ECX*/, const float* source /*EDX*/) -> void, plain RET, EAX never written",
+      "body": "00b63d50-00b63f09",
+      "instructions": 145,
+      "coverage": "complete",
+      "layout": "row-major 4x4 float32, 16-byte row stride, row-vector convention v' = v*M. Rows 0..2 basis at +00h/+10h/+20h, translation row 3 at +30h/+34h/+38h, homogeneous column at +0Ch/+1Ch/+2Ch/+3Ch never read from the source and forced to (0,0,0,1) on the destination.",
+      "layout_evidence": "the +10h step between the three basis row loads (00B63D53, 00B63DA7, 00B63DF2) gives the stride; the producer at 007BEB44..007BEB6B writes the global float3 at 00F87574 into [ESI+30h/34h/38h] and then passes ESI as the source, which settles +30h..+38h as the translation row independently of this consumer.",
+      "scale_handling": "per-axis. Each destination column is the corresponding source row divided by that row's OWN squared length (00B63E3D..00B63E99), so three different axis scales invert correctly. A uniform scale reduces to transpose/s^2 and an orthonormal basis to the plain transpose, but the code always takes the general path.",
+      "guards": "none. No Jcc anywhere in the body. A zero-length row divides by zero; a sheared basis silently returns a non-inverse; a mirrored basis needs no special path and gets none.",
+      "in_place": "unsafe. 00B63E52 FSTP [ECX+10h] precedes 00B63E5E FLD [EDX+10h]. No call site passes the same expression for both operands."
+    }
+  ],
+  "host_steps": [
+    {
+      "step": "the cached entity-pose inverse accessor",
+      "address": "00414e34",
+      "native": "00b63d50",
+      "function": "00414e10",
+      "method": "LEA EDX,[ESI+0CCh] (world matrix) / LEA ECX,[ESI+110h] (inverse cache). The canonical caller; 00414E2D sets the +10Ch valid byte before the call."
+    },
+    {
+      "step": "the gun gravity arc's mount-local transform",
+      "address": "009557b1",
+      "native": "00b63d50",
+      "function": "00955630",
+      "method": "LEA EDX,[ESI+0CCh] / LEA ECX,[ESI+110h] after 00955797 CALL 00414DB0 and before 009557AA MOV byte ptr [ESI+10Ch],1. Read as a contract only - 00955630 is packet cc7_gun_gravity_arc's address and was not leased or annotated here."
+    },
+    {
+      "step": "unit-group member slot production",
+      "address": "0070ed7c",
+      "native": "00b63d50",
+      "function": "0070ed30",
+      "method": "0070ED60 CALL 00414DB0 returns the owner in EAX, then LEA EDX,[EAX+0CCh] / LEA ECX,[EAX+110h] at 0070ED69/0070ED6F."
+    },
+    {
+      "step": "a stack-local inverse of a pose world matrix",
+      "address": "006ac409",
+      "native": "00b63d50",
+      "function": "006ac370",
+      "method": "006AC3E7 LEA EDI,[ESI+0CCh] then 006AC403 MOV EDX,EDI / 006AC405 LEA ECX,[ESP+1Ch]: source is the pose world matrix, destination a stack local."
+    },
+    {
+      "step": "a stack-to-stack inverse",
+      "address": "006e5dfe",
+      "native": "00b63d50",
+      "function": "006e5d70",
+      "method": "LEA ECX,[ESP+5Ch] / LEA EDX,[ESP+10h]: two stack locals 4Ch apart, so the 40h matrices do not overlap."
+    },
+    {
+      "step": "inverse of a matrix whose translation row the caller has just overwritten",
+      "address": "007beb6b",
+      "native": "00b63d50",
+      "function": "007be9b0",
+      "method": "007BEB38 MOV EDX,ESI / 007BEB3A LEA ECX,[ESP+0B0h], with 007BEB44..007BEB6B writing the global float3 at 00F87574 into [ESI+30h/34h/38h] first. This is the producer evidence for the translation row's offsets."
+    },
+    {
+      "step": "shipyard scene attach, both inverses",
+      "address": "00849bed",
+      "native": "00b63d50",
+      "function": "00849a30",
+      "method": "LEA ECX,[ESI+110h] / MOV EDX,EDI."
+    },
+    {
+      "step": "shipyard scene attach, second inverse",
+      "address": "00849c22",
+      "native": "00b63d50",
+      "function": "00849a30",
+      "method": "00849C17 MOV EDX,EDI / 00849C19 MOV ECX,EBX: two different registers, a stack matrix into a caller-supplied one."
+    },
+    {
+      "step": "plane-flight pose inverse with a register destination",
+      "address": "007d9e37",
+      "native": "00b63d50",
+      "function": "007d9ce0",
+      "method": "MOV ECX,EDI / LEA EDX,[EBP+0CCh]."
+    },
+    {
+      "step": "register destination against a pose world matrix",
+      "address": "0081e1d9",
+      "native": "00b63d50",
+      "function": "0081de10",
+      "method": "MOV ECX,EBP / LEA EDX,[ESI+0CCh]."
+    },
+    {
+      "step": "register destination against a pose world matrix",
+      "address": "0099ed3f",
+      "native": "00b63d50",
+      "function": "0099ec40",
+      "method": "MOV ECX,EBP / LEA EDX,[ESI+0CCh]."
+    },
+    {
+      "step": "the direction transform the arc uses on the result",
+      "address": "009557c7",
+      "native": "0042d0d0",
+      "function": "00955630",
+      "method": "read as a contract, not annotated. The setup is 009557B6 PUSH 0 (normalize = 0), 009557B8 ADD ESI,110h / PUSH ESI (m = mount+110h, the matrix 00B63D50 has just written), 009557BF LEA EDX,[ESP+2Ch], 009557C3 LEA ECX,[ESP+20h]. 0042D0F2/0042D0FD/0042D10B read [EAX+10h], [EAX], [EAX+20h] against v.y, v.x, v.z, so out.x = m[00h]*v.x + m[10h]*v.y + m[20h]*v.z - the row-vector transform, confirming the layout above. 0042D14E JZ 0042D162 skips the normalising call 00419510 when the flag is zero, which is how the arc calls it."
+    },
+    {
+      "step": "the angle extraction the arc uses on the local direction",
+      "address": "005213a0",
+      "native": "0042cf10",
+      "function": "00521370",
+      "method": "read as a contract, not annotated. 00521374..00521394 clamps only the LOWER bound: the FLD1 at 00521386 is compared against the constant -1.0 at 00D7A250, not against dir.y, so a dir.y above 1.0 reaches 0042CF10 unclamped. 0042CF19 COMISS XMM0,[00D7A24C] / JBE returns the +pi/2 at 00CE3C64 for x > 1.0f, and 0042CF36/0042CF39 the -pi/2 at 00CE3CCC. The composed behaviour is asin(clamp(dir.y,-1,1)); the attribution in docs/GUN_GRAVITY_ARC.md is not."
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "site": "007bb4a8",
+      "callee": "00b63d50",
+      "containing_routine": "007bb310-007bb570 inclusive, bounded by the INT3 padding before 007BB310 and the RET at 007BB570; a linear disassembly anchored at 007BB310 tiles exactly onto the call site",
+      "method": "007BB49D MOV ECX,EDI / CALL 004134F0 copies a matrix into EDI, then 007BB4A4 MOV EDX,EDI / 007BB4A6 MOV ECX,EBX inverts it into EBX. Two distinct registers."
+    }
+  ],
+  "constants": [
+    {
+      "address": "00d7a24c",
+      "width": "float",
+      "bytes": "00 00 80 3f",
+      "value": "1.0",
+      "meaning": "loaded into XMM0 at 00B63EF4 and stored to destination+3Ch at 00B63EFE, the homogeneous 1. Shared with 0042CF19's upper asin bound."
+    },
+    {
+      "address": "00d7a250",
+      "width": "double",
+      "bytes": "00 00 00 00 00 00 f0 bf",
+      "value": "-1.0",
+      "meaning": "not used by 00B63D50. Read here because 00521370 compares dir.y against it at 00521378/00521380, which is what makes that routine's clamp a lower bound only."
+    }
+  ],
+  "corrections": [
+    {
+      "what": "docs/GUN_GRAVITY_ARC.md, 'Assumed or carried over', the bullet on 00B63D50's interior",
+      "was": "00B63D50 really computes the affine inverse of mount+0CCh. Its 145-instruction interior was not read and the existing ledger name is taken on trust.",
+      "is": "The interior is now read in full and it is the affine inverse, for mutually orthogonal non-zero basis rows. The caveat can be retired.",
+      "evidence": "docs/MATRIX_ORTHOGONAL_INVERSE.md, the full derivation plus the M*N and N*M identity checks in five regimes."
+    },
+    {
+      "what": "docs/GUN_GRAVITY_ARC.md, the next bullet, on the mount matrix being a similarity transform",
+      "was": "That mount+110h is a similarity transform, so that a unit world direction stays unit after 0042D0D0. A mount matrix with non-uniform scale would therefore distort the recovered pitch.",
+      "is": "A similarity is not sufficient. A uniform scale s is a similarity and the inverse of a uniformly scaled basis scales the local direction by 1/s; 0042D0D0 is called with normalize = 0 and 00521370 takes asin of the RAW y component, so the pitch becomes asin(y/s). The required condition is an ORTHONORMAL mount basis, not merely a similarity. Yaw survives any scale that treats x and z alike, because it is an atan2.",
+      "evidence": "worked through the recovered rule: a world direction at pitch 30 / yaw 36.87 returns pitch 30.000 for an identity mount, 14.478 for a uniform scale of 2, a saturated 90.000 for a uniform scale of 0.5, 14.478 for a y-only scale of 2, and yaw 14.036 instead of 36.870 for an x-only scale of 3. local/verify_b63d50.py, table in docs/MATRIX_ORTHOGONAL_INVERSE.md."
+    },
+    {
+      "what": "docs/GUN_GRAVITY_ARC.md, the 00521370 section: 'The clamp is the routine's own, applied before 0042CF10'",
+      "was": "*outVert = asin( clamp(dir.y, -1.0, 1.0) ) with 00D7A250 = -1.0 and FLD1 for the upper bound, both attributed to 00521370.",
+      "is": "The composed behaviour is right; the attribution is not. 00521370's FCOMI/JA at 00521380/00521382 keeps dir.y whenever dir.y > -1.0, and the FLD1 at 00521386 is compared against the constant, not against dir.y - so 00521370 applies only the lower bound and a dir.y above 1.0 passes through. The upper bound is 0042CF10's own COMISS at 0042CF19.",
+      "evidence": "the 00521370 listing 00521374..00521394 and the 0042CF10 listing 0042CF19..0042CF44."
+    }
+  ],
+  "assumptions": [
+    "Whether any mount in the shipped data actually carries a non-unit or non-orthogonal basis was NOT established. 00414DB0 composes the world matrix as local(+74h) * parent.world(+0CCh) through 00413920 and does not normalise, so nothing in the pose system enforces orthonormality. The verdict on the gravity arc's local-frame path is therefore conditional: correct for an orthonormal mount, biased by asin(y/s) otherwise.",
+    "The caller-side x87 control word. The native inherits PC/RC; the derivation assumes the MSVC default of a 64-bit mantissa and round-to-nearest.",
+    "The reconstruction uses double where the native keeps x87 80-bit: the two additions inside each squared length and the three-term translation dot product. Products and quotients of float32 operands are provably identical under either width (64 >= 2*24+2 and 53 >= 2*24+2), so those are exact; the chained additions are not covered by that argument and can differ in the last bit at extreme exponents. src/pose_derived.cpp's derive_pose_affine_inverse_00b63d50 is the bit-exact kernel; this packet's rule is the portable one and is not a binary-compatible replacement.",
+    "For the two register-to-register call sites and the six mixed ones, in-place use would require two different registers, or a register and a different base, to hold the same address. That this can never happen was not separately proven, so the in-place claim is 'no call site passes the same expression', not 'no call site can alias'.",
+    "0042D0D0, 00521370, 0042CF10, 00414DB0 and 00413920 were read only as far as the contract needed - partial coverage, and none of them was annotated by this packet.",
+    "BSP_Matrix_BuildOrthogonalScaledAffineInverse remains a descriptive hypothesis. This packet confirms the description is accurate; it is not a recovered symbol."
+  ],
+  "ledger": [
+    {
+      "address": "00b63d50",
+      "name": "BSP_Matrix_BuildOrthogonalScaledAffineInverse",
+      "action": "append-evidence",
+      "note": "The name was already recorded by packet orch3_pose_derived_i and is confirmed, not replaced. This packet appends the independent second-pass derivation, the exhaustive 71-site call set, the numerical round-trip verification and the consequence for the gun gravity arc."
+    }
+  ],
+  "build": "./scripts/build.ps1, strict Win32 /W4 /WX /fp:strict - passed",
+  "tests": "one case added to tests/math_tests.cpp (the round-trip identity for an orthonormal and a per-axis-scaled basis, plus the shear residual). The existing reconstructed_math suite passes unchanged: 1/1 tests passed."
+}
