@@ -30,11 +30,15 @@ void reserve_native_shader_state_pairs_00b40cf0(NativeShaderStateListStorage& ro
     singleton_lifetime_free(rows.data_00);rows.data_00=data;rows.capacity_08=request;
 }
 void destroy_native_shader_state_list_00b56de0(NativeShaderStateListStorage*& holder,NativeShaderStateListPool& pool){
+    destroy_native_shader_state_list_00b56de0(holder,pool.storage());
+}
+void destroy_native_shader_state_list_00b56de0(NativeShaderStateListStorage*& holder,NativeShaderStateListPoolStorage& pool){
     auto* const rows=holder;if(!rows)return;
     if(rows->capacity_08<0)reserve_native_shader_state_pairs_00b40cf0(*rows,0);
     while(rows->count_04>0)--rows->count_04;
-    rows->count_04=0;singleton_lifetime_free(rows->data_00);
-    pool.return_slot_00b62280(rows);holder=nullptr;
+    void* const captured_data=rows->data_00;
+    rows->count_04=0;singleton_lifetime_free(captured_data);
+    return_native_shader_state_list_slot_00b623c0(pool,rows);holder=nullptr;
 }
 NativeShaderSamplerStorage* initialize_native_shader_sampler_00b57b50_fragment(void* raw){
     require_fresh(raw);auto* owner=::new(raw) NativeShaderSamplerStorage;
@@ -42,6 +46,9 @@ NativeShaderSamplerStorage* initialize_native_shader_sampler_00b57b50_fragment(v
     owner->index_20=0;owner->sampler_states_24=nullptr;owner->texture_stage_states_28=nullptr;return owner;
 }
 void destroy_native_shader_sampler_00b56ea0(NativeShaderSamplerStorage& owner,NativeShaderStateListPool& pool,NativeStringStorage& strings){
+    destroy_native_shader_sampler_00b56ea0(owner,pool.storage(),strings);
+}
+void destroy_native_shader_sampler_00b56ea0(NativeShaderSamplerStorage& owner,NativeShaderStateListPoolStorage& pool,NativeStringStorage& strings){
     owner.vtable_00=0x00d621f4;
     const StringCleanup name{owner.name_04,strings};const StringCleanup source{owner.source_name_18,strings};
     destroy_native_shader_state_list_00b56de0(owner.sampler_states_24,pool);
@@ -49,6 +56,10 @@ void destroy_native_shader_sampler_00b56ea0(NativeShaderSamplerStorage& owner,Na
 }
 NativeShaderSamplerStorage* delete_native_shader_sampler_00b56fc0(
     NativeShaderSamplerStorage* owner,NativeShaderStateListPool& pool,NativeStringStorage& strings,std::uint32_t flags){
+    return delete_native_shader_sampler_00b56fc0(owner,pool.storage(),strings,flags);
+}
+NativeShaderSamplerStorage* delete_native_shader_sampler_00b56fc0(
+    NativeShaderSamplerStorage* owner,NativeShaderStateListPoolStorage& pool,NativeStringStorage& strings,std::uint32_t flags){
     destroy_native_shader_sampler_00b56ea0(*owner,pool,strings);if(flags&1)singleton_lifetime_free(owner);return owner;
 }
 NativeShaderSamplerCallableBinding::NativeShaderSamplerCallableBinding(

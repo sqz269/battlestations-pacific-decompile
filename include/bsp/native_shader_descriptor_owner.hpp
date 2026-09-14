@@ -5,6 +5,7 @@
 #include <cstdint>
 
 namespace bsp {
+struct NativeMaterialEffectDescriptorContext;
 struct NativeShaderDescriptorArray {
     void* data_00;
     std::int32_t count_04;
@@ -52,10 +53,14 @@ NativeShaderDescriptorStorage* initialize_native_shader_descriptor_00b43700(void
 // data/capacity and string headers stay stale. Valid nonnegative extents and
 // shared singleton heap / supplied actual string storage are preconditions.
 void destroy_native_shader_descriptor_00b458a0(NativeShaderDescriptorStorage&,NativeStringStorage&);
+void destroy_native_shader_descriptor_00b458a0(
+    NativeShaderDescriptorStorage&,NativeMaterialEffectDescriptorContext&);
 // B46930: ECX descriptor, stack flags; EAX old address, RET4. Bit0 frees
 // the actual object through the shared heap; other flag bits do not free it.
 NativeShaderDescriptorStorage* delete_native_shader_descriptor_00b46930(
     NativeShaderDescriptorStorage*,NativeStringStorage&,std::uint32_t flags);
+NativeShaderDescriptorStorage* delete_native_shader_descriptor_00b46930(
+    NativeShaderDescriptorStorage*,NativeMaterialEffectDescriptorContext&,std::uint32_t flags);
 
 // Host-only callable virtual0 bridge for actual effect+C4 direct deletion.
 // The external table binds the SAME110h allocation to its string lifetime;

@@ -1,4 +1,5 @@
 #include "bsp/native_material_effect_owner.hpp"
+#include "bsp/native_material_effect_descriptor.hpp"
 #include "bsp/singleton_lifetime.hpp"
 #include <cstring>
 #include <exception>
@@ -118,18 +119,30 @@ void release_native_material_effect_base_owners_00b187a0(
     }
     storage.retained_count_a8=0;
 }
-void release_native_material_effect_owners_00b41b10(
-    NativeMaterialEffectStorage& storage,NativeRenderActualOwners& owners) {
+static void release_effect_owners(NativeMaterialEffectStorage& storage,
+    NativeRenderActualOwners& owners,NativeMaterialEffectDescriptorContext* actual) {
     void* const descriptor=storage.descriptor_c4;
     if(descriptor) {
-        const auto* const table=*static_cast<const std::uintptr_t* const*>(descriptor);
-        using Delete=void (__thiscall*)(void*,std::uint32_t);
-        reinterpret_cast<Delete>(table[0])(descriptor,1);
+        if(actual)invoke_native_material_effect_descriptor_terminal(descriptor,*actual);
+        else {
+            const auto* const table=*static_cast<const std::uintptr_t* const*>(descriptor);
+            using Delete=void (__thiscall*)(void*,std::uint32_t);
+            reinterpret_cast<Delete>(table[0])(descriptor,1);
+        }
         storage.descriptor_c4=nullptr;
     }
     for(void*& slot:storage.passes_c8)release_then_clear(slot,owners);
     for(void*& slot:storage.secondary_100)release_then_clear(slot,owners);
     release_then_clear(storage.retained_138,owners);
+}
+void release_native_material_effect_owners_00b41b10(
+    NativeMaterialEffectStorage& storage,NativeRenderActualOwners& owners) {
+    release_effect_owners(storage,owners,nullptr);
+}
+void release_native_material_effect_owners_00b41b10(
+    NativeMaterialEffectStorage& storage,NativeRenderActualOwners& owners,
+    NativeMaterialEffectDescriptorContext& actual) {
+    release_effect_owners(storage,owners,&actual);
 }
 void destroy_native_material_effect_base_00b18eb0(
     NativeMaterialEffectBaseStorage& storage,NativeMaterialEffectDestructionAccess& access) {
@@ -144,7 +157,9 @@ void destroy_native_material_effect_00b41f80(
     NativeMaterialEffectStorage& storage,NativeMaterialEffectDestructionAccess& access) {
     storage.base.vtable_00=effect_table;
     const EffectBaseCleanup base{storage.base,access};
-    release_native_material_effect_owners_00b41b10(storage,access.retained_owners);
+    if(access.actual_descriptor && &access.actual_descriptor->strings!=&access.strings)
+        throw std::invalid_argument("effect and descriptor must share the same actual string service");
+    release_effect_owners(storage,access.retained_owners,access.actual_descriptor);
 }
 NativeMaterialEffectBaseStorage* delete_native_material_effect_base_00b192d0(
     NativeMaterialEffectBaseStorage* storage,NativeMaterialEffectDestructionAccess& access,std::uint32_t flags) {

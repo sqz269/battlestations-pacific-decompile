@@ -293,9 +293,15 @@ NativeShaderStateListPool::NativeShaderStateListPool(AllocatorListDomain& list,N
 void NativeShaderStateListPool::initialize_00b623d0(){initialize_pool<NativeShaderStateListPool>(allocator_list_,storage_);}
 void* NativeShaderStateListPool::allocate_slot_00b62630(){return allocate_slot<NativeShaderStateListPool>(storage_);}
 void NativeShaderStateListPool::return_slot_00b62280(void* slot) noexcept {
+    return_native_shader_state_list_slot_00b62280(storage_,slot);
+}
+void return_native_shader_state_list_slot_00b62280(NativeShaderStateListPoolStorage& storage,void* slot) noexcept {
     // Original SAR4 divides the signed byte offset. Valid slots are16-byte
     // aligned in this actual slab, so the common division is exactly equal.
-    return_slot<NativeShaderStateListPool>(storage_,slot);
+    return_slot<NativeShaderStateListPool>(storage,slot);
+}
+void return_native_shader_state_list_slot_00b623c0(NativeShaderStateListPoolStorage& storage,void* slot) noexcept {
+    return_native_shader_state_list_slot_00b62280(storage,slot);
 }
 void NativeShaderStateListPool::trim_empty_slabs_00b62590(){trim_empty_slabs<NativeShaderStateListPool>(storage_);}
 void NativeShaderStateListPool::destroy_00b62500(){destroy_pool<NativeShaderStateListPool>(allocator_list_,storage_);}

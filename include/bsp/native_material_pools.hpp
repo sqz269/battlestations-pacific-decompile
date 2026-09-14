@@ -182,6 +182,11 @@ void destroy_native_shader_state_list_pool_table_00b621b0(void* actual_header) n
 void bind_static_native_shader_state_list_pool_0108fee4(NativeShaderStateListPool&) noexcept;
 void* allocate_static_native_shader_state_list_slot_00b62760();
 void return_static_native_shader_state_list_slot_00b623c0(void*);
+// Additional actual-storage entry; SAME fixed0108FEE4 storage and live slab ID.
+// Shares the full concrete B62280 body with the existing pool companion.
+void return_native_shader_state_list_slot_00b62280(NativeShaderStateListPoolStorage&,void*) noexcept;
+// B623C0 supplies fixed0108FEE4 then calls B62280. Source borrows that storage.
+void return_native_shader_state_list_slot_00b623c0(NativeShaderStateListPoolStorage&,void*) noexcept;
 int initialize_static_native_shader_state_list_pool_00cd7cc0();
 void destroy_static_native_shader_state_list_pool_00ce0d50() noexcept;
 

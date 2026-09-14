@@ -34,6 +34,7 @@ void reserve_native_shader_state_pairs_00b40cf0(NativeShaderStateListStorage&,st
 // RET. Capture header, reserve(0) if cap<0, zero count/free rows, return SAME
 // header slot to canonical pool, THEN clear holder. Header pointer/cap stay stale.
 void destroy_native_shader_state_list_00b56de0(NativeShaderStateListStorage*& holder,NativeShaderStateListPool&);
+void destroy_native_shader_state_list_00b56de0(NativeShaderStateListStorage*& holder,NativeShaderStateListPoolStorage&);
 // Allocation-initialization fragment B57B80..B57BA0 only. Sets D621F4,
 // names04/18 empty, vertex byte0/source14/index20/list pointers24/28 zero.
 // Type10 and padding0D..0F remain unwritten. Full Lua readerB57B50 is NOT here.
@@ -42,10 +43,13 @@ NativeShaderSamplerStorage* initialize_native_shader_sampler_00b57b50_fragment(v
 // strings18 and04. Its two unwind states cover ONLY these strings, so failure
 // during24 cleanup does not also destroy28. Strings leave stale headers.
 void destroy_native_shader_sampler_00b56ea0(NativeShaderSamplerStorage&,NativeShaderStateListPool&,NativeStringStorage&);
+void destroy_native_shader_sampler_00b56ea0(NativeShaderSamplerStorage&,NativeShaderStateListPoolStorage&,NativeStringStorage&);
 // B56FC0 full30-byte scalar deletion: ECX owner, stack flags, EAX old owner,
 // RET4; free2Ch object on bit0 only after successful member destruction.
 NativeShaderSamplerStorage* delete_native_shader_sampler_00b56fc0(
     NativeShaderSamplerStorage*,NativeShaderStateListPool&,NativeStringStorage&,std::uint32_t flags);
+NativeShaderSamplerStorage* delete_native_shader_sampler_00b56fc0(
+    NativeShaderSamplerStorage*,NativeShaderStateListPoolStorage&,NativeStringStorage&,std::uint32_t flags);
 // Host-only external callable table for actual descriptor C4 direct deletion.
 // Keep binding and shared pool/string lifetime alive until virtual deletion
 // or detach(); no private counter/registry and no implicit owner destruction.

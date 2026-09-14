@@ -1,0 +1,2573 @@
+{
+  "schema_version": 1,
+  "packet": "orch5_native_material_effect_descriptor",
+  "status": "shared_actual_descriptor_sampler_terminal_strict_Win32_original_pool_leaf_and_full_source_chain_checked",
+  "generated_utc": "2026-09-14T17:55:26.008707+00:00",
+  "base_commit": "b078ef14f1e746e6b50d6d273a15eb470281e402",
+  "ancestry": "Fresh published b078ef14 worktree; no private dependency merge.",
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "original_PE_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "routines": [
+    {
+      "address": "00b41b10",
+      "end": "00b41bcd",
+      "bytes": 190,
+      "cpp_symbol": "release_native_material_effect_owners_00b41b10",
+      "source": "src/native_material_effect_owner.cpp",
+      "original_ABI": "ECX effect; RET",
+      "contribution": "Raw numeric descriptor-profile overload; original retained-owner schedule shared."
+    },
+    {
+      "address": "00b41f80",
+      "end": "00b41fce",
+      "bytes": 79,
+      "cpp_symbol": "destroy_native_material_effect_00b41f80",
+      "source": "src/native_material_effect_owner.cpp",
+      "original_ABI": "ECX effect; RET",
+      "contribution": "Forward appended optional descriptor context after unchanged D61A00 stamp and armed base cleanup."
+    },
+    {
+      "address": "00b46930",
+      "end": "00b4694d",
+      "bytes": 30,
+      "cpp_symbol": "delete_native_shader_descriptor_00b46930",
+      "source": "src/native_shader_descriptor_owner.cpp",
+      "original_ABI": "ECX descriptor; stack flags; EAX captured address; RET4",
+      "contribution": "Raw context overload through shared scalar body; flags bit0 free after successful destructor."
+    },
+    {
+      "address": "00b458a0",
+      "end": "00b45df2",
+      "bytes": 1363,
+      "cpp_symbol": "destroy_native_shader_descriptor_00b458a0",
+      "source": "src/native_shader_descriptor_owner.cpp",
+      "original_ABI": "ECX descriptor; RET",
+      "contribution": "Shared complete member body with concrete current sampler profile dispatch; explicit data capture before final count0."
+    },
+    {
+      "address": "00b56fc0",
+      "end": "00b56fdd",
+      "bytes": 30,
+      "cpp_symbol": "delete_native_shader_sampler_00b56fc0",
+      "source": "src/native_shader_sampler_owner.cpp",
+      "original_ABI": "ECX sampler; stack flags; EAX captured address; RET4",
+      "contribution": "Raw pool-storage overload, legacy companion delegates through same scalar body."
+    },
+    {
+      "address": "00b56ea0",
+      "end": "00b56f31",
+      "bytes": 146,
+      "cpp_symbol": "destroy_native_shader_sampler_00b56ea0",
+      "source": "src/native_shader_sampler_owner.cpp",
+      "original_ABI": "ECX sampler; RET",
+      "contribution": "Shared raw pool-storage body preserves holder24/28 then reverse string cleanup."
+    },
+    {
+      "address": "00b56de0",
+      "end": "00b56e2c",
+      "bytes": 77,
+      "cpp_symbol": "destroy_native_shader_state_list_00b56de0",
+      "source": "src/native_shader_sampler_owner.cpp",
+      "original_ABI": "ECX holder address; RET",
+      "contribution": "Shared same-slot return using fixed raw pool; current data captured before final count0, holder clear after pool return."
+    },
+    {
+      "address": "00b62280",
+      "end": "00b622d4",
+      "bytes": 85,
+      "cpp_symbol": "return_native_shader_state_list_slot_00b62280",
+      "source": "src/native_material_pools.cpp",
+      "original_ABI": "ECX actual38h pool; stack actual10h slot; RET4",
+      "contribution": "Shared existing full raw slab-return body exposed without projected allocator-list companion."
+    },
+    {
+      "address": "00b623c0",
+      "end": "00b623cb",
+      "bytes": 12,
+      "cpp_symbol": "return_native_shader_state_list_slot_00b623c0",
+      "source": "src/native_material_pools.cpp",
+      "original_ABI": "ECX slot; RET; supply native fixed0108FEE4 pool",
+      "contribution": "Actual borrowed fixed-storage wrapper to substantive B62280."
+    }
+  ],
+  "newly_reconstructed_native_bytes": 0,
+  "full_live_PE_evidence": {
+    "target": {
+      "project": "bsp",
+      "program": "battlestationspacific.exe",
+      "program_path": "/battlestationspacific.exe",
+      "language": "x86:LE:32:default",
+      "image_base": "00400000",
+      "ghidra_url": "http://127.0.0.1:8089",
+      "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "project_file": "C:/Users/sqz269/bsp.gpr",
+      "coordination_dir": "C:/Users/sqz269/.bsp"
+    },
+    "original_PE_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "spans": [
+      {
+        "address": "00b41b10",
+        "end": "00b41bcd",
+        "bytes": 190,
+        "bytes_hex": "558be98b8dc400000085c95674128b018b106a01ffd2c785c40000000000000053578dbdc8000000bb0e0000008d49008b3785f6741c8d460450ff152022ce0085c075088b168b028bceffd0c7070000000083c70483eb0175d68dbd00010000bb0e0000008b3785f6741c8d4e0451ff152022ce0085c075088b168b028bceffd0c7070000000083c70483eb0175d68bb53801000085f65f5b74208d4e0451ff152022ce0085c075088b168b028bceffd0c78538010000000000005e5dc3",
+        "sha256": "5c6331d27bdf7e8372970308f464efe79d6f4aa4e9f641ec9906f6dbea17e6f5",
+        "live_PE_match": true,
+        "role": "owned complete entry"
+      },
+      {
+        "address": "00b41f80",
+        "end": "00b41fce",
+        "bytes": 79,
+        "bytes_hex": "6aff6898f0cb0064a100000000506489250000000051568bf189742404c706001ad600c744241000000000e860fbffff8bcec7442410ffffffffe8f16efdff8b4c24085e64890d0000000083c410c3",
+        "sha256": "358b2053d2d27f99ec19a6e39225e0547fec3756cb79f4a962611225b61b57f9",
+        "live_PE_match": true,
+        "role": "owned complete entry"
+      },
+      {
+        "address": "00b46930",
+        "end": "00b4694d",
+        "bytes": 30,
+        "bytes_hex": "568bf1e868effffff644240801740956e867fc0a0083c4048bc65ec20400",
+        "sha256": "96d8598d22c7b6980b7f07887e4504e4814fbb7934e6239521b9a6991c55e4dd",
+        "live_PE_match": true,
+        "role": "owned complete entry"
+      },
+      {
+        "address": "00b458a0",
+        "end": "00b45df2",
+        "bytes": 1363,
+        "bytes_hex": "6aff6867f5cb0064a10000000050648925000000005155568bf1578974240cc706441ad6008b86c800000033ed85c0c74424180c00000076308da424000000008b86c40000008b0ca885c98d3ca8740e8b118b026a01ffd0c7070000000083c5013baec800000072d733ed39aed40000005376468b8ed00000008b3ca985ff8d1ca9742b8b470485c074158b0f6a0183c1015150e887438dff8bc8e8d0bb080057e8660c0b0083c404c7030000000083c5013baed400000072ba33ed39aee000000076468b96dc0000008b3caa85ff8d1caa742b8b470485c074158b0f6a0183c1015150e837438dff8bc8e880bb080057e8160c0b0083c404c7030000000083c5013baee000000072ba8b860401000085c0c644241c0b74198b8e000100006a0183c1015150e8f5428dff8bc8e83ebb08008b86fc00000085c0c644241c0a74198b8ef80000006a0183c1015150e8cd428dff8bc8e816bb08008b86f400000085c0c644241c0974198b8ef00000006a0183c1015150e8a5428dff8bc8e8eeba08008b86ec00000085c0c644241c0874198b8ee80000006a0183c1015150e87d428dff8bc8e8c6ba08008b86e400000085c0c644241c077d5983f80a7d546a28e859fb0a008bf833c083c4043986e00000007e1f8bcf85c9740b8b96dc0000008b1482891183c00183c1043b86e00000007ce38b86dc00000050e8ea0e0b0083c40489bedc000000c786e40000000a0000008b86e000000085c07d1c8d0c85000000008b86dc00000003c17406c7000000000083c10478eb83c8ff83bee0000000007e1beb0a8da424000000008d49000186e000000083bee0000000007ff18b86dc00000050c786e000000000000000e8740e0b008b86d800000033ed83c4043bc5bb06000000885c241c7d5f83f80a7d5a6a28e885fa0a008bf883c40433c039aed40000007e258bcf8d9b000000003bcd740b8b96d00000008b1482891183c00183c1043b86d40000007ce38b86d000000050e8100e0b0083c40489bed0000000c786d80000000a0000008b86d40000003bc57d1b8d0c85000000008d49008b86d000000003c17402892883c10478ef83cfff39aed40000007e128d64240001bed400000039aed40000007ff28b86d00000005089aed4000000e8a90d0b008b86cc00000083c4043bc5c644241c057d593bc37d556a18e8c1f90a008bf883c40433c039aec80000007e218bcf8bff3bcd740b8b96c40000008b1482891183c00183c1043b86c80000007ce38b86c400000050e8500d0b0083c40489bec4000000899ecc00000083cfff8b86c80000003bc57d1c8d0c85000000008d6424008b86c400000003c17402892883c10478ef39aec80000007e158da4240000000001bec800000039aec80000007ff28b86c40000005089aec8000000e8e90c0b008b86c000000083c4043bc5c644241c047d6483f80a7d5f6a50e800f90a008bf883c40433c039aebc0000007e278bcf903bcd74128b96b80000008b1cc289198b54c20489510483c00183c1083b86bc0000007cdc8b86b800000050e8890c0b0083c40489beb8000000c786c00000000a00000083cfff39aebc0000005b7e0f9001bebc00000039aebc0000007ff28b86b80000005089aebc000000e8490c0b0083c4046820dd41006a0e8d46486a0850c644242803e8141f0b008b46403bc5c64424180274168b4e3c6a0183c1015150e84b3f8dff8bc8e894b708008b46383bc5c64424180174168b4e346a0183c1015150e8293f8dff8bc8e872b708008b462c3bc5c64424180074168b4e286a0183c1015150e8073f8dff8bc8e850b708008b46103bc5897c241874168b760c6a0183c6015650e8e63e8dff8bc8e82fb708008b4c24105f5e5d64890d0000000083c410c3",
+        "sha256": "29ae98bd6bcc9fd0a9fc04e7bc7e9fdc944e8c2c1198e77a0b7597e946d88e24",
+        "live_PE_match": true,
+        "role": "owned complete entry"
+      },
+      {
+        "address": "00b56fc0",
+        "end": "00b56fdd",
+        "bytes": 30,
+        "bytes_hex": "568bf1e8d8fefffff644240801740956e8d7f5090083c4048bc65ec20400",
+        "sha256": "6fad31e30c7057e2ecaf14b458c78833c5ec31ddd5da238fc25d6e6d59abd045",
+        "live_PE_match": true,
+        "role": "owned complete entry"
+      },
+      {
+        "address": "00b56ea0",
+        "end": "00b56f31",
+        "bytes": 146,
+        "bytes_hex": "6aff685604cc0064a100000000506489250000000051568bf189742404c706f421d6008d4e24c744241001000000e80dffffff8d4e28e805ffffff8b461c85c0c64424100074168b4e186a0183c1015150e8ca2d8cff8bc8e813a607008b460885c0c7442410ffffffff74168b76046a0183c6015650e8a52d8cff8bc8e8eea507008b4c24085e64890d0000000083c410c3",
+        "sha256": "43397e1721a6ef64348a71b2c7b7b3aef6c677b56f234a7460f12c5a5a87c7bf",
+        "live_PE_match": true,
+        "role": "owned complete entry"
+      },
+      {
+        "address": "00b56de0",
+        "end": "00b56e2c",
+        "bytes": 77,
+        "bytes_hex": "56578bf98b3785f67440837e08007d096a008bcee8f79efeff837e04007e0c83c8ff014604837e04007ff78b0650c7460400000000e86ffb090083c4048bcee89cb50000c707000000005f5ec3",
+        "sha256": "01129342665bc834859f3cdbd7bb7c552977c10556d811e356eb70f847e8b3d6",
+        "live_PE_match": true,
+        "role": "owned complete entry"
+      },
+      {
+        "address": "00b62280",
+        "end": "00b622d4",
+        "bytes": 85,
+        "bytes_hex": "5556578bf18d7e0c57ff151822ce00834718018b4c24108b510c8b46288b04900fb7a8400200002bc8c1f90466898c680002000066838040020000013b56347303895634834718ff57ff151022ce005f5e5dc20400",
+        "sha256": "ba85b125f24cb92197ed0ec1f1fcbff071ee3e3a5c62cefdd150a91fb2298006",
+        "live_PE_match": true,
+        "role": "owned complete entry"
+      },
+      {
+        "address": "00b623c0",
+        "end": "00b623cb",
+        "bytes": 12,
+        "bytes_hex": "51b9e4fe0801e8b5feffffc3",
+        "sha256": "264d50128615bde3fb27cee032ea81c516e513ce82a396adc5823a41a74acdac",
+        "live_PE_match": true,
+        "role": "owned complete entry"
+      },
+      {
+        "address": "00d61a44",
+        "end": "00d61a47",
+        "bytes": 4,
+        "bytes_hex": "3069b400",
+        "sha256": "26a84fdf72e5fd24cb33534307dc76be299603af0025332ec555166de6f5577e",
+        "live_PE_match": true,
+        "role": "descriptor profile slot0"
+      },
+      {
+        "address": "00d621f4",
+        "end": "00d621f7",
+        "bytes": 4,
+        "bytes_hex": "c06fb500",
+        "sha256": "aa784c8d876eacadf8706fd55100868cffe2ccb0ba6d9cef523557593b75e07a",
+        "live_PE_match": true,
+        "role": "sampler profile slot0"
+      },
+      {
+        "address": "00b43700",
+        "end": "00b437e8",
+        "bytes": 233,
+        "bytes_hex": "6aff685cf1cb0064a100000000506489250000000051568bf15733ffc706441ad60089742408897e0c897e10897c2414897e28897e2c897e34897e38897e3c897e406820dd410068705241006a0e6a088d464850c644242803e873450b008b4c240c89beb800000089bebc00000089bec000000089bec400000089bec800000089becc00000089bed000000089bed400000089bed800000089bedc00000089bee000000089bee400000089bee800000089beec00000089bef000000089bef400000089bef800000089befc00000089be0001000089be040100005f8bc65e64890d0000000083c410c3",
+        "sha256": "f4370b9dcd2b1d729025e5b591782bd5e71d1674c139f21c68609ec3a5b9cc93",
+        "live_PE_match": true,
+        "role": "descriptor constructor"
+      },
+      {
+        "address": "00b45f24",
+        "end": "00b45f62",
+        "bytes": 63,
+        "bytes_hex": "6810010000e8ed080b0083c4048944242c3bc3895c247474098bc8e8bcd7ffffeb0233c08b75086a03568bc8c744247cffffffff8987c4000000e89ddbffff",
+        "sha256": "35af3fde1d5275217208f7468527b2d1764c27de20fdd6f2debcdab40f4d689e",
+        "live_PE_match": true,
+        "role": "effect descriptor allocation/publication writer"
+      },
+      {
+        "address": "00b418fd",
+        "end": "00b41942",
+        "bytes": 70,
+        "bytes_hex": "8b0d90fe08018d54241052e8436201008db5c40000008bf88b4608394604751583c00483f8067f05b806000000508bcee8ee2cffff8b46048b0e8d048185c074028938015e04",
+        "sha256": "16af2fb6004c772e0fe777bed2f4be97c3b3300bec4bb3dbc35a0010a66bdad5",
+        "live_PE_match": true,
+        "role": "descriptor sampler allocation/append writer"
+      },
+      {
+        "address": "00b57b80",
+        "end": "00b57ba0",
+        "bytes": 33,
+        "bytes_hex": "c700f421d60089580489580888580c89581489581889581c895820895824895828",
+        "sha256": "f84307174374fc049ffca61520784bfbc5996b20405bb0ccf6d47285813b8f3f",
+        "live_PE_match": true,
+        "role": "sampler initialization writer"
+      },
+      {
+        "address": "00b40cf0",
+        "end": "00b40d57",
+        "bytes": 104,
+        "bytes_hex": "56578b7c240c83ff0a8bf17d05bf0a000000397e087d4c8d04fd000000005350e8a9480b008bd833c083c4043946047e218bcb5585c9740e8b168b2cc289298b54c20489510483c00183c1083b46047ce35d8b0650e83f5c0b0083c404891e897e085b5f5ec20400",
+        "sha256": "502c60025dc011b54bc526ea282b87d13f3e93e953e58aa4a5c0ff71402001a9",
+        "live_PE_match": true,
+        "role": "shared state-pair reserve"
+      },
+      {
+        "address": "00ce2210",
+        "end": "00ce221b",
+        "bytes": 12,
+        "bytes_hex": "8856a000a056a000b856a000",
+        "sha256": "15704746f565ce18ac9cbc9983feba827b291c035f2e82ed4225814ce8ffc704",
+        "live_PE_match": true,
+        "role": "Leave/Delete/Enter critical section IAT"
+      },
+      {
+        "address": "00cbf098",
+        "end": "00cbf0a1",
+        "bytes": 10,
+        "bytes_hex": "b8dc79df00e9a17af3ff",
+        "sha256": "63e715207c3517a92a2a1feeaf14f50e4c00ea977f0ae75838c17df838b246d8",
+        "live_PE_match": true,
+        "role": "FH3 handler"
+      },
+      {
+        "address": "00df79dc",
+        "end": "00df79ff",
+        "bytes": 36,
+        "bytes_hex": "2205931901000000d479df00000000000000000000000000000000000000000001000000",
+        "sha256": "154a4b90093571a26fb1123aaa4ef2b43917a754dbed8620240d2d5a089af14a",
+        "live_PE_match": true,
+        "role": "FH3 FuncInfo"
+      },
+      {
+        "address": "00df79d4",
+        "end": "00df79db",
+        "bytes": 8,
+        "bytes_hex": "ffffffff90f0cb00",
+        "sha256": "bc974cf7c453634bedb878b5345aa71f6c04d1b4c950e9727a5d9104ffb65c9f",
+        "live_PE_match": true,
+        "role": "FH3 unwind map"
+      },
+      {
+        "address": "00cbf090",
+        "end": "00cbf097",
+        "bytes": 8,
+        "bytes_hex": "8b4df0e9189ee5ff",
+        "sha256": "7154f0bfa0b9afac8be558e446feff572490ade6ea5091db22de998dac3b6a73",
+        "live_PE_match": true,
+        "role": "full FH3 action"
+      },
+      {
+        "address": "00cbf567",
+        "end": "00cbf570",
+        "bytes": 10,
+        "bytes_hex": "b8a47edf00e9d275f3ff",
+        "sha256": "b0fafa30f624720cf7a8b98d691835f081f80529218ff52bfc702921db11493e",
+        "live_PE_match": true,
+        "role": "FH3 handler"
+      },
+      {
+        "address": "00df7ea4",
+        "end": "00df7ec7",
+        "bytes": 36,
+        "bytes_hex": "220593190d000000c87edf00000000000000000000000000000000000000000001000000",
+        "sha256": "47317fb41729731639f8653a654d30e4db4b0c1b5070cc7a1c9555978b3ec8be",
+        "live_PE_match": true,
+        "role": "FH3 FuncInfo"
+      },
+      {
+        "address": "00df7ec8",
+        "end": "00df7f2f",
+        "bytes": 104,
+        "bytes_hex": "ffffffffc0f4cb0000000000cbf4cb0001000000d6f4cb0002000000e1f4cb0003000000ecf4cb0004000000f7f4cb000500000005f5cb000600000013f5cb000700000021f5cb00080000002ff5cb00090000003df5cb000a0000004bf5cb000b00000059f5cb00",
+        "sha256": "2d70d7c9590c972322305c9387c5e7399fe244913b7db6366d2faff8cdc0ea70",
+        "live_PE_match": true,
+        "role": "FH3 unwind map"
+      },
+      {
+        "address": "00cbf4c0",
+        "end": "00cbf4ca",
+        "bytes": 11,
+        "bytes_hex": "8b4df083c10ce955e875ff",
+        "sha256": "0c7685ede01fee4de7a0bc7e2c2d94481d3dc0c2012afca5ba9b0fc60f2e25b9",
+        "live_PE_match": true,
+        "role": "full FH3 action"
+      },
+      {
+        "address": "00cbf4cb",
+        "end": "00cbf4d5",
+        "bytes": 11,
+        "bytes_hex": "8b4df083c128e94ae875ff",
+        "sha256": "7cd74a1b659845325f49085eb5e9dd49c33b1eb77771636dbd58563caf6c6037",
+        "live_PE_match": true,
+        "role": "full FH3 action"
+      },
+      {
+        "address": "00cbf4d6",
+        "end": "00cbf4e0",
+        "bytes": 11,
+        "bytes_hex": "8b4df083c134e93fe875ff",
+        "sha256": "0fe9e7bd3860d47f5dae8b5c8624bf65a418c7d11a735ee760764fdebb90c5c3",
+        "live_PE_match": true,
+        "role": "full FH3 action"
+      },
+      {
+        "address": "00cbf4e1",
+        "end": "00cbf4eb",
+        "bytes": 11,
+        "bytes_hex": "8b4df083c13ce934e875ff",
+        "sha256": "700f99442f091df299242edcdd403df8d1a64f568dc67ff3149dff3c099e8d3a",
+        "live_PE_match": true,
+        "role": "full FH3 action"
+      },
+      {
+        "address": "00cbf4ec",
+        "end": "00cbf4f6",
+        "bytes": 11,
+        "bytes_hex": "8b4df083c148e9492de8ff",
+        "sha256": "bf3f3db0cb20fcaf09bd718d3c7b171a4cb67b6836f20ce24fd7738c5055127a",
+        "live_PE_match": true,
+        "role": "full FH3 action"
+      },
+      {
+        "address": "00cbf4f7",
+        "end": "00cbf504",
+        "bytes": 14,
+        "bytes_hex": "8b4df081c1b8000000e93b2ae8ff",
+        "sha256": "78d2d526e99b19b5f21797418d87953b8761418c82aafbd6d008fbe44fbd0036",
+        "live_PE_match": true,
+        "role": "full FH3 action"
+      },
+      {
+        "address": "00cbf505",
+        "end": "00cbf512",
+        "bytes": 14,
+        "bytes_hex": "8b4df081c1c4000000e9dd56e7ff",
+        "sha256": "987df78841fb62c6de2500b354ac2cba52015081d27d7d911eb5fb4db705cfd9",
+        "live_PE_match": true,
+        "role": "full FH3 action"
+      },
+      {
+        "address": "00cbf513",
+        "end": "00cbf520",
+        "bytes": 14,
+        "bytes_hex": "8b4df081c1d0000000e90f57e7ff",
+        "sha256": "f4ff20b365397963249007d7d4db0d9d3a9f114e3e566a8d8d6735fba36519f8",
+        "live_PE_match": true,
+        "role": "full FH3 action"
+      },
+      {
+        "address": "00cbf521",
+        "end": "00cbf52e",
+        "bytes": 14,
+        "bytes_hex": "8b4df081c1dc000000e90157e7ff",
+        "sha256": "c3a2a4c79ef698700edb938f961121095804a91ee17556a1f5daee480465e78c",
+        "live_PE_match": true,
+        "role": "full FH3 action"
+      },
+      {
+        "address": "00cbf52f",
+        "end": "00cbf53c",
+        "bytes": 14,
+        "bytes_hex": "8b4df081c1e8000000e9e3e775ff",
+        "sha256": "6c0079a6d0da1dec0323e96be8cee476c6485c7afdc264e360f2247222a8fffe",
+        "live_PE_match": true,
+        "role": "full FH3 action"
+      },
+      {
+        "address": "00cbf53d",
+        "end": "00cbf54a",
+        "bytes": 14,
+        "bytes_hex": "8b4df081c1f0000000e9d5e775ff",
+        "sha256": "e4206b34761c95b01af76b19a99c2af1afff41b37c1132e41ed47740a76b042f",
+        "live_PE_match": true,
+        "role": "full FH3 action"
+      },
+      {
+        "address": "00cbf54b",
+        "end": "00cbf558",
+        "bytes": 14,
+        "bytes_hex": "8b4df081c1f8000000e9c7e775ff",
+        "sha256": "81243175d960a453867c93f93a833d957458a43b13836fc0b70ffae79e0da385",
+        "live_PE_match": true,
+        "role": "full FH3 action"
+      },
+      {
+        "address": "00cbf559",
+        "end": "00cbf566",
+        "bytes": 14,
+        "bytes_hex": "8b4df081c100010000e9b9e775ff",
+        "sha256": "9fbe8ab7c941f3caa058b4528a34305005216d65e617e5ae0a5ceb6164bf7bf4",
+        "live_PE_match": true,
+        "role": "full FH3 action"
+      },
+      {
+        "address": "00cc0456",
+        "end": "00cc045f",
+        "bytes": 10,
+        "bytes_hex": "b81890df00e9e366f3ff",
+        "sha256": "0eea61e8f2a22b21b7fa3e7bde52e4913bb1f4d9e802eeba5c2315be27fb43c6",
+        "live_PE_match": true,
+        "role": "FH3 handler"
+      },
+      {
+        "address": "00df9018",
+        "end": "00df903b",
+        "bytes": 36,
+        "bytes_hex": "22059319020000000890df00000000000000000000000000000000000000000001000000",
+        "sha256": "93fef0c31dfbfb1a9c2b1e7fa4d3483e5355bbbfa98c1400642bba894b6067b5",
+        "live_PE_match": true,
+        "role": "FH3 FuncInfo"
+      },
+      {
+        "address": "00df9008",
+        "end": "00df9017",
+        "bytes": 16,
+        "bytes_hex": "ffffffff4004cc00000000004b04cc00",
+        "sha256": "8691033ee893b1af048657ce2c77f12daf9d8f2dd7b8fa2c62bf8db67dda1d27",
+        "live_PE_match": true,
+        "role": "FH3 unwind map"
+      },
+      {
+        "address": "00cc0440",
+        "end": "00cc044a",
+        "bytes": 11,
+        "bytes_hex": "8b4df083c104e9d5d875ff",
+        "sha256": "21d3db2cc562d7cf25167f97910bbb477d49afccdbf11c6cc2cdc8251a238519",
+        "live_PE_match": true,
+        "role": "full FH3 action"
+      },
+      {
+        "address": "00cc044b",
+        "end": "00cc0455",
+        "bytes": 11,
+        "bytes_hex": "8b4df083c118e9cad875ff",
+        "sha256": "cc735a5ef171e6fafa90e0bb6a56bd5037915c2fe89bb0b3b406d3e7fc98b9b9",
+        "live_PE_match": true,
+        "role": "full FH3 action"
+      }
+    ],
+    "unwind_rows": [
+      {
+        "owner": "00b41f80",
+        "state": 0,
+        "next_state": -1,
+        "action": "00cbf090"
+      },
+      {
+        "owner": "00b458a0",
+        "state": 0,
+        "next_state": -1,
+        "action": "00cbf4c0"
+      },
+      {
+        "owner": "00b458a0",
+        "state": 1,
+        "next_state": 0,
+        "action": "00cbf4cb"
+      },
+      {
+        "owner": "00b458a0",
+        "state": 2,
+        "next_state": 1,
+        "action": "00cbf4d6"
+      },
+      {
+        "owner": "00b458a0",
+        "state": 3,
+        "next_state": 2,
+        "action": "00cbf4e1"
+      },
+      {
+        "owner": "00b458a0",
+        "state": 4,
+        "next_state": 3,
+        "action": "00cbf4ec"
+      },
+      {
+        "owner": "00b458a0",
+        "state": 5,
+        "next_state": 4,
+        "action": "00cbf4f7"
+      },
+      {
+        "owner": "00b458a0",
+        "state": 6,
+        "next_state": 5,
+        "action": "00cbf505"
+      },
+      {
+        "owner": "00b458a0",
+        "state": 7,
+        "next_state": 6,
+        "action": "00cbf513"
+      },
+      {
+        "owner": "00b458a0",
+        "state": 8,
+        "next_state": 7,
+        "action": "00cbf521"
+      },
+      {
+        "owner": "00b458a0",
+        "state": 9,
+        "next_state": 8,
+        "action": "00cbf52f"
+      },
+      {
+        "owner": "00b458a0",
+        "state": 10,
+        "next_state": 9,
+        "action": "00cbf53d"
+      },
+      {
+        "owner": "00b458a0",
+        "state": 11,
+        "next_state": 10,
+        "action": "00cbf54b"
+      },
+      {
+        "owner": "00b458a0",
+        "state": 12,
+        "next_state": 11,
+        "action": "00cbf559"
+      },
+      {
+        "owner": "00b56ea0",
+        "state": 0,
+        "next_state": -1,
+        "action": "00cc0440"
+      },
+      {
+        "owner": "00b56ea0",
+        "state": 1,
+        "next_state": 0,
+        "action": "00cc044b"
+      }
+    ],
+    "original_IAT_imports": [
+      {
+        "iat": "00ce2210",
+        "dll": "KERNEL32.dll",
+        "name": "LeaveCriticalSection"
+      },
+      {
+        "iat": "00ce2214",
+        "dll": "KERNEL32.dll",
+        "name": "DeleteCriticalSection"
+      },
+      {
+        "iat": "00ce2218",
+        "dll": "KERNEL32.dll",
+        "name": "EnterCriticalSection"
+      }
+    ]
+  },
+  "native_calls": [
+    {
+      "function": "00b41f80",
+      "address": "00b41fab",
+      "native": "00b41b10"
+    },
+    {
+      "function": "00b41f80",
+      "address": "00b41fba",
+      "native": "00b18eb0"
+    },
+    {
+      "function": "00b46930",
+      "address": "00b46933",
+      "native": "00b458a0"
+    },
+    {
+      "function": "00b46930",
+      "address": "00b46940",
+      "native": "00bf65ac"
+    },
+    {
+      "function": "00b458a0",
+      "address": "00b45934",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00b458a0",
+      "address": "00b4593b",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00b458a0",
+      "address": "00b45941",
+      "native": "00bf65ac"
+    },
+    {
+      "function": "00b458a0",
+      "address": "00b45984",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00b458a0",
+      "address": "00b4598b",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00b458a0",
+      "address": "00b45991",
+      "native": "00bf65ac"
+    },
+    {
+      "function": "00b458a0",
+      "address": "00b459c6",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00b458a0",
+      "address": "00b459cd",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00b458a0",
+      "address": "00b459ee",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00b458a0",
+      "address": "00b459f5",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00b458a0",
+      "address": "00b45a16",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00b458a0",
+      "address": "00b45a1d",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00b458a0",
+      "address": "00b45a3e",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00b458a0",
+      "address": "00b45a45",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00b458a0",
+      "address": "00b45a60",
+      "native": "00bf55be"
+    },
+    {
+      "function": "00b458a0",
+      "address": "00b45a9a",
+      "native": "00bf6989"
+    },
+    {
+      "function": "00b458a0",
+      "address": "00b45b10",
+      "native": "00bf6989"
+    },
+    {
+      "function": "00b458a0",
+      "address": "00b45b34",
+      "native": "00bf55be"
+    },
+    {
+      "function": "00b458a0",
+      "address": "00b45b74",
+      "native": "00bf6989"
+    },
+    {
+      "function": "00b458a0",
+      "address": "00b45bdb",
+      "native": "00bf6989"
+    },
+    {
+      "function": "00b458a0",
+      "address": "00b45bf8",
+      "native": "00bf55be"
+    },
+    {
+      "function": "00b458a0",
+      "address": "00b45c34",
+      "native": "00bf6989"
+    },
+    {
+      "function": "00b458a0",
+      "address": "00b45c9b",
+      "native": "00bf6989"
+    },
+    {
+      "function": "00b458a0",
+      "address": "00b45cb9",
+      "native": "00bf55be"
+    },
+    {
+      "function": "00b458a0",
+      "address": "00b45cfb",
+      "native": "00bf6989"
+    },
+    {
+      "function": "00b458a0",
+      "address": "00b45d3b",
+      "native": "00bf6989"
+    },
+    {
+      "function": "00b458a0",
+      "address": "00b45d55",
+      "native": "00bf7c6e"
+    },
+    {
+      "function": "00b458a0",
+      "address": "00b45d70",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00b458a0",
+      "address": "00b45d77",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00b458a0",
+      "address": "00b45d92",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00b458a0",
+      "address": "00b45d99",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00b458a0",
+      "address": "00b45db4",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00b458a0",
+      "address": "00b45dbb",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00b458a0",
+      "address": "00b45dd5",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00b458a0",
+      "address": "00b45ddc",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00b56fc0",
+      "address": "00b56fc3",
+      "native": "00b56ea0"
+    },
+    {
+      "function": "00b56fc0",
+      "address": "00b56fd0",
+      "native": "00bf65ac"
+    },
+    {
+      "function": "00b56ea0",
+      "address": "00b56ece",
+      "native": "00b56de0"
+    },
+    {
+      "function": "00b56ea0",
+      "address": "00b56ed6",
+      "native": "00b56de0"
+    },
+    {
+      "function": "00b56ea0",
+      "address": "00b56ef1",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00b56ea0",
+      "address": "00b56ef8",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00b56ea0",
+      "address": "00b56f16",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00b56ea0",
+      "address": "00b56f1d",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00b56de0",
+      "address": "00b56df4",
+      "native": "00b40cf0"
+    },
+    {
+      "function": "00b56de0",
+      "address": "00b56e15",
+      "native": "00bf6989"
+    },
+    {
+      "function": "00b56de0",
+      "address": "00b56e1f",
+      "native": "00b623c0"
+    },
+    {
+      "function": "00b623c0",
+      "address": "00b623c6",
+      "native": "00b62280"
+    },
+    {
+      "function": "00b43700",
+      "address": "00b43759",
+      "native": "00bf7cd1"
+    },
+    {
+      "function": "00b40cf0",
+      "address": "00b40d10",
+      "native": "00bf55be"
+    },
+    {
+      "function": "00b40cf0",
+      "address": "00b40d45",
+      "native": "00bf6989"
+    },
+    {
+      "function": "00cbf090",
+      "address": "00cbf093",
+      "native": "00b18eb0",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "00cbf4c0",
+      "address": "00cbf4c6",
+      "native": "0041dd20",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "00cbf4cb",
+      "address": "00cbf4d1",
+      "native": "0041dd20",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "00cbf4d6",
+      "address": "00cbf4dc",
+      "native": "0041dd20",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "00cbf4e1",
+      "address": "00cbf4e7",
+      "native": "0041dd20",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "00cbf4ec",
+      "address": "00cbf4f2",
+      "native": "00b42240",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "00cbf4f7",
+      "address": "00cbf500",
+      "native": "00b41f40",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "00cbf505",
+      "address": "00cbf50e",
+      "native": "00b34bf0",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "00cbf513",
+      "address": "00cbf51c",
+      "native": "00b34c30",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "00cbf521",
+      "address": "00cbf52a",
+      "native": "00b34c30",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "00cbf52f",
+      "address": "00cbf538",
+      "native": "0041dd20",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "00cbf53d",
+      "address": "00cbf546",
+      "native": "0041dd20",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "00cbf54b",
+      "address": "00cbf554",
+      "native": "0041dd20",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "00cbf559",
+      "address": "00cbf562",
+      "native": "0041dd20",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "00cc0440",
+      "address": "00cc0446",
+      "native": "0041dd20",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "00cc044b",
+      "address": "00cc0451",
+      "native": "0041dd20",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "00b45ee0",
+      "address": "00b45f29",
+      "native": "00bf681b",
+      "operation": "Allocate actual110h descriptor"
+    },
+    {
+      "function": "00b45ee0",
+      "address": "00b45f3f",
+      "native": "00b43700",
+      "operation": "Construct D61A44 descriptor before effect+C4 publication"
+    },
+    {
+      "function": "00b45ee0",
+      "address": "00b45f5e",
+      "native": "00b43b00",
+      "operation": "Read published descriptor after B45F58 store"
+    },
+    {
+      "function": "00b41830",
+      "address": "00b41908",
+      "native": "00b57b50",
+      "operation": "Construct captured D621F4 sampler"
+    },
+    {
+      "function": "00b41830",
+      "address": "00b4192d",
+      "native": "00b34620",
+      "operation": "Reserve current sampler pointer array before B4193E append"
+    }
+  ],
+  "indirect_sites": [
+    {
+      "function": "00b41b10",
+      "site": "00b41b24",
+      "operation": "Captured nonnull effect+C4; CURRENT profile/slot0; flags1",
+      "supported_profile": "D61A44 slot0=B46930"
+    },
+    {
+      "function": "00b458a0",
+      "site": "00b458f6",
+      "operation": "Captured current C4 array child and slot; CURRENT profile/slot0; flags1",
+      "supported_profile": "D621F4 slot0=B56FC0"
+    },
+    {
+      "function": "00b62280",
+      "site": "00b62289",
+      "operation": "Actual EnterCriticalSection through CE2218"
+    },
+    {
+      "function": "00b62280",
+      "site": "00b622c9",
+      "operation": "Actual LeaveCriticalSection through CE2210"
+    },
+    {
+      "function": "00b41b10",
+      "sites": [
+        "00b41b4a",
+        "00b41b7f",
+        "00b41baf"
+      ],
+      "operation": "Existing real InterlockedDecrement through CE2220; unchanged retained slots"
+    },
+    {
+      "function": "00b41b10",
+      "sites": [
+        "00b41b5a",
+        "00b41b8f",
+        "00b41bbf"
+      ],
+      "operation": "Existing current slot0 only on final-zero retained ownership; unchanged source resolver contract"
+    }
+  ],
+  "writer_graph": {
+    "descriptor": "B45EE0 allocates110h at B45F29, calls B43700 at B45F3F, publishes current result effect+C4 at B45F58 before B43B00 read. B4371C stamps D61A44; live profile slot0 B46930.",
+    "sampler": "B41830 calls B57B50 at B41908, captures EAX, reserves current descriptor+C4 header if full, writes captured child at B4193E then increments current count B41940. B57B80 constructor fragment stamps D621F4; live slot0 B56FC0."
+  },
+  "actual_context": {
+    "fields": "NativeStringStorage& strings; NativeMaterialPoolStorage& actual_state_list_pool_0108fee4; immutable current slot0-word views actual_descriptor_profile_00d61a44 and actual_sampler_profile_00d621f4.",
+    "lifetime": "Context borrows exact existing storage domains; no AllocatorListDomain construction, private owner, retained diagnostic Operation, callable-table binding or global is introduced.",
+    "integration": "NativeMaterialEffectDestructionAccess appends optional actual_descriptor pointer. Null retains legacy callable-table API. Full B41F80 retains D61A00 stamp/armed base before checking same string-service identity and running shared child cleanup.",
+    "finite_profiles": "Current nonnull owner profile and supplied immutable actual slot0 are loaded at dispatch and validated. Missing/mismatched binding is a source contract error; numeric EXE words are never called. Descriptor/sampler have no intrusive count."
+  },
+  "ordering": {
+    "effect": "Capture descriptor once, dispatch then clear CURRENT effect+C4 only on return; retained arrays later. B41F80 shared actual-base cleanup executes normal or source unwind.",
+    "descriptor": "Stamp D61A44; capture each child slot/address before terminal, clear captured slot after return, reload current base/count for next child. D0/DC string-first children retain substantive release/free/clear. Reverse13 members lower cleanup state before each action.",
+    "sampler": "Stamp D621F4; +24 holder cleanup then +28; strings18 then04. Native two states only cover strings; failure during first holder does not invent second-holder cleanup.",
+    "state_holder": "Capture header; signed cap<0 reserve0 minimum10 pair rows; lower current positive count; capture CURRENT data BEFORE final count0 store; free captured rows; return same slot to fixed pool; clear holder after return. Data/capacity and physical+C ID stay stale.",
+    "pool": "Real Enter at pool+C, recursion+24 increment, CURRENT slot+C slab ID and CURRENT pool+28 slab pointer read under lock; append signed aligned slot index to slab+200 at ushort+240, reload/increment free count, lower current first-free+34, recursion decrement and real Leave.",
+    "allocation": "Descriptor110h/sampler2Ch scalars free shared allocation iff flags bit0 after successful complete destructor; source exception skips scalar free. State row heap and physical pooled header domains remain distinct."
+  },
+  "reuse": {
+    "descriptor": "Original scalar/member and13-action shared source bodies retained; overload changes only concrete child dispatch and explicit final data capture.",
+    "sampler": "Legacy companion overloads delegate to the same raw pool-storage holder/sampler/scalar bodies.",
+    "pool": "Existing B62280 class method and new raw API share the existing return_slot<NativeShaderStateListPool> implementation. Aligned in-slab slot domain makes signed division exactly native SAR4.",
+    "strings": "Existing NativeStringStorage provider required; fixture uses ActualNativeStringPoolStorage backed by real raw AA0/string owner, not semantic SizedStoragePool."
+  },
+  "ghidra_mutations": {
+    "authorization": "Integrator explicitly authorized owned B458A0 repair/recreation through verified B45DF3 exclusive, then separately authorized B56DE0 repair/recreation through B56E2D exclusive after call audit.",
+    "flow_record": {
+      "repairs": [
+        {
+          "function": "00b458a0",
+          "owner": "agent/orch5-native-material-effect-descriptor",
+          "when": "2026-09-14T17:37:23Z",
+          "decompile_lines_before": 150,
+          "gaps": [
+            {
+              "site": "00b45b10",
+              "mnemonic": "CALL",
+              "operands": "0x00bf6989",
+              "gap_start": "00b45b15",
+              "gap_end_exclusive": "00b45df3",
+              "bytes": 734,
+              "after_call": true,
+              "sha256": "02eb6cf057ba2ecaa0942718709e22ef54e724d7fe2a4979484bc63c4d77bf43"
+            }
+          ],
+          "events": [
+            {
+              "gap": {
+                "site": "00b45b10",
+                "mnemonic": "CALL",
+                "operands": "0x00bf6989",
+                "gap_start": "00b45b15",
+                "gap_end_exclusive": "00b45df3",
+                "bytes": 734,
+                "after_call": true,
+                "sha256": "02eb6cf057ba2ecaa0942718709e22ef54e724d7fe2a4979484bc63c4d77bf43"
+              },
+              "clear": "Success: Cleared flow override at 00b45b10 (was: CALL_RETURN, now: NONE)",
+              "disassemble": "Successfully disassembled 734 byte(s)"
+            },
+            {
+              "explicit_tail_call": "00b45941",
+              "clear": {
+                "status": "success",
+                "message": "Success: Cleared flow override at 00b45941 (was: NONE, now: NONE)"
+              }
+            },
+            {
+              "explicit_tail_call": "00b45991",
+              "clear": {
+                "status": "success",
+                "message": "Success: Cleared flow override at 00b45991 (was: NONE, now: NONE)"
+              }
+            },
+            {
+              "explicit_tail_call": "00b45a9a",
+              "clear": {
+                "status": "success",
+                "message": "Success: Cleared flow override at 00b45a9a (was: NONE, now: NONE)"
+              }
+            },
+            {
+              "explicit_tail_call": "00b45b10",
+              "clear": {
+                "status": "success",
+                "message": "Success: Cleared flow override at 00b45b10 (was: NONE, now: NONE)"
+              }
+            },
+            {
+              "explicit_tail_call": "00b45b74",
+              "clear": {
+                "status": "success",
+                "message": "Success: Cleared flow override at 00b45b74 (was: NONE, now: NONE)"
+              }
+            },
+            {
+              "explicit_tail_call": "00b45bdb",
+              "clear": {
+                "status": "success",
+                "message": "Success: Cleared flow override at 00b45bdb (was: NONE, now: NONE)"
+              }
+            },
+            {
+              "explicit_tail_call": "00b45c34",
+              "clear": {
+                "status": "success",
+                "message": "Success: Cleared flow override at 00b45c34 (was: NONE, now: NONE)"
+              }
+            },
+            {
+              "explicit_tail_call": "00b45c9b",
+              "clear": {
+                "status": "success",
+                "message": "Success: Cleared flow override at 00b45c9b (was: NONE, now: NONE)"
+              }
+            },
+            {
+              "explicit_tail_call": "00b45cfb",
+              "clear": {
+                "status": "success",
+                "message": "Success: Cleared flow override at 00b45cfb (was: NONE, now: NONE)"
+              }
+            },
+            {
+              "explicit_tail_call": "00b45d3b",
+              "clear": {
+                "status": "success",
+                "message": "Success: Cleared flow override at 00b45d3b (was: NONE, now: NONE)"
+              }
+            }
+          ],
+          "explicit_tail_end_exclusive": "00b45df3",
+          "explicit_body_sha256": "29ae98bd6bcc9fd0a9fc04e7bc7e9fdc944e8c2c1198e77a0b7597e946d88e24",
+          "body_before": "Function: BSP_ShaderDescriptor_Destroy at 00b458a0\nSignature: undefined BSP_ShaderDescriptor_Destroy(void)\nEntry: 00b458a0\nBody: 00b458a0 - 00b45b14",
+          "decompile_lines_after": 280,
+          "gaps_remaining": 1,
+          "body_after": "Function: BSP_ShaderDescriptor_Destroy at 00b458a0\nSignature: undefined BSP_ShaderDescriptor_Destroy(void)\nEntry: 00b458a0\nBody: 00b458a0 - 00b45b14",
+          "stored_body_tail_complete": false,
+          "body_extension_limit": "Explicit tail decoding/CRT overrides do not extend stored function-body metadata; the body still requires a separate supported repair."
+        }
+      ]
+    },
+    "function_record": {
+      "events": [
+        {
+          "recreate": "00b458a0",
+          "previous": "Function: BSP_ShaderDescriptor_Destroy at 00b458a0\nSignature: undefined BSP_ShaderDescriptor_Destroy(void)\nEntry: 00b458a0\nBody: 00b458a0 - 00b45b14",
+          "plate": "[BSP reconstruction 00b458a0]\nDescriptive hypothesis, not a recovered symbol. Complete1363-byte body verified through B45DF2; stored Ghidra body still ends B45B14. Direct callable virtual0(flags1) C4 entries, string-first heap D0/DC entries; capture slot before callback, reload unsigned live count/data. Reverse13 members, reserve minima10/10/6/10 with B8 stride8, others4; zero counts and leave header pointers/capacities stale. DF7EA4 thirteen-state unwind cleans members, not remaining child entries. Four call-return gaps repaired across destructor/scalar; full verified tail remains separately captured. docs/NATIVE_SHADER_DESCRIPTOR_OWNER.md; reports/native_shader_descriptor_owner.json."
+        },
+        {
+          "endpoint": "delete_function",
+          "body": {
+            "address": "00b458a0"
+          },
+          "result": {
+            "success": true,
+            "address": "00b458a0",
+            "deleted_function": "BSP_ShaderDescriptor_Destroy",
+            "body_size": 582,
+            "message": "Function 'BSP_ShaderDescriptor_Destroy' deleted at 00b458a0"
+          }
+        },
+        {
+          "endpoint": "disassemble_bytes",
+          "body": {
+            "start_address": "00b458a0",
+            "end_address": "00b45df3"
+          },
+          "result": {
+            "success": true,
+            "start_address": "00b458a0",
+            "end_address": "00b45df2",
+            "bytes_disassembled": 1363,
+            "message": "Successfully disassembled 1363 byte(s)"
+          }
+        },
+        {
+          "endpoint": "create_function",
+          "body": {
+            "address": "00b458a0",
+            "disassemble_first": false,
+            "name": "BSP_ShaderDescriptor_Destroy"
+          },
+          "result": {
+            "success": true,
+            "address": "00b458a0",
+            "function_name": "BSP_ShaderDescriptor_Destroy",
+            "entry_point": "00b458a0",
+            "body_size": 1353,
+            "message": "Function created successfully at 00b458a0",
+            "warnings": [
+              "Function name 'BSP_ShaderDescriptor_Destroy' \u2014 main part 'ShaderDescriptor_Destroy' is not PascalCase. Expected: ShaderdescriptorDestroy",
+              "Function name 'BSP_ShaderDescriptor_Destroy' \u2014 main part 'ShaderDescriptor_Destroy' contains underscores. Use PascalCase after the module prefix.",
+              "Function name 'BSP_ShaderDescriptor_Destroy' does not start with a recognized verb. First word 'Shader' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+            ]
+          }
+        },
+        {
+          "endpoint": "set_plate_comment",
+          "body": {
+            "address": "00b458a0",
+            "comment": "[BSP reconstruction 00b458a0]\nDescriptive hypothesis, not a recovered symbol. Complete1363-byte body verified through B45DF2; stored Ghidra body still ends B45B14. Direct callable virtual0(flags1) C4 entries, string-first heap D0/DC entries; capture slot before callback, reload unsigned live count/data. Reverse13 members, reserve minima10/10/6/10 with B8 stride8, others4; zero counts and leave header pointers/capacities stale. DF7EA4 thirteen-state unwind cleans members, not remaining child entries. Four call-return gaps repaired across destructor/scalar; full verified tail remains separately captured. docs/NATIVE_SHADER_DESCRIPTOR_OWNER.md; reports/native_shader_descriptor_owner.json."
+          },
+          "result": {
+            "status": "success",
+            "message": "Set plate comment for function at 00b458a0",
+            "warnings": [
+              "Plate comment missing Algorithm section",
+              "Plate comment missing Parameters section",
+              "Plate comment missing Returns section"
+            ]
+          }
+        },
+        {
+          "defined": "00b458a0",
+          "end": "00b45df3",
+          "name": "BSP_ShaderDescriptor_Destroy",
+          "after": "Function: BSP_ShaderDescriptor_Destroy at 00b458a0\nSignature: undefined BSP_ShaderDescriptor_Destroy(void)\nEntry: 00b458a0\nBody: 00b458a0 - 00b45df2"
+        },
+        {
+          "endpoint": "save_program",
+          "body": {},
+          "result": {
+            "success": true,
+            "program": "battlestationspacific.exe",
+            "message": "Program saved successfully"
+          }
+        }
+      ]
+    },
+    "result": "Official identity-verifying locked flow repair/recreation restored full1363-byte B458A0..B45DF2 (400instructions/0gaps). The75-row audit also required full77-byte B56DE0 body recreation: its discontiguous old body omitted B56E1F despite complete listing. Both old names/comments preserved, saved and exports forced. No other mutation or callee-wide free annotation.",
+    "holder_function_record": {
+      "events": [
+        {
+          "recreate": "00b56de0",
+          "previous": "Function: BSP_ShaderStateList_DestroyAndReturn at 00b56de0\nSignature: undefined BSP_ShaderStateList_DestroyAndReturn(void)\nEntry: 00b56de0\nBody: 00b56de0 - 00b56e2c",
+          "plate": "[BSP reconstruction 00b56de0]\nDescriptive hypothesis, not a recovered symbol. Full77-byte capture header; cap<0 reserve0, count0/free rows, return SAME slot viaB623C0 then clear holder. Hidden16-byte free continuation restored. Header pointer/capacity stale. docs/NATIVE_SHADER_SAMPLER_OWNER.md; reports/native_shader_sampler_owner.json."
+        },
+        {
+          "endpoint": "delete_function",
+          "body": {
+            "address": "00b56de0"
+          },
+          "result": {
+            "success": true,
+            "address": "00b56de0",
+            "deleted_function": "BSP_ShaderStateList_DestroyAndReturn",
+            "body_size": 61,
+            "message": "Function 'BSP_ShaderStateList_DestroyAndReturn' deleted at 00b56de0"
+          }
+        },
+        {
+          "endpoint": "disassemble_bytes",
+          "body": {
+            "start_address": "00b56de0",
+            "end_address": "00b56e2d"
+          },
+          "result": {
+            "success": true,
+            "start_address": "00b56de0",
+            "end_address": "00b56e2c",
+            "bytes_disassembled": 77,
+            "message": "Successfully disassembled 77 byte(s)"
+          }
+        },
+        {
+          "endpoint": "create_function",
+          "body": {
+            "address": "00b56de0",
+            "disassemble_first": false,
+            "name": "BSP_ShaderStateList_DestroyAndReturn"
+          },
+          "result": {
+            "success": true,
+            "address": "00b56de0",
+            "function_name": "BSP_ShaderStateList_DestroyAndReturn",
+            "entry_point": "00b56de0",
+            "body_size": 77,
+            "message": "Function created successfully at 00b56de0",
+            "warnings": [
+              "Function name 'BSP_ShaderStateList_DestroyAndReturn' \u2014 main part 'ShaderStateList_DestroyAndReturn' is not PascalCase. Expected: ShaderstatelistDestroyandreturn",
+              "Function name 'BSP_ShaderStateList_DestroyAndReturn' \u2014 main part 'ShaderStateList_DestroyAndReturn' contains underscores. Use PascalCase after the module prefix.",
+              "Function name 'BSP_ShaderStateList_DestroyAndReturn' does not start with a recognized verb. First word 'Shader' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+            ]
+          }
+        },
+        {
+          "endpoint": "set_plate_comment",
+          "body": {
+            "address": "00b56de0",
+            "comment": "[BSP reconstruction 00b56de0]\nDescriptive hypothesis, not a recovered symbol. Full77-byte capture header; cap<0 reserve0, count0/free rows, return SAME slot viaB623C0 then clear holder. Hidden16-byte free continuation restored. Header pointer/capacity stale. docs/NATIVE_SHADER_SAMPLER_OWNER.md; reports/native_shader_sampler_owner.json."
+          },
+          "result": {
+            "status": "success",
+            "message": "Set plate comment for function at 00b56de0",
+            "warnings": [
+              "Plate comment missing Algorithm section",
+              "Plate comment missing Parameters section",
+              "Plate comment missing Returns section"
+            ]
+          }
+        },
+        {
+          "defined": "00b56de0",
+          "end": "00b56e2d",
+          "name": "BSP_ShaderStateList_DestroyAndReturn",
+          "after": "Function: BSP_ShaderStateList_DestroyAndReturn at 00b56de0\nSignature: undefined BSP_ShaderStateList_DestroyAndReturn(void)\nEntry: 00b56de0\nBody: 00b56de0 - 00b56e2c"
+        },
+        {
+          "endpoint": "save_program",
+          "body": {},
+          "result": {
+            "success": true,
+            "program": "battlestationspacific.exe",
+            "message": "Program saved successfully"
+          }
+        }
+      ]
+    },
+    "commands": [
+      "python tools/ghidra_flow_repair.py 00b458a0 --tail-end 00b45df3 --apply --record local/native_material_effect_descriptor_flow_repair.json",
+      "python tools/ghidra_define_function.py 00b458a0 00b45df3 --recreate --record local/native_material_effect_descriptor_function_repair.json",
+      "python tools/bsp.py ghidra export 00b458a0 --force",
+      "python tools/ghidra_define_function.py 00b56de0 00b56e2d --recreate --record local/native_material_effect_descriptor_holder_function_repair.json",
+      "python tools/bsp.py ghidra export 00b56de0 --force"
+    ]
+  },
+  "validation": {
+    "seed_verification": "8/8 native seed ranges match disk before configure",
+    "build": "./scripts/build.ps1 strict MSVC Win32 /W4 /WX /fp:strict passed",
+    "ctests": "2/2 passed: reconstructed_math and native_math_differential",
+    "call_gate": "tools/verify_report_calls.py passed: 75 canonical direct/tail native rows checked once, 0 failed. Current-profile indirect sites recorded separately.",
+    "first_call_gate": "Initial report nested70 decoded rows plus75 canonical rows, producing145 checks and duplicate B56E1F missing-function failures. Canonical rows now appear once; holder stored body repaired. Source/header/library/probe byte identity checked against first frozen archive before final archive generation.",
+    "fixture": "One manifested /MD executable linked exact rebuilt libraries. Original/source85-byte B62280 comparison over entire physical slab plus real locked state. Source nonnull descriptor/sampler chain includes two state-list slots, negative capacity reserve/free, string-first field, actual8AD4A0 string pool and actual raw AA0 manager.",
+    "fixture_result": "PASS: original/source entire-slab and lock postimages; state slot returns0 then1, count2, balanced Win32 recursion; sampler strings then field then descriptor member. Explicit fixture string observer delegates actual releases while replacing descriptor array base and effect+C4; captured old child slot clears, current replacement array frees, rebound effect+C4 clears only after terminal. Base final CEB130. No retained owner resolution occurs for legitimately null pass slots.",
+    "original_bindings": "Original B62280 bytes unchanged except two absolute IAT operands CE2218/CE2210 rebound to actual imported Enter/LeaveCriticalSection function-pointer cells. All shared pool arithmetic/body bytes retained; no original EXE code calls.",
+    "fixture_limits": "Original execution covers pool-return leaf only. Descriptor/sampler normal chain is substantive source, not original FH3/SEH differential. The fixture observer is local-only and intentionally mutates actual source fields; no observer is added to product. No freed descriptor/sampler/row allocation is dereferenced; retained physical pooled headers and detached old pointer array are inspected.",
+    "fixture_stdout": "native_material_effect_descriptor_probe.cpp\nLOADED_RUNTIME|ucrtbase.dll|C:\\WINDOWS\\System32\\ucrtbase.dll|\\\\?\\C:\\Windows\\SysWOW64\\ucrtbase.dll|014c\nLOADED_RUNTIME|vcruntime140.dll|C:\\WINDOWS\\SYSTEM32\\VCRUNTIME140.dll|\\\\?\\C:\\Windows\\SysWOW64\\vcruntime140.dll|014c\nLOADED_RUNTIME|msvcp140.dll|C:\\WINDOWS\\SYSTEM32\\MSVCP140.dll|\\\\?\\C:\\Windows\\SysWOW64\\msvcp140.dll|014c\nUNLOADED_RUNTIME|vcruntime140_1.dll\nLOADED_RUNTIME|kernel32.dll|C:\\WINDOWS\\System32\\KERNEL32.DLL|\\\\?\\C:\\Windows\\SysWOW64\\kernel32.dll|014c\nLOADED_RUNTIME|ntdll.dll|C:\\WINDOWS\\SYSTEM32\\ntdll.dll|\\\\?\\C:\\Windows\\SysWOW64\\ntdll.dll|014c\nPROVIDER_ADDRESS|EnterCriticalSection|76f943e0\nLOADED_PROVIDER|EnterCriticalSection|C:\\WINDOWS\\SYSTEM32\\ntdll.dll|\\\\?\\C:\\Windows\\SysWOW64\\ntdll.dll|014c\nPROVIDER_ADDRESS|LeaveCriticalSection|76f93460\nLOADED_PROVIDER|LeaveCriticalSection|C:\\WINDOWS\\SYSTEM32\\ntdll.dll|\\\\?\\C:\\Windows\\SysWOW64\\ntdll.dll|014c\nPROVIDER_ADDRESS|DeleteCriticalSection|76fa56b0\nLOADED_PROVIDER|DeleteCriticalSection|C:\\WINDOWS\\SYSTEM32\\ntdll.dll|\\\\?\\C:\\Windows\\SysWOW64\\ntdll.dll|014c\nPASS: original/source B62280 entire-slab return; nonnull D61A44/D621F4 descriptor chain, actual state-list pool/string pool/AA0 manager, captured child slot and effect-C4 clear after provider changes\n",
+    "fixture_build_flags": "/std:c++20 /EHsc /MD /O2 /W4 /WX /fp:strict /link /MANIFEST:EMBED",
+    "fixture_source": "#define WIN32_LEAN_AND_MEAN\n#define NOMINMAX\n#include <Windows.h>\n#include \"bsp/native_material_effect_descriptor.hpp\"\n#include \"bsp/native_material_effect_owner.hpp\"\n#include \"bsp/native_shader_descriptor_owner.hpp\"\n#include \"bsp/native_shader_sampler_owner.hpp\"\n#include \"bsp/native_string_pool_storage.hpp\"\n#include \"bsp/native_singleton_destruction.hpp\"\n#include \"bsp/singleton_lifetime.hpp\"\n#include \"native_material_effect_descriptor_reference.hpp\"\n#include <array>\n#include <cstdio>\n#include <cstring>\n#include <stdexcept>\nnamespace {\nusing Word=std::uint32_t;\nvoid require(bool value,const char* message) {if(!value)throw std::runtime_error(message);}\nWord address(const void* value) {return reinterpret_cast<Word>(value);}\ntemplate<class T> T read(const void* base,Word offset) {T value;std::memcpy(&value,static_cast<const std::byte*>(base)+offset,sizeof value);return value;}\ntemplate<class T> void write(void* base,Word offset,T value) {std::memcpy(static_cast<std::byte*>(base)+offset,&value,sizeof value);}\nvoid* allocate(Word bytes) {void* p=bsp::singleton_lifetime_allocate({bsp::SingletonAllocationKind::object,bytes,bytes});require(p!=nullptr,\"fixture allocation\");return p;}\nstruct Pool {\n    bsp::NativeShaderStateListPoolStorage storage{};\n    alignas(4) std::array<std::byte,0x244> slab;\n    std::byte* slab_pointer=slab.data();\n    Pool() {\n        slab.fill(std::byte{0xa5});\n        InitializeCriticalSection(section());\n        storage.slabs_28=&slab_pointer;storage.slab_count_2c=1;storage.table_capacity_30=1;storage.first_free_slab_34=3;\n        write<std::uint16_t>(slab.data(),0x240,0);\n    }\n    ~Pool() {DeleteCriticalSection(section());}\n    CRITICAL_SECTION* section() {return reinterpret_cast<CRITICAL_SECTION*>(storage.critical_section_0c);}\n    bsp::NativeShaderStateListStorage* slot(Word index) {\n        void* raw=slab.data()+index*16;write<Word>(raw,12,0);\n        return bsp::initialize_native_shader_state_list_00b621a0(raw);\n    }\n    bool balanced() {return storage.recursion_24==0 && section()->RecursionCount==0;}\n};\nvoid original_pool_leaf() {\n    Pool native,source;\n    auto* a=native.slot(2);auto* b=source.slot(2);\n    void* code=VirtualAlloc(nullptr,sizeof original_00b62280,MEM_COMMIT|MEM_RESERVE,PAGE_READWRITE);\n    require(code!=nullptr,\"native pool code\");std::memcpy(code,original_00b62280,sizeof original_00b62280);\n    using Section=void (__stdcall*)(LPCRITICAL_SECTION);\n    Section enter=&EnterCriticalSection,leave=&LeaveCriticalSection;\n    require(read<Word>(code,0xb)==0x00ce2218 && read<Word>(code,0x4b)==0x00ce2210,\"native actual IAT operands\");\n    write<Word>(code,0xb,address(&enter));write<Word>(code,0x4b,address(&leave));\n    DWORD previous;require(VirtualProtect(code,sizeof original_00b62280,PAGE_EXECUTE_READ,&previous)!=0,\"native code protection\");\n    require(FlushInstructionCache(GetCurrentProcess(),code,sizeof original_00b62280)!=0,\"native instruction cache\");\n    using Return=void (__fastcall*)(void*,void*,void*);\n    reinterpret_cast<Return>(code)(&native.storage,nullptr,a);\n    bsp::return_native_shader_state_list_slot_00b62280(source.storage,b);\n    require(native.slab==source.slab && native.balanced() && source.balanced(),\"original/source entire slab and lock state\");\n    require(native.storage.first_free_slab_34==0 && source.storage.first_free_slab_34==0,\"current first free slab\");\n    require(read<std::uint16_t>(source.slab.data(),0x200)==2 && read<std::uint16_t>(source.slab.data(),0x240)==1,\"returned slot index/count\");\n    require(VirtualFree(code,0,MEM_RELEASE)!=0,\"native pool code release\");\n}\nstruct NoRetainedOwners final : bsp::NativeRenderActualOwners {\n    unsigned calls{};\n    bsp::RenderCommandReference& resolve_actual(void*) override {\n        ++calls;throw std::logic_error(\"fixture has no retained owner slots\");\n    }\n};\nstruct ObservedStrings final : bsp::NativeStringStorage {\n    bsp::ActualNativeStringPoolStorage& actual;\n    Pool& state_pool;\n    bsp::NativeMaterialEffectStorage& effect;\n    bsp::NativeShaderDescriptorStorage* descriptor{};\n    void** old_slots{};void** replacement_slots{};void* replacement_descriptor{};\n    char* trigger{};std::array<char*,8> order{};unsigned releases{};bool changed{},valid{true};\n    ObservedStrings(bsp::ActualNativeStringPoolStorage& a,Pool& p,bsp::NativeMaterialEffectStorage& e):actual(a),state_pool(p),effect(e){}\n    char* allocate(Word bytes) override {return actual.allocate(bytes);}\n    void release(char* block,Word bytes) noexcept override {\n        if(releases<order.size())order[releases]=block;else valid=false;\n        ++releases;\n        if(block==trigger) {\n            valid=valid && effect.descriptor_c4==descriptor && descriptor->virtual_owners_c4.data_00==old_slots;\n            valid=valid && read<std::uint16_t>(state_pool.slab.data(),0x240)==2 && state_pool.balanced();\n            // Explicit fixture provider side effects. Product has no callback.\n            effect.descriptor_c4=replacement_descriptor;\n            descriptor->virtual_owners_c4.data_00=replacement_slots;\n            changed=true;\n        }\n        actual.release(block,bytes);\n    }\n};\nvoid actual_descriptor_chain() {\n    Pool state_pool;\n    bsp::NativeStringPoolStorage* volatile strings_publication=nullptr;\n    volatile Word returns_disabled=0;\n    void* volatile manager_publication=nullptr;\n    bsp::ActualNativeStringPoolStorage actual_strings(strings_publication,returns_disabled,manager_publication);\n    bsp::NativeMaterialEffectStorage effect{};\n    NoRetainedOwners owners;\n    ObservedStrings strings(actual_strings,state_pool,effect);\n    auto* descriptor=bsp::initialize_native_shader_descriptor_00b43700(allocate(0x110));\n    auto* sampler=bsp::initialize_native_shader_sampler_00b57b50_fragment(allocate(0x2c));\n    sampler->name_04.assign_0041e870(strings,\"sampler\");\n    sampler->source_name_18.assign_0041e870(strings,\"source\");\n    descriptor->name_100.assign_0041e870(strings,\"last-name\");\n    auto* field=::new(allocate(8)) bsp::NativeString;\n    field->assign_0041e870(strings,\"field\");\n    auto* first=state_pool.slot(0);auto* second=state_pool.slot(1);\n    first->data_00=allocate(8);first->count_04=1;first->capacity_08=-1;\n    write<Word>(first->data_00,0,0x12345678);write<Word>(first->data_00,4,0x87654321);\n    second->data_00=allocate(8);second->count_04=1;second->capacity_08=1;\n    void* const original_second_rows=second->data_00;\n    sampler->sampler_states_24=first;sampler->texture_stage_states_28=second;\n    auto** old_slots=static_cast<void**>(allocate(4));old_slots[0]=sampler;\n    auto** replacement_slots=static_cast<void**>(allocate(4));replacement_slots[0]=nullptr;\n    auto** fields=static_cast<void**>(allocate(4));fields[0]=field;\n    descriptor->virtual_owners_c4={old_slots,1,1};descriptor->string_owners_d0={fields,1,1};\n    effect.descriptor_c4=descriptor;\n    Word replacement_descriptor=0xabcdef01;\n    strings.descriptor=descriptor;strings.old_slots=old_slots;strings.replacement_slots=replacement_slots;\n    strings.replacement_descriptor=&replacement_descriptor;strings.trigger=sampler->source_name_18.data();\n    const std::array<char*,4> expected{sampler->source_name_18.data(),sampler->name_04.data(),field->data(),descriptor->name_100.data()};\n    const volatile Word descriptor_profile=0x00b46930,sampler_profile=0x00b56fc0;\n    bsp::NativeMaterialEffectDescriptorContext context{strings,state_pool.storage,&descriptor_profile,&sampler_profile};\n    bsp::NativeMaterialEffectDestructionAccess access{strings,owners,&context};\n    bsp::destroy_native_material_effect_00b41f80(effect,access);\n    require(strings.valid && strings.changed && strings.releases==4,\"real string provider order and captured field side effects\");\n    for(unsigned i=0;i<expected.size();++i)require(strings.order[i]==expected[i],\"sampler strings then field then descriptor member\");\n    require(effect.descriptor_c4==nullptr && effect.base.vtable_00==0x00ceb130,\"descriptor clear after terminal and base unwind schedule\");\n    require(old_slots[0]==nullptr && replacement_descriptor==0xabcdef01,\"captured old slot cleared and rebound descriptor not selected\");\n    require(first->count_04==0 && first->capacity_08==10 && first->data_00!=nullptr,\"negative capacity resize/free stale postimage\");\n    require(second->count_04==0 && second->capacity_08==1 && second->data_00==original_second_rows,\"second holder stale postimage\");\n    require(read<Word>(first,12)==0 && read<Word>(second,12)==0,\"physical slab IDs preserved\");\n    require(read<std::uint16_t>(state_pool.slab.data(),0x200)==0 && read<std::uint16_t>(state_pool.slab.data(),0x202)==1 && read<std::uint16_t>(state_pool.slab.data(),0x240)==2 && state_pool.balanced(),\"actual pool return order and balanced lock\");\n    require(owners.calls==0 && strings_publication && manager_publication,\"actual string manager/pool and no invented retained owner\");\n    bsp::singleton_lifetime_free(old_slots); // Provider detached this storage; descriptor freed its CURRENT replacement vector.\n    bsp::NativeSingletonDeletionBindings deletion{};\n    deletion.actual_string_pool_publication_01090aa8=&strings_publication;\n    deletion.actual_string_returns_disabled_01090aa4=&returns_disabled;\n    void* manager=manager_publication;\n    bsp::destroy_native_singleton_manager_00bd0400(manager,deletion);\n    require(strings_publication==nullptr,\"actual string pool drained\");\n    bsp::singleton_lifetime_free(manager);manager_publication=nullptr;\n}\nvoid module_record(const wchar_t* name,HMODULE module,const char* category) {\n    if(!module){std::printf(\"UNLOADED_RUNTIME|%ls\\n\",name);return;}\n    wchar_t reported[1024],canonical[1024];const DWORD n=GetModuleFileNameW(module,reported,1024);require(n&&n<1024,\"module path\");\n    HANDLE file=CreateFileW(reported,GENERIC_READ,FILE_SHARE_READ|FILE_SHARE_WRITE|FILE_SHARE_DELETE,nullptr,OPEN_EXISTING,FILE_ATTRIBUTE_NORMAL,nullptr);require(file!=INVALID_HANDLE_VALUE,\"module file\");\n    const DWORD m=GetFinalPathNameByHandleW(file,canonical,1024,FILE_NAME_NORMALIZED);CloseHandle(file);require(m&&m<1024,\"canonical module file\");\n    const auto* data=reinterpret_cast<const unsigned char*>(module);const auto* dos=reinterpret_cast<const IMAGE_DOS_HEADER*>(data);const auto* nt=reinterpret_cast<const IMAGE_NT_HEADERS32*>(data+dos->e_lfanew);\n    require(nt->FileHeader.Machine==IMAGE_FILE_MACHINE_I386,\"loaded x86 machine\");std::printf(\"%s|%ls|%ls|%ls|%04x\\n\",category,name,reported,canonical,static_cast<unsigned>(nt->FileHeader.Machine));\n}\nvoid provider_record(const wchar_t* role,void* function) {\n    HMODULE module{};require(GetModuleHandleExW(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS|GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT,reinterpret_cast<LPCWSTR>(function),&module)!=0,\"guard provider module\");\n    std::printf(\"PROVIDER_ADDRESS|%ls|%08x\\n\",role,address(function));module_record(role,module,\"LOADED_PROVIDER\");\n}\n}\nint main(){try{\n    original_pool_leaf();actual_descriptor_chain();\n    for(const auto* name:{L\"ucrtbase.dll\",L\"vcruntime140.dll\",L\"msvcp140.dll\",L\"vcruntime140_1.dll\",L\"kernel32.dll\",L\"ntdll.dll\"})module_record(name,GetModuleHandleW(name),\"LOADED_RUNTIME\");\n    provider_record(L\"EnterCriticalSection\",reinterpret_cast<void*>(&EnterCriticalSection));provider_record(L\"LeaveCriticalSection\",reinterpret_cast<void*>(&LeaveCriticalSection));provider_record(L\"DeleteCriticalSection\",reinterpret_cast<void*>(&DeleteCriticalSection));\n    std::puts(\"PASS: original/source B62280 entire-slab return; nonnull D61A44/D621F4 descriptor chain, actual state-list pool/string pool/AA0 manager, captured child slot and effect-C4 clear after provider changes\");return 0;\n}catch(const std::exception& error){std::fprintf(stderr,\"FAIL: %s\\n\",error.what());return 1;}}\n",
+    "reference_header": "#pragma once\ninline constexpr unsigned char original_00b56de0[] = {0x56,0x57,0x8b,0xf9,0x8b,0x37,0x85,0xf6,0x74,0x40,0x83,0x7e,0x08,0x00,0x7d,0x09,0x6a,0x00,0x8b,0xce,0xe8,0xf7,0x9e,0xfe,0xff,0x83,0x7e,0x04,0x00,0x7e,0x0c,0x83,0xc8,0xff,0x01,0x46,0x04,0x83,0x7e,0x04,0x00,0x7f,0xf7,0x8b,0x06,0x50,0xc7,0x46,0x04,0x00,0x00,0x00,0x00,0xe8,0x6f,0xfb,0x09,0x00,0x83,0xc4,0x04,0x8b,0xce,0xe8,0x9c,0xb5,0x00,0x00,0xc7,0x07,0x00,0x00,0x00,0x00,0x5f,0x5e,0xc3};\ninline constexpr unsigned char original_00b62280[] = {0x55,0x56,0x57,0x8b,0xf1,0x8d,0x7e,0x0c,0x57,0xff,0x15,0x18,0x22,0xce,0x00,0x83,0x47,0x18,0x01,0x8b,0x4c,0x24,0x10,0x8b,0x51,0x0c,0x8b,0x46,0x28,0x8b,0x04,0x90,0x0f,0xb7,0xa8,0x40,0x02,0x00,0x00,0x2b,0xc8,0xc1,0xf9,0x04,0x66,0x89,0x8c,0x68,0x00,0x02,0x00,0x00,0x66,0x83,0x80,0x40,0x02,0x00,0x00,0x01,0x3b,0x56,0x34,0x73,0x03,0x89,0x56,0x34,0x83,0x47,0x18,0xff,0x57,0xff,0x15,0x10,0x22,0xce,0x00,0x5f,0x5e,0x5d,0xc2,0x04,0x00};\ninline constexpr unsigned char original_00b623c0[] = {0x51,0xb9,0xe4,0xfe,0x08,0x01,0xe8,0xb5,0xfe,0xff,0xff,0xc3};\n",
+    "build_script": "$ErrorActionPreference = 'Stop'\n$vswhere = Join-Path ${env:ProgramFiles(x86)} 'Microsoft Visual Studio/Installer/vswhere.exe'\n$vsPath = & $vswhere -latest -products '*' -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath\n& (Join-Path $vsPath 'Common7/Tools/Launch-VsDevShell.ps1') -Arch x86 -HostArch amd64 -SkipAutomaticLocation | Out-Null\n$cmakeDirectory = Join-Path $vsPath 'Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/bin'\n$toolPaths = @{\n    compiler = (Get-Command cl.exe).Source\n    linker = (Get-Command link.exe).Source\n    librarian = (Get-Command lib.exe).Source\n    python = (Get-Command python.exe).Source\n    powershell = (Get-Process -Id $PID).Path\n    cmake = (Join-Path $cmakeDirectory 'cmake.exe')\n    ctest = (Join-Path $cmakeDirectory 'ctest.exe')\n}\n$toolRecords = foreach ($entry in $toolPaths.GetEnumerator()) {\n    $item = Get-Item -LiteralPath $entry.Value\n    [pscustomobject]@{ role=$entry.Key; path=$item.FullName; file_version=$item.VersionInfo.FileVersion; bytes=$item.Length }\n}\n[System.IO.File]::WriteAllText((Join-Path $PWD 'local/native_material_effect_descriptor_tools.json'),($toolRecords | ConvertTo-Json),[System.Text.UTF8Encoding]::new($false))\ncl /nologo /std:c++20 /EHsc /MD /O2 /W4 /WX /fp:strict /I include /I local /Fo:local/native_material_effect_descriptor_probe.obj /Fe:local/native_material_effect_descriptor_probe.exe local/native_material_effect_descriptor_probe.cpp build/win32/Release/bsp_core.lib build/win32/Release/bsp_lua511.lib build/win32/Release/bsp_zlib121.lib /link /MANIFEST:EMBED user32.lib d3d9.lib shell32.lib kernel32.lib gdi32.lib winspool.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib\nif ($LASTEXITCODE) { throw 'Fixture compilation failed.' }\n& ./local/native_material_effect_descriptor_probe.exe\nif ($LASTEXITCODE) { throw 'Fixture failed.' }\n"
+  },
+  "artifact_archive": {
+    "root": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\local\\native_material_effect_descriptor_validated_archive",
+    "policy": "Write absent archive paths only; existing paths must match bytes. Complete git base ZIP plus exact modified/new source copies form compiled product source inputs.",
+    "artifact_manifest": [
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\include\\bsp\\native_material_effect_descriptor.hpp",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\include\\bsp\\native_material_effect_descriptor.hpp",
+        "bytes": 1258,
+        "sha256": "7bb8a41227c171d8df25deb8e4c181fbe4fa5d0b7ef8430f0d69d96435b4ef59"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\src\\native_material_effect_descriptor.cpp",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\src\\native_material_effect_descriptor.cpp",
+        "bytes": 1517,
+        "sha256": "fbeeb2d3c437c6a800a3ece310f998b64aa7a9a1211164d66403ea0a74b15da8"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\docs\\NATIVE_MATERIAL_EFFECT_DESCRIPTOR.md",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\docs\\NATIVE_MATERIAL_EFFECT_DESCRIPTOR.md",
+        "bytes": 6237,
+        "sha256": "27e22c54858ee25a12883fadbaa6517c175a50780dd97e67308a9241829555d6"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\cmake\\startup.cmake",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\cmake\\startup.cmake",
+        "bytes": 115185,
+        "sha256": "d89c78b28cb21a42c32be53e816a8aff96eaf173975f04b09e8550b2e974a33c"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\include\\bsp\\native_shader_descriptor_owner.hpp",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\include\\bsp\\native_shader_descriptor_owner.hpp",
+        "bytes": 4407,
+        "sha256": "e1adb6068037070bdfba39ce865e4f72cb52276e41598de7a927c237d460a077"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\src\\native_shader_descriptor_owner.cpp",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\src\\native_shader_descriptor_owner.cpp",
+        "bytes": 7295,
+        "sha256": "19e33a89d3fa483fbac72ce0c266c6b038f2228bdb2bab79b493bba6737d68d5"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\include\\bsp\\native_shader_sampler_owner.hpp",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\include\\bsp\\native_shader_sampler_owner.hpp",
+        "bytes": 5446,
+        "sha256": "40003baf2e7e8edaa815720d80565d742ec3ff313f446536e94bf3bde5cfd89e"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\src\\native_shader_sampler_owner.cpp",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\src\\native_shader_sampler_owner.cpp",
+        "bytes": 6278,
+        "sha256": "9985018260f0654018c92d33c21f1936fa838fab068fe0a42779f1ff1d4098cb"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\include\\bsp\\native_material_effect_owner.hpp",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\include\\bsp\\native_material_effect_owner.hpp",
+        "bytes": 8085,
+        "sha256": "b4e0ed748826d25d8780056340bb5d252876a19cb24f3997666968188397ad9f"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\src\\native_material_effect_owner.cpp",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\src\\native_material_effect_owner.cpp",
+        "bytes": 10146,
+        "sha256": "42f993271716a32be08990bab95528ccd6594d4728b55dd860f4f89fe3e9a4a3"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\include\\bsp\\native_material_pools.hpp",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\include\\bsp\\native_material_pools.hpp",
+        "bytes": 10659,
+        "sha256": "e338fe0d0998a961bd919bcf46d0757b3ced6075436614ff99b8e47c12d38668"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\src\\native_material_pools.cpp",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\src\\native_material_pools.cpp",
+        "bytes": 16754,
+        "sha256": "033014e9a5db876c053e846a21f0caf4af867c30d53fbec1fd38c198fc41f901"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\include\\bsp\\native_string.hpp",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\include\\bsp\\native_string.hpp",
+        "bytes": 8019,
+        "sha256": "80013e5a7350120f32fcad1ce54db9b0923ad5b49cc2152823d858534331378f"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\src\\native_string.cpp",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\src\\native_string.cpp",
+        "bytes": 8311,
+        "sha256": "0e8819d3a6442fc48c879e85c00899a72beabdc51b3e94a11836ab5314d5e60c"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\include\\bsp\\native_string_pool_owner.hpp",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\include\\bsp\\native_string_pool_owner.hpp",
+        "bytes": 5893,
+        "sha256": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\src\\native_string_pool_owner.cpp",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\src\\native_string_pool_owner.cpp",
+        "bytes": 8443,
+        "sha256": "cb52fde795918995689a26567d513e9f3cf75eeb27600eb60c431c37fdd21d6e"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\include\\bsp\\native_string_pool_storage.hpp",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\include\\bsp\\native_string_pool_storage.hpp",
+        "bytes": 2805,
+        "sha256": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\src\\native_string_pool_storage.cpp",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\src\\native_string_pool_storage.cpp",
+        "bytes": 5103,
+        "sha256": "5cb79a6ce240205b3f1c81f1fbd6edd49cc1c05f8a20ee8dca8913f44c9095d5"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\include\\bsp\\native_render_context.hpp",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\include\\bsp\\native_render_context.hpp",
+        "bytes": 4898,
+        "sha256": "eb4ace9d59bdc3b8b393927206aafd98f835b6b9cf2d7f0337ccd96f1c8c168f"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\src\\native_render_context.cpp",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\src\\native_render_context.cpp",
+        "bytes": 3884,
+        "sha256": "ee62d05164d69ba93eea4ffd34691dfd777aec5d629ad1753a8954b18468cc1e"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\include\\bsp\\singleton_lifetime.hpp",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\include\\bsp\\singleton_lifetime.hpp",
+        "bytes": 4372,
+        "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\src\\singleton_lifetime.cpp",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\src\\singleton_lifetime.cpp",
+        "bytes": 13257,
+        "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\local\\native_material_effect_descriptor_probe.cpp",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\local\\native_material_effect_descriptor_probe.cpp",
+        "bytes": 11776,
+        "sha256": "651adf41f712f6736de0e5e5d25711f569c8ccf4e2571f0bb84e864b89a71e93"
+      },
+      {
+        "role": "executable",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\local\\native_material_effect_descriptor_probe.exe",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\local\\native_material_effect_descriptor_probe.exe",
+        "bytes": 246272,
+        "sha256": "4cedfe25c7eb6aec8cc1c96ae6adb3ebb1f159280fd734193551594e4a3303ad",
+        "pe_machine": "014c"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\local\\native_material_effect_descriptor_probe.obj",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\local\\native_material_effect_descriptor_probe.obj",
+        "bytes": 55468,
+        "sha256": "9955f9ebd0a3abec2e40f63f65cf2b93e79bebd24ee41193958190b0739eed75"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\local\\native_material_effect_descriptor_probe.log",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\local\\native_material_effect_descriptor_probe.log",
+        "bytes": 1273,
+        "sha256": "9947234d21a475fb69434f6365e6a4160dd9f27bab4f24af7094993e25bf2b47"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\local\\native_material_effect_descriptor_reference.hpp",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\local\\native_material_effect_descriptor_reference.hpp",
+        "bytes": 1055,
+        "sha256": "bd1d5e50e22e260be4eaa873420e0856867062c420a2a2419e17ac21a986512b"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\local\\build_native_material_effect_descriptor_probe.ps1",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\local\\build_native_material_effect_descriptor_probe.ps1",
+        "bytes": 1870,
+        "sha256": "f10a592e0c7ea8b42003dba683cb07ddaaae213ee138bb26cc18b94cf372e022"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\local\\prepare_native_material_effect_descriptor.py",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\local\\prepare_native_material_effect_descriptor.py",
+        "bytes": 5586,
+        "sha256": "b8d86002355503777754aff78e906ef18bfba0cdf025cb10f527abe0135ac692"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\local\\compose_native_material_effect_descriptor_finalizer.py",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\local\\compose_native_material_effect_descriptor_finalizer.py",
+        "bytes": 4542,
+        "sha256": "ae5aa58454ee6580bd0d14f994357f07527c1aad8c142d44b245cbc547f5f453"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\local\\native_material_effect_descriptor_report_body.py",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\local\\native_material_effect_descriptor_report_body.py",
+        "bytes": 15376,
+        "sha256": "ff82918567a71da63a667310c25231d36954ce3d1e3358beba0d8f5398b61b59"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\local\\finalize_native_material_effect_descriptor.py",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\local\\finalize_native_material_effect_descriptor.py",
+        "bytes": 24925,
+        "sha256": "40593cb923bcc3fd396543c3962fece8895bc37c636baa286b33de680fa32214"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\local\\native_material_effect_descriptor_spans.json",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\local\\native_material_effect_descriptor_spans.json",
+        "bytes": 27735,
+        "sha256": "a16f1e4a8b7c56d7250e5a5de86704ac94390f0c2d2014fc482bc754ec338dab"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\local\\native_material_effect_descriptor_build.log",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\local\\native_material_effect_descriptor_build.log",
+        "bytes": 47103,
+        "sha256": "d22897c6b5570dcd3890450e80a0462dd319f3b14ad8fc88993c2adb80d43b69"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\local\\native_material_effect_descriptor_seeds.log",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\local\\native_material_effect_descriptor_seeds.log",
+        "bytes": 3034,
+        "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\local\\native_material_effect_descriptor_tools.json",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\local\\native_material_effect_descriptor_tools.json",
+        "bytes": 1456,
+        "sha256": "c0cefbb40277c00f45b61d6325b56cd3f8fc3ecfee6f0063e869ed056a940e04"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\local\\seed_reference.hpp",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\local\\seed_reference.hpp",
+        "bytes": 2995,
+        "sha256": "26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\local\\native_material_effect_descriptor_flow_repair.json",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\local\\native_material_effect_descriptor_flow_repair.json",
+        "bytes": 3596,
+        "sha256": "c651a9e134759d23f95b88ae4cb4c5cfc7d3c0e5b5456df3774a85db32ef1733"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\local\\native_material_effect_descriptor_flow_repair.log",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\local\\native_material_effect_descriptor_flow_repair.log",
+        "bytes": 461,
+        "sha256": "a9e6ea053309e523f5e8e315df9095d4eeacd86802607e911da49a19e7f82454"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\local\\native_material_effect_descriptor_flow_final.log",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\local\\native_material_effect_descriptor_flow_final.log",
+        "bytes": 117,
+        "sha256": "fa8d73a5f7bfa2cb013163678f0d61477523b8d9b365459f80ee16303f5c45f7"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\local\\native_material_effect_descriptor_function_repair.json",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\local\\native_material_effect_descriptor_function_repair.json",
+        "bytes": 4032,
+        "sha256": "d87e2c56171529bdb2151d83e1cab638714c5ce8f96a8e1f21213ee7b81e516f"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\local\\native_material_effect_descriptor_function_repair.log",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\local\\native_material_effect_descriptor_function_repair.log",
+        "bytes": 312,
+        "sha256": "0c43174ec7e9e8582ffc4cdf9b4a83cde2876d5d8fa1459efca96b6fb81cdf85"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\local\\native_material_effect_descriptor_holder_flow_plan.log",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\local\\native_material_effect_descriptor_holder_flow_plan.log",
+        "bytes": 128,
+        "sha256": "0facad6dc1aee3c614c4d3d5989918399d1bb0e6d02a30c017025c21c0a12503"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\local\\native_material_effect_descriptor_holder_flow_repair.log",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\local\\native_material_effect_descriptor_holder_flow_repair.log",
+        "bytes": 123,
+        "sha256": "c428a2a882b647db563fabff1172932fbc4413676e6d3c7d7c43d9ef432f9bd6"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\local\\native_material_effect_descriptor_holder_function_repair.json",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\local\\native_material_effect_descriptor_holder_function_repair.json",
+        "bytes": 3431,
+        "sha256": "d359ba3108cd87cd6a0906aa88a9ebb0495b7ba4ed039ec53a64442b5a6d4a9e"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\local\\native_material_effect_descriptor_holder_function_repair.log",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\local\\native_material_effect_descriptor_holder_function_repair.log",
+        "bytes": 341,
+        "sha256": "341b839dd7fac183f92a25da0ddea7d2b0d684b48ca42bf5fa3d0983023bcbcb"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\local\\native_material_effect_descriptor_holder_flow_final.log",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\local\\native_material_effect_descriptor_holder_flow_final.log",
+        "bytes": 128,
+        "sha256": "0facad6dc1aee3c614c4d3d5989918399d1bb0e6d02a30c017025c21c0a12503"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\local\\native_material_effect_descriptor_first_call_audit_failed.log",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\local\\native_material_effect_descriptor_first_call_audit_failed.log",
+        "bytes": 267,
+        "sha256": "66ee81057256a1fe763f3df6fec2db26fc3a134a34d605000a84d1f5aff490d7"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\local\\native_material_effect_descriptor_full_disk_asm.log",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\local\\native_material_effect_descriptor_full_disk_asm.log",
+        "bytes": 22007,
+        "sha256": "7cf692c45f27e3911d637bc113e67d12d8f644ee34caaa09bdfc7ea272176eb8"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\local\\native_material_effect_descriptor_old_comments.log",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\local\\native_material_effect_descriptor_old_comments.log",
+        "bytes": 2692,
+        "sha256": "a002c97523ed066f0594d52dd6c1293773b314dbb41793378c5e5be9d4c647d9"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\local\\append_native_material_effect_descriptor_source.py",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\local\\append_native_material_effect_descriptor_source.py",
+        "bytes": 699,
+        "sha256": "43997297d2a7879cce6f466be442e42d6a0c246faee0b85f831e788f7ac6b90a"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\local\\native_material_effect_descriptor_base_tree.zip",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\local\\native_material_effect_descriptor_base_tree.zip",
+        "bytes": 30922923,
+        "sha256": "67000a63e32b1dd79bf897805909c49d69d6fcd509bdb200306bd39cbc821968"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\build\\win32\\Release\\bsp_core.lib",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\build\\win32\\Release\\bsp_core.lib",
+        "bytes": 57810750,
+        "sha256": "c6d4bc00569a85f8984cdcfd2440444c71646851cb9a69b9621ef0d16b78f518"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\build\\win32\\Release\\bsp_lua511.lib",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\build\\win32\\Release\\bsp_lua511.lib",
+        "bytes": 455944,
+        "sha256": "2be5119865d30b4101f77fe847134a0743bd7918f8829ee43ffdf7bb3ce81449"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\build\\win32\\Release\\bsp_zlib121.lib",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\build\\win32\\Release\\bsp_zlib121.lib",
+        "bytes": 72166,
+        "sha256": "fb5fae6e55e982c17e7751286ca9a651cb1b957e2ac884752d4752a7b9ffd9c5"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\tools\\bsp.py",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\tools\\bsp.py",
+        "bytes": 63768,
+        "sha256": "848a26c48d64002df10da7e233d14968baa51f097fdd08474eb2169c4f0e9d61"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\tools\\ghidra_export.py",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\tools\\ghidra_export.py",
+        "bytes": 13401,
+        "sha256": "f94c057376298ef4e97fd9f5f98eec20a5fcdad886a777373977a90a09179eee"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\tools\\ghidra_flow_repair.py",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\tools\\ghidra_flow_repair.py",
+        "bytes": 11539,
+        "sha256": "87c0a67a49fd1e0e5cad52f0b6d014148e087774dcda77e9895bc23ca663d11a"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\tools\\ghidra_define_function.py",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\tools\\ghidra_define_function.py",
+        "bytes": 6462,
+        "sha256": "334901d9cbf4c0bb14425298867f5080e305b8faa7dcff2f41b93030a587940e"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\tools\\coordination.py",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\tools\\coordination.py",
+        "bytes": 16128,
+        "sha256": "109e148de66538b99c3440f42a5c404c8a7b19df130d0d83a84fd758d478e00d"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\tools\\verify_report_calls.py",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\tools\\verify_report_calls.py",
+        "bytes": 9233,
+        "sha256": "396e6d544dece7c9551ff10ee15ab234a0ad1c4a339fd118ddec20de1bb7a8cd"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\scripts\\build.ps1",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\scripts\\build.ps1",
+        "bytes": 1657,
+        "sha256": "87b1f7f177977e4800c6e427c13cc916779f412daa7490f37fbb1b50cb3d295c"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\build\\win32\\bsp_core.dir\\Release\\native_material_effect_descriptor.obj",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\build\\win32\\bsp_core.dir\\Release\\native_material_effect_descriptor.obj",
+        "bytes": 9027,
+        "sha256": "b6b5562a4255efd018ff134bb630c358535c08812e66424969682a578636a2af"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\build\\win32\\bsp_core.dir\\Release\\native_shader_descriptor_owner.obj",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\build\\win32\\bsp_core.dir\\Release\\native_shader_descriptor_owner.obj",
+        "bytes": 19860,
+        "sha256": "24b192ef86d1b98332e3d17773e9b59b680cafe758672cb772ff74edd1f3e628"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\build\\win32\\bsp_core.dir\\Release\\native_shader_sampler_owner.obj",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\build\\win32\\bsp_core.dir\\Release\\native_shader_sampler_owner.obj",
+        "bytes": 19462,
+        "sha256": "b648b1adf66fa4672d99b014e6adc9b1184b9cb3239092437eff7f468875fbbc"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\build\\win32\\bsp_core.dir\\Release\\native_material_effect_owner.obj",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\build\\win32\\bsp_core.dir\\Release\\native_material_effect_owner.obj",
+        "bytes": 44154,
+        "sha256": "7a36af1977e881d35a8185f25e43ed941e17c9db4bd2006a17fcd1f51d6285bf"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\build\\win32\\bsp_core.dir\\Release\\native_material_pools.obj",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\build\\win32\\bsp_core.dir\\Release\\native_material_pools.obj",
+        "bytes": 40110,
+        "sha256": "b2a2338f5922894cde28382c97438570402cc926fd00bec97df0ef78cca2bfba"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\local\\native_material_effect_descriptor_00b40cf0.txt",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\local\\native_material_effect_descriptor_00b40cf0.txt",
+        "bytes": 507,
+        "sha256": "eb5a76b8a095e22c3dcf133e93d90d3f5f1fcab6708856304b971242fc91edea"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\local\\native_material_effect_descriptor_00b418fd.txt",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\local\\native_material_effect_descriptor_00b418fd.txt",
+        "bytes": 345,
+        "sha256": "7ee785c260a733670387685d80f2c723edee83284d8817fa16fb276cff243399"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\local\\native_material_effect_descriptor_00b41b10.txt",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\local\\native_material_effect_descriptor_00b41b10.txt",
+        "bytes": 916,
+        "sha256": "480fd6b4459b4170dd7c39810c374d02d7a481e8cf0e52c8c39eb40ce5047d13"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\local\\native_material_effect_descriptor_00b41f80.txt",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\local\\native_material_effect_descriptor_00b41f80.txt",
+        "bytes": 381,
+        "sha256": "540e0f4c08411ea887461aecbe894c7d993c465ba130f509f0459ec67627807c"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\local\\native_material_effect_descriptor_00b43700.txt",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\local\\native_material_effect_descriptor_00b43700.txt",
+        "bytes": 1127,
+        "sha256": "5334e692b2ea211c0d5cd018cf816756fa0b9d34ffc60c103386245159a8add3"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\local\\native_material_effect_descriptor_00b458a0.txt",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\local\\native_material_effect_descriptor_00b458a0.txt",
+        "bytes": 1232,
+        "sha256": "1d5efe3249f4bc9836c0dc2a23720ccc4ef06f397f6c6718016c884a1ed7b51f"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\local\\native_material_effect_descriptor_00b459a0.txt",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\local\\native_material_effect_descriptor_00b459a0.txt",
+        "bytes": 1232,
+        "sha256": "4ccf04423bc336e56c541b8a353d3d14e278280615a7406c1cb5ef93e0e61777"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\local\\native_material_effect_descriptor_00b45aa0.txt",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\local\\native_material_effect_descriptor_00b45aa0.txt",
+        "bytes": 1232,
+        "sha256": "bb7b1fec304f9d9d1469c2070054d226cef83878044388ef2161bc29f00e4411"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\local\\native_material_effect_descriptor_00b45ba0.txt",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\local\\native_material_effect_descriptor_00b45ba0.txt",
+        "bytes": 1232,
+        "sha256": "4709391590adb2bf2ffc2686c9aaa914d1473269140d64b71f3421e2bfc3c2a9"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\local\\native_material_effect_descriptor_00b45ca0.txt",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\local\\native_material_effect_descriptor_00b45ca0.txt",
+        "bytes": 1232,
+        "sha256": "d5fb9b5c6146caa69a895e89146c26d1fb763ee234f4194268896ed1f593bebb"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\local\\native_material_effect_descriptor_00b45da0.txt",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\local\\native_material_effect_descriptor_00b45da0.txt",
+        "bytes": 410,
+        "sha256": "64224d7e8e062601bcdd2995478bdf3b6fc42b3a96aae59e30924a281184893d"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\local\\native_material_effect_descriptor_00b45f24.txt",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\local\\native_material_effect_descriptor_00b45f24.txt",
+        "bytes": 304,
+        "sha256": "c1290cec3896bec08beccbbb7ce8e3c0d3250bdaebcfe2e9c778d66889bbea47"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\local\\native_material_effect_descriptor_00b46930.txt",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\local\\native_material_effect_descriptor_00b46930.txt",
+        "bytes": 146,
+        "sha256": "29c2ca66ddf6c587d06f0302e7e4a48ce0031cbca301fdd22129decf07c5292c"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\local\\native_material_effect_descriptor_00b56de0.txt",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\local\\native_material_effect_descriptor_00b56de0.txt",
+        "bytes": 373,
+        "sha256": "491c0c82d677f3194d2ddd758795a44654fd9e10839a16f2452cce654a907c86"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\local\\native_material_effect_descriptor_00b56ea0.txt",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\local\\native_material_effect_descriptor_00b56ea0.txt",
+        "bytes": 714,
+        "sha256": "059330b0f0ee04357693d295a81884aedfdd65721fbbbf7f2d66e0434a789c57"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\local\\native_material_effect_descriptor_00b56fc0.txt",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\local\\native_material_effect_descriptor_00b56fc0.txt",
+        "bytes": 146,
+        "sha256": "8f7538ed048725515f3674e1484c559b62e0780db9efc28a74e0176bae4a6448"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\local\\native_material_effect_descriptor_00b57b80.txt",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\local\\native_material_effect_descriptor_00b57b80.txt",
+        "bytes": 171,
+        "sha256": "212c1af421bb0d8425257d0f499e1c647bc512ad293aa02d2960710a7228555f"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\local\\native_material_effect_descriptor_00b62280.txt",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\local\\native_material_effect_descriptor_00b62280.txt",
+        "bytes": 418,
+        "sha256": "4fb3ab5b484321abe69a9267a7f5d9c1b920ea1f3a0f666c174a19f383e1057f"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\local\\native_material_effect_descriptor_00b623c0.txt",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\local\\native_material_effect_descriptor_00b623c0.txt",
+        "bytes": 61,
+        "sha256": "adcb67b4dc462684ccb815c43a19be746b4088ddf831bce408d90778c3b91b5b"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\local\\native_material_effect_descriptor_00cbf090.txt",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\local\\native_material_effect_descriptor_00cbf090.txt",
+        "bytes": 154,
+        "sha256": "0a39cb049c09e766aab37bfc0f438ebf4ef280609514eceb65e6947b20bb50dc"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\local\\native_material_effect_descriptor_00cbf098.txt",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\local\\native_material_effect_descriptor_00cbf098.txt",
+        "bytes": 53,
+        "sha256": "6094e07e3d59259acdbf4a106a4d34bf5980e7322a7e7ca93b30d46ad0667708"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\local\\native_material_effect_descriptor_00cbf4c0.txt",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\local\\native_material_effect_descriptor_00cbf4c0.txt",
+        "bytes": 154,
+        "sha256": "8ec6ef885ddf54140ff869681d803cd293c17c6b958183c4c475aa4d4f4ad60e"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\local\\native_material_effect_descriptor_00cbf4cb.txt",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\local\\native_material_effect_descriptor_00cbf4cb.txt",
+        "bytes": 154,
+        "sha256": "23528d30f43d8ece9a82c7f301e97361f3db95eaaf3f28723ed45227ba54895f"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\local\\native_material_effect_descriptor_00cbf4d6.txt",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\local\\native_material_effect_descriptor_00cbf4d6.txt",
+        "bytes": 154,
+        "sha256": "47acc8f82e816423ad3a756aedcf4f0bf6a33f200b996204f3d74cf1869b7ed5"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\local\\native_material_effect_descriptor_00cbf4e1.txt",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\local\\native_material_effect_descriptor_00cbf4e1.txt",
+        "bytes": 154,
+        "sha256": "b0817552fc68b00dfa2b8988410f83619ab5dc2acb44c823a17832a6df9d5627"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\local\\native_material_effect_descriptor_00cbf4ec.txt",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\local\\native_material_effect_descriptor_00cbf4ec.txt",
+        "bytes": 154,
+        "sha256": "742fc95e64c3a3a8df145f411d5d79ffe15108272084cf35b8ef22772281a780"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\local\\native_material_effect_descriptor_00cbf4f7.txt",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\local\\native_material_effect_descriptor_00cbf4f7.txt",
+        "bytes": 154,
+        "sha256": "e49d2647a496510b01d38caf8df4ffc1794c421a6e0250f989b1de5aa2ca48f1"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\local\\native_material_effect_descriptor_00cbf505.txt",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\local\\native_material_effect_descriptor_00cbf505.txt",
+        "bytes": 154,
+        "sha256": "e1462d69953347aae4ad5764dc12a83fc5e19a3b4ff692e48ea3f34f5b7494e6"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\local\\native_material_effect_descriptor_00cbf513.txt",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\local\\native_material_effect_descriptor_00cbf513.txt",
+        "bytes": 154,
+        "sha256": "45356748b3b22d2d19b15904a025cff90ea519d1638b7add78e6fd55de15d90d"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\local\\native_material_effect_descriptor_00cbf521.txt",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\local\\native_material_effect_descriptor_00cbf521.txt",
+        "bytes": 154,
+        "sha256": "53150390f1d94f1c787e398c6ac0cd116747242b68704f6a5105ce9e24013bf7"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\local\\native_material_effect_descriptor_00cbf52f.txt",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\local\\native_material_effect_descriptor_00cbf52f.txt",
+        "bytes": 154,
+        "sha256": "5d49e96d28b98c6fafe3e93b6c86d5f1ed923a265240c800cb6b279f93096df9"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\local\\native_material_effect_descriptor_00cbf53d.txt",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\local\\native_material_effect_descriptor_00cbf53d.txt",
+        "bytes": 154,
+        "sha256": "12fea9ff26493f9b8d7fbedc428009ff81b7f5ac3d5a820cc8be4388ef1745f2"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\local\\native_material_effect_descriptor_00cbf54b.txt",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\local\\native_material_effect_descriptor_00cbf54b.txt",
+        "bytes": 154,
+        "sha256": "682b6aa1ce7d5245d6bd8d4512133091faba3ca6f80ce886299637ad664a911a"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\local\\native_material_effect_descriptor_00cbf559.txt",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\local\\native_material_effect_descriptor_00cbf559.txt",
+        "bytes": 154,
+        "sha256": "637aa032f8f48784b6c4deacbda6f108f9c0a6d7fdd24ed8fbeb29e2cf516589"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\local\\native_material_effect_descriptor_00cbf567.txt",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\local\\native_material_effect_descriptor_00cbf567.txt",
+        "bytes": 53,
+        "sha256": "01bb3b8d42b27a2101bf2e83aed20cd265ae4b53706a3a88af86df5c9ad26c8a"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\local\\native_material_effect_descriptor_00cc0440.txt",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\local\\native_material_effect_descriptor_00cc0440.txt",
+        "bytes": 154,
+        "sha256": "5a8e49c1af53e09b4ebdcfacf8202c3af86cd06e51c75162a015dfddfed204a1"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\local\\native_material_effect_descriptor_00cc044b.txt",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\local\\native_material_effect_descriptor_00cc044b.txt",
+        "bytes": 154,
+        "sha256": "05c5de8116473f585381c6f3dfdef9ece4a30c4442c83458d5ee34cb8b3ea5e4"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\local\\native_material_effect_descriptor_00cc0456.txt",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\local\\native_material_effect_descriptor_00cc0456.txt",
+        "bytes": 53,
+        "sha256": "2a9fa801b735c7f851417dbf5c98c6e5e8b48bb136d53012af649fba464a8912"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\local\\native_material_effect_descriptor_00ce2210.txt",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\local\\native_material_effect_descriptor_00ce2210.txt",
+        "bytes": 61,
+        "sha256": "520a965b79beef0c840d112c484154f660eb3d9c54a40f1c60ef5d4c69555a02"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\local\\native_material_effect_descriptor_00d61a44.txt",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\local\\native_material_effect_descriptor_00d61a44.txt",
+        "bytes": 29,
+        "sha256": "2556a1cc84fff9f67e21f75c381c02c2bb6c4f350308e8eea1e6888df3ae7923"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\local\\native_material_effect_descriptor_00d621f4.txt",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\local\\native_material_effect_descriptor_00d621f4.txt",
+        "bytes": 29,
+        "sha256": "a3f9b6accd7c6e143bf9e2b51841d44d527206f84bde4da20a24b173e98ebb15"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\local\\native_material_effect_descriptor_00df79d4.txt",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\local\\native_material_effect_descriptor_00df79d4.txt",
+        "bytes": 45,
+        "sha256": "0e5a3afaf533abd4da61b3930f8d55c2d9b9a625bb8bba6096219047d263ebc8"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\local\\native_material_effect_descriptor_00df79dc.txt",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\local\\native_material_effect_descriptor_00df79dc.txt",
+        "bytes": 183,
+        "sha256": "77426295dc767867790d932411a44c40fe8066ce3acc084f23c5c7f270db8f7a"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\local\\native_material_effect_descriptor_00df7ea4.txt",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\local\\native_material_effect_descriptor_00df7ea4.txt",
+        "bytes": 183,
+        "sha256": "ff31e0f2303b29e03585f6cf4a06d69508c7c1a3c0f142b11b6e7a471498e484"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\local\\native_material_effect_descriptor_00df7ec8.txt",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\local\\native_material_effect_descriptor_00df7ec8.txt",
+        "bytes": 507,
+        "sha256": "48aa167f6b09613d5aa5fdaed0599cdd33adc7b056ac51b18e3ddf2a4f1f9e23"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\local\\native_material_effect_descriptor_00df9008.txt",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\local\\native_material_effect_descriptor_00df9008.txt",
+        "bytes": 77,
+        "sha256": "bdc88a392699a97ea69c8e849f9f12a0eb24bf6ca29dda567c2c74e3b1021404"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\local\\native_material_effect_descriptor_00df9018.txt",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\local\\native_material_effect_descriptor_00df9018.txt",
+        "bytes": 183,
+        "sha256": "fb267df5381302da8b796d092faa252354000d49f28f799a6bc22f2034cc47c1"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\include\\bsp\\native_singleton_destruction.hpp",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\include\\bsp\\native_singleton_destruction.hpp",
+        "bytes": 8670,
+        "sha256": "8200bc14cfe9e23f5585fc04886c1e3b2dc2e8f9878f3498222cc60b881bd8a4"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\include\\bsp\\game_entry.hpp",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\include\\bsp\\game_entry.hpp",
+        "bytes": 5510,
+        "sha256": "055793fab1e425595a1e114160bb5ec76e5656f470527d88e52dfca31f0d916f"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\include\\bsp\\system_time_constants.hpp",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\include\\bsp\\system_time_constants.hpp",
+        "bytes": 4800,
+        "sha256": "36d88206bf9dbf4e6cceaab5e0aa6bf4b71172305b79bb98a571063add672ba9"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\include\\bsp\\frame_clock.hpp",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\include\\bsp\\frame_clock.hpp",
+        "bytes": 2475,
+        "sha256": "c5ca70e98942784432bfbee0e543d601a495d5ee2c43b17631985288ae98850b"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\include\\bsp\\render_tail.hpp",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\include\\bsp\\render_tail.hpp",
+        "bytes": 15566,
+        "sha256": "7ded157910928589128f7a1569d18e42877ed2c943649957612fa6060b4646fc"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\include\\bsp\\camera_transform.hpp",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\include\\bsp\\camera_transform.hpp",
+        "bytes": 7028,
+        "sha256": "1f2de265a3479686c68e74802cca45038374bf9be1f882aa8ccbee0086e2635d"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\include\\bsp\\camera_projection.hpp",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\include\\bsp\\camera_projection.hpp",
+        "bytes": 2413,
+        "sha256": "bbfe251c983ec82bd132108c32364798a1731f3e4456a77959139e13c0f0c9a4"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\include\\bsp\\render_command_queue.hpp",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\include\\bsp\\render_command_queue.hpp",
+        "bytes": 10656,
+        "sha256": "bc5b28823becf3dbe9628f7393be7f3ba399895d6935829921113a7496fe8f1a"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\include\\bsp\\instance_grouping.hpp",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\include\\bsp\\instance_grouping.hpp",
+        "bytes": 4008,
+        "sha256": "dd9f4b459ad6403464acfdf2461d3736938c0364fda4b96ec746c0a78063c308"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\include\\bsp\\instance_upload.hpp",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\include\\bsp\\instance_upload.hpp",
+        "bytes": 6532,
+        "sha256": "271e956b6dd3801fff1edab447fb03bb929ec562e227ae0357debbe95c1239fb"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\include\\bsp\\d3d9_states.hpp",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\include\\bsp\\d3d9_states.hpp",
+        "bytes": 15076,
+        "sha256": "d6f143ad718a3d931f4371ac14235a41006cb616c9b9df4cdd9c3faaf6c91288"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\include\\bsp\\instance_sort.hpp",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\include\\bsp\\instance_sort.hpp",
+        "bytes": 4479,
+        "sha256": "c3a892e5b69db70699daaa5c301f5b00aa17fe4f93f929fdc43dcc16e797b1f3"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\include\\bsp\\d3d9_startup.hpp",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\include\\bsp\\d3d9_startup.hpp",
+        "bytes": 1362,
+        "sha256": "cb5b822fd9129419b2d3d47a1dd590af05038c9b59a606a50b6dd0102048d843"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\include\\bsp\\random_threads.hpp",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\include\\bsp\\random_threads.hpp",
+        "bytes": 1446,
+        "sha256": "41b1402062fdf2afb99afa5b0d2beda697cc0c1b92a13806103b4bc4879d09b9"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\include\\bsp\\d3d9_buffers.hpp",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\include\\bsp\\d3d9_buffers.hpp",
+        "bytes": 3262,
+        "sha256": "e8bc19c4630661b83969b53cac94134748f3c9af2a98002f1f2906ed93dedc83"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\include\\bsp\\vertex_declaration.hpp",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\include\\bsp\\vertex_declaration.hpp",
+        "bytes": 1462,
+        "sha256": "0f03c6a960da3547644b3e5bc8b5934a35fe26f42abc2746559a31f0af2452a0"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\include\\bsp\\d3d9_vertex_layout.hpp",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\include\\bsp\\d3d9_vertex_layout.hpp",
+        "bytes": 1257,
+        "sha256": "b20c6b94d7bb3128e0315780a1a9693d110b45703a9c7396ae23a7bb223792ef"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\include\\bsp\\material_sort_metadata.hpp",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\include\\bsp\\material_sort_metadata.hpp",
+        "bytes": 3332,
+        "sha256": "244be13046cc21bd64870eaa388954d5c6a637b2ced23d3d35e161205ec73212"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\include\\bsp\\random.hpp",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\include\\bsp\\random.hpp",
+        "bytes": 791,
+        "sha256": "7c38db60d138add04d7abf759d23272c357d23bdd64d042ba4a27733c05f630c"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\include\\bsp\\native_singleton_publication.hpp",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\include\\bsp\\native_singleton_publication.hpp",
+        "bytes": 2293,
+        "sha256": "0ba3bb843ec6048790eb768f46e6cfeb99c8fae8c3e3f3ae59a0e14cca1e72f5"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\include\\bsp\\native_singleton_vector_registration_wrappers.hpp",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\include\\bsp\\native_singleton_vector_registration_wrappers.hpp",
+        "bytes": 2373,
+        "sha256": "04d669c9167de50ba74557cc6651ab4dbdc753b8c6f40fdb3a743f65948eab35"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\include\\bsp\\storage_pool.hpp",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\include\\bsp\\storage_pool.hpp",
+        "bytes": 5571,
+        "sha256": "da1c9a4f88fff56634f69cfb8dc113dc013680ae753a434e1a14aa458d410e33"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\include\\bsp\\allocator_list.hpp",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\include\\bsp\\allocator_list.hpp",
+        "bytes": 1781,
+        "sha256": "39ef9a5be06269f83af556cd80d0d68af3e983e1912154b2255ed7060f6fdae8"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\include\\bsp\\native_material_owner.hpp",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\include\\bsp\\native_material_owner.hpp",
+        "bytes": 5986,
+        "sha256": "e4583162e05d346f05f6f26fd6e9f4ac49368ffa8ccd1fa0939731f1134b0320"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\include\\bsp\\material_lighting.hpp",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\include\\bsp\\material_lighting.hpp",
+        "bytes": 1642,
+        "sha256": "b56091a2688d0a7cf52401396efa68b9f02de215e9bd89e4bf20d93d83600da8"
+      }
+    ],
+    "executable_artifacts": [
+      {
+        "role": "executable",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-effect-descriptor\\local\\native_material_effect_descriptor_probe.exe",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\inputs\\local\\native_material_effect_descriptor_probe.exe",
+        "bytes": 246272,
+        "sha256": "4cedfe25c7eb6aec8cc1c96ae6adb3ebb1f159280fd734193551594e4a3303ad",
+        "pe_machine": "014c"
+      }
+    ],
+    "observed_tool_executables": [
+      {
+        "role": "observed_tool_executable",
+        "original_path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin\\cmake.exe",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\tools\\cmake\\cmake.exe",
+        "bytes": 14060088,
+        "sha256": "d8173552e9d943c20feadd74d0437371f49d45c3d53a20dae2655ecc2493392c",
+        "pe_machine": "8664",
+        "tool_role": "cmake",
+        "file_version": "4.2.3-msvc3"
+      },
+      {
+        "role": "observed_tool_executable",
+        "original_path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x86\\cl.exe",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\tools\\compiler\\cl.exe",
+        "bytes": 891752,
+        "sha256": "95db52a9c9bd300131474769df7d32b342725b1e1574e0fc83a266479b196938",
+        "pe_machine": "8664",
+        "tool_role": "compiler",
+        "file_version": "19.51.36244.0"
+      },
+      {
+        "role": "observed_tool_executable",
+        "original_path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin\\ctest.exe",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\tools\\ctest\\ctest.exe",
+        "bytes": 15152224,
+        "sha256": "4d00d31a10d004edb8d7f39bcd47d0a94da1cd4464e9d2246d199f0cf6c7852b",
+        "pe_machine": "8664",
+        "tool_role": "ctest",
+        "file_version": "4.2.3-msvc3"
+      },
+      {
+        "role": "observed_tool_executable",
+        "original_path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x86\\lib.exe",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\tools\\librarian\\lib.exe",
+        "bytes": 23424,
+        "sha256": "8c59e7b3642ad1c5719bdc5e567e89254ab1022b7d20f1933e79b92213c76ebc",
+        "pe_machine": "8664",
+        "tool_role": "librarian",
+        "file_version": "14.51.36244.0"
+      },
+      {
+        "role": "observed_tool_executable",
+        "original_path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x86\\link.exe",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\tools\\linker\\link.exe",
+        "bytes": 3698016,
+        "sha256": "36186698fc03d62a1151e48c55d5c17170b94b4621a2faa11189d08182e11a81",
+        "pe_machine": "8664",
+        "tool_role": "linker",
+        "file_version": "14.51.36244.0"
+      },
+      {
+        "role": "observed_tool_executable",
+        "original_path": "C:\\Program Files\\PowerShell\\7\\pwsh.exe",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\tools\\powershell\\pwsh.exe",
+        "bytes": 301368,
+        "sha256": "362a356ce7f0940ec74f73a8fc2c990a2cc24a38a11c90bbd8eca947110ad139",
+        "pe_machine": "8664",
+        "tool_role": "powershell",
+        "file_version": "7.6.5.500"
+      },
+      {
+        "role": "observed_tool_executable",
+        "original_path": "C:\\ProgramData\\miniconda3\\python.exe",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\tools\\python\\python.exe",
+        "bytes": 104264,
+        "sha256": "ec0ea8d6907787b76dcf8524aaa93e52e167ceee62fa8778e182ea637a3dbc1d",
+        "pe_machine": "8664",
+        "tool_role": "python",
+        "file_version": "3.13.11"
+      }
+    ]
+  },
+  "loaded_runtime_dll_evidence": {
+    "observation": "Loaded x86 machine and module path; canonical file measured by handle in same running32-bit process. Actual Enter/Leave/DeleteCriticalSection function addresses mapped to provider modules.",
+    "hash_basis": "Post-run disk and archived-copy hashes, not mapped-image hashes.",
+    "loaded_runtime_dlls": [
+      {
+        "role": "loaded_runtime_dll_file",
+        "original_path": "\\\\?\\C:\\Windows\\SysWOW64\\ucrtbase.dll",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\runtime\\ucrtbase.dll",
+        "bytes": 1114240,
+        "sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+        "pe_machine": "014c",
+        "role_name": "ucrtbase.dll",
+        "reported_loaded_path": "C:\\WINDOWS\\System32\\ucrtbase.dll",
+        "canonical_path_from_running_x86_process": "\\\\?\\C:\\Windows\\SysWOW64\\ucrtbase.dll",
+        "loaded_image_machine": "014c"
+      },
+      {
+        "role": "loaded_runtime_dll_file",
+        "original_path": "\\\\?\\C:\\Windows\\SysWOW64\\vcruntime140.dll",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\runtime\\vcruntime140.dll",
+        "bytes": 123328,
+        "sha256": "2fa6efc053203460a23d3a25158f227d895d2dadc63acc1a372da97c3a4281c3",
+        "pe_machine": "014c",
+        "role_name": "vcruntime140.dll",
+        "reported_loaded_path": "C:\\WINDOWS\\SYSTEM32\\VCRUNTIME140.dll",
+        "canonical_path_from_running_x86_process": "\\\\?\\C:\\Windows\\SysWOW64\\vcruntime140.dll",
+        "loaded_image_machine": "014c"
+      },
+      {
+        "role": "loaded_runtime_dll_file",
+        "original_path": "\\\\?\\C:\\Windows\\SysWOW64\\msvcp140.dll",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\runtime\\msvcp140.dll",
+        "bytes": 618944,
+        "sha256": "f0cda2a0cf1fe6fbbf579b9098462329d3aaa7513a207af2e0f33b01456e388a",
+        "pe_machine": "014c",
+        "role_name": "msvcp140.dll",
+        "reported_loaded_path": "C:\\WINDOWS\\SYSTEM32\\MSVCP140.dll",
+        "canonical_path_from_running_x86_process": "\\\\?\\C:\\Windows\\SysWOW64\\msvcp140.dll",
+        "loaded_image_machine": "014c"
+      },
+      {
+        "role": "loaded_runtime_dll_file",
+        "original_path": "\\\\?\\C:\\Windows\\SysWOW64\\kernel32.dll",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\runtime\\kernel32.dll",
+        "bytes": 687472,
+        "sha256": "bafd9e061964642802d62f1eb694e7e4af60de739a8df1a492f90006dc5680f3",
+        "pe_machine": "014c",
+        "role_name": "kernel32.dll",
+        "reported_loaded_path": "C:\\WINDOWS\\System32\\KERNEL32.DLL",
+        "canonical_path_from_running_x86_process": "\\\\?\\C:\\Windows\\SysWOW64\\kernel32.dll",
+        "loaded_image_machine": "014c"
+      },
+      {
+        "role": "loaded_runtime_dll_file",
+        "original_path": "\\\\?\\C:\\Windows\\SysWOW64\\ntdll.dll",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\runtime\\ntdll.dll",
+        "bytes": 1822400,
+        "sha256": "7e15bd30890e9bf93b47fc894a68b2445618ee7528eb39584a263b21e112f9df",
+        "pe_machine": "014c",
+        "role_name": "ntdll.dll",
+        "reported_loaded_path": "C:\\WINDOWS\\SYSTEM32\\ntdll.dll",
+        "canonical_path_from_running_x86_process": "\\\\?\\C:\\Windows\\SysWOW64\\ntdll.dll",
+        "loaded_image_machine": "014c"
+      },
+      {
+        "role": "actual_Win32_guard_provider_module_file",
+        "original_path": "\\\\?\\C:\\Windows\\SysWOW64\\ntdll.dll",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\runtime\\providers\\EnterCriticalSection\\ntdll.dll",
+        "bytes": 1822400,
+        "sha256": "7e15bd30890e9bf93b47fc894a68b2445618ee7528eb39584a263b21e112f9df",
+        "pe_machine": "014c",
+        "role_name": "EnterCriticalSection",
+        "reported_loaded_path": "C:\\WINDOWS\\SYSTEM32\\ntdll.dll",
+        "canonical_path_from_running_x86_process": "\\\\?\\C:\\Windows\\SysWOW64\\ntdll.dll",
+        "loaded_image_machine": "014c",
+        "observed_function_VA": "76f943e0"
+      },
+      {
+        "role": "actual_Win32_guard_provider_module_file",
+        "original_path": "\\\\?\\C:\\Windows\\SysWOW64\\ntdll.dll",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\runtime\\providers\\LeaveCriticalSection\\ntdll.dll",
+        "bytes": 1822400,
+        "sha256": "7e15bd30890e9bf93b47fc894a68b2445618ee7528eb39584a263b21e112f9df",
+        "pe_machine": "014c",
+        "role_name": "LeaveCriticalSection",
+        "reported_loaded_path": "C:\\WINDOWS\\SYSTEM32\\ntdll.dll",
+        "canonical_path_from_running_x86_process": "\\\\?\\C:\\Windows\\SysWOW64\\ntdll.dll",
+        "loaded_image_machine": "014c",
+        "observed_function_VA": "76f93460"
+      },
+      {
+        "role": "actual_Win32_guard_provider_module_file",
+        "original_path": "\\\\?\\C:\\Windows\\SysWOW64\\ntdll.dll",
+        "archive_path": "local\\native_material_effect_descriptor_validated_archive\\runtime\\providers\\DeleteCriticalSection\\ntdll.dll",
+        "bytes": 1822400,
+        "sha256": "7e15bd30890e9bf93b47fc894a68b2445618ee7528eb39584a263b21e112f9df",
+        "pe_machine": "014c",
+        "role_name": "DeleteCriticalSection",
+        "reported_loaded_path": "C:\\WINDOWS\\SYSTEM32\\ntdll.dll",
+        "canonical_path_from_running_x86_process": "\\\\?\\C:\\Windows\\SysWOW64\\ntdll.dll",
+        "loaded_image_machine": "014c",
+        "observed_function_VA": "76fa56b0"
+      }
+    ],
+    "checked_but_unloaded": [
+      "vcruntime140_1.dll"
+    ]
+  },
+  "remaining_boundaries": [
+    "Legacy material-program LoadFrame descriptor/sampler callable-table producer bindings remain unchanged. They require null optional context until separately migrated/detached; unexpected host tables never fall back through raw path.",
+    "Borrowed actual string/storage/profile domains, nonnegative valid descriptor extents and aligned valid physical pool slots remain required.",
+    "Existing NativeStringStorage release is noexcept; actual bridge terminates on lazy getter C++ failure, unlike general native FH3. No new raw string exception interface is claimed.",
+    "Original descriptor/sampler/effect FH3/SEH exceptional execution, arbitrary profiles, original register/private-frame ABI, allocator failure injection and global shutdown/gameplay are not established.",
+    "Source normal free services exercised without allocator interception. Runtime disk hashes are separate from mapped-image identity; tool executable archive does not include every tool DLL."
+  ]
+}
