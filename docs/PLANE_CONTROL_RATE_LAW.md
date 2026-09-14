@@ -186,3 +186,57 @@ Trace `frame=-80` (the step-term multiplier) and `frame=-64` (the yaw working sl
 `tools/stack_frame_walk.py`, then match `ctl+4Ch`/`ctl+50h` against `RollSpd +1A8h` at `007DA7C2`
 and `kLatchedRoll +BB8h` the same way the pitch axis was matched. The tool makes each of those a
 filter rather than a read.
+
+## The law's form, and the one thing still missing
+
+The step term is **not proportional**. `007DAC9B`-`007DACD4` reads:
+
+```
+007dac9b  COMISS XMM0,XMM2
+007daca4  JBE  007dacac
+007daca6  MOV  [ESP+24h],ECX     ; ECX = -1   (OR ECX,0FFFFFFFFh at 007DAC98)
+007dacaa  JMP  007dacc1
+007dacac  COMISS XMM2,XMM0
+007dacaf  MOV  [ESP+24h],1
+007dacb7  JA   007dacc1
+007dacb9  MOV  [ESP+24h],0
+007dacc1  FILD [ESP+24h]         ; the sign, as an integer loaded to the x87 stack
+007dacc5  FMUL [ESP+14h]         ; x the factor at unit+BC4h
+007dacc9  FLD  [ESP+68h]         ; x step
+007dacd1  FLD  [ESI+48h]         ; + the current rate
+007dacd4  FADDP ST2,ST0
+```
+
+A three-way `{-1, 0, +1}` selection, `FILD`-ed as an integer, times a factor, times the step. So each
+axis approaches its target at a **constant rate** and the clamp is what stops it overshooting:
+
+```
+new = clamp(current + sign * factor * step, -|bound|, +|bound|)
+```
+
+**The factor is `unit+BC4h`, and it resolves to 1.0.** Its whole lifecycle is now known:
+`BSP_Plane_ReadPropertyBag` sets it to `1.0f` (`007D6167`, from the float at `00D7A24C`), the
+constructor writes it twice, and the rate law itself maintains it at `007DA978`-`007DA9E3` as a
+value that **relaxes toward 1.0** by `0.5 * step` each tick - the double at `00D7A280` is `0.5` -
+clamped on both branches so it never crosses 1.0. Initialised at 1.0 and relaxing to 1.0, it is 1.0
+throughout in this host unless something not yet found drives it away.
+
+## What is still missing
+
+**The sign's polarity.** `XMM0` and `XMM2` at `007DAC9B` are set outside the window read here, and
+`tools/stack_frame_walk.py` tracks `ESP` only - it does not trace SSE registers. So which comparand
+is the delta and which is zero, and therefore whether a positive delta yields `+1` or `-1`, is
+**not established**.
+
+This is the single most dangerous thing in the function to guess. The whole law is otherwise known,
+and a reader who assumed the obvious polarity would produce something that compiles, runs, and turns
+every aircraft the wrong way - with the gunnery numbers downstream looking exactly as validated as
+they would if it were right. It stays open.
+
+**The bound's source.** `frame=-52` and `frame=-56` feed the clamp; they are built by the `fabs`
+idiom at `007DAB79`-`007DAB8A` from a value not yet traced.
+
+## Next
+
+An SSE register trace across `007DAC00`-`007DACC1` to settle the two comparands, then the bound's
+producer. The form above means the remaining work is two register questions rather than a law.
