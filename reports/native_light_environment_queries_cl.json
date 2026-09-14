@@ -104,5 +104,35 @@
     "ctest": "existing reconstructed_math 1/1 passed (0.08 sec)",
     "new_tests": 0
   },
-  "limits": "Raw address leaf bodies only. Existing typed full-function ledger entries remain; this is zero new native body/byte credit. No whole B46A70 source, game ABI or gameplay validation."
+  "limits": "Raw address leaf bodies only. Existing typed full-function ledger entries remain; this is zero new native body/byte credit. No whole B46A70 source, game ABI or gameplay validation.",
+  "primary_integration": {
+    "source_commit": "1bbc16628a278b9c8b023266664e4874eb45a368",
+    "worker_source_commit": "8002713741ec755683789c72c635240f1cf66e0f",
+    "upstream_light_source_commit": "34c5ce54",
+    "strict_win32_build": true,
+    "seed_matches": 8,
+    "ctests_passed": 2,
+    "numeric_call_rows": 47,
+    "numeric_call_failures": 0,
+    "live_PE_spans": 24,
+    "live_PE_bytes": 5157,
+    "real_HAL_source_cases": 2,
+    "original_leaf_comparisons": 2,
+    "restored_original_COM_slots_and_vptrs": true,
+    "saved_read_back_annotations": 15,
+    "annotation_journal": "local/ghidra-annotations-20260914T191754Z.json",
+    "checkpoint": {
+      "path": "local/checkpoints/1bbc1662/native-system-constant-gather-wave/validation.json",
+      "sha256": "78ee9018977843340db954b871be19c91a27e56c175f83a216053571a02b2f66",
+      "source_commit": "1bbc16628a278b9c8b023266664e4874eb45a368",
+      "artifacts": 3377,
+      "runtime_modules": 58
+    },
+    "fixture_scope": "Full corrected source gather uses real Direct3D9 HAL devices. Only original four-byte texture width/height leaves executed differentially. Both current renderer/register count reloads, ignored VS failure, prefix preimage, fog/lighting/shadow, unsigned width and x87 reciprocal cases passed.",
+    "limitations": [
+      "Original full B46A70 remains unexecuted.",
+      "Uncached axes route, original private ABI/FH3/SEH, full renderer and game execution remain unvalidated.",
+      "Worker frozen evidence validates80027137; primary checkpoint validates captured-profile correction1bbc1662."
+    ]
+  }
 }

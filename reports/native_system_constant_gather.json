@@ -406,7 +406,7 @@
     "narrow_cherry_pick": "c03a4cb0",
     "generated_model_ancestry_dependency": "ca2fdcdd40f5218f9b5cc1a1b3cc7d9a58d2617c"
   },
-  "ghidra": "Verified bsp.gpr /battlestationspacific.exe x86 LE32 base00400000 at8089 for each read batch; read-only, no annotation mutation",
+  "ghidra": "Verified bsp.gpr /battlestationspacific.exe x86 LE32 base00400000 at8089 for each read batch; read-only, no annotation mutation; primary subsequently preserved15 current names/comments, appended integrated evidence, saved and read back all annotations, refreshed exports. BEE070 was already a saved function; no primary definition required.",
   "native_manifest": {
     "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-debug-records24\\local\\output\\debug24_gather_native_inputs\\manifest.json",
     "sha256": "71f2005eeaff39a28ce691befc120e587a5a9b1fc5447fd29531884e8ab303c4",
@@ -446,6 +446,36 @@
   "primary_capture_correction": {
     "worker_source": "8002713741ec755683789c72c635240f1cf66e0f",
     "public_API_changed": false,
-    "validation": "Combined-library build and real-provider fixture follow this source correction; worker frozen validation describes original80027137 source."
+    "validation": "Integrated source1bbc1662 passed strict Win32 build, eight seeds, both CTests and both real HAL source fixtures; immutable primary checkpoint recorded under primary_integration. Worker source80027137 evidence remains historical."
+  },
+  "primary_integration": {
+    "source_commit": "1bbc16628a278b9c8b023266664e4874eb45a368",
+    "worker_source_commit": "8002713741ec755683789c72c635240f1cf66e0f",
+    "upstream_light_source_commit": "34c5ce54",
+    "strict_win32_build": true,
+    "seed_matches": 8,
+    "ctests_passed": 2,
+    "numeric_call_rows": 47,
+    "numeric_call_failures": 0,
+    "live_PE_spans": 24,
+    "live_PE_bytes": 5157,
+    "real_HAL_source_cases": 2,
+    "original_leaf_comparisons": 2,
+    "restored_original_COM_slots_and_vptrs": true,
+    "saved_read_back_annotations": 15,
+    "annotation_journal": "local/ghidra-annotations-20260914T191754Z.json",
+    "checkpoint": {
+      "path": "local/checkpoints/1bbc1662/native-system-constant-gather-wave/validation.json",
+      "sha256": "78ee9018977843340db954b871be19c91a27e56c175f83a216053571a02b2f66",
+      "source_commit": "1bbc16628a278b9c8b023266664e4874eb45a368",
+      "artifacts": 3377,
+      "runtime_modules": 58
+    },
+    "fixture_scope": "Full corrected source gather uses real Direct3D9 HAL devices. Only original four-byte texture width/height leaves executed differentially. Both current renderer/register count reloads, ignored VS failure, prefix preimage, fog/lighting/shadow, unsigned width and x87 reciprocal cases passed.",
+    "limitations": [
+      "Original full B46A70 remains unexecuted.",
+      "Uncached axes route, original private ABI/FH3/SEH, full renderer and game execution remain unvalidated.",
+      "Worker frozen evidence validates80027137; primary checkpoint validates captured-profile correction1bbc1662."
+    ]
   }
 }

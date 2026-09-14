@@ -34,3 +34,11 @@ entries. These raw address leaves do not reconstruct B46A70's light-list
 traversal, indirect calls, stack prefix, upload behavior, native EH, or
 game execution. A returned address is borrowed and may be invalid to read
 unless the original caller's storage preconditions hold.
+
+## Primary integration at1bbc1662
+
+The combined library includes the raw gather and three consumed light-environment address getters. Primary review corrected five private bridges to use the profile captured by the original instruction; public context/API is unchanged. The strict MSVC Win32 build, eight native seeds, both existing CTests and47 numeric call rows passed. Fresh Ghidra and installed-PE captures matched24 spans/5157 bytes including parent/profile context. Fifteen existing names/comments were preserved, augmented, saved and read back; affected exports were refreshed. BEE070 was already present as a saved function.
+
+Two real Direct3D9 HAL source cases passed with the same308-word prefix at VS/PS upload, original preimage preservation, current renderer/count changes after ignored VS failure, and raw fog/lighting/shadow with unsigned dimension/x87 reciprocal behavior. Original/source execution covered only the four-byte width/height leaves. The full original gather, uncached axes, private ABI/FH3/SEH and game behavior remain unexecuted. Worker frozen evidence describes80027137; the primary checkpoint describes corrected1bbc1662.
+
+Immutable checkpoint: `local/checkpoints/1bbc1662/native-system-constant-gather-wave/validation.json`; SHA256 `78ee9018977843340db954b871be19c91a27e56c175f83a216053571a02b2f66`; 3377 artifacts and58 actual mapped runtime modules. The checkpoint retains exact sources, build/probe inputs and outputs, compiler dependencies, searched libraries, tools, native bytes and annotation before/after state.
