@@ -1,0 +1,205 @@
+{
+  "schema_version": 1,
+  "packet": "orch5_secondary_parent_review",
+  "status": "unfinished_worker_source_reviewed_and_corrected_fixture_passed_registration_pending",
+  "root_commit": "973a42a8c03d95e6a50610c99f35fa7c032652f6",
+  "worker_base": "57f813e3a17c744887cd936ca54012f0e9ead29c",
+  "worker_source_uncommitted": true,
+  "production_source_modified": false,
+  "production_pins": [
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-secondary-pass\\include\\bsp\\native_material_secondary_pass_actual.hpp",
+      "copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_secondary_parent_review\\workspace\\include\\bsp\\native_material_secondary_pass_actual.hpp",
+      "sha256": "293ca610ebfbedfb84a33587b3966e01c1d9af0f7d0f89e9ea16dd97f503c95d",
+      "bytes": 2198
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-secondary-pass\\src\\native_material_secondary_pass_actual.cpp",
+      "copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_secondary_parent_review\\workspace\\src\\native_material_secondary_pass_actual.cpp",
+      "sha256": "eacb6b769eb1e3941fd640a6c4e3d704dcb532f038a927aab54f058131a34cca",
+      "bytes": 4719
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-secondary-pass\\include\\bsp\\native_material_effect_programs.hpp",
+      "copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_secondary_parent_review\\workspace\\include\\bsp\\native_material_effect_programs.hpp",
+      "sha256": "1ac85b078f1d11a0b57ff1cf38378caf667e452d9cc9748812097bd90248305a",
+      "bytes": 8014
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-secondary-pass\\src\\native_material_effect_programs.cpp",
+      "copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_secondary_parent_review\\workspace\\src\\native_material_effect_programs.cpp",
+      "sha256": "9ef5b0f0cfc0fe7928e7d897023035c431c756159aadefaf69b80b3b18e7ee6e",
+      "bytes": 23180
+    }
+  ],
+  "routines": [
+    {
+      "address": "00b45e00",
+      "bytes": 224,
+      "coverage": "Full normal actual-source overload reviewed, strictly compiled, and source runtime exercised; original only empty branch."
+    },
+    {
+      "address": "00b45ee0",
+      "coverage": "Narrow B463B6 caller adaptation statically reviewed and compiled only."
+    }
+  ],
+  "calls": [
+    {
+      "function": "00b45e00",
+      "address": "00b45e39",
+      "native": "00b41210",
+      "contract": "Actual pass pool allocation after present primary gate."
+    },
+    {
+      "function": "00b45e00",
+      "address": "00b45e4c",
+      "native": "00b44b10",
+      "contract": "Complete actual renderer-profile constructor with persistent child."
+    },
+    {
+      "function": "00b45e00",
+      "address": "00b45e6c",
+      "native": "00b455c0",
+      "contract": "Copy captured current primary after secondary publication and metadata binding."
+    },
+    {
+      "function": "00b45e00",
+      "address": "00b45e7a",
+      "native": "00b5ec40",
+      "contract": "Current secondary state0F=0."
+    },
+    {
+      "function": "00b45e00",
+      "address": "00b45e89",
+      "native": "00b5ec40",
+      "contract": "Reload current secondary and write1B=1."
+    },
+    {
+      "function": "00b45e00",
+      "address": "00b45e98",
+      "native": "00b5ec40",
+      "contract": "Reload current secondary and write13=5."
+    },
+    {
+      "function": "00b45e00",
+      "address": "00b45ea7",
+      "native": "00b5ec40",
+      "contract": "Reload current secondary and write14=6."
+    },
+    {
+      "function": "00b45ee0",
+      "address": "00b463b6",
+      "native": "00b45e00",
+      "contract": "Canonical caller forwards exact existing service domains and retains failed child; full caller not executed."
+    }
+  ],
+  "source_findings": [],
+  "fixture_corrections": {
+    "original_sha256": "b5f927194aeb677d0dec12496330625592b4f0e5a7d3ee06b31cf96763cfbef3",
+    "corrected_sha256": "09c86ceffd801a039d0039e7aa6eaeb22a083080d97973158dc859a7cff7c2fb",
+    "production_source_modified": false,
+    "corrections": [
+      "Register the already-produced white texture variable, replacing the stale error identifier.",
+      "Construct the borrowed failure context with its own copied service object; assignment is deleted because the service contains a lifetime reference.",
+      "Remove an unused internal helper left after fixture reduction; W4/WX reports C4505. No behavior changed."
+    ],
+    "observer": "Append physical mapped-module observation after successful behavior checks."
+  },
+  "native_body": {
+    "address": "00b45e00",
+    "bytes": 224,
+    "sha256": "9ed00a4c3d16d41d9681d253d47e86723621e0d7d7ef5f3905fd7fb0044e4bb5",
+    "live_equals_PE_equals_fixture": true,
+    "fixture_input_created_from_verified_PE": true,
+    "relocations": 0,
+    "runtime_scope": "Original whole bytes execute only empty primary branch; no external child or FH3 handler is reached."
+  },
+  "missing_profile_supplied": {
+    "address": "00d61be8",
+    "bytes": 20,
+    "sha256": "8e487df2a8ed25f970a956066db075cbb5760250fc63436183a5ed4d4ae5b43a",
+    "live_equals_PE": true,
+    "was_missing_before_review": true,
+    "purpose": "Existing NativeMaterialPassReference checks actual numeric pass profile; the prepared fixture omitted pass.bin, and its missing-file throw occurs in noexcept bind_pass."
+  },
+  "generated_code": {
+    "core_object_sha256": "8db05902f46e35d5c734a4bbda4d1f7f4c7ea6015afac23f3eb0d72f6269ab7a",
+    "caller_object_sha256": "7f38818fb9723c707b89daa749311fe2e1bcb765993cd9b5847a919b35febc4d",
+    "generated_core_bytes": 992,
+    "direct_callee_relocations_verified": 7,
+    "primary_reload_offset": "01b9",
+    "secondary_publication_offset": "01cc",
+    "metadata_callback_offset": "01fd",
+    "copy_call_offset": "021b",
+    "state_calls": [
+      "0239",
+      "0253",
+      "026d",
+      "0287"
+    ],
+    "final_current_secondary_reload": "0296",
+    "root08_write": "02ae"
+  },
+  "runtime": {
+    "root_commit": "973a42a8c03d95e6a50610c99f35fa7c032652f6",
+    "compile_and_link": [
+      {
+        "command": "compile_fixture.cmd",
+        "exit_code": 0,
+        "log": "compile_fixture_final.log"
+      },
+      {
+        "command": "link_fixture.cmd",
+        "exit_code": 0,
+        "log": "link_fixture_final.log"
+      }
+    ],
+    "run_exit": 0,
+    "libraries_before_after": {
+      "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\build\\win32\\Release\\bsp_core.lib": "7a45bb6e460ac6a068fbffeccee28762e892baeee6ef0753f1c4c92dc6333610",
+      "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\build\\win32\\Release\\bsp_lua511.lib": "b6c19dd56bce2c86dcf1abf5c3044d48ddc2ac2c33ef04e3dc87f022413ee193",
+      "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\build\\win32\\Release\\bsp_zlib121.lib": "2c89bd9ae83d791564ea847c75e8e5ee025e40810c1df8d55e5799e0c7b8c471"
+    },
+    "new_source_object_override": true,
+    "cmake_registration": false,
+    "scope": "Copied unfinished secondary source/programs objects explicitly linked before current root library. Corrected prepared fixture only. Full source secondary with real HAL/owners and explicit effect preimages; untouched original224byte body only empty branch. No B45EE0/B46950/canonical effect admission, original activechildren/FH3 or game claim.",
+    "prior_run_exit": 3221226505,
+    "same_executable_sha256": "ad2afede2ba1580bc063bc0ddab98dbaa7a2aeb6b12207620c34c7dbd77604e8",
+    "only_runtime_input_added": {
+      "address": "00d61be8",
+      "bytes": 20,
+      "sha256": "8e487df2a8ed25f970a956066db075cbb5760250fc63436183a5ed4d4ae5b43a",
+      "live_equals_PE": true,
+      "was_missing_before_review": true,
+      "purpose": "Existing NativeMaterialPassReference checks actual numeric pass profile; the prepared fixture omitted pass.bin, and its missing-file throw occurs in noexcept bind_pass."
+    }
+  },
+  "coverage": [
+    "Real HAL hot white.tga primary and secondary constructors with canonical state/pass registration.",
+    "B455C0 state copying and four overrides; primary states unchanged and secondary borrowed effect preserved.",
+    "Original exact224bytes empty branch agrees across all376effect footprint bytes; no reached external calls or code relocations.",
+    "Distinct constructor/copy source-domain failures preserve raw slot, published pass or unmodified remaining13slots as appropriate.",
+    "Same executable initially failed fast when missing pass.bin threw through noexcept registration; adding only verified original20byte profile made it pass."
+  ],
+  "source_order_review": [
+    "Adopt persistent frame before allocation; initialize embedded actual-constructor child first.",
+    "Gate only modezero and currentC8, preserve native null-allocation publication-before-copy boundary.",
+    "Reload C8 after constructor, publish100, metadata bind, then realB455C0.",
+    "Four independent current100 reads before setters; final current100 read before root08=1.",
+    "Zero remaining13slots in order; absent primary zeros14; no old secondary releases.",
+    "Canonical caller resets only after normal completion; failed child stays adopted in LoadFrame."
+  ],
+  "limits": [
+    "Worker source remains uncommitted/unregistered; explicit new source objects precede root library. No default CMake build proof for this packet.",
+    "Effect is explicit raw caller-entry storage, not constructed canonical B46950 admission.",
+    "No full B45EE0/B46950, active original B45E00 children, native FH3/SEH/private aliases, cold loading, B2 draw, teardown or game validation.",
+    "Fixture used existing online-null borrowed platform receiver; no complete platform-construction or non-null input route proof."
+  ],
+  "immutable_review": {
+    "path": "local/checkpoints/973a42a8/secondary-pass-review/validation.json",
+    "sha256": "7e722db04deab4843be0e7bc841d5cbebd6a6b499b2c4753b6ffda8b1bce69ed",
+    "artifacts": 674,
+    "runtime_modules": 80,
+    "source_manifest_sha256": "2d1bf868f8949e55862ba66b27c8c16e871b26cec2e6c902f0a00bd8ef17d27a"
+  }
+}
