@@ -1,0 +1,185 @@
+{
+  "batch": "orch4_native_game_resource_classification_integration_bx",
+  "state": "integrated_build_actual_service_and_original_list_fixture_passed",
+  "branch": "agent/orch4-20260910",
+  "base_revision": "ae6dbac70f9d9ef5bf619d0fef8f72ad99f8e301",
+  "code_revision": "81472938606e4fdbb3661253456cfa8a33da085d",
+  "packets": [
+    {
+      "packet": "orch4_native_game_resource_classification_bx",
+      "report": "reports/native_game_resource_classification_bx.json",
+      "routines": 4,
+      "ordinary_bytes": 231
+    },
+    {
+      "packet": "orch4_native_game_resource_lists_bx",
+      "report": "reports/native_game_resource_lists_bx.json",
+      "routines": 24,
+      "ordinary_bytes": 2802
+    }
+  ],
+  "new_ordinary_routines": 28,
+  "new_ordinary_bytes": 3033,
+  "ordinary_instruction_starts": 1223,
+  "support_instruction_starts": 0,
+  "direct_transfer_rows": 78,
+  "indirect_calls": 3,
+  "incoming_main_review": {
+    "pinned_revision": "d697a0f68b42afa69d44d9f7c2ed9c554fc2a0ca",
+    "scope": "Actual raw unit-part/spatial attachment, plane timed-direction-hold projections, and model/shape reachability evidence.",
+    "observations": "Source additions were read and do not change BX dependencies. Spatial attachment uses explicit pose/current unit targets/floor/CRT services and source x87 kernels. Its60 paired cases, allocation failure and compatibility runs remain borrowed claims; actual unit/floor/native exception/gameplay parity was not independently certified. Plane timed-hold functions are scalar projections; native x87/COMISS exception and store-order equivalence remain unverified here. Model/shape negative reachability claims were not independently re-established.",
+    "independently_rerun": false,
+    "combined_build": "passed",
+    "merged_revision": "d697a0f68b42afa69d44d9f7c2ed9c554fc2a0ca",
+    "merge": "clean",
+    "borrowed_claims_independently_rerun": false,
+    "documentation_only_followup": {
+      "revision": "73c7fc052b6a5c1e0e51375fcac75b0e435d429d",
+      "merge_revision": "9fc99c82755c27829df22412c14aa44d837370e8",
+      "source_inputs_unchanged": true,
+      "observations": "Later documentation traces the part-shape source through class+50h slot8. Live disassembly at87BDF5..87BE02 confirms a null class-field guard branches to87BF5B before this producer call. This sample does not establish absence of writers, whole-program second-vector nonpopulation, or faithful zero part damage. No build inputs changed from the tested revision."
+    }
+  },
+  "validation": {
+    "strict_msvc_win32": "passed",
+    "actual_service_fixture": "passed",
+    "original_list_bodies": 24,
+    "paired_list_cases": 24,
+    "original_direct_call_relocations": 72,
+    "source_exception_boundaries": "predicate, length-error and allocation overflow passed",
+    "direct_transfer_rows": "78 passed",
+    "instruction_owners": "1223 passed",
+    "prior_ghidra_comments": "verified preserved for28 functions",
+    "duplicate_header_definitions": "passed",
+    "primary_win32_build": "passed",
+    "existing_ctests_passed": 2,
+    "native_classifier_original_body_oracle": false,
+    "native_fh3_exception_fixture": false,
+    "native_binary_abi_compatible": false,
+    "production_resource_load_bound": false,
+    "game_validated": false,
+    "final_library_hash_matches_tested_libraries": true,
+    "controlled_data_reservation": "passed with existing bootstrap"
+  },
+  "initial_build": {
+    "log": {
+      "path": "local/native_game_resource_classification_bx/build.log",
+      "sha256": "4ef694ce7e34fd5bcc1a8b55747c6eb2299a0e8d630818c3384a8b7698aef1fd",
+      "bytes": 2559
+    },
+    "core_sha256": "c1b298febc1c332ca696965377464111f855505749a831cbadfbe09201db1a17",
+    "game_sha256": "abac039d0dc1c9751541ed40ab8b5461e63d23e7929c7a88956fcde512f9533f"
+  },
+  "evidence": [
+    {
+      "path": "reports/native_game_resource_classification_bx.json",
+      "sha256": "7b88e084782bc57952f668713eb841c16390008c69ecb67d09540925d3f27251",
+      "bytes": 23726
+    },
+    {
+      "path": "reports/native_game_resource_lists_bx.json",
+      "sha256": "a48b986398e7ec5c0b7aa677e13742e280f78167ec83847d3de0f066b82a9567",
+      "bytes": 155763
+    },
+    {
+      "path": "reports/native_game_resource_classification_annotations_bx.json",
+      "sha256": "3c278a844c9043211ebc9967c3353f56ad40719537c704fc98e2e364ac96796f",
+      "bytes": 233044
+    },
+    {
+      "path": "reports/native_game_resource_classification_flow_bx.json",
+      "sha256": "7bbb76020da9ac9abe6aef14ac05e1b5bf29fd6bf830d9d73431a8f30e2c245c",
+      "bytes": 200343
+    }
+  ],
+  "source_manifest": {
+    "path": "local/native_game_resource_classification_bx/final/source_manifest.json",
+    "sha256": "5999d0eb95c1371325882c179cb9161630a75bf0708ecd9cd656b757029f4734",
+    "bytes": 287472,
+    "files": 2655
+  },
+  "limitations": [
+    "New C++ interfaces and actual borrowed storage/token cells, not original binary ABI or production publication.",
+    "Current CRT memmove_s, invalid-parameter callback, allocation and C++ exceptions are library boundaries, not native exception/handler ownership emulation.",
+    "Original oracle exercises normal list paths only; native classifier/FH3, private spills, corrupt ranges, hardware faults and gameplay untested.",
+    "Fixture parser and alternate type predicates are explicit boundary probes. Actual manager/parser/loader composition and queue shutdown remain open."
+  ],
+  "first_source_revision": "4a539a13800759ba1cafecfb031711f3a5833764",
+  "primary_build": {
+    "log": {
+      "path": "local/native_game_resource_classification_bx/final_build.log",
+      "sha256": "269a4448e0f53ed01a27706e0332792e6fd94ad6b1e809357dbcc91a814fc2c1",
+      "bytes": 2682
+    },
+    "core_sha256": "093266aafdc0969d1d94c7ded534c821971f2c99b6d2bd7e1dc08423fc8eddf9",
+    "game_sha256": "09ed0204e5cddb2aa95782d2bc4a01670a79643f2261ae959002fd79ca413003",
+    "configuration": "MSVC Win32 Release",
+    "existing_ctests_passed": 2
+  },
+  "combined_fixture": {
+    "source_commit": "81472938606e4fdbb3661253456cfa8a33da085d",
+    "passed": true,
+    "controlled_child_exit": 0,
+    "original_list_bodies": 24,
+    "paired_cases": 24,
+    "original_direct_call_relocations": 72,
+    "note": "Actual-service game-resource/root/fallback/hierarchy fixture and three original list families. Fixture parser/alternate type boundaries, native classifier/FH3/gameplay remain untested.",
+    "local_artifacts": [
+      {
+        "path": "local/native_game_resource_classification_bx/final/libraries.json",
+        "sha256": "cf7e639c42edc7c7dd335cf335119a05c834a7ac35ab5bc92b3d686f6072b3e6",
+        "bytes": 693
+      },
+      {
+        "path": "local/native_game_resource_classification_bx/final/probe.cpp",
+        "sha256": "35915fe70f5ff34fe3cc2f227b1cbe27fc2baf184bb2e19e11bacbb3254c80e5",
+        "bytes": 28180
+      },
+      {
+        "path": "local/native_game_resource_classification_bx/final/original_lists.hpp",
+        "sha256": "466d897462c35aa84109af3f47eedb54467b44de1d78b495ccb7e68c319bc667",
+        "bytes": 17792
+      },
+      {
+        "path": "local/native_game_resource_classification_bx/final/original_lists.json",
+        "sha256": "5353ac6106d5a348617cc0183486ca0300d733771b70d9cfa210f1c00ca9d371",
+        "bytes": 115770
+      },
+      {
+        "path": "local/native_game_resource_classification_bx/final/compile.cmd",
+        "sha256": "9e0b19ca266c1870034469ef91497276e8e466b35abdf93ef82f0e56241033f6",
+        "bytes": 731
+      },
+      {
+        "path": "local/native_game_resource_classification_bx/final/compile.log",
+        "sha256": "25d4f66c7c01d5b35c220cb97ffdd1608405f4ab45160497e6cc7ea3079676cf",
+        "bytes": 11
+      },
+      {
+        "path": "local/native_game_resource_classification_bx/final/probe.obj",
+        "sha256": "4308a1ba9a508c1b9cfb2c1c5ba7a05907083bc0eabd89a6fb141d860a7cd0b5",
+        "bytes": 252746
+      },
+      {
+        "path": "local/native_game_resource_classification_bx/final/probe.exe",
+        "sha256": "bbd69e540806cc55a6c7b218ead557ef3ca235c9e24b858f8537f0a9d375017e",
+        "bytes": 169984
+      },
+      {
+        "path": "local/native_game_resource_classification_bx/final/probe.log",
+        "sha256": "cf7de5d44ee0fd042fcbc83144f7ff269ac49ae541f67c4cd19e3f1e7a29bbd8",
+        "bytes": 611
+      },
+      {
+        "path": "local/native_game_resource_classification_bx/final/child_probe.log",
+        "sha256": "0284689628c624f573f610fdc39b61838a4fa9d2f337259f3a77e49f3137bd43",
+        "bytes": 571
+      },
+      {
+        "path": "local/native_game_resource_classification_bx/final/source_manifest.json",
+        "sha256": "5999d0eb95c1371325882c179cb9161630a75bf0708ecd9cd656b757029f4734",
+        "bytes": 287472
+      }
+    ]
+  }
+}
