@@ -7,7 +7,8 @@
   "target": "bsp_game, MSVC Win32 only",
   "link_options": [
     "/BASE:0x10000000",
-    "/DYNAMICBASE:NO"
+    "/DYNAMICBASE:NO",
+    "/FIXED:NO"
   ],
   "reason": "Observed initial-stack, private-region and rebuilt-image collisions with fixed original read-only data bands",
   "required_bands": [
@@ -73,5 +74,6 @@
   "sources": [
     "https://learn.microsoft.com/en-us/cpp/build/reference/dynamicbase?view=msvc-170",
     "https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-updateprocthreadattribute"
-  ]
+  ],
+  "relocation_review": "The initial production link stripped relocations after DYNAMICBASE:NO; the final configuration explicitly preserves them with FIXED:NO and the final PE verification checks the directory and file characteristic."
 }

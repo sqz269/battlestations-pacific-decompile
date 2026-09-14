@@ -10,13 +10,15 @@ stack overlapping CF, a private allocation overlapping D1, and a rebuilt image
 overlapping D5/D6. A successful later launch did not remove those failures.
 
 `cmake/native_data_placement.cmake`, included by the existing deferred startup
-registry, now gives only the MSVC Win32 `bsp_game` target `/BASE:0x10000000` and
-`/DYNAMICBASE:NO`. The rebuilt image starts at 256 MiB, above the entire original
+registry, now gives only the MSVC Win32 `bsp_game` target `/BASE:0x10000000`,
+`/DYNAMICBASE:NO` and `/FIXED:NO`. The rebuilt image starts at 256 MiB, above the entire original
 read-only data range. Its own ASLR opt-in is disabled, including the heap/stack
 randomization associated with that flag. This is an explicit compatibility
 tradeoff for the remaining absolute native-data consumers. Other targets, DLL
 ASLR, Windows policy and the image's NX-compatible flag are unchanged. Relocation
-information is retained; no `/FIXED` option is added.
+information is explicitly retained through `/FIXED:NO`. Without that option,
+the first production link stripped relocations despite the EDITBIN candidate
+retaining them; the final PE check rejects stripped or absent relocation data.
 
 The bootstrap still rejects any occupied required band. It does not free another
 allocation, change a live stack, retry until a launch succeeds, or relax source PE

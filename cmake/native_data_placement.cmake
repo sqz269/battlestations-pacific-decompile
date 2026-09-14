@@ -5,5 +5,5 @@
 # See docs/NATIVE_DATA_PLACEMENT_AC.md for the observed collisions and limits.
 if(WIN32 AND MSVC AND CMAKE_SIZEOF_VOID_P EQUAL 4)
     cmake_language(DEFER CALL target_link_options bsp_game PRIVATE
-        "/BASE:0x10000000" "/DYNAMICBASE:NO")
+        "/BASE:0x10000000" "/DYNAMICBASE:NO" "/FIXED:NO")
 endif()
