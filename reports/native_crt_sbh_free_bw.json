@@ -1,0 +1,854 @@
+{
+  "packet": "orch2_native_crt_sbh_free_bw",
+  "base": "e9c7792df0bc8a213b6b13c88c206575f2b1eb4d",
+  "status": "complete_bounded_native_discovery_source_owner_and_memmove_provider_open",
+  "documentation": "docs/NATIVE_CRT_SBH_FREE_BW.md",
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "mechanism": "Every fresh live capture uses supported BSP CLI, which invokes Client.verify before the query; direct-call checker also verifies target. No bridge/settings mutations.",
+    "count_record": "local/native_crt_sbh_free_bw/target_count.txt"
+  },
+  "installed_pe": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "size": 12223752,
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "sha512": "7b545a4c47fae14af6c50a1d4d0d2904c1b85f84b9a24d1516b95d77945693fc36b1f6bb9effb7fa29b22b06ebcafc230cdf97f5c332266a3de8dd83bdc29a97"
+  },
+  "provenance": {
+    "commit": "40d4693c9a94f236ebb932a91ca89e2bc10eb801",
+    "report": "J:\\PROG\\battlestations-pacific-decompile-orch2-raw-reader-allocation-bs\\reports\\native_raw_reader_allocation_bs.json",
+    "report_hashes": {
+      "size": 567538,
+      "sha256": "e9e30237c1ee8c72e8240fab16afb5e50f907b29f747d50dec50f232eedcf5e7",
+      "sha512": "b85336b72909320c5b1b38cf31a5549c280b5cdb5dda62695e960957d11e827de1b978b5ac1784321b4001b994aed43cd09d55ea1e1258eae7417897a25c9012"
+    },
+    "artifact_count": 1259,
+    "exact_path_set_and_two_hashes_verified": true,
+    "independent_chunked_second_pass": true
+  },
+  "functions": [
+    {
+      "address": "00c11d68",
+      "name": "___sbh_free_block",
+      "library": "Visual Studio 2005 Release",
+      "end_exclusive": "00c1207c",
+      "length": 788,
+      "instructions": 259,
+      "original_abi": {
+        "calling_convention": "cdecl",
+        "inputs": [
+          "D=[entry ESP+4] actual 20-byte descriptor",
+          "p=[entry ESP+8] actual native user block pointer"
+        ],
+        "return": "plain RET, caller cleanup; no meaningful EAX result contract",
+        "frame": "PUSH EBP/MOV EBP,ESP/SUB ESP,10h; ESI/EDI saved always, EBX conditionally after bit gate; matching normal restores",
+        "incoming_stack_writes": [
+          "EBP+C reused as successor/start pointer",
+          "byte EBP+F reused as old class counter",
+          "EBP+8 decremented by14h if current descriptor shifts after compaction"
+        ],
+        "nonvolatile": [
+          "EBP",
+          "EBX",
+          "ESI",
+          "EDI"
+        ],
+        "fs_or_eh_frame": "none installed by this body"
+      },
+      "argument_preconditions": [
+        "Actual descriptor points into native descriptor array; actual metadata and boundary tags/list links valid.",
+        "Actual group index, byte class counters, masks, sentinel heads, and allocated count belong to the same native SBH domain.",
+        "Caller supplies original lock/synchronization and API/native CRT provider identity; no local validation or lock."
+      ],
+      "abi_compatible_claim": false,
+      "source_implemented": false
+    }
+  ],
+  "native_spans": [
+    {
+      "address": "00c11d68",
+      "length": 788,
+      "end_exclusive": "00c1207c",
+      "live_pe_equal": true,
+      "size": 788,
+      "sha256": "8b6cce06449d208b367a0671ed68e5ec81c57bb152f4488abf500b57b23eadc8",
+      "sha512": "c93ffe8445dfacfbcd7f1be2c808142d107278f3ad3dfee6374a126fddc7128660956ba9c8ce51e729fb38fcd894dbeaaa1f54c0ff8588778c3509def0d5cc9a"
+    }
+  ],
+  "data_spans": [
+    {
+      "address": "00ce2088",
+      "length": 4,
+      "live_pe_equal": true,
+      "pe_backing": "file-backed import word",
+      "dwords": [
+        "00a078c0"
+      ],
+      "size": 4,
+      "sha256": "326a4fe197c60453fdd5926231c95b19e96e13cd5cda6e37fcdf2b7ccda0b365",
+      "sha512": "ca3f42f86913050d14f9e683f628a488f34c01c1bfb45fb0611e2607bcdafbee3810d9c3bba7ec10c886932065788fc4d93f46f5c05f9b53dc076aea12cca0b2"
+    },
+    {
+      "address": "00ce20fc",
+      "length": 4,
+      "live_pe_equal": true,
+      "pe_backing": "file-backed import word",
+      "dwords": [
+        "00a07712"
+      ],
+      "size": 4,
+      "sha256": "a95e613ad16eb266e6b93530c568c2203b506416a385f9bac831ec130523a772",
+      "sha512": "45facd0e8a66fa7b7019852d33710d54d57b98e6c91994ca3bbbca3fef3fde97170bbac6e5dbaae492e1741276a3716241ca3c5f7d95550cb6904e4f03b132e7"
+    },
+    {
+      "address": "0109e1bc",
+      "length": 4,
+      "live_pe_equal": true,
+      "pe_backing": "section virtual zero-fill",
+      "dwords": [
+        "00000000"
+      ],
+      "size": 4,
+      "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+      "sha512": "ec2d57691d9b2d40182ac565032054b7d784ba96b18bcb5be0bb4e70e3fb041eff582c8af66ee50256539f2181d7f9e53627c0189da7e75a4d5ef10ea93b20b3"
+    },
+    {
+      "address": "0109e310",
+      "length": 4,
+      "live_pe_equal": true,
+      "pe_backing": "section virtual zero-fill",
+      "dwords": [
+        "00000000"
+      ],
+      "size": 4,
+      "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+      "sha512": "ec2d57691d9b2d40182ac565032054b7d784ba96b18bcb5be0bb4e70e3fb041eff582c8af66ee50256539f2181d7f9e53627c0189da7e75a4d5ef10ea93b20b3"
+    },
+    {
+      "address": "0109ed64",
+      "length": 24,
+      "live_pe_equal": true,
+      "pe_backing": "section virtual zero-fill",
+      "dwords": [
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000000"
+      ],
+      "size": 24,
+      "sha256": "9d908ecfb6b256def8b49a7c504e6c889c4b0e41fe6ce3e01863dd7b61a20aa0",
+      "sha512": "11bb994b5d2eab48b18667c7d8943e82c9011cb1d974304b8f2b6247a7e6b7f55ca2f7c62893644c3728d17dafd74ae3ba46271cf6287bb9e751c779a26fefc5"
+    }
+  ],
+  "listing_verification": {
+    "live_listing_instructions": 259,
+    "raw_instructions": 259,
+    "exact_instruction_start_sequence": true,
+    "complete_788_byte_span": true,
+    "omitted_listing_instructions": [],
+    "listed_direct_calls": 1,
+    "listed_indirect_calls": 3,
+    "external_tail_jumps": 0
+  },
+  "calls": [
+    {
+      "caller": "00c11d68",
+      "address": "00c12042",
+      "instruction": "call 0xbf87e0",
+      "native": "00bf87e0"
+    }
+  ],
+  "indirect_calls": [
+    {
+      "caller": "00c11d68",
+      "address": "00c11faf",
+      "instruction": "call esi",
+      "iat": "00ce2088",
+      "provider": {
+        "dll": "KERNEL32.dll",
+        "symbol": "VirtualFree"
+      },
+      "loaded_at": "00c11f97",
+      "qualification": "ESI loaded once from actual IAT; reused for second VirtualFree call under native nonvolatile-register API contract."
+    },
+    {
+      "caller": "00c11d68",
+      "address": "00c1200a",
+      "instruction": "call esi",
+      "iat": "00ce2088",
+      "provider": {
+        "dll": "KERNEL32.dll",
+        "symbol": "VirtualFree"
+      },
+      "loaded_at": "00c11f97",
+      "qualification": "Same captured ESI as first call; no intervening write to ESI."
+    },
+    {
+      "caller": "00c11d68",
+      "address": "00c1201c",
+      "instruction": "call dword ptr [0xce20fc]",
+      "iat": "00ce20fc",
+      "provider": {
+        "dll": "KERNEL32.dll",
+        "symbol": "HeapFree"
+      }
+    }
+  ],
+  "layout": {
+    "descriptor_stride": 20,
+    "descriptor": {
+      "+00": "aggregate classes0..31 MSB-first mask",
+      "+04": "aggregate classes32..63 MSB-first mask",
+      "+08": "uncommitted/available-group MSB-first mask",
+      "+0c": "region reservation base; pinned classifier covers1MiB",
+      "+10": "actual metadata R"
+    },
+    "metadata": {
+      "+004..043": "64 byte per-class nonempty-group counts",
+      "+044+4*g": "group low-class mask",
+      "+0c4+4*g": "group high-class mask",
+      "+144+204*g": "group G",
+      "G+0": "allocated-block count",
+      "G+8*k+4": "class k sentinel next",
+      "G+8*k+8": "class k sentinel previous"
+    },
+    "free_block": {
+      "+0": "size",
+      "+4": "next",
+      "+8": "previous",
+      "+size-4": "footer size"
+    },
+    "group_index": "unsigned32(p-D.region)>>15",
+    "class": "unsigned clamp to63 of (signed32(size) arithmetic-shift-right4)-1; wrapping x86 arithmetic"
+  },
+  "ordered_behavior": [
+    "Capture R/group G and allocated header minus1; return if its low bit is1, after descriptor/header reads.",
+    "Capture successor header then predecessor footer; coalesce and unlink free successor first.",
+    "Coalesce free predecessor; retain its list position only when previous and final size classes match.",
+    "When removing singleton class: group mask clear, byte count decrement, descriptor mask clear iff zero; ordered link writes reload neighbors.",
+    "When inserting new list entry: F.previous,F.next,sentinel.next,reload F.next,next.previous; increment class byte before old-zero aggregate mask test, then set group mask.",
+    "Write header then footer; decrement allocated count; only zero enters eviction.",
+    "Evict old cached empty group, then publish current adjusted descriptor cache word before captured group index."
+  ],
+  "eviction": {
+    "cache_descriptor": "0109e310",
+    "cache_group": "0109ed78",
+    "decommit": {
+      "site": "00c11faf",
+      "args": [
+        "oldD.region+(oldg<<15)",
+        "8000h",
+        "MEM_DECOMMIT4000h"
+      ],
+      "result": "ignored; subsequent metadata updates unconditional"
+    },
+    "metadata_after_decommit": [
+      "reload old cache words",
+      "OR oldD+8 group bit",
+      "reload old metadata and oldgroup; clear oldR+C4+4*oldg only",
+      "reload old metadata; decrement byte oldR+43",
+      "reload oldD/metadata; if byte zero clear oldD+4 bit0"
+    ],
+    "whole_region_gate": "reloaded oldD+8 == FFFFFFFFh",
+    "release": {
+      "site": "00c1200a",
+      "args": [
+        "oldD.region",
+        "0",
+        "MEM_RELEASE8000h"
+      ],
+      "result": "ignored"
+    },
+    "metadata_free": {
+      "site": "00c1201c",
+      "args": [
+        "current0109E1BC",
+        "0",
+        "reloaded oldD.metadata"
+      ],
+      "result": "ignored"
+    },
+    "compaction": {
+      "site": "00c12042",
+      "callee": "00bf87e0 _memmove",
+      "args": [
+        "current oldD",
+        "oldD+14h",
+        "wrapped current_count*14h-oldD+current_array_base-14h"
+      ],
+      "after_return": [
+        "caller ADD ESP,0Ch",
+        "DEC current0109ED64",
+        "if current descriptor argument unsigned > reloaded old cache descriptor, subtract14h from argument slot",
+        "0109ED70=current0109ED68"
+      ]
+    },
+    "publication": [
+      {
+        "site": "00c1206c",
+        "store": "0109E310=current adjusted descriptor argument"
+      },
+      {
+        "site": "00c12071",
+        "store": "0109ED78=captured group EDI"
+      }
+    ]
+  },
+  "failure_and_exception": [
+    "BOOL results from two VirtualFree calls and HeapFree are ignored; no errno/GetLastError mapping.",
+    "No null/general validity check, catch, rollback, lock acquisition or FS/exception-frame installation.",
+    "Faults/nonlocal exits retain prior stores and completed API actions; source/full dispatcher/native exception parity not established.",
+    "ESI captures actual VirtualFree IAT once and is reused under native API nonvolatile-register contract."
+  ],
+  "globals": {
+    "0109e1bc": "owning CRT heap, read for metadata HeapFree",
+    "0109e310": "cached empty-group descriptor; init clears, allocation can clear, free publishes",
+    "0109ed64": "descriptor count; init clears, region creation increments, free decrements",
+    "0109ed68": "descriptor array base; init and region allocation publish, free reloads",
+    "0109ed70": "allocation search cursor; init/allocation publish, free resets to base after compaction",
+    "0109ed78": "cached empty-group index; free writes, allocation reads"
+  },
+  "existing_source": [
+    {
+      "source": "src/native_crt_small_block_heap_init.cpp",
+      "retained": "local/native_crt_sbh_free_bw/current_source/src/native_crt_small_block_heap_init.cpp",
+      "size": 1067,
+      "sha256": "247cf968d945af420f44ea89f3a2d96ba16a88923fb0d00cfe445cd959c887ca",
+      "sha512": "9bd9b493729554637b3270ca763bca01af7551aff640ddef5e9dd422608a4d0d5c2233cfed9ce173d0885ded4db6dddeb163784a75214f4dcd30c8f407765a11"
+    },
+    {
+      "source": "include/bsp/native_crt_small_block_heap_init.hpp",
+      "retained": "local/native_crt_sbh_free_bw/current_source/include/bsp/native_crt_small_block_heap_init.hpp",
+      "size": 1039,
+      "sha256": "00d6988a7ca75d5dc4b3e42e98b233c0da0301359b2b4a4acfa6209ba3d3cea6",
+      "sha512": "ea3c5493b55284ad64feefb3970fe4c17203b318942a13766bd52d97064d2def6dd6d32ac71ca269ce7ffd9f8454ed25a3e318f8c6e53096aca19076c3354461"
+    }
+  ],
+  "sdk_declarations": [
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\memoryapi.h",
+      "retained_lines": [
+        89,
+        97
+      ],
+      "size": 33539,
+      "sha256": "58edcc2090c411a1821e04a6a2954c258fd59ded44440bdd671984027e0a852f",
+      "sha512": "02e955151a9ed93a70466023971d4d62701069d5dcc542d97256ada844eae108d0ab9cc2de7819e573f12a64e148e7439262f48bcbc705f7952af90c6e891206"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\heapapi.h",
+      "retained_lines": [
+        99,
+        108
+      ],
+      "size": 5317,
+      "sha256": "22b606b0a4096295272bcae6fc353c4f159f0cdfc90b5f1a9a712b2fff50b53f",
+      "sha512": "3d84eec1642dcc39fb8e82069d2a1aba5ebdeaa5b40c24aa75d0e49fab7991cf790cfac98c9241e23fbeb4a9dc3c812b47051cc29b50687ce4fb40fd855b6293"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\winnt.h",
+      "retained_lines": [
+        15020,
+        15021
+      ],
+      "size": 876258,
+      "sha256": "bc603675b330e624fd6f3de9ed3497ed6101e4c56e12cf819a9ef7c41f1c78d8",
+      "sha512": "f601afdb6a9dd3ce915cd13d0146fe2f742ce4805422afe001a049d48d15712775f92d4570da0af3b3497e932f5b0148dbf6470abcd56c8e54223f82faadbecf"
+    }
+  ],
+  "source_availability": {
+    "indexed_queries": [
+      "00c11d68_lookup.txt",
+      "00bf87e0_lookup.txt",
+      "00bf87e0_docs.txt",
+      "00c11cf5_lookup.txt",
+      "00c119bf_lookup.txt",
+      "source_find_sbh.txt"
+    ],
+    "bounded_tree_search": "source_search_all.txt contains5 matches only in current small-block-init source/header for searched SBH/cache/native addresses. Indexed C11D68/BF87E0 have no reconstructed source records at base.",
+    "ready_primitive": "C11CF5 actual HeapAlloc/borrowed global publication initializer exists and source/header hashes retained.",
+    "not_ready": "C11D68 source not closed: actual BF87E0 provider and shared native state/lifetime/lock ownership must be explicit.",
+    "provider_frontier": [
+      {
+        "address": "00bf87e0",
+        "name": "_memmove",
+        "readiness": "named, no reconstructed source record; body unexpanded; exact caller cdecl overlap contract captured"
+      },
+      {
+        "address": "00c0c82b",
+        "name": "__VEC_memcpy",
+        "readiness": "BF87E0 indexed dependency only, unexpanded/unclaimed"
+      },
+      {
+        "addresses": [
+          "00c12968",
+          "00c1207c",
+          "00c1212c"
+        ],
+        "readiness": "allocator worker owns fresh discovery; peer layouts support coordination only until reviewed"
+      },
+      {
+        "address": "00c119bf",
+        "name": "__heap_init",
+        "readiness": "named original startup heap owner; no source record at this base"
+      }
+    ],
+    "recommendation": "Next bounded discovery should resolve complete BF87E0 and only its necessary actual direct-provider boundary; then assess a whole C11D68 packet with real borrowed shared globals and reviewed allocator layout. No callbacks, private heap state, or generic memmove replacement as closure."
+  },
+  "caller_context": {
+    "pinned_free": "BF9DC8 mode3 holds native lock4, classifies via C11D3D then calls C11D68; SEH4 cleanup remains caller responsibility.",
+    "classifier": "Pinned43B C11D3D uses descriptor14h stride and unsigned pointer-region<100000h; match alone does not prove valid block.",
+    "other_live_caller": "BFDCEC named LIBCRT_unmatched, unexpanded and not assigned a new contract.",
+    "xref_qualification": "READ/WRITE rows recorded; data-only xrefs do not establish global owners."
+  },
+  "validation": {
+    "native_bytes": 788,
+    "direct_call_rows": 1,
+    "indirect_sites_separately_qualified": 3,
+    "listed_external_tail_jumps": 0,
+    "prior_artifacts": 1259,
+    "build": false,
+    "tests": false,
+    "native_execution": false,
+    "source_mutations": false,
+    "ghidra_mutations": false,
+    "settings_mutations": false,
+    "push": false
+  },
+  "local_inventory": {
+    "directory": "local/native_crt_sbh_free_bw",
+    "files": 69,
+    "bytes": 654375,
+    "passes": 2,
+    "algorithms": [
+      "sha256",
+      "sha512"
+    ],
+    "complete_path_set_checked": true,
+    "method": "Whole-file first pass and independent chunked second pass. Report outside local avoids self-reference.",
+    "artifacts": [
+      {
+        "path": "local/native_crt_sbh_free_bw/00bf87e0_docs.txt",
+        "size": 31,
+        "sha256": "91e9a58f8802416523e4aa9d25a5bb527b70758c3baefaa703d7c1150b09dff3",
+        "sha512": "6360a58c8ff667c4d9c7deeeaf666c92a98df5b892ede4e6774691123bba71659b93ac67f0e14c3012c410933ffba61b10ce6c79741d722b81b726fb12e73eac"
+      },
+      {
+        "path": "local/native_crt_sbh_free_bw/00bf87e0_lookup.txt",
+        "size": 603,
+        "sha256": "ac9dc16bab07c9134d56ed440cc9ba3cb5150994fc4609e72ad7ed07ed0099e1",
+        "sha512": "4fc251e1d840d921eb947fd0cb7f17df01e439e3297f5c2fa11158c2c7eddae8510545829c2280ef4600a0269a90fb15d2fd9c8e0f370939c70384c2c74b00c3"
+      },
+      {
+        "path": "local/native_crt_sbh_free_bw/00bf9dc8_lookup.txt",
+        "size": 1754,
+        "sha256": "fc890677161402d086d7d192e9a67b76776a5124f618131b13fd66ad41dc613d",
+        "sha512": "de7eaae3b1927fd72f4c5f18fad3933289564959fee4e3923600143e5259826f4a0a48d621d9f3e5954f1d6451f4f9ade688757bf7912fa05ac96e080287b456"
+      },
+      {
+        "path": "local/native_crt_sbh_free_bw/00c119bf_lookup.txt",
+        "size": 320,
+        "sha256": "eda882b011b97cbbd0217d86a15a7d8d86538831bb6440d8a05f51b5608fcd55",
+        "sha512": "20752fb361eff86c673c47886394d49941501e091518154e11eeb73094fc574df5bc515e0bb43346ad846dee435dd4273d46172102d8b0ab8e3f64b3f8a82071"
+      },
+      {
+        "path": "local/native_crt_sbh_free_bw/00c11cf5_lookup.txt",
+        "size": 938,
+        "sha256": "2deded76a8788e96b96bf72cb9d026860f190a8360a72ab8f658037fb90ece7f",
+        "sha512": "8eef8232f73caa3dbd057afbf8a945014088a5b77eb6d370eed967d2bbe1bc35170d0a2839a9bf5672a65b0204d14ec4d8c7afdac96979988ab380cc3d8c6209"
+      },
+      {
+        "path": "local/native_crt_sbh_free_bw/00c11d68_asm_000.txt",
+        "size": 1774,
+        "sha256": "7bc932410095207d04ab3b804f40ad43f9a670ea77c0f2b97a327702f9bcbf6c",
+        "sha512": "956cdf7bc9021927abfc1782605fbad1a3688e8ac5a44278f628e4f790198c1037835f84af5d7c19bfdd93c7d6d12a3aad026f9717a3c61c28a68e86d2efd38c"
+      },
+      {
+        "path": "local/native_crt_sbh_free_bw/00c11d68_asm_055.txt",
+        "size": 1854,
+        "sha256": "332e7b7527d9b0084f7e671ca75fa2691c45ff5911b2d35f6394e9795b0fa505",
+        "sha512": "6521e3d5043ca173cb27687b104da0c7cd44d181cfe1dd1a66eb2259fea07ee250cca3b7be42dde8777b0f9f48f888cc11a4d2aeac5e5dca90d798de04403579"
+      },
+      {
+        "path": "local/native_crt_sbh_free_bw/00c11d68_asm_110.txt",
+        "size": 2036,
+        "sha256": "ddb36f796c5320861f14d3948408e39dd36b3d805b08f2ed5c07555d32e831a8",
+        "sha512": "42a00c6365a29c662161617d1aec29b14879eba7a093830919570973f1d4c5e488d4671c41fec3e850ce3cf5c830724aefdf8a205ff004aa722e663a45d78732"
+      },
+      {
+        "path": "local/native_crt_sbh_free_bw/00c11d68_asm_165.txt",
+        "size": 1956,
+        "sha256": "e8efec04668debadfc0e3773a7857f1c669a34fb0329894c84473e6f6353dbf7",
+        "sha512": "1d9c4b349387cde5ce544120a135c34e115f02e8a54b8ea04bf76e8302bdf5bd9c2f7e3bcce1d25d072bb8fc3030fbb25d13e806f2372a483cdb084d1877a422"
+      },
+      {
+        "path": "local/native_crt_sbh_free_bw/00c11d68_asm_220.txt",
+        "size": 1216,
+        "sha256": "ff7cd196f6ac0e2d5a87f03ce5babbff46e1190b9063c3ed88399ad6cac04e60",
+        "sha512": "14ef204ce0a28c32ecc456f4b31a070d070060801a36a8c5816fb2bf36d5f95a606fd687d3fee3fa7f4538ad166e9cfd82f7ce772d9a56ac060b465208f959cb"
+      },
+      {
+        "path": "local/native_crt_sbh_free_bw/00c11d68_asm_275.txt",
+        "size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "sha512": "cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce47d0d13c5d85f2b0ff8318d2877eec2f63b931bd47417a81a538327af927da3e"
+      },
+      {
+        "path": "local/native_crt_sbh_free_bw/00c11d68_bytes_000.txt",
+        "size": 616,
+        "sha256": "1a84315291267a0c4c0f364c00e1309296660406137e79205dfde4bed991fd32",
+        "sha512": "065a0589f2858775b0285fb90c8fedf35180df7bc98113b0c2a217dd844ee7bd979e064cbb1c05d319f16db797ac8c66c8c196b80bdf93291915bc0acd253c21"
+      },
+      {
+        "path": "local/native_crt_sbh_free_bw/00c11d68_bytes_128.txt",
+        "size": 616,
+        "sha256": "04d45dd658379cbe7335df8c23df1f176f3abaa34309bb07584a233d82e803dc",
+        "sha512": "d8de06b6c56b57f9aa9395ee2ea9ffd0d11f7463208111505115795cd56d4ea4bb9b8e0407d193c81010fa2910368a837dd2df93516ac89ef5dc565f700734cc"
+      },
+      {
+        "path": "local/native_crt_sbh_free_bw/00c11d68_bytes_256.txt",
+        "size": 616,
+        "sha256": "febd2d9729ff297581b47ce7d3435350e72c48eb033f73d9514f94a8ed621cb5",
+        "sha512": "e41d5ea3303de15605cd34bb3cdb8c98a62b86206ec9c0c711db0b26e966f11616db723b2e18b12289115ed42a24aa2a030783a753a9dd9332c7dc6cb2c661c7"
+      },
+      {
+        "path": "local/native_crt_sbh_free_bw/00c11d68_bytes_384.txt",
+        "size": 616,
+        "sha256": "110c4ca952aa6f2e4f2576948259578306fa20933efaba0691c98c3c749506ab",
+        "sha512": "5ddb29f1d104df63a578897a56a7ffaf4ec87a4f174b3be8c233dbd2fe0c0f04ba89b42667ba0f2748fa8f33b7e7e44a23bf1304e4da7c77aa36d6b71fa9721d"
+      },
+      {
+        "path": "local/native_crt_sbh_free_bw/00c11d68_bytes_512.txt",
+        "size": 616,
+        "sha256": "02ccdbace1fd34f5479cd2407c7a34443edb6312673116a3692eb618e75934cb",
+        "sha512": "e81c33c95b0939ea7867a1783b0f0b9fe7bb16a0bdd6b59190e2da146d8e8c328434eb631c0c7c805a497e00b5b025405f89426c43bd6b96281d3f5b4d3246d6"
+      },
+      {
+        "path": "local/native_crt_sbh_free_bw/00c11d68_bytes_640.txt",
+        "size": 616,
+        "sha256": "3e25f5f50a43133fce97151e2da186731be94d557e55be105ac508510bfbecf5",
+        "sha512": "a1697c5ea1213ba9a15c29d0a468d2ec984d1543fd5273dd44e4181c623c438d1252d506f46aadd01b7089683676955da71ca3404249dcc5eba4c15c187a4cdd"
+      },
+      {
+        "path": "local/native_crt_sbh_free_bw/00c11d68_bytes_768.txt",
+        "size": 106,
+        "sha256": "694448583f36372235e487c8216c19fc98534a8a9d6598b79a6b66359d884634",
+        "sha512": "d2f04882c01030bb5f4dfcdc872c94b9a54e1c15c8e43c930416e8b7f6825f57a82e52c0b89ee086f662b88756a9e8af0e1f32b71ae05b768ca18a701cb10b30"
+      },
+      {
+        "path": "local/native_crt_sbh_free_bw/00c11d68_callers.txt",
+        "size": 56,
+        "sha256": "e5ce3c3ce5ef74afda4d600488ed52364b8c2a8e20cb40ab85ac67bcde6ab886",
+        "sha512": "ae4f73544dfc02ff7f5219beb9974ff07c2ad25fe11a5e8bd20037b53aa2b5a208922a0c528cef7f7840ec1e0e5d0b470f215240c3a54335f5e1b6207719231b"
+      },
+      {
+        "path": "local/native_crt_sbh_free_bw/00c11d68_decompile_head.txt",
+        "size": 1841,
+        "sha256": "86a16799c82d81bd05a8ec0bcaa91b4d8fddbfdf429331befca39099ff6682f0",
+        "sha512": "d0e3b73312333cf2a46b3ab7b234ce5d3e3403745098d7c8bfd83cd97ddb779c6b1ad5a913ed35358c603a8a986850ef678940100e224e096d468ef539dca5f6"
+      },
+      {
+        "path": "local/native_crt_sbh_free_bw/00c11d68_decompile_mid.txt",
+        "size": 2456,
+        "sha256": "7667ee64a6dc446c0790116705eb9f2dc687bc193b3666bd65e644afae44d10f",
+        "sha512": "0830c55976ddda6ce4c6a30daddabcc9f9b5ebd69c02b5b654ae3dca8f2f3cd3b7c29504be53b3125bad2e4458ae5f96d6094eb19bda6fe77ae2c51b0216595c"
+      },
+      {
+        "path": "local/native_crt_sbh_free_bw/00c11d68_decompile_tail.txt",
+        "size": 1383,
+        "sha256": "cf32ab68ad923e0336a47186800776488e857366988a35265bb3aad81536fd62",
+        "sha512": "6c602b88fc0a98b045615781983c9b7a86175a7e85e788b05e0a9f5f2393d633f687305d6b3efa98f777d0e1c953161e45378a94fb5b411e4126aeab790aef2b"
+      },
+      {
+        "path": "local/native_crt_sbh_free_bw/00c11d68_live.bin",
+        "size": 788,
+        "sha256": "8b6cce06449d208b367a0671ed68e5ec81c57bb152f4488abf500b57b23eadc8",
+        "sha512": "c93ffe8445dfacfbcd7f1be2c808142d107278f3ad3dfee6374a126fddc7128660956ba9c8ce51e729fb38fcd894dbeaaa1f54c0ff8588778c3509def0d5cc9a"
+      },
+      {
+        "path": "local/native_crt_sbh_free_bw/00c11d68_lookup.txt",
+        "size": 316,
+        "sha256": "cc1e8d3b385be202f6137d53f874d61e67580eef7d8c5316c03f2bf845663c8d",
+        "sha512": "b778ba564002dddc384297af60b7d5985f1b09e02e27cb9cb1d0a15316dddb4a9e55dae63c8bc84bbfc2cde029cdadf3839e033fa870563f8f3eb21037a3b848"
+      },
+      {
+        "path": "local/native_crt_sbh_free_bw/00c11d68_pe.bin",
+        "size": 788,
+        "sha256": "8b6cce06449d208b367a0671ed68e5ec81c57bb152f4488abf500b57b23eadc8",
+        "sha512": "c93ffe8445dfacfbcd7f1be2c808142d107278f3ad3dfee6374a126fddc7128660956ba9c8ce51e729fb38fcd894dbeaaa1f54c0ff8588778c3509def0d5cc9a"
+      },
+      {
+        "path": "local/native_crt_sbh_free_bw/00c11d68_proto.txt",
+        "size": 293,
+        "sha256": "ab78688a98c6c6b25dc73d854d3dec0962a59b49872cb7cdef8602a00ffe0c2a",
+        "sha512": "5fa6052968be8a83ed518ab37418b051269141afac70bbafc6b77aeaa7483ce9748b6af28ad1646ee301b11852b4c7a0d59a2f608b914f253b12f98b23fd4f7e"
+      },
+      {
+        "path": "local/native_crt_sbh_free_bw/00c11d68_proto_complete.txt",
+        "size": 4260,
+        "sha256": "938cd0897c775b4414ec137ae184711177ce5c769146f28708419006983f12d7",
+        "sha512": "c6d756374e680a58cfce1f373e9bae72be8afc6299d71c49977da88d170014d378524b161aa3adf99053c975ec2de2d2277b217e17c3a20600a3535318b80c70"
+      },
+      {
+        "path": "local/native_crt_sbh_free_bw/00c11d68_raw.txt",
+        "size": 13770,
+        "sha256": "5324ecd6d5f29df9867753f4a02f97513b650d383b1ad79f78f312a5ca1bc99b",
+        "sha512": "c0750fde7fb56c02e87ee7599e14ae3f40cce5a0869f263d479656689ab71beb37ff4fe518c43530a36e115a4ff187499fdb282c9cba7dd8cc6fc2ee3018ebaa"
+      },
+      {
+        "path": "local/native_crt_sbh_free_bw/00ce2088_bytes.txt",
+        "size": 29,
+        "sha256": "45cc8e98b0fe63089c7d5c0049ae6952e285110ebf719ed736da42ef00f014b2",
+        "sha512": "f54a82a839c62efbfa49b61d4dab5c669adf22699e0e5ba8420628fe8fe09b184eddde4273d0d92cbb239e8fbca902b75d7a8dda21d6c7ac7ede2300ad1560e3"
+      },
+      {
+        "path": "local/native_crt_sbh_free_bw/00ce2088_live.bin",
+        "size": 4,
+        "sha256": "326a4fe197c60453fdd5926231c95b19e96e13cd5cda6e37fcdf2b7ccda0b365",
+        "sha512": "ca3f42f86913050d14f9e683f628a488f34c01c1bfb45fb0611e2607bcdafbee3810d9c3bba7ec10c886932065788fc4d93f46f5c05f9b53dc076aea12cca0b2"
+      },
+      {
+        "path": "local/native_crt_sbh_free_bw/00ce2088_pe.bin",
+        "size": 4,
+        "sha256": "326a4fe197c60453fdd5926231c95b19e96e13cd5cda6e37fcdf2b7ccda0b365",
+        "sha512": "ca3f42f86913050d14f9e683f628a488f34c01c1bfb45fb0611e2607bcdafbee3810d9c3bba7ec10c886932065788fc4d93f46f5c05f9b53dc076aea12cca0b2"
+      },
+      {
+        "path": "local/native_crt_sbh_free_bw/00ce20fc_bytes.txt",
+        "size": 29,
+        "sha256": "6540852e67763dff63fa983dc6be37b2b35040e9f741d7d6055095f53f907f00",
+        "sha512": "69432637b889e63c53d56ec4ffb81afdd5739045ff5791799e783b025e7261e478aa4147b5775f327bf0a12b5366421bbb86f378784b79a72fe57af10fc47e4d"
+      },
+      {
+        "path": "local/native_crt_sbh_free_bw/00ce20fc_live.bin",
+        "size": 4,
+        "sha256": "a95e613ad16eb266e6b93530c568c2203b506416a385f9bac831ec130523a772",
+        "sha512": "45facd0e8a66fa7b7019852d33710d54d57b98e6c91994ca3bbbca3fef3fde97170bbac6e5dbaae492e1741276a3716241ca3c5f7d95550cb6904e4f03b132e7"
+      },
+      {
+        "path": "local/native_crt_sbh_free_bw/00ce20fc_pe.bin",
+        "size": 4,
+        "sha256": "a95e613ad16eb266e6b93530c568c2203b506416a385f9bac831ec130523a772",
+        "sha512": "45facd0e8a66fa7b7019852d33710d54d57b98e6c91994ca3bbbca3fef3fde97170bbac6e5dbaae492e1741276a3716241ca3c5f7d95550cb6904e4f03b132e7"
+      },
+      {
+        "path": "local/native_crt_sbh_free_bw/0109e1bc_bytes.txt",
+        "size": 29,
+        "sha256": "8e82970b3ac2c6a59d68e89d60399b7dd049e60c28c3cf75271928d1815afa95",
+        "sha512": "86711af014933a61590d08aca1354fc03b0ef5059dca5a1a365719cdc130b222bcff37a5302024b2735cc6863e3bd9d751f97673d6ac007a7a06a46d75e07569"
+      },
+      {
+        "path": "local/native_crt_sbh_free_bw/0109e1bc_live.bin",
+        "size": 4,
+        "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+        "sha512": "ec2d57691d9b2d40182ac565032054b7d784ba96b18bcb5be0bb4e70e3fb041eff582c8af66ee50256539f2181d7f9e53627c0189da7e75a4d5ef10ea93b20b3"
+      },
+      {
+        "path": "local/native_crt_sbh_free_bw/0109e1bc_pe.bin",
+        "size": 4,
+        "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+        "sha512": "ec2d57691d9b2d40182ac565032054b7d784ba96b18bcb5be0bb4e70e3fb041eff582c8af66ee50256539f2181d7f9e53627c0189da7e75a4d5ef10ea93b20b3"
+      },
+      {
+        "path": "local/native_crt_sbh_free_bw/0109e310_bytes.txt",
+        "size": 29,
+        "sha256": "fb5c2dbae9e17cd87597d4bd11e9c969813c59e6f8b8d069cfdb4e21cb1ccbad",
+        "sha512": "b3646b826fd5b93b84d8995c72ab8676a281b9cb7435136a475eb7ad08facbe9dbe5d139c243f7e9860c2d867754405b73934636a1d167085710d5d6ed76d8a8"
+      },
+      {
+        "path": "local/native_crt_sbh_free_bw/0109e310_live.bin",
+        "size": 4,
+        "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+        "sha512": "ec2d57691d9b2d40182ac565032054b7d784ba96b18bcb5be0bb4e70e3fb041eff582c8af66ee50256539f2181d7f9e53627c0189da7e75a4d5ef10ea93b20b3"
+      },
+      {
+        "path": "local/native_crt_sbh_free_bw/0109e310_pe.bin",
+        "size": 4,
+        "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+        "sha512": "ec2d57691d9b2d40182ac565032054b7d784ba96b18bcb5be0bb4e70e3fb041eff582c8af66ee50256539f2181d7f9e53627c0189da7e75a4d5ef10ea93b20b3"
+      },
+      {
+        "path": "local/native_crt_sbh_free_bw/0109e310_xrefs.txt",
+        "size": 614,
+        "sha256": "f1b372a90e8d7a1132bcc96d5fd031ac404afb3acf5e5ae85238345a76d75439",
+        "sha512": "610eef693c4e77cf8de4506547ccad9d54f55a5a482ce378e2a135a03d27e6d74481efcfe53c5a2b68677ff315b5962112f7023c4574045706cde552d15d7382"
+      },
+      {
+        "path": "local/native_crt_sbh_free_bw/0109ed64_bytes.txt",
+        "size": 122,
+        "sha256": "00ce87cabeaac70613ee64a9fe33c089b7732ed3cf95d22b301085dc3a9465c2",
+        "sha512": "1fecac18a67a06cc7909a38629e791e54dcf48c96945e964c8a2ec9d0d2948e6a214b2f764b80c9404db9ed82c15274d5dd16ae0c8458836963b4cd29c8f3a3b"
+      },
+      {
+        "path": "local/native_crt_sbh_free_bw/0109ed64_live.bin",
+        "size": 24,
+        "sha256": "9d908ecfb6b256def8b49a7c504e6c889c4b0e41fe6ce3e01863dd7b61a20aa0",
+        "sha512": "11bb994b5d2eab48b18667c7d8943e82c9011cb1d974304b8f2b6247a7e6b7f55ca2f7c62893644c3728d17dafd74ae3ba46271cf6287bb9e751c779a26fefc5"
+      },
+      {
+        "path": "local/native_crt_sbh_free_bw/0109ed64_pe.bin",
+        "size": 24,
+        "sha256": "9d908ecfb6b256def8b49a7c504e6c889c4b0e41fe6ce3e01863dd7b61a20aa0",
+        "sha512": "11bb994b5d2eab48b18667c7d8943e82c9011cb1d974304b8f2b6247a7e6b7f55ca2f7c62893644c3728d17dafd74ae3ba46271cf6287bb9e751c779a26fefc5"
+      },
+      {
+        "path": "local/native_crt_sbh_free_bw/0109ed64_xrefs.txt",
+        "size": 474,
+        "sha256": "1f9dbd04e41a075f0e7ba79525666647add3a19d99c766c0f7f6c87739881b49",
+        "sha512": "9b810952e233cc35d0615521f2f9c9787a5bb12f33f5d8362b19c5f3fe345d87539b148f2d48e31ff320749cd48ca711b34740f76237fe55eba82b7ceb6ad12b"
+      },
+      {
+        "path": "local/native_crt_sbh_free_bw/0109ed68_xrefs.txt",
+        "size": 503,
+        "sha256": "e15e780746cf65714bd0f232b9279ba9f34ec51e971dc0dd8a2a81fe35537ecb",
+        "sha512": "f84f2edaf2079ee2db9350014f7b03516058c196e9f7ac2cb64d351eecc5a21ea1b3027e4cb83bcab06f2afd910d516d4ba77f29787cf1cdc82c056b72dc5194"
+      },
+      {
+        "path": "local/native_crt_sbh_free_bw/0109ed70_xrefs.txt",
+        "size": 176,
+        "sha256": "0d2e95f6f87f3a77d7999dd89a4f4177f95c6293a8bc067ede713dddde112c1d",
+        "sha512": "34e9ea9bcc100c080bf184c10c34eec8beece73b3b986ada15fbe0748252bdc2bf0bb9062176ecb7f8dd7a78438af52595bb7e00d173afc94aba79b83746e63d"
+      },
+      {
+        "path": "local/native_crt_sbh_free_bw/0109ed78_xrefs.txt",
+        "size": 217,
+        "sha256": "6f55e25953ea69c794a38c2895a67e0b02971d9f0c458bad6cc2a5a6db074ac9",
+        "sha512": "008c46a732c51b82db8e5a3cce4efba597c08c179ffa342908af945c7115eca9328aee998045bfe5e3276bdb139286b697aa04b78b48f78505de25b570a0fb5c"
+      },
+      {
+        "path": "local/native_crt_sbh_free_bw/capture.py",
+        "size": 4949,
+        "sha256": "cb3d21b1057ab346bc4344972e72d9d83341f086f47367d6294d8167ecea4a4a",
+        "sha512": "3ecc52114e1ae2636967d38a92d9a8e652b08048a9cffa1d2920b327f8a8e7339b4535a0f55e1ffa5c3832caa5221a8b4ee5ff51226ce795b4f36e995891f61c"
+      },
+      {
+        "path": "local/native_crt_sbh_free_bw/capture_command_correction.txt",
+        "size": 244,
+        "sha256": "ca94155e8bb67fdec106e77e10b90566ab7a14ebf0821e8fa88517f175e6540c",
+        "sha512": "d98c0af3bf042b0b05cf49c340ff226cd6b0b410297838ccde1e42b7cdf6d07e5a4290b3886ee83fb8b78fc23f0aec4b23c704e1cb61988bd57b5bcddd1c05ee"
+      },
+      {
+        "path": "local/native_crt_sbh_free_bw/capture_summary.json",
+        "size": 7976,
+        "sha256": "007c3c0358cb3969b8622519df5492fc0e9788e1aac125b89959c4bb18f69ef9",
+        "sha512": "4d8c711c86fc8ea9a69ecbba3010fb8b706df436624d6a507610aa82ad7b0d4c0e541a89f0fe9e80961fe49bf3f7fb681bafd80f968ca7b696916eec19581b15"
+      },
+      {
+        "path": "local/native_crt_sbh_free_bw/commit_message.txt",
+        "size": 430,
+        "sha256": "247707787b9d5a23025be399f3c52d08de2d96916c96eff112a0d5a33e22af99",
+        "sha512": "32e91d4389b8d4e158fb2e5f69e0de6c158ad6177f2725ffdba4ca7985d8bd0c5bd456a993679cd59e62487fcd1721145caa8826fc9963fc1ed8090338a08f18"
+      },
+      {
+        "path": "local/native_crt_sbh_free_bw/current_source/include/bsp/native_crt_small_block_heap_init.hpp",
+        "size": 1039,
+        "sha256": "00d6988a7ca75d5dc4b3e42e98b233c0da0301359b2b4a4acfa6209ba3d3cea6",
+        "sha512": "ea3c5493b55284ad64feefb3970fe4c17203b318942a13766bd52d97064d2def6dd6d32ac71ca269ce7ffd9f8454ed25a3e318f8c6e53096aca19076c3354461"
+      },
+      {
+        "path": "local/native_crt_sbh_free_bw/current_source/src/native_crt_small_block_heap_init.cpp",
+        "size": 1067,
+        "sha256": "247cf968d945af420f44ea89f3a2d96ba16a88923fb0d00cfe445cd959c887ca",
+        "sha512": "9bd9b493729554637b3270ca763bca01af7551aff640ddef5e9dd422608a4d0d5c2233cfed9ce173d0885ded4db6dddeb163784a75214f4dcd30c8f407765a11"
+      },
+      {
+        "path": "local/native_crt_sbh_free_bw/data_capture.py",
+        "size": 3218,
+        "sha256": "493438469a73ffb3a00aef6c3720768f75a60461b57dccea613b20557cda60d9",
+        "sha512": "2ee42493b985e7ba6f1d70956300ac49c3f8b8a5525d37b12c62f897b8c933f7260429dff266ee87fdf909de0d3f05ab76290fdafa0532c6d137fd5df83e3acf"
+      },
+      {
+        "path": "local/native_crt_sbh_free_bw/data_capture_corrections.txt",
+        "size": 377,
+        "sha256": "f8d6b9bbac431b2934cc078f9f793bfbd8bfd03b5c42eb6f6ca66a62c18f5816",
+        "sha512": "ab5556fd21b6c7874281f9a3871c3be608d0688ec55fa667b5b2fab272da89f4030ac5e7a7efd2280fe5e92e1efbdbc0fcf7e060fdfcfb8474fe30c38c7f0488"
+      },
+      {
+        "path": "local/native_crt_sbh_free_bw/final_document.md",
+        "size": 10132,
+        "sha256": "8e1602cfa0a2b9362515841b94c8c18f20a3eb55089fad7b393c5487df4e882d",
+        "sha512": "85eb2f268a09b15cb5b30d19f0a517ac3c5c3e063d2e73c9eafc6c0d1b932017c07a6191efddaea29d70472dba6996db2ff72acdba5ec4f94a4d20dfbcbef161"
+      },
+      {
+        "path": "local/native_crt_sbh_free_bw/inventory.py",
+        "size": 1933,
+        "sha256": "cb43f39fe19e180a85bd790abab85e098c7f90bbcc56d4ec7edb0b6935a5c5fb",
+        "sha512": "d3bcc33ee0a085449fffc9852b33e9857bf31042a5b535ad71fdfdd27f3f1753147114094ac612b8a57c593343db863f77e02c24f5b8889ad62831c59f338b16"
+      },
+      {
+        "path": "local/native_crt_sbh_free_bw/pinned_allocation_report.json",
+        "size": 567538,
+        "sha256": "e9e30237c1ee8c72e8240fab16afb5e50f907b29f747d50dec50f232eedcf5e7",
+        "sha512": "b85336b72909320c5b1b38cf31a5549c280b5cdb5dda62695e960957d11e827de1b978b5ac1784321b4001b994aed43cd09d55ea1e1258eae7417897a25c9012"
+      },
+      {
+        "path": "local/native_crt_sbh_free_bw/report.py",
+        "size": 8213,
+        "sha256": "150d25ce0e15d47825cb07becdb4776f4a6a4f2138a96640e2ca22f3a0fcc3f0",
+        "sha512": "aaa01fea48a4066aa9876222fb4fe4443eb8f677d13ea6ccd00e943bda9b90e0d7c2d47195a2cd4cc565d7d3d2cbdf8564c2a5f6c08ae5adf01b0b508dc9f390"
+      },
+      {
+        "path": "local/native_crt_sbh_free_bw/sdk_heapapi.h.txt",
+        "size": 230,
+        "sha256": "8296b66b8442d3cb5ccb43689987c30e6891c4efb1f257259bde9a9ac80494f7",
+        "sha512": "9d2666b8e7178dfc70d36e8ee3452e0fb25505b5f4a657e5090f9f979dffceb1971ab4f0bc679df8249c9a1d304809dfe98dda074ec0702ae74280abea99a3c8"
+      },
+      {
+        "path": "local/native_crt_sbh_free_bw/sdk_memoryapi.h.txt",
+        "size": 278,
+        "sha256": "e824e5c69d9741039c958f63d36610fce260379da480f739c7a451cdfa9bcb86",
+        "sha512": "91487bf9075c3f8aa834faf3bf7b108e7654490c05f30275e2ae9502277580de71cd3df7590485053d18bddfb98fea3135084f28994e3ee79b6501f4360122a6"
+      },
+      {
+        "path": "local/native_crt_sbh_free_bw/sdk_winnt.h.txt",
+        "size": 122,
+        "sha256": "b521c28b76b31a2efddcc605f5500bf1c7d3d26de693af51076e8fcd0a8c1b51",
+        "sha512": "e1a4aa63e67b53a970d33a35f6328fef2d0a1077b2449172df7fb2a3b306935eb59c6b5de383ae0032073520334494bf9215cce95a186cf785f68c67bbb81344"
+      },
+      {
+        "path": "local/native_crt_sbh_free_bw/source_find_sbh.txt",
+        "size": 498,
+        "sha256": "e7b5606dd11168111941c51dfea70a16c292145e744d04f42ed7b2a378f4c56e",
+        "sha512": "8169aeea69ca28bbbc9e395672a446ce58e640ac52459e839c16e4fc11e83321fef32d788bd7bf8b12752bc7e515b85b28f1c14a2f2899e942deb6b491f5acae"
+      },
+      {
+        "path": "local/native_crt_sbh_free_bw/source_search.txt",
+        "size": 511,
+        "sha256": "60adfb55a4f1a64dc8f641f029f371ec1e11126823344fa1dbfe823a9eb154b5",
+        "sha512": "76fad32e7aaa336b406735eb51ed035c94009d89a5ad9758822179de2f8856c39342f10e7611317052f0f021fc69f1d39aae1e936956a585cb9bd5e31a05df52"
+      },
+      {
+        "path": "local/native_crt_sbh_free_bw/source_search_all.txt",
+        "size": 511,
+        "sha256": "60adfb55a4f1a64dc8f641f029f371ec1e11126823344fa1dbfe823a9eb154b5",
+        "sha512": "76fad32e7aaa336b406735eb51ed035c94009d89a5ad9758822179de2f8856c39342f10e7611317052f0f021fc69f1d39aae1e936956a585cb9bd5e31a05df52"
+      },
+      {
+        "path": "local/native_crt_sbh_free_bw/target_config.json",
+        "size": 455,
+        "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+        "sha512": "4d63e102f408469c1bc103bc636873befeb5b8e7ced9254b7a64b03c91ed378680a0ac2c4f585b4f36bd572aa79a26404ae5595cddd1a1499be16d6188d7545c"
+      },
+      {
+        "path": "local/native_crt_sbh_free_bw/target_count.txt",
+        "size": 49,
+        "sha256": "ba6bfbdbbe70bbe3ac1ac00840b96e956fe47760eff92338e9c7e0ccfa4dacc9",
+        "sha512": "53251de9af0709db374660ce293ee1eca1ddbdb97d5419af14c328a40d3303cf28e0862186ddccbb168ad97db32ed51d492cc427655b26610de3779ac84d1be6"
+      },
+      {
+        "path": "local/native_crt_sbh_free_bw/verify_calls.txt",
+        "size": 68,
+        "sha256": "f2b2a30c15ebf3e02ad33dd2dbd7e5d8aa16f6b527787159240a1917ff30e604",
+        "sha512": "a7bb3cfecbace49f5ed57b546af736177e9d175b8d5304832f22991f1376d83edb39475e9b540aa735cd7667fbf9599e207a9e429e452dcaa35eba549557a01d"
+      }
+    ]
+  },
+  "documentation_hashes": {
+    "size": 10132,
+    "sha256": "8e1602cfa0a2b9362515841b94c8c18f20a3eb55089fad7b393c5487df4e882d",
+    "sha512": "85eb2f268a09b15cb5b30d19f0a517ac3c5c3e063d2e73c9eafc6c0d1b932017c07a6191efddaea29d70472dba6996db2ff72acdba5ec4f94a4d20dfbcbef161"
+  }
+}
