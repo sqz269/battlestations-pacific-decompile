@@ -373,5 +373,12 @@
     "original FH3/SEH and legacy exception identity",
     "malformed list/returning-invalid-parameter postconditions"
   ],
-  "validation": "Fresh ./scripts/build.ps1 MSVC Win32 Release passed (bsp_core, bsp_game, reconstructed_math CTest); 63/63 direct CALL rows verified; disk/live/listing and 320/320 saved instructions owned. No native fixture, archive or game execution."
+  "validation": "Fresh ./scripts/build.ps1 MSVC Win32 Release passed (bsp_core, bsp_game, reconstructed_math CTest); 63/63 direct CALL rows verified; disk/live/listing and 320/320 saved instructions owned. No native fixture, archive or game execution.",
+  "primary_integration": {
+    "report": "reports/native_vfs_composition_bd_validation.json",
+    "status": "actual_vfs_graph_search_groups_and_initial_constants_integrated_exact_build_and_fixtures_passed",
+    "source_revision": "5f9689802f0659de95c13253ddeac87b1ce2f233",
+    "scope": "Exact combined core archive; real raw provider graph and populated search groups; independently verified native roots/data and saved ABI corrections.",
+    "game_validated": false
+  }
 }

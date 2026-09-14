@@ -11388,30 +11388,32 @@
     {
       "id": "orch4_game_native_vfs_runtime_bd",
       "worker": "orch4-native-vfs-game-bd",
-      "done": false,
-      "state": "source_build_passed_installed_loose_fixture_in_progress",
+      "done": true,
+      "state": "actual_vfs_graph_search_groups_and_initial_constants_integrated_exact_build_and_fixtures_passed",
       "function_addresses": [],
       "code_ownership": [
         "include/bsp/game_native_vfs_runtime.hpp",
         "src/game_native_vfs_runtime.cpp"
-      ]
+      ],
+      "integration_report": "reports/native_vfs_composition_bd_validation.json"
     },
     {
       "id": "orch4_game_native_vfs_constants_bd",
       "worker": "orch4-vfs-constants-bd",
-      "done": false,
-      "state": "worker_committed_data_identity_fixture_passed_primary_review_pending",
+      "done": true,
+      "state": "actual_vfs_graph_search_groups_and_initial_constants_integrated_exact_build_and_fixtures_passed",
       "function_addresses": [],
       "code_ownership": [
         "include/bsp/game_native_vfs_constants.hpp",
         "src/game_native_vfs_constants.cpp"
-      ]
+      ],
+      "integration_report": "reports/native_vfs_composition_bd_validation.json"
     },
     {
       "id": "orch4_native_vfs_search_groups_bd",
       "worker": "orch4-vfs-search-bd",
-      "done": false,
-      "state": "worker_committed_build_passed_primary_native_review_pending",
+      "done": true,
+      "state": "actual_vfs_graph_search_groups_and_initial_constants_integrated_exact_build_and_fixtures_passed",
       "function_addresses": [
         "00be25e0",
         "00be2600",
@@ -11420,32 +11422,65 @@
       "code_ownership": [
         "include/bsp/native_vfs_search_groups.hpp",
         "src/native_vfs_search_groups.cpp"
-      ]
+      ],
+      "integration_report": "reports/native_vfs_composition_bd_validation.json"
     },
     {
       "id": "orch4_native_vfs_extension_prefix_be",
       "worker": "orch4-vfs-prefix-be",
       "done": false,
-      "state": "dispatched_bounded_actual_tree_source",
+      "state": "worker_committed_build_and_native_evidence_passed_primary_review_pending",
       "function_addresses": [
         "00be1480"
       ],
       "code_ownership": [
         "include/bsp/native_vfs_extension_prefix.hpp",
         "src/native_vfs_extension_prefix.cpp"
-      ]
+      ],
+      "worker_commit": "e6bbbf30"
     },
     {
       "id": "orch4_native_vfs_search_defaults_be",
       "worker": "orch4-vfs-search-defaults-be",
       "done": false,
-      "state": "dispatched_full_native_registration_sequence",
+      "state": "full_native_sequence_written_dependency_build_in_progress",
       "function_addresses": [
         "00738360"
       ],
       "code_ownership": [
         "include/bsp/native_vfs_search_defaults.hpp",
         "src/native_vfs_search_defaults.cpp"
+      ]
+    },
+    {
+      "id": "orch4_native_vfs_package_scan_be",
+      "worker": "orch4-vfs-package-scan-be",
+      "done": false,
+      "state": "dispatched_bounded_actual_storage_source",
+      "function_addresses": [
+        "0073cb10",
+        "00557a90",
+        "00bdb120"
+      ],
+      "code_ownership": [
+        "include/bsp/native_vfs_package_scan.hpp",
+        "src/native_vfs_package_scan.cpp"
+      ]
+    },
+    {
+      "id": "orch4_native_vfs_enumeration_bf",
+      "worker": "orch4-vfs-enumeration-bf",
+      "done": false,
+      "state": "dispatched_bounded_actual_storage_source",
+      "function_addresses": [
+        "00bdd990",
+        "00bdbe20",
+        "00bdd0a0",
+        "00bdb6e0"
+      ],
+      "code_ownership": [
+        "include/bsp/native_vfs_enumeration.hpp",
+        "src/native_vfs_enumeration.cpp"
       ]
     }
   ],

@@ -7,10 +7,53 @@
   "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
   "binary_size": 12223752,
   "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
-  "section": {"name":".data","virtual_begin":"00e08000","virtual_size":"00297edc","raw_begin":"00a08000","raw_size":"00010000","characteristics":"c0000040","writable":true},
+  "section": {
+    "name": ".data",
+    "virtual_begin": "00e08000",
+    "virtual_size": "00297edc",
+    "raw_begin": "00a08000",
+    "raw_size": "00010000",
+    "characteristics": "c0000040",
+    "writable": true
+  },
   "spans": [
-    {"address":"00e144f0","end_exclusive":"00e14709","length":537,"raw_offset":"00a144f0","sha256":"26abd3e2995fdbacecb6f352b5c0eb20ff20c9a7ada6312ba619c9d4c6fa6183","disk_live_equal":true,"meaning":"MPKG XOR table, period 0x219","direct_xrefs":[{"function":"00bb9920","address":"00bb9a8b","kind":"DATA read"}]},
-    {"address":"00e17bf0","end_exclusive":"00e17bf1","length":1,"raw_offset":"00a17bf0","sha256":"6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d","disk_live_equal":true,"meaning":"one-byte NUL, empty C-string fallback for native null data pointers","direct_xrefs":[{"function":"0043e9a0","address":"0043e9ac","kind":"DATA address load"},{"function":"0043ea80","address":"0043eac7","kind":"DATA address load"}]}
+    {
+      "address": "00e144f0",
+      "end_exclusive": "00e14709",
+      "length": 537,
+      "raw_offset": "00a144f0",
+      "sha256": "26abd3e2995fdbacecb6f352b5c0eb20ff20c9a7ada6312ba619c9d4c6fa6183",
+      "disk_live_equal": true,
+      "meaning": "MPKG XOR table, period 0x219",
+      "direct_xrefs": [
+        {
+          "function": "00bb9920",
+          "address": "00bb9a8b",
+          "kind": "DATA read"
+        }
+      ]
+    },
+    {
+      "address": "00e17bf0",
+      "end_exclusive": "00e17bf1",
+      "length": 1,
+      "raw_offset": "00a17bf0",
+      "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d",
+      "disk_live_equal": true,
+      "meaning": "one-byte NUL, empty C-string fallback for native null data pointers",
+      "direct_xrefs": [
+        {
+          "function": "0043e9a0",
+          "address": "0043e9ac",
+          "kind": "DATA address load"
+        },
+        {
+          "function": "0043ea80",
+          "address": "0043eac7",
+          "kind": "DATA address load"
+        }
+      ]
+    }
   ],
   "mutability_limit": "Both original spans are writable .data. Current direct xrefs show reads/address loads and no direct writes, but indirect/runtime mutation is unproved. Provider supplies verified initial-image snapshots, not live global aliases.",
   "source_abi": "GameNativeVfsConstants(path), const uint8_t* mpkg_xor_key_00e144f0(), const char* null_pattern_00e17bf0(); retain owner through all consumers.",
@@ -27,5 +70,12 @@
     "core_archive_sha256": "ab05f66e101b3674fd47a99c3ee84ee25abd3d1f9ead6cd1835c037c478588ba"
   },
   "native_game_process_exercised": false,
-  "calls": []
+  "calls": [],
+  "primary_integration": {
+    "report": "reports/native_vfs_composition_bd_validation.json",
+    "status": "actual_vfs_graph_search_groups_and_initial_constants_integrated_exact_build_and_fixtures_passed",
+    "source_revision": "5f9689802f0659de95c13253ddeac87b1ce2f233",
+    "scope": "Exact combined core archive; real raw provider graph and populated search groups; independently verified native roots/data and saved ABI corrections.",
+    "game_validated": false
+  }
 }

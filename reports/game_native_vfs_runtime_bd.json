@@ -33,5 +33,12 @@
     "Package scans, search-path registration and BE1480 prefix tree remain separate work.",
     "Caller must drain the single raw singleton manager before retained context destruction.",
     "Original FH3/SEH, runtime profile mutations and gameplay remain unverified."
-  ]
+  ],
+  "primary_integration": {
+    "report": "reports/native_vfs_composition_bd_validation.json",
+    "status": "actual_vfs_graph_search_groups_and_initial_constants_integrated_exact_build_and_fixtures_passed",
+    "source_revision": "5f9689802f0659de95c13253ddeac87b1ce2f233",
+    "scope": "Exact combined core archive; real raw provider graph and populated search groups; independently verified native roots/data and saved ABI corrections.",
+    "game_validated": false
+  }
 }
