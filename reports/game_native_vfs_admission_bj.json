@@ -1,13 +1,13 @@
 {
   "packet": "orch4_game_native_vfs_admission_bj",
   "status": "integrated_win32_built_native_vfs_frontend_two_frames_and_shared_drain_validated",
-  "utc": "2026-09-14T04:48:48.572616+00:00",
-  "code_revision": "8b9da0a46aeea1f41fb803f67b2cce73c9a35f59",
-  "concurrent_main_reviewed": "29d92bdb",
+  "utc": "2026-09-14T04:50:19.751987+00:00",
+  "code_revision": "8e68604bdc4860c5ef250ed147dc4dd8afeaa5a1",
+  "concurrent_main_reviewed": "31fac55a86b4f832d594d2c8d988276fdd22a68c",
   "source_manifest": {
-    "files": 2533,
+    "files": 2537,
     "path": "local/game_native_vfs_admission_bj_source_manifest.json",
-    "sha256": "80bff02bd7acca4ccedb2a66890e94e83eebb7d9007a82356f822cbbac46068f",
+    "sha256": "b2160a5d2b1017fccb4273cab564a8dbd69bf88312f756ffd32a9fa10ed328f1",
     "verification": "git diff of source/build inputs against code revision passed with repository line-ending normalization; manifest hashes actual working bytes"
   },
   "worker_commits": {
@@ -27,6 +27,11 @@
   },
   "validation": {
     "build": "scripts/build.ps1 MSVC Win32 Release passed",
+    "earlier_success": {
+      "code_revision": "8b9da0a46aeea1f41fb803f67b2cce73c9a35f59",
+      "result": "local/native_vfs_admission_bj/run_20260913_214406_563_68304/result.json",
+      "exit_code": 0
+    },
     "ctests": {
       "passed": 2,
       "failed": 0
@@ -34,8 +39,8 @@
     "permanent_tests_added": false,
     "native_data_handoff": "own suspended child, four bands, verified original PE, retained through host teardown",
     "successful_run": {
-      "RunDirectory": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\local\\native_vfs_admission_bj\\run_20260913_214406_563_68304",
-      "Log": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\local\\native_vfs_admission_bj\\run_20260913_214406_563_68304\\startup.log",
+      "RunDirectory": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\local\\native_vfs_admission_bj\\run_20260913_214954_141_70384",
+      "Log": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\local\\native_vfs_admission_bj\\run_20260913_214954_141_70384\\startup.log",
       "ExitCode": 0,
       "TimedOut": false,
       "NativeDataMapped": true,
@@ -43,8 +48,8 @@
       "OriginalExeUnchanged": true,
       "LiveOptionsAndSavesUnchanged": true,
       "PrivateRuntimeHashes": {
-        "msidcrl40.dll": "623CB6CA98E566357ABBD0E76B15713921E1D7E1144C0C4F589A0407C7EFF1EE",
-        "xlive.dll": "79DA26AB6B2DC25936C3354087DE0BA41DA1A8B62924972E9100C29B95D34385"
+        "xlive.dll": "79DA26AB6B2DC25936C3354087DE0BA41DA1A8B62924972E9100C29B95D34385",
+        "msidcrl40.dll": "623CB6CA98E566357ABBD0E76B15713921E1D7E1144C0C4F589A0407C7EFF1EE"
       }
     },
     "observed_summaries": [
@@ -68,18 +73,19 @@
     "strict_worker_fixtures": "reports/game_native_vfs_application_bj.json and reports/game_native_vfs_operations_bj.json retain their separate source/core identities"
   },
   "artifacts": {
-    "build/win32/Release/bsp_core.lib": "83526fe6f7016d0e5a735ee07424a2bca9393f0de5e57f0edc4098a17de79bec",
-    "build/win32/Release/bsp_game.exe": "ff0b7e3716187e47083afeba134c5afa52ef074a53f2078b2e6cebf81053ea0f",
-    "build/win32/bsp_game.map": "4266153402358a9a0925fda33540ff52c5501aa5f7266dd1bcd38f06c4263a1e",
+    "build/win32/Release/bsp_core.lib": "ceffc98d95f2fcd03f7f6f05a7f415d116c899e6df3751a46e59b23c761d7a03",
+    "build/win32/Release/bsp_game.exe": "1a99e917f3b48ea9e72f3d084728fd3fa6d79a1d2b6978d68e051dc9993f3148",
+    "build/win32/bsp_game.map": "783e17bc165d48a78694dc2d286cfd3bf2b6225885318ecc55bcd5ddb07c145e",
     "local/game_native_vfs_admission_bj_final_build.log": "98ed13d93951b0838770a947fa65992b1f8213e763200ec2480b5422eec62f59",
     "local/game_native_vfs_admission_bj_map_build.log": "7724a5f7cd07f0b329a4a752ae95b4554084c0d6babf4fd08a4849b21fc67477",
-    "local/native_vfs_admission_bj/run_20260913_214406_563_68304/result.json": "a023d53f106e1ae4dc17616ccb2112a24d673a0db2336f8317a08966f4c3ca39",
-    "local/native_vfs_admission_bj/run_20260913_214406_563_68304/startup.log": "0bcb589f7e71fb52d532500d76baa9e8290ce68cfb2e35c28339d173b8fb944f",
+    "local/game_native_vfs_admission_bj_publish_build.log": "2a92d63281988b9708872fa6c5f9ee245f90fd4dc9af3cd6054bc9c47fe46a05",
+    "local/native_vfs_admission_bj/run_20260913_214954_141_70384/result.json": "1504611249402dfc3e2fdc6cf897a07afe558309569f1893b005e4e0227d4fcd",
+    "local/native_vfs_admission_bj/run_20260913_214954_141_70384/startup.log": "b5a6f0f6382c6d61fd8bf8c35add3e4a85e6ed550b3ef3b4eab4d66d0cdbc0e2",
     "local/run_game_native_vfs_admission_bj.ps1": "094e8ffab6e50f572530b0629058e743e5b4c68171de0b49dc401124cc3e89df",
     "local/game_native_vfs_admission_bj_review.json": "42638682b1376b6d5b194a4b12577995e2d233716e743f3016a1da86ea756f7e",
     "local/game_entry_handoff_bj_review.json": "66d57c5673479e8ce8738e5aa6435a33c5688aa74acbba6bf6be4170a4fe139e",
     "local/native_vfs_consumer_bypass_bj.json": "3533c382a85ad7500c9942110c59c327066dea359ec56e850abeaf37c4d03aff",
-    "local/game_native_vfs_admission_bj_source_manifest.json": "80bff02bd7acca4ccedb2a66890e94e83eebb7d9007a82356f822cbbac46068f",
+    "local/game_native_vfs_admission_bj_source_manifest.json": "b2160a5d2b1017fccb4273cab564a8dbd69bf88312f756ffd32a9fa10ed328f1",
     "local/native_vfs_admission_bj/run_20260913_214632_093_75656/debug_receipt.json": "b3be3262bdff0f7298d0b145b027d4ad1558cf434ba27a657a1eb6631f60e6b9",
     "local/native_vfs_admission_bj/run_20260913_214632_093_75656/debug_result.json": "51b020fc0b734fe66860bcc3c005cda48180ee5a5e8570cb04c43f3d09a2519b",
     "local/debug_native_vfs_bj.py": "43b685e2d4e96901ca3a9d31f3929e4b250ffc440e8874f9c22d8774c5daec24"
