@@ -1,0 +1,126 @@
+{
+  "packet": "orch3_particle_clock_destructor_eh_cx",
+  "status": "raw_source_native_and_existing_external_reviewed_build_pending",
+  "source_parent_commit": "9e7454ba53529c526b26d7027dedc4c31e88a59a",
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "installed_pe": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "installed_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "functions": [
+    {
+      "address": "004b4f10",
+      "inclusive_end": "004b4f20",
+      "bytes": 17,
+      "native_sha256": "c663d2852ae875ca1d07a9a096b66942af425f33d767d89e7bb35d79805f789b",
+      "cpp_symbol": "clear_native_particle_clock_publication_base_004b4f10",
+      "ghidra_name": "BSP_SamplerOwner_ClearPublicationBase",
+      "original_abi": "ECX actual complete owner; no stack arguments; plain RET. Unconditional F8D420 zero then owner profile CE3818."
+    }
+  ],
+  "native_spans": [
+    {
+      "address": "004b4f10",
+      "inclusive_end": "004b4f20",
+      "bytes": 17,
+      "hex": "c70520d4f80000000000c7011838ce00c3",
+      "sha256": "c663d2852ae875ca1d07a9a096b66942af425f33d767d89e7bb35d79805f789b",
+      "kind": "raw leaf",
+      "live_installed_identity": true
+    },
+    {
+      "address": "00b1b680",
+      "inclusive_end": "00b1b6d8",
+      "bytes": 89,
+      "hex": "6aff6898c7cb0064a100000000506489250000000051568bf18d4e0489742404c706387dce00c701247dce00c744241000000000e8d72b9cff8b4c2408c70520d4f80000000000c7061838ce005e64890d0000000083c410c3",
+      "sha256": "dcd2d39096ce43bf8160c2071bd316991bf064577a3caa7afb3f7634ebbd9a3d",
+      "kind": "existing owner destructor",
+      "live_installed_identity": true
+    },
+    {
+      "address": "00cbc790",
+      "inclusive_end": "00cbc7a1",
+      "bytes": 18,
+      "hex": "8b4df0e978877fffb8044bdf00e9a1a3f3ff",
+      "sha256": "017b67e9de2fcacd900df1bc48e6813c0a18fdd2915c925286b8c05b393d2b66",
+      "kind": "unwind action and handler",
+      "live_installed_identity": true
+    },
+    {
+      "address": "00df4afc",
+      "inclusive_end": "00df4b27",
+      "bytes": 44,
+      "hex": "ffffffff90c7cb002205931901000000fc4adf00000000000000000000000000000000000000000001000000",
+      "sha256": "810d6a9810fa54600c5a9e207b6f701f4fdd82efab08a511ea67a86139b7210b",
+      "kind": "unwind map and FuncInfo",
+      "live_installed_identity": true
+    }
+  ],
+  "unwind": {
+    "funcinfo": "00df4b04",
+    "magic": "19930522",
+    "max_state": 1,
+    "unwind_map": "00df4afc",
+    "state0": {
+      "next_state": -1,
+      "action": "00cbc790",
+      "retained_owner": "[EBP-10h]",
+      "tail_jump_site": "00cbc793",
+      "target": "004b4f10"
+    },
+    "handler": "00cbc798",
+    "runtime": "00bf6b43",
+    "state0_arm": "00b1b6ac",
+    "secondary_destructor_call": "00b1b6b4",
+    "normal_publication_clear": "00b1b6bd",
+    "normal_base_stamp": "00b1b6c7",
+    "effect": "Secondary destruction failure still unconditionally clears current publication cell F8D420 and writes CE3818 to retained complete owner.",
+    "external_source_agreement": true,
+    "native_private_fh3_reproduced": false
+  },
+  "existing_external_full_function": {
+    "reviewed_commit": "1bbc16628a278b9c8b023266664e4874eb45a368",
+    "source_introduction_commit": "abfc4761e44ab10204871d37618fca226fabb9bd",
+    "git_blob_content_sha256": {
+      "include/bsp/native_sampler_owner_lifetime.hpp": "1551528393bd30bd8ae3cda1f986654bd5524b2486ae4ed55b4eeb53237139d3",
+      "src/native_sampler_owner_lifetime.cpp": "4a0cf0bca7b441de44dd937600bd6aa7656d9053d0108210c517fe11de7dbcb7",
+      "reports/native_sampler_owner_lifetime.json": "658512f7af7c501d842ced0f714f2250d62887351db069d6496dd968775f05af"
+    },
+    "credit": "Existing external full-function implementation retained; no new body credit.",
+    "boundary": "External implementation uses NativeSamplerOwnerLifetimeContext/Operation with owner-domain validation and diagnostic state. CX exposes only original two-store semantics with actual owner and borrowed publication cell."
+  },
+  "call_steps": [],
+  "incoming_tail_jump": {
+    "address": "00cbc793",
+    "native": "004b4f10",
+    "function": "00cbc790",
+    "bytes": "e978877fff",
+    "native_installed_live_verified": true
+  },
+  "source_sha256": {
+    "include/bsp/native_particle_clock_publication_base.hpp": "eadd9e4b1a025feff9b5c83560ed2c2daaf0752b74e3647e83b7769a5446ac4b",
+    "src/native_particle_clock_publication_base.cpp": "ed81edd39601f5235bd956842cb0157c3d861d09527fb11dad9c46cec880c815"
+  },
+  "provider_sha256": {},
+  "native_body_credit": 0,
+  "native_bytes_credit": 0,
+  "raw_interface_upgrades": 1,
+  "raw_interface_bytes": 17,
+  "review": {
+    "primary_native_source_reviewed": true,
+    "generated_code_pending": true,
+    "expected_transformation": "Replace native first10-byte MOV[F8D420],0 with6-byte MOV[EDX],0; retain remaining7 bytes exactly."
+  },
+  "validation": {
+    "build_pending": true,
+    "new_repository_tests": 0,
+    "new_local_focused_probes": 0,
+    "game_validated": false
+  },
+  "limits": [
+    "Added EDX publication-cell address is a new source ABI.",
+    "Existing external full-function implementation prevents any new body/byte credit.",
+    "Native private FH3 execution, full raw shutdown composition and gameplay remain unvalidated."
+  ]
+}

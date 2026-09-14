@@ -1,0 +1,317 @@
+{
+  "packet": "orch3_particle_clock_raw_shutdown_da",
+  "status": "raw_source_native_and_external_contract_reviewed_CY_build_pending",
+  "source_parent_commit": "9e7454ba53529c526b26d7027dedc4c31e88a59a",
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "installed_pe": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "installed_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "functions": [
+    {
+      "address": "004dda40",
+      "inclusive_end": "004dda93",
+      "bytes": 84,
+      "native_sha256": "6a968969ae7b08b6a38a49c8e4cf5e232866381e31408b5d5028830696d1e5f1",
+      "cpp_symbol": "clear_native_particle_clock_records_004dda40",
+      "ghidra_name": "BSP_ParticleRecordContainer_ReleaseAll",
+      "original_abi": "thiscall ECX actual secondary container; no stack arguments; RET"
+    },
+    {
+      "address": "004ddaa0",
+      "inclusive_end": "004ddab6",
+      "bytes": 23,
+      "native_sha256": "4f051e0d2d7e6bc49c9416594b2d6d3e19d652e517204ea5d7a40a0d3e1d657f",
+      "cpp_symbol": "destroy_native_particle_record_array_004ddaa0",
+      "ghidra_name": "BSP_SamplerRecordArray_Destroy",
+      "original_abi": "thiscall ECX actual0Ch vector; no stack arguments; RET"
+    },
+    {
+      "address": "004de290",
+      "inclusive_end": "004de2ee",
+      "bytes": 95,
+      "native_sha256": "8bf7b0c241edb4b0336c26465cb29ae74067453c5b865df3d566a9357210be56",
+      "cpp_symbol": "destroy_native_particle_clock_records_004de290",
+      "ghidra_name": "BSP_ParticleRecordContainer_Destroy",
+      "original_abi": "thiscall ECX actual secondary container; no stack arguments; RET"
+    },
+    {
+      "address": "00b1b680",
+      "inclusive_end": "00b1b6d8",
+      "bytes": 89,
+      "native_sha256": "dcd2d39096ce43bf8160c2071bd316991bf064577a3caa7afb3f7634ebbd9a3d",
+      "cpp_symbol": "destroy_native_particle_clock_00b1b680",
+      "ghidra_name": "BSP_ParticleClock_Destroy",
+      "original_abi": "thiscall ECX actual1Ch complete owner; no stack arguments; RET"
+    },
+    {
+      "address": "004de340",
+      "inclusive_end": "004de35d",
+      "bytes": 30,
+      "native_sha256": "a436f22b03ad7062c5b18fb2d81c6573184fa30c2b6ad2a4ec134ed0eb4a607a",
+      "cpp_symbol": "delete_native_particle_clock_004de340",
+      "ghidra_name": "BSP_ParticleClock_ScalarDeletingDestructor",
+      "original_abi": "thiscall ECX actual complete owner; flags stack word; low-byte bit0 read AFTER destruction; RET4; EAX captured address even after free"
+    },
+    {
+      "address": "004de360",
+      "inclusive_end": "004de367",
+      "bytes": 8,
+      "native_sha256": "ce521d978bd6fe4b54d56addf5f39ef6640d949531ed61e3d6aaac638ad9b314",
+      "cpp_symbol": "delete_native_particle_clock_secondary_004de360",
+      "ghidra_name": "BSP_ParticleClock_SecondaryDeletingDestructorThunk",
+      "original_abi": "thiscall ECX actual secondary; SUB ECX,4 then tail JMP004DE340; original flags stack word/RET4 and EAX retained complete address"
+    }
+  ],
+  "native_spans": [
+    {
+      "address": "004dda40",
+      "inclusive_end": "004dda93",
+      "bytes": 84,
+      "hex": "51568bf1837e0800743d8d9b000000008b46088b4e046bc02c8b4408fc8b168b5210508bceffd28b460885c074138b4e046bc02c8d4c08d4e8236bffff834608ff837e080075c96a008d4e04e87fe9ffff5e59c3",
+      "sha256": "6a968969ae7b08b6a38a49c8e4cf5e232866381e31408b5d5028830696d1e5f1",
+      "kind": "complete native body",
+      "live_installed_identity": true
+    },
+    {
+      "address": "004ddaa0",
+      "inclusive_end": "004ddab6",
+      "bytes": 23,
+      "hex": "566a008bf1e866e9ffff8b0650e8d78e710083c4045ec3",
+      "sha256": "4f051e0d2d7e6bc49c9416594b2d6d3e19d652e517204ea5d7a40a0d3e1d657f",
+      "kind": "complete native body",
+      "live_installed_identity": true
+    },
+    {
+      "address": "004de290",
+      "inclusive_end": "004de2ee",
+      "bytes": 95,
+      "hex": "6aff688b6fc60064a100000000506489250000000051568bf189742404c706087dce00c744241000000000e880f7ffff83c6046a008bcec7442414ffffffffe83ce1ffff8b0650e8ad8671008b4c240c83c4045e64890d0000000083c410c3",
+      "sha256": "8bf7b0c241edb4b0336c26465cb29ae74067453c5b865df3d566a9357210be56",
+      "kind": "complete native body",
+      "live_installed_identity": true
+    },
+    {
+      "address": "00b1b680",
+      "inclusive_end": "00b1b6d8",
+      "bytes": 89,
+      "hex": "6aff6898c7cb0064a100000000506489250000000051568bf18d4e0489742404c706387dce00c701247dce00c744241000000000e8d72b9cff8b4c2408c70520d4f80000000000c7061838ce005e64890d0000000083c410c3",
+      "sha256": "dcd2d39096ce43bf8160c2071bd316991bf064577a3caa7afb3f7634ebbd9a3d",
+      "kind": "complete native body",
+      "live_installed_identity": true
+    },
+    {
+      "address": "004de340",
+      "inclusive_end": "004de35d",
+      "bytes": 30,
+      "hex": "568bf1e838d36300f644240801740956e85782710083c4048bc65ec20400",
+      "sha256": "a436f22b03ad7062c5b18fb2d81c6573184fa30c2b6ad2a4ec134ed0eb4a607a",
+      "kind": "complete native body",
+      "live_installed_identity": true
+    },
+    {
+      "address": "004de360",
+      "inclusive_end": "004de367",
+      "bytes": 8,
+      "hex": "83e904e9d8ffffff",
+      "sha256": "ce521d978bd6fe4b54d56addf5f39ef6640d949531ed61e3d6aaac638ad9b314",
+      "kind": "complete native body",
+      "live_installed_identity": true
+    },
+    {
+      "address": "00c66f80",
+      "inclusive_end": "00c66f94",
+      "bytes": 21,
+      "hex": "8b4df083c104e9156b87ffb8b4fcd800e9aefbf8ff",
+      "sha256": "14dd21a372180040b7e4cc723052bc0ebb4fc2e3d0c3f3624681a2263c81c775",
+      "kind": "cache unwind action and handler",
+      "live_installed_identity": true
+    },
+    {
+      "address": "00d8fcac",
+      "inclusive_end": "00d8fcd7",
+      "bytes": 44,
+      "hex": "ffffffff806fc6002205931901000000acfcd800000000000000000000000000000000000000000001000000",
+      "sha256": "d25a48b0c2a567523746a2b6da42f7461d642fe2670a9f8c949821fafa410171",
+      "kind": "cache unwind map and FuncInfo",
+      "live_installed_identity": true
+    },
+    {
+      "address": "004de2f3",
+      "inclusive_end": "004de2f7",
+      "bytes": 5,
+      "hex": "e898ffffff",
+      "sha256": "1d4cd5c69cb507ca1d22e1f2ae55b57d0c6aef4023ac995f2fe32249dcbbc0fa",
+      "kind": "external incoming scalar-container call",
+      "live_installed_identity": true
+    }
+  ],
+  "call_steps": [
+    {
+      "address": "004dda78",
+      "native": "004d45a0",
+      "function": "004dda40",
+      "hex": "e8236bffff",
+      "sha256": "477b0a4feaa08bf1e6165b6b60bd1d61995c365c6813d426a4b77ed139e32015"
+    },
+    {
+      "address": "004dda8c",
+      "native": "004dc410",
+      "function": "004dda40",
+      "hex": "e87fe9ffff",
+      "sha256": "f7363ddbba7334a169f5017271c0c4a5e4184e9431ede7c3999c1973d11c11b9"
+    },
+    {
+      "address": "004ddaa5",
+      "native": "004dc410",
+      "function": "004ddaa0",
+      "hex": "e866e9ffff",
+      "sha256": "8d5b3e4b46eb5b997a149b7360839439598983aba8157ec7752da6aac73152f2"
+    },
+    {
+      "address": "004ddaad",
+      "native": "00bf6989",
+      "function": "004ddaa0",
+      "hex": "e8d78e7100",
+      "sha256": "2d078ffb63a7d749b5bad6b95a7048e2046fe7904350203d45090ed8b86c7e37"
+    },
+    {
+      "address": "004de2bb",
+      "native": "004dda40",
+      "function": "004de290",
+      "hex": "e880f7ffff",
+      "sha256": "bbb0691b73e8bd9f34f0ebfa8a4966b2e6e9764b050b7bd415876a9eb210d257"
+    },
+    {
+      "address": "004de2cf",
+      "native": "004dc410",
+      "function": "004de290",
+      "hex": "e83ce1ffff",
+      "sha256": "f4129efc5ba9bbaeb47b0268b0fcd4a7d8f0fdc944877d41ea506726d59dbb88"
+    },
+    {
+      "address": "004de2d7",
+      "native": "00bf6989",
+      "function": "004de290",
+      "hex": "e8ad867100",
+      "sha256": "e96adca90439c3bed2975949d66e6cdefbf7d74ca643dbfab8f569c26830d1ad"
+    },
+    {
+      "address": "00b1b6b4",
+      "native": "004de290",
+      "function": "00b1b680",
+      "hex": "e8d72b9cff",
+      "sha256": "fc70a1b0ffabba1f38e5b97e9ad719b66378f38cd8b426683716a1fb3aecba70"
+    },
+    {
+      "address": "004de343",
+      "native": "00b1b680",
+      "function": "004de340",
+      "hex": "e838d36300",
+      "sha256": "bd526e68bc07de3555731243ebd20668ec5df17825df376592976983cd64ea2b"
+    },
+    {
+      "address": "004de350",
+      "native": "00bf65ac",
+      "function": "004de340",
+      "hex": "e857827100",
+      "sha256": "dd9c8e5a227172f4147b278614cdcd8754fad77f4c52773bd610273fdc209488"
+    },
+    {
+      "address": "004de2f3",
+      "native": "004de290",
+      "function": "004de2f0",
+      "hex": "e898ffffff",
+      "sha256": "1d4cd5c69cb507ca1d22e1f2ae55b57d0c6aef4023ac995f2fe32249dcbbc0fa"
+    },
+    {
+      "address": "004dda65",
+      "native": "current-cache-profile-slot10-via-EDX",
+      "function": "004dda40",
+      "kind": "indirect",
+      "resolved_recovered_target": "004ddb40"
+    }
+  ],
+  "native_tail_jumps": [
+    {
+      "address": "004de363",
+      "target": "004de340",
+      "function": "004de360",
+      "hex": "e9d8ffffff",
+      "sha256": "a17ab4052d421f8d9036c30978015a95c8c0e5446ae09c4beff285dfaa64f9e2",
+      "kind": "native E9 tail jump; Ghidra xref call label is not direct CALL byte evidence"
+    },
+    {
+      "address": "00c66f86",
+      "target": "004ddaa0",
+      "function": "00c66f80",
+      "hex": "e9156b87ff",
+      "sha256": "af66ee968080e3f942c7bef0ace00404ba48522fbce50e61ca956284a06af992",
+      "kind": "native E9 tail jump; Ghidra xref call label is not direct CALL byte evidence"
+    }
+  ],
+  "source_sha256": {
+    "include/bsp/native_particle_clock_shutdown.hpp": "9bdaffd02e337dbc9ee915c2ea3ec16817bd14cbdd92872691e06c8ccea520ad",
+    "src/native_particle_clock_shutdown.cpp": "04a797fbc598bfc9275c726643e6939272a411ac5cc3a82217b663fb7dbebbd9"
+  },
+  "provider_sha256": {
+    "include/bsp/native_particle_clock_sink_release.hpp": "da5e9b06250fd11dd49a889cecf4aa6a9545af4b2e89f3684d7b30aca2552f67",
+    "src/native_particle_clock_sink_release.cpp": "5700252321afbf61a91ecba3ea11c2dbd6f0b9d8fcdcd7866d9d4cd49e24ba11",
+    "include/bsp/native_particle_clock_publication_base.hpp": "eadd9e4b1a025feff9b5c83560ed2c2daaf0752b74e3647e83b7769a5446ac4b",
+    "src/native_particle_clock_publication_base.cpp": "ed81edd39601f5235bd956842cb0157c3d861d09527fb11dad9c46cec880c815",
+    "include/bsp/native_resource_record_vector.hpp": "fb85cb890ab99aeb91cf40b8d06acdf61a6194e28025952569c5c9846c152b47",
+    "src/native_resource_record_vector.cpp": "84b2b2a9014c8f398c82a5420e905819d495310b54b33ef1a3771a4ae9fbe4d4",
+    "include/bsp/native_render_resource_record.hpp": "98f3ef8e236d812ed68f17bdee180a24a24732a1f266c2e2da7d47c92c5a5f6c",
+    "src/native_render_resource_record.cpp": "ef87fb3eaa2479bf707edf5a8dee72dbd77b7c37856e39d4c817a44a1eda07d9",
+    "include/bsp/native_string_pool_storage.hpp": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d",
+    "src/native_string_pool_storage.cpp": "5cb79a6ce240205b3f1c81f1fbd6edd49cc1c05f8a20ee8dca8913f44c9095d5",
+    "include/bsp/singleton_lifetime.hpp": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+    "src/singleton_lifetime.cpp": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+  },
+  "pending_provider": "CY complete raw DC410 resize header/source; must integrate and pin before final build",
+  "existing_external_full_functions": {
+    "commit": "4f5258f36f46bb4cb313f7094391aaa7d6fd80d2",
+    "source_introduction_commit": "abfc4761e44ab10204871d37618fca226fabb9bd",
+    "git_blob_content_sha256": {
+      "include/bsp/native_sampler_owner_lifetime.hpp": "1551528393bd30bd8ae3cda1f986654bd5524b2486ae4ed55b4eeb53237139d3",
+      "src/native_sampler_owner_lifetime.cpp": "4a0cf0bca7b441de44dd937600bd6aa7656d9053d0108210c517fe11de7dbcb7",
+      "reports/native_sampler_owner_lifetime.json": "658512f7af7c501d842ced0f714f2250d62887351db069d6496dd968775f05af"
+    },
+    "new_body_credit": 0
+  },
+  "unwind": {
+    "cache": "D8FCB4/mapD8FCAC state0->-1/C66F80: retained secondary+4 ->DDAA0; disarm at4DE2C7 before normal second resize/free",
+    "owner": "DF4B04/mapDF4AFC state0->-1/CBC790: retained complete owner ->B4F10; unconditional publication clear/base stamp on failed secondary destruction",
+    "proof_files": [
+      "local/cx-particle-clock-destructor-eh.json",
+      "local/cz-particle-record-resize-eh.json"
+    ],
+    "source_cleanup": "Completed ArrayCleanup and BaseCleanup guard actions; array unwind failure terminates; normal final cleanup is disarmed first."
+  },
+  "native_body_credit": 0,
+  "native_bytes_credit": 0,
+  "raw_interface_upgrades": 6,
+  "raw_interface_bytes": 329,
+  "review": {
+    "primary_complete_native_and_source_reviewed": true,
+    "generated_code_pending": true,
+    "improvements": [
+      "Current IAT and raw current sink slot0 path via CV, without canonical-owner admission or operation/replay state.",
+      "Captured sink precedes current cache profile/target; post-callback count/data are fresh.",
+      "Single memory ADD count decrement after record destruction.",
+      "Public scalar flags low byte read after destruction; secondary tail adjustment preserves same slot."
+    ],
+    "domain": "Current CE7D08/CE7D24 profile views must identify DDB40 at+10. Callable actual sink profiles and existing concrete record/pool/CRT domains required. Unknown profile/target is explicitly unresolved."
+  },
+  "validation": {
+    "build_pending": true,
+    "new_repository_tests": 0,
+    "game_validated": false
+  },
+  "limits": [
+    "New EDX contexts and helper frames differ from original binary ABI/private FH3.",
+    "Native hardware faults and double-unwind delivery remain outside the source claim.",
+    "Full singleton-manager terminal composition, concrete fresh particle destruction and gameplay remain unvalidated."
+  ]
+}
