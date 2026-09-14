@@ -1,0 +1,417 @@
+{
+  "packet": "orch3_post_effect_geometry_bt",
+  "status": "source_reviewed_Win32_build_tested_writer_differential_pass_wrapper_static_only",
+  "base_commit": "32e81952f34ffd0afe2e98afdb146aee50cf4d9b",
+  "source_parent_commit": "32e81952f34ffd0afe2e98afdb146aee50cf4d9b",
+  "native_body_credit": 0,
+  "native_bytes_credit": 0,
+  "proposed_native_bodies": 2,
+  "proposed_native_bytes": 542,
+  "credit_note": "Worker proposes two complete admitted bodies. No provider, alignment or duplicate native-body credit; no worker Ghidra/ledger mutation.",
+  "routines": [
+    {
+      "address": "00b4d2d0",
+      "inclusive_end": "00b4d4b2",
+      "bytes": 483,
+      "listed_instructions": 89,
+      "source_name": "write_native_post_effect_stream_geometry_00b4d2d0",
+      "proposed_name": "BSP_PostEffectGeometry_WriteVertices",
+      "original_abi": "ECX unused; stack output,first-output-record,count,input pointer; RET10h B4D4B0; ESI/EDI preserved. EAX/EDX/XMM incidental return contents not named as semantic results.",
+      "source_abi": "New ordinary C++ void interface adds explicit actual constant-cell pointers; not drop-in binary ABI.",
+      "coverage": "Complete normal body, including count-zero path and exact alias-sensitive loop in documented valid-storage/nontrapping FP domain.",
+      "callees": [],
+      "listing_gap": {
+        "first": "00b4d308",
+        "inclusive_last": "00b4d30f",
+        "bytes": 8,
+        "hex": "8da4240000000090",
+        "interpretation": "Unreachable LEA ESP,[ESP]/NOP alignment after unconditional JMP B4D306->B4D310. No repair needed."
+      }
+    },
+    {
+      "address": "00b4d4c0",
+      "inclusive_end": "00b4d4fa",
+      "bytes": 59,
+      "listed_instructions": 26,
+      "source_name": "populate_native_post_effect_stream_geometry_00b4d4c0",
+      "proposed_name": "BSP_PostEffectGeometry_PopulateCurrentStream",
+      "original_abi": "ECX actual24h parent; ONE stacked input pointer, RET4 B4D4F8; ESI saved. Fresh current-field/slot loads bracket writer.",
+      "source_abi": "New C++ interface adds NativePostEffectStreamGeometryContext; ordinary provider exceptions propagate, no auto-unlock.",
+      "coverage": "Complete normal body through existing concrete B49980/B49A80 providers; wrapper runtime/GPU fixture not executed."
+    }
+  ],
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "bridge": "http://127.0.0.1:8089",
+    "image_base": "00400000",
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "verification": "Every live native read/export uses BSP CLI target verification; PE hash independently recomputed."
+  },
+  "native_spans": [
+    {
+      "name": "writer",
+      "address": "00b4d2d0",
+      "inclusive_end": "00b4d4b2",
+      "bytes": 483,
+      "sha256": "973c4566c789877112af8bb25a7f1f571a384aa17c4efae6cbd4045c9064ac57",
+      "PE_live_equal": true
+    },
+    {
+      "name": "wrapper",
+      "address": "00b4d4c0",
+      "inclusive_end": "00b4d4fa",
+      "bytes": 59,
+      "sha256": "6ee86b95b2fded21ea376e008f341df31748621535965de42c932bcb9d7752d6",
+      "PE_live_equal": true
+    },
+    {
+      "name": "logical_profile",
+      "address": "00d61d6c",
+      "inclusive_end": "00d61d87",
+      "bytes": 28,
+      "sha256": "e063e41b192f122760c42fc351b6edac6d3a53814e3d8d2543c77985e5b5e21b",
+      "PE_live_equal": true
+    },
+    {
+      "name": "depth",
+      "address": "00ce3800",
+      "inclusive_end": "00ce3803",
+      "bytes": 4,
+      "sha256": "d99e58435243d9fef9c88273b8d553b4fba4d0baf8009d29eae74fa99e0d9f57",
+      "PE_live_equal": true
+    },
+    {
+      "name": "one",
+      "address": "00d7a24c",
+      "inclusive_end": "00d7a24f",
+      "bytes": 4,
+      "sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c",
+      "PE_live_equal": true
+    },
+    {
+      "name": "existing_map_provider",
+      "address": "00b49980",
+      "inclusive_end": "00b49a7b",
+      "bytes": 252,
+      "sha256": "e0e9868dcdc34f988d7d34bd33637d8d819c9ea453cd27e0138f91428abb44f6",
+      "PE_live_equal": true
+    },
+    {
+      "name": "existing_unmap_provider",
+      "address": "00b49a80",
+      "inclusive_end": "00b49b0a",
+      "bytes": 139,
+      "sha256": "16573b9f263996213c20821e791cd1e9a65c16de48cd9d388288308a3061eb6c",
+      "PE_live_equal": true
+    }
+  ],
+  "calls": [
+    {
+      "address": "00b4d4d6",
+      "native": "current_logical+vtable10",
+      "function": "00b4d4c0",
+      "kind": "indirect",
+      "resolved_native": "00b49980",
+      "contract": "Current D61D6C slot+10. ECX captured current parent+18; stack count*3 modulo DWORD,0,0; EAX mapping; RET0Ch."
+    },
+    {
+      "address": "00b4d4e8",
+      "native": "00b4d2d0",
+      "function": "00b4d4c0",
+      "contract": "Incoming ECX parent unused. Four stack words: captured mapping,0,fresh parent+20 shifted right1,ONE stacked input pointer. RET10h."
+    },
+    {
+      "address": "00b4d4f5",
+      "native": "current_logical+vtable14",
+      "function": "00b4d4c0",
+      "kind": "indirect",
+      "resolved_native": "00b49a80",
+      "contract": "Fresh current parent+18 after writing, current D61D6C slot+14. ECX logical, no stack inputs, RET. No synthetic unlock on failure."
+    }
+  ],
+  "caller_steps": [
+    {
+      "address": "00b53fd1",
+      "native": "00b4d4c0",
+      "function": "00b529a0",
+      "contract": "ECX parent+30 pointer; single stacked parent+24 pointer; RET4.",
+      "provenance": "B529BC MOV EBP,ECX; full writer scan has no later EBP modification before final POP at B5408D."
+    },
+    {
+      "address": "00b54004",
+      "native": "00b4d4c0",
+      "function": "00b529a0",
+      "contract": "ECX parent+68 pointer; single stacked address parent+44; RET4.",
+      "provenance": "B529BC MOV EBP,ECX; full writer scan has no later EBP modification before final POP at B5408D."
+    },
+    {
+      "address": "00b54028",
+      "native": "00b4d4c0",
+      "function": "00b529a0",
+      "contract": "ECX parent+88 pointer; single stacked parent+7C pointer; RET4.",
+      "provenance": "B529BC MOV EBP,ECX; full writer scan has no later EBP modification before final POP at B5408D."
+    },
+    {
+      "address": "00b54068",
+      "native": "00b4d4c0",
+      "function": "00b529a0",
+      "contract": "ECX parent+B0 pointer; single stacked parent+A4 pointer; RET4.",
+      "provenance": "B529BC MOV EBP,ECX; full writer scan has no later EBP modification before final POP at B5408D."
+    }
+  ],
+  "writer_contract": {
+    "output_stride": 168,
+    "input_stride": 36,
+    "vertices_per_record": 6,
+    "vertex_stride": 28,
+    "wrapping": "Output address uses low DWORD(first*168 + output); unsigned count loops exactly count times. Input starts at its independent supplied pointer.",
+    "constants": "Current CE3800 then D7A24C words loaded once only after nonzero count; original words 3F000000/3F800000.",
+    "x87": "Eight destination FLD/FSTP pairs in native order; no float arithmetic. Source does not change CW/MXCSR. MOVSS paths preserve payload words; x87 conversions may quiet SNaN/set status.",
+    "alias": "No capture-all or vectorized replacement. Late reads observe earlier output writes, including overlap with later input records.",
+    "late_color": "B4D484 captures input+20 after all floating transfers, then stores vertex5,4,3,2,1,0 colors.",
+    "control_flow": "B4D36B SUB EDI,1 flags survive remaining MOVSS/FLD/FSTP/MOV instructions to B4D4A8 JNZ."
+  },
+  "wrapper_contract": {
+    "mapping": "Current stream+18 then count+20, current D61D6C+10 => concrete B49980(count*3,0,0).",
+    "writer": "Fresh count+20 after map, unsigned >>1; actual single input argument, output captured mapping, first0.",
+    "unmapping": "Fresh stream+18 after writer; current D61D6C+14 => concrete B49A80. No stale stream fallback or extra cleanup.",
+    "ownership": "No new retain/allocation/registration. Mapped output extent and canonical real mapping/synchronization/physical-provider domain remain caller prerequisites."
+  },
+  "source_sha256": {
+    "include/bsp/native_post_effect_stream_geometry.hpp": "034ae3bb916456316e4aad0f365a3edbce0daf59334db39cf38980f2ab3bf5ba",
+    "src/native_post_effect_stream_geometry.cpp": "0fa880829244705f95d249da8965f533224ce5848c56e161be6d5a739c70a2f0"
+  },
+  "provider_sha256": {
+    "include/bsp/native_logical_buffer_mapping.hpp": "d3ee48a208b6636dc70941c6a62967407d657ad18f1ae971f2d900c752fcaef0",
+    "src/native_logical_buffer_mapping.cpp": "6e9b61c4928f34705e12be655d0c8e6a72bca9210a9d9a2748e43054c55d3075",
+    "include/bsp/native_logical_buffer_device_restore.hpp": "2e79708e49c1559f706602b9fe761791776f11fee1c5b3efa69d7fbb2bd57c45",
+    "src/native_logical_buffer_device_restore.cpp": "aa1db11b86a016620d3445f957c002765a65b2aa026494cdfa00cf01f7d8f2c7",
+    "include/bsp/native_physical_buffer_lock.hpp": "c921a67527c5b9018cf67cf0a36567f1a08e91bd997392a4432a63e1ab9551b2",
+    "src/native_physical_buffer_lock.cpp": "453fcaf0f7d6bd1de0b2c8d398253cb381aa8cec6862c09fa527a52bb13fb309",
+    "include/bsp/native_physical_buffer_access.hpp": "2b148eb3c36b24a631e316cb9f30f4e81c0d20f2819873aff98db089b15db9f5",
+    "src/native_physical_buffer_access.cpp": "c3825d21870003bd4d45b006a7056600089358522bb2ca596a1e997b136cff4c",
+    "include/bsp/native_renderer_synchronization_actual.hpp": "143554f622e256fc6188ae68b4e5530855b5e7dc3631a728739dc728398f3ea0",
+    "src/native_renderer_synchronization_actual.cpp": "753796c97dea61b0a5e4b9c4034aae48198782033d0a3272b22c11ccfaca2e7a",
+    "include/bsp/native_logical_vertex_owner.hpp": "f3a097c42b5289e0f5c14767e17cce85aa409b70f3f854d4ba4f668738aef20c",
+    "src/native_logical_vertex_owner.cpp": "8c3fc9cff8680d9c7fe300bff162c29818b92d71ab813cca2f33476cee953bba",
+    "include/bsp/native_post_effect_construction.hpp": "65a3332cee75378284f9376c991c7c6e35cc46dd65d3b222fb0e5fd086715560",
+    "src/native_post_effect_construction.cpp": "e4fe53202b14f7c5de5ec73e3ad04d5542b456f07b21db564453e87056a22f8b"
+  },
+  "provider_base_blob_sha256": {
+    "include/bsp/native_logical_buffer_mapping.hpp": "d3ee48a208b6636dc70941c6a62967407d657ad18f1ae971f2d900c752fcaef0",
+    "src/native_logical_buffer_mapping.cpp": "6e9b61c4928f34705e12be655d0c8e6a72bca9210a9d9a2748e43054c55d3075",
+    "include/bsp/native_logical_buffer_device_restore.hpp": "2e79708e49c1559f706602b9fe761791776f11fee1c5b3efa69d7fbb2bd57c45",
+    "src/native_logical_buffer_device_restore.cpp": "aa1db11b86a016620d3445f957c002765a65b2aa026494cdfa00cf01f7d8f2c7",
+    "include/bsp/native_physical_buffer_lock.hpp": "c921a67527c5b9018cf67cf0a36567f1a08e91bd997392a4432a63e1ab9551b2",
+    "src/native_physical_buffer_lock.cpp": "453fcaf0f7d6bd1de0b2c8d398253cb381aa8cec6862c09fa527a52bb13fb309",
+    "include/bsp/native_physical_buffer_access.hpp": "2b148eb3c36b24a631e316cb9f30f4e81c0d20f2819873aff98db089b15db9f5",
+    "src/native_physical_buffer_access.cpp": "c3825d21870003bd4d45b006a7056600089358522bb2ca596a1e997b136cff4c",
+    "include/bsp/native_renderer_synchronization_actual.hpp": "143554f622e256fc6188ae68b4e5530855b5e7dc3631a728739dc728398f3ea0",
+    "src/native_renderer_synchronization_actual.cpp": "753796c97dea61b0a5e4b9c4034aae48198782033d0a3272b22c11ccfaca2e7a",
+    "include/bsp/native_logical_vertex_owner.hpp": "f3a097c42b5289e0f5c14767e17cce85aa409b70f3f854d4ba4f668738aef20c",
+    "src/native_logical_vertex_owner.cpp": "8c3fc9cff8680d9c7fe300bff162c29818b92d71ab813cca2f33476cee953bba",
+    "include/bsp/native_post_effect_construction.hpp": "65a3332cee75378284f9376c991c7c6e35cc46dd65d3b222fb0e5fd086715560",
+    "src/native_post_effect_construction.cpp": "e4fe53202b14f7c5de5ec73e3ad04d5542b456f07b21db564453e87056a22f8b"
+  },
+  "source_review": {
+    "reviewer": "primary /root",
+    "findings": [],
+    "scope": "Complete new header/source and both native listings. Final generated/probe artifacts sent for independent review."
+  },
+  "validation": {
+    "build": "PASS",
+    "command": "./scripts/build.ps1",
+    "configuration": "MSVC Win32 Release",
+    "build_attempts": 1,
+    "configured_tests": 1,
+    "passed_tests": 1,
+    "test_names": [
+      "reconstructed_math"
+    ],
+    "new_repository_tests": 0,
+    "source_input_count": 2565,
+    "input_scope": "All tracked CMakeLists/cmake/include/src/tests/third_party/scripts/build.ps1 plus both new BT source files. Captured during the initial full build, then again after it; not a pre-build stamp.",
+    "during_after_equal": true,
+    "fixture_build_stamp_input_count": 2570,
+    "fixture_current_stamp_guard": true,
+    "fixture_input_count": 11,
+    "fixture_before_after_equal": true,
+    "generated": {
+      "object_sha256": "8ad23760a0db2368dafca8fb0eb5f839ea553f32434fac345e3dfddfb2290bd4",
+      "source_sha256": "0fa880829244705f95d249da8965f533224ce5848c56e161be6d5a739c70a2f0",
+      "functions": [
+        {
+          "role": "writer",
+          "symbol": "?write_native_post_effect_stream_geometry_00b4d2d0@bsp@@YAXPAXIIPBXABUNativePostEffectGeometryConstants@1@@Z",
+          "bytes": 477,
+          "sha256": "09755515be94cd5d9212d3cb0284960657b4b8d90644d1ccb52b015411410c21",
+          "relocations": [],
+          "loop_offset": 59,
+          "native_loop_address": "00b4d310",
+          "native_loop_inclusive_end": "00b4d4ad",
+          "loop_bytes": 414,
+          "loop_sha256": "695336baf725bc251f941bf55c99e3dde23a01e699c14f2028323b36c0441c9a",
+          "native_loop_byte_identical": true,
+          "x87_pairs": 8,
+          "no_callees": true,
+          "setup_review": "Output EBp+8, first+0C and count+10: modulo IMUL/ADD before zero test. Input+14 read and both constant loads occur only after nonzero branch. New constant context+18 is host ABI metadata."
+        },
+        {
+          "role": "wrapper",
+          "symbol": "?populate_native_post_effect_stream_geometry_00b4d4c0@bsp@@YAXPAXPBXAAUNativePostEffectStreamGeometryContext@1@@Z",
+          "bytes": 723,
+          "sha256": "59b63c949ac3fa0a38e2b2feeeae367cdc29563a03b8cd97cbebdd0ec2596af4",
+          "relocations": [
+            {
+              "offset": 119,
+              "kind": 20,
+              "symbol": "?lock_native_logical_vertex_stream_00b49980@bsp@@YIPAXPAXAAUNativeLogicalBufferMappingContext@1@IIE@Z"
+            },
+            {
+              "offset": 685,
+              "kind": 20,
+              "symbol": "?unlock_native_logical_vertex_stream_00b49a80@bsp@@YIXPAXAAUNativeLogicalBufferMappingContext@1@@Z"
+            },
+            {
+              "offset": 696,
+              "kind": 6,
+              "symbol": "??_C@_0EH@NHAJICOG@post?9effect?5geometry?5requires?5it@"
+            },
+            {
+              "offset": 704,
+              "kind": 20,
+              "symbol": "??0logic_error@std@@QAE@PBD@Z"
+            },
+            {
+              "offset": 709,
+              "kind": 6,
+              "symbol": "__TI2?AVlogic_error@std@@"
+            },
+            {
+              "offset": 718,
+              "kind": 20,
+              "symbol": "__CxxThrowException@8"
+            }
+          ],
+          "loop_offset": 204,
+          "native_loop_address": "00b4d310",
+          "native_loop_inclusive_end": "00b4d4ad",
+          "loop_bytes": 414,
+          "loop_sha256": "695336baf725bc251f941bf55c99e3dde23a01e699c14f2028323b36c0441c9a",
+          "native_loop_byte_identical": true,
+          "current_read_review": {
+            "stream_before_map": 16,
+            "count_before_map": 36,
+            "map_call": 118,
+            "fresh_count_after_map": 134,
+            "unsigned_shift": 143,
+            "inlined_loop": 204,
+            "fresh_stream_after_writer": 626,
+            "unmap_call": 684
+          }
+        }
+      ]
+    },
+    "call_audit": {
+      "direct_rows": 5,
+      "failed": 0,
+      "indirect_rows": 2,
+      "scope": "Indirect targets are separately evidenced current-profile selections; mechanical auditor skips them."
+    },
+    "artifact_sha256": {
+      "local/bt-build-attempt-1.log": "a74641162fcccf12efe26a6b1a5bbaf43b0327b1f099ebcd4efa24aea352d9eb",
+      "local/bt-input-pins-during.json": "a6b85f7c4001cca34a55d6a158a8b8dafde06e77c05993619d9812a340319f51",
+      "local/bt-input-pins-after.json": "2e66c431bda669c0e13cf0500fd50c010f06e4a61c82530afbf65db9b416c216",
+      "local/bt-build-stamp.json": "e3e55494e055178292a7a04c2f6f20c8b674950048cd5f98d8aa50c8860ecf4a",
+      "local/bt_object_review.py": "aae883a19fd13902bed6cca0d8b2eb90372a9fd5ecbc29ba34ee4d04d6d3ad4d",
+      "local/bt-object-review.json": "0422820164d0fd41c2849d854bb7a844402cc71bdb94370411faa12cd924a736",
+      "local/bt-writer-object.asm": "813a7dab3d8455def6374ed7b1232e47fbfd92febad3d83e23146a21519180f6",
+      "local/bt-wrapper-object.asm": "cf4e65165ea221248ac8c7fab7d99d2e7d106710fcf4288eaff534b66ad39900",
+      "local/bt_probe.cpp": "dbe6a763c2ed755ee8dbec39da66a1c43b690506d21ef015cac5160c983d13f7",
+      "local/run_bt_probe.ps1": "adac24f3bdb25bd0032bc267e9ba7768f594f3f96b070841e983a0fba2df34b8",
+      "local/bt_native_writer_bytes.hpp": "2e24c4a2b878bc0a7f652f592cc44c850316a77eb3a3eff7b8f401e1b03eaf64",
+      "local/bt-probe-build.cmd": "fbe601b7194f233ad0a129d29dab8c152c9f5bd2f17b6cee5254a92fe025cc7b",
+      "local/bt-probe-build.log": "9f9dfe3d3306e2218dbf8b82e8117316f20bbedb6872ec6fe95d167b857baab9",
+      "local/bt-probe-run.log": "0f7016d2d01d8f175fbee79550865ad42b97426c4a6f8edd4400fc802af663cf",
+      "local/bt-probe-inputs-before.json": "54515ba73be5310348834b2df7519f61acc026c19b08d5e18acedb8b67b5399a",
+      "local/bt-probe-inputs-after.json": "54515ba73be5310348834b2df7519f61acc026c19b08d5e18acedb8b67b5399a",
+      "local/bt-probe-snapshots.bin": "4ae44dc0869f6d518e2954cf08713f30ea2e15a134cfe0dc8308daabba97bf14",
+      "local/bt_probe.exe": "08f7774b923aa88d67d36e74232b7551462ab65688e01b72d82135f68c2a4921",
+      "local/bt_probe.obj": "8a15ae7e581c8ad0a1bd822ae3ebe05b893c2419d2613672ed5d2bfa71b1334a",
+      "local/bt-probe-attempt-1-fixed-mapping.zip": "4426146e080114fa02781d4a3e4096a09bde7e4db3aadcc0a25bb294cbe14632",
+      "local/bt-probe-attempt-2-coverage-check.zip": "5d55dff52136360b9bf31f33b4c11f2f41645b8d26180915fc6df0e34f8ef476",
+      "build/win32/bsp_core.dir/Release/native_post_effect_stream_geometry.obj": "8ad23760a0db2368dafca8fb0eb5f839ea553f32434fac345e3dfddfb2290bd4",
+      "build/win32/Release/bsp_core.lib": "86813a430647c5f9c90fba5912c2c19a6c68eb587f4b5b70ba5ef688bc7e0b47",
+      "build/win32/Release/bsp_lua511.lib": "2b75f5ff1c8a70fdd11e97928bcc611f628bf3b7208fd8d42e8337c0a38c7b9f",
+      "build/win32/Release/bsp_zlib121.lib": "9d88347acf5b29e877df2f1c8fb012e83d70466bdc713bf29f64222de37f5fd5",
+      "build/win32/Release/bsp_game.exe": "1bd9df11cfb4a34ad47082526127256d3826a0db15efad56ab7e3d77f5ea0915",
+      "build/win32/Release/bsp_math_tests.exe": "bb17b5f08b1935f05c77ec53e5ac265147060ae6834288529636f5bdd59892f1",
+      "cmake/startup.cmake": "d4e1dd932ebaf6faf2f277d1660f78a00ecb6ac44b366566c8ff5ffa12dcd34a",
+      "docs/NATIVE_POST_EFFECT_STREAM_GEOMETRY_BT.md": "6ac156c54ceff8e3154a2e9a17c6431f923676d45223675662ead5d2b256e9fb",
+      "local/bt-call-audit.txt": "5c838ff2efd68d77f78e850bc0f8ba3a3beac6ef88766af18c3a6567379bf08f"
+    }
+  },
+  "fixture": {
+    "scope": "One actual writer/native-source trajectory. Native483-byte writer rebased into private executable page with only its two proven absolute constant operands relocated before any run. Source links current libraries; no fake renderer or native callee callback.",
+    "native_operand_relocations": [
+      {
+        "instruction": "00b4d2f0",
+        "operand": "00b4d2f4",
+        "writer_offset": 36,
+        "original_cell": "00ce3800"
+      },
+      {
+        "instruction": "00b4d2f8",
+        "operand": "00b4d2fc",
+        "writer_offset": 44,
+        "original_cell": "00d7a24c"
+      }
+    ],
+    "case": {
+      "buffer_bytes_per_path": 768,
+      "output_base": 64,
+      "first_record": "20000001",
+      "wrapped_output_start": 232,
+      "input_start": 196,
+      "count": 2,
+      "overlap": "Iteration1 consumes original first record before overwriting record2; current input reads in iteration2 observe overwritten words.",
+      "x87_CW": "037f",
+      "x87_SW": "0003",
+      "MXCSR": "00001f80",
+      "all_buffer_bytes_equal": true,
+      "invalid_and_denormal_status_observed": true,
+      "guard_bytes_unchanged": 432,
+      "mapped_code_bytes_unchanged_after_rebasing": 483,
+      "constant_words_unchanged": true,
+      "snapshot_pair_sha256": "4ae44dc0869f6d518e2954cf08713f30ea2e15a134cfe0dc8308daabba97bf14",
+      "snapshot_half_sha256": "83b0f7df14f6b50200b8efe9693197497332fd5be7abcaccfc8ce5c81003d369"
+    },
+    "manifest": "cl /link /MANIFEST:EMBED; safe bt_probe.exe filename",
+    "final_run_log": [
+      "PASS native/source writer: two overlapping records, wrapping start, 768 buffer bytes/path; CW=037f SW=0003 MXCSR=00001f80",
+      "PASS scoped native code unchanged after two constant-operand relocations: 483 bytes; constants and 432 guard bytes unchanged"
+    ],
+    "failed_attempts": [
+      {
+        "attempt": 1,
+        "archive": "local/bt-probe-attempt-1-fixed-mapping.zip",
+        "result": "Probe compiled but required fixed mapping unavailable; stopped before native execution. Changed only fixture to allocated pages and two verified operand relocations."
+      },
+      {
+        "attempt": 2,
+        "archive": "local/bt-probe-attempt-2-coverage-check.zip",
+        "result": "Native/source bytes and FP state matched but coverage assertion failed: initial same-start alias overwrote payloads before both intended FP exceptions occurred. Moved input one record before destination; source and native bodies unchanged."
+      }
+    ]
+  },
+  "uncertainty": [
+    "No wrapper mapping/GPU runtime fixture, B529A0 source closure, renderer-startup or gameplay validation.",
+    "Valid raw accessed extent and nontrapping FP controls/free x87 slot required. Unmasked FP trap handling, hardware-fault locations and native FH3 excluded.",
+    "C++ wrapper inlines writer and may defer/skip its unused input stack-word load on a zero record count; receiver current-field loads match. Compiler-private stack/fault-time parity and binary ABI are not claimed.",
+    "Mapping inherits existing physical profile and synchronization guard domains, including exclusion of disabled-entry/enabled-cleanup transitions reading uninitialized native guard state; provider cleanup exception behavior is not broadened.",
+    "No automatic unlock, bounds clamp or stale current-field fallback is inserted. Changed current count after map can exceed the earlier extent; valid storage remains an explicit precondition.",
+    "The successful fixture is one masked-CW/MXCSR trajectory. Its equal status/output and byte-identical loop do not establish all control words, unmasked exceptions, wrapper provider failures or game rendering."
+  ]
+}
