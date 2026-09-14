@@ -1,0 +1,419 @@
+{
+  "packet": "orch5_native_online_startup_sdk",
+  "tested_base": "d1b06aa739dc95828f1e37f964a54faba94722b3",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "source": "src/native_online_startup_sdk.cpp",
+  "header": "include/bsp/native_online_startup_sdk.hpp",
+  "documentation": "docs/NATIVE_ONLINE_STARTUP_SDK.md",
+  "ghidra_writes": false,
+  "status": "complete_raw_sdk_win32_boundary_build_and_fake_import_fixture_tested",
+  "functions": [
+    {
+      "address": "00a4d5de",
+      "inclusive_end": "00a4d5e3",
+      "byte_length": 6,
+      "byte_sha256": "3b4d3b72c752cc207aa7a095989ea76839e853566ce07e011f4fc200c7958b68",
+      "matches_installed_pe": true,
+      "name": "XLiveInitializeEx",
+      "coverage": "complete six-byte IAT thunk; external SDK body not reconstructed",
+      "original_abi": "JMP [IAT]; imported Win32 stdcall cleans 8 stack bytes; return in EAX/AX",
+      "iat_slot": "00ce2710",
+      "ordinal": 5297,
+      "live_ghidra_bytes": "ff 25 10 27 ce 00",
+      "matches_live_ghidra": true
+    },
+    {
+      "address": "00a4d5d8",
+      "inclusive_end": "00a4d5dd",
+      "byte_length": 6,
+      "byte_sha256": "f6fcd89a0fbfd0044a64a056d601eaa6513b784cb6a45eb4dc0efe706df3831f",
+      "matches_installed_pe": true,
+      "name": "XOnlineStartup",
+      "coverage": "complete six-byte IAT thunk; external SDK body not reconstructed",
+      "original_abi": "JMP [IAT]; imported Win32 stdcall cleans 0 stack bytes; return in EAX/AX",
+      "iat_slot": "00ce270c",
+      "ordinal": 5310,
+      "live_ghidra_bytes": "ff 25 0c 27 ce 00",
+      "matches_live_ghidra": true
+    },
+    {
+      "address": "00a4d5d2",
+      "inclusive_end": "00a4d5d7",
+      "byte_length": 6,
+      "byte_sha256": "f4b430247759beff2a156a6f023f14e2dede3f67d460a2bfa5a5d0a75bc8b219",
+      "matches_installed_pe": true,
+      "name": "XWSAStartup",
+      "coverage": "complete six-byte IAT thunk; external SDK body not reconstructed",
+      "original_abi": "JMP [IAT]; imported Win32 stdcall cleans 8 stack bytes; return in EAX/AX",
+      "iat_slot": "00ce2708",
+      "ordinal": 1,
+      "live_ghidra_bytes": "ff 25 08 27 ce 00",
+      "matches_live_ghidra": true
+    },
+    {
+      "address": "00a4d5cc",
+      "inclusive_end": "00a4d5d1",
+      "byte_length": 6,
+      "byte_sha256": "7125e28cd5fa12c61ff77d793db6103daecfcbb8d849f6a4e8fdf011c870dfb3",
+      "matches_installed_pe": true,
+      "name": "XWSACleanup",
+      "coverage": "complete six-byte IAT thunk; external SDK body not reconstructed",
+      "original_abi": "JMP [IAT]; imported Win32 stdcall cleans 0 stack bytes; return in EAX/AX",
+      "iat_slot": "00ce2704",
+      "ordinal": 2,
+      "live_ghidra_bytes": "ff 25 04 27 ce 00",
+      "matches_live_ghidra": true
+    },
+    {
+      "address": "00a4d494",
+      "inclusive_end": "00a4d499",
+      "byte_length": 6,
+      "byte_sha256": "8e788172ae3047d05702576ddc5d46deaa6ece1cfdb0a295ce26151cc30afa1d",
+      "matches_installed_pe": true,
+      "name": "XSocketNTOHS",
+      "coverage": "complete six-byte IAT thunk; external SDK body not reconstructed",
+      "original_abi": "JMP [IAT]; imported Win32 stdcall cleans 4 stack bytes; return in EAX/AX",
+      "iat_slot": "00ce262c",
+      "ordinal": 38,
+      "live_ghidra_bytes": "ff 25 2c 26 ce 00",
+      "matches_live_ghidra": true
+    },
+    {
+      "address": "00a4d5c6",
+      "inclusive_end": "00a4d5cb",
+      "byte_length": 6,
+      "byte_sha256": "77f2f431e578d8ce7d09849837c1d644e3bea12f5fe9d2b829925276fb8850cf",
+      "matches_installed_pe": true,
+      "name": "XNetSetSystemLinkPort",
+      "coverage": "complete six-byte IAT thunk; external SDK body not reconstructed",
+      "original_abi": "JMP [IAT]; imported Win32 stdcall cleans 4 stack bytes; return in EAX/AX",
+      "iat_slot": "00ce2700",
+      "ordinal": 84,
+      "live_ghidra_bytes": "ff 25 00 27 ce 00",
+      "matches_live_ghidra": true
+    },
+    {
+      "address": "00a4d5b4",
+      "inclusive_end": "00a4d5b9",
+      "byte_length": 6,
+      "byte_sha256": "4eb798cdebcffac381f38433c29df32d63cf74dc5a7e19b2df93276c241c1735",
+      "matches_installed_pe": true,
+      "name": "XNotifyCreateListener",
+      "coverage": "complete six-byte IAT thunk; external SDK body not reconstructed",
+      "original_abi": "JMP [IAT]; imported Win32 stdcall cleans 8 stack bytes; return in EAX/AX",
+      "iat_slot": "00ce26f4",
+      "ordinal": 5270,
+      "live_ghidra_bytes": "ff 25 f4 26 ce 00",
+      "matches_live_ghidra": true
+    }
+  ],
+  "calls": [
+    {
+      "address": "00a40f1a",
+      "native": "00b1fef0",
+      "function": "00a40df0",
+      "operation": "renderer ECX=current F8D394; returns renderer+1A10 device"
+    },
+    {
+      "address": "00a40f31",
+      "native": "00ce22a8+iat",
+      "function": "00a40df0",
+      "operation": "KERNEL32 GetUserDefaultLangID; low AX into init-info+10"
+    },
+    {
+      "address": "00a40f46",
+      "native": "00a4d5de",
+      "function": "00a40df0",
+      "operation": "init-info pointer and version 20029900h"
+    },
+    {
+      "address": "00a40f63",
+      "native": "00a4d5d8",
+      "function": "00a40df0",
+      "operation": "XOnlineStartup, no stack arguments"
+    },
+    {
+      "address": "00a40f72",
+      "native": "00a4d5d2",
+      "function": "00a40df0",
+      "operation": "XWSAStartup DWORD 202h, same caller-owned WSADATA400 pointer"
+    },
+    {
+      "address": "00a40f84",
+      "native": "00a4d5cc",
+      "function": "00a40df0",
+      "operation": "XWSACleanup on WSADATA version mismatch, independent of startup return"
+    },
+    {
+      "address": "00a40f8e",
+      "native": "00a4d494",
+      "function": "00a40df0",
+      "operation": "XSocketNTOHS DWORD 0C02h"
+    },
+    {
+      "address": "00a40f94",
+      "native": "00a4d5c6",
+      "function": "00a40df0",
+      "operation": "XNetSetSystemLinkPort takes full prior EAX DWORD"
+    },
+    {
+      "address": "00a40fd4",
+      "native": "00a4d5b4",
+      "function": "00a40df0",
+      "operation": "XNotifyCreateListener DWORD 2Fh and DWORD zero"
+    }
+  ],
+  "read_only_dependencies": [
+    {
+      "address": "00b1fef0",
+      "inclusive_end": "00b1fef6",
+      "byte_length": 7,
+      "byte_sha256": "8e2f8eda5033d3403561544aec8eccd01530285ea93dcd284ef49a1308e871a6",
+      "matches_installed_pe": true,
+      "name": "BSP_D3D9Renderer_GetDevice",
+      "contract": "ECX=current renderer F8D394, EAX=DWORD at renderer+1A10, RET; no function calls",
+      "owned_by": "parent A40DF0 packet"
+    },
+    {
+      "address": "00a40df0",
+      "inclusive_end": "00a41026",
+      "byte_length": 567,
+      "byte_sha256": "871fc68e32ef282114bc89c112720e83f399ac0a6fa773c8f469ad8403f7e5ce",
+      "matches_installed_pe": true,
+      "name": "BSP_XLiveSystem_Initialize",
+      "contract": "parent owns full actual 3F0h manager construction and mutation order",
+      "owned_by": "parent A40DF0 packet"
+    }
+  ],
+  "thunk_iat": [
+    {
+      "thunk": "00a4d5de",
+      "iat_slot": "00ce2710",
+      "ordinal": 5297,
+      "retained_sdk_name": "XLiveInitializeEx",
+      "stdcall_stack_bytes": 8
+    },
+    {
+      "thunk": "00a4d5d8",
+      "iat_slot": "00ce270c",
+      "ordinal": 5310,
+      "retained_sdk_name": "XOnlineStartup",
+      "stdcall_stack_bytes": 0
+    },
+    {
+      "thunk": "00a4d5d2",
+      "iat_slot": "00ce2708",
+      "ordinal": 1,
+      "retained_sdk_name": "XWSAStartup",
+      "stdcall_stack_bytes": 8
+    },
+    {
+      "thunk": "00a4d5cc",
+      "iat_slot": "00ce2704",
+      "ordinal": 2,
+      "retained_sdk_name": "XWSACleanup",
+      "stdcall_stack_bytes": 0
+    },
+    {
+      "thunk": "00a4d494",
+      "iat_slot": "00ce262c",
+      "ordinal": 38,
+      "retained_sdk_name": "XSocketNTOHS",
+      "stdcall_stack_bytes": 4
+    },
+    {
+      "thunk": "00a4d5c6",
+      "iat_slot": "00ce2700",
+      "ordinal": 84,
+      "retained_sdk_name": "XNetSetSystemLinkPort",
+      "stdcall_stack_bytes": 4
+    },
+    {
+      "thunk": "00a4d5b4",
+      "iat_slot": "00ce26f4",
+      "ordinal": 5270,
+      "retained_sdk_name": "XNotifyCreateListener",
+      "stdcall_stack_bytes": 8
+    }
+  ],
+  "producer_evidence": [
+    {
+      "address": "00a40f12",
+      "observation": "zeroed 1Ch init-info size is written before renderer calls"
+    },
+    {
+      "address": "00a40f1a",
+      "observation": "B1FEF0 reads current F8D394 renderer+1A10 device"
+    },
+    {
+      "address": "00a40f23",
+      "observation": "F8D394 reloaded separately; ADD 1A28 yields same mutable present-parameters pointer"
+    },
+    {
+      "address": "00a40f77",
+      "observation": "WSADATA version read regardless of XWSAStartup EAX, comparison to 0202h"
+    },
+    {
+      "address": "00a40f93",
+      "observation": "full XSocketNTOHS EAX pushed as port setter DWORD"
+    },
+    {
+      "address": "00a40fd9",
+      "observation": "raw listener EAX stored in manager+1C before validity test"
+    }
+  ],
+  "uncertainty": "SDK implementation bodies and their undocumented semantic return values are external. Source forwards observed DWORD/AX stack and return bits; no native binary ABI replacement. Caller owns init-info/WSADATA preimage, render publication lifetime, cleanup branch and manager mutations. No real SDK, network or game startup validation.",
+  "validation": {
+    "full_build": {
+      "command": "./scripts/build.ps1",
+      "exit_code": 0,
+      "stdout_tail": "bsp_core.lib and bsp_game.exe built; reconstructed_math CTest 1/1 passed"
+    },
+    "focused_fake_import_fixture": {
+      "command": "cmd /c local\\build_native_online_startup_sdk_probe.cmd",
+      "exit_code": 0,
+      "stdout_tail": "native startup SDK: raw fake-import forwarding passed",
+      "effects": "typed fake imports only; nonzero XWSAStartup partial writes, current render pointer and full EAX port verified; no SDK/network request"
+    },
+    "mapped_runtime_probe": {
+      "command": "local\\native_online_startup_sdk_runtime_probe.exe local\\native_online_startup_sdk_probe.exe",
+      "exit_code": 0,
+      "stdout_tail": "PROBE_EXIT: 0; actual mapped Win32 runtime images captured with K32GetMappedFileNameW"
+    },
+    "report_calls": {
+      "command": "python tools/verify_report_calls.py reports/native_online_startup_sdk.json",
+      "exit_code": 0,
+      "stdout_tail": "8 call rows checked, 0 failed; GetUserDefaultLangID IAT indirect"
+    },
+    "game_validated": false,
+    "native_entry_abi_compatible": false
+  },
+  "artifact_manifest": {
+    "source": {
+      "path": "src/native_online_startup_sdk.cpp",
+      "bytes": 3666,
+      "sha256": "3d9826701cc6f137ba483707fee28158800974277cf9d0c684e8980a31ae9efc"
+    },
+    "header": {
+      "path": "include/bsp/native_online_startup_sdk.hpp",
+      "bytes": 4310,
+      "sha256": "f3ccb3f11d5131839b90636297b324d8942d24dc479761c988e743a919db2b08"
+    },
+    "documentation": {
+      "path": "docs/NATIVE_ONLINE_STARTUP_SDK.md",
+      "bytes": 2776,
+      "sha256": "d9c53cfcafcf261697cfb0c01f7b130bba8ed9c73c9a733ddc26586518120e07"
+    },
+    "report": {
+      "path": "reports/native_online_startup_sdk.json",
+      "sha256": "self-reference omitted; commit closes report bytes"
+    },
+    "shared_source_registry": {
+      "path": "cmake/startup.cmake",
+      "bytes": 113084,
+      "sha256": "810d548b2b096454353e4a548e2ee2be61b8153937be71805d1a90668dd928a4"
+    },
+    "fixture_source": {
+      "path": "local/native_online_startup_sdk_probe.cpp",
+      "bytes": 3295,
+      "sha256": "6ea06c374130d43367876d9c404a785dba62659e99ff4180a144e335a5d516a6"
+    },
+    "fixture_command": {
+      "path": "local/build_native_online_startup_sdk_probe.cmd",
+      "bytes": 1289,
+      "sha256": "f996e38b145936d9fadfd0e6e9e678b0ab5f8040c665f9311eda9680ae6cdaf6"
+    },
+    "fixture_exe": {
+      "path": "local/native_online_startup_sdk_probe.exe",
+      "bytes": 16384,
+      "sha256": "63e9387b0a1163f9610e3d3fdbc5bd3f8d9ccf3c47c65b66fd799dc1acccf63b"
+    },
+    "strict_source_obj": {
+      "path": "local/native_online_startup_sdk_strict.obj",
+      "bytes": 55286,
+      "sha256": "e87a67c0854cea45b3cb6663d14e11191e5ed0d9ec88ff129a00e0665bc3b8dc"
+    },
+    "runtime_probe_source": {
+      "path": "local/native_online_startup_sdk_runtime_probe.cpp",
+      "bytes": 2964,
+      "sha256": "cf6525dc81b7b8c84d60de6acc76195bf3d0e520bd844ecd312c9aa1c338b79e"
+    },
+    "runtime_probe_command": {
+      "path": "local/build_native_online_startup_sdk_runtime_probe.cmd",
+      "bytes": 439,
+      "sha256": "0229fcf2b66c1d66c39a8deafa30cf8b28966ad2935587f5416c0d4049173ce8"
+    },
+    "runtime_probe_exe": {
+      "path": "local/native_online_startup_sdk_runtime_probe.exe",
+      "bytes": 18944,
+      "sha256": "22621e6f3df2fb9760e35fc881212c07808d77a69f262fe1abe6cc511f10d2fd"
+    },
+    "link_dependencies": [
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "bytes": 57487484,
+        "sha256": "394e4660fc34537fc9a8f3b0e643d9b3680b170192fb4cf4d89a63f7b809dc62"
+      },
+      {
+        "path": "build/win32/Release/bsp_lua511.lib",
+        "bytes": 455720,
+        "sha256": "ba2210c34f7562d929190a8804d6e5849212969da81c4ab8269cf8b37474888e"
+      },
+      {
+        "path": "build/win32/Release/bsp_zlib121.lib",
+        "bytes": 72086,
+        "sha256": "cc58357ddf148862d346e9a4db53e1b5ffe1e6c4458e44fe7da5d0005b09d4e0"
+      }
+    ],
+    "system_link_libraries": "user32.lib d3d9.lib shell32.lib kernel32.lib gdi32.lib winspool.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib",
+    "compiler_dependencies": [
+      {
+        "file": {
+          "path": "local/native_online_startup_sdk_source_dependencies.json",
+          "bytes": 35286,
+          "sha256": "fa4fc7b89cbbfcf1207cae27f9cde38bd8ecd2c8d288eafaa82ffd1e8138e6d4"
+        },
+        "source": "j:\\prog\\battlestations-pacific-decompile-orch5-native-online-startup-sdk\\src\\native_online_startup_sdk.cpp",
+        "include_count": 329
+      },
+      {
+        "file": {
+          "path": "local/native_online_startup_sdk_probe_dependencies.json",
+          "bytes": 25446,
+          "sha256": "c7b8b24c32d80282826a832109bb27073db43f0bc5748534064c1d8d12e6107a"
+        },
+        "source": "j:\\prog\\battlestations-pacific-decompile-orch5-native-online-startup-sdk\\local\\native_online_startup_sdk_probe.cpp",
+        "include_count": 248
+      },
+      {
+        "file": {
+          "path": "local/native_online_startup_sdk_runtime_dependencies.json",
+          "bytes": 32389,
+          "sha256": "5f67f4a381245eaba70deab331695c7b9dcd1980357359768abeffacbb21f08f"
+        },
+        "source": "j:\\prog\\battlestations-pacific-decompile-orch5-native-online-startup-sdk\\local\\native_online_startup_sdk_runtime_probe.cpp",
+        "include_count": 306
+      }
+    ],
+    "fixture_pe": {
+      "machine": "0x014c",
+      "format": "PE32",
+      "embedded_manifest": true,
+      "imports": [
+        "KERNEL32.dll",
+        "VCRUNTIME140.dll",
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "api-ms-win-crt-stdio-l1-1-0.dll",
+        "api-ms-win-crt-heap-l1-1-0.dll",
+        "api-ms-win-crt-math-l1-1-0.dll",
+        "api-ms-win-crt-locale-l1-1-0.dll"
+      ]
+    },
+    "installed_pe_spans": "seven thunk rows plus two read-only dependencies above",
+    "full_closure": "packet-local final_manifest.json after commit"
+  },
+  "ghidra_integrator_actions": "Worker made zero Ghidra writes. Keep existing SDK import names. Parent may annotate A40DF0 boundary evidence and B1FEF0 read-only offset under write lock, preserving comments and prior values."
+}
