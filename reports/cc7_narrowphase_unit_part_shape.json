@@ -1,0 +1,187 @@
+{
+  "packet": "cc7_narrowphase_unit_part_shape",
+  "owner": "agent/cc7-narrowphase-part",
+  "doc": "docs/NARROWPHASE_UNIT_PART_SHAPE.md",
+  "program": "/battlestationspacific.exe",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "installation": "modded (BSPRM/AlterBSP); data files read read-only, mtimes in docs/NARROWPHASE_UNIT_PART_SHAPE.md section 6",
+  "summary": "Vtable 00CFD768 belongs to the unit-part collision shape, a 28h-byte value type built by 00712440 inside BSP_UnitPartInstance_Construct 007135C0 and copied into the STL lists at instance+18Ch / +198h; the ones whose transform is absent from every group record at index >= 1 are also published into instance+D0h, which is the array 0098AC20 dispatches shape->vtable[0] over at 0098AC82. The shape's +24h geometry is the GeomMesh itself: element vector at mesh+0Ch..+10h, triangles at mesh+2Ch..+30h, vertices at mesh+18h+4, all matching the parser 00727310 writes. 00723D60 tests every element in index order against a far endpoint already pulled back to the closest hit so far and returns the last acceptor; there is no distance comparison and no bounds reject in it, so the shortening is the whole ordering rule. element+20h and element+24h are NOT a scalar: they are the min-corner and max-corner arrays of a per-element AABB tree, indexed by node*12 in 007238E0 and handed as a pair to 0085BF90 in 00723B70. The element's +8h and 0092D1F0's 0..19 share one space: 0092D1F0 uses one index for both parts+34Ch and parts+310h, 00937C90 writes parts+34Ch + NN where NN is the fizika_%02d suffix, and no native step remaps anything in between. The native chain is complete; the reconstruction's gap is a host object, and its input sits behind one peer virtual call, model->vtable[8h] at 0087BE52.",
+  "answers": {
+    "vtable_owner": "the unit-part collision shape, a 28h-byte value type: +0h vtable 00CFD768, +4h..+0Ch and +10h..+18h two float3 bounds, +1Ch the collision node, +20h the transform, +24h the GeomMesh",
+    "where_created": "00712440 at 00712685, called from 007135C0 at 007136F2, itself called at 0087BE58 and 0087BE9B with (unit, model->vtable[8h](lod)); the instance is operator new(1ACh) at 0087BE1C",
+    "selection_rule_00723d60": "linear scan over ((geom+10h)-(geom+0Ch))/2Ch elements in index order; each accepted hit shortens the local far endpoint to the hit point and overwrites the result cell, so the surviving element is the closest along the segment. Signed count test at 00723DBF, null return at 00723E7E",
+    "narrowphase_entry": "per unit-part instance, not per model node and not per element: 00712440 publishes shape addresses into instance+D0h and counts them in instance+F8h, and 0098AC20 walks that array and calls shape->vtable[0] indirectly at 0098AC82",
+    "index_space_verdict": "same space, no mapping step exists. 0092D1F0 indexes parts+34Ch and parts+310h with the same value; 00937C90 writes parts+34Ch + NN for the fizika_%02d suffix NN and stores a compacted group slot IN that cell, so the engine itself distinguishes the two numbers and the damage path uses NN. element+8h is the bare u32 the parser reads at 007273AC. Node names and decoded element indices agree in count and range on every sampled file; yamato.mmod's out-of-order 1,2,5,6,0,4,3 rules out a per-element sequential counter. The gap case is untestable on this installation",
+    "host_needs": "full triangle geometry, not per-element bounds: 00723D60 applies no bounds reject and the per-element tree only accelerates a test that keeps the closest triangle",
+    "peer_boundary": "model->vtable[8h](lodValue) at 0087BE52 with model = *(*(unit+354h)+50h); it returns the refcounted selected set whose +40h..+44h vector holds 8-byte { GeomMesh*, transform* } pairs",
+    "module_published": "include/bsp/narrowphase_unit_part_shape.hpp + src/narrowphase_unit_part_shape.cpp: trace_closest_element_00723d60 plus the two corrected element-bounds offsets. Nothing else; the record write, the part-hit entry and the 0092D1F0 gate already exist in bsp/hit_hull_segment.hpp and were reused, not redeclared"
+  },
+  "routines": [
+    {
+      "address": "00723d60",
+      "native": "00723d60",
+      "name": "BSP_GeomMesh_TraceSegmentClosestElement",
+      "body": "00723d60-00723e86",
+      "abi": "__thiscall(geometry in ECX; const float3* from, const float3* to, float3* outHit) returning const Element*, RET 0xc at 00723e79 and 00723e84",
+      "coverage": "complete",
+      "evidence": "00723D63..00723D8D copy *to into the frame at E-0Ch..E-04h. 00723D85..00723DB5 compute count = ([geom+10h]-[geom+0Ch]) / 2Ch (IMUL 2E8BA2E9h at 00723DA4, SAR EDX,3 at 00723DAB), zero when begin is null, and park it in the incoming arg2 slot. 00723D93 seeds the result cell at E-10h with EBX = 0; 00723DBB CMP / 00723DBF JLE is a signed test that exits to 00723E7E MOV EAX,EBX. The loop indexes with EDI and the byte offset EBP (00723E61 ADD EBP,2Ch); 00723E06 calls 00723AA0 with ECX = [geom+0Ch]+EBP and pushes EBX=outHit, EAX=&localFarEnd, EDX=from at 00723DFD/00723E02/00723E05. On AL != 0, 00723E35..00723E58 copy the callee's three output floats into the local far endpoint and store [geom+0Ch]+EBP into the result cell. No distance comparison and no bounds reject exist in the body."
+    },
+    {
+      "address": "00723aa0",
+      "native": "00723aa0",
+      "name": "BSP_GeomMeshElement_TraceSegment",
+      "body": "00723aa0-00723b60",
+      "abi": "__thiscall(element in ECX; const float3* from, const float3* to, float3* outHit) returning bool, RET 0xc at 00723b56 and 00723b5e",
+      "coverage": "complete for the frame and the two calls; 00722B20 and 007238E0's recursion arm unread",
+      "evidence": "Its whole 3Ch-byte frame is one segment-query record passed by address: +18h is a copy of from (00723AAB..00723AC5), +24h a copy of to (00723ACF..00723AFA), +00h and +0Ch are filled by 00722B20 at 00723B00 (ECX = &+18h, EDX = &+24h, pushes &+00h and &+0Ch), and +30h is the hit point that 00723B31..00723B4C copy into the caller's outHit. The ESP arithmetic is pinned by 00723B53 ADD ESP,3Ch before RET 0Ch, which requires both callees to clean their stack arguments. The triangle count is ([element+18h]-[element+14h]) >> 1 at 00723B05..00723B15, zero when begin is null. No bounds reject precedes the call."
+    },
+    {
+      "address": "007238e0",
+      "native": "007238e0",
+      "name": "BSP_GeomMeshElement_TraceSegmentNode",
+      "body": "007238e0-00723a9b",
+      "abi": "__thiscall(element in ECX; SegmentQuery* record, int nodeIndex, int firstOrdinal, int ordinalCount) returning bool",
+      "coverage": "partial: the AABB test, the leaf threshold and the leaf loop are read; the recursion arm 00723A2E..00723A9B is NOT read",
+      "evidence": "007238EB..0072390C builds [element+20h]+node*12 and [element+24h]+node*12 (n+n*2 at 007238F8, then two ADD EAX,EAX at 00723900 and 00723906) and calls 0085CAD0 with record+18h and record+24h; a false return leaves at 00723913. 0072391E CMP EBP,14h / 00723922 JG selects the recursion arm. The leaf reads the mesh at element+0Ch (00723928), its triangle vector at mesh+2Ch/+30h with a /6 magic 2AAAAAABh at 0072393A, its vertex array at mesh+18h+4 (007239A4), and for each ordinal word[ordinals + i*2] indexes the 6-byte triangle at idx*6 and the three int16 vertices at v*12 (007239C4..007239EE). On a hit 00723A02..00723A11 copy record+30h into record+24h, shortening the same far end the outer scan shortens, and set the hit byte at 00723A04."
+    },
+    {
+      "address": "00712440",
+      "native": "00712440",
+      "name": "BSP_UnitPartCollisionNode_BuildShapes",
+      "body": "00712440-007128b2",
+      "abi": "__fastcall/__thiscall(instance in ECX) returning bool",
+      "coverage": "partial: the pair walk, the group filter, the shape assembly and the +D0h publication are read; the bounds producer 00723170 is not",
+      "evidence": "Walks the 8-byte pairs of the vector at [instance+160h]+40h..+44h. Per pair it assembles the 28h-byte shape on its frame at local_28..local_4 (vtable 00CFD768 at 00712685, instance into +1Ch, pair[1] into +20h, pair[0] into +24h), searches the 10h-byte group records at instance+16Ch..+170h FROM INDEX 1 for a pointer equal to pair[1], and files the shape through BSP_CollisionShapeList_BuyNode into instance+198h when found or instance+18Ch when not. Only the not-found case is published: *(instance + 0D0h + [instance+0F8h]*4) = listNode+8 and [instance+0F8h] is incremented. Nothing in the body bounds +F8h against the array's 0Ah slots."
+    },
+    {
+      "address": "007135c0",
+      "native": "007135c0",
+      "name": "BSP_UnitPartInstance_Construct",
+      "body": "007135c0-00713723",
+      "abi": "__thiscall(instance in ECX; Unit* unit, SelectedSet* partSet)",
+      "coverage": "partial, read only for the fields this packet needs; docs/NATIVE_UNIT_PART_CONSTRUCTION.md owns the rest",
+      "evidence": "007136E5 MOV EDX,[ESI+164h] / 007136EB MOV [ESI+4Ch],EDX republishes the unit owner into +4Ch, which is the cell 0098AC88 reads to fill record+0h. 007136E3 CMP EDI,EBX gates 007136F2 CALL 00712440 on a non-null unit."
+    },
+    {
+      "address": "0092d1f0",
+      "native": "0092d1f0",
+      "name": "BSP_UnitParts_ApplyPartDamage",
+      "body": "0092d1f0-0092d2ea",
+      "abi": "__thiscall(parts in ECX; uint index, const float dir[3], float damage), RET 0xc at 0092d2e8",
+      "coverage": "complete for the index question only",
+      "evidence": "0092D20A loads the index from [ESP+3Ch]; 0092D210 CMP byte ptr [EDI+EBX*1+34Ch],0 / 0092D218 JL bails on a negative gate byte and 0092D243 MOVSS XMM0,[EAX+EDI*4] reads parts+310h[index]. ONE index value feeds both arrays, which is what ties record+34h to the fizika_%02d suffix 00937C90 writes."
+    }
+  ],
+  "call_sites": [
+    {
+      "address": "0087be58",
+      "native": "007135c0",
+      "function": "0087bcc0",
+      "what": "the unit-part instance construction: PUSH EAX (the part set from model->vtable[8h]) at 0087BE54, PUSH ESI (the unit) at 0087BE55, MOV ECX,EBP (operator new(1ACh) at 0087BE1C) at 0087BE56"
+    },
+    {
+      "address": "0087be9b",
+      "native": "007135c0",
+      "function": "0087bcc0",
+      "what": "the second arm of the same construction, taken when unit->vtable[5Ch](1Bh) at 0087BE0D returned zero; it differs only in the LOD constant"
+    },
+    {
+      "address": "007136f2",
+      "native": "00712440",
+      "function": "007135c0",
+      "what": "builds the collision shapes; guarded by 007136E3 CMP EDI,EBX on the incoming unit"
+    },
+    {
+      "address": "00723e06",
+      "native": "00723aa0",
+      "function": "00723d60",
+      "what": "the per-element segment test, ECX = [geom+0Ch] + EBP, pushes (from, &localFarEnd, outHit)"
+    },
+    {
+      "address": "00723b00",
+      "native": "00722b20",
+      "function": "00723aa0",
+      "what": "fills the segment record's +00h and +0Ch from &+18h (ECX) and &+24h (EDX); the two results are unread"
+    },
+    {
+      "address": "00723b23",
+      "native": "007238e0",
+      "function": "00723aa0",
+      "what": "the node walk, ECX = the element, arguments (&record, 0, 0, ordinalCount)"
+    },
+    {
+      "address": "0072390c",
+      "native": "0085cad0",
+      "function": "007238e0",
+      "what": "segment against the node's AABB: [element+20h]+node*12, [element+24h]+node*12, record+18h, record+24h"
+    },
+    {
+      "address": "007239f9",
+      "native": "0085d020",
+      "function": "007238e0",
+      "what": "the leaf segment/triangle test; record+30h is the output and record+24h is shortened to it on a hit"
+    },
+    {
+      "address": "00723b8d",
+      "native": "0085bf90",
+      "function": "00723b70",
+      "what": "the sphere reject's squared distance; it takes BOTH element+20h (EDX at 00723B81) and element+24h (pushed at 00723B84), which is what proves they are two pointers and not a scalar"
+    },
+    {
+      "address": "00937ff9",
+      "native": "004a8f10",
+      "function": "00937c90",
+      "what": "resizes the per-segment health vector at parts+30Ch to 0x14 entries; PUSH 0x14 at 00937FF5"
+    },
+    {
+      "address": "0098ac82",
+      "native": "00724510",
+      "function": "0098ac20",
+      "kind": "indirect",
+      "what": "CALL EDX after 0098AC70 MOV ECX,[EBP] / MOV EDX,[ECX] / MOV EDX,[EDX]: shape->vtable[0]. 00724510 is the unit-part shape's implementation; the site itself is a register call and cannot be verified as a direct edge"
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "address": "0070f6f7",
+      "what": "MOV dword ptr [EAX],0CFD768h (C7 00 68 D7 CF 00). Ghidra defines no function containing it; bsp.py's enclosing candidate FUN_0070F4D0 is only the nearest preceding function and disasm refuses the address. Surrounding bytes at 0070F6F0..0070F703 decode as FSTP [EAX+4] / FLD [EAX+14h] / the vtable store / FSTP [EAX+8] / MOV [EAX+20h],EDX / FLD [EAX+18h] / MOV [EAX+24h],ECX / FSTP [EAX+0Ch] / RET 0Ch, i.e. a constructor of the same 28h-byte shape. EXTENT NOT ESTABLISHED: no start or inclusive end address is claimed."
+    },
+    {
+      "address": "0071067e",
+      "what": "MOV dword ptr [EAX],0CFD768h (C7 00 68 D7 CF 00), same situation; 00710672..00710691 decode as FSTP [EAX+4] / FLD [ECX+8] / MOV [EAX+1Ch],EDX / FSTP [EAX+8] / the vtable store / FLD [ECX+0Ch] / MOV EDX,[ECX+20h] / FSTP [EAX+0Ch] / MOV [EAX+20h],EDX. EXTENT NOT ESTABLISHED."
+    },
+    {
+      "address": "00710a2c",
+      "what": "MOV dword ptr [ECX],0CFD768h (C7 01 68 D7 CF 00), same situation with ECX as the destination; 00710A20..00710A3F decode as the same field set. EXTENT NOT ESTABLISHED."
+    }
+  ],
+  "census": {
+    "vtable_00cfd768_dword_stores": "scan-bytes 68 d7 cf 00 finds five sites: 0070F6F9, 00710680, 00710A2E, 00711046, 00712689 (operand addresses). Ghidra's xrefs reports only the last two, because the other three lie in undefined code. No 'b8 68 d7 cf 00' (MOV EAX,imm) form exists.",
+    "caller_census": "callers of 00712440: exactly one, 007135C0, from both the index call graph and ghidra xrefs (1 row, far below the 25-row cap). callers of 007135C0: eight, of which 0087BCC0 is the ship path."
+  },
+  "data_files_read": [
+    {"path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/models/ships/us/Farragut_1934.MMOD", "mtime": "2024-07-13 11:24:44", "read": "byte scan for the literal 'fizika_NN' only", "fizika_node_names": "00..03"},
+    {"path": ".../us/farragut.MMOD", "mtime": "2024-07-13 11:25:18", "fizika_node_names": "00..02"},
+    {"path": ".../us/Colorado.MMOD", "mtime": "2024-07-13 11:24:44", "fizika_node_names": "00..01"},
+    {"path": ".../us/colorado1944.MMOD", "mtime": "2024-07-13 11:25:14", "fizika_node_names": "none"},
+    {"path": ".../us/North_Carolina.mmod", "mtime": "2024-07-13 11:24:54", "fizika_node_names": "00..01"},
+    {"path": ".../us/Essex.mmod", "mtime": "2024-07-13 11:24:44", "fizika_node_names": "00..01"},
+    {"path": ".../us/PACK3_Colorado_1941.mmod", "mtime": "2024-07-13 11:24:56", "fizika_node_names": "none"},
+    {"path": ".../japan/yamato.mmod", "mtime": "2024-07-13 11:23:20", "fizika_node_names": "00..10"},
+    {"path": ".../japan/super_yamato.mmod", "mtime": "2024-07-13 11:23:12", "fizika_node_names": "00..10"},
+    {"path": ".../japan/Yamato1945.mmod", "mtime": "2024-07-13 11:22:10", "fizika_node_names": "none"}
+  ],
+  "refutations": [
+    "docs/HIT_HULL_SEGMENT.md section 4 and include/bsp/hit_hull_segment.hpp's kGeomElementOffRejectScalar call element+24h 'a scalar 0085BF90 turns into the squared-radius reject' and leave +20h unread. Both cells are POINTERS to parallel float3 arrays, the min and max corners of a per-element AABB tree: 007238E0 indexes both by node*12 at 007238EB/00723903/00723908/0072390A, and 00723B70 hands both to 0085BF90 at 00723B81/00723B84/00723B8D. The GeomMesh parser zeroes both at 007273D3/007273D7 and frees both through 00BF6989, which agrees.",
+    "docs/HIT_HULL_SEGMENT.md section 6 follow-up 1 says the loader that writes element+4h and element+8h was not found. It is the GeomMesh structured-resource parser 00727310/00727260 (docs/GEOM_MESH_RESOURCE.md): +4h at 007273DB from 007149D0(name), +8h at 007273DF from the u32 at 007273AC. The shape's +24h 'geometry' IS the GeomMesh, established three ways in docs/NARROWPHASE_UNIT_PART_SHAPE.md section 2."
+  ],
+  "not_read": [
+    "00722B20 - the two derived float3s at the segment record's +00h and +0Ch",
+    "0085CAD0, 0085D020, 0085BF90 - bodies; used from argument shape and caller use only",
+    "007238E0's recursion arm 00723A2E..00723A9B",
+    "00725380 - the per-element AABB tree builder, called at 00727A76",
+    "00723170 - the per-shape local bounds producer",
+    "model->vtable[8h] at 0087BE52 and the selected-set class at instance+160h - peer territory, described as a contract only"
+  ],
+  "gate": "python tools/verify_report_calls.py reports/cc7_narrowphase_unit_part_shape.json"
+}
