@@ -1,0 +1,1059 @@
+{
+  "packet": "orch6_unit_class_lua_z",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "sources": [
+    "src/native_unit_class_lua.cpp",
+    "src/native_lua_class_setters.cpp"
+  ],
+  "headers": [
+    "include/bsp/native_unit_class_lua.hpp",
+    "include/bsp/native_lua_class_setters.hpp"
+  ],
+  "documentation": "docs/NATIVE_UNIT_CLASS_LUA.md",
+  "routines": [
+    {
+      "address": "009292b0",
+      "end_inclusive": "00929454",
+      "length": 421,
+      "name": "bind_native_unit_class_lua_009292b0",
+      "source": "src/native_unit_class_lua.cpp",
+      "coverage": "complete",
+      "native_abi": "ECX=this; two stack DWORD arguments; RET8",
+      "source_abi": "explicit C++ interface; not a drop-in binary replacement"
+    },
+    {
+      "address": "00b67460",
+      "end_inclusive": "00b674b5",
+      "length": 86,
+      "name": "native_lua_set_integer_00b67460",
+      "source": "src/native_lua_class_setters.cpp",
+      "coverage": "complete",
+      "native_abi": "ECX=this; two stack DWORD arguments; RET8",
+      "source_abi": "explicit C++ interface; not a drop-in binary replacement"
+    },
+    {
+      "address": "00b66790",
+      "end_inclusive": "00b667ce",
+      "length": 63,
+      "name": "native_lua_set_cstring_00b66790",
+      "source": "src/native_lua_class_setters.cpp",
+      "coverage": "complete",
+      "native_abi": "ECX=this; two stack DWORD arguments; RET8",
+      "source_abi": "explicit C++ interface; not a drop-in binary replacement"
+    },
+    {
+      "address": "00b675d0",
+      "end_inclusive": "00b67622",
+      "length": 83,
+      "name": "native_lua_set_object_00b675d0",
+      "source": "src/native_lua_class_setters.cpp",
+      "coverage": "complete",
+      "native_abi": "ECX=this; two stack DWORD arguments; RET8",
+      "source_abi": "explicit C++ interface; not a drop-in binary replacement"
+    }
+  ],
+  "native_spans": [
+    {
+      "address": "009292b0",
+      "length": 421,
+      "end_exclusive": "00929455",
+      "hex": "6aff68a071ca0064a100000000506489250000000083ec5853568d44241050e86ce8ffff33db6a016a078d4c2410895c2470895c2410895c2414e8514aafff8b44240c3bc374168b4c240883c10151687894d10050e876e32c0083c40c8b742470568d54240c528d4c2418c644247001e83be123008b4c240c3bcb885c246874178b4424086a0183c0015051e87f09afff8bc8e8c8812a008b4424745068d08ece008d4c2418e835d423006a016a058d4c2410895c2410895c2414e8d049afff8b44240c3bc374168b4c240883c1015168c844ce0050e8f5e22c0083c40c8b0da888e1008d54244c81c10c1a000052c644246c02e8d7e52300688058ce008d4c243c518bc8c644247003e841e42300568d542428528bc8c644247004e84fe32300508d44240c508d4c2418c644247005e8ebe123008d4c2424c644246804e80de323008d4c2438c644246803e8ffe223008d4c244cc644246802e8f1e223008b44240c5e885c24643bc35b74168b0c246a0183c1015150e89408afff8bc8e8dd802a008d4c2408c7442460ffffffffe8bce223008b4c245864890d0000000083c464c20800",
+      "sha256": "2f91d0cd5d8f8c967a29ad106b0e42ddfaa4bf764cc209cd735013d55918e172",
+      "live_disk_equal": true,
+      "file_backed_bytes": 421,
+      "pe_loader_zero_fill_bytes": 0
+    },
+    {
+      "address": "00b67460",
+      "length": 86,
+      "end_exclusive": "00b674b6",
+      "hex": "568bf18b068b4804ba02000000e87efeefff8b4424088b088b400485c07505b82cff0801518b0e8b49048bd0e87f05f0ffdb44240c8b168b4a0483ec08dd1c24e82b05f0ff8b068b56088b4804e85e09f0ff5ec20800",
+      "sha256": "ebb00e501ec20e56c3361e3fdb0a212006c827e8152c17a067a5016ba9a1760e",
+      "live_disk_equal": true,
+      "file_backed_bytes": 86,
+      "pe_loader_zero_fill_bytes": 0
+    },
+    {
+      "address": "00b66790",
+      "length": 63,
+      "end_exclusive": "00b667cf",
+      "hex": "568bf18b068b4804ba02000000e84e0bf0ff8b0e8b5424088b4904e8a012f0ff8b068b54240c8b4804e89212f0ff8b0e8b56088b4904e84516f0ff5ec20800",
+      "sha256": "fe08f6aa3b7b8569de7ea2043ba4d316cdc94db0790a37b1e1529b9f3d4ae6fb",
+      "live_disk_equal": true,
+      "file_backed_bytes": 63,
+      "pe_loader_zero_fill_bytes": 0
+    },
+    {
+      "address": "00b675d0",
+      "length": 83,
+      "end_exclusive": "00b67623",
+      "hex": "568bf18b068b4804ba02000000e80efdefff8b4424088b088b400485c07505b82cff0801518b0e8b49048bd0e80f04f0ff8b4c240c8b068b51088b4804e85effefff8b068b56088b4804e8f107f0ff5ec20800",
+      "sha256": "910de7bee89732338720ddc7fed960fee27d45461ada15f2d3b11d415656aa24",
+      "live_disk_equal": true,
+      "file_backed_bytes": 83,
+      "pe_loader_zero_fill_bytes": 0
+    },
+    {
+      "address": "00ca7170",
+      "length": 8,
+      "end_exclusive": "00ca7178",
+      "hex": "8d4da4e98805ecff",
+      "sha256": "a7f0fc3a3ca1ab6d1895d66f7f916aef394651c8165a3ac1f608a5af10a1bf6d",
+      "live_disk_equal": true,
+      "file_backed_bytes": 8,
+      "pe_loader_zero_fill_bytes": 0
+    },
+    {
+      "address": "00ca7178",
+      "length": 8,
+      "end_exclusive": "00ca7180",
+      "hex": "8d4d9ce9a06b77ff",
+      "sha256": "0f606c2c544baf6e0d127f9920828cc1775e5663623892f7dc6e936d45b23064",
+      "live_disk_equal": true,
+      "file_backed_bytes": 8,
+      "pe_loader_zero_fill_bytes": 0
+    },
+    {
+      "address": "00ca7180",
+      "length": 8,
+      "end_exclusive": "00ca7188",
+      "hex": "8d4d9ce9986b77ff",
+      "sha256": "ce4301717efae658e3ddf8ae0d3ea4a0e04fabc22cee3d8891e4893026f2c826",
+      "live_disk_equal": true,
+      "file_backed_bytes": 8,
+      "pe_loader_zero_fill_bytes": 0
+    },
+    {
+      "address": "00ca7188",
+      "length": 8,
+      "end_exclusive": "00ca7190",
+      "hex": "8d4de0e97005ecff",
+      "sha256": "9d3aad737c9a77786990a0d7b8a069510f5b6e8c215823f69d3bb845a32d0ecd",
+      "live_disk_equal": true,
+      "file_backed_bytes": 8,
+      "pe_loader_zero_fill_bytes": 0
+    },
+    {
+      "address": "00ca7190",
+      "length": 8,
+      "end_exclusive": "00ca7198",
+      "hex": "8d4dcce96805ecff",
+      "sha256": "02708e1e6ea2c67eba6571faeb0e780a11675d2407c17166a47ae30730e40613",
+      "live_disk_equal": true,
+      "file_backed_bytes": 8,
+      "pe_loader_zero_fill_bytes": 0
+    },
+    {
+      "address": "00ca7198",
+      "length": 8,
+      "end_exclusive": "00ca71a0",
+      "hex": "8d4db8e96005ecff",
+      "sha256": "b7636e8cf2cba2dae6d8c40edd2b26ecd6c56b6c7b9032b18a74c167123d9042",
+      "live_disk_equal": true,
+      "file_backed_bytes": 8,
+      "pe_loader_zero_fill_bytes": 0
+    },
+    {
+      "address": "00ca71a0",
+      "length": 10,
+      "end_exclusive": "00ca71aa",
+      "hex": "b810a6dd00e999f9f4ff",
+      "sha256": "b4baba51063c643ab0e7f301ca3d463da2cff31452b2bb1afc291307f8febea6",
+      "live_disk_equal": true,
+      "file_backed_bytes": 10,
+      "pe_loader_zero_fill_bytes": 0
+    },
+    {
+      "address": "00dda610",
+      "length": 84,
+      "end_exclusive": "00dda664",
+      "hex": "220593190600000034a6dd00000000000000000000000000000000000000000001000000ffffffff7071ca00000000007871ca00000000008071ca00020000008871ca00030000009071ca00040000009871ca00",
+      "sha256": "c0d94ef4b9e0a0d660ab5c60229225d4abeed0482df756e2487165ca31f5e612",
+      "live_disk_equal": true,
+      "file_backed_bytes": 84,
+      "pe_loader_zero_fill_bytes": 0
+    },
+    {
+      "address": "00d19478",
+      "length": 8,
+      "end_exclusive": "00d19480",
+      "hex": "436c617373494400",
+      "sha256": "8055851302081eabb3be097e8c3bd8c3de73e0e6ee15e56efee78cf95b0884c8",
+      "live_disk_equal": true,
+      "file_backed_bytes": 8,
+      "pe_loader_zero_fill_bytes": 0
+    },
+    {
+      "address": "00ce8ed0",
+      "length": 5,
+      "end_exclusive": "00ce8ed5",
+      "hex": "4e616d6500",
+      "sha256": "5458f37977e6129640e9a702b17242e615bf4672eff3161fe49121846d47a085",
+      "live_disk_equal": true,
+      "file_backed_bytes": 5,
+      "pe_loader_zero_fill_bytes": 0
+    },
+    {
+      "address": "00ce44c8",
+      "length": 6,
+      "end_exclusive": "00ce44ce",
+      "hex": "436c61737300",
+      "sha256": "adc34608c46bad88d9529725937814c27f6a301ea123e9555a7be2f3ce03807f",
+      "live_disk_equal": true,
+      "file_backed_bytes": 6,
+      "pe_loader_zero_fill_bytes": 0
+    },
+    {
+      "address": "00ce5880",
+      "length": 13,
+      "end_exclusive": "00ce588d",
+      "hex": "56656869636c65436c61737300",
+      "sha256": "1f972120c16f2fbc1e3ded7a33540da8cd807be7e9efcfbcb8f5a53fa3f3bd3f",
+      "live_disk_equal": true,
+      "file_backed_bytes": 13,
+      "pe_loader_zero_fill_bytes": 0
+    },
+    {
+      "address": "0108ff2c",
+      "length": 1,
+      "end_exclusive": "0108ff2d",
+      "hex": "00",
+      "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d",
+      "live_disk_equal": true,
+      "file_backed_bytes": 0,
+      "pe_loader_zero_fill_bytes": 1
+    }
+  ],
+  "calls": [
+    {
+      "address": "009292cf",
+      "native": "00927b40",
+      "function": "009292b0",
+      "contract": "callee body read; existing canonical provider or Lua5.1.1 primitive; schedule in documentation"
+    },
+    {
+      "address": "009292ea",
+      "native": "0041dd40",
+      "function": "009292b0",
+      "contract": "callee body read; existing canonical provider or Lua5.1.1 primitive; schedule in documentation"
+    },
+    {
+      "address": "00929305",
+      "native": "00bf7680",
+      "function": "009292b0",
+      "contract": "callee body read; existing canonical provider or Lua5.1.1 primitive; schedule in documentation"
+    },
+    {
+      "address": "00929320",
+      "native": "00b67460",
+      "function": "009292b0",
+      "contract": "callee body read; existing canonical provider or Lua5.1.1 primitive; schedule in documentation"
+    },
+    {
+      "address": "0092933c",
+      "native": "00419cc0",
+      "function": "009292b0",
+      "contract": "callee body read; existing canonical provider or Lua5.1.1 primitive; schedule in documentation"
+    },
+    {
+      "address": "00929343",
+      "native": "00bd1510",
+      "function": "009292b0",
+      "contract": "callee body read; existing canonical provider or Lua5.1.1 primitive; schedule in documentation"
+    },
+    {
+      "address": "00929356",
+      "native": "00b66790",
+      "function": "009292b0",
+      "contract": "callee body read; existing canonical provider or Lua5.1.1 primitive; schedule in documentation"
+    },
+    {
+      "address": "0092936b",
+      "native": "0041dd40",
+      "function": "009292b0",
+      "contract": "callee body read; existing canonical provider or Lua5.1.1 primitive; schedule in documentation"
+    },
+    {
+      "address": "00929386",
+      "native": "00bf7680",
+      "function": "009292b0",
+      "contract": "callee body read; existing canonical provider or Lua5.1.1 primitive; schedule in documentation"
+    },
+    {
+      "address": "009293a4",
+      "native": "00b67980",
+      "function": "009292b0",
+      "contract": "callee body read; existing canonical provider or Lua5.1.1 primitive; schedule in documentation"
+    },
+    {
+      "address": "009293ba",
+      "native": "00b67800",
+      "function": "009292b0",
+      "contract": "callee body read; existing canonical provider or Lua5.1.1 primitive; schedule in documentation"
+    },
+    {
+      "address": "009293cc",
+      "native": "00b67720",
+      "function": "009292b0",
+      "contract": "callee body read; existing canonical provider or Lua5.1.1 primitive; schedule in documentation"
+    },
+    {
+      "address": "009293e0",
+      "native": "00b675d0",
+      "function": "009292b0",
+      "contract": "callee body read; existing canonical provider or Lua5.1.1 primitive; schedule in documentation"
+    },
+    {
+      "address": "009293ee",
+      "native": "00b67700",
+      "function": "009292b0",
+      "contract": "callee body read; existing canonical provider or Lua5.1.1 primitive; schedule in documentation"
+    },
+    {
+      "address": "009293fc",
+      "native": "00b67700",
+      "function": "009292b0",
+      "contract": "callee body read; existing canonical provider or Lua5.1.1 primitive; schedule in documentation"
+    },
+    {
+      "address": "0092940a",
+      "native": "00b67700",
+      "function": "009292b0",
+      "contract": "callee body read; existing canonical provider or Lua5.1.1 primitive; schedule in documentation"
+    },
+    {
+      "address": "00929427",
+      "native": "00419cc0",
+      "function": "009292b0",
+      "contract": "callee body read; existing canonical provider or Lua5.1.1 primitive; schedule in documentation"
+    },
+    {
+      "address": "0092942e",
+      "native": "00bd1510",
+      "function": "009292b0",
+      "contract": "callee body read; existing canonical provider or Lua5.1.1 primitive; schedule in documentation"
+    },
+    {
+      "address": "0092943f",
+      "native": "00b67700",
+      "function": "009292b0",
+      "contract": "callee body read; existing canonical provider or Lua5.1.1 primitive; schedule in documentation"
+    },
+    {
+      "address": "00b6746d",
+      "native": "00a672f0",
+      "function": "00b67460",
+      "contract": "callee body read; existing canonical provider or Lua5.1.1 primitive; schedule in documentation"
+    },
+    {
+      "address": "00b6748c",
+      "native": "00a67a10",
+      "function": "00b67460",
+      "contract": "callee body read; existing canonical provider or Lua5.1.1 primitive; schedule in documentation"
+    },
+    {
+      "address": "00b674a0",
+      "native": "00a679d0",
+      "function": "00b67460",
+      "contract": "callee body read; existing canonical provider or Lua5.1.1 primitive; schedule in documentation"
+    },
+    {
+      "address": "00b674ad",
+      "native": "00a67e10",
+      "function": "00b67460",
+      "contract": "callee body read; existing canonical provider or Lua5.1.1 primitive; schedule in documentation"
+    },
+    {
+      "address": "00b6679d",
+      "native": "00a672f0",
+      "function": "00b66790",
+      "contract": "callee body read; existing canonical provider or Lua5.1.1 primitive; schedule in documentation"
+    },
+    {
+      "address": "00b667ab",
+      "native": "00a67a50",
+      "function": "00b66790",
+      "contract": "callee body read; existing canonical provider or Lua5.1.1 primitive; schedule in documentation"
+    },
+    {
+      "address": "00b667b9",
+      "native": "00a67a50",
+      "function": "00b66790",
+      "contract": "callee body read; existing canonical provider or Lua5.1.1 primitive; schedule in documentation"
+    },
+    {
+      "address": "00b667c6",
+      "native": "00a67e10",
+      "function": "00b66790",
+      "contract": "callee body read; existing canonical provider or Lua5.1.1 primitive; schedule in documentation"
+    },
+    {
+      "address": "00b675dd",
+      "native": "00a672f0",
+      "function": "00b675d0",
+      "contract": "callee body read; existing canonical provider or Lua5.1.1 primitive; schedule in documentation"
+    },
+    {
+      "address": "00b675fc",
+      "native": "00a67a10",
+      "function": "00b675d0",
+      "contract": "callee body read; existing canonical provider or Lua5.1.1 primitive; schedule in documentation"
+    },
+    {
+      "address": "00b6760d",
+      "native": "00a67570",
+      "function": "00b675d0",
+      "contract": "callee body read; existing canonical provider or Lua5.1.1 primitive; schedule in documentation"
+    },
+    {
+      "address": "00b6761a",
+      "native": "00a67e10",
+      "function": "00b675d0",
+      "contract": "callee body read; existing canonical provider or Lua5.1.1 primitive; schedule in documentation"
+    }
+  ],
+  "eh_cleanup_calls": [
+    {
+      "address": "00ca7173",
+      "native": "00b67700",
+      "function": "00ca7170",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00ca717b",
+      "native": "0041dd20",
+      "function": "00ca7178",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00ca7183",
+      "native": "0041dd20",
+      "function": "00ca7180",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00ca718b",
+      "native": "00b67700",
+      "function": "00ca7188",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00ca7193",
+      "native": "00b67700",
+      "function": "00ca7190",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00ca719b",
+      "native": "00b67700",
+      "function": "00ca7198",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00ca71a5",
+      "native": "00bf6b43",
+      "function": "00ca71a0",
+      "kind": "tail_jump"
+    }
+  ],
+  "raw_evidence": [
+    {
+      "site": "007f218e",
+      "native": "009292b0",
+      "no_ghidra_function": true,
+      "start": "007f218e",
+      "end_inclusive": "007f2192",
+      "kind": "call",
+      "evidence": "no_ghidra_function; raw direct call bytes e81d711300"
+    },
+    {
+      "site": "007c9805",
+      "native": "00b67460",
+      "no_ghidra_function": true,
+      "start": "007c9805",
+      "end_inclusive": "007c9809",
+      "kind": "call",
+      "evidence": "no_ghidra_function; raw direct call bytes e856dc3900"
+    },
+    {
+      "site": "0081bf81",
+      "native": "00b67460",
+      "no_ghidra_function": true,
+      "start": "0081bf81",
+      "end_inclusive": "0081bf85",
+      "kind": "call",
+      "evidence": "no_ghidra_function; raw direct call bytes e8dab43400"
+    }
+  ],
+  "incoming_calls": [
+    {
+      "address": "00955498",
+      "native": "009292b0",
+      "function": "00955420",
+      "evidence": "local/unit_class_all_call_sites.json"
+    },
+    {
+      "address": "0096490c",
+      "native": "00b67460",
+      "function": "00964790",
+      "evidence": "local/unit_class_all_call_sites.json"
+    },
+    {
+      "address": "0043829c",
+      "native": "00b67460",
+      "function": "00438020",
+      "evidence": "local/unit_class_all_call_sites.json"
+    },
+    {
+      "address": "00438311",
+      "native": "00b67460",
+      "function": "00438020",
+      "evidence": "local/unit_class_all_call_sites.json"
+    },
+    {
+      "address": "00438386",
+      "native": "00b67460",
+      "function": "00438020",
+      "evidence": "local/unit_class_all_call_sites.json"
+    },
+    {
+      "address": "005e31a0",
+      "native": "00b67460",
+      "function": "005e2f00",
+      "evidence": "local/unit_class_all_call_sites.json"
+    },
+    {
+      "address": "006c6740",
+      "native": "00b67460",
+      "function": "006c6630",
+      "evidence": "local/unit_class_all_call_sites.json"
+    },
+    {
+      "address": "006c679b",
+      "native": "00b67460",
+      "function": "006c6630",
+      "evidence": "local/unit_class_all_call_sites.json"
+    },
+    {
+      "address": "006c67e8",
+      "native": "00b67460",
+      "function": "006c6630",
+      "evidence": "local/unit_class_all_call_sites.json"
+    },
+    {
+      "address": "006c6835",
+      "native": "00b67460",
+      "function": "006c6630",
+      "evidence": "local/unit_class_all_call_sites.json"
+    },
+    {
+      "address": "006c6a45",
+      "native": "00b67460",
+      "function": "006c6630",
+      "evidence": "local/unit_class_all_call_sites.json"
+    },
+    {
+      "address": "006c6abd",
+      "native": "00b67460",
+      "function": "006c6630",
+      "evidence": "local/unit_class_all_call_sites.json"
+    },
+    {
+      "address": "00809085",
+      "native": "00b67460",
+      "function": "00808f90",
+      "evidence": "local/unit_class_all_call_sites.json"
+    },
+    {
+      "address": "00929320",
+      "native": "00b67460",
+      "function": "009292b0",
+      "evidence": "local/unit_class_all_call_sites.json"
+    },
+    {
+      "address": "007ca82b",
+      "native": "00b67460",
+      "function": "007ca790",
+      "evidence": "local/unit_class_all_call_sites.json"
+    },
+    {
+      "address": "007f3495",
+      "native": "00b67460",
+      "function": "007f31a0",
+      "evidence": "local/unit_class_all_call_sites.json"
+    },
+    {
+      "address": "007f3123",
+      "native": "00b67460",
+      "function": "007f2fd0",
+      "evidence": "local/unit_class_all_call_sites.json"
+    },
+    {
+      "address": "008b2026",
+      "native": "00b67460",
+      "function": "008b1ec0",
+      "evidence": "local/unit_class_all_call_sites.json"
+    },
+    {
+      "address": "008b209a",
+      "native": "00b67460",
+      "function": "008b1ec0",
+      "evidence": "local/unit_class_all_call_sites.json"
+    },
+    {
+      "address": "008b210e",
+      "native": "00b67460",
+      "function": "008b1ec0",
+      "evidence": "local/unit_class_all_call_sites.json"
+    },
+    {
+      "address": "0091513a",
+      "native": "00b67460",
+      "function": "009150a0",
+      "evidence": "local/unit_class_all_call_sites.json"
+    },
+    {
+      "address": "008bd0a9",
+      "native": "00b67460",
+      "function": "008bcf10",
+      "evidence": "local/unit_class_all_call_sites.json"
+    },
+    {
+      "address": "008bd199",
+      "native": "00b67460",
+      "function": "008bcf10",
+      "evidence": "local/unit_class_all_call_sites.json"
+    },
+    {
+      "address": "008bd20a",
+      "native": "00b67460",
+      "function": "008bcf10",
+      "evidence": "local/unit_class_all_call_sites.json"
+    },
+    {
+      "address": "008bd290",
+      "native": "00b67460",
+      "function": "008bcf10",
+      "evidence": "local/unit_class_all_call_sites.json"
+    },
+    {
+      "address": "008d2a5f",
+      "native": "00b67460",
+      "function": "008d2850",
+      "evidence": "local/unit_class_all_call_sites.json"
+    },
+    {
+      "address": "00928fd9",
+      "native": "00b67460",
+      "function": "00928f50",
+      "evidence": "local/unit_class_all_call_sites.json"
+    },
+    {
+      "address": "00929046",
+      "native": "00b67460",
+      "function": "00928f50",
+      "evidence": "local/unit_class_all_call_sites.json"
+    },
+    {
+      "address": "00a2f14f",
+      "native": "00b67460",
+      "function": "00a2eee0",
+      "evidence": "local/unit_class_all_call_sites.json"
+    },
+    {
+      "address": "00a2f1c4",
+      "native": "00b67460",
+      "function": "00a2eee0",
+      "evidence": "local/unit_class_all_call_sites.json"
+    },
+    {
+      "address": "00a2f23f",
+      "native": "00b67460",
+      "function": "00a2eee0",
+      "evidence": "local/unit_class_all_call_sites.json"
+    },
+    {
+      "address": "00a2f520",
+      "native": "00b67460",
+      "function": "00a2eee0",
+      "evidence": "local/unit_class_all_call_sites.json"
+    },
+    {
+      "address": "00bd725a",
+      "native": "00b67460",
+      "function": "00bd7180",
+      "evidence": "local/unit_class_all_call_sites.json"
+    },
+    {
+      "address": "00bd74ac",
+      "native": "00b67460",
+      "function": "00bd7180",
+      "evidence": "local/unit_class_all_call_sites.json"
+    },
+    {
+      "address": "004369aa",
+      "native": "00b67460",
+      "function": "00436730",
+      "evidence": "local/unit_class_all_call_sites.json"
+    },
+    {
+      "address": "00436f61",
+      "native": "00b67460",
+      "function": "00436c50",
+      "evidence": "local/unit_class_all_call_sites.json"
+    },
+    {
+      "address": "00532ec0",
+      "native": "00b67460",
+      "function": "00532dc0",
+      "evidence": "local/unit_class_all_call_sites.json"
+    },
+    {
+      "address": "006ff611",
+      "native": "00b67460",
+      "function": "006ff570",
+      "evidence": "local/unit_class_all_call_sites.json"
+    },
+    {
+      "address": "0084676a",
+      "native": "00b67460",
+      "function": "00846640",
+      "evidence": "local/unit_class_all_call_sites.json"
+    },
+    {
+      "address": "006b2436",
+      "native": "00b66790",
+      "function": "006b23e0",
+      "evidence": "local/unit_class_all_call_sites.json"
+    },
+    {
+      "address": "006b691c",
+      "native": "00b66790",
+      "function": "006b68c0",
+      "evidence": "local/unit_class_all_call_sites.json"
+    },
+    {
+      "address": "006b7057",
+      "native": "00b66790",
+      "function": "006b68c0",
+      "evidence": "local/unit_class_all_call_sites.json"
+    },
+    {
+      "address": "006c6895",
+      "native": "00b66790",
+      "function": "006c6630",
+      "evidence": "local/unit_class_all_call_sites.json"
+    },
+    {
+      "address": "00929356",
+      "native": "00b66790",
+      "function": "009292b0",
+      "evidence": "local/unit_class_all_call_sites.json"
+    },
+    {
+      "address": "009298d6",
+      "native": "00b66790",
+      "function": "00929800",
+      "evidence": "local/unit_class_all_call_sites.json"
+    },
+    {
+      "address": "008bd243",
+      "native": "00b66790",
+      "function": "008bcf10",
+      "evidence": "local/unit_class_all_call_sites.json"
+    },
+    {
+      "address": "00a13996",
+      "native": "00b66790",
+      "function": "00a13960",
+      "evidence": "local/unit_class_all_call_sites.json"
+    },
+    {
+      "address": "00a13a98",
+      "native": "00b66790",
+      "function": "00a13a60",
+      "evidence": "local/unit_class_all_call_sites.json"
+    },
+    {
+      "address": "00bd71b7",
+      "native": "00b66790",
+      "function": "00bd7180",
+      "evidence": "local/unit_class_all_call_sites.json"
+    },
+    {
+      "address": "004369ed",
+      "native": "00b66790",
+      "function": "00436730",
+      "evidence": "local/unit_class_all_call_sites.json"
+    },
+    {
+      "address": "00742f11",
+      "native": "00b66790",
+      "function": "00742c10",
+      "evidence": "local/unit_class_all_call_sites.json"
+    },
+    {
+      "address": "00a0ff78",
+      "native": "00b66790",
+      "function": "00a0ff60",
+      "evidence": "local/unit_class_all_call_sites.json"
+    },
+    {
+      "address": "00440ed2",
+      "native": "00b675d0",
+      "function": "00440e10",
+      "evidence": "local/unit_class_all_call_sites.json"
+    },
+    {
+      "address": "006ae070",
+      "native": "00b675d0",
+      "function": "006addc0",
+      "evidence": "local/unit_class_all_call_sites.json"
+    },
+    {
+      "address": "006ae1ee",
+      "native": "00b675d0",
+      "function": "006ae120",
+      "evidence": "local/unit_class_all_call_sites.json"
+    },
+    {
+      "address": "009293e0",
+      "native": "00b675d0",
+      "function": "009292b0",
+      "evidence": "local/unit_class_all_call_sites.json"
+    },
+    {
+      "address": "0077d36f",
+      "native": "00b675d0",
+      "function": "0077d270",
+      "evidence": "local/unit_class_all_call_sites.json"
+    },
+    {
+      "address": "006e31cb",
+      "native": "00b675d0",
+      "function": "006e2e10",
+      "evidence": "local/unit_class_all_call_sites.json"
+    },
+    {
+      "address": "00a13b04",
+      "native": "00b675d0",
+      "function": "00a13a60",
+      "evidence": "local/unit_class_all_call_sites.json"
+    },
+    {
+      "address": "00a2ef65",
+      "native": "00b675d0",
+      "function": "00a2eee0",
+      "evidence": "local/unit_class_all_call_sites.json"
+    },
+    {
+      "address": "00b68d54",
+      "native": "00b675d0",
+      "function": "00b68ad0",
+      "evidence": "local/unit_class_all_call_sites.json"
+    },
+    {
+      "address": "00742fca",
+      "native": "00b675d0",
+      "function": "00742c10",
+      "evidence": "local/unit_class_all_call_sites.json"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "B675D0 named so assumed canonical implementation might exist",
+      "evidence": "indexed lookup has no reconstruction and source search found only prose",
+      "is": "named but unimplemented; complete typed body added"
+    },
+    {
+      "was": "decompiler drops ECX and setter stack arguments",
+      "evidence": "complete exported listings; FILD/FSTP disambiguates signed int32 vs double source",
+      "is": "all four routines take ECX object plus two DWORD stack arguments, RET8"
+    },
+    {
+      "was": "Class row may be assumed to use value owner",
+      "evidence": "00B67605..00B6760D; paired cross-owner fixture",
+      "is": "B675D0 reads target owner and value index independently"
+    },
+    {
+      "was": "initial nonvolatile source allowed compiler to reorder key data/length and target owner/value index; adjacent FILD/FSTP",
+      "is": "explicit volatile load sequence and FILD -> owner/state -> FSTP; final production object reviewed and fixtures rerun",
+      "evidence": "local/unit_class_setters_disasm_initial.txt vs local/unit_class_setters_disasm.txt"
+    }
+  ],
+  "eh": {
+    "metadata": "00dda610",
+    "map": "00dda634",
+    "states": [
+      [
+        -1,
+        "00ca7170"
+      ],
+      [
+        0,
+        "00ca7178"
+      ],
+      [
+        0,
+        "00ca7180"
+      ],
+      [
+        2,
+        "00ca7188"
+      ],
+      [
+        3,
+        "00ca7190"
+      ],
+      [
+        4,
+        "00ca7198"
+      ]
+    ],
+    "native_original_FH3_SEH_executed": false,
+    "source_exceptional_cleanup_executed": false,
+    "limits": [
+      "Lua longjmp/errors",
+      "simultaneous cleanup exceptions",
+      "hardware faults",
+      "arbitrary aliases into native stack frame"
+    ],
+    "selector": {
+      "address": "00ca71a0",
+      "end_inclusive": "00ca71a9",
+      "length": 10,
+      "root_defined_saved": true,
+      "evidence": "local/unit_class_handler_root_resolution.txt"
+    }
+  },
+  "validation": {
+    "status": "passed_with_explicit_EH_Lua_error_and_gameplay_limits",
+    "census": "65 incoming refs: 2/40/13/10, 3 without containing function",
+    "evidence_script": "local/unit_class_evidence.py",
+    "probe_source": "local/unit_class_probe.cpp",
+    "probe_build": "local/unit_class_probe_build.ps1",
+    "manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-unit-class-lua-z\\local\\unit_class_manifest.json",
+      "bytes": 171499,
+      "sha256": "e31171f9e857980661bb9f8284df2d6ae9eda1814f4a33b1ae0e8aeeb0a7f56a"
+    },
+    "game_validated": false,
+    "native_spans": "17 spans/828 bytes equal live Ghidra and installed PE",
+    "native_original_instruction_bytes": 653,
+    "probe_runs": [
+      {
+        "mode": "native",
+        "command": [
+          "local/unit_class_probe.exe",
+          "native"
+        ],
+        "returncode": 0,
+        "stdout": "TRACE: int32 extrema; Name string/nil; normal Class row; Name callback reloads worldB -> value index2 resolves target Class key; embedded NUL key; target-state cross-owner object; zero-kind setter; exact temporary cleanup\nPASS: native full421/86/63/83-byte routines; actual Lua5.1.1, raw pool, stable tracked objects. Native FH3/SEH and source exceptional cleanup unexecuted.\n",
+        "stderr": ""
+      },
+      {
+        "mode": "source",
+        "command": [
+          "local/unit_class_probe.exe",
+          "source"
+        ],
+        "returncode": 0,
+        "stdout": "TRACE: int32 extrema; Name string/nil; normal Class row; Name callback reloads worldB -> value index2 resolves target Class key; embedded NUL key; target-state cross-owner object; zero-kind setter; exact temporary cleanup\nPASS: source full421/86/63/83-byte routines; actual Lua5.1.1, raw pool, stable tracked objects. Native FH3/SEH and source exceptional cleanup unexecuted.\n",
+        "stderr": ""
+      }
+    ],
+    "relocation_proof": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-unit-class-lua-z\\local\\unit_class_relocation_proof.json",
+      "bytes": 11855,
+      "sha256": "c4827efaea151608fb2623c66be4b3b0775eefa9f8723ed4b25243e3e4d18627"
+    },
+    "toolchain": {
+      "platform": "Win32 Release",
+      "compiler": {
+        "Name": "cl.exe",
+        "Source": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x86\\cl.exe",
+        "FileVersion": "19.51.36244.0"
+      },
+      "sdk": "10.0.26100.0",
+      "flags": "/std:c++17 /EHsc /O2 /MD /W4 /WX /fp:strict; production command captured from CL tlog",
+      "manifest": "embedded asInvoker checked with mt"
+    },
+    "existing_ctests": "2/2 passed",
+    "seed_byte_checks": "8/8 equal",
+    "mechanical_call_rows": 100,
+    "mechanical_call_failures": 0,
+    "raw_incoming_call_spans": 3,
+    "compile_input_count": 344,
+    "linked_core_objects": [
+      "gui_layout_loader.obj",
+      "gui_lua_reader.obj",
+      "native_legacy_exception_owner.obj",
+      "native_legacy_sbo_string.obj",
+      "native_lua_class_setters.obj",
+      "native_lua_objects.obj",
+      "native_mission_entity_lua_self.obj",
+      "native_renderer_worker_lifetime.obj",
+      "native_singleton_publication.obj",
+      "native_singleton_vector_allocation.obj",
+      "native_singleton_vector_insert_count.obj",
+      "native_singleton_vector_leaves.obj",
+      "native_singleton_vector_registration_wrappers.obj",
+      "native_singleton_vector_reserve_construct.obj",
+      "native_string.obj",
+      "native_string_pool_owner.obj",
+      "native_string_pool_storage.obj",
+      "native_unit_class_lua.obj",
+      "singleton_lifetime.obj"
+    ],
+    "linked_lua_objects": [
+      "lapi.obj",
+      "lauxlib.obj",
+      "ldebug.obj",
+      "ldo.obj",
+      "lfunc.obj",
+      "lgc.obj",
+      "llex.obj",
+      "lmem.obj",
+      "lobject.obj",
+      "lopcodes.obj",
+      "lparser.obj",
+      "lstate.obj",
+      "lstring.obj",
+      "ltable.obj",
+      "ltm.obj",
+      "lvm.obj",
+      "lzio.obj"
+    ],
+    "failures": [
+      {
+        "stage": "report generator initial invocation",
+        "error": "Python reserved keyword is used as dict argument",
+        "resolution": "changed to is_ then canonical is key; final report verifier passes"
+      },
+      {
+        "stage": "initial source instruction review",
+        "error": "compiler reordered nonvolatile key and object reads",
+        "resolution": "ordered volatile reads, split x87 conversion, rebuilt and reran fixtures",
+        "evidence": "local/unit_class_setters_disasm_initial.txt"
+      }
+    ]
+  },
+  "compiled_schedule_review": {
+    "evidence": [
+      "local/unit_class_source_disasm.txt",
+      "local/unit_class_setters_disasm.txt"
+    ],
+    "integer": "length+1B/data+1D; FILD+3A, volatile owner+3D/state+3F, FSTP+42; final owner+58/index+5A/state+5E",
+    "object": "value push: target.owner+34/value.index+39/owner.state+3C; final owner+46/index+48/state+4C",
+    "caller": "Class memcpy+15E precedes worldreload+166; owneroffset+16B; globals+179,GetByName+18F,GetByIndex+1A1,SetObject+1B6; cleanup states5->4->3->2->0->-1 before calls",
+    "limit": "exact native stack aliases and FH3 not claimed"
+  },
+  "annotation_audit": {
+    "worker": "read-only Ghidra; no direct mutations",
+    "root_selector_definition": "local/unit_class_handler_root_resolution.txt",
+    "names": "ledger supplies three new names, preserves and extends existing B675D0 name; root applies formal Ghidra names/comments/save"
+  }
+}
