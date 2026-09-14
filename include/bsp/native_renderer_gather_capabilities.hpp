@@ -15,6 +15,17 @@ struct NativeRendererGatherCapabilitiesContext {
     SingletonLifetimeDomain& actual_lifetime;
 };
 
+// Same actual owner/scratch operation with the application's raw14h lifetime
+// manager publication. No projected manager or second pool is introduced.
+// Raw manager shutdown requires its explicit pool deletion binding; all cells,
+// bindings and scratch remain borrowed under the same contracts below.
+struct NativeRendererGatherCapabilitiesActualContext {
+    void* actual_callee_scratch;
+    NativeStringPoolStorage* volatile& actual_pool_publication_01090aa8;
+    volatile std::uint32_t& actual_small_returns_disabled_01090aa4;
+    void* volatile& actual_manager_publication_01090aa0;
+};
+
 // Complete B2C8E0[4094], translated to a NEW MSVC Win32 source interface:
 // ECX actual renderer, EDX fixed context; void result. Original ECX/RET has no
 // context and uses its own stack. This is not original caller/SEH ABI compatible.
@@ -59,5 +70,13 @@ struct NativeRendererGatherCapabilitiesContext {
 // runtime/game behavior are not established by this source interface.
 void __fastcall gather_native_renderer_capabilities_00b2c8e0(
     void* actual_renderer, const NativeRendererGatherCapabilitiesContext* context);
+
+// The SAME full body and literal table, using the complete raw00419CC0 getter
+// for each allocation/release and the disarmed normal-return getter. In
+// particular normal getter failure may propagate without another local cleanup;
+// armed unwind retains NativeStringStorage::release's noexcept limitation.
+// Caller scratch/preimages and parent FH3 composition are still explicit.
+void __fastcall gather_native_renderer_capabilities_00b2c8e0(
+    void* actual_renderer, const NativeRendererGatherCapabilitiesActualContext* context);
 
 } // namespace bsp
