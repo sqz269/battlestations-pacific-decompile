@@ -8355,3 +8355,33 @@ category, and `Electra`'s nearest enemy closes to 637 m. The remaining candidate
 mask `mask[7]` and the authored rank row for category 7, neither read here. That is a packet of its
 own, `torpedo_category_admission`, and until it is done the milestone's explanation of why no
 torpedo fires should be treated as open rather than as answered by this section.
+
+## Correction from docs/RECON_SLOT_OBJECT.md (packet cc7_recon_slot_object)
+
+- **Was:** "`[recon + DE8h]`, the side's published enemy contact list, has no producer here: this
+  process builds no recon slot object."
+  **Is:** the producer exists and was missed by a byte census that searched for the wrong access
+  form. There are five writers of that field, and the one that matters - the publication - is
+  `00804E10`, called at `00807627`, which appends over 97 iterations of array B. It does **not**
+  store through a `0DE8h` displacement: it receives a pointer already offset to the list and writes
+  the head as `[EAX+4]` at `00804E36`. A scan for stores at `+0DE8h` therefore finds only the
+  constructor's zero, the inlined unlink at `008076BC` and the destructor, which is exactly the
+  evidence that produced the "no producer" conclusion. Verified at integration by reading
+  `00804E10`'s body and the allocation at `008053E4`.
+
+- **The object.** `0x12A0` bytes, one per party, in the three-entry table at `00F874BC`;
+  `008053C0` is its only accessor and allocates on a miss (`008053E4 PUSH 12A0h`,
+  `008053E9 CALL 00BF681B`, constructor `008050E0` at `00805404`, stored at `0080540D`). The
+  constructor settles the layout that no consumer proved: **four** `61h x 0Ch` arrays at `+34h`,
+  `+4C0h`, `+94Ch` and `+0E14h`, plus five `{count, head, tail}` triples at `+0DD8h..+0E10h`, of
+  which `00806B10` publishes four. `0xE14 + 0x61*0x0C == 0x12A0` exactly, so the object ends on its
+  last member.
+
+- **Clear, fill and drain all run inside one `008073C0` call**, so a consumer only ever observes
+  records at level 2. Fifteen callers reach `008053C0`; ten read `+0DE8h` directly and three more
+  through the player record's cached slot at `+30h` - HUD markers, flak, torpedo steering and
+  ship-AI avoidance all walk the same chain.
+
+- **Negative result worth keeping.** `00862CD0` is **not** a contact-list consumer. It updates an
+  engagement record's accuracy from the `00E19994` table; the name in the milestone 2s notes is the
+  host method's, not a native contact walk.

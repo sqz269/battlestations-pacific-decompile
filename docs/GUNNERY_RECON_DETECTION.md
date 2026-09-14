@@ -366,3 +366,17 @@ so the field is the **square** of the script's `ReconModifier`, defaulting to `1
    was read here.
 6. **The milestone wiring.** `src/unit_gunnery_pass.cpp` builds contacts from (a) and (b) only.
    Applying this rule there is a separate packet: it owns that module, this one does not.
+
+## Correction from docs/RECON_SLOT_OBJECT.md (packet cc7_recon_slot_object)
+
+- **Was:** `[slot+28h]` described as storing the winning observer pointer.
+  **Is:** `[slot+28h]` is the **party index**. The winning observer pointer is `00805AF0`'s fourth
+  argument and lands in the unit's own detection record, not in the slot. Established from the slot
+  constructor `008050E0`, read in full, rather than from a consumer.
+
+- **The observer list** is the slot's own `{count, head, tail}` triple at `+0DD8h`, filled at
+  `0080753A` before the grouping pass and handed to `00806840` at `00807556`.
+
+- **A bucket is one list, and its index is the vehicle class id** (`ESI + 34h + i*0Ch`); 24 of the
+  97 subscripts are occupied in this installation. Where the `61h` bound itself comes from is **not**
+  established. There are three slots by party, and slot 2 never classifies anything as enemy.
