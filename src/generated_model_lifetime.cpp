@@ -82,7 +82,8 @@ void GeneratedModelLifetimeRuntime::validate_binding(GeneratedModelNodeLifetime&
 }
 void GeneratedModelLifetimeRuntime::bind(GeneratedModelNodeLifetime& node) {
     validate_binding(node);
-    reserve_binding_capacity();
+    // With no outstanding credits, preserve vector's ordinary growth policy.
+    if (pending_bindings_ != 0) reserve_binding_capacity();
     nodes_.push_back(&node);
 }
 void GeneratedModelLifetimeRuntime::bind(GeneratedModelNodeLifetime& node, BindingAdmission&& admission) {

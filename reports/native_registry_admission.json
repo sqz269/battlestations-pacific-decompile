@@ -41,7 +41,10 @@
     "repository_tests_added": 0,
     "external_fixture": "One registration-only credit-isolation scenario applied to both concrete registries; terminal callbacks are never exercised.",
     "build": "PASS fresh whole-worker scripts/build.ps1; MSVC Win32 Release, core /W4 /WX /fp:strict; no old-header library mixing and no unowned caller edits",
-    "ctests": ["PASS reconstructed_math", "PASS native_math_differential"],
+    "ctests": [
+      "PASS reconstructed_math",
+      "PASS native_math_differential"
+    ],
     "seed_ranges": 8,
     "seed_result": "PASS all eight Ghidra/disk byte ranges; configured C:/Users/sqz269/bsp.gpr and /battlestationspacific.exe verified by exporter",
     "probe": "PASS: scene ordinary allocations=2, lifetime ordinary allocations=2, forbidden host-new attempts=0; canonical identities and explicit cleanup passed",
@@ -76,5 +79,14 @@
     "Normal serialized concrete raw-slot reuse after terminal release is supported; no new reuse restriction.",
     "Camera overloads and concrete cockpit/viewport ownership composition are not included.",
     "No native body, ABI, native EH, native execution or gameplay proof from the external registration fixture."
-  ]
+  ],
+  "integration_growth_correction": {
+    "reason": "Preserve ordinary std::vector append growth with no pending admission; reserve extra capacity only when P is nonzero.",
+    "source_sha256": {
+      "src/scene_attachment.cpp": "58fa851ddc57a0910f4903da4d08fa74cf56b41af352b8d9b8ba8f4ff7715719",
+      "src/generated_model_lifetime.cpp": "d8c5990909d169f0f70d9e3320b4e671da6fcb58694cc9ac5f7d621cbdeabd64"
+    },
+    "native_semantics_changed": false,
+    "combined_validation_report": "reports/native_cockpit_admission_bh_validation.json"
+  }
 }

@@ -12,10 +12,12 @@ callback. Existing bind/unbind call signatures remain available.
 
 For the existing node vector, let L be its size, P the pending-credit count, and
 C its capacity. Every completed operation preserves `L + P <= C`. Preparation
-and fresh ordinary binding check `P < max_size() - L` before computing
+and fresh ordinary binding with outstanding credits check `P < max_size() - L` before computing
 `L + P + 1`, and reserve that capacity before changing either entries or P.
 Successful preparation increments P and returns its nonthrowing token. Ordinary
-bind preserves P. A successful admitted append consumes one P and empties the
+bind preserves P. With P=0, ordinary binding uses the original vector append
+and its normal growth/maximum-size checks; it does not force a reserve of L+1
+for every insertion. A successful admitted append consumes one P and empties the
 caller's token. The attachment-link vector receives no admission accounting.
 
 Validation precedes any admitted mutation. The scene overload shares the old
@@ -137,3 +139,13 @@ Camera owner/reference admission overloads remain a later reviewed packet.
 Persistent cockpit/viewport companions, their publication and retirement,
 native constructor/EH composition, original ABI compatibility and game
 validation remain outside this host registration implementation.
+
+## Integration correction
+
+The worker archive and its four source hashes above retain the original reviewed
+worker build. Integration changes only the two ordinary bind sites to call the
+capacity helper when P is nonzero. This preserves the existing vector growth
+policy when there is no pending credit; unconditional reserve(L+1) would instead
+allocate at each ordinary insertion. Reserved/admitted paths and validation are
+unchanged. The exact corrected combined source and current-library fixtures are
+recorded in `reports/native_cockpit_admission_bh_validation.json`.

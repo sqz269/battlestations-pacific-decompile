@@ -317,7 +317,8 @@ bool SceneAttachmentRuntime::validate_binding(SceneNodeAttachment& node) const {
 }
 void SceneAttachmentRuntime::bind(SceneNodeAttachment& node) {
     if (validate_binding(node)) return;
-    reserve_binding_capacity();
+    // With no outstanding credits, preserve vector's ordinary growth policy.
+    if (pending_bindings_ != 0) reserve_binding_capacity();
     bindings_.push_back(&node);
     if (node.transform.raw_node_key_) node.transform.hierarchy_runtime_ = this;
 }
