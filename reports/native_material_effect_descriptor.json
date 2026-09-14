@@ -2569,5 +2569,45 @@
     "Existing NativeStringStorage release is noexcept; actual bridge terminates on lazy getter C++ failure, unlike general native FH3. No new raw string exception interface is claimed.",
     "Original descriptor/sampler/effect FH3/SEH exceptional execution, arbitrary profiles, original register/private-frame ABI, allocator failure injection and global shutdown/gameplay are not established.",
     "Source normal free services exercised without allocator interception. Runtime disk hashes are separate from mapped-image identity; tool executable archive does not include every tool DLL."
-  ]
+  ],
+  "orch5_shader_parent_integration": {
+    "code_commit": "56780ba799cd9ed1208bdaf4262314d58df94929",
+    "checkpoint": {
+      "path": "local/checkpoints/56780ba7/native-shader-parent-wave/validation.json",
+      "sha256": "2c757704e58574665b12a4cfcc05ea693b880e1923a1e1daf67031202d633065",
+      "code_commit": "56780ba799cd9ed1208bdaf4262314d58df94929",
+      "artifacts": 3553
+    },
+    "strict_msvc_win32_build": true,
+    "verified_native_seeds": 8,
+    "ctests_passed": 2,
+    "fixture_program": "local/native_shader_parent_integration/renderer_descriptor_probe.exe",
+    "fixture_scope": "Full original/source B62280 pool-return postimages matched. The source nonnull D61A44/D621F4 descriptor/sampler chain passed with actual state-list pool/string pool/AA0 manager, captured child-slot clearing and effect-C4 clearing after provider changes. Whole-chain original execution and legacy callable producer migration remain open.",
+    "saved_annotation_journal": "local/ghidra-annotations-20260914T182201Z.json",
+    "saved_annotations": {
+      "source_entries": 20,
+      "handler_context_entries": 3
+    },
+    "native_byte_review": {
+      "spans": 70,
+      "bytes": 5674,
+      "scope": "combined full packet and explicit context spans; includes overlaps"
+    },
+    "call_site_review": {
+      "rows_checked": 136,
+      "failures": 0,
+      "scope": "combined numeric direct/tail rows, including two constructor handler tails; indirect dispatch and original exception execution excluded"
+    },
+    "saved_flow_and_definition_records": [
+      "reports/native_material_effect_descriptor_flow_repair.json",
+      "reports/native_material_effect_descriptor_function_definitions.json",
+      "reports/native_renderer_generated_model_function_definitions.json",
+      "reports/native_d3d9_shader_construction_actual_function_definitions.json"
+    ],
+    "full_renderer_lifetime_validated": false,
+    "full_generated_model_executed": false,
+    "raw_material_factory_executed": false,
+    "original_fh3_seh_abi_validated": false,
+    "game_validated": false
+  }
 }

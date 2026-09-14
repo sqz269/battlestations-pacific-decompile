@@ -87,3 +87,13 @@ dispatch, original caller/private-frame ABI, allocator-failure injection and gam
 or global-shutdown validation are not established. Source/library/tool evidence
 is archived separately from measured loaded runtime DLL file evidence; file hashes
 are not mapped-image hashes.
+
+## Integrated validation at 56780ba7
+
+Full original/source B62280 pool-return postimages matched. The source nonnull D61A44/D621F4 descriptor/sampler chain passed with actual state-list pool/string pool/AA0 manager, captured child-slot clearing and effect-C4 clearing after provider changes. Whole-chain original execution and legacy callable producer migration remain open.
+
+The combined strict Win32 build, eight seed checks and both CTests passed.
+Three final-library probes,136 numeric direct/tail rows,23 saved/read-back
+annotations (20 source entries and3 handler contexts), and70 live/PE spans
+are retained in `local/checkpoints/56780ba7/native-shader-parent-wave/validation.json`
+(SHA256 `2c757704e58574665b12a4cfcc05ea693b880e1923a1e1daf67031202d633065`). Full renderer and gameplay validation remain open.

@@ -108,3 +108,13 @@ do not close the effect compiler tail, its caller allocation cleanup, full shade
 owner graph, renderer lifecycle, draw/readback or gameplay. Runtime tests do not
 cover every earlier allocation failure or failure from a normal cleanup getter;
 those arm/disarm and preimage contracts are assembly/source evidence.
+
+## Integrated validation at 56780ba7
+
+Original/source pixel and vertex normal construction matched with real HAL shaders, actual AA0/AA8/FEDC publications, registry operations and canonical drain. Source-only postpublication failures checked armed cleanup order, base stamp, retained COM/vertex registration/publication and unlocked captured section. Legacy retained-frame checks passed, including expected destructor guard exit77. Original FH3/SEH execution remains unproved.
+
+The combined strict Win32 build, eight seed checks and both CTests passed.
+Three final-library probes,136 numeric direct/tail rows,23 saved/read-back
+annotations (20 source entries and3 handler contexts), and70 live/PE spans
+are retained in `local/checkpoints/56780ba7/native-shader-parent-wave/validation.json`
+(SHA256 `2c757704e58574665b12a4cfcc05ea693b880e1923a1e1daf67031202d633065`). Full renderer and gameplay validation remain open.

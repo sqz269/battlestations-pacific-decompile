@@ -1,0 +1,182 @@
+{
+  "events": [
+    {
+      "recreate": "00b458a0",
+      "previous": "Function: BSP_ShaderDescriptor_Destroy at 00b458a0\nSignature: undefined BSP_ShaderDescriptor_Destroy(void)\nEntry: 00b458a0\nBody: 00b458a0 - 00b45b14",
+      "plate": "[BSP reconstruction 00b458a0]\nDescriptive hypothesis, not a recovered symbol. Complete1363-byte body verified through B45DF2; stored Ghidra body still ends B45B14. Direct callable virtual0(flags1) C4 entries, string-first heap D0/DC entries; capture slot before callback, reload unsigned live count/data. Reverse13 members, reserve minima10/10/6/10 with B8 stride8, others4; zero counts and leave header pointers/capacities stale. DF7EA4 thirteen-state unwind cleans members, not remaining child entries. Four call-return gaps repaired across destructor/scalar; full verified tail remains separately captured. docs/NATIVE_SHADER_DESCRIPTOR_OWNER.md; reports/native_shader_descriptor_owner.json."
+    },
+    {
+      "endpoint": "delete_function",
+      "body": {
+        "address": "00b458a0"
+      },
+      "result": {
+        "success": true,
+        "address": "00b458a0",
+        "deleted_function": "BSP_ShaderDescriptor_Destroy",
+        "body_size": 582,
+        "message": "Function 'BSP_ShaderDescriptor_Destroy' deleted at 00b458a0"
+      }
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00b458a0",
+        "end_address": "00b45df3"
+      },
+      "result": {
+        "success": true,
+        "start_address": "00b458a0",
+        "end_address": "00b45df2",
+        "bytes_disassembled": 1363,
+        "message": "Successfully disassembled 1363 byte(s)"
+      }
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00b458a0",
+        "disassemble_first": false,
+        "name": "BSP_ShaderDescriptor_Destroy"
+      },
+      "result": {
+        "success": true,
+        "address": "00b458a0",
+        "function_name": "BSP_ShaderDescriptor_Destroy",
+        "entry_point": "00b458a0",
+        "body_size": 1353,
+        "message": "Function created successfully at 00b458a0",
+        "warnings": [
+          "Function name 'BSP_ShaderDescriptor_Destroy' \u2014 main part 'ShaderDescriptor_Destroy' is not PascalCase. Expected: ShaderdescriptorDestroy",
+          "Function name 'BSP_ShaderDescriptor_Destroy' \u2014 main part 'ShaderDescriptor_Destroy' contains underscores. Use PascalCase after the module prefix.",
+          "Function name 'BSP_ShaderDescriptor_Destroy' does not start with a recognized verb. First word 'Shader' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+        ]
+      }
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00b458a0",
+        "comment": "[BSP reconstruction 00b458a0]\nDescriptive hypothesis, not a recovered symbol. Complete1363-byte body verified through B45DF2; stored Ghidra body still ends B45B14. Direct callable virtual0(flags1) C4 entries, string-first heap D0/DC entries; capture slot before callback, reload unsigned live count/data. Reverse13 members, reserve minima10/10/6/10 with B8 stride8, others4; zero counts and leave header pointers/capacities stale. DF7EA4 thirteen-state unwind cleans members, not remaining child entries. Four call-return gaps repaired across destructor/scalar; full verified tail remains separately captured. docs/NATIVE_SHADER_DESCRIPTOR_OWNER.md; reports/native_shader_descriptor_owner.json."
+      },
+      "result": {
+        "status": "success",
+        "message": "Set plate comment for function at 00b458a0",
+        "warnings": [
+          "Plate comment missing Algorithm section",
+          "Plate comment missing Parameters section",
+          "Plate comment missing Returns section"
+        ]
+      }
+    },
+    {
+      "defined": "00b458a0",
+      "end": "00b45df3",
+      "name": "BSP_ShaderDescriptor_Destroy",
+      "after": "Function: BSP_ShaderDescriptor_Destroy at 00b458a0\nSignature: undefined BSP_ShaderDescriptor_Destroy(void)\nEntry: 00b458a0\nBody: 00b458a0 - 00b45df2"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": {
+        "success": true,
+        "program": "battlestationspacific.exe",
+        "message": "Program saved successfully"
+      }
+    },
+    {
+      "recreate": "00b56de0",
+      "previous": "Function: BSP_ShaderStateList_DestroyAndReturn at 00b56de0\nSignature: undefined BSP_ShaderStateList_DestroyAndReturn(void)\nEntry: 00b56de0\nBody: 00b56de0 - 00b56e2c",
+      "plate": "[BSP reconstruction 00b56de0]\nDescriptive hypothesis, not a recovered symbol. Full77-byte capture header; cap<0 reserve0, count0/free rows, return SAME slot viaB623C0 then clear holder. Hidden16-byte free continuation restored. Header pointer/capacity stale. docs/NATIVE_SHADER_SAMPLER_OWNER.md; reports/native_shader_sampler_owner.json."
+    },
+    {
+      "endpoint": "delete_function",
+      "body": {
+        "address": "00b56de0"
+      },
+      "result": {
+        "success": true,
+        "address": "00b56de0",
+        "deleted_function": "BSP_ShaderStateList_DestroyAndReturn",
+        "body_size": 61,
+        "message": "Function 'BSP_ShaderStateList_DestroyAndReturn' deleted at 00b56de0"
+      }
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00b56de0",
+        "end_address": "00b56e2d"
+      },
+      "result": {
+        "success": true,
+        "start_address": "00b56de0",
+        "end_address": "00b56e2c",
+        "bytes_disassembled": 77,
+        "message": "Successfully disassembled 77 byte(s)"
+      }
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00b56de0",
+        "disassemble_first": false,
+        "name": "BSP_ShaderStateList_DestroyAndReturn"
+      },
+      "result": {
+        "success": true,
+        "address": "00b56de0",
+        "function_name": "BSP_ShaderStateList_DestroyAndReturn",
+        "entry_point": "00b56de0",
+        "body_size": 77,
+        "message": "Function created successfully at 00b56de0",
+        "warnings": [
+          "Function name 'BSP_ShaderStateList_DestroyAndReturn' \u2014 main part 'ShaderStateList_DestroyAndReturn' is not PascalCase. Expected: ShaderstatelistDestroyandreturn",
+          "Function name 'BSP_ShaderStateList_DestroyAndReturn' \u2014 main part 'ShaderStateList_DestroyAndReturn' contains underscores. Use PascalCase after the module prefix.",
+          "Function name 'BSP_ShaderStateList_DestroyAndReturn' does not start with a recognized verb. First word 'Shader' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+        ]
+      }
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00b56de0",
+        "comment": "[BSP reconstruction 00b56de0]\nDescriptive hypothesis, not a recovered symbol. Full77-byte capture header; cap<0 reserve0, count0/free rows, return SAME slot viaB623C0 then clear holder. Hidden16-byte free continuation restored. Header pointer/capacity stale. docs/NATIVE_SHADER_SAMPLER_OWNER.md; reports/native_shader_sampler_owner.json."
+      },
+      "result": {
+        "status": "success",
+        "message": "Set plate comment for function at 00b56de0",
+        "warnings": [
+          "Plate comment missing Algorithm section",
+          "Plate comment missing Parameters section",
+          "Plate comment missing Returns section"
+        ]
+      }
+    },
+    {
+      "defined": "00b56de0",
+      "end": "00b56e2d",
+      "name": "BSP_ShaderStateList_DestroyAndReturn",
+      "after": "Function: BSP_ShaderStateList_DestroyAndReturn at 00b56de0\nSignature: undefined BSP_ShaderStateList_DestroyAndReturn(void)\nEntry: 00b56de0\nBody: 00b56de0 - 00b56e2c"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": {
+        "success": true,
+        "program": "battlestationspacific.exe",
+        "message": "Program saved successfully"
+      }
+    }
+  ],
+  "source_records": [
+    {
+      "archive_path": "local/compiler-path-workers/renderer-parent-descriptor/local/native_material_effect_descriptor_validated_archive/inputs/local/native_material_effect_descriptor_function_repair.json",
+      "sha256": "d87e2c56171529bdb2151d83e1cab638714c5ce8f96a8e1f21213ee7b81e516f"
+    },
+    {
+      "archive_path": "local/compiler-path-workers/renderer-parent-descriptor/local/native_material_effect_descriptor_validated_archive/inputs/local/native_material_effect_descriptor_holder_function_repair.json",
+      "sha256": "d359ba3108cd87cd6a0906aa88a9ebb0495b7ba4ed039ec53a64442b5a6d4a9e"
+    }
+  ]
+}

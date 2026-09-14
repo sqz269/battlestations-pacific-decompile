@@ -833,11 +833,12 @@
   "flow_repair": "reports/native_d3d9_renderer_flow_repair.json",
   "function_definition": "reports/native_d3d9_renderer_function_definitions.json",
   "remaining_boundaries": [
-    "Complete B32410/B32920/B339F0/B32900 source exists; parent probes cover link/import resolution only and do not invoke constructor/destructor",
-    "Execution requires a valid initialized renderer/device graph with documented live subobjects, scratch preimages, canonical bindings and shared actual publication cells",
-    "Static B4C700 callers identify generated models at19E4/19E8;19E0 writer and complete actual model-factory composition remain open",
-    "Nested material-effect descriptor D61A44/B46930/B458A0 and sampler D621F4/B56FC0/B56EA0/B56DE0 raw terminal integration remains independent unfinished work",
-    "Existing inner retained-operation/noexcept boundaries and projected physical-lock/shader-construction contexts remain explicit",
+    "Complete constructor/destructor source is linked; neither full parent constructor nor destructor has been invoked",
+    "Execution requires a valid initialized actual renderer/device graph with documented live subobjects, scratch preimages, canonical bindings and shared publication cells",
+    "B4C700 generated-model source and raw535320 material route are integrated but full bodies are unexecuted; cold B3B3C0 compiler tail remains required and19E0 writer is unknown",
+    "Raw D61A44 descriptor and D621F4 sampler terminals are integrated; existing callable descriptor/sampler producer paths still need explicit raw adoption without a profile fallback",
+    "Actual-AA0 shader constructors are integrated and normal original/source real-HAL checks pass; original constructor FH3/SEH and whole compiler ownership composition remain unproved",
+    "Existing inner retained-operation/noexcept boundaries and projected physical-lock context remain explicit",
     "EndFrame still needs actual B1EBE0, B2BB90 and B2B580 outer providers",
     "Original private-frame/CRT/FH3/SEH/register ABI, application adoption and gameplay remain unvalidated"
   ],
@@ -900,6 +901,35 @@
       "sha256": "559269e15cbe10ee773e9bc8dcd8372695dc890a33b9254553319ff8e6a39fb2",
       "code_commit": "7cbd532eca2ea23ac162bb80257c9e75c02f6594",
       "artifacts": 3422
+    }
+  },
+  "remaining_boundaries_before_shader_parent_integration": [
+    "Complete B32410/B32920/B339F0/B32900 source exists; parent probes cover link/import resolution only and do not invoke constructor/destructor",
+    "Execution requires a valid initialized renderer/device graph with documented live subobjects, scratch preimages, canonical bindings and shared actual publication cells",
+    "Static B4C700 callers identify generated models at19E4/19E8;19E0 writer and complete actual model-factory composition remain open",
+    "Nested material-effect descriptor D61A44/B46930/B458A0 and sampler D621F4/B56FC0/B56EA0/B56DE0 raw terminal integration remains independent unfinished work",
+    "Existing inner retained-operation/noexcept boundaries and projected physical-lock/shader-construction contexts remain explicit",
+    "EndFrame still needs actual B1EBE0, B2BB90 and B2B580 outer providers",
+    "Original private-frame/CRT/FH3/SEH/register ABI, application adoption and gameplay remain unvalidated"
+  ],
+  "shader_parent_integration_correction": {
+    "code_commit": "56780ba799cd9ed1208bdaf4262314d58df94929",
+    "sources": [
+      "docs/NATIVE_MATERIAL_EFFECT_DESCRIPTOR.md",
+      "docs/NATIVE_RENDERER_GENERATED_MODEL.md",
+      "docs/NATIVE_D3D9_SHADER_CONSTRUCTION_ACTUAL.md"
+    ],
+    "raw_descriptor_sampler_terminals_integrated": true,
+    "actual_generated_model_body_integrated": true,
+    "actual_AA0_shader_construction_integrated": true,
+    "parent_executed": false,
+    "generated_model_full_body_executed": false,
+    "raw_material_factory_executed": false,
+    "checkpoint": {
+      "path": "local/checkpoints/56780ba7/native-shader-parent-wave/validation.json",
+      "sha256": "2c757704e58574665b12a4cfcc05ea693b880e1923a1e1daf67031202d633065",
+      "code_commit": "56780ba799cd9ed1208bdaf4262314d58df94929",
+      "artifacts": 3553
     }
   }
 }

@@ -59,3 +59,14 @@ retained-operation/noexcept boundaries, physical-lock and shader-construction
 projected contexts, three outer EndFrame providers, original FH3/SEH identity,
 application adoption and gameplay remain open. See
 `reports/native_renderer_destructor.json` for the pinned validation scope.
+
+## Correction from descriptor, generated-model and raw shader integration
+
+At `56780ba7`, raw descriptor/sampler terminals, the complete B4C700 generated-model
+body, raw535320 material route and actual-AA0 shader constructors are integrated.
+Existing callable descriptor/sampler producers still require explicit raw adoption.
+Full B4C700/raw material execution and the cold B3B3C0 compiler continuation remain
+open. Normal original/source shader fixtures use real HAL shaders; native FH3/SEH
+execution and complete compiler ownership composition remain unproved.
+Constructor/destructor probes still cover linking/imports only. Projected physical
+locking, EndFrame providers and application/gameplay validation remain separate work.

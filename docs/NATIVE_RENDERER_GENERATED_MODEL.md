@@ -152,3 +152,13 @@ faults, mutable original stack aliases and game/visual parity remain explicit
 boundaries. `reports/native_renderer_generated_model.json` and the ignored
 immutable input/validation manifests distinguish native evidence, source,
 built artifacts, tools and modules actually loaded by the fixture.
+
+## Integrated validation at 56780ba7
+
+Complete B4C700 and the raw535320 material route passed final-library linking. The focused actual-AA0/AA8 mesh/section ownership and canonical bind-failure retention checks passed. Full B4C700 and raw material execution were NOT tested; the cold B3B3C0 continuation remains required.
+
+The combined strict Win32 build, eight seed checks and both CTests passed.
+Three final-library probes,136 numeric direct/tail rows,23 saved/read-back
+annotations (20 source entries and3 handler contexts), and70 live/PE spans
+are retained in `local/checkpoints/56780ba7/native-shader-parent-wave/validation.json`
+(SHA256 `2c757704e58574665b12a4cfcc05ea693b880e1923a1e1daf67031202d633065`). Full renderer and gameplay validation remain open.
