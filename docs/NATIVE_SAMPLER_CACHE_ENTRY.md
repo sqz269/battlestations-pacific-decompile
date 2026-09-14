@@ -73,3 +73,12 @@ provider closure, zero-reference resource terminals, native FH3 exceptions,
 application wiring and gameplay remain unproved. See the machine-readable
 [entry report](../reports/native_sampler_cache_entry.json) for numeric calls and
 the frozen evidence/compile/link/runtime closure.
+
+
+## Primary integration validation
+
+Source checkpoint `a234503d` integrates the actual sampler/default-load/message schedules. The primary independently reviewed all six source/header files, matched32 complete body/context spans totaling10,195 bytes between live Ghidra and the installed PE, and checked26 numeric call rows with zero failures. Strict Win32 build, eight native seeds and both CTests passed.
+
+The fixture relinked against this combined library passed the nine-sampler original/source schedule, nested source failure/replay checks and expected guard77. Original parent schedules share substantive source child providers and an imported atomic fixture bridge; this is not an independent child/Windows-atomic differential result. Runtime modules were captured from the actual mapped32-bit files. Five annotations were saved/read back with previous names/comments retained. Frozen combined evidence is `local/checkpoints/a234503d/native-sampler-append-wave/validation.json`.
+
+Nonnull input/online/cursor execution, resource terminal behavior, native FH3/SEH/private ABI, complete compiler-parent execution and gameplay remain unproved. The source requires actual shared storage, services and explicit stack preimages.

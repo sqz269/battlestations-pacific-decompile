@@ -383,5 +383,36 @@
     "include/bsp/native_sampler_cache_entry.hpp": "ac7b94006be653f7e9d3e14a818f2927c2bedc5b0b7fe3d49ba05e47e3fe7e1a",
     "src/native_platform_load_messages.cpp": "80d4cfb11b9dbe4777470f7273fc6aa8316763697233e4aff7caa38143387c06",
     "src/native_sampler_cache_entry.cpp": "862cc2d6488db4a822e2b0667604c3c61513bb82f3d4ad05c82e2d729bbc6249"
+  },
+  "orch5_sampler_parent_integration": {
+    "source_commit": "a234503d15531269cd5fefd1096e27f2888e2b7c",
+    "worker_commit": "e3e4c4e762614fa36f8769cc00dbb4013887ef50",
+    "worker_base": "c068aeded5c813772096889700d00097dce886f6",
+    "source_review": "All six new source/header files reviewed against complete relevant normal listings; LF hashes matched frozen final worker sources.",
+    "native_audit": {
+      "spans": 32,
+      "bytes": 10195,
+      "scope": "Owned normal bodies plus explicit consumed/context spans; independent live Ghidra equals installed PE.",
+      "path": "local/native_material_draw_parent_integration/sampler-native-audit.json",
+      "sha256": "5313f800767a4a8d56daddfa4a107fa0ea9eb9eb45205653b39cae7cb8cf8271"
+    },
+    "build": "Strict MSVC Win32; eight native seeds matched; both existing CTests passed.",
+    "numeric_call_rows": 26,
+    "numeric_call_failures": 0,
+    "fixture": "Final combined library: original/source nine-sampler normal schedule, source-only nested failure/replay checks and expected guard77 all passed. Original schedules share substantive source child and imported atomic fixture bridge boundaries.",
+    "archive": {
+      "path": "local/compiler-path-workers/material-draw-parent-sampler/manifest.json",
+      "sha256": "57926caba057de3ce3559e5667719287070be2ce2ec152ea6434ffbf01278b9d",
+      "artifacts": 883
+    },
+    "annotations": {
+      "count": 5,
+      "journal": "local/ghidra-annotations-20260914T185231Z.json",
+      "saved_and_read_back": true,
+      "previous_names_and_comments_preserved": true
+    },
+    "integration_correction": "Preserved original worker ancestry and moved its three source registrations to cmake/startup.cmake without changing parent CMakeLists.txt. Corrected two stale dependency-header scope statements.",
+    "checkpoint": "local/checkpoints/a234503d/native-sampler-append-wave/validation.json",
+    "limits": "Nonnull input/online/cursor provider route, actual resource terminal, native FH3/SEH/private ABI, complete compiler-parent execution and gameplay remain unproved. Explicit actual storage and stack preimages remain caller requirements."
   }
 }
