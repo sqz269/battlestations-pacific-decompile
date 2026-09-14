@@ -1,0 +1,796 @@
+{
+  "packet": "orch4_native_pak_block_callbacks_bo",
+  "generated_utc": "2026-09-14T07:31:43.946983+00:00",
+  "branch": "agent/orch4-pak-block-callbacks-bo",
+  "base_commit": "b58f75e5b68d1e68c412de321ddae6797d3705ef",
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "project": "bsp",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "verification": "bsp.py ghidra verifies project/program/language/base before each live query; autostart disabled"
+  },
+  "functions": [
+    {
+      "address": "00bb5770",
+      "inclusive_end": "00bb590a",
+      "byte_count": 411,
+      "cpp": "bsp::enter_native_pak_registry_block_00bb5770",
+      "coverage": "complete ordinary callback body; native FH3 mechanism excluded",
+      "native_abi": "ECX captured registry; one stacked name header; RET4; no uniform semantic EAX result",
+      "listed_instructions": 133,
+      "listing_gaps": 0
+    },
+    {
+      "address": "00bb5910",
+      "inclusive_end": "00bb5ab0",
+      "byte_count": 417,
+      "cpp": "bsp::leave_native_pak_registry_block_00bb5910",
+      "coverage": "complete ordinary callback body; native FH3 mechanism excluded",
+      "native_abi": "ECX captured registry; one stacked name header; RET4; no uniform semantic EAX result",
+      "listed_instructions": 133,
+      "listing_gaps": 0
+    }
+  ],
+  "native_spans": [
+    {
+      "address": "00bb5770",
+      "inclusive_end": "00bb590a",
+      "byte_count": 411,
+      "role": "complete entry body",
+      "sha256": "34f69e837c9101905b47f8508a7bd7e0ad838ebefa4ea87025a2ef97eaec6718",
+      "installed_pe_matches_live_ghidra": true,
+      "evidence_log": "local/pak_callbacks_bo/bytes_bb5770.txt",
+      "evidence_log_sha256": "653bec95e4bad50c39905422cb4dc1aa45c579eaa6bc7a068cb78cc17f091b0e",
+      "listed_instructions": 133,
+      "listing_gaps": 0
+    },
+    {
+      "address": "00bb5910",
+      "inclusive_end": "00bb5ab0",
+      "byte_count": 417,
+      "role": "complete exit body",
+      "sha256": "2761f2f31af96453ec9e33e7400afa3b991acd784f885f8ef7f2dbdd13baa6cf",
+      "installed_pe_matches_live_ghidra": true,
+      "evidence_log": "local/pak_callbacks_bo/bytes_bb5910.txt",
+      "evidence_log_sha256": "fe94d5eb7e59e2aa5132b5d368b1249f27c46c0b9bb8d4ac987f697a698f7c3a",
+      "listed_instructions": 133,
+      "listing_gaps": 0
+    },
+    {
+      "address": "00cc43e0",
+      "inclusive_end": "00cc4429",
+      "byte_count": 74,
+      "role": "EH action and decoded handler region, including padding",
+      "sha256": "4f7c9e622545f5f53d2901997a01ff375a83e2099b767f3af2dc33c430059bc4",
+      "installed_pe_matches_live_ghidra": true,
+      "evidence_log": "local/pak_callbacks_bo/bytes_cc43e0.txt",
+      "evidence_log_sha256": "82f560ac4cb731ec7b98e861c2633db33ae7a59eafd9f97eba42ec0dbfbba411"
+    },
+    {
+      "address": "00dfdce0",
+      "inclusive_end": "00dfdd4f",
+      "byte_count": 112,
+      "role": "both EH maps and FuncInfo records, including padding",
+      "sha256": "d9c5d70ed22584f64a75568606a5da7fec90f7782603c64d52e102836f111b4e",
+      "installed_pe_matches_live_ghidra": true,
+      "evidence_log": "local/pak_callbacks_bo/bytes_dfdce0.txt",
+      "evidence_log_sha256": "6de5129a2835e6aae0ea82004fdd7de41290111ffe99a5c7e24e0329372d4763"
+    },
+    {
+      "address": "00ce3a70",
+      "inclusive_end": "00ce3a73",
+      "byte_count": 4,
+      "role": "dot literal with padding",
+      "sha256": "c245aff91259378234ae88c46d0e6a690a75034a5fc42bd61f2e3d03c9158b33",
+      "installed_pe_matches_live_ghidra": true,
+      "evidence_log": "local/pak_callbacks_bo/bytes_ce3a70.txt",
+      "evidence_log_sha256": "f89df9a100eea698b5abb554ab06cb0af8148be225bc783594438d59de7f679b"
+    },
+    {
+      "address": "00d64190",
+      "inclusive_end": "00d6419f",
+      "byte_count": 16,
+      "role": "PakRegistry primary profile including both callback slots",
+      "sha256": "b3fcd7210a244010aeb08d14cc42d60e4f95ecca08d5a2954f9aa37be975aa55",
+      "installed_pe_matches_live_ghidra": true,
+      "evidence_log": "local/pak_callbacks_bo/bytes_d64190.txt",
+      "evidence_log_sha256": "7c4a251a833948f37c1418cd2b92639bdb3299b63f4c844c42364786b01d5f1f"
+    }
+  ],
+  "direct_and_tail_calls": [
+    {
+      "address": "00bb5795",
+      "native": "00bb5670",
+      "function": "00bb5770",
+      "abi_or_cleanup": "ECX outer output; EDX original input; callee RET"
+    },
+    {
+      "address": "00bb57a7",
+      "native": "00bd9210",
+      "function": "00bb5770",
+      "abi_or_cleanup": "ECX current manager; one stacked byte word; RET4"
+    },
+    {
+      "address": "00bb57b7",
+      "native": "00bdf4c0",
+      "function": "00bb5770",
+      "abi_or_cleanup": "ECX current manager; stacked mutable mpak header; AL bool; RET4"
+    },
+    {
+      "address": "00bb57d9",
+      "native": "0041dd40",
+      "function": "00bb5770",
+      "abi_or_cleanup": "ECX destination header; stacked length/true; RET8"
+    },
+    {
+      "address": "00bb57f3",
+      "native": "00bf7680",
+      "function": "00bb5770",
+      "abi_or_cleanup": "cdecl destination/source/count; caller ADD ESP,0xc"
+    },
+    {
+      "address": "00bb580e",
+      "native": "00bdd850",
+      "function": "00bb5770",
+      "abi_or_cleanup": "ECX current manager; same device header in both stacked slots; EAX id; RET8"
+    },
+    {
+      "address": "00bb5824",
+      "native": "0041e870",
+      "function": "00bb5770",
+      "abi_or_cleanup": "ECX dot header; stacked CE3A70; RET4"
+    },
+    {
+      "address": "00bb5842",
+      "native": "00be1890",
+      "function": "00bb5770",
+      "abi_or_cleanup": "ECX current manager; five stacked args mpak/dot/priority/0/device; EAX provider; RET14h"
+    },
+    {
+      "address": "00bb5860",
+      "native": "00bb46f0",
+      "function": "00bb5770",
+      "abi_or_cleanup": "ECX actual vector; stacked signed capacity; RET4"
+    },
+    {
+      "address": "00bb588c",
+      "native": "00419cc0",
+      "function": "00bb5770",
+      "abi_or_cleanup": "no stacked args; EAX actual string pool"
+    },
+    {
+      "address": "00bb5893",
+      "native": "00bd1510",
+      "function": "00bb5770",
+      "abi_or_cleanup": "ECX captured pool; stacked data/bytes/1; RET0Ch"
+    },
+    {
+      "address": "00bb589e",
+      "native": "00bd9fa0",
+      "function": "00bb5770",
+      "abi_or_cleanup": "ECX current manager; no stacked args; RET"
+    },
+    {
+      "address": "00bb58ba",
+      "native": "00419cc0",
+      "function": "00bb5770",
+      "abi_or_cleanup": "no stacked args; EAX actual string pool"
+    },
+    {
+      "address": "00bb58c1",
+      "native": "00bd1510",
+      "function": "00bb5770",
+      "abi_or_cleanup": "ECX captured pool; stacked data/bytes/1; RET0Ch"
+    },
+    {
+      "address": "00bb58cc",
+      "native": "00bd9220",
+      "function": "00bb5770",
+      "abi_or_cleanup": "ECX current manager; no stacked args; RET"
+    },
+    {
+      "address": "00bb58eb",
+      "native": "00419cc0",
+      "function": "00bb5770",
+      "abi_or_cleanup": "no stacked args; EAX actual string pool"
+    },
+    {
+      "address": "00bb58f2",
+      "native": "00bd1510",
+      "function": "00bb5770",
+      "abi_or_cleanup": "ECX captured pool; stacked data/bytes/1; RET0Ch"
+    },
+    {
+      "address": "00bb5934",
+      "native": "00bb5670",
+      "function": "00bb5910",
+      "abi_or_cleanup": "ECX outer output; EDX original input; callee RET"
+    },
+    {
+      "address": "00bb594c",
+      "native": "00bdf4c0",
+      "function": "00bb5910",
+      "abi_or_cleanup": "ECX current manager; stacked mutable mpak header; AL bool; RET4"
+    },
+    {
+      "address": "00bb5992",
+      "native": "00bf7fbf",
+      "function": "00bb5910",
+      "abi_or_cleanup": "cdecl provider-name-data/mpak-data; caller ADD ESP,8"
+    },
+    {
+      "address": "00bb59f5",
+      "native": "0041dd40",
+      "function": "00bb5910",
+      "abi_or_cleanup": "ECX destination header; stacked length/true; RET8"
+    },
+    {
+      "address": "00bb5a10",
+      "native": "00bf7680",
+      "function": "00bb5910",
+      "abi_or_cleanup": "cdecl destination/source/count; caller ADD ESP,0xc"
+    },
+    {
+      "address": "00bb5a2e",
+      "native": "00be0750",
+      "function": "00bb5910",
+      "abi_or_cleanup": "ECX current manager; stacked mpak/dot; AL bool; RET8"
+    },
+    {
+      "address": "00bb5a4d",
+      "native": "00419cc0",
+      "function": "00bb5910",
+      "abi_or_cleanup": "no stacked args; EAX actual string pool"
+    },
+    {
+      "address": "00bb5a54",
+      "native": "00bd1510",
+      "function": "00bb5910",
+      "abi_or_cleanup": "ECX captured pool; stacked data/bytes/1; RET0Ch"
+    },
+    {
+      "address": "00bb5a64",
+      "native": "00bd9200",
+      "function": "00bb5910",
+      "abi_or_cleanup": "ECX current manager; no stacked args; RET"
+    },
+    {
+      "address": "00bb5a73",
+      "native": "00bd9220",
+      "function": "00bb5910",
+      "abi_or_cleanup": "ECX current manager; no stacked args; RET"
+    },
+    {
+      "address": "00bb5a94",
+      "native": "00419cc0",
+      "function": "00bb5910",
+      "abi_or_cleanup": "no stacked args; EAX actual string pool"
+    },
+    {
+      "address": "00bb5a9b",
+      "native": "00bd1510",
+      "function": "00bb5910",
+      "abi_or_cleanup": "ECX captured pool; stacked data/bytes/1; RET0Ch"
+    },
+    {
+      "address": "00cc43e3",
+      "native": "0041dd20",
+      "function": "00cc43e0",
+      "kind": "tail_jump",
+      "abi_or_cleanup": "ECX selected current local header; tail JMP"
+    },
+    {
+      "address": "00cc43eb",
+      "native": "0041dd20",
+      "function": "00cc43e8",
+      "kind": "tail_jump",
+      "abi_or_cleanup": "ECX selected current local header; tail JMP"
+    },
+    {
+      "address": "00cc43f3",
+      "native": "0041dd20",
+      "function": "00cc43f0",
+      "kind": "tail_jump",
+      "abi_or_cleanup": "ECX selected current local header; tail JMP"
+    },
+    {
+      "address": "00cc4413",
+      "native": "0041dd20",
+      "function": "00cc4410",
+      "kind": "tail_jump",
+      "abi_or_cleanup": "ECX selected current local header; tail JMP"
+    },
+    {
+      "address": "00cc441b",
+      "native": "0041dd20",
+      "function": "00cc4418",
+      "kind": "tail_jump",
+      "abi_or_cleanup": "ECX selected current local header; tail JMP"
+    }
+  ],
+  "native_eh": {
+    "coverage": "decoded native maps/actions only; not emulated FH3",
+    "actions": [
+      {
+        "function": "00cc43e0",
+        "inclusive_end": "00cc43e7",
+        "callback": "00bb5770",
+        "from_state": 0,
+        "next_state": -1,
+        "header": "mpak:EBP-1c"
+      },
+      {
+        "function": "00cc43e8",
+        "inclusive_end": "00cc43ef",
+        "callback": "00bb5770",
+        "from_state": 1,
+        "next_state": 0,
+        "header": "device:EBP-24"
+      },
+      {
+        "function": "00cc43f0",
+        "inclusive_end": "00cc43f7",
+        "callback": "00bb5770",
+        "from_state": 2,
+        "next_state": 1,
+        "header": "dot:EBP-14"
+      },
+      {
+        "function": "00cc4410",
+        "inclusive_end": "00cc4417",
+        "callback": "00bb5910",
+        "from_state": 0,
+        "next_state": -1,
+        "header": "mpak:EBP-1c"
+      },
+      {
+        "function": "00cc4418",
+        "inclusive_end": "00cc441f",
+        "callback": "00bb5910",
+        "from_state": 1,
+        "next_state": 0,
+        "header": "dot:EBP-14"
+      }
+    ],
+    "no_ghidra_function": [
+      {
+        "start": "00cc43f8",
+        "inclusive_end": "00cc4401",
+        "byte_count": 10,
+        "status": "no_ghidra_function",
+        "decoded_tail_site": "00cc43fd",
+        "decoded_tail_target": "00bf6b43",
+        "func_info": "00dfdcf8",
+        "unwind_map": "00dfdce0",
+        "max_state": 3,
+        "eh_flags": 1,
+        "instruction_count": 2,
+        "decode_gaps": 0
+      },
+      {
+        "start": "00cc4420",
+        "inclusive_end": "00cc4429",
+        "byte_count": 10,
+        "status": "no_ghidra_function",
+        "decoded_tail_site": "00cc4425",
+        "decoded_tail_target": "00bf6b43",
+        "func_info": "00dfdd2c",
+        "unwind_map": "00dfdd1c",
+        "max_state": 2,
+        "eh_flags": 1,
+        "instruction_count": 2,
+        "decode_gaps": 0
+      }
+    ],
+    "membership_receipt": "local/pak_callbacks_bo/eh_membership.txt"
+  },
+  "incoming_references": [
+    {
+      "function": "00bb5770",
+      "profile_slot": "00d64198",
+      "reference_type": "DATA",
+      "profile_offset": 8
+    },
+    {
+      "function": "00bb5910",
+      "profile_slot": "00d6419c",
+      "reference_type": "DATA",
+      "profile_offset": 12
+    }
+  ],
+  "storage": {
+    "registry_size": 28,
+    "producer": "00bb4fb0",
+    "primary_profile": "00d64190",
+    "ordinal_offset": 12,
+    "vector_offset": 16,
+    "vector_layout": {
+      "base": 0,
+      "count": 4,
+      "capacity": 8
+    },
+    "provider_name_offset": 8,
+    "raw_vector_value_reference_ownership": false
+  },
+  "source_contract": [
+    "current publication reread at every original manager call",
+    "successful entry resolution precedes device copy/device selection/ordinal capture/dot construction/mount/append",
+    "normal null mount result still appended; capacity doubling uses wrapping DWORD and signed greater-than-one gate",
+    "entry captures dot data before vector count increment; releases before current manager counter mutation",
+    "exit ignores resolver AL; cached mpak length reload schedule preserved",
+    "erase all equal-length case-insensitive raw entries, no release or last-slot clear, then unmount exactly once",
+    "dot cleanup before saved unmount result test; decrement current manager then captured registry ordinal only on true",
+    "final signed-count recomputation always reloads current publication"
+  ],
+  "failure_boundary": {
+    "policy": "retain immovable outer headers/captures and nested resolver/unmount acquired objects; mark site and rethrow; no outer rollback/replay/guessed unwind",
+    "destruction": "active or failed invocation terminates; borrowed registry/original input/context must also outlive retained invocation",
+    "escaping_sites": [
+      {
+        "sites": [
+          "00bb5795",
+          "00bb5934"
+        ],
+        "dependency": "00bb5670",
+        "boundary": "outer output stable; helper stack suffix cleanup remains existing source behavior"
+      },
+      {
+        "sites": [
+          "00bb57b7",
+          "00bb594c"
+        ],
+        "dependency": "00bdf4c0",
+        "boundary": "validation may reject before binding name; provider/logging calls can throw after borrowing internal headers; nested frame addresses retained but existing catch frees completed internal backing"
+      },
+      {
+        "sites": [
+          "00bb57d9",
+          "00bb59f5",
+          "00bb5824"
+        ],
+        "dependency": "0041dd40/0041e870",
+        "boundary": "outer headers stable through actual string allocation; noexcept string release unchanged"
+      },
+      {
+        "sites": [
+          "00bb580e"
+        ],
+        "dependency": "00bdd850",
+        "boundary": "allocation can throw before provider call; provider call borrows stack copied-name/visitor output; existing catch destroys armed internal name/visitor; outer retention cannot retain these locals/backing"
+      },
+      {
+        "sites": [
+          "00bb5842"
+        ],
+        "dependency": "00be1890/00bdb040",
+        "boundary": "unsupported selector throws before factory dispatch; factory borrows stable outer headers; unsupported/throwing factory/failure dispatch preserves only outer storage"
+      },
+      {
+        "sites": [
+          "00bb5842"
+        ],
+        "dependency": "00be1740",
+        "boundary": "after provider/device store, registration calls can throw after borrowing internal stack canonical/payload/record/copy storage; canonicalization precedes catch; existing cleanup and tree mutation remain; no internal-frame retention"
+      },
+      {
+        "sites": [
+          "00bb5860"
+        ],
+        "dependency": "00bb46f0",
+        "boundary": "reserve failure retains captured provider/current registry state; no synthesized provider reference or rollback"
+      },
+      {
+        "sites": [
+          "00bb5a2e"
+        ],
+        "dependency": "00be0750",
+        "boundary": "nested acquired frame retained with its published dependency limits"
+      },
+      {
+        "sites": [
+          "00bb588c",
+          "00bb5893",
+          "00bb58ba",
+          "00bb58c1",
+          "00bb58eb",
+          "00bb58f2",
+          "00bb5a4d",
+          "00bb5a54",
+          "00bb5a94",
+          "00bb5a9b"
+        ],
+        "dependency": "00419cc0/00bd1510",
+        "boundary": "getter may throw before obtaining pool; return may throw after receiving captured pool/data/size; no retry; earlier completed returns remain completed"
+      }
+    ],
+    "native_behavior": "known source exceptions are not evidence of equivalent native C++ exception identity, FH3/SEH or arbitrary unknown callback behavior"
+  },
+  "validation": {
+    "strict_tu_compile": {
+      "passed": true,
+      "compiler": "MSVC Win32",
+      "flags": "/std:c++17 /EHsc /W4 /WX /O2 /fp:strict /MD",
+      "log": "local/pak_callbacks_bo/compile.log",
+      "explicit_unchanged_dependency": "src/native_pak_registry_block_helpers.cpp"
+    },
+    "fixture": {
+      "passed": true,
+      "normal_exit_code": 0,
+      "retained_exit_code": 0,
+      "frozen_input_count": 73,
+      "frozen_inputs": "local/pak_callbacks_bo/frozen_inputs.json",
+      "executable": "local/pak_callbacks_bo/pak_probe.exe",
+      "manifest_link_flag": "/MANIFEST:EMBED",
+      "normal_log": "local/pak_callbacks_bo/probe_normal.log",
+      "retained_log": "local/pak_callbacks_bo/probe_retained.log",
+      "coverage": [
+        "actual duplicate raw-value erasure without release and one concrete zero-ref FileStore unmount",
+        "false exit resolver ignored; concrete positive entry resolver/device42; actual resident memory-stream backing",
+        "null factory result append/reserve and ordinal increment",
+        "dot/device cleanup switches actual publication before counter/recompute",
+        "false entry leaves ordinal/vector; signed negative count inactive",
+        "controlled outer BB5A4D getter throw after completed erase/unmount retains headers and unchanged counter/ordinal"
+      ],
+      "not_exercised": [
+        "successful nonnull archive factory creation",
+        "unknown provider/factory exceptions",
+        "dependency internal unwind retention",
+        "native code or gameplay"
+      ],
+      "original_code_executed": false
+    },
+    "library_input": {
+      "source": "J:/PROG/battlestations-pacific-decompile-orch4-20260910/build/win32/Release/bsp_core.lib",
+      "before": "D8C2B7431A416C4C9266A2D179416505D506FCF8D9DE0A5058E268FD3928B269",
+      "after": "D8C2B7431A416C4C9266A2D179416505D506FCF8D9DE0A5058E268FD3928B269",
+      "copy": "D8C2B7431A416C4C9266A2D179416505D506FCF8D9DE0A5058E268FD3928B269"
+    },
+    "library_sha256": "d8c2b7431a416c4c9266a2d179416505d506fcf8d9de0a5058e268fd3928b269",
+    "library_scope": "explicitly pinned primary BM core contains unmount, predates pak helper; new callback and unchanged helper compiled separately; not read from concurrent main checkout",
+    "dependent_libraries": [
+      {
+        "source": "J:\\PROG\\battlestations-pacific-decompile-orch4-resource-cache-links-bn\\local\\cache_links_bn\\bsp_lua511.lib",
+        "sha256": "00315AC717AAC3D2B2161FEFEFE71B36A974335FF9C95D48C137423EB4E2F4B2",
+        "origin": "lookup and unmount fixture receipts retain primary build provenance"
+      },
+      {
+        "source": "J:\\PROG\\battlestations-pacific-decompile-orch4-resource-cache-links-bn\\local\\cache_links_bn\\bsp_zlib121.lib",
+        "sha256": "73AE30B8ADC3ADFE5B33285BAC533F8E7DF7E8AB8D9E44789E6A030FD8A06AD9",
+        "origin": "lookup and unmount fixture receipts retain primary build provenance"
+      }
+    ],
+    "full_integration_build": false,
+    "permanent_tests_added": false,
+    "game_validated": false
+  },
+  "checklist": {
+    "callee_before_contract": "concrete helper/registry/resolver/device/mount/unmount/string/counter sources and body contracts reviewed",
+    "boundary_before_attribution": "both full bodies and five separate EH action functions verified; decoded handlers explicitly have no Ghidra function",
+    "all_call_sites": "only profile DATA references incoming; all 29 ordinary CALLs and five action tails enumerated",
+    "producer_before_layout": "existing BB4FB0 registry producer and BB46F0 raw-vector owner reused",
+    "coverage": "complete ordinary callbacks; native FH3 and dependency failure limitations explicit",
+    "runtime_frame_rule": "no production route or gameplay/frame claim; actual-storage fixture only",
+    "argument_counts": "RET4 callbacks; each direct CALL carries callee RET or caller cdecl cleanup evidence",
+    "register_provenance": "complete 133/133 listings establish captured registry, priority/device/provider and cached/current name reads",
+    "lease": "only two owned addresses and four output files",
+    "report": "all address/native rows owner-checked; decoded-only handler tail edges kept distinct"
+  },
+  "corrections": [
+    {
+      "was": "retain outer headers implies all nested failure storage survives",
+      "is": "only outer headers/captures and acquired objects are retained; BDD850/BE1740 stack locals and existing resolver cleanup remain limited",
+      "evidence": "src/native_vfs_device_route.cpp:127-165; src/native_vfs_mount_registration.cpp:34-85; src/native_vfs_name_resolution.cpp:371-398,608-635"
+    },
+    {
+      "was": "exit can reload mpak length for every comparison",
+      "is": "BB595E initial cache; BB5997 reload after stricmp and BB59CB after reached shift loop",
+      "evidence": "complete BB5910 body; output/captured reads preserved in source"
+    }
+  ],
+  "source_files": [
+    {
+      "path": "src/native_pak_registry_block_callbacks.cpp",
+      "sha256": "4693bc70131e15a1ad86543e34eef3211de89d14e5e50744bc4074f9e3b091a1"
+    },
+    {
+      "path": "include/bsp/native_pak_registry_block_callbacks.hpp",
+      "sha256": "e5fd354f0861db6d2a82b4bc0d4358ee4df6b98ddc3133a158cfb06582eb4152"
+    },
+    {
+      "path": "docs/NATIVE_PAK_REGISTRY_BLOCK_CALLBACKS_BO.md",
+      "sha256": "7c423ac594b445210d33d2d2beec69db9f3869d73eac3ac945db919fa6f9962c"
+    }
+  ],
+  "local_artifacts": [
+    {
+      "path": "local/pak_callbacks_bo/bsp_core.lib",
+      "byte_count": 58040338,
+      "sha256": "d8c2b7431a416c4c9266a2d179416505d506fcf8d9de0a5058e268fd3928b269"
+    },
+    {
+      "path": "local/pak_callbacks_bo/bsp_lua511.lib",
+      "byte_count": 455244,
+      "sha256": "00315ac717aac3d2b2161fefefe71b36a974335ff9c95d48c137423eb4e2f4b2"
+    },
+    {
+      "path": "local/pak_callbacks_bo/bsp_zlib121.lib",
+      "byte_count": 71906,
+      "sha256": "73ae30b8adc3adfe5b33285bac533f8e7df7e8ab8d9e44789e6a030fd8a06ad9"
+    },
+    {
+      "path": "local/pak_callbacks_bo/bytes_bb5770.txt",
+      "byte_count": 1982,
+      "sha256": "653bec95e4bad50c39905422cb4dc1aa45c579eaa6bc7a068cb78cc17f091b0e"
+    },
+    {
+      "path": "local/pak_callbacks_bo/bytes_bb5910.txt",
+      "byte_count": 2019,
+      "sha256": "fe94d5eb7e59e2aa5132b5d368b1249f27c46c0b9bb8d4ac987f697a698f7c3a"
+    },
+    {
+      "path": "local/pak_callbacks_bo/bytes_cc43e0.txt",
+      "byte_count": 361,
+      "sha256": "82f560ac4cb731ec7b98e861c2633db33ae7a59eafd9f97eba42ec0dbfbba411"
+    },
+    {
+      "path": "local/pak_callbacks_bo/bytes_ce3a70.txt",
+      "byte_count": 29,
+      "sha256": "f89df9a100eea698b5abb554ab06cb0af8148be225bc783594438d59de7f679b"
+    },
+    {
+      "path": "local/pak_callbacks_bo/bytes_d64190.txt",
+      "byte_count": 77,
+      "sha256": "7c4a251a833948f37c1418cd2b92639bdb3299b63f4c844c42364786b01d5f1f"
+    },
+    {
+      "path": "local/pak_callbacks_bo/bytes_dfdce0.txt",
+      "byte_count": 539,
+      "sha256": "6de5129a2835e6aae0ea82004fdd7de41290111ffe99a5c7e24e0329372d4763"
+    },
+    {
+      "path": "local/pak_callbacks_bo/compile.cmd",
+      "byte_count": 612,
+      "sha256": "725a4ccca9ea6402c6828092e54c1d3fa0284c57b4b88bceb08f77b596b0fc0c"
+    },
+    {
+      "path": "local/pak_callbacks_bo/compile.log",
+      "byte_count": 80,
+      "sha256": "bfe41db6b78c7635087ef2c88d227b0f0ef1759dded8541b978856733faac3ce"
+    },
+    {
+      "path": "local/pak_callbacks_bo/compile_probe.cmd",
+      "byte_count": 647,
+      "sha256": "54c8186b204399a68e4a32164f2eb19940d09f95b4d6b723a0dcd8f49b265aa2"
+    },
+    {
+      "path": "local/pak_callbacks_bo/dependent_libraries.jsonl",
+      "byte_count": 563,
+      "sha256": "a36dc6c65cdd2dbe9e915cdb7ee91430e8fe998af7dd46bfb31df7151714be2d"
+    },
+    {
+      "path": "local/pak_callbacks_bo/eh_membership.txt",
+      "byte_count": 471,
+      "sha256": "f4f698a9327a210117d23eb19fb46a076d1c24b520efb36e1c459a9776564002"
+    },
+    {
+      "path": "local/pak_callbacks_bo/freeze_inputs.py",
+      "byte_count": 1117,
+      "sha256": "8ada199c6336056db5377b474c2e42848c95bb32cd179fc8c545b4ed83bd0b32"
+    },
+    {
+      "path": "local/pak_callbacks_bo/frozen_inputs.json",
+      "byte_count": 16694,
+      "sha256": "5709b48bd0d8245431958a452b8768331326a23527d05deb49b0af3c86cb72f7"
+    },
+    {
+      "path": "local/pak_callbacks_bo/library_hash.json",
+      "byte_count": 350,
+      "sha256": "eb1d1e7fabf926580ed3e1595bb6acc0826e1096a9eadb313c7c062bc5a92b9e"
+    },
+    {
+      "path": "local/pak_callbacks_bo/listing_bb5770.txt",
+      "byte_count": 3940,
+      "sha256": "55c5ca3dd6e6dc52a5fb2bf398071d6b0f311201969e661edd7f7847e14aff3f"
+    },
+    {
+      "path": "local/pak_callbacks_bo/listing_bb5910.txt",
+      "byte_count": 3957,
+      "sha256": "e7bf283f16b80f50495f2aa806636632b5a5d40363837f1c2bfb3cb0bda85226"
+    },
+    {
+      "path": "local/pak_callbacks_bo/make_report.py",
+      "byte_count": 17279,
+      "sha256": "26c360fcbec11e5343b322bbbf84411eaa220c70be5d9cd65bc351617003695d"
+    },
+    {
+      "path": "local/pak_callbacks_bo/native_membership.txt",
+      "byte_count": 158,
+      "sha256": "e8e486105d8fed8efedb67544727eae7df81074116ad674de1f80eb750f02b4f"
+    },
+    {
+      "path": "local/pak_callbacks_bo/native_pak_registry_block_callbacks.obj",
+      "byte_count": 27551,
+      "sha256": "d47a0a73ae60c481f279331d2e80947d82b6a67437321ee6269bbc2476c2dcce"
+    },
+    {
+      "path": "local/pak_callbacks_bo/native_pak_registry_block_helpers.obj",
+      "byte_count": 6522,
+      "sha256": "78430ad5f8c1eef5960050f12a845b653fb7f33893293af5150a665d9ccd67a5"
+    },
+    {
+      "path": "local/pak_callbacks_bo/pak_probe.cpp",
+      "byte_count": 14324,
+      "sha256": "206e5b318d4040b4d3fe8c71a2bc36224f9cd026e636e708d895a4ccddb0f241"
+    },
+    {
+      "path": "local/pak_callbacks_bo/pak_probe.exe",
+      "byte_count": 155648,
+      "sha256": "378932803d12fa53836d56c566df4ca25eb778947cca891e87a8c39d0d5e86cb"
+    },
+    {
+      "path": "local/pak_callbacks_bo/pak_probe.obj",
+      "byte_count": 160127,
+      "sha256": "3278727bbebc6c5a98e7d935664847732e92b5f6fe444f158ad09a739c0ebdac"
+    },
+    {
+      "path": "local/pak_callbacks_bo/probe_compile.log",
+      "byte_count": 15,
+      "sha256": "7359bf095046f26c3ec4d8f8a120d54aee7428370c0a2da0c43de0c59bb72ea4"
+    },
+    {
+      "path": "local/pak_callbacks_bo/probe_normal.log",
+      "byte_count": 491,
+      "sha256": "88a82dbc3cb7272227e36daba70001c1c59a35fdc7a5a8d9f850b0d4dbfde907"
+    },
+    {
+      "path": "local/pak_callbacks_bo/probe_retained.log",
+      "byte_count": 136,
+      "sha256": "000aeb9ab66f96f24225dbaad6874a0d83049525fb8fdabaeb7cfcda2107c253"
+    },
+    {
+      "path": "local/pak_callbacks_bo/verify_calls.log",
+      "byte_count": 85,
+      "sha256": "f616ee597cac006ad52262cdcb414b749b74b68293ec8410b40c489fb9cc3354"
+    },
+    {
+      "path": "local/pak_callbacks_bo/xrefs_bb5770.txt",
+      "byte_count": 22,
+      "sha256": "db39c50b10e4814e271c833f796818d68d04c1d16a2321cda9acd47bf18fd4b0"
+    },
+    {
+      "path": "local/pak_callbacks_bo/xrefs_bb5910.txt",
+      "byte_count": 22,
+      "sha256": "cf84c4a5b9f393e6f7275fa8981ba2fa78048425efcf27bb89df071541e1d9a6"
+    }
+  ],
+  "limitations": [
+    "explicit-service source ABI; no native FH3/SEH emulation",
+    "valid actual pointer storage required",
+    "original stack/register-spill aliasing and concurrent mutations beyond explicit callbacks unproved",
+    "dependency internal header retention is not supplied by outer frame",
+    "production observer dispatch and acquired invocation/context lifetime wiring belong to primary",
+    "full integration build and gameplay unproved"
+  ],
+  "ghidra_mutations": false,
+  "requested_primary_annotations": [
+    {
+      "address": "00bb5770",
+      "suggested_name": "BSP_PakRegistry_EnterFileBlock"
+    },
+    {
+      "address": "00bb5910",
+      "suggested_name": "BSP_PakRegistry_LeaveFileBlock"
+    }
+  ],
+  "call_site_validation": {
+    "checked": 34,
+    "failed": 0,
+    "exit_code": 0,
+    "tool": "tools/verify_report_calls.py",
+    "log": "local/pak_callbacks_bo/verify_calls.log"
+  }
+}
