@@ -1,0 +1,1039 @@
+{
+  "packet": "orch5_native_material_compiler_providers",
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "installed_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "source": "src/native_material_compiler_providers.cpp",
+  "header": "include/bsp/native_material_compiler_providers.hpp",
+  "document": "docs/NATIVE_MATERIAL_COMPILER_PROVIDERS.md",
+  "status": "complete_normal_actual_source_strict_win32_linked_leaf_fixture_only",
+  "base_commit": "4812aa79d777d216c5c7f15c782ef4cfd369fc00",
+  "source_base_equivalent": "a234503d",
+  "source_sha256": "a782bc95e420e54553c0e9b00d50def12d49edfd3b57fa7ad9ecae840a9ce410",
+  "header_sha256": "91e171c613975045058c377de34277310140ad1a9c90ed710448a4962edd997c",
+  "routines": [
+    {
+      "address": "00BE40D0",
+      "end_inclusive": "00BE40ED",
+      "bytes": 30,
+      "sha256": "c4b1729eae860355347fe73436308a010b4d4b633d068a4ff2935de563d6519c",
+      "coverage": "complete normal source; see explicit runtime and exception limits"
+    },
+    {
+      "address": "00BE4460",
+      "end_inclusive": "00BE4497",
+      "bytes": 56,
+      "sha256": "ee5a5a00d2bfecc6033a2644c354c943d1aad9ee06507ac76c505c4c4679d575",
+      "coverage": "complete normal source; see explicit runtime and exception limits"
+    },
+    {
+      "address": "00B1FF50",
+      "end_inclusive": "00B1FF56",
+      "bytes": 7,
+      "sha256": "cd366d3921b557c28b1796fa74b32facaa1cc00026445ce8c5983c3c5b6a17a4",
+      "coverage": "complete normal source; see explicit runtime and exception limits"
+    },
+    {
+      "address": "00B44B10",
+      "end_inclusive": "00B44BE5",
+      "bytes": 214,
+      "sha256": "3d94a7c3884c78acd7b8e84878996666c0ea40cd9f1427d68344ad74a4db9ca3",
+      "coverage": "complete normal source; see explicit runtime and exception limits"
+    }
+  ],
+  "spans": [
+    {
+      "name": "stream_word",
+      "start": "00BE40D0",
+      "end_inclusive": "00BE40ED",
+      "length": 30,
+      "sha256": "c4b1729eae860355347fe73436308a010b4d4b633d068a4ff2935de563d6519c",
+      "live_equals_pe": true,
+      "instructions": [
+        {
+          "address": "00BE40D0",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [esp + 4]"
+        },
+        {
+          "address": "00BE40D4",
+          "mnemonic": "mov",
+          "operands": "edx, dword ptr [ecx]"
+        },
+        {
+          "address": "00BE40D6",
+          "mnemonic": "mov",
+          "operands": "edx, dword ptr [edx + 0x28]"
+        },
+        {
+          "address": "00BE40D9",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esp + 4], eax"
+        },
+        {
+          "address": "00BE40DD",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [esp + 8]"
+        },
+        {
+          "address": "00BE40E1",
+          "mnemonic": "push",
+          "operands": "eax"
+        },
+        {
+          "address": "00BE40E2",
+          "mnemonic": "push",
+          "operands": "4"
+        },
+        {
+          "address": "00BE40E4",
+          "mnemonic": "lea",
+          "operands": "eax, [esp + 0xc]"
+        },
+        {
+          "address": "00BE40E8",
+          "mnemonic": "push",
+          "operands": "eax"
+        },
+        {
+          "address": "00BE40E9",
+          "mnemonic": "call",
+          "operands": "edx"
+        },
+        {
+          "address": "00BE40EB",
+          "mnemonic": "ret",
+          "operands": "8"
+        }
+      ]
+    },
+    {
+      "name": "stream_string",
+      "start": "00BE4460",
+      "end_inclusive": "00BE4497",
+      "length": 56,
+      "sha256": "ee5a5a00d2bfecc6033a2644c354c943d1aad9ee06507ac76c505c4c4679d575",
+      "live_equals_pe": true,
+      "instructions": [
+        {
+          "address": "00BE4460",
+          "mnemonic": "push",
+          "operands": "ebx"
+        },
+        {
+          "address": "00BE4461",
+          "mnemonic": "mov",
+          "operands": "ebx, dword ptr [esp + 8]"
+        },
+        {
+          "address": "00BE4465",
+          "mnemonic": "push",
+          "operands": "ebp"
+        },
+        {
+          "address": "00BE4466",
+          "mnemonic": "mov",
+          "operands": "ebp, dword ptr [esp + 0x10]"
+        },
+        {
+          "address": "00BE446A",
+          "mnemonic": "push",
+          "operands": "esi"
+        },
+        {
+          "address": "00BE446B",
+          "mnemonic": "push",
+          "operands": "edi"
+        },
+        {
+          "address": "00BE446C",
+          "mnemonic": "mov",
+          "operands": "edi, dword ptr [ebx]"
+        },
+        {
+          "address": "00BE446E",
+          "mnemonic": "mov",
+          "operands": "esi, ecx"
+        },
+        {
+          "address": "00BE4470",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [esi]"
+        },
+        {
+          "address": "00BE4472",
+          "mnemonic": "mov",
+          "operands": "edx, dword ptr [eax + 0x54]"
+        },
+        {
+          "address": "00BE4475",
+          "mnemonic": "push",
+          "operands": "ebp"
+        },
+        {
+          "address": "00BE4476",
+          "mnemonic": "push",
+          "operands": "edi"
+        },
+        {
+          "address": "00BE4477",
+          "mnemonic": "call",
+          "operands": "edx"
+        },
+        {
+          "address": "00BE4479",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [ebx + 4]"
+        },
+        {
+          "address": "00BE447C",
+          "mnemonic": "test",
+          "operands": "eax, eax"
+        },
+        {
+          "address": "00BE447E",
+          "mnemonic": "jne",
+          "operands": "0xbe4485"
+        },
+        {
+          "address": "00BE4480",
+          "mnemonic": "mov",
+          "operands": "eax, 0x109db64"
+        },
+        {
+          "address": "00BE4485",
+          "mnemonic": "mov",
+          "operands": "edx, dword ptr [esi]"
+        },
+        {
+          "address": "00BE4487",
+          "mnemonic": "push",
+          "operands": "ebp"
+        },
+        {
+          "address": "00BE4488",
+          "mnemonic": "push",
+          "operands": "edi"
+        },
+        {
+          "address": "00BE4489",
+          "mnemonic": "push",
+          "operands": "eax"
+        },
+        {
+          "address": "00BE448A",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [edx + 0x28]"
+        },
+        {
+          "address": "00BE448D",
+          "mnemonic": "mov",
+          "operands": "ecx, esi"
+        },
+        {
+          "address": "00BE448F",
+          "mnemonic": "call",
+          "operands": "eax"
+        },
+        {
+          "address": "00BE4491",
+          "mnemonic": "pop",
+          "operands": "edi"
+        },
+        {
+          "address": "00BE4492",
+          "mnemonic": "pop",
+          "operands": "esi"
+        },
+        {
+          "address": "00BE4493",
+          "mnemonic": "pop",
+          "operands": "ebp"
+        },
+        {
+          "address": "00BE4494",
+          "mnemonic": "pop",
+          "operands": "ebx"
+        },
+        {
+          "address": "00BE4495",
+          "mnemonic": "ret",
+          "operands": "8"
+        }
+      ]
+    },
+    {
+      "name": "renderer_caps",
+      "start": "00B1FF50",
+      "end_inclusive": "00B1FF56",
+      "length": 7,
+      "sha256": "cd366d3921b557c28b1796fa74b32facaa1cc00026445ce8c5983c3c5b6a17a4",
+      "live_equals_pe": true,
+      "instructions": [
+        {
+          "address": "00B1FF50",
+          "mnemonic": "lea",
+          "operands": "eax, [ecx + 0x1b18]"
+        },
+        {
+          "address": "00B1FF56",
+          "mnemonic": "ret",
+          "operands": ""
+        }
+      ]
+    },
+    {
+      "name": "pass_constructor",
+      "start": "00B44B10",
+      "end_inclusive": "00B44BE5",
+      "length": 214,
+      "sha256": "3d94a7c3884c78acd7b8e84878996666c0ea40cd9f1427d68344ad74a4db9ca3",
+      "live_equals_pe": true,
+      "instructions": [
+        {
+          "address": "00B44B10",
+          "mnemonic": "push",
+          "operands": "-1"
+        },
+        {
+          "address": "00B44B12",
+          "mnemonic": "push",
+          "operands": "0xcbf3d0"
+        },
+        {
+          "address": "00B44B17",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr fs:[0]"
+        },
+        {
+          "address": "00B44B1D",
+          "mnemonic": "push",
+          "operands": "eax"
+        },
+        {
+          "address": "00B44B1E",
+          "mnemonic": "mov",
+          "operands": "dword ptr fs:[0], esp"
+        },
+        {
+          "address": "00B44B25",
+          "mnemonic": "sub",
+          "operands": "esp, 0xc"
+        },
+        {
+          "address": "00B44B28",
+          "mnemonic": "push",
+          "operands": "ebx"
+        },
+        {
+          "address": "00B44B29",
+          "mnemonic": "push",
+          "operands": "esi"
+        },
+        {
+          "address": "00B44B2A",
+          "mnemonic": "mov",
+          "operands": "esi, ecx"
+        },
+        {
+          "address": "00B44B2C",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esp + 8], esi"
+        },
+        {
+          "address": "00B44B30",
+          "mnemonic": "call",
+          "operands": "0xb5f720"
+        },
+        {
+          "address": "00B44B35",
+          "mnemonic": "xor",
+          "operands": "ebx, ebx"
+        },
+        {
+          "address": "00B44B37",
+          "mnemonic": "or",
+          "operands": "eax, 0xffffffff"
+        },
+        {
+          "address": "00B44B3A",
+          "mnemonic": "push",
+          "operands": "1"
+        },
+        {
+          "address": "00B44B3C",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi], 0xd61be8"
+        },
+        {
+          "address": "00B44B42",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 0x6c], ebx"
+        },
+        {
+          "address": "00B44B45",
+          "mnemonic": "push",
+          "operands": "9"
+        },
+        {
+          "address": "00B44B47",
+          "mnemonic": "lea",
+          "operands": "ecx, [esp + 0x14]"
+        },
+        {
+          "address": "00B44B4B",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esp + 0x24], ebx"
+        },
+        {
+          "address": "00B44B4F",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 0x70], ebx"
+        },
+        {
+          "address": "00B44B52",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 0x74], ebx"
+        },
+        {
+          "address": "00B44B55",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 0x78], eax"
+        },
+        {
+          "address": "00B44B58",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 0x7c], eax"
+        },
+        {
+          "address": "00B44B5B",
+          "mnemonic": "mov",
+          "operands": "byte ptr [esi + 0x80], bl"
+        },
+        {
+          "address": "00B44B61",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 0x84], ebx"
+        },
+        {
+          "address": "00B44B67",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esp + 0x14], ebx"
+        },
+        {
+          "address": "00B44B6B",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esp + 0x18], ebx"
+        },
+        {
+          "address": "00B44B6F",
+          "mnemonic": "call",
+          "operands": "0x41dd40"
+        },
+        {
+          "address": "00B44B74",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [esp + 0x10]"
+        },
+        {
+          "address": "00B44B78",
+          "mnemonic": "cmp",
+          "operands": "eax, ebx"
+        },
+        {
+          "address": "00B44B7A",
+          "mnemonic": "je",
+          "operands": "0xb44b92"
+        },
+        {
+          "address": "00B44B7C",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [esp + 0xc]"
+        },
+        {
+          "address": "00B44B80",
+          "mnemonic": "add",
+          "operands": "ecx, 1"
+        },
+        {
+          "address": "00B44B83",
+          "mnemonic": "push",
+          "operands": "ecx"
+        },
+        {
+          "address": "00B44B84",
+          "mnemonic": "push",
+          "operands": "0xce77a4"
+        },
+        {
+          "address": "00B44B89",
+          "mnemonic": "push",
+          "operands": "eax"
+        },
+        {
+          "address": "00B44B8A",
+          "mnemonic": "call",
+          "operands": "0xbf7680"
+        },
+        {
+          "address": "00B44B8F",
+          "mnemonic": "add",
+          "operands": "esp, 0xc"
+        },
+        {
+          "address": "00B44B92",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [0xf8d394]"
+        },
+        {
+          "address": "00B44B98",
+          "mnemonic": "mov",
+          "operands": "edx, dword ptr [ecx]"
+        },
+        {
+          "address": "00B44B9A",
+          "mnemonic": "mov",
+          "operands": "edx, dword ptr [edx + 0x64]"
+        },
+        {
+          "address": "00B44B9D",
+          "mnemonic": "push",
+          "operands": "ebx"
+        },
+        {
+          "address": "00B44B9E",
+          "mnemonic": "lea",
+          "operands": "eax, [esp + 0x10]"
+        },
+        {
+          "address": "00B44BA2",
+          "mnemonic": "push",
+          "operands": "eax"
+        },
+        {
+          "address": "00B44BA3",
+          "mnemonic": "mov",
+          "operands": "byte ptr [esp + 0x24], 1"
+        },
+        {
+          "address": "00B44BA8",
+          "mnemonic": "call",
+          "operands": "edx"
+        },
+        {
+          "address": "00B44BAA",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [esp + 0x10]"
+        },
+        {
+          "address": "00B44BAE",
+          "mnemonic": "cmp",
+          "operands": "ecx, ebx"
+        },
+        {
+          "address": "00B44BB0",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 0x84], eax"
+        },
+        {
+          "address": "00B44BB6",
+          "mnemonic": "mov",
+          "operands": "byte ptr [esp + 0x1c], bl"
+        },
+        {
+          "address": "00B44BBA",
+          "mnemonic": "je",
+          "operands": "0xb44bd3"
+        },
+        {
+          "address": "00B44BBC",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [esp + 0xc]"
+        },
+        {
+          "address": "00B44BC0",
+          "mnemonic": "push",
+          "operands": "1"
+        },
+        {
+          "address": "00B44BC2",
+          "mnemonic": "add",
+          "operands": "eax, 1"
+        },
+        {
+          "address": "00B44BC5",
+          "mnemonic": "push",
+          "operands": "eax"
+        },
+        {
+          "address": "00B44BC6",
+          "mnemonic": "push",
+          "operands": "ecx"
+        },
+        {
+          "address": "00B44BC7",
+          "mnemonic": "call",
+          "operands": "0x419cc0"
+        },
+        {
+          "address": "00B44BCC",
+          "mnemonic": "mov",
+          "operands": "ecx, eax"
+        },
+        {
+          "address": "00B44BCE",
+          "mnemonic": "call",
+          "operands": "0xbd1510"
+        },
+        {
+          "address": "00B44BD3",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [esp + 0x14]"
+        },
+        {
+          "address": "00B44BD7",
+          "mnemonic": "mov",
+          "operands": "eax, esi"
+        },
+        {
+          "address": "00B44BD9",
+          "mnemonic": "pop",
+          "operands": "esi"
+        },
+        {
+          "address": "00B44BDA",
+          "mnemonic": "pop",
+          "operands": "ebx"
+        },
+        {
+          "address": "00B44BDB",
+          "mnemonic": "mov",
+          "operands": "dword ptr fs:[0], ecx"
+        },
+        {
+          "address": "00B44BE2",
+          "mnemonic": "add",
+          "operands": "esp, 0x18"
+        },
+        {
+          "address": "00B44BE5",
+          "mnemonic": "ret",
+          "operands": ""
+        }
+      ]
+    },
+    {
+      "name": "pass_handler",
+      "start": "00CBF3D0",
+      "end_inclusive": "00CBF3D9",
+      "length": 10,
+      "sha256": "0ad91aaf75999618038d5da1387cc65712964420148ecca96fa98dc7902fbb23",
+      "live_equals_pe": true,
+      "instructions": [
+        {
+          "address": "00CBF3D0",
+          "mnemonic": "mov",
+          "operands": "eax, 0xdf7d24"
+        },
+        {
+          "address": "00CBF3D5",
+          "mnemonic": "jmp",
+          "operands": "0xbf6b43"
+        }
+      ]
+    },
+    {
+      "name": "pass_fh3_info",
+      "start": "00DF7D24",
+      "end_inclusive": "00DF7D47",
+      "length": 36,
+      "sha256": "0c657285822591b3458b5c9aad6a67ea8129362f983628a87a3724d6055b69db",
+      "live_equals_pe": true
+    },
+    {
+      "name": "pass_unwind_map",
+      "start": "00DF7D14",
+      "end_inclusive": "00DF7D23",
+      "length": 16,
+      "sha256": "cdfc71a4f8c2da0562e8b2ef4cb8c4e14e4f0bfd9acc802c5b52a55c3a14a43c",
+      "live_equals_pe": true
+    },
+    {
+      "name": "pass_unwind_action_0",
+      "start": "00CBF3C0",
+      "end_inclusive": "00CBF3C7",
+      "length": 8,
+      "sha256": "549dcc24f806f2d774e31aa342c15a8daa427afb6093e4eae394b65811064645",
+      "live_equals_pe": true,
+      "instructions": [
+        {
+          "address": "00CBF3C0",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [ebp - 0x18]"
+        },
+        {
+          "address": "00CBF3C3",
+          "mnemonic": "jmp",
+          "operands": "0xb5f510"
+        }
+      ]
+    },
+    {
+      "name": "pass_unwind_action_1",
+      "start": "00CBF3C8",
+      "end_inclusive": "00CBF3CF",
+      "length": 8,
+      "sha256": "59d0642281454b6ff8457820a2765bce653ce7ac000ea5bf7e250427c37f1f9b",
+      "live_equals_pe": true,
+      "instructions": [
+        {
+          "address": "00CBF3C8",
+          "mnemonic": "lea",
+          "operands": "ecx, [ebp - 0x14]"
+        },
+        {
+          "address": "00CBF3CB",
+          "mnemonic": "jmp",
+          "operands": "0x41dd20"
+        }
+      ]
+    },
+    {
+      "name": "physical_stream_profile",
+      "start": "00D691B0",
+      "end_inclusive": "00D69217",
+      "length": 104,
+      "sha256": "36ecdfe82292725bddca54aee4e9730228381f3c721cafc2619fe5dacfd29fde",
+      "live_equals_pe": true
+    },
+    {
+      "name": "renderer_profile",
+      "start": "00D5F0A8",
+      "end_inclusive": "00D5F1EB",
+      "length": 324,
+      "sha256": "5fcfa2badc5e5416ad763aafed0b9ab8d17ea1b2e30afb7e3e1adaf051ec6573",
+      "live_equals_pe": true
+    },
+    {
+      "name": "physical_write",
+      "start": "00BF4F50",
+      "end_inclusive": "00BF4F86",
+      "length": 55,
+      "sha256": "e8838d6848776f0b6138f7e0db9363d671153207f78ed8f428bcefb9ae71bc6a",
+      "live_equals_pe": true,
+      "instructions": [
+        {
+          "address": "00BF4F50",
+          "mnemonic": "mov",
+          "operands": "edx, dword ptr [esp + 4]"
+        },
+        {
+          "address": "00BF4F54",
+          "mnemonic": "push",
+          "operands": "esi"
+        },
+        {
+          "address": "00BF4F55",
+          "mnemonic": "push",
+          "operands": "0"
+        },
+        {
+          "address": "00BF4F57",
+          "mnemonic": "mov",
+          "operands": "esi, ecx"
+        },
+        {
+          "address": "00BF4F59",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [esp + 0x10]"
+        },
+        {
+          "address": "00BF4F5D",
+          "mnemonic": "lea",
+          "operands": "eax, [esp + 0x10]"
+        },
+        {
+          "address": "00BF4F61",
+          "mnemonic": "push",
+          "operands": "eax"
+        },
+        {
+          "address": "00BF4F62",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [esi + 8]"
+        },
+        {
+          "address": "00BF4F65",
+          "mnemonic": "push",
+          "operands": "ecx"
+        },
+        {
+          "address": "00BF4F66",
+          "mnemonic": "push",
+          "operands": "edx"
+        },
+        {
+          "address": "00BF4F67",
+          "mnemonic": "push",
+          "operands": "eax"
+        },
+        {
+          "address": "00BF4F68",
+          "mnemonic": "call",
+          "operands": "dword ptr [0xce2290]"
+        },
+        {
+          "address": "00BF4F6E",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [esp + 0xc]"
+        },
+        {
+          "address": "00BF4F72",
+          "mnemonic": "add",
+          "operands": "dword ptr [esi + 0x10], eax"
+        },
+        {
+          "address": "00BF4F75",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [esp + 0x10]"
+        },
+        {
+          "address": "00BF4F79",
+          "mnemonic": "adc",
+          "operands": "dword ptr [esi + 0x14], 0"
+        },
+        {
+          "address": "00BF4F7D",
+          "mnemonic": "test",
+          "operands": "ecx, ecx"
+        },
+        {
+          "address": "00BF4F7F",
+          "mnemonic": "pop",
+          "operands": "esi"
+        },
+        {
+          "address": "00BF4F80",
+          "mnemonic": "je",
+          "operands": "0xbf4f84"
+        },
+        {
+          "address": "00BF4F82",
+          "mnemonic": "mov",
+          "operands": "dword ptr [ecx], eax"
+        },
+        {
+          "address": "00BF4F84",
+          "mnemonic": "ret",
+          "operands": "0xc"
+        }
+      ]
+    }
+  ],
+  "call_sites": [
+    {
+      "address": "00BE40E9",
+      "function": "00BE40D0",
+      "instruction": "CALL edx",
+      "native": "dynamic: edx",
+      "coverage": "current native operand; numeric call checker does not prove virtual resolution"
+    },
+    {
+      "address": "00BE4477",
+      "function": "00BE4460",
+      "instruction": "CALL edx",
+      "native": "dynamic: edx",
+      "coverage": "current native operand; numeric call checker does not prove virtual resolution"
+    },
+    {
+      "address": "00BE448F",
+      "function": "00BE4460",
+      "instruction": "CALL eax",
+      "native": "dynamic: eax",
+      "coverage": "current native operand; numeric call checker does not prove virtual resolution"
+    },
+    {
+      "address": "00B44B30",
+      "function": "00B44B10",
+      "instruction": "CALL 0xb5f720",
+      "native": "00B5F720"
+    },
+    {
+      "address": "00B44B6F",
+      "function": "00B44B10",
+      "instruction": "CALL 0x41dd40",
+      "native": "0041DD40"
+    },
+    {
+      "address": "00B44B8A",
+      "function": "00B44B10",
+      "instruction": "CALL 0xbf7680",
+      "native": "00BF7680"
+    },
+    {
+      "address": "00B44BA8",
+      "function": "00B44B10",
+      "instruction": "CALL edx",
+      "native": "dynamic: edx",
+      "coverage": "current native operand; numeric call checker does not prove virtual resolution"
+    },
+    {
+      "address": "00B44BC7",
+      "function": "00B44B10",
+      "instruction": "CALL 0x419cc0",
+      "native": "00419CC0"
+    },
+    {
+      "address": "00B44BCE",
+      "function": "00B44B10",
+      "instruction": "CALL 0xbd1510",
+      "native": "00BD1510"
+    }
+  ],
+  "dependency_provenance": [
+    {
+      "path": "src\\native_material_program_compiler.cpp",
+      "sha256": "0143f236502451b563897f9e8f59bd15289dd7eb113975f364cdbb14cca9b3a7",
+      "source_commit": "8ddf225dc2ea42040cc6d80afcfba3ead3c8e95b"
+    },
+    {
+      "path": "src\\native_material_pass_base.cpp",
+      "sha256": "e0d16654ffbabe7dc7dbd1c0a5dd0a6ff04e833c311215fe487435ff8771503b",
+      "source_commit": "af7543498d7e36f8f7ab23edc084ee08f4a214e9"
+    },
+    {
+      "path": "src\\native_material_pass_owner.cpp",
+      "sha256": "3fd1c2e7ccd4bf0d8793c79fc60298f55e6dc0ef43344fff7fc7f4468525a586",
+      "source_commit": "da8142a1e12b82dfbf6caff290d801e6228c8efc"
+    },
+    {
+      "path": "src\\native_material_pass_shader_slots.cpp",
+      "sha256": "cb4755e27fa9712df42d1d29462e46d76afd5373643c1da82232b25e123fd63d",
+      "source_commit": "4e74cde6f7b283599184a10ad653e408d7c3537b"
+    },
+    {
+      "path": "src\\native_shader_field_initialization.cpp",
+      "sha256": "bf9ab2d9359bb70eddf99815e34c489ca40313c8cea621a3c6b08dc030236a61",
+      "source_commit": "3d7446e46dbb0e29d65ad387db734658c61ac4c8"
+    },
+    {
+      "path": "src\\native_shader_system_fields.cpp",
+      "sha256": "5b21c616d24968286e688d063eab13394149818e2c03d4aee23a5c7feac36e99",
+      "source_commit": "5b449fee0e447567808400ab029eb0d4a1ee43c3"
+    },
+    {
+      "path": "src\\native_shader_interpolators.cpp",
+      "sha256": "55c76c11ab0b14fbf84bd88ed48197f7f583fc633df16e0eefd324c2412c4eb9",
+      "source_commit": "623ddac4737a57785a4806f76d9be1060a965bf1"
+    },
+    {
+      "path": "src\\native_shader_pixel_source.cpp",
+      "sha256": "04c2d3f658998557ca2072da69491c10249070ef5ce3ac4739dda84b5261c93f",
+      "source_commit": "49f956d21e4ea6cdc9c752ecb7cae9fcc38c006d"
+    },
+    {
+      "path": "src\\native_shader_vertex_source.cpp",
+      "sha256": "2d6a935acd8e97ae6a432d06ad18eafe19c0a34081bacf3f5c3a88a8a8032ad3",
+      "source_commit": "a0f4d1358487cd35646b487bd08779ebad0dc383"
+    },
+    {
+      "path": "src\\native_shader_compiler_lookups.cpp",
+      "sha256": "9dff1a78aae5ccb7f41dc76d468918090256a19368162968ad7cbb8ccfe8b06f",
+      "source_commit": "53ad177c0619007ff7bd2d204e7cafcf92bdcdf4"
+    },
+    {
+      "path": "src\\native_compiled_shader_owner.cpp",
+      "sha256": "0cae9e6766b659f5f496bada4dcdec8653ae6547f9152f6dcb6db6ddc09fae34",
+      "source_commit": "5e35e5705960a127b321cc497d02d4767981a171"
+    },
+    {
+      "path": "src\\native_compiled_shader_reflection.cpp",
+      "sha256": "d31e54a05e4994e17b1e6c36d2eed6e5f36c6bd5663fcf0bafa972350c7c8944",
+      "source_commit": "c23ab65cec4a01d418238fc5c0d96c41984e1689"
+    },
+    {
+      "path": "src\\native_vertex_shader_compilation.cpp",
+      "sha256": "58aac0e9097208fe7a4447e81e222d040914b62c93132c9299af86425b356c77",
+      "source_commit": "46be664b08a79f54652a2228f3ddb512cff670dd"
+    },
+    {
+      "path": "src\\native_pixel_shader_compilation.cpp",
+      "sha256": "dec59be43010c8ab6146b776c659ea4a41a05731d9daf44416520ac935bb1255",
+      "source_commit": "57b67bfc0be2034af0d75f6b5cdfea58e5ebc4cc"
+    },
+    {
+      "path": "src\\native_d3d9_shader_construction_actual.cpp",
+      "sha256": "ed1f3c19946bb79bc626a2e38246c4124a3cf0a03ef4208d4bc8c2387219de9d",
+      "source_commit": "043652d3ee931c09eb0554a4a53c8b192b9c1037"
+    },
+    {
+      "path": "src\\native_material_descriptor_samplers.cpp",
+      "sha256": "21f41ecb994cd986b7d4daba5e154131688ead43ad2e0b14f0971e8e0d5adec4",
+      "source_commit": "e3e4c4e762614fa36f8769cc00dbb4013887ef50"
+    },
+    {
+      "path": "src\\native_texture_loading_cache.cpp",
+      "sha256": "708020170abaf5a9bc22f522843dd766a97e67617f4716227d852fdd1a63e03c",
+      "source_commit": "653cd6b1863399d06fa352e238a7a9f525fc8caa"
+    },
+    {
+      "path": "src\\native_renderer_format_check.cpp",
+      "sha256": "2ff0427d616a5d924fc080a116d7c1e2dbf3cfd369594c8c0ad4849ba9f92b2e",
+      "source_commit": "52402686c4e80fa8c0946a12524fcbfc7fb68b49"
+    }
+  ],
+  "validation": {
+    "seeds": {
+      "command": "python tools/ghidra_export.py verify-seeds",
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-compiler-actual\\local\\verification\\compiler_actual\\seeds.json",
+      "matched": 8
+    },
+    "build": {
+      "command": "./scripts/build.ps1",
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-compiler-actual\\local\\verification\\compiler_actual\\build.log",
+      "platform": "MSVC Win32 Release",
+      "ctests": "2/2 passed"
+    },
+    "fixture": {
+      "build_command": "cmd /c local\\verification\\compiler_actual\\build_probe.cmd",
+      "run_command": "./local/verification/compiler_actual/compiler_actual_probe.exe",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-compiler-actual\\local\\verification\\compiler_actual\\compiler_actual_probe.cpp",
+      "build_log": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-compiler-actual\\local\\verification\\compiler_actual\\probe_build.log",
+      "run_log": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-compiler-actual\\local\\verification\\compiler_actual\\probe_run.log",
+      "source_dependencies": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-compiler-actual\\local\\verification\\compiler_actual\\probe_dependencies.json",
+      "link_map": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-compiler-actual\\local\\verification\\compiler_actual\\compiler_actual_probe.map",
+      "executable_sha256": "1e3a19f37924204ecb1b399cf0548dbaf3764a6100b9ce6160bf0751e7044173",
+      "runtime_cases": "Two original/source stream writes with real WriteFile; 3 original/source raw capability getter values",
+      "full_tail_link": "Exported factory retains actual compiler vtable and all concrete provider symbols; no unresolved symbols",
+      "full_tail_execution": false,
+      "relocations": [
+        "BE4460+21h: original109DB64 literal operand relocated to fixture empty literal",
+        "BF4F50+1Ah: originalCE2290 import-cell operand relocated to real WriteFile function-pointer cell",
+        "Original vtable slots point to relocated original bytes; source numeric D691B0 profile remains numeric"
+      ],
+      "initial_fixture_failure": "Fixed mappings collided before tested routines executed; retained probe_fixed_mapping_failure.log"
+    },
+    "call_rows": {
+      "command": "python tools/verify_report_calls.py reports/native_material_program_compiler_actual.json reports/native_material_compiler_providers.json",
+      "log": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-compiler-actual\\local\\verification\\compiler_actual\\call_rows.log",
+      "numeric_checked": 5,
+      "failed": 0,
+      "indirect": "not mechanically verified; resolved from captured current profiles and listing"
+    },
+    "frozen_closure": "Final immutable manifest is added in the metadata follow-up after the source commit."
+  },
+  "limits": [
+    "Whole source/cached compiler path and B44B10 acquisition not runtime exercised.",
+    "Original FH3/SEH and incidental register/private-stack alias equivalence not emitted or validated.",
+    "C++ child failures remain attached; no acknowledgement/disarm/rollback.",
+    "Other stream/renderer profiles and invalid extent/pointer behavior are explicit source-interface boundaries.",
+    "No game or render parity claim."
+  ],
+  "definition_journal": "reports/native_material_compiler_providers_definition.json",
+  "ghidra_mutation": "Only explicitly authorized exact BE40D0..BE40EE half-open definition through official write-lock/save tool; prior/after retained; force export"
+}

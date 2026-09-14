@@ -974,3 +974,6 @@ cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_material_de
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_sampler_cache_entry.cpp)
 
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_platform_load_messages.cpp)
+
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_material_compiler_providers.cpp)
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_material_program_compiler_actual.cpp)
