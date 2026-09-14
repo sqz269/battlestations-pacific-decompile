@@ -119,7 +119,10 @@ the implementation's doc/report. Prerequisites are the merged viewport registry,
 admitted viewport factory and camera binding overloads. No viewport-registry,
 reference, CMake, ledger, native-layout or native helper-constructor edits are
 needed. Reuse the parent's coupled fixture with this overload replacing manual
-first registration; retain its byte/trace and early/late failure checks. Build
+first registration. Reuse its existing successful byte/trace comparison and add
+the smallest source-side early/late failure validation needed for admission
+lifetime. The BH coupled run covers the successful original/source terminal
+pair only; unused `throw_renderer_call` plumbing is not failure-run evidence. Build
 the exact combined tree with matching headers/libraries when implementing.
 
 This packet runs only static/source review, JSON/diff checks and

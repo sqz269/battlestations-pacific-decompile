@@ -73,7 +73,8 @@
     "cpp_files": ["include/bsp/native_camera_owner.hpp", "src/native_camera_owner.cpp"],
     "other_files": "implementation doc/report only",
     "prerequisites": "Merged native viewport registry/admitted factory and camera binding overloads",
-    "verification": "Whole combined build with matching headers/libraries; reuse parent coupled fixture replacing manual first registration and retaining existing byte/trace/early-late failure checks."
+    "verification": "Whole combined build with matching headers/libraries; replace manual first registration, reuse the existing successful byte/trace comparison and add the smallest source-side early/late failure validation needed for admission lifetime.",
+    "existing_fixture_boundary": "BH coupled run covers only the successful original/source terminal pair. Unused throw_renderer_call plumbing is not early/late failure-run evidence."
   },
   "verification": {
     "source_review": true,
