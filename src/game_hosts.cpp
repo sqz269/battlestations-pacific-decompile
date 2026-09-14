@@ -990,7 +990,8 @@ struct GameStartupHost::InputServices {
 };
 
 GameStartupHost::GameStartupHost(GameHostLog& log, HINSTANCE instance,
-    const GameExecutableOptions& options) : log_(log), instance_(instance), options_(options) {
+    const GameExecutableOptions& options, GameNativeReadOnlyData* native_data)
+    : log_(log), instance_(instance), options_(options), native_data_(native_data) {
     auto singletons = std::make_unique<GameSingletonHost>(log_);
     // Represented CRT table order: CE2BAC -> CCD6A0 precedes CE3054 -> CD2D80.
     // Keep context/publication cells alive if later source construction fails.

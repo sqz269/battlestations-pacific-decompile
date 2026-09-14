@@ -63,6 +63,7 @@ const CameraAxesCrtAccess& application_camera_axes_crt() noexcept;
 // Milestone 2a, defined in bsp/game_hosts_vfs.hpp. Held by pointer so the milestone-1 header
 // stays independent of the VFS types.
 class GameVfsHost;
+class GameNativeReadOnlyData;
 class GameSettingsBinding;
 class GameScriptHost;
 class GameLocaleHost;
@@ -537,7 +538,8 @@ struct GameRunSummary {
 // application_initialize (0073d410) and application_shutdown (00737f30).
 class GameStartupHost final : public StartupHost {
 public:
-    GameStartupHost(GameHostLog& log, HINSTANCE instance, const GameExecutableOptions& options);
+    GameStartupHost(GameHostLog& log, HINSTANCE instance, const GameExecutableOptions& options,
+        GameNativeReadOnlyData* native_data = nullptr);
     ~GameStartupHost() override;
 
     long com_initialize() override;
@@ -601,6 +603,8 @@ private:
     GameHostLog& log_;
     HINSTANCE instance_{};
     GameExecutableOptions options_;
+    // The entrypoint retains adopted numeric data beyond this host's drain.
+    GameNativeReadOnlyData* native_data_{};
 
     // 008F823D: actual CoCreateInstance output, released explicitly at 008F82CA.
     // The denied branch calls CRT exit before this release; no destructor cleanup.
