@@ -1,0 +1,316 @@
+{
+  "schema_version": 1,
+  "packet": "orch5_shader_cache_vfs_construction",
+  "status": "actual_source_cache_acquisition_through_constructed_physical_vfs_passed_registration_pending",
+  "root_commit": "4a4a51725d8dfb1f3687c89cb0d0318d6e3136a1",
+  "production_source_modified": false,
+  "source_pins": [
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_shader_cache_parent_review\\workspace\\include\\bsp\\native_shader_binary_cache_load.hpp",
+      "copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_shader_cache_vfs_construction\\workspace\\include\\bsp\\native_shader_binary_cache_load.hpp",
+      "sha256": "5177bf8d5ef9fdc3467feaa24453bff9a89924f8e012a706471daec917d9a5aa"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_shader_cache_parent_review\\workspace\\include\\bsp\\native_shader_binary_cache_stream.hpp",
+      "copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_shader_cache_vfs_construction\\workspace\\include\\bsp\\native_shader_binary_cache_stream.hpp",
+      "sha256": "418de7a4a82b3f6f0a6d2642b34cb99b23733611e60a298cf5761511b0a48e21"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_shader_cache_parent_review\\workspace\\src\\native_shader_binary_cache_load.cpp",
+      "copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_shader_cache_vfs_construction\\workspace\\src\\native_shader_binary_cache_load.cpp",
+      "sha256": "86f12ebc0043a6046ba08ff5b1b75d0835c1e067ce93b94044163b0d0342a3a2"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_shader_cache_parent_review\\workspace\\src\\native_shader_binary_cache_stream.cpp",
+      "copy": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_shader_cache_vfs_construction\\workspace\\src\\native_shader_binary_cache_stream.cpp",
+      "sha256": "b370d140e8d1f587b258184c80e02a4513505aad76362cd957e6d5a1ee56a4a7"
+    }
+  ],
+  "source_domain": {
+    "shared_raw_singleton_publication": "01090AA0 source cell",
+    "vfs_owner": "Actual A0h allocated storage, BEDA60 -> BE1DC0/BDA6F0, published0109CEEC, profileD68D04.",
+    "physical_factory": "Actual BED990 owner registered by BEDA98/BE0660; one factory in this bounded graph.",
+    "provider_pool": "Actual raw38h pool initialized by BF3250, bound/unlinked through one AllocatorListDomain. CRT CD9010/CE10F0 startup is not run.",
+    "mount": "Actual BE1890/BDB040/BF4DF0/BE1740 physical provider and mount tree, installed game directory at empty virtual prefix, priority0/flags0/device0.",
+    "cache": "Unchanged worker B3A600 -> B38A70 -> current D68D04+4 BDF310 -> physical open -> B35340 with flags2/source_mode0/variants0.",
+    "strings": "Same actual raw string-pool and manager publication cells for manager, mount, open and cache work.",
+    "data": "Existing GameNativeReadOnlyData hashes the original PE and maps requested CE/CF/D1/D5/D6 bands as read-only, non-executable data. Fixed-base source probe uses no original code or code/table relocations."
+  },
+  "native_spans": [
+    {
+      "address": "00b3a600",
+      "bytes": 96,
+      "sha256": "d09e49d9c7b19df7e33eb3ae51e46288f1ba7b81a255b627a1361a346988c6f3",
+      "live_equals_installed_pe": true
+    },
+    {
+      "address": "00b38a70",
+      "bytes": 211,
+      "sha256": "a6ed35e72e736b9c0a77c00cd792d34dd082461de9bd54da9402e220bda66a42",
+      "live_equals_installed_pe": true
+    },
+    {
+      "address": "00b35340",
+      "bytes": 390,
+      "sha256": "a986cd7c975ed772e5ff134f784e9a7c704a909ba79e606d163bafdbe17d0a38",
+      "live_equals_installed_pe": true
+    },
+    {
+      "address": "00beda60",
+      "bytes": 79,
+      "sha256": "2c88005b2fa380f4c99d6553bfdcf0a42a7979f599c168f8537c310a836f5524",
+      "live_equals_installed_pe": true
+    },
+    {
+      "address": "00be1890",
+      "bytes": 127,
+      "sha256": "fe10481ffde965f403efe7a2a5f6c2f006234c86d275b50b466d3e656e5c308b",
+      "live_equals_installed_pe": true
+    }
+  ],
+  "native_bytes": 903,
+  "profiles": [
+    {
+      "address": "00d68d04",
+      "bytes": 28,
+      "sha256": "a890c546f9664b99eaadffd0fe32cbf8c865571df0bf98cc9796463ed7fdc2ce",
+      "live_equals_installed_pe": true
+    },
+    {
+      "address": "00d685b4",
+      "bytes": 8,
+      "sha256": "a449adb1f0cc3ef42c2835b25f72a2c9f239364129f516b34e7dd078697fb4f8",
+      "live_equals_installed_pe": true
+    },
+    {
+      "address": "00d691b0",
+      "bytes": 112,
+      "sha256": "c4077c26da348686c220035129914df5b08e7c513520e5847e626af3081bd584",
+      "live_equals_installed_pe": true
+    }
+  ],
+  "calls": [
+    {
+      "function": "00b3a600",
+      "address": "00b3a618",
+      "native": "00bf681b"
+    },
+    {
+      "function": "00b3a600",
+      "address": "00b3a631",
+      "native": "00b38a70"
+    },
+    {
+      "function": "00b38a70",
+      "address": "00b38aac",
+      "native": "0041e870"
+    },
+    {
+      "function": "00b38a70",
+      "address": "00b38af6",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00b38a70",
+      "address": "00b38afd",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00b38a70",
+      "address": "00b38b2b",
+      "native": "00b35340"
+    },
+    {
+      "function": "00b35340",
+      "address": "00b3539c",
+      "native": "00bf55be"
+    },
+    {
+      "function": "00b35340",
+      "address": "00b353c3",
+      "native": "00bf7cd1"
+    },
+    {
+      "function": "00b35340",
+      "address": "00b35412",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00b35340",
+      "address": "00b35428",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00b35340",
+      "address": "00b3544b",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00b35340",
+      "address": "00b35452",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00b35340",
+      "address": "00b35472",
+      "native": "00bf55be"
+    },
+    {
+      "function": "00beda60",
+      "address": "00beda7d",
+      "native": "00be1dc0"
+    },
+    {
+      "function": "00beda60",
+      "address": "00beda90",
+      "native": "00bed990"
+    },
+    {
+      "function": "00beda60",
+      "address": "00beda98",
+      "native": "00be0660"
+    },
+    {
+      "function": "00be1890",
+      "address": "00be18eb",
+      "native": "004254b0"
+    },
+    {
+      "function": "00be1890",
+      "address": "00be1901",
+      "native": "00be1740"
+    },
+    {
+      "function": "00b38a70",
+      "address": "00b38ad6",
+      "native": "00d68d04+04",
+      "resolved_target": "00bdf310",
+      "source_path_reached": true
+    },
+    {
+      "function": "00b38a70",
+      "address": "00b38b14",
+      "native": "00d691b0+54",
+      "resolved_target": "00be40d0",
+      "source_path_reached": false
+    },
+    {
+      "function": "00b35340",
+      "address": "00b35378",
+      "native": "00d691b0+38",
+      "resolved_target": "00be4300",
+      "source_path_reached": true
+    },
+    {
+      "function": "00b35340",
+      "address": "00b353f5",
+      "native": "00d691b0+60",
+      "resolved_target": "00be45f0",
+      "source_path_reached": true
+    },
+    {
+      "function": "00b35340",
+      "address": "00b35461",
+      "native": "00d691b0+38",
+      "resolved_target": "00be4300",
+      "source_path_reached": true
+    },
+    {
+      "function": "00b35340",
+      "address": "00b3549a",
+      "native": "00d691b0+24",
+      "resolved_target": "00bf5030",
+      "source_path_reached": true
+    },
+    {
+      "function": "00be1890",
+      "address": "00be18a5",
+      "native": "00d68d04+18",
+      "resolved_target": "00bdb040",
+      "source_path_reached": true
+    }
+  ],
+  "generated_cache": {
+    "functions": 3,
+    "bytes": 2264,
+    "source_object_sha256": "10f1426f556586b1d2bc8e7da5a43b50f6ee602ceb3f5538ced7bc8f22f69799",
+    "stream_object_sha256": "47759a0829121357ec6423a22a5965cca8ba377f7e7339df2c39784a67821509",
+    "map": "local/native_shader_cache_vfs_construction/cache_vfs_probe.map"
+  },
+  "linked_provider_count": 11,
+  "runtime": {
+    "utc": "2026-09-14T22:40:51.370951+00:00",
+    "exit": 0,
+    "executable_sha256": "ca86e09db1ba078a592ffae6bf3679d3d09d0b0f55bb426e98018db845af498a",
+    "command": [
+      "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_shader_cache_vfs_construction\\cache_vfs_probe.exe"
+    ],
+    "cwd": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_shader_cache_vfs_construction",
+    "libraries_before_after": {
+      "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\build\\win32\\Release\\bsp_core.lib": "7a45bb6e460ac6a068fbffeccee28762e892baeee6ef0753f1c4c92dc6333610",
+      "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\build\\win32\\Release\\bsp_lua511.lib": "b6c19dd56bce2c86dcf1abf5c3044d48ddc2ac2c33ef04e3dc87f022413ee193",
+      "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\build\\win32\\Release\\bsp_zlib121.lib": "2c89bd9ae83d791564ea847c75e8e5ee025e40810c1df8d55e5799e0c7b8c471"
+    },
+    "installed_asset_before_after": "dcc65686e26e0b7b4f4179b45b153aaa353696b0b1b08c32251fbc7c97c0ecf8",
+    "check_lines": [
+      "STAGE original read-only data mapping",
+      "STAGE physical provider pool",
+      "STAGE BEDA60 actual derived manager",
+      "STAGE BE1890 actual installed-root mount",
+      "STAGE B3A600 -> B38A70 -> actual VFS -> B35340",
+      "PASS cache constructor: actual D68D04/BDF310 manager, physical factory and mount; 1628 records/2250700 installed bytes; global publication and read accounting",
+      "STAGE explicit fixture cache retirement then shared raw manager drain",
+      "PASS shared manager and provider-pool drain; explicit harness cache retirement is not a reconstructed whole-cache destructor",
+      "LIMIT source constructor path only; no original constructor/FH3/allocator ABI, variants writes, archive startup, canonical effect admission or game proof"
+    ],
+    "serialization": {
+      "sha256": "dcc65686e26e0b7b4f4179b45b153aaa353696b0b1b08c32251fbc7c97c0ecf8",
+      "bytes": 2250700,
+      "records": 1628
+    }
+  },
+  "asserted_behavior": [
+    "After acquisition returns, the result, retained frame pointer and cache publication are equal. Publication-after-constructor ordering is separately established by source/generated-code review.",
+    "The constructor frame captured managerD68D04, targetBDF310 and open flags2.",
+    "Cache cursor0 and count1628; streamD691B0 final cursor2250700.",
+    "Manager read count28 is1 and read bytes2C is2250700.",
+    "All length-prefixed names and shader bytecode serialize to the exact installed2250700-byte shader file.",
+    "Explicit harness row/array/cache retirement releases the sole stream reference through real BF55A0; this is not a recovered whole-cache destructor.",
+    "BD0400 drains the same actual singleton domain while contexts remain alive; string/factory/stream-pool/batch-pool/batch-lock publications clear.",
+    "BF33A0 destroys the physical-provider pool after manager drain and unlinks the allocator head.",
+    "The installed shader file and all three published root libraries have unchanged before/after hashes."
+  ],
+  "scope_correction": "The preceding parent review had B3A600/B38A70 compiled only and a wrongly bound unused manager table. This fixture actually executes both entrypoints with a constructed manager and original D68D04 table. It does not modify or rerun the closed prior fixture.",
+  "limits": [
+    "No original cache-constructor execution, native register/stack ABI, FH3/SEH, allocator ABI or failure-path equivalence.",
+    "Only the installed loose shader file route is exercised. FileStore/MPKG/MPAK factory startup, archives, package scans, full native application VFS startup and alternate providers are not claimed.",
+    "Source-mode skip and variants write branches are unexecuted; the installed file is opened read-only.",
+    "The static provider pool uses explicit BF3250/BF33A0 lifecycle, not CD9010 registration/CRT atexit scheduling.",
+    "Harness cache retirement is explicit; native whole-cache destruction/shutdown ordering is not reconstructed by this fixture.",
+    "The two source units remain worker-owned, uncommitted and absent from CMake registration. This is strict explicit-object compilation/link/runtime evidence.",
+    "Canonical effect admission, full material compilation using this cache, active B2 drawing and gameplay remain unproved.",
+    "No Ghidra mutation or leased build-file edit was made."
+  ],
+  "follow_up": [
+    "Compose this acquired cache into the actual material-compiler service domain while retaining its VFS, stream, names and blobs.",
+    "After worker address handoff, repair B34C80 fallthrough and annotate/save/read back confirmed cache names.",
+    "When cmake/startup.cmake is available, register and integrate the reviewed cache/secondary source packets and run the standard Win32 build checks."
+  ],
+  "immutable_review_closure": {
+    "path": "local/checkpoints/4a4a5172/shader-cache-vfs-construction/validation.json",
+    "sha256": "4a50a5e3591911466b5c4c2a7ed7290b8a95bdfcfea292c448fce32089fc8034",
+    "artifacts": 598,
+    "runtime_modules": 17,
+    "source_manifest_sha256": "2afd33ecfe569e7e6fc150a60d4a30c6f526d29c9910b18c8d8b4896385acb2c"
+  },
+  "verification": {
+    "strict_explicit_win32_compile_link": true,
+    "source_runtime_exit": 0,
+    "direct_native_call_rows_checked": 18,
+    "direct_native_call_failures": 0,
+    "indirect_rows_separately_resolved": 7,
+    "indirect_rows_on_executed_source_path": 6,
+    "physical_x86_modules": 17,
+    "production_registration": false
+  }
+}
