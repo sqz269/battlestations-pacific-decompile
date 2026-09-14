@@ -1,0 +1,1331 @@
+{
+  "packet": "orch4_native_fileblock_integration_bm",
+  "entries": [
+    {
+      "address": "00bdf950",
+      "name": "BSP_FileBlock_PrepareIdentifier",
+      "before_comment": {
+        "address": "00bdf950",
+        "function_name": "BSP_FileBlock_PrepareIdentifier",
+        "comment": "[BSP reconstruction 00bdf950]\nComplete1072-byte PE-matched body through00bdfd7f RET. Name string at+14h/+18h; exact invalid set at00d68520. For length>32 use00bd20a0 split on underscore; count3..11 branch preserves nonzero-atol tokens and abbreviates other tokens to first byte. Fallback calls00469840(-64,64) and(0,64), then concatenates; no guaranteed32-byte limit. Finalfree call00bdfd65 has raw continuation. Descriptive name is a reconstruction hypothesis; no stream ownership or native ABI claim. Original ABI: ECX FileBlock object; no stack arguments; RET; no stable result contract. Evidence: docs/FILE_BLOCK_SETUP.md; reports/file_block_setup_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim."
+      },
+      "evidence": "BM FileBlock identifier/split, saved-gate list and name-based VFS unmount actual-storage source integration. Descriptive names are hypotheses, not recovered symbols. Complete ordinary source uses current native-layout storage and explicit services. Primary listing review, strict Win32 compilation, focused source fixtures and integrated Win32 build with both existing tests passed. Source ABI views expose otherwise unused EDX for ECX-only thiscall routines; const source pointers are documented in C++ rather than the Ghidra prototype parser. Native FH3/SEH, private stack aliases, production loader wiring and gameplay parity remain unproved. See docs/NATIVE_FILEBLOCK_INTEGRATION_BM.md and reports/native_fileblock_integration_bm.json. Full body1072 bytes; ECX actual FileBlock; no stack arguments; RET; no stable result contract; reports/native_fileblock_identifier_bm.json. Returning-free ADD ESP,4 atBDFD6A is now function-owned; unreachable8d4900 alignmentBDF97D..7F remains unowned.",
+      "before_documentation": {
+        "hash": "e518f58a3adb3426c071207183777cc807723a3525e16e32b0191d2705e09d55",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00bdf950",
+        "function_name": "BSP_FileBlock_PrepareIdentifier",
+        "return_type": "void",
+        "calling_convention": "__fastcall",
+        "plate_comment": "[BSP reconstruction 00bdf950]\nComplete1072-byte PE-matched body through00bdfd7f RET. Name string at+14h/+18h; exact invalid set at00d68520. For length>32 use00bd20a0 split on underscore; count3..11 branch preserves nonzero-atol tokens and abbreviates other tokens to first byte. Fallback calls00469840(-64,64) and(0,64), then concatenates; no guaranteed32-byte limit. Finalfree call00bdfd65 has raw continuation. Descriptive name is a reconstruction hypothesis; no stream ownership or native ABI claim. Original ABI: ECX FileBlock object; no stack arguments; RET; no stable result contract. Evidence: docs/FILE_BLOCK_SETUP.md; reports/file_block_setup_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim.",
+        "parameters": [
+          {
+            "ordinal": 0,
+            "name": "fileblock",
+            "type": "void *"
+          },
+          {
+            "ordinal": 1,
+            "name": "unused_edx",
+            "type": "void *"
+          }
+        ],
+        "local_variables": [
+          {
+            "name": "iVar9",
+            "type": "int",
+            "storage": "(register, 0xc, 4)"
+          },
+          {
+            "name": "puVar8",
+            "type": "uint *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "uVar10",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffff94, 4)"
+          },
+          {
+            "name": "psVar6",
+            "type": "size_t *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "pvVar5",
+            "type": "void *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "this_00",
+            "type": "void *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "iVar7",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "local_58",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffa8, 4)"
+          },
+          {
+            "name": "local_4c",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffb4, 4)"
+          },
+          {
+            "name": "local_48",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffb8, 4)"
+          },
+          {
+            "name": "local_54",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffac, 4)"
+          },
+          {
+            "name": "local_50",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffb0, 4)"
+          },
+          {
+            "name": "local_3c",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffc4, 4)"
+          },
+          {
+            "name": "local_38",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffc8, 4)"
+          },
+          {
+            "name": "local_44",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffbc, 4)"
+          },
+          {
+            "name": "local_40",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffc0, 4)"
+          },
+          {
+            "name": "local_2c",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffd4, 4)"
+          },
+          {
+            "name": "local_28",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffd8, 4)"
+          },
+          {
+            "name": "local_34",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffcc, 4)"
+          },
+          {
+            "name": "local_30",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffd0, 4)"
+          },
+          {
+            "name": "local_1c",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffe4, 4)"
+          },
+          {
+            "name": "local_14",
+            "type": "void *",
+            "storage": "(stack, 0xffffffffffffffec, 4)"
+          },
+          {
+            "name": "local_24",
+            "type": "void *",
+            "storage": "(stack, 0xffffffffffffffdc, 4)"
+          },
+          {
+            "name": "local_20",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffe0, 4)"
+          },
+          {
+            "name": "local_c",
+            "type": "int",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "sVar2",
+            "type": "size_t",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "uVar1",
+            "type": "uint",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "lVar4",
+            "type": "long",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "pcVar3",
+            "type": "char *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "pcStack_10",
+            "type": "undefined *",
+            "storage": "(stack, 0xfffffffffffffff0, 4)"
+          },
+          {
+            "name": "this",
+            "type": "uint *",
+            "storage": "(unique, 0x6600, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 48,
+            "name": "LAB_00bdf980"
+          },
+          {
+            "relative_offset": 71,
+            "name": "LAB_00bdf997"
+          },
+          {
+            "relative_offset": 75,
+            "name": "LAB_00bdf99b"
+          },
+          {
+            "relative_offset": 112,
+            "name": "LAB_00bdf9c0"
+          },
+          {
+            "relative_offset": 212,
+            "name": "LAB_00bdfa24"
+          },
+          {
+            "relative_offset": 229,
+            "name": "LAB_00bdfa35"
+          },
+          {
+            "relative_offset": 356,
+            "name": "LAB_00bdfab4"
+          },
+          {
+            "relative_offset": 392,
+            "name": "LAB_00bdfad8"
+          },
+          {
+            "relative_offset": 428,
+            "name": "LAB_00bdfafc"
+          },
+          {
+            "relative_offset": 454,
+            "name": "LAB_00bdfb16"
+          },
+          {
+            "relative_offset": 563,
+            "name": "LAB_00bdfb83"
+          },
+          {
+            "relative_offset": 599,
+            "name": "LAB_00bdfba7"
+          },
+          {
+            "relative_offset": 635,
+            "name": "LAB_00bdfbcb"
+          },
+          {
+            "relative_offset": 652,
+            "name": "LAB_00bdfbdc"
+          },
+          {
+            "relative_offset": 671,
+            "name": "LAB_00bdfbef"
+          },
+          {
+            "relative_offset": 693,
+            "name": "LAB_00bdfc05"
+          },
+          {
+            "relative_offset": 717,
+            "name": "LAB_00bdfc1d"
+          },
+          {
+            "relative_offset": 787,
+            "name": "LAB_00bdfc63"
+          },
+          {
+            "relative_offset": 811,
+            "name": "LAB_00bdfc7b"
+          },
+          {
+            "relative_offset": 914,
+            "name": "LAB_00bdfce2"
+          },
+          {
+            "relative_offset": 949,
+            "name": "LAB_00bdfd05"
+          },
+          {
+            "relative_offset": 985,
+            "name": "LAB_00bdfd29"
+          },
+          {
+            "relative_offset": 1021,
+            "name": "LAB_00bdfd4d"
+          },
+          {
+            "relative_offset": 1053,
+            "name": "LAB_00bdfd6d"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "prototype": "void __fastcall BSP_FileBlock_PrepareIdentifier(void* fileblock, void* unused_edx)",
+      "prototype_result": "Successfully set prototype for function at 00bdf950 with __fastcall calling convention",
+      "ledger_name_output": "00bdf950 -> BSP_FileBlock_PrepareIdentifier\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00bdf950\", \"name\": \"BSP_FileBlock_PrepareIdentifier\", \"evidence\": \"Complete1072-byte PE-matched body through00bdfd7f RET. Name string at+14h/+18h; exact invalid set at00d68520. For length>32 use00bd20a0 split on underscore; count3..11 branch preserves nonzero-atol tokens and abbreviates other tokens to first byte. Fallback calls00469840(-64,64) and(0,64), then concatenates; no guaranteed32-byte limit. Finalfree call00bdfd65 has raw continuation. Descriptive name is a reconstruction hypothesis; no stream ownership or native ABI claim. Original ABI: ECX FileBlock object; no stack arguments; RET; no stable result contract. Evidence: docs/FILE_BLOCK_SETUP.md; reports/file_block_setup_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim.\"})\n",
+      "ledger_function_output": "00bdf950 function prepare_native_fileblock_identifier_00bdf950\n",
+      "after_comment": {
+        "address": "00bdf950",
+        "function_name": "BSP_FileBlock_PrepareIdentifier",
+        "comment": "[BSP reconstruction 00bdf950]\nComplete1072-byte PE-matched body through00bdfd7f RET. Name string at+14h/+18h; exact invalid set at00d68520. For length>32 use00bd20a0 split on underscore; count3..11 branch preserves nonzero-atol tokens and abbreviates other tokens to first byte. Fallback calls00469840(-64,64) and(0,64), then concatenates; no guaranteed32-byte limit. Finalfree call00bdfd65 has raw continuation. Descriptive name is a reconstruction hypothesis; no stream ownership or native ABI claim. Original ABI: ECX FileBlock object; no stack arguments; RET; no stable result contract. Evidence: docs/FILE_BLOCK_SETUP.md; reports/file_block_setup_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim.\n\n[BSP reconstruction 00bdf950] update\nBM FileBlock identifier/split, saved-gate list and name-based VFS unmount actual-storage source integration. Descriptive names are hypotheses, not recovered symbols. Complete ordinary source uses current native-layout storage and explicit services. Primary listing review, strict Win32 compilation, focused source fixtures and integrated Win32 build with both existing tests passed. Source ABI views expose otherwise unused EDX for ECX-only thiscall routines; const source pointers are documented in C++ rather than the Ghidra prototype parser. Native FH3/SEH, private stack aliases, production loader wiring and gameplay parity remain unproved. See docs/NATIVE_FILEBLOCK_INTEGRATION_BM.md and reports/native_fileblock_integration_bm.json. Full body1072 bytes; ECX actual FileBlock; no stack arguments; RET; no stable result contract; reports/native_fileblock_identifier_bm.json. Returning-free ADD ESP,4 atBDFD6A is now function-owned; unreachable8d4900 alignmentBDF97D..7F remains unowned."
+      }
+    },
+    {
+      "address": "00bd20a0",
+      "name": "BSP_String_SplitNonemptyOnByte",
+      "before_comment": {
+        "address": "00bd20a0",
+        "function_name": "BSP_String_SplitNonemptyOnByte",
+        "comment": "[BSP reconstruction 00bd20a0]\nComplete205-byte PE-matched body. ECX string, delimiterDL, destination container on stack, RET4. Skips leading/repeated/trailing delimiters; copies only nonempty spans via00469840 then inserts via004cdc20 and releases temporary string. FileBlock caller uses underscore. Container/string allocator ABI not reconstructed. Original ABI: ECX source native string; DL delimiter; stack destination token container; RET4; no stable result contract. Evidence: docs/FILE_BLOCK_SETUP.md; reports/file_block_setup_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim."
+      },
+      "evidence": "BM FileBlock identifier/split, saved-gate list and name-based VFS unmount actual-storage source integration. Descriptive names are hypotheses, not recovered symbols. Complete ordinary source uses current native-layout storage and explicit services. Primary listing review, strict Win32 compilation, focused source fixtures and integrated Win32 build with both existing tests passed. Source ABI views expose otherwise unused EDX for ECX-only thiscall routines; const source pointers are documented in C++ rather than the Ghidra prototype parser. Native FH3/SEH, private stack aliases, production loader wiring and gameplay parity remain unproved. See docs/NATIVE_FILEBLOCK_INTEGRATION_BM.md and reports/native_fileblock_integration_bm.json. Full body205 bytes; ECX source8h header; DL delimiter; stack destination0Ch vector; RET4; no stable result contract; reports/native_fileblock_identifier_bm.json.",
+      "before_documentation": {
+        "hash": "114e1b667559380d3032cc609c98b0392557a30528266383679e1ab893192800",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00bd20a0",
+        "function_name": "BSP_String_SplitNonemptyOnByte",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00bd20a0]\nComplete205-byte PE-matched body. ECX string, delimiterDL, destination container on stack, RET4. Skips leading/repeated/trailing delimiters; copies only nonempty spans via00469840 then inserts via004cdc20 and releases temporary string. FileBlock caller uses underscore. Container/string allocator ABI not reconstructed. Original ABI: ECX source native string; DL delimiter; stack destination token container; RET4; no stable result contract. Evidence: docs/FILE_BLOCK_SETUP.md; reports/file_block_setup_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim.",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "pcStack_8",
+            "type": "undefined *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "uVar3",
+            "type": "undefined4",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "uVar4",
+            "type": "uint",
+            "storage": "(register, 0x4, 4)"
+          },
+          {
+            "name": "ppvVar1",
+            "type": "void * *",
+            "storage": "(unique, 0x100000a6, 4)"
+          },
+          {
+            "name": "uVar2",
+            "type": "uint",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "iVar7",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffd0, 4)"
+          },
+          {
+            "name": "iVar5",
+            "type": "int",
+            "storage": "(register, 0x4, 4)"
+          },
+          {
+            "name": "uVar6",
+            "type": "uint",
+            "storage": "(register, 0x18, 4)"
+          },
+          {
+            "name": "local_10",
+            "type": "int",
+            "storage": "(stack, 0xfffffffffffffff0, 4)"
+          },
+          {
+            "name": "local_14",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffec, 4)"
+          },
+          {
+            "name": "local_4",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "local_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 49,
+            "name": "LAB_00bd20d1"
+          },
+          {
+            "relative_offset": 52,
+            "name": "LAB_00bd20d4"
+          },
+          {
+            "relative_offset": 64,
+            "name": "LAB_00bd20e0"
+          },
+          {
+            "relative_offset": 80,
+            "name": "LAB_00bd20f0"
+          },
+          {
+            "relative_offset": 92,
+            "name": "LAB_00bd20fc"
+          },
+          {
+            "relative_offset": 171,
+            "name": "LAB_00bd214b"
+          },
+          {
+            "relative_offset": 173,
+            "name": "LAB_00bd214d"
+          },
+          {
+            "relative_offset": 186,
+            "name": "LAB_00bd215a"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "prototype": "void __fastcall BSP_String_SplitNonemptyOnByte(void* source, unsigned char delimiter, void* destination)",
+      "prototype_result": "Successfully set prototype for function at 00bd20a0 with __fastcall calling convention",
+      "ledger_name_output": "00bd20a0 -> BSP_String_SplitNonemptyOnByte\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00bd20a0\", \"name\": \"BSP_String_SplitNonemptyOnByte\", \"evidence\": \"Complete205-byte PE-matched body. ECX string, delimiterDL, destination container on stack, RET4. Skips leading/repeated/trailing delimiters; copies only nonempty spans via00469840 then inserts via004cdc20 and releases temporary string. FileBlock caller uses underscore. Container/string allocator ABI not reconstructed. Original ABI: ECX source native string; DL delimiter; stack destination token container; RET4; no stable result contract. Evidence: docs/FILE_BLOCK_SETUP.md; reports/file_block_setup_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim.\"})\n",
+      "ledger_function_output": "00bd20a0 function split_native_string_nonempty_on_byte_00bd20a0\n",
+      "after_comment": {
+        "address": "00bd20a0",
+        "function_name": "BSP_String_SplitNonemptyOnByte",
+        "comment": "[BSP reconstruction 00bd20a0]\nComplete205-byte PE-matched body. ECX string, delimiterDL, destination container on stack, RET4. Skips leading/repeated/trailing delimiters; copies only nonempty spans via00469840 then inserts via004cdc20 and releases temporary string. FileBlock caller uses underscore. Container/string allocator ABI not reconstructed. Original ABI: ECX source native string; DL delimiter; stack destination token container; RET4; no stable result contract. Evidence: docs/FILE_BLOCK_SETUP.md; reports/file_block_setup_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim.\n\n[BSP reconstruction 00bd20a0] update\nBM FileBlock identifier/split, saved-gate list and name-based VFS unmount actual-storage source integration. Descriptive names are hypotheses, not recovered symbols. Complete ordinary source uses current native-layout storage and explicit services. Primary listing review, strict Win32 compilation, focused source fixtures and integrated Win32 build with both existing tests passed. Source ABI views expose otherwise unused EDX for ECX-only thiscall routines; const source pointers are documented in C++ rather than the Ghidra prototype parser. Native FH3/SEH, private stack aliases, production loader wiring and gameplay parity remain unproved. See docs/NATIVE_FILEBLOCK_INTEGRATION_BM.md and reports/native_fileblock_integration_bm.json. Full body205 bytes; ECX source8h header; DL delimiter; stack destination0Ch vector; RET4; no stable result contract; reports/native_fileblock_identifier_bm.json."
+      }
+    },
+    {
+      "address": "007f8390",
+      "name": "BSP_AllocateNativeFileblockGateNode",
+      "before_comment": {
+        "address": "007f8390",
+        "function_name": "FUN_007f8390"
+      },
+      "evidence": "BM FileBlock identifier/split, saved-gate list and name-based VFS unmount actual-storage source integration. Descriptive names are hypotheses, not recovered symbols. Complete ordinary source uses current native-layout storage and explicit services. Primary listing review, strict Win32 compilation, focused source fixtures and integrated Win32 build with both existing tests passed. Source ABI views expose otherwise unused EDX for ECX-only thiscall routines; const source pointers are documented in C++ rather than the Ghidra prototype parser. Native FH3/SEH, private stack aliases, production loader wiring and gameplay parity remain unproved. See docs/NATIVE_FILEBLOCK_INTEGRATION_BM.md and reports/native_fileblock_integration_bm.json. Full body51 bytes; Incoming ECX unused; stack(next,previous,pointer-to-gate-byte); EAX new0Ch node; RET0C; reports/native_fileblock_gate_list_bm.json.",
+      "before_documentation": {
+        "hash": "218a6fd0420b34f23c70aa352b59dc4d6432c6b7c45d87505993fd794cde588e",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "007f8390",
+        "function_name": "FUN_007f8390",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "puVar1",
+            "type": "undefined4 *",
+            "storage": "(register, 0x0, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 20,
+            "name": "LAB_007f83a4"
+          },
+          {
+            "relative_offset": 33,
+            "name": "LAB_007f83b1"
+          },
+          {
+            "relative_offset": 48,
+            "name": "LAB_007f83c0"
+          }
+        ],
+        "completeness_score": 50.0
+      },
+      "prototype": "void* __stdcall BSP_AllocateNativeFileblockGateNode(void* next, void* previous, unsigned char* gate)",
+      "prototype_result": "Successfully set prototype for function at 007f8390 with __stdcall calling convention",
+      "ledger_name_output": "007f8390 -> BSP_AllocateNativeFileblockGateNode\n",
+      "ledger_function_output": "007f8390 function allocate_native_fileblock_gate_node_007f8390\n",
+      "after_comment": {
+        "address": "007f8390",
+        "function_name": "BSP_AllocateNativeFileblockGateNode",
+        "comment": "[BSP reconstruction 007f8390]\nBM FileBlock identifier/split, saved-gate list and name-based VFS unmount actual-storage source integration. Descriptive names are hypotheses, not recovered symbols. Complete ordinary source uses current native-layout storage and explicit services. Primary listing review, strict Win32 compilation, focused source fixtures and integrated Win32 build with both existing tests passed. Source ABI views expose otherwise unused EDX for ECX-only thiscall routines; const source pointers are documented in C++ rather than the Ghidra prototype parser. Native FH3/SEH, private stack aliases, production loader wiring and gameplay parity remain unproved. See docs/NATIVE_FILEBLOCK_INTEGRATION_BM.md and reports/native_fileblock_integration_bm.json. Full body51 bytes; Incoming ECX unused; stack(next,previous,pointer-to-gate-byte); EAX new0Ch node; RET0C; reports/native_fileblock_gate_list_bm.json."
+      }
+    },
+    {
+      "address": "007fa3a0",
+      "name": "STL_list_GrowSizeChecked_007fa3a0",
+      "before_comment": {
+        "address": "007fa3a0",
+        "function_name": "STL_list_GrowSizeChecked_007fa3a0",
+        "comment": "[BSP reconstruction 007fa3a0]\nPreserve standard-library identification; current throw-only heuristic omits returning path. Complete145-byte PE-matched body. ECX list, stack unsigneddelta, checkdelta<=UINT32_MAX-size+8; success stores/returns size+delta, RET4; overflow throws std::length_error. FileBlock caller passes1 after node construction and before linkage. Original ABI: ECX list object; stack unsigned increment; EAX updated list size on success; RET4. Evidence: docs/FILE_BLOCK_SETUP.md; reports/file_block_setup_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim."
+      },
+      "evidence": "BM FileBlock identifier/split, saved-gate list and name-based VFS unmount actual-storage source integration. Descriptive names are hypotheses, not recovered symbols. Complete ordinary source uses current native-layout storage and explicit services. Primary listing review, strict Win32 compilation, focused source fixtures and integrated Win32 build with both existing tests passed. Source ABI views expose otherwise unused EDX for ECX-only thiscall routines; const source pointers are documented in C++ rather than the Ghidra prototype parser. Native FH3/SEH, private stack aliases, production loader wiring and gameplay parity remain unproved. See docs/NATIVE_FILEBLOCK_INTEGRATION_BM.md and reports/native_fileblock_integration_bm.json. Full body145 bytes; ECX actual list; stack unsigned increment; EAX updated unsigned count; RET4 or native length_error; reports/native_fileblock_gate_list_bm.json.",
+      "before_documentation": {
+        "hash": "fba74b0531ffad11be1edf8adced7ab5fbe9bb10d7cd17a7583c808f78a176b0",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "007fa3a0",
+        "function_name": "STL_list_GrowSizeChecked_007fa3a0",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 007fa3a0]\nPreserve standard-library identification; current throw-only heuristic omits returning path. Complete145-byte PE-matched body. ECX list, stack unsigneddelta, checkdelta<=UINT32_MAX-size+8; success stores/returns size+delta, RET4; overflow throws std::length_error. FileBlock caller passes1 after node construction and before linkage. Original ABI: ECX list object; stack unsigned increment; EAX updated list size on success; RET4. Evidence: docs/FILE_BLOCK_SETUP.md; reports/file_block_setup_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim.",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "pcStack_8",
+            "type": "undefined *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "local_4",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "local_4c",
+            "type": "undefined1",
+            "storage": "(stack, 0xffffffffffffffb4, 1)"
+          },
+          {
+            "name": "local_50",
+            "type": "undefined1[4]"
+          },
+          {
+            "name": "local_38",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffc8, 4)"
+          },
+          {
+            "name": "local_3c",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffc4, 4)"
+          },
+          {
+            "name": "local_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "local_34",
+            "type": "undefined * *[10]",
+            "storage": "(stack, 0xffffffffffffffcc, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 123,
+            "name": "LAB_007fa41b"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "prototype": "unsigned int __fastcall STL_list_GrowSizeChecked_007fa3a0(void* list, void* unused_edx, unsigned int increment)",
+      "prototype_result": "Successfully set prototype for function at 007fa3a0 with __fastcall calling convention",
+      "ledger_name_output": "007fa3a0 -> STL_list_GrowSizeChecked_007fa3a0\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"007fa3a0\", \"name\": \"STL_list_GrowSizeChecked_007fa3a0\", \"evidence\": \"Preserve standard-library identification; current throw-only heuristic omits returning path. Complete145-byte PE-matched body. ECX list, stack unsigneddelta, checkdelta<=UINT32_MAX-size+8; success stores/returns size+delta, RET4; overflow throws std::length_error. FileBlock caller passes1 after node construction and before linkage. Original ABI: ECX list object; stack unsigned increment; EAX updated list size on success; RET4. Evidence: docs/FILE_BLOCK_SETUP.md; reports/file_block_setup_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim.\"})\n",
+      "ledger_function_output": "007fa3a0 function grow_native_fileblock_gate_count_007fa3a0\n",
+      "after_comment": {
+        "address": "007fa3a0",
+        "function_name": "STL_list_GrowSizeChecked_007fa3a0",
+        "comment": "[BSP reconstruction 007fa3a0]\nPreserve standard-library identification; current throw-only heuristic omits returning path. Complete145-byte PE-matched body. ECX list, stack unsigneddelta, checkdelta<=UINT32_MAX-size+8; success stores/returns size+delta, RET4; overflow throws std::length_error. FileBlock caller passes1 after node construction and before linkage. Original ABI: ECX list object; stack unsigned increment; EAX updated list size on success; RET4. Evidence: docs/FILE_BLOCK_SETUP.md; reports/file_block_setup_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim.\n\n[BSP reconstruction 007fa3a0] update\nBM FileBlock identifier/split, saved-gate list and name-based VFS unmount actual-storage source integration. Descriptive names are hypotheses, not recovered symbols. Complete ordinary source uses current native-layout storage and explicit services. Primary listing review, strict Win32 compilation, focused source fixtures and integrated Win32 build with both existing tests passed. Source ABI views expose otherwise unused EDX for ECX-only thiscall routines; const source pointers are documented in C++ rather than the Ghidra prototype parser. Native FH3/SEH, private stack aliases, production loader wiring and gameplay parity remain unproved. See docs/NATIVE_FILEBLOCK_INTEGRATION_BM.md and reports/native_fileblock_integration_bm.json. Full body145 bytes; ECX actual list; stack unsigned increment; EAX updated unsigned count; RET4 or native length_error; reports/native_fileblock_gate_list_bm.json."
+      }
+    },
+    {
+      "address": "00bdaf40",
+      "name": "STL_list_EraseNode_00bdaf40",
+      "before_comment": {
+        "address": "00bdaf40",
+        "function_name": "STL_list_EraseNode_00bdaf40",
+        "comment": "[BSP reconstruction 00bdaf40]\nPreserve library identity. Validate owner/nonend; unlink node by neighbors, free then decrement list+8 size; output {iterator_owner,node_next}. Complete94-byte body. Raw00bdaf84..00bdaf9d afterfree00bdaf7f includes omitted size decrement/iterator return; body already contains tail. Empty/foreign iterator runtime handling not reconstructed. Original ABI: ECX list; stack output iterator, iterator-owner list, node; EAX output iterator; RET0Ch. Evidence: docs/FILE_BLOCK_LIFETIME.md; reports/file_block_lifetime_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim."
+      },
+      "evidence": "BM FileBlock identifier/split, saved-gate list and name-based VFS unmount actual-storage source integration. Descriptive names are hypotheses, not recovered symbols. Complete ordinary source uses current native-layout storage and explicit services. Primary listing review, strict Win32 compilation, focused source fixtures and integrated Win32 build with both existing tests passed. Source ABI views expose otherwise unused EDX for ECX-only thiscall routines; const source pointers are documented in C++ rather than the Ghidra prototype parser. Native FH3/SEH, private stack aliases, production loader wiring and gameplay parity remain unproved. See docs/NATIVE_FILEBLOCK_INTEGRATION_BM.md and reports/native_fileblock_integration_bm.json. Full body94 bytes; ECX actual list; stack(output iterator,iterator owner,node); EAX output; RET0C; reports/native_fileblock_gate_list_bm.json. Returning-free successor/count/output stores atBDAF84..8A are now function-owned; original STL identity preserved.",
+      "before_documentation": {
+        "hash": "e4790d24f1b70153d51db11c66a18035f07a9749cae9deaff49cf7b5ffebf25e",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00bdaf40",
+        "function_name": "STL_list_EraseNode_00bdaf40",
+        "return_type": "void *",
+        "calling_convention": "__fastcall",
+        "plate_comment": "[BSP reconstruction 00bdaf40]\nPreserve library identity. Validate owner/nonend; unlink node by neighbors, free then decrement list+8 size; output {iterator_owner,node_next}. Complete94-byte body. Raw00bdaf84..00bdaf9d afterfree00bdaf7f includes omitted size decrement/iterator return; body already contains tail. Empty/foreign iterator runtime handling not reconstructed. Original ABI: ECX list; stack output iterator, iterator-owner list, node; EAX output iterator; RET0Ch. Evidence: docs/FILE_BLOCK_LIFETIME.md; reports/file_block_lifetime_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim.",
+        "parameters": [
+          {
+            "ordinal": 0,
+            "name": "list",
+            "type": "void *"
+          },
+          {
+            "ordinal": 1,
+            "name": "unused_edx",
+            "type": "void *"
+          },
+          {
+            "ordinal": 2,
+            "name": "output",
+            "type": "void *"
+          },
+          {
+            "ordinal": 3,
+            "name": "iterator_owner",
+            "type": "void *"
+          },
+          {
+            "ordinal": 4,
+            "name": "node",
+            "type": "void *"
+          }
+        ],
+        "local_variables": [
+          {
+            "name": "uVar1",
+            "type": "undefined4",
+            "storage": "(unique, 0x17200, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 30,
+            "name": "LAB_00bdaf5e"
+          },
+          {
+            "relative_offset": 40,
+            "name": "LAB_00bdaf68"
+          },
+          {
+            "relative_offset": 75,
+            "name": "LAB_00bdaf8b"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "prototype": "void* __fastcall STL_list_EraseNode_00bdaf40(void* list, void* unused_edx, void* output, void* iterator_owner, void* node)",
+      "prototype_result": "Successfully set prototype for function at 00bdaf40 with __fastcall calling convention",
+      "ledger_name_output": "00bdaf40 -> STL_list_EraseNode_00bdaf40\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00bdaf40\", \"name\": \"STL_list_EraseNode_00bdaf40\", \"evidence\": \"Preserve library identity. Validate owner/nonend; unlink node by neighbors, free then decrement list+8 size; output {iterator_owner,node_next}. Complete94-byte body. Raw00bdaf84..00bdaf9d afterfree00bdaf7f includes omitted size decrement/iterator return; body already contains tail. Empty/foreign iterator runtime handling not reconstructed. Original ABI: ECX list; stack output iterator, iterator-owner list, node; EAX output iterator; RET0Ch. Evidence: docs/FILE_BLOCK_LIFETIME.md; reports/file_block_lifetime_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim.\"})\n",
+      "ledger_function_output": "00bdaf40 function erase_native_fileblock_gate_iterator_00bdaf40\n",
+      "after_comment": {
+        "address": "00bdaf40",
+        "function_name": "STL_list_EraseNode_00bdaf40",
+        "comment": "[BSP reconstruction 00bdaf40]\nPreserve library identity. Validate owner/nonend; unlink node by neighbors, free then decrement list+8 size; output {iterator_owner,node_next}. Complete94-byte body. Raw00bdaf84..00bdaf9d afterfree00bdaf7f includes omitted size decrement/iterator return; body already contains tail. Empty/foreign iterator runtime handling not reconstructed. Original ABI: ECX list; stack output iterator, iterator-owner list, node; EAX output iterator; RET0Ch. Evidence: docs/FILE_BLOCK_LIFETIME.md; reports/file_block_lifetime_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim.\n\n[BSP reconstruction 00bdaf40] update\nBM FileBlock identifier/split, saved-gate list and name-based VFS unmount actual-storage source integration. Descriptive names are hypotheses, not recovered symbols. Complete ordinary source uses current native-layout storage and explicit services. Primary listing review, strict Win32 compilation, focused source fixtures and integrated Win32 build with both existing tests passed. Source ABI views expose otherwise unused EDX for ECX-only thiscall routines; const source pointers are documented in C++ rather than the Ghidra prototype parser. Native FH3/SEH, private stack aliases, production loader wiring and gameplay parity remain unproved. See docs/NATIVE_FILEBLOCK_INTEGRATION_BM.md and reports/native_fileblock_integration_bm.json. Full body94 bytes; ECX actual list; stack(output iterator,iterator owner,node); EAX output; RET0C; reports/native_fileblock_gate_list_bm.json. Returning-free successor/count/output stores atBDAF84..8A are now function-owned; original STL identity preserved."
+      }
+    },
+    {
+      "address": "00be0750",
+      "name": "BSP_UnmountNativeVfsName",
+      "before_comment": {
+        "address": "00be0750",
+        "function_name": "FUN_00be0750"
+      },
+      "evidence": "BM FileBlock identifier/split, saved-gate list and name-based VFS unmount actual-storage source integration. Descriptive names are hypotheses, not recovered symbols. Complete ordinary source uses current native-layout storage and explicit services. Primary listing review, strict Win32 compilation, focused source fixtures and integrated Win32 build with both existing tests passed. Source ABI views expose otherwise unused EDX for ECX-only thiscall routines; const source pointers are documented in C++ rather than the Ghidra prototype parser. Native FH3/SEH, private stack aliases, production loader wiring and gameplay parity remain unproved. See docs/NATIVE_FILEBLOCK_INTEGRATION_BM.md and reports/native_fileblock_integration_bm.json. Full body454 bytes; ECX manager; stack(system name,mount prefix); AL success; RET8; reports/native_vfs_unmount_name_bm.json.",
+      "before_documentation": {
+        "hash": "2c717898e2d0a10e4a0053a7f5659b15cbfac5d7e9d4e74f5e63b042edce231a",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00be0750",
+        "function_name": "FUN_00be0750",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "unaff_ESI",
+            "type": "int",
+            "storage": "(register, 0x18, 4)"
+          },
+          {
+            "name": "unaff_EBP",
+            "type": "int",
+            "storage": "(register, 0x14, 4)"
+          },
+          {
+            "name": "uVar7",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffc4, 4)"
+          },
+          {
+            "name": "iVar4",
+            "type": "int",
+            "storage": "(unique, 0x10000173, 4)"
+          },
+          {
+            "name": "local_1c",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffe4, 4)"
+          },
+          {
+            "name": "iVar3",
+            "type": "int",
+            "storage": "(unique, 0x1000016f, 4)"
+          },
+          {
+            "name": "local_18",
+            "type": "char *",
+            "storage": "(stack, 0xffffffffffffffe8, 4)"
+          },
+          {
+            "name": "iVar6",
+            "type": "int",
+            "storage": "(register, 0x4, 4)"
+          },
+          {
+            "name": "LVar5",
+            "type": "LONG",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "local_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "local_4",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "local_14",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffec, 4)"
+          },
+          {
+            "name": "puVar2",
+            "type": "undefined4 *",
+            "storage": "(unique, 0x17200, 4)"
+          },
+          {
+            "name": "iVar1",
+            "type": "int",
+            "storage": "(unique, 0x17200, 4)"
+          },
+          {
+            "name": "local_10",
+            "type": "int",
+            "storage": "(stack, 0xfffffffffffffff0, 4)"
+          },
+          {
+            "name": "pcStack_8",
+            "type": "undefined *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 83,
+            "name": "LAB_00be07a3"
+          },
+          {
+            "relative_offset": 94,
+            "name": "LAB_00be07ae"
+          },
+          {
+            "relative_offset": 99,
+            "name": "LAB_00be07b3"
+          },
+          {
+            "relative_offset": 116,
+            "name": "LAB_00be07c4"
+          },
+          {
+            "relative_offset": 126,
+            "name": "LAB_00be07ce"
+          },
+          {
+            "relative_offset": 157,
+            "name": "LAB_00be07ed"
+          },
+          {
+            "relative_offset": 166,
+            "name": "LAB_00be07f6"
+          },
+          {
+            "relative_offset": 182,
+            "name": "LAB_00be0806"
+          },
+          {
+            "relative_offset": 201,
+            "name": "LAB_00be0819"
+          },
+          {
+            "relative_offset": 222,
+            "name": "LAB_00be082e"
+          },
+          {
+            "relative_offset": 233,
+            "name": "LAB_00be0839"
+          },
+          {
+            "relative_offset": 250,
+            "name": "LAB_00be084a"
+          },
+          {
+            "relative_offset": 259,
+            "name": "LAB_00be0853"
+          },
+          {
+            "relative_offset": 281,
+            "name": "LAB_00be0869"
+          },
+          {
+            "relative_offset": 291,
+            "name": "LAB_00be0873"
+          },
+          {
+            "relative_offset": 316,
+            "name": "LAB_00be088c"
+          },
+          {
+            "relative_offset": 369,
+            "name": "LAB_00be08c1"
+          },
+          {
+            "relative_offset": 392,
+            "name": "LAB_00be08d8"
+          },
+          {
+            "relative_offset": 431,
+            "name": "LAB_00be08ff"
+          }
+        ],
+        "completeness_score": 50.0
+      },
+      "prototype": "bool __fastcall BSP_UnmountNativeVfsName(void* manager, void* unused_edx, void* system_name, void* mount_prefix)",
+      "prototype_result": "Successfully set prototype for function at 00be0750 with __fastcall calling convention",
+      "ledger_name_output": "00be0750 -> BSP_UnmountNativeVfsName\n",
+      "ledger_function_output": "00be0750 function unmount_native_vfs_name_00be0750\n",
+      "after_comment": {
+        "address": "00be0750",
+        "function_name": "BSP_UnmountNativeVfsName",
+        "comment": "[BSP reconstruction 00be0750]\nBM FileBlock identifier/split, saved-gate list and name-based VFS unmount actual-storage source integration. Descriptive names are hypotheses, not recovered symbols. Complete ordinary source uses current native-layout storage and explicit services. Primary listing review, strict Win32 compilation, focused source fixtures and integrated Win32 build with both existing tests passed. Source ABI views expose otherwise unused EDX for ECX-only thiscall routines; const source pointers are documented in C++ rather than the Ghidra prototype parser. Native FH3/SEH, private stack aliases, production loader wiring and gameplay parity remain unproved. See docs/NATIVE_FILEBLOCK_INTEGRATION_BM.md and reports/native_fileblock_integration_bm.json. Full body454 bytes; ECX manager; stack(system name,mount prefix); AL success; RET8; reports/native_vfs_unmount_name_bm.json."
+      }
+    },
+    {
+      "address": "00cc6690",
+      "name": "EH_handler_00cc6690",
+      "before_comment": {
+        "address": "00cc6690",
+        "function_name": "FUN_00cc6690"
+      },
+      "evidence": "BM FileBlock identifier/split, saved-gate list and name-based VFS unmount actual-storage source integration. Descriptive names are hypotheses, not recovered symbols. Complete ordinary source uses current native-layout storage and explicit services. Primary listing review, strict Win32 compilation, focused source fixtures and integrated Win32 build with both existing tests passed. Source ABI views expose otherwise unused EDX for ECX-only thiscall routines; const source pointers are documented in C++ rather than the Ghidra prototype parser. Native FH3/SEH, private stack aliases, production loader wiring and gameplay parity remain unproved. See docs/NATIVE_FILEBLOCK_INTEGRATION_BM.md and reports/native_fileblock_integration_bm.json. Complete10-byte MOV EAX,FuncInfo / JMP BF6B43 handler defined from verified native bytes; evidence only, no ABI thunk.",
+      "ledger_name_output": "00cc6690 -> EH_handler_00cc6690\n",
+      "after_comment": {
+        "address": "00cc6690",
+        "function_name": "EH_handler_00cc6690",
+        "comment": "[BSP reconstruction 00cc6690]\nBM FileBlock identifier/split, saved-gate list and name-based VFS unmount actual-storage source integration. Descriptive names are hypotheses, not recovered symbols. Complete ordinary source uses current native-layout storage and explicit services. Primary listing review, strict Win32 compilation, focused source fixtures and integrated Win32 build with both existing tests passed. Source ABI views expose otherwise unused EDX for ECX-only thiscall routines; const source pointers are documented in C++ rather than the Ghidra prototype parser. Native FH3/SEH, private stack aliases, production loader wiring and gameplay parity remain unproved. See docs/NATIVE_FILEBLOCK_INTEGRATION_BM.md and reports/native_fileblock_integration_bm.json. Complete10-byte MOV EAX,FuncInfo / JMP BF6B43 handler defined from verified native bytes; evidence only, no ABI thunk."
+      }
+    },
+    {
+      "address": "00cc55b8",
+      "name": "EH_handler_00cc55b8",
+      "before_comment": {
+        "address": "00cc55b8",
+        "function_name": "FUN_00cc55b8"
+      },
+      "evidence": "BM FileBlock identifier/split, saved-gate list and name-based VFS unmount actual-storage source integration. Descriptive names are hypotheses, not recovered symbols. Complete ordinary source uses current native-layout storage and explicit services. Primary listing review, strict Win32 compilation, focused source fixtures and integrated Win32 build with both existing tests passed. Source ABI views expose otherwise unused EDX for ECX-only thiscall routines; const source pointers are documented in C++ rather than the Ghidra prototype parser. Native FH3/SEH, private stack aliases, production loader wiring and gameplay parity remain unproved. See docs/NATIVE_FILEBLOCK_INTEGRATION_BM.md and reports/native_fileblock_integration_bm.json. Complete10-byte MOV EAX,FuncInfo / JMP BF6B43 handler defined from verified native bytes; evidence only, no ABI thunk.",
+      "ledger_name_output": "00cc55b8 -> EH_handler_00cc55b8\n",
+      "after_comment": {
+        "address": "00cc55b8",
+        "function_name": "EH_handler_00cc55b8",
+        "comment": "[BSP reconstruction 00cc55b8]\nBM FileBlock identifier/split, saved-gate list and name-based VFS unmount actual-storage source integration. Descriptive names are hypotheses, not recovered symbols. Complete ordinary source uses current native-layout storage and explicit services. Primary listing review, strict Win32 compilation, focused source fixtures and integrated Win32 build with both existing tests passed. Source ABI views expose otherwise unused EDX for ECX-only thiscall routines; const source pointers are documented in C++ rather than the Ghidra prototype parser. Native FH3/SEH, private stack aliases, production loader wiring and gameplay parity remain unproved. See docs/NATIVE_FILEBLOCK_INTEGRATION_BM.md and reports/native_fileblock_integration_bm.json. Complete10-byte MOV EAX,FuncInfo / JMP BF6B43 handler defined from verified native bytes; evidence only, no ABI thunk."
+      }
+    },
+    {
+      "address": "00c8f9a8",
+      "name": "EH_handler_00c8f9a8",
+      "before_comment": {
+        "address": "00c8f9a8",
+        "function_name": "FUN_00c8f9a8"
+      },
+      "evidence": "BM FileBlock identifier/split, saved-gate list and name-based VFS unmount actual-storage source integration. Descriptive names are hypotheses, not recovered symbols. Complete ordinary source uses current native-layout storage and explicit services. Primary listing review, strict Win32 compilation, focused source fixtures and integrated Win32 build with both existing tests passed. Source ABI views expose otherwise unused EDX for ECX-only thiscall routines; const source pointers are documented in C++ rather than the Ghidra prototype parser. Native FH3/SEH, private stack aliases, production loader wiring and gameplay parity remain unproved. See docs/NATIVE_FILEBLOCK_INTEGRATION_BM.md and reports/native_fileblock_integration_bm.json. Complete10-byte MOV EAX,FuncInfo / JMP BF6B43 handler defined from verified native bytes; evidence only, no ABI thunk.",
+      "ledger_name_output": "00c8f9a8 -> EH_handler_00c8f9a8\n",
+      "after_comment": {
+        "address": "00c8f9a8",
+        "function_name": "EH_handler_00c8f9a8",
+        "comment": "[BSP reconstruction 00c8f9a8]\nBM FileBlock identifier/split, saved-gate list and name-based VFS unmount actual-storage source integration. Descriptive names are hypotheses, not recovered symbols. Complete ordinary source uses current native-layout storage and explicit services. Primary listing review, strict Win32 compilation, focused source fixtures and integrated Win32 build with both existing tests passed. Source ABI views expose otherwise unused EDX for ECX-only thiscall routines; const source pointers are documented in C++ rather than the Ghidra prototype parser. Native FH3/SEH, private stack aliases, production loader wiring and gameplay parity remain unproved. See docs/NATIVE_FILEBLOCK_INTEGRATION_BM.md and reports/native_fileblock_integration_bm.json. Complete10-byte MOV EAX,FuncInfo / JMP BF6B43 handler defined from verified native bytes; evidence only, no ABI thunk."
+      }
+    },
+    {
+      "address": "00cc6728",
+      "name": "EH_handler_00cc6728",
+      "before_comment": {
+        "address": "00cc6728",
+        "function_name": "FUN_00cc6728"
+      },
+      "evidence": "BM FileBlock identifier/split, saved-gate list and name-based VFS unmount actual-storage source integration. Descriptive names are hypotheses, not recovered symbols. Complete ordinary source uses current native-layout storage and explicit services. Primary listing review, strict Win32 compilation, focused source fixtures and integrated Win32 build with both existing tests passed. Source ABI views expose otherwise unused EDX for ECX-only thiscall routines; const source pointers are documented in C++ rather than the Ghidra prototype parser. Native FH3/SEH, private stack aliases, production loader wiring and gameplay parity remain unproved. See docs/NATIVE_FILEBLOCK_INTEGRATION_BM.md and reports/native_fileblock_integration_bm.json. Complete10-byte MOV EAX,FuncInfo / JMP BF6B43 handler defined from verified native bytes; evidence only, no ABI thunk.",
+      "ledger_name_output": "00cc6728 -> EH_handler_00cc6728\n",
+      "after_comment": {
+        "address": "00cc6728",
+        "function_name": "EH_handler_00cc6728",
+        "comment": "[BSP reconstruction 00cc6728]\nBM FileBlock identifier/split, saved-gate list and name-based VFS unmount actual-storage source integration. Descriptive names are hypotheses, not recovered symbols. Complete ordinary source uses current native-layout storage and explicit services. Primary listing review, strict Win32 compilation, focused source fixtures and integrated Win32 build with both existing tests passed. Source ABI views expose otherwise unused EDX for ECX-only thiscall routines; const source pointers are documented in C++ rather than the Ghidra prototype parser. Native FH3/SEH, private stack aliases, production loader wiring and gameplay parity remain unproved. See docs/NATIVE_FILEBLOCK_INTEGRATION_BM.md and reports/native_fileblock_integration_bm.json. Complete10-byte MOV EAX,FuncInfo / JMP BF6B43 handler defined from verified native bytes; evidence only, no ABI thunk."
+      }
+    }
+  ],
+  "source_functions": [
+    {
+      "address": "00bdf950",
+      "function": "prepare_native_fileblock_identifier_00bdf950",
+      "source": "src/native_fileblock_identifier.cpp",
+      "report": "reports/native_fileblock_identifier_bm.json",
+      "original_abi": "ECX actual FileBlock; no stack arguments; RET; no stable result contract",
+      "bytes": 1072
+    },
+    {
+      "address": "00bd20a0",
+      "function": "split_native_string_nonempty_on_byte_00bd20a0",
+      "source": "src/native_fileblock_identifier.cpp",
+      "report": "reports/native_fileblock_identifier_bm.json",
+      "original_abi": "ECX source8h header; DL delimiter; stack destination0Ch vector; RET4; no stable result contract",
+      "bytes": 205
+    },
+    {
+      "address": "007f8390",
+      "function": "allocate_native_fileblock_gate_node_007f8390",
+      "source": "src/native_fileblock_gate_list.cpp",
+      "report": "reports/native_fileblock_gate_list_bm.json",
+      "original_abi": "Incoming ECX unused; stack(next,previous,pointer-to-gate-byte); EAX new0Ch node; RET0C",
+      "bytes": 51
+    },
+    {
+      "address": "007fa3a0",
+      "function": "grow_native_fileblock_gate_count_007fa3a0",
+      "source": "src/native_fileblock_gate_list.cpp",
+      "report": "reports/native_fileblock_gate_list_bm.json",
+      "original_abi": "ECX actual list; stack unsigned increment; EAX updated unsigned count; RET4 or native length_error",
+      "bytes": 145
+    },
+    {
+      "address": "00bdaf40",
+      "function": "erase_native_fileblock_gate_iterator_00bdaf40",
+      "source": "src/native_fileblock_gate_list.cpp",
+      "report": "reports/native_fileblock_gate_list_bm.json",
+      "original_abi": "ECX actual list; stack(output iterator,iterator owner,node); EAX output; RET0C",
+      "bytes": 94
+    },
+    {
+      "address": "00be0750",
+      "function": "unmount_native_vfs_name_00be0750",
+      "source": "src/native_vfs_unmount_name.cpp",
+      "report": "reports/native_vfs_unmount_name_bm.json",
+      "original_abi": "ECX manager; stack(system name,mount prefix); AL success; RET8",
+      "bytes": 454
+    }
+  ],
+  "actions": [
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00bdf950",
+        "prototype": "void __fastcall BSP_FileBlock_PrepareIdentifier(void* fileblock, void* unused_edx)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00bdf950 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00bd20a0",
+        "prototype": "void __fastcall BSP_String_SplitNonemptyOnByte(void* source, unsigned char delimiter, void* destination)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00bd20a0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "007f8390",
+        "prototype": "void* __stdcall BSP_AllocateNativeFileblockGateNode(void* next, void* previous, unsigned char* gate)",
+        "calling_convention": "__stdcall"
+      },
+      "result": "Successfully set prototype for function at 007f8390 with __stdcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "007fa3a0",
+        "prototype": "unsigned int __fastcall STL_list_GrowSizeChecked_007fa3a0(void* list, void* unused_edx, unsigned int increment)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 007fa3a0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00bdaf40",
+        "prototype": "void* __fastcall STL_list_EraseNode_00bdaf40(void* list, void* unused_edx, void* output, void* iterator_owner, void* node)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00bdaf40 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00be0750",
+        "prototype": "bool __fastcall BSP_UnmountNativeVfsName(void* manager, void* unused_edx, void* system_name, void* mount_prefix)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00be0750 with __fastcall calling convention"
+    }
+  ],
+  "prior_no_mutation_attempt": {
+    "packet": "orch4_native_fileblock_integration_bm",
+    "entries": [
+      {
+        "address": "00bdf950",
+        "name": "BSP_FileBlock_PrepareIdentifier",
+        "before_comment": {
+          "address": "00bdf950",
+          "function_name": "BSP_FileBlock_PrepareIdentifier",
+          "comment": "[BSP reconstruction 00bdf950]\nComplete1072-byte PE-matched body through00bdfd7f RET. Name string at+14h/+18h; exact invalid set at00d68520. For length>32 use00bd20a0 split on underscore; count3..11 branch preserves nonzero-atol tokens and abbreviates other tokens to first byte. Fallback calls00469840(-64,64) and(0,64), then concatenates; no guaranteed32-byte limit. Finalfree call00bdfd65 has raw continuation. Descriptive name is a reconstruction hypothesis; no stream ownership or native ABI claim. Original ABI: ECX FileBlock object; no stack arguments; RET; no stable result contract. Evidence: docs/FILE_BLOCK_SETUP.md; reports/file_block_setup_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim."
+        },
+        "evidence": "BM FileBlock identifier/split, saved-gate list and name-based VFS unmount actual-storage source integration. Descriptive names are hypotheses, not recovered symbols. Complete ordinary source uses current native-layout storage and explicit services. Primary listing review, strict Win32 compilation, focused source fixtures and integrated Win32 build with both existing tests passed. Source ABI views expose otherwise unused EDX for ECX-only thiscall routines; const source pointers are documented in C++ rather than the Ghidra prototype parser. Native FH3/SEH, private stack aliases, production loader wiring and gameplay parity remain unproved. See docs/NATIVE_FILEBLOCK_INTEGRATION_BM.md and reports/native_fileblock_integration_bm.json. Full body1072 bytes; ECX actual FileBlock; no stack arguments; RET; no stable result contract; reports/native_fileblock_identifier_bm.json. Returning-free ADD ESP,4 atBDFD6A is now function-owned; unreachable8d4900 alignmentBDF97D..7F remains unowned.",
+        "before_documentation": {
+          "hash": "e518f58a3adb3426c071207183777cc807723a3525e16e32b0191d2705e09d55",
+          "source_program": "battlestationspacific.exe",
+          "source_address": "00bdf950",
+          "function_name": "BSP_FileBlock_PrepareIdentifier",
+          "return_type": "void",
+          "calling_convention": "__fastcall",
+          "plate_comment": "[BSP reconstruction 00bdf950]\nComplete1072-byte PE-matched body through00bdfd7f RET. Name string at+14h/+18h; exact invalid set at00d68520. For length>32 use00bd20a0 split on underscore; count3..11 branch preserves nonzero-atol tokens and abbreviates other tokens to first byte. Fallback calls00469840(-64,64) and(0,64), then concatenates; no guaranteed32-byte limit. Finalfree call00bdfd65 has raw continuation. Descriptive name is a reconstruction hypothesis; no stream ownership or native ABI claim. Original ABI: ECX FileBlock object; no stack arguments; RET; no stable result contract. Evidence: docs/FILE_BLOCK_SETUP.md; reports/file_block_setup_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim.",
+          "parameters": [
+            {
+              "ordinal": 0,
+              "name": "fileblock",
+              "type": "void *"
+            },
+            {
+              "ordinal": 1,
+              "name": "unused_edx",
+              "type": "void *"
+            }
+          ],
+          "local_variables": [
+            {
+              "name": "uVar10",
+              "type": "undefined4",
+              "storage": "(stack, 0xffffffffffffff94, 4)"
+            },
+            {
+              "name": "iVar9",
+              "type": "int",
+              "storage": "(register, 0xc, 4)"
+            },
+            {
+              "name": "psVar6",
+              "type": "size_t *",
+              "storage": "(register, 0x0, 4)"
+            },
+            {
+              "name": "lVar5",
+              "type": "long",
+              "storage": "(register, 0x0, 4)"
+            },
+            {
+              "name": "puVar8",
+              "type": "uint *",
+              "storage": "(register, 0x0, 4)"
+            },
+            {
+              "name": "iVar7",
+              "type": "int",
+              "storage": "(register, 0x0, 4)"
+            },
+            {
+              "name": "local_58",
+              "type": "int",
+              "storage": "(stack, 0xffffffffffffffa8, 4)"
+            },
+            {
+              "name": "local_4c",
+              "type": "int",
+              "storage": "(stack, 0xffffffffffffffb4, 4)"
+            },
+            {
+              "name": "local_48",
+              "type": "int",
+              "storage": "(stack, 0xffffffffffffffb8, 4)"
+            },
+            {
+              "name": "local_54",
+              "type": "int",
+              "storage": "(stack, 0xffffffffffffffac, 4)"
+            },
+            {
+              "name": "local_50",
+              "type": "int",
+              "storage": "(stack, 0xffffffffffffffb0, 4)"
+            },
+            {
+              "name": "local_3c",
+              "type": "int",
+              "storage": "(stack, 0xffffffffffffffc4, 4)"
+            },
+            {
+              "name": "local_38",
+              "type": "int",
+              "storage": "(stack, 0xffffffffffffffc8, 4)"
+            },
+            {
+              "name": "local_44",
+              "type": "int",
+              "storage": "(stack, 0xffffffffffffffbc, 4)"
+            },
+            {
+              "name": "local_40",
+              "type": "int",
+              "storage": "(stack, 0xffffffffffffffc0, 4)"
+            },
+            {
+              "name": "local_2c",
+              "type": "int",
+              "storage": "(stack, 0xffffffffffffffd4, 4)"
+            },
+            {
+              "name": "local_28",
+              "type": "int",
+              "storage": "(stack, 0xffffffffffffffd8, 4)"
+            },
+            {
+              "name": "local_34",
+              "type": "int",
+              "storage": "(stack, 0xffffffffffffffcc, 4)"
+            },
+            {
+              "name": "local_30",
+              "type": "int",
+              "storage": "(stack, 0xffffffffffffffd0, 4)"
+            },
+            {
+              "name": "local_1c",
+              "type": "undefined4",
+              "storage": "(stack, 0xffffffffffffffe4, 4)"
+            },
+            {
+              "name": "local_14",
+              "type": "void *",
+              "storage": "(stack, 0xffffffffffffffec, 4)"
+            },
+            {
+              "name": "local_24",
+              "type": "void *",
+              "storage": "(stack, 0xffffffffffffffdc, 4)"
+            },
+            {
+              "name": "local_20",
+              "type": "int",
+              "storage": "(stack, 0xffffffffffffffe0, 4)"
+            },
+            {
+              "name": "local_c",
+              "type": "int",
+              "storage": "(stack, 0xfffffffffffffff4, 4)"
+            },
+            {
+              "name": "uVar2",
+              "type": "uint",
+              "storage": "(register, 0x0, 4)"
+            },
+            {
+              "name": "pvVar1",
+              "type": "void *",
+              "storage": "(unique, 0x1000045b, 4)"
+            },
+            {
+              "name": "pcVar4",
+              "type": "char *",
+              "storage": "(register, 0x0, 4)"
+            },
+            {
+              "name": "sVar3",
+              "type": "size_t",
+              "storage": "(register, 0x0, 4)"
+            },
+            {
+              "name": "pcStack_10",
+              "type": "undefined *",
+              "storage": "(stack, 0xfffffffffffffff0, 4)"
+            },
+            {
+              "name": "this",
+              "type": "uint *",
+              "storage": "(unique, 0x6600, 4)"
+            }
+          ],
+          "comments": [],
+          "labels": [
+            {
+              "relative_offset": 48,
+              "name": "LAB_00bdf980"
+            },
+            {
+              "relative_offset": 71,
+              "name": "LAB_00bdf997"
+            },
+            {
+              "relative_offset": 75,
+              "name": "LAB_00bdf99b"
+            },
+            {
+              "relative_offset": 112,
+              "name": "LAB_00bdf9c0"
+            },
+            {
+              "relative_offset": 212,
+              "name": "LAB_00bdfa24"
+            },
+            {
+              "relative_offset": 229,
+              "name": "LAB_00bdfa35"
+            },
+            {
+              "relative_offset": 356,
+              "name": "LAB_00bdfab4"
+            },
+            {
+              "relative_offset": 392,
+              "name": "LAB_00bdfad8"
+            },
+            {
+              "relative_offset": 428,
+              "name": "LAB_00bdfafc"
+            },
+            {
+              "relative_offset": 454,
+              "name": "LAB_00bdfb16"
+            },
+            {
+              "relative_offset": 563,
+              "name": "LAB_00bdfb83"
+            },
+            {
+              "relative_offset": 599,
+              "name": "LAB_00bdfba7"
+            },
+            {
+              "relative_offset": 635,
+              "name": "LAB_00bdfbcb"
+            },
+            {
+              "relative_offset": 652,
+              "name": "LAB_00bdfbdc"
+            },
+            {
+              "relative_offset": 671,
+              "name": "LAB_00bdfbef"
+            },
+            {
+              "relative_offset": 693,
+              "name": "LAB_00bdfc05"
+            },
+            {
+              "relative_offset": 717,
+              "name": "LAB_00bdfc1d"
+            },
+            {
+              "relative_offset": 787,
+              "name": "LAB_00bdfc63"
+            },
+            {
+              "relative_offset": 811,
+              "name": "LAB_00bdfc7b"
+            },
+            {
+              "relative_offset": 914,
+              "name": "LAB_00bdfce2"
+            },
+            {
+              "relative_offset": 949,
+              "name": "LAB_00bdfd05"
+            },
+            {
+              "relative_offset": 985,
+              "name": "LAB_00bdfd29"
+            },
+            {
+              "relative_offset": 1021,
+              "name": "LAB_00bdfd4d"
+            },
+            {
+              "relative_offset": 1053,
+              "name": "LAB_00bdfd6d"
+            }
+          ],
+          "completeness_score": 100.0
+        },
+        "prototype": "void __fastcall BSP_FileBlock_PrepareIdentifier(void* fileblock, void* unused_edx)"
+      }
+    ],
+    "source_functions": [
+      {
+        "address": "00bdf950",
+        "function": "prepare_native_fileblock_identifier_00bdf950",
+        "source": "src/native_fileblock_identifier.cpp",
+        "report": "reports/native_fileblock_identifier_bm.json",
+        "original_abi": "ECX actual FileBlock; no stack arguments; RET; no stable result contract",
+        "bytes": 1072
+      },
+      {
+        "address": "00bd20a0",
+        "function": "split_native_string_nonempty_on_byte_00bd20a0",
+        "source": "src/native_fileblock_identifier.cpp",
+        "report": "reports/native_fileblock_identifier_bm.json",
+        "original_abi": "ECX source8h header; DL delimiter; stack destination0Ch vector; RET4; no stable result contract",
+        "bytes": 205
+      },
+      {
+        "address": "007f8390",
+        "function": "allocate_native_fileblock_gate_node_007f8390",
+        "source": "src/native_fileblock_gate_list.cpp",
+        "report": "reports/native_fileblock_gate_list_bm.json",
+        "original_abi": "Incoming ECX unused; stack(next,previous,pointer-to-gate-byte); EAX new0Ch node; RET0C",
+        "bytes": 51
+      },
+      {
+        "address": "007fa3a0",
+        "function": "grow_native_fileblock_gate_count_007fa3a0",
+        "source": "src/native_fileblock_gate_list.cpp",
+        "report": "reports/native_fileblock_gate_list_bm.json",
+        "original_abi": "ECX actual list; stack unsigned increment; EAX updated unsigned count; RET4 or native length_error",
+        "bytes": 145
+      },
+      {
+        "address": "00bdaf40",
+        "function": "erase_native_fileblock_gate_iterator_00bdaf40",
+        "source": "src/native_fileblock_gate_list.cpp",
+        "report": "reports/native_fileblock_gate_list_bm.json",
+        "original_abi": "ECX actual list; stack(output iterator,iterator owner,node); EAX output; RET0C",
+        "bytes": 94
+      },
+      {
+        "address": "00be0750",
+        "function": "unmount_native_vfs_name_00be0750",
+        "source": "src/native_vfs_unmount_name.cpp",
+        "report": "reports/native_vfs_unmount_name_bm.json",
+        "original_abi": "ECX manager; stack(system name,mount prefix); AL success; RET8",
+        "bytes": 454
+      }
+    ]
+  },
+  "state": "names_and_abi_views_saved_previous_comments_retained",
+  "exports_refreshed": true
+}

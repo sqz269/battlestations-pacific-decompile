@@ -1,0 +1,2729 @@
+{
+  "reason": "Restore decoded returning-free function membership through supported bridge endpoints; preserve original evidence. No script execution or callee no-return changes.",
+  "entries": [
+    {
+      "address": "00bdf950",
+      "end_exclusive": "00bdfd80",
+      "sha256": "23f1be0a8d018d432c5bdde27ff48c82a841097fce6cda0622fc2ae435651982",
+      "bytes": 1072,
+      "before_documentation": {
+        "hash": "13a035075a8fb1e73ac6ccece9fba6567e57de47ebbf0b6311ce545bfb29a8ad",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00bdf950",
+        "function_name": "BSP_FileBlock_PrepareIdentifier",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00bdf950]\nComplete1072-byte PE-matched body through00bdfd7f RET. Name string at+14h/+18h; exact invalid set at00d68520. For length>32 use00bd20a0 split on underscore; count3..11 branch preserves nonzero-atol tokens and abbreviates other tokens to first byte. Fallback calls00469840(-64,64) and(0,64), then concatenates; no guaranteed32-byte limit. Finalfree call00bdfd65 has raw continuation. Descriptive name is a reconstruction hypothesis; no stream ownership or native ABI claim. Original ABI: ECX FileBlock object; no stack arguments; RET; no stable result contract. Evidence: docs/FILE_BLOCK_SETUP.md; reports/file_block_setup_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim.",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "puStack_10",
+            "type": "undefined1 *",
+            "storage": "(stack, 0xfffffffffffffff0, 4)"
+          },
+          {
+            "name": "sVar3",
+            "type": "size_t",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "uVar2",
+            "type": "uint",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "local_54",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffac, 4)"
+          },
+          {
+            "name": "pvVar1",
+            "type": "void *",
+            "storage": "(unique, 0x1000045b, 4)"
+          },
+          {
+            "name": "local_58",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffa8, 4)"
+          },
+          {
+            "name": "this",
+            "type": "uint *",
+            "storage": "(unique, 0x6600, 4)"
+          },
+          {
+            "name": "iVar7",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "local_4c",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffb4, 4)"
+          },
+          {
+            "name": "local_50",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffb0, 4)"
+          },
+          {
+            "name": "psVar6",
+            "type": "size_t *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "lVar5",
+            "type": "long",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "local_44",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffbc, 4)"
+          },
+          {
+            "name": "local_48",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffb8, 4)"
+          },
+          {
+            "name": "pcVar4",
+            "type": "char *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "local_3c",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffc4, 4)"
+          },
+          {
+            "name": "local_40",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffc0, 4)"
+          },
+          {
+            "name": "uVar10",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffff94, 4)"
+          },
+          {
+            "name": "iVar9",
+            "type": "int",
+            "storage": "(register, 0xc, 4)"
+          },
+          {
+            "name": "local_34",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffcc, 4)"
+          },
+          {
+            "name": "local_38",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffc8, 4)"
+          },
+          {
+            "name": "puVar8",
+            "type": "uint *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "local_2c",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffd4, 4)"
+          },
+          {
+            "name": "local_30",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffd0, 4)"
+          },
+          {
+            "name": "local_24",
+            "type": "void *",
+            "storage": "(stack, 0xffffffffffffffdc, 4)"
+          },
+          {
+            "name": "local_28",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffd8, 4)"
+          },
+          {
+            "name": "local_1c",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffe4, 4)"
+          },
+          {
+            "name": "local_20",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffe0, 4)"
+          },
+          {
+            "name": "local_c",
+            "type": "int",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "local_14",
+            "type": "void *",
+            "storage": "(stack, 0xffffffffffffffec, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 48,
+            "name": "LAB_00bdf980"
+          },
+          {
+            "relative_offset": 71,
+            "name": "LAB_00bdf997"
+          },
+          {
+            "relative_offset": 75,
+            "name": "LAB_00bdf99b"
+          },
+          {
+            "relative_offset": 112,
+            "name": "LAB_00bdf9c0"
+          },
+          {
+            "relative_offset": 212,
+            "name": "LAB_00bdfa24"
+          },
+          {
+            "relative_offset": 229,
+            "name": "LAB_00bdfa35"
+          },
+          {
+            "relative_offset": 356,
+            "name": "LAB_00bdfab4"
+          },
+          {
+            "relative_offset": 392,
+            "name": "LAB_00bdfad8"
+          },
+          {
+            "relative_offset": 428,
+            "name": "LAB_00bdfafc"
+          },
+          {
+            "relative_offset": 454,
+            "name": "LAB_00bdfb16"
+          },
+          {
+            "relative_offset": 563,
+            "name": "LAB_00bdfb83"
+          },
+          {
+            "relative_offset": 599,
+            "name": "LAB_00bdfba7"
+          },
+          {
+            "relative_offset": 635,
+            "name": "LAB_00bdfbcb"
+          },
+          {
+            "relative_offset": 652,
+            "name": "LAB_00bdfbdc"
+          },
+          {
+            "relative_offset": 671,
+            "name": "LAB_00bdfbef"
+          },
+          {
+            "relative_offset": 693,
+            "name": "LAB_00bdfc05"
+          },
+          {
+            "relative_offset": 717,
+            "name": "LAB_00bdfc1d"
+          },
+          {
+            "relative_offset": 787,
+            "name": "LAB_00bdfc63"
+          },
+          {
+            "relative_offset": 811,
+            "name": "LAB_00bdfc7b"
+          },
+          {
+            "relative_offset": 914,
+            "name": "LAB_00bdfce2"
+          },
+          {
+            "relative_offset": 949,
+            "name": "LAB_00bdfd05"
+          },
+          {
+            "relative_offset": 985,
+            "name": "LAB_00bdfd29"
+          },
+          {
+            "relative_offset": 1021,
+            "name": "LAB_00bdfd4d"
+          },
+          {
+            "relative_offset": 1053,
+            "name": "LAB_00bdfd6d"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "before_ownership": [
+        {
+          "address": "00bdf950",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bdf951",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdf953",
+          "mnemonic": "and",
+          "owned": true
+        },
+        {
+          "address": "00bdf956",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bdf958",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdf95e",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bdf963",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bdf964",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdf96b",
+          "mnemonic": "sub",
+          "owned": true
+        },
+        {
+          "address": "00bdf96e",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bdf96f",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bdf970",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bdf971",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdf973",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bdf974",
+          "mnemonic": "xor",
+          "owned": true
+        },
+        {
+          "address": "00bdf976",
+          "mnemonic": "xor",
+          "owned": true
+        },
+        {
+          "address": "00bdf978",
+          "mnemonic": "lea",
+          "owned": true
+        },
+        {
+          "address": "00bdf97b",
+          "mnemonic": "jmp",
+          "owned": true
+        },
+        {
+          "address": "00bdf97d",
+          "mnemonic": "lea",
+          "owned": false
+        },
+        {
+          "address": "00bdf980",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdf983",
+          "mnemonic": "cmp",
+          "owned": true
+        },
+        {
+          "address": "00bdf985",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdf987",
+          "mnemonic": "je",
+          "owned": true
+        },
+        {
+          "address": "00bdf989",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdf98b",
+          "mnemonic": "cmp",
+          "owned": true
+        },
+        {
+          "address": "00bdf98d",
+          "mnemonic": "je",
+          "owned": true
+        },
+        {
+          "address": "00bdf98f",
+          "mnemonic": "cmp",
+          "owned": true
+        },
+        {
+          "address": "00bdf991",
+          "mnemonic": "jge",
+          "owned": true
+        },
+        {
+          "address": "00bdf993",
+          "mnemonic": "xor",
+          "owned": true
+        },
+        {
+          "address": "00bdf995",
+          "mnemonic": "jmp",
+          "owned": true
+        },
+        {
+          "address": "00bdf997",
+          "mnemonic": "cmp",
+          "owned": true
+        },
+        {
+          "address": "00bdf999",
+          "mnemonic": "ja",
+          "owned": true
+        },
+        {
+          "address": "00bdf99b",
+          "mnemonic": "lea",
+          "owned": true
+        },
+        {
+          "address": "00bdf99e",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bdf9a3",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bdf9a4",
+          "mnemonic": "call",
+          "owned": true
+        },
+        {
+          "address": "00bdf9a9",
+          "mnemonic": "add",
+          "owned": true
+        },
+        {
+          "address": "00bdf9ab",
+          "mnemonic": "add",
+          "owned": true
+        },
+        {
+          "address": "00bdf9ae",
+          "mnemonic": "cmp",
+          "owned": true
+        },
+        {
+          "address": "00bdf9b0",
+          "mnemonic": "je",
+          "owned": true
+        },
+        {
+          "address": "00bdf9b2",
+          "mnemonic": "cmp",
+          "owned": true
+        },
+        {
+          "address": "00bdf9b5",
+          "mnemonic": "je",
+          "owned": true
+        },
+        {
+          "address": "00bdf9b7",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdf9ba",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdf9be",
+          "mnemonic": "jmp",
+          "owned": true
+        },
+        {
+          "address": "00bdf9c0",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdf9c2",
+          "mnemonic": "cmp",
+          "owned": true
+        },
+        {
+          "address": "00bdf9c5",
+          "mnemonic": "jbe",
+          "owned": true
+        },
+        {
+          "address": "00bdf9cb",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdf9cf",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdf9d3",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdf9d7",
+          "mnemonic": "lea",
+          "owned": true
+        },
+        {
+          "address": "00bdf9db",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bdf9dc",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdf9de",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdf9e0",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdf9e4",
+          "mnemonic": "call",
+          "owned": true
+        },
+        {
+          "address": "00bdf9e9",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdf9ed",
+          "mnemonic": "cmp",
+          "owned": true
+        },
+        {
+          "address": "00bdf9f0",
+          "mnemonic": "jl",
+          "owned": true
+        },
+        {
+          "address": "00bdf9f6",
+          "mnemonic": "lea",
+          "owned": true
+        },
+        {
+          "address": "00bdf9fa",
+          "mnemonic": "cmp",
+          "owned": true
+        },
+        {
+          "address": "00bdf9fd",
+          "mnemonic": "jg",
+          "owned": true
+        },
+        {
+          "address": "00bdfa03",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bdfa08",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdfa0a",
+          "mnemonic": "call",
+          "owned": true
+        },
+        {
+          "address": "00bdfa0f",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdfa13",
+          "mnemonic": "xor",
+          "owned": true
+        },
+        {
+          "address": "00bdfa15",
+          "mnemonic": "add",
+          "owned": true
+        },
+        {
+          "address": "00bdfa18",
+          "mnemonic": "test",
+          "owned": true
+        },
+        {
+          "address": "00bdfa1a",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdfa1e",
+          "mnemonic": "jle",
+          "owned": true
+        },
+        {
+          "address": "00bdfa24",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdfa28",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdfa2c",
+          "mnemonic": "test",
+          "owned": true
+        },
+        {
+          "address": "00bdfa2e",
+          "mnemonic": "jne",
+          "owned": true
+        },
+        {
+          "address": "00bdfa30",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdfa35",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bdfa36",
+          "mnemonic": "call",
+          "owned": true
+        },
+        {
+          "address": "00bdfa3b",
+          "mnemonic": "add",
+          "owned": true
+        },
+        {
+          "address": "00bdfa3e",
+          "mnemonic": "test",
+          "owned": true
+        },
+        {
+          "address": "00bdfa40",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bdfa45",
+          "mnemonic": "je",
+          "owned": true
+        },
+        {
+          "address": "00bdfa4b",
+          "mnemonic": "lea",
+          "owned": true
+        },
+        {
+          "address": "00bdfa4f",
+          "mnemonic": "call",
+          "owned": true
+        },
+        {
+          "address": "00bdfa54",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdfa58",
+          "mnemonic": "lea",
+          "owned": true
+        },
+        {
+          "address": "00bdfa5b",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bdfa5c",
+          "mnemonic": "lea",
+          "owned": true
+        },
+        {
+          "address": "00bdfa60",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdfa65",
+          "mnemonic": "call",
+          "owned": true
+        },
+        {
+          "address": "00bdfa6a",
+          "mnemonic": "lea",
+          "owned": true
+        },
+        {
+          "address": "00bdfa6e",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bdfa6f",
+          "mnemonic": "lea",
+          "owned": true
+        },
+        {
+          "address": "00bdfa73",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bdfa74",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdfa76",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdfa7b",
+          "mnemonic": "call",
+          "owned": true
+        },
+        {
+          "address": "00bdfa80",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdfa82",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdfa85",
+          "mnemonic": "test",
+          "owned": true
+        },
+        {
+          "address": "00bdfa87",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdfa8c",
+          "mnemonic": "je",
+          "owned": true
+        },
+        {
+          "address": "00bdfa8e",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdfa90",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bdfa92",
+          "mnemonic": "lea",
+          "owned": true
+        },
+        {
+          "address": "00bdfa95",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bdfa96",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdfa98",
+          "mnemonic": "call",
+          "owned": true
+        },
+        {
+          "address": "00bdfa9d",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdfaa0",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdfaa3",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bdfaa4",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bdfaa5",
+          "mnemonic": "add",
+          "owned": true
+        },
+        {
+          "address": "00bdfaa7",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bdfaa8",
+          "mnemonic": "call",
+          "owned": true
+        },
+        {
+          "address": "00bdfaad",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdfab1",
+          "mnemonic": "add",
+          "owned": true
+        },
+        {
+          "address": "00bdfab4",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdfab8",
+          "mnemonic": "test",
+          "owned": true
+        },
+        {
+          "address": "00bdfaba",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdfabf",
+          "mnemonic": "je",
+          "owned": true
+        },
+        {
+          "address": "00bdfac1",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdfac5",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bdfac7",
+          "mnemonic": "add",
+          "owned": true
+        },
+        {
+          "address": "00bdfaca",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bdfacb",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bdfacc",
+          "mnemonic": "call",
+          "owned": true
+        },
+        {
+          "address": "00bdfad1",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdfad3",
+          "mnemonic": "call",
+          "owned": true
+        },
+        {
+          "address": "00bdfad8",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdfadc",
+          "mnemonic": "test",
+          "owned": true
+        },
+        {
+          "address": "00bdfade",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdfae3",
+          "mnemonic": "je",
+          "owned": true
+        },
+        {
+          "address": "00bdfae5",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdfae9",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bdfaeb",
+          "mnemonic": "add",
+          "owned": true
+        },
+        {
+          "address": "00bdfaee",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bdfaef",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bdfaf0",
+          "mnemonic": "call",
+          "owned": true
+        },
+        {
+          "address": "00bdfaf5",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdfaf7",
+          "mnemonic": "call",
+          "owned": true
+        },
+        {
+          "address": "00bdfafc",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdfb00",
+          "mnemonic": "test",
+          "owned": true
+        },
+        {
+          "address": "00bdfb02",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdfb07",
+          "mnemonic": "je",
+          "owned": true
+        },
+        {
+          "address": "00bdfb0d",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdfb11",
+          "mnemonic": "jmp",
+          "owned": true
+        },
+        {
+          "address": "00bdfb16",
+          "mnemonic": "lea",
+          "owned": true
+        },
+        {
+          "address": "00bdfb1a",
+          "mnemonic": "call",
+          "owned": true
+        },
+        {
+          "address": "00bdfb1f",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdfb23",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdfb27",
+          "mnemonic": "movzx",
+          "owned": true
+        },
+        {
+          "address": "00bdfb2a",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bdfb2b",
+          "mnemonic": "lea",
+          "owned": true
+        },
+        {
+          "address": "00bdfb2f",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdfb34",
+          "mnemonic": "call",
+          "owned": true
+        },
+        {
+          "address": "00bdfb39",
+          "mnemonic": "lea",
+          "owned": true
+        },
+        {
+          "address": "00bdfb3d",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bdfb3e",
+          "mnemonic": "lea",
+          "owned": true
+        },
+        {
+          "address": "00bdfb42",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bdfb43",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdfb45",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdfb4a",
+          "mnemonic": "call",
+          "owned": true
+        },
+        {
+          "address": "00bdfb4f",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdfb51",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdfb54",
+          "mnemonic": "test",
+          "owned": true
+        },
+        {
+          "address": "00bdfb56",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdfb5b",
+          "mnemonic": "je",
+          "owned": true
+        },
+        {
+          "address": "00bdfb5d",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdfb5f",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bdfb61",
+          "mnemonic": "lea",
+          "owned": true
+        },
+        {
+          "address": "00bdfb64",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bdfb65",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdfb67",
+          "mnemonic": "call",
+          "owned": true
+        },
+        {
+          "address": "00bdfb6c",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdfb6f",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdfb72",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bdfb73",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bdfb74",
+          "mnemonic": "add",
+          "owned": true
+        },
+        {
+          "address": "00bdfb76",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bdfb77",
+          "mnemonic": "call",
+          "owned": true
+        },
+        {
+          "address": "00bdfb7c",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdfb80",
+          "mnemonic": "add",
+          "owned": true
+        },
+        {
+          "address": "00bdfb83",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdfb87",
+          "mnemonic": "test",
+          "owned": true
+        },
+        {
+          "address": "00bdfb89",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdfb8e",
+          "mnemonic": "je",
+          "owned": true
+        },
+        {
+          "address": "00bdfb90",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdfb94",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bdfb96",
+          "mnemonic": "add",
+          "owned": true
+        },
+        {
+          "address": "00bdfb99",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bdfb9a",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bdfb9b",
+          "mnemonic": "call",
+          "owned": true
+        },
+        {
+          "address": "00bdfba0",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdfba2",
+          "mnemonic": "call",
+          "owned": true
+        },
+        {
+          "address": "00bdfba7",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdfbab",
+          "mnemonic": "test",
+          "owned": true
+        },
+        {
+          "address": "00bdfbad",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdfbb2",
+          "mnemonic": "je",
+          "owned": true
+        },
+        {
+          "address": "00bdfbb4",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdfbb8",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bdfbba",
+          "mnemonic": "add",
+          "owned": true
+        },
+        {
+          "address": "00bdfbbd",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bdfbbe",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bdfbbf",
+          "mnemonic": "call",
+          "owned": true
+        },
+        {
+          "address": "00bdfbc4",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdfbc6",
+          "mnemonic": "call",
+          "owned": true
+        },
+        {
+          "address": "00bdfbcb",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdfbcf",
+          "mnemonic": "test",
+          "owned": true
+        },
+        {
+          "address": "00bdfbd1",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdfbd6",
+          "mnemonic": "je",
+          "owned": true
+        },
+        {
+          "address": "00bdfbd8",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdfbdc",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bdfbde",
+          "mnemonic": "add",
+          "owned": true
+        },
+        {
+          "address": "00bdfbe1",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bdfbe2",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bdfbe3",
+          "mnemonic": "call",
+          "owned": true
+        },
+        {
+          "address": "00bdfbe8",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdfbea",
+          "mnemonic": "call",
+          "owned": true
+        },
+        {
+          "address": "00bdfbef",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdfbf3",
+          "mnemonic": "add",
+          "owned": true
+        },
+        {
+          "address": "00bdfbf6",
+          "mnemonic": "add",
+          "owned": true
+        },
+        {
+          "address": "00bdfbf9",
+          "mnemonic": "cmp",
+          "owned": true
+        },
+        {
+          "address": "00bdfbfb",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdfbff",
+          "mnemonic": "jl",
+          "owned": true
+        },
+        {
+          "address": "00bdfc05",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdfc09",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdfc0d",
+          "mnemonic": "test",
+          "owned": true
+        },
+        {
+          "address": "00bdfc0f",
+          "mnemonic": "lea",
+          "owned": true
+        },
+        {
+          "address": "00bdfc16",
+          "mnemonic": "jne",
+          "owned": true
+        },
+        {
+          "address": "00bdfc18",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdfc1d",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bdfc1e",
+          "mnemonic": "call",
+          "owned": true
+        },
+        {
+          "address": "00bdfc23",
+          "mnemonic": "add",
+          "owned": true
+        },
+        {
+          "address": "00bdfc26",
+          "mnemonic": "test",
+          "owned": true
+        },
+        {
+          "address": "00bdfc28",
+          "mnemonic": "je",
+          "owned": true
+        },
+        {
+          "address": "00bdfc2a",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdfc2e",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdfc32",
+          "mnemonic": "add",
+          "owned": true
+        },
+        {
+          "address": "00bdfc34",
+          "mnemonic": "test",
+          "owned": true
+        },
+        {
+          "address": "00bdfc36",
+          "mnemonic": "je",
+          "owned": true
+        },
+        {
+          "address": "00bdfc3c",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdfc3e",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bdfc40",
+          "mnemonic": "lea",
+          "owned": true
+        },
+        {
+          "address": "00bdfc43",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bdfc44",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdfc46",
+          "mnemonic": "call",
+          "owned": true
+        },
+        {
+          "address": "00bdfc4b",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdfc4e",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdfc51",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bdfc52",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bdfc53",
+          "mnemonic": "add",
+          "owned": true
+        },
+        {
+          "address": "00bdfc55",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bdfc56",
+          "mnemonic": "call",
+          "owned": true
+        },
+        {
+          "address": "00bdfc5b",
+          "mnemonic": "add",
+          "owned": true
+        },
+        {
+          "address": "00bdfc5e",
+          "mnemonic": "jmp",
+          "owned": true
+        },
+        {
+          "address": "00bdfc63",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdfc67",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdfc6b",
+          "mnemonic": "movzx",
+          "owned": true
+        },
+        {
+          "address": "00bdfc6e",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bdfc6f",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdfc71",
+          "mnemonic": "call",
+          "owned": true
+        },
+        {
+          "address": "00bdfc76",
+          "mnemonic": "jmp",
+          "owned": true
+        },
+        {
+          "address": "00bdfc7b",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bdfc7d",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bdfc7f",
+          "mnemonic": "lea",
+          "owned": true
+        },
+        {
+          "address": "00bdfc83",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bdfc84",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdfc86",
+          "mnemonic": "call",
+          "owned": true
+        },
+        {
+          "address": "00bdfc8b",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdfc8d",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bdfc8f",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bdfc90",
+          "mnemonic": "lea",
+          "owned": true
+        },
+        {
+          "address": "00bdfc94",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bdfc95",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdfc97",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdfc9c",
+          "mnemonic": "call",
+          "owned": true
+        },
+        {
+          "address": "00bdfca1",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bdfca2",
+          "mnemonic": "lea",
+          "owned": true
+        },
+        {
+          "address": "00bdfca6",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bdfca7",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdfca9",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdfcab",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdfcaf",
+          "mnemonic": "call",
+          "owned": true
+        },
+        {
+          "address": "00bdfcb4",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdfcb6",
+          "mnemonic": "cmp",
+          "owned": true
+        },
+        {
+          "address": "00bdfcb8",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdfcbd",
+          "mnemonic": "je",
+          "owned": true
+        },
+        {
+          "address": "00bdfcbf",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdfcc1",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bdfcc3",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bdfcc4",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdfcc6",
+          "mnemonic": "call",
+          "owned": true
+        },
+        {
+          "address": "00bdfccb",
+          "mnemonic": "cmp",
+          "owned": true
+        },
+        {
+          "address": "00bdfccd",
+          "mnemonic": "je",
+          "owned": true
+        },
+        {
+          "address": "00bdfccf",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdfcd1",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdfcd4",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bdfcd5",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdfcd8",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bdfcd9",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bdfcda",
+          "mnemonic": "call",
+          "owned": true
+        },
+        {
+          "address": "00bdfcdf",
+          "mnemonic": "add",
+          "owned": true
+        },
+        {
+          "address": "00bdfce2",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdfce6",
+          "mnemonic": "cmp",
+          "owned": true
+        },
+        {
+          "address": "00bdfce8",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdfcec",
+          "mnemonic": "je",
+          "owned": true
+        },
+        {
+          "address": "00bdfcee",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdfcf2",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bdfcf4",
+          "mnemonic": "add",
+          "owned": true
+        },
+        {
+          "address": "00bdfcf7",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bdfcf8",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bdfcf9",
+          "mnemonic": "call",
+          "owned": true
+        },
+        {
+          "address": "00bdfcfe",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdfd00",
+          "mnemonic": "call",
+          "owned": true
+        },
+        {
+          "address": "00bdfd05",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdfd09",
+          "mnemonic": "cmp",
+          "owned": true
+        },
+        {
+          "address": "00bdfd0b",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdfd10",
+          "mnemonic": "je",
+          "owned": true
+        },
+        {
+          "address": "00bdfd12",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdfd16",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bdfd18",
+          "mnemonic": "add",
+          "owned": true
+        },
+        {
+          "address": "00bdfd1b",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bdfd1c",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bdfd1d",
+          "mnemonic": "call",
+          "owned": true
+        },
+        {
+          "address": "00bdfd22",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdfd24",
+          "mnemonic": "call",
+          "owned": true
+        },
+        {
+          "address": "00bdfd29",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdfd2d",
+          "mnemonic": "cmp",
+          "owned": true
+        },
+        {
+          "address": "00bdfd2f",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdfd34",
+          "mnemonic": "je",
+          "owned": true
+        },
+        {
+          "address": "00bdfd36",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdfd3a",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bdfd3c",
+          "mnemonic": "add",
+          "owned": true
+        },
+        {
+          "address": "00bdfd3f",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bdfd40",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bdfd41",
+          "mnemonic": "call",
+          "owned": true
+        },
+        {
+          "address": "00bdfd46",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdfd48",
+          "mnemonic": "call",
+          "owned": true
+        },
+        {
+          "address": "00bdfd4d",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bdfd4f",
+          "mnemonic": "lea",
+          "owned": true
+        },
+        {
+          "address": "00bdfd53",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdfd5b",
+          "mnemonic": "call",
+          "owned": true
+        },
+        {
+          "address": "00bdfd60",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdfd64",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bdfd65",
+          "mnemonic": "call",
+          "owned": true
+        },
+        {
+          "address": "00bdfd6a",
+          "mnemonic": "add",
+          "owned": false
+        },
+        {
+          "address": "00bdfd6d",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdfd71",
+          "mnemonic": "pop",
+          "owned": true
+        },
+        {
+          "address": "00bdfd72",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdfd79",
+          "mnemonic": "pop",
+          "owned": true
+        },
+        {
+          "address": "00bdfd7a",
+          "mnemonic": "pop",
+          "owned": true
+        },
+        {
+          "address": "00bdfd7b",
+          "mnemonic": "pop",
+          "owned": true
+        },
+        {
+          "address": "00bdfd7c",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdfd7e",
+          "mnemonic": "pop",
+          "owned": true
+        },
+        {
+          "address": "00bdfd7f",
+          "mnemonic": "ret",
+          "owned": true
+        }
+      ],
+      "after_documentation": {
+        "hash": "e518f58a3adb3426c071207183777cc807723a3525e16e32b0191d2705e09d55",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00bdf950",
+        "function_name": "BSP_FileBlock_PrepareIdentifier",
+        "return_type": "void",
+        "calling_convention": "__fastcall",
+        "plate_comment": "[BSP reconstruction 00bdf950]\nComplete1072-byte PE-matched body through00bdfd7f RET. Name string at+14h/+18h; exact invalid set at00d68520. For length>32 use00bd20a0 split on underscore; count3..11 branch preserves nonzero-atol tokens and abbreviates other tokens to first byte. Fallback calls00469840(-64,64) and(0,64), then concatenates; no guaranteed32-byte limit. Finalfree call00bdfd65 has raw continuation. Descriptive name is a reconstruction hypothesis; no stream ownership or native ABI claim. Original ABI: ECX FileBlock object; no stack arguments; RET; no stable result contract. Evidence: docs/FILE_BLOCK_SETUP.md; reports/file_block_setup_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim.",
+        "parameters": [
+          {
+            "ordinal": 0,
+            "name": "fileblock",
+            "type": "void *"
+          },
+          {
+            "ordinal": 1,
+            "name": "unused_edx",
+            "type": "void *"
+          }
+        ],
+        "local_variables": [
+          {
+            "name": "uVar10",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffff94, 4)"
+          },
+          {
+            "name": "iVar9",
+            "type": "int",
+            "storage": "(register, 0xc, 4)"
+          },
+          {
+            "name": "psVar6",
+            "type": "size_t *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "lVar5",
+            "type": "long",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "puVar8",
+            "type": "uint *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "iVar7",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "local_58",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffa8, 4)"
+          },
+          {
+            "name": "local_4c",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffb4, 4)"
+          },
+          {
+            "name": "local_48",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffb8, 4)"
+          },
+          {
+            "name": "local_54",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffac, 4)"
+          },
+          {
+            "name": "local_50",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffb0, 4)"
+          },
+          {
+            "name": "local_3c",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffc4, 4)"
+          },
+          {
+            "name": "local_38",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffc8, 4)"
+          },
+          {
+            "name": "local_44",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffbc, 4)"
+          },
+          {
+            "name": "local_40",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffc0, 4)"
+          },
+          {
+            "name": "local_2c",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffd4, 4)"
+          },
+          {
+            "name": "local_28",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffd8, 4)"
+          },
+          {
+            "name": "local_34",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffcc, 4)"
+          },
+          {
+            "name": "local_30",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffd0, 4)"
+          },
+          {
+            "name": "local_1c",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffe4, 4)"
+          },
+          {
+            "name": "local_14",
+            "type": "void *",
+            "storage": "(stack, 0xffffffffffffffec, 4)"
+          },
+          {
+            "name": "local_24",
+            "type": "void *",
+            "storage": "(stack, 0xffffffffffffffdc, 4)"
+          },
+          {
+            "name": "local_20",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffe0, 4)"
+          },
+          {
+            "name": "local_c",
+            "type": "int",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "uVar2",
+            "type": "uint",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "pvVar1",
+            "type": "void *",
+            "storage": "(unique, 0x1000045b, 4)"
+          },
+          {
+            "name": "pcVar4",
+            "type": "char *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "sVar3",
+            "type": "size_t",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "puStack_10",
+            "type": "undefined1 *",
+            "storage": "(stack, 0xfffffffffffffff0, 4)"
+          },
+          {
+            "name": "this",
+            "type": "uint *",
+            "storage": "(unique, 0x6600, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 48,
+            "name": "LAB_00bdf980"
+          },
+          {
+            "relative_offset": 71,
+            "name": "LAB_00bdf997"
+          },
+          {
+            "relative_offset": 75,
+            "name": "LAB_00bdf99b"
+          },
+          {
+            "relative_offset": 112,
+            "name": "LAB_00bdf9c0"
+          },
+          {
+            "relative_offset": 212,
+            "name": "LAB_00bdfa24"
+          },
+          {
+            "relative_offset": 229,
+            "name": "LAB_00bdfa35"
+          },
+          {
+            "relative_offset": 356,
+            "name": "LAB_00bdfab4"
+          },
+          {
+            "relative_offset": 392,
+            "name": "LAB_00bdfad8"
+          },
+          {
+            "relative_offset": 428,
+            "name": "LAB_00bdfafc"
+          },
+          {
+            "relative_offset": 454,
+            "name": "LAB_00bdfb16"
+          },
+          {
+            "relative_offset": 563,
+            "name": "LAB_00bdfb83"
+          },
+          {
+            "relative_offset": 599,
+            "name": "LAB_00bdfba7"
+          },
+          {
+            "relative_offset": 635,
+            "name": "LAB_00bdfbcb"
+          },
+          {
+            "relative_offset": 652,
+            "name": "LAB_00bdfbdc"
+          },
+          {
+            "relative_offset": 671,
+            "name": "LAB_00bdfbef"
+          },
+          {
+            "relative_offset": 693,
+            "name": "LAB_00bdfc05"
+          },
+          {
+            "relative_offset": 717,
+            "name": "LAB_00bdfc1d"
+          },
+          {
+            "relative_offset": 787,
+            "name": "LAB_00bdfc63"
+          },
+          {
+            "relative_offset": 811,
+            "name": "LAB_00bdfc7b"
+          },
+          {
+            "relative_offset": 914,
+            "name": "LAB_00bdfce2"
+          },
+          {
+            "relative_offset": 949,
+            "name": "LAB_00bdfd05"
+          },
+          {
+            "relative_offset": 985,
+            "name": "LAB_00bdfd29"
+          },
+          {
+            "relative_offset": 1021,
+            "name": "LAB_00bdfd4d"
+          },
+          {
+            "relative_offset": 1053,
+            "name": "LAB_00bdfd6d"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "verified_complete": true,
+      "verified_instruction_count": 356,
+      "prior_evidence_preserved": true
+    },
+    {
+      "address": "00bdaf40",
+      "end_exclusive": "00bdaf9e",
+      "sha256": "87ebfe3ac176c4601e85078bbd7959f7eaa2087138eb74b5afc565de489279f0",
+      "bytes": 94,
+      "before_documentation": {
+        "hash": "d9219ba324488c9d8e31b7635bcc7ef3d494457adcbb45e5a2f8d1409d670158",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00bdaf40",
+        "function_name": "STL_list_EraseNode_00bdaf40",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00bdaf40]\nPreserve library identity. Validate owner/nonend; unlink node by neighbors, free then decrement list+8 size; output {iterator_owner,node_next}. Complete94-byte body. Raw00bdaf84..00bdaf9d afterfree00bdaf7f includes omitted size decrement/iterator return; body already contains tail. Empty/foreign iterator runtime handling not reconstructed. Original ABI: ECX list; stack output iterator, iterator-owner list, node; EAX output iterator; RET0Ch. Evidence: docs/FILE_BLOCK_LIFETIME.md; reports/file_block_lifetime_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim.",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "iVar1",
+            "type": "int",
+            "storage": "(unique, 0x17200, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 30,
+            "name": "LAB_00bdaf5e"
+          },
+          {
+            "relative_offset": 40,
+            "name": "LAB_00bdaf68"
+          },
+          {
+            "relative_offset": 75,
+            "name": "LAB_00bdaf8b"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "before_ownership": [
+        {
+          "address": "00bdaf40",
+          "mnemonic": "sub",
+          "owned": true
+        },
+        {
+          "address": "00bdaf43",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bdaf44",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdaf48",
+          "mnemonic": "test",
+          "owned": true
+        },
+        {
+          "address": "00bdaf4a",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bdaf4b",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bdaf4c",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdaf50",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bdaf51",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdaf53",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdaf57",
+          "mnemonic": "jne",
+          "owned": true
+        },
+        {
+          "address": "00bdaf59",
+          "mnemonic": "call",
+          "owned": true
+        },
+        {
+          "address": "00bdaf5e",
+          "mnemonic": "cmp",
+          "owned": true
+        },
+        {
+          "address": "00bdaf61",
+          "mnemonic": "jne",
+          "owned": true
+        },
+        {
+          "address": "00bdaf63",
+          "mnemonic": "call",
+          "owned": true
+        },
+        {
+          "address": "00bdaf68",
+          "mnemonic": "cmp",
+          "owned": true
+        },
+        {
+          "address": "00bdaf6b",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdaf6d",
+          "mnemonic": "je",
+          "owned": true
+        },
+        {
+          "address": "00bdaf6f",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdaf72",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdaf74",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdaf76",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdaf78",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdaf7b",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bdaf7c",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdaf7f",
+          "mnemonic": "call",
+          "owned": true
+        },
+        {
+          "address": "00bdaf84",
+          "mnemonic": "add",
+          "owned": false
+        },
+        {
+          "address": "00bdaf87",
+          "mnemonic": "add",
+          "owned": false
+        },
+        {
+          "address": "00bdaf8b",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdaf8f",
+          "mnemonic": "pop",
+          "owned": true
+        },
+        {
+          "address": "00bdaf90",
+          "mnemonic": "pop",
+          "owned": true
+        },
+        {
+          "address": "00bdaf91",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdaf94",
+          "mnemonic": "pop",
+          "owned": true
+        },
+        {
+          "address": "00bdaf95",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bdaf97",
+          "mnemonic": "pop",
+          "owned": true
+        },
+        {
+          "address": "00bdaf98",
+          "mnemonic": "add",
+          "owned": true
+        },
+        {
+          "address": "00bdaf9b",
+          "mnemonic": "ret",
+          "owned": true
+        }
+      ],
+      "after_documentation": {
+        "hash": "e4790d24f1b70153d51db11c66a18035f07a9749cae9deaff49cf7b5ffebf25e",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00bdaf40",
+        "function_name": "STL_list_EraseNode_00bdaf40",
+        "return_type": "void *",
+        "calling_convention": "__fastcall",
+        "plate_comment": "[BSP reconstruction 00bdaf40]\nPreserve library identity. Validate owner/nonend; unlink node by neighbors, free then decrement list+8 size; output {iterator_owner,node_next}. Complete94-byte body. Raw00bdaf84..00bdaf9d afterfree00bdaf7f includes omitted size decrement/iterator return; body already contains tail. Empty/foreign iterator runtime handling not reconstructed. Original ABI: ECX list; stack output iterator, iterator-owner list, node; EAX output iterator; RET0Ch. Evidence: docs/FILE_BLOCK_LIFETIME.md; reports/file_block_lifetime_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim.",
+        "parameters": [
+          {
+            "ordinal": 0,
+            "name": "list",
+            "type": "void *"
+          },
+          {
+            "ordinal": 1,
+            "name": "unused_edx",
+            "type": "void *"
+          },
+          {
+            "ordinal": 2,
+            "name": "output",
+            "type": "void *"
+          },
+          {
+            "ordinal": 3,
+            "name": "iterator_owner",
+            "type": "void *"
+          },
+          {
+            "ordinal": 4,
+            "name": "node",
+            "type": "void *"
+          }
+        ],
+        "local_variables": [
+          {
+            "name": "uVar1",
+            "type": "undefined4",
+            "storage": "(unique, 0x17200, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 30,
+            "name": "LAB_00bdaf5e"
+          },
+          {
+            "relative_offset": 40,
+            "name": "LAB_00bdaf68"
+          },
+          {
+            "relative_offset": 75,
+            "name": "LAB_00bdaf8b"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "verified_complete": true,
+      "verified_instruction_count": 37,
+      "prior_evidence_preserved": true
+    }
+  ],
+  "actions": [
+    {
+      "endpoint": "clear_instruction_flow_override",
+      "body": {
+        "address": "00bdfd65"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Cleared flow override at 00bdfd65 (was: NONE, now: NONE)\"}"
+    },
+    {
+      "endpoint": "delete_function",
+      "body": {
+        "address": "00bdf950"
+      },
+      "result": "{\"success\": true, \"address\": \"00bdf950\", \"deleted_function\": \"BSP_FileBlock_PrepareIdentifier\", \"body_size\": 1066, \"message\": \"Function 'BSP_FileBlock_PrepareIdentifier' deleted at 00bdf950\"}"
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00bdf950",
+        "end_address": "00bdfd80"
+      },
+      "result": "{\"success\": true, \"start_address\": \"00bdf950\", \"end_address\": \"00bdfd7f\", \"bytes_disassembled\": 1072, \"message\": \"Successfully disassembled 1072 byte(s)\"}"
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00bdf950",
+        "name": "BSP_FileBlock_PrepareIdentifier",
+        "disassemble_first": false
+      },
+      "result": "{\"success\": true, \"address\": \"00bdf950\", \"function_name\": \"BSP_FileBlock_PrepareIdentifier\", \"entry_point\": \"00bdf950\", \"body_size\": 1069, \"message\": \"Function created successfully at 00bdf950\", \"warnings\": [\"Function name 'BSP_FileBlock_PrepareIdentifier' \\u2014 main part 'FileBlock_PrepareIdentifier' is not PascalCase. Expected: FileblockPrepareidentifier\", \"Function name 'BSP_FileBlock_PrepareIdentifier' \\u2014 main part 'FileBlock_PrepareIdentifier' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_FileBlock_PrepareIdentifier' does not start with a recognized verb. First word 'File' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00bdf950",
+        "prototype": "void __fastcall BSP_FileBlock_PrepareIdentifier(void* fileblock, void* unused_edx)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00bdf950 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00bdf950",
+        "comment": "[BSP reconstruction 00bdf950]\nComplete1072-byte PE-matched body through00bdfd7f RET. Name string at+14h/+18h; exact invalid set at00d68520. For length>32 use00bd20a0 split on underscore; count3..11 branch preserves nonzero-atol tokens and abbreviates other tokens to first byte. Fallback calls00469840(-64,64) and(0,64), then concatenates; no guaranteed32-byte limit. Finalfree call00bdfd65 has raw continuation. Descriptive name is a reconstruction hypothesis; no stream ownership or native ABI claim. Original ABI: ECX FileBlock object; no stack arguments; RET; no stable result contract. Evidence: docs/FILE_BLOCK_SETUP.md; reports/file_block_setup_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00bdf950\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "clear_instruction_flow_override",
+      "body": {
+        "address": "00bdaf7f"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Cleared flow override at 00bdaf7f (was: NONE, now: NONE)\"}"
+    },
+    {
+      "endpoint": "delete_function",
+      "body": {
+        "address": "00bdaf40"
+      },
+      "result": "{\"success\": true, \"address\": \"00bdaf40\", \"deleted_function\": \"STL_list_EraseNode_00bdaf40\", \"body_size\": 87, \"message\": \"Function 'STL_list_EraseNode_00bdaf40' deleted at 00bdaf40\"}"
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00bdaf40",
+        "end_address": "00bdaf9e"
+      },
+      "result": "{\"success\": true, \"start_address\": \"00bdaf40\", \"end_address\": \"00bdaf9d\", \"bytes_disassembled\": 94, \"message\": \"Successfully disassembled 94 byte(s)\"}"
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00bdaf40",
+        "name": "STL_list_EraseNode_00bdaf40",
+        "disassemble_first": false
+      },
+      "result": "{\"success\": true, \"address\": \"00bdaf40\", \"function_name\": \"STL_list_EraseNode_00bdaf40\", \"entry_point\": \"00bdaf40\", \"body_size\": 94, \"message\": \"Function created successfully at 00bdaf40\", \"warnings\": [\"Function name 'STL_list_EraseNode_00bdaf40' \\u2014 main part 'STL_list_EraseNode_00bdaf40' is not PascalCase. Expected: StlListErasenode00bdaf40\", \"Function name 'STL_list_EraseNode_00bdaf40' \\u2014 main part 'STL_list_EraseNode_00bdaf40' contains underscores. Use PascalCase after the module prefix.\"]}"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00bdaf40",
+        "prototype": "void* __fastcall STL_list_EraseNode_00bdaf40(void* list, void* unused_edx, void* output, void* iterator_owner, void* node)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00bdaf40 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00bdaf40",
+        "comment": "[BSP reconstruction 00bdaf40]\nPreserve library identity. Validate owner/nonend; unlink node by neighbors, free then decrement list+8 size; output {iterator_owner,node_next}. Complete94-byte body. Raw00bdaf84..00bdaf9d afterfree00bdaf7f includes omitted size decrement/iterator return; body already contains tail. Empty/foreign iterator runtime handling not reconstructed. Original ABI: ECX list; stack output iterator, iterator-owner list, node; EAX output iterator; RET0Ch. Evidence: docs/FILE_BLOCK_LIFETIME.md; reports/file_block_lifetime_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00bdaf40\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": "{\"success\": true, \"program\": \"battlestationspacific.exe\", \"message\": \"Program saved successfully\"}"
+    }
+  ],
+  "state": "complete_membership_saved_prior_evidence_preserved",
+  "exports_refreshed": true
+}

@@ -1,0 +1,119 @@
+{
+  "packet": "orch4_native_fileblock_integration_bm",
+  "status": "integrated_independently_reviewed_win32_built_focused_source_fixtures_checked_production_loader_unbound",
+  "code_revision": "48b9789f677cd17bb2a51129b3b43ce864622b70",
+  "first_build_revision": "c1579357bc6c61e3036f870c5047d4b402d49a28",
+  "reviewed_incoming_main": "5edee1d22dae1112136b45496133d7b0ee3852cc",
+  "worker_commits": {
+    "gate": "1de630945adf14ca856de0f736b2f4c7592820ba",
+    "identifier": "eaec86e6356471a43f2cc9bb84c976b84bb26d60",
+    "unmount": "3f5158e96d5f71af5d92ed52e5316a39e69f7946",
+    "thread_audit": "f0a7023fd2f46dc179e1ab3c1bf6f668943b9413",
+    "resource_audit": "d93fe02665629fbcdc1276359d21d9a8d12edf85"
+  },
+  "incoming_review": {
+    "accepted": true,
+    "worker": "fileblock_identifier_bm",
+    "source_and_retained_artifact_review": true,
+    "whole_report_call_rows": 34,
+    "unique_direct_rows": 17,
+    "failed": 0,
+    "new_fixtures": false
+  },
+  "source_manifest": {
+    "path": "local/native_fileblock_bm_source_48b9789f677c.json",
+    "files": 2564,
+    "sha256": "a80697c9cbafdcc2ca4f401bd9f06749808084ea8bd336173e75998ddbf7b7b7",
+    "normalization": "Git diff validates repository-normalized source; manifest hashes actual build working bytes."
+  },
+  "primary_build": {
+    "command": "./scripts/build.ps1",
+    "win32": true,
+    "configuration": "Release",
+    "new_translation_units": 3,
+    "passed": true,
+    "existing_ctests_passed": 2,
+    "log": "local/native_fileblock_integration_bm_combined_build.log",
+    "first_log": "local/native_fileblock_integration_bm_build.log"
+  },
+  "source_artifact_review": {
+    "native_fileblock_identifier_bm": {
+      "source_and_dependency_hashes": 16,
+      "ignored_artifact_hashes": 2,
+      "frozen_core_sha256": "134578367593f74415bb6fd12b51d103dfc6575dcb94d2f692640dde69c78251"
+    },
+    "native_fileblock_gate_list_bm": {
+      "source_and_dependency_hashes": 2,
+      "ignored_artifact_hashes": 6,
+      "frozen_core_sha256": "134578367593f74415bb6fd12b51d103dfc6575dcb94d2f692640dde69c78251"
+    },
+    "native_vfs_unmount_name_bm": {
+      "source_and_dependency_hashes": 3,
+      "ignored_artifact_hashes": 21,
+      "frozen_core_sha256": "134578367593f74415bb6fd12b51d103dfc6575dcb94d2f692640dde69c78251"
+    }
+  },
+  "call_checks": {
+    "identifier": 45,
+    "gate": 7,
+    "unmount": 16,
+    "source_rows": 68,
+    "thread_audit_rows": 97,
+    "resource_audit_direct_rows": 141,
+    "resource_audit_extra_function_owned_eh_and_tail_rows": 10,
+    "resource_audit_decoded_only_transfer": 1,
+    "failed": 0,
+    "logs": [
+      "local/native_fileblock_primary_calls_bm.log",
+      "local/native_resource_frontier_primary_calls_bn.log"
+    ]
+  },
+  "ghidra_annotations": {
+    "report": "reports/native_fileblock_annotations_bm.json",
+    "source_bodies": 6,
+    "source_bytes": 2021,
+    "evidence_handlers": 4,
+    "previous_comments_preserved": true,
+    "project_saved": true,
+    "exports_refreshed": true
+  },
+  "ghidra_repairs": [
+    "reports/native_fileblock_body_repair_bm.json",
+    "reports/native_fileblock_function_definitions_bm.json"
+  ],
+  "thread_lifetime": {
+    "report": "reports/native_loading_thread_lifetime_bl.json",
+    "finding": "No loader-owned stop/wake/join or thread-handle close in the bounded start/worker/update/drain/destructor/EH/getter/import-use audit. Event deletion is not worker quiescence; later process exit does not establish safe earlier destruction."
+  },
+  "resource_frontier": {
+    "report": "reports/native_resource_loading_frontier_bn.json",
+    "validated_source_hashes": 32,
+    "correction": "Eight JMP kinds and four actual unwind owners corrected; unowned B7F722 retained as decoded-only evidence."
+  },
+  "permanent_tests_added": false,
+  "native_abi_compatible": false,
+  "game_validated": false,
+  "current_production_run": "No new game run: this batch adds standalone source without binding the production loading owner or FileBlock orchestration. The preceding BK report separately records its bounded native provider-pump mission.",
+  "limits": [
+    "Focused source fixtures are not original instruction execution, ABI/FH3/SEH identity or gameplay validation.",
+    "Fixture dependency libraries freeze earlier BL source at134578; they do not claim linkage against the subsequently rebuilt BM library.",
+    "Uncertain native throwing cleanup and arbitrary native stack aliases remain qualified in individual reports.",
+    "Unmount deliberately retains stable frames for escaping unknown source failures; native unwind is not simulated.",
+    "Actual resource manager, reader/root dispatch, current metric and resource destruction remain prerequisites for full worker loading."
+  ],
+  "artifacts": {
+    "local/native_fileblock_integration_bm_combined_build.log": "96f210c9a8316457b324b254ac686678b5d96257bc79f9db26c963f8ad6c68f1",
+    "local/native_fileblock_integration_bm_build.log": "f68d71ccc0c669c3e2bf9755d91214fd7085641a84dfb3b4465fa7ff44c647d9",
+    "local/native_fileblock_primary_calls_bm.log": "4c7124c530c42f232d9f10ed2f80aa1993bf1fe9164cca88c399bee90bacd9e2",
+    "local/native_resource_frontier_primary_calls_bn.log": "8fc5ed4da11adb06f42088d046a2e01274e5af0f63029d8f327c59e61ee284e3",
+    "local/native_fileblock_bm_source_48b9789f677c.json": "a80697c9cbafdcc2ca4f401bd9f06749808084ea8bd336173e75998ddbf7b7b7",
+    "reports/native_fileblock_annotations_bm.json": "39b02f02d4c9d5ee9426aef75db4342cafbdbf4190f9aa442b8b55fb5a630b9f",
+    "reports/native_fileblock_body_repair_bm.json": "037c4efc4dff2dd439da022c1722e5fcec4495b5cf56304d7eb69994f896afb4",
+    "reports/native_fileblock_function_definitions_bm.json": "d465c31a7c9d67ea6a5b5510c053be0490bcada70f2fc13d5288c7344dfbb0af",
+    "build/win32/Release/bsp_core.lib": "d8c2b7431a416c4c9266a2d179416505d506fcf8d9de0a5058e268fd3928b269",
+    "build/win32/Release/bsp_game.exe": "cd8a4c1f828d87d3496321d99514b901c0042765bfe0cd161934efed96c223cb",
+    "build/win32/bsp_game.map": "942be20841748748ae562889a1d11dfef1bfb25a8462b3eb5a71c36d06d27e3d",
+    "local/native_fileblock_artifact_review_bm.json": "6da54a97796588659dc3a1439c7600606add5c53fbc8d8711f27ac0b1e536a06",
+    "local/native_fileblock_final_flow_bm.log": "15ef6fd21d6c0eebf3ab09ac663735e2134acf2ff3793f5045cd27c1a9f6fb29"
+  }
+}
