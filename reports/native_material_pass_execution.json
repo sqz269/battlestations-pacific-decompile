@@ -1,0 +1,636 @@
+{
+  "schema_version": 1,
+  "packet": "orch5_native_material_pass_execution",
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "installed_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "source_interface": "actual raw Win32 pass/entry/render domains, separate caller-owned constant build frame",
+  "routines": [
+    {
+      "address": "00B5E5E0",
+      "end_inclusive": "00B5E5E2",
+      "bytes": 3,
+      "native_sha256": "e598d0c3ba86d917b177d7adde0556aa99bc355543c57aee0a3e50b684dd7e99",
+      "live_equals_pe": true,
+      "source": "execute_native_material_pass_base_00b5e5e0",
+      "coverage": "complete"
+    },
+    {
+      "address": "00B454D0",
+      "end_inclusive": "00B454DE",
+      "bytes": 15,
+      "native_sha256": "73a42931d4f4d385cbf29137d38a8c5ed4a17d34a9c11f217f5331b2636c84d8",
+      "live_equals_pe": true,
+      "source": "execute_native_material_pass_00b454d0",
+      "coverage": "complete body orchestration; downstream linkage incomplete"
+    },
+    {
+      "address": "00B44750",
+      "end_inclusive": "00B44B03",
+      "bytes": 948,
+      "native_sha256": "f7eb5a9057acf5af9e2b25b4a707e2f1824ef829a72469b0c794913103b750bd",
+      "live_equals_pe": true,
+      "source": "bind_native_material_pass_geometry_00b44750",
+      "coverage": "complete body orchestration; downstream linkage incomplete"
+    },
+    {
+      "address": "00B43410",
+      "end_inclusive": "00B43667",
+      "bytes": 600,
+      "native_sha256": "0dca81aa71a05c9c00cf5656a12f976cbefe8f0415eb9bc73e290cce0673399c",
+      "live_equals_pe": true,
+      "source": "apply_native_material_pass_00b43410",
+      "coverage": "complete body orchestration; downstream linkage incomplete"
+    },
+    {
+      "address": "00B1BFA0",
+      "end_inclusive": "00B1BFA3",
+      "bytes": 4,
+      "native_sha256": "c8cc0b90c656bd6a43ec1c5684c1a494142d2fce4803153d9b1a0944cad7e281",
+      "live_equals_pe": true,
+      "source": "get_native_material_plane_context_00b1bfa0",
+      "coverage": "complete"
+    }
+  ],
+  "profile_and_data_spans": [
+    {
+      "name": "primitive_jump_table",
+      "start": "00B43668",
+      "end_inclusive": "00B4367F",
+      "length": 24,
+      "sha256": "608b1d48c611cbe1c9342d2742dcde405b00f092c37c72d26baa86556fc2454e",
+      "live_equals_pe": true
+    },
+    {
+      "name": "base_profile",
+      "start": "00D62A80",
+      "end_inclusive": "00D62A93",
+      "length": 20,
+      "sha256": "213a15838ca85b23084d21cd938e866c257e00f573d1824afa2b880a2d406dfd",
+      "live_equals_pe": true
+    },
+    {
+      "name": "derived_profile",
+      "start": "00D61BE8",
+      "end_inclusive": "00D61BFB",
+      "length": 20,
+      "sha256": "8e487df2a8ed25f970a956066db075cbb5760250fc63436183a5ed4d4ae5b43a",
+      "live_equals_pe": true
+    },
+    {
+      "name": "renderer_profile",
+      "start": "00D5F0A8",
+      "end_inclusive": "00D5F1EB",
+      "length": 324,
+      "sha256": "5fcfa2badc5e5416ad763aafed0b9ab8d17ea1b2e30afb7e3e1adaf051ec6573",
+      "live_equals_pe": true
+    },
+    {
+      "name": "vertex_profile",
+      "start": "00D61D6C",
+      "end_inclusive": "00D61D9B",
+      "length": 48,
+      "sha256": "a805cc75a6a31a849987d7cb0b47d255324d14aecea650897153021d8d00591a",
+      "live_equals_pe": true
+    },
+    {
+      "name": "negative_zero",
+      "start": "00D7A208",
+      "end_inclusive": "00D7A20B",
+      "length": 4,
+      "sha256": "6d58692645c9d1cfaf13541cbd258f86193ef63c2f1d38f6bbca9617372d7bd6",
+      "live_equals_pe": true
+    },
+    {
+      "name": "zero",
+      "start": "00D7A218",
+      "end_inclusive": "00D7A21B",
+      "length": 4,
+      "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+      "live_equals_pe": true
+    },
+    {
+      "name": "one",
+      "start": "00D7A24C",
+      "end_inclusive": "00D7A24F",
+      "length": 4,
+      "sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c",
+      "live_equals_pe": true
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00B454D7",
+      "native": "00B44750",
+      "function": "00B454D0"
+    },
+    {
+      "address": "00B4478E",
+      "native": "00B855A0",
+      "function": "00B44750"
+    },
+    {
+      "address": "00B447CF",
+      "native": "00B24A40",
+      "function": "00B44750"
+    },
+    {
+      "address": "00B447E3",
+      "native": "00B855A0",
+      "function": "00B44750"
+    },
+    {
+      "address": "00B447EE",
+      "native": "00B24A40",
+      "function": "00B44750"
+    },
+    {
+      "address": "00B44839",
+      "native": "00B24A40",
+      "function": "00B44750"
+    },
+    {
+      "address": "00B44848",
+      "native": "00B24A40",
+      "function": "00B44750"
+    },
+    {
+      "address": "00B448A3",
+      "native": "004C11F0",
+      "function": "00B44750"
+    },
+    {
+      "address": "00B448AA",
+      "native": "00B1BFA0",
+      "function": "00B44750"
+    },
+    {
+      "address": "00B448BA",
+      "native": "00B6DB70",
+      "function": "00B44750"
+    },
+    {
+      "address": "00B448ED",
+      "native": "0042D0D0",
+      "function": "00B44750"
+    },
+    {
+      "address": "00B44961",
+      "native": "00B6DB70",
+      "function": "00B44750"
+    },
+    {
+      "address": "00B449F8",
+      "native": "00B6FCB0",
+      "function": "00B44750"
+    },
+    {
+      "address": "00B44A06",
+      "native": "00B63B30",
+      "function": "00B44750"
+    },
+    {
+      "address": "00B44A13",
+      "native": "00B6FCF0",
+      "function": "00B44750"
+    },
+    {
+      "address": "00B44A21",
+      "native": "00B632D0",
+      "function": "00B44750"
+    },
+    {
+      "address": "00B44A28",
+      "native": "00413920",
+      "function": "00B44750"
+    },
+    {
+      "address": "00B44A36",
+      "native": "00B23360",
+      "function": "00B44750"
+    },
+    {
+      "address": "00B44A45",
+      "native": "00B65BA0",
+      "function": "00B44750"
+    },
+    {
+      "address": "00B44A4F",
+      "native": "00B25040",
+      "function": "00B44750"
+    },
+    {
+      "address": "00B44A56",
+      "native": "00B25080",
+      "function": "00B44750"
+    },
+    {
+      "address": "00B44A8D",
+      "native": "00B48DE0",
+      "function": "00B44750"
+    },
+    {
+      "address": "00B44AAB",
+      "native": "00B48D50",
+      "function": "00B44750"
+    },
+    {
+      "address": "00B44ABE",
+      "native": "00B855F0",
+      "function": "00B44750"
+    },
+    {
+      "address": "00B44AD1",
+      "native": "00B48D50",
+      "function": "00B44750"
+    },
+    {
+      "address": "00B44AF2",
+      "native": "00B43410",
+      "function": "00B44750"
+    },
+    {
+      "address": "00B4342C",
+      "native": "00B27A80",
+      "function": "00B43410"
+    },
+    {
+      "address": "00B43437",
+      "native": "00B27B90",
+      "function": "00B43410"
+    },
+    {
+      "address": "00B43442",
+      "native": "00B17320",
+      "function": "00B43410"
+    },
+    {
+      "address": "00B43455",
+      "native": "00B24460",
+      "function": "00B43410"
+    },
+    {
+      "address": "00B43460",
+      "native": "00B21D10",
+      "function": "00B43410"
+    },
+    {
+      "address": "00B4346B",
+      "native": "00B21C20",
+      "function": "00B43410"
+    },
+    {
+      "address": "00B434D0",
+      "native": "00B17D90",
+      "function": "00B43410"
+    },
+    {
+      "address": "00B4353C",
+      "native": "00B42350",
+      "function": "00B43410"
+    },
+    {
+      "address": "00B43570",
+      "native": "00B21820",
+      "function": "00B43410"
+    },
+    {
+      "address": "00B4359B",
+      "native": "00B218C0",
+      "function": "00B43410"
+    },
+    {
+      "address": "00B43651",
+      "native": "00B172C0",
+      "function": "00B43410"
+    },
+    {
+      "address": "00B43659",
+      "native": "00B16F80",
+      "function": "00B43410"
+    }
+  ],
+  "indirect_steps": [
+    {
+      "site": "00B4477F",
+      "operand": "eax",
+      "function": "00B44750",
+      "coverage": "current original profile dispatch or actual material callback"
+    },
+    {
+      "site": "00B447B4",
+      "operand": "edx",
+      "function": "00B44750",
+      "coverage": "current original profile dispatch or actual material callback"
+    },
+    {
+      "site": "00B44822",
+      "operand": "edx",
+      "function": "00B44750",
+      "coverage": "current original profile dispatch or actual material callback"
+    },
+    {
+      "site": "00B44A77",
+      "operand": "edx",
+      "function": "00B44750",
+      "coverage": "current original profile dispatch or actual material callback"
+    },
+    {
+      "site": "00B44AB6",
+      "operand": "edx",
+      "function": "00B44750",
+      "coverage": "current original profile dispatch or actual material callback"
+    },
+    {
+      "site": "00B4350E",
+      "operand": "edx",
+      "function": "00B43410",
+      "coverage": "current original profile dispatch or actual material callback"
+    },
+    {
+      "site": "00B4351E",
+      "operand": "eax",
+      "function": "00B43410",
+      "coverage": "current original profile dispatch or actual material callback"
+    },
+    {
+      "site": "00B435B1",
+      "operand": "eax",
+      "function": "00B43410",
+      "coverage": "current original profile dispatch or actual material callback"
+    },
+    {
+      "site": "00B435E0",
+      "operand": "edx",
+      "function": "00B43410",
+      "coverage": "current original profile dispatch or actual material callback"
+    },
+    {
+      "site": "00B43606",
+      "operand": "eax",
+      "function": "00B43410",
+      "coverage": "current original profile dispatch or actual material callback"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "D62A80/+08 presumed substantive pass executor",
+      "is": "B5E5E0 is exactly RET4; D61BE8/+08 B454D0 forwards entry/override0 to B44750",
+      "evidence": "complete live=PE leaves and both actual profile spans"
+    }
+  ],
+  "released_dependencies": [
+    {
+      "upstream": "514e822bbdd7f089a902a88039d6e2483a00ebfc",
+      "local": "00e0b6543c7c8c1fc0a7a150d1e0655f4c58d8a1",
+      "role": "actual material texture/state query leaves",
+      "files": [
+        "cmake/startup.cmake",
+        "docs/NATIVE_MATERIAL_TEXTURE_QUERIES_BY.md",
+        "include/bsp/native_material_texture_queries.hpp",
+        "reports/native_material_texture_queries_by.json",
+        "src/native_material_texture_queries.cpp"
+      ]
+    },
+    {
+      "upstream": "90170e87d99ee857d938207bd6fe0e0527629435",
+      "local": "8d671425d780008553413497192e1508da961145",
+      "role": "actual geometry query leaves",
+      "files": [
+        "cmake/startup.cmake",
+        "docs/NATIVE_MATERIAL_GEOMETRY_QUERIES_BW.md",
+        "include/bsp/native_material_geometry_queries.hpp",
+        "reports/native_material_geometry_queries_bw.json",
+        "src/native_material_geometry_queries.cpp"
+      ]
+    },
+    {
+      "upstream": "9ac2667041ac555a46d04dd015e7d9caa4b1b582",
+      "local": "a512ba3e120ba37c5243beafe5fb5fa514728688",
+      "role": "actual atomic IAT type/header and full released provider",
+      "files": [
+        "cmake/startup.cmake",
+        "docs/NATIVE_POST_EFFECT_FRAME_BINDING_BU.md",
+        "include/bsp/native_post_effect_frame_binding.hpp",
+        "reports/native_post_effect_frame_binding_bu.json",
+        "src/native_post_effect_frame_binding.cpp"
+      ]
+    },
+    {
+      "upstream": "f8561337278d672a891174244a50fe00576c9af0",
+      "local": "12f724befed995191524148de54cd1fa21e41ff6",
+      "files": [
+        "cmake/startup.cmake",
+        "docs/NATIVE_MATERIAL_DIAGNOSTICS_RECORD_INIT_BZ.md",
+        "include/bsp/native_material_diagnostics_record_init.hpp",
+        "reports/native_material_diagnostics_record_init_bz.json",
+        "src/native_material_diagnostics_record_init.cpp"
+      ],
+      "addresses": [
+        "00b106c0"
+      ]
+    },
+    {
+      "upstream": "d9f67c60e09ef1cc1583796029047b7400e45997",
+      "local": "59f19442d638794ce2e7dbb58d3c6c46e019286f",
+      "files": [
+        "cmake/startup.cmake",
+        "docs/NATIVE_MATERIAL_RECORD_COPY_CA.md",
+        "include/bsp/native_material_record_copy.hpp",
+        "reports/native_material_record_copy_ca.json",
+        "src/native_material_record_copy.cpp"
+      ],
+      "addresses": [
+        "00b0d230",
+        "00b13070"
+      ]
+    },
+    {
+      "upstream": "1676088104a86ee66cb6c71c827d8693236208ae",
+      "local": "4ebdc26d22b992e911d2a08b63ea8bef5748ce1e",
+      "files": [
+        "cmake/startup.cmake",
+        "docs/NATIVE_MATERIAL_RECORD_RANGES_CC.md",
+        "include/bsp/native_material_record_ranges.hpp",
+        "reports/native_material_record_ranges_cc.json",
+        "src/native_material_record_ranges.cpp"
+      ],
+      "addresses": [
+        "00b13920",
+        "00b13b00",
+        "00b14360",
+        "00b143a0"
+      ]
+    },
+    {
+      "upstream": "623b6b8c4ee7e24c768abc35434d0adc3f7087f0",
+      "local": "b3f03bde1c6c3a77083ac9edbaf3dba840385b91",
+      "files": [
+        "cmake/startup.cmake",
+        "docs/NATIVE_MATERIAL_RECORD_ASSIGNMENT_CI.md",
+        "include/bsp/native_material_record_assignment.hpp",
+        "reports/native_material_record_assignment_ci.json",
+        "src/native_material_record_assignment.cpp"
+      ],
+      "addresses": [
+        "00b13310",
+        "00b13720",
+        "00b13ad0",
+        "00b13f50",
+        "00b14550"
+      ]
+    },
+    {
+      "upstream": "b6e25ef6345b1c3386b713a48c056691266cb138",
+      "local": "74342ece427a4305e6bf098ffc84168d4145cb7a",
+      "files": [
+        "cmake/startup.cmake",
+        "docs/NATIVE_MATERIAL_RECORD_ALLOCATION_CJ.md",
+        "include/bsp/native_material_record_allocation.hpp",
+        "reports/native_material_record_allocation_cj.json",
+        "src/native_material_record_allocation.cpp"
+      ],
+      "addresses": [
+        "00b0d3b0",
+        "00b135c0"
+      ]
+    },
+    {
+      "upstream": "8b5c20da64531031c264d85c4edd2187cf806ff3",
+      "local": "2f0c50083eda01961487a40eca161485606dd1e6",
+      "files": [
+        "cmake/startup.cmake",
+        "docs/NATIVE_MATERIAL_RECORD_VECTOR_CH.md",
+        "include/bsp/native_material_record_vector.hpp",
+        "reports/native_material_record_vector_ch.json",
+        "reports/native_material_record_vector_ch_flow.json",
+        "src/native_material_record_vector.cpp"
+      ],
+      "addresses": [
+        "00b145e0",
+        "00b150d0",
+        "00b15610"
+      ]
+    },
+    {
+      "upstream": "628285793bebaa33ae913ef2a2b59f233ffcef7b",
+      "local": "4d7e7df483033ae783fec6a45e0110b1948a37c2",
+      "files": [
+        "cmake/startup.cmake",
+        "docs/NATIVE_MATERIAL_DIAGNOSTICS_DRAW_CN.md",
+        "include/bsp/native_material_diagnostics_draw.hpp",
+        "reports/native_material_diagnostics_draw_cn.json",
+        "src/native_material_diagnostics_draw.cpp"
+      ],
+      "addresses": [
+        "00b16f80"
+      ]
+    },
+    {
+      "upstream": "7d9a680444e0b5cb6406148b6dec51c232b02928",
+      "local": "d349aa700376b82a2ead6ae8993ea8e4e0e2470a",
+      "role": "required actual-pool string assignment/concat overloads",
+      "files": [
+        "docs/NATIVE_STRING_PREFIX_RAW_BQ.md",
+        "include/bsp/native_instance_collection.hpp",
+        "include/bsp/native_physical_file_date.hpp",
+        "reports/native_string_prefix_raw_bq.json",
+        "src/native_instance_collection.cpp",
+        "src/native_physical_file_date.cpp"
+      ]
+    }
+  ],
+  "unresolved_concrete_dependencies": [
+    {
+      "native": "00B42350",
+      "symbol": "build_native_material_constants_00b42350",
+      "status": "assigned independent raw body packet; declaration only here"
+    }
+  ],
+  "validation": {
+    "strict_source_compile_exit": 0,
+    "source_compile_log": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-pass-execution\\local\\verification\\pass_execution\\compile_source.log",
+    "full_build": "passed strict MSVC Win32 Release /MD /fp:strict; both existing CTests passed",
+    "derived_parent_linked": false,
+    "derived_parent_executed": false,
+    "game_validated": false,
+    "existing_ctests": [
+      "reconstructed_math",
+      "native_math_differential"
+    ],
+    "seed_count": 8,
+    "all_seeds_live_equals_pe": true,
+    "numeric_call_rows": 38,
+    "numeric_call_failures": 0,
+    "indirect_rows": 10,
+    "indirect_mechanical_proof": false,
+    "base_and_context_original_source_fixture_passed": true,
+    "probe_exit_code": 0,
+    "probe_scope": "Only complete base RET4 and raw queue-context getter; invalid unused base inputs preserve EAX/ECX/EDX/EFLAGS/ESP. Derived parent/diagnostics/constant construction unexecuted.",
+    "probe_cpp": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-pass-execution\\local\\verification\\pass_execution\\pass_execution_probe.cpp",
+    "probe_command": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-pass-execution\\local\\verification\\pass_execution\\build_probe.cmd",
+    "probe_log": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-pass-execution\\local\\verification\\pass_execution\\probe_run.log",
+    "probe_exe_sha256": "6043a3c1c9a9f6ebac44ea1980fcbfcc6c3d29ded12246df0f6278b1fac12288",
+    "probe_runtime_modules": [
+      "\\\\?\\J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-pass-execution\\local\\verification\\pass_execution\\pass_execution_probe.exe",
+      "\\\\?\\C:\\Windows\\SysWOW64\\ntdll.dll",
+      "\\\\?\\C:\\Windows\\SysWOW64\\kernel32.dll",
+      "\\\\?\\C:\\Windows\\SysWOW64\\KernelBase.dll",
+      "\\\\?\\C:\\Windows\\SysWOW64\\apphelp.dll",
+      "\\\\?\\C:\\Windows\\SysWOW64\\ucrtbase.dll",
+      "\\\\?\\C:\\Windows\\SysWOW64\\msvcp140.dll",
+      "\\\\?\\C:\\Windows\\SysWOW64\\vcruntime140.dll"
+    ],
+    "derived_link_failure": "Forced actual B43410 executable link has exactly one LNK2019: concrete build_native_material_constants_00b42350. No diagnostic or renderer provider remains unresolved.",
+    "no_stub_or_default_provider": true,
+    "full_build_log_sha256": "b17f4e0779df1c80a623b9c3b962b098364075eb4c91099df2aecd9cf6403fce",
+    "seeds_sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773",
+    "call_gate_sha256": "78aee9dfdc19d05c9292a4d8a2dd16ca6e2b71f1e1135e15f1a4c15788d6f238",
+    "probe_run_sha256": "0ed1a16cec87928711e84e672d438d3ce4d726264cdb5ab4c9d35ff23c75bdd2",
+    "derived_forced_link_log_sha256": "f597e06075fa235ba86b4a60b0259359dfd7fa4575208510bb9b7bf755ae7792",
+    "derived_forced_link_command": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-pass-execution\\local\\verification\\pass_execution\\build_parent_probe.cmd"
+  },
+  "evidence_dir": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-pass-execution\\local\\verification\\pass_execution",
+  "definition_record": "reports/native_material_pass_execution_function_definitions.json",
+  "annotation_pending_primary": [
+    {
+      "address": "00B5E5E0",
+      "name": "BSP_MaterialPassBase_IgnoreEntry"
+    },
+    {
+      "address": "00B454D0",
+      "name": "BSP_MaterialPass_DrawEntry"
+    }
+  ],
+  "source_manifest": [
+    {
+      "path": "include/bsp/native_material_pass_execution.hpp",
+      "sha256": "3353f9f23c8d112b1cbcd23d0d93798fa3e8da9df1cd299009f19b309356fb37"
+    },
+    {
+      "path": "src/native_material_pass_execution.cpp",
+      "sha256": "c2619bf04f9228d13cf2a54611383137bdb62a3c2458d385200b4f767a840384"
+    },
+    {
+      "path": "src/native_material_pass_execution_leaves.cpp",
+      "sha256": "0a158acac87958f0479eb316c711d2b3a711171f9fa4946c27ab76f93b053168"
+    },
+    {
+      "path": "docs/NATIVE_MATERIAL_PASS_EXECUTION.md",
+      "sha256": "fd76d5c1a9579b80d331e7ee7433baac712efbfe227c0a6746ad4b63a93bfa6c"
+    },
+    {
+      "path": "cmake/startup.cmake",
+      "sha256": "4c64b19afcaccc1acfa481a450205b5cb9bc6a7fffd38894e41fe63454c29628"
+    }
+  ]
+}
