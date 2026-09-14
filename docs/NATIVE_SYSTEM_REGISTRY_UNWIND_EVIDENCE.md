@@ -104,3 +104,9 @@ JSON includes all native maps, funclet bytes and instructions, 210 body state-wr
 Source snapshots are pinned to the stated commit. Native inputs were read through wrappers that verify the expected project/program. Only the two evidence files are committed. No additional entrypoint was claimed and no saved analysis was changed.
 
 Native exception-object/SEH dispatch, faults in arbitrary providers and second exceptions during cleanup remain outside this evidence-only result. The ordered chains describe successful progression through each cleanup; they do not establish that a parent free occurs after a cleanup itself fails. Current readable-storage and noexcept string-release source boundaries remain explicit. Native byte equality is not a runnable-game or original-FH3 compatibility claim.
+
+## Integrated validation at 87dad090
+
+This remains a static unwind map and source-change plan. Root checked all 106 state/action pairs, their native funclet bytes and all 52 literal names against the installed PE; the complete captured map/body spans also match fresh Ghidra bytes. No registry constructor implementation or native FH3 execution is claimed by this evidence packet.
+
+The combined checkpoint retains 3413 immutable artifacts at `local/checkpoints/87dad090/native-renderer-lifetime-followups/validation.json` (SHA-256 `930898fb5129ef943689981be1fcdd48913c18e9154efa35665c19f74398bfc3`). It records 13 new entry bodies (713 native bytes), the separate capability ownership overload, 14 saved/read-back annotations, seven completed returning tails, 61 passing call rows and 45 live/PE spans totaling 18,479 bytes including reused/evidence spans. The B22530 RET4 starts at B2258C and ends at B2258E; stored-body ends and return-instruction addresses are recorded separately. Worker evidence remains preserved. Full renderer lifetime, application adoption, original exception identity and gameplay remain incomplete.

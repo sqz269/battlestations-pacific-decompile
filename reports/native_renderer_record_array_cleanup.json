@@ -1081,5 +1081,70 @@
     "tool executables are evidence, not all dependencies",
     "runtime disk/archive hashes are separate from mapped-image identity",
     "no game integration or game validation"
-  ]
+  ],
+  "integrated_validation": {
+    "code_commit": "87dad0906ab21f6498d68eebacd8995ea86ddead",
+    "checkpoint": {
+      "path": "local/checkpoints/87dad090/native-renderer-lifetime-followups/validation.json",
+      "sha256": "930898fb5129ef943689981be1fcdd48913c18e9154efa35665c19f74398bfc3",
+      "code_commit": "87dad0906ab21f6498d68eebacd8995ea86ddead",
+      "artifacts": 3413
+    },
+    "source_module": "native_renderer_record_array_cleanup",
+    "worker_archive": {
+      "label": "members",
+      "commit": "7908392e909ede471a8b754bbb690942d3f5feee",
+      "path": "local/compiler-path-workers/renderer-lifetime-members/manifest.json",
+      "sha256": "792589c6ab7e93a81013b3402f20056d886719de933fa20ea32d4631cb5a65f7",
+      "artifacts": 55
+    },
+    "new_entry_bodies": 6,
+    "game_validated": false,
+    "limits": [
+      "Registry unwind packet is static evidence and a source plan only; raw constructor implementation remains a separate unintegrated packet",
+      "Full renderer constructor/destructor and canonical application adoption remain incomplete",
+      "Original private frames/CRT/FH3/SEH identity and gameplay remain unvalidated"
+    ],
+    "strict_win32_build": true,
+    "ctests_passed": 2,
+    "fixture_scope": "Three complete original reserve/resize/destructor chains versus six distinct integrated source entries: 21 comparisons. Allocation failure remains static evidence.",
+    "direct_call_rows": 20,
+    "direct_call_failures": 0,
+    "per_entry_scope": {
+      "00b25cf0": {
+        "module": "native_renderer_record_array_cleanup",
+        "scope": "Three complete original reserve/resize/destructor chains versus six distinct source entries: 21 comparisons. Full instruction equivalence justifies shared raw providers. Actual 0Ch header and DWORD cells only; captured initialization index, CURRENT count/base loads, null destination skip, resize0 then CURRENT free and stale header preserved. Allocation failure has static evidence only.",
+        "status": "raw_source_integrated_build_and_scoped_fixture_checked"
+      },
+      "00b25d40": {
+        "module": "native_renderer_record_array_cleanup",
+        "scope": "Three complete original reserve/resize/destructor chains versus six distinct source entries: 21 comparisons. Full instruction equivalence justifies shared raw providers. Actual 0Ch header and DWORD cells only; captured initialization index, CURRENT count/base loads, null destination skip, resize0 then CURRENT free and stale header preserved. Allocation failure has static evidence only.",
+        "status": "raw_source_integrated_build_and_scoped_fixture_checked"
+      },
+      "00b22e90": {
+        "module": "native_renderer_record_array_cleanup",
+        "scope": "Three complete original reserve/resize/destructor chains versus six distinct source entries: 21 comparisons. Full instruction equivalence justifies shared raw providers. Actual 0Ch header and DWORD cells only; captured initialization index, CURRENT count/base loads, null destination skip, resize0 then CURRENT free and stale header preserved. Allocation failure has static evidence only.",
+        "status": "raw_source_integrated_build_and_scoped_fixture_checked"
+      },
+      "00b29b60": {
+        "module": "native_renderer_record_array_cleanup",
+        "scope": "Three complete original reserve/resize/destructor chains versus six distinct source entries: 21 comparisons. Full instruction equivalence justifies shared raw providers. Actual 0Ch header and DWORD cells only; captured initialization index, CURRENT count/base loads, null destination skip, resize0 then CURRENT free and stale header preserved. Allocation failure has static evidence only.",
+        "status": "raw_source_integrated_build_and_scoped_fixture_checked"
+      },
+      "00b29b80": {
+        "module": "native_renderer_record_array_cleanup",
+        "scope": "Three complete original reserve/resize/destructor chains versus six distinct source entries: 21 comparisons. Full instruction equivalence justifies shared raw providers. Actual 0Ch header and DWORD cells only; captured initialization index, CURRENT count/base loads, null destination skip, resize0 then CURRENT free and stale header preserved. Allocation failure has static evidence only.",
+        "status": "raw_source_integrated_build_and_scoped_fixture_checked"
+      },
+      "00b28090": {
+        "module": "native_renderer_record_array_cleanup",
+        "scope": "Three complete original reserve/resize/destructor chains versus six distinct source entries: 21 comparisons. Full instruction equivalence justifies shared raw providers. Actual 0Ch header and DWORD cells only; captured initialization index, CURRENT count/base loads, null destination skip, resize0 then CURRENT free and stale header preserved. Allocation failure has static evidence only.",
+        "status": "raw_source_integrated_build_and_scoped_fixture_checked"
+      }
+    },
+    "annotation_journal": "local/ghidra-annotations-20260914T152722Z.json",
+    "annotations_saved_and_read_back_preserving_previous_comments": true,
+    "exports_forced_after_snapshot_refresh": true,
+    "integrated_documentation_sha256": "c261f67c01e3be23b063b26290af6f9b4d0a790252649dd653b47c0bdbbbfc10"
+  }
 }

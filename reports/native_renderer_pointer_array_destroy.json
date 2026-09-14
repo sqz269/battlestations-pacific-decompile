@@ -715,5 +715,75 @@
     "tools archived as observed executables, not every dependency",
     "runtime disk hashes separate from executable and mapped-image evidence",
     "no game integration or game validation"
-  ]
+  ],
+  "integrated_validation": {
+    "code_commit": "87dad0906ab21f6498d68eebacd8995ea86ddead",
+    "checkpoint": {
+      "path": "local/checkpoints/87dad090/native-renderer-lifetime-followups/validation.json",
+      "sha256": "930898fb5129ef943689981be1fcdd48913c18e9154efa35665c19f74398bfc3",
+      "code_commit": "87dad0906ab21f6498d68eebacd8995ea86ddead",
+      "artifacts": 3413
+    },
+    "source_module": "native_renderer_pointer_array_destroy",
+    "worker_archive": {
+      "label": "pointers",
+      "commit": "556afdb28f03182d0ba3425e2a7652454adf69cf",
+      "path": "local/compiler-path-workers/renderer-lifetime-pointers/manifest.json",
+      "sha256": "eb8492e81d129b2453202ffe41f6e78a1481a0ffb4dd9f7b94323177a78ee258",
+      "artifacts": 52
+    },
+    "new_entry_bodies": 7,
+    "game_validated": false,
+    "limits": [
+      "Registry unwind packet is static evidence and a source plan only; raw constructor implementation remains a separate unintegrated packet",
+      "Full renderer constructor/destructor and canonical application adoption remain incomplete",
+      "Original private frames/CRT/FH3/SEH identity and gameplay remain unvalidated"
+    ],
+    "strict_win32_build": true,
+    "ctests_passed": 2,
+    "fixture_scope": "Seven complete original bodies versus integrated source: 24 reserve/resize/destructor comparisons. Allocation failure remains static evidence.",
+    "direct_call_rows": 11,
+    "direct_call_failures": 0,
+    "per_entry_scope": {
+      "00b22530": {
+        "module": "native_renderer_pointer_array_destroy",
+        "scope": "Seven complete original bodies versus source: 24 reserve/resize/destructor comparisons. Actual 0Ch header and DWORD cells only; captured initialization index, CURRENT count/base loads, null destination skip, resize0 then CURRENT free and stale header preserved. Allocation failure has static evidence only.",
+        "status": "raw_source_integrated_build_and_scoped_fixture_checked"
+      },
+      "00b22cc0": {
+        "module": "native_renderer_pointer_array_destroy",
+        "scope": "Seven complete original bodies versus source: 24 reserve/resize/destructor comparisons. Actual 0Ch header and DWORD cells only; captured initialization index, CURRENT count/base loads, null destination skip, resize0 then CURRENT free and stale header preserved. Allocation failure has static evidence only.",
+        "status": "raw_source_integrated_build_and_scoped_fixture_checked"
+      },
+      "00b25940": {
+        "module": "native_renderer_pointer_array_destroy",
+        "scope": "Seven complete original bodies versus source: 24 reserve/resize/destructor comparisons. Actual 0Ch header and DWORD cells only; captured initialization index, CURRENT count/base loads, null destination skip, resize0 then CURRENT free and stale header preserved. Allocation failure has static evidence only.",
+        "status": "raw_source_integrated_build_and_scoped_fixture_checked"
+      },
+      "00b259d0": {
+        "module": "native_renderer_pointer_array_destroy",
+        "scope": "Seven complete original bodies versus source: 24 reserve/resize/destructor comparisons. Actual 0Ch header and DWORD cells only; captured initialization index, CURRENT count/base loads, null destination skip, resize0 then CURRENT free and stale header preserved. Allocation failure has static evidence only.",
+        "status": "raw_source_integrated_build_and_scoped_fixture_checked"
+      },
+      "00b27f50": {
+        "module": "native_renderer_pointer_array_destroy",
+        "scope": "Seven complete original bodies versus source: 24 reserve/resize/destructor comparisons. Actual 0Ch header and DWORD cells only; captured initialization index, CURRENT count/base loads, null destination skip, resize0 then CURRENT free and stale header preserved. Allocation failure has static evidence only.",
+        "status": "raw_source_integrated_build_and_scoped_fixture_checked"
+      },
+      "00b29b20": {
+        "module": "native_renderer_pointer_array_destroy",
+        "scope": "Seven complete original bodies versus source: 24 reserve/resize/destructor comparisons. Actual 0Ch header and DWORD cells only; captured initialization index, CURRENT count/base loads, null destination skip, resize0 then CURRENT free and stale header preserved. Allocation failure has static evidence only.",
+        "status": "raw_source_integrated_build_and_scoped_fixture_checked"
+      },
+      "00b29b40": {
+        "module": "native_renderer_pointer_array_destroy",
+        "scope": "Seven complete original bodies versus source: 24 reserve/resize/destructor comparisons. Actual 0Ch header and DWORD cells only; captured initialization index, CURRENT count/base loads, null destination skip, resize0 then CURRENT free and stale header preserved. Allocation failure has static evidence only.",
+        "status": "raw_source_integrated_build_and_scoped_fixture_checked"
+      }
+    },
+    "annotation_journal": "local/ghidra-annotations-20260914T152722Z.json",
+    "annotations_saved_and_read_back_preserving_previous_comments": true,
+    "exports_forced_after_snapshot_refresh": true,
+    "integrated_documentation_sha256": "af0f8eea5c594ff46b1c5c67b96cc7edd1072261add9fee2bce8709acc3f12e9"
+  }
 }

@@ -6707,5 +6707,35 @@
     "The planned raw path and its child cleanup changes require new ownership packets and verification; this packet only records evidence and a plan."
   ],
   "documentation": "docs/NATIVE_SYSTEM_REGISTRY_UNWIND_EVIDENCE.md",
-  "documentation_sha256": "1da7d324692c776fa9ea04068210082b07437ac528b1a835ef5334cf54bfcfb6"
+  "documentation_sha256": "1da7d324692c776fa9ea04068210082b07437ac528b1a835ef5334cf54bfcfb6",
+  "integrated_validation": {
+    "code_commit": "87dad0906ab21f6498d68eebacd8995ea86ddead",
+    "checkpoint": {
+      "path": "local/checkpoints/87dad090/native-renderer-lifetime-followups/validation.json",
+      "sha256": "930898fb5129ef943689981be1fcdd48913c18e9154efa35665c19f74398bfc3",
+      "code_commit": "87dad0906ab21f6498d68eebacd8995ea86ddead",
+      "artifacts": 3413
+    },
+    "source_module": null,
+    "worker_archive": {
+      "label": "unwind",
+      "commit": "4c73a48882c1307fe6078840f878035a51e0c132",
+      "path": "local/compiler-path-workers/renderer-lifetime-unwind/manifest.json",
+      "sha256": "a962853883e850fced4f8fa47ea739b22c190ccadd0bc06e5728f29036aa161d",
+      "artifacts": 84
+    },
+    "new_entry_bodies": 0,
+    "game_validated": false,
+    "limits": [
+      "Registry unwind packet is static evidence and a source plan only; raw constructor implementation remains a separate unintegrated packet",
+      "Full renderer constructor/destructor and canonical application adoption remain incomplete",
+      "Original private frames/CRT/FH3/SEH identity and gameplay remain unvalidated"
+    ],
+    "scope": "This remains a static unwind map and source-change plan. Root checked all 106 state/action pairs, their native funclet bytes and all 52 literal names against the installed PE; the complete captured map/body spans also match fresh Ghidra bytes. No registry constructor implementation or native FH3 execution is claimed by this evidence packet.",
+    "states_checked": 106,
+    "literals_checked": 52,
+    "source_change_plan_only": true,
+    "annotation_changes_in_this_packet": 0,
+    "integrated_documentation_sha256": "f20aaf3b8dd890324888957874e6d20cec470301b989339d8cffc014fb877858"
+  }
 }

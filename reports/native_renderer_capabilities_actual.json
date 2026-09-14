@@ -451,5 +451,46 @@
     "artifact_count": 367,
     "all_frozen_hashes_reverified": true,
     "all_original_inputs_reverified": true
+  },
+  "integrated_validation": {
+    "code_commit": "87dad0906ab21f6498d68eebacd8995ea86ddead",
+    "checkpoint": {
+      "path": "local/checkpoints/87dad090/native-renderer-lifetime-followups/validation.json",
+      "sha256": "930898fb5129ef943689981be1fcdd48913c18e9154efa35665c19f74398bfc3",
+      "code_commit": "87dad0906ab21f6498d68eebacd8995ea86ddead",
+      "artifacts": 3413
+    },
+    "source_module": "native_renderer_gather_capabilities",
+    "worker_archive": {
+      "label": "capabilities",
+      "commit": "4f12d563679ad12fbc303610ce19d26cf93b20ee",
+      "path": "local/compiler-path-workers/renderer-lifetime-capabilities/manifest.json",
+      "sha256": "7500f7b150d505f49467d876e04428dede78de426bbf5a2940f9a65de74c4997",
+      "artifacts": 373
+    },
+    "new_entry_bodies": 0,
+    "game_validated": false,
+    "limits": [
+      "Registry unwind packet is static evidence and a source plan only; raw constructor implementation remains a separate unintegrated packet",
+      "Full renderer constructor/destructor and canonical application adoption remain incomplete",
+      "Original private frames/CRT/FH3/SEH identity and gameplay remain unvalidated"
+    ],
+    "strict_win32_build": true,
+    "ctests_passed": 2,
+    "fixture_scope": "Actual raw AA0/AA8/AA4 source execution: ignored COM failure preimages, retained appended rows on post-arm cleanup, registration/return/canonical pool shutdown, real D3D9 S_OK caps and34 formats. Original B2C8E0/FH3 was not executed.",
+    "direct_call_rows": 30,
+    "direct_call_failures": 0,
+    "per_entry_scope": {
+      "00b2c8e0": {
+        "module": "native_renderer_capabilities_actual",
+        "scope": "Existing complete B2C8E0 algorithm and literals shared by both lifetime contexts; new raw AA0/AA8/AA4 overload adds no new native body or bytes. Source fixture confirms ignored failed COM output preimages, post-arm cleanup retaining appended rows, same-manager pool registration/return/canonical pool shutdown, and real D3D9 S_OK caps/34 formats. Original gather/FH3 body was not executed; caller scratch preimages and source noexcept cleanup boundary remain explicit.",
+        "status": "raw_source_integrated_build_and_scoped_fixture_checked"
+      }
+    },
+    "annotation_journal": "local/ghidra-annotations-20260914T152722Z.json",
+    "annotations_saved_and_read_back_preserving_previous_comments": true,
+    "exports_forced_after_snapshot_refresh": true,
+    "existing_body_ownership_overloads": 1,
+    "integrated_documentation_sha256": "67105107b75cfe8f3ac6b6e0422645acf3a41da1a47f59d9419aaf3581c42446"
   }
 }
