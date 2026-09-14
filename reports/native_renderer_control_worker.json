@@ -2956,5 +2956,36 @@
       "sha256": "753796c97dea61b0a5e4b9c4034aae48198782033d0a3272b22c11ccfaca2e7a",
       "immutable_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\immutable\\native_renderer_control_20260914T062635Z\\src\\native_renderer_synchronization_actual.cpp"
     }
-  ]
+  ],
+  "integrated_validation": {
+    "code_commit": "6641c05f524e29f9352f66ddbd017c64d2f99cee",
+    "checkpoint": {
+      "path": "local/checkpoints/6641c05f/native-renderer-components-default/validation.json",
+      "sha256": "a2eee5eeedc6e943e5118ec4ceb183866a9019881530fbec771b3063d0f77c2e",
+      "code_commit": "6641c05f524e29f9352f66ddbd017c64d2f99cee",
+      "artifacts": 3310
+    },
+    "strict_win32_build": true,
+    "ctests_passed": 2,
+    "packet_bodies": 5,
+    "direct_call_rows": 7,
+    "direct_call_failures": 0,
+    "fixture_scope": "16 original/source x87 timing comparisons across two rounding modes; raw clock fixed/QPC paths; real owner create/sample/yield/stop/join/scalar-delete and binding rejection. Active frame path not exercised.",
+    "annotation_journal": "local/ghidra-annotations-20260914T070228Z.json",
+    "annotations_saved_and_read_back": true,
+    "worker_artifacts_retained": {
+      "label": "control-worker",
+      "commit": "6feace267befe73af454df178a9362f622033f20",
+      "path": "local\\compiler-path-workers\\raw-renderer-control-worker\\manifest.json",
+      "sha256": "6df9c7cb77e1b4c0453044befdb994ee979dc860ee89dde9c6eb573468dcabf8",
+      "artifacts": 369
+    },
+    "game_validated": false,
+    "limits": [
+      "Full renderer lifetime, active frame providers and application adoption remain incomplete",
+      "C++ cleanup reconstruction is not original FH3/SEH exception ABI equivalence",
+      "Control and Lua fixtures are source lifetime evidence, with no active rendering or game fundamentals claim",
+      "No game execution or gameplay parity is claimed"
+    ]
+  }
 }

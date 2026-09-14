@@ -76,3 +76,9 @@ sampling/yield, stop/idle acknowledgement, join and flags1 deletion. Renderer
 providers remain absent in that fixture and no accepted Begin/End path is
 claimed. QPC/CreateThread failure, arbitrary concurrent mutation, private
 FH3/SEH, full original thread ABI identity and gameplay are not established.
+
+## Integrated validation at 6641c05f
+
+The integrated source at `6641c05f524e29f9352f66ddbd017c64d2f99cee` passed the strict MSVC Win32 build and both CTests. The existing focused fixture was relinked against that exact `bsp_core.lib` with `/MD`, `/W4 /WX`, `/sourceDependencies` and an embedded manifest. 16 original/source x87 timing comparisons across two rounding modes; raw clock fixed/QPC paths; real owner create/sample/yield/stop/join/scalar-delete and binding rejection. Active frame path not exercised.
+
+The packet passed 7 numeric call-site checks. Its 5 reviewed function names and evidence comments were applied, saved and read back in Ghidra, preserving previous comments. The combined 15-body checkpoint retains 3310 immutable source, build, compiler, fixture and measured runtime artifacts at `local/checkpoints/6641c05f/native-renderer-components-default/validation.json` (SHA-256 `a2eee5eeedc6e943e5118ec4ceb183866a9019881530fbec771b3063d0f77c2e`). Worker manifests remain historical inputs; their output-file labels are not treated as proof of loaded modules. Full renderer adoption, native exception ABI and gameplay remain unvalidated.

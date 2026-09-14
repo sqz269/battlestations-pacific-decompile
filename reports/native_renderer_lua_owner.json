@@ -539,5 +539,36 @@
     "command": "cl.exe /nologo /std:c++17 /EHsc /MD /O2 /Iinclude /Fo:local/output/native_renderer_lua_owner_fixture.obj /Fe:local/output/native_renderer_lua_probe.exe tests/native_renderer_lua_owner_fixture.cpp /link /MANIFEST:EMBED /MACHINE:X86 build/win32/Release/bsp_core.lib build/win32/Release/bsp_lua511.lib build/win32/Release/bsp_zlib121.lib d3d9.lib user32.lib gdi32.lib ole32.lib advapi32.lib shell32.lib",
     "run": "local/output/native_renderer_lua_probe.exe",
     "result": "renderer Lua owner fixture passed"
+  },
+  "integrated_validation": {
+    "code_commit": "6641c05f524e29f9352f66ddbd017c64d2f99cee",
+    "checkpoint": {
+      "path": "local/checkpoints/6641c05f/native-renderer-components-default/validation.json",
+      "sha256": "a2eee5eeedc6e943e5118ec4ceb183866a9019881530fbec771b3063d0f77c2e",
+      "code_commit": "6641c05f524e29f9352f66ddbd017c64d2f99cee",
+      "artifacts": 3310
+    },
+    "strict_win32_build": true,
+    "ctests_passed": 2,
+    "packet_bodies": 6,
+    "direct_call_rows": 15,
+    "direct_call_failures": 0,
+    "fixture_scope": "Real raw manager and Lua owner normal/current-publication destruction and injected Lua-construction failure; fixture-only bootstrap table, no scalar wrapper execution.",
+    "annotation_journal": "local/ghidra-annotations-20260914T070228Z.json",
+    "annotations_saved_and_read_back": true,
+    "worker_artifacts_retained": {
+      "label": "lua-owner",
+      "commit": "9447b175bae3c4befbce412356ec4dd8d5f2dc69",
+      "path": "local\\compiler-path-workers\\raw-renderer-lua-owner\\manifest.json",
+      "sha256": "ed4f66b9151bbe0dd7bf21cb27e6725d3870f8468d2e92d9714114a48a929451",
+      "artifacts": 41
+    },
+    "game_validated": false,
+    "limits": [
+      "Full renderer lifetime, active frame providers and application adoption remain incomplete",
+      "C++ cleanup reconstruction is not original FH3/SEH exception ABI equivalence",
+      "Control and Lua fixtures are source lifetime evidence, with no active rendering or game fundamentals claim",
+      "No game execution or gameplay parity is claimed"
+    ]
   }
 }

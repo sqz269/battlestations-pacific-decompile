@@ -329,5 +329,36 @@
       "bytes": 57562260,
       "sha256": "ef79373ea475a52dd0f1f621ca6a4f23835b25ef16535cb8839b0e6c551a8dc2"
     }
-  ]
+  ],
+  "integrated_validation": {
+    "code_commit": "6641c05f524e29f9352f66ddbd017c64d2f99cee",
+    "checkpoint": {
+      "path": "local/checkpoints/6641c05f/native-renderer-components-default/validation.json",
+      "sha256": "a2eee5eeedc6e943e5118ec4ceb183866a9019881530fbec771b3063d0f77c2e",
+      "code_commit": "6641c05f524e29f9352f66ddbd017c64d2f99cee",
+      "artifacts": 3310
+    },
+    "strict_win32_build": true,
+    "ctests_passed": 2,
+    "packet_bodies": 4,
+    "direct_call_rows": 8,
+    "direct_call_failures": 0,
+    "fixture_scope": "Four complete original reserve bodies against source, 16 cases: x87 signaling-NaN bytes/status, no-grow, negative capacity and real allocation failure.",
+    "annotation_journal": "local/ghidra-annotations-20260914T070228Z.json",
+    "annotations_saved_and_read_back": true,
+    "worker_artifacts_retained": {
+      "label": "containers",
+      "commit": "c1a53b1874986d8eddb4854733efd525b66dffe3",
+      "path": "local\\compiler-path-workers\\raw-renderer-containers\\manifest.json",
+      "sha256": "7a914c8c0eaf842549c00db3ab868645258c987f980f6a2af40771d08ac0a1a2",
+      "artifacts": 15
+    },
+    "game_validated": false,
+    "limits": [
+      "Full renderer lifetime, active frame providers and application adoption remain incomplete",
+      "C++ cleanup reconstruction is not original FH3/SEH exception ABI equivalence",
+      "Control and Lua fixtures are source lifetime evidence, with no active rendering or game fundamentals claim",
+      "No game execution or gameplay parity is claimed"
+    ]
+  }
 }

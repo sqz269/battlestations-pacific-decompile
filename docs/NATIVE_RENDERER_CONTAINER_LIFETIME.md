@@ -84,3 +84,9 @@ the built `bsp_core.lib`, routing only their two external calls to the same real
 source allocation/free service. It checks raw storage, header guards, x87 byte
 and exception-status behavior, clamped no-growth, negative-capacity reserve-zero,
 and allocation-failure propagation. This is fixture evidence, not game evidence.
+
+## Integrated validation at 6641c05f
+
+The integrated source at `6641c05f524e29f9352f66ddbd017c64d2f99cee` passed the strict MSVC Win32 build and both CTests. The existing focused fixture was relinked against that exact `bsp_core.lib` with `/MD`, `/W4 /WX`, `/sourceDependencies` and an embedded manifest. Four complete original reserve bodies against source, 16 cases: x87 signaling-NaN bytes/status, no-grow, negative capacity and real allocation failure.
+
+The packet passed 8 numeric call-site checks. Its 4 reviewed function names and evidence comments were applied, saved and read back in Ghidra, preserving previous comments. The combined 15-body checkpoint retains 3310 immutable source, build, compiler, fixture and measured runtime artifacts at `local/checkpoints/6641c05f/native-renderer-components-default/validation.json` (SHA-256 `a2eee5eeedc6e943e5118ec4ceb183866a9019881530fbec771b3063d0f77c2e`). Worker manifests remain historical inputs; their output-file labels are not treated as proof of loaded modules. Full renderer adoption, native exception ABI and gameplay remain unvalidated.

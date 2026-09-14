@@ -1,0 +1,148 @@
+{
+ "repairs": [
+  {
+   "function": "00b228b0",
+   "owner": "agent/orch5-20260911",
+   "when": "2026-09-14T07:00:29Z",
+   "decompile_lines_before": 35,
+   "gaps": [
+    {
+     "site": "00b22921",
+     "mnemonic": "CALL",
+     "operands": "0x00bf6989",
+     "gap_start": "00b22926",
+     "gap_end_exclusive": "00b2292f",
+     "bytes": 9,
+     "after_call": true,
+     "sha256": "fdbde0541e8e0af4bd22d3c9a2d99d86ba5f16afc2b9451faa3d07150d5ae791"
+    }
+   ],
+   "events": [
+    {
+     "gap": {
+      "site": "00b22921",
+      "mnemonic": "CALL",
+      "operands": "0x00bf6989",
+      "gap_start": "00b22926",
+      "gap_end_exclusive": "00b2292f",
+      "bytes": 9,
+      "after_call": true,
+      "sha256": "fdbde0541e8e0af4bd22d3c9a2d99d86ba5f16afc2b9451faa3d07150d5ae791"
+     },
+     "clear": "Success: Cleared flow override at 00b22921 (was: CALL_RETURN, now: NONE)",
+     "disassemble": "Successfully disassembled 9 byte(s)"
+    }
+   ],
+   "decompile_lines_after": 36,
+   "gaps_remaining": 0
+  },
+  {
+   "function": "00b22940",
+   "owner": "agent/orch5-20260911",
+   "when": "2026-09-14T07:00:35Z",
+   "decompile_lines_before": 36,
+   "gaps": [
+    {
+     "site": "00b229b7",
+     "mnemonic": "CALL",
+     "operands": "0x00bf6989",
+     "gap_start": "00b229bc",
+     "gap_end_exclusive": "00b229c5",
+     "bytes": 9,
+     "after_call": true,
+     "sha256": "9dbb6c6ce19afb9b20ee47785253be66c8057411714f24bd2d23bbda04b65ff3"
+    }
+   ],
+   "events": [
+    {
+     "gap": {
+      "site": "00b229b7",
+      "mnemonic": "CALL",
+      "operands": "0x00bf6989",
+      "gap_start": "00b229bc",
+      "gap_end_exclusive": "00b229c5",
+      "bytes": 9,
+      "after_call": true,
+      "sha256": "9dbb6c6ce19afb9b20ee47785253be66c8057411714f24bd2d23bbda04b65ff3"
+     },
+     "clear": "Success: Cleared flow override at 00b229b7 (was: CALL_RETURN, now: NONE)",
+     "disassemble": "Successfully disassembled 9 byte(s)"
+    }
+   ],
+   "decompile_lines_after": 37,
+   "gaps_remaining": 0
+  },
+  {
+   "function": "00b229d0",
+   "owner": "agent/orch5-20260911",
+   "when": "2026-09-14T07:00:42Z",
+   "decompile_lines_before": 37,
+   "gaps": [
+    {
+     "site": "00b22a53",
+     "mnemonic": "CALL",
+     "operands": "0x00bf6989",
+     "gap_start": "00b22a58",
+     "gap_end_exclusive": "00b22a61",
+     "bytes": 9,
+     "after_call": true,
+     "sha256": "9dbb6c6ce19afb9b20ee47785253be66c8057411714f24bd2d23bbda04b65ff3"
+    }
+   ],
+   "events": [
+    {
+     "gap": {
+      "site": "00b22a53",
+      "mnemonic": "CALL",
+      "operands": "0x00bf6989",
+      "gap_start": "00b22a58",
+      "gap_end_exclusive": "00b22a61",
+      "bytes": 9,
+      "after_call": true,
+      "sha256": "9dbb6c6ce19afb9b20ee47785253be66c8057411714f24bd2d23bbda04b65ff3"
+     },
+     "clear": "Success: Cleared flow override at 00b22a53 (was: CALL_RETURN, now: NONE)",
+     "disassemble": "Successfully disassembled 9 byte(s)"
+    }
+   ],
+   "decompile_lines_after": 38,
+   "gaps_remaining": 0
+  },
+  {
+   "function": "00b22a70",
+   "owner": "agent/orch5-20260911",
+   "when": "2026-09-14T07:00:48Z",
+   "decompile_lines_before": 41,
+   "gaps": [
+    {
+     "site": "00b22b0f",
+     "mnemonic": "CALL",
+     "operands": "0x00bf6989",
+     "gap_start": "00b22b14",
+     "gap_end_exclusive": "00b22b1d",
+     "bytes": 9,
+     "after_call": true,
+     "sha256": "9dbb6c6ce19afb9b20ee47785253be66c8057411714f24bd2d23bbda04b65ff3"
+    }
+   ],
+   "events": [
+    {
+     "gap": {
+      "site": "00b22b0f",
+      "mnemonic": "CALL",
+      "operands": "0x00bf6989",
+      "gap_start": "00b22b14",
+      "gap_end_exclusive": "00b22b1d",
+      "bytes": 9,
+      "after_call": true,
+      "sha256": "9dbb6c6ce19afb9b20ee47785253be66c8057411714f24bd2d23bbda04b65ff3"
+     },
+     "clear": "Success: Cleared flow override at 00b22b0f (was: CALL_RETURN, now: NONE)",
+     "disassemble": "Successfully disassembled 9 byte(s)"
+    }
+   ],
+   "decompile_lines_after": 42,
+   "gaps_remaining": 0
+  }
+ ]
+}
