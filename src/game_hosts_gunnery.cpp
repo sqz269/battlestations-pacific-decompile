@@ -819,13 +819,23 @@ public:
         owner_.unit_aim_point(unit_, point);
         return {point[0], point[1], point[2]};
     }
-    int sub_entities_slot0fc(void*) override {
-        // target->vtable[0FCh]. A ship instance in this process has no sub
-        // entity list: the device hierarchy is model data.
+    int sub_entities_slot0fc(void* target) override {
+        // target->vtable[0FCh]. The base implementation 00432480 is what 92 of
+        // the 94 entity-hierarchy vtables carry in this slot - every ship, gun
+        // platform and projectile - and it appends the entity itself, once and
+        // unconditionally: PUSH ECX / MOV [ESP],ECX / MOV ECX,[ESP+8] /
+        // PUSH EAX / CALL 004323D0 BSP_PointerVector_PushBack / RET 4.
+        // The two overrides are MAirfield 006D4DD0 (intact hangars) and the
+        // plane squadron 007F44E0 (live planes); neither is a unit this
+        // process creates, so a target here always takes the base.
+        // docs/SHIP_SUB_ENTITY_LIST.md.
         owner_.record("Gunnery::target_sub_entities_slot0fc", 0x008654acu);
-        return 0;
+        sub_entity_ = target;
+        return target != nullptr ? 1 : 0;
     }
-    void* sub_entity(int) override { return nullptr; }
+    void* sub_entity(int index) override {
+        return index == 0 ? sub_entity_ : nullptr;
+    }
     std::array<float, 3> entity_world_position(void* entity) override {
         const std::size_t other = unit_of(entity);
         float point[3] = {0.0f, 0.0f, 0.0f};
@@ -930,6 +940,7 @@ private:
     std::vector<std::size_t> contacts_;
     std::size_t accepted_{0};
     std::size_t rejected_{0};
+    void* sub_entity_{nullptr};   // the one entry 00432480 appends: the target itself
 };
 
 }  // namespace

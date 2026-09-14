@@ -8207,3 +8207,42 @@ detection value that decides what a side can see.
 
 7. **`ship_ai_neighbour_walk`** and **`ship_ai_follow_land_hosts`** are carried over from milestone
    2s unchanged; neither was touched here.
+
+## Correction from docs/SHIP_SUB_ENTITY_LIST.md (packet cc7_ship_sub_entity_list)
+
+Three statements in the milestone 2t sections above are wrong, and they share one cause: the
+`vtable[0FCh]` sub-entity list was read from this process's host stub rather than from the native
+slot. The native slot is not empty.
+
+- **Was:** "step 8.7 | nothing, because `vtable[0FCh]` answers with no sub-entity".
+  **Is:** step 8.7 appends the target itself. A census of every vtable stored at `object+0`
+  (306 in the image with more than 63 slots, 94 in the entity hierarchy) finds exactly three
+  implementations of slot `0FCh`. `00432480` is carried by **92** of them - every ship, gun
+  platform and projectile - and appends `this`, once, unconditionally. The other two are
+  `006D4DD0` on `MAirfield` (the intact hangars of the `0Ch`-stride vector at `airfield+830h`
+  whose `object+370h > 0.0f`) and `007F44E0` on the plane squadron (all `+3CCh` live planes at
+  `squadron+3D0h`, unfiltered). Neither is a unit this process creates.
+  **Evidence:** `00432480` decodes as `PUSH ECX` / `LEA EAX,[ESP]` / `MOV [ESP],ECX` /
+  `MOV ECX,[ESP+8]` / `PUSH EAX` / `CALL 004323D0 BSP_PointerVector_PushBack` / `POP ECX` /
+  `RET 4` - the receiver is the vector, the pushed pointer is the entity itself. The dword
+  `00432480` occurs 92 times in `.rdata`, every occurrence exactly `+0FCh` from a primary vtable
+  start, with no code xref. Verified at integration by decoding the bytes and re-counting the
+  92 occurrences independently of the packet.
+
+- **Was:** "a ship answers `vtable[0FCh]` with no sub-entity", and "step 8.7 appends sub-entities
+  and never the target itself".
+  **Is:** a ship answers with itself. The empty list was an artefact of
+  `src/game_hosts_gunnery.cpp`'s stub, not of the native code.
+
+- **Consequence for category 7.** The milestone's explanation of why 71 torpedo guns take zero
+  assignments is half right. Step 8.5 really does exclude category 7 - `008651F5 CMP ESI,7` /
+  `008651F8 JZ 00865442` jumps past the sweep at `008651FE`, and the `this+7Ch` branch at
+  `008651B4`/`008651BD` lands on the same target, so the exclusion is unconditional. But the
+  conclusion that a torpedo mount therefore cannot be reached at all does not follow: step 8.7
+  hands it the director's own target. The stub was the only thing standing in the way.
+
+- **Method note.** The vtable-to-class attribution is taken from each constructor's
+  `MOV [ESI],imm` store at offset 0, not from the vtable data; this image has no usable RTTI. A
+  first pass over the same data produced seven phantom overrides, all of them secondary vtables
+  at non-zero offsets, each disproved by reading its constructor. Slot censuses in this image are
+  not safe without that constructor check.
