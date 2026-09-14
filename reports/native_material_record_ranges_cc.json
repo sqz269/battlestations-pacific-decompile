@@ -4,7 +4,7 @@
   "source_parent_commit": "d9f67c60e09ef1cc1583796029047b7400e45997",
   "source_sha256": {
     "include/bsp/native_material_record_ranges.hpp": "032c83a9249024affbb66b8bee070d34384c6d09e178c6eb390fe52ec320e00c",
-    "src/native_material_record_ranges.cpp": "561aa99d44f20063c69700b3051ab8ccbd7163e38ecd40c0a85738e1d961c4a3"
+    "src/native_material_record_ranges.cpp": "033587e25452800a0abc87632f2ceab3dc2ae0c14b09b2331ffcee4b193dfb3d"
   },
   "provider_sha256": {
     "include/bsp/native_material_record_copy.hpp": "502c9743de1ed796c10c4c714808b06f32fef2f7ebc89a63b44061beea02feac",
@@ -248,5 +248,13 @@
   "limitations": [
     "C++ exception semantics and actual raw record storage only; no private native FH3/hardware-SEH identity or binary substitution.",
     "No new native execution, parent vector insertion/diagnostics completion, rendering or gameplay validation. Placement RET and EH funclets have zero separate body credit."
-  ]
+  ],
+  "generated_review_fix": {
+    "original_attempt": "1676088104a86ee66cb6c71c827d8693236208ae",
+    "finding": "B14360 C++ tail wrapper reloaded original output argument after fill instead of retaining the pre-call output capture.",
+    "correction": "Naked stdcall wrapper captures count/output in saved ESI/EDI across the real fill call and returns their wrapped arithmetic result.",
+    "before_source_sha256": "561aa99d44f20063c69700b3051ab8ccbd7163e38ecd40c0a85738e1d961c4a3",
+    "before_artifacts": "local/cacc-tail-fix-before",
+    "source_rebuild_required": true
+  }
 }

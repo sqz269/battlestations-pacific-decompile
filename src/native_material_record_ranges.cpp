@@ -111,10 +111,25 @@ __declspec(naked) void* __fastcall copy_construct_native_material_records_00b139
     __asm { ret 8 }
 }
 
-void* __stdcall fill_construct_native_material_record_tail_00b14360(
-    void* output, Word count, const void* source, Context& strings) {
-    fill_construct_native_material_records_00b13b00(output, count, source, strings);
-    return pointer(bits(output) + count * stride);
+__declspec(naked) void* __stdcall fill_construct_native_material_record_tail_00b14360(
+    void*, Word, const void*, Context&) {
+    __asm {
+        push esi
+        mov esi, dword ptr [esp + 0ch]
+        push edi
+        mov edi, dword ptr [esp + 0ch]
+        mov edx, esi
+        mov ecx, edi
+        push dword ptr [esp + 018h]
+        push dword ptr [esp + 018h]
+        call fill_construct_native_material_records_00b13b00
+        mov eax, esi
+        imul eax, eax, 012ch
+        add eax, edi
+        pop edi
+        pop esi
+        ret 010h
+    }
 }
 
 void __stdcall destroy_native_material_record_range_00b143a0(
