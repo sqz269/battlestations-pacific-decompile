@@ -25,6 +25,7 @@ struct NativePakRegistryContext;
 class NativeObserverLifetime;
 struct NativeObserverDispatchOwner;
 struct NativeSystemConstantRegistryRawContext;
+struct NativeResourceSupportStorage;
 namespace game { class GameSoundRuntime; }
 
 // Stable borrowed source bindings. Every nonnull object admitted to the raw
@@ -33,7 +34,7 @@ namespace game { class GameSoundRuntime; }
 // D2413C, D5B5F4, D5B5F8, D5B72C, D5B630, D68200, D68CF8, D68D04 or
 // D688B0, CFEA1C, D6418C, CF7E70, CF7E74, CE7548, D190C4, CF81CC, D68B94,
 // CFD84C, D62C18, D68EC0, D5E5DC, D5E5D4, CFB6C4, CFEA10, D62A3C or
-// D626F4. D0DA64
+// D626F4 or D62B64. D0DA64
 // requires its actual publication cell; registry and sound profiles require
 // their concrete borrowed bindings. Sound retains C++ projected storage. Online
 // profiles use either the raw lifetime below or the legacy XLive projection,
@@ -117,8 +118,12 @@ struct NativeSingletonDeletionBindings {
     // construction; no retained Operation and no current-owner identity check.
     // String cleanup can recreate/register a pool while this manager drains.
     NativeSystemConstantRegistryRawContext* system_constant_registry{};
+    // D62B64: B61D60 receives the popped actual8-byte support owner. Borrow
+    // the SAME0108FEDC cell used by construction; the deleter clears it
+    // unconditionally, including when publication differs from that owner.
+    NativeResourceSupportStorage* volatile* actual_resource_support_publication_0108fedc{};
 };
-static_assert(sizeof(NativeSingletonDeletionBindings) == 100);
+static_assert(sizeof(NativeSingletonDeletionBindings) == 104);
 
 // Full BD0400[197] normal schedule over raw14h manager storage. Native ECX
 // owner, RET; new EDX reference to stable bindings above. Pop before deleting
