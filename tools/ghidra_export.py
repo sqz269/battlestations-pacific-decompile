@@ -182,6 +182,19 @@ def decompile(client, output, addresses, force=False):
             continue
         try:
             client.verify()  # Prevent cross-project evidence if the user switches projects.
+            # Renames do not change the snapshot's function count. Refresh the
+            # exported name even when this address already exists in its inventory.
+            info = str(client.get('get_function_by_address', address=address))
+            heading = info.splitlines()[0] if info else ''
+            if not heading.startswith('Function: ') or ' at ' not in heading:
+                raise RuntimeError('Cannot obtain the current function name')
+            live_name, _, live_address = heading[len('Function: '):].rpartition(' at ')
+            if not live_name.strip() or live_address.strip().lower().removeprefix('0x') != address:
+                raise RuntimeError('Current function name belongs to a different entry')
+            metadata = {**inventory[address], 'name': live_name.strip(),
+                        'name_source': 'live get_function_by_address'}
+            if inventory[address].get('name') != metadata['name']:
+                metadata['snapshot_name'] = inventory[address].get('name')
             code = client.get('force_decompile' if force else 'decompile_function', address=address, timeout=60)
             if force and isinstance(code, str) and code.startswith('Success: Forced redecompilation of '):
                 code = code.partition('\n\n')[2]
@@ -190,7 +203,7 @@ def decompile(client, output, addresses, force=False):
                 raise RuntimeError('Empty or unsuccessful function export')
             write(folder / 'decompiled.c', code)
             write(folder / 'assembly.txt', assembly)
-            write(folder / 'metadata.json', {**inventory[address], 'project': client.config['project'],
+            write(folder / 'metadata.json', {**metadata, 'project': client.config['project'],
                   'program_path': client.config['program_path'], 'utc': datetime.now(timezone.utc).isoformat()})
             print(f'Exported {index + 1}/{len(addresses)} {address}', flush=True)
         except (OSError, RuntimeError) as error:
