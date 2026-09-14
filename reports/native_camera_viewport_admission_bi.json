@@ -1,0 +1,94 @@
+{
+  "packet": "orch3_camera_viewport_admission_bi",
+  "status": "design_only_ready_for_bounded_implementation_review",
+  "coverage": "complete scoped raw-camera first-viewport admission design; implementation absent",
+  "worker_base": "a92db8bda296bb245b8259aeb59c23ea2dd69495",
+  "producer_commit": "9b890a53e587ae0c62bfbfdc10d3f1c9502cfad8",
+  "producer_worktree": "J:/PROG/battlestations-pacific-decompile-orch3-20260910",
+  "producer_clean_at_pin": true,
+  "source_pin_file": "J:/PROG/bsp-evidence/orch3-camera-viewport-admission-bi-20260913/source_pins.json",
+  "producer_source_sha256": {
+    "include/bsp/native_viewport_registry.hpp": "250DECC6520ABB9D3085670129D0884B087465F4EEC1027CB210375619E8D486",
+    "src/native_viewport_registry.cpp": "CF63DE25D9E107F83F361DB4D4FA7C2A922119FA62584DD3688B8588D201A289",
+    "include/bsp/native_viewport_owner.hpp": "0FBADD5EAB924627E321A7896BD9796C0AAA17062BBF3953DE118FBE2B3867D5",
+    "src/native_viewport_owner.cpp": "D7F733023F89193A4BBD488A9E925B46AC52F2CC0EE1BE04F6DF2E663616D2EA"
+  },
+  "worker_source_sha256": {
+    "include/bsp/native_camera_owner.hpp": "DCFDA0FCB24A3415787D43EB5204116AFB18BD77D7A4D0B4A297351CD02E4153",
+    "src/native_camera_owner.cpp": "CA6A751F6956C2989073F072359F78FE64E2DF1EE6071BDFB2AF9F8CBE4C69E1"
+  },
+  "prerequisite_docs": ["docs/NATIVE_COCKPIT_VIEWPORT_LIFETIME_BH.md", "docs/NATIVE_COCKPIT_CONSTRUCTION_COMPOSITION_BG.md"],
+  "new_native_addresses": [],
+  "reconstructed_functions": [],
+  "native_body_credit_bytes": 0,
+  "ghidra": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "access": "Target-verified BSP CLI proto/disasm/bytes and read-only report verifier",
+    "mutations": false,
+    "exports_changed": false
+  },
+  "native_review": {
+    "entry": "00B71A80",
+    "extent": ["00B71A80", "00B71CDB"],
+    "bytes": 604,
+    "instructions": 133,
+    "abi": "ECX camera, stacked name, EAX same camera, RET4",
+    "coverage": "complete normal listing and complete three-state EH map/funclets; other called bodies retain existing contracts",
+    "receiver_provenance": "B71AA0 captures ECX into ESI; no later ESI reassignment before restoration; EBX zeroed B71AAC and remains zero.",
+    "allocation": "PUSH34h B71AAE, CALL BF681B B71ABA, ADD ESP4 B71ABF; B71AD1 constructs exact captured allocation.",
+    "publication": "B71ADD stores successful viewport pointer at camera+180; state0 restored B71AEF; +438 cleared B71B10 before state2 B71B21.",
+    "funcinfo": "DFAA38: magic19930522, maxState3, map DFAA20..DFAA37",
+    "unwind_map": [
+      {"state": 0, "next": -1, "funclet": "00CC1AD0", "extent": ["00CC1AD0", "00CC1AD7"], "effect": "captured camera node cleanup"},
+      {"state": 1, "next": 0, "funclet": "00CC1AD8", "extent": ["00CC1AD8", "00CC1AE2"], "effect": "free saved raw viewport allocation; POP ECX"},
+      {"state": 2, "next": 0, "funclet": "00CC1AE3", "extent": ["00CC1AE3", "00CC1AF0"], "effect": "captured camera+438 action before state0; no viewport release"}
+    ],
+    "supporting_complete_listings": ["00B1F850", "00CBCCB0", "00B6F440", "00605FD0", "00BF681B", "00BF65AC", "00CC1AF1"]
+  },
+  "native_calls": [
+    {"address": "00B71AA7", "native": "00B6F5A0", "function": "00B71A80", "contract": "unchanged raw node constructor call"},
+    {"address": "00B71ABA", "native": "00BF681B", "function": "00B71A80", "contract": "34h allocation; ADD ESP4 at B71ABF"},
+    {"address": "00B71AD1", "native": "00B1F850", "function": "00B71A80", "contract": "successful viewport construction precedes B71ADD publication"},
+    {"address": "00CC1AD3", "native": "00B6F440", "function": "00CC1AD0", "kind": "tail_jump", "contract": "camera node cleanup"},
+    {"address": "00CC1ADC", "native": "00BF65AC", "function": "00CC1AD8", "contract": "saved raw viewport free; POP ECX at CC1AE1"},
+    {"address": "00CC1AEC", "native": "00605FD0", "function": "00CC1AE3", "kind": "tail_jump", "contract": "camera+438 release then clear, followed by state0"},
+    {"address": "00CC1AF6", "native": "00BF6B43", "function": "00CC1AF1", "kind": "tail_jump", "contract": "existing FH3 dispatcher with FuncInfo DFAA38"},
+    {"address": "00CBCCB3", "native": "00BD30F0", "function": "00CBCCB0", "kind": "tail_jump", "contract": "viewport base unwind before caller raw free"}
+  ],
+  "design": {
+    "public_overload": "void* construct_native_camera_00b71a80(NativeCameraOwner&, const void* actual_name_header, const NativeNodeRawConstants&, NativeViewportRegistry::Admission&& first_viewport)",
+    "private_shared_body": "One file-private raw helper with optional Admission*; legacy raw wrapper passes nullptr and new raw wrapper passes the supplied argument address.",
+    "semantic_overload": "Keep existing NativeString overload/body unchanged; no semantic admission overload or generic callable strategy in this packet.",
+    "preflight": "Preserve prepared-owner/raw-name-pool/shared-D7A24C checks; require installed reserved token and exact owner.environment.viewport_views registry base identity; move into local guard before owner phase/native node effects.",
+    "commit": "Existing admitted allocate factory consumes local guard through registry.constructed after B1F850 success and before return; current +180 assignment follows directly.",
+    "no_ambient_state": "No environment next-admission field, token queue or owner-retained token; caller token is not consulted after transfer.",
+    "early_failure": "Pre-transfer validation rejection leaves caller token active; post-transfer node/allocation/viewport failure preserves native cleanup then cancels unused record. forget_quiescent remains required before cancelled storage reuse.",
+    "late_failure": "Consumed live viewport record survives camera state0/state2 cleanup independently of dead camera/ticket; do not release, retire or forget it.",
+    "reentry": "Independent serialized owners and prepared records may nest during native callbacks; local token ownership prevents outer credit theft. No finished view exists during earlier B1F850 renderer callbacks."
+  },
+  "implementation_packet": {
+    "cpp_files": ["include/bsp/native_camera_owner.hpp", "src/native_camera_owner.cpp"],
+    "other_files": "implementation doc/report only",
+    "prerequisites": "Merged native viewport registry/admitted factory and camera binding overloads",
+    "verification": "Whole combined build with matching headers/libraries; reuse parent coupled fixture replacing manual first registration and retaining existing byte/trace/early-late failure checks."
+  },
+  "verification": {
+    "source_review": true,
+    "worker_checklist": "docs/WORKER_VERIFICATION_CHECKLIST.md",
+    "report_calls": "PASS eight direct/tail call rows checked, zero failed",
+    "build_run": false,
+    "tests_run": false,
+    "reason": "Design-only packet"
+  },
+  "limits": [
+    "Public overload and first-production-publication registration remain unimplemented.",
+    "Parent BH fixture manually registers first viewport after B71A80; its replacement already uses admitted allocation.",
+    "Stable installed registry, serialized mutation, persistent records and actual owner lifetime through every native field borrow remain required.",
+    "No same-camera construction reentry, registry-operation reentry, arbitrary destructive borrow callback or concurrency guarantee.",
+    "Full cockpit/helper constructor, second-viewport sequencing and persistent block reclamation are outside this packet.",
+    "No added native retain, shadow native count, delayed free, original ABI/FH3/SEH equivalence, native execution or gameplay proof."
+  ]
+}
