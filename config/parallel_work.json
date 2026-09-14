@@ -12324,8 +12324,8 @@
     },
     {
       "id": "orch4_native_resource_manager_trees_bq",
-      "done": false,
-      "state": "worker_stopped_usage_limit_draft_retained",
+      "done": true,
+      "state": "integrated_complete_ordinary_source_build_and_focused_fixture_checked",
       "worktree": "J:\\PROG\\battlestations-pacific-decompile-orch4-resource-manager-trees-bq",
       "addresses": [
         "00b7e000",
@@ -12347,12 +12347,16 @@
         }
       ],
       "worker_active": false,
-      "report": "reports/native_loading_owners_integration_bp.json"
+      "report": "reports/native_loading_owners_integration_bp.json",
+      "primary_owner": "agent/orch4-20260910",
+      "code_revision": "3948a176b7693bd5bae3287e9bdf5297937264f2",
+      "integration_report": "reports/native_loading_owners_integration_bq.json",
+      "game_validated": false
     },
     {
       "id": "orch4_native_fileblock_owner_bq",
-      "done": false,
-      "state": "worker_stopped_usage_limit_analysis_only",
+      "done": true,
+      "state": "integrated_complete_ordinary_source_build_and_focused_fixture_checked",
       "worktree": "J:\\PROG\\battlestations-pacific-decompile-orch4-fileblock-owner-bq",
       "addresses": [
         "00be0a30",
@@ -12362,7 +12366,31 @@
       ],
       "retained_files": [],
       "worker_active": false,
-      "report": "reports/native_loading_owners_integration_bp.json"
+      "report": "reports/native_loading_owners_integration_bp.json",
+      "primary_owner": "agent/orch4-20260910",
+      "code_revision": "3948a176b7693bd5bae3287e9bdf5297937264f2",
+      "integration_report": "reports/native_loading_owners_integration_bq.json",
+      "game_validated": false
+    },
+    {
+      "id": "orch4_native_loading_owners_integration_bq",
+      "done": true,
+      "state": "integrated_complete_ordinary_source_build_and_focused_fixture_checked",
+      "owner": "agent/orch4-20260910",
+      "addresses": [
+        "00b7e000",
+        "00b7e050",
+        "00b7df40",
+        "00b7e740",
+        "00b7cef0",
+        "00be0a30",
+        "00bdcb30",
+        "00bdebe0",
+        "00504790"
+      ],
+      "code_revision": "3948a176b7693bd5bae3287e9bdf5297937264f2",
+      "report": "reports/native_loading_owners_integration_bq.json",
+      "game_validated": false
     }
   ],
   "snapshot_after_analysis": {
