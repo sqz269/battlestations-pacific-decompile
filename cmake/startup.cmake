@@ -924,4 +924,6 @@ cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_cor
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE src/native_viewport_registry.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_mpak_container_storage.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_mpak_storage_services.cpp)
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/game_native_vfs_runtime.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_vfs_owner_services.cpp)
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/game_native_vfs_constants.cpp)

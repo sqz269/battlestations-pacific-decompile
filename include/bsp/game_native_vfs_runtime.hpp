@@ -1,0 +1,73 @@
+#pragma once
+
+#include "bsp/native_path_canonicalizer.hpp"
+#include <cstddef>
+#include <cstdint>
+#include <memory>
+
+namespace bsp {
+class NativeVfsOwnerServices;
+struct NativeSingletonDeletionBindings;
+struct NativePhysicalProviderPoolContext;
+struct NativeRetainedMemoryOwnerContext;
+struct NativeStreamTypeIdStorage;
+struct NativeFileAccessLogLifetimeBindings;
+struct SingletonLifetimeCallbacks;
+}
+namespace bsp::game {
+class GameNativeReadOnlyData;
+
+// Borrow one initialized raw lifetime, physical-provider pool, type-ID set and
+// immutable original table image. actual_vfs_storage points to caller-owned A0h
+// bytes; the shared singleton drain frees it through the registered owner.
+struct GameNativeVfsRuntimeInputs {
+    NativeVfsOwnerServices& owners;
+    GameNativeReadOnlyData& data;
+    void* volatile& actual_manager_publication_01090aa0;
+    NativeSingletonDeletionBindings& deletion_bindings;
+    NativePhysicalProviderPoolContext& physical_provider_pool;
+    NativeRetainedMemoryOwnerContext& retained_memory;
+    NativeStreamTypeIdStorage& type_ids;
+    const SingletonLifetimeCallbacks& invalid_parameters;
+    NativePathCanonicalizerRuntimeServices::Lowercase lowercase_00bf9611;
+    void* actual_vfs_storage_a0;
+    // These archive bytes are outside GameNativeReadOnlyData's verified .rdata.
+    // Supply genuine retained source storage; null is rejected before startup.
+    const volatile std::uint8_t* actual_mpkg_xor_key_00e144f0;
+    const char* actual_mpak_null_pattern_00e17bf0;
+    NativeFileAccessLogLifetimeBindings* file_log_lifetime;
+};
+
+// Source composition for one raw VFS manager. The caller drains the SAME
+// 01090AA0 singleton domain while this object and all borrowed inputs live.
+class GameNativeVfsRuntime final {
+public:
+    explicit GameNativeVfsRuntime(const GameNativeVfsRuntimeInputs&);
+    ~GameNativeVfsRuntime();
+    GameNativeVfsRuntime(const GameNativeVfsRuntime&) = delete;
+    GameNativeVfsRuntime& operator=(const GameNativeVfsRuntime&) = delete;
+    GameNativeVfsRuntime(GameNativeVfsRuntime&&) = delete;
+    GameNativeVfsRuntime& operator=(GameNativeVfsRuntime&&) = delete;
+
+    void* actual_manager() const noexcept;
+    // Keep this object alive if startup throws: drain the shared singleton
+    // manager before any bound context or publication cell is destroyed.
+    void construct_and_register_core();
+    // Call at the native factory tail, after the caller's package/search phase.
+    void register_archive_factory_tail(bool cached_load);
+    void* mount(const char* system_path, const char* virtual_path,
+        std::uint32_t priority, std::uint32_t flags, std::uint32_t device_id);
+    void mount_phase2_loose_paths(const char* current_directory_with_separator);
+    bool exists(const char* path);
+    // Read up to capacity bytes; report the source's actual byte count. A null
+    // open returns false; unsupported profiles propagate as source errors.
+    bool read(const char* path, void* output, std::uint32_t capacity,
+        std::uint32_t& bytes_read);
+    // Call only after the shared 01090AA0 drain. Remove this bundle's borrowed
+    // dispatch bindings and clear its matching VFS publication before teardown.
+    void retire_after_shared_drain() noexcept;
+private:
+    struct Impl;
+    std::unique_ptr<Impl> impl_;
+};
+} // namespace bsp::game
