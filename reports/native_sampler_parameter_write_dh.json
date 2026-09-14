@@ -1,0 +1,110 @@
+{
+  "packet": "orch3_sampler_parameter_write_dh",
+  "status": "source_implemented_pending_child_integration_build_and_generated_review",
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "installed_pe": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "installed_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "address": "00b1b830",
+  "inclusive_end": "00b1b88d",
+  "native_bytes": 94,
+  "original_abi": "B1B830 thiscall ECX complete actual receiver; owner is receiver+4. Stack key/value headers RET8. Construct fresh14h globals via B67980; after construction read public value then key slots, arm state0, call B674C0 on returned object; disarm and destroy local via B67700. Private EH action now recovered and pinned below.",
+  "source_abi": "fastcall ECX actual complete receiver, EDX explicit actual empty-byte binding and persistent operation; original public key/value slots and RET8 retained by naked adapter",
+  "native_spans": [
+    {
+      "address": "00b1b830",
+      "bytes": 94,
+      "hex": "6aff68d8c7cb0064a100000000506489250000000083ec148d04245083c104e82cc104008b4c24288b54242451528bc8c744242400000000e853bc04008d0c24c744241cffffffffe883be04008b4c241464890d0000000083c420c20800",
+      "sha256": "dcade79f19f2106bdf6b69c8518aad3d47e99fe3424bb63210972f225b1e7ed4",
+      "live_installed_identity": true,
+      "installed_source": "installed PE raw bytes"
+    },
+    {
+      "address": "0108ff2c",
+      "bytes": 1,
+      "hex": "00",
+      "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d",
+      "live_installed_identity": true,
+      "installed_source": "PE loader zero-fill beyond section raw data; live Ghidra zero confirmed"
+    },
+    {
+      "address": "00cbc7d0",
+      "bytes": 18,
+      "hex": "8d4de0e928afeaffb8644bdf00e961a3f3ff",
+      "sha256": "d2a319c2df50e57881878c6769f242d509de42aed9c8ef59ffd342cdf5021523",
+      "live_installed_identity": true,
+      "installed_source": "installed PE raw bytes"
+    },
+    {
+      "address": "00df4b5c",
+      "bytes": 44,
+      "hex": "ffffffffd0c7cb0022059319010000005c4bdf00000000000000000000000000000000000000000001000000",
+      "sha256": "3c5dd534a08009bd5fb3d86a5b04a8a74e9395062c5d5458403ec043c6388f9a",
+      "live_installed_identity": true,
+      "installed_source": "installed PE raw bytes"
+    }
+  ],
+  "call_steps": [
+    {
+      "address": "00b1b84f",
+      "native": "00b67980",
+      "function": "00b1b830",
+      "hex": "e82cc10400"
+    },
+    {
+      "address": "00b1b868",
+      "native": "00b674c0",
+      "function": "00b1b830",
+      "hex": "e853bc0400"
+    },
+    {
+      "address": "00b1b878",
+      "native": "00b67700",
+      "function": "00b1b830",
+      "hex": "e883be0400"
+    }
+  ],
+  "native_unwind": {
+    "handler": "00cbc7d8",
+    "function_info": "00df4b64",
+    "map": "00df4b5c",
+    "state0_next": -1,
+    "action": "00cbc7d0",
+    "target": "00b67700",
+    "tail_site": "00cbc7d3",
+    "effect": "LEA ECX,[EBP-20h]; tail JMP B67700 on actual current14h local Lua object. State0 arms after globals construction and covers the Lua field write; disarmed before explicit destructor."
+  },
+  "source_sha256": {
+    "include/bsp/native_sampler_parameter_write.hpp": "d2027e918e982da7c06ba8839ed32fff47b53f557811154f26c3169c79ce47f8",
+    "src/native_sampler_parameter_write.cpp": "0370c2c190a564fbb73101bd889338a95e7e141eeb9616aefebff2bf12e562c5",
+    "docs/NATIVE_SAMPLER_PARAMETER_WRITE_DH.md": "04d16b9ae156059a001595b8abe5cac108ee41f7dd7099ebb9ba25c8b803235d",
+    "cmake/startup.cmake": "31c972b67d0b1c2d29c9b4d0a9b145039f6d32a63cea1287b1b77b345b3e54ac"
+  },
+  "provider_sha256": {
+    "include/bsp/native_lua_objects.hpp": "bccf6d4987d710dcbefd0f253cea939db64874f7394bedd432411ce88ae919cf",
+    "src/native_lua_objects.cpp": "c2d70e3c7471688114c14677facb25ef318c224ce0cab8de0ab2ef3be43a0a2e",
+    "include/bsp/native_string.hpp": "80013e5a7350120f32fcad1ce54db9b0923ad5b49cc2152823d858534331378f",
+    "cmake/lua.cmake": "50da26a918e8d494aba3ce414e5f550146348a91269318cdcff95e9ae2abe060",
+    "include/bsp/native_lua_string_field.hpp": "5263917e07cbcc575f7da9970ff9de18d9a77df6a35cb9cc303930defa832ce8",
+    "src/native_lua_string_field.cpp": "6b0e7d9fcae3ab3167388f9b8f3a828ee3eb07307e57a004c6852fc45aec041c"
+  },
+  "primary_evidence": {
+    "path": "local/dh-sampler-parameter-evidence.json",
+    "sha256": "2e67a690558d0376ce6781217e90abf295dab2661bbeeb1131a1abe8a2b47f76"
+  },
+  "source_order": [
+    "Construct actual globals into caller-retained14h preimage with B67980 using actual receiver+4 owner.",
+    "After construction, read original public VALUE slot before KEY slot, arm cleanup, pass returned LuaObject to full B674C0.",
+    "After child return disarm cleanup before current local B67700 destruction. Preserve partial obligation on explicit destructor failure.",
+    "Source C++ exception while armed runs current local B67700 cleanup through noexcept unwind helper, then retains failed diagnostic phase and rethrows; no replay or implicit retirement."
+  ],
+  "limits": [
+    "One actual-storage normal body with a source C++ cleanup model; not a drop-in original ABI/FH3/SEH replacement.",
+    "Linked Lua5.1.1 uses a source VM contract. Lua C longjmp is not converted to C++ exceptions and is outside the source catch contract.",
+    "Native0108FF2C is loader zero-fill outside section raw data; a matching current empty-byte binding is a source input.",
+    "No source execution, original native execution or gameplay validation is claimed before validation."
+  ],
+  "new_repository_tests": 0
+}
