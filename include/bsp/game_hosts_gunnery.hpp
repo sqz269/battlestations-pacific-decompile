@@ -65,6 +65,7 @@
 
 #include "bsp/gun_aiming.hpp"
 #include "bsp/gun_pending_timers.hpp"
+#include "bsp/ordnance_kinds.hpp"
 #include "bsp/gun_platform_arc.hpp"
 #include "bsp/gunnery_tables.hpp"
 #include "bsp/projectile_impact.hpp"
@@ -135,6 +136,9 @@ struct GameGunRow {
     std::string function;
     int category{-1};                 // 0..0Bh, the gunnery pass's loop index
     int bullet_class{-1};
+    // What this gun's projectile descriptor answers to vtable[8], from the
+    // authored `Bullets` row's `Type`. docs/ORDNANCE_KIND_IDENTITY.md.
+    bsp::OrdnanceKindSet ordnance{};
     float max_range{0.0f};            // 00731020's answer, the bullet `Range`
     float muzzle_speed{0.0f};
     float water_travel_speed{0.0f};   // MTorpedo classDesc+0E4h, 008566B0

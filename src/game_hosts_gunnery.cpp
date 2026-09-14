@@ -6,6 +6,8 @@
 
 #include "bsp/game_hosts_gunnery.hpp"
 
+#include <map>
+
 #include <algorithm>
 #include <cmath>
 #include <cstdarg>
@@ -469,6 +471,10 @@ void GameGunneryHost::Impl::build_guns() {
                 const std::string bullet_type =
                     lua.read_bullet_class_string(gun.bullet_class, "Type");
                 fin.sub_type = bsp::weapon_class_sub_type_for_lua_type(bullet_type);
+                // docs/ORDNANCE_KIND_IDENTITY.md: the Type string names the
+                // projectile descriptor whose vtable[8] the 007ED7E0 family
+                // queries, and its answer set is the entity class-id space.
+                gun.ordnance = bsp::ordnance_kinds_for_bullet_type(bullet_type.c_str());
                 fin.range = lua.read_bullet_class_number(
                     gun.bullet_class, "Range", 0.0f);
                 fin.muzzle_speed = lua.read_bullet_class_number(
@@ -2169,6 +2175,30 @@ void GameGunneryHost::report() {
         s.assigns_from_arm ? s.arm_reach_fraction_sum / double(s.assigns_from_arm) : 0.0,
         s.assigns_from_recon ? s.recon_reach_fraction_sum / double(s.assigns_from_recon) : 0.0,
         s.arm_assigns_beyond_half, s.recon_assigns_beyond_half);
+    {
+        // The ordnance inventory 007EEC50's AttackFeasibilityInputs need, per
+        // unit, aggregated over that unit's guns exactly as the 007ED7E0 family
+        // aggregates over the weapon controller's slots.
+        // docs/ORDNANCE_KIND_IDENTITY.md.
+        std::size_t torpedo = 0, general_bomb = 0, drop_kamikaze = 0, paratrooper = 0;
+        std::map<std::size_t, int> per_unit;
+        for (const GameGunRow& gun : host.guns) {
+            int& bits = per_unit[gun.unit_index];
+            if (bsp::ordnance_has_torpedo_2bh(gun.ordnance)) bits |= 1;
+            if (bsp::ordnance_has_general_bomb_2ah(gun.ordnance)) bits |= 2;
+            if (bsp::ordnance_has_drop_kamikaze_2fh(gun.ordnance)) bits |= 4;
+            if (bsp::ordnance_has_paratrooper_31h(gun.ordnance)) bits |= 8;
+        }
+        for (const std::pair<const std::size_t, int>& row : per_unit) {
+            if (row.second & 1) ++torpedo;
+            if (row.second & 2) ++general_bomb;
+            if (row.second & 4) ++drop_kamikaze;
+            if (row.second & 8) ++paratrooper;
+        }
+        host.log.notef("summary mission gunnery ordnance units_with torpedo=%zu "
+            "general_bomb=%zu drop_kamikaze=%zu paratrooper=%zu (of %zu units with guns)",
+            torpedo, general_bomb, drop_kamikaze, paratrooper, per_unit.size());
+    }
     host.log.notef("summary mission gunnery torpedo_ranges_derived=%llu "
         "swims_started=%llu snaps=%llu bullet_ranges_derived=%llu "
         "base_tick_timers_live=%llu expired=%llu",
