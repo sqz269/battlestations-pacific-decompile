@@ -1,0 +1,33 @@
+{
+  "packet": "orch4_vfs_open_failure_bh",
+  "source_revision": "2d41900c6dffe86d56bd7fcdd85e9c914c284b33",
+  "integration_report": "reports/native_vfs_handoff_bh_validation.json",
+  "observed_before_fix": {
+    "exception": "c0000005",
+    "instruction_pointer": "00530620",
+    "attempted_execute_address": "00530620",
+    "trigger": "missing read with numeric startup callback",
+    "evidence": "Recorded diagnostic during combined probe in this integration turn; final log supersedes the diagnostic run"
+  },
+  "native_sequence": [
+    {
+      "address": "00bdf423",
+      "operation": "MOV ECX,[0109CEEC]"
+    },
+    {
+      "address": "00bdf429",
+      "operation": "MOV EDX,[ECX+90]"
+    },
+    {
+      "address": "00bdf432",
+      "operation": "CALL EDX"
+    }
+  ],
+  "exact_supported_target": "00530620",
+  "existing_source_body": "ignore_native_vfs_mount_failure_00530620",
+  "new_source_binding": "NativeVfsRuntimeBindings::open_failure_entry",
+  "missing_reads_passed": 2,
+  "raw_callable_path_preserved": true,
+  "unknown_identity_rejected": true,
+  "game_validated": false
+}

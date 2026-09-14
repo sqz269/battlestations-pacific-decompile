@@ -20,3 +20,9 @@ independently, construct providers, or migrate the still-projected
 claims from this source adapter. The combined native-data/VFS integration
 records the exact build and focused real-host drain proof separately in
 `reports/native_vfs_handoff_bh_validation.json`.
+
+The combined adopted child fixture passed this ordering with ten real raw
+singleton registrations. It called shutdown twice, checked the cleared VFS
+bindings and publications, destroyed `GameSingletonHost`, and then destroyed
+the still-retained VFS runtime. This verifies the hook in the source composition;
+production `GameVfsHost` admission remains pending.
