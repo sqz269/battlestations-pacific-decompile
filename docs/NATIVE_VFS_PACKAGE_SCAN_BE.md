@@ -22,23 +22,32 @@ reconstructed. The module also supplies complete normal-flow `00BDB120`
 mounted-system-name lookup on actual manager+3Ch tree storage. It advances
 the current iterator through existing `00BD97E0`, compares lengths, calls
 `_stricmp` for nonempty equal-length names, and returns the first matching
-provider. Equal zero lengths match directly. No root scan API is complete yet.
+provider. Equal zero lengths match directly.
 
-The first unresolved source dependency is actual-manager `00BDD990`. Existing
-`enumerate_resources_00bdd990_fragment` takes a projected `VfsMountContext`.
-Native `00BDD990` constructs a 14h visitor with `00BDBE20`, visits the actual
-manager via `00BDD0A0`, and destroys through `00BDB6E0`. The visitor's
-provider enumeration and actual pooled-list insertion dispatch need concrete
-source bindings before the root can run. An empty installed archive inventory
-does not imply an empty native enumeration result, since mounted providers can
-enumerate names. `00BE1890` already has an actual-storage implementation. Integrating
-this helper requires one `bsp_core` CMake registration for
-`src/native_vfs_package_scan.cpp`; shared registration was reserved for the
-primary integration pass. The new translation unit passed explicit MSVC Win32
-`/W4 /WX /Zs`; the existing build does not compile it until registered.
+`scan_native_vfs_packages_0073cb10` now composes those helpers with the
+concrete actual-manager `00BDD990` visitor/provider enumeration and existing
+`00BE1890` mount. Its borrowed context carries the live `0109CEEC` manager
+publication, actual string pool, invalid-parameter callbacks, enumeration
+context and mount-registration context. It allocates a real 10h sentinel,
+initializes only the list's sentinel/count words, enumerates once, then
+releases the `.` and `mpkg` query strings in reverse order. Each iteration
+constructs `patch`, pops and owns the front name, computes priority before
+looking up that name on the current manager, and mounts only when absent.
+The per-mount `.` is released before the name, then `patch`. At exhaustion it
+clears the list and frees the sentinel. CMake registers this source once in
+`bsp_core`.
+
+The source API does not reproduce original SEH/FH3 frames. C++ scope cleanup
+also drains the list if a dependency throws; exact exceptional interleaving,
+returning invalid-parameter repair, and impossible 32-bit huge-length wrap
+cases remain outside proof. Ordinary native return paths are covered. This
+source is not a binary ABI replacement. The installed game has no package
+archives, so the source graph's ability to mount an authentic package in this
+installation is not runtime-proven; the scan must still call the actual
+enumerator rather than assuming an empty result.
 
 Source and saved-owner evidence was read from `0073CB10`, `00557A90`,
 `00BDD990`, `00BDBE20`, `00BDB6E0`, `00BDB120` and `00BE1890` in the
-configured `bsp.gpr` program. No Ghidra state was changed. Source completeness
-is limited to the `00557A90` and `00BDB120` normal paths; no package startup, runtime archive
-or gameplay validation is claimed.
+configured `bsp.gpr` program. No Ghidra state was changed. The bounded root
+and both helpers cover their normal source paths; startup integration and
+gameplay validation remain separate.

@@ -1,9 +1,17 @@
 #include "bsp/native_vfs_package_scan.hpp"
 #include "bsp/native_string_pool_storage.hpp"
+#include "bsp/native_pooled_string_substring.hpp"
+#include "bsp/native_physical_file_date.hpp"
+#include "bsp/native_render_resource_record_construction.hpp"
+#include "bsp/native_vfs_enumeration.hpp"
+#include "bsp/native_vfs_mount_registration.hpp"
 #include "bsp/native_vfs_date_route.hpp"
+#include "bsp/singleton_lifetime.hpp"
 
 #include <cstdint>
 #include <cstring>
+#include <cstdlib>
+#include <cstddef>
 #include <string.h>
 
 #if !defined(_MSC_VER) || !defined(_M_IX86)
@@ -15,6 +23,81 @@ namespace {
 template<class T> T& field(void* owner, std::uint32_t offset) {
     return *reinterpret_cast<T*>(static_cast<unsigned char*>(owner) + offset);
 }
+struct PooledName {
+    explicit PooledName(ActualNativeStringPoolStorage& strings) : strings(strings) {}
+    ~PooledName() { value.release_to(strings); }
+    NativeString value{};
+    ActualNativeStringPoolStorage& strings;
+};
+struct NameList {
+    explicit NameList(ActualNativeStringPoolStorage& strings) : strings(strings) {
+        field<NativeRenderResourceAliasNode*>(words, 4) =
+            allocate_native_render_alias_sentinel_004c3020();
+        field<std::uint32_t>(words, 8) = 0;
+    }
+    ~NameList() { clear(); }
+    void clear() noexcept {
+        auto*& head = field<NativeRenderResourceAliasNode*>(words, 4);
+        if (!head) return;
+        clear_native_render_resource_aliases_004d05e0(words, strings);
+        singleton_lifetime_free(head);
+        head = nullptr;
+    }
+    void* actual() noexcept { return words; }
+    std::uint32_t count() const noexcept {
+        return *reinterpret_cast<const std::uint32_t*>(words + 8);
+    }
+    alignas(4) unsigned char words[12]; // Native +0 is an unwritten preimage.
+    ActualNativeStringPoolStorage& strings;
+};
+}
+
+void scan_native_vfs_packages_0073cb10(NativeVfsPackageScanContext& context) {
+    NameList names(context.strings);
+    PooledName extension(context.strings), directory(context.strings);
+    construct_native_string_cstring_0041e870(&extension.value, "mpkg", context.strings);
+    construct_native_string_cstring_0041e870(&directory.value, ".", context.strings);
+    enumerate_native_vfs_resources_00bdd990(context.manager_0109ceec,
+        &directory.value, &extension.value, 0, names.actual(), context.enumeration);
+    directory.value.release_to(context.strings);
+    extension.value.release_to(context.strings);
+
+    while (names.count() != 0) {
+        PooledName patch(context.strings), name(context.strings);
+        construct_native_string_cstring_0041e870(&patch.value, "patch", context.strings);
+        pop_native_vfs_package_name_00557a90(names.actual(), &name.value,
+            context.strings, context.invalid_parameters);
+
+        std::uint32_t priority = 1000;
+        if (name.value.data() && patch.value.data() && name.value.length() >= patch.value.length()) {
+            const auto last = name.value.length() - patch.value.length();
+            for (std::uint32_t offset = 0; offset <= last; ++offset) {
+                if (_strnicmp(name.value.data() + offset, patch.value.data(),
+                        patch.value.length()) != 0) continue;
+                if (offset == 0) {
+                    PooledName suffix(context.strings);
+                    construct_native_string_substring_00469840(&name.value,
+                        &suffix.value, patch.value.length(), 0x7fffffffU, context.strings);
+                    const auto decimal = std::atol(suffix.value.data() ? suffix.value.data() : "");
+                    priority += static_cast<std::uint32_t>(decimal);
+                }
+                break;
+            }
+        }
+
+        if (!find_native_vfs_mounted_system_name_00bdb120(
+                context.manager_0109ceec, &name.value, context.invalid_parameters)) {
+            PooledName virtual_directory(context.strings);
+            construct_native_string_cstring_0041e870(&virtual_directory.value,
+                ".", context.strings);
+            mount_native_vfs_system_path_00be1890(context.manager_0109ceec,
+                &name.value, &virtual_directory.value, priority, 0, 0xffffffffU,
+                context.mounting);
+        }
+        name.value.release_to(context.strings);
+        patch.value.release_to(context.strings);
+    }
+    names.clear();
 }
 
 void* pop_native_vfs_package_name_00557a90(void* actual_list_owner,
