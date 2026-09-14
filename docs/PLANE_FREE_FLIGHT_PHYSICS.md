@@ -581,7 +581,32 @@ attacks on ships.
 Satisfied, and measured: aircraft acquire, fire, hit, damage and destroy other aircraft; ships
 acquire, fire, hit, damage and sink other ships.
 
-Not satisfied: directed air attack (needs the order chain), ship anti-aircraft fire (in `USN01` the
-aircraft never enter ship AA range - `Northampton` sits at 3787 m against a 2300 m reach), and part
-damage, fires and floods, which stay at zero for the separate model-load reason in
-`docs/PART_DAMAGE_WIRING_PLAN.md`.
+~~Not satisfied: ... ship anti-aircraft fire (in `USN01` the aircraft never enter ship AA range -
+`Northampton` sits at 3787 m against a 2300 m reach)~~
+
+**Correction: ship anti-aircraft fire IS satisfied, and was already happening in the run that
+sentence was written from.** `Northampton` was one ship and its 3787 m was generalised to the whole
+fleet without checking the others. In the same `USN01` run:
+
+```
+gun     plat cat range assigns shots first_shot target
+Katori    19   5  2000      13     9       0.35  KatTBD
+
+unit     side guns cats                range nearest shots hits health
+Katori      1   21 1:12 3:3 5:2 7:2 8:2  2000    1765     9    0   6000
+KatTBD      0    3 0:1 1:1 10:1           800    3068     0    0    220
+```
+
+`Katori` is `kind=10` `MCruiser`, a ship, carrying two category-5 FLAK guns - the category whose
+authored target-class list is the plane family, so it is anti-aircraft by construction. Its nearest
+enemy closes to 1765 m, inside the 2000 m reach, and it fires **nine rounds** at `KatTBD`, which is
+`kind=17` `MPlaneTorpedoBomber`, a TBD Devastator. First shot at t=0.35 s.
+
+Stated precisely, because the distinction matters: ship AA **acquires, aims and fires at aircraft**.
+It scores no hits in this window - `hits=0`, `dealt=0` - which is unsurprising for two guns against
+a crossing target, and is not the same as the path being unexercised.
+
+Still not satisfied: directed air attack (the order now reaches the weapon director, but the three
+steps from there to motion are unwired - `0099A170` command to task, `0099ACD0` task to control
+axes, `007C6500` axes to pose), and part damage, fires and floods, which stay at zero for the
+separate model-load reason in `docs/PART_DAMAGE_WIRING_PLAN.md`.
