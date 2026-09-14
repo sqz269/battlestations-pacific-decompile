@@ -1,0 +1,46 @@
+{
+  "packet": "orch3_native_lua_string_field_di",
+  "status": "source_implemented_pending_object_review",
+  "base_commit": "e4fb53cd952b67c2a0e332f34e247937ff56cb0d",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "installed_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "primary_native_evidence": {
+    "path": "J:/PROG/battlestations-pacific-decompile-orch3-20260910/local/dh-sampler-parameter-evidence.json",
+    "sha256": "2e67a690558d0376ce6781217e90abf295dab2661bbeeb1131a1abe8a2b47f76"
+  },
+  "routine": {
+    "address": "00b674c0",
+    "body_end_inclusive": "00b67520",
+    "length": 97,
+    "native_sha256": "ee7bb8eecce3d417d7e13e5ff69d252d39fb71c88d378b61fa1d4817bfafa7c5",
+    "coverage": "complete_source_body",
+    "original_abi": "thiscall ECX actual14h LuaObject; key/value actual8h header pointers in public stack slots; RET8",
+    "source_abi": "__fastcall ECX actual object, EDX borrowed actual0108FF2C zero-byte address, original key/value stack words; naked adapter RET8",
+    "source_symbol": "bsp::set_native_lua_string_field_00b674c0",
+    "empty_byte": "0108FF2C is virtual zero-fill in installed PE and live byte00; explicit address binding, not an on-disk byte snapshot"
+  },
+  "call_steps": [
+    {"address":"00b674cd","native":"00a672f0","function":"00b674c0","hex":"e81efeefff"},
+    {"address":"00b674ec","native":"00a67a10","function":"00b674c0","hex":"e81f05f0ff"},
+    {"address":"00b6750b","native":"00a67a10","function":"00b674c0","hex":"e80005f0ff"},
+    {"address":"00b67518","native":"00a67e10","function":"00b674c0","hex":"e8f308f0ff"}
+  ],
+  "source_schedule": [
+    "Capture original ECX object. Load current object.owner and owner.state; call checkstack(state,2), ignoring return.",
+    "Only after checkstack dereference original key public slot. Read current header length then data; null data selects borrowed actual0108FF2C; reload current owner/state and call first pushlstring.",
+    "Only after key push dereference original value public slot. Read length then data, apply same null fallback, reload current owner/state and call second pushlstring.",
+    "Read current object.owner, then current object.index, then captured owner's current state; call settable. No kind gate, tracking change, or cleanup."
+  ],
+  "source_sha256": {
+    "include/bsp/native_lua_string_field.hpp":"da0e602a777486fdd2b72bf4c0d00cf02e37859739883a6b1d29fba841b0000a",
+    "src/native_lua_string_field.cpp":"4fadc8f8b9dabd267d91fad108675df6e4f917500f69707455f00546ee849722"
+  },
+  "provider_sha256": {
+    "include/bsp/native_lua_objects.hpp":"bccf6d4987d710dcbefd0f253cea939db64874f7394bedd432411ce88ae919cf",
+    "src/native_lua_objects.cpp":"c2d70e3c7471688114c14677facb25ef318c224ce0cab8de0ab2ef3be43a0a2e",
+    "include/bsp/native_string.hpp":"80013e5a7350120f32fcad1ce54db9b0923ad5b49cc2152823d858534331378f",
+    "cmake/lua.cmake":"50da26a918e8d494aba3ce414e5f550146348a91269318cdcff95e9ae2abe060"
+  },
+  "limits": "Source uses linked stock Lua5.1.1 C ABI, not native game's register ABI. Source/private frame and Lua error transport are not original EH/game validation. B1B830 is outside this packet."
+}
