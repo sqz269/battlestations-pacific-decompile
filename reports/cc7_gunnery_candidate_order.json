@@ -1,0 +1,503 @@
+{
+  "packet": "cc7_gunnery_candidate_order",
+  "owner": "agent/cc7-candidate-order",
+  "date": "2026-09-13",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra": "read-only; no renames, comments, prototypes or saves were made from this packet",
+  "docs": [
+    "docs/GUNNERY_CANDIDATE_ORDER.md"
+  ],
+  "sources": [
+    "include/bsp/gunnery_candidate_order.hpp",
+    "src/gunnery_candidate_order.cpp"
+  ],
+  "subject": "Which end of the per-category gunnery candidate list a gun tries first, whether the walk stops at the first survivor, and which distance gates the walk applies. Opened to settle the unverified claim in src/unit_gunnery_pass.cpp that step 8.7's unsorted appends are tried first.",
+  "reuses": [
+    "docs/UNIT_GUNNERY_PASS.md for the tick's step numbering, the this+0CCh / DAT_00E19BF8 table pair, the six gun bot slots and the 005459E0 / 00729B90 / 00729BC0 summaries. That document already carries the same conclusion about the walk direction; this packet is an independent instruction-level confirmation, not a discovery.",
+    "docs/GUN_BOT_TICKS.md for the bot-slot layout at gun+390h..gun+3A4h",
+    "docs/SHIP_SUB_ENTITY_LIST.md for vtable slot 0FCh",
+    "docs/ENTITY_CLASS_IDS.md for the 0..60h class-id space that makes 61h a full table row"
+  ],
+  "answer": {
+    "which_end_first": "The far end. 00865790 seeds the cursor at count-1 (MOV ECX,[ESP+10h] / ADD ECX,-1 / MOV [ESP+40h],ECX) and 00865822 decrements it with JNS back to 008657B0, so step 0 of the walk is order[count-1]. 008657A3 TEST EBX,EBX / JL takes the empty-list path when count is 0. EBX is reseeded from [ESP+40h] at 0086579A for every gun, so every gun walks the full array from the same end.",
+    "insert_direction": "The insert at 00865284 scans front to back and stops at the first slot the new candidate strictly beats: 008652B2 JG on a greater rank, or 008652C5 JA on an equal rank with a greater key. It advances on 008652B0 JL. The resulting order array is therefore descending in (rank, key), and the back-to-front walk consumes it ascending: the numerically smallest rank first, nearest first inside a rank.",
+    "step_8_7_unranked": "Confirmed. 008655E1 and 0086574B are both MOV dword ptr [ESP + EBX*4 + 90h],EBX - order[count] = count, no rank lookup, no shift. Neither arm touches entity+0C4h or DAT_00E19BF8. Both arms run after the recon sweep exits at 00865442, so their entries occupy the tail of the order array and the back-to-front walk reaches them first, arm A (the fire target, 008656EE..0086574B) before arm B (the command target, 0086558D..008655E8).",
+    "record_layout": "The native candidate record is 8 bytes, not 12: [ESP + i*8 + 1D0h] is the entity pointer and [ESP + i*8 + 1D4h] the float key. There is no rank field; 0086529F..008652A7 recomputes the rank from DAT_00E19BF8[entity+0C4h + category*61h] at every comparison.",
+    "first_survivor_wins": "Yes. The accept path 00865829 calls 00727F10 at 00865833, optionally 00864CA0 at 00865860, then falls into 00865871, which advances the gun list and jumps to 00865796. No instruction between 00865829 and 00865871 jumps back to 008657B0. Ordering is the whole decision for a gun.",
+    "range_gate": "The walk does have a maximum-range gate, contrary to the packet brief's assumption. 00729BC0 recomputes the distance itself at 00729C7A and rejects at 00729C8A JA when it exceeds [proj+60h] of the record selected by [gun+3F4h]+74h + (kind == 6 ? 48h : 0) + 34h. A separate MINIMUM gate at 008657D8..008657F0 skips a candidate when 00729B90(gun) > key, but only when 005459E0(gun) finds the kind in {5,6} AND the candidate answers vfn 5Ch(0Fh). 00863990's per-category gate at 00863A34 (key < owner[category*4 + 430h], strict) covers every recon contact and each arm's TARGET, but not that target's sub-entities, which face only 00864D90.",
+    "consequence_for_the_regression": "The ordering is native-correct, so wiring slot 0FCh did not introduce a bug; it restored the native preference. The mechanism is sufficient to raise assigns and shots while lowering the hit rate - category 7 never sweeps recon (008651F5) so before the change every category-7 gun cleared its target every tick, and guns that took the nearest recon contact now take the director's target at any distance up to [proj+60h], which is a ballistic reach and not a hit-probability gate. The mechanism does NOT support 'the gun accepts a target it cannot reach': 00729C81 forbids that. This packet ran no game frames, so the attribution of the measured 857 water/expired shells to this ordering is a mechanism argument, not run evidence (checklist rule 6)."
+  },
+  "verification": {
+    "checklist": "docs/WORKER_VERIFICATION_CHECKLIST.md",
+    "rule_1_callee_before_contract": "005459E0, 00729B90, 00729BC0, 00727F10, 00432480, 007B8AD0 and 00863990 were read in full before being described. 00728000 was read to 0072806A, 0063BCD0 to 0063BCE5; both are labelled partial. 00864D90 and 00864CA0 keep their prior Ghidra names and their bodies were NOT read in this packet - labelled as such in the doc's routine table.",
+    "rule_2_boundary_before_attribution": "ghidra proto --brief on 00865284 and 008657A3 both report BSP_UnitGunneryAi_Tick, body 00864FE0-008658B8. Neither is a function start; both are labels inside the tick, and every host_step row names 00864fe0 as the containing function.",
+    "rule_3_all_call_sites": "00863990 has three call sites in the tick (00865237, 008654D4, 00865626); all three push (category, entity, &outKey) right to left and all three are rowed below. 00864D90 has three (0086525D, 00865584, 008656E5), 00414DB0 three, 0042B2F0 two, 0063BCD0 two, 0042EE00 two, 0042EDD0 two - all rowed.",
+    "rule_4_producer_before_layout": "The 8-byte record shape is taken from the writers (008653E7/008653EE, 0086558D/008655DA, 008656EE/00865744), all of which use stride 8, not from the readers. The order array's 4-byte stride likewise from 00865421, 008655E1, 0086574B.",
+    "rule_5_partial_is_labelled": "00728000, 0063BCD0 partial; 00864D90, 00864CA0 unread. Section 10 of the doc separates proven from assumed.",
+    "rule_6_runtime_evidence": "NOT satisfied and labelled as such: no run was made. The hit-rate attribution in the answer is explicitly a mechanism argument.",
+    "rule_7_argument_counts_from_cleanup": "Every ABI in the doc's table quotes the RET immediate: 00863990 RET 0Ch, 00729BC0 RET 4, 00727F10 RET 8, 00432480 RET 4, 00729B90 / 005459E0 / 007B8AD0 RET with no immediate.",
+    "rule_8_register_provenance": "[ESP+18h] was established by filtering the whole listing for 'ESP + 0x18]': written at 00865086, 00865177, 0086520E, 00865438 and 00865450. 00865450 is on every path into the walk (00865442..00865450 is the recon sweep's unconditional exit, and 00865212 JZ jumps directly to 00865442), so the value 00865800 reads is the arm-A target from 00865447, not the recon list head 0086520E stored. Likewise [ESP+10h] (count) filtered: only 008651AA writes a constant, and the only compare against a constant is the unroll guard at 00865286. The +0FCh trap the brief warned about is present and was resolved both ways: [EDX+0FCh] at 00865521 and 00865680 is a vtable slot (EDX = *(void**)obj), while [ESI+0FCh] at 008655AC, 00865647 and 00865710 is a float on the entity.",
+    "rule_9_lease_only_what_is_annotated": "Leased 00865284 and 008657A3 only, the two addresses named in the packet. 00864FE0 was deliberately not leased. No ledger name records addresses outside the lease.",
+    "rule_10_report_carries_evidence": "host_steps below carry address/native/function for every native call site claimed; tools/verify_report_calls.py is the gate."
+  },
+  "routines": [
+    {
+      "address": "00865284",
+      "name": "the ordered insert inside BSP_UnitGunneryAi_Tick",
+      "abi": "not a function; a label inside 00864FE0 (body 00864FE0-008658B8). Inputs in registers: EDX = the new candidate's rank, ST0 = its key, ESI = category*61h, [ESP+20h] = the contact, [ESP+2Ch] = the key, [ESP+10h] = the count.",
+      "body": "00865284-0086542B",
+      "abi_evidence": "ghidra proto --brief 00865284 reports BSP_UnitGunneryAi_Tick body 00864fe0 - 008658b8, so this range has no RET of its own. The x87 balance is exact: 0086526E FLD pushes the key, the five comparison copies each use the FLD/FXCH/FCOMI/FSTP ST1 keep-the-original idiom, and 008653D9 FSTP ST0 pops it once on the commit path.",
+      "coverage": "complete: every instruction in 00865284..0086542B is accounted for in docs/GUNNERY_CANDIDATE_ORDER.md section 4",
+      "reconstruction": "gunnery_order_insert_position_00865284 and gunnery_order_insert_00865284"
+    },
+    {
+      "address": "008657a3",
+      "name": "the per-gun candidate walk inside BSP_UnitGunneryAi_Tick",
+      "abi": "not a function; a label inside 00864FE0. EBX = the cursor, reseeded from [ESP+40h] at 0086579A per gun; EDI = the gun from [gunListNode+8h]; ESI = &record[order[EBX]].",
+      "body": "00865773-00865871",
+      "abi_evidence": "ghidra proto --brief 008657A3 reports BSP_UnitGunneryAi_Tick body 00864fe0 - 008658b8. The loop back edge is 00865825 JNS to 008657B0 and the gun back edge is 0086587E JNZ to 00865796; the two are disjoint.",
+      "coverage": "complete: every instruction in 00865773..00865871 is accounted for in docs/GUNNERY_CANDIDATE_ORDER.md section 5",
+      "reconstruction": "gunnery_order_walk_index_008657a3 and gunnery_walk_pick_00865773"
+    },
+    {
+      "address": "00863990",
+      "name": "BSP_UnitGunneryAi_ScoreCandidate",
+      "abi": "__thiscall bool(AiNode* /*ECX*/, int category, Entity* contact, float* outKey), RET 0Ch",
+      "body": "00863990-00863a7e",
+      "abi_evidence": "RET 0x0C at 008639B3 and 00863A7C pops three stack dwords. EBP is loaded from [ESP+14h] after SUB ESP,0Ch / PUSH EBP, which is entry_esp+4, the first argument, and it is used as a scale index at 00863A34 FLD [ESI + EBP*4 + 430h] - so argument 1 is the category, not a pointer. All three call sites push right to left in the same order.",
+      "coverage": "complete: 00863990..00863A7E, including the 00863A34 range gate and the 00863A69 bias",
+      "reconstruction": "gunnery_candidate_distance_key_00863a21 and gunnery_category_range_gate_00863a34"
+    },
+    {
+      "address": "00729bc0",
+      "name": "BSP_Gun_BotSlotAcceptsTarget",
+      "abi": "__thiscall bool(Gun* /*ECX*/, Entity* target), RET 4",
+      "body": "00729bc0-00729d27",
+      "abi_evidence": "RET 0x4 at 00729BFD, 00729D13 and 00729D25 pops one stack dword. EBX is loaded from [ESP+14h] after SUB ESP,0Ch / PUSH EBX, which is entry_esp+4.",
+      "coverage": "complete: the null test, the vfn 5Ch(5)/+54h==2 test, the 00729C81 maximum-range rejection, the projectile-kind dispatch to one of six bot slots and the tail slot->vtable[1Ch](target)",
+      "reconstruction": "gunnery_weapon_range_gate_00729c81 (the range rule only; the slot dispatch is not projected here)"
+    },
+    {
+      "address": "00729b90",
+      "name": "BSP_Gun_MinimumAirEngagementRange",
+      "abi": "__thiscall float(Gun* /*ECX*/), result in ST0, RET with no immediate",
+      "body": "00729b90-00729bb2",
+      "abi_evidence": "RET at 00729BA8 and 00729BB2 with no immediate; no stack argument is read. The two returns select [[gun+3F4h]+74h]+7Ch (kind 6) or +34h (otherwise), then +58h - the same two records 00729BC0 selects between at 00729C4B LEA ECX,[EDI+EDI*8] / 00729C52 LEA EDI,[EDX + ECX*8 + 34h], which is +34h or +34h+48h = +7Ch.",
+      "coverage": "complete",
+      "reconstruction": "gunnery_min_range_skip_008657d8 (the caller-side rule; the accessor itself is not projected)"
+    },
+    {
+      "address": "005459e0",
+      "name": "BSP_Gun_IsTorpedoClassLauncher",
+      "abi": "__thiscall bool(Gun* /*ECX*/), RET with no immediate",
+      "body": "005459e0-005459fe",
+      "abi_evidence": "RET at 005459F8 and 005459FE with no immediate. The body is exactly: EAX = [[gun+3F4h]+80h]; return EAX == 5 || EAX == 6.",
+      "coverage": "complete. The prior name is retained but is a hypothesis; what is proven is the kind test against {5,6}.",
+      "reconstruction": "an input flag on gunnery_min_range_skip_008657d8, not a separate rule"
+    },
+    {
+      "address": "00727f10",
+      "name": "BSP_Gun_SetBotFireTarget",
+      "abi": "__thiscall void(Gun* /*ECX*/, Entity* target, int designated), RET 8",
+      "body": "00727f10-00727ffe",
+      "abi_evidence": "RET 0x8 at 00727FE9 and 00727FFC pops two stack dwords. EDI = [ESP+0Ch] after PUSH ESI / PUSH EDI is entry_esp+4 (the target) and [ESP+10h] at 00727F4E is entry_esp+8 (the designated byte).",
+      "coverage": "complete: six slots at +390h, +394h, +398h, +39Ch, +3A0h, +3A4h each get vtable[38h](target), except +398h which calls vtable[30h]() for a class-0Fh target, +394h which calls vtable[30h]() for anything that is neither class 0Fh nor 0Eh, and +39Ch which additionally gets vtable[3Ch](designated) - the only consumer of the flag.",
+      "reconstruction": "not projected; this packet only establishes that the walk reaches it once per gun"
+    },
+    {
+      "address": "00728000",
+      "name": "BSP_Gun_ClearBotFireTarget",
+      "abi": "__thiscall void(Gun* /*ECX*/)",
+      "body": "00728000-00728073",
+      "abi_evidence": "the epilogue past 0072806A was not read, so the RET immediate is not quoted here; no stack argument is read in 00728000..0072806A.",
+      "coverage": "partial: 00728000..0072806A read (vtable[30h]() on +398h, +394h, +390h, +39Ch, +3A0h); 0072806A..00728073 unread",
+      "reconstruction": "not projected"
+    },
+    {
+      "address": "00432480",
+      "name": "the base vtable slot 0FCh, the sub-entity list",
+      "abi": "__thiscall void(Entity* /*ECX*/, Container* out), RET 4",
+      "body": "00432480-00432492",
+      "abi_evidence": "RET 0x4 at 00432492 pops one dword. PUSH ECX reserves the temporary, MOV [ESP],ECX stores `this`, MOV ECX,[ESP+8] reads the argument (entry_esp+4 shifted by the one push), PUSH EAX = &this, CALL 004323D0.",
+      "coverage": "complete: the base appends the entity itself, so an entity that does not override 0FCh contributes exactly one candidate",
+      "reconstruction": "not projected; see docs/SHIP_SUB_ENTITY_LIST.md"
+    },
+    {
+      "address": "007b8ad0",
+      "name": "the +9D8h null test used by the recon key bias",
+      "abi": "__thiscall bool(Entity* /*ECX*/), RET with no immediate",
+      "body": "007b8ad0-007b8adb",
+      "abi_evidence": "XOR EAX,EAX / CMP [ECX+9D8h],EAX / SETZ AL / RET. Four instructions, no stack argument.",
+      "coverage": "complete",
+      "reconstruction": "an input flag on gunnery_candidate_distance_key_00863a21"
+    },
+    {
+      "address": "0063bcd0",
+      "name": "the scratch container reset at ai+0BCh",
+      "abi": "__thiscall void(Container* /*ECX*/)",
+      "body": "0063bcd0-0063bd09 (approximate; the tail was not read)",
+      "abi_evidence": "head only: SUB ESP,8 / PUSH EBX / PUSH ESI / MOV ESI,ECX / EBX = [ESI+8] / CMP [ESI+4],EBX / JBE / CALL 00BF6713. The +4 <= +8 test is the MSVC checked-vector _Mylast <= _Myend assertion.",
+      "coverage": "partial: 0063BCD0..0063BCE5 read; the rest unread. It is called immediately before the 0FCh fill and before the begin/end iteration at both arms, which is what places it as a reset.",
+      "reconstruction": "not projected"
+    },
+    {
+      "address": "00864d90",
+      "name": "BSP_UnitGunneryVisibility_Test",
+      "abi": "__thiscall bool(VisCache* /*ECX*/, Entity*) - the RET immediate was not read",
+      "body": "00864d90-00864fc9",
+      "abi_evidence": "not established in this packet",
+      "coverage": "body NOT read in this packet. The prior Ghidra name is retained and the routine is referenced only by address and position - it is the gate every step-8.7 sub-entity passes before entering the list.",
+      "reconstruction": "not projected; follow-up 2"
+    },
+    {
+      "address": "00864ca0",
+      "name": "BSP_UnitGunneryAi_AddGunToTargetRecord",
+      "abi": "__thiscall void(AiNode* /*ECX*/, Entity*, Gun*) - the RET immediate was not read",
+      "body": "00864ca0-00864d83",
+      "abi_evidence": "not established in this packet; the argument order is from the call site 00865858..00865860 (PUSH EDI = gun, PUSH ECX = entity, MOV ECX,[ESP+14h] = the AI node after the two pushes)",
+      "coverage": "body NOT read in this packet. The prior Ghidra name is retained.",
+      "reconstruction": "not projected"
+    }
+  ],
+  "host_steps": [
+    {
+      "step": "8.5 recon sweep: the per-contact gate and key",
+      "address": "00865237",
+      "native": "00863990",
+      "function": "00864fe0",
+      "method": "gunnery_category_range_gate_00863a34 / gunnery_candidate_distance_key_00863a21; PUSH EDX = &[ESP+2Ch], PUSH EAX = the contact, PUSH ESI = the category, ECX = EBX the AI node"
+    },
+    {
+      "step": "8.5 recon sweep: the contact list head",
+      "address": "00865201",
+      "native": "008053c0",
+      "function": "00864fe0",
+      "method": "ECX = [owner+54h], the side object; the result's +DE8h is the contact list. Not projected."
+    },
+    {
+      "step": "8.5 recon sweep: the second reject",
+      "address": "00865248",
+      "native": "00862440",
+      "function": "00864fe0",
+      "method": "ECX = [ESP+20h], the contact; a true result jumps to 0086542F and drops the contact. Body not read; not projected."
+    },
+    {
+      "step": "8.5 recon sweep: the visibility gate",
+      "address": "0086525d",
+      "native": "00864d90",
+      "function": "00864fe0",
+      "method": "ECX = [ai+68h], PUSH the contact. Body not read."
+    },
+    {
+      "step": "8.7 arm B: the command target's per-category range gate",
+      "address": "008654d4",
+      "native": "00863990",
+      "function": "00864fe0",
+      "method": "gunnery_category_range_gate_00863a34; PUSH ECX = &[ESP+6Ch], PUSH EDX = [ESP+38h] the command target, PUSH EAX = the category. A false result skips the whole arm to 00865609."
+    },
+    {
+      "step": "8.7 arm B: the owner's position, the distance reference",
+      "address": "008654e5",
+      "native": "00427eb0",
+      "function": "00864fe0",
+      "method": "ECX = [ESP+1Ch], the owner entity; the result points at three floats copied to [ESP+60h..68h]"
+    },
+    {
+      "step": "8.7 arm B: reset the scratch container at ai+0BCh",
+      "address": "00865516",
+      "native": "0063bcd0",
+      "function": "00864fe0",
+      "method": "ECX = ESI = [ESP+0Ch] + 0BCh"
+    },
+    {
+      "step": "8.7 arm B: begin iterator",
+      "address": "00865531",
+      "native": "0042ee00",
+      "function": "00864fe0",
+      "method": "ECX = the container, PUSH &[ESP+44h]; [ESP+48h] becomes the walking pointer EDI"
+    },
+    {
+      "step": "8.7 arm B: end iterator",
+      "address": "0086553d",
+      "native": "0042edd0",
+      "function": "00864fe0",
+      "method": "ECX = the container, PUSH &[ESP+70h]; [ESP+74h] is the loop bound compared at 0086555D"
+    },
+    {
+      "step": "8.7 arm B: the sub-entity visibility gate",
+      "address": "00865584",
+      "native": "00864d90",
+      "function": "00864fe0",
+      "method": "ECX = [ai+68h], PUSH ESI = the sub-entity. The ONLY gate a step-8.7 sub-entity faces before 0086558D writes it into the record array."
+    },
+    {
+      "step": "8.7 arm B: refresh the sub-entity pose",
+      "address": "0086559f",
+      "native": "00414db0",
+      "function": "00864fe0",
+      "method": "guarded by CMP byte ptr [ESI+0C8h],0 at 00865594"
+    },
+    {
+      "step": "8.7 arm B: the raw distance key",
+      "address": "008655d5",
+      "native": "0042b2f0",
+      "function": "00864fe0",
+      "method": "ECX = &[ESP+78h], the three differences [ESP+60h..68h] - [ESI+0FCh..104h]; the result is stored unbiased at 008655DA into record[EBX].key"
+    },
+    {
+      "step": "8.7 arm A: the fire target's per-category range gate",
+      "address": "00865626",
+      "native": "00863990",
+      "function": "00864fe0",
+      "method": "gunnery_category_range_gate_00863a34; PUSH EDX = &[ESP+6Ch], PUSH EDI = [ESP+18h] the fire target, PUSH EAX = the category. A false result skips the arm to 00865773, the walk."
+    },
+    {
+      "step": "8.7 arm A: refresh the owner pose before reading +0FCh",
+      "address": "00865642",
+      "native": "00414db0",
+      "function": "00864fe0",
+      "method": "ECX = ESI = [ESP+1Ch]; guarded by CMP byte ptr [ESI+0C8h],0 at 00865637. The three floats read at 00865647..0086566B are entity fields, NOT the vtable slot 0FCh used at 00865680."
+    },
+    {
+      "step": "8.7 arm A: reset the scratch container at ai+0BCh",
+      "address": "00865679",
+      "native": "0063bcd0",
+      "function": "00864fe0",
+      "method": "ECX = ESI = EBX + 0BCh, EBX = [ESP+0Ch]; the same container arm B used, so arm A does not accumulate arm B's entries"
+    },
+    {
+      "step": "8.7 arm A: begin iterator",
+      "address": "00865692",
+      "native": "0042ee00",
+      "function": "00864fe0",
+      "method": "ECX = the container, PUSH &[ESP+24h]; [ESP+28h] becomes EDI"
+    },
+    {
+      "step": "8.7 arm A: end iterator",
+      "address": "0086569e",
+      "native": "0042edd0",
+      "function": "00864fe0",
+      "method": "ECX = the container, PUSH &[ESP+4Ch]; [ESP+50h] is the bound compared at 008656BE"
+    },
+    {
+      "step": "8.7 arm A: the sub-entity visibility gate",
+      "address": "008656e5",
+      "native": "00864d90",
+      "function": "00864fe0",
+      "method": "ECX = [ai+68h], PUSH ESI = the sub-entity"
+    },
+    {
+      "step": "8.7 arm A: refresh the sub-entity pose",
+      "address": "00865700",
+      "native": "00414db0",
+      "function": "00864fe0",
+      "method": "guarded by CMP byte ptr [ESI+0C8h],0 at 008656F5"
+    },
+    {
+      "step": "8.7 arm A: the raw distance key",
+      "address": "0086573f",
+      "native": "0042b2f0",
+      "function": "00864fe0",
+      "method": "ECX = &[ESP+84h]; stored unbiased at 00865744, then order[EBX] = EBX at 0086574B"
+    },
+    {
+      "step": "8.8 walk: the gun-kind test that arms the minimum-range gate",
+      "address": "008657c0",
+      "native": "005459e0",
+      "function": "00864fe0",
+      "method": "gunnery_min_range_skip_008657d8 first input; ECX = EDI the gun. A false result jumps past the whole minimum-range test to 008657F2."
+    },
+    {
+      "step": "8.8 walk: the minimum range",
+      "address": "008657e1",
+      "native": "00729b90",
+      "function": "00864fe0",
+      "method": "gunnery_min_range_skip_008657d8; ECX = EDI the gun; 008657EC FCOMIP ST0(range),ST1(key) and 008657F0 JA skip to 00865822"
+    },
+    {
+      "step": "8.8 walk: the accept gate, including the only maximum-range test",
+      "address": "008657f7",
+      "native": "00729bc0",
+      "function": "00864fe0",
+      "method": "gunnery_weapon_range_gate_00729c81; PUSH ECX = [ESI] the candidate entity, ECX = EDI the gun. A false result is 008657FE JZ to 00865822, the next candidate."
+    },
+    {
+      "step": "8.8 walk: commit the chosen candidate to the gun",
+      "address": "00865833",
+      "native": "00727f10",
+      "function": "00864fe0",
+      "method": "gunnery_walk_pick_00865773 returns here; PUSH ECX = [ESP+30h] the designated byte, PUSH EDX = [ESI] the candidate, ECX = EDI the gun. Nothing after this jumps back to 008657B0."
+    },
+    {
+      "step": "8.8 walk: record the gun against the target for kinds 2, 3, 4, 6",
+      "address": "00865860",
+      "native": "00864ca0",
+      "function": "00864fe0",
+      "method": "PUSH EDI = the gun, PUSH ECX = the candidate, ECX = [ESP+14h] = the AI node after the two pushes. Body not read."
+    },
+    {
+      "step": "8.8 walk: no candidate survived",
+      "address": "0086586c",
+      "native": "00728000",
+      "function": "00864fe0",
+      "method": "ECX = EDI the gun. Reached from 008657A3 JL when count is 0 and from 00865827 when the walk is exhausted."
+    },
+    {
+      "step": "00863990 step 1: the class and table pre-gate",
+      "address": "008639a2",
+      "native": "008633d0",
+      "function": "00863990",
+      "method": "PUSH EDI = the contact, PUSH EBP = the category; a false result is the early XOR AL,AL return. Body not read; see docs/UNIT_GUNNERY_PASS.md."
+    },
+    {
+      "step": "00863990: refresh the contact pose",
+      "address": "008639d7",
+      "native": "00414db0",
+      "function": "00863990",
+      "method": "ECX = EDI, guarded by CMP byte ptr [EDI+0C8h],0"
+    },
+    {
+      "step": "00863990: refresh the owner pose",
+      "address": "008639e7",
+      "native": "00414db0",
+      "function": "00863990",
+      "method": "ECX = ESI = [ai+50h], guarded by CMP byte ptr [ESI+0C8h],0"
+    },
+    {
+      "step": "00863990: the straight-line distance the range gate reads",
+      "address": "00863a21",
+      "native": "0042b2f0",
+      "function": "00863990",
+      "method": "gunnery_category_range_gate_00863a34; the result is stored to *outKey at 00863A32 BEFORE the 00863A69 bias, so the gate compares the unbiased length"
+    },
+    {
+      "step": "00863990: the +9D8h test that arms the 100.0 bias",
+      "address": "00863a60",
+      "native": "007b8ad0",
+      "function": "00863990",
+      "method": "gunnery_candidate_distance_key_00863a21; ECX = EDI the contact, reached only when the contact answers vfn 5Ch(0Fh) at 00863A58"
+    },
+    {
+      "step": "00729BC0: refresh the target pose",
+      "address": "00729c20",
+      "native": "00414db0",
+      "function": "00729bc0",
+      "method": "ECX = EBX the target, guarded by CMP byte ptr [EBX+0C8h],0"
+    },
+    {
+      "step": "00729BC0: refresh the gun pose",
+      "address": "00729c30",
+      "native": "00414db0",
+      "function": "00729bc0",
+      "method": "ECX = ESI the gun, guarded by CMP byte ptr [ESI+0C8h],0"
+    },
+    {
+      "step": "00729BC0: the distance the maximum-range gate uses",
+      "address": "00729c7a",
+      "native": "0042b2f0",
+      "function": "00729bc0",
+      "method": "gunnery_weapon_range_gate_00729c81; recomputed here from the two refreshed poses, NOT read from the candidate record's key. 00729C86 FCOMIP ST0(distance),ST1([proj+60h]) and 00729C8A JA reject to 00729D0A."
+    },
+    {
+      "step": "00432480: the base sub-entity list appends the entity itself",
+      "address": "0043248c",
+      "native": "004323d0",
+      "function": "00432480",
+      "method": "ECX = the out container, PUSH EAX = &this. Body of 004323D0 not read; the argument setup is what establishes the append."
+    }
+  ],
+  "indirect_sites": [
+    {
+      "site": "00865521",
+      "slot": "00865521+0fc",
+      "method": "MOV EDX,[[ESP+38h]] / MOV EAX,[EDX+0FCh] / PUSH ESI / CALL EAX - the command target's sub-entity list virtual, base implementation 00432480. EDX is the vtable, so +0FCh here is a slot, not the entity float at the same offset.",
+      "function": "00864fe0"
+    },
+    {
+      "site": "00865689",
+      "slot": "00865689+0fc",
+      "method": "MOV EDX,[EDI] / MOV EAX,[EDX+0FCh] / PUSH ESI / MOV ECX,EDI / CALL EAX - the fire target's sub-entity list virtual, same slot",
+      "function": "00864fe0"
+    },
+    {
+      "site": "00865447",
+      "slot": "00865447+04",
+      "method": "ECX = [ai+5Ch], CALL [[ECX]+4h] - resolves the arm-A fire target into [ESP+18h]",
+      "function": "00864fe0"
+    },
+    {
+      "site": "008657d2",
+      "slot": "008657d2+5c",
+      "method": "candidate->vtable[5Ch](0Fh) - the class query that arms the minimum-range gate",
+      "function": "00864fe0"
+    }
+  ],
+  "constants": [
+    {
+      "name": "kGunneryOrderCapacity",
+      "value": "0x50",
+      "evidence": "the order array spans ESP+90h..ESP+1CFh (140h bytes, stride 4) and the record array ESP+1D0h..ESP+44Fh (280h bytes, stride 8) inside the 444h frame of 00864FE0; both hold exactly 50h entries. No instruction compares the count against this bound - the only constant compare on [ESP+10h] is the four-way unroll guard at 00865286."
+    },
+    {
+      "name": "the recon key bias",
+      "value": "100.0",
+      "evidence": "the double at 00D7A220 reads 00 00 00 00 00 00 59 40; added at 00863A6B. Already declared as kUnitGunneryLoiteringPlanePenalty in include/bsp/unit_gunnery_pass.hpp and reused rather than redeclared."
+    },
+    {
+      "name": "the rank table row width",
+      "value": "0x61",
+      "evidence": "IMUL ESI,ESI,0x61 at 00865272; the index is [entity+0C4h] + category*61h into the dword table at 00E19BF8"
+    }
+  ],
+  "corrections": [
+    {
+      "where": "include/bsp/unit_gunnery_pass.hpp, struct GunneryCandidate",
+      "was": "a three-field record carrying entity, distance and rank",
+      "is": "the native record is 8 bytes, {void* entity; float key;}. There is no rank field; the rank is recomputed from DAT_00E19BF8 at every comparison.",
+      "evidence": "stride 8 at every access - 008653E7/008653EE on the commit, 008652A5/008652B8 on the compare, 0086558D/008655DA and 008656EE/00865744 on the two arms. 0086529F..008652A7 is the per-comparison rank reload.",
+      "severity": "modelling, not behavioural: caching a pure function of (category, class id) is equivalent as long as neither input changes during the loop, which they do not."
+    },
+    {
+      "where": "src/unit_gunnery_pass.cpp, the step 8.7 comment",
+      "was": "\"Both arms append unsorted, so their entries sit at the end of the order array and are therefore tried first.\"",
+      "is": "the conclusion is correct, but the stated reason is incomplete. Sitting at the end makes them tried LAST unless the walk is back-to-front, which it is: 00865790 seeds the cursor at count-1 and 00865822 decrements.",
+      "evidence": "00865789..00865790 and 00865822..00865825",
+      "severity": "comment only; the code is right"
+    },
+    {
+      "where": "src/unit_gunnery_pass.cpp, candidates[count].rank = 0 in the step 8.7 arms",
+      "was": "a stored rank of 0 for the director's entries",
+      "is": "an unobservable placeholder. The arms run strictly after the last ordered insert, so no comparison ever reads it. The value is misleading because a rank of 0 is a rejection in 00862820's step 3.",
+      "evidence": "the arms begin at 008654AC, after the sweep exit at 00865442; 008655E1 and 0086574B write only the order array",
+      "severity": "cosmetic"
+    },
+    {
+      "where": "the packet brief's assumption that the walk may have no range gate",
+      "was": "\"does the gun accept a target it cannot reach and simply miss?\"",
+      "is": "no. 00729BC0 recomputes the distance at 00729C7A and rejects at 00729C8A when it exceeds [proj+60h]. A gun that cannot reach the director's target falls through to the next candidate.",
+      "evidence": "00729C7A..00729C8A; the reject target 00729D0A is XOR AL,AL",
+      "severity": "material - it changes what the ordering implies for the regression"
+    }
+  ],
+  "assumptions": [
+    "00864D90 and 00864CA0 keep their prior Ghidra names; their bodies were not read in this packet.",
+    "The meaning of the class queries vfn 5Ch(0Fh), (0Eh), (5) and of the kind enum [gun+3F4h]+80h is taken from docs/UNIT_GUNNERY_PASS.md and docs/WEAPON_DIRECTOR.md, not re-derived here.",
+    "0063BCD0 is described as a container reset from its head and its position before the 0FCh fill; its body past 0063BCE5 was not read.",
+    "No game frames were run. The link from this ordering to the measured 857 water/expired shells is a mechanism argument, not run evidence."
+  ],
+  "ledger": [
+    {
+      "address": "00865284",
+      "name": "BSP_UnitGunneryAi_InsertRankedCandidate",
+      "note": "recorded as a name only; the address is a label inside BSP_UnitGunneryAi_Tick and no Ghidra mutation was made from this packet"
+    },
+    {
+      "address": "008657a3",
+      "name": "BSP_UnitGunneryAi_WalkCandidatesForGun",
+      "note": "recorded as a name only; same containing function"
+    }
+  ],
+  "build": "./scripts/build.ps1 in the worktree: bsp_core and bsp_game link clean at /W4 /WX /fp:strict Win32; src/gunnery_candidate_order.cpp added to cmake/startup.cmake on bsp_core.",
+  "tests": "ctest: 1/1 reconstructed_math passed. No new test case was added - the new rules are direct projections with no arithmetic risk the existing suite does not already cover."
+}

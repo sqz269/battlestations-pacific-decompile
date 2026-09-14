@@ -178,8 +178,8 @@ GameMissionLuaHost::GameMissionLuaHost(GameHostLog& log, GameVfsHost& vfs)
     // milestone 2b recorded, so every override query answers with the base file
     // alone. The resource adapter is the same one the locale tables read
     // through; it is what supplies 00886280's folder enumeration.
-    if (vfs_.manager() != nullptr) {
-        resources_ = std::make_unique<bsp::VfsLocaleRuntime>(vfs_.manager()->context(),
+    if (vfs_.ready()) {
+        resources_ = std::make_unique<bsp::VfsLocaleRuntime>(vfs_.context(),
             vfs_.search_registrations(), content_suffixes_, []() -> std::uint32_t { return 0; });
     }
 }

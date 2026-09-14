@@ -1,0 +1,336 @@
+{
+  "packet": "cc7_gun_mount_positions",
+  "owner": "agent/cc7-mount-positions",
+  "docs": [
+    "docs/GUN_MOUNT_POSITIONS.md"
+  ],
+  "sources": [
+    "include/bsp/gun_mount_positions.hpp",
+    "src/gun_mount_positions.cpp"
+  ],
+  "subject": "Where a gun's shot starts. The mount tail of BSP_Gun_Fire 00730160 (00730762..00730A0E) that docs/GUN_DISPERSION.md left as 'call shape only': the node pick at gun+3CCh, the weapon class's per-barrel muzzle-offset vector at class+98h and its producer 007325A0, the affine transform that turns the two into a world muzzle point, and the fallback when a class has no muzzle list. Establishes that gun vtable slot 1E0h carries a direction, not an origin, and that the class Height plays no part in firing.",
+  "reuses": [
+    "docs/GUN_DISPERSION.md for frame A (entry-108h) in 00730160 and for the dispersion cone applied to the direction",
+    "docs/GUN_PLATFORM_ARC.md for the gun vtable map and 006FE160's ring arithmetic",
+    "docs/PROJECTILE_IMPACT.md for the seven-argument create_projectile at 0072C006, which binds pos and dir independently",
+    "include/bsp/camera_projection.hpp for CameraMatrix and include/bsp/camera_affine.hpp for transform_point_004142e0",
+    "include/bsp/gun_dispersion.hpp for gun_multi_bullet_ring_0072fefb, the salvo cone, which is not repeated",
+    "include/bsp/gun_platform_arc.hpp for kGunArcOffBarrelIndex (gun+44Ch), which is not repeated"
+  ],
+  "functions": [
+    {
+      "address": "00730160",
+      "name": "BSP_Gun_Fire",
+      "abi": "__thiscall(gun)(bool useExplicitThrow, float throwA, float throwB), RET 0Ch at 00730A1B",
+      "coverage": "partial: complete for 00730762..00730A0E, the mount tail; 00730160..0073075E belongs to docs/GUN_DISPERSION.md",
+      "no_ghidra_function": false,
+      "calls": [
+        {
+          "address": "007301cc",
+          "native": "00b6db70",
+          "role": "refresh the mount node's world matrix when [node+5Ch] bit 2 is clear; node = [gun+3CCh] loaded at 007301BD"
+        },
+        {
+          "address": "00730217",
+          "native": "00730217",
+          "role": "indirect [[gun+3Ch]]+94h, taken only when [[gun+3Ch]]+8Ch answered true at 007301F1; consumes one of the three pushes (RET 4) and returns a matrix pointer",
+          "contract": "unread; the object at gun+3Ch belongs to the model/scene packet"
+        },
+        {
+          "address": "0073021b",
+          "native": "00413920",
+          "role": "BSP_Matrix_Multiply4x4(this = the slot-94h result)(out, nodeMatrix); reads its arguments at [ESP+44h]/[ESP+48h] after SUB ESP,40h, which are the two pushes the slot-94h call left"
+        },
+        {
+          "address": "00730225",
+          "native": "004134f0",
+          "role": "BSP_Matrix_Copy4x4X87 the product back over the node matrix copy at frame A +48h"
+        },
+        {
+          "address": "007307a0",
+          "native": "004181a0",
+          "role": "index the weapon class's muzzle-offset vector: ECX = class+98h, argument gun+44Ch; returns begin + index*0Ch"
+        },
+        {
+          "address": "007307d3",
+          "native": "004142e0",
+          "role": "BSP_Vector3f_TransformAffinePoint(this = the local muzzle offset)(out, nodeMatrix); the world mount point"
+        },
+        {
+          "address": "007308bc",
+          "native": "00b6db70",
+          "role": "fallback branch: refresh gun+3BCh, the model's own first node, before reading its translation at node+120h"
+        },
+        {
+          "address": "00730840",
+          "native": "0072f830",
+          "role": "BSP_Gun_SpawnShotAndEffects(worldMuzzle, localMuzzle, direction, 1); four pushes at 0073082D-0073083D"
+        },
+        {
+          "address": "007308fe",
+          "native": "0072f830",
+          "role": "the no-muzzle-list fallback with flag 1: arg1 = [gun+3BCh]+120h, arg2 zeroed"
+        },
+        {
+          "address": "00730978",
+          "native": "0072f830",
+          "role": "the shared flag-0 site, reached by two argument setups: the mount-list path pushes at 0073085F-0073086F and JMPs here from 00730870, and the fallback pushes at 00730943-00730975"
+        }
+      ]
+    },
+    {
+      "address": "0072f830",
+      "name": "BSP_Gun_SpawnShotAndEffects",
+      "abi": "__thiscall(gun)(const float* muzzleWorld, const float* muzzleLocal, const float* direction, int flag), RET 10h at 0073015A; frame ESP = entry-0E8h",
+      "coverage": "partial: complete for the argument binding, the slot-1E0h call and both 0072BF10 sites; the effect body 0072F891..0072FDF0 unread",
+      "no_ghidra_function": false,
+      "calls": [
+        {
+          "address": "0072fe74",
+          "native": "006e3dc0",
+          "role": "indirect [[gun]]+1E0h with (out = frame local, in = arg3, the direction); the base implementation copies three floats. The 27h override 006FE160 occupies the same slot. This is the only dispatch of slot 1E0h in .text."
+        },
+        {
+          "address": "0072feca",
+          "native": "00b63f10",
+          "role": "BSP_Matrix_BuildLookAt(matrix, eye = zeroed triple, target = the slot-1E0h result, up = (0,1,0)); the basis for the salvo cone"
+        },
+        {
+          "address": "0072fed3",
+          "native": "006fdd00",
+          "role": "post-process that matrix",
+          "contract": "unread"
+        },
+        {
+          "address": "00730042",
+          "native": "0072bf10",
+          "role": "BSP_Gun_CreateProjectile(pos = arg1, dir = the cone-perturbed direction, flag); the per-pellet loop"
+        },
+        {
+          "address": "00730076",
+          "native": "0072bf10",
+          "role": "the same for OneTimeBulletAmount <= 1: dir = the unperturbed slot-1E0h result"
+        }
+      ]
+    },
+    {
+      "address": "0072bf10",
+      "name": "BSP_Gun_CreateProjectile",
+      "abi": "__thiscall(gun)(const float* pos, const float* dir, int flag)",
+      "coverage": "partial: the near-camera test and the argument forwarding only; 0072BFFB..0072C162 is docs/PROJECTILE_IMPACT.md's",
+      "no_ghidra_function": false,
+      "calls": [
+        {
+          "address": "0072bf96",
+          "native": "004193e0",
+          "role": "length of ([gun+408h..410h] - [localPlayer+0FCh..104h]); gun+408h is the aim point per docs/GUN_BOT_TICKS.md, not the muzzle. Decides the nearCamera flag."
+        }
+      ]
+    },
+    {
+      "address": "0072e6d0",
+      "name": "BSP_Gun_SetupFromDescriptor",
+      "abi": "__thiscall(gun)(...); the cleanup was not read",
+      "coverage": "partial: 0072E6F5..0072E73A (the muzzle count and barrel index) and 0072E93D..0072EE97 (the node chain)",
+      "no_ghidra_function": false,
+      "calls": [
+        {
+          "address": "0072e713",
+          "native": "0072ab80",
+          "role": "muzzle count of the weapon class, stored to gun+448h at 0072E71A; gun+44Ch zeroed at 0072E72A"
+        },
+        {
+          "address": "0072e9e9",
+          "native": "0071ad50",
+          "role": "look the node named \"base\" (00CFACD8) up on [[gun+360h]+160h]; result stored to gun+3C4h at 0072E9F0",
+          "contract": "unread; model/scene packet"
+        },
+        {
+          "address": "0072ea15",
+          "native": "0071ad50",
+          "role": "the same for \"barrel\" (00CF70C4); result stored to gun+3C8h at 0072EA1C",
+          "contract": "unread; model/scene packet"
+        }
+      ]
+    },
+    {
+      "address": "007325a0",
+      "name": "BSP_GunClass_LoadFireNodeMuzzleOffsets",
+      "abi": "__thiscall(loader)(), RET at 007326D9 with no immediate",
+      "coverage": "partial: complete for the flag-0 \"fire\" copy into class+98h; the branches from 007326DA are unread",
+      "no_ghidra_function": false,
+      "calls": [
+        {
+          "address": "007325f3",
+          "native": "00718870",
+          "role": "query [loader+50h] for the node group named \"fire\" (00CE6798, length 4) with flag 0",
+          "contract": "unread; model/resource packet"
+        },
+        {
+          "address": "00732652",
+          "native": "00718870",
+          "role": "the same query with flag 1; its result (EDI) feeds the unread branches",
+          "contract": "unread"
+        },
+        {
+          "address": "007326bf",
+          "native": "00732560",
+          "role": "seven __cdecl arguments (ADD ESP,1Ch at 007326C4); copies the group's element range [result+44h) into the vector at class+98h"
+        }
+      ]
+    },
+    {
+      "address": "00732560",
+      "name": "STL_copy_into_vector_00732560",
+      "abi": "__cdecl(..., 7 arguments)",
+      "coverage": "complete; an STL algorithm instantiation, not renamed",
+      "no_ghidra_function": false,
+      "calls": [
+        {
+          "address": "00732576",
+          "native": "004215d0",
+          "role": "append one 0Ch-byte element; the loop steps ADD ESI,0Ch at 0073257B"
+        }
+      ]
+    },
+    {
+      "address": "007327b0",
+      "name": "BSP_GunClass_ReadLuaFields",
+      "abi": "__thiscall(gunClass)(...)",
+      "coverage": "partial: 00732AB9..00732B1C only",
+      "no_ghidra_function": false,
+      "calls": [
+        {
+          "address": "00732adb",
+          "native": "00b66380",
+          "role": "read the integer Lua key OneTimeBulletAmount (00CFE898) into class+0CCh at 00732AE4"
+        },
+        {
+          "address": "00732b17",
+          "native": "00b66330",
+          "role": "read the float Lua key MultiBulletConeAngle (00CFE880), default 0.0f, into class+0D0h at 00732B1C"
+        }
+      ]
+    },
+    {
+      "address": "0072ab80",
+      "name": "BSP_GunClass_MuzzleCount",
+      "abi": "__thiscall(gunClass)() -> int, RET at 0072ABAB and 0072ABD1",
+      "coverage": "complete",
+      "no_ghidra_function": false,
+      "calls": []
+    },
+    {
+      "address": "006fdd70",
+      "name": "BSP_GunClass_MuzzleCountRaw",
+      "abi": "__thiscall(gunClass)() -> int, RET at 006FDD7A and 006FDD93",
+      "coverage": "complete",
+      "no_ghidra_function": false,
+      "calls": []
+    },
+    {
+      "address": "004181a0",
+      "name": "STL_inst_004181a0",
+      "abi": "__thiscall(vectorHeader)(int index) -> begin + index*0Ch, RET 4 at 004181D8",
+      "coverage": "complete; a library instantiation, not renamed",
+      "no_ghidra_function": false,
+      "calls": []
+    },
+    {
+      "address": "006e3dc0",
+      "name": "BSP_Slot_CopyVec3Identity",
+      "abi": "(float* out, const float* in), ECX unused, RET 8 at 006E3DD8",
+      "coverage": "complete, from the raw listing; no Ghidra function",
+      "no_ghidra_function": "006e3dda",
+      "calls": []
+    },
+    {
+      "address": "006fe160",
+      "name": "BSP_MSTGun_RingMuzzleOrigin",
+      "abi": "__thiscall(gun)(float* out, const float* in), RET 8 at 006FE38B",
+      "coverage": "complete for the argument binding and the ring; the arithmetic is docs/GUN_PLATFORM_ARC.md's",
+      "no_ghidra_function": false,
+      "calls": [
+        {
+          "address": "006fe1a4",
+          "native": "00b63f10",
+          "role": "BSP_Matrix_BuildLookAt(matrix at [ESP+44h], eye = the zeroed triple at [ESP+38h], target = in, up = (0,1,0)); the eye being a pinned zero is what shows `in` is a direction"
+        }
+      ]
+    }
+  ],
+  "corrections": [
+    {
+      "subject": "gun vtable slot 1E0h",
+      "doc": "docs/GUN_PLATFORM_ARC.md",
+      "was": "slot 1E0h base 006E3DC0 'copies three floats; the unmodified muzzle origin'; the 27h override 006FE160 'offsets the origin ... This is how a salvo mount spreads its barrels.'",
+      "is": "slot 1E0h takes and returns a shot DIRECTION. Its `in` is 0072F830's arg3, which BSP_Gun_Fire fills from row 2 of the mount node's world matrix and then perturbs with the dispersion cone. The muzzle position is a different argument (arg1) produced at 00730762..007307FC. 006FE160 spreads the shot cone for sub-type 27h, not the barrels across the hull.",
+      "evidence": "Three independent lines. (a) docs/GUN_DISPERSION.md's own frame-A table already calls frame A +2Ch..+34h 'row 2, the direction the shot leaves on', and that is the triple passed as arg3 at 0073083D. (b) 006FE160 passes `in` to BSP_Matrix_BuildLookAt as the look-at target with the eye pinned to the triple zeroed at 006FE192-006FE19E (LEA EDX at 006FE18A), meaningful only for a direction. (c) the ring radius class+0D0h is the Lua key MultiBulletConeAngle (00CFE880, read at 00732B17, stored at 00732B1C) - an angle on a direction, not a length on a position. docs/PROJECTILE_IMPACT.md's 0072C006 argument list binds pos and dir separately and corroborates.",
+      "effect": "No arithmetic changes. src/gun_platform_arc.cpp's gun_ring_muzzle_origin_006fe160 computes the right thing under a wrong name; 006FE160's own ledger evidence already says 'builds a basis from the input direction'."
+    },
+    {
+      "subject": "006FDD70's divisor",
+      "doc": "docs/GUN_DISPERSION.md",
+      "was": "006FDD70(gunclass) returns ([+0A0h] - [+9Ch]) / 18h, the muzzle-point count",
+      "is": "([+0A0h] - [+9Ch]) / 0Ch",
+      "evidence": "006FDD83 MOV EAX,0x2AAAAAAB; 006FDD88 IMUL ECX; 006FDD8A SAR EDX,0x1. The 0x2AAAAAAB magic with a one-bit post-shift is division by 12; /24 needs SAR EDX,2. 0072AB80 (0072AB9A) and 006FE160 (006FE25D) run the identical sequence on the same two fields, 004181A0's indexing stride is 0Ch (004181D0 LEA EAX,[EDI+EDI*2]), and each element is consumed as a float triple by 004142E0 at 007307D3.",
+      "effect": "The torpedo fan divides its spacing by n-1; halving n halves the fan. src/gun_dispersion.cpp takes the count as an explicit argument and is unaffected; only a host deriving it from the raw byte span would be."
+    },
+    {
+      "subject": "the class Height as a muzzle height",
+      "doc": "src/game_hosts_gunnery.cpp and docs/GAME_EXECUTABLE.md milestone 2t",
+      "was": "muzzle = unit pose translation with y raised by the class Height",
+      "is": "Height is the unit class's hull height at class+0A8h, consumed by ship motion (draft, keel) and as a half-extent by the hit slab test. No routine on the firing path reads it. The native muzzle is TransformAffinePoint(class->muzzleOffsets[gun+44Ch], mountNode->worldMatrix), falling back to the node's own translation when the class has no offsets.",
+      "evidence": "The whole mount tail 00730762..007307FC and its fallback 00730899..007308F8 were read; the only class field either touches is the muzzle-offset vector at class+98h. 00864D90 does raise a point by [target+538h]+0A8h, but that is the AIM point, not the muzzle. include/bsp/ship_motion.hpp comments class+A8h as hull_height; src/game_hosts_gunnery.cpp:1394 uses it as hull_height*0.5f in the slab test.",
+      "effect": "src/game_hosts_gunnery.cpp:1095 is a placeholder with no native counterpart. It raises every muzzle by a whole hull height and gives every gun on a unit the same origin, which is what zeroes h = aim.y - muzzle.y and makes the recovered arc 00955630 indistinguishable from the asin(gR/v^2)/2 pre-estimate. This file is not owned by this packet and was not edited."
+    }
+  ],
+  "record_layouts": [
+    {
+      "record": "weapon class descriptor, the object at gun+3F4h",
+      "producer": "007325A0 for the vector, 007327B0 for the two salvo fields",
+      "fields": [
+        { "offset": "+98h", "size": "0Ch", "meaning": "std::vector header of muzzle offsets: begin +9Ch, end +0A0h, capacity +0A4h" },
+        { "offset": "element", "size": "0Ch", "meaning": "one float triple, a mount point in the node's local space; stride proved by 004181D0 and 0072AB9A, type by 004142E0 at 007307D3" },
+        { "offset": "+0CCh", "size": "4", "meaning": "OneTimeBulletAmount, the salvo pellet count (00CFE898, 00732AE4)" },
+        { "offset": "+0D0h", "size": "4", "meaning": "MultiBulletConeAngle, the cone radius applied to the direction (00CFE880, 00732B1C)" }
+      ]
+    },
+    {
+      "record": "gun instance",
+      "producer": "0072E6D0",
+      "fields": [
+        { "offset": "+3BCh", "size": "4", "meaning": "the model's own first node, [[gun+360h]+160h]+0Ch (0072E98A)" },
+        { "offset": "+3C4h", "size": "4", "meaning": "the node named \"base\" (0072E9F0)" },
+        { "offset": "+3C8h", "size": "4", "meaning": "the node named \"barrel\" (0072EA1C)" },
+        { "offset": "+3CCh", "size": "4", "meaning": "the mount node: first non-null of +3C8h, +3C4h, +3BCh (0072EE6F, 0072EE8B)" },
+        { "offset": "+448h", "size": "4", "meaning": "muzzle count, max(1, (class+0A0h - class+9Ch)/0Ch) (0072E71A)" },
+        { "offset": "+44Ch", "size": "4", "meaning": "nextFireBarrel; zeroed at 0072E72A, advanced (i+1) % gun+448h at 007309ED..00730A0E. Already declared as kGunArcOffBarrelIndex." }
+      ]
+    },
+    {
+      "record": "transform node (model/scene packet's; quoted, not owned)",
+      "producer": "not read; contract",
+      "fields": [
+        { "offset": "+5Ch", "size": "1", "meaning": "flags; bit 2 set means the world matrix is current (007301C3)" },
+        { "offset": "+0F0h", "size": "40h", "meaning": "world matrix, 16 floats, row-major (007301D1 REP MOVSD of 10h dwords)" },
+        { "offset": "+0F0h..+0F8h", "size": "0Ch", "meaning": "row 0, the dispersion plane's first axis" },
+        { "offset": "+100h..+108h", "size": "0Ch", "meaning": "row 1, the dispersion plane's second axis" },
+        { "offset": "+110h..+118h", "size": "0Ch", "meaning": "row 2, the shot direction (0073022A, 0073023C, 00730249)" },
+        { "offset": "+120h..+128h", "size": "0Ch", "meaning": "row 3, the translation; the fallback muzzle position (007308C1, 007308D6, 007308ED)" }
+      ]
+    }
+  ],
+  "contract_boundary": [
+    "0071AD50 - node lookup by name on the model. Call shape and both name strings proved; body unread. Model/scene packet.",
+    "00718870 - the model's node-group query by name, and the \"fire\" group's own record layout. Unread. Model/resource packet.",
+    "[gun+3Ch] vtable slots 8Ch and 94h - the optional pre-multiply of the mount matrix. Call shape and argument split proved from 00413920's own argument slots; bodies unread.",
+    "00B63F10's body beyond its argument binding, and 006FDD00.",
+    "[gun+360h]+160h - how a gun reaches its model."
+  ],
+  "negative_results": [
+    "No routine on the firing path reads the unit class Height (class+0A8h). The whole mount tail and its fallback were read.",
+    "0072FE63-0072FE74 is the only dispatch of gun vtable slot 1E0h in .text. Byte scans: FF 9x E0 01 00 00 (six register forms) no matches; FF 94 ?? E0 01 00 00 no matches; 8B ?? E0 01 00 00 and 8B ?? ?? E0 01 00 00 gave 34 hits of which only 0072FE66 is in a gun body, the rest being [ESP+1E0h] locals.",
+    "gun+408h..+410h is NOT the muzzle. It is the aim point (docs/GUN_BOT_TICKS.md step 9, 006DFAE9), and 0072BF10 uses it only for the near-camera distance test at 0072BF96."
+  ]
+}

@@ -331,14 +331,14 @@ struct GameSceneContentsHost::Impl {
 };
 
 bool GameSceneContentsHost::Impl::read_vfs_file(const std::string& name, std::string& text) {
-    VfsProviderManager* manager = vfs.manager();
+    auto* manager = vfs.ready() ? &vfs.context() : nullptr;
     if (manager == nullptr) return false;
     std::string resolved = name;
-    if (!resolve_existing_resource_00bdf4c0_fragment(manager->context(),
+    if (!resolve_existing_resource_00bdf4c0_fragment(*manager,
             vfs.search_registrations(), resolved)) {
         return false;
     }
-    VfsMemoryOpen opened = open_resource_memory_00bdf310_fragment(manager->context(),
+    VfsMemoryOpen opened = open_resource_memory_00bdf310_fragment(*manager,
         resolved, 2);
     if (!opened.provider_opened || !opened.stream || !opened.stream->fully_initialized()) {
         return false;
@@ -400,7 +400,7 @@ void GameSceneContentsHost::Impl::load_property_library() {
     // 008f67b0 once per file. The enumeration is the recovered one; the load is
     // this file's stand-in, and the host record says so.
     log.unimplemented("SceneContents::property_library_load", "008f67b0");
-    VfsProviderManager* manager = vfs.manager();
+    auto* manager = vfs.ready() ? &vfs.context() : nullptr;
     if (manager == nullptr) return;
     // 008f7100 calls 008f6fc0 twice, first with ".enums" (00d1655c at 008f7106)
     // and then with ".props" (00d16554 at 008f7113), so the enum tables are
@@ -411,7 +411,7 @@ void GameSceneContentsHost::Impl::load_property_library() {
     for (const char* extension : extensions) {
         std::vector<std::string> found;
         std::string error;
-        if (!enumerate_resources_00bdd990_fragment(manager->context(),
+        if (!enumerate_resources_00bdd990_fragment(*manager,
                 kPropertyLibraryDirectory, extension, 0, found, error)) {
             log.notef("property library: %s enumeration failed: %s", extension,
                 error.c_str());

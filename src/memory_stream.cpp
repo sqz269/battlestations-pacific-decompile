@@ -4,6 +4,7 @@
 #include <limits>
 #include <new>
 #include <utility>
+#include <stdexcept>
 
 namespace bsp {
 struct MemoryStreamBacking {
@@ -14,6 +15,17 @@ struct MemoryStreamBacking {
     std::uint32_t length;
     std::uint32_t initialized{};
 };
+
+MemoryStream memory_stream_from_complete_bytes(const void* source, std::size_t bytes) {
+    if (bytes > static_cast<std::size_t>((std::numeric_limits<std::int32_t>::max)()))
+        throw std::length_error("Completed VFS read exceeds signed32 consumer length");
+    if (bytes && !source) throw std::invalid_argument("Completed VFS read has no bytes");
+    MemoryStream result;
+    result.backing_ = std::make_shared<MemoryStreamBacking>(static_cast<std::uint32_t>(bytes));
+    if (bytes) std::memcpy(result.backing_->bytes.get(), source, bytes);
+    result.backing_->initialized = static_cast<std::uint32_t>(bytes);
+    return result;
+}
 
 MemoryStream MemoryStream::clone_reset_00bef6d0() const noexcept {
     MemoryStream clone;
