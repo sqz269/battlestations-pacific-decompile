@@ -12391,6 +12391,71 @@
       "code_revision": "fa879ae60afb839ac011dbc11c29c4830ea1cd81",
       "report": "reports/native_loading_owners_integration_bq.json",
       "game_validated": false
+    },
+    {
+      "id": "orch4_native_loading_queue_submission_br",
+      "state": "reconstructed_source_build_and_fixture_checked",
+      "status": "reconstructed_source_build_and_fixture_checked",
+      "addresses": [
+        "004fdc00",
+        "004fe700",
+        "00501720",
+        "005048f0",
+        "00504d20"
+      ],
+      "owner": "agent/orch4-20260910",
+      "report": "reports/native_loading_queue_submission_br.json",
+      "documentation": "docs/NATIVE_LOADING_QUEUE_SUBMISSION_BR.md",
+      "code_revision": null,
+      "game_validated": false,
+      "follow_up": "Production queue update/worker and native resource-load/owner closure; no inferred thread shutdown"
+    },
+    {
+      "id": "orch4_native_loading_queue_retirement_br",
+      "state": "reconstructed_source_build_and_fixture_checked",
+      "status": "reconstructed_source_build_and_fixture_checked",
+      "addresses": [
+        "00506bf0"
+      ],
+      "owner": "agent/orch4-20260910",
+      "report": "reports/native_loading_queue_retirement_br.json",
+      "documentation": "docs/NATIVE_LOADING_QUEUE_RETIREMENT_BR.md",
+      "code_revision": null,
+      "game_validated": false,
+      "follow_up": "Production queue update/worker and native resource-load/owner closure; no inferred thread shutdown"
+    },
+    {
+      "id": "orch4_native_fileblock_copy_br",
+      "state": "reconstructed_source_build_and_fixture_checked",
+      "status": "reconstructed_source_build_and_fixture_checked",
+      "addresses": [
+        "00be0a30"
+      ],
+      "owner": "agent/orch4-20260910",
+      "report": "reports/native_fileblock_copy_br.json",
+      "documentation": "docs/NATIVE_FILEBLOCK_COPY_BR.md",
+      "code_revision": null,
+      "game_validated": false,
+      "follow_up": "Production queue update/worker and native resource-load/owner closure; no inferred thread shutdown"
+    },
+    {
+      "id": "orch4_native_loading_queue_integration_br",
+      "state": "reconstructed_source_build_and_fixture_checked",
+      "status": "reconstructed_source_build_and_fixture_checked",
+      "addresses": [
+        "00c688e0",
+        "00c688e8",
+        "00c68ff0",
+        "00c6900c",
+        "00c69080",
+        "00c69088"
+      ],
+      "owner": "agent/orch4-20260910",
+      "report": "reports/native_loading_queue_integration_br.json",
+      "documentation": "docs/NATIVE_LOADING_QUEUE_INTEGRATION_BR.md",
+      "code_revision": null,
+      "game_validated": false,
+      "follow_up": "Production queue update/worker and native resource-load/owner closure; no inferred thread shutdown"
     }
   ],
   "snapshot_after_analysis": {

@@ -1,0 +1,100 @@
+{
+  "batch": "orch4_native_loading_queue_integration_br",
+  "state": "source_fixtures_and_initial_build_passed_combined_revision_pending",
+  "branch": "agent/orch4-20260910",
+  "base_revision": "86a14c7a2e4c08fda36a2a5fa9237b34ba539361",
+  "code_revision": null,
+  "packets": [
+    {
+      "packet": "orch4_native_loading_queue_submission_br",
+      "report": "reports/native_loading_queue_submission_br.json",
+      "routines": 5,
+      "ordinary_bytes": 591
+    },
+    {
+      "packet": "orch4_native_loading_queue_retirement_br",
+      "report": "reports/native_loading_queue_retirement_br.json",
+      "routines": 1,
+      "ordinary_bytes": 131
+    },
+    {
+      "packet": "orch4_native_fileblock_copy_br",
+      "report": "reports/native_fileblock_copy_br.json",
+      "routines": 1,
+      "ordinary_bytes": 171
+    }
+  ],
+  "new_ordinary_routines": 6,
+  "new_ordinary_bytes": 722,
+  "corrected_existing_ordinary_bytes": 171,
+  "ordinary_instruction_starts": 301,
+  "support_instruction_starts": 21,
+  "direct_transfer_rows": 31,
+  "incoming_main_review": {
+    "pinned_revision": "085b18dd527000239e823971291b2881be783bfe",
+    "scope": "Published actual unit-part collision source/count helper and bounds documentation; diagnostic class-capability logging in script orders.",
+    "observations": "Disjoint from BR storage services. Collision source preserves raw storage/x87 operations with explicit inputs; owner reports retain112 comparisons and120-frame compatibility checks. New class logging uses existing out-of-range guarded unit accessors and does not issue the refused order.",
+    "independent_native_oracle_or_game_rerun": false,
+    "combined_build": "pending"
+  },
+  "validation": {
+    "strict_msvc_win32": "passed",
+    "initial_fixture_modes": 3,
+    "all_31_report_call_rows": "passed",
+    "all_301_instruction_owners": "passed",
+    "prior_ghidra_comments": "verified preserved for13 functions",
+    "duplicate_header_definitions": "passed",
+    "primary_win32_build": "passed",
+    "existing_ctests_passed": 2,
+    "native_binary_abi_compatible": false,
+    "production_queue_bound": false,
+    "game_validated": false
+  },
+  "initial_build": {
+    "log": {
+      "path": "local/native_loading_queue_br/build.log",
+      "sha256": "dc74e0ecc1101e6d63b01180d4d3361f22bb5ba74516b5736a43861857846016",
+      "bytes": 2590
+    },
+    "core_sha256": "f2659c1ccb9c65e418e6e26e8be01dd69c0be6f41849ba29ea7d0253aa662c80",
+    "game_sha256": "fd461fd725be2e5c48d90ce185e1ee1c8e88857107e2a60dda7397102e3284b4"
+  },
+  "evidence": [
+    {
+      "path": "reports/native_loading_queue_submission_br.json",
+      "sha256": "20a5c2fee333b5bdc22a85b739874f14501b12dbfbea855a7cb3107b277e3153",
+      "bytes": 38162
+    },
+    {
+      "path": "reports/native_loading_queue_retirement_br.json",
+      "sha256": "d3b57c9863b2af60dc3b2eccf63993b96720093364b5c789d85600e4a372953e",
+      "bytes": 15426
+    },
+    {
+      "path": "reports/native_fileblock_copy_br.json",
+      "sha256": "1d58ccb2587d8d7740bdf76bbb3417ef1c864868a54da06afafa5a27115150b3",
+      "bytes": 37223
+    },
+    {
+      "path": "reports/native_loading_queue_flow_br.json",
+      "sha256": "6f098a1eb60306d13e57dc8781e029901ecd65f621eca16b48665a4c686c3829",
+      "bytes": 17148
+    },
+    {
+      "path": "reports/native_loading_queue_definitions_br.json",
+      "sha256": "c88326b76bd0cb0b0d55b3bfdd45f8e4d03fe615c31213f5254d6d4f6bef76df",
+      "bytes": 4978
+    },
+    {
+      "path": "reports/native_loading_queue_annotations_br.json",
+      "sha256": "ee6ed6d71323977867bbda9db97e9286f3d8aed9dec0b4911091ae8814d61180",
+      "bytes": 107428
+    }
+  ],
+  "source_manifest": null,
+  "limitations": [
+    "No native queue worker execution or production update binding.",
+    "Retirement retains BQ outer failed FileBlock invocations; does not close original native unwind.",
+    "Native FH3/SEH/CRT identity, hardware faults, original stack aliases and gameplay remain unverified."
+  ]
+}
