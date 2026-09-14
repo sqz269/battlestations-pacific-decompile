@@ -1,0 +1,206 @@
+{
+  "packet": "orch3_post_effect_draw_record_bn",
+  "status": "reconstructed_build_tested_static_instruction_equivalence_no_new_fixture",
+  "routine": {
+    "address": "00b51bd0",
+    "inclusive_end": "00b51c10",
+    "bytes": 65,
+    "listed_instructions": 24,
+    "listing_gaps": 0,
+    "proposed_name": "BSP_PostEffectDrawRecord_Construct",
+    "source_name": "construct_native_post_effect_draw_record_00b51bd0",
+    "coverage": "complete native wrapper through existing raw B51A20; parent construction and unrestricted derived service domain remain external",
+    "original_abi": "ECX actual28h record; stack leading(float),section,geometry,model,camera,visibility(float); EAX same captured allocation; RET18h; ESI saved/restored",
+    "source_abi": "MSVC Win32 naked fastcall; same six stack words; EDX adds borrowed NativeTracelineRenderAccess; extra stack word saved before native frame and discarded before RET18h",
+    "eh": "No native FH3/SEH registration, unwind states or cleanup. Source supplies no exception/unwind emulation; inherited dependency requires nonthrowing live service domain.",
+    "span_sha256": "5b5aad1351e13c160568d2797829346fcf62a14d5da7a516994200c6cc93c34e"
+  },
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "bridge": "http://127.0.0.1:8089",
+    "image_base": "00400000",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "verification": "Every live BSP CLI batch verifies configured project/program/language/image base; read-only. Disk PE/span hash recorded during final audit.",
+    "disk_and_live_span_equal": true,
+    "native_image_sha256_rechecked": true
+  },
+  "call_steps": [
+    {
+      "address": "00b51c06",
+      "native": "00b51a20",
+      "function": "00b51bd0",
+      "contract": "Actual entry ECX; eight DWORD args: leading,section,geometry,model,camera,visibility,positive-zero depth,flags555h; callee RET20h"
+    },
+    {
+      "address": "00b4e7bb",
+      "native": "00bf681b",
+      "function": "00b4e470",
+      "contract": "Caller pushes28h at B4E7B9; ADDESP4 B4E7C0"
+    },
+    {
+      "address": "00b4e7ec",
+      "native": "00b51bd0",
+      "function": "00b4e470",
+      "contract": "Six native arguments; EAX result published as raw+18 at B4E7F5; null branch produceszero"
+    },
+    {
+      "address": "00b4eb71",
+      "native": "00bf681b",
+      "function": "00b4e840",
+      "contract": "Caller pushes28h at B4EB6F; ADDESP4 B4EB76"
+    },
+    {
+      "address": "00b4eba2",
+      "native": "00b51bd0",
+      "function": "00b4e840",
+      "contract": "Six native arguments; EAX result published as raw+1C at B4EBAB; null branch produceszero"
+    },
+    {
+      "address": "00b51a7d",
+      "native": "00b6fcb0",
+      "function": "00b51a20",
+      "contract": "Existing camera view provider; ECX actual camera"
+    },
+    {
+      "address": "00b51a8f",
+      "native": "actual_model+vtable48",
+      "function": "00b51a20",
+      "kind": "indirect",
+      "contract": "Current model profile and slot; existing services resolve current numeric target; concrete B6E8C0 path when matched"
+    },
+    {
+      "address": "00b51a93",
+      "native": "004142e0",
+      "function": "00b51a20",
+      "contract": "Existing raw affine point transform; consumes destination/matrix stack args via RET8"
+    }
+  ],
+  "native_effects": {
+    "x87_staging": [
+      "B51BD0 FLDZ -> B51BE3 FSTP depth",
+      "B51BE9 FLD visibility -> B51BF1 FSTP visibility",
+      "B51BF9 FLD leading -> B51C03 FSTP leading"
+    ],
+    "added_access_stack": "Input stack argument reads shifted+4; outgoing argument slots unchanged; saved EDX access at source ESP+24h immediately before B51A20 call; all eight original arguments already stored; callee RET20h leaves saved ESI then access to pop",
+    "record_writes": "Only through B51A20: +00 leading, +18 visibility, +04 section, +08 geometry, +0C model, +10 camera, +1C flags, then +14 depth; +20/+24 preserved",
+    "current_reads": "Native pointer arguments captured in original order; B51A20 current zero cell, camera view, current model table+48 and section+34 read timing retained through existing dependency",
+    "ownership": "Raw28h allocation identity is caller-owned. No reference-count construction, atomic access, child retain/release, allocation/free or companion. Child pointers are borrowed; parent/mesh graph lifetime remains required."
+  },
+  "dependencies": {
+    "00b51a20": "Existing complete raw source initialize_native_render_entry_00b51a20 in native_traceline_render.cpp; use directly, not the older typed fragment",
+    "service_boundary": "Existing NativeTracelineRenderAccess and NativeTracelineRenderServices; current B6E8C0 sphere target dispatches concrete implementation; other profiles still require established actual service. No new callbacks/stubs introduced.",
+    "parent_composition": "B4E470/B4E840 constructor reconstruction and actual service binding are outside this packet; complete wrapper is not full post-effect initialization."
+  },
+  "validation": {
+    "build": {
+      "command": "./scripts/build.ps1",
+      "configuration": "MSVC Win32 Release",
+      "exit_code": 0,
+      "log": "local/bn-build-retry.log",
+      "log_sha256": "e942e87b03e0243be80bb408b91eb85f38d26c6cc46fbc63d0f06b819b8eb0e7",
+      "existing_ctests": {
+        "passed": 1,
+        "total": 1,
+        "names": [
+          "reconstructed_math"
+        ]
+      },
+      "initial_attempt": {
+        "log": "local/bn-build.log",
+        "sha256": "405fce7d5a8ebb7b9c491dd0ebf798e6b90aa515901c08f60d7d61b64765e143",
+        "exit_code": 1,
+        "failure": "CUSTOMBUILD CMake error: Cannot restore timestamp build/win32/CMakeFiles/generate.stamp: Access is denied, for bsp_ship_motion_probe and bsp_game; followed by MSB8066. Exact lines1416 and1419 in initial log; no C++ compiler error.",
+        "recovery": "Reran same authorized build script after process stopped, without source changes"
+      }
+    },
+    "call_audit": {
+      "direct_checked": 7,
+      "failed": 0,
+      "indirect_not_checked": 1,
+      "log_sha256": "0dbd1fdeb993110c3422e8f73d16b3e2d4148c6fdf5af5064512ac00dba5ea85"
+    },
+    "object_review": {
+      "object_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-post-effect-draw-record-bn\\build\\win32\\bsp_core.dir\\Release\\native_post_effect_draw_record.obj",
+      "object_sha256": "98dc76ab7a09ca7b1d5dd56d3c1a93d724ca3bb68724352dc9d568a3d9bf1f99",
+      "function": "?construct_native_post_effect_draw_record_00b51bd0@bsp@@YIPAXPAXPBUNativeTracelineRenderAccess@1@M0000M@Z",
+      "section_bytes": 71,
+      "section_sha256": "28c8de86cbc028f3f3dad97f4229f9755681199362c3c2543ff946578e55f37c",
+      "section_hex": "52 d9 ee 8b 44 24 18 8b 54 24 10 56 68 55 05 00 00 83 ec 08 d9 5c 24 04 8b f1 d9 44 24 2c 8b 4c 24 24 d9 1c 24 50 8b 44 24 20 d9 44 24 1c 51 52 50 51 8b ce d9 1c 24 8b 54 24 24 e8 00 00 00 00 8b c6 5e 5a c2 18 00",
+      "relocations": [
+        {
+          "offset": 60,
+          "type": 20,
+          "symbol": "?initialize_native_render_entry_00b51a20@bsp@@YIXPAXPBUNativeTracelineRenderAccess@1@M0000MMI@Z"
+        }
+      ],
+      "native_bytes": 65,
+      "native_sha256": "5b5aad1351e13c160568d2797829346fcf62a14d5da7a516994200c6cc93c34e",
+      "comparison": "Exact native instruction bytes after only six input-displacement+4 adjustments, added PUSH EDX, access reload MOV EDX,[ESP+24h], added POP EDX, and normalized existing CALL relocation",
+      "native_input_displacement_offsets": [
+        5,
+        9,
+        28,
+        32,
+        40,
+        44
+      ],
+      "source_call_relocation_offset": 60,
+      "all_native_x87_bytes_unchanged": true,
+      "extra_record_writes": false,
+      "extra_native_calls": false,
+      "source_ret_18h": true,
+      "original_key_writes_absent": true,
+      "limitation": "Static generated-code evidence, not executable fixture, ABI or hardware-exception proof",
+      "parser_path": "local/bn_object_review.py",
+      "parser_sha256": "f942294b69a9aee25e4601bcb4361ba4b3c33962b645927b4ab4366561e8e16a"
+    },
+    "new_tests": false,
+    "native_fixture": false,
+    "game_validation": false,
+    "binary_abi_claim": false,
+    "artifacts_sha256": {
+      "build/win32/Release/bsp_core.lib": "c2ee64e9c2dbd63abdbc0d043d2a625a9409d1b3b7da65589934608679db493c",
+      "build/win32/Release/bsp_game.exe": "65b6a11bd9870adc75bf3deeb31511b45aecdd5f618db707b7ffba2b09840738",
+      "build/win32/Release/bsp_math_tests.exe": "6f949a1db3f82b0e0f2ca1a62908eca428da87c4cfafad125103289b6501305b"
+    },
+    "source_pins_unchanged_after_build": true
+  },
+  "uncertainty": [
+    "Unrestricted derived model service domain not closed here",
+    "No native hardware-fault/FH3 parity claim",
+    "No actual parent constructor execution or native differential fixture",
+    "No runnable-game endpoint validation"
+  ],
+  "ghidra_mutations": false,
+  "ledger_mutations": false,
+  "base_commit": "193f5bf5f36402f039b6d0e848b950ee3b2e676d",
+  "created_utc": "2026-09-14T05:09:08.328468+00:00",
+  "native_body_bytes": 65,
+  "source_sha256": {
+    "include/bsp/native_post_effect_draw_record.hpp": "aa789a071b89943f1f7110c41b84d349d485eb68f083c08c27c9bc033f4df1e4",
+    "src/native_post_effect_draw_record.cpp": "e8b44b95775ee17d5e2343daf8b321b8c1110697949c2c90fd7ee5935bab4009",
+    "include/bsp/native_traceline_render.hpp": "71c88e0aa16eacc035ddeec264b9cba33aacef845ba10cf549409a66473085f3",
+    "src/native_traceline_render.cpp": "409f4c679ff1aa635b9d347c8049600079e822649e3ec751b32ed9d5100fa627",
+    "include/bsp/native_camera_cache_getters.hpp": "6ed2ed227a3fb53db7a4b9d5890f241d1b011f3699eb0868733e312e3e3d813b",
+    "src/native_camera_cache_getters.cpp": "d4801cdeb8761b98399a111992f583f721b820c476174255ae037ae778e6c65f",
+    "include/bsp/camera_affine.hpp": "fb6ba92f9d2409946714f0ee378ede994bce207849bb567a7d387ac7a8e5f570",
+    "src/camera_affine.cpp": "dc83d91929e3f52aaa8a310918830396c7bee5b74e27a6e9af83cdef88d8abfd",
+    "include/bsp/native_model_owner.hpp": "8ad5bc6167d9fa913583b1cbd19fb9f944d9fc5552d224848c4e0ef113996326",
+    "src/native_model_owner.cpp": "9ecc3aa48e27ec1235e77e660f328958bf7b63f0d9e9ffbaf8a4fbeb60d1c6c8"
+  },
+  "source_registration": {
+    "file": "cmake/startup.cmake",
+    "target": "bsp_core",
+    "source": "src/native_post_effect_draw_record.cpp",
+    "scope": "One deferred target_sources line only; no whole-registry lease"
+  },
+  "corrections": [
+    {
+      "was": "Saved lookup prototype undefined FUN_00b51bd0(void)",
+      "is": "ECX raw allocation plus six stack words, EAX same allocation, RET18h",
+      "evidence": "Complete24-instruction listing and both caller argument sequences; no Ghidra prototype mutation"
+    }
+  ]
+}
