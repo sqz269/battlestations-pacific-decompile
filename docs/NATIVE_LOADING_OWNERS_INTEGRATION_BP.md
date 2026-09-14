@@ -2,7 +2,7 @@
 
 Addresses: 00B7CB70, 00B7CB90, 00B7CE80, 00B7FA60, 00B801C0, 00BE0980, 00BDC9B0, 00BF0980, 00BF09B0, 00BEA150, 00BE9F10, 00CC2110, 00CC2118, 00CC70C0, 00CC70C8, 00CC70D3, 00CC7130, 00CC7138, 00CC7810, 00CC781B
 
-This batch integrates 11 reconstructed ordinary native bodies across three translation units. The validated combined source is `1af1d3fed4253f74aac6a01e360990e6c5934b5a` with 2613 recorded build inputs. Full details and receipts are in `reports/native_loading_owners_integration_bp.json`.
+This batch integrates 11 reconstructed ordinary native bodies across three translation units. The validated combined source is `f056f33b14bb18da1c228d326b1374c43af38cb6` with 2613 recorded build inputs. Full details and receipts are in `reports/native_loading_owners_integration_bp.json`.
 
 The cache erase packet preserves actual node identity while transplanting the successor and repairing the red-black tree. Keys return to the raw string pool before the original node is freed. Mapped resources remain borrowed. Returning diagnostics, current count reloads, and failure after unlinking retain their native ordering; the owner is not rolled back.
 
@@ -19,3 +19,5 @@ The reader worker stopped on a usage limit with four uncommitted deliverables. T
 Production loader/observer wiring, original ABI compatibility and gameplay validation remain incomplete. The continuing reconstruction goal remains active.
 
 A final clean merge brings in main `fa01d7f2e9809a72f4b5600e7ff1ef0ba35929fb`. The primary read the added ordnance table and gunnery diff, then reran the combined build and both tests successfully. The incoming native slot/loadout resolution limit remains explicit; the added inventory report does not establish that missing contract. Final source and artifact receipts supersede the first combined build while preserving it in the report.
+
+Publication also incorporates main `108e15dc3326a04b1559dc46264214d43c461862`: a pilot projection type rename and integration name-check fix, with additional other-owner model-numbering and ordnance evidence. The clean merge passes the combined build and both tests; BP source behavior is unchanged.

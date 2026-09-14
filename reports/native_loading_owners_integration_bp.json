@@ -1,11 +1,11 @@
 {
   "packet": "orch4_native_loading_owners_integration_bp",
   "generated_utc": "2026-09-14T15:32:19.730393+00:00",
-  "code_revision": "1af1d3fed4253f74aac6a01e360990e6c5934b5a",
+  "code_revision": "f056f33b14bb18da1c228d326b1374c43af38cb6",
   "source_manifest": {
-    "path": "local/native_loading_owners_bp_source_1af1d3fed425.json",
+    "path": "local/native_loading_owners_bp_source_f056f33b14bb.json",
     "files": 2613,
-    "sha256": "21f8bbe78135f93c80f423438da054d644a26aaea1c267fde469f56949012c1e",
+    "sha256": "c132b9bfbb9db576e5de4d58ad7fbfcf869e1b110eb7fee4853b3f970cab92dd",
     "bytes": 282724
   },
   "reconstructed_routines": [
@@ -190,12 +190,12 @@
     "passed": true,
     "existing_ctests_passed": 2,
     "log": {
-      "path": "local/native_loading_owners_bp_final_build.log",
-      "sha256": "22361cc73bdb4e4e25e693a3d506593a34f2e69763e34155e7ed8ada8afc0254",
-      "bytes": 2532
+      "path": "local/native_loading_owners_bp_latest_build.log",
+      "sha256": "b21bc4a9f9a2499761958be5e7bdef91f55400a987730535ac129bd7e69f97c4",
+      "bytes": 2484
     },
-    "core_sha256": "199c938d6436d7d5510cd74848e411e41fc11c23df661614ea46a970014b8466",
-    "game_sha256": "587a79b677b6d274158fbd1ba4f10fd817eddf978c17a3c23536afd8a778c8ef"
+    "core_sha256": "53be4852a6fb3545129cc7b066509f658e569a9feb8c9b6eb86adfe918933f88",
+    "game_sha256": "450af548d36883e269ee8f83202b0f6d2b2f223e797801dd607e27a8421aaa19"
   },
   "incoming_main_review": {
     "base": "a20c90fbbf2c5260f10e56f289388525468dcc5d",
@@ -523,5 +523,40 @@
     "merge": "clean",
     "combined_build": "passed",
     "existing_ctests_passed": 2
-  }
+  },
+  "additional_combined_validations": [
+    {
+      "code_revision": "1af1d3fed4253f74aac6a01e360990e6c5934b5a",
+      "source_manifest": {
+        "path": "local/native_loading_owners_bp_source_1af1d3fed425.json",
+        "files": 2613,
+        "sha256": "21f8bbe78135f93c80f423438da054d644a26aaea1c267fde469f56949012c1e",
+        "bytes": 282724
+      },
+      "primary_build": {
+        "command": "./scripts/build.ps1",
+        "platform": "MSVC Win32",
+        "configuration": "Release",
+        "passed": true,
+        "existing_ctests_passed": 2,
+        "log": {
+          "path": "local/native_loading_owners_bp_final_build.log",
+          "sha256": "22361cc73bdb4e4e25e693a3d506593a34f2e69763e34155e7ed8ada8afc0254",
+          "bytes": 2532
+        },
+        "core_sha256": "199c938d6436d7d5510cd74848e411e41fc11c23df661614ea46a970014b8466",
+        "game_sha256": "587a79b677b6d274158fbd1ba4f10fd817eddf978c17a3c23536afd8a778c8ef"
+      }
+    }
+  ],
+  "publication_race_merges": [
+    {
+      "commit": "108e15dc3326a04b1559dc46264214d43c461862",
+      "previous_code": "1af1d3fed4253f74aac6a01e360990e6c5934b5a",
+      "review": "Reviewed command-projection type rename and integration name-check diff. Incoming model-numbering runtime and ordnance host-gap reports remain other-owner evidence. No BP source/contract changes.",
+      "merge": "clean",
+      "combined_build": "passed",
+      "existing_ctests_passed": 2
+    }
+  ]
 }
