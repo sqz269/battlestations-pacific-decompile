@@ -43,6 +43,7 @@ cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/game_input_setting
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/game_native_readonly_data.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/game_native_vfs_constants.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/game_native_vfs_runtime.cpp)
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/gun_dispersion.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/gun_gravity_arc.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/gunnery_recon_detection.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/input_binding_poll.cpp src/sound_class_ownership.cpp src/sound_configuration.cpp src/fmod_configuration_library.cpp)
