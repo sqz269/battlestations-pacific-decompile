@@ -1,0 +1,1242 @@
+{
+  "packet": "orch4_native_resource_parser_singletons_ca",
+  "actions": [
+    {
+      "endpoint": "clear_instruction_flow_override",
+      "body": {
+        "address": "00b7dd2c"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Cleared flow override at 00b7dd2c (was: CALL_RETURN, now: NONE)\"}"
+    },
+    {
+      "endpoint": "delete_function",
+      "body": {
+        "address": "00b7dd00"
+      },
+      "result": "{\"success\": true, \"address\": \"00b7dd00\", \"deleted_function\": \"CG_scalar_deleting_dtor_00b7dd00\", \"body_size\": 55, \"message\": \"Function 'CG_scalar_deleting_dtor_00b7dd00' deleted at 00b7dd00\"}"
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00b7dd00",
+        "end_address": "00b7dd3a"
+      },
+      "result": "{\"success\": true, \"start_address\": \"00b7dd00\", \"end_address\": \"00b7dd39\", \"bytes_disassembled\": 58, \"message\": \"Successfully disassembled 58 byte(s)\"}"
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00b7dd00",
+        "name": "CG_scalar_deleting_dtor_00b7dd00",
+        "disassemble_first": false
+      },
+      "result": "{\"success\": true, \"address\": \"00b7dd00\", \"function_name\": \"CG_scalar_deleting_dtor_00b7dd00\", \"entry_point\": \"00b7dd00\", \"body_size\": 58, \"message\": \"Function created successfully at 00b7dd00\", \"warnings\": [\"Function name 'CG_scalar_deleting_dtor_00b7dd00' \\u2014 main part 'CG_scalar_deleting_dtor_00b7dd00' is not PascalCase. Expected: CgScalarDeletingDtor00b7dd00\", \"Function name 'CG_scalar_deleting_dtor_00b7dd00' \\u2014 main part 'CG_scalar_deleting_dtor_00b7dd00' contains underscores. Use PascalCase after the module prefix.\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b7dd00",
+        "new_name": "CG_scalar_deleting_dtor_00b7dd00"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b7dd00 from 'CG_scalar_deleting_dtor_00b7dd00' to 'CG_scalar_deleting_dtor_00b7dd00'\", \"warnings\": [\"Function name 'CG_scalar_deleting_dtor_00b7dd00' \\u2014 main part 'CG_scalar_deleting_dtor_00b7dd00' is not PascalCase. Expected: CgScalarDeletingDtor00b7dd00\", \"Function name 'CG_scalar_deleting_dtor_00b7dd00' \\u2014 main part 'CG_scalar_deleting_dtor_00b7dd00' contains underscores. Use PascalCase after the module prefix.\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00b7dd00",
+        "comment": ""
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00b7dd00\"}"
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00b7dae0",
+        "end_address": "00b7dae8"
+      },
+      "result": "{\"success\": true, \"start_address\": \"00b7dae0\", \"end_address\": \"00b7dae7\", \"bytes_disassembled\": 8, \"message\": \"Successfully disassembled 8 byte(s)\"}"
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00b7dae0",
+        "name": "BSP_GroupParamsParser_DeleteSecondary_00b7dae0",
+        "disassemble_first": false
+      },
+      "result": "{\"success\": true, \"address\": \"00b7dae0\", \"function_name\": \"BSP_GroupParamsParser_DeleteSecondary_00b7dae0\", \"entry_point\": \"00b7dae0\", \"body_size\": 8, \"message\": \"Function created successfully at 00b7dae0\", \"warnings\": [\"Function name 'BSP_GroupParamsParser_DeleteSecondary_00b7dae0' \\u2014 main part 'GroupParamsParser_DeleteSecondary_00b7dae0' is not PascalCase. Expected: GroupparamsparserDeletesecondary00b7dae0\", \"Function name 'BSP_GroupParamsParser_DeleteSecondary_00b7dae0' \\u2014 main part 'GroupParamsParser_DeleteSecondary_00b7dae0' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_GroupParamsParser_DeleteSecondary_00b7dae0' does not start with a recognized verb. First word 'Group' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b7dae0",
+        "new_name": "BSP_GroupParamsParser_DeleteSecondary_00b7dae0"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b7dae0 from 'BSP_GroupParamsParser_DeleteSecondary_00b7dae0' to 'BSP_GroupParamsParser_DeleteSecondary_00b7dae0'\", \"warnings\": [\"Function name 'BSP_GroupParamsParser_DeleteSecondary_00b7dae0' \\u2014 main part 'GroupParamsParser_DeleteSecondary_00b7dae0' is not PascalCase. Expected: GroupparamsparserDeletesecondary00b7dae0\", \"Function name 'BSP_GroupParamsParser_DeleteSecondary_00b7dae0' \\u2014 main part 'GroupParamsParser_DeleteSecondary_00b7dae0' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_GroupParamsParser_DeleteSecondary_00b7dae0' does not start with a recognized verb. First word 'Group' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00b7dae0",
+        "comment": ""
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00b7dae0\"}"
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00cc1f18",
+        "end_address": "00cc1f22"
+      },
+      "result": "{\"success\": true, \"start_address\": \"00cc1f18\", \"end_address\": \"00cc1f21\", \"bytes_disassembled\": 10, \"message\": \"Successfully disassembled 10 byte(s)\"}"
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00cc1f18",
+        "name": "BSP_GroupParamsParser_SingletonEH_00cc1f18",
+        "disassemble_first": false
+      },
+      "result": "{\"success\": true, \"address\": \"00cc1f18\", \"function_name\": \"BSP_GroupParamsParser_SingletonEH_00cc1f18\", \"entry_point\": \"00cc1f18\", \"body_size\": 10, \"message\": \"Function created successfully at 00cc1f18\", \"warnings\": [\"Function name 'BSP_GroupParamsParser_SingletonEH_00cc1f18' \\u2014 main part 'GroupParamsParser_SingletonEH_00cc1f18' is not PascalCase. Expected: GroupparamsparserSingletoneh00cc1f18\", \"Function name 'BSP_GroupParamsParser_SingletonEH_00cc1f18' \\u2014 main part 'GroupParamsParser_SingletonEH_00cc1f18' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_GroupParamsParser_SingletonEH_00cc1f18' does not start with a recognized verb. First word 'Group' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00cc1f18",
+        "new_name": "BSP_GroupParamsParser_SingletonEH_00cc1f18"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00cc1f18 from 'BSP_GroupParamsParser_SingletonEH_00cc1f18' to 'BSP_GroupParamsParser_SingletonEH_00cc1f18'\", \"warnings\": [\"Function name 'BSP_GroupParamsParser_SingletonEH_00cc1f18' \\u2014 main part 'GroupParamsParser_SingletonEH_00cc1f18' is not PascalCase. Expected: GroupparamsparserSingletoneh00cc1f18\", \"Function name 'BSP_GroupParamsParser_SingletonEH_00cc1f18' \\u2014 main part 'GroupParamsParser_SingletonEH_00cc1f18' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_GroupParamsParser_SingletonEH_00cc1f18' does not start with a recognized verb. First word 'Group' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00cc1f18",
+        "comment": ""
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00cc1f18\"}"
+    },
+    {
+      "endpoint": "clear_instruction_flow_override",
+      "body": {
+        "address": "00b7dd6c"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Cleared flow override at 00b7dd6c (was: CALL_RETURN, now: NONE)\"}"
+    },
+    {
+      "endpoint": "delete_function",
+      "body": {
+        "address": "00b7dd40"
+      },
+      "result": "{\"success\": true, \"address\": \"00b7dd40\", \"deleted_function\": \"CG_scalar_deleting_dtor_00b7dd40\", \"body_size\": 55, \"message\": \"Function 'CG_scalar_deleting_dtor_00b7dd40' deleted at 00b7dd40\"}"
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00b7dd40",
+        "end_address": "00b7dd7a"
+      },
+      "result": "{\"success\": true, \"start_address\": \"00b7dd40\", \"end_address\": \"00b7dd79\", \"bytes_disassembled\": 58, \"message\": \"Successfully disassembled 58 byte(s)\"}"
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00b7dd40",
+        "name": "CG_scalar_deleting_dtor_00b7dd40",
+        "disassemble_first": false
+      },
+      "result": "{\"success\": true, \"address\": \"00b7dd40\", \"function_name\": \"CG_scalar_deleting_dtor_00b7dd40\", \"entry_point\": \"00b7dd40\", \"body_size\": 58, \"message\": \"Function created successfully at 00b7dd40\", \"warnings\": [\"Function name 'CG_scalar_deleting_dtor_00b7dd40' \\u2014 main part 'CG_scalar_deleting_dtor_00b7dd40' is not PascalCase. Expected: CgScalarDeletingDtor00b7dd40\", \"Function name 'CG_scalar_deleting_dtor_00b7dd40' \\u2014 main part 'CG_scalar_deleting_dtor_00b7dd40' contains underscores. Use PascalCase after the module prefix.\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b7dd40",
+        "new_name": "CG_scalar_deleting_dtor_00b7dd40"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b7dd40 from 'CG_scalar_deleting_dtor_00b7dd40' to 'CG_scalar_deleting_dtor_00b7dd40'\", \"warnings\": [\"Function name 'CG_scalar_deleting_dtor_00b7dd40' \\u2014 main part 'CG_scalar_deleting_dtor_00b7dd40' is not PascalCase. Expected: CgScalarDeletingDtor00b7dd40\", \"Function name 'CG_scalar_deleting_dtor_00b7dd40' \\u2014 main part 'CG_scalar_deleting_dtor_00b7dd40' contains underscores. Use PascalCase after the module prefix.\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00b7dd40",
+        "comment": ""
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00b7dd40\"}"
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00b7db40",
+        "end_address": "00b7db48"
+      },
+      "result": "{\"success\": true, \"start_address\": \"00b7db40\", \"end_address\": \"00b7db47\", \"bytes_disassembled\": 8, \"message\": \"Successfully disassembled 8 byte(s)\"}"
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00b7db40",
+        "name": "BSP_MeshParser_DeleteSecondary_00b7db40",
+        "disassemble_first": false
+      },
+      "result": "{\"success\": true, \"address\": \"00b7db40\", \"function_name\": \"BSP_MeshParser_DeleteSecondary_00b7db40\", \"entry_point\": \"00b7db40\", \"body_size\": 8, \"message\": \"Function created successfully at 00b7db40\", \"warnings\": [\"Function name 'BSP_MeshParser_DeleteSecondary_00b7db40' \\u2014 main part 'MeshParser_DeleteSecondary_00b7db40' is not PascalCase. Expected: MeshparserDeletesecondary00b7db40\", \"Function name 'BSP_MeshParser_DeleteSecondary_00b7db40' \\u2014 main part 'MeshParser_DeleteSecondary_00b7db40' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_MeshParser_DeleteSecondary_00b7db40' does not start with a recognized verb. First word 'Mesh' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b7db40",
+        "new_name": "BSP_MeshParser_DeleteSecondary_00b7db40"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b7db40 from 'BSP_MeshParser_DeleteSecondary_00b7db40' to 'BSP_MeshParser_DeleteSecondary_00b7db40'\", \"warnings\": [\"Function name 'BSP_MeshParser_DeleteSecondary_00b7db40' \\u2014 main part 'MeshParser_DeleteSecondary_00b7db40' is not PascalCase. Expected: MeshparserDeletesecondary00b7db40\", \"Function name 'BSP_MeshParser_DeleteSecondary_00b7db40' \\u2014 main part 'MeshParser_DeleteSecondary_00b7db40' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_MeshParser_DeleteSecondary_00b7db40' does not start with a recognized verb. First word 'Mesh' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00b7db40",
+        "comment": ""
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00b7db40\"}"
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00cc1f38",
+        "end_address": "00cc1f42"
+      },
+      "result": "{\"success\": true, \"start_address\": \"00cc1f38\", \"end_address\": \"00cc1f41\", \"bytes_disassembled\": 10, \"message\": \"Successfully disassembled 10 byte(s)\"}"
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00cc1f38",
+        "name": "BSP_MeshParser_SingletonEH_00cc1f38",
+        "disassemble_first": false
+      },
+      "result": "{\"success\": true, \"address\": \"00cc1f38\", \"function_name\": \"BSP_MeshParser_SingletonEH_00cc1f38\", \"entry_point\": \"00cc1f38\", \"body_size\": 10, \"message\": \"Function created successfully at 00cc1f38\", \"warnings\": [\"Function name 'BSP_MeshParser_SingletonEH_00cc1f38' \\u2014 main part 'MeshParser_SingletonEH_00cc1f38' is not PascalCase. Expected: MeshparserSingletoneh00cc1f38\", \"Function name 'BSP_MeshParser_SingletonEH_00cc1f38' \\u2014 main part 'MeshParser_SingletonEH_00cc1f38' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_MeshParser_SingletonEH_00cc1f38' does not start with a recognized verb. First word 'Mesh' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00cc1f38",
+        "new_name": "BSP_MeshParser_SingletonEH_00cc1f38"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00cc1f38 from 'BSP_MeshParser_SingletonEH_00cc1f38' to 'BSP_MeshParser_SingletonEH_00cc1f38'\", \"warnings\": [\"Function name 'BSP_MeshParser_SingletonEH_00cc1f38' \\u2014 main part 'MeshParser_SingletonEH_00cc1f38' is not PascalCase. Expected: MeshparserSingletoneh00cc1f38\", \"Function name 'BSP_MeshParser_SingletonEH_00cc1f38' \\u2014 main part 'MeshParser_SingletonEH_00cc1f38' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_MeshParser_SingletonEH_00cc1f38' does not start with a recognized verb. First word 'Mesh' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00cc1f38",
+        "comment": ""
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00cc1f38\"}"
+    },
+    {
+      "endpoint": "clear_instruction_flow_override",
+      "body": {
+        "address": "00b7ddac"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Cleared flow override at 00b7ddac (was: CALL_RETURN, now: NONE)\"}"
+    },
+    {
+      "endpoint": "delete_function",
+      "body": {
+        "address": "00b7dd80"
+      },
+      "result": "{\"success\": true, \"address\": \"00b7dd80\", \"deleted_function\": \"CG_scalar_deleting_dtor_00b7dd80\", \"body_size\": 55, \"message\": \"Function 'CG_scalar_deleting_dtor_00b7dd80' deleted at 00b7dd80\"}"
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00b7dd80",
+        "end_address": "00b7ddba"
+      },
+      "result": "{\"success\": true, \"start_address\": \"00b7dd80\", \"end_address\": \"00b7ddb9\", \"bytes_disassembled\": 58, \"message\": \"Successfully disassembled 58 byte(s)\"}"
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00b7dd80",
+        "name": "CG_scalar_deleting_dtor_00b7dd80",
+        "disassemble_first": false
+      },
+      "result": "{\"success\": true, \"address\": \"00b7dd80\", \"function_name\": \"CG_scalar_deleting_dtor_00b7dd80\", \"entry_point\": \"00b7dd80\", \"body_size\": 58, \"message\": \"Function created successfully at 00b7dd80\", \"warnings\": [\"Function name 'CG_scalar_deleting_dtor_00b7dd80' \\u2014 main part 'CG_scalar_deleting_dtor_00b7dd80' is not PascalCase. Expected: CgScalarDeletingDtor00b7dd80\", \"Function name 'CG_scalar_deleting_dtor_00b7dd80' \\u2014 main part 'CG_scalar_deleting_dtor_00b7dd80' contains underscores. Use PascalCase after the module prefix.\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b7dd80",
+        "new_name": "CG_scalar_deleting_dtor_00b7dd80"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b7dd80 from 'CG_scalar_deleting_dtor_00b7dd80' to 'CG_scalar_deleting_dtor_00b7dd80'\", \"warnings\": [\"Function name 'CG_scalar_deleting_dtor_00b7dd80' \\u2014 main part 'CG_scalar_deleting_dtor_00b7dd80' is not PascalCase. Expected: CgScalarDeletingDtor00b7dd80\", \"Function name 'CG_scalar_deleting_dtor_00b7dd80' \\u2014 main part 'CG_scalar_deleting_dtor_00b7dd80' contains underscores. Use PascalCase after the module prefix.\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00b7dd80",
+        "comment": ""
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00b7dd80\"}"
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00b7dba0",
+        "end_address": "00b7dba8"
+      },
+      "result": "{\"success\": true, \"start_address\": \"00b7dba0\", \"end_address\": \"00b7dba7\", \"bytes_disassembled\": 8, \"message\": \"Successfully disassembled 8 byte(s)\"}"
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00b7dba0",
+        "name": "BSP_SkinedMeshParser_DeleteSecondary_00b7dba0",
+        "disassemble_first": false
+      },
+      "result": "{\"success\": true, \"address\": \"00b7dba0\", \"function_name\": \"BSP_SkinedMeshParser_DeleteSecondary_00b7dba0\", \"entry_point\": \"00b7dba0\", \"body_size\": 8, \"message\": \"Function created successfully at 00b7dba0\", \"warnings\": [\"Function name 'BSP_SkinedMeshParser_DeleteSecondary_00b7dba0' \\u2014 main part 'SkinedMeshParser_DeleteSecondary_00b7dba0' is not PascalCase. Expected: SkinedmeshparserDeletesecondary00b7dba0\", \"Function name 'BSP_SkinedMeshParser_DeleteSecondary_00b7dba0' \\u2014 main part 'SkinedMeshParser_DeleteSecondary_00b7dba0' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_SkinedMeshParser_DeleteSecondary_00b7dba0' does not start with a recognized verb. First word 'Skined' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b7dba0",
+        "new_name": "BSP_SkinedMeshParser_DeleteSecondary_00b7dba0"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b7dba0 from 'BSP_SkinedMeshParser_DeleteSecondary_00b7dba0' to 'BSP_SkinedMeshParser_DeleteSecondary_00b7dba0'\", \"warnings\": [\"Function name 'BSP_SkinedMeshParser_DeleteSecondary_00b7dba0' \\u2014 main part 'SkinedMeshParser_DeleteSecondary_00b7dba0' is not PascalCase. Expected: SkinedmeshparserDeletesecondary00b7dba0\", \"Function name 'BSP_SkinedMeshParser_DeleteSecondary_00b7dba0' \\u2014 main part 'SkinedMeshParser_DeleteSecondary_00b7dba0' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_SkinedMeshParser_DeleteSecondary_00b7dba0' does not start with a recognized verb. First word 'Skined' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00b7dba0",
+        "comment": ""
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00b7dba0\"}"
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00cc1f58",
+        "end_address": "00cc1f62"
+      },
+      "result": "{\"success\": true, \"start_address\": \"00cc1f58\", \"end_address\": \"00cc1f61\", \"bytes_disassembled\": 10, \"message\": \"Successfully disassembled 10 byte(s)\"}"
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00cc1f58",
+        "name": "BSP_SkinedMeshParser_SingletonEH_00cc1f58",
+        "disassemble_first": false
+      },
+      "result": "{\"success\": true, \"address\": \"00cc1f58\", \"function_name\": \"BSP_SkinedMeshParser_SingletonEH_00cc1f58\", \"entry_point\": \"00cc1f58\", \"body_size\": 10, \"message\": \"Function created successfully at 00cc1f58\", \"warnings\": [\"Function name 'BSP_SkinedMeshParser_SingletonEH_00cc1f58' \\u2014 main part 'SkinedMeshParser_SingletonEH_00cc1f58' is not PascalCase. Expected: SkinedmeshparserSingletoneh00cc1f58\", \"Function name 'BSP_SkinedMeshParser_SingletonEH_00cc1f58' \\u2014 main part 'SkinedMeshParser_SingletonEH_00cc1f58' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_SkinedMeshParser_SingletonEH_00cc1f58' does not start with a recognized verb. First word 'Skined' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00cc1f58",
+        "new_name": "BSP_SkinedMeshParser_SingletonEH_00cc1f58"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00cc1f58 from 'BSP_SkinedMeshParser_SingletonEH_00cc1f58' to 'BSP_SkinedMeshParser_SingletonEH_00cc1f58'\", \"warnings\": [\"Function name 'BSP_SkinedMeshParser_SingletonEH_00cc1f58' \\u2014 main part 'SkinedMeshParser_SingletonEH_00cc1f58' is not PascalCase. Expected: SkinedmeshparserSingletoneh00cc1f58\", \"Function name 'BSP_SkinedMeshParser_SingletonEH_00cc1f58' \\u2014 main part 'SkinedMeshParser_SingletonEH_00cc1f58' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_SkinedMeshParser_SingletonEH_00cc1f58' does not start with a recognized verb. First word 'Skined' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00cc1f58",
+        "comment": ""
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00cc1f58\"}"
+    },
+    {
+      "endpoint": "clear_instruction_flow_override",
+      "body": {
+        "address": "00b7ddec"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Cleared flow override at 00b7ddec (was: CALL_RETURN, now: NONE)\"}"
+    },
+    {
+      "endpoint": "delete_function",
+      "body": {
+        "address": "00b7ddc0"
+      },
+      "result": "{\"success\": true, \"address\": \"00b7ddc0\", \"deleted_function\": \"CG_scalar_deleting_dtor_00b7ddc0\", \"body_size\": 55, \"message\": \"Function 'CG_scalar_deleting_dtor_00b7ddc0' deleted at 00b7ddc0\"}"
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00b7ddc0",
+        "end_address": "00b7ddfa"
+      },
+      "result": "{\"success\": true, \"start_address\": \"00b7ddc0\", \"end_address\": \"00b7ddf9\", \"bytes_disassembled\": 58, \"message\": \"Successfully disassembled 58 byte(s)\"}"
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00b7ddc0",
+        "name": "CG_scalar_deleting_dtor_00b7ddc0",
+        "disassemble_first": false
+      },
+      "result": "{\"success\": true, \"address\": \"00b7ddc0\", \"function_name\": \"CG_scalar_deleting_dtor_00b7ddc0\", \"entry_point\": \"00b7ddc0\", \"body_size\": 58, \"message\": \"Function created successfully at 00b7ddc0\", \"warnings\": [\"Function name 'CG_scalar_deleting_dtor_00b7ddc0' \\u2014 main part 'CG_scalar_deleting_dtor_00b7ddc0' is not PascalCase. Expected: CgScalarDeletingDtor00b7ddc0\", \"Function name 'CG_scalar_deleting_dtor_00b7ddc0' \\u2014 main part 'CG_scalar_deleting_dtor_00b7ddc0' contains underscores. Use PascalCase after the module prefix.\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b7ddc0",
+        "new_name": "CG_scalar_deleting_dtor_00b7ddc0"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b7ddc0 from 'CG_scalar_deleting_dtor_00b7ddc0' to 'CG_scalar_deleting_dtor_00b7ddc0'\", \"warnings\": [\"Function name 'CG_scalar_deleting_dtor_00b7ddc0' \\u2014 main part 'CG_scalar_deleting_dtor_00b7ddc0' is not PascalCase. Expected: CgScalarDeletingDtor00b7ddc0\", \"Function name 'CG_scalar_deleting_dtor_00b7ddc0' \\u2014 main part 'CG_scalar_deleting_dtor_00b7ddc0' contains underscores. Use PascalCase after the module prefix.\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00b7ddc0",
+        "comment": ""
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00b7ddc0\"}"
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00b7dc00",
+        "end_address": "00b7dc08"
+      },
+      "result": "{\"success\": true, \"start_address\": \"00b7dc00\", \"end_address\": \"00b7dc07\", \"bytes_disassembled\": 8, \"message\": \"Successfully disassembled 8 byte(s)\"}"
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00b7dc00",
+        "name": "BSP_MatrixIndexedMeshParser_DeleteSecondary_00b7dc00",
+        "disassemble_first": false
+      },
+      "result": "{\"success\": true, \"address\": \"00b7dc00\", \"function_name\": \"BSP_MatrixIndexedMeshParser_DeleteSecondary_00b7dc00\", \"entry_point\": \"00b7dc00\", \"body_size\": 8, \"message\": \"Function created successfully at 00b7dc00\", \"warnings\": [\"Function name 'BSP_MatrixIndexedMeshParser_DeleteSecondary_00b7dc00' \\u2014 main part 'MatrixIndexedMeshParser_DeleteSecondary_00b7dc00' is not PascalCase. Expected: MatrixindexedmeshparserDeletesecondary00b7dc00\", \"Function name 'BSP_MatrixIndexedMeshParser_DeleteSecondary_00b7dc00' \\u2014 main part 'MatrixIndexedMeshParser_DeleteSecondary_00b7dc00' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_MatrixIndexedMeshParser_DeleteSecondary_00b7dc00' does not start with a recognized verb. First word 'Matrix' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b7dc00",
+        "new_name": "BSP_MatrixIndexedMeshParser_DeleteSecondary_00b7dc00"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b7dc00 from 'BSP_MatrixIndexedMeshParser_DeleteSecondary_00b7dc00' to 'BSP_MatrixIndexedMeshParser_DeleteSecondary_00b7dc00'\", \"warnings\": [\"Function name 'BSP_MatrixIndexedMeshParser_DeleteSecondary_00b7dc00' \\u2014 main part 'MatrixIndexedMeshParser_DeleteSecondary_00b7dc00' is not PascalCase. Expected: MatrixindexedmeshparserDeletesecondary00b7dc00\", \"Function name 'BSP_MatrixIndexedMeshParser_DeleteSecondary_00b7dc00' \\u2014 main part 'MatrixIndexedMeshParser_DeleteSecondary_00b7dc00' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_MatrixIndexedMeshParser_DeleteSecondary_00b7dc00' does not start with a recognized verb. First word 'Matrix' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00b7dc00",
+        "comment": ""
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00b7dc00\"}"
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00cc1f78",
+        "end_address": "00cc1f82"
+      },
+      "result": "{\"success\": true, \"start_address\": \"00cc1f78\", \"end_address\": \"00cc1f81\", \"bytes_disassembled\": 10, \"message\": \"Successfully disassembled 10 byte(s)\"}"
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00cc1f78",
+        "name": "BSP_MatrixIndexedMeshParser_SingletonEH_00cc1f78",
+        "disassemble_first": false
+      },
+      "result": "{\"success\": true, \"address\": \"00cc1f78\", \"function_name\": \"BSP_MatrixIndexedMeshParser_SingletonEH_00cc1f78\", \"entry_point\": \"00cc1f78\", \"body_size\": 10, \"message\": \"Function created successfully at 00cc1f78\", \"warnings\": [\"Function name 'BSP_MatrixIndexedMeshParser_SingletonEH_00cc1f78' \\u2014 main part 'MatrixIndexedMeshParser_SingletonEH_00cc1f78' is not PascalCase. Expected: MatrixindexedmeshparserSingletoneh00cc1f78\", \"Function name 'BSP_MatrixIndexedMeshParser_SingletonEH_00cc1f78' \\u2014 main part 'MatrixIndexedMeshParser_SingletonEH_00cc1f78' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_MatrixIndexedMeshParser_SingletonEH_00cc1f78' does not start with a recognized verb. First word 'Matrix' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00cc1f78",
+        "new_name": "BSP_MatrixIndexedMeshParser_SingletonEH_00cc1f78"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00cc1f78 from 'BSP_MatrixIndexedMeshParser_SingletonEH_00cc1f78' to 'BSP_MatrixIndexedMeshParser_SingletonEH_00cc1f78'\", \"warnings\": [\"Function name 'BSP_MatrixIndexedMeshParser_SingletonEH_00cc1f78' \\u2014 main part 'MatrixIndexedMeshParser_SingletonEH_00cc1f78' is not PascalCase. Expected: MatrixindexedmeshparserSingletoneh00cc1f78\", \"Function name 'BSP_MatrixIndexedMeshParser_SingletonEH_00cc1f78' \\u2014 main part 'MatrixIndexedMeshParser_SingletonEH_00cc1f78' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_MatrixIndexedMeshParser_SingletonEH_00cc1f78' does not start with a recognized verb. First word 'Matrix' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00cc1f78",
+        "comment": ""
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00cc1f78\"}"
+    },
+    {
+      "endpoint": "clear_instruction_flow_override",
+      "body": {
+        "address": "00b7de2c"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Cleared flow override at 00b7de2c (was: CALL_RETURN, now: NONE)\"}"
+    },
+    {
+      "endpoint": "delete_function",
+      "body": {
+        "address": "00b7de00"
+      },
+      "result": "{\"success\": true, \"address\": \"00b7de00\", \"deleted_function\": \"CG_scalar_deleting_dtor_00b7de00\", \"body_size\": 55, \"message\": \"Function 'CG_scalar_deleting_dtor_00b7de00' deleted at 00b7de00\"}"
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00b7de00",
+        "end_address": "00b7de3a"
+      },
+      "result": "{\"success\": true, \"start_address\": \"00b7de00\", \"end_address\": \"00b7de39\", \"bytes_disassembled\": 58, \"message\": \"Successfully disassembled 58 byte(s)\"}"
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00b7de00",
+        "name": "CG_scalar_deleting_dtor_00b7de00",
+        "disassemble_first": false
+      },
+      "result": "{\"success\": true, \"address\": \"00b7de00\", \"function_name\": \"CG_scalar_deleting_dtor_00b7de00\", \"entry_point\": \"00b7de00\", \"body_size\": 58, \"message\": \"Function created successfully at 00b7de00\", \"warnings\": [\"Function name 'CG_scalar_deleting_dtor_00b7de00' \\u2014 main part 'CG_scalar_deleting_dtor_00b7de00' is not PascalCase. Expected: CgScalarDeletingDtor00b7de00\", \"Function name 'CG_scalar_deleting_dtor_00b7de00' \\u2014 main part 'CG_scalar_deleting_dtor_00b7de00' contains underscores. Use PascalCase after the module prefix.\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b7de00",
+        "new_name": "CG_scalar_deleting_dtor_00b7de00"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b7de00 from 'CG_scalar_deleting_dtor_00b7de00' to 'CG_scalar_deleting_dtor_00b7de00'\", \"warnings\": [\"Function name 'CG_scalar_deleting_dtor_00b7de00' \\u2014 main part 'CG_scalar_deleting_dtor_00b7de00' is not PascalCase. Expected: CgScalarDeletingDtor00b7de00\", \"Function name 'CG_scalar_deleting_dtor_00b7de00' \\u2014 main part 'CG_scalar_deleting_dtor_00b7de00' contains underscores. Use PascalCase after the module prefix.\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00b7de00",
+        "comment": ""
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00b7de00\"}"
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00b7dc60",
+        "end_address": "00b7dc68"
+      },
+      "result": "{\"success\": true, \"start_address\": \"00b7dc60\", \"end_address\": \"00b7dc67\", \"bytes_disassembled\": 8, \"message\": \"Successfully disassembled 8 byte(s)\"}"
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00b7dc60",
+        "name": "BSP_CameraParser_DeleteSecondary_00b7dc60",
+        "disassemble_first": false
+      },
+      "result": "{\"success\": true, \"address\": \"00b7dc60\", \"function_name\": \"BSP_CameraParser_DeleteSecondary_00b7dc60\", \"entry_point\": \"00b7dc60\", \"body_size\": 8, \"message\": \"Function created successfully at 00b7dc60\", \"warnings\": [\"Function name 'BSP_CameraParser_DeleteSecondary_00b7dc60' \\u2014 main part 'CameraParser_DeleteSecondary_00b7dc60' is not PascalCase. Expected: CameraparserDeletesecondary00b7dc60\", \"Function name 'BSP_CameraParser_DeleteSecondary_00b7dc60' \\u2014 main part 'CameraParser_DeleteSecondary_00b7dc60' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_CameraParser_DeleteSecondary_00b7dc60' does not start with a recognized verb. First word 'Camera' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b7dc60",
+        "new_name": "BSP_CameraParser_DeleteSecondary_00b7dc60"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b7dc60 from 'BSP_CameraParser_DeleteSecondary_00b7dc60' to 'BSP_CameraParser_DeleteSecondary_00b7dc60'\", \"warnings\": [\"Function name 'BSP_CameraParser_DeleteSecondary_00b7dc60' \\u2014 main part 'CameraParser_DeleteSecondary_00b7dc60' is not PascalCase. Expected: CameraparserDeletesecondary00b7dc60\", \"Function name 'BSP_CameraParser_DeleteSecondary_00b7dc60' \\u2014 main part 'CameraParser_DeleteSecondary_00b7dc60' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_CameraParser_DeleteSecondary_00b7dc60' does not start with a recognized verb. First word 'Camera' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00b7dc60",
+        "comment": ""
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00b7dc60\"}"
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00cc1f98",
+        "end_address": "00cc1fa2"
+      },
+      "result": "{\"success\": true, \"start_address\": \"00cc1f98\", \"end_address\": \"00cc1fa1\", \"bytes_disassembled\": 10, \"message\": \"Successfully disassembled 10 byte(s)\"}"
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00cc1f98",
+        "name": "BSP_CameraParser_SingletonEH_00cc1f98",
+        "disassemble_first": false
+      },
+      "result": "{\"success\": true, \"address\": \"00cc1f98\", \"function_name\": \"BSP_CameraParser_SingletonEH_00cc1f98\", \"entry_point\": \"00cc1f98\", \"body_size\": 10, \"message\": \"Function created successfully at 00cc1f98\", \"warnings\": [\"Function name 'BSP_CameraParser_SingletonEH_00cc1f98' \\u2014 main part 'CameraParser_SingletonEH_00cc1f98' is not PascalCase. Expected: CameraparserSingletoneh00cc1f98\", \"Function name 'BSP_CameraParser_SingletonEH_00cc1f98' \\u2014 main part 'CameraParser_SingletonEH_00cc1f98' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_CameraParser_SingletonEH_00cc1f98' does not start with a recognized verb. First word 'Camera' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00cc1f98",
+        "new_name": "BSP_CameraParser_SingletonEH_00cc1f98"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00cc1f98 from 'BSP_CameraParser_SingletonEH_00cc1f98' to 'BSP_CameraParser_SingletonEH_00cc1f98'\", \"warnings\": [\"Function name 'BSP_CameraParser_SingletonEH_00cc1f98' \\u2014 main part 'CameraParser_SingletonEH_00cc1f98' is not PascalCase. Expected: CameraparserSingletoneh00cc1f98\", \"Function name 'BSP_CameraParser_SingletonEH_00cc1f98' \\u2014 main part 'CameraParser_SingletonEH_00cc1f98' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_CameraParser_SingletonEH_00cc1f98' does not start with a recognized verb. First word 'Camera' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00cc1f98",
+        "comment": ""
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00cc1f98\"}"
+    },
+    {
+      "endpoint": "clear_instruction_flow_override",
+      "body": {
+        "address": "00b7de6c"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Cleared flow override at 00b7de6c (was: CALL_RETURN, now: NONE)\"}"
+    },
+    {
+      "endpoint": "delete_function",
+      "body": {
+        "address": "00b7de40"
+      },
+      "result": "{\"success\": true, \"address\": \"00b7de40\", \"deleted_function\": \"CG_scalar_deleting_dtor_00b7de40\", \"body_size\": 55, \"message\": \"Function 'CG_scalar_deleting_dtor_00b7de40' deleted at 00b7de40\"}"
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00b7de40",
+        "end_address": "00b7de7a"
+      },
+      "result": "{\"success\": true, \"start_address\": \"00b7de40\", \"end_address\": \"00b7de79\", \"bytes_disassembled\": 58, \"message\": \"Successfully disassembled 58 byte(s)\"}"
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00b7de40",
+        "name": "CG_scalar_deleting_dtor_00b7de40",
+        "disassemble_first": false
+      },
+      "result": "{\"success\": true, \"address\": \"00b7de40\", \"function_name\": \"CG_scalar_deleting_dtor_00b7de40\", \"entry_point\": \"00b7de40\", \"body_size\": 58, \"message\": \"Function created successfully at 00b7de40\", \"warnings\": [\"Function name 'CG_scalar_deleting_dtor_00b7de40' \\u2014 main part 'CG_scalar_deleting_dtor_00b7de40' is not PascalCase. Expected: CgScalarDeletingDtor00b7de40\", \"Function name 'CG_scalar_deleting_dtor_00b7de40' \\u2014 main part 'CG_scalar_deleting_dtor_00b7de40' contains underscores. Use PascalCase after the module prefix.\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b7de40",
+        "new_name": "CG_scalar_deleting_dtor_00b7de40"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b7de40 from 'CG_scalar_deleting_dtor_00b7de40' to 'CG_scalar_deleting_dtor_00b7de40'\", \"warnings\": [\"Function name 'CG_scalar_deleting_dtor_00b7de40' \\u2014 main part 'CG_scalar_deleting_dtor_00b7de40' is not PascalCase. Expected: CgScalarDeletingDtor00b7de40\", \"Function name 'CG_scalar_deleting_dtor_00b7de40' \\u2014 main part 'CG_scalar_deleting_dtor_00b7de40' contains underscores. Use PascalCase after the module prefix.\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00b7de40",
+        "comment": ""
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00b7de40\"}"
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00b7dcc0",
+        "end_address": "00b7dcc8"
+      },
+      "result": "{\"success\": true, \"start_address\": \"00b7dcc0\", \"end_address\": \"00b7dcc7\", \"bytes_disassembled\": 8, \"message\": \"Successfully disassembled 8 byte(s)\"}"
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00b7dcc0",
+        "name": "BSP_SkinedMeshAnimationParser_DeleteSecondary_00b7dcc0",
+        "disassemble_first": false
+      },
+      "result": "{\"success\": true, \"address\": \"00b7dcc0\", \"function_name\": \"BSP_SkinedMeshAnimationParser_DeleteSecondary_00b7dcc0\", \"entry_point\": \"00b7dcc0\", \"body_size\": 8, \"message\": \"Function created successfully at 00b7dcc0\", \"warnings\": [\"Function name 'BSP_SkinedMeshAnimationParser_DeleteSecondary_00b7dcc0' \\u2014 main part 'SkinedMeshAnimationParser_DeleteSecondary_00b7dcc0' is not PascalCase. Expected: SkinedmeshanimationparserDeletesecondary00b7dcc0\", \"Function name 'BSP_SkinedMeshAnimationParser_DeleteSecondary_00b7dcc0' \\u2014 main part 'SkinedMeshAnimationParser_DeleteSecondary_00b7dcc0' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_SkinedMeshAnimationParser_DeleteSecondary_00b7dcc0' does not start with a recognized verb. First word 'Skined' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b7dcc0",
+        "new_name": "BSP_SkinedMeshAnimationParser_DeleteSecondary_00b7dcc0"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b7dcc0 from 'BSP_SkinedMeshAnimationParser_DeleteSecondary_00b7dcc0' to 'BSP_SkinedMeshAnimationParser_DeleteSecondary_00b7dcc0'\", \"warnings\": [\"Function name 'BSP_SkinedMeshAnimationParser_DeleteSecondary_00b7dcc0' \\u2014 main part 'SkinedMeshAnimationParser_DeleteSecondary_00b7dcc0' is not PascalCase. Expected: SkinedmeshanimationparserDeletesecondary00b7dcc0\", \"Function name 'BSP_SkinedMeshAnimationParser_DeleteSecondary_00b7dcc0' \\u2014 main part 'SkinedMeshAnimationParser_DeleteSecondary_00b7dcc0' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_SkinedMeshAnimationParser_DeleteSecondary_00b7dcc0' does not start with a recognized verb. First word 'Skined' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00b7dcc0",
+        "comment": ""
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00b7dcc0\"}"
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00cc1fb8",
+        "end_address": "00cc1fc2"
+      },
+      "result": "{\"success\": true, \"start_address\": \"00cc1fb8\", \"end_address\": \"00cc1fc1\", \"bytes_disassembled\": 10, \"message\": \"Successfully disassembled 10 byte(s)\"}"
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00cc1fb8",
+        "name": "BSP_SkinedMeshAnimationParser_SingletonEH_00cc1fb8",
+        "disassemble_first": false
+      },
+      "result": "{\"success\": true, \"address\": \"00cc1fb8\", \"function_name\": \"BSP_SkinedMeshAnimationParser_SingletonEH_00cc1fb8\", \"entry_point\": \"00cc1fb8\", \"body_size\": 10, \"message\": \"Function created successfully at 00cc1fb8\", \"warnings\": [\"Function name 'BSP_SkinedMeshAnimationParser_SingletonEH_00cc1fb8' \\u2014 main part 'SkinedMeshAnimationParser_SingletonEH_00cc1fb8' is not PascalCase. Expected: SkinedmeshanimationparserSingletoneh00cc1fb8\", \"Function name 'BSP_SkinedMeshAnimationParser_SingletonEH_00cc1fb8' \\u2014 main part 'SkinedMeshAnimationParser_SingletonEH_00cc1fb8' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_SkinedMeshAnimationParser_SingletonEH_00cc1fb8' does not start with a recognized verb. First word 'Skined' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00cc1fb8",
+        "new_name": "BSP_SkinedMeshAnimationParser_SingletonEH_00cc1fb8"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00cc1fb8 from 'BSP_SkinedMeshAnimationParser_SingletonEH_00cc1fb8' to 'BSP_SkinedMeshAnimationParser_SingletonEH_00cc1fb8'\", \"warnings\": [\"Function name 'BSP_SkinedMeshAnimationParser_SingletonEH_00cc1fb8' \\u2014 main part 'SkinedMeshAnimationParser_SingletonEH_00cc1fb8' is not PascalCase. Expected: SkinedmeshanimationparserSingletoneh00cc1fb8\", \"Function name 'BSP_SkinedMeshAnimationParser_SingletonEH_00cc1fb8' \\u2014 main part 'SkinedMeshAnimationParser_SingletonEH_00cc1fb8' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_SkinedMeshAnimationParser_SingletonEH_00cc1fb8' does not start with a recognized verb. First word 'Skined' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00cc1fb8",
+        "comment": ""
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00cc1fb8\"}"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": "{\"success\": true, \"program\": \"battlestationspacific.exe\", \"message\": \"Program saved successfully\"}"
+    }
+  ],
+  "entries": [
+    {
+      "address": "00b7dd00",
+      "role": "delete",
+      "before_documentation": {
+        "hash": "435196751d6110072d1a623423eeee5002a930e09c0f516b585f59d63d8830fe",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b7dd00",
+        "function_name": "CG_scalar_deleting_dtor_00b7dd00",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "extraout_EAX",
+            "type": "undefined4 *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "puVar1",
+            "type": "undefined4 *",
+            "storage": "(register, 0x0, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 12,
+            "name": "LAB_00b7dd0c"
+          },
+          {
+            "relative_offset": 14,
+            "name": "LAB_00b7dd0e"
+          },
+          {
+            "relative_offset": 52,
+            "name": "LAB_00b7dd34"
+          }
+        ],
+        "completeness_score": 80.0
+      },
+      "before_comment": {
+        "address": "00b7dd00",
+        "function_name": "CG_scalar_deleting_dtor_00b7dd00"
+      },
+      "complete": true,
+      "after_comment": {
+        "address": "00b7dd00",
+        "function_name": "CG_scalar_deleting_dtor_00b7dd00",
+        "comment": ""
+      },
+      "all_instruction_owners_verified": true,
+      "prior_comment_preserved": true
+    },
+    {
+      "address": "00b7dae0",
+      "role": "secondary",
+      "before_documentation": {
+        "no_function": true
+      },
+      "before_comment": {
+        "no_function": true,
+        "comment": ""
+      },
+      "complete": true,
+      "after_comment": {
+        "address": "00b7dae0",
+        "function_name": "BSP_GroupParamsParser_DeleteSecondary_00b7dae0",
+        "comment": ""
+      },
+      "all_instruction_owners_verified": true,
+      "prior_comment_preserved": true
+    },
+    {
+      "address": "00cc1f18",
+      "role": "handler",
+      "before_documentation": {
+        "no_function": true
+      },
+      "before_comment": {
+        "no_function": true,
+        "comment": ""
+      },
+      "complete": true,
+      "after_comment": {
+        "address": "00cc1f18",
+        "function_name": "BSP_GroupParamsParser_SingletonEH_00cc1f18",
+        "comment": ""
+      },
+      "all_instruction_owners_verified": true,
+      "prior_comment_preserved": true
+    },
+    {
+      "address": "00b7dd40",
+      "role": "delete",
+      "before_documentation": {
+        "hash": "435196751d6110072d1a623423eeee5002a930e09c0f516b585f59d63d8830fe",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b7dd40",
+        "function_name": "CG_scalar_deleting_dtor_00b7dd40",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "extraout_EAX",
+            "type": "undefined4 *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "puVar1",
+            "type": "undefined4 *",
+            "storage": "(register, 0x0, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 12,
+            "name": "LAB_00b7dd4c"
+          },
+          {
+            "relative_offset": 14,
+            "name": "LAB_00b7dd4e"
+          },
+          {
+            "relative_offset": 52,
+            "name": "LAB_00b7dd74"
+          }
+        ],
+        "completeness_score": 80.0
+      },
+      "before_comment": {
+        "address": "00b7dd40",
+        "function_name": "CG_scalar_deleting_dtor_00b7dd40"
+      },
+      "complete": true,
+      "after_comment": {
+        "address": "00b7dd40",
+        "function_name": "CG_scalar_deleting_dtor_00b7dd40",
+        "comment": ""
+      },
+      "all_instruction_owners_verified": true,
+      "prior_comment_preserved": true
+    },
+    {
+      "address": "00b7db40",
+      "role": "secondary",
+      "before_documentation": {
+        "no_function": true
+      },
+      "before_comment": {
+        "no_function": true,
+        "comment": ""
+      },
+      "complete": true,
+      "after_comment": {
+        "address": "00b7db40",
+        "function_name": "BSP_MeshParser_DeleteSecondary_00b7db40",
+        "comment": ""
+      },
+      "all_instruction_owners_verified": true,
+      "prior_comment_preserved": true
+    },
+    {
+      "address": "00cc1f38",
+      "role": "handler",
+      "before_documentation": {
+        "no_function": true
+      },
+      "before_comment": {
+        "no_function": true,
+        "comment": ""
+      },
+      "complete": true,
+      "after_comment": {
+        "address": "00cc1f38",
+        "function_name": "BSP_MeshParser_SingletonEH_00cc1f38",
+        "comment": ""
+      },
+      "all_instruction_owners_verified": true,
+      "prior_comment_preserved": true
+    },
+    {
+      "address": "00b7dd80",
+      "role": "delete",
+      "before_documentation": {
+        "hash": "435196751d6110072d1a623423eeee5002a930e09c0f516b585f59d63d8830fe",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b7dd80",
+        "function_name": "CG_scalar_deleting_dtor_00b7dd80",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "extraout_EAX",
+            "type": "undefined4 *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "puVar1",
+            "type": "undefined4 *",
+            "storage": "(register, 0x0, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 12,
+            "name": "LAB_00b7dd8c"
+          },
+          {
+            "relative_offset": 14,
+            "name": "LAB_00b7dd8e"
+          },
+          {
+            "relative_offset": 52,
+            "name": "LAB_00b7ddb4"
+          }
+        ],
+        "completeness_score": 80.0
+      },
+      "before_comment": {
+        "address": "00b7dd80",
+        "function_name": "CG_scalar_deleting_dtor_00b7dd80"
+      },
+      "complete": true,
+      "after_comment": {
+        "address": "00b7dd80",
+        "function_name": "CG_scalar_deleting_dtor_00b7dd80",
+        "comment": ""
+      },
+      "all_instruction_owners_verified": true,
+      "prior_comment_preserved": true
+    },
+    {
+      "address": "00b7dba0",
+      "role": "secondary",
+      "before_documentation": {
+        "no_function": true
+      },
+      "before_comment": {
+        "no_function": true,
+        "comment": ""
+      },
+      "complete": true,
+      "after_comment": {
+        "address": "00b7dba0",
+        "function_name": "BSP_SkinedMeshParser_DeleteSecondary_00b7dba0",
+        "comment": ""
+      },
+      "all_instruction_owners_verified": true,
+      "prior_comment_preserved": true
+    },
+    {
+      "address": "00cc1f58",
+      "role": "handler",
+      "before_documentation": {
+        "no_function": true
+      },
+      "before_comment": {
+        "no_function": true,
+        "comment": ""
+      },
+      "complete": true,
+      "after_comment": {
+        "address": "00cc1f58",
+        "function_name": "BSP_SkinedMeshParser_SingletonEH_00cc1f58",
+        "comment": ""
+      },
+      "all_instruction_owners_verified": true,
+      "prior_comment_preserved": true
+    },
+    {
+      "address": "00b7ddc0",
+      "role": "delete",
+      "before_documentation": {
+        "hash": "435196751d6110072d1a623423eeee5002a930e09c0f516b585f59d63d8830fe",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b7ddc0",
+        "function_name": "CG_scalar_deleting_dtor_00b7ddc0",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "extraout_EAX",
+            "type": "undefined4 *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "puVar1",
+            "type": "undefined4 *",
+            "storage": "(register, 0x0, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 12,
+            "name": "LAB_00b7ddcc"
+          },
+          {
+            "relative_offset": 14,
+            "name": "LAB_00b7ddce"
+          },
+          {
+            "relative_offset": 52,
+            "name": "LAB_00b7ddf4"
+          }
+        ],
+        "completeness_score": 80.0
+      },
+      "before_comment": {
+        "address": "00b7ddc0",
+        "function_name": "CG_scalar_deleting_dtor_00b7ddc0"
+      },
+      "complete": true,
+      "after_comment": {
+        "address": "00b7ddc0",
+        "function_name": "CG_scalar_deleting_dtor_00b7ddc0",
+        "comment": ""
+      },
+      "all_instruction_owners_verified": true,
+      "prior_comment_preserved": true
+    },
+    {
+      "address": "00b7dc00",
+      "role": "secondary",
+      "before_documentation": {
+        "no_function": true
+      },
+      "before_comment": {
+        "no_function": true,
+        "comment": ""
+      },
+      "complete": true,
+      "after_comment": {
+        "address": "00b7dc00",
+        "function_name": "BSP_MatrixIndexedMeshParser_DeleteSecondary_00b7dc00",
+        "comment": ""
+      },
+      "all_instruction_owners_verified": true,
+      "prior_comment_preserved": true
+    },
+    {
+      "address": "00cc1f78",
+      "role": "handler",
+      "before_documentation": {
+        "no_function": true
+      },
+      "before_comment": {
+        "no_function": true,
+        "comment": ""
+      },
+      "complete": true,
+      "after_comment": {
+        "address": "00cc1f78",
+        "function_name": "BSP_MatrixIndexedMeshParser_SingletonEH_00cc1f78",
+        "comment": ""
+      },
+      "all_instruction_owners_verified": true,
+      "prior_comment_preserved": true
+    },
+    {
+      "address": "00b7de00",
+      "role": "delete",
+      "before_documentation": {
+        "hash": "435196751d6110072d1a623423eeee5002a930e09c0f516b585f59d63d8830fe",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b7de00",
+        "function_name": "CG_scalar_deleting_dtor_00b7de00",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "extraout_EAX",
+            "type": "undefined4 *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "puVar1",
+            "type": "undefined4 *",
+            "storage": "(register, 0x0, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 12,
+            "name": "LAB_00b7de0c"
+          },
+          {
+            "relative_offset": 14,
+            "name": "LAB_00b7de0e"
+          },
+          {
+            "relative_offset": 52,
+            "name": "LAB_00b7de34"
+          }
+        ],
+        "completeness_score": 80.0
+      },
+      "before_comment": {
+        "address": "00b7de00",
+        "function_name": "CG_scalar_deleting_dtor_00b7de00"
+      },
+      "complete": true,
+      "after_comment": {
+        "address": "00b7de00",
+        "function_name": "CG_scalar_deleting_dtor_00b7de00",
+        "comment": ""
+      },
+      "all_instruction_owners_verified": true,
+      "prior_comment_preserved": true
+    },
+    {
+      "address": "00b7dc60",
+      "role": "secondary",
+      "before_documentation": {
+        "no_function": true
+      },
+      "before_comment": {
+        "no_function": true,
+        "comment": ""
+      },
+      "complete": true,
+      "after_comment": {
+        "address": "00b7dc60",
+        "function_name": "BSP_CameraParser_DeleteSecondary_00b7dc60",
+        "comment": ""
+      },
+      "all_instruction_owners_verified": true,
+      "prior_comment_preserved": true
+    },
+    {
+      "address": "00cc1f98",
+      "role": "handler",
+      "before_documentation": {
+        "no_function": true
+      },
+      "before_comment": {
+        "no_function": true,
+        "comment": ""
+      },
+      "complete": true,
+      "after_comment": {
+        "address": "00cc1f98",
+        "function_name": "BSP_CameraParser_SingletonEH_00cc1f98",
+        "comment": ""
+      },
+      "all_instruction_owners_verified": true,
+      "prior_comment_preserved": true
+    },
+    {
+      "address": "00b7de40",
+      "role": "delete",
+      "before_documentation": {
+        "hash": "435196751d6110072d1a623423eeee5002a930e09c0f516b585f59d63d8830fe",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b7de40",
+        "function_name": "CG_scalar_deleting_dtor_00b7de40",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "extraout_EAX",
+            "type": "undefined4 *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "puVar1",
+            "type": "undefined4 *",
+            "storage": "(register, 0x0, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 12,
+            "name": "LAB_00b7de4c"
+          },
+          {
+            "relative_offset": 14,
+            "name": "LAB_00b7de4e"
+          },
+          {
+            "relative_offset": 52,
+            "name": "LAB_00b7de74"
+          }
+        ],
+        "completeness_score": 80.0
+      },
+      "before_comment": {
+        "address": "00b7de40",
+        "function_name": "CG_scalar_deleting_dtor_00b7de40"
+      },
+      "complete": true,
+      "after_comment": {
+        "address": "00b7de40",
+        "function_name": "CG_scalar_deleting_dtor_00b7de40",
+        "comment": ""
+      },
+      "all_instruction_owners_verified": true,
+      "prior_comment_preserved": true
+    },
+    {
+      "address": "00b7dcc0",
+      "role": "secondary",
+      "before_documentation": {
+        "no_function": true
+      },
+      "before_comment": {
+        "no_function": true,
+        "comment": ""
+      },
+      "complete": true,
+      "after_comment": {
+        "address": "00b7dcc0",
+        "function_name": "BSP_SkinedMeshAnimationParser_DeleteSecondary_00b7dcc0",
+        "comment": ""
+      },
+      "all_instruction_owners_verified": true,
+      "prior_comment_preserved": true
+    },
+    {
+      "address": "00cc1fb8",
+      "role": "handler",
+      "before_documentation": {
+        "no_function": true
+      },
+      "before_comment": {
+        "no_function": true,
+        "comment": ""
+      },
+      "complete": true,
+      "after_comment": {
+        "address": "00cc1fb8",
+        "function_name": "BSP_SkinedMeshAnimationParser_SingletonEH_00cc1fb8",
+        "comment": ""
+      },
+      "all_instruction_owners_verified": true,
+      "prior_comment_preserved": true
+    }
+  ],
+  "reference_gap_not_mutated": {
+    "function": "00bed950",
+    "address": "00bed981",
+    "owner": "No function found for 00bed981"
+  },
+  "saved": true
+}

@@ -1,0 +1,8135 @@
+{
+  "packet": "orch4_native_resource_parser_singletons_ca",
+  "base_revision": "3ea7cdf457e52d7793292acd15f26848a4851069",
+  "documentation": "docs/NATIVE_RESOURCE_PARSER_SINGLETONS_CA.md",
+  "project": {
+    "project_name": "bsp",
+    "current_folder": "/",
+    "folders": [],
+    "files": [
+      {
+        "name": "battlestationspacific.exe",
+        "path": "/battlestationspacific.exe",
+        "content_type": "Program",
+        "version": 2642,
+        "is_read_only": false,
+        "is_versioned": false
+      }
+    ]
+  },
+  "program": {
+    "name": "battlestationspacific.exe",
+    "path": "/battlestationspacific.exe",
+    "executable_path": "/I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "executable_format": "Portable Executable (PE)",
+    "language": "x86:LE:32:default",
+    "compiler": "windows",
+    "address_size": 32,
+    "image_base": "00400000",
+    "min_address": "00400000",
+    "max_address": "ffdfffff",
+    "memory_size": 14876380,
+    "function_count": 64063,
+    "symbol_count": 144105,
+    "data_type_count": 795,
+    "creation_date": "Mon May 04 16:56:25 PDT 2026",
+    "memory_block_count": 6,
+    "address_spaces": [
+      {
+        "name": "ram",
+        "start": "00000000",
+        "end": "ffffffff",
+        "size": 4294967296,
+        "addressable_unit_size": 1,
+        "size_bytes": 4294967296,
+        "address_size_bits": 32,
+        "is_default": true
+      }
+    ],
+    "has_multiple_address_spaces": false
+  },
+  "routines": [
+    {
+      "address": "00b7e100",
+      "bytes": 206,
+      "inclusive_end": "00b7e1cd",
+      "sha256": "02a5b27d91334086787e6e01c2d8b1bf0dd747b9d90fb3bb586796f51c3ef008",
+      "installed_pe_matches_live_ghidra": true,
+      "instruction_count": 54,
+      "all_instruction_owners_verified": true,
+      "instructions": [
+        [
+          12050688,
+          6,
+          "mov",
+          "eax, dword ptr fs:[0]"
+        ],
+        [
+          12050694,
+          2,
+          "push",
+          "-1"
+        ],
+        [
+          12050696,
+          5,
+          "push",
+          "0xcc1f18"
+        ],
+        [
+          12050701,
+          1,
+          "push",
+          "eax"
+        ],
+        [
+          12050702,
+          7,
+          "mov",
+          "dword ptr fs:[0], esp"
+        ],
+        [
+          12050709,
+          5,
+          "mov",
+          "eax, dword ptr [0x109033c]"
+        ],
+        [
+          12050714,
+          3,
+          "sub",
+          "esp, 8"
+        ],
+        [
+          12050717,
+          2,
+          "test",
+          "eax, eax"
+        ],
+        [
+          12050719,
+          6,
+          "jne",
+          "0xb7e1bf"
+        ],
+        [
+          12050725,
+          1,
+          "push",
+          "esi"
+        ],
+        [
+          12050726,
+          5,
+          "call",
+          "0x415350"
+        ],
+        [
+          12050731,
+          3,
+          "mov",
+          "esi, dword ptr [eax + 0x10]"
+        ],
+        [
+          12050734,
+          2,
+          "test",
+          "esi, esi"
+        ],
+        [
+          12050736,
+          8,
+          "mov",
+          "dword ptr [esp + 4], 0xce37fc"
+        ],
+        [
+          12050744,
+          4,
+          "mov",
+          "dword ptr [esp + 8], esi"
+        ],
+        [
+          12050748,
+          2,
+          "je",
+          "0xb7e149"
+        ],
+        [
+          12050750,
+          1,
+          "push",
+          "esi"
+        ],
+        [
+          12050751,
+          6,
+          "call",
+          "dword ptr [0xce2218]"
+        ],
+        [
+          12050757,
+          4,
+          "add",
+          "dword ptr [esi + 0x18], 1"
+        ],
+        [
+          12050761,
+          8,
+          "mov",
+          "dword ptr [esp + 0x14], 0"
+        ],
+        [
+          12050769,
+          7,
+          "cmp",
+          "dword ptr [0x109033c], 0"
+        ],
+        [
+          12050776,
+          2,
+          "jne",
+          "0xb7e1aa"
+        ],
+        [
+          12050778,
+          2,
+          "push",
+          "8"
+        ],
+        [
+          12050780,
+          5,
+          "call",
+          "0xbf681b"
+        ],
+        [
+          12050785,
+          3,
+          "add",
+          "esp, 4"
+        ],
+        [
+          12050788,
+          2,
+          "test",
+          "eax, eax"
+        ],
+        [
+          12050790,
+          2,
+          "je",
+          "0xb7e183"
+        ],
+        [
+          12050792,
+          7,
+          "mov",
+          "dword ptr [eax + 4], 0xd6306c"
+        ],
+        [
+          12050799,
+          6,
+          "mov",
+          "dword ptr [eax], 0xd63088"
+        ],
+        [
+          12050805,
+          7,
+          "mov",
+          "dword ptr [eax + 4], 0xd63084"
+        ],
+        [
+          12050812,
+          5,
+          "mov",
+          "dword ptr [0x109033c], eax"
+        ],
+        [
+          12050817,
+          2,
+          "jmp",
+          "0xb7e18d"
+        ],
+        [
+          12050819,
+          10,
+          "mov",
+          "dword ptr [0x109033c], 0"
+        ],
+        [
+          12050829,
+          5,
+          "mov",
+          "eax, dword ptr [0x109033c]"
+        ],
+        [
+          12050834,
+          2,
+          "test",
+          "eax, eax"
+        ],
+        [
+          12050836,
+          2,
+          "je",
+          "0xb7e19b"
+        ],
+        [
+          12050838,
+          3,
+          "add",
+          "eax, 4"
+        ],
+        [
+          12050841,
+          2,
+          "jmp",
+          "0xb7e19d"
+        ],
+        [
+          12050843,
+          2,
+          "xor",
+          "eax, eax"
+        ],
+        [
+          12050845,
+          1,
+          "push",
+          "eax"
+        ],
+        [
+          12050846,
+          5,
+          "call",
+          "0x415350"
+        ],
+        [
+          12050851,
+          2,
+          "mov",
+          "ecx, eax"
+        ],
+        [
+          12050853,
+          5,
+          "call",
+          "0xbd0c30"
+        ],
+        [
+          12050858,
+          2,
+          "test",
+          "esi, esi"
+        ],
+        [
+          12050860,
+          2,
+          "je",
+          "0xb7e1b9"
+        ],
+        [
+          12050862,
+          4,
+          "add",
+          "dword ptr [esi + 0x18], -1"
+        ],
+        [
+          12050866,
+          1,
+          "push",
+          "esi"
+        ],
+        [
+          12050867,
+          6,
+          "call",
+          "dword ptr [0xce2210]"
+        ],
+        [
+          12050873,
+          5,
+          "mov",
+          "eax, dword ptr [0x109033c]"
+        ],
+        [
+          12050878,
+          1,
+          "pop",
+          "esi"
+        ],
+        [
+          12050879,
+          4,
+          "mov",
+          "ecx, dword ptr [esp + 8]"
+        ],
+        [
+          12050883,
+          7,
+          "mov",
+          "dword ptr fs:[0], ecx"
+        ],
+        [
+          12050890,
+          3,
+          "add",
+          "esp, 0x14"
+        ],
+        [
+          12050893,
+          1,
+          "ret",
+          ""
+        ]
+      ],
+      "original_abi": "No native input; EAX parser; RET",
+      "function": "get_native_group_params_parser_00b7e100",
+      "role": "getter",
+      "parser": "GroupParams",
+      "source": "src/native_resource_parser_singletons.cpp",
+      "report": "reports/native_resource_parser_singletons_ca.json",
+      "coverage": "complete ordinary body",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00b7dd00",
+      "bytes": 58,
+      "inclusive_end": "00b7dd39",
+      "sha256": "687a4183dee06d699642cedcef237bcf6395f763d740be19c2b579a2e1db440f",
+      "installed_pe_matches_live_ghidra": true,
+      "instruction_count": 18,
+      "all_instruction_owners_verified": true,
+      "instructions": [
+        [
+          12049664,
+          1,
+          "push",
+          "esi"
+        ],
+        [
+          12049665,
+          2,
+          "mov",
+          "esi, ecx"
+        ],
+        [
+          12049667,
+          2,
+          "test",
+          "esi, esi"
+        ],
+        [
+          12049669,
+          2,
+          "je",
+          "0xb7dd0c"
+        ],
+        [
+          12049671,
+          3,
+          "lea",
+          "eax, [esi + 4]"
+        ],
+        [
+          12049674,
+          2,
+          "jmp",
+          "0xb7dd0e"
+        ],
+        [
+          12049676,
+          2,
+          "xor",
+          "eax, eax"
+        ],
+        [
+          12049678,
+          5,
+          "test",
+          "byte ptr [esp + 8], 1"
+        ],
+        [
+          12049683,
+          10,
+          "mov",
+          "dword ptr [0x109033c], 0"
+        ],
+        [
+          12049693,
+          6,
+          "mov",
+          "dword ptr [eax], 0xce3818"
+        ],
+        [
+          12049699,
+          6,
+          "mov",
+          "dword ptr [esi], 0xcfd7d0"
+        ],
+        [
+          12049705,
+          2,
+          "je",
+          "0xb7dd34"
+        ],
+        [
+          12049707,
+          1,
+          "push",
+          "esi"
+        ],
+        [
+          12049708,
+          5,
+          "call",
+          "0xbf65ac"
+        ],
+        [
+          12049713,
+          3,
+          "add",
+          "esp, 4"
+        ],
+        [
+          12049716,
+          2,
+          "mov",
+          "eax, esi"
+        ],
+        [
+          12049718,
+          1,
+          "pop",
+          "esi"
+        ],
+        [
+          12049719,
+          3,
+          "ret",
+          "4"
+        ]
+      ],
+      "original_abi": "ECX primary parser; stacked flags; EAX captured primary; RET4",
+      "function": "delete_native_group_params_parser_00b7dd00",
+      "role": "delete",
+      "parser": "GroupParams",
+      "source": "src/native_resource_parser_singletons.cpp",
+      "report": "reports/native_resource_parser_singletons_ca.json",
+      "coverage": "complete ordinary body",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00b7dae0",
+      "bytes": 8,
+      "inclusive_end": "00b7dae7",
+      "sha256": "bfcac0c316737ea7c7a33a387cc1509d51b2d04cffcdd00ec8203ce00a8f94df",
+      "installed_pe_matches_live_ghidra": true,
+      "instruction_count": 2,
+      "all_instruction_owners_verified": true,
+      "instructions": [
+        [
+          12049120,
+          3,
+          "sub",
+          "ecx, 4"
+        ],
+        [
+          12049123,
+          5,
+          "jmp",
+          "0xb7dd00"
+        ]
+      ],
+      "original_abi": "ECX secondary parser; stacked flags; adjusts ECX -4 and tail-jumps primary deletion; RET4",
+      "function": "delete_native_group_params_parser_secondary_00b7dae0",
+      "role": "secondary",
+      "parser": "GroupParams",
+      "source": "src/native_resource_parser_singletons.cpp",
+      "report": "reports/native_resource_parser_singletons_ca.json",
+      "coverage": "complete ordinary body",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00b8f8e0",
+      "bytes": 33,
+      "inclusive_end": "00b8f900",
+      "sha256": "7a5dbd531b47752906032a6549a9919861f0de23de0c77150cc8e0aab2d20cca",
+      "installed_pe_matches_live_ghidra": true,
+      "instruction_count": 11,
+      "all_instruction_owners_verified": true,
+      "instructions": [
+        [
+          12122336,
+          1,
+          "push",
+          "ecx"
+        ],
+        [
+          12122337,
+          1,
+          "push",
+          "esi"
+        ],
+        [
+          12122338,
+          4,
+          "mov",
+          "esi, dword ptr [esp + 0xc]"
+        ],
+        [
+          12122342,
+          5,
+          "push",
+          "0xd63550"
+        ],
+        [
+          12122347,
+          2,
+          "mov",
+          "ecx, esi"
+        ],
+        [
+          12122349,
+          8,
+          "mov",
+          "dword ptr [esp + 8], 0"
+        ],
+        [
+          12122357,
+          5,
+          "call",
+          "0x41e870"
+        ],
+        [
+          12122362,
+          2,
+          "mov",
+          "eax, esi"
+        ],
+        [
+          12122364,
+          1,
+          "pop",
+          "esi"
+        ],
+        [
+          12122365,
+          1,
+          "pop",
+          "ecx"
+        ],
+        [
+          12122366,
+          3,
+          "ret",
+          "4"
+        ]
+      ],
+      "original_abi": "ECX parser ignored; stacked output header; EAX output; RET4",
+      "function": "name_native_group_params_parser_00b8f8e0",
+      "role": "name",
+      "parser": "GroupParams",
+      "source": "src/native_resource_parser_singletons.cpp",
+      "report": "reports/native_resource_parser_singletons_ca.json",
+      "coverage": "complete ordinary body",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00b7e1d0",
+      "bytes": 206,
+      "inclusive_end": "00b7e29d",
+      "sha256": "09d4d21638458f8a1289b83b3b2b6baed9adf2f67abe9d65d2f00b6f18a0165f",
+      "installed_pe_matches_live_ghidra": true,
+      "instruction_count": 54,
+      "all_instruction_owners_verified": true,
+      "instructions": [
+        [
+          12050896,
+          6,
+          "mov",
+          "eax, dword ptr fs:[0]"
+        ],
+        [
+          12050902,
+          2,
+          "push",
+          "-1"
+        ],
+        [
+          12050904,
+          5,
+          "push",
+          "0xcc1f38"
+        ],
+        [
+          12050909,
+          1,
+          "push",
+          "eax"
+        ],
+        [
+          12050910,
+          7,
+          "mov",
+          "dword ptr fs:[0], esp"
+        ],
+        [
+          12050917,
+          5,
+          "mov",
+          "eax, dword ptr [0x109047c]"
+        ],
+        [
+          12050922,
+          3,
+          "sub",
+          "esp, 8"
+        ],
+        [
+          12050925,
+          2,
+          "test",
+          "eax, eax"
+        ],
+        [
+          12050927,
+          6,
+          "jne",
+          "0xb7e28f"
+        ],
+        [
+          12050933,
+          1,
+          "push",
+          "esi"
+        ],
+        [
+          12050934,
+          5,
+          "call",
+          "0x415350"
+        ],
+        [
+          12050939,
+          3,
+          "mov",
+          "esi, dword ptr [eax + 0x10]"
+        ],
+        [
+          12050942,
+          2,
+          "test",
+          "esi, esi"
+        ],
+        [
+          12050944,
+          8,
+          "mov",
+          "dword ptr [esp + 4], 0xce37fc"
+        ],
+        [
+          12050952,
+          4,
+          "mov",
+          "dword ptr [esp + 8], esi"
+        ],
+        [
+          12050956,
+          2,
+          "je",
+          "0xb7e219"
+        ],
+        [
+          12050958,
+          1,
+          "push",
+          "esi"
+        ],
+        [
+          12050959,
+          6,
+          "call",
+          "dword ptr [0xce2218]"
+        ],
+        [
+          12050965,
+          4,
+          "add",
+          "dword ptr [esi + 0x18], 1"
+        ],
+        [
+          12050969,
+          8,
+          "mov",
+          "dword ptr [esp + 0x14], 0"
+        ],
+        [
+          12050977,
+          7,
+          "cmp",
+          "dword ptr [0x109047c], 0"
+        ],
+        [
+          12050984,
+          2,
+          "jne",
+          "0xb7e27a"
+        ],
+        [
+          12050986,
+          2,
+          "push",
+          "8"
+        ],
+        [
+          12050988,
+          5,
+          "call",
+          "0xbf681b"
+        ],
+        [
+          12050993,
+          3,
+          "add",
+          "esp, 4"
+        ],
+        [
+          12050996,
+          2,
+          "test",
+          "eax, eax"
+        ],
+        [
+          12050998,
+          2,
+          "je",
+          "0xb7e253"
+        ],
+        [
+          12051000,
+          7,
+          "mov",
+          "dword ptr [eax + 4], 0xd63070"
+        ],
+        [
+          12051007,
+          6,
+          "mov",
+          "dword ptr [eax], 0xd63098"
+        ],
+        [
+          12051013,
+          7,
+          "mov",
+          "dword ptr [eax + 4], 0xd63094"
+        ],
+        [
+          12051020,
+          5,
+          "mov",
+          "dword ptr [0x109047c], eax"
+        ],
+        [
+          12051025,
+          2,
+          "jmp",
+          "0xb7e25d"
+        ],
+        [
+          12051027,
+          10,
+          "mov",
+          "dword ptr [0x109047c], 0"
+        ],
+        [
+          12051037,
+          5,
+          "mov",
+          "eax, dword ptr [0x109047c]"
+        ],
+        [
+          12051042,
+          2,
+          "test",
+          "eax, eax"
+        ],
+        [
+          12051044,
+          2,
+          "je",
+          "0xb7e26b"
+        ],
+        [
+          12051046,
+          3,
+          "add",
+          "eax, 4"
+        ],
+        [
+          12051049,
+          2,
+          "jmp",
+          "0xb7e26d"
+        ],
+        [
+          12051051,
+          2,
+          "xor",
+          "eax, eax"
+        ],
+        [
+          12051053,
+          1,
+          "push",
+          "eax"
+        ],
+        [
+          12051054,
+          5,
+          "call",
+          "0x415350"
+        ],
+        [
+          12051059,
+          2,
+          "mov",
+          "ecx, eax"
+        ],
+        [
+          12051061,
+          5,
+          "call",
+          "0xbd0c30"
+        ],
+        [
+          12051066,
+          2,
+          "test",
+          "esi, esi"
+        ],
+        [
+          12051068,
+          2,
+          "je",
+          "0xb7e289"
+        ],
+        [
+          12051070,
+          4,
+          "add",
+          "dword ptr [esi + 0x18], -1"
+        ],
+        [
+          12051074,
+          1,
+          "push",
+          "esi"
+        ],
+        [
+          12051075,
+          6,
+          "call",
+          "dword ptr [0xce2210]"
+        ],
+        [
+          12051081,
+          5,
+          "mov",
+          "eax, dword ptr [0x109047c]"
+        ],
+        [
+          12051086,
+          1,
+          "pop",
+          "esi"
+        ],
+        [
+          12051087,
+          4,
+          "mov",
+          "ecx, dword ptr [esp + 8]"
+        ],
+        [
+          12051091,
+          7,
+          "mov",
+          "dword ptr fs:[0], ecx"
+        ],
+        [
+          12051098,
+          3,
+          "add",
+          "esp, 0x14"
+        ],
+        [
+          12051101,
+          1,
+          "ret",
+          ""
+        ]
+      ],
+      "original_abi": "No native input; EAX parser; RET",
+      "function": "get_native_mesh_parser_00b7e1d0",
+      "role": "getter",
+      "parser": "Mesh",
+      "source": "src/native_resource_parser_singletons.cpp",
+      "report": "reports/native_resource_parser_singletons_ca.json",
+      "coverage": "complete ordinary body",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00b7dd40",
+      "bytes": 58,
+      "inclusive_end": "00b7dd79",
+      "sha256": "532a97db2685342c74a1bdb9843aabeb6b085974ba319b579cf0e19669a23aaa",
+      "installed_pe_matches_live_ghidra": true,
+      "instruction_count": 18,
+      "all_instruction_owners_verified": true,
+      "instructions": [
+        [
+          12049728,
+          1,
+          "push",
+          "esi"
+        ],
+        [
+          12049729,
+          2,
+          "mov",
+          "esi, ecx"
+        ],
+        [
+          12049731,
+          2,
+          "test",
+          "esi, esi"
+        ],
+        [
+          12049733,
+          2,
+          "je",
+          "0xb7dd4c"
+        ],
+        [
+          12049735,
+          3,
+          "lea",
+          "eax, [esi + 4]"
+        ],
+        [
+          12049738,
+          2,
+          "jmp",
+          "0xb7dd4e"
+        ],
+        [
+          12049740,
+          2,
+          "xor",
+          "eax, eax"
+        ],
+        [
+          12049742,
+          5,
+          "test",
+          "byte ptr [esp + 8], 1"
+        ],
+        [
+          12049747,
+          10,
+          "mov",
+          "dword ptr [0x109047c], 0"
+        ],
+        [
+          12049757,
+          6,
+          "mov",
+          "dword ptr [eax], 0xce3818"
+        ],
+        [
+          12049763,
+          6,
+          "mov",
+          "dword ptr [esi], 0xcfd7d0"
+        ],
+        [
+          12049769,
+          2,
+          "je",
+          "0xb7dd74"
+        ],
+        [
+          12049771,
+          1,
+          "push",
+          "esi"
+        ],
+        [
+          12049772,
+          5,
+          "call",
+          "0xbf65ac"
+        ],
+        [
+          12049777,
+          3,
+          "add",
+          "esp, 4"
+        ],
+        [
+          12049780,
+          2,
+          "mov",
+          "eax, esi"
+        ],
+        [
+          12049782,
+          1,
+          "pop",
+          "esi"
+        ],
+        [
+          12049783,
+          3,
+          "ret",
+          "4"
+        ]
+      ],
+      "original_abi": "ECX primary parser; stacked flags; EAX captured primary; RET4",
+      "function": "delete_native_mesh_parser_00b7dd40",
+      "role": "delete",
+      "parser": "Mesh",
+      "source": "src/native_resource_parser_singletons.cpp",
+      "report": "reports/native_resource_parser_singletons_ca.json",
+      "coverage": "complete ordinary body",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00b7db40",
+      "bytes": 8,
+      "inclusive_end": "00b7db47",
+      "sha256": "456f69495bfd2429ea71a1ef6a0880c4090dad04e0aa0e05a537d4d127783ba2",
+      "installed_pe_matches_live_ghidra": true,
+      "instruction_count": 2,
+      "all_instruction_owners_verified": true,
+      "instructions": [
+        [
+          12049216,
+          3,
+          "sub",
+          "ecx, 4"
+        ],
+        [
+          12049219,
+          5,
+          "jmp",
+          "0xb7dd40"
+        ]
+      ],
+      "original_abi": "ECX secondary parser; stacked flags; adjusts ECX -4 and tail-jumps primary deletion; RET4",
+      "function": "delete_native_mesh_parser_secondary_00b7db40",
+      "role": "secondary",
+      "parser": "Mesh",
+      "source": "src/native_resource_parser_singletons.cpp",
+      "report": "reports/native_resource_parser_singletons_ca.json",
+      "coverage": "complete ordinary body",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00b7eb60",
+      "bytes": 33,
+      "inclusive_end": "00b7eb80",
+      "sha256": "158f5cc4cd2e65ff7d2bc126eaa5a95f59e6feb19a19b5746a0f4d0e51754272",
+      "installed_pe_matches_live_ghidra": true,
+      "instruction_count": 11,
+      "all_instruction_owners_verified": true,
+      "instructions": [
+        [
+          12053344,
+          1,
+          "push",
+          "ecx"
+        ],
+        [
+          12053345,
+          1,
+          "push",
+          "esi"
+        ],
+        [
+          12053346,
+          4,
+          "mov",
+          "esi, dword ptr [esp + 0xc]"
+        ],
+        [
+          12053350,
+          5,
+          "push",
+          "0xce5fd0"
+        ],
+        [
+          12053355,
+          2,
+          "mov",
+          "ecx, esi"
+        ],
+        [
+          12053357,
+          8,
+          "mov",
+          "dword ptr [esp + 8], 0"
+        ],
+        [
+          12053365,
+          5,
+          "call",
+          "0x41e870"
+        ],
+        [
+          12053370,
+          2,
+          "mov",
+          "eax, esi"
+        ],
+        [
+          12053372,
+          1,
+          "pop",
+          "esi"
+        ],
+        [
+          12053373,
+          1,
+          "pop",
+          "ecx"
+        ],
+        [
+          12053374,
+          3,
+          "ret",
+          "4"
+        ]
+      ],
+      "original_abi": "ECX parser ignored; stacked output header; EAX output; RET4",
+      "function": "name_native_mesh_parser_00b7eb60",
+      "role": "name",
+      "parser": "Mesh",
+      "source": "src/native_resource_parser_singletons.cpp",
+      "report": "reports/native_resource_parser_singletons_ca.json",
+      "coverage": "complete ordinary body",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00b7e2a0",
+      "bytes": 206,
+      "inclusive_end": "00b7e36d",
+      "sha256": "deaddb697f452630cd5493b50dc925e9e52f491aa538ca82253f61b68166c374",
+      "installed_pe_matches_live_ghidra": true,
+      "instruction_count": 54,
+      "all_instruction_owners_verified": true,
+      "instructions": [
+        [
+          12051104,
+          6,
+          "mov",
+          "eax, dword ptr fs:[0]"
+        ],
+        [
+          12051110,
+          2,
+          "push",
+          "-1"
+        ],
+        [
+          12051112,
+          5,
+          "push",
+          "0xcc1f58"
+        ],
+        [
+          12051117,
+          1,
+          "push",
+          "eax"
+        ],
+        [
+          12051118,
+          7,
+          "mov",
+          "dword ptr fs:[0], esp"
+        ],
+        [
+          12051125,
+          5,
+          "mov",
+          "eax, dword ptr [0x1090480]"
+        ],
+        [
+          12051130,
+          3,
+          "sub",
+          "esp, 8"
+        ],
+        [
+          12051133,
+          2,
+          "test",
+          "eax, eax"
+        ],
+        [
+          12051135,
+          6,
+          "jne",
+          "0xb7e35f"
+        ],
+        [
+          12051141,
+          1,
+          "push",
+          "esi"
+        ],
+        [
+          12051142,
+          5,
+          "call",
+          "0x415350"
+        ],
+        [
+          12051147,
+          3,
+          "mov",
+          "esi, dword ptr [eax + 0x10]"
+        ],
+        [
+          12051150,
+          2,
+          "test",
+          "esi, esi"
+        ],
+        [
+          12051152,
+          8,
+          "mov",
+          "dword ptr [esp + 4], 0xce37fc"
+        ],
+        [
+          12051160,
+          4,
+          "mov",
+          "dword ptr [esp + 8], esi"
+        ],
+        [
+          12051164,
+          2,
+          "je",
+          "0xb7e2e9"
+        ],
+        [
+          12051166,
+          1,
+          "push",
+          "esi"
+        ],
+        [
+          12051167,
+          6,
+          "call",
+          "dword ptr [0xce2218]"
+        ],
+        [
+          12051173,
+          4,
+          "add",
+          "dword ptr [esi + 0x18], 1"
+        ],
+        [
+          12051177,
+          8,
+          "mov",
+          "dword ptr [esp + 0x14], 0"
+        ],
+        [
+          12051185,
+          7,
+          "cmp",
+          "dword ptr [0x1090480], 0"
+        ],
+        [
+          12051192,
+          2,
+          "jne",
+          "0xb7e34a"
+        ],
+        [
+          12051194,
+          2,
+          "push",
+          "8"
+        ],
+        [
+          12051196,
+          5,
+          "call",
+          "0xbf681b"
+        ],
+        [
+          12051201,
+          3,
+          "add",
+          "esp, 4"
+        ],
+        [
+          12051204,
+          2,
+          "test",
+          "eax, eax"
+        ],
+        [
+          12051206,
+          2,
+          "je",
+          "0xb7e323"
+        ],
+        [
+          12051208,
+          7,
+          "mov",
+          "dword ptr [eax + 4], 0xd63074"
+        ],
+        [
+          12051215,
+          6,
+          "mov",
+          "dword ptr [eax], 0xd630a8"
+        ],
+        [
+          12051221,
+          7,
+          "mov",
+          "dword ptr [eax + 4], 0xd630a4"
+        ],
+        [
+          12051228,
+          5,
+          "mov",
+          "dword ptr [0x1090480], eax"
+        ],
+        [
+          12051233,
+          2,
+          "jmp",
+          "0xb7e32d"
+        ],
+        [
+          12051235,
+          10,
+          "mov",
+          "dword ptr [0x1090480], 0"
+        ],
+        [
+          12051245,
+          5,
+          "mov",
+          "eax, dword ptr [0x1090480]"
+        ],
+        [
+          12051250,
+          2,
+          "test",
+          "eax, eax"
+        ],
+        [
+          12051252,
+          2,
+          "je",
+          "0xb7e33b"
+        ],
+        [
+          12051254,
+          3,
+          "add",
+          "eax, 4"
+        ],
+        [
+          12051257,
+          2,
+          "jmp",
+          "0xb7e33d"
+        ],
+        [
+          12051259,
+          2,
+          "xor",
+          "eax, eax"
+        ],
+        [
+          12051261,
+          1,
+          "push",
+          "eax"
+        ],
+        [
+          12051262,
+          5,
+          "call",
+          "0x415350"
+        ],
+        [
+          12051267,
+          2,
+          "mov",
+          "ecx, eax"
+        ],
+        [
+          12051269,
+          5,
+          "call",
+          "0xbd0c30"
+        ],
+        [
+          12051274,
+          2,
+          "test",
+          "esi, esi"
+        ],
+        [
+          12051276,
+          2,
+          "je",
+          "0xb7e359"
+        ],
+        [
+          12051278,
+          4,
+          "add",
+          "dword ptr [esi + 0x18], -1"
+        ],
+        [
+          12051282,
+          1,
+          "push",
+          "esi"
+        ],
+        [
+          12051283,
+          6,
+          "call",
+          "dword ptr [0xce2210]"
+        ],
+        [
+          12051289,
+          5,
+          "mov",
+          "eax, dword ptr [0x1090480]"
+        ],
+        [
+          12051294,
+          1,
+          "pop",
+          "esi"
+        ],
+        [
+          12051295,
+          4,
+          "mov",
+          "ecx, dword ptr [esp + 8]"
+        ],
+        [
+          12051299,
+          7,
+          "mov",
+          "dword ptr fs:[0], ecx"
+        ],
+        [
+          12051306,
+          3,
+          "add",
+          "esp, 0x14"
+        ],
+        [
+          12051309,
+          1,
+          "ret",
+          ""
+        ]
+      ],
+      "original_abi": "No native input; EAX parser; RET",
+      "function": "get_native_skined_mesh_parser_00b7e2a0",
+      "role": "getter",
+      "parser": "SkinedMesh",
+      "source": "src/native_resource_parser_singletons.cpp",
+      "report": "reports/native_resource_parser_singletons_ca.json",
+      "coverage": "complete ordinary body",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00b7dd80",
+      "bytes": 58,
+      "inclusive_end": "00b7ddb9",
+      "sha256": "31cefb3858ea8643ad57c4e9bdb4a6c621458c7b78e8e78492dced05c9a501ca",
+      "installed_pe_matches_live_ghidra": true,
+      "instruction_count": 18,
+      "all_instruction_owners_verified": true,
+      "instructions": [
+        [
+          12049792,
+          1,
+          "push",
+          "esi"
+        ],
+        [
+          12049793,
+          2,
+          "mov",
+          "esi, ecx"
+        ],
+        [
+          12049795,
+          2,
+          "test",
+          "esi, esi"
+        ],
+        [
+          12049797,
+          2,
+          "je",
+          "0xb7dd8c"
+        ],
+        [
+          12049799,
+          3,
+          "lea",
+          "eax, [esi + 4]"
+        ],
+        [
+          12049802,
+          2,
+          "jmp",
+          "0xb7dd8e"
+        ],
+        [
+          12049804,
+          2,
+          "xor",
+          "eax, eax"
+        ],
+        [
+          12049806,
+          5,
+          "test",
+          "byte ptr [esp + 8], 1"
+        ],
+        [
+          12049811,
+          10,
+          "mov",
+          "dword ptr [0x1090480], 0"
+        ],
+        [
+          12049821,
+          6,
+          "mov",
+          "dword ptr [eax], 0xce3818"
+        ],
+        [
+          12049827,
+          6,
+          "mov",
+          "dword ptr [esi], 0xcfd7d0"
+        ],
+        [
+          12049833,
+          2,
+          "je",
+          "0xb7ddb4"
+        ],
+        [
+          12049835,
+          1,
+          "push",
+          "esi"
+        ],
+        [
+          12049836,
+          5,
+          "call",
+          "0xbf65ac"
+        ],
+        [
+          12049841,
+          3,
+          "add",
+          "esp, 4"
+        ],
+        [
+          12049844,
+          2,
+          "mov",
+          "eax, esi"
+        ],
+        [
+          12049846,
+          1,
+          "pop",
+          "esi"
+        ],
+        [
+          12049847,
+          3,
+          "ret",
+          "4"
+        ]
+      ],
+      "original_abi": "ECX primary parser; stacked flags; EAX captured primary; RET4",
+      "function": "delete_native_skined_mesh_parser_00b7dd80",
+      "role": "delete",
+      "parser": "SkinedMesh",
+      "source": "src/native_resource_parser_singletons.cpp",
+      "report": "reports/native_resource_parser_singletons_ca.json",
+      "coverage": "complete ordinary body",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00b7dba0",
+      "bytes": 8,
+      "inclusive_end": "00b7dba7",
+      "sha256": "8bb76f97611a82a7343cdcf250d6b6c2f1a260c9aa34c314a976392810fb180f",
+      "installed_pe_matches_live_ghidra": true,
+      "instruction_count": 2,
+      "all_instruction_owners_verified": true,
+      "instructions": [
+        [
+          12049312,
+          3,
+          "sub",
+          "ecx, 4"
+        ],
+        [
+          12049315,
+          5,
+          "jmp",
+          "0xb7dd80"
+        ]
+      ],
+      "original_abi": "ECX secondary parser; stacked flags; adjusts ECX -4 and tail-jumps primary deletion; RET4",
+      "function": "delete_native_skined_mesh_parser_secondary_00b7dba0",
+      "role": "secondary",
+      "parser": "SkinedMesh",
+      "source": "src/native_resource_parser_singletons.cpp",
+      "report": "reports/native_resource_parser_singletons_ca.json",
+      "coverage": "complete ordinary body",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00b94170",
+      "bytes": 33,
+      "inclusive_end": "00b94190",
+      "sha256": "6589e31385c67464c0b1620ebd7350060896b822c6b241ad5c97f422d256097d",
+      "installed_pe_matches_live_ghidra": true,
+      "instruction_count": 11,
+      "all_instruction_owners_verified": true,
+      "instructions": [
+        [
+          12140912,
+          1,
+          "push",
+          "ecx"
+        ],
+        [
+          12140913,
+          1,
+          "push",
+          "esi"
+        ],
+        [
+          12140914,
+          4,
+          "mov",
+          "esi, dword ptr [esp + 0xc]"
+        ],
+        [
+          12140918,
+          5,
+          "push",
+          "0xd637f8"
+        ],
+        [
+          12140923,
+          2,
+          "mov",
+          "ecx, esi"
+        ],
+        [
+          12140925,
+          8,
+          "mov",
+          "dword ptr [esp + 8], 0"
+        ],
+        [
+          12140933,
+          5,
+          "call",
+          "0x41e870"
+        ],
+        [
+          12140938,
+          2,
+          "mov",
+          "eax, esi"
+        ],
+        [
+          12140940,
+          1,
+          "pop",
+          "esi"
+        ],
+        [
+          12140941,
+          1,
+          "pop",
+          "ecx"
+        ],
+        [
+          12140942,
+          3,
+          "ret",
+          "4"
+        ]
+      ],
+      "original_abi": "ECX parser ignored; stacked output header; EAX output; RET4",
+      "function": "name_native_skined_mesh_parser_00b94170",
+      "role": "name",
+      "parser": "SkinedMesh",
+      "source": "src/native_resource_parser_singletons.cpp",
+      "report": "reports/native_resource_parser_singletons_ca.json",
+      "coverage": "complete ordinary body",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00b7e370",
+      "bytes": 206,
+      "inclusive_end": "00b7e43d",
+      "sha256": "e4f4ecb232a5b063664b13a61c5b83250f769feef487dd67f8728e8cb1f19726",
+      "installed_pe_matches_live_ghidra": true,
+      "instruction_count": 54,
+      "all_instruction_owners_verified": true,
+      "instructions": [
+        [
+          12051312,
+          6,
+          "mov",
+          "eax, dword ptr fs:[0]"
+        ],
+        [
+          12051318,
+          2,
+          "push",
+          "-1"
+        ],
+        [
+          12051320,
+          5,
+          "push",
+          "0xcc1f78"
+        ],
+        [
+          12051325,
+          1,
+          "push",
+          "eax"
+        ],
+        [
+          12051326,
+          7,
+          "mov",
+          "dword ptr fs:[0], esp"
+        ],
+        [
+          12051333,
+          5,
+          "mov",
+          "eax, dword ptr [0x1090484]"
+        ],
+        [
+          12051338,
+          3,
+          "sub",
+          "esp, 8"
+        ],
+        [
+          12051341,
+          2,
+          "test",
+          "eax, eax"
+        ],
+        [
+          12051343,
+          6,
+          "jne",
+          "0xb7e42f"
+        ],
+        [
+          12051349,
+          1,
+          "push",
+          "esi"
+        ],
+        [
+          12051350,
+          5,
+          "call",
+          "0x415350"
+        ],
+        [
+          12051355,
+          3,
+          "mov",
+          "esi, dword ptr [eax + 0x10]"
+        ],
+        [
+          12051358,
+          2,
+          "test",
+          "esi, esi"
+        ],
+        [
+          12051360,
+          8,
+          "mov",
+          "dword ptr [esp + 4], 0xce37fc"
+        ],
+        [
+          12051368,
+          4,
+          "mov",
+          "dword ptr [esp + 8], esi"
+        ],
+        [
+          12051372,
+          2,
+          "je",
+          "0xb7e3b9"
+        ],
+        [
+          12051374,
+          1,
+          "push",
+          "esi"
+        ],
+        [
+          12051375,
+          6,
+          "call",
+          "dword ptr [0xce2218]"
+        ],
+        [
+          12051381,
+          4,
+          "add",
+          "dword ptr [esi + 0x18], 1"
+        ],
+        [
+          12051385,
+          8,
+          "mov",
+          "dword ptr [esp + 0x14], 0"
+        ],
+        [
+          12051393,
+          7,
+          "cmp",
+          "dword ptr [0x1090484], 0"
+        ],
+        [
+          12051400,
+          2,
+          "jne",
+          "0xb7e41a"
+        ],
+        [
+          12051402,
+          2,
+          "push",
+          "8"
+        ],
+        [
+          12051404,
+          5,
+          "call",
+          "0xbf681b"
+        ],
+        [
+          12051409,
+          3,
+          "add",
+          "esp, 4"
+        ],
+        [
+          12051412,
+          2,
+          "test",
+          "eax, eax"
+        ],
+        [
+          12051414,
+          2,
+          "je",
+          "0xb7e3f3"
+        ],
+        [
+          12051416,
+          7,
+          "mov",
+          "dword ptr [eax + 4], 0xd63078"
+        ],
+        [
+          12051423,
+          6,
+          "mov",
+          "dword ptr [eax], 0xd630b8"
+        ],
+        [
+          12051429,
+          7,
+          "mov",
+          "dword ptr [eax + 4], 0xd630b4"
+        ],
+        [
+          12051436,
+          5,
+          "mov",
+          "dword ptr [0x1090484], eax"
+        ],
+        [
+          12051441,
+          2,
+          "jmp",
+          "0xb7e3fd"
+        ],
+        [
+          12051443,
+          10,
+          "mov",
+          "dword ptr [0x1090484], 0"
+        ],
+        [
+          12051453,
+          5,
+          "mov",
+          "eax, dword ptr [0x1090484]"
+        ],
+        [
+          12051458,
+          2,
+          "test",
+          "eax, eax"
+        ],
+        [
+          12051460,
+          2,
+          "je",
+          "0xb7e40b"
+        ],
+        [
+          12051462,
+          3,
+          "add",
+          "eax, 4"
+        ],
+        [
+          12051465,
+          2,
+          "jmp",
+          "0xb7e40d"
+        ],
+        [
+          12051467,
+          2,
+          "xor",
+          "eax, eax"
+        ],
+        [
+          12051469,
+          1,
+          "push",
+          "eax"
+        ],
+        [
+          12051470,
+          5,
+          "call",
+          "0x415350"
+        ],
+        [
+          12051475,
+          2,
+          "mov",
+          "ecx, eax"
+        ],
+        [
+          12051477,
+          5,
+          "call",
+          "0xbd0c30"
+        ],
+        [
+          12051482,
+          2,
+          "test",
+          "esi, esi"
+        ],
+        [
+          12051484,
+          2,
+          "je",
+          "0xb7e429"
+        ],
+        [
+          12051486,
+          4,
+          "add",
+          "dword ptr [esi + 0x18], -1"
+        ],
+        [
+          12051490,
+          1,
+          "push",
+          "esi"
+        ],
+        [
+          12051491,
+          6,
+          "call",
+          "dword ptr [0xce2210]"
+        ],
+        [
+          12051497,
+          5,
+          "mov",
+          "eax, dword ptr [0x1090484]"
+        ],
+        [
+          12051502,
+          1,
+          "pop",
+          "esi"
+        ],
+        [
+          12051503,
+          4,
+          "mov",
+          "ecx, dword ptr [esp + 8]"
+        ],
+        [
+          12051507,
+          7,
+          "mov",
+          "dword ptr fs:[0], ecx"
+        ],
+        [
+          12051514,
+          3,
+          "add",
+          "esp, 0x14"
+        ],
+        [
+          12051517,
+          1,
+          "ret",
+          ""
+        ]
+      ],
+      "original_abi": "No native input; EAX parser; RET",
+      "function": "get_native_matrix_indexed_mesh_parser_00b7e370",
+      "role": "getter",
+      "parser": "MatrixIndexedMesh",
+      "source": "src/native_resource_parser_singletons.cpp",
+      "report": "reports/native_resource_parser_singletons_ca.json",
+      "coverage": "complete ordinary body",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00b7ddc0",
+      "bytes": 58,
+      "inclusive_end": "00b7ddf9",
+      "sha256": "6969e31b3c126cd81c71d460ba7e110fe254a55aa4dbc282f6abbab8f1a8ec2b",
+      "installed_pe_matches_live_ghidra": true,
+      "instruction_count": 18,
+      "all_instruction_owners_verified": true,
+      "instructions": [
+        [
+          12049856,
+          1,
+          "push",
+          "esi"
+        ],
+        [
+          12049857,
+          2,
+          "mov",
+          "esi, ecx"
+        ],
+        [
+          12049859,
+          2,
+          "test",
+          "esi, esi"
+        ],
+        [
+          12049861,
+          2,
+          "je",
+          "0xb7ddcc"
+        ],
+        [
+          12049863,
+          3,
+          "lea",
+          "eax, [esi + 4]"
+        ],
+        [
+          12049866,
+          2,
+          "jmp",
+          "0xb7ddce"
+        ],
+        [
+          12049868,
+          2,
+          "xor",
+          "eax, eax"
+        ],
+        [
+          12049870,
+          5,
+          "test",
+          "byte ptr [esp + 8], 1"
+        ],
+        [
+          12049875,
+          10,
+          "mov",
+          "dword ptr [0x1090484], 0"
+        ],
+        [
+          12049885,
+          6,
+          "mov",
+          "dword ptr [eax], 0xce3818"
+        ],
+        [
+          12049891,
+          6,
+          "mov",
+          "dword ptr [esi], 0xcfd7d0"
+        ],
+        [
+          12049897,
+          2,
+          "je",
+          "0xb7ddf4"
+        ],
+        [
+          12049899,
+          1,
+          "push",
+          "esi"
+        ],
+        [
+          12049900,
+          5,
+          "call",
+          "0xbf65ac"
+        ],
+        [
+          12049905,
+          3,
+          "add",
+          "esp, 4"
+        ],
+        [
+          12049908,
+          2,
+          "mov",
+          "eax, esi"
+        ],
+        [
+          12049910,
+          1,
+          "pop",
+          "esi"
+        ],
+        [
+          12049911,
+          3,
+          "ret",
+          "4"
+        ]
+      ],
+      "original_abi": "ECX primary parser; stacked flags; EAX captured primary; RET4",
+      "function": "delete_native_matrix_indexed_mesh_parser_00b7ddc0",
+      "role": "delete",
+      "parser": "MatrixIndexedMesh",
+      "source": "src/native_resource_parser_singletons.cpp",
+      "report": "reports/native_resource_parser_singletons_ca.json",
+      "coverage": "complete ordinary body",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00b7dc00",
+      "bytes": 8,
+      "inclusive_end": "00b7dc07",
+      "sha256": "77664f3c9636391dc2004335b707c02aff5c5d011225899f55892aa9de2570cf",
+      "installed_pe_matches_live_ghidra": true,
+      "instruction_count": 2,
+      "all_instruction_owners_verified": true,
+      "instructions": [
+        [
+          12049408,
+          3,
+          "sub",
+          "ecx, 4"
+        ],
+        [
+          12049411,
+          5,
+          "jmp",
+          "0xb7ddc0"
+        ]
+      ],
+      "original_abi": "ECX secondary parser; stacked flags; adjusts ECX -4 and tail-jumps primary deletion; RET4",
+      "function": "delete_native_matrix_indexed_mesh_parser_secondary_00b7dc00",
+      "role": "secondary",
+      "parser": "MatrixIndexedMesh",
+      "source": "src/native_resource_parser_singletons.cpp",
+      "report": "reports/native_resource_parser_singletons_ca.json",
+      "coverage": "complete ordinary body",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00b941a0",
+      "bytes": 33,
+      "inclusive_end": "00b941c0",
+      "sha256": "bcbf99dbda99fcd531b56ed4541a12fed4a803912a0a7ce9c79551e2082ffd6c",
+      "installed_pe_matches_live_ghidra": true,
+      "instruction_count": 11,
+      "all_instruction_owners_verified": true,
+      "instructions": [
+        [
+          12140960,
+          1,
+          "push",
+          "ecx"
+        ],
+        [
+          12140961,
+          1,
+          "push",
+          "esi"
+        ],
+        [
+          12140962,
+          4,
+          "mov",
+          "esi, dword ptr [esp + 0xc]"
+        ],
+        [
+          12140966,
+          5,
+          "push",
+          "0xd63804"
+        ],
+        [
+          12140971,
+          2,
+          "mov",
+          "ecx, esi"
+        ],
+        [
+          12140973,
+          8,
+          "mov",
+          "dword ptr [esp + 8], 0"
+        ],
+        [
+          12140981,
+          5,
+          "call",
+          "0x41e870"
+        ],
+        [
+          12140986,
+          2,
+          "mov",
+          "eax, esi"
+        ],
+        [
+          12140988,
+          1,
+          "pop",
+          "esi"
+        ],
+        [
+          12140989,
+          1,
+          "pop",
+          "ecx"
+        ],
+        [
+          12140990,
+          3,
+          "ret",
+          "4"
+        ]
+      ],
+      "original_abi": "ECX parser ignored; stacked output header; EAX output; RET4",
+      "function": "name_native_matrix_indexed_mesh_parser_00b941a0",
+      "role": "name",
+      "parser": "MatrixIndexedMesh",
+      "source": "src/native_resource_parser_singletons.cpp",
+      "report": "reports/native_resource_parser_singletons_ca.json",
+      "coverage": "complete ordinary body",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00b7e460",
+      "bytes": 206,
+      "inclusive_end": "00b7e52d",
+      "sha256": "c69e240677e61ec439f372d3716db8966f01320067312635fa8edd00c2ae7748",
+      "installed_pe_matches_live_ghidra": true,
+      "instruction_count": 54,
+      "all_instruction_owners_verified": true,
+      "instructions": [
+        [
+          12051552,
+          6,
+          "mov",
+          "eax, dword ptr fs:[0]"
+        ],
+        [
+          12051558,
+          2,
+          "push",
+          "-1"
+        ],
+        [
+          12051560,
+          5,
+          "push",
+          "0xcc1f98"
+        ],
+        [
+          12051565,
+          1,
+          "push",
+          "eax"
+        ],
+        [
+          12051566,
+          7,
+          "mov",
+          "dword ptr fs:[0], esp"
+        ],
+        [
+          12051573,
+          5,
+          "mov",
+          "eax, dword ptr [0x10902a0]"
+        ],
+        [
+          12051578,
+          3,
+          "sub",
+          "esp, 8"
+        ],
+        [
+          12051581,
+          2,
+          "test",
+          "eax, eax"
+        ],
+        [
+          12051583,
+          6,
+          "jne",
+          "0xb7e51f"
+        ],
+        [
+          12051589,
+          1,
+          "push",
+          "esi"
+        ],
+        [
+          12051590,
+          5,
+          "call",
+          "0x415350"
+        ],
+        [
+          12051595,
+          3,
+          "mov",
+          "esi, dword ptr [eax + 0x10]"
+        ],
+        [
+          12051598,
+          2,
+          "test",
+          "esi, esi"
+        ],
+        [
+          12051600,
+          8,
+          "mov",
+          "dword ptr [esp + 4], 0xce37fc"
+        ],
+        [
+          12051608,
+          4,
+          "mov",
+          "dword ptr [esp + 8], esi"
+        ],
+        [
+          12051612,
+          2,
+          "je",
+          "0xb7e4a9"
+        ],
+        [
+          12051614,
+          1,
+          "push",
+          "esi"
+        ],
+        [
+          12051615,
+          6,
+          "call",
+          "dword ptr [0xce2218]"
+        ],
+        [
+          12051621,
+          4,
+          "add",
+          "dword ptr [esi + 0x18], 1"
+        ],
+        [
+          12051625,
+          8,
+          "mov",
+          "dword ptr [esp + 0x14], 0"
+        ],
+        [
+          12051633,
+          7,
+          "cmp",
+          "dword ptr [0x10902a0], 0"
+        ],
+        [
+          12051640,
+          2,
+          "jne",
+          "0xb7e50a"
+        ],
+        [
+          12051642,
+          2,
+          "push",
+          "8"
+        ],
+        [
+          12051644,
+          5,
+          "call",
+          "0xbf681b"
+        ],
+        [
+          12051649,
+          3,
+          "add",
+          "esp, 4"
+        ],
+        [
+          12051652,
+          2,
+          "test",
+          "eax, eax"
+        ],
+        [
+          12051654,
+          2,
+          "je",
+          "0xb7e4e3"
+        ],
+        [
+          12051656,
+          7,
+          "mov",
+          "dword ptr [eax + 4], 0xd6307c"
+        ],
+        [
+          12051663,
+          6,
+          "mov",
+          "dword ptr [eax], 0xd630c8"
+        ],
+        [
+          12051669,
+          7,
+          "mov",
+          "dword ptr [eax + 4], 0xd630c4"
+        ],
+        [
+          12051676,
+          5,
+          "mov",
+          "dword ptr [0x10902a0], eax"
+        ],
+        [
+          12051681,
+          2,
+          "jmp",
+          "0xb7e4ed"
+        ],
+        [
+          12051683,
+          10,
+          "mov",
+          "dword ptr [0x10902a0], 0"
+        ],
+        [
+          12051693,
+          5,
+          "mov",
+          "eax, dword ptr [0x10902a0]"
+        ],
+        [
+          12051698,
+          2,
+          "test",
+          "eax, eax"
+        ],
+        [
+          12051700,
+          2,
+          "je",
+          "0xb7e4fb"
+        ],
+        [
+          12051702,
+          3,
+          "add",
+          "eax, 4"
+        ],
+        [
+          12051705,
+          2,
+          "jmp",
+          "0xb7e4fd"
+        ],
+        [
+          12051707,
+          2,
+          "xor",
+          "eax, eax"
+        ],
+        [
+          12051709,
+          1,
+          "push",
+          "eax"
+        ],
+        [
+          12051710,
+          5,
+          "call",
+          "0x415350"
+        ],
+        [
+          12051715,
+          2,
+          "mov",
+          "ecx, eax"
+        ],
+        [
+          12051717,
+          5,
+          "call",
+          "0xbd0c30"
+        ],
+        [
+          12051722,
+          2,
+          "test",
+          "esi, esi"
+        ],
+        [
+          12051724,
+          2,
+          "je",
+          "0xb7e519"
+        ],
+        [
+          12051726,
+          4,
+          "add",
+          "dword ptr [esi + 0x18], -1"
+        ],
+        [
+          12051730,
+          1,
+          "push",
+          "esi"
+        ],
+        [
+          12051731,
+          6,
+          "call",
+          "dword ptr [0xce2210]"
+        ],
+        [
+          12051737,
+          5,
+          "mov",
+          "eax, dword ptr [0x10902a0]"
+        ],
+        [
+          12051742,
+          1,
+          "pop",
+          "esi"
+        ],
+        [
+          12051743,
+          4,
+          "mov",
+          "ecx, dword ptr [esp + 8]"
+        ],
+        [
+          12051747,
+          7,
+          "mov",
+          "dword ptr fs:[0], ecx"
+        ],
+        [
+          12051754,
+          3,
+          "add",
+          "esp, 0x14"
+        ],
+        [
+          12051757,
+          1,
+          "ret",
+          ""
+        ]
+      ],
+      "original_abi": "No native input; EAX parser; RET",
+      "function": "get_native_camera_parser_00b7e460",
+      "role": "getter",
+      "parser": "Camera",
+      "source": "src/native_resource_parser_singletons.cpp",
+      "report": "reports/native_resource_parser_singletons_ca.json",
+      "coverage": "complete ordinary body",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00b7de00",
+      "bytes": 58,
+      "inclusive_end": "00b7de39",
+      "sha256": "142071e6e9959d0233c31bf3c0063d771cbb30695beece230189dc14639be0f7",
+      "installed_pe_matches_live_ghidra": true,
+      "instruction_count": 18,
+      "all_instruction_owners_verified": true,
+      "instructions": [
+        [
+          12049920,
+          1,
+          "push",
+          "esi"
+        ],
+        [
+          12049921,
+          2,
+          "mov",
+          "esi, ecx"
+        ],
+        [
+          12049923,
+          2,
+          "test",
+          "esi, esi"
+        ],
+        [
+          12049925,
+          2,
+          "je",
+          "0xb7de0c"
+        ],
+        [
+          12049927,
+          3,
+          "lea",
+          "eax, [esi + 4]"
+        ],
+        [
+          12049930,
+          2,
+          "jmp",
+          "0xb7de0e"
+        ],
+        [
+          12049932,
+          2,
+          "xor",
+          "eax, eax"
+        ],
+        [
+          12049934,
+          5,
+          "test",
+          "byte ptr [esp + 8], 1"
+        ],
+        [
+          12049939,
+          10,
+          "mov",
+          "dword ptr [0x10902a0], 0"
+        ],
+        [
+          12049949,
+          6,
+          "mov",
+          "dword ptr [eax], 0xce3818"
+        ],
+        [
+          12049955,
+          6,
+          "mov",
+          "dword ptr [esi], 0xcfd7d0"
+        ],
+        [
+          12049961,
+          2,
+          "je",
+          "0xb7de34"
+        ],
+        [
+          12049963,
+          1,
+          "push",
+          "esi"
+        ],
+        [
+          12049964,
+          5,
+          "call",
+          "0xbf65ac"
+        ],
+        [
+          12049969,
+          3,
+          "add",
+          "esp, 4"
+        ],
+        [
+          12049972,
+          2,
+          "mov",
+          "eax, esi"
+        ],
+        [
+          12049974,
+          1,
+          "pop",
+          "esi"
+        ],
+        [
+          12049975,
+          3,
+          "ret",
+          "4"
+        ]
+      ],
+      "original_abi": "ECX primary parser; stacked flags; EAX captured primary; RET4",
+      "function": "delete_native_camera_parser_00b7de00",
+      "role": "delete",
+      "parser": "Camera",
+      "source": "src/native_resource_parser_singletons.cpp",
+      "report": "reports/native_resource_parser_singletons_ca.json",
+      "coverage": "complete ordinary body",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00b7dc60",
+      "bytes": 8,
+      "inclusive_end": "00b7dc67",
+      "sha256": "7c3ba0f93701fd4fec27b11e90823d4e602916532497d9d04505d01e776016c8",
+      "installed_pe_matches_live_ghidra": true,
+      "instruction_count": 2,
+      "all_instruction_owners_verified": true,
+      "instructions": [
+        [
+          12049504,
+          3,
+          "sub",
+          "ecx, 4"
+        ],
+        [
+          12049507,
+          5,
+          "jmp",
+          "0xb7de00"
+        ]
+      ],
+      "original_abi": "ECX secondary parser; stacked flags; adjusts ECX -4 and tail-jumps primary deletion; RET4",
+      "function": "delete_native_camera_parser_secondary_00b7dc60",
+      "role": "secondary",
+      "parser": "Camera",
+      "source": "src/native_resource_parser_singletons.cpp",
+      "report": "reports/native_resource_parser_singletons_ca.json",
+      "coverage": "complete ordinary body",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00b8b210",
+      "bytes": 33,
+      "inclusive_end": "00b8b230",
+      "sha256": "dfabb5232a56fbc723be5f2f1dd59450e1ea3c5ad84ebd1888fe9913390ad743",
+      "installed_pe_matches_live_ghidra": true,
+      "instruction_count": 11,
+      "all_instruction_owners_verified": true,
+      "instructions": [
+        [
+          12104208,
+          1,
+          "push",
+          "ecx"
+        ],
+        [
+          12104209,
+          1,
+          "push",
+          "esi"
+        ],
+        [
+          12104210,
+          4,
+          "mov",
+          "esi, dword ptr [esp + 0xc]"
+        ],
+        [
+          12104214,
+          5,
+          "push",
+          "0xd633d4"
+        ],
+        [
+          12104219,
+          2,
+          "mov",
+          "ecx, esi"
+        ],
+        [
+          12104221,
+          8,
+          "mov",
+          "dword ptr [esp + 8], 0"
+        ],
+        [
+          12104229,
+          5,
+          "call",
+          "0x41e870"
+        ],
+        [
+          12104234,
+          2,
+          "mov",
+          "eax, esi"
+        ],
+        [
+          12104236,
+          1,
+          "pop",
+          "esi"
+        ],
+        [
+          12104237,
+          1,
+          "pop",
+          "ecx"
+        ],
+        [
+          12104238,
+          3,
+          "ret",
+          "4"
+        ]
+      ],
+      "original_abi": "ECX parser ignored; stacked output header; EAX output; RET4",
+      "function": "name_native_camera_parser_00b8b210",
+      "role": "name",
+      "parser": "Camera",
+      "source": "src/native_resource_parser_singletons.cpp",
+      "report": "reports/native_resource_parser_singletons_ca.json",
+      "coverage": "complete ordinary body",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00b7e530",
+      "bytes": 206,
+      "inclusive_end": "00b7e5fd",
+      "sha256": "2e3663f33dc6279b11a30c5a52b36e05f0c07dc7e1b7dd69a11daad6d47e2728",
+      "installed_pe_matches_live_ghidra": true,
+      "instruction_count": 54,
+      "all_instruction_owners_verified": true,
+      "instructions": [
+        [
+          12051760,
+          6,
+          "mov",
+          "eax, dword ptr fs:[0]"
+        ],
+        [
+          12051766,
+          2,
+          "push",
+          "-1"
+        ],
+        [
+          12051768,
+          5,
+          "push",
+          "0xcc1fb8"
+        ],
+        [
+          12051773,
+          1,
+          "push",
+          "eax"
+        ],
+        [
+          12051774,
+          7,
+          "mov",
+          "dword ptr fs:[0], esp"
+        ],
+        [
+          12051781,
+          5,
+          "mov",
+          "eax, dword ptr [0x109043c]"
+        ],
+        [
+          12051786,
+          3,
+          "sub",
+          "esp, 8"
+        ],
+        [
+          12051789,
+          2,
+          "test",
+          "eax, eax"
+        ],
+        [
+          12051791,
+          6,
+          "jne",
+          "0xb7e5ef"
+        ],
+        [
+          12051797,
+          1,
+          "push",
+          "esi"
+        ],
+        [
+          12051798,
+          5,
+          "call",
+          "0x415350"
+        ],
+        [
+          12051803,
+          3,
+          "mov",
+          "esi, dword ptr [eax + 0x10]"
+        ],
+        [
+          12051806,
+          2,
+          "test",
+          "esi, esi"
+        ],
+        [
+          12051808,
+          8,
+          "mov",
+          "dword ptr [esp + 4], 0xce37fc"
+        ],
+        [
+          12051816,
+          4,
+          "mov",
+          "dword ptr [esp + 8], esi"
+        ],
+        [
+          12051820,
+          2,
+          "je",
+          "0xb7e579"
+        ],
+        [
+          12051822,
+          1,
+          "push",
+          "esi"
+        ],
+        [
+          12051823,
+          6,
+          "call",
+          "dword ptr [0xce2218]"
+        ],
+        [
+          12051829,
+          4,
+          "add",
+          "dword ptr [esi + 0x18], 1"
+        ],
+        [
+          12051833,
+          8,
+          "mov",
+          "dword ptr [esp + 0x14], 0"
+        ],
+        [
+          12051841,
+          7,
+          "cmp",
+          "dword ptr [0x109043c], 0"
+        ],
+        [
+          12051848,
+          2,
+          "jne",
+          "0xb7e5da"
+        ],
+        [
+          12051850,
+          2,
+          "push",
+          "8"
+        ],
+        [
+          12051852,
+          5,
+          "call",
+          "0xbf681b"
+        ],
+        [
+          12051857,
+          3,
+          "add",
+          "esp, 4"
+        ],
+        [
+          12051860,
+          2,
+          "test",
+          "eax, eax"
+        ],
+        [
+          12051862,
+          2,
+          "je",
+          "0xb7e5b3"
+        ],
+        [
+          12051864,
+          7,
+          "mov",
+          "dword ptr [eax + 4], 0xd63080"
+        ],
+        [
+          12051871,
+          6,
+          "mov",
+          "dword ptr [eax], 0xd630d8"
+        ],
+        [
+          12051877,
+          7,
+          "mov",
+          "dword ptr [eax + 4], 0xd630d4"
+        ],
+        [
+          12051884,
+          5,
+          "mov",
+          "dword ptr [0x109043c], eax"
+        ],
+        [
+          12051889,
+          2,
+          "jmp",
+          "0xb7e5bd"
+        ],
+        [
+          12051891,
+          10,
+          "mov",
+          "dword ptr [0x109043c], 0"
+        ],
+        [
+          12051901,
+          5,
+          "mov",
+          "eax, dword ptr [0x109043c]"
+        ],
+        [
+          12051906,
+          2,
+          "test",
+          "eax, eax"
+        ],
+        [
+          12051908,
+          2,
+          "je",
+          "0xb7e5cb"
+        ],
+        [
+          12051910,
+          3,
+          "add",
+          "eax, 4"
+        ],
+        [
+          12051913,
+          2,
+          "jmp",
+          "0xb7e5cd"
+        ],
+        [
+          12051915,
+          2,
+          "xor",
+          "eax, eax"
+        ],
+        [
+          12051917,
+          1,
+          "push",
+          "eax"
+        ],
+        [
+          12051918,
+          5,
+          "call",
+          "0x415350"
+        ],
+        [
+          12051923,
+          2,
+          "mov",
+          "ecx, eax"
+        ],
+        [
+          12051925,
+          5,
+          "call",
+          "0xbd0c30"
+        ],
+        [
+          12051930,
+          2,
+          "test",
+          "esi, esi"
+        ],
+        [
+          12051932,
+          2,
+          "je",
+          "0xb7e5e9"
+        ],
+        [
+          12051934,
+          4,
+          "add",
+          "dword ptr [esi + 0x18], -1"
+        ],
+        [
+          12051938,
+          1,
+          "push",
+          "esi"
+        ],
+        [
+          12051939,
+          6,
+          "call",
+          "dword ptr [0xce2210]"
+        ],
+        [
+          12051945,
+          5,
+          "mov",
+          "eax, dword ptr [0x109043c]"
+        ],
+        [
+          12051950,
+          1,
+          "pop",
+          "esi"
+        ],
+        [
+          12051951,
+          4,
+          "mov",
+          "ecx, dword ptr [esp + 8]"
+        ],
+        [
+          12051955,
+          7,
+          "mov",
+          "dword ptr fs:[0], ecx"
+        ],
+        [
+          12051962,
+          3,
+          "add",
+          "esp, 0x14"
+        ],
+        [
+          12051965,
+          1,
+          "ret",
+          ""
+        ]
+      ],
+      "original_abi": "No native input; EAX parser; RET",
+      "function": "get_native_skined_mesh_animation_parser_00b7e530",
+      "role": "getter",
+      "parser": "SkinedMeshAnimation",
+      "source": "src/native_resource_parser_singletons.cpp",
+      "report": "reports/native_resource_parser_singletons_ca.json",
+      "coverage": "complete ordinary body",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00b7de40",
+      "bytes": 58,
+      "inclusive_end": "00b7de79",
+      "sha256": "fb0f731b51a3f0325818c870f136521fa6af476b9ed6ddebedf9f028d19c330c",
+      "installed_pe_matches_live_ghidra": true,
+      "instruction_count": 18,
+      "all_instruction_owners_verified": true,
+      "instructions": [
+        [
+          12049984,
+          1,
+          "push",
+          "esi"
+        ],
+        [
+          12049985,
+          2,
+          "mov",
+          "esi, ecx"
+        ],
+        [
+          12049987,
+          2,
+          "test",
+          "esi, esi"
+        ],
+        [
+          12049989,
+          2,
+          "je",
+          "0xb7de4c"
+        ],
+        [
+          12049991,
+          3,
+          "lea",
+          "eax, [esi + 4]"
+        ],
+        [
+          12049994,
+          2,
+          "jmp",
+          "0xb7de4e"
+        ],
+        [
+          12049996,
+          2,
+          "xor",
+          "eax, eax"
+        ],
+        [
+          12049998,
+          5,
+          "test",
+          "byte ptr [esp + 8], 1"
+        ],
+        [
+          12050003,
+          10,
+          "mov",
+          "dword ptr [0x109043c], 0"
+        ],
+        [
+          12050013,
+          6,
+          "mov",
+          "dword ptr [eax], 0xce3818"
+        ],
+        [
+          12050019,
+          6,
+          "mov",
+          "dword ptr [esi], 0xcfd7d0"
+        ],
+        [
+          12050025,
+          2,
+          "je",
+          "0xb7de74"
+        ],
+        [
+          12050027,
+          1,
+          "push",
+          "esi"
+        ],
+        [
+          12050028,
+          5,
+          "call",
+          "0xbf65ac"
+        ],
+        [
+          12050033,
+          3,
+          "add",
+          "esp, 4"
+        ],
+        [
+          12050036,
+          2,
+          "mov",
+          "eax, esi"
+        ],
+        [
+          12050038,
+          1,
+          "pop",
+          "esi"
+        ],
+        [
+          12050039,
+          3,
+          "ret",
+          "4"
+        ]
+      ],
+      "original_abi": "ECX primary parser; stacked flags; EAX captured primary; RET4",
+      "function": "delete_native_skined_mesh_animation_parser_00b7de40",
+      "role": "delete",
+      "parser": "SkinedMeshAnimation",
+      "source": "src/native_resource_parser_singletons.cpp",
+      "report": "reports/native_resource_parser_singletons_ca.json",
+      "coverage": "complete ordinary body",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00b7dcc0",
+      "bytes": 8,
+      "inclusive_end": "00b7dcc7",
+      "sha256": "3d112c7f62dae908bc99feb7ee4f70d26f70afd5e8b58c7c9bd2bb77996e22ec",
+      "installed_pe_matches_live_ghidra": true,
+      "instruction_count": 2,
+      "all_instruction_owners_verified": true,
+      "instructions": [
+        [
+          12049600,
+          3,
+          "sub",
+          "ecx, 4"
+        ],
+        [
+          12049603,
+          5,
+          "jmp",
+          "0xb7de40"
+        ]
+      ],
+      "original_abi": "ECX secondary parser; stacked flags; adjusts ECX -4 and tail-jumps primary deletion; RET4",
+      "function": "delete_native_skined_mesh_animation_parser_secondary_00b7dcc0",
+      "role": "secondary",
+      "parser": "SkinedMeshAnimation",
+      "source": "src/native_resource_parser_singletons.cpp",
+      "report": "reports/native_resource_parser_singletons_ca.json",
+      "coverage": "complete ordinary body",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00b92a20",
+      "bytes": 33,
+      "inclusive_end": "00b92a40",
+      "sha256": "5548c4b34a7fafefd36c703548b171abb37cc5cda9bef853d2ddcb7f3ac0d50c",
+      "installed_pe_matches_live_ghidra": true,
+      "instruction_count": 11,
+      "all_instruction_owners_verified": true,
+      "instructions": [
+        [
+          12134944,
+          1,
+          "push",
+          "ecx"
+        ],
+        [
+          12134945,
+          1,
+          "push",
+          "esi"
+        ],
+        [
+          12134946,
+          4,
+          "mov",
+          "esi, dword ptr [esp + 0xc]"
+        ],
+        [
+          12134950,
+          5,
+          "push",
+          "0xd636ec"
+        ],
+        [
+          12134955,
+          2,
+          "mov",
+          "ecx, esi"
+        ],
+        [
+          12134957,
+          8,
+          "mov",
+          "dword ptr [esp + 8], 0"
+        ],
+        [
+          12134965,
+          5,
+          "call",
+          "0x41e870"
+        ],
+        [
+          12134970,
+          2,
+          "mov",
+          "eax, esi"
+        ],
+        [
+          12134972,
+          1,
+          "pop",
+          "esi"
+        ],
+        [
+          12134973,
+          1,
+          "pop",
+          "ecx"
+        ],
+        [
+          12134974,
+          3,
+          "ret",
+          "4"
+        ]
+      ],
+      "original_abi": "ECX parser ignored; stacked output header; EAX output; RET4",
+      "function": "name_native_skined_mesh_animation_parser_00b92a20",
+      "role": "name",
+      "parser": "SkinedMeshAnimation",
+      "source": "src/native_resource_parser_singletons.cpp",
+      "report": "reports/native_resource_parser_singletons_ca.json",
+      "coverage": "complete ordinary body",
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "support": [
+    {
+      "address": "00cc1f10",
+      "bytes": 8,
+      "inclusive_end": "00cc1f17",
+      "sha256": "88b04f7bea7f5e09124a83d3fbc574376d00d3f6ee59b426026656ad43e2133b",
+      "installed_pe_matches_live_ghidra": true,
+      "instruction_count": 2,
+      "all_instruction_owners_verified": true,
+      "instructions": [
+        [
+          13377296,
+          3,
+          "lea",
+          "ecx, [ebp - 0x14]"
+        ],
+        [
+          13377299,
+          5,
+          "jmp",
+          "0x411ee0"
+        ]
+      ]
+    },
+    {
+      "address": "00cc1f18",
+      "bytes": 10,
+      "inclusive_end": "00cc1f21",
+      "sha256": "a233385f0e401c1a2ec752ba86fb4ebba947ee055df845d39c4de857eafd3cc2",
+      "installed_pe_matches_live_ghidra": true,
+      "instruction_count": 2,
+      "all_instruction_owners_verified": true,
+      "instructions": [
+        [
+          13377304,
+          5,
+          "mov",
+          "eax, 0xdfb024"
+        ],
+        [
+          13377309,
+          5,
+          "jmp",
+          "0xbf6b43"
+        ]
+      ]
+    },
+    {
+      "address": "00cc1f30",
+      "bytes": 8,
+      "inclusive_end": "00cc1f37",
+      "sha256": "ad884940442deba76c9e394da92724eee3a3d0138c0bc4bdf54f2f6099d73e02",
+      "installed_pe_matches_live_ghidra": true,
+      "instruction_count": 2,
+      "all_instruction_owners_verified": true,
+      "instructions": [
+        [
+          13377328,
+          3,
+          "lea",
+          "ecx, [ebp - 0x14]"
+        ],
+        [
+          13377331,
+          5,
+          "jmp",
+          "0x411ee0"
+        ]
+      ]
+    },
+    {
+      "address": "00cc1f38",
+      "bytes": 10,
+      "inclusive_end": "00cc1f41",
+      "sha256": "df46387aadc941ce5c14fc522ced30808dcfe19446b3777870757b8961c23eb7",
+      "installed_pe_matches_live_ghidra": true,
+      "instruction_count": 2,
+      "all_instruction_owners_verified": true,
+      "instructions": [
+        [
+          13377336,
+          5,
+          "mov",
+          "eax, 0xdfb050"
+        ],
+        [
+          13377341,
+          5,
+          "jmp",
+          "0xbf6b43"
+        ]
+      ]
+    },
+    {
+      "address": "00cc1f50",
+      "bytes": 8,
+      "inclusive_end": "00cc1f57",
+      "sha256": "a4fcc5b431c4975e3c7171b1c07b33c7a0ab7cc0c50e4c6f4af407864f13cd73",
+      "installed_pe_matches_live_ghidra": true,
+      "instruction_count": 2,
+      "all_instruction_owners_verified": true,
+      "instructions": [
+        [
+          13377360,
+          3,
+          "lea",
+          "ecx, [ebp - 0x14]"
+        ],
+        [
+          13377363,
+          5,
+          "jmp",
+          "0x411ee0"
+        ]
+      ]
+    },
+    {
+      "address": "00cc1f58",
+      "bytes": 10,
+      "inclusive_end": "00cc1f61",
+      "sha256": "413e731460d5d431e39fbb4327fae00b5d2fd2c215b2e45240b212dd2d2ba58f",
+      "installed_pe_matches_live_ghidra": true,
+      "instruction_count": 2,
+      "all_instruction_owners_verified": true,
+      "instructions": [
+        [
+          13377368,
+          5,
+          "mov",
+          "eax, 0xdfb07c"
+        ],
+        [
+          13377373,
+          5,
+          "jmp",
+          "0xbf6b43"
+        ]
+      ]
+    },
+    {
+      "address": "00cc1f70",
+      "bytes": 8,
+      "inclusive_end": "00cc1f77",
+      "sha256": "fc3882283f71fe226e5375ec3fcb508eaab226a76acc5304d21eeb80865bece2",
+      "installed_pe_matches_live_ghidra": true,
+      "instruction_count": 2,
+      "all_instruction_owners_verified": true,
+      "instructions": [
+        [
+          13377392,
+          3,
+          "lea",
+          "ecx, [ebp - 0x14]"
+        ],
+        [
+          13377395,
+          5,
+          "jmp",
+          "0x411ee0"
+        ]
+      ]
+    },
+    {
+      "address": "00cc1f78",
+      "bytes": 10,
+      "inclusive_end": "00cc1f81",
+      "sha256": "e1751741c11102c78b555080af13eca4f32d51eba8ef48348b8d363b49eff7c0",
+      "installed_pe_matches_live_ghidra": true,
+      "instruction_count": 2,
+      "all_instruction_owners_verified": true,
+      "instructions": [
+        [
+          13377400,
+          5,
+          "mov",
+          "eax, 0xdfb0a8"
+        ],
+        [
+          13377405,
+          5,
+          "jmp",
+          "0xbf6b43"
+        ]
+      ]
+    },
+    {
+      "address": "00cc1f90",
+      "bytes": 8,
+      "inclusive_end": "00cc1f97",
+      "sha256": "30f5f45988c864eb16e466be9ca08fc69634efd02f2743bbb06a5b76948bbd5f",
+      "installed_pe_matches_live_ghidra": true,
+      "instruction_count": 2,
+      "all_instruction_owners_verified": true,
+      "instructions": [
+        [
+          13377424,
+          3,
+          "lea",
+          "ecx, [ebp - 0x14]"
+        ],
+        [
+          13377427,
+          5,
+          "jmp",
+          "0x411ee0"
+        ]
+      ]
+    },
+    {
+      "address": "00cc1f98",
+      "bytes": 10,
+      "inclusive_end": "00cc1fa1",
+      "sha256": "659d992e7e64ca73c56276ef4971f93d2fa151a929881f0eedfc66340f3b01ac",
+      "installed_pe_matches_live_ghidra": true,
+      "instruction_count": 2,
+      "all_instruction_owners_verified": true,
+      "instructions": [
+        [
+          13377432,
+          5,
+          "mov",
+          "eax, 0xdfb0d4"
+        ],
+        [
+          13377437,
+          5,
+          "jmp",
+          "0xbf6b43"
+        ]
+      ]
+    },
+    {
+      "address": "00cc1fb0",
+      "bytes": 8,
+      "inclusive_end": "00cc1fb7",
+      "sha256": "b27d28ce002b2cf6904c712c341a3a7eeafab569ec8a9ae0ef1f07a551ecdf24",
+      "installed_pe_matches_live_ghidra": true,
+      "instruction_count": 2,
+      "all_instruction_owners_verified": true,
+      "instructions": [
+        [
+          13377456,
+          3,
+          "lea",
+          "ecx, [ebp - 0x14]"
+        ],
+        [
+          13377459,
+          5,
+          "jmp",
+          "0x411ee0"
+        ]
+      ]
+    },
+    {
+      "address": "00cc1fb8",
+      "bytes": 10,
+      "inclusive_end": "00cc1fc1",
+      "sha256": "3e575b8c1c2c017b01dcb3a61f604e99bbfe4a21f578a8d6850cb96b99871179",
+      "installed_pe_matches_live_ghidra": true,
+      "instruction_count": 2,
+      "all_instruction_owners_verified": true,
+      "instructions": [
+        [
+          13377464,
+          5,
+          "mov",
+          "eax, 0xdfb100"
+        ],
+        [
+          13377469,
+          5,
+          "jmp",
+          "0xbf6b43"
+        ]
+      ]
+    }
+  ],
+  "calls": [
+    {
+      "address": "00b7e126",
+      "native": "00415350",
+      "function": "00b7e100",
+      "kind": "call",
+      "instruction": "call 0x415350",
+      "bytes": "e8257289ff"
+    },
+    {
+      "address": "00b7e15c",
+      "native": "00bf681b",
+      "function": "00b7e100",
+      "kind": "call",
+      "instruction": "call 0xbf681b",
+      "bytes": "e8ba860700"
+    },
+    {
+      "address": "00b7e19e",
+      "native": "00415350",
+      "function": "00b7e100",
+      "kind": "call",
+      "instruction": "call 0x415350",
+      "bytes": "e8ad7189ff"
+    },
+    {
+      "address": "00b7e1a5",
+      "native": "00bd0c30",
+      "function": "00b7e100",
+      "kind": "call",
+      "instruction": "call 0xbd0c30",
+      "bytes": "e8862a0500"
+    },
+    {
+      "address": "00b7dd2c",
+      "native": "00bf65ac",
+      "function": "00b7dd00",
+      "kind": "call",
+      "instruction": "call 0xbf65ac",
+      "bytes": "e87b880700"
+    },
+    {
+      "address": "00b7dae3",
+      "native": "00b7dd00",
+      "function": "00b7dae0",
+      "kind": "tail_jump",
+      "instruction": "jmp 0xb7dd00",
+      "bytes": "e918020000"
+    },
+    {
+      "address": "00b8f8f5",
+      "native": "0041e870",
+      "function": "00b8f8e0",
+      "kind": "call",
+      "instruction": "call 0x41e870",
+      "bytes": "e876ef88ff"
+    },
+    {
+      "address": "00b7e1f6",
+      "native": "00415350",
+      "function": "00b7e1d0",
+      "kind": "call",
+      "instruction": "call 0x415350",
+      "bytes": "e8557189ff"
+    },
+    {
+      "address": "00b7e22c",
+      "native": "00bf681b",
+      "function": "00b7e1d0",
+      "kind": "call",
+      "instruction": "call 0xbf681b",
+      "bytes": "e8ea850700"
+    },
+    {
+      "address": "00b7e26e",
+      "native": "00415350",
+      "function": "00b7e1d0",
+      "kind": "call",
+      "instruction": "call 0x415350",
+      "bytes": "e8dd7089ff"
+    },
+    {
+      "address": "00b7e275",
+      "native": "00bd0c30",
+      "function": "00b7e1d0",
+      "kind": "call",
+      "instruction": "call 0xbd0c30",
+      "bytes": "e8b6290500"
+    },
+    {
+      "address": "00b7dd6c",
+      "native": "00bf65ac",
+      "function": "00b7dd40",
+      "kind": "call",
+      "instruction": "call 0xbf65ac",
+      "bytes": "e83b880700"
+    },
+    {
+      "address": "00b7db43",
+      "native": "00b7dd40",
+      "function": "00b7db40",
+      "kind": "tail_jump",
+      "instruction": "jmp 0xb7dd40",
+      "bytes": "e9f8010000"
+    },
+    {
+      "address": "00b7eb75",
+      "native": "0041e870",
+      "function": "00b7eb60",
+      "kind": "call",
+      "instruction": "call 0x41e870",
+      "bytes": "e8f6fc89ff"
+    },
+    {
+      "address": "00b7e2c6",
+      "native": "00415350",
+      "function": "00b7e2a0",
+      "kind": "call",
+      "instruction": "call 0x415350",
+      "bytes": "e8857089ff"
+    },
+    {
+      "address": "00b7e2fc",
+      "native": "00bf681b",
+      "function": "00b7e2a0",
+      "kind": "call",
+      "instruction": "call 0xbf681b",
+      "bytes": "e81a850700"
+    },
+    {
+      "address": "00b7e33e",
+      "native": "00415350",
+      "function": "00b7e2a0",
+      "kind": "call",
+      "instruction": "call 0x415350",
+      "bytes": "e80d7089ff"
+    },
+    {
+      "address": "00b7e345",
+      "native": "00bd0c30",
+      "function": "00b7e2a0",
+      "kind": "call",
+      "instruction": "call 0xbd0c30",
+      "bytes": "e8e6280500"
+    },
+    {
+      "address": "00b7ddac",
+      "native": "00bf65ac",
+      "function": "00b7dd80",
+      "kind": "call",
+      "instruction": "call 0xbf65ac",
+      "bytes": "e8fb870700"
+    },
+    {
+      "address": "00b7dba3",
+      "native": "00b7dd80",
+      "function": "00b7dba0",
+      "kind": "tail_jump",
+      "instruction": "jmp 0xb7dd80",
+      "bytes": "e9d8010000"
+    },
+    {
+      "address": "00b94185",
+      "native": "0041e870",
+      "function": "00b94170",
+      "kind": "call",
+      "instruction": "call 0x41e870",
+      "bytes": "e8e6a688ff"
+    },
+    {
+      "address": "00b7e396",
+      "native": "00415350",
+      "function": "00b7e370",
+      "kind": "call",
+      "instruction": "call 0x415350",
+      "bytes": "e8b56f89ff"
+    },
+    {
+      "address": "00b7e3cc",
+      "native": "00bf681b",
+      "function": "00b7e370",
+      "kind": "call",
+      "instruction": "call 0xbf681b",
+      "bytes": "e84a840700"
+    },
+    {
+      "address": "00b7e40e",
+      "native": "00415350",
+      "function": "00b7e370",
+      "kind": "call",
+      "instruction": "call 0x415350",
+      "bytes": "e83d6f89ff"
+    },
+    {
+      "address": "00b7e415",
+      "native": "00bd0c30",
+      "function": "00b7e370",
+      "kind": "call",
+      "instruction": "call 0xbd0c30",
+      "bytes": "e816280500"
+    },
+    {
+      "address": "00b7ddec",
+      "native": "00bf65ac",
+      "function": "00b7ddc0",
+      "kind": "call",
+      "instruction": "call 0xbf65ac",
+      "bytes": "e8bb870700"
+    },
+    {
+      "address": "00b7dc03",
+      "native": "00b7ddc0",
+      "function": "00b7dc00",
+      "kind": "tail_jump",
+      "instruction": "jmp 0xb7ddc0",
+      "bytes": "e9b8010000"
+    },
+    {
+      "address": "00b941b5",
+      "native": "0041e870",
+      "function": "00b941a0",
+      "kind": "call",
+      "instruction": "call 0x41e870",
+      "bytes": "e8b6a688ff"
+    },
+    {
+      "address": "00b7e486",
+      "native": "00415350",
+      "function": "00b7e460",
+      "kind": "call",
+      "instruction": "call 0x415350",
+      "bytes": "e8c56e89ff"
+    },
+    {
+      "address": "00b7e4bc",
+      "native": "00bf681b",
+      "function": "00b7e460",
+      "kind": "call",
+      "instruction": "call 0xbf681b",
+      "bytes": "e85a830700"
+    },
+    {
+      "address": "00b7e4fe",
+      "native": "00415350",
+      "function": "00b7e460",
+      "kind": "call",
+      "instruction": "call 0x415350",
+      "bytes": "e84d6e89ff"
+    },
+    {
+      "address": "00b7e505",
+      "native": "00bd0c30",
+      "function": "00b7e460",
+      "kind": "call",
+      "instruction": "call 0xbd0c30",
+      "bytes": "e826270500"
+    },
+    {
+      "address": "00b7de2c",
+      "native": "00bf65ac",
+      "function": "00b7de00",
+      "kind": "call",
+      "instruction": "call 0xbf65ac",
+      "bytes": "e87b870700"
+    },
+    {
+      "address": "00b7dc63",
+      "native": "00b7de00",
+      "function": "00b7dc60",
+      "kind": "tail_jump",
+      "instruction": "jmp 0xb7de00",
+      "bytes": "e998010000"
+    },
+    {
+      "address": "00b8b225",
+      "native": "0041e870",
+      "function": "00b8b210",
+      "kind": "call",
+      "instruction": "call 0x41e870",
+      "bytes": "e8463689ff"
+    },
+    {
+      "address": "00b7e556",
+      "native": "00415350",
+      "function": "00b7e530",
+      "kind": "call",
+      "instruction": "call 0x415350",
+      "bytes": "e8f56d89ff"
+    },
+    {
+      "address": "00b7e58c",
+      "native": "00bf681b",
+      "function": "00b7e530",
+      "kind": "call",
+      "instruction": "call 0xbf681b",
+      "bytes": "e88a820700"
+    },
+    {
+      "address": "00b7e5ce",
+      "native": "00415350",
+      "function": "00b7e530",
+      "kind": "call",
+      "instruction": "call 0x415350",
+      "bytes": "e87d6d89ff"
+    },
+    {
+      "address": "00b7e5d5",
+      "native": "00bd0c30",
+      "function": "00b7e530",
+      "kind": "call",
+      "instruction": "call 0xbd0c30",
+      "bytes": "e856260500"
+    },
+    {
+      "address": "00b7de6c",
+      "native": "00bf65ac",
+      "function": "00b7de40",
+      "kind": "call",
+      "instruction": "call 0xbf65ac",
+      "bytes": "e83b870700"
+    },
+    {
+      "address": "00b7dcc3",
+      "native": "00b7de40",
+      "function": "00b7dcc0",
+      "kind": "tail_jump",
+      "instruction": "jmp 0xb7de40",
+      "bytes": "e978010000"
+    },
+    {
+      "address": "00b92a35",
+      "native": "0041e870",
+      "function": "00b92a20",
+      "kind": "call",
+      "instruction": "call 0x41e870",
+      "bytes": "e836be88ff"
+    },
+    {
+      "address": "00cc1f13",
+      "native": "00411ee0",
+      "function": "00cc1f10",
+      "kind": "tail_jump",
+      "instruction": "jmp 0x411ee0",
+      "bytes": "e9c8ff74ff"
+    },
+    {
+      "address": "00cc1f1d",
+      "native": "00bf6b43",
+      "function": "00cc1f18",
+      "kind": "tail_jump",
+      "instruction": "jmp 0xbf6b43",
+      "bytes": "e9214cf3ff"
+    },
+    {
+      "address": "00cc1f33",
+      "native": "00411ee0",
+      "function": "00cc1f30",
+      "kind": "tail_jump",
+      "instruction": "jmp 0x411ee0",
+      "bytes": "e9a8ff74ff"
+    },
+    {
+      "address": "00cc1f3d",
+      "native": "00bf6b43",
+      "function": "00cc1f38",
+      "kind": "tail_jump",
+      "instruction": "jmp 0xbf6b43",
+      "bytes": "e9014cf3ff"
+    },
+    {
+      "address": "00cc1f53",
+      "native": "00411ee0",
+      "function": "00cc1f50",
+      "kind": "tail_jump",
+      "instruction": "jmp 0x411ee0",
+      "bytes": "e988ff74ff"
+    },
+    {
+      "address": "00cc1f5d",
+      "native": "00bf6b43",
+      "function": "00cc1f58",
+      "kind": "tail_jump",
+      "instruction": "jmp 0xbf6b43",
+      "bytes": "e9e14bf3ff"
+    },
+    {
+      "address": "00cc1f73",
+      "native": "00411ee0",
+      "function": "00cc1f70",
+      "kind": "tail_jump",
+      "instruction": "jmp 0x411ee0",
+      "bytes": "e968ff74ff"
+    },
+    {
+      "address": "00cc1f7d",
+      "native": "00bf6b43",
+      "function": "00cc1f78",
+      "kind": "tail_jump",
+      "instruction": "jmp 0xbf6b43",
+      "bytes": "e9c14bf3ff"
+    },
+    {
+      "address": "00cc1f93",
+      "native": "00411ee0",
+      "function": "00cc1f90",
+      "kind": "tail_jump",
+      "instruction": "jmp 0x411ee0",
+      "bytes": "e948ff74ff"
+    },
+    {
+      "address": "00cc1f9d",
+      "native": "00bf6b43",
+      "function": "00cc1f98",
+      "kind": "tail_jump",
+      "instruction": "jmp 0xbf6b43",
+      "bytes": "e9a14bf3ff"
+    },
+    {
+      "address": "00cc1fb3",
+      "native": "00411ee0",
+      "function": "00cc1fb0",
+      "kind": "tail_jump",
+      "instruction": "jmp 0x411ee0",
+      "bytes": "e928ff74ff"
+    },
+    {
+      "address": "00cc1fbd",
+      "native": "00bf6b43",
+      "function": "00cc1fb8",
+      "kind": "tail_jump",
+      "instruction": "jmp 0xbf6b43",
+      "bytes": "e9814bf3ff"
+    }
+  ],
+  "indirect_calls": [
+    {
+      "address": "00b7e13f",
+      "function": "00b7e100",
+      "instruction": "call dword ptr [0xce2218]"
+    },
+    {
+      "address": "00b7e1b3",
+      "function": "00b7e100",
+      "instruction": "call dword ptr [0xce2210]"
+    },
+    {
+      "address": "00b7e20f",
+      "function": "00b7e1d0",
+      "instruction": "call dword ptr [0xce2218]"
+    },
+    {
+      "address": "00b7e283",
+      "function": "00b7e1d0",
+      "instruction": "call dword ptr [0xce2210]"
+    },
+    {
+      "address": "00b7e2df",
+      "function": "00b7e2a0",
+      "instruction": "call dword ptr [0xce2218]"
+    },
+    {
+      "address": "00b7e353",
+      "function": "00b7e2a0",
+      "instruction": "call dword ptr [0xce2210]"
+    },
+    {
+      "address": "00b7e3af",
+      "function": "00b7e370",
+      "instruction": "call dword ptr [0xce2218]"
+    },
+    {
+      "address": "00b7e423",
+      "function": "00b7e370",
+      "instruction": "call dword ptr [0xce2210]"
+    },
+    {
+      "address": "00b7e49f",
+      "function": "00b7e460",
+      "instruction": "call dword ptr [0xce2218]"
+    },
+    {
+      "address": "00b7e513",
+      "function": "00b7e460",
+      "instruction": "call dword ptr [0xce2210]"
+    },
+    {
+      "address": "00b7e56f",
+      "function": "00b7e530",
+      "instruction": "call dword ptr [0xce2218]"
+    },
+    {
+      "address": "00b7e5e3",
+      "function": "00b7e530",
+      "instruction": "call dword ptr [0xce2210]"
+    }
+  ],
+  "data": [
+    {
+      "address": "00d63550",
+      "bytes": 12,
+      "hex": "47726f7570506172616d7300"
+    },
+    {
+      "address": "00dfb024",
+      "bytes": 36,
+      "hex": "22059319010000001cb0df00000000000000000000000000000000000000000001000000"
+    },
+    {
+      "address": "00dfb01c",
+      "bytes": 8,
+      "hex": "ffffffff101fcc00"
+    },
+    {
+      "address": "00d63088",
+      "bytes": 12,
+      "hex": "00ddb700e0f8b80050ebb800"
+    },
+    {
+      "address": "00d63084",
+      "bytes": 4,
+      "hex": "e0dab700"
+    },
+    {
+      "address": "00d6306c",
+      "bytes": 4,
+      "hex": "10d4b700"
+    },
+    {
+      "address": "00ce5fd0",
+      "bytes": 5,
+      "hex": "4d65736800"
+    },
+    {
+      "address": "00dfb050",
+      "bytes": 36,
+      "hex": "220593190100000048b0df00000000000000000000000000000000000000000001000000"
+    },
+    {
+      "address": "00dfb048",
+      "bytes": 8,
+      "hex": "ffffffff301fcc00"
+    },
+    {
+      "address": "00d63098",
+      "bytes": 12,
+      "hex": "40ddb70060ebb700a047b900"
+    },
+    {
+      "address": "00d63094",
+      "bytes": 4,
+      "hex": "40dbb700"
+    },
+    {
+      "address": "00d63070",
+      "bytes": 4,
+      "hex": "50d4b700"
+    },
+    {
+      "address": "00d637f8",
+      "bytes": 11,
+      "hex": "536b696e65644d65736800"
+    },
+    {
+      "address": "00dfb07c",
+      "bytes": 36,
+      "hex": "220593190100000074b0df00000000000000000000000000000000000000000001000000"
+    },
+    {
+      "address": "00dfb074",
+      "bytes": 8,
+      "hex": "ffffffff501fcc00"
+    },
+    {
+      "address": "00d630a8",
+      "bytes": 12,
+      "hex": "80ddb7007041b9005048b900"
+    },
+    {
+      "address": "00d630a4",
+      "bytes": 4,
+      "hex": "a0dbb700"
+    },
+    {
+      "address": "00d63074",
+      "bytes": 4,
+      "hex": "90d4b700"
+    },
+    {
+      "address": "00d63804",
+      "bytes": 18,
+      "hex": "4d6174726978496e64657865644d65736800"
+    },
+    {
+      "address": "00dfb0a8",
+      "bytes": 36,
+      "hex": "2205931901000000a0b0df00000000000000000000000000000000000000000001000000"
+    },
+    {
+      "address": "00dfb0a0",
+      "bytes": 8,
+      "hex": "ffffffff701fcc00"
+    },
+    {
+      "address": "00d630b8",
+      "bytes": 12,
+      "hex": "c0ddb700a041b9000049b900"
+    },
+    {
+      "address": "00d630b4",
+      "bytes": 4,
+      "hex": "00dcb700"
+    },
+    {
+      "address": "00d63078",
+      "bytes": 4,
+      "hex": "d0d4b700"
+    },
+    {
+      "address": "00d633d4",
+      "bytes": 7,
+      "hex": "43616d65726100"
+    },
+    {
+      "address": "00dfb0d4",
+      "bytes": 36,
+      "hex": "2205931901000000ccb0df00000000000000000000000000000000000000000001000000"
+    },
+    {
+      "address": "00dfb0cc",
+      "bytes": 8,
+      "hex": "ffffffff901fcc00"
+    },
+    {
+      "address": "00d630c8",
+      "bytes": 12,
+      "hex": "00deb70010b2b80040b2b800"
+    },
+    {
+      "address": "00d630c4",
+      "bytes": 4,
+      "hex": "60dcb700"
+    },
+    {
+      "address": "00d6307c",
+      "bytes": 4,
+      "hex": "10d5b700"
+    },
+    {
+      "address": "00d636ec",
+      "bytes": 20,
+      "hex": "536b696e65644d657368416e696d6174696f6e00"
+    },
+    {
+      "address": "00dfb100",
+      "bytes": 36,
+      "hex": "2205931901000000f8b0df00000000000000000000000000000000000000000001000000"
+    },
+    {
+      "address": "00dfb0f8",
+      "bytes": 8,
+      "hex": "ffffffffb01fcc00"
+    },
+    {
+      "address": "00d630d8",
+      "bytes": 12,
+      "hex": "40deb700202ab900202fb900"
+    },
+    {
+      "address": "00d630d4",
+      "bytes": 4,
+      "hex": "c0dcb700"
+    },
+    {
+      "address": "00d63080",
+      "bytes": 4,
+      "hex": "50d5b700"
+    }
+  ],
+  "families": [
+    {
+      "stem": "group_params",
+      "label": "GroupParams",
+      "getter": "00b7e100",
+      "publication": "0109033c",
+      "name": "00b8f8e0",
+      "parse": "00b8eb50",
+      "delete": "00b7dd00",
+      "secondary": "00b7dae0",
+      "initial": "00d6306c",
+      "primary": "00d63088",
+      "final": "00d63084",
+      "unwind": "00cc1f10",
+      "handler": "00cc1f18",
+      "info": "00dfb024",
+      "literal": "00d63550"
+    },
+    {
+      "stem": "mesh",
+      "label": "Mesh",
+      "getter": "00b7e1d0",
+      "publication": "0109047c",
+      "name": "00b7eb60",
+      "parse": "00b947a0",
+      "delete": "00b7dd40",
+      "secondary": "00b7db40",
+      "initial": "00d63070",
+      "primary": "00d63098",
+      "final": "00d63094",
+      "unwind": "00cc1f30",
+      "handler": "00cc1f38",
+      "info": "00dfb050",
+      "literal": "00ce5fd0"
+    },
+    {
+      "stem": "skined_mesh",
+      "label": "SkinedMesh",
+      "getter": "00b7e2a0",
+      "publication": "01090480",
+      "name": "00b94170",
+      "parse": "00b94850",
+      "delete": "00b7dd80",
+      "secondary": "00b7dba0",
+      "initial": "00d63074",
+      "primary": "00d630a8",
+      "final": "00d630a4",
+      "unwind": "00cc1f50",
+      "handler": "00cc1f58",
+      "info": "00dfb07c",
+      "literal": "00d637f8"
+    },
+    {
+      "stem": "matrix_indexed_mesh",
+      "label": "MatrixIndexedMesh",
+      "getter": "00b7e370",
+      "publication": "01090484",
+      "name": "00b941a0",
+      "parse": "00b94900",
+      "delete": "00b7ddc0",
+      "secondary": "00b7dc00",
+      "initial": "00d63078",
+      "primary": "00d630b8",
+      "final": "00d630b4",
+      "unwind": "00cc1f70",
+      "handler": "00cc1f78",
+      "info": "00dfb0a8",
+      "literal": "00d63804"
+    },
+    {
+      "stem": "camera",
+      "label": "Camera",
+      "getter": "00b7e460",
+      "publication": "010902a0",
+      "name": "00b8b210",
+      "parse": "00b8b240",
+      "delete": "00b7de00",
+      "secondary": "00b7dc60",
+      "initial": "00d6307c",
+      "primary": "00d630c8",
+      "final": "00d630c4",
+      "unwind": "00cc1f90",
+      "handler": "00cc1f98",
+      "info": "00dfb0d4",
+      "literal": "00d633d4"
+    },
+    {
+      "stem": "skined_mesh_animation",
+      "label": "SkinedMeshAnimation",
+      "getter": "00b7e530",
+      "publication": "0109043c",
+      "name": "00b92a20",
+      "parse": "00b92f20",
+      "delete": "00b7de40",
+      "secondary": "00b7dcc0",
+      "initial": "00d63080",
+      "primary": "00d630d8",
+      "final": "00d630d4",
+      "unwind": "00cc1fb0",
+      "handler": "00cc1fb8",
+      "info": "00dfb100",
+      "literal": "00d636ec"
+    }
+  ],
+  "equivalence_pairs": [
+    {
+      "parser": "GroupParams",
+      "role": "getter",
+      "left": "00b7e100",
+      "right": "00bed990",
+      "equivalent": true,
+      "normalized": [
+        [
+          0,
+          6,
+          "mov",
+          "eax, dword ptr fs:[0]"
+        ],
+        [
+          6,
+          2,
+          "push",
+          "-1"
+        ],
+        [
+          8,
+          5,
+          "push",
+          "handler"
+        ],
+        [
+          13,
+          1,
+          "push",
+          "eax"
+        ],
+        [
+          14,
+          7,
+          "mov",
+          "dword ptr fs:[0], esp"
+        ],
+        [
+          21,
+          5,
+          "mov",
+          "eax, dword ptr [publication]"
+        ],
+        [
+          26,
+          3,
+          "sub",
+          "esp, 8"
+        ],
+        [
+          29,
+          2,
+          "test",
+          "eax, eax"
+        ],
+        [
+          31,
+          6,
+          "jne",
+          "local+191"
+        ],
+        [
+          37,
+          1,
+          "push",
+          "esi"
+        ],
+        [
+          38,
+          5,
+          "call",
+          "0x415350"
+        ],
+        [
+          43,
+          3,
+          "mov",
+          "esi, dword ptr [eax + 0x10]"
+        ],
+        [
+          46,
+          2,
+          "test",
+          "esi, esi"
+        ],
+        [
+          48,
+          8,
+          "mov",
+          "dword ptr [esp + 4], 0xce37fc"
+        ],
+        [
+          56,
+          4,
+          "mov",
+          "dword ptr [esp + 8], esi"
+        ],
+        [
+          60,
+          2,
+          "je",
+          "local+73"
+        ],
+        [
+          62,
+          1,
+          "push",
+          "esi"
+        ],
+        [
+          63,
+          6,
+          "call",
+          "dword ptr [0xce2218]"
+        ],
+        [
+          69,
+          4,
+          "add",
+          "dword ptr [esi + 0x18], 1"
+        ],
+        [
+          73,
+          8,
+          "mov",
+          "dword ptr [esp + 0x14], 0"
+        ],
+        [
+          81,
+          7,
+          "cmp",
+          "dword ptr [publication], 0"
+        ],
+        [
+          88,
+          2,
+          "jne",
+          "local+170"
+        ],
+        [
+          90,
+          2,
+          "push",
+          "8"
+        ],
+        [
+          92,
+          5,
+          "call",
+          "0xbf681b"
+        ],
+        [
+          97,
+          3,
+          "add",
+          "esp, 4"
+        ],
+        [
+          100,
+          2,
+          "test",
+          "eax, eax"
+        ],
+        [
+          102,
+          2,
+          "je",
+          "local+131"
+        ],
+        [
+          104,
+          7,
+          "mov",
+          "dword ptr [eax + 4], initial"
+        ],
+        [
+          111,
+          6,
+          "mov",
+          "dword ptr [eax], primary"
+        ],
+        [
+          117,
+          7,
+          "mov",
+          "dword ptr [eax + 4], final"
+        ],
+        [
+          124,
+          5,
+          "mov",
+          "dword ptr [publication], eax"
+        ],
+        [
+          129,
+          2,
+          "jmp",
+          "local+141"
+        ],
+        [
+          131,
+          10,
+          "mov",
+          "dword ptr [publication], 0"
+        ],
+        [
+          141,
+          5,
+          "mov",
+          "eax, dword ptr [publication]"
+        ],
+        [
+          146,
+          2,
+          "test",
+          "eax, eax"
+        ],
+        [
+          148,
+          2,
+          "je",
+          "local+155"
+        ],
+        [
+          150,
+          3,
+          "add",
+          "eax, 4"
+        ],
+        [
+          153,
+          2,
+          "jmp",
+          "local+157"
+        ],
+        [
+          155,
+          2,
+          "xor",
+          "eax, eax"
+        ],
+        [
+          157,
+          1,
+          "push",
+          "eax"
+        ],
+        [
+          158,
+          5,
+          "call",
+          "0x415350"
+        ],
+        [
+          163,
+          2,
+          "mov",
+          "ecx, eax"
+        ],
+        [
+          165,
+          5,
+          "call",
+          "0xbd0c30"
+        ],
+        [
+          170,
+          2,
+          "test",
+          "esi, esi"
+        ],
+        [
+          172,
+          2,
+          "je",
+          "local+185"
+        ],
+        [
+          174,
+          4,
+          "add",
+          "dword ptr [esi + 0x18], -1"
+        ],
+        [
+          178,
+          1,
+          "push",
+          "esi"
+        ],
+        [
+          179,
+          6,
+          "call",
+          "dword ptr [0xce2210]"
+        ],
+        [
+          185,
+          5,
+          "mov",
+          "eax, dword ptr [publication]"
+        ],
+        [
+          190,
+          1,
+          "pop",
+          "esi"
+        ],
+        [
+          191,
+          4,
+          "mov",
+          "ecx, dword ptr [esp + 8]"
+        ],
+        [
+          195,
+          7,
+          "mov",
+          "dword ptr fs:[0], ecx"
+        ],
+        [
+          202,
+          3,
+          "add",
+          "esp, 0x14"
+        ],
+        [
+          205,
+          1,
+          "ret",
+          ""
+        ]
+      ]
+    },
+    {
+      "parser": "GroupParams",
+      "role": "delete",
+      "left": "00b7dd00",
+      "right": "00bed950",
+      "equivalent": true,
+      "normalized": [
+        [
+          0,
+          1,
+          "push",
+          "esi"
+        ],
+        [
+          1,
+          2,
+          "mov",
+          "esi, ecx"
+        ],
+        [
+          3,
+          2,
+          "test",
+          "esi, esi"
+        ],
+        [
+          5,
+          2,
+          "je",
+          "local+12"
+        ],
+        [
+          7,
+          3,
+          "lea",
+          "eax, [esi + 4]"
+        ],
+        [
+          10,
+          2,
+          "jmp",
+          "local+14"
+        ],
+        [
+          12,
+          2,
+          "xor",
+          "eax, eax"
+        ],
+        [
+          14,
+          5,
+          "test",
+          "byte ptr [esp + 8], 1"
+        ],
+        [
+          19,
+          10,
+          "mov",
+          "dword ptr [publication], 0"
+        ],
+        [
+          29,
+          6,
+          "mov",
+          "dword ptr [eax], 0xce3818"
+        ],
+        [
+          35,
+          6,
+          "mov",
+          "dword ptr [esi], base"
+        ],
+        [
+          41,
+          2,
+          "je",
+          "local+52"
+        ],
+        [
+          43,
+          1,
+          "push",
+          "esi"
+        ],
+        [
+          44,
+          5,
+          "call",
+          "0xbf65ac"
+        ],
+        [
+          49,
+          3,
+          "add",
+          "esp, 4"
+        ],
+        [
+          52,
+          2,
+          "mov",
+          "eax, esi"
+        ],
+        [
+          54,
+          1,
+          "pop",
+          "esi"
+        ],
+        [
+          55,
+          3,
+          "ret",
+          "4"
+        ]
+      ]
+    },
+    {
+      "parser": "GroupParams",
+      "role": "secondary",
+      "left": "00b7dae0",
+      "right": "00bed910",
+      "equivalent": true,
+      "normalized": [
+        [
+          0,
+          3,
+          "sub",
+          "ecx, 4"
+        ],
+        [
+          3,
+          5,
+          "jmp",
+          "delete"
+        ]
+      ]
+    },
+    {
+      "parser": "GroupParams",
+      "role": "name",
+      "left": "00b8f8e0",
+      "right": "00b8f8e0",
+      "equivalent": true,
+      "normalized": [
+        [
+          0,
+          1,
+          "push",
+          "ecx"
+        ],
+        [
+          1,
+          1,
+          "push",
+          "esi"
+        ],
+        [
+          2,
+          4,
+          "mov",
+          "esi, dword ptr [esp + 0xc]"
+        ],
+        [
+          6,
+          5,
+          "push",
+          "literal"
+        ],
+        [
+          11,
+          2,
+          "mov",
+          "ecx, esi"
+        ],
+        [
+          13,
+          8,
+          "mov",
+          "dword ptr [esp + 8], 0"
+        ],
+        [
+          21,
+          5,
+          "call",
+          "0x41e870"
+        ],
+        [
+          26,
+          2,
+          "mov",
+          "eax, esi"
+        ],
+        [
+          28,
+          1,
+          "pop",
+          "esi"
+        ],
+        [
+          29,
+          1,
+          "pop",
+          "ecx"
+        ],
+        [
+          30,
+          3,
+          "ret",
+          "4"
+        ]
+      ]
+    },
+    {
+      "parser": "Mesh",
+      "role": "getter",
+      "left": "00b7e1d0",
+      "right": "00bed990",
+      "equivalent": true,
+      "normalized": [
+        [
+          0,
+          6,
+          "mov",
+          "eax, dword ptr fs:[0]"
+        ],
+        [
+          6,
+          2,
+          "push",
+          "-1"
+        ],
+        [
+          8,
+          5,
+          "push",
+          "handler"
+        ],
+        [
+          13,
+          1,
+          "push",
+          "eax"
+        ],
+        [
+          14,
+          7,
+          "mov",
+          "dword ptr fs:[0], esp"
+        ],
+        [
+          21,
+          5,
+          "mov",
+          "eax, dword ptr [publication]"
+        ],
+        [
+          26,
+          3,
+          "sub",
+          "esp, 8"
+        ],
+        [
+          29,
+          2,
+          "test",
+          "eax, eax"
+        ],
+        [
+          31,
+          6,
+          "jne",
+          "local+191"
+        ],
+        [
+          37,
+          1,
+          "push",
+          "esi"
+        ],
+        [
+          38,
+          5,
+          "call",
+          "0x415350"
+        ],
+        [
+          43,
+          3,
+          "mov",
+          "esi, dword ptr [eax + 0x10]"
+        ],
+        [
+          46,
+          2,
+          "test",
+          "esi, esi"
+        ],
+        [
+          48,
+          8,
+          "mov",
+          "dword ptr [esp + 4], 0xce37fc"
+        ],
+        [
+          56,
+          4,
+          "mov",
+          "dword ptr [esp + 8], esi"
+        ],
+        [
+          60,
+          2,
+          "je",
+          "local+73"
+        ],
+        [
+          62,
+          1,
+          "push",
+          "esi"
+        ],
+        [
+          63,
+          6,
+          "call",
+          "dword ptr [0xce2218]"
+        ],
+        [
+          69,
+          4,
+          "add",
+          "dword ptr [esi + 0x18], 1"
+        ],
+        [
+          73,
+          8,
+          "mov",
+          "dword ptr [esp + 0x14], 0"
+        ],
+        [
+          81,
+          7,
+          "cmp",
+          "dword ptr [publication], 0"
+        ],
+        [
+          88,
+          2,
+          "jne",
+          "local+170"
+        ],
+        [
+          90,
+          2,
+          "push",
+          "8"
+        ],
+        [
+          92,
+          5,
+          "call",
+          "0xbf681b"
+        ],
+        [
+          97,
+          3,
+          "add",
+          "esp, 4"
+        ],
+        [
+          100,
+          2,
+          "test",
+          "eax, eax"
+        ],
+        [
+          102,
+          2,
+          "je",
+          "local+131"
+        ],
+        [
+          104,
+          7,
+          "mov",
+          "dword ptr [eax + 4], initial"
+        ],
+        [
+          111,
+          6,
+          "mov",
+          "dword ptr [eax], primary"
+        ],
+        [
+          117,
+          7,
+          "mov",
+          "dword ptr [eax + 4], final"
+        ],
+        [
+          124,
+          5,
+          "mov",
+          "dword ptr [publication], eax"
+        ],
+        [
+          129,
+          2,
+          "jmp",
+          "local+141"
+        ],
+        [
+          131,
+          10,
+          "mov",
+          "dword ptr [publication], 0"
+        ],
+        [
+          141,
+          5,
+          "mov",
+          "eax, dword ptr [publication]"
+        ],
+        [
+          146,
+          2,
+          "test",
+          "eax, eax"
+        ],
+        [
+          148,
+          2,
+          "je",
+          "local+155"
+        ],
+        [
+          150,
+          3,
+          "add",
+          "eax, 4"
+        ],
+        [
+          153,
+          2,
+          "jmp",
+          "local+157"
+        ],
+        [
+          155,
+          2,
+          "xor",
+          "eax, eax"
+        ],
+        [
+          157,
+          1,
+          "push",
+          "eax"
+        ],
+        [
+          158,
+          5,
+          "call",
+          "0x415350"
+        ],
+        [
+          163,
+          2,
+          "mov",
+          "ecx, eax"
+        ],
+        [
+          165,
+          5,
+          "call",
+          "0xbd0c30"
+        ],
+        [
+          170,
+          2,
+          "test",
+          "esi, esi"
+        ],
+        [
+          172,
+          2,
+          "je",
+          "local+185"
+        ],
+        [
+          174,
+          4,
+          "add",
+          "dword ptr [esi + 0x18], -1"
+        ],
+        [
+          178,
+          1,
+          "push",
+          "esi"
+        ],
+        [
+          179,
+          6,
+          "call",
+          "dword ptr [0xce2210]"
+        ],
+        [
+          185,
+          5,
+          "mov",
+          "eax, dword ptr [publication]"
+        ],
+        [
+          190,
+          1,
+          "pop",
+          "esi"
+        ],
+        [
+          191,
+          4,
+          "mov",
+          "ecx, dword ptr [esp + 8]"
+        ],
+        [
+          195,
+          7,
+          "mov",
+          "dword ptr fs:[0], ecx"
+        ],
+        [
+          202,
+          3,
+          "add",
+          "esp, 0x14"
+        ],
+        [
+          205,
+          1,
+          "ret",
+          ""
+        ]
+      ]
+    },
+    {
+      "parser": "Mesh",
+      "role": "delete",
+      "left": "00b7dd40",
+      "right": "00bed950",
+      "equivalent": true,
+      "normalized": [
+        [
+          0,
+          1,
+          "push",
+          "esi"
+        ],
+        [
+          1,
+          2,
+          "mov",
+          "esi, ecx"
+        ],
+        [
+          3,
+          2,
+          "test",
+          "esi, esi"
+        ],
+        [
+          5,
+          2,
+          "je",
+          "local+12"
+        ],
+        [
+          7,
+          3,
+          "lea",
+          "eax, [esi + 4]"
+        ],
+        [
+          10,
+          2,
+          "jmp",
+          "local+14"
+        ],
+        [
+          12,
+          2,
+          "xor",
+          "eax, eax"
+        ],
+        [
+          14,
+          5,
+          "test",
+          "byte ptr [esp + 8], 1"
+        ],
+        [
+          19,
+          10,
+          "mov",
+          "dword ptr [publication], 0"
+        ],
+        [
+          29,
+          6,
+          "mov",
+          "dword ptr [eax], 0xce3818"
+        ],
+        [
+          35,
+          6,
+          "mov",
+          "dword ptr [esi], base"
+        ],
+        [
+          41,
+          2,
+          "je",
+          "local+52"
+        ],
+        [
+          43,
+          1,
+          "push",
+          "esi"
+        ],
+        [
+          44,
+          5,
+          "call",
+          "0xbf65ac"
+        ],
+        [
+          49,
+          3,
+          "add",
+          "esp, 4"
+        ],
+        [
+          52,
+          2,
+          "mov",
+          "eax, esi"
+        ],
+        [
+          54,
+          1,
+          "pop",
+          "esi"
+        ],
+        [
+          55,
+          3,
+          "ret",
+          "4"
+        ]
+      ]
+    },
+    {
+      "parser": "Mesh",
+      "role": "secondary",
+      "left": "00b7db40",
+      "right": "00bed910",
+      "equivalent": true,
+      "normalized": [
+        [
+          0,
+          3,
+          "sub",
+          "ecx, 4"
+        ],
+        [
+          3,
+          5,
+          "jmp",
+          "delete"
+        ]
+      ]
+    },
+    {
+      "parser": "Mesh",
+      "role": "name",
+      "left": "00b7eb60",
+      "right": "00b8f8e0",
+      "equivalent": true,
+      "normalized": [
+        [
+          0,
+          1,
+          "push",
+          "ecx"
+        ],
+        [
+          1,
+          1,
+          "push",
+          "esi"
+        ],
+        [
+          2,
+          4,
+          "mov",
+          "esi, dword ptr [esp + 0xc]"
+        ],
+        [
+          6,
+          5,
+          "push",
+          "literal"
+        ],
+        [
+          11,
+          2,
+          "mov",
+          "ecx, esi"
+        ],
+        [
+          13,
+          8,
+          "mov",
+          "dword ptr [esp + 8], 0"
+        ],
+        [
+          21,
+          5,
+          "call",
+          "0x41e870"
+        ],
+        [
+          26,
+          2,
+          "mov",
+          "eax, esi"
+        ],
+        [
+          28,
+          1,
+          "pop",
+          "esi"
+        ],
+        [
+          29,
+          1,
+          "pop",
+          "ecx"
+        ],
+        [
+          30,
+          3,
+          "ret",
+          "4"
+        ]
+      ]
+    },
+    {
+      "parser": "SkinedMesh",
+      "role": "getter",
+      "left": "00b7e2a0",
+      "right": "00bed990",
+      "equivalent": true,
+      "normalized": [
+        [
+          0,
+          6,
+          "mov",
+          "eax, dword ptr fs:[0]"
+        ],
+        [
+          6,
+          2,
+          "push",
+          "-1"
+        ],
+        [
+          8,
+          5,
+          "push",
+          "handler"
+        ],
+        [
+          13,
+          1,
+          "push",
+          "eax"
+        ],
+        [
+          14,
+          7,
+          "mov",
+          "dword ptr fs:[0], esp"
+        ],
+        [
+          21,
+          5,
+          "mov",
+          "eax, dword ptr [publication]"
+        ],
+        [
+          26,
+          3,
+          "sub",
+          "esp, 8"
+        ],
+        [
+          29,
+          2,
+          "test",
+          "eax, eax"
+        ],
+        [
+          31,
+          6,
+          "jne",
+          "local+191"
+        ],
+        [
+          37,
+          1,
+          "push",
+          "esi"
+        ],
+        [
+          38,
+          5,
+          "call",
+          "0x415350"
+        ],
+        [
+          43,
+          3,
+          "mov",
+          "esi, dword ptr [eax + 0x10]"
+        ],
+        [
+          46,
+          2,
+          "test",
+          "esi, esi"
+        ],
+        [
+          48,
+          8,
+          "mov",
+          "dword ptr [esp + 4], 0xce37fc"
+        ],
+        [
+          56,
+          4,
+          "mov",
+          "dword ptr [esp + 8], esi"
+        ],
+        [
+          60,
+          2,
+          "je",
+          "local+73"
+        ],
+        [
+          62,
+          1,
+          "push",
+          "esi"
+        ],
+        [
+          63,
+          6,
+          "call",
+          "dword ptr [0xce2218]"
+        ],
+        [
+          69,
+          4,
+          "add",
+          "dword ptr [esi + 0x18], 1"
+        ],
+        [
+          73,
+          8,
+          "mov",
+          "dword ptr [esp + 0x14], 0"
+        ],
+        [
+          81,
+          7,
+          "cmp",
+          "dword ptr [publication], 0"
+        ],
+        [
+          88,
+          2,
+          "jne",
+          "local+170"
+        ],
+        [
+          90,
+          2,
+          "push",
+          "8"
+        ],
+        [
+          92,
+          5,
+          "call",
+          "0xbf681b"
+        ],
+        [
+          97,
+          3,
+          "add",
+          "esp, 4"
+        ],
+        [
+          100,
+          2,
+          "test",
+          "eax, eax"
+        ],
+        [
+          102,
+          2,
+          "je",
+          "local+131"
+        ],
+        [
+          104,
+          7,
+          "mov",
+          "dword ptr [eax + 4], initial"
+        ],
+        [
+          111,
+          6,
+          "mov",
+          "dword ptr [eax], primary"
+        ],
+        [
+          117,
+          7,
+          "mov",
+          "dword ptr [eax + 4], final"
+        ],
+        [
+          124,
+          5,
+          "mov",
+          "dword ptr [publication], eax"
+        ],
+        [
+          129,
+          2,
+          "jmp",
+          "local+141"
+        ],
+        [
+          131,
+          10,
+          "mov",
+          "dword ptr [publication], 0"
+        ],
+        [
+          141,
+          5,
+          "mov",
+          "eax, dword ptr [publication]"
+        ],
+        [
+          146,
+          2,
+          "test",
+          "eax, eax"
+        ],
+        [
+          148,
+          2,
+          "je",
+          "local+155"
+        ],
+        [
+          150,
+          3,
+          "add",
+          "eax, 4"
+        ],
+        [
+          153,
+          2,
+          "jmp",
+          "local+157"
+        ],
+        [
+          155,
+          2,
+          "xor",
+          "eax, eax"
+        ],
+        [
+          157,
+          1,
+          "push",
+          "eax"
+        ],
+        [
+          158,
+          5,
+          "call",
+          "0x415350"
+        ],
+        [
+          163,
+          2,
+          "mov",
+          "ecx, eax"
+        ],
+        [
+          165,
+          5,
+          "call",
+          "0xbd0c30"
+        ],
+        [
+          170,
+          2,
+          "test",
+          "esi, esi"
+        ],
+        [
+          172,
+          2,
+          "je",
+          "local+185"
+        ],
+        [
+          174,
+          4,
+          "add",
+          "dword ptr [esi + 0x18], -1"
+        ],
+        [
+          178,
+          1,
+          "push",
+          "esi"
+        ],
+        [
+          179,
+          6,
+          "call",
+          "dword ptr [0xce2210]"
+        ],
+        [
+          185,
+          5,
+          "mov",
+          "eax, dword ptr [publication]"
+        ],
+        [
+          190,
+          1,
+          "pop",
+          "esi"
+        ],
+        [
+          191,
+          4,
+          "mov",
+          "ecx, dword ptr [esp + 8]"
+        ],
+        [
+          195,
+          7,
+          "mov",
+          "dword ptr fs:[0], ecx"
+        ],
+        [
+          202,
+          3,
+          "add",
+          "esp, 0x14"
+        ],
+        [
+          205,
+          1,
+          "ret",
+          ""
+        ]
+      ]
+    },
+    {
+      "parser": "SkinedMesh",
+      "role": "delete",
+      "left": "00b7dd80",
+      "right": "00bed950",
+      "equivalent": true,
+      "normalized": [
+        [
+          0,
+          1,
+          "push",
+          "esi"
+        ],
+        [
+          1,
+          2,
+          "mov",
+          "esi, ecx"
+        ],
+        [
+          3,
+          2,
+          "test",
+          "esi, esi"
+        ],
+        [
+          5,
+          2,
+          "je",
+          "local+12"
+        ],
+        [
+          7,
+          3,
+          "lea",
+          "eax, [esi + 4]"
+        ],
+        [
+          10,
+          2,
+          "jmp",
+          "local+14"
+        ],
+        [
+          12,
+          2,
+          "xor",
+          "eax, eax"
+        ],
+        [
+          14,
+          5,
+          "test",
+          "byte ptr [esp + 8], 1"
+        ],
+        [
+          19,
+          10,
+          "mov",
+          "dword ptr [publication], 0"
+        ],
+        [
+          29,
+          6,
+          "mov",
+          "dword ptr [eax], 0xce3818"
+        ],
+        [
+          35,
+          6,
+          "mov",
+          "dword ptr [esi], base"
+        ],
+        [
+          41,
+          2,
+          "je",
+          "local+52"
+        ],
+        [
+          43,
+          1,
+          "push",
+          "esi"
+        ],
+        [
+          44,
+          5,
+          "call",
+          "0xbf65ac"
+        ],
+        [
+          49,
+          3,
+          "add",
+          "esp, 4"
+        ],
+        [
+          52,
+          2,
+          "mov",
+          "eax, esi"
+        ],
+        [
+          54,
+          1,
+          "pop",
+          "esi"
+        ],
+        [
+          55,
+          3,
+          "ret",
+          "4"
+        ]
+      ]
+    },
+    {
+      "parser": "SkinedMesh",
+      "role": "secondary",
+      "left": "00b7dba0",
+      "right": "00bed910",
+      "equivalent": true,
+      "normalized": [
+        [
+          0,
+          3,
+          "sub",
+          "ecx, 4"
+        ],
+        [
+          3,
+          5,
+          "jmp",
+          "delete"
+        ]
+      ]
+    },
+    {
+      "parser": "SkinedMesh",
+      "role": "name",
+      "left": "00b94170",
+      "right": "00b8f8e0",
+      "equivalent": true,
+      "normalized": [
+        [
+          0,
+          1,
+          "push",
+          "ecx"
+        ],
+        [
+          1,
+          1,
+          "push",
+          "esi"
+        ],
+        [
+          2,
+          4,
+          "mov",
+          "esi, dword ptr [esp + 0xc]"
+        ],
+        [
+          6,
+          5,
+          "push",
+          "literal"
+        ],
+        [
+          11,
+          2,
+          "mov",
+          "ecx, esi"
+        ],
+        [
+          13,
+          8,
+          "mov",
+          "dword ptr [esp + 8], 0"
+        ],
+        [
+          21,
+          5,
+          "call",
+          "0x41e870"
+        ],
+        [
+          26,
+          2,
+          "mov",
+          "eax, esi"
+        ],
+        [
+          28,
+          1,
+          "pop",
+          "esi"
+        ],
+        [
+          29,
+          1,
+          "pop",
+          "ecx"
+        ],
+        [
+          30,
+          3,
+          "ret",
+          "4"
+        ]
+      ]
+    },
+    {
+      "parser": "MatrixIndexedMesh",
+      "role": "getter",
+      "left": "00b7e370",
+      "right": "00bed990",
+      "equivalent": true,
+      "normalized": [
+        [
+          0,
+          6,
+          "mov",
+          "eax, dword ptr fs:[0]"
+        ],
+        [
+          6,
+          2,
+          "push",
+          "-1"
+        ],
+        [
+          8,
+          5,
+          "push",
+          "handler"
+        ],
+        [
+          13,
+          1,
+          "push",
+          "eax"
+        ],
+        [
+          14,
+          7,
+          "mov",
+          "dword ptr fs:[0], esp"
+        ],
+        [
+          21,
+          5,
+          "mov",
+          "eax, dword ptr [publication]"
+        ],
+        [
+          26,
+          3,
+          "sub",
+          "esp, 8"
+        ],
+        [
+          29,
+          2,
+          "test",
+          "eax, eax"
+        ],
+        [
+          31,
+          6,
+          "jne",
+          "local+191"
+        ],
+        [
+          37,
+          1,
+          "push",
+          "esi"
+        ],
+        [
+          38,
+          5,
+          "call",
+          "0x415350"
+        ],
+        [
+          43,
+          3,
+          "mov",
+          "esi, dword ptr [eax + 0x10]"
+        ],
+        [
+          46,
+          2,
+          "test",
+          "esi, esi"
+        ],
+        [
+          48,
+          8,
+          "mov",
+          "dword ptr [esp + 4], 0xce37fc"
+        ],
+        [
+          56,
+          4,
+          "mov",
+          "dword ptr [esp + 8], esi"
+        ],
+        [
+          60,
+          2,
+          "je",
+          "local+73"
+        ],
+        [
+          62,
+          1,
+          "push",
+          "esi"
+        ],
+        [
+          63,
+          6,
+          "call",
+          "dword ptr [0xce2218]"
+        ],
+        [
+          69,
+          4,
+          "add",
+          "dword ptr [esi + 0x18], 1"
+        ],
+        [
+          73,
+          8,
+          "mov",
+          "dword ptr [esp + 0x14], 0"
+        ],
+        [
+          81,
+          7,
+          "cmp",
+          "dword ptr [publication], 0"
+        ],
+        [
+          88,
+          2,
+          "jne",
+          "local+170"
+        ],
+        [
+          90,
+          2,
+          "push",
+          "8"
+        ],
+        [
+          92,
+          5,
+          "call",
+          "0xbf681b"
+        ],
+        [
+          97,
+          3,
+          "add",
+          "esp, 4"
+        ],
+        [
+          100,
+          2,
+          "test",
+          "eax, eax"
+        ],
+        [
+          102,
+          2,
+          "je",
+          "local+131"
+        ],
+        [
+          104,
+          7,
+          "mov",
+          "dword ptr [eax + 4], initial"
+        ],
+        [
+          111,
+          6,
+          "mov",
+          "dword ptr [eax], primary"
+        ],
+        [
+          117,
+          7,
+          "mov",
+          "dword ptr [eax + 4], final"
+        ],
+        [
+          124,
+          5,
+          "mov",
+          "dword ptr [publication], eax"
+        ],
+        [
+          129,
+          2,
+          "jmp",
+          "local+141"
+        ],
+        [
+          131,
+          10,
+          "mov",
+          "dword ptr [publication], 0"
+        ],
+        [
+          141,
+          5,
+          "mov",
+          "eax, dword ptr [publication]"
+        ],
+        [
+          146,
+          2,
+          "test",
+          "eax, eax"
+        ],
+        [
+          148,
+          2,
+          "je",
+          "local+155"
+        ],
+        [
+          150,
+          3,
+          "add",
+          "eax, 4"
+        ],
+        [
+          153,
+          2,
+          "jmp",
+          "local+157"
+        ],
+        [
+          155,
+          2,
+          "xor",
+          "eax, eax"
+        ],
+        [
+          157,
+          1,
+          "push",
+          "eax"
+        ],
+        [
+          158,
+          5,
+          "call",
+          "0x415350"
+        ],
+        [
+          163,
+          2,
+          "mov",
+          "ecx, eax"
+        ],
+        [
+          165,
+          5,
+          "call",
+          "0xbd0c30"
+        ],
+        [
+          170,
+          2,
+          "test",
+          "esi, esi"
+        ],
+        [
+          172,
+          2,
+          "je",
+          "local+185"
+        ],
+        [
+          174,
+          4,
+          "add",
+          "dword ptr [esi + 0x18], -1"
+        ],
+        [
+          178,
+          1,
+          "push",
+          "esi"
+        ],
+        [
+          179,
+          6,
+          "call",
+          "dword ptr [0xce2210]"
+        ],
+        [
+          185,
+          5,
+          "mov",
+          "eax, dword ptr [publication]"
+        ],
+        [
+          190,
+          1,
+          "pop",
+          "esi"
+        ],
+        [
+          191,
+          4,
+          "mov",
+          "ecx, dword ptr [esp + 8]"
+        ],
+        [
+          195,
+          7,
+          "mov",
+          "dword ptr fs:[0], ecx"
+        ],
+        [
+          202,
+          3,
+          "add",
+          "esp, 0x14"
+        ],
+        [
+          205,
+          1,
+          "ret",
+          ""
+        ]
+      ]
+    },
+    {
+      "parser": "MatrixIndexedMesh",
+      "role": "delete",
+      "left": "00b7ddc0",
+      "right": "00bed950",
+      "equivalent": true,
+      "normalized": [
+        [
+          0,
+          1,
+          "push",
+          "esi"
+        ],
+        [
+          1,
+          2,
+          "mov",
+          "esi, ecx"
+        ],
+        [
+          3,
+          2,
+          "test",
+          "esi, esi"
+        ],
+        [
+          5,
+          2,
+          "je",
+          "local+12"
+        ],
+        [
+          7,
+          3,
+          "lea",
+          "eax, [esi + 4]"
+        ],
+        [
+          10,
+          2,
+          "jmp",
+          "local+14"
+        ],
+        [
+          12,
+          2,
+          "xor",
+          "eax, eax"
+        ],
+        [
+          14,
+          5,
+          "test",
+          "byte ptr [esp + 8], 1"
+        ],
+        [
+          19,
+          10,
+          "mov",
+          "dword ptr [publication], 0"
+        ],
+        [
+          29,
+          6,
+          "mov",
+          "dword ptr [eax], 0xce3818"
+        ],
+        [
+          35,
+          6,
+          "mov",
+          "dword ptr [esi], base"
+        ],
+        [
+          41,
+          2,
+          "je",
+          "local+52"
+        ],
+        [
+          43,
+          1,
+          "push",
+          "esi"
+        ],
+        [
+          44,
+          5,
+          "call",
+          "0xbf65ac"
+        ],
+        [
+          49,
+          3,
+          "add",
+          "esp, 4"
+        ],
+        [
+          52,
+          2,
+          "mov",
+          "eax, esi"
+        ],
+        [
+          54,
+          1,
+          "pop",
+          "esi"
+        ],
+        [
+          55,
+          3,
+          "ret",
+          "4"
+        ]
+      ]
+    },
+    {
+      "parser": "MatrixIndexedMesh",
+      "role": "secondary",
+      "left": "00b7dc00",
+      "right": "00bed910",
+      "equivalent": true,
+      "normalized": [
+        [
+          0,
+          3,
+          "sub",
+          "ecx, 4"
+        ],
+        [
+          3,
+          5,
+          "jmp",
+          "delete"
+        ]
+      ]
+    },
+    {
+      "parser": "MatrixIndexedMesh",
+      "role": "name",
+      "left": "00b941a0",
+      "right": "00b8f8e0",
+      "equivalent": true,
+      "normalized": [
+        [
+          0,
+          1,
+          "push",
+          "ecx"
+        ],
+        [
+          1,
+          1,
+          "push",
+          "esi"
+        ],
+        [
+          2,
+          4,
+          "mov",
+          "esi, dword ptr [esp + 0xc]"
+        ],
+        [
+          6,
+          5,
+          "push",
+          "literal"
+        ],
+        [
+          11,
+          2,
+          "mov",
+          "ecx, esi"
+        ],
+        [
+          13,
+          8,
+          "mov",
+          "dword ptr [esp + 8], 0"
+        ],
+        [
+          21,
+          5,
+          "call",
+          "0x41e870"
+        ],
+        [
+          26,
+          2,
+          "mov",
+          "eax, esi"
+        ],
+        [
+          28,
+          1,
+          "pop",
+          "esi"
+        ],
+        [
+          29,
+          1,
+          "pop",
+          "ecx"
+        ],
+        [
+          30,
+          3,
+          "ret",
+          "4"
+        ]
+      ]
+    },
+    {
+      "parser": "Camera",
+      "role": "getter",
+      "left": "00b7e460",
+      "right": "00bed990",
+      "equivalent": true,
+      "normalized": [
+        [
+          0,
+          6,
+          "mov",
+          "eax, dword ptr fs:[0]"
+        ],
+        [
+          6,
+          2,
+          "push",
+          "-1"
+        ],
+        [
+          8,
+          5,
+          "push",
+          "handler"
+        ],
+        [
+          13,
+          1,
+          "push",
+          "eax"
+        ],
+        [
+          14,
+          7,
+          "mov",
+          "dword ptr fs:[0], esp"
+        ],
+        [
+          21,
+          5,
+          "mov",
+          "eax, dword ptr [publication]"
+        ],
+        [
+          26,
+          3,
+          "sub",
+          "esp, 8"
+        ],
+        [
+          29,
+          2,
+          "test",
+          "eax, eax"
+        ],
+        [
+          31,
+          6,
+          "jne",
+          "local+191"
+        ],
+        [
+          37,
+          1,
+          "push",
+          "esi"
+        ],
+        [
+          38,
+          5,
+          "call",
+          "0x415350"
+        ],
+        [
+          43,
+          3,
+          "mov",
+          "esi, dword ptr [eax + 0x10]"
+        ],
+        [
+          46,
+          2,
+          "test",
+          "esi, esi"
+        ],
+        [
+          48,
+          8,
+          "mov",
+          "dword ptr [esp + 4], 0xce37fc"
+        ],
+        [
+          56,
+          4,
+          "mov",
+          "dword ptr [esp + 8], esi"
+        ],
+        [
+          60,
+          2,
+          "je",
+          "local+73"
+        ],
+        [
+          62,
+          1,
+          "push",
+          "esi"
+        ],
+        [
+          63,
+          6,
+          "call",
+          "dword ptr [0xce2218]"
+        ],
+        [
+          69,
+          4,
+          "add",
+          "dword ptr [esi + 0x18], 1"
+        ],
+        [
+          73,
+          8,
+          "mov",
+          "dword ptr [esp + 0x14], 0"
+        ],
+        [
+          81,
+          7,
+          "cmp",
+          "dword ptr [publication], 0"
+        ],
+        [
+          88,
+          2,
+          "jne",
+          "local+170"
+        ],
+        [
+          90,
+          2,
+          "push",
+          "8"
+        ],
+        [
+          92,
+          5,
+          "call",
+          "0xbf681b"
+        ],
+        [
+          97,
+          3,
+          "add",
+          "esp, 4"
+        ],
+        [
+          100,
+          2,
+          "test",
+          "eax, eax"
+        ],
+        [
+          102,
+          2,
+          "je",
+          "local+131"
+        ],
+        [
+          104,
+          7,
+          "mov",
+          "dword ptr [eax + 4], initial"
+        ],
+        [
+          111,
+          6,
+          "mov",
+          "dword ptr [eax], primary"
+        ],
+        [
+          117,
+          7,
+          "mov",
+          "dword ptr [eax + 4], final"
+        ],
+        [
+          124,
+          5,
+          "mov",
+          "dword ptr [publication], eax"
+        ],
+        [
+          129,
+          2,
+          "jmp",
+          "local+141"
+        ],
+        [
+          131,
+          10,
+          "mov",
+          "dword ptr [publication], 0"
+        ],
+        [
+          141,
+          5,
+          "mov",
+          "eax, dword ptr [publication]"
+        ],
+        [
+          146,
+          2,
+          "test",
+          "eax, eax"
+        ],
+        [
+          148,
+          2,
+          "je",
+          "local+155"
+        ],
+        [
+          150,
+          3,
+          "add",
+          "eax, 4"
+        ],
+        [
+          153,
+          2,
+          "jmp",
+          "local+157"
+        ],
+        [
+          155,
+          2,
+          "xor",
+          "eax, eax"
+        ],
+        [
+          157,
+          1,
+          "push",
+          "eax"
+        ],
+        [
+          158,
+          5,
+          "call",
+          "0x415350"
+        ],
+        [
+          163,
+          2,
+          "mov",
+          "ecx, eax"
+        ],
+        [
+          165,
+          5,
+          "call",
+          "0xbd0c30"
+        ],
+        [
+          170,
+          2,
+          "test",
+          "esi, esi"
+        ],
+        [
+          172,
+          2,
+          "je",
+          "local+185"
+        ],
+        [
+          174,
+          4,
+          "add",
+          "dword ptr [esi + 0x18], -1"
+        ],
+        [
+          178,
+          1,
+          "push",
+          "esi"
+        ],
+        [
+          179,
+          6,
+          "call",
+          "dword ptr [0xce2210]"
+        ],
+        [
+          185,
+          5,
+          "mov",
+          "eax, dword ptr [publication]"
+        ],
+        [
+          190,
+          1,
+          "pop",
+          "esi"
+        ],
+        [
+          191,
+          4,
+          "mov",
+          "ecx, dword ptr [esp + 8]"
+        ],
+        [
+          195,
+          7,
+          "mov",
+          "dword ptr fs:[0], ecx"
+        ],
+        [
+          202,
+          3,
+          "add",
+          "esp, 0x14"
+        ],
+        [
+          205,
+          1,
+          "ret",
+          ""
+        ]
+      ]
+    },
+    {
+      "parser": "Camera",
+      "role": "delete",
+      "left": "00b7de00",
+      "right": "00bed950",
+      "equivalent": true,
+      "normalized": [
+        [
+          0,
+          1,
+          "push",
+          "esi"
+        ],
+        [
+          1,
+          2,
+          "mov",
+          "esi, ecx"
+        ],
+        [
+          3,
+          2,
+          "test",
+          "esi, esi"
+        ],
+        [
+          5,
+          2,
+          "je",
+          "local+12"
+        ],
+        [
+          7,
+          3,
+          "lea",
+          "eax, [esi + 4]"
+        ],
+        [
+          10,
+          2,
+          "jmp",
+          "local+14"
+        ],
+        [
+          12,
+          2,
+          "xor",
+          "eax, eax"
+        ],
+        [
+          14,
+          5,
+          "test",
+          "byte ptr [esp + 8], 1"
+        ],
+        [
+          19,
+          10,
+          "mov",
+          "dword ptr [publication], 0"
+        ],
+        [
+          29,
+          6,
+          "mov",
+          "dword ptr [eax], 0xce3818"
+        ],
+        [
+          35,
+          6,
+          "mov",
+          "dword ptr [esi], base"
+        ],
+        [
+          41,
+          2,
+          "je",
+          "local+52"
+        ],
+        [
+          43,
+          1,
+          "push",
+          "esi"
+        ],
+        [
+          44,
+          5,
+          "call",
+          "0xbf65ac"
+        ],
+        [
+          49,
+          3,
+          "add",
+          "esp, 4"
+        ],
+        [
+          52,
+          2,
+          "mov",
+          "eax, esi"
+        ],
+        [
+          54,
+          1,
+          "pop",
+          "esi"
+        ],
+        [
+          55,
+          3,
+          "ret",
+          "4"
+        ]
+      ]
+    },
+    {
+      "parser": "Camera",
+      "role": "secondary",
+      "left": "00b7dc60",
+      "right": "00bed910",
+      "equivalent": true,
+      "normalized": [
+        [
+          0,
+          3,
+          "sub",
+          "ecx, 4"
+        ],
+        [
+          3,
+          5,
+          "jmp",
+          "delete"
+        ]
+      ]
+    },
+    {
+      "parser": "Camera",
+      "role": "name",
+      "left": "00b8b210",
+      "right": "00b8f8e0",
+      "equivalent": true,
+      "normalized": [
+        [
+          0,
+          1,
+          "push",
+          "ecx"
+        ],
+        [
+          1,
+          1,
+          "push",
+          "esi"
+        ],
+        [
+          2,
+          4,
+          "mov",
+          "esi, dword ptr [esp + 0xc]"
+        ],
+        [
+          6,
+          5,
+          "push",
+          "literal"
+        ],
+        [
+          11,
+          2,
+          "mov",
+          "ecx, esi"
+        ],
+        [
+          13,
+          8,
+          "mov",
+          "dword ptr [esp + 8], 0"
+        ],
+        [
+          21,
+          5,
+          "call",
+          "0x41e870"
+        ],
+        [
+          26,
+          2,
+          "mov",
+          "eax, esi"
+        ],
+        [
+          28,
+          1,
+          "pop",
+          "esi"
+        ],
+        [
+          29,
+          1,
+          "pop",
+          "ecx"
+        ],
+        [
+          30,
+          3,
+          "ret",
+          "4"
+        ]
+      ]
+    },
+    {
+      "parser": "SkinedMeshAnimation",
+      "role": "getter",
+      "left": "00b7e530",
+      "right": "00bed990",
+      "equivalent": true,
+      "normalized": [
+        [
+          0,
+          6,
+          "mov",
+          "eax, dword ptr fs:[0]"
+        ],
+        [
+          6,
+          2,
+          "push",
+          "-1"
+        ],
+        [
+          8,
+          5,
+          "push",
+          "handler"
+        ],
+        [
+          13,
+          1,
+          "push",
+          "eax"
+        ],
+        [
+          14,
+          7,
+          "mov",
+          "dword ptr fs:[0], esp"
+        ],
+        [
+          21,
+          5,
+          "mov",
+          "eax, dword ptr [publication]"
+        ],
+        [
+          26,
+          3,
+          "sub",
+          "esp, 8"
+        ],
+        [
+          29,
+          2,
+          "test",
+          "eax, eax"
+        ],
+        [
+          31,
+          6,
+          "jne",
+          "local+191"
+        ],
+        [
+          37,
+          1,
+          "push",
+          "esi"
+        ],
+        [
+          38,
+          5,
+          "call",
+          "0x415350"
+        ],
+        [
+          43,
+          3,
+          "mov",
+          "esi, dword ptr [eax + 0x10]"
+        ],
+        [
+          46,
+          2,
+          "test",
+          "esi, esi"
+        ],
+        [
+          48,
+          8,
+          "mov",
+          "dword ptr [esp + 4], 0xce37fc"
+        ],
+        [
+          56,
+          4,
+          "mov",
+          "dword ptr [esp + 8], esi"
+        ],
+        [
+          60,
+          2,
+          "je",
+          "local+73"
+        ],
+        [
+          62,
+          1,
+          "push",
+          "esi"
+        ],
+        [
+          63,
+          6,
+          "call",
+          "dword ptr [0xce2218]"
+        ],
+        [
+          69,
+          4,
+          "add",
+          "dword ptr [esi + 0x18], 1"
+        ],
+        [
+          73,
+          8,
+          "mov",
+          "dword ptr [esp + 0x14], 0"
+        ],
+        [
+          81,
+          7,
+          "cmp",
+          "dword ptr [publication], 0"
+        ],
+        [
+          88,
+          2,
+          "jne",
+          "local+170"
+        ],
+        [
+          90,
+          2,
+          "push",
+          "8"
+        ],
+        [
+          92,
+          5,
+          "call",
+          "0xbf681b"
+        ],
+        [
+          97,
+          3,
+          "add",
+          "esp, 4"
+        ],
+        [
+          100,
+          2,
+          "test",
+          "eax, eax"
+        ],
+        [
+          102,
+          2,
+          "je",
+          "local+131"
+        ],
+        [
+          104,
+          7,
+          "mov",
+          "dword ptr [eax + 4], initial"
+        ],
+        [
+          111,
+          6,
+          "mov",
+          "dword ptr [eax], primary"
+        ],
+        [
+          117,
+          7,
+          "mov",
+          "dword ptr [eax + 4], final"
+        ],
+        [
+          124,
+          5,
+          "mov",
+          "dword ptr [publication], eax"
+        ],
+        [
+          129,
+          2,
+          "jmp",
+          "local+141"
+        ],
+        [
+          131,
+          10,
+          "mov",
+          "dword ptr [publication], 0"
+        ],
+        [
+          141,
+          5,
+          "mov",
+          "eax, dword ptr [publication]"
+        ],
+        [
+          146,
+          2,
+          "test",
+          "eax, eax"
+        ],
+        [
+          148,
+          2,
+          "je",
+          "local+155"
+        ],
+        [
+          150,
+          3,
+          "add",
+          "eax, 4"
+        ],
+        [
+          153,
+          2,
+          "jmp",
+          "local+157"
+        ],
+        [
+          155,
+          2,
+          "xor",
+          "eax, eax"
+        ],
+        [
+          157,
+          1,
+          "push",
+          "eax"
+        ],
+        [
+          158,
+          5,
+          "call",
+          "0x415350"
+        ],
+        [
+          163,
+          2,
+          "mov",
+          "ecx, eax"
+        ],
+        [
+          165,
+          5,
+          "call",
+          "0xbd0c30"
+        ],
+        [
+          170,
+          2,
+          "test",
+          "esi, esi"
+        ],
+        [
+          172,
+          2,
+          "je",
+          "local+185"
+        ],
+        [
+          174,
+          4,
+          "add",
+          "dword ptr [esi + 0x18], -1"
+        ],
+        [
+          178,
+          1,
+          "push",
+          "esi"
+        ],
+        [
+          179,
+          6,
+          "call",
+          "dword ptr [0xce2210]"
+        ],
+        [
+          185,
+          5,
+          "mov",
+          "eax, dword ptr [publication]"
+        ],
+        [
+          190,
+          1,
+          "pop",
+          "esi"
+        ],
+        [
+          191,
+          4,
+          "mov",
+          "ecx, dword ptr [esp + 8]"
+        ],
+        [
+          195,
+          7,
+          "mov",
+          "dword ptr fs:[0], ecx"
+        ],
+        [
+          202,
+          3,
+          "add",
+          "esp, 0x14"
+        ],
+        [
+          205,
+          1,
+          "ret",
+          ""
+        ]
+      ]
+    },
+    {
+      "parser": "SkinedMeshAnimation",
+      "role": "delete",
+      "left": "00b7de40",
+      "right": "00bed950",
+      "equivalent": true,
+      "normalized": [
+        [
+          0,
+          1,
+          "push",
+          "esi"
+        ],
+        [
+          1,
+          2,
+          "mov",
+          "esi, ecx"
+        ],
+        [
+          3,
+          2,
+          "test",
+          "esi, esi"
+        ],
+        [
+          5,
+          2,
+          "je",
+          "local+12"
+        ],
+        [
+          7,
+          3,
+          "lea",
+          "eax, [esi + 4]"
+        ],
+        [
+          10,
+          2,
+          "jmp",
+          "local+14"
+        ],
+        [
+          12,
+          2,
+          "xor",
+          "eax, eax"
+        ],
+        [
+          14,
+          5,
+          "test",
+          "byte ptr [esp + 8], 1"
+        ],
+        [
+          19,
+          10,
+          "mov",
+          "dword ptr [publication], 0"
+        ],
+        [
+          29,
+          6,
+          "mov",
+          "dword ptr [eax], 0xce3818"
+        ],
+        [
+          35,
+          6,
+          "mov",
+          "dword ptr [esi], base"
+        ],
+        [
+          41,
+          2,
+          "je",
+          "local+52"
+        ],
+        [
+          43,
+          1,
+          "push",
+          "esi"
+        ],
+        [
+          44,
+          5,
+          "call",
+          "0xbf65ac"
+        ],
+        [
+          49,
+          3,
+          "add",
+          "esp, 4"
+        ],
+        [
+          52,
+          2,
+          "mov",
+          "eax, esi"
+        ],
+        [
+          54,
+          1,
+          "pop",
+          "esi"
+        ],
+        [
+          55,
+          3,
+          "ret",
+          "4"
+        ]
+      ]
+    },
+    {
+      "parser": "SkinedMeshAnimation",
+      "role": "secondary",
+      "left": "00b7dcc0",
+      "right": "00bed910",
+      "equivalent": true,
+      "normalized": [
+        [
+          0,
+          3,
+          "sub",
+          "ecx, 4"
+        ],
+        [
+          3,
+          5,
+          "jmp",
+          "delete"
+        ]
+      ]
+    },
+    {
+      "parser": "SkinedMeshAnimation",
+      "role": "name",
+      "left": "00b92a20",
+      "right": "00b8f8e0",
+      "equivalent": true,
+      "normalized": [
+        [
+          0,
+          1,
+          "push",
+          "ecx"
+        ],
+        [
+          1,
+          1,
+          "push",
+          "esi"
+        ],
+        [
+          2,
+          4,
+          "mov",
+          "esi, dword ptr [esp + 0xc]"
+        ],
+        [
+          6,
+          5,
+          "push",
+          "literal"
+        ],
+        [
+          11,
+          2,
+          "mov",
+          "ecx, esi"
+        ],
+        [
+          13,
+          8,
+          "mov",
+          "dword ptr [esp + 8], 0"
+        ],
+        [
+          21,
+          5,
+          "call",
+          "0x41e870"
+        ],
+        [
+          26,
+          2,
+          "mov",
+          "eax, esi"
+        ],
+        [
+          28,
+          1,
+          "pop",
+          "esi"
+        ],
+        [
+          29,
+          1,
+          "pop",
+          "ecx"
+        ],
+        [
+          30,
+          3,
+          "ret",
+          "4"
+        ]
+      ]
+    }
+  ],
+  "ordinary_bytes": 1830,
+  "ordinary_instruction_owners": 510,
+  "support_instruction_owners": 24,
+  "validation": {
+    "strict_win32_build": "passed",
+    "existing_ctests": "2/2 passed",
+    "paired_original_fixture": "six families: absent/present fast path, slow creation, real tracked sections, secondary registration, owned name, primary flags2 and secondary flags1",
+    "raw_registration": "six source names registered and duplicate-rejected through B80A50 with actual map/string source; unrelated manager words preserved",
+    "original_bodies": 24,
+    "direct_relocations": 42,
+    "absolute_relocations": 60,
+    "native_exception_paths_guarded_out": true,
+    "whole_report_verifier": "54 passed",
+    "combined_strict_win32": true,
+    "combined_existing_ctests": 2,
+    "combined_original_fixture": true,
+    "source_manifest_inputs": 2665,
+    "previous_ghidra_comments_preserved": 36
+  },
+  "evidence": [
+    {
+      "path": "local/native_resource_parser_singletons_ca/initial_audit.json",
+      "sha256": "627c0191d5d3ddd0bd8b04788e77474eb434b01708c5a111ab0a1c5344e28943",
+      "bytes": 133729
+    },
+    {
+      "path": "local/native_resource_parser_singletons_ca/span_audit.json",
+      "sha256": "8f557ec25deb2de00ceb2fe8056834a8abc6c36d178b73ec2f813349c0ae6106",
+      "bytes": 85325
+    },
+    {
+      "path": "local/native_resource_parser_singletons_ca/build.log",
+      "sha256": "f9020fca10518bce4981517810a167d3ca2d150e9c3576d4b9a033c75256b12a",
+      "bytes": 2501
+    },
+    {
+      "path": "local/native_resource_parser_singletons_ca/compile.log",
+      "sha256": "25d4f66c7c01d5b35c220cb97ffdd1608405f4ab45160497e6cc7ea3079676cf",
+      "bytes": 11
+    },
+    {
+      "path": "local/native_resource_parser_singletons_ca/probe.log",
+      "sha256": "41cc26aff15153adf4b2dcb94decea99f870804e204f0ed99acefb14eda9cb55",
+      "bytes": 1120
+    },
+    {
+      "path": "local/native_resource_parser_singletons_ca/child_probe.log",
+      "sha256": "e8d6c8615e42e5615c9005e902a5ca2026e96af56f295ac4d0299f0cbbe5abdd",
+      "bytes": 1078
+    },
+    {
+      "path": "local/native_resource_parser_singletons_ca/probe.cpp",
+      "sha256": "6a0804f2fccadba8fd1a09c6829960c2b8312979b5532ca9031dbe6f8957d6bc",
+      "bytes": 13597
+    },
+    {
+      "path": "local/native_resource_parser_singletons_ca/probe.exe",
+      "sha256": "fa7c9f81893059ba514e025cd7e9ec65d35aef5fc41d647187ad3a2957da0855",
+      "bytes": 282112
+    },
+    {
+      "path": "local/native_resource_parser_singletons_ca/probe.map",
+      "sha256": "5b5866179e52d8973496d5aed956b1553305a8470ed164ad0be06102b44dee0c",
+      "bytes": 442051
+    },
+    {
+      "path": "local/native_resource_parser_singletons_ca/original_bodies.hpp",
+      "sha256": "41d9db20be8e675863796ea263df42d2a6ef44d7dbd9728de319ee92da78011f",
+      "bytes": 10373
+    },
+    {
+      "path": "local/native_resource_parser_singletons_ca/original_bodies.json",
+      "sha256": "14dc26c93d5943a0af73dcd2be507dfa59f90b3b95803982782c81b9c44582fd",
+      "bytes": 15562
+    },
+    {
+      "path": "local/native_resource_parser_singletons_ca/compile.cmd",
+      "sha256": "9f23ba7e33ad843b43585e54c6616aa5e8498337e00060c6636c84016b1dad81",
+      "bytes": 741
+    },
+    {
+      "path": "local/native_resource_parser_singletons_ca/bsp_core.lib",
+      "sha256": "0bf098bad74e24a9016bbd1f1edab4c6482f6bcc102bb703aa2ecf1e1a78545c",
+      "bytes": 58687012
+    },
+    {
+      "path": "local/native_resource_parser_singletons_ca/bsp_lua511.lib",
+      "sha256": "00315ac717aac3d2b2161fefefe71b36a974335ff9c95d48c137423eb4e2f4b2",
+      "bytes": 455244
+    },
+    {
+      "path": "local/native_resource_parser_singletons_ca/bsp_zlib121.lib",
+      "sha256": "73ae30b8adc3adfe5b33285bac533f8e7df7e8ab8d9e44789e6a030fd8a06ad9",
+      "bytes": 71906
+    },
+    {
+      "path": "reports/native_resource_parser_singletons_flow_ca.json",
+      "sha256": "2f524349b59dba35f9ff2d2f48e2ff5a88cf6ed29449b446adc1b8bf76d2902d",
+      "bytes": 63183
+    }
+  ],
+  "evidence_limits": [
+    "New explicit-service C++ interfaces, not original callable ABI/FH3/SEH identity or hardware-fault cleanup.",
+    "Original normal-path bodies use explicit source CRT/string/registration/Win32 bindings; native error/exception paths are guarded out.",
+    "Paired fixture verifies normal allocation, lock, registration, getter/name/deletion behavior; allocation failure and publication mutation during services are supported by listing schedule, not dynamically tested here.",
+    "Parser parse-slot8 bodies, actual B81040 manager bootstrap/destruction, mixed-owner canonical singleton dispatch binding, loading queue admission and gameplay remain open.",
+    "Reference physical deleter BED950 has a pre-existing unowned ADD ESP,4 atBED981. Its disk/live bytes were compared, but its membership was not repaired or claimed by this packet.",
+    "Fixture manually constructs and tears down its raw parser map, removes registered pointers before direct deletion and then destroys empty canonical managers; this is not the actual resource manager destructor."
+  ],
+  "status": "integrated_complete_ordinary_source_build_and_original_fixture_checked",
+  "code_revision": "29b4b5c379c67388c5d1a1b986b8eafbb5c70f60",
+  "final_validation": {
+    "code_revision": "29b4b5c379c67388c5d1a1b986b8eafbb5c70f60",
+    "evidence": [
+      {
+        "path": "local/native_resource_parser_singletons_ca/final_build.log",
+        "sha256": "0bc81528ecd1f9b389283658f2cdafccfa2801783356f6e3c6c0d7aa9e84bb23",
+        "bytes": 2496
+      },
+      {
+        "path": "local/native_resource_parser_singletons_ca/final/source_manifest.json",
+        "sha256": "f59a4714d4af6048fb92f575066b3741eb02887a11db9cbf2935838048f0aa45",
+        "bytes": 288624
+      },
+      {
+        "path": "local/native_resource_parser_singletons_ca/final/libraries.json",
+        "sha256": "81def0262725e1916a54768de3943a8bb1d8ded87fd68c450667165da3bce63e",
+        "bytes": 687
+      },
+      {
+        "path": "local/native_resource_parser_singletons_ca/final/bsp_core.lib",
+        "sha256": "abb6007e5d1d4b745b721a0410f78bbd6941980138ccc0357d1ac8b65e4642e1",
+        "bytes": 58697846
+      },
+      {
+        "path": "local/native_resource_parser_singletons_ca/final/bsp_lua511.lib",
+        "sha256": "00315ac717aac3d2b2161fefefe71b36a974335ff9c95d48c137423eb4e2f4b2",
+        "bytes": 455244
+      },
+      {
+        "path": "local/native_resource_parser_singletons_ca/final/bsp_zlib121.lib",
+        "sha256": "73ae30b8adc3adfe5b33285bac533f8e7df7e8ab8d9e44789e6a030fd8a06ad9",
+        "bytes": 71906
+      },
+      {
+        "path": "local/native_resource_parser_singletons_ca/final/probe.cpp",
+        "sha256": "8e7fa051cbecb70fe7616d952425c5ee8066d7d6f1a62b3a39ecfbe0692e6231",
+        "bytes": 13609
+      },
+      {
+        "path": "local/native_resource_parser_singletons_ca/final/original_bodies.hpp",
+        "sha256": "41d9db20be8e675863796ea263df42d2a6ef44d7dbd9728de319ee92da78011f",
+        "bytes": 10373
+      },
+      {
+        "path": "local/native_resource_parser_singletons_ca/final/original_bodies.json",
+        "sha256": "14dc26c93d5943a0af73dcd2be507dfa59f90b3b95803982782c81b9c44582fd",
+        "bytes": 15562
+      },
+      {
+        "path": "local/native_resource_parser_singletons_ca/final/compile.cmd",
+        "sha256": "4b0f36f7d163c28f0e58dab634f48464efb5d2c7d12cade689aa6df9df8389e3",
+        "bytes": 783
+      },
+      {
+        "path": "local/native_resource_parser_singletons_ca/final/compile.log",
+        "sha256": "25d4f66c7c01d5b35c220cb97ffdd1608405f4ab45160497e6cc7ea3079676cf",
+        "bytes": 11
+      },
+      {
+        "path": "local/native_resource_parser_singletons_ca/final/probe.exe",
+        "sha256": "3b2e2cb837a2680af54c0bf16cff3189172c8f726101031e4623f6d2b2c40a57",
+        "bytes": 282112
+      },
+      {
+        "path": "local/native_resource_parser_singletons_ca/final/probe.map",
+        "sha256": "47501b3e40708b3e746671a15d2348f0c600af0f961f22f04ecffdf634498e98",
+        "bytes": 442051
+      },
+      {
+        "path": "local/native_resource_parser_singletons_ca/final/probe.log",
+        "sha256": "b7fbd2e447f52a4a7c328d9aacc9bbcbc5071d3a6088bdfbc3a74269a700d547",
+        "bytes": 1120
+      },
+      {
+        "path": "local/native_resource_parser_singletons_ca/final/child_probe.log",
+        "sha256": "e8d6c8615e42e5615c9005e902a5ca2026e96af56f295ac4d0299f0cbbe5abdd",
+        "bytes": 1078
+      },
+      {
+        "path": "local/native_resource_parser_singletons_ca/final/bsp_game.exe",
+        "sha256": "820819a99a5807ee253f80365ef10c5cbadb55c1ec2c58f49d0f177b855d215d",
+        "bytes": 2165248
+      }
+    ],
+    "limits": [
+      "New explicit-service C++ interfaces, not original callable ABI/FH3/SEH identity or hardware-fault cleanup.",
+      "Original normal-path bodies use explicit source CRT/string/registration/Win32 bindings; native error/exception paths are guarded out.",
+      "Paired fixture verifies normal allocation, lock, registration, getter/name/deletion behavior; allocation failure and publication mutation during services are supported by listing schedule, not dynamically tested here.",
+      "Parser parse-slot8 bodies, actual B81040 manager bootstrap/destruction, mixed-owner canonical singleton dispatch binding, loading queue admission and gameplay remain open.",
+      "Reference physical deleter BED950 has a pre-existing unowned ADD ESP,4 atBED981. Its disk/live bytes were compared, but its membership was not repaired or claimed by this packet.",
+      "Fixture manually constructs and tears down its raw parser map, removes registered pointers before direct deletion and then destroys empty canonical managers; this is not the actual resource manager destructor."
+    ]
+  }
+}

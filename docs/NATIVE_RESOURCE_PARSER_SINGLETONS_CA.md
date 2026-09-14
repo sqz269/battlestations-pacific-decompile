@@ -1,0 +1,30 @@
+# Actual resource parser singletons and type names
+
+Packet `orch4_native_resource_parser_singletons_ca` adds 24 complete ordinary bodies (1830 bytes), with 510 ordinary and 24 support instruction owners verified against the installed PE and live Ghidra. The new raw-storage interfaces are in `native_resource_parser_singletons.hpp/.cpp`. Names are descriptive hypotheses, not recovered symbols.
+
+| Parser | Getter | Publication | Primary delete | Secondary adjustment | Name getter |
+|---|---|---|---|---|---|
+| GroupParams | 00b7e100 | 0109033c | 00b7dd00 | 00b7dae0 | 00b8f8e0 |
+| Mesh | 00b7e1d0 | 0109047c | 00b7dd40 | 00b7db40 | 00b7eb60 |
+| SkinedMesh | 00b7e2a0 | 01090480 | 00b7dd80 | 00b7dba0 | 00b94170 |
+| MatrixIndexedMesh | 00b7e370 | 01090484 | 00b7ddc0 | 00b7dc00 | 00b941a0 |
+| Camera | 00b7e460 | 010902a0 | 00b7de00 | 00b7dc60 | 00b8b210 |
+| SkinedMeshAnimation | 00b7e530 | 0109043c | 00b7de40 | 00b7dcc0 | 00b92a20 |
+
+Each 206-byte getter borrows the actual singleton manager publication at01090AA0 and its parser publication. The first nonnull parser read returns immediately. The slow path captures the first manager's section+10, enters/increments its depth, rechecks the parser, allocates exactly eight bytes and writes initial secondary, primary, then final secondary profiles. It publishes the result and captures the CURRENT parser+4 before looking up the manager a second time and registering that captured pointer throughBD0C30. It releases the originally captured section and returns the current publication. The source keeps those reads and stores in order; it does not introduce a private lifetime domain.
+
+The native state0 begins after entering the critical section and incrementing its tracked depth. Six FuncInfo records DFB024/050/07C/0A8/0D4/100 each contain one state, mapping to CC1F10/30/50/70/90/B0. Those eight-byte funclets destroy the guard atEBP-14 through411EE0. Registration failure retains both the published allocation and publication. The source uses the existing guard destructor when a C++ exception crosses that scope. It does not emulate the original native exception machinery.
+
+Each 58-byte scalar deleting destructor captures primary+4, clears its publication unconditionally, stamps secondaryCE3818 and primaryCFD7D0, optionally frees the allocation when flags bit0 is set, and returns the captured address. Each eight-byte secondary entry subtracts four before tail-calling its matching primary entry. No unregister, parser reference adjustment or parse-payload cleanup is invented. Six missing ADD ESP,4 instructions after returning `_free` calls were restored to their functions; six secondary thunks and six dispatch handlers were defined. Old compiler names and all previous plate comments were preserved. No original instruction bytes or callee no-return flags were changed.
+
+Each 33-byte name getter ignores incoming parserECX and calls41E870 with the stacked actual output header and its native read-only literal. The getter's zero store is a private local;41E870 itself clears the output header before allocating/copying the name. Exact spellings include `SkinedMesh` and `SkinedMeshAnimation`. The caller owns the resulting name. The finite name-call adapter accepts the six captured slot4 targets and rejects an unbound target. It does not re-read a parser vtable or replace an unknown name with a default.
+
+Twenty-four instruction-family comparisons prove the six getter/destructor/secondary/name schedules, substituting only audited publications, profiles, literals, handler addresses and local control-flow targets. Getter/destructor/secondary code matches the earlier physical factory family; names match the GroupParams getter. Six complete primary tables, final/initial secondary cells, literal bytes and complete EH records are retained in the report. The pre-existing physical deleter membership gap atBED981 is recorded as an external reference limitation, not silently repaired or covered by this packet.
+
+The strict MSVC Win32 build and both existing CTests pass. One controlled-child fixture runs 24 copied original bodies with42 direct and60 absolute relocations. Original normal paths call canonical source allocation, singleton manager/registration and native string services, plus actual Win32 critical sections. It pairs all six families for absent-manager fast returns, slow allocation, current publication, profiles, one secondary registration, tracked depth returning to zero, repeated fast reads, owned type names, primary flags2 and secondary flags1. It also registers and duplicate-checks all six source names through the actual B80A50 parser map while preserving unrelated manager words. Original exception paths are guarded out. This fixture is additional to the previous BZ registration proof.
+
+The fixture removes registered pointers before direct deletion and then destroys empty canonical managers. Its raw parser map is constructed and torn down explicitly. Actual resource manager B81040/bootstrap/destruction, mixed-owner canonical singleton dispatch binding, concrete parse-slot8 bodies, loading-queue admission, native ABI/FH3/SEH identity and gameplay remain open. Failure/alias schedules not dynamically exercised here remain assembly-backed source behavior, not expanded runtime claims. See `reports/native_resource_parser_singletons_ca.json` and its integration receipt for exact revision and artifacts.
+
+## Integrated revision
+
+Combined code `29b4b5c379c67388c5d1a1b986b8eafbb5c70f60` passes the strict Win32 build, both existing CTests and the six-family original/source fixture against its exact libraries. A manifest seals all 2665 tracked source/build inputs. The reviewed unit-part destruction packet is included; its peer fixture and mission compatibility receipts remain borrowed evidence. Its three truncated stored Ghidra bodies are not part of the CA complete-owner checks. Block-copy count bounds alone do not prove absence of class+50 writers without destination provenance; SIB, alias and external writers remain outside that scan. No raw resource-manager bootstrap, concrete parse body or gameplay claim is added.
