@@ -105,3 +105,7 @@ selected-set slot0 and the constructor's unit slot10. Their operands and fixture
 dispatches are verified separately, not counted as direct-call passes. Names
 are descriptive hypotheses, not recovered symbols; source interfaces have a
 new C++ ABI. The build/fixture evidence does not establish game admission.
+
+## Integrated validation
+
+Commit `b392d91d338c080c4296cc0367d80d5af495520e` passes the Win32 build and both existing CTests. The constructor/entry/name/reference fixture passes against that library. The prior AJ storage/unwind fixture also passes with its original result hash; only its unused name-override signature was adapted to the explicit pool parameter. The 120-frame USN01 compatibility run passes finite-trajectory, stationary Airfield2, avoidance, generic-tick, participant, world-list and observer/pending-owner checks. The preserved executable SHA-256 is `2f509dedb905d7b800b198710892f9f1270b3f0233091474da9d575465186985`. An immutable manifest retains original reference bytes, raw results, linked objects, compilation dependencies and mission artifacts. Game admission and gameplay parity remain unproved.
