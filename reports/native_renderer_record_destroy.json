@@ -1,0 +1,556 @@
+{
+  "schema": 1,
+  "packet": "orch5_native_renderer_record_destroy",
+  "status": "complete_actual_record_destructors_strict_win32_original_source_postimages_and_archived_runtime_evidence_checked",
+  "created_utc": "2026-09-14T07:20:56.292655+00:00",
+  "base_commit": "6641c05f524e29f9352f66ddbd017c64d2f99cee",
+  "worktree": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-record-destroy",
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "original_PE_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "owned_files": [
+    "include/bsp/native_renderer_record_destroy.hpp",
+    "src/native_renderer_record_destroy.cpp",
+    "docs/NATIVE_RENDERER_RECORD_DESTROY.md",
+    "reports/native_renderer_record_destroy.json"
+  ],
+  "shared_append": "one deferred target_sources line under short coordination.lease_transaction and unleased check",
+  "routines": [
+    {
+      "address": "00b29ba0",
+      "name": "destroy_native_renderer_records16_00b29ba0",
+      "source": "src/native_renderer_record_destroy.cpp",
+      "coverage": "complete",
+      "end": "00b29bdc",
+      "bytes": 61,
+      "original_ABI": "ECX actual raw0Ch header; plain RET; no semantic result",
+      "parent_header": "1cf4"
+    },
+    {
+      "address": "00b29be0",
+      "name": "destroy_native_renderer_records20_00b29be0",
+      "source": "src/native_renderer_record_destroy.cpp",
+      "coverage": "complete",
+      "end": "00b29c1c",
+      "bytes": 61,
+      "original_ABI": "ECX actual raw0Ch header; plain RET; no semantic result",
+      "parent_header": "1d00"
+    },
+    {
+      "address": "00b29c20",
+      "name": "destroy_native_renderer_records24_00b29c20",
+      "source": "src/native_renderer_record_destroy.cpp",
+      "coverage": "complete",
+      "end": "00b29c5c",
+      "bytes": 61,
+      "original_ABI": "ECX actual raw0Ch header; plain RET; no semantic result",
+      "parent_header": "1d0c"
+    },
+    {
+      "address": "00b29c60",
+      "name": "destroy_native_renderer_records40_00b29c60",
+      "source": "src/native_renderer_record_destroy.cpp",
+      "coverage": "complete",
+      "end": "00b29c9c",
+      "bytes": 61,
+      "original_ABI": "ECX actual raw0Ch header; plain RET; no semantic result",
+      "parent_header": "1d18"
+    }
+  ],
+  "external_calls": [
+    {
+      "function": "00b29ba0",
+      "address": "00b29bab",
+      "native": "00b228b0",
+      "source": "existing matching native renderer reserve API; request0, ignored EDX0"
+    },
+    {
+      "function": "00b29ba0",
+      "address": "00b29bd3",
+      "native": "00bf6989",
+      "source": "singleton_lifetime_free; data captured BEFORE final count0 store"
+    },
+    {
+      "function": "00b29be0",
+      "address": "00b29beb",
+      "native": "00b22940",
+      "source": "existing matching native renderer reserve API; request0, ignored EDX0"
+    },
+    {
+      "function": "00b29be0",
+      "address": "00b29c13",
+      "native": "00bf6989",
+      "source": "singleton_lifetime_free; data captured BEFORE final count0 store"
+    },
+    {
+      "function": "00b29c20",
+      "address": "00b29c2b",
+      "native": "00b229d0",
+      "source": "existing matching native renderer reserve API; request0, ignored EDX0"
+    },
+    {
+      "function": "00b29c20",
+      "address": "00b29c53",
+      "native": "00bf6989",
+      "source": "singleton_lifetime_free; data captured BEFORE final count0 store"
+    },
+    {
+      "function": "00b29c60",
+      "address": "00b29c6b",
+      "native": "00b22a70",
+      "source": "existing matching native renderer reserve API; request0, ignored EDX0"
+    },
+    {
+      "function": "00b29c60",
+      "address": "00b29c93",
+      "native": "00bf6989",
+      "source": "singleton_lifetime_free; data captured BEFORE final count0 store"
+    }
+  ],
+  "fresh_guarded_spans": [
+    {
+      "address": "00b29ba0",
+      "end": "00b29bdc",
+      "length": 61,
+      "reserve": "00b228b0",
+      "stride": 16,
+      "bytes_hex": "568bf1837e08007d076a00e8008dffff837e04007e1383c8ff8da42400000000014604837e04007ff78b0650c7460400000000e8b1cd0c0083c4045ec3",
+      "sha256": "4689aab48c1feeab5707ac08d884f04ace81958e10e753073d930654ecd12b58",
+      "live_PE_match": true
+    },
+    {
+      "address": "00b29be0",
+      "end": "00b29c1c",
+      "length": 61,
+      "reserve": "00b22940",
+      "stride": 20,
+      "bytes_hex": "568bf1837e08007d076a00e8508dffff837e04007e1383c8ff8da42400000000014604837e04007ff78b0650c7460400000000e871cd0c0083c4045ec3",
+      "sha256": "edf79defb82deaf385932e77037a156a20c14434996bb6b6a792a5cf67568a93",
+      "live_PE_match": true
+    },
+    {
+      "address": "00b29c20",
+      "end": "00b29c5c",
+      "length": 61,
+      "reserve": "00b229d0",
+      "stride": 24,
+      "bytes_hex": "568bf1837e08007d076a00e8a08dffff837e04007e1383c8ff8da42400000000014604837e04007ff78b0650c7460400000000e831cd0c0083c4045ec3",
+      "sha256": "ba9958ce42358467f7149e3ab9b505dabe3d109b8313606f47e7676a860a42f2",
+      "live_PE_match": true
+    },
+    {
+      "address": "00b29c60",
+      "end": "00b29c9c",
+      "length": 61,
+      "reserve": "00b22a70",
+      "stride": 40,
+      "bytes_hex": "568bf1837e08007d076a00e8008effff837e04007e1383c8ff8da42400000000014604837e04007ff78b0650c7460400000000e8f1cc0c0083c4045ec3",
+      "sha256": "9bfc359fe410310c82c6a11692a08991b98c59a1ec94ba8d12cd1c954bd1ceaf",
+      "live_PE_match": true
+    }
+  ],
+  "new_complete_function_bytes": 244,
+  "raw_order": [
+    "signed capacity<0 -> matching existing reserve(header,0)",
+    "reload current signed count after reserve and decrement current count repeatedly while positive",
+    "capture current data before final count store",
+    "write count0 even if prior count was zero/negative",
+    "free captured data, retain stale pointer/current capacity and all other header bytes"
+  ],
+  "postimages": {
+    "normal_nonnegative_capacity": "count0; original capacity and pointer bits retained; data freed",
+    "returning_negative_capacity": "reserve normally publishes capacity1 and fresh pointer; count then0 and fresh data freed",
+    "reserve_failure": "no destructor count-clear/free continuation; existing allocator/handler effects retained, no catch/rollback"
+  },
+  "parent_actions": [
+    {
+      "action": "00cbe00c",
+      "operation": "load owner from EBP-14h, add actual header offset, tail-jump",
+      "header": "1cf4",
+      "target": "00b29ba0"
+    },
+    {
+      "action": "00cbe01a",
+      "operation": "load owner from EBP-14h, add actual header offset, tail-jump",
+      "header": "1d00",
+      "target": "00b29be0"
+    },
+    {
+      "action": "00cbe028",
+      "operation": "load owner from EBP-14h, add actual header offset, tail-jump",
+      "header": "1d0c",
+      "target": "00b29c20"
+    },
+    {
+      "action": "00cbe036",
+      "operation": "load owner from EBP-14h, add actual header offset, tail-jump",
+      "header": "1d18",
+      "target": "00b29c60"
+    }
+  ],
+  "returning_tail_corrections": [
+    {
+      "function": "00b29ba0",
+      "was": "saved body ends 00b29bd7 at free",
+      "is": "full RET at 00b29bdc",
+      "returning_call": "00b29bd3",
+      "evidence": "complete61-byte live span equals installed PE"
+    },
+    {
+      "function": "00b29be0",
+      "was": "saved body ends 00b29c17 at free",
+      "is": "full RET at 00b29c1c",
+      "returning_call": "00b29c13",
+      "evidence": "complete61-byte live span equals installed PE"
+    },
+    {
+      "function": "00b29c20",
+      "was": "saved body ends 00b29c57 at free",
+      "is": "full RET at 00b29c5c",
+      "returning_call": "00b29c53",
+      "evidence": "complete61-byte live span equals installed PE"
+    },
+    {
+      "function": "00b29c60",
+      "was": "saved body ends 00b29c97 at free",
+      "is": "full RET at 00b29c9c",
+      "returning_call": "00b29c93",
+      "evidence": "complete61-byte live span equals installed PE"
+    }
+  ],
+  "ghidra_mutations": "None by worker; integrator owns definitions, returning overrides, old-value comments, names, save and exports after lease release.",
+  "validation": {
+    "build": "./scripts/build.ps1 passed; MSVC Win32 Release /W4 /WX /fp:strict",
+    "seed_verification": "8 native math seed ranges match live/installed PE before configure",
+    "ctests": "2/2 passed: reconstructed_math and native_math_differential",
+    "fixture": "One focused executable runs all four complete original61-byte bodies against source symbols from the built bsp_core.lib;16 comparisons cover positive count, signed negative count, negative-capacity reserve/reallocation, and empty/null storage.",
+    "fixture_bindings": "Only eight CALL operands rebound: four existing substantive reserve providers plus existing actual lifetime free. Original destructor algorithm bytes unchanged, no original game-address calls.",
+    "fixture_result": "raw-header guards, count/capacity and normalized stale-pointer postimages pass",
+    "fixture_stdout": "native_renderer_record_probe.cpp\nPASS 00b29ba0: positive/negative count, negative capacity reserve, empty null storage\nPASS 00b29be0: positive/negative count, negative capacity reserve, empty null storage\nPASS 00b29c20: positive/negative count, negative capacity reserve, empty null storage\nPASS 00b29c60: positive/negative count, negative capacity reserve, empty null storage\nLOADED_RUNTIME|ucrtbase.dll|C:\\WINDOWS\\System32\\ucrtbase.dll|\\\\?\\C:\\Windows\\SysWOW64\\ucrtbase.dll|014c\nLOADED_RUNTIME|vcruntime140.dll|C:\\WINDOWS\\SYSTEM32\\VCRUNTIME140.dll|\\\\?\\C:\\Windows\\SysWOW64\\vcruntime140.dll|014c\nUNLOADED_RUNTIME|msvcp140.dll\nUNLOADED_RUNTIME|vcruntime140_1.dll\nPASS: four complete original destructors versus main-archive source; 16 postimage comparisons\n",
+    "fixture_build_flags": "/std:c++20 /EHsc /MD /O2 /W4 /WX /fp:strict /link /MANIFEST:EMBED",
+    "fixture_source": "#include \"bsp/native_renderer_record_destroy.hpp\"\n#include \"bsp/native_renderer_container_lifetime.hpp\"\n#include \"bsp/singleton_lifetime.hpp\"\n#include \"native_renderer_record_reference.hpp\"\n#include <Windows.h>\n#include <array>\n#include <cstdio>\n#include <cstring>\n#include <stdexcept>\n\nnamespace {\nvoid require(bool condition,const char* message) { if(!condition) throw std::runtime_error(message); }\nusing Destroy=void (__fastcall*)(void*);\nusing Reserve=void (__fastcall*)(void*,std::uint32_t,std::int32_t);\nstruct Header { void* data; std::int32_t count,capacity; };\nstatic_assert(sizeof(Header)==12);\nstruct Frame { std::uint32_t before; Header header; std::uint32_t after; };\nvoid __cdecl free_original(void* data) noexcept { bsp::singleton_lifetime_free(data); }\nstruct Spec {\n    const char* name;\n    const unsigned char* bytes;\n    std::size_t length;\n    std::uint32_t stride;\n    Reserve reserve;\n    Destroy destroy;\n};\nclass Original {\n    void* code_;\npublic:\n    explicit Original(const Spec& spec):code_(VirtualAlloc(nullptr,spec.length,MEM_COMMIT|MEM_RESERVE,PAGE_READWRITE)) {\n        require(code_!=nullptr,\"VirtualAlloc\"); std::memcpy(code_,spec.bytes,spec.length);\n        relocate(0x0b,reinterpret_cast<std::uintptr_t>(spec.reserve));\n        relocate(0x33,reinterpret_cast<std::uintptr_t>(&free_original));\n        DWORD previous;\n        require(VirtualProtect(code_,spec.length,PAGE_EXECUTE_READ,&previous)!=0,\"VirtualProtect\");\n        require(FlushInstructionCache(GetCurrentProcess(),code_,spec.length)!=0,\"FlushInstructionCache\");\n    }\n    ~Original() { VirtualFree(code_,0,MEM_RELEASE); }\n    void relocate(std::size_t site,std::uintptr_t target) {\n        auto* code=static_cast<unsigned char*>(code_);\n        require(code[site]==0xe8,\"CALL operand\");\n        const auto relative=static_cast<std::uint32_t>(target-reinterpret_cast<std::uintptr_t>(code+site+5));\n        std::memcpy(code+site+1,&relative,4);\n    }\n    Destroy function() const { return reinterpret_cast<Destroy>(code_); }\n};\nusing Outcome=std::array<std::uint32_t,5>;\nOutcome run(Destroy destroy,std::uint32_t stride,int scenario) {\n    Frame frame{0x13579bdfu,{nullptr,0,0},0x2468ace0u};\n    if(scenario!=3) {\n        const auto bytes=stride*2;\n        frame.header.data=bsp::singleton_lifetime_allocate({bsp::SingletonAllocationKind::object,bytes,bytes});\n        std::memset(frame.header.data,0x35,bytes);\n        frame.header.count=scenario==0?2:(scenario==1?-3:1);\n        frame.header.capacity=scenario==2?-1:2;\n    }\n    void* const old=frame.header.data;\n    destroy(&frame.header);\n    require(frame.before==0x13579bdfu&&frame.after==0x2468ace0u,\"header guards\");\n    require(frame.header.count==0,\"final count\");\n    require(frame.header.capacity==(scenario==2?1:(scenario==3?0:2)),\"capacity postimage\");\n    require((frame.header.data==old)==(scenario!=2),\"current/stale data pointer\");\n    // Only compare pointer bits; the backing allocation has been freed.\n    return {static_cast<std::uint32_t>(frame.header.count),static_cast<std::uint32_t>(frame.header.capacity),frame.header.data==old,frame.header.data==nullptr,frame.after};\n}\nvoid report_runtime_modules() {\n    const wchar_t* names[]={L\"ucrtbase.dll\",L\"vcruntime140.dll\",L\"msvcp140.dll\",L\"vcruntime140_1.dll\"};\n    for(const auto* name:names) {\n        HMODULE module=GetModuleHandleW(name);\n        if(module==nullptr) { std::printf(\"UNLOADED_RUNTIME|%ls\\n\",name); continue; }\n        wchar_t reported[1024],canonical[1024];\n        const auto length=GetModuleFileNameW(module,reported,1024);\n        require(length!=0&&length<1024,\"loaded module path\");\n        HANDLE file=CreateFileW(reported,GENERIC_READ,FILE_SHARE_READ|FILE_SHARE_WRITE|FILE_SHARE_DELETE,nullptr,OPEN_EXISTING,FILE_ATTRIBUTE_NORMAL,nullptr);\n        require(file!=INVALID_HANDLE_VALUE,\"loaded module file\");\n        const auto final_length=GetFinalPathNameByHandleW(file,canonical,1024,FILE_NAME_NORMALIZED);\n        CloseHandle(file);\n        require(final_length!=0&&final_length<1024,\"canonical module file\");\n        const auto* base=reinterpret_cast<const unsigned char*>(module);\n        const auto* dos=reinterpret_cast<const IMAGE_DOS_HEADER*>(base);\n        const auto* nt=reinterpret_cast<const IMAGE_NT_HEADERS32*>(base+dos->e_lfanew);\n        require(nt->FileHeader.Machine==IMAGE_FILE_MACHINE_I386,\"loaded runtime machine\");\n        std::printf(\"LOADED_RUNTIME|%ls|%ls|%ls|%04x\\n\",name,reported,canonical,static_cast<unsigned>(nt->FileHeader.Machine));\n    }\n}\n}\nint main() {\n    const Spec specs[]={\n        {\"00b29ba0\",original_00b29ba0,sizeof original_00b29ba0,16,&bsp::reserve_native_renderer_records16_00b228b0,&bsp::destroy_native_renderer_records16_00b29ba0},\n        {\"00b29be0\",original_00b29be0,sizeof original_00b29be0,20,&bsp::reserve_native_renderer_records20_00b22940,&bsp::destroy_native_renderer_records20_00b29be0},\n        {\"00b29c20\",original_00b29c20,sizeof original_00b29c20,24,&bsp::reserve_native_renderer_records24_00b229d0,&bsp::destroy_native_renderer_records24_00b29c20},\n        {\"00b29c60\",original_00b29c60,sizeof original_00b29c60,40,&bsp::reserve_native_renderer_records40_00b22a70,&bsp::destroy_native_renderer_records40_00b29c60}\n    };\n    try {\n        for(const auto& spec:specs) {\n            Original original(spec);\n            for(int scenario=0;scenario<4;++scenario)\n                require(run(original.function(),spec.stride,scenario)==run(spec.destroy,spec.stride,scenario),\"original/source postimages\");\n            std::printf(\"PASS %s: positive/negative count, negative capacity reserve, empty null storage\\n\",spec.name);\n        }\n        report_runtime_modules();\n        std::puts(\"PASS: four complete original destructors versus main-archive source; 16 postimage comparisons\");\n        return 0;\n    } catch(const std::exception& error) { std::fprintf(stderr,\"FAIL: %s\\n\",error.what()); return 1; }\n}\n",
+    "reference_header": "#pragma once\n#include <cstddef>\ninline constexpr unsigned char original_00b29ba0[] = {0x56,0x8b,0xf1,0x83,0x7e,0x08,0x00,0x7d,0x07,0x6a,0x00,0xe8,0x00,0x8d,0xff,0xff,0x83,0x7e,0x04,0x00,0x7e,0x13,0x83,0xc8,0xff,0x8d,0xa4,0x24,0x00,0x00,0x00,0x00,0x01,0x46,0x04,0x83,0x7e,0x04,0x00,0x7f,0xf7,0x8b,0x06,0x50,0xc7,0x46,0x04,0x00,0x00,0x00,0x00,0xe8,0xb1,0xcd,0x0c,0x00,0x83,0xc4,0x04,0x5e,0xc3};\ninline constexpr unsigned char original_00b29be0[] = {0x56,0x8b,0xf1,0x83,0x7e,0x08,0x00,0x7d,0x07,0x6a,0x00,0xe8,0x50,0x8d,0xff,0xff,0x83,0x7e,0x04,0x00,0x7e,0x13,0x83,0xc8,0xff,0x8d,0xa4,0x24,0x00,0x00,0x00,0x00,0x01,0x46,0x04,0x83,0x7e,0x04,0x00,0x7f,0xf7,0x8b,0x06,0x50,0xc7,0x46,0x04,0x00,0x00,0x00,0x00,0xe8,0x71,0xcd,0x0c,0x00,0x83,0xc4,0x04,0x5e,0xc3};\ninline constexpr unsigned char original_00b29c20[] = {0x56,0x8b,0xf1,0x83,0x7e,0x08,0x00,0x7d,0x07,0x6a,0x00,0xe8,0xa0,0x8d,0xff,0xff,0x83,0x7e,0x04,0x00,0x7e,0x13,0x83,0xc8,0xff,0x8d,0xa4,0x24,0x00,0x00,0x00,0x00,0x01,0x46,0x04,0x83,0x7e,0x04,0x00,0x7f,0xf7,0x8b,0x06,0x50,0xc7,0x46,0x04,0x00,0x00,0x00,0x00,0xe8,0x31,0xcd,0x0c,0x00,0x83,0xc4,0x04,0x5e,0xc3};\ninline constexpr unsigned char original_00b29c60[] = {0x56,0x8b,0xf1,0x83,0x7e,0x08,0x00,0x7d,0x07,0x6a,0x00,0xe8,0x00,0x8e,0xff,0xff,0x83,0x7e,0x04,0x00,0x7e,0x13,0x83,0xc8,0xff,0x8d,0xa4,0x24,0x00,0x00,0x00,0x00,0x01,0x46,0x04,0x83,0x7e,0x04,0x00,0x7f,0xf7,0x8b,0x06,0x50,0xc7,0x46,0x04,0x00,0x00,0x00,0x00,0xe8,0xf1,0xcc,0x0c,0x00,0x83,0xc4,0x04,0x5e,0xc3};\n",
+    "build_script": "$ErrorActionPreference = 'Stop'\n$vswhere = Join-Path ${env:ProgramFiles(x86)} 'Microsoft Visual Studio/Installer/vswhere.exe'\n$vsPath = & $vswhere -latest -products '*' -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath\n& (Join-Path $vsPath 'Common7/Tools/Launch-VsDevShell.ps1') -Arch x86 -HostArch amd64 -SkipAutomaticLocation | Out-Null\n$cmakeDirectory = Join-Path $vsPath 'Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/bin'\n$toolPaths = @{\n    compiler = (Get-Command cl.exe).Source\n    linker = (Get-Command link.exe).Source\n    librarian = (Get-Command lib.exe).Source\n    python = (Get-Command python.exe).Source\n    powershell = (Get-Process -Id $PID).Path\n    cmake = (Join-Path $cmakeDirectory 'cmake.exe')\n    ctest = (Join-Path $cmakeDirectory 'ctest.exe')\n}\n$toolRecords = foreach ($entry in $toolPaths.GetEnumerator()) {\n    $item = Get-Item -LiteralPath $entry.Value\n    [pscustomobject]@{ role=$entry.Key; path=$item.FullName; file_version=$item.VersionInfo.FileVersion; bytes=$item.Length }\n}\n[System.IO.File]::WriteAllText((Join-Path $PWD 'local/native_renderer_record_tools.json'),($toolRecords | ConvertTo-Json),[System.Text.UTF8Encoding]::new($false))\ncl /nologo /std:c++20 /EHsc /MD /O2 /W4 /WX /fp:strict /I include /I local /Fo:local/native_renderer_record_probe.obj /Fe:local/native_renderer_record_probe.exe local/native_renderer_record_probe.cpp build/win32/Release/bsp_core.lib build/win32/Release/bsp_lua511.lib build/win32/Release/bsp_zlib121.lib /link /MANIFEST:EMBED user32.lib d3d9.lib shell32.lib kernel32.lib gdi32.lib winspool.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib\nif ($LASTEXITCODE) { throw 'Fixture compilation failed.' }\n& ./local/native_renderer_record_probe.exe\nif ($LASTEXITCODE) { throw 'Fixture failed.' }\n",
+    "report_call_gate": {
+      "command": "python tools/verify_report_calls.py reports/native_renderer_record_destroy.json",
+      "checked": 8,
+      "failed": 0,
+      "result": "reports/native_renderer_record_destroy.json: 8 call rows checked, 0 failed"
+    }
+  },
+  "artifact_archive": {
+    "root": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-record-destroy\\local\\native_renderer_record_destroy_archive",
+    "policy": "copy absent paths only; reusing a path requires byte equality; all copied bytes rechecked; no overwrites",
+    "artifact_manifest": [
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-record-destroy\\include\\bsp\\native_renderer_record_destroy.hpp",
+        "archive_path": "local\\native_renderer_record_destroy_archive\\inputs\\include\\bsp\\native_renderer_record_destroy.hpp",
+        "bytes": 1552,
+        "sha256": "e9432baea13b84832dc4068b34fed44ba935418bc0ad4220672b875490e7dc73"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-record-destroy\\src\\native_renderer_record_destroy.cpp",
+        "archive_path": "local\\native_renderer_record_destroy_archive\\inputs\\src\\native_renderer_record_destroy.cpp",
+        "bytes": 1497,
+        "sha256": "66f42cfdb2cadde7cafbbc4b82cc796263ad80a7eefbaa2673d06a19aead03be"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-record-destroy\\docs\\NATIVE_RENDERER_RECORD_DESTROY.md",
+        "archive_path": "local\\native_renderer_record_destroy_archive\\inputs\\docs\\NATIVE_RENDERER_RECORD_DESTROY.md",
+        "bytes": 4432,
+        "sha256": "c6fc3480cbba2f7159fe13fdacf2e1e15eba10edc3c925bbb0e883fff0ddbe7a"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-record-destroy\\cmake\\startup.cmake",
+        "archive_path": "local\\native_renderer_record_destroy_archive\\inputs\\cmake\\startup.cmake",
+        "bytes": 113259,
+        "sha256": "c78bebc433f3a59b269580f180bb9f408c9dfd4a94a122a829bf818585dd5b0b"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-record-destroy\\include\\bsp\\native_renderer_container_lifetime.hpp",
+        "archive_path": "local\\native_renderer_record_destroy_archive\\inputs\\include\\bsp\\native_renderer_container_lifetime.hpp",
+        "bytes": 2121,
+        "sha256": "680c430daa67600cb13a54e8147eac9ad402fa6e84f2f45879253a1ee40cb0d7"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-record-destroy\\src\\native_renderer_container_lifetime.cpp",
+        "archive_path": "local\\native_renderer_record_destroy_archive\\inputs\\src\\native_renderer_container_lifetime.cpp",
+        "bytes": 3507,
+        "sha256": "4f20fe408411e00afed498f0542bfe94be0a66024c89dc7782448de025ff9cd1"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-record-destroy\\local\\native_renderer_record_reference.hpp",
+        "archive_path": "local\\native_renderer_record_destroy_archive\\inputs\\local\\native_renderer_record_reference.hpp",
+        "bytes": 1482,
+        "sha256": "61e2a84a5fe33eefc9936db8e87982685351cf2111ef21ab51952ee9732c6a37"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-record-destroy\\local\\native_renderer_record_probe.cpp",
+        "archive_path": "local\\native_renderer_record_destroy_archive\\inputs\\local\\native_renderer_record_probe.cpp",
+        "bytes": 5911,
+        "sha256": "067ddc07827c936ae90e07dbbb52642a4797a78ac475f636283730609a094779"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-record-destroy\\local\\build_native_renderer_record_probe.ps1",
+        "archive_path": "local\\native_renderer_record_destroy_archive\\inputs\\local\\build_native_renderer_record_probe.ps1",
+        "bytes": 1815,
+        "sha256": "8df2817b848ea24394b8269b0d1f2713f6c83db9e4ff2d4ddb443fd7cf86a7c5"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-record-destroy\\local\\prepare_native_renderer_record_destroy.py",
+        "archive_path": "local\\native_renderer_record_destroy_archive\\inputs\\local\\prepare_native_renderer_record_destroy.py",
+        "bytes": 2337,
+        "sha256": "110f6e2794cb0bf4398b367bcdc4aaa1e2bfb1a51004167c819669fcdb4bd1a4"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-record-destroy\\local\\finalize_native_renderer_record_destroy.py",
+        "archive_path": "local\\native_renderer_record_destroy_archive\\inputs\\local\\finalize_native_renderer_record_destroy.py",
+        "bytes": 9654,
+        "sha256": "b79d1f2248776d2e27b06f0f8d08e516c32021ea7c481141202f15f887026a3e"
+      },
+      {
+        "role": "executable",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-record-destroy\\local\\native_renderer_record_probe.exe",
+        "archive_path": "local\\native_renderer_record_destroy_archive\\inputs\\local\\native_renderer_record_probe.exe",
+        "bytes": 15872,
+        "sha256": "ebff14304ea5565c516e802b1481487b6f6b3d9dc3b9cb8c0f63b3ffa06c6091",
+        "pe_machine": "014c"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-record-destroy\\local\\native_renderer_record_probe.obj",
+        "archive_path": "local\\native_renderer_record_destroy_archive\\inputs\\local\\native_renderer_record_probe.obj",
+        "bytes": 26301,
+        "sha256": "f4d4aaadcb2f04bd246a0c19fbe869cf4d6de57ac45cb350df478531bc86f271"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-record-destroy\\local\\native_renderer_record_probe.log",
+        "archive_path": "local\\native_renderer_record_destroy_archive\\inputs\\local\\native_renderer_record_probe.log",
+        "bytes": 765,
+        "sha256": "dd3c572c799d9c83ec7b57f94b50454c48fcff037413a6ae23dd1a027d8721ec"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-record-destroy\\local\\native_renderer_record_build.log",
+        "archive_path": "local\\native_renderer_record_destroy_archive\\inputs\\local\\native_renderer_record_build.log",
+        "bytes": 46356,
+        "sha256": "046cf8fb9352585c57f98b8ab691384c2763e0768f80c52ea1f17d3cc5162725"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-record-destroy\\local\\native_renderer_record_seeds.log",
+        "archive_path": "local\\native_renderer_record_destroy_archive\\inputs\\local\\native_renderer_record_seeds.log",
+        "bytes": 3034,
+        "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-record-destroy\\local\\native_renderer_record_tools.json",
+        "archive_path": "local\\native_renderer_record_destroy_archive\\inputs\\local\\native_renderer_record_tools.json",
+        "bytes": 1456,
+        "sha256": "0a3b588d26bc0f31ae9c27834472a3644d72181ca19964d752cfac6b0e46fe62"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-record-destroy\\local\\seed_reference.hpp",
+        "archive_path": "local\\native_renderer_record_destroy_archive\\inputs\\local\\seed_reference.hpp",
+        "bytes": 2995,
+        "sha256": "26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-record-destroy\\build\\win32\\Release\\bsp_core.lib",
+        "archive_path": "local\\native_renderer_record_destroy_archive\\inputs\\build\\win32\\Release\\bsp_core.lib",
+        "bytes": 57623398,
+        "sha256": "78631d6053c00f26727360fc41182d87c6d5d6542432a894522b2a5792f11583"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-record-destroy\\build\\win32\\Release\\bsp_lua511.lib",
+        "archive_path": "local\\native_renderer_record_destroy_archive\\inputs\\build\\win32\\Release\\bsp_lua511.lib",
+        "bytes": 455880,
+        "sha256": "9401ec54767a097be4800f138caa017761f5bfc22f4602121f18d6b873f5980e"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-record-destroy\\build\\win32\\Release\\bsp_zlib121.lib",
+        "archive_path": "local\\native_renderer_record_destroy_archive\\inputs\\build\\win32\\Release\\bsp_zlib121.lib",
+        "bytes": 72126,
+        "sha256": "0fdb4eeb84fe4cb9b4785d38c1784ad984d98b8f9ebf93e7867daccfb17459eb"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-record-destroy\\tools\\bsp.py",
+        "archive_path": "local\\native_renderer_record_destroy_archive\\inputs\\tools\\bsp.py",
+        "bytes": 63768,
+        "sha256": "848a26c48d64002df10da7e233d14968baa51f097fdd08474eb2169c4f0e9d61"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-record-destroy\\tools\\ghidra_export.py",
+        "archive_path": "local\\native_renderer_record_destroy_archive\\inputs\\tools\\ghidra_export.py",
+        "bytes": 13401,
+        "sha256": "f94c057376298ef4e97fd9f5f98eec20a5fcdad886a777373977a90a09179eee"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-record-destroy\\tools\\verify_report_calls.py",
+        "archive_path": "local\\native_renderer_record_destroy_archive\\inputs\\tools\\verify_report_calls.py",
+        "bytes": 9233,
+        "sha256": "396e6d544dece7c9551ff10ee15ab234a0ad1c4a339fd118ddec20de1bb7a8cd"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-record-destroy\\scripts\\build.ps1",
+        "archive_path": "local\\native_renderer_record_destroy_archive\\inputs\\scripts\\build.ps1",
+        "bytes": 1657,
+        "sha256": "87b1f7f177977e4800c6e427c13cc916779f412daa7490f37fbb1b50cb3d295c"
+      }
+    ],
+    "executable_artifacts": [
+      {
+        "role": "executable",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-record-destroy\\local\\native_renderer_record_probe.exe",
+        "archive_path": "local\\native_renderer_record_destroy_archive\\inputs\\local\\native_renderer_record_probe.exe",
+        "bytes": 15872,
+        "sha256": "ebff14304ea5565c516e802b1481487b6f6b3d9dc3b9cb8c0f63b3ffa06c6091",
+        "pe_machine": "014c"
+      }
+    ],
+    "observed_tool_executables": [
+      {
+        "role": "observed_tool_executable",
+        "original_path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin\\cmake.exe",
+        "archive_path": "local\\native_renderer_record_destroy_archive\\tools\\cmake\\cmake.exe",
+        "bytes": 14060088,
+        "sha256": "d8173552e9d943c20feadd74d0437371f49d45c3d53a20dae2655ecc2493392c",
+        "pe_machine": "8664",
+        "tool_role": "cmake",
+        "file_version": "4.2.3-msvc3"
+      },
+      {
+        "role": "observed_tool_executable",
+        "original_path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x86\\cl.exe",
+        "archive_path": "local\\native_renderer_record_destroy_archive\\tools\\compiler\\cl.exe",
+        "bytes": 891752,
+        "sha256": "95db52a9c9bd300131474769df7d32b342725b1e1574e0fc83a266479b196938",
+        "pe_machine": "8664",
+        "tool_role": "compiler",
+        "file_version": "19.51.36244.0"
+      },
+      {
+        "role": "observed_tool_executable",
+        "original_path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin\\ctest.exe",
+        "archive_path": "local\\native_renderer_record_destroy_archive\\tools\\ctest\\ctest.exe",
+        "bytes": 15152224,
+        "sha256": "4d00d31a10d004edb8d7f39bcd47d0a94da1cd4464e9d2246d199f0cf6c7852b",
+        "pe_machine": "8664",
+        "tool_role": "ctest",
+        "file_version": "4.2.3-msvc3"
+      },
+      {
+        "role": "observed_tool_executable",
+        "original_path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x86\\lib.exe",
+        "archive_path": "local\\native_renderer_record_destroy_archive\\tools\\librarian\\lib.exe",
+        "bytes": 23424,
+        "sha256": "8c59e7b3642ad1c5719bdc5e567e89254ab1022b7d20f1933e79b92213c76ebc",
+        "pe_machine": "8664",
+        "tool_role": "librarian",
+        "file_version": "14.51.36244.0"
+      },
+      {
+        "role": "observed_tool_executable",
+        "original_path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x86\\link.exe",
+        "archive_path": "local\\native_renderer_record_destroy_archive\\tools\\linker\\link.exe",
+        "bytes": 3698016,
+        "sha256": "36186698fc03d62a1151e48c55d5c17170b94b4621a2faa11189d08182e11a81",
+        "pe_machine": "8664",
+        "tool_role": "linker",
+        "file_version": "14.51.36244.0"
+      },
+      {
+        "role": "observed_tool_executable",
+        "original_path": "C:\\Program Files\\PowerShell\\7\\pwsh.exe",
+        "archive_path": "local\\native_renderer_record_destroy_archive\\tools\\powershell\\pwsh.exe",
+        "bytes": 301368,
+        "sha256": "362a356ce7f0940ec74f73a8fc2c990a2cc24a38a11c90bbd8eca947110ad139",
+        "pe_machine": "8664",
+        "tool_role": "powershell",
+        "file_version": "7.6.5.500"
+      },
+      {
+        "role": "observed_tool_executable",
+        "original_path": "C:\\ProgramData\\miniconda3\\python.exe",
+        "archive_path": "local\\native_renderer_record_destroy_archive\\tools\\python\\python.exe",
+        "bytes": 104264,
+        "sha256": "ec0ea8d6907787b76dcf8524aaa93e52e167ceee62fa8778e182ea637a3dbc1d",
+        "pe_machine": "8664",
+        "tool_role": "python",
+        "file_version": "3.13.11"
+      }
+    ]
+  },
+  "loaded_runtime_dll_evidence": {
+    "observation": "GetModuleHandleW/GetModuleFileNameW and loaded PE machine inside running Win32 fixture; canonical file path from a handle opened by that same process",
+    "hash_basis": "post-run disk file and copied archive hash, not mapped-image hash",
+    "loaded_runtime_dlls": [
+      {
+        "role": "loaded_runtime_dll_file",
+        "original_path": "\\\\?\\C:\\Windows\\SysWOW64\\ucrtbase.dll",
+        "archive_path": "local\\native_renderer_record_destroy_archive\\runtime\\ucrtbase.dll",
+        "bytes": 1114240,
+        "sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+        "pe_machine": "014c",
+        "module_name": "ucrtbase.dll",
+        "reported_loaded_path": "C:\\WINDOWS\\System32\\ucrtbase.dll",
+        "canonical_path_from_running_x86_process": "\\\\?\\C:\\Windows\\SysWOW64\\ucrtbase.dll",
+        "loaded_image_machine": "014c"
+      },
+      {
+        "role": "loaded_runtime_dll_file",
+        "original_path": "\\\\?\\C:\\Windows\\SysWOW64\\vcruntime140.dll",
+        "archive_path": "local\\native_renderer_record_destroy_archive\\runtime\\vcruntime140.dll",
+        "bytes": 123328,
+        "sha256": "2fa6efc053203460a23d3a25158f227d895d2dadc63acc1a372da97c3a4281c3",
+        "pe_machine": "014c",
+        "module_name": "vcruntime140.dll",
+        "reported_loaded_path": "C:\\WINDOWS\\SYSTEM32\\VCRUNTIME140.dll",
+        "canonical_path_from_running_x86_process": "\\\\?\\C:\\Windows\\SysWOW64\\vcruntime140.dll",
+        "loaded_image_machine": "014c"
+      }
+    ],
+    "checked_but_unloaded": [
+      "msvcp140.dll",
+      "vcruntime140_1.dll"
+    ]
+  },
+  "remaining_boundaries": [
+    "original caller/register/private-frame and native SEH/static-CRT exception identity",
+    "allocation failure supported by source/static ordering but not fault-injected here",
+    "valid raw extents and allocator ownership; no malformed/concurrent-header guarantee",
+    "archived tool executables are evidence, not every toolchain dependency",
+    "runtime DLL file hashes are separate from executable artifacts and loaded-memory hashes",
+    "no game integration or game validation"
+  ]
+}
