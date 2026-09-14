@@ -217,6 +217,9 @@ public:
     // "FlyTime" and "WaterTravelSpeed". docs/TORPEDO_CATEGORY_ADMISSION.md.
     float read_bullet_class_number(int index, const char* key, float fallback);
 
+    // `Bullets[index][key]` as a string; "" when absent. Used for `Type`.
+    std::string read_bullet_class_string(int index, const char* key);
+
     // Milestone 2j. The head of the gameplay settings loader 0083b5e0: it
     // formats `Scripts\datatables\ShipGlobals.lua` (the literal at 00d0b67c)
     // into a path at 0083b6c3, runs it through the Lua state owner's own runner

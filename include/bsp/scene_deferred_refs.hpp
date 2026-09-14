@@ -87,7 +87,13 @@ struct SceneCommandTarget {
     std::uint16_t object_id{0};      // +2h: target entity +174h, 0 otherwise
     void* object{nullptr};           // +4h: the resolved target entity, null otherwise
     float position[3]{};             // +8h/+Ch/+10h
-    float reserved{0.0f};            // +14h: XORPS at 0046ABF8, always 0
+    // +14h: a live payload, NOT reserved. 0046ABF8's XORPS zeroes it on the
+    // scene-deferred path only, which is what the old "always 0" comment
+    // generalised from. 008A4590 PilotMoveToRange stores its `range` argument
+    // here - 008A4708 `FSTP float ptr [ESP+54h]` against the descriptor base
+    // 008A471E leaves at ESP+40h - and 0077D600 forwards it into
+    // EntityOrderMessage::trailing. docs/PILOT_ORDER_BINDINGS.md.
+    float trailing{0.0f};
 };
 inline constexpr int kSceneCommandTargetSize = 0x18;
 

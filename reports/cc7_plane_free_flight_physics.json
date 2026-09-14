@@ -1,0 +1,191 @@
+{
+  "packet": "cc7_plane_free_flight_physics",
+  "owner": "agent/cc7-plane-physics",
+  "date": "2026-09-14",
+  "project": "bsp",
+  "program": "/battlestationspacific.exe",
+  "ghidra": "read-only: no rename, comment, prototype, function creation or save",
+  "docs": [
+    "docs/PLANE_FREE_FLIGHT_PHYSICS.md"
+  ],
+  "sources": [
+    "include/bsp/plane_flight.hpp",
+    "src/plane_flight.cpp",
+    "tests/math_tests.cpp"
+  ],
+  "subject": "The free-flight arm of 007DB680, re-derived from the assembly listing and published as a pure rule: the four accumulators it writes, the fold that resolves them into a body-frame acceleration, and the acceptance test that pins lift against gravity.",
+  "reuses": [
+    "docs/PLANE_FLIGHT_CORE_LAW.md sections 4.2 through 4.9, re-verified term by term",
+    "docs/GAME_TUNING_SINGLETON.md key table for the nine Dynamics/* rows",
+    "docs/PLANE_FLIGHT.md installed class row (StallSpd 17.5, TravelSpeed 141.666672)",
+    "include/bsp/plane_flight.hpp: PlaneFlightHost, run_plane_fixed_step_007ce040, plane_class_flight_off, plane_dynamics_tuning_off, kDynamicsMirrorBase"
+  ],
+  "answer": {
+    "shape": "007DB680 is an accumulator pass, not an integrator. 007DB6B6 007D7C00 zeroes six 3-float accumulators at dyn+04h + 0Ch*k and copies ctl+18h/ctl+3Ch into dyn+4Ch/dyn+64h; 007DB680 adds one term per force into the accumulator that force's frame belongs to; 007DC6E6 007D8470 rotates each world accumulator into its body partner through ctl+0B0h and applies a 0.001f deadband. Free flight writes dyn+04h (body damping, ceiling forward push), dyn+10h (world drag), dyn+1Ch (body lift and thrust) and dyn+28h (world gravity and ceiling).",
+    "matrix_direction": "ctl+0B0h maps world to body. 007D9C2D-007D9C51 calls 0042D0D0 with EDX = ctl+18h, the world velocity 007D7C00 is handed, and stores the result into ctl+3Ch..44h, which 007DBD3A/007DBD50 pair with XDrag/YDrag as the body velocity; 007DC6DA hands 007D8470 that same ctl+0B0h, reaching it as [ESP+0x54] after SUB ESP,3Ch and three pushes.",
+    "lift": "aoa = (0.1 <= |vz|) ? -vy/vz : 0; q = (007D99C0(ctl) / desc+184h StallSpd) / LevelFlight * ctl+9Ch; qq = q < 1 ? q*q : 1; dyn+20h += min(clamp((1 + aoa) * qq, -2, 2) * AccelCheatMul, ctl+90h) * 9.81f.",
+    "gravity": "dyn+2Ch -= AccelCheatMul * 9.81f * InterpolateClamped(0, 1, LostDragTime, ExtraGravityMul, unit+0C3Ch), and when ctl+94h is set a second time by 9.81f * InterpolateClamped(1, 0, 2.5, 3, unit+0C3Ch) with no AccelCheatMul.",
+    "cancellation": "Both sides are the same float 1.5f * 9.81f once q >= 1, so lift cancels gravity exactly at and above forward speed 1.8 * StallSpd = 31.5 m/s for the installed Fighter row. Measured net world-up acceleration is 0.00000000 at 141.666672 m/s and at 31.5 m/s, -0.09327984 at 31.4, -8.78302670 at 20 and -14.71500015 at rest. Perturbing ctl+40h to -10 m/s raises the angle of attack to +0.0705882 and the net to +1.03870678: the model self-corrects.",
+    "host_data": "The model needed nothing the host cannot supply. The only authored class field the cancellation depends on is StallSpd, which 007D1F70 already parses; everything else is an image constant or a Dynamics/* row whose PlaneGlobals.lua default is recorded."
+  },
+  "verification": {
+    "checklist": "docs/WORKER_VERIFICATION_CHECKLIST.md, all ten read",
+    "producer_before_layout": "Every authored field was traced to its producer before use: desc+184h/170h/174h to 007D1F70 (the key strings XDrag/YDrag pushed before each FSTP, per docs/PLANE_FLIGHT_CORE_LAW.md), and the nine Dynamics/* rows to 007EAAE1's REP MOVSD into 00F872F0. The mirror mapping was not assumed: 007D92B0 alone reads 00F87324, 00F87328 and 00F87308, which the mapping predicts as DragRangeMin, DragRangeMax and DragFuncPower, and the key table confirms all three.",
+    "register_provenance": "The three x87 stack traces were done by counting every push and pop over the whole block, not by reading the instruction nearest the use: 007DB89D-007DB9BB establishes that the gravity ramp's y0 = 1.0f is the FLD1 leftover from 007DB8E1; 007DBE50-007DBE79 that the ceiling fade's y1 = 0.0f is the FLDZ leftover from 007DBE54; 007DBB95-007DBC5C that the ctl+98h term's three components are (n.x*d, d*0.0, n.z*d), which is what disproves the merged transcription.",
+    "byte_census": "00F87574 was checked for writers under two store encodings (D9 1D FSTP and F3 0F 11 05 MOVSS): no matches under either, 161 readers under F3 0F 10 05. The image bytes are zero, so 007D7C00 is a clear.",
+    "argument_counts": "00419010 is RET 0x14 (five floats), 007D92B0 RET 4 (one float), 007D7C00 RET 8 plus ECX. 007D9050's three stack arguments were counted from PUSH ECX at 007DB787 plus SUB ESP,8 at 007DB78E, not from the decompiler.",
+    "negative_results": "No producer of ctl+94h was found (the previous packet also failed to find one); it is labelled a host input with no known writer. 0042D0D0's row/column convention was not re-read; the published fold declares its own and the acceptance test drives the identity case only.",
+    "installation": "Modded (BSPRM/AlterBSP): vehicleclasses.lua mtime 2026-05-09 against an untouched bulk of 2024-07-13. Nothing in this installation was modified; StallSpd 17.5 and TravelSpeed 141.666672 are quoted from docs/PLANE_FLIGHT.md, not re-read from the script."
+  },
+  "routines": [
+    {
+      "address": "007DB680",
+      "name": "BSP_PlaneFlight_CoreLaw",
+      "abi": "__thiscall(ctl)(float step, void*, void*, float*); RET 0x10; body 007DB680-007DC828",
+      "coverage": "partial: 007DB680-007DBEA8, the free-flight path. The ground arm 007DBEAA-007DC204 and the water arm 007DC205-007DC68C were not read by this packet; docs/PLANE_FLIGHT_CORE_LAW.md owns them and labels the water arm partial. The commit tail 007DC696-007DC828 was read only far enough to establish the 007D8470 call site and its matrix argument."
+    },
+    {
+      "address": "007D7C00",
+      "name": "BSP_PlaneDynamics_BeginStep",
+      "abi": "__fastcall(dyn)(const float* worldVel, const float* bodyVel); RET 8; body 007D7C00-007D7D21",
+      "coverage": "complete: all 53 instructions read"
+    },
+    {
+      "address": "007D8470",
+      "name": "BSP_PlaneDynamics_IntegrateStep",
+      "abi": "__fastcall(dyn)(void*, void*, const Matrix* worldToBody); body 007D8470-007D904E",
+      "coverage": "partial: 007D8470-007D85A5 (three folds and the 0.001f deadband). The integration tail 007D8624-007D904E is unread; nothing in this packet's code integrates."
+    },
+    {
+      "address": "007D92B0",
+      "name": "BSP_PlaneFlight_AeroResponseCurve",
+      "abi": "__cdecl-shaped, RET 4, one float argument; body 007D92B0-007D9358",
+      "coverage": "complete"
+    },
+    {
+      "address": "007D9C10",
+      "name": "BSP_PlaneFlightController_RefreshBodyFrame",
+      "abi": "__fastcall(ctl); body 007D9C10-007D9C75, tail JMP 007D8020",
+      "coverage": "complete except the tail callee 007D8020, which was not read"
+    },
+    {
+      "address": "007D99C0",
+      "name": "BSP_PlaneFlightController_ForwardSpeed",
+      "abi": "__fastcall(ctl); returns in ST0; body 007D99C0-007D9A68",
+      "coverage": "partial: the ctl+44h baseline and the branch shape were read; the carrier-relative correction's two sign constants 00D7A2F0 and 00CE74F8 were not decoded."
+    },
+    {
+      "address": "007D9050",
+      "name": "BSP_PlaneFlight_ThrustAccel",
+      "abi": "__fastcall(desc, byte)(float pitch, float throttle, int); body 007D9050-007D9137",
+      "coverage": "none: read only at its call site 007DB7A6. Enters the rule as the input thrust_accel."
+    },
+    {
+      "address": "007D9140",
+      "name": "BSP_PlaneFlight_DragAccel",
+      "abi": "__fastcall(desc)(five stack floats); RET 0x14; body 007D9140-007D92A4",
+      "coverage": "none: read only at its call site 007DBB5E. Enters the rule as the input drag_accel."
+    }
+  ],
+  "host_steps": [
+    { "step": "the pre-step the free-flight arm runs before any force", "address": "007db690", "native": "007d81b0", "function": "007db680" },
+    { "step": "rebuild ctl+0B0h and the body velocity ctl+3Ch", "address": "007db697", "native": "007d9c10", "function": "007db680" },
+    { "step": "the rate law, with step", "address": "007db6a6", "native": "007da710", "function": "007db680" },
+    { "step": "zero the six accumulators and snapshot the two velocities", "address": "007db6b6", "native": "007d7c00", "function": "007db680" },
+    { "step": "the forward speed the lift and damping ratios divide by StallSpd", "address": "007db75b", "native": "007d99c0", "function": "007db680" },
+    { "step": "thrust magnitude", "address": "007db7a6", "native": "007d9050", "function": "007db680" },
+    { "step": "the optional thrust multiplier, gated on 00E0C978 and [00F88C30]+0D0h", "address": "007db7db", "native": "008e6430", "function": "007db680" },
+    { "step": "the predicate that pins the lift ramp cap at 3.0f", "address": "007db814", "native": "007bbc50", "function": "007db680" },
+    { "step": "the DeadMeat gravity ramp", "address": "007db9c4", "native": "00419010", "function": "007db680" },
+    { "step": "the second gravity ramp, gated on ctl+94h", "address": "007dba20", "native": "00419010", "function": "007db680" },
+    { "step": "the world speed the drag direction divides by", "address": "007dba7b", "native": "00bf7030", "function": "007db680" },
+    { "step": "the drag ramp r1, over the lost-drag timer", "address": "007dbb0e", "native": "00419010", "function": "007db680" },
+    { "step": "the drag ramp r2, over the pitch, with r1 as y0", "address": "007dbb23", "native": "00419010", "function": "007db680" },
+    { "step": "the signed drag magnitude", "address": "007dbb5e", "native": "007d9140", "function": "007db680" },
+    { "step": "the dynamic-pressure response the body damping scales by", "address": "007dbd61", "native": "007d92b0", "function": "007db680" },
+    { "step": "the bound on the vertical damping, over unit+908h", "address": "007dbdbd", "native": "00419010", "function": "007db680" },
+    { "step": "refresh the world pose before reading unit+100h", "address": "007dbe29", "native": "00414db0", "function": "007db680" },
+    { "step": "the ceiling's forward-push fade, over the speed ratio", "address": "007dbe96", "native": "00419010", "function": "007db680" },
+    { "step": "fold the world accumulators into their body partners", "address": "007dc6e6", "native": "007d8470", "function": "007db680" },
+    { "step": "the response curve's own interpolation", "address": "007d92db", "native": "00419010", "function": "007d92b0" },
+    { "step": "fold 1: dyn+28h world into dyn+1Ch body", "address": "007d8487", "native": "0042d0d0", "function": "007d8470" },
+    { "step": "fold 2: dyn+10h world into dyn+04h body", "address": "007d84b2", "native": "0042d0d0", "function": "007d8470" },
+    { "step": "fold 3: dyn+34h into dyn+40h", "address": "007d84de", "native": "0042d0d0", "function": "007d8470" },
+    { "step": "build ctl+0B0h from the unit's local matrix unit+74h", "address": "007d9c25", "native": "0085dea0", "function": "007d9c10" },
+    { "step": "world velocity ctl+18h into body velocity ctl+3Ch", "address": "007d9c34", "native": "0042d0d0", "function": "007d9c10" },
+    { "step": "a second world vector ctl+24h into ctl+48h", "address": "007d9c54", "native": "0042d0d0", "function": "007d9c10" },
+    { "step": "refresh the carrier's pose", "address": "007d99ec", "native": "00414db0", "function": "007d99c0" },
+    { "step": "invert the carrier's matrix into ctl-relative space", "address": "007d9a04", "native": "00b63d50", "function": "007d99c0" },
+    { "step": "the carrier-relative velocity correction", "address": "007d9a26", "native": "0042d0d0", "function": "007d99c0" }
+  ],
+  "constants": [
+    { "address": "00D7A218", "value": "0.0f", "use": "007DB87A, the sign test in the |vz| idiom" },
+    { "address": "00D7A208", "value": "-0.0f", "use": "007DB88B and 007D9313, the -0.0f - x absolute value" },
+    { "address": "00D7A3A0", "value": "double 3FB99999A0000000 = (double)0.1f", "use": "007DB8A1, the angle-of-attack gate; a promoted float literal, not a tuning row" },
+    { "address": "00CE7D7C", "value": "-2.0f", "use": "007DB913, the lift-coefficient lower clamp" },
+    { "address": "00CE3958", "value": "+2.0f", "use": "007DB8F5, the lift-coefficient upper clamp" },
+    { "address": "00CF9058", "value": "double 40239EB860000000 = (double)9.81f", "use": "007DB981, 007DB9CF, 007DBA25; gravity, a promoted float literal" },
+    { "address": "00CE3854", "value": "3.0f", "use": "007DB81D the ramp pin and 007DBA01 the second gravity ramp's y1" },
+    { "address": "00CE6630", "value": "6.0f", "use": "007DB854, the lift ramp's ceiling" },
+    { "address": "00D7A2B0", "value": "double 3.0", "use": "007DB865, the ramp's fast rate" },
+    { "address": "00CF87C8", "value": "2.5f", "use": "007DBA0B, the second gravity ramp's x1" },
+    { "address": "00CE3820", "value": "double 1e-10", "use": "007DBA67, the squared-speed floor below which drag is skipped" },
+    { "address": "00D7A23C", "value": "0.001f", "use": "007DBA92 the speed floor and 007D850E the fold's deadband" },
+    { "address": "00D06888", "value": "-0.3f", "use": "007DBB1A, the drag pitch ramp's x0" },
+    { "address": "00D7A2F0", "value": "0.1f", "use": "007DBAE1, the drag pitch ramp's x1" },
+    { "address": "00D7A370", "value": "double 5.0", "use": "007DBB78, the flying-backwards drag multiplier" },
+    { "address": "00D7A258", "value": "double 0.0", "use": "007DBC03, the zeroed middle component of the ctl+98h drag term" },
+    { "address": "00D7A210", "value": "double 1.0", "use": "007DBC15, the ctl+98h subtrahend" },
+    { "address": "00CE3800", "value": "0.5f", "use": "007DBDB4 the damping clamp's x0 and 007DBE8D the ceiling fade's x1" },
+    { "address": "00CE3930", "value": "20.0f", "use": "007DBDA4, the damping clamp's x1" },
+    { "address": "00CE3D08", "value": "100.0f", "use": "007DBD9A, the damping clamp's y1" },
+    { "address": "00CE380C", "value": "1.5f", "use": "007DBE8D, the ceiling fade's x0" },
+    { "address": "00D7A238", "value": "0.01f", "use": "007DB76C, the throttle gate on the whole thrust term" },
+    { "address": "00D7A24C", "value": "1.0f", "use": "007DB7E6 the default thrust multiplier and 007DBB8D the ctl+98h comparand" },
+    { "address": "00F872F0", "value": "Dynamics/Ceiling, 1500 (zero in the image; 007EAAE1 fills the mirror)", "use": "007DBE34" },
+    { "address": "00F872F4", "value": "Dynamics/CeilingForce, 0.1", "use": "007DBE42" },
+    { "address": "00F87308", "value": "Dynamics/DragFuncPower, 1.8", "use": "007D9325" },
+    { "address": "00F87324", "value": "Dynamics/SpdMultipliers/DragRangeMin, 1.0", "use": "007D92D2" },
+    { "address": "00F87328", "value": "Dynamics/SpdMultipliers/DragRangeMax, 2.0", "use": "007D92C2" },
+    { "address": "00F8732C", "value": "Dynamics/SpdMultipliers/LevelFlight, 1.8", "use": "007DB8C1" },
+    { "address": "00F87344", "value": "Dynamics/DeadMeat/LostDragTime, 5", "use": "007DB9B1, 007DBAFB" },
+    { "address": "00F87348", "value": "Dynamics/DeadMeat/ExtraGravityMul, 1.5", "use": "007DB9A7" },
+    { "address": "00F873FC", "value": "Dynamics/AccelCheatMul, 1.5", "use": "007DB931, 007DB9C9" },
+    { "address": "00F87574", "value": "0.0f, and 00F87578/00F8757C likewise: a read-only Vector3 zero, NOT the Dynamics mirror", "use": "007D7C2A-007D7D0F, the accumulator clear" }
+  ],
+  "corrections": [
+    {
+      "was": "docs/PLANE_FLIGHT_CORE_LAW.md section 4.7: 007dbbf3 if (ctl[0x98] > 1.0f) dyn[0x10..0x18] += (d*n.x, 0, 0) * (ctl[0x98] - 1)",
+      "is": "dyn[0x10..0x18] += (n.x*d, d*0.0, n.z*d) * (ctl[0x98] - 1.0). Only the middle component is zeroed; the forward component survives.",
+      "evidence": "At 007DBBF5 the x87 stack is ST0 = n.x*d, ST1 = n.z*d, ST2 = d, built at 007DBB95-007DBBC2. 007DBC03 FMUL double [00D7A258] multiplies d (not n.y*d) by the double 0.0 and 007DBC09 stores it as the middle component; 007DBC0D FSTP [ESP+0x38] keeps n.z*d, 007DBC3B FMUL [ESP+0x38] scales it by (ctl+98h - 1.0) and 007DBC55-007DBC5C adds it into dyn+18h. Inert in the shipped game: 007D7F5D leaves ctl+98h at 1.0f."
+    },
+    {
+      "was": "docs/GAME_TUNING_SINGLETON.md row +494 Pilot/DepthCharge/AimAltRange/1, implicitly at mirror base + 494h = 00F87574, and docs/PLANE_FLIGHT_CORE_LAW.md's blanket mapping tuning_offset = mirror - 00F870E0",
+      "is": "00F87574-00F8757C is a read-only Vector3 zero constant outside the mirror. The mirror is 00F872F0-00F87427 (0x138 bytes, tuning +210h..+347h) per include/bsp/plane_flight.hpp, so 00F87574 is 0x14C past its end. The mapping is sound for every offset this law reads (all nine are inside the window) and must not be extrapolated past it.",
+      "evidence": "A byte scan for stores to 00F87574 finds none under D9 1D (FSTP) or F3 0F 11 05 (MOVSS); 161 sites read it under F3 0F 10 05. The image bytes are zero. If it were the authored triple 20/60/80, 007D7C00 would preset every accumulator instead of clearing it and no term below would hold."
+    },
+    {
+      "was": "docs/PLANE_FLIGHT_CORE_LAW.md section 4.6: a second gravity application at 007DB9E7-007DBA2F runs only when ctl+94h is set, arguments unstated",
+      "is": "dyn+2Ch -= 9.81f * InterpolateClamped(1.0f, 0.0f, 2.5f, 3.0f, unit+0C3Ch), with no AccelCheatMul factor, unlike the first term.",
+      "evidence": "007DBA1B FLD1 into [ESP], 007DBA15 FLDZ into [ESP+4], 007DBA0B 00CF87C8 = 2.5f into [ESP+8], 007DBA01 00CE3854 = 3.0f into [ESP+0xC], 007DB9F7 unit+0C3Ch into [ESP+0x10]; 007DBA25 FMUL double [00CF9058] applies 9.81 directly to the result, where the first term's 007DB9C9 loads 00F873FC first."
+    }
+  ],
+  "assumptions": [
+    "007D8470's integration tail 007D8624-007D904E is unread. The published rule returns accelerations and does not integrate; no velocity or position update in this repository is attributable to 007D8470.",
+    "0042D0D0's row/column convention was not re-read. fold_world_into_body_007d8470 declares its own (row-major, body = M * world). The acceptance test drives the identity case only; a non-level pose depends on the convention and is not covered.",
+    "007D9050 and 007D9140 enter as scalar inputs; their bodies are not reconstructed.",
+    "ctl+94h has no known producer. It is a host input.",
+    "XDrag and YDrag's installed values were not read; the test leaves them zero, so the damping term is untested against authored numbers.",
+    "No run-time evidence: the arm is not wired into bsp_game.exe's host yet (the integrator owns src/game_hosts_units.cpp), so checklist item 6 is satisfied vacuously."
+  ],
+  "prescription": "Bind PlaneFlightHost::free_flight_007cc2f0 to accumulate_free_flight_007db680 followed by fold_world_into_body_007d8470, supplying thrust_accel and drag_accel from the host. The rule returns a body-frame acceleration; the integration step remains the host's until 007D8624-007D904E is read.",
+  "ledger": [
+    { "address": "007DB680", "action": "append-evidence" },
+    { "address": "007D7C00", "action": "append-evidence" },
+    { "address": "007D8470", "action": "append-evidence" },
+    { "address": "007D92B0", "action": "append-evidence" },
+    { "address": "007D9C10", "action": "append-evidence" }
+  ],
+  "build": "scripts/build.ps1 Release Win32, clean; ctest reconstructed_math 1/1 passed. include/bsp/plane_flight.hpp and src/plane_flight.cpp extended in place; cmake/startup.cmake unchanged.",
+  "tests": "One case added to tests/math_tests.cpp: 007DB680's lift cancels gravity at and above 1.8 * StallSpd, sinks below it, and self-corrects under a downward perturbation."
+}

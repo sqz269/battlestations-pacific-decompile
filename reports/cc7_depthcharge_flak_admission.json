@@ -1,0 +1,316 @@
+{
+  "packet": "cc7_depthcharge_flak_admission",
+  "owner": "agent/cc7-dc-admission",
+  "date": "2026-09-14",
+  "project": "bsp",
+  "program": "/battlestationspacific.exe",
+  "ghidra": "read-only: no rename, comment, prototype, function creation or save",
+  "docs": "docs/DEPTHCHARGE_FLAK_ADMISSION.md",
+  "sources": [],
+  "subject": "Why FLAK (category 5), DEPTHCHARGE (category 8) and CATAPULT (category 0Bh) take exactly zero assignments on IJN01, established separately for each.",
+  "reuses": "include/bsp/gunnery_tables.hpp (kGunneryPreferenceLists, build_rank_table_00727bd0, gunnery_rank), include/bsp/unit_gunnery_pass.hpp (kArtilleryCategories, kAaFlakCategories, kTorpedoCategories, kDepthChargeCategories, kCategoryMaskMayEngagePlane/Other, WeaponGroup), include/bsp/bullet_engagement_range.hpp. No new header or source was published.",
+  "verdicts": {
+    "depthcharge_cat8": "faithful zero. Not a defect. The gunnery pass does assign category 8 like any other gun category; it is refused by the engagement range, 970 m to the nearest submarine against a 240 m category range. In the native build 00862820's category-8 arm refuses independently whenever the submarine is shallow, so the zero holds whichever way the depth resolves.",
+    "flak_cat5": "faithful zero, and a consequence of the aircraft never flying. Two independent sufficient causes: (a) the authored row ranks 8 aircraft classes and MTorpedoBoat, and side 1 on IJN01 has no MTorpedoBoat and nothing else the row ranks within reach - the 1938 m candidate at California is No19, a submarine the flak row does not rank; (b) no aircraft comes within 2960 m of any unit, against an isolated category-5 range of 2000 m on Enterprise and a game-wide flak ceiling of 2400 m.",
+    "catapult_cat0b": "faithful zero, structural. The row at 00E0A374 is zero in all 61h dwords, so gunnery_rank(0Bh, *) is 0 for every class id and every candidate is refused on the first test. All 20 CATAPULT device records in the installation author no Bullet key at all, against 402 of 402 for every other Function: a catapult is an aircraft launch device, not a weapon, and the gunnery pass should never assign it."
+  },
+  "verification": {
+    "run": "local/ijn01_500.log in the main checkout (read-only): --frames 700 --press-start-frame 30 --menu-select IJN01 --mission-frames 500 --mission-frame-seconds 0.05, the run the packet's table was taken from.",
+    "fresh_run": "NOT TAKEN. bsp_game.exe built from this worktree faults 0xC0000005 immediately after 'Phase 5 load_game_settings', in sound_->core.startup() / Phase 5 sound_system_initialize 0073DAFD (src/game_hosts.cpp:1378-1381). Reproduced with --frames 700 --menu-select IJN01, with a bare --frames 3, and with a private --settings-personal-root. docs/PLANE_UNIT_TICK.md section 6 records the identical fault from the main checkout's own build, so it is the session's environment, not this worktree. Checklist rule 6 is therefore satisfied by the existing log, not by a new one.",
+    "build": "scripts/build.ps1 Release Win32, exit 0, ctest 1/1 passed, no warnings. No source or header was added or changed.",
+    "category_coverage": "Complete for all three categories. Category 5: Enterprise 5:8, Lexington 5:8, Arizona 5:8, Pennsylvania 5:8, West Virginia 5:7, Maryland 5:7, Tennessee 5:7, California 5:7 = 60 of 60. Category 8: Cassin 8:2, Downes 8:2, Mona 8:2, PT1/PT2/PT3/PT4 8:1 = 10 of 10. Category 0Bh: Helena 11:2, Massachusetts 11:1, Iowa 11:1 = 4 of 4.",
+    "row_coverage": "All 61h dwords of rows 5, 8, 9, 0Ah and 0Bh were read, not only the leading entries, because 00727BD0's inner loop skips a zero rather than stopping at one.",
+    "distances": "Cassin -> No18 is 970 m, quoted from the run's own first-shot line. The minimum nearest over the 21 aircraft that carry a category-1 gun is 2960 m (JillSpawn12), matched by LST1's own nearest of 2960 m. The eight flak ships report 1938-3120 m; California's 1938 m is No19, named as its category-4 target in the per-gun table."
+  },
+  "routines": [
+    {
+      "address": "00727BD0",
+      "name": "the rank table producer, 00E092C8 -> 00E19BF8",
+      "abi": "__cdecl(); RET 0; body 00727BD0-00727C23",
+      "coverage": "complete",
+      "note": "rank[category*61h + classId] is the one-based position among the non-zero entries. A zero entry is SKIPPED (JZ 00727BF7 -> 00727C05, the pointer advance), not a terminator; the inner loop always runs 61h times (ESI = EDX + 60h at 00727BF0). Category 0's id 61h writes to 00E19BF8+184h, the first dword of rank row 1, which row 1's own REP STOSD at 00727BEC erases. No other row holds an id above 46h, so no other rank row is touched and row 0Bh is genuinely all zero."
+    },
+    {
+      "address": "00862820",
+      "name": "BSP_UnitGunneryAi_TargetClassAllowed, the class gate",
+      "abi": "__thiscall(gunneryAi)(int category, Entity* target); RET 8; body 00862820-008628CB",
+      "coverage": "complete",
+      "note": "Args confirmed from the frame and the RET 8: [ESP+8] category (EDI), [ESP+0Ch] target (ESI). Four liveness bytes at 00862825; the per-(category,class) permission byte [this + cat*61h + classId + 0CCh] at 00862855; the rank at 0086285F; the category-7 arm at 00862869; the submarine arm at 0086288C - categories 8 and 9 refuse a shallow submarine, every other category except 7 refuses one that is not shallow, and category 7 is exempt from both."
+    },
+    {
+      "address": "00852820",
+      "name": "BSP_Entity_IsAboveDepthChargeDepth",
+      "abi": "__thiscall(submarine); RET 0; body 00852820-0085285A",
+      "coverage": "complete",
+      "note": "returns [sub+100h] > ([sub+1204h] + [sub+1200h]) / 3.0, with 3.0 the double at 00D7A2B0. Direction established from its two siblings' consumers rather than from the existing name."
+    },
+    {
+      "address": "008527A0",
+      "name": "the submarine deck-gun depth predicate",
+      "abi": "__thiscall(submarine); RET 0; body 008527A0-008527DA",
+      "coverage": "complete",
+      "note": "returns [sub+100h] > [sub+1200h] - 3.0. 008627A0, the class-8 category gate, lets a submarine's own categories 1, 2, 5 and 6 run only when this holds."
+    },
+    {
+      "address": "008527E0",
+      "name": "the submarine torpedo depth predicate",
+      "abi": "__thiscall(submarine); RET 0; body 008527E0-0085281A",
+      "coverage": "complete",
+      "note": "returns [sub+100h] > [sub+1204h] - 3.0, the periscope reference. 008627A0 gates the submarine's own category 7 on it."
+    },
+    {
+      "address": "00861CD0",
+      "name": "BSP_UnitGunneryAi_SetArtilleryGroupAllowed",
+      "abi": "__thiscall(gunneryAi)(bool allowed); RET 4; body 00861CD0-00861D11",
+      "coverage": "complete",
+      "note": "walks 00E0A4F8 = {1, 2, 3, 4, 6} terminated by 0Ch, and ORs 2 or ANDs ~2 into mask[cat] at this+80h+cat*4 - the non-plane bit. docs/DIRECTOR_UPDATE_ARMS.md's coverage table calls it unread; that entry is stale, the ledger record from cc2_unit_gunnery_pass already carried the list and the bit operation."
+    },
+    {
+      "address": "00861D20",
+      "name": "BSP_UnitGunneryAi_SetAaGroupAllowed",
+      "abi": "__thiscall(gunneryAi)(bool allowed); RET 4; body 00861D20-00861D61",
+      "coverage": "complete",
+      "note": "walks 00E0A510 = {1, 5, 6}, ORs 1 or ANDs ~1 - the plane bit. Category 5's mask is therefore 3 whether aaEnabled is set or clear, because the constructor already seeded 3 and this setter only touches bit 0. docs/DIRECTOR_UPDATE_ARMS.md's coverage table calls it unread; that entry is stale, the ledger record from cc2_unit_gunnery_pass already carried the list and the bit operation."
+    },
+    {
+      "address": "00861D70",
+      "name": "BSP_UnitGunneryAi_SetTorpedoGroupAllowed",
+      "abi": "__thiscall(gunneryAi)(bool allowed); RET 4; body 00861D70-00861DBD",
+      "coverage": "complete",
+      "note": "walks 00E0A520 = {7}; writes the whole word 3 or 0 and mirrors the flag to this+77h. docs/DIRECTOR_UPDATE_ARMS.md's coverage table calls it unread; that entry is stale, the ledger record from cc2_unit_gunnery_pass already carried the list and the bit operation."
+    },
+    {
+      "address": "00861DC0",
+      "name": "BSP_UnitGunneryAi_SetDepthChargeGroupAllowed",
+      "abi": "__thiscall(gunneryAi)(bool allowed); RET 4; body 00861DC0-00861E0D",
+      "coverage": "complete",
+      "note": "walks 00E0A528 = {8, 9}; writes the whole word 3 or 0 over mask[8] and mask[9] and mirrors the flag to this+78h. docs/DIRECTOR_UPDATE_ARMS.md's coverage table calls it unread; that entry is stale, the ledger record from cc2_unit_gunnery_pass already carried the list and the bit operation. Alone among the four it has no refreshAll bypass at its call site (008625D9 compares director+223h against bridge+10h with no preceding TEST BL,BL), so it fires only on a change - and the bridge's first call is always a change because 00863AD1-00863ADD zero bridge+0Ch..+10h while director+223h defaults to 1 at 007202FD."
+    },
+    {
+      "address": "00864580",
+      "name": "BSP_UnitGunneryAi_Construct, the seeding of the per-category state",
+      "abi": "__thiscall(gunneryAi)(...); body 00864580-0086465E",
+      "coverage": "partial: only the twelve-iteration tail 00864615-00864648 and the scalar stores 008645B6-008645D6 were read; the list and 00864220 sub-object setup at 008645DA-00864610 was not",
+      "note": "for i = 0..0Bh: memset(this + 0CCh + i*61h, 1, 61h) at 00864623-00864628; [this + 70h + i] = 1 at 0086462D; [this + 80h + i*4] = 3 at 00864632 with EBP = this+80h from 00864617. Every category starts enabled with both mask bits, including 0, 0Ah and 0Bh, which no setter list contains."
+    },
+    {
+      "address": "00861C20",
+      "name": "the per-(category, class) target permission setter",
+      "abi": "__thiscall(gunneryAi)(int classId, int category, bool allowed); RET 0Ch; body 00861C20-00861C5A",
+      "coverage": "complete",
+      "note": "writes [this + category*61h + classId + 0CCh]; a negative category writes all twelve rows through the ADD EAX,61h loop at 00861C52. Exactly one call site."
+    },
+    {
+      "address": "008945F0",
+      "name": "the Lua binding SetWeaponDirectorTargetEnable",
+      "abi": "the luaMW_ binding shape; body 008945F0-0089486B per the Ghidra function",
+      "coverage": "partial: only the argument marshalling around 00894780-008947D5 was read; the string-object construction at 008945F0-0089477F and the tail after 008947D5 were not",
+      "note": "error literal \"luaMW_SetWeaponDirectorTargetEnable failed:\"; the binding name string is at 00D0FF64, referenced from the descriptor row at 00E0BF54. No .lua file in the installation calls it, so [gunneryAi+0CCh] is all 1 in every mission here. Negative result."
+    },
+    {
+      "address": "00853630",
+      "name": "BSP_SubmarineUnit_SEntityInit, the depth-reference copy",
+      "abi": "__thiscall(submarine); body 00853630-00853D4A per the Ghidra function",
+      "coverage": "partial: only the four-float copy loop 00853A68-00853AC5 was read out of 534 instructions",
+      "note": "00853A87 LEA ECX,[ESI+1200h] with the source offset EAX running 80Ch to 81Ch (00853AC0 CMP EAX,81Ch) out of the class descriptor at [ESI+538h]. entity+1200h is copied verbatim; entity+1204h/1208h/120Ch take XMM1 - classValue when the class value is non-negative (00853A9F COMISS / JC). XMM1's producer was NOT read."
+    },
+    {
+      "address": "00854230",
+      "name": "BSP_SubmarineClass_ReadLuaFields",
+      "abi": "the class-reader shape; body per the Ghidra function",
+      "coverage": "partial: only the PeriscopeDepth / SwimDepth1 / SwimDepth2 block was read",
+      "note": "class+810h = PeriscopeDepth, falling back to SwimDepth1 when PeriscopeDepth is negative; class+814h = SwimDepth2. These are the sources of entity+1204h and entity+1208h."
+    }
+  ],
+  "host_steps": [
+    {
+      "step": "00862820's submarine arm, first call: refuse category 8 or 9 against a shallow submarine",
+      "address": "008628a7",
+      "native": "00852820",
+      "function": "00862820"
+    },
+    {
+      "step": "00862820's submarine arm, second call: refuse any other non-torpedo category against a submarine that is not shallow",
+      "address": "008628be",
+      "native": "00852820",
+      "function": "00862820"
+    },
+    {
+      "step": "008624C0 step 4: torpedoEnabled -> the category-7 mask",
+      "address": "00862581",
+      "native": "00861d70",
+      "function": "008624c0"
+    },
+    {
+      "step": "008624C0 step 4: artilleryEnabled -> the non-plane bit over categories 1, 2, 3, 4, 6",
+      "address": "008625a6",
+      "native": "00861cd0",
+      "function": "008624c0"
+    },
+    {
+      "step": "008624C0 step 4: aaEnabled -> the plane bit over categories 1, 5, 6",
+      "address": "008625cb",
+      "native": "00861d20",
+      "function": "008624c0"
+    },
+    {
+      "step": "008624C0 step 5: depthChargeEnabled -> the whole mask word over categories 8 and 9, on a change only",
+      "address": "008625ec",
+      "native": "00861dc0",
+      "function": "008624c0"
+    },
+    {
+      "step": "the bridge's first call, with force = 1 on a record whose five cached flag bytes were just zeroed",
+      "address": "00863ae7",
+      "native": "008624c0",
+      "function": "00863a80"
+    },
+    {
+      "step": "the constructor seeds the per-(category, class) permission row to all 1",
+      "address": "00864628",
+      "native": "00bf79f0",
+      "function": "00864580"
+    },
+    {
+      "step": "the only writer of the per-(category, class) permission table, from the Lua binding",
+      "address": "008947d0",
+      "native": "00861c20",
+      "function": "008945f0"
+    }
+  ],
+  "constants": [
+    {
+      "address": "00D7A2B0",
+      "value": "3.0 (double)",
+      "use": "00852820's and 00852860's divisor, and the subtrahend in 008527A0 and 008527E0"
+    },
+    {
+      "address": "00CFA428",
+      "value": "240.0f",
+      "use": "006E9923, the depth-charge arm of the engagement-range derivation. The category-8 range on every unit in this installation that carries a real depth-charge launcher"
+    },
+    {
+      "address": "00E0A4F8",
+      "value": "01 02 03 04 06 | 0C",
+      "use": "00861CD0's category list, the artillery group"
+    },
+    {
+      "address": "00E0A510",
+      "value": "01 05 06 | 0C",
+      "use": "00861D20's category list, the AA/flak group"
+    },
+    {
+      "address": "00E0A520",
+      "value": "07 | 0C",
+      "use": "00861D70's category list, the torpedo group"
+    },
+    {
+      "address": "00E0A528",
+      "value": "08 09 | 0C",
+      "use": "00861DC0's category list, the depth-charge group"
+    },
+    {
+      "address": "00E09A5C",
+      "value": "17h 11h 12h 15h 16h 14h 10h 13h 0Eh, then 58 zero dwords",
+      "use": "the FLAK preference row: eight aircraft classes and MTorpedoBoat, no MSubmarine"
+    },
+    {
+      "address": "00E09EE8",
+      "value": "08h 41h, then 5Fh zero dwords",
+      "use": "the DEPTHCHARGE preference row: MSubmarine and NavPoint"
+    },
+    {
+      "address": "00E0A374",
+      "value": "61h zero dwords",
+      "use": "the CATAPULT preference row: empty for its whole length"
+    },
+    {
+      "address": "00D0FF64",
+      "value": "\"SetWeaponDirectorTargetEnable\"",
+      "use": "the Lua binding name for 008945F0, referenced from 00E0BF54"
+    }
+  ],
+  "corrections": [
+    {
+      "target": "docs/GAME_EXECUTABLE.md, the twelve-category table",
+      "was": "Categories 1, 5, 8 and 11 ... list plane classes, air classes, the submarine and nothing at all. No plane and no submarine exists on this mission, so 00862820 step 3 refuses every candidate on a zero rank. That is the table doing its job.",
+      "is": "That measurement was a different mission. On IJN01 two submarines do exist, are visible, and are engaged by categories 4 and 6 - the run's per-gun table names No19 as the target of nine category-4 guns. Category 8's row ranks MSubmarine FIRST, so its zero is not a zero rank; it is the 240 m engagement range against 970 m. The zero-rank explanation stands only for category 11.",
+      "evidence": "00E09EE8 = {08h, 41h}; the run's per-gun table; 'Cassin platform 4 ... at No18, range 970 m'; 006E9923's 240.0f constant arm."
+    },
+    {
+      "target": "docs/DIRECTOR_UPDATE_ARMS.md, the coverage table",
+      "was": "008624C0 complete as a decision table; the four setters 00861CD0/00861D20/00861D70/00861DC0 and the panel record are unread",
+      "is": "Stale. The ledger records from cc2_unit_gunnery_pass already carry each setter's category list and bit operation; the coverage table was never updated. What is new here: only the depth-charge call site lacks the refreshAll bypass (008625D9 has no preceding TEST BL,BL, where 00862586, 008625AB and 008625BA all do), and the constructor's all-3 mask seed at 00864632 means the AA setter's single bit can never make a flak mask refuse a non-plane.",
+      "evidence": "00861CD0-00861E0D read whole; 00E0A4F8-00E0A530 read as bytes; the call sites 00862581, 008625A6, 008625CB, 008625EC."
+    },
+    {
+      "target": "the packet brief's note on the modded installation",
+      "was": "vehicleclasses.lua and bulletclasses.lua both mtime 2026-05-09 against an untouched datatables bulk of 2024-07-13",
+      "is": "classtables/arcade/deviceclasses.lua is modded too, 2026-05-09 22:37, alongside classtables/arcade/bulletclasses.lua 2026-05-09 23:04 and autoload/vehicleclasses.lua 2026-05-09 21:52. classtables/realistic/bulletclasses.lua is 2025-06-02. The three realistic siblings and both reconclasses.lua are the untouched 2024-07-13. Every device, bullet and vehicle fact in this report is from THIS installation.",
+      "evidence": "ls -l --time-style=long-iso on scripts/datatables/classtables/{arcade,realistic}/*.lua and scripts/datatables/autoload/vehicleclasses.lua."
+    },
+    {
+      "target": "config/names record for 00852820, packet cc2_unit_gunnery_pass",
+      "was": "00862820 requires it before letting the depth-charge categories 8 and 9 take a target answering IsKindOf(8).",
+      "is": "Inverted. 008628AE JZ 008628C7 sends a ZERO answer to the MOV AL,1 return and falls a non-zero answer through to 008628B0 XOR AL,AL / RET 8. Categories 8 and 9 require 00852820 to be FALSE - a depth charge engages a submarine only when it is NOT above depth-charge depth. The opposite arm at 008628B7 exempts category 7 and, for every other category, refuses at 008628C5 when the answer is zero. The two arms are complementary.",
+      "evidence": "00862820's listing at 0086289B-008628CB, read whole. A refutation naming the wrong clause is appended to the ledger record."
+    }
+  ],
+  "divergence": {
+    "site": "src/game_hosts_gunnery.cpp:822",
+    "what": "score_candidate_00863990 calls bsp::target_is_engageable_00862820(liveness), which carries only the four liveness bytes. 00862820's category-7 arm, its submarine arm and its [this + cat*61h + classId + 0CCh] permission byte are all absent, so the host is strictly more permissive than the native gate.",
+    "effect_on_this_measurement": "none. Category 8's zero on IJN01 comes from the range gate, which the host does implement, and the missing arm would only have refused it harder. The divergence is already recorded as a correction by docs/TORPEDO_CATEGORY_ADMISSION.md section 7; this packet confirms it from the listing and supplies the sign convention for 00852820.",
+    "prescription": "1. Add a bool target_is_shallow_00852820(std::size_t unit) query to the unit binding, answering [sub+100h] > ([sub+1204h] + [sub+1200h]) / 3.0f from PeriscopeDepth / SwimDepth2 and the unit's vertical coordinate; a unit that is not IsKindOf(8) never reaches it. 2. In score_candidate_00863990, after the liveness test and before the rank test, refuse when category is 8 or 9 and the query is true, and when category is neither 7 nor 8 nor 9 and the query is false. 3. Add the category-7 arm at the same point: require IsKindOf(6), reject IsKindOf(0Eh). 4. Add the [this + cat*61h + classId + 0CCh] permission array as all 1, or record it as deliberately omitted because no mission script in this installation writes it. The integrator owns the host; this packet publishes no source."
+  },
+  "assumptions": "The 240 m category-8 range on Cassin is DERIVED, not observed: from 006E9890's depth-charge arm, from Mahan 1941 (VehicleClass[309], the run's own type_id line for Cassin) carrying device class 54 'US Destroyer DC launcher' with bullet class 54, and from that bullet's Type = 'Depthcharge' with no FlyTime. The run prints no per-category range, and 240 is below Cassin's best_range of 1500, so it cannot be read off the log; Enterprise's 2000 for category 5 IS read off the log, because Enterprise carries no category with a longer range. The Mona and PT vehicle classes were not looked up, so their category-8 bullet class is assumed to be one of the four real depth-charge classes - all four give 240 and all five units are over 3.2 km from anything, so no verdict turns on it. NOT ESTABLISHED: whether No18 and No19 are above or below the depth-charge threshold on IJN01 - the host models no submarine depth, ForceSubmarinePeriscope is commented out in every mission script in the installation and ijn_1_pearl.lua never calls it, so the depth-charge verdict was written to hold either way but the reason the native build refuses is not settled. NOT ESTABLISHED: the absolute sign of [sub+100h], [sub+1200h] and [sub+1204h]; XMM1's producer in 00853630's copy loop was not chased. The relative reading - three routines comparing one coordinate against a surfaced, a periscope and an averaged reference - is complete and is what the verdicts use.",
+  "follow_ups": [
+    "submarine_depth_state: [sub+100h], [sub+1200h]..[sub+120Ch], 00853A68-00853AC5 and XMM1's producer. Settles the sign convention and makes 00862820's submarine arm implementable.",
+    "weapon_director_target_enable: 00861C20, 008945F0, 00E0BF54 and the luaMW_ binding family. A per-(category, class) permission surface no mission in this installation uses.",
+    "depth_charge_launcher_category_9: 00E0A06C, the single DEPTHCHARGELAUNCHER device and bullet class 2 (Hedgehog Projector Depth Charge). No unit on IJN01 carries one.",
+    "catapult_launch_device: what a Function = CATAPULT device does with PlaneStartPosY/PlaneStartPosZ/ReloadTime, given that it holds a per-category gun record and a gun tick but no bullet.",
+    "a mission with a submerged submarine: the only measurement that can exercise category 8 at all. IJN01 cannot, at any tick count."
+  ],
+  "ledger": [
+    {
+      "address": "00E09A5C",
+      "action": "add-name",
+      "name": "GunneryPreferenceRow_Flak"
+    },
+    {
+      "address": "00E09EE8",
+      "action": "add-name",
+      "name": "GunneryPreferenceRow_DepthCharge"
+    },
+    {
+      "address": "00E0A374",
+      "action": "add-name",
+      "name": "GunneryPreferenceRow_Catapult"
+    },
+    {
+      "address": "00E0A528",
+      "action": "add-name",
+      "name": "GunneryDepthChargeCategoryList"
+    },
+    {
+      "address": "00852820",
+      "action": "append-evidence"
+    },
+    {
+      "address": "008527A0",
+      "action": "add-name",
+      "name": "BSP_Submarine_IsAboveDeckGunDepth"
+    },
+    {
+      "address": "008527E0",
+      "action": "add-name",
+      "name": "BSP_Submarine_IsAboveTorpedoDepth"
+    },
+    {
+      "address": "00861DC0",
+      "action": "append-evidence"
+    }
+  ],
+  "build": "scripts/build.ps1 Release Win32, exit 0, no warnings; ctest reconstructed_math 1/1 passed. No source or header was added or changed.",
+  "tests": "none added",
+  "module": "none published. The outcome is evidence: three authored data rows, a gate chain that passes everywhere it was suspected of failing, and two distance comparisons. There is no pure rule here with explicit inputs that gunnery_tables.hpp, unit_gunnery_pass.hpp and bullet_engagement_range.hpp do not already carry."
+}

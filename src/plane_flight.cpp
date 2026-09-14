@@ -191,4 +191,241 @@ PlaneMotionArm run_plane_fixed_step_007ce040(PlaneFlightHost& host, float step) 
     return arm;
 }
 
+// ---------------------------------------------------------------------------
+// 007DB680 BSP_PlaneFlight_CoreLaw, the free-flight arm (ctl+FCh == 0).
+// docs/PLANE_FREE_FLIGHT_PHYSICS.md carries the per-term derivation.
+// ---------------------------------------------------------------------------
+
+namespace {
+
+// 00419010 BSP_Math_InterpolateClamped(x0, y0, x1, y1, x), RET 0x14. 0041901E
+// FUCOMIP returns y0 when x1 == x0 exactly; otherwise the line, clamped to the
+// interval the two endpoints span, in either order.
+float interp_clamped_00419010(float x0, float y0, float x1, float y1, float x) {
+    if (x1 == x0) return y0;
+    const float v = y0 + (y1 - y0) * ((x - x0) / (x1 - x0));
+    const float lo = min_float(y0, y1);
+    const float hi = max_float(y0, y1);
+    return v < lo ? lo : (v > hi ? hi : v);
+}
+
+// 00CF9058, the double the lift, gravity and extra-gravity terms all multiply
+// by: float 9.81f widened, 40239EB860000000.
+constexpr float kGravity00cf9058 = 9.81f;
+
+// The clamp on the lift coefficient, 00CE7D7C = -2.0f and 00CE3958 = +2.0f.
+constexpr float kLiftCoeffMin00ce7d7c = -2.0f;
+constexpr float kLiftCoeffMax00ce3958 = 2.0f;
+
+// 00D7A3A0, the double 0.1f: below this forward speed the angle of attack is
+// pinned to zero instead of dividing by it.
+constexpr float kAoaMinForwardSpeed00d7a3a0 = 0.1f;
+
+}  // namespace
+
+float aero_response_curve_007d92b0(float speed_ratio, const PlaneFreeFlightTuning& tuning) {
+    // 007D92D2 pushes DragRangeMin as x0 and 007D92C2 DragRangeMax as x1; the
+    // two endpoints 007D92CC / 007D92BC are the immediates 0.0f and 1.0f.
+    const float u = interp_clamped_00419010(tuning.drag_range_min, 0.0f, tuning.drag_range_max,
+                                            1.0f, speed_ratio);
+    // 007D92EA FUCOMIP against FLDZ, read through LAHF / TEST AH,44h: JP is the
+    // not-equal branch, so an exact zero returns zero and never reaches the pow.
+    if (u == 0.0f) return 0.0f;
+    // 007D9313 takes |u| the same way the lift does, as -0.0f - u (00D7A208).
+    const float magnitude = u < 0.0f ? -u : u;
+    return std::pow(magnitude, tuning.drag_func_power);  // 007D9325 FYL2X / F2XM1 / FSCALE
+}
+
+float angle_of_attack_007db8b1(float body_vy, float body_vz) {
+    // 007DB875..007DB89D: |vz| as vz when vz > 0.0f (00D7A218) and as
+    // -0.0f - vz (00D7A208) otherwise, so both signed zeros give +0.0f.
+    const float speed = body_vz > 0.0f ? body_vz : (-0.0f - body_vz);
+    // 007DB8A7 FCOMIP / JBE: the divide runs when 0.1f <= |vz|.
+    if (!(kAoaMinForwardSpeed00d7a3a0 <= speed)) return 0.0f;  // 007DB8AD FLDZ
+    return -body_vy / body_vz;                                 // 007DB8B1 FLD / FCHS / FDIV
+}
+
+float lift_accel_007db875(const PlaneFreeFlightState& state, const PlaneFreeFlightClass& cls,
+                          const PlaneFreeFlightTuning& tuning) {
+    const float aoa = angle_of_attack_007db8b1(state.body_velocity[1], state.body_velocity[2]);
+    // 007DB773 stored 007D99C0's result already divided by desc+184h StallSpd;
+    // 007DB8C1 divides that by LevelFlight and 007DB8CF scales by ctl+9Ch.
+    const float q = (state.forward_speed / cls.stall_spd) / tuning.level_flight * state.lift_scale;
+    // 007DB8DD..007DB8F1, the two-path square: q*q below 1.0f, 1.0f at or above.
+    const float qq = q < 1.0f ? q * q : 1.0f;
+    const float coefficient = (1.0f + aoa) * qq;  // 007DB8F1 FADD, 007DB907 FMULP
+    // 007DB91D / 007DB961: -2.0f wins when it is greater, then +2.0f caps.
+    float clamped = coefficient;
+    if (kLiftCoeffMin00ce7d7c > clamped) {
+        clamped = kLiftCoeffMin00ce7d7c;
+    } else if (clamped > kLiftCoeffMax00ce3958) {
+        clamped = kLiftCoeffMax00ce3958;
+    }
+    // 007DB931 scales by AccelCheatMul, 007DB94D caps at ctl+90h.
+    const float scaled = clamped * tuning.accel_cheat_mul;
+    const float capped = min_float(scaled, state.lift_ramp);
+    return capped * kGravity00cf9058;  // 007DB981 / 007DB98A, into dyn+20h
+}
+
+float gravity_accel_007db990(const PlaneFreeFlightState& state,
+                             const PlaneFreeFlightTuning& tuning) {
+    // 007DB9BF pushes the immediate 0.0f as x0 and 007DB9BB the 1.0f left on the
+    // x87 stack by the lift block's FLD1 as y0; x1 and y1 are the two DeadMeat
+    // rows. 007DB9D5 / 007DB9D7: dyn+2Ch -= AccelCheatMul * 9.81f * that.
+    const float ramp = interp_clamped_00419010(0.0f, 1.0f, tuning.lost_drag_time,
+                                               tuning.extra_gravity_mul, state.lost_drag_timer);
+    float accel = -(tuning.accel_cheat_mul * kGravity00cf9058 * ramp);
+    if (state.extra_gravity) {
+        // 007DB9E7..007DBA2F, gated on the byte ctl+94h. Every argument is an
+        // immediate or an image float: 007DBA1B 1.0f, 007DBA15 0.0f,
+        // 007DBA0B 00CF87C8 = 2.5f, 007DBA01 00CE3854 = 3.0f. No AccelCheatMul.
+        const float extra =
+            interp_clamped_00419010(1.0f, 0.0f, 2.5f, 3.0f, state.lost_drag_timer);
+        accel -= kGravity00cf9058 * extra;  // 007DBA25 / 007DBA2B
+    }
+    return accel;
+}
+
+float advance_lift_ramp_007db80d(float lift_ramp, float step, bool ramp_reset) {
+    if (ramp_reset) return 3.0f;  // 007DB825 stores 00CE3854 when 007BBC50 returns true
+    if (3.0f > lift_ramp) return lift_ramp + step;             // 007DB84A
+    if (6.0f > lift_ramp) return lift_ramp + 3.0f * step;      // 007DB861, 00D7A2B0 is 3.0
+    return lift_ramp;                                          // 007DB85F leaves it alone
+}
+
+PlaneDynAccumulators accumulate_free_flight_007db680(const PlaneFreeFlightState& state,
+                                                     const PlaneFreeFlightClass& cls,
+                                                     const PlaneFreeFlightTuning& tuning,
+                                                     float step, bool ramp_reset) {
+    PlaneDynAccumulators acc{};  // 007DB6B6 007D7C00 zeroes all six each step
+
+    // 007DB744..007DB80A. The gate is unit+0BBCh > 0.01f (00D7A238); the host
+    // supplies the product 007D9050 * unit+0CC8h * the 008E6430 multiplier.
+    acc.body_lift[2] += state.thrust_accel;  // dyn+24h, body forward
+
+    // 007DB80D..007DB874, before the lift reads the cap.
+    PlaneFreeFlightState stepped = state;
+    stepped.lift_ramp = advance_lift_ramp_007db80d(state.lift_ramp, step, ramp_reset);
+
+    acc.body_lift[1] += lift_accel_007db875(stepped, cls, tuning);   // dyn+20h, body up
+    acc.world_gravity[1] += gravity_accel_007db990(stepped, tuning);  // dyn+2Ch, world up
+
+    // 007DBA32..007DBC76, the drag along the world velocity direction.
+    const float* wv = state.world_velocity;
+    const float speed_squared = wv[0] * wv[0] + wv[1] * wv[1] + wv[2] * wv[2];
+    // 007DBA67 compares against the double 1e-10 (00CE3820); 007DBA92 against
+    // 0.001f (00D7A23C). Either failure skips straight to the damping block.
+    if (speed_squared > 1.0e-10f) {
+        const float speed = std::sqrt(speed_squared);  // 007DBA7B 00BF7030
+        if (speed > 0.001f) {
+            const float n[3] = {wv[0] / speed, wv[1] / speed, wv[2] / speed};
+            // 007D9140's signed magnitude is already scaled by the 007DBB23
+            // pitch ramp at the call site; its tail multiplies in -sgn, so a
+            // forward-moving plane gets a negative value that opposes motion.
+            float d = state.drag_accel;
+            // 007DBB6A: flying backwards multiplies by the double 5.0 (00D7A370).
+            if (0.0f > state.body_velocity[2]) d *= 5.0f;
+            acc.world_drag[0] += n[0] * d;  // 007DBBC6
+            acc.world_drag[1] += n[1] * d;  // 007DBBCE
+            acc.world_drag[2] += n[2] * d;  // 007DBBD8
+            // 007DBBEA / 007DBBF3: only when ctl+98h > 1.0f. The middle
+            // component is multiplied by the double 0.0 at 00D7A258, so the
+            // extra push is the horizontal projection of the drag, not the x
+            // axis alone: 007DBC3B multiplies n.z * d back in for dyn+18h.
+            if (state.roll_drag_scale > 1.0f) {
+                const float extra = state.roll_drag_scale - 1.0f;  // 007DBC15, 00D7A210 is 1.0
+                acc.world_drag[0] += n[0] * d * extra;             // 007DBC43
+                acc.world_drag[1] += 0.0f * d * extra;             // 007DBC4B, the zeroed term
+                acc.world_drag[2] += n[2] * d * extra;             // 007DBC55
+            }
+        }
+    }
+
+    // 007DBD37..007DBE0D, the body-frame damping. 007DBD5A hands 007D92B0 the
+    // same ratio 007DB773 stored, forward speed over StallSpd.
+    const float speed_ratio = state.forward_speed / cls.stall_spd;
+    const float response = aero_response_curve_007d92b0(speed_ratio, tuning);
+    acc.body_damping[0] += response * (-state.body_velocity[0] * cls.x_drag);  // 007DBD7D
+    acc.body_damping[1] += response * (-state.body_velocity[1] * cls.y_drag);  // 007DBD8A
+    // 007DBDBD: the vertical term alone is clamped, by a bound that opens from
+    // 1.0f to 100.0f as unit+908h runs from 0.5f to 20.0f (00CE3800, 00CE3930,
+    // 00CE3D08). 007DBDE6 / 007DBDF6 / 007DBE0A write the clamped value back.
+    const float bound =
+        interp_clamped_00419010(0.5f, 1.0f, 20.0f, 100.0f, state.airborne_time);
+    if (-bound > acc.body_damping[1]) {
+        acc.body_damping[1] = -bound;
+    } else if (acc.body_damping[1] > bound) {
+        acc.body_damping[1] = bound;
+    }
+
+    // 007DBE0E..007DBEA8, free flight only (ctl+FCh == 0, which this arm is).
+    // 007DBE2E subtracts Ceiling from unit+100h and 007DBE42 multiplies by
+    // -CeilingForce, so the push exists only above the ceiling.
+    const float ceiling_push = -(state.world_altitude - tuning.ceiling) * tuning.ceiling_force;
+    if (0.0f > ceiling_push) {
+        acc.world_gravity[1] += ceiling_push;  // 007DBE6B, into dyn+2Ch
+        // 007DBE96: the second push fades out as the speed ratio falls from
+        // 1.5f (00CE380C) to 0.5f (00CE3800); y0 is the immediate 1.0f and y1
+        // the 0.0f the FLDZ above left on the x87 stack.
+        const float forward_share =
+            interp_clamped_00419010(1.5f, 1.0f, 0.5f, 0.0f, speed_ratio);
+        acc.body_damping[2] += forward_share * ceiling_push;  // 007DBEA2, into dyn+0Ch
+    }
+
+    return acc;
+}
+
+PlaneBodyAcceleration fold_world_into_body_007d8470(const PlaneDynAccumulators& acc,
+                                                    const float world_to_body[9]) {
+    const auto rotate = [&world_to_body](const float* v, float* out) {
+        // 0042D0D0(out, v, ctl+0B0h, 0). 007D9C39 uses the same call to build
+        // the body velocity ctl+3Ch from the world velocity ctl+18h, and
+        // 007DC6DA hands the fold that same matrix, so both are world -> body.
+        for (int row = 0; row < 3; ++row) {
+            out[row] = world_to_body[row * 3 + 0] * v[0] + world_to_body[row * 3 + 1] * v[1] +
+                       world_to_body[row * 3 + 2] * v[2];
+        }
+    };
+
+    PlaneBodyAcceleration result{};
+    float rotated[3] = {0.0f, 0.0f, 0.0f};
+
+    // 007D8487, the first fold: dyn+28h rotated into dyn+1Ch.
+    rotate(acc.world_gravity, rotated);
+    for (int i = 0; i < 3; ++i) result.pair_1c[i] = acc.body_lift[i] + rotated[i];
+
+    // 007D84B2, the second fold: dyn+10h rotated into dyn+04h.
+    rotate(acc.world_drag, rotated);
+    for (int i = 0; i < 3; ++i) result.pair_04[i] = acc.body_damping[i] + rotated[i];
+
+    // 007D8502..007D85A5, the deadband: each component of the two body
+    // accumulators is zeroed when its magnitude falls under 0.001f (00D7A23C).
+    const auto deadband = [](float* v) {
+        for (int i = 0; i < 3; ++i) {
+            const float magnitude = v[i] < 0.0f ? -v[i] : v[i];
+            if (0.001f > magnitude) v[i] = 0.0f;
+        }
+    };
+    deadband(result.pair_1c);
+    deadband(result.pair_04);
+
+    for (int i = 0; i < 3; ++i) result.total[i] = result.pair_04[i] + result.pair_1c[i];
+    return result;
+}
+
+float free_flight_world_up_acceleration(const PlaneFreeFlightState& state,
+                                        const PlaneFreeFlightClass& cls,
+                                        const PlaneFreeFlightTuning& tuning, float step,
+                                        bool ramp_reset) {
+    const PlaneDynAccumulators acc =
+        accumulate_free_flight_007db680(state, cls, tuning, step, ramp_reset);
+    const PlaneBodyAcceleration body = fold_world_into_body_007d8470(acc, state.world_to_body);
+    // The body result goes back to world through the transpose. ctl+0B0h is a
+    // rotation for every pose the native builds (0085DEA0 copies it out of the
+    // unit's local matrix unit+74h), so the transpose is its inverse; the
+    // acceptance test drives the identity case, where this is a no-op.
+    return state.world_to_body[1] * body.total[0] + state.world_to_body[4] * body.total[1] +
+           state.world_to_body[7] * body.total[2];
+}
+
 }  // namespace bsp

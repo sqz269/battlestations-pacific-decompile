@@ -28,7 +28,12 @@ inline constexpr std::size_t kGeomElementOffPartIndex = 0x08; // 00723F65, 00724
 inline constexpr std::size_t kGeomElementOffMesh = 0x0C;      // 00723B70 reads its two vectors
 inline constexpr std::size_t kGeomElementOffTriBegin = 0x14;  // 00723AA0, 00723B70
 inline constexpr std::size_t kGeomElementOffTriEnd = 0x18;    // the count is (end - begin) >> 1
-inline constexpr std::size_t kGeomElementOffRejectScalar = 0x24; // fed to 0085BF90, unread
+// REFUTED by packet cc7_narrowphase_unit_part_shape - do not use, retire when
+// the last reader is gone. element+20h and element+24h are not a scalar: they
+// are POINTERS to parallel float3 min/max arrays. 007238E0 indexes both by
+// node*12 and 00723B70 hands BOTH to 0085BF90. The corrected offsets are in
+// bsp/narrowphase_unit_part_shape.hpp. docs/NARROWPHASE_UNIT_PART_SHAPE.md.
+inline constexpr std::size_t kGeomElementOffRejectScalar = 0x24; // WRONG, see above
 
 inline constexpr std::size_t kGeomOffElementsBegin = 0x0C;
 inline constexpr std::size_t kGeomOffElementsEnd = 0x10;

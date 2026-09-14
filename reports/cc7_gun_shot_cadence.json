@@ -1,0 +1,139 @@
+{
+  "packet": "cc7_gun_shot_cadence",
+  "owner": "agent/cc7-shot-cadence",
+  "date": "2026-09-14",
+  "project": "bsp",
+  "program": "/battlestationspacific.exe",
+  "ghidra": "read-only: no rename, comment, prototype, function creation or save",
+  "docs": ["docs/GUN_SHOT_CADENCE.md"],
+  "sources": [],
+  "subject": "CanFire's full conjunct set, the native reload and barrel cadence, and whether HEAVYARTILLERY's 29 shots on IJN01 are a faithful cadence or a wrong gate.",
+  "reuses": [
+    "include/bsp/gun_aiming.hpp: GunFireGateInputs, gun_can_fire_00729a80, gun_can_fire_turning_0085a830, gun_aim_settled_0085ae4a, kGunAimDeadBand",
+    "include/bsp/gun_platform_arc.hpp: gun_fixed_step_tick_0072d130, gun_set_fire_request_0072d2c0",
+    "include/bsp/unit_weapons.hpp: next_ready_barrel_007298d0, barrel_reload_write_0072cf00",
+    "docs/GUN_AIMING.md CanFire table; docs/GUN_PLATFORM_ARC.md fixed-step tick and gun+358h; docs/UNIT_WEAPON_DEVICES.md gun field table and Fire step list; docs/GUN_MOUNT_POSITIONS.md muzzle vector; docs/GUN_BOT_TICKS.md bot slot map and 006DF520; docs/GUN_DISPERSION.md fire-parameter record; docs/AA_VERTICAL_WINDOW.md targeted-tick counters"
+  ],
+  "answer": {
+    "verdict": "29 is faithful in shape. The two HEAVYARTILLERY device rows that fire on IJN01 both author ReloadTime = 17.5 s; a 25 s window admits two firing opportunities per barrel, so hundreds was never the number. There is no missing gate. The cadence has one real error, the host's barrel count, worth a factor of two or three in both directions.",
+    "can_fire_conjuncts": "00729A80 BSP_Gun_CanFire, __thiscall(gun)(bool checkReload) -> bool, RET 4, body 00729A80-00729B88. (1) 00729A83 [[gun+3F8h]+34h] != 0, the NEG/SBB/TEST 0E19983h idiom being a plain null check; (2) 00729A9E gun+3B8h == 0; (3) 00729AA7 gun+358h <= 0 signed, the destroyed-state level; (4) 00729ABC !checkReload || (gun+450h <= 0 && gun+478h <= 0); (5) 00729ADD !006D1E50(kind) || [[gun+3F0h]+6F8h] <= 0; (6) 00729B0C kind != 7 || [[gun+3F0h]+6FCh] <= 0; (7) 00729B2A muzzle.y >= 1.0 (00D7A24C) or (!00728A90(gun) && !005459B0(gun)); (8) 00729B53 gun+448h > 0 and some barrel i has !checkReload || gun[+414h][i] <= 0, the only true path. Ammunition is NOT a conjunct: it is enforced after the shot in 0072D520.",
+    "predicates": "006D1E50 takes the weapon kind in ECX and answers true for {2,3,4,6}, the artillery set. 005459B0 is the same predicate reading the kind from [[gun+3F4h]+80h]. 00728A90 answers true for {1,5,6}, the anti-air set. Their union is {1..6}, so test 7 reads: a gun of kind 1..6 whose muzzle is below y = 1.0 cannot fire; kind 0 and kinds >= 7 are exempt.",
+    "host_models": "Of the eight, the host models 4 and 8 live, 6 structurally with a always-zero input, 7 partially (y live, both predicates hard-coded false), and 1, 2, 3 as faithful constants. Test 5 is not modelled at all.",
+    "cadence": "Per Fire call: 007302C4 picks the first barrel with a timer <= 0 scanning forward from gun+44Ch; ONE projectile is spawned; 007309E8 rearms that barrel; 007309ED advances the cursor modulo gun+448h; 00730A05 sets gun+450h = [gun+3F8h]+30h, the authored BarrelDelayTime. 0072D520 consumes a round and writes gun[+414h][barrel] = 00BD2F10([gun+3F8h]+28h, [gun+3F8h]+2Ch), or FLT_MAX when the provider is empty. 0072CF00 divides by 008E6430(8, unit) when the value is below FLT_MAX and both mode guards are set, then stores. Per fixed step 0072D130 decrements gun+478h and gun+450h unconditionally and advances only barrel timers that are not already negative. Steady state: an opening burst of M shots spaced D apart because every timer starts at 0, then min(1/D, M/R) shots per second.",
+    "salvo": "One Fire call spawns one projectile. class+0CCh OneTimeBulletAmount appears zero times and class+0D0h MultiBulletConeAngle once in this installation's arcade device table, so a salvo is one shot here. That is a data property, not a rule of the engine.",
+    "barrel_count_producer": "gun+448h is not a Lua field. 0072E713 calls 0072AB80(gunClass) = max(1, (class+0A0h - class+9Ch)/0Ch), the size of the class muzzle vector, which 00732560 copies verbatim from the model's \"fire\" node group. It is a model property.",
+    "reload_producer": "FUN_007313E0 reads ReloadTime: when it is not a number it takes ReloadTime[1] into +28h and ReloadTime[2] into +2Ch; when it is a number it writes the same value to both. Every ReloadTime in this installation's arcade table is a number, so 00BD2F10(R, R) = R and the native reload is deterministic here, which makes the host's fixed reload_time faithful.",
+    "no_settle": "The reconstruction's settle test is too strict by exactly ten times per axis, and is taken from the wrong routine. 0085AE4A is an early-out inside the angle stepper 0085AD80; src/game_hosts_gunnery.cpp:1400 reuses it as a want_fire conjunct with kGunAimDeadBand = 0.00017453 rad (0.01 deg). HEAVYARTILLERY is kind 2,3,4,6, which 0072C6A0 maps to the ArtilleryGunnerBot at gun+398h, tick 006DF520, whose own arming gate is 006DEE40(gun+480h, h, *00CF9054) with *00CF9054 = 0.0017453 rad (0.1 deg). The 1828 lost gun-ticks are 13% of the 13886 targeted refusals; the binding constraint on the shot count is the 17.5 s reload, so this is a faithfulness correction and is NOT proposed as a way to raise the count.",
+    "expected_shot_bound": "Maryland and West Virginia carry device 205 (vehicle 315 Colorado 1941, ReloadTime 17.5, BarrelDelayTime 0.6, one Bullet row); Massachusetts and Iowa carry device 516 (vehicle 321 South Dakota 1920 16'' 3X, same numbers, one Bullet row). With the host's M = 1 an engaged gun fires when it settles and once 17.5 s later: two shots in 25 s, which is exactly what the per-gun table prints for all thirteen continuously engaged rows, with 1 for the five that engage after t = 7.5 s or lose the target. With the native M (2 for a twin, 3 for the South Dakota triple) the same guns would fire 4 and 6, so roughly 60 to 90 shots for cat 4, not hundreds. Cat 6 runs the other way: Downes and Cassin platforms 4 and 5 are single 5'' mounts with two ammunition rows and R = 5.0, so the host's M = 2 prints 10 shots each where a single-muzzle mount fires 1 + floor(24.6/5) = 5.",
+    "refusal_rate": "The 98-99% can_fire_refusals rate is arithmetically required, not a symptom: a gun holding the latch and firing every 17.5 s must refuse 349 of every 350 ticks at 20 Hz. 7628 fire messages over 52 trigger_rises is an average held latch of 147 ticks = 7.3 s, shorter than one reload, which is why an engaged gun usually gets its opening burst and nothing more within one episode.",
+    "stagger": "trigger_rises = 52 closes the fire-start stagger. gun+478h is seeded 52 times at up to 0.12 s (00CE81A8) across 606 guns x 25 s = 15150 gun-seconds, at most 6.2 gun-seconds of block in total. The stagger is not why anything fails to fire."
+  },
+  "verification": {
+    "run": "build/win32/Release/bsp_game.exe --frames 700 --press-start-frame 30 --menu-select IJN01 --mission-frames 500 --mission-frame-seconds 0.05 --log local/cadence_run.log --xlive-dll build/win32/Release/xlive_stub.dll --game-root \"I:/SteamLibrary/steamapps/common/Battlestations Pacific\"",
+    "exit": 0,
+    "reproduces_prior_packet": "targeted refusals=12058 no_accept=12058 no_settle=1828 no_window=0; arc_blocks=1174; cat 4 guns=45 assigns=418 shots=29 no_window=7774 arc_blocked=222; cat 6 guns=72 assigns=143 shots=40 no_window=4332 arc_blocked=952. Identical to docs/AA_VERTICAL_WINDOW.md.",
+    "new_counters": "trigger_rises=52 fire_messages=7628 fire_if_ready=7628 can_fire_refusals=7559 shots=69; 7628 - 7559 = 69 exactly.",
+    "per_gun_table": "Every continuously engaged cat-4 row prints shots=2 (Maryland 1/2, Tennessee 1/2, California 1/2, Pennsylvania 4, Massachusetts 1/2, Iowa 1/2); Lexington 1/2, West Virginia 1/2 and Oklahoma 1 print 1. Every cat-6 row on Downes and Cassin prints 10. Both match the closed form barrels + floor(window/reload)*barrels for the host's barrel count.",
+    "ret_shape_00bd2f10": "__fastcall(int kind)(float lo, float hi), RET 8, proved at 0072D3B3: eight bytes are pushed, and two instructions after the call POP ESI / POP EBX balance the PUSH EBX / PUSH ESI of the prologue with no ADD ESP. The PUSH 1 at 0072D565 is therefore 0072CF00's third argument pushed early, not a third argument to the random helper.",
+    "ret_shape_0072cf00": "__thiscall(gun)(int barrel, float time, int setFull). Argument slots read at [ESP+24h], [ESP+28h] and [ESP+2Ch] after three pushes, an eight-byte SUB and three register pushes from entry, i.e. entry+4, +8 and +0Ch.",
+    "installation": "I:/SteamLibrary/steamapps/common/Battlestations Pacific. MODDED (BSPRM/AlterBSP): scripts/datatables/classtables/arcade/deviceclasses.lua mtime 2026-05-09 22:37 with the author's RPM_RT/RPM_DT helpers at its head; classtables/realistic/deviceclasses.lua and autoload/deviceclasses.lua both 2024-07-13 08:26. autoload selects arcade unless GameMode == 1, so every authored number quoted comes from the modified table. Read only; nothing in the installation was written."
+  },
+  "host_steps": [
+    {"step": "FireIfReady asks CanFire with checkReload = 1", "address": "00727e3d", "native": "00729a80", "function": "00727e30", "note": "indirect through gun vtable slot 1D0h; the row records the resolved base implementation"},
+    {"step": "CanFire test 5: is this an artillery kind", "address": "00729aec", "native": "006d1e50", "function": "00729a80"},
+    {"step": "CanFire test 7: the refreshed muzzle world position", "address": "00729b2a", "native": "00427eb0", "function": "00729a80"},
+    {"step": "CanFire test 7: the anti-air kind predicate", "address": "00729b3f", "native": "00728a90", "function": "00729a80"},
+    {"step": "CanFire test 7: the artillery kind predicate off the gun", "address": "00729b4a", "native": "005459b0", "function": "00729a80"},
+    {"step": "Fire picks the first ready barrel from the cursor", "address": "007302c4", "native": "007298d0", "function": "00730160"},
+    {"step": "Fire rearms the barrel it just fired", "address": "007309e8", "native": "0072d520", "function": "00730160"},
+    {"step": "rearm: the reload draw between +28h and +2Ch", "address": "0072d579", "native": "00bd2f10", "function": "0072d520"},
+    {"step": "rearm: store the drawn reload with setFull = 1", "address": "0072d589", "native": "0072cf00", "function": "0072d520"},
+    {"step": "rearm: the empty-provider sentinel, FLT_MAX with setFull = 0", "address": "0072d5a5", "native": "0072cf00", "function": "0072d520"},
+    {"step": "reload store: the per-unit modifier product for slot 8", "address": "0072cf4e", "native": "008e6430", "function": "0072cf00"},
+    {"step": "fixed step: the base gun tick", "address": "0072d18c", "native": "0072ad40", "function": "0072d130"},
+    {"step": "fixed step: advance one barrel timer that is not already negative", "address": "0072d21b", "native": "0072cf00", "function": "0072d130"},
+    {"step": "rising edge of the latch seeds the fire-start stagger in [0, 0.12)", "address": "0072d3b3", "native": "00bd2f10", "function": "0072d2c0"},
+    {"step": "falling edge of the latch", "address": "0072d3d3", "native": "0072b4c0", "function": "0072d2c0"},
+    {"step": "gun construction: barrelNum from the class muzzle vector", "address": "0072e713", "native": "0072ab80", "function": "0072e6d0"},
+    {"step": "torpedo stock also rearms a barrel", "address": "0081f95a", "native": "0072d520", "function": "0081f8b0", "note": "the second and only other caller of 0072D520; not read by this packet"}
+  ],
+  "routines": [
+    {"address": "00729a80", "body": "00729a80-00729b88", "coverage": "complete"},
+    {"address": "00727e30", "body": "00727e30-00727e64", "coverage": "complete"},
+    {"address": "0072d520", "body": "0072d520-0072d5ad", "coverage": "complete"},
+    {"address": "007298d0", "body": "007298d0-00729913", "coverage": "complete"},
+    {"address": "0072ab80", "body": "0072ab80-0072abd1", "coverage": "complete"},
+    {"address": "006d1e50", "body": "006d1e50-006d1e6c", "coverage": "complete"},
+    {"address": "00728a90", "body": "00728a90-00728ab3", "coverage": "complete"},
+    {"address": "005459b0", "body": "005459b0-005459d8", "coverage": "complete"},
+    {"address": "006dee40", "body": "006dee40-006dee80", "coverage": "complete"},
+    {"address": "00427eb0", "body": "00427eb0-00427ec8", "coverage": "complete"},
+    {"address": "0072d2c0", "body": "0072d2c0-0072d3e8", "coverage": "complete"},
+    {"address": "0072d130", "body": "0072d130-0072d2be", "coverage": "partial: the two decrements and the barrel loop; the effect-reference arm at 0072D14D was not re-read"},
+    {"address": "0072cf00", "body": "0072cf00-0072d129", "coverage": "partial: 0072CF00-0072CF9A. 0072CF9A-0072D129, the per-barrel attached objects at gun+3E4h, unread"},
+    {"address": "00730160", "body": "00730160-00730a1b", "coverage": "partial: head 00730160-007301BC and tail 007309C4-00730A1B. The middle is docs/UNIT_WEAPON_DEVICES.md's contract"},
+    {"address": "007313e0", "body": "007313e0-00731a00", "coverage": "partial: Throw, TracerRatio, ReloadTime, BarrelDelayTime and the start of FireEfx. The rest of the 48h record unread"},
+    {"address": "0072d5d1", "body": "0072d5d1-0072d6db", "coverage": "partial: 0072D5D1-0072D61C, the two pointer re-points. The tail unread"},
+    {"address": "008e6430", "body": "008e6430-008e649d", "coverage": "partial: the 1.0 seed and the loop head; the modifier combination unread"}
+  ],
+  "constants": [
+    {"address": "00d7a218", "value": "0.0f", "use": "the zero every CanFire timer comparison and the barrel-advance guard use"},
+    {"address": "00d7a24c", "value": "1.0f", "use": "CanFire test 7's muzzle waterline y, and 0072CF00's divisor when no modifier applies"},
+    {"address": "00d7a278", "value": "double 3.4028234663852886e38 (FLT_MAX)", "use": "0072CF00 scales only values strictly below it, so the empty-barrel sentinel is never divided"},
+    {"address": "00cfdbf8", "value": "0x7F7FFFFF (FLT_MAX)", "use": "the empty-provider barrel sentinel written by 0072D520"},
+    {"address": "00ce81a8", "value": "0.12f", "use": "upper bound of the fire-start stagger seeded into gun+478h on a rising edge"},
+    {"address": "00cf9054", "value": "0.0017453292f (0.1 degree)", "use": "the ArtilleryGunnerBot's arming tolerance in 006DF520 step 12"},
+    {"address": "00cfaa48", "value": "0.00017453293f (0.01 degree)", "use": "the angle stepper's dead band, which the host wrongly reuses as the fire gate"}
+  ],
+  "divergences": [
+    {"id": 1, "what": "barrel count", "native": "0072AB80: the muzzle-node count of the gun class", "host": "src/game_hosts_gunnery.cpp:434, the number of Bullet[i] sub-tables in the Lua device row", "direction": "both. Iowa/South Dakota 16'' 3X authors one Bullet row, so host 1 vs native 3 and the host fires one third. A Mahan 5''/38 single mount authors two Bullet rows (two ammunition types), so host 2 vs native 1 and the host fires twice as many."},
+    {"id": 2, "what": "the settle test before the trigger", "native": "006DFB8C/006DFBB6: 006DEE40 against *00CF9054 = 0.0017453 rad", "host": "gun_aim_settled_0085ae4a with kGunAimDeadBand = 0.00017453 rad, taken from inside the stepper 0085AD80", "direction": "host fires less, by a factor of ten per axis"},
+    {"id": 3, "what": "the artillery bot's fire path", "native": "006DF520 arms delayedFire, counts rand(0, 0.1) down and calls gun vtable slot 1F0h once", "host": "the 0072D2C0 latch, one 0ADh message per fixed step, FireIfReady each time", "direction": "unresolved: 006FDF60, slot 1F0h, is contract: unread. The host asks CanFire far more often, but the timers bound both."},
+    {"id": 4, "what": "CanFire test 5, the unit-wide fire cooldown", "native": "[[gun+3F0h]+6F8h] gates every artillery kind", "host": "unit_cooldown_applies = false", "direction": "host fires more"},
+    {"id": 5, "what": "CanFire test 7, the two submerged predicates", "native": "00728A90 and 005459B0", "host": "both hard-coded false", "direction": "host fires more, only for a muzzle below y = 1.0"},
+    {"id": 6, "what": "reload scaling", "native": "t /= 008E6430(8, unit)", "host": "not modelled", "direction": "neutral while no modifier is active; the product starts at 1.0 and both mode guards are clear in a single mission"},
+    {"id": 7, "what": "ammunition", "native": "an empty provider pins the fired barrel at FLT_MAX", "host": "not modelled", "direction": "neutral here: every artillery and AA row in this data authors Ammo = 9999"},
+    {"id": 8, "what": "ammunition-type selection", "native": "0072D5D1 re-points gun+3F8h to [[gun+3F4h]+74h] + idx*48h, so reload and barrel delay follow the selected record", "host": "always Bullet[1]", "direction": "neutral for reload on IJN01; BarrelDelayTime differs by 0.1 s on some dual-purpose rows"},
+    {"id": 9, "what": "ReloadTime authored as a pair", "native": "+28h/+2Ch = ReloadTime[1]/[2]", "host": "src/game_hosts_gunnery.cpp:288, num() returns nil for a table so reload becomes 0", "direction": "latent, not live: no row in this installation authors a pair. A gun with reload = 0 would fire every fixed step"},
+    {"id": 10, "what": "the reload draw", "native": "00BD2F10(+28h, +2Ch) per shot", "host": "a fixed gun.reload_time", "direction": "faithful here, because 007313E0 writes the same scalar to both slots"}
+  ],
+  "corrections": [
+    {
+      "was": "docs/GUN_AIMING.md line 327, CanFire test 3: gun+358h is 'a per-gun counter, contract: unread'.",
+      "is": "It is the destroyed-state level docs/GUN_PLATFORM_ARC.md established at 007297B0. This packet re-read the test at 00729AA7 and the parallel branch at 00730198-007301B6.",
+      "evidence": "00729AA7 CMP dword ptr [ESI+358h], 0 / JG to the false epilogue. docs/GUN_PLATFORM_ARC.md section 'gun+358h is a destruction level'."
+    },
+    {
+      "was": "docs/GUN_AIMING.md line 328 calls gun+450h 'barrelDelayTime' and gun+478h 'a second timer'.",
+      "is": "gun+450h is the barrel delay, reloaded at 00730A05 from the authored BarrelDelayTime at [gun+3F8h]+30h; gun+478h is the fire-start stagger, seeded only on a rising edge of the latch at 0072D3B3 with a uniform draw in [0, 0.12).",
+      "evidence": "00730A05 FLD [ECX+30h] / FSTP [EBP+450h]; 0072D39C-0072D3B8."
+    }
+  ],
+  "assumptions": [
+    "That a 3X mount's model carries three \"fire\" nodes. The mechanism is proven - gun+448h is the size of the class muzzle vector and 00732560 copies that vector verbatim from the model's \"fire\" group - but the group's contents are the model/resource packet's contract and were not read. The 2X/3X/4X in the device Comment strings and the mod author's own RPM_RT(RPM, BarrelNum) = BarrelNum/(RPM/60) helper are corroboration, not a recovered source. The factor of two to three in divergence 1 is a well-supported estimate, not a measurement.",
+    "006FDF60, gun vtable slot 1F0h, the immediate fire 006DF520 actually calls: contract: unread.",
+    "[gun+3F0h]->vtable[1F4h] and [1F8h], the ammunition provider pair: call shape only.",
+    "008E6430's modifier list contents; only the 1.0 seed and the two mode guards were read.",
+    "[00E188A8]+1FE4h == 2 is taken from docs/GUN_PLATFORM_ARC.md; this packet re-read the 00730198-007301B6 branch but not what writes the global."
+  ],
+  "prescription": [
+    "gun.barrel_num (src/game_hosts_gunnery.cpp:434) is the count of Bullet[i] sub-tables; the native gun+448h is the model's \"fire\" node count. These are different quantities and the host's is wrong in both directions. The Lua device table cannot supply it; either take it from the model or label the field a stand-in in the header and in the run log so that no later reading treats a cat-4 or cat-6 shot count as a cadence result.",
+    "settled (src/game_hosts_gunnery.cpp:1400) should use the artillery bot's 0.0017453 rad (00CF9054), not the stepper's 0.00017453 (00CFAA48). 0085AE4A's dead band belongs only inside gun_step_aim_0085ad80.",
+    "f['reload'] (src/game_hosts_gunnery.cpp:288) silently becomes 0 if a mod authors ReloadTime = {min, max}, a form 007313E0 handles. A type(v) == 'table' arm would close it."
+  ],
+  "follow_up_packets": [
+    "gun_immediate_fire_006fdf60: gun vtable slot 1F0h on MRTGun (00CFBF58+1F0h), the call 006DF520 and 008FFF20 actually make.",
+    "gun_class_muzzle_group: the \"fire\" node group 00718870 builds and 00732560 copies; the only source for gun+448h.",
+    "unit_ammunition_provider: [gun+3F0h]->vtable[1F4h]/[1F8h] and 0081F8B0, which re-arms barrels sitting at the FLT_MAX sentinel.",
+    "unit_fire_cooldown_6f8h: what 00953CC0 seeds into unit+6F8h and unit+6FCh, the two conjuncts the host does not model at all."
+  ],
+  "ledger": [
+    {"address": "007313e0", "name": "BSP_GunClass_ReadBulletLuaFields"},
+    {"address": "006d1e50", "name": "BSP_WeaponKind_IsArtillery"},
+    {"address": "005459b0", "name": "BSP_Gun_IsArtilleryKind"},
+    {"address": "00728a90", "name": "BSP_Gun_IsAntiAirKind"},
+    {"address": "0072d5d1", "name": "BSP_Gun_SelectBulletRecord"}
+  ],
+  "build": "./scripts/build.ps1, exit 0, 1/1 tests passed",
+  "tests": "none added: the packet publishes no numeric rule"
+}

@@ -295,6 +295,9 @@ private:
     // The `ID` field 00928a00 seeds, turned into a created instance. Null when
     // the argument is not one of this process's entity tables.
     void* entity_from_argument(int index);
+    // 008A4C90 PilotSetTarget. Resolves and reports; see the definition for why
+    // it does not yet issue.
+    int run_pilot_set_target(GameScriptOrderRow& row);
     std::size_t index_of(void* entity) const noexcept;
     std::string name_of(void* entity) const;
 
@@ -318,6 +321,12 @@ private:
 
     GameHostLog& log_;
     GameUnitsHost& units_;
+    // 008A4C90's tally. `calls` counts what the scripts asked for; the two
+    // `resolved` counters say whether the Lua argument path actually reached a
+    // unit and a target, which was the open question the wiring settles.
+    unsigned long long pilot_set_target_calls_{0};
+    unsigned long long pilot_set_target_unit_resolved_{0};
+    unsigned long long pilot_set_target_target_resolved_{0};
     std::vector<SceneMarker> markers_;
     lua_State* state_{nullptr};
     // The mission machine, kept past a dispatch so the per-frame timer pass can
