@@ -650,5 +650,33 @@
     "Valid raw extents, lifetimes and native wrapping-address domain remain caller obligations; no concurrent/malformed-header guarantee.",
     "Tool executable archive does not contain every tool dependency; post-run runtime file hashes are not mapped-image hashes.",
     "Real D3D9 enumeration passed on this machine; no game integration or gameplay validation."
-  ]
+  ],
+  "orch5_parent_dependency_integration": {
+    "code_commit": "aa836cddc1c64cad1664fe5c140312adab054544",
+    "checkpoint": {
+      "path": "local/checkpoints/aa836cdd/native-renderer-parent-dependencies/validation.json",
+      "sha256": "e6cbd24bb0166528f733e3075862ab1edb655ea9624b623e7cf08f6df90fdbc3",
+      "code_commit": "aa836cddc1c64cad1664fe5c140312adab054544",
+      "artifacts": 3583
+    },
+    "strict_msvc_win32_build": true,
+    "verified_native_seeds": 8,
+    "ctests_passed": 2,
+    "fixture_program": "local/native_renderer_parent_integration/renderer_resolution_probe.exe",
+    "fixture_scope": "All four original bodies matched integrated source in scripted COM rebinding/partial-output cases and actual Direct3D9 enumeration. Search/reserve are176 bytes; the two additional raw API variants cover274 existing native bytes. New caller-supplied16-byte scratch and host qsort boundaries remain explicit.",
+    "packet_entry_extent_bytes_including_existing_raw_variants": 450,
+    "saved_annotation_journal": "local/ghidra-annotations-20260914T161950Z.json",
+    "fresh_native_byte_review": {
+      "spans": 59,
+      "bytes": 11642,
+      "scope": "combined packet and explicit dependency/context spans"
+    },
+    "call_site_review": {
+      "rows_checked": 503,
+      "failures": 0,
+      "scope": "combined direct and tail rows; row counts include explicit dependency duplicates, not unique sites"
+    },
+    "original_fh3_seh_abi_validated": false,
+    "game_validated": false
+  }
 }

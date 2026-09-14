@@ -83,3 +83,11 @@ general B5BE10 negative-count initialization or negative-capacity reserve paths.
 The separately integrated NATIVE_SYSTEM_REGISTRY_RAW_TERMINAL packet now provides
 B5DF00/B5DF70/B5BB20 and canonical raw singleton dispatch; original FH3/SEH,
 private frame aliases and gameplay remain unvalidated.
+
+## Integrated validation at aa836cdd
+
+Eight actual entry implementations/overloads include the complete52-literal constructor and106-state static cleanup map. Seven actual manager/pool source workflows passed. B5BF50 zero-resize requires nonnegative current count AND capacity; general B5BE10 negative preimages and original FH3 execution remain unproved. The combined strict Win32 build, eight seed checks and both CTests passed.
+The six final-library fixtures, 503 direct/tail audit rows, 31 saved/read-back
+annotations, and 59 live/PE spans are preserved in `local/checkpoints/aa836cdd/native-renderer-parent-dependencies/validation.json`
+(SHA256 `e6cbd24bb0166528f733e3075862ab1edb655ea9624b623e7cf08f6df90fdbc3`). Original CRT/FH3/SEH/private-frame identity,
+full renderer lifecycle/adoption and gameplay remain unvalidated.

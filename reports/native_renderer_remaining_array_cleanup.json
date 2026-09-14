@@ -713,5 +713,33 @@
     "artifact_count": 477,
     "all_frozen_hashes_reverified": true,
     "all_original_inputs_reverified": true
+  },
+  "orch5_parent_dependency_integration": {
+    "code_commit": "aa836cddc1c64cad1664fe5c140312adab054544",
+    "checkpoint": {
+      "path": "local/checkpoints/aa836cdd/native-renderer-parent-dependencies/validation.json",
+      "sha256": "e6cbd24bb0166528f733e3075862ab1edb655ea9624b623e7cf08f6df90fdbc3",
+      "code_commit": "aa836cddc1c64cad1664fe5c140312adab054544",
+      "artifacts": 3583
+    },
+    "strict_msvc_win32_build": true,
+    "verified_native_seeds": 8,
+    "ctests_passed": 2,
+    "fixture_program": "local/native_renderer_parent_integration/renderer_remaining_probe.exe",
+    "fixture_scope": "Seven distinct actual entries reuse instruction-equivalent raw DWORD-array providers. Original/source signed resize and all four negative-capacity cleanup paths passed; allocation failures remain static.",
+    "packet_entry_extent_bytes_including_existing_raw_variants": 332,
+    "saved_annotation_journal": "local/ghidra-annotations-20260914T161950Z.json",
+    "fresh_native_byte_review": {
+      "spans": 59,
+      "bytes": 11642,
+      "scope": "combined packet and explicit dependency/context spans"
+    },
+    "call_site_review": {
+      "rows_checked": 503,
+      "failures": 0,
+      "scope": "combined direct and tail rows; row counts include explicit dependency duplicates, not unique sites"
+    },
+    "original_fh3_seh_abi_validated": false,
+    "game_validated": false
   }
 }

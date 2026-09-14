@@ -1,6 +1,6 @@
 {
   "packet": "native_renderer_parent_member_cleanup",
-  "status": "reconstructed_strict_Win32_build_tested_pending_focused_fixture_and_saved_annotations",
+  "status": "reconstructed_integrated_strict_build_and_scoped_fixture_checked",
   "project": "C:/Users/sqz269/bsp.gpr",
   "program": "/battlestationspacific.exe",
   "native_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
@@ -130,8 +130,20 @@
       "log": "local/native-renderer-parent-build.log",
       "initial_configuration_failure": "local/native-renderer-parent-configure-initial.log; corrected immediate target_sources to deferred source registration before the successful build"
     },
-    "fixture": "pending",
-    "native_bytes": "pending current integration capture"
+    "fixture": {
+      "comparisons": 8,
+      "scope": "Five member cleanup entries passed eight original/source comparisons, including recursive and negative-depth embedded Win32 sections. The original B2F690 FH3 handler literal was explicitly rebound to a fail-fast fixture handler for normal-path execution only.",
+      "log": "local/native_renderer_parent_integration/parent_cleanup_run.log"
+    },
+    "native_bytes": {
+      "owned_entry_bytes": 237,
+      "combined_checkpoint": {
+        "path": "local/checkpoints/aa836cdd/native-renderer-parent-dependencies/validation.json",
+        "sha256": "e6cbd24bb0166528f733e3075862ab1edb655ea9624b623e7cf08f6df90fdbc3",
+        "code_commit": "aa836cddc1c64cad1664fe5c140312adab054544",
+        "artifacts": 3583
+      }
+    }
   },
   "boundaries": [
     "new C++ ABI",
@@ -141,5 +153,33 @@
     "full parent lifecycle and game execution unvalidated"
   ],
   "game_validated": false,
-  "abi_compatible": false
+  "abi_compatible": false,
+  "orch5_parent_dependency_integration": {
+    "code_commit": "aa836cddc1c64cad1664fe5c140312adab054544",
+    "checkpoint": {
+      "path": "local/checkpoints/aa836cdd/native-renderer-parent-dependencies/validation.json",
+      "sha256": "e6cbd24bb0166528f733e3075862ab1edb655ea9624b623e7cf08f6df90fdbc3",
+      "code_commit": "aa836cddc1c64cad1664fe5c140312adab054544",
+      "artifacts": 3583
+    },
+    "strict_msvc_win32_build": true,
+    "verified_native_seeds": 8,
+    "ctests_passed": 2,
+    "fixture_program": "local/native_renderer_parent_integration/renderer_parent_cleanup_probe.exe",
+    "fixture_scope": "Five member cleanup entries passed eight original/source comparisons, including recursive and negative-depth embedded Win32 sections. The original B2F690 FH3 handler literal was explicitly rebound to a fail-fast fixture handler for normal-path execution only.",
+    "packet_entry_extent_bytes_including_existing_raw_variants": 237,
+    "saved_annotation_journal": "local/ghidra-annotations-20260914T161950Z.json",
+    "fresh_native_byte_review": {
+      "spans": 59,
+      "bytes": 11642,
+      "scope": "combined packet and explicit dependency/context spans"
+    },
+    "call_site_review": {
+      "rows_checked": 503,
+      "failures": 0,
+      "scope": "combined direct and tail rows; row counts include explicit dependency duplicates, not unique sites"
+    },
+    "original_fh3_seh_abi_validated": false,
+    "game_validated": false
+  }
 }

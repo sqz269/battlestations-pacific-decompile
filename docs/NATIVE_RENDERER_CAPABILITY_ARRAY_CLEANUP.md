@@ -80,3 +80,11 @@ reference bytes, tools and logs. Actual loaded x86 runtime DLL evidence is store
 separately. Paths are resolved through handles opened in the running fixture;
 loaded PE machine identity is read from memory, while later disk/archive hashes
 are not mapped-image hashes. Observed tools do not cover every toolchain dependency.
+
+## Integrated validation at aa836cdd
+
+Two distinct actual entry adapters share the fully checked raw reserve/resize/free implementation. Seven original/source comparisons passed; allocation-failure behavior remains static. The combined strict Win32 build, eight seed checks and both CTests passed.
+The six final-library fixtures, 503 direct/tail audit rows, 31 saved/read-back
+annotations, and 59 live/PE spans are preserved in `local/checkpoints/aa836cdd/native-renderer-parent-dependencies/validation.json`
+(SHA256 `e6cbd24bb0166528f733e3075862ab1edb655ea9624b623e7cf08f6df90fdbc3`). Original CRT/FH3/SEH/private-frame identity,
+full renderer lifecycle/adoption and gameplay remain unvalidated.

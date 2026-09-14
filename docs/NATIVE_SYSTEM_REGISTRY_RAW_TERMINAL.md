@@ -71,3 +71,11 @@ The normal workflow constructs all 52 registry records with initially absent man
 The failure workflow injects one C++ exception at the first registry string getter after the original pool has been destroyed. It verifies count was predecremented to 51; B5DF00's state-0 base cleanup installed CE3818 and cleared current registry publication; the scalar retained its owner and array; and BD0400 cleared its vector while retaining the actual section with depth zero. The getter failed before pool recreation. Diagnostic fixture disposal occurs only after these assertions and does not retry the failed owner or manager.
 
 Test-only entry hooks record actual allocations/frees and inject the selected exception; production has no such hooks. The fixture records loaded PE machine and physically resolved module paths inside the 32-bit process before hashing, distinguishing linked static libraries from loaded runtime DLLs. This is source behavior validation, not execution of original FH3 exception machinery or game validation. The machine-readable report records the final strict build and artifact status separately.
+
+## Integrated validation at aa836cdd
+
+Three terminal entries compose with existing BD0400 canonical manager dispatch using the popped owner and actual current publication cells. Normal pool recreation and first-getter source failure workflows passed; the existing197-byte BD0400 body is not counted as a new native entry. The combined strict Win32 build, eight seed checks and both CTests passed.
+The six final-library fixtures, 503 direct/tail audit rows, 31 saved/read-back
+annotations, and 59 live/PE spans are preserved in `local/checkpoints/aa836cdd/native-renderer-parent-dependencies/validation.json`
+(SHA256 `e6cbd24bb0166528f733e3075862ab1edb655ea9624b623e7cf08f6df90fdbc3`). Original CRT/FH3/SEH/private-frame identity,
+full renderer lifecycle/adoption and gameplay remain unvalidated.

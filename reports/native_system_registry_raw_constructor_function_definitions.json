@@ -1,0 +1,79 @@
+{
+ "events": [
+  {
+   "recreate": "00b5bf50",
+   "previous": "Function: FUN_00b5bf50 at 00b5bf50\nSignature: undefined FUN_00b5bf50(void)\nEntry: 00b5bf50\nBody: 00b5bf50 - 00b5bf61",
+   "plate": null
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "00b5bf50"
+   },
+   "result": {
+    "success": true,
+    "address": "00b5bf50",
+    "deleted_function": "FUN_00b5bf50",
+    "body_size": 18,
+    "message": "Function 'FUN_00b5bf50' deleted at 00b5bf50"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00b5bf50",
+    "end_address": "00b5bf67"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00b5bf50",
+    "end_address": "00b5bf66",
+    "bytes_disassembled": 23,
+    "message": "Successfully disassembled 23 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00b5bf50",
+    "disassemble_first": false,
+    "name": "BSP_NativeSystemConstants_DestroyArray_Provisional"
+   },
+   "result": {
+    "success": true,
+    "address": "00b5bf50",
+    "function_name": "BSP_NativeSystemConstants_DestroyArray_Provisional",
+    "entry_point": "00b5bf50",
+    "body_size": 23,
+    "message": "Function created successfully at 00b5bf50",
+    "warnings": [
+     "Function name 'BSP_NativeSystemConstants_DestroyArray_Provisional' \u2014 main part 'NativeSystemConstants_DestroyArray_Provisional' is not PascalCase. Expected: NativesystemconstantsDestroyarrayProvisional",
+     "Function name 'BSP_NativeSystemConstants_DestroyArray_Provisional' \u2014 main part 'NativeSystemConstants_DestroyArray_Provisional' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_NativeSystemConstants_DestroyArray_Provisional' does not start with a recognized verb. First word 'Native' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00b5bf50",
+   "end": "00b5bf67",
+   "name": "BSP_NativeSystemConstants_DestroyArray_Provisional",
+   "after": "Function: BSP_NativeSystemConstants_DestroyArray_Provisional at 00b5bf50\nSignature: undefined BSP_NativeSystemConstants_DestroyArray_Provisional(void)\nEntry: 00b5bf50\nBody: 00b5bf50 - 00b5bf66"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}

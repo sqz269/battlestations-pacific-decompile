@@ -103,3 +103,11 @@ generated original-byte header, executable, library, logs, compiler inputs,
 toolchain files, measured module files and original PE are frozen by hash.
 Allocation failure and parent/native FH3 dispatch are static/source-contract
 evidence only. No in-game renderer, real referenced resource or gameplay was run.
+
+## Integrated validation at aa836cdd
+
+Seven distinct actual entries reuse instruction-equivalent raw DWORD-array providers. Original/source signed resize and all four negative-capacity cleanup paths passed; allocation failures remain static. The combined strict Win32 build, eight seed checks and both CTests passed.
+The six final-library fixtures, 503 direct/tail audit rows, 31 saved/read-back
+annotations, and 59 live/PE spans are preserved in `local/checkpoints/aa836cdd/native-renderer-parent-dependencies/validation.json`
+(SHA256 `e6cbd24bb0166528f733e3075862ab1edb655ea9624b623e7cf08f6df90fdbc3`). Original CRT/FH3/SEH/private-frame identity,
+full renderer lifecycle/adoption and gameplay remain unvalidated.

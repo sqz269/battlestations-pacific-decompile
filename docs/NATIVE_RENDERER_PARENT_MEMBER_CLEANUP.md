@@ -42,3 +42,11 @@ recreated their complete bodies under the Ghidra write lock, and verified zero
 remaining flow gaps. Repair reports retain intermediate states as history.
 Compilation and focused fixture evidence are recorded in the accompanying
 report as they are completed. Full parent lifetime and gameplay remain open.
+
+## Integrated validation at aa836cdd
+
+Five member cleanup entries passed eight original/source comparisons, including recursive and negative-depth embedded Win32 sections. The original B2F690 FH3 handler literal was explicitly rebound to a fail-fast fixture handler for normal-path execution only. The combined strict Win32 build, eight seed checks and both CTests passed.
+The six final-library fixtures, 503 direct/tail audit rows, 31 saved/read-back
+annotations, and 59 live/PE spans are preserved in `local/checkpoints/aa836cdd/native-renderer-parent-dependencies/validation.json`
+(SHA256 `e6cbd24bb0166528f733e3075862ab1edb655ea9624b623e7cf08f6df90fdbc3`). Original CRT/FH3/SEH/private-frame identity,
+full renderer lifecycle/adoption and gameplay remain unvalidated.
