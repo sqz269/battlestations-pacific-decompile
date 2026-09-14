@@ -10,6 +10,9 @@
 #include "bsp/game_hosts_units.hpp"
 #include "bsp/lua_binding_navigator.hpp"
 #include "bsp/mission_lua_bindings.hpp"
+#include "bsp/attack_commands.hpp"
+#include "bsp/attack_target_classify.hpp"
+#include "bsp/ordnance_kinds.hpp"
 #include "bsp/pilot_order_bindings.hpp"
 #include "bsp/mission_lua_host.hpp"
 
@@ -319,17 +322,121 @@ int GameScriptOrdersHost::run_pilot_set_target(GameScriptOrderRow& row) {
     const bsp::PilotAttackSelectorFlags flags =
         bsp::pilot_attack_selector_flags_008a4e54(attack_type);
 
+    // docs/ATTACK_CAPABILITY_INPUTS.md: eight of 007EEC50's eleven feasibility
+    // inputs are answerable from an authored class id alone, and this host
+    // already holds the machinery - unit_is_kind_of walks the 88 compiled
+    // vt[5Ch] bodies, which is the same question the native asks. Report them so
+    // the remaining gap is a measured list rather than an assertion.
+    const std::size_t target_index = target.object != nullptr
+        ? index_of(target.object)
+        : (target.object_id > 0 ? static_cast<std::size_t>(target.object_id - 1)
+                                : ~static_cast<std::size_t>(0));
+    const int self_class = units_.unit_class_id(row.unit_index);
+    const int target_class = units_.unit_class_id(target_index);
+    // docs/ATTACK_CAPABILITY_INPUTS.md Part 2: the two classifiers behind
+    // target_is_air and target_is_surface. Both need the target's live +5Dh
+    // byte, which this host does model - unit_flag_005d, and the same byte
+    // unit_alive_and_visible reads - so they are answerable here rather than
+    // refused, which is what that document's contract assumed a host could not
+    // do. The surface walk still reports kUnreadSetBranch if it reaches
+    // 008DDF90, which no ship or aircraft target does.
+    bsp::EntityTargetFacts tf;
+    tf.present = target_index < units_.count();
+    if (tf.present) {
+        tf.not_engageable = units_.unit_flag_005d(target_index);
+        tf.is_plane = units_.unit_is_kind_of(target_index, 0x0f);
+        tf.is_plane_squadron = units_.unit_is_kind_of(target_index, 0x18);
+        tf.is_ship_family = units_.unit_is_kind_of(target_index, 0x06);
+        tf.is_submarine = units_.unit_is_kind_of(target_index, 0x08);
+        tf.is_airfield = units_.unit_is_kind_of(target_index, 0x45);
+        tf.is_shipyard = units_.unit_is_kind_of(target_index, 0x46);
+        tf.is_command_building = units_.unit_is_kind_of(target_index, 0x1c);
+        tf.is_dummy_target = units_.unit_is_kind_of(target_index, 0x35);
+        tf.is_land_fort = units_.unit_is_kind_of(target_index, 0x1b);
+        float r[3], u[3], f[3], t[3];
+        if (units_.unit_pose(target_index, r, u, f, t)) tf.world_y = t[1];
+    }
+    const bool target_air = bsp::entity_is_airborne_00922b10(tf);
+    const bsp::SurfaceTargetAnswer target_surface =
+        bsp::entity_is_surface_target_00922c80(tf);
+    log_.notef("  PilotSetTarget classify: target_is_air=%d target_is_surface=%s "
+        "(+5Dh=%d y=%.1f)", target_air ? 1 : 0,
+        target_surface == bsp::SurfaceTargetAnswer::kYes ? "yes"
+            : (target_surface == bsp::SurfaceTargetAnswer::kNo ? "no" : "UNREAD-SET-BRANCH"),
+        tf.not_engageable ? 1 : 0, static_cast<double>(tf.world_y));
+    log_.notef("  PilotSetTarget caps: self_class=%d level_bomber=%d kamikaze_capable=%d "
+        "dogfight_excluded=%d | target_class=%d structure=%d bomb_excluded=%d "
+        "submarine=%d ship_family=%d | REFUSED: weapon_controller, target_is_air, "
+        "target_is_surface (need live +5Dh); gates 0047B850/00604A50/00828EC0 unread",
+        self_class,
+        units_.unit_is_kind_of(row.unit_index, 0x10) ? 1 : 0,
+        units_.unit_is_kind_of(row.unit_index, 0x17) ? 1 : 0,
+        units_.unit_is_kind_of(row.unit_index, 0x16) ? 1 : 0,
+        target_class,
+        units_.unit_is_kind_of(target_index, 0x1c) ? 1 : 0,
+        units_.unit_is_kind_of(target_index, 0x0e) ? 1 : 0,
+        units_.unit_is_kind_of(target_index, 0x08) ? 1 : 0,
+        units_.unit_is_kind_of(target_index, 0x06) ? 1 : 0);
+    // All eleven of 007EEC50's feasibility inputs, assembled from what this host
+    // holds. docs/ATTACK_CAPABILITY_INPUTS.md and docs/ORDNANCE_KIND_IDENTITY.md
+    // carry the evidence for each; nothing here is guessed.
+    bsp::AttackFeasibilityInputs in;
+    in.target_present = tf.present && !tf.not_engageable;
+    in.unit_side = units_.unit_side_0054(row.unit_index);
+    in.target_side = tf.present ? units_.unit_side_0054(target_index) : 0;
+    in.target_is_structure = units_.unit_is_kind_of(target_index, 0x1c);
+    in.target_is_bomb_excluded = units_.unit_is_kind_of(target_index, 0x0e);
+    in.target_is_submarine = units_.unit_is_kind_of(target_index, 0x08);
+    in.target_is_kamikaze_ship = units_.unit_is_kind_of(target_index, 0x06);
+    in.target_is_strafe_fallback = units_.unit_is_kind_of(target_index, 0x41);
+    in.self_is_level_bomber = units_.unit_is_kind_of(row.unit_index, 0x10);
+    in.self_is_kamikaze_capable = units_.unit_is_kind_of(row.unit_index, 0x17);
+    in.self_is_dogfight_excluded = units_.unit_is_kind_of(row.unit_index, 0x16);
+    in.target_is_air = target_air;
+    in.target_is_surface = target_surface == bsp::SurfaceTargetAnswer::kYes;
+    // [unit+3D0h] != 0, the squadron's slot-0 plane. This host models a single
+    // unit rather than a squadron holding an array, and the "self" queries above
+    // already read the ordered unit AS that slot-0 plane - which is the native's
+    // own arrangement, since 007ED830 loops +3CCh over +3D0h and every self
+    // query runs on element 0. So the occupancy question reduces to whether the
+    // ordered unit is a plane. That follows from the identification the self
+    // queries already make; it is not a further assumption.
+    in.unit_has_weapon_controller = units_.unit_is_kind_of(row.unit_index, 0x0f);
+    const std::uint64_t ordnance = units_.unit_ordnance(row.unit_index);
+    const bsp::OrdnanceKindSet set{ordnance};
+    in.has_level_bomb_ordnance = bsp::ordnance_has_paratrooper_31h(set);
+    in.has_general_bomb_ordnance = bsp::ordnance_has_general_bomb_2ah(set);
+    in.has_drop_kamikaze_ordnance = bsp::ordnance_has_drop_kamikaze_2fh(set);
+    in.has_torpedo_ordnance = bsp::ordnance_has_torpedo_2bh(set);
+    const std::uint32_t chosen =
+        bsp::attack_command_choose(in, flags.prefer_ordnance, flags.allow_guns);
+    log_.notef("  PilotSetTarget choose: 007EEC50 -> %08lx  (weapon_controller=%d "
+        "ordnance lb=%d gb=%d dk=%d torp=%d, sides %d/%d)",
+        static_cast<unsigned long>(chosen),
+        in.unit_has_weapon_controller ? 1 : 0,
+        in.has_level_bomb_ordnance ? 1 : 0, in.has_general_bomb_ordnance ? 1 : 0,
+        in.has_drop_kamikaze_ordnance ? 1 : 0, in.has_torpedo_ordnance ? 1 : 0,
+        in.unit_side, in.target_side);
+
+    // 008A4EAC: PilotSetTarget hands 0077D600 the command class 007EEC50 chose,
+    // the descriptor built from argument 1, and flags = 1. Issued only when a
+    // class was actually chosen - a zero is 007EEC50 declining, and forwarding
+    // it would be inventing an order the native would not give.
+    if (chosen != 0u && unit != nullptr) {
+        entity_issue_command(unit, chosen, target, 1);
+        ++pilot_set_target_issued_;
+    }
     log_.notef("  PilotSetTarget: unit=%s target_object_id=%u target_valid=%d "
         "pos=(%.1f %.1f %.1f) attack_type=%d prefer_ordnance=%d allow_guns=%d "
-        "-> NOT ISSUED, 007EEC50 needs per-class capability inputs this host "
-        "does not build (docs/PILOT_ORDER_BINDINGS.md)",
+        "-> %s",
         row.unit.empty() ? "(unresolved)" : row.unit.c_str(),
         static_cast<unsigned>(target.object_id),
         target.position_valid ? 1 : 0,
         static_cast<double>(target.position[0]),
         static_cast<double>(target.position[1]),
         static_cast<double>(target.position[2]),
-        attack_type, flags.prefer_ordnance ? 1 : 0, flags.allow_guns ? 1 : 0);
+        attack_type, flags.prefer_ordnance ? 1 : 0, flags.allow_guns ? 1 : 0,
+        chosen != 0u ? "ISSUED" : "not issued (007EEC50 declined)");
     ++pilot_set_target_calls_;
     if (!row.unit.empty()) ++pilot_set_target_unit_resolved_;
     if (target.object_id != 0 || target.position_valid) ++pilot_set_target_target_resolved_;

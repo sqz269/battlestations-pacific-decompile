@@ -1,0 +1,490 @@
+{
+  "reason": "Restore BDEBE0 returning-free epilogue membership using supported endpoints; no inline scripts or callee no-return edits.",
+  "entries": [
+    {
+      "address": "00506bf0",
+      "end_exclusive": "00506c73",
+      "bytes": 131,
+      "sha256": "7d71157d777118c1f98cb770ca44f0b6a9a1e15c044ce9e9da81c881dd9a3704",
+      "before_documentation": {
+        "hash": "a8389b53461fa8485d64b5001e1e78368b00d875a4c36ea89c2685c05a4880b5",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00506bf0",
+        "function_name": "BSP_LoadingQueue_RetireFront",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00506bf0]\n[BSP reconstruction 00506bf0] update\nComplete 131-byte front retirement. Optional job +20h virtual +4(1), clear field; FileStore 00be7130(name at job +14h); destroy through 005051a0 and free. Erroneous CALL_RETURN flow override at call 00506c39 hides raw 00506c3e..46 (add ESP,4; clear front); then shift pointer array left and decrement loader +14h at 00506c6c. The _free thunk and target are already returning; repair the call site only. Do not accept the decompiler early return before decrement. Removal helper body and pending-map effects remain unaudited.\nEvidence: docs/VFS_LOADING_PUMP_LIFETIME.md and reports/vfs_loading_pump_lifetime_audit.json. Read-only audit; no new runtime or ABI-compatible implementation claim. Original ABI: ECX loader; no stack arguments; RET; valid nonempty pointer queue.. Evidence: docs/VFS_LOADING_PUMP_LIFETIME.md; reports/vfs_loading_pump_lifetime_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim.",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "pvVar3",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff0, 4)"
+          },
+          {
+            "name": "uVar4",
+            "type": "undefined8",
+            "storage": "(VARIABLE, 0x0, 8)"
+          },
+          {
+            "name": "puVar1",
+            "type": "undefined4 *",
+            "storage": "(unique, 0x17200, 4)"
+          },
+          {
+            "name": "iVar2",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 32,
+            "name": "LAB_00506c10"
+          },
+          {
+            "relative_offset": 87,
+            "name": "LAB_00506c47"
+          },
+          {
+            "relative_offset": 100,
+            "name": "LAB_00506c54"
+          },
+          {
+            "relative_offset": 124,
+            "name": "LAB_00506c6c"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "before_ownership": [
+        {
+          "address": "00506bf0",
+          "mnemonic": "push",
+          "operands": "esi",
+          "owned": true
+        },
+        {
+          "address": "00506bf1",
+          "mnemonic": "mov",
+          "operands": "esi, ecx",
+          "owned": true
+        },
+        {
+          "address": "00506bf3",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [esi + 0x10]",
+          "owned": true
+        },
+        {
+          "address": "00506bf6",
+          "mnemonic": "push",
+          "operands": "edi",
+          "owned": true
+        },
+        {
+          "address": "00506bf7",
+          "mnemonic": "mov",
+          "operands": "edi, dword ptr [eax]",
+          "owned": true
+        },
+        {
+          "address": "00506bf9",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [edi + 0x20]",
+          "owned": true
+        },
+        {
+          "address": "00506bfc",
+          "mnemonic": "test",
+          "operands": "ecx, ecx",
+          "owned": true
+        },
+        {
+          "address": "00506bfe",
+          "mnemonic": "je",
+          "operands": "0x506c10",
+          "owned": true
+        },
+        {
+          "address": "00506c00",
+          "mnemonic": "mov",
+          "operands": "edx, dword ptr [ecx]",
+          "owned": true
+        },
+        {
+          "address": "00506c02",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [edx + 4]",
+          "owned": true
+        },
+        {
+          "address": "00506c05",
+          "mnemonic": "push",
+          "operands": "1",
+          "owned": true
+        },
+        {
+          "address": "00506c07",
+          "mnemonic": "call",
+          "operands": "eax",
+          "owned": true
+        },
+        {
+          "address": "00506c09",
+          "mnemonic": "mov",
+          "operands": "dword ptr [edi + 0x20], 0",
+          "owned": true
+        },
+        {
+          "address": "00506c10",
+          "mnemonic": "push",
+          "operands": "ebx",
+          "owned": true
+        },
+        {
+          "address": "00506c11",
+          "mnemonic": "call",
+          "operands": "0x4fc150",
+          "owned": true
+        },
+        {
+          "address": "00506c16",
+          "mnemonic": "add",
+          "operands": "edi, 0x14",
+          "owned": true
+        },
+        {
+          "address": "00506c19",
+          "mnemonic": "push",
+          "operands": "edi",
+          "owned": true
+        },
+        {
+          "address": "00506c1a",
+          "mnemonic": "mov",
+          "operands": "ecx, eax",
+          "owned": true
+        },
+        {
+          "address": "00506c1c",
+          "mnemonic": "call",
+          "operands": "0xbe80b0",
+          "owned": true
+        },
+        {
+          "address": "00506c21",
+          "mnemonic": "mov",
+          "operands": "ecx, eax",
+          "owned": true
+        },
+        {
+          "address": "00506c23",
+          "mnemonic": "call",
+          "operands": "0xbe7130",
+          "owned": true
+        },
+        {
+          "address": "00506c28",
+          "mnemonic": "mov",
+          "operands": "ebx, dword ptr [esi + 0x10]",
+          "owned": true
+        },
+        {
+          "address": "00506c2b",
+          "mnemonic": "mov",
+          "operands": "edi, dword ptr [ebx]",
+          "owned": true
+        },
+        {
+          "address": "00506c2d",
+          "mnemonic": "test",
+          "operands": "edi, edi",
+          "owned": true
+        },
+        {
+          "address": "00506c2f",
+          "mnemonic": "je",
+          "operands": "0x506c47",
+          "owned": true
+        },
+        {
+          "address": "00506c31",
+          "mnemonic": "mov",
+          "operands": "ecx, edi",
+          "owned": true
+        },
+        {
+          "address": "00506c33",
+          "mnemonic": "call",
+          "operands": "0x5051a0",
+          "owned": true
+        },
+        {
+          "address": "00506c38",
+          "mnemonic": "push",
+          "operands": "edi",
+          "owned": true
+        },
+        {
+          "address": "00506c39",
+          "mnemonic": "call",
+          "operands": "0xbf65ac",
+          "owned": true
+        },
+        {
+          "address": "00506c3e",
+          "mnemonic": "add",
+          "operands": "esp, 4",
+          "owned": false
+        },
+        {
+          "address": "00506c41",
+          "mnemonic": "mov",
+          "operands": "dword ptr [ebx], 0",
+          "owned": false
+        },
+        {
+          "address": "00506c47",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [esi + 0x14]",
+          "owned": true
+        },
+        {
+          "address": "00506c4a",
+          "mnemonic": "sub",
+          "operands": "ecx, 1",
+          "owned": true
+        },
+        {
+          "address": "00506c4d",
+          "mnemonic": "xor",
+          "operands": "eax, eax",
+          "owned": true
+        },
+        {
+          "address": "00506c4f",
+          "mnemonic": "test",
+          "operands": "ecx, ecx",
+          "owned": true
+        },
+        {
+          "address": "00506c51",
+          "mnemonic": "pop",
+          "operands": "ebx",
+          "owned": true
+        },
+        {
+          "address": "00506c52",
+          "mnemonic": "jle",
+          "operands": "0x506c6c",
+          "owned": true
+        },
+        {
+          "address": "00506c54",
+          "mnemonic": "mov",
+          "operands": "edx, dword ptr [esi + 0x10]",
+          "owned": true
+        },
+        {
+          "address": "00506c57",
+          "mnemonic": "lea",
+          "operands": "ecx, [edx + eax*4]",
+          "owned": true
+        },
+        {
+          "address": "00506c5a",
+          "mnemonic": "mov",
+          "operands": "edx, dword ptr [ecx + 4]",
+          "owned": true
+        },
+        {
+          "address": "00506c5d",
+          "mnemonic": "mov",
+          "operands": "dword ptr [ecx], edx",
+          "owned": true
+        },
+        {
+          "address": "00506c5f",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [esi + 0x14]",
+          "owned": true
+        },
+        {
+          "address": "00506c62",
+          "mnemonic": "add",
+          "operands": "eax, 1",
+          "owned": true
+        },
+        {
+          "address": "00506c65",
+          "mnemonic": "sub",
+          "operands": "ecx, 1",
+          "owned": true
+        },
+        {
+          "address": "00506c68",
+          "mnemonic": "cmp",
+          "operands": "eax, ecx",
+          "owned": true
+        },
+        {
+          "address": "00506c6a",
+          "mnemonic": "jl",
+          "operands": "0x506c54",
+          "owned": true
+        },
+        {
+          "address": "00506c6c",
+          "mnemonic": "add",
+          "operands": "dword ptr [esi + 0x14], -1",
+          "owned": true
+        },
+        {
+          "address": "00506c70",
+          "mnemonic": "pop",
+          "operands": "edi",
+          "owned": true
+        },
+        {
+          "address": "00506c71",
+          "mnemonic": "pop",
+          "operands": "esi",
+          "owned": true
+        },
+        {
+          "address": "00506c72",
+          "mnemonic": "ret",
+          "operands": "",
+          "owned": true
+        }
+      ],
+      "original_abi": "ECX actual20h loader; RET. Current-front reload after initial FileBlock and FileStore removal; job free, clear captured slot, current-array/count shift.",
+      "prototype_note": "Corrects unknown zero-input prototype with explicit ECX and unused EDX source view; not a native binary replacement claim.",
+      "after_documentation": {
+        "hash": "4d2e5269b52f99f0d45c83031435ad84913303651d66edfb71c9f2b8edcd6a8e",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00506bf0",
+        "function_name": "BSP_LoadingQueue_RetireFront",
+        "return_type": "void",
+        "calling_convention": "__fastcall",
+        "plate_comment": "[BSP reconstruction 00506bf0]\n[BSP reconstruction 00506bf0] update\nComplete 131-byte front retirement. Optional job +20h virtual +4(1), clear field; FileStore 00be7130(name at job +14h); destroy through 005051a0 and free. Erroneous CALL_RETURN flow override at call 00506c39 hides raw 00506c3e..46 (add ESP,4; clear front); then shift pointer array left and decrement loader +14h at 00506c6c. The _free thunk and target are already returning; repair the call site only. Do not accept the decompiler early return before decrement. Removal helper body and pending-map effects remain unaudited.\nEvidence: docs/VFS_LOADING_PUMP_LIFETIME.md and reports/vfs_loading_pump_lifetime_audit.json. Read-only audit; no new runtime or ABI-compatible implementation claim. Original ABI: ECX loader; no stack arguments; RET; valid nonempty pointer queue.. Evidence: docs/VFS_LOADING_PUMP_LIFETIME.md; reports/vfs_loading_pump_lifetime_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim.",
+        "parameters": [
+          {
+            "ordinal": 0,
+            "name": "loader",
+            "type": "void *"
+          },
+          {
+            "ordinal": 1,
+            "name": "unused_edx",
+            "type": "void *"
+          }
+        ],
+        "local_variables": [
+          {
+            "name": "iVar2",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "pvVar3",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff0, 4)"
+          },
+          {
+            "name": "puVar1",
+            "type": "undefined4 *",
+            "storage": "(unique, 0x17200, 4)"
+          },
+          {
+            "name": "uVar4",
+            "type": "undefined8",
+            "storage": "(VARIABLE, 0x0, 8)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 32,
+            "name": "LAB_00506c10"
+          },
+          {
+            "relative_offset": 87,
+            "name": "LAB_00506c47"
+          },
+          {
+            "relative_offset": 100,
+            "name": "LAB_00506c54"
+          },
+          {
+            "relative_offset": 124,
+            "name": "LAB_00506c6c"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "verified_complete": true,
+      "verified_instruction_count": 50,
+      "previous_evidence_preserved": true
+    }
+  ],
+  "actions": [
+    {
+      "endpoint": "clear_instruction_flow_override",
+      "body": {
+        "address": "00506c39"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Cleared flow override at 00506c39 (was: NONE, now: NONE)\"}"
+    },
+    {
+      "endpoint": "delete_function",
+      "body": {
+        "address": "00506bf0"
+      },
+      "result": "{\"success\": true, \"address\": \"00506bf0\", \"deleted_function\": \"BSP_LoadingQueue_RetireFront\", \"body_size\": 122, \"message\": \"Function 'BSP_LoadingQueue_RetireFront' deleted at 00506bf0\"}"
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00506bf0",
+        "end_address": "00506c73"
+      },
+      "result": "{\"success\": true, \"start_address\": \"00506bf0\", \"end_address\": \"00506c72\", \"bytes_disassembled\": 131, \"message\": \"Successfully disassembled 131 byte(s)\"}"
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00506bf0",
+        "name": "BSP_LoadingQueue_RetireFront",
+        "disassemble_first": false
+      },
+      "result": "{\"success\": true, \"address\": \"00506bf0\", \"function_name\": \"BSP_LoadingQueue_RetireFront\", \"entry_point\": \"00506bf0\", \"body_size\": 131, \"message\": \"Function created successfully at 00506bf0\", \"warnings\": [\"Function name 'BSP_LoadingQueue_RetireFront' \\u2014 main part 'LoadingQueue_RetireFront' is not PascalCase. Expected: LoadingqueueRetirefront\", \"Function name 'BSP_LoadingQueue_RetireFront' \\u2014 main part 'LoadingQueue_RetireFront' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_LoadingQueue_RetireFront' does not start with a recognized verb. First word 'Loading' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00506bf0",
+        "prototype": "void __fastcall BSP_LoadingQueue_RetireFront(void* loader, void* unused_edx)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00506bf0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00506bf0",
+        "comment": "[BSP reconstruction 00506bf0]\n[BSP reconstruction 00506bf0] update\nComplete 131-byte front retirement. Optional job +20h virtual +4(1), clear field; FileStore 00be7130(name at job +14h); destroy through 005051a0 and free. Erroneous CALL_RETURN flow override at call 00506c39 hides raw 00506c3e..46 (add ESP,4; clear front); then shift pointer array left and decrement loader +14h at 00506c6c. The _free thunk and target are already returning; repair the call site only. Do not accept the decompiler early return before decrement. Removal helper body and pending-map effects remain unaudited.\nEvidence: docs/VFS_LOADING_PUMP_LIFETIME.md and reports/vfs_loading_pump_lifetime_audit.json. Read-only audit; no new runtime or ABI-compatible implementation claim. Original ABI: ECX loader; no stack arguments; RET; valid nonempty pointer queue.. Evidence: docs/VFS_LOADING_PUMP_LIFETIME.md; reports/vfs_loading_pump_lifetime_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00506bf0\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": "{\"success\": true, \"program\": \"battlestationspacific.exe\", \"message\": \"Program saved successfully\"}"
+    }
+  ],
+  "state": "complete_membership_saved_prior_evidence_preserved",
+  "exports_refreshed": true
+}

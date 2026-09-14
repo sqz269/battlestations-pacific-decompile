@@ -88,7 +88,8 @@ void* construct_native_fileblock_00be0a30(void* owner,const void* name,U gate,
                 const auto count=word(output);
                 auto* const destination=pointer(output,4); // native captures destination before source
                 const auto* const source=pointer(name,4);f.active=0x00be0a9f;
-                if(count!=0) std::memcpy(destination,source,count);
+                // Native BF7680 also implements the backward-overlap path.
+                if(count!=0) std::memmove(destination,source,count);
             }
         }
         f.native_state=1;f.phase=NativeFileBlockOwnerPhase::identifying;f.active=0x00be0aae;
