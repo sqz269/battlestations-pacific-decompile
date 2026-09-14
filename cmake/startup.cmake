@@ -976,3 +976,15 @@ cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_sampler_cac
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_platform_load_messages.cpp)
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE src/native_light_environment_queries.cpp)
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE src/native_system_constant_gather.cpp)
+
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_post_effect_frame_binding.cpp)
+
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_material_texture_queries.cpp)
+
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_inverse_world_getter.cpp)
+
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_material_constant_build.cpp)
+
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_material_constant_build_leaves.cpp)
+
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_material_texture_source_constants.cpp)

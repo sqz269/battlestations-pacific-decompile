@@ -1,0 +1,538 @@
+{
+  "packet": "orch5_native_material_constant_build",
+  "status": "complete_normal_schedule_actual_storage_strict_Win32_original_source_fixture_checked",
+  "base_commit": "812b6c0e3be89fed52316ac0076721c69ed66b34",
+  "source_commit": "6336f48698718c2fa5164b9ffb2fa48e0f0ae322",
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "installed_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "routines": [
+    {
+      "address": "00b42350",
+      "end_exclusive": "00b43410",
+      "bytes": 4288,
+      "native_sha256": "5b3d63fcdd42f9f5bb9cd7a02e08e3531472e87aa7409125153c83804f516091",
+      "name": "build_native_material_constants_00b42350",
+      "source": "src/native_material_constant_build.cpp",
+      "original_abi": "ECX actual pass; stack actual entry, unused override; RET8; new source context/frame parameters",
+      "raw_upgrade_of_existing_projected_function": true,
+      "new_native_body_credit": 0
+    },
+    {
+      "address": "00b17390",
+      "end_exclusive": "00b17397",
+      "bytes": 7,
+      "native_sha256": "a369532a26c5c1a580d2c2cd4846bfb741c2c3df0825ee6005ee1643bbc68e41",
+      "name": "native_material_parameter_table_00b17390",
+      "source": "src/native_material_constant_build_leaves.cpp",
+      "original_abi": "ECX actual material; EAX actual+80h; RET",
+      "raw_upgrade_of_existing_projected_function": false,
+      "new_native_body_credit": 1
+    },
+    {
+      "address": "00b5b880",
+      "end_exclusive": "00b5b884",
+      "bytes": 4,
+      "native_sha256": "f7e0208f5e988ae39c7a45dfddbd12921d02f9c3deb5695d4c534c8ab0ccdb0f",
+      "name": "native_shader_constant_register_count_00b5b880",
+      "source": "src/native_material_constant_build_leaves.cpp",
+      "original_abi": "ECX actual constant; EAX DWORD+04; RET",
+      "raw_upgrade_of_existing_projected_function": false,
+      "new_native_body_credit": 1
+    },
+    {
+      "address": "00b8ff00",
+      "end_exclusive": "00b8ff07",
+      "bytes": 7,
+      "native_sha256": "b679e47759c8f774f8f994e01d6997a3e6a9b94d3a2d95948f0fc1e8801ead7a",
+      "name": "native_model_bone_count_00b8ff00",
+      "source": "src/native_material_constant_build_leaves.cpp",
+      "original_abi": "ECX actual model; EAX signed DWORD+188; RET",
+      "raw_upgrade_of_existing_projected_function": false,
+      "new_native_body_credit": 1
+    },
+    {
+      "address": "00b90620",
+      "end_exclusive": "00b90630",
+      "bytes": 16,
+      "native_sha256": "71fa8e8ee03bdc5fd363b5475d813ca3dedcbfd61154227318a711eb27bfd78e",
+      "name": "native_model_bone_node_00b90620",
+      "source": "src/native_material_constant_build_leaves.cpp",
+      "original_abi": "ECX model; stack index; EAX [model+184][index]; RET4; source unused EDX",
+      "raw_upgrade_of_existing_projected_function": false,
+      "new_native_body_credit": 1
+    },
+    {
+      "address": "00b75e50",
+      "end_exclusive": "00b75e56",
+      "bytes": 6,
+      "native_sha256": "2b4f1290dd630ea02869f8dc9c45a88e27460c5f4a254aac68a48f979e84917c",
+      "name": "native_optimized_animator_type_00b75e50",
+      "source": "src/native_material_constant_build_leaves.cpp",
+      "original_abi": "native no arguments, EAX current10900FC; RET; source ECX actual publication address",
+      "raw_upgrade_of_existing_projected_function": false,
+      "new_native_body_credit": 1
+    },
+    {
+      "address": "00b47900",
+      "end_exclusive": "00b47904",
+      "bytes": 4,
+      "native_sha256": "74032ad0e931f3c4730df99da43479f9f5315cc898c7c8614278631cb2c16a62",
+      "name": "native_vertex_declaration_element_count_00b47900",
+      "source": "src/native_material_constant_build_leaves.cpp",
+      "original_abi": "ECX actual declaration; EAX DWORD+10; RET",
+      "raw_upgrade_of_existing_projected_function": false,
+      "new_native_body_credit": 1
+    },
+    {
+      "address": "00b61e10",
+      "end_exclusive": "00b61e1d",
+      "bytes": 13,
+      "native_sha256": "5fe3cbfe6f2e7862e70bd7a669c43c07281175d6aa8cb4556254679bcc348c4a",
+      "name": "native_logical_vertex_decode_record_00b61e10",
+      "source": "src/native_material_constant_build_leaves.cpp",
+      "original_abi": "ECX stream; stack index; EAX current+50 plus index*32; RET4; source unused EDX",
+      "raw_upgrade_of_existing_projected_function": false,
+      "new_native_body_credit": 1
+    },
+    {
+      "address": "00b782d0",
+      "end_exclusive": "00b782f8",
+      "bytes": 40,
+      "native_sha256": "463e918e1963f616d2f5130d3652aebbdd8b6eacc1b4fe1c72186bea942a1576",
+      "name": "native_optimized_animator_has_type_00b782d0",
+      "source": "src/native_material_constant_build_leaves.cpp",
+      "original_abi": "ECX unused actual animator; stack type; AL result only; RET4; source EDX same three current type cells",
+      "raw_upgrade_of_existing_projected_function": false,
+      "new_native_body_credit": 1
+    },
+    {
+      "address": "00c302f0",
+      "end_exclusive": "00c30303",
+      "bytes": 19,
+      "native_sha256": "1c32489e590cada7ddfc0f1e864d830c29d5be4d29b2f72a68cd503d115e13fd",
+      "name": "native_texture_source_current_texture_00c302f0",
+      "source": "src/native_material_texture_source_constants.cpp",
+      "original_abi": "ECX actual source; EAX borrowed texture; RET",
+      "raw_upgrade_of_existing_projected_function": false,
+      "new_native_body_credit": 1
+    },
+    {
+      "address": "00bbcc40",
+      "end_exclusive": "00bbcca7",
+      "bytes": 103,
+      "native_sha256": "85f81b9659df77033306c5a01d0fd5b253952aa28b113e7f8f67520c5d57c2b6",
+      "name": "native_caustics_source_constants_00bbcc40",
+      "source": "src/native_material_texture_source_constants.cpp",
+      "original_abi": "ECX actual source; stack entry,VS,PS,VSheader,PSheader; RET14; source unused EDX",
+      "raw_upgrade_of_existing_projected_function": false,
+      "new_native_body_credit": 1
+    },
+    {
+      "address": "00bbcbd0",
+      "end_exclusive": "00bbcbd3",
+      "bytes": 3,
+      "native_sha256": "596494f50350462943d59d32bfc675a2c3e2e9a6aa0d0606422e3cbbffd86c6b",
+      "name": "native_shore_source_constants_00bbcbd0",
+      "source": "src/native_material_texture_source_constants.cpp",
+      "original_abi": "ECX unused actual source; five unused stack arguments; literal RET14; source unused EDX",
+      "raw_upgrade_of_existing_projected_function": false,
+      "new_native_body_credit": 1
+    }
+  ],
+  "owned_bytes": 4510,
+  "owned_functions": 12,
+  "new_native_body_credit": 11,
+  "new_native_bytes_credit": 222,
+  "raw_upgrade_body_credit": 0,
+  "raw_upgrade_bytes": 4288,
+  "dependency_commits": [
+    {
+      "upstream": "9ac2667041ac555a46d04dd015e7d9caa4b1b582",
+      "local": "dbc4c1a4fec1ac3413df249b0e10cfbd2a9670b4",
+      "purpose": "post-effect raw frame binding"
+    },
+    {
+      "upstream": "514e822bbdd7f089a902a88039d6e2483a00ebfc",
+      "local": "dbe8aa25d32b7635b9580cb83f8c728d721940bd",
+      "purpose": "raw material texture queries"
+    },
+    {
+      "upstream": "3e5d090de8f982e9dbd4a4e16875d746fa51283d",
+      "local": "df64eeefe086a7ba13e53f26a87cce81f447f412",
+      "purpose": "raw inverse-world getter"
+    },
+    {
+      "upstream": "8002713741ec755683789c72c635240f1cf66e0f",
+      "local": "d7e2fc24df77605029d514734596c004a9b22396",
+      "purpose": "raw system gather/shadow/light leaves"
+    },
+    {
+      "upstream": "34c5ce541f9b06de0ae976d2e3f3c9f14b796b35",
+      "local": "f0969dccb88edc7c111f220a82e54a151b45d9b9",
+      "purpose": "raw light-environment queries"
+    }
+  ],
+  "source_files": [
+    {
+      "path": "include/bsp/native_material_constant_build.hpp",
+      "sha256": "9a8cfa55a0828f563aacdd19459170130df65e287a48e6f2038f05eb05e084d3",
+      "lf_sha256": "9a8cfa55a0828f563aacdd19459170130df65e287a48e6f2038f05eb05e084d3"
+    },
+    {
+      "path": "include/bsp/native_material_constant_build_leaves.hpp",
+      "sha256": "2d54399b985b8c892de587307b9a8cbc3a1331f9438a533a2057954da2b5fea4",
+      "lf_sha256": "2d54399b985b8c892de587307b9a8cbc3a1331f9438a533a2057954da2b5fea4"
+    },
+    {
+      "path": "include/bsp/native_material_texture_source_constants.hpp",
+      "sha256": "e4f34abafe81f6f5da92b5bdd7a8f8455ed49a02186404df6defa220c6d574d4",
+      "lf_sha256": "e4f34abafe81f6f5da92b5bdd7a8f8455ed49a02186404df6defa220c6d574d4"
+    },
+    {
+      "path": "src/native_material_constant_build.cpp",
+      "sha256": "757eb28bab6d7925acec8e218eb6de01ef093c6da439d4f58c6e781fc6e2e06b",
+      "lf_sha256": "757eb28bab6d7925acec8e218eb6de01ef093c6da439d4f58c6e781fc6e2e06b"
+    },
+    {
+      "path": "src/native_material_constant_build_leaves.cpp",
+      "sha256": "327c838fb9cde2ca1cea58518684960c84cfe6c8b4dbb4a85d50077f86958c75",
+      "lf_sha256": "327c838fb9cde2ca1cea58518684960c84cfe6c8b4dbb4a85d50077f86958c75"
+    },
+    {
+      "path": "src/native_material_texture_source_constants.cpp",
+      "sha256": "4feee5ff7d5d435e1604369bbe77c1c1b59103c1499da160963152720ec27523",
+      "lf_sha256": "4feee5ff7d5d435e1604369bbe77c1c1b59103c1499da160963152720ec27523"
+    }
+  ],
+  "direct_call_rows": [
+    {
+      "address": 11805650,
+      "native": 11629456,
+      "function": "00b42350"
+    },
+    {
+      "address": 11805751,
+      "native": 11909232,
+      "function": "00b42350"
+    },
+    {
+      "address": 11805762,
+      "native": 11909248,
+      "function": "00b42350"
+    },
+    {
+      "address": 11806151,
+      "native": 12547712,
+      "function": "00b42350"
+    },
+    {
+      "address": 11806309,
+      "native": 12547712,
+      "function": "00b42350"
+    },
+    {
+      "address": 11806376,
+      "native": 12123904,
+      "function": "00b42350"
+    },
+    {
+      "address": 11806421,
+      "native": 12125728,
+      "function": "00b42350"
+    },
+    {
+      "address": 11806436,
+      "native": 11983728,
+      "function": "00b42350"
+    },
+    {
+      "address": 11806612,
+      "native": 12017232,
+      "function": "00b42350"
+    },
+    {
+      "address": 11806675,
+      "native": 12547712,
+      "function": "00b42350"
+    },
+    {
+      "address": 11806757,
+      "native": 11983728,
+      "function": "00b42350"
+    },
+    {
+      "address": 11806778,
+      "native": 11985104,
+      "function": "00b42350"
+    },
+    {
+      "address": 11806812,
+      "native": 4274464,
+      "function": "00b42350"
+    },
+    {
+      "address": 11806819,
+      "native": 4274464,
+      "function": "00b42350"
+    },
+    {
+      "address": 11807082,
+      "native": 11827456,
+      "function": "00b42350"
+    },
+    {
+      "address": 11807183,
+      "native": 11935248,
+      "function": "00b42350"
+    },
+    {
+      "address": 11807391,
+      "native": 11983728,
+      "function": "00b42350"
+    },
+    {
+      "address": 11807876,
+      "native": 11983728,
+      "function": "00b42350"
+    },
+    {
+      "address": 11808463,
+      "native": 12007280,
+      "function": "00b42350"
+    },
+    {
+      "address": 11808531,
+      "native": 11985104,
+      "function": "00b42350"
+    },
+    {
+      "address": 11808882,
+      "native": 11631088,
+      "function": "00b42350"
+    },
+    {
+      "address": 11808939,
+      "native": 11631088,
+      "function": "00b42350"
+    },
+    {
+      "address": 11808995,
+      "native": 11587888,
+      "function": "00b42350"
+    },
+    {
+      "address": 11809042,
+      "native": 12543763,
+      "function": "00b42350"
+    },
+    {
+      "address": 11809050,
+      "native": 12036784,
+      "function": "00b42350"
+    },
+    {
+      "address": 11809123,
+      "native": 11983952,
+      "function": "00b42350"
+    }
+  ],
+  "indirect_calls": [
+    {
+      "callsite": 11805568,
+      "kind": "indirect_current_profile",
+      "verified_by": "full assembly and original profile bytes"
+    },
+    {
+      "callsite": 11805586,
+      "kind": "indirect_current_profile",
+      "verified_by": "full assembly and original profile bytes"
+    },
+    {
+      "callsite": 11805624,
+      "kind": "indirect_current_profile",
+      "verified_by": "full assembly and original profile bytes"
+    },
+    {
+      "callsite": 11806631,
+      "kind": "indirect_current_profile",
+      "verified_by": "full assembly and original profile bytes"
+    },
+    {
+      "callsite": 11807078,
+      "kind": "indirect_current_profile",
+      "verified_by": "full assembly and original profile bytes"
+    },
+    {
+      "callsite": 11809013,
+      "kind": "indirect_current_profile",
+      "verified_by": "full assembly and original profile bytes"
+    },
+    {
+      "callsite": 11809074,
+      "kind": "indirect_current_profile",
+      "verified_by": "full assembly and original profile bytes"
+    },
+    {
+      "callsite": 11809089,
+      "kind": "indirect_current_profile",
+      "verified_by": "full assembly and original profile bytes"
+    },
+    {
+      "callsite": 11809118,
+      "kind": "indirect_current_profile",
+      "verified_by": "full assembly and original profile bytes"
+    }
+  ],
+  "field_contract": "docs/NATIVE_MATERIAL_CONSTANT_BUILD.md",
+  "failure_contract": "persistent fresh/running/completed/failed frame plus reached native callsite; prior effects and underlying retained child failures survive; no replay, disarm, cleanup substitution or rollback",
+  "profile_domains": [
+    {
+      "profile": "00d64478",
+      "producer": "00bbc6f0",
+      "slots": {
+        "+2C": "00c302f0",
+        "+30": "00bbcc40"
+      }
+    },
+    {
+      "profile": "00d644b4",
+      "producer": "00bbc810",
+      "slots": {
+        "+2C": "00c302f0",
+        "+30": "00bbcbd0"
+      }
+    },
+    {
+      "profile": "00d62eb0",
+      "producer": "00b79bc0",
+      "write_site": "00b79d9e",
+      "slots": {
+        "+0C": "00b782d0"
+      }
+    },
+    {
+      "profile": "00d61d6c",
+      "slots": {
+        "+24": "00b48ce0"
+      }
+    },
+    {
+      "profile": "00d5f0a8",
+      "slots": {
+        "+130": "00b24710"
+      }
+    },
+    {
+      "profile": "00d5b5d8",
+      "slots": {
+        "+08": "00a8fcf0"
+      }
+    }
+  ],
+  "decode_counter_evidence": {
+    "initialization": "00b429c2 LEA ECX,[EBP+1] executes once with EBP0",
+    "loop_branch": "00b42a4f JL00b429c5 bypasses LEA",
+    "effective_step": 1,
+    "decoded_restore": "00b429ea MOV ECX,1",
+    "counters": "unsigned budget and remaining; signed per-stream min against gap; cursors advance full count before writes"
+  },
+  "verification": {
+    "seeds": {
+      "command": "python tools/ghidra_export.py verify-seeds",
+      "count": 8,
+      "result": "all matched"
+    },
+    "strict_build": {
+      "command": "./scripts/build.ps1",
+      "configuration": "MSVC Win32 Release",
+      "ctests": 2,
+      "result": "passed"
+    },
+    "fixture": {
+      "command": "./local/constant-build-validation/run_probe.ps1",
+      "compiler_flags": [
+        "/MD",
+        "/O2",
+        "/fp:strict",
+        "/W4",
+        "/WX",
+        "/MANIFEST:EMBED"
+      ],
+      "result": "passed",
+      "full_original_parent_bytes": 4288,
+      "native_routines": 27,
+      "native_routine_bytes": 6704,
+      "variants": [
+        "fallback skin",
+        "optimized palette"
+      ],
+      "comparison": "both4096-byte raw constant banks bit-for-bit",
+      "coverage": [
+        "matrix widths2/3/4",
+        "sNaN bit copy versus x87",
+        "overlapping raw parameter copy",
+        "bone/world/inverse refresh",
+        "both decode modes, multiple actual section streams and budget/remaining wrap",
+        "fade and diffuse",
+        "four point lights",
+        "actual texture-source factories and native/source current-texture and caustics writer",
+        "source unsupported-target partial effects and replay rejection"
+      ],
+      "shared_boundaries": [
+        "B48CE0 logical declaration getter",
+        "host memmove for BF7680",
+        "host invalid parameter for BF6713"
+      ]
+    },
+    "live_native_spans": {
+      "count": 48,
+      "bytes": 12176,
+      "all_matches_disk": true,
+      "capture": "local/constant-build-validation/live-spans.json"
+    },
+    "definitions": {
+      "report": "reports/native_material_constant_build_function_definitions.json",
+      "entries": [
+        "00c302f0",
+        "00bbcc40",
+        "00bbcbd0",
+        "00b782d0"
+      ],
+      "prior_state": "no function, verified by BSP proto before explicit primary-authorized definitions",
+      "tool": "python tools/ghidra_define_function.py",
+      "write_lock": true,
+      "saved": true,
+      "names_or_comments_changed": false
+    },
+    "exports": "full shared exports resolved with tools/workspace.py and copied into immutable closure",
+    "compiled_entry_bodies": {
+      "count": 12,
+      "complete_native_byte_matches": 9,
+      "new_source_abi_bodies": [
+        "00b42350",
+        "00b75e50",
+        "00b782d0"
+      ],
+      "evidence": "local/constant-build-validation/object-bodies.json"
+    }
+  },
+  "limits": [
+    "new source ABI; original private stack aliases/incidental registers/native FH3 and hardware faults unproved",
+    "fixture B42350 source-binding count0 and shadow sampler sentinels; complete renderer/COM binding routes compiled only",
+    "unknown derived profiles fail at reached dispatch",
+    "no animator constructor or animation runtime proof",
+    "no terminal texture owner or game integration/render/gameplay proof",
+    "parent captured-gather-profile correction1bbc1662 is outside this source snapshot; reached raw shadow/light leaf bodies unchanged"
+  ],
+  "immutable_closure": "See final handoff manifest and sibling ZIP. No mutable log in captured folder is modified."
+}
