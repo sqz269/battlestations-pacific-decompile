@@ -105,3 +105,13 @@ The pinned totals are219 implemented code bytes,84 profile bytes and62 guard
 code/metadata bytes; these categories are separate. The local runner accepts
 `-LibraryRoot` for integration. The report and final local manifest pin source,
 original bytes, transitive fixture inputs, executable, library, runner and logs.
+
+## Saved Ghidra correction and integrated validation
+
+The earlier missing-function observation for handler C66FA8 is superseded by
+the integrator definition through C66FB1. The saved definition survived the
+Ghidra restart. It is an exception metadata helper, not an additional
+reconstructed normal body or evidence of original FH3 execution. At f2cf87ab,
+the default Win32 build, both CTests and the focused loader fixture pass
+against the integrated library. The exact evidence is linked in the report's
+`integrator_correction.checkpoint`; the historical worker manifest remains intact.

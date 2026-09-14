@@ -424,10 +424,9 @@
     "The previous fog descriptor-context negative evidence remains unresolved: both original/source outputs report missing cFogDirColor with comment-only Constants. This is not evidence of a native shader defect."
   ],
   "pending_packets": [
-    "Sampler-loader singleton/factory-forwarder worker completed; reviewed source/assembly, separate integration and combined validation pending.",
-    "Actual B1A51D..B1AA29 cache continuation worker is in progress. Full B1A4F0/B1B4D0 remain incomplete pending actual platform event and online-manager closure.",
-    "Actual A40110 notification prerequisites are independently in progress; full A409F0 pump and BECB20/BECCD0 closure remain incomplete.",
-    "Full B3B280/B3B3C0 compiler orchestration, native FH3, shader drawing and gameplay remain outstanding."
+    "Raw online sign-in, storage/path/request entrypoints and procedural-resource lifetime have worker recovery/build/evidence in progress; not covered by this sampler checkpoint.",
+    "Full B1A4F0/B1B4D0 cache entry and full A40110/A409F0 event and online-manager closure remain incomplete.",
+    "Full B3B280/B3B3C0 compiler orchestration, native FH3 delivery, shader drawing and gameplay remain outstanding."
   ],
   "publication_merges": [
     {
@@ -493,5 +492,150 @@
         "sha256": "bc00d0a1c64a7ddbdff97859a0a1f5da41f706db0624f84d3d9c64c96f4592e1"
       }
     }
-  ]
+  ],
+  "sampler_dependency_integration": {
+    "validated_code_commit": "f2cf87ab7079c7b075986cd8102b0eed889a2ca2",
+    "checkpoint": {
+      "path": "local/checkpoints/f2cf87ab/native-sampler-dependencies-default/validation.json",
+      "sha256": "609b237e0e76c3cfb17be0b5f310a9a411f95b3fcda5c601b221a77f3c8df76b",
+      "artifacts": 2894
+    },
+    "complete_normal_bodies": 11,
+    "fragments": 2,
+    "registered_sources": [
+      "native_sampler_loader_context",
+      "native_sampler_cache_operation",
+      "native_online_notifications",
+      "native_sampler_owner_lifetime"
+    ],
+    "default_build": "scripts/build.ps1 MSVC Win32; two CTests passed",
+    "fixtures": [
+      {
+        "name": "sampler-loader-context",
+        "command": [
+          "pwsh",
+          "-NoProfile",
+          "-File",
+          "local/run_native_sampler_loader_probe.ps1",
+          "-LibraryRoot",
+          "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911"
+        ],
+        "exit_code": 0,
+        "seconds": 2.17,
+        "log": "local/sampler-integrator-sampler-loader-context-fixture.log",
+        "sha256": "b76dd3f170dabb8404027df0b340f030170d538b0de8b80f8a8c4f534cd5d864"
+      },
+      {
+        "name": "sampler-cache-operation",
+        "command": [
+          "pwsh",
+          "-NoProfile",
+          "-File",
+          "local/run_native_sampler_cache_probe.ps1"
+        ],
+        "exit_code": 0,
+        "seconds": 2.59,
+        "log": "local/sampler-integrator-sampler-cache-operation-fixture.log",
+        "sha256": "180f24c9fd58fc1cd58c112e0883e12d612cbe3815aede234a706ca10c8decba"
+      },
+      {
+        "name": "online-notifications",
+        "command": [
+          "pwsh",
+          "-NoProfile",
+          "-File",
+          "local/run_native_online_notifications_probe.ps1",
+          "-LibraryRoot",
+          "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911"
+        ],
+        "exit_code": 0,
+        "seconds": 2.63,
+        "log": "local/sampler-integrator-online-notifications-fixture.log",
+        "sha256": "c3006142f217af3bd03794f36eeb2ea2a978ba53cf7c6087044fdb5ae52265b1"
+      },
+      {
+        "name": "sampler-owner-lifetime",
+        "command": [
+          "pwsh",
+          "-NoProfile",
+          "-File",
+          "local/run_native_sampler_owner_probe.ps1",
+          "-LibraryRoot",
+          "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911"
+        ],
+        "exit_code": 0,
+        "seconds": 2.67,
+        "log": "local/sampler-integrator-sampler-owner-lifetime-fixture.log",
+        "sha256": "d505e686e13d29e0c1bfb943276f484642b44d223db44ca5217439b3780ead40"
+      }
+    ],
+    "numeric_call_rows": 143,
+    "failed_call_rows": 0,
+    "ghidra": {
+      "project": "C:/Users/sqz269/bsp.gpr",
+      "program": "/battlestationspacific.exe",
+      "saved_annotations_verified_after_restart": [
+        "004de4b0",
+        "00b1b810",
+        "00b1a4f0",
+        "00b1b4d0",
+        "00a40110",
+        "004dc410",
+        "004dda40",
+        "004ddb40",
+        "004ddaa0",
+        "004de290",
+        "004b4f10",
+        "00b1b680",
+        "004de340",
+        "004de360"
+      ],
+      "repaired_bodies": [
+        "004de340..004de35d",
+        "004de290..004de2ee",
+        "004ddaa0..004ddab6"
+      ],
+      "defined_handlers": [
+        "00c66fa8..00c66fb1",
+        "00cbc798..00cbc7a1",
+        "00c66f8b..00c66f94",
+        "00c669c1..00c669ca"
+      ]
+    },
+    "worker_archives": {
+      "sampler-loader-context": {
+        "commit": "7638b900cc0494402c9fdb97b6fe817af498cb25",
+        "manifest": "local/compiler-path-workers/sampler-loader-context/manifest.json",
+        "sha256": "c663f8c08b829afa013af0c7f56152e672783012e87020e9f38310fabd16ec8e",
+        "artifacts": 411
+      },
+      "sampler-cache-operation": {
+        "commit": "0b08478b116b292aa794571f81c2bf98e91cb934",
+        "manifest": "local/compiler-path-workers/sampler-cache-operation/manifest.json",
+        "sha256": "217aa25238845bf643350931143add6e8ac25965fc2734220b2daa9730b428c4",
+        "artifacts": 444
+      },
+      "online-notifications": {
+        "commit": "0eb93243d127a13f49de7c8395887d60311befb2",
+        "manifest": "local/compiler-path-workers/online-notifications/manifest.json",
+        "sha256": "4889f2f48494a06a752572462c6795d36a127e38dffd929631c719df03da8c50",
+        "artifacts": 255
+      },
+      "sampler-owner-lifetime": {
+        "commit": "abfc4761e44ab10204871d37618fca226fabb9bd",
+        "manifest": "local/compiler-path-workers/sampler-owner-lifetime/manifest.json",
+        "sha256": "a7218c69065073d3fa2272d2789dcb9d3877bfce4c5fb82e6d4d01fd3bf502ff",
+        "artifacts": 187
+      }
+    },
+    "limits": [
+      "Eleven complete normal bodies and two fragments; full B1A4F0, B1B4D0 and A40110 are not reconstructed.",
+      "Cache original/source comparison qualifies the raw online-manager-null path; a real private XLive runtime and Win32 message mutation precede the first filename read.",
+      "Lifetime fixture exercises qualified nonnull canonical resources. Native 4DDA40 unconditionally releases record+28; negative-cache null rows are not admitted by this lifetime contract.",
+      "Original 4DDAA0 and 4B4F10 entries and native FH3 delivery are not executed by the lifetime fixture; their source effects are covered separately.",
+      "Fresh procedural resource companions, full event/online-manager and compiler closure, original ABI compatibility and gameplay remain outstanding.",
+      "Earlier 29 shader fixtures and their libraries remain at the separate a50d1fc3 checkpoint; this batch reruns only these four relevant fixture programs."
+    ]
+  },
+  "latest_integration": "sampler_dependency_integration"
 }

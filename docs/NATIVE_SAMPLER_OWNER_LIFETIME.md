@@ -127,3 +127,19 @@ fixture's real admitted resource, not a claim that it is a procedural texture.
 The manifest separates581 reconstructed normal bytes,60 profile bytes and222
 unwind code/metadata bytes and pins all local fixture inputs and selected linked
 project sources. The runner supports `-LibraryRoot` for integration.
+
+## Saved Ghidra correction and integrated validation
+
+The integrator repaired the free-call fall-through gap in 4DE340 and recreated
+the complete stored bodies of 4DE290 and 4DDAA0. Their inclusive ends are
+4DE35D, 4DE2EE and 4DDAB6, with 11, 26 and 10 listed instructions and zero
+gaps. Earlier incomplete repair records remain historical evidence. Existing
+comments were preserved. Handlers CBC798..CBC7A1, C66F8B..C66F94 and
+C669C1..C669CA are now defined; none counts as an additional reconstruction.
+All these saved changes and the reviewed names survived the Ghidra restart.
+
+At f2cf87ab the default Win32 build, both CTests and the integrated lifetime
+fixture pass. Independent review confirmed the nine normal source bodies and
+shared canonical resource domain. The fixture does not execute the original
+4DDAA0 or 4B4F10 entries or original FH3 failure delivery; their source effects
+are supported separately. The report links the immutable integrated checkpoint.

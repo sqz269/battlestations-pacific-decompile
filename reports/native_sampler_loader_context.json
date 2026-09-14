@@ -267,5 +267,16 @@
     "no complete B1A4F0/B1B4D0/B3B280 implementation claimed",
     "no multithreaded race or game runtime validation"
   ],
-  "artifact_manifest": "local/native-sampler-loader-final-manifest.json"
+  "artifact_manifest": "local/native-sampler-loader-final-manifest.json",
+  "integrator_correction": {
+    "verified_after_restart": true,
+    "handler_defined": "00c66fa8..00c66fb1",
+    "definition_record": "local/sampler-owner-handler-definitions.json",
+    "checkpoint": {
+      "path": "local/checkpoints/f2cf87ab/native-sampler-dependencies-default/validation.json",
+      "sha256": "609b237e0e76c3cfb17be0b5f310a9a411f95b3fcda5c601b221a77f3c8df76b",
+      "artifacts": 2894
+    },
+    "limits": "Metadata handler definition does not add a reconstructed normal body or prove native FH3 delivery."
+  }
 }

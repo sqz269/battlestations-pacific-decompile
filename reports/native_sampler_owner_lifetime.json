@@ -405,5 +405,26 @@
     "actual singleton-manager terminal profile dispatch/admission and registration drain integration",
     "full loader entry/platform route, native binary ABI/FH3 and game validation"
   ],
-  "artifact_manifest": "local/native-sampler-owner-final-manifest.json"
+  "artifact_manifest": "local/native-sampler-owner-final-manifest.json",
+  "integrator_correction": {
+    "verified_after_restart": true,
+    "repaired_bodies": [
+      "004de340..004de35d",
+      "004de290..004de2ee",
+      "004ddaa0..004ddab6"
+    ],
+    "defined_handlers": [
+      "00cbc798..00cbc7a1",
+      "00c66f8b..00c66f94",
+      "00c669c1..00c669ca"
+    ],
+    "prior_values_and_comments_preserved": true,
+    "checkpoint": {
+      "path": "local/checkpoints/f2cf87ab/native-sampler-dependencies-default/validation.json",
+      "sha256": "609b237e0e76c3cfb17be0b5f310a9a411f95b3fcda5c601b221a77f3c8df76b",
+      "artifacts": 2894
+    },
+    "review": "local/sampler-owner-independent-review.json",
+    "limits": "Original 4DDAA0 and 4B4F10 entries and native FH3 failures were not executed by this lifetime fixture; source effects have separate coverage."
+  }
 }

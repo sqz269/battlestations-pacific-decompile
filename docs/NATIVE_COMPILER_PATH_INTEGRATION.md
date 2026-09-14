@@ -306,3 +306,26 @@ hashes match the29-fixture checkpoint `a50d1fc3`. That fixture result remains
 tied to the earlier libraries; 2 transitive fixture input files
 changed in the concurrent merge. Its separate build evidence is
 `local/checkpoints/4c3c5585/shader-owner-publication-build/validation.json`.
+
+## Sampler and online dependency integration
+
+At `f2cf87ab`, four newly registered modules add eleven complete normal
+bodies and two bounded fragments: actual sampler singleton/forwarding, owner
+lifetime, the B1A51D..B1AA29 cache continuation, and the A401A9..A401CC
+notification-9 branch. The full cache and notification entrypoints remain open.
+
+The default MSVC Win32 build and both CTests pass. All four relevant fixture
+programs pass against the same unchanged three libraries; four reports contain
+143 checked numeric call rows and zero failures. Fourteen saved names/comments,
+three repaired function bodies and four added exception handlers survived the
+Ghidra restart. Previous comments and mutation journals were preserved.
+The immutable checkpoint is `local/checkpoints/f2cf87ab/native-sampler-dependencies-default/validation.json` (2894 artifacts).
+
+Cache comparisons qualify the online-manager-null route with a real private
+XLive runtime and Win32 message mutation before the first filename read. The
+lifetime contract requires qualified nonnull resources; native unconditional
+record+28 release does not admit negative-cache null entries. Source cleanup
+checks do not prove original FH3 delivery. Original 4DDAA0 and 4B4F10 entries
+are not executed by the lifetime fixture. Fresh procedural resource companions,
+complete event/compiler integration, original ABI and gameplay remain open.
+The earlier 29 shader fixtures retain their separate a50d1fc3 checkpoint.
