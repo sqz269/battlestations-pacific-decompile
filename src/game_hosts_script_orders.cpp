@@ -10,6 +10,7 @@
 #include "bsp/game_hosts_units.hpp"
 #include "bsp/lua_binding_navigator.hpp"
 #include "bsp/mission_lua_bindings.hpp"
+#include "bsp/attack_target_classify.hpp"
 #include "bsp/pilot_order_bindings.hpp"
 #include "bsp/mission_lua_host.hpp"
 
@@ -330,6 +331,37 @@ int GameScriptOrdersHost::run_pilot_set_target(GameScriptOrderRow& row) {
                                 : ~static_cast<std::size_t>(0));
     const int self_class = units_.unit_class_id(row.unit_index);
     const int target_class = units_.unit_class_id(target_index);
+    // docs/ATTACK_CAPABILITY_INPUTS.md Part 2: the two classifiers behind
+    // target_is_air and target_is_surface. Both need the target's live +5Dh
+    // byte, which this host does model - unit_flag_005d, and the same byte
+    // unit_alive_and_visible reads - so they are answerable here rather than
+    // refused, which is what that document's contract assumed a host could not
+    // do. The surface walk still reports kUnreadSetBranch if it reaches
+    // 008DDF90, which no ship or aircraft target does.
+    bsp::EntityTargetFacts tf;
+    tf.present = target_index < units_.count();
+    if (tf.present) {
+        tf.not_engageable = units_.unit_flag_005d(target_index);
+        tf.is_plane = units_.unit_is_kind_of(target_index, 0x0f);
+        tf.is_plane_squadron = units_.unit_is_kind_of(target_index, 0x18);
+        tf.is_ship_family = units_.unit_is_kind_of(target_index, 0x06);
+        tf.is_submarine = units_.unit_is_kind_of(target_index, 0x08);
+        tf.is_airfield = units_.unit_is_kind_of(target_index, 0x45);
+        tf.is_shipyard = units_.unit_is_kind_of(target_index, 0x46);
+        tf.is_command_building = units_.unit_is_kind_of(target_index, 0x1c);
+        tf.is_dummy_target = units_.unit_is_kind_of(target_index, 0x35);
+        tf.is_land_fort = units_.unit_is_kind_of(target_index, 0x1b);
+        float r[3], u[3], f[3], t[3];
+        if (units_.unit_pose(target_index, r, u, f, t)) tf.world_y = t[1];
+    }
+    const bool target_air = bsp::entity_is_airborne_00922b10(tf);
+    const bsp::SurfaceTargetAnswer target_surface =
+        bsp::entity_is_surface_target_00922c80(tf);
+    log_.notef("  PilotSetTarget classify: target_is_air=%d target_is_surface=%s "
+        "(+5Dh=%d y=%.1f)", target_air ? 1 : 0,
+        target_surface == bsp::SurfaceTargetAnswer::kYes ? "yes"
+            : (target_surface == bsp::SurfaceTargetAnswer::kNo ? "no" : "UNREAD-SET-BRANCH"),
+        tf.not_engageable ? 1 : 0, static_cast<double>(tf.world_y));
     log_.notef("  PilotSetTarget caps: self_class=%d level_bomber=%d kamikaze_capable=%d "
         "dogfight_excluded=%d | target_class=%d structure=%d bomb_excluded=%d "
         "submarine=%d ship_family=%d | REFUSED: weapon_controller, target_is_air, "
