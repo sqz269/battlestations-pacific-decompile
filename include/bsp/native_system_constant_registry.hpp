@@ -1,6 +1,7 @@
 #pragma once
 #include "bsp/native_compiled_shader_owner.hpp"
 #include "bsp/singleton_lifetime.hpp"
+#include "bsp/sound_lifetime_access.hpp"
 #include <memory>
 
 namespace bsp {
@@ -83,6 +84,12 @@ class NativeSystemConstantRegistryLifetimeBinding final {
 public:
     NativeSystemConstantRegistryLifetimeBinding(void* volatile& published,
         SingletonLifetimeCallbacks next);
+    // Borrow the actual0108FE94 and actual01090AA0 cells and existing strings.
+    // No projected domain or other-owner callbacks are needed for this route.
+    // Canonical deletion uses the existing scalar wrappers and this binding;
+    // a failed operation remains retained and prevents terminal admission.
+    NativeSystemConstantRegistryLifetimeBinding(void* volatile& published,
+        void* volatile& actual_manager_01090aa0, NativeStringStorage&);
     ~NativeSystemConstantRegistryLifetimeBinding();
     NativeSystemConstantRegistryLifetimeBinding(const NativeSystemConstantRegistryLifetimeBinding&)=delete;
     NativeSystemConstantRegistryLifetimeBinding& operator=(const NativeSystemConstantRegistryLifetimeBinding&)=delete;
@@ -90,6 +97,7 @@ public:
     void bind(SingletonLifetimeDomain&, NativeStringStorage&);
     void* volatile& publication() noexcept { return published_; }
     SingletonLifetimeDomain& lifetime();
+    SoundLifetimeAccess lifetime_access();
     NativeStringStorage& strings();
     // Checked operation admission; no native ownership is acquired here.
     // Only one unfinished registry operation is supported by this binding,
@@ -103,6 +111,7 @@ private:
     void* volatile& published_;
     SingletonLifetimeCallbacks next_;
     SingletonLifetimeDomain* lifetime_{};
+    void* volatile* actual_manager_{};
     NativeStringStorage* strings_{};
     NativeSystemConstantRegistryOperation* guarded_{};
 };
