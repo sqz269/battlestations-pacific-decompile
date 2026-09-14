@@ -248,6 +248,12 @@ struct GameGunnerySummary {
     // reachable and category 7 is still refused on the 10.0f seed.
     // Which gate the recon-contact stand-in drops a unit at, so a zero contact
     // count can be attributed instead of guessed.
+    // Ticks on which the gun actually held a target, split out of the
+    // per-gun-per-tick angle tallies which carry no target information.
+    unsigned long long angle_refusals_targeted{0};
+    unsigned long long want_fire_no_accept{0};
+    unsigned long long want_fire_no_settle{0};
+    unsigned long long want_fire_no_window{0};
     unsigned long long contact_considered{0};
     unsigned long long contact_reject_side{0};
     unsigned long long contact_reject_visible{0};

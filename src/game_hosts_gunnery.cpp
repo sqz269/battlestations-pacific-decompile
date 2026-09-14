@@ -1377,6 +1377,13 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
         } else {
             ++gun.angle_refusals;
             ++summary.angle_refusals;
+            // angle_sets + angle_refusals is exactly guns * mission_ticks - every
+            // gun, every tick, with no target gate - so the refusal count carries
+            // no information about targets and must never be read as one. Verified
+            // on IJN01: 230442 + 72558 = 303000 = 606 * 500 to the digit.
+            // docs/AA_VERTICAL_WINDOW.md. These split out the ticks where the gun
+            // actually held a target.
+            if (have_target) ++summary.angle_refusals_targeted;
         }
         done("GunBot::set_target_angles_0085aba0", 0x0085aba0u);
 
@@ -1401,6 +1408,15 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
         // unit+634h, the scripted per-group fire inhibit. No mission-script
         // action in this mission writes it, so every bit is clear.
         const bool inhibited = false;
+        // Which conjunct of want_fire fails on a tick that had a target. A
+        // refusal here is not automatically a defect: a beam mount cannot train
+        // astern, so check the commanded bearing against the platform's windows
+        // before reading a non-zero want_fire_no_accept as one.
+        if (have_target && !accepted) ++summary.want_fire_no_accept;
+        if (have_target && accepted && !settled) ++summary.want_fire_no_settle;
+        if (have_target && accepted && settled && !may_fire_here) {
+            ++summary.want_fire_no_window;
+        }
         const bool want_fire = have_target && accepted && settled && may_fire_here
             && !inhibited;
 
@@ -2122,6 +2138,9 @@ void GameGunneryHost::report() {
         s.contact_considered, s.contact_reject_side, s.contact_reject_visible,
         s.contact_reject_dead, s.contact_reject_kind, s.contact_admit_ship,
         s.contact_admit_plane);
+    host.log.notef("summary mission gunnery targeted refusals=%llu no_accept=%llu "
+        "no_settle=%llu no_window=%llu", s.angle_refusals_targeted,
+        s.want_fire_no_accept, s.want_fire_no_settle, s.want_fire_no_window);
     host.log.notef("summary mission gunnery aim angle_sets=%llu refusals=%llu steps=%llu "
         "arc_blocks=%llu arc_unsolved=%llu trigger_rises=%llu fire_messages=%llu "
         "fire_if_ready=%llu can_fire_refusals=%llu shots=%llu first_shot=%.2f s",

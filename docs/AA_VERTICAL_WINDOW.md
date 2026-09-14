@@ -433,3 +433,41 @@ reach 80-90 degrees while the commanded vertical on this mission is under 1 degr
 torpedo defect was a real angle refusal (`MinVertAngle == MaxVertAngle == 0` against a
 computed depression); this is not. The document's other IJN01 observations - the inert `A7M`
 fighters, and FLAK/TORPEDO/DEPTHCHARGE needing their own admission traces - stand.
+
+## Measured confirmation from the recon-contact fix (integration)
+
+This packet argued from distance that no aircraft is reachable; the recon-contact fix measured it.
+Admitting plane bases at the kind gate added **44824 plane contacts** on IJN01 and moved
+AAMACHINEGUN's assignment count by **zero** - the same 26 this packet reproduced at 522 mission
+ticks with the kind gate still shut. The binding constraint is the **range test downstream** of it,
+2950 m horizontal to the nearest aircraft against a 960 m derived AA range, not the kind gate. The
+recon fix is correct against the native scan and is behaviourally inert on this mission.
+
+The `angle_sets + refusals == guns x mission_ticks` test was run on the integrator's tree and passes
+to the digit: `230442 + 72558 = 303000 = 606 x 500`.
+
+### Targeted-tick counters
+
+Four counters were added to split the ticks on which a gun actually held a target out of the
+per-gun-per-tick tallies. On the same run:
+
+```
+targeted refusals=12058  no_accept=12058  no_settle=1828  no_window=0
+```
+
+**These are global, not per-category**, so they do not test this packet's category-1 prediction of
+roughly 450 and its falsifier is untouched. What they do show is the idle-domination reading
+generalised: **12058 of 72558 refusals held a target, so 83% of all refusals are idle gun
+instances.** `no_accept` is *identical* to `angle_refusals_targeted` rather than merely close, which
+is exactly right - a refused command is what makes `accepted` false, so the predicates coincide with
+no residual. `no_window = 0` against per-category `arc_blocked` of 222 and 952 satisfies the
+`want_fire_no_window <= arc_blocked` self-test, and both are 0 for category 1 as predicted.
+
+### Ordering constraint on the prescription
+
+**Items 3 and 4 must land together.** Dropping the artillery gravity pre-estimate for category 1
+without first branching on the bot class would strip superelevation from *every* non-torpedo
+category, including the HEAVYARTILLERY and LIGHTARTILLERYFLAK that are currently the only guns
+landing hits on this mission. This is the one ordering in the prescription that is not safe to
+split, and it is the same half-applied failure that made the torpedo solver-speed fix read as a
+regression before its companion steps landed.
