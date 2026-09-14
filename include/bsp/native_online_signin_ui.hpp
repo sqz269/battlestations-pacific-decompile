@@ -4,11 +4,26 @@
 #include "bsp/native_online_signin.hpp"
 #include "bsp/native_string.hpp"
 
+#include <array>
+#include <cstddef>
 #include <cstdint>
 
 namespace bsp {
 class LocaleTextResolver;
 class XLiveLibrary;
+
+using NativeOnlineSigninUiInfo28 = std::array<std::byte, 0x28>;
+
+// Same explicit CRT boundary contract as the achievement pump. BF6713 can
+// return through its configured handler. BF67A7 reports errno 22/34 through
+// that policy and returns it without clearing destination; reset ignores it.
+struct NativeOnlineSigninUiCrt {
+    void (__cdecl* invalid_parameter_noinfo)();
+    int (__cdecl* memmove_s)(void*, std::size_t, const void*, std::size_t);
+};
+// Concrete binding to this module's CRT. Original-CRT interoperation must
+// supply that CRT's matching entries and invalid-parameter policy explicitly.
+NativeOnlineSigninUiCrt standard_native_online_signin_ui_crt() noexcept;
 
 // The original stack output is an eight-byte Win32 wide-string header, with
 // no inline buffer or owner. These four headers are local to a state-1 call.
@@ -33,8 +48,9 @@ public:
         void* overlapped, std::uint32_t* result, std::uint32_t wait) = 0;
     virtual std::uint32_t show_signin_00a4d5ba(
         std::uint32_t users, std::uint32_t flags) = 0;
-    // The caller owns an uninitialized 28h-byte stack output. The SDK may
-    // write only part of it; byte +8 is read only after a zero return.
+    // The original output is an uninitialized 28h-byte stack image. This
+    // source interface copies the caller-provided preimage before the SDK;
+    // partial writes retain those bytes. Byte +8 is read only after success.
     virtual std::uint32_t user_get_signin_info_00a4d560(
         std::uint32_t user, std::uint32_t flags, void* output_28h) = 0;
     virtual void build_storage_path_00a3ed10(NativeOnlineManagerStorage&) = 0;
@@ -66,6 +82,10 @@ struct NativeOnlineSigninUiContext {
     NativeOnlineSigninUiCalls& calls;
     NativeOnlineSigninCalls& signin_calls;
     NativeStringRawPoolContext& strings;
+    // Fully defined caller-supplied native stack preimage, copied per state-5
+    // call. No invented zero default or indeterminate C++ read is introduced.
+    const NativeOnlineSigninUiInfo28& signin_info_preimage;
+    NativeOnlineSigninUiCrt crt = standard_native_online_signin_ui_crt();
 };
 
 // Complete normal bodies, as semantic C++ interfaces over the captured actual
@@ -74,6 +94,7 @@ struct NativeOnlineSigninUiContext {
 void reset_native_online_ui_slots_00a3e700(
     NativeOnlineManagerStorage& manager) noexcept;
 void reset_native_online_signin_state_00a40020(
-    NativeOnlineManagerStorage& manager, NativeOnlineSigninCalls& calls);
+    NativeOnlineManagerStorage& manager, NativeOnlineSigninCalls& calls,
+    NativeOnlineSigninUiCrt crt = standard_native_online_signin_ui_crt());
 void pump_native_online_signin_ui_00a40510(NativeOnlineSigninUiContext& context);
 } // namespace bsp

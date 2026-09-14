@@ -11,6 +11,7 @@
 #include <array>
 #include <cstddef>
 #include <cstring>
+#include <cstdlib>
 #include <limits>
 #include <stdexcept>
 #include <string>
@@ -82,6 +83,10 @@ const wchar_t* text_or_empty(const NativeOnlineUiWide8& wide) noexcept {
 }
 } // namespace
 
+NativeOnlineSigninUiCrt standard_native_online_signin_ui_crt() noexcept {
+    return {&_invalid_parameter_noinfo, &::memmove_s};
+}
+
 NativeOnlineSigninUiRuntime::NativeOnlineSigninUiRuntime(
     const XLiveLibrary& library, const LocaleTextResolver& locale)
     : module_(library.module_handle()), locale_(locale) {
@@ -144,7 +149,8 @@ void reset_native_online_ui_slots_00a3e700(NativeOnlineManagerStorage& manager) 
 }
 
 void reset_native_online_signin_state_00a40020(
-    NativeOnlineManagerStorage& manager, NativeOnlineSigninCalls& calls) {
+    NativeOnlineManagerStorage& manager, NativeOnlineSigninCalls& calls,
+    NativeOnlineSigninUiCrt crt) {
     const auto callback = read<std::uint32_t>(manager, 0x20);
     if (callback != 0 && read<std::uint32_t>(manager, 0x8c) != 0)
         calls.call_callback20(callback, 0); // ECX=0; reread manager after call.
@@ -164,23 +170,24 @@ void reset_native_online_signin_state_00a40020(
     write(manager, 0x358, std::uint32_t{0});
     const auto end = read<std::uint32_t>(manager, 0x368);
     if (read<std::uint32_t>(manager, 0x364) > end)
-        throw std::out_of_range("Native achievement vector end precedes begin");
+        crt.invalid_parameter_noinfo();
     const auto begin = read<std::uint32_t>(manager, 0x364);
     if (begin > read<std::uint32_t>(manager, 0x368))
-        throw std::out_of_range("Native achievement vector changed out of range");
+        crt.invalid_parameter_noinfo();
     if (begin != end) {
-        // Native subtracts captured EDI=end from current [manager+368], giving
-        // zero in the ordinary path, so its _memmove_s call is skipped.
+        // The CRT handlers can return after mutating the queue. Native keeps
+        // captured EDI=end and EBP=begin, then SARs the wrapped DWORD delta.
         const auto current_end = read<std::uint32_t>(manager, 0x368);
-        const auto words = static_cast<std::int32_t>(current_end - end) >> 2;
-        const auto bytes_to_move = static_cast<std::uint32_t>(words) * 4u;
-        if (words > 0) {
+        const auto delta = current_end - end;
+        const auto words = (delta >> 2) | ((delta & 0x80000000u) ? 0xc0000000u : 0u);
+        const auto bytes_to_move = words * 4u;
+        const auto new_end = begin + bytes_to_move; // captured before memmove_s
+        if (words != 0 && (words & 0x80000000u) == 0) {
             const auto* source = reinterpret_cast<const void*>(end);
             auto* destination = reinterpret_cast<void*>(begin);
-            if (memmove_s(destination, bytes_to_move, source, bytes_to_move) != 0)
-                throw std::runtime_error("Native achievement vector memmove failed");
+            (void)crt.memmove_s(destination, bytes_to_move, source, bytes_to_move);
         }
-        write(manager, 0x368, begin + bytes_to_move);
+        write(manager, 0x368, new_end);
     }
     state(manager, 0);
     write(manager, 0x3b4, std::uint32_t{1});
@@ -231,7 +238,7 @@ void pump_native_online_signin_ui_00a40510(NativeOnlineSigninUiContext& context)
         if (read<std::uint32_t>(manager, 0x3c0) == pending) return;
         if (calls.get_overlapped_result_00a4d42e(
                 bytes(manager) + 0x3c0, nullptr, 1) != 0) {
-            reset_native_online_signin_state_00a40020(manager, context.signin_calls);
+            reset_native_online_signin_state_00a40020(manager, context.signin_calls, context.crt);
             return;
         }
         if (read<std::uint32_t>(manager, 0x3dc) == 0) {
@@ -251,7 +258,7 @@ void pump_native_online_signin_ui_00a40510(NativeOnlineSigninUiContext& context)
             if (read<std::uint8_t>(manager, 0x3e8) != 0) return;
             if (calls.show_signin_00a4d5ba(1, 0) != 0) return;
         }
-        reset_native_online_signin_state_00a40020(manager, context.signin_calls);
+        reset_native_online_signin_state_00a40020(manager, context.signin_calls, context.crt);
         return;
     case 4:
         if (read<std::uint8_t>(manager, 0x2c) != 0) {
@@ -273,7 +280,7 @@ void pump_native_online_signin_ui_00a40510(NativeOnlineSigninUiContext& context)
             return;
         }
         if (read<std::uint8_t>(manager, 0x119) != 0) {
-            std::array<std::byte, 0x28> info; // original uninitialized stack local
+            auto info = context.signin_info_preimage; // exact caller-provided stack bytes
             const auto result = calls.user_get_signin_info_00a4d560(
                 read<std::uint32_t>(manager, 0x11c), 1, info.data());
             if (result == 0) {
