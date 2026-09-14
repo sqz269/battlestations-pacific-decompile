@@ -474,3 +474,36 @@ Nothing else is published: the rest of this packet is scoping evidence. No test 
    handler is excluded.
 4. **`[node+160h]+40h`'s producer**, reached from `0087BE4B`/`0087BE52` — model/scene territory.
 5. **`00983780` / `009832F0`**, the two mission-Lua notifiers a fire or a leak raises.
+
+## Correction from docs/GEOM_MESH_RESOURCE.md (packet cc7_geom_mesh_resource_parser)
+
+- **Was:** section 1e's helper list describes `00BE9A80` as reading a `u16`, so the `n2` block is
+  "two u16 reads" per entry and the triangle records are 2-byte fields.
+  **Is:** `00BE9A80` reads a **u32**. Its body calls `00BF0280` - the same DWORD primitive that
+  `00BE9A00` (ReadU32) and `00BE99E0` call - and stores the full dword:
+
+  ```
+  00be9a8c  CALL 00BF0280
+  00be9a91  MOV EDX,dword ptr [ESP+8]
+  00be9a95  MOV dword ptr [EDX],EAX     ; a dword, not a word
+  ```
+
+  Verified at integration by reading the body. The empirical check settles it beyond the listing:
+  decoded with 2-byte fields, `Farragut_1934.MMOD`'s chunk stops **70104 bytes short** of its
+  declared `0x1C5BA`; with 4-byte fields it lands exactly, and nine chunks across five ships decode
+  with zero bytes left over.
+
+- **Was:** the `Farragut_1934.MMOD` element list is at file offset `0x1587E3`.
+  **Is:** `0x1587E3` is where the characters `GeomMesh` start; the counted tag begins at `0x1587DF`.
+
+- **Also.** `00727704..00727A6D` reads nothing from the stream. It merges an element whose kind
+  already appeared at a lower index into that earlier element and erases the duplicate, with `0Dh`
+  (`fizika`) and `0Eh` (`bullet`) **exempt**. That is the mechanism that keeps exactly one element
+  per authored `fizika_NN` node, and it explains why `North_Carolina.mmod`'s 46 `fizika` strings
+  produce only 2 elements. The element stride is `2Ch`, confirmed twice.
+
+- **Reachability, unchanged.** The parser existing does not make `part` non-zero. Nothing registers
+  it on the model load path and no unit carries a decoded element list, so `00723D60` still has
+  nothing to walk and `hit+30h`/`+34h` still come from the three hard-coded narrowphase shapes
+  writing `0Ah`/`-1`. That is a narrowphase packet, not a parser one. The parser retains the
+  triangle ordinal lists so a ray-triangle hit maps straight back to a `(kind, index)` pair.
