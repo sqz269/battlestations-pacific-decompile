@@ -1,0 +1,654 @@
+{
+  "schema": 1,
+  "packet": "orch5_native_renderer_resolution_enumeration",
+  "generated_utc": "2026-09-14T16:00:23.673105+00:00",
+  "source": "src/native_renderer_resolution_enumeration.cpp",
+  "header": "include/bsp/native_renderer_resolution_enumeration.hpp",
+  "status": "reconstructed_build_and_focused_original_source_fixture_verified",
+  "base_commit": "a9160919ec13ed56bceaf4c8e36c2ea57b818be2",
+  "dependency_merge": null,
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "original_PE_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "native_spans": [
+    {
+      "address": "00b27d80",
+      "end": "00b27e74",
+      "length": 245,
+      "bytes_hex": "83ec20558be98b85901900006a16c785dc190000000000008b088b51186a0050ffd233c985c089442408894c24040f86a5000000535657eb078da424000000008b85901900008b108d74242056516a166a00508b421cffd085c075658b5c242081fb8002000072598b7c242481ffe0010000724d8d4c24188d751c518bce895c241c897c2420e8b5c8daff83f8ff75318b4608394604751403c083f8017f05b801000000508bcee824c9daff8b56048b068d04d085c074058918897804834604018b4c241083c1013b4c2414894c24100f826affffff5f5e5b8b4d208b551c68d0ffb1006a085152e8e3440d0083c4105d83c420c3",
+      "sha256": "b78a4a690e24b1c203f4b5d3ebd4917ada4aa46b33d2538fe0023ad44ae4d447",
+      "live_PE_match": true,
+      "ownership": "packet"
+    },
+    {
+      "address": "008d46c0",
+      "end": "008d4707",
+      "length": 72,
+      "bytes_hex": "568b318b49048bd68d0cca83c8ff3bd1733253578b7c24108b1f55eb038d4900391a75088b6a043b6f04740e83c2083bd172ed5d5f5b5ec204005d2bd6c1fa035f8bc25b5ec20400",
+      "sha256": "00678c8757c9db19bee31322564d5abe8358b9e0b49176224ed920d4b8b025e9",
+      "live_PE_match": true,
+      "ownership": "packet"
+    },
+    {
+      "address": "008d4750",
+      "end": "008d47b7",
+      "length": 104,
+      "bytes_hex": "56578b7c240c83ff018bf17d05bf01000000397e087d4c8d04fd000000005350e8490e320033c983c404394e048bd87e215585c074108b168b2cca8d14ca89288b520489500483c10183c0083b4e047ce15d8b0650e8df21320083c404891e897e085b5f5ec20400",
+      "sha256": "d95f6ef2410f3ec72c4679f9122dc876476dabc5508c7d0923d130ed3054df66",
+      "live_PE_match": true,
+      "ownership": "packet"
+    },
+    {
+      "address": "00b1ffd0",
+      "end": "00b1ffec",
+      "length": 29,
+      "bytes_hex": "8b5424048b02568b74240c8b0e3bc175088b42042b46045ec32bc15ec3",
+      "sha256": "03bbcf779db76a9712100c749dde55f17fbfb2045e85f47afeedcc8374c9eade",
+      "live_PE_match": true,
+      "ownership": "packet"
+    }
+  ],
+  "reviewed_native_bytes": 450,
+  "new_function_bytes": 176,
+  "additional_raw_API_fragment_bytes": 274,
+  "routines": [
+    {
+      "address": "00b27d80",
+      "name": "enumerate_native_renderer_resolutions_00b27d80",
+      "bytes": 245,
+      "end": "00b27e74",
+      "ledger_kind": "fragment",
+      "source": "src/native_renderer_resolution_enumeration.cpp",
+      "coverage": "complete actual native body",
+      "original_ABI": "ECX actual renderer; plain RET. Source fastcall adds explicit borrowed mode scratch in EDX."
+    },
+    {
+      "address": "008d46c0",
+      "name": "find_native_resolution_pair_008d46c0",
+      "bytes": 72,
+      "end": "008d4707",
+      "ledger_kind": "function",
+      "source": "src/native_renderer_resolution_enumeration.cpp",
+      "coverage": "complete actual native body",
+      "original_ABI": "ECX actual pair header, stack key pointer; EAX signed index/-1, RET4."
+    },
+    {
+      "address": "008d4750",
+      "name": "reserve_native_resolution_pairs_008d4750",
+      "bytes": 104,
+      "end": "008d47b7",
+      "ledger_kind": "function",
+      "source": "src/native_renderer_resolution_enumeration.cpp",
+      "coverage": "complete actual native body",
+      "original_ABI": "ECX actual pair header, signed stack request; RET4."
+    },
+    {
+      "address": "00b1ffd0",
+      "name": "compare_native_resolution_pairs_00b1ffd0",
+      "bytes": 29,
+      "end": "00b1ffec",
+      "ledger_kind": "fragment",
+      "source": "src/native_renderer_resolution_enumeration.cpp",
+      "coverage": "complete actual native body",
+      "original_ABI": "cdecl(two raw row pointers), EAX signed wrapped difference; RET."
+    }
+  ],
+  "direct_calls": [
+    {
+      "function": "00b27d80",
+      "address": "00b27e06",
+      "native": "008d46c0",
+      "behavior": "Search actual pair header for captured width/height."
+    },
+    {
+      "function": "00b27d80",
+      "address": "00b27e27",
+      "native": "008d4750",
+      "behavior": "Grow actual pair storage only when current count equals current capacity."
+    },
+    {
+      "function": "00b27d80",
+      "address": "00b27e68",
+      "native": "00bfc350",
+      "behavior": "Unconditional genuine CRT qsort with captured current count/data and raw comparator."
+    },
+    {
+      "function": "008d4750",
+      "address": "008d4770",
+      "native": "00bf55be",
+      "behavior": "Allocate wrapped requested*8 bytes through shared substantive lifetime allocator."
+    },
+    {
+      "function": "008d4750",
+      "address": "008d47a5",
+      "native": "00bf6989",
+      "behavior": "Free current old data before replacement/capacity publication."
+    }
+  ],
+  "ownership": "Four addresses and four new source/header/doc/report files; one coordinated CMake append. Existing projected APIs preserved; new raw enumeration/comparator recorded as fragments.",
+  "actual_storage": {
+    "renderer_offsets": {
+      "pair_data": "1c",
+      "pair_count": "20",
+      "pair_capacity": "24",
+      "current_IDirect3D9": "1990",
+      "opaque_zeroed_field": "19dc"
+    },
+    "pair_header": "12 bytes: data+0,count+4,signed capacity+8",
+    "row": "8 bytes: ordered width DWORD,height DWORD",
+    "mode": "16 bytes: width,height,refresh,format DWORDs; same independent borrowed scratch each call"
+  },
+  "indirect_dispatch": [
+    {
+      "site": "00b27da0",
+      "slot": "18",
+      "ABI": "stdcall(this,adapter0,format16h)",
+      "contract": "GetAdapterModeCount; capture interface before opaque clear; read its current vtable after clear; capture unsigned returned count once"
+    },
+    {
+      "site": "00b27dd6",
+      "slot": "1c",
+      "ABI": "stdcall(this,adapter0,format16h,index,mode16)",
+      "contract": "EnumAdapterModes; reload current interface and table every iteration; only HRESULT exactly0 accepted"
+    }
+  ],
+  "comparator_data_operand": {
+    "site": "00b27e5f",
+    "opcode": "PUSH imm32",
+    "target": "00b1ffd0",
+    "role": "qsort comparator pointer; data operand, not a direct CALL"
+  },
+  "source_interface_boundary": "Native enumeration has only ECX renderer input. New source fastcall EDX argument borrows independent valid DWORD-aligned initialized mode16 preimage, replacing otherwise-uninitialized native stack storage. It is never cleared; COM writes remain observable. This is not a native second argument or diagnostic operation adapter.",
+  "enumeration_order": [
+    "Capture renderer+1990 interface, store opaque+19DC=0, then current captured-interface vtable slot18 adapter0/format16h. Capture returned unsigned mode count once.",
+    "Each iteration reloads current renderer+1990 and table slot1C; HRESULT nonzero skips all field reads while retaining provider writes.",
+    "On exactly0, read/check unsigned width>=640 before reading/checking unsigned height>=480. Capture both before raw search/reserve; refresh/format outputs not consumed.",
+    "Only search return -1 appends. Compare current count to current capacity; equality grows with signed wrapping double clamped to1.",
+    "After reserve, capture current count before current data. Computed null destination skips two stores; increment CURRENT count regardless.",
+    "Capture current count before current data and unconditionally genuine CRT qsort(data,count,8,raw comparator), retaining already-existing pairs/duplicates."
+  ],
+  "search_order": "Capture base and wrapping base+count*8 end once; unsigned cursor>=end returns -1 before key read. Otherwise capture key first once; per candidate read first, and on equality candidate second before reloading current key second. First matching index is signed wrapping(cursor-base)>>3.",
+  "reserve_order": "Signed clamp1 and signed capacity comparison. Allocate wrapping request*8; reload current signed count each test and current base each copied row. Preserve null destination check, capture source address once per row, first load/store BEFORE second load/store. Free CURRENT old data, then publish replacement pointer and capacity; count retained.",
+  "comparator_order": "Capture left width then right width; unequal returns signed wrapped subtraction. Only equal widths read left/right height and return wrapped subtraction.",
+  "existing_provider_inventory": [
+    {
+      "candidate": "native_material_pass_states.cpp / B40AC0",
+      "reason_not_reused": "Extent/overflow guards, memcpy copy and rollback change native access/publication/failure semantics."
+    },
+    {
+      "candidate": "B40CF0 shader pair reserve",
+      "reason_not_reused": "Different minimum capacity10 and additional contracts."
+    },
+    {
+      "candidate": "VFS pair providers",
+      "reason_not_reused": "Different 16-byte/string-owning record contracts."
+    },
+    {
+      "candidate": "settings/options resolution APIs",
+      "reason_not_reused": "Projected standard-container state does not provide actual renderer+1C storage/COM captures."
+    },
+    {
+      "candidate": "singleton_lifetime_allocate / singleton_lifetime_free",
+      "reuse": "Existing substantive actual shared allocation domain reused directly; no allocator copy or original EXE call."
+    }
+  ],
+  "failure_boundary": "No catch, rollback, count restoration or fresh-allocation cleanup added. Allocation failure bypasses later publication/append/sort while retaining prior provider, mode, array and allocator-handler side effects. Actual native CRT/private-frame/SEH identity is not reproduced.",
+  "returning_tail_corrections": [
+    {
+      "function": "008d4750",
+      "returning_call": "008d47a5",
+      "missing_inclusive_range": [
+        "008d47aa",
+        "008d47b2"
+      ],
+      "missing_bytes": 9,
+      "complete_RET_end": "008d47b7",
+      "evidence": "Full104 live bytes equal installed PE; current Ghidra flow gap despite full max endpoint via early-return path.",
+      "action_for_integrator": "Clear returning-call override, recover stack cleanup/data-capacity stores/POP EBX, preserve full RET4 endpoint; worker made no Ghidra writes."
+    }
+  ],
+  "ghidra_mutations": "None by worker. Each live query verified existing bsp.gpr/program identity through bsp wrappers. Root owns annotations, old-value preservation, listing repair, save and exports after release.",
+  "validation": {
+    "build": "./scripts/build.ps1 passed after final source registration; MSVC Win32 Release /W4 /WX /fp:strict",
+    "seed_verification": "8 native seed ranges verified before configure",
+    "ctests": "2/2 passed: reconstructed_math and native_math_differential",
+    "earlier_build": "First baseline build overlapped deferred CMake source registration and failed during concurrent CMake/FetchContent regeneration. Final strict rebuild after configuration settled passed. Both logs archived.",
+    "call_gate": "tools/verify_report_calls.py passed: 5 direct native CALL rows checked, 0 failed. Two indirect COM sites and pushed comparator operand are recorded separately; real COM slots measured by focused fixture.",
+    "fixture": "One executable links actual built bsp_core.lib. Four complete original bodies are copied into executable memory and compared with source using scripted COM reentry/preimages and real Direct3DCreate9 enumeration; same executable checks empty search and wrapped comparator.",
+    "fixture_bindings": "Exactly five CALL rel32 operands and one pushed comparator immediate rebound: original child copies, shared actual allocator/free and genuine host CRT qsort. Dynamic COM slots remain actual vtable dispatch. No original EXE addresses invoked.",
+    "scripted_result": "7 mode calls after1 captured count call; current COM interface rebound twice; failed and positive1 writes retained into later partial-output HRESULT0. Callback mutates current array/count. Original/source end with5 sorted pairs and capacity8, retained opaque1234, identical guarded actual renderer storage.",
+    "scripted_preimage_boundary": "First failed COM call writes all16 mode bytes; subsequent partial-output retention compared. Source explicit initial scratch initialized, but native initial uninitialized frame bytes were not externally controlled or compared before first complete write.",
+    "real_D3D9": {
+      "unique_pairs": 26,
+      "capacity": 32,
+      "adapters": 3
+    },
+    "helper_edges": "Empty raw header with null key returns -1 without key read; width80000000 minus0 wraps identically.",
+    "fixture_result": "PASS",
+    "fixture_stdout": "native_renderer_resolution_probe.cpp\nREAL_D3D9|unique_pairs=26|capacity=32|adapters=3\nLOADED_RUNTIME|ucrtbase.dll|C:\\WINDOWS\\System32\\ucrtbase.dll|\\\\?\\C:\\Windows\\SysWOW64\\ucrtbase.dll|014c\nLOADED_RUNTIME|vcruntime140.dll|C:\\WINDOWS\\SYSTEM32\\VCRUNTIME140.dll|\\\\?\\C:\\Windows\\SysWOW64\\vcruntime140.dll|014c\nLOADED_RUNTIME|msvcp140.dll|C:\\WINDOWS\\SYSTEM32\\MSVCP140.dll|\\\\?\\C:\\Windows\\SysWOW64\\msvcp140.dll|014c\nUNLOADED_RUNTIME|vcruntime140_1.dll\nLOADED_RUNTIME|d3d9.dll|C:\\WINDOWS\\SYSTEM32\\d3d9.dll|\\\\?\\C:\\Windows\\SysWOW64\\d3d9.dll|014c\nPROVIDER_ADDRESS|IDirect3D9.GetAdapterModeCount|6e793940\nLOADED_PROVIDER|IDirect3D9.GetAdapterModeCount|C:\\WINDOWS\\SYSTEM32\\d3d9.dll|\\\\?\\C:\\Windows\\SysWOW64\\d3d9.dll|014c\nPROVIDER_ADDRESS|IDirect3D9.EnumAdapterModes|6e793620\nLOADED_PROVIDER|IDirect3D9.EnumAdapterModes|C:\\WINDOWS\\SYSTEM32\\d3d9.dll|\\\\?\\C:\\Windows\\SysWOW64\\d3d9.dll|014c\nPASS: complete original resolution chain equals actual source for scripted COM reentry/preimages and real D3D9 modes; raw helper edges pass\n",
+    "fixture_build_flags": "/std:c++20 /EHsc /MD /O2 /W4 /WX /fp:strict /link /MANIFEST:EMBED",
+    "fixture_source": "#include \"bsp/native_renderer_resolution_enumeration.hpp\"\n#include \"bsp/singleton_lifetime.hpp\"\n#include \"native_renderer_resolution_reference.hpp\"\n#include <Windows.h>\n#include <d3d9.h>\n#include <array>\n#include <vector>\n#include <cstdio>\n#include <cstdlib>\n#include <cstring>\n#include <stdexcept>\n\nnamespace {\nusing Word=std::uint32_t;\nvoid require(bool ok,const char* message) { if(!ok) throw std::runtime_error(message); }\nWord load(const void* base,Word offset=0) { Word value; std::memcpy(&value,static_cast<const unsigned char*>(base)+offset,4); return value; }\nvoid store(void* base,Word offset,Word value) { std::memcpy(static_cast<unsigned char*>(base)+offset,&value,4); }\nvoid* ptr(Word value) { return reinterpret_cast<void*>(value); }\nWord addr(const void* value) { return reinterpret_cast<Word>(value); }\nstruct Pair { Word width,height; bool operator==(const Pair&) const=default; };\nstatic_assert(sizeof(Pair)==8);\nstruct Renderer {\n    alignas(4) std::array<unsigned char,0x1a00> bytes;\n    Renderer() { bytes.fill(0xa5); std::memset(bytes.data()+0x1c,0,12); }\n    void* raw() { return bytes.data(); }\n    void set_api(void* value) { store(raw(),0x1990,addr(value)); }\n    void initial_pairs() {\n        void* data=bsp::singleton_lifetime_allocate({bsp::SingletonAllocationKind::object,16,16});\n        const Pair rows[]={{1920,1080},{800,600}}; std::memcpy(data,rows,16);\n        store(raw(),0x1c,addr(data)); store(raw(),0x20,2); store(raw(),0x24,2);\n    }\n    void guards() {\n        for(std::size_t i=0;i<bytes.size();++i) {\n            if((i>=0x1c&&i<0x28)||(i>=0x1990&&i<0x1994)||(i>=0x19dc&&i<0x19e0)) continue;\n            require(bytes[i]==0xa5,\"unrelated renderer byte changed\");\n        }\n    }\n    ~Renderer() { bsp::singleton_lifetime_free(ptr(load(raw(),0x1c))); }\n};\nvoid* __cdecl allocate_original(Word bytes) {\n    return bsp::singleton_lifetime_allocate({bsp::SingletonAllocationKind::object,bytes,bytes});\n}\nvoid __cdecl free_original(void* value) noexcept { bsp::singleton_lifetime_free(value); }\nusing Comparator=int (__cdecl*)(const void*,const void*);\nunsigned original_sorts=0;\nvoid __cdecl sort_original(void* base,std::size_t count,std::size_t width,Comparator comparator) {\n    require(width==8,\"qsort row size\"); ++original_sorts; std::qsort(base,count,width,comparator);\n}\nusing OriginalEnumerate=void (__fastcall*)(void*);\nusing Find=std::int32_t (__fastcall*)(const void*,Word,const void*);\nclass Original {\n    void* code_; std::size_t size_;\npublic:\n    template<std::size_t N> explicit Original(const unsigned char (&bytes)[N]):\n        code_(VirtualAlloc(nullptr,N,MEM_COMMIT|MEM_RESERVE,PAGE_READWRITE)),size_(N) {\n        require(code_!=nullptr,\"VirtualAlloc\"); std::memcpy(code_,bytes,N);\n    }\n    ~Original(){VirtualFree(code_,0,MEM_RELEASE);}\n    void* pointer() const { return code_; }\n    template<class F> void call(std::size_t offset,F function) {\n        auto* p=static_cast<unsigned char*>(code_); require(p[offset]==0xe8,\"CALL relocation\");\n        const Word displacement=static_cast<Word>(reinterpret_cast<std::uintptr_t>(function)-reinterpret_cast<std::uintptr_t>(p+offset+5));\n        std::memcpy(p+offset+1,&displacement,4);\n    }\n    void comparator(std::size_t offset,void* function) {\n        auto* p=static_cast<unsigned char*>(code_); require(p[offset]==0x68,\"PUSH comparator relocation\");\n        const Word value=addr(function); std::memcpy(p+offset+1,&value,4);\n    }\n    void finish() {\n        DWORD previous; require(VirtualProtect(code_,size_,PAGE_EXECUTE_READ,&previous)!=0,\"VirtualProtect\");\n        require(FlushInstructionCache(GetCurrentProcess(),code_,size_)!=0,\"FlushInstructionCache\");\n    }\n};\nstruct Snapshot {\n    std::vector<Pair> pairs; Word capacity,opaque;\n    bool operator==(const Snapshot&) const=default;\n};\nSnapshot snapshot(Renderer& renderer) {\n    renderer.guards(); const Word count=load(renderer.raw(),0x20);\n    const auto* data=static_cast<const Pair*>(ptr(load(renderer.raw(),0x1c)));\n    Snapshot result{{},load(renderer.raw(),0x24),load(renderer.raw(),0x19dc)};\n    if(count) result.pairs.assign(data,data+count);\n    return result;\n}\nstruct Script;\nstruct ScriptApi { Word* table; Script* script; Word id; };\nstruct Script {\n    Renderer& renderer; std::array<Word,8> table{};\n    ScriptApi initial{table.data(),this,0},first{table.data(),this,1},second{table.data(),this,2};\n    unsigned count_calls=0; std::vector<Word> calls;\n};\nWord __stdcall mode_count(void* opaque,Word adapter,Word format) {\n    auto& api=*static_cast<ScriptApi*>(opaque); auto& s=*api.script;\n    require(api.id==0&&adapter==0&&format==0x16,\"count actual COM arguments\");\n    require(load(s.renderer.raw(),0x19dc)==0,\"opaque clear before count dispatch\");\n    ++s.count_calls; s.renderer.set_api(&s.first); return 7;\n}\nstd::int32_t __stdcall enum_mode(void* opaque,Word adapter,Word format,Word index,void* mode) {\n    auto& api=*static_cast<ScriptApi*>(opaque); auto& s=*api.script;\n    require(adapter==0&&format==0x16&&index==s.calls.size(),\"enumeration captured count/index/arguments\");\n    require(api.id==(index<2?1u:2u),\"current COM interface was not reloaded\"); s.calls.push_back(api.id);\n    switch(index) {\n    case 0:\n        store(mode,0,1024); store(mode,4,768); store(mode,8,60); store(mode,12,0x16);\n        return static_cast<std::int32_t>(0x80004005u);\n    case 1:\n        store(mode,0,1280); s.renderer.set_api(&s.second); return 1;\n    case 2: store(mode,4,720); return 0;\n    case 3: store(mode,0,800); store(mode,4,600); return 0;\n    case 4: {\n        store(mode,0,639); store(mode,4,999);\n        auto* rows=static_cast<Pair*>(ptr(load(s.renderer.raw(),0x1c)));\n        const Word count=load(s.renderer.raw(),0x20);\n        require(count==3&&load(s.renderer.raw(),0x24)==4,\"append publication before COM reentry\");\n        rows[count]={1366,768}; store(s.renderer.raw(),0x20,count+1); return 0;\n    }\n    case 5: store(mode,0,1920); store(mode,4,1080); store(s.renderer.raw(),0x19dc,0x1234); return 0;\n    case 6: store(mode,0,640); store(mode,4,480); return 0;\n    default: throw std::runtime_error(\"unexpected extra enumeration\");\n    }\n}\nSnapshot scripted(OriginalEnumerate original,bool use_original) {\n    Renderer renderer; renderer.initial_pairs(); Script script{renderer};\n    script.table[6]=reinterpret_cast<Word>(&mode_count); script.table[7]=reinterpret_cast<Word>(&enum_mode);\n    renderer.set_api(&script.initial); Word scratch[4]={0xdddddddd,0xcccccccc,0xbbbbbbbb,0xaaaaaaaa};\n    if(use_original) original(renderer.raw());\n    else bsp::enumerate_native_renderer_resolutions_00b27d80(renderer.raw(),scratch);\n    require(script.count_calls==1&&script.calls.size()==7,\"single captured mode count\");\n    auto result=snapshot(renderer);\n    const std::vector<Pair> expected{{640,480},{800,600},{1280,720},{1366,768},{1920,1080}};\n    require(result.pairs==expected&&result.capacity==8&&result.opaque==0x1234,\"scripted native postimages\");\n    if(!use_original) require(scratch[0]==640&&scratch[1]==480&&scratch[2]==60&&scratch[3]==0x16,\"retained mode scratch writes\");\n    return result;\n}\nSnapshot real_modes(OriginalEnumerate original,IDirect3D9* api,bool use_original) {\n    Renderer renderer; renderer.set_api(api); Word scratch[4]={640,480,0x9876,0x5432};\n    if(use_original) original(renderer.raw());\n    else bsp::enumerate_native_renderer_resolutions_00b27d80(renderer.raw(),scratch);\n    return snapshot(renderer);\n}\nvoid module_record(const wchar_t* name,HMODULE module,const char* category) {\n    if(!module) { std::printf(\"UNLOADED_RUNTIME|%ls\\n\",name); return; }\n    wchar_t reported[1024],canonical[1024];\n    const DWORD n=GetModuleFileNameW(module,reported,1024); require(n&&n<1024,\"module path\");\n    HANDLE file=CreateFileW(reported,GENERIC_READ,FILE_SHARE_READ|FILE_SHARE_WRITE|FILE_SHARE_DELETE,nullptr,OPEN_EXISTING,FILE_ATTRIBUTE_NORMAL,nullptr);\n    require(file!=INVALID_HANDLE_VALUE,\"module file\");\n    const DWORD m=GetFinalPathNameByHandleW(file,canonical,1024,FILE_NAME_NORMALIZED); CloseHandle(file); require(m&&m<1024,\"canonical module file\");\n    const auto* bytes=reinterpret_cast<const unsigned char*>(module);\n    const auto* dos=reinterpret_cast<const IMAGE_DOS_HEADER*>(bytes);\n    const auto* nt=reinterpret_cast<const IMAGE_NT_HEADERS32*>(bytes+dos->e_lfanew);\n    require(nt->FileHeader.Machine==IMAGE_FILE_MACHINE_I386,\"loaded machine\");\n    std::printf(\"%s|%ls|%ls|%ls|%04x\\n\",category,name,reported,canonical,static_cast<unsigned>(nt->FileHeader.Machine));\n}\nvoid provider_record(const wchar_t* role,void* function) {\n    HMODULE module{};\n    require(GetModuleHandleExW(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS|GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT,reinterpret_cast<LPCWSTR>(function),&module)!=0,\"COM provider module\");\n    std::printf(\"PROVIDER_ADDRESS|%ls|%08x\\n\",role,addr(function));\n    module_record(role,module,\"LOADED_PROVIDER\");\n}\nvoid runtime_records(IDirect3D9* api) {\n    for(const auto* name:{L\"ucrtbase.dll\",L\"vcruntime140.dll\",L\"msvcp140.dll\",L\"vcruntime140_1.dll\",L\"d3d9.dll\"}) module_record(name,GetModuleHandleW(name),\"LOADED_RUNTIME\");\n    void* table=ptr(load(api));\n    provider_record(L\"IDirect3D9.GetAdapterModeCount\",ptr(load(table,0x18)));\n    provider_record(L\"IDirect3D9.EnumAdapterModes\",ptr(load(table,0x1c)));\n}\n}\nint main() {\n    try {\n        Original search(original_008d46c0),reserve(original_008d4750),compare(original_00b1ffd0),enumerate(original_00b27d80);\n        search.finish(); compare.finish(); reserve.call(0x20,&allocate_original); reserve.call(0x55,&free_original); reserve.finish();\n        enumerate.call(0x86,search.pointer()); enumerate.call(0xa7,reserve.pointer()); enumerate.call(0xe8,&sort_original); enumerate.comparator(0xdf,compare.pointer()); enumerate.finish();\n        auto original=reinterpret_cast<OriginalEnumerate>(enumerate.pointer());\n        require(scripted(original,true)==scripted(original,false),\"scripted original/source mismatch\");\n        const Word empty[3]{};\n        require(reinterpret_cast<Find>(search.pointer())(empty,0,nullptr)==bsp::find_native_resolution_pair_008d46c0(empty,0,nullptr),\"empty search no key read\");\n        const Pair left{0x80000000u,1},right{0,9};\n        require(reinterpret_cast<Comparator>(compare.pointer())(&left,&right)==bsp::compare_native_resolution_pairs_00b1ffd0(&left,&right),\"wrapped raw comparator\");\n        IDirect3D9* api=Direct3DCreate9(D3D_SDK_VERSION); require(api!=nullptr,\"Direct3DCreate9\");\n        const auto native=real_modes(original,api,true); const auto source=real_modes(original,api,false);\n        require(native==source,\"real D3D9 original/source mismatch\");\n        std::printf(\"REAL_D3D9|unique_pairs=%u|capacity=%u|adapters=%u\\n\",static_cast<unsigned>(source.pairs.size()),source.capacity,api->GetAdapterCount());\n        runtime_records(api); api->Release();\n        require(original_sorts==2,\"native unconditional qsort calls\");\n        std::puts(\"PASS: complete original resolution chain equals actual source for scripted COM reentry/preimages and real D3D9 modes; raw helper edges pass\");\n        return 0;\n    } catch(const std::exception& error) { std::fprintf(stderr,\"FAIL: %s\\n\",error.what()); return 1; }\n}\n",
+    "reference_header": "#pragma once\n#include <cstddef>\ninline constexpr unsigned char original_00b27d80[] = {0x83,0xec,0x20,0x55,0x8b,0xe9,0x8b,0x85,0x90,0x19,0x00,0x00,0x6a,0x16,0xc7,0x85,0xdc,0x19,0x00,0x00,0x00,0x00,0x00,0x00,0x8b,0x08,0x8b,0x51,0x18,0x6a,0x00,0x50,0xff,0xd2,0x33,0xc9,0x85,0xc0,0x89,0x44,0x24,0x08,0x89,0x4c,0x24,0x04,0x0f,0x86,0xa5,0x00,0x00,0x00,0x53,0x56,0x57,0xeb,0x07,0x8d,0xa4,0x24,0x00,0x00,0x00,0x00,0x8b,0x85,0x90,0x19,0x00,0x00,0x8b,0x10,0x8d,0x74,0x24,0x20,0x56,0x51,0x6a,0x16,0x6a,0x00,0x50,0x8b,0x42,0x1c,0xff,0xd0,0x85,0xc0,0x75,0x65,0x8b,0x5c,0x24,0x20,0x81,0xfb,0x80,0x02,0x00,0x00,0x72,0x59,0x8b,0x7c,0x24,0x24,0x81,0xff,0xe0,0x01,0x00,0x00,0x72,0x4d,0x8d,0x4c,0x24,0x18,0x8d,0x75,0x1c,0x51,0x8b,0xce,0x89,0x5c,0x24,0x1c,0x89,0x7c,0x24,0x20,0xe8,0xb5,0xc8,0xda,0xff,0x83,0xf8,0xff,0x75,0x31,0x8b,0x46,0x08,0x39,0x46,0x04,0x75,0x14,0x03,0xc0,0x83,0xf8,0x01,0x7f,0x05,0xb8,0x01,0x00,0x00,0x00,0x50,0x8b,0xce,0xe8,0x24,0xc9,0xda,0xff,0x8b,0x56,0x04,0x8b,0x06,0x8d,0x04,0xd0,0x85,0xc0,0x74,0x05,0x89,0x18,0x89,0x78,0x04,0x83,0x46,0x04,0x01,0x8b,0x4c,0x24,0x10,0x83,0xc1,0x01,0x3b,0x4c,0x24,0x14,0x89,0x4c,0x24,0x10,0x0f,0x82,0x6a,0xff,0xff,0xff,0x5f,0x5e,0x5b,0x8b,0x4d,0x20,0x8b,0x55,0x1c,0x68,0xd0,0xff,0xb1,0x00,0x6a,0x08,0x51,0x52,0xe8,0xe3,0x44,0x0d,0x00,0x83,0xc4,0x10,0x5d,0x83,0xc4,0x20,0xc3};\ninline constexpr unsigned char original_008d46c0[] = {0x56,0x8b,0x31,0x8b,0x49,0x04,0x8b,0xd6,0x8d,0x0c,0xca,0x83,0xc8,0xff,0x3b,0xd1,0x73,0x32,0x53,0x57,0x8b,0x7c,0x24,0x10,0x8b,0x1f,0x55,0xeb,0x03,0x8d,0x49,0x00,0x39,0x1a,0x75,0x08,0x8b,0x6a,0x04,0x3b,0x6f,0x04,0x74,0x0e,0x83,0xc2,0x08,0x3b,0xd1,0x72,0xed,0x5d,0x5f,0x5b,0x5e,0xc2,0x04,0x00,0x5d,0x2b,0xd6,0xc1,0xfa,0x03,0x5f,0x8b,0xc2,0x5b,0x5e,0xc2,0x04,0x00};\ninline constexpr unsigned char original_008d4750[] = {0x56,0x57,0x8b,0x7c,0x24,0x0c,0x83,0xff,0x01,0x8b,0xf1,0x7d,0x05,0xbf,0x01,0x00,0x00,0x00,0x39,0x7e,0x08,0x7d,0x4c,0x8d,0x04,0xfd,0x00,0x00,0x00,0x00,0x53,0x50,0xe8,0x49,0x0e,0x32,0x00,0x33,0xc9,0x83,0xc4,0x04,0x39,0x4e,0x04,0x8b,0xd8,0x7e,0x21,0x55,0x85,0xc0,0x74,0x10,0x8b,0x16,0x8b,0x2c,0xca,0x8d,0x14,0xca,0x89,0x28,0x8b,0x52,0x04,0x89,0x50,0x04,0x83,0xc1,0x01,0x83,0xc0,0x08,0x3b,0x4e,0x04,0x7c,0xe1,0x5d,0x8b,0x06,0x50,0xe8,0xdf,0x21,0x32,0x00,0x83,0xc4,0x04,0x89,0x1e,0x89,0x7e,0x08,0x5b,0x5f,0x5e,0xc2,0x04,0x00};\ninline constexpr unsigned char original_00b1ffd0[] = {0x8b,0x54,0x24,0x04,0x8b,0x02,0x56,0x8b,0x74,0x24,0x0c,0x8b,0x0e,0x3b,0xc1,0x75,0x08,0x8b,0x42,0x04,0x2b,0x46,0x04,0x5e,0xc3,0x2b,0xc1,0x5e,0xc3};\n",
+    "build_script": "$ErrorActionPreference = 'Stop'\n$vswhere = Join-Path ${env:ProgramFiles(x86)} 'Microsoft Visual Studio/Installer/vswhere.exe'\n$vsPath = & $vswhere -latest -products '*' -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath\n& (Join-Path $vsPath 'Common7/Tools/Launch-VsDevShell.ps1') -Arch x86 -HostArch amd64 -SkipAutomaticLocation | Out-Null\n$cmakeDirectory = Join-Path $vsPath 'Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/bin'\n$toolPaths = @{\n    compiler = (Get-Command cl.exe).Source\n    linker = (Get-Command link.exe).Source\n    librarian = (Get-Command lib.exe).Source\n    python = (Get-Command python.exe).Source\n    powershell = (Get-Process -Id $PID).Path\n    cmake = (Join-Path $cmakeDirectory 'cmake.exe')\n    ctest = (Join-Path $cmakeDirectory 'ctest.exe')\n}\n$toolRecords = foreach ($entry in $toolPaths.GetEnumerator()) {\n    $item = Get-Item -LiteralPath $entry.Value\n    [pscustomobject]@{ role=$entry.Key; path=$item.FullName; file_version=$item.VersionInfo.FileVersion; bytes=$item.Length }\n}\n[System.IO.File]::WriteAllText((Join-Path $PWD 'local/native_renderer_resolution_tools.json'),($toolRecords | ConvertTo-Json),[System.Text.UTF8Encoding]::new($false))\ncl /nologo /std:c++20 /EHsc /MD /O2 /W4 /WX /fp:strict /I include /I local /Fo:local/native_renderer_resolution_probe.obj /Fe:local/native_renderer_resolution_probe.exe local/native_renderer_resolution_probe.cpp build/win32/Release/bsp_core.lib build/win32/Release/bsp_lua511.lib build/win32/Release/bsp_zlib121.lib /link /MANIFEST:EMBED user32.lib d3d9.lib shell32.lib kernel32.lib gdi32.lib winspool.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib\nif ($LASTEXITCODE) { throw 'Fixture compilation failed.' }\n& ./local/native_renderer_resolution_probe.exe\nif ($LASTEXITCODE) { throw 'Fixture failed.' }\n"
+  },
+  "artifact_archive": {
+    "root": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-resolution-enumeration\\local\\native_renderer_resolution_enumeration_archive",
+    "policy": "Copy absent paths only; existing paths require byte equality; copied bytes rechecked; no overwrites.",
+    "artifact_manifest": [
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-resolution-enumeration\\include\\bsp\\native_renderer_resolution_enumeration.hpp",
+        "archive_path": "local\\native_renderer_resolution_enumeration_archive\\inputs\\include\\bsp\\native_renderer_resolution_enumeration.hpp",
+        "bytes": 2169,
+        "sha256": "478440bd42997d5839f78f06151d74ded1cf969b2dbc4f4d67ad0d8d6a05acae"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-resolution-enumeration\\src\\native_renderer_resolution_enumeration.cpp",
+        "archive_path": "local\\native_renderer_resolution_enumeration_archive\\inputs\\src\\native_renderer_resolution_enumeration.cpp",
+        "bytes": 4762,
+        "sha256": "d5ccb64e0a7668cfd86518d5f64af59cf6aa31ac2e5726776f526a38d81bf64c"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-resolution-enumeration\\docs\\NATIVE_RENDERER_RESOLUTION_ENUMERATION.md",
+        "archive_path": "local\\native_renderer_resolution_enumeration_archive\\inputs\\docs\\NATIVE_RENDERER_RESOLUTION_ENUMERATION.md",
+        "bytes": 6708,
+        "sha256": "04a3a6aecf9faa867c80c24c35ab0212b613658f58cbb97fac85b42d91dade99"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-resolution-enumeration\\cmake\\startup.cmake",
+        "archive_path": "local\\native_renderer_resolution_enumeration_archive\\inputs\\cmake\\startup.cmake",
+        "bytes": 113844,
+        "sha256": "366e42682fb65ec25df75e9537040a2e611f253092b2518057301232f97cae07"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-resolution-enumeration\\include\\bsp\\singleton_lifetime.hpp",
+        "archive_path": "local\\native_renderer_resolution_enumeration_archive\\inputs\\include\\bsp\\singleton_lifetime.hpp",
+        "bytes": 4372,
+        "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-resolution-enumeration\\src\\singleton_lifetime.cpp",
+        "archive_path": "local\\native_renderer_resolution_enumeration_archive\\inputs\\src\\singleton_lifetime.cpp",
+        "bytes": 13257,
+        "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-resolution-enumeration\\local\\native_renderer_resolution_reference.hpp",
+        "archive_path": "local\\native_renderer_resolution_enumeration_archive\\inputs\\local\\native_renderer_resolution_reference.hpp",
+        "bytes": 2512,
+        "sha256": "72587236f010efe2e6a97b64d3dc320bb037985ef40f200c6b4e2a0746be1ef2"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-resolution-enumeration\\local\\native_renderer_resolution_probe.cpp",
+        "archive_path": "local\\native_renderer_resolution_enumeration_archive\\inputs\\local\\native_renderer_resolution_probe.cpp",
+        "bytes": 11224,
+        "sha256": "63a1a19546e8b21b8eab89f8aa8df8aadf0fa347d5132fcacf34bc60296c9d8e"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-resolution-enumeration\\local\\build_native_renderer_resolution_probe.ps1",
+        "archive_path": "local\\native_renderer_resolution_enumeration_archive\\inputs\\local\\build_native_renderer_resolution_probe.ps1",
+        "bytes": 1835,
+        "sha256": "8dff6eb2a8b4fb469da5465b3180e74eb3663ee48543380fe110be533119539d"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-resolution-enumeration\\local\\prepare_native_renderer_resolution_bytes.py",
+        "archive_path": "local\\native_renderer_resolution_enumeration_archive\\inputs\\local\\prepare_native_renderer_resolution_bytes.py",
+        "bytes": 2308,
+        "sha256": "46f46f17099627f324755f4f692ed7e9ab846d3f76594f70dd1d7a36289523b5"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-resolution-enumeration\\local\\append_native_renderer_resolution_source.py",
+        "archive_path": "local\\native_renderer_resolution_enumeration_archive\\inputs\\local\\append_native_renderer_resolution_source.py",
+        "bytes": 692,
+        "sha256": "c93da960bb448443eb215545ce612a84377aa7e004b3590b4c57fce985aef20d"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-resolution-enumeration\\local\\finalize_native_renderer_resolution_enumeration.py",
+        "archive_path": "local\\native_renderer_resolution_enumeration_archive\\inputs\\local\\finalize_native_renderer_resolution_enumeration.py",
+        "bytes": 17049,
+        "sha256": "88e591874a41d0e0d6416e0734431ef6cd71d7ecd2b2f7b5196955e1419fe8de"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-resolution-enumeration\\local\\native_renderer_resolution_spans.json",
+        "archive_path": "local\\native_renderer_resolution_enumeration_archive\\inputs\\local\\native_renderer_resolution_spans.json",
+        "bytes": 2541,
+        "sha256": "6f6e2d32aa489f8497bcf98e33e04dac0c44734d30b61dec85da5a38423a1c4b"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-resolution-enumeration\\local\\native_renderer_resolution_flow.log",
+        "archive_path": "local\\native_renderer_resolution_enumeration_archive\\inputs\\local\\native_renderer_resolution_flow.log",
+        "bytes": 195,
+        "sha256": "b3e3dd58c73f65282e0f0e8cc625090239515f40e98fed5d44b7903a0b1e9b98"
+      },
+      {
+        "role": "executable",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-resolution-enumeration\\local\\native_renderer_resolution_probe.exe",
+        "archive_path": "local\\native_renderer_resolution_enumeration_archive\\inputs\\local\\native_renderer_resolution_probe.exe",
+        "bytes": 21504,
+        "sha256": "4392130238ea6340d114f3a21168e4aa87e7e9bdb7768e3310e858a17184a867",
+        "pe_machine": "014c"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-resolution-enumeration\\local\\native_renderer_resolution_probe.obj",
+        "archive_path": "local\\native_renderer_resolution_enumeration_archive\\inputs\\local\\native_renderer_resolution_probe.obj",
+        "bytes": 105682,
+        "sha256": "623a2cbc8eb3783712a8a0461f6bd653dc5dc898468a1ccc6dc0e96320390b1f"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-resolution-enumeration\\local\\native_renderer_resolution_probe.log",
+        "archive_path": "local\\native_renderer_resolution_enumeration_archive\\inputs\\local\\native_renderer_resolution_probe.log",
+        "bytes": 1022,
+        "sha256": "9da87e4c41f322a4df24617228d65b31a68526829b51880487210e7a8de01ab9"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-resolution-enumeration\\local\\native_renderer_resolution_baseline_build.log",
+        "archive_path": "local\\native_renderer_resolution_enumeration_archive\\inputs\\local\\native_renderer_resolution_baseline_build.log",
+        "bytes": 68404,
+        "sha256": "765740bd9b6a463aa726b04991bbc3b6f6cf32956726961d9396a4bfb6934da1"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-resolution-enumeration\\local\\native_renderer_resolution_build.log",
+        "archive_path": "local\\native_renderer_resolution_enumeration_archive\\inputs\\local\\native_renderer_resolution_build.log",
+        "bytes": 7305,
+        "sha256": "0554ac3cb415e54b897136259ebbbb2bd306c97c320b58d244e900e10d708436"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-resolution-enumeration\\local\\native_renderer_resolution_seeds.log",
+        "archive_path": "local\\native_renderer_resolution_enumeration_archive\\inputs\\local\\native_renderer_resolution_seeds.log",
+        "bytes": 3034,
+        "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-resolution-enumeration\\local\\native_renderer_resolution_tools.json",
+        "archive_path": "local\\native_renderer_resolution_enumeration_archive\\inputs\\local\\native_renderer_resolution_tools.json",
+        "bytes": 1456,
+        "sha256": "b8cd8fc62d46733792e6211347bf216a45b0e75d4b0a6c3bec1552cfd0bf699f"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-resolution-enumeration\\local\\seed_reference.hpp",
+        "archive_path": "local\\native_renderer_resolution_enumeration_archive\\inputs\\local\\seed_reference.hpp",
+        "bytes": 2995,
+        "sha256": "26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-resolution-enumeration\\build\\win32\\Release\\bsp_core.lib",
+        "archive_path": "local\\native_renderer_resolution_enumeration_archive\\inputs\\build\\win32\\Release\\bsp_core.lib",
+        "bytes": 57708616,
+        "sha256": "3a68f33f0ce8ab2c2d124c72091c41fc190f59242e7bf77f428969ed135ac337"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-resolution-enumeration\\build\\win32\\Release\\bsp_lua511.lib",
+        "archive_path": "local\\native_renderer_resolution_enumeration_archive\\inputs\\build\\win32\\Release\\bsp_lua511.lib",
+        "bytes": 456104,
+        "sha256": "1775a7898546abed1372a6d7e76e0d104a10f7aa63a14b65a2608c5260bc0fce"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-resolution-enumeration\\build\\win32\\Release\\bsp_zlib121.lib",
+        "archive_path": "local\\native_renderer_resolution_enumeration_archive\\inputs\\build\\win32\\Release\\bsp_zlib121.lib",
+        "bytes": 72206,
+        "sha256": "638ce0205e39efbc8cf5a8b4e435127b83b07e15dafc8048bc8948ec00e86d58"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-resolution-enumeration\\tools\\bsp.py",
+        "archive_path": "local\\native_renderer_resolution_enumeration_archive\\inputs\\tools\\bsp.py",
+        "bytes": 63768,
+        "sha256": "848a26c48d64002df10da7e233d14968baa51f097fdd08474eb2169c4f0e9d61"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-resolution-enumeration\\tools\\ghidra_export.py",
+        "archive_path": "local\\native_renderer_resolution_enumeration_archive\\inputs\\tools\\ghidra_export.py",
+        "bytes": 13401,
+        "sha256": "f94c057376298ef4e97fd9f5f98eec20a5fcdad886a777373977a90a09179eee"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-resolution-enumeration\\tools\\verify_report_calls.py",
+        "archive_path": "local\\native_renderer_resolution_enumeration_archive\\inputs\\tools\\verify_report_calls.py",
+        "bytes": 9233,
+        "sha256": "396e6d544dece7c9551ff10ee15ab234a0ad1c4a339fd118ddec20de1bb7a8cd"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-resolution-enumeration\\scripts\\build.ps1",
+        "archive_path": "local\\native_renderer_resolution_enumeration_archive\\inputs\\scripts\\build.ps1",
+        "bytes": 1657,
+        "sha256": "87b1f7f177977e4800c6e427c13cc916779f412daa7490f37fbb1b50cb3d295c"
+      }
+    ],
+    "executable_artifacts": [
+      {
+        "role": "executable",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-resolution-enumeration\\local\\native_renderer_resolution_probe.exe",
+        "archive_path": "local\\native_renderer_resolution_enumeration_archive\\inputs\\local\\native_renderer_resolution_probe.exe",
+        "bytes": 21504,
+        "sha256": "4392130238ea6340d114f3a21168e4aa87e7e9bdb7768e3310e858a17184a867",
+        "pe_machine": "014c"
+      }
+    ],
+    "observed_tool_executables": [
+      {
+        "role": "observed_tool_executable",
+        "original_path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin\\cmake.exe",
+        "archive_path": "local\\native_renderer_resolution_enumeration_archive\\tools\\cmake\\cmake.exe",
+        "bytes": 14060088,
+        "sha256": "d8173552e9d943c20feadd74d0437371f49d45c3d53a20dae2655ecc2493392c",
+        "pe_machine": "8664",
+        "tool_role": "cmake",
+        "file_version": "4.2.3-msvc3"
+      },
+      {
+        "role": "observed_tool_executable",
+        "original_path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x86\\cl.exe",
+        "archive_path": "local\\native_renderer_resolution_enumeration_archive\\tools\\compiler\\cl.exe",
+        "bytes": 891752,
+        "sha256": "95db52a9c9bd300131474769df7d32b342725b1e1574e0fc83a266479b196938",
+        "pe_machine": "8664",
+        "tool_role": "compiler",
+        "file_version": "19.51.36244.0"
+      },
+      {
+        "role": "observed_tool_executable",
+        "original_path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin\\ctest.exe",
+        "archive_path": "local\\native_renderer_resolution_enumeration_archive\\tools\\ctest\\ctest.exe",
+        "bytes": 15152224,
+        "sha256": "4d00d31a10d004edb8d7f39bcd47d0a94da1cd4464e9d2246d199f0cf6c7852b",
+        "pe_machine": "8664",
+        "tool_role": "ctest",
+        "file_version": "4.2.3-msvc3"
+      },
+      {
+        "role": "observed_tool_executable",
+        "original_path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x86\\lib.exe",
+        "archive_path": "local\\native_renderer_resolution_enumeration_archive\\tools\\librarian\\lib.exe",
+        "bytes": 23424,
+        "sha256": "8c59e7b3642ad1c5719bdc5e567e89254ab1022b7d20f1933e79b92213c76ebc",
+        "pe_machine": "8664",
+        "tool_role": "librarian",
+        "file_version": "14.51.36244.0"
+      },
+      {
+        "role": "observed_tool_executable",
+        "original_path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x86\\link.exe",
+        "archive_path": "local\\native_renderer_resolution_enumeration_archive\\tools\\linker\\link.exe",
+        "bytes": 3698016,
+        "sha256": "36186698fc03d62a1151e48c55d5c17170b94b4621a2faa11189d08182e11a81",
+        "pe_machine": "8664",
+        "tool_role": "linker",
+        "file_version": "14.51.36244.0"
+      },
+      {
+        "role": "observed_tool_executable",
+        "original_path": "C:\\Program Files\\PowerShell\\7\\pwsh.exe",
+        "archive_path": "local\\native_renderer_resolution_enumeration_archive\\tools\\powershell\\pwsh.exe",
+        "bytes": 301368,
+        "sha256": "362a356ce7f0940ec74f73a8fc2c990a2cc24a38a11c90bbd8eca947110ad139",
+        "pe_machine": "8664",
+        "tool_role": "powershell",
+        "file_version": "7.6.5.500"
+      },
+      {
+        "role": "observed_tool_executable",
+        "original_path": "C:\\ProgramData\\miniconda3\\python.exe",
+        "archive_path": "local\\native_renderer_resolution_enumeration_archive\\tools\\python\\python.exe",
+        "bytes": 104264,
+        "sha256": "ec0ea8d6907787b76dcf8524aaa93e52e167ceee62fa8778e182ea637a3dbc1d",
+        "pe_machine": "8664",
+        "tool_role": "python",
+        "file_version": "3.13.11"
+      }
+    ]
+  },
+  "loaded_runtime_dll_evidence": {
+    "observation": "GetModuleHandleW/GetModuleFileNameW and loaded PE machine inside running Win32 fixture; canonical file from handle opened by that same process. Actual COM slot addresses mapped by GetModuleHandleEx FROM_ADDRESS.",
+    "hash_basis": "Post-run disk file and archived copy hash; not a mapped-image hash.",
+    "loaded_runtime_dlls": [
+      {
+        "role": "loaded_runtime_dll_file",
+        "original_path": "\\\\?\\C:\\Windows\\SysWOW64\\ucrtbase.dll",
+        "archive_path": "local\\native_renderer_resolution_enumeration_archive\\runtime\\ucrtbase.dll",
+        "bytes": 1114240,
+        "sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+        "pe_machine": "014c",
+        "module_name": "ucrtbase.dll",
+        "reported_loaded_path": "C:\\WINDOWS\\System32\\ucrtbase.dll",
+        "canonical_path_from_running_x86_process": "\\\\?\\C:\\Windows\\SysWOW64\\ucrtbase.dll",
+        "loaded_image_machine": "014c"
+      },
+      {
+        "role": "loaded_runtime_dll_file",
+        "original_path": "\\\\?\\C:\\Windows\\SysWOW64\\vcruntime140.dll",
+        "archive_path": "local\\native_renderer_resolution_enumeration_archive\\runtime\\vcruntime140.dll",
+        "bytes": 123328,
+        "sha256": "2fa6efc053203460a23d3a25158f227d895d2dadc63acc1a372da97c3a4281c3",
+        "pe_machine": "014c",
+        "module_name": "vcruntime140.dll",
+        "reported_loaded_path": "C:\\WINDOWS\\SYSTEM32\\VCRUNTIME140.dll",
+        "canonical_path_from_running_x86_process": "\\\\?\\C:\\Windows\\SysWOW64\\vcruntime140.dll",
+        "loaded_image_machine": "014c"
+      },
+      {
+        "role": "loaded_runtime_dll_file",
+        "original_path": "\\\\?\\C:\\Windows\\SysWOW64\\msvcp140.dll",
+        "archive_path": "local\\native_renderer_resolution_enumeration_archive\\runtime\\msvcp140.dll",
+        "bytes": 618944,
+        "sha256": "f0cda2a0cf1fe6fbbf579b9098462329d3aaa7513a207af2e0f33b01456e388a",
+        "pe_machine": "014c",
+        "module_name": "msvcp140.dll",
+        "reported_loaded_path": "C:\\WINDOWS\\SYSTEM32\\MSVCP140.dll",
+        "canonical_path_from_running_x86_process": "\\\\?\\C:\\Windows\\SysWOW64\\msvcp140.dll",
+        "loaded_image_machine": "014c"
+      },
+      {
+        "role": "loaded_runtime_dll_file",
+        "original_path": "\\\\?\\C:\\Windows\\SysWOW64\\d3d9.dll",
+        "archive_path": "local\\native_renderer_resolution_enumeration_archive\\runtime\\d3d9.dll",
+        "bytes": 1528480,
+        "sha256": "f4757445d75d619bc5695294ee5ca6bfa0ad8763c6604a8e884739f605a6df28",
+        "pe_machine": "014c",
+        "module_name": "d3d9.dll",
+        "reported_loaded_path": "C:\\WINDOWS\\SYSTEM32\\d3d9.dll",
+        "canonical_path_from_running_x86_process": "\\\\?\\C:\\Windows\\SysWOW64\\d3d9.dll",
+        "loaded_image_machine": "014c"
+      },
+      {
+        "role": "actual_COM_slot_provider_module_file",
+        "original_path": "\\\\?\\C:\\Windows\\SysWOW64\\d3d9.dll",
+        "archive_path": "local\\native_renderer_resolution_enumeration_archive\\runtime\\providers\\IDirect3D9.GetAdapterModeCount\\d3d9.dll",
+        "bytes": 1528480,
+        "sha256": "f4757445d75d619bc5695294ee5ca6bfa0ad8763c6604a8e884739f605a6df28",
+        "pe_machine": "014c",
+        "provider_role": "IDirect3D9.GetAdapterModeCount",
+        "observed_function_VA": "6e793940",
+        "reported_loaded_path": "C:\\WINDOWS\\SYSTEM32\\d3d9.dll",
+        "canonical_path_from_running_x86_process": "\\\\?\\C:\\Windows\\SysWOW64\\d3d9.dll",
+        "loaded_image_machine": "014c"
+      },
+      {
+        "role": "actual_COM_slot_provider_module_file",
+        "original_path": "\\\\?\\C:\\Windows\\SysWOW64\\d3d9.dll",
+        "archive_path": "local\\native_renderer_resolution_enumeration_archive\\runtime\\providers\\IDirect3D9.EnumAdapterModes\\d3d9.dll",
+        "bytes": 1528480,
+        "sha256": "f4757445d75d619bc5695294ee5ca6bfa0ad8763c6604a8e884739f605a6df28",
+        "pe_machine": "014c",
+        "provider_role": "IDirect3D9.EnumAdapterModes",
+        "observed_function_VA": "6e793620",
+        "reported_loaded_path": "C:\\WINDOWS\\SYSTEM32\\d3d9.dll",
+        "canonical_path_from_running_x86_process": "\\\\?\\C:\\Windows\\SysWOW64\\d3d9.dll",
+        "loaded_image_machine": "014c"
+      }
+    ],
+    "actual_COM_providers": [
+      {
+        "role": "actual_COM_slot_provider_module_file",
+        "original_path": "\\\\?\\C:\\Windows\\SysWOW64\\d3d9.dll",
+        "archive_path": "local\\native_renderer_resolution_enumeration_archive\\runtime\\providers\\IDirect3D9.GetAdapterModeCount\\d3d9.dll",
+        "bytes": 1528480,
+        "sha256": "f4757445d75d619bc5695294ee5ca6bfa0ad8763c6604a8e884739f605a6df28",
+        "pe_machine": "014c",
+        "provider_role": "IDirect3D9.GetAdapterModeCount",
+        "observed_function_VA": "6e793940",
+        "reported_loaded_path": "C:\\WINDOWS\\SYSTEM32\\d3d9.dll",
+        "canonical_path_from_running_x86_process": "\\\\?\\C:\\Windows\\SysWOW64\\d3d9.dll",
+        "loaded_image_machine": "014c"
+      },
+      {
+        "role": "actual_COM_slot_provider_module_file",
+        "original_path": "\\\\?\\C:\\Windows\\SysWOW64\\d3d9.dll",
+        "archive_path": "local\\native_renderer_resolution_enumeration_archive\\runtime\\providers\\IDirect3D9.EnumAdapterModes\\d3d9.dll",
+        "bytes": 1528480,
+        "sha256": "f4757445d75d619bc5695294ee5ca6bfa0ad8763c6604a8e884739f605a6df28",
+        "pe_machine": "014c",
+        "provider_role": "IDirect3D9.EnumAdapterModes",
+        "observed_function_VA": "6e793620",
+        "reported_loaded_path": "C:\\WINDOWS\\SYSTEM32\\d3d9.dll",
+        "canonical_path_from_running_x86_process": "\\\\?\\C:\\Windows\\SysWOW64\\d3d9.dll",
+        "loaded_image_machine": "014c"
+      }
+    ],
+    "checked_but_unloaded": [
+      "vcruntime140_1.dll"
+    ]
+  },
+  "remaining_boundaries": [
+    "Allocation failure ordering established from native/source; not fault-injected.",
+    "Explicit initialized mode16 input is a new source ABI, not original stack/register/private-frame identity.",
+    "Host CRT qsort is genuine but its private algorithm/error behavior/non-transitive overflow ordering is not asserted identical to original static CRT.",
+    "Valid raw extents, lifetimes and native wrapping-address domain remain caller obligations; no concurrent/malformed-header guarantee.",
+    "Tool executable archive does not contain every tool dependency; post-run runtime file hashes are not mapped-image hashes.",
+    "Real D3D9 enumeration passed on this machine; no game integration or gameplay validation."
+  ]
+}
