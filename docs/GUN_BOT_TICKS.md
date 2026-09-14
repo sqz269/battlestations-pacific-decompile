@@ -533,3 +533,28 @@ Both start after `int3` padding (`006DF4B3`-`006DF4BF` and `008FC07F`) and end a
 - **Was:** Primary vtable slot +10h is a stub (0071C4A0).
   **Is:** The body is two byte stores, but the effect is not inert: it is the retire request that makes the owning tick node's sweeper unlink and delete the sub-node on its next pass.
   **Evidence:** 0071C4A0 sets [this+10h] = 1 and [this+11h] = 0; 008759E1 CMP byte ptr [ESI+0x10],BL in BSP_TickElement_RunSubNodes falls into the removal path at 008759E6 when it is set, and 00875A5A calls slot 0 with PUSH 1.
+
+## Correction from docs/GUN_DISPERSION.md (packet cc7_gun_dispersion)
+
+- **Was:** step 2 of the table above, `006DEFF0(bot)` "re-rolls the error envelope with `2^(k*rand(0,1))`,
+  `k` from `descriptor + 10h + skill*1Ch`".
+  **Is:** the envelope magnitude is `rand(0,1)^Power`, not `2^(Power*rand(0,1))`. The two are not the
+  same function: the first is a power of the draw, the second an exponential in the draw.
+  **Evidence:** `006DF065..006DF081`. `FLD [ESP+0Ch]` pushes `Power`, `FLD [ESP+04h]` pushes the
+  `00BD2F10` draw made at `006DF009`, then `FYL2X` computes `ST(1)*log2(ST(0))` = `Power*log2(rand)`
+  and pops. The `F2XM1`/`FLD1`/`FSCALE` triple at `006DF077..006DF07D` raises 2 to that, giving
+  `2^(Power*log2(rand))` = `rand^Power`. The operand order is the whole of the difference: `Power`
+  is in `ST(1)`, the draw in `ST(0)`, so the draw is the base and `Power` the exponent.
+  Verified at integration by reading the same listing range independently of the packet.
+
+- **Was:** the `ArtilleryGunnerBot` descriptor fields at `+14h..+24h` read as lead scalars.
+  **Is:** `+14h` is `TargetPointRefreshTime` and `+18h..+24h` are four target-section weights.
+  **Evidence:** the producer `read_ArtilleryGunnerBot_parameters_008FD370`, reached from
+  `load_robot_config_00901610`, whose name-to-global pairing gives `[00E19990] = ArtilleryGunnerBot`.
+  The layout is taken from that producer, not from a consumer's reads.
+
+- **Also:** `0072F830` is **not** a dispersion producer. Its per-pellet loop is deterministic -
+  `theta_i = 2*pi*i / OneTimeBulletAmount` on a ring of radius `MultiBulletConeAngle`
+  (`gunclass+0CCh`/`+0D0h`) - and its single `00BD2F10` call at `0072FB6A` is an effect timer. The
+  authored `Throw` cone is one frame up, in `BSP_Gun_Fire 00730160` steps 7 and 8, which
+  `docs/UNIT_WEAPON_DEVICES.md` had marked `contract: unread`. See docs/GUN_DISPERSION.md.

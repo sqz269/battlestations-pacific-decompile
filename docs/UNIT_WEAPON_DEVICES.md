@@ -271,3 +271,24 @@ branches are argument shapes, not three setters.
 The "sub-type table selecting 2, 3, 4, 5 or 7" that Fire consults is the gun class descriptor's
 weapon type at `+80h`, not the projectile descriptor's sub-type; and the `+88h`/`+8Ch` rotation
 rates docs/GUN_AIMING.md reads belong to the gun class descriptor, not to the projectile class.
+
+## Correction from docs/GUN_DISPERSION.md (packet cc7_gun_dispersion)
+
+- **Was:** the "Firing: `00730160`" section states "Ghidra has no function object there ... so it was
+  read from the raw listing; `reports/unit_weapons.json` records it as `no_ghidra_function`".
+  **Is:** `00730160` is now a defined Ghidra function, `BSP_Gun_Fire`, body `00730160 - 00730A1D`.
+  It was created through `tools/ghidra_define_function.py` during a later integration, so the
+  listing, the decompiler and `bsp.py ghidra proto|disasm|decompile` all answer for it now. The
+  original raw-listing reading stands; only the "no function object" caveat is stale.
+  **Evidence:** `bsp.py ghidra proto 00730160 --brief` reports `body 00730160 - 00730a1d`, and the
+  epilogue is `POP EBP` at `00730A14`, `ADD ESP,0FCh` at `00730A15`, `RET 0Ch` at `00730A1B`, with
+  `CC` padding from `00730A1E`.
+
+- **Was:** steps 7 and 8 of the Fire sequence carried `contract: unread`.
+  **Is:** both are read. Step 7/8 are where the authored `Throw` cone is applied, and they are the
+  per-shot dispersion producer for the whole game - not `0072F830`, whose per-pellet ring is
+  deterministic. The draw is `throwA = U(0, 2*pi)` and `throwB = tan(Throw') * U(0,1)` from the
+  MT19937 stream at `00BD2F10`, applied to the barrel matrix as
+  `row2 + throwB*(cos(throwA)*row1 + sin(throwA)*row0)` and left **unnormalised**, so the realised
+  half-angle is `atan(throwB)` and the distribution is uniform in radius rather than in area.
+  See docs/GUN_DISPERSION.md for the derivation and for the `Throw'` magnitude chain.
