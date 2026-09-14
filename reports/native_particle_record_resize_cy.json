@@ -1,0 +1,146 @@
+{
+  "packet": "orch3_particle_record_resize_cy",
+  "created_utc": "2026-09-14T19:40:47Z",
+  "base_commit": "9e7454ba53529c526b26d7027dedc4c31e88a59a",
+  "credit": {
+    "new_functions": 0,
+    "new_native_code_bytes": 0,
+    "reason": "Standalone source interface for the already credited orch5 raw 004DC410 normal body; source algorithm/evidence commit abfc4761e44ab10204871d37618fca226fabb9bd, audited branch head 4f5258f36f46bb4cb313f7094391aaa7d6fd80d2."
+  },
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "live_count": 64046
+  },
+  "original": {
+    "address": "004dc410",
+    "inclusive_end": "004dc4db",
+    "bytes": 204,
+    "pe_sha256": "92fe6a11dfd0a9384aac242baf0cc794edd44777f5ebb0994fe9203421b0682d",
+    "live_sha256": "92fe6a11dfd0a9384aac242baf0cc794edd44777f5ebb0994fe9203421b0682d",
+    "pe_live_equal": true,
+    "abi": "ECX actual 0Ch vector; signed requested count in original stack word; RET4; EDX unused.",
+    "direct_callers": [
+      "004dca80",
+      "004dda40",
+      "004ddaa0",
+      "004de290"
+    ],
+    "direct_calls": [
+      {
+        "site": "004dc43a",
+        "target": "004da180",
+        "hex": "e841ddffff"
+      },
+      {
+        "site": "004dc470",
+        "target": "004c3020",
+        "hex": "e8ab6bfeff"
+      },
+      {
+        "site": "004dc4bc",
+        "target": "004d45a0",
+        "hex": "e8df80ffff"
+      }
+    ],
+    "requested_slot_reads": [
+      "004dc429 initial capture",
+      "004dc47f after each nonnull C3020 return; no reload on null branch"
+    ],
+    "retained_and_current_reads": [
+      "004dc43f current count after reserve",
+      "004dc455 current data on each growth iteration",
+      "004dc4a7 current count before shrink",
+      "004dc4b0 decrement current count",
+      "004dc4b4 current count and 004dc4ba current data before each D45A0",
+      "004dc4c1 current count after each D45A0",
+      "004dc4ca final retained bound publication"
+    ]
+  },
+  "source": {
+    "header": "include/bsp/native_particle_record_resize.hpp",
+    "header_sha256": "6595699d66ba3b21af20d8b272b9dda9b88adbd444e815d1f53a9e2a8a240f7e",
+    "cpp": "src/native_particle_record_resize.cpp",
+    "cpp_sha256": "5a4b7db2a73d3b0a8b5d6a69372f9e645455bffd65a613c206af25628efeef2b",
+    "documentation": "docs/NATIVE_PARTICLE_RECORD_RESIZE_CY.md",
+    "documentation_sha256": "418fcd37f259fcac3ab7d4dd4ae4654b4c61d629a29d00eb8065dec338f72027",
+    "cmake": "cmake/startup.cmake",
+    "cmake_sha256": "a15306ebb82a3faf51c6c5ff5e63b8140928be6c091c3df9d1b2a0c5fad1deed",
+    "signature": "void __fastcall resize_native_particle_record_array_004dc410(NativeResourceRecordVectorStorage&, NativeParticleRecordResizeContext&, volatile int32_t requested_count)",
+    "context": "NativeParticleRecordResizeContext borrows ActualNativeStringPoolStorage& strings and const SingletonLifetimeCallbacks& validation.",
+    "registered_target": "bsp_core"
+  },
+  "provider_sha256": {
+    "include/bsp/native_resource_record_vector.hpp": "fb85cb890ab99aeb91cf40b8d06acdf61a6194e28025952569c5c9846c152b47",
+    "src/native_resource_record_vector.cpp": "84b2b2a9014c8f398c82a5420e905819d495310b54b33ef1a3771a4ae9fbe4d4",
+    "include/bsp/native_render_resource_record_construction.hpp": "9c79ba1484463c66957c0c330148ee2572f07c9192ee7e6e96bd40ba65994f65",
+    "src/native_render_resource_record_construction.cpp": "a2014615290441972dfe1c0bdadb29c5e1f7585a5858e0c108c636f2a0691e08",
+    "include/bsp/native_resource_record_copy.hpp": "f3ca7414372dbc7c67412d8e77fbc26ac921e140aad847abcaa62bb04aeb2ada",
+    "src/native_resource_record_copy.cpp": "f5ee6fde9661b6d396171fa3f3c530e314fae2c1deea9b457b3f92a8aa0dc8b7",
+    "include/bsp/native_string.hpp": "80013e5a7350120f32fcad1ce54db9b0923ad5b49cc2152823d858534331378f",
+    "src/native_string.cpp": "0e8819d3a6442fc48c879e85c00899a72beabdc51b3e94a11836ab5314d5e60c",
+    "include/bsp/native_string_pool_storage.hpp": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d",
+    "src/native_string_pool_storage.cpp": "5cb79a6ce240205b3f1c81f1fbd6edd49cc1c05f8a20ee8dca8913f44c9095d5",
+    "include/bsp/singleton_lifetime.hpp": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+    "src/singleton_lifetime.cpp": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+  },
+  "generated": {
+    "object": "build\\win32\\bsp_core.dir\\Release\\native_particle_record_resize.obj",
+    "object_sha256": "49e3837d01971abcd25b44476343f4cc5af501476f44aece014af1d36bb54fcc",
+    "machine": "IMAGE_FILE_MACHINE_I386",
+    "sections": {
+      "fastcall_adapter": {
+        "coff_section_index": 8,
+        "name": ".text$mn",
+        "bytes": 21,
+        "relocations": 1,
+        "sha256": "b9d1c0a2f2feb47a8b18a6cec1001b29882d32bcadc8f9af232afebad9c551f5"
+      },
+      "cpp_resize_body_and_catch": {
+        "coff_section_index": 9,
+        "name": ".text$mn",
+        "bytes": 317,
+        "relocations": 8,
+        "sha256": "cf9b9eeaa5dd01975e383f652a3ee7ad6b881a0c7cdc72ac2f2ad7948545dd5b"
+      }
+    },
+    "adapter_hex": "558bec8d4508505251e80000000083c40c5dc20400",
+    "adapter_evidence": [
+      "lea eax,[ebp+8] is address of original third-argument public stack word",
+      "push eax; push edx; push ecx; call private body; add esp,0Ch; ret4",
+      "one REL32 relocation to private body"
+    ],
+    "body_evidence": [
+      "entry request load through pointer at helper+0034; initial bound retained through DA180 call at +004A",
+      "current vector.count load at +0052 and vector.data load at +005C",
+      "C3020 call +007C; original public requested word reload at +008E; tail stores +0090..+00AF",
+      "shrink single memory ADD at helper+00D3, fresh count +00D7/current data +00DA, D45A0 call +00E4, final count store +00F3",
+      "catch calls current-name destructor +0110, freshly reads vector data via load call +011A, computes placement address +011F..+012A, rethrows"
+    ],
+    "provider_relocations": [
+      "reserve_native_resource_record_vector_004da180 REL32 +004B",
+      "allocate_native_render_alias_sentinel_004c3020 REL32 +007D",
+      "destroy_native_resource_record_004d45a0 REL32 +00E5",
+      "destroy_native_string_header_0041dd20 REL32 +0111"
+    ]
+  },
+  "eh_boundary": {
+    "root_evidence": "Root independently recovered C669C1 FuncInfo D8F898, state1 current-name action and state0 current-vector-data/ret-only placement action; CY did not query or mutate those handler addresses.",
+    "source_behavior": "C++ catch after C3020 failure destroys retained name, reads current vector data and computes retained-index placement address, then rethrows. No no-op 00401130 stub, new array/prefix rollback or ownership repair.",
+    "limit": "C++ EH and host CRT are not native FH3/SEH, exception identity, or game validation."
+  },
+  "validation": {
+    "scripts_build_ps1": "passed Win32 Release, bsp_core.lib and bsp_game.exe linked",
+    "existing_ctest": "reconstructed_math 1/1 passed",
+    "new_tests": 0,
+    "game_validated": false,
+    "object_access_order_reviewed": true
+  },
+  "scope_exclusions": [
+    "No Ghidra/ledger edits or private handler queries.",
+    "DDA40/DE290 current-IAT/raw sink composition belongs to root DA.",
+    "No new native body/byte credit."
+  ]
+}
