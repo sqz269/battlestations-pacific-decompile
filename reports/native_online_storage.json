@@ -1,0 +1,67 @@
+{
+  "packet": "orch5_native_online_storage_raw",
+  "tested_base": "0eb93243d127a13f49de7c8395887d60311befb2",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "source": "src/native_online_storage.cpp",
+  "header": "include/bsp/native_online_storage.hpp",
+  "status": "complete_normal_body_raw_owner_win32_compiled_local_fixture_checked_unregistered",
+  "routines": [
+    {
+      "address": "00a3ed60",
+      "inclusive_end": "00a3ef1d",
+      "byte_length": 446,
+      "byte_sha256": "b69bb3287c286a3bfdf52b9cd59c194d48c102defc6f29d0d34b80af17e569a4",
+      "name": "download_native_online_storage_00a3ed60",
+      "name_hypothesis": "BSP_XLiveSystem_DownloadStorage",
+      "coverage": "complete normal body; no allocation-failure or asynchronous retirement emulation",
+      "original_abi": "ECX=captured 3F0h NativeOnlineManagerStorage; RET; no stack arguments",
+      "source_abi": "Win32 C++ explicit captured owner, six checked stdcall SDK ordinal entrypoints, same-heap allocation/free dependencies; not a binary replacement",
+      "game_validated": false
+    },
+    {
+      "address": "00a3ef20",
+      "inclusive_end": "00a3f0fe",
+      "byte_length": 479,
+      "byte_sha256": "fc5ef8fdcc55f8429db0d1550b20de0edc31a9d7c5b29ecb2fbe5d209bddbde2",
+      "name": "upload_native_online_storage_00a3ef20",
+      "name_hypothesis": "BSP_XLiveSystem_UploadStorage",
+      "coverage": "complete normal body; empty diagnostic callee omitted; no allocation-failure or asynchronous retirement emulation",
+      "original_abi": "ECX=captured 3F0h NativeOnlineManagerStorage; RET; no stack arguments",
+      "source_abi": "Win32 C++ explicit captured owner, six checked stdcall SDK ordinal entrypoints, same-heap allocation/free dependencies; not a binary replacement",
+      "game_validated": false
+    }
+  ],
+  "calls": [
+    {"address":"00a3edaa","native":"00bf6989","function":"00a3ed60","operation":"free former buffer"},
+    {"address":"00a3edcb","native":"00bf55be","function":"00a3ed60","operation":"allocate 100h bytes"},
+    {"address":"00a3ede0","native":"00bf79f0","function":"00a3ed60","operation":"zero 100h bytes"},
+    {"address":"00a3ee60","native":"00a4d584","function":"00a3ed60","operation":"XStorageDownloadToMemory ordinal 5345"},
+    {"address":"00a3eeaa","native":"00a4d57e","function":"00a3ed60","operation":"XStorageDownloadToMemoryGetProgress ordinal 5307"},
+    {"address":"00a3eeb8","native":"00a4d42e","function":"00a3ed60","operation":"XGetOverlappedResult ordinal 1083"},
+    {"address":"00a3eefa","native":"00a4d422","function":"00a3ed60","operation":"XGetOverlappedExtendedError ordinal 1082"},
+    {"address":"00a3ef75","native":"00bf6989","function":"00a3ef20","operation":"free former buffer"},
+    {"address":"00a3ef93","native":"00bf55be","function":"00a3ef20","operation":"allocate nine bytes"},
+    {"address":"00a3f000","native":"004254b0","function":"00a3ef20","operation":"empty diagnostic prepared"},
+    {"address":"00a3f039","native":"00a4d590","function":"00a3ef20","operation":"XStorageUploadFromMemory ordinal 5305"},
+    {"address":"00a3f05b","native":"004254b0","function":"00a3ef20","operation":"empty diagnostic submitted"},
+    {"address":"00a3f076","native":"004254b0","function":"00a3ef20","operation":"empty diagnostic immediate result"},
+    {"address":"00a3f0a5","native":"00a4d58a","function":"00a3ef20","operation":"XStorageUploadFromMemoryGetProgress ordinal 5304"},
+    {"address":"00a3f0b3","native":"00a4d42e","function":"00a3ef20","operation":"XGetOverlappedResult ordinal 1083"},
+    {"address":"00a3f0cb","native":"004254b0","function":"00a3ef20","operation":"empty diagnostic completion"},
+    {"address":"00a3f0e2","native":"00a4d422","function":"00a3ef20","operation":"XGetOverlappedExtendedError ordinal 1082"},
+    {"address":"00a3f0f3","native":"004254b0","function":"00a3ef20","operation":"empty diagnostic error"}
+  ],
+  "producer_evidence": [
+    {"address":"00a3ed10","role":"build 200h-byte DropRates path at +154, write state 1 only on success; analyzed, not implemented here"},
+    {"address":"00a3f4a0","role":"write +358/+35C from two stack DWORD inputs and call upload for states 1/9/4/5/8/10; analyzed, not implemented here"},
+    {"address":"00a3f500","role":"call download for states 1/4/9/5/8; analyzed, not implemented here"},
+    {"address":"00a40020","role":"reset +11C and +3B4, clear two payload DWORDs; analyzed, another packet owns nearby sign-in"},
+    {"address":"00a40df0","role":"initialize actual owner and reset sign-in; analyzed, not implemented here"},
+    {"address":"00a3f530","role":"publish same 3F0h identity at F8ABE8; analyzed, not implemented here"}
+  ],
+  "validation": "MSVC Win32 /std:c++20 /EHsc /W4 /WX standalone compile and local in-memory probe linked against local/native_online_storage.lib with /MANIFEST:EMBED passed; 18 report call sites checked against live Ghidra. Shared cmake/startup.cmake registration is leased elsewhere, so no integrated bsp_core build of this new source is claimed.",
+  "uncertainty": "Caller must supply matching game-CRT allocation/release and keep manager, path, buffer, overlapped, DLL and ordinal entries alive until completion. SDK call signatures derive from actual call-site pushes and previously verified original XLive exports, not projection types. No full-event or gameplay proof."
+}
