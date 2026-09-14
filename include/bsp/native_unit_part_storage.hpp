@@ -34,8 +34,9 @@ void destroy_native_unit_part_group_rows_00712b40(void* actual_header) noexcept;
 
 // Binds recovered base initialization and collision construction to the same
 // borrowed globals and validation domain. The inherited storage defaults do
-// real allocation/cleanup. Selected-set destruction, render-name binding,
-// attachment and final entry production remain required complete providers.
+// real allocation/cleanup, entry production and pooled node-name assignment.
+// Selected-set destruction and attachment remain required complete providers;
+// unit virtual-name and selected render-root access remain explicit bindings.
 // No copied global values, fallback hierarchy, ownership proxy or native vtable
 // invocation is introduced. These are new C++ interfaces, not the native ABI.
 class NativeUnitPartStorageBindings : public NativeUnitPartConstructionBindings {

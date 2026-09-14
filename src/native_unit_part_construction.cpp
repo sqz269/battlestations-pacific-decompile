@@ -1,9 +1,17 @@
 #include "bsp/native_unit_part_construction.hpp"
 #include "bsp/native_unit_part_groups.hpp"
 #include "bsp/native_unit_part_storage.hpp"
+#include "bsp/native_unit_part_entries.hpp"
 #include "bsp/native_physical_file_date.hpp"
 
 namespace bsp {
+void NativeUnitPartConstructionBindings::call_00711c60(void* model) {
+    build_native_unit_part_entries_00711c60(model);
+}
+void NativeUnitPartConstructionBindings::call_00b6f960(NativeNodeStorage* node,
+    const NativeString& name, NativeStringRawPoolContext& strings) {
+    assign_native_unit_part_node_name_00b6f960(*node, name, strings);
+}
 void* NativeUnitPartConstructionBindings::call_007103a0(void*) {
     return buy_native_unit_part_list_sentinel_007103a0();
 }
@@ -92,7 +100,7 @@ void* construct_native_unit_part_007135c0(NativeUnitPartConstructionView v,
             void* current_set = ordered(v.selected_set_160);
             NativeNodeStorage* root = b.render_root_0c(current_set);
             state = 7;
-            b.call_00b6f960(root, temporary);
+            b.call_00b6f960(root, temporary, strings);
             state = 6;
             destroy_native_string_header_0041dd20(&temporary, strings);
         }
