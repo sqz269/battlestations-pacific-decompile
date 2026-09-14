@@ -1,0 +1,603 @@
+{
+  "packet": "orch4_native_loading_queue_retirement_br",
+  "generated_utc": "2026-09-14T16:30:05.737645+00:00",
+  "identity": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "routines": [
+    {
+      "address": "00506bf0",
+      "bytes": 131,
+      "inclusive_end": "00506c72",
+      "sha256": "7d71157d777118c1f98cb770ca44f0b6a9a1e15c044ce9e9da81c881dd9a3704",
+      "installed_pe_matches_live_ghidra": true,
+      "instruction_count": 50,
+      "all_instruction_owners_verified": true,
+      "instructions": [
+        [
+          5270512,
+          1,
+          "push",
+          "esi"
+        ],
+        [
+          5270513,
+          2,
+          "mov",
+          "esi, ecx"
+        ],
+        [
+          5270515,
+          3,
+          "mov",
+          "eax, dword ptr [esi + 0x10]"
+        ],
+        [
+          5270518,
+          1,
+          "push",
+          "edi"
+        ],
+        [
+          5270519,
+          2,
+          "mov",
+          "edi, dword ptr [eax]"
+        ],
+        [
+          5270521,
+          3,
+          "mov",
+          "ecx, dword ptr [edi + 0x20]"
+        ],
+        [
+          5270524,
+          2,
+          "test",
+          "ecx, ecx"
+        ],
+        [
+          5270526,
+          2,
+          "je",
+          "0x506c10"
+        ],
+        [
+          5270528,
+          2,
+          "mov",
+          "edx, dword ptr [ecx]"
+        ],
+        [
+          5270530,
+          3,
+          "mov",
+          "eax, dword ptr [edx + 4]"
+        ],
+        [
+          5270533,
+          2,
+          "push",
+          "1"
+        ],
+        [
+          5270535,
+          2,
+          "call",
+          "eax"
+        ],
+        [
+          5270537,
+          7,
+          "mov",
+          "dword ptr [edi + 0x20], 0"
+        ],
+        [
+          5270544,
+          1,
+          "push",
+          "ebx"
+        ],
+        [
+          5270545,
+          5,
+          "call",
+          "0x4fc150"
+        ],
+        [
+          5270550,
+          3,
+          "add",
+          "edi, 0x14"
+        ],
+        [
+          5270553,
+          1,
+          "push",
+          "edi"
+        ],
+        [
+          5270554,
+          2,
+          "mov",
+          "ecx, eax"
+        ],
+        [
+          5270556,
+          5,
+          "call",
+          "0xbe80b0"
+        ],
+        [
+          5270561,
+          2,
+          "mov",
+          "ecx, eax"
+        ],
+        [
+          5270563,
+          5,
+          "call",
+          "0xbe7130"
+        ],
+        [
+          5270568,
+          3,
+          "mov",
+          "ebx, dword ptr [esi + 0x10]"
+        ],
+        [
+          5270571,
+          2,
+          "mov",
+          "edi, dword ptr [ebx]"
+        ],
+        [
+          5270573,
+          2,
+          "test",
+          "edi, edi"
+        ],
+        [
+          5270575,
+          2,
+          "je",
+          "0x506c47"
+        ],
+        [
+          5270577,
+          2,
+          "mov",
+          "ecx, edi"
+        ],
+        [
+          5270579,
+          5,
+          "call",
+          "0x5051a0"
+        ],
+        [
+          5270584,
+          1,
+          "push",
+          "edi"
+        ],
+        [
+          5270585,
+          5,
+          "call",
+          "0xbf65ac"
+        ],
+        [
+          5270590,
+          3,
+          "add",
+          "esp, 4"
+        ],
+        [
+          5270593,
+          6,
+          "mov",
+          "dword ptr [ebx], 0"
+        ],
+        [
+          5270599,
+          3,
+          "mov",
+          "ecx, dword ptr [esi + 0x14]"
+        ],
+        [
+          5270602,
+          3,
+          "sub",
+          "ecx, 1"
+        ],
+        [
+          5270605,
+          2,
+          "xor",
+          "eax, eax"
+        ],
+        [
+          5270607,
+          2,
+          "test",
+          "ecx, ecx"
+        ],
+        [
+          5270609,
+          1,
+          "pop",
+          "ebx"
+        ],
+        [
+          5270610,
+          2,
+          "jle",
+          "0x506c6c"
+        ],
+        [
+          5270612,
+          3,
+          "mov",
+          "edx, dword ptr [esi + 0x10]"
+        ],
+        [
+          5270615,
+          3,
+          "lea",
+          "ecx, [edx + eax*4]"
+        ],
+        [
+          5270618,
+          3,
+          "mov",
+          "edx, dword ptr [ecx + 4]"
+        ],
+        [
+          5270621,
+          2,
+          "mov",
+          "dword ptr [ecx], edx"
+        ],
+        [
+          5270623,
+          3,
+          "mov",
+          "ecx, dword ptr [esi + 0x14]"
+        ],
+        [
+          5270626,
+          3,
+          "add",
+          "eax, 1"
+        ],
+        [
+          5270629,
+          3,
+          "sub",
+          "ecx, 1"
+        ],
+        [
+          5270632,
+          2,
+          "cmp",
+          "eax, ecx"
+        ],
+        [
+          5270634,
+          2,
+          "jl",
+          "0x506c54"
+        ],
+        [
+          5270636,
+          4,
+          "add",
+          "dword ptr [esi + 0x14], -1"
+        ],
+        [
+          5270640,
+          1,
+          "pop",
+          "edi"
+        ],
+        [
+          5270641,
+          1,
+          "pop",
+          "esi"
+        ],
+        [
+          5270642,
+          1,
+          "ret",
+          ""
+        ]
+      ],
+      "original_abi": "ECX actual20h loader; RET; no semantic return",
+      "source_name": "retire_native_loading_queue_front_00506bf0",
+      "coverage": "complete ordinary body"
+    }
+  ],
+  "supporting_spans": [],
+  "eh_data": [],
+  "call_sites": [
+    {
+      "address": "00506c11",
+      "native": "004fc150",
+      "function": "00506bf0",
+      "kind": "call",
+      "instruction": "call 0x4fc150",
+      "bytes": "e83a55ffff"
+    },
+    {
+      "address": "00506c1c",
+      "native": "00be80b0",
+      "function": "00506bf0",
+      "kind": "call",
+      "instruction": "call 0xbe80b0",
+      "bytes": "e88f146e00"
+    },
+    {
+      "address": "00506c23",
+      "native": "00be7130",
+      "function": "00506bf0",
+      "kind": "call",
+      "instruction": "call 0xbe7130",
+      "bytes": "e808056e00"
+    },
+    {
+      "address": "00506c33",
+      "native": "005051a0",
+      "function": "00506bf0",
+      "kind": "call",
+      "instruction": "call 0x5051a0",
+      "bytes": "e868e5ffff"
+    },
+    {
+      "address": "00506c39",
+      "native": "00bf65ac",
+      "function": "00506bf0",
+      "kind": "call",
+      "instruction": "call 0xbf65ac",
+      "bytes": "e86ef96e00"
+    }
+  ],
+  "source_artifacts": [
+    {
+      "path": "include/bsp/native_loading_queue_retirement.hpp",
+      "sha256": "70859fb48becc8c708f93354b35dbf53d911f43aa28bf090f42cf361a796ec40",
+      "bytes": 2657
+    },
+    {
+      "path": "src/native_loading_queue_retirement.cpp",
+      "sha256": "04aa93cdbc31ec861c0157206f7fb0a483b55055c2bfe049c7507db679080037",
+      "bytes": 5126
+    },
+    {
+      "path": "docs/NATIVE_LOADING_QUEUE_RETIREMENT_BR.md",
+      "sha256": "262c038629ff3bf9a63468a0883484b86ea439373619ef0fbe2faf94a0612a6b",
+      "bytes": 2751
+    }
+  ],
+  "borrowed_source_artifacts": [
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "bytes": 4372
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "bytes": 13257
+    },
+    {
+      "path": "include/bsp/native_string.hpp",
+      "sha256": "80013e5a7350120f32fcad1ce54db9b0923ad5b49cc2152823d858534331378f",
+      "bytes": 8019
+    },
+    {
+      "path": "src/native_string.cpp",
+      "sha256": "0e8819d3a6442fc48c879e85c00899a72beabdc51b3e94a11836ab5314d5e60c",
+      "bytes": 8311
+    },
+    {
+      "path": "include/bsp/native_string_pool_owner.hpp",
+      "sha256": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff",
+      "bytes": 5893
+    },
+    {
+      "path": "src/native_string_pool_owner.cpp",
+      "sha256": "cb52fde795918995689a26567d513e9f3cf75eeb27600eb60c431c37fdd21d6e",
+      "bytes": 8443
+    },
+    {
+      "path": "include/bsp/native_string_pool_storage.hpp",
+      "sha256": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d",
+      "bytes": 2805
+    },
+    {
+      "path": "src/native_string_pool_storage.cpp",
+      "sha256": "5cb79a6ce240205b3f1c81f1fbd6edd49cc1c05f8a20ee8dca8913f44c9095d5",
+      "bytes": 5103
+    },
+    {
+      "path": "include/bsp/native_loading_queue_work_items.hpp",
+      "sha256": "b1d288578a3221bb4b64a6aff6f7b798c16f3ca1cf705d94dc7341203fc69ce8",
+      "bytes": 3313
+    },
+    {
+      "path": "src/native_loading_queue_work_items.cpp",
+      "sha256": "31c0e78ee4050eee92d51f55da559eab5ac6defa87ae2d7fcef2def15b335738",
+      "bytes": 9594
+    },
+    {
+      "path": "include/bsp/native_fileblock_owner.hpp",
+      "sha256": "cffc8e01ec847d1825f8eeb2cd55d78a94ac231392d3de671f59379773e29296",
+      "bytes": 4616
+    },
+    {
+      "path": "src/native_fileblock_owner.cpp",
+      "sha256": "f5012c4ed979bb6b69bdc88665e113c75f08c5474812fe1db3ba11896ed34ac3",
+      "bytes": 9398
+    },
+    {
+      "path": "include/bsp/native_filestore_factory.hpp",
+      "sha256": "7cd1ba457b57d308aa970f3bdbf3a352d51cb90eeb5b3f456094a79b98283b64",
+      "bytes": 3135
+    },
+    {
+      "path": "src/native_filestore_factory.cpp",
+      "sha256": "ac07435a234a255c0fa103876c0b43d34e94dc7dd63fe244c8a892771a53fedb",
+      "bytes": 4243
+    },
+    {
+      "path": "include/bsp/native_filestore_provider_lifetime.hpp",
+      "sha256": "6823e9ed29918260ae7607960439a59a64f635ab94e5148abe8a78612cc6cab0",
+      "bytes": 3285
+    },
+    {
+      "path": "src/native_filestore_provider_lifetime.cpp",
+      "sha256": "397dc03cab757126e2a7bb42c190cbe31df6ad49bda71e5da3ca03d903999e3a",
+      "bytes": 6972
+    },
+    {
+      "path": "include/bsp/native_filestore_remove.hpp",
+      "sha256": "9d2cf7fe7aa894de9cd9b1d7897c36d0f85580e3698e7507cf6aa4acfc94c08c",
+      "bytes": 1427
+    },
+    {
+      "path": "src/native_filestore_remove.cpp",
+      "sha256": "3471dccfe6eb681af7fe3d39c61a4908b13ab806344ccdd17a91fa219044aaad",
+      "bytes": 2264
+    }
+  ],
+  "local_artifacts": [
+    {
+      "path": "local/native_loading_queue_br/compile.cmd",
+      "sha256": "5ec660507c262b7f8d96e5486296b78eff35358d925b2b67ee43749f3f4a3566",
+      "bytes": 1965
+    },
+    {
+      "path": "local/native_loading_queue_br/compile.log",
+      "sha256": "ce6785a0b05865fb70481e9311dd04e860b8050eac5eeafb2f69130d88aea23e",
+      "bytes": 130
+    },
+    {
+      "path": "local/native_loading_queue_br/probe.cpp",
+      "sha256": "ea035f99ed7f775368d330b85e5e0e19011a54d52963458eeeba664d418b135c",
+      "bytes": 9237
+    },
+    {
+      "path": "local/native_loading_queue_br/probe.obj",
+      "sha256": "dcee8b3b298114fe926469082452f8e901f6eab320595b609cb1bd7d4dcbb600",
+      "bytes": 79972
+    },
+    {
+      "path": "local/native_loading_queue_br/probe.exe",
+      "sha256": "491a1bef2beae1a80443355638ae40e20592b6914c9eda0a83c1ab3c21a25d5b",
+      "bytes": 135680
+    },
+    {
+      "path": "local/native_loading_queue_br/probe.log",
+      "sha256": "03185e35f049e655a6f513ab35a81a25ffb10fe24b4867484e74b71ea2894131",
+      "bytes": 202
+    },
+    {
+      "path": "local/native_loading_queue_br/owner_probe.cpp",
+      "sha256": "e2bf7da889ffc2337dc791b46c08169a20ff2f9e8a3382c6f4b9b972303f28f5",
+      "bytes": 6629
+    },
+    {
+      "path": "local/native_loading_queue_br/owner_probe.exe",
+      "sha256": "879b8fdf187dcdd0f807ade0011788ebc3d0936f84edc30e3aef1ce85859f255",
+      "bytes": 41472
+    },
+    {
+      "path": "local/native_loading_queue_br/owner_probe.log",
+      "sha256": "026ac28c61f8382b77c6383e8e2ce884c0227c0cfdcfaca19699a7d9ebed5d7b",
+      "bytes": 176
+    },
+    {
+      "path": "local/native_loading_queue_br/owner_probe_retained.log",
+      "sha256": "670b98fcc7f91e9b72fac6bdf1f0fefe39d44feb0a57ac6ac4cc579f43026a2c",
+      "bytes": 167
+    },
+    {
+      "path": "local/native_loading_queue_br/native_loading_queue_retirement.obj",
+      "sha256": "49daf5ff769cb6ae8f8b7f69643cf9e7a003b2b7c8a71ea55598a7951bd23b82",
+      "bytes": 19367
+    },
+    {
+      "path": "local/native_loading_queue_br/frozen_inputs.json",
+      "sha256": "75d1ca3cae2298f9e9f4514dea1f2b12b6428a15a6daccb3ca993ce1920a5b5e",
+      "bytes": 1183
+    }
+  ],
+  "frozen_inputs": {
+    "source_commit": "fa879ae60afb839ac011dbc11c29c4830ea1cd81",
+    "libraries": [
+      {
+        "source": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\build\\win32\\Release\\bsp_core.lib",
+        "copy": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\local\\native_loading_queue_br\\bsp_core.lib",
+        "sha256": "78835ac05ce149c015c3b5fd7d8d27e43b433ee09f7d81375585a98359e9c6b2",
+        "bytes": 58341082
+      },
+      {
+        "source": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\build\\win32\\Release\\bsp_lua511.lib",
+        "copy": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\local\\native_loading_queue_br\\bsp_lua511.lib",
+        "sha256": "00315ac717aac3d2b2161fefefe71b36a974335ff9c95d48c137423eb4e2f4b2",
+        "bytes": 455244
+      },
+      {
+        "source": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\build\\win32\\Release\\bsp_zlib121.lib",
+        "copy": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\local\\native_loading_queue_br\\bsp_zlib121.lib",
+        "sha256": "73ae30b8adc3adfe5b33285bac533f8e7df7e8ab8d9e44789e6a030fd8a06ad9",
+        "bytes": 71906
+      }
+    ]
+  },
+  "validation": {
+    "strict_msvc_win32": "passed /std:c++17 /EHsc /MD /W4 /WX /fp:strict /permissive-",
+    "actual_service_fixture": "passed",
+    "corrected_owner_normal": "passed",
+    "corrected_owner_retained_failure": "passed",
+    "whole_report_verifier": "passed",
+    "combined_win32_build": "passed",
+    "existing_ctests_passed": 2,
+    "build_log": {
+      "path": "local/native_loading_queue_br/build.log",
+      "sha256": "dc74e0ecc1101e6d63b01180d4d3361f22bb5ba74516b5736a43861857846016",
+      "bytes": 2590
+    },
+    "native_binary_abi_compatible": false,
+    "game_validated": false,
+    "build_source_commit": "35c9b762a12bca1ab24972ffae5cebfa349c9ced",
+    "combined_fixture_modes": "passed against integrated libraries, hash-identical to final build",
+    "integration_report": "reports/native_loading_queue_integration_br.json"
+  },
+  "evidence_limits": [
+    "New explicit C++ interfaces over actual storage. Original CRT/FH3/SEH identity, native stack and EH-spill aliasing, hardware fault cleanup, callee-internal exception boundaries and gameplay are unverified.",
+    "Queue update, resource-loading worker, full drain/destruction and safe thread shutdown are not supplied; production GameFrameHost queue hook remains unimplemented.",
+    "Retirement inherits retained BQ FileBlock outer frames instead of native FH3 cleanup; the deliberate observer fixture proves retention only."
+  ],
+  "indirect_call_sites": [
+    {
+      "address": "00506c07",
+      "instruction": "CALL EAX",
+      "selection": "CURRENT FileBlock table+4",
+      "supported_source_target": "00bdebe0",
+      "flags": 1,
+      "unsupported": "retained frame failure before initial job+20 clear"
+    }
+  ],
+  "flow_repair": {
+    "path": "reports/native_loading_queue_flow_br.json",
+    "sha256": "6f098a1eb60306d13e57dc8781e029901ecd65f621eca16b48665a4c686c3829",
+    "bytes": 17148
+  }
+}
