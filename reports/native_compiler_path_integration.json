@@ -637,7 +637,7 @@
       "Earlier 29 shader fixtures and their libraries remain at the separate a50d1fc3 checkpoint; this batch reruns only these four relevant fixture programs."
     ]
   },
-  "latest_integration": "raw_renderer_registry_integration",
+  "latest_integration": "raw_renderer_base_integration",
   "raw_online_procedural_integration": {
     "validated_code_commit": "d260af28ae358507e05d601ed2bcc538c0d1ff90",
     "checkpoint": {
@@ -1006,6 +1006,42 @@
       "Full renderer/application adoption not supplied",
       "Fixture checks source actual-manager behavior; original instruction and call evidence are separate",
       "Original ABI/FH3/SEH and gameplay remain unvalidated"
+    ],
+    "publication_branch": "agent/orch5-20260911",
+    "main_integration_claimed": false
+  },
+  "raw_renderer_base_integration": {
+    "code_commit": "8f73fbf754bc47dfac527e898c3cf7a4cc6ebfa4",
+    "checkpoint": {
+      "path": "local/checkpoints/8f73fbf7/native-renderer-base-default/validation.json",
+      "sha256": "45925cb9c0b96ce1504ae19641da9d7c5b984ee2d44fb44a5303da7b2fb4d111",
+      "code_commit": "8f73fbf754bc47dfac527e898c3cf7a4cc6ebfa4",
+      "artifacts": 3229
+    },
+    "default_build": "MSVC Win32 Release",
+    "ctests_passed": 2,
+    "fixture_programs": 1,
+    "normal_bodies": 9,
+    "direct_call_rows_checked": 24,
+    "direct_call_failures": 0,
+    "saved_ghidra_annotations": 9,
+    "restored_stack_adjustments": 3,
+    "game_startup_adopted": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "registered_sources": [
+      "native_renderer_base_lifetime"
+    ],
+    "worker_archive": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\compiler-path-workers\\raw-renderer-base\\manifest.json",
+      "sha256": "abae562dc7d7525864bbacebe0c81271c5e263fb80c12b7eb693b514eccb27c3",
+      "artifacts": 66,
+      "worker_commit": "b521b0a5988081eaee24e9ab535e6055379bf5a7"
+    },
+    "limits": [
+      "Full derived renderer and canonical application deletion dispatch not composed",
+      "C++ exception cleanup is source reconstruction; original FH3/SEH/register ABI not reproduced",
+      "Existing fixture checks source lifetime behavior; no differential or gameplay claim"
     ],
     "publication_branch": "agent/orch5-20260911",
     "main_integration_claimed": false

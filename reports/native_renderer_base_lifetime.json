@@ -300,32 +300,6 @@
       "symbol": "LeaveCriticalSection"
     }
   ],
-  "native_listing_gaps": [
-    {
-      "address": "00b260a5",
-      "inclusive_end": "00b260a7",
-      "disk_hex": "83c404",
-      "decoded": "ADD ESP,4 after BF65AC cdecl free",
-      "ghidra_missing": true,
-      "root_repair_required": true
-    },
-    {
-      "address": "00b28555",
-      "inclusive_end": "00b28557",
-      "disk_hex": "83c404",
-      "decoded": "ADD ESP,4 after BF65AC cdecl free",
-      "ghidra_missing": true,
-      "root_repair_required": true
-    },
-    {
-      "address": "00b33e2e",
-      "inclusive_end": "00b33e30",
-      "disk_hex": "83c404",
-      "decoded": "ADD ESP,4 after BF65AC cdecl free",
-      "ghidra_missing": true,
-      "root_repair_required": true
-    }
-  ],
   "evidence": {
     "bodies": "complete live read-only Ghidra listings and installed PE disasm-raw over scalar gaps",
     "eh_func_info": [
@@ -350,68 +324,6 @@
     ],
     "identity": "F8D394 is primary; singleton list stores primary+0C; destructor reloads CURRENT primary before second getter",
     "input_preimage": "B283F0 writes primary +0,+4,+8,+0C,+10,+18 through its callees; other renderer bytes remain preimage"
-  },
-  "validation": {
-    "status": "complete_base_subobject_body_reconstruction_build_and_focused_fixture_tested",
-    "seed_command": "python tools/ghidra_export.py verify-seeds > local/native_renderer_base_seed_stdout.txt",
-    "seed_exit": 0,
-    "seed_ranges_compared": 8,
-    "seed_ranges_matched": 8,
-    "build_command": "./scripts/build.ps1 *> local/native_renderer_base_build.log",
-    "build_exit": 0,
-    "ctests": {
-      "passed": 2,
-      "failed": 0,
-      "names": [
-        "reconstructed_math",
-        "native_math_differential"
-      ]
-    },
-    "strict_fixture_command": "cmd /d /c .\\local\\build_native_renderer_base_probe.cmd *> local/native_renderer_base_fixture_build.log",
-    "strict_fixture_exit": 0,
-    "fixture_replay_command": ".\\local\\native_renderer_base_probe.exe *> local/native_renderer_base_fixture_run.log",
-    "fixture_replay_exit": 0,
-    "fixture_stdout": "native renderer base: primary publication, subobject registration and cleanup passed",
-    "strict_compile_flags": "/std:c++17 /EHsc /MD /W4 /WX /showIncludes",
-    "fixture_link_flags": "/MANIFEST:EMBED /MACHINE:X86 /VERBOSE:LIB",
-    "fixture_pe_machine": "014c",
-    "fixture_manifest_resource_id": 24,
-    "fixture_import_dlls": [
-      "KERNEL32.dll",
-      "VCRUNTIME140.dll",
-      "api-ms-win-crt-heap-l1-1-0.dll",
-      "api-ms-win-crt-locale-l1-1-0.dll",
-      "api-ms-win-crt-math-l1-1-0.dll",
-      "api-ms-win-crt-runtime-l1-1-0.dll",
-      "api-ms-win-crt-stdio-l1-1-0.dll",
-      "api-ms-win-crt-string-l1-1-0.dll"
-    ],
-    "searched_linker_libraries": [
-      "C:/Program Files (x86)/Windows Kits/10/lib/10.0.26100.0/ucrt/x86/ucrt.lib",
-      "C:/Program Files (x86)/Windows Kits/10/lib/10.0.26100.0/um/x86/advapi32.lib",
-      "C:/Program Files (x86)/Windows Kits/10/lib/10.0.26100.0/um/x86/comdlg32.lib",
-      "C:/Program Files (x86)/Windows Kits/10/lib/10.0.26100.0/um/x86/d3d9.lib",
-      "C:/Program Files (x86)/Windows Kits/10/lib/10.0.26100.0/um/x86/gdi32.lib",
-      "C:/Program Files (x86)/Windows Kits/10/lib/10.0.26100.0/um/x86/kernel32.lib",
-      "C:/Program Files (x86)/Windows Kits/10/lib/10.0.26100.0/um/x86/ole32.lib",
-      "C:/Program Files (x86)/Windows Kits/10/lib/10.0.26100.0/um/x86/oleaut32.lib",
-      "C:/Program Files (x86)/Windows Kits/10/lib/10.0.26100.0/um/x86/shell32.lib",
-      "C:/Program Files (x86)/Windows Kits/10/lib/10.0.26100.0/um/x86/user32.lib",
-      "C:/Program Files (x86)/Windows Kits/10/lib/10.0.26100.0/um/x86/uuid.lib",
-      "C:/Program Files (x86)/Windows Kits/10/lib/10.0.26100.0/um/x86/winspool.lib",
-      "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/lib/x86/msvcprt.lib",
-      "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/lib/x86/MSVCRT.lib",
-      "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/lib/x86/OLDNAMES.lib",
-      "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/lib/x86/vcruntime.lib",
-      "build/win32/Release/bsp_core.lib",
-      "build/win32/Release/bsp_lua511.lib",
-      "build/win32/Release/bsp_zlib121.lib"
-    ],
-    "call_check_command": "python tools/verify_report_calls.py reports/native_renderer_base_lifetime.json",
-    "call_check_exit": 0,
-    "call_check_direct_rows": 24,
-    "call_check_failures": 0,
-    "artifact_manifest": "local/native_renderer_base_final_manifest.json"
   },
   "original_pe": {
     "machine": "014c",
@@ -829,5 +741,140 @@
     "C++ source interfaces add cell references and are not original ECX/RET or SEH frame ABI replacements.",
     "Host /MD allocator and returning CRT boundaries are not the game's static CRT identity.",
     "Fixture uses synthetic raw singleton and actual raw providers; no GPU/rendering/gameplay validation."
-  ]
+  ],
+  "integrated_validation": {
+    "code_commit": "8f73fbf754bc47dfac527e898c3cf7a4cc6ebfa4",
+    "checkpoint": {
+      "path": "local/checkpoints/8f73fbf7/native-renderer-base-default/validation.json",
+      "sha256": "45925cb9c0b96ce1504ae19641da9d7c5b984ee2d44fb44a5303da7b2fb4d111",
+      "code_commit": "8f73fbf754bc47dfac527e898c3cf7a4cc6ebfa4",
+      "artifacts": 3229
+    },
+    "default_build": "MSVC Win32 Release",
+    "ctests_passed": 2,
+    "fixture_programs": 1,
+    "normal_bodies": 9,
+    "direct_call_rows_checked": 24,
+    "direct_call_failures": 0,
+    "saved_ghidra_annotations": 9,
+    "restored_stack_adjustments": 3,
+    "game_startup_adopted": false,
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "worker_validation": {
+    "status": "complete_base_subobject_body_reconstruction_build_and_focused_fixture_tested",
+    "seed_command": "python tools/ghidra_export.py verify-seeds > local/native_renderer_base_seed_stdout.txt",
+    "seed_exit": 0,
+    "seed_ranges_compared": 8,
+    "seed_ranges_matched": 8,
+    "build_command": "./scripts/build.ps1 *> local/native_renderer_base_build.log",
+    "build_exit": 0,
+    "ctests": {
+      "passed": 2,
+      "failed": 0,
+      "names": [
+        "reconstructed_math",
+        "native_math_differential"
+      ]
+    },
+    "strict_fixture_command": "cmd /d /c .\\local\\build_native_renderer_base_probe.cmd *> local/native_renderer_base_fixture_build.log",
+    "strict_fixture_exit": 0,
+    "fixture_replay_command": ".\\local\\native_renderer_base_probe.exe *> local/native_renderer_base_fixture_run.log",
+    "fixture_replay_exit": 0,
+    "fixture_stdout": "native renderer base: primary publication, subobject registration and cleanup passed",
+    "strict_compile_flags": "/std:c++17 /EHsc /MD /W4 /WX /showIncludes",
+    "fixture_link_flags": "/MANIFEST:EMBED /MACHINE:X86 /VERBOSE:LIB",
+    "fixture_pe_machine": "014c",
+    "fixture_manifest_resource_id": 24,
+    "fixture_import_dlls": [
+      "KERNEL32.dll",
+      "VCRUNTIME140.dll",
+      "api-ms-win-crt-heap-l1-1-0.dll",
+      "api-ms-win-crt-locale-l1-1-0.dll",
+      "api-ms-win-crt-math-l1-1-0.dll",
+      "api-ms-win-crt-runtime-l1-1-0.dll",
+      "api-ms-win-crt-stdio-l1-1-0.dll",
+      "api-ms-win-crt-string-l1-1-0.dll"
+    ],
+    "searched_linker_libraries": [
+      "C:/Program Files (x86)/Windows Kits/10/lib/10.0.26100.0/ucrt/x86/ucrt.lib",
+      "C:/Program Files (x86)/Windows Kits/10/lib/10.0.26100.0/um/x86/advapi32.lib",
+      "C:/Program Files (x86)/Windows Kits/10/lib/10.0.26100.0/um/x86/comdlg32.lib",
+      "C:/Program Files (x86)/Windows Kits/10/lib/10.0.26100.0/um/x86/d3d9.lib",
+      "C:/Program Files (x86)/Windows Kits/10/lib/10.0.26100.0/um/x86/gdi32.lib",
+      "C:/Program Files (x86)/Windows Kits/10/lib/10.0.26100.0/um/x86/kernel32.lib",
+      "C:/Program Files (x86)/Windows Kits/10/lib/10.0.26100.0/um/x86/ole32.lib",
+      "C:/Program Files (x86)/Windows Kits/10/lib/10.0.26100.0/um/x86/oleaut32.lib",
+      "C:/Program Files (x86)/Windows Kits/10/lib/10.0.26100.0/um/x86/shell32.lib",
+      "C:/Program Files (x86)/Windows Kits/10/lib/10.0.26100.0/um/x86/user32.lib",
+      "C:/Program Files (x86)/Windows Kits/10/lib/10.0.26100.0/um/x86/uuid.lib",
+      "C:/Program Files (x86)/Windows Kits/10/lib/10.0.26100.0/um/x86/winspool.lib",
+      "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/lib/x86/msvcprt.lib",
+      "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/lib/x86/MSVCRT.lib",
+      "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/lib/x86/OLDNAMES.lib",
+      "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/lib/x86/vcruntime.lib",
+      "build/win32/Release/bsp_core.lib",
+      "build/win32/Release/bsp_lua511.lib",
+      "build/win32/Release/bsp_zlib121.lib"
+    ],
+    "call_check_command": "python tools/verify_report_calls.py reports/native_renderer_base_lifetime.json",
+    "call_check_exit": 0,
+    "call_check_direct_rows": 24,
+    "call_check_failures": 0,
+    "artifact_manifest": "local/native_renderer_base_final_manifest.json"
+  },
+  "validation": {
+    "code_commit": "8f73fbf754bc47dfac527e898c3cf7a4cc6ebfa4",
+    "checkpoint": {
+      "path": "local/checkpoints/8f73fbf7/native-renderer-base-default/validation.json",
+      "sha256": "45925cb9c0b96ce1504ae19641da9d7c5b984ee2d44fb44a5303da7b2fb4d111",
+      "code_commit": "8f73fbf754bc47dfac527e898c3cf7a4cc6ebfa4",
+      "artifacts": 3229
+    },
+    "default_build": "MSVC Win32 Release",
+    "ctests_passed": 2,
+    "fixture_programs": 1,
+    "normal_bodies": 9,
+    "direct_call_rows_checked": 24,
+    "direct_call_failures": 0,
+    "saved_ghidra_annotations": 9,
+    "restored_stack_adjustments": 3,
+    "game_startup_adopted": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "fixture_scope": "Existing raw1D94h-owner fixture with compatible14h manager storage and real tracked sections; primary publication, secondary registration/current-slot unregister, field preimages and scalar frees",
+    "original_source_comparison_claimed": false
+  },
+  "worker_native_listing_gaps": [
+    {
+      "address": "00b260a5",
+      "inclusive_end": "00b260a7",
+      "disk_hex": "83c404",
+      "decoded": "ADD ESP,4 after BF65AC cdecl free",
+      "ghidra_missing": true,
+      "root_repair_required": true
+    },
+    {
+      "address": "00b28555",
+      "inclusive_end": "00b28557",
+      "disk_hex": "83c404",
+      "decoded": "ADD ESP,4 after BF65AC cdecl free",
+      "ghidra_missing": true,
+      "root_repair_required": true
+    },
+    {
+      "address": "00b33e2e",
+      "inclusive_end": "00b33e30",
+      "disk_hex": "83c404",
+      "decoded": "ADD ESP,4 after BF65AC cdecl free",
+      "ghidra_missing": true,
+      "root_repair_required": true
+    }
+  ],
+  "native_listing_gaps": [],
+  "root_ghidra_writes": true,
+  "root_ghidra_saves": true,
+  "root_flow_repair_record": "reports/native_renderer_base_flow_repair.json",
+  "root_reviewed_argument_order": "B25F40 computes/pushes captured primary+0C before second415350; B25FE0 captures CURRENT F8D394+0C before second415350. This differs from Lua/state registry second-getter then publication reload ordering."
 }

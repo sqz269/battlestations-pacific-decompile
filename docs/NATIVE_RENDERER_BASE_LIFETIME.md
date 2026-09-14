@@ -86,3 +86,7 @@ scalar free; it does not run game rendering, GPU, SDK or network activity.
 `verify-seeds` matched all eight installed native differential ranges. The
 single local fixture compiled source and itself under `/MD /W4 /WX`, linked
 with `/MANIFEST:EMBED`, and passed. Neither check is gameplay validation.
+
+Integrated validation at `8f73fbf754bc47dfac527e898c3cf7a4cc6ebfa4`: strict Win32 build and both CTests pass. The existing raw1D94h-owner fixture passes against the exact integrated library, using compatible14h manager storage and real tracked sections. It checks field preimages, primary publication, secondary registration/current-slot unregister, section release and scalar frees. This is source lifetime validation; no original/source differential or application-drain claim is made.
+
+Root restored ADD ESP,4 at B260A5/B28555/B33E2E, saved nine reviewed names/evidence comments while retaining prior comments, refreshed all nine exports and verified24 direct calls. B33D90 is primary section destruction, superseding its earlier generated adjustor classification. The actual derived secondary adjustor is B32900. Native B25F40 computes/pushes the captured registered subobject before its second415350; B25FE0 similarly captures the current publication before that getter. Keep this order distinct from Lua and registry base bodies. `local/checkpoints/8f73fbf7/native-renderer-base-default/validation.json` freezes 3229 artifacts and references the66-artifact worker archive. Full derived lifetime, application composition and gameplay remain open.
