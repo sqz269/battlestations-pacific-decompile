@@ -21,6 +21,7 @@
 #include "bsp/native_vfs_derived_manager.hpp"
 #include "bsp/native_string_pool_owner.hpp"
 #include "bsp/native_system_registry_raw_terminal.hpp"
+#include "bsp/native_resource_support.hpp"
 #include "bsp/xlive_owner_lifetime.hpp"
 #include "bsp/native_online_manager_lifetime.hpp"
 
@@ -49,6 +50,14 @@ __declspec(noinline) void __fastcall delete_current_profile(void* owner,
     case 0x00ce3818:
         delete_native_singleton_base_00412440(owner, nullptr, flags);
         return;
+    case 0x00d62b64:
+        if (bindings.actual_resource_support_publication_0108fedc != nullptr) {
+            delete_native_resource_support_00b61d60(
+                *static_cast<NativeResourceSupportStorage*>(owner), flags,
+                *bindings.actual_resource_support_publication_0108fedc);
+            return;
+        }
+        break;
     case 0x00d62a3c:
         if (bindings.system_constant_registry != nullptr) {
             delete_native_system_constant_registry_00b5df70(
