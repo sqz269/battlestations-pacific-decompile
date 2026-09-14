@@ -142,3 +142,7 @@ the captured folder. The report contains the exact numeric native callsite rows.
 ## Primary descriptor-search capture correction
 
 The original B42421..B42431 reads shader+7C count before its+78 descriptor base and captures that initial end without another base read. B42449..B4245A reloads the current shader, count and base after each match check. The primary source now makes these reads explicit, removing the extra initial base read and dependence on C++ function-argument evaluation order. Frozen worker source6336f486 remains unchanged; combined validation follows the correction.
+
+## Independent full-listing review corrections
+
+Review of all1125 original assembly lines additionally found two access-order differences. VS/PS world paths now capture node+5C flag2 before the width read and use that captured decision for refresh. Decoded scale component1 now performs FLD decode.y, MOVSS the live one constant, then FSTP scale.y. These differences do not affect ordinary bank results, but preserve the original volatile/fault/x87 order. Frozen worker6336f486 and earlier8b2e79df annotations remain historical; corrected combined validation follows.

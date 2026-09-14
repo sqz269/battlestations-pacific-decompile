@@ -66,6 +66,20 @@ void copy_x87(void* destination, const volatile void* source) noexcept {
         fstp dword ptr [edx]
     }
 }
+// B429DC..B429E7: the live one read occurs with decode.y still in ST0,
+// before its destination spill. Keep that ordering even for FP faults.
+void copy_decode_second(void* destination, const void* source,
+    const volatile float* actual_one) noexcept {
+    __asm {
+        mov eax, source
+        mov edx, destination
+        mov ecx, actual_one
+        xorps xmm0, xmm0
+        fld dword ptr [eax]
+        movss xmm1, dword ptr [ecx]
+        fstp dword ptr [edx]
+    }
+}
 // Width2 is the native MOVSS/local scratch/REP MOVSD8 path. Other accepted
 // widths perform individual FLD/FSTP crossings and retain overlap effects.
 void transpose(void* destination, const void* source, Word rows) noexcept {
@@ -320,8 +334,8 @@ void build_native_material_constants_00b42350(void* pass, void* entry,
                         reached(frame, 0x00b429cf);
                         void* const decode = native_logical_vertex_decode_record_00b61e10(logical, nullptr, index);
                         copy_x87(scale, decode);
-                        static_cast<void>(word(&c.actual_one_00d7a24c));
-                        for (Word j = 1; j < 4; ++j) copy_x87(at(scale, j * 4), at(decode, j * 4));
+                        copy_decode_second(at(scale, 4), at(decode, 4), &c.actual_one_00d7a24c);
+                        for (Word j = 2; j < 4; ++j) copy_x87(at(scale, j * 4), at(decode, j * 4));
                         for (Word j = 0; j < 4; ++j) copy_x87(at(bias, j * 4), at(decode, 16 + j * 4));
                         step = 1;
                     } else {
@@ -344,15 +358,23 @@ void build_native_material_constants_00b42350(void* pass, void* entry,
     shader = ptr(pass, 0x70);
     if (byte(shader, 8) != 0xff) {
         void* const node = ptr(entry, 0x0c);
+        const bool refresh = (byte(node, 0x5c) & 2) == 0;
         const Word rows = byte(shader, 0x3e);
-        ensure_world(node, frame, 0x00b42a9f);
+        if (refresh) {
+            reached(frame, 0x00b42a9f);
+            refresh_native_camera_world_00b6db70(node);
+        }
         const Word first = byte(ptr(pass, 0x70), 8);
         transpose(reg(c.bank0108EBF4, first), at(node, 0xf0), rows);
     }
     if (byte(ptr(pass, 0x74), 8) != 0xff) {
         void* const node = ptr(entry, 0x0c);
+        const bool refresh = (byte(node, 0x5c) & 2) == 0;
         const Word rows = byte(ptr(pass, 0x70), 0x3e); // Native PS uses VS width.
-        ensure_world(node, frame, 0x00b42c84);
+        if (refresh) {
+            reached(frame, 0x00b42c84);
+            refresh_native_camera_world_00b6db70(node);
+        }
         const Word first = byte(ptr(pass, 0x74), 8);
         transpose(reg(c.bank0108DBEC, first), at(node, 0xf0), rows);
     }

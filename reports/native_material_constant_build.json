@@ -544,5 +544,28 @@
     "change": "Read shader+7C count before shader+78 base once at initial search; after each match reload current shader, count, base and end before advancing current descriptor. Remove extra initial base read and unspecified function argument ordering.",
     "public_API_changed": false,
     "validation": "Combined-library validation follows this correction; frozen worker fixture describes6336f486."
+  },
+  "primary_full_listing_review_corrections": {
+    "reviewer_worktree": "orch5-constant-build-review",
+    "reviewed_native_assembly_lines": 1125,
+    "worker_source": "6336f48698718c2fa5164b9ffb2fa48e0f0ae322",
+    "corrections": [
+      {
+        "sites": [
+          "00b42a93",
+          "00b42c75"
+        ],
+        "change": "Capture actual node+5C flag2 before the width read/current VS width reload, then use the captured flag for world refresh."
+      },
+      {
+        "sites": [
+          "00b429dc",
+          "00b429df",
+          "00b429e7"
+        ],
+        "change": "Preserve FLD decode.y then MOVSS live one then FSTP scale.y, with the float remaining in ST0 across the live constant read."
+      }
+    ],
+    "validation": "Corrected combined build/full-bank fixture and final annotation/checkpoint follow; earlier8b2e79df annotations remain historical."
   }
 }
