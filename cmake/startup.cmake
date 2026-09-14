@@ -927,3 +927,4 @@ cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_mpak_storag
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/game_native_vfs_runtime.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_vfs_owner_services.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/game_native_vfs_constants.cpp)
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_vfs_search_groups.cpp)
