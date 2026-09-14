@@ -245,8 +245,9 @@ inline constexpr int kUnitHeading = 0xC6C;  // the wrapped atan2 that 007C1ACA w
 // ordnance, then interpolated toward a class field; turbo scales whatever results.
 struct PlaneBombLoadFactor {
     bool carries_bomb = false;   // slot->vtable[210h](2Ah, 0) over +974h/+994h, 007C0F72
-    float slot_weight = 0.0f;    // slot->vtable[214h]() of the first such slot, 007C0F9D.
-                                 // The virtual itself was not read.
+    float slot_weight = 0.0f;    // slot->vtable[214h]() of the first such slot, 007C0F9D:
+                                 // the remaining bomb-load fraction, see
+                                 // bomb_load_fraction_006e4130 below.
     float loaded_scale = 1.0f;   // class+15Ch, 007C0FA6
     bool turbo = false;          // plane+BC8h, 007C0FCF
     float turbo_scale = 1.0f;    // class+608h, 007C0FDE; the turbo block is +5FCh..+608h
@@ -255,14 +256,34 @@ float bomb_load_factor_007c0f40(const PlaneBombLoadFactor& in);
 
 // 007D9A70, the speed factor R that the yaw turn term remaps onto [0.1, 0.9R+0.1].
 struct PlaneSpeedFactor {
-    float altitude_term = 0.0f;  // [[sub+8h]+908h], 007D9A79. The field was not identified.
+    float free_flight_scalar = 0.0f;  // unit+908h: controller+8h is the plane unit itself,
+                                      // 007D9A79. docs/PILOT_CONTROLS.md pairs it with +904h
+                                      // against 5.0f; this interpolation's x range is 3..6.
     float forward_speed = 0.0f;  // 007D99C0 BSP_PlaneFlight_ForwardSpeed(sub), 007D9AB4
     float max_speed = 0.0f;      // class+184h, in the speed block, 007D9ABC
-    float ratio_x0 = 0.0f;       // [00F8731C] — a runtime global, zero in the image on disk
-    float ratio_x1 = 0.0f;       // [00F87320] — likewise; neither runtime value is established
-    float extra = 0.0f;          // [[sub+10h]+C0h], 007D9AFC. The field was not identified.
+    float dyn_c0 = 0.0f;         // [controller+10h]+C0h, 007D9AFC. **Runtime-only**: three
+                                 // producers, all per-tick physics — 007DB2A4 copies a source
+                                 // scalar in, 007DC6C5 zeroes it or takes a computed value,
+                                 // and 007D902F decays it in the integrator's tail. Nothing
+                                 // authored reaches it, so a host that does not run the plane
+                                 // integrator cannot supply it and must refuse the yaw axis.
     float bomb_load = 1.0f;      // 007C0F40, above
 };
+// Nothing in the image writes 00F8731C or 00F87320, so the ratio interpolation's two
+// x-endpoints are both 0.0f and 00419010 returns its y0 — the `c` term is a constant zero in
+// this build. The parameters for them are therefore gone; see the doc for the evidence.
 float plane_speed_factor_007d9a70(const PlaneSpeedFactor& in);
+
+// 006E4130 (MBombPlatform) and 006E3700 (MMultipleBombPlatform), vtable[214h]. The remaining
+// bomb-load fraction that 007C0F40 interpolates on. Both divide a kind-2Ah count from
+// vtable[21Ch](2Ah) by the platform's capacity at +488h; MBombPlatform adds +484h first and
+// returns 0.0f outright when the capacity is zero.
+struct BombLoadFraction {
+    int remaining = 0;    // slot->vtable[21Ch](2Ah), 006E4144 / 006E3706. Not read.
+    int pending = 0;      // slot+484h, 006E414E; MBombPlatform only
+    int capacity = 0;     // slot+488h, 006E415C / 006E3720
+    bool single = true;   // MBombPlatform (true) vs MMultipleBombPlatform (false)
+};
+float bomb_load_fraction_006e4130(const BombLoadFraction& in);
 
 }  // namespace bsp

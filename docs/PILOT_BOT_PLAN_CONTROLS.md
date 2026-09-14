@@ -822,3 +822,202 @@ quantities named above as unread. A host that supplies the unread four as zero g
 altitude term and `c` from a zero ratio — a **legal** result, not an obviously wrong one, so this
 is another place to refuse rather than default. The bound `R ∈ [0, m]` is what a host can assert
 against if it wires the axis and wants a cheap sanity check.
+
+# The speed factor's four leaves (packet `cc7_speed_factor_leaves`)
+
+Addresses: `00419010`, `007D9A70`, `007C0F40`, `006E4130`, `006E3700`. Globals `00F87300`-`00F8733F`.
+
+Ghidra read-only. **Exported, reconstructed, build-tested**; `reconstructed_math` still passes, no
+new tests. Not fixture-tested, not game-validated.
+
+**All four close.** One of them closes by correcting this document's own speculation, and one of
+them corrects a helper I had already written.
+
+## `00F8731C` and `00F87320` are never written, and the degenerate case is the opposite of what I guessed
+
+A byte scan of `.text` for every absolute reference into `00F87300`-`00F8733F` finds **26
+references, all x87 reads** — `D9 05` (`FLD`), `D8 0D` (`FMUL`), `D8 35` (`FDIV`) — spread across
+the plane-flight code at `007D92xx`-`007DCAxx`. There is **no write in any form**: no
+`MOV [imm32], reg`, no `MOV reg, imm32` that would let a loop index the block, and `.data` and
+`.rdata` contain no reference to any address in the window either. The whole 64-byte block reads
+zero in the image.
+
+So `007D9A70`'s second interpolation runs with `x0 == x1 == 0.0f`. The previous section flagged
+that case and declined to characterise it. Reading `00419010`'s body settles it, and **the guess
+that section did not make would have been wrong**:
+
+```
+00419010  FLD [ESP+0Ch]        ; x1
+00419016  FLD [ESP+04h]        ; x0
+0041901E  FUCOMIP ST0,ST2      ; compare x1 with x0
+00419022  LAHF / TEST AH,44h
+00419026  JP 00419033          ; taken only when they DIFFER
+00419028  FSTP ST0 / FSTP ST0
+0041902C  FLD [ESP+08h]        ; -> returns y0
+00419030  RET 14h
+```
+
+The equality idiom again: equal gives `ZF=1, PF=0`, so `AH & 44h` is one bit, odd parity, `JP` not
+taken, and the function returns **`y0`**. So `c` is a **constant `0.0f`** in this build — not `1.0`,
+which is what a "ratio above the range saturates at `y1`" reading would have produced. `v` is
+therefore `[controller+10h][+C0h] * 0.6` alone.
+
+### A correction to `interpolate_clamped` in `src/plane_ai_control.cpp`
+
+Reading the body also corrected the helper I wrote two packets ago, which clamped on the **x** side.
+The native clamps on the **y** side: `00419063`-`004190CC` picks `min(y0,y1)` and `max(y0,y1)` into
+`XMM0`/`XMM1` and bounds the interpolated value between them, returning the raw value at `004190BC`
+and the two bounds at `00419094`/`004190AF`. For an ascending `x` pair the two are equivalent, but
+they differ when `x0 > x1` and they differ decisively when `x0 == x1`. `yaw_base_gain_0099dffb`
+passes a **descending** `y` pair (`y0 = 1`, `y1 = 0`), which is exactly the case the y-side clamp
+exists for. The helper now matches the listing.
+
+## The two sub-object fields
+
+`unit+AB0h` is `kFlightController` (`include/bsp/plane_flight.hpp:77`). Its two fields resolve
+without reading anything new:
+
+* **`controller+8h` is the plane unit itself.** `007D9B35` passes it as `this` to `007C0F40`, and
+  that function reads `+974h`/`+994h` (the weapon slot array), `+538h` (the class descriptor) and
+  `+BC8h` — all unit offsets. So `[[sub+8h]+908h]` is **`unit+908h`**, the scalar
+  `docs/PILOT_CONTROLS.md:215,218,222` pairs with `+904h` against `5.0f` and sets to `0` or
+  `3600.0f` on state transitions. This interpolation's x range is `3..6`, which brackets that
+  `5.0f` threshold. That doc did not name the field and neither does this one.
+* **`controller+10h` is the dynamics block**, which `include/bsp/plane_flight.hpp:370` already
+  records (`dyn+04h`, `+10h`, `+1Ch`, `+28h`, `+34h`, `+40h`). `007D9AF9` loads it as a **pointer**
+  and reads `+C0h`, which is beyond the fields that header lists. **`dyn+C0h`'s meaning is not
+  established** — and with `c` pinned at zero it is now the *only* thing that moves `v`.
+
+## `slot->vtable[214h]` is the remaining bomb-load fraction
+
+Only the bomb-platform vtables are long enough to have slot `214h`; on the shorter gun vtables that
+displacement lands past the end, in the string data that follows a vtable (`00CFE75C` reads
+`"ing"`, `00CFACCC` reads `"ePar"` — both mid-string), which is why the slot had to be read per
+class rather than taken from the base.
+
+| class | vtable | `+214h` |
+| --- | --- | --- |
+| `MBombPlatform` | `00CF96A8` | `006E4130` |
+| `MMultipleBombPlatform` | `00CF9918` | `006E3700` |
+
+```
+006E3700 (multiple):  return (float)vtable[21Ch](2Ah) / (int)this+488h
+006E4130 (single):    if (this+488h == 0) return 0.0f
+                      return (float)(vtable[21Ch](2Ah) + this+484h) / (int)this+488h
+```
+
+Both are `FILD`/`FIDIV` integer divides. `vtable[21Ch](2Ah)` is a **count** of kind-`2Ah` items —
+the same `2Ah = MBomb` id space `docs/ORDNANCE_KIND_IDENTITY.md` established — and `+488h` is the
+platform's capacity, so `w` is the **fraction of the bomb load still aboard**, in `[0, 1]`.
+
+That makes `007C0F40` legible: `InterpolateClamped(0, 1.0f, 0.8f, class+15Ch, w)` gives `m = 1.0`
+with no bombs left and `m = class+15Ch` at four-fifths loaded or more. **It is a handling penalty
+for carrying bombs**, which is why `R`, and therefore the yaw turn term, degrades with a full load.
+
+## What this does to the model
+
+`c = 0` and `ratio` is computed but unused, so in this build
+
+```
+a      = InterpolateClamped(3, 0, 6, 0.25, unit+908h)      in [0, 0.25]
+v      = dyn+C0h * 0.6
+result = max(a, min(v, 1))                                  in [0, 1]
+R      = m * result^2                                       in [0, m]
+```
+
+The bound from the previous section is **unchanged**, and now rests on less: `a` alone pins
+`result` from below and the explicit `1.0f` caps it from above.
+
+## What is still unread, named
+
+* **`dyn+C0h`** — the only live input to `v`.
+* **`unit+908h`'s meaning.** `docs/PILOT_CONTROLS.md` established its producers and its `5.0f`
+  threshold but explicitly did not name it, and this packet did not either.
+* **`slot->vtable[21Ch]`**, the kind-`2Ah` count.
+* The scan is of `battlestationspacific.exe` only. This installation carries mod artefacts
+  (`docs/AA_VERTICAL_WINDOW.md` and others record it), so a loaded module could in principle write
+  those globals; that was not checked, and the claim here is about the shipped executable.
+* Unchanged from before: the pitch demand's bank target, the speed-hold trigger at `0099D8C6`, and
+  the producers of `task+2B4h`/`+2C0h`/`+2D8h`.
+
+## Wiring contract
+
+Of the yaw arm's inputs, a host now needs from this packet: `unit+908h`, `BSP_PlaneFlight_ForwardSpeed`,
+`class+184h`, `[controller+10h]+C0h`, and, for the bomb-load factor, the platform counts
+`+484h`/`+488h` plus the kind-`2Ah` count, `class+15Ch`, `plane+BC8h` and `class+608h`. The two
+globals need nothing — they are zero and `c` collapses to zero with them.
+
+`dyn+C0h` is the one remaining input a host cannot supply honestly. Defaulting it to zero gives
+`v = 0`, hence `result = a`, hence a **well-formed** `R` that is simply wrong whenever the dynamics
+term is non-zero — the same legal-looking failure as before, so the axis should still refuse until
+that field is read.
+
+# `dyn+C0h` is runtime-only (packet `cc7_dyn_c0`)
+
+Addresses: `007D8470` `BSP_PlaneDynamics_IntegrateStep` (write at `007D902F`), `007DB1F0` (write at
+`007DB2A4`), `007DB680` `BSP_PlaneFlight_CoreLaw` (write at `007DC6C5`), `007D9AFC` (the read).
+
+Ghidra read-only. **Exported / read only** — no C++ behaviour was added; the header comment on the
+existing parameter was updated. The build and `reconstructed_math` still pass. No new tests.
+
+## The answer
+
+**It cannot be supplied from authored data.** `dyn+C0h` is a per-tick scalar that the plane's own
+physics pipeline maintains, and it has three producers, all of them runtime:
+
+| site | function | what it writes |
+| --- | --- | --- |
+| `007DB2A4` | `FUN_007DB1F0` | `FSTP [EAX+0C0h]` with `[EDI+2Ch]`, alongside copying `[EDI+30h/34h/38h]` into a separate 3-float destination — so a `{scalar, vec3}` group is being copied out of a source object |
+| `007DC6C5` | `BSP_PlaneFlight_CoreLaw` | `MOVSS [ECX+0C0h],XMM0`, where a predicate `[eax+72Ch]->vtable[38h]()` answering **true** skips the store entirely (`007DC6BD JNE`), answering false **zeroes** it (`007DC6BF XORPS`), and an earlier `JE` path stores a computed `XMM0` |
+| `007D902F` | `BSP_PlaneDynamics_IntegrateStep`, its tail | a **decay with a floor**: `007D8FFE` loads the previous value, `007D9006 COMISS` compares it, `007D900F JBE` returns **without writing** when it is not above the comparand, and otherwise a subtracted-and-compared value is stored |
+
+All three resolve the base the same way — `MOV reg,[ESI+10h]` then `[reg+0C0h]` — which confirms
+the field is on the block `controller+10h` points at, the same dereference `007D9AF9` does.
+
+`include/bsp/plane_flight.hpp` models that block only as far as `dyn+04h`..`+6Ch`, and its own
+comment says "the unread tail integrates". `dyn+C0h` is written **by that unread tail**, so this is
+not a gap in the field's identification so much as the boundary of what this repo has read of the
+integrator.
+
+## What I did not establish
+
+* **What the scalar means.** It is normalised-ish — the yaw law uses it as `v = dyn+C0h * 0.6`
+  against a floor `a ∈ [0, 0.25]` and a cap of `1`, so anything above about `1.67` saturates — and
+  it builds from a source object, is zeroed or re-set by a predicate in the core law, and decays in
+  the integrator. That is consistent with several readings and I did not pick one.
+* **The comparand at `007D9006`** (`XMM0` at the decay), and the source object `[EDI+2Ch]` at
+  `007DB2A4`, and the `+72Ch` predicate at `007DC6B6`.
+* The other reads of the same displacement in the plane code (`007D7A93`, `007D83A2`, `007D88CD`,
+  `007D8ABB`, `007DEF9F`) were not attributed to an object; only the three writes above were.
+
+## Wiring contract, final for this axis
+
+**The yaw axis stays refused, for a named structural reason rather than an unknown one.** Every
+other input to `plan_yaw_0099e81a` is now either authored or derived from authored data:
+
+```
+heading error   unit+C6Ch (vtable[50h]) and task+2C0h          available
+q               unit+340h                                      available
+deadband/step   tuning+34h/38h/3Ch, class+1ACh/1C8h            available
+base gain       tuning+7Ch/80h                                 available
+turn term       class+1ACh/1B0h/1B8h/1D8h, the attitude triple available
+R               unit+908h, forward speed, class+184h,
+                the bomb-load factor                           available
+                dyn+C0h                                        RUNTIME ONLY
+```
+
+A host that runs the plane flight integrator would have `dyn+C0h` for free. A host that does not
+cannot obtain it at all, and must refuse the axis — **not** default it to zero, which yields
+`v = 0`, `result = a`, and a well-formed `R` that is wrong whenever the plane's dynamics term is
+non-zero.
+
+## Caveat carried forward
+
+The scans behind this packet and the previous one cover `battlestationspacific.exe` only. This
+installation carries mod artefacts, so a loaded module writing `00F8731C`/`00F87320`, or this
+field, is not excluded.
+
+## Still open, unchanged
+
+The pitch demand's bank-target arm, the speed-hold trigger `XMM0` at `0099D8C6`, and the producers
+of `task+2B4h`/`+2C0h`/`+2D8h`.

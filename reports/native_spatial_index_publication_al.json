@@ -1,0 +1,187 @@
+{
+  "packet": "orch6_spatial_index_publication_al",
+  "native": {
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "spans": [
+      {
+        "address": "0042d450",
+        "end": "0042d48d",
+        "size": 62,
+        "sha256": "fb2b86990941715c97600f8a2530dedadb535b9920ef335d937d572b3b214e36",
+        "live_disk_equal": true,
+        "kind": "complete_function"
+      },
+      {
+        "address": "0042e630",
+        "end": "0042e6dd",
+        "size": 174,
+        "sha256": "b9aae24b55d776c979f19945e9d7354b6e235fb8c4c9eb6355897d570f9a6d83",
+        "live_disk_equal": true,
+        "kind": "complete_function"
+      },
+      {
+        "address": "00c5eb20",
+        "end": "00c5eb31",
+        "size": 18,
+        "sha256": "98cd00b4ef2aff5cefe026a533e853ee764b822b1766b69ac39424e50701a77f",
+        "live_disk_equal": true,
+        "kind": "exception_evidence"
+      },
+      {
+        "address": "00d851d0",
+        "end": "00d851fb",
+        "size": 44,
+        "sha256": "75307cdba47b15142e3771cdf65fab04986ff03a81a15fdb8b1bd9b69a7ca4cf",
+        "live_disk_equal": true,
+        "kind": "exception_evidence"
+      }
+    ]
+  },
+  "calls": [
+    {
+      "function": "0042d450",
+      "address": "0042d46e",
+      "native": "00bf79f0"
+    },
+    {
+      "function": "0042e630",
+      "address": "0042e652",
+      "native": "00415350"
+    },
+    {
+      "function": "0042e630",
+      "address": "0042e68b",
+      "native": "00bf681b"
+    },
+    {
+      "function": "0042e630",
+      "address": "0042e699",
+      "native": "0042d450"
+    },
+    {
+      "function": "0042e630",
+      "address": "0042e6a7",
+      "native": "00415350"
+    },
+    {
+      "function": "0042e630",
+      "address": "0042e6b5",
+      "native": "00bd0c30"
+    }
+  ],
+  "indirect_calls": [
+    {
+      "function": "0042e630",
+      "site": "0042e66b",
+      "operand": "dword ptr [0xce2218]"
+    },
+    {
+      "function": "0042e630",
+      "site": "0042e6c3",
+      "operand": "dword ptr [0xce2210]"
+    }
+  ],
+  "imports": {
+    "00ce2218": {
+      "dll": "KERNEL32.dll",
+      "name": "EnterCriticalSection"
+    },
+    "00ce2210": {
+      "dll": "KERNEL32.dll",
+      "name": "LeaveCriticalSection"
+    }
+  },
+  "worker_dispatches": 0,
+  "coverage": "Complete raw constructor and singleton getter; bounded original-byte caller comparisons under canonical shared source dependencies.",
+  "limits": [
+    "Native FH3/fault delivery, deleting-destructor table, attachment, executable admission and gameplay remain unproved."
+  ],
+  "entries": [
+    {
+      "address": "0042d450",
+      "ghidra_name": "BSP_SpatialIndex_Construct",
+      "name": "construct_native_spatial_index_0042d450",
+      "evidence": "Complete62-byte ECX actual16018h allocation, EAX self, plainRET. StoreCE3CEC/+4zero; SDK memset+84/15F90; then count80/root16014zero. Thirty loose slots8..7C untouched. Complete native/source allocation plus canary images agree; identity profile is not a callable rebuilt vtable."
+    },
+    {
+      "address": "0042e630",
+      "ghidra_name": "BSP_SpatialIndex_GetSingleton",
+      "name": "get_native_spatial_index_0042e630",
+      "evidence": "Complete174-byte no-input EAX-pointer RET getter; explicit new source ABI borrows actual distinct raw manager01090AA0/indexF8A0D8 cells. Fast captured return; first raw manager/capturedsection10; Enter then physical18increment before sole guard state. Recheck; allocate16018/construct42D450/publish; second manager lookup and currentindex reread/registerBD0C30. Release first capturedsection before finalindex reread. D851D8/D851D0 solecleanupC5EB20 guardEBP-14 to411EE0; no allocation rollback. Seven paired getters include actual contended-section publication/manager replacement and SDK validation republication; source registration throw retains owner and balances guard."
+    }
+  ],
+  "validation": {
+    "summary": {
+      "passed": true,
+      "paired_constructor_cases": 1,
+      "paired_getter_scenarios": 7,
+      "paired_blocked_getter_scenarios": 2,
+      "source_registration_exception": true,
+      "validation_calls": 3,
+      "native_exception_paths_executed": 0
+    },
+    "comparisons": [
+      {
+        "case": "constructor",
+        "words": 22542,
+        "sha256": "406f5860016368ae668b017ea3768791f3ab6261ad1877a6db3fc9d1e9ab7ce4",
+        "equal": true
+      },
+      {
+        "case": "getter_0",
+        "words": 7,
+        "sha256": "373dc645bdafc666e1011facc8bce2e4f415fa4afe1ca1623de49d847ead3564",
+        "equal": true
+      },
+      {
+        "case": "getter_1",
+        "words": 11,
+        "sha256": "5898fd6b34490d1ce48715674c15490ad89cde8f82e65f788c59f237e8746c2a",
+        "equal": true
+      },
+      {
+        "case": "getter_2",
+        "words": 11,
+        "sha256": "3883a1885c51049841ed76238e438bfe5a603969cce4800373418304afea276f",
+        "equal": true
+      },
+      {
+        "case": "getter_3",
+        "words": 11,
+        "sha256": "24ebd3a7f442443f8b68ea0f1bfbf5634d80a2ed05eea73da88795256d04c8b6",
+        "equal": true
+      },
+      {
+        "case": "getter_4",
+        "words": 7,
+        "sha256": "164fa43cf94f236705b193f7cc1556ca11a50df10cb94b58daf163e39e61c64e",
+        "equal": true
+      },
+      {
+        "case": "getter_5",
+        "words": 11,
+        "sha256": "63c05e9f13163db5d679a074b47f666ab588634899e882e0d64d1ae88a9b75cb",
+        "equal": true
+      },
+      {
+        "case": "getter_6",
+        "words": 11,
+        "sha256": "66c97a1c6031adaf0d18a6642e5ffeb669d14b3ab9d1c2af024f7409c5d56eb6",
+        "equal": true
+      }
+    ],
+    "results_sha256": "938a505658dce1caac45df56d27ee2a29176e921afcfcfefdfd1fb2eb3d03e68",
+    "owned_direct_call_rows": 6,
+    "separately_verified_import_sites": 2,
+    "native_seed_matches": 8,
+    "compiled_object_review": "Constructor field order, two raw-manager calls, actual allocation/registration calls, volatile publication reloads, captured-section balance and source guard cleanup/rethrow verified in retained dumpbin listing.",
+    "exception_map": {
+      "funcinfo": "00d851d8",
+      "unwind_map": "00d851d0",
+      "cleanup": "00c5eb20",
+      "guard": "EBP-14",
+      "allocation_cleanup": false
+    }
+  }
+}
