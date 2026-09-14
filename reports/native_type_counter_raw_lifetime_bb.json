@@ -1,0 +1,207 @@
+{
+  "packet": "orch4_type_counter_raw_lifetime_bb",
+  "status": "bounded-source-implementation",
+  "source": [
+    "src/light_type_bootstrap.cpp",
+    "src/native_singleton_destruction.cpp"
+  ],
+  "headers": [
+    "include/bsp/light_type_bootstrap.hpp",
+    "include/bsp/native_singleton_destruction.hpp"
+  ],
+  "documentation": "docs/NATIVE_TYPE_COUNTER_RAW_LIFETIME_BB.md",
+  "roots": [
+    {
+      "address": "006fac20",
+      "name": "TypeIdCounterLifetime::get_006fac20",
+      "original_abi": "no parameters; EAX owner; RET0",
+      "coverage": "full normal source; disk/live 181 bytes, 48/48 saved instructions owned",
+      "sha256": "70526b13aa54e4afb188a2aeb0facac4a3e61c6770e787563b2c8e5d68a8d678"
+    },
+    {
+      "address": "006fad40",
+      "name": "TypeIdCounterLifetime::deleting_destructor_006fad40",
+      "original_abi": "ECX popped owner, stack flags DWORD; EAX original owner; RET4",
+      "coverage": "full normal source; disk/live 41 bytes, 11/12 saved instructions owned",
+      "sha256": "6f167643b027f016e3e3560ccaf18bc54a49088ec5e3d37a985e3aca014fc8ce",
+      "saved_body_exclusion": "006fad60 ADD ESP,4 has no containing Ghidra function"
+    }
+  ],
+  "calls": [
+    {
+      "function": "00ac7b80",
+      "address": "00ac7bbe",
+      "native": "006fac20"
+    },
+    {
+      "function": "00ab3180",
+      "address": "00ab31b5",
+      "native": "006fac20"
+    },
+    {
+      "function": "00aa8200",
+      "address": "00aa822c",
+      "native": "006fac20"
+    },
+    {
+      "function": "00bea780",
+      "address": "00bea793",
+      "native": "006fac20"
+    },
+    {
+      "function": "00af6b90",
+      "address": "00af6bce",
+      "native": "006fac20"
+    },
+    {
+      "function": "00b74f90",
+      "address": "00b74fc5",
+      "native": "006fac20"
+    },
+    {
+      "function": "00b6f110",
+      "address": "00b6f13c",
+      "native": "006fac20"
+    },
+    {
+      "function": "00b78170",
+      "address": "00b781b6",
+      "native": "006fac20"
+    },
+    {
+      "function": "00b78170",
+      "address": "00b781db",
+      "native": "006fac20"
+    },
+    {
+      "function": "00b781f0",
+      "address": "00b78236",
+      "native": "006fac20"
+    },
+    {
+      "function": "00b781f0",
+      "address": "00b7825b",
+      "native": "006fac20"
+    },
+    {
+      "function": "00b7c0c0",
+      "address": "00b7c0fe",
+      "native": "006fac20"
+    },
+    {
+      "function": "00b7bfd0",
+      "address": "00b7c005",
+      "native": "006fac20"
+    },
+    {
+      "function": "00b7c110",
+      "address": "00b7c14e",
+      "native": "006fac20"
+    },
+    {
+      "function": "00b86a00",
+      "address": "00b86a46",
+      "native": "006fac20"
+    },
+    {
+      "function": "00b86a00",
+      "address": "00b86a6b",
+      "native": "006fac20"
+    },
+    {
+      "function": "00b90fb0",
+      "address": "00b90fee",
+      "native": "006fac20"
+    },
+    {
+      "function": "00b911d0",
+      "address": "00b9120e",
+      "native": "006fac20"
+    },
+    {
+      "function": "00b93c20",
+      "address": "00b93c5e",
+      "native": "006fac20"
+    },
+    {
+      "function": "00b93bd0",
+      "address": "00b93c05",
+      "native": "006fac20"
+    },
+    {
+      "function": "00b869c0",
+      "address": "00b869ec",
+      "native": "006fac20"
+    },
+    {
+      "function": "00b93c70",
+      "address": "00b93cae",
+      "native": "006fac20"
+    },
+    {
+      "function": "00bbe770",
+      "address": "00bbe7ae",
+      "native": "006fac20"
+    },
+    {
+      "function": "00c30360",
+      "address": "00c3039e",
+      "native": "006fac20"
+    },
+    {
+      "function": "00c30310",
+      "address": "00c30345",
+      "native": "006fac20"
+    },
+    {
+      "function": "006fac20",
+      "address": "006fac46",
+      "native": "00415350"
+    },
+    {
+      "function": "006fac20",
+      "address": "006fac7c",
+      "native": "00bf681b"
+    },
+    {
+      "function": "006fac20",
+      "address": "006fac9e",
+      "native": "00415350"
+    },
+    {
+      "function": "006fac20",
+      "address": "006facac",
+      "native": "00bd0c30"
+    },
+    {
+      "function": "006fad40",
+      "address": "006fad5b",
+      "native": "00bf65ac"
+    }
+  ],
+  "call_scope": {
+    "within_roots": 5,
+    "external_direct_callers": 25,
+    "total_direct_calls": 30
+  },
+  "indirect_evidence": [
+    "006fac5f calls current enter target at 00ce2218",
+    "006facba calls current leave target at 00ce2210",
+    "data 00cfb6c4 begins DWORD 006fad40"
+  ],
+  "source_dispatch_only": "CFB6C4 dispatch passes the popped owner, flags and retained TypeIdCounterLifetime bound to actual 0109DB7C.",
+  "uncertainty": [
+    "Saved function ownership excludes 006fad60; no complete saved-body attribution is claimed until primary repair.",
+    "Original FH3/SEH identity and simultaneous cleanup failures are not reproduced.",
+    "Raw manager lifetime composition and game behavior remain unvalidated by this source change."
+  ],
+  "validation": "Fresh ./scripts/build.ps1 Win32 Release passed (bsp_core, bsp_game, one reconstructed_math CTest); 30/30 report CALL rows verified; no game execution or native raw-manager fixture in this packet.",
+  "primary_integration": {
+    "report": "reports/vfs_storage_owner_bb_validation.json",
+    "status": "bounded_vfs_owner_storage_source_integrated_exact_combined_build_and_three_fixtures_passed",
+    "source_revision": "62279e9f92e8e2dea6e816e9f451770e47fce0f9",
+    "source_registration": "Owner-services source is registered in bsp_core; all three primary fixtures link the combined archive only.",
+    "saved_evidence": "Type-counter saved ownership restored at006FAD60 and zero-initialization annotation corrected with retained receipt.",
+    "game_validated": false
+  }
+}

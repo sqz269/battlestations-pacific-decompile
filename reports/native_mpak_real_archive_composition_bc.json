@@ -1,0 +1,24 @@
+{
+  "packet": "orch4_mpak_real_archive_composition_bc",
+  "result": "blocked before fixture by absence of a real installed .mpak archive",
+  "inventory": {
+    "root": "I:/SteamLibrary/steamapps/common/Battlestations Pacific",
+    "method": "Get-ChildItem -Recurse -File -Force; filter .mpak, .mpkg, .pak",
+    "matching_files": 0,
+    "date": "2026-09-13"
+  },
+  "source_path": [
+    "00BB83A0 src/native_mpak_factory.cpp: suffix gate; 00BB8240 provider construction",
+    "00BB8240 src/native_mpak_provider.cpp: registry, manager open, 00BB7C50 parser",
+    "00BB5BB0 src/native_mpak_open.cpp: member open",
+    "00BB5080 src/native_mpak_entry.cpp: entry materialization",
+    "00BB7920 src/native_mpak_provider.cpp: provider drain",
+    "NativeMpakRuntime + NativeMpakStorageServices: existing source composition interfaces"
+  ],
+  "host_boundary": "src/game_hosts_vfs.cpp:110-124 retains a factory token and does not dispatch Create 00BB83A0; startup scans mpkg only",
+  "next_packet": "After an authentic immutable .mpak with known member is available, connect real host factory dispatch over one actual VFS owner, then run one member-read/drain fixture.",
+  "new_native_bodies": [],
+  "new_native_calls_owned": [],
+  "fixture": "not run; no real installed archive exists",
+  "runtime_proof": false
+}
