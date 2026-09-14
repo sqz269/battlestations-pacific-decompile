@@ -1,0 +1,140 @@
+{
+  "packet": "cc7_aa_vertical_window",
+  "owner": "agent/cc7-aa-window",
+  "date": "2026-09-14",
+  "project": "bsp",
+  "program": "/battlestationspacific.exe",
+  "ghidra": "read-only: no rename, comment, prototype, function creation or save",
+  "docs": ["docs/AA_VERTICAL_WINDOW.md"],
+  "sources": [],
+  "subject": "Why AAMACHINEGUN produces no shot on IJN01, and what the column the run log prints as no_window actually counts.",
+  "reuses": [
+    "include/bsp/gun_aiming.hpp: gun_set_target_angles_0085aba0, gun_traverse_allowed_007f5fc0, gun_fire_allowed_007f60a0",
+    "include/bsp/gun_bot_ticks.hpp: gun_bot_slots_for_subtype_0072c6a0, GunBotClass, kAAGunnerBot constants",
+    "include/bsp/vehicle_class_fields.hpp: VehicleClassPlatformFields::rest_angle_a (RestAngles[1], FLT_MAX when absent)",
+    "docs/GUN_AIMING.md sections on 0085ABA0 and 0085AD00; docs/GUN_BOT_TICKS.md sections 2, 3 and 6.4"
+  ],
+  "answer": {
+    "bot": "AAMACHINEGUN is Function category 1. 0072C6A0 gives sub-type 1 the AAGunnerBot (ctor 008FE740, tick 00902920) when 00922E90(gun, 0Fh) == 0, and the TailGunnerBot (ctor 008FE9F0, tick 008FFA20) otherwise. On IJN01 273 of the 295 category-1 guns are ship mounts and 22 are aircraft tail guns, so both arms are live.",
+    "commanded": "00902920 commands 0085ABA0(gun, horz, vert) at 00902FB0. The pair is 00901C20's closed-form lead point, put into the gun's frame by 00414E10 and turned into angles by 008FDAF0, with the swinging-error pair bot+64h/+68h added by 00438AA0 at 00902F3E and 00902F58, and a negative vertical multiplied by [00D7A280] = 0.5 at 00902F6C. There is no ballistic superelevation anywhere on the path.",
+    "no_gravity_census": "Whole-body listing dumps: 00902920..009030AD is 552 instructions and 00901C20..00902277 is 421 instructions. Neither contains FSQRT, a reference to 00CF9058 (9.81) or a reference to 00CEB5A8 (pi/4). 00901C20's only float constants are 00CE3958, 00CE3D78, 00CE47A0, 00CEB4B8, 00D7A238, 00D7A23C, 00D7A24C, 00D7A280, 00D7A328.",
+    "authored_windows": "78 device classes carry Function = AAMACHINEGUN and all 78 author HorzRotSpeed = VertRotSpeed = 4.0, so neither of 0085ABA0's rate gates can refuse an AA mount. 1916 platforms point a Gun[1] at one of them, carrying 2335 windows: MinVertAngle is -5 deg on 1720 of them, and MaxVertAngle is 80 deg on 1005, 87 deg on 630, 85 deg on 560 and 90 deg on 40. An AA mount in this installation elevates to 80-90 degrees.",
+    "target_is_airborne": "No. All 31 enemy aircraft on IJN01 report moved 0.00 for the whole 150 s mission. The closest one ever comes to an AA-carrying ship is 2950 m horizontally (LST1 -> JillSpawn12); the nearest column is a 3-D distance and reports 4235 m for LST1, so they are also about 3 km up. The AAMACHINEGUN engagement range, isolated on the four units carrying only category 1 (Vestal, Neosho, Medusa, B-17), is 960 m. No AA gun on this mission can ever be offered an aircraft.",
+    "verdict": "The refusal is not the AA path's fault. no_window is a per-gun-per-tick tally of gun_set_target_angles_0085aba0's return that the host makes unconditionally, including for guns with no target, so it is dominated by idle guns whose authored rest pose is outside their own windows. An AA gun accepts its commanded pair on 92.9% of its gun-ticks. The only AA-eligible targets on IJN01 are two midget submarines, against which the commanded vertical is +0.3 to +1.0 deg, clear of every authored window by at least 1 deg below and 79 deg above. AA does not shoot on IJN01 because the aircraft never fly."
+  },
+  "verification": {
+    "run": "build/win32/Release/bsp_game.exe --frames 3200 --press-start-frame 30 --menu-select IJN01 --mission-frames 3000 --mission-frame-seconds 0.05 --log local/ijn01.log --settings-personal-root local/personal --fmod-dll <root>/fmodex.dll --fmod-event-dll <root>/fmod_event.dll --xlive-dll build/win32/Release/xlive_stub.dll --game-root <root>",
+    "exit": 0,
+    "counter_identity": "angle_sets + refusals = 1385442 + 432558 = 1818000 = 606 guns x 3000 ticks, exactly. Every gun is evaluated every tick.",
+    "idle_rows": "PLANEGUN 82 guns -> 246000 refusals = 82 x 3000 with 0 assignments; DEPTHCHARGE 10 -> 30000 = 10 x 3000; CATAPULT 4 -> 12000 = 4 x 3000. AAMACHINEGUN 295 guns -> 62952, which is 7.1% of its 885000 gun-ticks.",
+    "convention_calibration": "With forward = (sin h, 0, cos h) and right = (cos h, 0, -sin h), Cassin (442.4, -3637.9, heading 0.5498) firing at No18 (-160.0, -4393.7) computes want_horz 187.1 deg and a slant of 966.5 m; the run log's first-shot line reports horz 187.4 deg, range 970 m.",
+    "note": "The executable faults immediately after Phase 5 load_game_settings when run from a directory that does not contain fmodex.dll, because selected_library_path (src/game_hosts.cpp:57) resolves the bare name with std::filesystem::absolute against the working directory. A fresh worktree has no copy, so --fmod-dll / --fmod-event-dll / --xlive-dll must be passed explicitly."
+  },
+  "routines": [
+    {
+      "address": "00902920",
+      "name": "BSP_GunBot_LeadAimTick, the AAGunnerBot tick",
+      "abi": "__thiscall(bot)(float dt); body 00902920-009030B2",
+      "coverage": "partial: the command tail 00902F3E-00902FB0 and the whole-body constant census were read from the listing; the swinging-error model 00902B38-00902EF7 was read from pseudocode only and is left as docs/GUN_BOT_TICKS.md section 6.4's."
+    },
+    {
+      "address": "00901C20",
+      "name": "BSP_GunBot_InterceptSolution",
+      "abi": "__fastcall(const float3* shooterPos, Entity* target)(float projSpeed, const float3* shooterVel, float3* outAimPoint, float* outDist); RET 10h; body 00901C20-0090227F",
+      "coverage": "census only: the body was scanned in full for FSQRT, 00CF9058 and its float-constant set. The solve itself was not re-derived; the contract is docs/GUN_BOT_TICKS.md's and the existing ledger comment's."
+    },
+    {
+      "address": "0085AD00",
+      "name": "BSP_TurningGun_AimToRestAngles",
+      "abi": "__fastcall(gun); body 0085AD00-0085AD7A",
+      "coverage": "complete; read as a contract from docs/GUN_AIMING.md and re-read from the listing for the FLT_MAX gate at 0085AD4E-0085AD56"
+    },
+    {
+      "address": "007F5FC0",
+      "name": "BSP_GunPlatform_AnglesInTraverseWindow",
+      "abi": "__thiscall(platform)(float horz, float vert) -> bool; body 007F5FC0-007F609E",
+      "coverage": "partial: the clamp 007F601F-007F6037 and the four comparisons 007F603F-007F6071 were read from the listing; the flag test in the tail was not re-read. Enough to settle that the test is a four-sided box with no wrap-around."
+    },
+    {
+      "address": "009030C0",
+      "name": "BSP_GunBot_BallisticAimAndFireTick, the AAFlakBot tick",
+      "abi": "__thiscall(bot)(float dt); body 009030C0-0090341D",
+      "coverage": "census only: dumped 009030C0-00903417 and scanned for CALL targets, to settle that 009031CF calls 00901C20 and that the body contains no CALL 008FBB00."
+    }
+  ],
+  "host_steps": [
+    {"step": "the AA gunner bot's lead solve", "address": "00902a74", "native": "00901c20", "function": "00902920"},
+    {"step": "into the gun's frame", "address": "00902acb", "native": "00414e10", "function": "00902920"},
+    {"step": "world direction to the gun angle pair", "address": "00902ad9", "native": "008fdaf0", "function": "00902920"},
+    {"step": "second vtable[100h] sample into the same converter", "address": "00902c86", "native": "008fdaf0", "function": "00902920"},
+    {"step": "horizontal plus the bot+64h error", "address": "00902f3e", "native": "00438aa0", "function": "00902920"},
+    {"step": "vertical plus the bot+68h error", "address": "00902f58", "native": "00438aa0", "function": "00902920"},
+    {"step": "the commanded pair, after a negative vertical is halved at 00902F6C", "address": "00902fb0", "native": "0085aba0", "function": "00902920"},
+    {"step": "the idle timer's one-shot rest arm", "address": "008fbd61", "native": "0085ad00", "function": "008fbce0"},
+    {"step": "the rest pair, only when platform+94h is not FLT_MAX", "address": "0085ad6a", "native": "0085aba0", "function": "0085ad00"},
+    {"step": "the sub-type 1 owner test that splits the two bots", "address": "0072c6eb", "native": "00922e90", "function": "0072c6a0"},
+    {"step": "sub-type 1 under an owner of kind 0Fh: TailGunnerBot", "address": "0072c713", "native": "008fe9f0", "function": "0072c6a0"},
+    {"step": "sub-type 1 with no such owner: AAGunnerBot", "address": "0072c736", "native": "008fe740", "function": "0072c6a0"},
+    {"step": "sub-types 5 and 6: AAFlakBot, not an AA machine gun", "address": "0072c79e", "native": "008fefd0", "function": "0072c6a0"},
+    {"step": "the flak bot's lead solve; the brief called this a call into 008FBB00", "address": "009031cf", "native": "00901c20", "function": "009030c0"},
+    {"step": "the flak bot's second lead solve", "address": "00903219", "native": "00901c20", "function": "009030c0"},
+    {"step": "the flak bot's commanded pair", "address": "00903302", "native": "0085aba0", "function": "009030c0"},
+    {"step": "the torpedo bot's solver, which is where 008FBB00 actually lives", "address": "0090025e", "native": "008fbb00", "function": "008fff20"}
+  ],
+  "constants": [
+    {"address": "00D7A280", "value": "0.5 (double)", "use": "00902F6C halves a negative commanded vertical"},
+    {"address": "00D7A278", "value": "FLT_MAX (double)", "use": "0085AD46, the rest-angle sentinel 0085AD00 compares against"},
+    {"address": "00D7A248", "value": "FLT_MAX (float)", "use": "src/vehicle_class_fields.cpp:701, the reader's default for RestAngles[1] into platform+94h"},
+    {"address": "00D7A264", "value": "+pi", "use": "007F5FC0's horizontal clamp, upper"},
+    {"address": "00CE684C", "value": "-pi", "use": "007F5FC0's horizontal clamp, lower"},
+    {"address": "00CE3958", "value": "2.0", "use": "00901C20's projectile-speed floor"},
+    {"address": "00CF9058", "value": "9.81 (double)", "use": "absent from 00902920 and 00901C20; present in the host's category-1 path"},
+    {"address": "00CEB5A8", "value": "pi/4", "use": "absent from 00902920 and 00901C20"}
+  ],
+  "corrections": [
+    {
+      "target": "docs/BULLET_ENGAGEMENT_RANGE.md, Integration result, the AA bullet",
+      "was": "26 assignments and no_window = 10452, so the targets sit outside the guns' vertical windows. That is the same shape of defect the torpedoes had.",
+      "is": "no_window is a per-gun-per-tick tally of gun_set_target_angles_0085aba0's return that the host makes with no target gate, so it cannot support a claim about targets. AA accepts its commanded pair on 92.9% of gun-ticks, and the commanded vertical against the only AA-eligible targets on IJN01 is under 1 degree against windows that reach 80-90 degrees.",
+      "evidence": "PLANEGUN reports 246000 refusals from 82 guns over 3000 ticks with 0 assignments (82 x 3000 exactly); angle_sets + refusals = 606 x 3000 exactly; the window census over 2335 authored AA windows."
+    },
+    {
+      "target": "the packet brief",
+      "was": "009031CF is an AA flak bot's call into the intercept solver 008FBB00 taking V0 at +50h.",
+      "is": "009031CF calls 00901C20, and so does 00903219. A byte census of the whole flak-bot body 009030C0..00903417 finds no CALL 0x008fbb00. 008FBB00 is the torpedo bot's solver at 0090025E inside 008FFF20. The +50h against +0E4h contrast separates two different solvers, not two call sites into one.",
+      "evidence": "listing at 009031cf, 00903219, 00903302 and 0090025e"
+    },
+    {
+      "target": "this packet's own first pass",
+      "was": "80 AA windows author MinHorzAngle > MaxHorzAngle, which the host's min <= h <= max test can never satisfy, so those sectors are dead in the host.",
+      "is": "They are dead in the native too. 007F5FC0 clamps the horizontal into [-pi, +pi] and runs four one-sided comparisons with no wrap-around, exactly as the host reproduces. Do not teach the host to wrap an inverted window. Authors who need the stern sector write two explicit halves, as Oglala platform 5 does.",
+      "evidence": "007F601F-007F6037 and 007F603F-007F6071"
+    },
+    {
+      "target": "this packet's own first pass",
+      "was": "24.1% of AA platforms have a rest pose outside every window they author.",
+      "is": "1.9%, 36 of 1916, and all 36 are platforms that author no RestAngles at all. The first census missed the multi-line RestAngles form and mis-paired window keys, which are emitted alphabetically (MaxHorzAngle, MaxVertAngle, MinHorzAngle, MinVertAngle).",
+      "evidence": "local/aa_rest_census.py against vehicleclasses.lua, and the raw blocks of VehicleClass[3] and VehicleClass[234]"
+    }
+  ],
+  "assumptions": [
+    "Which two AA guns held a target is NOT established. The run reports 148 AA assignments, which at the 2.000 s director think time over 150 s is exactly 2 x 74, so two AA guns were re-assigned every think cycle. The log prints per-gun rows only for guns with shots > 0, so they cannot be named from it, and 62952 = 20 x 3000 + 2952 does not resolve cleanly into idle and targeted ticks. The residual 2952 is NOT attributed. The claim that AA's refusals are dominated by idle guns rests on the exact 82 x 3000, 10 x 3000 and 4 x 3000 rows and on AA's 92.9% acceptance rate, not on attributing that residual.",
+    "008633D0, 00863990, 00864FE0 admission and 006E9890 range derivation are read as contracts from merged packets and were not re-derived. The 960 m AA engagement range is an observation from the run log's range column on units carrying only category 1, not a derivation.",
+    "0085ABA0's argument order (0 = horizontal, 1 = vertical) is settled by three independent readings: the stack tracking at 00902FA2-00902FB0, 0085AD00 pushing platform+94h as argument 0, and src/vehicle_class_fields.cpp:701-709 mapping RestAngles[1] to +94h with a physical rest pose of { DEG(-90), DEG(15) }.",
+    "The installation is modded (BSPRM/AlterBSP): vehicleclasses.lua mtime 2026-05-09 21:52:13, arcade/deviceclasses.lua 2026-05-09 22:37:38, arcade/bulletclasses.lua 2026-05-09 23:04:46, against an untouched 2024-07-13 datatables bulk. Every authored number is this installation's, not retail. Nothing in the installation was modified.",
+    "The aircraft altitude of about 3 km is inferred from LST1's 3-D nearest of 4235 m against a computed horizontal separation of 2950 m. The placement table carries x and z only. The conclusion does not depend on it: 2950 m horizontal already exceeds 960 m."
+  ],
+  "prescription": [
+    "Carry the FLT_MAX sentinel into the gunnery host: gun.rest_horz must be FLT_MAX, or the row must carry a has_rest_angles flag, when p.RestAngles is nil, matching src/vehicle_class_fields.cpp:701. Changes at src/game_hosts_gunnery.cpp:326-327 and 491-492.",
+    "Do not command the rest pair every tick on a gun with no target. Mirror 0085AD00: skip gun_set_target_angles_0085aba0 when the rest horizontal is the sentinel, and otherwise command it on the idle-timer arm (008FBD61) rather than per tick.",
+    "Branch the aim arm on the bot class at src/game_hosts_gunnery.cpp:1170-1239. Use the GunBotSlotAssignment already computed at 1171 instead of discarding it at 1172, and pass the real owner_of_kind_0f so an aircraft tail gun takes 008FFA20.",
+    "For GunBotClass::kAAGunner, drop the gravity term: want_vert = asin(dot(unit_delta, up)) with no pitch and no 00955630 call, then apply if (want_vert < 0.0f) want_vert *= 0.5f (00902F6C, 00D7A280) before gun_set_target_angles_0085aba0.",
+    "None of these will make AAMACHINEGUN shoot on IJN01. No aircraft is ever within reach; see the target_is_airborne answer."
+  ],
+  "ledger": [
+    {"address": "00902920", "action": "append-evidence"},
+    {"address": "00901C20", "action": "append-evidence"}
+  ],
+  "build": "scripts/build.ps1 Release Win32, no warnings; ctest reconstructed_math 1/1 passed. No source or header was added or changed by this packet.",
+  "tests": "none added"
+}
