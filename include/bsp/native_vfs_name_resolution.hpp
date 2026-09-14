@@ -16,7 +16,7 @@ struct NativeVfsNameResolutionContext {
 
 enum class NativeVfsNameResolutionPhase { fresh, normalizing, candidates, logging, complete, failed };
 // One invocation's native temporary headers/iterators and source diagnostics.
-// A failed call cannot replay. Retain this frame and the mutable caller header
+// A failed call cannot replay. Retain this frame and the caller name headers
 // while diagnosing an interrupted provider. Cleanup does not restore the name.
 class NativeVfsNameResolutionAcquired final {
 public:
@@ -32,6 +32,8 @@ private:
     std::unique_ptr<Impl> impl_;
     friend bool resolve_native_vfs_existing_name_00bdf4c0(void*, void*,
         NativeVfsNameResolutionContext&, NativeVfsNameResolutionAcquired&);
+    friend bool resolve_native_vfs_direct_name_00bdd6e0(void*, const void*, void*,
+        NativeVfsNameResolutionContext&, NativeVfsNameResolutionAcquired&);
 };
 
 // Full BDF4C0: ECX captured actual manager, mutable8h name stack, RET4, AL.
@@ -42,6 +44,15 @@ private:
 bool resolve_native_vfs_existing_name_00bdf4c0(void* actual_manager,
     void* actual_mutable_name, NativeVfsNameResolutionContext&,
     NativeVfsNameResolutionAcquired&);
+
+// Full BDD6E0..BDD847 (360 bytes): ECX captured manager; stack input8h/output8h
+// headers; RET8; AL0/1. Normalize a separate input and traverse actual mounts
+// with D683F4/BDBC70. Copy resolved output only on success; false preserves it.
+// Input/output may alias. Reuses BDF4C0's same complete direct-resolution body
+// and acquired-frame contract; no ordered candidates or logging are added.
+bool resolve_native_vfs_direct_name_00bdd6e0(void* actual_manager,
+    const void* actual_input_name, void* actual_output_name,
+    NativeVfsNameResolutionContext&, NativeVfsNameResolutionAcquired&);
 
 // BDEB40: ECX manager; original/resolved headers stack; RET8. Tests current
 // 0109CEE8 and manager+79; constructs and destroys the native SRCH builder.

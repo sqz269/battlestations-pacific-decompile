@@ -1,0 +1,66 @@
+{
+  "packet": "orch4_native_vfs_operations_bj",
+  "base_commit": "63889c8a",
+  "owner": "agent/orch4-vfs-operations-bj",
+  "date_utc": "2026-09-14",
+  "status": "implemented_strict_win32_compiled_actual_loose_graph_fixture_passed",
+  "apis": [
+    "bool resolve_existing(std::string&)",
+    "bool has_failed_name_resolution() const noexcept",
+    "uint32_t name_resolution_failure_site() const noexcept",
+    "bool direct_resolve(const std::string&, std::string&)",
+    "vector<string> enumerate(const char*, const char*, uint32_t)",
+    "array<uint32_t, 5> file_date(const char*)",
+    "optional<vector<uint8_t>> read_all(const char*, uint32_t)"
+  ],
+  "addresses": {
+    "00bdf4c0": "complete existing body reused; no internal algorithm edit",
+    "00bdd6e0": "public acquired-frame wrapper reuses existing private direct_resolution; 360 bytes; ECX manager, two headers stack, RET8, AL0/1",
+    "00bdd990": "existing raw enumeration and concrete provider dispatcher reused",
+    "00bdd340": "existing five-DWORD actual metadata query reused",
+    "00bdf310": "existing raw open receives complete flags; default remains 2"
+  },
+  "identity": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "verification": "bsp.py ghidra ensure --status target verification; read-only saved BSP exports",
+    "ghidra_mutations": false,
+    "ledger_mutations": false,
+    "installed_executable": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "installed_executable_sha256": "B682A82C52F81F957B2C70222077305A933F72481686C88843077F714B956DD6"
+  },
+  "validation": {
+    "strict_compile": "/std:c++20 /W4 /WX /O2 /MD /fp:strict; MSVC Win32",
+    "probe_manifest": "/MANIFEST:EMBED",
+    "core_archive_sha256_before_and_after": "6B5D0DE17A2101F8D723DAA6C3F3BB65857D81658FA001D20470862FF705535D",
+    "probe": "local/native_vfs_handoff_bh_probe.cpp",
+    "probe_sha256": "F2040D538C2838117B28FC4D4A3332FCF243529A5E7619266C4CEB4F888E715A",
+    "runner": "local/run_native_vfs_handoff_bh_probe.ps1",
+    "runner_sha256": "1C47BF67696CFB16966821BD15E4776500CB3D81F3EBFA6B6AD2D6D50C2DE5D5",
+    "log": "local/native_vfs_operations_bj_probe.log",
+    "process_exit": 0,
+    "mounts": 3,
+    "search_groups": 6,
+    "aliases": 13,
+    "enumerated_scripts_lua_names": 1,
+    "duplicate_diagnostics": 0,
+    "descriptor": "shaderfx/terrain/tree.shfx",
+    "descriptor_read_flags": 50,
+    "descriptor_bytes": 1387,
+    "normal_false_mutation": "uppercase missing name became lowercase; false frame completed",
+    "direct_false": "output preserved",
+    "direct_aliasing": "same std::string input/output resolved fundamentals",
+    "date_results": "existing nonzero; missing five zeros",
+    "cleanup": "zero retained-memory counters; shared singleton drain; singleton host destroyed before runtime",
+    "permanent_tests_added": false,
+    "full_build": "deferred to primary integration as assigned"
+  },
+  "retained_failure_contract": "Both name APIs publish actual headers/acquired state before source entry; failed frames and all borrowed runtime owners must survive through process exit; no successful drain or false-result substitution is claimed.",
+  "limits": [
+    "New runtime APIs are source adapters, not original register or FH3/SEH ABI replacements",
+    "Fixture exercises actual installed loose providers, not archive member reads",
+    "Interrupted-provider frame retention is source-inspected, not runtime-injected",
+    "Duplicate rejection not independently exercised by this fixture",
+    "Production consumer migration, full production build, and game validation belong to integration"
+  ]
+}

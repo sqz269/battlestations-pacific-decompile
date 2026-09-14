@@ -1,5 +1,6 @@
 #include "bsp/vfs_mounts.hpp"
 #include "bsp/resource_path.hpp"
+#include "bsp/vfs_native_access.hpp"
 #include <cstring>
 #include <utility>
 
@@ -33,6 +34,7 @@ bool suffix_for_mount(const std::string& name, const std::string& prefix,
 }
 bool exists_resource_00bdd440_fragment(VfsMountContext& context,
                                       const std::string& name) {
+    if (context.native_access) return context.native_access->exists(name);
     std::string normalized;
     if (!prepare(context, name, Operation::exists, normalized)) return false;
     context.error_code = -1;
@@ -45,6 +47,7 @@ bool exists_resource_00bdd440_fragment(VfsMountContext& context,
 }
 bool direct_resolve_resource_00bdd6e0_fragment(
     VfsMountContext& context, const std::string& name, std::string& output) {
+    if (context.native_access) return context.native_access->direct_resolve(name, output);
     std::string normalized;
     if (!prepare(context, name, Operation::resolve, normalized)) return false;
     context.error_code = -1;
@@ -77,6 +80,7 @@ bool apply_resource_alias_00bdca80_fragment(const std::vector<VfsAlias>& aliases
 }
 VfsMemoryOpen open_resource_memory_00bdf310_fragment(VfsMountContext& context,
     const std::string& name, std::uint32_t flags) {
+    if (context.native_access) return context.native_access->open(name, flags);
     if (flags != 2 && flags != 0x32)
         return {false, {}, "Unsupported VFS open flags."};
     std::string normalized;
@@ -98,6 +102,20 @@ bool enumerate_resources_00bdd990_fragment(VfsMountContext& context,
     const std::string& directory, const std::string& extension, std::uint32_t flags,
     std::vector<std::string>& output, std::string& error) {
     error.clear();
+    if (context.native_access) {
+        const auto names = context.native_access->enumerate(directory, extension, flags);
+        for (const auto& name : names) {
+            bool duplicate = false;
+            for (const auto& previous : output) {
+                if (name.size() == previous.size() && _stricmp(name.c_str(), previous.c_str()) == 0) {
+                    duplicate = true;
+                    break;
+                }
+            }
+            if (!duplicate) output.push_back(name);
+        }
+        return true;
+    }
     if (!valid_string(directory) || !valid_string(extension)) {
         error = "Unsupported VFS enumeration query.";
         return false;

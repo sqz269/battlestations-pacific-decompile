@@ -513,3 +513,15 @@ here; the two `gun_bot_ticks.hpp` notes above are naming, not layout.
   in that packet's doc: the bot's error pair is added to the arc's two angles
   *after* the solve and never touches the aim point, so the arc can be
   reconstructed and tested with dispersion switched off.
+
+## Correction from docs/GUN_MOUNT_POSITIONS.md (packet cc7_gun_mount_positions)
+
+- **Was:** section 5 reads `006FDD70`'s muzzle count as dividing the byte span by `18h` (24).
+  **Is:** it divides by `0Ch` (12), so the element is a 12-byte triple of floats, not a 24-byte
+  record.
+  **Evidence:** `006FDD70` loads `[ECX+9Ch]`, subtracts to get the byte span, then
+  `006FDD83 MOV EAX,0x2AAAAAAB` / `006FDD88 IMUL ECX` / `006FDD8A SAR EDX,1`. `0x2AAAAAAB` is
+  `round(2^33/12)`, so the high half of the product is `span/6` and the single arithmetic shift
+  makes it `span/12`. A divisor of 24 would need `SAR EDX,2` with the same constant. Verified at
+  integration by reading the listing directly. This also agrees with `docs/GUN_PLATFORM_ARC.md`,
+  which already records the count as `(descriptor+A0h - descriptor+9Ch) / 0Ch`.

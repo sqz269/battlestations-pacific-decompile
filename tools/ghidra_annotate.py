@@ -34,6 +34,19 @@ def main():
         apply_entries(client, entries)
 
 
+
+def _function_entry(previous):
+    """The entry address of the function a plate-comment lookup landed in, or None.
+
+    `get_plate_comment` answers for the enclosing function, so its reply carries
+    that function's own address rather than the address asked about.
+    """
+    if isinstance(previous, dict):
+        found = previous.get('address') or previous.get('entry_point')
+        if found:
+            return str(found).lower().replace('0x', '').rjust(8, '0')
+    return None
+
 def apply_entries(client, entries):
     changes = []
     stamp = datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%SZ')
@@ -58,6 +71,21 @@ def apply_entries(client, entries):
             comment = (previous + '\n\n' if previous else '') + marker + '\n' + entry['evidence']
         elif entry['evidence'] not in previous:
             comment = previous + '\n\n' + marker + ' update\n' + entry['evidence']
+        # rename_function_by_address resolves an interior address to its ENCLOSING
+        # function and renames that, so a ledger record for a block inside a larger
+        # body silently clobbers the enclosing function's established name. This
+        # happened once to BSP_UnitGunneryAi_Tick 00864FE0, which was overwritten by
+        # a record for its interior label 00865284. Skip those and say so; interior
+        # blocks are named with tools/ghidra_label_interior.py, which applies a label.
+        entry_address = _function_entry(old)
+        if entry_address and entry_address != address:
+            print(f"{address}: SKIPPED, interior of {entry_address} "
+                  f"({old.get('function_name') if isinstance(old, dict) else ''}). "
+                  f"Use tools/ghidra_label_interior.py {address} {entry['name']}", flush=True)
+            changes.append({'address': address, 'before': old, 'after': entry,
+                            'status': 'skipped_interior', 'enclosing': entry_address})
+            write(log, changes)
+            continue
         changes.append({'address': address, 'before': old, 'after': entry, 'status': 'pending'})
         write(log, changes)
         post('rename_function_by_address', function_address=address, new_name=entry['name'])

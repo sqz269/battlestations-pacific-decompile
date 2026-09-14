@@ -107,6 +107,7 @@
 #include "bsp/collision_shapes.hpp"
 #include "bsp/ship_ai_ring_scan.hpp"
 #include "bsp/unit_rudder.hpp"
+#include "bsp/pose_derived.hpp"
 #include <algorithm>
 #include <cmath>
 #include <memory>
@@ -3337,6 +3338,54 @@ int main() {
                   bsp::ship_ai_group_corridor_extent_change_invalidates(5.0f, 31.0f),
               "009D9DE0: the JA at 009D9E09 is strict, so an extent moving exactly 25 keeps "
               "the plan and 26 throws it away");
+    }
+
+    {
+        // 00B63D50 is the one link docs/GUN_GRAVITY_ARC.md left unread, and the
+        // claim that it inverts had no standing coverage. It is worth pinning
+        // because every gun's commanded pitch and yaw passes through it: the
+        // round trip has to come back to the identity, and it has to do so for
+        // a non-unit scale, which is what separates this routine from a plain
+        // transpose. The third case is the precondition - a sheared basis is
+        // not inverted, and nothing in the routine says so.
+        // docs/MATRIX_ORTHOGONAL_INVERSE.md.
+        auto round_trip_deviation = [](const bsp::CameraMatrix& m) {
+            bsp::CameraMatrix inverse{};
+            bsp::derive_pose_affine_inverse_00b63d50(inverse, m);
+            float worst = 0.0f;
+            for (int r = 0; r < 4; ++r) {
+                for (int c = 0; c < 4; ++c) {
+                    double sum = 0.0;
+                    for (int k = 0; k < 4; ++k) {
+                        sum += static_cast<double>(m[static_cast<std::size_t>(r * 4 + k)]) *
+                               static_cast<double>(inverse[static_cast<std::size_t>(k * 4 + c)]);
+                    }
+                    const float deviation =
+                        std::fabs(static_cast<float>(sum) - (r == c ? 1.0f : 0.0f));
+                    if (deviation > worst) worst = deviation;
+                }
+            }
+            return worst;
+        };
+        // A yaw of 40 degrees about Y, translated - rows orthonormal.
+        const float c40 = std::cos(0.6981317f);
+        const float s40 = std::sin(0.6981317f);
+        const bsp::CameraMatrix rotated{c40,  0.0f, -s40, 0.0f, 0.0f, 1.0f, 0.0f,  0.0f,
+                                        s40,  0.0f, c40,  0.0f, 3.5f, -12.25f, 7.0f, 1.0f};
+        // The same basis with a per-axis scale, the case a transpose cannot
+        // invert and the division by each row's own squared length can.
+        const bsp::CameraMatrix scaled{c40 * 0.5f, 0.0f, -s40 * 0.5f, 0.0f,
+                                       0.0f,       3.0f, 0.0f,        0.0f,
+                                       s40 * 1.75f, 0.0f, c40 * 1.75f, 0.0f,
+                                       -40.0f,     6.0f, 0.125f,      1.0f};
+        // Rows 0 and 1 at 17 degrees to each other instead of 90.
+        const bsp::CameraMatrix sheared{1.0f, 0.0f, 0.0f, 0.0f, 0.3f, 1.0f, 0.0f, 0.0f,
+                                        0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
+        check(round_trip_deviation(rotated) < 1.0e-6f && round_trip_deviation(scaled) < 1.0e-5f &&
+                  round_trip_deviation(sheared) > 0.25f,
+              "00B63D50: M * inverse(M) is the identity to float tolerance for an orthonormal "
+              "basis and for a per-axis-scaled one, and is not the identity for a sheared one - "
+              "orthogonal rows are a precondition the branch-free routine never checks");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";

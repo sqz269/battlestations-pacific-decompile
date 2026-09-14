@@ -54,9 +54,9 @@ struct GameFontHost::Impl {
 
     bool read(const std::string& requested, std::shared_ptr<MemoryStream>& stream,
         std::string& error) {
-        auto* manager = vfs.manager();
+        auto* manager = vfs.ready() ? &vfs.context() : nullptr;
         if (!manager) { error = "Font VFS manager missing"; return false; }
-        auto& mounts = manager->context();
+        auto& mounts = *manager;
         std::string resolved = requested;
         if (!resolve_existing_resource_00bdf4c0_fragment(mounts,
                 vfs.search_registrations(), resolved)) {

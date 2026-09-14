@@ -63,6 +63,7 @@ const CameraAxesCrtAccess& application_camera_axes_crt() noexcept;
 // Milestone 2a, defined in bsp/game_hosts_vfs.hpp. Held by pointer so the milestone-1 header
 // stays independent of the VFS types.
 class GameVfsHost;
+class GameNativeReadOnlyData;
 class GameSettingsBinding;
 class GameScriptHost;
 class GameLocaleHost;
@@ -426,8 +427,7 @@ struct GameRunSummary {
     bool vfs_ready{};
     std::size_t mounts_created{};
     std::size_t mounts_requested{};
-    std::size_t package_entries{};
-    std::size_t package_mounts{};
+    std::size_t package_scans_completed{};
     bool cached_load{};
     bool options_file_present{};
     std::string options_path;
@@ -537,7 +537,8 @@ struct GameRunSummary {
 // application_initialize (0073d410) and application_shutdown (00737f30).
 class GameStartupHost final : public StartupHost {
 public:
-    GameStartupHost(GameHostLog& log, HINSTANCE instance, const GameExecutableOptions& options);
+    GameStartupHost(GameHostLog& log, HINSTANCE instance, const GameExecutableOptions& options,
+        GameNativeReadOnlyData* native_data = nullptr);
     ~GameStartupHost() override;
 
     long com_initialize() override;
@@ -566,6 +567,9 @@ public:
     void application_shutdown() override;
     void application_destruct() override;
     void destroy_singleton_lifetime_manager() override;
+    // Terminal policy for an interrupted native VFS operation with unrecovered
+    // cleanup. Preserve the host, mapped data and CRT owners until OS exit.
+    void exit_if_native_vfs_interrupted() noexcept;
 
     const GameRunSummary& summary() const noexcept { return summary_; }
     // Milestone 2a: the phase-2 provider manager, alive for the whole run, and the settings
@@ -601,6 +605,8 @@ private:
     GameHostLog& log_;
     HINSTANCE instance_{};
     GameExecutableOptions options_;
+    // The entrypoint retains adopted numeric data beyond this host's drain.
+    GameNativeReadOnlyData* native_data_{};
 
     // 008F823D: actual CoCreateInstance output, released explicitly at 008F82CA.
     // The denied branch calls CRT exit before this release; no destructor cleanup.
