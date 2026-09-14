@@ -1,0 +1,74 @@
+{
+  "packet": "orch3_native_effect_direction_interface_cb",
+  "status": "existing_kernel_public_interface_exact_build_pending",
+  "source_parent_commit": "3351a4525bd72cca42c33221cad81999f3780bfa",
+  "source_sha256": {
+    "include/bsp/material_effect_plane.hpp": "c1c98d09b887efd3a8905c3630c1f791e0d90060ec04b98821902aeef3bc29e0",
+    "src/material_effect_plane.cpp": "ea9ca3b939f51146f79fe4e9d73a5decb79338486860724958c40680d954aeb5"
+  },
+  "before_object_sha256": "0d56abb035fab6b9d683c87e887061371ea096e068d040edc4b8d108578b8a65",
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_home": "J:/tools/ghidra_12.0.4_PUBLIC",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "native_spans": [
+    {
+      "address": "0042d0d0",
+      "bytes": 187,
+      "sha256": "b15282939ead3cf84c443e3092841998741ebf62b02f712287eed22fa32f767a",
+      "live_PE_equal": true,
+      "hex": "83ec18807c242000d94204d91c248b44241cd90256d95c24088bf1d94208d95c240cd94010d9442404d9c0decad900d9442408d9c0decad9cbdec1d94020d944240cd9c0decad9cadec1d95c2410d94004d8cbd94014d8cbdec1d94024d8cadec1d95c2414d94008decbd94018decad9cadec1d94028decadec1d95c241874128d542410e8b7c3feff8bc65e83c418c20800f30f10442410f30f1106f30f10442414f30f114604f30f10442418f30f1146088bc65e83c418c20800"
+    },
+    {
+      "address": "00b448e0",
+      "bytes": 18,
+      "sha256": "7f7be9952e37717b5076bd86b472d1bd44bab5f49cb9e0a7b095b60c54c4ed90",
+      "live_PE_equal": true,
+      "hex": "54243c8d4c241cf30f11442444e8de878eff"
+    }
+  ],
+  "address": "0042d0d0",
+  "inclusive_end": "0042d18a",
+  "original_function_bytes": 187,
+  "source_symbol": "transform_native_effect_direction_0042d0d0_no_normalize",
+  "native_body_credit": 0,
+  "native_bytes_credit": 0,
+  "existing_kernel_exposed": true,
+  "arithmetic_implementation_changed": false,
+  "complete_function_reconstructed": false,
+  "original_abi": "ECX destination, EDX source, stack matrix and normalize DWORD slot; EAX destination; RET8.",
+  "source_abi": "ECX destination, EDX source, one stack matrix pointer; EAX destination; RET4. Interface selects normalize=false.",
+  "call_steps": [
+    {
+      "address": "00b448ed",
+      "native": "0042d0d0",
+      "function": "00b44750",
+      "normalize_argument": 0
+    }
+  ],
+  "remaining_normalization_dependencies": [
+    "00419510",
+    "00419440",
+    "00bf7030"
+  ],
+  "validation": {
+    "build": "pending exact committed Win32 build",
+    "new_tests": 0,
+    "new_native_fixture": false,
+    "raw_entry_executed": false,
+    "game_validated": false
+  },
+  "limitations": [
+    "Selected false branch only, zero new native function/byte credit; typed wrapper preserved.",
+    "No raw normalize-true/CRT exception reconstruction, native execution, drop-in ABI, complete material submission or game validation."
+  ]
+}
