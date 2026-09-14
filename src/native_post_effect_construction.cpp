@@ -396,7 +396,7 @@ void* construct_native_post_effect_00b4e840(void* actual, std::size_t allocation
         if (late_raw) {
             block.camera_owner_.emplace(late_raw, NativeCameraPool::slot_bytes, c.cameras, std::move(block.camera_scene_));
             acquired.camera_owner = &*block.camera_owner_;
-            prefix_native_string_header_0043c130(&block.camera_name_, c.camera_prefix_00d61ed0, &effect_name, c.strings);
+            prefix_native_string_header_0043c130(&block.camera_name_, c.camera_prefix_00d61ed0, &effect_name, c.raw_strings);
             mask |= 2u; set_state(8);
             camera = construct_native_camera_00b71a80(*block.camera_owner_, &block.camera_name_,
                 c.node_constants, std::move(block.viewport_admissions_[0]));
