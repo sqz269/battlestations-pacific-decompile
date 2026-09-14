@@ -4,6 +4,15 @@ Addresses: `0099D300`, `0099ACD0`, `0099A170`, `0099A4C0`, `0099BE30`, `007C18B0
 `008358D0`, `0071E6C0`, `00720CD0`, `007EEC50`, `0071BE40`, `0071EB60`, `00521EA0`,
 `00D09EC0` (vtable), `00D09F20` / `00D09FB8` (the two `+60h` slots).
 
+> **Superseded in part by `docs/ENTITY_LUA_ORDER_PATH.md`.** The caller table at
+> [Who issues the command](#who-issues-the-command--the-complete-list) is **not complete** — it
+> came from `ghidra callers`, which under-reports, and lists 25 of the real **62** call sites. Two
+> conclusions below are wrong as a result: the `Pilot*` bindings `008A4C90 PilotSetTarget`,
+> `008A4150 PilotMoveTo` and `008A4590 PilotMoveToRange` **do** call `0077D600`, and the AI
+> planners (`009FFEB0`, `00A02020`, `00A11FF0`, `00A13B60`, `00A14DD0`, `00A2F6F0`) **do** issue
+> commands through it, so the "group-command-to-unit-command hand-off is unestablished" gap this
+> document reports does not exist. Everything else here stands.
+
 Worker `agent/cc7-pilot-bot-plan-controls`, 2026-09-14 UTC. Project `C:/Users/sqz269/bsp.gpr`,
 program `/battlestationspacific.exe`. Ghidra was **read-only**: no rename, no comment, no
 prototype, no tag, no write lock, no save. Every descriptive name is a hypothesis, not a
