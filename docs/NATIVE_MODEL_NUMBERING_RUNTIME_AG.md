@@ -54,3 +54,7 @@ raw outputs and copied original references are under
 `local/model_numbering_runtime_ag/`. No workers were dispatched.
 
 Integration exposed two unrelated header issues already on main. The duplicate-name preflight now respects namespace scope for offset constants. A real collision between two incompatible `bsp::PilotCommandBlock` projections is removed by naming the older `plane_ai_control.hpp` type `PlaneAiCommandProjection`; its fields and algorithms are unchanged. A combined MSVC syntax check includes both projections and the other affected headers. The namespace check still detects the actual shared-name collision.
+
+## Integrated validation
+
+Commit `c4e12d446133e51e39ebd7410238139372009bf7` passes the Win32 build and both existing CTests. The complete numbering fixture was rebuilt against that library and all 25 comparisons pass. The preserved game executable has SHA-256 `b23ecb241a1d71ad0d7da8aaae8945942c9dc968f3fcaccdafcd3f9b44e3060b`. The 120-frame USN01 compatibility run exits successfully with 18,557 finite trajectory rows, 241 unchanged Airfield2 samples, 2,400 avoidance queries, 10,080 generic ticks, 420 world-list nodes and the existing observer/pending-owner teardown checks. The mission run does not establish numbering admission or gameplay/render parity. The report records an immutable archive of the native references, complete caller fixture, linked production objects, compiler dependencies and mission artifacts.
