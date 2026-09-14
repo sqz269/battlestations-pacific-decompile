@@ -185,7 +185,8 @@ float axis_urgency_0099e996(float urgency, float reference, float committed);
 // stored by 0099DDD0.
 struct PilotBotHeadingTerm {
     float heading_error = 0.0f;  // 00438B10(task+2C0h, unit->vtable[50h]()), 0099DEB8.
-                                 // The vtable[50h] heading getter was not read.
+                                 // vtable[50h] is 0074E260 on all nine plane classes:
+                                 // FLD [ECX+0C6Ch] / RET, so it is the unit+C6Ch heading.
     float speed_scale = 0.0f;    // [ESP+28h] = 1 / max(unit[+340h] * 0.4f, 1.0f), 0099D4B3
     float deadband = 0.0f;       // tuning+3Ch, 0099DEC5
     float rate_a = 0.0f;         // class+1C8h, 0099DF0F
@@ -209,7 +210,8 @@ struct PilotBotTurnTerm {
     float yaw_spd = 0.0f;               // class+1B0h, 0099E6AE
     float rate_b = 0.0f;                // class+1ACh, 0099E630
     float negative_pitch_ratio = 0.0f;  // class+1D8h, 0099E6BA
-    float speed_factor = 0.0f;          // R = 007D9A70(unit+AB0h), 0099E5D7. Not read.
+    float speed_factor = 0.0f;          // R = 007D9A70(unit+AB0h), 0099E5D7.
+                                        // See plane_speed_factor_007d9a70 below.
     bool inverted = false;              // sign(cos(bank)) < 0; [ESP+44h] from 0099DDCA
 };
 float yaw_turn_numerator_0099e69b(const PilotBotTurnTerm& in);
@@ -229,5 +231,38 @@ bool stick_override_0099d620(float stick_axis, float* out);
 // 0099DC7A-0099DC97. A ceiling on the power axis: when the slot's own previous value is
 // above 0.6f (00CE3D30) the desired power is pinned there.
 float power_ceiling_0099dc7a(float previous_power, float desired, bool* wrote);
+
+// ---------------------------------------------------------------------------
+// The yaw arm's last two inputs (packet cc7_yaw_remaining_inputs).
+
+// unit->vtable[50h] is 0074E260 on every plane class (00D05F20, 00D06638, 00D1A000,
+// 00D19D28, 00D06920, 00D00070, 00D0BA80, 00D00308, 00D1A2D8 all hold it at +50h), and its
+// whole body is `FLD dword ptr [ECX+0C6Ch] / RET`. Other entity families override the slot,
+// so the identification is the plane family's, not a universal one.
+inline constexpr int kUnitHeading = 0xC6C;  // the wrapped atan2 that 007C1ACA writes
+
+// 007C0F40, the bomb-load factor. 1.0f unless a weapon slot still carries bomb-class
+// ordnance, then interpolated toward a class field; turbo scales whatever results.
+struct PlaneBombLoadFactor {
+    bool carries_bomb = false;   // slot->vtable[210h](2Ah, 0) over +974h/+994h, 007C0F72
+    float slot_weight = 0.0f;    // slot->vtable[214h]() of the first such slot, 007C0F9D.
+                                 // The virtual itself was not read.
+    float loaded_scale = 1.0f;   // class+15Ch, 007C0FA6
+    bool turbo = false;          // plane+BC8h, 007C0FCF
+    float turbo_scale = 1.0f;    // class+608h, 007C0FDE; the turbo block is +5FCh..+608h
+};
+float bomb_load_factor_007c0f40(const PlaneBombLoadFactor& in);
+
+// 007D9A70, the speed factor R that the yaw turn term remaps onto [0.1, 0.9R+0.1].
+struct PlaneSpeedFactor {
+    float altitude_term = 0.0f;  // [[sub+8h]+908h], 007D9A79. The field was not identified.
+    float forward_speed = 0.0f;  // 007D99C0 BSP_PlaneFlight_ForwardSpeed(sub), 007D9AB4
+    float max_speed = 0.0f;      // class+184h, in the speed block, 007D9ABC
+    float ratio_x0 = 0.0f;       // [00F8731C] — a runtime global, zero in the image on disk
+    float ratio_x1 = 0.0f;       // [00F87320] — likewise; neither runtime value is established
+    float extra = 0.0f;          // [[sub+10h]+C0h], 007D9AFC. The field was not identified.
+    float bomb_load = 1.0f;      // 007C0F40, above
+};
+float plane_speed_factor_007d9a70(const PlaneSpeedFactor& in);
 
 }  // namespace bsp

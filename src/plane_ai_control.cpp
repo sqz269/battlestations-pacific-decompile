@@ -258,4 +258,28 @@ float power_ceiling_0099dc7a(float previous_power, float desired, bool* wrote) {
     return desired;
 }
 
+float bomb_load_factor_007c0f40(const PlaneBombLoadFactor& in) {
+    float m = 1.0f;  // 007C0F41, 00D7A24C
+    if (in.carries_bomb) {
+        // 007C0FC5: x0 = 0.0f (FLDZ), y0 = 1.0f (FLD1), x1 = 0.8f (00CE74F8),
+        // y1 = class+15Ch. The loop takes the first matching slot and stops (007C0F76).
+        m = interpolate_clamped(0.0f, 1.0f, 0.8f, in.loaded_scale, in.slot_weight);
+    }
+    if (in.turbo) m *= in.turbo_scale;  // 007C0FE4
+    return m;
+}
+
+float plane_speed_factor_007d9a70(const PlaneSpeedFactor& in) {
+    // 007D9AA9: x0 = 3.0f (00CE3854), y0 = 0, x1 = 6.0f (00CE6630), y1 = 0.25f (00CE3868).
+    const float a = interpolate_clamped(3.0f, 0.0f, 6.0f, 0.25f, in.altitude_term);
+    const float ratio = in.forward_speed / in.max_speed;  // 007D9ABC FDIV
+    // 007D9AF0: the two x-endpoints are the runtime globals named in the header.
+    const float c = interpolate_clamped(in.ratio_x0, 0.0f, in.ratio_x1, 1.0f, ratio);
+    const float v = c + in.extra * 0.6f;  // 007D9B02 FMUL 00CEFF98, 007D9B08 FADD
+    // 007D9B1C picks `a` when it is the larger; otherwise 007D9B55-007D9B68 caps at 1.0f.
+    const float result = a > v ? a : min_float(v, 1.0f);
+    // 007D9B3F squares the result (FMUL ST0), 007D9B45 multiplies in the bomb-load factor.
+    return in.bomb_load * result * result;
+}
+
 }  // namespace bsp
