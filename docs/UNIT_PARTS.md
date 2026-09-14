@@ -55,7 +55,7 @@ part-descriptor vector is filled somewhere else, most likely on the model side t
 | --- | --- | --- |
 | `+0h` | `PTR_LAB_00CE89E8`, then `PTR_LAB_00CFD7B8` | base vptr, then the concrete vptr |
 | `+4Ch` | `unit`, rewritten from `+164h` at the end | owner |
-| `+160h` | `partSet` (`[class+50h]->vtable[8](lod)`) | the LOD-selected part set |
+| `+160h` | `partSet` (`[class+50h]->vtable[8](unit->vtable[190h](), lod)`) | selected part set; two stack arguments, see `NATIVE_UNIT_HEALTH_PARTS.md` |
 | `+164h` | `unit` | owner |
 | `+16Ch`/`+170h`/`+174h` | zero | vector of `10h`-byte damage states (the `>> 4` is in `0072AB10`) |
 | `+17Ch` | `007103A0()` | allocated sub-object |
