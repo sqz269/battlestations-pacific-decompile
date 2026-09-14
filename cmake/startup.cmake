@@ -927,3 +927,4 @@ cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_mpak_storag
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_vfs_owner_services.cpp)
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE src/native_sampler_loader_context.cpp)
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE src/native_sampler_cache_operation.cpp)
+cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE src/native_online_notifications.cpp)

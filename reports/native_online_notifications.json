@@ -1,0 +1,643 @@
+{
+  "packet": "orch5_native_online_notifications",
+  "tested_base": "b3ada5d45e297eeb63efc9332e9e86e19775a9e2",
+  "source": "src/native_online_notifications.cpp",
+  "header": "include/bsp/native_online_notifications.hpp",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "status": "partial_projection_actual_storage_branch_build_and_fixture_checked",
+  "routines": [
+    {
+      "address": "00a40110",
+      "name": "apply_native_online_notification9_fragment_00a401a9",
+      "coverage": "partial: only 00a401a9..00a401cc; remaining 00a40110..00a401a8 and 00a401cd..00a404f3",
+      "original_abi": "Containing function ECX=manager, RET; branch ESI=captured manager, EBX=0, [ESP+14]=mutable DWORD parameter; external callback CL=SETNZ(parameter), no stacked arguments, RET.",
+      "source_abi": "Win32 C++ explicit raw owner/cell/slot references; external hook matches observed fastcall byte in CL; not a drop-in whole-function replacement"
+    }
+  ],
+  "spans": [
+    {
+      "address": "00a40110",
+      "end_inclusive": "00a404f3",
+      "bytes": 996,
+      "role": "complete containing body, only branch implemented",
+      "sha256": "f8ba5024e2b3987ca70c7b973a2b32e19693ff6ad9502f5f088ba4dc3fa33cf7",
+      "path": "local/on-00a40110.bin",
+      "live_path": "local/on-00a40110-live.txt",
+      "live_disk_equal": true,
+      "instructions": 288
+    },
+    {
+      "address": "00a401a9",
+      "end_inclusive": "00a401cc",
+      "bytes": 36,
+      "role": "copied implemented branch",
+      "sha256": "e59b95af10143ef79aaef7d4b88a2c84df45707911cbbb7786192cf1105f7324",
+      "path": "local/on-00a401a9.bin",
+      "live_path": "local/on-00a401a9-live.txt",
+      "live_disk_equal": true,
+      "instructions": 10
+    },
+    {
+      "address": "004ceb40",
+      "end_inclusive": "004cebf8",
+      "bytes": 185,
+      "role": "complete actual native callback, external implementation",
+      "sha256": "a7db5f1b4a7c5a22fb8c0ed460509c156e6765a4c78c9ca8950137bd0a04ed0a",
+      "path": "local/on-004ceb40.bin",
+      "live_path": "local/on-004ceb40-live.txt",
+      "live_disk_equal": true,
+      "instructions": 45
+    },
+    {
+      "address": "00a3f530",
+      "end_inclusive": "00a3f5c0",
+      "bytes": 145,
+      "role": "complete base producer, evidence only",
+      "sha256": "d7a3f898dc893cea64324d9bbbd00acd441285fcb79a064f543ce0cab89e9526",
+      "path": "local/on-00a3f530.bin",
+      "live_path": "local/on-00a3f530-live.txt",
+      "live_disk_equal": true,
+      "instructions": 40
+    },
+    {
+      "address": "00a40df0",
+      "end_inclusive": "00a41026",
+      "bytes": 567,
+      "role": "complete derived producer, evidence only",
+      "sha256": "871fc68e32ef282114bc89c112720e83f399ac0a6fa773c8f469ad8403f7e5ce",
+      "path": "local/on-00a40df0.bin",
+      "live_path": "local/on-00a40df0-live.txt",
+      "live_disk_equal": true,
+      "instructions": 129
+    },
+    {
+      "address": "0073dc50",
+      "end_inclusive": "0073dc80",
+      "bytes": 49,
+      "role": "allocation and constructor call window",
+      "sha256": "5085e591d5795519427fe608d507250c17edabf39710bb154beeb9523ce5187c",
+      "path": "local/on-0073dc50.bin",
+      "live_path": "local/on-0073dc50-live.txt",
+      "live_disk_equal": true,
+      "instructions": 11
+    },
+    {
+      "address": "004e555e",
+      "end_inclusive": "004e5567",
+      "bytes": 10,
+      "role": "sole observed hook-slot writer",
+      "sha256": "a74d9e5f0e82d1e470310101a69687d479efec6b259c923560ad432d490d12f1",
+      "path": "local/on-004e555e.bin",
+      "live_path": "local/on-004e555e-live.txt",
+      "live_disk_equal": true,
+      "instructions": 1
+    },
+    {
+      "address": "004db2c1",
+      "end_inclusive": "004db2d0",
+      "bytes": 16,
+      "role": "other direct callback site: CL=1, no stack arguments",
+      "sha256": "1e741cebb5bc4838d29281129a749796ab15d7d56734f66042cd93558ff89558",
+      "path": "local/on-004db2c1.bin",
+      "live_path": "local/on-004db2c1-live.txt",
+      "live_disk_equal": true,
+      "instructions": 4
+    },
+    {
+      "address": "00a404f4",
+      "end_inclusive": "00a4050b",
+      "bytes": 24,
+      "role": "six DWORD notification switch entries",
+      "sha256": "dea429e136844a28c2f0e5c837ee6e4b3f6ccd5c6dbf00480f62f2374e525370",
+      "path": "local/on-00a404f4.bin",
+      "live_path": "local/on-00a404f4-live.txt",
+      "live_disk_equal": true
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00a40143",
+      "caller": "00a40110",
+      "native": "00a4d5b4",
+      "instruction": "call 0xa4d5b4",
+      "coverage": "evidence only, not executed by this fragment"
+    },
+    {
+      "address": "00a4014d",
+      "caller": "00a40110",
+      "native": "00a3f3e0",
+      "instruction": "call 0xa3f3e0",
+      "coverage": "evidence only, not executed by this fragment"
+    },
+    {
+      "address": "00a40161",
+      "caller": "00a40110",
+      "native": "00a4d5ae",
+      "instruction": "call 0xa4d5ae",
+      "coverage": "evidence only, not executed by this fragment"
+    },
+    {
+      "address": "00a4017f",
+      "caller": "00a40110",
+      "native": "004254b0",
+      "instruction": "call 0x4254b0",
+      "coverage": "evidence only, not executed by this fragment"
+    },
+    {
+      "address": "00a401b9",
+      "caller": "00a40110",
+      "native": "indirect eax",
+      "instruction": "call eax",
+      "coverage": "implemented external callback ABI"
+    },
+    {
+      "address": "00a401cf",
+      "caller": "00a40110",
+      "native": "00a3f440",
+      "instruction": "call 0xa3f440",
+      "coverage": "evidence only, not executed by this fragment"
+    },
+    {
+      "address": "00a401e0",
+      "caller": "00a40110",
+      "native": "00a3e600",
+      "instruction": "call 0xa3e600",
+      "coverage": "evidence only, not executed by this fragment"
+    },
+    {
+      "address": "00a401f7",
+      "caller": "00a40110",
+      "native": "indirect eax",
+      "instruction": "call eax",
+      "coverage": "evidence only, not executed by this fragment"
+    },
+    {
+      "address": "00a40218",
+      "caller": "00a40110",
+      "native": "00a3ff20",
+      "instruction": "call 0xa3ff20",
+      "coverage": "evidence only, not executed by this fragment"
+    },
+    {
+      "address": "00a4022c",
+      "caller": "00a40110",
+      "native": "0041dd40",
+      "instruction": "call 0x41dd40",
+      "coverage": "evidence only, not executed by this fragment"
+    },
+    {
+      "address": "00a40247",
+      "caller": "00a40110",
+      "native": "00bf7680",
+      "instruction": "call 0xbf7680",
+      "coverage": "evidence only, not executed by this fragment"
+    },
+    {
+      "address": "00a4026e",
+      "caller": "00a40110",
+      "native": "00bf7fbf",
+      "instruction": "call 0xbf7fbf",
+      "coverage": "evidence only, not executed by this fragment"
+    },
+    {
+      "address": "00a40286",
+      "caller": "00a40110",
+      "native": "00419cc0",
+      "instruction": "call 0x419cc0",
+      "coverage": "evidence only, not executed by this fragment"
+    },
+    {
+      "address": "00a4028d",
+      "caller": "00a40110",
+      "native": "00bd1510",
+      "instruction": "call 0xbd1510",
+      "coverage": "evidence only, not executed by this fragment"
+    },
+    {
+      "address": "00a402b4",
+      "caller": "00a40110",
+      "native": "00419cc0",
+      "instruction": "call 0x419cc0",
+      "coverage": "evidence only, not executed by this fragment"
+    },
+    {
+      "address": "00a402bb",
+      "caller": "00a40110",
+      "native": "00bd1510",
+      "instruction": "call 0xbd1510",
+      "coverage": "evidence only, not executed by this fragment"
+    },
+    {
+      "address": "00a402d5",
+      "caller": "00a40110",
+      "native": "00a4d5ae",
+      "instruction": "call 0xa4d5ae",
+      "coverage": "evidence only, not executed by this fragment"
+    },
+    {
+      "address": "00a40328",
+      "caller": "00a40110",
+      "native": "00a4d5a8",
+      "instruction": "call 0xa4d5a8",
+      "coverage": "evidence only, not executed by this fragment"
+    },
+    {
+      "address": "00a40358",
+      "caller": "00a40110",
+      "native": "004254b0",
+      "instruction": "call 0x4254b0",
+      "coverage": "evidence only, not executed by this fragment"
+    },
+    {
+      "address": "00a40391",
+      "caller": "00a40110",
+      "native": "00a3fa70",
+      "instruction": "call 0xa3fa70",
+      "coverage": "evidence only, not executed by this fragment"
+    },
+    {
+      "address": "00a403c2",
+      "caller": "00a40110",
+      "native": "004254b0",
+      "instruction": "call 0x4254b0",
+      "coverage": "evidence only, not executed by this fragment"
+    },
+    {
+      "address": "00a403f9",
+      "caller": "00a40110",
+      "native": "indirect eax",
+      "instruction": "call eax",
+      "coverage": "evidence only, not executed by this fragment"
+    },
+    {
+      "address": "00a40409",
+      "caller": "00a40110",
+      "native": "004254b0",
+      "instruction": "call 0x4254b0",
+      "coverage": "evidence only, not executed by this fragment"
+    },
+    {
+      "address": "00a4041f",
+      "caller": "00a40110",
+      "native": "0041e870",
+      "instruction": "call 0x41e870",
+      "coverage": "evidence only, not executed by this fragment"
+    },
+    {
+      "address": "00a40446",
+      "caller": "00a40110",
+      "native": "0041dd40",
+      "instruction": "call 0x41dd40",
+      "coverage": "evidence only, not executed by this fragment"
+    },
+    {
+      "address": "00a40454",
+      "caller": "00a40110",
+      "native": "00bf7680",
+      "instruction": "call 0xbf7680",
+      "coverage": "evidence only, not executed by this fragment"
+    },
+    {
+      "address": "00a40473",
+      "caller": "00a40110",
+      "native": "00419cc0",
+      "instruction": "call 0x419cc0",
+      "coverage": "evidence only, not executed by this fragment"
+    },
+    {
+      "address": "00a4047a",
+      "caller": "00a40110",
+      "native": "00bd1510",
+      "instruction": "call 0xbd1510",
+      "coverage": "evidence only, not executed by this fragment"
+    },
+    {
+      "address": "00a40492",
+      "caller": "00a40110",
+      "native": "00a3e560",
+      "instruction": "call 0xa3e560",
+      "coverage": "evidence only, not executed by this fragment"
+    },
+    {
+      "address": "00a4049c",
+      "caller": "00a40110",
+      "native": "indirect dword ptr [0xce2230]",
+      "instruction": "call dword ptr [0xce2230]",
+      "coverage": "evidence only, not executed by this fragment"
+    },
+    {
+      "address": "00a404a4",
+      "caller": "00a40110",
+      "native": "00bfbdbb",
+      "instruction": "call 0xbfbdbb",
+      "coverage": "evidence only, not executed by this fragment"
+    },
+    {
+      "address": "00a404bf",
+      "caller": "00a40110",
+      "native": "00a3fde0",
+      "instruction": "call 0xa3fde0",
+      "coverage": "evidence only, not executed by this fragment"
+    },
+    {
+      "address": "00a404d6",
+      "caller": "00a40110",
+      "native": "004c5e60",
+      "instruction": "call 0x4c5e60",
+      "coverage": "evidence only, not executed by this fragment"
+    },
+    {
+      "address": "00a404e9",
+      "caller": "00a40110",
+      "native": "00a4d5a2",
+      "instruction": "call 0xa4d5a2",
+      "coverage": "evidence only, not executed by this fragment"
+    },
+    {
+      "address": "00a404ef",
+      "caller": "00a40110",
+      "native": "00bfbdbb",
+      "instruction": "call 0xbfbdbb",
+      "coverage": "evidence only, not executed by this fragment"
+    },
+    {
+      "address": "004ceb8a",
+      "caller": "004ceb40",
+      "native": "004cd0f0",
+      "instruction": "call 0x4cd0f0",
+      "coverage": "evidence only, not executed by this fragment"
+    },
+    {
+      "address": "004ceb9a",
+      "caller": "004ceb40",
+      "native": "005ff0d0",
+      "instruction": "call 0x5ff0d0",
+      "coverage": "evidence only, not executed by this fragment"
+    },
+    {
+      "address": "004ceba7",
+      "caller": "004ceb40",
+      "native": "00a77760",
+      "instruction": "call 0xa77760",
+      "coverage": "evidence only, not executed by this fragment"
+    },
+    {
+      "address": "004cebbc",
+      "caller": "004ceb40",
+      "native": "004cd0f0",
+      "instruction": "call 0x4cd0f0",
+      "coverage": "evidence only, not executed by this fragment"
+    },
+    {
+      "address": "004cebcd",
+      "caller": "004ceb40",
+      "native": "005fd440",
+      "instruction": "call 0x5fd440",
+      "coverage": "evidence only, not executed by this fragment"
+    },
+    {
+      "address": "004cebda",
+      "caller": "004ceb40",
+      "native": "00a77760",
+      "instruction": "call 0xa77760",
+      "coverage": "evidence only, not executed by this fragment"
+    },
+    {
+      "address": "004cebe5",
+      "caller": "004ceb40",
+      "native": "004bec00",
+      "instruction": "call 0x4bec00",
+      "coverage": "evidence only, not executed by this fragment"
+    },
+    {
+      "address": "004cebec",
+      "caller": "004ceb40",
+      "native": "00a92c40",
+      "instruction": "call 0xa92c40",
+      "coverage": "evidence only, not executed by this fragment"
+    },
+    {
+      "address": "00a3f55e",
+      "caller": "00a3f530",
+      "native": "00415350",
+      "instruction": "call 0x415350",
+      "coverage": "evidence only, not executed by this fragment"
+    },
+    {
+      "address": "00a3f577",
+      "caller": "00a3f530",
+      "native": "indirect dword ptr [0xce2218]",
+      "instruction": "call dword ptr [0xce2218]",
+      "coverage": "evidence only, not executed by this fragment"
+    },
+    {
+      "address": "00a3f58c",
+      "caller": "00a3f530",
+      "native": "00415350",
+      "instruction": "call 0x415350",
+      "coverage": "evidence only, not executed by this fragment"
+    },
+    {
+      "address": "00a3f59a",
+      "caller": "00a3f530",
+      "native": "00bd0c30",
+      "instruction": "call 0xbd0c30",
+      "coverage": "evidence only, not executed by this fragment"
+    },
+    {
+      "address": "00a3f5a8",
+      "caller": "00a3f530",
+      "native": "indirect dword ptr [0xce2210]",
+      "instruction": "call dword ptr [0xce2210]",
+      "coverage": "evidence only, not executed by this fragment"
+    },
+    {
+      "address": "00a40e13",
+      "caller": "00a40df0",
+      "native": "00a3f530",
+      "instruction": "call 0xa3f530",
+      "coverage": "evidence only, not executed by this fragment"
+    },
+    {
+      "address": "00a40eae",
+      "caller": "00a40df0",
+      "native": "004254b0",
+      "instruction": "call 0x4254b0",
+      "coverage": "evidence only, not executed by this fragment"
+    },
+    {
+      "address": "00a40f1a",
+      "caller": "00a40df0",
+      "native": "00b1fef0",
+      "instruction": "call 0xb1fef0",
+      "coverage": "evidence only, not executed by this fragment"
+    },
+    {
+      "address": "00a40f31",
+      "caller": "00a40df0",
+      "native": "indirect dword ptr [0xce22a8]",
+      "instruction": "call dword ptr [0xce22a8]",
+      "coverage": "evidence only, not executed by this fragment"
+    },
+    {
+      "address": "00a40f46",
+      "caller": "00a40df0",
+      "native": "00a4d5de",
+      "instruction": "call 0xa4d5de",
+      "coverage": "evidence only, not executed by this fragment"
+    },
+    {
+      "address": "00a40f50",
+      "caller": "00a40df0",
+      "native": "004254b0",
+      "instruction": "call 0x4254b0",
+      "coverage": "evidence only, not executed by this fragment"
+    },
+    {
+      "address": "00a40f5e",
+      "caller": "00a40df0",
+      "native": "00a4c250",
+      "instruction": "call 0xa4c250",
+      "coverage": "evidence only, not executed by this fragment"
+    },
+    {
+      "address": "00a40f63",
+      "caller": "00a40df0",
+      "native": "00a4d5d8",
+      "instruction": "call 0xa4d5d8",
+      "coverage": "evidence only, not executed by this fragment"
+    },
+    {
+      "address": "00a40f72",
+      "caller": "00a40df0",
+      "native": "00a4d5d2",
+      "instruction": "call 0xa4d5d2",
+      "coverage": "evidence only, not executed by this fragment"
+    },
+    {
+      "address": "00a40f84",
+      "caller": "00a40df0",
+      "native": "00a4d5cc",
+      "instruction": "call 0xa4d5cc",
+      "coverage": "evidence only, not executed by this fragment"
+    },
+    {
+      "address": "00a40f8e",
+      "caller": "00a40df0",
+      "native": "00a4d494",
+      "instruction": "call 0xa4d494",
+      "coverage": "evidence only, not executed by this fragment"
+    },
+    {
+      "address": "00a40f94",
+      "caller": "00a40df0",
+      "native": "00a4d5c6",
+      "instruction": "call 0xa4d5c6",
+      "coverage": "evidence only, not executed by this fragment"
+    },
+    {
+      "address": "00a40fd4",
+      "caller": "00a40df0",
+      "native": "00a4d5b4",
+      "instruction": "call 0xa4d5b4",
+      "coverage": "evidence only, not executed by this fragment"
+    },
+    {
+      "address": "00a40fea",
+      "caller": "00a40df0",
+      "native": "004254b0",
+      "instruction": "call 0x4254b0",
+      "coverage": "evidence only, not executed by this fragment"
+    },
+    {
+      "address": "00a40ff4",
+      "caller": "00a40df0",
+      "native": "00a40020",
+      "instruction": "call 0xa40020",
+      "coverage": "evidence only, not executed by this fragment"
+    },
+    {
+      "address": "00a40ffb",
+      "caller": "00a40df0",
+      "native": "00a409f0",
+      "instruction": "call 0xa409f0",
+      "coverage": "evidence only, not executed by this fragment"
+    },
+    {
+      "address": "0073dc55",
+      "caller": "0073d410",
+      "native": "00bf681b",
+      "instruction": "call 0xbf681b",
+      "coverage": "evidence only, not executed by this fragment"
+    },
+    {
+      "address": "0073dc7c",
+      "caller": "0073d410",
+      "native": "00a40df0",
+      "instruction": "call 0xa40df0",
+      "coverage": "evidence only, not executed by this fragment"
+    },
+    {
+      "address": "004db2cc",
+      "caller": "004db290",
+      "native": "004ceb40",
+      "instruction": "call 0x4ceb40",
+      "coverage": "evidence only, not executed by this fragment"
+    }
+  ],
+  "no_ghidra_function": [],
+  "corrections": [
+    {
+      "was": "Preserve raw parameter as stored +3E8 byte.",
+      "is": "This producer normalizes the DWORD parameter with SETNZ twice, separated by optional callback; downstream consumers must still preserve whatever raw byte they read.",
+      "evidence": "A401B2..A401C2, full body EBX provenance."
+    }
+  ],
+  "remaining_closure": [
+    "A40110 listener creation, debounce and notification drain/log/dispatch are not implemented.",
+    "A3F3E0/A3F440 call A3EBD0; sign-in, profile, invite, connection/achievement, update launch/update-system/exit branches remain outside this branch.",
+    "Actual A3F530/A40DF0 full raw construction/lifetime is not implemented here; existing owner implementations are projections.",
+    "Actual 4CEB40 game UI callback remains an external native function-pointer interface. No substitute game UI callback is shipped.",
+    "A409F0 and BECCD0/BECB20 full actual platform-event closure remains pending."
+  ],
+  "lifetime": "Caller retains captured raw manager, parameter cell, and hook slot across call; excludes concurrent mutation or retirement. Hook may synchronously alter data/slot/publication. C++ throw leaves hook effects and omits final store; original FH3 not executed.",
+  "source_inputs_sha256": {
+    "include/bsp/native_online_notifications.hpp": "ebdc2ad2b07aa53b7f033f32982c61908fc8d9abe19961a1585fc1ee2623b821",
+    "src/native_online_notifications.cpp": "997198aab281e2ab622b16bb769b02f5b30c24f46cecba0b46008bcc2f1f90fc",
+    "local/native_online_notifications_probe.cpp": "ed73be23ecd1058beac75ab22223ba03dd3c927220a3a0b8253079174dc12a9e",
+    "local/native_online_notifications_original.hpp": "059dcd42c3dafb6d6860c6b2e2a8327f0bec46123b52f85bb3f31b7d4f2789a4"
+  },
+  "build": {
+    "command": "./scripts/build.ps1",
+    "target": "default MSVC Win32 Release /W4 /WX",
+    "exit": 0,
+    "existing_ctests_passed": 2,
+    "log": "local/on-build.log",
+    "verify_seeds_log": "local/on-verify-seeds.log",
+    "core_library_sha256": "5a3b39f9d9c98c1ee75b84e6eb24f6323418fe2e8b64a451dc03a84406be29a7"
+  },
+  "fixture": {
+    "runner": "local/run_native_online_notifications_probe.ps1",
+    "original_source_cases": 4,
+    "source_only_exception_case": 1,
+    "copied_bytes": 36,
+    "copied_instructions": 10,
+    "original_bytes_changed": 0,
+    "adapter": "Code and relative jump destination relocated together with zero instruction-byte edits; RET at corresponding A402C6 destination outside copied span. Absolute F8ABEC operand unchanged.",
+    "log": "local/on-probe.log",
+    "compiler_log": "local/on-probe-compile.log",
+    "exe_sha256": "1c9b0b7b8f6c52dfcb5c2e16dc963329c0928fc2a7e400d6332e9307c1643c08",
+    "limits": "Controlled raw preimages and diagnostic CL/RET callback; no whole manager construction/lifetime, 4CEB40 game UI callback, complete A40110, SDK, FH3 or game execution."
+  },
+  "call_verification": {
+    "numeric_rows": 60,
+    "failed": 0,
+    "indirect_rows": 7,
+    "all_observed_rows": 67,
+    "log": "local/on-call-check.log"
+  },
+  "artifact_manifest": "local/native-online-notifications-final-manifest.json"
+}
