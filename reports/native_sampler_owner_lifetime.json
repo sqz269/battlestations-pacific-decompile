@@ -426,5 +426,16 @@
     },
     "review": "local/sampler-owner-independent-review.json",
     "limits": "Original 4DDAA0 and 4B4F10 entries and native FH3 failures were not executed by this lifetime fixture; source effects have separate coverage."
+  },
+  "procedural_lifetime_followup": {
+    "source": "src/native_procedural_resource_lifetime.cpp",
+    "documentation": "docs/NATIVE_PROCEDURAL_RESOURCE_LIFETIME.md",
+    "report": "reports/native_procedural_resource_lifetime.json",
+    "checkpoint": {
+      "path": "local/checkpoints/d260af28/native-online-procedural-default/validation.json",
+      "sha256": "38d24ce8e2f46770fcc86e429213aeb87c15940b1a37cc00405f7adb3f3210bf",
+      "artifacts": 2878
+    },
+    "scope": "Both fresh BBC6F0/BBC810 profiles now have companions sharing the same raw+04 and NativeRenderActualOwners domain. Full cache/event/compiler and null negative-cache lifetime handling remain outside that contract."
   }
 }

@@ -102,3 +102,24 @@ The committed report records exact bytes, ABI, host sites, old/proposed names,
 corrections and limitations. `local/native-procedural-resource-final/manifest.json`
 closes code, documentation/report, probe sources and inputs, executable/object,
 outputs, library and toolchain hashes in an immutable local delivery directory.
+
+## Integrated library validation
+
+At `d260af28` this source is registered once in the default Win32 target.
+The combined `scripts/build.ps1` build and both existing CTests pass. The
+packet's focused fixture was compiled and run against the integrated
+`bsp_core.lib`, with saved commands, stdout, exit status, dependency headers
+and exact library hashes. The four current packet reports contain 55 checked
+numeric call rows and zero failures. Source/header bytes match the reviewed
+worker delivery. Fourteen saved names/comments were read back and exported
+with previous comments preserved. Exact evidence: `local/checkpoints/d260af28/native-online-procedural-default/validation.json`.
+This supersedes earlier worker-specific build or fixture-log limitations;
+original ABI/FH3 delivery, full manager/pump adoption and gameplay remain open.
+
+The integrator completed C304A0 through C3054B, both scalar stack-cleanup
+gaps, and the separately leased 737BF0 cleanup through 737C06. Their final
+listings have 56, 11, 11 and 10 instructions respectively, with zero gaps.
+Handler CC7EC3..CC7ECC was defined and saved. The formerly out-of-body call
+at C30536 now passes the unchanged 14-row call report. Earlier truncated
+body observations remain preserved in the worker snapshot. The helper and
+handler repairs add no extra reconstructed normal bodies.

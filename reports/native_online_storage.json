@@ -35,33 +35,161 @@
     }
   ],
   "calls": [
-    {"address":"00a3edaa","native":"00bf6989","function":"00a3ed60","operation":"free former buffer"},
-    {"address":"00a3edcb","native":"00bf55be","function":"00a3ed60","operation":"allocate 100h bytes"},
-    {"address":"00a3ede0","native":"00bf79f0","function":"00a3ed60","operation":"zero 100h bytes"},
-    {"address":"00a3ee60","native":"00a4d584","function":"00a3ed60","operation":"XStorageDownloadToMemory ordinal 5345"},
-    {"address":"00a3eeaa","native":"00a4d57e","function":"00a3ed60","operation":"XStorageDownloadToMemoryGetProgress ordinal 5307"},
-    {"address":"00a3eeb8","native":"00a4d42e","function":"00a3ed60","operation":"XGetOverlappedResult ordinal 1083"},
-    {"address":"00a3eefa","native":"00a4d422","function":"00a3ed60","operation":"XGetOverlappedExtendedError ordinal 1082"},
-    {"address":"00a3ef75","native":"00bf6989","function":"00a3ef20","operation":"free former buffer"},
-    {"address":"00a3ef93","native":"00bf55be","function":"00a3ef20","operation":"allocate nine bytes"},
-    {"address":"00a3f000","native":"004254b0","function":"00a3ef20","operation":"empty diagnostic prepared"},
-    {"address":"00a3f039","native":"00a4d590","function":"00a3ef20","operation":"XStorageUploadFromMemory ordinal 5305"},
-    {"address":"00a3f05b","native":"004254b0","function":"00a3ef20","operation":"empty diagnostic submitted"},
-    {"address":"00a3f076","native":"004254b0","function":"00a3ef20","operation":"empty diagnostic immediate result"},
-    {"address":"00a3f0a5","native":"00a4d58a","function":"00a3ef20","operation":"XStorageUploadFromMemoryGetProgress ordinal 5304"},
-    {"address":"00a3f0b3","native":"00a4d42e","function":"00a3ef20","operation":"XGetOverlappedResult ordinal 1083"},
-    {"address":"00a3f0cb","native":"004254b0","function":"00a3ef20","operation":"empty diagnostic completion"},
-    {"address":"00a3f0e2","native":"00a4d422","function":"00a3ef20","operation":"XGetOverlappedExtendedError ordinal 1082"},
-    {"address":"00a3f0f3","native":"004254b0","function":"00a3ef20","operation":"empty diagnostic error"}
+    {
+      "address": "00a3edaa",
+      "native": "00bf6989",
+      "function": "00a3ed60",
+      "operation": "free former buffer"
+    },
+    {
+      "address": "00a3edcb",
+      "native": "00bf55be",
+      "function": "00a3ed60",
+      "operation": "allocate 100h bytes"
+    },
+    {
+      "address": "00a3ede0",
+      "native": "00bf79f0",
+      "function": "00a3ed60",
+      "operation": "zero 100h bytes"
+    },
+    {
+      "address": "00a3ee60",
+      "native": "00a4d584",
+      "function": "00a3ed60",
+      "operation": "XStorageDownloadToMemory ordinal 5345"
+    },
+    {
+      "address": "00a3eeaa",
+      "native": "00a4d57e",
+      "function": "00a3ed60",
+      "operation": "XStorageDownloadToMemoryGetProgress ordinal 5307"
+    },
+    {
+      "address": "00a3eeb8",
+      "native": "00a4d42e",
+      "function": "00a3ed60",
+      "operation": "XGetOverlappedResult ordinal 1083"
+    },
+    {
+      "address": "00a3eefa",
+      "native": "00a4d422",
+      "function": "00a3ed60",
+      "operation": "XGetOverlappedExtendedError ordinal 1082"
+    },
+    {
+      "address": "00a3ef75",
+      "native": "00bf6989",
+      "function": "00a3ef20",
+      "operation": "free former buffer"
+    },
+    {
+      "address": "00a3ef93",
+      "native": "00bf55be",
+      "function": "00a3ef20",
+      "operation": "allocate nine bytes"
+    },
+    {
+      "address": "00a3f000",
+      "native": "004254b0",
+      "function": "00a3ef20",
+      "operation": "empty diagnostic prepared"
+    },
+    {
+      "address": "00a3f039",
+      "native": "00a4d590",
+      "function": "00a3ef20",
+      "operation": "XStorageUploadFromMemory ordinal 5305"
+    },
+    {
+      "address": "00a3f05b",
+      "native": "004254b0",
+      "function": "00a3ef20",
+      "operation": "empty diagnostic submitted"
+    },
+    {
+      "address": "00a3f076",
+      "native": "004254b0",
+      "function": "00a3ef20",
+      "operation": "empty diagnostic immediate result"
+    },
+    {
+      "address": "00a3f0a5",
+      "native": "00a4d58a",
+      "function": "00a3ef20",
+      "operation": "XStorageUploadFromMemoryGetProgress ordinal 5304"
+    },
+    {
+      "address": "00a3f0b3",
+      "native": "00a4d42e",
+      "function": "00a3ef20",
+      "operation": "XGetOverlappedResult ordinal 1083"
+    },
+    {
+      "address": "00a3f0cb",
+      "native": "004254b0",
+      "function": "00a3ef20",
+      "operation": "empty diagnostic completion"
+    },
+    {
+      "address": "00a3f0e2",
+      "native": "00a4d422",
+      "function": "00a3ef20",
+      "operation": "XGetOverlappedExtendedError ordinal 1082"
+    },
+    {
+      "address": "00a3f0f3",
+      "native": "004254b0",
+      "function": "00a3ef20",
+      "operation": "empty diagnostic error"
+    }
   ],
   "producer_evidence": [
-    {"address":"00a3ed10","role":"build 200h-byte DropRates path at +154, write state 1 only on success; analyzed, not implemented here"},
-    {"address":"00a3f4a0","role":"write +358/+35C from two stack DWORD inputs and call upload for states 1/9/4/5/8/10; analyzed, not implemented here"},
-    {"address":"00a3f500","role":"call download for states 1/4/9/5/8; analyzed, not implemented here"},
-    {"address":"00a40020","role":"reset +11C and +3B4, clear two payload DWORDs; analyzed, another packet owns nearby sign-in"},
-    {"address":"00a40df0","role":"initialize actual owner and reset sign-in; analyzed, not implemented here"},
-    {"address":"00a3f530","role":"publish same 3F0h identity at F8ABE8; analyzed, not implemented here"}
+    {
+      "address": "00a3ed10",
+      "role": "build 200h-byte DropRates path at +154, write state 1 only on success; analyzed, not implemented here"
+    },
+    {
+      "address": "00a3f4a0",
+      "role": "write +358/+35C from two stack DWORD inputs and call upload for states 1/9/4/5/8/10; analyzed, not implemented here"
+    },
+    {
+      "address": "00a3f500",
+      "role": "call download for states 1/4/9/5/8; analyzed, not implemented here"
+    },
+    {
+      "address": "00a40020",
+      "role": "reset +11C and +3B4, clear two payload DWORDs; analyzed, another packet owns nearby sign-in"
+    },
+    {
+      "address": "00a40df0",
+      "role": "initialize actual owner and reset sign-in; analyzed, not implemented here"
+    },
+    {
+      "address": "00a3f530",
+      "role": "publish same 3F0h identity at F8ABE8; analyzed, not implemented here"
+    }
   ],
   "validation": "MSVC Win32 /std:c++20 /EHsc /W4 /WX standalone compile and local in-memory probe linked against local/native_online_storage.lib with /MANIFEST:EMBED passed; 18 report call sites checked against live Ghidra. Shared cmake/startup.cmake registration is leased elsewhere, so no integrated bsp_core build of this new source is claimed.",
-  "uncertainty": "Caller must supply matching game-CRT allocation/release and keep manager, path, buffer, overlapped, DLL and ordinal entries alive until completion. SDK call signatures derive from actual call-site pushes and previously verified original XLive exports, not projection types. No full-event or gameplay proof."
+  "uncertainty": "Caller must supply matching game-CRT allocation/release and keep manager, path, buffer, overlapped, DLL and ordinal entries alive until completion. SDK call signatures derive from actual call-site pushes and previously verified original XLive exports, not projection types. No full-event or gameplay proof.",
+  "integrator_validation": {
+    "code_commit": "d260af28ae358507e05d601ed2bcc538c0d1ff90",
+    "checkpoint": {
+      "path": "local/checkpoints/d260af28/native-online-procedural-default/validation.json",
+      "sha256": "38d24ce8e2f46770fcc86e429213aeb87c15940b1a37cc00405f7adb3f3210bf",
+      "artifacts": 2878
+    },
+    "default_build": "scripts/build.ps1 Win32 Release; both CTests passed",
+    "registered_library_fixture": true,
+    "source_and_header_unchanged_from_reviewed_worker": true,
+    "saved_ghidra_readback_and_exports_verified": true,
+    "limits": [
+      "Fourteen complete normal bodies use new C++ interfaces; no fixed-address or original ABI replacement claim.",
+      "Raw sign-in failed-QPC original stack preimage is unavailable; actual manager lifetime and full A40110/A409F0 platform-loop adoption remain open.",
+      "Storage fixtures use in-memory SDK functions; no real request, account/network mutation or live SDK behavior is validated.",
+      "Procedural fixture executes all five original normal bodies and original factories but routes child virtual0 to the same canonical source terminal. Native FH3/SEH delivery and hardware faults are not exercised.",
+      "Both procedural factory profiles now have canonical lifetime companions; full sampler/cache/compiler integration, shader drawing and gameplay remain open.",
+      "The prior sampler four-fixture checkpoint remains tied to f2cf87ab; the older29 shader fixtures remain tied to a50d1fc3."
+    ]
+  }
 }

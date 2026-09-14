@@ -424,9 +424,9 @@
     "The previous fog descriptor-context negative evidence remains unresolved: both original/source outputs report missing cFogDirColor with comment-only Constants. This is not evidence of a native shader defect."
   ],
   "pending_packets": [
-    "Raw online sign-in, storage/path/request entrypoints and procedural-resource lifetime have worker recovery/build/evidence in progress; not covered by this sampler checkpoint.",
-    "Full B1A4F0/B1B4D0 cache entry and full A40110/A409F0 event and online-manager closure remain incomplete.",
-    "Full B3B280/B3B3C0 compiler orchestration, native FH3 delivery, shader drawing and gameplay remain outstanding."
+    "Adopt actual manager construction/lifetime and complete A40110/A409F0 dispatch/pump using the now-implemented raw sign-in and storage dependencies.",
+    "Full B1A4F0/B1B4D0 cache entry still needs complete event/online-manager closure; the earlier continuation and both procedural lifetime companions remain qualified pieces.",
+    "Full B3B280/B3B3C0 compiler orchestration, failed-QPC original stack preimage, native FH3/ABI equivalence, shader drawing and gameplay remain outstanding."
   ],
   "publication_merges": [
     {
@@ -637,5 +637,141 @@
       "Earlier 29 shader fixtures and their libraries remain at the separate a50d1fc3 checkpoint; this batch reruns only these four relevant fixture programs."
     ]
   },
-  "latest_integration": "sampler_dependency_integration"
+  "latest_integration": "raw_online_procedural_integration",
+  "raw_online_procedural_integration": {
+    "validated_code_commit": "d260af28ae358507e05d601ed2bcc538c0d1ff90",
+    "checkpoint": {
+      "path": "local/checkpoints/d260af28/native-online-procedural-default/validation.json",
+      "sha256": "38d24ce8e2f46770fcc86e429213aeb87c15940b1a37cc00405f7adb3f3210bf",
+      "artifacts": 2878
+    },
+    "complete_normal_bodies": 14,
+    "registered_sources": [
+      "native_online_signin",
+      "native_online_storage",
+      "native_online_storage_requests",
+      "native_procedural_resource_lifetime"
+    ],
+    "default_build": "scripts/build.ps1 Win32 Release; both CTests passed",
+    "fixtures": [
+      {
+        "name": "signin",
+        "command": [
+          "pwsh",
+          "-NoProfile",
+          "-File",
+          "local/run_raw_dependency_probe.ps1",
+          "-Packet",
+          "signin"
+        ],
+        "exit_code": 0,
+        "log": "local/raw-dependency-signin-fixture.log",
+        "sha256": "6741648176a9a1316c5185377f16d894c36bff9ce02fe306e281e683461c77af",
+        "seconds": 1.93
+      },
+      {
+        "name": "storage",
+        "command": [
+          "pwsh",
+          "-NoProfile",
+          "-File",
+          "local/run_raw_dependency_probe.ps1",
+          "-Packet",
+          "storage"
+        ],
+        "exit_code": 0,
+        "log": "local/raw-dependency-storage-fixture.log",
+        "sha256": "64c12e0a73d23a8cc02da6729f9915a8daf4f2db37187c41d147b6a6aa61bfa9",
+        "seconds": 1.78
+      },
+      {
+        "name": "storage_requests",
+        "command": [
+          "pwsh",
+          "-NoProfile",
+          "-File",
+          "local/run_raw_dependency_probe.ps1",
+          "-Packet",
+          "storage_requests"
+        ],
+        "exit_code": 0,
+        "log": "local/raw-dependency-storage_requests-fixture.log",
+        "sha256": "47a1069a4f05e5a13dba9012533faa360b303047769d12b3f47a9db0cb569979",
+        "seconds": 1.85
+      },
+      {
+        "name": "procedural",
+        "command": [
+          "pwsh",
+          "-NoProfile",
+          "-File",
+          "local/run_native_procedural_resource_probe.ps1",
+          "-LibraryRoot",
+          "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911"
+        ],
+        "exit_code": 0,
+        "log": "local/raw-dependency-procedural-fixture.log",
+        "sha256": "d02b265f45dcfc462f1f21c4d46303e423bc2e9334a140f577430df00de5aee2",
+        "seconds": 2.5
+      }
+    ],
+    "numeric_call_rows": 55,
+    "failed_call_rows": 0,
+    "ghidra": {
+      "project": "C:/Users/sqz269/bsp.gpr",
+      "program": "/battlestationspacific.exe",
+      "saved_verified_exported_addresses": [
+        "00a3e6a0",
+        "00a3ebd0",
+        "00a3f3e0",
+        "00a3f440",
+        "00a3ed60",
+        "00a3ef20",
+        "00a3ed10",
+        "00a3f4a0",
+        "00a3f500",
+        "00bbc6d0",
+        "00bbc7f0",
+        "00c304a0",
+        "00737390",
+        "00b19750"
+      ],
+      "repaired_bodies": [
+        "00bbc6d0..00bbc6ed",
+        "00bbc7f0..00bbc80d",
+        "00c304a0..00c3054b",
+        "00737bf0..00737c06"
+      ],
+      "defined_handler": "00cc7ec3..00cc7ecc",
+      "prior_comments_preserved": true
+    },
+    "worker_archives": {
+      "raw-online-signin": {
+        "commit": "87fbeb64301bac8e5dbd41bd369c5bb4cf9b9aba",
+        "manifest": "local/compiler-path-workers/raw-online-signin/manifest.json",
+        "sha256": "eee9fdc56504a9a80f4ab1b94038d1c1d8d9d964f5f5dc2a4a412e56104abf4d",
+        "artifacts": 357
+      },
+      "raw-online-storage": {
+        "commit": "30a9888325a72d9104eed3485148ffc1dd0070e5",
+        "manifest": "local/compiler-path-workers/raw-online-storage/manifest.json",
+        "sha256": "c682e7d1dc11bdfb642b26eb5ffa3b6978b30767f6443693fe0abfa8b2fd2d67",
+        "artifacts": 35
+      },
+      "procedural-resource-lifetime": {
+        "commit": "16bdecc8a0ad504ebb9947bbdd2e7cc3ce01c79b",
+        "manifest": "local/compiler-path-workers/procedural-resource-lifetime/manifest.json",
+        "sha256": "7d5efc15951262b9c130409bd3c9cb51f4e98e6bd9414e49db7db77edcb0d36f",
+        "artifacts": 2520
+      }
+    },
+    "limits": [
+      "Fourteen complete normal bodies use new C++ interfaces; no fixed-address or original ABI replacement claim.",
+      "Raw sign-in failed-QPC original stack preimage is unavailable; actual manager lifetime and full A40110/A409F0 platform-loop adoption remain open.",
+      "Storage fixtures use in-memory SDK functions; no real request, account/network mutation or live SDK behavior is validated.",
+      "Procedural fixture executes all five original normal bodies and original factories but routes child virtual0 to the same canonical source terminal. Native FH3/SEH delivery and hardware faults are not exercised.",
+      "Both procedural factory profiles now have canonical lifetime companions; full sampler/cache/compiler integration, shader drawing and gameplay remain open.",
+      "The prior sampler four-fixture checkpoint remains tied to f2cf87ab; the older29 shader fixtures remain tied to a50d1fc3."
+    ]
+  }
 }

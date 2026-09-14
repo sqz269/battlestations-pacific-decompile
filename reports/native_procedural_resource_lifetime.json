@@ -409,5 +409,36 @@
   "artifact_manifest": "local/native-procedural-resource-final/manifest.json",
   "source_sha256": "1aeca5d85a4960807040ed991036a8f3df949f751cb8853634a1753b558737ec",
   "header_sha256": "6e9e4e5cd70e7fa9d0e150f0cf235d03754c916c2dbd14bb9e886dc10f498b3b",
-  "documentation_sha256": "767b7e57d9ef1cf25cef6397227a8edf82bbf40571db3ca962e7c651aa3ea187"
+  "documentation_sha256": "767b7e57d9ef1cf25cef6397227a8edf82bbf40571db3ca962e7c651aa3ea187",
+  "integrator_validation": {
+    "code_commit": "d260af28ae358507e05d601ed2bcc538c0d1ff90",
+    "checkpoint": {
+      "path": "local/checkpoints/d260af28/native-online-procedural-default/validation.json",
+      "sha256": "38d24ce8e2f46770fcc86e429213aeb87c15940b1a37cc00405f7adb3f3210bf",
+      "artifacts": 2878
+    },
+    "default_build": "scripts/build.ps1 Win32 Release; both CTests passed",
+    "registered_library_fixture": true,
+    "source_and_header_unchanged_from_reviewed_worker": true,
+    "saved_ghidra_readback_and_exports_verified": true,
+    "limits": [
+      "Fourteen complete normal bodies use new C++ interfaces; no fixed-address or original ABI replacement claim.",
+      "Raw sign-in failed-QPC original stack preimage is unavailable; actual manager lifetime and full A40110/A409F0 platform-loop adoption remain open.",
+      "Storage fixtures use in-memory SDK functions; no real request, account/network mutation or live SDK behavior is validated.",
+      "Procedural fixture executes all five original normal bodies and original factories but routes child virtual0 to the same canonical source terminal. Native FH3/SEH delivery and hardware faults are not exercised.",
+      "Both procedural factory profiles now have canonical lifetime companions; full sampler/cache/compiler integration, shader drawing and gameplay remain open.",
+      "The prior sampler four-fixture checkpoint remains tied to f2cf87ab; the older29 shader fixtures remain tied to a50d1fc3."
+    ],
+    "completed_flow_repairs": [
+      "00bbc6d0..00bbc6ed",
+      "00bbc7f0..00bbc80d",
+      "00c304a0..00c3054b",
+      "00737bf0..00737c06"
+    ],
+    "handler_defined": "00cc7ec3..00cc7ecc",
+    "report_calls_after_repair": {
+      "checked": 14,
+      "failed": 0
+    }
+  }
 }

@@ -80,3 +80,16 @@ passed (1/1); this worktree has no `local/seed_reference.hpp`, so the optional
 native differential CTest is not configured here. The two reports' live
 call-site checks passed at 18/18 and 7/7 respectively. This proves build and
 fixture behavior, not game event validation or an actual XLive request.
+
+## Integrated library validation
+
+At `d260af28` this source is registered once in the default Win32 target.
+The combined `scripts/build.ps1` build and both existing CTests pass. The
+packet's focused fixture was compiled and run against the integrated
+`bsp_core.lib`, with saved commands, stdout, exit status, dependency headers
+and exact library hashes. The four current packet reports contain 55 checked
+numeric call rows and zero failures. Source/header bytes match the reviewed
+worker delivery. Fourteen saved names/comments were read back and exported
+with previous comments preserved. Exact evidence: `local/checkpoints/d260af28/native-online-procedural-default/validation.json`.
+This supersedes earlier worker-specific build or fixture-log limitations;
+original ABI/FH3 delivery, full manager/pump adoption and gameplay remain open.

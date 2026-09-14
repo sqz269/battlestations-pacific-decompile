@@ -121,3 +121,16 @@ clock identity, invalid name bounds and exceptions are explicit C++ boundaries.
 There is no claim of hardware-fault/FH3 equivalence, live account execution,
 native ABI replacement, full `00A40110`/`00A409F0` event closure, or gameplay
 validation. This packet supplies actual-storage prerequisites for that integration.
+
+## Integrated library validation
+
+At `d260af28` this source is registered once in the default Win32 target.
+The combined `scripts/build.ps1` build and both existing CTests pass. The
+packet's focused fixture was compiled and run against the integrated
+`bsp_core.lib`, with saved commands, stdout, exit status, dependency headers
+and exact library hashes. The four current packet reports contain 55 checked
+numeric call rows and zero failures. Source/header bytes match the reviewed
+worker delivery. Fourteen saved names/comments were read back and exported
+with previous comments preserved. Exact evidence: `local/checkpoints/d260af28/native-online-procedural-default/validation.json`.
+This supersedes earlier worker-specific build or fixture-log limitations;
+original ABI/FH3 delivery, full manager/pump adoption and gameplay remain open.

@@ -95,3 +95,16 @@ Ghidra with zero mismatches. `cmake/startup.cmake` is leased by another
 worker, so the new translation unit has **not** yet been registered or
 included in the default `bsp_core` build. The integration build, two
 existing CTests and any game session remain pending.
+
+## Integrated library validation
+
+At `d260af28` this source is registered once in the default Win32 target.
+The combined `scripts/build.ps1` build and both existing CTests pass. The
+packet's focused fixture was compiled and run against the integrated
+`bsp_core.lib`, with saved commands, stdout, exit status, dependency headers
+and exact library hashes. The four current packet reports contain 55 checked
+numeric call rows and zero failures. Source/header bytes match the reviewed
+worker delivery. Fourteen saved names/comments were read back and exported
+with previous comments preserved. Exact evidence: `local/checkpoints/d260af28/native-online-procedural-default/validation.json`.
+This supersedes earlier worker-specific build or fixture-log limitations;
+original ABI/FH3 delivery, full manager/pump adoption and gameplay remain open.

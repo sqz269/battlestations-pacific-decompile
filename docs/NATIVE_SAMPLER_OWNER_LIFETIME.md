@@ -143,3 +143,14 @@ fixture pass. Independent review confirmed the nine normal source bodies and
 shared canonical resource domain. The fixture does not execute the original
 4DDAA0 or 4B4F10 entries or original FH3 failure delivery; their source effects
 are supported separately. The report links the immutable integrated checkpoint.
+
+## Correction from NATIVE_PROCEDURAL_RESOURCE_LIFETIME
+
+The fresh BBC6F0/BBC810 companion frontier above is now implemented by
+`docs/NATIVE_PROCEDURAL_RESOURCE_LIFETIME.md`: both factory profiles use the
+same raw+04 reference count and `NativeRenderActualOwners` identity domain,
+with concrete BD30E0 and current virtual4 destruction. The integrated fixture
+exercises admission through actual 4DDB40 sampler release, including current
+profile changes. This closes that qualified lifetime dependency; it does not
+make native unconditional null-record release safe or complete the whole
+cache/event/compiler path. The follow-up report pins the d260af28 evidence.

@@ -329,3 +329,27 @@ checks do not prove original FH3 delivery. Original 4DDAA0 and 4B4F10 entries
 are not executed by the lifetime fixture. Fresh procedural resource companions,
 complete event/compiler integration, original ABI and gameplay remain open.
 The earlier 29 shader fixtures retain their separate a50d1fc3 checkpoint.
+
+## Raw online and procedural lifetime integration
+
+At `d260af28`, four more modules add fourteen complete normal bodies:
+four sign-in/debounce bodies, two raw storage transfer bodies, three path/
+request entrypoints and five procedural-resource lifetime bodies. Independent
+review checked sign-in x87 rounding, raw aliasing and callback/failure ordering;
+the storage review checked source and fixture provenance. Both procedural
+factory profiles now use companions in the existing actual owner domain.
+
+The combined default Win32 build, both CTests and four focused registered-library
+fixtures pass with unchanged source and library hashes during the runs. All 55
+numeric call rows pass. Fourteen saved names/comments were verified and exported,
+four truncated/gapped bodies were repaired and the missing CC7EC3 handler was
+defined. Previous comments and repair journals remain preserved. Checkpoint:
+`local/checkpoints/d260af28/native-online-procedural-default/validation.json` (2878 verified artifacts).
+
+The new storage fixture run captures the stdout/exit evidence missing from its
+earlier worker snapshot. Storage callbacks are in-memory fixtures; no live SDK
+request is validated. Procedural normal-body comparisons route child virtual0
+to the same canonical source provider; original FH3 delivery remains untested.
+Actual manager lifetime, full notification/pump/cache/compiler composition and
+gameplay remain open. Earlier sampler and shader fixtures retain their separate
+exact-commit checkpoints.
