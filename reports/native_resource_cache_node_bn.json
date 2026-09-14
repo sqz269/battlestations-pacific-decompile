@@ -1,0 +1,464 @@
+{
+  "packet": "orch4_native_resource_cache_node_bn",
+  "worker_base": "c1579357bc6c61e3036f870c5047d4b402d49a28",
+  "branch": "agent/orch4-resource-cache-node-bn",
+  "frozen_frontier_contract": {
+    "commit": "d93fe02665629fbcdc1276359d21d9a8d12edf85",
+    "doc": "docs/NATIVE_RESOURCE_LOADING_FRONTIER_BN.md",
+    "report": "reports/native_resource_loading_frontier_bn.json",
+    "consulted_worktree": "J:/PROG/battlestations-pacific-decompile-orch4-fileblock-identifier-bm"
+  },
+  "timestamp_utc": "2026-09-14T06:59:38.325147+00:00",
+  "status": "complete_source_strict_tu_and_actual_storage_failure_fixture_passed_pending_integration_and_membership_repair",
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_home": "J:/tools/ghidra_12.0.4_PUBLIC",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "target_verification": "Every live query uses bsp.py ghidra -> client.verify; autostart disabled; no Ghidra scripts or mutations.",
+  "identity_output": "00b7f220 BSP_ResourceNameTree_ConstructNode  undefined BSP_ResourceNameTree_ConstructNode(void)  body 00b7f220 - 00b7f28f\n00b7f6a0 BSP_ResourceNameTree_AllocateNode  undefined BSP_ResourceNameTree_AllocateNode(void)  body 00b7f6a0 - 00b7f711\n00b7f712 Catch_All@00b7f712  undefined Catch_All@00b7f712(void)  body 00b7f712 - 00b7f71a\n00cc20d0 Unwind@00cc20d0  undefined Unwind@00cc20d0(void)  body 00cc20d0 - 00cc20e0\n00cc20e1 ?  ?  body ?\n",
+  "call_membership_output": "00b7f259 BSP_ResourceNameTree_ConstructNode  undefined BSP_ResourceNameTree_ConstructNode(void)  body 00b7f220 - 00b7f28f\n00b7f26f BSP_ResourceNameTree_ConstructNode  undefined BSP_ResourceNameTree_ConstructNode(void)  body 00b7f220 - 00b7f28f\n00b7f6c3 BSP_ResourceNameTree_AllocateNode  undefined BSP_ResourceNameTree_AllocateNode(void)  body 00b7f6a0 - 00b7f711\n00b7f6f8 BSP_ResourceNameTree_AllocateNode  undefined BSP_ResourceNameTree_AllocateNode(void)  body 00b7f6a0 - 00b7f711\n00b7f716 Catch_All@00b7f712  undefined Catch_All@00b7f712(void)  body 00b7f712 - 00b7f71a\n00b7f722 ?  ?  body ?\n00cc20d8 Unwind@00cc20d0  undefined Unwind@00cc20d0(void)  body 00cc20d0 - 00cc20e0\n00cc20e6 ?  ?  body ?\n",
+  "installed_image": {
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "size": 12223752,
+    "image_base": "00400000"
+  },
+  "routines": [
+    {
+      "address": "00b7f220",
+      "inclusive_end": "00b7f28f",
+      "byte_count": 112,
+      "sha256": "df8d6833d6619f9a8e5201b0999755e206e963e100434a966c2c0aa7c31bede3",
+      "installed_pe_matches_live_ghidra": true,
+      "evidence_log": "local/resource_cache_node_bn/00b7f220.txt",
+      "evidence_sha256": "92c50a986585a8d8d8e3a2cf9356131bc54664da17f4222d6b10780bf2d032c5",
+      "source": "construct_native_resource_cache_node_00b7f220",
+      "original_ghidra_name": "BSP_ResourceNameTree_ConstructNode",
+      "native_abi": "ECX actual1Ch node; stack left,parent,right,actual0Ch source pair,color DWORD low byte; EAX node; RET14h",
+      "coverage": "complete actual-storage source",
+      "annotations_applied": false
+    },
+    {
+      "address": "00b7f6a0",
+      "inclusive_end": "00b7f711",
+      "byte_count": 114,
+      "sha256": "536ca3023856a06464984184b8ceaed15a81d100a376c9be3da340f2bbb2b850",
+      "installed_pe_matches_live_ghidra": true,
+      "evidence_log": "local/resource_cache_node_bn/00b7f6a0.txt",
+      "evidence_sha256": "c5a62019c914cc81f5731d136cb6eea145b59546dc5c227c742c3d22573957f1",
+      "source": "allocate_native_resource_cache_node_00b7f6a0",
+      "original_ghidra_name": "BSP_ResourceNameTree_AllocateNode",
+      "native_abi": "incoming ECX unused; five stack arguments left,parent,right,source pair,color; EAX captured allocation/null; RET14h",
+      "coverage": "complete actual-storage source including separately decoded catch",
+      "annotations_applied": false
+    },
+    {
+      "address": "00b7f712",
+      "inclusive_end": "00b7f726",
+      "byte_count": 21,
+      "sha256": "0a850b8d8836ccbe24be9b1218de98b9df7d2bcc540853640015be3ed7ea25ad",
+      "installed_pe_matches_live_ghidra": true,
+      "evidence_log": "local/resource_cache_node_bn/00b7f712.txt",
+      "evidence_sha256": "a021e244e3c0bfdee8d3b81c9b914089920a68eed02e4f4e8137f560fd8be924",
+      "source": "catch in allocate_native_resource_cache_node_00b7f6a0",
+      "original_ghidra_name": "Catch_All@00b7f712",
+      "native_abi": "native FH3 catch frame; captured outer allocation at EBP-14h; free then rethrow",
+      "coverage": "complete decoded B7F712..B7F726 represented by source catch; current Ghidra membership stops at B7F71A",
+      "annotations_applied": false
+    },
+    {
+      "address": "00cc20d0",
+      "inclusive_end": "00cc20e0",
+      "byte_count": 17,
+      "sha256": "f76c20c58cf76a2d087191cc44309e7cf57d952d1ecf963e8cae5ccbbd46f0a0",
+      "installed_pe_matches_live_ghidra": true,
+      "evidence_log": "local/resource_cache_node_bn/00cc20d0.txt",
+      "evidence_sha256": "7479c26e49164a7cb03872ae6a3613701c209be75260017e4b1845759667ede5",
+      "source": "no-op represented in allocator cleanup contract",
+      "original_ghidra_name": "Unwind@00cc20d0",
+      "native_abi": "FH3 unwind frame; captured allocation words EBP-14h/18h; RET",
+      "coverage": "complete supporting evidence; no-op placement delete omitted from source execution",
+      "annotations_applied": false
+    },
+    {
+      "address": "00cc20e1",
+      "inclusive_end": "00cc20ea",
+      "byte_count": 10,
+      "sha256": "627f2da5d205093121c6ac4d4fea0b7c72e03958268d4313dbb8933bf2e1b7fb",
+      "installed_pe_matches_live_ghidra": true,
+      "evidence_log": "local/resource_cache_node_bn/00cc20e1.txt",
+      "evidence_sha256": "7691a8e3f686834e709f2938a7ca1f4d8e74728dddca713f415857bd540df7d0",
+      "source": "native FH3 metadata evidence",
+      "original_ghidra_name": null,
+      "native_abi": "handler loads EAX=DFB2E8 then tail-jumps BF6B43",
+      "coverage": "complete decoded supporting evidence; no current Ghidra function",
+      "annotations_applied": false
+    }
+  ],
+  "support_spans": [
+    {
+      "address": "00dfb2e8",
+      "inclusive_end": "00dfb30b",
+      "byte_count": 36,
+      "sha256": "b90451f2d07aaa1d7c076c372e02c9fe76e0d4eacdc91ad66c3f6ab1beea39da",
+      "installed_pe_matches_live_ghidra": true,
+      "evidence_log": "local/resource_cache_node_bn/00dfb2e8.txt",
+      "evidence_sha256": "19e0ffcc183b78af67d040c3a41d7b82d7a683361254fccbe9b7818c988a5925"
+    },
+    {
+      "address": "00dfb2d0",
+      "inclusive_end": "00dfb2e7",
+      "byte_count": 24,
+      "sha256": "723478eeb0bb596f6f3b9bc2e67622751a3c1bcf0ff9052561347efe20cecc49",
+      "installed_pe_matches_live_ghidra": true,
+      "evidence_log": "local/resource_cache_node_bn/00dfb2d0.txt",
+      "evidence_sha256": "18e46a9c85605f8e2d78eef68960864a4b06257afc3072132f656179c47fff56"
+    },
+    {
+      "address": "00dfb2bc",
+      "inclusive_end": "00dfb2cf",
+      "byte_count": 20,
+      "sha256": "98d6506ada8aaea911fed1ede7a908775ac04cc31c4c5ba0b46ea5b51570df25",
+      "installed_pe_matches_live_ghidra": true,
+      "evidence_log": "local/resource_cache_node_bn/00dfb2bc.txt",
+      "evidence_sha256": "379a383e1639a3a6cbd6239d7ef1fc7c0a76884ffd024f1c89acdc91cc2b2ec3"
+    },
+    {
+      "address": "00dfb2ac",
+      "inclusive_end": "00dfb2bb",
+      "byte_count": 16,
+      "sha256": "ff316460e7ddd322fbb402db86e0cdacf82b7c659630f87dcdedb09a3d9abe05",
+      "installed_pe_matches_live_ghidra": true,
+      "evidence_log": "local/resource_cache_node_bn/00dfb2ac.txt",
+      "evidence_sha256": "14be3ef4defd9cdadd3b8a920bea1078745114c12519241233dcefc92793e8bd"
+    },
+    {
+      "address": "00401130",
+      "inclusive_end": "00401130",
+      "byte_count": 1,
+      "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+      "installed_pe_matches_live_ghidra": true,
+      "evidence_log": "local/resource_cache_node_bn/00401130.txt",
+      "evidence_sha256": "fbb20bd3152b50cc9e9d4a7228f92446a3cbd174a0110c70fd16dc0a72ad6e0d"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00b7f259",
+      "native": "0041dd40",
+      "function": "00b7f220",
+      "instruction": "CALL 0x41dd40",
+      "kind": "call",
+      "ghidra_membership_present": true,
+      "source_operation": "resize_native_string_header_0041dd40 raw context",
+      "argument_cleanup_evidence": "ECX actualkey; stack current source length,preserve1; callee RET8"
+    },
+    {
+      "address": "00b7f26f",
+      "native": "00bf7680",
+      "function": "00b7f220",
+      "instruction": "CALL 0xbf7680",
+      "kind": "call",
+      "ghidra_membership_present": true,
+      "source_operation": "memmove for recovered valid overlap behavior",
+      "argument_cleanup_evidence": "current destination data,source data,destination length; B7F274 ADD ESP,0Ch"
+    },
+    {
+      "address": "00b7f6c3",
+      "native": "00bf681b",
+      "function": "00b7f6a0",
+      "instruction": "CALL 0xbf681b",
+      "kind": "call",
+      "ghidra_membership_present": true,
+      "source_operation": "singleton_lifetime_allocate",
+      "argument_cleanup_evidence": "size1Ch; B7F6CA ADD ESP,4; before state0"
+    },
+    {
+      "address": "00b7f6f8",
+      "native": "00b7f220",
+      "function": "00b7f6a0",
+      "instruction": "CALL 0xb7f220",
+      "kind": "call",
+      "ghidra_membership_present": true,
+      "source_operation": "construct_native_resource_cache_node_00b7f220",
+      "argument_cleanup_evidence": "ECX captured allocation; five explicit arguments; callee RET14h"
+    },
+    {
+      "address": "00b7f716",
+      "native": "00bf65ac",
+      "function": "00b7f712",
+      "instruction": "CALL 0xbf65ac",
+      "kind": "call",
+      "ghidra_membership_present": true,
+      "source_operation": "singleton_lifetime_free",
+      "argument_cleanup_evidence": "captured[EBP-14]; decoded B7F71B ADD ESP,4"
+    },
+    {
+      "address": "00cc20d8",
+      "native": "00401130",
+      "function": "00cc20d0",
+      "instruction": "CALL 0x401130",
+      "kind": "call",
+      "ghidra_membership_present": true,
+      "source_operation": "no-op placement-delete evidence",
+      "argument_cleanup_evidence": "captured[EBP-18],captured[EBP-14]; CC20DD ADD ESP,8"
+    }
+  ],
+  "decoded_only_transfers": [
+    {
+      "instruction_address": "00b7f722",
+      "decoded_target": "00bf6885",
+      "intended_function": "00b7f712",
+      "instruction": "CALL 0xbf6885",
+      "kind": "call",
+      "source_operation": "C++ rethrow after outer free",
+      "argument_cleanup_evidence": "PUSH0 atB7F71E; PUSH0 atB7F720; no normal continuation",
+      "evidence_status": "decoded only, live/PE byte parity; no current Ghidra function membership; not a supported-call claim"
+    },
+    {
+      "instruction_address": "00cc20e6",
+      "decoded_target": "00bf6b43",
+      "intended_function": "00cc20e1",
+      "instruction": "JMP 0xbf6b43",
+      "kind": "tail_jump",
+      "source_operation": "native FH3 metadata transfer only",
+      "argument_cleanup_evidence": "EAX DFB2E8; JMP BF6B43",
+      "evidence_status": "decoded only, live/PE byte parity; no current Ghidra function membership; not a supported-call claim"
+    }
+  ],
+  "native_byte_parity": {
+    "span_count": 10,
+    "bytes": 371,
+    "routine_bytes": 226,
+    "catch_bytes": 21,
+    "unwind_handler_bytes": 27,
+    "metadata_noop_bytes": 97,
+    "all_installed_pe_matches_live_ghidra": true
+  },
+  "actual_storage": {
+    "node_bytes": "1Ch",
+    "source_pair_bytes": "0Ch",
+    "fields": {
+      "00": "left pointer",
+      "04": "parent pointer",
+      "08": "right pointer",
+      "0c": "owned key DWORD length",
+      "10": "owned key data pointer",
+      "14": "borrowed raw resource value",
+      "18": "color byte",
+      "19": "nil byte=0",
+      "1a..1b": "untouched allocation bytes"
+    },
+    "resource_reference_changes": "none",
+    "layout_projection_added": false
+  },
+  "material_contracts": [
+    "Compare key/source identity at B7F238 before link writes or key clear. No old-key release during clear.",
+    "Write left,parent,right, then clear key length/data. Nonidentity source aliases observe these writes.",
+    "Raw-pool resize receives current source length; source guard and destination length/source data/destination data reload afterward.",
+    "Copy uses current destination length. Current source+8 rawresource is read after the key copy, then color lowbyte and nil0 are written.",
+    "No AddRef, Release, virtual resource call, inserted-tree ownership or partial-key rollback.",
+    "B7F6C3 allocates1Ch before state0; only nonnull result enters constructor. Return captured allocation, not constructor result.",
+    "State1 placement-delete action calls bareRET401130. Separate catch frees captured EBP-14 outer node then rethrows. No key cleanup.",
+    "NativeStringRawPoolContext uses actual publication/gate/lifetime cells; canonical singleton allocation has equal native/host size1Ch."
+  ],
+  "fh3": {
+    "handler": "00cc20e1",
+    "func_info": "00dfb2e8",
+    "magic": "19930522",
+    "max_state": 3,
+    "unwind_map": "00dfb2d0",
+    "try_map": "00dfb2bc",
+    "flags": 1,
+    "states": [
+      {
+        "state": 0,
+        "next": -1,
+        "action": null
+      },
+      {
+        "state": 1,
+        "next": 0,
+        "action": "00cc20d0",
+        "effect": "RET-only401130 placement-delete; no free"
+      },
+      {
+        "state": 2,
+        "next": -1,
+        "action": null
+      }
+    ],
+    "try": {
+      "low": 0,
+      "high": 1,
+      "catch_high": 2,
+      "catch_count": 1,
+      "descriptor": "00dfb2ac",
+      "adjectives": "40h",
+      "type": null,
+      "handler": "00b7f712"
+    },
+    "allocation_capture": "ESI and frame EBP-14h/EBP-18h; source preserves one exact outer allocation pointer",
+    "catch": "BF65AC(captured outer) at B7F716, then BF6885(0,0) at B7F722; no partial key cleanup",
+    "source_transport": "constructor call under catch(...); canonical free(captured allocation); throw;",
+    "abi_limit": "No native EH registration, mutable frame-spill identity, hardware-SEH or legacy exception-object ABI claim"
+  },
+  "repair_proposals": [
+    {
+      "was": "Catch_All@00b7f712 owns onlyB7F712..B7F71A; decoded B7F71B..B7F726 has no function",
+      "is": "Proposed full catch membershipB7F712..B7F726",
+      "evidence": "21-byte live/installed PE parity plus ADD ESP4/PUSH0/PUSH0/CALL BF6885 decoded at B7F71B..726",
+      "apply": "Primary coordinated write lock, preserve existing comments, refresh exports and save; no global no-return edit",
+      "applied": false
+    },
+    {
+      "was": "CC20E1..CC20EA has no current function",
+      "is": "Proposed distinct decoded FH3 handler atCC20E1",
+      "evidence": "10-byte live/installed PE parity: MOV EAX,DFB2E8; JMP BF6B43, named in allocator prologue",
+      "apply": "Primary coordinated creation/annotation only after evidence review",
+      "applied": false
+    }
+  ],
+  "dependencies": [
+    {
+      "entry": "0041dd40",
+      "source": "native_string.cpp raw-pool overload",
+      "contract": "Current actual header resize, allocation-before-return and current pool getters; caller owns its EH"
+    },
+    {
+      "entries": [
+        "00419cc0",
+        "00bd1120",
+        "00bd1510"
+      ],
+      "source": "native_string_pool_owner.cpp and native_string_pool_storage.cpp",
+      "contract": "Existing actual raw pool and lifetime publication composition; getter failures propagate"
+    },
+    {
+      "entries": [
+        "00bf681b",
+        "00bf65ac"
+      ],
+      "source": "singleton_lifetime.cpp",
+      "contract": "Existing malloc/new-handler retry/host bad_alloc and matching free; native/host byte counts both1Ch"
+    },
+    {
+      "entry": "00401130",
+      "source": "native evidence only",
+      "contract": "Complete one-byte RET, no cleanup"
+    },
+    {
+      "entry": "00bf7680",
+      "source": "host memmove for supported ranges",
+      "contract": "Complete packet call schedule; native overlap branch atBF769A and backward copying independently inspected"
+    },
+    {
+      "entry": "00bf6885",
+      "source": "host C++ rethrow",
+      "contract": "Native two-zero rethrow request; source preserves caught exception, not legacy runtime object identity"
+    }
+  ],
+  "source_sha256": {
+    "include/bsp/native_resource_cache_node.hpp": "9c322b1840f2e517120dbefe1c936403dad591ea66c52471db76315b2bd09a3b",
+    "src/native_resource_cache_node.cpp": "fa360b416710ec09af95657cd67324006d797fce55db6cd7874477f5313c555b",
+    "include/bsp/native_string.hpp": "80013e5a7350120f32fcad1ce54db9b0923ad5b49cc2152823d858534331378f",
+    "src/native_string.cpp": "0e8819d3a6442fc48c879e85c00899a72beabdc51b3e94a11836ab5314d5e60c",
+    "include/bsp/native_string_pool_owner.hpp": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff",
+    "src/native_string_pool_owner.cpp": "cb52fde795918995689a26567d513e9f3cf75eeb27600eb60c431c37fdd21d6e",
+    "include/bsp/native_string_pool_storage.hpp": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d",
+    "src/native_string_pool_storage.cpp": "5cb79a6ce240205b3f1c81f1fbd6edd49cc1c05f8a20ee8dca8913f44c9095d5",
+    "include/bsp/singleton_lifetime.hpp": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+    "src/singleton_lifetime.cpp": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+  },
+  "validation": {
+    "strict_win32_tu": {
+      "passed": true,
+      "flags": "/std:c++17 /EHsc /O2 /MD /W4 /WX /fp:strict /Iinclude /c"
+    },
+    "ignored_actual_storage_fixture": {
+      "passed": true,
+      "source": "local/resource_cache_node_bn/probe.cpp",
+      "actual_pool_constructed": true,
+      "new_source_object_explicitly_linked": true,
+      "checks": [
+        "key/value copy and no AddRef",
+        "arbitrary color byte and untouched padding",
+        "key/source identity",
+        "source/link alias reads after stores",
+        "postallocation current source guard/copy/resource reads",
+        "successful actual node allocation",
+        "constructor partial state after pool-getter failure",
+        "captured outer allocation freed exactly once before same exception rethrow"
+      ],
+      "failure_instrumentation": "Only fixture-process malloc/free import slots and CRT new handler, restored before exit; no production callbacks",
+      "native_original_execution": false,
+      "permanent_test_added": false,
+      "manifest": "/MANIFEST:EMBED",
+      "runtime_link": "/MD"
+    },
+    "frozen_library": {
+      "frozen": "J:\\PROG\\battlestations-pacific-decompile-orch4-pak-block-helpers-bn\\local\\pak_block_helpers_bn\\bsp_core_orchestrator_frozen.lib",
+      "sha256": "134578367593f74415bb6fd12b51d103dfc6575dcb94d2f692640dde69c78251",
+      "original_source": "J:/PROG/battlestations-pacific-decompile-orch4-20260910/build/win32/Release/bsp_core.lib",
+      "receipt": "J:/PROG/battlestations-pacific-decompile-orch4-pak-block-helpers-bn/local/pak_block_helpers_bn/orchestrator_frozen_library.json",
+      "source_copy_source_hashes_agreed_when_frozen": true,
+      "use": "Reuse of previously frozen correct orchestrator library; no main/primary library recopied or rebuilt."
+    },
+    "artifact_sha256": {
+      "local/resource_cache_node_bn/probe.cpp": "8b7a35765c25c65fe7e7df8c9c46e480582255af219d28a1aa049272381cdfbd",
+      "local/resource_cache_node_bn/compile.ps1": "1ca174cfb89313dd37bb47606ca3dcd4e026b1444d77e064926986ece953aaea",
+      "local/resource_cache_node_bn/compile.log": "836a1bb82e2e84faaa8125215b1dccb7ea915cc1869b1a971ed2e4490bc2a137",
+      "local/resource_cache_node_bn/node.obj": "96b9fb2094ad087f370a55a393f80f242e09690431fa068ba5ded4296ca2f336",
+      "local/resource_cache_node_bn/probe.exe": "0b9115f3d4bd9401c9b705ef473e052092176b654ac72d9e2eca503a278d8929"
+    },
+    "call_report_verifier": {
+      "command": "python tools/verify_report_calls.py reports/native_resource_cache_node_bn.json",
+      "pending_execution": false,
+      "checked": 6,
+      "failed": 0,
+      "exit_code": 0,
+      "scope": "Six supported owned CALLs; decoded-only rethrow and handler JMP kept separately until primary membership repair",
+      "log": "local/resource_cache_node_bn/call_verifier.log",
+      "log_sha256": "72b74207213faab66ba86403c466d6a8b55883f3c4ba292b32fe23051bc2feb3",
+      "initial_all_decoded_rows_receipt": {
+        "checked": 8,
+        "failed": 2,
+        "log": "local/resource_cache_node_bn/initial_all_decoded_calls_verifier.log",
+        "log_sha256": "cab06dc0d015481141b4c858b565e6b659dff3e6aaf63ae3c0161dcb85cc207b",
+        "reasons": [
+          "B7F722 no containing function",
+          "CC20E6 no containing function"
+        ]
+      }
+    },
+    "integrated_build": false,
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "worker_verification_checklist": {
+    "1_callee_before_contract": "Reviewed native resize/allocator/free/rethrow and RET-only placement delete before naming source operations.",
+    "2_boundary_before_attribution": "Live containing-function query for every row; two unowned transfers are separate decoded-only evidence, not asserted supported-call ownership.",
+    "3_all_call_sites": "Live xrefs show constructor callerB7F6F8 and allocator callerB80004; argument setup read, all five inputs retained.",
+    "4_producer_before_layout": "B7F220 producer agrees with existing RESOURCE_CACHE_OWNERSHIP.md; no projected struct added.",
+    "5_complete_vs_partial": "Two full source bodies plus decoded catch are complete; metadata/listing membership limits are separate.",
+    "6_runtime_frame_claim": "Not applicable: no game/frame claim or production binding; focused fixture evidence only.",
+    "7_argument_cleanup": "Every native step carries stack argument/cleanup evidence, including decoded post-free ADD ESP4.",
+    "8_register_provenance": "Full112/114-byte listings read; ESI captures node/allocation, EBP source pointer/frame, EDI key; incoming ECX unused in allocator.",
+    "9_lease_scope": "Only assigned five routines/FH3 entries and four output files leased; called dependencies read without claims.",
+    "10_machine_readable_evidence": "Six supported CALL rows carry address/native/function/kind; two unowned decoded transfers carry instruction_address/decoded_target/intended_function/kind; repair proposals carry was/is/evidence."
+  },
+  "known_unknowns": [
+    "Six supported call rows pass; unowned decoded rethrow and FH3 handler transfer cannot join that verified set until primary repairs membership.",
+    "No original register/stack spill identity or hardware-SEH/FH3 transport equivalence.",
+    "Native invalid pointers, address wrap into invalid buffers and zero-byte CRT call effects are not made safe or proven equivalent.",
+    "The existing allocation service ordinarily throws instead of returning null; explicit native null branch retained but not fixture-forced.",
+    "No insertion, resource manager, factory/resource lifetime, CMake registration, shared ledgers, production glue or integrated game validation."
+  ]
+}
