@@ -16,6 +16,11 @@ and the agreement settles the two things a listing cannot: the **units** and the
 | `YawTurnRollRange` | `{DEG(30), DEG(60)}` | *"ekkora roll tartomany eseten yaw-al is kanyarodik"* — over this roll range it turns with yaw as well | `0099DFFB` and `0099E94A`: the two interpolations, with swapped endpoints, that blend the heading term out and the turn term in |
 | `YawCtrlSetTimeMul` | `0.8` | *"manoverezes kozben ugy allitja be a yaw kontrolt, hogy elvileg ennyi sec kell ahhoz, hogy a kivant pozicioba keruljunk"* — it sets the yaw control so that in theory this many seconds are needed to reach the wanted position | `0099E884`: the divisor `YawSpd * cos(bank) * 0.8` |
 
+The reconstruction these confirm is `plan_yaw_0099e81a`, `yaw_base_numerator_0099de8a` and
+`yaw_base_gain_0099dffb` in `include/bsp/plane_ai_control.hpp` and `src/plane_ai_control.cpp`
+(packets `cc7_pilot_bot_axis_arms` and `_2), which decompose the arm the way the native does. This
+doc adds no code.
+
 ## What the cross-check buys
 
 **Units.** `(TurnRollSpd + PitchSpd) * SoftHdgLimit` is dimensionally a rate times a time. The
