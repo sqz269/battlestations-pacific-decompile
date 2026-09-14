@@ -10,21 +10,21 @@ namespace bsp {
 namespace {
 using Word = std::uint32_t;
 static_assert(sizeof(void*) == 4);
-Word word(const volatile void* base, Word offset = 0) noexcept {
+Word word(const volatile void* base, Word byte_offset = 0) noexcept {
     Word result;
     __asm {
         mov eax, base
-        mov edx, offset
+        mov edx, byte_offset
         mov eax, dword ptr [eax + edx]
         mov result, eax
     }
     return result;
 }
-std::uint8_t byte(const void* base, Word offset) noexcept {
+std::uint8_t byte(const void* base, Word byte_offset) noexcept {
     std::uint8_t result;
     __asm {
         mov eax, base
-        mov edx, offset
+        mov edx, byte_offset
         mov al, byte ptr [eax + edx]
         mov result, al
     }

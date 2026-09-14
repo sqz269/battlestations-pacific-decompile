@@ -77,12 +77,38 @@ also match live and disk bytes. `reports/native_renderer_debug_lines.json`
 contains 34 numeric direct-call rows; seven virtual COM/renderer call sites are
 explicitly marked indirect and are not proved by the mechanical call gate.
 
-Validation is pending the separate shader dependency. The prepared single
-focused fixture uses real HAL devices with temporary per-device vtable
-observation, a context-free empty path, fresh device/constant reads, ignored
-HRESULT behavior, draw-gated reserve, and an injected second-transform source
-exception. Its null logical-buffer bindings isolate this provider; it does not
-repeat the existing nonempty owner teardown fixtures.
+Shader dependency `5ccb5885` is integrated through private ancestry merge
+`878fafdb`. The strict MSVC Win32 build passed with all eight native seeds
+verified before configuration and both existing CTests passing. The numeric
+call gate passed all 34 direct sites, and the source literal arguments agree
+with the native pushed DWORDs at every direct call.
+
+One focused fixture passed an original/source empty-return comparison and
+three nonempty source cases using two real HAL devices. Those cases cover
+fresh device/constant reads and shared matrix identity despite an injected
+failed HRESULT, a draw-gated real reserve, and a second-transform source
+exception that preserves prior state and leaves records undrained. The three
+cases observed 30, 29, and 16 COM calls. Fourteen temporarily observed slots
+across the two original device vtables were restored and checked before device
+release. The fixture retained the real device vptrs. Its null logical-buffer
+bindings isolate this provider; it does not repeat the existing nonempty owner
+teardown fixtures. Only the initial count-zero path executed copied original
+instructions; the nonempty cases executed the reconstructed source.
+
+The final manifested `/MD` probe links its fixture source solely against the
+complete rebuilt core/Lua/zlib libraries and platform import libraries. It does
+not compile reconstructed modules into the probe directly. The immutable
+artifact manifest in `local/output/debug_lines_validated_artifacts/manifest.json`
+separates compiler/source/library/test artifacts from the modules actually
+loaded by the final Win32 fixture; the report records its hash and scope.
+
+Root's subsequent dependency audit identified a separate integration limit:
+resource-support getter `B3E730` and existing physical/surface/layout/shader
+contexts still use projected `SingletonLifetimeDomain` access. Migration to the
+same actual `01090AA0` manager remains necessary for full parent destruction
+and nonempty terminal composition. This provider neither creates a projected
+manager nor claims that migration. The focused fixture's logical-buffer
+bindings are null, so it never invokes that resource-support/lifetime path.
 
 This is a new source interface. Original caller ABI, aliases into other native
 private stack slots, original hardware-fault/FH3 execution, active original

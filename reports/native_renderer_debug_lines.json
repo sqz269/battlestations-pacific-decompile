@@ -1,7 +1,7 @@
 {
   "packet": "orch5_native_renderer_debug_lines",
-  "status": "implemented_pending_shader_dependency_strict_build_and_focused_fixture",
-  "created_utc": "2026-09-14T16:34:03.753503+00:00",
+  "status": "full_actual_body_strict_win32_two_ctests_real_d3d9_source_fixture_passed",
+  "created_utc": "2026-09-14T16:52:57.672568+00:00",
   "entry": "00b28d00",
   "native_end_inclusive": "00b290c5",
   "native_bytes": 966,
@@ -678,7 +678,11 @@
     "program_path": "/battlestationspacific.exe"
   },
   "dependencies": {
-    "shader_worker": "B21C20/B21D10 new native_renderer_shader_binding module; stable borrowed globals API received, commit pending.",
+    "shader_worker": {
+      "commit": "5ccb5885ca28e4280d8f39478bcb49bb8e6cd4d2",
+      "private_ancestry_merge": "878fafdb",
+      "source_and_header_unchanged": true
+    },
     "existing_actual": [
       "B24460 render state",
       "B24510 texture-stage state",
@@ -687,6 +691,7 @@
       "B24B00 index binding",
       "B22940 reserve20"
     ],
+    "remaining_resource_support_domain": "Root identified B3E730 resource-support access and physical/surface/layout/shader contexts still using projected SingletonLifetimeDomain. Actual01090AA0 migration and stable borrowed manager identity remain a separate prerequisite for full parent/nonempty terminal composition. B28D00 creates no projected manager; fixture null logical-buffer bindings do not invoke that lifetime path.",
     "integration_owner": "Root owns native_renderer_end_frame.hpp/.cpp; this packet does not edit or claim those entry points."
   },
   "exception_and_domain_limits": [
@@ -697,9 +702,74 @@
     "The shared local matrix preserves pointer identity across its three calls; equivalence for aliases into other original private stack slots or asynchronous data races is not claimed."
   ],
   "validation": {
-    "state": "pending dependency",
-    "native_seeds": "local/output/debug_lines_seed_verification.json",
-    "fixture_source": "local/output/debug_lines_probe.cpp",
-    "fixture_plan": "One focused source fixture: context-free empty path; two real HAL devices with temporary per-device vtable observation, current constant/device reload and injected failed HRESULT; draw-gated negative-capacity reserve; second-transform source exception retaining prior state/count. Cold null logical buffers isolate B28D00; full nonempty canonical owner teardown belongs to existing binding provider evidence."
+    "strict_build": {
+      "command": "./scripts/build.ps1",
+      "log": "local/output/debug_lines_build.log",
+      "exit_code": 0,
+      "target": "MSVC Win32 Release",
+      "warnings": "W4/WX",
+      "floating_point": "strict",
+      "eight_seeds_verified_before_configure": true,
+      "ctests": 2,
+      "ctests_failed": 0
+    },
+    "native_call_gate": {
+      "command": "python tools/verify_report_calls.py reports/native_renderer_debug_lines.json",
+      "log": "local/output/debug_lines_call_gate.log",
+      "numeric_direct_sites": 34,
+      "failed": 0,
+      "indirect_sites_unproved": 7,
+      "constant_stack_arguments_match_source": 34
+    },
+    "focused_fixture": {
+      "source": "local/output/debug_lines_probe.cpp",
+      "build_command_file": "local/output/build_debug_lines_probe.cmd",
+      "compile_log": "local/output/debug_lines_probe_compile.log",
+      "run_log": "local/output/debug_lines_probe_run.log",
+      "manifest_embedded": true,
+      "crt": "MD",
+      "link_inputs": "Fixture source plus the complete rebuilt bsp_core/bsp_lua511/bsp_zlib121 libraries and normal platform import libraries; no reconstructed source/object inputs.",
+      "cases": [
+        "Original/source count-zero return, including negative capacity and absent context; all actual8192 receiver bytes agree. Original active branch was not executed.",
+        "Nonempty source with two real HAL devices: three calls reuse one64-byte matrix, reload current D7A24C/current device, forward actual D3D9 operations, continue after an injected E_FAIL, draw odd count3 as one primitive and drain records.",
+        "Source byte draw gate retains state/transform work and executes actual B22940 negative-capacity reserve with one valid row, then drains count.",
+        "Injected source exception after the second real transform retains count/data and old index-base word, while prior actual shader cache/counter effects remain. No later call/draw/cleanup occurs."
+      ],
+      "observed_com_calls": [
+        30,
+        29,
+        16
+      ],
+      "restoration": "Two original device vptrs retained; seven observed slots in each original vtable restored and checked before release.",
+      "limits": "Temporary original-vtable slot observation forwards real COM operations; shader cache views and null logical buffers are controlled fixture inputs. Actual01090AA0 resource-support migration remains separate; the fixture never selects that lifetime path. No full EndFrame, original nonempty FH3/SEH execution, active game renderer, visual parity or game validation."
+    },
+    "retained_prior_attempts": [
+      {
+        "log": "local/output/debug_lines_initial_build_failure.log",
+        "cause": "MSVC inline assembly treated parameter name offset as reserved OFFSET; final source uses byte_offset. Corrected strict build and both CTests passed."
+      },
+      {
+        "log": "local/output/debug_lines_probe_observation_failure.log",
+        "source": "local/output/debug_lines_probe_observation_failure.cpp",
+        "exe": "local/output/debug_lines_probe_observation_failure.exe",
+        "cause": "A copied COM vtable observation setup faulted inside d3d9.dll. Final fixture preserves real vptrs and observes/restores original table slots; all final cases and restoration checks passed."
+      }
+    ],
+    "immutable_closure": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-debug-lines\\local\\output\\debug_lines_validated_artifacts\\manifest.json",
+      "sha256": "70b6caaf38ef74603ea9a4b25cf2e044f4d586eafa8d73869495b768acf95029",
+      "artifacts": 4409,
+      "actually_loaded_modules": 57,
+      "bytes": 512892352
+    }
+  },
+  "ghidra_followup_for_root": {
+    "worker_mutations": false,
+    "current_name": "FUN_00b28d00",
+    "proposed_descriptive_name": "BSP_D3D9Renderer_DrawDebugLineRecords",
+    "current_saved_signature": "undefined FUN_00b28d00(void)",
+    "established_original_abi": "ECX actual renderer, no stack arguments, RET",
+    "body_repairs_needed": null,
+    "do_after_worker_release": "Root may annotate name/prototype/evidence, preserving previous metadata and refreshing export."
   }
 }
