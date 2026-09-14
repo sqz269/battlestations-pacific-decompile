@@ -1,9 +1,11 @@
 #include "bsp/resource_lookup.hpp"
 #include "bsp/resource_path.hpp"
+#include "bsp/vfs_native_access.hpp"
 
 namespace bsp {
 bool resolve_existing_resource_00bdf4c0_fragment(VfsMountContext& mounts,
     const VfsCandidateRegistrations& registrations, std::string& name) {
+    if (mounts.native_access) return mounts.native_access->resolve_existing(name);
     if (!normalize_resource_path_00bee690(name)) return false;
     return resolve_resource_candidates_00bddc80(name, registrations,
         [&](const std::string& input, std::string& output) {

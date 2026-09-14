@@ -1,6 +1,7 @@
 #pragma once
 #include "bsp/physical_file.hpp"
 #include <memory>
+#include <cstddef>
 
 namespace bsp {
 struct MemoryStreamBacking;
@@ -38,6 +39,7 @@ public:
         std::uint32_t* actual = nullptr) noexcept;
 
 private:
+    friend MemoryStream memory_stream_from_complete_bytes(const void*, std::size_t);
     friend bool memory_stream_from_physical_00bef750_fragment(
         PhysicalFile&, MemoryStream&, DWORD&) noexcept;
     friend bool memory_stream_from_bytes_00befa40_fragment(
@@ -62,4 +64,9 @@ bool memory_stream_from_physical_00bef750_fragment(PhysicalFile& source,
 // allocator/refcount ABI and zero/negative-size paths. Source may alias output.
 bool memory_stream_from_bytes_00befa40_fragment(const void* source,
     std::uint32_t byte_count, MemoryStream& output, DWORD& error) noexcept;
+
+// Source-only carrier for an already completed native read. Keeps a valid
+// backing for an opened empty file. No original constructor/ABI is claimed.
+// The signed32 consumer length limit applies; invalid extent/allocation throws.
+MemoryStream memory_stream_from_complete_bytes(const void* source, std::size_t bytes);
 }

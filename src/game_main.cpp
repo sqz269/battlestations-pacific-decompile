@@ -16,14 +16,26 @@
 #define NOMINMAX
 #endif
 #include <windows.h>
+#include <shellapi.h>
+#include <wincrypt.h>
 
 #include <cfloat>
+#include <array>
 #include <cstdio>
+#include <cstring>
+#include <cwchar>
+#include <filesystem>
+#include <fstream>
+#include <memory>
 #include <string>
 #include <exception>
+#include <stdexcept>
+#include <utility>
+#include <vector>
 
 #include "bsp/game_hosts.hpp"
 #include "bsp/game_hosts_vfs.hpp"
+#include "bsp/game_native_data_bootstrap.hpp"
 #include "bsp/winmain_startup.hpp"
 
 namespace {
@@ -37,6 +49,159 @@ void attach_parent_console() {
     freopen_s(&stream, "CONOUT$", "w", stderr);
 }
 
+// These explicit spans select the four original read-only 64-KB bands consumed by
+// the raw VFS entry path. The mapper verifies the entire original PE before it
+// admits any table/literal read in those bands.
+constexpr std::array<bsp::game::GameNativeDataSpan, 4> native_data_spans{{
+    {0x00cf0000u, 1}, {0x00d10000u, 1}, {0x00d50000u, 1}, {0x00d60000u, 1}
+}};
+constexpr char handoff_prefix[] = "--bsp-native-data-handoff=";
+
+// The bootstrap appends this token last. Exclude it before the public parser
+// sees argv, including when a public option is missing its required value.
+bool is_handoff_child() {
+    if (__argc < 2) return false;
+    const char* const token = __argv[__argc - 1];
+    const std::size_t prefix_size = sizeof(handoff_prefix) - 1;
+    if (std::strncmp(token, handoff_prefix, prefix_size) != 0 ||
+        std::strlen(token + prefix_size) != 8) return false;
+    unsigned long value = 0;
+    for (const char* digit = token + prefix_size; *digit; ++digit) {
+        const unsigned nibble = (*digit >= '0' && *digit <= '9') ? *digit - '0' :
+            (*digit >= 'A' && *digit <= 'F') ? *digit - 'A' + 10 :
+            (*digit >= 'a' && *digit <= 'f') ? *digit - 'a' + 10 : 16;
+        if (nibble == 16) return false;
+        value = (value << 4) | nibble;
+    }
+    DWORD flags = 0;
+    return GetHandleInformation(reinterpret_cast<HANDLE>(value), &flags) &&
+        (flags & HANDLE_FLAG_INHERIT);
+}
+
+// Windows command-line quoting: double backslashes before quotes and before
+// the closing quote. Rebuild the public argument vector without changing its
+// token boundaries, then let the bootstrap append its private handle token.
+std::wstring quote_argument(const std::wstring& argument) {
+    std::wstring quoted(1, L'"');
+    std::size_t slashes = 0;
+    for (const wchar_t ch : argument) {
+        if (ch == L'\\') { ++slashes; continue; }
+        if (ch == L'"') {
+            quoted.append(slashes * 2 + 1, L'\\');
+            quoted.push_back(ch);
+        } else {
+            quoted.append(slashes, L'\\');
+            quoted.push_back(ch);
+        }
+        slashes = 0;
+    }
+    quoted.append(slashes * 2, L'\\');
+    quoted.push_back(L'"');
+    return quoted;
+}
+
+std::wstring child_arguments() {
+    int count = 0;
+    LPWSTR* const arguments = CommandLineToArgvW(GetCommandLineW(), &count);
+    if (!arguments) throw std::runtime_error("Cannot read bsp_game command line");
+    std::wstring result;
+    try {
+        for (int index = 1; index < count; ++index) {
+            if (std::wcsncmp(arguments[index], L"--bsp-native-data-handoff=", 26) == 0)
+                throw std::invalid_argument("The --bsp-native-data-handoff= prefix is reserved for the child bootstrap");
+            if (!result.empty()) result.push_back(L' ');
+            result += quote_argument(arguments[index]);
+        }
+    } catch (...) { LocalFree(arguments); throw; }
+    LocalFree(arguments);
+    return result;
+}
+
+std::filesystem::path own_executable() {
+    std::wstring path(MAX_PATH, L'\0');
+    for (;;) {
+        const DWORD size = GetModuleFileNameW(nullptr, path.data(),
+            static_cast<DWORD>(path.size()));
+        if (!size) throw std::runtime_error("Cannot resolve bsp_game executable");
+        if (size < path.size()) { path.resize(size); return path; }
+        if (path.size() > 32768) throw std::runtime_error("bsp_game executable path is too long");
+        path.resize(path.size() * 2);
+    }
+}
+
+std::filesystem::path original_executable(const bsp::game::GameExecutableOptions& options) {
+    const auto root = options.game_root.empty() ? std::filesystem::current_path()
+        : std::filesystem::absolute(std::filesystem::path(options.game_root));
+    const auto image = root / "battlestationspacific.exe";
+    if (!std::filesystem::is_regular_file(image))
+        throw std::runtime_error("Supported original battlestationspacific.exe is absent from game root: "
+            + image.string());
+    return image;
+}
+
+void check_original_identity(const std::filesystem::path& image) {
+    constexpr std::uintmax_t supported_size = 12223752;
+    constexpr std::array<BYTE, 32> supported_sha256{{
+        0xb6, 0x82, 0xa8, 0x2c, 0x52, 0xf8, 0x1f, 0x95,
+        0x7b, 0x2c, 0x70, 0x22, 0x20, 0x77, 0x30, 0x5a,
+        0x93, 0x3f, 0x72, 0x48, 0x16, 0x86, 0xc8, 0x88,
+        0x43, 0x07, 0x7f, 0x71, 0x4b, 0x95, 0x6d, 0xd6
+    }};
+    if (std::filesystem::file_size(image) != supported_size)
+        throw std::runtime_error("Original executable has an unsupported size: " +
+            image.string());
+    std::ifstream file(image, std::ios::binary);
+    if (!file) throw std::runtime_error("Cannot read original executable: " + image.string());
+    struct HashContext {
+        HCRYPTPROV provider = 0;
+        HCRYPTHASH hash = 0;
+        ~HashContext() {
+            if (hash) CryptDestroyHash(hash);
+            if (provider) CryptReleaseContext(provider, 0);
+        }
+    } context;
+    if (!CryptAcquireContextW(&context.provider, nullptr, nullptr, PROV_RSA_AES,
+            CRYPT_VERIFYCONTEXT) ||
+        !CryptCreateHash(context.provider, CALG_SHA_256, 0, 0, &context.hash))
+        throw std::runtime_error("Cannot initialize original executable SHA-256 check");
+    std::array<char, 65536> bytes{};
+    for (;;) {
+        file.read(bytes.data(), bytes.size());
+        const std::streamsize count = file.gcount();
+        if (count > 0 && !CryptHashData(context.hash,
+                reinterpret_cast<const BYTE*>(bytes.data()), static_cast<DWORD>(count), 0))
+            throw std::runtime_error("Cannot hash original executable");
+        if (count < static_cast<std::streamsize>(bytes.size())) {
+            if (!file.eof()) throw std::runtime_error("Cannot read entire original executable");
+            break;
+        }
+    }
+    std::array<BYTE, 32> digest{};
+    DWORD size = static_cast<DWORD>(digest.size());
+    if (!CryptGetHashParam(context.hash, HP_HASHVAL, digest.data(), &size, 0) ||
+        size != digest.size())
+        throw std::runtime_error("Cannot finish original executable SHA-256 check");
+    if (digest != supported_sha256)
+        throw std::runtime_error("Original executable SHA-256 is unsupported: " +
+            image.string());
+}
+
+int run_bootstrap_parent(const bsp::game::GameExecutableOptions& options) {
+    check_original_identity(original_executable(options));
+    const auto child_path = own_executable();
+    bsp::game::GameNativeDataBootstrapChild child(child_path, child_arguments(),
+        native_data_spans.data(), native_data_spans.size());
+    child.reserve_and_resume();
+    child.wait_for_mapping(30000);
+    const HANDLE process = static_cast<HANDLE>(child.process_handle());
+    if (WaitForSingleObject(process, INFINITE) != WAIT_OBJECT_0)
+        throw std::runtime_error("Cannot wait for native-data child exit");
+    DWORD exit_code = 0;
+    if (!GetExitCodeProcess(process, &exit_code))
+        throw std::runtime_error("Cannot read native-data child exit code");
+    return static_cast<int>(exit_code);
+}
+
 void report_summary(bsp::game::GameHostLog& log, const bsp::game::GameRunSummary& summary) {
     log.notef("summary window_created=%d device_created=%d device_hr=0x%08lx "
         "back_buffer=%ux%u frames_presented=%llu loop_finished=%d exit_code=%d",
@@ -44,9 +209,9 @@ void report_summary(bsp::game::GameHostLog& log, const bsp::game::GameRunSummary
         static_cast<unsigned long>(summary.device_result), summary.back_buffer_width,
         summary.back_buffer_height, summary.frames_presented,
         summary.loop_finished ? 1 : 0, summary.exit_code);
-    log.notef("summary vfs_ready=%d mounts=%zu/%zu package_entries=%zu package_mounts=%zu "
+    log.notef("summary vfs_ready=%d loose_mounts=%zu/%zu package_scans=%zu "
         "cachedload=%d probes=%zu/%zu", summary.vfs_ready ? 1 : 0, summary.mounts_created,
-        summary.mounts_requested, summary.package_entries, summary.package_mounts,
+        summary.mounts_requested, summary.package_scans_completed,
         summary.cached_load ? 1 : 0, summary.probes_resolved, summary.probes_requested);
     log.notef("summary options_file=%d path=%s language=%s resolution=%dx%d fullscreen=%d "
         "vsync=%d antialias=%d", summary.options_file_present ? 1 : 0,
@@ -146,9 +311,10 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
     int show_command) {
     attach_parent_console();
 
+    const bool handoff_child = is_handoff_child();
     bsp::game::GameExecutableOptions options;
     std::string error;
-    if (!options.parse(__argc, __argv, error)) {
+    if (!options.parse(__argc - (handoff_child ? 1 : 0), __argv, error)) {
         std::fprintf(stderr, "bsp_game: %s\n", error.c_str());
         std::fprintf(stderr, "usage: bsp_game.exe [--frames N] [--log <path>]"
             " [--game-root <dir>] [--settings-personal-root <dir>] [--vfs-probe <virtual path>]"
@@ -164,9 +330,40 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
         return 2;
     }
 
+    if (!handoff_child) {
+        try { return run_bootstrap_parent(options); }
+        catch (const std::exception& failure) {
+            std::fprintf(stderr, "bsp_game: native-data bootstrap failed: %s\n",
+                failure.what());
+            return 2;
+        }
+    }
+
+    std::filesystem::path original_image;
+    try { original_image = original_executable(options); }
+    catch (const std::exception& failure) {
+        std::fprintf(stderr, "bsp_game: native-data source failed: %s\n", failure.what());
+        return 2;
+    }
+
     bsp::game::GameHostLog log;
     if (!log.open(options.log_path)) {
         std::fprintf(stderr, "bsp_game: cannot write log %s\n", options.log_path.c_str());
+        return 2;
+    }
+
+    std::unique_ptr<bsp::game::GameNativeReadOnlyData> native_data;
+    try {
+        auto reservation = bsp::game::accept_native_data_handoff(
+            native_data_spans.data(), native_data_spans.size());
+        native_data = std::make_unique<bsp::game::GameNativeReadOnlyData>(original_image,
+            native_data_spans.data(), native_data_spans.size(), std::move(reservation));
+        log.notef("native-data handoff mapped verified original image %s",
+            original_image.string().c_str());
+    } catch (const std::exception& failure) {
+        std::fprintf(stderr, "bsp_game: native-data handoff failed: %s\n", failure.what());
+        log.notef("native-data handoff failed: %s", failure.what());
+        log.close();
         return 2;
     }
     // docs/X87_CONTROL_WORD.md establishes statically that the CRT startup sets
@@ -213,7 +410,15 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
         log.notef("game root %s", options.game_root.c_str());
     }
 
-    bsp::game::GameStartupHost host(log, instance, options);
+    std::unique_ptr<bsp::game::GameStartupHost> host;
+    try { host = std::make_unique<bsp::game::GameStartupHost>(
+        log, instance, options, native_data.get()); }
+    catch (const std::exception& failure) {
+        std::fprintf(stderr, "bsp_game: startup host failed: %s\n", failure.what());
+        log.notef("startup host failed: %s", failure.what());
+        log.close();
+        return 1;
+    }
 
     // 008f81f0 reads none of its four arguments; they are recorded for completeness.
     bsp::WinMainArguments arguments;
@@ -224,12 +429,13 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
 
     int result = 1;
     try {
-        result = bsp::run_win_main(arguments, host);
+        result = bsp::run_win_main(arguments, *host);
     } catch (const std::exception& error) {
         log.notef("startup failed: %s", error.what());
     }
 
-    bsp::game::GameRunSummary summary = host.summary();
+    host->exit_if_native_vfs_interrupted();
+    bsp::game::GameRunSummary summary = host->summary();
     summary.exit_code = result;
     // A run that asked for a frame count only succeeds when the device presented them.
     // Milestone 2g is the one exception: a mission that ended through the debrief path
@@ -240,14 +446,15 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
     }
     // A --vfs-probe that did not read bytes fails the run, so a scripted check needs only the
     // exit code. The three probes the milestone always performs do not affect it.
-    if (summary.exit_code == 0 && host.vfs() != nullptr) {
+    if (summary.exit_code == 0 && host->vfs() != nullptr) {
         for (const std::string& requested : options.vfs_probes) {
-            for (const auto& probe : host.vfs()->probes()) {
+            for (const auto& probe : host->vfs()->probes()) {
                 if (probe.requested == requested && !probe.opened) summary.exit_code = 3;
             }
         }
     }
     report_summary(log, summary);
+    host.reset(); // The verified bands remain mapped throughout host teardown.
     log.close();
     return summary.exit_code;
 }

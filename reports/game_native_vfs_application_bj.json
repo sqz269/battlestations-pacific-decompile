@@ -1,0 +1,44 @@
+{
+  "packet": "orch4_native_vfs_application_bj",
+  "base_commit": "63889c8a",
+  "scope": "Retained game-side VFS owner over one existing GameSingletonHost raw 01090AA0 domain; no Ghidra writes or new native bodies",
+  "source_sha256": {
+    "include/bsp/game_native_vfs_application.hpp": "73B8C42A9630290BD7D69F30BE71C3B716D25B75811F971F484A8A4384C6276B",
+    "src/game_native_vfs_application.cpp": "8D92BB8DFAE00E4329D3AF3949E93295A4AE8E97BBE8DF4115D0542878579271"
+  },
+  "borrowed_inputs": [
+    "GameSingletonHost manager publication 01090AA0 and deletion bindings",
+    "GameNativeReadOnlyData verified .rdata spans",
+    "game_native_physical_pool_process() with common allocator domain 00E188B4"
+  ],
+  "strict_win32_translation_unit": {
+    "command": "cl /nologo /EHsc /std:c++20 /W4 /WX /O2 /MD /fp:strict /c /Iinclude src/game_native_vfs_application.cpp",
+    "result": "pass"
+  },
+  "adopted_probe": {
+    "kind": "Ignored local adaptation of native_vfs_handoff_bh_probe.cpp, rebuilt source only",
+    "source_sha256": "B3DF1183A9BBE9766698C6F1C8C21CFCD51E5CEDD3322DF180D732FA8A3021BA",
+    "executable_sha256": "B26C7C7C0F0EFEF1FF6FE17F61D251E7C5CEBF6577974B612E7D1B676EED31ED",
+    "linked_core_archive_sha256": "6B5D0DE17A2101F8D723DAA6C3F3BB65857D81658FA001D20470862FF705535D",
+    "original_executable_read_only_sha256": "B682A82C52F81F957B2C70222077305A933F72481686C88843077F714B956DD6",
+    "result": "exit 0",
+    "loose_mounts": 3,
+    "search_groups": 6,
+    "registered_singleton_slots_drained": 10,
+    "installed_member": "scripts/fundamentals.lua",
+    "installed_member_bytes": 657,
+    "checks": [
+      "capacity and complete reads equal installed bytes",
+      "repeated missing reads return no open stream",
+      "string, stream, batch, lock and type-counter publications clear after shared drain",
+      "GameSingletonHost destroyed before retained GameNativeVfsApplication"
+    ],
+    "stderr": "empty"
+  },
+  "limits": [
+    "No original game executable code was run or modified",
+    "No production bsp_game startup or exceptional-path run was exercised",
+    "No original ABI, archive payload, or gameplay validation is claimed",
+    "An unknown partially registered A0h manager is retained for the same-host drain, without fabricated rollback"
+  ]
+}

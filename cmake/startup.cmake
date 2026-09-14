@@ -957,3 +957,10 @@ cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_gam
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_game PRIVATE src/unit_gunnery_pass.cpp)
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_game PRIVATE src/unit_message_arms.cpp)
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_game PRIVATE src/unit_neighbour_fields.cpp)
+
+# Actual VFS application owner and deterministic child image placement. The
+# inherited reservation owns the four original read-only address bands.
+cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_game PRIVATE src/game_native_vfs_application.cpp)
+if(MSVC)
+    cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_link_options bsp_game PRIVATE /BASE:0x30000000 /DYNAMICBASE:NO "/MAP:${CMAKE_BINARY_DIR}/bsp_game.map")
+endif()
