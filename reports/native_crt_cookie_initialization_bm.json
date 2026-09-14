@@ -1,0 +1,724 @@
+{
+  "packet": "orch2_native_crt_cookie_source_bm",
+  "base_commit": "45980f8a3a0512d10cf4f874fff2fde1eb59ee5e",
+  "scope": "Two complete source bodies with borrowed actual words; qualified source ABI only.",
+  "source_files": [
+    "include/bsp/native_crt_cookie_initialization.hpp",
+    "src/native_crt_cookie_initialization.cpp",
+    "cmake/startup.cmake",
+    "docs/NATIVE_CRT_COOKIE_INITIALIZATION_BM.md"
+  ],
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_home": "J:/tools/ghidra_12.0.4_PUBLIC",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "installed_pe": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "size": 12223752,
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "sha512": "7b545a4c47fae14af6c50a1d4d0d2904c1b85f84b9a24d1516b95d77945693fc36b1f6bb9effb7fa29b22b06ebcafc230cdf97f5c332266a3de8dd83bdc29a97"
+  },
+  "native_evidence": {
+    "pinned_commit": "ed185cb2dfdf1ba045dbf30ebfd47f083eeece80",
+    "pinned_spans": 22,
+    "pinned_inventory_two_hash_verified": 135,
+    "current_spans": [
+      {
+        "address": "00c1815e",
+        "length": 148,
+        "live_pe_equal": true,
+        "pinned_equal": true,
+        "sha256": "ab5ce5744b96a3fec31d2ae40dfab40805079070fc159e2fc7d153efc280e861",
+        "sha512": "ab4e527f05b6f70cb5a9a84860bee9dacc58028e65925b19467554d5ea28973b488878fd28f9129bc2abd39a597b0b46ba88fd1ee59c687d77fc7512d9a329f3"
+      },
+      {
+        "address": "00c04ef3",
+        "length": 8,
+        "live_pe_equal": true,
+        "pinned_equal": true,
+        "sha256": "575916c4179889b86e93e4583f8ab1f1b5c5e333c9e773f03932fb1b8beb65e9",
+        "sha512": "e9ad0a43b62bf24e345de9b337a735344db4c9269e2304973aa2c31cf5b703af30cf4ba7e235e28125df1ea2261a2d278311fbeba1d848e4a790246d0024f1b1"
+      },
+      {
+        "address": "00e15590",
+        "length": 8,
+        "live_pe_equal": true,
+        "pinned_equal": true,
+        "sha256": "29b5066f8e977a643aebc158d86968765fbcdec85d9c5fcff28cc9f68782d5e4",
+        "sha512": "40e2bd5a6b3a1a52d333dc5bfc7555994772ed5eece72f302e65d5cfe1ddc4d39b65f2c3c053be26b03635d62a8c00d8ebd126132b8a665bf5fca051f9fe9398"
+      }
+    ],
+    "imports": [
+      {
+        "iat": "00ce2100",
+        "dll": "KERNEL32.dll",
+        "name": "GetSystemTimeAsFileTime"
+      },
+      {
+        "iat": "00ce21dc",
+        "dll": "KERNEL32.dll",
+        "name": "GetCurrentProcessId"
+      },
+      {
+        "iat": "00ce223c",
+        "dll": "KERNEL32.dll",
+        "name": "GetCurrentThreadId"
+      },
+      {
+        "iat": "00ce2270",
+        "dll": "KERNEL32.dll",
+        "name": "QueryPerformanceCounter"
+      },
+      {
+        "iat": "00ce22ac",
+        "dll": "KERNEL32.dll",
+        "name": "GetTickCount"
+      }
+    ],
+    "cookie_initial": [
+      3141592654,
+      1153374641
+    ]
+  },
+  "complete_native_bodies": [
+    {
+      "entry": "00c1815e",
+      "end_inclusive": "00c181f1",
+      "bytes": 148,
+      "original_name": "___security_init_cookie",
+      "original_abi": "No arguments; plain RET; EBP/EBX/EDI preserved; ESI preserved on reseed path.",
+      "source_abi": "cdecl, one NativeCrtCookieInitializationContext&; adds ECX/EDX clobbers and pointer-binding loads.",
+      "source_symbol": "bsp::initialize_native_crt_security_cookie_00c1815e"
+    },
+    {
+      "entry": "00c04ef3",
+      "end_inclusive": "00c04efa",
+      "bytes": 8,
+      "original_name": "LIBCRT_unmatched_00c04ef3",
+      "original_abi": "Caller reason ignored; plain RET; AND absolute word,0 preserves EAX and sets native AND flags.",
+      "source_abi": "cdecl, ignored uint32 reason plus volatile uint32 reference; explicit EAX save/restore; added stack/address load.",
+      "source_symbol": "bsp::clear_native_crt_debugger_hook_00c04ef3"
+    }
+  ],
+  "semantics": {
+    "cookie_word": "00e15590",
+    "complement_word": "00e15594",
+    "initial_cookie": "bb40e64e",
+    "initial_complement": "44bf19b1",
+    "state_contract": "Stable distinct writable borrowed references to actual words in one cookie domain, not private or host CRT state.",
+    "fast_path": "Current cookie differs from default and has nonzero high16: write complement only.",
+    "locals": "Clear only FILETIME words at EBP-8/-4; QPC output at EBP-10h/-Ch remains uninitialized before real API call.",
+    "mix": "XOR FILETIME low/high, PID, TID, tick, QPC low/high in recovered API order; ignore QPC BOOL result.",
+    "adjustment": "Default result becomes bb40e64f; otherwise high16==0 becomes result|(result<<16); zero is not repaired.",
+    "publication": "Cookie first, then bitwise complement.",
+    "hook": "Actual volatile AND read/modify/write of borrowed 0109eea8 word; reason ignored, EAX and AND flags preserved.",
+    "eh": "No added language EH or error/failure handling; no QPC failure branch; source stack/binding faults have no native continuation identity."
+  },
+  "indirect_api_calls": [
+    {
+      "native_site": "00c18193",
+      "iat": "00ce2100",
+      "dll": "KERNEL32.dll",
+      "api": "GetSystemTimeAsFileTime",
+      "original_instruction": "ff150021ce00",
+      "emitted_call_offset": 58,
+      "coff_relocation": {
+        "offset": 60,
+        "type": 6,
+        "symbol": "__imp__GetSystemTimeAsFileTime@4"
+      },
+      "installed_pe_import_verified": true
+    },
+    {
+      "native_site": "00c1819f",
+      "iat": "00ce21dc",
+      "dll": "KERNEL32.dll",
+      "api": "GetCurrentProcessId",
+      "original_instruction": "ff15dc21ce00",
+      "emitted_call_offset": 70,
+      "coff_relocation": {
+        "offset": 72,
+        "type": 6,
+        "symbol": "__imp__GetCurrentProcessId@0"
+      },
+      "installed_pe_import_verified": true
+    },
+    {
+      "native_site": "00c181a7",
+      "iat": "00ce223c",
+      "dll": "KERNEL32.dll",
+      "api": "GetCurrentThreadId",
+      "original_instruction": "ff153c22ce00",
+      "emitted_call_offset": 78,
+      "coff_relocation": {
+        "offset": 80,
+        "type": 6,
+        "symbol": "__imp__GetCurrentThreadId@0"
+      },
+      "installed_pe_import_verified": true
+    },
+    {
+      "native_site": "00c181af",
+      "iat": "00ce22ac",
+      "dll": "KERNEL32.dll",
+      "api": "GetTickCount",
+      "original_instruction": "ff15ac22ce00",
+      "emitted_call_offset": 86,
+      "coff_relocation": {
+        "offset": 88,
+        "type": 6,
+        "symbol": "__imp__GetTickCount@0"
+      },
+      "installed_pe_import_verified": true
+    },
+    {
+      "native_site": "00c181bb",
+      "iat": "00ce2270",
+      "dll": "KERNEL32.dll",
+      "api": "QueryPerformanceCounter",
+      "original_instruction": "ff157022ce00",
+      "emitted_call_offset": 98,
+      "coff_relocation": {
+        "offset": 100,
+        "type": 6,
+        "symbol": "__imp__QueryPerformanceCounter@4"
+      },
+      "installed_pe_import_verified": true
+    }
+  ],
+  "direct_calls": [],
+  "direct_call_validation": {
+    "current_bodies_direct_rows": 0,
+    "current_report_log": "local/native_crt_cookie_initialization_bm/verify_source_calls.txt",
+    "pinned_discovery_rows": 28,
+    "pinned_discovery_failed": 0,
+    "pinned_log": "local/native_crt_cookie_initialization_bm/verify_pinned_calls.txt",
+    "qualification": "Five import sites are separately byte/import/relocation verified; not direct-call checker successes."
+  },
+  "compiler_evidence": {
+    "compiler": {
+      "dumpbin": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\dumpbin.exe",
+      "compiler": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\cl.exe",
+      "compiler_version": "19.51.36244.0",
+      "toolset": "14.51.36231",
+      "installation": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community"
+    },
+    "compiler_binary": {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\cl.exe",
+      "size": 891752,
+      "sha256": "95db52a9c9bd300131474769df7d32b342725b1e1574e0fc83a266479b196938",
+      "sha512": "390e9a478e6e3dd08f08b4a5d76a32d7d77239ff17f67bb0bf069d103ce1ee991d801353ef843b93b41fe2dd6dd9eff32f78b80dcc439f4eb61aba675394a6ec"
+    },
+    "traces": {
+      "command": {
+        "artifact": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-cookie-source-bm\\local\\native_crt_cookie_initialization_bm\\CL.command_target.txt",
+          "size": 1010,
+          "sha256": "a2bc5c967c117e1164aa7324223cba391785faf24c3f6b88d31e747e925115ed",
+          "sha512": "d2f34de98690cc948dd42f93152edba30aff9e325f47124e6c2822982edc80b2e796f5111a7e9810a59026c034026a804f56551b41a9ed4eecb905daaf9775de"
+        },
+        "lines": 2
+      },
+      "read": {
+        "artifact": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-cookie-source-bm\\local\\native_crt_cookie_initialization_bm\\CL.read_target.txt",
+          "size": 8227,
+          "sha256": "f83160c42b226afc9900fb391e9d4675b4927e6ede200879a1d0a596eb410f8b",
+          "sha512": "c4d80be56280df12ead4bdf979425bc7e52fba985c5c3e60bd1625144a404fd6201c0b68afe1bfd696df24a2184d05f0ddf290150030d638099ba0e88d8daa7f"
+        },
+        "lines": 101
+      },
+      "write": {
+        "artifact": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-cookie-source-bm\\local\\native_crt_cookie_initialization_bm\\CL.write_target.txt",
+          "size": 291622,
+          "sha256": "9e84f075ed3b9a04cd50784bc95ada7a1e6f990b1f32337359a34e00ac9f83ed",
+          "sha512": "b7845c370a9df5efe84fe927d0a11951bd33d2bec4b64d1f5cdad47c31a82c57eb9caa3556c209977a8cad32f087dcefa91b95c088854ccc25671a8a755d917f"
+        },
+        "lines": 1202
+      }
+    },
+    "object": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-cookie-source-bm\\build\\win32\\bsp_core.dir\\Release\\native_crt_cookie_initialization.obj",
+      "size": 1399,
+      "sha256": "f8607c906060ed3f0b12cde3c6512b1b3845204e12075d48e8432f67da4aca51",
+      "sha512": "fcc0f4b30c9da5d136b1d33316b9e9c3432656164918feb16c2496a758954b50d337a6d329504acdbc878343d0f78322ad207f0150aebc5c614f53dbe381407d"
+    },
+    "archive": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-cookie-source-bm\\build\\win32\\Release\\bsp_core.lib",
+      "size": 57358940,
+      "sha256": "c7e25744a6510c07b87b6bb34faf71fb664238d57dbf18d1f5880f213b15fdf1",
+      "sha512": "d97e1f8b82c7ec38699613c06f6aeef2d3b99954e8c949109acc80f55bb8c62cc00ec4d333438affcc408e01dd9ca982023723ed2104e3ca92963908bd052622"
+    },
+    "archive_member": "bsp_core.dir\\Release\\native_crt_cookie_initialization.obj",
+    "archive_member_matches": 1,
+    "object_member_equal": true,
+    "retained_object": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-cookie-source-bm\\local\\native_crt_cookie_initialization_bm\\native_crt_cookie_initialization_build.obj",
+      "size": 1399,
+      "sha256": "f8607c906060ed3f0b12cde3c6512b1b3845204e12075d48e8432f67da4aca51",
+      "sha512": "fcc0f4b30c9da5d136b1d33316b9e9c3432656164918feb16c2496a758954b50d337a6d329504acdbc878343d0f78322ad207f0150aebc5c614f53dbe381407d"
+    },
+    "extracted_member": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-cookie-source-bm\\local\\native_crt_cookie_initialization_bm\\native_crt_cookie_initialization_archive.obj",
+      "size": 1399,
+      "sha256": "f8607c906060ed3f0b12cde3c6512b1b3845204e12075d48e8432f67da4aca51",
+      "sha512": "fcc0f4b30c9da5d136b1d33316b9e9c3432656164918feb16c2496a758954b50d337a6d329504acdbc878343d0f78322ad207f0150aebc5c614f53dbe381407d"
+    },
+    "functions": [
+      {
+        "symbol": "?initialize_native_crt_security_cookie_00c1815e@bsp@@YAXAAUNativeCrtCookieInitializationContext@1@@Z",
+        "length": 156,
+        "sha256": "69b3f6a53f5232f2fe420d7f874a7d85a3ac52d12558e44966d28f37092b431f",
+        "sha512": "f3874e9f196d83e9455c4f45cd1326cd52de14890a8f5a28460088538aa689608c748252d3ff207693f1c8e0a2d80d4215f6e14d8c2597120925f2e9dde14aac",
+        "relocations": [
+          {
+            "offset": 60,
+            "type": 6,
+            "symbol": "__imp__GetSystemTimeAsFileTime@4"
+          },
+          {
+            "offset": 72,
+            "type": 6,
+            "symbol": "__imp__GetCurrentProcessId@0"
+          },
+          {
+            "offset": 80,
+            "type": 6,
+            "symbol": "__imp__GetCurrentThreadId@0"
+          },
+          {
+            "offset": 88,
+            "type": 6,
+            "symbol": "__imp__GetTickCount@0"
+          },
+          {
+            "offset": 100,
+            "type": 6,
+            "symbol": "__imp__QueryPerformanceCounter@4"
+          }
+        ]
+      },
+      {
+        "symbol": "?clear_native_crt_debugger_hook_00c04ef3@bsp@@YAXIACI@Z",
+        "length": 10,
+        "sha256": "15604c8792acf1a31c894861a2bdca6ceb8652807bf96273da8b47403db9abc2",
+        "sha512": "3c00ebc150ab0511602223341b41e748c9dea652061b26f389df79688a9269cbd6b52dda0e2ee797ac7e2633cb7627551163aaf358702d40e42eac364b7bcee3",
+        "relocations": []
+      }
+    ]
+  },
+  "verification": {
+    "build_command": "./scripts/build.ps1",
+    "build_exit_code": 0,
+    "required_flags": [
+      "/W4",
+      "/WX",
+      "/fp:strict"
+    ],
+    "verify_seeds": {
+      "matched": 8,
+      "mismatched": 0,
+      "log": "local/native_crt_cookie_initialization_bm/verify_seeds.txt"
+    },
+    "ctests": [
+      {
+        "name": "reconstructed_math",
+        "passed": true
+      },
+      {
+        "name": "native_math_differential",
+        "passed": true
+      }
+    ],
+    "new_tests": 0,
+    "layout_probe": "Compile-only inspection confirms reference pointer bindings at offsets0/4; no executable.",
+    "runtime_executed": false,
+    "ghidra_mutated": false,
+    "limitations": [
+      "Added source ABI and binding lifetime requirements.",
+      "No canonical cookie/frame/error owner.",
+      "No BFE120, C185A4 or BF65BB implementation.",
+      "No original process, game, runtime or native drop-in parity claim.",
+      "Existing math CTests do not execute these reconstructed routines."
+    ]
+  },
+  "local_inventory": {
+    "directory": "local/native_crt_cookie_initialization_bm",
+    "files": 55,
+    "bytes": 58014413,
+    "passes": 2,
+    "algorithms": [
+      "sha256",
+      "sha512"
+    ],
+    "complete_path_set_checked": true,
+    "method": "Pass1 whole-file bytes; pass2 independent chunked reads; report outside inventoried directory.",
+    "artifacts": [
+      {
+        "path": "local/native_crt_cookie_initialization_bm/00c04ef3_bytes.txt",
+        "size": 45,
+        "sha256": "38406f0a6bae60d3fb7b84b4ceeaaa66a78970a8c6840eaf7ce45a1e05adf9a5",
+        "sha512": "bb199af96e99efe01547eea0673a4f521ad74ba53d7c49637ca0c45d25a2673cea28ade7862f2b92f5458c1aa0f6b04f30b84b23e10c06a20b769c045c239100"
+      },
+      {
+        "path": "local/native_crt_cookie_initialization_bm/00c04ef3_disasm.txt",
+        "size": 59,
+        "sha256": "a42c0a89be6cdd181241ebd48fd353f4f19567e7a6f5837ca9f22200010d3e6e",
+        "sha512": "ed17b6c58bbdf35c87edb1a131cbe147f3340e0cd1756cf2f4ed70ac2cbc7e7f0fac3dd4534a11a9358ca35f7e63bfb38b9f38cd0d62bcb655513bb3b5c259e0"
+      },
+      {
+        "path": "local/native_crt_cookie_initialization_bm/00c04ef3_live.bin",
+        "size": 8,
+        "sha256": "575916c4179889b86e93e4583f8ab1f1b5c5e333c9e773f03932fb1b8beb65e9",
+        "sha512": "e9ad0a43b62bf24e345de9b337a735344db4c9269e2304973aa2c31cf5b703af30cf4ba7e235e28125df1ea2261a2d278311fbeba1d848e4a790246d0024f1b1"
+      },
+      {
+        "path": "local/native_crt_cookie_initialization_bm/00c04ef3_pe.bin",
+        "size": 8,
+        "sha256": "575916c4179889b86e93e4583f8ab1f1b5c5e333c9e773f03932fb1b8beb65e9",
+        "sha512": "e9ad0a43b62bf24e345de9b337a735344db4c9269e2304973aa2c31cf5b703af30cf4ba7e235e28125df1ea2261a2d278311fbeba1d848e4a790246d0024f1b1"
+      },
+      {
+        "path": "local/native_crt_cookie_initialization_bm/00c04ef3_proto.txt",
+        "size": 105,
+        "sha256": "393da3203f85f2f9ef5a8a90b8d5a212d6710ddd4f746f96fcb2041face33dc1",
+        "sha512": "d5fdc10c69c23787a62c92f65867a854c650c2570876e6aaa27f5054aef46f06e24612a1d63ed6e7e9171ff75e2d962b66546405747d333d94bd3c9d8a4a9404"
+      },
+      {
+        "path": "local/native_crt_cookie_initialization_bm/00c1815e_bytes.txt",
+        "size": 722,
+        "sha256": "745fec80bea1272b26de7654bd35d5b20cba78abf6f323af79f8761347867b0d",
+        "sha512": "b67d4957d457ac55e7fc0f39d96ae624c55c8159473f8ddb3d091d0afe9e336bce3a55cdb4f89064c5836b73d9abffbc4d0e745453f7dc296b7075d634c736d8"
+      },
+      {
+        "path": "local/native_crt_cookie_initialization_bm/00c1815e_disasm.txt",
+        "size": 1506,
+        "sha256": "3ba4c7dcf5b8963ff0d71df195eb713ced0cde1161e749328b4e92ae747461bd",
+        "sha512": "913ddf78d8dfb40659aad1a6c700eaf0e8f347497947aa1c0999c00e89f4a4fe434c2fa85a2fe8b5efa29fb313a6945f269f103244679ce0e1c0bbf526e2263a"
+      },
+      {
+        "path": "local/native_crt_cookie_initialization_bm/00c1815e_live.bin",
+        "size": 148,
+        "sha256": "ab5ce5744b96a3fec31d2ae40dfab40805079070fc159e2fc7d153efc280e861",
+        "sha512": "ab4e527f05b6f70cb5a9a84860bee9dacc58028e65925b19467554d5ea28973b488878fd28f9129bc2abd39a597b0b46ba88fd1ee59c687d77fc7512d9a329f3"
+      },
+      {
+        "path": "local/native_crt_cookie_initialization_bm/00c1815e_pe.bin",
+        "size": 148,
+        "sha256": "ab5ce5744b96a3fec31d2ae40dfab40805079070fc159e2fc7d153efc280e861",
+        "sha512": "ab4e527f05b6f70cb5a9a84860bee9dacc58028e65925b19467554d5ea28973b488878fd28f9129bc2abd39a597b0b46ba88fd1ee59c687d77fc7512d9a329f3"
+      },
+      {
+        "path": "local/native_crt_cookie_initialization_bm/00c1815e_proto.txt",
+        "size": 104,
+        "sha256": "c508617ea187231c2691fec8ef0c21ea5f0b2a02b4b47e9dbbe8c48ea33db1af",
+        "sha512": "600245fdaac9abd835d31e4a894a85e9b8582508ff37a7e61405b4e1aca10dbe233f6aa6ddb76ae5b216a2618e6a56fd3e73e82ce759b3071d62116b578104d7"
+      },
+      {
+        "path": "local/native_crt_cookie_initialization_bm/00e15590_bytes.txt",
+        "size": 45,
+        "sha256": "96c8259d56d47d1d905d95d3ef21787fa4f6815f1c9ab529a36365688de4741e",
+        "sha512": "970c69dbfc5cfee9a7dc8fd0b857cd0647eeb1d0c8666e573b9c13f9fffd09daa773cbfde57d72e6859b58b1babfbcfdf4306f9884c6cf3b15247bea5139df49"
+      },
+      {
+        "path": "local/native_crt_cookie_initialization_bm/00e15590_live.bin",
+        "size": 8,
+        "sha256": "29b5066f8e977a643aebc158d86968765fbcdec85d9c5fcff28cc9f68782d5e4",
+        "sha512": "40e2bd5a6b3a1a52d333dc5bfc7555994772ed5eece72f302e65d5cfe1ddc4d39b65f2c3c053be26b03635d62a8c00d8ebd126132b8a665bf5fca051f9fe9398"
+      },
+      {
+        "path": "local/native_crt_cookie_initialization_bm/00e15590_pe.bin",
+        "size": 8,
+        "sha256": "29b5066f8e977a643aebc158d86968765fbcdec85d9c5fcff28cc9f68782d5e4",
+        "sha512": "40e2bd5a6b3a1a52d333dc5bfc7555994772ed5eece72f302e65d5cfe1ddc4d39b65f2c3c053be26b03635d62a8c00d8ebd126132b8a665bf5fca051f9fe9398"
+      },
+      {
+        "path": "local/native_crt_cookie_initialization_bm/bsp_core_build.lib",
+        "size": 57358940,
+        "sha256": "c7e25744a6510c07b87b6bb34faf71fb664238d57dbf18d1f5880f213b15fdf1",
+        "sha512": "d97e1f8b82c7ec38699613c06f6aeef2d3b99954e8c949109acc80f55bb8c62cc00ec4d333438affcc408e01dd9ca982023723ed2104e3ca92963908bd052622"
+      },
+      {
+        "path": "local/native_crt_cookie_initialization_bm/build.log",
+        "size": 46456,
+        "sha256": "1925e5e6dc5fa409e6699e143cf396a9a4e2c739284d8a53ed836a0e4ccd392a",
+        "sha512": "4cd92016da3951a2c5eed5b87854d2d9c924450f4c0fce4773350c089f260296576eb87dd459d52df9a25401077e9274933962d6e5fd2127a384aa8ab33281be"
+      },
+      {
+        "path": "local/native_crt_cookie_initialization_bm/capture_native.py",
+        "size": 3855,
+        "sha256": "c288e8cd8d61ab6d0f06f1d32c573cef51ffa6431df605a1e74a8eeed530bc65",
+        "sha512": "9505d8f35cfb1bae788f417fc2662db92fa0ecaba66974fc545ca84cbff09d743edd439e0ae48f599a6035c6a4e1d21b13d45f338b9711d9c5d567b22c4b56db"
+      },
+      {
+        "path": "local/native_crt_cookie_initialization_bm/CL.command_target.txt",
+        "size": 1010,
+        "sha256": "a2bc5c967c117e1164aa7324223cba391785faf24c3f6b88d31e747e925115ed",
+        "sha512": "d2f34de98690cc948dd42f93152edba30aff9e325f47124e6c2822982edc80b2e796f5111a7e9810a59026c034026a804f56551b41a9ed4eecb905daaf9775de"
+      },
+      {
+        "path": "local/native_crt_cookie_initialization_bm/CL.read_target.txt",
+        "size": 8227,
+        "sha256": "f83160c42b226afc9900fb391e9d4675b4927e6ede200879a1d0a596eb410f8b",
+        "sha512": "c4d80be56280df12ead4bdf979425bc7e52fba985c5c3e60bd1625144a404fd6201c0b68afe1bfd696df24a2184d05f0ddf290150030d638099ba0e88d8daa7f"
+      },
+      {
+        "path": "local/native_crt_cookie_initialization_bm/CL.write_object_line.txt",
+        "size": 146,
+        "sha256": "a21fb4a2cbea14144175472737fe6e7d829b1e070e8dd34de8ce2e4a335e2bc9",
+        "sha512": "7959428e79491c658c7996be37c0c2237af81f37c8f0a902ce820f35a2b00fb9a76aaf74d6d3b1581216ce4711eaf5c181c253e8ad406b7e62d2b633ecc9642d"
+      },
+      {
+        "path": "local/native_crt_cookie_initialization_bm/CL.write_target.txt",
+        "size": 291622,
+        "sha256": "9e84f075ed3b9a04cd50784bc95ada7a1e6f990b1f32337359a34e00ac9f83ed",
+        "sha512": "b7845c370a9df5efe84fe927d0a11951bd33d2bec4b64d1f5cdad47c31a82c57eb9caa3556c209977a8cad32f087dcefa91b95c088854ccc25671a8a755d917f"
+      },
+      {
+        "path": "local/native_crt_cookie_initialization_bm/clear_native_crt_debugger_hook_00c04ef3.bin",
+        "size": 10,
+        "sha256": "15604c8792acf1a31c894861a2bdca6ceb8652807bf96273da8b47403db9abc2",
+        "sha512": "3c00ebc150ab0511602223341b41e748c9dea652061b26f389df79688a9269cbd6b52dda0e2ee797ac7e2633cb7627551163aaf358702d40e42eac364b7bcee3"
+      },
+      {
+        "path": "local/native_crt_cookie_initialization_bm/commit_message.txt",
+        "size": 562,
+        "sha256": "e1feb4a9fcab5599634500bbda9e2fb1d05eae45ee1f7f306b7fddd68ef5ec6a",
+        "sha512": "d1649a94801c6203b755f7387031074e53a202781e5ece03da89092eb53f972d7e9c0af8ef85a7c71b6095bb92c7172023c4ad60f8b1a837607aaa9bcd674b34"
+      },
+      {
+        "path": "local/native_crt_cookie_initialization_bm/compile_layout.cmd",
+        "size": 1588,
+        "sha256": "741310613bebc785f53f849228371b8a885dab34fb1a3c494a5283acc3c95389",
+        "sha512": "f2870d98d2bef913e7a4d8e77d6859ea182f344e2cab541e9462013281196263063e24f770576e440fdfa0d8f8bb0e92a1c2512dfc449e0f95b812a1c007dc7a"
+      },
+      {
+        "path": "local/native_crt_cookie_initialization_bm/compile_layout.ps1",
+        "size": 1850,
+        "sha256": "32c466748fc883a9fe9374b507246b300f0a9146451ab64ce800676568ab472f",
+        "sha512": "49f8da5a9b75b8d73ef2201f82b04bf4a959e6fe066c9be79bc84ac703198c3c7e235614cd95410b5a8a4fdd12541aae5aec4a9e9ce79f32cde51bc07a8d7cc5"
+      },
+      {
+        "path": "local/native_crt_cookie_initialization_bm/compiler.json",
+        "size": 424,
+        "sha256": "16267444b379879b8148449b04b9842b2c490f60e587aba62a82e46fd2c6df68",
+        "sha512": "d15ddc3b903be5481f84b1a863d0293cf650f60e6e6ccb23b8b51091c0ef33607745832c020368e65288720c8deceb89faf0754f166a2863975739ae7a7a963a"
+      },
+      {
+        "path": "local/native_crt_cookie_initialization_bm/compiler_evidence.json",
+        "size": 5720,
+        "sha256": "4b9196d8f3379b64967cd55cd09ce4c503cd66b568f5a1cdf415b62e32c07f16",
+        "sha512": "05d24216dc4b483f0d631d256b3a57654b54400bb7b6f754506dfeeb2772beea0199218b199378d60a9af2fdce23aa3ce66731b2539f48fc9f42cc350fb70115"
+      },
+      {
+        "path": "local/native_crt_cookie_initialization_bm/finalize_report.py",
+        "size": 9828,
+        "sha256": "b80f5c594ddf030ee59889391711f152fa431819ba1fe1b3c0b3bf1f08265560",
+        "sha512": "0f17290b3544c2349276679b5a4c9c4d3a9b27679f8acba85ea76ea7db6e237ff1ef459699bd149836be1bc6d7f0a4a387ead1ae2371db142f9234883b23454d"
+      },
+      {
+        "path": "local/native_crt_cookie_initialization_bm/import_closure.json",
+        "size": 2068,
+        "sha256": "f52b8aa9e0a9889961a35cb47854f4ba7ec98fabe0cbef6258188cbf640ad572",
+        "sha512": "cf50031adc047003e224f6d7e81cf286a12de15b1aed6ece08cceede9dea80497046001ffb30b2514625063dd82b73226852fb0c4b1c60b34a2b86dafee85b73"
+      },
+      {
+        "path": "local/native_crt_cookie_initialization_bm/initialize_native_crt_security_cookie_00c1815e.bin",
+        "size": 156,
+        "sha256": "69b3f6a53f5232f2fe420d7f874a7d85a3ac52d12558e44966d28f37092b431f",
+        "sha512": "f3874e9f196d83e9455c4f45cd1326cd52de14890a8f5a28460088538aa689608c748252d3ff207693f1c8e0a2d80d4215f6e14d8c2597120925f2e9dde14aac"
+      },
+      {
+        "path": "local/native_crt_cookie_initialization_bm/installed_pe.json",
+        "size": 1924,
+        "sha256": "bf6907c90f84e78e560d4273a7077b41e41360f16cd9d7cb16f65d755a77cd53",
+        "sha512": "2ccc4edb5dbdd066a33f80076012f6f692a922f45d6129b1ac7eabb0681a6fb828cddba7bf95e5a6e44bf8a9cd1cf7229b098474683dfd649f0e2a9dc43d2a1a"
+      },
+      {
+        "path": "local/native_crt_cookie_initialization_bm/inventory.py",
+        "size": 3212,
+        "sha256": "d47752f8351f81356a93a0a8aad7512599b870e58c913ea7fe223cba0a99ec6a",
+        "sha512": "e9751a0063962e27e559bd1df5c5e763dff0cbd743d9c4c9478a7d79878b99e8ab562a24b56ea1619b8955c2e576f635d60ab66f1eecca5474e83d677e449100"
+      },
+      {
+        "path": "local/native_crt_cookie_initialization_bm/layout_compile.log",
+        "size": 1118,
+        "sha256": "c992398678f42691593417cfcf21eebf925b67b78cde6f33dc7f585a203d0dc5",
+        "sha512": "e134492b4004eee3682c2a7debadb88a59a173fa4c7bc8ac5adf601620140b9bde617add9e2640931838baba55214acd74dcdf8a9a00b297f2ea018de883ea5b"
+      },
+      {
+        "path": "local/native_crt_cookie_initialization_bm/layout_probe.asm",
+        "size": 1565,
+        "sha256": "66f739b6ae3d322eb2ddb75fa0311066291e6aa544260b60f316a44c86b2e8c5",
+        "sha512": "088b39b54a73d2082e1f75aa44ae5526030416cff8787771c6590627b6d16754dcb7d82b3339b5ed1f7a0eb11a80f514210e66f12ab720afac7b738775af7199"
+      },
+      {
+        "path": "local/native_crt_cookie_initialization_bm/layout_probe.cpp",
+        "size": 369,
+        "sha256": "45946930dcb21ca598e06a0f8d1c82f5fd2e790e89b6c2387aac777ce3767e81",
+        "sha512": "986e21d9e65dc31d67eb0e34f53b7f0dc1b17c29ab746a5ed548ef3f89cc8a3b81d9ab1de23ea2b452cb5c2a6cd9eea60dfab7f351f30c4c143c49c633bdb7a8"
+      },
+      {
+        "path": "local/native_crt_cookie_initialization_bm/layout_probe.obj",
+        "size": 848,
+        "sha256": "8c71ee69668caf619aeda8fdba52a0b2d7ff099e58bfb9380cd2d384c34aecc2",
+        "sha512": "1b71b5068aa4f69d79634caa2498aeadf82ca28a4aabe580aea86b6522f7010b77b903e6c8745e288dd2947f6d0c6141e5549f0316667cbed91405c0609fd79b"
+      },
+      {
+        "path": "local/native_crt_cookie_initialization_bm/layout_probe_dump.txt",
+        "size": 2018,
+        "sha256": "e63948a30ed01da0faab539a09360d6940852c8c4c0d1d8e93c51d7a9ad3b784",
+        "sha512": "410e03fd93690c07bf69bcf6d4f9a5f9f41dfc8c1f7a8fb9faa1e575b650757a64168b6cc09b04fc1878cfd97df483214bd0a5e5708da44556ba8447b7ff4568"
+      },
+      {
+        "path": "local/native_crt_cookie_initialization_bm/native_crt_cookie_initialization_archive.obj",
+        "size": 1399,
+        "sha256": "f8607c906060ed3f0b12cde3c6512b1b3845204e12075d48e8432f67da4aca51",
+        "sha512": "fcc0f4b30c9da5d136b1d33316b9e9c3432656164918feb16c2496a758954b50d337a6d329504acdbc878343d0f78322ad207f0150aebc5c614f53dbe381407d"
+      },
+      {
+        "path": "local/native_crt_cookie_initialization_bm/native_crt_cookie_initialization_build.obj",
+        "size": 1399,
+        "sha256": "f8607c906060ed3f0b12cde3c6512b1b3845204e12075d48e8432f67da4aca51",
+        "sha512": "fcc0f4b30c9da5d136b1d33316b9e9c3432656164918feb16c2496a758954b50d337a6d329504acdbc878343d0f78322ad207f0150aebc5c614f53dbe381407d"
+      },
+      {
+        "path": "local/native_crt_cookie_initialization_bm/native_evidence.json",
+        "size": 1861,
+        "sha256": "e778bad25fe830f34e573aff445be92dd2cd4f70694c941bf7251c28223929eb",
+        "sha512": "4db58ff9d8bb6cb892a0363cf6e3332f897fd7a4afce450f03c7621ce7916510ccb945678afdef4a4c6a72fb0cdfcf4e3a3c3394d47c79e97b0fc46a26cbb85f"
+      },
+      {
+        "path": "local/native_crt_cookie_initialization_bm/package_compiler.py",
+        "size": 6367,
+        "sha256": "04d000c3fc7d8e2fa751634ee6ae6f55abe4b028e5cd223a54de1216261f6e23",
+        "sha512": "adcbe328ce5845b71f25464d7e01f844ef7b008e461b32c8e7f61544e43ec5271cfef8480d01082c6b9b7037bb44c7573895040303fe2d8647885faa624db708"
+      },
+      {
+        "path": "local/native_crt_cookie_initialization_bm/pinned_watson_report.json",
+        "size": 95086,
+        "sha256": "7f2271fc61aec5c8cd02a34d8d87d9f052ba37ef9ef125b186f5e0a2286123d5",
+        "sha512": "19ed96cc66d549d767ffed7ddf1467fab72a7eb5c2ade61eb9793c639f1592e2ce7df79272009fb676f0e04b8bebf6208bf9de9a1ce4c57b3a208d64241bc556"
+      },
+      {
+        "path": "local/native_crt_cookie_initialization_bm/reconstruction_records.json",
+        "size": 3003,
+        "sha256": "6e38f5e72afa28792f3a8aeead8193ae14254ae89c2ec058adee3c60b7d258cc",
+        "sha512": "56a750f3a054d7f48aa1cfcb89d4688ff0dea3a5324e55bd76f477871a8d442ff628b81cad5125e35bddc743be0b5850928db1087d413a0d6a1b73e11d0e54a1"
+      },
+      {
+        "path": "local/native_crt_cookie_initialization_bm/seed_reference.hpp",
+        "size": 2995,
+        "sha256": "26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c",
+        "sha512": "73558474158d529bc96205150b2c52ebc133b1b6bcb743e01ecf14dd4655c2cc594a2b0353e0d2f89977ced7c585fcf9cdd7c00cfe96bfa67eee8a29226d05bf"
+      },
+      {
+        "path": "local/native_crt_cookie_initialization_bm/source/cmake/startup.cmake",
+        "size": 113337,
+        "sha256": "eda4f579a5595a99e1c56d31d8dfe08b59da6ac3d145b1205461fe2638fa488d",
+        "sha512": "d3263dc3ab466534addee6f7058a976d31abe5879be78d921e059029b1b393aca9270c1ca1aa7af4e230defc08de188e22da9250258f4424601b8b5958f298b9"
+      },
+      {
+        "path": "local/native_crt_cookie_initialization_bm/source/CMakeLists.txt",
+        "size": 14869,
+        "sha256": "0bad51a21cd02eb4d8b196a345a3f86418d0dab144d66912f0ad8db06881c5a8",
+        "sha512": "3a5f79736fe4eed9455edaefbbe1d8dd23a555a86efa3935827e3068fc3baa2c82f0d9c69246a5ef74a961d41fbd847f5a5c554c5c91a945d55521212d2ec958"
+      },
+      {
+        "path": "local/native_crt_cookie_initialization_bm/source/docs/NATIVE_CRT_COOKIE_INITIALIZATION_BM.md",
+        "size": 5491,
+        "sha256": "d2017589535abb6544938bed81c42f5eedcea3b8364012ef4b3cfcfdee74cb8d",
+        "sha512": "a936f15b54613bed40dbb111c5662251acfdfb00f22f30676acb63a1611f651e49ab8477138bb9d62275823e6696401b8251a432adeb2043d62440595e093e7e"
+      },
+      {
+        "path": "local/native_crt_cookie_initialization_bm/source/include/bsp/native_crt_cookie_initialization.hpp",
+        "size": 1913,
+        "sha256": "85acf04f760e43876685008d3c32e900000f809554fa3fc82fa4bbcb81631b4b",
+        "sha512": "dcb93dd93af27a8acbd37584c921e6ad92a76470b429615c7fe8f19f27cc626382c65572ee12980f2db1e0141b16066c5fb2bb66c4d34174b139913f0f5c7288"
+      },
+      {
+        "path": "local/native_crt_cookie_initialization_bm/source/src/native_crt_cookie_initialization.cpp",
+        "size": 2651,
+        "sha256": "48f957e66f4c3c4f5692a693ef3680cc907f6303ea02212fdbda803ba00aa1c5",
+        "sha512": "9a00d33ead06bd26afb5c0bd6699f8e5f6c0b29a44a9693c0fa00c671f5ad6107d8650e5e3b31007f607eab1c036575ae644231808eb5cee9e0eb17209b7bd2f"
+      },
+      {
+        "path": "local/native_crt_cookie_initialization_bm/source_object_dump.txt",
+        "size": 6861,
+        "sha256": "51f81f3ee8954fa115f2e0a1b4d96176428ea281ece5b11d94d8bfda8989f2d9",
+        "sha512": "06716582f95462896880721cfe9e04d85d8309d04deefd48335f613ea8ce6e0fe3fd2d0cfb7923c707517087760762ae8b1cbe449a45f118331ea0d76999a6e7"
+      },
+      {
+        "path": "local/native_crt_cookie_initialization_bm/source_object_preview.txt",
+        "size": 6771,
+        "sha256": "789e310a14bc7f46160e75526d661c30aa47c0514668479561b3419ae2486af5",
+        "sha512": "5b47ce5bfbb71ccc9059fa97cebb6ec05b0611dfa92ee20e366ea237fede67717e20d6b9fb5c6c8cfc8082c7f5f50ad24937e4373d41676396a05cb9c10ee966"
+      },
+      {
+        "path": "local/native_crt_cookie_initialization_bm/target.json",
+        "size": 467,
+        "sha256": "83b26a388b77d3b817eafd6005f72a0d9b4137efc62ac8cbe17963ac18589533",
+        "sha512": "5e1985b12330b62d1f0c2c7c23d99e75d5be50c508b3f69ac606fab9d1bbf5df9d51b32094c1418a36df8d595b3bc19b693b7188026388aed3994f73a7813cd9"
+      },
+      {
+        "path": "local/native_crt_cookie_initialization_bm/vcvars.log",
+        "size": 297,
+        "sha256": "1a4df196337e03bcdb59d67050d46e47764dfc64fa184608219d7e229cd9cb3c",
+        "sha512": "2912afa5d0e8121d385ff1ffa200c4a87f08915485d371d0f1d5f4c95957abde12eb557cd1179ade7953b1a51bbb53817506610991f81da1f416622ea05ec04f"
+      },
+      {
+        "path": "local/native_crt_cookie_initialization_bm/verify_pinned_calls.txt",
+        "size": 101,
+        "sha256": "e12c3d15dc3be4ba535f9b8648f21a44d99b229e8fbfda694ed3d3ad14d4c523",
+        "sha512": "5ad490aeaa00e779f48a71697eaa35592fd6031cf9d2b2cc5490d4bf56f14a405dcf4e07575570b5a2b283d6201f7c71ae696cc77daf648f0045cd67beb5b45b"
+      },
+      {
+        "path": "local/native_crt_cookie_initialization_bm/verify_seeds.txt",
+        "size": 3034,
+        "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773",
+        "sha512": "857449ff384d332baa250c7444daa15f5fbd261c5d4a63b9c1a168cab8c367e343c42dbd412ee38f61ea2c148d63c36eee699b58ac02ae28d087e0ef232e56e8"
+      },
+      {
+        "path": "local/native_crt_cookie_initialization_bm/verify_source_calls.txt",
+        "size": 81,
+        "sha256": "1eca311db0de3f9d97d1846f8b2ee53344814e45ca8dfd4a78c1856c77f5cacd",
+        "sha512": "a6d49bd37c0f237f8959530f80a58f582f49d85328b9845503589568a863d2c25354902a8583988cea65762d2c556ac5d81ecff7a9040a2e986eb36096e4614e"
+      }
+    ]
+  },
+  "current_source_hashes": [
+    {
+      "path": "src/native_crt_cookie_initialization.cpp",
+      "size": 2651,
+      "sha256": "48f957e66f4c3c4f5692a693ef3680cc907f6303ea02212fdbda803ba00aa1c5",
+      "sha512": "9a00d33ead06bd26afb5c0bd6699f8e5f6c0b29a44a9693c0fa00c671f5ad6107d8650e5e3b31007f607eab1c036575ae644231808eb5cee9e0eb17209b7bd2f"
+    },
+    {
+      "path": "include/bsp/native_crt_cookie_initialization.hpp",
+      "size": 1913,
+      "sha256": "85acf04f760e43876685008d3c32e900000f809554fa3fc82fa4bbcb81631b4b",
+      "sha512": "dcb93dd93af27a8acbd37584c921e6ad92a76470b429615c7fe8f19f27cc626382c65572ee12980f2db1e0141b16066c5fb2bb66c4d34174b139913f0f5c7288"
+    },
+    {
+      "path": "cmake/startup.cmake",
+      "size": 113337,
+      "sha256": "eda4f579a5595a99e1c56d31d8dfe08b59da6ac3d145b1205461fe2638fa488d",
+      "sha512": "d3263dc3ab466534addee6f7058a976d31abe5879be78d921e059029b1b393aca9270c1ca1aa7af4e230defc08de188e22da9250258f4424601b8b5958f298b9"
+    },
+    {
+      "path": "docs/NATIVE_CRT_COOKIE_INITIALIZATION_BM.md",
+      "size": 5491,
+      "sha256": "d2017589535abb6544938bed81c42f5eedcea3b8364012ef4b3cfcfdee74cb8d",
+      "sha512": "a936f15b54613bed40dbb111c5662251acfdfb00f22f30676acb63a1611f651e49ab8477138bb9d62275823e6696401b8251a432adeb2043d62440595e093e7e"
+    }
+  ]
+}
