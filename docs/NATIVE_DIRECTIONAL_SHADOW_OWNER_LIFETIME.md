@@ -106,3 +106,7 @@ numeric transfer rows, provider/source inputs, build and generated-code evidence
 There are no new tests or shadow-owner runtime fixtures. Compilation and source order
 review do not prove real-game integration, GPU effects, arbitrary callback faults,
 or gameplay. Root owns later combined validation and metadata integration.
+
+Primary integration at exact clean source `42603ccf159dad821d9b51ceca44e5092d7187a3` passed Win32 Release and both existing CTests with 2627 unchanged tracked build inputs. All14 reviewed COFF symbol rows have the same complete section bytes and relocation targets/types/offsets as the worker, normalizing only anonymous-namespace path hashes. The shared44-byte unwindtable/FuncInfo section and42-byte funclet/handler section are not independent function bodies. The21 instruction checks retain callback scheduling and late flag loads. The compiler removes the source disarm store before the known-noexcept base call; ordinary C++ cleanup remains base-only, with no raw FH3/SEH identity claim. No shadow-owner fixture was run.
+
+Primary also cleared the erroneous CALL_RETURN override at A8FCE0 under the Ghidra write lock, decoded the verified three-byte ADD ESP,4 at A8FCE5, and saved the project. There are no remaining call-site listing gaps in A8FCD0. The record preserves the original override value, native byte hash and readback; the shared CRT callee was not edited.
