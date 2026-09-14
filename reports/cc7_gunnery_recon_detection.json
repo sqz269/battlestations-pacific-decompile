@@ -1,0 +1,223 @@
+{
+  "packet": "cc7_gunnery_recon_detection",
+  "owner": "agent/cc7-gunnery-recon-detection",
+  "docs": "docs/GUNNERY_RECON_DETECTION.md",
+  "sources": "include/bsp/gunnery_recon_detection.hpp, src/gunnery_recon_detection.cpp",
+  "subject": "Rule (c) of the recon contact list: the per-observer detection value computed by 008048A0, the sensor rows behind it, and the fold at 00806840 that turns per-observer gains into the level the drain publishes. The bsp_game.exe milestone builds contacts from rules (a) and (b) alone, so every class-scoped enemy is treated as a contact.",
+  "reuses": "include/bsp/recon_slot_lists.hpp for ReconSensorEntry, ReconSensorEntryResult, ReconDetectionLevel and its thresholds, ReconRelation, ReconTripleFilterResult, recon_triple_filter_00807647, recon_detection_accumulate_00805af0, recon_detection_level_00805b3d, recon_effective_level_0080695c, recon_sensor_range_scale_00804947, recon_sensor_submerged_scale_008049a3, recon_sensor_entry_gain_00804ab0, recon_horizontal_distance_sq_00804a1e, kReconSensorDefaultFactor, kReconSensorMaskAll, kReconEnemyChainHeadOffset; include/bsp/sensor_tables.hpp for SensorCategory, sensor_list_index_008085aa, kSensorListCount; include/bsp/unit_rudder.hpp for wrapped_angle_subtract_00438b10; include/bsp/fixed_step_countdown.hpp for kReconSlotIndexOffset (0x28); docs/SENSOR_TABLES.md section 2 for the producer-derived 1Ch row layout.",
+  "answer": [
+    {
+      "question": "What is the per-observer detection value, and how is it computed?",
+      "result": "008048A0 normalises a horizontal squared distance by a range scale and compares it against each row entry. rangeScale = env^2 * reconModifierSq * m74^2, each step stored back to a float (00804953..0080497B), times m78^2 when the target is IsKindOf(08h) AND fails the surface test 00922DC0 (0080497F..008049B5). distSq uses only unit+0FCh and unit+104h, never the height (00804A1E..00804A57), and 00804A5F divides it by the range scale with no zero guard: a zero scale with a non-zero distance gives +inf and rejects every entry, while both zero gives a NaN that PASSES the range test because JA is false on unordered flags. The reused recon_sensor_entry_gain_00804ab0 spells the test as 'normalized > max -> reject', which has the same NaN behaviour."
+    },
+    {
+      "question": "What is the exact admit/reject predicate, with units?",
+      "result": "Per entry, in order, each failure advancing to the next: (1) 00804AB7 normalizedDistSq <= entry[+4h], both sides squared world distances divided by rangeScale; (2) 00804ACF (mask & (1 << entry[+10h])) != 0, and the live caller passes 0FFh at 008068E0 so this never rejects; (3) when entry[+18h] != 0, 00804B29 |wrap(atan2(dx, dz) - heading)| <= entry[+14h], where the wrap is 00438B10 (RET 8) and the magnitude is taken bitwise at 00804B1B AND ECX,7FFFFFFFh. entry[+14h] is a HALF-angle in radians, so the admitted arc is twice the script's Angle. An entry that passes sets the applied byte at 00804B40 BEFORE the cap clamp, so applied is independent of the gain's sign or magnitude."
+    },
+    {
+      "question": "What does an applying entry contribute?",
+      "result": "gain = entry[+8h] * dt (00804B32..00804B3C), where entry[+8h] is the script's Gain HALVED by the writer at 00808626. 00804B45 reads the current value from the detection record indexed by the OBSERVER's party, unit + 1E8h + [observer+54h]*34h + 0Ch. When current + gain exceeds entry[+0Ch] the gain becomes exactly cap - current (00804B6D FSUBRP / 00804B6F FSUBP), which is negative if a wider entry already pushed the value past this entry's cap. 00804B85 keeps a strictly larger gain, and 00804BB4 writes the best through outGain only when the pointer is non-null; the return value at 00804BC7 is the applied byte, not the gain."
+    },
+    {
+      "question": "Where does the sensor row layout come from?",
+      "result": "From the writer 008085C0..00808A6A (docs/SENSOR_TABLES.md section 2), not from the reader. Entries are 1Ch, confirmed independently at the writer (00808A53 LEA ECX,[EAX*8]; SUB ECX,EAX) and the reader (00804A8C, the same idiom, and 00804BA6 ADD ESI,1Ch). Pairs are 0Ch apart at table + 8 + (observerCategory * 8 + targetCategory) * 0Ch, the same index the loader builds at 008085AA. entry+0Ch is not a free clamp: it is one of three image floats keyed off MaxLevel (0 -> 0.0f, 1 -> 0.25f, 2 -> 1.0f), and 0.25f is exactly kReconDetectionBlipThreshold, so a MaxLevel 1 entry caps the value at the blip threshold and can never identify (00805B3D takes >= 0.25 to blip and >= 0.5 to identified)."
+    },
+    {
+      "question": "How does the fold publish a level, and where does it write it?",
+      "result": "00806840 loops targets (head at targets+4h, next at node+4h) and, per target, observers (head at observers+4h). 0080686A skips the whole sensor pass when [[00E188A8]+1FE4h] == 2 (the non-originating machine) and 00806883 skips it when the record's force byte at unit+1E8h+slot*34h+10h is set; both jump to the publish, leaving the record untouched. Otherwise 008068C2 admits only an IsKindOf(05h) observer, 008068FA keeps the strictly largest gain and its observer, and 0080693D calls 00805AF0(det, bestGain, 1, bestObserverUnit) or 00806957 calls 00805BE0(det). The publish at 00806968..00806981 writes the forced level (det+8h) or the accumulated level (det+4h) into the contact-list node's PAYLOAD at +0Ch, not into the detection record. dt is [slot+30h] and the slot index is [slot+28h]."
+    },
+    {
+      "question": "How does rule (c) compose with (a) and (b)?",
+      "result": "From 008073C0, not from prose. The slot holds four 97 * 0Ch bucket arrays (own +34h, enemy +4C0h, neutral +94Ch; 0x4C0-0x34 = 0x94C-0x4C0 = 0x48C = 97*0Ch) and four flat {count, head, tail} lists (own +0DD8h, enemy +0DE4h, neutral +0DF0h, unknown +0DFCh). Order: 00807531 flattens the own buckets into the own list; 00807556 and 00807574 run 00806840 over every enemy and neutral bucket with the own list as observers; 00807615 flattens the enemy buckets into +0DE4h; 00807634 drains that list once; 008077A0 and 008077C2 do the same for neutrals. So the drain is NOT per target. The drain predicate on payload+0Ch is exactly recon_triple_filter_00807647: level == 1 is copied into the unknown list at +0DFCh (00807654..0080769B), level < 2 is unlinked and freed (008076A5..008076E7). No filter loop exists over the own list anywhere in 00807520..00807871. The consumer closes the loop: 00865201 resolves the party's slot from unit+54h and 00865206 walks the enemy list head at slot+0DE8h, which by then holds only level >= 2 records."
+    }
+  ],
+  "functions": [
+    {
+      "address": "008048a0",
+      "name": "BSP_Recon_EvaluateSensors",
+      "body": "008048a0-00804bd3",
+      "abi": "__fastcall bool(ECX=observer, EDX=target, int mask, float dt, float* outGain), RET 0Ch",
+      "coverage": "complete: every instruction of the body accounted for in docs/GUNNERY_RECON_DETECTION.md sections 2 and 4"
+    },
+    {
+      "address": "00806840",
+      "name": "BSP_Recon_RunSensorPass",
+      "body": "00806840-0080699c",
+      "abi": "__thiscall void(ReconSlot* ECX, UnitList* targets, UnitList* observers), RET 8",
+      "coverage": "complete for the body; the reconstruction models one target per call, the native loops the whole bucket"
+    },
+    {
+      "address": "00922dc0",
+      "name": "BSP_Entity_IsSurfaceTarget",
+      "body": "00922dc0-00922dc2",
+      "abi": "__thiscall bool(ECX=entity); MOV DL,1 thunk, tail JMP into 00922C80",
+      "coverage": "partial: read as a contract. 00922C80's body read far enough to rule out a party or visibility test (rejects on entity+5Dh, IsKindOf(0Fh), IsKindOf(18h); for IsKindOf(06h) compares a negated depth scalar against [+49Ch] at 00922CE8..00922CFA), not far enough to state the exact predicate. Name is the pre-existing ledger hypothesis, reused unchanged."
+    },
+    {
+      "address": "00960230",
+      "name": "BSP_VehicleClass_ReadLuaFields",
+      "body": "00960230-00963234",
+      "abi": "__thiscall(descriptor, LuaObject* row), RET 4 at 00963232 - from the existing ledger record, not re-derived here",
+      "coverage": "partial: 0096239A..009623D9 only, the producer of [[target+538h]+0B8h]"
+    }
+  ],
+  "call_sites": [
+    {
+      "address": "008068e7",
+      "native": "008048a0",
+      "function": "00806840",
+      "note": "the only live call site of the sensor evaluation: 008068D3 pushes &localGain, 008068DD pushes dt from [slot+30h], 008068E0 pushes 0FFh, ECX = the observer unit [[observerNode+8h]+4h], EDX = the target unit [[targetNode+8h]+4h]. Fixes the stack-argument order used to read the RET 0Ch frame."
+    },
+    {
+      "address": "0080491e",
+      "native": "008e6430",
+      "function": "008048a0",
+      "note": "the environment modifier, category 0Ch, called only when [00E0C978] and [[00F88C30]+118h] are both set; otherwise 00804929 substitutes 00D7A24C, 1.0f. Squared into the range scale."
+    },
+    {
+      "address": "00804987",
+      "native": "00922dc0",
+      "function": "008048a0",
+      "note": "the surface test. The sonar penalty needs BOTH IsKindOf(08h) true (0080497F) AND this false (0080498E JNE skips), so a surfaced submarine keeps the unpenalised scale."
+    },
+    {
+      "address": "008049c4",
+      "native": "00414db0",
+      "function": "008048a0",
+      "note": "lazy world-frame refresh on the target, gated by the dirty byte at [target+0C8h]; the observer gets the same treatment at 008049F0. Both run before +0FCh and +104h are read."
+    },
+    {
+      "address": "00804afa",
+      "native": "00bf701a",
+      "function": "008048a0",
+      "note": "_CIatan2, CRT, never ported. 00804AF2 loads dx then dz and the routine takes the first as y, so bearing = atan2(dx, dz), measured from +z toward +x."
+    },
+    {
+      "address": "00804b0b",
+      "native": "00438b10",
+      "function": "008048a0",
+      "note": "wraps bearing - heading into (-pi, pi]. RET 8: both float arguments are cleaned, which the frame arithmetic at 00804B35's [ESP+44h] confirms."
+    },
+    {
+      "address": "0080693d",
+      "native": "00805af0",
+      "function": "00806840",
+      "note": "00805AF0(ECX = unit+1E8h+slotIndex*34h, float bestGain, int 1, void* bestObserverUnit). The fourth argument is the winning observer pointer; the reconstruction reports an array index instead."
+    },
+    {
+      "address": "00806957",
+      "native": "00805be0",
+      "function": "00806840",
+      "note": "the reset arm, taken when no observer applied. Snaps value and level to zero in one step: there is no decay ramp and no hysteresis anywhere in the rule."
+    },
+    {
+      "address": "00807556",
+      "native": "00806840",
+      "function": "008073c0",
+      "note": "rule (c) over the 97 enemy class buckets at slot+4C0h, observers = the flat own list at slot+0DD8h. 00807552 PUSH EBX (observers) then 00807553 PUSH EDI (targets) fixes the argument order."
+    },
+    {
+      "address": "00807574",
+      "native": "00806840",
+      "function": "008073c0",
+      "note": "the same over the 97 neutral class buckets at slot+94Ch."
+    },
+    {
+      "address": "00807627",
+      "native": "00804e10",
+      "function": "008073c0",
+      "note": "flattens the enemy buckets into the flat enemy list at slot+0DE4h, AFTER the sensor pass and BEFORE the drain at 00807634. This is why the drain is once-per-list, not per target."
+    },
+    {
+      "address": "0080753a",
+      "native": "00804e10",
+      "function": "008073c0",
+      "note": "flattens the 97 own buckets at slot+34h (loop head 00807531) into the flat own list at slot+0DD8h, which is what the two 00806840 calls then use as the observer list."
+    },
+    {
+      "address": "00865201",
+      "native": "008053c0",
+      "function": "00864fe0",
+      "note": "the gunnery consumer resolves the party's slot from unit+54h, then 00865206 MOV EAX,[EAX+0DE8h] walks the enemy list head. The enclosing function is BSP_UnitGunneryAi_Tick, from the offline index (tools/bsp.py lookup 00865206); its end was not bounded in this pass. disasm-raw resynced a few bytes before the call site, but both instructions decoded cleanly."
+    },
+    {
+      "address": "009623be",
+      "native": "00b66330",
+      "function": "00960230",
+      "note": "reads the ReconModifier float with the FLD1 default pushed at 009623AE; 009623CF FMUL ST0 squares it and 009623D9 stores it to [EDI+0B8h]. So [[target+538h]+0B8h] is the SQUARE of the script value and 008048A0 does not square it again."
+    }
+  ],
+  "data": [
+    {
+      "address": "00d1aaf4",
+      "what": "the Lua key string \"ReconModifier\", pushed at 0096239A. Confirmed by name lookup against 00960230."
+    },
+    {
+      "address": "00d7a24c",
+      "what": "1.0f. The substitute for a non-unit-base target's ReconModifier (008048FD) and for the skipped environment modifier (00804929); also kReconDetectionValueMax."
+    },
+    {
+      "address": "00ce3868",
+      "what": "0.25f, the MaxLevel 1 cap written at 0080896B and the blip threshold read by 00805B3D. The coincidence is load-bearing: a MaxLevel 1 entry stops exactly at a blip."
+    },
+    {
+      "address": "00e188a8",
+      "what": "the game pointer. [[00E188A8]+1FE4h] is the network role word (2 = non-originating, skips the sensor pass at 0080686A); [[[00E188A8]+21C4h]+74h] and +78h are the recon and sonar multipliers, each squared into the range scale."
+    }
+  ],
+  "corrections": [
+    {
+      "what": "GunneryReconContact::published_level was commented as 'record+0Ch'. 00806981 MOV [ECX+0Ch],EAX writes the contact-list NODE PAYLOAD's +0Ch, where ECX = [node+8h]; the detection record at unit+1E8h+slot*34h keeps the raw value and level and is not touched by the publish. Corrected in the header this packet owns."
+    },
+    {
+      "what": "The header implied a per-target drain. 008073C0 runs all 97 buckets through 00806840 first, flattens them (00807615), and drains once (00807634). The reconstruction's folding of the drain into gunnery_recon_detect_00806840 is now labelled as this packet's composition, not native control flow, in both the header and the doc."
+    },
+    {
+      "what": "'[00E188A8]+1FE4h' was missing a level of indirection; the word is [[00E188A8]+1FE4h]. Same for the tuning block at [[[00E188A8]+21C4h]+74h/+78h]."
+    },
+    {
+      "what": "Units note added: entry+8h is the script's Gain HALVED at the writer (00808626, the double at 00D7A280) and entry+14h is a half-angle. Neither was stated where the reader's consumers could see it."
+    },
+    {
+      "what": "No contradiction found in the reused headers. Every symbol include/bsp/gunnery_recon_detection.hpp claims to reuse exists with the assumed shape, and the ReconSensorEntry field offsets it depends on (+4h, +8h, +0Ch, +10h, +14h, +18h) match both the writer 008085C0..00808A6A and the reader instructions 00804AB7, 00804B35, 00804B69, 00804ACF, 00804B29, 00804AD7. docs/SENSOR_TABLES.md cites 00804B0F for the +18h gate; the gate decodes at 00804AD7. A citation slip only, no layout consequence, and that doc belongs to another packet so it was not edited."
+    }
+  ],
+  "names_added": [
+    {
+      "address": "008048a0",
+      "name": "BSP_Recon_EvaluateSensors",
+      "note": "existing name kept; evidence appended, not replaced"
+    },
+    {
+      "address": "00806840",
+      "name": "BSP_Recon_RunSensorPass",
+      "note": "existing name kept; evidence appended, not replaced"
+    }
+  ],
+  "contracts": [
+    {
+      "address": "00922dc0",
+      "what": "the surface/submerged test inside the range scale. Read as a contract; 00922C80's exact predicate is the one remaining guess among 008048A0's inputs. Not leased, not annotated."
+    },
+    {
+      "address": "008e6430",
+      "what": "the gameplay environment modifier, category 0Ch. Squared into the range scale; supplied to this rule as a host float. Not leased, not annotated."
+    },
+    {
+      "address": "008085aa",
+      "what": "the sensor list index the loader builds. Reused through sensor_tables.hpp so reader and writer address the same list. Not leased by this packet."
+    },
+    {
+      "address": "00807647",
+      "what": "the triple filter. Reused through recon_slot_lists.hpp; re-derived from 0080764A..008076A9 in this pass and found exact. Not leased by this packet."
+    },
+    {
+      "address": "00444d20",
+      "what": "claimed by the surviving header to force the recon multiplier to 1.0f. NOT verified in this pass; a targeted disassembly found no store to +74h in the first 60 bytes and the search was not extended. Treat as inherited, unproven."
+    }
+  ],
+  "run_time_evidence": "None. Every instruction-level claim in this pass comes from the PE on disk via tools/bsp.py disasm-raw, plus the four Ghidra listings the predecessor spilled to local/output/ before the reboot, plus docs/SENSOR_TABLES.md for the writer-derived row layout. No live decompilation was used to form a claim. The Ghidra bridge turned out to be back up (tools/verify_report_calls.py reached the live listing), but Ghidra was left read-only: no annotation, no rename, no snapshot.",
+  "build": "./scripts/build.ps1 from the worktree, Win32 Release, /W4 /WX /fp:strict: bsp_core, bsp_game and the probes compile clean. src/gunnery_recon_detection.cpp built into build/win32/bsp_core.dir/Release/gunnery_recon_detection.obj.",
+  "tests": "No new test. ctest: 1/1 passed (reconstructed_math). The rule adds no numeric surface an existing fixture does not already cover, and AGENTS.md asks for the smallest possible test footprint.",
+  "gate": "python tools/verify_report_calls.py reports/cc7_gunnery_recon_detection.json: 14 call rows checked, 0 failed, against live Ghidra."
+}
