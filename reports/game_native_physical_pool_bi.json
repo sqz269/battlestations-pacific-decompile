@@ -1,0 +1,62 @@
+{
+  "packet": "orch4_game_native_physical_pool_bi",
+  "scope": "Game-side process owner for source-projected 0109DBF0 physical-provider pool and common 00E188B4 allocator-list domain",
+  "original_addresses": {
+    "pool_storage": "0109DBF0",
+    "allocator_list_head": "00E188B4",
+    "pool_initializer": "00BF3250",
+    "static_initializer": "00CD9010",
+    "crt_destructor": "00CE10F0",
+    "pool_destructor": "00BF33A0"
+  },
+  "source_contract": {
+    "owner": "bsp::game::game_native_physical_pool_process()",
+    "explicit_once_initialization": "GameNativePhysicalPoolProcess::initialize_once_00cd9010()",
+    "common_allocator_domain": "GameNativePhysicalPoolProcess::allocator_list_domain_00e188b4()",
+    "retained_vfs_input": "GameNativePhysicalPoolProcess::physical_provider_pool_context_0109dbf0()",
+    "registration_failure": "Return and cache the exact nonzero CRT status; BF3250 pool remains initialized and context remains accessible; no rollback, retry, or manual destruction",
+    "first_attempt_exception": "Retain attempted state and reject retry; no assumption about native partial state",
+    "teardown": "Registered native CE10F0 callback invokes BF33A0 at CRT exit; C++ owner destructor only releases bookkeeping afterward"
+  },
+  "lifetime_order_proof": [
+    "Function-local process owner completes construction and registers its C++ destructor before initialize_once_00cd9010 is called",
+    "CD9010 source wrapper registers CE10F0 later with std::atexit",
+    "CRT LIFO order executes CE10F0 while process raw storage and allocator domain still live",
+    "One child observer registered before native registration ran afterward, saw the pool unlinked, and called trim_all on the still-live empty domain"
+  ],
+  "verification": {
+    "platform": "MSVC Win32 /MD",
+    "source_compilation": "cl /std:c++20 /EHsc /MD /O2 /Iinclude /c src\\game_native_physical_pool.cpp",
+    "child_link": "link local\\probe.obj local\\game_native_physical_pool.obj bsp_core.lib /MANIFEST:EMBED",
+    "manifest_extracted": true,
+    "manifest_execution_level": "asInvoker",
+    "child_exit_code": 0,
+    "observed_output": [
+      "main pool=initialized slot=returned once_status=0",
+      "before_native_cleanup head=pool blocks=1",
+      "after_native_cleanup head=empty domain=alive",
+      "older_than_process",
+      "exit_code=0"
+    ],
+    "checks": [
+      "Context rejected before explicit startup",
+      "Repeated startup returned cached zero without a second pool construction",
+      "Context referenced the same allocator domain as the process owner",
+      "Actual source slot acquired and returned",
+      "CRT callbacks observed live pool before native teardown and empty shared list afterward"
+    ],
+    "sha256": {
+      "header": "9CA8763821CFFB6CC6AB1C7A26411855B4466ACFF191DB61D13FD54DCE72A36E",
+      "source": "2DDE8E71367EE7B689F7AE620F62F545F0811DCF40979896CEE990E97B323E7C",
+      "ignored_child_source": "73687FD44209772C264A6FC5C499CACF330F90C4B88C671B44E4A3225068356D",
+      "ignored_child_exe": "FB02EAC6123683BD54EC0202F87BDC138614A07812130FD763E2AFFE1E56924A",
+      "linked_primary_bsp_core_lib": "A38213FA1488744A7F413276543108D4CF467AB083F1ED90DD9019856C66A517"
+    }
+  },
+  "limits": [
+    "New C++ source interfaces, not original ABI or fixed-image address identity",
+    "No original game process or gameplay validation",
+    "Forced CRT registration failure, allocation exception, and concurrent startup were not injected",
+    "Game entrypoint admission, VFS integration, and CMake registration remain parent integration work"
+  ]
+}
