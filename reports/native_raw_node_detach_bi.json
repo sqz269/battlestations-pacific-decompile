@@ -1,0 +1,661 @@
+{
+  "packet": "orch2_raw_node_detach_bi",
+  "base": "3d6f645b",
+  "status": "complete_source_within_two_profile_domain_strict_build_and_focused_fixture_passed",
+  "original_abi_replacement": false,
+  "game_validated": false,
+  "ghidra_mutated": false,
+  "routines": [
+    {
+      "entry": "00be9c40",
+      "coverage": "complete within D642C0/BEF540 and D691B0/BF4F20 domain",
+      "original_abi": "ECX raw wrapper; no stack arguments; ESI preserved; RET; final EAX reader pointer",
+      "source": "src/native_raw_node_detach.cpp:skip_and_detach_native_raw_node_00be9c40",
+      "interface": "context-bearing C++ pointer result, not native ABI thunk"
+    },
+    {
+      "entry": "00bf03e0",
+      "coverage": "complete within same qualified provider domain",
+      "original_abi": "ECX reader; stacked low distance/ignored pointer; RET8; provider EAX forwarded",
+      "source": "src/native_raw_node_detach.cpp:skip_native_raw_reader_relative_00bf03e0",
+      "interface": "context-bearing C++ uint32 result, not native ABI thunk"
+    }
+  ],
+  "calls": [
+    {
+      "address": "00b7f567",
+      "native": "00be9c40",
+      "containing_function": "00b7f430",
+      "body_end": "00b7f5ab"
+    },
+    {
+      "address": "00b7ea95",
+      "native": "00be9c40",
+      "containing_function": "00b7e970",
+      "body_end": "00b7eadd"
+    },
+    {
+      "address": "00b7f170",
+      "native": "00be9c40",
+      "containing_function": "00b7f100",
+      "body_end": "00b7f1a3"
+    },
+    {
+      "address": "00b7ee46",
+      "native": "00be9c40",
+      "containing_function": "00b7eb90",
+      "body_end": "00b7ee90"
+    },
+    {
+      "address": "00bc44f8",
+      "native": "00be9c40",
+      "containing_function": "00bc4480",
+      "body_end": "00bc452b"
+    },
+    {
+      "address": "00bc4440",
+      "native": "00be9c40",
+      "containing_function": "00bc43d0",
+      "body_end": "00bc4473"
+    },
+    {
+      "address": "007191fe",
+      "native": "00be9c40",
+      "containing_function": "00719080",
+      "body_end": "00719236"
+    },
+    {
+      "address": "0071b4fb",
+      "native": "00be9c40",
+      "containing_function": "0071b3e0",
+      "body_end": "0071b532"
+    },
+    {
+      "address": "00727342",
+      "native": "00be9c40",
+      "containing_function": "00727310",
+      "body_end": "00727a8f"
+    },
+    {
+      "address": "00addd3d",
+      "native": "00be9c40",
+      "containing_function": "00adda60",
+      "body_end": "00adde3f"
+    },
+    {
+      "address": "00ae01bf",
+      "native": "00be9c40",
+      "containing_function": "00adfeb0",
+      "body_end": "00ae01fd"
+    },
+    {
+      "address": "00b8ad1b",
+      "native": "00be9c40",
+      "containing_function": "00b8aad0",
+      "body_end": "00b8ad50"
+    },
+    {
+      "address": "00b8aec7",
+      "native": "00be9c40",
+      "containing_function": "00b8ad80",
+      "body_end": "00b8af04"
+    },
+    {
+      "address": "00b8b1ce",
+      "native": "00be9c40",
+      "containing_function": "00b8b0b0",
+      "body_end": "00b8b207"
+    },
+    {
+      "address": "00b93de9",
+      "native": "00be9c40",
+      "containing_function": "00b93d30",
+      "body_end": "00b93e55"
+    },
+    {
+      "address": "00b93f1b",
+      "native": "00be9c40",
+      "containing_function": "00b93e60",
+      "body_end": "00b93f8d"
+    },
+    {
+      "address": "00b94419",
+      "native": "00be9c40",
+      "containing_function": "00b941d0",
+      "body_end": "00b944bd"
+    },
+    {
+      "address": "00b946d4",
+      "native": "00be9c40",
+      "containing_function": "00b944e0",
+      "body_end": "00b9470c"
+    },
+    {
+      "address": "00b8e594",
+      "native": "00be9c40",
+      "containing_function": "00b8e580",
+      "body_end": "00b8e59d"
+    },
+    {
+      "address": "00be9c69",
+      "native": "00bf03e0",
+      "containing_function": "00be9c40",
+      "body_end": "00be9c85"
+    },
+    {
+      "address": "00bf03f0",
+      "native": "00bef540",
+      "containing_function": "00bf03e0",
+      "virtual_slot": "1C",
+      "qualification": "current actual D642C0 or D691B0 profile words"
+    },
+    {
+      "address": "00bf03f0",
+      "native": "00bf4f20",
+      "containing_function": "00bf03e0",
+      "virtual_slot": "1C",
+      "qualification": "current actual D642C0 or D691B0 profile words"
+    },
+    {
+      "address": "00bf4f37",
+      "native": "SetFilePointerEx (IAT00ce22d8)",
+      "containing_function": "00bf4f20",
+      "qualification": {
+        "iat": "00ce22d8",
+        "dll": "KERNEL32.dll",
+        "symbol": "SetFilePointerEx"
+      }
+    }
+  ],
+  "call_evidence": "19 inbound detach calls plus sole adapter call; two virtual rows separately established by actual profile bytes; one symbolic import separately established by PE import directory",
+  "current_byte_identity": [
+    {
+      "start": "00be9c40",
+      "size": 70,
+      "sha256": "9359e2b2658bd938fcd03693c267ce661ee2c01a93673211ccc450111059892b",
+      "sha512": "d29b80e0c7740886cba9406a901e0a7e78d1956fba478722acee7c6f12092b2a84a5dec5c19f8b1b16e7907ca92a43c458e01b8baf0307e976e55fd46f81fb88",
+      "complete_span_matches": true,
+      "current_live_matches_discovery_pe": true
+    },
+    {
+      "start": "00bf03e0",
+      "size": 21,
+      "sha256": "994d8687d30b77f52335a8bb8c33b65a5da5db7c7f45397de269c0bc7278e99c",
+      "sha512": "1c44e8185c560b3c70345c5dd977bc23455be8a3d1063cd336bef4a44793f27610a9e13f6161c56a467a246311b101d92352df366f7a8ef9f94eafe543d4d6ff",
+      "complete_span_matches": true,
+      "current_live_matches_discovery_pe": true
+    },
+    {
+      "start": "00bef540",
+      "size": 61,
+      "sha256": "daf89af22b34c985f1a54071d85eb03e08045470122e29fb766ecbd04657eac0",
+      "sha512": "fa552eadbb9a8cd60b2076eb629c8f47648637c1a551cf02638b50534a373e29c9a8f437d7dcb173df0087b752c7423ab4556762cc99010a66afae49db2c258e",
+      "complete_span_matches": true,
+      "current_live_matches_discovery_pe": true
+    },
+    {
+      "start": "00bf4f20",
+      "size": 32,
+      "sha256": "956d15aa55fd38f9f349ef3c873b984bd3fae3e02c78e78e949743f929dbb27c",
+      "sha512": "b21d80c4f2e8fd456686dc075cd271a2d0930f02c7deffc4fff56aa19ca0b8d31e31b211ffe664a58241abf02562cb00befd09b7338ce32c5bded24118d9b961",
+      "complete_span_matches": true,
+      "current_live_matches_discovery_pe": true
+    },
+    {
+      "start": "00d642c0",
+      "size": 76,
+      "sha256": "f5b345176e2efcce20a31faa47e4deabd93fa32bddf5dc54483dd074c26fa71f",
+      "sha512": "8eabdb029f4d6a54fb177570f3dc8b20ad57d4b5cca03d7a64758d2de1dc12e9a4027c2f5093bff1e4eb582d73c57d61fa50d4d1a60d2edd41508e33afb16cf4",
+      "complete_span_matches": true,
+      "current_live_matches_discovery_pe": true
+    },
+    {
+      "start": "00d691b0",
+      "size": 76,
+      "sha256": "6dc3f5127bee62f46013d321a844d7b100eee5691919d7c89b21b0ef570c19ec",
+      "sha512": "46a1375b372bd800aaa2b0d847b0551a7fb821c39d9ab6f373f6253ebc36d3cf5b892825aa7dd98e8f7db591f092bf229591f017246eb20a18db40543f658cd9",
+      "complete_span_matches": true,
+      "current_live_matches_discovery_pe": true
+    },
+    {
+      "start": "00ce22d8",
+      "size": 4,
+      "sha256": "22b17ea0013611993b19d410093df91cfacae84fd91b14311bbabc0d6b46a34d",
+      "sha512": "9daea8189de7f712beac183d748ce49c0738ac47b69938df8adfc9a5883ef0f2c028dac5c9272d47f911031bcf2713b5c7e94691e3b9c466bec9c723bf0c1e5a",
+      "complete_span_matches": true,
+      "current_live_matches_discovery_pe": true
+    }
+  ],
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "bridge": "http://127.0.0.1:8089",
+    "pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "compiler_archive_binding": {
+    "inputs": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-raw-node-detach-bi\\src\\native_raw_node_detach.cpp",
+        "size": 3181,
+        "sha256": "ffde1194923272ca210fc139219189d21fe5135f2a523098655affe659ed206d",
+        "sha512": "8859ca31314eaf999feaa9fb3ea895da2cb0ca2ffb0f396ee0a783499478fe45b0a23675cdca33baedb1afafe398fee24cc21644f35f1dc919e89023fef985b4"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-raw-node-detach-bi\\include\\bsp\\native_raw_node_detach.hpp",
+        "size": 1997,
+        "sha256": "d73017e2801354588614c4dfa5df5ec20ce24847fae5b6138b17e95ce435fe0e",
+        "sha512": "87abce09f99bc6dcf09387c36b8f6af16afda54216dbdae0b2eca04ce09de02d5b68a252d1e65f700cea9a1739db908850491b0f3e6ca365d0332973ef17b455"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-raw-node-detach-bi\\src\\native_filestore_open.cpp",
+        "size": 12292,
+        "sha256": "8f844893f5d9bc6545dec4808786b74f098d61180e7f4e8c1c644fb38ceda71f",
+        "sha512": "971b9c2b625b1cc0b1c2c791b93ad17ceee7cc6bb3cb2228faa6c9a707520ccc53bcbe3ec8cfae234e8293f537c54bfbae7a7360d42aa531420240fa55ff3559"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-raw-node-detach-bi\\include\\bsp\\native_filestore_open.hpp",
+        "size": 4766,
+        "sha256": "b7ea10798dae64b2e4dfeef9a78693e4462b495fe7dba8c32ad4a7e87d782827",
+        "sha512": "b583e870dfeb7cff6c58bec68619d1f316fad74a3d2f79c514b6a4d7fc1117d47c94beaa2b2b44c5c97f1df551fbf4b5c367190e59b1339450c2c557dd8b6dd7"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-raw-node-detach-bi\\src\\native_physical_stream_conversion.cpp",
+        "size": 1077,
+        "sha256": "8c6beb3ab29e40fb71e42d4266076c27a354d72b7112b6c4e5731b1477e7454a",
+        "sha512": "3adf6b737f69e767be2fb56e83c39201d18354312c74e2d53d2950f6a240dcdc21b33128a920554c87ae18bbd26b5ff3cc319c63fd3aa28f30a802a7432ca37f"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-raw-node-detach-bi\\include\\bsp\\native_physical_stream_conversion.hpp",
+        "size": 1307,
+        "sha256": "8c24719755dd8719da843edeb2730598976d2d7dac702b733c0d399daec0d6ac",
+        "sha512": "b014c77904f18023fdef29010129d916d23d0261479cc0be4010c7374d6c464d0099366157623fc396f78ede0d3464e7136922f707651c0b07cbf4a32098ce19"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-raw-node-detach-bi\\cmake\\startup.cmake",
+        "size": 110069,
+        "sha256": "e559a98ab1d437cb96c6d40d615eb89e956f0e84ee76c84c29a24bc5c526a5fc",
+        "sha512": "edcd393414b957ded740dfc1b0fcf18bb399e675ea3f7238566d2bfb869bc60f27c39f22707cba2883a722a8d25b78a1247b7df648db2c55fe542ee76bef8b8d"
+      }
+    ],
+    "precompile_inputs_unchanged": true,
+    "compiler_bindings": {
+      "command": {
+        "tlog": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-raw-node-detach-bi\\build\\win32\\bsp_core.dir\\Release\\bsp_core.tlog\\CL.command.1.tlog",
+          "size": 2168768,
+          "sha256": "c8d7462c4a3a78c36d1bf340c6960924e25beeb194032f05efb038bae98ee96e",
+          "sha512": "a5a11980ff6fb47039d9bfb98221677dd31725850585bb7bfa9d7acbdff52cf51c32e720810a94050f62eedf71dcd9223dab39adc1d1b6bb053a9d852fd84bf8"
+        },
+        "binding": [
+          "^J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-ORCH2-RAW-NODE-DETACH-BI\\SRC\\NATIVE_RAW_NODE_DETACH.CPP",
+          "/c /I\"J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-ORCH2-RAW-NODE-DETACH-BI\\INCLUDE\" /I\"J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-ORCH2-RAW-NODE-DETACH-BI\\BUILD\\WIN32\\_DEPS\\LUA511-SRC\\SRC\" /I\"J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-ORCH2-RAW-NODE-DETACH-BI\\BUILD\\WIN32\\_DEPS\\ZLIB121-SRC\" /nologo /W4 /WX /diagnostics:column /O2 /Ob2 /Oy- /D _MBCS /D WIN32 /D _WINDOWS /D NDEBUG /D \"CMAKE_INTDIR=\\\"Release\\\"\" /EHsc /MD /fp:strict /std:c++17 /Fo\"BSP_CORE.DIR\\RELEASE\\\\\" /Fd\"J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-ORCH2-RAW-NODE-DETACH-BI\\BUILD\\WIN32\\RELEASE\\BSP_CORE.PDB\" /external:W0 /TP /analyze-  /external:I \"J:/PROG/battlestations-pacific-decompile-orch2-raw-node-detach-bi/build/win32/_deps/dxsdk_d3dx-src/build/native/include\" J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-ORCH2-RAW-NODE-DETACH-BI\\SRC\\NATIVE_RAW_NODE_DETACH.CPP"
+        ],
+        "retained_block": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-raw-node-detach-bi\\local\\raw_node_detach_bi\\CL.command.source-containing-block.txt",
+          "size": 927,
+          "sha256": "2f2f351b6aec8fe9fc7111a0f5d2412207395903821f6baa4b733c4b2a9d9d79",
+          "sha512": "d1f011bbb01ce4993651309dfb4284a6775e2c38dc872b9df9b34cc9d19796a63b49ab442f64fbcd57151c5c0f33d7c4e5d8730a94d6bd7b3261687bd569b9cc"
+        },
+        "aggregate_header": false,
+        "source_membership_verified": true,
+        "excluded_aggregate_headers": []
+      },
+      "read": {
+        "tlog": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-raw-node-detach-bi\\build\\win32\\bsp_core.dir\\Release\\bsp_core.tlog\\CL.read.1.tlog",
+          "size": 35569832,
+          "sha256": "70557dec9090d532616c0ab59be3a63c15b5a2eb10f1a995cc9071a39923a308",
+          "sha512": "230a39d1a36b774f5057597f743457e3b606ed3ef437891a025ee65b71317fa2b24fec6ff088a291283f2b3b203e87c14aea1a97baceb079e7c5382c77329aec"
+        },
+        "binding": [
+          "^J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-ORCH2-RAW-NODE-DETACH-BI\\SRC\\NATIVE_RAW_NODE_DETACH.CPP",
+          "C:\\WINDOWS\\GLOBALIZATION\\SORTING\\SORTDEFAULT.NLS",
+          "C:\\WINDOWS\\SYSTEM32\\TZRES.DLL",
+          "J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-ORCH2-RAW-NODE-DETACH-BI\\INCLUDE\\BSP\\NATIVE_RAW_NODE_DETACH.HPP",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\CSTDINT",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\YVALS_CORE.H",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\VCRUNTIME.H",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\SAL.H",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\CONCURRENCYSAL.H",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\VADEFS.H",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\XKEYCHECK.H",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\STDINT.H",
+          "J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-ORCH2-RAW-NODE-DETACH-BI\\INCLUDE\\BSP\\NATIVE_FILESTORE_OPEN.HPP",
+          "J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-ORCH2-RAW-NODE-DETACH-BI\\INCLUDE\\BSP\\NATIVE_RETAINED_MEMORY_OWNERS.HPP",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\CSTDDEF",
+          "C:\\PROGRAM FILES (X86)\\WINDOWS KITS\\10\\INCLUDE\\10.0.26100.0\\UCRT\\STDDEF.H",
+          "C:\\PROGRAM FILES (X86)\\WINDOWS KITS\\10\\INCLUDE\\10.0.26100.0\\UCRT\\CORECRT.H",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\XTR1COMMON",
+          "J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-ORCH2-RAW-NODE-DETACH-BI\\INCLUDE\\BSP\\NATIVE_PHYSICAL_STREAM_CONVERSION.HPP"
+        ],
+        "retained_block": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-raw-node-detach-bi\\local\\raw_node_detach_bi\\CL.read.source-containing-block.txt",
+          "size": 1767,
+          "sha256": "ffa65e1e545880445405f39b9aaa5ca2cc08026d76209d19f42844fca0da728a",
+          "sha512": "260e0073c7e877d865a79ed057118d623e7fe1b1de787469b5f0df09dfd721359963b7e06d70b46a3e8e54a9d408050743f0a90ea129c05540ec8f382a131599"
+        },
+        "aggregate_header": false,
+        "source_membership_verified": true,
+        "excluded_aggregate_headers": []
+      },
+      "write": {
+        "tlog": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-raw-node-detach-bi\\build\\win32\\bsp_core.dir\\Release\\bsp_core.tlog\\CL.write.1.tlog",
+          "size": 1054732,
+          "sha256": "57752b9dc78f2200f86ed16363e8baf03a93f2c0c940f189c0ceaa36ae42b3ca",
+          "sha512": "f934f62abd3a1f16d041a60b79a266b2ac1535e853c2452357b49d4814320a768ea760c46ac09b63676ff49e31f7fdafbd39bbde8ce778a837ebbfc167ed0b71"
+        },
+        "binding": [
+          "^J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-ORCH2-RAW-NODE-DETACH-BI\\SRC\\NATIVE_RAW_NODE_DETACH.CPP",
+          "J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-ORCH2-RAW-NODE-DETACH-BI\\BUILD\\WIN32\\BSP_CORE.DIR\\RELEASE\\NATIVE_RAW_NODE_DETACH.OBJ"
+        ],
+        "retained_block": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-raw-node-detach-bi\\local\\raw_node_detach_bi\\CL.write.source-containing-block.txt",
+          "size": 226,
+          "sha256": "0626e6831733d3f2f4fa241154a4bc60956dd93dd6e74dfd5d07870f15e2c074",
+          "sha512": "e4d69edaa1d916f7822fef1c9cccde3428d35ef2d664b9d46de69cd1db7dc2988ea583b30b92d438b58f94583e0161d6ebed993103d0d112d373fb80f716c8f9"
+        },
+        "aggregate_header": false,
+        "source_membership_verified": true,
+        "excluded_aggregate_headers": [
+          {
+            "length": 113753,
+            "sha256": "c1c9f7d81a0156fa9090a6ad90e9d8e2608a8b7bef80ee8771262f8670fc11a8"
+          }
+        ]
+      }
+    },
+    "object": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-raw-node-detach-bi\\build\\win32\\bsp_core.dir\\Release\\native_raw_node_detach.obj",
+      "size": 2346,
+      "sha256": "452c34181cb0d33d6c86feeab4847cfea879733d8ee622badde8b7d32441f0ad",
+      "sha512": "c0a7e50e37249121929088e32f11493a1b7ef4d2739caf6690ab34efb8557ebf8fa1a7baee29ef5f15c523c7a85415b8fcb4d2f7712c88ec02c75ac4ebb87b7f"
+    },
+    "archive": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-raw-node-detach-bi\\build\\win32\\Release\\bsp_core.lib",
+      "size": 56773298,
+      "sha256": "b72c0da908f993ae600a83292011c2eab0601bb49e4546284d831b30aaa48b03",
+      "sha512": "7a01ff6c049f9b2a7c6915176438c9076eec73ab44e48cf21389f2bda1a2912154f072b3f93a8b3adf149899862562cb9f2925f8178f4ae141fc345d883d8aba"
+    },
+    "unique_member": {
+      "name": "bsp_core.dir\\Release\\native_raw_node_detach.obj",
+      "archive_offset": 23679242,
+      "size": 2346,
+      "sha256": "452c34181cb0d33d6c86feeab4847cfea879733d8ee622badde8b7d32441f0ad",
+      "sha512": "c0a7e50e37249121929088e32f11493a1b7ef4d2739caf6690ab34efb8557ebf8fa1a7baee29ef5f15c523c7a85415b8fcb4d2f7712c88ec02c75ac4ebb87b7f",
+      "equals_object": true
+    }
+  },
+  "providers": [
+    {
+      "original_abi": "ECX stream; stack low/high/origin; RET0C; EAX old selected base; EDX new cursor",
+      "profile": "00d642c0",
+      "slot1c": "00bef540",
+      "source": "src/native_filestore_open.cpp:native_memory_stream_seek_00bef540",
+      "context": "existing NativeRetainedMemoryOwnerContext profile words; actual naked source leaf with explicit EAX capture"
+    },
+    {
+      "original_abi": "ECX stream; stack low/high/origin; RET0C; EAX complete SetFilePointerEx BOOL",
+      "profile": "00d691b0",
+      "slot1c": "00bf4f20",
+      "source": "src/native_physical_stream_conversion.cpp:seek_native_physical_stream_00bf4f20",
+      "context": "actual numeric profile words; existing OS seek leaf needs no additional context"
+    }
+  ],
+  "ordered_contract": [
+    "Load node from raw wrapper without guards",
+    "If parent+0C nonnull, subtract complete child declared+1C from parent remaining+20 modulo32, before reader/remaining checks",
+    "If own remaining+20 nonzero, call BF03E0(reader+8,remaining,&local_zero); BF03E0 ignores extra pointer and calls current slot1C(low,high0,origin1)",
+    "Ignore provider EAX including FALSE; after normal return write own remaining+20=0",
+    "Reload reader+8, decrement reader+60 modulo32, clear node+8; no path-cell clearing or reference release"
+  ],
+  "forwarded_result": "BF03E0 returns previous absolute memory cursor bits or full physical BOOL; BE9C40 discards it and explicitly returns reloaded reader pointer after all field updates",
+  "validation": {
+    "strict_build": "local/raw_node_detach_bi/build-v2.txt",
+    "flags": [
+      "/W4",
+      "/WX",
+      "/fp:strict",
+      "Win32"
+    ],
+    "verify_seeds": "local/raw_node_detach_bi/verify-seeds.txt",
+    "existing_ctests": [
+      "reconstructed_math",
+      "native_math_differential"
+    ],
+    "focused_probe": {
+      "path": "local/raw_node_detach_bi/detach_probe.cpp",
+      "log": "detach_probe.cpp\nparent_remaining=2 declared=8 cursor_delta=3 remaining=0 attached=00000000 path=0 returned_reader=1 untouched_fields=1 passed=1\n",
+      "contract": "One actual memory-source detach case: declared8 remaining3 parent10; verify parent2 cursor+3 remaining0 attachment0 path0 returned reader and preserved unrelated fields",
+      "scope": "source fixture, not original-game/physical-failure runtime"
+    },
+    "object_disassembly": "local/raw_node_detach_bi/object-disasm.txt",
+    "manifest": "ad hoc probe linked /MANIFEST:EMBED"
+  },
+  "failure_history": [
+    {
+      "failure": "C2400 inline assembler keyword low in source helper parameter",
+      "evidence": [
+        "local/raw_node_detach_bi/build.txt",
+        "local/raw_node_detach_bi/native_raw_node_detach_failed_low.cpp",
+        "local/raw_node_detach_bi/precompile_inputs.json"
+      ],
+      "correction": "Renamed helper parameter distance_low; captured corrected immutable inputs before incremental compile"
+    },
+    {
+      "failure": "One documentation apply_patch contained an unnecessary unmatched context hunk",
+      "correction": "Patch made no changes; reapplied only the intended reader-word wording change"
+    }
+  ],
+  "limitations": [
+    "Two context-bearing source interfaces; no native ABI thunks or game-runtime claim",
+    "Only established current D642C0 and D691B0 profiles/slots; mismatches outside input domain with no invented fallback",
+    "No node/extent/attached/duplicate guard, rollback, Boolean normalization or reference release",
+    "Probe uses independently verified numeric profile fixture and real memory seek source; no physical FALSE runtime fixture",
+    "No existing provider/comparison source or Ghidra mutation; only one deferred source registration",
+    "Full hierarchy producer still depends on separate name, child-construction and intrusive-lifetime modules"
+  ],
+  "call_verifier": {
+    "exit_code": 0,
+    "log": "  indirect  report.calls[20]: 00bf03f0 uses CALL through a register or memory operand; the report resolves it to 00bef540 (not verifiable here)\n  indirect  report.calls[21]: 00bf03f0 uses CALL through a register or memory operand; the report resolves it to 00bf4f20 (not verifiable here)\n  indirect  report.calls[22]: native='SetFilePointerEx (IAT00ce22d8)' (not checked)\nJ:\\PROG\\battlestations-pacific-decompile-orch2-raw-node-detach-bi\\reports\\native_raw_node_detach_bi.json: 22 call rows checked, 0 failed\n",
+    "numeric_rows": 22,
+    "direct_rows": 20,
+    "virtual_rows": 2,
+    "symbolic_import_rows": 1,
+    "virtual_resolution": "separate actual profile-byte evidence",
+    "import_resolution": "PE KERNEL32.dll!SetFilePointerEx import"
+  },
+  "whole_local_inventory": {
+    "root": "J:\\PROG\\battlestations-pacific-decompile-orch2-raw-node-detach-bi\\local",
+    "double_pass_equal": true,
+    "file_count": 31,
+    "files": [
+      {
+        "path": "local\\raw_node_detach_bi\\bindings.py",
+        "size": 3857,
+        "sha256": "58d958af2b1cfdf63229431fc82429baf530f70de94cdb5d8949a946028057bb",
+        "sha512": "84c5835711a07d9305a4d05aeb07ceffc8de311d91eb72eab55d96062d4a1233da464a23ca39af532a98266067ac706603f67168d28a5255896c25609234accf"
+      },
+      {
+        "path": "local\\raw_node_detach_bi\\build-v2.txt",
+        "size": 5865,
+        "sha256": "9442973dfba65757b5c47a3288dd51c9e15496116d91957c251870a690901a80",
+        "sha512": "6c2a74b2fd0665da4636904f94ca8bf94ce3c5381476acdf23586d227802b2095c3cd7677db2ce527d59cbc0505c385488a1a03bcf7da83d3ca9ad692eff5b90"
+      },
+      {
+        "path": "local\\raw_node_detach_bi\\build.txt",
+        "size": 40575,
+        "sha256": "4fef5c5e5c615a7414e4a494e69591d6aa183a5c452e4186a376e69fc6e36692",
+        "sha512": "da1b6315513cbb13fa86caa7fee3a71c842f5ec561545091b44297f310151543638dc4f7352691c74f673f7b92f0124dfab4881a3122ef5ebc09f4875cbf46cc"
+      },
+      {
+        "path": "local\\raw_node_detach_bi\\CL.command.source-containing-block.txt",
+        "size": 927,
+        "sha256": "2f2f351b6aec8fe9fc7111a0f5d2412207395903821f6baa4b733c4b2a9d9d79",
+        "sha512": "d1f011bbb01ce4993651309dfb4284a6775e2c38dc872b9df9b34cc9d19796a63b49ab442f64fbcd57151c5c0f33d7c4e5d8730a94d6bd7b3261687bd569b9cc"
+      },
+      {
+        "path": "local\\raw_node_detach_bi\\CL.read.source-containing-block.txt",
+        "size": 1767,
+        "sha256": "ffa65e1e545880445405f39b9aaa5ca2cc08026d76209d19f42844fca0da728a",
+        "sha512": "260e0073c7e877d865a79ed057118d623e7fe1b1de787469b5f0df09dfd721359963b7e06d70b46a3e8e54a9d408050743f0a90ea129c05540ec8f382a131599"
+      },
+      {
+        "path": "local\\raw_node_detach_bi\\CL.write.source-containing-block.txt",
+        "size": 226,
+        "sha256": "0626e6831733d3f2f4fa241154a4bc60956dd93dd6e74dfd5d07870f15e2c074",
+        "sha512": "e4d69edaa1d916f7822fef1c9cccde3428d35ef2d664b9d46de69cd1db7dc2988ea583b30b92d438b58f94583e0161d6ebed993103d0d112d373fb80f716c8f9"
+      },
+      {
+        "path": "local\\raw_node_detach_bi\\commit-message.txt",
+        "size": 377,
+        "sha256": "4cd9f628997b5bdbd7e2ffe356f483238e0b027dec580418ae38324962de388c",
+        "sha512": "fa507c99fdd2d18c4a88b6451e7b169918a302ebd3d3fdfc957971fe5349999beb8dcc16067bd8493567c1113eb915722a2141b6b5b353b768351586e515a4a8"
+      },
+      {
+        "path": "local\\raw_node_detach_bi\\compiler_archive_binding.json",
+        "size": 10797,
+        "sha256": "c5fe1a092b438bd0d986016b021e177333770d33894dbfc9faa0b4d2e8f03543",
+        "sha512": "a0c7996ac476f8a61c4354afb75560879522f021a14fcd1d4d1cf53e5fcc6fd832efd0e6fdd542d6e6f20125be5dbf14d9dddd80c0c258dd80f427362e0366ff"
+      },
+      {
+        "path": "local\\raw_node_detach_bi\\current_byte_identity.json",
+        "size": 2573,
+        "sha256": "710b21be817a73492765ab692e0e688f89556ee261fd20441e6451355c55a5a9",
+        "sha512": "472e2d2dc6b19009077977c1aa7a62918a3903d64da0263ce38b0c97df9e18675846faf959e059ba7b5971e32a62de0fc82913f0fe318cc3c5ea86fb17d48744"
+      },
+      {
+        "path": "local\\raw_node_detach_bi\\current_bytes_00be9c40.txt",
+        "size": 345,
+        "sha256": "9d2d8ae33b6a211e208436b97fbbdb1cc8a99c6a71ddf2984aea437a1044c4ff",
+        "sha512": "262866a5ea3300a349c6cc43d67ed7c281670bbd7a65591453f444265c05345e0530ebc011df4ed6d2815bcf093eb8ed52634df1d03f118807f38ec82c3b46e0"
+      },
+      {
+        "path": "local\\raw_node_detach_bi\\current_bytes_00bef540.txt",
+        "size": 296,
+        "sha256": "8db552521dd884a6209fee046a794da09ee0cce6f42fefe3127b83cafdeffb12",
+        "sha512": "5d7ded49fd925b9a0cf02766bcc4a4e70d0d3a17e51d38a21c7c246191c4bae4ce360162af3f215731b96270f7d73517faed41d792834c4d26cec2cfdf154fcc"
+      },
+      {
+        "path": "local\\raw_node_detach_bi\\current_bytes_00bf03e0.txt",
+        "size": 110,
+        "sha256": "f99d37deecfac594e745bc4137f53851025887a60d4917fc1aa32f7e492cbfb6",
+        "sha512": "8073db02c8cc7007041983de023c48fa712f0872515e466975d383522021739d5e2c0d094784c0ec96fe04f9ca18b5dd34f0a9114ded18f90c90a6a5efab85a9"
+      },
+      {
+        "path": "local\\raw_node_detach_bi\\current_bytes_00bf4f20.txt",
+        "size": 154,
+        "sha256": "f800e6978a1aafd7f9b6fc57b14a53d51b09e9357ab4742ef0754d637db90253",
+        "sha512": "758fc47a6b68b25dbb275d6ff4532acda0355f186dd705386a79368b51985c47e7e9eccea97e9ca47454f4d81eeb33dd834fcf9722f0ae009c94ef5ec36a7409"
+      },
+      {
+        "path": "local\\raw_node_detach_bi\\current_bytes_00ce22d8.txt",
+        "size": 29,
+        "sha256": "450557efd890772a3ea844741d61b4b9a79584dbce0f293b113c545a014ba9cc",
+        "sha512": "bfe2163d227ce61f75a7edb23c071aa6f35a1a80be65966df675f7a1262be4638b7a312075a537e3a75f952e629f263215c62f88bff90f60be262773988fb4b7"
+      },
+      {
+        "path": "local\\raw_node_detach_bi\\current_bytes_00d642c0.txt",
+        "size": 369,
+        "sha256": "80ba46b663cd932ce3dd01bf8dd4b4fae244684830650fbb4a75f4948a6c7cbd",
+        "sha512": "c5d9e25b254ac68fd22315ff0659fb001edcee0652381637eb42cdc989c6a08ed18fc5a008867feae3620145475726407ac50fb210d9e1d972bbcdf015cc06e6"
+      },
+      {
+        "path": "local\\raw_node_detach_bi\\current_bytes_00d691b0.txt",
+        "size": 369,
+        "sha256": "5824db85b2b123eb6daa21a84ec0746e3092753e83741a72e7e08fa49b767938",
+        "sha512": "7c17829e1da7d3057553fe7ebfb8b740eaf47a474997537133aa2a70ab80bb96ba2504436f6d193f7d0d7d3683a44b3dc77e47bcc77332c4e6bbdf8e05103c97"
+      },
+      {
+        "path": "local\\raw_node_detach_bi\\current_evidence.py",
+        "size": 1076,
+        "sha256": "c8ac77c04c51b541e89a2893462300d98d8507adcf26e520af45f66e3967a5c8",
+        "sha512": "8a97868cabb35ff4b59d511ec13f58fc65bb25139760a24047c7821dd90bbb25449e067189c261d7c91a204918cc68fe83540428dc0399bc167d4e33400f7746"
+      },
+      {
+        "path": "local\\raw_node_detach_bi\\detach_probe.cpp",
+        "size": 1811,
+        "sha256": "c798bf66168d8c53be0b51d5f4825b0ba6a94e0880d376310c112198409f568f",
+        "sha512": "6fd23fc16d1f1a9dede8c07fbfb913e1e3afc65d52d685558a31f6325a7a079c8ecee50b79acd927a053febbe4b94f304fee1a910b5bd4afaec0bcdc177bc8d8"
+      },
+      {
+        "path": "local\\raw_node_detach_bi\\detach_probe.exe",
+        "size": 21504,
+        "sha256": "5a68f96218db8a8f6abf3773d7b59d2d0529606a32f3232cc1f23c508ff66e4d",
+        "sha512": "29af6090acf3c9963aefa090a1eea8aa009c3c01fd72a76aa1a00190702efd2de308b78f48b56f4ec05ade9dcb9dc9d24ed15d96dca421f2ad5f9979e0c70b81"
+      },
+      {
+        "path": "local\\raw_node_detach_bi\\detach_probe.obj",
+        "size": 3134,
+        "sha256": "dd9740f505effd63a9d2bc8dff2a5102d2d0600ceffc729a26e35aa4433f6e31",
+        "sha512": "21b8fdc452dec7b6634f592cee6f7ec00ce5dbbc3a3753f92cbf0d57efb1b0b36a88a0a98b59f3616db1d11ec3a2767dec7f8c29f78a9f9e914204c157c74686"
+      },
+      {
+        "path": "local\\raw_node_detach_bi\\native_raw_node_detach_failed_low.cpp",
+        "size": 3163,
+        "sha256": "a26755d44f786bff615535fa017624a5681faf8561b39e83854ea0bcf5e845d8",
+        "sha512": "785a939e87df4b2fa3f4fca6924420a747b1d724002f8ff8276122e788dabcb276627a6659c2edac508853e531780d4f11c38d1a092222891e691cf6d648f142"
+      },
+      {
+        "path": "local\\raw_node_detach_bi\\object-disasm.txt",
+        "size": 11849,
+        "sha256": "7fb0dd02e72ae950291e665cb1dbcb682c750f258db35fda1f6f8fb842af7c3c",
+        "sha512": "0d1279b4b54da34fa83d8287e0e8ee866cde511696af354eda897014222fc52e36c0720a87fc5f791af1917af41a31823eb8b766fe9a0c1196949c61433ae15c"
+      },
+      {
+        "path": "local\\raw_node_detach_bi\\precompile_inputs.json",
+        "size": 2676,
+        "sha256": "a3a2ed2b7725fb9dde4d9b6bf4af6c7c59bd45faced24d9bdbd2799e7cd3c223",
+        "sha512": "bfd978a9d406115b46b478392c1112fc8431f376405e5b32888e28760507847bfb606ee581d36cc2cd73f533d2117b311a7251a9242cf8ee4b1d2c88dec00fb9"
+      },
+      {
+        "path": "local\\raw_node_detach_bi\\precompile_inputs_v2.json",
+        "size": 2676,
+        "sha256": "82cd4cbb3b0d9e0c3e74cbf0610269d3e44e788d5106455e1fc684b20ae226af",
+        "sha512": "35bf8f557c234135aaf0f3be38727f9d3baedc389f4b988fb77d81ca2144173a12ae6ae7b72047c6f42715b69833e0f9b95544f9a572addf31d28176fc8ec916"
+      },
+      {
+        "path": "local\\raw_node_detach_bi\\probe.txt",
+        "size": 147,
+        "sha256": "2d3815fd25a4d7679c19fe26c560040e6eb60cae63337145a0f9a81dbb44f115",
+        "sha512": "9217dd8e0fddab50c0c778062e7b2d15c130947c208248a913cc6a7f98b1e64be0f48aa509ad8fe8cefeb2a9efa34e7841c5f5a167860c2937af39048c44cf32"
+      },
+      {
+        "path": "local\\raw_node_detach_bi\\report.py",
+        "size": 5884,
+        "sha256": "32aa190fb7c7509f3f6306a4c96e6b76217acc2c5f39865f4d464c357b237c6e",
+        "sha512": "d300cef10a69a5bfc8a9f05ad8a1875765d462c8bf299209274fe08169f45495a134918ec2be1f00cda9215fa30434594bcfd400f210b3404d3ac3c5311932e1"
+      },
+      {
+        "path": "local\\raw_node_detach_bi\\run-probe.cmd",
+        "size": 914,
+        "sha256": "2b1822a6eee34bfe2fe24b1d6f704a0d14b143266dec6fcc88b78cb71b6f7200",
+        "sha512": "a23d70230478c89b22a79dfc1eda7c236484edc614c753b337da497d123be3f4df21eed2623c27b51a86ba3d977a460dca5e8de85de37c7d4d942c61f9d16961"
+      },
+      {
+        "path": "local\\raw_node_detach_bi\\run-probe.ps1",
+        "size": 1499,
+        "sha256": "3bbdb1561d992cb30c0c07823a7bcded0ac4158643134ad5b46138ead5a542c7",
+        "sha512": "8bd71aff3795e1c4d2f4a42ec08d0289330b10a12b2dae0e89a39411c7f137cedf9aa9a11d1a9c49ee303e74836862adf12b178720cd82428499cea1a8de9918"
+      },
+      {
+        "path": "local\\raw_node_detach_bi\\verify-seeds.txt",
+        "size": 3034,
+        "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773",
+        "sha512": "857449ff384d332baa250c7444daa15f5fbd261c5d4a63b9c1a168cab8c367e343c42dbd412ee38f61ea2c148d63c36eee699b58ac02ae28d087e0ef232e56e8"
+      },
+      {
+        "path": "local\\raw_node_detach_bi\\verify_report_calls.txt",
+        "size": 513,
+        "sha256": "4371678567814f5b5b3d2cb53b71c21a234620ff1789c993a1327ec192499071",
+        "sha512": "ecf408f8c2f9c9ee2f4503d8a0d1f396286686a7b87ccc8cd28ece9380f17d857146661d0b57ef8f97ce1c9f3c1de910de38c9fe76c7b5f96c4e068192cfd41d"
+      },
+      {
+        "path": "local\\seed_reference.hpp",
+        "size": 2995,
+        "sha256": "26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c",
+        "sha512": "73558474158d529bc96205150b2c52ebc133b1b6bcb743e01ecf14dd4655c2cc594a2b0353e0d2f89977ced7c585fcf9cdd7c00cfe96bfa67eee8a29226d05bf"
+      }
+    ]
+  }
+}
