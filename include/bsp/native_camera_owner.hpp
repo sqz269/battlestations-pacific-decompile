@@ -106,6 +106,12 @@ void* construct_native_camera_00b71a80(NativeCameraOwner&, const NativeString&);
 // callbacks retain their noexcept boundary.
 void* construct_native_camera_00b71a80(NativeCameraOwner&, const void* actual_name_header,
     const NativeNodeRawConstants&);
+// Prepared first-viewport association in the same installed resolver. Validate
+// and take the token before native construction; register the successful owner
+// before +180 publication. Early unused admission is cancelled on unwind;
+// a published viewport and its live record survive late native constructor failure.
+void* construct_native_camera_00b71a80(NativeCameraOwner&, const void* actual_name_header,
+    const NativeNodeRawConstants&, NativeViewportRegistry::Admission&&);
 // Actual raw +180 publication, retain new, release captured old; same identity
 // skips both counts. Supports the concrete D5E5F8 viewport profile.
 void set_native_camera_viewport_00b71990(NativeCameraOwner&, NativeViewportOwner*);

@@ -262,13 +262,22 @@ void* construct_native_camera_00b71a80(NativeCameraOwner& owner, const NativeStr
 
 // Keep the native continuation literal: its volatile load and alias schedule
 // must remain identical to the established semantic entry above.
-void* construct_native_camera_00b71a80(NativeCameraOwner& owner, const void* actual_name_header,
-    const NativeNodeRawConstants& constants) {
+namespace {
+void* construct_native_camera_raw(NativeCameraOwner& owner, const void* actual_name_header,
+    const NativeNodeRawConstants& constants, NativeViewportRegistry::Admission* admission) {
     if (owner.phase != NativeCameraOwner::Phase::prepared)
         throw std::logic_error("camera constructor requires its unused prepared slot");
     auto& name_pool = owner.environment.nodes.require_raw_name_pool();
     if (&constants.one_00d7a24c != &owner.environment.viewport.one_bits_00d7a24c)
         throw std::logic_error("camera and node require the same actual D7A24C cell");
+    NativeViewportRegistry::Admission prepared;
+    const bool has_admission = admission != nullptr;
+    if (admission) {
+        auto& registry = admission->require_registry();
+        if (&owner.environment.viewport_views != &registry)
+            throw std::logic_error("camera viewport admission requires its exact installed resolver");
+        prepared = std::move(*admission); // caller token is empty before native callbacks
+    }
     owner.phase = NativeCameraOwner::Phase::constructing;
     try {
         // Same-type placement transparently replaces the prefix; every binding
@@ -285,7 +294,9 @@ void* construct_native_camera_00b71a80(NativeCameraOwner& owner, const void* act
     try {
         // Shared allocator wrapper supplies exact state1 raw-allocation cleanup.
         // If the viewport constructor throws, no +180 publication occurs.
-        tail.viewport_180 = allocate_native_viewport_owner(environment.viewport);
+        tail.viewport_180 = has_admission
+            ? allocate_native_viewport_owner(environment.viewport, std::move(prepared))
+            : allocate_native_viewport_owner(environment.viewport);
         initialize_system_fog_camera_slot_00b71ae3(owner.frame.fog_184);
         for (auto& value : tail.zero_1b8) word(value, 0);
         construct_camera_plane_set_00b659d0(tail.planes_2f4, environment.viewport.one_bits_00d7a24c);
@@ -342,6 +353,16 @@ void* construct_native_camera_00b71a80(NativeCameraOwner& owner, const void* act
     }
     owner.phase = NativeCameraOwner::Phase::live;
     return &owner.storage.node;
+}
+} // namespace
+
+void* construct_native_camera_00b71a80(NativeCameraOwner& owner, const void* actual_name_header,
+    const NativeNodeRawConstants& constants) {
+    return construct_native_camera_raw(owner, actual_name_header, constants, nullptr);
+}
+void* construct_native_camera_00b71a80(NativeCameraOwner& owner, const void* actual_name_header,
+    const NativeNodeRawConstants& constants, NativeViewportRegistry::Admission&& admission) {
+    return construct_native_camera_raw(owner, actual_name_header, constants, &admission);
 }
 
 void set_native_camera_viewport_00b71990(NativeCameraOwner& owner, NativeViewportOwner* value) {
