@@ -5,6 +5,7 @@
 namespace bsp {
 struct NativeResourceRegistryDeleteBindings;
 class XLiveOwnerAllocation;
+struct NativeOnlineManagerLifetimeContext;
 struct NativeInputBackendOwnerContext;
 struct NativeInputActionOwnerContext;
 struct NativeInputSettingsLifetimeContext;
@@ -32,8 +33,9 @@ namespace game { class GameSoundRuntime; }
 // D688B0, CFEA1C, D6418C, CF7E70, CF7E74, CE7548, D190C4, CF81CC, D68B94,
 // CFD84C, D62C18, D68EC0, D5E5DC, D5E5D4, CFB6C4 or CFEA10. D0DA64
 // requires its actual publication cell; registry and sound profiles require
-// their concrete borrowed bindings. Sound and XLive owners retain C++ projected
-// storage; XLive additionally requires the exact allocation identity. Input
+// their concrete borrowed bindings. Sound retains C++ projected storage. Online
+// profiles use either the raw lifetime below or the legacy XLive projection,
+// never both; the legacy binding requires exact allocation identity. Input
 // contexts borrow the same raw manager/publications as construction and must
 // outlive drain. Input dispatch does not require current-publication identity:
 // native destructors themselves implement its reload/unregister/clear rules.
@@ -103,8 +105,13 @@ struct NativeSingletonDeletionBindings {
     // CFEA10 is the registered MPKG secondary at primary+4. Its existing
     // thunk adjusts the popped pointer and clears the same 010904F4 cell.
     NativeMpkgFactoryContext* mpkg_factory{};
+    // D24138/D2413C: pass the popped actual 3F0h owner to the base/derived
+    // scalar wrapper. These services retain the SAME F8ABE8/01090AA0 cells
+    // through the entire drain, even when current publication changes.
+    // Mutually exclusive with xlive_owner; no publication identity check.
+    NativeOnlineManagerLifetimeContext* online_lifetime{};
 };
-static_assert(sizeof(NativeSingletonDeletionBindings) == 92);
+static_assert(sizeof(NativeSingletonDeletionBindings) == 96);
 
 // Full BD0400[197] normal schedule over raw14h manager storage. Native ECX
 // owner, RET; new EDX reference to stable bindings above. Pop before deleting

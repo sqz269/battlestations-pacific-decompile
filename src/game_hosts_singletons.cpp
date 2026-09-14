@@ -29,6 +29,12 @@ void GameSingletonHost::bind_sound_runtime(GameSoundRuntime* runtime) noexcept {
 }
 void GameSingletonHost::bind_xlive_owner(XLiveOwnerAllocation* owner) noexcept {
     deletion_bindings_.xlive_owner = owner;
+    deletion_bindings_.online_lifetime = nullptr;
+}
+void GameSingletonHost::bind_native_online_lifetime(
+    NativeOnlineManagerLifetimeContext* context) noexcept {
+    deletion_bindings_.online_lifetime = context;
+    deletion_bindings_.xlive_owner = nullptr;
 }
 void GameSingletonHost::bind_input_backend(NativeInputBackendOwnerContext* context) noexcept {
     deletion_bindings_.input_backend = context;

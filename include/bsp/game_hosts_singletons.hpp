@@ -30,6 +30,10 @@ public:
     // until shutdown returns; scalar flags1 consumes the online allocation.
     // Input callers retain SDK references until all raw device owners finish.
     void bind_xlive_owner(XLiveOwnerAllocation*) noexcept;
+    // Select the actual 3F0h online deletion path. Its context must borrow this
+    // host's manager cell and survive shutdown. Binding clears the legacy
+    // projected alternative; no allocation or publication occurs here.
+    void bind_native_online_lifetime(NativeOnlineManagerLifetimeContext*) noexcept;
     void bind_input_backend(NativeInputBackendOwnerContext*) noexcept;
     void bind_input_actions(NativeInputActionOwnerContext*) noexcept;
     // Borrow these stable actual-publication cells for the settings context.

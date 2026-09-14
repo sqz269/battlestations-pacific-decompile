@@ -1,0 +1,294 @@
+{
+  "packet": "orch5_native_online_manager_lifetime",
+  "project_file": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "source": "src/native_online_manager_lifetime.cpp",
+  "header": "include/bsp/native_online_manager_lifetime.hpp",
+  "functions": [
+    {
+      "label": "ctor",
+      "address": "00a40df0",
+      "inclusive_end": "00a41026",
+      "bytes": 567,
+      "sha256": "871fc68e32ef282114bc89c112720e83f399ac0a6fa773c8f469ad8403f7e5ce",
+      "saved_disk_equal": true,
+      "name": "construct_native_online_manager_00a40df0",
+      "original_abi": "ECX actual3F0 owner; two DWORD callbacks on stack; RET8; EAX captured owner",
+      "normal_instructions": 129,
+      "coverage": "complete normal body; source ordinary C++ cleanup order",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "label": "dtor",
+      "address": "00a3f9d0",
+      "inclusive_end": "00a3fa6e",
+      "bytes": 159,
+      "sha256": "f13396a62c4ab1bca71789e80732fbef157e4341b343de14cb992e266402e932",
+      "saved_disk_equal": true,
+      "name": "destroy_native_online_manager_00a3f9d0",
+      "original_abi": "ECX actual3F0 owner; RET",
+      "normal_instructions": 42,
+      "coverage": "complete normal body; source ordinary C++ cleanup order",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "label": "vector",
+      "address": "00a3f840",
+      "inclusive_end": "00a3f869",
+      "bytes": 42,
+      "sha256": "e887b017246e923885d9d3fa9dec5dd9fae4f5660da6db54ad9edddd12fff8d1",
+      "saved_disk_equal": true,
+      "name": "destroy_native_online_vector_00a3f840",
+      "original_abi": "ECX embedded header owner+360; RET",
+      "normal_instructions": 13,
+      "coverage": "complete normal body; source ordinary C++ cleanup order",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "label": "scalar",
+      "address": "00a3fdc0",
+      "inclusive_end": "00a3fddd",
+      "bytes": 30,
+      "sha256": "04a9a0401f3384988a84d61978b8b2049aee441aa380a99d61070dfc532afe56",
+      "saved_disk_equal": true,
+      "name": "delete_native_online_manager_00a3fdc0",
+      "original_abi": "ECX actual3F0 owner; flags DWORD on stack; RET4; EAX captured address even after free",
+      "normal_instructions": 11,
+      "coverage": "complete normal body; source ordinary C++ cleanup order",
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00a40e13",
+      "native": "00a3f530",
+      "function": "00a40df0",
+      "contract": "Full normal schedule documented in docs/NATIVE_ONLINE_MANAGER_LIFETIME.md; original call retained or verified bare-RET diagnostic omitted."
+    },
+    {
+      "address": "00a40eae",
+      "native": "004254b0",
+      "function": "00a40df0",
+      "contract": "Full normal schedule documented in docs/NATIVE_ONLINE_MANAGER_LIFETIME.md; original call retained or verified bare-RET diagnostic omitted."
+    },
+    {
+      "address": "00a40f1a",
+      "native": "00b1fef0",
+      "function": "00a40df0",
+      "contract": "Full normal schedule documented in docs/NATIVE_ONLINE_MANAGER_LIFETIME.md; original call retained or verified bare-RET diagnostic omitted."
+    },
+    {
+      "address": "00a40f31",
+      "native": "00ce22a8+iat",
+      "function": "00a40df0",
+      "contract": "Full normal schedule documented in docs/NATIVE_ONLINE_MANAGER_LIFETIME.md; original call retained or verified bare-RET diagnostic omitted."
+    },
+    {
+      "address": "00a40f46",
+      "native": "00a4d5de",
+      "function": "00a40df0",
+      "contract": "Full normal schedule documented in docs/NATIVE_ONLINE_MANAGER_LIFETIME.md; original call retained or verified bare-RET diagnostic omitted."
+    },
+    {
+      "address": "00a40f50",
+      "native": "004254b0",
+      "function": "00a40df0",
+      "contract": "Full normal schedule documented in docs/NATIVE_ONLINE_MANAGER_LIFETIME.md; original call retained or verified bare-RET diagnostic omitted."
+    },
+    {
+      "address": "00a40f5e",
+      "native": "00a4c250",
+      "function": "00a40df0",
+      "contract": "Full normal schedule documented in docs/NATIVE_ONLINE_MANAGER_LIFETIME.md; original call retained or verified bare-RET diagnostic omitted."
+    },
+    {
+      "address": "00a40f63",
+      "native": "00a4d5d8",
+      "function": "00a40df0",
+      "contract": "Full normal schedule documented in docs/NATIVE_ONLINE_MANAGER_LIFETIME.md; original call retained or verified bare-RET diagnostic omitted."
+    },
+    {
+      "address": "00a40f72",
+      "native": "00a4d5d2",
+      "function": "00a40df0",
+      "contract": "Full normal schedule documented in docs/NATIVE_ONLINE_MANAGER_LIFETIME.md; original call retained or verified bare-RET diagnostic omitted."
+    },
+    {
+      "address": "00a40f84",
+      "native": "00a4d5cc",
+      "function": "00a40df0",
+      "contract": "Full normal schedule documented in docs/NATIVE_ONLINE_MANAGER_LIFETIME.md; original call retained or verified bare-RET diagnostic omitted."
+    },
+    {
+      "address": "00a40f8e",
+      "native": "00a4d494",
+      "function": "00a40df0",
+      "contract": "Full normal schedule documented in docs/NATIVE_ONLINE_MANAGER_LIFETIME.md; original call retained or verified bare-RET diagnostic omitted."
+    },
+    {
+      "address": "00a40f94",
+      "native": "00a4d5c6",
+      "function": "00a40df0",
+      "contract": "Full normal schedule documented in docs/NATIVE_ONLINE_MANAGER_LIFETIME.md; original call retained or verified bare-RET diagnostic omitted."
+    },
+    {
+      "address": "00a40fd4",
+      "native": "00a4d5b4",
+      "function": "00a40df0",
+      "contract": "Full normal schedule documented in docs/NATIVE_ONLINE_MANAGER_LIFETIME.md; original call retained or verified bare-RET diagnostic omitted."
+    },
+    {
+      "address": "00a40fea",
+      "native": "004254b0",
+      "function": "00a40df0",
+      "contract": "Full normal schedule documented in docs/NATIVE_ONLINE_MANAGER_LIFETIME.md; original call retained or verified bare-RET diagnostic omitted."
+    },
+    {
+      "address": "00a40ff4",
+      "native": "00a40020",
+      "function": "00a40df0",
+      "contract": "Full normal schedule documented in docs/NATIVE_ONLINE_MANAGER_LIFETIME.md; original call retained or verified bare-RET diagnostic omitted."
+    },
+    {
+      "address": "00a40ffb",
+      "native": "00a409f0",
+      "function": "00a40df0",
+      "contract": "Full normal schedule documented in docs/NATIVE_ONLINE_MANAGER_LIFETIME.md; original call retained or verified bare-RET diagnostic omitted."
+    },
+    {
+      "address": "00a3fa02",
+      "native": "00a4c280",
+      "function": "00a3f9d0",
+      "contract": "Full normal schedule documented in docs/NATIVE_ONLINE_MANAGER_LIFETIME.md; original call retained or verified bare-RET diagnostic omitted."
+    },
+    {
+      "address": "00a3fa1c",
+      "native": "00bf65ac",
+      "function": "00a3f9d0",
+      "contract": "Full normal schedule documented in docs/NATIVE_ONLINE_MANAGER_LIFETIME.md; original call retained or verified bare-RET diagnostic omitted."
+    },
+    {
+      "address": "00a3fa35",
+      "native": "00bf65ac",
+      "function": "00a3f9d0",
+      "contract": "Full normal schedule documented in docs/NATIVE_ONLINE_MANAGER_LIFETIME.md; original call retained or verified bare-RET diagnostic omitted."
+    },
+    {
+      "address": "00a3fa59",
+      "native": "00a3f5d0",
+      "function": "00a3f9d0",
+      "contract": "Full normal schedule documented in docs/NATIVE_ONLINE_MANAGER_LIFETIME.md; original call retained or verified bare-RET diagnostic omitted."
+    },
+    {
+      "address": "00a3f84b",
+      "native": "00bf65ac",
+      "function": "00a3f840",
+      "contract": "Full normal schedule documented in docs/NATIVE_ONLINE_MANAGER_LIFETIME.md; original call retained or verified bare-RET diagnostic omitted."
+    },
+    {
+      "address": "00a3fdc3",
+      "native": "00a3f9d0",
+      "function": "00a3fdc0",
+      "contract": "Full normal schedule documented in docs/NATIVE_ONLINE_MANAGER_LIFETIME.md; original call retained or verified bare-RET diagnostic omitted."
+    },
+    {
+      "address": "00a3fdd0",
+      "native": "00bf65ac",
+      "function": "00a3fdc0",
+      "contract": "Full normal schedule documented in docs/NATIVE_ONLINE_MANAGER_LIFETIME.md; original call retained or verified bare-RET diagnostic omitted."
+    }
+  ],
+  "evidence_spans": [
+    {
+      "label": "ctor",
+      "address": "00a40df0",
+      "inclusive_end": "00a41026",
+      "bytes": 567,
+      "sha256": "871fc68e32ef282114bc89c112720e83f399ac0a6fa773c8f469ad8403f7e5ce",
+      "saved_disk_equal": true
+    },
+    {
+      "label": "dtor",
+      "address": "00a3f9d0",
+      "inclusive_end": "00a3fa6e",
+      "bytes": 159,
+      "sha256": "f13396a62c4ab1bca71789e80732fbef157e4341b343de14cb992e266402e932",
+      "saved_disk_equal": true
+    },
+    {
+      "label": "vector",
+      "address": "00a3f840",
+      "inclusive_end": "00a3f869",
+      "bytes": 42,
+      "sha256": "e887b017246e923885d9d3fa9dec5dd9fae4f5660da6db54ad9edddd12fff8d1",
+      "saved_disk_equal": true
+    },
+    {
+      "label": "scalar",
+      "address": "00a3fdc0",
+      "inclusive_end": "00a3fddd",
+      "bytes": 30,
+      "sha256": "04a9a0401f3384988a84d61978b8b2049aee441aa380a99d61070dfc532afe56",
+      "saved_disk_equal": true
+    },
+    {
+      "label": "ctor-fh3",
+      "address": "00de9f50",
+      "inclusive_end": "00de9f83",
+      "bytes": 52,
+      "sha256": "d9e1f2058f77b02943d19594475a698aa5d2c113190b082ee75328aed30a9443",
+      "saved_disk_equal": true
+    },
+    {
+      "label": "dtor-fh3",
+      "address": "00de9df8",
+      "inclusive_end": "00de9e2b",
+      "bytes": 52,
+      "sha256": "554e4eea36392b379cfc71f06a312b233093e2842f0e7a035ef6a10cab3ca348",
+      "saved_disk_equal": true
+    },
+    {
+      "label": "ctor-funclets",
+      "address": "00cb4260",
+      "inclusive_end": "00cb4285",
+      "bytes": 38,
+      "sha256": "641dd41051f8ec5a353257145e33dbc49d82170f5f488edb3ec6a4b8fec2eee5",
+      "saved_disk_equal": true
+    },
+    {
+      "label": "dtor-funclets",
+      "address": "00cb4160",
+      "inclusive_end": "00cb417f",
+      "bytes": 32,
+      "sha256": "a68ced2b6a03391ad2ea1c0e02548239cfbce35342178aadd8bb373a826c3d01",
+      "saved_disk_equal": true
+    }
+  ],
+  "review": {
+    "reviewer": "independent gpt-6-astra xhigh agent",
+    "accepted": true,
+    "correction": "Restored second current +14C pointer test before release/clear",
+    "eh_states": "Both FH3 maps contain state1 vector then state0 base; no IPC/+14C/+3A0 cleanup",
+    "unvalidated": [
+      "original FH3/FS/EBP ABI",
+      "SEH",
+      "full application adoption",
+      "gameplay"
+    ]
+  },
+  "integration": {
+    "singleton_deletion": "D24138/D2413C raw popped-owner binding; same F8ABE8/01090AA0 cells; legacy projection mutually exclusive",
+    "game_startup_adopted": false
+  },
+  "validation": {
+    "status": "pending exact integrated build and focused fixture",
+    "abi_compatible": false,
+    "game_validated": false
+  }
+}
