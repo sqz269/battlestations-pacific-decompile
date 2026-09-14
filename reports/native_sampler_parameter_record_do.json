@@ -1,0 +1,585 @@
+{
+  "packet": "orch3_native_sampler_parameter_record_do",
+  "status": "complete_source_strict_win32_build_one_existing_CTest_generated_order_and17_call_rows_checked",
+  "base_commit": "61fc799eb36dfb3f33762b3bc08cd34c7e2262ca",
+  "source": "src/native_sampler_parameter_record.cpp",
+  "header": "include/bsp/native_sampler_parameter_record.hpp",
+  "documentation": "docs/NATIVE_SAMPLER_PARAMETER_RECORD_DO.md",
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "project_name": "bsp",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "installed_pe": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "installed_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "verification": "Every live command uses tools/bsp.py client() -> Client.verify(): project name, program path, language, image base checked before requests. Expected project_file config and existing bsp.gpr also checked. Live API guard checks project name, not an independently reported absolute project filename."
+  },
+  "routines": [
+    {
+      "address": "00b1b890",
+      "end_inclusive": "00b1b97b",
+      "bytes": 236,
+      "coverage": "complete normal body with explicit source C++ cleanup-state projection; not a native FH3 replacement",
+      "source_interface": "set_native_sampler_parameter_record_00b1b890(void*, NativeSamplerParameterRecordOperation&, const NativeString*, const void*)",
+      "original_abi": {
+        "entry_ecx": "Complete actual receiver; ESI = ECX+4 once at B1B8AA, retained as actual Lua owner for both globals constructions.",
+        "stack_at_entry": {
+          "ESP+4": "actual8h NativeString key-header pointer",
+          "ESP+8": "pointer to four adjacent IEEE binary32 components; native pointer captured only at B1B90D"
+        },
+        "return": "RET8 at B1B979; no meaningful native return value established; EAX left from final destruction is not an object return.",
+        "preserved": "ESI and EDI saved/restored; EBX/EBP untouched. x87 control/environment not saved or restored by this body.",
+        "source_caution": "Do not infer the stored undefined(void) prototype or use a by-value four-float snapshot."
+      }
+    }
+  ],
+  "call_steps": [
+    {
+      "address": "00b1b8b4",
+      "native": "00b67980",
+      "function": "00b1b890",
+      "hex": "e8c7c00400"
+    },
+    {
+      "address": "00b1b8c8",
+      "native": "00b67580",
+      "function": "00b1b890",
+      "hex": "e8b3bc0400"
+    },
+    {
+      "address": "00b1b8d9",
+      "native": "00b67700",
+      "function": "00b1b890",
+      "hex": "e822be0400"
+    },
+    {
+      "address": "00b1b8e5",
+      "native": "00b67980",
+      "function": "00b1b890",
+      "hex": "e896c00400"
+    },
+    {
+      "address": "00b1b8fa",
+      "native": "00b68100",
+      "function": "00b1b890",
+      "hex": "e801c80400"
+    },
+    {
+      "address": "00b1b908",
+      "native": "00b67700",
+      "function": "00b1b890",
+      "hex": "e8f3bd0400"
+    },
+    {
+      "address": "00b1b91d",
+      "native": "00b66580",
+      "function": "00b1b890",
+      "hex": "e85eac0400"
+    },
+    {
+      "address": "00b1b92f",
+      "native": "00b66580",
+      "function": "00b1b890",
+      "hex": "e84cac0400"
+    },
+    {
+      "address": "00b1b941",
+      "native": "00b66580",
+      "function": "00b1b890",
+      "hex": "e83aac0400"
+    },
+    {
+      "address": "00b1b953",
+      "native": "00b66580",
+      "function": "00b1b890",
+      "hex": "e828ac0400"
+    },
+    {
+      "address": "00b1b964",
+      "native": "00b67700",
+      "function": "00b1b890",
+      "hex": "e897bd0400"
+    },
+    {
+      "address": "00cbc7f3",
+      "native": "00b67700",
+      "function": "00cbc7f0",
+      "hex": "e908afeaff",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00cbc7fb",
+      "native": "00b67700",
+      "function": "00cbc7f8",
+      "hex": "e900afeaff",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00cbc803",
+      "native": "00b67700",
+      "function": "00cbc800",
+      "hex": "e9f8aeeaff",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00cbc80d",
+      "native": "00bf6b43",
+      "function": "00cbc808",
+      "hex": "e931a3f3ff",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "004df590",
+      "native": "0041e870",
+      "function": "004de610",
+      "hex": "e8dbf2f3ff"
+    },
+    {
+      "address": "004df5b7",
+      "native": "00b1b890",
+      "function": "004de610",
+      "hex": "e8d4c26300"
+    }
+  ],
+  "native_spans": [
+    {
+      "address": "00b1b890",
+      "end_inclusive": "00b1b97b",
+      "bytes": 236,
+      "pe_offset": 7452816,
+      "sha256": "3c9f943e32caa8ed05573a79664874f2bef5895be24fc4ee716a912432337f01",
+      "hex": "6aff6808c8cb0064a100000000506489250000000083ec2856578d71048d44241c508bcee8c7c004008b7c2440578bc8c744243c00000000e8b3bc04008d4c241cc7442438ffffffffe822be04008d4c241c518bcee896c00400578d54240c528bc8c744244001000000e801c804008d4c241cc644243803e8f3bd04008b742444d90651d91c246a018d4c2410e85eac0400d9460451d91c246a028d4c2410e84cac0400d9460851d91c246a038d4c2410e83aac0400d9460c51d91c246a048d4c2410e828ac04008d4c2408c7442438ffffffffe897bd04008b4c24305f5e64890d0000000083c434c20800",
+      "live_installed_identity": true,
+      "live_source": "BSP CLI target-verified ghidra bytes read; captured output transcribed and matched byte-for-byte to installed PE",
+      "installed_listing": [
+        "00b1b890: push -1",
+        "00b1b892: push 0xcbc808",
+        "00b1b897: mov eax, dword ptr fs:[0]",
+        "00b1b89d: push eax",
+        "00b1b89e: mov dword ptr fs:[0], esp",
+        "00b1b8a5: sub esp, 0x28",
+        "00b1b8a8: push esi",
+        "00b1b8a9: push edi",
+        "00b1b8aa: lea esi, [ecx + 4]",
+        "00b1b8ad: lea eax, [esp + 0x1c]",
+        "00b1b8b1: push eax",
+        "00b1b8b2: mov ecx, esi",
+        "00b1b8b4: call 0xb67980",
+        "00b1b8b9: mov edi, dword ptr [esp + 0x40]",
+        "00b1b8bd: push edi",
+        "00b1b8be: mov ecx, eax",
+        "00b1b8c0: mov dword ptr [esp + 0x3c], 0",
+        "00b1b8c8: call 0xb67580",
+        "00b1b8cd: lea ecx, [esp + 0x1c]",
+        "00b1b8d1: mov dword ptr [esp + 0x38], 0xffffffff",
+        "00b1b8d9: call 0xb67700",
+        "00b1b8de: lea ecx, [esp + 0x1c]",
+        "00b1b8e2: push ecx",
+        "00b1b8e3: mov ecx, esi",
+        "00b1b8e5: call 0xb67980",
+        "00b1b8ea: push edi",
+        "00b1b8eb: lea edx, [esp + 0xc]",
+        "00b1b8ef: push edx",
+        "00b1b8f0: mov ecx, eax",
+        "00b1b8f2: mov dword ptr [esp + 0x40], 1",
+        "00b1b8fa: call 0xb68100",
+        "00b1b8ff: lea ecx, [esp + 0x1c]",
+        "00b1b903: mov byte ptr [esp + 0x38], 3",
+        "00b1b908: call 0xb67700",
+        "00b1b90d: mov esi, dword ptr [esp + 0x44]",
+        "00b1b911: fld dword ptr [esi]",
+        "00b1b913: push ecx",
+        "00b1b914: fstp dword ptr [esp]",
+        "00b1b917: push 1",
+        "00b1b919: lea ecx, [esp + 0x10]",
+        "00b1b91d: call 0xb66580",
+        "00b1b922: fld dword ptr [esi + 4]",
+        "00b1b925: push ecx",
+        "00b1b926: fstp dword ptr [esp]",
+        "00b1b929: push 2",
+        "00b1b92b: lea ecx, [esp + 0x10]",
+        "00b1b92f: call 0xb66580",
+        "00b1b934: fld dword ptr [esi + 8]",
+        "00b1b937: push ecx",
+        "00b1b938: fstp dword ptr [esp]",
+        "00b1b93b: push 3",
+        "00b1b93d: lea ecx, [esp + 0x10]",
+        "00b1b941: call 0xb66580",
+        "00b1b946: fld dword ptr [esi + 0xc]",
+        "00b1b949: push ecx",
+        "00b1b94a: fstp dword ptr [esp]",
+        "00b1b94d: push 4",
+        "00b1b94f: lea ecx, [esp + 0x10]",
+        "00b1b953: call 0xb66580",
+        "00b1b958: lea ecx, [esp + 8]",
+        "00b1b95c: mov dword ptr [esp + 0x38], 0xffffffff",
+        "00b1b964: call 0xb67700",
+        "00b1b969: mov ecx, dword ptr [esp + 0x30]",
+        "00b1b96d: pop edi",
+        "00b1b96e: pop esi",
+        "00b1b96f: mov dword ptr fs:[0], ecx",
+        "00b1b976: add esp, 0x34",
+        "00b1b979: ret 8"
+      ]
+    },
+    {
+      "address": "00cbc7f0",
+      "end_inclusive": "00cbc811",
+      "bytes": 34,
+      "pe_offset": 9160688,
+      "sha256": "ec52ce3c97638d69509ea980f70535601e184f47a6895040992e60bc89f06e7b",
+      "hex": "8d4de0e908afeaff8d4de0e900afeaff8d4dcce9f8aeeaffb8a84bdf00e931a3f3ff",
+      "live_installed_identity": true,
+      "live_source": "BSP CLI target-verified ghidra bytes read; captured output transcribed and matched byte-for-byte to installed PE",
+      "installed_listing": [
+        "00cbc7f0: lea ecx, [ebp - 0x20]",
+        "00cbc7f3: jmp 0xb67700",
+        "00cbc7f8: lea ecx, [ebp - 0x20]",
+        "00cbc7fb: jmp 0xb67700",
+        "00cbc800: lea ecx, [ebp - 0x34]",
+        "00cbc803: jmp 0xb67700",
+        "00cbc808: mov eax, 0xdf4ba8",
+        "00cbc80d: jmp 0xbf6b43"
+      ]
+    },
+    {
+      "address": "00df4b88",
+      "end_inclusive": "00df4bcb",
+      "bytes": 68,
+      "pe_offset": 10439560,
+      "sha256": "f8d0df4c5a79c7554ffe656aabbc1d987e8664fc3c94665541d599c864a8357e",
+      "hex": "fffffffff0c7cb00fffffffff8c7cb000100000000c8cb00ffffffff00c8cb002205931904000000884bdf00000000000000000000000000000000000000000001000000",
+      "live_installed_identity": true,
+      "live_source": "BSP CLI target-verified ghidra bytes read; captured output transcribed and matched byte-for-byte to installed PE"
+    },
+    {
+      "address": "004df587",
+      "end_inclusive": "004df5bb",
+      "bytes": 53,
+      "pe_offset": 914823,
+      "sha256": "99e6ad65db8c0052677380910fa94034957db20f914f03bc6e0c66ead56f3c7e",
+      "hex": "68647dce008d4c2428e8dbf2f3ff8b86fc05000005440c0000c784249c00000020000000508d4c2428518b0d34d4f800e8d4c26300",
+      "live_installed_identity": true,
+      "live_source": "BSP CLI target-verified ghidra bytes read; captured output transcribed and matched byte-for-byte to installed PE",
+      "installed_listing": [
+        "004df587: push 0xce7d64",
+        "004df58c: lea ecx, [esp + 0x28]",
+        "004df590: call 0x41e870",
+        "004df595: mov eax, dword ptr [esi + 0x5fc]",
+        "004df59b: add eax, 0xc44",
+        "004df5a0: mov dword ptr [esp + 0x9c], 0x20",
+        "004df5ab: push eax",
+        "004df5ac: lea ecx, [esp + 0x28]",
+        "004df5b0: push ecx",
+        "004df5b1: mov ecx, dword ptr [0xf8d434]",
+        "004df5b7: call 0xb1b890"
+      ]
+    },
+    {
+      "address": "00ce7d64",
+      "end_inclusive": "00ce7d74",
+      "bytes": 17,
+      "pe_offset": 9338212,
+      "sha256": "21eefd6238a1be4e5b2d689ff5aee136151eddaa4e57f17df20a36548e47fc24",
+      "hex": "5761746572547261636572436f6c6f7200",
+      "live_installed_identity": true,
+      "live_source": "BSP CLI target-verified ghidra bytes read; captured output transcribed and matched byte-for-byte to installed PE"
+    }
+  ],
+  "original_unwind": {
+    "handler": "00cbc808..00cbc811",
+    "handler_transfer": "MOV EAX,00DF4BA8; JMP00BF6B43 at00CBC80D",
+    "func_info": "00df4ba8..00df4bcb",
+    "magic": "19930522",
+    "max_state": 4,
+    "unwind_map": "00df4b88..00df4ba7",
+    "num_try_blocks": 0,
+    "other_map_pointer_fields": 0,
+    "final_flags_dword": 1,
+    "states": [
+      {
+        "state": 0,
+        "next_state": -1,
+        "action": "00cbc7f0",
+        "receiver": "current globals EBP-20h"
+      },
+      {
+        "state": 1,
+        "next_state": -1,
+        "action": "00cbc7f8",
+        "receiver": "current globals EBP-20h"
+      },
+      {
+        "state": 2,
+        "next_state": 1,
+        "action": "00cbc800",
+        "receiver": "current result EBP-34h; then state1 globals"
+      },
+      {
+        "state": 3,
+        "next_state": -1,
+        "action": "00cbc800",
+        "receiver": "current result EBP-34h only"
+      }
+    ],
+    "all_actions": "LEA ECX actual local; tail JMP00B67700. No allocation, zeroing, backup object or special rollback action.",
+    "state2_limit": "Present in the original map but never explicitly published by the 236-byte normal body; do not invent a source call/transition to exercise it."
+  },
+  "original_schedule": [
+    {
+      "site": "00b1b8b4",
+      "action": "B67980(owner=original receiver+4, out=globals S-20h); state remains -1 during construction."
+    },
+    {
+      "site": "00b1b8b9",
+      "action": "Read original public KEY pointer once into EDI AFTER first globals construction. EDI is reused for the later get; no public key-slot reload."
+    },
+    {
+      "site": "00b1b8c0",
+      "action": "Store state0; B67580 at B1B8C8 receives EAX returned by first globals construction and captured key. Ignore setter return."
+    },
+    {
+      "site": "00b1b8d1",
+      "action": "Store state-1 BEFORE B67700 at B1B8D9 on current actual globals local."
+    },
+    {
+      "site": "00b1b8e5",
+      "action": "B67980 again on SAME globals slot using retained owner address."
+    },
+    {
+      "site": "00b1b8f2",
+      "action": "Store state1; B68100 at B1B8FA receives returned second globals object in ECX, result out=S-34h, and original captured key. Its returned pointer is ignored: later writes use physical result local."
+    },
+    {
+      "site": "00b1b903",
+      "action": "Store low byte3 into current state1, producing state3. B67700 at B1B908 destroys globals while ONLY result cleanup is armed."
+    },
+    {
+      "site": "00b1b90d",
+      "action": "Only after second globals destructor returns, load original public RECORD pointer once into ESI."
+    },
+    {
+      "site": "00b1b91d",
+      "action": "Actual result local; numeric index1 and FLD32/FSTP32 from record+0. EAX return ignored."
+    },
+    {
+      "site": "00b1b92f",
+      "action": "Actual result local; numeric index2 and fresh FLD32/FSTP32 from same captured record+4 AFTER preceding write returns."
+    },
+    {
+      "site": "00b1b941",
+      "action": "Actual result local; numeric index3 and fresh FLD32/FSTP32 from same captured record+8 AFTER preceding write returns."
+    },
+    {
+      "site": "00b1b953",
+      "action": "Actual result local; numeric index4 and fresh FLD32/FSTP32 from same captured record+C AFTER preceding write returns."
+    },
+    {
+      "site": "00b1b95c",
+      "action": "Store state-1 BEFORE B67700 at B1B964 on current result local; restore exception list and registers, RET8."
+    }
+  ],
+  "caller": {
+    "all_live_incoming_xrefs": [
+      {
+        "address": "004df5b7",
+        "function": "004de610",
+        "type": "UNCONDITIONAL_CALL"
+      }
+    ],
+    "literal": {
+      "address": "00ce7d64",
+      "text": "WaterTracerColor",
+      "bytes_including_null": 17
+    },
+    "producer": "004DF590 constructs caller-owned actual key header with0041E870. 004DF595 rereads current game+5FC,004DF59B addsC44. PUSH record pointer; PUSH key header; MOV ECX,[00F8D434]; CALL B1B890. Caller then reads key data/length for its own release; parent does not own or destroy the key.",
+    "argument_boundary": "Original key slot read after first globals constructor; original record slot read after second globals destruction. Mutations to the key/record slots before these respective captures are visible; after capture the pointer identity stays fixed. Contents at that identity remain current through concrete providers and component loads."
+  },
+  "x87_sites": [
+    {
+      "read": "00b1b911",
+      "spill": "00b1b914",
+      "offset": 0,
+      "index_push": "00b1b917",
+      "index": 1,
+      "call": "00b1b91d"
+    },
+    {
+      "read": "00b1b922",
+      "spill": "00b1b926",
+      "offset": 4,
+      "index_push": "00b1b929",
+      "index": 2,
+      "call": "00b1b92f"
+    },
+    {
+      "read": "00b1b934",
+      "spill": "00b1b938",
+      "offset": 8,
+      "index_push": "00b1b93b",
+      "index": 3,
+      "call": "00b1b941"
+    },
+    {
+      "read": "00b1b946",
+      "spill": "00b1b94a",
+      "offset": 12,
+      "index_push": "00b1b94d",
+      "index": 4,
+      "call": "00b1b953"
+    }
+  ],
+  "provider_sha256": [
+    {
+      "path": "include/bsp/native_lua_objects.hpp",
+      "sha256": "bccf6d4987d710dcbefd0f253cea939db64874f7394bedd432411ce88ae919cf",
+      "bytes": 7409
+    },
+    {
+      "path": "src/native_lua_objects.cpp",
+      "sha256": "c2d70e3c7471688114c14677facb25ef318c224ce0cab8de0ab2ef3be43a0a2e",
+      "bytes": 12954
+    },
+    {
+      "path": "include/bsp/native_lua_field_setters.hpp",
+      "sha256": "63832fb6d3072a368fe3c86ed6894142d78cda19d7f3deaa3db4348dd17f5d52",
+      "bytes": 751
+    },
+    {
+      "path": "src/native_lua_field_setters.cpp",
+      "sha256": "d787fe6a207baac0219d1eaae6f85fdbe8c023618511140b51cf36ff432b0f5e",
+      "bytes": 2259
+    },
+    {
+      "path": "include/bsp/native_string.hpp",
+      "sha256": "80013e5a7350120f32fcad1ce54db9b0923ad5b49cc2152823d858534331378f",
+      "bytes": 8019
+    },
+    {
+      "path": "reports/native_lua_field_setters.json",
+      "sha256": "625159a97d7af72d38bdfc4e3664281a7df69ee59929dcf991876ffdfbe72b0c",
+      "bytes": 9768
+    },
+    {
+      "path": "include/bsp/native_lua_numeric_element.hpp",
+      "sha256": "f760fb07c2ce9c2c8f8332faace3154002bb42a03827df1897c8f6234e99952a",
+      "bytes": 623
+    },
+    {
+      "path": "src/native_lua_numeric_element.cpp",
+      "sha256": "51a703872ec2400a418d0663a7d051dfd09886fbee83025021e624948c176aa5",
+      "bytes": 1902
+    },
+    {
+      "path": "docs/NATIVE_LUA_NUMERIC_ELEMENT_DL.md",
+      "sha256": "9e45cd4f5b79b32c05484be026657e4cc1501905203079840cd5f6d2dc12ea1f",
+      "bytes": 2390
+    },
+    {
+      "path": "reports/native_lua_numeric_element_dl.json",
+      "sha256": "b3515a71fa244ce6f346c0407b0902afb7eac475fa70d6d3ba19db07bcc2f862",
+      "bytes": 3283
+    }
+  ],
+  "source_sha256": {
+    "include/bsp/native_sampler_parameter_record.hpp": "72654c7f8b16dd409149895fafafb463f1b7657ed8a30b1265fcee7e40198fb3",
+    "src/native_sampler_parameter_record.cpp": "66b71897b2b4ec14475d6d75105477570ffe30fcd1ca167c2be369c6b6fb5861",
+    "docs/NATIVE_SAMPLER_PARAMETER_RECORD_DO.md": "83faf5b1c7a60297b8adef2c723ee9b66a654a18f63ef6048db14ceaecad28c6",
+    "cmake/startup.cmake": "e9c28ec1f73370258677dd873ffc552e0d983b4c76d64d8e40a6cc12bc0d9738"
+  },
+  "evidence": [
+    {
+      "path": "local/dm-world-parameter-record-evidence.json",
+      "sha256": "aac45ed3d29df6f064107214fad8d2ac3008e98b1b9fcd855689c4bf4db6c90b"
+    },
+    {
+      "path": "local/dm-world-parameter-record-evidence.md",
+      "sha256": "457620313a546c5ce315a1fcb8d28bbecdc6cc9ad9e45d0928a53fa506647897"
+    },
+    {
+      "path": "local/do-eh-definition.json",
+      "sha256": "2ff3c3ded14e0828e9468e0b573dcd0f7f672af1fc79030ac5da6c516f92e799",
+      "meaning": "Primary defined/saved handler CBC808..811 after DM; no worker mutation."
+    }
+  ],
+  "source_state_model": {
+    "published_states": [
+      -1,
+      0,
+      1,
+      3
+    ],
+    "state2": "Original map row retained in evidence; never assigned by normal source path. Unsupported corruption of source diagnostic state terminates.",
+    "storage": "Two adjacent actual14h members result then globals; globals reused after first destruction; caller-supplied preimage preserved until provider writes. Extra EDX operation persists for diagnosis.",
+    "failure": "Source C++ catch cleans only state0/1 current globals or state3 current result. Disarm before cleanup. Nested cleanup failure terminates via noexcept. Explicit destructor failure retains its unresolved obligation; no automatic retry. Failed frame requires explicit acknowledgement after obligations resolve; acknowledgement releases no resource.",
+    "native_catch_boundary": "Only source C++ exceptions that reach the parent catch are projected. Lua C longjmp, hardware faults, private native FH3/SEH and child exception propagation are not generalized."
+  },
+  "checks": {
+    "build": "One full scripts/build.ps1 MSVC Win32 Release /W4 /WX /fp:strict build passed",
+    "existing_ctests": "1/1 reconstructed_math passed; native_math_differential not configured because fresh worktree lacked local/seed_reference.hpp. Primary explicitly owns planned seeded exact-combined2CTest run; no worker rerun.",
+    "verify_seeds": "8/8 live-installed matches",
+    "numeric_call_rows": "17 checked, 0 failed via read-only verify_report_calls.py",
+    "generated_order": "PASS: public key +67 after globals+56; record+F4 after globals destroy+E5; four helper calls; helper FLD32+07/FSTP32+09 and raw MOVSS+0C/+17 into child+1F, no extra conversion.",
+    "new_tests": 0,
+    "parent_fixture": "not run; root owns independent exact-combined validation",
+    "gameplay": "not run"
+  },
+  "verification_checklist": {
+    "callee_before_contract": "Four established actual providers verified in DK/DJ/DM with unchanged source pins; B66580 DL exact current API/source inspected. No semantic host substitute.",
+    "boundary_before_attribution": "DM complete native body/live bytes, exact 11 calls; one complete caller preparation; cleanup/handler boundaries pinned. Handler definition subsequently resolved by primary.",
+    "all_call_sites": "One incoming B1B890 xref at004DF5B7; full argument preparation and NativeString producer captured.",
+    "producer_before_layout": "Only four native consumed binary32 components at offsets0/4/8/C are represented, without assigning semantic color channels or inventing a record constructor/schema. Existing caller record+0C44 link retained.",
+    "partial_projection": "Complete normal body; source C++ cleanup projection explicitly bounded from original FH3/SEH and Lua longjmp.",
+    "runtime_evidence": "No frame/gameplay or parent fixture claim. Dependency DL runtime proof remains separate.",
+    "argument_counts": "RET8 parent and numeric child; existing provider RET4/RET8 contracts; each original call preparation retained in DM.",
+    "register_provenance": "Complete native listing: ESI initially receiver+4, then original record pointer only after second globals destructor; EDI captures key once; saved/restored.",
+    "lease_only_owned": "Only parentB1B890 and four owned files leased; shared startup registry receives one append-only line without lease. No callee/EH ownership taken.",
+    "report_evidence": "17 address/native/function rows, tail_jump kind on four JMPs, original spans, source/provider/DM hashes and explicit limits."
+  },
+  "limits": [
+    "Valid actual NativeString, actual owner at receiver+4 and source-compatible linked Lua5.1.1 VM required; no receiver constructor or process-global owner is invented.",
+    "B67580 uses its qualified source empty-literal domain; B68100 uses C-string lookup ignoring header length and concrete tracked-object construction. No provider domain expansion.",
+    "Parent x87 source helper preserves FLD32/FSTP32 and late component reads; full NaN/denormal/hardware exception behavior awaits independent parent runtime evidence.",
+    "New C++ signature/storage/diagnostic policy and linked Lua C ABI preclude a drop-in private-game ABI claim.",
+    "No native FH3/SEH dispatcher, Lua C longjmp interception, unrestricted callback/alias/exception recovery or gameplay validation.",
+    "No new tests, native runtime fixture, ledger edits, Ghidra mutation, push or merge by this worker.",
+    "Worker full build configured only one existing CTest; native_math_differential was absent with local/seed_reference.hpp. Eight live/disk seed spans verified. Primary requested no seed-copy/test rerun and will run its already configured2CTest combined build."
+  ],
+  "validation_artifacts": [
+    {
+      "path": "local/do-build.log",
+      "sha256": "248b2fd64feb321e808eca78535361f705898f3be0b000fd2f10084b1b5ca33d"
+    },
+    {
+      "path": "local/do-report-calls.log",
+      "sha256": "cc4a042f2eac3141ba504023488db68287a8df98def057ef5289b3eee8347b3b"
+    },
+    {
+      "path": "local/do-generated-order.json",
+      "sha256": "ff14e32ba8e52a81166b858b3e81b442da4b1dde508fa749eb1eda19f0a93190"
+    },
+    {
+      "path": "local/do-object-disassembly.txt",
+      "sha256": "a46ce941b183290c96edd6fbaa597448f1b9c6336ea9320c8c8e6444bb829e14"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_sampler_parameter_record.obj",
+      "sha256": "6469370a1fa23493a880d8c5b47563a1b9c29d8f99459e81a6a718c0a58cf68f"
+    }
+  ],
+  "worker_libraries": [
+    {
+      "path": "build/win32/Release/bsp_core.lib",
+      "sha256": "df87514834b258a54ac138323cf02a0b22d68d4374e5e9dd81b97881074db817"
+    },
+    {
+      "path": "build/win32/Release/bsp_lua511.lib",
+      "sha256": "c4e8e2a3073782cfce9a0bd764189a2de48fa24daf152a6fe158601cc0b8a537"
+    },
+    {
+      "path": "build/win32/Release/bsp_zlib121.lib",
+      "sha256": "a3ed9da5a794cf17f0ffad70edd6e19ad59acb4fe52be3b74ea4bcbff2853173"
+    }
+  ]
+}
