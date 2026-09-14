@@ -1,0 +1,133 @@
+{
+  "packet": "orch3_material_record_allocation_cj",
+  "status": "source_build_and_generated_review_passed_pending_primary_integration",
+  "source_parent_commit": "91ec29c54466e4e7b7834470379765b3098f5dcf",
+  "native_body_credit": 0,
+  "native_bytes_credit": 0,
+  "proposed_native_bodies": 2,
+  "proposed_native_bytes": 191,
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "installed_pe": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "routines": [
+    {
+      "address": "00b0d3b0",
+      "inclusive_end": "00b0d405",
+      "bytes": 86,
+      "native_bytes_hex": "83ec1085c9771533c969c92c01000051e856940e0083c40483c410c383c8ff33d2f7f13d2c01000073df8d0424508d4c2408c744240400000000e8518f0e0068c03ce0008d4c240851c744240c3c92d600e87f940e00",
+      "native_sha256": "187fc8ecddb674807e4cdceaf7de5f19b21c51084202ce989e93999da82ed123",
+      "ghidra_name_at_review": "FUN_00b0d3b0",
+      "cpp_symbol": "allocate_native_material_records_00b0d3b0",
+      "source_signature": "void* __fastcall allocate_native_material_records_00b0d3b0(uint32_t count, void* unused_edx)",
+      "original_abi": "ECX unsigned count, EDX unused, EAX allocation, plain RET",
+      "caller": "00b145e0 at 00b146e3; caller clears EDX before ECX count",
+      "normal_contract": "Zero requests zero bytes; 1..14316557 request count*300 native and host bytes from concrete malloc/new-handler service; release with singleton_lifetime_free",
+      "overflow_contract": "Positive count above UINT32_MAX/300: original BF6340 null-message std::exception, vtable D6923C, BF6885 ThrowInfo E03CC0; source throws host std::bad_alloc",
+      "native_call_sites": [
+        {"site": "00b0d3c0", "target": "00bf681b"},
+        {"site": "00b0d3ea", "target": "00bf6340"},
+        {"site": "00b0d401", "target": "00bf6885"}
+      ]
+    },
+    {
+      "address": "00b135c0",
+      "inclusive_end": "00b13628",
+      "bytes": 105,
+      "native_bytes_hex": "6aff6898c2cb0064a100000000506489250000000083ec446a1268e037ce008d4c2408c74424200f000000c744241c00000000c644240c00e823518fff8d0424508d4c2420c744245000000000e8eee08fff68983fd8008d4c242051c74424246092d600e85c320e00",
+      "native_sha256": "7d3b2e223f800dbc771a2a1b867891f27e3b314e0f5734ea2088cfa138b9ee56",
+      "ghidra_name_at_review": "STL_xlen_throw_00b135c0",
+      "cpp_symbol": "STL_xlen_throw_00b135c0",
+      "source_signature": "[[noreturn]] void __cdecl STL_xlen_throw_00b135c0()",
+      "original_abi": "No arguments or normal return; private FH3/SEH frame; native BF6885 throw",
+      "caller": "00b145e0 at 00b1466e",
+      "message": {"address": "00ce37e0", "length": 18, "text": "vector<T> too long"},
+      "native_call_sites": [
+        {"site": "00b135f8", "target": "00408720"},
+        {"site": "00b1360d", "target": "00411700"},
+        {"site": "00b13624", "target": "00bf6885"}
+      ],
+      "exception_metadata": {
+        "handler": "00cbc298",
+        "frame_handler": "00bf6b43",
+        "funcinfo": "00df438c",
+        "magic": "19930522",
+        "max_state": 1,
+        "unwind_map": "00df4384",
+        "state0_to": -1,
+        "state0_action": "00cbc290",
+        "cleanup_this": "[EBP-50h]",
+        "cleanup_target": "004072d0",
+        "arm_after_assign": "00b13605",
+        "throwinfo": "00d83f98",
+        "native_vtable": "00d69260"
+      },
+      "source_catch_type": "NativeSingletonVectorLengthError",
+      "analogy": "00bd0590 is identical after masking handler address and three relative call displacements; uses the same message, ThrowInfo and native vtable"
+    }
+  ],
+  "provider_sha256": {
+    "include/bsp/native_singleton_vector_allocation.hpp": "2910d0e12e3ecce6820cc1a083a3bfba9c5478fbbea9cdf9dc4c2926bdb0296a",
+    "src/native_singleton_vector_allocation.cpp": "4771197c3f1ead7dd635637c849c60f8f525c4d482dcc4a33c8617922362e09e",
+    "include/bsp/native_legacy_exception_owner.hpp": "98da5a8c50222979739c330b503cc03f2b43e03df5cf15a795f30ed2df3ed727",
+    "src/native_legacy_exception_owner.cpp": "4a35fabcd35adbd986c1c6bc64b2b88bc07323a47b6f0ebf5bf764675925ad60",
+    "include/bsp/native_legacy_sbo_string.hpp": "9729dd1df270ad0c6f3e2601219735bd71f6758a797aaf2b59e687527704f422",
+    "src/native_legacy_sbo_string.cpp": "377004812adb5e8760b02a84fff81f0004f08fd145c4ce4acfebf31cc583164c",
+    "include/bsp/singleton_lifetime.hpp": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+    "src/singleton_lifetime.cpp": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+    "include/bsp/native_material_record_copy.hpp": "502c9743de1ed796c10c4c714808b06f32fef2f7ebc89a63b44061beea02feac",
+    "src/native_material_record_copy.cpp": "c33a822d3ededc37d9f20396a0e306d2a97ab1e0fb46295306d787dd2edd87d5"
+  },
+  "source_sha256": {
+    "include/bsp/native_material_record_allocation.hpp": "3f0b20ebbbaa0d5f7f6b1bf6421465b764ddc1ad9a7087ac73abd1486700f699",
+    "src/native_material_record_allocation.cpp": "99f16e0c423ac2b0e6e146bbb7b0630c2fb9e0c12707aaaa81973cf6988d970a",
+    "cmake/startup.cmake": "e056001cb31a639f432adc6bc01dffff364e78d4a5585596de81af478fffefb5"
+  },
+  "generated_object": {
+    "path": "build/win32/bsp_core.dir/Release/native_material_record_allocation.obj",
+    "sha256": "565d3fe6d000e9388542c999b0cebca0c7bfe8418475660f302358b5e9547830",
+    "format": "MSVC Win32 COFF, machine 014C",
+    "sections": [
+      {
+        "coff_section_hex": "11",
+        "symbol": "STL_xlen_throw_00b135c0",
+        "size": 111,
+        "sha256": "7f0d0a7e916dbbb9d59d9ac28453c45957661910199ae53e1175dff9edfda670",
+        "relocations": 7,
+        "relocation_offsets_hex": ["06", "15", "32", "43", "5c", "61", "6a"],
+        "review": "Cap 15, length 0 and inline byte 0 precede counted assign at +42; state 0 store at +54 follows assign and precedes NativeSingletonVectorLengthError construction at +5B and host throw at +69."
+      },
+      {
+        "coff_section_hex": "12",
+        "symbol": "__ehhandler$STL_xlen_throw_00b135c0",
+        "size": 42,
+        "sha256": "e2a0b1cc92067e79dba62402c0bbd51040d7b383f02bef870bb5044e6b4b50a7",
+        "relocations": 4,
+        "relocation_offsets_hex": ["04", "1c", "21", "26"],
+        "review": "State 0 unwind funclet invokes CompletedMessage destructor, which calls raw native_legacy_sbo_string_destroy_004072d0; generated handler uses host __CxxFrameHandler3."
+      },
+      {
+        "coff_section_hex": "13",
+        "symbol": "allocate_native_material_records_00b0d3b0",
+        "size": 92,
+        "sha256": "482054836708d87a9b6fefa3afd60a0c8122c5da6873a82261220b75107a78f7",
+        "relocations": 6,
+        "relocation_offsets_hex": ["07", "30", "3d", "49", "4e", "57"],
+        "review": "Unsigned ECX comparison with 0xDA740D admits IMUL count*0x12C; the same computed byte count fills native and host request fields before singleton_lifetime_allocate. Overflow constructs and throws host std::bad_alloc."
+      }
+    ],
+    "native_binary_equality": false,
+    "reason": "Source uses concrete host CRT and C++ EH services; original PE uses private BF681B/BF6885 and FH3/SEH data."
+  },
+  "validation": {
+    "installed_pe_and_live_project": "verified C:/Users/sqz269/bsp.gpr /battlestationspacific.exe against installed PE SHA-256 and both complete live function ranges",
+    "source_evidence": "ignored local/output/verify-cj-report.py passed: both original PE spans, six original call targets, both B145E0 call sites, EH unwind/state, BD0590 analogue and all pinned source/provider hashes",
+    "generated_evidence": "ignored local/output/verify-cj-coff.py passed: object hash, three code COMDAT hashes, 17 relocation offsets and provider/exception symbol targets; dumpbin disassembly reviewed",
+    "build": "./scripts/build.ps1 passed, Win32 Release bsp_game linked",
+    "ctest": "existing reconstructed_math 1/1 passed (0.07 sec)",
+    "new_tests": 0
+  },
+  "limits": "Equal admitted allocation bytes and ordered source SBO cleanup/catch transport, not native binary heap, std::exception/bad_alloc RTTI, private FH3/SEH, or game validation."
+}

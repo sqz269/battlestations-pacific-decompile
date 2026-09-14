@@ -145,6 +145,57 @@ void* assign_native_string_cstring_0041e350(void* destination, const char* sourc
     return destination;
 }
 
+void* assign_native_string_header_00425f40(void* destination, const void* source,
+    NativeStringRawPoolContext& strings) {
+    if (destination != source) { // 425F48: identity skips every header access.
+        const auto source_length = word(source);
+        resize_native_string_header_0041dd40(destination, strings, source_length, true);
+        if (word(source) != 0) { // 425F56: current source length, after resize.
+            const auto count = word(destination); // 425F5B
+            const auto* input = pointer(source, 4); // 425F5D
+            auto* output = pointer(destination, 4); // 425F60
+            // BF7680 supports backward overlap. Omit only the zero-byte call,
+            // after all native header loads, as in the existing raw providers.
+            if (count != 0) std::memmove(output, input, count);
+        }
+    }
+    return destination;
+}
+
+void* concatenate_native_string_headers_004261a0(const void* left, void* output,
+    const void* right, NativeStringRawPoolContext& strings) {
+    const bool identical = output == left; // 4261C6, before both output stores.
+    clear_header(output);
+    if (!identical) {
+        const auto left_length = word(left);
+        resize_native_string_header_0041dd40(output, strings, left_length, true);
+        if (word(left) != 0) {
+            const auto count = word(output); // 4261E3
+            auto* destination = pointer(output, 4); // 4261E5, BEFORE left.data
+            const auto* input = pointer(left, 4); // 4261E9
+            if (count != 0) std::memmove(destination, input, count);
+        }
+    }
+    // C5E830's output-owned bit is zero for all the preceding effects/reads.
+    const auto appended = word(right); // 4261FA, before arming owned output.
+    try {
+        if (appended != 0) {
+            const auto old_length = word(output); // 42620D
+            resize_native_string_header_0041dd40(output, strings, old_length + appended, true);
+            const auto* input = pointer(right, 4); // 42621C: current after resize
+            auto* destination = pointer(output, 4); // 42621F
+            std::memmove(at(destination, old_length), input, appended);
+        }
+    } catch (...) {
+        // Entering this unique handler consumes the output cleanup edge before
+        // the getter can throw. A newer cleanup exception replaces the original;
+        // there is no retry or remaining owned action in this function.
+        destroy_native_string_header_0041dd20(output, strings);
+        throw;
+    }
+    return output;
+}
+
 void* construct_native_string_cstring_0041e870(void* destination, const char* source,
     NativeStringStorage& strings) {
     clear_header(destination);

@@ -1,0 +1,94 @@
+{
+  "packet": "orch3_native_material_diagnostics_record_init_bz",
+  "status": "source_reconstructed_exact_build_pending",
+  "source_parent_commit": "d8456ff4a9c3e015daebe26d7a5161d019c73a84",
+  "native_body_credit": 0,
+  "native_bytes_credit": 0,
+  "proposed_native_bodies": 1,
+  "proposed_native_bytes": 64,
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_home": "J:/tools/ghidra_12.0.4_PUBLIC",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "source_sha256": {
+    "include/bsp/native_material_diagnostics_record_init.hpp": "3f99134591b554ff32cec8fe9827614548847ae8488bdaa6f1aee9d024375a43",
+    "src/native_material_diagnostics_record_init.cpp": "0b861b19d18e0338e3d290506260b7dbb5206d6af019b55d709274ae42a57547"
+  },
+  "native_spans": [
+    {
+      "address": "00b106c0",
+      "bytes": 64,
+      "sha256": "4797ca6a2108ecc9d36168c69c9bc3638c339a544421b3b91c78112391f3b059",
+      "live_PE_equal": true,
+      "hex": "8bc15633f689b01c01000089b02001000089b02401000089b02801000089308d503c8d4e0e8972c8893289723889727089b2a800000083c20483e90175e75ec3"
+    },
+    {
+      "address": "00b17041",
+      "bytes": 5,
+      "sha256": "9a73bc0a00289f178f223e4c1b9dcfb6c08a2b97388fd1c581025c7e5bef187e",
+      "live_PE_equal": true,
+      "hex": "e87a96ffff"
+    }
+  ],
+  "functions": [
+    {
+      "address": "00b106c0",
+      "inclusive_end": "00b106ff",
+      "bytes": 64,
+      "cpp_symbol": "initialize_native_material_diagnostics_record_00b106c0",
+      "ghidra_name": "BSP_MaterialDiagnosticsRecord_InitializeEmpty",
+      "original_abi": "ECX actual 12Ch-byte writable record; EAX retains receiver; ESI preserved; no stack arguments; RET."
+    }
+  ],
+  "call_steps": [
+    {
+      "address": "00b17041",
+      "native": "00b106c0",
+      "function": "00b16f80"
+    }
+  ],
+  "write_schedule": {
+    "initial_dword_offsets": [
+      "11c",
+      "120",
+      "124",
+      "128",
+      "0"
+    ],
+    "iterations": 14,
+    "per_iteration_initial_dword_offsets": [
+      "4",
+      "3c",
+      "74",
+      "ac",
+      "e4"
+    ],
+    "stride": 4,
+    "record_bytes": 300
+  },
+  "review": {
+    "primary_complete_source_and_20_native_instructions": true,
+    "source_authored_by_primary": true,
+    "remaining_blocking_findings": []
+  },
+  "validation": {
+    "build": "pending",
+    "new_tests": 0,
+    "new_native_fixture": false,
+    "raw_entry_executed": false,
+    "game_validated": false
+  },
+  "limitations": [
+    "Static source/body identity only; no native execution, broader ABI substitution, completed diagnostics, rendering or game validation.",
+    "Parent diagnostics/vector/string lifetime providers remain dependencies; this is only empty raw record initialization."
+  ]
+}
