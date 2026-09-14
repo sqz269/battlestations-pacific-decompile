@@ -378,3 +378,11 @@ Full derived construction/lifetime needs real IPC services, native WSADATA
 failure-output handling and actual singleton deletion binding. F8A2FC's
 current virtual28 remains a genuine external client dependency. Earlier
 sampler, shader and raw storage checkpoints retain their separate scope.
+
+## Actual online manager lifetime integration
+
+Code commit `96a02cf2f412ea132715fd9ddda7d1c98454f9a4` adds the actual 3F0h base/derived manager lifetime, typed raw SDK startup boundary, actual 2Ch IPC endpoint/worker, and raw singleton deletion binding. The 16 reconstructed normal bodies preserve early publication, current-slot unregistration, partial WSADATA output, post-pump buffer abandonment and vector/base unwind obligations. This advances the raw owner/lifetime follow-up described above.
+
+The strict Win32 build and both CTests pass. Four focused programs pass against the exact integrated library: raw base owner, typed SDK imports, nine original/source IPC cases plus a real worker abort, and six complete original/source lifetime cases plus raw scalar drain and a source exception. All 66 direct call rows pass; 16 saved annotations retain previous comments. Two stored-body repairs recover omitted IPC cleanup calls. `local/checkpoints/96a02cf2/native-online-lifetime-default/validation.json` archives 3157 verified artifacts and four immutable evidence bundles.
+
+Publication remains on `agent/orch5-20260911`. No main, original ABI/FH3/SEH, live pipe/account flow or gameplay claim is made. Application adoption still needs the actual F8D394 renderer and mutable +1A28 block, canonical string pool and game/profile cells, process-lifetime IPC and notification/UI services, and the raw cursor/frame route. Known client virtual leaves A43180/A430E0 are a separate active packet. Earlier sampler, shader, storage and pump checkpoints retain their exact scope.

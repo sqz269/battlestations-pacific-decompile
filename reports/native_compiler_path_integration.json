@@ -637,7 +637,7 @@
       "Earlier 29 shader fixtures and their libraries remain at the separate a50d1fc3 checkpoint; this batch reruns only these four relevant fixture programs."
     ]
   },
-  "latest_integration": "raw_online_pump_integration",
+  "latest_integration": "raw_online_lifetime_integration",
   "raw_online_procedural_integration": {
     "validated_code_commit": "d260af28ae358507e05d601ed2bcc538c0d1ff90",
     "checkpoint": {
@@ -861,5 +861,71 @@
       "derived manager A40DF0/A3F9D0/A3FDC0 with raw WSADATA/IPC services",
       "current client A43180/A430E0 and real gameplay adoption"
     ]
+  },
+  "raw_online_lifetime_integration": {
+    "code_commit": "96a02cf2f412ea132715fd9ddda7d1c98454f9a4",
+    "checkpoint": {
+      "path": "local/checkpoints/96a02cf2/native-online-lifetime-default/validation.json",
+      "sha256": "8a6c285250adc7b03729de3810ab4154837a710b84b0d777a47081ffb4ccd73d",
+      "artifacts": 3157,
+      "code_commit": "96a02cf2f412ea132715fd9ddda7d1c98454f9a4"
+    },
+    "default_build": "MSVC Win32 Release",
+    "ctests_passed": 2,
+    "fixture_programs": 4,
+    "normal_bodies": 16,
+    "direct_call_rows_checked": 66,
+    "direct_call_failures": 0,
+    "saved_ghidra_annotations": 16,
+    "stored_body_repairs": 2,
+    "game_startup_adopted": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "registered_sources": [
+      "native_online_manager_owner",
+      "native_online_startup_sdk",
+      "native_online_ipc",
+      "native_online_manager_lifetime"
+    ],
+    "original_source_comparisons": {
+      "ipc": 9,
+      "parents": 6
+    },
+    "worker_archives": {
+      "raw-online-manager-owner": {
+        "commit": "91099202996c0bb85019d8e938fab6425849af50",
+        "manifest": "local/compiler-path-workers/raw-online-manager-owner/manifest.json",
+        "sha256": "d76dc58c8c191c2bf3811025213c9a366edb6e8ff5d36586daff090383dd99e2",
+        "artifacts": 60
+      },
+      "raw-online-startup-sdk": {
+        "commit": "d6dac38fd7b29691fc34128bb90da79d07f38650",
+        "manifest": "local/compiler-path-workers/raw-online-startup-sdk/manifest.json",
+        "sha256": "2bdf5fef78ac32d69d056fd14110ddb1ce1ee58350fcb6393c2b3020a250ec6f",
+        "artifacts": 3075
+      },
+      "raw-online-ipc": {
+        "commit": "f6c6d2cbb8095777f2e4b644771d279e7ec15c31",
+        "manifest": "local/compiler-path-workers/raw-online-ipc/manifest.json",
+        "sha256": "a5d4dba7d1684fbf3cde5f5d5da7e26948c10254909a03cae6176fa5526cf799",
+        "artifacts": 3119
+      },
+      "raw-online-lifetime-fixture": {
+        "commit": "96a02cf2f412ea132715fd9ddda7d1c98454f9a4",
+        "manifest": "local/compiler-path-workers/raw-online-lifetime-fixture/manifest.json",
+        "sha256": "2b9c7213c974bd2fa26385ad36d5fd2924883fa7d1e9872b4e54a577b40f1931",
+        "artifacts": 545
+      }
+    },
+    "limits": [
+      "original FH3/SEH and caller ABI unvalidated",
+      "original parent WSA preimage seeded only at fake SDK boundary",
+      "SDK/pipe calls in focused fixtures mocked; no live pipe/network/account flow",
+      "IPC immutable process service binding and timeout lifetime remain explicit source boundaries",
+      "game startup renderer/pool/profile/cursor/provider composition remains incomplete",
+      "gameplay unvalidated"
+    ],
+    "publication_branch": "agent/orch5-20260911",
+    "main_integration_claimed": false
   }
 }

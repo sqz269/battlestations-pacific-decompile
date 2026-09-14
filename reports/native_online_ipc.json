@@ -366,50 +366,6 @@
       "contract": "CloseHandle"
     }
   ],
-  "saved_body_repairs_required": [
-    {
-      "function": "00a4bde0",
-      "missing_start": "00a4be2f",
-      "missing_inclusive_end": "00a4be47",
-      "failing_calls": [
-        "00a4be36",
-        "00a4be3f"
-      ],
-      "repair_union_inclusive_end": "00a4be4a"
-    },
-    {
-      "function": "00a4c030",
-      "missing_start": "00a4c209",
-      "missing_inclusive_end": "00a4c211",
-      "failing_calls": [
-        "00a4c20d"
-      ]
-    }
-  ],
-  "validation": {
-    "strict_win32_build": "passed scripts/build.ps1",
-    "ctests_passed": 2,
-    "ctests_failed": 0,
-    "verified_seed_input": "local/seed_reference.hpp",
-    "report_call_rows": 24,
-    "report_call_failures": 3,
-    "report_call_result": "true saved-body gaps retained; integrator repair pending",
-    "report_call_log": "local/native_online_ipc/report_calls.log",
-    "fixture": "local/native_online_ipc/ipc_probe.cpp",
-    "fixture_copied_original_source_comparisons": 9,
-    "fixture_result": "passed",
-    "additional_fixture_checks": [
-      "real CreateThread worker E_ABORT exit observed with WaitForSingleObject/GetExitCodeThread",
-      "same-address runtime rebinding accepted, different address rejected",
-      "null/sentinel slot handling",
-      "matching standard CRT allocation/free"
-    ],
-    "copied_native_redirected_direct_calls": 24,
-    "actual_game_validated": false,
-    "binary_drop_in_compatible": false,
-    "test_no_pipe_network_or_process_termination": true,
-    "exact_gap_edge_evidence": "local/native_online_ipc/exact_gap_edges.txt"
-  },
   "uncertainties": [
     "Specific native stack preimages are unrecovered; explicit caller inputs define partial-output source observations.",
     "Immutable process runtime is a source-host adaptation; dependency lifetime must extend to process exit.",
@@ -433,5 +389,96 @@
     "path": "local/native_online_ipc/final_manifest.json",
     "closure": "source/header/report/doc, probe cpp/inc/bin/obj/exe, copied original full spans, build and probe commands/logs, actual compiler dependencies and libraries, actual mapped runtime modules and selected toolchain",
     "hash": "external final handoff; manifest excludes itself and sidecar to avoid circular hashes"
-  }
+  },
+  "integrated_validation": {
+    "code_commit": "96a02cf2f412ea132715fd9ddda7d1c98454f9a4",
+    "checkpoint": {
+      "path": "local/checkpoints/96a02cf2/native-online-lifetime-default/validation.json",
+      "sha256": "8a6c285250adc7b03729de3810ab4154837a710b84b0d777a47081ffb4ccd73d",
+      "artifacts": 3157,
+      "code_commit": "96a02cf2f412ea132715fd9ddda7d1c98454f9a4"
+    },
+    "default_build": "MSVC Win32 Release",
+    "ctests_passed": 2,
+    "fixture_programs": 4,
+    "normal_bodies": 16,
+    "direct_call_rows_checked": 66,
+    "direct_call_failures": 0,
+    "saved_ghidra_annotations": 16,
+    "stored_body_repairs": 2,
+    "game_startup_adopted": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "module_direct_call_rows": 24
+  },
+  "worker_saved_body_repairs_required": [
+    {
+      "function": "00a4bde0",
+      "missing_start": "00a4be2f",
+      "missing_inclusive_end": "00a4be47",
+      "failing_calls": [
+        "00a4be36",
+        "00a4be3f"
+      ],
+      "repair_union_inclusive_end": "00a4be4a"
+    },
+    {
+      "function": "00a4c030",
+      "missing_start": "00a4c209",
+      "missing_inclusive_end": "00a4c211",
+      "failing_calls": [
+        "00a4c20d"
+      ]
+    }
+  ],
+  "saved_body_repairs_required": [],
+  "worker_validation": {
+    "strict_win32_build": "passed scripts/build.ps1",
+    "ctests_passed": 2,
+    "ctests_failed": 0,
+    "verified_seed_input": "local/seed_reference.hpp",
+    "report_call_rows": 24,
+    "report_call_failures": 3,
+    "report_call_result": "true saved-body gaps retained; integrator repair pending",
+    "report_call_log": "local/native_online_ipc/report_calls.log",
+    "fixture": "local/native_online_ipc/ipc_probe.cpp",
+    "fixture_copied_original_source_comparisons": 9,
+    "fixture_result": "passed",
+    "additional_fixture_checks": [
+      "real CreateThread worker E_ABORT exit observed with WaitForSingleObject/GetExitCodeThread",
+      "same-address runtime rebinding accepted, different address rejected",
+      "null/sentinel slot handling",
+      "matching standard CRT allocation/free"
+    ],
+    "copied_native_redirected_direct_calls": 24,
+    "actual_game_validated": false,
+    "binary_drop_in_compatible": false,
+    "test_no_pipe_network_or_process_termination": true,
+    "exact_gap_edge_evidence": "local/native_online_ipc/exact_gap_edges.txt"
+  },
+  "validation": {
+    "code_commit": "96a02cf2f412ea132715fd9ddda7d1c98454f9a4",
+    "checkpoint": {
+      "path": "local/checkpoints/96a02cf2/native-online-lifetime-default/validation.json",
+      "sha256": "8a6c285250adc7b03729de3810ab4154837a710b84b0d777a47081ffb4ccd73d",
+      "artifacts": 3157,
+      "code_commit": "96a02cf2f412ea132715fd9ddda7d1c98454f9a4"
+    },
+    "default_build": "MSVC Win32 Release",
+    "ctests_passed": 2,
+    "fixture_programs": 4,
+    "normal_bodies": 16,
+    "direct_call_rows_checked": 66,
+    "direct_call_failures": 0,
+    "saved_ghidra_annotations": 16,
+    "stored_body_repairs": 2,
+    "game_startup_adopted": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "module_direct_call_rows": 24,
+    "module_direct_call_failures": 0,
+    "body_repair_record": "reports/native_online_ipc_function_definitions.json"
+  },
+  "root_ghidra_writes": true,
+  "root_ghidra_saves": true
 }

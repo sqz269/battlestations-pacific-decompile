@@ -290,5 +290,26 @@
     "status": "pending exact integrated build and focused fixture",
     "abi_compatible": false,
     "game_validated": false
+  },
+  "integrated_validation": {
+    "code_commit": "96a02cf2f412ea132715fd9ddda7d1c98454f9a4",
+    "checkpoint": {
+      "path": "local/checkpoints/96a02cf2/native-online-lifetime-default/validation.json",
+      "sha256": "8a6c285250adc7b03729de3810ab4154837a710b84b0d777a47081ffb4ccd73d",
+      "artifacts": 3157,
+      "code_commit": "96a02cf2f412ea132715fd9ddda7d1c98454f9a4"
+    },
+    "default_build": "MSVC Win32 Release",
+    "ctests_passed": 2,
+    "fixture_programs": 4,
+    "normal_bodies": 16,
+    "direct_call_rows_checked": 66,
+    "direct_call_failures": 0,
+    "saved_ghidra_annotations": 16,
+    "stored_body_repairs": 2,
+    "game_startup_adopted": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "module_direct_call_rows": 22
   }
 }

@@ -1,0 +1,161 @@
+{
+ "events": [
+  {
+   "recreate": "00a4bde0",
+   "previous": "Function: BSP_XLiveIpc_Destroy at 00a4bde0\nSignature: undefined BSP_XLiveIpc_Destroy(void)\nEntry: 00a4bde0\nBody: 00a4bde0 - 00a4be4a",
+   "plate": "[BSP reconstruction 00a4bde0]\nHypothesis, not a recovered symbol. Previous function name: FUN_00a4bde0. ECX=2Ch IPC owner; RET. Signal stop event, wait1000 and ignore result, close/null thread then pipe/event, free/null receive/send buffers and free owner. Native wait does not ensure worker exit. Evidence: docs/XLIVE_IPC.md; reports/xlive_ipc.json. Required linked pipe operations remain unreconstructed with uncertain library provenance. Win32 build/two CTests and one scripted synchronous fixture passed; no endpoints or game/ABI validation."
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "00a4bde0"
+   },
+   "result": {
+    "success": true,
+    "address": "00a4bde0",
+    "deleted_function": "BSP_XLiveIpc_Destroy",
+    "body_size": 82,
+    "message": "Function 'BSP_XLiveIpc_Destroy' deleted at 00a4bde0"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a4bde0",
+    "end_address": "00a4be4b"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a4bde0",
+    "end_address": "00a4be4a",
+    "bytes_disassembled": 107,
+    "message": "Successfully disassembled 107 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a4bde0",
+    "disassemble_first": false,
+    "name": "BSP_XLiveIpc_Destroy"
+   },
+   "result": {
+    "success": true,
+    "address": "00a4bde0",
+    "function_name": "BSP_XLiveIpc_Destroy",
+    "entry_point": "00a4bde0",
+    "body_size": 107,
+    "message": "Function created successfully at 00a4bde0",
+    "warnings": [
+     "Function name 'BSP_XLiveIpc_Destroy' \u2014 main part 'XLiveIpc_Destroy' is not PascalCase. Expected: XliveipcDestroy",
+     "Function name 'BSP_XLiveIpc_Destroy' \u2014 main part 'XLiveIpc_Destroy' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "endpoint": "set_plate_comment",
+   "body": {
+    "address": "00a4bde0",
+    "comment": "[BSP reconstruction 00a4bde0]\nHypothesis, not a recovered symbol. Previous function name: FUN_00a4bde0. ECX=2Ch IPC owner; RET. Signal stop event, wait1000 and ignore result, close/null thread then pipe/event, free/null receive/send buffers and free owner. Native wait does not ensure worker exit. Evidence: docs/XLIVE_IPC.md; reports/xlive_ipc.json. Required linked pipe operations remain unreconstructed with uncertain library provenance. Win32 build/two CTests and one scripted synchronous fixture passed; no endpoints or game/ABI validation."
+   },
+   "result": {
+    "status": "success",
+    "message": "Set plate comment for function at 00a4bde0",
+    "warnings": [
+     "Plate comment missing Algorithm section",
+     "Plate comment missing Parameters section",
+     "Plate comment missing Returns section"
+    ]
+   }
+  },
+  {
+   "defined": "00a4bde0",
+   "end": "00a4be4b",
+   "name": "BSP_XLiveIpc_Destroy",
+   "after": "Function: BSP_XLiveIpc_Destroy at 00a4bde0\nSignature: undefined BSP_XLiveIpc_Destroy(void)\nEntry: 00a4bde0\nBody: 00a4bde0 - 00a4be4a"
+  },
+  {
+   "recreate": "00a4c030",
+   "previous": "Function: BSP_XLiveIpc_Create at 00a4c030\nSignature: undefined BSP_XLiveIpc_Create(void)\nEntry: 00a4c030\nBody: 00a4c030 - 00a4c224",
+   "plate": "[BSP reconstruction 00a4c030]\nHypothesis, not a recovered symbol. Previous function name: FUN_00a4c030. ECX=output pointer; RET; EAX=signed HRESULT. Null output E_INVALIDARG; initial nothrow allocation failure null/E_OUTOFMEMORY. Preserve +14/+20 raw preimages, create manual-reset event, open pipe, query+allocate bounded frame buffers, start real worker before publishing output. All later failures cleanup and _exit(0); hidden post-free call at A4C20D is genuinely nonreturning. Evidence: docs/XLIVE_IPC.md; reports/xlive_ipc.json. Required linked pipe operations remain unreconstructed with uncertain library provenance. Win32 build/two CTests and one scripted synchronous fixture passed; no endpoints or game/ABI validation."
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "00a4c030"
+   },
+   "result": {
+    "success": true,
+    "address": "00a4c030",
+    "deleted_function": "BSP_XLiveIpc_Create",
+    "body_size": 480,
+    "message": "Function 'BSP_XLiveIpc_Create' deleted at 00a4c030"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a4c030",
+    "end_address": "00a4c225"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a4c030",
+    "end_address": "00a4c224",
+    "bytes_disassembled": 501,
+    "message": "Successfully disassembled 501 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a4c030",
+    "disassemble_first": false,
+    "name": "BSP_XLiveIpc_Create"
+   },
+   "result": {
+    "success": true,
+    "address": "00a4c030",
+    "function_name": "BSP_XLiveIpc_Create",
+    "entry_point": "00a4c030",
+    "body_size": 501,
+    "message": "Function created successfully at 00a4c030",
+    "warnings": [
+     "Function name 'BSP_XLiveIpc_Create' \u2014 main part 'XLiveIpc_Create' is not PascalCase. Expected: XliveipcCreate",
+     "Function name 'BSP_XLiveIpc_Create' \u2014 main part 'XLiveIpc_Create' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "endpoint": "set_plate_comment",
+   "body": {
+    "address": "00a4c030",
+    "comment": "[BSP reconstruction 00a4c030]\nHypothesis, not a recovered symbol. Previous function name: FUN_00a4c030. ECX=output pointer; RET; EAX=signed HRESULT. Null output E_INVALIDARG; initial nothrow allocation failure null/E_OUTOFMEMORY. Preserve +14/+20 raw preimages, create manual-reset event, open pipe, query+allocate bounded frame buffers, start real worker before publishing output. All later failures cleanup and _exit(0); hidden post-free call at A4C20D is genuinely nonreturning. Evidence: docs/XLIVE_IPC.md; reports/xlive_ipc.json. Required linked pipe operations remain unreconstructed with uncertain library provenance. Win32 build/two CTests and one scripted synchronous fixture passed; no endpoints or game/ABI validation."
+   },
+   "result": {
+    "status": "success",
+    "message": "Set plate comment for function at 00a4c030",
+    "warnings": [
+     "Plate comment missing Algorithm section",
+     "Plate comment missing Parameters section",
+     "Plate comment missing Returns section"
+    ]
+   }
+  },
+  {
+   "defined": "00a4c030",
+   "end": "00a4c225",
+   "name": "BSP_XLiveIpc_Create",
+   "after": "Function: BSP_XLiveIpc_Create at 00a4c030\nSignature: undefined BSP_XLiveIpc_Create(void)\nEntry: 00a4c030\nBody: 00a4c030 - 00a4c224"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}

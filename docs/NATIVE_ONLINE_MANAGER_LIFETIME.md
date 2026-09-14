@@ -62,3 +62,5 @@ Independent assembly/EH review accepted the four source bodies after restoring
 the destructor's second +14C test. The report records exact saved/disk byte spans,
 all call sites, review and validation results. Builds, focused fixtures, original
 ABI compatibility and gameplay validation remain separate claims.
+
+Integrated validation at `96a02cf2f412ea132715fd9ddda7d1c98454f9a4`: strict Win32 build and both CTests passed. Four focused fixture programs passed against that exact library. Six complete copied-original/source parent cases matched all owner/endpoint/SDK images and 89 ordered boundary observations; actual raw scalar drain and a source SDK exception case also passed. The original parent WSADATA preimage was seeded at the fake SDK boundary; original FH3 was not executed. All 66 direct call rows across the four modules pass. The immutable checkpoint `local/checkpoints/96a02cf2/native-online-lifetime-default/validation.json` contains 3157 hashed artifacts.
