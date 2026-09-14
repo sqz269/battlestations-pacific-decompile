@@ -12811,8 +12811,8 @@
     },
     {
       "id": "orch4_native_resource_parser_singletons_ca",
-      "state": "reconstructed_source_build_and_original_fixture_checked",
-      "status": "reconstructed_source_build_and_original_fixture_checked",
+      "state": "integrated_source_build_and_original_fixture_checked",
+      "status": "integrated_source_build_and_original_fixture_checked",
       "addresses": [
         "00b7e100",
         "00b7dd00",
@@ -12842,9 +12842,25 @@
       "owner": "agent/orch4-20260910",
       "report": "reports/native_resource_parser_singletons_ca.json",
       "documentation": "docs/NATIVE_RESOURCE_PARSER_SINGLETONS_CA.md",
-      "code_revision": null,
+      "code_revision": "29b4b5c379c67388c5d1a1b986b8eafbb5c70f60",
       "game_validated": false,
-      "follow_up": "Raw manager B81040 bootstrap and map cleanup, canonical mixed-parser singleton deletion binding, concrete parser slot8 bodies; then loading queue admission/stop/join"
+      "follow_up": "Raw manager B81040 bootstrap and map cleanup, canonical mixed-parser singleton deletion binding, concrete parser slot8 bodies; then loading queue admission/stop/join",
+      "validation": {
+        "strict_win32_build": "passed",
+        "existing_ctests": "2/2 passed",
+        "paired_original_fixture": "six families: absent/present fast path, slow creation, real tracked sections, secondary registration, owned name, primary flags2 and secondary flags1",
+        "raw_registration": "six source names registered and duplicate-rejected through B80A50 with actual map/string source; unrelated manager words preserved",
+        "original_bodies": 24,
+        "direct_relocations": 42,
+        "absolute_relocations": 60,
+        "native_exception_paths_guarded_out": true,
+        "whole_report_verifier": "54 passed",
+        "combined_strict_win32": true,
+        "combined_existing_ctests": 2,
+        "combined_original_fixture": true,
+        "source_manifest_inputs": 2665,
+        "previous_ghidra_comments_preserved": 36
+      }
     }
   ],
   "snapshot_after_analysis": {

@@ -7940,7 +7940,12 @@
     "direct_relocations": 42,
     "absolute_relocations": 60,
     "native_exception_paths_guarded_out": true,
-    "whole_report_verifier": "54 passed"
+    "whole_report_verifier": "54 passed",
+    "combined_strict_win32": true,
+    "combined_existing_ctests": 2,
+    "combined_original_fixture": true,
+    "source_manifest_inputs": 2665,
+    "previous_ghidra_comments_preserved": 36
   },
   "evidence": [
     {
@@ -8031,5 +8036,100 @@
     "Parser parse-slot8 bodies, actual B81040 manager bootstrap/destruction, mixed-owner canonical singleton dispatch binding, loading queue admission and gameplay remain open.",
     "Reference physical deleter BED950 has a pre-existing unowned ADD ESP,4 atBED981. Its disk/live bytes were compared, but its membership was not repaired or claimed by this packet.",
     "Fixture manually constructs and tears down its raw parser map, removes registered pointers before direct deletion and then destroys empty canonical managers; this is not the actual resource manager destructor."
-  ]
+  ],
+  "status": "integrated_complete_ordinary_source_build_and_original_fixture_checked",
+  "code_revision": "29b4b5c379c67388c5d1a1b986b8eafbb5c70f60",
+  "final_validation": {
+    "code_revision": "29b4b5c379c67388c5d1a1b986b8eafbb5c70f60",
+    "evidence": [
+      {
+        "path": "local/native_resource_parser_singletons_ca/final_build.log",
+        "sha256": "0bc81528ecd1f9b389283658f2cdafccfa2801783356f6e3c6c0d7aa9e84bb23",
+        "bytes": 2496
+      },
+      {
+        "path": "local/native_resource_parser_singletons_ca/final/source_manifest.json",
+        "sha256": "f59a4714d4af6048fb92f575066b3741eb02887a11db9cbf2935838048f0aa45",
+        "bytes": 288624
+      },
+      {
+        "path": "local/native_resource_parser_singletons_ca/final/libraries.json",
+        "sha256": "81def0262725e1916a54768de3943a8bb1d8ded87fd68c450667165da3bce63e",
+        "bytes": 687
+      },
+      {
+        "path": "local/native_resource_parser_singletons_ca/final/bsp_core.lib",
+        "sha256": "abb6007e5d1d4b745b721a0410f78bbd6941980138ccc0357d1ac8b65e4642e1",
+        "bytes": 58697846
+      },
+      {
+        "path": "local/native_resource_parser_singletons_ca/final/bsp_lua511.lib",
+        "sha256": "00315ac717aac3d2b2161fefefe71b36a974335ff9c95d48c137423eb4e2f4b2",
+        "bytes": 455244
+      },
+      {
+        "path": "local/native_resource_parser_singletons_ca/final/bsp_zlib121.lib",
+        "sha256": "73ae30b8adc3adfe5b33285bac533f8e7df7e8ab8d9e44789e6a030fd8a06ad9",
+        "bytes": 71906
+      },
+      {
+        "path": "local/native_resource_parser_singletons_ca/final/probe.cpp",
+        "sha256": "8e7fa051cbecb70fe7616d952425c5ee8066d7d6f1a62b3a39ecfbe0692e6231",
+        "bytes": 13609
+      },
+      {
+        "path": "local/native_resource_parser_singletons_ca/final/original_bodies.hpp",
+        "sha256": "41d9db20be8e675863796ea263df42d2a6ef44d7dbd9728de319ee92da78011f",
+        "bytes": 10373
+      },
+      {
+        "path": "local/native_resource_parser_singletons_ca/final/original_bodies.json",
+        "sha256": "14dc26c93d5943a0af73dcd2be507dfa59f90b3b95803982782c81b9c44582fd",
+        "bytes": 15562
+      },
+      {
+        "path": "local/native_resource_parser_singletons_ca/final/compile.cmd",
+        "sha256": "4b0f36f7d163c28f0e58dab634f48464efb5d2c7d12cade689aa6df9df8389e3",
+        "bytes": 783
+      },
+      {
+        "path": "local/native_resource_parser_singletons_ca/final/compile.log",
+        "sha256": "25d4f66c7c01d5b35c220cb97ffdd1608405f4ab45160497e6cc7ea3079676cf",
+        "bytes": 11
+      },
+      {
+        "path": "local/native_resource_parser_singletons_ca/final/probe.exe",
+        "sha256": "3b2e2cb837a2680af54c0bf16cff3189172c8f726101031e4623f6d2b2c40a57",
+        "bytes": 282112
+      },
+      {
+        "path": "local/native_resource_parser_singletons_ca/final/probe.map",
+        "sha256": "47501b3e40708b3e746671a15d2348f0c600af0f961f22f04ecffdf634498e98",
+        "bytes": 442051
+      },
+      {
+        "path": "local/native_resource_parser_singletons_ca/final/probe.log",
+        "sha256": "b7fbd2e447f52a4a7c328d9aacc9bbcbc5071d3a6088bdfbc3a74269a700d547",
+        "bytes": 1120
+      },
+      {
+        "path": "local/native_resource_parser_singletons_ca/final/child_probe.log",
+        "sha256": "e8d6c8615e42e5615c9005e902a5ca2026e96af56f295ac4d0299f0cbbe5abdd",
+        "bytes": 1078
+      },
+      {
+        "path": "local/native_resource_parser_singletons_ca/final/bsp_game.exe",
+        "sha256": "820819a99a5807ee253f80365ef10c5cbadb55c1ec2c58f49d0f177b855d215d",
+        "bytes": 2165248
+      }
+    ],
+    "limits": [
+      "New explicit-service C++ interfaces, not original callable ABI/FH3/SEH identity or hardware-fault cleanup.",
+      "Original normal-path bodies use explicit source CRT/string/registration/Win32 bindings; native error/exception paths are guarded out.",
+      "Paired fixture verifies normal allocation, lock, registration, getter/name/deletion behavior; allocation failure and publication mutation during services are supported by listing schedule, not dynamically tested here.",
+      "Parser parse-slot8 bodies, actual B81040 manager bootstrap/destruction, mixed-owner canonical singleton dispatch binding, loading queue admission and gameplay remain open.",
+      "Reference physical deleter BED950 has a pre-existing unowned ADD ESP,4 atBED981. Its disk/live bytes were compared, but its membership was not repaired or claimed by this packet.",
+      "Fixture manually constructs and tears down its raw parser map, removes registered pointers before direct deletion and then destroys empty canonical managers; this is not the actual resource manager destructor."
+    ]
+  }
 }
