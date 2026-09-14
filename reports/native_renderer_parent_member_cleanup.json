@@ -1,0 +1,145 @@
+{
+  "packet": "native_renderer_parent_member_cleanup",
+  "status": "reconstructed_strict_Win32_build_tested_pending_focused_fixture_and_saved_annotations",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "native_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "owned_native_bytes": 237,
+  "functions": [
+    {
+      "address": "008d4e60",
+      "end_inclusive": "008d4e9c",
+      "bytes": 61,
+      "cpp_symbol": "destroy_native_renderer_resolution_pairs_008d4e60",
+      "native_abi": "ECX actual receiver; plain RET",
+      "calls": [
+        {
+          "address": "008d4e6b",
+          "native": "008d4750"
+        },
+        {
+          "address": "008d4e93",
+          "native": "00bf6989"
+        }
+      ]
+    },
+    {
+      "address": "0086ae00",
+      "end_inclusive": "0086ae16",
+      "bytes": 23,
+      "cpp_symbol": "destroy_native_renderer_dword_array_0086ae00",
+      "native_abi": "ECX actual receiver; plain RET",
+      "calls": [
+        {
+          "address": "0086ae05",
+          "native": "0086a430"
+        },
+        {
+          "address": "0086ae0d",
+          "native": "00bf6989"
+        }
+      ]
+    },
+    {
+      "address": "00b2f690",
+      "end_inclusive": "00b2f6fc",
+      "bytes": 109,
+      "cpp_symbol": "destroy_native_renderer_capabilities_00b2f690",
+      "native_abi": "ECX actual receiver; plain RET",
+      "calls": [
+        {
+          "address": "00b2f6bd",
+          "native": "00b2ae20"
+        },
+        {
+          "address": "00b2f6c5",
+          "native": "00bf6989"
+        },
+        {
+          "address": "00b2f6dc",
+          "native": "00b260b0"
+        },
+        {
+          "address": "00b2f6e4",
+          "native": "00bf6989"
+        }
+      ]
+    },
+    {
+      "address": "00b2f700",
+      "end_inclusive": "00b2f704",
+      "bytes": 5,
+      "cpp_symbol": "destroy_native_renderer_capabilities_thunk_00b2f700",
+      "native_abi": "ECX actual receiver; plain RET",
+      "calls": [
+        {
+          "address": "00b2f700",
+          "native": "00b2f690",
+          "kind": "tail_jump"
+        }
+      ]
+    },
+    {
+      "address": "00402f70",
+      "end_inclusive": "00402f96",
+      "bytes": 39,
+      "cpp_symbol": "destroy_native_embedded_tracked_section_00402f70",
+      "native_abi": "ECX actual receiver; plain RET",
+      "calls": []
+    }
+  ],
+  "indirect_calls": [
+    {
+      "address": "00402f85",
+      "instruction": "CALL EDI",
+      "captured_iat": "00ce2210",
+      "import": "LeaveCriticalSection"
+    },
+    {
+      "address": "00402f8f",
+      "instruction": "CALL [00ce2214]",
+      "import": "DeleteCriticalSection"
+    }
+  ],
+  "fh3": {
+    "parent": "00b2f690",
+    "handler": "00cbd7eb",
+    "func_info": "00df607c",
+    "unwind_map": "00df6074",
+    "state": 0,
+    "next_state": -1,
+    "funclet": "00cbd7e0",
+    "receiver": "captured [EBP-10] + 44h",
+    "tail_call": {
+      "address": "00cbd7e6",
+      "native": "00b29e40",
+      "kind": "tail_jump"
+    },
+    "source_cleanup": "armed until before normal DWORD resize; second cleanup exception terminates"
+  },
+  "no_ghidra_function": [],
+  "repair_reports": [
+    "reports/native_renderer_parent_member_cleanup_flow_repair.json",
+    "reports/native_renderer_parent_member_cleanup_function_definitions.json"
+  ],
+  "validation": {
+    "build": {
+      "strict_Win32": true,
+      "ctests_passed": 2,
+      "native_seeds": 8,
+      "log": "local/native-renderer-parent-build.log",
+      "initial_configuration_failure": "local/native-renderer-parent-configure-initial.log; corrected immediate target_sources to deferred source registration before the successful build"
+    },
+    "fixture": "pending",
+    "native_bytes": "pending current integration capture"
+  },
+  "boundaries": [
+    "new C++ ABI",
+    "valid raw extents and caller-owned Win32 recursive acquisitions",
+    "host CRT domain",
+    "original FH3/SEH and private frame aliases unproved",
+    "full parent lifecycle and game execution unvalidated"
+  ],
+  "game_validated": false,
+  "abi_compatible": false
+}
