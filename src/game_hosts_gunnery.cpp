@@ -19,6 +19,7 @@
 #include "bsp/gun_gravity_arc.hpp"
 #include "bsp/bullet_engagement_range.hpp"
 #include "bsp/gun_heading_snap.hpp"
+#include "bsp/unit_rudder.hpp"
 #include "bsp/game_hosts_lua.hpp"
 #include "bsp/game_hosts_ship_ai.hpp"
 #include "bsp/game_hosts_units.hpp"
@@ -285,7 +286,16 @@ void GameGunneryHost::Impl::flatten_class_tables(const std::vector<int>& class_i
         "            f[q .. 'barrels'] = bn\n"
         "            if type(b1) == 'table' then\n"
         "              f[q .. 'bullet'] = num(b1.Bullet, 1) or -1\n"
-        "              f[q .. 'reload'] = num(b1.ReloadTime, 1000) or 0\n"
+        // LATENT GUARD. 007313E0 reads ReloadTime as a PAIR into +28h/+2Ch and
+        // 00BD2F10 draws between them per shot; when a row authors a scalar the
+        // reader writes it to both ends, which is every row in this installation.
+        // But num() returns nil for a table, so a paired ReloadTime would leave
+        // `reload` at 0 here and the gun would fire every fixed step. Nothing
+        // authors a pair today, so this changes no current behaviour.
+        // docs/GUN_SHOT_CADENCE.md divergence 9.
+        "              local rt1 = b1.ReloadTime\n"
+        "              if type(rt1) == 'table' then rt1 = rt1[1] end\n"
+        "              f[q .. 'reload'] = num(rt1, 1000) or 0\n"
         "              f[q .. 'bdelay'] = num(b1.BarrelDelayTime, 1000) or 0\n"
         "              f[q .. 'throw'] = num(b1.Throw, 1000000) or 0\n"
         // bulletclasses.lua publishes the arcade or realistic table under the
@@ -1397,7 +1407,23 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
         }
         done("Gun::step_aim_0085ad80", 0x0085ad80u);
 
-        const bool settled = bsp::gun_aim_settled_0085ae4a(gun.angles);
+        // 006DF520 step 12 arms the trigger through 006DEE40 against
+        // *00CF9054 = 0.1 degree, not the stepper's 0.01-degree dead band that
+        // gun_aim_settled_0085ae4a carries. Using the latter as a fire gate made
+        // the host ten times stricter per axis than the native.
+        // docs/GUN_SHOT_CADENCE.md divergence 2. This is a faithfulness fix and
+        // is NOT expected to raise the shot count materially: the packet measures
+        // it at 13% of targeted refusals, and the count is held down by the
+        // authored 17.5 s reload, not by the settle test.
+        // Only the CONSTANT differs from gun_aim_settled_0085ae4a: the wrapped
+        // difference and the strict comparison are kept, because a plain
+        // subtraction changes the semantics across the +/-pi wrap. An earlier
+        // revision of this line dropped the wrap and was wrong for that reason.
+        const bool settled =
+            std::fabs(bsp::wrapped_angle_subtract_00438b10(
+                gun.angles.target_horz, gun.angles.horz)) < bsp::kGunFireSettleBand &&
+            std::fabs(bsp::wrapped_angle_subtract_00438b10(
+                gun.angles.target_vert, gun.angles.vert)) < bsp::kGunFireSettleBand;
         const bool may_fire_here = bsp::gun_fire_allowed_007f60a0(arcs, gun.angles.horz,
             gun.angles.vert);
         done("Gun::fire_window_007f60a0", 0x007f60a0u);

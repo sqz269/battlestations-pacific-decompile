@@ -335,3 +335,38 @@ errors in `src/game_hosts_gunnery.cpp`, which the integrator owns, and a bound. 
 `2024-07-13 08:26`. `autoload/deviceclasses.lua` selects arcade unless `GameMode == 1`.
 Every number in sections 2 and 4 comes from the arcade table, which is the modified one. The
 installation was only read.
+
+## Integration result: the settle gate was holding the count down after all
+
+Divergence 2 is fixed. `src/game_hosts_gunnery.cpp` used `gun_aim_settled_0085ae4a`, whose
+`kGunAimDeadBand = 0.00017453` rad is the **stepper's** dead band from `0085AD80`, as the gate
+deciding whether a gun may fire. The native fire gate is `006DF520` step 12 through `006DEE40`
+against `*00CF9054 = 0.0017453` rad. Both constants verified from the image: `00CFAA48` is
+`d4 02 37 39` = 0.01 degree and `00CF9054` is `89 c3 e4 3a` = 0.1 degree, a clean factor of ten.
+
+Measured on the 3200-frame USN02 line:
+
+| | shots | entity impacts | hit rate | total damage | first shot |
+| --- | --- | --- | --- | --- | --- |
+| before | 273 | 167 | 61.2% | 16472.1 | 35.60 s |
+| after | **729** | **181** | **24.8%** | **18490.1** | **1.40 s** |
+
+**This packet's integrator predicted the change would not move the count materially**, on the
+grounds that `no_settle` was 13% of targeted refusals and the count is held by the authored 17.5 s
+reload. That prediction was wrong: the count went up 2.7x. The reload does bound how often a *given*
+barrel fires, but the over-strict settle gate was delaying the first shot of every engagement and
+costing whole reload cycles - `first_shot` moves from 35.60 s to 1.40 s, so each gun gains most of a
+minute of firing time. The magnitude also agrees with this packet's own IJN01 estimate, which put
+HEAVYARTILLERY at 60-90 against an observed 29, a 2-3x factor.
+
+**The hit rate falls from 61.2% to 24.8%, and that is the expected direction.** A gun that fires
+when it is within 0.1 degree of its commanded angle is aiming less precisely than one that waits for
+0.01 degree. The native gate is the looser one, so the lower per-shot accuracy at higher volume is
+faithful rather than a regression; total damage still rises from 16472.1 to 18490.1.
+
+**A process note.** The first attempt at this fix replaced the whole predicate with a plain
+subtraction instead of changing only the constant, dropping `wrapped_angle_subtract_00438b10` and
+the strict comparison. That version gave 697 shots and a `queued_hits = 181` against `hull = 180`
+mismatch that no other run has shown. It was caught because the result contradicted the prediction
+above and prompted a re-read of the original rather than banking the number. Only the constant
+differs now.
