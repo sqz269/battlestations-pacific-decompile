@@ -1,5 +1,11 @@
 # Unit-part storage construction and cleanup
 
+Correction from [NATIVE_UNIT_PART_ENTRIES_AK.md](NATIVE_UNIT_PART_ENTRIES_AK.md):
+entry production and node-name assignment now have concrete constructor defaults.
+The name operation receives the constructor's same raw string-pool context.
+Selected-set release is reconstructed through an explicit slot-zero dispatch
+boundary; attachment and complete selected-set destruction remain dependencies.
+
 Addresses: 004E6480, 004E6570, 007103A0, 007103C0, 00710870, 007108E0,
 00710F90, 00710FC0, 00712B40, 00711000, 00710420, 0070FAA0, 00711F70.
 

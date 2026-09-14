@@ -47,10 +47,10 @@ public:
     virtual void call_00713380(void* model);
     virtual const char* call_unit_10(std::uint32_t entry, void* unit) = 0;
     virtual void call_00b6f960(NativeNodeStorage* render_root,
-        const NativeString& name) = 0; // canonical node.name_54; RET4
+        const NativeString& name, NativeStringRawPoolContext&); // actual node.name_54; RET4
     virtual void call_00712440(void* model) = 0; // EAX discarded
     virtual void call_00710ad0(void* model) = 0;
-    virtual void call_00711c60(void* model) = 0;
+    virtual void call_00711c60(void* model); // complete actual part-entry producer
 
     // Whole storage cleanup defaults include the decoded post-CRT-call tails.
     // Selected-set cleanup remains required. The new C++ unwind domain requires
