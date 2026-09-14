@@ -1,0 +1,73 @@
+{
+  "packet": "orch4_native_filestore_enumeration_bf",
+  "status": "complete actual-storage source; Win32 build/CTest and standalone x86 source compile passed",
+  "source": "src/native_filestore_enumeration.cpp",
+  "header": "include/bsp/native_filestore_enumeration.hpp",
+  "documentation": "docs/NATIVE_FILESTORE_ENUMERATION_BF.md",
+  "program": "/battlestationspacific.exe",
+  "root": {
+    "address": "00be6480",
+    "end_inclusive": "00be654c",
+    "byte_length": 205,
+    "sha256_disk_live": "ebe69187dc5e615e57365b8e5037d35ce1c9340370fb2de2cedc4979782a9c36",
+    "saved_instruction_count": 77,
+    "owned_instruction_count": 77,
+    "original_abi": "ECX actual FileStore provider; stack directory, extension, flags, output vector; RET10h; no semantic return",
+    "coverage": "full normal initialized FileStore tree, pointer-gated prefix/extension filtering and native append; native FH3/SEH and invalid-pointer contracts remain explicit"
+  },
+  "vtable": {
+    "address": "00d689fc",
+    "base": "00d689e8",
+    "slot_offset": "0x14",
+    "target": "00be6480",
+    "disk_live_slot_bytes": "8064be00"
+  },
+  "calls": [
+    {
+      "function": "00be6480",
+      "address": "00be64ab",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00be6480",
+      "address": "00be64be",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00be6480",
+      "address": "00be64c8",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00be6480",
+      "address": "00be64e4",
+      "native": "00bf9440"
+    },
+    {
+      "function": "00be6480",
+      "address": "00be6506",
+      "native": "00bf9440"
+    },
+    {
+      "function": "00be6480",
+      "address": "00be6528",
+      "native": "004cdc20"
+    },
+    {
+      "function": "00be6480",
+      "address": "00be6531",
+      "native": "00be4c30"
+    }
+  ],
+  "calls_excluded": [],
+  "uncertainty": [
+    "Source receives borrowed services explicitly and is not binary ABI compatible.",
+    "No original game or invalid-callback mutation fixture has been run."
+  ],
+  "validation": {
+    "build": "./scripts/build.ps1 Win32 Release and CTest reconstructed_math passed; new BF source awaits primary CMake registration and was not linked into archive",
+    "direct_source_compile": "MSVC 19.51 x86 /std:c++20 /EHsc /MD /W4 passed",
+    "call_verifier": "7/7 direct CALL rows accepted",
+    "source_sha256": "7778b20056e47f86347535c562b8e42ab2d9c3edeb76354704d062f611b03499"
+  }
+}
