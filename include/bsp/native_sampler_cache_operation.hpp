@@ -57,8 +57,9 @@ struct NativeSamplerCacheOperation final {
 //
 // Original enclosing entry: ECX secondary cache; stack name/options/low-byte
 // retain-new/low-byte load-if-missing; EAX resource, RET10. The source interface
-// has its own ABI. B1A4F0 and B1B4D0 remain unimplemented full entries until the
-// actual platform provider and wrapper composition are supplied.
+// has its own ABI. Full actual B1A4F0/B1B4D0 composition is provided by
+// native_sampler_cache_entry.hpp, using native_platform_load_messages.hpp.
+// This continuation still requires the already-executed pump contract above.
 void* continue_native_sampler_cache_after_pump_00b1a51d(void* captured_cache,
     const void* actual_name, const void* options, std::uint8_t retain_new,
     std::uint8_t load_if_missing, NativeSamplerCacheContext&,

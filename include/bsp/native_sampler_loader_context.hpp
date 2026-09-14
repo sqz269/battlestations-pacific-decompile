@@ -65,8 +65,9 @@ void* create_native_sampler_factory_resource_00b1b810(const void* actual_name,
 
 // Actual borrowed globals and canonical provider domains; new explicit C++ ABI.
 // Numeric profiles are original identities, not callable host vtables. Raw
-// singleton terminal dispatch and complete B1A4F0/B1B4D0 cache loading remain
-// unimplemented here. Descriptive names are hypotheses. Native FH3/hardware
+// singleton terminal dispatch remains unimplemented here. Full normal
+// B1A4F0/B1B4D0 loading is composed in native_sampler_cache_entry.hpp.
+// Descriptive names are hypotheses. Native FH3/hardware
 // faults/provider exception identities and game behavior are not reproduced.
 // Keep cells, owners and contexts alive; exclude retirement while running or
 // failed. The persistent frame does not intercept external owner retirement.
