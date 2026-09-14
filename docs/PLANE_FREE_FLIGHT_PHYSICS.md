@@ -390,38 +390,81 @@ One case was added to `tests/math_tests.cpp` covering rows 1, 4 and the `-10` pe
    `docs/GAME_TUNING_SINGLETON.md` should be re-derived from its writer rather than from
    `mirror_base + offset`.
 
-## Integration result: the planes fly, and they fly the wrong way
+## Integration result: the planes fly, on the heading the mission authored
 
 The rule is wired into `src/game_hosts_units.cpp`'s free-flight arm. Measured on `IJN01`, 500
 mission ticks:
 
 ```
 plane step:   steps=16500 free_flight=16500 ground_roll=0 surface=0 none=0
-plane motion: distance_moved=116875.00 m
+plane motion: distance_moved=116833.55 m
 ```
 
-**116875.00 m is exactly `141.666672 m/s x 25 s x 33 planes`**, predicted before the run. The planes
-hold the seeded airspeed for the whole mission, which means lift cancels gravity in the running
-process exactly as the acceptance test pins it. The physics is confirmed end to end, from the
-listing through the pure rule to a live run.
+The planes hold the seeded airspeed for the whole mission, so lift cancels gravity in the running
+process as the acceptance test pins it. The physics is confirmed end to end, from the listing
+through the pure rule to a live run.
 
-**And it changes nothing about air combat, because the direction is fabricated.** AAMACHINEGUN is
-still 26 assignments and FLAK still 0. The `JudySpawn` aircraft now report `nearest` distances of
-4582 to 5068 m where the closest aircraft was previously 2950 m: the planes are flying **away** from
-the fleet.
+### The spawn orientation is authored, and an earlier revision threw it away
 
-That is a limitation of the wiring, not of the recovered law. Two pieces are missing and neither is
-invented here:
+The first revision of this wiring seeded the airspeed along world `+Z` and left
+`PlaneFreeFlightState::world_to_body` at the identity, on the stated ground that "a real orientation
+needs the pose the model supplies, which this process does not build". **That was wrong, and it was
+never checked.** The pose is already in the slot: unit creation copies the instance's world 4x4 -
+the frame `0046cf40` composes from the authored placement - straight into
+`motion.pose_row0/1/2`, and `src/system_camera_axes.cpp:387` reads `world[8..10]` of that same frame
+as forward. `IJN01` authors two distinct orientations:
 
-1. **Orientation.** `PlaneFreeFlightState::world_to_body` is left at the identity, which is correct
-   only for level flight along the world axes. A real orientation is the plane's pose, which this
-   process does not build - it is the same model and scene territory that blocks part damage. Lift
-   and both drag terms are body-frame quantities, so every one of them is only as good as that
-   matrix.
-2. **A direction to fly.** The host seeds `141.666672 m/s` along world `+Z` because that is the body
-   forward axis under an identity orientation. The native takes the spawn heading from the placement
-   and then steers with a plane AI, of which `docs/PLANE_UNIT_TICK.md` records that nothing exists in
-   the ledger.
+```
+plane spawn: unit=A7M_1      heading=180.00 deg forward=(0.0000 -0.0003 -1.0000)
+plane spawn: unit=JudySpawn1 heading=180.00 deg forward=(0.0000 -0.0003 -1.0000)
+                             forward=(0.7324  0.0000  0.6808)   # heading ~47.1 deg
+```
+
+So the world-`+Z` seed was **180 degrees wrong** for the A7M and Judy groups. Both defects are
+fixed together, because they are the same fact:
+
+- The airspeed is seeded along `pose_row2`, the plane's own forward axis, normalised. A degenerate
+  authored frame falls back to the old world-`+Z` seed rather than propagating a NaN through every
+  lift term.
+- `world_to_body` is the pose rows laid out row-major. The header records the convention as
+  `body = M * world` (`007D9C39` writes ctl+3Ch from `0042D0D0(ctl+18h, ctl+0B0h)`), and row `i` of
+  the pose is body axis `i` expressed in world, so `dot(row_i, v)` is exactly the body component.
+  Nothing is invented; the matrix is the authored placement.
+- `forward_speed` becomes `body_velocity[2]`, which is what the header already said it was
+  (ctl+44h). Under an identity frame that is the world `+Z` the old code took, so the acceptance
+  test is unmoved - and it still passes.
+
+`distance_moved` moves 116875.00 -> 116833.55 m, down 0.035%. That is the expected consequence of a
+pose that is not exactly level: at a forward `y` of -0.0003 the lift no longer cancels gravity to
+the last bit, so the speed decays very slightly. The level-flight ideal of
+`141.666672 m/s x 25 s x 33 planes = 116875 m` is the number the acceptance test pins, and the run
+sits just under it.
+
+### Correction: what the `nearest` column can and cannot show
+
+The previous commit reported that the aircraft "now report `nearest` distances of 4582 to 5068 m
+where the closest aircraft was previously 2950 m: the planes are flying **away** from the fleet."
+**The conclusion was right but the evidence was misread.** `row.nearest_enemy`
+(`src/game_hosts_gunnery.cpp:856`) is a running minimum that never resets, so it reports the closest
+approach over the whole mission. Flipping the seed 180 degrees leaves it byte-identical at 4582 m,
+which it could not do if it tracked live position - both runs are simply reporting the distance at
+t=0.
+
+Read correctly, that pinned minimum is the stronger statement: **the planes never get closer than
+their spawn distance, on either heading.** The arithmetic agrees - 4582 m of separation against
+3541 m of travel in 25 s, so even a plane aimed straight at the fleet would not reach the 800 m
+`AAMACHINEGUN` range inside this window.
+
+### Air combat is still unreachable, and this is not the reason
+
+The per-category table is byte-identical to the previous run: `AAMACHINEGUN` 295 assignments / 26 /
+0 shots, `FLAK` 60 / 0 / 0. Correcting the orientation did not make a single new gun fire, and it
+was never going to: the planes fly the heading the mission authored, which does not close on the
+fleet, and no recovered code steers them off it.
+
+What is missing is the plane AI. `docs/PLANE_UNIT_TICK.md` records that nothing in the ledger names
+one. Until it is recovered, aircraft in a reconstructed mission fly straight lines from their
+authored placements, and **gameplay validation of air combat remains unsatisfied.**
 
 **The integration step is the host's own, not recovered code.** `007DB680` is an accumulator pass:
 it leaves four accumulators for `007D8470` to fold and the caller applies them. The
@@ -430,7 +473,8 @@ for native behaviour.
 
 ### Follow-up packets
 
-1. **`plane_spawn_orientation`** - where a placed aircraft's heading comes from, and what the host
-   must hold to give `world_to_body` a real value. Until this lands, the flight direction is
-   arbitrary and any measurement that depends on where a plane goes is meaningless.
-2. **`plane_ai`** - the steering above it. Nothing in the ledger names one.
+1. **`plane_ai`** - the steering. Nothing in the ledger names one; it is what stands between a
+   reconstructed mission and any air combat at all.
+2. **`plane_pose_integration`** - the pose is read at spawn but never updated afterwards, so a
+   plane's orientation is frozen at its authored value for the whole mission. A turning plane needs
+   the angular half of the flight law folded back into `pose_row0/1/2`.

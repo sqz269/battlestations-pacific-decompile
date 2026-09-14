@@ -1441,10 +1441,40 @@ void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entit
             // The spawn airspeed. docs/PLANE_FLIGHT_CORE_LAW.md measures the
             // seed at 141.67 m/s, and the acceptance test in tests/math_tests.cpp
             // pins lift against gravity at exactly that value and at
-            // 1.8 * StallSpd. Seeded along +Z, the body forward axis, which the
-            // identity orientation below makes world forward too.
-            slot->plane_world_velocity[2] = 141.666672f;
+            // 1.8 * StallSpd.
+            //
+            // It is an AIRSPEED, so it goes along the plane's own forward axis,
+            // not along a world axis. That axis is pose_row2 - the frame
+            // 0046cf40 composed from the authored placement, which the loop
+            // above already copied in, and which 00521374's camera path reads
+            // the same way (src/system_camera_axes.cpp:387 takes world[8..10]
+            // as forward). An earlier revision seeded world +Z instead, on the
+            // unchecked assumption that a placement carries no rotation; that
+            // flew every plane in the same arbitrary direction.
+            {
+                const float* const fwd = slot->motion.pose_row2;
+                const float len = std::sqrt(fwd[0] * fwd[0] + fwd[1] * fwd[1] +
+                                            fwd[2] * fwd[2]);
+                if (len > 1e-6f) {
+                    for (int i = 0; i < 3; ++i) {
+                        slot->plane_world_velocity[i] = 141.666672f * fwd[i] / len;
+                    }
+                } else {
+                    // A degenerate authored frame keeps the old world-+Z seed
+                    // rather than propagating a NaN through every lift term.
+                    slot->plane_world_velocity[2] = 141.666672f;
+                }
+            }
             slot->plane_velocity_seeded = true;
+            host.log.notef("plane spawn: unit=%s heading=%.2f deg forward=(%.4f %.4f %.4f)"
+                " seed=(%.2f %.2f %.2f)", row.name.c_str(),
+                static_cast<double>(row.heading_degrees),
+                static_cast<double>(slot->motion.pose_row2[0]),
+                static_cast<double>(slot->motion.pose_row2[1]),
+                static_cast<double>(slot->motion.pose_row2[2]),
+                static_cast<double>(slot->plane_world_velocity[0]),
+                static_cast<double>(slot->plane_world_velocity[1]),
+                static_cast<double>(slot->plane_world_velocity[2]));
         }
         bsp::publish_game_entity_observer_tables_00928662(slot->observer_prefix);
         slot->observer_prefix_ready = bsp::publish_unit_leaf_observer_tables_for_creator(
@@ -2041,17 +2071,29 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         for (int i = 0; i < 3; ++i) {
                             state.world_velocity[i] = unit_.plane_world_velocity[i];
                         }
-                        // Level flight: the body frame agrees with the world, so
-                        // the identity matrix the struct defaults to is correct
-                        // and body velocity is world velocity. A real orientation
-                        // needs the pose the model supplies, which this process
-                        // does not build - flagged rather than invented.
-                        for (int i = 0; i < 3; ++i) {
-                            state.body_velocity[i] = unit_.plane_world_velocity[i];
+                        // ctl+0B0h, row-major, body = M * world. The pose rows
+                        // ARE that matrix: row i is body axis i expressed in
+                        // world, so dot(row_i, world_vec) is the body component.
+                        // The frame comes from the authored placement through
+                        // 0046cf40; nothing here invents a rotation.
+                        const float* const rows[3] = {unit_.motion.pose_row0,
+                            unit_.motion.pose_row1, unit_.motion.pose_row2};
+                        for (int r = 0; r < 3; ++r) {
+                            for (int c = 0; c < 3; ++c) {
+                                state.world_to_body[r * 3 + c] = rows[r][c];
+                            }
+                            // ctl+3Ch..44h, which 007D9C39 rebuilds from the
+                            // world velocity through this same matrix each step.
+                            state.body_velocity[r] =
+                                rows[r][0] * unit_.plane_world_velocity[0] +
+                                rows[r][1] * unit_.plane_world_velocity[1] +
+                                rows[r][2] * unit_.plane_world_velocity[2];
                         }
-                        const float vx = unit_.plane_world_velocity[0];
-                        const float vz = unit_.plane_world_velocity[2];
-                        state.forward_speed = std::sqrt(vx * vx + vz * vz);
+                        // ctl+44h, the body forward component. The carrier term
+                        // 007D99C0 adds to it is zero off a deck. Under the
+                        // identity frame this is the world +Z the previous
+                        // revision took, so the acceptance test is unmoved.
+                        state.forward_speed = state.body_velocity[2];
                         state.world_altitude = unit_.motion.position[1];
                         state.lost_drag_timer = unit_.plane_lost_drag_timer_c3c;
                         state.airborne_time = unit_.plane_airborne_908;
@@ -2063,8 +2105,11 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             unit_.plane_world_velocity[i] += body.total[i] * step;
                             unit_.motion.position[i] += unit_.plane_world_velocity[i] * step;
                         }
+                        // The 3D step length. The seed no longer lies along
+                        // world +Z, so one component would understate it.
+                        const float* const wv = unit_.plane_world_velocity;
                         owner_.summary.plane_distance_moved +=
-                            std::fabs(unit_.plane_world_velocity[2]) * step;
+                            std::sqrt(wv[0] * wv[0] + wv[1] * wv[1] + wv[2] * wv[2]) * step;
                         owner_.done("PlaneMotion::free_flight_007cc2f0", 0x007cc2f0u);
                     }
                     void ground_roll_007cbfa0(float) override {
