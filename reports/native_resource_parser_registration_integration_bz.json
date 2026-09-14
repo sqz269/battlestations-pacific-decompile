@@ -1,0 +1,168 @@
+{
+  "batch": "orch4_native_resource_parser_registration_bz",
+  "state": "integrated_source_build_and_original_fixture_checked",
+  "branch": "agent/orch4-20260910",
+  "base_revision": "1df2a26fcae589accaec96845bf958e6e0ed202c",
+  "code_revision": "231ba1f32c4441e4b778e869474ff09740e892f1",
+  "ordinary_bodies": 10,
+  "ordinary_bytes": 1740,
+  "ordinary_instruction_owners": 634,
+  "support_instruction_owners": 39,
+  "direct_transfer_rows": 49,
+  "indirect_calls": 2,
+  "incoming_main_review": {
+    "pinned_revision": "3b4ddb98f1ef70c706941cd34234766aba24b5ac",
+    "source_review": "Read complete53-line gunnery command-target addition.",
+    "observations": "Host resolves current command rows by authored unit names, caches on row/unit counts and supplies the modeled gunnery command target. This is a projected command-row bridge; native queued-command identity, same-count mutations and gameplay were not certified here. BZ raw registration dependencies unchanged.",
+    "combined_build": "passed strict Win32 and both existing CTests; paired original/source parser registration fixture passed",
+    "independently_rerun": false
+  },
+  "validation": {
+    "strict_msvc_win32": true,
+    "existing_ctests": 2,
+    "paired_registration_steps": 10,
+    "paired_pair_cleanup_cases": 2,
+    "original_bodies_loaded": 11,
+    "original_direct_relocations": 39,
+    "normalized_tree_images_match": true,
+    "source_length_failure": true,
+    "native_exception_paths_guarded_out": true,
+    "native_fh3": false,
+    "concrete_parser_getters": false,
+    "game_validated": false,
+    "whole_report_verifier": "49 passed",
+    "combined_strict_win32": true,
+    "combined_existing_ctests": 2,
+    "combined_original_fixture": true,
+    "source_manifest_inputs": 2661,
+    "all_instruction_owners_rechecked": true,
+    "previous_ghidra_comments_preserved": 22
+  },
+  "evidence": [
+    {
+      "path": "reports/native_resource_parser_registration_bz.json",
+      "sha256": "72287acf1c935781671760d24cd294880bccbea3ab709ade98c6ab6d6af13187",
+      "bytes": 111331
+    },
+    {
+      "path": "reports/native_resource_parser_registration_annotations_bz.json",
+      "sha256": "b9b5fbcc73ed0361174847bbba2d6d9dd4f667b98e04b804bfe77776530fcc94",
+      "bytes": 121559
+    },
+    {
+      "path": "reports/native_resource_parser_registration_flow_bz.json",
+      "sha256": "23e44a6ffb30328a99a6a5f2967c1e5698e76e42fe4ecb707ca66b2ee22a1e76",
+      "bytes": 9224
+    },
+    {
+      "path": "local/native_resource_parser_registration_bz/final_build.log",
+      "sha256": "bccc3fd012a4d63a29825e11e72d7da0fa1633ca7a1d54991c0d9f341e086213",
+      "bytes": 2486
+    },
+    {
+      "path": "local/native_resource_parser_registration_bz/final/source_manifest.json",
+      "sha256": "e5040315eb01b2b10b9ee5d1d9e99e9c906414cd1d4f4c78cd65b2683f8dc8b5",
+      "bytes": 288158
+    },
+    {
+      "path": "local/native_resource_parser_registration_bz/final/libraries.json",
+      "sha256": "78c3241d761e9c89f65735c84d1d50fd62842bed60884ac69eb1b8af2eca121a",
+      "bytes": 693
+    },
+    {
+      "path": "local/native_resource_parser_registration_bz/final/bsp_core.lib",
+      "sha256": "5aa4a42dea09c3004e539b5308de7cafa9aab5f70b23c1af4eacff981439a1e1",
+      "bytes": 58665388
+    },
+    {
+      "path": "local/native_resource_parser_registration_bz/final/bsp_lua511.lib",
+      "sha256": "00315ac717aac3d2b2161fefefe71b36a974335ff9c95d48c137423eb4e2f4b2",
+      "bytes": 455244
+    },
+    {
+      "path": "local/native_resource_parser_registration_bz/final/bsp_zlib121.lib",
+      "sha256": "73ae30b8adc3adfe5b33285bac533f8e7df7e8ab8d9e44789e6a030fd8a06ad9",
+      "bytes": 71906
+    },
+    {
+      "path": "local/native_resource_parser_registration_bz/final/probe.cpp",
+      "sha256": "db22dcdfa824e4ba6258520e300f055fdff441613391b4a19a260be62094344f",
+      "bytes": 17507
+    },
+    {
+      "path": "local/native_resource_parser_registration_bz/final/original_parser_bodies.hpp",
+      "sha256": "b334281851de46e86ae9ab93f0a63465ba8e1ec602ce31b9e58bff2f44d6abd5",
+      "bytes": 8396
+    },
+    {
+      "path": "local/native_resource_parser_registration_bz/final/original_parser_bodies.json",
+      "sha256": "ed1ee75d2f6793ca4e41df651b6b4b4862d1111a0b0d4a5ae20ca4a313aedd2b",
+      "bytes": 2651
+    },
+    {
+      "path": "local/native_resource_parser_registration_bz/final/compile.cmd",
+      "sha256": "70fcfff87d6d6f08bac250603c5f5e931146239961076c2c3bb0450496c0859f",
+      "bytes": 797
+    },
+    {
+      "path": "local/native_resource_parser_registration_bz/final/compile.log",
+      "sha256": "25d4f66c7c01d5b35c220cb97ffdd1608405f4ab45160497e6cc7ea3079676cf",
+      "bytes": 11
+    },
+    {
+      "path": "local/native_resource_parser_registration_bz/final/probe.exe",
+      "sha256": "cfb8a6ca7cf656f6a9f940b906a8f9799609a0ad0cf604abd892d94afde0dcd6",
+      "bytes": 81408
+    },
+    {
+      "path": "local/native_resource_parser_registration_bz/final/probe.map",
+      "sha256": "85703e8e4cd67cdc515954faec2e45f965df74c50c7d3a02b7c8d35ab998e19e",
+      "bytes": 158158
+    },
+    {
+      "path": "local/native_resource_parser_registration_bz/final/probe.log",
+      "sha256": "feeb21ba03301201832156a5a5cdb6c21c35d8a7b84a99addad7f50c4e2e5bfd",
+      "bytes": 441
+    },
+    {
+      "path": "local/native_resource_parser_registration_bz/final/child_probe.log",
+      "sha256": "58a61fa437436d64c8bea92bd80b0f9c161fb9c8d2c56cc944d7d4512a6c2d67",
+      "bytes": 403
+    },
+    {
+      "path": "build/win32/Release/bsp_game.exe",
+      "sha256": "c8481dc756866759892282a397e3d40876950c9b88355694e378ccd0db5fbd4d",
+      "bytes": 2165248
+    }
+  ],
+  "source_manifest": {
+    "path": "local/native_resource_parser_registration_bz/final/source_manifest.json",
+    "sha256": "e5040315eb01b2b10b9ee5d1d9e99e9c906414cd1d4f4c78cd65b2683f8dc8b5",
+    "bytes": 288158
+  },
+  "limitations": [
+    "New source ABI; original FH3/SEH/private spill and hardware faults unproved",
+    "Original error paths guarded out; source count-limit exception checked separately",
+    "Fixture name getters; actual parser singleton/body/manager bootstrap and successful destruction remain open",
+    "No actual executable admission or gameplay claim"
+  ],
+  "source_commit": "6c84eef6",
+  "subsequent_documentation_merge": {
+    "pinned_revision": "2d8aedb5490a17f2029073a68ec257ef4a66363a",
+    "merge_revision": "6bb16dd61479fe5d6a6932549c3f0d6f75d76d68",
+    "files": [
+      "docs/GAME_EXECUTABLE.md",
+      "docs/MODEL_REACHES_UNIT.md",
+      "docs/PART_DAMAGE_WIRING_PLAN.md"
+    ],
+    "source_inputs_unchanged": true,
+    "review": "Read complete153-line additions. Borrowed USN02 command-target A/B reports14 targeted units,734 versus729 shots and18525.6 versus18490.1 modeled damage; not independently rerun. This does not prove directed air attack or original-game parity. Model-handle null branch is conditional: prior verified87BE02 branch plus fresh87BF5B MOV[ESI+360],EBX and87BF73 RET proves the zero publication for the null path. Scanned writer absence and untraced block copies do not establish shipped-game model-handle state or completed part-damage reconstruction.",
+    "independent_listing_sample": {
+      "program": "/battlestationspacific.exe",
+      "address": "0087bf5b",
+      "instruction": "MOV dword ptr [ESI+0x360],EBX",
+      "terminator": "0087bf73 RET"
+    },
+    "rebuild_required": false
+  }
+}

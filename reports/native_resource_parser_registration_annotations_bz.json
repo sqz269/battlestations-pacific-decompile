@@ -1,0 +1,1227 @@
+{
+  "source_functions": [
+    {
+      "address": "00b80a50",
+      "function": "register_native_resource_type_parser_00b80a50",
+      "source": "src/native_resource_parser_registration.cpp",
+      "report": "reports/native_resource_parser_registration_bz.json",
+      "original_abi": "ECX actual manager; stacked parser; AL0/1; RET4",
+      "bytes": 367
+    },
+    {
+      "address": "00b80290",
+      "function": "insert_native_resource_parser_unique_00b80290",
+      "source": "src/native_resource_parser_registration.cpp",
+      "report": "reports/native_resource_parser_registration_bz.json",
+      "original_abi": "ECX tree; stacked output/pair; EAX output; RET8",
+      "bytes": 276
+    },
+    {
+      "address": "00b7fd30",
+      "function": "insert_native_resource_parser_at_00b7fd30",
+      "source": "src/native_resource_parser_registration.cpp",
+      "report": "reports/native_resource_parser_registration_bz.json",
+      "original_abi": "ECX tree; stacked output/side/parent/pair; EAX output; RET10h",
+      "bytes": 492
+    },
+    {
+      "address": "00b7f610",
+      "function": "allocate_native_resource_parser_node_00b7f610",
+      "source": "src/native_resource_parser_registration.cpp",
+      "report": "reports/native_resource_parser_registration_bz.json",
+      "original_abi": "ECX unused; stacked left,parent,right,pair,color; EAX captured allocation; RET14h",
+      "bytes": 114
+    },
+    {
+      "address": "00b7f1b0",
+      "function": "construct_native_resource_parser_node_00b7f1b0",
+      "source": "src/native_resource_parser_registration.cpp",
+      "report": "reports/native_resource_parser_registration_bz.json",
+      "original_abi": "ECX node; stacked left,parent,right,pair,color; EAX node; RET14h",
+      "bytes": 112
+    },
+    {
+      "address": "00b7f340",
+      "function": "construct_native_resource_parser_pair_00b7f340",
+      "source": "src/native_resource_parser_registration.cpp",
+      "report": "reports/native_resource_parser_registration_bz.json",
+      "original_abi": "ECX pair, EDX parser; stacked owned by-value8h name; EAX pair; RET8",
+      "bytes": 161
+    },
+    {
+      "address": "00b7ca80",
+      "function": "rotate_native_resource_parser_right_00b7ca80",
+      "source": "src/native_resource_parser_registration.cpp",
+      "report": "reports/native_resource_parser_registration_bz.json",
+      "original_abi": "ECX tree; stacked node; EAX pivot; RET4",
+      "bytes": 82
+    },
+    {
+      "address": "00b7d590",
+      "function": "rotate_native_resource_parser_left_00b7d590",
+      "source": "src/native_resource_parser_registration.cpp",
+      "report": "reports/native_resource_parser_registration_bz.json",
+      "original_abi": "ECX tree; stacked node; EAX pivot; RET4",
+      "bytes": 78
+    },
+    {
+      "address": "00b7e930",
+      "function": "destroy_native_resource_parser_pair_00b7e930",
+      "source": "src/native_resource_parser_registration.cpp",
+      "report": "reports/native_resource_parser_registration_bz.json",
+      "original_abi": "ECX pair; RET",
+      "bytes": 29
+    },
+    {
+      "address": "00b7e950",
+      "function": "destroy_native_resource_parser_insert_pair_00b7e950",
+      "source": "src/native_resource_parser_registration.cpp",
+      "report": "reports/native_resource_parser_registration_bz.json",
+      "original_abi": "ECX pair; RET",
+      "bytes": 29
+    }
+  ],
+  "entries": [
+    {
+      "address": "00b80a50",
+      "name": "BSP_ResourceManager_RegisterTypeParser",
+      "before_comment": {
+        "address": "00b80a50",
+        "function_name": "BSP_ResourceManager_RegisterTypeParser",
+        "comment": "[BSP reconstruction 00b80a50]\nObtain parser virtual+4 type name and findcase-insensitively in map+8. Duplicate returnsfalse unchanged. New name is obtainedagain and copied with raw parser into unique map; no AddRef/release on parser. Original ABI: ECX manager; parser pointer stack; boolean AL; RET4. Evidence: docs/RESOURCE_MANAGER_REGISTRATION.md; reports/resource_manager_registration_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\n\n[BSP reconstruction 00b80a50] update\nObtain owned type-name through parser virtual+4 once for lookup; duplicate returns false. On miss call getter again, copy raw parser/name into unique map, clean strings and return true without inspecting insertion result. Thus a changed second name may collide while registration still returns true. No parser AddRef or release. Host StructuredResourceRegistry preserves this call order and borrowed lifetime. Original ABI: ECX manager; stack parser pointer; boolean AL result; RET4; x86 SEH. Evidence: docs/RESOURCE_PARSER_MAP_STORAGE.md; reports/resource_parser_map_storage_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation.\n\n[BSP reconstruction 00b80a50] update\nObtain owned type-name through parser virtual+4 once for lookup; duplicate returns false. On miss call getter again, copy raw parser/name into unique map, clean strings and return true without inspecting insertion result. Thus a changed second name may collide while registration still returns true. No parser AddRef or release. Host StructuredResourceRegistry preserves this call order and borrowed lifetime. Original ABI: ECX manager; stack parser pointer; boolean AL result; RET4; x86 SEH. Evidence: docs/RESOURCE_PARSER_MAP_STORAGE.md; reports/resource_parser_map_storage_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation. | Run-time evidence from bsp_game.exe milestone 2c (packet cc_exe_2c), `--frames 120 --press-start-frame 30` against the installed game; see docs/GAME_EXECUTABLE.md. Both phase-6 registrations succeed against one resource manager: AnimationChannels and Bone end up in the parser map, keyed by the string vtable slot +4h returns."
+      },
+      "evidence": "BZ complete raw parser registration:10 ordinary bodies1740bytes;634 ordinary+39 support owners;49 direct transfers and2 indirect name-getters verified. 18 parser/cache code pairs and3 full EH metadata groups are identical after audited target substitutions; existing actual cache algorithms are reused without inventing native graph edges. Strict Win32 build and both tests passed. Ten paired source/original registration steps plus two pair cleanups use11 original bodies/39 relocations; normalized tree links/colors/keys/parser values agree. First getter return pointer drives lookup; captured pre-find head, second current target, true-on-second-name-collision, empty key, both rotations and parser/nonmanager field preservation checked. Native error paths are guarded out; source count-limit exception checked separately. Five handlers defined and full allocation catch restored; old names/comments preserved. Fixture getters, current CRT/C++ exception services and teardown are boundaries. Concrete parser singleton/name/body dispatch, raw manager/bootstrap, original FH3/SEH/private spills/hardware faults and gameplay remain unproved. Names are hypotheses. See docs/NATIVE_RESOURCE_PARSER_REGISTRATION_BZ.md and reports/native_resource_parser_registration_bz.json. Full ordinary span 367 bytes; ECX actual manager; stacked parser; AL0/1; RET4; reports/native_resource_parser_registration_bz.json.",
+      "before_documentation": {
+        "hash": "e7d7b77e4f2499c614cb289c08ec5846b88287e49e346dd1713f84573cfd777f",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b80a50",
+        "function_name": "BSP_ResourceManager_RegisterTypeParser",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00b80a50]\nObtain parser virtual+4 type name and findcase-insensitively in map+8. Duplicate returnsfalse unchanged. New name is obtainedagain and copied with raw parser into unique map; no AddRef/release on parser. Original ABI: ECX manager; parser pointer stack; boolean AL; RET4. Evidence: docs/RESOURCE_MANAGER_REGISTRATION.md; reports/resource_manager_registration_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\n\n[BSP reconstruction 00b80a50] update\nObtain owned type-name through parser virtual+4 once for lookup; duplicate returns false. On miss call getter again, copy raw parser/name into unique map, clean strings and return true without inspecting insertion result. Thus a changed second name may collide while registration still returns true. No parser AddRef or release. Host StructuredResourceRegistry preserves this call order and borrowed lifetime. Original ABI: ECX manager; stack parser pointer; boolean AL result; RET4; x86 SEH. Evidence: docs/RESOURCE_PARSER_MAP_STORAGE.md; reports/resource_parser_map_storage_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation.\n\n[BSP reconstruction 00b80a50] update\nObtain owned type-name through parser virtual+4 once for lookup; duplicate returns false. On miss call getter again, copy raw parser/name into unique map, clean strings and return true without inspecting insertion result. Thus a changed second name may collide while registration still returns true. No parser AddRef or release. Host StructuredResourceRegistry preserves this call order and borrowed lifetime. Original ABI: ECX manager; stack parser pointer; boolean AL result; RET4; x86 SEH. Evidence: docs/RESOURCE_PARSER_MAP_STORAGE.md; reports/resource_parser_map_storage_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation. | Run-time evidence from bsp_game.exe milestone 2c (packet cc_exe_2c), `--frames 120 --press-start-frame 30` against the installed game; see docs/GAME_EXECUTABLE.md. Both phase-6 registrations succeed against one resource manager: AnimationChannels and Bone end up in the parser map, keyed by the string vtable slot +4h returns.",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "local_30",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffd0, 4)"
+          },
+          {
+            "name": "puVar2",
+            "type": "undefined4 *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "iVar1",
+            "type": "int",
+            "storage": "(unique, 0x17200, 4)"
+          },
+          {
+            "name": "iVar4",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "puVar3",
+            "type": "uint *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "uVar6",
+            "type": "undefined8",
+            "storage": "(VARIABLE, 0x0, 8)"
+          },
+          {
+            "name": "pvVar5",
+            "type": "void *",
+            "storage": "(register, 0x1c, 4)"
+          },
+          {
+            "name": "puVar7",
+            "type": "undefined1 *"
+          },
+          {
+            "name": "uStack_2c",
+            "type": "uint",
+            "storage": "(stack, 0xffffffffffffffd4, 4)"
+          },
+          {
+            "name": "uStack_24",
+            "type": "uint",
+            "storage": "(stack, 0xffffffffffffffdc, 4)"
+          },
+          {
+            "name": "pvStack_28",
+            "type": "void *",
+            "storage": "(stack, 0xffffffffffffffd8, 4)"
+          },
+          {
+            "name": "iStack_1c",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffe4, 4)"
+          },
+          {
+            "name": "iStack_20",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffe0, 4)"
+          },
+          {
+            "name": "pvStack_10",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff0, 4)"
+          },
+          {
+            "name": "pvStack_14",
+            "type": "void *",
+            "storage": "(stack, 0xffffffffffffffec, 4)"
+          },
+          {
+            "name": "pcStack_8",
+            "type": "undefined *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "pvStack_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "uStack_4",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 79,
+            "name": "LAB_00b80a9f"
+          },
+          {
+            "relative_offset": 84,
+            "name": "LAB_00b80aa4"
+          },
+          {
+            "relative_offset": 121,
+            "name": "LAB_00b80ac9"
+          },
+          {
+            "relative_offset": 148,
+            "name": "LAB_00b80ae4"
+          },
+          {
+            "relative_offset": 244,
+            "name": "LAB_00b80b44"
+          },
+          {
+            "relative_offset": 305,
+            "name": "LAB_00b80b81"
+          },
+          {
+            "relative_offset": 344,
+            "name": "LAB_00b80ba8"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "prototype": "unsigned char __fastcall BSP_ResourceManager_RegisterTypeParser(void* manager, void* unused_edx, void* parser)",
+      "prototype_result": "Successfully set prototype for function at 00b80a50 with __fastcall calling convention",
+      "ledger_name_output": "00b80a50 -> BSP_ResourceManager_RegisterTypeParser\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00b80a50\", \"name\": \"BSP_ResourceManager_RegisterTypeParser\", \"evidence\": \"Obtain owned type-name through parser virtual+4 once for lookup; duplicate returns false. On miss call getter again, copy raw parser/name into unique map, clean strings and return true without inspecting insertion result. Thus a changed second name may collide while registration still returns true. No parser AddRef or release. Host StructuredResourceRegistry preserves this call order and borrowed lifetime. Original ABI: ECX manager; stack parser pointer; boolean AL result; RET4; x86 SEH. Evidence: docs/RESOURCE_PARSER_MAP_STORAGE.md; reports/resource_parser_map_storage_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation. | Run-time evidence from bsp_game.exe milestone 2c (packet cc_exe_2c), `--frames 120 --press-start-frame 30` against the installed game; see docs/GAME_EXECUTABLE.md. Both phase-6 registrations succeed against one resource manager: AnimationChannels and Bone end up in the parser map, keyed by the string vtable slot +4h returns.\"})\n",
+      "ledger_function_output": "00b80a50 function register_native_resource_type_parser_00b80a50\n",
+      "prior_comment_preservation_checked": true,
+      "after_comment": {
+        "address": "00b80a50",
+        "function_name": "BSP_ResourceManager_RegisterTypeParser",
+        "comment": "[BSP reconstruction 00b80a50]\nObtain parser virtual+4 type name and findcase-insensitively in map+8. Duplicate returnsfalse unchanged. New name is obtainedagain and copied with raw parser into unique map; no AddRef/release on parser. Original ABI: ECX manager; parser pointer stack; boolean AL; RET4. Evidence: docs/RESOURCE_MANAGER_REGISTRATION.md; reports/resource_manager_registration_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\n\n[BSP reconstruction 00b80a50] update\nObtain owned type-name through parser virtual+4 once for lookup; duplicate returns false. On miss call getter again, copy raw parser/name into unique map, clean strings and return true without inspecting insertion result. Thus a changed second name may collide while registration still returns true. No parser AddRef or release. Host StructuredResourceRegistry preserves this call order and borrowed lifetime. Original ABI: ECX manager; stack parser pointer; boolean AL result; RET4; x86 SEH. Evidence: docs/RESOURCE_PARSER_MAP_STORAGE.md; reports/resource_parser_map_storage_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation.\n\n[BSP reconstruction 00b80a50] update\nObtain owned type-name through parser virtual+4 once for lookup; duplicate returns false. On miss call getter again, copy raw parser/name into unique map, clean strings and return true without inspecting insertion result. Thus a changed second name may collide while registration still returns true. No parser AddRef or release. Host StructuredResourceRegistry preserves this call order and borrowed lifetime. Original ABI: ECX manager; stack parser pointer; boolean AL result; RET4; x86 SEH. Evidence: docs/RESOURCE_PARSER_MAP_STORAGE.md; reports/resource_parser_map_storage_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation. | Run-time evidence from bsp_game.exe milestone 2c (packet cc_exe_2c), `--frames 120 --press-start-frame 30` against the installed game; see docs/GAME_EXECUTABLE.md. Both phase-6 registrations succeed against one resource manager: AnimationChannels and Bone end up in the parser map, keyed by the string vtable slot +4h returns.\n\n[BSP reconstruction 00b80a50] update\nBZ complete raw parser registration:10 ordinary bodies1740bytes;634 ordinary+39 support owners;49 direct transfers and2 indirect name-getters verified. 18 parser/cache code pairs and3 full EH metadata groups are identical after audited target substitutions; existing actual cache algorithms are reused without inventing native graph edges. Strict Win32 build and both tests passed. Ten paired source/original registration steps plus two pair cleanups use11 original bodies/39 relocations; normalized tree links/colors/keys/parser values agree. First getter return pointer drives lookup; captured pre-find head, second current target, true-on-second-name-collision, empty key, both rotations and parser/nonmanager field preservation checked. Native error paths are guarded out; source count-limit exception checked separately. Five handlers defined and full allocation catch restored; old names/comments preserved. Fixture getters, current CRT/C++ exception services and teardown are boundaries. Concrete parser singleton/name/body dispatch, raw manager/bootstrap, original FH3/SEH/private spills/hardware faults and gameplay remain unproved. Names are hypotheses. See docs/NATIVE_RESOURCE_PARSER_REGISTRATION_BZ.md and reports/native_resource_parser_registration_bz.json. Full ordinary span 367 bytes; ECX actual manager; stacked parser; AL0/1; RET4; reports/native_resource_parser_registration_bz.json."
+      }
+    },
+    {
+      "address": "00b80290",
+      "name": "STL_ResourceParserMap_InsertUnique",
+      "before_comment": {
+        "address": "00b80290",
+        "function_name": "STL_ResourceParserMap_InsertUnique",
+        "comment": "[BSP reconstruction 00b80290]\nSelect unique insertion under same case-insensitive ordering; reject equivalent name. Actual allocation/link/balance00b7fd30 remains a separate dependency. Original ABI: ECX tree; output result and name/parser pair stack; EAX output; RET8. Evidence: docs/RESOURCE_MANAGER_REGISTRATION.md; reports/resource_manager_registration_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation."
+      },
+      "evidence": "BZ complete raw parser registration:10 ordinary bodies1740bytes;634 ordinary+39 support owners;49 direct transfers and2 indirect name-getters verified. 18 parser/cache code pairs and3 full EH metadata groups are identical after audited target substitutions; existing actual cache algorithms are reused without inventing native graph edges. Strict Win32 build and both tests passed. Ten paired source/original registration steps plus two pair cleanups use11 original bodies/39 relocations; normalized tree links/colors/keys/parser values agree. First getter return pointer drives lookup; captured pre-find head, second current target, true-on-second-name-collision, empty key, both rotations and parser/nonmanager field preservation checked. Native error paths are guarded out; source count-limit exception checked separately. Five handlers defined and full allocation catch restored; old names/comments preserved. Fixture getters, current CRT/C++ exception services and teardown are boundaries. Concrete parser singleton/name/body dispatch, raw manager/bootstrap, original FH3/SEH/private spills/hardware faults and gameplay remain unproved. Names are hypotheses. See docs/NATIVE_RESOURCE_PARSER_REGISTRATION_BZ.md and reports/native_resource_parser_registration_bz.json. Full ordinary span 276 bytes; ECX tree; stacked output/pair; EAX output; RET8; reports/native_resource_parser_registration_bz.json.",
+      "before_documentation": {
+        "hash": "a6129e8c6a302503bd9fc8b06a4c9a37db7016a5b6afaeb5e857818d3e006f67",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b80290",
+        "function_name": "STL_ResourceParserMap_InsertUnique",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00b80290]\nSelect unique insertion under same case-insensitive ordering; reject equivalent name. Actual allocation/link/balance00b7fd30 remains a separate dependency. Original ABI: ECX tree; output result and name/parser pair stack; EAX output; RET8. Evidence: docs/RESOURCE_MANAGER_REGISTRATION.md; reports/resource_manager_registration_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "puVar1",
+            "type": "undefined4 *",
+            "storage": "(unique, 0x100000a3, 4)"
+          },
+          {
+            "name": "cVar3",
+            "type": "char",
+            "storage": "(register, 0x0, 1)"
+          },
+          {
+            "name": "local_4",
+            "type": "undefined4 *",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "puVar2",
+            "type": "undefined4 *",
+            "storage": "(unique, 0x1000009f, 4)"
+          },
+          {
+            "name": "piVar5",
+            "type": "int *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "iVar4",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "local_8",
+            "type": "int",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "bVar7",
+            "type": "bool",
+            "storage": "(register, 0x207, 1)"
+          },
+          {
+            "name": "puVar6",
+            "type": "undefined4 *",
+            "storage": "(register, 0x18, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 33,
+            "name": "LAB_00b802b1"
+          },
+          {
+            "relative_offset": 49,
+            "name": "LAB_00b802c1"
+          },
+          {
+            "relative_offset": 62,
+            "name": "LAB_00b802ce"
+          },
+          {
+            "relative_offset": 78,
+            "name": "LAB_00b802de"
+          },
+          {
+            "relative_offset": 95,
+            "name": "LAB_00b802ef"
+          },
+          {
+            "relative_offset": 98,
+            "name": "LAB_00b802f2"
+          },
+          {
+            "relative_offset": 104,
+            "name": "LAB_00b802f8"
+          },
+          {
+            "relative_offset": 171,
+            "name": "LAB_00b8033b"
+          },
+          {
+            "relative_offset": 184,
+            "name": "LAB_00b80348"
+          },
+          {
+            "relative_offset": 249,
+            "name": "LAB_00b80389"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "prototype": "void* __fastcall STL_ResourceParserMap_InsertUnique(void* tree, void* unused_edx, void* output, void* pair)",
+      "prototype_result": "Successfully set prototype for function at 00b80290 with __fastcall calling convention",
+      "ledger_name_output": "00b80290 -> STL_ResourceParserMap_InsertUnique\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00b80290\", \"name\": \"STL_ResourceParserMap_InsertUnique\", \"evidence\": \"Select unique insertion under same case-insensitive ordering; reject equivalent name. Actual allocation/link/balance00b7fd30 remains a separate dependency. Original ABI: ECX tree; output result and name/parser pair stack; EAX output; RET8. Evidence: docs/RESOURCE_MANAGER_REGISTRATION.md; reports/resource_manager_registration_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\"})\n",
+      "ledger_function_output": "00b80290 function insert_native_resource_parser_unique_00b80290\n",
+      "prior_comment_preservation_checked": true,
+      "after_comment": {
+        "address": "00b80290",
+        "function_name": "STL_ResourceParserMap_InsertUnique",
+        "comment": "[BSP reconstruction 00b80290]\nSelect unique insertion under same case-insensitive ordering; reject equivalent name. Actual allocation/link/balance00b7fd30 remains a separate dependency. Original ABI: ECX tree; output result and name/parser pair stack; EAX output; RET8. Evidence: docs/RESOURCE_MANAGER_REGISTRATION.md; reports/resource_manager_registration_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\n\n[BSP reconstruction 00b80290] update\nBZ complete raw parser registration:10 ordinary bodies1740bytes;634 ordinary+39 support owners;49 direct transfers and2 indirect name-getters verified. 18 parser/cache code pairs and3 full EH metadata groups are identical after audited target substitutions; existing actual cache algorithms are reused without inventing native graph edges. Strict Win32 build and both tests passed. Ten paired source/original registration steps plus two pair cleanups use11 original bodies/39 relocations; normalized tree links/colors/keys/parser values agree. First getter return pointer drives lookup; captured pre-find head, second current target, true-on-second-name-collision, empty key, both rotations and parser/nonmanager field preservation checked. Native error paths are guarded out; source count-limit exception checked separately. Five handlers defined and full allocation catch restored; old names/comments preserved. Fixture getters, current CRT/C++ exception services and teardown are boundaries. Concrete parser singleton/name/body dispatch, raw manager/bootstrap, original FH3/SEH/private spills/hardware faults and gameplay remain unproved. Names are hypotheses. See docs/NATIVE_RESOURCE_PARSER_REGISTRATION_BZ.md and reports/native_resource_parser_registration_bz.json. Full ordinary span 276 bytes; ECX tree; stacked output/pair; EAX output; RET8; reports/native_resource_parser_registration_bz.json."
+      }
+    },
+    {
+      "address": "00b7fd30",
+      "name": "STL_ResourceParserMap_InsertNode",
+      "before_comment": {
+        "address": "00b7fd30",
+        "function_name": "STL_ResourceParserMap_InsertNode",
+        "comment": "[BSP reconstruction 00b7fd30]\nReject count>=15555554h; allocate copied-key/raw-parser red node, increment count, link and update head extrema, rebalance red-black tree, force root black. No parser lifetime operation. Original ABI: ECX tree; stack output iterator, side byte, parent, source pair; EAX output; RET10h. Evidence: docs/RESOURCE_PARSER_MAP_STORAGE.md; reports/resource_parser_map_storage_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation."
+      },
+      "evidence": "BZ complete raw parser registration:10 ordinary bodies1740bytes;634 ordinary+39 support owners;49 direct transfers and2 indirect name-getters verified. 18 parser/cache code pairs and3 full EH metadata groups are identical after audited target substitutions; existing actual cache algorithms are reused without inventing native graph edges. Strict Win32 build and both tests passed. Ten paired source/original registration steps plus two pair cleanups use11 original bodies/39 relocations; normalized tree links/colors/keys/parser values agree. First getter return pointer drives lookup; captured pre-find head, second current target, true-on-second-name-collision, empty key, both rotations and parser/nonmanager field preservation checked. Native error paths are guarded out; source count-limit exception checked separately. Five handlers defined and full allocation catch restored; old names/comments preserved. Fixture getters, current CRT/C++ exception services and teardown are boundaries. Concrete parser singleton/name/body dispatch, raw manager/bootstrap, original FH3/SEH/private spills/hardware faults and gameplay remain unproved. Names are hypotheses. See docs/NATIVE_RESOURCE_PARSER_REGISTRATION_BZ.md and reports/native_resource_parser_registration_bz.json. Full ordinary span 492 bytes; ECX tree; stacked output/side/parent/pair; EAX output; RET10h; reports/native_resource_parser_registration_bz.json.",
+      "before_documentation": {
+        "hash": "125e5bab9e2ffc318cc00bff651b69e8e3830ddd25cab7d8f2d5eecd12a422ee",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b7fd30",
+        "function_name": "STL_ResourceParserMap_InsertNode",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00b7fd30]\nReject count>=15555554h; allocate copied-key/raw-parser red node, increment count, link and update head extrema, rebalance red-black tree, force root black. No parser lifetime operation. Original ABI: ECX tree; stack output iterator, side byte, parent, source pair; EAX output; RET10h. Evidence: docs/RESOURCE_PARSER_MAP_STORAGE.md; reports/resource_parser_map_storage_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation.",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "pcStack_8",
+            "type": "undefined *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "local_4c",
+            "type": "undefined1",
+            "storage": "(stack, 0xffffffffffffffb4, 1)"
+          },
+          {
+            "name": "local_50",
+            "type": "undefined1[4]"
+          },
+          {
+            "name": "local_38",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffc8, 4)"
+          },
+          {
+            "name": "local_3c",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffc4, 4)"
+          },
+          {
+            "name": "local_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "local_34",
+            "type": "undefined * *[10]",
+            "storage": "(stack, 0xffffffffffffffcc, 4)"
+          },
+          {
+            "name": "local_4",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "piVar2",
+            "type": "int *",
+            "storage": "(unique, 0x17200, 4)"
+          },
+          {
+            "name": "cVar1",
+            "type": "char",
+            "storage": "(unique, 0x17000, 1)"
+          },
+          {
+            "name": "iVar4",
+            "type": "int",
+            "storage": "(unique, 0x17200, 4)"
+          },
+          {
+            "name": "piVar3",
+            "type": "int *",
+            "storage": "(unique, 0x17200, 4)"
+          },
+          {
+            "name": "piVar6",
+            "type": "int *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "piVar5",
+            "type": "int *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "piVar7",
+            "type": "int *",
+            "storage": "(register, 0x18, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 113,
+            "name": "LAB_00b7fda1"
+          },
+          {
+            "relative_offset": 170,
+            "name": "LAB_00b7fdda"
+          },
+          {
+            "relative_offset": 190,
+            "name": "LAB_00b7fdee"
+          },
+          {
+            "relative_offset": 204,
+            "name": "LAB_00b7fdfc"
+          },
+          {
+            "relative_offset": 224,
+            "name": "LAB_00b7fe10"
+          },
+          {
+            "relative_offset": 267,
+            "name": "LAB_00b7fe3b"
+          },
+          {
+            "relative_offset": 282,
+            "name": "LAB_00b7fe4a"
+          },
+          {
+            "relative_offset": 314,
+            "name": "LAB_00b7fe6a"
+          },
+          {
+            "relative_offset": 344,
+            "name": "LAB_00b7fe88"
+          },
+          {
+            "relative_offset": 358,
+            "name": "LAB_00b7fe96"
+          },
+          {
+            "relative_offset": 399,
+            "name": "LAB_00b7febf"
+          },
+          {
+            "relative_offset": 418,
+            "name": "LAB_00b7fed2"
+          },
+          {
+            "relative_offset": 429,
+            "name": "LAB_00b7fedd"
+          },
+          {
+            "relative_offset": 432,
+            "name": "LAB_00b7fee0"
+          },
+          {
+            "relative_offset": 437,
+            "name": "LAB_00b7fee5"
+          },
+          {
+            "relative_offset": 453,
+            "name": "LAB_00b7fef5"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "prototype": "void* __fastcall STL_ResourceParserMap_InsertNode(void* tree, void* unused_edx, void* output, unsigned int side, void* parent, void* pair)",
+      "prototype_result": "Successfully set prototype for function at 00b7fd30 with __fastcall calling convention",
+      "ledger_name_output": "00b7fd30 -> STL_ResourceParserMap_InsertNode\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00b7fd30\", \"name\": \"STL_ResourceParserMap_InsertNode\", \"evidence\": \"Reject count>=15555554h; allocate copied-key/raw-parser red node, increment count, link and update head extrema, rebalance red-black tree, force root black. No parser lifetime operation. Original ABI: ECX tree; stack output iterator, side byte, parent, source pair; EAX output; RET10h. Evidence: docs/RESOURCE_PARSER_MAP_STORAGE.md; reports/resource_parser_map_storage_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation.\"})\n",
+      "ledger_function_output": "00b7fd30 function insert_native_resource_parser_at_00b7fd30\n",
+      "prior_comment_preservation_checked": true,
+      "after_comment": {
+        "address": "00b7fd30",
+        "function_name": "STL_ResourceParserMap_InsertNode",
+        "comment": "[BSP reconstruction 00b7fd30]\nReject count>=15555554h; allocate copied-key/raw-parser red node, increment count, link and update head extrema, rebalance red-black tree, force root black. No parser lifetime operation. Original ABI: ECX tree; stack output iterator, side byte, parent, source pair; EAX output; RET10h. Evidence: docs/RESOURCE_PARSER_MAP_STORAGE.md; reports/resource_parser_map_storage_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation.\n\n[BSP reconstruction 00b7fd30] update\nBZ complete raw parser registration:10 ordinary bodies1740bytes;634 ordinary+39 support owners;49 direct transfers and2 indirect name-getters verified. 18 parser/cache code pairs and3 full EH metadata groups are identical after audited target substitutions; existing actual cache algorithms are reused without inventing native graph edges. Strict Win32 build and both tests passed. Ten paired source/original registration steps plus two pair cleanups use11 original bodies/39 relocations; normalized tree links/colors/keys/parser values agree. First getter return pointer drives lookup; captured pre-find head, second current target, true-on-second-name-collision, empty key, both rotations and parser/nonmanager field preservation checked. Native error paths are guarded out; source count-limit exception checked separately. Five handlers defined and full allocation catch restored; old names/comments preserved. Fixture getters, current CRT/C++ exception services and teardown are boundaries. Concrete parser singleton/name/body dispatch, raw manager/bootstrap, original FH3/SEH/private spills/hardware faults and gameplay remain unproved. Names are hypotheses. See docs/NATIVE_RESOURCE_PARSER_REGISTRATION_BZ.md and reports/native_resource_parser_registration_bz.json. Full ordinary span 492 bytes; ECX tree; stacked output/side/parent/pair; EAX output; RET10h; reports/native_resource_parser_registration_bz.json."
+      }
+    },
+    {
+      "address": "00b7f610",
+      "name": "STL_ResourceParserMap_AllocateNode",
+      "before_comment": {
+        "address": "00b7f610",
+        "function_name": "STL_ResourceParserMap_AllocateNode",
+        "comment": "[BSP reconstruction 00b7f610]\nAllocate1Ch-byte parser-map node and invoke00b7f1b0. Normal allocation/constructor path audited; SEH allocation-failure cleanup not reconstructed. Original ABI: Five stack arguments left, parent, right, source pair, color; EAX allocated node; RET14h; ECX not consumed. Evidence: docs/RESOURCE_PARSER_MAP_STORAGE.md; reports/resource_parser_map_storage_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation."
+      },
+      "evidence": "BZ complete raw parser registration:10 ordinary bodies1740bytes;634 ordinary+39 support owners;49 direct transfers and2 indirect name-getters verified. 18 parser/cache code pairs and3 full EH metadata groups are identical after audited target substitutions; existing actual cache algorithms are reused without inventing native graph edges. Strict Win32 build and both tests passed. Ten paired source/original registration steps plus two pair cleanups use11 original bodies/39 relocations; normalized tree links/colors/keys/parser values agree. First getter return pointer drives lookup; captured pre-find head, second current target, true-on-second-name-collision, empty key, both rotations and parser/nonmanager field preservation checked. Native error paths are guarded out; source count-limit exception checked separately. Five handlers defined and full allocation catch restored; old names/comments preserved. Fixture getters, current CRT/C++ exception services and teardown are boundaries. Concrete parser singleton/name/body dispatch, raw manager/bootstrap, original FH3/SEH/private spills/hardware faults and gameplay remain unproved. Names are hypotheses. See docs/NATIVE_RESOURCE_PARSER_REGISTRATION_BZ.md and reports/native_resource_parser_registration_bz.json. Full ordinary span 114 bytes; ECX unused; stacked left,parent,right,pair,color; EAX captured allocation; RET14h; reports/native_resource_parser_registration_bz.json.",
+      "before_documentation": {
+        "hash": "3ea937240940895cebaf3f7cc18f893e2c2d42aa1446a22dc876cc23c7afb80b",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b7f610",
+        "function_name": "STL_ResourceParserMap_AllocateNode",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00b7f610]\nAllocate1Ch-byte parser-map node and invoke00b7f1b0. Normal allocation/constructor path audited; SEH allocation-failure cleanup not reconstructed. Original ABI: Five stack arguments left, parent, right, source pair, color; EAX allocated node; RET14h; ECX not consumed. Evidence: docs/RESOURCE_PARSER_MAP_STORAGE.md; reports/resource_parser_map_storage_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation.",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "iVar1",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "pcStack_c",
+            "type": "undefined *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "local_10",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff0, 4)"
+          },
+          {
+            "name": "local_8",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 93,
+            "name": "LAB_00b7f66d"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "prototype": "void* __fastcall STL_ResourceParserMap_AllocateNode(void* unused_ecx, void* unused_edx, void* left, void* parent, void* right, void* pair, unsigned int color)",
+      "prototype_result": "Successfully set prototype for function at 00b7f610 with __fastcall calling convention",
+      "ledger_name_output": "00b7f610 -> STL_ResourceParserMap_AllocateNode\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00b7f610\", \"name\": \"STL_ResourceParserMap_AllocateNode\", \"evidence\": \"Allocate1Ch-byte parser-map node and invoke00b7f1b0. Normal allocation/constructor path audited; SEH allocation-failure cleanup not reconstructed. Original ABI: Five stack arguments left, parent, right, source pair, color; EAX allocated node; RET14h; ECX not consumed. Evidence: docs/RESOURCE_PARSER_MAP_STORAGE.md; reports/resource_parser_map_storage_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation.\"})\n",
+      "ledger_function_output": "00b7f610 function allocate_native_resource_parser_node_00b7f610\n",
+      "prior_comment_preservation_checked": true,
+      "after_comment": {
+        "address": "00b7f610",
+        "function_name": "STL_ResourceParserMap_AllocateNode",
+        "comment": "[BSP reconstruction 00b7f610]\nAllocate1Ch-byte parser-map node and invoke00b7f1b0. Normal allocation/constructor path audited; SEH allocation-failure cleanup not reconstructed. Original ABI: Five stack arguments left, parent, right, source pair, color; EAX allocated node; RET14h; ECX not consumed. Evidence: docs/RESOURCE_PARSER_MAP_STORAGE.md; reports/resource_parser_map_storage_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation.\n\n[BSP reconstruction 00b7f610] update\nBZ complete raw parser registration:10 ordinary bodies1740bytes;634 ordinary+39 support owners;49 direct transfers and2 indirect name-getters verified. 18 parser/cache code pairs and3 full EH metadata groups are identical after audited target substitutions; existing actual cache algorithms are reused without inventing native graph edges. Strict Win32 build and both tests passed. Ten paired source/original registration steps plus two pair cleanups use11 original bodies/39 relocations; normalized tree links/colors/keys/parser values agree. First getter return pointer drives lookup; captured pre-find head, second current target, true-on-second-name-collision, empty key, both rotations and parser/nonmanager field preservation checked. Native error paths are guarded out; source count-limit exception checked separately. Five handlers defined and full allocation catch restored; old names/comments preserved. Fixture getters, current CRT/C++ exception services and teardown are boundaries. Concrete parser singleton/name/body dispatch, raw manager/bootstrap, original FH3/SEH/private spills/hardware faults and gameplay remain unproved. Names are hypotheses. See docs/NATIVE_RESOURCE_PARSER_REGISTRATION_BZ.md and reports/native_resource_parser_registration_bz.json. Full ordinary span 114 bytes; ECX unused; stacked left,parent,right,pair,color; EAX captured allocation; RET14h; reports/native_resource_parser_registration_bz.json."
+      }
+    },
+    {
+      "address": "00b7f1b0",
+      "name": "STL_ResourceParserMap_ConstructNode",
+      "before_comment": {
+        "address": "00b7f1b0",
+        "function_name": "STL_ResourceParserMap_ConstructNode",
+        "comment": "[BSP reconstruction 00b7f1b0]\nConstruct links, zero key, resize/copy all counted bytes through0041dd40, copy raw parser pair+8 to node+14h, set color and non-sentinel flag. No AddRef. Original ABI: ECX node; stack left, parent, right, source pair, color; EAX node; RET14h. Evidence: docs/RESOURCE_PARSER_MAP_STORAGE.md; reports/resource_parser_map_storage_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation."
+      },
+      "evidence": "BZ complete raw parser registration:10 ordinary bodies1740bytes;634 ordinary+39 support owners;49 direct transfers and2 indirect name-getters verified. 18 parser/cache code pairs and3 full EH metadata groups are identical after audited target substitutions; existing actual cache algorithms are reused without inventing native graph edges. Strict Win32 build and both tests passed. Ten paired source/original registration steps plus two pair cleanups use11 original bodies/39 relocations; normalized tree links/colors/keys/parser values agree. First getter return pointer drives lookup; captured pre-find head, second current target, true-on-second-name-collision, empty key, both rotations and parser/nonmanager field preservation checked. Native error paths are guarded out; source count-limit exception checked separately. Five handlers defined and full allocation catch restored; old names/comments preserved. Fixture getters, current CRT/C++ exception services and teardown are boundaries. Concrete parser singleton/name/body dispatch, raw manager/bootstrap, original FH3/SEH/private spills/hardware faults and gameplay remain unproved. Names are hypotheses. See docs/NATIVE_RESOURCE_PARSER_REGISTRATION_BZ.md and reports/native_resource_parser_registration_bz.json. Full ordinary span 112 bytes; ECX node; stacked left,parent,right,pair,color; EAX node; RET14h; reports/native_resource_parser_registration_bz.json.",
+      "before_documentation": {
+        "hash": "9229a16db074a933085d2bcec3aa0fc2c66e1254fabd3fdb1d18e31d8ad06850",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b7f1b0",
+        "function_name": "STL_ResourceParserMap_ConstructNode",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00b7f1b0]\nConstruct links, zero key, resize/copy all counted bytes through0041dd40, copy raw parser pair+8 to node+14h, set color and non-sentinel flag. No AddRef. Original ABI: ECX node; stack left, parent, right, source pair, color; EAX node; RET14h. Evidence: docs/RESOURCE_PARSER_MAP_STORAGE.md; reports/resource_parser_map_storage_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation.",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "this",
+            "type": "uint *",
+            "storage": "(unique, 0x6600, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 87,
+            "name": "LAB_00b7f207"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "prototype": "void* __fastcall STL_ResourceParserMap_ConstructNode(void* node, void* unused_edx, void* left, void* parent, void* right, void* pair, unsigned int color)",
+      "prototype_result": "Successfully set prototype for function at 00b7f1b0 with __fastcall calling convention",
+      "ledger_name_output": "00b7f1b0 -> STL_ResourceParserMap_ConstructNode\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00b7f1b0\", \"name\": \"STL_ResourceParserMap_ConstructNode\", \"evidence\": \"Construct links, zero key, resize/copy all counted bytes through0041dd40, copy raw parser pair+8 to node+14h, set color and non-sentinel flag. No AddRef. Original ABI: ECX node; stack left, parent, right, source pair, color; EAX node; RET14h. Evidence: docs/RESOURCE_PARSER_MAP_STORAGE.md; reports/resource_parser_map_storage_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation.\"})\n",
+      "ledger_function_output": "00b7f1b0 function construct_native_resource_parser_node_00b7f1b0\n",
+      "prior_comment_preservation_checked": true,
+      "after_comment": {
+        "address": "00b7f1b0",
+        "function_name": "STL_ResourceParserMap_ConstructNode",
+        "comment": "[BSP reconstruction 00b7f1b0]\nConstruct links, zero key, resize/copy all counted bytes through0041dd40, copy raw parser pair+8 to node+14h, set color and non-sentinel flag. No AddRef. Original ABI: ECX node; stack left, parent, right, source pair, color; EAX node; RET14h. Evidence: docs/RESOURCE_PARSER_MAP_STORAGE.md; reports/resource_parser_map_storage_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation.\n\n[BSP reconstruction 00b7f1b0] update\nBZ complete raw parser registration:10 ordinary bodies1740bytes;634 ordinary+39 support owners;49 direct transfers and2 indirect name-getters verified. 18 parser/cache code pairs and3 full EH metadata groups are identical after audited target substitutions; existing actual cache algorithms are reused without inventing native graph edges. Strict Win32 build and both tests passed. Ten paired source/original registration steps plus two pair cleanups use11 original bodies/39 relocations; normalized tree links/colors/keys/parser values agree. First getter return pointer drives lookup; captured pre-find head, second current target, true-on-second-name-collision, empty key, both rotations and parser/nonmanager field preservation checked. Native error paths are guarded out; source count-limit exception checked separately. Five handlers defined and full allocation catch restored; old names/comments preserved. Fixture getters, current CRT/C++ exception services and teardown are boundaries. Concrete parser singleton/name/body dispatch, raw manager/bootstrap, original FH3/SEH/private spills/hardware faults and gameplay remain unproved. Names are hypotheses. See docs/NATIVE_RESOURCE_PARSER_REGISTRATION_BZ.md and reports/native_resource_parser_registration_bz.json. Full ordinary span 112 bytes; ECX node; stacked left,parent,right,pair,color; EAX node; RET14h; reports/native_resource_parser_registration_bz.json."
+      }
+    },
+    {
+      "address": "00b7f340",
+      "name": "BSP_ResourceParserEntry_Construct",
+      "before_comment": {
+        "address": "00b7f340",
+        "function_name": "BSP_ResourceParserEntry_Construct",
+        "comment": "[BSP reconstruction 00b7f340]\nCopy name into pair, store raw parser at+8 and destroy stack string; no parser retain. Original ABI: ECX output pair; EDX parser pointer; by-value8-byte string stack; RET8. Evidence: docs/RESOURCE_MANAGER_REGISTRATION.md; reports/resource_manager_registration_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation."
+      },
+      "evidence": "BZ complete raw parser registration:10 ordinary bodies1740bytes;634 ordinary+39 support owners;49 direct transfers and2 indirect name-getters verified. 18 parser/cache code pairs and3 full EH metadata groups are identical after audited target substitutions; existing actual cache algorithms are reused without inventing native graph edges. Strict Win32 build and both tests passed. Ten paired source/original registration steps plus two pair cleanups use11 original bodies/39 relocations; normalized tree links/colors/keys/parser values agree. First getter return pointer drives lookup; captured pre-find head, second current target, true-on-second-name-collision, empty key, both rotations and parser/nonmanager field preservation checked. Native error paths are guarded out; source count-limit exception checked separately. Five handlers defined and full allocation catch restored; old names/comments preserved. Fixture getters, current CRT/C++ exception services and teardown are boundaries. Concrete parser singleton/name/body dispatch, raw manager/bootstrap, original FH3/SEH/private spills/hardware faults and gameplay remain unproved. Names are hypotheses. See docs/NATIVE_RESOURCE_PARSER_REGISTRATION_BZ.md and reports/native_resource_parser_registration_bz.json. Full ordinary span 161 bytes; ECX pair, EDX parser; stacked owned by-value8h name; EAX pair; RET8; reports/native_resource_parser_registration_bz.json.",
+      "before_documentation": {
+        "hash": "e2a8c276b977d325673847337aa7447e3e4cc02684308a2ed9f7f95abd688b42",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b7f340",
+        "function_name": "BSP_ResourceParserEntry_Construct",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00b7f340]\nCopy name into pair, store raw parser at+8 and destroy stack string; no parser retain. Original ABI: ECX output pair; EDX parser pointer; by-value8-byte string stack; RET8. Evidence: docs/RESOURCE_MANAGER_REGISTRATION.md; reports/resource_manager_registration_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "uVar3",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffd8, 4)"
+          },
+          {
+            "name": "local_4",
+            "type": "uint",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "pcStack_8",
+            "type": "undefined *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "local_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "uVar1",
+            "type": "uint",
+            "storage": "(unique, 0x100000a5, 4)"
+          },
+          {
+            "name": "_Src",
+            "type": "void *",
+            "storage": "(stack, 0xffffffffffffffd0, 4)"
+          },
+          {
+            "name": "iVar2",
+            "type": "int",
+            "storage": "(register, 0x14, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 99,
+            "name": "LAB_00b7f3a3"
+          },
+          {
+            "relative_offset": 138,
+            "name": "LAB_00b7f3ca"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "prototype": "void* __fastcall BSP_ResourceParserEntry_Construct(void* pair, void* parser, unsigned int name_length, void* name_data)",
+      "prototype_result": "Successfully set prototype for function at 00b7f340 with __fastcall calling convention",
+      "ledger_name_output": "00b7f340 -> BSP_ResourceParserEntry_Construct\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00b7f340\", \"name\": \"BSP_ResourceParserEntry_Construct\", \"evidence\": \"Copy name into pair, store raw parser at+8 and destroy stack string; no parser retain. Original ABI: ECX output pair; EDX parser pointer; by-value8-byte string stack; RET8. Evidence: docs/RESOURCE_MANAGER_REGISTRATION.md; reports/resource_manager_registration_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\"})\n",
+      "ledger_function_output": "00b7f340 function construct_native_resource_parser_pair_00b7f340\n",
+      "prior_comment_preservation_checked": true,
+      "after_comment": {
+        "address": "00b7f340",
+        "function_name": "BSP_ResourceParserEntry_Construct",
+        "comment": "[BSP reconstruction 00b7f340]\nCopy name into pair, store raw parser at+8 and destroy stack string; no parser retain. Original ABI: ECX output pair; EDX parser pointer; by-value8-byte string stack; RET8. Evidence: docs/RESOURCE_MANAGER_REGISTRATION.md; reports/resource_manager_registration_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\n\n[BSP reconstruction 00b7f340] update\nBZ complete raw parser registration:10 ordinary bodies1740bytes;634 ordinary+39 support owners;49 direct transfers and2 indirect name-getters verified. 18 parser/cache code pairs and3 full EH metadata groups are identical after audited target substitutions; existing actual cache algorithms are reused without inventing native graph edges. Strict Win32 build and both tests passed. Ten paired source/original registration steps plus two pair cleanups use11 original bodies/39 relocations; normalized tree links/colors/keys/parser values agree. First getter return pointer drives lookup; captured pre-find head, second current target, true-on-second-name-collision, empty key, both rotations and parser/nonmanager field preservation checked. Native error paths are guarded out; source count-limit exception checked separately. Five handlers defined and full allocation catch restored; old names/comments preserved. Fixture getters, current CRT/C++ exception services and teardown are boundaries. Concrete parser singleton/name/body dispatch, raw manager/bootstrap, original FH3/SEH/private spills/hardware faults and gameplay remain unproved. Names are hypotheses. See docs/NATIVE_RESOURCE_PARSER_REGISTRATION_BZ.md and reports/native_resource_parser_registration_bz.json. Full ordinary span 161 bytes; ECX pair, EDX parser; stacked owned by-value8h name; EAX pair; RET8; reports/native_resource_parser_registration_bz.json."
+      }
+    },
+    {
+      "address": "00b7ca80",
+      "name": "STL_ResourceParserMap_RotateRight",
+      "before_comment": {
+        "address": "00b7ca80",
+        "function_name": "STL_ResourceParserMap_RotateRight",
+        "comment": "[BSP reconstruction 00b7ca80]\nRotate right, updating non-sentinel child parent, parent/root link, and pivot links. No value or lifetime operation. Original ABI: ECX tree; stack pivot; RET4. Evidence: docs/RESOURCE_PARSER_MAP_STORAGE.md; reports/resource_parser_map_storage_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation."
+      },
+      "evidence": "BZ complete raw parser registration:10 ordinary bodies1740bytes;634 ordinary+39 support owners;49 direct transfers and2 indirect name-getters verified. 18 parser/cache code pairs and3 full EH metadata groups are identical after audited target substitutions; existing actual cache algorithms are reused without inventing native graph edges. Strict Win32 build and both tests passed. Ten paired source/original registration steps plus two pair cleanups use11 original bodies/39 relocations; normalized tree links/colors/keys/parser values agree. First getter return pointer drives lookup; captured pre-find head, second current target, true-on-second-name-collision, empty key, both rotations and parser/nonmanager field preservation checked. Native error paths are guarded out; source count-limit exception checked separately. Five handlers defined and full allocation catch restored; old names/comments preserved. Fixture getters, current CRT/C++ exception services and teardown are boundaries. Concrete parser singleton/name/body dispatch, raw manager/bootstrap, original FH3/SEH/private spills/hardware faults and gameplay remain unproved. Names are hypotheses. See docs/NATIVE_RESOURCE_PARSER_REGISTRATION_BZ.md and reports/native_resource_parser_registration_bz.json. Full ordinary span 82 bytes; ECX tree; stacked node; EAX pivot; RET4; reports/native_resource_parser_registration_bz.json.",
+      "before_documentation": {
+        "hash": "09b45940fdefc5db8a91061b680c680594e75233c79d3d091203b1842903258b",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b7ca80",
+        "function_name": "STL_ResourceParserMap_RotateRight",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00b7ca80]\nRotate right, updating non-sentinel child parent, parent/root link, and pivot links. No value or lifetime operation. Original ABI: ECX tree; stack pivot; RET4. Evidence: docs/RESOURCE_PARSER_MAP_STORAGE.md; reports/resource_parser_map_storage_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation.",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "piVar2",
+            "type": "int *",
+            "storage": "(unique, 0x17200, 4)"
+          },
+          {
+            "name": "iVar1",
+            "type": "int",
+            "storage": "(unique, 0x17200, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 24,
+            "name": "LAB_00b7ca98"
+          },
+          {
+            "relative_offset": 51,
+            "name": "LAB_00b7cab3"
+          },
+          {
+            "relative_offset": 71,
+            "name": "LAB_00b7cac7"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "prototype": "void* __fastcall STL_ResourceParserMap_RotateRight(void* tree, void* unused_edx, void* node)",
+      "prototype_result": "Successfully set prototype for function at 00b7ca80 with __fastcall calling convention",
+      "ledger_name_output": "00b7ca80 -> STL_ResourceParserMap_RotateRight\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00b7ca80\", \"name\": \"STL_ResourceParserMap_RotateRight\", \"evidence\": \"Rotate right, updating non-sentinel child parent, parent/root link, and pivot links. No value or lifetime operation. Original ABI: ECX tree; stack pivot; RET4. Evidence: docs/RESOURCE_PARSER_MAP_STORAGE.md; reports/resource_parser_map_storage_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation.\"})\n",
+      "ledger_function_output": "00b7ca80 function rotate_native_resource_parser_right_00b7ca80\n",
+      "prior_comment_preservation_checked": true,
+      "after_comment": {
+        "address": "00b7ca80",
+        "function_name": "STL_ResourceParserMap_RotateRight",
+        "comment": "[BSP reconstruction 00b7ca80]\nRotate right, updating non-sentinel child parent, parent/root link, and pivot links. No value or lifetime operation. Original ABI: ECX tree; stack pivot; RET4. Evidence: docs/RESOURCE_PARSER_MAP_STORAGE.md; reports/resource_parser_map_storage_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation.\n\n[BSP reconstruction 00b7ca80] update\nBZ complete raw parser registration:10 ordinary bodies1740bytes;634 ordinary+39 support owners;49 direct transfers and2 indirect name-getters verified. 18 parser/cache code pairs and3 full EH metadata groups are identical after audited target substitutions; existing actual cache algorithms are reused without inventing native graph edges. Strict Win32 build and both tests passed. Ten paired source/original registration steps plus two pair cleanups use11 original bodies/39 relocations; normalized tree links/colors/keys/parser values agree. First getter return pointer drives lookup; captured pre-find head, second current target, true-on-second-name-collision, empty key, both rotations and parser/nonmanager field preservation checked. Native error paths are guarded out; source count-limit exception checked separately. Five handlers defined and full allocation catch restored; old names/comments preserved. Fixture getters, current CRT/C++ exception services and teardown are boundaries. Concrete parser singleton/name/body dispatch, raw manager/bootstrap, original FH3/SEH/private spills/hardware faults and gameplay remain unproved. Names are hypotheses. See docs/NATIVE_RESOURCE_PARSER_REGISTRATION_BZ.md and reports/native_resource_parser_registration_bz.json. Full ordinary span 82 bytes; ECX tree; stacked node; EAX pivot; RET4; reports/native_resource_parser_registration_bz.json."
+      }
+    },
+    {
+      "address": "00b7d590",
+      "name": "STL_ResourceParserMap_RotateLeft",
+      "before_comment": {
+        "address": "00b7d590",
+        "function_name": "STL_ResourceParserMap_RotateLeft",
+        "comment": "[BSP reconstruction 00b7d590]\nRotate left, updating non-sentinel child parent, parent/root link, and pivot links. No value or lifetime operation. Original ABI: ECX tree; stack pivot; RET4. Evidence: docs/RESOURCE_PARSER_MAP_STORAGE.md; reports/resource_parser_map_storage_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation."
+      },
+      "evidence": "BZ complete raw parser registration:10 ordinary bodies1740bytes;634 ordinary+39 support owners;49 direct transfers and2 indirect name-getters verified. 18 parser/cache code pairs and3 full EH metadata groups are identical after audited target substitutions; existing actual cache algorithms are reused without inventing native graph edges. Strict Win32 build and both tests passed. Ten paired source/original registration steps plus two pair cleanups use11 original bodies/39 relocations; normalized tree links/colors/keys/parser values agree. First getter return pointer drives lookup; captured pre-find head, second current target, true-on-second-name-collision, empty key, both rotations and parser/nonmanager field preservation checked. Native error paths are guarded out; source count-limit exception checked separately. Five handlers defined and full allocation catch restored; old names/comments preserved. Fixture getters, current CRT/C++ exception services and teardown are boundaries. Concrete parser singleton/name/body dispatch, raw manager/bootstrap, original FH3/SEH/private spills/hardware faults and gameplay remain unproved. Names are hypotheses. See docs/NATIVE_RESOURCE_PARSER_REGISTRATION_BZ.md and reports/native_resource_parser_registration_bz.json. Full ordinary span 78 bytes; ECX tree; stacked node; EAX pivot; RET4; reports/native_resource_parser_registration_bz.json.",
+      "before_documentation": {
+        "hash": "61a7d7cab6cb4a09c1b4c4f97fc8291d90e2f9306247050232f6828c66136932",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b7d590",
+        "function_name": "STL_ResourceParserMap_RotateLeft",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00b7d590]\nRotate left, updating non-sentinel child parent, parent/root link, and pivot links. No value or lifetime operation. Original ABI: ECX tree; stack pivot; RET4. Evidence: docs/RESOURCE_PARSER_MAP_STORAGE.md; reports/resource_parser_map_storage_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation.",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "piVar2",
+            "type": "int *",
+            "storage": "(unique, 0x17200, 4)"
+          },
+          {
+            "name": "piVar1",
+            "type": "int *",
+            "storage": "(unique, 0x17200, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 24,
+            "name": "LAB_00b7d5a8"
+          },
+          {
+            "relative_offset": 50,
+            "name": "LAB_00b7d5c2"
+          },
+          {
+            "relative_offset": 67,
+            "name": "LAB_00b7d5d3"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "prototype": "void* __fastcall STL_ResourceParserMap_RotateLeft(void* tree, void* unused_edx, void* node)",
+      "prototype_result": "Successfully set prototype for function at 00b7d590 with __fastcall calling convention",
+      "ledger_name_output": "00b7d590 -> STL_ResourceParserMap_RotateLeft\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00b7d590\", \"name\": \"STL_ResourceParserMap_RotateLeft\", \"evidence\": \"Rotate left, updating non-sentinel child parent, parent/root link, and pivot links. No value or lifetime operation. Original ABI: ECX tree; stack pivot; RET4. Evidence: docs/RESOURCE_PARSER_MAP_STORAGE.md; reports/resource_parser_map_storage_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation.\"})\n",
+      "ledger_function_output": "00b7d590 function rotate_native_resource_parser_left_00b7d590\n",
+      "prior_comment_preservation_checked": true,
+      "after_comment": {
+        "address": "00b7d590",
+        "function_name": "STL_ResourceParserMap_RotateLeft",
+        "comment": "[BSP reconstruction 00b7d590]\nRotate left, updating non-sentinel child parent, parent/root link, and pivot links. No value or lifetime operation. Original ABI: ECX tree; stack pivot; RET4. Evidence: docs/RESOURCE_PARSER_MAP_STORAGE.md; reports/resource_parser_map_storage_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation.\n\n[BSP reconstruction 00b7d590] update\nBZ complete raw parser registration:10 ordinary bodies1740bytes;634 ordinary+39 support owners;49 direct transfers and2 indirect name-getters verified. 18 parser/cache code pairs and3 full EH metadata groups are identical after audited target substitutions; existing actual cache algorithms are reused without inventing native graph edges. Strict Win32 build and both tests passed. Ten paired source/original registration steps plus two pair cleanups use11 original bodies/39 relocations; normalized tree links/colors/keys/parser values agree. First getter return pointer drives lookup; captured pre-find head, second current target, true-on-second-name-collision, empty key, both rotations and parser/nonmanager field preservation checked. Native error paths are guarded out; source count-limit exception checked separately. Five handlers defined and full allocation catch restored; old names/comments preserved. Fixture getters, current CRT/C++ exception services and teardown are boundaries. Concrete parser singleton/name/body dispatch, raw manager/bootstrap, original FH3/SEH/private spills/hardware faults and gameplay remain unproved. Names are hypotheses. See docs/NATIVE_RESOURCE_PARSER_REGISTRATION_BZ.md and reports/native_resource_parser_registration_bz.json. Full ordinary span 78 bytes; ECX tree; stacked node; EAX pivot; RET4; reports/native_resource_parser_registration_bz.json."
+      }
+    },
+    {
+      "address": "00b7e930",
+      "name": "BSP_ResourceParserPair_DestroyName",
+      "before_comment": {
+        "address": "00b7e930",
+        "function_name": "FUN_00b7e930"
+      },
+      "evidence": "BZ complete raw parser registration:10 ordinary bodies1740bytes;634 ordinary+39 support owners;49 direct transfers and2 indirect name-getters verified. 18 parser/cache code pairs and3 full EH metadata groups are identical after audited target substitutions; existing actual cache algorithms are reused without inventing native graph edges. Strict Win32 build and both tests passed. Ten paired source/original registration steps plus two pair cleanups use11 original bodies/39 relocations; normalized tree links/colors/keys/parser values agree. First getter return pointer drives lookup; captured pre-find head, second current target, true-on-second-name-collision, empty key, both rotations and parser/nonmanager field preservation checked. Native error paths are guarded out; source count-limit exception checked separately. Five handlers defined and full allocation catch restored; old names/comments preserved. Fixture getters, current CRT/C++ exception services and teardown are boundaries. Concrete parser singleton/name/body dispatch, raw manager/bootstrap, original FH3/SEH/private spills/hardware faults and gameplay remain unproved. Names are hypotheses. See docs/NATIVE_RESOURCE_PARSER_REGISTRATION_BZ.md and reports/native_resource_parser_registration_bz.json. Full ordinary span 29 bytes; ECX pair; RET; reports/native_resource_parser_registration_bz.json.",
+      "before_documentation": {
+        "hash": "abccc4a57624ffd26380018c8df4b10608f27abdc02afa1c6e152bbc9aefcfc0",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b7e930",
+        "function_name": "FUN_00b7e930",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "iVar2",
+            "type": "int",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "iVar1",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "uVar3",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 28,
+            "name": "LAB_00b7e94c"
+          }
+        ],
+        "completeness_score": 50.0
+      },
+      "prototype": "void __fastcall BSP_ResourceParserPair_DestroyName(void* pair, void* unused_edx)",
+      "prototype_result": "Successfully set prototype for function at 00b7e930 with __fastcall calling convention",
+      "ledger_name_output": "00b7e930 -> BSP_ResourceParserPair_DestroyName\n",
+      "ledger_function_output": "00b7e930 function destroy_native_resource_parser_pair_00b7e930\n",
+      "prior_comment_preservation_checked": true,
+      "after_comment": {
+        "address": "00b7e930",
+        "function_name": "BSP_ResourceParserPair_DestroyName",
+        "comment": "[BSP reconstruction 00b7e930]\nBZ complete raw parser registration:10 ordinary bodies1740bytes;634 ordinary+39 support owners;49 direct transfers and2 indirect name-getters verified. 18 parser/cache code pairs and3 full EH metadata groups are identical after audited target substitutions; existing actual cache algorithms are reused without inventing native graph edges. Strict Win32 build and both tests passed. Ten paired source/original registration steps plus two pair cleanups use11 original bodies/39 relocations; normalized tree links/colors/keys/parser values agree. First getter return pointer drives lookup; captured pre-find head, second current target, true-on-second-name-collision, empty key, both rotations and parser/nonmanager field preservation checked. Native error paths are guarded out; source count-limit exception checked separately. Five handlers defined and full allocation catch restored; old names/comments preserved. Fixture getters, current CRT/C++ exception services and teardown are boundaries. Concrete parser singleton/name/body dispatch, raw manager/bootstrap, original FH3/SEH/private spills/hardware faults and gameplay remain unproved. Names are hypotheses. See docs/NATIVE_RESOURCE_PARSER_REGISTRATION_BZ.md and reports/native_resource_parser_registration_bz.json. Full ordinary span 29 bytes; ECX pair; RET; reports/native_resource_parser_registration_bz.json."
+      }
+    },
+    {
+      "address": "00b7e950",
+      "name": "BSP_ResourceParserInsertPair_DestroyName",
+      "before_comment": {
+        "address": "00b7e950",
+        "function_name": "FUN_00b7e950"
+      },
+      "evidence": "BZ complete raw parser registration:10 ordinary bodies1740bytes;634 ordinary+39 support owners;49 direct transfers and2 indirect name-getters verified. 18 parser/cache code pairs and3 full EH metadata groups are identical after audited target substitutions; existing actual cache algorithms are reused without inventing native graph edges. Strict Win32 build and both tests passed. Ten paired source/original registration steps plus two pair cleanups use11 original bodies/39 relocations; normalized tree links/colors/keys/parser values agree. First getter return pointer drives lookup; captured pre-find head, second current target, true-on-second-name-collision, empty key, both rotations and parser/nonmanager field preservation checked. Native error paths are guarded out; source count-limit exception checked separately. Five handlers defined and full allocation catch restored; old names/comments preserved. Fixture getters, current CRT/C++ exception services and teardown are boundaries. Concrete parser singleton/name/body dispatch, raw manager/bootstrap, original FH3/SEH/private spills/hardware faults and gameplay remain unproved. Names are hypotheses. See docs/NATIVE_RESOURCE_PARSER_REGISTRATION_BZ.md and reports/native_resource_parser_registration_bz.json. Full ordinary span 29 bytes; ECX pair; RET; reports/native_resource_parser_registration_bz.json.",
+      "before_documentation": {
+        "hash": "abccc4a57624ffd26380018c8df4b10608f27abdc02afa1c6e152bbc9aefcfc0",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b7e950",
+        "function_name": "FUN_00b7e950",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "iVar2",
+            "type": "int",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "iVar1",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "uVar3",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 28,
+            "name": "LAB_00b7e96c"
+          }
+        ],
+        "completeness_score": 50.0
+      },
+      "prototype": "void __fastcall BSP_ResourceParserInsertPair_DestroyName(void* pair, void* unused_edx)",
+      "prototype_result": "Successfully set prototype for function at 00b7e950 with __fastcall calling convention",
+      "ledger_name_output": "00b7e950 -> BSP_ResourceParserInsertPair_DestroyName\n",
+      "ledger_function_output": "00b7e950 function destroy_native_resource_parser_insert_pair_00b7e950\n",
+      "prior_comment_preservation_checked": true,
+      "after_comment": {
+        "address": "00b7e950",
+        "function_name": "BSP_ResourceParserInsertPair_DestroyName",
+        "comment": "[BSP reconstruction 00b7e950]\nBZ complete raw parser registration:10 ordinary bodies1740bytes;634 ordinary+39 support owners;49 direct transfers and2 indirect name-getters verified. 18 parser/cache code pairs and3 full EH metadata groups are identical after audited target substitutions; existing actual cache algorithms are reused without inventing native graph edges. Strict Win32 build and both tests passed. Ten paired source/original registration steps plus two pair cleanups use11 original bodies/39 relocations; normalized tree links/colors/keys/parser values agree. First getter return pointer drives lookup; captured pre-find head, second current target, true-on-second-name-collision, empty key, both rotations and parser/nonmanager field preservation checked. Native error paths are guarded out; source count-limit exception checked separately. Five handlers defined and full allocation catch restored; old names/comments preserved. Fixture getters, current CRT/C++ exception services and teardown are boundaries. Concrete parser singleton/name/body dispatch, raw manager/bootstrap, original FH3/SEH/private spills/hardware faults and gameplay remain unproved. Names are hypotheses. See docs/NATIVE_RESOURCE_PARSER_REGISTRATION_BZ.md and reports/native_resource_parser_registration_bz.json. Full ordinary span 29 bytes; ECX pair; RET; reports/native_resource_parser_registration_bz.json."
+      }
+    },
+    {
+      "address": "00cc2051",
+      "name": "EH_handler_00cc2051",
+      "before_comment": {
+        "address": "00cc2051",
+        "function_name": "FUN_00cc2051"
+      },
+      "evidence": "BZ complete raw parser registration:10 ordinary bodies1740bytes;634 ordinary+39 support owners;49 direct transfers and2 indirect name-getters verified. 18 parser/cache code pairs and3 full EH metadata groups are identical after audited target substitutions; existing actual cache algorithms are reused without inventing native graph edges. Strict Win32 build and both tests passed. Ten paired source/original registration steps plus two pair cleanups use11 original bodies/39 relocations; normalized tree links/colors/keys/parser values agree. First getter return pointer drives lookup; captured pre-find head, second current target, true-on-second-name-collision, empty key, both rotations and parser/nonmanager field preservation checked. Native error paths are guarded out; source count-limit exception checked separately. Five handlers defined and full allocation catch restored; old names/comments preserved. Fixture getters, current CRT/C++ exception services and teardown are boundaries. Concrete parser singleton/name/body dispatch, raw manager/bootstrap, original FH3/SEH/private spills/hardware faults and gameplay remain unproved. Names are hypotheses. See docs/NATIVE_RESOURCE_PARSER_REGISTRATION_BZ.md and reports/native_resource_parser_registration_bz.json. Complete MOV EAX,FuncInfo / JMP BF6B43 dispatch handler defined and saved.",
+      "ledger_name_output": "00cc2051 -> EH_handler_00cc2051\n",
+      "prior_comment_preservation_checked": true,
+      "after_comment": {
+        "address": "00cc2051",
+        "function_name": "EH_handler_00cc2051",
+        "comment": "[BSP reconstruction 00cc2051]\nBZ complete raw parser registration:10 ordinary bodies1740bytes;634 ordinary+39 support owners;49 direct transfers and2 indirect name-getters verified. 18 parser/cache code pairs and3 full EH metadata groups are identical after audited target substitutions; existing actual cache algorithms are reused without inventing native graph edges. Strict Win32 build and both tests passed. Ten paired source/original registration steps plus two pair cleanups use11 original bodies/39 relocations; normalized tree links/colors/keys/parser values agree. First getter return pointer drives lookup; captured pre-find head, second current target, true-on-second-name-collision, empty key, both rotations and parser/nonmanager field preservation checked. Native error paths are guarded out; source count-limit exception checked separately. Five handlers defined and full allocation catch restored; old names/comments preserved. Fixture getters, current CRT/C++ exception services and teardown are boundaries. Concrete parser singleton/name/body dispatch, raw manager/bootstrap, original FH3/SEH/private spills/hardware faults and gameplay remain unproved. Names are hypotheses. See docs/NATIVE_RESOURCE_PARSER_REGISTRATION_BZ.md and reports/native_resource_parser_registration_bz.json. Complete MOV EAX,FuncInfo / JMP BF6B43 dispatch handler defined and saved."
+      }
+    },
+    {
+      "address": "00cc2081",
+      "name": "EH_handler_00cc2081",
+      "before_comment": {
+        "address": "00cc2081",
+        "function_name": "FUN_00cc2081"
+      },
+      "evidence": "BZ complete raw parser registration:10 ordinary bodies1740bytes;634 ordinary+39 support owners;49 direct transfers and2 indirect name-getters verified. 18 parser/cache code pairs and3 full EH metadata groups are identical after audited target substitutions; existing actual cache algorithms are reused without inventing native graph edges. Strict Win32 build and both tests passed. Ten paired source/original registration steps plus two pair cleanups use11 original bodies/39 relocations; normalized tree links/colors/keys/parser values agree. First getter return pointer drives lookup; captured pre-find head, second current target, true-on-second-name-collision, empty key, both rotations and parser/nonmanager field preservation checked. Native error paths are guarded out; source count-limit exception checked separately. Five handlers defined and full allocation catch restored; old names/comments preserved. Fixture getters, current CRT/C++ exception services and teardown are boundaries. Concrete parser singleton/name/body dispatch, raw manager/bootstrap, original FH3/SEH/private spills/hardware faults and gameplay remain unproved. Names are hypotheses. See docs/NATIVE_RESOURCE_PARSER_REGISTRATION_BZ.md and reports/native_resource_parser_registration_bz.json. Complete MOV EAX,FuncInfo / JMP BF6B43 dispatch handler defined and saved.",
+      "ledger_name_output": "00cc2081 -> EH_handler_00cc2081\n",
+      "prior_comment_preservation_checked": true,
+      "after_comment": {
+        "address": "00cc2081",
+        "function_name": "EH_handler_00cc2081",
+        "comment": "[BSP reconstruction 00cc2081]\nBZ complete raw parser registration:10 ordinary bodies1740bytes;634 ordinary+39 support owners;49 direct transfers and2 indirect name-getters verified. 18 parser/cache code pairs and3 full EH metadata groups are identical after audited target substitutions; existing actual cache algorithms are reused without inventing native graph edges. Strict Win32 build and both tests passed. Ten paired source/original registration steps plus two pair cleanups use11 original bodies/39 relocations; normalized tree links/colors/keys/parser values agree. First getter return pointer drives lookup; captured pre-find head, second current target, true-on-second-name-collision, empty key, both rotations and parser/nonmanager field preservation checked. Native error paths are guarded out; source count-limit exception checked separately. Five handlers defined and full allocation catch restored; old names/comments preserved. Fixture getters, current CRT/C++ exception services and teardown are boundaries. Concrete parser singleton/name/body dispatch, raw manager/bootstrap, original FH3/SEH/private spills/hardware faults and gameplay remain unproved. Names are hypotheses. See docs/NATIVE_RESOURCE_PARSER_REGISTRATION_BZ.md and reports/native_resource_parser_registration_bz.json. Complete MOV EAX,FuncInfo / JMP BF6B43 dispatch handler defined and saved."
+      }
+    },
+    {
+      "address": "00cc20c1",
+      "name": "EH_handler_00cc20c1",
+      "before_comment": {
+        "address": "00cc20c1",
+        "function_name": "FUN_00cc20c1"
+      },
+      "evidence": "BZ complete raw parser registration:10 ordinary bodies1740bytes;634 ordinary+39 support owners;49 direct transfers and2 indirect name-getters verified. 18 parser/cache code pairs and3 full EH metadata groups are identical after audited target substitutions; existing actual cache algorithms are reused without inventing native graph edges. Strict Win32 build and both tests passed. Ten paired source/original registration steps plus two pair cleanups use11 original bodies/39 relocations; normalized tree links/colors/keys/parser values agree. First getter return pointer drives lookup; captured pre-find head, second current target, true-on-second-name-collision, empty key, both rotations and parser/nonmanager field preservation checked. Native error paths are guarded out; source count-limit exception checked separately. Five handlers defined and full allocation catch restored; old names/comments preserved. Fixture getters, current CRT/C++ exception services and teardown are boundaries. Concrete parser singleton/name/body dispatch, raw manager/bootstrap, original FH3/SEH/private spills/hardware faults and gameplay remain unproved. Names are hypotheses. See docs/NATIVE_RESOURCE_PARSER_REGISTRATION_BZ.md and reports/native_resource_parser_registration_bz.json. Complete MOV EAX,FuncInfo / JMP BF6B43 dispatch handler defined and saved.",
+      "ledger_name_output": "00cc20c1 -> EH_handler_00cc20c1\n",
+      "prior_comment_preservation_checked": true,
+      "after_comment": {
+        "address": "00cc20c1",
+        "function_name": "EH_handler_00cc20c1",
+        "comment": "[BSP reconstruction 00cc20c1]\nBZ complete raw parser registration:10 ordinary bodies1740bytes;634 ordinary+39 support owners;49 direct transfers and2 indirect name-getters verified. 18 parser/cache code pairs and3 full EH metadata groups are identical after audited target substitutions; existing actual cache algorithms are reused without inventing native graph edges. Strict Win32 build and both tests passed. Ten paired source/original registration steps plus two pair cleanups use11 original bodies/39 relocations; normalized tree links/colors/keys/parser values agree. First getter return pointer drives lookup; captured pre-find head, second current target, true-on-second-name-collision, empty key, both rotations and parser/nonmanager field preservation checked. Native error paths are guarded out; source count-limit exception checked separately. Five handlers defined and full allocation catch restored; old names/comments preserved. Fixture getters, current CRT/C++ exception services and teardown are boundaries. Concrete parser singleton/name/body dispatch, raw manager/bootstrap, original FH3/SEH/private spills/hardware faults and gameplay remain unproved. Names are hypotheses. See docs/NATIVE_RESOURCE_PARSER_REGISTRATION_BZ.md and reports/native_resource_parser_registration_bz.json. Complete MOV EAX,FuncInfo / JMP BF6B43 dispatch handler defined and saved."
+      }
+    },
+    {
+      "address": "00cc2138",
+      "name": "EH_handler_00cc2138",
+      "before_comment": {
+        "address": "00cc2138",
+        "function_name": "FUN_00cc2138"
+      },
+      "evidence": "BZ complete raw parser registration:10 ordinary bodies1740bytes;634 ordinary+39 support owners;49 direct transfers and2 indirect name-getters verified. 18 parser/cache code pairs and3 full EH metadata groups are identical after audited target substitutions; existing actual cache algorithms are reused without inventing native graph edges. Strict Win32 build and both tests passed. Ten paired source/original registration steps plus two pair cleanups use11 original bodies/39 relocations; normalized tree links/colors/keys/parser values agree. First getter return pointer drives lookup; captured pre-find head, second current target, true-on-second-name-collision, empty key, both rotations and parser/nonmanager field preservation checked. Native error paths are guarded out; source count-limit exception checked separately. Five handlers defined and full allocation catch restored; old names/comments preserved. Fixture getters, current CRT/C++ exception services and teardown are boundaries. Concrete parser singleton/name/body dispatch, raw manager/bootstrap, original FH3/SEH/private spills/hardware faults and gameplay remain unproved. Names are hypotheses. See docs/NATIVE_RESOURCE_PARSER_REGISTRATION_BZ.md and reports/native_resource_parser_registration_bz.json. Complete MOV EAX,FuncInfo / JMP BF6B43 dispatch handler defined and saved.",
+      "ledger_name_output": "00cc2138 -> EH_handler_00cc2138\n",
+      "prior_comment_preservation_checked": true,
+      "after_comment": {
+        "address": "00cc2138",
+        "function_name": "EH_handler_00cc2138",
+        "comment": "[BSP reconstruction 00cc2138]\nBZ complete raw parser registration:10 ordinary bodies1740bytes;634 ordinary+39 support owners;49 direct transfers and2 indirect name-getters verified. 18 parser/cache code pairs and3 full EH metadata groups are identical after audited target substitutions; existing actual cache algorithms are reused without inventing native graph edges. Strict Win32 build and both tests passed. Ten paired source/original registration steps plus two pair cleanups use11 original bodies/39 relocations; normalized tree links/colors/keys/parser values agree. First getter return pointer drives lookup; captured pre-find head, second current target, true-on-second-name-collision, empty key, both rotations and parser/nonmanager field preservation checked. Native error paths are guarded out; source count-limit exception checked separately. Five handlers defined and full allocation catch restored; old names/comments preserved. Fixture getters, current CRT/C++ exception services and teardown are boundaries. Concrete parser singleton/name/body dispatch, raw manager/bootstrap, original FH3/SEH/private spills/hardware faults and gameplay remain unproved. Names are hypotheses. See docs/NATIVE_RESOURCE_PARSER_REGISTRATION_BZ.md and reports/native_resource_parser_registration_bz.json. Complete MOV EAX,FuncInfo / JMP BF6B43 dispatch handler defined and saved."
+      }
+    },
+    {
+      "address": "00cc21c0",
+      "name": "EH_handler_00cc21c0",
+      "before_comment": {
+        "address": "00cc21c0",
+        "function_name": "FUN_00cc21c0"
+      },
+      "evidence": "BZ complete raw parser registration:10 ordinary bodies1740bytes;634 ordinary+39 support owners;49 direct transfers and2 indirect name-getters verified. 18 parser/cache code pairs and3 full EH metadata groups are identical after audited target substitutions; existing actual cache algorithms are reused without inventing native graph edges. Strict Win32 build and both tests passed. Ten paired source/original registration steps plus two pair cleanups use11 original bodies/39 relocations; normalized tree links/colors/keys/parser values agree. First getter return pointer drives lookup; captured pre-find head, second current target, true-on-second-name-collision, empty key, both rotations and parser/nonmanager field preservation checked. Native error paths are guarded out; source count-limit exception checked separately. Five handlers defined and full allocation catch restored; old names/comments preserved. Fixture getters, current CRT/C++ exception services and teardown are boundaries. Concrete parser singleton/name/body dispatch, raw manager/bootstrap, original FH3/SEH/private spills/hardware faults and gameplay remain unproved. Names are hypotheses. See docs/NATIVE_RESOURCE_PARSER_REGISTRATION_BZ.md and reports/native_resource_parser_registration_bz.json. Complete MOV EAX,FuncInfo / JMP BF6B43 dispatch handler defined and saved.",
+      "ledger_name_output": "00cc21c0 -> EH_handler_00cc21c0\n",
+      "prior_comment_preservation_checked": true,
+      "after_comment": {
+        "address": "00cc21c0",
+        "function_name": "EH_handler_00cc21c0",
+        "comment": "[BSP reconstruction 00cc21c0]\nBZ complete raw parser registration:10 ordinary bodies1740bytes;634 ordinary+39 support owners;49 direct transfers and2 indirect name-getters verified. 18 parser/cache code pairs and3 full EH metadata groups are identical after audited target substitutions; existing actual cache algorithms are reused without inventing native graph edges. Strict Win32 build and both tests passed. Ten paired source/original registration steps plus two pair cleanups use11 original bodies/39 relocations; normalized tree links/colors/keys/parser values agree. First getter return pointer drives lookup; captured pre-find head, second current target, true-on-second-name-collision, empty key, both rotations and parser/nonmanager field preservation checked. Native error paths are guarded out; source count-limit exception checked separately. Five handlers defined and full allocation catch restored; old names/comments preserved. Fixture getters, current CRT/C++ exception services and teardown are boundaries. Concrete parser singleton/name/body dispatch, raw manager/bootstrap, original FH3/SEH/private spills/hardware faults and gameplay remain unproved. Names are hypotheses. See docs/NATIVE_RESOURCE_PARSER_REGISTRATION_BZ.md and reports/native_resource_parser_registration_bz.json. Complete MOV EAX,FuncInfo / JMP BF6B43 dispatch handler defined and saved."
+      }
+    },
+    {
+      "address": "00b7f682",
+      "name": "Catch_All@00b7f682",
+      "before_comment": {
+        "address": "00b7f682",
+        "function_name": "Catch_All@00b7f682",
+        "comment": ""
+      },
+      "evidence": "BZ complete raw parser registration:10 ordinary bodies1740bytes;634 ordinary+39 support owners;49 direct transfers and2 indirect name-getters verified. 18 parser/cache code pairs and3 full EH metadata groups are identical after audited target substitutions; existing actual cache algorithms are reused without inventing native graph edges. Strict Win32 build and both tests passed. Ten paired source/original registration steps plus two pair cleanups use11 original bodies/39 relocations; normalized tree links/colors/keys/parser values agree. First getter return pointer drives lookup; captured pre-find head, second current target, true-on-second-name-collision, empty key, both rotations and parser/nonmanager field preservation checked. Native error paths are guarded out; source count-limit exception checked separately. Five handlers defined and full allocation catch restored; old names/comments preserved. Fixture getters, current CRT/C++ exception services and teardown are boundaries. Concrete parser singleton/name/body dispatch, raw manager/bootstrap, original FH3/SEH/private spills/hardware faults and gameplay remain unproved. Names are hypotheses. See docs/NATIVE_RESOURCE_PARSER_REGISTRATION_BZ.md and reports/native_resource_parser_registration_bz.json. Native unwind evidence.",
+      "ledger_name_output": "00b7f682 -> Catch_All@00b7f682\n",
+      "prior_comment_preservation_checked": true,
+      "after_comment": {
+        "address": "00b7f682",
+        "function_name": "Catch_All@00b7f682",
+        "comment": "[BSP reconstruction 00b7f682]\nBZ complete raw parser registration:10 ordinary bodies1740bytes;634 ordinary+39 support owners;49 direct transfers and2 indirect name-getters verified. 18 parser/cache code pairs and3 full EH metadata groups are identical after audited target substitutions; existing actual cache algorithms are reused without inventing native graph edges. Strict Win32 build and both tests passed. Ten paired source/original registration steps plus two pair cleanups use11 original bodies/39 relocations; normalized tree links/colors/keys/parser values agree. First getter return pointer drives lookup; captured pre-find head, second current target, true-on-second-name-collision, empty key, both rotations and parser/nonmanager field preservation checked. Native error paths are guarded out; source count-limit exception checked separately. Five handlers defined and full allocation catch restored; old names/comments preserved. Fixture getters, current CRT/C++ exception services and teardown are boundaries. Concrete parser singleton/name/body dispatch, raw manager/bootstrap, original FH3/SEH/private spills/hardware faults and gameplay remain unproved. Names are hypotheses. See docs/NATIVE_RESOURCE_PARSER_REGISTRATION_BZ.md and reports/native_resource_parser_registration_bz.json. Native unwind evidence."
+      }
+    },
+    {
+      "address": "00cc2060",
+      "name": "Unwind@00cc2060",
+      "before_comment": {
+        "address": "00cc2060",
+        "function_name": "Unwind@00cc2060"
+      },
+      "evidence": "BZ complete raw parser registration:10 ordinary bodies1740bytes;634 ordinary+39 support owners;49 direct transfers and2 indirect name-getters verified. 18 parser/cache code pairs and3 full EH metadata groups are identical after audited target substitutions; existing actual cache algorithms are reused without inventing native graph edges. Strict Win32 build and both tests passed. Ten paired source/original registration steps plus two pair cleanups use11 original bodies/39 relocations; normalized tree links/colors/keys/parser values agree. First getter return pointer drives lookup; captured pre-find head, second current target, true-on-second-name-collision, empty key, both rotations and parser/nonmanager field preservation checked. Native error paths are guarded out; source count-limit exception checked separately. Five handlers defined and full allocation catch restored; old names/comments preserved. Fixture getters, current CRT/C++ exception services and teardown are boundaries. Concrete parser singleton/name/body dispatch, raw manager/bootstrap, original FH3/SEH/private spills/hardware faults and gameplay remain unproved. Names are hypotheses. See docs/NATIVE_RESOURCE_PARSER_REGISTRATION_BZ.md and reports/native_resource_parser_registration_bz.json. Native unwind evidence.",
+      "ledger_name_output": "00cc2060 -> Unwind@00cc2060\n",
+      "prior_comment_preservation_checked": true,
+      "after_comment": {
+        "address": "00cc2060",
+        "function_name": "Unwind@00cc2060",
+        "comment": "[BSP reconstruction 00cc2060]\nBZ complete raw parser registration:10 ordinary bodies1740bytes;634 ordinary+39 support owners;49 direct transfers and2 indirect name-getters verified. 18 parser/cache code pairs and3 full EH metadata groups are identical after audited target substitutions; existing actual cache algorithms are reused without inventing native graph edges. Strict Win32 build and both tests passed. Ten paired source/original registration steps plus two pair cleanups use11 original bodies/39 relocations; normalized tree links/colors/keys/parser values agree. First getter return pointer drives lookup; captured pre-find head, second current target, true-on-second-name-collision, empty key, both rotations and parser/nonmanager field preservation checked. Native error paths are guarded out; source count-limit exception checked separately. Five handlers defined and full allocation catch restored; old names/comments preserved. Fixture getters, current CRT/C++ exception services and teardown are boundaries. Concrete parser singleton/name/body dispatch, raw manager/bootstrap, original FH3/SEH/private spills/hardware faults and gameplay remain unproved. Names are hypotheses. See docs/NATIVE_RESOURCE_PARSER_REGISTRATION_BZ.md and reports/native_resource_parser_registration_bz.json. Native unwind evidence."
+      }
+    },
+    {
+      "address": "00cc2068",
+      "name": "Unwind@00cc2068",
+      "before_comment": {
+        "address": "00cc2068",
+        "function_name": "Unwind@00cc2068"
+      },
+      "evidence": "BZ complete raw parser registration:10 ordinary bodies1740bytes;634 ordinary+39 support owners;49 direct transfers and2 indirect name-getters verified. 18 parser/cache code pairs and3 full EH metadata groups are identical after audited target substitutions; existing actual cache algorithms are reused without inventing native graph edges. Strict Win32 build and both tests passed. Ten paired source/original registration steps plus two pair cleanups use11 original bodies/39 relocations; normalized tree links/colors/keys/parser values agree. First getter return pointer drives lookup; captured pre-find head, second current target, true-on-second-name-collision, empty key, both rotations and parser/nonmanager field preservation checked. Native error paths are guarded out; source count-limit exception checked separately. Five handlers defined and full allocation catch restored; old names/comments preserved. Fixture getters, current CRT/C++ exception services and teardown are boundaries. Concrete parser singleton/name/body dispatch, raw manager/bootstrap, original FH3/SEH/private spills/hardware faults and gameplay remain unproved. Names are hypotheses. See docs/NATIVE_RESOURCE_PARSER_REGISTRATION_BZ.md and reports/native_resource_parser_registration_bz.json. Native unwind evidence.",
+      "ledger_name_output": "00cc2068 -> Unwind@00cc2068\n",
+      "prior_comment_preservation_checked": true,
+      "after_comment": {
+        "address": "00cc2068",
+        "function_name": "Unwind@00cc2068",
+        "comment": "[BSP reconstruction 00cc2068]\nBZ complete raw parser registration:10 ordinary bodies1740bytes;634 ordinary+39 support owners;49 direct transfers and2 indirect name-getters verified. 18 parser/cache code pairs and3 full EH metadata groups are identical after audited target substitutions; existing actual cache algorithms are reused without inventing native graph edges. Strict Win32 build and both tests passed. Ten paired source/original registration steps plus two pair cleanups use11 original bodies/39 relocations; normalized tree links/colors/keys/parser values agree. First getter return pointer drives lookup; captured pre-find head, second current target, true-on-second-name-collision, empty key, both rotations and parser/nonmanager field preservation checked. Native error paths are guarded out; source count-limit exception checked separately. Five handlers defined and full allocation catch restored; old names/comments preserved. Fixture getters, current CRT/C++ exception services and teardown are boundaries. Concrete parser singleton/name/body dispatch, raw manager/bootstrap, original FH3/SEH/private spills/hardware faults and gameplay remain unproved. Names are hypotheses. See docs/NATIVE_RESOURCE_PARSER_REGISTRATION_BZ.md and reports/native_resource_parser_registration_bz.json. Native unwind evidence."
+      }
+    },
+    {
+      "address": "00cc20b0",
+      "name": "Unwind@00cc20b0",
+      "before_comment": {
+        "address": "00cc20b0",
+        "function_name": "Unwind@00cc20b0"
+      },
+      "evidence": "BZ complete raw parser registration:10 ordinary bodies1740bytes;634 ordinary+39 support owners;49 direct transfers and2 indirect name-getters verified. 18 parser/cache code pairs and3 full EH metadata groups are identical after audited target substitutions; existing actual cache algorithms are reused without inventing native graph edges. Strict Win32 build and both tests passed. Ten paired source/original registration steps plus two pair cleanups use11 original bodies/39 relocations; normalized tree links/colors/keys/parser values agree. First getter return pointer drives lookup; captured pre-find head, second current target, true-on-second-name-collision, empty key, both rotations and parser/nonmanager field preservation checked. Native error paths are guarded out; source count-limit exception checked separately. Five handlers defined and full allocation catch restored; old names/comments preserved. Fixture getters, current CRT/C++ exception services and teardown are boundaries. Concrete parser singleton/name/body dispatch, raw manager/bootstrap, original FH3/SEH/private spills/hardware faults and gameplay remain unproved. Names are hypotheses. See docs/NATIVE_RESOURCE_PARSER_REGISTRATION_BZ.md and reports/native_resource_parser_registration_bz.json. Native unwind evidence.",
+      "ledger_name_output": "00cc20b0 -> Unwind@00cc20b0\n",
+      "prior_comment_preservation_checked": true,
+      "after_comment": {
+        "address": "00cc20b0",
+        "function_name": "Unwind@00cc20b0",
+        "comment": "[BSP reconstruction 00cc20b0]\nBZ complete raw parser registration:10 ordinary bodies1740bytes;634 ordinary+39 support owners;49 direct transfers and2 indirect name-getters verified. 18 parser/cache code pairs and3 full EH metadata groups are identical after audited target substitutions; existing actual cache algorithms are reused without inventing native graph edges. Strict Win32 build and both tests passed. Ten paired source/original registration steps plus two pair cleanups use11 original bodies/39 relocations; normalized tree links/colors/keys/parser values agree. First getter return pointer drives lookup; captured pre-find head, second current target, true-on-second-name-collision, empty key, both rotations and parser/nonmanager field preservation checked. Native error paths are guarded out; source count-limit exception checked separately. Five handlers defined and full allocation catch restored; old names/comments preserved. Fixture getters, current CRT/C++ exception services and teardown are boundaries. Concrete parser singleton/name/body dispatch, raw manager/bootstrap, original FH3/SEH/private spills/hardware faults and gameplay remain unproved. Names are hypotheses. See docs/NATIVE_RESOURCE_PARSER_REGISTRATION_BZ.md and reports/native_resource_parser_registration_bz.json. Native unwind evidence."
+      }
+    },
+    {
+      "address": "00cc2130",
+      "name": "Unwind@00cc2130",
+      "before_comment": {
+        "address": "00cc2130",
+        "function_name": "Unwind@00cc2130"
+      },
+      "evidence": "BZ complete raw parser registration:10 ordinary bodies1740bytes;634 ordinary+39 support owners;49 direct transfers and2 indirect name-getters verified. 18 parser/cache code pairs and3 full EH metadata groups are identical after audited target substitutions; existing actual cache algorithms are reused without inventing native graph edges. Strict Win32 build and both tests passed. Ten paired source/original registration steps plus two pair cleanups use11 original bodies/39 relocations; normalized tree links/colors/keys/parser values agree. First getter return pointer drives lookup; captured pre-find head, second current target, true-on-second-name-collision, empty key, both rotations and parser/nonmanager field preservation checked. Native error paths are guarded out; source count-limit exception checked separately. Five handlers defined and full allocation catch restored; old names/comments preserved. Fixture getters, current CRT/C++ exception services and teardown are boundaries. Concrete parser singleton/name/body dispatch, raw manager/bootstrap, original FH3/SEH/private spills/hardware faults and gameplay remain unproved. Names are hypotheses. See docs/NATIVE_RESOURCE_PARSER_REGISTRATION_BZ.md and reports/native_resource_parser_registration_bz.json. Native unwind evidence.",
+      "ledger_name_output": "00cc2130 -> Unwind@00cc2130\n",
+      "prior_comment_preservation_checked": true,
+      "after_comment": {
+        "address": "00cc2130",
+        "function_name": "Unwind@00cc2130",
+        "comment": "[BSP reconstruction 00cc2130]\nBZ complete raw parser registration:10 ordinary bodies1740bytes;634 ordinary+39 support owners;49 direct transfers and2 indirect name-getters verified. 18 parser/cache code pairs and3 full EH metadata groups are identical after audited target substitutions; existing actual cache algorithms are reused without inventing native graph edges. Strict Win32 build and both tests passed. Ten paired source/original registration steps plus two pair cleanups use11 original bodies/39 relocations; normalized tree links/colors/keys/parser values agree. First getter return pointer drives lookup; captured pre-find head, second current target, true-on-second-name-collision, empty key, both rotations and parser/nonmanager field preservation checked. Native error paths are guarded out; source count-limit exception checked separately. Five handlers defined and full allocation catch restored; old names/comments preserved. Fixture getters, current CRT/C++ exception services and teardown are boundaries. Concrete parser singleton/name/body dispatch, raw manager/bootstrap, original FH3/SEH/private spills/hardware faults and gameplay remain unproved. Names are hypotheses. See docs/NATIVE_RESOURCE_PARSER_REGISTRATION_BZ.md and reports/native_resource_parser_registration_bz.json. Native unwind evidence."
+      }
+    },
+    {
+      "address": "00cc21b0",
+      "name": "Unwind@00cc21b0",
+      "before_comment": {
+        "address": "00cc21b0",
+        "function_name": "Unwind@00cc21b0"
+      },
+      "evidence": "BZ complete raw parser registration:10 ordinary bodies1740bytes;634 ordinary+39 support owners;49 direct transfers and2 indirect name-getters verified. 18 parser/cache code pairs and3 full EH metadata groups are identical after audited target substitutions; existing actual cache algorithms are reused without inventing native graph edges. Strict Win32 build and both tests passed. Ten paired source/original registration steps plus two pair cleanups use11 original bodies/39 relocations; normalized tree links/colors/keys/parser values agree. First getter return pointer drives lookup; captured pre-find head, second current target, true-on-second-name-collision, empty key, both rotations and parser/nonmanager field preservation checked. Native error paths are guarded out; source count-limit exception checked separately. Five handlers defined and full allocation catch restored; old names/comments preserved. Fixture getters, current CRT/C++ exception services and teardown are boundaries. Concrete parser singleton/name/body dispatch, raw manager/bootstrap, original FH3/SEH/private spills/hardware faults and gameplay remain unproved. Names are hypotheses. See docs/NATIVE_RESOURCE_PARSER_REGISTRATION_BZ.md and reports/native_resource_parser_registration_bz.json. Native unwind evidence.",
+      "ledger_name_output": "00cc21b0 -> Unwind@00cc21b0\n",
+      "prior_comment_preservation_checked": true,
+      "after_comment": {
+        "address": "00cc21b0",
+        "function_name": "Unwind@00cc21b0",
+        "comment": "[BSP reconstruction 00cc21b0]\nBZ complete raw parser registration:10 ordinary bodies1740bytes;634 ordinary+39 support owners;49 direct transfers and2 indirect name-getters verified. 18 parser/cache code pairs and3 full EH metadata groups are identical after audited target substitutions; existing actual cache algorithms are reused without inventing native graph edges. Strict Win32 build and both tests passed. Ten paired source/original registration steps plus two pair cleanups use11 original bodies/39 relocations; normalized tree links/colors/keys/parser values agree. First getter return pointer drives lookup; captured pre-find head, second current target, true-on-second-name-collision, empty key, both rotations and parser/nonmanager field preservation checked. Native error paths are guarded out; source count-limit exception checked separately. Five handlers defined and full allocation catch restored; old names/comments preserved. Fixture getters, current CRT/C++ exception services and teardown are boundaries. Concrete parser singleton/name/body dispatch, raw manager/bootstrap, original FH3/SEH/private spills/hardware faults and gameplay remain unproved. Names are hypotheses. See docs/NATIVE_RESOURCE_PARSER_REGISTRATION_BZ.md and reports/native_resource_parser_registration_bz.json. Native unwind evidence."
+      }
+    },
+    {
+      "address": "00cc21b8",
+      "name": "Unwind@00cc21b8",
+      "before_comment": {
+        "address": "00cc21b8",
+        "function_name": "Unwind@00cc21b8"
+      },
+      "evidence": "BZ complete raw parser registration:10 ordinary bodies1740bytes;634 ordinary+39 support owners;49 direct transfers and2 indirect name-getters verified. 18 parser/cache code pairs and3 full EH metadata groups are identical after audited target substitutions; existing actual cache algorithms are reused without inventing native graph edges. Strict Win32 build and both tests passed. Ten paired source/original registration steps plus two pair cleanups use11 original bodies/39 relocations; normalized tree links/colors/keys/parser values agree. First getter return pointer drives lookup; captured pre-find head, second current target, true-on-second-name-collision, empty key, both rotations and parser/nonmanager field preservation checked. Native error paths are guarded out; source count-limit exception checked separately. Five handlers defined and full allocation catch restored; old names/comments preserved. Fixture getters, current CRT/C++ exception services and teardown are boundaries. Concrete parser singleton/name/body dispatch, raw manager/bootstrap, original FH3/SEH/private spills/hardware faults and gameplay remain unproved. Names are hypotheses. See docs/NATIVE_RESOURCE_PARSER_REGISTRATION_BZ.md and reports/native_resource_parser_registration_bz.json. Native unwind evidence.",
+      "ledger_name_output": "00cc21b8 -> Unwind@00cc21b8\n",
+      "prior_comment_preservation_checked": true,
+      "after_comment": {
+        "address": "00cc21b8",
+        "function_name": "Unwind@00cc21b8",
+        "comment": "[BSP reconstruction 00cc21b8]\nBZ complete raw parser registration:10 ordinary bodies1740bytes;634 ordinary+39 support owners;49 direct transfers and2 indirect name-getters verified. 18 parser/cache code pairs and3 full EH metadata groups are identical after audited target substitutions; existing actual cache algorithms are reused without inventing native graph edges. Strict Win32 build and both tests passed. Ten paired source/original registration steps plus two pair cleanups use11 original bodies/39 relocations; normalized tree links/colors/keys/parser values agree. First getter return pointer drives lookup; captured pre-find head, second current target, true-on-second-name-collision, empty key, both rotations and parser/nonmanager field preservation checked. Native error paths are guarded out; source count-limit exception checked separately. Five handlers defined and full allocation catch restored; old names/comments preserved. Fixture getters, current CRT/C++ exception services and teardown are boundaries. Concrete parser singleton/name/body dispatch, raw manager/bootstrap, original FH3/SEH/private spills/hardware faults and gameplay remain unproved. Names are hypotheses. See docs/NATIVE_RESOURCE_PARSER_REGISTRATION_BZ.md and reports/native_resource_parser_registration_bz.json. Native unwind evidence."
+      }
+    }
+  ],
+  "actions": [
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00b80a50",
+        "prototype": "unsigned char __fastcall BSP_ResourceManager_RegisterTypeParser(void* manager, void* unused_edx, void* parser)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00b80a50 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00b80290",
+        "prototype": "void* __fastcall STL_ResourceParserMap_InsertUnique(void* tree, void* unused_edx, void* output, void* pair)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00b80290 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00b7fd30",
+        "prototype": "void* __fastcall STL_ResourceParserMap_InsertNode(void* tree, void* unused_edx, void* output, unsigned int side, void* parent, void* pair)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00b7fd30 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00b7f610",
+        "prototype": "void* __fastcall STL_ResourceParserMap_AllocateNode(void* unused_ecx, void* unused_edx, void* left, void* parent, void* right, void* pair, unsigned int color)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00b7f610 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00b7f1b0",
+        "prototype": "void* __fastcall STL_ResourceParserMap_ConstructNode(void* node, void* unused_edx, void* left, void* parent, void* right, void* pair, unsigned int color)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00b7f1b0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00b7f340",
+        "prototype": "void* __fastcall BSP_ResourceParserEntry_Construct(void* pair, void* parser, unsigned int name_length, void* name_data)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00b7f340 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00b7ca80",
+        "prototype": "void* __fastcall STL_ResourceParserMap_RotateRight(void* tree, void* unused_edx, void* node)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00b7ca80 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00b7d590",
+        "prototype": "void* __fastcall STL_ResourceParserMap_RotateLeft(void* tree, void* unused_edx, void* node)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00b7d590 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00b7e930",
+        "prototype": "void __fastcall BSP_ResourceParserPair_DestroyName(void* pair, void* unused_edx)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00b7e930 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00b7e950",
+        "prototype": "void __fastcall BSP_ResourceParserInsertPair_DestroyName(void* pair, void* unused_edx)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00b7e950 with __fastcall calling convention"
+    }
+  ],
+  "state": "names_and_abi_views_saved_previous_comments_retained",
+  "exports_refreshed": true
+}
