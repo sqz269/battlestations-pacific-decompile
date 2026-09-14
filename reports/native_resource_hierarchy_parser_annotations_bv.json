@@ -1,0 +1,739 @@
+{
+  "source_functions": [
+    {
+      "address": "00b7eb90",
+      "function": "parse_native_resource_hierarchy_item_00b7eb90",
+      "source": "src/native_resource_hierarchy_parser.cpp",
+      "report": "reports/native_resource_hierarchy_parser_bv.json",
+      "original_abi": "ECX manager; stacked node handle; RET4",
+      "bytes": 769
+    },
+    {
+      "address": "00b7f100",
+      "function": "parse_native_resource_hierarchy_00b7f100",
+      "source": "src/native_resource_hierarchy_parser.cpp",
+      "report": "reports/native_resource_hierarchy_parser_bv.json",
+      "original_abi": "ECX manager; stacked node handle; RET4",
+      "bytes": 164
+    },
+    {
+      "address": "00b87ae0",
+      "function": "append_native_resource_hierarchy_record_00b87ae0",
+      "source": "src/native_resource_hierarchy_parser.cpp",
+      "report": "reports/native_resource_hierarchy_parser_bv.json",
+      "original_abi": "ECX resource; stacked raw record pointer; RET4",
+      "bytes": 59
+    },
+    {
+      "address": "00b7d160",
+      "function": "build_native_sphere_bounds_00b7d160",
+      "source": "src/native_resource_hierarchy_parser.cpp",
+      "report": "reports/native_resource_hierarchy_parser_bv.json",
+      "original_abi": "ECX output bounds; EDX sphere; EAX output; RET",
+      "bytes": 191
+    },
+    {
+      "address": "00b7d220",
+      "function": "set_native_sphere_bounds_00b7d220",
+      "source": "src/native_resource_hierarchy_parser.cpp",
+      "report": "reports/native_resource_hierarchy_parser_bv.json",
+      "original_abi": "ECX output bounds; stacked sphere; EAX output; RET4",
+      "bytes": 62
+    }
+  ],
+  "entries": [
+    {
+      "address": "00b7eb90",
+      "name": "BSP_StructuredResource_ParseHierarchyItem",
+      "before_comment": {
+        "address": "00b7eb90",
+        "function_name": "BSP_StructuredResource_ParseHierarchyItem",
+        "comment": "[BSP reconstruction 00b7eb90]\n[BSP reconstruction 00b7eb90] update\nComplete 769-byte Item branch. Obtain 132-byte storage via 00b87a90; fields Parent +0, owned Name +4/+8, Matrix destination +0Ch, Resource dword vector +4Ch/+50h/+54h, Flags +58h, sphere +5Ch..+68h, box +6Ch..+80h. Defaults parent FFFFFFFF, zero name/vector/flags, sphere (0,0,0,1e10), box (-1e10 XYZ,+1e10 XYZ); matrix area has no initialization in this body. Resource tags append, other recognized fields overwrite. Sphere recomputes box; explicit box overwrites box only. End passes raw record to 00b87ae0 on current resource manager+24h; owning append/destruction remain unaudited. Do not conflate with resource-item append 00b87aa0.\nEvidence: docs/STRUCTURED_RESOURCE_HIERARCHY_BOUNDS.md and reports/structured_resource_hierarchy_bounds_audit.json. No new C++, native differential test, ABI-compatible replacement or runtime claim. Original ABI: ECX manager; one reader-handle-wrapper pointer stack argument; RET 4.. Evidence: docs/STRUCTURED_RESOURCE_HIERARCHY_BOUNDS.md; reports/structured_resource_hierarchy_bounds_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim.\n\n[BSP reconstruction 00b7eb90] update\nOriginal ABI: ECX manager; node-wrapper pointer stack; RET4. Typed HierarchyItem field loop now implemented with exact serialized defaults, duplicate field ordering, resource indices, counted name and optional uninitialized native matrix. Does not claim native pool allocation/record append ownership. Evidence: docs/STRUCTURED_RESOURCE_INTEGRATION.md; reports/structured_resource_validation.json."
+      },
+      "evidence": "BV actual resource hierarchy parsing. Five complete ordinary bodies total1245bytes; all377 ordinary and10 supporting instruction starts match installed PE and live Ghidra ownership. Strict Win32 compile, whole build and both tests passed. One actual memory-stream/raw-string/hierarchy-pool/list/ref/pointer-array fixture passed field overwrites, duplicate indices, matrix/defaults, unknown skips, repeated append and current manager resource reload. One injected source exception after actual Parent read confirms child-only cleanup; unpublished record is intentionally retained until explicit fixture teardown. Two relocated original sphere math bodies match source in576 paired cases across12 masked x87 modes and three alias placements. FH3 maps have child/name actions only; no record/slot rollback. Whole original parser/FH3, arbitrary private-stack aliases, CRT/SEH identity, unmasked faults and gameplay remain unproved. Root/item dispatch, manager/factory/parser owners, B80720 and queue shutdown remain open. Names are descriptive hypotheses; prior comments retained. See docs/NATIVE_RESOURCE_HIERARCHY_PARSER_INTEGRATION_BV.md and reports/native_resource_hierarchy_parser_bv.json. Full ordinary span 769 bytes; ECX manager; stacked node handle; RET4; reports/native_resource_hierarchy_parser_bv.json. Allocate through existing B87A90 actual hierarchy pool. Initialize84h defaults excluding matrix and slot+84. Parent/Name/Flags overwrite, Resource indices append, sphere recomputes bounds and later box overwrites bounds only. Reload manager+24 after field loop; no record unwind.",
+      "before_documentation": {
+        "hash": "1a0735cd76a6e48f9d54544bcf5a4d2bd96ac470139372a0f3dc5b048f560b32",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b7eb90",
+        "function_name": "BSP_StructuredResource_ParseHierarchyItem",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00b7eb90]\n[BSP reconstruction 00b7eb90] update\nComplete 769-byte Item branch. Obtain 132-byte storage via 00b87a90; fields Parent +0, owned Name +4/+8, Matrix destination +0Ch, Resource dword vector +4Ch/+50h/+54h, Flags +58h, sphere +5Ch..+68h, box +6Ch..+80h. Defaults parent FFFFFFFF, zero name/vector/flags, sphere (0,0,0,1e10), box (-1e10 XYZ,+1e10 XYZ); matrix area has no initialization in this body. Resource tags append, other recognized fields overwrite. Sphere recomputes box; explicit box overwrites box only. End passes raw record to 00b87ae0 on current resource manager+24h; owning append/destruction remain unaudited. Do not conflate with resource-item append 00b87aa0.\nEvidence: docs/STRUCTURED_RESOURCE_HIERARCHY_BOUNDS.md and reports/structured_resource_hierarchy_bounds_audit.json. No new C++, native differential test, ABI-compatible replacement or runtime claim. Original ABI: ECX manager; one reader-handle-wrapper pointer stack argument; RET 4.. Evidence: docs/STRUCTURED_RESOURCE_HIERARCHY_BOUNDS.md; reports/structured_resource_hierarchy_bounds_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim.\n\n[BSP reconstruction 00b7eb90] update\nOriginal ABI: ECX manager; node-wrapper pointer stack; RET4. Typed HierarchyItem field loop now implemented with exact serialized defaults, duplicate field ordering, resource indices, counted name and optional uninitialized native matrix. Does not claim native pool allocation/record append ownership. Evidence: docs/STRUCTURED_RESOURCE_INTEGRATION.md; reports/structured_resource_validation.json.",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "extraout_EDX_01",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "unused_edx_00",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "extraout_EDX_03",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "extraout_EDX_02",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "extraout_EDX_04",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "unused_edx_01",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "extraout_EDX_06",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "extraout_EDX_05",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "unused_edx_02",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "extraout_EDX_07",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "unused_edx_03",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "extraout_EDX_08",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "extraout_EDX_10",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "extraout_EDX_09",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "unused_edx_04",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "pvVar8",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "puVar9",
+            "type": "uint *",
+            "storage": "(register, 0x14, 4)"
+          },
+          {
+            "name": "extraout_EDX_11",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "uVar11",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffb8, 4)"
+          },
+          {
+            "name": "uVar10",
+            "type": "undefined8",
+            "storage": "(VARIABLE, 0x0, 8)"
+          },
+          {
+            "name": "pcStack_8",
+            "type": "undefined *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "local_34",
+            "type": "int[2]",
+            "storage": "(stack, 0xffffffffffffffcc, 4)"
+          },
+          {
+            "name": "cVar2",
+            "type": "char",
+            "storage": "(register, 0x0, 1)"
+          },
+          {
+            "name": "local_28",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffd8, 4)"
+          },
+          {
+            "name": "local_2c",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffd4, 4)"
+          },
+          {
+            "name": "uVar1",
+            "type": "uint",
+            "storage": "(unique, 0x1000033f, 4)"
+          },
+          {
+            "name": "iVar4",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "local_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "uVar3",
+            "type": "uint",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "iVar6",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "local_4",
+            "type": "int",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "puVar5",
+            "type": "uint *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "extraout_EDX",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "puVar7",
+            "type": "uint *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "extraout_EDX_00",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "unused_edx",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 147,
+            "name": "LAB_00b7ec23"
+          },
+          {
+            "relative_offset": 149,
+            "name": "LAB_00b7ec25"
+          },
+          {
+            "relative_offset": 176,
+            "name": "LAB_00b7ec40"
+          },
+          {
+            "relative_offset": 243,
+            "name": "LAB_00b7ec83"
+          },
+          {
+            "relative_offset": 312,
+            "name": "LAB_00b7ecc8"
+          },
+          {
+            "relative_offset": 320,
+            "name": "LAB_00b7ecd0"
+          },
+          {
+            "relative_offset": 334,
+            "name": "LAB_00b7ecde"
+          },
+          {
+            "relative_offset": 343,
+            "name": "LAB_00b7ece7"
+          },
+          {
+            "relative_offset": 394,
+            "name": "LAB_00b7ed1a"
+          },
+          {
+            "relative_offset": 495,
+            "name": "LAB_00b7ed7f"
+          },
+          {
+            "relative_offset": 539,
+            "name": "LAB_00b7edab"
+          },
+          {
+            "relative_offset": 574,
+            "name": "LAB_00b7edce"
+          },
+          {
+            "relative_offset": 659,
+            "name": "LAB_00b7ee23"
+          },
+          {
+            "relative_offset": 694,
+            "name": "LAB_00b7ee46"
+          },
+          {
+            "relative_offset": 699,
+            "name": "LAB_00b7ee4b"
+          },
+          {
+            "relative_offset": 736,
+            "name": "LAB_00b7ee70"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "prototype": "void __fastcall BSP_StructuredResource_ParseHierarchyItem(void* manager, void* unused_edx, void* handle)",
+      "prototype_result": "Successfully set prototype for function at 00b7eb90 with __fastcall calling convention",
+      "ledger_name_output": "00b7eb90 -> BSP_StructuredResource_ParseHierarchyItem\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00b7eb90\", \"name\": \"BSP_StructuredResource_ParseHierarchyItem\", \"evidence\": \"Original ABI: ECX manager; node-wrapper pointer stack; RET4. Typed HierarchyItem field loop now implemented with exact serialized defaults, duplicate field ordering, resource indices, counted name and optional uninitialized native matrix. Does not claim native pool allocation/record append ownership. Evidence: docs/STRUCTURED_RESOURCE_INTEGRATION.md; reports/structured_resource_validation.json.\"})\n",
+      "ledger_function_output": "00b7eb90 function parse_native_resource_hierarchy_item_00b7eb90\n",
+      "prior_comment_preservation_checked": true,
+      "after_comment": {
+        "address": "00b7eb90",
+        "function_name": "BSP_StructuredResource_ParseHierarchyItem",
+        "comment": "[BSP reconstruction 00b7eb90]\n[BSP reconstruction 00b7eb90] update\nComplete 769-byte Item branch. Obtain 132-byte storage via 00b87a90; fields Parent +0, owned Name +4/+8, Matrix destination +0Ch, Resource dword vector +4Ch/+50h/+54h, Flags +58h, sphere +5Ch..+68h, box +6Ch..+80h. Defaults parent FFFFFFFF, zero name/vector/flags, sphere (0,0,0,1e10), box (-1e10 XYZ,+1e10 XYZ); matrix area has no initialization in this body. Resource tags append, other recognized fields overwrite. Sphere recomputes box; explicit box overwrites box only. End passes raw record to 00b87ae0 on current resource manager+24h; owning append/destruction remain unaudited. Do not conflate with resource-item append 00b87aa0.\nEvidence: docs/STRUCTURED_RESOURCE_HIERARCHY_BOUNDS.md and reports/structured_resource_hierarchy_bounds_audit.json. No new C++, native differential test, ABI-compatible replacement or runtime claim. Original ABI: ECX manager; one reader-handle-wrapper pointer stack argument; RET 4.. Evidence: docs/STRUCTURED_RESOURCE_HIERARCHY_BOUNDS.md; reports/structured_resource_hierarchy_bounds_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim.\n\n[BSP reconstruction 00b7eb90] update\nOriginal ABI: ECX manager; node-wrapper pointer stack; RET4. Typed HierarchyItem field loop now implemented with exact serialized defaults, duplicate field ordering, resource indices, counted name and optional uninitialized native matrix. Does not claim native pool allocation/record append ownership. Evidence: docs/STRUCTURED_RESOURCE_INTEGRATION.md; reports/structured_resource_validation.json.\n\n[BSP reconstruction 00b7eb90] update\nBV actual resource hierarchy parsing. Five complete ordinary bodies total1245bytes; all377 ordinary and10 supporting instruction starts match installed PE and live Ghidra ownership. Strict Win32 compile, whole build and both tests passed. One actual memory-stream/raw-string/hierarchy-pool/list/ref/pointer-array fixture passed field overwrites, duplicate indices, matrix/defaults, unknown skips, repeated append and current manager resource reload. One injected source exception after actual Parent read confirms child-only cleanup; unpublished record is intentionally retained until explicit fixture teardown. Two relocated original sphere math bodies match source in576 paired cases across12 masked x87 modes and three alias placements. FH3 maps have child/name actions only; no record/slot rollback. Whole original parser/FH3, arbitrary private-stack aliases, CRT/SEH identity, unmasked faults and gameplay remain unproved. Root/item dispatch, manager/factory/parser owners, B80720 and queue shutdown remain open. Names are descriptive hypotheses; prior comments retained. See docs/NATIVE_RESOURCE_HIERARCHY_PARSER_INTEGRATION_BV.md and reports/native_resource_hierarchy_parser_bv.json. Full ordinary span 769 bytes; ECX manager; stacked node handle; RET4; reports/native_resource_hierarchy_parser_bv.json. Allocate through existing B87A90 actual hierarchy pool. Initialize84h defaults excluding matrix and slot+84. Parent/Name/Flags overwrite, Resource indices append, sphere recomputes bounds and later box overwrites bounds only. Reload manager+24 after field loop; no record unwind."
+      }
+    },
+    {
+      "address": "00b7f100",
+      "name": "BSP_StructuredResource_ParseHierarchy",
+      "before_comment": {
+        "address": "00b7f100",
+        "function_name": "BSP_StructuredResource_ParseHierarchy",
+        "comment": "[BSP reconstruction 00b7f100]\n[BSP reconstruction 00b7f100] update\nComplete 164-byte Hierarchy branch. Iterate through 00715bf0/00bea680; case-insensitive Item name calls 00b7eb90 with manager and child-handle wrapper; null/unknown name calls 00be9c40; both normal paths then 00be9ed0 child cleanup. No parent-pointer tree construction or graph validation here. Reader-helper lifetime/error internals remain separate dependencies.\nEvidence: docs/STRUCTURED_RESOURCE_HIERARCHY_BOUNDS.md and reports/structured_resource_hierarchy_bounds_audit.json. No new C++, native differential test, ABI-compatible replacement or runtime claim. Original ABI: ECX manager; stack pointer to reader-handle wrapper; RET 4.. Evidence: docs/STRUCTURED_RESOURCE_HIERARCHY_BOUNDS.md; reports/structured_resource_hierarchy_bounds_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim.\n\n[BSP reconstruction 00b7f100] update\nRetained host Hierarchy container parser now appends actual00b7eb90 Item values, compares Item through CRT stricmp, and explicitly skips unknown children. Repeated containers append; recognized child close never seeks an unread tail. Original ECX manager/stack wrapper/RET4, no graph validation or native object ABI claim. Evidence docs/REGISTERED_ROOT_RESOURCE.md and reports/registered_root_resource_audit.json. Original ABI: ECX manager; stack pointer to Hierarchy node-handle wrapper; no meaningful return value; RET4. Evidence: docs/REGISTERED_ROOT_RESOURCE.md; reports/registered_root_resource_audit.json. Names are descriptive hypotheses. Typed interfaces are not original ABI or gameplay validation."
+      },
+      "evidence": "BV actual resource hierarchy parsing. Five complete ordinary bodies total1245bytes; all377 ordinary and10 supporting instruction starts match installed PE and live Ghidra ownership. Strict Win32 compile, whole build and both tests passed. One actual memory-stream/raw-string/hierarchy-pool/list/ref/pointer-array fixture passed field overwrites, duplicate indices, matrix/defaults, unknown skips, repeated append and current manager resource reload. One injected source exception after actual Parent read confirms child-only cleanup; unpublished record is intentionally retained until explicit fixture teardown. Two relocated original sphere math bodies match source in576 paired cases across12 masked x87 modes and three alias placements. FH3 maps have child/name actions only; no record/slot rollback. Whole original parser/FH3, arbitrary private-stack aliases, CRT/SEH identity, unmasked faults and gameplay remain unproved. Root/item dispatch, manager/factory/parser owners, B80720 and queue shutdown remain open. Names are descriptive hypotheses; prior comments retained. See docs/NATIVE_RESOURCE_HIERARCHY_PARSER_INTEGRATION_BV.md and reports/native_resource_hierarchy_parser_bv.json. Full ordinary span 164 bytes; ECX manager; stacked node handle; RET4; reports/native_resource_hierarchy_parser_bv.json. Iterate Item children, skip unknown, release each after normal dispatch. Cleanup armed only after child creation and disarmed before normal release. Repeated containers append.",
+      "before_documentation": {
+        "hash": "76f47c13e7e6c6cda94818dade8332ea751630063b84501593c43da9ec8c6d51",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b7f100",
+        "function_name": "BSP_StructuredResource_ParseHierarchy",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00b7f100]\n[BSP reconstruction 00b7f100] update\nComplete 164-byte Hierarchy branch. Iterate through 00715bf0/00bea680; case-insensitive Item name calls 00b7eb90 with manager and child-handle wrapper; null/unknown name calls 00be9c40; both normal paths then 00be9ed0 child cleanup. No parent-pointer tree construction or graph validation here. Reader-helper lifetime/error internals remain separate dependencies.\nEvidence: docs/STRUCTURED_RESOURCE_HIERARCHY_BOUNDS.md and reports/structured_resource_hierarchy_bounds_audit.json. No new C++, native differential test, ABI-compatible replacement or runtime claim. Original ABI: ECX manager; stack pointer to reader-handle wrapper; RET 4.. Evidence: docs/STRUCTURED_RESOURCE_HIERARCHY_BOUNDS.md; reports/structured_resource_hierarchy_bounds_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim.\n\n[BSP reconstruction 00b7f100] update\nRetained host Hierarchy container parser now appends actual00b7eb90 Item values, compares Item through CRT stricmp, and explicitly skips unknown children. Repeated containers append; recognized child close never seeks an unread tail. Original ECX manager/stack wrapper/RET4, no graph validation or native object ABI claim. Evidence docs/REGISTERED_ROOT_RESOURCE.md and reports/registered_root_resource_audit.json. Original ABI: ECX manager; stack pointer to Hierarchy node-handle wrapper; no meaningful return value; RET4. Evidence: docs/REGISTERED_ROOT_RESOURCE.md; reports/registered_root_resource_audit.json. Names are descriptive hypotheses. Typed interfaces are not original ABI or gameplay validation.",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "cVar1",
+            "type": "char",
+            "storage": "(register, 0x0, 1)"
+          },
+          {
+            "name": "parent_handle",
+            "type": "void *",
+            "storage": "(unique, 0x100000ad, 4)"
+          },
+          {
+            "name": "iVar3",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "uVar2",
+            "type": "uint",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "extraout_EDX_00",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "extraout_EDX",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "extraout_EDX_02",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "extraout_EDX_01",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "pvVar4",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "extraout_EDX_03",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "extraout_EDX_04",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "unused_edx",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "local_4",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "local_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "pcStack_8",
+            "type": "undefined *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 40,
+            "name": "LAB_00b7f128"
+          },
+          {
+            "relative_offset": 108,
+            "name": "LAB_00b7f16c"
+          },
+          {
+            "relative_offset": 117,
+            "name": "LAB_00b7f175"
+          },
+          {
+            "relative_offset": 145,
+            "name": "LAB_00b7f191"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "prototype": "void __fastcall BSP_StructuredResource_ParseHierarchy(void* manager, void* unused_edx, void* handle)",
+      "prototype_result": "Successfully set prototype for function at 00b7f100 with __fastcall calling convention",
+      "ledger_name_output": "00b7f100 -> BSP_StructuredResource_ParseHierarchy\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00b7f100\", \"name\": \"BSP_StructuredResource_ParseHierarchy\", \"evidence\": \"Retained host Hierarchy container parser now appends actual00b7eb90 Item values, compares Item through CRT stricmp, and explicitly skips unknown children. Repeated containers append; recognized child close never seeks an unread tail. Original ECX manager/stack wrapper/RET4, no graph validation or native object ABI claim. Evidence docs/REGISTERED_ROOT_RESOURCE.md and reports/registered_root_resource_audit.json. Original ABI: ECX manager; stack pointer to Hierarchy node-handle wrapper; no meaningful return value; RET4. Evidence: docs/REGISTERED_ROOT_RESOURCE.md; reports/registered_root_resource_audit.json. Names are descriptive hypotheses. Typed interfaces are not original ABI or gameplay validation.\"})\n",
+      "ledger_function_output": "00b7f100 function parse_native_resource_hierarchy_00b7f100\n",
+      "prior_comment_preservation_checked": true,
+      "after_comment": {
+        "address": "00b7f100",
+        "function_name": "BSP_StructuredResource_ParseHierarchy",
+        "comment": "[BSP reconstruction 00b7f100]\n[BSP reconstruction 00b7f100] update\nComplete 164-byte Hierarchy branch. Iterate through 00715bf0/00bea680; case-insensitive Item name calls 00b7eb90 with manager and child-handle wrapper; null/unknown name calls 00be9c40; both normal paths then 00be9ed0 child cleanup. No parent-pointer tree construction or graph validation here. Reader-helper lifetime/error internals remain separate dependencies.\nEvidence: docs/STRUCTURED_RESOURCE_HIERARCHY_BOUNDS.md and reports/structured_resource_hierarchy_bounds_audit.json. No new C++, native differential test, ABI-compatible replacement or runtime claim. Original ABI: ECX manager; stack pointer to reader-handle wrapper; RET 4.. Evidence: docs/STRUCTURED_RESOURCE_HIERARCHY_BOUNDS.md; reports/structured_resource_hierarchy_bounds_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim.\n\n[BSP reconstruction 00b7f100] update\nRetained host Hierarchy container parser now appends actual00b7eb90 Item values, compares Item through CRT stricmp, and explicitly skips unknown children. Repeated containers append; recognized child close never seeks an unread tail. Original ECX manager/stack wrapper/RET4, no graph validation or native object ABI claim. Evidence docs/REGISTERED_ROOT_RESOURCE.md and reports/registered_root_resource_audit.json. Original ABI: ECX manager; stack pointer to Hierarchy node-handle wrapper; no meaningful return value; RET4. Evidence: docs/REGISTERED_ROOT_RESOURCE.md; reports/registered_root_resource_audit.json. Names are descriptive hypotheses. Typed interfaces are not original ABI or gameplay validation.\n\n[BSP reconstruction 00b7f100] update\nBV actual resource hierarchy parsing. Five complete ordinary bodies total1245bytes; all377 ordinary and10 supporting instruction starts match installed PE and live Ghidra ownership. Strict Win32 compile, whole build and both tests passed. One actual memory-stream/raw-string/hierarchy-pool/list/ref/pointer-array fixture passed field overwrites, duplicate indices, matrix/defaults, unknown skips, repeated append and current manager resource reload. One injected source exception after actual Parent read confirms child-only cleanup; unpublished record is intentionally retained until explicit fixture teardown. Two relocated original sphere math bodies match source in576 paired cases across12 masked x87 modes and three alias placements. FH3 maps have child/name actions only; no record/slot rollback. Whole original parser/FH3, arbitrary private-stack aliases, CRT/SEH identity, unmasked faults and gameplay remain unproved. Root/item dispatch, manager/factory/parser owners, B80720 and queue shutdown remain open. Names are descriptive hypotheses; prior comments retained. See docs/NATIVE_RESOURCE_HIERARCHY_PARSER_INTEGRATION_BV.md and reports/native_resource_hierarchy_parser_bv.json. Full ordinary span 164 bytes; ECX manager; stacked node handle; RET4; reports/native_resource_hierarchy_parser_bv.json. Iterate Item children, skip unknown, release each after normal dispatch. Cleanup armed only after child creation and disarmed before normal release. Repeated containers append."
+      }
+    },
+    {
+      "address": "00b87ae0",
+      "name": "BSP_Resource_AppendHierarchyItem",
+      "before_comment": {
+        "address": "00b87ae0",
+        "function_name": "BSP_Resource_AppendHierarchyItem",
+        "comment": "[BSP reconstruction 00b87ae0]\nECX resource; hierarchy record pointer stack; RET4. If count+20 equals capacity+24 reserve max(capacity+16,16) through00b87350 on+1C. Store raw record pointer then increment count. No AddRef or copy of record. Matched complete body00b87ae0-00b87b1a to installed PE; normal-path audit only, no native ABI or game validation. reports/resource_item_ownership_audit.json Original ABI: ECX resource; hierarchy record pointer stack; RET4. Evidence: docs/RESOURCE_ITEM_OWNERSHIP.md; reports/resource_item_ownership_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\n\n[BSP reconstruction 00b87ae0] update\nECX resource; hierarchy record pointer stack; RET4. If count+20 equals capacity+24 reserve max(capacity+16,16) through00b87350 on+1C. Store raw record pointer then increment count. No AddRef or copy of record. Matched complete body00b87ae0-00b87b1a to installed PE; normal-path audit only, no native ABI or game validation. reports/resource_item_ownership_audit.json Original ABI: ECX resource; hierarchy record pointer stack; RET4. Evidence: docs/RESOURCE_ITEM_OWNERSHIP.md; reports/resource_item_ownership_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation. | Complete B87AE0-B87B1A PE/live SHA256 19a37acb3de69e759305a422242e3cb3e12eb8d506d701215a24b1736c62b6a5; see docs/NATIVE_RESOURCE_HIERARCHY_APPEND.md; descriptive hypothesis only. | BG/BH source evidence: Complete59B: raw resource array+1Ch/count+20h/capacity+24h; grow only when count==capacity by wrapping+16 with signed minimum16 through actual B87350. Reload data/count, write raw pointer unless computed slot is zero, reload/increment count. No AddRef, null guard or rollback. Worker e0c5832e strict build and two existing CTests; new source interface. See reports/native_resource_hierarchy_append.json and corresponding packet document. Descriptive names are reconstruction hypotheses, not recovered symbols. Merged candidate validation remains separate from worker evidence."
+      },
+      "evidence": "BV actual resource hierarchy parsing. Five complete ordinary bodies total1245bytes; all377 ordinary and10 supporting instruction starts match installed PE and live Ghidra ownership. Strict Win32 compile, whole build and both tests passed. One actual memory-stream/raw-string/hierarchy-pool/list/ref/pointer-array fixture passed field overwrites, duplicate indices, matrix/defaults, unknown skips, repeated append and current manager resource reload. One injected source exception after actual Parent read confirms child-only cleanup; unpublished record is intentionally retained until explicit fixture teardown. Two relocated original sphere math bodies match source in576 paired cases across12 masked x87 modes and three alias placements. FH3 maps have child/name actions only; no record/slot rollback. Whole original parser/FH3, arbitrary private-stack aliases, CRT/SEH identity, unmasked faults and gameplay remain unproved. Root/item dispatch, manager/factory/parser owners, B80720 and queue shutdown remain open. Names are descriptive hypotheses; prior comments retained. See docs/NATIVE_RESOURCE_HIERARCHY_PARSER_INTEGRATION_BV.md and reports/native_resource_hierarchy_parser_bv.json. Full ordinary span 59 bytes; ECX resource; stacked raw record pointer; RET4; reports/native_resource_hierarchy_parser_bv.json. Capacity24 before count20; grow by wrapped+16/signed minimum16 iff equal. Existing B87350 reserve; reload current header for computed-nonnull store then increment current count.",
+      "before_documentation": {
+        "hash": "8d25263bfee574b2d74966047ac6bac3d72aed9edd042426cdc3fe92e4ffbd55",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b87ae0",
+        "function_name": "BSP_Resource_AppendHierarchyItem",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00b87ae0]\nECX resource; hierarchy record pointer stack; RET4. If count+20 equals capacity+24 reserve max(capacity+16,16) through00b87350 on+1C. Store raw record pointer then increment count. No AddRef or copy of record. Matched complete body00b87ae0-00b87b1a to installed PE; normal-path audit only, no native ABI or game validation. reports/resource_item_ownership_audit.json Original ABI: ECX resource; hierarchy record pointer stack; RET4. Evidence: docs/RESOURCE_ITEM_OWNERSHIP.md; reports/resource_item_ownership_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\n\n[BSP reconstruction 00b87ae0] update\nECX resource; hierarchy record pointer stack; RET4. If count+20 equals capacity+24 reserve max(capacity+16,16) through00b87350 on+1C. Store raw record pointer then increment count. No AddRef or copy of record. Matched complete body00b87ae0-00b87b1a to installed PE; normal-path audit only, no native ABI or game validation. reports/resource_item_ownership_audit.json Original ABI: ECX resource; hierarchy record pointer stack; RET4. Evidence: docs/RESOURCE_ITEM_OWNERSHIP.md; reports/resource_item_ownership_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation. | Complete B87AE0-B87B1A PE/live SHA256 19a37acb3de69e759305a422242e3cb3e12eb8d506d701215a24b1736c62b6a5; see docs/NATIVE_RESOURCE_HIERARCHY_APPEND.md; descriptive hypothesis only. | BG/BH source evidence: Complete59B: raw resource array+1Ch/count+20h/capacity+24h; grow only when count==capacity by wrapping+16 with signed minimum16 through actual B87350. Reload data/count, write raw pointer unless computed slot is zero, reload/increment count. No AddRef, null guard or rollback. Worker e0c5832e strict build and two existing CTests; new source interface. See reports/native_resource_hierarchy_append.json and corresponding packet document. Descriptive names are reconstruction hypotheses, not recovered symbols. Merged candidate validation remains separate from worker evidence.",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "puVar1",
+            "type": "undefined4 *",
+            "storage": "(unique, 0x6c00, 4)"
+          },
+          {
+            "name": "iVar2",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 25,
+            "name": "LAB_00b87af9"
+          },
+          {
+            "relative_offset": 33,
+            "name": "LAB_00b87b01"
+          },
+          {
+            "relative_offset": 51,
+            "name": "LAB_00b87b13"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "prototype": "void __fastcall BSP_Resource_AppendHierarchyItem(void* resource, void* unused_edx, void* record)",
+      "prototype_result": "Successfully set prototype for function at 00b87ae0 with __fastcall calling convention",
+      "ledger_name_output": "00b87ae0 -> BSP_Resource_AppendHierarchyItem\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00b87ae0\", \"name\": \"BSP_Resource_AppendHierarchyItem\", \"evidence\": \"ECX resource; hierarchy record pointer stack; RET4. If count+20 equals capacity+24 reserve max(capacity+16,16) through00b87350 on+1C. Store raw record pointer then increment count. No AddRef or copy of record. Matched complete body00b87ae0-00b87b1a to installed PE; normal-path audit only, no native ABI or game validation. reports/resource_item_ownership_audit.json Original ABI: ECX resource; hierarchy record pointer stack; RET4. Evidence: docs/RESOURCE_ITEM_OWNERSHIP.md; reports/resource_item_ownership_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\"})\n",
+      "ledger_function_output": "00b87ae0 function append_native_resource_hierarchy_record_00b87ae0\n",
+      "prior_comment_preservation_checked": true,
+      "after_comment": {
+        "address": "00b87ae0",
+        "function_name": "BSP_Resource_AppendHierarchyItem",
+        "comment": "[BSP reconstruction 00b87ae0]\nECX resource; hierarchy record pointer stack; RET4. If count+20 equals capacity+24 reserve max(capacity+16,16) through00b87350 on+1C. Store raw record pointer then increment count. No AddRef or copy of record. Matched complete body00b87ae0-00b87b1a to installed PE; normal-path audit only, no native ABI or game validation. reports/resource_item_ownership_audit.json Original ABI: ECX resource; hierarchy record pointer stack; RET4. Evidence: docs/RESOURCE_ITEM_OWNERSHIP.md; reports/resource_item_ownership_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\n\n[BSP reconstruction 00b87ae0] update\nECX resource; hierarchy record pointer stack; RET4. If count+20 equals capacity+24 reserve max(capacity+16,16) through00b87350 on+1C. Store raw record pointer then increment count. No AddRef or copy of record. Matched complete body00b87ae0-00b87b1a to installed PE; normal-path audit only, no native ABI or game validation. reports/resource_item_ownership_audit.json Original ABI: ECX resource; hierarchy record pointer stack; RET4. Evidence: docs/RESOURCE_ITEM_OWNERSHIP.md; reports/resource_item_ownership_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation. | Complete B87AE0-B87B1A PE/live SHA256 19a37acb3de69e759305a422242e3cb3e12eb8d506d701215a24b1736c62b6a5; see docs/NATIVE_RESOURCE_HIERARCHY_APPEND.md; descriptive hypothesis only. | BG/BH source evidence: Complete59B: raw resource array+1Ch/count+20h/capacity+24h; grow only when count==capacity by wrapping+16 with signed minimum16 through actual B87350. Reload data/count, write raw pointer unless computed slot is zero, reload/increment count. No AddRef, null guard or rollback. Worker e0c5832e strict build and two existing CTests; new source interface. See reports/native_resource_hierarchy_append.json and corresponding packet document. Descriptive names are reconstruction hypotheses, not recovered symbols. Merged candidate validation remains separate from worker evidence.\n\n[BSP reconstruction 00b87ae0] update\nBV actual resource hierarchy parsing. Five complete ordinary bodies total1245bytes; all377 ordinary and10 supporting instruction starts match installed PE and live Ghidra ownership. Strict Win32 compile, whole build and both tests passed. One actual memory-stream/raw-string/hierarchy-pool/list/ref/pointer-array fixture passed field overwrites, duplicate indices, matrix/defaults, unknown skips, repeated append and current manager resource reload. One injected source exception after actual Parent read confirms child-only cleanup; unpublished record is intentionally retained until explicit fixture teardown. Two relocated original sphere math bodies match source in576 paired cases across12 masked x87 modes and three alias placements. FH3 maps have child/name actions only; no record/slot rollback. Whole original parser/FH3, arbitrary private-stack aliases, CRT/SEH identity, unmasked faults and gameplay remain unproved. Root/item dispatch, manager/factory/parser owners, B80720 and queue shutdown remain open. Names are descriptive hypotheses; prior comments retained. See docs/NATIVE_RESOURCE_HIERARCHY_PARSER_INTEGRATION_BV.md and reports/native_resource_hierarchy_parser_bv.json. Full ordinary span 59 bytes; ECX resource; stacked raw record pointer; RET4; reports/native_resource_hierarchy_parser_bv.json. Capacity24 before count20; grow by wrapped+16/signed minimum16 iff equal. Existing B87350 reserve; reload current header for computed-nonnull store then increment current count."
+      }
+    },
+    {
+      "address": "00b7d160",
+      "name": "BSP_Sphere_ToAxisAlignedBounds",
+      "before_comment": {
+        "address": "00b7d160",
+        "function_name": "BSP_Sphere_ToAxisAlignedBounds",
+        "comment": "[BSP reconstruction 00b7d160]\n[BSP reconstruction 00b7d160] update\nComplete 191-byte geometry leaf. Sphere components are center X/Y/Z and radius. Outputs center-minus-radius XYZ then center-plus-radius XYZ, grounding minimum/maximum ordering for nonnegative radius. Uses x87 arithmetic and float stores; no radius clamp, min/max sorting or finite-value rejection. Negative radius can invert bounds; exceptional FP/control-word parity untested.\nEvidence: docs/STRUCTURED_RESOURCE_HIERARCHY_BOUNDS.md and reports/structured_resource_hierarchy_bounds_audit.json. No new C++, native differential test, ABI-compatible replacement or runtime claim. Original ABI: ECX six-float output; EDX four-float sphere; EAX output; no stack arguments; RET.. Evidence: docs/STRUCTURED_RESOURCE_HIERARCHY_BOUNDS.md; reports/structured_resource_hierarchy_bounds_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim.\n\n[BSP reconstruction 00b7d160] update\nOriginal ABI: ECX output box; EDX sphere; EAX output box; plain RET. Native rounds maxima to float stack temporaries before minima, then writes output minima XYZ followed by maxima XYZ. Typed projection uses explicit x87 and staged output like wrapper00b7d220. Exceptional x87 status/control and NaN behavior remain unverified. Evidence: docs/STRUCTURED_RESOURCE_INTEGRATION.md; reports/structured_resource_validation.json.\n\n[BSP reconstruction 00b7d160] update\nOriginal ABI: ECX output box; EDX sphere; EAX output box; plain RET. Native rounds maxima to float stack temporaries before minima, then writes output minima XYZ followed by maxima XYZ. Typed projection uses explicit x87 and staged output like wrapper00b7d220. Exceptional x87 status/control and NaN behavior remain unverified. Evidence: docs/STRUCTURED_RESOURCE_INTEGRATION.md; reports/structured_resource_validation.json. | BG/BH source evidence: Complete191B raw leaf: ECX output24h, EDX sphere16h, EAX original output, RET. Preserve every original x87/SSE center/radius store/reload and output order. Worker fb127ba9 compiler section equals all191 original PE/live bytes, unique archive member checked. Typed structured_hierarchy.cpp helper remains a separate fragment. No original-vs-source execution or exception-context identity claim. See reports/native_resource_sphere_box.json and corresponding packet document. Descriptive names are reconstruction hypotheses, not recovered symbols. Merged candidate validation remains separate from worker evidence."
+      },
+      "evidence": "BV actual resource hierarchy parsing. Five complete ordinary bodies total1245bytes; all377 ordinary and10 supporting instruction starts match installed PE and live Ghidra ownership. Strict Win32 compile, whole build and both tests passed. One actual memory-stream/raw-string/hierarchy-pool/list/ref/pointer-array fixture passed field overwrites, duplicate indices, matrix/defaults, unknown skips, repeated append and current manager resource reload. One injected source exception after actual Parent read confirms child-only cleanup; unpublished record is intentionally retained until explicit fixture teardown. Two relocated original sphere math bodies match source in576 paired cases across12 masked x87 modes and three alias placements. FH3 maps have child/name actions only; no record/slot rollback. Whole original parser/FH3, arbitrary private-stack aliases, CRT/SEH identity, unmasked faults and gameplay remain unproved. Root/item dispatch, manager/factory/parser owners, B80720 and queue shutdown remain open. Names are descriptive hypotheses; prior comments retained. See docs/NATIVE_RESOURCE_HIERARCHY_PARSER_INTEGRATION_BV.md and reports/native_resource_hierarchy_parser_bv.json. Full ordinary span 191 bytes; ECX output bounds; EDX sphere; EAX output; RET; reports/native_resource_hierarchy_parser_bv.json. Complete ordered x87/SSE leaf. Stage maxima before minima; FLD/FSTP minima and MOVSS maxima. Raw assembly retains float32 stages and overlapping input/output behavior.",
+      "before_documentation": {
+        "hash": "a80f8ba3460b0f98a1419de33e2e6d29278ba94474e29e267fda9b42d5e04367",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b7d160",
+        "function_name": "BSP_Sphere_ToAxisAlignedBounds",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00b7d160]\n[BSP reconstruction 00b7d160] update\nComplete 191-byte geometry leaf. Sphere components are center X/Y/Z and radius. Outputs center-minus-radius XYZ then center-plus-radius XYZ, grounding minimum/maximum ordering for nonnegative radius. Uses x87 arithmetic and float stores; no radius clamp, min/max sorting or finite-value rejection. Negative radius can invert bounds; exceptional FP/control-word parity untested.\nEvidence: docs/STRUCTURED_RESOURCE_HIERARCHY_BOUNDS.md and reports/structured_resource_hierarchy_bounds_audit.json. No new C++, native differential test, ABI-compatible replacement or runtime claim. Original ABI: ECX six-float output; EDX four-float sphere; EAX output; no stack arguments; RET.. Evidence: docs/STRUCTURED_RESOURCE_HIERARCHY_BOUNDS.md; reports/structured_resource_hierarchy_bounds_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim.\n\n[BSP reconstruction 00b7d160] update\nOriginal ABI: ECX output box; EDX sphere; EAX output box; plain RET. Native rounds maxima to float stack temporaries before minima, then writes output minima XYZ followed by maxima XYZ. Typed projection uses explicit x87 and staged output like wrapper00b7d220. Exceptional x87 status/control and NaN behavior remain unverified. Evidence: docs/STRUCTURED_RESOURCE_INTEGRATION.md; reports/structured_resource_validation.json.\n\n[BSP reconstruction 00b7d160] update\nOriginal ABI: ECX output box; EDX sphere; EAX output box; plain RET. Native rounds maxima to float stack temporaries before minima, then writes output minima XYZ followed by maxima XYZ. Typed projection uses explicit x87 and staged output like wrapper00b7d220. Exceptional x87 status/control and NaN behavior remain unverified. Evidence: docs/STRUCTURED_RESOURCE_INTEGRATION.md; reports/structured_resource_validation.json. | BG/BH source evidence: Complete191B raw leaf: ECX output24h, EDX sphere16h, EAX original output, RET. Preserve every original x87/SSE center/radius store/reload and output order. Worker fb127ba9 compiler section equals all191 original PE/live bytes, unique archive member checked. Typed structured_hierarchy.cpp helper remains a separate fragment. No original-vs-source execution or exception-context identity claim. See reports/native_resource_sphere_box.json and corresponding packet document. Descriptive names are reconstruction hypotheses, not recovered symbols. Merged candidate validation remains separate from worker evidence.",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "fVar2",
+            "type": "float",
+            "storage": "(unique, 0xa900, 4)"
+          },
+          {
+            "name": "fVar1",
+            "type": "float",
+            "storage": "(unique, 0xa300, 4)"
+          },
+          {
+            "name": "fVar4",
+            "type": "float",
+            "storage": "(unique, 0xa900, 4)"
+          },
+          {
+            "name": "fVar3",
+            "type": "float",
+            "storage": "(unique, 0xa900, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 100.0
+      },
+      "prototype": "void* __fastcall BSP_Sphere_ToAxisAlignedBounds(void* output, void* sphere)",
+      "prototype_result": "Successfully set prototype for function at 00b7d160 with __fastcall calling convention",
+      "ledger_name_output": "00b7d160 -> BSP_Sphere_ToAxisAlignedBounds\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00b7d160\", \"name\": \"BSP_Sphere_ToAxisAlignedBounds\", \"evidence\": \"Original ABI: ECX output box; EDX sphere; EAX output box; plain RET. Native rounds maxima to float stack temporaries before minima, then writes output minima XYZ followed by maxima XYZ. Typed projection uses explicit x87 and staged output like wrapper00b7d220. Exceptional x87 status/control and NaN behavior remain unverified. Evidence: docs/STRUCTURED_RESOURCE_INTEGRATION.md; reports/structured_resource_validation.json.\"})\n",
+      "ledger_function_output": "00b7d160 function build_native_sphere_bounds_00b7d160\n",
+      "prior_comment_preservation_checked": true,
+      "after_comment": {
+        "address": "00b7d160",
+        "function_name": "BSP_Sphere_ToAxisAlignedBounds",
+        "comment": "[BSP reconstruction 00b7d160]\n[BSP reconstruction 00b7d160] update\nComplete 191-byte geometry leaf. Sphere components are center X/Y/Z and radius. Outputs center-minus-radius XYZ then center-plus-radius XYZ, grounding minimum/maximum ordering for nonnegative radius. Uses x87 arithmetic and float stores; no radius clamp, min/max sorting or finite-value rejection. Negative radius can invert bounds; exceptional FP/control-word parity untested.\nEvidence: docs/STRUCTURED_RESOURCE_HIERARCHY_BOUNDS.md and reports/structured_resource_hierarchy_bounds_audit.json. No new C++, native differential test, ABI-compatible replacement or runtime claim. Original ABI: ECX six-float output; EDX four-float sphere; EAX output; no stack arguments; RET.. Evidence: docs/STRUCTURED_RESOURCE_HIERARCHY_BOUNDS.md; reports/structured_resource_hierarchy_bounds_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim.\n\n[BSP reconstruction 00b7d160] update\nOriginal ABI: ECX output box; EDX sphere; EAX output box; plain RET. Native rounds maxima to float stack temporaries before minima, then writes output minima XYZ followed by maxima XYZ. Typed projection uses explicit x87 and staged output like wrapper00b7d220. Exceptional x87 status/control and NaN behavior remain unverified. Evidence: docs/STRUCTURED_RESOURCE_INTEGRATION.md; reports/structured_resource_validation.json.\n\n[BSP reconstruction 00b7d160] update\nOriginal ABI: ECX output box; EDX sphere; EAX output box; plain RET. Native rounds maxima to float stack temporaries before minima, then writes output minima XYZ followed by maxima XYZ. Typed projection uses explicit x87 and staged output like wrapper00b7d220. Exceptional x87 status/control and NaN behavior remain unverified. Evidence: docs/STRUCTURED_RESOURCE_INTEGRATION.md; reports/structured_resource_validation.json. | BG/BH source evidence: Complete191B raw leaf: ECX output24h, EDX sphere16h, EAX original output, RET. Preserve every original x87/SSE center/radius store/reload and output order. Worker fb127ba9 compiler section equals all191 original PE/live bytes, unique archive member checked. Typed structured_hierarchy.cpp helper remains a separate fragment. No original-vs-source execution or exception-context identity claim. See reports/native_resource_sphere_box.json and corresponding packet document. Descriptive names are reconstruction hypotheses, not recovered symbols. Merged candidate validation remains separate from worker evidence.\n\n[BSP reconstruction 00b7d160] update\nBV actual resource hierarchy parsing. Five complete ordinary bodies total1245bytes; all377 ordinary and10 supporting instruction starts match installed PE and live Ghidra ownership. Strict Win32 compile, whole build and both tests passed. One actual memory-stream/raw-string/hierarchy-pool/list/ref/pointer-array fixture passed field overwrites, duplicate indices, matrix/defaults, unknown skips, repeated append and current manager resource reload. One injected source exception after actual Parent read confirms child-only cleanup; unpublished record is intentionally retained until explicit fixture teardown. Two relocated original sphere math bodies match source in576 paired cases across12 masked x87 modes and three alias placements. FH3 maps have child/name actions only; no record/slot rollback. Whole original parser/FH3, arbitrary private-stack aliases, CRT/SEH identity, unmasked faults and gameplay remain unproved. Root/item dispatch, manager/factory/parser owners, B80720 and queue shutdown remain open. Names are descriptive hypotheses; prior comments retained. See docs/NATIVE_RESOURCE_HIERARCHY_PARSER_INTEGRATION_BV.md and reports/native_resource_hierarchy_parser_bv.json. Full ordinary span 191 bytes; ECX output bounds; EDX sphere; EAX output; RET; reports/native_resource_hierarchy_parser_bv.json. Complete ordered x87/SSE leaf. Stage maxima before minima; FLD/FSTP minima and MOVSS maxima. Raw assembly retains float32 stages and overlapping input/output behavior."
+      }
+    },
+    {
+      "address": "00b7d220",
+      "name": "BSP_Bounds_SetFromSphere",
+      "before_comment": {
+        "address": "00b7d220",
+        "function_name": "BSP_Bounds_SetFromSphere",
+        "comment": "[BSP reconstruction 00b7d220]\n[BSP reconstruction 00b7d220] update\nComplete 62-byte sphere-to-box wrapper. Load sphere pointer into EDX; call leaf 00b7d160 with temporary six-float ECX output; copy six float values into caller output through x87 loads/stores; return output. No ownership transfer or allocation.\nEvidence: docs/STRUCTURED_RESOURCE_HIERARCHY_BOUNDS.md and reports/structured_resource_hierarchy_bounds_audit.json. No new C++, native differential test, ABI-compatible replacement or runtime claim. Original ABI: ECX output box; stack sphere pointer; EAX output; RET 4.. Evidence: docs/STRUCTURED_RESOURCE_HIERARCHY_BOUNDS.md; reports/structured_resource_hierarchy_bounds_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim.\n\n[BSP reconstruction 00b7d220] update\n[BSP reconstruction 00b7d220] update\nComplete 62-byte sphere-to-box wrapper. Load sphere pointer into EDX; call leaf 00b7d160 with temporary six-float ECX output; copy six float values into caller output through x87 loads/stores; return output. No ownership transfer or allocation.\nEvidence: docs/STRUCTURED_RESOURCE_HIERARCHY_BOUNDS.md and reports/structured_resource_hierarchy_bounds_audit.json. No new C++, native differential test, ABI-compatible replacement or runtime claim. Original ABI: ECX output box; stack sphere pointer; EAX output; RET 4.. Evidence: docs/STRUCTURED_RESOURCE_HIERARCHY_BOUNDS.md; reports/structured_resource_hierarchy_bounds_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim. | BG/BH source evidence: Complete62B: ECX output, stack sphere pointer, RET4, EAX original output, ESI preserved. B7D160 writes private24h temporary, then six ordered FLD/FSTP copies. Worker fb127ba9 section has58 identical bytes and only4-byte CALLrel32 relocation to reconstructed leaf. C++ ignored EDX parameter arranges original entry inputs; no installation/gameplay claim. See reports/native_resource_sphere_box.json and corresponding packet document. Descriptive names are reconstruction hypotheses, not recovered symbols. Merged candidate validation remains separate from worker evidence."
+      },
+      "evidence": "BV actual resource hierarchy parsing. Five complete ordinary bodies total1245bytes; all377 ordinary and10 supporting instruction starts match installed PE and live Ghidra ownership. Strict Win32 compile, whole build and both tests passed. One actual memory-stream/raw-string/hierarchy-pool/list/ref/pointer-array fixture passed field overwrites, duplicate indices, matrix/defaults, unknown skips, repeated append and current manager resource reload. One injected source exception after actual Parent read confirms child-only cleanup; unpublished record is intentionally retained until explicit fixture teardown. Two relocated original sphere math bodies match source in576 paired cases across12 masked x87 modes and three alias placements. FH3 maps have child/name actions only; no record/slot rollback. Whole original parser/FH3, arbitrary private-stack aliases, CRT/SEH identity, unmasked faults and gameplay remain unproved. Root/item dispatch, manager/factory/parser owners, B80720 and queue shutdown remain open. Names are descriptive hypotheses; prior comments retained. See docs/NATIVE_RESOURCE_HIERARCHY_PARSER_INTEGRATION_BV.md and reports/native_resource_hierarchy_parser_bv.json. Full ordinary span 62 bytes; ECX output bounds; stacked sphere; EAX output; RET4; reports/native_resource_hierarchy_parser_bv.json. Call sphere leaf with separate24h temporary then six sequential FLD/FSTP copies to captured output. EAX output, RET4.",
+      "before_documentation": {
+        "hash": "c3da4b795d0806c94185e82844322339aeee103286f80df4a3207d09223e80c2",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b7d220",
+        "function_name": "BSP_Bounds_SetFromSphere",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00b7d220]\n[BSP reconstruction 00b7d220] update\nComplete 62-byte sphere-to-box wrapper. Load sphere pointer into EDX; call leaf 00b7d160 with temporary six-float ECX output; copy six float values into caller output through x87 loads/stores; return output. No ownership transfer or allocation.\nEvidence: docs/STRUCTURED_RESOURCE_HIERARCHY_BOUNDS.md and reports/structured_resource_hierarchy_bounds_audit.json. No new C++, native differential test, ABI-compatible replacement or runtime claim. Original ABI: ECX output box; stack sphere pointer; EAX output; RET 4.. Evidence: docs/STRUCTURED_RESOURCE_HIERARCHY_BOUNDS.md; reports/structured_resource_hierarchy_bounds_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim.\n\n[BSP reconstruction 00b7d220] update\n[BSP reconstruction 00b7d220] update\nComplete 62-byte sphere-to-box wrapper. Load sphere pointer into EDX; call leaf 00b7d160 with temporary six-float ECX output; copy six float values into caller output through x87 loads/stores; return output. No ownership transfer or allocation.\nEvidence: docs/STRUCTURED_RESOURCE_HIERARCHY_BOUNDS.md and reports/structured_resource_hierarchy_bounds_audit.json. No new C++, native differential test, ABI-compatible replacement or runtime claim. Original ABI: ECX output box; stack sphere pointer; EAX output; RET 4.. Evidence: docs/STRUCTURED_RESOURCE_HIERARCHY_BOUNDS.md; reports/structured_resource_hierarchy_bounds_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim. | BG/BH source evidence: Complete62B: ECX output, stack sphere pointer, RET4, EAX original output, ESI preserved. B7D160 writes private24h temporary, then six ordered FLD/FSTP copies. Worker fb127ba9 section has58 identical bytes and only4-byte CALLrel32 relocation to reconstructed leaf. C++ ignored EDX parameter arranges original entry inputs; no installation/gameplay claim. See reports/native_resource_sphere_box.json and corresponding packet document. Descriptive names are reconstruction hypotheses, not recovered symbols. Merged candidate validation remains separate from worker evidence.",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "puVar1",
+            "type": "undefined4 *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "local_18",
+            "type": "undefined1[24]"
+          }
+        ],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 100.0
+      },
+      "prototype": "void* __fastcall BSP_Bounds_SetFromSphere(void* output, void* unused_edx, void* sphere)",
+      "prototype_result": "Successfully set prototype for function at 00b7d220 with __fastcall calling convention",
+      "ledger_name_output": "00b7d220 -> BSP_Bounds_SetFromSphere\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00b7d220\", \"name\": \"BSP_Bounds_SetFromSphere\", \"evidence\": \"[BSP reconstruction 00b7d220] update\\nComplete 62-byte sphere-to-box wrapper. Load sphere pointer into EDX; call leaf 00b7d160 with temporary six-float ECX output; copy six float values into caller output through x87 loads/stores; return output. No ownership transfer or allocation.\\nEvidence: docs/STRUCTURED_RESOURCE_HIERARCHY_BOUNDS.md and reports/structured_resource_hierarchy_bounds_audit.json. No new C++, native differential test, ABI-compatible replacement or runtime claim. Original ABI: ECX output box; stack sphere pointer; EAX output; RET 4.. Evidence: docs/STRUCTURED_RESOURCE_HIERARCHY_BOUNDS.md; reports/structured_resource_hierarchy_bounds_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim.\"})\n",
+      "ledger_function_output": "00b7d220 function set_native_sphere_bounds_00b7d220\n",
+      "prior_comment_preservation_checked": true,
+      "after_comment": {
+        "address": "00b7d220",
+        "function_name": "BSP_Bounds_SetFromSphere",
+        "comment": "[BSP reconstruction 00b7d220]\n[BSP reconstruction 00b7d220] update\nComplete 62-byte sphere-to-box wrapper. Load sphere pointer into EDX; call leaf 00b7d160 with temporary six-float ECX output; copy six float values into caller output through x87 loads/stores; return output. No ownership transfer or allocation.\nEvidence: docs/STRUCTURED_RESOURCE_HIERARCHY_BOUNDS.md and reports/structured_resource_hierarchy_bounds_audit.json. No new C++, native differential test, ABI-compatible replacement or runtime claim. Original ABI: ECX output box; stack sphere pointer; EAX output; RET 4.. Evidence: docs/STRUCTURED_RESOURCE_HIERARCHY_BOUNDS.md; reports/structured_resource_hierarchy_bounds_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim.\n\n[BSP reconstruction 00b7d220] update\n[BSP reconstruction 00b7d220] update\nComplete 62-byte sphere-to-box wrapper. Load sphere pointer into EDX; call leaf 00b7d160 with temporary six-float ECX output; copy six float values into caller output through x87 loads/stores; return output. No ownership transfer or allocation.\nEvidence: docs/STRUCTURED_RESOURCE_HIERARCHY_BOUNDS.md and reports/structured_resource_hierarchy_bounds_audit.json. No new C++, native differential test, ABI-compatible replacement or runtime claim. Original ABI: ECX output box; stack sphere pointer; EAX output; RET 4.. Evidence: docs/STRUCTURED_RESOURCE_HIERARCHY_BOUNDS.md; reports/structured_resource_hierarchy_bounds_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim. | BG/BH source evidence: Complete62B: ECX output, stack sphere pointer, RET4, EAX original output, ESI preserved. B7D160 writes private24h temporary, then six ordered FLD/FSTP copies. Worker fb127ba9 section has58 identical bytes and only4-byte CALLrel32 relocation to reconstructed leaf. C++ ignored EDX parameter arranges original entry inputs; no installation/gameplay claim. See reports/native_resource_sphere_box.json and corresponding packet document. Descriptive names are reconstruction hypotheses, not recovered symbols. Merged candidate validation remains separate from worker evidence.\n\n[BSP reconstruction 00b7d220] update\nBV actual resource hierarchy parsing. Five complete ordinary bodies total1245bytes; all377 ordinary and10 supporting instruction starts match installed PE and live Ghidra ownership. Strict Win32 compile, whole build and both tests passed. One actual memory-stream/raw-string/hierarchy-pool/list/ref/pointer-array fixture passed field overwrites, duplicate indices, matrix/defaults, unknown skips, repeated append and current manager resource reload. One injected source exception after actual Parent read confirms child-only cleanup; unpublished record is intentionally retained until explicit fixture teardown. Two relocated original sphere math bodies match source in576 paired cases across12 masked x87 modes and three alias placements. FH3 maps have child/name actions only; no record/slot rollback. Whole original parser/FH3, arbitrary private-stack aliases, CRT/SEH identity, unmasked faults and gameplay remain unproved. Root/item dispatch, manager/factory/parser owners, B80720 and queue shutdown remain open. Names are descriptive hypotheses; prior comments retained. See docs/NATIVE_RESOURCE_HIERARCHY_PARSER_INTEGRATION_BV.md and reports/native_resource_hierarchy_parser_bv.json. Full ordinary span 62 bytes; ECX output bounds; stacked sphere; EAX output; RET4; reports/native_resource_hierarchy_parser_bv.json. Call sphere leaf with separate24h temporary then six sequential FLD/FSTP copies to captured output. EAX output, RET4."
+      }
+    },
+    {
+      "address": "00cc2000",
+      "name": "EH_handler_00cc2000",
+      "before_comment": {
+        "address": "00cc2000",
+        "function_name": "FUN_00cc2000"
+      },
+      "evidence": "BV actual resource hierarchy parsing. Five complete ordinary bodies total1245bytes; all377 ordinary and10 supporting instruction starts match installed PE and live Ghidra ownership. Strict Win32 compile, whole build and both tests passed. One actual memory-stream/raw-string/hierarchy-pool/list/ref/pointer-array fixture passed field overwrites, duplicate indices, matrix/defaults, unknown skips, repeated append and current manager resource reload. One injected source exception after actual Parent read confirms child-only cleanup; unpublished record is intentionally retained until explicit fixture teardown. Two relocated original sphere math bodies match source in576 paired cases across12 masked x87 modes and three alias placements. FH3 maps have child/name actions only; no record/slot rollback. Whole original parser/FH3, arbitrary private-stack aliases, CRT/SEH identity, unmasked faults and gameplay remain unproved. Root/item dispatch, manager/factory/parser owners, B80720 and queue shutdown remain open. Names are descriptive hypotheses; prior comments retained. See docs/NATIVE_RESOURCE_HIERARCHY_PARSER_INTEGRATION_BV.md and reports/native_resource_hierarchy_parser_bv.json. Complete MOV EAX,FuncInfo / JMP BF6B43 dispatch handler defined and saved.",
+      "ledger_name_output": "00cc2000 -> EH_handler_00cc2000\n",
+      "prior_comment_preservation_checked": true,
+      "after_comment": {
+        "address": "00cc2000",
+        "function_name": "EH_handler_00cc2000",
+        "comment": "[BSP reconstruction 00cc2000]\nBV actual resource hierarchy parsing. Five complete ordinary bodies total1245bytes; all377 ordinary and10 supporting instruction starts match installed PE and live Ghidra ownership. Strict Win32 compile, whole build and both tests passed. One actual memory-stream/raw-string/hierarchy-pool/list/ref/pointer-array fixture passed field overwrites, duplicate indices, matrix/defaults, unknown skips, repeated append and current manager resource reload. One injected source exception after actual Parent read confirms child-only cleanup; unpublished record is intentionally retained until explicit fixture teardown. Two relocated original sphere math bodies match source in576 paired cases across12 masked x87 modes and three alias placements. FH3 maps have child/name actions only; no record/slot rollback. Whole original parser/FH3, arbitrary private-stack aliases, CRT/SEH identity, unmasked faults and gameplay remain unproved. Root/item dispatch, manager/factory/parser owners, B80720 and queue shutdown remain open. Names are descriptive hypotheses; prior comments retained. See docs/NATIVE_RESOURCE_HIERARCHY_PARSER_INTEGRATION_BV.md and reports/native_resource_hierarchy_parser_bv.json. Complete MOV EAX,FuncInfo / JMP BF6B43 dispatch handler defined and saved."
+      }
+    },
+    {
+      "address": "00cc2018",
+      "name": "EH_handler_00cc2018",
+      "before_comment": {
+        "address": "00cc2018",
+        "function_name": "FUN_00cc2018"
+      },
+      "evidence": "BV actual resource hierarchy parsing. Five complete ordinary bodies total1245bytes; all377 ordinary and10 supporting instruction starts match installed PE and live Ghidra ownership. Strict Win32 compile, whole build and both tests passed. One actual memory-stream/raw-string/hierarchy-pool/list/ref/pointer-array fixture passed field overwrites, duplicate indices, matrix/defaults, unknown skips, repeated append and current manager resource reload. One injected source exception after actual Parent read confirms child-only cleanup; unpublished record is intentionally retained until explicit fixture teardown. Two relocated original sphere math bodies match source in576 paired cases across12 masked x87 modes and three alias placements. FH3 maps have child/name actions only; no record/slot rollback. Whole original parser/FH3, arbitrary private-stack aliases, CRT/SEH identity, unmasked faults and gameplay remain unproved. Root/item dispatch, manager/factory/parser owners, B80720 and queue shutdown remain open. Names are descriptive hypotheses; prior comments retained. See docs/NATIVE_RESOURCE_HIERARCHY_PARSER_INTEGRATION_BV.md and reports/native_resource_hierarchy_parser_bv.json. Complete MOV EAX,FuncInfo / JMP BF6B43 dispatch handler defined and saved.",
+      "ledger_name_output": "00cc2018 -> EH_handler_00cc2018\n",
+      "prior_comment_preservation_checked": true,
+      "after_comment": {
+        "address": "00cc2018",
+        "function_name": "EH_handler_00cc2018",
+        "comment": "[BSP reconstruction 00cc2018]\nBV actual resource hierarchy parsing. Five complete ordinary bodies total1245bytes; all377 ordinary and10 supporting instruction starts match installed PE and live Ghidra ownership. Strict Win32 compile, whole build and both tests passed. One actual memory-stream/raw-string/hierarchy-pool/list/ref/pointer-array fixture passed field overwrites, duplicate indices, matrix/defaults, unknown skips, repeated append and current manager resource reload. One injected source exception after actual Parent read confirms child-only cleanup; unpublished record is intentionally retained until explicit fixture teardown. Two relocated original sphere math bodies match source in576 paired cases across12 masked x87 modes and three alias placements. FH3 maps have child/name actions only; no record/slot rollback. Whole original parser/FH3, arbitrary private-stack aliases, CRT/SEH identity, unmasked faults and gameplay remain unproved. Root/item dispatch, manager/factory/parser owners, B80720 and queue shutdown remain open. Names are descriptive hypotheses; prior comments retained. See docs/NATIVE_RESOURCE_HIERARCHY_PARSER_INTEGRATION_BV.md and reports/native_resource_hierarchy_parser_bv.json. Complete MOV EAX,FuncInfo / JMP BF6B43 dispatch handler defined and saved."
+      }
+    },
+    {
+      "address": "00cc1ff0",
+      "name": "Unwind@00cc1ff0",
+      "before_comment": {
+        "address": "00cc1ff0",
+        "function_name": "Unwind@00cc1ff0"
+      },
+      "evidence": "BV actual resource hierarchy parsing. Five complete ordinary bodies total1245bytes; all377 ordinary and10 supporting instruction starts match installed PE and live Ghidra ownership. Strict Win32 compile, whole build and both tests passed. One actual memory-stream/raw-string/hierarchy-pool/list/ref/pointer-array fixture passed field overwrites, duplicate indices, matrix/defaults, unknown skips, repeated append and current manager resource reload. One injected source exception after actual Parent read confirms child-only cleanup; unpublished record is intentionally retained until explicit fixture teardown. Two relocated original sphere math bodies match source in576 paired cases across12 masked x87 modes and three alias placements. FH3 maps have child/name actions only; no record/slot rollback. Whole original parser/FH3, arbitrary private-stack aliases, CRT/SEH identity, unmasked faults and gameplay remain unproved. Root/item dispatch, manager/factory/parser owners, B80720 and queue shutdown remain open. Names are descriptive hypotheses; prior comments retained. See docs/NATIVE_RESOURCE_HIERARCHY_PARSER_INTEGRATION_BV.md and reports/native_resource_hierarchy_parser_bv.json. Native unwind evidence. DFB158 state0->-1: release active child handle at synthetic EBP-34 through BE9ED0. No hierarchy-record action.",
+      "ledger_name_output": "00cc1ff0 -> Unwind@00cc1ff0\n",
+      "prior_comment_preservation_checked": true,
+      "after_comment": {
+        "address": "00cc1ff0",
+        "function_name": "Unwind@00cc1ff0",
+        "comment": "[BSP reconstruction 00cc1ff0]\nBV actual resource hierarchy parsing. Five complete ordinary bodies total1245bytes; all377 ordinary and10 supporting instruction starts match installed PE and live Ghidra ownership. Strict Win32 compile, whole build and both tests passed. One actual memory-stream/raw-string/hierarchy-pool/list/ref/pointer-array fixture passed field overwrites, duplicate indices, matrix/defaults, unknown skips, repeated append and current manager resource reload. One injected source exception after actual Parent read confirms child-only cleanup; unpublished record is intentionally retained until explicit fixture teardown. Two relocated original sphere math bodies match source in576 paired cases across12 masked x87 modes and three alias placements. FH3 maps have child/name actions only; no record/slot rollback. Whole original parser/FH3, arbitrary private-stack aliases, CRT/SEH identity, unmasked faults and gameplay remain unproved. Root/item dispatch, manager/factory/parser owners, B80720 and queue shutdown remain open. Names are descriptive hypotheses; prior comments retained. See docs/NATIVE_RESOURCE_HIERARCHY_PARSER_INTEGRATION_BV.md and reports/native_resource_hierarchy_parser_bv.json. Native unwind evidence. DFB158 state0->-1: release active child handle at synthetic EBP-34 through BE9ED0. No hierarchy-record action."
+      }
+    },
+    {
+      "address": "00cc1ff8",
+      "name": "Unwind@00cc1ff8",
+      "before_comment": {
+        "address": "00cc1ff8",
+        "function_name": "Unwind@00cc1ff8"
+      },
+      "evidence": "BV actual resource hierarchy parsing. Five complete ordinary bodies total1245bytes; all377 ordinary and10 supporting instruction starts match installed PE and live Ghidra ownership. Strict Win32 compile, whole build and both tests passed. One actual memory-stream/raw-string/hierarchy-pool/list/ref/pointer-array fixture passed field overwrites, duplicate indices, matrix/defaults, unknown skips, repeated append and current manager resource reload. One injected source exception after actual Parent read confirms child-only cleanup; unpublished record is intentionally retained until explicit fixture teardown. Two relocated original sphere math bodies match source in576 paired cases across12 masked x87 modes and three alias placements. FH3 maps have child/name actions only; no record/slot rollback. Whole original parser/FH3, arbitrary private-stack aliases, CRT/SEH identity, unmasked faults and gameplay remain unproved. Root/item dispatch, manager/factory/parser owners, B80720 and queue shutdown remain open. Names are descriptive hypotheses; prior comments retained. See docs/NATIVE_RESOURCE_HIERARCHY_PARSER_INTEGRATION_BV.md and reports/native_resource_hierarchy_parser_bv.json. Native unwind evidence. DFB158 state1->0: destroy current temporary name header at synthetic EBP-2C through41DD20.",
+      "ledger_name_output": "00cc1ff8 -> Unwind@00cc1ff8\n",
+      "prior_comment_preservation_checked": true,
+      "after_comment": {
+        "address": "00cc1ff8",
+        "function_name": "Unwind@00cc1ff8",
+        "comment": "[BSP reconstruction 00cc1ff8]\nBV actual resource hierarchy parsing. Five complete ordinary bodies total1245bytes; all377 ordinary and10 supporting instruction starts match installed PE and live Ghidra ownership. Strict Win32 compile, whole build and both tests passed. One actual memory-stream/raw-string/hierarchy-pool/list/ref/pointer-array fixture passed field overwrites, duplicate indices, matrix/defaults, unknown skips, repeated append and current manager resource reload. One injected source exception after actual Parent read confirms child-only cleanup; unpublished record is intentionally retained until explicit fixture teardown. Two relocated original sphere math bodies match source in576 paired cases across12 masked x87 modes and three alias placements. FH3 maps have child/name actions only; no record/slot rollback. Whole original parser/FH3, arbitrary private-stack aliases, CRT/SEH identity, unmasked faults and gameplay remain unproved. Root/item dispatch, manager/factory/parser owners, B80720 and queue shutdown remain open. Names are descriptive hypotheses; prior comments retained. See docs/NATIVE_RESOURCE_HIERARCHY_PARSER_INTEGRATION_BV.md and reports/native_resource_hierarchy_parser_bv.json. Native unwind evidence. DFB158 state1->0: destroy current temporary name header at synthetic EBP-2C through41DD20."
+      }
+    },
+    {
+      "address": "00cc2010",
+      "name": "Unwind@00cc2010",
+      "before_comment": {
+        "address": "00cc2010",
+        "function_name": "Unwind@00cc2010"
+      },
+      "evidence": "BV actual resource hierarchy parsing. Five complete ordinary bodies total1245bytes; all377 ordinary and10 supporting instruction starts match installed PE and live Ghidra ownership. Strict Win32 compile, whole build and both tests passed. One actual memory-stream/raw-string/hierarchy-pool/list/ref/pointer-array fixture passed field overwrites, duplicate indices, matrix/defaults, unknown skips, repeated append and current manager resource reload. One injected source exception after actual Parent read confirms child-only cleanup; unpublished record is intentionally retained until explicit fixture teardown. Two relocated original sphere math bodies match source in576 paired cases across12 masked x87 modes and three alias placements. FH3 maps have child/name actions only; no record/slot rollback. Whole original parser/FH3, arbitrary private-stack aliases, CRT/SEH identity, unmasked faults and gameplay remain unproved. Root/item dispatch, manager/factory/parser owners, B80720 and queue shutdown remain open. Names are descriptive hypotheses; prior comments retained. See docs/NATIVE_RESOURCE_HIERARCHY_PARSER_INTEGRATION_BV.md and reports/native_resource_hierarchy_parser_bv.json. Native unwind evidence. DFB18C state0->-1: release active Item child handle at synthetic EBP+4 through BE9ED0.",
+      "ledger_name_output": "00cc2010 -> Unwind@00cc2010\n",
+      "prior_comment_preservation_checked": true,
+      "after_comment": {
+        "address": "00cc2010",
+        "function_name": "Unwind@00cc2010",
+        "comment": "[BSP reconstruction 00cc2010]\nBV actual resource hierarchy parsing. Five complete ordinary bodies total1245bytes; all377 ordinary and10 supporting instruction starts match installed PE and live Ghidra ownership. Strict Win32 compile, whole build and both tests passed. One actual memory-stream/raw-string/hierarchy-pool/list/ref/pointer-array fixture passed field overwrites, duplicate indices, matrix/defaults, unknown skips, repeated append and current manager resource reload. One injected source exception after actual Parent read confirms child-only cleanup; unpublished record is intentionally retained until explicit fixture teardown. Two relocated original sphere math bodies match source in576 paired cases across12 masked x87 modes and three alias placements. FH3 maps have child/name actions only; no record/slot rollback. Whole original parser/FH3, arbitrary private-stack aliases, CRT/SEH identity, unmasked faults and gameplay remain unproved. Root/item dispatch, manager/factory/parser owners, B80720 and queue shutdown remain open. Names are descriptive hypotheses; prior comments retained. See docs/NATIVE_RESOURCE_HIERARCHY_PARSER_INTEGRATION_BV.md and reports/native_resource_hierarchy_parser_bv.json. Native unwind evidence. DFB18C state0->-1: release active Item child handle at synthetic EBP+4 through BE9ED0."
+      }
+    }
+  ],
+  "actions": [
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00b7eb90",
+        "prototype": "void __fastcall BSP_StructuredResource_ParseHierarchyItem(void* manager, void* unused_edx, void* handle)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00b7eb90 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00b7f100",
+        "prototype": "void __fastcall BSP_StructuredResource_ParseHierarchy(void* manager, void* unused_edx, void* handle)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00b7f100 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00b87ae0",
+        "prototype": "void __fastcall BSP_Resource_AppendHierarchyItem(void* resource, void* unused_edx, void* record)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00b87ae0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00b7d160",
+        "prototype": "void* __fastcall BSP_Sphere_ToAxisAlignedBounds(void* output, void* sphere)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00b7d160 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00b7d220",
+        "prototype": "void* __fastcall BSP_Bounds_SetFromSphere(void* output, void* unused_edx, void* sphere)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00b7d220 with __fastcall calling convention"
+    }
+  ],
+  "state": "names_and_abi_views_saved_previous_comments_retained",
+  "exports_refreshed": true
+}
