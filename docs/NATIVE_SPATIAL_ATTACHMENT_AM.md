@@ -134,3 +134,7 @@ adjustments and cleanup of the numerical kernels are inspected separately.
 The actual executable still needs spatial ownership admission, complete unit
 dispatch and floor bindings, detachment/destruction, and a populated refresh
 registry. Original FH3/fault delivery and gameplay parity remain unproved.
+
+## Integrated validation
+
+Commit `a3e0699006f3b2d9d5aa16dee9c3f91967f5704d` passes the Win32 build and both existing CTests. All60 paired original-byte cases pass against that exact library, including whole attachment branches, numerical edge cases and actual source-CRT allocation failure. The 120-frame USN01 compatibility run passes finite-trajectory, stationary Airfield2, avoidance, generic-tick, participant, world-list and observer/pending-owner checks. The preserved executable SHA-256 is `a35ec951555bb9074cef2b4d7dcea5c31011282ba2f25d71f2671e4e534aa8ff`. An immutable manifest retains original reference bytes, raw normalized attachment images, numerical results and branch traces, linked objects, compilation dependencies and mission artifacts. Spatial admission and gameplay parity remain unproved.
