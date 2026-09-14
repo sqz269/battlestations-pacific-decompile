@@ -37,8 +37,9 @@ inline constexpr std::size_t kWeaponClassOffEngagementRange = 0x60;
 inline constexpr std::size_t kWeaponClassOffFinaliseLatch = 0x64;
 // 006E97F0 sets this at 006E9878; 006EB033 tests it to run the pair once.
 inline constexpr std::size_t kWeaponClassOffLoadLatch = 0xC8;
-// 00855A90 writes the torpedo's terminal fall speed here at 00855AD3.
-inline constexpr std::size_t kTorpedoClassOffTerminalFallSpeed = 0xEC;
+// 00855A90 also writes the torpedo's terminal fall speed at 00855AD3; that
+// offset is already published as kTorpedoClassOffTerminalFallSpeed in
+// bsp/bomb_torpedo_tick.hpp and is deliberately not redeclared here.
 
 // ---------------------------------------------------------------------------
 // The constants the hook loads, each with the .rdata address it comes from.
