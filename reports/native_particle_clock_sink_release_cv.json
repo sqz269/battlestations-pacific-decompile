@@ -1,0 +1,88 @@
+{
+  "packet": "orch3_particle_clock_sink_release_cv",
+  "status": "raw_source_native_reviewed_build_pending",
+  "source_parent_commit": "e8e5af0f0d5be9663f9a98e2925808ce55aa7298",
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "installed_pe": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "installed_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "functions": [
+    {
+      "address": "004ddb40",
+      "inclusive_end": "004ddb5e",
+      "bytes": 31,
+      "native_sha256": "1071027371a9ce2f817139cbfde3b2eb3ef9061595d7348715c459167dea677f",
+      "cpp_symbol": "release_native_particle_clock_sink_004ddb40",
+      "ghidra_name": "BSP_ParticleRecordContainer_ReleaseSink",
+      "original_abi": "thiscall ECX unused container; one actual sink pointer stack word; RET4. Current IAT00CE2220 stdcall on sink+4; on zero actual sink ECX and profile slot0 call with no stack arguments."
+    }
+  ],
+  "native_spans": [
+    {
+      "address": "004ddb40",
+      "bytes": 31,
+      "hex": "568b7424088d460450ff152022ce0085c075088b168b028bceffd05ec20400",
+      "sha256": "1071027371a9ce2f817139cbfde3b2eb3ef9061595d7348715c459167dea677f",
+      "live_installed_identity": true
+    },
+    {
+      "address": "00ce7d18",
+      "bytes": 4,
+      "hex": "40db4d00",
+      "sha256": "f60ca37f6f2f6d6a8005f6e9f930c663d0bb82cd72a527fcc50149403205c8ce",
+      "live_installed_identity": true
+    },
+    {
+      "address": "00ce7d34",
+      "bytes": 4,
+      "hex": "40db4d00",
+      "sha256": "f60ca37f6f2f6d6a8005f6e9f930c663d0bb82cd72a527fcc50149403205c8ce",
+      "live_installed_identity": true
+    }
+  ],
+  "call_steps": [
+    {
+      "address": "004ddb49",
+      "function": "004ddb40",
+      "native": "current-IAT-InterlockedDecrement-00CE2220",
+      "kind": "indirect"
+    },
+    {
+      "address": "004ddb59",
+      "function": "004ddb40",
+      "native": "actual-sink-profile-slot0-via-EAX-no-stack-arguments",
+      "kind": "indirect"
+    }
+  ],
+  "native_incoming_xrefs": "From 00ce7d18 [DATA]\nFrom 00ce7d34 [DATA]\n",
+  "source_sha256": {
+    "include/bsp/native_particle_clock_sink_release.hpp": "da5e9b06250fd11dd49a889cecf4aa6a9545af4b2e89f3684d7b30aca2552f67",
+    "src/native_particle_clock_sink_release.cpp": "5700252321afbf61a91ecba3ea11c2dbd6f0b9d8fcdcd7866d9d4cd49e24ba11"
+  },
+  "provider_sha256": {
+    "include/bsp/particle_clock_lifetime.hpp": "b54ea8e3be7dd654e869ff009d6adb812f5acfc6029d903dac18006a01341919",
+    "src/particle_clock_lifetime.cpp": "841a2eace4497456da6e8dfbf39f51fb83ae52e668a87797a314a8243256ed89"
+  },
+  "native_body_credit": 0,
+  "native_bytes_credit": 0,
+  "raw_interface_upgrades": 1,
+  "raw_interface_bytes": 31,
+  "review": {
+    "native_complete_body_reviewed": true,
+    "source_complete_body_reviewed": true,
+    "generated_code_pending": true,
+    "expected_code_transformation": "Replace six-byte CALL[00CE2220] at native+9 by two-byte CALL[EDX]; all other bytes identical. Source EDX borrows current IAT cell address; original sink stack slot and RET4 unchanged."
+  },
+  "validation": {
+    "build_pending": true,
+    "new_repository_tests": 0,
+    "game_validated": false
+  },
+  "limits": [
+    "Additional source EDX IAT-cell argument is not the original binary ABI.",
+    "No host C++ virtual projection or stand-in sink is substituted for the actual profile call.",
+    "Concrete native sink destruction, full particle clock shutdown and gameplay remain unvalidated."
+  ]
+}
