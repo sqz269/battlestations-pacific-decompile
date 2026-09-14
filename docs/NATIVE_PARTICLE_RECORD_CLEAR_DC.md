@@ -28,3 +28,7 @@ found no existing address implementation in root, main or the pinned orch5
 branches. This packet contributes one new eight-byte body, subject to that
 explicit evidence scope. Original FH3 behavior, source caller reachability and
 gameplay remain separate validation requirements.
+
+## Primary validation
+
+Exact source `21a288f2d3c596036498905e77fb7ea991d2bb33` passed MSVC Win32 Release and both existing math CTests with 2609 unchanged tracked inputs and a clean tree before/after. The entire eight-byte generated COMDAT matches all non-relocation native bytes; its sole REL32 relocation names the concrete CY resize provider. No repository test or local execution probe was added for this three-instruction forwarding entry. Its new source entry and original native parent were not executed. The independent DD immutable-ref audit is retained with the evidence.
