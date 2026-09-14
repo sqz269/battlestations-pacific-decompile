@@ -1,0 +1,3265 @@
+{
+  "packet": "orch5_native_sampler_cache_operation",
+  "status": "actual_continuation_reconstructed_full_entries_incomplete",
+  "source": "src/native_sampler_cache_operation.cpp",
+  "header": "include/bsp/native_sampler_cache_operation.hpp",
+  "documentation": "docs/NATIVE_SAMPLER_CACHE_OPERATION.md",
+  "analysis": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "routines": [
+    {
+      "address": "00b1a4f0",
+      "bytes": 1338,
+      "end": "00b1aa29",
+      "sha256": "002cdaf6ca625b6e3b138575622dc3dc6feb22a468c021f33814f1815a669f62",
+      "live_disk_equal": true,
+      "path": "local/sco-original-00b1a4f0.bin",
+      "instructions": 447,
+      "last_instruction": "00b1aa27: ret 0x10",
+      "last_instruction_length": 3,
+      "ghidra_body": "00b1a4f0 FUN_00b1a4f0  undefined FUN_00b1a4f0(void)  body 00b1a4f0 - 00b1aa29",
+      "coverage": "complete normal continuation B1A51D..B1AA29 implemented; full entry incomplete",
+      "original_abi": "ECX secondary cache; stack name/options/retain-new-byte/load-if-missing-byte; EAX resource; RET10"
+    },
+    {
+      "address": "00b1b4d0",
+      "bytes": 280,
+      "end": "00b1b5e7",
+      "sha256": "842408999114f6f975691e501a6a8bedbd52c55796eb4d47c694e211ca335ea1",
+      "live_disk_equal": true,
+      "path": "local/sco-original-00b1b4d0.bin",
+      "instructions": 95,
+      "last_instruction": "00b1b5e5: ret 4",
+      "last_instruction_length": 3,
+      "ghidra_body": "00b1b4d0 FUN_00b1b4d0  undefined FUN_00b1b4d0(void)  body 00b1b4d0 - 00b1b5e7",
+      "coverage": "complete body analyzed; source entry not implemented",
+      "original_abi": "ECX complete1Ch owner; stack actual name; EAX resource; RET4"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00b1a518",
+      "caller": "00b1a4f0",
+      "instruction": "call 0xbeccd0",
+      "native": "00beccd0",
+      "contract": "ECX current raw0109CF04 captured B1A50E; no stacked args, RET. Full pump executes before requested header read/initialization or string cleanup is armed. Actual raw platform adapter remains unavailable."
+    },
+    {
+      "address": "00b1a540",
+      "caller": "00b1a4f0",
+      "instruction": "call 0x41dd40",
+      "native": "0041dd40",
+      "contract": "ECX actual8h header; stack DWORD length,preserve1; RET8. Re-read source nonempty and current destination length/source data/destination data after return."
+    },
+    {
+      "address": "00b1a557",
+      "caller": "00b1a4f0",
+      "instruction": "call 0xbf7680",
+      "native": "00bf7680",
+      "contract": "cdecl memmove semantics; three stacked arguments and ADD ESP,0Ch. Copy schedules are current destination length, source data, destination data except wrapper captured EDI destination and Default length+1."
+    },
+    {
+      "address": "00b1a567",
+      "caller": "00b1a4f0",
+      "instruction": "call 0xbee690",
+      "native": "00bee690",
+      "contract": "ECX actual8h header, RET. Existing full current-header path normalization with same actual string pool."
+    },
+    {
+      "address": "00b1a597",
+      "caller": "00b1a4f0",
+      "instruction": "call 0xbf6713",
+      "native": "00bf6713",
+      "contract": "No native arguments, RET. Returning CRT invalid-parameter path. B1A597 unreachable CMP EAX,EAX; other sites continue using the original current/captured operands."
+    },
+    {
+      "address": "00b1a5a5",
+      "caller": "00b1a4f0",
+      "instruction": "call 0xbf6713",
+      "native": "00bf6713",
+      "contract": "No native arguments, RET. Returning CRT invalid-parameter path. B1A597 unreachable CMP EAX,EAX; other sites continue using the original current/captured operands."
+    },
+    {
+      "address": "00b1a5d3",
+      "caller": "00b1a4f0",
+      "instruction": "call 0xbf7fbf",
+      "native": "00bf7fbf",
+      "contract": "cdecl case-insensitive C-string comparison; two arguments, ADD ESP,8. Stored-length precheck only for alias matches, not requested/resolved comparisons."
+    },
+    {
+      "address": "00b1a5e9",
+      "caller": "00b1a4f0",
+      "instruction": "call 0xbf6713",
+      "native": "00bf6713",
+      "contract": "No native arguments, RET. Returning CRT invalid-parameter path. B1A597 unreachable CMP EAX,EAX; other sites continue using the original current/captured operands."
+    },
+    {
+      "address": "00b1a663",
+      "caller": "00b1a4f0",
+      "instruction": "call 0x41dd40",
+      "native": "0041dd40",
+      "contract": "ECX actual8h header; stack DWORD length,preserve1; RET8. Re-read source nonempty and current destination length/source data/destination data after return."
+    },
+    {
+      "address": "00b1a67a",
+      "caller": "00b1a4f0",
+      "instruction": "call 0xbf7680",
+      "native": "00bf7680",
+      "contract": "cdecl memmove semantics; three stacked arguments and ADD ESP,0Ch. Copy schedules are current destination length, source data, destination data except wrapper captured EDI destination and Default length+1."
+    },
+    {
+      "address": "00b1a69a",
+      "caller": "00b1a4f0",
+      "instruction": "call 0x419cc0",
+      "native": "00419cc0",
+      "contract": "No native arguments; current actual 419CC0 pool publication, EAX owner, RET. Prior pushed data/size/flag1 remain arguments for BD1510."
+    },
+    {
+      "address": "00b1a6a1",
+      "caller": "00b1a4f0",
+      "instruction": "call 0xbd1510",
+      "native": "00bd1510",
+      "contract": "ECX actual owning pool; stack captured/current data,current length+1,1; RET0C. B1B4D0 requested data captured at B1B516, other normal cleanups capture current data before disarming."
+    },
+    {
+      "address": "00b1a6aa",
+      "caller": "00b1a4f0",
+      "instruction": "call 0xbee690",
+      "native": "00bee690",
+      "contract": "ECX actual8h header, RET. Existing full current-header path normalization with same actual string pool."
+    },
+    {
+      "address": "00b1a6cf",
+      "caller": "00b1a4f0",
+      "instruction": "call 0xbf7fbf",
+      "native": "00bf7fbf",
+      "contract": "cdecl case-insensitive C-string comparison; two arguments, ADD ESP,8. Stored-length precheck only for alias matches, not requested/resolved comparisons."
+    },
+    {
+      "address": "00b1a6f8",
+      "caller": "00b1a4f0",
+      "instruction": "call 0xbf6713",
+      "native": "00bf6713",
+      "contract": "No native arguments, RET. Returning CRT invalid-parameter path. B1A597 unreachable CMP EAX,EAX; other sites continue using the original current/captured operands."
+    },
+    {
+      "address": "00b1a726",
+      "caller": "00b1a4f0",
+      "instruction": "call 0xbf7fbf",
+      "native": "00bf7fbf",
+      "contract": "cdecl case-insensitive C-string comparison; two arguments, ADD ESP,8. Stored-length precheck only for alias matches, not requested/resolved comparisons."
+    },
+    {
+      "address": "00b1a782",
+      "caller": "00b1a4f0",
+      "instruction": "call 0x4c3020",
+      "native": "004c3020",
+      "contract": "No register/stack inputs, RET. Actual10h sentinel allocation with next/previous self links; string fields uninitialized."
+    },
+    {
+      "address": "00b1a7b3",
+      "caller": "00b1a4f0",
+      "instruction": "call 0x41dd40",
+      "native": "0041dd40",
+      "contract": "ECX actual8h header; stack DWORD length,preserve1; RET8. Re-read source nonempty and current destination length/source data/destination data after return."
+    },
+    {
+      "address": "00b1a7cd",
+      "caller": "00b1a4f0",
+      "instruction": "call 0xbf7680",
+      "native": "00bf7680",
+      "contract": "cdecl memmove semantics; three stacked arguments and ADD ESP,0Ch. Copy schedules are current destination length, source data, destination data except wrapper captured EDI destination and Default length+1."
+    },
+    {
+      "address": "00b1a7ea",
+      "caller": "00b1a4f0",
+      "instruction": "call 0x4ce6f0",
+      "native": "004ce6f0",
+      "contract": "ECX/EDX unused; stack next,previous,actual name; EAX allocated actual10h alias node; RET0C. No insertion or count change."
+    },
+    {
+      "address": "00b1a7f7",
+      "caller": "00b1a4f0",
+      "instruction": "call 0x4ce780",
+      "native": "004ce780",
+      "contract": "ECX actual0Ch list header; stack1, RET4. Current unsigned count bound, actual length_error path. Successful allocated node remains separate until following link writes."
+    },
+    {
+      "address": "00b1a813",
+      "caller": "00b1a4f0",
+      "instruction": "call 0xbdd340",
+      "native": "00bdd340",
+      "contract": "ECX current0109CEEC captured B1A80D; stack actual output/name, RET8. Uses returned output pointer for five ascending interleaved copies; physical route independently reloads current manager."
+    },
+    {
+      "address": "00b1a85d",
+      "caller": "00b1a4f0",
+      "instruction": "call 0x4ce6f0",
+      "native": "004ce6f0",
+      "contract": "ECX/EDX unused; stack next,previous,actual name; EAX allocated actual10h alias node; RET0C. No insertion or count change."
+    },
+    {
+      "address": "00b1a868",
+      "caller": "00b1a4f0",
+      "instruction": "call 0x4ce780",
+      "native": "004ce780",
+      "contract": "ECX actual0Ch list header; stack1, RET4. Current unsigned count bound, actual length_error path. Successful allocated node remains separate until following link writes."
+    },
+    {
+      "address": "00b1a8b0",
+      "caller": "00b1a4f0",
+      "instruction": "call 0xbf7fbf",
+      "native": "00bf7fbf",
+      "contract": "cdecl case-insensitive C-string comparison; two arguments, ADD ESP,8. Stored-length precheck only for alias matches, not requested/resolved comparisons."
+    },
+    {
+      "address": "00b1a8d1",
+      "caller": "00b1a4f0",
+      "instruction": "call 0x4ce6f0",
+      "native": "004ce6f0",
+      "contract": "ECX/EDX unused; stack next,previous,actual name; EAX allocated actual10h alias node; RET0C. No insertion or count change."
+    },
+    {
+      "address": "00b1a8de",
+      "caller": "00b1a4f0",
+      "instruction": "call 0x4ce780",
+      "native": "004ce780",
+      "contract": "ECX actual0Ch list header; stack1, RET4. Current unsigned count bound, actual length_error path. Successful allocated node remains separate until following link writes."
+    },
+    {
+      "address": "00b1a8fa",
+      "caller": "00b1a4f0",
+      "instruction": "call 0xb1a3c0",
+      "native": "00b1a3c0",
+      "contract": "ECX actual0Ch vector; stack actual2Ch source record; RET4. Complete existing actual reserve/copy and count publication; native orphan-prefix failure boundary retained."
+    },
+    {
+      "address": "00b1a922",
+      "caller": "00b1a4f0",
+      "instruction": "call 0x4d45a0",
+      "native": "004d45a0",
+      "contract": "ECX actual2Ch record; RET. Clear aliases, free/null current sentinel, release current name. No resource+28 retain/release."
+    },
+    {
+      "address": "00b1a93f",
+      "caller": "00b1a4f0",
+      "instruction": "call 0x419cc0",
+      "native": "00419cc0",
+      "contract": "No native arguments; current actual 419CC0 pool publication, EAX owner, RET. Prior pushed data/size/flag1 remain arguments for BD1510."
+    },
+    {
+      "address": "00b1a946",
+      "caller": "00b1a4f0",
+      "instruction": "call 0xbd1510",
+      "native": "00bd1510",
+      "contract": "ECX actual owning pool; stack captured/current data,current length+1,1; RET0C. B1B4D0 requested data captured at B1B516, other normal cleanups capture current data before disarming."
+    },
+    {
+      "address": "00b1a95f",
+      "caller": "00b1a4f0",
+      "instruction": "call 0x4d45a0",
+      "native": "004d45a0",
+      "contract": "ECX actual2Ch record; RET. Clear aliases, free/null current sentinel, release current name. No resource+28 retain/release."
+    },
+    {
+      "address": "00b1a97c",
+      "caller": "00b1a4f0",
+      "instruction": "call 0x419cc0",
+      "native": "00419cc0",
+      "contract": "No native arguments; current actual 419CC0 pool publication, EAX owner, RET. Prior pushed data/size/flag1 remain arguments for BD1510."
+    },
+    {
+      "address": "00b1a983",
+      "caller": "00b1a4f0",
+      "instruction": "call 0xbd1510",
+      "native": "00bd1510",
+      "contract": "ECX actual owning pool; stack captured/current data,current length+1,1; RET0C. B1B4D0 requested data captured at B1B516, other normal cleanups capture current data before disarming."
+    },
+    {
+      "address": "00b1a9a3",
+      "caller": "00b1a4f0",
+      "instruction": "call 0x419cc0",
+      "native": "00419cc0",
+      "contract": "No native arguments; current actual 419CC0 pool publication, EAX owner, RET. Prior pushed data/size/flag1 remain arguments for BD1510."
+    },
+    {
+      "address": "00b1a9aa",
+      "caller": "00b1a4f0",
+      "instruction": "call 0xbd1510",
+      "native": "00bd1510",
+      "contract": "ECX actual owning pool; stack captured/current data,current length+1,1; RET0C. B1B4D0 requested data captured at B1B516, other normal cleanups capture current data before disarming."
+    },
+    {
+      "address": "00b1a9e0",
+      "caller": "00b1a4f0",
+      "instruction": "call 0x419cc0",
+      "native": "00419cc0",
+      "contract": "No native arguments; current actual 419CC0 pool publication, EAX owner, RET. Prior pushed data/size/flag1 remain arguments for BD1510."
+    },
+    {
+      "address": "00b1a9e7",
+      "caller": "00b1a4f0",
+      "instruction": "call 0xbd1510",
+      "native": "00bd1510",
+      "contract": "ECX actual owning pool; stack captured/current data,current length+1,1; RET0C. B1B4D0 requested data captured at B1B516, other normal cleanups capture current data before disarming."
+    },
+    {
+      "address": "00b1aa07",
+      "caller": "00b1a4f0",
+      "instruction": "call 0x419cc0",
+      "native": "00419cc0",
+      "contract": "No native arguments; current actual 419CC0 pool publication, EAX owner, RET. Prior pushed data/size/flag1 remain arguments for BD1510."
+    },
+    {
+      "address": "00b1aa0e",
+      "caller": "00b1a4f0",
+      "instruction": "call 0xbd1510",
+      "native": "00bd1510",
+      "contract": "ECX actual owning pool; stack captured/current data,current length+1,1; RET0C. B1B4D0 requested data captured at B1B516, other normal cleanups capture current data before disarming."
+    },
+    {
+      "address": "00b1b50f",
+      "caller": "00b1b4d0",
+      "instruction": "call 0x41dd40",
+      "native": "0041dd40",
+      "contract": "ECX actual8h header; stack DWORD length,preserve1; RET8. Re-read source nonempty and current destination length/source data/destination data after return."
+    },
+    {
+      "address": "00b1b526",
+      "caller": "00b1b4d0",
+      "instruction": "call 0xbf7680",
+      "native": "00bf7680",
+      "contract": "cdecl memmove semantics; three stacked arguments and ADD ESP,0Ch. Copy schedules are current destination length, source data, destination data except wrapper captured EDI destination and Default length+1."
+    },
+    {
+      "address": "00b1b536",
+      "caller": "00b1b4d0",
+      "instruction": "call 0x4bcc00",
+      "native": "004bcc00",
+      "contract": "ECX actual8h name; no stacked arguments, RET. Captured data cursor and current unsigned length, signed ASCII A..Z test."
+    },
+    {
+      "address": "00b1b54b",
+      "caller": "00b1b4d0",
+      "instruction": "call 0x41dd40",
+      "native": "0041dd40",
+      "contract": "ECX actual8h header; stack DWORD length,preserve1; RET8. Re-read source nonempty and current destination length/source data/destination data after return."
+    },
+    {
+      "address": "00b1b566",
+      "caller": "00b1b4d0",
+      "instruction": "call 0xbf7680",
+      "native": "00bf7680",
+      "contract": "cdecl memmove semantics; three stacked arguments and ADD ESP,0Ch. Copy schedules are current destination length, source data, destination data except wrapper captured EDI destination and Default length+1."
+    },
+    {
+      "address": "00b1b584",
+      "caller": "00b1b4d0",
+      "instruction": "call 0xb1a4f0",
+      "native": "00b1a4f0",
+      "contract": "ECX complete owner+4 secondary cache; stack actual name,options,1,1; EAX resource, RET10. Full entry requires actual platform load-message route."
+    },
+    {
+      "address": "00b1b5a2",
+      "caller": "00b1b4d0",
+      "instruction": "call 0x419cc0",
+      "native": "00419cc0",
+      "contract": "No native arguments; current actual 419CC0 pool publication, EAX owner, RET. Prior pushed data/size/flag1 remain arguments for BD1510."
+    },
+    {
+      "address": "00b1b5a9",
+      "caller": "00b1b4d0",
+      "instruction": "call 0xbd1510",
+      "native": "00bd1510",
+      "contract": "ECX actual owning pool; stack captured/current data,current length+1,1; RET0C. B1B4D0 requested data captured at B1B516, other normal cleanups capture current data before disarming."
+    },
+    {
+      "address": "00b1b5c5",
+      "caller": "00b1b4d0",
+      "instruction": "call 0x419cc0",
+      "native": "00419cc0",
+      "contract": "No native arguments; current actual 419CC0 pool publication, EAX owner, RET. Prior pushed data/size/flag1 remain arguments for BD1510."
+    },
+    {
+      "address": "00b1b5cc",
+      "caller": "00b1b4d0",
+      "instruction": "call 0xbd1510",
+      "native": "00bd1510",
+      "contract": "ECX actual owning pool; stack captured/current data,current length+1,1; RET0C. B1B4D0 requested data captured at B1B516, other normal cleanups capture current data before disarming."
+    },
+    {
+      "address": "00b1b481",
+      "native": "00b1a4f0",
+      "caller": "00b1b400",
+      "contract": "ECX owner+4, copied/lowercased actual name, original options, low-byte flags1/1; RET10."
+    },
+    {
+      "address": "00b3b2c5",
+      "native": "00b1b4d0",
+      "caller": "00b3b280",
+      "contract": "Type1 sampler; ECX actual4DE4B0 returned complete owner; stack descriptor sampler+18 actual name; RET4. Resource result later enters B44CF0 and actual+4 release."
+    }
+  ],
+  "profile_dispatch": [
+    {
+      "address": "00b1a649",
+      "caller": "00b1a4f0",
+      "instruction": "call edx",
+      "indirect_register": "edx",
+      "profile": "00ce7d24",
+      "slot": 4,
+      "observed_selector": "00b19e40",
+      "contract": "Read CURRENT secondary profile and CURRENT slot at this reached call. Numeric selector is data evidence, not a static call-graph target."
+    },
+    {
+      "address": "00b1a76d",
+      "caller": "00b1a4f0",
+      "instruction": "call edx",
+      "indirect_register": "edx",
+      "profile": "00ce7d24",
+      "slot": 8,
+      "observed_selector": "00b1b810",
+      "contract": "Read CURRENT secondary profile and CURRENT slot at this reached call. Numeric selector is data evidence, not a static call-graph target."
+    },
+    {
+      "address": "00b1a896",
+      "caller": "00b1a4f0",
+      "instruction": "call edx",
+      "indirect_register": "edx",
+      "profile": "00ce7d24",
+      "slot": 12,
+      "observed_selector": "004ddb20",
+      "contract": "Read CURRENT secondary profile and CURRENT slot at this reached call. Numeric selector is data evidence, not a static call-graph target."
+    },
+    {
+      "address": "00b1a915",
+      "caller": "00b1a4f0",
+      "instruction": "call edx",
+      "indirect_register": "edx",
+      "profile": "00ce7d24",
+      "slot": 12,
+      "observed_selector": "004ddb20",
+      "contract": "Read CURRENT secondary profile and CURRENT slot at this reached call. Numeric selector is data evidence, not a static call-graph target."
+    }
+  ],
+  "callees": {
+    "00419cc0": "00419cc0 BSP_SizedStoragePool_GetSingleton  undefined BSP_SizedStoragePool_GetSingleton(void)  body 00419cc0 - 00419d7f",
+    "0041dd40": "0041dd40 BSP_NativeString_Resize  void __thiscall BSP_NativeString_Resize(void * this, uint length, uint preserve_slot)  body 0041dd40 - 0041dde3",
+    "004bcc00": "004bcc00 BSP_String_LowercaseAscii  undefined BSP_String_LowercaseAscii(void)  body 004bcc00 - 004bcc32",
+    "004c3020": "004c3020 BSP_PooledStringList_AllocateSentinel  undefined BSP_PooledStringList_AllocateSentinel(void)  body 004c3020 - 004c3039",
+    "004ce6f0": "004ce6f0 BSP_NativeRenderResourceAliasNode_AllocateCopy  undefined BSP_NativeRenderResourceAliasNode_AllocateCopy(void)  body 004ce6f0 - 004ce75b",
+    "004ce780": "004ce780 BSP_NativeAliasList_GrowCount  undefined BSP_NativeAliasList_GrowCount(void)  body 004ce780 - 004ce812",
+    "004d45a0": "004d45a0 BSP_StringAliasRecord_Destroy  undefined BSP_StringAliasRecord_Destroy(void)  body 004d45a0 - 004d4617",
+    "004ddb20": "004ddb20 BSP_ResourceCache_RetainResource  undefined BSP_ResourceCache_RetainResource(void)  body 004ddb20 - 004ddb34",
+    "004de4b0": "004de4b0 BSP_ParticleClock_GetSingleton  undefined BSP_ParticleClock_GetSingleton(void)  body 004de4b0 - 004de576",
+    "00b19e40": "00b19e40 BSP_ResourceCache_CopyRequestedName  undefined BSP_ResourceCache_CopyRequestedName(void)  body 00b19e40 - 00b19e8f",
+    "00b1a3c0": "00b1a3c0 BSP_NativeResourceRecordVector_Append  undefined BSP_NativeResourceRecordVector_Append(void)  body 00b1a3c0 - 00b1a42e",
+    "00b1a4f0": "00b1a4f0 FUN_00b1a4f0  undefined FUN_00b1a4f0(void)  body 00b1a4f0 - 00b1aa29",
+    "00b1b400": "00b1b400 FUN_00b1b400  undefined FUN_00b1b400(void)  body 00b1b400 - 00b1b4c0",
+    "00b1b4d0": "00b1b4d0 FUN_00b1b4d0  undefined FUN_00b1b4d0(void)  body 00b1b4d0 - 00b1b5e7",
+    "00b1b810": "00b1b810 FUN_00b1b810  undefined FUN_00b1b810(void)  body 00b1b810 - 00b1b823",
+    "00b3b280": "00b3b280 BSP_ShaderBuilder_AddDescriptorSamplers  undefined BSP_ShaderBuilder_AddDescriptorSamplers(void)  body 00b3b280 - 00b3b3b1",
+    "00bd1510": "00bd1510 BSP_SizedStoragePool_ReturnBlock  undefined BSP_SizedStoragePool_ReturnBlock(void)  body 00bd1510 - 00bd156e",
+    "00bdd340": "00bdd340 BSP_VFS_GetFileDate  undefined BSP_VFS_GetFileDate(void)  body 00bdd340 - 00bdd438",
+    "00becb20": "00becb20 BSP_Win32Platform_UpdateCursorFocusState  void __fastcall BSP_Win32Platform_UpdateCursorFocusState(void * self, void * unused_edx, byte loading)  body 00becb20 - 00beccc7",
+    "00beccd0": "00beccd0 BSP_Win32Platform_PumpLoadMessages  undefined BSP_Win32Platform_PumpLoadMessages(void)  body 00beccd0 - 00becd36",
+    "00bee690": "00bee690 BSP_Path_NormalizeResourceName  undefined BSP_Path_NormalizeResourceName(void)  body 00bee690 - 00bee77f",
+    "00bf6713": "00bf6713 LIBCRT_unmatched_00bf6713  undefined LIBCRT_unmatched_00bf6713(void)  body 00bf6713 - 00bf6722",
+    "00bf7680": "00bf7680 _memcpy  void * __cdecl _memcpy(void * _Dst, void * _Src, size_t _Size)  body 00bf7680 - 00bf79e4",
+    "00bf7fbf": "00bf7fbf __stricmp  int __cdecl __stricmp(char * _Str1, char * _Str2)  body 00bf7fbf - 00bf800e"
+  },
+  "evidence_spans": [
+    {
+      "address": "00ce7d24",
+      "bytes": 20,
+      "end": "00ce7d37",
+      "sha256": "82fed636b359d203664f7b11c3f1d6a12fab8cb5782d4abf7276be51c5a3fec8",
+      "live_disk_equal": true,
+      "path": "local/sco-original-00ce7d24.bin"
+    },
+    {
+      "address": "00ce3c5c",
+      "bytes": 8,
+      "end": "00ce3c63",
+      "sha256": "7670cf4ceda3b9a04325d9e243935446f8064a15b60b5d91e03d6450344e89c8",
+      "live_disk_equal": true,
+      "path": "local/sco-original-00ce3c5c.bin"
+    },
+    {
+      "address": "004de4b0",
+      "bytes": 199,
+      "end": "004de576",
+      "sha256": "fa1f9c042b0a54c37c68547e0fed4dc02526fdfe6a8911e5b66e46ed9d541ec2",
+      "live_disk_equal": true,
+      "path": "local/sco-original-004de4b0.bin"
+    },
+    {
+      "address": "00b1b810",
+      "bytes": 20,
+      "end": "00b1b823",
+      "sha256": "8a65e02675980fa957b1a0e9d36c98b9b89afb43e7d2ee3f84189a5421809ce8",
+      "live_disk_equal": true,
+      "path": "local/sco-original-00b1b810.bin"
+    },
+    {
+      "address": "00be1e39",
+      "bytes": 27,
+      "end": "00be1e53",
+      "sha256": "a4e1a80239a40c5e9f5f91b7b2177fbd18ef148e6369894a935000e6dea8c2a0",
+      "live_disk_equal": true,
+      "path": "local/sco-original-00be1e39.bin"
+    },
+    {
+      "address": "00d683b0",
+      "bytes": 12,
+      "end": "00d683bb",
+      "sha256": "b68b8ef46d77cf713d6836ad9c8b4bf81dec10d0998c7f6c1238063b63906d8b",
+      "live_disk_equal": true,
+      "path": "local/sco-original-00d683b0.bin"
+    },
+    {
+      "address": "00bdabf0",
+      "bytes": 55,
+      "end": "00bdac26",
+      "sha256": "f6fa6aabc0e0200c52111e4c05caf3e21a538e31892d027396c1b49c22c75d17",
+      "live_disk_equal": true,
+      "path": "local/sco-original-00bdabf0.bin"
+    },
+    {
+      "address": "00beccd0",
+      "bytes": 103,
+      "end": "00becd36",
+      "sha256": "fb8d69fd84a258f76f7fe1a491fc89db03aa373d8aa24fa0e58051b517e67278",
+      "live_disk_equal": true,
+      "path": "local/sco-original-00beccd0.bin",
+      "instructions": 43,
+      "last_instruction": "00becd36: ret ",
+      "last_instruction_length": 1,
+      "ghidra_body": "00beccd0 BSP_Win32Platform_PumpLoadMessages  undefined BSP_Win32Platform_PumpLoadMessages(void)  body 00beccd0 - 00becd36"
+    },
+    {
+      "address": "00becb20",
+      "bytes": 424,
+      "end": "00beccc7",
+      "sha256": "d49521cd17d5c4bbd55280346ebbf30a23de86a24d5a947fc8ceda875aeef8e3",
+      "live_disk_equal": true,
+      "path": "local/sco-original-00becb20.bin",
+      "instructions": 127,
+      "last_instruction": "00beccc5: ret 4",
+      "last_instruction_length": 3,
+      "ghidra_body": "00becb20 BSP_Win32Platform_UpdateCursorFocusState  void __fastcall BSP_Win32Platform_UpdateCursorFocusState(void * self, void * unused_edx, byte loading)  body 00becb20 - 00beccc7"
+    }
+  ],
+  "no_ghidra_function": [],
+  "alignment": {
+    "address": "00b1a58d",
+    "bytes": 3,
+    "status": "unreachable alignment, not missing flow; original JMP B1A58B goes to B1A590",
+    "ghidra_instructions": 446,
+    "linear_decode_instructions": 447
+  },
+  "provider_frontier": {
+    "ready": "Actual pool/string/path/alias/sentinel/count/2Ch record copy/destruction/vector and VFS date. Same actual manager/pool/registry domains required.",
+    "reviewed_dependency": "7638b900cc0494402c9fdb97b6fe817af498cb25 actual4DE4B0 getter and B1B810 forwarder; reviewed/released before mechanical dependency merge dd49a6f0",
+    "blocked": "BECCD0/BECB20 current platform raw-owner admission. Existing ResourceLoadEventHost/PlatformServices and native_input_cursor explicitly borrow projected Win32PlatformState; no raw0109CF04 adapter proved.",
+    "not_interchangeable": "B30B40/native_texture_loading_cache selects D5F088 texture loaders; this cache selects CE7D24/B1B810 procedural factories."
+  },
+  "corrections": [
+    {
+      "was": "A named platform/cache provider could be assumed interchangeable with this actual route.",
+      "is": "CE7D24 profile and raw current-platform identity must both be preserved; available projections do not close the full entry.",
+      "evidence": "B1A50E/B1A518 before input read B1A51D; BECCD0 captured EBP then BECB20 raw+41; CE7D24 actual slot bytes."
+    },
+    {
+      "was": "Persistent B1B810 child allocated using make_unique at the native call edge.",
+      "is": "Inline optional child uses emplace with no added heap service before native B1B810.",
+      "evidence": "Independent source review before first build; B1A76D has no intervening allocation."
+    }
+  ],
+  "source_continuation": {
+    "symbol": "continue_native_sampler_cache_after_pump_00b1a51d",
+    "start": "00b1a51d",
+    "end_inclusive": "00b1aa29",
+    "bytes": 1293,
+    "required_precondition": "Actual BECCD0 on platform captured from current0109CF04 must complete before any input name/header read; pass original argument pointers and pre-pump captured cache.",
+    "full_entries_implemented": false,
+    "normal_path_only": true,
+    "native_fh3": false,
+    "persistent_outputs": "actual requested/resolved/hidden headers, temporary2Ch record, created resource, pending unlinked alias and inline factory child",
+    "failure_limits": "No resource rollback or altered existing helper cleanup. Existing vector orphan-prefix and actual-pool noexcept-return boundaries remain. Explicit host operation retirement cannot substitute native FH3."
+  },
+  "validation": {
+    "report_calls": "PASS 52 numeric direct rows; four current-profile indirect sites recorded separately",
+    "build": "PASS default MSVC Win32 C++17 /W4 /WX Release plus both existing CTests after verify-seeds",
+    "fixture": "PASS one focused executable:3 original/source comparisons, actual null factory lookup/VFS empty-tree date/vector append and negative hit, existing actual resource retain, actual pool snapshot, real Windows/XLive message mutation before first header read; source profile failure/replay/guard77",
+    "game_validated": false,
+    "original_relocation_checks": [
+      {
+        "address": "00b1a4f0",
+        "bytes": 1338,
+        "changed_bytes": 159,
+        "only_direct_call_operands_changed": true
+      },
+      {
+        "address": "00b1b4d0",
+        "bytes": 280,
+        "changed_bytes": 38,
+        "only_direct_call_operands_changed": true
+      },
+      {
+        "address": "00beccd0",
+        "bytes": 103,
+        "changed_bytes": 8,
+        "only_direct_call_operands_changed": true
+      },
+      {
+        "address": "00becb20",
+        "bytes": 424,
+        "changed_bytes": 26,
+        "only_direct_call_operands_changed": true
+      }
+    ],
+    "trace_pairs": 3,
+    "prefix_limit": "Copied original BECCD0/BECB20 exact bytes execute on both legs. Current raw F8ABE8 is null, so original BECB20 guard returns. Real Windows imports and private Microsoft SDK XLive ordinal5030 execute with SDK uninitialized; nonnull online-manager A409F0/cursor route, account/network/overlay operations are not implemented or exercised.",
+    "profile_relocation": "Raw owner retains CE7D24 identity. Source profile view is byte-identical to original20bytes. Executable original CE7D24 view changes only +4/+8/+C targets to the matching B19E40/B1B810/4DDB20 concrete ABI bridges. Both views pinned. Existing private4D0000 mapping is untouched; delayed USER32 loading reserves fixture CE0000 first.",
+    "vfs_setup": "Actual BDABF0 sentinel allocation plus exact27byte BE1E39..BE1E53 mount-head producer fragment. Empty mount traversal provides actual zero date result; no fabricated date callback or complete VFS-manager construction claim.",
+    "resource_setup": "Both legs create initial null record through actual continuation/factory-registry miss, then supply an existing actual BBC6F0-created resource as explicit cache initial state for hit cases. Factory tree population and successful factory discovery are not claimed.",
+    "lifetime_limit": "Actual raw manager, loader, pool, registry and resource allocations remain in process arena until exit. No mixed raw singleton/resource terminal dispatch, original FH3, source full entry or gameplay claim.",
+    "build_log": "local/sampler-cache-build.log",
+    "fixture_log": "local/sampler-cache-probe.log",
+    "guard_log": "local/sampler-cache-guard.log",
+    "copied_but_not_invoked": [
+      "00b1b4d0"
+    ]
+  },
+  "review": {
+    "independent": "header_review full continuation/source/HPP/callee/read-order review accepted after optional-child correction",
+    "source_sha256": "a8db75abee67fc46898a45cbe873b38e0ddb40e0d512c4475847b240332ef038",
+    "header_sha256": "e9c2249d5d9423061255b543d56d16c7b2359a9667ba929818f2b153e347c5ca"
+  },
+  "linker_selected_core_objects": [
+    "native_alias_count_growth",
+    "native_diagnostic_sink_lifetime",
+    "native_legacy_exception_owner",
+    "native_legacy_sbo_string",
+    "native_physical_file_date",
+    "native_pooled_resource_path",
+    "native_pooled_string_substring",
+    "native_render_alias_checked_ops",
+    "native_render_alias_insertion",
+    "native_render_resource_alias_nodes",
+    "native_render_resource_record",
+    "native_render_resource_record_construction",
+    "native_renderer_worker_lifetime",
+    "native_resource_cache_leaves",
+    "native_resource_record_copy",
+    "native_resource_record_vector",
+    "native_resource_registry_construction",
+    "native_resource_registry_destroy",
+    "native_resource_registry_lookup",
+    "native_sampler_cache_operation",
+    "native_sampler_loader_context",
+    "native_singleton_publication",
+    "native_singleton_vector_allocation",
+    "native_singleton_vector_insert_count",
+    "native_singleton_vector_leaves",
+    "native_singleton_vector_registration_wrappers",
+    "native_singleton_vector_reserve_construct",
+    "native_string",
+    "native_string_pool_owner",
+    "native_string_pool_storage",
+    "native_vfs_container_allocation",
+    "native_vfs_date_leaf_providers",
+    "native_vfs_date_route",
+    "singleton_lifetime"
+  ],
+  "evidence_artifacts": [
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_alias_count_growth.obj",
+      "bytes": 4472,
+      "sha256": "e35f6e48a56c4f5aeda724c39259f0ad1135d29bd56621e9993ba75f756986d9"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_diagnostic_sink_lifetime.obj",
+      "bytes": 4669,
+      "sha256": "d5b45d1ff3e53883888607fecf634c6d1f739232f64816dd324c9e295ce74080"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_legacy_exception_owner.obj",
+      "bytes": 7112,
+      "sha256": "306ab0c4f83ede64012921b3f71fb7daaa35275bbac3996e6870f2ed3247568f"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_legacy_sbo_string.obj",
+      "bytes": 18686,
+      "sha256": "adc87a25d906b38976aff64aece5c6825700ace108d77f52b46347a7be3afe47"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_physical_file_date.obj",
+      "bytes": 23574,
+      "sha256": "43106b8f3f22bd0357e5b0bb359a359fdb44efb1036412d3b98ead2d32545883"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_pooled_resource_path.obj",
+      "bytes": 6358,
+      "sha256": "a7a454ad9bc1de2b9bebbcff479dee553524eea08b1f89be0ebe245b17a4155a"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_pooled_string_substring.obj",
+      "bytes": 4623,
+      "sha256": "9d6474b495232675fa3989c0aca48f43f864825b1a6808ce002d65277cb0344c"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_render_alias_checked_ops.obj",
+      "bytes": 4800,
+      "sha256": "69f1eab1a14ef4fa9f6249cc4657f212a71f0c8048c0064c2a4e9d55d70715b9"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_render_alias_insertion.obj",
+      "bytes": 8168,
+      "sha256": "c409c1481eb3b2f3ead48bf85855f162fa9b40d8a327ab02558468cb7f3da878"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_render_resource_alias_nodes.obj",
+      "bytes": 9039,
+      "sha256": "fabcbb5851d17373494fef4c0391d77703757011b123b5c9ad93d126225ac36f"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_render_resource_record.obj",
+      "bytes": 11002,
+      "sha256": "a1aed4d5b6760e7188fceabc8cdae9b10eee86c0308b57823bfe1b3e8f662831"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_render_resource_record_construction.obj",
+      "bytes": 17026,
+      "sha256": "c15f9334d50ddbef0e7798bb18611683c07d4700fccf58fb1459613a182cf758"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_renderer_worker_lifetime.obj",
+      "bytes": 6121,
+      "sha256": "5662348d35e50f00aa98b3cbade1f9d694ae2452debcb378d3a979f72f495294"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_resource_cache_leaves.obj",
+      "bytes": 4783,
+      "sha256": "f9ac123829a00b30db85d61c9471efba7c48d026f0d987592cbebce96b58f1f9"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_resource_record_copy.obj",
+      "bytes": 5695,
+      "sha256": "6c0f92d17a6899eaf5cd40a070c3b6222a572391faeaffb7ad11100d9c92604c"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_resource_record_vector.obj",
+      "bytes": 5291,
+      "sha256": "b30bc2873eecb11defde953041cb188addb97c3e730d03c39231d8296675a5c1"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_resource_registry_construction.obj",
+      "bytes": 3576,
+      "sha256": "27eac8fa1a8cb9589d4d79e30e08d3bcb6c005588594f5e245c45a36a558e5b3"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_resource_registry_destroy.obj",
+      "bytes": 3582,
+      "sha256": "c6ffef803de57c53f4bfe62e1ba54c319280d0b6d6e8b81644c76c1a4bdaf26b"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_resource_registry_lookup.obj",
+      "bytes": 11454,
+      "sha256": "aa55fd1b4d51a2a52117921f0b9679b35d9992c3b2cd5a846a75d8452f08ae06"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_sampler_cache_operation.obj",
+      "bytes": 25848,
+      "sha256": "c1db097908528fbf7522e30f2b6f6e7071c72c4b62ca545465e97ad5e29f1d7b"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_sampler_loader_context.obj",
+      "bytes": 13275,
+      "sha256": "79cd070a28a3a37a1089f386bc1d904b9626232039a9cc07292460ab00f142e8"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_singleton_publication.obj",
+      "bytes": 5059,
+      "sha256": "01baea17e901123a8f5ce1e7d24a07269026b52ff0a240e5599a25214e16fc34"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_singleton_vector_allocation.obj",
+      "bytes": 10596,
+      "sha256": "e76abc37db4da763e9d23bc56d55743d4d09d8e7659a5ca7763f58f62b2f21e7"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_singleton_vector_insert_count.obj",
+      "bytes": 2221,
+      "sha256": "7bd87e8bf0f870137ab8a6b4805b7763266a41938d81a62f9314291898f934a9"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_singleton_vector_leaves.obj",
+      "bytes": 2616,
+      "sha256": "f8d8b74429635807ec2686a5536a1c44391057b99a0e2ecac829aebfd2c2d461"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_singleton_vector_registration_wrappers.obj",
+      "bytes": 1890,
+      "sha256": "cbc07fa21b6cc685f5569f2a577a395f6ecc48c6ecccfc7712623b8aa3631672"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_singleton_vector_reserve_construct.obj",
+      "bytes": 4209,
+      "sha256": "cf94463665f7d4b914a8d9a733ff387b4be0e9f9d3c89cfc4d13e10665cce61b"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_string.obj",
+      "bytes": 17940,
+      "sha256": "4739ec5d6954dfdf9724887c9b9e774c08ec86e321a6d4c32392e25f0b76fb19"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_string_pool_owner.obj",
+      "bytes": 15562,
+      "sha256": "004d9fc1b85437cbbfbf87f77a23d5d37ea2c39b585104be27677b17a33f293c"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_string_pool_storage.obj",
+      "bytes": 9167,
+      "sha256": "deba63cc64c09523d762a6dfb9181ec6b71fae9d16b4536374080640424193f5"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_vfs_container_allocation.obj",
+      "bytes": 2600,
+      "sha256": "645fc89e242dc582ce0e9a3abda3ce03a95905788d8affa0fc55ff30411780ed"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_vfs_date_leaf_providers.obj",
+      "bytes": 3918,
+      "sha256": "6506218885d505c40f6b48a2e23bcfcace2f67edd19a2f5fb020c10e77ef0952"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_vfs_date_route.obj",
+      "bytes": 17536,
+      "sha256": "24ee54f5ecc0bdaccc2554bed4f2d68bd05651077fa6b00b762d1670eb061cb0"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/singleton_lifetime.obj",
+      "bytes": 32979,
+      "sha256": "b560ca56a5f09d88768fbe1812e404ef576ecba6e14b95f124cb09519a808621"
+    },
+    {
+      "path": "build/win32/bsp_core.vcxproj",
+      "bytes": 266551,
+      "sha256": "d28dd86e96a487fe4705df64c5fcdaaff884083b7c9132de8650b85348850872"
+    },
+    {
+      "path": "build/win32/Release/bsp_core.lib",
+      "bytes": 56146076,
+      "sha256": "7f0ab3011bebaac8be76351e2a0ecf962fe90506cc8c917c2388ecf49931a9ef"
+    },
+    {
+      "path": "build/win32/Release/bsp_lua511.lib",
+      "bytes": 455880,
+      "sha256": "ba37998d46b33f9c2bbf24bfc37f88416c11e410ac9dcc9b0a9e77e6fa5b61ee"
+    },
+    {
+      "path": "build/win32/Release/bsp_zlib121.lib",
+      "bytes": 72126,
+      "sha256": "ed948fbdc86170a37fa65c27075725e3002d43d247f2b366d2ba97da545ae7e7"
+    },
+    {
+      "path": "cmake/startup.cmake",
+      "bytes": 107153,
+      "sha256": "64d32e0ae2e3af7cbfa89a1f12216c5ea61765c2e3de98fde7d0be0f67a71290"
+    },
+    {
+      "path": "CMakeLists.txt",
+      "bytes": 14869,
+      "sha256": "0bad51a21cd02eb4d8b196a345a3f86418d0dab144d66912f0ad8db06881c5a8"
+    },
+    {
+      "path": "config/target.json",
+      "bytes": 405,
+      "sha256": "626d61b987acdf60ffb156c9a753df9632453dc26d6cbdfab5740df26f93dbb2"
+    },
+    {
+      "path": "docs/XLIVE_PRIVATE_RUNTIME.md",
+      "bytes": 3046,
+      "sha256": "24b280e6ecaf832d3008c67a4388aca37826a455e0317177566230014138ad0d"
+    },
+    {
+      "path": "include/bsp/camera_projection.hpp",
+      "bytes": 2413,
+      "sha256": "bbfe251c983ec82bd132108c32364798a1731f3e4456a77959139e13c0f0c9a4"
+    },
+    {
+      "path": "include/bsp/camera_transform.hpp",
+      "bytes": 7028,
+      "sha256": "1f2de265a3479686c68e74802cca45038374bf9be1f882aa8ccbee0086e2635d"
+    },
+    {
+      "path": "include/bsp/frame_clock.hpp",
+      "bytes": 2475,
+      "sha256": "c5ca70e98942784432bfbee0e543d601a495d5ee2c43b17631985288ae98850b"
+    },
+    {
+      "path": "include/bsp/game_entry.hpp",
+      "bytes": 5510,
+      "sha256": "055793fab1e425595a1e114160bb5ec76e5656f470527d88e52dfca31f0d916f"
+    },
+    {
+      "path": "include/bsp/native_alias_count_growth.hpp",
+      "bytes": 1379,
+      "sha256": "9b605ef2b35babd22fc061e774f398e178ae3e7bd6f5be27b764643ca17f40f3"
+    },
+    {
+      "path": "include/bsp/native_diagnostic_sink_lifetime.hpp",
+      "bytes": 1471,
+      "sha256": "17bf59a7aee1bda0ceb66989c177ed8e32f207c55087f10b5ecfaaa275791af6"
+    },
+    {
+      "path": "include/bsp/native_hardware_layout_tree.hpp",
+      "bytes": 3491,
+      "sha256": "3c8b2c3a5e762a557fbbc5da3d825801c6d60a5b89c636c3ba379420c109c9d5"
+    },
+    {
+      "path": "include/bsp/native_legacy_exception_owner.hpp",
+      "bytes": 3232,
+      "sha256": "98da5a8c50222979739c330b503cc03f2b43e03df5cf15a795f30ed2df3ed727"
+    },
+    {
+      "path": "include/bsp/native_legacy_sbo_string.hpp",
+      "bytes": 2115,
+      "sha256": "9729dd1df270ad0c6f3e2601219735bd71f6758a797aaf2b59e687527704f422"
+    },
+    {
+      "path": "include/bsp/native_physical_file_date.hpp",
+      "bytes": 4310,
+      "sha256": "78fa2bd31ebe6c8b786ecdf4dcfdaafbfb577aa7b529e5a6cc53320798787939"
+    },
+    {
+      "path": "include/bsp/native_pooled_resource_path.hpp",
+      "bytes": 1432,
+      "sha256": "2b9b1dad7f2843e0ddcc4d4bf609343ddf02a1516b9c54c2028ea4e78f56bc26"
+    },
+    {
+      "path": "include/bsp/native_pooled_string_substring.hpp",
+      "bytes": 1557,
+      "sha256": "1ab8439842d42ad82c129a30ed5d80867fb6ec6175bc7fdf5a4c585dd628905f"
+    },
+    {
+      "path": "include/bsp/native_render_alias_checked_ops.hpp",
+      "bytes": 2868,
+      "sha256": "ce77ee3c02e2b72d7885660d6d5d268927daa158c8fca1411e1b47b4e9a0f72f"
+    },
+    {
+      "path": "include/bsp/native_render_alias_insertion.hpp",
+      "bytes": 2530,
+      "sha256": "9341a8de21faa50408df17735e024aea69a9c2e567f75c9d219134241bf551b3"
+    },
+    {
+      "path": "include/bsp/native_render_resource_alias_nodes.hpp",
+      "bytes": 2647,
+      "sha256": "335d5589685bb98ef6eeed62726b75a773067fbbbfd4e09373bb0fc33bc0592b"
+    },
+    {
+      "path": "include/bsp/native_render_resource_record.hpp",
+      "bytes": 3932,
+      "sha256": "98f3ef8e236d812ed68f17bdee180a24a24732a1f266c2e2da7d47c92c5a5f6c"
+    },
+    {
+      "path": "include/bsp/native_render_resource_record_construction.hpp",
+      "bytes": 3053,
+      "sha256": "9c79ba1484463c66957c0c330148ee2572f07c9192ee7e6e96bd40ba65994f65"
+    },
+    {
+      "path": "include/bsp/native_renderer_worker_lifetime.hpp",
+      "bytes": 2431,
+      "sha256": "8c74c2f12193bdbbfe0c1f682c182f4d0be03bf603f7f207703f08463a55488a"
+    },
+    {
+      "path": "include/bsp/native_resource_cache_leaves.hpp",
+      "bytes": 3126,
+      "sha256": "a3998606653bdcc1b71b78cbe0ceef12ff35cb4693e0468b798d14e9aa82ffec"
+    },
+    {
+      "path": "include/bsp/native_resource_record_copy.hpp",
+      "bytes": 1769,
+      "sha256": "f3ca7414372dbc7c67412d8e77fbc26ac921e140aad847abcaa62bb04aeb2ada"
+    },
+    {
+      "path": "include/bsp/native_resource_record_vector.hpp",
+      "bytes": 2136,
+      "sha256": "fb85cb890ab99aeb91cf40b8d06acdf61a6194e28025952569c5c9846c152b47"
+    },
+    {
+      "path": "include/bsp/native_resource_registry_construction.hpp",
+      "bytes": 2336,
+      "sha256": "50607201a87a306462eaba1a6dc83c733dd7307eb3078cf0966903b349a49cb3"
+    },
+    {
+      "path": "include/bsp/native_resource_registry_destroy.hpp",
+      "bytes": 1603,
+      "sha256": "c60895e2f80155ae0a13748892cd0dd86e95cfe8dc42b1150f4e59e1bfb5e14f"
+    },
+    {
+      "path": "include/bsp/native_resource_registry_erase.hpp",
+      "bytes": 2347,
+      "sha256": "ab8b1bf2b438840d9c6470cae6e8b35e7ae3da29dfde777f24735e97f64afc94"
+    },
+    {
+      "path": "include/bsp/native_resource_registry_lookup.hpp",
+      "bytes": 1893,
+      "sha256": "1f3f752e70c8e2264087d1bd8a47cc6089c8e4ac57273a4da4aefdbad71b22a9"
+    },
+    {
+      "path": "include/bsp/native_resource_registry_tree_leaves.hpp",
+      "bytes": 2953,
+      "sha256": "96232ce20dce86fc606bba1aca448a6df0c4dfd871300b2bfc7bfdf7e97d4f29"
+    },
+    {
+      "path": "include/bsp/native_sampler_cache_operation.hpp",
+      "bytes": 3626,
+      "sha256": "e9c2249d5d9423061255b543d56d16c7b2359a9667ba929818f2b153e347c5ca"
+    },
+    {
+      "path": "include/bsp/native_sampler_loader_context.hpp",
+      "bytes": 3827,
+      "sha256": "1597437df568ec3a493a8cd4029fbd15b28bae6ef896450bf7f1925cbd10bb42"
+    },
+    {
+      "path": "include/bsp/native_singleton_publication.hpp",
+      "bytes": 2293,
+      "sha256": "0ba3bb843ec6048790eb768f46e6cfeb99c8fae8c3e3f3ae59a0e14cca1e72f5"
+    },
+    {
+      "path": "include/bsp/native_singleton_vector_allocation.hpp",
+      "bytes": 2149,
+      "sha256": "2910d0e12e3ecce6820cc1a083a3bfba9c5478fbbea9cdf9dc4c2926bdb0296a"
+    },
+    {
+      "path": "include/bsp/native_singleton_vector_insert_count.hpp",
+      "bytes": 1212,
+      "sha256": "df4cc0dd530b7741fdc790b57f086d495730d905f043780e04513582056c8e12"
+    },
+    {
+      "path": "include/bsp/native_singleton_vector_leaves.hpp",
+      "bytes": 3101,
+      "sha256": "18ccc9155d016d979489e00a900628816bd31a013815c299b9b8b565878c7d8b"
+    },
+    {
+      "path": "include/bsp/native_singleton_vector_registration_wrappers.hpp",
+      "bytes": 2373,
+      "sha256": "04d669c9167de50ba74557cc6651ab4dbdc753b8c6f40fdb3a743f65948eab35"
+    },
+    {
+      "path": "include/bsp/native_singleton_vector_reserve_construct.hpp",
+      "bytes": 1845,
+      "sha256": "0ab5b32557f19fbd2887065378af01a95f2be959855d8de1249a896a9754579d"
+    },
+    {
+      "path": "include/bsp/native_string.hpp",
+      "bytes": 8019,
+      "sha256": "80013e5a7350120f32fcad1ce54db9b0923ad5b49cc2152823d858534331378f"
+    },
+    {
+      "path": "include/bsp/native_string_pool_owner.hpp",
+      "bytes": 5893,
+      "sha256": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff"
+    },
+    {
+      "path": "include/bsp/native_string_pool_storage.hpp",
+      "bytes": 2805,
+      "sha256": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d"
+    },
+    {
+      "path": "include/bsp/native_tree_out_of_range_exception.hpp",
+      "bytes": 966,
+      "sha256": "a35ad6906acf09d0814c5142856fe4c0adf91b86f3a8373eb8d26fb3adf11fcf"
+    },
+    {
+      "path": "include/bsp/native_vfs_container_allocation.hpp",
+      "bytes": 1917,
+      "sha256": "7aa5f78de45034f75163da77a7630418511918523325ed4a125a676f17e4deeb"
+    },
+    {
+      "path": "include/bsp/native_vfs_date_leaf_providers.hpp",
+      "bytes": 3083,
+      "sha256": "ab6ba39ac240f79db04b7eb083eec54b58e27a93973c421d4fb03147b7a0a3e0"
+    },
+    {
+      "path": "include/bsp/native_vfs_date_route.hpp",
+      "bytes": 2805,
+      "sha256": "22bd52024880018152e4ce93cccdcfecb5bd097cfb228f63c9f0538d706d99b2"
+    },
+    {
+      "path": "include/bsp/random.hpp",
+      "bytes": 791,
+      "sha256": "7c38db60d138add04d7abf759d23272c357d23bdd64d042ba4a27733c05f630c"
+    },
+    {
+      "path": "include/bsp/random_threads.hpp",
+      "bytes": 1446,
+      "sha256": "41b1402062fdf2afb99afa5b0d2beda697cc0c1b92a13806103b4bc4879d09b9"
+    },
+    {
+      "path": "include/bsp/render_tail.hpp",
+      "bytes": 15566,
+      "sha256": "7ded157910928589128f7a1569d18e42877ed2c943649957612fa6060b4646fc"
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "bytes": 4372,
+      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+    },
+    {
+      "path": "include/bsp/storage_pool.hpp",
+      "bytes": 5571,
+      "sha256": "da1c9a4f88fff56634f69cfb8dc113dc013680ae753a434e1a14aa458d410e33"
+    },
+    {
+      "path": "include/bsp/system_time_constants.hpp",
+      "bytes": 4800,
+      "sha256": "36d88206bf9dbf4e6cceaab5e0aa6bf4b71172305b79bb98a571063add672ba9"
+    },
+    {
+      "path": "local/finalize_sampler_cache.py",
+      "bytes": 8989,
+      "sha256": "1e48419e7a42eeeee056bbd9b22d6d47ebfcc99b82198abb45592d5704150573"
+    },
+    {
+      "path": "local/gfwl-private-runtime/msidcrl40.dll",
+      "bytes": 1089440,
+      "sha256": "623cb6ca98e566357abbd0e76b15713921e1d7e1144c0c4f589a0407c7eff1ee"
+    },
+    {
+      "path": "local/gfwl-private-runtime/ppcrlconfig.dll",
+      "bytes": 21408,
+      "sha256": "649557d6349ea0658808952c1bbf9a111ec2283c29345c7f904919fd599e5d61"
+    },
+    {
+      "path": "local/gfwl-private-runtime/xlive.dll",
+      "bytes": 14303392,
+      "sha256": "79da26ab6b2dc25936c3354087de0ba41da1a8b62924972e9100c29b95d34385"
+    },
+    {
+      "path": "local/gfwl-private-runtime/xlivefnt.dll",
+      "bytes": 13643936,
+      "sha256": "a07e20c09a0c3eac2ed3e6288d67060e82b70595053153866b1cfb4f9958f9a4"
+    },
+    {
+      "path": "local/ledger_sampler_cache.py",
+      "bytes": 1648,
+      "sha256": "0471cc5b004f0548d2cab6c1233d04bc79e7fab91a32048a9b5f47656a21b977"
+    },
+    {
+      "path": "local/native_sampler_cache_probe.cpp",
+      "bytes": 15958,
+      "sha256": "be8f9db787c5c0a47be2086c7b0c3f3d09d98058b9ffb8334fc8342b67be73e7"
+    },
+    {
+      "path": "local/native_sampler_cache_probe.exe",
+      "bytes": 78336,
+      "sha256": "9b3f8da65b60676ba3c6534ec6151b5ff9735e8fd173026761c614f0f2d0178a"
+    },
+    {
+      "path": "local/native_sampler_cache_probe.map",
+      "bytes": 173924,
+      "sha256": "d2f5502d97d07fab8ca0ddba3895dc1fcbb8eed5c09a3c41bfce35d2e361cadf"
+    },
+    {
+      "path": "local/native_sampler_cache_probe.obj",
+      "bytes": 332475,
+      "sha256": "7f7379a7b2969f4d7918698cefca72c0adc3fa007541a45181b0b66e6e54fa5c"
+    },
+    {
+      "path": "local/precompile_sampler_cache_probe.ps1",
+      "bytes": 755,
+      "sha256": "da7408303472ecbcdc4ab6a664c045e82d2acce19498a42d51a460c1547dded6"
+    },
+    {
+      "path": "local/register_sampler_cache.py",
+      "bytes": 747,
+      "sha256": "37cafb1e63bef361f186d20365eb2ba66f7e33406561caa95a7ae7a6dff4a83c"
+    },
+    {
+      "path": "local/resolve_sampler_cache_dependency.py",
+      "bytes": 1157,
+      "sha256": "7f409f5fa97a614bde6300053c9cc33720f2ba88e0a517bd2dd7a26d92d050c7"
+    },
+    {
+      "path": "local/run_native_sampler_cache_probe.ps1",
+      "bytes": 1738,
+      "sha256": "cc943794220a67bf4ce214c3f42ea53c5fea4e52675722fabdddcfdb955e0696"
+    },
+    {
+      "path": "local/sampler-cache-build.log",
+      "bytes": 44107,
+      "sha256": "820c85ac9740b2b78490f57d19e2153568faf41da1859fe38efd3b647fa9ff07"
+    },
+    {
+      "path": "local/sampler-cache-commit.txt",
+      "bytes": 737,
+      "sha256": "bb634d08f1c56cbe90da05b986594918815e4592e47b31ec08b7752d4695b25a"
+    },
+    {
+      "path": "local/sampler-cache-dependency-commit.txt",
+      "bytes": 299,
+      "sha256": "8146e78a74c05e670b49d02f4fa631b65ab2c94d4e25911ff36d35a60567dc6b"
+    },
+    {
+      "path": "local/sampler-cache-guard.log",
+      "bytes": 263,
+      "sha256": "a4f58ed5a86cdea159f34e27c6a3c708b795fa27c9888d60a792a6ee9195fa1e"
+    },
+    {
+      "path": "local/sampler-cache-index.log",
+      "bytes": 142,
+      "sha256": "5d3adb9365b63f4cc386b8028a5a330af1fb11d1176829b219119891134e54f6"
+    },
+    {
+      "path": "local/sampler-cache-ledger.log",
+      "bytes": 180,
+      "sha256": "4982589d2e17fa11c4ff3967958cd21b8ed0c153d725fbfd2846c2f8f678950f"
+    },
+    {
+      "path": "local/sampler-cache-load-error182.log",
+      "bytes": 37,
+      "sha256": "036f8a621b9118bce9d86edfea055f1f192e33466df3f952a349cfdc68d95658"
+    },
+    {
+      "path": "local/sampler-cache-probe-compile.log",
+      "bytes": 32,
+      "sha256": "9e02124553a0843722eb20967a74c92ff76f75ecea31b5f7575977c922dd79bd"
+    },
+    {
+      "path": "local/sampler-cache-probe-precompile.log",
+      "bytes": 32,
+      "sha256": "9e02124553a0843722eb20967a74c92ff76f75ecea31b5f7575977c922dd79bd"
+    },
+    {
+      "path": "local/sampler-cache-probe.log",
+      "bytes": 486,
+      "sha256": "354316d21d620c15f067794e0b250cfce460277168f827487f2bf5b6d6811619"
+    },
+    {
+      "path": "local/sampler_cache_evidence.py",
+      "bytes": 3617,
+      "sha256": "27d7b0330f3b178715b70b79342491b84e0ddd4e2bf73056fb35077e9fa92345"
+    },
+    {
+      "path": "local/sampler_cache_manifest.py",
+      "bytes": 2836,
+      "sha256": "d2791bc2e3835eec8bcbaab7b430a5a25bfe5505210d05b63d79cc059b62e3f5"
+    },
+    {
+      "path": "local/sampler_cache_report.py",
+      "bytes": 8239,
+      "sha256": "d339b2b4ef49f757bf1ad18fe90d6aada29170a15bdd0a56a6bd9a4365a2e7cd"
+    },
+    {
+      "path": "local/sco-audit.json",
+      "bytes": 14204,
+      "sha256": "c8151b244609a9629fd8ffa40579f49c224a6aa9d4a03e844a76120c4eaed731"
+    },
+    {
+      "path": "local/sco-calls.log",
+      "bytes": 77,
+      "sha256": "104e0e07da33b252fddbbcc3751c7d712dfe75598995f6e26f81387c562a0491"
+    },
+    {
+      "path": "local/sco-flow-00b1a4f0.txt",
+      "bytes": 227,
+      "sha256": "0629146b9d5a1c8111eb52b57182e4ca1f179c3f08305b9e7f3fb9e39bf1eb31"
+    },
+    {
+      "path": "local/sco-flow-00b1b4d0.txt",
+      "bytes": 128,
+      "sha256": "565b34a01ab0fbe787d88569b876c128fa56368bc3bec8b4adcef444a4667384"
+    },
+    {
+      "path": "local/sco-flow-00becb20.txt",
+      "bytes": 129,
+      "sha256": "6467eb36dc2f225e3bff1172073b73956682d7600f691b0287e6de0a3273608e"
+    },
+    {
+      "path": "local/sco-flow-00beccd0.txt",
+      "bytes": 226,
+      "sha256": "6d21ab9f9d31dc142a33834b3bbf595f6c021fe2e060c336fcd7dfadca7750e5"
+    },
+    {
+      "path": "local/sco-host-secondary-profile.bin",
+      "bytes": 20,
+      "sha256": "f877db1cabab7531973473256b4557a3c5380792e7d6d6d49df0abd7f79f6bc7"
+    },
+    {
+      "path": "local/sco-linked-00b1a4f0.bin",
+      "bytes": 1338,
+      "sha256": "c046579a3c3790af02c25fd8fe310abf27e037248dc3955f729f454ba353f035"
+    },
+    {
+      "path": "local/sco-linked-00b1b4d0.bin",
+      "bytes": 280,
+      "sha256": "f0d859faaf0fb085b7b49d98cf29a449b9e2c67e304114fa0ef715cf60e23282"
+    },
+    {
+      "path": "local/sco-linked-00becb20.bin",
+      "bytes": 424,
+      "sha256": "125e2b56142e1f21365d8752dc5dbc2fb443002ff2a86490a099ddf1f0a52141"
+    },
+    {
+      "path": "local/sco-linked-00beccd0.bin",
+      "bytes": 103,
+      "sha256": "2e977a3f357220fe973346129f1ccf8e2651943a917344565702d2f182728c58"
+    },
+    {
+      "path": "local/sco-linked-mount-producer.bin",
+      "bytes": 46,
+      "sha256": "4a58257e549f895c69b40b2370f66b6b9553d33108bc826700993ede97a1c266"
+    },
+    {
+      "path": "local/sco-live-004de4b0.txt",
+      "bytes": 965,
+      "sha256": "04251e16e17994c37a5dfbdad7145af03bff9ba5feba0c9d3145ee240f67b535"
+    },
+    {
+      "path": "local/sco-live-004de516.txt",
+      "bytes": 154,
+      "sha256": "3a3c093370579e4b068b29190f249ab1744256816222f200ca7de577cbcf5972"
+    },
+    {
+      "path": "local/sco-live-00b1a4f0.txt",
+      "bytes": 6444,
+      "sha256": "1dabd373125059404e6f35df4019a7fc74849582aeaf9d14e8492c4932d70345"
+    },
+    {
+      "path": "local/sco-live-00b1b4d0.txt",
+      "bytes": 1354,
+      "sha256": "bcb55461444f01f1c711df0987460f0d4d5ae9ff999e72b5645b53e89f980641"
+    },
+    {
+      "path": "local/sco-live-00b1b810.txt",
+      "bytes": 106,
+      "sha256": "649f9df27f36b8cdd8fc7bad860b6d817dece37bff89825d831b8719e07a1ec7"
+    },
+    {
+      "path": "local/sco-live-00bdabf0.txt",
+      "bytes": 272,
+      "sha256": "90682ae5ac0d9c900ca6c9b0c31b08fa873bd9170ef2f9419943e303713fae8a"
+    },
+    {
+      "path": "local/sco-live-00be1e39.txt",
+      "bytes": 134,
+      "sha256": "f27fe4222a82cfbe197e3069c05c914af5dce6e16f352295b16ba37e412d6c2c"
+    },
+    {
+      "path": "local/sco-live-00becb20.txt",
+      "bytes": 2047,
+      "sha256": "8cab45835597e0068aa54934f2b60915961e53d879733b4be75b776873cd659c"
+    },
+    {
+      "path": "local/sco-live-00beccd0.txt",
+      "bytes": 503,
+      "sha256": "0dd11b83b76db2a09ab246624df68502510efa798f64ded7631bf0c2665b7531"
+    },
+    {
+      "path": "local/sco-live-00ce3c5c.txt",
+      "bytes": 45,
+      "sha256": "638cc7c266646821f502d0d14984ef8f47059d6d208f7ba5c16611c62cae3e51"
+    },
+    {
+      "path": "local/sco-live-00ce7d24.txt",
+      "bytes": 106,
+      "sha256": "39bd09fe6e7740d516d20e7cd397e5d6ecaf3d5828ff2888dcb730f8d45c0ced"
+    },
+    {
+      "path": "local/sco-live-00d683b0.txt",
+      "bytes": 61,
+      "sha256": "d1e49bdde3ec360dd81afa63744fcabf47ee83c2378b8cb4ecf9e7c93f411d60"
+    },
+    {
+      "path": "local/sco-original-004de4b0.bin",
+      "bytes": 199,
+      "sha256": "fa1f9c042b0a54c37c68547e0fed4dc02526fdfe6a8911e5b66e46ed9d541ec2"
+    },
+    {
+      "path": "local/sco-original-004de516.bin",
+      "bytes": 32,
+      "sha256": "8edbf80c297148addbc08a36ef56dac2e1f272717d79f4bc28f590b0d257662a"
+    },
+    {
+      "path": "local/sco-original-00b1a4f0.bin",
+      "bytes": 1338,
+      "sha256": "002cdaf6ca625b6e3b138575622dc3dc6feb22a468c021f33814f1815a669f62"
+    },
+    {
+      "path": "local/sco-original-00b1b4d0.bin",
+      "bytes": 280,
+      "sha256": "842408999114f6f975691e501a6a8bedbd52c55796eb4d47c694e211ca335ea1"
+    },
+    {
+      "path": "local/sco-original-00b1b810.bin",
+      "bytes": 20,
+      "sha256": "8a65e02675980fa957b1a0e9d36c98b9b89afb43e7d2ee3f84189a5421809ce8"
+    },
+    {
+      "path": "local/sco-original-00bdabf0.bin",
+      "bytes": 55,
+      "sha256": "f6fa6aabc0e0200c52111e4c05caf3e21a538e31892d027396c1b49c22c75d17"
+    },
+    {
+      "path": "local/sco-original-00be1e39.bin",
+      "bytes": 27,
+      "sha256": "a4e1a80239a40c5e9f5f91b7b2177fbd18ef148e6369894a935000e6dea8c2a0"
+    },
+    {
+      "path": "local/sco-original-00becb20.bin",
+      "bytes": 424,
+      "sha256": "d49521cd17d5c4bbd55280346ebbf30a23de86a24d5a947fc8ceda875aeef8e3"
+    },
+    {
+      "path": "local/sco-original-00beccd0.bin",
+      "bytes": 103,
+      "sha256": "fb8d69fd84a258f76f7fe1a491fc89db03aa373d8aa24fa0e58051b517e67278"
+    },
+    {
+      "path": "local/sco-original-00ce3c5c.bin",
+      "bytes": 8,
+      "sha256": "7670cf4ceda3b9a04325d9e243935446f8064a15b60b5d91e03d6450344e89c8"
+    },
+    {
+      "path": "local/sco-original-00ce7d24.bin",
+      "bytes": 20,
+      "sha256": "82fed636b359d203664f7b11c3f1d6a12fab8cb5782d4abf7276be51c5a3fec8"
+    },
+    {
+      "path": "local/sco-original-00d683b0.bin",
+      "bytes": 12,
+      "sha256": "b68b8ef46d77cf713d6836ad9c8b4bf81dec10d0998c7f6c1238063b63906d8b"
+    },
+    {
+      "path": "local/sco-probe-dependencies.json",
+      "bytes": 31016,
+      "sha256": "919849b2e3f867bd77f3a13dc08b74061f49347c054f09c66c51320e949232b1"
+    },
+    {
+      "path": "local/sco-proto-00419cc0.txt",
+      "bytes": 121,
+      "sha256": "984e62dfb9438f448344876a7883fc44125c0180ae220afe2c1ce9b64aff9d48"
+    },
+    {
+      "path": "local/sco-proto-0041dd40.txt",
+      "bytes": 147,
+      "sha256": "ef23645c54a7f2a9ecd8a7249c81f826956270825a2c4b83e0929760aa5d99ea"
+    },
+    {
+      "path": "local/sco-proto-004bcc00.txt",
+      "bytes": 105,
+      "sha256": "f1a36c0a3b3283a4dc3907272dedd7d50c60873a4986f12d4c5d344c79b47b0a"
+    },
+    {
+      "path": "local/sco-proto-004c3020.txt",
+      "bytes": 129,
+      "sha256": "51f9ed85d5926d5ada699744812ae05a3d81c46cc0f9a9de70b330dc6bff3677"
+    },
+    {
+      "path": "local/sco-proto-004ce6f0.txt",
+      "bytes": 147,
+      "sha256": "2c6c23a276f8984e8b7370deecad94be73c42725b89fab156d070191647cd45d"
+    },
+    {
+      "path": "local/sco-proto-004ce780.txt",
+      "bytes": 113,
+      "sha256": "a4f1a1340303c83570a5c52f7a4747582a5df2e23f70db70879c9e2f28580c27"
+    },
+    {
+      "path": "local/sco-proto-004d45a0.txt",
+      "bytes": 113,
+      "sha256": "81208f30e8ae36f90f75f2a04ce124052c4728e5113b80e9d018328af26cd7cf"
+    },
+    {
+      "path": "local/sco-proto-004ddb20.txt",
+      "bytes": 119,
+      "sha256": "f19b46db0dc18c0f7703a863769ff4d421929107d5f6d6088336aa5eb1709fa9"
+    },
+    {
+      "path": "local/sco-proto-004de4b0.txt",
+      "bytes": 115,
+      "sha256": "c4b6ad10986f96952e68a307389689bcb04c2295fdc946f911be7f84252942b6"
+    },
+    {
+      "path": "local/sco-proto-00b19e40.txt",
+      "bytes": 125,
+      "sha256": "8104b89d0eed162cf041e106e10552cbc7ab31438e1b384ae8c36cc1010897fe"
+    },
+    {
+      "path": "local/sco-proto-00b1a3c0.txt",
+      "bytes": 129,
+      "sha256": "e2019be4babe74f164b851aa4887b86fe36b2233007a1c38df16bb914ad2d851"
+    },
+    {
+      "path": "local/sco-proto-00b1a4f0.txt",
+      "bytes": 79,
+      "sha256": "ac87817154db5be221651aedd7bb1e135543713dee459b934126ada1b27a2a16"
+    },
+    {
+      "path": "local/sco-proto-00b1b400.txt",
+      "bytes": 79,
+      "sha256": "c4956ae12bf63721ab537e4a6095dd860e9dbd44c60921ffc91a5b4efc469662"
+    },
+    {
+      "path": "local/sco-proto-00b1b4d0.txt",
+      "bytes": 79,
+      "sha256": "72cf5886c026a2c4fd807fa8a05be479b52c970f0691dde8461e65a0b5e5e18a"
+    },
+    {
+      "path": "local/sco-proto-00b1b810.txt",
+      "bytes": 79,
+      "sha256": "aa6b534768b34d675cda01536d210e6e9f91d366c37a494985c0ef225cca4429"
+    },
+    {
+      "path": "local/sco-proto-00b3b280.txt",
+      "bytes": 133,
+      "sha256": "570180f2056ac29b0f2e7ec7a384441e32a2a90c25052869375db92ed66b5689"
+    },
+    {
+      "path": "local/sco-proto-00bd1510.txt",
+      "bytes": 119,
+      "sha256": "db4f196956b39fd27089594cb993e7d050577952ee44f3ed5e060cc3ff829564"
+    },
+    {
+      "path": "local/sco-proto-00bdd340.txt",
+      "bytes": 93,
+      "sha256": "bad1aa8b2bead04c583f0e86fcd967395502389720737f5490af683a5a0e5c3f"
+    },
+    {
+      "path": "local/sco-proto-00becb20.txt",
+      "bytes": 181,
+      "sha256": "ce446135d32cf322ca550d0fa803b44a0dc8d30ff39ada8d7c90eba23c0a5900"
+    },
+    {
+      "path": "local/sco-proto-00beccd0.txt",
+      "bytes": 123,
+      "sha256": "e98457c816af4a15ca97406e9e8a2b7d12b74b228e56e17c178cb24ce855f725"
+    },
+    {
+      "path": "local/sco-proto-00bee690.txt",
+      "bytes": 115,
+      "sha256": "f085079ac2d517e1401beb9256589a7cfae12e72c7b70b0da0f108ac09ba513d"
+    },
+    {
+      "path": "local/sco-proto-00bf6713.txt",
+      "bytes": 105,
+      "sha256": "b80a4221a4d30046c54c13d3281c96eaeaae098efbae2ff79efdd005a2a9a471"
+    },
+    {
+      "path": "local/sco-proto-00bf7680.txt",
+      "bytes": 108,
+      "sha256": "2f298397141b7d27b28a74ef020c63f117df2bdbcb2ef097145a0e0c80a3275a"
+    },
+    {
+      "path": "local/sco-proto-00bf7fbf.txt",
+      "bytes": 97,
+      "sha256": "d77ecb2496a7fcc9e8b5f121555a1e9cd2f126783be1c387eb922db00f87c2cb"
+    },
+    {
+      "path": "local/sco-seeds.log",
+      "bytes": 3034,
+      "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+    },
+    {
+      "path": "local/sco-source-secondary-profile.bin",
+      "bytes": 20,
+      "sha256": "82fed636b359d203664f7b11c3f1d6a12fab8cb5782d4abf7276be51c5a3fec8"
+    },
+    {
+      "path": "local/sco-trace-0-original.txt",
+      "bytes": 2696,
+      "sha256": "223cae5953f36f8ad4905016c7daad02f9a87ddfb96cf6e0b12b2e5f574db6b8"
+    },
+    {
+      "path": "local/sco-trace-0-source.txt",
+      "bytes": 2696,
+      "sha256": "223cae5953f36f8ad4905016c7daad02f9a87ddfb96cf6e0b12b2e5f574db6b8"
+    },
+    {
+      "path": "local/sco-trace-1-original.txt",
+      "bytes": 2753,
+      "sha256": "e69ddfeb32dc9e24fd301dadd8d12e1cdb4858e58fef7329db71a75b8d48a490"
+    },
+    {
+      "path": "local/sco-trace-1-source.txt",
+      "bytes": 2753,
+      "sha256": "e69ddfeb32dc9e24fd301dadd8d12e1cdb4858e58fef7329db71a75b8d48a490"
+    },
+    {
+      "path": "local/sco-trace-2-original.txt",
+      "bytes": 2696,
+      "sha256": "007e3fd97bbbddaee66061a589b6298b4ada0643f42290737e4abef0c30bed58"
+    },
+    {
+      "path": "local/sco-trace-2-source.txt",
+      "bytes": 2696,
+      "sha256": "007e3fd97bbbddaee66061a589b6298b4ada0643f42290737e4abef0c30bed58"
+    },
+    {
+      "path": "local/sco_original.hpp",
+      "bytes": 11785,
+      "sha256": "4acce1ad48ccf052bacd3d5b0c7497823a1f958ef0c25858969e9a304ae05081"
+    },
+    {
+      "path": "local/seed_reference.hpp",
+      "bytes": 2995,
+      "sha256": "26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c"
+    },
+    {
+      "path": "scripts/build.ps1",
+      "bytes": 1657,
+      "sha256": "87b1f7f177977e4800c6e427c13cc916779f412daa7490f37fbb1b50cb3d295c"
+    },
+    {
+      "path": "src/native_alias_count_growth.cpp",
+      "bytes": 1729,
+      "sha256": "2bc25adb85712c0823f7f847e97788b42cc53e2510b4449e02356a4c255a596b"
+    },
+    {
+      "path": "src/native_diagnostic_sink_lifetime.cpp",
+      "bytes": 3472,
+      "sha256": "c74781854e773ffdf76f46b823b6751ca795709f277fefc874a2bdfdefd63131"
+    },
+    {
+      "path": "src/native_legacy_exception_owner.cpp",
+      "bytes": 5121,
+      "sha256": "4a35fabcd35adbd986c1c6bc64b2b88bc07323a47b6f0ebf5bf764675925ad60"
+    },
+    {
+      "path": "src/native_legacy_sbo_string.cpp",
+      "bytes": 7772,
+      "sha256": "377004812adb5e8760b02a84fff81f0004f08fd145c4ce4acfebf31cc583164c"
+    },
+    {
+      "path": "src/native_physical_file_date.cpp",
+      "bytes": 15546,
+      "sha256": "203658be8e2820c639399053fdbb1ebdb1f1482b48729de0161cd29cb8135443"
+    },
+    {
+      "path": "src/native_pooled_resource_path.cpp",
+      "bytes": 4724,
+      "sha256": "dcdbbd55b83fc4cea7666498bf9d9b81bf2b6b03b50373339f9f17b2fa72dfa0"
+    },
+    {
+      "path": "src/native_pooled_string_substring.cpp",
+      "bytes": 5004,
+      "sha256": "3310d48a69a0a20f1d7466fcba1688d8dcc856c7bf4a8048700ccd1fa02db4bc"
+    },
+    {
+      "path": "src/native_render_alias_checked_ops.cpp",
+      "bytes": 6315,
+      "sha256": "76afd570a680a185006392a19fdbee9df084ab073b61c83aed34ba0a45341d0f"
+    },
+    {
+      "path": "src/native_render_alias_insertion.cpp",
+      "bytes": 5959,
+      "sha256": "17861b942820a2bb650440b342a6e07c3f96f122a2f020ed50a45534ea407d69"
+    },
+    {
+      "path": "src/native_render_resource_alias_nodes.cpp",
+      "bytes": 5199,
+      "sha256": "42af1975015ee058412183a60adc83045510405e22247015a39b710924105051"
+    },
+    {
+      "path": "src/native_render_resource_record.cpp",
+      "bytes": 10234,
+      "sha256": "ef87fb3eaa2479bf707edf5a8dee72dbd77b7c37856e39d4c817a44a1eda07d9"
+    },
+    {
+      "path": "src/native_render_resource_record_construction.cpp",
+      "bytes": 8346,
+      "sha256": "a2014615290441972dfe1c0bdadb29c5e1f7585a5858e0c108c636f2a0691e08"
+    },
+    {
+      "path": "src/native_renderer_worker_lifetime.cpp",
+      "bytes": 6911,
+      "sha256": "be86a8c242635d229b9e68d8570b6a5752068ed740d7f58212ad5123d788bddd"
+    },
+    {
+      "path": "src/native_resource_cache_leaves.cpp",
+      "bytes": 5600,
+      "sha256": "8a1eaf9a6423a88492d654a539f99fa436ac263b92b646cdf146f3081b877e61"
+    },
+    {
+      "path": "src/native_resource_record_copy.cpp",
+      "bytes": 3454,
+      "sha256": "f5ee6fde9661b6d396171fa3f3c530e314fae2c1deea9b457b3f92a8aa0dc8b7"
+    },
+    {
+      "path": "src/native_resource_record_vector.cpp",
+      "bytes": 4748,
+      "sha256": "84b2b2a9014c8f398c82a5420e905819d495310b54b33ef1a3771a4ae9fbe4d4"
+    },
+    {
+      "path": "src/native_resource_registry_construction.cpp",
+      "bytes": 3029,
+      "sha256": "190f11052970ca69bf805828fc1061d322a251f964fec72170cbf6f16c366b36"
+    },
+    {
+      "path": "src/native_resource_registry_destroy.cpp",
+      "bytes": 2365,
+      "sha256": "a7d71184eb97813771339d048292afbecdf02cf21da8021ffe7f9590bc5f78b7"
+    },
+    {
+      "path": "src/native_resource_registry_lookup.cpp",
+      "bytes": 2821,
+      "sha256": "06d92bdfc4da4311df3c49007476bcb9317d954827a4832ccf8daf5d822fc414"
+    },
+    {
+      "path": "src/native_sampler_cache_operation.cpp",
+      "bytes": 11806,
+      "sha256": "a8db75abee67fc46898a45cbe873b38e0ddb40e0d512c4475847b240332ef038"
+    },
+    {
+      "path": "src/native_sampler_loader_context.cpp",
+      "bytes": 4393,
+      "sha256": "477616c40fc4658735dadf9a31a2fe543f12bf507be12ce238ab379ac3feeedb"
+    },
+    {
+      "path": "src/native_singleton_publication.cpp",
+      "bytes": 4127,
+      "sha256": "db69108414a5aa844b80b04ca82819139f1dccc422d6f3a954512a4375d07c8a"
+    },
+    {
+      "path": "src/native_singleton_vector_allocation.cpp",
+      "bytes": 1966,
+      "sha256": "4771197c3f1ead7dd635637c849c60f8f525c4d482dcc4a33c8617922362e09e"
+    },
+    {
+      "path": "src/native_singleton_vector_insert_count.cpp",
+      "bytes": 5712,
+      "sha256": "12961e35b1189704bf7f1de55fbdeb6f406688cfadf9256f8729fd72a0a870ac"
+    },
+    {
+      "path": "src/native_singleton_vector_leaves.cpp",
+      "bytes": 3538,
+      "sha256": "366628d6ec54de3f643b5fff299d16092a2c085a8e0715d4a9b0a6cdb2ed89ad"
+    },
+    {
+      "path": "src/native_singleton_vector_registration_wrappers.cpp",
+      "bytes": 4283,
+      "sha256": "cd191614f5de77becc8a0a9a73f9c3ebfc1cfd86bb87fdf10a7965d0a5839a90"
+    },
+    {
+      "path": "src/native_singleton_vector_reserve_construct.cpp",
+      "bytes": 3731,
+      "sha256": "105cce16ac4886cdc5c2359ae1837a3126445842e46268c55d34ae42f9186f29"
+    },
+    {
+      "path": "src/native_string.cpp",
+      "bytes": 8311,
+      "sha256": "0e8819d3a6442fc48c879e85c00899a72beabdc51b3e94a11836ab5314d5e60c"
+    },
+    {
+      "path": "src/native_string_pool_owner.cpp",
+      "bytes": 8443,
+      "sha256": "cb52fde795918995689a26567d513e9f3cf75eeb27600eb60c431c37fdd21d6e"
+    },
+    {
+      "path": "src/native_string_pool_storage.cpp",
+      "bytes": 5103,
+      "sha256": "5cb79a6ce240205b3f1c81f1fbd6edd49cc1c05f8a20ee8dca8913f44c9095d5"
+    },
+    {
+      "path": "src/native_vfs_container_allocation.cpp",
+      "bytes": 3577,
+      "sha256": "dbb7ca65319f7d4c07a68a1b2f5df58fa9faf52a0432298490fa81f9669f93ad"
+    },
+    {
+      "path": "src/native_vfs_date_leaf_providers.cpp",
+      "bytes": 4749,
+      "sha256": "8a3615bec143538b10b50448e9e44948f3f36374b33cdc6878ad50de27f36559"
+    },
+    {
+      "path": "src/native_vfs_date_route.cpp",
+      "bytes": 10164,
+      "sha256": "96ca6bf65359a09b52ff70141cba7ca2fc029030e670e47601ba6832f1b6d991"
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "bytes": 13257,
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+    }
+  ],
+  "external_artifacts": [
+    {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "bytes": 12223752,
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "preserved_in_place": true
+    },
+    {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/redist/gfwlivesetup.exe",
+      "bytes": 178631776,
+      "sha256": "82b3088d0af4bad22bf8058659fb80654040fbafdccbd0fc8df996153f597217",
+      "preserved_in_place": true
+    }
+  ],
+  "private_runtime": {
+    "provenance": "Copied existing retained files from orch3 local/gfwl-private-runtime; independently hash-checked against docs/XLIVE_PRIVATE_RUNTIME.md. Original bundled installer is pinned as extraction provenance and was not executed.",
+    "loading": "Absolute private msidcrl40.dll loaded first, then absolute private xlive.dll. No DLL search-path change or SDK initialization. Both remain loaded until process exit.",
+    "system_failure": "Initial C:/Windows/SysWOW64/xlive.dll load reproduced error182; log retained in local/sampler-cache-load-error182.log. Existing project investigation identifies incompatible system credential DLL; no fallback stub was used."
+  },
+  "external_toolchain_headers": [
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/Windows.h",
+      "bytes": 7511,
+      "sha256": "b337d661d03a4abefb7b86a2742ce1ad5d19b57cd8b858bd13e7bbcc1dbeeaaa",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/winapifamily.h",
+      "bytes": 11292,
+      "sha256": "bda507d14f2e40023d344cb943cbd98af26de8a47f3b0f5fac694d2025711af1",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/winpackagefamily.h",
+      "bytes": 3699,
+      "sha256": "8f74e254896094a3884e6975fd24b3493846514065f47d2666df53cdea45b8ea",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/sdkddkver.h",
+      "bytes": 11565,
+      "sha256": "2472140e0a4d56595743bb74002a51aee9b58667bd178fc43742e19debfeb774",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/excpt.h",
+      "bytes": 2493,
+      "sha256": "9532b07eff7b34c062401b7155fe77494068e82bb7c2bef34cec5937e948cefc",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/vcruntime.h",
+      "bytes": 11444,
+      "sha256": "8a6e89fe85c66162d62c772d02367ae2e6530f1faaaa8d099427698a689bac7f",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/sal.h",
+      "bytes": 213957,
+      "sha256": "cda06459ca38681800ce5e98703c66534c74a803aa652bd4bc2b3407dd45ed46",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/concurrencysal.h",
+      "bytes": 17273,
+      "sha256": "1ea9a2e32a6ff298ad7904610cc71028caa9b172399a579ca90a120d1b1aec12",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/vadefs.h",
+      "bytes": 7668,
+      "sha256": "282dcb4af7cdbbf34095235b069474621fdd82e28eec698b467f553df4759f01",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/stdarg.h",
+      "bytes": 554,
+      "sha256": "5d61d0b6734ef0832c30064800e8d01b3f12d29d24c8b1bd07b3ece3b72a9330",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/windef.h",
+      "bytes": 7362,
+      "sha256": "040535b19a60264e5fe6971f7cb13cbf24be17abeeaa8acd21e44f5d7dfe8d22",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/minwindef.h",
+      "bytes": 6876,
+      "sha256": "a9cf08be8407a196104124d5ade2308e204e47d3252bcd2ad20d0f2137843d62",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/specstrings.h",
+      "bytes": 48804,
+      "sha256": "3b83b1cd3b4f9bf46009bfdccf01d5c3a6fa6eed3f823d1ef497ed6d1b9bce0e",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/specstrings_strict.h",
+      "bytes": 67448,
+      "sha256": "49b12898b42bcf53e5f8fb75e6db1a5d3ffb7a9f394e50df3351e0824d4a8b42",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/specstrings_undef.h",
+      "bytes": 13106,
+      "sha256": "6aba76eabbec627edadba5ab29304d9e2ff4eb9da165fd81a9095c851f405a01",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/driverspecs.h",
+      "bytes": 41698,
+      "sha256": "9cf7e9e1c9b55c7c351e87ff5a98e362b6ffdb511c3309ab9cf46b62b0dace42",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/sdv_driverspecs.h",
+      "bytes": 554,
+      "sha256": "99fd81f9464150f56963c3bbafaa95f93b837c221c4237e6e399a85e00ea9f39",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/winnt.h",
+      "bytes": 876258,
+      "sha256": "bc603675b330e624fd6f3de9ed3497ed6101e4c56e12cf819a9ef7c41f1c78d8",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt/ctype.h",
+      "bytes": 12981,
+      "sha256": "6a10e9f0505b896d356d986d671c939b7fb0602012e463314ff7bfd0182a861f",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt/corecrt.h",
+      "bytes": 127273,
+      "sha256": "822e503b81dd7b3d7df93ca22fced3672a5154484fd42054d5941e619bcf6cbc",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt/corecrt_wctype.h",
+      "bytes": 10605,
+      "sha256": "b622b24cbda842a1736987f38c9deb5076e51af018630842a127bebd9104076e",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/kernelspecs.h",
+      "bytes": 11879,
+      "sha256": "e844c7726c42736df74445b36351dc01e29bccee7d57ea208f77f61aa4c2b191",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/basetsd.h",
+      "bytes": 11448,
+      "sha256": "d35b73f885d7ef7dfd27fce3762c190c1c952a21e10a3945bcb3d1860c673b12",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/guiddef.h",
+      "bytes": 5083,
+      "sha256": "0c08463fbc5a23a8862e57699e2f30dd14cd3db4a40903e4fca9392a57942dae",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt/string.h",
+      "bytes": 17395,
+      "sha256": "39767b2e1963b8ef679b62d5e27cb2d0ca1de6a6173b75389b79c9d575da92fc",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt/corecrt_memory.h",
+      "bytes": 3527,
+      "sha256": "18ca520416579183bc369c0a8e555914db5c7577075b9359173fc6bc45595560",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt/corecrt_memcpy_s.h",
+      "bytes": 3692,
+      "sha256": "359f3ce9e84bc00c983f01d9c3375d0ca9e0ef6a42e797d16e119c62b2ef333b",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt/errno.h",
+      "bytes": 3835,
+      "sha256": "c64e8df96f057fdebc0474bd765cee3ae17de34a2b1fc9d197597321f2d1e447",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/vcruntime_string.h",
+      "bytes": 2959,
+      "sha256": "b05204f6814d1d7b7ca729b41d4192d0e47722f162c0b1d322f994bf9650af63",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt/corecrt_wstring.h",
+      "bytes": 20015,
+      "sha256": "c485f918d43f0f846d77a36eaee9e111f57bf2eec32db7d9719ff924771744c6",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/pshpack4.h",
+      "bytes": 918,
+      "sha256": "1cb4d07a218ec43c7935b431b16146fc0f3d29d43bd192f12959051d62c48d57",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/poppack.h",
+      "bytes": 1021,
+      "sha256": "a50d0ef5cfe96d634a41ee9a97749c147165f8656cdfed5df53bc24c8adb1210",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/pshpack4.h",
+      "bytes": 918,
+      "sha256": "1cb4d07a218ec43c7935b431b16146fc0f3d29d43bd192f12959051d62c48d57",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/poppack.h",
+      "bytes": 1021,
+      "sha256": "a50d0ef5cfe96d634a41ee9a97749c147165f8656cdfed5df53bc24c8adb1210",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/pshpack4.h",
+      "bytes": 918,
+      "sha256": "1cb4d07a218ec43c7935b431b16146fc0f3d29d43bd192f12959051d62c48d57",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/poppack.h",
+      "bytes": 1021,
+      "sha256": "a50d0ef5cfe96d634a41ee9a97749c147165f8656cdfed5df53bc24c8adb1210",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/pshpack4.h",
+      "bytes": 918,
+      "sha256": "1cb4d07a218ec43c7935b431b16146fc0f3d29d43bd192f12959051d62c48d57",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/pshpack2.h",
+      "bytes": 918,
+      "sha256": "971d19074639cb36134bb40776cb2f817c53cbd05d748b52468f571932bbcc49",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/poppack.h",
+      "bytes": 1021,
+      "sha256": "a50d0ef5cfe96d634a41ee9a97749c147165f8656cdfed5df53bc24c8adb1210",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/pshpack2.h",
+      "bytes": 918,
+      "sha256": "971d19074639cb36134bb40776cb2f817c53cbd05d748b52468f571932bbcc49",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/pshpack2.h",
+      "bytes": 918,
+      "sha256": "971d19074639cb36134bb40776cb2f817c53cbd05d748b52468f571932bbcc49",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/poppack.h",
+      "bytes": 1021,
+      "sha256": "a50d0ef5cfe96d634a41ee9a97749c147165f8656cdfed5df53bc24c8adb1210",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/poppack.h",
+      "bytes": 1021,
+      "sha256": "a50d0ef5cfe96d634a41ee9a97749c147165f8656cdfed5df53bc24c8adb1210",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/pshpack8.h",
+      "bytes": 918,
+      "sha256": "47f3972a1211e3a5ac32b18fae1a824db087dc7dc562d152e9ccab9b297faef0",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/poppack.h",
+      "bytes": 1021,
+      "sha256": "a50d0ef5cfe96d634a41ee9a97749c147165f8656cdfed5df53bc24c8adb1210",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/pshpack1.h",
+      "bytes": 918,
+      "sha256": "dee27f2712b9e72ca78a404834735303d16bdb21c8aa3addaca7dbca22664529",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/poppack.h",
+      "bytes": 1021,
+      "sha256": "a50d0ef5cfe96d634a41ee9a97749c147165f8656cdfed5df53bc24c8adb1210",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/pshpack1.h",
+      "bytes": 918,
+      "sha256": "dee27f2712b9e72ca78a404834735303d16bdb21c8aa3addaca7dbca22664529",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/poppack.h",
+      "bytes": 1021,
+      "sha256": "a50d0ef5cfe96d634a41ee9a97749c147165f8656cdfed5df53bc24c8adb1210",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/poppack.h",
+      "bytes": 1021,
+      "sha256": "a50d0ef5cfe96d634a41ee9a97749c147165f8656cdfed5df53bc24c8adb1210",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/apiset.h",
+      "bytes": 6423,
+      "sha256": "e984e20681fd3de73ce14ab09d759d5b4faf03f7d66a78602da2ac9234b24df4",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/ktmtypes.h",
+      "bytes": 7849,
+      "sha256": "68d2848d00ae33282fb265880f8166f2b5dc60cd7a26db652450a5b44d44ee11",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/WinBase.h",
+      "bytes": 271704,
+      "sha256": "ec538199f5ebe8cec2dfd4f1ba48316ef776c82d37277aed3a677965e494f192",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/apisetcconv.h",
+      "bytes": 2162,
+      "sha256": "1093683104f97c8c9725bb2e7539dca22722dc8c5618cd846287e9458698abfe",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/minwinbase.h",
+      "bytes": 13973,
+      "sha256": "7d1408f4b8eeba96ae45892209132258cde80cab6dab192b4cceea591972c78b",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/apiquery2.h",
+      "bytes": 1549,
+      "sha256": "56c61c2ee306428d38037a578b66a49ef347a14a3760936416035b0d45da2b11",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/processenv.h",
+      "bytes": 7427,
+      "sha256": "c10dd3bd48a2416e0aece2259ea57cc47d6c8b9fdbae085a4c7a5b29c71a85dd",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/fileapifromapp.h",
+      "bytes": 4111,
+      "sha256": "d07110e7f7989aeef7eed77d5f584f3ee60ff2ce58bc1a374d70151a18b4a664",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/fileapi.h",
+      "bytes": 40460,
+      "sha256": "f8927178c75de487c0e57f044a215e455522bf6eaa0b660421be09cd06ae05a1",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/debugapi.h",
+      "bytes": 3591,
+      "sha256": "d63f6c4aad9787bb8ff2e54966c8db156b0ef1570be58201d74dff12cd6f1e22",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/utilapiset.h",
+      "bytes": 2482,
+      "sha256": "a8e0f6001c784b3ad9feb44c61d96b58c57366c473832ca8b2ea5de05877b470",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/handleapi.h",
+      "bytes": 2578,
+      "sha256": "c967fdf1a98e4ce8d501dae26b905f6452173b2be1c25e6aa2e5eeae415369cc",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/errhandlingapi.h",
+      "bytes": 6566,
+      "sha256": "b73cccce6dac8ce02c6a399862ec2a6e22fe27a4d09874d86ec2be3bd5d17fbf",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/fibersapi.h",
+      "bytes": 2582,
+      "sha256": "f8eeadc28f8e3e4c7bfd1217d55315eb31d63f3d86c66a3948d74ceb8e7a00d0",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/namedpipeapi.h",
+      "bytes": 5539,
+      "sha256": "37062eba19e35b391cf050519c9403e19c6782663ea644ff38b2b5eb71dfce6b",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/profileapi.h",
+      "bytes": 1413,
+      "sha256": "cfa8e3626dba11689997d8fcd65b5dfbf4bcef8de09dd7e4e881769d48d165a2",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/heapapi.h",
+      "bytes": 5317,
+      "sha256": "22b606b0a4096295272bcae6fc353c4f159f0cdfc90b5f1a9a712b2fff50b53f",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/ioapiset.h",
+      "bytes": 4791,
+      "sha256": "7c3f659f98b3f1748a314bd64106583d01649333e0419b66232b4f64b3f85b0c",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/synchapi.h",
+      "bytes": 15696,
+      "sha256": "d962588974e5e100205f683160b351dee70ea100aa736e14d878b7a74577a9c5",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/interlockedapi.h",
+      "bytes": 2604,
+      "sha256": "4b0d3bc138eaab8dc9dd40bfb109f5fea4cbd2caaf92d63a4cf60a8edcfb0e3a",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/processthreadsapi.h",
+      "bytes": 37180,
+      "sha256": "436ae4cbb017d1cdb381aaf2119a3f89b04bae257fd4c881ef251daa02533540",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/sysinfoapi.h",
+      "bytes": 19345,
+      "sha256": "077088cb53ec69d454916aac5f00e45dda79e09da64054acc141120eb67a5700",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/memoryapi.h",
+      "bytes": 33539,
+      "sha256": "58edcc2090c411a1821e04a6a2954c258fd59ded44440bdd671984027e0a852f",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/enclaveapi.h",
+      "bytes": 3502,
+      "sha256": "9467c4bc6400057c3d3205d53667000be525cad64a381552291e869430af6a76",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/threadpoollegacyapiset.h",
+      "bytes": 2824,
+      "sha256": "87c1630abf7dc4ed7978f2c4dbacf418f6bcf94cb946e277cb7250770bd44200",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/threadpoolapiset.h",
+      "bytes": 7148,
+      "sha256": "e91d7dee4d22ca848e3110a4c55f32e1918dc865479343896aec9ab653ee5110",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/jobapi.h",
+      "bytes": 1307,
+      "sha256": "08ddff85ec80f12b156837bbce4f969480fea0e32a08dade7cc16acecb0892d1",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/jobapi2.h",
+      "bytes": 2976,
+      "sha256": "a8f9591dc2b0bd249d03150b70abd47c0068c6eda2a1d74d24bc8964bcd68549",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/wow64apiset.h",
+      "bytes": 5421,
+      "sha256": "6b14e2b59ae5b9f22bfd9a1e989a5589adf5790832ff24cb9d8828d4e8d45cda",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/libloaderapi.h",
+      "bytes": 15518,
+      "sha256": "8ad0ba5600d6c2e9aed318ca9d2f48f2bdf9f47ed3cd5d9f243e6f779c8e04c4",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/securitybaseapi.h",
+      "bytes": 36514,
+      "sha256": "a443b4183d3ec5b8e1ae40db5824f002a34eb0415f38227fa1dddbbf02a448d4",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/namespaceapi.h",
+      "bytes": 1974,
+      "sha256": "3257ad8af53c5809be4d5d17ed0ffd8b49451d3f27c1fd747ffde3e0a7a81583",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/systemtopologyapi.h",
+      "bytes": 2319,
+      "sha256": "8bfd1a78cc30b6d33c88e3f61ae2ac6468cee0607352ee8d096ba5375b4d401c",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/processtopologyapi.h",
+      "bytes": 2081,
+      "sha256": "4507a5e0c4f41d19a80d1543833f1a9d90277bc376441b277884bb043be24ba5",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/securityappcontainer.h",
+      "bytes": 1470,
+      "sha256": "85cc13ed7028960bd7f97c91f98b96825b46f4b8bc386aed2f2a6a9bccbe4083",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/realtimeapiset.h",
+      "bytes": 3149,
+      "sha256": "00c874b981a1242ee4ebc21e6ae96a69d7aa70662d820ceffbabcfea859b03e4",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/winerror.h",
+      "bytes": 1622697,
+      "sha256": "607a0b5fb2ce91048147796f618cd1d408ffc603cfc3a34dc710be087e7d1a5c",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/timezoneapi.h",
+      "bytes": 5462,
+      "sha256": "621c0252a8a831813592c4a95e183a2e7ae55efbbd7b8ad886af7d8871fc4d50",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/wingdi.h",
+      "bytes": 244023,
+      "sha256": "96f3528cabc7e5fe30e2f2c51daa01c018dd6cedb3768121202434758629b8a2",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/pshpack1.h",
+      "bytes": 918,
+      "sha256": "dee27f2712b9e72ca78a404834735303d16bdb21c8aa3addaca7dbca22664529",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/poppack.h",
+      "bytes": 1021,
+      "sha256": "a50d0ef5cfe96d634a41ee9a97749c147165f8656cdfed5df53bc24c8adb1210",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/pshpack2.h",
+      "bytes": 918,
+      "sha256": "971d19074639cb36134bb40776cb2f817c53cbd05d748b52468f571932bbcc49",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/poppack.h",
+      "bytes": 1021,
+      "sha256": "a50d0ef5cfe96d634a41ee9a97749c147165f8656cdfed5df53bc24c8adb1210",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/pshpack2.h",
+      "bytes": 918,
+      "sha256": "971d19074639cb36134bb40776cb2f817c53cbd05d748b52468f571932bbcc49",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/poppack.h",
+      "bytes": 1021,
+      "sha256": "a50d0ef5cfe96d634a41ee9a97749c147165f8656cdfed5df53bc24c8adb1210",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/pshpack4.h",
+      "bytes": 918,
+      "sha256": "1cb4d07a218ec43c7935b431b16146fc0f3d29d43bd192f12959051d62c48d57",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/poppack.h",
+      "bytes": 1021,
+      "sha256": "a50d0ef5cfe96d634a41ee9a97749c147165f8656cdfed5df53bc24c8adb1210",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/pshpack4.h",
+      "bytes": 918,
+      "sha256": "1cb4d07a218ec43c7935b431b16146fc0f3d29d43bd192f12959051d62c48d57",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/poppack.h",
+      "bytes": 1021,
+      "sha256": "a50d0ef5cfe96d634a41ee9a97749c147165f8656cdfed5df53bc24c8adb1210",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/WinUser.h",
+      "bytes": 428754,
+      "sha256": "89910113eb8dfc9fad16e3b12abf5f52a5df70cc9ead30ba1be095462bb880b3",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/pshpack2.h",
+      "bytes": 918,
+      "sha256": "971d19074639cb36134bb40776cb2f817c53cbd05d748b52468f571932bbcc49",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/poppack.h",
+      "bytes": 1021,
+      "sha256": "a50d0ef5cfe96d634a41ee9a97749c147165f8656cdfed5df53bc24c8adb1210",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/tvout.h",
+      "bytes": 4128,
+      "sha256": "8c359d2dff894d546f3eced2fe9463dfa4824bffc6c8c71ecd8feef02e7eae21",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/WinNls.h",
+      "bytes": 129219,
+      "sha256": "e47861762a4b51a2689c8a99798a1a7e68335573e03c857e545172b095c5c829",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/datetimeapi.h",
+      "bytes": 3964,
+      "sha256": "a4325c76b9bc900c22ef3d766c739ccd3a71894e81833ad637d50f9e45417117",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/stringapiset.h",
+      "bytes": 3941,
+      "sha256": "624c82fb73517a3829f3766a50a0235e2f9a51cb4bda95a0c39981e39fa4d42d",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/WinNls.h",
+      "bytes": 129219,
+      "sha256": "e47861762a4b51a2689c8a99798a1a7e68335573e03c857e545172b095c5c829",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/wincon.h",
+      "bytes": 1129,
+      "sha256": "98e33720f9ec8fded808ab94f111b8335d0ba2fd2246a5adab3aab2ce05503d9",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/wincontypes.h",
+      "bytes": 4610,
+      "sha256": "209e79fdbbb30971740e59b2da2d6c86e27c0e9dd02bee9cbc21736fbd2426ad",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/consoleapi.h",
+      "bytes": 8161,
+      "sha256": "a0e727e696f3599ef0b570942f28646dbd94374e62c812659eba5ebe2a42a99f",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/consoleapi2.h",
+      "bytes": 11697,
+      "sha256": "f2134e1d2c01611e60ff939ccd45561884aa0ccbce590136ffd1d95161892d17",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/consoleapi3.h",
+      "bytes": 8574,
+      "sha256": "0a00bf6ca901d0d980fe8c2b9bb91a39fb84c3a99e9c87498149a04cf7cf5925",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/winver.h",
+      "bytes": 8809,
+      "sha256": "c60e137e7ff88582f72e50fe74904f5773502d229f78234ea83abb2688f6e8ae",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/verrsrc.h",
+      "bytes": 6705,
+      "sha256": "ff9bee8ee5b7aa81eaf79a1eab0e93bd307601e87d3b80a73f24984e9c951c61",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/winreg.h",
+      "bytes": 42295,
+      "sha256": "bff833e8d092a0cb657837e3162b8bb0cf35b43105203f4ce880972a501d61d6",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/reason.h",
+      "bytes": 5042,
+      "sha256": "30540eb35daa79c7a5cb98059430df480e86b549b7980247288da8a2801add1d",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/winnetwk.h",
+      "bytes": 27073,
+      "sha256": "7c7412df502fb6ea390c96d7c9f805a2a211609b95b8fdb4740540f789d9c4ce",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/wnnc.h",
+      "bytes": 4001,
+      "sha256": "fb3aaeef324b5d00ce0a6ae11702dcc3c1de65fa0a10caaab4336b97d3adf493",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared/stralign.h",
+      "bytes": 16784,
+      "sha256": "f7d2f48b6a9154937ad907e91b70faf6c68044fbe9d4042c392ac3c0eb1a82ef",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/winsvc.h",
+      "bytes": 59863,
+      "sha256": "8108fe3f099960014f36d1b2da425a8382e9d839de3477eb06f181289a0685c8",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/mcx.h",
+      "bytes": 24640,
+      "sha256": "4ee416b2d24e45cfc5d35ce5b34833b64b34fd9a39957c66d75509f6d3b8f972",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/imm.h",
+      "bytes": 28873,
+      "sha256": "942d0b80eb7d186ee935fce8064ccdcdea3a49b39bcc03f55208b7c37e289779",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um/ime_cmodes.h",
+      "bytes": 833,
+      "sha256": "27904e900938749c12a4d1e741afd564198a57a24724c1ddd36cd3302224df26",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/cstddef",
+      "bytes": 4015,
+      "sha256": "8388948efa6dc3b3b20866fa1c3057ea53b8dfd028f22abe1d7dce23ef1d9ecc",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/yvals_core.h",
+      "bytes": 100570,
+      "sha256": "10b59d42bde2105e76cf16735e34dd0f1d45a943cb1b789c4a0406c67c2bd684",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/xkeycheck.h",
+      "bytes": 20754,
+      "sha256": "fdb1dc9ca22f9309bfb7e87b3f9e2b340ced7945344af2450be4beac589a3df9",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt/stddef.h",
+      "bytes": 1413,
+      "sha256": "3f1f7eeefad270928749c89a2a2094ccc3f38829b1d8c197f6ce7483ead2284c",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/xtr1common",
+      "bytes": 8613,
+      "sha256": "cdffecba4f44c22fe4f809c6e4f6eeee628a7331a1b2e4ffd5dba32afcda2dcd",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/cstdint",
+      "bytes": 1697,
+      "sha256": "ce03526f2948c653a2ca8f68b9a8a8f0e13648243ab24068cdd473a52d4774c5",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/stdint.h",
+      "bytes": 4114,
+      "sha256": "29fb6d4ba5e311e06877609c20a1bc49c6cdfb730f56dd0f9c53a6241c40ab5c",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/memory",
+      "bytes": 182088,
+      "sha256": "8955101828fe9d46c77e214e50415bac5b1e59697e0f59bc46fa145aa1e8ae4c",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/exception",
+      "bytes": 13765,
+      "sha256": "49c3ebe69f8fd1947c6a05f7de89dd17fc962e4c229b8bf1a5b0d040e5dcb0cb",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/yvals.h",
+      "bytes": 16953,
+      "sha256": "9a5c69cc397b3eb33601b0c165276e92d28def742876b8124622830dc3c3e1c6",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/__msvc_doom_core.hpp",
+      "bytes": 2756,
+      "sha256": "06f0d5fece0ff0c2b7c36346ae8471df661f07601fcb5501cf1f19f1c130ae63",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt/crtdbg.h",
+      "bytes": 32615,
+      "sha256": "d9ebd063f0243dd122ec33901661d1ae175359adbb019f0d815fb902e6f617e4",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/vcruntime_new_debug.h",
+      "bytes": 1578,
+      "sha256": "c3f552f0f27600ad991ad4b8b39d2204b65b4afcf0123504f03e781546f0f010",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/vcruntime_new.h",
+      "bytes": 5547,
+      "sha256": "5ee35f7b2db5dffa801c5fd2f6053ff03d9b09f06d5452b15e4b3d7d22e0b87d",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/crtdefs.h",
+      "bytes": 2581,
+      "sha256": "82bdcc78bdab153e2a41a72a3860201b33aab6e46d207194caf09326f47b298f",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/use_ansi.h",
+      "bytes": 1330,
+      "sha256": "f3133ce73105aa38ea2fa0ee1495c8620b2d7dc0ab00dd980d9325ac38c7d443",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/cstdlib",
+      "bytes": 2532,
+      "sha256": "0a7edd2c3ba954e98aa26894f28c3eb7fb9b0ba748261ec6e568563ed17b2fc4",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt/math.h",
+      "bytes": 505,
+      "sha256": "fb747990091c8c6e4ed8b4cfb40ed14eadd37547153607459e9ddef71c64edff",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt/corecrt_math.h",
+      "bytes": 39299,
+      "sha256": "ca2f0f25b2e07b3613984efd1135dd9f1d0786fabaa56da2ba3c83b1a23eb918",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt/stdlib.h",
+      "bytes": 43968,
+      "sha256": "1576fdb40eb225dff53489db2fd52e41c7bb24f1e621e4a95c2c7f4a7216949c",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt/corecrt_malloc.h",
+      "bytes": 7405,
+      "sha256": "44bd1bb518e730ba0be045f44a4735869e08f7d54ab85c298270770812fcff80",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt/corecrt_search.h",
+      "bytes": 10959,
+      "sha256": "fe06c4dd27c3df5ca6bed52a433b8848f32e14ed0f3712d00f7e602416471c1b",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt/corecrt_wstdlib.h",
+      "bytes": 16790,
+      "sha256": "98b62ac5fb4291961c19ecf5c1b2e641b437f9042054f1a56ebdfd0deb71eca1",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/limits.h",
+      "bytes": 1919,
+      "sha256": "2ed583abdb8a052b919d4652b10839e28a6fadbe63674108dcc65f719c9ff51c",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/type_traits",
+      "bytes": 117009,
+      "sha256": "c04ca6a9f8e48aaa077714c8a34cb52f00216d5de9e0d05065642c19cf41c1d5",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt/malloc.h",
+      "bytes": 5079,
+      "sha256": "8acfe0c7a33a4d5ae2253f7167f92b0e728dea86f83289cee9d583c45b175b6e",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/vcruntime_exception.h",
+      "bytes": 3143,
+      "sha256": "0dd3dcc67b655fbfc96708f131c9e7f86416d2db95fd33b1e7acc8489f2c32d4",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/eh.h",
+      "bytes": 2206,
+      "sha256": "f9809ac3f6929a584a971f14823be5a737e763a8d8f93bd50af2c3575c286c52",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt/corecrt_terminate.h",
+      "bytes": 1223,
+      "sha256": "c8dc9a2497bcae0a9084eb1120f25660a575c7957997301c4f017fc44c908f54",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/iosfwd",
+      "bytes": 11546,
+      "sha256": "5bb1f37c08ab118972567c468f8f9e024046b7bd1f884571828a19006b3b4076",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/cstdio",
+      "bytes": 2511,
+      "sha256": "d13434f976c70f1ea3f930ad63121bfd8cfb5c736cfc48a91f06a7608b1fbaa0",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt/stdio.h",
+      "bytes": 81489,
+      "sha256": "06cbab3a501306fdd9176a00a83e5bb92ea4d7863cfd666355743527cf99edc6",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt/corecrt_wstdio.h",
+      "bytes": 75265,
+      "sha256": "a10bbf4667b3aada380a6b80df853f9fbddc3cc691ca57389b3b6759f119e515",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt/corecrt_stdio_config.h",
+      "bytes": 5009,
+      "sha256": "a7e100624320a8e0123890c5008bcb2281c1273ca7ce5bb1d297f987fdbe79a0",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/cstring",
+      "bytes": 1532,
+      "sha256": "6f16cc44e5505c1d46e0869b8a7cbabf0be1646203261ab6e885165faceb98a6",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/cwchar",
+      "bytes": 3044,
+      "sha256": "6395a6c56a62c4b02e58f4f5bf6904f7baabd7b90d0de281148ee3c115e7291a",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt/wchar.h",
+      "bytes": 18447,
+      "sha256": "802dc6f33d128ac94cb0e8a978c65382c7c18e85dc2eb7d340b038d79ad10ea5",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt/corecrt_wconio.h",
+      "bytes": 13310,
+      "sha256": "6cfdcfd9e1ec60014c4e7e87913275ce3cacda008dbc397a17306976266aa5b6",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt/corecrt_wdirect.h",
+      "bytes": 1495,
+      "sha256": "b8477593983d23ed4ef93c3efcabb8239375b518ba589a65338db29bb0dc2237",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt/corecrt_wio.h",
+      "bytes": 7427,
+      "sha256": "e6a08ad4c75ef96fd5fafcff334048c4cc610f990f39c15e07c03af14d607197",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt/corecrt_share.h",
+      "bytes": 1005,
+      "sha256": "08e7a7eb0b0c7ebdd7e5fa9f9a65f626f5a725b688502ac178ca67334328b898",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt/corecrt_wprocess.h",
+      "bytes": 3980,
+      "sha256": "e75c5cdf244070ddcebac8920dd4cc96c33d0e21fdfbc82446c0374950e98487",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt/corecrt_wtime.h",
+      "bytes": 7205,
+      "sha256": "4e487fddafbc724cf4e6df45feb920bc46dae80f54ffe5d983bf742a1fd9a12f",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt/sys/stat.h",
+      "bytes": 6856,
+      "sha256": "2b720dd0426cf0a74eefdb684ac559c8b4f84b1d7d345e3582ce0dfeb01b9aa7",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt/sys/types.h",
+      "bytes": 1280,
+      "sha256": "dfb9ebc7d527c30d71f1056ddd85e33fb931df573b41424bb1db9a48457bebd7",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/intrin.h",
+      "bytes": 64899,
+      "sha256": "80919d795d8c0793dae4a3698a683bee8186f357ff46f0d72e05bb3309d06011",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/intrin0.inl.h",
+      "bytes": 20586,
+      "sha256": "6f044368f38ba290c9f40260d4d55bf7bc23e8edd0cbba9291d5a222a74f80f8",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/setjmp.h",
+      "bytes": 3810,
+      "sha256": "7e4243ef92eee5f552fe66256e4b7d6f20b9050fbc034fcc9458cae39dcecf5e",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/immintrin.h",
+      "bytes": 121509,
+      "sha256": "a23efe7eceb2bc98584124a8263bcff1ec7f273b6d1f58ec634ddee6bd63a466",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/wmmintrin.h",
+      "bytes": 2615,
+      "sha256": "ccee1d63e178b3dcff1625817c2a0722fbb2966956d3cbe5531feecb6afd5a9b",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/nmmintrin.h",
+      "bytes": 4632,
+      "sha256": "69ecf104338622b7f1e44b0d99469adb95c46dd9e5858f5dc8279c3ef3b99421",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/smmintrin.h",
+      "bytes": 10000,
+      "sha256": "2f773512dac1c4515c13cb9173a2c852d8c884b0cedc5814cff3956b742a1071",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/tmmintrin.h",
+      "bytes": 4763,
+      "sha256": "e5981ed52590bbcd7cad7d84e7ab3b47b81837136138854de0ee807332f95dab",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/pmmintrin.h",
+      "bytes": 3208,
+      "sha256": "2fb7131f91e5e300a7d9f2f148b6fe79a9775d06c3f1be26908e138ac6f9fbc5",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/emmintrin.h",
+      "bytes": 16130,
+      "sha256": "735efe76e3f5190c1b2c0c7aadcbec4a4bf1156f91cb12f7be3ed53ad1709a5a",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/xmmintrin.h",
+      "bytes": 20078,
+      "sha256": "6c30762cf69f112244617f72ea7f9ef933b673c3cc8afd1866158f0143fd263c",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/mmintrin.h",
+      "bytes": 6634,
+      "sha256": "d2dce9191fbdd235a94fc1af6bd163119dbcdfeadfb50f777b2d75b12ca1f028",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/zmmintrin.h",
+      "bytes": 501410,
+      "sha256": "12c732298b86162914cee68c5dfe2f83b5c1fe71602707eca695901443bdac01",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/ammintrin.h",
+      "bytes": 16119,
+      "sha256": "d53a3e43803820ffe804f2f0266ce7a3166d6c7ae82b0dfba2a4ae2601eb059f",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/mm3dnow.h",
+      "bytes": 3202,
+      "sha256": "da11304a505d7a70dacacba6dfa22be8d4dbcf44736682899ca8551eb03de4d1",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/typeinfo",
+      "bytes": 2112,
+      "sha256": "9fe7fd18aaf6ea9714837a862d40d3bbaebdf57321a60f0951a0fafd157e25d2",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/vcruntime_typeinfo.h",
+      "bytes": 5313,
+      "sha256": "d6a1a675ad9592ba87ec95dc130e0ad690040c6dbb4faa974945c778190cccf8",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/xmemory",
+      "bytes": 115075,
+      "sha256": "0409c9668d5bae4abeeceeef3ee29353c1f4039dc5a78565acfe1cb34d442f38",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/limits",
+      "bytes": 27812,
+      "sha256": "dde4a73958faee94656e0fdc37d73a686aee75f8a5dc6dbc478bed56178f2f2a",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/cfloat",
+      "bytes": 242,
+      "sha256": "615e244a422277b8362e591881df1bd701d7e0ad0467d1787cb04a89565b333c",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt/float.h",
+      "bytes": 15397,
+      "sha256": "0fbf87532c053b666940a65360f2488f5b6bb2e601632e32a0f1a8a078d8fdcd",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/climits",
+      "bytes": 319,
+      "sha256": "dd0a6215a16748afdb3c6ad3f877e32ffab31326645b14dda13fdc76c2683da4",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/intrin0.h",
+      "bytes": 543,
+      "sha256": "bdbbcc2c993b2b90ea601cb033701c9ed6b66f65a39e031d65207464d7095e2c",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/new",
+      "bytes": 1991,
+      "sha256": "a88db84beaf4d5d201a7a8393d0a41d647072da207a0c7e2ffe0e9997aef0e2a",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/xatomic.h",
+      "bytes": 4862,
+      "sha256": "7e1abd2855dbb3a253581696f8e3f096309d84ef1f576908a8959ea473de7e12",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/xutility",
+      "bytes": 352139,
+      "sha256": "44344065c26095b03a7228d2c733d41532ae99a56bbadf052baba64d22e39a9d",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/__msvc_iter_core.hpp",
+      "bytes": 19874,
+      "sha256": "31f6c29179177ad3aa6c3e930b5b785e6302fb817280749200ffe691cdc6d331",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/utility",
+      "bytes": 47053,
+      "sha256": "70d85f5ad793a8b8891e02d13b7a348423ce195fa144ff612c0bf0755eea64e0",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/initializer_list",
+      "bytes": 2113,
+      "sha256": "7d15e533e1453ef99e71156c470f7d3b7ece6b7c55527b8b15fe24dabedeb196",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/vector",
+      "bytes": 169028,
+      "sha256": "b254d6fc250164a9f4e71ea66e2c1e9401cb2bf8b0056550fd92135518450b51",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/__msvc_bit_utils.hpp",
+      "bytes": 15192,
+      "sha256": "16e211c59fcbcaf645edb613f7e50dfefb581073071f3e13b3e66ad8cabd197a",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/__msvc_sanitizer_annotate_container.hpp",
+      "bytes": 11024,
+      "sha256": "061c14cd379f9b8fc6e764c0c32b83d019c06136794a9f7e7e53a38a599b18e6",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/xpolymorphic_allocator.h",
+      "bytes": 17150,
+      "sha256": "5d2cce0665bd140efba9be3ac1fbf5cd2cdbadc68a0dce66b8de0bf88acab0e3",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/tuple",
+      "bytes": 70727,
+      "sha256": "dcabb4e66cfb39d4068fd92a8e181b96405d5cbdb946fbf6ae852b55cce86565",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/array",
+      "bytes": 28800,
+      "sha256": "823bff850876472cb1d3209ca745a0f1c4c9caf09a26720f096d7336cbe1d16f",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/optional",
+      "bytes": 43870,
+      "sha256": "3bfc80a64908f77eaba10ec9a1e2c3b0746dd65e993c8c8d636696ada184f683",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/xsmf_control.h",
+      "bytes": 7671,
+      "sha256": "b69b98ce04a1d505f2f7fcf8a610664682c3a754d85b4bb2f857f09bce61f3dd",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/fstream",
+      "bytes": 17853,
+      "sha256": "bc2581a3c62f9faacb06e7cf2d325caec8ab1668f60988e1ad1dd5a308c7a5d4",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/__msvc_filebuf.hpp",
+      "bytes": 27781,
+      "sha256": "281fa0b5e253bee79ebcf55c50000ff94614a0764e6b8c3863e92e817eed9a1f",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/streambuf",
+      "bytes": 15129,
+      "sha256": "b8bec573d0d281db12a779a161e0485d9b801fc8d7f040752909aa15cebb8478",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/xiosbase",
+      "bytes": 16541,
+      "sha256": "c065a4de2c93df21a3df510158cd0cd08a45bea61188867026491c35198476e0",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt/share.h",
+      "bytes": 312,
+      "sha256": "f706b5df86d1bdf22cfe8d86dc798b255ce1bd2719d5d25f8f491595075a2bc2",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/system_error",
+      "bytes": 29567,
+      "sha256": "d6d9b5c66e9aeae9e1297ef6cc682033b5d9eaf0f199ce6a103308afd38c5f85",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/__msvc_system_error_abi.hpp",
+      "bytes": 1224,
+      "sha256": "c5c46618a13ba9a8087f0db8d2d2ecdeadad7694c8bef71a2e39b72b683d14d3",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/cerrno",
+      "bytes": 314,
+      "sha256": "4c8b39febc5b11b08e7a1253dc363bd8c8acdbe0159855b1c15d21b604f71e74",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/stdexcept",
+      "bytes": 5213,
+      "sha256": "e677daf8465dd4b870f420df9010ee3a17cd80fb6f6f5655f2ad3dc6d8009ae1",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/xstring",
+      "bytes": 170303,
+      "sha256": "ab80a6b60196246d1c8653e6d55f78e3cbaaf4207860a37cf6996cdc833eea7a",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/__msvc_string_view.hpp",
+      "bytes": 90494,
+      "sha256": "0f17b9360bd7f327e1a3910b2131c59a7c31b19b5e795780588e550d73e28851",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/xcall_once.h",
+      "bytes": 3896,
+      "sha256": "1d209e2f8b71c3cf36253fee4d7e6edd8450c831f5bd7f33d7e2964ca4a13544",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/xerrc.h",
+      "bytes": 6445,
+      "sha256": "41bf5400ac3bc3e6f1d738089a77b3112d988bff89b31ef15bf532922d52b04d",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/atomic",
+      "bytes": 125169,
+      "sha256": "2f24fbb8dceb9dccc86f9a61493301ae3aa99ee572e2c4227428992a32e713f4",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/xthreads.h",
+      "bytes": 4138,
+      "sha256": "76a4a9ce19140621d2d3c32738bf396177ebe72b893c5f50dea331c9cff15e3b",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/__msvc_threads_core.hpp",
+      "bytes": 3281,
+      "sha256": "50430177a6bee373d83d0ef84658395909276403d6c29b5196619e5f2d5de5af",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/xtimec.h",
+      "bytes": 1755,
+      "sha256": "d6a25d6dfaf39141a7bfb86b296eb54c0b76aa29fc54a7c2a52c7bc17014d958",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/ctime",
+      "bytes": 3296,
+      "sha256": "702d79a569a3c18256e7a1318691942c38fed334dd6339c9b91a2f92f4bb1f16",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt/time.h",
+      "bytes": 19166,
+      "sha256": "b775fe03a3288dfcd68a72caad43e8198283164eae94b665fdd3375a3baea44c",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/xlocale",
+      "bytes": 127795,
+      "sha256": "d9a25c7471ef2c304dee80b1567e385c58f6395901fcc8dddf31e7cf927c1676",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/xfacet",
+      "bytes": 1473,
+      "sha256": "71d7bd76e31f7aee31c2d22386e00bf508936cea4e510ed3a7cde20dc3ab8312",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/xlocinfo",
+      "bytes": 14513,
+      "sha256": "dbe56d1af1337f6c501e1fae84c6e0b5e7ed5758fd9480e538dbb992df04d82b",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/__msvc_xlocinfo_types.hpp",
+      "bytes": 1207,
+      "sha256": "1ee04bf81213a765a6b6c894275303d46d372c0555c8f4b17a1c97124dbdf860",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/cctype",
+      "bytes": 1113,
+      "sha256": "d764f74333f84776e778d936af9c78d9a9a21a0668dc1833fdd4a98e26a00f18",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/clocale",
+      "bytes": 744,
+      "sha256": "95cb0b228d1448969c55add911b4abe6d0108422c05ba27a71dd3ec7d4f61e38",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt/locale.h",
+      "bytes": 5109,
+      "sha256": "877aa49e1f22814dd5634e785d305210d3c7ac0a1274e8552ce4f687a91ac4cb",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/istream",
+      "bytes": 35008,
+      "sha256": "5cd13c4359146d0e1183cff78b5a7b03eea1d38073b6eb533c5238fe726f79a2",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/__msvc_ostream.hpp",
+      "bytes": 37506,
+      "sha256": "8994a33650247fceb4eb5b531c82c00c7577d583edcb2ce0815007408b19165e",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/ios",
+      "bytes": 10486,
+      "sha256": "3d0a96d6228a23c017afd63633359edbaddfce430ace5bd0b94031ade44c0186",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/xlocnum",
+      "bytes": 73151,
+      "sha256": "bc5d777f8743572e650852c78c8a46dab766462684e27953e3c982b05426659c",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/cmath",
+      "bytes": 72317,
+      "sha256": "b8d2e85a83f0b173863dc4dd56eae8b7b8dcd366d3ae103b429f51bf620449cd",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/iterator",
+      "bytes": 56587,
+      "sha256": "cab4f393f89858e2f8ee63482b0f9a7fadd5978928aca30b01151b29c72934d3",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/map",
+      "bytes": 30308,
+      "sha256": "34b79b08daba1489b8506e79a211b3412a0ca3dbd9472c5e5c9cd87b546838b1",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/xtree",
+      "bytes": 79867,
+      "sha256": "867a86f513afabe0258ad0cc697217b09d580179f6a3e2ce7ab9c887ac45a503",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/xnode_handle.h",
+      "bytes": 7078,
+      "sha256": "559b99d9f52414b17923f7f791028ad50e310ebbcfb4ef4bee9d7c5d930c4935",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/sstream",
+      "bytes": 37480,
+      "sha256": "a848b53cd2c1a3265eaffa71cc5f5c8e267cb784d0f70eff310cc7d373089c80",
+      "preserved_in_place": true
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/include/string",
+      "bytes": 16455,
+      "sha256": "dafa5ec4d069f7e85001d6a03fdcac5bde1d18eb7412240aa5cc7e10c7cddf05",
+      "preserved_in_place": true
+    }
+  ]
+}
