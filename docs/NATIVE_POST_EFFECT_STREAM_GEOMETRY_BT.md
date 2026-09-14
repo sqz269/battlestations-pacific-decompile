@@ -100,9 +100,9 @@ provider calls. Full Win32 build runs only existing configured tests.
 
 One small ignored writer differential trajectory checks two overlapping records,
 a wrapping nonzero first-output index, signed-zero/signaling-NaN/subnormal input,
-all 768 bytes per path, x87 CW/status and MXCSR, and untouched guards. Native code
-and both constant pages are mapped before running, made read-only/executable as
-appropriate and verified unchanged afterward. Only the two absolute constant
+all 768 bytes per path, x87 CW/status and MXCSR, and untouched guards. The native
+code page and shared constant page are mapped before running, made read-only or
+executable as appropriate and verified unchanged afterward. Only the two absolute constant
 operands are rebased before execution; relative flow and the complete loop stay
 unchanged. The manifest-bearing probe links
 the three current libraries; source/build stamps and before/after fixture pins
