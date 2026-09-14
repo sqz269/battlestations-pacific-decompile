@@ -33,7 +33,7 @@ at all. Every conclusion below follows from that.
   a ray-triangle test that names a triangle yields the owning element, and therefore the
   `(kind, index)` pair, by lookup.
 
-## The one function that gates both blockers
+## The function that was supposed to gate both blockers, and does not
 
 **`0082FE30` `BSP_ShipClass_BindModelData_Provisional`** - body `0082FE30`-`00831801`, roughly
 9.9 KB, `void __fastcall(ship class descriptor)`. It is **slot 8 (`vtable+20h`) of every ship-kind
@@ -45,21 +45,47 @@ Its string immediates are model **node names**: `shipcenter`, `deckline`, `botto
 function that looks up a dozen named node groups in a model is where a class learns its model's
 structure.
 
-That makes it the common ancestor of both stuck numbers:
+~~That makes it the common ancestor of both stuck numbers... Recovering `0082FE30` is therefore
+worth more than either blocker taken alone.~~
 
-1. **Part damage** needs a decoded element list attached to the unit for the narrowphase to walk.
-2. **The barrel-count divergence** needs the model's `fire` node group, which is the same kind of
-   named-node lookup this function performs.
+**CORRECTED. `0082FE30` gates neither blocker, and the reasoning above was wrong in a specific and
+instructive way.** `docs/SHIP_CLASS_BIND_MODEL_DATA.md` swept the body and found:
 
-Recovering `0082FE30` is therefore worth more than either blocker taken alone. It is large, so it
-suits the listing-sweep method for oversized bodies - anchor on the EH-state `ESP` stores and
-back-propagate - rather than a decompile.
+* **It opens no model.** The first call after the prologue already dereferences `[class+50h]`, and
+  across the whole 9.9 KB body that field is read thirteen times and **never written**. The model
+  is already open when this runs; the function is a consumer, not the route in.
+* **It never reaches the `Resource` container.** It touches exactly two model-side containers -
+  `model+64h` nodes and `model+54h` pointers - and neither carries the `{kind +4h, index +8h}`
+  elements `00727310` produces. It is downstream of the GeomMesh parser, not a way to reach it.
+* **It does not bind `"fire"`.** That string does not appear in the body at all;
+  `007325A0` binds it on the **gun** class's own `[class+50h]`, at indices 0 and 1.
+
+So the inference "a function that looks up a dozen named node groups is where a class learns its
+model's structure" was plausible and false. It looks up node groups because a model is already
+there. The twelve string immediates were read as evidence of the model *arriving*, when they are
+evidence of it being *used* - and the distinction is exactly what a byte census of `[class+50h]`
+settles and a list of string literals cannot.
+
+**The real gate is the producer of `class+50h`, and it was searched for and not found.** The packet
+ruled out `009633C0`, `00960230` and `00964020` by inspection, and byte scans for
+`MOV [reg+50h], reg` and for every `CALL [reg+20h]` / `MOV reg,[reg+20h]; CALL reg` form turned up
+no candidate in the vehicle-class code. Neither the writer of that field nor the invoker of vtable
+slot 8 is known. This matches an open item already recorded in `docs/UNIT_PARTS.md`.
+
+What the packet does give is the consumption contract: sixteen descriptor fields mapped from twelve
+named node groups, all of them **point data** rather than mesh data. Worth keeping for whoever
+builds the model path, and worth noting that a missing `debarkation` node synthesises a twelve-point
+ring from the class box half-extents rather than leaving the field empty, and that `wave` is
+dereferenced at `0083089D` with no null check unlike every other optional group here.
 
 ## Packet order, smallest first
 
-1. **`ship_class_bind_model_data`** - recover `0082FE30`. What model does a ship class open, how
-   does it reach the node groups, and what does it keep? Read the listing; the body is too large to
-   decompile. This is the prerequisite for everything below and pays for itself twice.
+1. ~~`ship_class_bind_model_data`~~ **DONE, and it answered "none of the above"** -
+   `docs/SHIP_CLASS_BIND_MODEL_DATA.md`. Replaced by **`model_handle_producer`**: find the writer of
+   `class+50h` and the invoker of ship-vtable slot 8. That is the actual prerequisite for everything
+   below, and it is currently unknown - the sweep ruled out `009633C0`, `00960230` and `00964020`
+   and found no candidate by byte scan. Start from `docs/UNIT_PARTS.md`, which already carries this
+   as an open item.
 2. **`model_resource_load_path`** - the host side of reaching an `.MMOD`'s `Resource` container and
    dispatching it. `docs/GAME_RESOURCE_PARSER_REGISTRATION.md` has the native registration row.
    `docs/GEOM_MESH_RESOURCE.md` notes the registry needs a fourth variant alternative and that this

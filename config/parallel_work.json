@@ -12456,6 +12456,174 @@
       "code_revision": "35c9b762a12bca1ab24972ffae5cebfa349c9ced",
       "game_validated": false,
       "follow_up": "Production queue update/worker and native resource-load/owner closure; no inferred thread shutdown"
+    },
+    {
+      "id": "orch4_native_resource_stream_reads_bs",
+      "state": "reconstructed_source_build_and_fixture_checked",
+      "status": "reconstructed_source_build_and_fixture_checked",
+      "addresses": [
+        "00be42e0",
+        "00be4300",
+        "00be4620",
+        "00bf0280",
+        "00bf0510"
+      ],
+      "owner": "agent/orch4-20260910",
+      "report": "reports/native_resource_stream_reads_bs.json",
+      "documentation": "docs/NATIVE_RESOURCE_STREAM_READS_BS.md",
+      "code_revision": "95dabdc782c79abbc61097965ec6adc6322e7bff",
+      "game_validated": false,
+      "follow_up": "Raw structured child/control traversal and B80720 loader/manager/parser closure; retain exact partial-read and cleanup behavior"
+    },
+    {
+      "id": "orch4_native_resource_root_owner_bs",
+      "state": "reconstructed_source_build_and_fixture_checked",
+      "status": "reconstructed_source_build_and_fixture_checked",
+      "addresses": [
+        "00bea380",
+        "00bea700",
+        "00be9df0",
+        "00be9fc0"
+      ],
+      "owner": "agent/orch4-20260910",
+      "report": "reports/native_resource_root_owner_bs.json",
+      "documentation": "docs/NATIVE_RESOURCE_ROOT_OWNER_BS.md",
+      "code_revision": "95dabdc782c79abbc61097965ec6adc6322e7bff",
+      "game_validated": false,
+      "follow_up": "Raw structured child/control traversal and B80720 loader/manager/parser closure; retain exact partial-read and cleanup behavior"
+    },
+    {
+      "id": "orch4_native_resource_root_integration_bs",
+      "state": "reconstructed_source_build_and_fixture_checked",
+      "status": "reconstructed_source_build_and_fixture_checked",
+      "addresses": [
+        "00cc6bc0",
+        "00cc6bc8",
+        "00cc6be1",
+        "00cc7180",
+        "00cc7188",
+        "00cc7193",
+        "00cc719b",
+        "00cc7210",
+        "00cc721b",
+        "00cc70a0",
+        "00cc70a8"
+      ],
+      "owner": "agent/orch4-20260910",
+      "report": "reports/native_resource_root_integration_bs.json",
+      "documentation": "docs/NATIVE_RESOURCE_ROOT_INTEGRATION_BS.md",
+      "code_revision": "95dabdc782c79abbc61097965ec6adc6322e7bff",
+      "game_validated": false,
+      "follow_up": "Raw structured child/control traversal and B80720 loader/manager/parser closure; retain exact partial-read and cleanup behavior"
+    },
+    {
+      "id": "orch4_native_resource_node_traversal_bt",
+      "state": "reconstructed_source_build_and_fixture_checked",
+      "status": "reconstructed_source_build_and_fixture_checked",
+      "addresses": [
+        "00bea250",
+        "00bea680",
+        "00bf02a0",
+        "00bf03e0",
+        "00be9a40",
+        "00be9c40",
+        "00715bf0"
+      ],
+      "owner": "agent/orch4-20260910",
+      "report": "reports/native_resource_node_traversal_bt.json",
+      "documentation": "docs/NATIVE_RESOURCE_NODE_TRAVERSAL_BT.md",
+      "code_revision": "7a75e190ea90b929838738d8be7646ba9e6e5ba2",
+      "game_validated": false,
+      "follow_up": "Actual B7F430/B7E970 resource dispatch, manager/factory/parser owners and B80720 loader; production queue/worker shutdown"
+    },
+    {
+      "id": "orch4_native_resource_node_traversal_integration_bt",
+      "state": "reconstructed_source_build_and_fixture_checked",
+      "status": "reconstructed_source_build_and_fixture_checked",
+      "addresses": [
+        "00cc7150",
+        "00cc7158",
+        "00cc7163",
+        "00cc716b",
+        "00cc71f0",
+        "00cc71fb"
+      ],
+      "owner": "agent/orch4-20260910",
+      "report": "reports/native_resource_node_traversal_integration_bt.json",
+      "documentation": "docs/NATIVE_RESOURCE_NODE_TRAVERSAL_INTEGRATION_BT.md",
+      "code_revision": "7a75e190ea90b929838738d8be7646ba9e6e5ba2",
+      "game_validated": false,
+      "follow_up": "Actual B7F430/B7E970 resource dispatch, manager/factory/parser owners and B80720 loader; production queue/worker shutdown"
+    },
+    {
+      "id": "orch4_native_resource_value_reads_bu",
+      "state": "reconstructed_source_build_and_fixture_checked",
+      "status": "reconstructed_source_build_and_fixture_checked",
+      "addresses": [
+        "00be4360",
+        "00bf02c0",
+        "00be99d0",
+        "00b932e0",
+        "00b93310",
+        "00b936e0",
+        "00be9a00",
+        "00be9fe0",
+        "00bea010"
+      ],
+      "owner": "agent/orch4-20260910",
+      "report": "reports/native_resource_value_reads_bu.json",
+      "documentation": "docs/NATIVE_RESOURCE_VALUE_READS_BU.md",
+      "code_revision": "d2577dbd51ebc135c5cd000217b1a89b9441dccb",
+      "game_validated": false,
+      "follow_up": "Actual B7EB90 hierarchy field parser and resource append arrays; B7F430/B7E970 dispatch, manager/factory/parser owners, B80720 and queue shutdown"
+    },
+    {
+      "id": "orch4_native_resource_value_reads_integration_bu",
+      "state": "reconstructed_source_build_and_fixture_checked",
+      "status": "reconstructed_source_build_and_fixture_checked",
+      "addresses": [],
+      "owner": "agent/orch4-20260910",
+      "report": "reports/native_resource_value_reads_integration_bu.json",
+      "documentation": "docs/NATIVE_RESOURCE_VALUE_READS_INTEGRATION_BU.md",
+      "code_revision": "d2577dbd51ebc135c5cd000217b1a89b9441dccb",
+      "game_validated": false,
+      "follow_up": "Actual B7EB90 hierarchy field parser and resource append arrays; B7F430/B7E970 dispatch, manager/factory/parser owners, B80720 and queue shutdown"
+    },
+    {
+      "id": "orch4_native_resource_hierarchy_parser_bv",
+      "state": "reconstructed_source_build_and_fixture_checked",
+      "status": "reconstructed_source_build_and_fixture_checked",
+      "addresses": [
+        "00b7eb90",
+        "00b7f100",
+        "00b87ae0",
+        "00b7d160",
+        "00b7d220"
+      ],
+      "owner": "agent/orch4-20260910",
+      "report": "reports/native_resource_hierarchy_parser_bv.json",
+      "documentation": "docs/NATIVE_RESOURCE_HIERARCHY_PARSER_BV.md",
+      "code_revision": "16a5f3d5d528c25fe9e6935f8c514d4b27116148",
+      "game_validated": false,
+      "follow_up": "Actual B7F430/B7E970 root/item dispatch, raw manager/factory/parser owners, B80720 loader and queue shutdown"
+    },
+    {
+      "id": "orch4_native_resource_hierarchy_parser_integration_bv",
+      "state": "reconstructed_source_build_and_fixture_checked",
+      "status": "reconstructed_source_build_and_fixture_checked",
+      "addresses": [
+        "00cc1ff0",
+        "00cc1ff8",
+        "00cc2000",
+        "00cc2010",
+        "00cc2018"
+      ],
+      "owner": "agent/orch4-20260910",
+      "report": "reports/native_resource_hierarchy_parser_integration_bv.json",
+      "documentation": "docs/NATIVE_RESOURCE_HIERARCHY_PARSER_INTEGRATION_BV.md",
+      "code_revision": "16a5f3d5d528c25fe9e6935f8c514d4b27116148",
+      "game_validated": false,
+      "follow_up": "Actual B7F430/B7E970 root/item dispatch, raw manager/factory/parser owners, B80720 loader and queue shutdown"
     }
   ],
   "snapshot_after_analysis": {

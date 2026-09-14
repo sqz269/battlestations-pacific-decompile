@@ -2,6 +2,11 @@
 #include "bsp/native_legacy_sbo_string.hpp"
 
 namespace bsp {
+// Complete 00711F70..00711FA5. ECX=first row, EDX=end row, two unconsumed
+// stack words, RET8. Each actual10h row frees its nonnull inner allocation and
+// clears+4/+8/+C through the canonical DWORD-vector clear. Row+0 is preserved.
+void destroy_native_part_group_row_range_00711f70(void* first, void* last) noexcept;
+
 // 711C30: ECX named record, stack destination, RET4. The record embeds its
 // existing 1Ch legacy SBO at+8; output+0 is untouched. Source objects stay owned
 // by the caller. This is a new C++ ABI, not a native virtual entry.

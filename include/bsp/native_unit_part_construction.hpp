@@ -38,29 +38,29 @@ public:
     virtual const volatile std::uint32_t* primary_table(void* unit) noexcept = 0;
     virtual NativeNodeStorage* render_root_0c(void* selected_set) noexcept = 0;
 
-    // Complete existing providers; there are no permissive default operations.
+    // Complete providers. Concrete defaults perform actual storage operations.
     // ECX=this, RET unless stated. Tokens are not process-callable source code.
     virtual void call_004e6480(void* model) = 0;
-    virtual void* call_007103a0(void* list) = 0; // 30h circular sentinel; ECX unused
-    virtual void* call_007103c0(void* list) = 0; // same allocation, distinct native entry
+    virtual void* call_007103a0(void* list); // 30h circular sentinel; ECX unused
+    virtual void* call_007103c0(void* list); // same allocation, distinct native entry
     // Concrete default: full actual group-row producer and source CRT domain.
     virtual void call_00713380(void* model);
     virtual const char* call_unit_10(std::uint32_t entry, void* unit) = 0;
     virtual void call_00b6f960(NativeNodeStorage* render_root,
-        const NativeString& name) = 0; // canonical node.name_54; RET4
+        const NativeString& name, NativeStringRawPoolContext&); // actual node.name_54; RET4
     virtual void call_00712440(void* model) = 0; // EAX discarded
     virtual void call_00710ad0(void* model) = 0;
-    virtual void call_00711c60(void* model) = 0;
+    virtual void call_00711c60(void* model); // complete actual part-entry producer
 
-    // Required whole cleanup providers, including post-CRT-call instructions
-    // missing from the current Ghidra bodies. New C++ unwind domain requires
+    // Whole storage cleanup defaults include the decoded post-CRT-call tails.
+    // Selected-set cleanup remains required. The new C++ unwind domain requires
     // cleanup to return; throwing from these noexcept operations terminates.
-    virtual void call_004e6570(void* model) noexcept = 0;
+    virtual void call_004e6570(void* model) noexcept;
     virtual void call_00711080(void* selected_set_cell) noexcept = 0;
-    virtual void call_00712b40(void* groups) noexcept = 0;
-    virtual void call_00710f90(void* list) noexcept = 0;
-    virtual void call_00710fc0(void* list) noexcept = 0;
-    virtual void call_00711000(NativeRenderPointerArrayStorage&) noexcept = 0;
+    virtual void call_00712b40(void* groups) noexcept;
+    virtual void call_00710f90(void* list) noexcept;
+    virtual void call_00710fc0(void* list) noexcept;
+    virtual void call_00711000(NativeRenderPointerArrayStorage&) noexcept;
 };
 
 // Complete caller 007135C0..00713723 (356 bytes). Original ECX=fresh storage,
