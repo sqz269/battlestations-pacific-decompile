@@ -1134,8 +1134,12 @@ void GameGunneryHost::Impl::refresh_command_targets() {
         }
     }
     command_targets_resolved = 0;
-    for (std::size_t value : command_target_by_unit) {
-        if (value != 0) ++command_targets_resolved;
+    for (std::size_t i = 0; i < command_target_by_unit.size(); ++i) {
+        if (command_target_by_unit[i] != 0) ++command_targets_resolved;
+        // The plane's control path needs the same answer, and taking it from
+        // here rather than resolving names again is what keeps the two from
+        // drifting apart.
+        units.store_unit_command_target(i, command_target_by_unit[i]);
     }
 }
 

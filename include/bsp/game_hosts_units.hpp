@@ -332,6 +332,10 @@ public:
     // see the other. Zero for a unit with no guns, which is also the correct
     // answer for one whose guns carry nothing the family asks about.
     void store_unit_ordnance(std::size_t index, std::uint64_t mask) noexcept;
+    // The commanded target the gunnery host resolved for this unit, plus one,
+    // or 0 for none. Pushed rather than pulled so the two hosts agree by
+    // construction on which entity a command names.
+    void store_unit_command_target(std::size_t index, std::size_t target_plus_one) noexcept;
     std::uint64_t unit_ordnance(std::size_t index) const noexcept;
     bool unit_flag_0061(std::size_t index) const;
     // 0092d730 over the unit's body axis and linear velocity, the same value the
