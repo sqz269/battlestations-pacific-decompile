@@ -1,0 +1,191 @@
+{
+  "packet": "cc7_plane_flight_core_law",
+  "owner": "agent/cc7-plane-flight-law",
+  "date": "2026-09-14",
+  "doc": "docs/PLANE_FLIGHT_CORE_LAW.md",
+  "ghidra": "read-only: no rename, comment, prototype, function creation or save",
+  "summary": "007DB680 BSP_PlaneFlight_CoreLaw read in full on the free-flight path. __thiscall(ctl, float step, float a, float b, float* p), RET 0x10. Lift is dyn+20h += clamp((1 + (-vy/vz)) * min(q,1)^2, -2, 2) * AccelCheatMul * 9.81 with q = ForwardSpeed / (StallSpd * LevelFlight(1.8)); gravity is dyn+2Ch -= AccelCheatMul * 9.81 * lerp(unit+0C3Ch, 0..LostDragTime -> 1..ExtraGravityMul). Level flight is exactly airspeed >= 1.8 * StallSpd at zero angle of attack, and the law is self-correcting around it. The blocker is unit+900h, which is 0 from the constructor and must be 7; its producer is 007C6340, confirmed.",
+  "routines": [
+    {
+      "address": "007db680",
+      "name": "BSP_PlaneFlight_CoreLaw",
+      "abi": "__thiscall(void* ctl, float step, float a, float b, float* p)",
+      "abi_evidence": "007DC828 RET 0x10 = four stack arguments; all three call sites push 0x10 bytes",
+      "body": "007db680-007dc82a",
+      "coverage": "partial: free-flight path and commit tail complete; ground arm 007DBEAA-007DC204 read but only its dyn terms transcribed; water arm 007DC426-007DC64A unread"
+    },
+    {"address": "007d7c00", "name": "BSP_PlaneDynamics_BeginStep", "abi": "__thiscall(dyn, const Vec3* worldVel, const Vec3* bodyVel), RET 8", "body": "007d7c00-007d7d21", "coverage": "complete"},
+    {"address": "007d81b0", "name": "BSP_PlaneFlight_TickContactTimers", "abi": "__thiscall(ctl, float step), RET 4", "body": "007d81b0-007d8221", "coverage": "complete"},
+    {"address": "007d8470", "name": "BSP_PlaneDynamics_IntegrateStep", "abi": "__thiscall(dyn, float step, const Matrix* bodyToWorld, const Matrix* worldToBody), RET 0x10", "body": "007d8470-007d904e", "coverage": "partial: 007D8470-007D8624 and the clamp block 007D8783-007D883D only; 007D8624-007D904E unread"},
+    {"address": "007d9050", "name": "BSP_PlaneFlight_ThrustAccel", "abi": "__fastcall(desc, int turbo, float pitch, float throttle, int boost), RET 0xC", "body": "007d9050-007d9137", "coverage": "complete"},
+    {"address": "007d9140", "name": "BSP_PlaneFlight_DragAccel", "abi": "__fastcall(desc, float speed, float airbrake, float pitch, float, float), RET 0x14", "body": "007d9140-007d92a4", "coverage": "partial: argument order past the first taken from the call site; only the sign tail 007D9287-007D929B transcribed instruction by instruction"},
+    {"address": "007d92b0", "name": "BSP_PlaneFlight_AeroResponseCurve", "abi": "__thiscall-free: (float speedRatio) on the stack, RET 4", "body": "007d92b0-007d9358", "coverage": "complete"},
+    {"address": "007d9c10", "name": "BSP_PlaneFlightController_RefreshBodyFrame", "abi": "__thiscall(ctl)", "body": "007d9c10-007d9c75", "coverage": "partial: 007D9C59-007D9C75 unread"},
+    {"address": "007d9c80", "name": "BSP_PlaneFlightController_BodyToWorldVelocity", "abi": "__thiscall(ctl)", "body": "007d9c80-007d9cdc", "coverage": "partial: 007D9CB8-007D9CDC unread"},
+    {"address": "007d9e80", "name": "BSP_PlaneFlightController_SetForwardSpeed", "abi": "__thiscall(ctl, float speed), RET 4", "body": "007d9e80-007d9eda", "coverage": "complete"},
+    {"address": "007d9ee0", "name": "BSP_PlaneFlightController_SetWorldVelocity", "abi": "__thiscall(ctl, const Vec3*), RET 4", "body": "007d9ee0-007d9f5a", "coverage": "partial: head only, 007D9F42 onward unread"},
+    {"address": "007c6340", "name": "BSP_Plane_ChooseSpawnFlightState", "abi": "__thiscall(unit)", "body": "007c6340-007c64f5", "coverage": "complete for both spawn paths"},
+    {"address": "007c7110", "name": "BSP_Plane_BeginFlying", "abi": "__thiscall(unit)", "body": "007c7110-007c71df", "coverage": "complete"},
+    {"address": "007c1430", "name": "BSP_Plane_SetFlightState", "abi": "__thiscall(unit, int state) -> bool, RET 4", "body": "007c1430-007c154d", "coverage": "partial: the 007C1550 table's five handlers were not read"}
+  ],
+  "call_sites": [
+    {"address": "007dc86e", "native": "007db680", "function": "007dc830", "note": "free-flight arm, ctl+FCh = 0, args (step, 0.0f, 0.0f, nullptr)"},
+    {"address": "007dcd64", "native": "007db680", "function": "007dccf0", "note": "ground-roll arm, ctl+FCh = 1"},
+    {"address": "007dd48e", "native": "007db680", "function": "007dcdd0", "note": "water-surface arm, ctl+FCh = 2, fifth argument is &local"},
+    {"address": "007dcd14", "native": "007dc830", "function": "007dccf0", "note": "ground roll delegates to free flight when unit+0BF8h == 0 and unit+900h != 5"},
+
+    {"address": "007db690", "native": "007d81b0", "function": "007db680"},
+    {"address": "007db697", "native": "007d9c10", "function": "007db680"},
+    {"address": "007db6a6", "native": "007da710", "function": "007db680"},
+    {"address": "007db6b6", "native": "007d7c00", "function": "007db680"},
+    {"address": "007db75b", "native": "007d99c0", "function": "007db680"},
+    {"address": "007db7a6", "native": "007d9050", "function": "007db680", "note": "thrust curve"},
+    {"address": "007db7db", "native": "008e6430", "function": "007db680", "note": "gameplay modifier 6"},
+    {"address": "007db814", "native": "007bbc50", "function": "007db680", "note": "resets the ctl+90h ramp to 3.0"},
+    {"address": "007dba7b", "native": "00bf7030", "function": "007db680", "note": "sqrt of the world speed"},
+    {"address": "007db9c4", "native": "00419010", "function": "007db680", "note": "gravity multiplier from unit+0C3Ch"},
+    {"address": "007dbb0e", "native": "00419010", "function": "007db680", "note": "aero fade r1"},
+    {"address": "007dbb23", "native": "00419010", "function": "007db680", "note": "aero fade r2 over the pitch"},
+    {"address": "007dbb5e", "native": "007d9140", "function": "007db680", "note": "signed drag magnitude"},
+    {"address": "007dbcbd", "native": "00414db0", "function": "007db680"},
+    {"address": "007dbcfc", "native": "00419010", "function": "007db680"},
+    {"address": "007dbd07", "native": "007d99c0", "function": "007db680"},
+    {"address": "007dbd1c", "native": "00415510", "function": "007db680"},
+    {"address": "007dbd61", "native": "007d92b0", "function": "007db680", "note": "dynamic-pressure response for XDrag/YDrag"},
+    {"address": "007dbdbd", "native": "00419010", "function": "007db680", "note": "the dyn+8h clamp from unit+908h"},
+    {"address": "007dbe29", "native": "00414db0", "function": "007db680", "note": "refresh the world pose before reading unit+100h"},
+    {"address": "007dbe96", "native": "00419010", "function": "007db680", "note": "ceiling force split onto dyn+0Ch"},
+    {"address": "007dbf53", "native": "006049f0", "function": "007db680"},
+    {"address": "007dbf78", "native": "00438b10", "function": "007db680"},
+    {"address": "007dbfcd", "native": "00414c60", "function": "007db680"},
+    {"address": "007dbff9", "native": "0042e740", "function": "007db680", "note": "tuning singleton for +518h WireRope"},
+    {"address": "007dc004", "native": "00414c60", "function": "007db680"},
+    {"address": "007dc017", "native": "0042e740", "function": "007db680"},
+    {"address": "007dc024", "native": "00415510", "function": "007db680"},
+    {"address": "007dc038", "native": "006049f0", "function": "007db680"},
+    {"address": "007dc043", "native": "006049f0", "function": "007db680"},
+    {"address": "007dc078", "native": "00419010", "function": "007db680"},
+    {"address": "007dc099", "native": "00415620", "function": "007db680", "note": "WheelFrictionAccel clamp on ctl+68h"},
+    {"address": "007dc0b2", "native": "00414e10", "function": "007db680"},
+    {"address": "007dc0cd", "native": "0042d0d0", "function": "007db680"},
+    {"address": "007dc128", "native": "00419010", "function": "007db680"},
+    {"address": "007dc189", "native": "00419010", "function": "007db680", "note": "WheelFriction / WheelFrictionSpeed"},
+    {"address": "007dc2d9", "native": "00415620", "function": "007db680", "note": "water branch"},
+    {"address": "007dc325", "native": "00415550", "function": "007db680", "note": "water branch"},
+    {"address": "007dc3d3", "native": "00415620", "function": "007db680", "note": "water branch"},
+    {"address": "007dc6e6", "native": "007d8470", "function": "007db680", "note": "the integrator; args (step, unit+74h, ctl+0B0h)"},
+    {"address": "007dc80e", "native": "007d9c80", "function": "007db680"},
+    {"address": "007dc81d", "native": "007d80c0", "function": "007db680"},
+
+    {"address": "007d8487", "native": "0042d0d0", "function": "007d8470", "note": "world accumulator dyn+28h folded into the body accumulator dyn+1Ch"},
+    {"address": "007d9c25", "native": "0085dea0", "function": "007d9c10", "note": "builds ctl+0B0h, the world-to-body matrix, from unit+74h"},
+    {"address": "007d9c34", "native": "0042d0d0", "function": "007d9c10", "note": "ctl+18h world velocity -> ctl+3Ch body velocity"},
+    {"address": "007d9c96", "native": "0042d0d0", "function": "007d9c80", "note": "ctl+3Ch body velocity -> ctl+18h world velocity"},
+    {"address": "007d9ec2", "native": "007d9c80", "function": "007d9e80"},
+    {"address": "007d90cb", "native": "00419010", "function": "007d9050", "note": "AccelCheatFallPitchRange -> 0..PI/2"},
+    {"address": "007d923d", "native": "00419010", "function": "007d9140"},
+    {"address": "007d92db", "native": "00419010", "function": "007d92b0", "note": "DragRangeMin..DragRangeMax -> 0..1"},
+
+    {"address": "007c6442", "native": "0078cf20", "function": "007c6340", "note": "water spawn: sample the water height"},
+    {"address": "007c641a", "native": "007c11e0", "function": "007c6340", "note": "after unit+900h = 6"},
+    {"address": "007c649f", "native": "007c11e0", "function": "007c6340", "note": "after unit+900h = 7"},
+    {"address": "007c64e4", "native": "007db2c0", "function": "007c6340", "note": "reset the controller at unit+0AB0h"},
+    {"address": "007c14c5", "native": "007c11e0", "function": "007c1430"},
+    {"address": "007c713a", "native": "007c6f50", "function": "007c7110"},
+    {"address": "007c71c3", "native": "007c11e0", "function": "007c7110"},
+    {"address": "007c71d9", "native": "007c11e0", "function": "007c7110"},
+    {"address": "007cff87", "native": "007d7ea0", "function": "007cfd20", "note": "the controller constructor, this = unit+0AB0h"}
+  ],
+  "indirect_call_sites": [
+    {"site": "007dbf30", "target": "unit->vtable[+50h]", "function": "007db680", "note": "ground branch, arrestor wire"},
+    {"site": "007dc0c5", "target": "unit+3Ch ->vtable[+34h]", "function": "007db680"},
+    {"site": "007dc6b9", "target": "(*(unit+72Ch))->vtable[+38h]", "function": "007db680", "note": "the free-flight gate; false zeroes dyn+0C0h"},
+    {"site": "007c64bb", "target": "unit->vtable[+3Ch] = 00D05F20+3Ch = 0074E1E0", "function": "007c6340", "note": "sets the airspeed to desc+18Ch TravelSpeed"},
+    {"site": "007c6467", "target": "unit->vtable[+3Ch]", "function": "007c6340", "note": "water spawn, 0.0f"},
+    {"site": "007c63ab", "target": "unit->vtable[+3Ch]", "function": "007c6340", "note": "state-3 path, 0.0f"}
+  ],
+  "no_ghidra_function": [
+    {
+      "start": "0074e1e0",
+      "end_inclusive": "0074e1f5",
+      "final_instruction": "0074e1f3 ret 4",
+      "read_from": "disasm-raw over the PE on disk",
+      "role": "the plane unit vtable +3Ch thunk: push ecx / add ecx,0xab0 / fstp dword [esp] / call 0x7d9e80 / ret 4",
+      "site": "0074e1ee",
+      "target": "007d9e80"
+    },
+    {
+      "start": "007f2e18",
+      "end_inclusive": "007f2fcf",
+      "final_instruction": "not read",
+      "read_from": "byte census only",
+      "role": "unclaimed region between BSP_PlaneSquadronTickableEntity_Construct and 007F2FD0; holds three E8 sites to 007F2920 at 007F2E8F, 007F2F74, 007F2FC6",
+      "site": "007f2e8f",
+      "target": "007f2920"
+    },
+    {
+      "start": "007f4b94",
+      "end_inclusive": "unbounded: not established",
+      "final_instruction": "not read",
+      "read_from": "byte census only",
+      "role": "unclaimed region past BSP_PlaneSquadron_AttachLuaSelfAndSpawnPlanes's body end; holds one E8 site to 007F2920 at 007F4DB0",
+      "site": "007f4db0",
+      "target": "007f2920"
+    }
+  ],
+  "caller_census": {
+    "target": "007db680",
+    "method": "byte-level E8/E9 rel32 scan plus absolute-dword scan over every mapped section of the PE on disk (local/callcensus.py)",
+    "sections": [".text 00401000+8E0136", ".rdata 00CE2000+125B24", ".data 00E08000 raw 10000h", ".rsrc 010A0000+18E0C0"],
+    "exhaustive": true,
+    "e8_sites": ["007dc86e", "007dcd64", "007dd48e"],
+    "e9_sites": [],
+    "absolute_dword_references": [],
+    "note": "Ghidra's own callers list agrees for 007DB680 but returns zero rows for 007F2920, where the same scan finds four E8 sites. The byte census is the evidence."
+  },
+  "unit_900h_writer_census": {
+    "method": "byte scan of .text for C7 ?? 00 09 00 00, 89 ?? 00 09 00 00 and 8D ?? 00 09 00 00 (store through an already-offset pointer)",
+    "constructor_value": {"site": "007d0060", "function": "007cfd20", "value": 0, "evidence": "MOV [ESI+900h],EBX with 007CFD56 XOR EBX,EBX the only EBX write before it"},
+    "producers_of_7": [
+      {"site": "007c6481", "function": "007c6340", "note": "the free-flight spawn; also sets unit+908h = 3600 and the airspeed to desc+18Ch TravelSpeed"},
+      {"site": "007c7183", "function": "007c7110", "note": "BSP_Plane_BeginFlying, called only from 007CCFA0"},
+      {"site": "007c145b", "function": "007c1430", "note": "the generic setter, state from the argument"},
+      {"site": "007c78f1", "function": "007c78a0", "note": "the unguarded setter, state from the argument"}
+    ],
+    "lea_hits_outside_plane_code": ["00acbd0a", "00b5ff67"],
+    "unread_writers": ["007c7488", "007cba12", "007cc7e2", "007cc857", "007c627c", "007c36bc", "007cb673", "007cb6e2", "007d63ea", "007d65dd", "007d711a", "007d6600", "007c1697", "007c171e"]
+  },
+  "corrections": [
+    {
+      "document": "docs/PLANE_FLIGHT.md",
+      "was": "007DB680(ctl, step, a, b, flag) - the fifth parameter is an int flag",
+      "is": "the fifth parameter is a float*, null on the free-flight and ground arms",
+      "evidence": "007DD43F PUSH EDX with EDX = LEA [ESP+0x34] at the water call site; 007DC3DC MOV ECX,dword ptr [ESP+0x68] then 007DC422 FLD float ptr [ECX] in the callee"
+    },
+    {
+      "document": "docs/PLANE_FLIGHT.md",
+      "was": "desc +1CCh YawLimitAngle, +1D0h PitchLimitAngle, +1D4h DragPitchRatio and +1DCh AirBrakeDrag are read in the '007DB680 band'",
+      "is": "none of the four is read anywhere in 007DB680's body. A complete census of every [reg + 0x1xx], [reg + 0x2xx] and [reg + 0x5xx] access in its 1214-instruction listing yields only desc+170h, +174h, +184h, +198h, +1A0h, +1E0h, +1FCh, +508h and unit+100h. +1D4h and +1DCh are read by 007D9140 at 007D91BD and 007D91E0; +1CCh by 007C466D and 007C49E9, which 007DB680 does not call.",
+      "evidence": "rg over the full assembly listing of 007db680; scan-bytes for FLD/MOVSS with disp32 0x1CC"
+    },
+    {
+      "document": "ledger record on 007c6340 (packet cc2_plane_ground_ops)",
+      "was": "state 7 with unit+908h = 3600.0f at 007C63F4, and state 6 with unit+908h = 0 at 007C6481",
+      "is": "the two sites are swapped. 007C63F4 is c7 86 00 09 00 00 06 00 00 00 = state 6, with unit+908h = 0 at 007C6412; 007C6481 is c7 86 00 09 00 00 07 00 00 00 = state 7, with unit+908h = 3600.0f (00CFDEB0) at 007C6497. The predicate in the old record is correct. 007C6481, the fall-through branch, is the only site in the spawn chooser that produces the value the free-flight gate needs.",
+      "evidence": "the immediates in the instruction bytes at 007C63F4 and 007C6481; desc+198h confirmed as MinWaterSpd from 007D2440 PUSH 0xD06458 before 007D2463 FSTP [ESI+0x198], string at 00D06458"
+    },
+    {
+      "document": "new",
+      "was": "desc+170h and desc+174h had no Lua key on record",
+      "is": "desc+170h is YDrag and desc+174h is XDrag",
+      "evidence": "007D2144 PUSH 0xD06500 before 007D2167 FSTP [ESI+0x170], and 00D06500 holds \"YDrag\"; 007D217D PUSH 0xD064F8 before 007D21A0 FSTP [ESI+0x174], and 00D064F8 holds \"XDrag\". Writer 007D1F70 BSP_PlaneClass_ReadLuaFields."
+    }
+  ],
+  "published_code": {
+    "headers": [],
+    "sources": [],
+    "cmake": "unchanged",
+    "tests": "none added",
+    "reason": "007DB680 is the body behind PlaneFlightHost::free_flight_007cc2f0 in the existing include/bsp/plane_flight.hpp and src/plane_flight.cpp module. The packet may not edit that file, so it publishes nothing rather than creating a parallel plane_flight_core_law module."
+  }
+}
