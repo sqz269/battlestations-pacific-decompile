@@ -552,5 +552,59 @@
     "archived tool executables are evidence, not every toolchain dependency",
     "runtime DLL file hashes are separate from executable artifacts and loaded-memory hashes",
     "no game integration or game validation"
-  ]
+  ],
+  "integrated_validation": {
+    "code_commit": "33ac99a202f5630d2fe4e706609cb84fc7ffb7f9",
+    "checkpoint": {
+      "path": "local/checkpoints/33ac99a2/native-renderer-cleanup-refreshed/validation.json",
+      "sha256": "9e496724999d084f197d606cf7351cc861f75a14050c0e5ad85c1ca145bef4c0",
+      "code_commit": "33ac99a202f5630d2fe4e706609cb84fc7ffb7f9",
+      "artifacts": 3390
+    },
+    "strict_win32_build": true,
+    "ctests_passed": 2,
+    "new_entry_bodies_including_thunks": 4,
+    "existing_body_pool_overloads": 0,
+    "direct_call_rows": 8,
+    "direct_call_failures": 0,
+    "fixture_scope": "Four complete original destructor bodies versus source,16 postimage cases. Allocation failure remains static evidence.",
+    "per_entry_scope": {
+      "00b29ba0": {
+        "module": "native_renderer_record_destroy",
+        "scope": "Negative capacity calls B228B0 reserve0. Decrement current positive count, capture current data BEFORE final count0 store, then free captured data. Pointer/capacity remain stale. Four-case original/source postimage fixture passed; allocation failure is static evidence only.",
+        "status": "actual_body_reconstructed_integrated_build_scoped_fixture_evidence"
+      },
+      "00b29be0": {
+        "module": "native_renderer_record_destroy",
+        "scope": "Negative capacity calls B22940 reserve0. Decrement current positive count, capture current data BEFORE final count0 store, then free captured data. Pointer/capacity remain stale. Four-case original/source postimage fixture passed; allocation failure is static evidence only.",
+        "status": "actual_body_reconstructed_integrated_build_scoped_fixture_evidence"
+      },
+      "00b29c20": {
+        "module": "native_renderer_record_destroy",
+        "scope": "Negative capacity calls B229D0 reserve0. Decrement current positive count, capture current data BEFORE final count0 store, then free captured data. Pointer/capacity remain stale. Four-case original/source postimage fixture passed; allocation failure is static evidence only.",
+        "status": "actual_body_reconstructed_integrated_build_scoped_fixture_evidence"
+      },
+      "00b29c60": {
+        "module": "native_renderer_record_destroy",
+        "scope": "Negative capacity calls B22A70 reserve0. Decrement current positive count, capture current data BEFORE final count0 store, then free captured data. Pointer/capacity remain stale. Four-case original/source postimage fixture passed; allocation failure is static evidence only.",
+        "status": "actual_body_reconstructed_integrated_build_scoped_fixture_evidence"
+      }
+    },
+    "annotation_journal": "local/ghidra-annotations-20260914T073358Z.json",
+    "annotations_saved_and_read_back_preserving_previous_comments": true,
+    "exports_forced_after_snapshot_refresh": true,
+    "worker_artifacts_retained": {
+      "label": "records",
+      "commit": "10870d920fcad63be095912c5552600d6195c06e",
+      "path": "local/compiler-path-workers/renderer-cleanup-records/manifest.json",
+      "sha256": "b910d88db25280829094dd72eb5199c023dcd23d4d94fffd0b0dc2cb1f4285b2",
+      "artifacts": 37
+    },
+    "game_validated": false,
+    "limits": [
+      "EndFrame still requires queue and three overlay bodies; active parent and XLiveRender execution unvalidated",
+      "Effect registry destruction and B30410 currently have build/static evidence only",
+      "Full renderer lifetime, canonical application adoption, original exception ABI and gameplay remain incomplete"
+    ]
+  }
 }

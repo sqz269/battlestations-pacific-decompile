@@ -699,5 +699,44 @@
     "Exact entry byte identity and admitted synthetic COM differential do not prove original game runtime or installed binary replacement.",
     "Invalid owner/query/vtable pointers, driver behavior and hardware/native exception propagation are not newly validated.",
     "Loaded module identities belong to the focused probe process; configured compiler/linker and static archive artifacts are separately identified."
-  ]
+  ],
+  "integrated_validation": {
+    "code_commit": "33ac99a202f5630d2fe4e706609cb84fc7ffb7f9",
+    "checkpoint": {
+      "path": "local/checkpoints/33ac99a2/native-renderer-cleanup-refreshed/validation.json",
+      "sha256": "9e496724999d084f197d606cf7351cc861f75a14050c0e5ad85c1ca145bef4c0",
+      "code_commit": "33ac99a202f5630d2fe4e706609cb84fc7ffb7f9",
+      "artifacts": 3390
+    },
+    "strict_win32_build": true,
+    "ctests_passed": 2,
+    "new_entry_bodies_including_thunks": 1,
+    "existing_body_pool_overloads": 0,
+    "direct_call_rows": 0,
+    "direct_call_failures": 0,
+    "fixture_scope": "Byte-identical linked52byte poll and four original/source raw-owner synthetic-COM cases; no actual GPU test.",
+    "per_entry_scope": {
+      "00b5fca0": {
+        "module": "native_occlusion_query_poll",
+        "scope": "Complete raw52byte body; captured COM+10 calls current GetData+1C once into owner+C with size4/flags1; exact S_OK writes owner+8=2. AL return and HRESULT upper bits preserved. Linked entry matches all52 original bytes; four original/source cases with synthetic COM passed. EndFrame now directly binds this current query profile; no GPU or active-frame runtime proof.",
+        "status": "actual_body_reconstructed_integrated_build_scoped_fixture_evidence"
+      }
+    },
+    "annotation_journal": "local/ghidra-annotations-20260914T073358Z.json",
+    "annotations_saved_and_read_back_preserving_previous_comments": true,
+    "exports_forced_after_snapshot_refresh": true,
+    "worker_artifacts_retained": {
+      "label": "query",
+      "commit": "893adebc6ecba1b88db255490664c51c453ed3c4",
+      "path": "local/compiler-path-workers/renderer-cleanup-query/manifest.json",
+      "sha256": "c6951d26396c41d06d1c95880b51172927a3e82ac25ddf408a5ff4348cbcf1a2",
+      "artifacts": 51
+    },
+    "game_validated": false,
+    "limits": [
+      "EndFrame still requires queue and three overlay bodies; active parent and XLiveRender execution unvalidated",
+      "Effect registry destruction and B30410 currently have build/static evidence only",
+      "Full renderer lifetime, canonical application adoption, original exception ABI and gameplay remain incomplete"
+    ]
+  }
 }

@@ -117,3 +117,11 @@ checks establish base/derived armed cleanup and retained earlier effects.
 The terminal callbacks are fixture instrumentation, not game texture destruction.
 Nonnull pooled names, unmasked hardware faults, native SEH/CRT exception identity,
 full effect-resize differential execution, and game validation are not claimed.
+
+## Integrated validation at 33ac99a2
+
+The integrated source at `33ac99a202f5630d2fe4e706609cb84fc7ffb7f9` passed the strict MSVC Win32 build and both CTests. Original/source B316C0 normal/current-storage mutation, B31730 resize/free and B30340 actual-pool growth/shrink; source B32090/B32370 unwind checks. B30410 has build/static evidence only.
+
+The existing focused fixture was relinked against that exact `bsp_core.lib` with `/MD`, `/W4 /WX`, `/sourceDependencies` and an embedded manifest; loaded runtime module paths were measured.
+
+The packet passed 19 numeric direct-call checks. Reviewed names and evidence comments were applied, saved and read back in Ghidra while preserving previous comments. All 23 affected exports were forced after the snapshot refresh; eight repaired returning tails were checked in the live bodies and refreshed assembly. The combined checkpoint covers 22 new entry bodies including thunks and one overload of an existing body, with distinct per-entry validation scopes in the report. It retains 3390 immutable source, build, compiler, fixture and measured runtime artifacts at `local/checkpoints/33ac99a2/native-renderer-cleanup-refreshed/validation.json` (SHA-256 `9e496724999d084f197d606cf7351cc861f75a14050c0e5ad85c1ca145bef4c0`). Worker manifests and intermediate flow-repair reports remain historical inputs. Full renderer lifetime, active-frame execution, application adoption, native exception ABI and gameplay remain unvalidated.

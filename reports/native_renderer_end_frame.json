@@ -628,8 +628,7 @@
     "actual queue B1EBE0 (existing source is a projection)",
     "B2BB90 overlay 1765 bytes",
     "current renderer+C4 B28D00 overlay 966 bytes",
-    "B2B580 overlay 1549 bytes",
-    "current pending query+10 D62AD0/B5FCA0 (existing source is a projection)"
+    "B2B580 overlay 1549 bytes"
   ],
   "seh_evidence": [
     {
@@ -738,5 +737,98 @@
     "manifest_sha256": "6316e2940db437481ff202baa142380afac42d32cb1c9dea20c532fded3a016c",
     "artifact_count": 529,
     "all_frozen_hashes_reverified": true
-  }
+  },
+  "integrated_validation": {
+    "code_commit": "33ac99a202f5630d2fe4e706609cb84fc7ffb7f9",
+    "checkpoint": {
+      "path": "local/checkpoints/33ac99a2/native-renderer-cleanup-refreshed/validation.json",
+      "sha256": "9e496724999d084f197d606cf7351cc861f75a14050c0e5ad85c1ca145bef4c0",
+      "code_commit": "33ac99a202f5630d2fe4e706609cb84fc7ffb7f9",
+      "artifacts": 3390
+    },
+    "strict_win32_build": true,
+    "ctests_passed": 2,
+    "new_entry_bodies_including_thunks": 7,
+    "existing_body_pool_overloads": 0,
+    "direct_call_rows": 33,
+    "direct_call_failures": 0,
+    "fixture_scope": "Original/source two physical rewinds with real recursive guards, exact eight-byte leaves, source partial failure and negative count; inactive parent/wrappers only.",
+    "per_entry_scope": {
+      "00b2d8e0": {
+        "module": "native_renderer_end_frame",
+        "scope": "Full call schedule now binds current D62AD0 query+10 to actual B5FCA0. Queue and three overlay bodies remain required substantive providers. Only inactive parent return is fixture-tested; active frame and loaded XLiveRender remain unvalidated.",
+        "status": "call_schedule_reconstructed_build_inactive_only_required_frontier"
+      },
+      "00b2f4a0": {
+        "module": "native_renderer_end_frame",
+        "scope": "Default null-save wrapper. Inactive raw owner with null context fixture passed; active frame remains unvalidated.",
+        "status": "call_schedule_reconstructed_build_inactive_only_required_frontier"
+      },
+      "00b2f4b0": {
+        "module": "native_renderer_end_frame",
+        "scope": "Five-byte tail thunk to EndFrame with existing save argument. Inactive wrapper fixture passed; active frame remains unvalidated.",
+        "status": "call_schedule_reconstructed_build_inactive_only_required_frontier"
+      },
+      "00b232b0": {
+        "module": "native_renderer_end_frame",
+        "scope": "Actual signed-count/current-child traversal and final counters; sole optional-guard unwind. Original/source comparison with real recursive sections and source partial-failure fixture passed.",
+        "status": "actual_body_reconstructed_integrated_build_scoped_fixture_evidence"
+      },
+      "00b231c0": {
+        "module": "native_renderer_end_frame",
+        "scope": "Actual signed-count/current-child traversal and final counters; sole optional-guard unwind. Original/source comparison with real recursive sections and source partial-failure fixture passed.",
+        "status": "actual_body_reconstructed_integrated_build_scoped_fixture_evidence"
+      },
+      "00b48d40": {
+        "module": "native_renderer_end_frame",
+        "scope": "Actual logical owner+5C=-1. Linked eight-byte entry matches original and participates in original/source physical rewind fixture.",
+        "status": "actual_body_reconstructed_integrated_build_static_evidence"
+      },
+      "00b48dd0": {
+        "module": "native_renderer_end_frame",
+        "scope": "Actual logical owner+C=-1. Linked eight-byte entry matches original and participates in original/source physical rewind fixture.",
+        "status": "actual_body_reconstructed_integrated_build_static_evidence"
+      }
+    },
+    "annotation_journal": "local/ghidra-annotations-20260914T073358Z.json",
+    "annotations_saved_and_read_back_preserving_previous_comments": true,
+    "exports_forced_after_snapshot_refresh": true,
+    "worker_artifacts_retained": {
+      "label": "endframe",
+      "commit": "0c6c37b82daa15d54b0585c6c9d40cc742506d17",
+      "path": "local/compiler-path-workers/renderer-cleanup-endframe/manifest.json",
+      "sha256": "6b19bd6d33c7175ce7389909aaf1c19419c2490809afb281dc9f68545ee955dd",
+      "artifacts": 529
+    },
+    "game_validated": false,
+    "limits": [
+      "EndFrame still requires queue and three overlay bodies; active parent and XLiveRender execution unvalidated",
+      "Effect registry destruction and B30410 currently have build/static evidence only",
+      "Full renderer lifetime, canonical application adoption, original exception ABI and gameplay remain incomplete"
+    ],
+    "query_binding": {
+      "source_commit": "33ac99a202f5630d2fe4e706609cb84fc7ffb7f9",
+      "source": "src/native_renderer_end_frame.cpp",
+      "query_entry": "00b5fca0",
+      "current_owner_profile": "00d62ad0",
+      "current_slot": "10",
+      "predicate": "current actual query+8 == 0",
+      "effect": "execute the byte-identical raw poll and ignore AL; loop reloads current renderer array and unsigned count",
+      "remaining_required_bodies": [
+        "00b1ebe0",
+        "00b2bb90",
+        "00b28d00",
+        "00b2b580"
+      ],
+      "active_endframe_runtime_validated": false,
+      "review": "raw poll standalone differential and byte identity passed; this parent wiring is build/static evidence only"
+    }
+  },
+  "worker_required_frontier_before_raw_query_integration": [
+    "actual queue B1EBE0 (existing source is a projection)",
+    "B2BB90 overlay 1765 bytes",
+    "current renderer+C4 B28D00 overlay 966 bytes",
+    "B2B580 overlay 1549 bytes",
+    "current pending query+10 D62AD0/B5FCA0 (existing source is a projection)"
+  ]
 }

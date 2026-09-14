@@ -319,5 +319,64 @@
     "manifest_sha256": "df3f67af4f2763c20e657894f2e03e9017b6a31f1ec7abe8907ee38dc807f3bf",
     "artifact_count": 443,
     "all_frozen_hashes_reverified": true
+  },
+  "integrated_validation": {
+    "code_commit": "33ac99a202f5630d2fe4e706609cb84fc7ffb7f9",
+    "checkpoint": {
+      "path": "local/checkpoints/33ac99a2/native-renderer-cleanup-refreshed/validation.json",
+      "sha256": "9e496724999d084f197d606cf7351cc861f75a14050c0e5ad85c1ca145bef4c0",
+      "code_commit": "33ac99a202f5630d2fe4e706609cb84fc7ffb7f9",
+      "artifacts": 3390
+    },
+    "strict_win32_build": true,
+    "ctests_passed": 2,
+    "new_entry_bodies_including_thunks": 5,
+    "existing_body_pool_overloads": 0,
+    "direct_call_rows": 8,
+    "direct_call_failures": 0,
+    "fixture_scope": "Strict build and native static/call evidence only; no dedicated runtime fixture.",
+    "per_entry_scope": {
+      "00b32010": {
+        "module": "native_effect_registry_destroy",
+        "scope": "Actual+4 reference decrement before canonical current-profile terminal at zero. Strict build and static native evidence only; no dedicated runtime fixture for this packet.",
+        "status": "actual_body_reconstructed_integrated_build_static_evidence"
+      },
+      "00b31750": {
+        "module": "native_effect_registry_destroy",
+        "scope": "Current reverse count/base traversal, zero-accounting leaf, current registry release, current effect record destruction, count reload and B30410 resize0. Strict build and static native evidence only; no dedicated runtime fixture for this packet.",
+        "status": "actual_body_reconstructed_integrated_build_static_evidence"
+      },
+      "00b317c0": {
+        "module": "native_effect_registry_destroy",
+        "scope": "B30410 resize0 then free current data through the same actual array domain; preserve pointer/capacity. Returning tail restored. Strict build and static native evidence only; no dedicated runtime fixture for this packet.",
+        "status": "actual_body_reconstructed_integrated_build_static_evidence"
+      },
+      "00b320f0": {
+        "module": "native_effect_registry_destroy",
+        "scope": "Publish D5F04C, arm state0 array cleanup during clear, disarm before normal array destroy. Returning tail restored. Strict build and static native evidence only; no dedicated runtime fixture for this packet.",
+        "status": "actual_body_reconstructed_integrated_build_static_evidence"
+      },
+      "00b32200": {
+        "module": "native_effect_registry_destroy",
+        "scope": "Five-byte tail jump to B320F0, preserving actual receiver. Strict build and static native evidence only; no dedicated runtime fixture for this packet.",
+        "status": "actual_body_reconstructed_integrated_build_static_evidence"
+      }
+    },
+    "annotation_journal": "local/ghidra-annotations-20260914T073358Z.json",
+    "annotations_saved_and_read_back_preserving_previous_comments": true,
+    "exports_forced_after_snapshot_refresh": true,
+    "worker_artifacts_retained": {
+      "label": "effects",
+      "commit": "0b3a8cac720172bfca88f12795913bd4a6fb78d1",
+      "path": "local/compiler-path-workers/renderer-cleanup-effects/manifest.json",
+      "sha256": "1496da422caa91d18f47eeeb1eca39846b4a30375baaccd8f90b924b18cad389",
+      "artifacts": 443
+    },
+    "game_validated": false,
+    "limits": [
+      "EndFrame still requires queue and three overlay bodies; active parent and XLiveRender execution unvalidated",
+      "Effect registry destruction and B30410 currently have build/static evidence only",
+      "Full renderer lifetime, canonical application adoption, original exception ABI and gameplay remain incomplete"
+    ]
   }
 }

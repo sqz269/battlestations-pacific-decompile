@@ -1,0 +1,157 @@
+{
+ "events": [
+  {
+   "recreate": "00b317c0",
+   "previous": "Function: FUN_00b317c0 at 00b317c0\nSignature: undefined FUN_00b317c0(void)\nEntry: 00b317c0\nBody: 00b317c0 - 00b317d1",
+   "plate": null
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "00b317c0"
+   },
+   "result": {
+    "success": true,
+    "address": "00b317c0",
+    "deleted_function": "FUN_00b317c0",
+    "body_size": 18,
+    "message": "Function 'FUN_00b317c0' deleted at 00b317c0"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00b317c0",
+    "end_address": "00b317d7"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00b317c0",
+    "end_address": "00b317d6",
+    "bytes_disassembled": 23,
+    "message": "Successfully disassembled 23 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00b317c0",
+    "disassemble_first": false
+   },
+   "result": {
+    "success": true,
+    "address": "00b317c0",
+    "function_name": "FUN_00b317c0",
+    "entry_point": "00b317c0",
+    "body_size": 23,
+    "message": "Function created successfully at 00b317c0"
+   }
+  },
+  {
+   "defined": "00b317c0",
+   "end": "00b317d7",
+   "name": null,
+   "after": "Function: FUN_00b317c0 at 00b317c0\nSignature: undefined FUN_00b317c0(void)\nEntry: 00b317c0\nBody: 00b317c0 - 00b317d6"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  },
+  {
+   "recreate": "00b320f0",
+   "previous": "Function: BSP_MaterialEffectCache_Destroy at 00b320f0\nSignature: undefined BSP_MaterialEffectCache_Destroy(void)\nEntry: 00b320f0\nBody: 00b320f0 - 00b3213b",
+   "plate": "[BSP reconstruction 00b320f0]\nCorrect body through00b3214e RET; initial saved body truncated by erroneous CALL_RETURN override at call00b32137 to free00bf6989. Base vtable retains same retain/release functions; clears and frees vector storage. Evidence: docs/FONT_EFFECT_CACHE_OWNERSHIP.md; reports/font_effect_cache_ownership_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim."
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "00b320f0"
+   },
+   "result": {
+    "success": true,
+    "address": "00b320f0",
+    "deleted_function": "BSP_MaterialEffectCache_Destroy",
+    "body_size": 76,
+    "message": "Function 'BSP_MaterialEffectCache_Destroy' deleted at 00b320f0"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00b320f0",
+    "end_address": "00b3214f"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00b320f0",
+    "end_address": "00b3214e",
+    "bytes_disassembled": 95,
+    "message": "Successfully disassembled 95 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00b320f0",
+    "disassemble_first": false,
+    "name": "BSP_MaterialEffectCache_Destroy"
+   },
+   "result": {
+    "success": true,
+    "address": "00b320f0",
+    "function_name": "BSP_MaterialEffectCache_Destroy",
+    "entry_point": "00b320f0",
+    "body_size": 95,
+    "message": "Function created successfully at 00b320f0",
+    "warnings": [
+     "Function name 'BSP_MaterialEffectCache_Destroy' \u2014 main part 'MaterialEffectCache_Destroy' is not PascalCase. Expected: MaterialeffectcacheDestroy",
+     "Function name 'BSP_MaterialEffectCache_Destroy' \u2014 main part 'MaterialEffectCache_Destroy' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_MaterialEffectCache_Destroy' does not start with a recognized verb. First word 'Material' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "endpoint": "set_plate_comment",
+   "body": {
+    "address": "00b320f0",
+    "comment": "[BSP reconstruction 00b320f0]\nCorrect body through00b3214e RET; initial saved body truncated by erroneous CALL_RETURN override at call00b32137 to free00bf6989. Base vtable retains same retain/release functions; clears and frees vector storage. Evidence: docs/FONT_EFFECT_CACHE_OWNERSHIP.md; reports/font_effect_cache_ownership_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim."
+   },
+   "result": {
+    "status": "success",
+    "message": "Set plate comment for function at 00b320f0",
+    "warnings": [
+     "Plate comment missing Algorithm section",
+     "Plate comment missing Parameters section",
+     "Plate comment missing Returns section"
+    ]
+   }
+  },
+  {
+   "defined": "00b320f0",
+   "end": "00b3214f",
+   "name": "BSP_MaterialEffectCache_Destroy",
+   "after": "Function: BSP_MaterialEffectCache_Destroy at 00b320f0\nSignature: undefined BSP_MaterialEffectCache_Destroy(void)\nEntry: 00b320f0\nBody: 00b320f0 - 00b3214e"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}

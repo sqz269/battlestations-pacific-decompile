@@ -3,8 +3,9 @@
 This packet supplies the full `00B2D8E0..00B2DBCC` call schedule, its default and
 save-header wrappers, both actual physical-buffer rewinds, and their two concrete
 logical-stream leaves. It does **not** close the EndFrame dependency graph.
-Queue execution, three overlay bodies and current query polling remain required
-substantive providers. No provider defaults to success or a no-op.
+Queue execution and three overlay bodies remain required substantive providers.
+Current query polling is bound to the actual raw B5FCA0 body at integration commit
+`33ac99a2`. No provider defaults to success or a no-op.
 
 Names are descriptive hypotheses. Evidence was read from the existing
 `C:/Users/sqz269/bsp.gpr`, program `/battlestationspacific.exe`, and compared with
@@ -51,11 +52,11 @@ Device EndScene and Present instead execute their current real COM table slots.
 - B2BB90 (1765 bytes), current renderer +C4 B28D00 (966 bytes), and B2B580
   (1549 bytes). Their full resource/material/draw graphs remain external;
   their initial gates are not substituted for those bodies.
-- Current query +10 dispatch for each eligible actual +19A0 array member.
-  The observed D62AD0 slot is B5FCA0. Existing `D3D9OcclusionQuery` is a
-  projection without the native vtable/intrusive prefix. The provider must
-  perform the current dispatch and ignore no required operation; parent ignores
-  AL and adds no retry, wait or local lost-device gate.
+Current query +10 dispatch is integrated separately: after the current owner+08
+state is zero, source verifies its D62AD0 profile and the borrowed current table
+slot +10 equals B5FCA0, then executes the actual raw poll. The parent ignores AL
+and adds no retry, wait or local lost-device gate. The standalone query passed
+differential checks; this active-parent wiring has build and static evidence only.
 
 `NativeXLiveRenderImport` resolves ordinal 5002 from the already loaded
 `XLiveLibrary::module_handle()`. The PE import record identifies CE25D8 as
@@ -140,3 +141,11 @@ Original FH3 handlers are not exercised by the fixture. Both inactive wrappers
 are also checked with a null context. No active full-frame fixture or loaded
 XLiveRender execution is claimed. ABI compatibility of the two leaves does not
 establish parent ABI, unrestricted concurrency, rendering or gameplay parity.
+
+## Integrated validation at 33ac99a2
+
+The integrated source at `33ac99a202f5630d2fe4e706609cb84fc7ffb7f9` passed the strict MSVC Win32 build and both CTests. Original/source two physical rewinds with real recursive guards, exact eight-byte leaves, source partial failure and negative count; inactive parent/wrappers only.
+
+The existing focused fixture was relinked against that exact `bsp_core.lib` with `/MD`, `/W4 /WX`, `/sourceDependencies` and an embedded manifest; loaded runtime module paths were measured.
+
+The packet passed 33 numeric direct-call checks. Reviewed names and evidence comments were applied, saved and read back in Ghidra while preserving previous comments. All 23 affected exports were forced after the snapshot refresh; eight repaired returning tails were checked in the live bodies and refreshed assembly. The combined checkpoint covers 22 new entry bodies including thunks and one overload of an existing body, with distinct per-entry validation scopes in the report. It retains 3390 immutable source, build, compiler, fixture and measured runtime artifacts at `local/checkpoints/33ac99a2/native-renderer-cleanup-refreshed/validation.json` (SHA-256 `9e496724999d084f197d606cf7351cc861f75a14050c0e5ad85c1ca145bef4c0`). Worker manifests and intermediate flow-repair reports remain historical inputs. Full renderer lifetime, active-frame execution, application adoption, native exception ABI and gameplay remain unvalidated.

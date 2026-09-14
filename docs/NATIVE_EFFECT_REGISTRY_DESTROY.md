@@ -127,3 +127,9 @@ against complete assembly and existing actual providers. The dependency fixture
 is not a runtime test of these new destructors. Original FH3 dispatch, active
 renderer-parent destruction, unrestricted callbacks/SEH/concurrency and gameplay
 remain unproved.
+
+## Integrated validation at 33ac99a2
+
+The integrated source at `33ac99a202f5630d2fe4e706609cb84fc7ffb7f9` passed the strict MSVC Win32 build and both CTests. Strict build and native static/call evidence only; no dedicated runtime fixture.
+
+The packet passed 8 numeric direct-call checks. Reviewed names and evidence comments were applied, saved and read back in Ghidra while preserving previous comments. All 23 affected exports were forced after the snapshot refresh; eight repaired returning tails were checked in the live bodies and refreshed assembly. The combined checkpoint covers 22 new entry bodies including thunks and one overload of an existing body, with distinct per-entry validation scopes in the report. It retains 3390 immutable source, build, compiler, fixture and measured runtime artifacts at `local/checkpoints/33ac99a2/native-renderer-cleanup-refreshed/validation.json` (SHA-256 `9e496724999d084f197d606cf7351cc861f75a14050c0e5ad85c1ca145bef4c0`). Worker manifests and intermediate flow-repair reports remain historical inputs. Full renderer lifetime, active-frame execution, application adoption, native exception ABI and gameplay remain unvalidated.
