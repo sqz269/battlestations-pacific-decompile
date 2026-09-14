@@ -2314,7 +2314,7 @@
   "ordinary_instructions": 284,
   "support_instructions": 12,
   "packet": "orch4_native_resource_load_cache_by",
-  "status": "complete_ordinary_source_build_and_focused_fixture_checked",
+  "status": "integrated_complete_ordinary_source_build_and_focused_fixture_checked",
   "base_revision": "1d1b64031f4c9e8b682b5ba7eca28faf08fe8c2d",
   "source": "src/native_resource_load_cache.cpp",
   "header": "include/bsp/native_resource_load_cache.hpp",
@@ -2339,7 +2339,13 @@
     "native_fh3": false,
     "production_vfs_open_fixture": false,
     "game_validated": false,
-    "whole_report_verifier": "38 passed"
+    "whole_report_verifier": "38 passed",
+    "combined_strict_win32": true,
+    "combined_existing_ctests": 2,
+    "combined_source_fixture": true,
+    "source_manifest_inputs": 2659,
+    "all_instruction_owners_rechecked": true,
+    "previous_ghidra_comments_preserved": 10
   },
   "evidence": [
     {
@@ -2417,5 +2423,93 @@
       "bytes": 11802,
       "sha256": "b7c5453b35d595600e9c16d0130d3aa29b0d31dbc40b074d70f3a3a910eb0c3a"
     }
-  ]
+  ],
+  "code_revision": "efbc13b663be04719f89f376801426d0f91572cc",
+  "final_validation": {
+    "code_revision": "efbc13b663be04719f89f376801426d0f91572cc",
+    "evidence": [
+      {
+        "path": "local/native_resource_load_cache_by/final_build.log",
+        "sha256": "d343463790b3b8d1a697f00180cbb614b6d0be5976d081c3651d9212ef1ce55c",
+        "bytes": 2626
+      },
+      {
+        "path": "local/native_resource_load_cache_by/final/source_manifest.json",
+        "sha256": "f1da83fd9aee98243f40c13da3e3b28e17fea0fc64b95d28b98efc315713ca53",
+        "bytes": 287916
+      },
+      {
+        "path": "local/native_resource_load_cache_by/final/libraries.json",
+        "sha256": "25025b727b4a9ac243fe19a7d847d3a99d44e0bb9cfd2facf2609ea94a70eaa9",
+        "bytes": 666
+      },
+      {
+        "path": "local/native_resource_load_cache_by/final/bsp_core.lib",
+        "sha256": "588a7190968662ad4706c33ffd38b5ab12fe62e426054f84ba8088573d0eec12",
+        "bytes": 58654712
+      },
+      {
+        "path": "local/native_resource_load_cache_by/final/bsp_lua511.lib",
+        "sha256": "00315ac717aac3d2b2161fefefe71b36a974335ff9c95d48c137423eb4e2f4b2",
+        "bytes": 455244
+      },
+      {
+        "path": "local/native_resource_load_cache_by/final/bsp_zlib121.lib",
+        "sha256": "73ae30b8adc3adfe5b33285bac533f8e7df7e8ab8d9e44789e6a030fd8a06ad9",
+        "bytes": 71906
+      },
+      {
+        "path": "local/native_resource_load_cache_by/final/probe.cpp",
+        "sha256": "fbf2c61c84940c038d4261d06d3af5fe9b3cc13770cd465e7f481774e61865a0",
+        "bytes": 21460
+      },
+      {
+        "path": "local/native_resource_load_cache_by/final/original_metric.hpp",
+        "sha256": "db47877adedbdadadfc1dc74868675eb2b3a41a10f5e8f9ae2b095435a0e0644",
+        "bytes": 146
+      },
+      {
+        "path": "local/native_resource_load_cache_by/final/compile.cmd",
+        "sha256": "052951a33e6e7d760522f0a7615cf0baac67cee2b65cb72418509e2d65a33c49",
+        "bytes": 734
+      },
+      {
+        "path": "local/native_resource_load_cache_by/final/compile.log",
+        "sha256": "25d4f66c7c01d5b35c220cb97ffdd1608405f4ab45160497e6cc7ea3079676cf",
+        "bytes": 11
+      },
+      {
+        "path": "local/native_resource_load_cache_by/final/probe.exe",
+        "sha256": "4d37c4f9db7b8c9adfe8e899287ea7f3692b1e5f9bdf312fa3a04253402a3a08",
+        "bytes": 170496
+      },
+      {
+        "path": "local/native_resource_load_cache_by/final/probe.map",
+        "sha256": "895fac6b4419ed0436a533be657cd1d1f7849a9bf1c94d98f49baa2dcc4e2926",
+        "bytes": 302137
+      },
+      {
+        "path": "local/native_resource_load_cache_by/final/probe.log",
+        "sha256": "fb57358c79e6e13efb53d7c4b4a5a9236ef66fdfa16e57717179de8a2ea01bbf",
+        "bytes": 562
+      },
+      {
+        "path": "local/native_resource_load_cache_by/final/child_probe.log",
+        "sha256": "77a1903adc3af5f9e5e33b05a06b6f1b7555cfba6db217afd25134843061be41",
+        "bytes": 521
+      },
+      {
+        "path": "build/win32/Release/bsp_game.exe",
+        "sha256": "e543b5a7acada41d517472d9255c3e39656ea17b2496ad691325d31ce4124ec0",
+        "bytes": 2164224
+      }
+    ],
+    "limits": [
+      "New source ABI, not native loader/FH3/SEH equivalence",
+      "Failed VFS resolution invocation remains retained under its existing contract",
+      "Empty VFS lookup and explicit fixture open/parser boundaries",
+      "No full resource destructor or actual manager/concrete-parser bootstrap",
+      "No production loader admission or gameplay validation"
+    ]
+  }
 }
