@@ -1,12 +1,12 @@
 {
   "packet": "orch4_native_loading_owners_integration_bp",
   "generated_utc": "2026-09-14T15:32:19.730393+00:00",
-  "code_revision": "cfec38f9866ac0d923b5dbf1edd9dd58ffa21674",
+  "code_revision": "1af1d3fed4253f74aac6a01e360990e6c5934b5a",
   "source_manifest": {
-    "path": "local/native_loading_owners_bp_source_cfec38f9866a.json",
-    "sha256": "d698176f099826d70e580adc6621652db9e0afff788884f2f5de8089a53c7976",
-    "bytes": 282620,
-    "files": 2612
+    "path": "local/native_loading_owners_bp_source_1af1d3fed425.json",
+    "files": 2613,
+    "sha256": "21f8bbe78135f93c80f423438da054d644a26aaea1c267fde469f56949012c1e",
+    "bytes": 282724
   },
   "reconstructed_routines": [
     {
@@ -190,12 +190,12 @@
     "passed": true,
     "existing_ctests_passed": 2,
     "log": {
-      "path": "local/native_loading_owners_bp_combined_build.log",
-      "sha256": "b65cba9fe3b90003c28a8df6256e2c3ade7825e574626c7a29ec2ad97e0d7f8d",
-      "bytes": 4253
+      "path": "local/native_loading_owners_bp_final_build.log",
+      "sha256": "22361cc73bdb4e4e25e693a3d506593a34f2e69763e34155e7ed8ada8afc0254",
+      "bytes": 2532
     },
     "core_sha256": "199c938d6436d7d5510cd74848e411e41fc11c23df661614ea46a970014b8466",
-    "game_sha256": "fe1a7bd9ca60fe5eea93f98364e94197324c92b0a5cb82f2d42b5847cae33783"
+    "game_sha256": "587a79b677b6d274158fbd1ba4f10fd817eddf978c17a3c23536afd8a778c8ef"
   },
   "incoming_main_review": {
     "base": "a20c90fbbf2c5260f10e56f289388525468dcc5d",
@@ -487,5 +487,41 @@
     "No production resource-loader or observer route claimed complete.",
     "No new game run for BP; incoming owner gameplay reports were not rerun by this primary.",
     "Whole reconstruction goal remains active; required gameplay validation is incomplete."
-  ]
+  ],
+  "first_combined_validation": {
+    "code_revision": "cfec38f9866ac0d923b5dbf1edd9dd58ffa21674",
+    "source_manifest": {
+      "path": "local/native_loading_owners_bp_source_cfec38f9866a.json",
+      "sha256": "d698176f099826d70e580adc6621652db9e0afff788884f2f5de8089a53c7976",
+      "bytes": 282620,
+      "files": 2612
+    },
+    "primary_build": {
+      "command": "./scripts/build.ps1",
+      "platform": "MSVC Win32",
+      "configuration": "Release",
+      "passed": true,
+      "existing_ctests_passed": 2,
+      "log": {
+        "path": "local/native_loading_owners_bp_final_build.log",
+        "sha256": "22361cc73bdb4e4e25e693a3d506593a34f2e69763e34155e7ed8ada8afc0254",
+        "bytes": 2532
+      },
+      "core_sha256": "199c938d6436d7d5510cd74848e411e41fc11c23df661614ea46a970014b8466",
+      "game_sha256": "587a79b677b6d274158fbd1ba4f10fd817eddf978c17a3c23536afd8a778c8ef"
+    }
+  },
+  "later_incoming_main": {
+    "commit": "fa01d7f2e9809a72f4b5600e7ff1ef0ba35929fb",
+    "changed_files": [
+      "docs/ORDNANCE_KIND_IDENTITY.md",
+      "include/bsp/game_hosts_gunnery.hpp",
+      "include/bsp/ordnance_kinds.hpp",
+      "src/game_hosts_gunnery.cpp"
+    ],
+    "review": "Read the complete added ordnance header, gunnery code diff and worker limits. Adds a Type-to-predicate table and inventory reporting; no BP ownership/dependency overlap. Native slot/loadout-to-descriptor resolution remains incomplete per incoming documentation; this merge does not certify it.",
+    "merge": "clean",
+    "combined_build": "passed",
+    "existing_ctests_passed": 2
+  }
 }

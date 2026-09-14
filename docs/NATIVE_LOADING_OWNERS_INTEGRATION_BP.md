@@ -2,7 +2,7 @@
 
 Addresses: 00B7CB70, 00B7CB90, 00B7CE80, 00B7FA60, 00B801C0, 00BE0980, 00BDC9B0, 00BF0980, 00BF09B0, 00BEA150, 00BE9F10, 00CC2110, 00CC2118, 00CC70C0, 00CC70C8, 00CC70D3, 00CC7130, 00CC7138, 00CC7810, 00CC781B
 
-This batch integrates 11 reconstructed ordinary native bodies across three translation units. The validated combined source is `cfec38f9866ac0d923b5dbf1edd9dd58ffa21674` with 2612 recorded build inputs. Full details and receipts are in `reports/native_loading_owners_integration_bp.json`.
+This batch integrates 11 reconstructed ordinary native bodies across three translation units. The validated combined source is `1af1d3fed4253f74aac6a01e360990e6c5934b5a` with 2613 recorded build inputs. Full details and receipts are in `reports/native_loading_owners_integration_bp.json`.
 
 The cache erase packet preserves actual node identity while transplanting the successor and repairing the red-black tree. Keys return to the raw string pool before the original node is freed. Mapped resources remain borrowed. Returning diagnostics, current count reloads, and failure after unlinking retain their native ordering; the owner is not rolled back.
 
@@ -17,3 +17,5 @@ Incoming main `32dd35290e645c74a4af57f8eb87af751b2a44de` was checked for integra
 The reader worker stopped on a usage limit with four uncommitted deliverables. The primary verified and recovered those exact files, preserving the original worktree. The following BQ workers also stopped: resource-manager trees retain two unreviewed source drafts, while FileBlock owner retains analysis only. Their states are recorded as stopped, not running; local backups preserve the two drafts.
 
 Production loader/observer wiring, original ABI compatibility and gameplay validation remain incomplete. The continuing reconstruction goal remains active.
+
+A final clean merge brings in main `fa01d7f2e9809a72f4b5600e7ff1ef0ba35929fb`. The primary read the added ordnance table and gunnery diff, then reran the combined build and both tests successfully. The incoming native slot/loadout resolution limit remains explicit; the added inventory report does not establish that missing contract. Final source and artifact receipts supersede the first combined build while preserving it in the report.
