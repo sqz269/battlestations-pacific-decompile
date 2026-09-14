@@ -1,0 +1,4511 @@
+{
+ "packet": "cc7_sensor_table_data",
+ "owner": "agent/cc7-sensor-table-data",
+ "document": "docs/SENSOR_TABLE_DATA.md",
+ "summary": "The authored sensor-table data behind rule (c) of the contact list. The Lua key names are recovered strings in the image; the twelve ReconClass rows of the shipped arcade and realistic tables are dumped from the installed scripts and converted with 008082A0's own arithmetic.",
+ "evidence_kind": "static, read-only Ghidra reading of 008082A0 and 00960230, plus a parse of the installed read-only game scripts. No run-time evidence: bsp_game.exe fakes the recon lists and reaches neither 008082A0 nor 008048A0.",
+ "routines": [
+  {
+   "address": "008082a0",
+   "name": "BSP_SensorClassTable_LoadFromLua",
+   "body": "008082a0-00808c1c",
+   "coverage": "partial: the row-writing path 008085C0-00808A6A and the GUIRange path 00808734-00808908 were re-read instruction by instruction for this packet; the observer/subject key chains and the unwind funclets 00808B78-00808C1C were not re-read",
+   "role": "reads Details and fills the record's entry and ring lists"
+  },
+  {
+   "address": "00960230",
+   "name": "BSP_VehicleClass_ReadLuaFields",
+   "body": "00960230-00963234",
+   "coverage": "partial: only 009623D9-00962428, the ReconClass read and resolve; the rest belongs to docs/VEHICLE_CLASS_FIELDS.md",
+   "role": "maps a vehicle class to its ReconClass id and record"
+  }
+ ],
+ "host_steps": [
+  {
+   "step": "row_is_table_008082cd",
+   "function": "008082a0",
+   "address": "008082cd",
+   "native": "00b661b0",
+   "note": "IsTable on the ReconClass[id] row; false abandons the load at 008082D4"
+  },
+  {
+   "step": "index_details_008082e9",
+   "function": "008082a0",
+   "address": "008082e9",
+   "native": "00b67800",
+   "note": "row[\"Details\"], the key string at 00D08FE4"
+  },
+  {
+   "step": "details_is_table_008082fe",
+   "function": "008082a0",
+   "address": "008082fe",
+   "native": "00b661b0",
+   "note": "IsTable on Details; false abandons the load at 00808305"
+  },
+  {
+   "step": "subject_air_key_00808537",
+   "function": "008082a0",
+   "address": "00808537",
+   "native": "00bf7fbf",
+   "note": "__stricmp against \"SubjectAir\" at 00D08F64; 0080854C then stores subject index 0 into [ESP+14h]"
+  },
+  {
+   "step": "guirange_key_0080873d",
+   "function": "008082a0",
+   "address": "0080873d",
+   "native": "00425850",
+   "note": "case-insensitive compare against \"GUIRange\" at 00D08ED8"
+  },
+  {
+   "step": "index_dist_008085d1",
+   "function": "008082a0",
+   "address": "008085d1",
+   "native": "00b67800",
+   "note": "row[\"Dist\"], the key string at 00D08F5C"
+  },
+  {
+   "step": "read_dist_008085e0",
+   "function": "008082a0",
+   "address": "008085e0",
+   "native": "00b66270",
+   "note": "GetNumber; 008085E5 FSTP float [ESP+74h] is entry +0h and 008085F1 FMUL ST0 / 008085FB FSTP is entry +4h"
+  },
+  {
+   "step": "index_gain_00808615",
+   "function": "008082a0",
+   "address": "00808615",
+   "native": "00b67800",
+   "note": "row[\"Gain\"], the key string at 00D08F54"
+  },
+  {
+   "step": "read_gain_00808624",
+   "function": "008082a0",
+   "address": "00808624",
+   "native": "00b66270",
+   "note": "GetNumber; 00808629 FMUL double [00D7A280] = 0.5 and 0080863B FSTP float [ESP+7Ch] is entry +8h"
+  },
+  {
+   "step": "index_maxlevel_00808655",
+   "function": "008082a0",
+   "address": "00808655",
+   "native": "00b67800",
+   "note": "row[\"MaxLevel\"], the key string at 00D08F48"
+  },
+  {
+   "step": "read_maxlevel_00808666",
+   "function": "008082a0",
+   "address": "00808666",
+   "native": "00b66380",
+   "note": "GetIntegerOrDefault with the default 2 pushed at 0080865A; 0080866B/00808674 map 0 to 0.0f (00808975 XORPS), 1 to 0.25f ([00CE3868]) and anything else to 1.0f ([00D7A24C]) into entry +0Ch"
+  },
+  {
+   "step": "index_angle_008089a6",
+   "function": "008082a0",
+   "address": "008089a6",
+   "native": "00b67800",
+   "note": "row[\"Angle\"], the key string at 00D08ED0"
+  },
+  {
+   "step": "angle_is_nil_008089ba",
+   "function": "008082a0",
+   "address": "008089ba",
+   "native": "00b65fb0",
+   "note": "IsNil; nil writes 0.0f to entry +14h and 0 to entry +18h (008089C6/008089CF), otherwise 008089E5/008089EC write the number and 1"
+  },
+  {
+   "step": "read_angle_008089e0",
+   "function": "008082a0",
+   "address": "008089e0",
+   "native": "00b66270",
+   "note": "GetNumber; 008089E5 FSTP float [ESP+88h] is entry +14h"
+  },
+  {
+   "step": "index_rawtype_00808a08",
+   "function": "008082a0",
+   "address": "00808a08",
+   "native": "00b67800",
+   "note": "row[\"RawType\"], the key string at 00D08EC8"
+  },
+  {
+   "step": "read_rawtype_00808a17",
+   "function": "008082a0",
+   "address": "00808a17",
+   "native": "00b66290",
+   "note": "GetInteger; 00808A23 MOV [ESP+84h],EAX is entry +10h"
+  },
+  {
+   "step": "grow_entry_list_00808a4e",
+   "function": "008082a0",
+   "address": "00808a4e",
+   "native": "00807bd0",
+   "note": "00808A37 count == capacity grows to max(2 * capacity, 1); the entry is then written at begin + count * 1Ch and 00808A68 MOV ECX,7 / REP MOVSD copies the 1Ch record"
+  },
+  {
+   "step": "next_row_key_00808aa3",
+   "function": "008082a0",
+   "address": "00808aa3",
+   "native": "00b67190",
+   "note": "advance to the next numbered row under the subject key"
+  },
+  {
+   "step": "row_iteration_end_00808ab4",
+   "function": "008082a0",
+   "address": "00808ab4",
+   "native": "00b66420",
+   "note": "false loops back to 008085C0 for the next row (00808ABB)"
+  },
+  {
+   "step": "index_ring_range_008087f3",
+   "function": "008082a0",
+   "address": "008087f3",
+   "native": "00b67800",
+   "note": "GUIRange row[\"Range\"], the key string at 00CFA1A8"
+  },
+  {
+   "step": "read_ring_range_00808802",
+   "function": "008082a0",
+   "address": "00808802",
+   "native": "00b66270",
+   "note": "GetNumber; 00808807 FSTP float [ESP+5Ch] is ring +8h"
+  },
+  {
+   "step": "index_ring_color_0080882d",
+   "function": "008082a0",
+   "address": "0080882d",
+   "native": "00b67800",
+   "note": "GUIRange row[\"Color\"], the key string at 00CE93F8"
+  },
+  {
+   "step": "read_ring_color_00808844",
+   "function": "008082a0",
+   "address": "00808844",
+   "native": "00b67c40",
+   "note": "reads Lua array indices 1..4 as floats into the caller's 4-float buffer (00B67C69/00B67C9D FSTP float [EDI+k*4]); 00808849..00808864 copy the four dwords into ring +10h..+1Ch"
+  },
+  {
+   "step": "index_ring_angle_00808886",
+   "function": "008082a0",
+   "address": "00808886",
+   "native": "00b67800",
+   "note": "GUIRange row[\"Angle\"]"
+  },
+  {
+   "step": "ring_angle_is_nil_00808897",
+   "function": "008082a0",
+   "address": "00808897",
+   "native": "00b65fb0",
+   "note": "IsNil; nil writes 0.0f to ring +0Ch and 0 to ring +4h"
+  },
+  {
+   "step": "read_ring_angle_008088b4",
+   "function": "008082a0",
+   "address": "008088b4",
+   "native": "00b66270",
+   "note": "GetNumber; 008088B9 FSTP float [ESP+60h] is ring +0Ch"
+  },
+  {
+   "step": "index_ring_rawtype_008088d3",
+   "function": "008082a0",
+   "address": "008088d3",
+   "native": "00b67800",
+   "note": "GUIRange row[\"RawType\"]"
+  },
+  {
+   "step": "read_ring_rawtype_008088e2",
+   "function": "008082a0",
+   "address": "008088e2",
+   "native": "00b66290",
+   "note": "GetInteger; 008088EB MOV [ESP+54h],EAX is ring +0h, the record base"
+  },
+  {
+   "step": "push_ring_00808903",
+   "function": "008082a0",
+   "address": "00808903",
+   "native": "00807f60",
+   "note": "pushes the 20h ring into the list header 008087B2 computed as record + 5Ch + observer * 60h, which is column 7 of the observer's group"
+  },
+  {
+   "step": "index_reconclass_009623f0",
+   "function": "00960230",
+   "address": "009623f0",
+   "native": "00b67800",
+   "note": "the vehicle-class row's [\"ReconClass\"], key string at 00D08FF8"
+  },
+  {
+   "step": "reconclass_is_nil_00962401",
+   "function": "00960230",
+   "address": "00962401",
+   "native": "00b65fb0",
+   "note": "IsNil; 00962408 skips the resolve when the key is absent"
+  },
+  {
+   "step": "read_reconclass_0096240e",
+   "function": "00960230",
+   "address": "0096240e",
+   "native": "00b66290",
+   "note": "GetInteger gives the id EDX passed to the resolver"
+  },
+  {
+   "step": "resolve_record_00962419",
+   "function": "00960230",
+   "address": "00962419",
+   "native": "00808f90",
+   "note": "resolves the id to the shared 2A8h record; 00962420 reads the class's current [EDI+B4h] to release the old one"
+  }
+ ],
+ "lua_key_strings": {
+  "note": "Recovered strings, not hypotheses: each is the literal pushed at the cited site, read back with ghidra bytes.",
+  "keys": [
+   {
+    "key": "Details",
+    "address": "00d08fe4",
+    "pushed_at": "008082da"
+   },
+   {
+    "key": "ObserverAir",
+    "address": "00d08fd8",
+    "pushed_at": "008083cd"
+   },
+   {
+    "key": "ObserverSurface",
+    "address": "00d08fc8",
+    "pushed_at": "008083ed"
+   },
+   {
+    "key": "ObserverPeriscopeIn",
+    "address": "00d08fb4",
+    "pushed_at": "0080840e"
+   },
+   {
+    "key": "ObserverPeriscopeOut",
+    "address": "00d08f9c",
+    "pushed_at": "0080842a"
+   },
+   {
+    "key": "ObserverUnderwater",
+    "address": "00d08f88",
+    "pushed_at": "00808446"
+   },
+   {
+    "key": "ObserverDeepUnderwater",
+    "address": "00d08f70",
+    "pushed_at": "00808462"
+   },
+   {
+    "key": "SubjectAir",
+    "address": "00d08f64",
+    "pushed_at": "00808531"
+   },
+   {
+    "key": "SubjectSurface",
+    "address": "00d08f38",
+    "pushed_at": "0080868a"
+   },
+   {
+    "key": "SubjectPeriscopeIn",
+    "address": "00d08f24",
+    "pushed_at": "008086ae"
+   },
+   {
+    "key": "SubjectPeriscopeOut",
+    "address": "00d08f10",
+    "pushed_at": "008086d2"
+   },
+   {
+    "key": "SubjectUnderwater",
+    "address": "00d08efc",
+    "pushed_at": "008086f6"
+   },
+   {
+    "key": "SubjectDeepUnderwater",
+    "address": "00d08ee4",
+    "pushed_at": "00808715"
+   },
+   {
+    "key": "GUIRange",
+    "address": "00d08ed8",
+    "pushed_at": "00808734"
+   },
+   {
+    "key": "Dist",
+    "address": "00d08f5c",
+    "pushed_at": "008085c0"
+   },
+   {
+    "key": "Gain",
+    "address": "00d08f54",
+    "pushed_at": "00808604"
+   },
+   {
+    "key": "MaxLevel",
+    "address": "00d08f48",
+    "pushed_at": "00808644"
+   },
+   {
+    "key": "Angle",
+    "address": "00d08ed0",
+    "pushed_at": "00808992"
+   },
+   {
+    "key": "RawType",
+    "address": "00d08ec8",
+    "pushed_at": "008089f4"
+   },
+   {
+    "key": "Range",
+    "address": "00cfa1a8",
+    "pushed_at": "008087c2"
+   },
+   {
+    "key": "Color",
+    "address": "00ce93f8",
+    "pushed_at": "0080881c"
+   },
+   {
+    "key": "ReconClass",
+    "address": "00d08ff8",
+    "pushed_at": "009623e4"
+   }
+  ]
+ },
+ "entry_layout": {
+  "size": "0x1c",
+  "copied_by": "00808a68 MOV ECX,7 / 00808a71 REP MOVSD from [ESP+74h]",
+  "fields": [
+   {
+    "offset": "+0h",
+    "lua_key": "Dist",
+    "transform": "float(Dist)",
+    "written_at": "008085e5"
+   },
+   {
+    "offset": "+4h",
+    "lua_key": "Dist",
+    "transform": "float(float(Dist) * float(Dist))",
+    "written_at": "008085fb"
+   },
+   {
+    "offset": "+8h",
+    "lua_key": "Gain",
+    "transform": "float(Gain * 0.5), the double at 00D7A280",
+    "written_at": "0080863b"
+   },
+   {
+    "offset": "+0ch",
+    "lua_key": "MaxLevel",
+    "transform": "0 -> 0.0f, 1 -> 0.25f (00CE3868), else 1.0f (00D7A24C); absent key defaults to 2",
+    "written_at": "0080897c"
+   },
+   {
+    "offset": "+10h",
+    "lua_key": "RawType",
+    "transform": "int",
+    "written_at": "00808a23"
+   },
+   {
+    "offset": "+14h",
+    "lua_key": "Angle",
+    "transform": "float(Angle), 0.0f when nil",
+    "written_at": "008089e5 / 008089c6"
+   },
+   {
+    "offset": "+18h",
+    "lua_key": "Angle",
+    "transform": "1 when the key is not nil, else 0",
+    "written_at": "008089ec / 008089cf"
+   }
+  ]
+ },
+ "ring_layout": {
+  "size": "0x20",
+  "base": "[ESP+54h], pushed at 008088fc",
+  "destination": "record + 5Ch + observer * 60h, computed at 008087a4-008087b2; that is column 7 of the observer's group of eight 0Ch list headers",
+  "fields": [
+   {
+    "offset": "+0h",
+    "lua_key": "RawType",
+    "written_at": "008088eb"
+   },
+   {
+    "offset": "+4h",
+    "lua_key": "Angle present",
+    "written_at": "008088a9 / 008088bd"
+   },
+   {
+    "offset": "+8h",
+    "lua_key": "Range",
+    "written_at": "00808807"
+   },
+   {
+    "offset": "+0ch",
+    "lua_key": "Angle",
+    "written_at": "008088a3 / 008088b9"
+   },
+   {
+    "offset": "+10h",
+    "lua_key": "Color",
+    "transform": "four floats, Lua array indices 1..4",
+    "written_at": "0080884e-00808864"
+   }
+  ]
+ },
+ "data_provenance": {
+  "installation": "I:/SteamLibrary/steamapps/common/Battlestations Pacific",
+  "read_only": true,
+  "files": [
+   {
+    "path": "scripts/datatables/autoload/reconclasses.lua",
+    "mtime": "2024-07-13 08:26",
+    "lines": 16,
+    "role": "selects the variant by GameMode and aliases it onto the global ReconClass"
+   },
+   {
+    "path": "scripts/datatables/classtables/arcade/reconclasses.lua",
+    "mtime": "2024-07-13 08:26",
+    "lines": 467,
+    "role": "ArcadeTable, twelve classes"
+   },
+   {
+    "path": "scripts/datatables/classtables/realistic/reconclasses.lua",
+    "mtime": "2024-07-13 08:26",
+    "lines": 467,
+    "role": "RealisticTable, the same twelve classes"
+   },
+   {
+    "path": "gamemode.lua",
+    "mtime": "2024-07-13 11:27",
+    "content": "GameMode = 0",
+    "role": "arcade is what this installation loads; the file carries a modder's note and is NOT install baseline"
+   },
+   {
+    "path": "scripts/datatables/autoload/vehicleclasses.lua",
+    "mtime": "2026-05-09 21:52",
+    "role": "the ReconClass id per vehicle class; this file has been modified locally, so the association counts below describe THIS installation, not the stock game"
+   }
+  ],
+  "modded_installation": "The installation carries the BSPRM mod and a HUD mod (xlive.dll is AlterBSP). mod_restore.bat restores interface, movies, mpak, sound and the exe and never touches scripts/. The three reconclasses.lua files carry the 2024-07-13 08:26 timestamp shared by the untouched datatables; gamemode.lua, vehicleclasses.lua, shipnames.lua and three classtables files carry later timestamps. No pristine copy was available to diff against, so 'install baseline' here means 'same timestamp as the untouched bulk', not 'byte-identical to the retail release'.",
+  "extraction": "local/extract_reconclasses.py evaluates the Lua subset these files use (scalar assignments, table constructors, + - * /, DEG()) with COL_* from scripts/global/luamw_init.lua lines 22-28 and DEG from line 434, then applies 008082A0's arithmetic in float32.",
+  "variant_difference": "The arcade and realistic files are identical except for the table name and fifteen base-range scalars; every row, key and structure is the same."
+ },
+ "base_range_scalars": {
+  "arcade": {
+   "NormalShip_recon_VisionRange": 4000,
+   "RadarShip_recon_RadarRange": 6000,
+   "SonarShip_recon_SonarRange": 1000,
+   "RadarAndSonarShip_recon_RadarRange": 5000,
+   "RadarAndSonarShip_recon_SonarRange": 1000,
+   "NormalPlane_recon_VisionRange": 4000,
+   "ReconPlane_recon_VisionRange": 5000,
+   "ReconPlane_recon_SonarRange": 750,
+   "NormalSub_recon_VisionRange": 4000,
+   "NormalSub_recon_SonarRange": 1800,
+   "GroundUnit_recon_VisionRange": 4000,
+   "GroundObserverUnit_recon_VisionRange": 6000,
+   "GroundRadarUnit_recon_RadarRange": 10000,
+   "GroundRadarUnit_recon_VisionRange": 4000,
+   "SmallRadarUnit_recon_RadarRange": 5000
+  },
+  "realistic": {
+   "NormalShip_recon_VisionRange": 10000,
+   "RadarShip_recon_RadarRange": 20000,
+   "SonarShip_recon_SonarRange": 4000,
+   "RadarAndSonarShip_recon_RadarRange": 10000,
+   "RadarAndSonarShip_recon_SonarRange": 4000,
+   "NormalPlane_recon_VisionRange": 10000,
+   "ReconPlane_recon_VisionRange": 10000,
+   "ReconPlane_recon_SonarRange": 1000,
+   "NormalSub_recon_VisionRange": 9000,
+   "NormalSub_recon_SonarRange": 4000,
+   "GroundUnit_recon_VisionRange": 10000,
+   "GroundObserverUnit_recon_VisionRange": 10000,
+   "GroundRadarUnit_recon_RadarRange": 20000,
+   "GroundRadarUnit_recon_VisionRange": 10000,
+   "SmallRadarUnit_recon_RadarRange": 20000
+  }
+ },
+ "authored_tables": {
+  "arcade": {
+   "1": {
+    "script_comment": "Normal Ship (Cargo ship, Torpedoboat)",
+    "lists": {
+     "Surface/Air": [
+      {
+       "range": 4000.0,
+       "range_sq": 16000000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 1.0,
+       "raw_type": 0,
+       "raw_type_name": "RRT_VISION",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 4000.0,
+        "Gain": 1.0,
+        "MaxLevel": 2,
+        "RawType": 0
+       }
+      }
+     ],
+     "Surface/Surface": [
+      {
+       "range": 4000.0,
+       "range_sq": 16000000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 1.0,
+       "raw_type": 0,
+       "raw_type_name": "RRT_VISION",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 4000.0,
+        "Gain": 1.0,
+        "MaxLevel": 2,
+        "RawType": 0
+       }
+      }
+     ],
+     "Surface/PeriscopeOut": [
+      {
+       "range": 1200.0,
+       "range_sq": 1440000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 1.0,
+       "raw_type": 0,
+       "raw_type_name": "RRT_VISION",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 1200.0,
+        "Gain": 1.0,
+        "MaxLevel": 2,
+        "RawType": 0
+       }
+      }
+     ]
+    },
+    "gui_rings": {
+     "Surface": [
+      {
+       "raw_type": 0,
+       "raw_type_name": "RRT_VISION",
+       "has_bearing": false,
+       "range": 4000.0,
+       "half_angle_rad": 0.0,
+       "color_rgba": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+       ]
+      }
+     ]
+    }
+   },
+   "2": {
+    "script_comment": "Radar ship (Battleship, Carrier)",
+    "lists": {
+     "Surface/Air": [
+      {
+       "range": 4000.0,
+       "range_sq": 16000000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 1.0,
+       "raw_type": 0,
+       "raw_type_name": "RRT_VISION",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 4000.0,
+        "Gain": 1.0,
+        "MaxLevel": 2,
+        "RawType": 0
+       }
+      },
+      {
+       "range": 6000.0,
+       "range_sq": 36000000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 0.25,
+       "raw_type": 1,
+       "raw_type_name": "RRT_RADAR",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 6000.0,
+        "Gain": 1.0,
+        "MaxLevel": 1,
+        "RawType": 1
+       }
+      }
+     ],
+     "Surface/Surface": [
+      {
+       "range": 4000.0,
+       "range_sq": 16000000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 1.0,
+       "raw_type": 0,
+       "raw_type_name": "RRT_VISION",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 4000.0,
+        "Gain": 1.0,
+        "MaxLevel": 2,
+        "RawType": 0
+       }
+      },
+      {
+       "range": 6000.0,
+       "range_sq": 36000000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 0.25,
+       "raw_type": 1,
+       "raw_type_name": "RRT_RADAR",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 6000.0,
+        "Gain": 1.0,
+        "MaxLevel": 1,
+        "RawType": 1
+       }
+      }
+     ],
+     "Surface/PeriscopeOut": [
+      {
+       "range": 1200.0,
+       "range_sq": 1440000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 1.0,
+       "raw_type": 0,
+       "raw_type_name": "RRT_VISION",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 1200.0,
+        "Gain": 1.0,
+        "MaxLevel": 2,
+        "RawType": 0
+       }
+      }
+     ]
+    },
+    "gui_rings": {
+     "Surface": [
+      {
+       "raw_type": 0,
+       "raw_type_name": "RRT_VISION",
+       "has_bearing": false,
+       "range": 4000.0,
+       "half_angle_rad": 0.0,
+       "color_rgba": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+       ]
+      },
+      {
+       "raw_type": 1,
+       "raw_type_name": "RRT_RADAR",
+       "has_bearing": false,
+       "range": 6000.0,
+       "half_angle_rad": 0.0,
+       "color_rgba": [
+        1.0,
+        0.0,
+        0.0,
+        1.0
+       ]
+      }
+     ]
+    }
+   },
+   "3": {
+    "script_comment": "Sonar ship (Destroyer)",
+    "lists": {
+     "Surface/Air": [
+      {
+       "range": 4000.0,
+       "range_sq": 16000000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 1.0,
+       "raw_type": 0,
+       "raw_type_name": "RRT_VISION",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 4000.0,
+        "Gain": 1.0,
+        "MaxLevel": 2,
+        "RawType": 0
+       }
+      }
+     ],
+     "Surface/Surface": [
+      {
+       "range": 4000.0,
+       "range_sq": 16000000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 1.0,
+       "raw_type": 0,
+       "raw_type_name": "RRT_VISION",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 4000.0,
+        "Gain": 1.0,
+        "MaxLevel": 2,
+        "RawType": 0
+       }
+      }
+     ],
+     "Surface/PeriscopeIn": [
+      {
+       "range": 1000.0,
+       "range_sq": 1000000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 1.0,
+       "raw_type": 2,
+       "raw_type_name": "RRT_SONAR",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 1000,
+        "Gain": 1.0,
+        "MaxLevel": 2,
+        "RawType": 2
+       }
+      },
+      {
+       "range": 2500.0,
+       "range_sq": 6250000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 1.0,
+       "raw_type": 2,
+       "raw_type_name": "RRT_SONAR",
+       "half_angle_rad": 0.785398,
+       "has_bearing_test": true,
+       "authored": {
+        "Dist": 2500.0,
+        "Gain": 1.0,
+        "MaxLevel": 2,
+        "RawType": 2,
+        "Angle": 0.7853981633974483
+       }
+      }
+     ],
+     "Surface/PeriscopeOut": [
+      {
+       "range": 1000.0,
+       "range_sq": 1000000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 1.0,
+       "raw_type": 2,
+       "raw_type_name": "RRT_SONAR",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 1000,
+        "Gain": 1.0,
+        "MaxLevel": 2,
+        "RawType": 2
+       }
+      },
+      {
+       "range": 2500.0,
+       "range_sq": 6250000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 1.0,
+       "raw_type": 2,
+       "raw_type_name": "RRT_SONAR",
+       "half_angle_rad": 0.785398,
+       "has_bearing_test": true,
+       "authored": {
+        "Dist": 2500.0,
+        "Gain": 1.0,
+        "MaxLevel": 2,
+        "RawType": 2,
+        "Angle": 0.7853981633974483
+       }
+      }
+     ],
+     "Surface/Underwater": [
+      {
+       "range": 660.0,
+       "range_sq": 435600.0,
+       "gain_per_second": 0.5,
+       "level_cap": 1.0,
+       "raw_type": 2,
+       "raw_type_name": "RRT_SONAR",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 660.0,
+        "Gain": 1.0,
+        "MaxLevel": 2,
+        "RawType": 2
+       }
+      },
+      {
+       "range": 1660.0,
+       "range_sq": 2755600.0,
+       "gain_per_second": 0.5,
+       "level_cap": 1.0,
+       "raw_type": 2,
+       "raw_type_name": "RRT_SONAR",
+       "half_angle_rad": 0.785398,
+       "has_bearing_test": true,
+       "authored": {
+        "Dist": 1660.0,
+        "Gain": 1.0,
+        "MaxLevel": 2,
+        "RawType": 2,
+        "Angle": 0.7853981633974483
+       }
+      }
+     ]
+    },
+    "gui_rings": {
+     "Surface": [
+      {
+       "raw_type": 2,
+       "raw_type_name": "RRT_SONAR",
+       "has_bearing": false,
+       "range": 1000.0,
+       "half_angle_rad": 0.0,
+       "color_rgba": [
+        0.0,
+        1.0,
+        0.0,
+        1.0
+       ]
+      },
+      {
+       "raw_type": 2,
+       "raw_type_name": "RRT_SONAR",
+       "has_bearing": true,
+       "range": 2500.0,
+       "half_angle_rad": 0.785398,
+       "color_rgba": [
+        0.0,
+        1.0,
+        0.0,
+        1.0
+       ]
+      },
+      {
+       "raw_type": 0,
+       "raw_type_name": "RRT_VISION",
+       "has_bearing": false,
+       "range": 4000.0,
+       "half_angle_rad": 0.0,
+       "color_rgba": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+       ]
+      }
+     ]
+    }
+   },
+   "4": {
+    "script_comment": "Ship with radar and sonar (Cruiser - TONE)",
+    "lists": {
+     "Surface/Air": [
+      {
+       "range": 4000.0,
+       "range_sq": 16000000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 1.0,
+       "raw_type": 0,
+       "raw_type_name": "RRT_VISION",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 4000.0,
+        "Gain": 1.0,
+        "MaxLevel": 2,
+        "RawType": 0
+       }
+      },
+      {
+       "range": 5000.0,
+       "range_sq": 25000000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 0.25,
+       "raw_type": 1,
+       "raw_type_name": "RRT_RADAR",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 5000.0,
+        "Gain": 1.0,
+        "MaxLevel": 1,
+        "RawType": 1
+       }
+      }
+     ],
+     "Surface/Surface": [
+      {
+       "range": 4000.0,
+       "range_sq": 16000000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 1.0,
+       "raw_type": 0,
+       "raw_type_name": "RRT_VISION",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 4000.0,
+        "Gain": 1.0,
+        "MaxLevel": 2,
+        "RawType": 0
+       }
+      },
+      {
+       "range": 5000.0,
+       "range_sq": 25000000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 0.25,
+       "raw_type": 1,
+       "raw_type_name": "RRT_RADAR",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 5000.0,
+        "Gain": 1.0,
+        "MaxLevel": 1,
+        "RawType": 1
+       }
+      }
+     ],
+     "Surface/PeriscopeIn": [
+      {
+       "range": 1000.0,
+       "range_sq": 1000000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 1.0,
+       "raw_type": 2,
+       "raw_type_name": "RRT_SONAR",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 1000,
+        "Gain": 1.0,
+        "MaxLevel": 2,
+        "RawType": 2
+       }
+      },
+      {
+       "range": 2500.0,
+       "range_sq": 6250000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 1.0,
+       "raw_type": 2,
+       "raw_type_name": "RRT_SONAR",
+       "half_angle_rad": 0.785398,
+       "has_bearing_test": true,
+       "authored": {
+        "Dist": 2500.0,
+        "Gain": 1.0,
+        "MaxLevel": 2,
+        "RawType": 2,
+        "Angle": 0.7853981633974483
+       }
+      }
+     ],
+     "Surface/PeriscopeOut": [
+      {
+       "range": 1000.0,
+       "range_sq": 1000000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 1.0,
+       "raw_type": 2,
+       "raw_type_name": "RRT_SONAR",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 1000,
+        "Gain": 1.0,
+        "MaxLevel": 2,
+        "RawType": 2
+       }
+      },
+      {
+       "range": 2500.0,
+       "range_sq": 6250000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 1.0,
+       "raw_type": 2,
+       "raw_type_name": "RRT_SONAR",
+       "half_angle_rad": 0.785398,
+       "has_bearing_test": true,
+       "authored": {
+        "Dist": 2500.0,
+        "Gain": 1.0,
+        "MaxLevel": 2,
+        "RawType": 2,
+        "Angle": 0.7853981633974483
+       }
+      }
+     ],
+     "Surface/Underwater": [
+      {
+       "range": 660.0,
+       "range_sq": 435600.0,
+       "gain_per_second": 0.5,
+       "level_cap": 1.0,
+       "raw_type": 2,
+       "raw_type_name": "RRT_SONAR",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 660.0,
+        "Gain": 1.0,
+        "MaxLevel": 2,
+        "RawType": 2
+       }
+      },
+      {
+       "range": 1660.0,
+       "range_sq": 2755600.0,
+       "gain_per_second": 0.5,
+       "level_cap": 1.0,
+       "raw_type": 2,
+       "raw_type_name": "RRT_SONAR",
+       "half_angle_rad": 0.785398,
+       "has_bearing_test": true,
+       "authored": {
+        "Dist": 1660.0,
+        "Gain": 1.0,
+        "MaxLevel": 2,
+        "RawType": 2,
+        "Angle": 0.7853981633974483
+       }
+      }
+     ]
+    },
+    "gui_rings": {
+     "Surface": [
+      {
+       "raw_type": 2,
+       "raw_type_name": "RRT_SONAR",
+       "has_bearing": false,
+       "range": 1000.0,
+       "half_angle_rad": 0.0,
+       "color_rgba": [
+        0.0,
+        1.0,
+        0.0,
+        1.0
+       ]
+      },
+      {
+       "raw_type": 2,
+       "raw_type_name": "RRT_SONAR",
+       "has_bearing": true,
+       "range": 2500.0,
+       "half_angle_rad": 0.785398,
+       "color_rgba": [
+        0.0,
+        1.0,
+        0.0,
+        1.0
+       ]
+      },
+      {
+       "raw_type": 0,
+       "raw_type_name": "RRT_VISION",
+       "has_bearing": false,
+       "range": 4000.0,
+       "half_angle_rad": 0.0,
+       "color_rgba": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+       ]
+      },
+      {
+       "raw_type": 1,
+       "raw_type_name": "RRT_RADAR",
+       "has_bearing": false,
+       "range": 5000.0,
+       "half_angle_rad": 0.0,
+       "color_rgba": [
+        1.0,
+        0.0,
+        0.0,
+        1.0
+       ]
+      }
+     ]
+    }
+   },
+   "5": {
+    "script_comment": "Normal plane",
+    "lists": {
+     "Air/Air": [
+      {
+       "range": 4000.0,
+       "range_sq": 16000000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 1.0,
+       "raw_type": 0,
+       "raw_type_name": "RRT_VISION",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 4000.0,
+        "Gain": 1.0,
+        "MaxLevel": 2,
+        "RawType": 0
+       }
+      }
+     ],
+     "Air/Surface": [
+      {
+       "range": 4000.0,
+       "range_sq": 16000000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 1.0,
+       "raw_type": 0,
+       "raw_type_name": "RRT_VISION",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 4000.0,
+        "Gain": 1.0,
+        "MaxLevel": 2,
+        "RawType": 0
+       }
+      }
+     ]
+    },
+    "gui_rings": {
+     "Air": [
+      {
+       "raw_type": 0,
+       "raw_type_name": "RRT_VISION",
+       "has_bearing": false,
+       "range": 4000.0,
+       "half_angle_rad": 0.0,
+       "color_rgba": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+       ]
+      }
+     ]
+    }
+   },
+   "6": {
+    "script_comment": "Recon plane",
+    "lists": {
+     "Air/Air": [
+      {
+       "range": 5000.0,
+       "range_sq": 25000000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 1.0,
+       "raw_type": 0,
+       "raw_type_name": "RRT_VISION",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 5000.0,
+        "Gain": 1.0,
+        "MaxLevel": 2,
+        "RawType": 0
+       }
+      }
+     ],
+     "Air/Surface": [
+      {
+       "range": 5000.0,
+       "range_sq": 25000000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 1.0,
+       "raw_type": 0,
+       "raw_type_name": "RRT_VISION",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 5000.0,
+        "Gain": 1.0,
+        "MaxLevel": 2,
+        "RawType": 0
+       }
+      }
+     ],
+     "Air/PeriscopeIn": [
+      {
+       "range": 750.0,
+       "range_sq": 562500.0,
+       "gain_per_second": 0.5,
+       "level_cap": 1.0,
+       "raw_type": 2,
+       "raw_type_name": "RRT_SONAR",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 750,
+        "Gain": 1.0,
+        "MaxLevel": 2,
+        "RawType": 2
+       }
+      }
+     ],
+     "Air/PeriscopeOut": [
+      {
+       "range": 750.0,
+       "range_sq": 562500.0,
+       "gain_per_second": 0.5,
+       "level_cap": 1.0,
+       "raw_type": 2,
+       "raw_type_name": "RRT_SONAR",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 750,
+        "Gain": 1.0,
+        "MaxLevel": 2,
+        "RawType": 2
+       }
+      }
+     ],
+     "Air/Underwater": [
+      {
+       "range": 495.0,
+       "range_sq": 245025.0,
+       "gain_per_second": 0.5,
+       "level_cap": 1.0,
+       "raw_type": 2,
+       "raw_type_name": "RRT_SONAR",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 495.0,
+        "Gain": 1.0,
+        "MaxLevel": 2,
+        "RawType": 2
+       }
+      }
+     ]
+    },
+    "gui_rings": {
+     "Air": [
+      {
+       "raw_type": 2,
+       "raw_type_name": "RRT_SONAR",
+       "has_bearing": false,
+       "range": 750.0,
+       "half_angle_rad": 0.0,
+       "color_rgba": [
+        0.0,
+        1.0,
+        0.0,
+        1.0
+       ]
+      },
+      {
+       "raw_type": 0,
+       "raw_type_name": "RRT_VISION",
+       "has_bearing": false,
+       "range": 5000.0,
+       "half_angle_rad": 0.0,
+       "color_rgba": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+       ]
+      }
+     ]
+    }
+   },
+   "7": {
+    "script_comment": "Normal submarine",
+    "lists": {
+     "Surface/Air": [
+      {
+       "range": 4000.0,
+       "range_sq": 16000000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 1.0,
+       "raw_type": 0,
+       "raw_type_name": "RRT_VISION",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 4000.0,
+        "Gain": 1.0,
+        "MaxLevel": 2,
+        "RawType": 0
+       }
+      }
+     ],
+     "Surface/Surface": [
+      {
+       "range": 4000.0,
+       "range_sq": 16000000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 1.0,
+       "raw_type": 0,
+       "raw_type_name": "RRT_VISION",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 4000.0,
+        "Gain": 1.0,
+        "MaxLevel": 2,
+        "RawType": 0
+       }
+      }
+     ],
+     "Surface/PeriscopeIn": [
+      {
+       "range": 1800.0,
+       "range_sq": 3240000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 1.0,
+       "raw_type": 2,
+       "raw_type_name": "RRT_SONAR",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 1800,
+        "Gain": 1.0,
+        "MaxLevel": 2,
+        "RawType": 2
+       }
+      }
+     ],
+     "Surface/PeriscopeOut": [
+      {
+       "range": 1800.0,
+       "range_sq": 3240000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 1.0,
+       "raw_type": 2,
+       "raw_type_name": "RRT_SONAR",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 1800,
+        "Gain": 1.0,
+        "MaxLevel": 2,
+        "RawType": 2
+       }
+      }
+     ],
+     "Surface/Underwater": [
+      {
+       "range": 1800.0,
+       "range_sq": 3240000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 1.0,
+       "raw_type": 2,
+       "raw_type_name": "RRT_SONAR",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 1800,
+        "Gain": 1.0,
+        "MaxLevel": 2,
+        "RawType": 2
+       }
+      }
+     ],
+     "PeriscopeIn/Surface": [
+      {
+       "range": 1800.0,
+       "range_sq": 3240000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 1.0,
+       "raw_type": 2,
+       "raw_type_name": "RRT_SONAR",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 1800,
+        "Gain": 1.0,
+        "MaxLevel": 2,
+        "RawType": 2
+       }
+      }
+     ],
+     "PeriscopeIn/PeriscopeIn": [
+      {
+       "range": 1800.0,
+       "range_sq": 3240000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 1.0,
+       "raw_type": 2,
+       "raw_type_name": "RRT_SONAR",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 1800,
+        "Gain": 1.0,
+        "MaxLevel": 2,
+        "RawType": 2
+       }
+      }
+     ],
+     "PeriscopeIn/PeriscopeOut": [
+      {
+       "range": 1800.0,
+       "range_sq": 3240000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 1.0,
+       "raw_type": 2,
+       "raw_type_name": "RRT_SONAR",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 1800,
+        "Gain": 1.0,
+        "MaxLevel": 2,
+        "RawType": 2
+       }
+      }
+     ],
+     "PeriscopeIn/Underwater": [
+      {
+       "range": 1800.0,
+       "range_sq": 3240000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 1.0,
+       "raw_type": 2,
+       "raw_type_name": "RRT_SONAR",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 1800,
+        "Gain": 1.0,
+        "MaxLevel": 2,
+        "RawType": 2
+       }
+      }
+     ],
+     "PeriscopeOut/Air": [
+      {
+       "range": 4000.0,
+       "range_sq": 16000000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 1.0,
+       "raw_type": 0,
+       "raw_type_name": "RRT_VISION",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 4000.0,
+        "Gain": 1.0,
+        "MaxLevel": 2,
+        "RawType": 0
+       }
+      }
+     ],
+     "PeriscopeOut/Surface": [
+      {
+       "range": 4000.0,
+       "range_sq": 16000000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 1.0,
+       "raw_type": 0,
+       "raw_type_name": "RRT_VISION",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 4000.0,
+        "Gain": 1.0,
+        "MaxLevel": 2,
+        "RawType": 0
+       }
+      }
+     ],
+     "PeriscopeOut/PeriscopeIn": [
+      {
+       "range": 1800.0,
+       "range_sq": 3240000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 1.0,
+       "raw_type": 2,
+       "raw_type_name": "RRT_SONAR",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 1800,
+        "Gain": 1.0,
+        "MaxLevel": 2,
+        "RawType": 2
+       }
+      }
+     ],
+     "PeriscopeOut/PeriscopeOut": [
+      {
+       "range": 1800.0,
+       "range_sq": 3240000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 1.0,
+       "raw_type": 2,
+       "raw_type_name": "RRT_SONAR",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 1800,
+        "Gain": 1.0,
+        "MaxLevel": 2,
+        "RawType": 2
+       }
+      }
+     ],
+     "PeriscopeOut/Underwater": [
+      {
+       "range": 1800.0,
+       "range_sq": 3240000.0,
+       "gain_per_second": 0.1,
+       "level_cap": 1.0,
+       "raw_type": 2,
+       "raw_type_name": "RRT_SONAR",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 1800,
+        "Gain": 0.2,
+        "MaxLevel": 2,
+        "RawType": 2
+       }
+      }
+     ],
+     "Underwater/Surface": [
+      {
+       "range": 1800.0,
+       "range_sq": 3240000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 1.0,
+       "raw_type": 2,
+       "raw_type_name": "RRT_SONAR",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 1800,
+        "Gain": 1.0,
+        "MaxLevel": 2,
+        "RawType": 2
+       }
+      }
+     ],
+     "Underwater/PeriscopeIn": [
+      {
+       "range": 1800.0,
+       "range_sq": 3240000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 1.0,
+       "raw_type": 2,
+       "raw_type_name": "RRT_SONAR",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 1800,
+        "Gain": 1.0,
+        "MaxLevel": 2,
+        "RawType": 2
+       }
+      }
+     ],
+     "Underwater/PeriscopeOut": [
+      {
+       "range": 1800.0,
+       "range_sq": 3240000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 1.0,
+       "raw_type": 2,
+       "raw_type_name": "RRT_SONAR",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 1800,
+        "Gain": 1.0,
+        "MaxLevel": 2,
+        "RawType": 2
+       }
+      }
+     ],
+     "Underwater/Underwater": [
+      {
+       "range": 1800.0,
+       "range_sq": 3240000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 1.0,
+       "raw_type": 2,
+       "raw_type_name": "RRT_SONAR",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 1800,
+        "Gain": 1.0,
+        "MaxLevel": 2,
+        "RawType": 2
+       }
+      }
+     ]
+    },
+    "gui_rings": {
+     "Surface": [
+      {
+       "raw_type": 2,
+       "raw_type_name": "RRT_SONAR",
+       "has_bearing": false,
+       "range": 1800.0,
+       "half_angle_rad": 0.0,
+       "color_rgba": [
+        0.0,
+        1.0,
+        0.0,
+        1.0
+       ]
+      },
+      {
+       "raw_type": 0,
+       "raw_type_name": "RRT_VISION",
+       "has_bearing": false,
+       "range": 4000.0,
+       "half_angle_rad": 0.0,
+       "color_rgba": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+       ]
+      }
+     ],
+     "PeriscopeIn": [
+      {
+       "raw_type": 2,
+       "raw_type_name": "RRT_SONAR",
+       "has_bearing": false,
+       "range": 1800.0,
+       "half_angle_rad": 0.0,
+       "color_rgba": [
+        0.0,
+        1.0,
+        0.0,
+        1.0
+       ]
+      }
+     ],
+     "PeriscopeOut": [
+      {
+       "raw_type": 2,
+       "raw_type_name": "RRT_SONAR",
+       "has_bearing": false,
+       "range": 1800.0,
+       "half_angle_rad": 0.0,
+       "color_rgba": [
+        0.0,
+        1.0,
+        0.0,
+        1.0
+       ]
+      },
+      {
+       "raw_type": 0,
+       "raw_type_name": "RRT_VISION",
+       "has_bearing": false,
+       "range": 4000.0,
+       "half_angle_rad": 0.0,
+       "color_rgba": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+       ]
+      }
+     ],
+     "Underwater": [
+      {
+       "raw_type": 2,
+       "raw_type_name": "RRT_SONAR",
+       "has_bearing": false,
+       "range": 1800.0,
+       "half_angle_rad": 0.0,
+       "color_rgba": [
+        0.0,
+        1.0,
+        0.0,
+        1.0
+       ]
+      }
+     ]
+    }
+   },
+   "8": {
+    "script_comment": "Ground unit w/o radar",
+    "lists": {
+     "Surface/Air": [
+      {
+       "range": 4000.0,
+       "range_sq": 16000000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 1.0,
+       "raw_type": 0,
+       "raw_type_name": "RRT_VISION",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 4000.0,
+        "Gain": 1.0,
+        "MaxLevel": 2,
+        "RawType": 0
+       }
+      }
+     ],
+     "Surface/Surface": [
+      {
+       "range": 4000.0,
+       "range_sq": 16000000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 1.0,
+       "raw_type": 0,
+       "raw_type_name": "RRT_VISION",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 4000.0,
+        "Gain": 1.0,
+        "MaxLevel": 2,
+        "RawType": 0
+       }
+      }
+     ]
+    },
+    "gui_rings": {
+     "Surface": [
+      {
+       "raw_type": 0,
+       "raw_type_name": "RRT_VISION",
+       "has_bearing": false,
+       "range": 4000.0,
+       "half_angle_rad": 0.0,
+       "color_rgba": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+       ]
+      }
+     ]
+    }
+   },
+   "9": {
+    "script_comment": "Ground unit with high vision (Observation post)",
+    "lists": {
+     "Surface/Air": [
+      {
+       "range": 6000.0,
+       "range_sq": 36000000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 1.0,
+       "raw_type": 0,
+       "raw_type_name": "RRT_VISION",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 6000.0,
+        "Gain": 1.0,
+        "MaxLevel": 2,
+        "RawType": 0
+       }
+      }
+     ],
+     "Surface/Surface": [
+      {
+       "range": 6000.0,
+       "range_sq": 36000000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 1.0,
+       "raw_type": 0,
+       "raw_type_name": "RRT_VISION",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 6000.0,
+        "Gain": 1.0,
+        "MaxLevel": 2,
+        "RawType": 0
+       }
+      }
+     ]
+    },
+    "gui_rings": {
+     "Surface": [
+      {
+       "raw_type": 0,
+       "raw_type_name": "RRT_VISION",
+       "has_bearing": false,
+       "range": 6000.0,
+       "half_angle_rad": 0.0,
+       "color_rgba": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+       ]
+      }
+     ]
+    }
+   },
+   "10": {
+    "script_comment": "Ground unit with radar (Radar station)",
+    "lists": {
+     "Surface/Air": [
+      {
+       "range": 4000.0,
+       "range_sq": 16000000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 1.0,
+       "raw_type": 0,
+       "raw_type_name": "RRT_VISION",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 4000.0,
+        "Gain": 1.0,
+        "MaxLevel": 2,
+        "RawType": 0
+       }
+      },
+      {
+       "range": 10000.0,
+       "range_sq": 100000000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 0.25,
+       "raw_type": 1,
+       "raw_type_name": "RRT_RADAR",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 10000.0,
+        "Gain": 1.0,
+        "MaxLevel": 1,
+        "RawType": 1
+       }
+      }
+     ],
+     "Surface/Surface": [
+      {
+       "range": 4000.0,
+       "range_sq": 16000000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 1.0,
+       "raw_type": 0,
+       "raw_type_name": "RRT_VISION",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 4000.0,
+        "Gain": 1.0,
+        "MaxLevel": 2,
+        "RawType": 0
+       }
+      },
+      {
+       "range": 10000.0,
+       "range_sq": 100000000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 0.25,
+       "raw_type": 1,
+       "raw_type_name": "RRT_RADAR",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 10000.0,
+        "Gain": 1.0,
+        "MaxLevel": 1,
+        "RawType": 1
+       }
+      }
+     ]
+    },
+    "gui_rings": {
+     "Surface": [
+      {
+       "raw_type": 0,
+       "raw_type_name": "RRT_VISION",
+       "has_bearing": false,
+       "range": 4000.0,
+       "half_angle_rad": 0.0,
+       "color_rgba": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+       ]
+      },
+      {
+       "raw_type": 1,
+       "raw_type_name": "RRT_RADAR",
+       "has_bearing": false,
+       "range": 10000.0,
+       "half_angle_rad": 0.0,
+       "color_rgba": [
+        1.0,
+        0.0,
+        0.0,
+        1.0
+       ]
+      }
+     ]
+    }
+   },
+   "11": {
+    "script_comment": "Ground unit with small radar (Airfield)",
+    "lists": {
+     "Surface/Air": [
+      {
+       "range": 4000.0,
+       "range_sq": 16000000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 1.0,
+       "raw_type": 0,
+       "raw_type_name": "RRT_VISION",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 4000.0,
+        "Gain": 1.0,
+        "MaxLevel": 2,
+        "RawType": 0
+       }
+      },
+      {
+       "range": 5000.0,
+       "range_sq": 25000000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 0.25,
+       "raw_type": 1,
+       "raw_type_name": "RRT_RADAR",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 5000.0,
+        "Gain": 1.0,
+        "MaxLevel": 1,
+        "RawType": 1
+       }
+      }
+     ],
+     "Surface/Surface": [
+      {
+       "range": 4000.0,
+       "range_sq": 16000000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 1.0,
+       "raw_type": 0,
+       "raw_type_name": "RRT_VISION",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 4000.0,
+        "Gain": 1.0,
+        "MaxLevel": 2,
+        "RawType": 0
+       }
+      },
+      {
+       "range": 5000.0,
+       "range_sq": 25000000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 0.25,
+       "raw_type": 1,
+       "raw_type_name": "RRT_RADAR",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 5000.0,
+        "Gain": 1.0,
+        "MaxLevel": 1,
+        "RawType": 1
+       }
+      }
+     ]
+    },
+    "gui_rings": {
+     "Surface": [
+      {
+       "raw_type": 0,
+       "raw_type_name": "RRT_VISION",
+       "has_bearing": false,
+       "range": 4000.0,
+       "half_angle_rad": 0.0,
+       "color_rgba": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+       ]
+      },
+      {
+       "raw_type": 1,
+       "raw_type_name": "RRT_RADAR",
+       "has_bearing": false,
+       "range": 5000.0,
+       "half_angle_rad": 0.0,
+       "color_rgba": [
+        1.0,
+        0.0,
+        0.0,
+        1.0
+       ]
+      }
+     ]
+    }
+   },
+   "12": {
+    "script_comment": "Units with no recon",
+    "lists": {
+     "Surface/Air": [
+      {
+       "range": 0.0,
+       "range_sq": 0.0,
+       "gain_per_second": 0.0,
+       "level_cap": 0.0,
+       "raw_type": 0,
+       "raw_type_name": "RRT_VISION",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 0,
+        "Gain": 0,
+        "MaxLevel": 0,
+        "RawType": 0
+       }
+      },
+      {
+       "range": 0.0,
+       "range_sq": 0.0,
+       "gain_per_second": 0.0,
+       "level_cap": 0.0,
+       "raw_type": 0,
+       "raw_type_name": "RRT_VISION",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 0,
+        "Gain": 0,
+        "MaxLevel": 0,
+        "RawType": 0
+       }
+      }
+     ],
+     "Surface/Surface": [
+      {
+       "range": 0.0,
+       "range_sq": 0.0,
+       "gain_per_second": 0.0,
+       "level_cap": 0.0,
+       "raw_type": 0,
+       "raw_type_name": "RRT_VISION",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 0,
+        "Gain": 0,
+        "MaxLevel": 0,
+        "RawType": 0
+       }
+      },
+      {
+       "range": 0.0,
+       "range_sq": 0.0,
+       "gain_per_second": 0.0,
+       "level_cap": 0.0,
+       "raw_type": 0,
+       "raw_type_name": "RRT_VISION",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 0,
+        "Gain": 0,
+        "MaxLevel": 0,
+        "RawType": 0
+       }
+      }
+     ]
+    },
+    "gui_rings": {
+     "Surface": [
+      {
+       "raw_type": 0,
+       "raw_type_name": "RRT_VISION",
+       "has_bearing": false,
+       "range": 0.0,
+       "half_angle_rad": 0.0,
+       "color_rgba": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+       ]
+      },
+      {
+       "raw_type": 0,
+       "raw_type_name": "RRT_VISION",
+       "has_bearing": false,
+       "range": 0.0,
+       "half_angle_rad": 0.0,
+       "color_rgba": [
+        1.0,
+        0.0,
+        0.0,
+        1.0
+       ]
+      }
+     ]
+    }
+   }
+  },
+  "realistic": {
+   "1": {
+    "script_comment": "Normal Ship (Cargo ship, Torpedoboat)",
+    "lists": {
+     "Surface/Air": [
+      {
+       "range": 10000.0,
+       "range_sq": 100000000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 1.0,
+       "raw_type": 0,
+       "raw_type_name": "RRT_VISION",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 10000.0,
+        "Gain": 1.0,
+        "MaxLevel": 2,
+        "RawType": 0
+       }
+      }
+     ],
+     "Surface/Surface": [
+      {
+       "range": 10000.0,
+       "range_sq": 100000000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 1.0,
+       "raw_type": 0,
+       "raw_type_name": "RRT_VISION",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 10000.0,
+        "Gain": 1.0,
+        "MaxLevel": 2,
+        "RawType": 0
+       }
+      }
+     ],
+     "Surface/PeriscopeOut": [
+      {
+       "range": 3000.0,
+       "range_sq": 9000000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 1.0,
+       "raw_type": 0,
+       "raw_type_name": "RRT_VISION",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 3000.0,
+        "Gain": 1.0,
+        "MaxLevel": 2,
+        "RawType": 0
+       }
+      }
+     ]
+    },
+    "gui_rings": {
+     "Surface": [
+      {
+       "raw_type": 0,
+       "raw_type_name": "RRT_VISION",
+       "has_bearing": false,
+       "range": 10000.0,
+       "half_angle_rad": 0.0,
+       "color_rgba": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+       ]
+      }
+     ]
+    }
+   },
+   "2": {
+    "script_comment": "Radar ship (Battleship, Carrier)",
+    "lists": {
+     "Surface/Air": [
+      {
+       "range": 10000.0,
+       "range_sq": 100000000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 1.0,
+       "raw_type": 0,
+       "raw_type_name": "RRT_VISION",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 10000.0,
+        "Gain": 1.0,
+        "MaxLevel": 2,
+        "RawType": 0
+       }
+      },
+      {
+       "range": 20000.0,
+       "range_sq": 400000000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 0.25,
+       "raw_type": 1,
+       "raw_type_name": "RRT_RADAR",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 20000.0,
+        "Gain": 1.0,
+        "MaxLevel": 1,
+        "RawType": 1
+       }
+      }
+     ],
+     "Surface/Surface": [
+      {
+       "range": 10000.0,
+       "range_sq": 100000000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 1.0,
+       "raw_type": 0,
+       "raw_type_name": "RRT_VISION",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 10000.0,
+        "Gain": 1.0,
+        "MaxLevel": 2,
+        "RawType": 0
+       }
+      },
+      {
+       "range": 20000.0,
+       "range_sq": 400000000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 0.25,
+       "raw_type": 1,
+       "raw_type_name": "RRT_RADAR",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 20000.0,
+        "Gain": 1.0,
+        "MaxLevel": 1,
+        "RawType": 1
+       }
+      }
+     ],
+     "Surface/PeriscopeOut": [
+      {
+       "range": 3000.0,
+       "range_sq": 9000000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 1.0,
+       "raw_type": 0,
+       "raw_type_name": "RRT_VISION",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 3000.0,
+        "Gain": 1.0,
+        "MaxLevel": 2,
+        "RawType": 0
+       }
+      }
+     ]
+    },
+    "gui_rings": {
+     "Surface": [
+      {
+       "raw_type": 0,
+       "raw_type_name": "RRT_VISION",
+       "has_bearing": false,
+       "range": 10000.0,
+       "half_angle_rad": 0.0,
+       "color_rgba": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+       ]
+      },
+      {
+       "raw_type": 1,
+       "raw_type_name": "RRT_RADAR",
+       "has_bearing": false,
+       "range": 20000.0,
+       "half_angle_rad": 0.0,
+       "color_rgba": [
+        1.0,
+        0.0,
+        0.0,
+        1.0
+       ]
+      }
+     ]
+    }
+   },
+   "3": {
+    "script_comment": "Sonar ship (Destroyer)",
+    "lists": {
+     "Surface/Air": [
+      {
+       "range": 10000.0,
+       "range_sq": 100000000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 1.0,
+       "raw_type": 0,
+       "raw_type_name": "RRT_VISION",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 10000.0,
+        "Gain": 1.0,
+        "MaxLevel": 2,
+        "RawType": 0
+       }
+      }
+     ],
+     "Surface/Surface": [
+      {
+       "range": 10000.0,
+       "range_sq": 100000000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 1.0,
+       "raw_type": 0,
+       "raw_type_name": "RRT_VISION",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 10000.0,
+        "Gain": 1.0,
+        "MaxLevel": 2,
+        "RawType": 0
+       }
+      }
+     ],
+     "Surface/PeriscopeIn": [
+      {
+       "range": 4000.0,
+       "range_sq": 16000000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 1.0,
+       "raw_type": 2,
+       "raw_type_name": "RRT_SONAR",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 4000,
+        "Gain": 1.0,
+        "MaxLevel": 2,
+        "RawType": 2
+       }
+      },
+      {
+       "range": 10000.0,
+       "range_sq": 100000000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 1.0,
+       "raw_type": 2,
+       "raw_type_name": "RRT_SONAR",
+       "half_angle_rad": 0.785398,
+       "has_bearing_test": true,
+       "authored": {
+        "Dist": 10000.0,
+        "Gain": 1.0,
+        "MaxLevel": 2,
+        "RawType": 2,
+        "Angle": 0.7853981633974483
+       }
+      }
+     ],
+     "Surface/PeriscopeOut": [
+      {
+       "range": 4000.0,
+       "range_sq": 16000000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 1.0,
+       "raw_type": 2,
+       "raw_type_name": "RRT_SONAR",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 4000,
+        "Gain": 1.0,
+        "MaxLevel": 2,
+        "RawType": 2
+       }
+      },
+      {
+       "range": 10000.0,
+       "range_sq": 100000000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 1.0,
+       "raw_type": 2,
+       "raw_type_name": "RRT_SONAR",
+       "half_angle_rad": 0.785398,
+       "has_bearing_test": true,
+       "authored": {
+        "Dist": 10000.0,
+        "Gain": 1.0,
+        "MaxLevel": 2,
+        "RawType": 2,
+        "Angle": 0.7853981633974483
+       }
+      }
+     ],
+     "Surface/Underwater": [
+      {
+       "range": 2640.0,
+       "range_sq": 6969600.0,
+       "gain_per_second": 0.5,
+       "level_cap": 1.0,
+       "raw_type": 2,
+       "raw_type_name": "RRT_SONAR",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 2640.0,
+        "Gain": 1.0,
+        "MaxLevel": 2,
+        "RawType": 2
+       }
+      },
+      {
+       "range": 6640.0,
+       "range_sq": 44089600.0,
+       "gain_per_second": 0.5,
+       "level_cap": 1.0,
+       "raw_type": 2,
+       "raw_type_name": "RRT_SONAR",
+       "half_angle_rad": 0.785398,
+       "has_bearing_test": true,
+       "authored": {
+        "Dist": 6640.0,
+        "Gain": 1.0,
+        "MaxLevel": 2,
+        "RawType": 2,
+        "Angle": 0.7853981633974483
+       }
+      }
+     ]
+    },
+    "gui_rings": {
+     "Surface": [
+      {
+       "raw_type": 2,
+       "raw_type_name": "RRT_SONAR",
+       "has_bearing": false,
+       "range": 4000.0,
+       "half_angle_rad": 0.0,
+       "color_rgba": [
+        0.0,
+        1.0,
+        0.0,
+        1.0
+       ]
+      },
+      {
+       "raw_type": 2,
+       "raw_type_name": "RRT_SONAR",
+       "has_bearing": true,
+       "range": 10000.0,
+       "half_angle_rad": 0.785398,
+       "color_rgba": [
+        0.0,
+        1.0,
+        0.0,
+        1.0
+       ]
+      },
+      {
+       "raw_type": 0,
+       "raw_type_name": "RRT_VISION",
+       "has_bearing": false,
+       "range": 10000.0,
+       "half_angle_rad": 0.0,
+       "color_rgba": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+       ]
+      }
+     ]
+    }
+   },
+   "4": {
+    "script_comment": "Ship with radar and sonar (Cruiser - TONE)",
+    "lists": {
+     "Surface/Air": [
+      {
+       "range": 10000.0,
+       "range_sq": 100000000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 1.0,
+       "raw_type": 0,
+       "raw_type_name": "RRT_VISION",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 10000.0,
+        "Gain": 1.0,
+        "MaxLevel": 2,
+        "RawType": 0
+       }
+      },
+      {
+       "range": 10000.0,
+       "range_sq": 100000000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 0.25,
+       "raw_type": 1,
+       "raw_type_name": "RRT_RADAR",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 10000.0,
+        "Gain": 1.0,
+        "MaxLevel": 1,
+        "RawType": 1
+       }
+      }
+     ],
+     "Surface/Surface": [
+      {
+       "range": 10000.0,
+       "range_sq": 100000000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 1.0,
+       "raw_type": 0,
+       "raw_type_name": "RRT_VISION",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 10000.0,
+        "Gain": 1.0,
+        "MaxLevel": 2,
+        "RawType": 0
+       }
+      },
+      {
+       "range": 10000.0,
+       "range_sq": 100000000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 0.25,
+       "raw_type": 1,
+       "raw_type_name": "RRT_RADAR",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 10000.0,
+        "Gain": 1.0,
+        "MaxLevel": 1,
+        "RawType": 1
+       }
+      }
+     ],
+     "Surface/PeriscopeIn": [
+      {
+       "range": 4000.0,
+       "range_sq": 16000000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 1.0,
+       "raw_type": 2,
+       "raw_type_name": "RRT_SONAR",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 4000,
+        "Gain": 1.0,
+        "MaxLevel": 2,
+        "RawType": 2
+       }
+      },
+      {
+       "range": 10000.0,
+       "range_sq": 100000000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 1.0,
+       "raw_type": 2,
+       "raw_type_name": "RRT_SONAR",
+       "half_angle_rad": 0.785398,
+       "has_bearing_test": true,
+       "authored": {
+        "Dist": 10000.0,
+        "Gain": 1.0,
+        "MaxLevel": 2,
+        "RawType": 2,
+        "Angle": 0.7853981633974483
+       }
+      }
+     ],
+     "Surface/PeriscopeOut": [
+      {
+       "range": 4000.0,
+       "range_sq": 16000000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 1.0,
+       "raw_type": 2,
+       "raw_type_name": "RRT_SONAR",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 4000,
+        "Gain": 1.0,
+        "MaxLevel": 2,
+        "RawType": 2
+       }
+      },
+      {
+       "range": 10000.0,
+       "range_sq": 100000000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 1.0,
+       "raw_type": 2,
+       "raw_type_name": "RRT_SONAR",
+       "half_angle_rad": 0.785398,
+       "has_bearing_test": true,
+       "authored": {
+        "Dist": 10000.0,
+        "Gain": 1.0,
+        "MaxLevel": 2,
+        "RawType": 2,
+        "Angle": 0.7853981633974483
+       }
+      }
+     ],
+     "Surface/Underwater": [
+      {
+       "range": 2640.0,
+       "range_sq": 6969600.0,
+       "gain_per_second": 0.5,
+       "level_cap": 1.0,
+       "raw_type": 2,
+       "raw_type_name": "RRT_SONAR",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 2640.0,
+        "Gain": 1.0,
+        "MaxLevel": 2,
+        "RawType": 2
+       }
+      },
+      {
+       "range": 6640.0,
+       "range_sq": 44089600.0,
+       "gain_per_second": 0.5,
+       "level_cap": 1.0,
+       "raw_type": 2,
+       "raw_type_name": "RRT_SONAR",
+       "half_angle_rad": 0.785398,
+       "has_bearing_test": true,
+       "authored": {
+        "Dist": 6640.0,
+        "Gain": 1.0,
+        "MaxLevel": 2,
+        "RawType": 2,
+        "Angle": 0.7853981633974483
+       }
+      }
+     ]
+    },
+    "gui_rings": {
+     "Surface": [
+      {
+       "raw_type": 2,
+       "raw_type_name": "RRT_SONAR",
+       "has_bearing": false,
+       "range": 4000.0,
+       "half_angle_rad": 0.0,
+       "color_rgba": [
+        0.0,
+        1.0,
+        0.0,
+        1.0
+       ]
+      },
+      {
+       "raw_type": 2,
+       "raw_type_name": "RRT_SONAR",
+       "has_bearing": true,
+       "range": 10000.0,
+       "half_angle_rad": 0.785398,
+       "color_rgba": [
+        0.0,
+        1.0,
+        0.0,
+        1.0
+       ]
+      },
+      {
+       "raw_type": 0,
+       "raw_type_name": "RRT_VISION",
+       "has_bearing": false,
+       "range": 10000.0,
+       "half_angle_rad": 0.0,
+       "color_rgba": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+       ]
+      },
+      {
+       "raw_type": 1,
+       "raw_type_name": "RRT_RADAR",
+       "has_bearing": false,
+       "range": 10000.0,
+       "half_angle_rad": 0.0,
+       "color_rgba": [
+        1.0,
+        0.0,
+        0.0,
+        1.0
+       ]
+      }
+     ]
+    }
+   },
+   "5": {
+    "script_comment": "Normal plane",
+    "lists": {
+     "Air/Air": [
+      {
+       "range": 10000.0,
+       "range_sq": 100000000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 1.0,
+       "raw_type": 0,
+       "raw_type_name": "RRT_VISION",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 10000.0,
+        "Gain": 1.0,
+        "MaxLevel": 2,
+        "RawType": 0
+       }
+      }
+     ],
+     "Air/Surface": [
+      {
+       "range": 10000.0,
+       "range_sq": 100000000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 1.0,
+       "raw_type": 0,
+       "raw_type_name": "RRT_VISION",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 10000.0,
+        "Gain": 1.0,
+        "MaxLevel": 2,
+        "RawType": 0
+       }
+      }
+     ]
+    },
+    "gui_rings": {
+     "Air": [
+      {
+       "raw_type": 0,
+       "raw_type_name": "RRT_VISION",
+       "has_bearing": false,
+       "range": 10000.0,
+       "half_angle_rad": 0.0,
+       "color_rgba": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+       ]
+      }
+     ]
+    }
+   },
+   "6": {
+    "script_comment": "Recon plane",
+    "lists": {
+     "Air/Air": [
+      {
+       "range": 10000.0,
+       "range_sq": 100000000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 1.0,
+       "raw_type": 0,
+       "raw_type_name": "RRT_VISION",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 10000.0,
+        "Gain": 1.0,
+        "MaxLevel": 2,
+        "RawType": 0
+       }
+      }
+     ],
+     "Air/Surface": [
+      {
+       "range": 10000.0,
+       "range_sq": 100000000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 1.0,
+       "raw_type": 0,
+       "raw_type_name": "RRT_VISION",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 10000.0,
+        "Gain": 1.0,
+        "MaxLevel": 2,
+        "RawType": 0
+       }
+      }
+     ],
+     "Air/PeriscopeIn": [
+      {
+       "range": 1000.0,
+       "range_sq": 1000000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 1.0,
+       "raw_type": 2,
+       "raw_type_name": "RRT_SONAR",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 1000,
+        "Gain": 1.0,
+        "MaxLevel": 2,
+        "RawType": 2
+       }
+      }
+     ],
+     "Air/PeriscopeOut": [
+      {
+       "range": 1000.0,
+       "range_sq": 1000000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 1.0,
+       "raw_type": 2,
+       "raw_type_name": "RRT_SONAR",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 1000,
+        "Gain": 1.0,
+        "MaxLevel": 2,
+        "RawType": 2
+       }
+      }
+     ],
+     "Air/Underwater": [
+      {
+       "range": 660.0,
+       "range_sq": 435600.0,
+       "gain_per_second": 0.5,
+       "level_cap": 1.0,
+       "raw_type": 2,
+       "raw_type_name": "RRT_SONAR",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 660.0,
+        "Gain": 1.0,
+        "MaxLevel": 2,
+        "RawType": 2
+       }
+      }
+     ]
+    },
+    "gui_rings": {
+     "Air": [
+      {
+       "raw_type": 2,
+       "raw_type_name": "RRT_SONAR",
+       "has_bearing": false,
+       "range": 1000.0,
+       "half_angle_rad": 0.0,
+       "color_rgba": [
+        0.0,
+        1.0,
+        0.0,
+        1.0
+       ]
+      },
+      {
+       "raw_type": 0,
+       "raw_type_name": "RRT_VISION",
+       "has_bearing": false,
+       "range": 10000.0,
+       "half_angle_rad": 0.0,
+       "color_rgba": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+       ]
+      }
+     ]
+    }
+   },
+   "7": {
+    "script_comment": "Normal submarine",
+    "lists": {
+     "Surface/Air": [
+      {
+       "range": 9000.0,
+       "range_sq": 81000000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 1.0,
+       "raw_type": 0,
+       "raw_type_name": "RRT_VISION",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 9000.0,
+        "Gain": 1.0,
+        "MaxLevel": 2,
+        "RawType": 0
+       }
+      }
+     ],
+     "Surface/Surface": [
+      {
+       "range": 9000.0,
+       "range_sq": 81000000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 1.0,
+       "raw_type": 0,
+       "raw_type_name": "RRT_VISION",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 9000.0,
+        "Gain": 1.0,
+        "MaxLevel": 2,
+        "RawType": 0
+       }
+      }
+     ],
+     "Surface/PeriscopeIn": [
+      {
+       "range": 4000.0,
+       "range_sq": 16000000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 1.0,
+       "raw_type": 2,
+       "raw_type_name": "RRT_SONAR",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 4000,
+        "Gain": 1.0,
+        "MaxLevel": 2,
+        "RawType": 2
+       }
+      }
+     ],
+     "Surface/PeriscopeOut": [
+      {
+       "range": 4000.0,
+       "range_sq": 16000000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 1.0,
+       "raw_type": 2,
+       "raw_type_name": "RRT_SONAR",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 4000,
+        "Gain": 1.0,
+        "MaxLevel": 2,
+        "RawType": 2
+       }
+      }
+     ],
+     "Surface/Underwater": [
+      {
+       "range": 4000.0,
+       "range_sq": 16000000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 1.0,
+       "raw_type": 2,
+       "raw_type_name": "RRT_SONAR",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 4000,
+        "Gain": 1.0,
+        "MaxLevel": 2,
+        "RawType": 2
+       }
+      }
+     ],
+     "PeriscopeIn/Surface": [
+      {
+       "range": 4000.0,
+       "range_sq": 16000000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 1.0,
+       "raw_type": 2,
+       "raw_type_name": "RRT_SONAR",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 4000,
+        "Gain": 1.0,
+        "MaxLevel": 2,
+        "RawType": 2
+       }
+      }
+     ],
+     "PeriscopeIn/PeriscopeIn": [
+      {
+       "range": 4000.0,
+       "range_sq": 16000000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 1.0,
+       "raw_type": 2,
+       "raw_type_name": "RRT_SONAR",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 4000,
+        "Gain": 1.0,
+        "MaxLevel": 2,
+        "RawType": 2
+       }
+      }
+     ],
+     "PeriscopeIn/PeriscopeOut": [
+      {
+       "range": 4000.0,
+       "range_sq": 16000000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 1.0,
+       "raw_type": 2,
+       "raw_type_name": "RRT_SONAR",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 4000,
+        "Gain": 1.0,
+        "MaxLevel": 2,
+        "RawType": 2
+       }
+      }
+     ],
+     "PeriscopeIn/Underwater": [
+      {
+       "range": 4000.0,
+       "range_sq": 16000000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 1.0,
+       "raw_type": 2,
+       "raw_type_name": "RRT_SONAR",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 4000,
+        "Gain": 1.0,
+        "MaxLevel": 2,
+        "RawType": 2
+       }
+      }
+     ],
+     "PeriscopeOut/Air": [
+      {
+       "range": 9000.0,
+       "range_sq": 81000000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 1.0,
+       "raw_type": 0,
+       "raw_type_name": "RRT_VISION",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 9000.0,
+        "Gain": 1.0,
+        "MaxLevel": 2,
+        "RawType": 0
+       }
+      }
+     ],
+     "PeriscopeOut/Surface": [
+      {
+       "range": 9000.0,
+       "range_sq": 81000000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 1.0,
+       "raw_type": 0,
+       "raw_type_name": "RRT_VISION",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 9000.0,
+        "Gain": 1.0,
+        "MaxLevel": 2,
+        "RawType": 0
+       }
+      }
+     ],
+     "PeriscopeOut/PeriscopeIn": [
+      {
+       "range": 4000.0,
+       "range_sq": 16000000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 1.0,
+       "raw_type": 2,
+       "raw_type_name": "RRT_SONAR",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 4000,
+        "Gain": 1.0,
+        "MaxLevel": 2,
+        "RawType": 2
+       }
+      }
+     ],
+     "PeriscopeOut/PeriscopeOut": [
+      {
+       "range": 4000.0,
+       "range_sq": 16000000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 1.0,
+       "raw_type": 2,
+       "raw_type_name": "RRT_SONAR",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 4000,
+        "Gain": 1.0,
+        "MaxLevel": 2,
+        "RawType": 2
+       }
+      }
+     ],
+     "PeriscopeOut/Underwater": [
+      {
+       "range": 4000.0,
+       "range_sq": 16000000.0,
+       "gain_per_second": 0.1,
+       "level_cap": 1.0,
+       "raw_type": 2,
+       "raw_type_name": "RRT_SONAR",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 4000,
+        "Gain": 0.2,
+        "MaxLevel": 2,
+        "RawType": 2
+       }
+      }
+     ],
+     "Underwater/Surface": [
+      {
+       "range": 4000.0,
+       "range_sq": 16000000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 1.0,
+       "raw_type": 2,
+       "raw_type_name": "RRT_SONAR",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 4000,
+        "Gain": 1.0,
+        "MaxLevel": 2,
+        "RawType": 2
+       }
+      }
+     ],
+     "Underwater/PeriscopeIn": [
+      {
+       "range": 4000.0,
+       "range_sq": 16000000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 1.0,
+       "raw_type": 2,
+       "raw_type_name": "RRT_SONAR",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 4000,
+        "Gain": 1.0,
+        "MaxLevel": 2,
+        "RawType": 2
+       }
+      }
+     ],
+     "Underwater/PeriscopeOut": [
+      {
+       "range": 4000.0,
+       "range_sq": 16000000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 1.0,
+       "raw_type": 2,
+       "raw_type_name": "RRT_SONAR",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 4000,
+        "Gain": 1.0,
+        "MaxLevel": 2,
+        "RawType": 2
+       }
+      }
+     ],
+     "Underwater/Underwater": [
+      {
+       "range": 4000.0,
+       "range_sq": 16000000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 1.0,
+       "raw_type": 2,
+       "raw_type_name": "RRT_SONAR",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 4000,
+        "Gain": 1.0,
+        "MaxLevel": 2,
+        "RawType": 2
+       }
+      }
+     ]
+    },
+    "gui_rings": {
+     "Surface": [
+      {
+       "raw_type": 2,
+       "raw_type_name": "RRT_SONAR",
+       "has_bearing": false,
+       "range": 4000.0,
+       "half_angle_rad": 0.0,
+       "color_rgba": [
+        0.0,
+        1.0,
+        0.0,
+        1.0
+       ]
+      },
+      {
+       "raw_type": 0,
+       "raw_type_name": "RRT_VISION",
+       "has_bearing": false,
+       "range": 9000.0,
+       "half_angle_rad": 0.0,
+       "color_rgba": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+       ]
+      }
+     ],
+     "PeriscopeIn": [
+      {
+       "raw_type": 2,
+       "raw_type_name": "RRT_SONAR",
+       "has_bearing": false,
+       "range": 4000.0,
+       "half_angle_rad": 0.0,
+       "color_rgba": [
+        0.0,
+        1.0,
+        0.0,
+        1.0
+       ]
+      }
+     ],
+     "PeriscopeOut": [
+      {
+       "raw_type": 2,
+       "raw_type_name": "RRT_SONAR",
+       "has_bearing": false,
+       "range": 4000.0,
+       "half_angle_rad": 0.0,
+       "color_rgba": [
+        0.0,
+        1.0,
+        0.0,
+        1.0
+       ]
+      },
+      {
+       "raw_type": 0,
+       "raw_type_name": "RRT_VISION",
+       "has_bearing": false,
+       "range": 9000.0,
+       "half_angle_rad": 0.0,
+       "color_rgba": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+       ]
+      }
+     ],
+     "Underwater": [
+      {
+       "raw_type": 2,
+       "raw_type_name": "RRT_SONAR",
+       "has_bearing": false,
+       "range": 4000.0,
+       "half_angle_rad": 0.0,
+       "color_rgba": [
+        0.0,
+        1.0,
+        0.0,
+        1.0
+       ]
+      }
+     ]
+    }
+   },
+   "8": {
+    "script_comment": "Ground unit w/o radar",
+    "lists": {
+     "Surface/Air": [
+      {
+       "range": 10000.0,
+       "range_sq": 100000000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 1.0,
+       "raw_type": 0,
+       "raw_type_name": "RRT_VISION",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 10000.0,
+        "Gain": 1.0,
+        "MaxLevel": 2,
+        "RawType": 0
+       }
+      }
+     ],
+     "Surface/Surface": [
+      {
+       "range": 10000.0,
+       "range_sq": 100000000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 1.0,
+       "raw_type": 0,
+       "raw_type_name": "RRT_VISION",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 10000.0,
+        "Gain": 1.0,
+        "MaxLevel": 2,
+        "RawType": 0
+       }
+      }
+     ]
+    },
+    "gui_rings": {
+     "Surface": [
+      {
+       "raw_type": 0,
+       "raw_type_name": "RRT_VISION",
+       "has_bearing": false,
+       "range": 10000.0,
+       "half_angle_rad": 0.0,
+       "color_rgba": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+       ]
+      }
+     ]
+    }
+   },
+   "9": {
+    "script_comment": "Ground unit with high vision (Observation post)",
+    "lists": {
+     "Surface/Air": [
+      {
+       "range": 10000.0,
+       "range_sq": 100000000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 1.0,
+       "raw_type": 0,
+       "raw_type_name": "RRT_VISION",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 10000.0,
+        "Gain": 1.0,
+        "MaxLevel": 2,
+        "RawType": 0
+       }
+      }
+     ],
+     "Surface/Surface": [
+      {
+       "range": 10000.0,
+       "range_sq": 100000000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 1.0,
+       "raw_type": 0,
+       "raw_type_name": "RRT_VISION",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 10000.0,
+        "Gain": 1.0,
+        "MaxLevel": 2,
+        "RawType": 0
+       }
+      }
+     ]
+    },
+    "gui_rings": {
+     "Surface": [
+      {
+       "raw_type": 0,
+       "raw_type_name": "RRT_VISION",
+       "has_bearing": false,
+       "range": 10000.0,
+       "half_angle_rad": 0.0,
+       "color_rgba": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+       ]
+      }
+     ]
+    }
+   },
+   "10": {
+    "script_comment": "Ground unit with radar (Radar station)",
+    "lists": {
+     "Surface/Air": [
+      {
+       "range": 10000.0,
+       "range_sq": 100000000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 1.0,
+       "raw_type": 0,
+       "raw_type_name": "RRT_VISION",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 10000.0,
+        "Gain": 1.0,
+        "MaxLevel": 2,
+        "RawType": 0
+       }
+      },
+      {
+       "range": 20000.0,
+       "range_sq": 400000000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 0.25,
+       "raw_type": 1,
+       "raw_type_name": "RRT_RADAR",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 20000.0,
+        "Gain": 1.0,
+        "MaxLevel": 1,
+        "RawType": 1
+       }
+      }
+     ],
+     "Surface/Surface": [
+      {
+       "range": 10000.0,
+       "range_sq": 100000000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 1.0,
+       "raw_type": 0,
+       "raw_type_name": "RRT_VISION",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 10000.0,
+        "Gain": 1.0,
+        "MaxLevel": 2,
+        "RawType": 0
+       }
+      },
+      {
+       "range": 20000.0,
+       "range_sq": 400000000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 0.25,
+       "raw_type": 1,
+       "raw_type_name": "RRT_RADAR",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 20000.0,
+        "Gain": 1.0,
+        "MaxLevel": 1,
+        "RawType": 1
+       }
+      }
+     ]
+    },
+    "gui_rings": {
+     "Surface": [
+      {
+       "raw_type": 0,
+       "raw_type_name": "RRT_VISION",
+       "has_bearing": false,
+       "range": 10000.0,
+       "half_angle_rad": 0.0,
+       "color_rgba": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+       ]
+      },
+      {
+       "raw_type": 1,
+       "raw_type_name": "RRT_RADAR",
+       "has_bearing": false,
+       "range": 20000.0,
+       "half_angle_rad": 0.0,
+       "color_rgba": [
+        1.0,
+        0.0,
+        0.0,
+        1.0
+       ]
+      }
+     ]
+    }
+   },
+   "11": {
+    "script_comment": "Ground unit with small radar (Airfield)",
+    "lists": {
+     "Surface/Air": [
+      {
+       "range": 10000.0,
+       "range_sq": 100000000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 1.0,
+       "raw_type": 0,
+       "raw_type_name": "RRT_VISION",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 10000.0,
+        "Gain": 1.0,
+        "MaxLevel": 2,
+        "RawType": 0
+       }
+      },
+      {
+       "range": 20000.0,
+       "range_sq": 400000000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 0.25,
+       "raw_type": 1,
+       "raw_type_name": "RRT_RADAR",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 20000.0,
+        "Gain": 1.0,
+        "MaxLevel": 1,
+        "RawType": 1
+       }
+      }
+     ],
+     "Surface/Surface": [
+      {
+       "range": 10000.0,
+       "range_sq": 100000000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 1.0,
+       "raw_type": 0,
+       "raw_type_name": "RRT_VISION",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 10000.0,
+        "Gain": 1.0,
+        "MaxLevel": 2,
+        "RawType": 0
+       }
+      },
+      {
+       "range": 20000.0,
+       "range_sq": 400000000.0,
+       "gain_per_second": 0.5,
+       "level_cap": 0.25,
+       "raw_type": 1,
+       "raw_type_name": "RRT_RADAR",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 20000.0,
+        "Gain": 1.0,
+        "MaxLevel": 1,
+        "RawType": 1
+       }
+      }
+     ]
+    },
+    "gui_rings": {
+     "Surface": [
+      {
+       "raw_type": 0,
+       "raw_type_name": "RRT_VISION",
+       "has_bearing": false,
+       "range": 10000.0,
+       "half_angle_rad": 0.0,
+       "color_rgba": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+       ]
+      },
+      {
+       "raw_type": 1,
+       "raw_type_name": "RRT_RADAR",
+       "has_bearing": false,
+       "range": 20000.0,
+       "half_angle_rad": 0.0,
+       "color_rgba": [
+        1.0,
+        0.0,
+        0.0,
+        1.0
+       ]
+      }
+     ]
+    }
+   },
+   "12": {
+    "script_comment": "Units with no recon",
+    "lists": {
+     "Surface/Air": [
+      {
+       "range": 0.0,
+       "range_sq": 0.0,
+       "gain_per_second": 0.0,
+       "level_cap": 0.0,
+       "raw_type": 0,
+       "raw_type_name": "RRT_VISION",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 0,
+        "Gain": 0,
+        "MaxLevel": 0,
+        "RawType": 0
+       }
+      },
+      {
+       "range": 0.0,
+       "range_sq": 0.0,
+       "gain_per_second": 0.0,
+       "level_cap": 0.0,
+       "raw_type": 0,
+       "raw_type_name": "RRT_VISION",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 0,
+        "Gain": 0,
+        "MaxLevel": 0,
+        "RawType": 0
+       }
+      }
+     ],
+     "Surface/Surface": [
+      {
+       "range": 0.0,
+       "range_sq": 0.0,
+       "gain_per_second": 0.0,
+       "level_cap": 0.0,
+       "raw_type": 0,
+       "raw_type_name": "RRT_VISION",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 0,
+        "Gain": 0,
+        "MaxLevel": 0,
+        "RawType": 0
+       }
+      },
+      {
+       "range": 0.0,
+       "range_sq": 0.0,
+       "gain_per_second": 0.0,
+       "level_cap": 0.0,
+       "raw_type": 0,
+       "raw_type_name": "RRT_VISION",
+       "half_angle_rad": 0.0,
+       "has_bearing_test": false,
+       "authored": {
+        "Dist": 0,
+        "Gain": 0,
+        "MaxLevel": 0,
+        "RawType": 0
+       }
+      }
+     ]
+    },
+    "gui_rings": {
+     "Surface": [
+      {
+       "raw_type": 0,
+       "raw_type_name": "RRT_VISION",
+       "has_bearing": false,
+       "range": 0.0,
+       "half_angle_rad": 0.0,
+       "color_rgba": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+       ]
+      },
+      {
+       "raw_type": 0,
+       "raw_type_name": "RRT_VISION",
+       "has_bearing": false,
+       "range": 0.0,
+       "half_angle_rad": 0.0,
+       "color_rgba": [
+        1.0,
+        0.0,
+        0.0,
+        1.0
+       ]
+      }
+     ]
+    }
+   }
+  }
+ },
+ "vehicle_class_association": {
+  "mechanism": "00960230 reads the vehicle class row's integer ReconClass (009623F0/0096240E), resolves it through 00808F90 at 00962419 and stores the record at class+B4h; 008048A0 then reads [[unit+538h]+B4h] and indexes it with sensor_list_index_008085aa",
+  "source": "scripts/datatables/autoload/vehicleclasses.lua (MODIFIED in this installation, see data_provenance)",
+  "vehicle_class_rows": 633,
+  "rows_with_reconclass": 633,
+  "counts_per_recon_class": {
+   "1": 22,
+   "2": 97,
+   "3": 31,
+   "4": 1,
+   "5": 65,
+   "6": 8,
+   "7": 9,
+   "8": 305,
+   "9": 3,
+   "10": 3,
+   "11": 6,
+   "12": 83
+  },
+  "per_vehicle_class": {
+   "1": 2,
+   "2": 2,
+   "3": 2,
+   "4": 7,
+   "5": 5,
+   "6": 8,
+   "7": 2,
+   "8": 7,
+   "9": 2,
+   "10": 2,
+   "11": 3,
+   "12": 1,
+   "13": 2,
+   "14": 3,
+   "15": 2,
+   "16": 5,
+   "17": 2,
+   "18": 2,
+   "19": 2,
+   "20": 2,
+   "21": 2,
+   "22": 8,
+   "23": 3,
+   "24": 2,
+   "25": 3,
+   "26": 5,
+   "27": 1,
+   "30": 7,
+   "31": 7,
+   "32": 5,
+   "34": 6,
+   "35": 1,
+   "37": 1,
+   "38": 5,
+   "39": 1,
+   "40": 1,
+   "41": 1,
+   "42": 8,
+   "43": 1,
+   "44": 8,
+   "45": 5,
+   "46": 5,
+   "48": 3,
+   "49": 8,
+   "50": 2,
+   "51": 2,
+   "52": 2,
+   "53": 2,
+   "54": 8,
+   "55": 8,
+   "56": 8,
+   "57": 2,
+   "58": 3,
+   "59": 2,
+   "60": 2,
+   "61": 2,
+   "62": 8,
+   "63": 8,
+   "64": 8,
+   "65": 8,
+   "66": 8,
+   "67": 2,
+   "68": 4,
+   "69": 2,
+   "70": 2,
+   "71": 2,
+   "72": 8,
+   "73": 3,
+   "74": 8,
+   "75": 3,
+   "76": 8,
+   "77": 1,
+   "78": 8,
+   "79": 8,
+   "80": 8,
+   "81": 7,
+   "82": 8,
+   "83": 7,
+   "84": 8,
+   "85": 1,
+   "87": 1,
+   "88": 8,
+   "89": 8,
+   "90": 1,
+   "91": 1,
+   "92": 1,
+   "93": 7,
+   "94": 1,
+   "95": 1,
+   "96": 1,
+   "97": 8,
+   "98": 8,
+   "99": 10,
+   "100": 5,
+   "101": 5,
+   "102": 5,
+   "103": 5,
+   "104": 5,
+   "105": 8,
+   "106": 10,
+   "107": 11,
+   "108": 5,
+   "109": 5,
+   "110": 5,
+   "111": 8,
+   "112": 5,
+   "113": 5,
+   "114": 8,
+   "115": 8,
+   "116": 5,
+   "117": 5,
+   "118": 5,
+   "119": 8,
+   "120": 12,
+   "121": 6,
+   "122": 12,
+   "123": 11,
+   "125": 6,
+   "126": 8,
+   "127": 8,
+   "128": 12,
+   "129": 12,
+   "130": 12,
+   "131": 12,
+   "132": 8,
+   "133": 5,
+   "134": 5,
+   "135": 5,
+   "136": 5,
+   "137": 8,
+   "138": 11,
+   "139": 8,
+   "140": 8,
+   "141": 8,
+   "142": 8,
+   "143": 8,
+   "144": 8,
+   "145": 8,
+   "146": 8,
+   "147": 12,
+   "148": 12,
+   "149": 12,
+   "150": 5,
+   "151": 5,
+   "152": 5,
+   "153": 12,
+   "154": 5,
+   "155": 12,
+   "156": 5,
+   "157": 12,
+   "158": 5,
+   "159": 5,
+   "160": 12,
+   "162": 5,
+   "163": 5,
+   "164": 12,
+   "165": 12,
+   "166": 5,
+   "167": 5,
+   "168": 12,
+   "169": 12,
+   "170": 12,
+   "171": 6,
+   "172": 6,
+   "173": 12,
+   "174": 6,
+   "175": 6,
+   "176": 12,
+   "178": 12,
+   "183": 5,
+   "185": 12,
+   "186": 5,
+   "187": 12,
+   "189": 5,
+   "191": 12,
+   "192": 12,
+   "193": 7,
+   "200": 8,
+   "201": 8,
+   "202": 8,
+   "205": 8,
+   "206": 8,
+   "207": 8,
+   "208": 12,
+   "209": 12,
+   "210": 8,
+   "211": 8,
+   "212": 12,
+   "213": 12,
+   "214": 12,
+   "215": 12,
+   "216": 12,
+   "217": 12,
+   "218": 12,
+   "219": 12,
+   "220": 12,
+   "221": 12,
+   "222": 12,
+   "223": 12,
+   "224": 1,
+   "225": 12,
+   "228": 8,
+   "229": 12,
+   "230": 12,
+   "231": 8,
+   "232": 8,
+   "233": 8,
+   "234": 1,
+   "236": 8,
+   "237": 8,
+   "241": 8,
+   "246": 1,
+   "464": 8,
+   "465": 8,
+   "466": 8,
+   "467": 8,
+   "468": 8,
+   "469": 8,
+   "470": 8,
+   "471": 8,
+   "472": 8,
+   "473": 8,
+   "474": 8,
+   "475": 8,
+   "476": 8,
+   "477": 8,
+   "478": 8,
+   "479": 8,
+   "646": 8,
+   "647": 8,
+   "648": 8,
+   "649": 5,
+   "650": 8,
+   "651": 8,
+   "652": 8,
+   "653": 8,
+   "654": 8,
+   "655": 8,
+   "656": 8,
+   "657": 8,
+   "658": 8,
+   "659": 8,
+   "660": 8,
+   "661": 8,
+   "662": 8,
+   "663": 8,
+   "664": 8,
+   "665": 8,
+   "666": 8,
+   "667": 8,
+   "668": 8,
+   "669": 8,
+   "670": 8,
+   "671": 8,
+   "672": 8,
+   "673": 8,
+   "674": 8,
+   "675": 8,
+   "676": 8,
+   "677": 8,
+   "678": 8,
+   "679": 8,
+   "680": 8,
+   "681": 8,
+   "682": 8,
+   "683": 8,
+   "684": 8,
+   "685": 8,
+   "686": 9,
+   "687": 8,
+   "688": 8,
+   "689": 8,
+   "690": 8,
+   "691": 8,
+   "692": 8,
+   "693": 8,
+   "694": 8,
+   "695": 8,
+   "696": 8,
+   "697": 8,
+   "698": 8,
+   "699": 8,
+   "700": 8,
+   "711": 8,
+   "712": 8,
+   "713": 8,
+   "714": 12,
+   "715": 12,
+   "716": 12,
+   "717": 12,
+   "718": 12,
+   "719": 8,
+   "480": 8,
+   "481": 8,
+   "482": 8,
+   "483": 8,
+   "484": 8,
+   "485": 8,
+   "486": 8,
+   "487": 8,
+   "488": 8,
+   "489": 8,
+   "490": 8,
+   "491": 8,
+   "492": 8,
+   "493": 8,
+   "494": 8,
+   "495": 8,
+   "496": 8,
+   "497": 8,
+   "498": 8,
+   "499": 8,
+   "632": 8,
+   "633": 8,
+   "634": 8,
+   "635": 8,
+   "636": 8,
+   "637": 8,
+   "638": 8,
+   "639": 8,
+   "640": 8,
+   "641": 12,
+   "642": 12,
+   "643": 8,
+   "644": 8,
+   "645": 8,
+   "385": 5,
+   "388": 2,
+   "389": 2,
+   "390": 2,
+   "391": 2,
+   "392": 5,
+   "393": 8,
+   "394": 8,
+   "395": 8,
+   "396": 8,
+   "397": 8,
+   "398": 8,
+   "399": 8,
+   "400": 8,
+   "401": 8,
+   "402": 8,
+   "403": 8,
+   "404": 8,
+   "405": 8,
+   "406": 8,
+   "408": 8,
+   "409": 8,
+   "410": 8,
+   "411": 8,
+   "412": 8,
+   "413": 8,
+   "414": 8,
+   "415": 8,
+   "416": 8,
+   "417": 8,
+   "418": 8,
+   "419": 8,
+   "420": 8,
+   "421": 8,
+   "422": 8,
+   "423": 8,
+   "424": 8,
+   "428": 8,
+   "433": 8,
+   "434": 8,
+   "435": 8,
+   "436": 8,
+   "447": 8,
+   "450": 8,
+   "451": 8,
+   "452": 8,
+   "453": 8,
+   "460": 8,
+   "461": 8,
+   "462": 8,
+   "463": 8,
+   "500": 8,
+   "501": 8,
+   "502": 8,
+   "503": 8,
+   "504": 8,
+   "505": 8,
+   "506": 8,
+   "507": 8,
+   "508": 8,
+   "509": 8,
+   "510": 8,
+   "511": 8,
+   "512": 8,
+   "513": 8,
+   "514": 8,
+   "515": 8,
+   "516": 8,
+   "517": 8,
+   "518": 8,
+   "520": 8,
+   "521": 8,
+   "522": 8,
+   "524": 8,
+   "527": 8,
+   "528": 8,
+   "531": 8,
+   "532": 8,
+   "533": 8,
+   "534": 8,
+   "535": 8,
+   "536": 8,
+   "537": 8,
+   "538": 8,
+   "539": 8,
+   "540": 8,
+   "541": 8,
+   "542": 11,
+   "543": 8,
+   "544": 8,
+   "545": 8,
+   "550": 8,
+   "553": 11,
+   "554": 8,
+   "555": 8,
+   "556": 8,
+   "557": 8,
+   "564": 9,
+   "565": 9,
+   "570": 10,
+   "571": 8,
+   "572": 8,
+   "575": 8,
+   "576": 8,
+   "577": 8,
+   "579": 8,
+   "580": 8,
+   "581": 8,
+   "582": 8,
+   "583": 8,
+   "584": 8,
+   "585": 8,
+   "586": 8,
+   "587": 8,
+   "588": 8,
+   "590": 11,
+   "591": 8,
+   "592": 8,
+   "593": 8,
+   "594": 8,
+   "595": 8,
+   "596": 8,
+   "597": 8,
+   "600": 8,
+   "610": 8,
+   "611": 8,
+   "612": 8,
+   "613": 8,
+   "614": 8,
+   "617": 8,
+   "618": 8,
+   "619": 8,
+   "620": 8,
+   "621": 8,
+   "622": 8,
+   "623": 8,
+   "624": 8,
+   "625": 8,
+   "626": 8,
+   "627": 8,
+   "628": 1,
+   "629": 8,
+   "630": 8,
+   "631": 8,
+   "701": 8,
+   "702": 8,
+   "703": 8,
+   "704": 8,
+   "705": 8,
+   "706": 8,
+   "707": 8,
+   "708": 8,
+   "709": 8,
+   "710": 8,
+   "720": 8,
+   "721": 12,
+   "722": 12,
+   "723": 12,
+   "724": 12,
+   "725": 12,
+   "726": 12,
+   "727": 12,
+   "728": 12,
+   "729": 12,
+   "730": 12,
+   "731": 12,
+   "732": 12,
+   "734": 12,
+   "735": 12,
+   "745": 12,
+   "746": 12,
+   "747": 12,
+   "748": 12,
+   "749": 12,
+   "750": 12,
+   "751": 12,
+   "752": 12,
+   "753": 12,
+   "754": 12,
+   "755": 12,
+   "756": 12,
+   "758": 12,
+   "759": 12,
+   "760": 12,
+   "761": 12,
+   "762": 12,
+   "763": 12,
+   "764": 12,
+   "766": 12,
+   "790": 5,
+   "999": 8,
+   "252": 2,
+   "253": 2,
+   "254": 2,
+   "255": 2,
+   "256": 2,
+   "257": 2,
+   "258": 2,
+   "259": 2,
+   "260": 2,
+   "261": 2,
+   "263": 2,
+   "265": 3,
+   "266": 2,
+   "267": 2,
+   "268": 2,
+   "270": 2,
+   "271": 2,
+   "273": 3,
+   "274": 2,
+   "275": 3,
+   "276": 3,
+   "277": 3,
+   "278": 2,
+   "279": 2,
+   "284": 2,
+   "287": 2,
+   "288": 3,
+   "289": 3,
+   "290": 3,
+   "291": 2,
+   "292": 2,
+   "293": 2,
+   "294": 2,
+   "295": 2,
+   "296": 3,
+   "297": 2,
+   "298": 2,
+   "299": 3,
+   "300": 2,
+   "301": 2,
+   "302": 2,
+   "304": 2,
+   "305": 2,
+   "306": 3,
+   "307": 2,
+   "308": 3,
+   "309": 3,
+   "310": 2,
+   "311": 2,
+   "314": 2,
+   "315": 2,
+   "346": 2,
+   "347": 2,
+   "348": 2,
+   "349": 2,
+   "351": 2,
+   "345": 1,
+   "352": 3,
+   "353": 3,
+   "355": 2,
+   "356": 3,
+   "357": 2,
+   "358": 2,
+   "359": 2,
+   "360": 2,
+   "361": 5,
+   "362": 3,
+   "363": 2,
+   "364": 3,
+   "365": 2,
+   "366": 3,
+   "367": 3,
+   "368": 2,
+   "369": 2,
+   "372": 2,
+   "373": 2,
+   "374": 2,
+   "383": 2,
+   "378": 3,
+   "380": 2,
+   "381": 3,
+   "321": 2,
+   "377": 2,
+   "332": 3,
+   "387": 2,
+   "382": 2,
+   "338": 2,
+   "335": 2,
+   "384": 2,
+   "337": 2,
+   "386": 2,
+   "318": 5,
+   "350": 5,
+   "322": 5,
+   "324": 5,
+   "325": 5,
+   "326": 5,
+   "327": 5,
+   "328": 5,
+   "329": 5,
+   "330": 5,
+   "331": 5,
+   "333": 5,
+   "334": 5,
+   "312": 5,
+   "313": 5,
+   "341": 5,
+   "339": 5,
+   "269": 5,
+   "810": 5,
+   "811": 5,
+   "812": 2,
+   "370": 5,
+   "814": 7,
+   "340": 5,
+   "343": 6
+  }
+ },
+ "corrections": [
+  {
+   "target": "docs/SENSOR_TABLES.md section 1 and include/bsp/sensor_tables.hpp kSensorListCount",
+   "was": "column 7 of every row is allocated and unreachable / columns 7 stay empty",
+   "is": "column 7 of each observer group is the GUIRange ring list",
+   "evidence": "008087a4 MOV EAX,[ESP+10h] (observer) / 008087ac LEA EAX,[EAX+EAX*2] / 008087af SHL EAX,5 / 008087b2 LEA EDI,[EAX+ECX+5Ch] is record + 8 + observer*60h + 7*0Ch, the eighth header of the group; 00808903 pushes the ring into it. 008048A0 never reads it, which is what 'unreachable' should have said."
+  },
+  {
+   "target": "docs/SENSOR_TABLES.md section 5, the per-class vehicle-class counts",
+   "was": "recon 2 carries 99 vehicle classes and recon 5 carries 67, counted from 637 ReconClass occurrences",
+   "is": "97 and 65; the live table has 633 rows and exactly 633 top-level ReconClass keys",
+   "evidence": "the four extra occurrences (lines 188118, 188395, 189548, 191096 of vehicleclasses.lua) lie inside the --[[ ... blocks that comment out VehicleClass[342], [425], [250] and [251] at lines 187892, 188169, 188446 and 189580. Note this file is locally modified, so neither count describes the stock game."
+  },
+  {
+   "target": "docs/SENSOR_TABLES.md section 10, fourth open question",
+   "was": "the Color values in GUIRange are Lua constants that this packet did not decode, so the four colour words are left zero",
+   "is": "COL_RED {1,0,0,1}, COL_GREEN {0,1,0,1} and COL_BLUE {0,0,1,1} are float RGBA quadruples; 00B67C40 reads Lua array indices 1..4 with FSTP float [EDI+k*4], so ring +10h..+1Ch are four floats, not opaque words",
+   "evidence": "scripts/global/luamw_init.lua lines 25-27; 00b67c69 and 00b67c9d in 00B67C40"
+  }
+ ],
+ "not_reached": [
+  {
+   "item": "run-time confirmation",
+   "reason": "bsp_game.exe fakes the recon lists (docs/RECON_SLOT_LISTS.md section 10); no path it runs reaches 008082A0, 00808F90 or 008048A0, so nothing here is game-validated"
+  },
+  {
+   "item": "the pristine retail script bytes",
+   "reason": "the only installation on this machine is modded; provenance rests on file timestamps"
+  },
+  {
+   "item": "00960230 and the VFS/archive loader",
+   "reason": "peer orchestrators hold leases across that territory; 00960230 was read but neither leased nor annotated"
+  }
+ ]
+}
