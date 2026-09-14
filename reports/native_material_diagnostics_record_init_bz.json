@@ -1,9 +1,9 @@
 {
   "packet": "orch3_native_material_diagnostics_record_init_bz",
-  "status": "source_reconstructed_exact_build_pending",
+  "status": "exact_committed_build_static_native_review_saved_annotations_passed_sealed",
   "source_parent_commit": "d8456ff4a9c3e015daebe26d7a5161d019c73a84",
-  "native_body_credit": 0,
-  "native_bytes_credit": 0,
+  "native_body_credit": 1,
+  "native_bytes_credit": 64,
   "proposed_native_bodies": 1,
   "proposed_native_bytes": 64,
   "target": {
@@ -81,14 +81,108 @@
     "remaining_blocking_findings": []
   },
   "validation": {
-    "build": "pending",
+    "command": "./scripts/build.ps1",
+    "configuration": "MSVC Win32 Release",
+    "exit_code": 0,
+    "ctests_passed": 2,
+    "ctests": [
+      "reconstructed_math",
+      "native_math_differential"
+    ],
+    "exact_commit": "514e822bbdd7f089a902a88039d6e2483a00ebfc",
+    "tracked_build_inputs": 2573,
+    "clean_before_after": true,
+    "all_build_input_hashes_preserved": true,
     "new_tests": 0,
     "new_native_fixture": false,
-    "raw_entry_executed": false,
+    "raw_entries_executed": false,
     "game_validated": false
   },
   "limitations": [
     "Static source/body identity only; no native execution, broader ABI substitution, completed diagnostics, rendering or game validation.",
     "Parent diagnostics/vector/string lifetime providers remain dependencies; this is only empty raw record initialization."
-  ]
+  ],
+  "tested_commit": "514e822bbdd7f089a902a88039d6e2483a00ebfc",
+  "generated_code": [
+    {
+      "address": "00b106c0",
+      "cpp_symbol": "initialize_native_material_diagnostics_record_00b106c0",
+      "symbol": "?initialize_native_material_diagnostics_record_00b106c0@bsp@@YIPAXPAX@Z",
+      "native_bytes": 64,
+      "native_sha256": "4797ca6a2108ecc9d36168c69c9bc3638c339a544421b3b91c78112391f3b059",
+      "object_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\bsp_core.dir\\Release\\native_material_diagnostics_record_init.obj",
+      "object_sha256": "8a179e3ed9b0f55f9b3386ca5298be42dc80580c063142b7e0cb11d588b5bab8",
+      "source_bytes": 64,
+      "source_sha256": "4797ca6a2108ecc9d36168c69c9bc3638c339a544421b3b91c78112391f3b059",
+      "relocations": [],
+      "complete_native_byte_identity": true,
+      "worker_primary_code_identity": false,
+      "listing": "local/byz-generated-00b106c0.asm"
+    }
+  ],
+  "primary_call_audit": {
+    "direct_rows": 1,
+    "indirect_rows": 0,
+    "failed": 0,
+    "log": "local/byz-call-audit-native_material_diagnostics_record_init_bz.log"
+  },
+  "annotation": {
+    "saved": true,
+    "readback_passed": true,
+    "prior_comments_preserved": true,
+    "record": "local/byz-ghidra-annotation-record.json",
+    "force_refreshed_exports": [
+      "00b106c0"
+    ],
+    "correct_existing_names_preserved": true,
+    "original_thiscall_signatures": true
+  },
+  "artifact_sha256": {
+    "build/win32/bsp_core.dir/Release/native_material_diagnostics_record_init.obj": "8a179e3ed9b0f55f9b3386ca5298be42dc80580c063142b7e0cb11d588b5bab8",
+    "build/win32/bsp_core.dir/Release/native_material_texture_queries.obj": "f68b8114fa8692c6c49ad091683304f0c093f0f64ee2d530e4ab0fdf8ad94626",
+    "local/adapt_byz_seal.py": "67abc952ed0487d624aacbfde2e6e00ab89f7ea79755de7824642c99c34b6402",
+    "local/annotate_byz.py": "027ffda295991b99c3520ee4be89a783962770ccff549340861318a0bf6a8cac",
+    "local/bq_object_review.py": "93d9b6dc62ddcd4bc7e0aab0ba75a9ef29e60fa15638adba14eb9a9fd7de862a",
+    "local/build_final_byz.py": "aeeb42d4602c6b362bfab666e131afcddb7ec5f3edd68558964dd2f93db39e38",
+    "local/byz-annotation.log": "12849dbb0faf9e537b032d91835f49a8be55bfc95c9e545e0a40657319215935",
+    "local/byz-call-audit-native_material_diagnostics_record_init_bz.log": "36fe077dbef3c110151f396e55acbc19db0b1cf360a92c2f78b077a43f854d83",
+    "local/byz-call-audit-native_material_texture_queries_by.log": "3b947fab9d21177aef6962a478ee47bc796c402ccf18157c7d2067fdc365453e",
+    "local/byz-comments-after.json": "e029031f2ea55c50f1a820fce36d79c4eff21101d88c754eac7ad07a9ae30e1a",
+    "local/byz-comments-before.json": "d020a102602ad9c1cd8ba64ac4f5d6f8f1c09ac0178468997650487f8a6191d4",
+    "local/byz-export-refresh.log": "c7d0054f3ff17e27ea16a94cecfee28420d3d3f4cb5b4faeb92b676f1eddcf4e",
+    "local/byz-final-build-stamp.json": "c34ca4ac50fa0fbb606dfbb435b701924098ccdf57987a369a63f3f2676a874a",
+    "local/byz-final-combined-build.log": "64f5d18e529dea3fd1cd3bcfc77e9cb8ac818a05db0460c4d164505948a160d5",
+    "local/byz-function-records.json": "2cf32c94950738fd37deaa765a4b40afe155663739d17e5dc673f773af7e3204",
+    "local/byz-generated-00b106c0.asm": "e1f99bca5e4474aa23635ce668eeaabd78c4747ba5fe87ad6c307d116303d25f",
+    "local/byz-generated-00b17320.asm": "08d5052c0b3c2fb26198a1f279787f7e991b0f4d3f18218b8eeb25e9f0dba6af",
+    "local/byz-generated-00b17d90.asm": "872da752afe977cbd8889359e93556d0a3624d5b3a9138017efcbaad48fc2759",
+    "local/byz-ghidra-annotation-record.json": "c5f9925bf806c572b0f22e1285d5503267fecfe729e71ec4bcd40844c8f9998c",
+    "local/byz-import-review.json": "06076ebc80840a44641acc3d186082c8dc74f1a058006891750e9cc724b84341",
+    "local/byz-ledger-before.json": "358878f80890ee7e1ef4c8d7edfeab40a1ed4379a527dfc5fc17b652d09a53d7",
+    "local/byz-live-00b106c0.txt": "59e1181d4ecef2cc7f5272e3ade8421199b926dc2f55451f47e41efa109c1c82",
+    "local/byz-live-00b17041.txt": "71df6599e0db2df08a4c34da9f3e50c8e9cd899c05f08e54911d8d0e24754c17",
+    "local/byz-live-00b17320.txt": "e1bda8b9b5b6c5f12a5f18b3ee0ede3efa2643168caa4199cd464bcf14e5b61a",
+    "local/byz-live-00b17d90.txt": "5b83eeda59416b2439076a9be87489c42deb668fe14a68f71cd16236980bfccd",
+    "local/byz-native-00b106c0.txt": "06c0ce954cb1402c24b1c00d0a5b4496ee7498f4eb9ad21e58fc9a664db6dc42",
+    "local/byz-native-00b17041.txt": "db97a662c99013f2f0428688f27fbc63e775cfb1b9775ae70b9d817a6da470ab",
+    "local/byz-object-review.json": "d2466b22a0f516bf90ef862c5b9766a2265dbf747afa0dfc09ce75a44da5c59d",
+    "local/finish_byz.py": "15cdd045c2cda12429e587536660b425961b7583275d48278702066a3fafd809",
+    "local/prepare_bz.py": "3b79c0b8adc3659127b2894861a0b6f7a9a22fa0fc08c63303d03bcaf7404e04",
+    "local/review_byz_objects.py": "4ed609d65900eb9aa20209694fab1467a68cfd1804185ece90cf21163f1de4d4",
+    "local/seal_byz.py": "1128b9055392d2f1ad33e8df364d1a2332b814c8fee59e2188efcd068ba4bb87"
+  },
+  "sealed_attempt": {
+    "tested_commit": "514e822bbdd7f089a902a88039d6e2483a00ebfc",
+    "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\byz-validated-attempt-514e822b.zip",
+    "sha256": "35d32cee0ec88a31922646e8ef661e9508cc4010fbc913efa8233977fd437b80",
+    "payload_members": 2623,
+    "manifest_members": 1,
+    "all_member_hashes_rechecked": true,
+    "libraries": {
+      "bsp_core.lib": "a47be0022789c11847ab006915c92876f1e1f207a5f2380f4735229124efa5d1",
+      "bsp_lua511.lib": "71e114b0ff6244852d678a5779fcbf28589bdcecbad811aff228ffd5007fe8c7",
+      "bsp_zlib121.lib": "f3f934925213a2ffb81f3aec2afbb065c1733cf43b28dddf31db6a69185c4102"
+    },
+    "tracked_build_inputs": 2573
+  }
 }
