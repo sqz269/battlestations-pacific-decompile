@@ -1,6 +1,6 @@
 {
   "packet": "orch4_native_vfs_search_defaults_be",
-  "status": "complete ordered source reconstruction; strict existing Win32 build/CTest and standalone source translation-unit compile passed",
+  "status": "complete ordered source reconstruction with per-registration publication reload; strict standalone MSVC Win32 translation-unit compile passed; combined build remains integration-owned",
   "program": "/battlestationspacific.exe",
   "root": {
     "address": "00738360",
@@ -9,7 +9,7 @@
     "sha256_disk_live": "69fee27dbfafde84f1de4c8debe61839d9b25b82d6cc3b6771828d039174e0da",
     "saved_instructions": 4310,
     "unowned_instructions": [],
-    "original_abi": "__cdecl-like no argument stack: raw global manager and pool singleton; RET at 0073bad4; exact calling convention uncertain",
+    "original_abi": "No-argument native entry (live Ghidra void parameter list); reloads the actual manager from global 0109CEEC into ECX at all 78 raw registration calls; pool singleton comes from globals; RET at 0073bad4; exact stack/EH calling convention remains uncertain. The borrowed-reference source parameters are not native arguments.",
     "coverage": "78/78 normal ordered registrations with native raw manager/string headers; exception EH ABI and earlier manager startup not reconstructed here"
   },
   "registrations": [
@@ -29,7 +29,19 @@
       },
       "decompiled_line": 44,
       "address": "00738401",
-      "native": "00be25e0"
+      "native": "00be25e0",
+      "manager_load_evidence": {
+        "manager_publication_load": "007383f6",
+        "manager_publication_global": "0109ceec",
+        "manager_register": "ECX",
+        "value_header_construct_call": "00738392",
+        "group_header_construct_call": "007383c9",
+        "value_literal_address": "00cff084",
+        "group_literal_address": "00cff078",
+        "group_header_copy_call": "007383e4",
+        "intervening_call_or_ecx_write": false,
+        "branch_entry_bypassing_load": false
+      }
     },
     {
       "kind": "SearchExtension",
@@ -47,7 +59,19 @@
       },
       "decompiled_line": 75,
       "address": "007384d2",
-      "native": "00be25e0"
+      "native": "00be25e0",
+      "manager_load_evidence": {
+        "manager_publication_load": "007384bd",
+        "manager_publication_global": "0109ceec",
+        "manager_register": "ECX",
+        "value_header_construct_call": "0073845f",
+        "group_header_construct_call": "0073849a",
+        "value_literal_address": "00cff074",
+        "group_literal_address": "00cff078",
+        "group_header_copy_call": "007384b5",
+        "intervening_call_or_ecx_write": false,
+        "branch_entry_bypassing_load": false
+      }
     },
     {
       "kind": "SearchDirectory",
@@ -65,7 +89,19 @@
       },
       "decompiled_line": 106,
       "address": "007385a1",
-      "native": "00be2600"
+      "native": "00be2600",
+      "manager_load_evidence": {
+        "manager_publication_load": "00738596",
+        "manager_publication_global": "0109ceec",
+        "manager_register": "ECX",
+        "value_header_construct_call": "0073852e",
+        "group_header_construct_call": "00738569",
+        "value_literal_address": "00cff068",
+        "group_literal_address": "00cff078",
+        "group_header_copy_call": "00738584",
+        "intervening_call_or_ecx_write": false,
+        "branch_entry_bypassing_load": false
+      }
     },
     {
       "kind": "SearchDirectory",
@@ -83,7 +119,19 @@
       },
       "decompiled_line": 137,
       "address": "00738670",
-      "native": "00be2600"
+      "native": "00be2600",
+      "manager_load_evidence": {
+        "manager_publication_load": "0073865b",
+        "manager_publication_global": "0109ceec",
+        "manager_register": "ECX",
+        "value_header_construct_call": "007385fd",
+        "group_header_construct_call": "00738638",
+        "value_literal_address": "00cff054",
+        "group_literal_address": "00cff078",
+        "group_header_copy_call": "00738653",
+        "intervening_call_or_ecx_write": false,
+        "branch_entry_bypassing_load": false
+      }
     },
     {
       "kind": "SearchDirectory",
@@ -101,7 +149,19 @@
       },
       "decompiled_line": 168,
       "address": "0073873f",
-      "native": "00be2600"
+      "native": "00be2600",
+      "manager_load_evidence": {
+        "manager_publication_load": "00738734",
+        "manager_publication_global": "0109ceec",
+        "manager_register": "ECX",
+        "value_header_construct_call": "007386cc",
+        "group_header_construct_call": "00738707",
+        "value_literal_address": "00cff038",
+        "group_literal_address": "00cff078",
+        "group_header_copy_call": "00738722",
+        "intervening_call_or_ecx_write": false,
+        "branch_entry_bypassing_load": false
+      }
     },
     {
       "kind": "SearchDirectory",
@@ -119,7 +179,19 @@
       },
       "decompiled_line": 199,
       "address": "0073880e",
-      "native": "00be2600"
+      "native": "00be2600",
+      "manager_load_evidence": {
+        "manager_publication_load": "007387f9",
+        "manager_publication_global": "0109ceec",
+        "manager_register": "ECX",
+        "value_header_construct_call": "0073879b",
+        "group_header_construct_call": "007387d6",
+        "value_literal_address": "00cff020",
+        "group_literal_address": "00cff078",
+        "group_header_copy_call": "007387f1",
+        "intervening_call_or_ecx_write": false,
+        "branch_entry_bypassing_load": false
+      }
     },
     {
       "kind": "SearchDirectory",
@@ -137,7 +209,19 @@
       },
       "decompiled_line": 230,
       "address": "007388dd",
-      "native": "00be2600"
+      "native": "00be2600",
+      "manager_load_evidence": {
+        "manager_publication_load": "007388d2",
+        "manager_publication_global": "0109ceec",
+        "manager_register": "ECX",
+        "value_header_construct_call": "0073886a",
+        "group_header_construct_call": "007388a5",
+        "value_literal_address": "00cff008",
+        "group_literal_address": "00cff078",
+        "group_header_copy_call": "007388c0",
+        "intervening_call_or_ecx_write": false,
+        "branch_entry_bypassing_load": false
+      }
     },
     {
       "kind": "SearchDirectory",
@@ -155,7 +239,19 @@
       },
       "decompiled_line": 261,
       "address": "007389ac",
-      "native": "00be2600"
+      "native": "00be2600",
+      "manager_load_evidence": {
+        "manager_publication_load": "00738997",
+        "manager_publication_global": "0109ceec",
+        "manager_register": "ECX",
+        "value_header_construct_call": "00738939",
+        "group_header_construct_call": "00738974",
+        "value_literal_address": "00cfefe8",
+        "group_literal_address": "00cff078",
+        "group_header_copy_call": "0073898f",
+        "intervening_call_or_ecx_write": false,
+        "branch_entry_bypassing_load": false
+      }
     },
     {
       "kind": "SearchDirectory",
@@ -173,7 +269,19 @@
       },
       "decompiled_line": 292,
       "address": "00738a7b",
-      "native": "00be2600"
+      "native": "00be2600",
+      "manager_load_evidence": {
+        "manager_publication_load": "00738a70",
+        "manager_publication_global": "0109ceec",
+        "manager_register": "ECX",
+        "value_header_construct_call": "00738a08",
+        "group_header_construct_call": "00738a43",
+        "value_literal_address": "00cfefd4",
+        "group_literal_address": "00cff078",
+        "group_header_copy_call": "00738a5e",
+        "intervening_call_or_ecx_write": false,
+        "branch_entry_bypassing_load": false
+      }
     },
     {
       "kind": "SearchDirectory",
@@ -191,7 +299,19 @@
       },
       "decompiled_line": 323,
       "address": "00738b4a",
-      "native": "00be2600"
+      "native": "00be2600",
+      "manager_load_evidence": {
+        "manager_publication_load": "00738b35",
+        "manager_publication_global": "0109ceec",
+        "manager_register": "ECX",
+        "value_header_construct_call": "00738ad7",
+        "group_header_construct_call": "00738b12",
+        "value_literal_address": "00ce8228",
+        "group_literal_address": "00cff078",
+        "group_header_copy_call": "00738b2d",
+        "intervening_call_or_ecx_write": false,
+        "branch_entry_bypassing_load": false
+      }
     },
     {
       "kind": "SearchDirectory",
@@ -209,7 +329,19 @@
       },
       "decompiled_line": 354,
       "address": "00738c19",
-      "native": "00be2600"
+      "native": "00be2600",
+      "manager_load_evidence": {
+        "manager_publication_load": "00738c0e",
+        "manager_publication_global": "0109ceec",
+        "manager_register": "ECX",
+        "value_header_construct_call": "00738ba6",
+        "group_header_construct_call": "00738be1",
+        "value_literal_address": "00cfefb0",
+        "group_literal_address": "00cff078",
+        "group_header_copy_call": "00738bfc",
+        "intervening_call_or_ecx_write": false,
+        "branch_entry_bypassing_load": false
+      }
     },
     {
       "kind": "SearchDirectory",
@@ -227,7 +359,19 @@
       },
       "decompiled_line": 385,
       "address": "00738ce8",
-      "native": "00be2600"
+      "native": "00be2600",
+      "manager_load_evidence": {
+        "manager_publication_load": "00738cd3",
+        "manager_publication_global": "0109ceec",
+        "manager_register": "ECX",
+        "value_header_construct_call": "00738c75",
+        "group_header_construct_call": "00738cb0",
+        "value_literal_address": "00ce820c",
+        "group_literal_address": "00cff078",
+        "group_header_copy_call": "00738ccb",
+        "intervening_call_or_ecx_write": false,
+        "branch_entry_bypassing_load": false
+      }
     },
     {
       "kind": "SearchDirectory",
@@ -245,7 +389,19 @@
       },
       "decompiled_line": 416,
       "address": "00738db7",
-      "native": "00be2600"
+      "native": "00be2600",
+      "manager_load_evidence": {
+        "manager_publication_load": "00738dac",
+        "manager_publication_global": "0109ceec",
+        "manager_register": "ECX",
+        "value_header_construct_call": "00738d44",
+        "group_header_construct_call": "00738d7f",
+        "value_literal_address": "00cfefa8",
+        "group_literal_address": "00cff078",
+        "group_header_copy_call": "00738d9a",
+        "intervening_call_or_ecx_write": false,
+        "branch_entry_bypassing_load": false
+      }
     },
     {
       "kind": "SearchDirectory",
@@ -263,7 +419,19 @@
       },
       "decompiled_line": 447,
       "address": "00738e86",
-      "native": "00be2600"
+      "native": "00be2600",
+      "manager_load_evidence": {
+        "manager_publication_load": "00738e71",
+        "manager_publication_global": "0109ceec",
+        "manager_register": "ECX",
+        "value_header_construct_call": "00738e13",
+        "group_header_construct_call": "00738e4e",
+        "value_literal_address": "00cfef9c",
+        "group_literal_address": "00cff078",
+        "group_header_copy_call": "00738e69",
+        "intervening_call_or_ecx_write": false,
+        "branch_entry_bypassing_load": false
+      }
     },
     {
       "kind": "SearchDirectory",
@@ -281,7 +449,19 @@
       },
       "decompiled_line": 478,
       "address": "00738f55",
-      "native": "00be2600"
+      "native": "00be2600",
+      "manager_load_evidence": {
+        "manager_publication_load": "00738f4a",
+        "manager_publication_global": "0109ceec",
+        "manager_register": "ECX",
+        "value_header_construct_call": "00738ee2",
+        "group_header_construct_call": "00738f1d",
+        "value_literal_address": "00cfef90",
+        "group_literal_address": "00cff078",
+        "group_header_copy_call": "00738f38",
+        "intervening_call_or_ecx_write": false,
+        "branch_entry_bypassing_load": false
+      }
     },
     {
       "kind": "SearchDirectory",
@@ -299,7 +479,19 @@
       },
       "decompiled_line": 509,
       "address": "00739024",
-      "native": "00be2600"
+      "native": "00be2600",
+      "manager_load_evidence": {
+        "manager_publication_load": "0073900f",
+        "manager_publication_global": "0109ceec",
+        "manager_register": "ECX",
+        "value_header_construct_call": "00738fb1",
+        "group_header_construct_call": "00738fec",
+        "value_literal_address": "00cfef84",
+        "group_literal_address": "00cff078",
+        "group_header_copy_call": "00739007",
+        "intervening_call_or_ecx_write": false,
+        "branch_entry_bypassing_load": false
+      }
     },
     {
       "kind": "SearchDirectory",
@@ -317,7 +509,19 @@
       },
       "decompiled_line": 540,
       "address": "007390f3",
-      "native": "00be2600"
+      "native": "00be2600",
+      "manager_load_evidence": {
+        "manager_publication_load": "007390e8",
+        "manager_publication_global": "0109ceec",
+        "manager_register": "ECX",
+        "value_header_construct_call": "00739080",
+        "group_header_construct_call": "007390bb",
+        "value_literal_address": "00cfef74",
+        "group_literal_address": "00cff078",
+        "group_header_copy_call": "007390d6",
+        "intervening_call_or_ecx_write": false,
+        "branch_entry_bypassing_load": false
+      }
     },
     {
       "kind": "SearchDirectory",
@@ -335,7 +539,19 @@
       },
       "decompiled_line": 571,
       "address": "007391c2",
-      "native": "00be2600"
+      "native": "00be2600",
+      "manager_load_evidence": {
+        "manager_publication_load": "007391ad",
+        "manager_publication_global": "0109ceec",
+        "manager_register": "ECX",
+        "value_header_construct_call": "0073914f",
+        "group_header_construct_call": "0073918a",
+        "value_literal_address": "00cfef5c",
+        "group_literal_address": "00cff078",
+        "group_header_copy_call": "007391a5",
+        "intervening_call_or_ecx_write": false,
+        "branch_entry_bypassing_load": false
+      }
     },
     {
       "kind": "SearchDirectory",
@@ -353,7 +569,19 @@
       },
       "decompiled_line": 602,
       "address": "00739291",
-      "native": "00be2600"
+      "native": "00be2600",
+      "manager_load_evidence": {
+        "manager_publication_load": "00739286",
+        "manager_publication_global": "0109ceec",
+        "manager_register": "ECX",
+        "value_header_construct_call": "0073921e",
+        "group_header_construct_call": "00739259",
+        "value_literal_address": "00cfef4c",
+        "group_literal_address": "00cff078",
+        "group_header_copy_call": "00739274",
+        "intervening_call_or_ecx_write": false,
+        "branch_entry_bypassing_load": false
+      }
     },
     {
       "kind": "SearchDirectory",
@@ -371,7 +599,19 @@
       },
       "decompiled_line": 633,
       "address": "00739360",
-      "native": "00be2600"
+      "native": "00be2600",
+      "manager_load_evidence": {
+        "manager_publication_load": "0073934b",
+        "manager_publication_global": "0109ceec",
+        "manager_register": "ECX",
+        "value_header_construct_call": "007392ed",
+        "group_header_construct_call": "00739328",
+        "value_literal_address": "00cfef38",
+        "group_literal_address": "00cff078",
+        "group_header_copy_call": "00739343",
+        "intervening_call_or_ecx_write": false,
+        "branch_entry_bypassing_load": false
+      }
     },
     {
       "kind": "SearchDirectory",
@@ -389,7 +629,19 @@
       },
       "decompiled_line": 664,
       "address": "0073942f",
-      "native": "00be2600"
+      "native": "00be2600",
+      "manager_load_evidence": {
+        "manager_publication_load": "00739424",
+        "manager_publication_global": "0109ceec",
+        "manager_register": "ECX",
+        "value_header_construct_call": "007393bc",
+        "group_header_construct_call": "007393f7",
+        "value_literal_address": "00cfef24",
+        "group_literal_address": "00cff078",
+        "group_header_copy_call": "00739412",
+        "intervening_call_or_ecx_write": false,
+        "branch_entry_bypassing_load": false
+      }
     },
     {
       "kind": "SearchDirectory",
@@ -407,7 +659,19 @@
       },
       "decompiled_line": 695,
       "address": "007394fe",
-      "native": "00be2600"
+      "native": "00be2600",
+      "manager_load_evidence": {
+        "manager_publication_load": "007394e9",
+        "manager_publication_global": "0109ceec",
+        "manager_register": "ECX",
+        "value_header_construct_call": "0073948b",
+        "group_header_construct_call": "007394c6",
+        "value_literal_address": "00ce81f8",
+        "group_literal_address": "00cff078",
+        "group_header_copy_call": "007394e1",
+        "intervening_call_or_ecx_write": false,
+        "branch_entry_bypassing_load": false
+      }
     },
     {
       "kind": "SearchDirectory",
@@ -425,7 +689,19 @@
       },
       "decompiled_line": 726,
       "address": "007395cd",
-      "native": "00be2600"
+      "native": "00be2600",
+      "manager_load_evidence": {
+        "manager_publication_load": "007395c2",
+        "manager_publication_global": "0109ceec",
+        "manager_register": "ECX",
+        "value_header_construct_call": "0073955a",
+        "group_header_construct_call": "00739595",
+        "value_literal_address": "00cfef10",
+        "group_literal_address": "00cff078",
+        "group_header_copy_call": "007395b0",
+        "intervening_call_or_ecx_write": false,
+        "branch_entry_bypassing_load": false
+      }
     },
     {
       "kind": "SearchDirectory",
@@ -443,7 +719,19 @@
       },
       "decompiled_line": 757,
       "address": "0073969c",
-      "native": "00be2600"
+      "native": "00be2600",
+      "manager_load_evidence": {
+        "manager_publication_load": "00739687",
+        "manager_publication_global": "0109ceec",
+        "manager_register": "ECX",
+        "value_header_construct_call": "00739629",
+        "group_header_construct_call": "00739664",
+        "value_literal_address": "00cfeef8",
+        "group_literal_address": "00cff078",
+        "group_header_copy_call": "0073967f",
+        "intervening_call_or_ecx_write": false,
+        "branch_entry_bypassing_load": false
+      }
     },
     {
       "kind": "SearchDirectory",
@@ -461,7 +749,19 @@
       },
       "decompiled_line": 788,
       "address": "0073976b",
-      "native": "00be2600"
+      "native": "00be2600",
+      "manager_load_evidence": {
+        "manager_publication_load": "00739760",
+        "manager_publication_global": "0109ceec",
+        "manager_register": "ECX",
+        "value_header_construct_call": "007396f8",
+        "group_header_construct_call": "00739733",
+        "value_literal_address": "00cfeedc",
+        "group_literal_address": "00cff078",
+        "group_header_copy_call": "0073974e",
+        "intervening_call_or_ecx_write": false,
+        "branch_entry_bypassing_load": false
+      }
     },
     {
       "kind": "ExtensionPrefix",
@@ -479,7 +779,19 @@
       },
       "decompiled_line": 819,
       "address": "0073983a",
-      "native": "00be1480"
+      "native": "00be1480",
+      "manager_load_evidence": {
+        "manager_publication_load": "00739825",
+        "manager_publication_global": "0109ceec",
+        "manager_register": "ECX",
+        "value_header_construct_call": "007397c7",
+        "group_header_construct_call": "00739802",
+        "value_literal_address": "00cfeed0",
+        "group_literal_address": "00cfeecc",
+        "group_header_copy_call": "0073981d",
+        "intervening_call_or_ecx_write": false,
+        "branch_entry_bypassing_load": false
+      }
     },
     {
       "kind": "ExtensionPrefix",
@@ -497,7 +809,19 @@
       },
       "decompiled_line": 850,
       "address": "00739909",
-      "native": "00be1480"
+      "native": "00be1480",
+      "manager_load_evidence": {
+        "manager_publication_load": "007398fe",
+        "manager_publication_global": "0109ceec",
+        "manager_register": "ECX",
+        "value_header_construct_call": "00739896",
+        "group_header_construct_call": "007398d1",
+        "value_literal_address": "00cfeec4",
+        "group_literal_address": "00cfeebc",
+        "group_header_copy_call": "007398ec",
+        "intervening_call_or_ecx_write": false,
+        "branch_entry_bypassing_load": false
+      }
     },
     {
       "kind": "ExtensionPrefix",
@@ -515,7 +839,19 @@
       },
       "decompiled_line": 881,
       "address": "007399d8",
-      "native": "00be1480"
+      "native": "00be1480",
+      "manager_load_evidence": {
+        "manager_publication_load": "007399c3",
+        "manager_publication_global": "0109ceec",
+        "manager_register": "ECX",
+        "value_header_construct_call": "00739965",
+        "group_header_construct_call": "007399a0",
+        "value_literal_address": "00cfeeb4",
+        "group_literal_address": "00cfeeb0",
+        "group_header_copy_call": "007399bb",
+        "intervening_call_or_ecx_write": false,
+        "branch_entry_bypassing_load": false
+      }
     },
     {
       "kind": "ExtensionPrefix",
@@ -533,7 +869,19 @@
       },
       "decompiled_line": 912,
       "address": "00739aa7",
-      "native": "00be1480"
+      "native": "00be1480",
+      "manager_load_evidence": {
+        "manager_publication_load": "00739a9c",
+        "manager_publication_global": "0109ceec",
+        "manager_register": "ECX",
+        "value_header_construct_call": "00739a34",
+        "group_header_construct_call": "00739a6f",
+        "value_literal_address": "00cff068",
+        "group_literal_address": "00cfeeb0",
+        "group_header_copy_call": "00739a8a",
+        "intervening_call_or_ecx_write": false,
+        "branch_entry_bypassing_load": false
+      }
     },
     {
       "kind": "ExtensionPrefix",
@@ -551,7 +899,19 @@
       },
       "decompiled_line": 943,
       "address": "00739b76",
-      "native": "00be1480"
+      "native": "00be1480",
+      "manager_load_evidence": {
+        "manager_publication_load": "00739b61",
+        "manager_publication_global": "0109ceec",
+        "manager_register": "ECX",
+        "value_header_construct_call": "00739b03",
+        "group_header_construct_call": "00739b3e",
+        "value_literal_address": "00cfeea0",
+        "group_literal_address": "00cfee98",
+        "group_header_copy_call": "00739b59",
+        "intervening_call_or_ecx_write": false,
+        "branch_entry_bypassing_load": false
+      }
     },
     {
       "kind": "SearchExtension",
@@ -569,7 +929,19 @@
       },
       "decompiled_line": 974,
       "address": "00739c45",
-      "native": "00be25e0"
+      "native": "00be25e0",
+      "manager_load_evidence": {
+        "manager_publication_load": "00739c3a",
+        "manager_publication_global": "0109ceec",
+        "manager_register": "ECX",
+        "value_header_construct_call": "00739bd2",
+        "group_header_construct_call": "00739c0d",
+        "value_literal_address": "00cfee90",
+        "group_literal_address": "00cfee84",
+        "group_header_copy_call": "00739c28",
+        "intervening_call_or_ecx_write": false,
+        "branch_entry_bypassing_load": false
+      }
     },
     {
       "kind": "SearchDirectory",
@@ -587,7 +959,19 @@
       },
       "decompiled_line": 1005,
       "address": "00739d14",
-      "native": "00be2600"
+      "native": "00be2600",
+      "manager_load_evidence": {
+        "manager_publication_load": "00739cff",
+        "manager_publication_global": "0109ceec",
+        "manager_register": "ECX",
+        "value_header_construct_call": "00739ca1",
+        "group_header_construct_call": "00739cdc",
+        "value_literal_address": "00cfee78",
+        "group_literal_address": "00cfee84",
+        "group_header_copy_call": "00739cf7",
+        "intervening_call_or_ecx_write": false,
+        "branch_entry_bypassing_load": false
+      }
     },
     {
       "kind": "SearchDirectory",
@@ -605,7 +989,19 @@
       },
       "decompiled_line": 1036,
       "address": "00739de3",
-      "native": "00be2600"
+      "native": "00be2600",
+      "manager_load_evidence": {
+        "manager_publication_load": "00739dd8",
+        "manager_publication_global": "0109ceec",
+        "manager_register": "ECX",
+        "value_header_construct_call": "00739d70",
+        "group_header_construct_call": "00739dab",
+        "value_literal_address": "00cfee68",
+        "group_literal_address": "00cfee84",
+        "group_header_copy_call": "00739dc6",
+        "intervening_call_or_ecx_write": false,
+        "branch_entry_bypassing_load": false
+      }
     },
     {
       "kind": "SearchDirectory",
@@ -623,7 +1019,19 @@
       },
       "decompiled_line": 1067,
       "address": "00739eb2",
-      "native": "00be2600"
+      "native": "00be2600",
+      "manager_load_evidence": {
+        "manager_publication_load": "00739e9d",
+        "manager_publication_global": "0109ceec",
+        "manager_register": "ECX",
+        "value_header_construct_call": "00739e3f",
+        "group_header_construct_call": "00739e7a",
+        "value_literal_address": "00cfee58",
+        "group_literal_address": "00cfee84",
+        "group_header_copy_call": "00739e95",
+        "intervening_call_or_ecx_write": false,
+        "branch_entry_bypassing_load": false
+      }
     },
     {
       "kind": "SearchDirectory",
@@ -641,7 +1049,19 @@
       },
       "decompiled_line": 1098,
       "address": "00739f81",
-      "native": "00be2600"
+      "native": "00be2600",
+      "manager_load_evidence": {
+        "manager_publication_load": "00739f76",
+        "manager_publication_global": "0109ceec",
+        "manager_register": "ECX",
+        "value_header_construct_call": "00739f0e",
+        "group_header_construct_call": "00739f49",
+        "value_literal_address": "00cfee44",
+        "group_literal_address": "00cfee84",
+        "group_header_copy_call": "00739f64",
+        "intervening_call_or_ecx_write": false,
+        "branch_entry_bypassing_load": false
+      }
     },
     {
       "kind": "SearchDirectory",
@@ -659,7 +1079,19 @@
       },
       "decompiled_line": 1129,
       "address": "0073a050",
-      "native": "00be2600"
+      "native": "00be2600",
+      "manager_load_evidence": {
+        "manager_publication_load": "0073a03b",
+        "manager_publication_global": "0109ceec",
+        "manager_register": "ECX",
+        "value_header_construct_call": "00739fdd",
+        "group_header_construct_call": "0073a018",
+        "value_literal_address": "00cfee30",
+        "group_literal_address": "00cfee84",
+        "group_header_copy_call": "0073a033",
+        "intervening_call_or_ecx_write": false,
+        "branch_entry_bypassing_load": false
+      }
     },
     {
       "kind": "SearchDirectory",
@@ -677,7 +1109,19 @@
       },
       "decompiled_line": 1160,
       "address": "0073a11f",
-      "native": "00be2600"
+      "native": "00be2600",
+      "manager_load_evidence": {
+        "manager_publication_load": "0073a114",
+        "manager_publication_global": "0109ceec",
+        "manager_register": "ECX",
+        "value_header_construct_call": "0073a0ac",
+        "group_header_construct_call": "0073a0e7",
+        "value_literal_address": "00cfee1c",
+        "group_literal_address": "00cfee84",
+        "group_header_copy_call": "0073a102",
+        "intervening_call_or_ecx_write": false,
+        "branch_entry_bypassing_load": false
+      }
     },
     {
       "kind": "SearchDirectory",
@@ -695,7 +1139,19 @@
       },
       "decompiled_line": 1191,
       "address": "0073a1ee",
-      "native": "00be2600"
+      "native": "00be2600",
+      "manager_load_evidence": {
+        "manager_publication_load": "0073a1d9",
+        "manager_publication_global": "0109ceec",
+        "manager_register": "ECX",
+        "value_header_construct_call": "0073a17b",
+        "group_header_construct_call": "0073a1b6",
+        "value_literal_address": "00cfee0c",
+        "group_literal_address": "00cfee84",
+        "group_header_copy_call": "0073a1d1",
+        "intervening_call_or_ecx_write": false,
+        "branch_entry_bypassing_load": false
+      }
     },
     {
       "kind": "SearchDirectory",
@@ -713,7 +1169,19 @@
       },
       "decompiled_line": 1222,
       "address": "0073a2bd",
-      "native": "00be2600"
+      "native": "00be2600",
+      "manager_load_evidence": {
+        "manager_publication_load": "0073a2b2",
+        "manager_publication_global": "0109ceec",
+        "manager_register": "ECX",
+        "value_header_construct_call": "0073a24a",
+        "group_header_construct_call": "0073a285",
+        "value_literal_address": "00cfedf8",
+        "group_literal_address": "00cfee84",
+        "group_header_copy_call": "0073a2a0",
+        "intervening_call_or_ecx_write": false,
+        "branch_entry_bypassing_load": false
+      }
     },
     {
       "kind": "SearchDirectory",
@@ -731,7 +1199,19 @@
       },
       "decompiled_line": 1253,
       "address": "0073a38c",
-      "native": "00be2600"
+      "native": "00be2600",
+      "manager_load_evidence": {
+        "manager_publication_load": "0073a377",
+        "manager_publication_global": "0109ceec",
+        "manager_register": "ECX",
+        "value_header_construct_call": "0073a319",
+        "group_header_construct_call": "0073a354",
+        "value_literal_address": "00cfede0",
+        "group_literal_address": "00cfee84",
+        "group_header_copy_call": "0073a36f",
+        "intervening_call_or_ecx_write": false,
+        "branch_entry_bypassing_load": false
+      }
     },
     {
       "kind": "SearchDirectory",
@@ -749,7 +1229,19 @@
       },
       "decompiled_line": 1284,
       "address": "0073a45b",
-      "native": "00be2600"
+      "native": "00be2600",
+      "manager_load_evidence": {
+        "manager_publication_load": "0073a450",
+        "manager_publication_global": "0109ceec",
+        "manager_register": "ECX",
+        "value_header_construct_call": "0073a3e8",
+        "group_header_construct_call": "0073a423",
+        "value_literal_address": "00cfedd0",
+        "group_literal_address": "00cfee84",
+        "group_header_copy_call": "0073a43e",
+        "intervening_call_or_ecx_write": false,
+        "branch_entry_bypassing_load": false
+      }
     },
     {
       "kind": "ExtensionPrefix",
@@ -767,7 +1259,19 @@
       },
       "decompiled_line": 1315,
       "address": "0073a52a",
-      "native": "00be1480"
+      "native": "00be1480",
+      "manager_load_evidence": {
+        "manager_publication_load": "0073a515",
+        "manager_publication_global": "0109ceec",
+        "manager_register": "ECX",
+        "value_header_construct_call": "0073a4b7",
+        "group_header_construct_call": "0073a4f2",
+        "value_literal_address": "00cfedc4",
+        "group_literal_address": "00cfedc0",
+        "group_header_copy_call": "0073a50d",
+        "intervening_call_or_ecx_write": false,
+        "branch_entry_bypassing_load": false
+      }
     },
     {
       "kind": "ExtensionPrefix",
@@ -785,7 +1289,19 @@
       },
       "decompiled_line": 1346,
       "address": "0073a5f9",
-      "native": "00be1480"
+      "native": "00be1480",
+      "manager_load_evidence": {
+        "manager_publication_load": "0073a5ee",
+        "manager_publication_global": "0109ceec",
+        "manager_register": "ECX",
+        "value_header_construct_call": "0073a586",
+        "group_header_construct_call": "0073a5c1",
+        "value_literal_address": "00cfedc4",
+        "group_literal_address": "00cfedbc",
+        "group_header_copy_call": "0073a5dc",
+        "intervening_call_or_ecx_write": false,
+        "branch_entry_bypassing_load": false
+      }
     },
     {
       "kind": "SearchExtension",
@@ -803,7 +1319,19 @@
       },
       "decompiled_line": 1377,
       "address": "0073a6c8",
-      "native": "00be25e0"
+      "native": "00be25e0",
+      "manager_load_evidence": {
+        "manager_publication_load": "0073a6b3",
+        "manager_publication_global": "0109ceec",
+        "manager_register": "ECX",
+        "value_header_construct_call": "0073a655",
+        "group_header_construct_call": "0073a690",
+        "value_literal_address": "00cfedb4",
+        "group_literal_address": "00cfeda8",
+        "group_header_copy_call": "0073a6ab",
+        "intervening_call_or_ecx_write": false,
+        "branch_entry_bypassing_load": false
+      }
     },
     {
       "kind": "SearchDirectory",
@@ -821,7 +1349,19 @@
       },
       "decompiled_line": 1408,
       "address": "0073a797",
-      "native": "00be2600"
+      "native": "00be2600",
+      "manager_load_evidence": {
+        "manager_publication_load": "0073a78c",
+        "manager_publication_global": "0109ceec",
+        "manager_register": "ECX",
+        "value_header_construct_call": "0073a724",
+        "group_header_construct_call": "0073a75f",
+        "value_literal_address": "00cfed9c",
+        "group_literal_address": "00cfeda8",
+        "group_header_copy_call": "0073a77a",
+        "intervening_call_or_ecx_write": false,
+        "branch_entry_bypassing_load": false
+      }
     },
     {
       "kind": "SearchDirectory",
@@ -839,7 +1379,19 @@
       },
       "decompiled_line": 1439,
       "address": "0073a866",
-      "native": "00be2600"
+      "native": "00be2600",
+      "manager_load_evidence": {
+        "manager_publication_load": "0073a851",
+        "manager_publication_global": "0109ceec",
+        "manager_register": "ECX",
+        "value_header_construct_call": "0073a7f3",
+        "group_header_construct_call": "0073a82e",
+        "value_literal_address": "00cfed8c",
+        "group_literal_address": "00cfeda8",
+        "group_header_copy_call": "0073a849",
+        "intervening_call_or_ecx_write": false,
+        "branch_entry_bypassing_load": false
+      }
     },
     {
       "kind": "SearchDirectory",
@@ -857,7 +1409,19 @@
       },
       "decompiled_line": 1470,
       "address": "0073a935",
-      "native": "00be2600"
+      "native": "00be2600",
+      "manager_load_evidence": {
+        "manager_publication_load": "0073a92a",
+        "manager_publication_global": "0109ceec",
+        "manager_register": "ECX",
+        "value_header_construct_call": "0073a8c2",
+        "group_header_construct_call": "0073a8fd",
+        "value_literal_address": "00cfed7c",
+        "group_literal_address": "00cfeda8",
+        "group_header_copy_call": "0073a918",
+        "intervening_call_or_ecx_write": false,
+        "branch_entry_bypassing_load": false
+      }
     },
     {
       "kind": "SearchDirectory",
@@ -875,7 +1439,19 @@
       },
       "decompiled_line": 1501,
       "address": "0073aa04",
-      "native": "00be2600"
+      "native": "00be2600",
+      "manager_load_evidence": {
+        "manager_publication_load": "0073a9ef",
+        "manager_publication_global": "0109ceec",
+        "manager_register": "ECX",
+        "value_header_construct_call": "0073a991",
+        "group_header_construct_call": "0073a9cc",
+        "value_literal_address": "00cfed68",
+        "group_literal_address": "00cfeda8",
+        "group_header_copy_call": "0073a9e7",
+        "intervening_call_or_ecx_write": false,
+        "branch_entry_bypassing_load": false
+      }
     },
     {
       "kind": "SearchDirectory",
@@ -893,7 +1469,19 @@
       },
       "decompiled_line": 1532,
       "address": "0073aad3",
-      "native": "00be2600"
+      "native": "00be2600",
+      "manager_load_evidence": {
+        "manager_publication_load": "0073aac8",
+        "manager_publication_global": "0109ceec",
+        "manager_register": "ECX",
+        "value_header_construct_call": "0073aa60",
+        "group_header_construct_call": "0073aa9b",
+        "value_literal_address": "00cfed54",
+        "group_literal_address": "00cfeda8",
+        "group_header_copy_call": "0073aab6",
+        "intervening_call_or_ecx_write": false,
+        "branch_entry_bypassing_load": false
+      }
     },
     {
       "kind": "SearchDirectory",
@@ -911,7 +1499,19 @@
       },
       "decompiled_line": 1563,
       "address": "0073aba2",
-      "native": "00be2600"
+      "native": "00be2600",
+      "manager_load_evidence": {
+        "manager_publication_load": "0073ab8d",
+        "manager_publication_global": "0109ceec",
+        "manager_register": "ECX",
+        "value_header_construct_call": "0073ab2f",
+        "group_header_construct_call": "0073ab6a",
+        "value_literal_address": "00cfed40",
+        "group_literal_address": "00cfeda8",
+        "group_header_copy_call": "0073ab85",
+        "intervening_call_or_ecx_write": false,
+        "branch_entry_bypassing_load": false
+      }
     },
     {
       "kind": "SearchDirectory",
@@ -929,7 +1529,19 @@
       },
       "decompiled_line": 1594,
       "address": "0073ac71",
-      "native": "00be2600"
+      "native": "00be2600",
+      "manager_load_evidence": {
+        "manager_publication_load": "0073ac66",
+        "manager_publication_global": "0109ceec",
+        "manager_register": "ECX",
+        "value_header_construct_call": "0073abfe",
+        "group_header_construct_call": "0073ac39",
+        "value_literal_address": "00cfed30",
+        "group_literal_address": "00cfeda8",
+        "group_header_copy_call": "0073ac54",
+        "intervening_call_or_ecx_write": false,
+        "branch_entry_bypassing_load": false
+      }
     },
     {
       "kind": "ExtensionPrefix",
@@ -947,7 +1559,19 @@
       },
       "decompiled_line": 1615,
       "address": "0073acf6",
-      "native": "00be1480"
+      "native": "00be1480",
+      "manager_load_evidence": {
+        "manager_publication_load": "0073ace1",
+        "manager_publication_global": "0109ceec",
+        "manager_register": "ECX",
+        "value_header_construct_call": "0073acc6",
+        "group_header_construct_call": "0073acdc",
+        "value_literal_address": "00cfed18",
+        "group_literal_address": "00cfed14",
+        "group_header_copy_call": null,
+        "intervening_call_or_ecx_write": false,
+        "branch_entry_bypassing_load": false
+      }
     },
     {
       "kind": "ExtensionPrefix",
@@ -965,14 +1589,26 @@
       },
       "decompiled_line": 1636,
       "address": "0073ad7b",
-      "native": "00be1480"
+      "native": "00be1480",
+      "manager_load_evidence": {
+        "manager_publication_load": "0073ad6b",
+        "manager_publication_global": "0109ceec",
+        "manager_register": "ECX",
+        "value_header_construct_call": "0073ad4b",
+        "group_header_construct_call": "0073ad61",
+        "value_literal_address": "00cfed18",
+        "group_literal_address": "00cfed10",
+        "group_header_copy_call": null,
+        "intervening_call_or_ecx_write": false,
+        "branch_entry_bypassing_load": false
+      }
     },
     {
       "kind": "ExtensionPrefix",
       "first": {
-        "text": "pfx",
+        "text": "pfv",
         "length": 3,
-        "source": "\"pfx\"",
+        "source": "&DAT_00cfed0c",
         "mode": "Assign"
       },
       "second": {
@@ -983,7 +1619,19 @@
       },
       "decompiled_line": 1657,
       "address": "0073ae00",
-      "native": "00be1480"
+      "native": "00be1480",
+      "manager_load_evidence": {
+        "manager_publication_load": "0073adf5",
+        "manager_publication_global": "0109ceec",
+        "manager_register": "ECX",
+        "value_header_construct_call": "0073add0",
+        "group_header_construct_call": "0073ade6",
+        "value_literal_address": "00cfed18",
+        "group_literal_address": "00cfed0c",
+        "group_header_copy_call": null,
+        "intervening_call_or_ecx_write": false,
+        "branch_entry_bypassing_load": false
+      }
     },
     {
       "kind": "ExtensionPrefix",
@@ -1001,7 +1649,19 @@
       },
       "decompiled_line": 1678,
       "address": "0073ae85",
-      "native": "00be1480"
+      "native": "00be1480",
+      "manager_load_evidence": {
+        "manager_publication_load": "0073ae70",
+        "manager_publication_global": "0109ceec",
+        "manager_register": "ECX",
+        "value_header_construct_call": "0073ae55",
+        "group_header_construct_call": "0073ae6b",
+        "value_literal_address": "00cfef9c",
+        "group_literal_address": "00cfed08",
+        "group_header_copy_call": null,
+        "intervening_call_or_ecx_write": false,
+        "branch_entry_bypassing_load": false
+      }
     },
     {
       "kind": "ExtensionPrefix",
@@ -1019,7 +1679,19 @@
       },
       "decompiled_line": 1699,
       "address": "0073af0a",
-      "native": "00be1480"
+      "native": "00be1480",
+      "manager_load_evidence": {
+        "manager_publication_load": "0073aefa",
+        "manager_publication_global": "0109ceec",
+        "manager_register": "ECX",
+        "value_header_construct_call": "0073aeda",
+        "group_header_construct_call": "0073aef0",
+        "value_literal_address": "00cfecfc",
+        "group_literal_address": "00cfecf8",
+        "group_header_copy_call": null,
+        "intervening_call_or_ecx_write": false,
+        "branch_entry_bypassing_load": false
+      }
     },
     {
       "kind": "SearchExtension",
@@ -1037,7 +1709,19 @@
       },
       "decompiled_line": 1720,
       "address": "0073af8f",
-      "native": "00be25e0"
+      "native": "00be25e0",
+      "manager_load_evidence": {
+        "manager_publication_load": "0073af84",
+        "manager_publication_global": "0109ceec",
+        "manager_register": "ECX",
+        "value_header_construct_call": "0073af5f",
+        "group_header_construct_call": "0073af75",
+        "value_literal_address": "00cfecf4",
+        "group_literal_address": "00cfecec",
+        "group_header_copy_call": null,
+        "intervening_call_or_ecx_write": false,
+        "branch_entry_bypassing_load": false
+      }
     },
     {
       "kind": "SearchDirectory",
@@ -1055,7 +1739,19 @@
       },
       "decompiled_line": 1741,
       "address": "0073b014",
-      "native": "00be2600"
+      "native": "00be2600",
+      "manager_load_evidence": {
+        "manager_publication_load": "0073afff",
+        "manager_publication_global": "0109ceec",
+        "manager_register": "ECX",
+        "value_header_construct_call": "0073afe4",
+        "group_header_construct_call": "0073affa",
+        "value_literal_address": "00cfecdc",
+        "group_literal_address": "00cfecec",
+        "group_header_copy_call": null,
+        "intervening_call_or_ecx_write": false,
+        "branch_entry_bypassing_load": false
+      }
     },
     {
       "kind": "SearchDirectory",
@@ -1073,7 +1769,19 @@
       },
       "decompiled_line": 1762,
       "address": "0073b099",
-      "native": "00be2600"
+      "native": "00be2600",
+      "manager_load_evidence": {
+        "manager_publication_load": "0073b089",
+        "manager_publication_global": "0109ceec",
+        "manager_register": "ECX",
+        "value_header_construct_call": "0073b069",
+        "group_header_construct_call": "0073b07f",
+        "value_literal_address": "00cfeccc",
+        "group_literal_address": "00cfecec",
+        "group_header_copy_call": null,
+        "intervening_call_or_ecx_write": false,
+        "branch_entry_bypassing_load": false
+      }
     },
     {
       "kind": "SearchDirectory",
@@ -1091,7 +1799,19 @@
       },
       "decompiled_line": 1783,
       "address": "0073b11e",
-      "native": "00be2600"
+      "native": "00be2600",
+      "manager_load_evidence": {
+        "manager_publication_load": "0073b113",
+        "manager_publication_global": "0109ceec",
+        "manager_register": "ECX",
+        "value_header_construct_call": "0073b0ee",
+        "group_header_construct_call": "0073b104",
+        "value_literal_address": "00cfecb8",
+        "group_literal_address": "00cfecec",
+        "group_header_copy_call": null,
+        "intervening_call_or_ecx_write": false,
+        "branch_entry_bypassing_load": false
+      }
     },
     {
       "kind": "SearchDirectory",
@@ -1109,7 +1829,19 @@
       },
       "decompiled_line": 1804,
       "address": "0073b1a3",
-      "native": "00be2600"
+      "native": "00be2600",
+      "manager_load_evidence": {
+        "manager_publication_load": "0073b18e",
+        "manager_publication_global": "0109ceec",
+        "manager_register": "ECX",
+        "value_header_construct_call": "0073b173",
+        "group_header_construct_call": "0073b189",
+        "value_literal_address": "00cfeca8",
+        "group_literal_address": "00cfecec",
+        "group_header_copy_call": null,
+        "intervening_call_or_ecx_write": false,
+        "branch_entry_bypassing_load": false
+      }
     },
     {
       "kind": "SearchDirectory",
@@ -1127,7 +1859,19 @@
       },
       "decompiled_line": 1825,
       "address": "0073b228",
-      "native": "00be2600"
+      "native": "00be2600",
+      "manager_load_evidence": {
+        "manager_publication_load": "0073b218",
+        "manager_publication_global": "0109ceec",
+        "manager_register": "ECX",
+        "value_header_construct_call": "0073b1f8",
+        "group_header_construct_call": "0073b20e",
+        "value_literal_address": "00cfec98",
+        "group_literal_address": "00cfecec",
+        "group_header_copy_call": null,
+        "intervening_call_or_ecx_write": false,
+        "branch_entry_bypassing_load": false
+      }
     },
     {
       "kind": "SearchDirectory",
@@ -1145,7 +1889,19 @@
       },
       "decompiled_line": 1846,
       "address": "0073b2ad",
-      "native": "00be2600"
+      "native": "00be2600",
+      "manager_load_evidence": {
+        "manager_publication_load": "0073b2a2",
+        "manager_publication_global": "0109ceec",
+        "manager_register": "ECX",
+        "value_header_construct_call": "0073b27d",
+        "group_header_construct_call": "0073b293",
+        "value_literal_address": "00cfec80",
+        "group_literal_address": "00cfecec",
+        "group_header_copy_call": null,
+        "intervening_call_or_ecx_write": false,
+        "branch_entry_bypassing_load": false
+      }
     },
     {
       "kind": "SearchDirectory",
@@ -1163,7 +1919,19 @@
       },
       "decompiled_line": 1867,
       "address": "0073b332",
-      "native": "00be2600"
+      "native": "00be2600",
+      "manager_load_evidence": {
+        "manager_publication_load": "0073b31d",
+        "manager_publication_global": "0109ceec",
+        "manager_register": "ECX",
+        "value_header_construct_call": "0073b302",
+        "group_header_construct_call": "0073b318",
+        "value_literal_address": "00cfec6c",
+        "group_literal_address": "00cfecec",
+        "group_header_copy_call": null,
+        "intervening_call_or_ecx_write": false,
+        "branch_entry_bypassing_load": false
+      }
     },
     {
       "kind": "SearchDirectory",
@@ -1181,7 +1949,19 @@
       },
       "decompiled_line": 1888,
       "address": "0073b3b7",
-      "native": "00be2600"
+      "native": "00be2600",
+      "manager_load_evidence": {
+        "manager_publication_load": "0073b3a7",
+        "manager_publication_global": "0109ceec",
+        "manager_register": "ECX",
+        "value_header_construct_call": "0073b387",
+        "group_header_construct_call": "0073b39d",
+        "value_literal_address": "00cfec5c",
+        "group_literal_address": "00cfecec",
+        "group_header_copy_call": null,
+        "intervening_call_or_ecx_write": false,
+        "branch_entry_bypassing_load": false
+      }
     },
     {
       "kind": "SearchDirectory",
@@ -1199,7 +1979,19 @@
       },
       "decompiled_line": 1909,
       "address": "0073b43c",
-      "native": "00be2600"
+      "native": "00be2600",
+      "manager_load_evidence": {
+        "manager_publication_load": "0073b431",
+        "manager_publication_global": "0109ceec",
+        "manager_register": "ECX",
+        "value_header_construct_call": "0073b40c",
+        "group_header_construct_call": "0073b422",
+        "value_literal_address": "00cfec4c",
+        "group_literal_address": "00cfecec",
+        "group_header_copy_call": null,
+        "intervening_call_or_ecx_write": false,
+        "branch_entry_bypassing_load": false
+      }
     },
     {
       "kind": "SearchDirectory",
@@ -1217,7 +2009,19 @@
       },
       "decompiled_line": 1930,
       "address": "0073b4c1",
-      "native": "00be2600"
+      "native": "00be2600",
+      "manager_load_evidence": {
+        "manager_publication_load": "0073b4ac",
+        "manager_publication_global": "0109ceec",
+        "manager_register": "ECX",
+        "value_header_construct_call": "0073b491",
+        "group_header_construct_call": "0073b4a7",
+        "value_literal_address": "00cfec3c",
+        "group_literal_address": "00cfecec",
+        "group_header_copy_call": null,
+        "intervening_call_or_ecx_write": false,
+        "branch_entry_bypassing_load": false
+      }
     },
     {
       "kind": "SearchDirectory",
@@ -1235,7 +2039,19 @@
       },
       "decompiled_line": 1951,
       "address": "0073b546",
-      "native": "00be2600"
+      "native": "00be2600",
+      "manager_load_evidence": {
+        "manager_publication_load": "0073b536",
+        "manager_publication_global": "0109ceec",
+        "manager_register": "ECX",
+        "value_header_construct_call": "0073b516",
+        "group_header_construct_call": "0073b52c",
+        "value_literal_address": "00cfec2c",
+        "group_literal_address": "00cfecec",
+        "group_header_copy_call": null,
+        "intervening_call_or_ecx_write": false,
+        "branch_entry_bypassing_load": false
+      }
     },
     {
       "kind": "SearchExtension",
@@ -1253,7 +2069,19 @@
       },
       "decompiled_line": 1972,
       "address": "0073b5cb",
-      "native": "00be25e0"
+      "native": "00be25e0",
+      "manager_load_evidence": {
+        "manager_publication_load": "0073b5c0",
+        "manager_publication_global": "0109ceec",
+        "manager_register": "ECX",
+        "value_header_construct_call": "0073b59b",
+        "group_header_construct_call": "0073b5b1",
+        "value_literal_address": "00cfec28",
+        "group_literal_address": "00cfec20",
+        "group_header_copy_call": null,
+        "intervening_call_or_ecx_write": false,
+        "branch_entry_bypassing_load": false
+      }
     },
     {
       "kind": "SearchDirectory",
@@ -1271,7 +2099,19 @@
       },
       "decompiled_line": 1993,
       "address": "0073b650",
-      "native": "00be2600"
+      "native": "00be2600",
+      "manager_load_evidence": {
+        "manager_publication_load": "0073b63b",
+        "manager_publication_global": "0109ceec",
+        "manager_register": "ECX",
+        "value_header_construct_call": "0073b620",
+        "group_header_construct_call": "0073b636",
+        "value_literal_address": "00cfecdc",
+        "group_literal_address": "00cfec20",
+        "group_header_copy_call": null,
+        "intervening_call_or_ecx_write": false,
+        "branch_entry_bypassing_load": false
+      }
     },
     {
       "kind": "ExtensionPrefix",
@@ -1289,7 +2129,19 @@
       },
       "decompiled_line": 2014,
       "address": "0073b6d5",
-      "native": "00be1480"
+      "native": "00be1480",
+      "manager_load_evidence": {
+        "manager_publication_load": "0073b6c5",
+        "manager_publication_global": "0109ceec",
+        "manager_register": "ECX",
+        "value_header_construct_call": "0073b6a5",
+        "group_header_construct_call": "0073b6bb",
+        "value_literal_address": "00cfec18",
+        "group_literal_address": "00cfec14",
+        "group_header_copy_call": null,
+        "intervening_call_or_ecx_write": false,
+        "branch_entry_bypassing_load": false
+      }
     },
     {
       "kind": "SearchExtension",
@@ -1307,7 +2159,19 @@
       },
       "decompiled_line": 2035,
       "address": "0073b75a",
-      "native": "00be25e0"
+      "native": "00be25e0",
+      "manager_load_evidence": {
+        "manager_publication_load": "0073b74f",
+        "manager_publication_global": "0109ceec",
+        "manager_register": "ECX",
+        "value_header_construct_call": "0073b72a",
+        "group_header_construct_call": "0073b740",
+        "value_literal_address": "00cfec0c",
+        "group_literal_address": "00cfec04",
+        "group_header_copy_call": null,
+        "intervening_call_or_ecx_write": false,
+        "branch_entry_bypassing_load": false
+      }
     },
     {
       "kind": "SearchDirectory",
@@ -1325,7 +2189,19 @@
       },
       "decompiled_line": 2056,
       "address": "0073b7df",
-      "native": "00be2600"
+      "native": "00be2600",
+      "manager_load_evidence": {
+        "manager_publication_load": "0073b7ca",
+        "manager_publication_global": "0109ceec",
+        "manager_register": "ECX",
+        "value_header_construct_call": "0073b7af",
+        "group_header_construct_call": "0073b7c5",
+        "value_literal_address": "00cfebf4",
+        "group_literal_address": "00cfec04",
+        "group_header_copy_call": null,
+        "intervening_call_or_ecx_write": false,
+        "branch_entry_bypassing_load": false
+      }
     },
     {
       "kind": "SearchDirectory",
@@ -1343,7 +2219,19 @@
       },
       "decompiled_line": 2077,
       "address": "0073b864",
-      "native": "00be2600"
+      "native": "00be2600",
+      "manager_load_evidence": {
+        "manager_publication_load": "0073b854",
+        "manager_publication_global": "0109ceec",
+        "manager_register": "ECX",
+        "value_header_construct_call": "0073b834",
+        "group_header_construct_call": "0073b84a",
+        "value_literal_address": "00cfebe4",
+        "group_literal_address": "00cfec04",
+        "group_header_copy_call": null,
+        "intervening_call_or_ecx_write": false,
+        "branch_entry_bypassing_load": false
+      }
     },
     {
       "kind": "SearchDirectory",
@@ -1361,7 +2249,19 @@
       },
       "decompiled_line": 2098,
       "address": "0073b8e9",
-      "native": "00be2600"
+      "native": "00be2600",
+      "manager_load_evidence": {
+        "manager_publication_load": "0073b8de",
+        "manager_publication_global": "0109ceec",
+        "manager_register": "ECX",
+        "value_header_construct_call": "0073b8b9",
+        "group_header_construct_call": "0073b8cf",
+        "value_literal_address": "00cfebd4",
+        "group_literal_address": "00cfec04",
+        "group_header_copy_call": null,
+        "intervening_call_or_ecx_write": false,
+        "branch_entry_bypassing_load": false
+      }
     },
     {
       "kind": "SearchDirectory",
@@ -1379,7 +2279,19 @@
       },
       "decompiled_line": 2119,
       "address": "0073b96e",
-      "native": "00be2600"
+      "native": "00be2600",
+      "manager_load_evidence": {
+        "manager_publication_load": "0073b959",
+        "manager_publication_global": "0109ceec",
+        "manager_register": "ECX",
+        "value_header_construct_call": "0073b93e",
+        "group_header_construct_call": "0073b954",
+        "value_literal_address": "00cfebc0",
+        "group_literal_address": "00cfec04",
+        "group_header_copy_call": null,
+        "intervening_call_or_ecx_write": false,
+        "branch_entry_bypassing_load": false
+      }
     },
     {
       "kind": "SearchDirectory",
@@ -1397,7 +2309,19 @@
       },
       "decompiled_line": 2140,
       "address": "0073b9f3",
-      "native": "00be2600"
+      "native": "00be2600",
+      "manager_load_evidence": {
+        "manager_publication_load": "0073b9e3",
+        "manager_publication_global": "0109ceec",
+        "manager_register": "ECX",
+        "value_header_construct_call": "0073b9c3",
+        "group_header_construct_call": "0073b9d9",
+        "value_literal_address": "00cfebb0",
+        "group_literal_address": "00cfec04",
+        "group_header_copy_call": null,
+        "intervening_call_or_ecx_write": false,
+        "branch_entry_bypassing_load": false
+      }
     },
     {
       "kind": "SearchDirectory",
@@ -1415,7 +2339,19 @@
       },
       "decompiled_line": 2161,
       "address": "0073ba78",
-      "native": "00be2600"
+      "native": "00be2600",
+      "manager_load_evidence": {
+        "manager_publication_load": "0073ba6d",
+        "manager_publication_global": "0109ceec",
+        "manager_register": "ECX",
+        "value_header_construct_call": "0073ba48",
+        "group_header_construct_call": "0073ba5e",
+        "value_literal_address": "00cfeba0",
+        "group_literal_address": "00cfec04",
+        "group_header_copy_call": null,
+        "intervening_call_or_ecx_write": false,
+        "branch_entry_bypassing_load": false
+      }
     }
   ],
   "calls": [
@@ -4673,13 +5609,63 @@
     "actual pooled string storage"
   ],
   "uncertainty": [
-    "The source interface receives the actual manager and borrowed storage explicitly; original global lookup and binary/EH ABI are outside this module.",
-    "No runtime game startup proof; the caller must provide the already constructed actual manager and all retained deletion bindings."
+    "The source borrows the actual 0109CEEC manager publication by volatile reference and rereads it after both string headers are constructed at each registration. Binding the original address, storage/lifetime services, and the native no-argument binary/EH entry remains caller-owned.",
+    "No runtime game startup proof; the caller must keep the publication alive and supply constructed actual managers with all retained deletion bindings. Volatile preserves the native load points; it does not add cross-thread synchronization."
   ],
   "validation": {
     "build": "./scripts/build.ps1: Win32 Release and CTest reconstructed_math passed; BE source not registered in cmake/startup.cmake and therefore not in this archive",
-    "direct_source_compile": "MSVC 19.51 x86 /std:c++20 /EHsc /MD /W4 passed against merged BE1480 header",
+    "direct_source_compile": "MSVC 19.51 x86 /c /std:c++20 /EHsc /MD /W4 /WX /permissive- passed with no diagnostics; local/native_vfs_search_defaults_publication_compile.txt",
     "report_calls": "726/726 rows accepted; 648 unique direct native CALL sites plus 78 registration classification rows",
-    "source_sha256": "3785eaa3cae696a1da54708f27e50e5743ec6358fe8b0f55f7b5a63c92541074"
+    "source_sha256": "3eadc0f792c3341b52aa86b5670a8692cdf82656136274b1388df32fc603dc1e",
+    "prior_direct_source_compile": "MSVC 19.51 x86 /std:c++20 /EHsc /MD /W4 passed against merged BE1480 header",
+    "publication_audit": {
+      "instructions": 4310,
+      "direct_calls": 648,
+      "registrations": 78,
+      "manager_loads": 78,
+      "literal_strings": 156,
+      "constructor_order_verified": true,
+      "all_loads_after_header_construction": true,
+      "all_ecx_values_preserved_to_call": true,
+      "all_loads_dominate_corresponding_call": true,
+      "source_blocks_match": true,
+      "source_borrows_volatile_publication": true,
+      "literal_mismatches": []
+    },
+    "current_combined_build": "Not run in this old worker worktree; source registration and merged build/CTest belong to the primary integrator. The existing build field records prior evidence only."
+  },
+  "publication_review": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "live_target_verification": "bsp.py ghidra proto 00738360 and bytes 00cfed0c --length 8 verify configured project/program before reading; no Ghidra mutations",
+    "source_api": "void register_native_vfs_search_defaults_00738360(void* volatile& actual_manager_publication_0109ceec, ActualNativeStringPoolStorage& strings, const SingletonLifetimeCallbacks& callbacks)",
+    "manager_global": "0109ceec",
+    "manager_register": "ECX",
+    "native_body_disk_sha256_matches_existing_evidence": true,
+    "saved_listing_instructions_and_direct_calls_match_disk": true,
+    "manager_loads": 78,
+    "loads_after_value_and_group_header_construction": 78,
+    "ecx_preserved_without_intervening_call": 78,
+    "loads_with_no_branch_entry_to_the_following_call_window": 78,
+    "native_literal_checks": 156,
+    "source_blocks_preserve_value_then_group_construction_and_reverse_scope_destruction": true,
+    "preserved_construction_modes": {
+      "ResizeMemcpy": 51,
+      "Assign": 27
+    },
+    "literal_corrections": [
+      {
+        "ordinal": 54,
+        "operand": "first",
+        "literal_address": "00cfed0c",
+        "reported": "pfx",
+        "native": "pfv",
+        "registration_call": "0073ae00",
+        "native_literal_push": "0073add5",
+        "native_group_constructor_call": "0073ade6",
+        "live_ghidra_and_disk_bytes_at_00cfed0c": "70 66 76 00 70 66 78 00",
+        "reason": "Saved assembly pushes 00cfed0c for entry 54; installed PE and live memory contain pfv followed by the separate pfx string at 00cfed10. Existing pseudocode-derived report and source incorrectly duplicated pfx."
+      }
+    ]
   }
 }
