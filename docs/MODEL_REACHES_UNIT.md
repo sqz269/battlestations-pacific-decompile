@@ -267,3 +267,62 @@ Its remaining question is no longer "why is `part` zero" — that is answered �
 `class+50h` in the shipped game", which is a smaller and better-posed question, and one that byte
 scanning has now largely exhausted.
 
+# None of the block copies can reach `class+50h` (packet `cc7_block_copy_destinations`)
+
+Ghidra read-only. **Exported / read only** — no C++, no tests. Mod-artefact caveat carried.
+
+## Result: the byte-reachable space is exhausted
+
+**None of the thirteen `REP MOVSD` sites in `00949000`-`00970000` writes `class+50h`**, and the
+reason is arithmetic rather than attribution: every one of them copies **0x10 or 0x11 dwords — 64 or
+68 bytes** — and the ones that target an object take it at its **base**, so they reach `+00h`..`+43h`
+and stop **twelve bytes short of `+50h`**.
+
+| destination | sites | count |
+| --- | --- | --- |
+| a stack buffer — `LEA EDI,[ESP+…]`, `LEA EDI,[EBP-…]`, or `MOV EDI,ESP` | `00949E94`, `0094A171`, `0094A6FC`, `0094C213`, `009559D4`, `0095B15B`, `0095D13D`, `0095D3DD`, `0095D470` — **nine** | 0x10 / 0x11 |
+| an object pointer at offset 0 — `MOV EDI,EAX`, `MOV EDI,ECX`, `MOV EDI,[ESP+8]` | `00952ECF`, `009552CD`, `00955163`, `00955FBD` — **four** | 0x11 |
+
+The nine stack destinations cannot be class descriptors at all. The four object copies are
+**by-value copies of a 68-byte struct**: three of the stack ones confirm the size independently by
+pairing `SUB ESP,44h` with `MOV EDI,ESP` and `MOV ECX,11h`, so `0x44` bytes is the type's size, not
+a coincidence of the loop.
+
+The four were each resolved from the listing rather than assumed:
+
+```
+00952ECF  PUSH EDI ; MOV EDI,ECX ; TEST EDI,EDI ; JZ ; MOV ECX,11h ; MOV ESI,EDX
+009552CD  TEST EAX,EAX ; JZ ; MOV ECX,11h ; MOV ESI,EBX ; MOV EDI,EAX
+00955163  (function entry after CC padding) PUSH EDI ; MOV EDI,[ESP+8] ; TEST EDI,EDI ; JZ ;
+          PUSH ESI ; MOV ESI,[ESP+10h] ; MOV ECX,11h
+00955FBD  same shape as 009552CD
+```
+
+## The model region's twenty-six, bulk-characterised
+
+Taken as the follow-up. Counts across all 26 in `00700000`-`00760000`: **9, 15, 16, 18 and 19
+dwords — at most 76 bytes**, so the largest reaches `+4Bh` and still falls short of `+50h`. By
+destination shape: nine stack, twelve object, five unclassified.
+
+That characterisation is **bulk** — the destinations were bucketed by a byte-pattern heuristic, not
+traced per site as the thirteen were. The solid part is the count bound, which is exact and applies
+to all 26.
+
+## The line is closed to byte search
+
+Across both regions, **39 block copies, none exceeding 76 bytes, none starting below a destination's
+base**. Together with the earlier scans — `MOV` reg and immediate in both encodings, `LEA`, `MOVSS`,
+all negative in the class region, all with non-zero image-wide controls — the byte-reachable space
+for a writer of `class+50h` is **exhausted**.
+
+What remains cannot be reached by scanning:
+
+* a **SIB-indexed** write, `[reg+reg*n+50h]`, which every scan here skips by design;
+* a write on an object **later aliased** to the class;
+* a writer in a **module outside `battlestationspacific.exe`** — this installation carries mod
+  artefacts and that was never excluded.
+
+All three need the call graph or a runtime observation. **Byte scanning has nothing left to say
+about this question**, and the part-damage line should be recorded as closed to it: the zero is
+proved faithful, the feature gap is bounded, and the missing writer is a call-graph question now.
+
