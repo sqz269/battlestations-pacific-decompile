@@ -4,8 +4,15 @@
   "local_dependency": "merged NativeVfsOwnerServices 7f68e529 and its type-counter dependency 27f7b637",
   "status": "populated_raw_manager_source_fixture_passed",
   "scope": {
-    "tracked_files": ["docs/RAW_VFS_LUA_COMPOSITION_BC.md", "reports/raw_vfs_lua_composition_bc.json"],
-    "ignored_fixture": ["local/raw_vfs_lua_bc_probe.cpp", "local/run_raw_vfs_lua_bc_probe.ps1", "local/raw_vfs_lua_bc_probe.exe"],
+    "tracked_files": [
+      "docs/RAW_VFS_LUA_COMPOSITION_BC.md",
+      "reports/raw_vfs_lua_composition_bc.json"
+    ],
+    "ignored_fixture": [
+      "local/raw_vfs_lua_bc_probe.cpp",
+      "local/run_raw_vfs_lua_bc_probe.ps1",
+      "local/raw_vfs_lua_bc_probe.exe"
+    ],
     "ghidra_mutations": false,
     "native_addresses_reconstructed": [],
     "permanent_tests_added": 0,
@@ -32,5 +39,13 @@
     "readonly_data_cpp_sha256": "aef2cb65721546b6699240b6236ee7856e1298cb5d4fbd32639c8f6db042f581"
   },
   "limits": "VFS manager/provider and FileStore records are seeded by fixture arena, not created by production startup. Fixed read-only spans support source identity checks only. No original game process or native binary ABI proof.",
-  "calls": []
+  "calls": [],
+  "primary_integration": {
+    "report": "reports/vfs_storage_owner_bb_validation.json",
+    "status": "bounded_vfs_owner_storage_source_integrated_exact_combined_build_and_three_fixtures_passed",
+    "source_revision": "62279e9f92e8e2dea6e816e9f451770e47fce0f9",
+    "source_registration": "Owner-services source is registered in bsp_core; all three primary fixtures link the combined archive only.",
+    "saved_evidence": "Type-counter saved ownership restored at006FAD60 and zero-initialization annotation corrected with retained receipt.",
+    "game_validated": false
+  }
 }
