@@ -103,9 +103,60 @@ the class fields the body scales by, though `docs/PLANE_CLASS_FIELDS.md` already
 `RollSpd +1A8h` at `007DA7C2`, `PitchSpd +1ACh` at `007DA8EB`, `YawSpd +1B0h` at `007DA926` and
 `NegativePitchRatio +1D8h` at `007DA918` inside this body; and the whole region before `007DAB3A`.
 
+## Update: the stack walk, and `ctl+48h` identified
+
+`tools/stack_frame_walk.py` was written for this and normalises every `[ESP+N]` in the body to an
+entry-relative frame offset, so two reads of the same literal at different depths are visibly
+different slots. It resolves the open questions above in order.
+
+**`[ESP+68h]` is the `step` argument.** Every one of its eight sites - `007DA963`, `007DA96D`,
+`007DACC9`, `007DACD8`, `007DACDC`, `007DACFB`, `007DAD31`, `007DAD40` - resolves to `frame=4` at a
+stable `depth=100`, and `frame=4` is the first stack argument. So the tail's accumulator and the
+step are the same storage, which a literal-offset reading could not have told apart.
+
+**The three target rates are distinct frame slots**, read at `007DAB52`/`007DAB5F`/`007DAB6C`:
+
+| store | target slot | delta slot |
+| --- | --- | --- |
+| `ctl+48h` | `frame=-72` | `frame=-36` |
+| `ctl+4Ch` | `frame=-8` | `frame=-32` |
+| `ctl+50h` | `frame=-76` | `frame=-28` |
+
+**`ctl+48h` is the PITCH rate**, established three independent ways in the block that writes its
+target at `007DA912`:
+
+```
+007da8eb  FLD   [EBP+1ACh]        ; PitchSpd
+007da8f1  MOVSS XMM0,[EDI+0BB4h]  ; kLatchedPitch, the previous-step snapshot
+007da8f9  COMISS XMM2,XMM0        ; 0 against the latched pitch
+007da912  FSTP  [ESP+1Ch]         ; -> frame=-72, the ctl+48h target
+007da916  JBE   007da926          ; taken when the latched pitch is not negative
+007da918  FLD   [EBP+1D8h]        ; NegativePitchRatio, applied only when it is
+007da922  FSTP  [ESP+1Ch]
+```
+
+`PitchSpd +1ACh`, `kLatchedPitch +BB4h` and `NegativePitchRatio +1D8h` all feed the same slot, and
+the ratio is applied exactly when the latched pitch is negative - nose-down. That matches
+`docs/PILOT_BOT_PLAN_CONTROLS.md`'s independent finding that the planner applies the same constant
+on the inverted-flight branch.
+
+The block immediately after, `007DA926`-`007DA95F`, opens with `YawSpd +1B0h` and multiplies by
+`kLatchedYaw +BB0h`, landing in `frame=-64` - a working slot rather than one of the three targets,
+so the yaw path runs through at least one more step before reaching its store.
+
+## Still not established
+
+The **step term's arithmetic**, and therefore the law. `[ESP+14h]` resolves to `frame=-80` at the
+`007DACC5` multiply, and that slot's producer has not been traced.
+
+**Which of `ctl+4Ch` and `ctl+50h` is yaw and which is roll.** The pitch identification is solid;
+the other two are not, and guessing them would swap two axes of a flight model.
+
+The region before `007DAB3A` is read only where it writes the three target slots.
+
 ## Next
 
-A packet with the stack walk, starting from the three deltas at `007DAB52`-`007DAB75` and working
-outward, and matching the axis order against the control block's corrected labels
-(`kLiveYaw = 0x9E4`, `kLivePitch = 0x9E8`, `kLiveRoll = 0x9EC`). The shape above should make that
-much shorter than reading 2.2 KB cold.
+Trace `frame=-80` (the step-term multiplier) and `frame=-64` (the yaw working slot) with
+`tools/stack_frame_walk.py`, then match `ctl+4Ch`/`ctl+50h` against `RollSpd +1A8h` at `007DA7C2`
+and `kLatchedRoll +BB8h` the same way the pitch axis was matched. The tool makes each of those a
+filter rather than a read.
