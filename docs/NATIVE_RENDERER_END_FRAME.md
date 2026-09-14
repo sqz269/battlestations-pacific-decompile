@@ -161,3 +161,11 @@ domains; it may be null only when B28D00 sees zero current line count.
 Nonempty physical/surface/layout/shader terminal composition still needs the
 separate raw resource-support AA0 migration. Standalone debug-line fixtures
 and inactive EndFrame checks do not prove full active EndFrame or gameplay.
+
+## Integrated validation at 425b3b48
+
+The current +C4 gate calls substantive B28D00 directly. Existing rewind comparisons and inactive context-free wrappers passed against the final library. Actual queue B1EBE0, B2BB90 and B2B580 remain required outer providers; active EndFrame remains unproved. The combined strict Win32 build, eight seed checks and both CTests passed.
+The four final-library probes,118 direct/tail rows, seven saved/read-back
+annotations and38 live/PE spans are retained in `local/checkpoints/425b3b48/native-renderer-constructor-wave/validation.json`
+(SHA256 `64c19259048ada5f8868750e99c793c0b95674ea7f391b124b8ed2e613ae8fe0`). Full parent execution and application/gameplay
+validation remain open.

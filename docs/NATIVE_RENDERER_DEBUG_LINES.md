@@ -113,3 +113,11 @@ bindings are null, so it never invokes that resource-support/lifetime path.
 This is a new source interface. Original caller ABI, aliases into other native
 private stack slots, original hardware-fault/FH3 execution, active original
 renderer execution, visual parity and game validation remain unproved.
+
+## Integrated validation at 425b3b48
+
+Original/source empty return matched. Three nonempty source scenarios used two real D3D9 devices, checked current device/constant reloads and ignored HRESULT, performed negative-capacity reserve and retained partial failure. Fourteen original COM slots were restored and checked. Original nonempty execution and actual-AA0 terminal composition remain unproved. The combined strict Win32 build, eight seed checks and both CTests passed.
+The four final-library probes,118 direct/tail rows, seven saved/read-back
+annotations and38 live/PE spans are retained in `local/checkpoints/425b3b48/native-renderer-constructor-wave/validation.json`
+(SHA256 `64c19259048ada5f8868750e99c793c0b95674ea7f391b124b8ed2e613ae8fe0`). Full parent execution and application/gameplay
+validation remain open.

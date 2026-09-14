@@ -838,7 +838,8 @@
     "Physical/surface/layout/shader lifetime resource support still needs actual-AA0 manager access for full parent composition",
     "Raw registry B5BF50 zero-resize requires nonnegative current count and capacity; caller supplied live subobjects, scratch preimages and control bindings remain required",
     "EndFrame retains actual queue B1EBE0, B2BB90 and B2B580 providers after substantive B28D00 debug-line integration",
-    "Original FH3/SEH/register ABI and application/gameplay behavior remain unvalidated"
+    "Original FH3/SEH/register ABI and application/gameplay behavior remain unvalidated",
+    "Nested material-effect descriptor current table[0] dispatch needs a genuinely callable reconstructed descriptor domain (or null descriptor); original EXE table words cannot be invoked as host callbacks"
   ],
   "integrator_validation": {
     "direct_call_rows": 91,
@@ -870,6 +871,12 @@
     "source": "src/native_renderer_constructor.cpp",
     "report": "reports/native_renderer_constructor.json",
     "raw_registry_operation_conflict_resolved": true,
-    "constructor_executed": false
+    "constructor_executed": false,
+    "checkpoint": {
+      "path": "local/checkpoints/425b3b48/native-renderer-constructor-wave/validation.json",
+      "sha256": "64c19259048ada5f8868750e99c793c0b95674ea7f391b124b8ed2e613ae8fe0",
+      "code_commit": "425b3b4843efe2a3f7032340461002fb83798fc9",
+      "artifacts": 3439
+    }
   }
 }

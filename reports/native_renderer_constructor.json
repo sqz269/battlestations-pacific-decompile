@@ -2368,5 +2368,34 @@
     "artifact_count": 1022,
     "all_frozen_hashes_reverified": true,
     "all_original_inputs_reverified": true
+  },
+  "orch5_constructor_wave_integration": {
+    "code_commit": "425b3b4843efe2a3f7032340461002fb83798fc9",
+    "checkpoint": {
+      "path": "local/checkpoints/425b3b48/native-renderer-constructor-wave/validation.json",
+      "sha256": "64c19259048ada5f8868750e99c793c0b95674ea7f391b124b8ed2e613ae8fe0",
+      "code_commit": "425b3b4843efe2a3f7032340461002fb83798fc9",
+      "artifacts": 3439
+    },
+    "strict_msvc_win32_build": true,
+    "verified_native_seeds": 8,
+    "ctests_passed": 2,
+    "fixture_program": "local/native_renderer_constructor_integration/renderer_constructor_probe.exe",
+    "fixture_scope": "The complete constructor source passed final-library linking and import resolution. The probe did NOT invoke the constructor. Independent static review checked139 owner-store offsets/widths,134 constant/dataflow values, five nonconstant stores and all29 cleanup states.",
+    "saved_annotation_journal": "local/ghidra-annotations-20260914T170148Z.json",
+    "native_byte_review": {
+      "spans": 38,
+      "bytes": 5535,
+      "scope": "combined packet and explicit dependency/context spans; includes overlaps"
+    },
+    "call_site_review": {
+      "rows_checked": 118,
+      "failures": 0,
+      "scope": "combined numeric direct/tail rows; indirect dispatch and original exception execution excluded"
+    },
+    "constructor_executed": false,
+    "full_renderer_lifetime_validated": false,
+    "original_fh3_seh_abi_validated": false,
+    "game_validated": false
   }
 }

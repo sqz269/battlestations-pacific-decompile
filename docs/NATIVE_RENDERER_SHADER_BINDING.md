@@ -56,3 +56,11 @@ checks the C++ cleanup boundary. These are local behavioral checks, not game or
 full original exception validation. The archive separates actual library/tool
 files from measured loaded runtime DLLs; post-run file hashes do not establish
 mapped-image identity.
+
+## Integrated validation at 425b3b48
+
+Both original/source normal binder traces matched with real Win32 guards and current cache/device/counter effects. Source-only C++ cleanup failures passed. Original FH3 exception execution and real shader creation remain unproved. The combined strict Win32 build, eight seed checks and both CTests passed.
+The four final-library probes,118 direct/tail rows, seven saved/read-back
+annotations and38 live/PE spans are retained in `local/checkpoints/425b3b48/native-renderer-constructor-wave/validation.json`
+(SHA256 `64c19259048ada5f8868750e99c793c0b95674ea7f391b124b8ed2e613ae8fe0`). Full parent execution and application/gameplay
+validation remain open.

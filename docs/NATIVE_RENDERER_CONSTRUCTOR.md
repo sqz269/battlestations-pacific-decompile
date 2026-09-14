@@ -93,3 +93,11 @@ reports. Original FH3 frame layout, asynchronous SEH, native CRT exception
 identity, full renderer shutdown, ABI interchangeability and gameplay remain
 unproved. The new source is a complete parent schedule under the documented
 actual-provider and preimage contracts, not whole-program closure.
+
+## Integrated validation at 425b3b48
+
+The complete constructor source passed final-library linking and import resolution. The probe did NOT invoke the constructor. Independent static review checked139 owner-store offsets/widths,134 constant/dataflow values, five nonconstant stores and all29 cleanup states. The combined strict Win32 build, eight seed checks and both CTests passed.
+The four final-library probes,118 direct/tail rows, seven saved/read-back
+annotations and38 live/PE spans are retained in `local/checkpoints/425b3b48/native-renderer-constructor-wave/validation.json`
+(SHA256 `64c19259048ada5f8868750e99c793c0b95674ea7f391b124b8ed2e613ae8fe0`). Full parent execution and application/gameplay
+validation remain open.
