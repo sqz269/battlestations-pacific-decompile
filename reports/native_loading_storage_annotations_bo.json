@@ -1,0 +1,1174 @@
+{
+  "source_functions": [
+    {
+      "address": "00b7ff80",
+      "function": "insert_native_resource_cache_at_00b7ff80",
+      "source": "src/native_resource_cache_insert.cpp",
+      "report": "reports/native_resource_cache_insert_bo.json",
+      "original_abi": "ECX actual tree; stack output iterator,insert-left DWORD lowbyte,parent,source pair; EAX output; RET10h",
+      "bytes": 492
+    },
+    {
+      "address": "00b803b0",
+      "function": "insert_native_resource_cache_unique_00b803b0",
+      "source": "src/native_resource_cache_insert.cpp",
+      "report": "reports/native_resource_cache_insert_bo.json",
+      "original_abi": "ECX actual tree; stack actual result,source pair; EAX result; RET8",
+      "bytes": 276
+    },
+    {
+      "address": "00bf05d0",
+      "function": "reserve_native_resource_reader_buffer_00bf05d0",
+      "source": "src/native_resource_reader_buffer.cpp",
+      "report": "reports/native_resource_reader_buffer_bo.json",
+      "original_abi": "ECX actual0Ch buffer header; stack signed capacity; RET4; no stable result",
+      "bytes": 298
+    },
+    {
+      "address": "00bf0700",
+      "function": "resize_native_resource_reader_buffer_00bf0700",
+      "source": "src/native_resource_reader_buffer.cpp",
+      "report": "reports/native_resource_reader_buffer_bo.json",
+      "original_abi": "ECX actual0Ch buffer header; stack signed count; RET4; no stable result",
+      "bytes": 125
+    },
+    {
+      "address": "00bb5770",
+      "function": "enter_native_pak_registry_block_00bb5770",
+      "source": "src/native_pak_registry_block_callbacks.cpp",
+      "report": "reports/native_pak_registry_block_callbacks_bo.json",
+      "original_abi": "ECX captured registry; one stacked name header; RET4; no uniform semantic EAX result",
+      "bytes": 411
+    },
+    {
+      "address": "00bb5910",
+      "function": "leave_native_pak_registry_block_00bb5910",
+      "source": "src/native_pak_registry_block_callbacks.cpp",
+      "report": "reports/native_pak_registry_block_callbacks_bo.json",
+      "original_abi": "ECX captured registry; one stacked name header; RET4; no uniform semantic EAX result",
+      "bytes": 417
+    }
+  ],
+  "entries": [
+    {
+      "address": "00b7ff80",
+      "name": "BSP_ResourceNameTree_InsertAt",
+      "before_comment": {
+        "address": "00b7ff80",
+        "function_name": "BSP_ResourceNameTree_InsertAt",
+        "comment": "[BSP reconstruction 00b7ff80]\nECX tree; stack output iterator, insert-left byte, parent node, source key/value-pair pointer; RET16; EAX output iterator; x86 SEH. Reject tree size>=15555554h via existing length_error path; allocate node with00b7f6a0, increment size, link node and rebalance colors/links, return iterator. Normal insert exists despite old throw-only name; no mapped-resource access in this body. Full PE-matched body00b7ff80-00b8016b. docs/RESOURCE_CACHE_OWNERSHIP.md; normal-path evidence, no native ABI or runtime claim. Original ABI: ECX tree; stack output iterator, insert-left byte, parent node, source key/value-pair pointer; RET16; EAX output iterator; x86 SEH. Evidence: docs/RESOURCE_CACHE_OWNERSHIP.md; reports/resource_cache_ownership_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation."
+      },
+      "evidence": "BO actual-storage cache insertion, optional reader buffer and ordinary PakRegistry FileBlock callback source. Primary reviewed full listings and source, verified worker source/dependency/artifact hashes, reran four focused probe modes, registered three TUs and passed the Win32 build plus both existing tests. Descriptive names are hypotheses, not recovered symbols. Analysis prototypes expose ECX with unused EDX; source APIs add explicit services. Callback frames retain outer storage on escaping calls but do not implement native FH3 or preserve BDD850/BE1740 internal temporaries. Native binary/SEH/stack identity, production observer/resource-loader wiring and gameplay remain unproved. See docs/NATIVE_LOADING_STORAGE_INTEGRATION_BO.md and reports/native_loading_storage_integration_bo.json. Full body 492 bytes; ECX actual tree; stack output iterator,insert-left DWORD lowbyte,parent,source pair; EAX output; RET10h; reports/native_resource_cache_insert_bo.json.",
+      "before_documentation": {
+        "hash": "125e5bab9e2ffc318cc00bff651b69e8e3830ddd25cab7d8f2d5eecd12a422ee",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b7ff80",
+        "function_name": "BSP_ResourceNameTree_InsertAt",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00b7ff80]\nECX tree; stack output iterator, insert-left byte, parent node, source key/value-pair pointer; RET16; EAX output iterator; x86 SEH. Reject tree size>=15555554h via existing length_error path; allocate node with00b7f6a0, increment size, link node and rebalance colors/links, return iterator. Normal insert exists despite old throw-only name; no mapped-resource access in this body. Full PE-matched body00b7ff80-00b8016b. docs/RESOURCE_CACHE_OWNERSHIP.md; normal-path evidence, no native ABI or runtime claim. Original ABI: ECX tree; stack output iterator, insert-left byte, parent node, source key/value-pair pointer; RET16; EAX output iterator; x86 SEH. Evidence: docs/RESOURCE_CACHE_OWNERSHIP.md; reports/resource_cache_ownership_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "pcStack_8",
+            "type": "undefined *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "local_4c",
+            "type": "undefined1",
+            "storage": "(stack, 0xffffffffffffffb4, 1)"
+          },
+          {
+            "name": "local_50",
+            "type": "undefined1[4]"
+          },
+          {
+            "name": "local_38",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffc8, 4)"
+          },
+          {
+            "name": "piVar2",
+            "type": "int *",
+            "storage": "(unique, 0x17200, 4)"
+          },
+          {
+            "name": "cVar1",
+            "type": "char",
+            "storage": "(unique, 0x17000, 1)"
+          },
+          {
+            "name": "local_3c",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffc4, 4)"
+          },
+          {
+            "name": "local_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "pvVar4",
+            "type": "void *",
+            "storage": "(unique, 0x17200, 4)"
+          },
+          {
+            "name": "local_34",
+            "type": "undefined * *[10]",
+            "storage": "(stack, 0xffffffffffffffcc, 4)"
+          },
+          {
+            "name": "piVar3",
+            "type": "int *",
+            "storage": "(unique, 0x17200, 4)"
+          },
+          {
+            "name": "piVar6",
+            "type": "int *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "iVar5",
+            "type": "int",
+            "storage": "(unique, 0x17200, 4)"
+          },
+          {
+            "name": "local_4",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "piVar8",
+            "type": "int *",
+            "storage": "(register, 0x18, 4)"
+          },
+          {
+            "name": "piVar7",
+            "type": "int *",
+            "storage": "(register, 0x0, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 113,
+            "name": "LAB_00b7fff1"
+          },
+          {
+            "relative_offset": 170,
+            "name": "LAB_00b8002a"
+          },
+          {
+            "relative_offset": 190,
+            "name": "LAB_00b8003e"
+          },
+          {
+            "relative_offset": 204,
+            "name": "LAB_00b8004c"
+          },
+          {
+            "relative_offset": 224,
+            "name": "LAB_00b80060"
+          },
+          {
+            "relative_offset": 267,
+            "name": "LAB_00b8008b"
+          },
+          {
+            "relative_offset": 282,
+            "name": "LAB_00b8009a"
+          },
+          {
+            "relative_offset": 314,
+            "name": "LAB_00b800ba"
+          },
+          {
+            "relative_offset": 344,
+            "name": "LAB_00b800d8"
+          },
+          {
+            "relative_offset": 358,
+            "name": "LAB_00b800e6"
+          },
+          {
+            "relative_offset": 399,
+            "name": "LAB_00b8010f"
+          },
+          {
+            "relative_offset": 418,
+            "name": "LAB_00b80122"
+          },
+          {
+            "relative_offset": 429,
+            "name": "LAB_00b8012d"
+          },
+          {
+            "relative_offset": 432,
+            "name": "LAB_00b80130"
+          },
+          {
+            "relative_offset": 437,
+            "name": "LAB_00b80135"
+          },
+          {
+            "relative_offset": 453,
+            "name": "LAB_00b80145"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "prototype": "void* __fastcall BSP_ResourceNameTree_InsertAt(void* tree, void* unused_edx, void* output, unsigned int insert_left, void* parent, void* pair)",
+      "prototype_result": "Successfully set prototype for function at 00b7ff80 with __fastcall calling convention",
+      "ledger_name_output": "00b7ff80 -> BSP_ResourceNameTree_InsertAt\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00b7ff80\", \"name\": \"BSP_ResourceNameTree_InsertAt\", \"evidence\": \"ECX tree; stack output iterator, insert-left byte, parent node, source key/value-pair pointer; RET16; EAX output iterator; x86 SEH. Reject tree size>=15555554h via existing length_error path; allocate node with00b7f6a0, increment size, link node and rebalance colors/links, return iterator. Normal insert exists despite old throw-only name; no mapped-resource access in this body. Full PE-matched body00b7ff80-00b8016b. docs/RESOURCE_CACHE_OWNERSHIP.md; normal-path evidence, no native ABI or runtime claim. Original ABI: ECX tree; stack output iterator, insert-left byte, parent node, source key/value-pair pointer; RET16; EAX output iterator; x86 SEH. Evidence: docs/RESOURCE_CACHE_OWNERSHIP.md; reports/resource_cache_ownership_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\"})\n",
+      "ledger_function_output": "00b7ff80 function insert_native_resource_cache_at_00b7ff80\n",
+      "after_comment": {
+        "address": "00b7ff80",
+        "function_name": "BSP_ResourceNameTree_InsertAt",
+        "comment": "[BSP reconstruction 00b7ff80]\nECX tree; stack output iterator, insert-left byte, parent node, source key/value-pair pointer; RET16; EAX output iterator; x86 SEH. Reject tree size>=15555554h via existing length_error path; allocate node with00b7f6a0, increment size, link node and rebalance colors/links, return iterator. Normal insert exists despite old throw-only name; no mapped-resource access in this body. Full PE-matched body00b7ff80-00b8016b. docs/RESOURCE_CACHE_OWNERSHIP.md; normal-path evidence, no native ABI or runtime claim. Original ABI: ECX tree; stack output iterator, insert-left byte, parent node, source key/value-pair pointer; RET16; EAX output iterator; x86 SEH. Evidence: docs/RESOURCE_CACHE_OWNERSHIP.md; reports/resource_cache_ownership_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\n\n[BSP reconstruction 00b7ff80] update\nBO actual-storage cache insertion, optional reader buffer and ordinary PakRegistry FileBlock callback source. Primary reviewed full listings and source, verified worker source/dependency/artifact hashes, reran four focused probe modes, registered three TUs and passed the Win32 build plus both existing tests. Descriptive names are hypotheses, not recovered symbols. Analysis prototypes expose ECX with unused EDX; source APIs add explicit services. Callback frames retain outer storage on escaping calls but do not implement native FH3 or preserve BDD850/BE1740 internal temporaries. Native binary/SEH/stack identity, production observer/resource-loader wiring and gameplay remain unproved. See docs/NATIVE_LOADING_STORAGE_INTEGRATION_BO.md and reports/native_loading_storage_integration_bo.json. Full body 492 bytes; ECX actual tree; stack output iterator,insert-left DWORD lowbyte,parent,source pair; EAX output; RET10h; reports/native_resource_cache_insert_bo.json."
+      }
+    },
+    {
+      "address": "00b803b0",
+      "name": "BSP_ResourceNameTree_InsertUnique",
+      "before_comment": {
+        "address": "00b803b0",
+        "function_name": "BSP_ResourceNameTree_InsertUnique",
+        "comment": "[BSP reconstruction 00b803b0]\nECX tree; stack output insert-result pointer and source key/value-pair pointer; RET8; EAX output result pointer. Find insertion position with length0-empty and CRTstricmp ordering. On equivalent key return existing iterator and inserted byte0 without replacing its value. Otherwise call00b7ff80 then return new iterator and inserted byte1. No pointee methods or refcount writes. Full PE-matched body00b803b0-00b804c3. docs/RESOURCE_CACHE_OWNERSHIP.md; normal-path evidence, no native ABI or runtime claim. Original ABI: ECX tree; stack output insert-result pointer and source key/value-pair pointer; RET8; EAX output result pointer. Evidence: docs/RESOURCE_CACHE_OWNERSHIP.md; reports/resource_cache_ownership_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation."
+      },
+      "evidence": "BO actual-storage cache insertion, optional reader buffer and ordinary PakRegistry FileBlock callback source. Primary reviewed full listings and source, verified worker source/dependency/artifact hashes, reran four focused probe modes, registered three TUs and passed the Win32 build plus both existing tests. Descriptive names are hypotheses, not recovered symbols. Analysis prototypes expose ECX with unused EDX; source APIs add explicit services. Callback frames retain outer storage on escaping calls but do not implement native FH3 or preserve BDD850/BE1740 internal temporaries. Native binary/SEH/stack identity, production observer/resource-loader wiring and gameplay remain unproved. See docs/NATIVE_LOADING_STORAGE_INTEGRATION_BO.md and reports/native_loading_storage_integration_bo.json. Full body 276 bytes; ECX actual tree; stack actual result,source pair; EAX result; RET8; reports/native_resource_cache_insert_bo.json.",
+      "before_documentation": {
+        "hash": "a6129e8c6a302503bd9fc8b06a4c9a37db7016a5b6afaeb5e857818d3e006f67",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b803b0",
+        "function_name": "BSP_ResourceNameTree_InsertUnique",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00b803b0]\nECX tree; stack output insert-result pointer and source key/value-pair pointer; RET8; EAX output result pointer. Find insertion position with length0-empty and CRTstricmp ordering. On equivalent key return existing iterator and inserted byte0 without replacing its value. Otherwise call00b7ff80 then return new iterator and inserted byte1. No pointee methods or refcount writes. Full PE-matched body00b803b0-00b804c3. docs/RESOURCE_CACHE_OWNERSHIP.md; normal-path evidence, no native ABI or runtime claim. Original ABI: ECX tree; stack output insert-result pointer and source key/value-pair pointer; RET8; EAX output result pointer. Evidence: docs/RESOURCE_CACHE_OWNERSHIP.md; reports/resource_cache_ownership_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "uVar1",
+            "type": "undefined4",
+            "storage": "(unique, 0x17200, 4)"
+          },
+          {
+            "name": "unused_edx",
+            "type": "int *",
+            "storage": "(unique, 0x17200, 4)"
+          },
+          {
+            "name": "cVar2",
+            "type": "char",
+            "storage": "(register, 0x0, 1)"
+          },
+          {
+            "name": "parent",
+            "type": "undefined4 *",
+            "storage": "(unique, 0x100000d5, 4)"
+          },
+          {
+            "name": "puVar4",
+            "type": "undefined4 *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "iVar3",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "puVar5",
+            "type": "undefined4 *",
+            "storage": "(register, 0x18, 4)"
+          },
+          {
+            "name": "unused_edx_00",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "bVar6",
+            "type": "bool",
+            "storage": "(register, 0x207, 1)"
+          },
+          {
+            "name": "local_4",
+            "type": "undefined4 *",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "local_c",
+            "type": "uint",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "local_8",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 33,
+            "name": "LAB_00b803d1"
+          },
+          {
+            "relative_offset": 49,
+            "name": "LAB_00b803e1"
+          },
+          {
+            "relative_offset": 62,
+            "name": "LAB_00b803ee"
+          },
+          {
+            "relative_offset": 78,
+            "name": "LAB_00b803fe"
+          },
+          {
+            "relative_offset": 95,
+            "name": "LAB_00b8040f"
+          },
+          {
+            "relative_offset": 98,
+            "name": "LAB_00b80412"
+          },
+          {
+            "relative_offset": 104,
+            "name": "LAB_00b80418"
+          },
+          {
+            "relative_offset": 171,
+            "name": "LAB_00b8045b"
+          },
+          {
+            "relative_offset": 184,
+            "name": "LAB_00b80468"
+          },
+          {
+            "relative_offset": 249,
+            "name": "LAB_00b804a9"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "prototype": "void* __fastcall BSP_ResourceNameTree_InsertUnique(void* tree, void* unused_edx, void* output, void* pair)",
+      "prototype_result": "Successfully set prototype for function at 00b803b0 with __fastcall calling convention",
+      "ledger_name_output": "00b803b0 -> BSP_ResourceNameTree_InsertUnique\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00b803b0\", \"name\": \"BSP_ResourceNameTree_InsertUnique\", \"evidence\": \"ECX tree; stack output insert-result pointer and source key/value-pair pointer; RET8; EAX output result pointer. Find insertion position with length0-empty and CRTstricmp ordering. On equivalent key return existing iterator and inserted byte0 without replacing its value. Otherwise call00b7ff80 then return new iterator and inserted byte1. No pointee methods or refcount writes. Full PE-matched body00b803b0-00b804c3. docs/RESOURCE_CACHE_OWNERSHIP.md; normal-path evidence, no native ABI or runtime claim. Original ABI: ECX tree; stack output insert-result pointer and source key/value-pair pointer; RET8; EAX output result pointer. Evidence: docs/RESOURCE_CACHE_OWNERSHIP.md; reports/resource_cache_ownership_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\"})\n",
+      "ledger_function_output": "00b803b0 function insert_native_resource_cache_unique_00b803b0\n",
+      "after_comment": {
+        "address": "00b803b0",
+        "function_name": "BSP_ResourceNameTree_InsertUnique",
+        "comment": "[BSP reconstruction 00b803b0]\nECX tree; stack output insert-result pointer and source key/value-pair pointer; RET8; EAX output result pointer. Find insertion position with length0-empty and CRTstricmp ordering. On equivalent key return existing iterator and inserted byte0 without replacing its value. Otherwise call00b7ff80 then return new iterator and inserted byte1. No pointee methods or refcount writes. Full PE-matched body00b803b0-00b804c3. docs/RESOURCE_CACHE_OWNERSHIP.md; normal-path evidence, no native ABI or runtime claim. Original ABI: ECX tree; stack output insert-result pointer and source key/value-pair pointer; RET8; EAX output result pointer. Evidence: docs/RESOURCE_CACHE_OWNERSHIP.md; reports/resource_cache_ownership_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\n\n[BSP reconstruction 00b803b0] update\nBO actual-storage cache insertion, optional reader buffer and ordinary PakRegistry FileBlock callback source. Primary reviewed full listings and source, verified worker source/dependency/artifact hashes, reran four focused probe modes, registered three TUs and passed the Win32 build plus both existing tests. Descriptive names are hypotheses, not recovered symbols. Analysis prototypes expose ECX with unused EDX; source APIs add explicit services. Callback frames retain outer storage on escaping calls but do not implement native FH3 or preserve BDD850/BE1740 internal temporaries. Native binary/SEH/stack identity, production observer/resource-loader wiring and gameplay remain unproved. See docs/NATIVE_LOADING_STORAGE_INTEGRATION_BO.md and reports/native_loading_storage_integration_bo.json. Full body 276 bytes; ECX actual tree; stack actual result,source pair; EAX result; RET8; reports/native_resource_cache_insert_bo.json."
+      }
+    },
+    {
+      "address": "00bf05d0",
+      "name": "BSP_ResourceReaderBuffer_Reserve",
+      "before_comment": {
+        "address": "00bf05d0",
+        "function_name": "FUN_00bf05d0",
+        "comment": ""
+      },
+      "evidence": "BO actual-storage cache insertion, optional reader buffer and ordinary PakRegistry FileBlock callback source. Primary reviewed full listings and source, verified worker source/dependency/artifact hashes, reran four focused probe modes, registered three TUs and passed the Win32 build plus both existing tests. Descriptive names are hypotheses, not recovered symbols. Analysis prototypes expose ECX with unused EDX; source APIs add explicit services. Callback frames retain outer storage on escaping calls but do not implement native FH3 or preserve BDD850/BE1740 internal temporaries. Native binary/SEH/stack identity, production observer/resource-loader wiring and gameplay remain unproved. See docs/NATIVE_LOADING_STORAGE_INTEGRATION_BO.md and reports/native_loading_storage_integration_bo.json. Full body 298 bytes; ECX actual0Ch buffer header; stack signed capacity; RET4; no stable result; reports/native_resource_reader_buffer_bo.json.",
+      "before_documentation": {
+        "hash": "ee290cfd29a024bbbf23cca0aae5b50038f796a3afebb29e8e738991aa06f9ee",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00bf05d0",
+        "function_name": "FUN_00bf05d0",
+        "return_type": "void",
+        "calling_convention": "__fastcall",
+        "plate_comment": "",
+        "parameters": [
+          {
+            "ordinal": 0,
+            "name": "buffer",
+            "type": "void *"
+          },
+          {
+            "ordinal": 1,
+            "name": "unused_edx",
+            "type": "void *"
+          },
+          {
+            "ordinal": 2,
+            "name": "capacity",
+            "type": "int"
+          }
+        ],
+        "local_variables": [
+          {
+            "name": "iVar6",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffcc, 4)"
+          },
+          {
+            "name": "uVar7",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffd4, 4)"
+          },
+          {
+            "name": "iVar4",
+            "type": "int",
+            "storage": "(register, 0x18, 4)"
+          },
+          {
+            "name": "puVar5",
+            "type": "uint *",
+            "storage": "(register, 0x1c, 4)"
+          },
+          {
+            "name": "iVar2",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "iVar3",
+            "type": "int",
+            "storage": "(register, 0x14, 4)"
+          },
+          {
+            "name": "this",
+            "type": "uint *",
+            "storage": "(unique, 0x6c00, 4)"
+          },
+          {
+            "name": "iVar1",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "pcStack_8",
+            "type": "undefined *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "local_4",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "local_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 49,
+            "name": "LAB_00bf0601"
+          },
+          {
+            "relative_offset": 96,
+            "name": "LAB_00bf0630"
+          },
+          {
+            "relative_offset": 170,
+            "name": "LAB_00bf067a"
+          },
+          {
+            "relative_offset": 180,
+            "name": "LAB_00bf0684"
+          },
+          {
+            "relative_offset": 204,
+            "name": "LAB_00bf069c"
+          },
+          {
+            "relative_offset": 213,
+            "name": "LAB_00bf06a5"
+          },
+          {
+            "relative_offset": 246,
+            "name": "LAB_00bf06c6"
+          },
+          {
+            "relative_offset": 261,
+            "name": "LAB_00bf06d5"
+          },
+          {
+            "relative_offset": 279,
+            "name": "LAB_00bf06e7"
+          }
+        ],
+        "completeness_score": 70.0
+      },
+      "prototype": "void __fastcall BSP_ResourceReaderBuffer_Reserve(void* header, void* unused_edx, int capacity)",
+      "prototype_result": "Successfully set prototype for function at 00bf05d0 with __fastcall calling convention",
+      "ledger_name_output": "00bf05d0 -> BSP_ResourceReaderBuffer_Reserve\n",
+      "ledger_function_output": "00bf05d0 function reserve_native_resource_reader_buffer_00bf05d0\n",
+      "after_comment": {
+        "address": "00bf05d0",
+        "function_name": "BSP_ResourceReaderBuffer_Reserve",
+        "comment": "[BSP reconstruction 00bf05d0]\nBO actual-storage cache insertion, optional reader buffer and ordinary PakRegistry FileBlock callback source. Primary reviewed full listings and source, verified worker source/dependency/artifact hashes, reran four focused probe modes, registered three TUs and passed the Win32 build plus both existing tests. Descriptive names are hypotheses, not recovered symbols. Analysis prototypes expose ECX with unused EDX; source APIs add explicit services. Callback frames retain outer storage on escaping calls but do not implement native FH3 or preserve BDD850/BE1740 internal temporaries. Native binary/SEH/stack identity, production observer/resource-loader wiring and gameplay remain unproved. See docs/NATIVE_LOADING_STORAGE_INTEGRATION_BO.md and reports/native_loading_storage_integration_bo.json. Full body 298 bytes; ECX actual0Ch buffer header; stack signed capacity; RET4; no stable result; reports/native_resource_reader_buffer_bo.json."
+      }
+    },
+    {
+      "address": "00bf0700",
+      "name": "BSP_ResourceReaderBuffer_Resize",
+      "before_comment": {
+        "address": "00bf0700",
+        "function_name": "FUN_00bf0700"
+      },
+      "evidence": "BO actual-storage cache insertion, optional reader buffer and ordinary PakRegistry FileBlock callback source. Primary reviewed full listings and source, verified worker source/dependency/artifact hashes, reran four focused probe modes, registered three TUs and passed the Win32 build plus both existing tests. Descriptive names are hypotheses, not recovered symbols. Analysis prototypes expose ECX with unused EDX; source APIs add explicit services. Callback frames retain outer storage on escaping calls but do not implement native FH3 or preserve BDD850/BE1740 internal temporaries. Native binary/SEH/stack identity, production observer/resource-loader wiring and gameplay remain unproved. See docs/NATIVE_LOADING_STORAGE_INTEGRATION_BO.md and reports/native_loading_storage_integration_bo.json. Full body 125 bytes; ECX actual0Ch buffer header; stack signed count; RET4; no stable result; reports/native_resource_reader_buffer_bo.json.",
+      "before_documentation": {
+        "hash": "0cca6271969c06d082832f4b14d01daa8d1ce9ce87ee4f6fbec04712dbdcaf04",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00bf0700",
+        "function_name": "FUN_00bf0700",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "uVar5",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "iVar4",
+            "type": "int",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "iVar3",
+            "type": "int",
+            "storage": "(register, 0x4, 4)"
+          },
+          {
+            "name": "puVar2",
+            "type": "undefined4 *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "piVar1",
+            "type": "int *",
+            "storage": "(unique, 0x6c00, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 19,
+            "name": "LAB_00bf0713"
+          },
+          {
+            "relative_offset": 37,
+            "name": "LAB_00bf0725"
+          },
+          {
+            "relative_offset": 56,
+            "name": "LAB_00bf0738"
+          },
+          {
+            "relative_offset": 64,
+            "name": "LAB_00bf0740"
+          },
+          {
+            "relative_offset": 69,
+            "name": "LAB_00bf0745"
+          },
+          {
+            "relative_offset": 112,
+            "name": "LAB_00bf0770"
+          },
+          {
+            "relative_offset": 117,
+            "name": "LAB_00bf0775"
+          }
+        ],
+        "completeness_score": 50.0
+      },
+      "prototype": "void __fastcall BSP_ResourceReaderBuffer_Resize(void* header, void* unused_edx, int count)",
+      "prototype_result": "Successfully set prototype for function at 00bf0700 with __fastcall calling convention",
+      "ledger_name_output": "00bf0700 -> BSP_ResourceReaderBuffer_Resize\n",
+      "ledger_function_output": "00bf0700 function resize_native_resource_reader_buffer_00bf0700\n",
+      "after_comment": {
+        "address": "00bf0700",
+        "function_name": "BSP_ResourceReaderBuffer_Resize",
+        "comment": "[BSP reconstruction 00bf0700]\nBO actual-storage cache insertion, optional reader buffer and ordinary PakRegistry FileBlock callback source. Primary reviewed full listings and source, verified worker source/dependency/artifact hashes, reran four focused probe modes, registered three TUs and passed the Win32 build plus both existing tests. Descriptive names are hypotheses, not recovered symbols. Analysis prototypes expose ECX with unused EDX; source APIs add explicit services. Callback frames retain outer storage on escaping calls but do not implement native FH3 or preserve BDD850/BE1740 internal temporaries. Native binary/SEH/stack identity, production observer/resource-loader wiring and gameplay remain unproved. See docs/NATIVE_LOADING_STORAGE_INTEGRATION_BO.md and reports/native_loading_storage_integration_bo.json. Full body 125 bytes; ECX actual0Ch buffer header; stack signed count; RET4; no stable result; reports/native_resource_reader_buffer_bo.json."
+      }
+    },
+    {
+      "address": "00bb5770",
+      "name": "BSP_PakRegistry_EnterFileBlock",
+      "before_comment": {
+        "address": "00bb5770",
+        "function_name": "FUN_00bb5770"
+      },
+      "evidence": "BO actual-storage cache insertion, optional reader buffer and ordinary PakRegistry FileBlock callback source. Primary reviewed full listings and source, verified worker source/dependency/artifact hashes, reran four focused probe modes, registered three TUs and passed the Win32 build plus both existing tests. Descriptive names are hypotheses, not recovered symbols. Analysis prototypes expose ECX with unused EDX; source APIs add explicit services. Callback frames retain outer storage on escaping calls but do not implement native FH3 or preserve BDD850/BE1740 internal temporaries. Native binary/SEH/stack identity, production observer/resource-loader wiring and gameplay remain unproved. See docs/NATIVE_LOADING_STORAGE_INTEGRATION_BO.md and reports/native_loading_storage_integration_bo.json. Full body 411 bytes; ECX captured registry; one stacked name header; RET4; no uniform semantic EAX result; reports/native_pak_registry_block_callbacks_bo.json.",
+      "before_documentation": {
+        "hash": "da55c44d0fee47d90b1533deaa6f7860f676dae75ad365f524958fd8c2ddbedc",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00bb5770",
+        "function_name": "FUN_00bb5770",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "uVar7",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffcc, 4)"
+          },
+          {
+            "name": "uVar6",
+            "type": "undefined8",
+            "storage": "(VARIABLE, 0x0, 8)"
+          },
+          {
+            "name": "pvVar5",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "extraout_EDX_03",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "extraout_EDX_02",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "extraout_EDX_01",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "extraout_EDX_00",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "extraout_EDX",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "unused_edx",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "iVar4",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "uVar3",
+            "type": "undefined4",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "cVar2",
+            "type": "char",
+            "storage": "(register, 0x0, 1)"
+          },
+          {
+            "name": "local_24",
+            "type": "size_t",
+            "storage": "(stack, 0xffffffffffffffdc, 4)"
+          },
+          {
+            "name": "puVar1",
+            "type": "undefined4 *",
+            "storage": "(unique, 0x6c00, 4)"
+          },
+          {
+            "name": "local_1c",
+            "type": "uint",
+            "storage": "(stack, 0xffffffffffffffe4, 4)"
+          },
+          {
+            "name": "local_20",
+            "type": "void *",
+            "storage": "(stack, 0xffffffffffffffe0, 4)"
+          },
+          {
+            "name": "local_14",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffec, 4)"
+          },
+          {
+            "name": "local_18",
+            "type": "void *",
+            "storage": "(stack, 0xffffffffffffffe8, 4)"
+          },
+          {
+            "name": "pcStack_8",
+            "type": "undefined *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "local_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "local_10",
+            "type": "int",
+            "storage": "(stack, 0xfffffffffffffff0, 4)"
+          },
+          {
+            "name": "local_4",
+            "type": "int",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 139,
+            "name": "LAB_00bb57fb"
+          },
+          {
+            "relative_offset": 237,
+            "name": "LAB_00bb585d"
+          },
+          {
+            "relative_offset": 245,
+            "name": "LAB_00bb5865"
+          },
+          {
+            "relative_offset": 259,
+            "name": "LAB_00bb5873"
+          },
+          {
+            "relative_offset": 296,
+            "name": "LAB_00bb5898"
+          },
+          {
+            "relative_offset": 342,
+            "name": "LAB_00bb58c6"
+          },
+          {
+            "relative_offset": 391,
+            "name": "LAB_00bb58f7"
+          }
+        ],
+        "completeness_score": 50.0
+      },
+      "prototype": "void __fastcall BSP_PakRegistry_EnterFileBlock(void* registry, void* unused_edx, void* name)",
+      "prototype_result": "Successfully set prototype for function at 00bb5770 with __fastcall calling convention",
+      "ledger_name_output": "00bb5770 -> BSP_PakRegistry_EnterFileBlock\n",
+      "ledger_function_output": "00bb5770 function enter_native_pak_registry_block_00bb5770\n",
+      "after_comment": {
+        "address": "00bb5770",
+        "function_name": "BSP_PakRegistry_EnterFileBlock",
+        "comment": "[BSP reconstruction 00bb5770]\nBO actual-storage cache insertion, optional reader buffer and ordinary PakRegistry FileBlock callback source. Primary reviewed full listings and source, verified worker source/dependency/artifact hashes, reran four focused probe modes, registered three TUs and passed the Win32 build plus both existing tests. Descriptive names are hypotheses, not recovered symbols. Analysis prototypes expose ECX with unused EDX; source APIs add explicit services. Callback frames retain outer storage on escaping calls but do not implement native FH3 or preserve BDD850/BE1740 internal temporaries. Native binary/SEH/stack identity, production observer/resource-loader wiring and gameplay remain unproved. See docs/NATIVE_LOADING_STORAGE_INTEGRATION_BO.md and reports/native_loading_storage_integration_bo.json. Full body 411 bytes; ECX captured registry; one stacked name header; RET4; no uniform semantic EAX result; reports/native_pak_registry_block_callbacks_bo.json."
+      }
+    },
+    {
+      "address": "00bb5910",
+      "name": "BSP_PakRegistry_LeaveFileBlock",
+      "before_comment": {
+        "address": "00bb5910",
+        "function_name": "FUN_00bb5910"
+      },
+      "evidence": "BO actual-storage cache insertion, optional reader buffer and ordinary PakRegistry FileBlock callback source. Primary reviewed full listings and source, verified worker source/dependency/artifact hashes, reran four focused probe modes, registered three TUs and passed the Win32 build plus both existing tests. Descriptive names are hypotheses, not recovered symbols. Analysis prototypes expose ECX with unused EDX; source APIs add explicit services. Callback frames retain outer storage on escaping calls but do not implement native FH3 or preserve BDD850/BE1740 internal temporaries. Native binary/SEH/stack identity, production observer/resource-loader wiring and gameplay remain unproved. See docs/NATIVE_LOADING_STORAGE_INTEGRATION_BO.md and reports/native_loading_storage_integration_bo.json. Full body 417 bytes; ECX captured registry; one stacked name header; RET4; no uniform semantic EAX result; reports/native_pak_registry_block_callbacks_bo.json.",
+      "before_documentation": {
+        "hash": "45256ae9d371098791265a3d2ab49352c28f8241606bf519f276ddf13170d95e",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00bb5910",
+        "function_name": "FUN_00bb5910",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "local_1c",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffe4, 4)"
+          },
+          {
+            "name": "pcStack_8",
+            "type": "undefined *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "local_14",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffec, 4)"
+          },
+          {
+            "name": "local_18",
+            "type": "char *",
+            "storage": "(stack, 0xffffffffffffffe8, 4)"
+          },
+          {
+            "name": "local_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "local_10",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff0, 4)"
+          },
+          {
+            "name": "local_4",
+            "type": "int",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "uVar8",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffd4, 4)"
+          },
+          {
+            "name": "iVar7",
+            "type": "int",
+            "storage": "(register, 0x1c, 4)"
+          },
+          {
+            "name": "pvVar6",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "extraout_EDX_03",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "extraout_EDX_02",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "extraout_EDX_01",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "extraout_EDX_00",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "extraout_EDX",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "iVar5",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "iVar4",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "bVar3",
+            "type": "bool",
+            "storage": "(register, 0x0, 1)"
+          },
+          {
+            "name": "iVar2",
+            "type": "int",
+            "storage": "(unique, 0x17200, 4)"
+          },
+          {
+            "name": "puVar1",
+            "type": "undefined4 *",
+            "storage": "(unique, 0x6c00, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 82,
+            "name": "LAB_00bb5962"
+          },
+          {
+            "relative_offset": 112,
+            "name": "LAB_00bb5980"
+          },
+          {
+            "relative_offset": 121,
+            "name": "LAB_00bb5989"
+          },
+          {
+            "relative_offset": 142,
+            "name": "LAB_00bb599e"
+          },
+          {
+            "relative_offset": 163,
+            "name": "LAB_00bb59b3"
+          },
+          {
+            "relative_offset": 191,
+            "name": "LAB_00bb59cf"
+          },
+          {
+            "relative_offset": 197,
+            "name": "LAB_00bb59d5"
+          },
+          {
+            "relative_offset": 200,
+            "name": "LAB_00bb59d8"
+          },
+          {
+            "relative_offset": 205,
+            "name": "LAB_00bb59dd"
+          },
+          {
+            "relative_offset": 264,
+            "name": "LAB_00bb5a18"
+          },
+          {
+            "relative_offset": 329,
+            "name": "LAB_00bb5a59"
+          },
+          {
+            "relative_offset": 349,
+            "name": "LAB_00bb5a6d"
+          },
+          {
+            "relative_offset": 400,
+            "name": "LAB_00bb5aa0"
+          }
+        ],
+        "completeness_score": 50.0
+      },
+      "prototype": "void __fastcall BSP_PakRegistry_LeaveFileBlock(void* registry, void* unused_edx, void* name)",
+      "prototype_result": "Successfully set prototype for function at 00bb5910 with __fastcall calling convention",
+      "ledger_name_output": "00bb5910 -> BSP_PakRegistry_LeaveFileBlock\n",
+      "ledger_function_output": "00bb5910 function leave_native_pak_registry_block_00bb5910\n",
+      "after_comment": {
+        "address": "00bb5910",
+        "function_name": "BSP_PakRegistry_LeaveFileBlock",
+        "comment": "[BSP reconstruction 00bb5910]\nBO actual-storage cache insertion, optional reader buffer and ordinary PakRegistry FileBlock callback source. Primary reviewed full listings and source, verified worker source/dependency/artifact hashes, reran four focused probe modes, registered three TUs and passed the Win32 build plus both existing tests. Descriptive names are hypotheses, not recovered symbols. Analysis prototypes expose ECX with unused EDX; source APIs add explicit services. Callback frames retain outer storage on escaping calls but do not implement native FH3 or preserve BDD850/BE1740 internal temporaries. Native binary/SEH/stack identity, production observer/resource-loader wiring and gameplay remain unproved. See docs/NATIVE_LOADING_STORAGE_INTEGRATION_BO.md and reports/native_loading_storage_integration_bo.json. Full body 417 bytes; ECX captured registry; one stacked name header; RET4; no uniform semantic EAX result; reports/native_pak_registry_block_callbacks_bo.json."
+      }
+    },
+    {
+      "address": "00cc2158",
+      "name": "EH_handler_00cc2158",
+      "before_comment": {
+        "address": "00cc2158",
+        "function_name": "FUN_00cc2158"
+      },
+      "evidence": "BO actual-storage cache insertion, optional reader buffer and ordinary PakRegistry FileBlock callback source. Primary reviewed full listings and source, verified worker source/dependency/artifact hashes, reran four focused probe modes, registered three TUs and passed the Win32 build plus both existing tests. Descriptive names are hypotheses, not recovered symbols. Analysis prototypes expose ECX with unused EDX; source APIs add explicit services. Callback frames retain outer storage on escaping calls but do not implement native FH3 or preserve BDD850/BE1740 internal temporaries. Native binary/SEH/stack identity, production observer/resource-loader wiring and gameplay remain unproved. See docs/NATIVE_LOADING_STORAGE_INTEGRATION_BO.md and reports/native_loading_storage_integration_bo.json. Verified complete 10-byte MOV EAX,FuncInfo / JMP BF6B43 handler newly defined; evidence only.",
+      "ledger_name_output": "00cc2158 -> EH_handler_00cc2158\n",
+      "after_comment": {
+        "address": "00cc2158",
+        "function_name": "EH_handler_00cc2158",
+        "comment": "[BSP reconstruction 00cc2158]\nBO actual-storage cache insertion, optional reader buffer and ordinary PakRegistry FileBlock callback source. Primary reviewed full listings and source, verified worker source/dependency/artifact hashes, reran four focused probe modes, registered three TUs and passed the Win32 build plus both existing tests. Descriptive names are hypotheses, not recovered symbols. Analysis prototypes expose ECX with unused EDX; source APIs add explicit services. Callback frames retain outer storage on escaping calls but do not implement native FH3 or preserve BDD850/BE1740 internal temporaries. Native binary/SEH/stack identity, production observer/resource-loader wiring and gameplay remain unproved. See docs/NATIVE_LOADING_STORAGE_INTEGRATION_BO.md and reports/native_loading_storage_integration_bo.json. Verified complete 10-byte MOV EAX,FuncInfo / JMP BF6B43 handler newly defined; evidence only."
+      }
+    },
+    {
+      "address": "00cc77a7",
+      "name": "EH_handler_00cc77a7",
+      "before_comment": {
+        "address": "00cc77a7",
+        "function_name": "FUN_00cc77a7"
+      },
+      "evidence": "BO actual-storage cache insertion, optional reader buffer and ordinary PakRegistry FileBlock callback source. Primary reviewed full listings and source, verified worker source/dependency/artifact hashes, reran four focused probe modes, registered three TUs and passed the Win32 build plus both existing tests. Descriptive names are hypotheses, not recovered symbols. Analysis prototypes expose ECX with unused EDX; source APIs add explicit services. Callback frames retain outer storage on escaping calls but do not implement native FH3 or preserve BDD850/BE1740 internal temporaries. Native binary/SEH/stack identity, production observer/resource-loader wiring and gameplay remain unproved. See docs/NATIVE_LOADING_STORAGE_INTEGRATION_BO.md and reports/native_loading_storage_integration_bo.json. Verified complete 10-byte MOV EAX,FuncInfo / JMP BF6B43 handler newly defined; evidence only.",
+      "ledger_name_output": "00cc77a7 -> EH_handler_00cc77a7\n",
+      "after_comment": {
+        "address": "00cc77a7",
+        "function_name": "EH_handler_00cc77a7",
+        "comment": "[BSP reconstruction 00cc77a7]\nBO actual-storage cache insertion, optional reader buffer and ordinary PakRegistry FileBlock callback source. Primary reviewed full listings and source, verified worker source/dependency/artifact hashes, reran four focused probe modes, registered three TUs and passed the Win32 build plus both existing tests. Descriptive names are hypotheses, not recovered symbols. Analysis prototypes expose ECX with unused EDX; source APIs add explicit services. Callback frames retain outer storage on escaping calls but do not implement native FH3 or preserve BDD850/BE1740 internal temporaries. Native binary/SEH/stack identity, production observer/resource-loader wiring and gameplay remain unproved. See docs/NATIVE_LOADING_STORAGE_INTEGRATION_BO.md and reports/native_loading_storage_integration_bo.json. Verified complete 10-byte MOV EAX,FuncInfo / JMP BF6B43 handler newly defined; evidence only."
+      }
+    },
+    {
+      "address": "00cc43f8",
+      "name": "EH_handler_00cc43f8",
+      "before_comment": {
+        "address": "00cc43f8",
+        "function_name": "FUN_00cc43f8"
+      },
+      "evidence": "BO actual-storage cache insertion, optional reader buffer and ordinary PakRegistry FileBlock callback source. Primary reviewed full listings and source, verified worker source/dependency/artifact hashes, reran four focused probe modes, registered three TUs and passed the Win32 build plus both existing tests. Descriptive names are hypotheses, not recovered symbols. Analysis prototypes expose ECX with unused EDX; source APIs add explicit services. Callback frames retain outer storage on escaping calls but do not implement native FH3 or preserve BDD850/BE1740 internal temporaries. Native binary/SEH/stack identity, production observer/resource-loader wiring and gameplay remain unproved. See docs/NATIVE_LOADING_STORAGE_INTEGRATION_BO.md and reports/native_loading_storage_integration_bo.json. Verified complete 10-byte MOV EAX,FuncInfo / JMP BF6B43 handler newly defined; evidence only.",
+      "ledger_name_output": "00cc43f8 -> EH_handler_00cc43f8\n",
+      "after_comment": {
+        "address": "00cc43f8",
+        "function_name": "EH_handler_00cc43f8",
+        "comment": "[BSP reconstruction 00cc43f8]\nBO actual-storage cache insertion, optional reader buffer and ordinary PakRegistry FileBlock callback source. Primary reviewed full listings and source, verified worker source/dependency/artifact hashes, reran four focused probe modes, registered three TUs and passed the Win32 build plus both existing tests. Descriptive names are hypotheses, not recovered symbols. Analysis prototypes expose ECX with unused EDX; source APIs add explicit services. Callback frames retain outer storage on escaping calls but do not implement native FH3 or preserve BDD850/BE1740 internal temporaries. Native binary/SEH/stack identity, production observer/resource-loader wiring and gameplay remain unproved. See docs/NATIVE_LOADING_STORAGE_INTEGRATION_BO.md and reports/native_loading_storage_integration_bo.json. Verified complete 10-byte MOV EAX,FuncInfo / JMP BF6B43 handler newly defined; evidence only."
+      }
+    },
+    {
+      "address": "00cc4420",
+      "name": "EH_handler_00cc4420",
+      "before_comment": {
+        "address": "00cc4420",
+        "function_name": "FUN_00cc4420"
+      },
+      "evidence": "BO actual-storage cache insertion, optional reader buffer and ordinary PakRegistry FileBlock callback source. Primary reviewed full listings and source, verified worker source/dependency/artifact hashes, reran four focused probe modes, registered three TUs and passed the Win32 build plus both existing tests. Descriptive names are hypotheses, not recovered symbols. Analysis prototypes expose ECX with unused EDX; source APIs add explicit services. Callback frames retain outer storage on escaping calls but do not implement native FH3 or preserve BDD850/BE1740 internal temporaries. Native binary/SEH/stack identity, production observer/resource-loader wiring and gameplay remain unproved. See docs/NATIVE_LOADING_STORAGE_INTEGRATION_BO.md and reports/native_loading_storage_integration_bo.json. Verified complete 10-byte MOV EAX,FuncInfo / JMP BF6B43 handler newly defined; evidence only.",
+      "ledger_name_output": "00cc4420 -> EH_handler_00cc4420\n",
+      "after_comment": {
+        "address": "00cc4420",
+        "function_name": "EH_handler_00cc4420",
+        "comment": "[BSP reconstruction 00cc4420]\nBO actual-storage cache insertion, optional reader buffer and ordinary PakRegistry FileBlock callback source. Primary reviewed full listings and source, verified worker source/dependency/artifact hashes, reran four focused probe modes, registered three TUs and passed the Win32 build plus both existing tests. Descriptive names are hypotheses, not recovered symbols. Analysis prototypes expose ECX with unused EDX; source APIs add explicit services. Callback frames retain outer storage on escaping calls but do not implement native FH3 or preserve BDD850/BE1740 internal temporaries. Native binary/SEH/stack identity, production observer/resource-loader wiring and gameplay remain unproved. See docs/NATIVE_LOADING_STORAGE_INTEGRATION_BO.md and reports/native_loading_storage_integration_bo.json. Verified complete 10-byte MOV EAX,FuncInfo / JMP BF6B43 handler newly defined; evidence only."
+      }
+    },
+    {
+      "address": "00cc2150",
+      "name": "Unwind@00cc2150",
+      "before_comment": {
+        "address": "00cc2150",
+        "function_name": "Unwind@00cc2150"
+      },
+      "evidence": "BO actual-storage cache insertion, optional reader buffer and ordinary PakRegistry FileBlock callback source. Primary reviewed full listings and source, verified worker source/dependency/artifact hashes, reran four focused probe modes, registered three TUs and passed the Win32 build plus both existing tests. Descriptive names are hypotheses, not recovered symbols. Analysis prototypes expose ECX with unused EDX; source APIs add explicit services. Callback frames retain outer storage on escaping calls but do not implement native FH3 or preserve BDD850/BE1740 internal temporaries. Native binary/SEH/stack identity, production observer/resource-loader wiring and gameplay remain unproved. See docs/NATIVE_LOADING_STORAGE_INTEGRATION_BO.md and reports/native_loading_storage_integration_bo.json. Native unwind evidence, correct compiler name preserved; CC2150 destroys completed SBO message, CC7790 calls no-op placement delete, callback actions destroy their native string temporaries.",
+      "ledger_name_output": "00cc2150 -> Unwind@00cc2150\n",
+      "after_comment": {
+        "address": "00cc2150",
+        "function_name": "Unwind@00cc2150",
+        "comment": "[BSP reconstruction 00cc2150]\nBO actual-storage cache insertion, optional reader buffer and ordinary PakRegistry FileBlock callback source. Primary reviewed full listings and source, verified worker source/dependency/artifact hashes, reran four focused probe modes, registered three TUs and passed the Win32 build plus both existing tests. Descriptive names are hypotheses, not recovered symbols. Analysis prototypes expose ECX with unused EDX; source APIs add explicit services. Callback frames retain outer storage on escaping calls but do not implement native FH3 or preserve BDD850/BE1740 internal temporaries. Native binary/SEH/stack identity, production observer/resource-loader wiring and gameplay remain unproved. See docs/NATIVE_LOADING_STORAGE_INTEGRATION_BO.md and reports/native_loading_storage_integration_bo.json. Native unwind evidence, correct compiler name preserved; CC2150 destroys completed SBO message, CC7790 calls no-op placement delete, callback actions destroy their native string temporaries."
+      }
+    },
+    {
+      "address": "00cc7790",
+      "name": "Unwind@00cc7790",
+      "before_comment": {
+        "address": "00cc7790",
+        "function_name": "Unwind@00cc7790"
+      },
+      "evidence": "BO actual-storage cache insertion, optional reader buffer and ordinary PakRegistry FileBlock callback source. Primary reviewed full listings and source, verified worker source/dependency/artifact hashes, reran four focused probe modes, registered three TUs and passed the Win32 build plus both existing tests. Descriptive names are hypotheses, not recovered symbols. Analysis prototypes expose ECX with unused EDX; source APIs add explicit services. Callback frames retain outer storage on escaping calls but do not implement native FH3 or preserve BDD850/BE1740 internal temporaries. Native binary/SEH/stack identity, production observer/resource-loader wiring and gameplay remain unproved. See docs/NATIVE_LOADING_STORAGE_INTEGRATION_BO.md and reports/native_loading_storage_integration_bo.json. Native unwind evidence, correct compiler name preserved; CC2150 destroys completed SBO message, CC7790 calls no-op placement delete, callback actions destroy their native string temporaries.",
+      "ledger_name_output": "00cc7790 -> Unwind@00cc7790\n",
+      "after_comment": {
+        "address": "00cc7790",
+        "function_name": "Unwind@00cc7790",
+        "comment": "[BSP reconstruction 00cc7790]\nBO actual-storage cache insertion, optional reader buffer and ordinary PakRegistry FileBlock callback source. Primary reviewed full listings and source, verified worker source/dependency/artifact hashes, reran four focused probe modes, registered three TUs and passed the Win32 build plus both existing tests. Descriptive names are hypotheses, not recovered symbols. Analysis prototypes expose ECX with unused EDX; source APIs add explicit services. Callback frames retain outer storage on escaping calls but do not implement native FH3 or preserve BDD850/BE1740 internal temporaries. Native binary/SEH/stack identity, production observer/resource-loader wiring and gameplay remain unproved. See docs/NATIVE_LOADING_STORAGE_INTEGRATION_BO.md and reports/native_loading_storage_integration_bo.json. Native unwind evidence, correct compiler name preserved; CC2150 destroys completed SBO message, CC7790 calls no-op placement delete, callback actions destroy their native string temporaries."
+      }
+    },
+    {
+      "address": "00cc43e0",
+      "name": "Unwind@00cc43e0",
+      "before_comment": {
+        "address": "00cc43e0",
+        "function_name": "Unwind@00cc43e0"
+      },
+      "evidence": "BO actual-storage cache insertion, optional reader buffer and ordinary PakRegistry FileBlock callback source. Primary reviewed full listings and source, verified worker source/dependency/artifact hashes, reran four focused probe modes, registered three TUs and passed the Win32 build plus both existing tests. Descriptive names are hypotheses, not recovered symbols. Analysis prototypes expose ECX with unused EDX; source APIs add explicit services. Callback frames retain outer storage on escaping calls but do not implement native FH3 or preserve BDD850/BE1740 internal temporaries. Native binary/SEH/stack identity, production observer/resource-loader wiring and gameplay remain unproved. See docs/NATIVE_LOADING_STORAGE_INTEGRATION_BO.md and reports/native_loading_storage_integration_bo.json. Native unwind evidence, correct compiler name preserved; CC2150 destroys completed SBO message, CC7790 calls no-op placement delete, callback actions destroy their native string temporaries.",
+      "ledger_name_output": "00cc43e0 -> Unwind@00cc43e0\n",
+      "after_comment": {
+        "address": "00cc43e0",
+        "function_name": "Unwind@00cc43e0",
+        "comment": "[BSP reconstruction 00cc43e0]\nBO actual-storage cache insertion, optional reader buffer and ordinary PakRegistry FileBlock callback source. Primary reviewed full listings and source, verified worker source/dependency/artifact hashes, reran four focused probe modes, registered three TUs and passed the Win32 build plus both existing tests. Descriptive names are hypotheses, not recovered symbols. Analysis prototypes expose ECX with unused EDX; source APIs add explicit services. Callback frames retain outer storage on escaping calls but do not implement native FH3 or preserve BDD850/BE1740 internal temporaries. Native binary/SEH/stack identity, production observer/resource-loader wiring and gameplay remain unproved. See docs/NATIVE_LOADING_STORAGE_INTEGRATION_BO.md and reports/native_loading_storage_integration_bo.json. Native unwind evidence, correct compiler name preserved; CC2150 destroys completed SBO message, CC7790 calls no-op placement delete, callback actions destroy their native string temporaries."
+      }
+    },
+    {
+      "address": "00cc43e8",
+      "name": "Unwind@00cc43e8",
+      "before_comment": {
+        "address": "00cc43e8",
+        "function_name": "Unwind@00cc43e8"
+      },
+      "evidence": "BO actual-storage cache insertion, optional reader buffer and ordinary PakRegistry FileBlock callback source. Primary reviewed full listings and source, verified worker source/dependency/artifact hashes, reran four focused probe modes, registered three TUs and passed the Win32 build plus both existing tests. Descriptive names are hypotheses, not recovered symbols. Analysis prototypes expose ECX with unused EDX; source APIs add explicit services. Callback frames retain outer storage on escaping calls but do not implement native FH3 or preserve BDD850/BE1740 internal temporaries. Native binary/SEH/stack identity, production observer/resource-loader wiring and gameplay remain unproved. See docs/NATIVE_LOADING_STORAGE_INTEGRATION_BO.md and reports/native_loading_storage_integration_bo.json. Native unwind evidence, correct compiler name preserved; CC2150 destroys completed SBO message, CC7790 calls no-op placement delete, callback actions destroy their native string temporaries.",
+      "ledger_name_output": "00cc43e8 -> Unwind@00cc43e8\n",
+      "after_comment": {
+        "address": "00cc43e8",
+        "function_name": "Unwind@00cc43e8",
+        "comment": "[BSP reconstruction 00cc43e8]\nBO actual-storage cache insertion, optional reader buffer and ordinary PakRegistry FileBlock callback source. Primary reviewed full listings and source, verified worker source/dependency/artifact hashes, reran four focused probe modes, registered three TUs and passed the Win32 build plus both existing tests. Descriptive names are hypotheses, not recovered symbols. Analysis prototypes expose ECX with unused EDX; source APIs add explicit services. Callback frames retain outer storage on escaping calls but do not implement native FH3 or preserve BDD850/BE1740 internal temporaries. Native binary/SEH/stack identity, production observer/resource-loader wiring and gameplay remain unproved. See docs/NATIVE_LOADING_STORAGE_INTEGRATION_BO.md and reports/native_loading_storage_integration_bo.json. Native unwind evidence, correct compiler name preserved; CC2150 destroys completed SBO message, CC7790 calls no-op placement delete, callback actions destroy their native string temporaries."
+      }
+    },
+    {
+      "address": "00cc43f0",
+      "name": "Unwind@00cc43f0",
+      "before_comment": {
+        "address": "00cc43f0",
+        "function_name": "Unwind@00cc43f0"
+      },
+      "evidence": "BO actual-storage cache insertion, optional reader buffer and ordinary PakRegistry FileBlock callback source. Primary reviewed full listings and source, verified worker source/dependency/artifact hashes, reran four focused probe modes, registered three TUs and passed the Win32 build plus both existing tests. Descriptive names are hypotheses, not recovered symbols. Analysis prototypes expose ECX with unused EDX; source APIs add explicit services. Callback frames retain outer storage on escaping calls but do not implement native FH3 or preserve BDD850/BE1740 internal temporaries. Native binary/SEH/stack identity, production observer/resource-loader wiring and gameplay remain unproved. See docs/NATIVE_LOADING_STORAGE_INTEGRATION_BO.md and reports/native_loading_storage_integration_bo.json. Native unwind evidence, correct compiler name preserved; CC2150 destroys completed SBO message, CC7790 calls no-op placement delete, callback actions destroy their native string temporaries.",
+      "ledger_name_output": "00cc43f0 -> Unwind@00cc43f0\n",
+      "after_comment": {
+        "address": "00cc43f0",
+        "function_name": "Unwind@00cc43f0",
+        "comment": "[BSP reconstruction 00cc43f0]\nBO actual-storage cache insertion, optional reader buffer and ordinary PakRegistry FileBlock callback source. Primary reviewed full listings and source, verified worker source/dependency/artifact hashes, reran four focused probe modes, registered three TUs and passed the Win32 build plus both existing tests. Descriptive names are hypotheses, not recovered symbols. Analysis prototypes expose ECX with unused EDX; source APIs add explicit services. Callback frames retain outer storage on escaping calls but do not implement native FH3 or preserve BDD850/BE1740 internal temporaries. Native binary/SEH/stack identity, production observer/resource-loader wiring and gameplay remain unproved. See docs/NATIVE_LOADING_STORAGE_INTEGRATION_BO.md and reports/native_loading_storage_integration_bo.json. Native unwind evidence, correct compiler name preserved; CC2150 destroys completed SBO message, CC7790 calls no-op placement delete, callback actions destroy their native string temporaries."
+      }
+    },
+    {
+      "address": "00cc4410",
+      "name": "Unwind@00cc4410",
+      "before_comment": {
+        "address": "00cc4410",
+        "function_name": "Unwind@00cc4410"
+      },
+      "evidence": "BO actual-storage cache insertion, optional reader buffer and ordinary PakRegistry FileBlock callback source. Primary reviewed full listings and source, verified worker source/dependency/artifact hashes, reran four focused probe modes, registered three TUs and passed the Win32 build plus both existing tests. Descriptive names are hypotheses, not recovered symbols. Analysis prototypes expose ECX with unused EDX; source APIs add explicit services. Callback frames retain outer storage on escaping calls but do not implement native FH3 or preserve BDD850/BE1740 internal temporaries. Native binary/SEH/stack identity, production observer/resource-loader wiring and gameplay remain unproved. See docs/NATIVE_LOADING_STORAGE_INTEGRATION_BO.md and reports/native_loading_storage_integration_bo.json. Native unwind evidence, correct compiler name preserved; CC2150 destroys completed SBO message, CC7790 calls no-op placement delete, callback actions destroy their native string temporaries.",
+      "ledger_name_output": "00cc4410 -> Unwind@00cc4410\n",
+      "after_comment": {
+        "address": "00cc4410",
+        "function_name": "Unwind@00cc4410",
+        "comment": "[BSP reconstruction 00cc4410]\nBO actual-storage cache insertion, optional reader buffer and ordinary PakRegistry FileBlock callback source. Primary reviewed full listings and source, verified worker source/dependency/artifact hashes, reran four focused probe modes, registered three TUs and passed the Win32 build plus both existing tests. Descriptive names are hypotheses, not recovered symbols. Analysis prototypes expose ECX with unused EDX; source APIs add explicit services. Callback frames retain outer storage on escaping calls but do not implement native FH3 or preserve BDD850/BE1740 internal temporaries. Native binary/SEH/stack identity, production observer/resource-loader wiring and gameplay remain unproved. See docs/NATIVE_LOADING_STORAGE_INTEGRATION_BO.md and reports/native_loading_storage_integration_bo.json. Native unwind evidence, correct compiler name preserved; CC2150 destroys completed SBO message, CC7790 calls no-op placement delete, callback actions destroy their native string temporaries."
+      }
+    },
+    {
+      "address": "00cc4418",
+      "name": "Unwind@00cc4418",
+      "before_comment": {
+        "address": "00cc4418",
+        "function_name": "Unwind@00cc4418"
+      },
+      "evidence": "BO actual-storage cache insertion, optional reader buffer and ordinary PakRegistry FileBlock callback source. Primary reviewed full listings and source, verified worker source/dependency/artifact hashes, reran four focused probe modes, registered three TUs and passed the Win32 build plus both existing tests. Descriptive names are hypotheses, not recovered symbols. Analysis prototypes expose ECX with unused EDX; source APIs add explicit services. Callback frames retain outer storage on escaping calls but do not implement native FH3 or preserve BDD850/BE1740 internal temporaries. Native binary/SEH/stack identity, production observer/resource-loader wiring and gameplay remain unproved. See docs/NATIVE_LOADING_STORAGE_INTEGRATION_BO.md and reports/native_loading_storage_integration_bo.json. Native unwind evidence, correct compiler name preserved; CC2150 destroys completed SBO message, CC7790 calls no-op placement delete, callback actions destroy their native string temporaries.",
+      "ledger_name_output": "00cc4418 -> Unwind@00cc4418\n",
+      "after_comment": {
+        "address": "00cc4418",
+        "function_name": "Unwind@00cc4418",
+        "comment": "[BSP reconstruction 00cc4418]\nBO actual-storage cache insertion, optional reader buffer and ordinary PakRegistry FileBlock callback source. Primary reviewed full listings and source, verified worker source/dependency/artifact hashes, reran four focused probe modes, registered three TUs and passed the Win32 build plus both existing tests. Descriptive names are hypotheses, not recovered symbols. Analysis prototypes expose ECX with unused EDX; source APIs add explicit services. Callback frames retain outer storage on escaping calls but do not implement native FH3 or preserve BDD850/BE1740 internal temporaries. Native binary/SEH/stack identity, production observer/resource-loader wiring and gameplay remain unproved. See docs/NATIVE_LOADING_STORAGE_INTEGRATION_BO.md and reports/native_loading_storage_integration_bo.json. Native unwind evidence, correct compiler name preserved; CC2150 destroys completed SBO message, CC7790 calls no-op placement delete, callback actions destroy their native string temporaries."
+      }
+    }
+  ],
+  "actions": [
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00b7ff80",
+        "prototype": "void* __fastcall BSP_ResourceNameTree_InsertAt(void* tree, void* unused_edx, void* output, unsigned int insert_left, void* parent, void* pair)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00b7ff80 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00b803b0",
+        "prototype": "void* __fastcall BSP_ResourceNameTree_InsertUnique(void* tree, void* unused_edx, void* output, void* pair)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00b803b0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00bf05d0",
+        "prototype": "void __fastcall BSP_ResourceReaderBuffer_Reserve(void* header, void* unused_edx, int capacity)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00bf05d0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00bf0700",
+        "prototype": "void __fastcall BSP_ResourceReaderBuffer_Resize(void* header, void* unused_edx, int count)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00bf0700 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00bb5770",
+        "prototype": "void __fastcall BSP_PakRegistry_EnterFileBlock(void* registry, void* unused_edx, void* name)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00bb5770 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00bb5910",
+        "prototype": "void __fastcall BSP_PakRegistry_LeaveFileBlock(void* registry, void* unused_edx, void* name)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00bb5910 with __fastcall calling convention"
+    }
+  ],
+  "state": "names_and_abi_views_saved_previous_comments_retained",
+  "exports_refreshed": true
+}

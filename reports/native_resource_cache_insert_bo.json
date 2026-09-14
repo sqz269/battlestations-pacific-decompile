@@ -519,5 +519,21 @@
     "Controlled fixture field replacement proves scheduling only, not concurrency or reentrancy safety.",
     "Native allocator null branch remains unguarded after existing dependency returns; fixture does not force unsafe null continuation.",
     "No cache manager, resource lifetime, production glue, CMake/shared metadata/Ghidra changes or integrated gameplay claim."
+  ],
+  "primary_integration_review": {
+    "worker_report_preimage": "local\\native_resource_cache_insert_bo_worker_preimage.json",
+    "sha256": "cd389ed5164f2a585549cfe76ccfea223a02673f6dc44a415016f214bf2886d3",
+    "definition_report": "reports/native_loading_storage_definitions_bo.json",
+    "annotation_report": "reports/native_loading_storage_annotations_bo.json",
+    "note": "Earlier worker observations are retained as historical evidence. Primary defined and verified complete handler instruction membership, saved names/comments and refreshed exports."
+  },
+  "primary_repaired_transfers": [
+    {
+      "address": "00cc215d",
+      "native": "00bf6b43",
+      "function": "00cc2158",
+      "kind": "tail_jump",
+      "evidence": "Primary verified two-instruction handler membership after definition; native MOV EAX,FuncInfo and tail JMP."
+    }
   ]
 }

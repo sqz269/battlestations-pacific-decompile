@@ -885,8 +885,8 @@
     },
     {
       "path": "docs\\NATIVE_RESOURCE_READER_BUFFER_BO.md",
-      "bytes": 7502,
-      "sha256": "5c9d55756ddf811e108d0acd2c7241d6debc1d535cf53d863e481ea903efd8d4"
+      "bytes": 7716,
+      "sha256": "c1269660564542d2c3df9c7b1145f821be19165a9bd8f4219e5f75e07a11a7f6"
     },
     {
       "path": "include\\bsp\\native_string.hpp",
@@ -1036,5 +1036,28 @@
     "src/native_resource_reader_buffer.cpp",
     "docs/NATIVE_RESOURCE_READER_BUFFER_BO.md",
     "reports/native_resource_reader_buffer_bo.json"
+  ],
+  "primary_integration_review": {
+    "worker_report_preimage": "local\\native_resource_reader_buffer_bo_worker_preimage.json",
+    "sha256": "8711622cfbbf5766659728d9390edaee22926dc8685e387bd1fc8f15c5899ba6",
+    "definition_report": "reports/native_loading_storage_definitions_bo.json",
+    "annotation_report": "reports/native_loading_storage_annotations_bo.json",
+    "note": "Earlier worker observations are retained as historical evidence. Primary defined and verified complete handler instruction membership, saved names/comments and refreshed exports.",
+    "old_document_receipt": {
+      "path": "docs\\NATIVE_RESOURCE_READER_BUFFER_BO.md",
+      "bytes": 7502,
+      "sha256": "5c9d55756ddf811e108d0acd2c7241d6debc1d535cf53d863e481ea903efd8d4"
+    },
+    "document_receipt_correction": "Worker confirmed final three-line call-verifier paragraph was added after receipt hashing. Primary reviewed full final doc, verified exact committed/integrated equality; all source, dependency and fixture hashes matched independently.",
+    "reader_flow_repair": "reports/native_loading_storage_flow_bo.json: BF05D0 now owns all 106 instructions through RET4; previous five-instruction gap recovered."
+  },
+  "primary_repaired_transfers": [
+    {
+      "address": "00cc77ac",
+      "native": "00bf6b43",
+      "function": "00cc77a7",
+      "kind": "tail_jump",
+      "evidence": "Primary verified two-instruction handler membership after definition; native MOV EAX,FuncInfo and tail JMP."
+    }
   ]
 }

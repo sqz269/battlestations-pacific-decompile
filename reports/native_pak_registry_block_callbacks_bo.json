@@ -792,5 +792,28 @@
     "exit_code": 0,
     "tool": "tools/verify_report_calls.py",
     "log": "local/pak_callbacks_bo/verify_calls.log"
-  }
+  },
+  "primary_integration_review": {
+    "worker_report_preimage": "local\\native_pak_registry_block_callbacks_bo_worker_preimage.json",
+    "sha256": "4dfa0b0ded9ae5663c3dff6ae26f5d5731a28abd010d845100dde1c9303384f9",
+    "definition_report": "reports/native_loading_storage_definitions_bo.json",
+    "annotation_report": "reports/native_loading_storage_annotations_bo.json",
+    "note": "Earlier worker observations are retained as historical evidence. Primary defined and verified complete handler instruction membership, saved names/comments and refreshed exports."
+  },
+  "primary_repaired_transfers": [
+    {
+      "address": "00cc43fd",
+      "native": "00bf6b43",
+      "function": "00cc43f8",
+      "kind": "tail_jump",
+      "evidence": "Primary verified two-instruction handler membership after definition; native MOV EAX,FuncInfo and tail JMP."
+    },
+    {
+      "address": "00cc4425",
+      "native": "00bf6b43",
+      "function": "00cc4420",
+      "kind": "tail_jump",
+      "evidence": "Primary verified two-instruction handler membership after definition; native MOV EAX,FuncInfo and tail JMP."
+    }
+  ]
 }
