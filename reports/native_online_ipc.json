@@ -1,0 +1,437 @@
+{
+  "packet": "orch5_native_online_ipc",
+  "base_commit": "d1b06aa739dc95828f1e37f964a54faba94722b3",
+  "project_file": "C:/Users/sqz269/bsp.gpr",
+  "program_path": "/battlestationspacific.exe",
+  "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "source": "src/native_online_ipc.cpp",
+  "header": "include/bsp/native_online_ipc.hpp",
+  "ghidra_writes": false,
+  "ghidra_saves": false,
+  "functions": [
+    {
+      "address": "00a4bc80",
+      "inclusive_end": "00a4bc8f",
+      "byte_length": 16,
+      "byte_sha256": "1b053f62234cfbd01071d259647a5fffa60b8d2102fcab57b3f0a9937cf44f78",
+      "matches_installed_executable": true,
+      "name": "native_online_ipc_last_error_00a4bc80",
+      "coverage": "complete normal body on actual 2Ch storage",
+      "native_abi": "no arguments, RET",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00a4bd40",
+      "inclusive_end": "00a4bd77",
+      "byte_length": 56,
+      "byte_sha256": "8a34b7c5dfd9ecc5a54a0498abec4238437eac34885a04dac675fbe28b9e7d0e",
+      "matches_installed_executable": true,
+      "name": "encode_native_online_ipc_00a4bd40",
+      "coverage": "complete normal body on actual 2Ch storage",
+      "native_abi": "stdcall RET12",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00a4bd80",
+      "inclusive_end": "00a4bdb1",
+      "byte_length": 50,
+      "byte_sha256": "8cfadc6a2442a0a1a7f465e3e4a18e1fb081cc794a8c1961bb808ff4b2803f3c",
+      "matches_installed_executable": true,
+      "name": "decode_native_online_ipc_00a4bd80",
+      "coverage": "complete normal body on actual 2Ch storage",
+      "native_abi": "stdcall RET12",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00a4bde0",
+      "inclusive_end": "00a4be4a",
+      "byte_length": 107,
+      "byte_sha256": "4825bce50669672d4998c23f71bcc5c71122adafc275190fa653c05ef1a3d849",
+      "matches_installed_executable": true,
+      "name": "destroy_native_online_ipc_00a4bde0",
+      "coverage": "complete normal body on actual 2Ch storage",
+      "native_abi": "ECX pointer, RET",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00a4be50",
+      "inclusive_end": "00a4bfdf",
+      "byte_length": 400,
+      "byte_sha256": "4bb1e1bd089d7daa6d5924ab5d005222a09f60c123f316c097f034a6a50c9421",
+      "matches_installed_executable": true,
+      "name": "run_native_online_ipc_loop_00a4be50",
+      "coverage": "complete normal body on actual 2Ch storage",
+      "native_abi": "ECX pointer, RET",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00a4c000",
+      "inclusive_end": "00a4c02b",
+      "byte_length": 44,
+      "byte_sha256": "0132deda0fb90187b5878c3d26f00e9b3b16633ad068272fbd5de1a4a32be066",
+      "matches_installed_executable": true,
+      "name": "run_native_online_ipc_thread_00a4c000",
+      "coverage": "complete normal body on actual 2Ch storage",
+      "native_abi": "stdcall RET4",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00a4c030",
+      "inclusive_end": "00a4c224",
+      "byte_length": 501,
+      "byte_sha256": "bf676b169064602b508e24f078ee8c12ec11ca3b31dac51e11abb1d7ab6e8e84",
+      "matches_installed_executable": true,
+      "name": "create_native_online_ipc_00a4c030",
+      "coverage": "complete normal body on actual 2Ch storage",
+      "native_abi": "ECX pointer, RET",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00a4c250",
+      "inclusive_end": "00a4c27b",
+      "byte_length": 44,
+      "byte_sha256": "9f2e355589f2efd72ba33531bab0cf726b2d93cdbc8b73bdf4d61f4d607ca4bf",
+      "matches_installed_executable": true,
+      "name": "initialize_native_online_ipc_slot_00a4c250",
+      "coverage": "complete normal body on actual 2Ch storage",
+      "native_abi": "ECX pointer, RET",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00a4c280",
+      "inclusive_end": "00a4c28e",
+      "byte_length": 15,
+      "byte_sha256": "7872ac7e2e2afbfb5c15bfa5410ce4995503e2442111f32ac3c59531cb2587fe",
+      "matches_installed_executable": true,
+      "name": "close_native_online_ipc_handle_00a4c280",
+      "coverage": "complete normal body on actual 2Ch storage",
+      "native_abi": "ECX pointer, RET",
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00a4be16",
+      "native": "00a5de68",
+      "function": "00a4bde0",
+      "contract": "Recovered direct callee; numeric call checked against live function body."
+    },
+    {
+      "address": "00a4be2a",
+      "native": "00bf6989",
+      "function": "00a4bde0",
+      "contract": "Recovered direct callee; numeric call checked against live function body."
+    },
+    {
+      "address": "00a4be36",
+      "native": "00bf6989",
+      "function": "00a4bde0",
+      "contract": "Recovered direct callee; numeric call checked against live function body."
+    },
+    {
+      "address": "00a4be3f",
+      "native": "00bf65ac",
+      "function": "00a4bde0",
+      "contract": "Recovered direct callee; numeric call checked against live function body."
+    },
+    {
+      "address": "00a4beba",
+      "native": "00a5e055",
+      "function": "00a4be50",
+      "contract": "Recovered direct callee; numeric call checked against live function body."
+    },
+    {
+      "address": "00a4bee5",
+      "native": "00a5df20",
+      "function": "00a4be50",
+      "contract": "Recovered direct callee; numeric call checked against live function body."
+    },
+    {
+      "address": "00a4bf11",
+      "native": "00a5df5e",
+      "function": "00a4be50",
+      "contract": "Recovered direct callee; numeric call checked against live function body."
+    },
+    {
+      "address": "00a4bf4a",
+      "native": "00a5deaa",
+      "function": "00a4be50",
+      "contract": "Recovered direct callee; numeric call checked against live function body."
+    },
+    {
+      "address": "00a4bf71",
+      "native": "00a5dee8",
+      "function": "00a4be50",
+      "contract": "Recovered direct callee; numeric call checked against live function body."
+    },
+    {
+      "address": "00a4bfaf",
+      "native": "00a5e09e",
+      "function": "00a4be50",
+      "contract": "Recovered direct callee; numeric call checked against live function body."
+    },
+    {
+      "address": "00a4c005",
+      "native": "00a4be50",
+      "function": "00a4c000",
+      "contract": "Recovered direct callee; numeric call checked against live function body."
+    },
+    {
+      "address": "00a4c055",
+      "native": "00bfd017",
+      "function": "00a4c030",
+      "contract": "Recovered direct callee; numeric call checked against live function body."
+    },
+    {
+      "address": "00a4c0ea",
+      "native": "00a5de34",
+      "function": "00a4c030",
+      "contract": "Recovered direct callee; numeric call checked against live function body."
+    },
+    {
+      "address": "00a4c104",
+      "native": "00a5df96",
+      "function": "00a4c030",
+      "contract": "Recovered direct callee; numeric call checked against live function body."
+    },
+    {
+      "address": "00a4c130",
+      "native": "00bfd012",
+      "function": "00a4c030",
+      "contract": "Recovered direct callee; numeric call checked against live function body."
+    },
+    {
+      "address": "00a4c14e",
+      "native": "00a5dfce",
+      "function": "00a4c030",
+      "contract": "Recovered direct callee; numeric call checked against live function body."
+    },
+    {
+      "address": "00a4c175",
+      "native": "00bfd012",
+      "function": "00a4c030",
+      "contract": "Recovered direct callee; numeric call checked against live function body."
+    },
+    {
+      "address": "00a4c1a3",
+      "native": "00a4bc80",
+      "function": "00a4c030",
+      "contract": "Recovered direct callee; numeric call checked against live function body."
+    },
+    {
+      "address": "00a4c1c5",
+      "native": "00a5de68",
+      "function": "00a4c030",
+      "contract": "Recovered direct callee; numeric call checked against live function body."
+    },
+    {
+      "address": "00a4c1e5",
+      "native": "00bf6989",
+      "function": "00a4c030",
+      "contract": "Recovered direct callee; numeric call checked against live function body."
+    },
+    {
+      "address": "00a4c1f8",
+      "native": "00bf6989",
+      "function": "00a4c030",
+      "contract": "Recovered direct callee; numeric call checked against live function body."
+    },
+    {
+      "address": "00a4c204",
+      "native": "00bf65ac",
+      "function": "00a4c030",
+      "contract": "Recovered direct callee; numeric call checked against live function body."
+    },
+    {
+      "address": "00a4c20d",
+      "native": "00bfbdbb",
+      "function": "00a4c030",
+      "contract": "Recovered direct callee; numeric call checked against live function body."
+    },
+    {
+      "address": "00a4c264",
+      "native": "00a4c030",
+      "function": "00a4c250",
+      "contract": "Recovered direct callee; numeric call checked against live function body."
+    }
+  ],
+  "iat_calls": [
+    {
+      "address": "00a4bc80",
+      "iat_slot": "00ce2258",
+      "function": "00a4bc80"
+    },
+    {
+      "address": "00a4bdef",
+      "iat_slot": "00ce22b4",
+      "function": "00a4bde0"
+    },
+    {
+      "address": "00a4bdfe",
+      "iat_slot": "00ce22b0",
+      "function": "00a4bde0"
+    },
+    {
+      "address": "00a4be7b",
+      "iat_slot": "00ce2230",
+      "function": "00a4be50"
+    },
+    {
+      "address": "00a4be86",
+      "iat_slot": "00ce226c",
+      "function": "00a4be50"
+    },
+    {
+      "address": "00a4c019",
+      "iat_slot": "00ce2228",
+      "function": "00a4c000"
+    },
+    {
+      "address": "00a4c020",
+      "iat_slot": "00ce2224",
+      "function": "00a4c000"
+    },
+    {
+      "address": "00a4c08f",
+      "iat_slot": "00ce22b8",
+      "function": "00a4c030"
+    },
+    {
+      "address": "00a4c09c",
+      "iat_slot": "00ce2258",
+      "function": "00a4c030"
+    },
+    {
+      "address": "00a4c196",
+      "iat_slot": "00ce2238",
+      "function": "00a4c030"
+    },
+    {
+      "address": "00a4c1d4",
+      "iat_slot": "00ce225c",
+      "function": "00a4c030"
+    }
+  ],
+  "name_hypotheses": "All descriptive C++ names are analyst hypotheses, not recovered game symbols.",
+  "actual_storage": {
+    "type": "NativeOnlineIpcStorage = XLiveIpcNativeState",
+    "size": 44,
+    "manager_slot_offset": "3ac",
+    "native_preimages": [
+      "14",
+      "20"
+    ],
+    "extra_fields": false,
+    "identity_map": false
+  },
+  "concrete_binding": {
+    "pipe": "existing ReconstructedXLivePipeServices, opaque owned child pointer",
+    "system": "existing Win32XLiveIpcSystemHost real APIs",
+    "memory": "selected MSVC nothrow scalar new / same module free",
+    "worker": "reconstructed A4C000/A4BE50 and callbacks on actual 2Ch endpoint",
+    "source_host_boundary": "one immutable process-lifetime runtime address, repeated identical binding accepted and different binding rejected",
+    "original_image_code_required": false,
+    "unresolved_DLL": false,
+    "real_pipe_or_network_executed": false
+  },
+  "iat_register_calls": [
+    {
+      "address": "00a4c089",
+      "iat_slot": "00ce22bc",
+      "contract": "SetLastError"
+    },
+    {
+      "address": "00a4c18a",
+      "iat_slot": "00ce22bc",
+      "contract": "SetLastError"
+    },
+    {
+      "address": "00a4be0e",
+      "iat_slot": "00ce225c",
+      "contract": "CloseHandle"
+    },
+    {
+      "address": "00a4be21",
+      "iat_slot": "00ce225c",
+      "contract": "CloseHandle"
+    }
+  ],
+  "saved_body_repairs_required": [
+    {
+      "function": "00a4bde0",
+      "missing_start": "00a4be2f",
+      "missing_inclusive_end": "00a4be47",
+      "failing_calls": [
+        "00a4be36",
+        "00a4be3f"
+      ],
+      "repair_union_inclusive_end": "00a4be4a"
+    },
+    {
+      "function": "00a4c030",
+      "missing_start": "00a4c209",
+      "missing_inclusive_end": "00a4c211",
+      "failing_calls": [
+        "00a4c20d"
+      ]
+    }
+  ],
+  "validation": {
+    "strict_win32_build": "passed scripts/build.ps1",
+    "ctests_passed": 2,
+    "ctests_failed": 0,
+    "verified_seed_input": "local/seed_reference.hpp",
+    "report_call_rows": 24,
+    "report_call_failures": 3,
+    "report_call_result": "true saved-body gaps retained; integrator repair pending",
+    "report_call_log": "local/native_online_ipc/report_calls.log",
+    "fixture": "local/native_online_ipc/ipc_probe.cpp",
+    "fixture_copied_original_source_comparisons": 9,
+    "fixture_result": "passed",
+    "additional_fixture_checks": [
+      "real CreateThread worker E_ABORT exit observed with WaitForSingleObject/GetExitCodeThread",
+      "same-address runtime rebinding accepted, different address rejected",
+      "null/sentinel slot handling",
+      "matching standard CRT allocation/free"
+    ],
+    "copied_native_redirected_direct_calls": 24,
+    "actual_game_validated": false,
+    "binary_drop_in_compatible": false,
+    "test_no_pipe_network_or_process_termination": true,
+    "exact_gap_edge_evidence": "local/native_online_ipc/exact_gap_edges.txt"
+  },
+  "uncertainties": [
+    "Specific native stack preimages are unrecovered; explicit caller inputs define partial-output source observations.",
+    "Immutable process runtime is a source-host adaptation; dependency lifetime must extend to process exit.",
+    "Existing opaque child pipe source services retain their own published projection/protocol/environment limitations.",
+    "Timeout destruction can free a still-running native worker; no safe-join guarantee.",
+    "Game startup, real endpoint protocol exchange and account/network behavior were not executed."
+  ],
+  "commands": [
+    "python tools/bsp.py brief",
+    "python tools/bsp.py lease claim --packet orch5_native_online_ipc --addresses 00A4C250 00A4C030 00A4C280 00A4BDE0 00A4BE50 00A4C000 00A4BD40 00A4BD80 00A4BC80 --files include/bsp/native_online_ipc.hpp src/native_online_ipc.cpp docs/NATIVE_ONLINE_IPC.md reports/native_online_ipc.json --ttl 6",
+    "python local/native_online_ipc/prepare_reference.py",
+    "python tools/ghidra_export.py verify-seeds",
+    "./scripts/build.ps1",
+    "cmd /d /c .\\local\\native_online_ipc\\compile_probe.cmd",
+    "cmd /d /c .\\local\\native_online_ipc\\build_probe.cmd",
+    "python tools/verify_report_calls.py reports/native_online_ipc.json",
+    "python local/native_online_ipc/finalize_report.py",
+    "python local/native_online_ipc/capture_manifest.py"
+  ],
+  "artifact_manifest": {
+    "path": "local/native_online_ipc/final_manifest.json",
+    "closure": "source/header/report/doc, probe cpp/inc/bin/obj/exe, copied original full spans, build and probe commands/logs, actual compiler dependencies and libraries, actual mapped runtime modules and selected toolchain",
+    "hash": "external final handoff; manifest excludes itself and sidecar to avoid circular hashes"
+  }
+}
