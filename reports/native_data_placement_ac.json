@@ -1,0 +1,77 @@
+{
+  "scope": "Source-only Win32 executable memory placement; no native function or ABI claim",
+  "files": [
+    "cmake/native_data_placement.cmake",
+    "cmake/startup.cmake"
+  ],
+  "target": "bsp_game, MSVC Win32 only",
+  "link_options": [
+    "/BASE:0x10000000",
+    "/DYNAMICBASE:NO"
+  ],
+  "reason": "Observed initial-stack, private-region and rebuilt-image collisions with fixed original read-only data bands",
+  "required_bands": [
+    "00cf0000",
+    "00d10000",
+    "00d50000",
+    "00d60000"
+  ],
+  "prior_diagnostics": "reports/orch6_bootstrap_diagnostic_ab.json",
+  "candidate_probe": {
+    "image": {
+      "image_base": "0x10000000",
+      "size_of_image": "0x20c000",
+      "dll_characteristics": "0x8100",
+      "stack_reserve": "0x100000",
+      "sha256": "037513333b42de3aa0ca4382b95524eaf9b4081389d8d9ee264a216e31af141f"
+    },
+    "command": [
+      "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\part_vector_closeout_ab\\local\\part_vector_ab\\native_band_probe.exe",
+      "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\placement_ac\\placement_candidate.exe",
+      "--actual",
+      "--frames 360 --press-start-frame 3 --menu-select USN01 --mission-frames 120 --mission-frame-seconds 0.1 --game-root \"I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\" --fmod-dll \"I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\fmodex.dll\" --fmod-event-dll \"I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\fmod_event.dll\" --xlive-dll J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\gfwl-private-runtime\\xlive.dll --xlive-dependency J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\gfwl-private-runtime\\msidcrl40.dll --log J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\orch6_combined_ab.log --order-frame 0 --order-unit Enterprise --order moveto:Airfield2 --trajectory-csv J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\orch6_combined_ab.csv"
+    ],
+    "launches": [
+      {
+        "index": 0,
+        "exit": 0,
+        "output": "candidate_suspended_0.txt",
+        "sha256": "eb17a388f001f65ea9095f662c83358cf801cb917db7cb4ae35b3d029c856ef6"
+      },
+      {
+        "index": 1,
+        "exit": 0,
+        "output": "candidate_suspended_1.txt",
+        "sha256": "8c46fc4ef5ea901d4be95b6d14111d0584a9325892b249085577423a44093080"
+      },
+      {
+        "index": 2,
+        "exit": 0,
+        "output": "candidate_suspended_2.txt",
+        "sha256": "24d02359d56618ebcedbc44e2d20245a00abaa114fb86ddbedac9a307bfaaa3c"
+      },
+      {
+        "index": 3,
+        "exit": 0,
+        "output": "candidate_suspended_3.txt",
+        "sha256": "371eb8723a6e8ad94e2e3cb1f8bf90f29cff24e8bb718e4f792a6914297a1f08"
+      }
+    ],
+    "scope": "Four independent controlled suspended children; production bootstrap reservation and resume only, no mission claim"
+  },
+  "initial_verification": {
+    "win32_build": true,
+    "existing_ctests_passed": 2,
+    "log": "local/placement_ac/production_build.txt"
+  },
+  "policy_scope": "Only this source executable opts out of image/heap/stack ASLR. DLL flags, NX compatibility, Windows policy and the bootstrap ownership guards are unchanged.",
+  "limits": [
+    "External forced relocation or foreign mappings may still cause a guarded startup failure.",
+    "The supported local environment is tested; no universal placement guarantee is claimed.",
+    "This is startup compatibility, not original-game gameplay parity."
+  ],
+  "sources": [
+    "https://learn.microsoft.com/en-us/cpp/build/reference/dynamicbase?view=msvc-170",
+    "https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-updateprocthreadattribute"
+  ]
+}
