@@ -211,6 +211,12 @@ public:
     int read_vehicle_class_integer(int index, const char* key, const char* nested_key,
         int fallback);
 
+    // `Bullets[index][key]` from the live Lua state - the bullet class table that
+    // Scripts/datatables/autoload/bulletclasses.lua publishes. Used for the
+    // fields the flattened per-platform BSPGun table does not carry, notably
+    // "FlyTime" and "WaterTravelSpeed". docs/TORPEDO_CATEGORY_ADMISSION.md.
+    float read_bullet_class_number(int index, const char* key, float fallback);
+
     // Milestone 2j. The head of the gameplay settings loader 0083b5e0: it
     // formats `Scripts\datatables\ShipGlobals.lua` (the literal at 00d0b67c)
     // into a path at 0083b6c3, runs it through the Lua state owner's own runner

@@ -435,6 +435,28 @@ void GameGunneryHost::Impl::build_guns() {
             gun.barrel_delay_time = flat_scaled(type_id, make("bdelay"), kMilliScale, 0.0f);
             gun.muzzle_speed = flat_scaled(type_id, make("v0"), kMilliScale, 0.0f);
             gun.max_range = flat_scaled(type_id, make("range"), kMilliScale, 0.0f);
+            // 00731020 answers with descriptor+60h, which is NOT the authored Lua
+            // `Range`: 006E8770 puts `Range` at +68h and never writes +60h. The
+            // finalise hook 006E9890 derives +60h per class kind, and MTorpedo
+            // overrides it at 00855A90 with
+            //   +60h = WaterTravelSpeed(+0E4h) * FlyTime(+54h) * 0.6
+            // the 0.6 being the double at 00CEFF98 (verified 0.6000000238418579).
+            // No torpedo bullet class in this installation carries `Range`, so the
+            // flattened value above is 0 for every torpedo and category 7's
+            // engagement range collapsed to the 10.0f seed, refusing every
+            // candidate at 00863A34. For gun kinds the native rule round-trips to
+            // `Range`, so only the water-travelling case is applied here.
+            // docs/TORPEDO_CATEGORY_ADMISSION.md.
+            if (gun.bullet_class >= 0) {
+                const float water_speed = lua.read_bullet_class_number(
+                    gun.bullet_class, "WaterTravelSpeed", 0.0f);
+                const float fly_time = lua.read_bullet_class_number(
+                    gun.bullet_class, "FlyTime", 0.0f);
+                if (water_speed > 0.0f && fly_time > 0.0f) {
+                    gun.max_range = water_speed * fly_time * 0.6f;
+                    ++summary.torpedo_ranges_derived;
+                }
+            }
             gun.rest_horz = flat_scaled(type_id, make("rh"), kAngleScale, 0.0f);
             gun.rest_vert = flat_scaled(type_id, make("rv"), kAngleScale, 0.0f);
 
@@ -1954,6 +1976,8 @@ void GameGunneryHost::report() {
         s.assigns_from_arm ? s.arm_reach_fraction_sum / double(s.assigns_from_arm) : 0.0,
         s.assigns_from_recon ? s.recon_reach_fraction_sum / double(s.assigns_from_recon) : 0.0,
         s.arm_assigns_beyond_half, s.recon_assigns_beyond_half);
+    host.log.notef("summary mission gunnery torpedo_ranges_derived=%llu",
+        s.torpedo_ranges_derived);
     host.log.notef("summary mission gunnery aim angle_sets=%llu refusals=%llu steps=%llu "
         "arc_blocks=%llu arc_unsolved=%llu trigger_rises=%llu fire_messages=%llu "
         "fire_if_ready=%llu can_fire_refusals=%llu shots=%llu first_shot=%.2f s",

@@ -231,6 +231,10 @@ struct GameGunnerySummary {
     double recon_reach_fraction_sum{0.0};
     unsigned long long arm_assigns_beyond_half{0};   // fraction > 0.5
     unsigned long long recon_assigns_beyond_half{0};
+    // Guns whose engagement range came from 00855A90's water-travel rule rather
+    // than the authored `Range`. Zero here means the Bullets table was not
+    // reachable and category 7 is still refused on the 10.0f seed.
+    unsigned long long torpedo_ranges_derived{0};
     unsigned long long angle_sets{0};
     unsigned long long angle_refusals{0};
     unsigned long long aim_steps{0};
