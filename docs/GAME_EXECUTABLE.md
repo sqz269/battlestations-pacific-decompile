@@ -8246,3 +8246,46 @@ slot. The native slot is not empty.
   first pass over the same data produced seven phantom overrides, all of them secondary vtables
   at non-zero offsets, each disproved by reading its constructor. Slot censuses in this image are
   not safe without that constructor check.
+
+## Correction from docs/GUN_GRAVITY_ARC.md and the cc7 arc wiring run
+
+Follow-up packet 1 of milestone 2t says of `00955630`: "every elevation in this milestone is
+`006DF520` step 6's pre-estimate, and the difference between the two is the whole of a gun's
+accuracy at range." **The second half is wrong.**
+
+The pre-estimate `pitch = asin(g*R/v^2)/2` is not an approximation of the arc solve. For a target at
+the muzzle's own height it is the *exact* closed form of it. With `s = g*R/v^2` and `h = 0`:
+
+```
+k = g*R^2/(2*v^2)          so  2k/R = s
+D = R^2 - 4*k^2            so  sqrt(D) = R*sqrt(1 - s^2)
+tan(theta) = (R - sqrt(D)) / (2k) = (1 - sqrt(1 - s^2)) / s = tan(asin(s)/2)
+```
+
+the last step being the half-angle identity. The two agree to machine precision at every range up
+to the degeneracy bound; `tools/gun_arc_pre_estimate_compare.py` part 1 tabulates it for v = 250, 400 and 800 m/s and
+the difference is 0.0000 mrad in every row.
+
+The two differ **only through the height difference `h`**, which the pre-estimate drops entirely,
+and the resulting vertical error at the target is approximately `h` itself, nearly independently of
+range (`tools/gun_arc_pre_estimate_compare.py` part 2): h = 5 m gives 5.0-5.7 m of miss at R = 2-10 km, h = 20 m gives
+20.1-22.7 m, h = 100 m gives 100-113 m. So the arc matters for a gun shooting at a target well
+above or below it - a coastal battery, an aircraft, a superstructure mount against a low hull - and
+is worth nothing at all against a target at its own height.
+
+**Measured.** Wiring the recovered solve into `src/game_hosts_gunnery.cpp` in place of the
+pre-estimate changed the 3200-frame USN02 run by almost nothing: `shots` 1003 -> 1003,
+`entity_impacts` 141 -> 141, `water` 481 -> 481, `expired` 376 -> 376, `deaths` 3 -> 3,
+`total_damage` 13091.2 -> 13086.3, `arc_blocks` 69864 -> 69865, `arc_unsolved` 0 -> 0. Every unit in
+this mission floats at sea level, so `h` is near zero for every shot and the identity above makes
+the substitution a no-op to within float rounding. The small residue is what proves the new code is
+on the path rather than dead.
+
+**A hypothesis this refutes.** The commit that wired the sub-entity slot recorded that the hit-rate
+fall from 69% to 14% was "consistent with" guns engaging at long ranges on a pre-estimate elevation,
+and proposed wiring the arc as the test. The test was run and came back negative: elevation is not
+the cause. The cause is still unestablished. The remaining candidate, unproven, is candidate
+ordering - `docs/GAME_EXECUTABLE.md`'s own step 8.7 note and `src/unit_gunnery_pass.cpp`'s comment
+both say the two arms append unsorted and are therefore tried first, so a gun prefers the
+director's target over a nearer recon contact. Whether the native code really orders it that way,
+and whether 481 water impacts and 376 expiries are faithful, needs its own packet.
