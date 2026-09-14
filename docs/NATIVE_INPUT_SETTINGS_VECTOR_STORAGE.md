@@ -86,3 +86,8 @@ outside saved catch ownership and are explicitly excluded from passed checks.
 Returning-free flow gaps were repaired under the write lock without changing
 callee no-return flags. Prior names, signatures and comments are retained in the
 annotation receipt; original engine signatures are unchanged.
+
+
+## Part-vector provider, batch AB
+
+Correction from `docs/NATIVE_UNIT_PART_VECTOR.md`: The shared DWORD storage mechanics now accept an explicit publication order. The existing00492210 entry keeps begin/capacity/end; the unit-part pointer specialization0087B460 uses capacity/end/begin. Eight original-pointer/source cases also check the existing DWORD provider. The valid-storage and source exception boundaries above remain unchanged.

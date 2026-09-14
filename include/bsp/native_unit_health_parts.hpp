@@ -60,8 +60,11 @@ public:
     // cast to process addresses. Indirect callees are not identified by this
     // packet; names intentionally retain the evidenced slot only.
     virtual void call_0077f0e0(void* unit) = 0;
+    // Concrete default: canonical actual10h checked-vector storage. Valid,
+    // consistently owned header; allocation callbacks must not mutate it.
+    // Existing equivalent ownership-domain overrides remain supported.
     virtual void call_0087b460(void* vector, std::uint32_t count,
-        std::uint32_t fill) = 0; // native ECX=vector, RET8
+        std::uint32_t fill); // native ECX=vector, RET8
     virtual void call_00bf6713() = 0; // may return; preserve subsequent reloads
     virtual std::uint32_t call_parent_b0(std::uint32_t entry, void* parent) = 0;
     virtual std::uint8_t call_unit_5c(std::uint32_t entry, void* unit,
