@@ -9,9 +9,11 @@
 #include "bsp/native_memory_stream.hpp"
 #include "bsp/native_filestore_provider_lifetime.hpp"
 #include "bsp/native_physical_provider.hpp"
+#include "bsp/native_physical_pending_io.hpp"
 #include "bsp/native_file_access_log_owner.hpp"
 #include "bsp/native_mpkg_provider.hpp"
 #include "bsp/native_mpak_runtime.hpp"
+#include "bsp/native_mpak_enumeration.hpp"
 #include "bsp/native_raw_inflate_stream.hpp"
 #include "bsp/native_vfs_startup_callbacks.hpp"
 #include <stdexcept>
@@ -55,9 +57,10 @@ NativeVfsRuntimeBindings::NativeVfsRuntimeBindings(NativeVfsOpenRouteContext& ro
     NativeVfsLookupRouteContext& lookup,NativePhysicalStreamOpenContext& physical,
     NativeStoredStreamConversionContext& store,NativeVfsOpenLoggingContext& logging,
     NativeRetainedMemoryOwnerContext& memory,NativePhysicalProviderContext* provider,
-    NativeFileAccessLogLifetimeBindings* log_lifetime)
+    NativeFileAccessLogLifetimeBindings* log_lifetime,
+    NativePhysicalPendingIoContext* pending)
     :route_(route),lookup_(lookup),physical_(physical),store_(store),logging_(logging),memory_(memory),
-     provider_(provider),log_lifetime_(log_lifetime),
+     provider_(provider),log_lifetime_(log_lifetime),pending_(pending),
      previous_(route.native_bindings),previous_substreams_(store.adopted_substreams) {
     route_.native_bindings=this;
     store_.adopted_substreams=this;
@@ -79,6 +82,35 @@ void NativeVfsRuntimeBindings::open_failure_entry(std::uintptr_t entry,void* cap
     (void)captured_manager; // The confirmed one-byte RET body reads no inputs.
     if(entry!=0x00530620)unsupported();
     ignore_native_vfs_mount_failure_00530620();
+}
+std::uint8_t NativeVfsRuntimeBindings::invoke_submit(std::uintptr_t entry,
+    void* provider, const void* first, const void* second,
+    std::uintptr_t callback, std::uint32_t flags) {
+    switch (entry) {
+    case 0x00be7cb0:
+        return decline_native_filestore_pending_00be7cb0(provider, first, second, callback, flags);
+    case 0x00bb9d30:
+        return decline_native_mpkg_pending_00bb9d30(provider, first, second, callback, flags);
+    case 0x00bb79e0:
+        return reject_native_mpak_operation_00bb79e0(reinterpret_cast<std::uint32_t>(first),
+            reinterpret_cast<std::uint32_t>(second), static_cast<std::uint32_t>(callback), flags) ? 1 : 0;
+    case 0x00bf43b0:
+        if (!pending_) unsupported();
+        return submit_native_physical_pending_io_00bf43b0(provider, first, second,
+            static_cast<std::uint32_t>(callback), flags, *pending_) ? 1 : 0;
+    default: unsupported();
+    }
+}
+void NativeVfsRuntimeBindings::invoke_tick(std::uintptr_t entry, void* provider) {
+    switch (entry) {
+    case 0x00be7cc0: tick_native_filestore_pending_00be7cc0(provider); return;
+    case 0x00bb9d40: tick_native_mpkg_pending_00bb9d40(provider); return;
+    case 0x00bb79f0: noop_native_mpak_default_00bb79f0(); return;
+    case 0x00bf46b0:
+        if (!pending_) unsupported();
+        pump_native_physical_pending_io_00bf46b0(provider, *pending_); return;
+    default: unsupported();
+    }
 }
 NativeMpkgProviderContext* NativeVfsRuntimeBindings::bind_mpkg_provider(
     NativeMpkgProviderContext* context) noexcept {

@@ -86,6 +86,9 @@ void destroy_native_vfs_pending_visitor_00bdb740(void* visitor,
     destroy_native_string_header_0041dd20(at(visitor, 4), strings);
     put(visitor, 0, 0x00d68380);
 }
+std::uint8_t decline_native_mpkg_pending_00bb9d30(void*, const void*, const void*,
+    std::uintptr_t, std::uint32_t) noexcept { return 0; }
+void tick_native_mpkg_pending_00bb9d40(void*) noexcept {}
 
 std::uint8_t read_native_vfs_pending_result_00bdc1d0(const void* visitor) noexcept {
     return byte(visitor, 0x14);

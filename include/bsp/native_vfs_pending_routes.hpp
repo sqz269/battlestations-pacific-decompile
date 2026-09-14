@@ -31,6 +31,12 @@ std::uint8_t decline_native_filestore_pending_00be7cb0(void* unused_provider,
     const void* unused_first, const void* unused_second,
     std::uintptr_t unused_callback, std::uint32_t unused_flags) noexcept;
 void tick_native_filestore_pending_00be7cc0(void* unused_provider) noexcept;
+// Complete MPKG leaves with the same no-read contracts: BB9D30[5] RET10h,
+// raw AL0; BB9D40[1] RET. These are actual archive provider defaults.
+std::uint8_t decline_native_mpkg_pending_00bb9d30(void* unused_provider,
+    const void* unused_first, const void* unused_second,
+    std::uintptr_t unused_callback, std::uint32_t unused_flags) noexcept;
+void tick_native_mpkg_pending_00bb9d40(void* unused_provider) noexcept;
 
 // Full BDC100[195]. ECX actual20h visitor; stack first/second/callback/flags;
 // RET10h, EAX captured visitor. Zero/copy first+4 then second+0C as actual8h
