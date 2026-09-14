@@ -1,0 +1,58 @@
+{
+  "entries": [
+    {
+      "address": "00cc2098",
+      "func_info": "00dfb228",
+      "bytes": 10,
+      "sha256": "f4b67800425fc29c79147cd4ab44bfe0c3788421fe8390adaed0f6e9fafc7c47",
+      "before_owners": [
+        "No function found for 00cc2098",
+        "No function found for 00cc209d"
+      ],
+      "instructions": [
+        [
+          13377688,
+          5,
+          "mov",
+          "eax, 0xdfb228"
+        ],
+        [
+          13377693,
+          5,
+          "jmp",
+          "0xbf6b43"
+        ]
+      ],
+      "after_owners": [
+        "Function: FUN_00cc2098 at 00cc2098\nSignature: undefined FUN_00cc2098(void)\nEntry: 00cc2098\nBody: 00cc2098 - 00cc20a1",
+        "Function: FUN_00cc2098 at 00cc2098\nSignature: undefined FUN_00cc2098(void)\nEntry: 00cc2098\nBody: 00cc2098 - 00cc20a1"
+      ],
+      "complete": true
+    }
+  ],
+  "actions": [
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00cc2098",
+        "end_address": "00cc20a2"
+      },
+      "result": "{\"success\": true, \"start_address\": \"00cc2098\", \"end_address\": \"00cc20a1\", \"bytes_disassembled\": 10, \"message\": \"Successfully disassembled 10 byte(s)\"}"
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00cc2098",
+        "disassemble_first": false
+      },
+      "result": "{\"success\": true, \"address\": \"00cc2098\", \"function_name\": \"FUN_00cc2098\", \"entry_point\": \"00cc2098\", \"body_size\": 10, \"message\": \"Function created successfully at 00cc2098\"}"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": "{\"success\": true, \"program\": \"battlestationspacific.exe\", \"message\": \"Program saved successfully\"}"
+    }
+  ],
+  "saved": true,
+  "exports_refreshed": true
+}

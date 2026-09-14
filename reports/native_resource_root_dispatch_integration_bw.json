@@ -1,0 +1,82 @@
+{
+  "batch": "orch4_native_resource_root_dispatch_integration_bw",
+  "state": "source_fixture_and_initial_build_passed_combined_revision_pending",
+  "branch": "agent/orch4-20260910",
+  "base_revision": "ed5f6a0ee4a3423288fbfa29474036a95bc0f949",
+  "code_revision": null,
+  "packets": [
+    {
+      "packet": "orch4_native_resource_root_dispatch_bw",
+      "report": "reports/native_resource_root_dispatch_bw.json",
+      "routines": 5,
+      "ordinary_bytes": 841
+    }
+  ],
+  "new_ordinary_routines": 5,
+  "new_ordinary_bytes": 841,
+  "ordinary_instruction_starts": 259,
+  "support_instruction_starts": 13,
+  "direct_transfer_rows": 31,
+  "indirect_calls": 4,
+  "incoming_main_review": {
+    "pinned_revision": "bab5d943e192d8d2ece768f85951c5358570aa95",
+    "scope": "Pilot bot task target evidence and corrected speed-hold scalar projection.",
+    "observations": "Incoming code is disjoint from BW dependencies. The added scalar result reports a full-stop trigger and leaves mode clearing to its caller; COMISS fault/status equivalence and native task/game behavior were not independently certified. The bank-target demand remains incomplete.",
+    "independently_rerun": false,
+    "combined_build": "pending"
+  },
+  "validation": {
+    "strict_msvc_win32": "passed",
+    "actual_service_fixture": "passed",
+    "source_exception_fixture": "after actual parser read and after actual append passed",
+    "direct_transfer_rows": "31 passed",
+    "instruction_owners": "272 passed",
+    "prior_ghidra_comments": "verified preserved for10 functions",
+    "duplicate_header_definitions": "passed",
+    "primary_win32_build": "passed",
+    "existing_ctests_passed": 2,
+    "native_dispatch_original_body_oracle": false,
+    "native_fh3_exception_fixture": false,
+    "native_binary_abi_compatible": false,
+    "production_resource_load_bound": false,
+    "game_validated": false
+  },
+  "initial_build": {
+    "log": {
+      "path": "local/native_resource_root_dispatch_bw/build.log",
+      "sha256": "bb91a8e896c32df866f1aa60b0b03e7810a0c7fb0a6320931103bebee57fd48b",
+      "bytes": 2497
+    },
+    "core_sha256": "7223062735eb6f6e9cfff84eb1f1317354b03d8a3bbb006869c99358a97b0707",
+    "game_sha256": "5294287ce5d6c79e0e4405ddb6924cc89b3e2c6e4c9010b37ae5323121a7f66f"
+  },
+  "evidence": [
+    {
+      "path": "reports/native_resource_root_dispatch_bw.json",
+      "sha256": "0fdb476793c4a4b77e5c22677306a523bdf98eae3349845e4cad81111c6aa8b5",
+      "bytes": 52247
+    },
+    {
+      "path": "reports/native_resource_root_dispatch_annotations_bw.json",
+      "sha256": "ead0242205289efc77495f7d4a9c2a9c8766e30cd842c9d633b1af17189fb3cc",
+      "bytes": 72049
+    },
+    {
+      "path": "reports/native_resource_root_dispatch_definitions_bw.json",
+      "sha256": "01c3a9f6578f2c0b0685059f09c12827c6f4319250b190dd3792033268881852",
+      "bytes": 1854
+    },
+    {
+      "path": "reports/native_resource_root_dispatch_flow_bw.json",
+      "sha256": "f3826721c308a3e4ddcd656c3189781795a28fe2c43b67379535bb4a46b2ef8d",
+      "bytes": 5908
+    }
+  ],
+  "source_manifest": null,
+  "limitations": [
+    "Actual source bodies with explicit current virtual target dispatch; parser, alternate resource and renderer identities require supplied implementations.",
+    "Fixture registered parser is a boundary probe, not native Mesh or other parser production.",
+    "No original dispatcher body oracle, native FH3/SEH runtime, hardware faults, private stack aliases, resource destructor or gameplay fixture.",
+    "Game-resource slotC71BB40 is not a default-resource alias; raw manager registration, parser owners, B80720 and queue shutdown remain incomplete."
+  ]
+}
