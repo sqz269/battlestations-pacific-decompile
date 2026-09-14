@@ -91,3 +91,24 @@ not test.
 * `(ESI+10h)->+0C0h`, the third input to `B`. `ESI+10h` is not identified.
 * `007C0F40`'s arithmetic after the matching part is found (`007C0F9F` onward).
 * Whether the roll term's dependence on `PitchAccel` is intended.
+
+## Correction: the roll acceleration term
+
+The table at the top of this doc gives the roll term as
+`PitchAccel class+1C0h * m * RollAccel class+1BCh`, and the paragraph under it flags the dependence
+on `PitchAccel` as possibly deliberate, possibly a shipped slip. Both are wrong, and the error is
+mine rather than the game's.
+
+`007DAA9D FSTP [ESP+4Ch]` stores **and pops**. After it, `ST0` is `m` again, not the
+`PitchAccel * m` product, so `007DAAB3 FMUL [EAX+1BCh]` multiplies `m` by `RollAccel`. The roll
+term is `m * RollAccel`, and the three are symmetric:
+
+| axis | term | address |
+|---|---|---|
+| pitch | `PitchAccel class+1C0h * m` | `007DAA7F`, `007DAA93` |
+| yaw | `YawAccel class+1C4h * -m` | `007DAAA1`, `007DAAAD` |
+| roll | `RollAccel class+1BCh * m` | `007DAAB3` |
+
+Caught by packet `cc7_plane_control_targets`, which read the same span independently and against
+the decompiler's `local_10 = local_44 * *(float *)(iVar1 + 0x1bc)`. There is nothing anomalous here
+to explain, and the paragraph inviting someone to look for intent is withdrawn.
