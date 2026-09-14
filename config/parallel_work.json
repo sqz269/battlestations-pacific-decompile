@@ -12767,8 +12767,8 @@
     },
     {
       "id": "orch4_native_resource_parser_registration_bz",
-      "state": "reconstructed_source_build_and_original_fixture_checked",
-      "status": "reconstructed_source_build_and_original_fixture_checked",
+      "state": "integrated_source_build_and_original_fixture_checked",
+      "status": "integrated_source_build_and_original_fixture_checked",
       "addresses": [
         "00b80a50",
         "00b80290",
@@ -12784,9 +12784,30 @@
       "owner": "agent/orch4-20260910",
       "report": "reports/native_resource_parser_registration_bz.json",
       "documentation": "docs/NATIVE_RESOURCE_PARSER_REGISTRATION_BZ.md",
-      "code_revision": null,
+      "code_revision": "231ba1f32c4441e4b778e869474ff09740e892f1",
       "game_validated": false,
-      "follow_up": "Actual parser singleton/name/body dispatch and raw manager construction/destruction; then connect actual loader and loading queue stop/join"
+      "follow_up": "Actual parser singleton/name/body dispatch and raw manager construction/destruction; then connect actual loader and loading queue stop/join",
+      "validation": {
+        "strict_msvc_win32": true,
+        "existing_ctests": 2,
+        "paired_registration_steps": 10,
+        "paired_pair_cleanup_cases": 2,
+        "original_bodies_loaded": 11,
+        "original_direct_relocations": 39,
+        "normalized_tree_images_match": true,
+        "source_length_failure": true,
+        "native_exception_paths_guarded_out": true,
+        "native_fh3": false,
+        "concrete_parser_getters": false,
+        "game_validated": false,
+        "whole_report_verifier": "49 passed",
+        "combined_strict_win32": true,
+        "combined_existing_ctests": 2,
+        "combined_original_fixture": true,
+        "source_manifest_inputs": 2661,
+        "all_instruction_owners_rechecked": true,
+        "previous_ghidra_comments_preserved": 22
+      }
     }
   ],
   "snapshot_after_analysis": {
