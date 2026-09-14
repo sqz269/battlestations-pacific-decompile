@@ -1,0 +1,737 @@
+{
+  "packet": "orch4_native_filestore_resident_insert_bk",
+  "timestamp_utc": "2026-09-14T05:30:54.318186+00:00",
+  "status": "complete_source_strict_compile_fixture_passed_21_call_rows_one_catch_membership_failure_pending_root_repair",
+  "base_commit": "faa5a58711ecf586393084852b8ae05d3b5c5ae1",
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_home": "J:/tools/ghidra_12.0.4_PUBLIC",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "installed_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "evidence_policy": "Every live batch uses bsp.py wrappers verifying bsp project, program path, language and image base; read-only Ghidra; no game code execution or original file changes.",
+  "routines": [
+    {
+      "address": "00be4d20",
+      "end_inclusive": "00be4da8",
+      "bytes": 137,
+      "source_function": "decrement_native_file_store_resident_iterator_00be4d20",
+      "coverage": "complete",
+      "original_abi": "ECX iterator {owner,node}; RET or BF6713 tail",
+      "original_sha256": "45ec301efd0bd7553524a9f4caa08f1bb2fcd482f08b5be0aa741a7ca22ffe5c",
+      "live_equals_installed_pe": true,
+      "live_proto": "00be4d20 FUN_00be4d20  undefined FUN_00be4d20(void)  body 00be4d20 - 00be4da8",
+      "incoming_xrefs": [
+        "From 00be73ef in FUN_00be7340 [UNCONDITIONAL_CALL]",
+        "From 00be5253 in FUN_00be5250 [UNCONDITIONAL_CALL]",
+        "From 00be5473 in FUN_00be5470 [UNCONDITIONAL_CALL]"
+      ]
+    },
+    {
+      "address": "00be6cf0",
+      "end_inclusive": "00be6edb",
+      "bytes": 492,
+      "source_function": "link_native_file_store_resident_node_00be6cf0",
+      "coverage": "complete",
+      "original_abi": "ECX tree; stack output,left-byte DWORD slot,parent,pair; EAX output; RET10",
+      "original_sha256": "47cf03cbcf9991e3bcb548debbd25e08b6c76ed9a15defda7d83c9fb5f43277e",
+      "live_equals_installed_pe": true,
+      "live_proto": "00be6cf0 FUN_00be6cf0  undefined FUN_00be6cf0(void)  body 00be6cf0 - 00be6edb",
+      "incoming_xrefs": [
+        "From 00be73c8 in FUN_00be7340 [UNCONDITIONAL_CALL]",
+        "From 00be7416 in FUN_00be7340 [UNCONDITIONAL_CALL]"
+      ]
+    },
+    {
+      "address": "00be6590",
+      "end_inclusive": "00be660d",
+      "bytes": 126,
+      "source_function": "allocate_native_file_store_resident_node_00be6590",
+      "coverage": "complete",
+      "original_abi": "five stack words left,parent,right,pair,color; EAX node; RET14; ECX unused",
+      "original_sha256": "a0a92412cb26018aa7f2a10a9f3662274b265d481897225b0f227095673b056f",
+      "live_equals_installed_pe": true,
+      "live_proto": "00be6590 FUN_00be6590  undefined FUN_00be6590(void)  body 00be6590 - 00be660d",
+      "incoming_xrefs": [
+        "From 00be6d74 in FUN_00be6cf0 [UNCONDITIONAL_CALL]"
+      ]
+    },
+    {
+      "address": "00be6170",
+      "end_inclusive": "00be61f0",
+      "bytes": 129,
+      "source_function": "copy_native_file_store_resident_pair_00be6170",
+      "coverage": "complete",
+      "original_abi": "ECX output; stack pair; EAX output; RET4",
+      "original_sha256": "e78d0aa99d3d82d7fa6a5ea264fba1314d2d250796a88e4d212d460158689a1f",
+      "live_equals_installed_pe": true,
+      "live_proto": "00be6170 FUN_00be6170  undefined FUN_00be6170(void)  body 00be6170 - 00be61f0",
+      "incoming_xrefs": [
+        "From 00be65ea in FUN_00be6590 [UNCONDITIONAL_CALL]"
+      ]
+    },
+    {
+      "address": "00be660e",
+      "end_inclusive": "00be6622",
+      "bytes": 21,
+      "source_function": "allocate_native_file_store_resident_node_00be6590 catch-all",
+      "coverage": "complete",
+      "original_abi": "native parent EBP frame; no normal return; free raw node then rethrow",
+      "original_sha256": "dbb19375b5a58bec172feabff78ed00bf3c897020f05c026db6867ebbf843686",
+      "live_equals_installed_pe": true,
+      "live_proto": "00be660e Catch_All@00be660e  undefined Catch_All@00be660e(void)  body 00be660e - 00be6616",
+      "incoming_xrefs": [
+        "From 00e01520 [DATA]"
+      ]
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00be4d28",
+      "function": "00be4d20",
+      "source_body_inclusive": [
+        "00be4d20",
+        "00be4da8"
+      ],
+      "instruction": "call 0xbf6713",
+      "native": "00bf6713",
+      "semantic_label": "existing returning invalid-parameter service",
+      "contract": "no native semantic arguments; initial CALL can return; final tail validation has no subsequent publication",
+      "callee_body_inspected": true
+    },
+    {
+      "address": "00be4d43",
+      "function": "00be4d20",
+      "source_body_inclusive": [
+        "00be4d20",
+        "00be4da8"
+      ],
+      "instruction": "jmp 0xbf6713",
+      "kind": "tail_jump",
+      "native": "00bf6713",
+      "semantic_label": "existing returning invalid-parameter service",
+      "contract": "no native semantic arguments; initial CALL can return; final tail validation has no subsequent publication",
+      "callee_body_inspected": true
+    },
+    {
+      "address": "00be4d9f",
+      "function": "00be4d20",
+      "source_body_inclusive": [
+        "00be4d20",
+        "00be4da8"
+      ],
+      "instruction": "jmp 0xbf6713",
+      "kind": "tail_jump",
+      "native": "00bf6713",
+      "semantic_label": "existing returning invalid-parameter service",
+      "contract": "no native semantic arguments; initial CALL can return; final tail validation has no subsequent publication",
+      "callee_body_inspected": true
+    },
+    {
+      "address": "00be6d33",
+      "function": "00be6cf0",
+      "source_body_inclusive": [
+        "00be6cf0",
+        "00be6edb"
+      ],
+      "instruction": "call 0x408720",
+      "native": "00408720",
+      "semantic_label": "existing actual legacy SBO assignment",
+      "contract": "ECX fresh message; stack literalCE47BC,count19; RET8",
+      "callee_body_inspected": true
+    },
+    {
+      "address": "00be6d45",
+      "function": "00be6cf0",
+      "source_body_inclusive": [
+        "00be6cf0",
+        "00be6edb"
+      ],
+      "instruction": "call 0x411700",
+      "native": "00411700",
+      "semantic_label": "existing actual legacy logic-error construction",
+      "contract": "ECX raw28h exception; stack message; EAX exception; RET4",
+      "callee_body_inspected": true
+    },
+    {
+      "address": "00be6d5c",
+      "function": "00be6cf0",
+      "source_body_inclusive": [
+        "00be6cf0",
+        "00be6edb"
+      ],
+      "instruction": "call 0xbf6885",
+      "native": "00bf6885",
+      "semantic_label": "existing source C++ exception transport boundary",
+      "contract": "stdcall object/ThrowInfo pointers; no return; catch rethrow supplies0,0",
+      "callee_body_inspected": true
+    },
+    {
+      "address": "00be6d74",
+      "function": "00be6cf0",
+      "source_body_inclusive": [
+        "00be6cf0",
+        "00be6edb"
+      ],
+      "instruction": "call 0xbe6590",
+      "native": "00be6590",
+      "semantic_label": "actual retained resident-node allocation",
+      "contract": "stack head,parent,head,pair,color0; EAX raw1Ch node; RET14",
+      "callee_body_inspected": true
+    },
+    {
+      "address": "00be6e05",
+      "function": "00be6cf0",
+      "source_body_inclusive": [
+        "00be6cf0",
+        "00be6edb"
+      ],
+      "instruction": "call 0xbe50e0",
+      "native": "00be50e0",
+      "semantic_label": "existing actual left rotation",
+      "contract": "ECX tree; stack node; RET4",
+      "callee_body_inspected": true
+    },
+    {
+      "address": "00be6e23",
+      "function": "00be6cf0",
+      "source_body_inclusive": [
+        "00be6cf0",
+        "00be6edb"
+      ],
+      "instruction": "call 0xbe4980",
+      "native": "00be4980",
+      "semantic_label": "existing actual right rotation",
+      "contract": "ECX tree; stack node; RET4",
+      "callee_body_inspected": true
+    },
+    {
+      "address": "00be6e51",
+      "function": "00be6cf0",
+      "source_body_inclusive": [
+        "00be6cf0",
+        "00be6edb"
+      ],
+      "instruction": "call 0xbe4980",
+      "native": "00be4980",
+      "semantic_label": "existing actual right rotation",
+      "contract": "ECX tree; stack node; RET4",
+      "callee_body_inspected": true
+    },
+    {
+      "address": "00be65b3",
+      "function": "00be6590",
+      "source_body_inclusive": [
+        "00be6590",
+        "00be660d"
+      ],
+      "instruction": "call 0xbf681b",
+      "native": "00bf681b",
+      "semantic_label": "shared original-new allocation service",
+      "contract": "cdecl byte count1Ch; EAX raw; ADD ESP4",
+      "callee_body_inspected": true
+    },
+    {
+      "address": "00be65ea",
+      "function": "00be6590",
+      "source_body_inclusive": [
+        "00be6590",
+        "00be660d"
+      ],
+      "instruction": "call 0xbe6170",
+      "native": "00be6170",
+      "semantic_label": "actual pair copy using equivalent existing6250",
+      "contract": "ECX node+Ch; stack pair; EAX output; RET4",
+      "callee_body_inspected": true
+    },
+    {
+      "address": "00be61a4",
+      "function": "00be6170",
+      "source_body_inclusive": [
+        "00be6170",
+        "00be61f0"
+      ],
+      "instruction": "call 0x41dd40",
+      "native": "0041dd40",
+      "semantic_label": "existing actual pooled-string resize",
+      "contract": "ECX destination; stack source length,preserve1; RET8",
+      "callee_body_inspected": true
+    },
+    {
+      "address": "00be61b9",
+      "function": "00be6170",
+      "source_body_inclusive": [
+        "00be6170",
+        "00be61f0"
+      ],
+      "instruction": "call 0xbf7680",
+      "native": "00bf7680",
+      "semantic_label": "existing overlap-aware memory copy",
+      "contract": "cdecl output,data,count; ADD ESP0Ch",
+      "callee_body_inspected": true
+    },
+    {
+      "address": "00be61d6",
+      "function": "00be6170",
+      "source_body_inclusive": [
+        "00be6170",
+        "00be61f0"
+      ],
+      "instruction": "call dword ptr [0xce221c]",
+      "native": "00ce221c+IAT",
+      "semantic_label": "real InterlockedIncrement",
+      "contract": "stdcall actual retained stream+4 address"
+    },
+    {
+      "address": "00be6612",
+      "function": "00be660e",
+      "source_body_inclusive": [
+        "00be660e",
+        "00be6622"
+      ],
+      "instruction": "call 0xbf65ac",
+      "native": "00bf65ac",
+      "semantic_label": "shared CRT free",
+      "contract": "cdecl stored raw node; ADD ESP4",
+      "callee_body_inspected": true
+    },
+    {
+      "address": "00be661e",
+      "function": "00be660e",
+      "source_body_inclusive": [
+        "00be660e",
+        "00be6622"
+      ],
+      "instruction": "call 0xbf6885",
+      "native": "00bf6885",
+      "semantic_label": "existing source C++ exception transport boundary",
+      "contract": "stdcall object/ThrowInfo pointers; no return; catch rethrow supplies0,0",
+      "callee_body_inspected": true,
+      "no_ghidra_function": {
+        "start": "00be6617",
+        "end_inclusive": "00be6622"
+      },
+      "live_containing_function": null
+    }
+  ],
+  "external_incoming_call_sites": [
+    {
+      "address": "00be5253",
+      "native": "00be4d20",
+      "function": "00be5250",
+      "function_body_inclusive": [
+        "00be5250",
+        "00be525b"
+      ],
+      "contract": "same ECX iterator; wrapper returns iterator in EAX",
+      "live_membership": "00be5253 FUN_00be5250  undefined FUN_00be5250(void)  body 00be5250 - 00be525b"
+    },
+    {
+      "address": "00be5473",
+      "native": "00be4d20",
+      "function": "00be5470",
+      "function_body_inclusive": [
+        "00be5470",
+        "00be547b"
+      ],
+      "contract": "same ECX iterator; wrapper returns iterator in EAX",
+      "live_membership": "00be5473 FUN_00be5470  undefined FUN_00be5470(void)  body 00be5470 - 00be547b"
+    },
+    {
+      "address": "00be73ef",
+      "native": "00be4d20",
+      "function": "00be7340",
+      "function_body_inclusive": [
+        "00be7340",
+        "00be7453"
+      ],
+      "contract": "ECX local{tree,node} iterator; no stack arguments",
+      "live_membership": "00be73ef FUN_00be7340  undefined FUN_00be7340(void)  body 00be7340 - 00be7453"
+    },
+    {
+      "address": "00be73c8",
+      "native": "00be6cf0",
+      "function": "00be7340",
+      "function_body_inclusive": [
+        "00be7340",
+        "00be7453"
+      ],
+      "contract": "ECX tree; stack local output,left1,parent,pair; RET10",
+      "live_membership": "00be73c8 FUN_00be7340  undefined FUN_00be7340(void)  body 00be7340 - 00be7453"
+    },
+    {
+      "address": "00be7416",
+      "native": "00be6cf0",
+      "function": "00be7340",
+      "function_body_inclusive": [
+        "00be7340",
+        "00be7453"
+      ],
+      "contract": "ECX tree; stack local output,captured comparison byte,parent,pair; RET10",
+      "live_membership": "00be7416 FUN_00be7340  undefined FUN_00be7340(void)  body 00be7340 - 00be7453"
+    }
+  ],
+  "auxiliary_evidence": [
+    {
+      "address": "00be6250",
+      "end_inclusive": "00be62d0",
+      "bytes": 129,
+      "sha256": "360894560babad5ef68a14e3db56e3283d95ea1a949b9565f6afa6e60eb45a55",
+      "role": "root-owned equivalent pair-copy body",
+      "no_ghidra_function": false,
+      "live_equals_installed_pe": true
+    },
+    {
+      "address": "00cc6cc0",
+      "end_inclusive": "00cc6cd0",
+      "bytes": 17,
+      "sha256": "b35ff490bf7d30d411708c3feba8b195abbb31a8221a7bb733e6234e5f4d3024",
+      "role": "node placement unwind: no-op401130 with2 arguments, ADD ESP8",
+      "no_ghidra_function": false,
+      "live_equals_installed_pe": true
+    },
+    {
+      "address": "00cc6cd1",
+      "end_inclusive": "00cc6cda",
+      "bytes": 10,
+      "sha256": "58d82630efde1888f10f89d22e2e5f52c45c390bc6f2af33657ca5a4b47403a9",
+      "role": "node allocator handler E01550",
+      "no_ghidra_function": true,
+      "live_equals_installed_pe": true
+    },
+    {
+      "address": "00e01514",
+      "end_inclusive": "00e01573",
+      "bytes": 96,
+      "sha256": "6b42b0914bcc048fe2938fb7717f8c895c8fc7cd473d8d9f1ccfd6b15013c626",
+      "role": "node catch descriptors, three-state unwind map and FuncInfo",
+      "no_ghidra_function": false,
+      "live_equals_installed_pe": true
+    },
+    {
+      "address": "00cc6c80",
+      "end_inclusive": "00cc6c87",
+      "bytes": 8,
+      "sha256": "b7e83d6c35c570393b48f9a58d901112d0bc2e51438bbd17d0e7d2bacc23a8bd",
+      "role": "6170 metadata cleanup action; state0 never armed by normal body",
+      "no_ghidra_function": false,
+      "live_equals_installed_pe": true
+    },
+    {
+      "address": "00cc6c88",
+      "end_inclusive": "00cc6c91",
+      "bytes": 10,
+      "sha256": "6fb063f327ad537da9afbed6cbad0c227b1f120bd6ccdd5b255e85248f6827c3",
+      "role": "6170 handler E014C4",
+      "no_ghidra_function": true,
+      "live_equals_installed_pe": true
+    },
+    {
+      "address": "00e014bc",
+      "end_inclusive": "00e014e7",
+      "bytes": 44,
+      "sha256": "829cb900a9fa4339a8d0ebf86ee1d029b9f8d32f40cfc4de98ab60b7eb0f350b",
+      "role": "6170 one-state map and FuncInfo",
+      "no_ghidra_function": false,
+      "live_equals_installed_pe": true
+    },
+    {
+      "address": "00cc6ca0",
+      "end_inclusive": "00cc6ca7",
+      "bytes": 8,
+      "sha256": "1671cc4984c97bf0b5d9481c4cc423935e3ab39553020002521891508662caa0",
+      "role": "6250 matching metadata cleanup action",
+      "no_ghidra_function": false,
+      "live_equals_installed_pe": true
+    },
+    {
+      "address": "00cc6ca8",
+      "end_inclusive": "00cc6cb1",
+      "bytes": 10,
+      "sha256": "653df3f7d5b394e8978ab7c74000814135993b70cf433b4fd1b25ba9ee428131",
+      "role": "6250 handler E014F0",
+      "no_ghidra_function": true,
+      "live_equals_installed_pe": true
+    },
+    {
+      "address": "00e014e8",
+      "end_inclusive": "00e01513",
+      "bytes": 44,
+      "sha256": "5c5dc60a34cb28a28587701c98e6098b216f0e2eb551b1577cb6eea012fcaa57",
+      "role": "6250 matching one-state map and FuncInfo",
+      "no_ghidra_function": false,
+      "live_equals_installed_pe": true
+    },
+    {
+      "address": "00cc6d40",
+      "end_inclusive": "00cc6d47",
+      "bytes": 8,
+      "sha256": "1a8493d62243f3df4bec1f08666d639d8022bf836c6b1dbdd753ad0b65a0371d",
+      "role": "length-message unwind destroys completed SBO",
+      "no_ghidra_function": false,
+      "live_equals_installed_pe": true
+    },
+    {
+      "address": "00cc6d48",
+      "end_inclusive": "00cc6d51",
+      "bytes": 10,
+      "sha256": "9ee5e76bc6bda89e22e0e758ed41b0f612240a450829eed76e0c2ee9b7e64fb8",
+      "role": "length-handler E01634",
+      "no_ghidra_function": true,
+      "live_equals_installed_pe": true
+    },
+    {
+      "address": "00e0162c",
+      "end_inclusive": "00e01657",
+      "bytes": 44,
+      "sha256": "baf900819263b31204bc6d153e9a141e71df30106f39e863ad7216d48ac6962d",
+      "role": "length-message one-state map and FuncInfo",
+      "no_ghidra_function": false,
+      "live_equals_installed_pe": true
+    },
+    {
+      "address": "00ce47bc",
+      "end_inclusive": "00ce47ce",
+      "bytes": 19,
+      "sha256": "a9f39e3a871f83a52768ea6df66168ce9478998f7fc7cf6486325d19720d4201",
+      "role": "exact length-error message bytes",
+      "no_ghidra_function": false,
+      "live_equals_installed_pe": true
+    }
+  ],
+  "function_membership_holes": [
+    {
+      "start": "00be6617",
+      "end_inclusive": "00be6622",
+      "bytes": 12,
+      "no_ghidra_function": true,
+      "original_sha256": "74a833191a5ee4b61559df343514c93c3b7d6c2750a9c2c1f2653ed5cef90bad",
+      "role": "returning-free continuation and BF6885(0,0) rethrow"
+    }
+  ],
+  "pair_copy_equivalence": {
+    "entries": [
+      "00be6170",
+      "00be6250"
+    ],
+    "normalized_full_instructions_equal": true,
+    "instruction_count": 43,
+    "normalization": "relative in-body branch addresses and handler immediate only; external call targets and memory operands unchanged",
+    "source_binding": "new6170 interface calls existing root6250 unchanged source body",
+    "metadata_state0": "both normal bodies remain state-1 throughout; equivalent unreachable name cleanup metadata"
+  },
+  "inline_correspondence": [
+    {
+      "source_body": "00be6cf0",
+      "start": "00be6e66",
+      "end_inclusive": "00be6ea2",
+      "reused_source": "rotate_native_file_store_resident_left_00be50e0",
+      "native_call": false,
+      "evidence": "full inline and callee assembly inspected; same current-link stores and nil check"
+    }
+  ],
+  "exception_contracts": [
+    "Allocation before try; node construction failures run no-op placement cleanup then actual raw free and rethrow. No added pair/string/stream rollback.",
+    "Length count unsigned>=15555554h; message19 bytesCE47BC; actual owning28h D69260 NativeHardwareLayoutTreeLengthError source payload.",
+    "SBO cleanup arms after completed408720; native hardware faults, stack aliases, BF6885/FH3 RTTI and historical CRT heap remain explicit source boundaries."
+  ],
+  "corrections": [
+    {
+      "was": "BE6590 pseudocode showed only normal construction and function extent endedBE660D",
+      "is": "FuncInfo E01550 establishes catch-all BE660E..BE6622 with raw-free/rethrow; no-Ghidra continuation6617..6622 remains",
+      "evidence": "E01514 handler entry, E01524 try/catch map, E01538 unwind map, raw catch and verified PE/live spans"
+    }
+  ],
+  "validation": {
+    "strict_compile": {
+      "status": "passed",
+      "command": "./local/resident_insert_bk/build_probe.ps1",
+      "flags": "MSVC Win32 /std:c++20 /EHsc /MD /O2 /W4 /WX /fp:strict; worker include then root include"
+    },
+    "focused_fixture": {
+      "status": "passed",
+      "log": "local/resident_insert_bk/probe.log",
+      "link_flags": "/MANIFEST:EMBED /OPT:REF",
+      "scenario": "12 insertions covering red-black invariants/extrema/parent links and actual retained payloads; reverse traversal; returning validation repair; throwing string allocation before publication; owning native length-error payload19 bytes",
+      "string_service": "existing crt_string_storage with fixture exception injection; actual pooled publication not exercised",
+      "root_dependency": "literal unchanged helper/pair blocks extracted from frozen root_completion.cpp; hashes and full-file provenance recorded",
+      "raw_free_runtime_trace": false,
+      "original_code_executed": false
+    },
+    "report_calls": {
+      "status": "failed_due_to_one_ghidra_catch_membership_hole",
+      "command": "python tools/verify_report_calls.py reports/native_filestore_resident_insert_bk.json",
+      "numeric_rows_checked": 21,
+      "failed": 1,
+      "failed_site": "00be661e",
+      "indirect_rows_skipped": 1,
+      "log": "local/resident_insert_bk/report_call_check.log",
+      "reason": "No function contains raw returning-free continuation00BE6617..00BE6622 inclusive; retained numeric BF6885 rethrow row for root repair and rerun"
+    },
+    "full_build": "primary integration responsibility; no CMake changes",
+    "original_differential": "not performed",
+    "original_abi_or_fh3": "not established; explicit new C++ source service interfaces",
+    "gameplay": "not performed"
+  },
+  "remaining_dependencies": [
+    "primary BE7340 and completion integration",
+    "CMake/full build",
+    "root catch function membership repair and checker rerun"
+  ],
+  "artifacts": [
+    {
+      "path": "include/bsp/native_filestore_resident_insert.hpp",
+      "bytes": 2523,
+      "sha256": "d386db3bcc559b890a35301263b14ae640b955f609d8d405f858c1de4f6a20f4"
+    },
+    {
+      "path": "src/native_filestore_resident_insert.cpp",
+      "bytes": 6569,
+      "sha256": "9e125a4f573f0b822748037bc4069e771f86eaff2efc2b12e024590a36e47d90"
+    },
+    {
+      "path": "docs/NATIVE_FILESTORE_RESIDENT_INSERT_BK.md",
+      "bytes": 7970,
+      "sha256": "27c0c0c1763d3d88bf1c7a1d17d711690a19113bb761f176630ba1e65dfb5564"
+    },
+    {
+      "path": "local/resident_insert_bk/build_probe.ps1",
+      "bytes": 2744,
+      "sha256": "a902cba8fff9e64cd64817b0ea8f2da02228d94f230a226017a938f6205e9c22"
+    },
+    {
+      "path": "local/resident_insert_bk/resident_probe.cpp",
+      "bytes": 6327,
+      "sha256": "b310d797f2acea609b96e8fd78e14005eca7310c6afe44239ac07fa3b0ecf7f4"
+    },
+    {
+      "path": "local/resident_insert_bk/resident_insert.obj",
+      "bytes": 9070,
+      "sha256": "1683c47172117a12fb3111455d668419cb6f7ac57201e15f0bac2a6dbad49032"
+    },
+    {
+      "path": "local/resident_insert_bk/resident_probe.obj",
+      "bytes": 146067,
+      "sha256": "78ee95be578a225f4c78042bca8c8aa552e5fe5c1e10d8e845cfc585f55901a1"
+    },
+    {
+      "path": "local/resident_insert_bk/resident_probe.exe",
+      "bytes": 31232,
+      "sha256": "f696debab293f52a9b2278410a877e1ec7756659a7f5af339483b019e0967474"
+    },
+    {
+      "path": "local/resident_insert_bk/root_completion.cpp",
+      "bytes": 9218,
+      "sha256": "823eb1b8686451b46f7435490ca5134cfe3e273b5adbaea202ce49f7abfe3c8b"
+    },
+    {
+      "path": "local/resident_insert_bk/root_pair.cpp",
+      "bytes": 1552,
+      "sha256": "4ecde2d966def16cac0965d234277dc510fa5b5521bfba76c330c2925f9984db"
+    },
+    {
+      "path": "local/resident_insert_bk/root_pair.obj",
+      "bytes": 2785,
+      "sha256": "6235e2e9954f387c13994a0de8258699e25371acf3b3df1d8605bafa1623c0ff"
+    },
+    {
+      "path": "local/resident_insert_bk/root_pair_provenance.json",
+      "bytes": 652,
+      "sha256": "38cb7e5085739c230daba1b0174d56bd381d777cae7567e808e2a30fb5cb69c0"
+    },
+    {
+      "path": "local/resident_insert_bk/compile.log",
+      "bytes": 38,
+      "sha256": "099a1d44747b4a3e860e20f141431f8e4b9775992e4bc4b36313b8a79c4ea822"
+    },
+    {
+      "path": "local/resident_insert_bk/root_compile.log",
+      "bytes": 15,
+      "sha256": "de3baaf8fffd85a3930d7e1677e5bcf9098bc469179f56af63bedcec1e4731d2"
+    },
+    {
+      "path": "local/resident_insert_bk/probe_build.log",
+      "bytes": 20,
+      "sha256": "463040f84106cf20b8179591111b1d4451a2a9c7f2ed4cd6ce65881026b2692a"
+    },
+    {
+      "path": "local/resident_insert_bk/probe.log",
+      "bytes": 278,
+      "sha256": "eccd592ad2aff91b852dfc924aae02cb2f373f7cf68093803617244cd87d97f4"
+    },
+    {
+      "path": "local/resident_insert_bk/membership_holes.txt",
+      "bytes": 115,
+      "sha256": "daf59393807e62e7b40eb34e03fb268f1218c188ee068eeb31311975c8ecd6c6"
+    },
+    {
+      "path": "local/resident_insert_bk/report_call_check.log",
+      "bytes": 234,
+      "sha256": "041b359566b77f75868393333f24f71fd70b817d10043da2356fe349e1327925"
+    },
+    {
+      "path": "local/resident_insert_bk/extract_pair.py",
+      "bytes": 1325,
+      "sha256": "ddd186d9541b02914448aecd09b1ffd3a4cae604e0202fa438c0fb2c8b11177d"
+    },
+    {
+      "path": "local/resident_insert_bk/collect_report.py",
+      "bytes": 13641,
+      "sha256": "cdb9baccae1c5ca1f9e65320c2411578cad26584686289304bf6e4a13ee4bf47"
+    }
+  ],
+  "consumed_artifacts": [
+    {
+      "path": "include/bsp/native_filestore_resident_tree.hpp",
+      "bytes": 3192,
+      "sha256": "f870d325c2cab349e573f39c49f92aabdf10a50eeb1debe1d7727becbc7f0199"
+    },
+    {
+      "path": "src/native_filestore_resident_tree.cpp",
+      "bytes": 13983,
+      "sha256": "802cf5aa7bb00963f97de5df2da782b263cc6af28c8350ac79209e758095cd51"
+    },
+    {
+      "path": "include/bsp/native_hardware_layout_tree_insert.hpp",
+      "bytes": 3313,
+      "sha256": "ab22f0f87d42c9c6b4cb6823b28bfbff1098a21ec9ff917a9cf4be211163dbd4"
+    },
+    {
+      "path": "src/native_hardware_layout_tree_insert.cpp",
+      "bytes": 5048,
+      "sha256": "82d040c12d2d84affb1a05e3880d273ce4f3471ee4e8cb88922a5213ad2ab802"
+    },
+    {
+      "path": "include/bsp/native_string.hpp",
+      "bytes": 8019,
+      "sha256": "80013e5a7350120f32fcad1ce54db9b0923ad5b49cc2152823d858534331378f"
+    },
+    {
+      "path": "src/native_string.cpp",
+      "bytes": 8311,
+      "sha256": "0e8819d3a6442fc48c879e85c00899a72beabdc51b3e94a11836ab5314d5e60c"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-orch4-20260910/include/bsp/native_filestore_completion.hpp",
+      "bytes": 3766,
+      "sha256": "3db38f2f98207a119d44ded26e68b98065f1dc45b43670b106d215d292f8bff3"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-orch4-20260910/build/win32/Release/bsp_core.lib",
+      "bytes": 57741816,
+      "sha256": "ceffc98d95f2fcd03f7f6f05a7f415d116c899e6df3751a46e59b23c761d7a03"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-orch4-20260910/build/win32/Release/bsp_zlib121.lib",
+      "bytes": 71906,
+      "sha256": "73ae30b8adc3adfe5b33285bac533f8e7df7e8ab8d9e44789e6a030fd8a06ad9"
+    }
+  ]
+}
