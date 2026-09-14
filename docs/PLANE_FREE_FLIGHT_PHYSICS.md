@@ -520,3 +520,68 @@ weapon.
 This retires the run-length hypothesis. What remains is `plane_ai`: with no steering, aircraft fly
 straight lines from authored placements, and **air combat cannot be validated in this mission at any
 run length.**
+
+## Correction: air combat works, and this doc said otherwise
+
+Everything above about air combat was measured in `IJN01` alone, and generalised from it. That was
+wrong. **`USN01` has aircraft shooting each other down today, in the current build.**
+
+`USN01` (`Scripts/missions/usn_1_marshall.lua`, 14 ships and 20 aircraft), 3000 mission ticks:
+
+```
+  0  PLANEGUN             14      0        0    36054   0
+  1  AAMACHINEGUN        154   1043     8937    99104   0
+  5  FLAK                 21    148       55    12000   0
+damage: hull=23 part=0 fires=0 floods=0 attributions=23 deaths=1 kill_credits=1 total_damage=220.0
+```
+
+And the kill is unambiguous, from the per-unit table:
+
+```
+unit              side guns cats      range nearest shots hits dealt taken health sunk_at killed_by
+ScoutDauntless      0    3  0:2 1:1     800     223     0   23     0   220      0    1.35  Nell2
+Nell2               1    3  1:3         800     359  1489    0    73     0    440   -1.00  -
+ConSBD1             0    3  0:2 1:1     800     707   246     0     0     0    220   -1.00  -
+```
+
+A US `ScoutDauntless` closes to 223 m, takes 220 damage, and is **destroyed at t=1.35 s by `Nell2`**,
+a Japanese aircraft. Aircraft on both sides fire hundreds to thousands of rounds. `admit_plane=8215`
+at 500 ticks: the contact path admits aircraft, the assignment path assigns them, and the guns
+shoot.
+
+So several claims recorded earlier are corrected:
+
+* **"Air combat is unreachable"** - false. It is reachable and it happens.
+* **`AAMACHINEGUN` at 0 shots** - an `IJN01` fact, not a general one. `USN01` fires 8937.
+* **`FLAK` as a faithful zero** - the `IJN01` reasoning (2960 m of separation against a 2000 m
+  weapon) still holds *for that mission*, but FLAK is not structurally silent: it fires 55 rounds in
+  `USN01`.
+
+The mistake was method, not arithmetic. Every number in the sections above is still correct for
+`IJN01`; the error was treating one mission as the game. `IJN01` is Pearl Harbor, where the player
+flies the strike and the script issues no targeting orders at all - close to the worst possible
+mission to judge AI air combat by.
+
+### What is still missing, stated narrowly
+
+The engagement is real but it is **incidental rather than directed**, and the hit rate says so:
+8937 shots for 23 hits, about 0.26%, and every point of damage lands in the first seconds. At 500
+ticks the totals are already `hull=23 deaths=1 total_damage=220.0`, and 2500 further ticks add
+nothing. Aircraft fly the straight lines their authored headings give them, cross once, and then
+diverge for good while still firing.
+
+That is exactly what the missing order chain predicts (`docs/PILOT_BOT_PLAN_CONTROLS.md`): with no
+command there is no task, so the bot produces no control axes, so nothing ever turns toward
+anything. What the order chain would buy is not "air combat" - that already works - but *directed*
+air combat: aircraft that hold an engagement instead of passing through it once, and that prosecute
+attacks on ships.
+
+### Where this leaves validation
+
+Satisfied, and measured: aircraft acquire, fire, hit, damage and destroy other aircraft; ships
+acquire, fire, hit, damage and sink other ships.
+
+Not satisfied: directed air attack (needs the order chain), ship anti-aircraft fire (in `USN01` the
+aircraft never enter ship AA range - `Northampton` sits at 3787 m against a 2300 m reach), and part
+damage, fires and floods, which stay at zero for the separate model-load reason in
+`docs/PART_DAMAGE_WIRING_PLAN.md`.
