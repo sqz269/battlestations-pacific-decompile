@@ -1,0 +1,194 @@
+{
+  "packet": "orch4_mpkg_factory_deletion_bd",
+  "status": "source_deletion_binding_native_evidence",
+  "documentation": "docs/NATIVE_MPKG_FACTORY_DELETION_BD.md",
+  "source": [
+    "include/bsp/native_singleton_destruction.hpp",
+    "src/native_singleton_destruction.cpp"
+  ],
+  "existing_native_implementation": "src/native_mpkg_provider.cpp",
+  "byte_spans": [
+    {
+      "address": "00736a90",
+      "bytes": 206,
+      "sha256": "67b9ec934640c9846dd162bb583bd671c6440d178cb2dfe9bb6ea6d989883141",
+      "live_disk_equal": true,
+      "instructions": 54,
+      "all_instruction_owners_verified": true,
+      "before_annotation": "Function: BSP_MpkgProviderFactory_GetSingleton at 00736a90\nSignature: undefined BSP_MpkgProviderFactory_GetSingleton(void)\nEntry: 00736a90\nBody: 00736a90 - 00736b5d"
+    },
+    {
+      "address": "00737090",
+      "bytes": 58,
+      "sha256": "7e37a456c1575ce98a866888aed47a44f85cfcb884d99d69deb5ffc50bb2b0d1",
+      "live_disk_equal": true,
+      "instructions": 18,
+      "all_instruction_owners_verified": true,
+      "before_annotation": "Function: CG_scalar_deleting_dtor_00737090 at 00737090\nSignature: undefined CG_scalar_deleting_dtor_00737090(void)\nEntry: 00737090\nBody: 00737090 - 007370c9"
+    },
+    {
+      "address": "00735d00",
+      "bytes": 8,
+      "sha256": "b474dc1d8c83258749bce9be684f57f5a2035905136736dc0aa94755954018bf",
+      "live_disk_equal": true,
+      "instructions": 2,
+      "all_instruction_owners_verified": true,
+      "before_annotation": "Function: BSP_MpkgFactory_SecondaryDeletingDestructor at 00735d00\nSignature: undefined BSP_MpkgFactory_SecondaryDeletingDestructor(void)\nEntry: 00735d00\nBody: 00735d00 - 00735d07"
+    }
+  ],
+  "calls": [
+    {
+      "function": "00736a90",
+      "address": "00736ab6",
+      "native": "00415350",
+      "evidence": "Owned direct call in complete disk/live factory envelope."
+    },
+    {
+      "function": "00736a90",
+      "address": "00736aec",
+      "native": "00bf681b",
+      "evidence": "Owned direct call in complete disk/live factory envelope."
+    },
+    {
+      "function": "00736a90",
+      "address": "00736b2e",
+      "native": "00415350",
+      "evidence": "Owned direct call in complete disk/live factory envelope."
+    },
+    {
+      "function": "00736a90",
+      "address": "00736b35",
+      "native": "00bd0c30",
+      "evidence": "Owned direct call in complete disk/live factory envelope."
+    },
+    {
+      "function": "00737090",
+      "address": "007370bc",
+      "native": "00bf65ac",
+      "evidence": "Owned direct call in complete disk/live factory envelope."
+    }
+  ],
+  "indirect_calls": [
+    {
+      "function": "00736a90",
+      "call_site": "00736acf",
+      "operand": "dword ptr [0xce2218]"
+    },
+    {
+      "function": "00736a90",
+      "call_site": "00736b43",
+      "operand": "dword ptr [0xce2210]"
+    }
+  ],
+  "instruction_ownership_failures": [],
+  "entries": [
+    {
+      "address": "00736a90",
+      "name": "BSP_MpkgProviderFactory_GetSingleton",
+      "before": "Function: BSP_MpkgProviderFactory_GetSingleton at 00736a90\nSignature: undefined BSP_MpkgProviderFactory_GetSingleton(void)\nEntry: 00736a90\nBody: 00736a90 - 00736b5d",
+      "before_comment": {
+        "address": "00736a90",
+        "function_name": "BSP_MpkgProviderFactory_GetSingleton",
+        "comment": "[BSP reconstruction 00736a90]\nHypothesis, not a recovered symbol. __cdecl void->EAX, plain RET at 00736b5d. Double-checked lazy construction of the 8-byte VFS provider factory singleton in DAT_010904f4 under the singleton-lifetime lock (00415350 manager, lock at manager+10h): malloc(8) at 00736aea, base lifetime vtable 00cfe9fc at +4, then primary vtable 00cfea14 at +0 and final lifetime vtable 00cfea10 at +4 (00736af8/00736aff/00736b05); registers object+4 through 00bd0c30. Primary vtable 00cfea14 = {00737090 scalar deleting dtor, 00bb9d90 create}. 00bb9d90 accepts a system path longer than 5 whose last five characters equal '.mpkg', so this is the MPKG provider factory. Sole caller BSP_Application_Initialize 0073d410 at 0073d680; its result is appended to the provider manager at 0073d688 through 00be0660, third in the startup order after physical 00bed990 and FileStore 004fc150. Evidence: docs/APP_INIT_VFS_SINGLETONS.md; docs/ARCHIVE_PROVIDER_ENTRY.md; reports/app_init_vfs_singletons.json.\n\n[BSP reconstruction 00736a90] update\nHypothesis, not a recovered symbol. __cdecl void->EAX, plain RET at 00736b5d. Double-checked lazy construction of the 8-byte VFS provider factory singleton in DAT_010904f4 under the singleton-lifetime lock (00415350 manager, lock at manager+10h): malloc(8) at 00736aea, base lifetime vtable 00cfe9fc at +4, then primary vtable 00cfea14 at +0 and final lifetime vtable 00cfea10 at +4 (00736af8/00736aff/00736b05); registers object+4 through 00bd0c30. Primary vtable 00cfea14 = {00737090 scalar deleting dtor, 00bb9d90 create}. 00bb9d90 accepts a system path longer than 5 whose last five characters equal '.mpkg', so this is the MPKG provider factory. Sole caller BSP_Application_Initialize 0073d410 at 0073d680; its result is appended to the provider manager at 0073d688 through 00be0660, third in the startup order after physical 00bed990 and FileStore 004fc150. Evidence: docs/APP_INIT_VFS_SINGLETONS.md; docs/ARCHIVE_PROVIDER_ENTRY.md; reports/app_init_vfs_singletons.json. | Complete actual native MPKG wrapper/lifetime; No arguments; EAX factory; RET. Source get_native_mpkg_factory_00736a90. Native bytes/live/PE, docs/NATIVE_MPKG_PROVIDER.md and reports/native_mpkg_provider.json. Archive construction/destruction remains explicit primary-owned raw operations; no native FH3/SEH/game claim. Names descriptive hypotheses."
+      },
+      "prototype": "void* __cdecl BSP_MpkgProviderFactory_GetSingleton(void)",
+      "prototype_apply": "Successfully set prototype for function at 00736a90 with __cdecl calling convention",
+      "after": "Function: BSP_MpkgProviderFactory_GetSingleton at 00736a90\nSignature: void * __cdecl BSP_MpkgProviderFactory_GetSingleton(void)\nEntry: 00736a90\nBody: 00736a90 - 00736b5d",
+      "after_comment": {
+        "address": "00736a90",
+        "function_name": "BSP_MpkgProviderFactory_GetSingleton",
+        "comment": "[BSP reconstruction 00736a90]\nHypothesis, not a recovered symbol. __cdecl void->EAX, plain RET at 00736b5d. Double-checked lazy construction of the 8-byte VFS provider factory singleton in DAT_010904f4 under the singleton-lifetime lock (00415350 manager, lock at manager+10h): malloc(8) at 00736aea, base lifetime vtable 00cfe9fc at +4, then primary vtable 00cfea14 at +0 and final lifetime vtable 00cfea10 at +4 (00736af8/00736aff/00736b05); registers object+4 through 00bd0c30. Primary vtable 00cfea14 = {00737090 scalar deleting dtor, 00bb9d90 create}. 00bb9d90 accepts a system path longer than 5 whose last five characters equal '.mpkg', so this is the MPKG provider factory. Sole caller BSP_Application_Initialize 0073d410 at 0073d680; its result is appended to the provider manager at 0073d688 through 00be0660, third in the startup order after physical 00bed990 and FileStore 004fc150. Evidence: docs/APP_INIT_VFS_SINGLETONS.md; docs/ARCHIVE_PROVIDER_ENTRY.md; reports/app_init_vfs_singletons.json.\n\n[BSP reconstruction 00736a90] update\nHypothesis, not a recovered symbol. __cdecl void->EAX, plain RET at 00736b5d. Double-checked lazy construction of the 8-byte VFS provider factory singleton in DAT_010904f4 under the singleton-lifetime lock (00415350 manager, lock at manager+10h): malloc(8) at 00736aea, base lifetime vtable 00cfe9fc at +4, then primary vtable 00cfea14 at +0 and final lifetime vtable 00cfea10 at +4 (00736af8/00736aff/00736b05); registers object+4 through 00bd0c30. Primary vtable 00cfea14 = {00737090 scalar deleting dtor, 00bb9d90 create}. 00bb9d90 accepts a system path longer than 5 whose last five characters equal '.mpkg', so this is the MPKG provider factory. Sole caller BSP_Application_Initialize 0073d410 at 0073d680; its result is appended to the provider manager at 0073d688 through 00be0660, third in the startup order after physical 00bed990 and FileStore 004fc150. Evidence: docs/APP_INIT_VFS_SINGLETONS.md; docs/ARCHIVE_PROVIDER_ENTRY.md; reports/app_init_vfs_singletons.json. | Complete actual native MPKG wrapper/lifetime; No arguments; EAX factory; RET. Source get_native_mpkg_factory_00736a90. Native bytes/live/PE, docs/NATIVE_MPKG_PROVIDER.md and reports/native_mpkg_provider.json. Archive construction/destruction remains explicit primary-owned raw operations; no native FH3/SEH/game claim. Names descriptive hypotheses.\n\n[BSP reconstruction 00736a90] update\nHypothesis, not a recovered symbol. BD: docs/NATIVE_MPKG_FACTORY_DELETION_BD.md; reports/native_mpkg_factory_deletion_bd.json. Get/publish8h factory at010904F4 with primary CFEA14 and secondary+4 CFEA10; capture registered secondary BEFORE second raw manager getter and retain original captured-section cleanup. Existing native_mpkg_provider bodies are unchanged. Three complete disk/live envelopes and every saved instruction owner verified; CFEA10 data equals735D00 and SUB ECX,4/JMP737090 is confirmed. New source NativeSingletonDeletionBindings::mpkg_factory closes the finite-profile dispatch gap. Six-owner raw source fixture checks actual secondary registration, popped-owner drain and unconditional clearing of a changed publication. Original exception/ABI identity and production host/archive/game reachability remain unvalidated."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "00737090",
+      "name": "BSP_MpkgFactory_DeletingDestructor",
+      "before": "Function: CG_scalar_deleting_dtor_00737090 at 00737090\nSignature: undefined CG_scalar_deleting_dtor_00737090(void)\nEntry: 00737090\nBody: 00737090 - 007370c9",
+      "before_comment": {
+        "address": "00737090",
+        "function_name": "CG_scalar_deleting_dtor_00737090",
+        "comment": "[BSP reconstruction 00737090]\nComplete actual native MPKG wrapper/lifetime; ECX primary; flags stack; EAX captured owner; RET4. Source delete_native_mpkg_factory_00737090. Native bytes/live/PE, docs/NATIVE_MPKG_PROVIDER.md and reports/native_mpkg_provider.json. Archive construction/destruction remains explicit primary-owned raw operations; no native FH3/SEH/game claim. Names descriptive hypotheses."
+      },
+      "prototype": "void* __fastcall BSP_MpkgFactory_DeletingDestructor(void* primary, void* unused_edx, unsigned int flags)",
+      "prototype_apply": "Successfully set prototype for function at 00737090 with __fastcall calling convention",
+      "after": "Function: BSP_MpkgFactory_DeletingDestructor at 00737090\nSignature: void * __fastcall BSP_MpkgFactory_DeletingDestructor(void * primary, void * unused_edx, uint flags)\nEntry: 00737090\nBody: 00737090 - 007370c9",
+      "after_comment": {
+        "address": "00737090",
+        "function_name": "BSP_MpkgFactory_DeletingDestructor",
+        "comment": "[BSP reconstruction 00737090]\nComplete actual native MPKG wrapper/lifetime; ECX primary; flags stack; EAX captured owner; RET4. Source delete_native_mpkg_factory_00737090. Native bytes/live/PE, docs/NATIVE_MPKG_PROVIDER.md and reports/native_mpkg_provider.json. Archive construction/destruction remains explicit primary-owned raw operations; no native FH3/SEH/game claim. Names descriptive hypotheses.\n\n[BSP reconstruction 00737090] update\nHypothesis, not a recovered symbol. BD: docs/NATIVE_MPKG_FACTORY_DELETION_BD.md; reports/native_mpkg_factory_deletion_bd.json. Clear same010904F4, write secondary CE3818 then primary CFE9F4, free allocation only on low flag bit, return original primary. Current publication is not the deletion owner. Existing native_mpkg_provider bodies are unchanged. Three complete disk/live envelopes and every saved instruction owner verified; CFEA10 data equals735D00 and SUB ECX,4/JMP737090 is confirmed. New source NativeSingletonDeletionBindings::mpkg_factory closes the finite-profile dispatch gap. Six-owner raw source fixture checks actual secondary registration, popped-owner drain and unconditional clearing of a changed publication. Original exception/ABI identity and production host/archive/game reachability remain unvalidated."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "00735d00",
+      "name": "BSP_MpkgFactory_SecondaryDeletingDestructor",
+      "before": "Function: BSP_MpkgFactory_SecondaryDeletingDestructor at 00735d00\nSignature: undefined BSP_MpkgFactory_SecondaryDeletingDestructor(void)\nEntry: 00735d00\nBody: 00735d00 - 00735d07",
+      "before_comment": {
+        "address": "00735d00",
+        "function_name": "BSP_MpkgFactory_SecondaryDeletingDestructor",
+        "comment": "[BSP reconstruction 00735d00]\nComplete actual native MPKG wrapper/lifetime; ECX secondary; SUB4/JMP737090; inherited RET4. Source delete_native_mpkg_factory_secondary_00735d00. Native bytes/live/PE, docs/NATIVE_MPKG_PROVIDER.md and reports/native_mpkg_provider.json. Archive construction/destruction remains explicit primary-owned raw operations; no native FH3/SEH/game claim. Names descriptive hypotheses."
+      },
+      "prototype": "void* __fastcall BSP_MpkgFactory_SecondaryDeletingDestructor(void* secondary, void* unused_edx, unsigned int flags)",
+      "prototype_apply": "Successfully set prototype for function at 00735d00 with __fastcall calling convention",
+      "after": "Function: BSP_MpkgFactory_SecondaryDeletingDestructor at 00735d00\nSignature: void * __fastcall BSP_MpkgFactory_SecondaryDeletingDestructor(void * secondary, void * unused_edx, uint flags)\nEntry: 00735d00\nBody: 00735d00 - 00735d07",
+      "after_comment": {
+        "address": "00735d00",
+        "function_name": "BSP_MpkgFactory_SecondaryDeletingDestructor",
+        "comment": "[BSP reconstruction 00735d00]\nComplete actual native MPKG wrapper/lifetime; ECX secondary; SUB4/JMP737090; inherited RET4. Source delete_native_mpkg_factory_secondary_00735d00. Native bytes/live/PE, docs/NATIVE_MPKG_PROVIDER.md and reports/native_mpkg_provider.json. Archive construction/destruction remains explicit primary-owned raw operations; no native FH3/SEH/game claim. Names descriptive hypotheses.\n\n[BSP reconstruction 00735d00] update\nHypothesis, not a recovered symbol. BD: docs/NATIVE_MPKG_FACTORY_DELETION_BD.md; reports/native_mpkg_factory_deletion_bd.json. Adjust popped ECX secondary by-4 and tail-jump737090. Native EAX is primary, inherited RET4. Shared source singleton dispatcher CFEA10 must call this thunk with popped secondary and retained original factory context. Existing native_mpkg_provider bodies are unchanged. Three complete disk/live envelopes and every saved instruction owner verified; CFEA10 data equals735D00 and SUB ECX,4/JMP737090 is confirmed. New source NativeSingletonDeletionBindings::mpkg_factory closes the finite-profile dispatch gap. Six-owner raw source fixture checks actual secondary registration, popped-owner drain and unconditional clearing of a changed publication. Original exception/ABI identity and production host/archive/game reachability remain unvalidated."
+      },
+      "readback_verified": true
+    }
+  ],
+  "actions": [
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00736a90",
+        "prototype": "void* __cdecl BSP_MpkgProviderFactory_GetSingleton(void)",
+        "calling_convention": "__cdecl"
+      },
+      "result": "Successfully set prototype for function at 00736a90 with __cdecl calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00737090",
+        "prototype": "void* __fastcall BSP_MpkgFactory_DeletingDestructor(void* primary, void* unused_edx, unsigned int flags)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00737090 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00735d00",
+        "prototype": "void* __fastcall BSP_MpkgFactory_SecondaryDeletingDestructor(void* secondary, void* unused_edx, unsigned int flags)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00735d00 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": "{\"success\": true, \"program\": \"battlestationspacific.exe\", \"message\": \"Program saved successfully\"}"
+    }
+  ],
+  "secondary_tail_transfer": {
+    "address": "00735d03",
+    "target": "00737090",
+    "preceding_instruction": "SUB ECX,4",
+    "raw_hex": "83e904e988130000"
+  },
+  "deletion_table": {
+    "address": "00cfea10",
+    "bytes": 4,
+    "hex": "005d7300",
+    "live_disk_equal": true
+  },
+  "exports_refreshed": [
+    "00736a90",
+    "00737090",
+    "00735d00"
+  ]
+}
