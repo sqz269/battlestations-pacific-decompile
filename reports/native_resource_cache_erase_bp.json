@@ -311,17 +311,15 @@
       "native": "004072d0",
       "function": "00cc2110",
       "kind": "tail_jump"
-    }
-  ],
-  "decoded_only_transfers": [
+    },
     {
-      "instruction_address": "00cc211d",
-      "decoded_target": "00bf6b43",
-      "intended_function": "00cc2118",
-      "kind": "tail_jump",
-      "evidence_status": "decoded only; no current Ghidra function"
+      "address": "00cc211d",
+      "native": "00bf6b43",
+      "function": "00cc2118",
+      "kind": "tail_jump"
     }
   ],
+  "decoded_only_transfers": [],
   "layout": {
     "tree": {
       "head": 4,
@@ -570,5 +568,9 @@
     "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b7ce80\\assembly.txt": "bf482b0307bef366d3c1f671cc5527a66b0da0ae99378d9a97a9af99ef28a6fb",
     "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b7fa60\\assembly.txt": "6eebc686d30203c6607eacf81c19f397a90ad6d9de714ad88c35d66c7b8bf4ae",
     "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b801c0\\assembly.txt": "cb5f09cb0ae4b30cacc1de7178ee289e3511be2f44cf043d94b2176ead472a99"
+  },
+  "primary_integration": {
+    "handler_definition": "reports/native_loading_owners_definitions_bp.json",
+    "note": "Primary defined CC2118, verified both instruction owners, saved/exported, promoted tail transfer. Other worker observations retained as pre-integration evidence."
   }
 }

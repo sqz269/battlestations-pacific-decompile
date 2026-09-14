@@ -1,0 +1,2015 @@
+{
+  "packet": "orch4_native_resource_reader_owner_bp",
+  "generated_utc": "2026-09-14T07:57:32.761669+00:00",
+  "worker_base_commit": "ba1f9a6c4b9d8a524dd6f74ad0a1e8096bdb94ae",
+  "identity": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000"
+  },
+  "identity_verification": "Every live export/bytes/proto/disasm/flow/callees batch uses tools/bsp.py ghidra with Client.verify; autostart disabled; no inline live querying or mutation",
+  "binary": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "bytes": 12223752,
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "source_status": "Complete actual-storage owner bodies with explicit native state/cursor cleanup schedule and source-visible secondary C++ termination policy; new C++ ABI, not original CRT/FH3 replacement",
+  "routines": [
+    {
+      "address": "00bf0980",
+      "inclusive_end": "00bf0996",
+      "bytes": 23,
+      "source_symbol": "bsp::destroy_native_resource_reader_buffer_00bf0980",
+      "abi": "ECX actual0Ch header, RET, no stable result",
+      "current_ghidra_end": "00bf0991",
+      "contract": "resize0 then free current data; leave data/capacity; no local retry/unwind"
+    },
+    {
+      "address": "00bf09b0",
+      "inclusive_end": "00bf0a27",
+      "bytes": 120,
+      "source_symbol": "bsp::destroy_native_resource_reader_00bf09b0",
+      "abi": "ECX actual10h reader, RET, no stable result",
+      "contract": "capture stream before state0; interlocked-decrement+4/current table slot0; clear only after normal return; unwind buffer at state0, disarm before normal buffer destruction"
+    },
+    {
+      "address": "00bea150",
+      "inclusive_end": "00bea1b4",
+      "bytes": 101,
+      "source_symbol": "bsp::construct_native_structured_resource_reader_00bea150",
+      "abi": "ECX actual70h reader, EAX same reader, RET",
+      "contract": "base10h first, arm state0, ten empty strings forward, then index0/controlFFFFFFFF/name0; iterator unwinds completed strings, outer action destroys base"
+    },
+    {
+      "address": "00be9f10",
+      "inclusive_end": "00be9f87",
+      "bytes": 120,
+      "source_symbol": "bsp::destroy_native_structured_resource_reader_00be9f10",
+      "abi": "ECX actual70h reader, RET, no stable result",
+      "contract": "capture name data before state1; name return, state0 ten strings reverse, state-1 base; name failure unwinds array then base; array failure cleans preceding strings then outer base"
+    }
+  ],
+  "source_file": "src/native_resource_reader_owner.cpp",
+  "spans": [
+    {
+      "start": "00bf0980",
+      "inclusive_end": "00bf0996",
+      "byte_count": 23,
+      "sha256": "773283e7cd4f034d0e92d3128a8206892b5828e4489a5df2172c7cc9bb4e7863",
+      "role": "buffer_destructor",
+      "live_pe_matches": true,
+      "byte_evidence": {
+        "path": "local/native_resource_reader_owner_bp/bytes_00bf0980.txt",
+        "bytes": 118,
+        "sha256": "8f66ea365b5754e363c376ba494b34413d6b745fd1e0636c2219c511b452de5a"
+      },
+      "listing_evidence": {
+        "path": "local/native_resource_reader_owner_bp/disasm_00bf0980.txt",
+        "bytes": 179,
+        "sha256": "06829e5a7363619477cedc9a2dd1c25e770dd3a515cbbb84dbe649056556dfc9"
+      },
+      "decoded_instructions": 10,
+      "live_listed_instructions": 7,
+      "pe_only_instruction_starts": [
+        "00bf0992",
+        "00bf0995",
+        "00bf0996"
+      ]
+    },
+    {
+      "start": "00bf09b0",
+      "inclusive_end": "00bf0a27",
+      "byte_count": 120,
+      "sha256": "16d87d896d4c0617d3bc7741929e43c10d51e8c1236d70063b23212dc4fd0da1",
+      "role": "base_destructor",
+      "live_pe_matches": true,
+      "byte_evidence": {
+        "path": "local/native_resource_reader_owner_bp/bytes_00bf09b0.txt",
+        "bytes": 584,
+        "sha256": "4ae670d14856c0c7a811b64f11092669decfecad41b04d1644fd003a95a20812"
+      },
+      "listing_evidence": {
+        "path": "local/native_resource_reader_owner_bp/disasm_00bf09b0.txt",
+        "bytes": 1113,
+        "sha256": "536b612c2efb26734c6627f889f2f5c2d1f173b7fcbd7e69828870445b0c3af0"
+      },
+      "decoded_instructions": 39,
+      "live_listed_instructions": 39,
+      "pe_only_instruction_starts": []
+    },
+    {
+      "start": "00bea150",
+      "inclusive_end": "00bea1b4",
+      "byte_count": 101,
+      "sha256": "38a6f86d62fec93cac7f5882414e14abea2588877887336d1ab96acd2d64a0a8",
+      "role": "structured_constructor",
+      "live_pe_matches": true,
+      "byte_evidence": {
+        "path": "local/native_resource_reader_owner_bp/bytes_00bea150.txt",
+        "bytes": 495,
+        "sha256": "3cdf3db45614f2b1d9ee2800c4a86b07573b4dab623cbf4a505ad073af411c6c"
+      },
+      "listing_evidence": {
+        "path": "local/native_resource_reader_owner_bp/disasm_00bea150.txt",
+        "bytes": 944,
+        "sha256": "d17b1346473839abf2f5751b914ec921e09706050164e065fdc10440fdd11926"
+      },
+      "decoded_instructions": 33,
+      "live_listed_instructions": 33,
+      "pe_only_instruction_starts": []
+    },
+    {
+      "start": "00be9f10",
+      "inclusive_end": "00be9f87",
+      "byte_count": 120,
+      "sha256": "dda7c3627d8b59ce3bb47a0503bbab43366d5cbd0b867145f88e9c73a10defe8",
+      "role": "structured_destructor",
+      "live_pe_matches": true,
+      "byte_evidence": {
+        "path": "local/native_resource_reader_owner_bp/bytes_00be9f10.txt",
+        "bytes": 584,
+        "sha256": "d025830d947fbe52dfce9683c3df145fa77bc0ccb6b6d6a22851a715e018b83f"
+      },
+      "listing_evidence": {
+        "path": "local/native_resource_reader_owner_bp/disasm_00be9f10.txt",
+        "bytes": 1028,
+        "sha256": "811c6b714f19ecb5dd0e16b1739e6ca147aa4c8f480c4301314f4726a538ff41"
+      },
+      "decoded_instructions": 36,
+      "live_listed_instructions": 36,
+      "pe_only_instruction_starts": []
+    },
+    {
+      "start": "00cc70c0",
+      "inclusive_end": "00cc70c7",
+      "byte_count": 8,
+      "sha256": "70ab751499c12ed11d6f433b2347f5be270a06644148050209632630d39dd570",
+      "role": "outer_unwind",
+      "live_pe_matches": true,
+      "byte_evidence": {
+        "path": "local/native_resource_reader_owner_bp/bytes_00cc70c0.txt",
+        "bytes": 45,
+        "sha256": "a551283affb1fc8ff221e8fd444848b71d283481a41aac4f893c9063e50679ae"
+      },
+      "listing_evidence": {
+        "path": "local/native_resource_reader_owner_bp/disasm_00cc70c0.txt",
+        "bytes": 71,
+        "sha256": "95a62b84b5d6b80fd57057eeaff765f82b96e68b4c59eca3b6fc319151759aeb"
+      },
+      "decoded_instructions": 2,
+      "live_listed_instructions": 2,
+      "pe_only_instruction_starts": []
+    },
+    {
+      "start": "00cc70c8",
+      "inclusive_end": "00cc70d2",
+      "byte_count": 11,
+      "sha256": "3f5bf0fe407bf7ed7d3e973083b28633d46117c8fa7b7413442177ce83ce38b3",
+      "role": "outer_unwind",
+      "live_pe_matches": true,
+      "byte_evidence": {
+        "path": "local/native_resource_reader_owner_bp/bytes_00cc70c8.txt",
+        "bytes": 57,
+        "sha256": "d5cea3c9e2a7fca0d759554b86fcf912b45df88016f1f53552e128d3cb74b402"
+      },
+      "listing_evidence": {
+        "path": "local/native_resource_reader_owner_bp/disasm_00cc70c8.txt",
+        "bytes": 96,
+        "sha256": "797f40c8608c5e8984c4d4b7f0e1c89a4ec41bcc28b40400c4b3292ac8a8af9c"
+      },
+      "decoded_instructions": 3,
+      "live_listed_instructions": 3,
+      "pe_only_instruction_starts": []
+    },
+    {
+      "start": "00cc70d3",
+      "inclusive_end": "00cc70dc",
+      "byte_count": 10,
+      "sha256": "58651078de373af53ae0d5d2921ff715d33bbc695bfcb33ac15f076c0ae2729e",
+      "role": "unowned_outer_handler",
+      "live_pe_matches": true,
+      "byte_evidence": {
+        "path": "local/native_resource_reader_owner_bp/bytes_00cc70d3.txt",
+        "bytes": 53,
+        "sha256": "abf57756f815c64ce7d34147cde0edfe5bc0418ae0ee860f276226c1d957a42a"
+      },
+      "decoded_instructions": 2,
+      "live_listed_instructions": 0,
+      "pe_only_instruction_starts": [
+        "00cc70d3",
+        "00cc70d8"
+      ]
+    },
+    {
+      "start": "00cc7130",
+      "inclusive_end": "00cc7137",
+      "byte_count": 8,
+      "sha256": "5512f0e6858d7a57068788652550d938296212836b6b7f6111a1452ce7491a64",
+      "role": "outer_unwind",
+      "live_pe_matches": true,
+      "byte_evidence": {
+        "path": "local/native_resource_reader_owner_bp/bytes_00cc7130.txt",
+        "bytes": 45,
+        "sha256": "8cce618c2b3642731b5bb2e73ba1f4d6fa8a0215d8388cbd1392603c01939c79"
+      },
+      "listing_evidence": {
+        "path": "local/native_resource_reader_owner_bp/disasm_00cc7130.txt",
+        "bytes": 71,
+        "sha256": "216c61a92e076b86ed100a6ee1a66c72a2ba935b12e831049f8dbf5272006427"
+      },
+      "decoded_instructions": 2,
+      "live_listed_instructions": 2,
+      "pe_only_instruction_starts": []
+    },
+    {
+      "start": "00cc7138",
+      "inclusive_end": "00cc7141",
+      "byte_count": 10,
+      "sha256": "2ed67c339738af9fd35f5aa1f3e75495121f9341e6679ff7dc01c8c4c803f624",
+      "role": "unowned_outer_handler",
+      "live_pe_matches": true,
+      "byte_evidence": {
+        "path": "local/native_resource_reader_owner_bp/bytes_00cc7138.txt",
+        "bytes": 53,
+        "sha256": "bd4bac9a966cd7769657ee27a2b21793fc2d5cf89128c8a7e847c05fb068f24a"
+      },
+      "decoded_instructions": 2,
+      "live_listed_instructions": 0,
+      "pe_only_instruction_starts": [
+        "00cc7138",
+        "00cc713d"
+      ]
+    },
+    {
+      "start": "00cc7810",
+      "inclusive_end": "00cc781a",
+      "byte_count": 11,
+      "sha256": "a09f609b9b477ad42d1d9a052958e7283c8492eed03a588edab33e455d06ab3f",
+      "role": "outer_unwind",
+      "live_pe_matches": true,
+      "byte_evidence": {
+        "path": "local/native_resource_reader_owner_bp/bytes_00cc7810.txt",
+        "bytes": 57,
+        "sha256": "2fbd86e93d615a249391d380dbba5a1c8fed4e708c2f1d0774ba2c0fda874a91"
+      },
+      "listing_evidence": {
+        "path": "local/native_resource_reader_owner_bp/disasm_00cc7810.txt",
+        "bytes": 95,
+        "sha256": "8b8dd1513b259fed35de1bbc46089e7ba9df18ad5fda21914da8e695ec8577ea"
+      },
+      "decoded_instructions": 3,
+      "live_listed_instructions": 3,
+      "pe_only_instruction_starts": []
+    },
+    {
+      "start": "00cc781b",
+      "inclusive_end": "00cc7824",
+      "byte_count": 10,
+      "sha256": "e796aee63eb43826709e25bcc51f3260f6e5253146f7effef7d3e27d794a651f",
+      "role": "unowned_outer_handler",
+      "live_pe_matches": true,
+      "byte_evidence": {
+        "path": "local/native_resource_reader_owner_bp/bytes_00cc781b.txt",
+        "bytes": 53,
+        "sha256": "10ec631e9723ae60cefffe27d24afbd32807dc63c198637de650fef82b185325"
+      },
+      "decoded_instructions": 2,
+      "live_listed_instructions": 0,
+      "pe_only_instruction_starts": [
+        "00cc781b",
+        "00cc7820"
+      ]
+    },
+    {
+      "start": "00be9f00",
+      "inclusive_end": "00be9f0f",
+      "byte_count": 16,
+      "sha256": "6b1a17cb89a83ffeeb26a01590a0050d761995e477cb7bca2911b0a65246108c",
+      "role": "ten_string_destructor_wrapper",
+      "live_pe_matches": true,
+      "byte_evidence": {
+        "path": "local/native_resource_reader_owner_bp/bytes_00be9f00.txt",
+        "bytes": 77,
+        "sha256": "6a9aa2c09d277abc1d353fa9de576ebfa217cf3b0bbb66be1dff91dbbd970938"
+      },
+      "listing_evidence": {
+        "path": "local/native_resource_reader_owner_bp/disasm_00be9f00.txt",
+        "bytes": 133,
+        "sha256": "9730c6956da06eeb7741aa4f092d85faa85428043d9b32ebecac9d5756b26660"
+      },
+      "decoded_instructions": 6,
+      "live_listed_instructions": 6,
+      "pe_only_instruction_starts": []
+    },
+    {
+      "start": "00e01ab4",
+      "inclusive_end": "00e01ac3",
+      "byte_count": 16,
+      "sha256": "4b599b6c2fbf5a3c87db1d7bf8fc49870057d7fc042b419740b27ad52088c327",
+      "role": "unwind_map",
+      "live_pe_matches": true,
+      "byte_evidence": {
+        "path": "local/native_resource_reader_owner_bp/bytes_00e01ab4.txt",
+        "bytes": 77,
+        "sha256": "543fbbea885c4d86fc5a5fd4845045fe990facab0b4e2a71f0db7635e77afe87"
+      },
+      "dwords": [
+        "ffffffff",
+        "00cc70c0",
+        "00000000",
+        "00cc70c8"
+      ]
+    },
+    {
+      "start": "00e01ac4",
+      "inclusive_end": "00e01ae7",
+      "byte_count": 36,
+      "sha256": "b69e89d8194b448c9d6d29a7eef7fbf2f12e4e5a33de86aad3d5e976f2a97cab",
+      "role": "func_info",
+      "live_pe_matches": true,
+      "byte_evidence": {
+        "path": "local/native_resource_reader_owner_bp/bytes_00e01ac4.txt",
+        "bytes": 183,
+        "sha256": "e0832c5c92afd434e565b38b88bbf279d9f6d3af8fd20f2abac3db549a1692cf"
+      },
+      "dwords": [
+        "19930522",
+        "00000002",
+        "00e01ab4",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000001"
+      ]
+    },
+    {
+      "start": "00e01b50",
+      "inclusive_end": "00e01b57",
+      "byte_count": 8,
+      "sha256": "65a202a843a228c29eb2ec5d9da2af66f5f28e99783eb9856446592934ddde7b",
+      "role": "unwind_map",
+      "live_pe_matches": true,
+      "byte_evidence": {
+        "path": "local/native_resource_reader_owner_bp/bytes_00e01b50.txt",
+        "bytes": 45,
+        "sha256": "c6d2ba4fe534edaaca7063262a6b24cc599a0768b3dd6a843b10d7859ff9b7c0"
+      },
+      "dwords": [
+        "ffffffff",
+        "00cc7130"
+      ]
+    },
+    {
+      "start": "00e01b58",
+      "inclusive_end": "00e01b7b",
+      "byte_count": 36,
+      "sha256": "f6e7e258de9bc10289de629075fbc80735cb267dee055cf322297c375500d429",
+      "role": "func_info",
+      "live_pe_matches": true,
+      "byte_evidence": {
+        "path": "local/native_resource_reader_owner_bp/bytes_00e01b58.txt",
+        "bytes": 183,
+        "sha256": "edb5ab255d0c6d9a0ade07ebfe7b6cbe76bee5d46f96e2612b03adb15d795e73"
+      },
+      "dwords": [
+        "19930522",
+        "00000001",
+        "00e01b50",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000001"
+      ]
+    },
+    {
+      "start": "00e0245c",
+      "inclusive_end": "00e02463",
+      "byte_count": 8,
+      "sha256": "c74a3f86973c4bc1ee7de1103061e128d6aca1c37f870a7b6d751c91a49922da",
+      "role": "unwind_map",
+      "live_pe_matches": true,
+      "byte_evidence": {
+        "path": "local/native_resource_reader_owner_bp/bytes_00e0245c.txt",
+        "bytes": 45,
+        "sha256": "19eafc26e9730ec5cfef8b92449498134d290cf49891750798abc7f30c803ec7"
+      },
+      "dwords": [
+        "ffffffff",
+        "00cc7810"
+      ]
+    },
+    {
+      "start": "00e02464",
+      "inclusive_end": "00e02487",
+      "byte_count": 36,
+      "sha256": "932059848a9fbfedb9134b3bf01cb53a33ae81abb96c29c1f06805600a0039d0",
+      "role": "func_info",
+      "live_pe_matches": true,
+      "byte_evidence": {
+        "path": "local/native_resource_reader_owner_bp/bytes_00e02464.txt",
+        "bytes": 183,
+        "sha256": "2380e619c710e60a66a5d51e87f219a5588899d6486f55f062a6d29bd12df466"
+      },
+      "dwords": [
+        "19930522",
+        "00000001",
+        "00e0245c",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000001"
+      ]
+    },
+    {
+      "start": "00bf7c10",
+      "inclusive_end": "00bf7c6d",
+      "byte_count": 94,
+      "sha256": "38f062912d5ab25f59b3575e852e2859060b9ef893cbf4de542a50a72a004da2",
+      "role": "array_unwind",
+      "live_pe_matches": true,
+      "byte_evidence": {
+        "path": "local/native_resource_reader_owner_bp/bytes_00bf7c10.txt",
+        "bytes": 454,
+        "sha256": "26548f3ef7f10b4c6b2f3e2c11421406808a4e84723469a2ad19cdbb6f3a8afe"
+      },
+      "listing_evidence": {
+        "path": "local/native_resource_reader_owner_bp/disasm_00bf7c10.txt",
+        "bytes": 476,
+        "sha256": "f7e07a3971f2a551d41e410980660c8a6afe4cb8636fe2273d6e67664679060a"
+      },
+      "decoded_instructions": 27,
+      "live_listed_instructions": 14,
+      "pe_only_instruction_starts": [
+        "00bf7c33",
+        "00bf7c36",
+        "00bf7c39",
+        "00bf7c3c",
+        "00bf7c3e",
+        "00bf7c41",
+        "00bf7c44",
+        "00bf7c4a",
+        "00bf7c4c",
+        "00bf7c53",
+        "00bf7c56",
+        "00bf7c57",
+        "00bf7c5c"
+      ]
+    },
+    {
+      "start": "00bf7c6e",
+      "inclusive_end": "00bf7cb8",
+      "byte_count": 75,
+      "sha256": "e17d277fcf76c86ca7bbd9efd9cd4320b80da6c94ca29539e6ae9ddc27ad5b59",
+      "role": "destructor_iterator",
+      "live_pe_matches": true,
+      "byte_evidence": {
+        "path": "local/native_resource_reader_owner_bp/bytes_00bf7c6e.txt",
+        "bytes": 365,
+        "sha256": "e43a1d91382cbb66a692cb8ffcb02c0f77365758d49cb21e2b704c53d0660cb4"
+      },
+      "listing_evidence": {
+        "path": "local/native_resource_reader_owner_bp/disasm_00bf7c6e.txt",
+        "bytes": 701,
+        "sha256": "f37e90f70e05cba673837dfd9a9227f5073e5fe983f8e46fc5440380d08fcfaf"
+      },
+      "decoded_instructions": 20,
+      "live_listed_instructions": 20,
+      "pe_only_instruction_starts": []
+    },
+    {
+      "start": "00bf7cb9",
+      "inclusive_end": "00bf7cd0",
+      "byte_count": 24,
+      "sha256": "517d4263f48e5a86fc4a0b59a1946ed6eb5266a29658d974d9f149196d80cd76",
+      "role": "destructor_finally",
+      "live_pe_matches": true,
+      "byte_evidence": {
+        "path": "local/native_resource_reader_owner_bp/bytes_00bf7cb9.txt",
+        "bytes": 122,
+        "sha256": "238b9cd09292d21d513ecabb7c214dd54fb7bb44b9294ec545bb5bd739f9cbb0"
+      },
+      "listing_evidence": {
+        "path": "local/native_resource_reader_owner_bp/disasm_00bf7cb9.txt",
+        "bytes": 273,
+        "sha256": "07197d1ffe8c30101a0524d855aeef37078c7a0b83b3e79e5a1c5c3229c30dd3"
+      },
+      "decoded_instructions": 8,
+      "live_listed_instructions": 8,
+      "pe_only_instruction_starts": []
+    },
+    {
+      "start": "00bf7cd1",
+      "inclusive_end": "00bf7d1d",
+      "byte_count": 77,
+      "sha256": "df3c3d7d942712d00f42e5566f4329673df0a12a6e6893d6cb06a4ddb766f5fc",
+      "role": "constructor_iterator",
+      "live_pe_matches": true,
+      "byte_evidence": {
+        "path": "local/native_resource_reader_owner_bp/bytes_00bf7cd1.txt",
+        "bytes": 373,
+        "sha256": "89253479bcb2ca69ab3c2597c296b9ef36c664ea1c1f9663a36b6bb81e97dc72"
+      },
+      "listing_evidence": {
+        "path": "local/native_resource_reader_owner_bp/disasm_00bf7cd1.txt",
+        "bytes": 773,
+        "sha256": "937f31f2d1b680d0ed157af8ffc73408d108aa81008a7cdfdbeae163fc4af21b"
+      },
+      "decoded_instructions": 22,
+      "live_listed_instructions": 22,
+      "pe_only_instruction_starts": []
+    },
+    {
+      "start": "00bf7d1e",
+      "inclusive_end": "00bf7d35",
+      "byte_count": 24,
+      "sha256": "e56ad8fee3c15f6af4a20a74b9ef9fa92929fbc75edcfba0bdd6667aff5cd97e",
+      "role": "constructor_finally",
+      "live_pe_matches": true,
+      "byte_evidence": {
+        "path": "local/native_resource_reader_owner_bp/bytes_00bf7d1e.txt",
+        "bytes": 122,
+        "sha256": "6be26081fa6d1435871d1bb4a9019dfd3072f1c9f93a2e3c87e3d2befdfce53c"
+      },
+      "listing_evidence": {
+        "path": "local/native_resource_reader_owner_bp/disasm_00bf7d1e.txt",
+        "bytes": 274,
+        "sha256": "5d91dab4c6f3d55914c1f565fbcd1ac767d98892ac69e4d49a431110dcd134ab"
+      },
+      "decoded_instructions": 8,
+      "live_listed_instructions": 8,
+      "pe_only_instruction_starts": []
+    },
+    {
+      "start": "00e02d10",
+      "inclusive_end": "00e02d2b",
+      "byte_count": 28,
+      "sha256": "13b250649cda11fb96dd4ce8f9fda3173195e2d0550eba9477bec70a0fa688b9",
+      "role": "scope_table",
+      "live_pe_matches": true,
+      "byte_evidence": {
+        "path": "local/native_resource_reader_owner_bp/bytes_00e02d10.txt",
+        "bytes": 138,
+        "sha256": "7d0a4dab315f46da692789e68052761fba337d4e470bbe36df08393cf4d026b2"
+      },
+      "dwords": [
+        "fffffffe",
+        "00000000",
+        "ffffffcc",
+        "00000000",
+        "fffffffe",
+        "00bf7c33",
+        "00bf7c5c"
+      ]
+    },
+    {
+      "start": "00e02d30",
+      "inclusive_end": "00e02d4b",
+      "byte_count": 28,
+      "sha256": "bc5077694dd45d4ccb65de855866ba6d655eb388dc372531a919fb8ca953f490",
+      "role": "scope_table",
+      "live_pe_matches": true,
+      "byte_evidence": {
+        "path": "local/native_resource_reader_owner_bp/bytes_00e02d30.txt",
+        "bytes": 138,
+        "sha256": "63c880eaef7d1281885db838e1207b6ee770a02b5037e1d8a764d7f7a979dff7"
+      },
+      "dwords": [
+        "fffffffe",
+        "00000000",
+        "ffffffd4",
+        "00000000",
+        "fffffffe",
+        "00000000",
+        "00bf7cb9"
+      ]
+    },
+    {
+      "start": "00e02d50",
+      "inclusive_end": "00e02d6b",
+      "byte_count": 28,
+      "sha256": "a4a60b64175cea98b956adfdac873af174743ae70f8b8b27a084670a2b305126",
+      "role": "scope_table",
+      "live_pe_matches": true,
+      "byte_evidence": {
+        "path": "local/native_resource_reader_owner_bp/bytes_00e02d50.txt",
+        "bytes": 138,
+        "sha256": "90b9cf8befd2e21675e23d1f5639515c44f0c9cde01322ab7cb552352010d0e4"
+      },
+      "dwords": [
+        "fffffffe",
+        "00000000",
+        "ffffffd0",
+        "00000000",
+        "fffffffe",
+        "00000000",
+        "00bf7d1e"
+      ]
+    },
+    {
+      "start": "00415270",
+      "inclusive_end": "0041527f",
+      "byte_count": 16,
+      "sha256": "9d20fb9737545d0eeb198c79dc5d325beabd6d570a4058d3f1e7f4a887df0403",
+      "role": "empty_string_constructor",
+      "live_pe_matches": true,
+      "byte_evidence": {
+        "path": "local/native_resource_reader_owner_bp/bytes_00415270.txt",
+        "bytes": 77,
+        "sha256": "72853371e1bde7a9c7387857629ba4a3823831ef52590b704dee68b0bf994a9b"
+      },
+      "listing_evidence": {
+        "path": "local/native_resource_reader_owner_bp/disasm_00415270.txt",
+        "bytes": 118,
+        "sha256": "76a75a78bc02e95c417eaa0142197ce23f7971872f1cf1616c97b6cf22534d86"
+      },
+      "decoded_instructions": 4,
+      "live_listed_instructions": 4,
+      "pe_only_instruction_starts": []
+    },
+    {
+      "start": "00c0695e",
+      "inclusive_end": "00c069a1",
+      "byte_count": 68,
+      "sha256": "957e6d68b64bea1eb02a08e938fb4cb91e4cd3398c90835062bc069cf1e6ef84",
+      "role": "unowned_frame_unwind_filter",
+      "live_pe_matches": true,
+      "byte_evidence": {
+        "path": "local/native_resource_reader_owner_bp/bytes_00c0695e.txt",
+        "bytes": 337,
+        "sha256": "229dc41c512b9c87bd4e06a1254699e173b99b960b2420638405c46276ab7386"
+      },
+      "decoded_instructions": 18,
+      "live_listed_instructions": 0,
+      "pe_only_instruction_starts": [
+        "00c0695e",
+        "00c06962",
+        "00c06964",
+        "00c06966",
+        "00c0696b",
+        "00c0696d",
+        "00c06972",
+        "00c06974",
+        "00c06979",
+        "00c06980",
+        "00c06985",
+        "00c0698a",
+        "00c06991",
+        "00c06993",
+        "00c06998",
+        "00c0699d",
+        "00c0699f",
+        "00c069a1"
+      ]
+    },
+    {
+      "start": "00c069a2",
+      "inclusive_end": "00c06a61",
+      "byte_count": 192,
+      "sha256": "1fec28dd01c0bc6a429f6aabf83fd7d2266beaca51f8ec016d0a7db56ece5973",
+      "role": "frame_unwind_contract",
+      "live_pe_matches": true,
+      "byte_evidence": {
+        "path": "local/native_resource_reader_owner_bp/bytes_00c069a2.txt",
+        "bytes": 924,
+        "sha256": "963dfa0d4711195a8093e25f0e2490e839a855a684747426aee4a38a6d396035"
+      },
+      "listing_evidence": {
+        "path": "local/native_resource_reader_owner_bp/disasm_00c069a2.txt",
+        "bytes": 1643,
+        "sha256": "be6154bc9079085a465166cbc14a8e3eacb2af21f923c3decc59687c496626a0"
+      },
+      "decoded_instructions": 58,
+      "live_listed_instructions": 49,
+      "pe_only_instruction_starts": [
+        "00c06a24",
+        "00c06a27",
+        "00c06a2c",
+        "00c06a2d",
+        "00c06a2e",
+        "00c06a31",
+        "00c06a35",
+        "00c06a38",
+        "00c06a3b"
+      ]
+    },
+    {
+      "start": "00e03398",
+      "inclusive_end": "00e033bf",
+      "byte_count": 40,
+      "sha256": "9c0440aeba09419242feaccd485fe0219357537ec969ebcf19eb5e600307c1b0",
+      "role": "scope_table",
+      "live_pe_matches": true,
+      "byte_evidence": {
+        "path": "local/native_resource_reader_owner_bp/bytes_00e03398.txt",
+        "bytes": 199,
+        "sha256": "bdb2f50295a853f53fab2053fc302f096cb4c08b54d90dd21a632ac1551b4744"
+      },
+      "dwords": [
+        "fffffffe",
+        "00000000",
+        "ffffffd0",
+        "00000000",
+        "fffffffe",
+        "00000000",
+        "00c06a62",
+        "00000000",
+        "00c06a24",
+        "00c06a2e"
+      ]
+    },
+    {
+      "start": "00c07a75",
+      "inclusive_end": "00c07aa7",
+      "byte_count": 51,
+      "sha256": "2fb5afe39f8d63536cca0535d9fdb365c4ce2ae93344f03f7dd47f84068ee693",
+      "role": "terminate_identification",
+      "live_pe_matches": true,
+      "byte_evidence": {
+        "path": "local/native_resource_reader_owner_bp/bytes_00c07a75.txt",
+        "bytes": 256,
+        "sha256": "e99b963ee55985609e91cf5d827c1c46b22805c237242185319d8908dedcf344"
+      },
+      "listing_evidence": {
+        "path": "local/native_resource_reader_owner_bp/disasm_00c07a75.txt",
+        "bytes": 366,
+        "sha256": "86bec70990b6b5de94546d845ff7bc40947bbe2c13721bb54233ba747cc82855"
+      },
+      "decoded_instructions": 16,
+      "live_listed_instructions": 12,
+      "pe_only_instruction_starts": [
+        "00c07a95",
+        "00c07a97",
+        "00c07a98",
+        "00c07a99"
+      ]
+    }
+  ],
+  "direct_call_rows": [
+    {
+      "address": "00bf0985",
+      "function": "00bf0980",
+      "bytes": "e8 76 fd ff ff",
+      "instruction": "call 0xbf0700",
+      "scope": "owned",
+      "native": "00bf0700",
+      "kind": "direct_call",
+      "live_instruction": "CALL 0x00bf0700"
+    },
+    {
+      "address": "00bf098d",
+      "function": "00bf0980",
+      "bytes": "e8 f7 5f 00 00",
+      "instruction": "call 0xbf6989",
+      "scope": "owned",
+      "native": "00bf6989",
+      "kind": "direct_call",
+      "live_instruction": "CALL 0x00bf6989"
+    },
+    {
+      "address": "00bf0a07",
+      "function": "00bf09b0",
+      "bytes": "e8 f4 fc ff ff",
+      "instruction": "call 0xbf0700",
+      "scope": "owned",
+      "native": "00bf0700",
+      "kind": "direct_call",
+      "live_instruction": "CALL 0x00bf0700"
+    },
+    {
+      "address": "00bf0a0f",
+      "function": "00bf09b0",
+      "bytes": "e8 75 5f 00 00",
+      "instruction": "call 0xbf6989",
+      "scope": "owned",
+      "native": "00bf6989",
+      "kind": "direct_call",
+      "live_instruction": "CALL 0x00bf6989"
+    },
+    {
+      "address": "00bea16f",
+      "function": "00bea150",
+      "bytes": "e8 2c 68 00 00",
+      "instruction": "call 0xbf09a0",
+      "scope": "owned",
+      "native": "00bf09a0",
+      "kind": "direct_call",
+      "live_instruction": "CALL 0x00bf09a0"
+    },
+    {
+      "address": "00bea18c",
+      "function": "00bea150",
+      "bytes": "e8 40 db 00 00",
+      "instruction": "call 0xbf7cd1",
+      "scope": "owned",
+      "native": "00bf7cd1",
+      "kind": "direct_call",
+      "live_instruction": "CALL 0x00bf7cd1"
+    },
+    {
+      "address": "00be9f46",
+      "function": "00be9f10",
+      "bytes": "e8 75 fd 82 ff",
+      "instruction": "call 0x419cc0",
+      "scope": "owned",
+      "native": "00419cc0",
+      "kind": "direct_call",
+      "live_instruction": "CALL 0x00419cc0"
+    },
+    {
+      "address": "00be9f4d",
+      "function": "00be9f10",
+      "bytes": "e8 be 75 fe ff",
+      "instruction": "call 0xbd1510",
+      "scope": "owned",
+      "native": "00bd1510",
+      "kind": "direct_call",
+      "live_instruction": "CALL 0x00bd1510"
+    },
+    {
+      "address": "00be9f64",
+      "function": "00be9f10",
+      "bytes": "e8 05 dd 00 00",
+      "instruction": "call 0xbf7c6e",
+      "scope": "owned",
+      "native": "00bf7c6e",
+      "kind": "direct_call",
+      "live_instruction": "CALL 0x00bf7c6e"
+    },
+    {
+      "address": "00be9f73",
+      "function": "00be9f10",
+      "bytes": "e8 38 6a 00 00",
+      "instruction": "call 0xbf09b0",
+      "scope": "owned",
+      "native": "00bf09b0",
+      "kind": "direct_call",
+      "live_instruction": "CALL 0x00bf09b0"
+    },
+    {
+      "address": "00be9f0a",
+      "function": "00be9f00",
+      "bytes": "e8 5f dd 00 00",
+      "instruction": "call 0xbf7c6e",
+      "scope": "bounded_eh_or_constructor_dependency",
+      "native": "00bf7c6e",
+      "kind": "direct_call",
+      "live_instruction": "CALL 0x00bf7c6e"
+    },
+    {
+      "address": "00bf7c17",
+      "function": "00bf7c10",
+      "bytes": "e8 e4 ff 00 00",
+      "instruction": "call 0xc07c00",
+      "scope": "bounded_eh_or_constructor_dependency",
+      "native": "00c07c00",
+      "kind": "direct_call",
+      "live_instruction": "CALL 0x00c07c00"
+    },
+    {
+      "address": "00bf7c66",
+      "function": "00bf7c10",
+      "bytes": "e8 da ff 00 00",
+      "instruction": "call 0xc07c45",
+      "scope": "bounded_eh_or_constructor_dependency",
+      "native": "00c07c45",
+      "kind": "direct_call",
+      "live_instruction": "CALL 0x00c07c45"
+    },
+    {
+      "address": "00bf7c75",
+      "function": "00bf7c6e",
+      "bytes": "e8 86 ff 00 00",
+      "instruction": "call 0xc07c00",
+      "scope": "bounded_eh_or_constructor_dependency",
+      "native": "00c07c00",
+      "kind": "direct_call",
+      "live_instruction": "CALL 0x00c07c00"
+    },
+    {
+      "address": "00bf7cac",
+      "function": "00bf7c6e",
+      "bytes": "e8 08 00 00 00",
+      "instruction": "call 0xbf7cb9",
+      "scope": "bounded_eh_or_constructor_dependency",
+      "native": "00bf7cb9",
+      "kind": "direct_call",
+      "live_instruction": "CALL 0x00bf7cb9"
+    },
+    {
+      "address": "00bf7cb1",
+      "function": "00bf7c6e",
+      "bytes": "e8 8f ff 00 00",
+      "instruction": "call 0xc07c45",
+      "scope": "bounded_eh_or_constructor_dependency",
+      "native": "00c07c45",
+      "kind": "direct_call",
+      "live_instruction": "CALL 0x00c07c45"
+    },
+    {
+      "address": "00bf7ccb",
+      "function": "00bf7cb9",
+      "bytes": "e8 40 ff ff ff",
+      "instruction": "call 0xbf7c10",
+      "scope": "bounded_eh_or_constructor_dependency",
+      "native": "00bf7c10",
+      "kind": "direct_call",
+      "live_instruction": "CALL 0x00bf7c10"
+    },
+    {
+      "address": "00bf7cd8",
+      "function": "00bf7cd1",
+      "bytes": "e8 23 ff 00 00",
+      "instruction": "call 0xc07c00",
+      "scope": "bounded_eh_or_constructor_dependency",
+      "native": "00c07c00",
+      "kind": "direct_call",
+      "live_instruction": "CALL 0x00c07c00"
+    },
+    {
+      "address": "00bf7d11",
+      "function": "00bf7cd1",
+      "bytes": "e8 08 00 00 00",
+      "instruction": "call 0xbf7d1e",
+      "scope": "bounded_eh_or_constructor_dependency",
+      "native": "00bf7d1e",
+      "kind": "direct_call",
+      "live_instruction": "CALL 0x00bf7d1e"
+    },
+    {
+      "address": "00bf7d16",
+      "function": "00bf7cd1",
+      "bytes": "e8 2a ff 00 00",
+      "instruction": "call 0xc07c45",
+      "scope": "bounded_eh_or_constructor_dependency",
+      "native": "00c07c45",
+      "kind": "direct_call",
+      "live_instruction": "CALL 0x00c07c45"
+    },
+    {
+      "address": "00bf7d30",
+      "function": "00bf7d1e",
+      "bytes": "e8 db fe ff ff",
+      "instruction": "call 0xbf7c10",
+      "scope": "bounded_eh_or_constructor_dependency",
+      "native": "00bf7c10",
+      "kind": "direct_call",
+      "live_instruction": "CALL 0x00bf7c10"
+    },
+    {
+      "address": "00c069a9",
+      "function": "00c069a2",
+      "bytes": "e8 52 12 00 00",
+      "instruction": "call 0xc07c00",
+      "scope": "bounded_eh_or_constructor_dependency",
+      "native": "00c07c00",
+      "kind": "direct_call",
+      "live_instruction": "CALL 0x00c07c00"
+    },
+    {
+      "address": "00c069c9",
+      "function": "00c069a2",
+      "bytes": "e8 60 e8 ff ff",
+      "instruction": "call 0xc0522e",
+      "scope": "bounded_eh_or_constructor_dependency",
+      "native": "00c0522e",
+      "kind": "direct_call",
+      "live_instruction": "CALL 0x00c0522e"
+    },
+    {
+      "address": "00c069e8",
+      "function": "00c069a2",
+      "bytes": "e8 d4 10 00 00",
+      "instruction": "call 0xc07ac1",
+      "scope": "bounded_eh_or_constructor_dependency",
+      "native": "00c07ac1",
+      "kind": "direct_call",
+      "live_instruction": "CALL 0x00c07ac1"
+    },
+    {
+      "address": "00c06a19",
+      "function": "00c069a2",
+      "bytes": "e8 f2 10 00 00",
+      "instruction": "call 0xc07b10",
+      "scope": "bounded_eh_or_constructor_dependency",
+      "native": "00c07b10",
+      "kind": "direct_call",
+      "live_instruction": "CALL 0x00c07b10"
+    },
+    {
+      "address": "00c06a4a",
+      "function": "00c069a2",
+      "bytes": "e8 19 00 00 00",
+      "instruction": "call 0xc06a68",
+      "scope": "bounded_eh_or_constructor_dependency",
+      "native": "00c06a68",
+      "kind": "direct_call",
+      "live_instruction": "CALL 0x00c06a68"
+    },
+    {
+      "address": "00c06a54",
+      "function": "00c069a2",
+      "bytes": "e8 68 10 00 00",
+      "instruction": "call 0xc07ac1",
+      "scope": "bounded_eh_or_constructor_dependency",
+      "native": "00c07ac1",
+      "kind": "direct_call",
+      "live_instruction": "CALL 0x00c07ac1"
+    },
+    {
+      "address": "00c06a5c",
+      "function": "00c069a2",
+      "bytes": "e8 e4 11 00 00",
+      "instruction": "call 0xc07c45",
+      "scope": "bounded_eh_or_constructor_dependency",
+      "native": "00c07c45",
+      "kind": "direct_call",
+      "live_instruction": "CALL 0x00c07c45"
+    },
+    {
+      "address": "00c07a7c",
+      "function": "00c07a75",
+      "bytes": "e8 7f 01 00 00",
+      "instruction": "call 0xc07c00",
+      "scope": "bounded_eh_or_constructor_dependency",
+      "native": "00c07c00",
+      "kind": "direct_call",
+      "live_instruction": "CALL 0x00c07c00"
+    },
+    {
+      "address": "00c07a81",
+      "function": "00c07a75",
+      "bytes": "e8 a8 d7 ff ff",
+      "instruction": "call 0xc0522e",
+      "scope": "bounded_eh_or_constructor_dependency",
+      "native": "00c0522e",
+      "kind": "direct_call",
+      "live_instruction": "CALL 0x00c0522e"
+    },
+    {
+      "address": "00c07aa3",
+      "function": "00c07a75",
+      "bytes": "e8 3a d3 ff ff",
+      "instruction": "call 0xc04de2",
+      "scope": "bounded_eh_or_constructor_dependency",
+      "native": "00c04de2",
+      "kind": "direct_call",
+      "live_instruction": "CALL 0x00c04de2"
+    }
+  ],
+  "tail_jump_rows": [
+    {
+      "address": "00cc70c3",
+      "function": "00cc70c0",
+      "bytes": "e9 e8 98 f2 ff",
+      "instruction": "jmp 0xbf09b0",
+      "scope": "bounded_eh_or_constructor_dependency",
+      "native": "00bf09b0",
+      "kind": "tail_jump",
+      "live_instruction": "JMP 0x00bf09b0"
+    },
+    {
+      "address": "00cc70ce",
+      "function": "00cc70c8",
+      "bytes": "e9 2d 2e f2 ff",
+      "instruction": "jmp 0xbe9f00",
+      "scope": "bounded_eh_or_constructor_dependency",
+      "native": "00be9f00",
+      "kind": "tail_jump",
+      "live_instruction": "JMP 0x00be9f00"
+    },
+    {
+      "address": "00cc7133",
+      "function": "00cc7130",
+      "bytes": "e9 78 98 f2 ff",
+      "instruction": "jmp 0xbf09b0",
+      "scope": "bounded_eh_or_constructor_dependency",
+      "native": "00bf09b0",
+      "kind": "tail_jump",
+      "live_instruction": "JMP 0x00bf09b0"
+    },
+    {
+      "address": "00cc7816",
+      "function": "00cc7810",
+      "bytes": "e9 65 91 f2 ff",
+      "instruction": "jmp 0xbf0980",
+      "scope": "bounded_eh_or_constructor_dependency",
+      "native": "00bf0980",
+      "kind": "tail_jump",
+      "live_instruction": "JMP 0x00bf0980"
+    },
+    {
+      "address": "00cc70d8",
+      "native": "00bf6b43",
+      "function": "00cc70d3",
+      "kind": "tail_jump",
+      "bytes": "e9 66 fa f2 ff"
+    },
+    {
+      "address": "00cc713d",
+      "native": "00bf6b43",
+      "function": "00cc7138",
+      "kind": "tail_jump",
+      "bytes": "e9 01 fa f2 ff"
+    },
+    {
+      "address": "00cc7820",
+      "native": "00bf6b43",
+      "function": "00cc781b",
+      "kind": "tail_jump",
+      "bytes": "e9 1e f3 f2 ff"
+    }
+  ],
+  "indirect_call_rows": [
+    {
+      "address": "00bf09e0",
+      "function": "00bf09b0",
+      "bytes": "ff 15 20 22 ce 00",
+      "instruction": "call dword ptr [0xce2220]",
+      "scope": "owned",
+      "native": "iat:00ce2220",
+      "kind": "indirect_call",
+      "live_instruction": "CALL dword ptr [0x00ce2220]"
+    },
+    {
+      "address": "00bf09f0",
+      "function": "00bf09b0",
+      "bytes": "ff d0",
+      "instruction": "call eax",
+      "scope": "owned",
+      "native": "captured-stream+vtable0",
+      "kind": "indirect_call",
+      "live_instruction": "CALL EAX"
+    },
+    {
+      "address": "00bf7c2e",
+      "function": "00bf7c10",
+      "bytes": "ff 55 14",
+      "instruction": "call dword ptr [ebp + 0x14]",
+      "scope": "bounded_eh_or_constructor_dependency",
+      "native": "callback:0041dd20",
+      "kind": "indirect_call",
+      "live_instruction": "CALL dword ptr [EBP + 0x14]"
+    },
+    {
+      "address": "00bf7c99",
+      "function": "00bf7c6e",
+      "bytes": "ff 55 14",
+      "instruction": "call dword ptr [ebp + 0x14]",
+      "scope": "bounded_eh_or_constructor_dependency",
+      "native": "callback:0041dd20",
+      "kind": "indirect_call",
+      "live_instruction": "CALL dword ptr [EBP + 0x14]"
+    },
+    {
+      "address": "00bf7cf5",
+      "function": "00bf7cd1",
+      "bytes": "ff 55 14",
+      "instruction": "call dword ptr [ebp + 0x14]",
+      "scope": "bounded_eh_or_constructor_dependency",
+      "native": "callback:00415270",
+      "kind": "indirect_call",
+      "live_instruction": "CALL dword ptr [EBP + 0x14]"
+    },
+    {
+      "address": "00c07a91",
+      "function": "00c07a75",
+      "bytes": "ff d0",
+      "instruction": "call eax",
+      "scope": "bounded_eh_or_constructor_dependency",
+      "native": "current-thread-terminate-handler",
+      "kind": "indirect_call",
+      "live_instruction": "CALL EAX"
+    }
+  ],
+  "decoded_only_transfers": [
+    {
+      "site": "00bf7c57",
+      "enclosing_span": "00bf7c10",
+      "function_owner": null,
+      "kind": "decoded_call",
+      "target": "00c07a75",
+      "bytes": "e8 19 fe 00 00",
+      "instruction": "call 0xc07a75",
+      "evidence": "Matched live/PE bytes; no current listed function owner at site"
+    },
+    {
+      "site": "00c06974",
+      "enclosing_span": "00c0695e",
+      "function_owner": null,
+      "kind": "decoded_call",
+      "target": "00c0522e",
+      "bytes": "e8 b5 e8 ff ff",
+      "instruction": "call 0xc0522e",
+      "evidence": "Matched live/PE bytes; no current listed function owner at site"
+    },
+    {
+      "site": "00c06980",
+      "enclosing_span": "00c0695e",
+      "function_owner": null,
+      "kind": "decoded_tail_jump",
+      "target": "00c07a75",
+      "bytes": "e9 f0 10 00 00",
+      "instruction": "jmp 0xc07a75",
+      "evidence": "Matched live/PE bytes; no current listed function owner at site"
+    },
+    {
+      "site": "00c06985",
+      "enclosing_span": "00c0695e",
+      "function_owner": null,
+      "kind": "decoded_call",
+      "target": "00c0522e",
+      "bytes": "e8 a4 e8 ff ff",
+      "instruction": "call 0xc0522e",
+      "evidence": "Matched live/PE bytes; no current listed function owner at site"
+    },
+    {
+      "site": "00c06993",
+      "enclosing_span": "00c0695e",
+      "function_owner": null,
+      "kind": "decoded_call",
+      "target": "00c0522e",
+      "bytes": "e8 96 e8 ff ff",
+      "instruction": "call 0xc0522e",
+      "evidence": "Matched live/PE bytes; no current listed function owner at site"
+    },
+    {
+      "site": "00c06a27",
+      "enclosing_span": "00c069a2",
+      "function_owner": null,
+      "kind": "decoded_call",
+      "target": "00c0695e",
+      "bytes": "e8 32 ff ff ff",
+      "instruction": "call 0xc0695e",
+      "evidence": "Matched live/PE bytes; no current listed function owner at site"
+    }
+  ],
+  "local_control_flow": [
+    {
+      "span": "00bf0980",
+      "local_branches": [],
+      "returns": [
+        {
+          "site": "00bf0996",
+          "bytes": "c3",
+          "live_listed": false
+        }
+      ]
+    },
+    {
+      "span": "00bf09b0",
+      "local_branches": [
+        {
+          "site": "00bf09da",
+          "target": "00bf09f8",
+          "instruction": "je 0xbf09f8",
+          "live_listed": true
+        },
+        {
+          "site": "00bf09e8",
+          "target": "00bf09f2",
+          "instruction": "jne 0xbf09f2",
+          "live_listed": true
+        }
+      ],
+      "returns": [
+        {
+          "site": "00bf0a27",
+          "bytes": "c3",
+          "live_listed": true
+        }
+      ]
+    },
+    {
+      "span": "00bea150",
+      "local_branches": [],
+      "returns": [
+        {
+          "site": "00bea1b4",
+          "bytes": "c3",
+          "live_listed": true
+        }
+      ]
+    },
+    {
+      "span": "00be9f10",
+      "local_branches": [
+        {
+          "site": "00be9f3a",
+          "target": "00be9f52",
+          "instruction": "je 0xbe9f52",
+          "live_listed": true
+        }
+      ],
+      "returns": [
+        {
+          "site": "00be9f87",
+          "bytes": "c3",
+          "live_listed": true
+        }
+      ]
+    },
+    {
+      "span": "00cc70c0",
+      "local_branches": [],
+      "returns": []
+    },
+    {
+      "span": "00cc70c8",
+      "local_branches": [],
+      "returns": []
+    },
+    {
+      "span": "00cc70d3",
+      "local_branches": [],
+      "returns": []
+    },
+    {
+      "span": "00cc7130",
+      "local_branches": [],
+      "returns": []
+    },
+    {
+      "span": "00cc7138",
+      "local_branches": [],
+      "returns": []
+    },
+    {
+      "span": "00cc7810",
+      "local_branches": [],
+      "returns": []
+    },
+    {
+      "span": "00cc781b",
+      "local_branches": [],
+      "returns": []
+    },
+    {
+      "span": "00be9f00",
+      "local_branches": [],
+      "returns": [
+        {
+          "site": "00be9f0f",
+          "bytes": "c3",
+          "live_listed": true
+        }
+      ]
+    },
+    {
+      "span": "00bf7c10",
+      "local_branches": [
+        {
+          "site": "00bf7c23",
+          "target": "00bf7c5f",
+          "instruction": "js 0xbf7c5f",
+          "live_listed": true
+        },
+        {
+          "site": "00bf7c31",
+          "target": "00bf7c20",
+          "instruction": "jmp 0xbf7c20",
+          "live_listed": true
+        },
+        {
+          "site": "00bf7c4a",
+          "target": "00bf7c57",
+          "instruction": "je 0xbf7c57",
+          "live_listed": false
+        }
+      ],
+      "returns": [
+        {
+          "site": "00bf7c56",
+          "bytes": "c3",
+          "live_listed": false
+        },
+        {
+          "site": "00bf7c6b",
+          "bytes": "c2 10 00",
+          "live_listed": true
+        }
+      ]
+    },
+    {
+      "span": "00bf7c6e",
+      "local_branches": [
+        {
+          "site": "00bf7c91",
+          "target": "00bf7c9e",
+          "instruction": "js 0xbf7c9e",
+          "live_listed": true
+        },
+        {
+          "site": "00bf7c9c",
+          "target": "00bf7c8e",
+          "instruction": "jmp 0xbf7c8e",
+          "live_listed": true
+        }
+      ],
+      "returns": [
+        {
+          "site": "00bf7cb6",
+          "bytes": "c2 10 00",
+          "live_listed": true
+        }
+      ]
+    },
+    {
+      "span": "00bf7cb9",
+      "local_branches": [
+        {
+          "site": "00bf7cbd",
+          "target": "00bf7cd0",
+          "instruction": "jne 0xbf7cd0",
+          "live_listed": true
+        }
+      ],
+      "returns": [
+        {
+          "site": "00bf7cd0",
+          "bytes": "c3",
+          "live_listed": true
+        }
+      ]
+    },
+    {
+      "span": "00bf7cd1",
+      "local_branches": [
+        {
+          "site": "00bf7cee",
+          "target": "00bf7d03",
+          "instruction": "jge 0xbf7d03",
+          "live_listed": true
+        },
+        {
+          "site": "00bf7d01",
+          "target": "00bf7ce8",
+          "instruction": "jmp 0xbf7ce8",
+          "live_listed": true
+        }
+      ],
+      "returns": [
+        {
+          "site": "00bf7d1b",
+          "bytes": "c2 14 00",
+          "live_listed": true
+        }
+      ]
+    },
+    {
+      "span": "00bf7d1e",
+      "local_branches": [
+        {
+          "site": "00bf7d22",
+          "target": "00bf7d35",
+          "instruction": "jne 0xbf7d35",
+          "live_listed": true
+        }
+      ],
+      "returns": [
+        {
+          "site": "00bf7d35",
+          "bytes": "c3",
+          "live_listed": true
+        }
+      ]
+    },
+    {
+      "span": "00415270",
+      "local_branches": [],
+      "returns": [
+        {
+          "site": "0041527f",
+          "bytes": "c3",
+          "live_listed": true
+        }
+      ]
+    },
+    {
+      "span": "00c0695e",
+      "local_branches": [
+        {
+          "site": "00c0696b",
+          "target": "00c06985",
+          "instruction": "je 0xc06985",
+          "live_listed": false
+        },
+        {
+          "site": "00c06972",
+          "target": "00c0699f",
+          "instruction": "jne 0xc0699f",
+          "live_listed": false
+        },
+        {
+          "site": "00c06991",
+          "target": "00c0699f",
+          "instruction": "jle 0xc0699f",
+          "live_listed": false
+        }
+      ],
+      "returns": [
+        {
+          "site": "00c069a1",
+          "bytes": "c3",
+          "live_listed": false
+        }
+      ]
+    },
+    {
+      "span": "00c069a2",
+      "local_branches": [
+        {
+          "site": "00c069bb",
+          "target": "00c069c3",
+          "instruction": "jg 0xc069c3",
+          "live_listed": true
+        },
+        {
+          "site": "00c069c1",
+          "target": "00c069c6",
+          "instruction": "jmp 0xc069c6",
+          "live_listed": true
+        },
+        {
+          "site": "00c069dc",
+          "target": "00c06a43",
+          "instruction": "je 0xc06a43",
+          "live_listed": true
+        },
+        {
+          "site": "00c069e1",
+          "target": "00c069e8",
+          "instruction": "jle 0xc069e8",
+          "live_listed": true
+        },
+        {
+          "site": "00c069e6",
+          "target": "00c069ed",
+          "instruction": "jl 0xc069ed",
+          "live_listed": true
+        },
+        {
+          "site": "00c06a07",
+          "target": "00c06a1e",
+          "instruction": "je 0xc06a1e",
+          "live_listed": true
+        },
+        {
+          "site": "00c06a22",
+          "target": "00c06a3e",
+          "instruction": "jmp 0xc06a3e",
+          "live_listed": true
+        },
+        {
+          "site": "00c06a41",
+          "target": "00c069d9",
+          "instruction": "jmp 0xc069d9",
+          "live_listed": true
+        },
+        {
+          "site": "00c06a52",
+          "target": "00c06a59",
+          "instruction": "je 0xc06a59",
+          "live_listed": true
+        }
+      ],
+      "returns": [
+        {
+          "site": "00c06a2d",
+          "bytes": "c3",
+          "live_listed": false
+        },
+        {
+          "site": "00c06a61",
+          "bytes": "c3",
+          "live_listed": true
+        }
+      ]
+    },
+    {
+      "span": "00c07a75",
+      "local_branches": [
+        {
+          "site": "00c07a8b",
+          "target": "00c07aa3",
+          "instruction": "je 0xc07aa3",
+          "live_listed": true
+        },
+        {
+          "site": "00c07a93",
+          "target": "00c07a9c",
+          "instruction": "jmp 0xc07a9c",
+          "live_listed": true
+        }
+      ],
+      "returns": [
+        {
+          "site": "00c07a98",
+          "bytes": "c3",
+          "live_listed": false
+        }
+      ]
+    }
+  ],
+  "actual_layout": {
+    "base_bytes": 16,
+    "buffer_header_offset": 4,
+    "buffer_header_bytes": 12,
+    "structured_bytes": 112,
+    "path_strings_offset": 16,
+    "path_string_count": 10,
+    "path_string_stride": 8,
+    "index_offset": 96,
+    "control_offset": 100,
+    "separate_name_offset": 104
+  },
+  "outer_eh": {
+    "base_destructor": {
+      "handler": "00cc781b",
+      "func_info": "00e02464",
+      "map": "00e0245c",
+      "states": [
+        {
+          "state": 0,
+          "to": -1,
+          "action": "00cc7810",
+          "effect": "BF0980(saved reader+4)"
+        }
+      ]
+    },
+    "structured_constructor": {
+      "handler": "00cc7138",
+      "func_info": "00e01b58",
+      "map": "00e01b50",
+      "states": [
+        {
+          "state": 0,
+          "to": -1,
+          "action": "00cc7130",
+          "effect": "BF09B0(saved reader)"
+        }
+      ]
+    },
+    "structured_destructor": {
+      "handler": "00cc70d3",
+      "func_info": "00e01ac4",
+      "map": "00e01ab4",
+      "states": [
+        {
+          "state": 1,
+          "to": 0,
+          "action": "00cc70c8",
+          "effect": "BE9F00(saved reader+10h)"
+        },
+        {
+          "state": 0,
+          "to": -1,
+          "action": "00cc70c0",
+          "effect": "BF09B0(saved reader)"
+        }
+      ]
+    },
+    "captured_reader": "EH frame [EBP-10h]; transition precedes action call, confirmed atC06A09"
+  },
+  "iterator_eh": {
+    "constructor": "BF7CD1/SEH4 E02D50; cursor[EBP+8], completed[EBP-1C], success[EBP-20]; advance/count only after415270 returns; BF7D1E finally calls ArrayUnwind(cursor,8,completed,41DD20)",
+    "destructor": "BF7C6E/SEH4 E02D30; cursor first+80, remaining[EBP+10], success[EBP-1C]; decrement remaining then cursor-=8 before callback; BF7CB9 finally passes current failing pointer and remaining preceding count; failing element not retried",
+    "array_unwind": "BF7C10/SEH4 E02D10 repeats preceding strings backward; BF7C33 filter checksE06D7363 and callsC07A75 terminate atBF7C57; other exceptions search",
+    "outer_secondary_failure": "BF6B43 -> C07991 -> C069A2; E03398 filterC06A24 callsC0695E; E06D7363 resets native ProcessingThrow then terminates; CLR branch adjusts ProcessingThrow and searches; source reproduces C++ terminal routing through unwind-only SEH filters, not native TLS/CLR bookkeeping",
+    "ordinary_failure": "Raw pool getters/terminal dispatch are not noexcept; primary failures propagate after required cleanup. C++ failures during unwind actions terminate explicitly"
+  },
+  "reused_contracts": {
+    "buffer": "BF0700 actual0Ch buffer through RawPoolContext; BF0980 reads current data only after resize returns",
+    "base_constructor": "Complete BF09A0 actual10h constructor from reference packet",
+    "string_returns": "Actual41DD20 raw-pool overload, except separate name uses separately captured data before state1 and size before current419CC0/BD1510",
+    "stream_dispatch": "NativeAdoptedSubstreamDispatch::source_zero_reference(entry,captured source,current table); current table reads only at zero; ordinary fixture uses existing NativeVfsRuntimeBindings",
+    "free": "shared singleton_lifetime_free BF6989/BF65AC service; no post-free clear"
+  },
+  "repair_candidates_not_applied": [
+    {
+      "range": "00bf0992..00bf0996",
+      "owner": "00bf0980",
+      "bytes": 5,
+      "action": "Recover ADD ESP4/POP ESI/RET after freeBF098D; extend current endBF0991; BF0997 padding"
+    },
+    {
+      "range": "00cc70d3..00cc70dc",
+      "owner": null,
+      "bytes": 10,
+      "action": "Define verified FuncInfo/EH dispatcher stub"
+    },
+    {
+      "range": "00cc7138..00cc7141",
+      "owner": null,
+      "bytes": 10,
+      "action": "Define verified FuncInfo/EH dispatcher stub"
+    },
+    {
+      "range": "00cc781b..00cc7824",
+      "owner": null,
+      "bytes": 10,
+      "action": "Define verified FuncInfo/EH dispatcher stub"
+    },
+    {
+      "range": "00bf7c33..00bf7c5e",
+      "owner": null,
+      "bytes": 44,
+      "action": "Recover ArrayUnwind filter and handler fromE02D10; filter returnBF7C56/terminate armBF7C57; handlerBF7C5C joins existingBF7C5F epilogue; do not invent overlapping owners"
+    },
+    {
+      "range": "00c0695e..00c069a1",
+      "owner": null,
+      "bytes": 68,
+      "scope": "bounded secondary-EH contract",
+      "action": "Complete decoded frame-unwind filter lacks owning function"
+    },
+    {
+      "range": "00c06a24..00c06a3d",
+      "owner": null,
+      "bytes": 26,
+      "scope": "bounded secondary-EH contract",
+      "action": "Recover filterC06A24..2D and handlerC06A2E..3D; preserve handler joinC06A3E"
+    },
+    {
+      "range": "00c07a95..00c07a9b",
+      "owner": null,
+      "bytes": 7,
+      "scope": "terminal identification only",
+      "action": "Unlisted filter returns1 atC07A98; handlerC07A99 restoresESP and joinsC07A9C"
+    }
+  ],
+  "source_artifacts": [
+    {
+      "path": "include/bsp/native_resource_reader_owner.hpp",
+      "bytes": 2605,
+      "sha256": "8e382168c44c7a8a63a4ff7b94865a018ad793eaa27d15708aa0d96b05c02d1f"
+    },
+    {
+      "path": "src/native_resource_reader_owner.cpp",
+      "bytes": 6738,
+      "sha256": "08b0d8193e68f76df4e1688602fbcb9119cd6e7daf1d9417fbfc2aa75875386f"
+    },
+    {
+      "path": "docs/NATIVE_RESOURCE_READER_OWNER_BP.md",
+      "bytes": 8422,
+      "sha256": "5d9c44784eea40d035139404edfb56f72a0a1363bd248b75bfd4cd84396795f3"
+    }
+  ],
+  "dependency_artifacts": [
+    {
+      "path": "include/bsp/native_resource_reader_buffer.hpp",
+      "bytes": 2083,
+      "sha256": "39b7e4ba7f01ff288bd7b929dd51280b335315502e8b7366eeb1405052a1a042"
+    },
+    {
+      "path": "src/native_resource_reader_buffer.cpp",
+      "bytes": 4604,
+      "sha256": "bd770efafd314b290eff66f21f4a835a56498d6878ae86947c3c15422ee2d670"
+    },
+    {
+      "path": "include/bsp/native_resource_reader_references.hpp",
+      "bytes": 2195,
+      "sha256": "f1d87cf080877afc8a4e8c690147c22a21fbfeac0786897d913e3604403d3fc3"
+    },
+    {
+      "path": "src/native_resource_reader_references.cpp",
+      "bytes": 2504,
+      "sha256": "9255ab57bdccb91ab0b071f5c23e68d601352cf108677ceed520647a09c73e5d"
+    },
+    {
+      "path": "include/bsp/native_adopted_substream.hpp",
+      "bytes": 4690,
+      "sha256": "a5d41d65fb462fbe64b002ab38c646a8cb5f066c80415f33523b454100c302d8"
+    },
+    {
+      "path": "src/native_adopted_substream.cpp",
+      "bytes": 9011,
+      "sha256": "cc290d6afb33d1e3ee42455b2aa7a327e1c34d5eb12e3903f82c13caed15985a"
+    },
+    {
+      "path": "include/bsp/native_string.hpp",
+      "bytes": 8019,
+      "sha256": "80013e5a7350120f32fcad1ce54db9b0923ad5b49cc2152823d858534331378f"
+    },
+    {
+      "path": "src/native_string.cpp",
+      "bytes": 8311,
+      "sha256": "0e8819d3a6442fc48c879e85c00899a72beabdc51b3e94a11836ab5314d5e60c"
+    },
+    {
+      "path": "include/bsp/native_string_pool_owner.hpp",
+      "bytes": 5893,
+      "sha256": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff"
+    },
+    {
+      "path": "src/native_string_pool_owner.cpp",
+      "bytes": 8443,
+      "sha256": "cb52fde795918995689a26567d513e9f3cf75eeb27600eb60c431c37fdd21d6e"
+    },
+    {
+      "path": "include/bsp/native_string_pool_storage.hpp",
+      "bytes": 2805,
+      "sha256": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d"
+    },
+    {
+      "path": "src/native_string_pool_storage.cpp",
+      "bytes": 5103,
+      "sha256": "5cb79a6ce240205b3f1c81f1fbd6edd49cc1c05f8a20ee8dca8913f44c9095d5"
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "bytes": 4372,
+      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "bytes": 13257,
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+    },
+    {
+      "path": "include/bsp/native_vfs_runtime_bindings.hpp",
+      "bytes": 5963,
+      "sha256": "1b2ef8bd680361642fd8c7bd402837e5de8e8cea96a19f817c8abf93b049ba6f"
+    },
+    {
+      "path": "src/native_vfs_runtime_bindings.cpp",
+      "bytes": 14832,
+      "sha256": "2e6ef9885f98c3adca48553a36fed52b99aded39c134681bc41d1ec02f6e150b"
+    },
+    {
+      "path": "include/bsp/native_retained_memory_owners.hpp",
+      "bytes": 3829,
+      "sha256": "c559f53cca95dd93ba9133740e0570b2705c9b4cb9593ab1d050404d8470708c"
+    },
+    {
+      "path": "src/native_retained_memory_owners.cpp",
+      "bytes": 6850,
+      "sha256": "f069566ab280cb05fbdaa55474a6174bd143c52d6cbbaa0f0795511770932e93"
+    },
+    {
+      "path": "include/bsp/native_memory_stream.hpp",
+      "bytes": 3230,
+      "sha256": "1cd41bf0ec1db15bce03acf9d8ecceae4d8b27fe689dea2a3393327ff7e81c88"
+    },
+    {
+      "path": "src/native_memory_stream.cpp",
+      "bytes": 6507,
+      "sha256": "1b55127245d09d5ad2eedfb3e00d02ecbe1b310e8630f4c24e5490273a119fbd"
+    },
+    {
+      "path": "include/bsp/game_native_readonly_data.hpp",
+      "bytes": 2212,
+      "sha256": "8e751679e907c9471a6135b090ad5fe7d733cbaae5070484877138f3775fe96b"
+    },
+    {
+      "path": "src/game_native_readonly_data.cpp",
+      "bytes": 6144,
+      "sha256": "efc2201294dd5b5a3364c611d45b3dbc1760aaa99985e86d947e0b060713dd16"
+    }
+  ],
+  "validation": {
+    "strict_msvc_win32_tu": "passed /std:c++17 /EHsc /MD /W4 /WX /fp:strict /permissive-",
+    "fixture_output": "PASS actual70h reader: exact construction,13 pooled-string return order, current buffer teardown, concrete NativeVfsRuntimeBindings memory-stream/backing deletion and retained headers",
+    "fixture_scope": "One ignored actual70h reader/13 raw-pool strings/optional0Ch buffer; concrete NativeVfsRuntimeBindings D642C0 stream/backing deletion; counters0, exact reuse order, construction bounds, retained headers. Normal owner paths only",
+    "not_executed": "Primary getter failure, remaining-element unwind and secondary termination; these are native listing/FH3/filter evidence plus source inspection",
+    "fixture_link": "/MD /link /MANIFEST:EMBED /BASE:0x18000000 /DYNAMICBASE:NO; safe probe.exe",
+    "frozen_library": {
+      "source": "J:/PROG/battlestations-pacific-decompile-orch4-20260910/build/win32/Release/bsp_core.lib",
+      "source_before": "02b33f5248e04e595830d66c353883d0b9d66706e37f653a9d8d8f9545c22444",
+      "copy": "02b33f5248e04e595830d66c353883d0b9d66706e37f653a9d8d8f9545c22444",
+      "source_after": "02b33f5248e04e595830d66c353883d0b9d66706e37f653a9d8d8f9545c22444",
+      "source_commit": "994e06289522017335e3438a0e499523a8777462",
+      "path": "local/native_resource_reader_owner_bp/bsp_core.bo.frozen.lib",
+      "bytes": 58143170,
+      "sha256": "02b33f5248e04e595830d66c353883d0b9d66706e37f653a9d8d8f9545c22444",
+      "dependency_sources_equal_worker_and_library_base": true
+    },
+    "support_libraries": [
+      {
+        "source": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\build\\win32\\Release\\bsp_lua511.lib",
+        "copy": "local/native_resource_reader_owner_bp/bsp_lua511.lib",
+        "source_before": "00315ac717aac3d2b2161fefefe71b36a974335ff9c95d48c137423eb4e2f4b2",
+        "copy_sha256": "00315ac717aac3d2b2161fefefe71b36a974335ff9c95d48c137423eb4e2f4b2",
+        "source_after": "00315ac717aac3d2b2161fefefe71b36a974335ff9c95d48c137423eb4e2f4b2"
+      },
+      {
+        "source": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\build\\win32\\Release\\bsp_zlib121.lib",
+        "copy": "local/native_resource_reader_owner_bp/bsp_zlib121.lib",
+        "source_before": "73ae30b8adc3adfe5b33285bac533f8e7df7e8ab8d9e44789e6a030fd8a06ad9",
+        "copy_sha256": "73ae30b8adc3adfe5b33285bac533f8e7df7e8ab8d9e44789e6a030fd8a06ad9",
+        "source_after": "73ae30b8adc3adfe5b33285bac533f8e7df7e8ab8d9e44789e6a030fd8a06ad9"
+      }
+    ],
+    "retained_artifacts": [
+      {
+        "path": "local/native_resource_reader_owner_bp/audit.py",
+        "bytes": 18888,
+        "sha256": "82b171c60c66245c9d477c59fa311e12523fcc0524f9c456e19f7ded121e031f"
+      },
+      {
+        "path": "local/native_resource_reader_owner_bp/compile.cmd",
+        "bytes": 929,
+        "sha256": "0c19fa925f0ae0dbf502a52bcf482d49b47335315f5a662fb8b8144658cbb39b"
+      },
+      {
+        "path": "local/native_resource_reader_owner_bp/compile.txt",
+        "bytes": 45,
+        "sha256": "214251bdd4f905aca1b617efcbc2ed6afd459c55fb0812e51378e242b2f731fc"
+      },
+      {
+        "path": "local/native_resource_reader_owner_bp/native_resource_reader_owner.obj",
+        "bytes": 8533,
+        "sha256": "5f114e21fb5dd53098bafb8958ccc7000bc34a3209a2b64d6ea2b3a1e51613c3"
+      },
+      {
+        "path": "local/native_resource_reader_owner_bp/probe.cpp",
+        "bytes": 6765,
+        "sha256": "37ddaa08cf8f49687fc5334585694566c62c0510a3d48072b6781335cbbcac21"
+      },
+      {
+        "path": "local/native_resource_reader_owner_bp/probe.obj",
+        "bytes": 73223,
+        "sha256": "006994e47862bcd7d007129a3f8f10eb9bbd5c463598f6c1183177e81aa2974f"
+      },
+      {
+        "path": "local/native_resource_reader_owner_bp/probe.exe",
+        "bytes": 118272,
+        "sha256": "0d13bcca04c3a16d919c97fe918253082ae16d6d23890d14273ce9c6a5ce5019"
+      },
+      {
+        "path": "local/native_resource_reader_owner_bp/probe.txt",
+        "bytes": 185,
+        "sha256": "56ab32b843896c70fba27e9917ed407a6f746bc36fd96a2634b9209cddd40400"
+      },
+      {
+        "path": "local/native_resource_reader_owner_bp/flow.txt",
+        "bytes": 402,
+        "sha256": "d204bdad249ad06d280f2527b58bc7ceecd7b62e673a547abc4a9cbe40b31c98"
+      },
+      {
+        "path": "local/native_resource_reader_owner_bp/proto.txt",
+        "bytes": 654,
+        "sha256": "f8ab9ca85a45de1b99f5e96d5bf1ca2879881d7c055e54cd26d9e55a170b9573"
+      },
+      {
+        "path": "local/native_resource_reader_owner_bp/eh_gap_owners.txt",
+        "bytes": 161,
+        "sha256": "2f71ce5b2243066d9e21a7f8e29d76b9658f261a5bbf5d9c2fc73947fa3cd017"
+      },
+      {
+        "path": "local/native_resource_reader_owner_bp/framehandler_callees.txt",
+        "bytes": 39,
+        "sha256": "15d46ec50e7010881d5d12d13fd8667fa2ba62de4f61e5f079c08be50fd33893"
+      },
+      {
+        "path": "local/native_resource_reader_owner_bp/internal_framehandler_callees.txt",
+        "bytes": 79,
+        "sha256": "2b5fde8ab191c079d34608673681b1c1cdd9a5cdc9413193fc09720915896798"
+      },
+      {
+        "path": "local/native_resource_reader_owner_bp/library_bo_freeze.json",
+        "bytes": 428,
+        "sha256": "3e6851030c05f77589b4b27621d4ce7daceb5860c143753efdf10ad2931a68c5"
+      },
+      {
+        "path": "local/native_resource_reader_owner_bp/support_libraries.json",
+        "bytes": 929,
+        "sha256": "21e0094a17bc1e75f09385bb3c8f36e15b4a902da7a66cbecdd696725e3c756b"
+      }
+    ],
+    "whole_report_verifier": "pending;31 function-owned direct CALLs,4 owned tail JMPs,6 indirect rows and9 separately classified decoded-only transfers",
+    "repository_build": "Worker TU unregistered; primary owns combined build",
+    "native_binary_abi_compatible": false,
+    "original_body_differential_tested": false,
+    "game_validated": false
+  },
+  "limits": [
+    "No original CRT/FH3 identity or native ProcessingThrow/CLR bookkeeping replacement",
+    "Valid live backing required through ordinary and cleanup accesses; no arbitrary native-stack alias, hardware-fault, concurrent-mutation or gameplay proof",
+    "No stream owner policy replacement, reader root/node parsing, production runtime/CMake/shared metadata",
+    "Descriptive names are hypotheses; incomplete Ghidra prototypes are corrected by listing contracts, not mutated"
+  ],
+  "ghidra_mutations": [],
+  "owned_files": [
+    "include/bsp/native_resource_reader_owner.hpp",
+    "src/native_resource_reader_owner.cpp",
+    "docs/NATIVE_RESOURCE_READER_OWNER_BP.md",
+    "reports/native_resource_reader_owner_bp.json"
+  ],
+  "primary_integration": {
+    "recovered_from_uncommitted_worker_draft": true,
+    "worker_stopped": "usage limit",
+    "originals_preserved": true,
+    "artifact_checks": 65,
+    "normal_fixture_rerun": "passed",
+    "handler_definitions": "reports/native_loading_owners_definitions_bp.json",
+    "buffer_destructor_membership": "reports/native_loading_owners_flow_bp.json",
+    "note": "BF0980 all 10 instructions now owned through BF0996; three handlers defined and tail transfers promoted. Six CRT-support decoded transfers remain separate. Original worker body-end and verifier observations are pre-integration evidence."
+  }
+}
