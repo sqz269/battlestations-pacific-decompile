@@ -104,6 +104,9 @@ void finish_node(NativeModelOwner& owner) {
         if (owner.environment.actual_names)
             destroy_native_node_00b6f440(owner.environment.nodes, owner.node,
                 *owner.environment.actual_names);
+        else if (owner.environment.nodes.uses_raw_name_pool())
+            destroy_native_node_00b6f440(owner.environment.nodes, owner.node,
+                owner.environment.nodes.require_raw_name_pool());
         else
             destroy_native_node_00b6f440(owner.environment.nodes, owner.node);
     } catch (...) {

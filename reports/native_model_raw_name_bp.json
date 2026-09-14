@@ -2,7 +2,7 @@
   "packet": "orch3_model_raw_name_bp",
   "created_utc": "2026-09-14T05:44:25.964350+00:00",
   "base_commit": "7390b7b8dc204cb41b860b0ceacb3823da98ac57",
-  "status": "source_extension_combined_build_pending",
+  "status": "raw_cleanup_dispatch_corrected_combined_build_pending",
   "native_body_credit": 0,
   "native_bytes_credit": 0,
   "routine": {
@@ -23,7 +23,7 @@
   },
   "source_sha256": {
     "include/bsp/native_model_owner.hpp": "7bb75bca29ed440709040ce34b217bb9a760741d971d8b6b2fdeb8b77201f47e",
-    "src/native_model_owner.cpp": "dbf4b654edfd6fba6a674953c78722addc46643dbfcf5888b1fe2dbfe2009d79",
+    "src/native_model_owner.cpp": "abe4817fd6ca9049f720a50e5c5c9a2041112f634dee73b2c4f2a94d4077886a",
     "include/bsp/native_node_construction.hpp": "977424218edef9f6eefdafb9463b1ef5be11a4f61554eecca37a7d823b3c7098",
     "src/native_node_construction.cpp": "87a73019511d3575aa0887a4964a2a8703a5248106fdcff2eddfbb424918dd35",
     "include/bsp/native_node_destruction.hpp": "bd525ac65ff936736cbf5a02bd7b31e12c326ae5ec624c9685315dbcc116c833",
@@ -61,5 +61,25 @@
     "Direct raw cleanup can propagate C++ failures; this source routing change does not establish original native exception equivalence.",
     "Historical model native-byte fixture evidence applies to its recorded interface/domain, not automatically to this raw overload.",
     "Prefix43C130 inherited nonthrowing nested-cleanup admission remains separate. No parent-constructor/gameplay proof."
-  ]
+  ],
+  "affected_existing_lifetime_entries": [
+    "00b750c0",
+    "00b75290"
+  ],
+  "initial_validation_attempt": {
+    "tested_commit": "54c34b9d59e29460d335649d76c76c89f03ffea7",
+    "build_passed": true,
+    "ctests_passed": 2,
+    "source_probe_passed": false,
+    "failure": "Construction returned; deletion selected semantic runtime accessor and terminated because runtime was raw.",
+    "initial_exit": "0xc0000409",
+    "diagnostic_exit": 91,
+    "diagnostic": "native node runtime requires semantic name domain",
+    "correction": "finish_node now dispatches explicitly to raw destroy_native_node when raw runtime is selected, preserving actual_names adapter precedence and semantic fallback.",
+    "logs": [
+      "local/bp-model-raw-probe/run.log",
+      "local/bp-model-raw-probe/first-run-result.json",
+      "local/bp-model-raw-probe/diagnostic-run-2.log"
+    ]
+  }
 }
