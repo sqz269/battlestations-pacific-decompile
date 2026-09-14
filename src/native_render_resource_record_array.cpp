@@ -2,6 +2,7 @@
 
 #include "bsp/native_render_resource_record_construction.hpp"
 #include "bsp/native_string.hpp"
+#include "bsp/native_string_pool_storage.hpp"
 #include "bsp/singleton_lifetime.hpp"
 
 #include <cstring>
@@ -72,9 +73,12 @@ void reserve_native_render_resource_record_array_00b2ff00(
     field<std::uint32_t>(actual_header, 8) = requested_capacity;
 }
 
-void resize_native_render_resource_record_array_00b30340(
+namespace {
+template<class Pool>
+void resize_records(
     void* actual_header, std::uint32_t requested_count,
-    SizedStoragePool& actual_string_pool, const SingletonLifetimeCallbacks& callbacks) {
+    Pool& actual_string_pool, NativeStringStorage& storage,
+    const SingletonLifetimeCallbacks& callbacks) {
     if (signed_bits(requested_count) > signed_bits(field<std::uint32_t>(actual_header, 8)))
         reserve_native_render_resource_record_array_00b2ff00(
             actual_header, requested_count, actual_string_pool, callbacks);
@@ -87,7 +91,6 @@ void resize_native_render_resource_record_array_00b30340(
             volatile auto* const current = record;
             current->name_length_00 = 0;
             current->name_data_04 = nullptr;
-            PooledStringStorage storage(actual_string_pool);
             try { // State 1 at B3039B, after both empty-name stores.
                 auto* const sentinel = allocate_native_render_alias_sentinel_004c3020();
                 current->sentinel_0c = sentinel;
@@ -111,6 +114,20 @@ void resize_native_render_resource_record_array_00b30340(
         destroy_native_render_resource_record_00b2f990(*record, actual_string_pool);
     }
     field<std::uint32_t>(actual_header, 4) = requested_count;
+}
+} // namespace
+
+void resize_native_render_resource_record_array_00b30340(
+    void* actual_header, std::uint32_t requested_count,
+    SizedStoragePool& actual_string_pool, const SingletonLifetimeCallbacks& callbacks) {
+    PooledStringStorage storage(actual_string_pool);
+    resize_records(actual_header, requested_count, actual_string_pool, storage, callbacks);
+}
+
+void resize_native_render_resource_record_array_00b30340(
+    void* actual_header, std::uint32_t requested_count,
+    ActualNativeStringPoolStorage& actual_string_pool, const SingletonLifetimeCallbacks& callbacks) {
+    resize_records(actual_header, requested_count, actual_string_pool, actual_string_pool, callbacks);
 }
 
 
