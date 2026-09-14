@@ -187,3 +187,7 @@ host cache, projected vector, typed model or invented completion protocol.
 
 No C++ change, build, fixture, executable invocation, tests, source registration,
 ledger update, Ghidra mutation or game-state change was performed in BN.
+
+## Primary call-row correction
+
+The whole-report verifier also examines the separately recorded EH/tail edges. Eight JMP rows now explicitly declare tail transfers, and four unwind rows identify their separate native funclets. The rethrow at B7F722 remains decoded-only because it has no function membership; its bytes/target and unresolved repair are preserved. The original worker report is retained as a hashed local preimage. These are evidence-schema corrections; no source behavior or Ghidra body changed.

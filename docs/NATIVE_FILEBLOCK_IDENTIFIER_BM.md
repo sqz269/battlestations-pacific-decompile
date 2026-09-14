@@ -106,3 +106,7 @@ existing dependency allocation/overlap domain are required; arbitrary stack
 aliases, hardware faults and exact FH3/SEH identity are unverified. The primary
 integrator owns CMake/runtime wiring and repository-wide build checks. No game
 execution, complete FileBlock lifetime binding or gameplay validation is claimed.
+
+## Primary integration correction
+
+Registered and built with both existing tests passing; see [BM integration](NATIVE_FILEBLOCK_INTEGRATION_BM.md) for exact source/build revisions and evidence. Primary saved reviewed names, original ABI views and preserved comments, defined the packet FH3 handlers, and refreshed exports. The BDF950 and BDAF40 reachable returning-free membership holes are repaired; earlier worker observations remain historical evidence. Fixture dependency libraries remain pinned to the earlier BL build. No new gameplay or native FH3 identity claim is made.

@@ -119,3 +119,7 @@ No permanent tests were added. No Ghidra writes, metadata edits, CMake edits or
 full integration build were performed in this worker packet; primary owns
 those actions. This is reconstructed, strict-TU-compiled and source-fixture-
 tested evidence, not a complete native ABI, original-executable or game result.
+
+## Primary integration correction
+
+Registered and built with both existing tests passing; see [BM integration](NATIVE_FILEBLOCK_INTEGRATION_BM.md) for exact source/build revisions and evidence. Primary saved reviewed names, original ABI views and preserved comments, defined the packet FH3 handlers, and refreshed exports. The BDF950 and BDAF40 reachable returning-free membership holes are repaired; earlier worker observations remain historical evidence. Fixture dependency libraries remain pinned to the earlier BL build. No new gameplay or native FH3 identity claim is made.

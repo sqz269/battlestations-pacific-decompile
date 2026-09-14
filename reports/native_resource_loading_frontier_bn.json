@@ -1737,21 +1737,24 @@
       "function": "00b7cdf0",
       "bytes": "e9 fb 98 07 00",
       "instruction": "jmp 0xbf6713",
-      "native": "00bf6713"
+      "native": "00bf6713",
+      "kind": "tail_jump"
     },
     {
       "address": "00b7ce6f",
       "function": "00b7cdf0",
       "bytes": "e9 9f 98 07 00",
       "instruction": "jmp 0xbf6713",
-      "native": "00bf6713"
+      "native": "00bf6713",
+      "kind": "tail_jump"
     },
     {
       "address": "0071886b",
       "function": "00718810",
       "bytes": "e9 c0 fb 46 00",
       "instruction": "jmp 0xb88430",
-      "native": "00b88430"
+      "native": "00b88430",
+      "kind": "tail_jump"
     },
     {
       "address": "00cc2176",
@@ -1759,39 +1762,44 @@
       "native": "0041dd20",
       "bytes": "e9 a5 bb 75 ff",
       "instruction": "jmp 0x41dd20",
-      "scope": "B80720 direct unwind actions"
+      "scope": "B80720 direct unwind actions",
+      "kind": "tail_jump"
     },
     {
       "address": "00cc217e",
-      "function": "00cc2170",
+      "function": "00cc217b",
       "native": "00be9f10",
       "bytes": "e9 8d 7d f2 ff",
       "instruction": "jmp 0xbe9f10",
-      "scope": "B80720 direct unwind actions"
+      "scope": "B80720 direct unwind actions",
+      "kind": "tail_jump"
     },
     {
       "address": "00cc2189",
-      "function": "00cc2170",
+      "function": "00cc2183",
       "native": "00be9ed0",
       "bytes": "e9 42 7d f2 ff",
       "instruction": "jmp 0xbe9ed0",
-      "scope": "B80720 direct unwind actions"
+      "scope": "B80720 direct unwind actions",
+      "kind": "tail_jump"
     },
     {
       "address": "00cc2194",
-      "function": "00cc2170",
+      "function": "00cc218e",
       "native": "00b7e8f0",
       "bytes": "e9 57 c7 eb ff",
       "instruction": "jmp 0xb7e8f0",
-      "scope": "B80720 direct unwind actions"
+      "scope": "B80720 direct unwind actions",
+      "kind": "tail_jump"
     },
     {
       "address": "00cc219f",
-      "function": "00cc2170",
+      "function": "00cc2199",
       "native": "00b7e910",
       "bytes": "e9 6c c7 eb ff",
       "instruction": "jmp 0xb7e910",
-      "scope": "B80720 direct unwind actions"
+      "scope": "B80720 direct unwind actions",
+      "kind": "tail_jump"
     },
     {
       "address": "00cc20d8",
@@ -1810,12 +1818,13 @@
       "scope": "node catch captured outer free then rethrow, including decoded continuation"
     },
     {
-      "address": "00b7f722",
       "function": "00b7f712",
-      "native": "00bf6885",
       "bytes": "e8 5e 71 07 00",
       "instruction": "call 0xbf6885",
-      "scope": "node catch captured outer free then rethrow, including decoded continuation"
+      "scope": "node catch captured outer free then rethrow, including decoded continuation",
+      "instruction_address": "00b7f722",
+      "decoded_target": "00bf6885",
+      "verification_scope": "Installed/live instruction bytes and decoded transfer only; no Ghidra function membership. Excluded from function-owned call-row count pending coordinated catch repair."
     }
   ],
   "data_and_eh_spans": [
@@ -2689,5 +2698,20 @@
     "packets_dispatched": false,
     "game_validated": false
   },
-  "doc_sha256": "53deca0bc3615d86d073f47cda3c57395e0d8522b7ba17a7be62577ff9f31d9f"
+  "doc_sha256": "53deca0bc3615d86d073f47cda3c57395e0d8522b7ba17a7be62577ff9f31d9f",
+  "primary_schema_correction": {
+    "worker_preimage": "local/native_resource_frontier_bn_worker_preimage.json",
+    "sha256": "5db390c3ddbe0e38d4d2ecd0e9afad1fce43ad00b4ab0a8de638de31fb7a3960",
+    "original_whole_report_check": {
+      "rows": 152,
+      "failed": 9
+    },
+    "changes": [
+      "Mark eight recorded JMP instructions as tail_jump.",
+      "Attribute four unwind actions to their actual separate Ghidra funclets.",
+      "Retain the unowned B7F722 rethrow as decoded-only evidence, not a verified function-owned call."
+    ],
+    "source_behavior_changed": false,
+    "ghidra_changed": false
+  }
 }

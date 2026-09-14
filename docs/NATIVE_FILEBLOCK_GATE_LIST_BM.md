@@ -105,3 +105,7 @@ needed. Its hooks are inspection instrumentation, not production dependencies.
 No permanent tests or CMake entries were added. Full registered build/CTest,
 production composition, native exception ABI, and game validation remain with
 the integrator. This is source-, TU-build-, and fixture-verified helper coverage.
+
+## Primary integration correction
+
+Registered and built with both existing tests passing; see [BM integration](NATIVE_FILEBLOCK_INTEGRATION_BM.md) for exact source/build revisions and evidence. Primary saved reviewed names, original ABI views and preserved comments, defined the packet FH3 handlers, and refreshed exports. The BDF950 and BDAF40 reachable returning-free membership holes are repaired; earlier worker observations remain historical evidence. Fixture dependency libraries remain pinned to the earlier BL build. No new gameplay or native FH3 identity claim is made.
