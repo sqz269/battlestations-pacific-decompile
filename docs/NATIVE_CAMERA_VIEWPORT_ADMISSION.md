@@ -42,9 +42,7 @@ CC1AD8(next0), CC1AE3(next0). Their listings show node cleanup, saved raw
 viewport free, and +438 release respectively. Registration is additional host
 bookkeeping; no new call is attributed to the original binary.
 
-Independent design: `docs/NATIVE_CAMERA_VIEWPORT_ADMISSION_BI.md`. Successful
-native/source comparison and focused source-side early/late failure verification
-are pending against the exact combined source. No repository test is added.
+Independent design: `docs/NATIVE_CAMERA_VIEWPORT_ADMISSION_BI.md`. Exact combined source `b811585de88e3bf9a4f7f7bb8d5d15484dda8ae0` passed the strict Win32 build, both existing CTests, eight seed checks, the successful native/source comparison, and focused source-side early/late failure checks. Independent source and fixture reviews found no issues. See `reports/native_camera_viewport_admission_bi_validation.json` for hashes, scope and immutable evidence. No repository test is added.
 Original FH3/SEH exception identity, replacement ABI and game execution remain
 unproved. The installed-registry, serialized-mutation, stable-record and live
 native-borrow contracts remain in force. Independent prepared constructions may
