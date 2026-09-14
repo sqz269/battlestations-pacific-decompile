@@ -1,0 +1,82 @@
+{
+  "batch": "orch4_native_resource_node_traversal_integration_bt",
+  "state": "source_fixture_and_initial_build_passed_combined_revision_pending",
+  "branch": "agent/orch4-20260910",
+  "base_revision": "7c43760ce89b5483ad327416eca39bc05e60bdbf",
+  "code_revision": null,
+  "packets": [
+    {
+      "packet": "orch4_native_resource_node_traversal_bt",
+      "report": "reports/native_resource_node_traversal_bt.json",
+      "routines": 7,
+      "ordinary_bytes": 582
+    }
+  ],
+  "new_ordinary_routines": 7,
+  "new_ordinary_bytes": 582,
+  "ordinary_instruction_starts": 203,
+  "support_instruction_starts": 16,
+  "direct_transfer_rows": 18,
+  "indirect_calls": 2,
+  "incoming_main_review": {
+    "pinned_revision": "a1ea289c63eb30ba637af4338bba1953637397ef",
+    "scope": "Actual unit-part storage allocation/cleanup and concrete constructor defaults; correction to stale script-order diagnostic text.",
+    "observations": "Incoming code is disjoint from BT dependencies. Storage report explicitly retains three incomplete Ghidra body memberships and source private-stack/FH3/fault limits. Selected-set and final-entry providers remain open. Its native fixture and 120-frame compatibility claims were reviewed as borrowed evidence, not independently rerun by this integrator.",
+    "independently_rerun": false,
+    "combined_build": "pending"
+  },
+  "validation": {
+    "strict_msvc_win32": "passed",
+    "actual_service_fixture": "passed",
+    "source_exception_fixture": "one injected source exception passed",
+    "all_18_direct_transfer_rows": "passed",
+    "all_219_instruction_owners": "passed",
+    "prior_ghidra_comments": "verified preserved for13 functions",
+    "duplicate_header_definitions": "passed",
+    "primary_win32_build": "passed",
+    "existing_ctests_passed": 2,
+    "original_body_oracle": false,
+    "native_fh3_exception_fixture": false,
+    "native_binary_abi_compatible": false,
+    "production_resource_load_bound": false,
+    "game_validated": false
+  },
+  "initial_build": {
+    "log": {
+      "path": "local/native_resource_node_traversal_bt/build.log",
+      "sha256": "3a6466d392fb9a0dd5e85e66326d1414df6fd1e4c9d61e5ed1fa4bd0233de589",
+      "bytes": 2498
+    },
+    "core_sha256": "39e2db1a9ddb52619cb1aac25c26b571eb0602792862db958380751961f0d171",
+    "game_sha256": "6af802cdafab7827061e7af795adb05edcd22176c0ed07951013645c3c5c55fc"
+  },
+  "evidence": [
+    {
+      "path": "reports/native_resource_node_traversal_bt.json",
+      "sha256": "2fa21ac349bd0f14d239ef98335f5eb88b413e51f34f5f98ef49811742ab8deb",
+      "bytes": 40736
+    },
+    {
+      "path": "reports/native_resource_node_traversal_flow_bt.json",
+      "sha256": "7cc6b0dfc7931b41b207b78b69efc07e89484af25a66e8547c02a289689b9f38",
+      "bytes": 5879
+    },
+    {
+      "path": "reports/native_resource_node_traversal_definitions_bt.json",
+      "sha256": "96e3095e0c6a75c06a72013ee93b20e3dea9886658e23b1fa14d2460a701b633",
+      "bytes": 3416
+    },
+    {
+      "path": "reports/native_resource_node_traversal_annotations_bt.json",
+      "sha256": "898d079d3dfce05eabb5aca728dac2f3e364c3c6f7557a1097f63eec0ddae462",
+      "bytes": 91601
+    }
+  ],
+  "source_manifest": null,
+  "limitations": [
+    "New C++ interfaces; original private stack/EH-spill aliases, native CRT/FH3/SEH and hardware faults unproved.",
+    "Fixture uses concrete existing memory-stream/pool/reader/root/ref services; two forwarding mutation hooks and one source exception injection are not native original-body oracles.",
+    "Allocation-null, path-copy failure and secondary-cleanup termination paths were inspected but not exercised.",
+    "Raw root/item/hierarchy dispatch, manager/factory/parser owners, B80720 loading and queue/worker shutdown remain incomplete."
+  ]
+}

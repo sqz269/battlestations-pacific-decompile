@@ -1,0 +1,616 @@
+{
+  "source_functions": [
+    {
+      "address": "00bea250",
+      "function": "construct_native_resource_child_00bea250",
+      "source": "src/native_resource_node_traversal.cpp",
+      "report": "reports/native_resource_node_traversal_bt.json",
+      "original_abi": "ECX actual24h node; stacked parent node; EAX node; RET4",
+      "bytes": 300
+    },
+    {
+      "address": "00bea680",
+      "function": "create_native_resource_child_00bea680",
+      "source": "src/native_resource_node_traversal.cpp",
+      "report": "reports/native_resource_node_traversal_bt.json",
+      "original_abi": "ECX parent handle; stacked output handle; EAX output; RET4",
+      "bytes": 121
+    },
+    {
+      "address": "00bf02a0",
+      "function": "read_native_resource_control_dword_00bf02a0",
+      "source": "src/native_resource_node_traversal.cpp",
+      "report": "reports/native_resource_node_traversal_bt.json",
+      "original_abi": "ECX reader; stacked budget; EAX DWORD; RET4",
+      "bytes": 27
+    },
+    {
+      "address": "00bf03e0",
+      "function": "seek_native_resource_relative_00bf03e0",
+      "source": "src/native_resource_node_traversal.cpp",
+      "report": "reports/native_resource_node_traversal_bt.json",
+      "original_abi": "ECX reader; stacked low offset and ignored pointer; forwarded EAX; RET8",
+      "bytes": 21
+    },
+    {
+      "address": "00be9a40",
+      "function": "read_native_resource_node_control_00be9a40",
+      "source": "src/native_resource_node_traversal.cpp",
+      "report": "reports/native_resource_node_traversal_bt.json",
+      "original_abi": "ECX node handle; plain RET; no semantic return",
+      "bytes": 22
+    },
+    {
+      "address": "00be9c40",
+      "function": "skip_native_resource_node_00be9c40",
+      "source": "src/native_resource_node_traversal.cpp",
+      "report": "reports/native_resource_node_traversal_bt.json",
+      "original_abi": "ECX node handle; plain RET; no semantic return",
+      "bytes": 70
+    },
+    {
+      "address": "00715bf0",
+      "function": "native_resource_node_has_remaining_00715bf0",
+      "source": "src/native_resource_node_traversal.cpp",
+      "report": "reports/native_resource_node_traversal_bt.json",
+      "original_abi": "ECX node handle; EAX boolean0/1; plain RET",
+      "bytes": 21
+    }
+  ],
+  "entries": [
+    {
+      "address": "00bea250",
+      "name": "BSP_StructuredNode_ConstructChild",
+      "before_comment": {
+        "address": "00bea250",
+        "function_name": "BSP_StructuredNode_ConstructChild",
+        "comment": "[BSP reconstruction 00bea250]\nBSP reconstruction hypothesis: Initialize ref1, raw shared reader and parent, depth parent+1; debit tag and length actual header counts from parent remaining; set own declared and remaining payload; append copied path tag without guard. ABI: ECX new node; stack parent node; EAX node; RET4. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json. Original ABI: ECX new node; stack parent node; EAX node; RET4. Evidence: docs/STRUCTURED_READER.md; reports/structured_reader_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\n\n[BSP reconstruction 00bea250] update\nBSP reconstruction hypothesis: Initialize ref1, raw shared reader and parent, depth parent+1; debit tag and length actual header counts from parent remaining; set own declared and remaining payload; append copied path tag without guard. ABI: ECX new node; stack parent node; EAX node; RET4. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json. Original ABI: ECX new node; stack parent node; EAX node; RET4. Evidence: docs/STRUCTURED_READER.md; reports/structured_reader_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation. | BI/BK reviewed source evidence: Complete300B: ECX writable24h/36-byte raw node, stacked parent, EAX node, RET4. Base/refcount/profile/reader/parent/name/depth schedule; real BF0510 debit then temporary-to-name copy. Capture temporary fields and disarm state2 before real pool getter/return. BF0280 payload publishes declared then remaining; captured reader path index increments BEFORE path-name resize/copy. Unwind armed temporary then node name then BD30F0; no BE9DF0 or budget/path rollback. Removed invented temporary initialization: BEA296 is EH state0; provider writes both output words before normal return. Caller supplies valid initialized path headers. In-place source only; BEA680 allocation, original heap/error ownership, FH3/native ABI/gameplay remain open. See reports/native_raw_node_construction_bj.json. Worker builds and source probes are retained separately; corrected combined candidate validation is pending. Descriptive names are hypotheses, not recovered symbols."
+      },
+      "evidence": "BT actual resource child traversal. Seven complete ordinary bodies total582bytes; all203 ordinary and16 supporting instruction starts match installed PE and live Ghidra ownership. Strict Win32 compile, full build and both tests passed. One actual memory-stream/pool/reader/root/ref fixture passed nested traversal/control/skip/detach, two forwarding-call mutation checks and one injected source exception after an actual payload-header read. Current scalar slot38 debits actual with wrapping; control stores to captured reader while skip reloads current reader after seek. Child FH3 maps establish source cleanup order and preserve prior header debits. Original stack/EH spill aliases, native CRT/FH3/SEH identity, hardware faults and binary ABI remain unproved. No native original-body oracle or gameplay run. Raw resource dispatch, manager/factory/parser owners, B80720 and queue/worker shutdown remain incomplete. Names are descriptive hypotheses; prior comments and correct compiler names retained. See docs/NATIVE_RESOURCE_NODE_TRAVERSAL_INTEGRATION_BT.md and reports/native_resource_node_traversal_bt.json. Full ordinary span 300 bytes; ECX actual24h node; stacked parent node; EAX node; RET4; reports/native_resource_node_traversal_bt.json. Reacquire parent and reader across calls. First tag copy reads destination data before source data; final path copy reads source before destination. Publish path index before copy; no rollback/guards/retains.",
+      "before_documentation": {
+        "hash": "55ebdf6ecc5cb962838e2e4fa2d88b5ed44998b20b65a4e6d09281c591496ee9",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00bea250",
+        "function_name": "BSP_StructuredNode_ConstructChild",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00bea250]\nBSP reconstruction hypothesis: Initialize ref1, raw shared reader and parent, depth parent+1; debit tag and length actual header counts from parent remaining; set own declared and remaining payload; append copied path tag without guard. ABI: ECX new node; stack parent node; EAX node; RET4. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json. Original ABI: ECX new node; stack parent node; EAX node; RET4. Evidence: docs/STRUCTURED_READER.md; reports/structured_reader_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\n\n[BSP reconstruction 00bea250] update\nBSP reconstruction hypothesis: Initialize ref1, raw shared reader and parent, depth parent+1; debit tag and length actual header counts from parent remaining; set own declared and remaining payload; append copied path tag without guard. ABI: ECX new node; stack parent node; EAX node; RET4. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json. Original ABI: ECX new node; stack parent node; EAX node; RET4. Evidence: docs/STRUCTURED_READER.md; reports/structured_reader_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation. | BI/BK reviewed source evidence: Complete300B: ECX writable24h/36-byte raw node, stacked parent, EAX node, RET4. Base/refcount/profile/reader/parent/name/depth schedule; real BF0510 debit then temporary-to-name copy. Capture temporary fields and disarm state2 before real pool getter/return. BF0280 payload publishes declared then remaining; captured reader path index increments BEFORE path-name resize/copy. Unwind armed temporary then node name then BD30F0; no BE9DF0 or budget/path rollback. Removed invented temporary initialization: BEA296 is EH state0; provider writes both output words before normal return. Caller supplies valid initialized path headers. In-place source only; BEA680 allocation, original heap/error ownership, FH3/native ABI/gameplay remain open. See reports/native_raw_node_construction_bj.json. Worker builds and source probes are retained separately; corrected combined candidate validation is pending. Descriptive names are hypotheses, not recovered symbols.",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "local_14",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffec, 4)"
+          },
+          {
+            "name": "local_10",
+            "type": "int",
+            "storage": "(stack, 0xfffffffffffffff0, 4)"
+          },
+          {
+            "name": "local_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "local_4",
+            "type": "undefined1",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "uStack_3",
+            "type": "undefined3",
+            "storage": "(stack, 0xfffffffffffffffd, 3)"
+          },
+          {
+            "name": "pcStack_8",
+            "type": "undefined *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "puVar1",
+            "type": "uint *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "this",
+            "type": "uint *",
+            "storage": "(unique, 0x6600, 4)"
+          },
+          {
+            "name": "uVar4",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffd8, 4)"
+          },
+          {
+            "name": "uVar3",
+            "type": "uint",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "iVar2",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 162,
+            "name": "LAB_00bea2f2"
+          },
+          {
+            "relative_offset": 198,
+            "name": "LAB_00bea316"
+          },
+          {
+            "relative_offset": 278,
+            "name": "LAB_00bea366"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "prototype": "void* __fastcall BSP_StructuredNode_ConstructChild(void* node, void* unused_edx, void* parent)",
+      "prototype_result": "Successfully set prototype for function at 00bea250 with __fastcall calling convention",
+      "ledger_name_output": "00bea250 -> BSP_StructuredNode_ConstructChild\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00bea250\", \"name\": \"BSP_StructuredNode_ConstructChild\", \"evidence\": \"BSP reconstruction hypothesis: Initialize ref1, raw shared reader and parent, depth parent+1; debit tag and length actual header counts from parent remaining; set own declared and remaining payload; append copied path tag without guard. ABI: ECX new node; stack parent node; EAX node; RET4. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json. Original ABI: ECX new node; stack parent node; EAX node; RET4. Evidence: docs/STRUCTURED_READER.md; reports/structured_reader_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\"})\n",
+      "ledger_function_output": "00bea250 function construct_native_resource_child_00bea250\n",
+      "prior_comment_preservation_checked": true,
+      "after_comment": {
+        "address": "00bea250",
+        "function_name": "BSP_StructuredNode_ConstructChild",
+        "comment": "[BSP reconstruction 00bea250]\nBSP reconstruction hypothesis: Initialize ref1, raw shared reader and parent, depth parent+1; debit tag and length actual header counts from parent remaining; set own declared and remaining payload; append copied path tag without guard. ABI: ECX new node; stack parent node; EAX node; RET4. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json. Original ABI: ECX new node; stack parent node; EAX node; RET4. Evidence: docs/STRUCTURED_READER.md; reports/structured_reader_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\n\n[BSP reconstruction 00bea250] update\nBSP reconstruction hypothesis: Initialize ref1, raw shared reader and parent, depth parent+1; debit tag and length actual header counts from parent remaining; set own declared and remaining payload; append copied path tag without guard. ABI: ECX new node; stack parent node; EAX node; RET4. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json. Original ABI: ECX new node; stack parent node; EAX node; RET4. Evidence: docs/STRUCTURED_READER.md; reports/structured_reader_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation. | BI/BK reviewed source evidence: Complete300B: ECX writable24h/36-byte raw node, stacked parent, EAX node, RET4. Base/refcount/profile/reader/parent/name/depth schedule; real BF0510 debit then temporary-to-name copy. Capture temporary fields and disarm state2 before real pool getter/return. BF0280 payload publishes declared then remaining; captured reader path index increments BEFORE path-name resize/copy. Unwind armed temporary then node name then BD30F0; no BE9DF0 or budget/path rollback. Removed invented temporary initialization: BEA296 is EH state0; provider writes both output words before normal return. Caller supplies valid initialized path headers. In-place source only; BEA680 allocation, original heap/error ownership, FH3/native ABI/gameplay remain open. See reports/native_raw_node_construction_bj.json. Worker builds and source probes are retained separately; corrected combined candidate validation is pending. Descriptive names are hypotheses, not recovered symbols.\n\n[BSP reconstruction 00bea250] update\nBT actual resource child traversal. Seven complete ordinary bodies total582bytes; all203 ordinary and16 supporting instruction starts match installed PE and live Ghidra ownership. Strict Win32 compile, full build and both tests passed. One actual memory-stream/pool/reader/root/ref fixture passed nested traversal/control/skip/detach, two forwarding-call mutation checks and one injected source exception after an actual payload-header read. Current scalar slot38 debits actual with wrapping; control stores to captured reader while skip reloads current reader after seek. Child FH3 maps establish source cleanup order and preserve prior header debits. Original stack/EH spill aliases, native CRT/FH3/SEH identity, hardware faults and binary ABI remain unproved. No native original-body oracle or gameplay run. Raw resource dispatch, manager/factory/parser owners, B80720 and queue/worker shutdown remain incomplete. Names are descriptive hypotheses; prior comments and correct compiler names retained. See docs/NATIVE_RESOURCE_NODE_TRAVERSAL_INTEGRATION_BT.md and reports/native_resource_node_traversal_bt.json. Full ordinary span 300 bytes; ECX actual24h node; stacked parent node; EAX node; RET4; reports/native_resource_node_traversal_bt.json. Reacquire parent and reader across calls. First tag copy reads destination data before source data; final path copy reads source before destination. Publish path index before copy; no rollback/guards/retains."
+      }
+    },
+    {
+      "address": "00bea680",
+      "name": "BSP_StructuredNode_CreateChild",
+      "before_comment": {
+        "address": "00bea680",
+        "function_name": "BSP_StructuredNode_CreateChild",
+        "comment": "[BSP reconstruction 00bea680]\nBSP reconstruction hypothesis: Allocate24h and call00bea250 with dereferenced parent; write null output on null allocation. No parent or remaining check. ABI: ECX parent wrapper; stack output wrapper; EAX output wrapper; RET4. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json. Original ABI: ECX parent wrapper; stack output wrapper; EAX output wrapper; RET4. Evidence: docs/STRUCTURED_READER.md; reports/structured_reader_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation."
+      },
+      "evidence": "BT actual resource child traversal. Seven complete ordinary bodies total582bytes; all203 ordinary and16 supporting instruction starts match installed PE and live Ghidra ownership. Strict Win32 compile, full build and both tests passed. One actual memory-stream/pool/reader/root/ref fixture passed nested traversal/control/skip/detach, two forwarding-call mutation checks and one injected source exception after an actual payload-header read. Current scalar slot38 debits actual with wrapping; control stores to captured reader while skip reloads current reader after seek. Child FH3 maps establish source cleanup order and preserve prior header debits. Original stack/EH spill aliases, native CRT/FH3/SEH identity, hardware faults and binary ABI remain unproved. No native original-body oracle or gameplay run. Raw resource dispatch, manager/factory/parser owners, B80720 and queue/worker shutdown remain incomplete. Names are descriptive hypotheses; prior comments and correct compiler names retained. See docs/NATIVE_RESOURCE_NODE_TRAVERSAL_INTEGRATION_BT.md and reports/native_resource_node_traversal_bt.json. Full ordinary span 121 bytes; ECX parent handle; stacked output handle; EAX output; RET4; reports/native_resource_node_traversal_bt.json. Allocate24h, only then reload current parent handle on nonnull allocation. Output untouched on construction failure; free captured allocation after child cleanup.",
+      "before_documentation": {
+        "hash": "32a8ce30968a594fc71b6d2a21eb93e0fa70fd3af9e9ba7cddb457412c3fa2ad",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00bea680",
+        "function_name": "BSP_StructuredNode_CreateChild",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00bea680]\nBSP reconstruction hypothesis: Allocate24h and call00bea250 with dereferenced parent; write null output on null allocation. No parent or remaining check. ABI: ECX parent wrapper; stack output wrapper; EAX output wrapper; RET4. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json. Original ABI: ECX parent wrapper; stack output wrapper; EAX output wrapper; RET4. Evidence: docs/STRUCTURED_READER.md; reports/structured_reader_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "uVar2",
+            "type": "undefined8",
+            "storage": "(VARIABLE, 0x0, 8)"
+          },
+          {
+            "name": "pcStack_8",
+            "type": "undefined *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "local_4",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "pvVar1",
+            "type": "void *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "local_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 95,
+            "name": "LAB_00bea6df"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "prototype": "void* __fastcall BSP_StructuredNode_CreateChild(void* parent_handle, void* unused_edx, void* output)",
+      "prototype_result": "Successfully set prototype for function at 00bea680 with __fastcall calling convention",
+      "ledger_name_output": "00bea680 -> BSP_StructuredNode_CreateChild\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00bea680\", \"name\": \"BSP_StructuredNode_CreateChild\", \"evidence\": \"BSP reconstruction hypothesis: Allocate24h and call00bea250 with dereferenced parent; write null output on null allocation. No parent or remaining check. ABI: ECX parent wrapper; stack output wrapper; EAX output wrapper; RET4. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json. Original ABI: ECX parent wrapper; stack output wrapper; EAX output wrapper; RET4. Evidence: docs/STRUCTURED_READER.md; reports/structured_reader_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\"})\n",
+      "ledger_function_output": "00bea680 function create_native_resource_child_00bea680\n",
+      "prior_comment_preservation_checked": true,
+      "after_comment": {
+        "address": "00bea680",
+        "function_name": "BSP_StructuredNode_CreateChild",
+        "comment": "[BSP reconstruction 00bea680]\nBSP reconstruction hypothesis: Allocate24h and call00bea250 with dereferenced parent; write null output on null allocation. No parent or remaining check. ABI: ECX parent wrapper; stack output wrapper; EAX output wrapper; RET4. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json. Original ABI: ECX parent wrapper; stack output wrapper; EAX output wrapper; RET4. Evidence: docs/STRUCTURED_READER.md; reports/structured_reader_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\n\n[BSP reconstruction 00bea680] update\nBT actual resource child traversal. Seven complete ordinary bodies total582bytes; all203 ordinary and16 supporting instruction starts match installed PE and live Ghidra ownership. Strict Win32 compile, full build and both tests passed. One actual memory-stream/pool/reader/root/ref fixture passed nested traversal/control/skip/detach, two forwarding-call mutation checks and one injected source exception after an actual payload-header read. Current scalar slot38 debits actual with wrapping; control stores to captured reader while skip reloads current reader after seek. Child FH3 maps establish source cleanup order and preserve prior header debits. Original stack/EH spill aliases, native CRT/FH3/SEH identity, hardware faults and binary ABI remain unproved. No native original-body oracle or gameplay run. Raw resource dispatch, manager/factory/parser owners, B80720 and queue/worker shutdown remain incomplete. Names are descriptive hypotheses; prior comments and correct compiler names retained. See docs/NATIVE_RESOURCE_NODE_TRAVERSAL_INTEGRATION_BT.md and reports/native_resource_node_traversal_bt.json. Full ordinary span 121 bytes; ECX parent handle; stacked output handle; EAX output; RET4; reports/native_resource_node_traversal_bt.json. Allocate24h, only then reload current parent handle on nonnull allocation. Output untouched on construction failure; free captured allocation after child cleanup."
+      }
+    },
+    {
+      "address": "00bf02a0",
+      "name": "BSP_StreamReader_ReadDwordAndDebit",
+      "before_comment": {
+        "address": "00bf02a0",
+        "function_name": "BSP_StreamReader_ReadDwordAndDebit",
+        "comment": "[BSP reconstruction 00bf02a0]\nBSP reconstruction hypothesis: Call stream virtual+38 with nonnull actual-count local then subtract actual from budget. Count local initially contains reader pointer. No count or budget validation. ABI: ECX reader; stack budget pointer; EAX scalar; RET4. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json. Original ABI: ECX reader; stack budget pointer; EAX scalar; RET4. Evidence: docs/STRUCTURED_READER.md; reports/structured_reader_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation."
+      },
+      "evidence": "BT actual resource child traversal. Seven complete ordinary bodies total582bytes; all203 ordinary and16 supporting instruction starts match installed PE and live Ghidra ownership. Strict Win32 compile, full build and both tests passed. One actual memory-stream/pool/reader/root/ref fixture passed nested traversal/control/skip/detach, two forwarding-call mutation checks and one injected source exception after an actual payload-header read. Current scalar slot38 debits actual with wrapping; control stores to captured reader while skip reloads current reader after seek. Child FH3 maps establish source cleanup order and preserve prior header debits. Original stack/EH spill aliases, native CRT/FH3/SEH identity, hardware faults and binary ABI remain unproved. No native original-body oracle or gameplay run. Raw resource dispatch, manager/factory/parser owners, B80720 and queue/worker shutdown remain incomplete. Names are descriptive hypotheses; prior comments and correct compiler names retained. See docs/NATIVE_RESOURCE_NODE_TRAVERSAL_INTEGRATION_BT.md and reports/native_resource_node_traversal_bt.json. Full ordinary span 27 bytes; ECX reader; stacked budget; EAX DWORD; RET4; reports/native_resource_node_traversal_bt.json. Actual-count local initially reader bits. Capture stream slot38 and wrap-subtract returned actual from current budget.",
+      "before_documentation": {
+        "hash": "ce92be3d2bbc276b51f6411197e72dcf786a319127d073bbcfa2d683abf9c58d",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00bf02a0",
+        "function_name": "BSP_StreamReader_ReadDwordAndDebit",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00bf02a0]\nBSP reconstruction hypothesis: Call stream virtual+38 with nonnull actual-count local then subtract actual from budget. Count local initially contains reader pointer. No count or budget validation. ABI: ECX reader; stack budget pointer; EAX scalar; RET4. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json. Original ABI: ECX reader; stack budget pointer; EAX scalar; RET4. Evidence: docs/STRUCTURED_READER.md; reports/structured_reader_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "unaff_retaddr",
+            "type": "int *",
+            "storage": "(stack, 0x0, 4)"
+          },
+          {
+            "name": "local_4",
+            "type": "undefined4 *",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 100.0
+      },
+      "prototype": "unsigned int __fastcall BSP_StreamReader_ReadDwordAndDebit(void* reader, void* unused_edx, unsigned int* budget)",
+      "prototype_result": "Successfully set prototype for function at 00bf02a0 with __fastcall calling convention",
+      "ledger_name_output": "00bf02a0 -> BSP_StreamReader_ReadDwordAndDebit\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00bf02a0\", \"name\": \"BSP_StreamReader_ReadDwordAndDebit\", \"evidence\": \"BSP reconstruction hypothesis: Call stream virtual+38 with nonnull actual-count local then subtract actual from budget. Count local initially contains reader pointer. No count or budget validation. ABI: ECX reader; stack budget pointer; EAX scalar; RET4. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json. Original ABI: ECX reader; stack budget pointer; EAX scalar; RET4. Evidence: docs/STRUCTURED_READER.md; reports/structured_reader_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\"})\n",
+      "ledger_function_output": "00bf02a0 function read_native_resource_control_dword_00bf02a0\n",
+      "prior_comment_preservation_checked": true,
+      "after_comment": {
+        "address": "00bf02a0",
+        "function_name": "BSP_StreamReader_ReadDwordAndDebit",
+        "comment": "[BSP reconstruction 00bf02a0]\nBSP reconstruction hypothesis: Call stream virtual+38 with nonnull actual-count local then subtract actual from budget. Count local initially contains reader pointer. No count or budget validation. ABI: ECX reader; stack budget pointer; EAX scalar; RET4. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json. Original ABI: ECX reader; stack budget pointer; EAX scalar; RET4. Evidence: docs/STRUCTURED_READER.md; reports/structured_reader_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\n\n[BSP reconstruction 00bf02a0] update\nBT actual resource child traversal. Seven complete ordinary bodies total582bytes; all203 ordinary and16 supporting instruction starts match installed PE and live Ghidra ownership. Strict Win32 compile, full build and both tests passed. One actual memory-stream/pool/reader/root/ref fixture passed nested traversal/control/skip/detach, two forwarding-call mutation checks and one injected source exception after an actual payload-header read. Current scalar slot38 debits actual with wrapping; control stores to captured reader while skip reloads current reader after seek. Child FH3 maps establish source cleanup order and preserve prior header debits. Original stack/EH spill aliases, native CRT/FH3/SEH identity, hardware faults and binary ABI remain unproved. No native original-body oracle or gameplay run. Raw resource dispatch, manager/factory/parser owners, B80720 and queue/worker shutdown remain incomplete. Names are descriptive hypotheses; prior comments and correct compiler names retained. See docs/NATIVE_RESOURCE_NODE_TRAVERSAL_INTEGRATION_BT.md and reports/native_resource_node_traversal_bt.json. Full ordinary span 27 bytes; ECX reader; stacked budget; EAX DWORD; RET4; reports/native_resource_node_traversal_bt.json. Actual-count local initially reader bits. Capture stream slot38 and wrap-subtract returned actual from current budget."
+      }
+    },
+    {
+      "address": "00bf03e0",
+      "name": "BSP_StreamReader_SkipRelative",
+      "before_comment": {
+        "address": "00bf03e0",
+        "function_name": "BSP_StreamReader_SkipRelative",
+        "comment": "[BSP reconstruction 00bf03e0]\nBSP reconstruction hypothesis: Call stream virtual+1C(offset,0,1); ignore second incoming argument. No actual-count debit or success validation. ABI: ECX reader; stack low offset and ignored pointer; RET8. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json. Original ABI: ECX reader; stack low offset and ignored pointer; RET8. Evidence: docs/STRUCTURED_READER.md; reports/structured_reader_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\n\n[BSP reconstruction 00bf03e0] update\nBSP reconstruction hypothesis: Call stream virtual+1C(offset,0,1); ignore second incoming argument. No actual-count debit or success validation. ABI: ECX reader; stack low offset and ignored pointer; RET8. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json. Original ABI: ECX reader; stack low offset and ignored pointer; RET8. Evidence: docs/STRUCTURED_READER.md; reports/structured_reader_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation. | BI/BK reviewed source evidence: Complete21B: forward low remaining displacement, high0 and origin1 through actual current stream slot1Ch; second incoming pointer ignored; EAX raw provider result. Existing BEF540 memory provider preserves unsigned wrap and raw EAX/EDX behavior; physical BF4F20 uses real SetFilePointerEx and cached64-bit position. Unsupported profiles/slots explicitly rejected only as source-domain policy; no invented seek success. See reports/native_raw_node_detach_bi.json. Worker builds and source probes are retained separately; corrected combined candidate validation is pending. Descriptive names are hypotheses, not recovered symbols."
+      },
+      "evidence": "BT actual resource child traversal. Seven complete ordinary bodies total582bytes; all203 ordinary and16 supporting instruction starts match installed PE and live Ghidra ownership. Strict Win32 compile, full build and both tests passed. One actual memory-stream/pool/reader/root/ref fixture passed nested traversal/control/skip/detach, two forwarding-call mutation checks and one injected source exception after an actual payload-header read. Current scalar slot38 debits actual with wrapping; control stores to captured reader while skip reloads current reader after seek. Child FH3 maps establish source cleanup order and preserve prior header debits. Original stack/EH spill aliases, native CRT/FH3/SEH identity, hardware faults and binary ABI remain unproved. No native original-body oracle or gameplay run. Raw resource dispatch, manager/factory/parser owners, B80720 and queue/worker shutdown remain incomplete. Names are descriptive hypotheses; prior comments and correct compiler names retained. See docs/NATIVE_RESOURCE_NODE_TRAVERSAL_INTEGRATION_BT.md and reports/native_resource_node_traversal_bt.json. Full ordinary span 21 bytes; ECX reader; stacked low offset and ignored pointer; forwarded EAX; RET8; reports/native_resource_node_traversal_bt.json. Capture current stream slot1C and seek(low,0,1). Second stack pointer unconsumed; EAX forwarded; no budget debit.",
+      "before_documentation": {
+        "hash": "58f7ad7c71418768728c1de689fbc0343e3118daf70895e35481991ffae2b2f6",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00bf03e0",
+        "function_name": "BSP_StreamReader_SkipRelative",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00bf03e0]\nBSP reconstruction hypothesis: Call stream virtual+1C(offset,0,1); ignore second incoming argument. No actual-count debit or success validation. ABI: ECX reader; stack low offset and ignored pointer; RET8. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json. Original ABI: ECX reader; stack low offset and ignored pointer; RET8. Evidence: docs/STRUCTURED_READER.md; reports/structured_reader_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\n\n[BSP reconstruction 00bf03e0] update\nBSP reconstruction hypothesis: Call stream virtual+1C(offset,0,1); ignore second incoming argument. No actual-count debit or success validation. ABI: ECX reader; stack low offset and ignored pointer; RET8. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json. Original ABI: ECX reader; stack low offset and ignored pointer; RET8. Evidence: docs/STRUCTURED_READER.md; reports/structured_reader_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation. | BI/BK reviewed source evidence: Complete21B: forward low remaining displacement, high0 and origin1 through actual current stream slot1Ch; second incoming pointer ignored; EAX raw provider result. Existing BEF540 memory provider preserves unsigned wrap and raw EAX/EDX behavior; physical BF4F20 uses real SetFilePointerEx and cached64-bit position. Unsupported profiles/slots explicitly rejected only as source-domain policy; no invented seek success. See reports/native_raw_node_detach_bi.json. Worker builds and source probes are retained separately; corrected combined candidate validation is pending. Descriptive names are hypotheses, not recovered symbols.",
+        "parameters": [],
+        "local_variables": [],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 100.0
+      },
+      "prototype": "unsigned int __fastcall BSP_StreamReader_SkipRelative(void* reader, void* unused_edx, unsigned int low_offset, void* ignored)",
+      "prototype_result": "Successfully set prototype for function at 00bf03e0 with __fastcall calling convention",
+      "ledger_name_output": "00bf03e0 -> BSP_StreamReader_SkipRelative\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00bf03e0\", \"name\": \"BSP_StreamReader_SkipRelative\", \"evidence\": \"BSP reconstruction hypothesis: Call stream virtual+1C(offset,0,1); ignore second incoming argument. No actual-count debit or success validation. ABI: ECX reader; stack low offset and ignored pointer; RET8. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json. Original ABI: ECX reader; stack low offset and ignored pointer; RET8. Evidence: docs/STRUCTURED_READER.md; reports/structured_reader_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\"})\n",
+      "ledger_function_output": "00bf03e0 function seek_native_resource_relative_00bf03e0\n",
+      "prior_comment_preservation_checked": true,
+      "after_comment": {
+        "address": "00bf03e0",
+        "function_name": "BSP_StreamReader_SkipRelative",
+        "comment": "[BSP reconstruction 00bf03e0]\nBSP reconstruction hypothesis: Call stream virtual+1C(offset,0,1); ignore second incoming argument. No actual-count debit or success validation. ABI: ECX reader; stack low offset and ignored pointer; RET8. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json. Original ABI: ECX reader; stack low offset and ignored pointer; RET8. Evidence: docs/STRUCTURED_READER.md; reports/structured_reader_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\n\n[BSP reconstruction 00bf03e0] update\nBSP reconstruction hypothesis: Call stream virtual+1C(offset,0,1); ignore second incoming argument. No actual-count debit or success validation. ABI: ECX reader; stack low offset and ignored pointer; RET8. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json. Original ABI: ECX reader; stack low offset and ignored pointer; RET8. Evidence: docs/STRUCTURED_READER.md; reports/structured_reader_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation. | BI/BK reviewed source evidence: Complete21B: forward low remaining displacement, high0 and origin1 through actual current stream slot1Ch; second incoming pointer ignored; EAX raw provider result. Existing BEF540 memory provider preserves unsigned wrap and raw EAX/EDX behavior; physical BF4F20 uses real SetFilePointerEx and cached64-bit position. Unsupported profiles/slots explicitly rejected only as source-domain policy; no invented seek success. See reports/native_raw_node_detach_bi.json. Worker builds and source probes are retained separately; corrected combined candidate validation is pending. Descriptive names are hypotheses, not recovered symbols.\n\n[BSP reconstruction 00bf03e0] update\nBT actual resource child traversal. Seven complete ordinary bodies total582bytes; all203 ordinary and16 supporting instruction starts match installed PE and live Ghidra ownership. Strict Win32 compile, full build and both tests passed. One actual memory-stream/pool/reader/root/ref fixture passed nested traversal/control/skip/detach, two forwarding-call mutation checks and one injected source exception after an actual payload-header read. Current scalar slot38 debits actual with wrapping; control stores to captured reader while skip reloads current reader after seek. Child FH3 maps establish source cleanup order and preserve prior header debits. Original stack/EH spill aliases, native CRT/FH3/SEH identity, hardware faults and binary ABI remain unproved. No native original-body oracle or gameplay run. Raw resource dispatch, manager/factory/parser owners, B80720 and queue/worker shutdown remain incomplete. Names are descriptive hypotheses; prior comments and correct compiler names retained. See docs/NATIVE_RESOURCE_NODE_TRAVERSAL_INTEGRATION_BT.md and reports/native_resource_node_traversal_bt.json. Full ordinary span 21 bytes; ECX reader; stacked low offset and ignored pointer; forwarded EAX; RET8; reports/native_resource_node_traversal_bt.json. Capture current stream slot1C and seek(low,0,1). Second stack pointer unconsumed; EAX forwarded; no budget debit."
+      }
+    },
+    {
+      "address": "00be9a40",
+      "name": "BSP_StructuredNode_ReadControlWord",
+      "before_comment": {
+        "address": "00be9a40",
+        "function_name": "BSP_StructuredNode_ReadControlWord",
+        "comment": "[BSP reconstruction 00be9a40]\nBSP reconstruction hypothesis: Read DWORD via reader00bf02a0 against node+20 budget and store reader+64. No control value validation. ABI: ECX node wrapper; no stack arguments; plain RET. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json. Original ABI: ECX node wrapper; no stack arguments; plain RET. Evidence: docs/STRUCTURED_READER.md; reports/structured_reader_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation."
+      },
+      "evidence": "BT actual resource child traversal. Seven complete ordinary bodies total582bytes; all203 ordinary and16 supporting instruction starts match installed PE and live Ghidra ownership. Strict Win32 compile, full build and both tests passed. One actual memory-stream/pool/reader/root/ref fixture passed nested traversal/control/skip/detach, two forwarding-call mutation checks and one injected source exception after an actual payload-header read. Current scalar slot38 debits actual with wrapping; control stores to captured reader while skip reloads current reader after seek. Child FH3 maps establish source cleanup order and preserve prior header debits. Original stack/EH spill aliases, native CRT/FH3/SEH identity, hardware faults and binary ABI remain unproved. No native original-body oracle or gameplay run. Raw resource dispatch, manager/factory/parser owners, B80720 and queue/worker shutdown remain incomplete. Names are descriptive hypotheses; prior comments and correct compiler names retained. See docs/NATIVE_RESOURCE_NODE_TRAVERSAL_INTEGRATION_BT.md and reports/native_resource_node_traversal_bt.json. Full ordinary span 22 bytes; ECX node handle; plain RET; no semantic return; reports/native_resource_node_traversal_bt.json. Capture node and reader; store scalar return to that same reader+64 despite call-boundary node.reader mutation.",
+      "before_documentation": {
+        "hash": "badc288343c1f704b72658d04bff032379775dffa75b3a3323b44891a0e9c175",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00be9a40",
+        "function_name": "BSP_StructuredNode_ReadControlWord",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00be9a40]\nBSP reconstruction hypothesis: Read DWORD via reader00bf02a0 against node+20 budget and store reader+64. No control value validation. ABI: ECX node wrapper; no stack arguments; plain RET. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json. Original ABI: ECX node wrapper; no stack arguments; plain RET. Evidence: docs/STRUCTURED_READER.md; reports/structured_reader_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "uVar1",
+            "type": "uint",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "reader",
+            "type": "void *",
+            "storage": "(unique, 0x17200, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 100.0
+      },
+      "prototype": "void __fastcall BSP_StructuredNode_ReadControlWord(void* handle, void* unused_edx)",
+      "prototype_result": "Successfully set prototype for function at 00be9a40 with __fastcall calling convention",
+      "ledger_name_output": "00be9a40 -> BSP_StructuredNode_ReadControlWord\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00be9a40\", \"name\": \"BSP_StructuredNode_ReadControlWord\", \"evidence\": \"BSP reconstruction hypothesis: Read DWORD via reader00bf02a0 against node+20 budget and store reader+64. No control value validation. ABI: ECX node wrapper; no stack arguments; plain RET. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json. Original ABI: ECX node wrapper; no stack arguments; plain RET. Evidence: docs/STRUCTURED_READER.md; reports/structured_reader_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\"})\n",
+      "ledger_function_output": "00be9a40 function read_native_resource_node_control_00be9a40\n",
+      "prior_comment_preservation_checked": true,
+      "after_comment": {
+        "address": "00be9a40",
+        "function_name": "BSP_StructuredNode_ReadControlWord",
+        "comment": "[BSP reconstruction 00be9a40]\nBSP reconstruction hypothesis: Read DWORD via reader00bf02a0 against node+20 budget and store reader+64. No control value validation. ABI: ECX node wrapper; no stack arguments; plain RET. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json. Original ABI: ECX node wrapper; no stack arguments; plain RET. Evidence: docs/STRUCTURED_READER.md; reports/structured_reader_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\n\n[BSP reconstruction 00be9a40] update\nBT actual resource child traversal. Seven complete ordinary bodies total582bytes; all203 ordinary and16 supporting instruction starts match installed PE and live Ghidra ownership. Strict Win32 compile, full build and both tests passed. One actual memory-stream/pool/reader/root/ref fixture passed nested traversal/control/skip/detach, two forwarding-call mutation checks and one injected source exception after an actual payload-header read. Current scalar slot38 debits actual with wrapping; control stores to captured reader while skip reloads current reader after seek. Child FH3 maps establish source cleanup order and preserve prior header debits. Original stack/EH spill aliases, native CRT/FH3/SEH identity, hardware faults and binary ABI remain unproved. No native original-body oracle or gameplay run. Raw resource dispatch, manager/factory/parser owners, B80720 and queue/worker shutdown remain incomplete. Names are descriptive hypotheses; prior comments and correct compiler names retained. See docs/NATIVE_RESOURCE_NODE_TRAVERSAL_INTEGRATION_BT.md and reports/native_resource_node_traversal_bt.json. Full ordinary span 22 bytes; ECX node handle; plain RET; no semantic return; reports/native_resource_node_traversal_bt.json. Capture node and reader; store scalar return to that same reader+64 despite call-boundary node.reader mutation."
+      }
+    },
+    {
+      "address": "00be9c40",
+      "name": "BSP_StructuredNode_SkipAndDetach",
+      "before_comment": {
+        "address": "00be9c40",
+        "function_name": "BSP_StructuredNode_SkipAndDetach",
+        "comment": "[BSP reconstruction 00be9c40]\nBSP reconstruction hypothesis: Subtract declared payload from parent if any; relative-seek own remaining via00bf03e0 then zero remaining; decrement reader path index and null node+8. No duplicate-detach or seek-success check. ABI: ECX node wrapper; no stack arguments; plain RET. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json. Original ABI: ECX node wrapper; no stack arguments; plain RET. Evidence: docs/STRUCTURED_READER.md; reports/structured_reader_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\n\n[BSP reconstruction 00be9c40] update\nBSP reconstruction hypothesis: Subtract declared payload from parent if any; relative-seek own remaining via00bf03e0 then zero remaining; decrement reader path index and null node+8. No duplicate-detach or seek-success check. ABI: ECX node wrapper; no stack arguments; plain RET. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json. Original ABI: ECX node wrapper; no stack arguments; plain RET. Evidence: docs/STRUCTURED_READER.md; reports/structured_reader_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation. | BI/BK reviewed source evidence: Complete70B: valid node wrapper; debit nonnull parent remaining by FULL declared node+1Ch before testing node remaining. If remaining nonzero, actual BF03E0 seek, ignore result, clear remaining. Reload reader, decrement path index+60h, clear node attachment+8, return reader. No attachment/double-detach/rollback guard. One real-memory source probe checked declared8/remaining3, parent10->2, cursor+3 and detach fields; native ABI/FH3/gameplay unclaimed. See reports/native_raw_node_detach_bi.json. Worker builds and source probes are retained separately; corrected combined candidate validation is pending. Descriptive names are hypotheses, not recovered symbols."
+      },
+      "evidence": "BT actual resource child traversal. Seven complete ordinary bodies total582bytes; all203 ordinary and16 supporting instruction starts match installed PE and live Ghidra ownership. Strict Win32 compile, full build and both tests passed. One actual memory-stream/pool/reader/root/ref fixture passed nested traversal/control/skip/detach, two forwarding-call mutation checks and one injected source exception after an actual payload-header read. Current scalar slot38 debits actual with wrapping; control stores to captured reader while skip reloads current reader after seek. Child FH3 maps establish source cleanup order and preserve prior header debits. Original stack/EH spill aliases, native CRT/FH3/SEH identity, hardware faults and binary ABI remain unproved. No native original-body oracle or gameplay run. Raw resource dispatch, manager/factory/parser owners, B80720 and queue/worker shutdown remain incomplete. Names are descriptive hypotheses; prior comments and correct compiler names retained. See docs/NATIVE_RESOURCE_NODE_TRAVERSAL_INTEGRATION_BT.md and reports/native_resource_node_traversal_bt.json. Full ordinary span 70 bytes; ECX node handle; plain RET; no semantic return; reports/native_resource_node_traversal_bt.json. Debit current parent remaining by declared1C; seek nonzero remaining; normal return clears remaining then reloads current reader for pop/detach. No attached or repeat-skip guard.",
+      "before_documentation": {
+        "hash": "be33fe6e2ce001dee49ae66bf042f16569fb29a8a45d711cb1e29b39c7eb2e94",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00be9c40",
+        "function_name": "BSP_StructuredNode_SkipAndDetach",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00be9c40]\nBSP reconstruction hypothesis: Subtract declared payload from parent if any; relative-seek own remaining via00bf03e0 then zero remaining; decrement reader path index and null node+8. No duplicate-detach or seek-success check. ABI: ECX node wrapper; no stack arguments; plain RET. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json. Original ABI: ECX node wrapper; no stack arguments; plain RET. Evidence: docs/STRUCTURED_READER.md; reports/structured_reader_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\n\n[BSP reconstruction 00be9c40] update\nBSP reconstruction hypothesis: Subtract declared payload from parent if any; relative-seek own remaining via00bf03e0 then zero remaining; decrement reader path index and null node+8. No duplicate-detach or seek-success check. ABI: ECX node wrapper; no stack arguments; plain RET. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json. Original ABI: ECX node wrapper; no stack arguments; plain RET. Evidence: docs/STRUCTURED_READER.md; reports/structured_reader_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation. | BI/BK reviewed source evidence: Complete70B: valid node wrapper; debit nonnull parent remaining by FULL declared node+1Ch before testing node remaining. If remaining nonzero, actual BF03E0 seek, ignore result, clear remaining. Reload reader, decrement path index+60h, clear node attachment+8, return reader. No attachment/double-detach/rollback guard. One real-memory source probe checked declared8/remaining3, parent10->2, cursor+3 and detach fields; native ABI/FH3/gameplay unclaimed. See reports/native_raw_node_detach_bi.json. Worker builds and source probes are retained separately; corrected combined candidate validation is pending. Descriptive names are hypotheses, not recovered symbols.",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "local_4",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "iVar2",
+            "type": "int",
+            "storage": "(unique, 0x17200, 4)"
+          },
+          {
+            "name": "piVar1",
+            "type": "int *",
+            "storage": "(unique, 0x6600, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 17,
+            "name": "LAB_00be9c51"
+          },
+          {
+            "relative_offset": 53,
+            "name": "LAB_00be9c75"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "prototype": "void __fastcall BSP_StructuredNode_SkipAndDetach(void* handle, void* unused_edx)",
+      "prototype_result": "Successfully set prototype for function at 00be9c40 with __fastcall calling convention",
+      "ledger_name_output": "00be9c40 -> BSP_StructuredNode_SkipAndDetach\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00be9c40\", \"name\": \"BSP_StructuredNode_SkipAndDetach\", \"evidence\": \"BSP reconstruction hypothesis: Subtract declared payload from parent if any; relative-seek own remaining via00bf03e0 then zero remaining; decrement reader path index and null node+8. No duplicate-detach or seek-success check. ABI: ECX node wrapper; no stack arguments; plain RET. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json. Original ABI: ECX node wrapper; no stack arguments; plain RET. Evidence: docs/STRUCTURED_READER.md; reports/structured_reader_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\"})\n",
+      "ledger_function_output": "00be9c40 function skip_native_resource_node_00be9c40\n",
+      "prior_comment_preservation_checked": true,
+      "after_comment": {
+        "address": "00be9c40",
+        "function_name": "BSP_StructuredNode_SkipAndDetach",
+        "comment": "[BSP reconstruction 00be9c40]\nBSP reconstruction hypothesis: Subtract declared payload from parent if any; relative-seek own remaining via00bf03e0 then zero remaining; decrement reader path index and null node+8. No duplicate-detach or seek-success check. ABI: ECX node wrapper; no stack arguments; plain RET. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json. Original ABI: ECX node wrapper; no stack arguments; plain RET. Evidence: docs/STRUCTURED_READER.md; reports/structured_reader_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\n\n[BSP reconstruction 00be9c40] update\nBSP reconstruction hypothesis: Subtract declared payload from parent if any; relative-seek own remaining via00bf03e0 then zero remaining; decrement reader path index and null node+8. No duplicate-detach or seek-success check. ABI: ECX node wrapper; no stack arguments; plain RET. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json. Original ABI: ECX node wrapper; no stack arguments; plain RET. Evidence: docs/STRUCTURED_READER.md; reports/structured_reader_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation. | BI/BK reviewed source evidence: Complete70B: valid node wrapper; debit nonnull parent remaining by FULL declared node+1Ch before testing node remaining. If remaining nonzero, actual BF03E0 seek, ignore result, clear remaining. Reload reader, decrement path index+60h, clear node attachment+8, return reader. No attachment/double-detach/rollback guard. One real-memory source probe checked declared8/remaining3, parent10->2, cursor+3 and detach fields; native ABI/FH3/gameplay unclaimed. See reports/native_raw_node_detach_bi.json. Worker builds and source probes are retained separately; corrected combined candidate validation is pending. Descriptive names are hypotheses, not recovered symbols.\n\n[BSP reconstruction 00be9c40] update\nBT actual resource child traversal. Seven complete ordinary bodies total582bytes; all203 ordinary and16 supporting instruction starts match installed PE and live Ghidra ownership. Strict Win32 compile, full build and both tests passed. One actual memory-stream/pool/reader/root/ref fixture passed nested traversal/control/skip/detach, two forwarding-call mutation checks and one injected source exception after an actual payload-header read. Current scalar slot38 debits actual with wrapping; control stores to captured reader while skip reloads current reader after seek. Child FH3 maps establish source cleanup order and preserve prior header debits. Original stack/EH spill aliases, native CRT/FH3/SEH identity, hardware faults and binary ABI remain unproved. No native original-body oracle or gameplay run. Raw resource dispatch, manager/factory/parser owners, B80720 and queue/worker shutdown remain incomplete. Names are descriptive hypotheses; prior comments and correct compiler names retained. See docs/NATIVE_RESOURCE_NODE_TRAVERSAL_INTEGRATION_BT.md and reports/native_resource_node_traversal_bt.json. Full ordinary span 70 bytes; ECX node handle; plain RET; no semantic return; reports/native_resource_node_traversal_bt.json. Debit current parent remaining by declared1C; seek nonzero remaining; normal return clears remaining then reloads current reader for pop/detach. No attached or repeat-skip guard."
+      }
+    },
+    {
+      "address": "00715bf0",
+      "name": "BSP_StructuredNode_HasRemaining",
+      "before_comment": {
+        "address": "00715bf0",
+        "function_name": "BSP_StructuredNode_HasRemaining",
+        "comment": "[BSP reconstruction 00715bf0]\nBSP reconstruction hypothesis: True iff wrapper contains nonnull node and node+20 DWORD is nonzero; no attachment, stream, sign or bound check. ABI: ECX wrapper; EAX boolean0/1; plain RET. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json. Original ABI: ECX wrapper; EAX boolean0/1; plain RET. Evidence: docs/STRUCTURED_READER.md; reports/structured_reader_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\n\n[BSP reconstruction 00715bf0] update\nBSP reconstruction hypothesis: True iff wrapper contains nonnull node and node+20 DWORD is nonzero; no attachment, stream, sign or bound check. ABI: ECX wrapper; EAX boolean0/1; plain RET. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json. Original ABI: ECX wrapper; EAX boolean0/1; plain RET. Evidence: docs/STRUCTURED_READER.md; reports/structured_reader_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation. | BG/BH source evidence: Complete21B: ECX valid wrapper, load contained node; null node false, otherwise DWORD node+20h!=0. No wrapper-null, attachment or sign check. No CALL instructions; previous report native-name field was metadata, not an indirect call. Worker b307150c strict build and two CTests; C++ bool interface, no native/runtime claim. See reports/native_structured_node_predicate.json and corresponding packet document. Descriptive names are reconstruction hypotheses, not recovered symbols. Merged candidate validation remains separate from worker evidence."
+      },
+      "evidence": "BT actual resource child traversal. Seven complete ordinary bodies total582bytes; all203 ordinary and16 supporting instruction starts match installed PE and live Ghidra ownership. Strict Win32 compile, full build and both tests passed. One actual memory-stream/pool/reader/root/ref fixture passed nested traversal/control/skip/detach, two forwarding-call mutation checks and one injected source exception after an actual payload-header read. Current scalar slot38 debits actual with wrapping; control stores to captured reader while skip reloads current reader after seek. Child FH3 maps establish source cleanup order and preserve prior header debits. Original stack/EH spill aliases, native CRT/FH3/SEH identity, hardware faults and binary ABI remain unproved. No native original-body oracle or gameplay run. Raw resource dispatch, manager/factory/parser owners, B80720 and queue/worker shutdown remain incomplete. Names are descriptive hypotheses; prior comments and correct compiler names retained. See docs/NATIVE_RESOURCE_NODE_TRAVERSAL_INTEGRATION_BT.md and reports/native_resource_node_traversal_bt.json. Full ordinary span 21 bytes; ECX node handle; EAX boolean0/1; plain RET; reports/native_resource_node_traversal_bt.json. True iff captured handle node nonnull and remaining20 nonzero. No attachment/sign/bounds guard.",
+      "before_documentation": {
+        "hash": "772c6a4a0e266f159a0edcb3d41461e62768bacda99fdb76d1335cef5123726a",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00715bf0",
+        "function_name": "BSP_StructuredNode_HasRemaining",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00715bf0]\nBSP reconstruction hypothesis: True iff wrapper contains nonnull node and node+20 DWORD is nonzero; no attachment, stream, sign or bound check. ABI: ECX wrapper; EAX boolean0/1; plain RET. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json. Original ABI: ECX wrapper; EAX boolean0/1; plain RET. Evidence: docs/STRUCTURED_READER.md; reports/structured_reader_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\n\n[BSP reconstruction 00715bf0] update\nBSP reconstruction hypothesis: True iff wrapper contains nonnull node and node+20 DWORD is nonzero; no attachment, stream, sign or bound check. ABI: ECX wrapper; EAX boolean0/1; plain RET. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json. Original ABI: ECX wrapper; EAX boolean0/1; plain RET. Evidence: docs/STRUCTURED_READER.md; reports/structured_reader_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation. | BG/BH source evidence: Complete21B: ECX valid wrapper, load contained node; null node false, otherwise DWORD node+20h!=0. No wrapper-null, attachment or sign check. No CALL instructions; previous report native-name field was metadata, not an indirect call. Worker b307150c strict build and two CTests; C++ bool interface, no native/runtime claim. See reports/native_structured_node_predicate.json and corresponding packet document. Descriptive names are reconstruction hypotheses, not recovered symbols. Merged candidate validation remains separate from worker evidence.",
+        "parameters": [],
+        "local_variables": [],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 18,
+            "name": "LAB_00715c02"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "prototype": "unsigned int __fastcall BSP_StructuredNode_HasRemaining(void* handle, void* unused_edx)",
+      "prototype_result": "Successfully set prototype for function at 00715bf0 with __fastcall calling convention",
+      "ledger_name_output": "00715bf0 -> BSP_StructuredNode_HasRemaining\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00715bf0\", \"name\": \"BSP_StructuredNode_HasRemaining\", \"evidence\": \"BSP reconstruction hypothesis: True iff wrapper contains nonnull node and node+20 DWORD is nonzero; no attachment, stream, sign or bound check. ABI: ECX wrapper; EAX boolean0/1; plain RET. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json. Original ABI: ECX wrapper; EAX boolean0/1; plain RET. Evidence: docs/STRUCTURED_READER.md; reports/structured_reader_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\"})\n",
+      "ledger_function_output": "00715bf0 function native_resource_node_has_remaining_00715bf0\n",
+      "prior_comment_preservation_checked": true,
+      "after_comment": {
+        "address": "00715bf0",
+        "function_name": "BSP_StructuredNode_HasRemaining",
+        "comment": "[BSP reconstruction 00715bf0]\nBSP reconstruction hypothesis: True iff wrapper contains nonnull node and node+20 DWORD is nonzero; no attachment, stream, sign or bound check. ABI: ECX wrapper; EAX boolean0/1; plain RET. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json. Original ABI: ECX wrapper; EAX boolean0/1; plain RET. Evidence: docs/STRUCTURED_READER.md; reports/structured_reader_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\n\n[BSP reconstruction 00715bf0] update\nBSP reconstruction hypothesis: True iff wrapper contains nonnull node and node+20 DWORD is nonzero; no attachment, stream, sign or bound check. ABI: ECX wrapper; EAX boolean0/1; plain RET. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json. Original ABI: ECX wrapper; EAX boolean0/1; plain RET. Evidence: docs/STRUCTURED_READER.md; reports/structured_reader_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation. | BG/BH source evidence: Complete21B: ECX valid wrapper, load contained node; null node false, otherwise DWORD node+20h!=0. No wrapper-null, attachment or sign check. No CALL instructions; previous report native-name field was metadata, not an indirect call. Worker b307150c strict build and two CTests; C++ bool interface, no native/runtime claim. See reports/native_structured_node_predicate.json and corresponding packet document. Descriptive names are reconstruction hypotheses, not recovered symbols. Merged candidate validation remains separate from worker evidence.\n\n[BSP reconstruction 00715bf0] update\nBT actual resource child traversal. Seven complete ordinary bodies total582bytes; all203 ordinary and16 supporting instruction starts match installed PE and live Ghidra ownership. Strict Win32 compile, full build and both tests passed. One actual memory-stream/pool/reader/root/ref fixture passed nested traversal/control/skip/detach, two forwarding-call mutation checks and one injected source exception after an actual payload-header read. Current scalar slot38 debits actual with wrapping; control stores to captured reader while skip reloads current reader after seek. Child FH3 maps establish source cleanup order and preserve prior header debits. Original stack/EH spill aliases, native CRT/FH3/SEH identity, hardware faults and binary ABI remain unproved. No native original-body oracle or gameplay run. Raw resource dispatch, manager/factory/parser owners, B80720 and queue/worker shutdown remain incomplete. Names are descriptive hypotheses; prior comments and correct compiler names retained. See docs/NATIVE_RESOURCE_NODE_TRAVERSAL_INTEGRATION_BT.md and reports/native_resource_node_traversal_bt.json. Full ordinary span 21 bytes; ECX node handle; EAX boolean0/1; plain RET; reports/native_resource_node_traversal_bt.json. True iff captured handle node nonnull and remaining20 nonzero. No attachment/sign/bounds guard."
+      }
+    },
+    {
+      "address": "00cc716b",
+      "name": "EH_handler_00cc716b",
+      "before_comment": {
+        "address": "00cc716b",
+        "function_name": "FUN_00cc716b"
+      },
+      "evidence": "BT actual resource child traversal. Seven complete ordinary bodies total582bytes; all203 ordinary and16 supporting instruction starts match installed PE and live Ghidra ownership. Strict Win32 compile, full build and both tests passed. One actual memory-stream/pool/reader/root/ref fixture passed nested traversal/control/skip/detach, two forwarding-call mutation checks and one injected source exception after an actual payload-header read. Current scalar slot38 debits actual with wrapping; control stores to captured reader while skip reloads current reader after seek. Child FH3 maps establish source cleanup order and preserve prior header debits. Original stack/EH spill aliases, native CRT/FH3/SEH identity, hardware faults and binary ABI remain unproved. No native original-body oracle or gameplay run. Raw resource dispatch, manager/factory/parser owners, B80720 and queue/worker shutdown remain incomplete. Names are descriptive hypotheses; prior comments and correct compiler names retained. See docs/NATIVE_RESOURCE_NODE_TRAVERSAL_INTEGRATION_BT.md and reports/native_resource_node_traversal_bt.json. Complete MOV EAX,FuncInfo / JMP BF6B43 dispatch handler defined and saved.",
+      "ledger_name_output": "00cc716b -> EH_handler_00cc716b\n",
+      "prior_comment_preservation_checked": true,
+      "after_comment": {
+        "address": "00cc716b",
+        "function_name": "EH_handler_00cc716b",
+        "comment": "[BSP reconstruction 00cc716b]\nBT actual resource child traversal. Seven complete ordinary bodies total582bytes; all203 ordinary and16 supporting instruction starts match installed PE and live Ghidra ownership. Strict Win32 compile, full build and both tests passed. One actual memory-stream/pool/reader/root/ref fixture passed nested traversal/control/skip/detach, two forwarding-call mutation checks and one injected source exception after an actual payload-header read. Current scalar slot38 debits actual with wrapping; control stores to captured reader while skip reloads current reader after seek. Child FH3 maps establish source cleanup order and preserve prior header debits. Original stack/EH spill aliases, native CRT/FH3/SEH identity, hardware faults and binary ABI remain unproved. No native original-body oracle or gameplay run. Raw resource dispatch, manager/factory/parser owners, B80720 and queue/worker shutdown remain incomplete. Names are descriptive hypotheses; prior comments and correct compiler names retained. See docs/NATIVE_RESOURCE_NODE_TRAVERSAL_INTEGRATION_BT.md and reports/native_resource_node_traversal_bt.json. Complete MOV EAX,FuncInfo / JMP BF6B43 dispatch handler defined and saved."
+      }
+    },
+    {
+      "address": "00cc71fb",
+      "name": "EH_handler_00cc71fb",
+      "before_comment": {
+        "address": "00cc71fb",
+        "function_name": "FUN_00cc71fb"
+      },
+      "evidence": "BT actual resource child traversal. Seven complete ordinary bodies total582bytes; all203 ordinary and16 supporting instruction starts match installed PE and live Ghidra ownership. Strict Win32 compile, full build and both tests passed. One actual memory-stream/pool/reader/root/ref fixture passed nested traversal/control/skip/detach, two forwarding-call mutation checks and one injected source exception after an actual payload-header read. Current scalar slot38 debits actual with wrapping; control stores to captured reader while skip reloads current reader after seek. Child FH3 maps establish source cleanup order and preserve prior header debits. Original stack/EH spill aliases, native CRT/FH3/SEH identity, hardware faults and binary ABI remain unproved. No native original-body oracle or gameplay run. Raw resource dispatch, manager/factory/parser owners, B80720 and queue/worker shutdown remain incomplete. Names are descriptive hypotheses; prior comments and correct compiler names retained. See docs/NATIVE_RESOURCE_NODE_TRAVERSAL_INTEGRATION_BT.md and reports/native_resource_node_traversal_bt.json. Complete MOV EAX,FuncInfo / JMP BF6B43 dispatch handler defined and saved.",
+      "ledger_name_output": "00cc71fb -> EH_handler_00cc71fb\n",
+      "prior_comment_preservation_checked": true,
+      "after_comment": {
+        "address": "00cc71fb",
+        "function_name": "EH_handler_00cc71fb",
+        "comment": "[BSP reconstruction 00cc71fb]\nBT actual resource child traversal. Seven complete ordinary bodies total582bytes; all203 ordinary and16 supporting instruction starts match installed PE and live Ghidra ownership. Strict Win32 compile, full build and both tests passed. One actual memory-stream/pool/reader/root/ref fixture passed nested traversal/control/skip/detach, two forwarding-call mutation checks and one injected source exception after an actual payload-header read. Current scalar slot38 debits actual with wrapping; control stores to captured reader while skip reloads current reader after seek. Child FH3 maps establish source cleanup order and preserve prior header debits. Original stack/EH spill aliases, native CRT/FH3/SEH identity, hardware faults and binary ABI remain unproved. No native original-body oracle or gameplay run. Raw resource dispatch, manager/factory/parser owners, B80720 and queue/worker shutdown remain incomplete. Names are descriptive hypotheses; prior comments and correct compiler names retained. See docs/NATIVE_RESOURCE_NODE_TRAVERSAL_INTEGRATION_BT.md and reports/native_resource_node_traversal_bt.json. Complete MOV EAX,FuncInfo / JMP BF6B43 dispatch handler defined and saved."
+      }
+    },
+    {
+      "address": "00cc7150",
+      "name": "Unwind@00cc7150",
+      "before_comment": {
+        "address": "00cc7150",
+        "function_name": "Unwind@00cc7150"
+      },
+      "evidence": "BT actual resource child traversal. Seven complete ordinary bodies total582bytes; all203 ordinary and16 supporting instruction starts match installed PE and live Ghidra ownership. Strict Win32 compile, full build and both tests passed. One actual memory-stream/pool/reader/root/ref fixture passed nested traversal/control/skip/detach, two forwarding-call mutation checks and one injected source exception after an actual payload-header read. Current scalar slot38 debits actual with wrapping; control stores to captured reader while skip reloads current reader after seek. Child FH3 maps establish source cleanup order and preserve prior header debits. Original stack/EH spill aliases, native CRT/FH3/SEH identity, hardware faults and binary ABI remain unproved. No native original-body oracle or gameplay run. Raw resource dispatch, manager/factory/parser owners, B80720 and queue/worker shutdown remain incomplete. Names are descriptive hypotheses; prior comments and correct compiler names retained. See docs/NATIVE_RESOURCE_NODE_TRAVERSAL_INTEGRATION_BT.md and reports/native_resource_node_traversal_bt.json. Native unwind evidence. State0->-1 base BD30F0 on saved node at synthetic EBP-18.",
+      "ledger_name_output": "00cc7150 -> Unwind@00cc7150\n",
+      "prior_comment_preservation_checked": true,
+      "after_comment": {
+        "address": "00cc7150",
+        "function_name": "Unwind@00cc7150",
+        "comment": "[BSP reconstruction 00cc7150]\nBT actual resource child traversal. Seven complete ordinary bodies total582bytes; all203 ordinary and16 supporting instruction starts match installed PE and live Ghidra ownership. Strict Win32 compile, full build and both tests passed. One actual memory-stream/pool/reader/root/ref fixture passed nested traversal/control/skip/detach, two forwarding-call mutation checks and one injected source exception after an actual payload-header read. Current scalar slot38 debits actual with wrapping; control stores to captured reader while skip reloads current reader after seek. Child FH3 maps establish source cleanup order and preserve prior header debits. Original stack/EH spill aliases, native CRT/FH3/SEH identity, hardware faults and binary ABI remain unproved. No native original-body oracle or gameplay run. Raw resource dispatch, manager/factory/parser owners, B80720 and queue/worker shutdown remain incomplete. Names are descriptive hypotheses; prior comments and correct compiler names retained. See docs/NATIVE_RESOURCE_NODE_TRAVERSAL_INTEGRATION_BT.md and reports/native_resource_node_traversal_bt.json. Native unwind evidence. State0->-1 base BD30F0 on saved node at synthetic EBP-18."
+      }
+    },
+    {
+      "address": "00cc7158",
+      "name": "Unwind@00cc7158",
+      "before_comment": {
+        "address": "00cc7158",
+        "function_name": "Unwind@00cc7158"
+      },
+      "evidence": "BT actual resource child traversal. Seven complete ordinary bodies total582bytes; all203 ordinary and16 supporting instruction starts match installed PE and live Ghidra ownership. Strict Win32 compile, full build and both tests passed. One actual memory-stream/pool/reader/root/ref fixture passed nested traversal/control/skip/detach, two forwarding-call mutation checks and one injected source exception after an actual payload-header read. Current scalar slot38 debits actual with wrapping; control stores to captured reader while skip reloads current reader after seek. Child FH3 maps establish source cleanup order and preserve prior header debits. Original stack/EH spill aliases, native CRT/FH3/SEH identity, hardware faults and binary ABI remain unproved. No native original-body oracle or gameplay run. Raw resource dispatch, manager/factory/parser owners, B80720 and queue/worker shutdown remain incomplete. Names are descriptive hypotheses; prior comments and correct compiler names retained. See docs/NATIVE_RESOURCE_NODE_TRAVERSAL_INTEGRATION_BT.md and reports/native_resource_node_traversal_bt.json. Native unwind evidence. State1->0 destroy saved node+10 tag; saved node at synthetic EBP-18.",
+      "ledger_name_output": "00cc7158 -> Unwind@00cc7158\n",
+      "prior_comment_preservation_checked": true,
+      "after_comment": {
+        "address": "00cc7158",
+        "function_name": "Unwind@00cc7158",
+        "comment": "[BSP reconstruction 00cc7158]\nBT actual resource child traversal. Seven complete ordinary bodies total582bytes; all203 ordinary and16 supporting instruction starts match installed PE and live Ghidra ownership. Strict Win32 compile, full build and both tests passed. One actual memory-stream/pool/reader/root/ref fixture passed nested traversal/control/skip/detach, two forwarding-call mutation checks and one injected source exception after an actual payload-header read. Current scalar slot38 debits actual with wrapping; control stores to captured reader while skip reloads current reader after seek. Child FH3 maps establish source cleanup order and preserve prior header debits. Original stack/EH spill aliases, native CRT/FH3/SEH identity, hardware faults and binary ABI remain unproved. No native original-body oracle or gameplay run. Raw resource dispatch, manager/factory/parser owners, B80720 and queue/worker shutdown remain incomplete. Names are descriptive hypotheses; prior comments and correct compiler names retained. See docs/NATIVE_RESOURCE_NODE_TRAVERSAL_INTEGRATION_BT.md and reports/native_resource_node_traversal_bt.json. Native unwind evidence. State1->0 destroy saved node+10 tag; saved node at synthetic EBP-18."
+      }
+    },
+    {
+      "address": "00cc7163",
+      "name": "Unwind@00cc7163",
+      "before_comment": {
+        "address": "00cc7163",
+        "function_name": "Unwind@00cc7163"
+      },
+      "evidence": "BT actual resource child traversal. Seven complete ordinary bodies total582bytes; all203 ordinary and16 supporting instruction starts match installed PE and live Ghidra ownership. Strict Win32 compile, full build and both tests passed. One actual memory-stream/pool/reader/root/ref fixture passed nested traversal/control/skip/detach, two forwarding-call mutation checks and one injected source exception after an actual payload-header read. Current scalar slot38 debits actual with wrapping; control stores to captured reader while skip reloads current reader after seek. Child FH3 maps establish source cleanup order and preserve prior header debits. Original stack/EH spill aliases, native CRT/FH3/SEH identity, hardware faults and binary ABI remain unproved. No native original-body oracle or gameplay run. Raw resource dispatch, manager/factory/parser owners, B80720 and queue/worker shutdown remain incomplete. Names are descriptive hypotheses; prior comments and correct compiler names retained. See docs/NATIVE_RESOURCE_NODE_TRAVERSAL_INTEGRATION_BT.md and reports/native_resource_node_traversal_bt.json. Native unwind evidence. State2->1 destroy current temporary header at synthetic EBP-14.",
+      "ledger_name_output": "00cc7163 -> Unwind@00cc7163\n",
+      "prior_comment_preservation_checked": true,
+      "after_comment": {
+        "address": "00cc7163",
+        "function_name": "Unwind@00cc7163",
+        "comment": "[BSP reconstruction 00cc7163]\nBT actual resource child traversal. Seven complete ordinary bodies total582bytes; all203 ordinary and16 supporting instruction starts match installed PE and live Ghidra ownership. Strict Win32 compile, full build and both tests passed. One actual memory-stream/pool/reader/root/ref fixture passed nested traversal/control/skip/detach, two forwarding-call mutation checks and one injected source exception after an actual payload-header read. Current scalar slot38 debits actual with wrapping; control stores to captured reader while skip reloads current reader after seek. Child FH3 maps establish source cleanup order and preserve prior header debits. Original stack/EH spill aliases, native CRT/FH3/SEH identity, hardware faults and binary ABI remain unproved. No native original-body oracle or gameplay run. Raw resource dispatch, manager/factory/parser owners, B80720 and queue/worker shutdown remain incomplete. Names are descriptive hypotheses; prior comments and correct compiler names retained. See docs/NATIVE_RESOURCE_NODE_TRAVERSAL_INTEGRATION_BT.md and reports/native_resource_node_traversal_bt.json. Native unwind evidence. State2->1 destroy current temporary header at synthetic EBP-14."
+      }
+    },
+    {
+      "address": "00cc71f0",
+      "name": "Unwind@00cc71f0",
+      "before_comment": {
+        "address": "00cc71f0",
+        "function_name": "Unwind@00cc71f0",
+        "comment": ""
+      },
+      "evidence": "BT actual resource child traversal. Seven complete ordinary bodies total582bytes; all203 ordinary and16 supporting instruction starts match installed PE and live Ghidra ownership. Strict Win32 compile, full build and both tests passed. One actual memory-stream/pool/reader/root/ref fixture passed nested traversal/control/skip/detach, two forwarding-call mutation checks and one injected source exception after an actual payload-header read. Current scalar slot38 debits actual with wrapping; control stores to captured reader while skip reloads current reader after seek. Child FH3 maps establish source cleanup order and preserve prior header debits. Original stack/EH spill aliases, native CRT/FH3/SEH identity, hardware faults and binary ABI remain unproved. No native original-body oracle or gameplay run. Raw resource dispatch, manager/factory/parser owners, B80720 and queue/worker shutdown remain incomplete. Names are descriptive hypotheses; prior comments and correct compiler names retained. See docs/NATIVE_RESOURCE_NODE_TRAVERSAL_INTEGRATION_BT.md and reports/native_resource_node_traversal_bt.json. Native unwind evidence. State0->-1 BF65AC free on captured allocation at EBP-10; complete five-instruction POP ECX/RET membership repaired and verified.",
+      "ledger_name_output": "00cc71f0 -> Unwind@00cc71f0\n",
+      "prior_comment_preservation_checked": true,
+      "after_comment": {
+        "address": "00cc71f0",
+        "function_name": "Unwind@00cc71f0",
+        "comment": "[BSP reconstruction 00cc71f0]\nBT actual resource child traversal. Seven complete ordinary bodies total582bytes; all203 ordinary and16 supporting instruction starts match installed PE and live Ghidra ownership. Strict Win32 compile, full build and both tests passed. One actual memory-stream/pool/reader/root/ref fixture passed nested traversal/control/skip/detach, two forwarding-call mutation checks and one injected source exception after an actual payload-header read. Current scalar slot38 debits actual with wrapping; control stores to captured reader while skip reloads current reader after seek. Child FH3 maps establish source cleanup order and preserve prior header debits. Original stack/EH spill aliases, native CRT/FH3/SEH identity, hardware faults and binary ABI remain unproved. No native original-body oracle or gameplay run. Raw resource dispatch, manager/factory/parser owners, B80720 and queue/worker shutdown remain incomplete. Names are descriptive hypotheses; prior comments and correct compiler names retained. See docs/NATIVE_RESOURCE_NODE_TRAVERSAL_INTEGRATION_BT.md and reports/native_resource_node_traversal_bt.json. Native unwind evidence. State0->-1 BF65AC free on captured allocation at EBP-10; complete five-instruction POP ECX/RET membership repaired and verified."
+      }
+    }
+  ],
+  "actions": [
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00bea250",
+        "prototype": "void* __fastcall BSP_StructuredNode_ConstructChild(void* node, void* unused_edx, void* parent)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00bea250 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00bea680",
+        "prototype": "void* __fastcall BSP_StructuredNode_CreateChild(void* parent_handle, void* unused_edx, void* output)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00bea680 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00bf02a0",
+        "prototype": "unsigned int __fastcall BSP_StreamReader_ReadDwordAndDebit(void* reader, void* unused_edx, unsigned int* budget)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00bf02a0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00bf03e0",
+        "prototype": "unsigned int __fastcall BSP_StreamReader_SkipRelative(void* reader, void* unused_edx, unsigned int low_offset, void* ignored)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00bf03e0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00be9a40",
+        "prototype": "void __fastcall BSP_StructuredNode_ReadControlWord(void* handle, void* unused_edx)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00be9a40 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00be9c40",
+        "prototype": "void __fastcall BSP_StructuredNode_SkipAndDetach(void* handle, void* unused_edx)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00be9c40 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00715bf0",
+        "prototype": "unsigned int __fastcall BSP_StructuredNode_HasRemaining(void* handle, void* unused_edx)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00715bf0 with __fastcall calling convention"
+    }
+  ],
+  "state": "names_and_abi_views_saved_previous_comments_retained",
+  "exports_refreshed": true
+}
