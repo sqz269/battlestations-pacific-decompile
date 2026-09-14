@@ -6,6 +6,7 @@
 #include "bsp/native_mpak_storage_services.hpp"
 #include "bsp/native_mpkg_runtime.hpp"
 #include "bsp/native_pak_registry.hpp"
+#include "bsp/native_physical_enumeration.hpp"
 #include "bsp/native_physical_factory.hpp"
 #include "bsp/native_physical_provider.hpp"
 #include "bsp/native_physical_provider_pool.hpp"
@@ -14,13 +15,17 @@
 #include "bsp/native_stream_type_ids.hpp"
 #include "bsp/native_string.hpp"
 #include "bsp/native_vfs_derived_manager.hpp"
+#include "bsp/native_vfs_enumeration.hpp"
 #include "bsp/native_vfs_factory_registration.hpp"
 #include "bsp/native_vfs_lookup_routes.hpp"
 #include "bsp/native_vfs_mount_registration.hpp"
 #include "bsp/native_vfs_open_logging.hpp"
 #include "bsp/native_vfs_open_route.hpp"
 #include "bsp/native_vfs_owner_services.hpp"
+#include "bsp/native_vfs_package_scan.hpp"
+#include "bsp/native_vfs_provider_enumeration_bindings.hpp"
 #include "bsp/native_vfs_runtime_bindings.hpp"
+#include "bsp/native_vfs_search_defaults.hpp"
 #include "bsp/native_vfs_startup_callbacks.hpp"
 #include "bsp/platform_window.hpp"
 
@@ -47,6 +52,11 @@ void put_byte(void* p, std::size_t offset, std::uint8_t value) noexcept {
 const void* required(const GameNativeReadOnlyData& data,
     std::uintptr_t address, std::size_t bytes) {
     return data.data_at(address, bytes);
+}
+NativeVfsEnumerationDuplicateLog& required_log(
+    NativeVfsEnumerationDuplicateLog* logger) {
+    if (!logger) throw std::invalid_argument("Native VFS duplicate logger is required");
+    return *logger;
 }
 struct PooledHeader {
     NativeString value{};
@@ -109,6 +119,11 @@ struct GameNativeVfsRuntime::Impl {
     NativeVfsManagerLifetimeContext manager_context;
     NativeVfsStartupCallbacks failure;
     NativeVfsMountRegistrationContext mount_context;
+    NativePhysicalEnumerationContext physical_enumeration;
+    NativeVfsProviderEnumerationInputs enumeration_provider_inputs;
+    NativeVfsProviderEnumerationBindings enumeration_providers;
+    NativeVfsEnumerationContext enumeration_context;
+    NativeVfsPackageScanContext package_scan_context;
     bool core_started{};
     bool core_registered{};
     bool archive_tail_registered{};
@@ -175,10 +190,23 @@ struct GameNativeVfsRuntime::Impl {
                static_cast<const char*>(required(inputs.data, 0x00d68400, 1))},
               inputs.invalid_parameters, bindings},
           mount_context{inputs.owners.vfs_publication_0109ceec(), canonicalizer,
-              inputs.invalid_parameters, bindings, failure} {
+              inputs.invalid_parameters, bindings, failure},
+          physical_enumeration{inputs.owners.physical(), canonicalizer},
+          enumeration_provider_inputs{physical_enumeration, inputs.owners.strings(),
+              inputs.invalid_parameters, mpkg_directory,
+              inputs.actual_mpak_null_pattern_00e17bf0, mpak_runtime},
+          enumeration_providers(enumeration_provider_inputs),
+          enumeration_context{inputs.owners.strings(), inputs.invalid_parameters,
+              enumeration_providers, required_log(inputs.enumeration_duplicates),
+              inputs.actual_empty_name_0109cef0,
+              required(inputs.data, 0x00d6846c, 12)},
+          package_scan_context{inputs.owners.vfs_publication_0109ceec(),
+              inputs.owners.strings(), inputs.invalid_parameters,
+              enumeration_context, mount_context} {
         if (!inputs.actual_vfs_storage_a0 || !inputs.lowercase_00bf9611 ||
             !inputs.actual_mpkg_xor_key_00e144f0 ||
-            !inputs.actual_mpak_null_pattern_00e17bf0)
+            !inputs.actual_mpak_null_pattern_00e17bf0 ||
+            !inputs.enumeration_duplicates || !inputs.actual_empty_name_0109cef0)
             throw std::invalid_argument("Native VFS requires actual owner and archive services");
         required(inputs.data, 0x00d68d04, 0x38);
         required(inputs.data, 0x00cfea14, 0x10);
@@ -280,11 +308,28 @@ void* GameNativeVfsRuntime::mount(const char* system, const char* virtual_path,
         &virtual_name.value, priority, flags, device_id, impl_->mount_context);
 }
 void GameNativeVfsRuntime::mount_phase2_loose_paths(const char* root) {
-    // The three verified 0073D6A2..0073D881 requests. Package scans and search
-    // registration occur after this phase and are separate, required work.
+    // The three verified 0073D6A2..0073D881 requests.
     mount(root, ".", 0, 1, static_cast<std::uint32_t>(-1));
     mount(root, "persistent_data", 99, 1, static_cast<std::uint32_t>(-1));
     mount("filestore", ".", 300, 0, static_cast<std::uint32_t>(-1));
+}
+void GameNativeVfsRuntime::scan_phase2_packages() {
+    if (!impl_->core_registered)
+        throw std::logic_error("Native VFS core is not registered");
+    scan_native_vfs_packages_0073cb10(impl_->package_scan_context);
+}
+void GameNativeVfsRuntime::register_phase2_search_defaults() {
+    if (!impl_->core_registered)
+        throw std::logic_error("Native VFS core is not registered");
+    register_native_vfs_search_defaults_00738360(
+        impl_->inputs.owners.vfs_publication_0109ceec(),
+        impl_->inputs.owners.strings(), impl_->inputs.invalid_parameters);
+}
+void GameNativeVfsRuntime::run_phase2_mount_scan_search(const char* root) {
+    mount_phase2_loose_paths(root);
+    scan_phase2_packages();
+    scan_phase2_packages();
+    register_phase2_search_defaults();
 }
 bool GameNativeVfsRuntime::exists(const char* path) {
     if (!impl_->core_registered)

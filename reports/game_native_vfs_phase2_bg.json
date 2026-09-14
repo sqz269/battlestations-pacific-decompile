@@ -1,0 +1,15 @@
+{
+  "packet": "orch4_game_native_vfs_phase2_bg",
+  "kind": "source composition; zero new native address claims",
+  "program": "/battlestationspacific.exe",
+  "source": "src/game_native_vfs_runtime.cpp",
+  "header": "include/bsp/game_native_vfs_runtime.hpp",
+  "merged_search_defaults_dependency": "2bb336a0538e54efc4ba08f7f6e55bbc6e3c772f",
+  "dependencies": ["00bdd990 actual visitor", "0073cb10 actual package scan", "00738360 full raw search registrations", "00bf47e0 physical enumeration", "00be6480 FileStore enumeration", "00bb98f0 MPKG enumeration", "00bb5f40 MPAK enumeration"],
+  "calls": [],
+  "lifetime": "all phase2 contexts borrow retained GameNativeVfsRuntime owner cells and survive the same 01090AA0 manager drain",
+  "required_external_inputs": ["real NativeVfsEnumerationDuplicateLog", "caller-owned readable initial-zero 0109cef0 empty-name bytes", "existing original MPKG key and MPAK filter pattern"],
+  "empty_name_evidence": "supported installed PE SHA256 b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6: RVA C9CEF0 is zero-fill in .data beyond raw section bytes; fixed address/global identity and later writes are not reconstructed",
+  "exclusions": ["GameVfsHost consumer migration", "original SEH/FH3 failure identity", "original executable runtime equivalence", "archive payload equivalence from the loose-assets probe"],
+  "validation": "strict MSVC Win32 /std:c++20 /permissive- /EHsc /W4 /WX /O2 /MD /fp:strict /c passed for composer and updated ignored primary probe against merged defaults; combined build and runtime pending primary CMake registration 9aed5ec4"
+}
