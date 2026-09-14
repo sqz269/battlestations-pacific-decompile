@@ -1,0 +1,36 @@
+{
+  "packet": "orch4_raw_vfs_lua_composition_bc",
+  "base_commit": "294b90ad3321da62be0b690f46d9ac9f0ba803cb",
+  "local_dependency": "merged NativeVfsOwnerServices 7f68e529 and its type-counter dependency 27f7b637",
+  "status": "populated_raw_manager_source_fixture_passed",
+  "scope": {
+    "tracked_files": ["docs/RAW_VFS_LUA_COMPOSITION_BC.md", "reports/raw_vfs_lua_composition_bc.json"],
+    "ignored_fixture": ["local/raw_vfs_lua_bc_probe.cpp", "local/run_raw_vfs_lua_bc_probe.ps1", "local/raw_vfs_lua_bc_probe.exe"],
+    "ghidra_mutations": false,
+    "native_addresses_reconstructed": [],
+    "permanent_tests_added": 0,
+    "game_process_launched": false
+  },
+  "source_change": "Adapted existing ignored populated GameNativeReadOnlyData/VFS/Lua fixture to use one borrowed raw01090AA0 across NativeVfsOwnerServices and NativeLuaFundamentalsContext; removed semantic domain/callback drain and bound all six reached native deletion profiles before registration.",
+  "original_fixture_provenance": {
+    "source": "J:/PROG/battlestations-pacific-decompile-orch4-20260910/local/game_native_readonly_data_az_probe.cpp",
+    "source_sha256": "566697ed084b4bd8538de8d5f5417cac522206e1f6092906353529a30fbead94",
+    "runner_sha256": "1137264c75c129cc197e5e7fc1a7864f6e66b4e51ff443527dcf23f0fcac6ff0",
+    "support_generator_sha256": "28bca6476863d51d05825db6f12af3f2d20f7e2510dfa29202e919fd7d27ec77"
+  },
+  "validation": {
+    "strict_build": "Full MSVC Win32 build and reconstructed_math CTest passed; new owner-services translation unit compiled explicitly by the ignored fixture because startup.cmake registration is primary-owned.",
+    "fixture_command": "./local/run_raw_vfs_lua_bc_probe.ps1",
+    "fixture_result": "PASS: verified 196608 original read-only bytes in 48 pages; installed shader HANDLE reads; Lua bootstrap and nested DoFile MCPP; FileStore memory/physical/adopted conversion; cursors/references/handle closure; one raw manager registered and drained six owners; all six publications cleared; retained-memory counters zero.",
+    "installed_exe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "fixture_source_sha256": "06fbead6574930c8627e003aa12a0e6a7ea32885cdce66a98072808e6d9d7471",
+    "fixture_runner_sha256": "e1ecee2c07de2517a31c5f752e51bb89504d9465732d95b4b9b03c2714406f2b",
+    "fixture_exe_sha256": "3d7f4d14de85d7e5965e63947f3e0d1844d400355a082ab7916ec980a5e24ab4",
+    "core_archive_sha256": "af6eddbcc5194875e83d05e9b01da67daae6d79afbbfc4e8d03eabe016afaad9",
+    "owner_services_cpp_sha256": "1df19acedaa8505b0bc1d0fd4279a514a73f4a1db5cf63300c53f89e9cb1ed6c",
+    "readonly_data_header_sha256": "ccbec01a1a81df7308a4dfe208593bb8b97d0e88d072eda45f354aa8715913c4",
+    "readonly_data_cpp_sha256": "aef2cb65721546b6699240b6236ee7856e1298cb5d4fbd32639c8f6db042f581"
+  },
+  "limits": "VFS manager/provider and FileStore records are seeded by fixture arena, not created by production startup. Fixed read-only spans support source identity checks only. No original game process or native binary ABI proof.",
+  "calls": []
+}
