@@ -1,7 +1,11 @@
 #include "bsp/native_unit_part_construction.hpp"
+#include "bsp/native_unit_part_groups.hpp"
 #include "bsp/native_physical_file_date.hpp"
 
 namespace bsp {
+void NativeUnitPartConstructionBindings::call_00713380(void* model) {
+    build_native_unit_part_groups_00713380(model);
+}
 namespace {
 template<class T> volatile T& ordered(T& cell) noexcept { return cell; }
 
