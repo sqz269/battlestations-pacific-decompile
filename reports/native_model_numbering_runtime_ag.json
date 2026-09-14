@@ -705,5 +705,16 @@
       "source_type_dispatch": "ModelTypeBootstrap::is_type_006ef860",
       "match": true
     }
-  ]
+  ],
+  "integration_repairs": {
+    "real_collision": "Two incompatible bsp::PilotCommandBlock definitions. The older plane_ai_control projection is now PlaneAiCommandProjection; algorithms and members are unchanged.",
+    "false_positives": "Integration preflight now qualifies names by namespace and excludes local/anonymous scopes instead of rejecting unrelated offset constants.",
+    "check": "local/model_numbering_runtime_ag/integration_name_audit.json",
+    "compiler_check": "MSVC /Zs combined six affected headers, including both distinct pilot projections; passed.",
+    "files": [
+      "tools/integrate_workers.py",
+      "include/bsp/plane_ai_control.hpp",
+      "src/plane_ai_control.cpp"
+    ]
+  }
 }

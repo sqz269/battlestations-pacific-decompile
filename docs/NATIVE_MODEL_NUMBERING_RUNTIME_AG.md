@@ -52,3 +52,5 @@ The mission runtime still requires this service composition to be connected.
 call rows, output hashes and exact retained fixture scope. The fixture sources,
 raw outputs and copied original references are under
 `local/model_numbering_runtime_ag/`. No workers were dispatched.
+
+Integration exposed two unrelated header issues already on main. The duplicate-name preflight now respects namespace scope for offset constants. A real collision between two incompatible `bsp::PilotCommandBlock` projections is removed by naming the older `plane_ai_control.hpp` type `PlaneAiCommandProjection`; its fields and algorithms are unchanged. A combined MSVC syntax check includes both projections and the other affected headers. The namespace check still detects the actual shared-name collision.
