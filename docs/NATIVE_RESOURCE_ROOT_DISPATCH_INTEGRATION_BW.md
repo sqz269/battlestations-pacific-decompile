@@ -19,3 +19,5 @@ The integration report records the tested revision, copied libraries, source
 manifest, build logs, fixture receipts and evidence boundaries. This closes the
 two dispatch bodies, not the raw manager, native parsers, B80720 loader or complete
 resource ownership. It adds no production loading admission or gameplay claim.
+
+Final code revision `8c9cd4cd1c1415d2dac7fe1f4c31fc88da8d48c3` includes reviewed main `bab5d943e192d8d2ece768f85951c5358570aa95`. The combined Win32 build and both tests passed. The focused fixture passed linked to copied, hash-verified libraries from this revision; its manifest records 2647 build inputs. All259 ordinary and13 supporting instruction starts,31 direct transfers,4 indirect call contracts and10 preserved Ghidra annotations are recorded. Incoming pilot-target and speed-hold source was reviewed and built; native task, COMISS exception behavior and gameplay claims were not independently certified.

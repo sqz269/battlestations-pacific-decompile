@@ -2375,8 +2375,8 @@
   ],
   "definition_report": {
     "path": "reports/native_resource_root_dispatch_definitions_bw.json",
-    "sha256": "01c3a9f6578f2c0b0685059f09c12827c6f4319250b190dd3792033268881852",
-    "bytes": 1854
+    "sha256": "0b0326b7baf90ec8b9c786cfd4c0ad46d3d06377dfadfa0b7166c4d4c45790fe",
+    "bytes": 1796
   },
   "flow_report": {
     "path": "reports/native_resource_root_dispatch_flow_bw.json",
@@ -2396,7 +2396,10 @@
     "native_binary_abi_compatible": false,
     "native_dispatch_original_body_oracle": false,
     "native_fh3_exception_fixture": false,
-    "game_validated": false
+    "game_validated": false,
+    "build_source_commit": "8c9cd4cd1c1415d2dac7fe1f4c31fc88da8d48c3",
+    "combined_fixture": "passed with exact final libraries and controlled suspended-child data reservation",
+    "integration_report": "reports/native_resource_root_dispatch_integration_bw.json"
   },
   "evidence_limits": [
     "Actual source bodies with explicit current virtual target dispatch; parser, alternate resource and renderer identities require supplied implementations.",
