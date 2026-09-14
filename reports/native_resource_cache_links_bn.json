@@ -1,0 +1,408 @@
+{
+  "packet": "orch4_native_resource_cache_links_bn",
+  "generated_utc": "2026-09-14T07:04:23.321796+00:00",
+  "branch": "agent/orch4-resource-cache-links-bn",
+  "base_commit": "c1579357bc6c61e3036f870c5047d4b402d49a28",
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "project": "bsp",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "verification": "bsp.py ghidra verifies project/program/language/base before every live batch"
+  },
+  "functions": [
+    {
+      "address": "00b7cbd0",
+      "inclusive_end": "00b7cc21",
+      "byte_count": 82,
+      "cpp": "bsp::rotate_native_resource_cache_right_00b7cbd0",
+      "coverage": "complete ordinary right rotation body",
+      "native_abi": "ECX tree; stack node; EAX captured pivot; RET4",
+      "listed_instructions": 30,
+      "listing_gaps": 0
+    },
+    {
+      "address": "00b7d5f0",
+      "inclusive_end": "00b7d63d",
+      "byte_count": 78,
+      "cpp": "bsp::rotate_native_resource_cache_left_00b7d5f0",
+      "coverage": "complete ordinary left rotation body",
+      "native_abi": "ECX tree; stack node; EAX captured pivot; RET4",
+      "listed_instructions": 30,
+      "listing_gaps": 0
+    },
+    {
+      "address": "00b7cdf0",
+      "inclusive_end": "00b7ce78",
+      "byte_count": 137,
+      "cpp": "bsp::decrement_native_resource_cache_iterator_00b7cdf0",
+      "coverage": "complete ordinary predecessor body",
+      "native_abi": "ECX iterator; no stack arguments; RET or BF6713 tail jump; no uniform EAX result",
+      "listed_instructions": 48,
+      "listing_gaps": 0
+    }
+  ],
+  "native_spans": [
+    {
+      "address": "00b7cbd0",
+      "inclusive_end": "00b7cc21",
+      "byte_count": 82,
+      "role": "complete right rotation",
+      "sha256": "e42b0897d23d00413aefba0f2366246f1aae06cad9b22bfcdbe23fa0d8ffe502",
+      "installed_pe_matches_live_ghidra": true,
+      "listed_instructions": 30,
+      "listing_gaps": 0,
+      "evidence_log": "local/cache_links_bn/live_00b7cbd0.txt",
+      "evidence_log_sha256": "b0cdc35f0d50c0f861f6e83800af046700717597c5fee399a7637dd55f7f8a48"
+    },
+    {
+      "address": "00b7d5f0",
+      "inclusive_end": "00b7d63d",
+      "byte_count": 78,
+      "role": "complete left rotation",
+      "sha256": "0439f0befe0245fd4352ce96b0a1925cf906071c3d97d0d6b31232037d4a02b4",
+      "installed_pe_matches_live_ghidra": true,
+      "listed_instructions": 30,
+      "listing_gaps": 0,
+      "evidence_log": "local/cache_links_bn/live_00b7d5f0.txt",
+      "evidence_log_sha256": "b0f37c5f19b8ff9ecc7d19dd6a1bd64a8d25f879b451d71af2252bf51c8a196a"
+    },
+    {
+      "address": "00b7cdf0",
+      "inclusive_end": "00b7ce78",
+      "byte_count": 137,
+      "role": "complete predecessor",
+      "sha256": "fc78306ce8f6a1e4ab70945da58dcfa8ac8f36436932f7b9f917ccbc6f224f49",
+      "installed_pe_matches_live_ghidra": true,
+      "listed_instructions": 48,
+      "listing_gaps": 0,
+      "evidence_log": "local/cache_links_bn/live_00b7cdf0.txt",
+      "evidence_log_sha256": "d75de543c23adda127e5b51461dbb1da5d04bb6978ab9e830145a1a4b2c099ed"
+    }
+  ],
+  "direct_and_tail_calls": [
+    {
+      "address": "00b7cdf8",
+      "native": "00bf6713",
+      "function": "00b7cdf0"
+    },
+    {
+      "address": "00b7ce13",
+      "native": "00bf6713",
+      "function": "00b7cdf0",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00b7ce6f",
+      "native": "00bf6713",
+      "function": "00b7cdf0",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00b7fc35",
+      "native": "00b7cbd0",
+      "function": "00b7fa60",
+      "setup": "ECX tree; one stacked node; callee RET4"
+    },
+    {
+      "address": "00b7fc66",
+      "native": "00b7cbd0",
+      "function": "00b7fa60",
+      "setup": "ECX tree; one stacked node; callee RET4"
+    },
+    {
+      "address": "00b7fcc9",
+      "native": "00b7cbd0",
+      "function": "00b7fa60",
+      "setup": "ECX tree; one stacked node; callee RET4"
+    },
+    {
+      "address": "00b7fc02",
+      "native": "00b7d5f0",
+      "function": "00b7fa60",
+      "setup": "ECX tree; one stacked node; callee RET4"
+    },
+    {
+      "address": "00b7fc51",
+      "native": "00b7d5f0",
+      "function": "00b7fa60",
+      "setup": "ECX tree; one stacked node; callee RET4"
+    },
+    {
+      "address": "00b7fcaf",
+      "native": "00b7d5f0",
+      "function": "00b7fa60",
+      "setup": "ECX tree; one stacked node; callee RET4"
+    },
+    {
+      "address": "00b800b3",
+      "native": "00b7cbd0",
+      "function": "00b7ff80",
+      "setup": "ECX tree; one stacked node; callee RET4"
+    },
+    {
+      "address": "00b800e1",
+      "native": "00b7cbd0",
+      "function": "00b7ff80",
+      "setup": "ECX tree; one stacked node; callee RET4"
+    },
+    {
+      "address": "00b80095",
+      "native": "00b7d5f0",
+      "function": "00b7ff80",
+      "setup": "ECX tree; one stacked node; callee RET4"
+    },
+    {
+      "address": "00b8045f",
+      "native": "00b7cdf0",
+      "function": "00b803b0",
+      "setup": "ECX actual iterator; no stacked arguments; callee RET"
+    },
+    {
+      "address": "00b7d8c3",
+      "native": "00b7cdf0",
+      "function": "00b7d8c0",
+      "setup": "ECX actual iterator; no stacked arguments; callee RET"
+    },
+    {
+      "address": "00b7dee3",
+      "native": "00b7cdf0",
+      "function": "00b7dee0",
+      "setup": "ECX actual iterator; no stacked arguments; callee RET"
+    }
+  ],
+  "no_ghidra_function": [],
+  "storage": {
+    "tree": "head+4; current head root+4; allocator/count untouched",
+    "node": "actual1Ch links0/4/8,keyC/10,borrowed resource14,color18,nil19,padding1A/1B",
+    "iterator": "actual8h owner/node",
+    "producer": "B7F220; existing ownership audit and disjoint node worker confirmation"
+  },
+  "current_captured_contract": [
+    "rotations capture pivot and retain it as EAX result",
+    "moved child reread after node link store",
+    "current head captured after pivot.parent store",
+    "current node.parent reread for nonroot branch",
+    "predecessor reloads node after returning null-owner handler",
+    "end publishes captured rightmost then checks captured value",
+    "ancestor published into iterator before current ancestor.parent read",
+    "final nil test uses current iterator node",
+    "both tail handlers return without further stores"
+  ],
+  "validation": {
+    "strict_tu_compile": {
+      "passed": true,
+      "compiler": "MSVC Win32",
+      "flags": "/std:c++17 /EHsc /W4 /WX /O2 /fp:strict /MD",
+      "log": "local/cache_links_bn/compile.log"
+    },
+    "fixture": {
+      "passed": true,
+      "exit_code": 0,
+      "frozen_input_count": 10,
+      "frozen_inputs": "local/cache_links_bn/frozen_inputs.json",
+      "executable": "local/cache_links_bn/links_probe.exe",
+      "manifest_link_flag": "/MANIFEST:EMBED",
+      "log": "local/cache_links_bn/probe.log",
+      "coverage": [
+        "root/both parent-side branches of each rotation",
+        "nonnil/nil moved child",
+        "captured pivot return and unchanged payload/color/count",
+        "left-subtree rightmost, ancestor climb, end/max",
+        "returning owner handler changes node then source reloads it",
+        "B7CE13 tail preserves repair",
+        "B7CE6F tail reached by actual iterator/node-flag alias and preserves repair"
+      ],
+      "alias_fixture": "VirtualAlloc64KB-aligned A, B=A+100h, iterator=B+14h; publishing B changes B.nil; callback repairs toA; VirtualFree afterward",
+      "original_code_executed": false
+    },
+    "library_inputs": [
+      {
+        "source": "J:\\PROG\\battlestations-pacific-decompile-orch4-resource-cache-lookup-bn\\local\\cache_lookup_bn\\bsp_core.lib",
+        "before": "134578367593F74415BB6FD12B51D103DFC6575DCB94D2F692640DDE69C78251",
+        "after": "134578367593F74415BB6FD12B51D103DFC6575DCB94D2F692640DDE69C78251",
+        "copy": "134578367593F74415BB6FD12B51D103DFC6575DCB94D2F692640DDE69C78251",
+        "origin_receipts": "J:/PROG/battlestations-pacific-decompile-orch4-resource-cache-lookup-bn/local/cache_lookup_bn/library_hash.json and dependent_library_hashes.jsonl"
+      },
+      {
+        "source": "J:\\PROG\\battlestations-pacific-decompile-orch4-resource-cache-lookup-bn\\local\\cache_lookup_bn\\bsp_lua511.lib",
+        "before": "00315AC717AAC3D2B2161FEFEFE71B36A974335FF9C95D48C137423EB4E2F4B2",
+        "after": "00315AC717AAC3D2B2161FEFEFE71B36A974335FF9C95D48C137423EB4E2F4B2",
+        "copy": "00315AC717AAC3D2B2161FEFEFE71B36A974335FF9C95D48C137423EB4E2F4B2",
+        "origin_receipts": "J:/PROG/battlestations-pacific-decompile-orch4-resource-cache-lookup-bn/local/cache_lookup_bn/library_hash.json and dependent_library_hashes.jsonl"
+      },
+      {
+        "source": "J:\\PROG\\battlestations-pacific-decompile-orch4-resource-cache-lookup-bn\\local\\cache_lookup_bn\\bsp_zlib121.lib",
+        "before": "73AE30B8ADC3ADFE5B33285BAC533F8E7DF7E8AB8D9E44789E6A030FD8A06AD9",
+        "after": "73AE30B8ADC3ADFE5B33285BAC533F8E7DF7E8AB8D9E44789E6A030FD8A06AD9",
+        "copy": "73AE30B8ADC3ADFE5B33285BAC533F8E7DF7E8AB8D9E44789E6A030FD8A06AD9",
+        "origin_receipts": "J:/PROG/battlestations-pacific-decompile-orch4-resource-cache-lookup-bn/local/cache_lookup_bn/library_hash.json and dependent_library_hashes.jsonl"
+      }
+    ],
+    "library_limit": "helpers have no external reconstructed body beyond explicit callback; listing a pinned library as link input does not prove additional dependencies",
+    "full_integration_build": false,
+    "permanent_tests_added": false,
+    "game_validated": false
+  },
+  "checklist": {
+    "callee_before_contract": "BF6713 source/assembly can return",
+    "boundary_before_attribution": "30/30/48 complete listed instructions, no gaps",
+    "all_call_sites": "all twelve direct caller setups inspected",
+    "producer_before_layout": "B7F220 producer and ownership audit reconciled with node worker",
+    "coverage": "complete ordinary bodies",
+    "runtime_frame_rule": "not applicable; no production route or frame claim",
+    "argument_counts": "rotation RET4; predecessor/wrapper RET",
+    "register_provenance": "complete helper listings and caller captures inspected",
+    "lease": "only3ownedaddresses/4files",
+    "report": "all3internalCALL/tailJMP and12externalCALL rows recorded"
+  },
+  "source_files": [
+    {
+      "path": "src/native_resource_cache_links.cpp",
+      "sha256": "286266e2aa4bdd38e3468fc54d8c162649fbefc86faff02061a9178c1c5cdbb5"
+    },
+    {
+      "path": "include/bsp/native_resource_cache_links.hpp",
+      "sha256": "4669a8bec642162844778b1e69529482eb7e9082ea791be05584e267101e17e5"
+    },
+    {
+      "path": "docs/NATIVE_RESOURCE_CACHE_LINKS_BN.md",
+      "sha256": "dacf91e09bdbac9b22939e953e242162bd5414836684f2e173d610e5aaad34b0"
+    }
+  ],
+  "local_artifacts": [
+    {
+      "path": "local/cache_links_bn/bsp_core.lib",
+      "byte_count": 57996726,
+      "sha256": "134578367593f74415bb6fd12b51d103dfc6575dcb94d2f692640dde69c78251"
+    },
+    {
+      "path": "local/cache_links_bn/bsp_lua511.lib",
+      "byte_count": 455244,
+      "sha256": "00315ac717aac3d2b2161fefefe71b36a974335ff9c95d48c137423eb4e2f4b2"
+    },
+    {
+      "path": "local/cache_links_bn/bsp_zlib121.lib",
+      "byte_count": 71906,
+      "sha256": "73ae30b8adc3adfe5b33285bac533f8e7df7e8ab8d9e44789e6a030fd8a06ad9"
+    },
+    {
+      "path": "local/cache_links_bn/compile.cmd",
+      "byte_count": 332,
+      "sha256": "dbf4106498ff8b230c19d498edbf367a0e2c5187d5c97e08e78e49236e55c492"
+    },
+    {
+      "path": "local/cache_links_bn/compile.log",
+      "byte_count": 33,
+      "sha256": "94305724f9f8396eefdd65bffd5dd60429b278484b5738997e52fe860b8f6f4e"
+    },
+    {
+      "path": "local/cache_links_bn/compile_probe.cmd",
+      "byte_count": 535,
+      "sha256": "9045e99eb7fb4d92eb0d50556118cb5b48b1126a815cb3dcb6a005b1da71508b"
+    },
+    {
+      "path": "local/cache_links_bn/freeze_inputs.py",
+      "byte_count": 1060,
+      "sha256": "51eb25b9f4fd06142dbd46c7135cf5930413fd9b4ae973318ec86f6ba2aafb5f"
+    },
+    {
+      "path": "local/cache_links_bn/frozen_inputs.json",
+      "byte_count": 2164,
+      "sha256": "a4088f9048f47369cab4d3e4ab6f47e42bb9941aaa1d4a3b52007f26b7399518"
+    },
+    {
+      "path": "local/cache_links_bn/library_hashes.jsonl",
+      "byte_count": 1559,
+      "sha256": "871ff6c29ac918683eb6677c807aecc5b04a9bae5128aeb83af11222a3851673"
+    },
+    {
+      "path": "local/cache_links_bn/links_probe.cpp",
+      "byte_count": 5808,
+      "sha256": "d2730ec911f3d4a68210f04068150ade111922c11a086e164c20bb4668c68493"
+    },
+    {
+      "path": "local/cache_links_bn/links_probe.exe",
+      "byte_count": 14336,
+      "sha256": "b931f39b3e1fcf75d197f1779ef54b93ab46e63d61ec8021e0112d908e503992"
+    },
+    {
+      "path": "local/cache_links_bn/links_probe.obj",
+      "byte_count": 26814,
+      "sha256": "20661819b024e474c6212930dc7cb2eb838bb83073b913bbaa66b62eff465787"
+    },
+    {
+      "path": "local/cache_links_bn/live_00b7cbd0.txt",
+      "byte_count": 406,
+      "sha256": "b0cdc35f0d50c0f861f6e83800af046700717597c5fee399a7637dd55f7f8a48"
+    },
+    {
+      "path": "local/cache_links_bn/live_00b7cdf0.txt",
+      "byte_count": 665,
+      "sha256": "d75de543c23adda127e5b51461dbb1da5d04bb6978ab9e830145a1a4b2c099ed"
+    },
+    {
+      "path": "local/cache_links_bn/live_00b7d5f0.txt",
+      "byte_count": 377,
+      "sha256": "b0f37c5f19b8ff9ecc7d19dd6a1bd64a8d25f879b451d71af2252bf51c8a196a"
+    },
+    {
+      "path": "local/cache_links_bn/make_report.py",
+      "byte_count": 8208,
+      "sha256": "8f6e8d3e8916e5df1592a1a5e85080ffaea6ef6f63a20666c616a6b1b4344461"
+    },
+    {
+      "path": "local/cache_links_bn/native_resource_cache_links.obj",
+      "byte_count": 3181,
+      "sha256": "3fa883638dab1b93b3e397da032899d502fe1f79e413764ca51199030c6a838d"
+    },
+    {
+      "path": "local/cache_links_bn/probe.log",
+      "byte_count": 271,
+      "sha256": "e90ae03fdbbbd8da32174e67fc449b3623b92e9c1f94b791a842a597294f09f1"
+    },
+    {
+      "path": "local/cache_links_bn/probe_compile.log",
+      "byte_count": 17,
+      "sha256": "5908fb4f49f02975cb77b46ed5a9e5c57c6e457e03d06903c24fa4425acb3685"
+    },
+    {
+      "path": "local/cache_links_bn/verify_calls.log",
+      "byte_count": 77,
+      "sha256": "72a31bc655c8ca080ebb958e218ef232ae0f6d787c0c96180f5ab55644ac0353"
+    }
+  ],
+  "limitations": [
+    "source stack/SEH ABI differs",
+    "valid raw pointer storage required",
+    "arbitrary original stack/register-spill aliases and concurrency unproved",
+    "native exception identity and gameplay unproved",
+    "insertion/manager/lifetime/recoloring outside packet",
+    "primary owns shared metadata/CMake/runtime and full integration build"
+  ],
+  "ghidra_mutations": false,
+  "requested_primary_annotations": [
+    {
+      "address": "00b7cbd0",
+      "suggested_name": "BSP_ResourceNameTree_RotateRight"
+    },
+    {
+      "address": "00b7d5f0",
+      "suggested_name": "BSP_ResourceNameTree_RotateLeft"
+    },
+    {
+      "address": "00b7cdf0",
+      "suggested_name": "BSP_ResourceNameTree_DecrementIterator"
+    }
+  ],
+  "call_site_validation": {
+    "checked": 15,
+    "failed": 0,
+    "exit_code": 0,
+    "tool": "tools/verify_report_calls.py",
+    "log": "local/cache_links_bn/verify_calls.log"
+  }
+}
