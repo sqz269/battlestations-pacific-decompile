@@ -1,0 +1,156 @@
+{
+  "packet": "orch3_native_renderer_shader_binding_bx",
+  "status": "raw_source_implemented_exact_build_pending",
+  "source_parent_commit": "f597d55ebf91b6c1e671bf1c29f95984a153248d",
+  "native_body_credit": 0,
+  "native_bytes_credit": 0,
+  "existing_semantic_functions_upgraded": 2,
+  "raw_body_bytes": 452,
+  "source": "src/native_renderer_shader_binding.cpp",
+  "header": "include/bsp/native_renderer_shader_binding.hpp",
+  "source_sha256": {
+    "include/bsp/native_renderer_shader_binding.hpp": "782653d951ecf90001217c1825aecd35d9fd1977400bf53c4624329cf3d016bb",
+    "src/native_renderer_shader_binding.cpp": "a24c3585bf883864720869053fae9ede49dc2253f1791b4b8ad2c9afe7a3d84e"
+  },
+  "provider_sha256": {
+    "include/bsp/native_renderer_synchronization_actual.hpp": "143554f622e256fc6188ae68b4e5530855b5e7dc3631a728739dc728398f3ea0",
+    "src/native_renderer_synchronization_actual.cpp": "753796c97dea61b0a5e4b9c4034aae48198782033d0a3272b22c11ccfaca2e7a",
+    "src/native_shader_constants.cpp": "6f3101c42f9ba54487b5de622038016c5a7103af5191f1aaa208fcb863f1b2b1",
+    "src/native_renderer_viewport_clear.cpp": "d9c1c037daf55a08e7eeab51dffe88b613bfae745204bfec3f974daed315525f"
+  },
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_home": "J:/tools/ghidra_12.0.4_PUBLIC",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "native_spans": [
+    {
+      "address": "00b21c20",
+      "bytes": 226,
+      "sha256": "283f873aca12e2de7ea0ce269eb5607c0f614cdb1adf397d868d3e70a7959125",
+      "live_PE_equal": true
+    },
+    {
+      "address": "00b21d10",
+      "bytes": 226,
+      "sha256": "bf5434109165dfa619784f62602c3e53b6e93a4475bb03fe3b9735998e74cf38",
+      "live_PE_equal": true
+    },
+    {
+      "address": "00cbce10",
+      "bytes": 18,
+      "sha256": "8b2039b49a1edc7538b4506f844b8e832472737cbac4ad82655430e9c3070a05",
+      "live_PE_equal": true
+    },
+    {
+      "address": "00cbce30",
+      "bytes": 18,
+      "sha256": "a16153e6e890c448ffe77e7b3bae861c28fd8acc38ae3f79299d1a79b16caec3",
+      "live_PE_equal": true
+    },
+    {
+      "address": "00df53c4",
+      "bytes": 44,
+      "sha256": "553d43ce868a52674f36c6ed60126491da4f3f006fbe93ad7b03d745a4fd200a",
+      "live_PE_equal": true
+    },
+    {
+      "address": "00df53f0",
+      "bytes": 44,
+      "sha256": "6fb9bcd3cf869d4a2e44984e0acd8f47f8bfe56877c3c63f12ce3b1fe5a0f2e8",
+      "live_PE_equal": true
+    }
+  ],
+  "call_steps": [
+    {
+      "address": "00b21c4b",
+      "native": "00b33ad0",
+      "function": "00b21c20"
+    },
+    {
+      "address": "00b21c99",
+      "native": "current_device_shader_slot",
+      "function": "00b21c20"
+    },
+    {
+      "address": "00b21cc9",
+      "native": "current_device_shader_slot",
+      "function": "00b21c20"
+    },
+    {
+      "address": "00b21cea",
+      "native": "00b33b00",
+      "function": "00b21c20"
+    },
+    {
+      "address": "00b21d3b",
+      "native": "00b33ad0",
+      "function": "00b21d10"
+    },
+    {
+      "address": "00b21d89",
+      "native": "current_device_shader_slot",
+      "function": "00b21d10"
+    },
+    {
+      "address": "00b21db9",
+      "native": "current_device_shader_slot",
+      "function": "00b21d10"
+    },
+    {
+      "address": "00b21dda",
+      "native": "00b33b00",
+      "function": "00b21d10"
+    }
+  ],
+  "functions": [
+    {
+      "address": "00b21c20",
+      "inclusive_end": "00b21d01",
+      "bytes": 226,
+      "cpp_symbol": "bind_native_renderer_pixel_shader_00b21c20",
+      "ghidra_name": "BSP_D3D9Renderer_BindPixelShader",
+      "cache": "176c",
+      "counter": "1bbc",
+      "device_slot": "1ac"
+    },
+    {
+      "address": "00b21d10",
+      "inclusive_end": "00b21df1",
+      "bytes": 226,
+      "cpp_symbol": "bind_native_renderer_vertex_shader_00b21d10",
+      "ghidra_name": "BSP_D3D9Renderer_BindVertexShader",
+      "cache": "1770",
+      "counter": "1bc0",
+      "device_slot": "170"
+    }
+  ],
+  "original_abi": "ECX actual renderer; one original callee stack argument logical shader; RET4; no specified return. Source adds globals pointer in EDX.",
+  "review": {
+    "primary_complete_native_listings_and_source": true,
+    "original_instructions": 132,
+    "source_authored_by_primary": true,
+    "independent_review": false,
+    "remaining_blocking_findings": []
+  },
+  "validation": {
+    "build": "pending",
+    "new_tests": 0,
+    "new_native_fixture": false,
+    "raw_entries_executed": false,
+    "game_validated": false
+  },
+  "limitations": [
+    "Raw source upgrade only; prior semantic implementation remains available.",
+    "No native execution, complete material-pass composition, hardware-exception/FH3 binary identity, drop-in ABI, render or game validation.",
+    "Entry-disabled/exit-enabled uninitialized optional guard storage is outside the valid source domain."
+  ]
+}
