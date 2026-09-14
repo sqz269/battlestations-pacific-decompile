@@ -18,3 +18,5 @@ evidence limits are in `NATIVE_RESOURCE_VALUE_READS_BU.md`.
 The integration report retains the final code revision, exact source-input
 manifest, final-library probe and combined build evidence. Production raw
 resource dispatch/loading and queue shutdown remain incomplete.
+
+Final code revision `d2577dbd51ebc135c5cd000217b1a89b9441dccb` includes reviewed main `8440ffeae812bbca915d792bd19105727e011aad`. The combined Win32 build and both tests passed. The probe passed linked to copied, hash-verified libraries from this revision; its manifest records 2639 exact build inputs. All 124 instruction starts, 15 direct transfers, two indirect sites and nine preserved Ghidra annotations are recorded. The final probe repeats the 612 paired cases, 60 seed-aware short reads, alias/source-exception cases and DWORD/string checks. Incoming pilot and model-data interpretations were not independently certified as native or gameplay parity by BU.

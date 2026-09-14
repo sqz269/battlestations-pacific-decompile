@@ -1313,7 +1313,10 @@
     "native_binary_abi_compatible": false,
     "native_fh3_exception_fixture": false,
     "unmasked_x87_faults": false,
-    "game_validated": false
+    "game_validated": false,
+    "build_source_commit": "d2577dbd51ebc135c5cd000217b1a89b9441dccb",
+    "combined_fixture": "passed with exact final libraries and controlled suspended-child data reservation",
+    "integration_report": "reports/native_resource_value_reads_integration_bu.json"
   },
   "evidence_limits": [
     "New source ABI and own stack addresses; original private aliases, general registers/EFLAGS, native CRT/FH3/SEH and hardware-fault delivery unproved.",

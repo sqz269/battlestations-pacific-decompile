@@ -1,9 +1,9 @@
 {
   "batch": "orch4_native_resource_value_reads_integration_bu",
-  "state": "source_fixture_and_initial_build_passed_combined_revision_pending",
+  "state": "integrated_build_and_actual_service_original_body_fixture_passed",
   "branch": "agent/orch4-20260910",
   "base_revision": "024d18ed7bf59a6575f1997b2a7fcf793c2c4827",
-  "code_revision": null,
+  "code_revision": "d2577dbd51ebc135c5cd000217b1a89b9441dccb",
   "packets": [
     {
       "packet": "orch4_native_resource_value_reads_bu",
@@ -23,7 +23,11 @@
     "scope": "Plane heading/speed factor input identification and partial source laws; ship model-data binding evidence and correction of damage wiring dependencies.",
     "observations": "Incoming source is disjoint from BU dependencies. The speed factor retains explicit unidentified fields and unestablished runtime interpolation globals. Ship binding changes are documentation only. This integrator reviewed these boundaries without certifying native x87/NaN parity or rerunning incoming native/game claims.",
     "independently_rerun": false,
-    "combined_build": "pending"
+    "combined_build": "passed",
+    "merged_revision": "8440ffeae812bbca915d792bd19105727e011aad",
+    "merge": "clean",
+    "borrowed_claims_independently_rerun": false,
+    "subsequent_review": "8440ffea adds actual unit-part entry/name production and selected-set release caller. Native/source constructor fixtures and compatibility run remain borrowed claims; empty collision-source fixtures do not prove spatial attachment or real selected-set destructor targets. No BU dependency changed."
   },
   "validation": {
     "strict_msvc_win32": "passed",
@@ -43,7 +47,9 @@
     "unmasked_x87_faults": false,
     "native_binary_abi_compatible": false,
     "production_resource_load_bound": false,
-    "game_validated": false
+    "game_validated": false,
+    "final_library_hash_matches_tested_libraries": true,
+    "controlled_data_reservation": "passed with existing bootstrap"
   },
   "initial_build": {
     "log": {
@@ -57,8 +63,8 @@
   "evidence": [
     {
       "path": "reports/native_resource_value_reads_bu.json",
-      "sha256": "0f9b8920b25eba0092a725aacca8c2c35ea06a4dcd52610b66b87fcff945a364",
-      "bytes": 31022
+      "sha256": "9809424770948a69c6044e46763e97b93ec1c01aa9f0c377ae190b3ae7615c3b",
+      "bytes": 31287
     },
     {
       "path": "reports/native_resource_value_reads_annotations_bu.json",
@@ -66,12 +72,162 @@
       "bytes": 96854
     }
   ],
-  "source_manifest": null,
+  "source_manifest": {
+    "path": "local/native_resource_value_reads_bu/combined/source_manifest.json",
+    "sha256": "b81e83432cc414f4386ab752a316c371e90f9a4a888504b9a077bfacbbae83b7",
+    "bytes": 288281,
+    "files": 2639
+  },
   "limitations": [
     "New source ABI and own stack addresses; original private aliases, general registers/EFLAGS, native CRT/FH3/SEH and hardware-fault delivery unproved.",
     "Six relocated float bodies use an ABI adapter to actual source memory read. This is a bounded original-body oracle, not a whole original process.",
     "Masked x87 exception status, control and stack balance checked; condition codes, instruction/data pointers and unmasked exceptions untested.",
     "Short-read values are checked against each call own pointer seed, not equal raw pointer-derived bits across source and original stacks.",
     "Only memory-stream family exercised here; raw hierarchy/root/item dispatch, manager/factory/parser owners, B80720 and queue shutdown remain open."
-  ]
+  ],
+  "first_source_revision": "c5822da87f665822d0a85060386469056eee8d78",
+  "primary_build": {
+    "log": {
+      "path": "local/native_resource_value_reads_bu/combined_build.log",
+      "sha256": "08c3ab9203ade58826f6ac47935d9a6fcc6789c6fd8717996e0d90cd426eecfd",
+      "bytes": 2583
+    },
+    "core_sha256": "4334f0108dfd98037f9b679d0327a529ac49e97bc496a17ff51ac006b68c1642",
+    "game_sha256": "d703bccea5be4baabb1e105b06f856271d05b868e0796285e1138d1bddc6c102",
+    "configuration": "MSVC Win32 Release",
+    "existing_ctests_passed": 2
+  },
+  "combined_fixture": {
+    "source_commit": "d2577dbd51ebc135c5cd000217b1a89b9441dccb",
+    "modes": 1,
+    "passed": true,
+    "controlled_child_exit": 0,
+    "original_float_bodies": 6,
+    "paired_cases": 612,
+    "x87_control_modes": 12,
+    "seed_aware_partial_cases": 60,
+    "note": "Six relocated float bodies, same concrete memory read service, masked x87 status/output/budget comparisons, source alias and exception checks. Original private stack addresses differ; unmasked faults/FH3/gameplay untested.",
+    "local_artifacts": [
+      {
+        "path": "local/native_resource_value_reads_bu/combined/libraries.json",
+        "sha256": "bf5dc168c7457db36bcf89f98de9fa305fa305281137abb49d9305c5086c93c3",
+        "bytes": 698
+      },
+      {
+        "path": "local/native_resource_value_reads_bu/combined/probe.cpp",
+        "sha256": "360e961c1743e979703e14ece0eb864172de498e4cf0678d41eb8f01789f5900",
+        "bytes": 17172
+      },
+      {
+        "path": "local/native_resource_value_reads_bu/combined/originals.hpp",
+        "sha256": "a1b14fe085955bada2b9a99dadcef4231019817ff8f10c1cbef32d09c1f73dba",
+        "bytes": 1699
+      },
+      {
+        "path": "local/native_resource_value_reads_bu/combined/originals.json",
+        "sha256": "2c4e2fcdf07e806e35a9e0e3e6e644b674292f117de0a0f45d214905737ecaed",
+        "bytes": 1415
+      },
+      {
+        "path": "local/native_resource_value_reads_bu/combined/compile.cmd",
+        "sha256": "3221a022cd0816d948aa0e5c85274641856587589ec96dbb687b4054fc80f358",
+        "bytes": 706
+      },
+      {
+        "path": "local/native_resource_value_reads_bu/combined/compile.log",
+        "sha256": "25d4f66c7c01d5b35c220cb97ffdd1608405f4ab45160497e6cc7ea3079676cf",
+        "bytes": 11
+      },
+      {
+        "path": "local/native_resource_value_reads_bu/combined/probe.obj",
+        "sha256": "9674cde3bdca8f7eb8f79252e1446ab8dcc556ea7b88a09ee3e60d2d8f58491a",
+        "bytes": 131991
+      },
+      {
+        "path": "local/native_resource_value_reads_bu/combined/probe.exe",
+        "sha256": "3e27ffbc44f5d2f94733574e38b73586958450fa63ded24b21fbb74cade67f26",
+        "bytes": 137216
+      },
+      {
+        "path": "local/native_resource_value_reads_bu/combined/probe.log",
+        "sha256": "76d486ddaad8342e326a56f81270bf9d9cbceee4df63a907471e3992d7fdc679",
+        "bytes": 390
+      },
+      {
+        "path": "local/native_resource_value_reads_bu/combined/child_probe.log",
+        "sha256": "8d01cea101f651b73b30105b58b8d2787ed1d859aaf961a1288f2af3dabe8864",
+        "bytes": 351
+      },
+      {
+        "path": "local/native_resource_value_reads_bu/combined/source_manifest.json",
+        "sha256": "b81e83432cc414f4386ab752a316c371e90f9a4a888504b9a077bfacbbae83b7",
+        "bytes": 288281
+      }
+    ]
+  },
+  "earlier_combined_fixture": {
+    "source_commit": "0b1735125f06f8360d17baf7b891e72c8787420d",
+    "local_artifacts": [
+      {
+        "path": "local/native_resource_value_reads_bu/final/libraries.json",
+        "sha256": "29809bf37e5d770af0dfe736869caecc76208865c9008751b274cc200618384e",
+        "bytes": 689
+      },
+      {
+        "path": "local/native_resource_value_reads_bu/final/probe.cpp",
+        "sha256": "7711ad8996383b178c7bb25b17b94ea28ba83bc97d723513f5573f63c5ee9556",
+        "bytes": 17166
+      },
+      {
+        "path": "local/native_resource_value_reads_bu/final/originals.hpp",
+        "sha256": "a1b14fe085955bada2b9a99dadcef4231019817ff8f10c1cbef32d09c1f73dba",
+        "bytes": 1699
+      },
+      {
+        "path": "local/native_resource_value_reads_bu/final/originals.json",
+        "sha256": "2c4e2fcdf07e806e35a9e0e3e6e644b674292f117de0a0f45d214905737ecaed",
+        "bytes": 1415
+      },
+      {
+        "path": "local/native_resource_value_reads_bu/final/compile.cmd",
+        "sha256": "8bb6d9815cdede5dda1f861028e9933b12a58e4d6b71b4720849577605a3a809",
+        "bytes": 688
+      },
+      {
+        "path": "local/native_resource_value_reads_bu/final/compile.log",
+        "sha256": "25d4f66c7c01d5b35c220cb97ffdd1608405f4ab45160497e6cc7ea3079676cf",
+        "bytes": 11
+      },
+      {
+        "path": "local/native_resource_value_reads_bu/final/probe.obj",
+        "sha256": "53fc99f601412e1b1637bb84232e9a5cf61cf23756b3a01c5c9ce94c01aefbcb",
+        "bytes": 131988
+      },
+      {
+        "path": "local/native_resource_value_reads_bu/final/probe.exe",
+        "sha256": "2f10934dd36cd55ecbb372e813eae3479ca40713b5dd3500ccd81aad90fb9996",
+        "bytes": 137216
+      },
+      {
+        "path": "local/native_resource_value_reads_bu/final/probe.log",
+        "sha256": "ff07804eb349fbd1cce342096b45cd04dbb8a84ec3b50ba0ad7e214a1bf852e4",
+        "bytes": 390
+      },
+      {
+        "path": "local/native_resource_value_reads_bu/final/child_probe.log",
+        "sha256": "8d01cea101f651b73b30105b58b8d2787ed1d859aaf961a1288f2af3dabe8864",
+        "bytes": 351
+      },
+      {
+        "path": "local/native_resource_value_reads_bu/final/source_manifest.json",
+        "sha256": "686163329ae62232fe24d942171e1adff0bb2c2e12527bc639d05e7127569157",
+        "bytes": 288059
+      }
+    ],
+    "build_log": {
+      "path": "local/native_resource_value_reads_bu/final_build.log",
+      "sha256": "c170568b6df2e896dfc07f7be390e43f62f6bf070f2969589951c273c0fba7b5",
+      "bytes": 2484
+    }
+  }
 }
