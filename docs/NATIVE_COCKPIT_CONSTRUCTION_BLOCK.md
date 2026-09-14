@@ -132,3 +132,8 @@ inert view storage does not make dead native fields readable or prove arbitrary
 destructive renderer callbacks safe. B3C800, outer provider wiring, original
 binary ABI, unrestricted native EH and game validation remain outside this
 implementation packet.
+
+
+## BJ combined integration validation
+
+Exact source `dd86c2152a814a352ee0e2f3c3b503fc678b0008` passed the strict MSVC Win32 build, both existing CTests, eight seed spans and the current-library actual constructor fixture. One full mapped-original/source B3C800 constructor-through-helper-terminal pair at x87CW027F: 12 live checkpoints, 13392 camera bytes and 432 helper snapshot bytes per path, 12 ordered events, 14736 identical normalized snapshot bytes per path and 36 identical normalized helper bytes before free. The 9492 mapped code bytes remain unchanged after both paths and the failure observation. One source-only renderer-call2 failure verifies unregistered first-viewport cancellation/free, both local/camera raw-string returns, exact primed camera slot/pool return, helper base/count1/zero camera representation, absence of helper companions, settled block and one explicit host-quiescent reset before caller-owned helper free. No original FH3 exception path is executed. Independent source and fixture reviews found no issues within those domains. See `reports/native_cockpit_constructor_bj_validation.json` for exact source/library pins and sealed evidence. Original replacement ABI, unrestricted native FH3/SEH, arbitrary native write-trace parity and gameplay remain unvalidated.

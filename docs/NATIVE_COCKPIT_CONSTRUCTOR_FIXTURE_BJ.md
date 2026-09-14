@@ -1,6 +1,6 @@
 # Actual cockpit constructor fixture, BJ
 
-Exact combined source `549b36761b49a69162dd874651cb2e50a3925927` passed the strict MSVC Win32 build and both existing CTests before this fixture. One probe translation unit links only the three current repository libraries; 2504 inputs including all tracked build sources, recipes, libraries and original PE stayed unchanged.
+Exact combined source `dd86c2152a814a352ee0e2f3c3b503fc678b0008` passed the strict MSVC Win32 build and both existing CTests before this fixture. One probe translation unit links only the three current repository libraries; 2522 inputs including all tracked build sources, recipes, libraries and original PE stayed unchanged.
 
 One full mapped-original/source B3C800 constructor-through-helper-terminal pair at x87CW027F: 12 live checkpoints, 13392 camera bytes and 432 helper snapshot bytes per path, 12 ordered events, 14736 identical normalized snapshot bytes per path and 36 identical normalized helper bytes before free. The 9492 mapped code bytes remain unchanged after both paths and the failure observation.
 

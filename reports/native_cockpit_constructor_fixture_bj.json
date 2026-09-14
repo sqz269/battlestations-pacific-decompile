@@ -1,7 +1,7 @@
 {
   "packet": "orch3_cockpit_constructor_fixture_bj",
-  "status": "actual_native_source_fixture_and_independent_review_passed",
-  "tested_commit": "549b36761b49a69162dd874651cb2e50a3925927",
+  "status": "actual_native_source_fixture_passed_primary_and_independent_review",
+  "tested_commit": "dd86c2152a814a352ee0e2f3c3b503fc678b0008",
   "original_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
   "native_entry": "00b3c800",
   "native_body_bytes": 339,
@@ -16,11 +16,11 @@
     "src/native_cockpit_helper_construction.cpp": "a72d1f60a8cda7b68cbb5fe3b9fcf6f87b60bbb36e528d34448d3d0157d752da"
   },
   "libraries": {
-    "bsp_core.lib": "8dad63496f0d2be7c2ccecd1014355e7ab79005167130c18c158991da393f761",
+    "bsp_core.lib": "fc80a2d6140964d87425f30c1c66243bdbd6d075bdf86cfe38187b7aa1455ad1",
     "bsp_lua511.lib": "71e114b0ff6244852d678a5779fcbf28589bdcecbad811aff228ffd5007fe8c7",
     "bsp_zlib121.lib": "f3f934925213a2ffb81f3aec2afbb065c1733cf43b28dddf31db6a69185c4102"
   },
-  "stable_input_count": 2504,
+  "stable_input_count": 2522,
   "native_differential_scope": "One full mapped-original/source B3C800 constructor-through-helper-terminal pair at x87CW027F: 12 live checkpoints, 13392 camera bytes and 432 helper snapshot bytes per path, 12 ordered events, 14736 identical normalized snapshot bytes per path and 36 identical normalized helper bytes before free. The 9492 mapped code bytes remain unchanged after both paths and the failure observation.",
   "source_failure_scope": "One source-only renderer-call2 failure verifies unregistered first-viewport cancellation/free, both local/camera raw-string returns, exact primed camera slot/pool return, helper base/count1/zero camera representation, absence of helper companions, settled block and one explicit host-quiescent reset before caller-owned helper free. No original FH3 exception path is executed.",
   "source_interface": "New host C++ ABI, originalthiscall mapped only in fixture",
@@ -164,29 +164,37 @@
     "native_fh3_executed": false
   },
   "primary_review": {
-    "tested_commit": "549b36761b49a69162dd874651cb2e50a3925927",
+    "tested_commit": "dd86c2152a814a352ee0e2f3c3b503fc678b0008",
     "passed": true,
     "findings": [],
     "reviewer": "Primary integrator; preserved worker draft completed and reviewed locally",
+    "run_command": [
+      "C:/Program Files/PowerShell/7/pwsh.exe",
+      "-NoProfile",
+      "-File",
+      "C:\\Users\\sqz269\\bsp-bj-cockpit-constructor\\current\\run.ps1",
+      "-ExpectedCommit",
+      "dd86c2152a814a352ee0e2f3c3b503fc678b0008"
+    ],
     "fixture_artifacts": {
       "build.log": "25d4f66c7c01d5b35c220cb97ffdd1608405f4ab45160497e6cc7ea3079676cf",
       "compile.cmd": "c94d6081fece902e1b702b896ee493c1b513dbd37f961b7683d0aef3a126e6db",
       "inherited-run.ps1": "c809e4686947731f5b6aed9dc9dfd33dc947bdeb5a64ae4c8a26d930484da1aa",
-      "input-pins-before.json": "cfd377be54d2777172636ae616b5ae5162f9a43969fb4b1e3a3c4a70b0ded8db",
-      "input-pins.json": "cfd377be54d2777172636ae616b5ae5162f9a43969fb4b1e3a3c4a70b0ded8db",
-      "mapped_code_after.bin": "a71c034c2bab7a76942a8a0c9d4a30c0dcd5587894bfe7685af2d0ab3ffd6a60",
-      "mapped_code_before.bin": "a71c034c2bab7a76942a8a0c9d4a30c0dcd5587894bfe7685af2d0ab3ffd6a60",
+      "input-pins-before.json": "5662ae0210f02c9334e3fe14df2b0eca22b304042e883d62dc69360456b74a39",
+      "input-pins.json": "5662ae0210f02c9334e3fe14df2b0eca22b304042e883d62dc69360456b74a39",
+      "mapped_code_after.bin": "1f6aac1dd2592a7777f2ddb0825c52b27390169f7dda67cf64b839bea771a71e",
+      "mapped_code_before.bin": "1f6aac1dd2592a7777f2ddb0825c52b27390169f7dda67cf64b839bea771a71e",
       "native_camera_owner_spans.hpp": "0a6d0f2e68d500a2067be69e01c5257cd81262298ccd2e0ce8d230cf8d0df321",
       "original_helper_pre_free.bin": "cacb87f9bdbbb13506ab5376765813fc35591db3ac6541f6c79a5206a689124d",
-      "original_snapshots.bin": "107a228f823ad6225d2c2b525c6689446d158657e1a6f850ccb1a959571320c7",
+      "original_snapshots.bin": "a02c17e69439af7db5fd690ff876147c8e52c760c3d31dca922001a96c6bc1b5",
       "probe.cpp": "17f09101031c82566e7c07d7928fc2d53da8290ba569fe9d211e1f3226021624",
-      "probe.exe": "c79a3ad60f22da3fcdae0ae773561e281e7e579ecb3fdab76be46fd0d3af3b4f",
-      "probe.obj": "ef33414d1be0d2342602078528f6f610f1460233263da954cc0b90e10eb12caa",
+      "probe.exe": "3632f765d8211a81c13ff7a45b6899ac3ea86f02aa3a5f5443433ca432b27149",
+      "probe.obj": "6b38675b6f0cd04624d61b6c0fa932d8bb0776cdb51a5826887addfdc5f8c93b",
       "run.log": "c1e124bd561857d4b38ae7be6fcfebef50c5fd11dc8f8d025207f9dcbf94b62d",
       "run.ps1": "96aeb1fe155e3f080ad064c14b66ab77676f6d92c9aad40e25151f3b0fe51611",
       "source_early_failure_helper.bin": "ef8032873075fb49a19d92676948138b301cde07f149a9eee75f552675848549",
       "source_helper_pre_free.bin": "cacb87f9bdbbb13506ab5376765813fc35591db3ac6541f6c79a5206a689124d",
-      "source_snapshots.bin": "107a228f823ad6225d2c2b525c6689446d158657e1a6f850ccb1a959571320c7",
+      "source_snapshots.bin": "a02c17e69439af7db5fd690ff876147c8e52c760c3d31dca922001a96c6bc1b5",
       "span-preparation.json": "b6e40caca41cbcd9adff28925afd0484f529b9bdd1bbefbcc72c29beecc8545c"
     },
     "required_success_lines": [
@@ -210,9 +218,9 @@
       "Raw camera/helper/view state and x87/SSE state are compared at12live checkpoints. Address normalization is limited to mapped-image relocation, actual pool-relative name buffers and known allocation identities.",
       "Actual helper count-zero dispatch terminates through camera/viewport/retained-owner cleanup and returns slot/names before helper free; source owner/reference retirement precedes explicit later destruction of host companions and block reset.",
       "Source renderer2 failure has no manual native cleanup substitution: constructor cleanup and factory cancellation happen before observed caller slot/helper handling. No late orphan cleanup or original FH3 is invented.",
-      "Only probe.cpp compiles, with current3libraries and embedded manifest; all2504inputs unchanged before/after. Snapshot and helper comparison files independently compared byte-for-byte; mapped code immutable."
+      "Only probe.cpp compiles, with current3libraries and embedded manifest; all2522inputs unchanged before/after and initial source inputs match the build stamp. Snapshot and helper comparison files independently compared byte-for-byte; mapped code immutable."
     ],
-    "independent_review_status": "passed; no outstanding findings within stated domain",
+    "independent_review_status": "Passed current combined artifact revalidation; scoped behavioral review explicitly reused",
     "material_limits": [
       "Concrete B71770 pool allocation and existing raw-string/CRT/renderer boundaries are hooked; this is not a complete original-callee closure.",
       "One successful CW027F case and one source failure; helper+08/+18 remain zero. Current-camera substitution and late orphan survival are separate contracts, not exercised here.",
@@ -220,186 +228,81 @@
       "Private unused atomic count0 startup precedes explicitcount1 and callbacks; no native write-trace parity claim.",
       "New source ABI and C++ cleanup projection; no original replacement ABI, native FH3/SEH, arbitrary destructive callbacks, concurrency or gameplay proof."
     ],
-    "independent_review_path": "J:\\PROG\\bsp-evidence\\orch3-cockpit-construction-bj-20260913\\fixture_review.json",
-    "independent_review_sha256": "cfad9a287a8403ada38e84a8a19523c957f967befa16202cd7f7a8ad61eff42a"
+    "independent_review_path": "J:\\PROG\\bsp-evidence\\orch3-cockpit-construction-bj-20260913\\fixture_review_entity_merge.json",
+    "independent_review_sha256": "5cf634b3a22b7946210bf7dd4e31f10a474b2f5b516cb38d1d78dc453871537d"
   },
   "tests_added": 0,
   "game_validated": false,
   "original_binary_abi_validated": false,
   "native_fh3_validated": false,
   "independent_review": {
-    "tested_commit": "549b36761b49a69162dd874651cb2e50a3925927",
-    "reviewed_utc": "2026-09-14T03:31:57.355419+00:00",
-    "reviewer": "independent orch3 render resources worker; read-only fixture/source review",
-    "review_result": "accepted_with_stated_scope",
+    "tested_commit": "dd86c2152a814a352ee0e2f3c3b503fc678b0008",
+    "reviewed_utc": "2026-09-14T03:59:07.466842+00:00",
     "findings": [],
-    "reviewed_hashes": {
-      "C:\\Users\\sqz269\\bsp-bj-cockpit-constructor\\current\\probe.cpp": "17f09101031c82566e7c07d7928fc2d53da8290ba569fe9d211e1f3226021624",
-      "C:\\Users\\sqz269\\bsp-bj-cockpit-constructor\\current\\native_camera_owner_spans.hpp": "0a6d0f2e68d500a2067be69e01c5257cd81262298ccd2e0ce8d230cf8d0df321",
-      "C:\\Users\\sqz269\\bsp-bj-cockpit-constructor\\current\\run.ps1": "96aeb1fe155e3f080ad064c14b66ab77676f6d92c9aad40e25151f3b0fe51611",
-      "C:\\Users\\sqz269\\bsp-bj-cockpit-constructor\\current\\span-preparation.json": "b6e40caca41cbcd9adff28925afd0484f529b9bdd1bbefbcc72c29beecc8545c",
-      "C:\\Users\\sqz269\\bsp-bj-cockpit-constructor\\current\\compile.cmd": "c94d6081fece902e1b702b896ee493c1b513dbd37f961b7683d0aef3a126e6db",
-      "C:\\Users\\sqz269\\bsp-bj-cockpit-constructor\\current\\build.log": "25d4f66c7c01d5b35c220cb97ffdd1608405f4ab45160497e6cc7ea3079676cf",
-      "C:\\Users\\sqz269\\bsp-bj-cockpit-constructor\\current\\run.log": "c1e124bd561857d4b38ae7be6fcfebef50c5fd11dc8f8d025207f9dcbf94b62d",
-      "C:\\Users\\sqz269\\bsp-bj-cockpit-constructor\\current\\probe.exe": "c79a3ad60f22da3fcdae0ae773561e281e7e579ecb3fdab76be46fd0d3af3b4f",
-      "C:\\Users\\sqz269\\bsp-bj-cockpit-constructor\\current\\input-pins-before.json": "cfd377be54d2777172636ae616b5ae5162f9a43969fb4b1e3a3c4a70b0ded8db",
-      "C:\\Users\\sqz269\\bsp-bj-cockpit-constructor\\current\\input-pins.json": "cfd377be54d2777172636ae616b5ae5162f9a43969fb4b1e3a3c4a70b0ded8db",
-      "C:\\Users\\sqz269\\bsp-bj-cockpit-constructor\\current\\original_snapshots.bin": "107a228f823ad6225d2c2b525c6689446d158657e1a6f850ccb1a959571320c7",
-      "C:\\Users\\sqz269\\bsp-bj-cockpit-constructor\\current\\source_snapshots.bin": "107a228f823ad6225d2c2b525c6689446d158657e1a6f850ccb1a959571320c7",
-      "C:\\Users\\sqz269\\bsp-bj-cockpit-constructor\\current\\original_helper_pre_free.bin": "cacb87f9bdbbb13506ab5376765813fc35591db3ac6541f6c79a5206a689124d",
-      "C:\\Users\\sqz269\\bsp-bj-cockpit-constructor\\current\\source_helper_pre_free.bin": "cacb87f9bdbbb13506ab5376765813fc35591db3ac6541f6c79a5206a689124d",
-      "C:\\Users\\sqz269\\bsp-bj-cockpit-constructor\\current\\source_early_failure_helper.bin": "ef8032873075fb49a19d92676948138b301cde07f149a9eee75f552675848549",
-      "C:\\Users\\sqz269\\bsp-bj-cockpit-constructor\\current\\mapped_code_before.bin": "a71c034c2bab7a76942a8a0c9d4a30c0dcd5587894bfe7685af2d0ab3ffd6a60",
-      "C:\\Users\\sqz269\\bsp-bj-cockpit-constructor\\current\\mapped_code_after.bin": "a71c034c2bab7a76942a8a0c9d4a30c0dcd5587894bfe7685af2d0ab3ffd6a60",
-      "C:\\Users\\sqz269\\bsp-bj-cockpit-constructor\\prepare_probe.py": "23e391df956c62d109aad6e43b8ba9cc3942d3d2b03437f8074d3f61dca0f73e",
-      "C:\\Users\\sqz269\\bsp-bj-cockpit-constructor\\prepare_spans.py": "109b6da674f1a6096c6cf28b4d27e68bf25516a2f823b813b270276cc60fbbd5",
-      "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\bj-final-build-stamp.json": "498c15d0e767da870c549c048802d3511a5fc59f4a2349c936cf817723785cd7"
-    },
-    "libraries": {
-      "bsp_core.lib": "8dad63496f0d2be7c2ccecd1014355e7ab79005167130c18c158991da393f761",
+    "scope": "Mechanical revalidation only. Reuses scoped behavioral, ownership and original-mapping review from 549b3676 and artifact review at 07192719. One native/source B3C800 constructor-through-helper-terminal pair and one source-only renderer2 failure; no native FH3, unrestricted ABI, full callee closure or game proof. Reviewer ran no build/probe and edited no existing files.",
+    "prior_review": "J:\\PROG\\bsp-evidence\\orch3-cockpit-construction-bj-20260913\\fixture_review_gun_merge.json",
+    "prior_review_sha256": "14be2fc6a84da688a2f9e956b85cb4fdc370d8459e52c6a41d808351f85d3c4f",
+    "sealed_prior_attempt": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\bj-validated-attempt-07192719.zip",
+    "sealed_prior_attempt_sha256": "94564e6b6c02211e3085bb11c193f7c4ab33467c7eef024bc685807f05f219d3",
+    "delta_source_and_build": [
+      "cmake/startup.cmake",
+      "include/bsp/ship_sub_entity_list.hpp",
+      "src/ship_sub_entity_list.cpp"
+    ],
+    "remaining_delta": "names/docs/reports only",
+    "build_registration": [
+      "+cmake_language(DEFER DIRECTORY \"${CMAKE_SOURCE_DIR}\" CALL target_sources bsp_game PRIVATE src/ship_sub_entity_list.cpp)"
+    ],
+    "prior_source_inputs_unchanged": 2495,
+    "prior_source_changes": [],
+    "BJ_four_sources_unchanged": true,
+    "fixture_recipe_probe_spans_preparation_unchanged": true,
+    "constructor_object_sha256": "f04d045f03985f645fd72d8b33b73b065db18937f2790cbb05e0bd7048f040ec",
+    "constructor_listing_sha256": "3ee46088b6f42d9b3c29e574a5cde0eaa3dcffd87bd00460a06666c5a627699b",
+    "constructor_artifacts_unchanged": true,
+    "build_inputs": 2514,
+    "full_Win32_and_two_CTests_passed": true,
+    "three_linked_libraries_unchanged": {
+      "bsp_core.lib": "fc80a2d6140964d87425f30c1c66243bdbd6d075bdf86cfe38187b7aa1455ad1",
       "bsp_lua511.lib": "71e114b0ff6244852d678a5779fcbf28589bdcecbad811aff228ffd5007fe8c7",
       "bsp_zlib121.lib": "f3f934925213a2ffb81f3aec2afbb065c1733cf43b28dddf31db6a69185c4102"
     },
-    "input_audit": {
-      "build_passed": true,
-      "pending": false,
-      "tracked_build_inputs": 2496,
-      "fixture_inputs": 2504,
-      "all_initial_source_hashes_equal_build_stamp": true,
-      "all_current_source_hashes_equal_build_stamp": true,
-      "before_after_equal": true,
-      "all_current_inputs_equal_final_pins": true,
-      "recipe_initial_source_guard_reviewed": true,
-      "recipe_current_three_library_guard_reviewed": true,
-      "before_after_and_commit_guards_reviewed": true,
-      "compile": "MSVC x86 /std:c++17 /EHsc /O2 /Oy- /MD /fp:strict /W4 /WX; only current bsp_core,bsp_lua511,bsp_zlib121 plus system libraries; /MANIFEST:EMBED"
-    },
-    "actual_run_scope": {
-      "normal_pairs": 1,
-      "native_entry": "00b3c800",
-      "source_entry": "construct_native_cockpit_helper_00b3c800",
-      "native_parent_bytes": 339,
-      "path": "actual raw helper constructor through helper final-zero terminal, camera slot return, helper free, companion retirement and explicit block quiescence",
-      "source_only_failures": [
-        {
-          "trigger": "second renderer callback",
-          "scope": "first viewport constructor failure before publication; local and camera names returned, failed viewport freed, camera raw slot returned, block settled/reset, caller frees failed helper"
-        }
-      ],
-      "x87_control_word": "027f",
-      "mutate_one_cell": false,
-      "helper_attached_08": 0,
-      "helper_retained_18": 0,
-      "renderer_callbacks_per_normal_path": 6,
-      "live_checkpoints_per_normal_path": 12,
-      "camera_snapshot_bytes_per_path": 13392,
-      "helper_snapshot_bytes_per_path": 432,
-      "full_snapshot_file_bytes_per_path": 14736,
-      "ordered_events_per_normal_path": 12,
-      "pre_free_helper_bytes": 36,
-      "native_fh3_executed": false,
-      "run_log_lines": [
-        "PASS native B3C800 through helper terminal cw027f live_checkpoints12 camera_bytes13392 helper_bytes432 events12",
-        "PASS source B3C800 through helper terminal cw027f live_checkpoints12 camera_bytes13392 helper_bytes432 events12",
-        "PASS source B3C800 renderer2 failure: block settled/reset once, local and camera names returned, raw slot and failed viewport freed; no native FH3 execution",
-        "PASS immutable mapped original code 9492 bytes",
-        "PASS focused original/source B3C800 constructor-through-terminal pair and source renderer2 failure; caller-owned block reset once, no manual camera/view registration or replacement; actual helper pre-free36 bytes, live camera/viewport checkpoints and ordered events; native B71930 with concrete B71770 provider boundary; +08/+18 zero; no native FH3/full-callee-closure/game proof"
-      ]
-    },
+    "fixture_pins": 2522,
+    "before_after_current_inputs_equal": true,
+    "initial_sources_match_build_stamp": true,
+    "before_after_pins_sha256": "5662ae0210f02c9334e3fe14df2b0eca22b304042e883d62dc69360456b74a39",
+    "build_stamp_sha256": "ce245d2b9a93959f38b0b68bd01af3778811a86cf5fa97b3c389e14dcaddeb6a",
+    "generated_metadata_sha256": "807f78bca285ef1b2bbb8e7e5c961f2b5afa5b28de4af19ad94f916c9f1d699a",
+    "same_five_fixture_PASS_lines": true,
+    "run_log_sha256": "c1e124bd561857d4b38ae7be6fcfebef50c5fd11dc8f8d025207f9dcbf94b62d",
     "artifact_pairs": [
       {
-        "first": "original_snapshots.bin",
-        "second": "source_snapshots.bin",
-        "bytes_each": 14736,
+        "files": [
+          "original_snapshots.bin",
+          "source_snapshots.bin"
+        ],
+        "bytes": 14736,
         "equal": true,
-        "sha256": "107a228f823ad6225d2c2b525c6689446d158657e1a6f850ccb1a959571320c7"
+        "sha256": "a02c17e69439af7db5fd690ff876147c8e52c760c3d31dca922001a96c6bc1b5"
       },
       {
-        "first": "original_helper_pre_free.bin",
-        "second": "source_helper_pre_free.bin",
-        "bytes_each": 36,
+        "files": [
+          "original_helper_pre_free.bin",
+          "source_helper_pre_free.bin"
+        ],
+        "bytes": 36,
         "equal": true,
         "sha256": "cacb87f9bdbbb13506ab5376765813fc35591db3ac6541f6c79a5206a689124d"
       },
       {
-        "first": "mapped_code_before.bin",
-        "second": "mapped_code_after.bin",
-        "bytes_each": 9492,
+        "files": [
+          "mapped_code_before.bin",
+          "mapped_code_after.bin"
+        ],
+        "bytes": 9492,
         "equal": true,
-        "sha256": "a71c034c2bab7a76942a8a0c9d4a30c0dcd5587894bfe7685af2d0ab3ffd6a60"
+        "sha256": "1f6aac1dd2592a7777f2ddb0825c52b27390169f7dda67cf64b839bea771a71e"
       }
-    ],
-    "mapping_audit": {
-      "mapped_spans": 120,
-      "code_spans": 82,
-      "mapped_code_bytes": 9492,
-      "all_file_offsets_match_original_pe": true,
-      "all_code_spans_inside_mapped_spans": true,
-      "all_129_absolute_preimages_match_original_pe": true,
-      "code_absolute_operands_adjusted": 81,
-      "added_exact_pe_spans": 14,
-      "added_absolute_operands": 9,
-      "prepared_code_differs_only_by_declared_relocations_and_hooks": true,
-      "documented_five_byte_hooks": [
-        "00419cc0",
-        "00bd1120",
-        "00bd1510",
-        "00bf7680",
-        "00bf681b",
-        "00bf65ac",
-        "00bf6989",
-        "00c27489",
-        "00b71770"
-      ],
-      "documented_hook_bytes": 45,
-      "unexplained_prepared_code_differences": [],
-      "prepared_mapped_code_unchanged_after_final_run": true,
-      "original_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
-    },
-    "ownership_review": [
-      "Helper is raw malloc24h preimage; no helper construction/initialization is substituted before actual B3C800. Preserve+10/+14/+1C/+20 sentinels.",
-      "Primed physical camera slot is returned before constructor; original B71930 supplies exact mapped108FFB0 through concreteB71770 hook. Source static pool binding selects same canonical source pool/environment identity.",
-      "Caller optional helper companions and persistent block storage exist before native effects; block admissions precede source entry and moved caller admission is empty in callbacks.",
-      "No manual camera lifetime/view registration or manual replacement is performed; observations verify constructor-installed canonical camera/reference and registry states.",
-      "Source helper owner/reference emplace after constructor success under guarded global operator new; no allocation attempt and actual+4 counter identity checked.",
-      "Native/source terminal each decrements actual helper once; canonical helper companion records retirement after real free.",
-      "Camera/viewport/native strings and raw slot cleanup are verified before helper storage free; ended camera storage is not read by later snapshot operations.",
-      "Companions reset after native retirement, then separately reset block after all fixture host borrows end.",
-      "Source renderer2 failure creates no helper companion, preserves raw diagnostic helper representation until explicit caller free, and verifies no surviving camera/reference/viewport before block reset."
-    ],
-    "resolved_review_observations": [
-      {
-        "issue": "Initial recipe checked current libraries and before/after equality but omitted initial source-to-build-stamp comparison.",
-        "resolution": "Parent preserved successful recipe-v1 attempt, added explicit initial source comparison before compile, and replayed the same bounded fixture. Final recipe/source/pins independently rechecked.",
-        "prior_attempt_archive": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\bj-fixture-attempt-549b3676-recipe-v1.zip",
-        "prior_attempt_archive_sha256": "f417da6fdf969c714312e3e9061f1da7fdb215d148a3d20a751909b44a44059a"
-      }
-    ],
-    "sealed_bi_baseline": {
-      "archive": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\bi-validated-attempt-0307b963.zip",
-      "sha256": "742ea7fd3ff2d8d1e0a8094691b71c97410e5c8cfde7b1bd2795de58326f9318",
-      "sealed_probe_matches_archive": true,
-      "sealed_span_header_matches_archive": true,
-      "reviewer_mutations": false
-    },
-    "limitations": [
-      "One finite CW027F pair; no full native FH3/SEH, arbitrary FP modes, late failure or unrestricted provider/profile/alias/concurrency coverage.",
-      "Native allocation wrapper B71930 is original; B71770 is an explicitly declared concrete provider hook, not original allocator instruction equivalence.",
-      "Current string/CRT allocation and free services are shared reconstructed provider boundaries. Prepared original code equality is after declared relocation/hooks, not unmodified executable equality.",
-      "Source private atomic lifetime initialization can transiently store count0 before native-visible count1; observed checkpoint equality is not native write-trace parity.",
-      "Near/far and terminal IAT/profile cells are unchanged in this pair; current-cell mutation behavior is not established by these fixtures.",
-      "Helper+08/+18 remain zero. A separately injected retained camera member exercises terminal ordering; it does not prove all native producers or helper nonzero retained/attached ownership.",
-      "Companion allocation guard covers postconstructor helper binding, not every allocation in all constructor descendants.",
-      "No startup/game behavior, drop-in binary ABI or full descendant closure is claimed."
-    ],
-    "reviewer_actions": {
-      "source_or_fixture_edits": false,
-      "builds": false,
-      "probe_execution": false,
-      "ghidra_mutations": false,
-      "repo_metadata_edits": false,
-      "only_written_artifact": "J:\\PROG\\bsp-evidence\\orch3-cockpit-construction-bj-20260913\\fixture_review.json"
-    }
-  },
-  "independent_review_sha256": "cfad9a287a8403ada38e84a8a19523c957f967befa16202cd7f7a8ad61eff42a"
+    ]
+  }
 }

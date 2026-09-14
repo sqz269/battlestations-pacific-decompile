@@ -1,6 +1,6 @@
 {
   "packet": "orch3_cockpit_constructor_impl_bj",
-  "status": "source_implemented_pending_parent_combined_build_and_fixture",
+  "status": "integrated_strict_win32_and_bounded_actual_constructor_fixture_passed",
   "reviewed_date": "2026-09-13",
   "source_base": "20ace1358700e43c75035b55e6b8b0a0c68ee520",
   "branch": "agent/orch3-cockpit-constructor-bj",
@@ -475,7 +475,18 @@
       "source": "src/native_cockpit_helper_construction.cpp",
       "sha256": "a72d1f60a8cda7b68cbb5fe3b9fcf6f87b60bbb36e528d34448d3d0157d752da",
       "worker_source_pins": "Historical worker inputs remain above; this integration source hash supersedes only the worker constructor cpp pin.",
-      "validation": "Combined rebuild and actual-constructor fixture pending."
+      "validation": "PASS at exact combined dd86c2152a814a352ee0e2f3c3b503fc678b0008; see reports/native_cockpit_constructor_bj_validation.json. Private atomic count-zero startup limit remains explicit."
     }
-  ]
+  ],
+  "integration_validation_bj": {
+    "tested_commit": "dd86c2152a814a352ee0e2f3c3b503fc678b0008",
+    "validation_report": "reports/native_cockpit_constructor_bj_validation.json",
+    "strict_win32_build_passed": true,
+    "existing_ctests_passed": 2,
+    "native_fixture_scope": "One full mapped-original/source B3C800 constructor-through-helper-terminal pair at x87CW027F: 12 live checkpoints, 13392 camera bytes and 432 helper snapshot bytes per path, 12 ordered events, 14736 identical normalized snapshot bytes per path and 36 identical normalized helper bytes before free. The 9492 mapped code bytes remain unchanged after both paths and the failure observation.",
+    "source_failure_scope": "One source-only renderer-call2 failure verifies unregistered first-viewport cancellation/free, both local/camera raw-string returns, exact primed camera slot/pool return, helper base/count1/zero camera representation, absence of helper companions, settled block and one explicit host-quiescent reset before caller-owned helper free. No original FH3 exception path is executed.",
+    "game_validated": false,
+    "native_fh3_validated": false,
+    "original_binary_abi_validated": false
+  }
 }
