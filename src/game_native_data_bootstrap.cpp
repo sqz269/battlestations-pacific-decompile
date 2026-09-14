@@ -24,9 +24,14 @@ namespace bsp::game {
 namespace {
 constexpr std::uintptr_t first_band=0x00ce0000;
 constexpr std::size_t band_bytes=0x10000;
-constexpr std::size_t band_count=19;
+constexpr std::size_t ro_band_count=19;
+constexpr std::size_t band_count=21;
+constexpr std::uint32_t mutable_mask=(1u<<19)|(1u<<20);
+constexpr std::uint32_t canonical_ro_mask=0x18a;
+constexpr std::array<DWORD,3> mutable_pages{0x00e15000,0x00e16000,0x0109e000};
 constexpr DWORD handoff_magic=0x48534442; // BDSH, source protocol only
-constexpr DWORD handoff_version=1;
+constexpr DWORD handoff_version_v1=1;
+constexpr DWORD handoff_version_v2=2;
 constexpr LONG state_pending=0;
 constexpr LONG state_ready=1;
 constexpr LONG state_claimed=2;
@@ -41,11 +46,38 @@ struct HandoffRecord {
     DWORD child_pid;
     DWORD band_mask;
     volatile LONG state;
+    // Zero in v1. V2 names every committed mutable page and its role.
+    DWORD mutable_page[3];
+    DWORD mutable_roles;
 };
 static_assert(sizeof(HandoffRecord) <= 0x1000);
 
 HANDLE as_handle(void* value) noexcept { return static_cast<HANDLE>(value); }
 HandoffRecord* as_record(void* value) noexcept { return static_cast<HandoffRecord*>(value); }
+std::uintptr_t band_address(std::size_t slot) noexcept {
+    return slot<ro_band_count ? first_band+slot*band_bytes :
+        slot==19 ? 0x00e10000 : 0x01090000;
+}
+DWORD plan_version(GameNativeDataPlan plan) noexcept {
+    return plan==GameNativeDataPlan::CanonicalCrtV2 ? handoff_version_v2 : handoff_version_v1;
+}
+std::uint32_t plan_mask(std::uint32_t ro_mask,GameNativeDataPlan plan) {
+    if (plan==GameNativeDataPlan::CanonicalCrtV2) {
+        if (ro_mask!=canonical_ro_mask)
+            throw std::invalid_argument("Canonical CRT plan requires the exact game RO bands");
+        return ro_mask|mutable_mask;
+    }
+    return ro_mask;
+}
+bool record_plan_matches(const HandoffRecord& record,GameNativeDataPlan plan) noexcept {
+    if (record.version!=plan_version(plan)) return false;
+    if (plan==GameNativeDataPlan::ReadOnlyV1)
+        return record.mutable_page[0]==0 && record.mutable_page[1]==0 &&
+            record.mutable_page[2]==0 && record.mutable_roles==0;
+    return record.mutable_page[0]==mutable_pages[0] &&
+        record.mutable_page[1]==mutable_pages[1] &&
+        record.mutable_page[2]==mutable_pages[2] && record.mutable_roles==0x7;
+}
 
 void check_platform() {
     SYSTEM_INFO info{};
@@ -141,44 +173,72 @@ GameNativeDataReservation& GameNativeDataReservation::operator=(GameNativeDataRe
     if (this!=&other) {
         release_local(bands_);
         if (handoff_view_) finish(false);
-        bands_=other.bands_; mask_=other.mask_;
+        bands_=other.bands_; mask_=other.mask_; plan_=other.plan_;
         handoff_view_=other.handoff_view_; handoff_handle_=other.handoff_handle_;
         other.bands_.fill(nullptr); other.mask_=0;
         other.handoff_view_=nullptr; other.handoff_handle_=nullptr;
     }
     return *this;
 }
-void GameNativeDataReservation::finish(bool mapped) noexcept {
-    if (!handoff_view_) return;
+bool GameNativeDataReservation::finish(bool mapped) noexcept {
+    if (!handoff_view_) return false;
     auto* record=as_record(handoff_view_);
     // The parent may have cancelled a timed-out handoff. Never overwrite that
     // decision with a late success acknowledgement.
-    InterlockedCompareExchange(&record->state,
-        mapped ? state_mapped : state_failed,state_claimed);
+    const bool accepted=InterlockedCompareExchange(&record->state,
+        mapped ? state_mapped : state_failed,state_claimed)==state_claimed;
     UnmapViewOfFile(handoff_view_);
     CloseHandle(as_handle(handoff_handle_));
     handoff_view_=nullptr; handoff_handle_=nullptr;
+    return accepted;
 }
 void GameNativeDataReservation::transfer_to(std::array<void*,19>& destination,
     std::uint32_t expected_mask) {
-    if (!handoff_view_ || mask_!=expected_mask)
+    if (!handoff_view_ || plan_!=GameNativeDataPlan::ReadOnlyV1 || mask_!=expected_mask)
         throw std::invalid_argument("Native-data reservation does not match requested bands");
-    for (std::size_t i=0;i<band_count;++i) {
+    for (std::size_t i=0;i<ro_band_count;++i) {
         const bool selected=(mask_ & (1u<<i))!=0;
         if (selected != (bands_[i]!=nullptr) || destination[i])
             throw std::invalid_argument("Incomplete native-data reservation capability");
-        if (selected && !exact_reservation(GetCurrentProcess(),first_band+i*band_bytes))
+        if (selected && !exact_reservation(GetCurrentProcess(),band_address(i)))
             throw std::runtime_error("Transferred native-data reservation changed before mapping");
     }
-    destination=bands_;
+    std::copy_n(bands_.begin(),ro_band_count,destination.begin());
     bands_.fill(nullptr);
+    mask_=0;
+}
+void GameNativeDataReservation::transfer_ro_subset(std::array<void*,19>& destination,
+    std::uint32_t expected_mask) {
+    if (!handoff_view_ || plan_!=GameNativeDataPlan::CanonicalCrtV2 ||
+        expected_mask!=canonical_ro_mask || mask_!=(expected_mask|mutable_mask))
+        throw std::invalid_argument("Canonical RO subset does not match the handoff");
+    for (std::size_t i=0;i<ro_band_count;++i) {
+        const bool selected=(expected_mask & (1u<<i))!=0;
+        if (selected!=(bands_[i]!=nullptr) || destination[i] ||
+            (selected && !exact_reservation(GetCurrentProcess(),band_address(i))))
+            throw std::runtime_error("Canonical RO subset changed before transfer");
+    }
+    for (std::size_t i=0;i<ro_band_count;++i) if (expected_mask & (1u<<i)) {
+        destination[i]=bands_[i]; bands_[i]=nullptr;
+    }
+    mask_&=~expected_mask;
+}
+void GameNativeDataReservation::transfer_mutable_subset(std::array<void*,2>& destination) {
+    if (!handoff_view_ || plan_!=GameNativeDataPlan::CanonicalCrtV2 || mask_!=mutable_mask)
+        throw std::invalid_argument("Canonical mutable subset does not match the handoff");
+    for (std::size_t i=0;i<2;++i) if (!bands_[19+i] || destination[i] ||
+        !exact_reservation(GetCurrentProcess(),band_address(19+i)))
+        throw std::runtime_error("Canonical mutable subset changed before transfer");
+    for (std::size_t i=0;i<2;++i) {
+        destination[i]=bands_[19+i]; bands_[19+i]=nullptr;
+    }
     mask_=0;
 }
 
 GameNativeDataReservation accept_native_data_handoff(
-    const GameNativeDataSpan* spans, std::size_t count) {
+    const GameNativeDataSpan* spans, std::size_t count, GameNativeDataPlan plan) {
     check_platform();
-    const auto expected=detail::native_data_band_mask(spans,count);
+    const auto expected=plan_mask(detail::native_data_band_mask(spans,count),plan);
     const HANDLE mapping=inherited_mapping_argument();
     DWORD flags=0;
     if (!GetHandleInformation(mapping,&flags) || !(flags & HANDLE_FLAG_INHERIT))
@@ -186,7 +246,7 @@ GameNativeDataReservation accept_native_data_handoff(
     void* const view=MapViewOfFile(mapping,FILE_MAP_READ|FILE_MAP_WRITE,0,0,sizeof(HandoffRecord));
     if (!view) throw std::invalid_argument("Native-data handoff mapping is unavailable");
     auto* record=as_record(view);
-    if (record->magic!=handoff_magic || record->version!=handoff_version ||
+    if (record->magic!=handoff_magic || !record_plan_matches(*record,plan) ||
         record->child_pid!=GetCurrentProcessId() || record->parent_pid==GetCurrentProcessId() ||
         record->band_mask!=expected || record->state!=state_ready) {
         UnmapViewOfFile(view);
@@ -197,9 +257,9 @@ GameNativeDataReservation accept_native_data_handoff(
         throw std::invalid_argument("Native-data handoff was already consumed");
     }
     for (std::size_t i=0;i<band_count;++i) if (expected & (1u<<i)) {
-        if (!exact_reservation(GetCurrentProcess(),first_band+i*band_bytes)) {
+        if (!exact_reservation(GetCurrentProcess(),band_address(i))) {
             MEMORY_BASIC_INFORMATION actual{};
-            VirtualQuery(reinterpret_cast<void*>(first_band+i*band_bytes),&actual,sizeof(actual));
+            VirtualQuery(reinterpret_cast<void*>(band_address(i)),&actual,sizeof(actual));
             InterlockedExchange(&record->state,state_failed);
             UnmapViewOfFile(view);
             CloseHandle(mapping);
@@ -212,17 +272,18 @@ GameNativeDataReservation accept_native_data_handoff(
     }
     GameNativeDataReservation result;
     result.mask_=expected;
+    result.plan_=plan;
     result.handoff_view_=view;
     result.handoff_handle_=mapping;
     for (std::size_t i=0;i<band_count;++i) if (expected & (1u<<i))
-        result.bands_[i]=reinterpret_cast<void*>(first_band+i*band_bytes);
+        result.bands_[i]=reinterpret_cast<void*>(band_address(i));
     return result;
 }
 
 GameNativeDataBootstrapChild::GameNativeDataBootstrapChild(
     const std::filesystem::path& executable, const std::wstring& arguments,
-    const GameNativeDataSpan* spans, std::size_t count)
-    : mask_(detail::native_data_band_mask(spans,count)) {
+    const GameNativeDataSpan* spans, std::size_t count, GameNativeDataPlan plan)
+    : mask_(plan_mask(detail::native_data_band_mask(spans,count),plan)), plan_(plan) {
     check_platform();
     SECURITY_ATTRIBUTES security{sizeof(security),nullptr,TRUE};
     const HANDLE mapping=CreateFileMappingW(INVALID_HANDLE_VALUE,&security,PAGE_READWRITE,0,0x1000,nullptr);
@@ -232,8 +293,11 @@ GameNativeDataBootstrapChild::GameNativeDataBootstrapChild(
         handoff_view_=MapViewOfFile(mapping,FILE_MAP_READ|FILE_MAP_WRITE,0,0,sizeof(HandoffRecord));
         if (!handoff_view_) throw std::runtime_error("Cannot map native-data handoff section");
         auto* record=as_record(handoff_view_);
-        record->magic=handoff_magic; record->version=handoff_version;
+        record->magic=handoff_magic; record->version=plan_version(plan_);
         record->parent_pid=GetCurrentProcessId(); record->band_mask=mask_;
+        for (std::size_t i=0;i<mutable_pages.size();++i)
+            record->mutable_page[i]=plan_==GameNativeDataPlan::CanonicalCrtV2 ? mutable_pages[i] : 0;
+        record->mutable_roles=plan_==GameNativeDataPlan::CanonicalCrtV2 ? 0x7 : 0;
         record->state=state_pending;
 
         SIZE_T attribute_bytes=0;
@@ -294,11 +358,16 @@ std::uint32_t GameNativeDataBootstrapChild::process_id() const noexcept { return
 
 void GameNativeDataBootstrapChild::reserve_and_resume() {
     if (!process_ || resumed_ ||
-        InterlockedCompareExchange(&as_record(handoff_view_)->state,state_pending,state_pending)!=state_pending)
+        InterlockedCompareExchange(&as_record(handoff_view_)->state,state_pending,state_pending)!=state_pending ||
+        as_record(handoff_view_)->magic!=handoff_magic ||
+        as_record(handoff_view_)->parent_pid!=GetCurrentProcessId() ||
+        as_record(handoff_view_)->child_pid!=process_id_ ||
+        as_record(handoff_view_)->band_mask!=mask_ ||
+        !record_plan_matches(*as_record(handoff_view_),plan_))
         throw std::logic_error("Native-data child is not pending reservation");
     std::array<void*,band_count> owned{};
     for (std::size_t i=0;i<band_count;++i) if (mask_ & (1u<<i)) {
-        void* const address=reinterpret_cast<void*>(first_band+i*band_bytes);
+        void* const address=reinterpret_cast<void*>(band_address(i));
         void* const got=VirtualAllocEx(as_handle(process_),address,band_bytes,MEM_RESERVE,PAGE_NOACCESS);
         if (got!=address) {
             const DWORD allocation_error=GetLastError();

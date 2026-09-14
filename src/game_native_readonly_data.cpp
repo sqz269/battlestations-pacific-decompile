@@ -50,18 +50,26 @@ bool matches_image(const BYTE* bytes) {
 
 GameNativeReadOnlyData::GameNativeReadOnlyData(const std::filesystem::path& path,
     const GameNativeDataSpan* spans, std::size_t count) {
-    initialize(path,spans,count,nullptr);
+    initialize(path,spans,count,nullptr,false);
 }
 
 GameNativeReadOnlyData::GameNativeReadOnlyData(const std::filesystem::path& path,
     const GameNativeDataSpan* spans, std::size_t count,
     GameNativeDataReservation&& reservation) {
-    initialize(path,spans,count,&reservation);
+    initialize(path,spans,count,&reservation,false);
+}
+
+GameNativeReadOnlyData::GameNativeReadOnlyData(const std::filesystem::path& path,
+    const GameNativeDataSpan* spans, std::size_t count,
+    GameNativeDataReservation& reservation, bool defer_ack) {
+    (void)path;
+    if (!defer_ack) throw std::logic_error("Joint RO construction requires deferred ACK");
+    reservation.transfer_ro_subset(reservations_,detail::native_data_band_mask(spans,count));
 }
 
 void GameNativeReadOnlyData::initialize(const std::filesystem::path& path,
     const GameNativeDataSpan* spans, std::size_t count,
-    GameNativeDataReservation* reservation) {
+    GameNativeDataReservation* reservation, bool defer_ack, bool already_reserved) {
     // Reserve requested bands before the large file buffer. Unrequested parts
     // of the original section may already contain unrelated process allocations.
     const auto mask=detail::native_data_band_mask(spans,count);
@@ -73,8 +81,18 @@ void GameNativeReadOnlyData::initialize(const std::filesystem::path& path,
     if (system.dwAllocationGranularity!=band_size || system.dwPageSize!=0x1000)
         throw std::runtime_error("Unsupported native-data allocation granularity");
     try {
-        if (reservation) reservation->transfer_to(reservations_,mask);
-        for (std::size_t i=0;i<reservations_.size();++i) if (mask & (1u<<i) && !reservation) {
+        if (reservation) {
+            if (defer_ack) reservation->transfer_ro_subset(reservations_,mask);
+            else reservation->transfer_to(reservations_,mask);
+        }
+        if (already_reserved) {
+            for (std::size_t i=0;i<reservations_.size();++i) {
+                const bool selected=(mask & (1u<<i))!=0;
+                if (selected != (reservations_[i]!=nullptr))
+                    throw std::logic_error("Joint RO owned bands changed before initialization");
+            }
+        }
+        for (std::size_t i=0;i<reservations_.size();++i) if (mask & (1u<<i) && !reservation && !already_reserved) {
             void* const requested=reinterpret_cast<void*>(reservation_begin+i*band_size);
             reservations_[i]=VirtualAlloc(requested,band_size,MEM_RESERVE,PAGE_NOACCESS);
             if (reservations_[i]!=requested)
@@ -101,7 +119,8 @@ void GameNativeReadOnlyData::initialize(const std::filesystem::path& path,
             if (!VirtualProtect(data,commit_end-first,PAGE_READONLY,&previous))
                 throw std::runtime_error("Cannot protect original read-only data pages");
         }
-        if (reservation) reservation->finish(true);
+        if (reservation && !defer_ack && !reservation->finish(true))
+            throw std::runtime_error("Native-data parent cancelled the mapping ACK");
     } catch (...) {
         for (auto& owned_band:reservations_) if (owned_band) {
             VirtualFree(owned_band,0,MEM_RELEASE);owned_band=nullptr;
