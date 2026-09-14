@@ -9,12 +9,13 @@ namespace bsp {
 namespace {
 using Word = std::uint32_t;
 static_assert(sizeof(void*) == 4);
-enum class Kind { word, descriptor, string, words, strings, pairs };
+enum class Kind { word, descriptor, string, words, strings, pairs, raw_pair };
 Word width(Kind kind) noexcept {
     switch (kind) {
     case Kind::word: return 4;
     case Kind::descriptor: return 20;
     case Kind::string: return 8;
+    case Kind::raw_pair: return 8;
     default: return 16;
     }
 }
@@ -66,7 +67,7 @@ void copy_vector(Kind kind, void* destination, const void* source, NativeStringS
     write(destination,8,completed);
 }
 void construct(Kind kind, void* destination, const void* source, NativeStringStorage* strings) {
-    if (kind==Kind::word || kind==Kind::descriptor) {
+    if (kind==Kind::word || kind==Kind::descriptor || kind==Kind::raw_pair) {
         if (destination) std::memcpy(destination,source,width(kind));
     } else if (kind==Kind::string) {
         if (!destination) return;
@@ -88,7 +89,7 @@ void relocate(Kind kind, void* destination, void* source, NativeStringStorage* s
     } else construct(kind,destination,source,strings);
 }
 void destroy(Kind kind, void* value, NativeStringStorage* strings) noexcept {
-    if (kind==Kind::word || kind==Kind::descriptor) return;
+    if (kind==Kind::word || kind==Kind::descriptor || kind==Kind::raw_pair) return;
     if (kind==Kind::string) { destroy_native_string_header_0041dd20(value,*strings);return; }
     const Word first=read(value,4);
     if (first) {
@@ -172,6 +173,10 @@ void resize_native_input_settings_words_00492210(void* header, Word count, Word 
 void resize_native_checked_dword_storage(void* header, Word count, Word value,
     NativeCheckedDwordPublication publication) {
     resize(Kind::word,header,count,&value,nullptr,publication);
+}
+void append_native_checked_pair_storage(void* header, const void* value) {
+    resize(Kind::raw_pair,header,size(header,Kind::raw_pair)+1u,value,nullptr,
+        NativeCheckedDwordPublication::capacity_end_begin);
 }
 void resize_native_input_settings_bits_0049df50(void* header, Word count, Word value) {
     const Word old=read(header,0);if (count==old) return;

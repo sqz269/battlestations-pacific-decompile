@@ -17,6 +17,12 @@ void resize_native_input_settings_words_00492210(void*, std::uint32_t, std::uint
 enum class NativeCheckedDwordPublication { begin_capacity_end, capacity_end_begin };
 void resize_native_checked_dword_storage(void*, std::uint32_t, std::uint32_t,
     NativeCheckedDwordPublication);
+// Non-owning two-DWORD specialization of the same checked storage mechanics.
+// Actual10h header, eight-byte records, 1.5x element-count growth; replacement
+// publication is capacity/end/begin. Only end insertion is supplied, with valid
+// consistent storage and a source pair independent of invalidated old backing.
+// This is a source storage contract, not a general original STL/iterator ABI.
+void append_native_checked_pair_storage(void*, const void* source_pair);
 // Actual14h packed-bit storage: bit count0, opaque4, word begin8/endC/capacity10.
 // Only the low byte of the fill value is boolean. Shrink masks unused high bits.
 void resize_native_input_settings_bits_0049df50(void*, std::uint32_t, std::uint32_t);

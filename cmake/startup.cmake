@@ -1025,3 +1025,4 @@ cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_unit_part_a
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_spatial_lifecycle.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_unit_part_destruction.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_resource_instance_lifecycle.cpp)
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_resource_instance_publication.cpp)
