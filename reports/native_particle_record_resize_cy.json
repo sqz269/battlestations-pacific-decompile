@@ -23,7 +23,7 @@
     "pe_live_equal": true,
     "abi": "ECX actual 0Ch vector; signed requested count in original stack word; RET4; EDX unused.",
     "direct_callers": [
-      "004dca80",
+      "004dcaa0",
       "004dda40",
       "004ddaa0",
       "004de290"
@@ -639,5 +639,11 @@
       "bsp_zlib121.lib": "f3f934925213a2ffb81f3aec2afbb065c1733cf43b28dddf31db6a69185c4102"
     },
     "tracked_build_inputs": 2607
+  },
+  "caller_boundary_correction": {
+    "report": "reports/native_particle_record_clear_dc.json",
+    "cause": "Unvalidated linear candidate sweep attributed the separately undecoded4DCAA0 wrapper to the preceding4DCA80 body because there was no INT3 padding. A snapshot refresh alone preserved the edge; defining the actual eight-byte function and regenerating the graph corrected its ownership.",
+    "prior_sealed_attempt_preserved": true,
+    "source_and_outgoing_calls_unchanged": true
   }
 }
