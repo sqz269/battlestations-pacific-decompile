@@ -1,0 +1,455 @@
+{
+  "packet": "orch6_graph_builder_ar",
+  "recorded_utc": "2026-09-14T22:01:43.995860+00:00",
+  "status": "analysis_and_listing_cleanup_only",
+  "worker_dispatches": 0,
+  "cpp_files_changed": [],
+  "native": {
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "spans": [
+      {
+        "entry": "00b87e80",
+        "end": "00b8817b",
+        "bytes": 764,
+        "sha256": "3ac26866b671c56c3071bbc4c36f4ed9e0bc3ab1dd4133d077d6c5d198755db0",
+        "prior_name": "FUN_00b87e80",
+        "live_disk_equal": true,
+        "coverage": "assembly analyzed; no new C++ reconstruction"
+      },
+      {
+        "entry": "00b87ce0",
+        "end": "00b87d99",
+        "bytes": 186,
+        "sha256": "cb392fea4332fc579cf85e7232229c9aa2c9761c2f61491d1536835ff5349c62",
+        "prior_name": "FUN_00b87ce0",
+        "live_disk_equal": true,
+        "coverage": "assembly analyzed; no new C++ reconstruction"
+      },
+      {
+        "entry": "00b783e0",
+        "end": "00b78448",
+        "bytes": 105,
+        "sha256": "c344c8c1badf2647bf9fb0195ec93aa6c91e7fa14f72010864ca59bb8bf74d7f",
+        "prior_name": "FUN_00b783e0",
+        "live_disk_equal": true,
+        "coverage": "assembly analyzed; no new C++ reconstruction"
+      },
+      {
+        "entry": "00b931b0",
+        "end": "00b931b5",
+        "bytes": 6,
+        "sha256": "87baaf3418f6edc2f12fde69058500ba8e5884d9e8ae821ef88028ea8a5c2be9",
+        "prior_name": "TRIV_body_00b931b0",
+        "live_disk_equal": true,
+        "coverage": "assembly analyzed; no new C++ reconstruction"
+      },
+      {
+        "entry": "00b72730",
+        "end": "00b72736",
+        "bytes": 7,
+        "sha256": "07370f3bf9af1ccfdf7e4d94825bcc82587190a22845ffbf5f24fd22d3d80b1f",
+        "prior_name": "TRIV_body_00b72730",
+        "live_disk_equal": true,
+        "coverage": "assembly analyzed; no new C++ reconstruction"
+      },
+      {
+        "entry": "00b90e30",
+        "end": "00b90e3a",
+        "bytes": 11,
+        "sha256": "0cf98cf3ed474a1f21d87fd3566e8d22efd01d34486daa346f1f681663dc51d7",
+        "prior_name": "CG_adjustor_thunk_00b90e30",
+        "live_disk_equal": true,
+        "coverage": "assembly analyzed; no new C++ reconstruction"
+      },
+      {
+        "entry": "00b90630",
+        "end": "00b9067f",
+        "bytes": 80,
+        "sha256": "c0c3d27588930cfa989ca40d08b300899f11c729a60c646b2461371d53ee12e2",
+        "prior_name": "FUN_00b90630",
+        "live_disk_equal": true,
+        "coverage": "assembly analyzed; no new C++ reconstruction"
+      },
+      {
+        "entry": "00b90600",
+        "end": "00b90613",
+        "bytes": 20,
+        "sha256": "8e2ad97d42a40e510579af8a3005b0e237dbc8adfdcbf366ad02e0bcaaf7513c",
+        "prior_name": "FUN_00b90600",
+        "live_disk_equal": true,
+        "coverage": "assembly analyzed; no new C++ reconstruction"
+      },
+      {
+        "entry": "00b90620",
+        "end": "00b9062f",
+        "bytes": 16,
+        "sha256": "71fa8e8ee03bdc5fd363b5475d813ca3dedcbfd61154227318a711eb27bfd78e",
+        "prior_name": "BSP_Model_GetBoneNode",
+        "live_disk_equal": true,
+        "coverage": "assembly analyzed; no new C++ reconstruction"
+      },
+      {
+        "entry": "00b76510",
+        "end": "00b76522",
+        "bytes": 19,
+        "sha256": "05b2650de3aee8f24348fcba3c4f10aedfbd9cd03e85eb74cc3c1f0ce2ecc3fc",
+        "prior_name": "FUN_00b76510",
+        "live_disk_equal": true,
+        "coverage": "assembly analyzed; no new C++ reconstruction"
+      },
+      {
+        "entry": "00427d10",
+        "end": "00427dce",
+        "bytes": 191,
+        "sha256": "e33e28731d38d918deb6aefae0be4ba0b00d54b27020e05a5ad28f1cc7486792",
+        "prior_name": "FUN_00427d10",
+        "live_disk_equal": true,
+        "coverage": "assembly analyzed; no new C++ reconstruction"
+      },
+      {
+        "entry": "00b901c0",
+        "end": "00b9021e",
+        "bytes": 95,
+        "sha256": "e1bca0b8f139e8ccbc8963e5342a163f36b0fd3fe340a0304c668013058cabd9",
+        "prior_name": "FUN_00b901c0",
+        "live_disk_equal": true,
+        "coverage": "assembly analyzed; no new C++ reconstruction"
+      }
+    ],
+    "verified_bytes": 1500,
+    "constants": [
+      {
+        "address": "00ce4970",
+        "bits": "501502f9",
+        "float32": 10000000000.0,
+        "live_disk_equal": true
+      },
+      {
+        "address": "00ce4adc",
+        "bits": "d01502f9",
+        "float32": -10000000000.0,
+        "live_disk_equal": true
+      }
+    ],
+    "token_cell": {
+      "address": "01090468",
+      "database_initial_bytes": "00000000",
+      "runtime_value": "not established; getter reads the current cell"
+    },
+    "factory_table": {
+      "address": "00d63210",
+      "bytes": 24,
+      "sha256": "2ed9b8263c5cf9959aee2cf337d07bfe223984d39dc5b6a4e672be4ade5b6f05",
+      "live_disk_equal": true,
+      "entries": [
+        "00b87180",
+        "00b866c0",
+        "00b871b0",
+        "00b86720",
+        "00b871e0",
+        "00b86780"
+      ]
+    }
+  },
+  "calls": [
+    {
+      "function": "00b87e80",
+      "address": "00b87e90",
+      "native": "00b87ce0"
+    },
+    {
+      "function": "00b87e80",
+      "address": "00b87ebc",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00b87e80",
+      "address": "00b87eca",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00b87e80",
+      "address": "00b87ee2",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00b87e80",
+      "address": "00b87ef5",
+      "native": "00b74640"
+    },
+    {
+      "function": "00b87e80",
+      "address": "00b87efc",
+      "native": "00b72730"
+    },
+    {
+      "function": "00b87e80",
+      "address": "00b87f0d",
+      "native": "00b90e30"
+    },
+    {
+      "function": "00b87e80",
+      "address": "00b87f2a",
+      "native": "00b76510"
+    },
+    {
+      "function": "00b87e80",
+      "address": "00b87f4a",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00b87e80",
+      "address": "00b87f57",
+      "native": "00b6d800"
+    },
+    {
+      "function": "00b87e80",
+      "address": "00b87f81",
+      "native": "00bf7fbf"
+    },
+    {
+      "function": "00b87e80",
+      "address": "00b87f97",
+      "native": "00b76510"
+    },
+    {
+      "function": "00b87e80",
+      "address": "00b87fac",
+      "native": "00b90600"
+    },
+    {
+      "function": "00b87e80",
+      "address": "00b87fb6",
+      "native": "00b74310"
+    },
+    {
+      "function": "00b87e80",
+      "address": "00b88014",
+      "native": "00b74640"
+    },
+    {
+      "function": "00b87e80",
+      "address": "00b88029",
+      "native": "00b72b20"
+    },
+    {
+      "function": "00b87e80",
+      "address": "00b88043",
+      "native": "00b73260"
+    },
+    {
+      "function": "00b87e80",
+      "address": "00b88059",
+      "native": "00b47c90"
+    },
+    {
+      "function": "00b87e80",
+      "address": "00b88075",
+      "native": "00b47c40"
+    },
+    {
+      "function": "00b87e80",
+      "address": "00b880ba",
+      "native": "00b90620"
+    },
+    {
+      "function": "00b87e80",
+      "address": "00b880d7",
+      "native": "004768d0"
+    },
+    {
+      "function": "00b87e80",
+      "address": "00b880e1",
+      "native": "00427d10"
+    },
+    {
+      "function": "00b87ce0",
+      "address": "00b87cfb",
+      "native": "00b931b0"
+    },
+    {
+      "function": "00b87ce0",
+      "address": "00b87d13",
+      "native": "00b783e0"
+    },
+    {
+      "function": "00b87ce0",
+      "address": "00b87d33",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00b87ce0",
+      "address": "00b87d54",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00b87ce0",
+      "address": "00b87d64",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00b90e30",
+      "address": "00b90e36",
+      "native": "00b90630",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "00b90630",
+      "address": "00b9063e",
+      "native": "00b901c0"
+    },
+    {
+      "function": "00b901c0",
+      "address": "00b901e0",
+      "native": "00bf55be"
+    },
+    {
+      "function": "00b901c0",
+      "address": "00b9020c",
+      "native": "00bf6989"
+    }
+  ],
+  "indirect_calls": [
+    {
+      "function": "00b87e80",
+      "site": "00b87fc0",
+      "operand": "edx"
+    },
+    {
+      "function": "00b87e80",
+      "site": "00b88055",
+      "operand": "edx"
+    },
+    {
+      "function": "00b87e80",
+      "site": "00b88071",
+      "operand": "edx"
+    },
+    {
+      "function": "00b87e80",
+      "site": "00b88089",
+      "operand": "edx"
+    },
+    {
+      "function": "00b87e80",
+      "site": "00b8809b",
+      "operand": "eax"
+    },
+    {
+      "function": "00b87e80",
+      "site": "00b880cd",
+      "operand": "edx"
+    },
+    {
+      "function": "00b87e80",
+      "site": "00b88144",
+      "operand": "eax"
+    }
+  ],
+  "analysis": {
+    "primary": "00b87e80",
+    "contract": "Bind mesh weight names to first matching instance nodes and accumulate per-bone six-float bounds from stream positions and float bone indices.",
+    "graph_builder": "00b891a0 remains analysis only; AQ established first-node root publication.",
+    "animation_postprocessor": "00b79bc0 remains partially analyzed; only its three known listing gaps were repaired here.",
+    "reuse_candidates": [
+      "NativeMeshStorage::weight_names_b0",
+      "read_native_vertex_position_004768d0",
+      "reserve_native_instance_entry_pointers_00b1c500",
+      "resize_native_instance_entry_pointers_00b1c770"
+    ],
+    "reuse_limit": "Pointer-array specialization equivalence and complete external virtual dispatch bindings have not been established by this batch."
+  },
+  "cleanup": {
+    "flow_report": "reports/native_graph_builder_flow_ar.json",
+    "repaired_call_gaps": 4,
+    "repaired_bytes": 43,
+    "prior_stored_body_limits": [
+      {
+        "entry": "00712c80",
+        "stored_end": "00712d7c",
+        "physical_end": "00712f18",
+        "status": "still pending: supported script execution is disabled"
+      },
+      {
+        "entry": "007112e0",
+        "stored_end": "00711357",
+        "physical_end": "0071136b",
+        "status": "still pending: supported script execution is disabled"
+      },
+      {
+        "entry": "00711120",
+        "stored_end": "00711131",
+        "physical_end": "00711136",
+        "status": "still pending: supported script execution is disabled"
+      },
+      {
+        "entry": "00b89db0",
+        "stored_end": "00b89e32",
+        "physical_end": "00b89e8e",
+        "status": "still pending: supported script execution is disabled"
+      }
+    ],
+    "script_audit_response": {
+      "error": "Script execution disabled. Set GHIDRA_MCP_ALLOW_SCRIPTS=1 (and GHIDRA_MCP_AUTH_TOKEN if exposing beyond loopback) to enable. /run_script_inline executes arbitrary Java against the Ghidra process."
+    },
+    "prior_sealed_proofs": "AO, AP and AQ artifacts remain unchanged; their original validation claims are historical snapshots."
+  },
+  "validation": {
+    "kind": "static evidence and live listing verification",
+    "source_build": "No C++ changed in this batch. Any integration build is recorded separately.",
+    "native_fixture": "No new native differential fixture was run.",
+    "gameplay": "Not validated; complete graph admission, external behavior and original exception ABI remain open.",
+    "call_verifier": "reports/native_graph_builder_ar.json: 31 call rows checked, 0 failed",
+    "annotations_saved": 8,
+    "annotation_receipt_sha256": "61eea6eedb3e647b898c4dd9529e06d3cdc08ce6a5cbfcba01a82b395ff91820"
+  },
+  "annotations": [
+    {
+      "entry": "00b87e80",
+      "name": "BSP_ResourceInstance_BindMeshBonesAndBounds",
+      "classification": "analysis only"
+    },
+    {
+      "entry": "00b87ce0",
+      "name": "BSP_ResourceInstance_GetMeshBindingRange",
+      "classification": "analysis only"
+    },
+    {
+      "entry": "00b931b0",
+      "name": "BSP_GetMeshBindingTypeToken",
+      "classification": "analysis only"
+    },
+    {
+      "entry": "00b72730",
+      "name": "BSP_Mesh_GetWeightNames",
+      "classification": "analysis only"
+    },
+    {
+      "entry": "00b90e30",
+      "name": "BSP_Model_ResizeBoneNodes",
+      "classification": "analysis only"
+    },
+    {
+      "entry": "00b90600",
+      "name": "BSP_Model_SetBoneNode",
+      "classification": "analysis only"
+    },
+    {
+      "entry": "00b76510",
+      "name": "BSP_ResourceInstance_GetNodeCount",
+      "classification": "analysis only"
+    },
+    {
+      "entry": "00427d10",
+      "name": "BSP_Aabb3_IncludePoint",
+      "classification": "analysis only"
+    }
+  ],
+  "proof": {
+    "manifest": "local/restart_cleanup_ar/manifest.json",
+    "sha256": "5e9253b261cf6d34dd8590ec3af71d8db1cd06891f0b62bc656466e4f3e65f6d",
+    "retained_files": 79,
+    "scope": "Native byte spans, readbacks, prior annotation values, script refusal, flow receipt and tool inputs. Public docs/report are retained by their Git commit."
+  }
+}
