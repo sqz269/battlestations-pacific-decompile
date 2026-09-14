@@ -2,6 +2,16 @@
 #include "bsp/native_material_pools.hpp"
 
 namespace bsp {
+struct NativeMaterialEffectCacheContext;
+struct NativeMaterialEffectCacheAcquired;
+
+// Same actual renderer/cache/owner domain; the caller retains the acquired
+// effect frame through any cold-loader failure. Numeric native profile view.
+struct NativeMaterialFactoryRawContext {
+    NativeMaterialEffectCacheContext& effects;
+    NativeMaterialEffectCacheAcquired& acquired_effect;
+    const volatile std::uint32_t* renderer_profile_00d5f0a8;
+};
 
 // Original ECX=actual8h effect-name header, EAX=material, RET. Capture the
 // current F8D394 renderer once and invoke its CURRENT callable virtual+48
@@ -17,6 +27,18 @@ namespace bsp {
 NativeMaterialStorage* create_native_material_for_effect_00535320(
     NativeString& actual_effect_name, void* const volatile& actual_renderer_00f8d394,
     NativeMaterialSlotPool&, NativeRenderActualOwners&);
+
+// Actual D5F0A8+48=B318B0 route over the same allocation/constructor/release
+// body. Publish a completed material before releasing the captured effect, so
+// a throwing terminal cannot hide that native creator. This output starts null
+// and adds no retain or cleanup. Constructor failure returns only its raw slot;
+// later failures retain completed native effects and may not replay the frame.
+// A null effect is a source-domain error; native later null+04 access-fault
+// effects/SEH are not modeled and must not become a successful empty material.
+NativeMaterialStorage* create_native_material_for_effect_00535320(
+    NativeString& actual_effect_name, void* const volatile& actual_renderer_00f8d394,
+    NativeMaterialSlotPool&, NativeRenderActualOwners&, NativeMaterialFactoryRawContext&,
+    NativeMaterialStorage** completed_before_effect_release = nullptr);
 
 // Original ECX=raw material slot, RET. Supplies canonical F8D3AC to B17A80.
 // Also the destination of state0 funclet C6C240; no material destruction.
