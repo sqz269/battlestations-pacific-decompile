@@ -12,6 +12,7 @@
 
 #include "bsp/game_hosts_units.hpp"
 #include "bsp/plane_flight.hpp"
+#include "bsp/plane_pose_commit.hpp"
 
 #include "bsp/game_hosts.hpp"
 #include "bsp/game_observer_runtime.hpp"
@@ -2118,7 +2119,43 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     void surface_007cba50(float) override {
                         ++owner_.summary.plane_arm_surface;
                     }
-                    void commit_step_pose_0085dc80() override {}
+                    // 007CECBA on unit+674h. Not a pose *commit* despite the
+                    // name this interface inherited from a doc annotation that
+                    // turned out to be wrong: 0085DC80 is
+                    // BSP_Matrix_OrthonormalizeBasisRows, a general Gram-Schmidt
+                    // with 54 callers that takes no step, no velocity and no
+                    // control axis. docs/PLANE_POSE_COMMIT.md.
+                    //
+                    // On an already-orthonormal basis it is a no-op, and the
+                    // host's pose is orthonormal because it comes from the
+                    // authored placement and nothing rotates it yet. So this
+                    // changes nothing today and is wired for faithfulness, not
+                    // effect - it is the drift tidy-up that will matter once
+                    // something actually turns a plane.
+                    //
+                    // No zero-length guard: the native has none, and a zero or
+                    // NaN forward silently collapses the basis there too. The
+                    // counter below records it instead of hiding it.
+                    void commit_step_pose_0085dc80() override {
+                        bsp::PoseBasis in;
+                        for (int i = 0; i < 3; ++i) {
+                            in.row0[i] = unit_.motion.pose_row0[i];
+                            in.row1[i] = unit_.motion.pose_row1[i];
+                            in.row2[i] = unit_.motion.pose_row2[i];
+                        }
+                        const bsp::PoseOrthonormalizeResult r =
+                            bsp::orthonormalize_basis_rows_0085dc80(in);
+                        for (int i = 0; i < 3; ++i) {
+                            unit_.motion.pose_row0[i] = r.basis.row0[i];
+                            unit_.motion.pose_row1[i] = r.basis.row1[i];
+                            unit_.motion.pose_row2[i] = r.basis.row2[i];
+                        }
+                        if (r.branch == bsp::PoseOrthonormalizeBranch::RightReference)
+                            ++owner_.summary.plane_pose_right_reference;
+                        if (!(r.forward_length > 0.0f))
+                            ++owner_.summary.plane_pose_collapsed;
+                        owner_.done("PlaneMotion::commit_step_pose_0085dc80", 0x0085dc80u);
+                    }
                     void latch_control_input_007b9770() override {}
                     bool airborne_time_frozen() override {
                         return unit_.plane_airborne_frozen_9e0;
@@ -3051,8 +3088,11 @@ void GameUnitsHost::report() {
         host.summary.plane_steps, host.summary.plane_arm_free_flight,
         host.summary.plane_arm_ground_roll, host.summary.plane_arm_surface,
         host.summary.plane_arm_none);
-    host.log.notef("summary mission plane motion: distance_moved=%.2f m",
-        host.summary.plane_distance_moved);
+    host.log.notef("summary mission plane motion: distance_moved=%.2f m "
+        "pose_right_reference=%llu pose_collapsed=%llu",
+        host.summary.plane_distance_moved,
+        host.summary.plane_pose_right_reference,
+        host.summary.plane_pose_collapsed);
     host.commands.report();
 }
 

@@ -165,6 +165,13 @@ struct GameUnitsSummary {
     // Metres of forward travel summed over every free-flight step; zero means
     // the arm ran but the plane did not move.
     double plane_distance_moved{0.0};
+    // 0085DC80s two observable outcomes. Both stay 0 while nothing rotates
+    // a plane: the authored basis is already orthonormal, so the sweep is a
+    // no-op. A non-zero right_reference means a row 1 came within 2.56
+    // degrees of forward; a non-zero collapsed means a zero or NaN forward
+    // silently zeroed a basis, which the native does not guard either.
+    unsigned long long plane_pose_right_reference{0};
+    unsigned long long plane_pose_collapsed{0};
     unsigned long long generic_tick_calls{0}; //00953CC0 with available live inputs
     unsigned long long generic_tick_unavailable{0};
     unsigned long long player_orders{0};
