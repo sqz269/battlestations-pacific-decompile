@@ -12861,6 +12861,52 @@
         "source_manifest_inputs": 2665,
         "previous_ghidra_comments_preserved": 36
       }
+    },
+    {
+      "id": "orch4_native_resource_manager_lifetime_cb",
+      "state": "integrated_source_build_and_original_fixture_checked",
+      "status": "integrated_source_build_and_original_fixture_checked",
+      "addresses": [
+        "00b7ca20",
+        "00b7ca40",
+        "00b7cf80",
+        "00b7f730",
+        "00b7ff20",
+        "00b7f790",
+        "00b80500",
+        "00b805d0",
+        "00b80e90",
+        "00b80ed0",
+        "00b7d290",
+        "00b7d2c0",
+        "00b81040",
+        "00b80f10",
+        "00b81150",
+        "004c1400"
+      ],
+      "owner": "agent/orch4-20260910",
+      "report": "reports/native_resource_manager_lifetime_cb.json",
+      "documentation": "docs/NATIVE_RESOURCE_MANAGER_LIFETIME_CB.md",
+      "code_revision": "f0e1c95726dd4d8b088b1b2c924c733292a27b5c",
+      "game_validated": false,
+      "follow_up": "Concrete parser slot8 bodies, game-specific parser registration and nondefault factory terminals; then actual manager/loader admission and loading queue stop/join",
+      "source_stable_merge_revision": "a419a94de558e88ec45e8c0b4e2e63727b28af53",
+      "validation": {
+        "strict_win32_build": "passed",
+        "existing_ctests": "2/2 passed",
+        "original_bodies": 16,
+        "direct_relocations": 68,
+        "absolute_relocations": 13,
+        "paired_original_fixture": "No-allocation fast return, raw getter/constructor with six names and seven registered owners, repeated getter, normalized full parser/cache trees, partial parser range erasure, populated manager scalar flags2, seeded constructor preservation.",
+        "source_canonical_shutdown": "Complete actual manager then six parser-secondary drain cleared all seven publications; no fixture pointer removal or direct parser deletion in this case.",
+        "source_constructor_exception": "Third name call throws: completed maps/base cleaned, default factory retained, two parser singleton publications and registrations retained; explicit fixture cleanup afterward.",
+        "native_exception_paths_guarded_out": true,
+        "whole_report_verifier": "81 passed",
+        "source_manifest_inputs": 2669,
+        "previous_ghidra_comments_preserved": 30,
+        "production_inputs_identical_on_merged_tree": true,
+        "build_and_fixture_run": "Successful initial CB run, preserved verbatim; source inputs unchanged by subsequent documentation/tooling-only merge. No additional run claimed."
+      }
     }
   ],
   "snapshot_after_analysis": {

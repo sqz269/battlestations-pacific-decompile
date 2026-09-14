@@ -4,6 +4,7 @@
 
 namespace bsp {
 struct NativeResourceRegistryDeleteBindings;
+struct NativeResourceManagerContext;
 class XLiveOwnerAllocation;
 struct NativeInputBackendOwnerContext;
 struct NativeInputActionOwnerContext;
@@ -30,7 +31,8 @@ namespace game { class GameSoundRuntime; }
 // D0DA64, D5E594, D5E59C, D5B44C, D5B460, D5B478, D58F78, D24138,
 // D2413C, D5B5F4, D5B5F8, D5B72C, D5B630, D68200, D68CF8, D68D04 or
 // D688B0, CFEA1C, D6418C, CF7E70, CF7E74, CE7548, D190C4, CF81CC, D68B94,
-// CFD84C, D62C18, D68EC0, D5E5DC, D5E5D4, CFB6C4 or CFEA10. D0DA64
+// CFD84C, D62C18, D68EC0, D5E5DC, D5E5D4, CFB6C4, CFEA10, D63128,
+// D63084, D63094, D630A4, D630B4, D630C4 or D630D4. D0DA64
 // requires its actual publication cell; registry and sound profiles require
 // their concrete borrowed bindings. Sound and XLive owners retain C++ projected
 // storage; XLive additionally requires the exact allocation identity. Input
@@ -103,8 +105,11 @@ struct NativeSingletonDeletionBindings {
     // CFEA10 is the registered MPKG secondary at primary+4. Its existing
     // thunk adjusts the popped pointer and clears the same 010904F4 cell.
     NativeMpkgFactoryContext* mpkg_factory{};
+    // D63128 manager and its six registered parser secondary profiles. Borrow
+    // the SAME raw publications and string services used by construction.
+    NativeResourceManagerContext* resource_manager{};
 };
-static_assert(sizeof(NativeSingletonDeletionBindings) == 92);
+static_assert(sizeof(NativeSingletonDeletionBindings) == 96);
 
 // Full BD0400[197] normal schedule over raw14h manager storage. Native ECX
 // owner, RET; new EDX reference to stable bindings above. Pop before deleting
