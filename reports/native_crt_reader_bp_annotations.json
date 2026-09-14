@@ -1,13 +1,13 @@
 {
   "packet": "orch2_crt_reader_bp_annotations",
-  "status": "locale_source_named_commented_saved_refreshed_remaining3_sources_pending",
-  "source_functions": 1,
-  "original_body_bytes": 134,
+  "status": "four_reviewed_sources_named_commented_saved_refreshed_combined_validation_pending",
+  "source_functions": 4,
+  "original_body_bytes": 217,
   "target": {
     "project": "C:/Users/sqz269/bsp.gpr",
     "program": "/battlestationspacific.exe"
   },
-  "combined_validation": "Fresh16-stem candidate acceptance pending all reviewed source integration; prior BM acceptance remains historical and separate.",
+  "combined_validation": "All16 source stems integrated and independently reviewed; fresh current-candidate strict build and acceptance pending, previous BM receipt remains historical.",
   "batches": [
     {
       "kind": "locale",
@@ -27,6 +27,25 @@
         "path": "local/bp_integration/locale-exports-refresh.log",
         "sha256": "33b54eb2f67c1a450ed2af08460b44079b5f1755869a5c62909cddde1f93302b"
       }
+    },
+    {
+      "kind": "attachment_and_critical_primitives",
+      "annotation_log": {
+        "path": "local/ghidra-annotations-20260914T055159Z.json",
+        "sha256": "d677f185f3575b80aac065b556b969ed30793efd975a40a044829461d78f6521"
+      },
+      "before": {
+        "path": "local/bp_integration/comments-before-remaining.json",
+        "sha256": "a507e29615831ca53a342c589fe0aaf70dfd526447385555b7fc2f481aeb90e8"
+      },
+      "after": {
+        "path": "local/bp_integration/comments-after-remaining.json",
+        "sha256": "96614a8c73ecde4336b06d2df156b0500e91f0248d28986ef005544c60adf822"
+      },
+      "exports": {
+        "path": "local/bp_integration/remaining-exports-refresh.log",
+        "sha256": "a2d1d89bbe7a1d8bea952b3b382ea45339c1dd010799ff07a52e1a9ab9b6ec81"
+      }
     }
   ],
   "functions": [
@@ -36,7 +55,28 @@
       "name": "___addlocaleref",
       "original_body_bytes": 134,
       "added_evidence": "BO/BP reviewed source evidence: Complete134B cdecl locale-record reference acquisition; preserve EBX/EBP/ESI/EDI and plainRET. Cache real InterlockedIncrement import once in EDI; eight static CALL EDI sites. Increment root, then reload optional B0/B8/B4/C0 targets in that order; six category pairs compare narrow pointer identity against actual E161D0 before optional narrow count, then current wide-presence/current count; finally reload D4 and increment its unguarded +B4 count. Preserve alias-sensitive reloads and repeated increments; no snapshot, deduplication, lock, allocator, release, null repair, overflow repair or error translation. Source adds stable borrowed actual sentinel as second cdecl argument while preserving original record slot. Emitted134B equals native except sole import relocation and exact seven-byte sentinel load/CMP replacement at offset4B; extra ECX/stack access and original frame/ABI identity remain qualified. No locale/PTD/TLS ownership is created. See reports/native_crt_locale_reference_acquire_bo.json and reports/native_crt_ptd_frontier_bn.json. Primary and independent source/compiler/archive reviews accepted; worker strict build, eight PE/live seeds and existing CTests passed; fresh combined candidate acceptance is recorded separately. Native runtime/SEH and gameplay remain open; library name retained."
+    },
+    {
+      "address": "00bf0430",
+      "old_name": "BSP_StreamReader_AssignStream",
+      "name": "BSP_StreamReader_AssignStream",
+      "original_body_bytes": 57,
+      "added_evidence": "BP reviewed complete57B source: native ECX reader, stacked replacement, RET4; EAX incidental. Capture replacement then old stream, identity returns without count/profile/context operations; otherwise publish replacement first, increment replacement+4 if nonnull, decrement captured old+4 if nonnull, and dispatch its current profile/slot0 only at zero. No later reader store, cleanup, seek or rollback, including on terminal provider failure. Qualified actual memory D642C0/BD30E0 path rereads profile and slot4 then calls existing BB8F90 with flags1; physical D691B0/BF55A0 uses existing provider with current slot4, flags0 and actual pool recycling. Preserve alias-sensitive field/reference effects and selected-context-only access. New C++ context-bearing void interface and supported-profile guards are source boundaries. Current compiled323B uses actual Windows Interlocked source operations lowered to LOCK INC/LOCK XADD(-1); native IAT call, hook, register and fault boundaries are explicitly not preserved or claimed. Native FH3/SEH, asynchronous faults, arbitrary or changing providers, general reader destruction and gameplay remain open. See reports/native_raw_reader_attachment_bp.json and retained BO lifetime evidence. Primary and independent source/compiler/unique-archive reviews accepted; worker strict build, eight seeds and existing CTests passed; combined candidate validation recorded separately."
+    },
+    {
+      "address": "00c17643",
+      "old_name": "___crtInitCritSecNoSpinCount@8",
+      "name": "___crtInitCritSecNoSpinCount@8",
+      "original_body_bytes": 16,
+      "added_evidence": "BQ reviewed complete16B source: actual two-argument stdcall fallback forwards only caller critical-section pointer to real InitializeCriticalSection, ignores spin, then XOR EAX,EAX; INC EAX; RET8 yields one only on normal API return. Preserve native arithmetic flags and actual exception propagation; no catch, LastError repair, allocation, private lock storage or selector substitution. Current emitted16B matches native outside sole real InitializeCriticalSection DIR32 import relocation at offset6. Borrow actual valid Win32 critical-section storage; native caller/frame/fault/gameplay identity remains qualified. Existing library name retained. Full C17653 selector, encoded cache ownership, Watson and SEH4 remain separate. See reports/native_crt_critical_section_primitives_bq.json and reports/native_crt_lock_init_frontier_bp.json. Primary and independent source/compiler/archive reviews accepted; worker strict build, eight seeds and existing CTests passed; combined validation recorded separately."
+    },
+    {
+      "address": "00c17639",
+      "old_name": "LIBCRT_unmatched_00c17639",
+      "name": "BSP_Crt_StoreEncodedCriticalSectionInitializer",
+      "original_body_bytes": 10,
+      "added_evidence": "BQ reconstruction naming hypothesis, not recovered library symbol. Complete10B native cdecl primitive loads caller already-encoded DWORD into EAX, stores unchanged bits to actual109E454, plainRET with EAX input and arithmetic flags unchanged; observed native caller does not consume a semantic result. New13B source adds a borrowed actual cache-word binding and saves/restores ECX, keeps input in EAX and uses only MOV/PUSH/POP/RET. Binding must be stable, writable and outside new argument/save frame. Added argument/register-save/stack access and source return type qualify original ABI and fault continuation. No encoding, decoding, private cache, validation, synchronization, lock owner or initialization is supplied. Full C17653 and native SEH4/Watson/canonical CRT ownership remain open. See reports/native_crt_critical_section_primitives_bq.json and reports/native_crt_lock_init_frontier_bp.json. Primary and independent source/compiler/unique-archive reviews accepted; worker strict build, eight seeds and existing CTests passed; combined validation recorded separately; no native runtime/gameplay claim."
     }
   ],
-  "qualification": "Library name retained; added borrowed-sentinel cdecl interface, no canonical locale/PTD/TLS ownership, original entry/SEH/runtime/gameplay claim."
+  "qualification": "Confirmed library names and prior comments preserved; unmatched setter has descriptive hypothesis name. Actual borrowed storage and concrete providers only; native ABI/import/fault/SEH/FH3 identity, canonical ownership, full C17653, general reader destruction and gameplay remain qualified or open."
 }
