@@ -1,0 +1,164 @@
+{
+  "packet": "cc7_ship_sub_entity_list",
+  "owner": "agent/cc7-sub-entity-list",
+  "date": "2026-09-13",
+  "ghidra": "read-only",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "doc": "docs/SHIP_SUB_ENTITY_LIST.md",
+  "headline": "Entity virtual slot 0FCh is not empty. 92 of the 94 entity classes in the image - every ship, gun platform and projectile - share 00432480, which appends `this` to the caller's vector. Only two classes override it: MAirfield (006D4DD0, its intact hangars) and the plane squadron (007F44E0, its live planes). docs/GAME_EXECUTABLE.md records the opposite in three places and is wrong; the empty sub-entity list is an artefact of the reconstruction's host, not of the native code.",
+
+  "slot": {
+    "index": "0FCh",
+    "abi": "__thiscall(entity* this, PointerVector* out), RET 4, no return value",
+    "argument": "the caller's pointer vector; the gunnery tick passes this+0BCh (kUnitGunneryOffSubEntityScratch) after clearing it with 0063BCD0",
+    "evidence": "both call sites load [vtable+0FCh] and PUSH the vector; all three implementations end RET 4; the only data reference to each override is vtable+0FCh (00CF8D04 = 00CF8C08+0FCh, 00D088BC = 00D087C0+0FCh)"
+  },
+
+  "container": {
+    "name": "PointerVector",
+    "fields": [
+      {"offset": "+4h", "name": "first", "evidence": "0063BCD7/0063BCDA compare [+4h] against [+8h]; 004323D6 reads [+4h] as the base"},
+      {"offset": "+8h", "name": "last", "evidence": "00865570 CMP EDI,[ESI+8h] is the walk's bound; 004323F9/00432402 write through it"},
+      {"offset": "+0Ch", "name": "capacity_end", "evidence": "004323ED SUB EAX,EDX; SAR EAX,2 against the size"}
+    ],
+    "element_size": 4,
+    "element_type": "entity pointer",
+    "producer": "004323D0 BSP_PointerVector_PushBack copies *arg (4 bytes); 0063BCD0 erases [first,last) through 0063AD10",
+    "iteration": "0042EE00 begin / 0042EDD0 end return {container*, element*} pairs; 00BF6713 is the checked-iterator trap"
+  },
+
+  "implementations": [
+    {"address": "00432480", "native": "none", "name": "BSP_Entity_AppendSelfAsSubEntity", "convention": "__thiscall(entity*, PointerVector*), RET 4", "body": "00432480-00432494", "coverage": "complete", "state": "reconstructed", "classes": 92, "role": "spills `this` to a 4-byte local and hands its address to 004323D0; one element, no null test, no filter", "evidence": "00432481 LEA EAX,[ESP]; 00432487 MOV ECX,[ESP+8] is arg0 after the PUSH ECX; 0043248C CALL 004323D0; 00432492 RET 4"},
+    {"address": "006d4dd0", "native": "none", "name": "BSP_AirField_AppendIntactHangarsAsSubEntities", "convention": "__thiscall(airfield*, PointerVector*), RET 4", "body": "006D4DD0-006D4E36", "coverage": "complete", "state": "reconstructed", "classes": 1, "role": "walks the 0Ch-stride hangar vector at airfield+830h / +834h and appends record[0] when the object is non-null and object+370h is strictly above 0.0f; base and count are re-read each pass", "evidence": "006D4DE5 LEA EDX,[ECX+EAX*4] after LEA EAX,[EAX+EAX*2] gives stride 0Ch; 006D4DF7 MOVSS [EAX+370h]; 006D4DFF COMISS 00D7A218 (= 0.0f); 006D4E06 JBE skip; 006D4E27 ADD ESI,0Ch"},
+    {"address": "007f44e0", "native": "none", "name": "BSP_PlaneSquadron_AppendPlanesAsSubEntities", "convention": "__thiscall(squadron*, PointerVector*), RET 4", "body": "007F44E0-007F4570", "coverage": "complete", "state": "reconstructed", "classes": 1, "role": "appends all squadron+3CCh pointers from the inline array at squadron+3D0h, unfiltered; inlines push_back's fast path and falls back to 004322D0", "evidence": "007F44E6 CMP [ECX+3CCh],0 / JLE end; 007F44F9 LEA EBX,[ECX+3D0h]; 007F452C MOV [EAX],EDI; 007F455C ADD EBX,4; 007F456E RET 4"}
+  ],
+
+  "call_sites": [
+    {"address": "00865521", "native": "none", "kind": "indirect", "function": "00864FE0", "name": "slot 0FCh on the command target", "note": "MOV EAX,[EDX+0FCh] then 00865528 CALL EAX with ECX = [ESP+38h] and the vector pushed at 00865527"},
+    {"address": "00865680", "native": "none", "kind": "indirect", "function": "00864FE0", "name": "slot 0FCh on the fire target", "note": "MOV EAX,[EDX+0FCh] then 00865689 CALL EAX with ECX = EDI = [ESP+18h] and the vector pushed at 00865686"},
+    {"address": "00865516", "native": "0063bcd0", "function": "00864FE0", "name": "clear the scratch vector before the first arm"},
+    {"address": "00865679", "native": "0063bcd0", "function": "00864FE0", "name": "clear the scratch vector before the second arm"},
+    {"address": "00865531", "native": "0042ee00", "function": "00864FE0", "name": "begin() on the filled vector, first arm"},
+    {"address": "0086553d", "native": "0042edd0", "function": "00864FE0", "name": "end() on the filled vector, first arm"},
+    {"address": "00865692", "native": "0042ee00", "function": "00864FE0", "name": "begin(), second arm"},
+    {"address": "0086569e", "native": "0042edd0", "function": "00864FE0", "name": "end(), second arm"},
+    {"address": "00865584", "native": "00864d90", "function": "00864FE0", "name": "per-element test, first arm; body NOT read by this packet"},
+    {"address": "008656e5", "native": "00864d90", "function": "00864FE0", "name": "per-element test, second arm; body NOT read by this packet"},
+    {"address": "0086559f", "native": "00414db0", "function": "00864FE0", "name": "pose refresh when element+0C8h is zero, first arm; body NOT read"},
+    {"address": "00865700", "native": "00414db0", "function": "00864FE0", "name": "pose refresh, second arm; body NOT read"},
+    {"address": "008654a3", "native": "00521ea0", "function": "00864FE0", "name": "entity-handle resolve that produces the command target"},
+    {"address": "0086549c", "native": "0071ebf0", "function": "00864FE0", "name": "the newest command record, ahead of 00521EA0"},
+    {"address": "00865201", "native": "008053c0", "function": "00864FE0", "name": "step 8.5's recon object, reached only for categories other than 7"},
+    {"address": "006d4e13", "native": "004323d0", "function": "006D4DD0", "name": "append one intact hangar"},
+    {"address": "007f4550", "native": "004322d0", "function": "007F44E0", "name": "the growing insert when the vector is full; callee NOT read"},
+    {"address": "007f453d", "native": "00bf6713", "function": "007F44E0", "name": "the checked-iterator trap on first > last"},
+    {"address": "006d5485", "native": "00bd8e20", "function": "006D5220", "name": "hangar vector allocation, in the producer"},
+    {"address": "006d54ec", "native": "007ac9d0", "function": "006D5220", "name": "entryPathID resolved to a path interface before it is stored at record+4h"}
+  ],
+
+  "no_ghidra_function": [
+    {"address": "00432480", "name": "BSP_Entity_AppendSelfAsSubEntity", "end_address": "00432494"}
+  ],
+
+  "vtable_census": {
+    "method": "scan .text for `mov dword ptr [reg], imm32` with mod=00 and an .rdata immediate - the store of a vtable at object+0, which is the pointer MOV EDX,[ECX] loads at the call site; keep the immediates that begin a run of more than 63 .text pointers; read [start+0FCh]; attribute the class from the storing function",
+    "primary_vtables_over_63_slots": 306,
+    "entity_hierarchy_primaries": 94,
+    "slot0fc_00432480": 92,
+    "slot0fc_006d4dd0": 1,
+    "slot0fc_007f44e0": 1,
+    "completeness": [
+      "the dword 00432480 occurs 92 times in .rdata and every occurrence is at exactly +0FCh from a primary vtable start; no other vtable offset uses it",
+      "Ghidra xrefs for 00432480 are 92 [DATA] references and no code reference; 006D4DD0 has exactly one xref (00CF8D04 = 00CF8C08+0FCh) and 007F44E0 exactly one (00D088BC = 00D087C0+0FCh)",
+      "the alternate store form `mov r32, imm32; mov [reg], r32` occurs 27 times in .text and none of its immediates begins a run longer than 3 .text pointers, so none is a vtable"
+    ],
+    "rtti": "none usable: the dword before a vtable is not a complete-object locator and an RTTI-anchored scan finds zero vtables with 64 or more slots",
+    "phantoms_disproved": [
+      {"phantom": "00CF9D78", "primary": "00CF9DF0", "ctor": "006E7B00", "evidence": "006E7B67 MOV [ESI],0xcf9df0; 006E7B81 MOV [EBX],0xcf9d78 with EBX = ESI+244h"},
+      {"phantom": "00CF9D90", "primary": "00CF9DF0", "ctor": "006E7B00", "evidence": "006E7B7B MOV [EDI],0xcf9d90 with EDI = ESI+170h"},
+      {"phantom": "00CFF3AC", "primary": "00CFF3F8", "ctor": "00745940", "evidence": "0074597D MOV [ESI],0xcff3f8; 007459B9 MOV [EDI],0xcff3ac with EDI = ESI+72Ch"},
+      {"phantom": "00D03E54", "primary": "00D03E80", "ctor": "0077EED0", "evidence": "0077EF5B MOV [ESI],0xd03e80; 0077EF48 MOV [EDI],0xd03e54 with EDI = ESI+1E4h"},
+      {"phantom": "00CEA05C", "primary": "00CEA090", "ctor": "004F11C0", "evidence": "004F1272 MOV [ESI],0xcea090; 004F1290 MOV [EBX],0xcea05c with EBX = ESI+1E4h"},
+      {"phantom": "00D23168", "primary": "00D231A0", "ctor": "00A31730", "evidence": "00A3176B MOV [ESI],0xd231a0; 00A3177F MOV [EDI],0xd23168"},
+      {"phantom": "00D0877C", "primary": "00D087C0", "ctor": "007F2C60", "evidence": "007F2CAD MOV [ESI],0xd087c0; 007F2CD5 MOV [EDI],0xd0877c with EDI = ESI+310h - this is the check that confirmed 00D087C0 as a real override"}
+    ],
+    "ship_classes_on_the_base": [
+      {"vtable": "00CFC3D0", "ctor": "BSP_UnitInstance_Construct 006FE460"},
+      {"vtable": "00D05F20", "ctor": "BSP_PlaneUnitInstance_Construct 007CFD20"},
+      {"vtable": "00D0BF80", "ctor": "BSP_SubmarineUnit_Construct 00852F10"},
+      {"vtable": "00D09678", "ctor": "BSP_UnitVehicleBase_Construct 0081ED40"},
+      {"vtable": "00D0DF70", "ctor": "BSP_UnitTickableEntity_Construct 0087B670"},
+      {"vtable": "00D1A698", "ctor": "BSP_UnitGameObject_Construct 0095CC90"},
+      {"vtable": "00D192E0", "ctor": "BSP_GameEntity_Construct 00928630"},
+      {"vtable": "00CFBD20", "ctor": "BSP_TurningGunBase_Construct 006FDDA0"},
+      {"vtable": "00CFC190", "ctor": "BSP_SingleTurningGun_Construct 006FDFC0"},
+      {"vtable": "00CFBF58", "ctor": "BSP_RapidTurningGun_Construct 006FDED0"}
+    ]
+  },
+
+  "record_layouts": [
+    {
+      "owner": "MAirfield",
+      "vector": "airfield+830h base, +834h count, +838h capacity, stride 0Ch",
+      "producer": "006D5220 BSP_AirField_ReadHangarAndMarkerProperties",
+      "fields": [
+        {"offset": "+0h", "name": "object", "scene_key": "entityID (00CF8E70)", "written_at": "006D54BF MOV [EDI],ECX"},
+        {"offset": "+4h", "name": "entry_path", "scene_key": "entryPathID (00CF8E64)", "written_at": "006D54F1 MOV [EDI+4],EAX, after 006D54EC CALL 007AC9D0"},
+        {"offset": "+8h", "name": "exit_path", "scene_key": "exitPathID (00CF8E58)", "written_at": "the third property read in the same loop"}
+      ],
+      "base_and_count_written_at": "006D541E MOV [ESI+830h],EBX; 006D545F MOV [ESI+834h],EBP",
+      "existing_doc": "docs/AIRFIELD_TAXI.md already declares this as AirfieldHangarRecord and calls object+370h the hangar-failure rule; this packet re-read the producer and agrees"
+    },
+    {
+      "owner": "plane squadron",
+      "vector": "squadron+3CCh live count, squadron+3D0h .. +3E0h five inline pointers",
+      "producer": "007F4580 BSP_PlaneSquadron_AttachLuaSelfAndSpawnPlanes",
+      "fields": [
+        {"offset": "+3D0h + i*4", "name": "plane", "written_at": "007F4B55 MOV [ESI+EAX*4+3D0h],EBX"},
+        {"offset": "+3CCh", "name": "count", "written_at": "007F4B60 ADD [ESI+3CCh],1"}
+      ],
+      "back_links": "007F4B43 plane+9D8h = the spawn index; 007F4B49 plane+9D4h = the squadron",
+      "existing_doc": "docs/PLANE_SQUADRON.md lines 96-97 already record the same pair and the removal path 007F39ED / 007F3970 that keeps it dense"
+    }
+  ],
+
+  "category_7": {
+    "claim": "docs/GAME_EXECUTABLE.md: step 8.5 never sweeps the recon list for category 7",
+    "verdict": "confirmed from the listing",
+    "evidence": "008651F5 CMP ESI,7 / 008651F8 JZ 00865442 jumps past the sweep at 008651FE; the earlier 008651B4 CMP [ESP+14h],7 / 008651BD MOV BL,[EAX+7Ch] branch reaches the same 00865442 through 008651E1, so category 7 skips the sweep whatever this+7Ch holds",
+    "consequence": "a torpedo mount can only be fed by steps 8.6/8.7 - the two slot-0FCh arms"
+  },
+
+  "corrections": [
+    {"document": "docs/GAME_EXECUTABLE.md", "was": "a ship answers vtable[0FCh] with no sub-entity", "is": "a ship answers with itself; its class sits on 00432480, which appends `this`", "evidence": "the eight-instruction body at 00432480; 00CFC3D0+0FCh, 00D05F20+0FCh and 00D0BF80+0FCh all hold 00432480"},
+    {"document": "docs/GAME_EXECUTABLE.md step table row 8.7", "was": "nothing, because vtable[0FCh] answers with no sub-entity", "is": "one element, the target itself, for every unit class in the mission", "evidence": "as above"},
+    {"document": "docs/GAME_EXECUTABLE.md category-7 note", "was": "step 8.7 appends sub-entities and never the target itself; a ship with an empty sub-entity list therefore contributes nothing at all", "is": "step 8.7 appends the target itself for 92 of 94 classes; the empty list comes from src/game_hosts_gunnery.cpp's sub_entity stub returning nullptr, not from the native code", "evidence": "00432480; the stub in src/game_hosts_gunnery.cpp"}
+  ],
+
+  "reconstruction": {
+    "header": "include/bsp/ship_sub_entity_list.hpp",
+    "source": "src/ship_sub_entity_list.cpp",
+    "registered": "cmake/startup.cmake",
+    "reuses": ["bsp/airfield_taxi.hpp AirfieldHangarCandidate and AirfieldHangarRecord", "bsp/plane_squadron.hpp PlaneSquadronOffsets"],
+    "api": "sub_entity_list_slot0fc(const SubEntityListInputs&, const void** out, std::size_t out_capacity) -> count; hangar_contributes_006d4dd0(const AirfieldHangarCandidate&) -> bool",
+    "not_wired": "no host is touched. src/game_hosts_gunnery.cpp, src/unit_gunnery_pass.cpp and include/bsp/unit_gunnery_pass.hpp belong to other packets and were not edited.",
+    "build": "scripts/build.ps1 Win32 Release clean; ctest 1/1 reconstructed_math passed; no test added"
+  },
+
+  "not_verified": [
+    "no run-time evidence: bsp_game.exe cannot reach this path because its host returns an empty list, and the native executable was not run",
+    "00864D90 and 00414DB0 were NOT read; they are named here from the packet brief and include/bsp/unit_gunnery_pass.hpp only",
+    "004322D0 was not read",
+    "what entity+370h is; only the comparison against 0.0f is proven",
+    "that an MAirfield or a squadron is ever reached as a gunnery target at run time"
+  ],
+
+  "follow_up": [
+    "wire the host: sub_entities_slot0fc should return 1 and sub_entity(0) the target, for the 00432480 arm - the gunnery-host packet, not this one",
+    "read 00864D90 and name it from its body",
+    "read 004322D0, the growing insert",
+    "find the writer of entity+370h",
+    "promote local/primary_vtables.txt, the offset-0 vtable census, out of local/"
+  ]
+}
