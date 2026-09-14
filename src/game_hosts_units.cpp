@@ -11,6 +11,7 @@
 // file supplies, and labels, is listed in include/bsp/game_hosts_units.hpp.
 
 #include "bsp/game_hosts_units.hpp"
+#include "bsp/plane_flight.hpp"
 
 #include "bsp/game_hosts.hpp"
 #include "bsp/game_observer_runtime.hpp"
@@ -235,6 +236,16 @@ struct GameUnitSlot {
     float generic_timer_6f8{0.0f};             //0095CF50
     float generic_timer_6fc{0.0f};             //0095CF58
     bool generic_suppress_520{false};         //0095CDD7
+
+    // Plane control state. 007CFD20 zeroes unit+900h (XOR EBX,EBX); the
+    // free-flight arm needs 7, which 007C6340's fall-through sets at 007C6481
+    // alongside unit+908h = 3600. All three inputs of select_motion_arm_007ce040
+    // derive from this one field: the gate (*(unit+72Ch))->vtable[+38h] is
+    // BSP_PlaneControlMode_IsFreeFlight, `+1D4h == 7`, and 310h+41Ch+1D4h = 900h.
+    // docs/PLANE_FLIGHT_CORE_LAW.md, docs/PLANE_UNIT_TICK.md.
+    std::int32_t plane_control_mode_900{0};
+    float plane_airborne_908{0.0f};
+    bool plane_airborne_frozen_9e0{false};
     volatile float generic_input_63c{1.0f};   //0095CD9E
 
     // The pose the canonical projection borrows: +74h local, +C8h valid, +CCh
@@ -1411,6 +1422,16 @@ void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entit
         const bsp::VehicleClassDescriptorRow* kind = lua_row.found
             ? bsp::vehicle_class_kind_row(lua_row.type.c_str()) : nullptr;
         slot->motion_dispatch = unit_motion_dispatch(kind);
+        if (slot->motion_dispatch.entry == 0x007ce040u) {
+            // 007C6340's fall-through at 007C6481 sets unit+900h = 7 and
+            // unit+908h = 3600 together, and one call satisfies both of the
+            // free-flight arm's requirements. 007CFD20 leaves +900h at 0, which
+            // selects no arm at all - which is why a freshly created plane is
+            // correctly motionless until something seeds it.
+            // docs/PLANE_FLIGHT_CORE_LAW.md.
+            slot->plane_control_mode_900 = 7;
+            slot->plane_airborne_908 = 3600.0f;
+        }
         bsp::publish_game_entity_observer_tables_00928662(slot->observer_prefix);
         slot->observer_prefix_ready = bsp::publish_unit_leaf_observer_tables_for_creator(
             slot->observer_prefix, slot->motion_dispatch.creator);
@@ -1971,6 +1992,62 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     continue;
                 }
                 ++host.summary.generic_tick_unavailable;
+            }
+            if (slot.motion_dispatch.entry == 0x007ce040u) {
+                // The plane fixed step. docs/PLANE_FLIGHT_CORE_LAW.md proves the
+                // arm selection is reachable: seed unit+900h to 7 as 007C6481
+                // does and the free-flight arm runs. The arms themselves are not
+                // wired here - this binds the sequence and reports which arm the
+                // native would take, so the next step has a harness and the
+                // selection is measurable before any motion is claimed.
+                class PlaneBinding final : public bsp::PlaneFlightHost {
+                public:
+                    PlaneBinding(GameUnitsHost::Impl& owner, GameUnitSlot& unit)
+                        : owner_(owner), unit_(unit) {}
+                    bool unit_game_object_tick_00953cc0(float) override {
+                        return unit_.generic_suppress_520;
+                    }
+                    void class_input_poll_0095dc40(float) override {}
+                    void out_of_action_countdown_007c6c30(float) override {}
+                    bool free_flight_gate_00d06130_38() override {
+                        // 0074E210 BSP_PlaneControlMode_IsFreeFlight: +1D4h == 7.
+                        return unit_.plane_control_mode_900 == 7;
+                    }
+                    void accumulate_airborne_time(float step) override {
+                        unit_.plane_airborne_908 += step;   // 007CEC4E
+                    }
+                    void free_flight_007cc2f0(float) override {
+                        ++owner_.summary.plane_arm_free_flight;
+                    }
+                    void ground_roll_007cbfa0(float) override {
+                        ++owner_.summary.plane_arm_ground_roll;
+                    }
+                    void surface_007cba50(float) override {
+                        ++owner_.summary.plane_arm_surface;
+                    }
+                    void commit_step_pose_0085dc80() override {}
+                    void latch_control_input_007b9770() override {}
+                    bool airborne_time_frozen() override {
+                        return unit_.plane_airborne_frozen_9e0;
+                    }
+                    int ground_water_mode() override {
+                        return unit_.plane_control_mode_900;
+                    }
+                    int surface_mode() override {
+                        // The surface arm's documented unit+5F0h is the same
+                        // field: 007CEC39's LEA proves unit+72Ch is embedded.
+                        return unit_.plane_control_mode_900;
+                    }
+                private:
+                    GameUnitsHost::Impl& owner_;
+                    GameUnitSlot& unit_;
+                } plane_calls(host, slot);
+                const bsp::PlaneMotionArm arm =
+                    bsp::run_plane_fixed_step_007ce040(plane_calls, step_seconds);
+                if (arm == bsp::PlaneMotionArm::None) ++host.summary.plane_arm_none;
+                ++host.summary.plane_steps;
+                host.done("UnitMotion::plane_fixed_step_007ce040", 0x007ce040u);
+                continue;
             }
             if (slot.motion_dispatch.entry != 0) {
                 host.record_motion_phase("unreconstructed_phase", slot.motion_dispatch.entry);
@@ -2876,6 +2953,11 @@ void GameUnitsHost::report() {
         "units=%zu input_one=%zu (00953cc0; current roles0/4=8, flag634=0)",
         host.summary.generic_tick_calls, host.summary.generic_tick_unavailable,
         generic_units, generic_input_one);
+    host.log.notef("summary mission plane step: steps=%llu free_flight=%llu "
+        "ground_roll=%llu surface=%llu none=%llu (007ce040 arm selection)",
+        host.summary.plane_steps, host.summary.plane_arm_free_flight,
+        host.summary.plane_arm_ground_roll, host.summary.plane_arm_surface,
+        host.summary.plane_arm_none);
     host.commands.report();
 }
 

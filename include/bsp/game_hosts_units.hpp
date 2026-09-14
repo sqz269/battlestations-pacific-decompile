@@ -154,6 +154,14 @@ struct GameUnitsSummary {
     unsigned long long instance_updates{0};
     unsigned long long motion_ticks{0};
     unsigned long long motion_steps{0};   // fixed steps that ran the motion pass
+    // The plane fixed step 007CE040 and which arm select_motion_arm_007ce040
+    // chose. All three inputs derive from unit+900h, which 007CFD20 zeroes and
+    // 007C6481 sets to 7. docs/PLANE_FLIGHT_CORE_LAW.md.
+    unsigned long long plane_steps{0};
+    unsigned long long plane_arm_free_flight{0};
+    unsigned long long plane_arm_ground_roll{0};
+    unsigned long long plane_arm_surface{0};
+    unsigned long long plane_arm_none{0};
     unsigned long long generic_tick_calls{0}; //00953CC0 with available live inputs
     unsigned long long generic_tick_unavailable{0};
     unsigned long long player_orders{0};

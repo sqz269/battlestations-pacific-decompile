@@ -602,3 +602,35 @@ decision; no `plane_flight_core_law` name exists and none was created.
    the way the game does, rather than setting `unit+900h` by hand.
 5. **`plane_control_state_machine`** — the twelve unread `unit+900h` writers in §6 and the
    `007C1550` dispatch table's five handlers. Needed before a plane can take off or land.
+
+## Integration result: steps 1 and 2
+
+The plane fixed step is bound and the control state is seeded. `src/game_hosts_units.cpp` had all
+eight `0x007ce040` dispatch rows marked `UnitMotionCoverage::unresolved`, so the motion loop recorded
+`unreconstructed_phase` and skipped them; it now drives `bsp::run_plane_fixed_step_007ce040` through
+a `PlaneFlightHost` binding, and seeds `plane_control_mode_900 = 7` with `plane_airborne_908 = 3600`
+at unit creation, as `007C6481` does.
+
+All three inputs of `select_motion_arm_007ce040` derive from that one field: the gate
+`(*(unit+72Ch))->vtable[+38h]` is `BSP_PlaneControlMode_IsFreeFlight`, `+1D4h == 7`, and
+`310h + 41Ch + 1D4h = 900h`.
+
+```
+summary mission plane step: steps=16500 free_flight=16500 ground_roll=0 surface=0 none=0
+```
+
+**16500 = 33 planes x 500 ticks**, every step selecting the free-flight arm and none selecting
+`None`. Before this the count was zero because the dispatch was never entered at all. The `USN02`
+control is byte-identical with `plane_steps = 0`, which is right: that mission carries no aircraft,
+so the change is inert there.
+
+**The arms are deliberately stubs.** They count which arm was chosen and do nothing else, so this
+step claims only that the selection is reachable and correct. No plane moves yet, and the counters
+say so rather than implying otherwise. Step 3 - giving the free-flight arm sections 4.5 and 4.6 plus
+the body/world fold - is what first makes an aircraft move, and by this document's own numbers it is
+what first makes one reachable: 141.67 m/s closes the measured 2950 m in 21 s against a 960 m AA
+range.
+
+This ordering is deliberate. The torpedo work in this session applied two of four prescription steps
+and the half-applied change read as a regression; binding the sequence before wiring the physics
+means step 3 lands into a harness whose selection is already verified.
