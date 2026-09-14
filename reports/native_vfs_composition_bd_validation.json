@@ -271,18 +271,18 @@
   "indirect_calls": [],
   "instruction_ownership_failures": [],
   "final_validation": {
-    "utc": "2026-09-14T00:35:45.436245+00:00",
-    "source_revision": "5f9689802f0659de95c13253ddeac87b1ce2f233",
-    "merged_main_revision": "5d74fcf5edf15bd27f2099062210f1b2f2ee005a",
+    "utc": "2026-09-14T00:46:55.852810+00:00",
+    "source_revision": "adacdd852a47375fe7f0ccac6cb1110b7a9f3200",
+    "merged_main_revision": "20ace1358700e43c75035b55e6b8b0a0c68ee520",
     "code_files": 2477,
     "code_manifest": "local/native_vfs_composition_bd_source_manifest.json",
-    "code_manifest_sha256": "80afe8812dced39a0abad274ad4b2bb9b8ec6f5d7e47a0998e5153936f66858d",
-    "core_archive_sha256": "9cf5c9b249aef14e572133487a71757dc219de4d74773c7d85e24d4bed542e34",
-    "game_executable_sha256": "c37c700ffa0a8bbf7382ad84ae546d172671d111152a3bef42f1945ac8a6fb62",
+    "code_manifest_sha256": "7816464ba4c0a713d5e5a9cc73bb1eaa70e3a265165d4455da64ef413fbb9ac2",
+    "core_archive_sha256": "613f78550bd26d24e6dfb5ff5dab444c1f966fd1416f233f89ca8247036a5163",
+    "game_executable_sha256": "f1720d9fdb0e034212234957051ca232e26c9d506f74d6d35922969912e88674",
     "strict_win32_build": true,
     "ctests_passed": 2,
     "build_log": "local/native_vfs_composition_bd_combined_build.log",
-    "build_log_sha256": "63e61077f3fc5a584f82b8198be76cf1f1fe842be41feaa392ab8c9b2b260467",
+    "build_log_sha256": "285237c71e110d78246c87b222043c47d8234f5893f397048b75b6d68c8b5ffd",
     "fixtures": [
       {
         "name": "graph",
@@ -290,10 +290,10 @@
         "runner": "local/run_game_native_vfs_runtime_bd_probe.ps1",
         "executable": "local/game_native_vfs_runtime_bd_probe.exe",
         "log": "local/native_vfs_composition_bd_combined_graph_probe.log",
-        "source_sha256": "aad4843ae10b2b0a6335c2867dd282b9b54f2c79240c21d72f7fa18eb931a616",
+        "source_sha256": "6259938e5fe6c34bd91f1a4c12fbf69f92037cc977b9190abe2636298f8a7611",
         "runner_sha256": "0a095057a137921d70ec89eb9d1a7dd940b7d3005d619287b922c283b40370de",
-        "executable_sha256": "0d32339ab3f4034363179cd0ce2ef099a7db4a3048fc0eb8852a1eb38b35e3e8",
-        "log_sha256": "2dd9407c79e461f41806ece327ef5fd3c38489f23eb726b2aa42d9272a00a389"
+        "executable_sha256": "fdf97426615d5bd9da0f181f6558361a186ed714370f950375891010daddc0d0",
+        "log_sha256": "ac51c0a19d244446ddbb64e939cf4ee4e83773850bf5928dbcf6daff093c9a81"
       },
       {
         "name": "constants",
@@ -303,8 +303,8 @@
         "log": "local/native_vfs_composition_bd_combined_constants_probe.log",
         "source_sha256": "4fa6627c925af5f746e8377dfc07f44df14051aec0e43250ab756ae92349eef2",
         "runner_sha256": "bf6aa1360336aa9a6932bfb6c0d17f24d7c52b0c1ebb552e7beb8c5e2547da64",
-        "executable_sha256": "79e5c3965f0d23d81e8230af8d658ad286b8a7da1bdb59f28ec8aab48e305c5e",
-        "log_sha256": "61d56853201fcff57123ffcb5b6b28c251cda19faf224fd919bf0368b22fc4d2"
+        "executable_sha256": "7d9ce330cf8822803802757fb2ce8d6f6217f057b315f0838ec029bcaa947ed4",
+        "log_sha256": "62861cb51a80308a3a6aebdf86f95d98d0a02259741e611f3e0d8fbadb09cdc1"
       }
     ],
     "support_hashes": {
@@ -312,7 +312,10 @@
       "local/prepare_native_vfs_group_annotations_bd.py": "9b388815e373da1b83ed2101a1a302765f0362aaea7a38a55076eceb3a98911a",
       "local/annotate_native_vfs_groups_bd.py": "19edcf5d38625d3b64702d1797f248b5679ab2f754f843f3ae217936fcee251f",
       "local/native_vfs_composition_bd_calls.log": "c82172b568b7159d6c3edb9732b2abf02267ef52ce042de4a4f6ef8d51c706ec",
-      "local/native_vfs_composition_bd_seeds.log": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+      "local/native_vfs_composition_bd_seeds.log": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773",
+      "local/native_vfs_bd_collision_probe.cpp": "6259938e5fe6c34bd91f1a4c12fbf69f92037cc977b9190abe2636298f8a7611",
+      "local/native_vfs_bd_collision_probe.exe": "44e31096b1953253e5efc48b256a5b15df69ccaed4af7e0f15f96639b03a587b",
+      "local/native_vfs_composition_bd_repeat_diagnostic.log": "cd214dcfcfc6b9944591e49d637f0952df96d5d23e1ccb8d5c03dd6a4c914cb6"
     },
     "installed_executable_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
     "installed_asset_hashes": {
@@ -333,10 +336,28 @@
     "additional_native_evidence_hashes": {},
     "original_abi_compatible": false,
     "production_host_reachable": false,
-    "game_validated": false
+    "game_validated": false,
+    "reservation_precondition": {
+      "required_bands": [
+        "00cf0000",
+        "00d10000",
+        "00d50000",
+        "00d60000"
+      ],
+      "intermittent_rejection_observed": true,
+      "occupied_band": "00d10000",
+      "allocation_kind": "MEM_PRIVATE committed PAGE_READWRITE",
+      "region_bytes": 36864,
+      "graph_successes_before_rejection": 21,
+      "original_failfast_inference": "Former fixture had no top-level C++ exception handler; diagnostic runs reproduce the reservation exception explicitly.",
+      "mapper_rejection_unchanged": true,
+      "reliable_production_startup_reservation_proven": false,
+      "diagnostic_log": "local/native_vfs_composition_bd_repeat_diagnostic.log"
+    }
   },
   "limits": [
-    "Actual raw construction/loose reads and populated-group drain are fixture-proven, but GameVfsHost and external consumers are not switched.",
+    "Actual raw construction/loose reads and populated-group drain are fixture-proven when required native data bands are available; repeated process launches reproduce a preexisting private allocation at D10000 and safe mapping rejection. Reliable production startup reservation remains unproved.",
+    "GameVfsHost and external consumers are not switched.",
     "The composer requires initialized owner/type/pool inputs and retained contexts through shared drain; original partial construction/FH3/CRT behavior is not established by this normal-path fixture.",
     "Archive constants are verified initial .data snapshots, not aliases of mutable process globals.",
     "Full00738360/+54 prefix setup, package scan and provider enumeration remain pending; no original game or authentic archive member test."

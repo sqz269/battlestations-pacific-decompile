@@ -11443,20 +11443,21 @@
       "id": "orch4_native_vfs_search_defaults_be",
       "worker": "orch4-vfs-search-defaults-be",
       "done": false,
-      "state": "full_native_sequence_written_dependency_build_in_progress",
+      "state": "worker_committed_full_native_sequence_TU_compile_passed_primary_registration_and_review_pending",
       "function_addresses": [
         "00738360"
       ],
       "code_ownership": [
         "include/bsp/native_vfs_search_defaults.hpp",
         "src/native_vfs_search_defaults.cpp"
-      ]
+      ],
+      "worker_commit": "2b8186606be37f86ce3bd00564c9934a2eb1397e"
     },
     {
       "id": "orch4_native_vfs_package_scan_be",
       "worker": "orch4-vfs-package-scan-be",
       "done": false,
-      "state": "dispatched_bounded_actual_storage_source",
+      "state": "worker_committed_pop_and_system_name_lookup_primary_registration_pending",
       "function_addresses": [
         "0073cb10",
         "00557a90",
@@ -11465,13 +11466,14 @@
       "code_ownership": [
         "include/bsp/native_vfs_package_scan.hpp",
         "src/native_vfs_package_scan.cpp"
-      ]
+      ],
+      "worker_commit": "11fcece7cbae6759614a2bf8da8972c4aac79ed0"
     },
     {
       "id": "orch4_native_vfs_enumeration_bf",
       "worker": "orch4-vfs-enumeration-bf",
       "done": false,
-      "state": "dispatched_bounded_actual_storage_source",
+      "state": "worker_committed_actual_enumerator_TU_compile_passed_provider_dispatch_pending",
       "function_addresses": [
         "00bdd990",
         "00bdbe20",
@@ -11481,7 +11483,64 @@
       "code_ownership": [
         "include/bsp/native_vfs_enumeration.hpp",
         "src/native_vfs_enumeration.cpp"
-      ]
+      ],
+      "worker_commit": "e32c2ad704f54e657f79d97e3e4e5b497e8f3dde"
+    },
+    {
+      "id": "orch4_native_physical_enumeration_bf",
+      "worker": "orch4-physical-enumeration-bf",
+      "done": false,
+      "state": "worker_committed_TU_and_existing_build_passed_primary_registration_pending",
+      "function_addresses": [
+        "00bf47e0",
+        "00bee520"
+      ],
+      "code_ownership": [
+        "include/bsp/native_physical_enumeration.hpp",
+        "src/native_physical_enumeration.cpp"
+      ],
+      "worker_commit": "10bd658d1b487906bece49f68b28baa4dbb9899f"
+    },
+    {
+      "id": "orch4_native_filestore_enumeration_bf",
+      "worker": "orch4-filestore-enumeration-bf",
+      "done": false,
+      "state": "worker_committed_TU_and_existing_build_passed_primary_registration_pending",
+      "function_addresses": [
+        "00be6480"
+      ],
+      "code_ownership": [
+        "include/bsp/native_filestore_enumeration.hpp",
+        "src/native_filestore_enumeration.cpp"
+      ],
+      "worker_commit": "861ed9c1ec12fea1d422982c82b6e5c4fef5940c"
+    },
+    {
+      "id": "orch4_native_mpkg_enumeration_bf",
+      "worker": "orch4-mpkg-enumeration-bf",
+      "done": false,
+      "state": "worker_committed_TU_compile_passed_primary_registration_pending",
+      "function_addresses": [
+        "00bb98f0",
+        "00bb97b0"
+      ],
+      "code_ownership": [
+        "include/bsp/native_mpkg_enumeration.hpp",
+        "src/native_mpkg_enumeration.cpp"
+      ],
+      "worker_commit": "9b62daa5bcdea54f669cce04c2f1f1406558fac2"
+    },
+    {
+      "id": "orch4_native_vfs_provider_enumeration_bindings_bg",
+      "worker": "orch4-vfs-provider-enumeration-bg",
+      "done": false,
+      "state": "worker_committed_four_profile_dispatch_TU_compile_passed_primary_registration_pending",
+      "function_addresses": [],
+      "code_ownership": [
+        "include/bsp/native_vfs_provider_enumeration_bindings.hpp",
+        "src/native_vfs_provider_enumeration_bindings.cpp"
+      ],
+      "worker_commit": "25829fc0b9e71fd64ca466dbccfb86947705aeb7"
     }
   ],
   "snapshot_after_analysis": {

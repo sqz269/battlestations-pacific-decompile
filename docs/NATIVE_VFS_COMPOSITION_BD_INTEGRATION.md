@@ -49,6 +49,16 @@ publications clear and retained-memory counters return to zero. A second
 fixture verifies both constant spans, pointer stability, wrong-size rejection
 and same-size corrupt-image rejection. Neither fixture seeds a provider tree.
 
+Repeated process launches also reproduced an unavailable required D10000 band:
+an unrelated 36 KB committed private read/write allocation already occupied it.
+The mapper correctly rejected the reservation. An earlier fixture let that
+exception terminate the process; its top-level handler now reports the error
+and the occupied region. The diagnostic source, executable and mixed
+success/rejection log are retained separately. Successful graph execution is
+conditional on all four required bands being free; reliable reservation during
+production process startup remains unresolved. No unrelated allocation was
+released or overwritten, and the mapper's rejection behavior is unchanged.
+
 The exact combined source, core archive, executable, build, two CTests and both
 fixture artifacts are pinned in `reports/native_vfs_composition_bd_validation.json`.
 This proves bounded source composition, not original FH3/CRT identity, native
