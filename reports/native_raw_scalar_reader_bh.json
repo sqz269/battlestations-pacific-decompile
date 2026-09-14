@@ -1,0 +1,1368 @@
+{
+  "packet": "orch2_raw_scalar_reader_bh",
+  "base": "c92e9b16",
+  "status": "complete_source_within_two_profile_domain_strict_build_and_focused_fixture_passed",
+  "original_abi_replacement": false,
+  "game_validated": false,
+  "ghidra_mutated": false,
+  "routines": [
+    {
+      "entry": "00be9a00",
+      "coverage": "complete within qualified D642C0 and D691B0 profile domain",
+      "source": "src/native_raw_scalar_reader.cpp",
+      "interface": "explicit context-bearing cdecl; not original ABI thunk"
+    },
+    {
+      "entry": "00be99d0",
+      "coverage": "complete within qualified D642C0 and D691B0 profile domain",
+      "source": "src/native_raw_scalar_reader.cpp",
+      "interface": "explicit context-bearing cdecl; not original ABI thunk"
+    },
+    {
+      "entry": "00bf0280",
+      "coverage": "complete within qualified D642C0 and D691B0 profile domain",
+      "source": "src/native_raw_scalar_reader.cpp",
+      "interface": "explicit context-bearing cdecl; not original ABI thunk"
+    },
+    {
+      "entry": "00bf02c0",
+      "coverage": "complete within qualified D642C0 and D691B0 profile domain",
+      "source": "src/native_raw_scalar_reader.cpp",
+      "interface": "explicit context-bearing cdecl; not original ABI thunk"
+    },
+    {
+      "entry": "00be42e0",
+      "coverage": "complete within qualified D642C0 and D691B0 profile domain",
+      "source": "src/native_raw_scalar_reader.cpp",
+      "interface": "explicit context-bearing cdecl; not original ABI thunk"
+    },
+    {
+      "entry": "00be4360",
+      "coverage": "complete within qualified D642C0 and D691B0 profile domain",
+      "source": "src/native_raw_scalar_reader.cpp",
+      "interface": "explicit context-bearing cdecl; not original ABI thunk"
+    }
+  ],
+  "original_abi": {
+    "00be9a00": "ECX raw wrapper; EAX DWORD; RET",
+    "00be99d0": "ECX raw wrapper; ST0; RET",
+    "00bf0280": "ECX raw reader; one stack budget pointer; EAX DWORD; RET4",
+    "00bf02c0": "ECX raw reader; one stack budget pointer; ST0; RET4",
+    "00be42e0": "ECX raw stream; one stack optional count pointer; EAX DWORD; RET4",
+    "00be4360": "ECX raw stream; one stack optional count pointer; ST0; RET4"
+  },
+  "calls": [
+    {
+      "address": "00b7ec76",
+      "native": "00be9a00",
+      "containing_function": "00b7eb90",
+      "body_end": "00b7ee90"
+    },
+    {
+      "address": "00b7eca9",
+      "native": "00be9a00",
+      "containing_function": "00b7eb90",
+      "body_end": "00b7ee90"
+    },
+    {
+      "address": "00b7edc4",
+      "native": "00be9a00",
+      "containing_function": "00b7eb90",
+      "body_end": "00b7ee90"
+    },
+    {
+      "address": "00bc42ed",
+      "native": "00be9a00",
+      "containing_function": "00bc42e0",
+      "body_end": "00bc43cb"
+    },
+    {
+      "address": "0072735c",
+      "native": "00be9a00",
+      "containing_function": "00727310",
+      "body_end": "00727a8f"
+    },
+    {
+      "address": "007273ac",
+      "native": "00be9a00",
+      "containing_function": "00727310",
+      "body_end": "00727a8f"
+    },
+    {
+      "address": "00727471",
+      "native": "00be9a00",
+      "containing_function": "00727310",
+      "body_end": "00727a8f"
+    },
+    {
+      "address": "007274c4",
+      "native": "00be9a00",
+      "containing_function": "00727310",
+      "body_end": "00727a8f"
+    },
+    {
+      "address": "007274ef",
+      "native": "00be9a00",
+      "containing_function": "00727310",
+      "body_end": "00727a8f"
+    },
+    {
+      "address": "00b8a0ab",
+      "native": "00be9a00",
+      "containing_function": "00b8a0a0",
+      "body_end": "00b8a118"
+    },
+    {
+      "address": "00b8ab91",
+      "native": "00be9a00",
+      "containing_function": "00b8aad0",
+      "body_end": "00b8ad50"
+    },
+    {
+      "address": "00b8ab9b",
+      "native": "00be9a00",
+      "containing_function": "00b8aad0",
+      "body_end": "00b8ad50"
+    },
+    {
+      "address": "00b92cf4",
+      "native": "00be9a00",
+      "containing_function": "00b92cd0",
+      "body_end": "00b92e4c"
+    },
+    {
+      "address": "00b92d97",
+      "native": "00be9a00",
+      "containing_function": "00b92cd0",
+      "body_end": "00b92e4c"
+    },
+    {
+      "address": "00b93764",
+      "native": "00be9a00",
+      "containing_function": "00b93710",
+      "body_end": "00b93791"
+    },
+    {
+      "address": "00b9376f",
+      "native": "00be9a00",
+      "containing_function": "00b93710",
+      "body_end": "00b93791"
+    },
+    {
+      "address": "00b932e6",
+      "native": "00be99d0",
+      "containing_function": "00b932e0",
+      "body_end": "00b9330d"
+    },
+    {
+      "address": "00b932ef",
+      "native": "00be99d0",
+      "containing_function": "00b932e0",
+      "body_end": "00b9330d"
+    },
+    {
+      "address": "00b932f9",
+      "native": "00be99d0",
+      "containing_function": "00b932e0",
+      "body_end": "00b9330d"
+    },
+    {
+      "address": "00b93303",
+      "native": "00be99d0",
+      "containing_function": "00b932e0",
+      "body_end": "00b9330d"
+    },
+    {
+      "address": "00b93316",
+      "native": "00be99d0",
+      "containing_function": "00b93310",
+      "body_end": "00b93351"
+    },
+    {
+      "address": "00b9331f",
+      "native": "00be99d0",
+      "containing_function": "00b93310",
+      "body_end": "00b93351"
+    },
+    {
+      "address": "00b93329",
+      "native": "00be99d0",
+      "containing_function": "00b93310",
+      "body_end": "00b93351"
+    },
+    {
+      "address": "00b93333",
+      "native": "00be99d0",
+      "containing_function": "00b93310",
+      "body_end": "00b93351"
+    },
+    {
+      "address": "00b9333d",
+      "native": "00be99d0",
+      "containing_function": "00b93310",
+      "body_end": "00b93351"
+    },
+    {
+      "address": "00b93347",
+      "native": "00be99d0",
+      "containing_function": "00b93310",
+      "body_end": "00b93351"
+    },
+    {
+      "address": "00b936f7",
+      "native": "00be99d0",
+      "containing_function": "00b936e0",
+      "body_end": "00b9370f"
+    },
+    {
+      "address": "00bc4312",
+      "native": "00be99d0",
+      "containing_function": "00bc42e0",
+      "body_end": "00bc43cb"
+    },
+    {
+      "address": "00bc431d",
+      "native": "00be99d0",
+      "containing_function": "00bc42e0",
+      "body_end": "00bc43cb"
+    },
+    {
+      "address": "00bc4328",
+      "native": "00be99d0",
+      "containing_function": "00bc42e0",
+      "body_end": "00bc43cb"
+    },
+    {
+      "address": "00bc4333",
+      "native": "00be99d0",
+      "containing_function": "00bc42e0",
+      "body_end": "00bc43cb"
+    },
+    {
+      "address": "00727492",
+      "native": "00be99d0",
+      "containing_function": "00727310",
+      "body_end": "00727a8f"
+    },
+    {
+      "address": "0072749d",
+      "native": "00be99d0",
+      "containing_function": "00727310",
+      "body_end": "00727a8f"
+    },
+    {
+      "address": "007274a8",
+      "native": "00be99d0",
+      "containing_function": "00727310",
+      "body_end": "00727a8f"
+    },
+    {
+      "address": "00aed122",
+      "native": "00be99d0",
+      "containing_function": "00aed100",
+      "body_end": "00aed156"
+    },
+    {
+      "address": "00b8a0b6",
+      "native": "00be99d0",
+      "containing_function": "00b8a0a0",
+      "body_end": "00b8a118"
+    },
+    {
+      "address": "00b8a0c1",
+      "native": "00be99d0",
+      "containing_function": "00b8a0a0",
+      "body_end": "00b8a118"
+    },
+    {
+      "address": "00b8a0cc",
+      "native": "00be99d0",
+      "containing_function": "00b8a0a0",
+      "body_end": "00b8a118"
+    },
+    {
+      "address": "00b8a0d7",
+      "native": "00be99d0",
+      "containing_function": "00b8a0a0",
+      "body_end": "00b8a118"
+    },
+    {
+      "address": "00b8a0e2",
+      "native": "00be99d0",
+      "containing_function": "00b8a0a0",
+      "body_end": "00b8a118"
+    },
+    {
+      "address": "00b8a0f2",
+      "native": "00be99d0",
+      "containing_function": "00b8a0a0",
+      "body_end": "00b8a118"
+    },
+    {
+      "address": "00be9a09",
+      "native": "00bf0280",
+      "containing_function": "00be9a00",
+      "body_end": "00be9a0e"
+    },
+    {
+      "address": "00bea320",
+      "native": "00bf0280",
+      "containing_function": "00bea250",
+      "body_end": "00bea37b"
+    },
+    {
+      "address": "00bea44a",
+      "native": "00bf0280",
+      "containing_function": "00bea380",
+      "body_end": "00bea4a6"
+    },
+    {
+      "address": "00be9a8c",
+      "native": "00bf0280",
+      "containing_function": "00be9a80",
+      "body_end": "00be9a9c"
+    },
+    {
+      "address": "00be99e9",
+      "native": "00bf0280",
+      "containing_function": "00be99e0",
+      "body_end": "00be99ee"
+    },
+    {
+      "address": "00bea53b",
+      "native": "00bf0280",
+      "containing_function": "00bea4b0",
+      "body_end": "00bea596"
+    },
+    {
+      "address": "00be99d9",
+      "native": "00bf02c0",
+      "containing_function": "00be99d0",
+      "body_end": "00be99de"
+    },
+    {
+      "address": "00be9a6c",
+      "native": "00bf02c0",
+      "containing_function": "00be9a60",
+      "body_end": "00be9a7c"
+    },
+    {
+      "address": "00b8afbc",
+      "native": "00be99d0",
+      "containing_function": "00b8af30",
+      "body_end": "00b8b04c"
+    },
+    {
+      "address": "00b8afc7",
+      "native": "00be99d0",
+      "containing_function": "00b8af30",
+      "body_end": "00b8b04c"
+    },
+    {
+      "address": "00b8afd2",
+      "native": "00be99d0",
+      "containing_function": "00b8af30",
+      "body_end": "00b8b04c"
+    },
+    {
+      "address": "00b8afdd",
+      "native": "00be99d0",
+      "containing_function": "00b8af30",
+      "body_end": "00b8b04c"
+    },
+    {
+      "address": "00b8afe8",
+      "native": "00be99d0",
+      "containing_function": "00b8af30",
+      "body_end": "00b8b04c"
+    },
+    {
+      "address": "00b8aff3",
+      "native": "00be99d0",
+      "containing_function": "00b8af30",
+      "body_end": "00b8b04c"
+    },
+    {
+      "address": "00b8affe",
+      "native": "00be99d0",
+      "containing_function": "00b8af30",
+      "body_end": "00b8b04c"
+    },
+    {
+      "address": "00b8b0d6",
+      "native": "00be99d0",
+      "containing_function": "00b8b0b0",
+      "body_end": "00b8b207"
+    },
+    {
+      "address": "00b8b0e1",
+      "native": "00be99d0",
+      "containing_function": "00b8b0b0",
+      "body_end": "00b8b207"
+    },
+    {
+      "address": "00b92d12",
+      "native": "00be99d0",
+      "containing_function": "00b92cd0",
+      "body_end": "00b92e4c"
+    },
+    {
+      "address": "00b92308",
+      "native": "00be99d0",
+      "containing_function": "00b92300",
+      "body_end": "00b92381"
+    },
+    {
+      "address": "00b92311",
+      "native": "00be99d0",
+      "containing_function": "00b92300",
+      "body_end": "00b92381"
+    },
+    {
+      "address": "00b9231b",
+      "native": "00be99d0",
+      "containing_function": "00b92300",
+      "body_end": "00b92381"
+    },
+    {
+      "address": "00b92325",
+      "native": "00be99d0",
+      "containing_function": "00b92300",
+      "body_end": "00b92381"
+    },
+    {
+      "address": "00b9232f",
+      "native": "00be99d0",
+      "containing_function": "00b92300",
+      "body_end": "00b92381"
+    },
+    {
+      "address": "00b92339",
+      "native": "00be99d0",
+      "containing_function": "00b92300",
+      "body_end": "00b92381"
+    },
+    {
+      "address": "00b92343",
+      "native": "00be99d0",
+      "containing_function": "00b92300",
+      "body_end": "00b92381"
+    },
+    {
+      "address": "00b9234d",
+      "native": "00be99d0",
+      "containing_function": "00b92300",
+      "body_end": "00b92381"
+    },
+    {
+      "address": "00b92357",
+      "native": "00be99d0",
+      "containing_function": "00b92300",
+      "body_end": "00b92381"
+    },
+    {
+      "address": "00b92361",
+      "native": "00be99d0",
+      "containing_function": "00b92300",
+      "body_end": "00b92381"
+    },
+    {
+      "address": "00b9236b",
+      "native": "00be99d0",
+      "containing_function": "00b92300",
+      "body_end": "00b92381"
+    },
+    {
+      "address": "00b92375",
+      "native": "00be99d0",
+      "containing_function": "00b92300",
+      "body_end": "00b92381"
+    },
+    {
+      "address": "00b9352c",
+      "native": "00be99d0",
+      "containing_function": "00b934d0",
+      "body_end": "00b93553"
+    },
+    {
+      "address": "00b93396",
+      "native": "00be99d0",
+      "containing_function": "00b93390",
+      "body_end": "00b9343f"
+    },
+    {
+      "address": "00b9339f",
+      "native": "00be99d0",
+      "containing_function": "00b93390",
+      "body_end": "00b9343f"
+    },
+    {
+      "address": "00b933a9",
+      "native": "00be99d0",
+      "containing_function": "00b93390",
+      "body_end": "00b9343f"
+    },
+    {
+      "address": "00b933b3",
+      "native": "00be99d0",
+      "containing_function": "00b93390",
+      "body_end": "00b9343f"
+    },
+    {
+      "address": "00b933bd",
+      "native": "00be99d0",
+      "containing_function": "00b93390",
+      "body_end": "00b9343f"
+    },
+    {
+      "address": "00b933c7",
+      "native": "00be99d0",
+      "containing_function": "00b93390",
+      "body_end": "00b9343f"
+    },
+    {
+      "address": "00b933d1",
+      "native": "00be99d0",
+      "containing_function": "00b93390",
+      "body_end": "00b9343f"
+    },
+    {
+      "address": "00b933db",
+      "native": "00be99d0",
+      "containing_function": "00b93390",
+      "body_end": "00b9343f"
+    },
+    {
+      "address": "00b933e5",
+      "native": "00be99d0",
+      "containing_function": "00b93390",
+      "body_end": "00b9343f"
+    },
+    {
+      "address": "00b933ef",
+      "native": "00be99d0",
+      "containing_function": "00b93390",
+      "body_end": "00b9343f"
+    },
+    {
+      "address": "00b933f9",
+      "native": "00be99d0",
+      "containing_function": "00b93390",
+      "body_end": "00b9343f"
+    },
+    {
+      "address": "00b93403",
+      "native": "00be99d0",
+      "containing_function": "00b93390",
+      "body_end": "00b9343f"
+    },
+    {
+      "address": "00b9340d",
+      "native": "00be99d0",
+      "containing_function": "00b93390",
+      "body_end": "00b9343f"
+    },
+    {
+      "address": "00b93417",
+      "native": "00be99d0",
+      "containing_function": "00b93390",
+      "body_end": "00b9343f"
+    },
+    {
+      "address": "00b93421",
+      "native": "00be99d0",
+      "containing_function": "00b93390",
+      "body_end": "00b9343f"
+    },
+    {
+      "address": "00b9342b",
+      "native": "00be99d0",
+      "containing_function": "00b93390",
+      "body_end": "00b9343f"
+    },
+    {
+      "address": "00b93435",
+      "native": "00be99d0",
+      "containing_function": "00b93390",
+      "body_end": "00b9343f"
+    },
+    {
+      "address": "00b943ae",
+      "native": "00be99d0",
+      "containing_function": "00b941d0",
+      "body_end": "00b944bd"
+    },
+    {
+      "address": "00b943b9",
+      "native": "00be99d0",
+      "containing_function": "00b941d0",
+      "body_end": "00b944bd"
+    },
+    {
+      "address": "00b943c4",
+      "native": "00be99d0",
+      "containing_function": "00b941d0",
+      "body_end": "00b944bd"
+    },
+    {
+      "address": "00b943cf",
+      "native": "00be99d0",
+      "containing_function": "00b941d0",
+      "body_end": "00b944bd"
+    },
+    {
+      "address": "00b94554",
+      "native": "00be99d0",
+      "containing_function": "00b944e0",
+      "body_end": "00b9470c"
+    },
+    {
+      "address": "00b93597",
+      "native": "00be99d0",
+      "containing_function": "00b93590",
+      "body_end": "00b935bc"
+    },
+    {
+      "address": "00b935a0",
+      "native": "00be99d0",
+      "containing_function": "00b93590",
+      "body_end": "00b935bc"
+    },
+    {
+      "address": "00b935a9",
+      "native": "00be99d0",
+      "containing_function": "00b93590",
+      "body_end": "00b935bc"
+    },
+    {
+      "address": "00b935b2",
+      "native": "00be99d0",
+      "containing_function": "00b93590",
+      "body_end": "00b935bc"
+    },
+    {
+      "address": "00b935c7",
+      "native": "00be99d0",
+      "containing_function": "00b935c0",
+      "body_end": "00b935fe"
+    },
+    {
+      "address": "00b935d0",
+      "native": "00be99d0",
+      "containing_function": "00b935c0",
+      "body_end": "00b935fe"
+    },
+    {
+      "address": "00b935d9",
+      "native": "00be99d0",
+      "containing_function": "00b935c0",
+      "body_end": "00b935fe"
+    },
+    {
+      "address": "00b935e2",
+      "native": "00be99d0",
+      "containing_function": "00b935c0",
+      "body_end": "00b935fe"
+    },
+    {
+      "address": "00b935eb",
+      "native": "00be99d0",
+      "containing_function": "00b935c0",
+      "body_end": "00b935fe"
+    },
+    {
+      "address": "00b935f4",
+      "native": "00be99d0",
+      "containing_function": "00b935c0",
+      "body_end": "00b935fe"
+    },
+    {
+      "address": "00b9374e",
+      "native": "00be99d0",
+      "containing_function": "00b93710",
+      "body_end": "00b93791"
+    },
+    {
+      "address": "00b93759",
+      "native": "00be99d0",
+      "containing_function": "00b93710",
+      "body_end": "00b93791"
+    },
+    {
+      "address": "00adc6cb",
+      "native": "00be99d0",
+      "containing_function": "00adc6c0",
+      "body_end": "00adc740"
+    },
+    {
+      "address": "00adc6d5",
+      "native": "00be99d0",
+      "containing_function": "00adc6c0",
+      "body_end": "00adc740"
+    },
+    {
+      "address": "00adfbdb",
+      "native": "00be99d0",
+      "containing_function": "00adfbd0",
+      "body_end": "00adfc4a"
+    },
+    {
+      "address": "00adfbe5",
+      "native": "00be99d0",
+      "containing_function": "00adfbd0",
+      "body_end": "00adfc4a"
+    },
+    {
+      "address": "00b8e58a",
+      "native": "00be99d0",
+      "containing_function": "00b8e580",
+      "body_end": "00b8e59d"
+    },
+    {
+      "address": "00bf028c",
+      "native": "00be42e0",
+      "containing_function": "00bf0280",
+      "virtual_slot": "34",
+      "qualification": "actual D642C0 or D691B0 profile words verified against PE/live"
+    },
+    {
+      "address": "00bf02ce",
+      "native": "00be4360",
+      "containing_function": "00bf02c0",
+      "virtual_slot": "44",
+      "qualification": "actual D642C0 or D691B0 profile words verified against PE/live"
+    },
+    {
+      "address": "00be42f1",
+      "native": "00bef590",
+      "containing_function": "00be42e0",
+      "virtual_slot": "24 memory",
+      "qualification": "actual D642C0 or D691B0 profile words verified against PE/live"
+    },
+    {
+      "address": "00be42f1",
+      "native": "00bf5030",
+      "containing_function": "00be42e0",
+      "virtual_slot": "24 physical",
+      "qualification": "actual D642C0 or D691B0 profile words verified against PE/live"
+    },
+    {
+      "address": "00be4371",
+      "native": "00bef590",
+      "containing_function": "00be4360",
+      "virtual_slot": "24 memory",
+      "qualification": "actual D642C0 or D691B0 profile words verified against PE/live"
+    },
+    {
+      "address": "00be4371",
+      "native": "00bf5030",
+      "containing_function": "00be4360",
+      "virtual_slot": "24 physical",
+      "qualification": "actual D642C0 or D691B0 profile words verified against PE/live"
+    }
+  ],
+  "call_evidence": "111 direct call rows inherited from discovery and rechecked live; six indirect rows require separate verified profile-byte evidence, not call verifier resolution",
+  "current_byte_identity": [
+    {
+      "start": "00be9a00",
+      "size": 15,
+      "sha256": "f2ef76861953da7e389ad59ee18ef593f8f71f2b8df154d27250ee73d2aaa937",
+      "sha512": "1af02b0c141b303f5df226bad85ddbb92b4185142733b50a6ed132d4207993a8e9919e0590f0904cb82e17fa4d1026d93d704c3fb8e2477d7e8e51a1c15de618",
+      "match": true,
+      "current_live_matches_discovery_pe": true
+    },
+    {
+      "start": "00bf0280",
+      "size": 27,
+      "sha256": "5bbc7a22b6469e5ad59fab8dbe0948c18aaafb8d0a3a031bf36941273553bc16",
+      "sha512": "62309b7411c5c705693068e9cdac2b94b76f06519528522d32f995ef3f8e244d54731c44d395b2d7117fc5e8b260906a80a04c67dfdc77c50553bb32ed07e532",
+      "match": true,
+      "current_live_matches_discovery_pe": true
+    },
+    {
+      "start": "00be99d0",
+      "size": 15,
+      "sha256": "e7b48483940ecbf97f92224ca7e2b88f4b3ab554b00b06967f5ce5d090b7b1e8",
+      "sha512": "b35cac22f89ddc28822c4d62e2aada1754e76a7210a97e509e2498a6f338faea44e7de40b799694cdca432f5a4c6b9dd1083ac1edde444b103038e77ae42d063",
+      "match": true,
+      "current_live_matches_discovery_pe": true
+    },
+    {
+      "start": "00bf02c0",
+      "size": 39,
+      "sha256": "841102549ac51ea3173dfc9dc71109922d1992fb05ea4ebd664b6a25e99fdfe3",
+      "sha512": "382c4e8c1b615fd7560df9515513004bc53c16423414b2da9673acf71cc2f72dbec8f558aa8b2203281b8e91d8d47a5903e480ab6df88daeed4fcace733612cf",
+      "match": true,
+      "current_live_matches_discovery_pe": true
+    },
+    {
+      "start": "00be42e0",
+      "size": 26,
+      "sha256": "c7a6ad72a87a8ebe2d36e3aeb3f8bac796457b74b3d9ee5c5bf4e38c92b196bd",
+      "sha512": "65e70277cbf5c2b760f846c8a73bbe3eb89643cb260233cd9a26444e99e604d9c407729c9b97012b2cd6ae2bc931675ec168f7d35f9d701011369b7942b0193a",
+      "match": true,
+      "current_live_matches_discovery_pe": true
+    },
+    {
+      "start": "00be4360",
+      "size": 26,
+      "sha256": "1129ea810e498622079339887610ba4548f0622b4babec424ef2d1fb92ae02e4",
+      "sha512": "f6f8048775f38c99cf0c7b233096df9dc9d0e9ef92e9e107b49b74525ba98f5f4afa76051554988b2c346858b134791fb3560fbc15947bb65d5a866084160b7a",
+      "match": true,
+      "current_live_matches_discovery_pe": true
+    },
+    {
+      "start": "00bef590",
+      "size": 86,
+      "sha256": "e250c1e0947817d753a5132cdd34703080ede478fb5a1ddf6ec8cdfaf9361e11",
+      "sha512": "f110bd93bed36ef95bb8d47cc6fcd3c30c29d761a0fd8b0adad8ebe337ab780b52e49df95461b501fa382dcf3f39713b968c6512bfffb4758f1e1b82d04a9fe4",
+      "match": true,
+      "current_live_matches_discovery_pe": true
+    },
+    {
+      "start": "00bf5030",
+      "size": 84,
+      "sha256": "d0b1d2fd5e3863f9e82af8f94b038bb84c2fc189c683fd5f3a31fd92397ad48d",
+      "sha512": "b90f10ffc49e3640e98af67500176326af0b1ee153ca1e6cd8dcaca3aa34865f3501feb3456757e5dab7992d23a8fa182d62ed37071882a634b266cc226e9055",
+      "match": true,
+      "current_live_matches_discovery_pe": true
+    },
+    {
+      "start": "00d642c0",
+      "size": 76,
+      "sha256": "f5b345176e2efcce20a31faa47e4deabd93fa32bddf5dc54483dd074c26fa71f",
+      "sha512": "8eabdb029f4d6a54fb177570f3dc8b20ad57d4b5cca03d7a64758d2de1dc12e9a4027c2f5093bff1e4eb582d73c57d61fa50d4d1a60d2edd41508e33afb16cf4",
+      "match": true,
+      "current_live_matches_discovery_pe": true
+    },
+    {
+      "start": "00d691b0",
+      "size": 76,
+      "sha256": "6dc3f5127bee62f46013d321a844d7b100eee5691919d7c89b21b0ef570c19ec",
+      "sha512": "46a1375b372bd800aaa2b0d847b0551a7fb821c39d9ab6f373f6253ebc36d3cf5b892825aa7dd98e8f7db591f092bf229591f017246eb20a18db40543f658cd9",
+      "match": true,
+      "current_live_matches_discovery_pe": true
+    }
+  ],
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "bridge": "http://127.0.0.1:8089",
+    "pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "compiler_archive_binding": {
+    "inputs": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-raw-scalar-reader-bh\\src\\native_raw_scalar_reader.cpp",
+        "size": 6269,
+        "sha256": "8cca6aee313190f3bce7471658f4430076bf1e7df51d5a12375e4a001128cf4c",
+        "sha512": "5d577d58e1a1b4937ddb1c650cf190198c737dbd3bca8ba21118ebc92e796122aed7b72b8ae1744e0c6e5f5e8f1c128fb493c9290debd1ce8b8ebab91e44c7a3"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-raw-scalar-reader-bh\\include\\bsp\\native_raw_scalar_reader.hpp",
+        "size": 2827,
+        "sha256": "1d3973cb5f9bd52152a435d9b4c3a77de6393708d32a383485d000ed7c4bd330",
+        "sha512": "67e37c52c4ffa32e32740cedd0f7d8c76c2a005b6b6e18bfb506cab17c7793cba2c7a079516b45fe7ce064b274c78c07e31655425167cb9e3c48666ce06443cd"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-raw-scalar-reader-bh\\src\\native_memory_stream.cpp",
+        "size": 6507,
+        "sha256": "1b55127245d09d5ad2eedfb3e00d02ecbe1b310e8630f4c24e5490273a119fbd",
+        "sha512": "3c1a0f0f27a2fb1e68e202400cbfc434e6c5fb1ae499032b8fb9e408bf37b1f240bb81fc25f4cf586ad7baa595e21e19410d0688c1b10132f0f3bc2b25353ccf"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-raw-scalar-reader-bh\\include\\bsp\\native_memory_stream.hpp",
+        "size": 3230,
+        "sha256": "1cd41bf0ec1db15bce03acf9d8ecceae4d8b27fe689dea2a3393327ff7e81c88",
+        "sha512": "ca2f2b2b82ef7e50935740f016eb6ec7718aa754bf5e9e3e7d8433e87a7e375feacdcb7a7d005a96a86c80744da3bc73aabaa81640f9af8dba8b3abca99db912"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-raw-scalar-reader-bh\\src\\native_physical_stream_open.cpp",
+        "size": 14025,
+        "sha256": "c2be9674386b55e5f3afab8e46feeb6c2703ccba590b4f964cbcba92b61f196d",
+        "sha512": "5153b1f9a41ab18bcdfc55eb57940c5650039ec1f57caca3f6f6af0620142bc6a752ef3bd859832755bd84b3a24e0a61e91c6f4344c6268ec973f2657175248f"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-raw-scalar-reader-bh\\include\\bsp\\native_physical_stream_open.hpp",
+        "size": 4711,
+        "sha256": "ffbceae195d62c626fcce2bc120b86b662a8489a8d239f8db3cd5f6bfb313d58",
+        "sha512": "243cb8c8e53547d686e5961d15fbbfdc92e547a537d8b8cf76ddfda65eb5075b9aa2dbe00c9f2f94fa2592ccf9fd8f3bde6ae0a1d8c765251c338e9f10ab0eab"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-raw-scalar-reader-bh\\cmake\\startup.cmake",
+        "size": 109947,
+        "sha256": "a6e4a07ac95c98152018e9f14af50f7d0db970fe9f2d10c20bf96860d951c2ce",
+        "sha512": "e3978cb6411405fc6890ef244c8a9dd2347ecb68800d250b47a1ca261388d39b1c4d4181c46fde1d1a48df1bc904993c9721014f197984d6c2b27b7c27237f44"
+      }
+    ],
+    "precompile_inputs_unchanged": true,
+    "compiler_bindings": {
+      "command": {
+        "tlog": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-raw-scalar-reader-bh\\build\\win32\\bsp_core.dir\\Release\\bsp_core.tlog\\CL.command.1.tlog",
+          "size": 2199618,
+          "sha256": "b355e285748ef73aaf31bbc1bce82399d8d3d9bbd45a285701d5c399452bd7be",
+          "sha512": "527b10a7d41936f7b13576290d1edee98a970b39514e11c2e5cf778cb898ba2a6c4b252c65c5d78eb2bcd97671d6b4f1dc94e91b078e3665d03bfa26ed3ee514"
+        },
+        "binding": [
+          "^J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-ORCH2-RAW-SCALAR-READER-BH\\SRC\\NATIVE_RAW_SCALAR_READER.CPP",
+          "/c /I\"J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-ORCH2-RAW-SCALAR-READER-BH\\INCLUDE\" /I\"J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-ORCH2-RAW-SCALAR-READER-BH\\BUILD\\WIN32\\_DEPS\\LUA511-SRC\\SRC\" /I\"J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-ORCH2-RAW-SCALAR-READER-BH\\BUILD\\WIN32\\_DEPS\\ZLIB121-SRC\" /nologo /W4 /WX /diagnostics:column /O2 /Ob2 /Oy- /D _MBCS /D WIN32 /D _WINDOWS /D NDEBUG /D \"CMAKE_INTDIR=\\\"Release\\\"\" /EHsc /MD /fp:strict /std:c++17 /Fo\"BSP_CORE.DIR\\RELEASE\\\\\" /Fd\"J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-ORCH2-RAW-SCALAR-READER-BH\\BUILD\\WIN32\\RELEASE\\BSP_CORE.PDB\" /external:W0 /TP /analyze-  /external:I \"J:/PROG/battlestations-pacific-decompile-orch2-raw-scalar-reader-bh/build/win32/_deps/dxsdk_d3dx-src/build/native/include\" J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-ORCH2-RAW-SCALAR-READER-BH\\SRC\\NATIVE_RAW_SCALAR_READER.CPP"
+        ],
+        "excluded_aggregate_headers": []
+      },
+      "read": {
+        "tlog": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-raw-scalar-reader-bh\\build\\win32\\bsp_core.dir\\Release\\bsp_core.tlog\\CL.read.1.tlog",
+          "size": 35670274,
+          "sha256": "66e680bdcbae5692eebf257fe914a92a9bbca03dfb3865b5c8e2e6c4a145b80f",
+          "sha512": "18cb56fae800d2e5f909982403f077c27dcbc780a3c0390c860b6d103da66292f4361a79d7073d6705ec4de4296dd3b96ca18d0d4ed618fb78c0c65a2e001d02"
+        },
+        "binding": [
+          "^J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-ORCH2-RAW-SCALAR-READER-BH\\SRC\\NATIVE_RAW_SCALAR_READER.CPP",
+          "C:\\WINDOWS\\GLOBALIZATION\\SORTING\\SORTDEFAULT.NLS",
+          "C:\\WINDOWS\\SYSTEM32\\TZRES.DLL",
+          "J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-ORCH2-RAW-SCALAR-READER-BH\\INCLUDE\\BSP\\NATIVE_RAW_SCALAR_READER.HPP",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\CSTDINT",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\YVALS_CORE.H",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\VCRUNTIME.H",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\SAL.H",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\CONCURRENCYSAL.H",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\VADEFS.H",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\XKEYCHECK.H",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\STDINT.H",
+          "J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-ORCH2-RAW-SCALAR-READER-BH\\INCLUDE\\BSP\\NATIVE_MEMORY_STREAM.HPP",
+          "J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-ORCH2-RAW-SCALAR-READER-BH\\INCLUDE\\BSP\\NATIVE_RETAINED_MEMORY_OWNERS.HPP",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\CSTDDEF",
+          "C:\\PROGRAM FILES (X86)\\WINDOWS KITS\\10\\INCLUDE\\10.0.26100.0\\UCRT\\STDDEF.H",
+          "C:\\PROGRAM FILES (X86)\\WINDOWS KITS\\10\\INCLUDE\\10.0.26100.0\\UCRT\\CORECRT.H",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\XTR1COMMON",
+          "J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-ORCH2-RAW-SCALAR-READER-BH\\INCLUDE\\BSP\\NATIVE_PHYSICAL_STREAM_OPEN.HPP",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\STDEXCEPT",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\EXCEPTION",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\YVALS.H",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\__MSVC_DOOM_CORE.HPP",
+          "C:\\PROGRAM FILES (X86)\\WINDOWS KITS\\10\\INCLUDE\\10.0.26100.0\\UCRT\\CRTDBG.H",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\VCRUNTIME_NEW_DEBUG.H",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\VCRUNTIME_NEW.H",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\CRTDEFS.H",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\USE_ANSI.H",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\CSTDLIB",
+          "C:\\PROGRAM FILES (X86)\\WINDOWS KITS\\10\\INCLUDE\\10.0.26100.0\\UCRT\\MATH.H",
+          "C:\\PROGRAM FILES (X86)\\WINDOWS KITS\\10\\INCLUDE\\10.0.26100.0\\UCRT\\CORECRT_MATH.H",
+          "C:\\PROGRAM FILES (X86)\\WINDOWS KITS\\10\\INCLUDE\\10.0.26100.0\\UCRT\\STDLIB.H",
+          "C:\\PROGRAM FILES (X86)\\WINDOWS KITS\\10\\INCLUDE\\10.0.26100.0\\UCRT\\CORECRT_MALLOC.H",
+          "C:\\PROGRAM FILES (X86)\\WINDOWS KITS\\10\\INCLUDE\\10.0.26100.0\\UCRT\\CORECRT_SEARCH.H",
+          "C:\\PROGRAM FILES (X86)\\WINDOWS KITS\\10\\INCLUDE\\10.0.26100.0\\UCRT\\CORECRT_WSTDLIB.H",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\LIMITS.H",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\TYPE_TRAITS",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\BIN\\HOSTX64\\X86\\1033\\CLUI.DLL",
+          "C:\\PROGRAM FILES (X86)\\WINDOWS KITS\\10\\INCLUDE\\10.0.26100.0\\UCRT\\MALLOC.H",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\VCRUNTIME_EXCEPTION.H",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\EH.H",
+          "C:\\PROGRAM FILES (X86)\\WINDOWS KITS\\10\\INCLUDE\\10.0.26100.0\\UCRT\\CORECRT_TERMINATE.H",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\XSTRING",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\__MSVC_SANITIZER_ANNOTATE_CONTAINER.HPP",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\__MSVC_STRING_VIEW.HPP",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\IOSFWD",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\CSTDIO",
+          "C:\\PROGRAM FILES (X86)\\WINDOWS KITS\\10\\INCLUDE\\10.0.26100.0\\UCRT\\STDIO.H",
+          "C:\\PROGRAM FILES (X86)\\WINDOWS KITS\\10\\INCLUDE\\10.0.26100.0\\UCRT\\CORECRT_WSTDIO.H",
+          "C:\\PROGRAM FILES (X86)\\WINDOWS KITS\\10\\INCLUDE\\10.0.26100.0\\UCRT\\CORECRT_STDIO_CONFIG.H",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\CSTRING",
+          "C:\\PROGRAM FILES (X86)\\WINDOWS KITS\\10\\INCLUDE\\10.0.26100.0\\UCRT\\STRING.H",
+          "C:\\PROGRAM FILES (X86)\\WINDOWS KITS\\10\\INCLUDE\\10.0.26100.0\\UCRT\\CORECRT_MEMORY.H",
+          "C:\\PROGRAM FILES (X86)\\WINDOWS KITS\\10\\INCLUDE\\10.0.26100.0\\UCRT\\CORECRT_MEMCPY_S.H",
+          "C:\\PROGRAM FILES (X86)\\WINDOWS KITS\\10\\INCLUDE\\10.0.26100.0\\UCRT\\ERRNO.H",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\VCRUNTIME_STRING.H",
+          "C:\\PROGRAM FILES (X86)\\WINDOWS KITS\\10\\INCLUDE\\10.0.26100.0\\UCRT\\CORECRT_WSTRING.H",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\CWCHAR",
+          "C:\\PROGRAM FILES (X86)\\WINDOWS KITS\\10\\INCLUDE\\10.0.26100.0\\UCRT\\WCHAR.H",
+          "C:\\PROGRAM FILES (X86)\\WINDOWS KITS\\10\\INCLUDE\\10.0.26100.0\\UCRT\\CORECRT_WCONIO.H",
+          "C:\\PROGRAM FILES (X86)\\WINDOWS KITS\\10\\INCLUDE\\10.0.26100.0\\UCRT\\CORECRT_WCTYPE.H",
+          "C:\\PROGRAM FILES (X86)\\WINDOWS KITS\\10\\INCLUDE\\10.0.26100.0\\UCRT\\CORECRT_WDIRECT.H",
+          "C:\\PROGRAM FILES (X86)\\WINDOWS KITS\\10\\INCLUDE\\10.0.26100.0\\UCRT\\CORECRT_WIO.H",
+          "C:\\PROGRAM FILES (X86)\\WINDOWS KITS\\10\\INCLUDE\\10.0.26100.0\\UCRT\\CORECRT_SHARE.H",
+          "C:\\PROGRAM FILES (X86)\\WINDOWS KITS\\10\\INCLUDE\\10.0.26100.0\\UCRT\\CORECRT_WPROCESS.H",
+          "C:\\PROGRAM FILES (X86)\\WINDOWS KITS\\10\\INCLUDE\\10.0.26100.0\\UCRT\\CORECRT_WTIME.H",
+          "C:\\PROGRAM FILES (X86)\\WINDOWS KITS\\10\\INCLUDE\\10.0.26100.0\\UCRT\\SYS\\STAT.H",
+          "C:\\PROGRAM FILES (X86)\\WINDOWS KITS\\10\\INCLUDE\\10.0.26100.0\\UCRT\\SYS\\TYPES.H",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\INTRIN.H",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\INTRIN0.INL.H",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\SETJMP.H",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\IMMINTRIN.H",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\WMMINTRIN.H",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\NMMINTRIN.H",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\SMMINTRIN.H",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\TMMINTRIN.H",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\PMMINTRIN.H",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\EMMINTRIN.H",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\XMMINTRIN.H",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\MMINTRIN.H",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\ZMMINTRIN.H",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\AMMINTRIN.H",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\MM3DNOW.H",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\XUTILITY",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\__MSVC_ITER_CORE.HPP",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\UTILITY",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\INITIALIZER_LIST",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\CLIMITS",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\XMEMORY",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\LIMITS",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\CFLOAT",
+          "C:\\PROGRAM FILES (X86)\\WINDOWS KITS\\10\\INCLUDE\\10.0.26100.0\\UCRT\\FLOAT.H",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\INTRIN0.H",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\NEW",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\XATOMIC.H",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\XPOLYMORPHIC_ALLOCATOR.H",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\TUPLE"
+        ],
+        "excluded_aggregate_headers": []
+      },
+      "write": {
+        "tlog": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-raw-scalar-reader-bh\\build\\win32\\bsp_core.dir\\Release\\bsp_core.tlog\\CL.write.1.tlog",
+          "size": 1072512,
+          "sha256": "b7fe95d584b665b33865de5007748e0de04a465a8b771a58d00355819e65c27b",
+          "sha512": "bc74d15265e45a69dc336da1d407a6e15aedbd8a1c0035fc0ad237ad85eca610ddb356424fd692f17397f4c585216703217f73ffec9fd331fb49be2fbaacd1ab"
+        },
+        "binding": [
+          "^J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-ORCH2-RAW-SCALAR-READER-BH\\SRC\\NATIVE_RAW_SCALAR_READER.CPP",
+          "J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-ORCH2-RAW-SCALAR-READER-BH\\BUILD\\WIN32\\BSP_CORE.DIR\\RELEASE\\NATIVE_RAW_SCALAR_READER.OBJ"
+        ],
+        "excluded_aggregate_headers": [
+          {
+            "length": 115992,
+            "sha256": "7dde5646f2104858b7b0b4016392b74ccdfc221ab0badc21ce2413dea27c1777"
+          }
+        ]
+      }
+    },
+    "object": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-raw-scalar-reader-bh\\build\\win32\\bsp_core.dir\\Release\\native_raw_scalar_reader.obj",
+      "size": 12346,
+      "sha256": "712c4c13d2919a545ee91cb5952199deb5b10b3de65a9e2cdc7204c37adc6c0f",
+      "sha512": "cb52b475a8a353baa9ac3e1de93e904c0e69d5939041b128b9a6fb0a9bd1f11e9a7c8bdc601fb84c1dda5edcf09b0964552841d82264d7bc5374251f752e559f"
+    },
+    "archive": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-raw-scalar-reader-bh\\build\\win32\\Release\\bsp_core.lib",
+      "size": 56772840,
+      "sha256": "2fa24d8aacb3694a107da15d811da74c8a84100a385953ca0d223162b5dde9ce",
+      "sha512": "57097e9ee02eeb617885b19df7d0d033f940c3cc43cb82cebc853842f622eca22626fdace41c3da11bb2b911c70dee310f1089e15840779043de270d488ea6f9"
+    },
+    "unique_member": {
+      "name": "bsp_core.dir\\Release\\native_raw_scalar_reader.obj",
+      "archive_offset": 23667072,
+      "size": 12346,
+      "sha256": "712c4c13d2919a545ee91cb5952199deb5b10b3de65a9e2cdc7204c37adc6c0f",
+      "sha512": "cb52b475a8a353baa9ac3e1de93e904c0e69d5939041b128b9a6fb0a9bd1f11e9a7c8bdc601fb84c1dda5edcf09b0964552841d82264d7bc5374251f752e559f",
+      "equals_object": true
+    }
+  },
+  "semantics": [
+    "Incoming scalar actual-count argument slot is read buffer; preserve numeric pointer seed in unwritten bytes",
+    "DWORD adapter count local initially reader bits; float count local initially uninitialized; established providers publish actual on normal return",
+    "One requested4 raw read; count forwarded unchanged; unchecked modulo32 budget SUB",
+    "Exact explicit source x87 instruction schedule: scalar FLD32, float adapter FSTP32 / budget-address load / FLD32 / count load / SUB",
+    "Wrapper/node/reader raw loads have no added null-node, attachment, readiness or full-read rejection",
+    "Current object profile/slot reloaded at each native virtual site; numeric identities are not callable host pointers"
+  ],
+  "providers": [
+    {
+      "profile": "00d642c0",
+      "scalar34": "00be42e0",
+      "scalar44": "00be4360",
+      "raw24": "00bef590",
+      "source": "src/native_memory_stream.cpp:native_memory_stream_read_00bef590",
+      "context": "NativeRetainedMemoryOwnerContext, borrowed actual profile words"
+    },
+    {
+      "profile": "00d691b0",
+      "scalar34": "00be42e0",
+      "scalar44": "00be4360",
+      "raw24": "00bf5030",
+      "source": "src/native_physical_stream_open.cpp:read_native_physical_stream_00bf5030",
+      "context": "NativePhysicalStreamOpenContext, current actual numeric profile memory"
+    }
+  ],
+  "validation": {
+    "strict_build": "local/scalar_source_bh/build-v2.txt",
+    "flags": [
+      "/W4",
+      "/WX",
+      "/fp:strict",
+      "Win32"
+    ],
+    "verify_seeds": "local/scalar_source_bh/verify-seeds.txt",
+    "existing_ctests": [
+      "reconstructed_math",
+      "native_math_differential"
+    ],
+    "focused_probe": {
+      "path": "local/scalar_source_bh/short_read_probe.cpp",
+      "log": "short_read_probe.cpp\nvalue=010ffda7 seed=010ffda0 expected=010ffda7 budget=ffffffff cursor_delta=1\n",
+      "contract": "One real BEF590 one-byte read, observed adapter local address seeds high24 result bits; byteA7; budget0->FFFFFFFF; cursor+1",
+      "scope": "source fixture, not original-native stack-address differential"
+    },
+    "object_disassembly": "local/scalar_source_bh/object-disasm.txt",
+    "manifest": "ad hoc probe linked /MANIFEST:EMBED"
+  },
+  "failure_history": [
+    {
+      "failure": "C2400 inline assembler offset keyword",
+      "evidence": [
+        "local/scalar_source_bh/build.txt",
+        "local/scalar_source_bh/native_raw_scalar_reader_failed_offset.cpp",
+        "local/scalar_source_bh/precompile_inputs.json"
+      ],
+      "correction": "helper parameter renamed byte_offset; corrected input hashes captured before incremental compilation"
+    },
+    {
+      "failure": "Early combined orientation read exceeded requested output budget; only bounded known regions used afterward",
+      "correction": "Subsequent reads capped"
+    },
+    {
+      "failure": "Attempted to read math-test link tlog before target had linked",
+      "correction": "Did not use missing binding; final source compiler bindings captured after successful build"
+    },
+    {
+      "failure": "Initial standalone probe command omitted /std:c++17 and hit C7525 for existing inline variables",
+      "evidence": [
+        "local/scalar_source_bh/probe-failed-missing-cxx-standard.txt",
+        "local/scalar_source_bh/run-probe-failed-missing-cxx-standard.cmd"
+      ],
+      "correction": "Use project standard c++17; successful probe command/log retained"
+    },
+    {
+      "failure": "First tlog binding script saw historical aggregate plus current single-source write header and rejected ambiguity",
+      "evidence": "local/scalar_source_bh/bindings_failed_ambiguous_write.py",
+      "correction": "Bind exact current single-source header; retain excluded aggregate header size/hash and full tlog file hash"
+    }
+  ],
+  "limitations": [
+    "All six source interfaces are context-bearing cdecl; no raw scalar native ABI thunks",
+    "Pointer seed preserves source count-pointer bits; no exact original caller-stack-address parity",
+    "Qualified two-profile domain only; unsupported profile/slot exception is a source boundary not native read failure",
+    "Memory probe uses verified original numeric profile fixture words and actual memory source, not game-owned storage",
+    "No physical OS-failure runtime or NaN/FP-exception differential in this packet",
+    "No Ghidra mutation, original-game deployment, or gameplay validation",
+    "Full B7EB90 still depends on separate raw node/string/detach/intrusive lifecycle source"
+  ],
+  "call_verifier": {
+    "exit_code": 0,
+    "log": "  indirect  report.calls[111]: 00bf028c uses CALL through a register or memory operand; the report resolves it to 00be42e0 (not verifiable here)\n  indirect  report.calls[112]: 00bf02ce uses CALL through a register or memory operand; the report resolves it to 00be4360 (not verifiable here)\n  indirect  report.calls[113]: 00be42f1 uses CALL through a register or memory operand; the report resolves it to 00bef590 (not verifiable here)\n  indirect  report.calls[114]: 00be42f1 uses CALL through a register or memory operand; the report resolves it to 00bf5030 (not verifiable here)\n  indirect  report.calls[115]: 00be4371 uses CALL through a register or memory operand; the report resolves it to 00bef590 (not verifiable here)\n  indirect  report.calls[116]: 00be4371 uses CALL through a register or memory operand; the report resolves it to 00bf5030 (not verifiable here)\nJ:\\PROG\\battlestations-pacific-decompile-orch2-raw-scalar-reader-bh\\reports\\native_raw_scalar_reader_bh.json: 117 call rows checked, 0 failed\n",
+    "rows": 117,
+    "direct_rows": 111,
+    "virtual_rows": 6
+  },
+  "whole_local_inventory": {
+    "root": "J:\\PROG\\battlestations-pacific-decompile-orch2-raw-scalar-reader-bh\\local",
+    "double_pass_equal": true,
+    "file_count": 34,
+    "files": [
+      {
+        "path": "local\\scalar_source_bh\\bindings.py",
+        "size": 3259,
+        "sha256": "09d71284667ce316cafdddc3f010048465a47225f82ccb0076bae5e2b60fdbbd",
+        "sha512": "a32d79b715f29ad5547672c8314b5947e446d93ac51b2aaeaa905958c7e677af222801aa6e99bd1372ec98b6680a906645e711a9f69b46d8728f6c53c1ec35dc"
+      },
+      {
+        "path": "local\\scalar_source_bh\\bindings_failed_ambiguous_write.py",
+        "size": 3068,
+        "sha256": "cebc6886a02e4ccf12657b9fb9930eea8dcb27ee8ba603c15bbad58fc732f3ea",
+        "sha512": "c312b7f37da18cb930e03e2192a21f54b4079f0a2ab1c5a5381a4519b3f3e4850e33ee86983a959b1e27d0a12d763024a1d2b03062d1503d18d161713f12068e"
+      },
+      {
+        "path": "local\\scalar_source_bh\\build-v2.txt",
+        "size": 5929,
+        "sha256": "39244177af1a825cfd3d3de4b0ef7e22b066ff5c1bb64f709149bc5cfa001b9b",
+        "sha512": "c00b4ce239c8fec33241600a800816a6f55b984870db36c7bbf4a3c41c117f9e4e7fa81c9619a28b7308f4831751fb509e18231c8b4083722d08e49783c7310c"
+      },
+      {
+        "path": "local\\scalar_source_bh\\build.txt",
+        "size": 40572,
+        "sha256": "a470b52de77f0fc0474aa8640fe982a7d3d7bfe7127f67895cdd3ab13950bf21",
+        "sha512": "a8a1e2628b5b50af030e4481b4918d717252956185bc87072e79228251f1fd1287169b926e785b3ae9b2d46e018b35c6f7191a2822ced8c5c0498099d4a34774"
+      },
+      {
+        "path": "local\\scalar_source_bh\\commit-message.txt",
+        "size": 367,
+        "sha256": "c9126fca5f88a3e299f7dd20a25cc1b5b9bcd5ee5f6921e3d791f27bfdc6a022",
+        "sha512": "a0a3d933fce97035019e8514666411fc2ecc2489a20884eb422e6f54369c678ea5787cb39fff4136b3bdbb82e388a1ccdaca92b887d8214a278c074b506aeb03"
+      },
+      {
+        "path": "local\\scalar_source_bh\\compiler_archive_binding.json",
+        "size": 18141,
+        "sha256": "9e36820125423b99829a8858e469a208b7b17a68576e691ceb7961e79a6a5f47",
+        "sha512": "0d22e71cea591375044df3f6c538246a536cc345dd503998722022bc6d07dc280dcf8ab42cc57a150f0d1fa22d54758ec124fa290c10648b5917453661934cb6"
+      },
+      {
+        "path": "local\\scalar_source_bh\\current_byte_identity.json",
+        "size": 3515,
+        "sha256": "c7886065e5361feb18796dab83cc5a68639d6876bab279eaf0f1f8bc4f66bb11",
+        "sha512": "0860d0548740b7b51ce11f28d8b26a19bdd13c70d6326a1ebb9f5e96d62a23e55beeeca9598964510d2e6ec08a7ce15d8f816c10ed7ef4a9cb79c92f39474713"
+      },
+      {
+        "path": "local\\scalar_source_bh\\current_bytes_00be42e0.txt",
+        "size": 130,
+        "sha256": "7cf65249b01a9aa5763afb6e26ccadc76909de4a3398916a132e29d81479aa18",
+        "sha512": "42ad82fb57f4d2187942ea706fe56928fd2aa992000576efc36b24286e725eb7d97222250db50d0fa35ee8b71ca21490e85d20b36aa3b33943590e7a5b8e8cd0"
+      },
+      {
+        "path": "local\\scalar_source_bh\\current_bytes_00be4360.txt",
+        "size": 130,
+        "sha256": "41911d83dfce0e57fa5c00888eaa29676b0ac1423c439bd1090eaba6469d771b",
+        "sha512": "6390232cafa0f35d3db276054c5e73dce627052c59f0faf4b7495dbb544ce34f49aeadad1d4daec5eb2fde37c5eca86d44ee29ea86c0c26b570a7d75dc011243"
+      },
+      {
+        "path": "local\\scalar_source_bh\\current_bytes_00be99d0.txt",
+        "size": 73,
+        "sha256": "e1c1b4cd93b256d91abdaf8cb9c89f1ca55b87e466c0469c620de7beeb91f5bc",
+        "sha512": "c6e64c0ad195b8db5393157778614f9269d17bba5aa785b9d41d954c27f13da12e81b147fda9d5e2dd983e1d1a6231e08f92137f17a17e5bda0af7f4ddf2b763"
+      },
+      {
+        "path": "local\\scalar_source_bh\\current_bytes_00be9a00.txt",
+        "size": 73,
+        "sha256": "c4b05e15190ccb6ad1811ee6b3ec1be86e19d2517b5369ab14376bbc47309b99",
+        "sha512": "40dd2a13bd9a0bcfc2ee167397845b571b107e7b78c40f1126e5dfaa850df5efbde4175517a24c22dfda77d4271b71e5d1af186e00904f7f44cd39dd6e5522d7"
+      },
+      {
+        "path": "local\\scalar_source_bh\\current_bytes_00bef590.txt",
+        "size": 422,
+        "sha256": "0342d19525356ebc0524b6862f8b0529fadc69a5c27f03bc51184805a8b75041",
+        "sha512": "6b3ac52d7171c790d887f48a6a6ceac4266d6491b353705e711bc1ea35e0205e40c72c5c5a8d67cf3085873398009fc798863983d091dd46d2640e613f3521f8"
+      },
+      {
+        "path": "local\\scalar_source_bh\\current_bytes_00bf0280.txt",
+        "size": 134,
+        "sha256": "fd42c969e3ec9cf486972e12778e43322b5c8023b68a7e331ea41b18d0909725",
+        "sha512": "d830193dfc84c14a541f924e9c1302b82e98d900f37ac118755654c60bf581dcba8150e08ae7b0ff14b0adc1d147125bf195e41ba4990b1a48ac7a829444e811"
+      },
+      {
+        "path": "local\\scalar_source_bh\\current_bytes_00bf02c0.txt",
+        "size": 195,
+        "sha256": "da220cc9c5bc4044303a9f446a92ee5e569560a94dd657353368781e607cae96",
+        "sha512": "6a821dc141414ac8e813285b6cab47778c794e2c8d1ed02249f8ddbe89899c18f09c8c0f3ac85bf0ad189124ae9d9baba64dda44cd879452ef3ba90018e45b5d"
+      },
+      {
+        "path": "local\\scalar_source_bh\\current_bytes_00bf5030.txt",
+        "size": 414,
+        "sha256": "258bae4f9f16136f57d0ec50a30b69bc566c4661479eb41f34c7d16dd052e5a2",
+        "sha512": "3765db8970f05749e777f1262d34eb375718ce359e3326d0b7d723e21dcb0c5f4b6b09d0e849d792c25d8e0bb29ecc38837009a96b0f02f3a9b748fc2334c56e"
+      },
+      {
+        "path": "local\\scalar_source_bh\\current_bytes_00d642c0.txt",
+        "size": 369,
+        "sha256": "80ba46b663cd932ce3dd01bf8dd4b4fae244684830650fbb4a75f4948a6c7cbd",
+        "sha512": "c5d9e25b254ac68fd22315ff0659fb001edcee0652381637eb42cdc989c6a08ed18fc5a008867feae3620145475726407ac50fb210d9e1d972bbcdf015cc06e6"
+      },
+      {
+        "path": "local\\scalar_source_bh\\current_bytes_00d691b0.txt",
+        "size": 369,
+        "sha256": "5824db85b2b123eb6daa21a84ec0746e3092753e83741a72e7e08fa49b767938",
+        "sha512": "7c17829e1da7d3057553fe7ebfb8b740eaf47a474997537133aa2a70ab80bb96ba2504436f6d193f7d0d7d3683a44b3dc77e47bcc77332c4e6bbdf8e05103c97"
+      },
+      {
+        "path": "local\\scalar_source_bh\\current_evidence.py",
+        "size": 1031,
+        "sha256": "82ce60bd1b01513369edf681b89424e053f5cc1d4d614eda9d5b15392845fda5",
+        "sha512": "245cca3901f81f97f162be49a79e2a1b8fcf79218eadcfc9d957d4c155a33c4250fcb3cb78993e7f20e5403ee046d141d86ce5949a3ba47b2f69f62f478f7982"
+      },
+      {
+        "path": "local\\scalar_source_bh\\native_raw_scalar_reader_failed_offset.cpp",
+        "size": 6259,
+        "sha256": "d145ec7f2ab94e364cb03daa9494ddc0be41ae174a9b62ee6eab8a0a331bd745",
+        "sha512": "b7dfa8983bac72015a20dfb1cab16af4f345372b218e3db16e0ca9a0bd6dd06107c7b24ac6055d92293a986c2b7f2cf8eb398142037a26ad9af6ae53260c9380"
+      },
+      {
+        "path": "local\\scalar_source_bh\\object-disasm.txt",
+        "size": 28375,
+        "sha256": "cc4a56c6aeeec70bf41c60a7590282f454b127d95b8346a31f2d830c114b160e",
+        "sha512": "28babbfc50757a665cfb0adfc79e0cc4e7004a379ebf572214e4ac05ff977ba06387fe892bde523dcae444ac01254fd4f3f9e79b086ddb9bebfcdd21c6c2a6ad"
+      },
+      {
+        "path": "local\\scalar_source_bh\\precompile_inputs.json",
+        "size": 2680,
+        "sha256": "036e73312bbf06e431a1faa1e0de2a222bf9add3a5cb166f3bd2ee84fea57156",
+        "sha512": "a2011c999167f9f972f89ab8674d933b46833fdfa3504b4d17386e26d065df2537d6578faad56f67d94f051fd45d344a8208ae51aa35bd48f162e50c9774cab9"
+      },
+      {
+        "path": "local\\scalar_source_bh\\precompile_inputs_v2.json",
+        "size": 2680,
+        "sha256": "c4e495d30ea4714836bd9174efaf0d9a360186d3d5404d574ec619a842638e38",
+        "sha512": "b41f98c11338c8635cde86420927a45d9d83a22de84be160442af17e84548f84afda5b46b1d3f1411628c3506b075b4ec2e05d926fca7efd0628e707b7d67b3a"
+      },
+      {
+        "path": "local\\scalar_source_bh\\probe-failed-missing-cxx-standard.txt",
+        "size": 244,
+        "sha256": "8a539d0e57420f507838b14c5af5104a1f83a2b9cdd8642a3dd5529606f6c37d",
+        "sha512": "30ca5d354331ee5482b3c463a01632a29e19640834bae7b171eece886fadd5c3901cf748c7822f124344e21d591c59341a59e2e19a8fc70dd8eb9e5af348a41b"
+      },
+      {
+        "path": "local\\scalar_source_bh\\probe.txt",
+        "size": 101,
+        "sha256": "29e81ae70690d1eeaa7c5e748fe1ca02d95d00a2d3d8895b4e63d638010ebbac",
+        "sha512": "c41ad530a5e56be6a6fcb10c4e358a5be54ac0dccbb7d14a492031119ad1534cb2e798e778fbaf599395eec556c6b75bd44a3febff31f0ff286ed32eb034b2e3"
+      },
+      {
+        "path": "local\\scalar_source_bh\\report.py",
+        "size": 6670,
+        "sha256": "21524cdcf1b03671f50ec7ec165643aa30b28e207dc066efe014f6364b604cc9",
+        "sha512": "19acd9f63bdcd01c580d6014e4376082e780a3006472f56486f2c578d807595841bb6bfaac19086f92b291eac93f603ba08412df335209a67ad738d91cb6d17a"
+      },
+      {
+        "path": "local\\scalar_source_bh\\run-probe-failed-missing-cxx-standard.cmd",
+        "size": 911,
+        "sha256": "25e2376b3a71794b269a98ae485f4171a4c8ca353f2d308c603949c9d6a5ef1e",
+        "sha512": "d344c60a11013ff46fd60bd0034cfc3e082041b11c120d04cc52122c8eddddd6d59369e710e2bb9120e761d6e910bfcd8c36c70929960031c247fde3ede56c3d"
+      },
+      {
+        "path": "local\\scalar_source_bh\\run-probe.cmd",
+        "size": 922,
+        "sha256": "ad1aade9f5af3e7c2972067fd82b0cbd99e3558b8371ff044217d0ac320bf4e9",
+        "sha512": "97ec48d76a49941da7a4d41bc99719127a7b58cd92fd805b494f2dc26e5c23781873cfd64ff80196646c1fd4e7e130eb0a6c7f1bc31aee039ab76aedfc3eb331"
+      },
+      {
+        "path": "local\\scalar_source_bh\\run-probe.ps1",
+        "size": 1507,
+        "sha256": "5c17b280281d23402d8d029dc0d748952ede95898e2e0f3f52e605a800d7e835",
+        "sha512": "f9159810cd4dfe257b685585e010e9f6239538bab67df85ca1098573e8646c337a87eb46d0c6e5ba2a0c293b6ba0e352b151c421b1c0937b59debcbb61605d48"
+      },
+      {
+        "path": "local\\scalar_source_bh\\short_read_probe.cpp",
+        "size": 2174,
+        "sha256": "5e4b5c74c5c0e8e07f98a0cca438202bc3b859ff6963675a8169eafa96a3de7b",
+        "sha512": "0fa5b7df6d54d23e046d3fc38a9baeba6a13e0a337dafa3694d0f866ea3a409676fc2843ae0d844261f56cb66532b2508844e2ef78dbdb9b7fb3b14cc46e3b76"
+      },
+      {
+        "path": "local\\scalar_source_bh\\short_read_probe.exe",
+        "size": 12800,
+        "sha256": "fb24ea2d1efcf96f18653e8ab9f95156765c12c0c42b4490894a45950478d2f5",
+        "sha512": "1944954a4a6a5aca793773cf8a3106cebd08480696880e8b866275eb4de1235554a14e369dcd5937d2ac0dbaa109a1ec9ead2f0de9ed28811e58486ea456e3e5"
+      },
+      {
+        "path": "local\\scalar_source_bh\\short_read_probe.obj",
+        "size": 3070,
+        "sha256": "c7350dcb6bf890425ffb8896b43c2b93096137d265a214ccb9073d4925370960",
+        "sha512": "77917bac62a1b8cffccd590acdce64bbcf5e65574da769f51b6fc69f95023ddc3278ec9f96c88300b7d5d467e0b907da7c838b9e1cb5c2e28f3c28293f159c84"
+      },
+      {
+        "path": "local\\scalar_source_bh\\verify-seeds.txt",
+        "size": 3034,
+        "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773",
+        "sha512": "857449ff384d332baa250c7444daa15f5fbd261c5d4a63b9c1a168cab8c367e343c42dbd412ee38f61ea2c148d63c36eee699b58ac02ae28d087e0ef232e56e8"
+      },
+      {
+        "path": "local\\scalar_source_bh\\verify_report_calls.txt",
+        "size": 1019,
+        "sha256": "b0351dd57d1e806ce88f75b98efe7d2afdeb46953d4c4f4c5301b77977578634",
+        "sha512": "b1aab25caccbf8e466151868321b8a6b151b2162132df8188d65f8028cc981af7f331a6f5fb1ff5755578e1e4435382218552ccdeb232582ac9303a2a9eedf89"
+      },
+      {
+        "path": "local\\seed_reference.hpp",
+        "size": 2995,
+        "sha256": "26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c",
+        "sha512": "73558474158d529bc96205150b2c52ebc133b1b6bcb743e01ecf14dd4655c2cc594a2b0353e0d2f89977ced7c585fcf9cdd7c00cfe96bfa67eee8a29226d05bf"
+      }
+    ]
+  }
+}
