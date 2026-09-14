@@ -5,6 +5,7 @@
 #include "bsp/native_pooled_string_substring.hpp"
 #include "bsp/native_string.hpp"
 #include "bsp/native_string_append.hpp"
+#include "bsp/native_string_byte_append.hpp"
 #include "bsp/native_string_compare.hpp"
 #include "bsp/native_string_pool_storage.hpp"
 
@@ -42,11 +43,12 @@ void require_slot(void* provider, std::uint32_t offset, std::uint32_t expected) 
     if (slot(provider, offset) != expected)
         throw std::invalid_argument("unsupported physical provider method");
 }
-void append_character(NativeString& destination, char character,
+void append_star_pattern(NativeString& destination,
     NativeStringStorage& strings) {
-    char one[2]{character, 0};
+    // BF487F..BF48FA inlines the C-string constructor/append for "*".
+    // It does not call0054AA70 and retains its existing C-string schedule.
     OwnedString temporary(strings);
-    construct_native_string_cstring_0041e870(&temporary.value, one, strings);
+    construct_native_string_cstring_0041e870(&temporary.value, "*", strings);
     append_native_string_00425e10(destination, temporary.value, strings);
 }
 } // namespace
@@ -87,11 +89,11 @@ void enumerate_native_physical_names_00bf47e0(void* provider,
     if (physical_path.value.length() == 0 || !physical_path.value.data())
         throw std::invalid_argument("empty physical enumeration path");
     if (physical_path.value.data()[physical_path.value.length() - 1] != '\\')
-        append_character(physical_path.value, '\\', strings);
+        append_native_string_byte_0054aa70(&physical_path.value, 0x5c, strings);
     OwnedString pattern(strings);
     copy_construct_native_string_header_00426060(&pattern.value,
         &physical_path.value, strings);
-    append_character(pattern.value, '*', strings);
+    append_star_pattern(pattern.value, strings);
 
     WIN32_FIND_DATAA found{};
     FindOwner search{FindFirstFileA(pattern.value.data(), &found)};
