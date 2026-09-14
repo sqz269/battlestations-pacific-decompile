@@ -33,8 +33,8 @@ void assign_header(void* destination, const NativeString& source,
         const auto length = read<std::uint32_t>(destination, 0);
         const auto* data = read<const char*>(&source, 4);
         auto* output = read<char*>(destination, 4);
-        // The raw string helpers omit only a zero-byte CRT memcpy.
-        if (length != 0) std::memcpy(output, data, length);
+        // 00BF7680 preserves overlap, including aliased source/data headers.
+        if (length != 0) std::memmove(output, data, length);
     }
 }
 

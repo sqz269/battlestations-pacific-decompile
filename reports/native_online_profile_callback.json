@@ -107,7 +107,7 @@
       "address": "007f936f",
       "native": "00bf7680",
       "function": "007f9340",
-      "operation": "copy current destination length from current source"
+      "operation": "overlap-safe 00BF7680 copy of current destination length from current source"
     },
     {
       "address": "007f938a",
@@ -137,7 +137,7 @@
       "address": "007f92bf",
       "native": "00bf7680",
       "function": "007f9290",
-      "operation": "copy current destination length from current source"
+      "operation": "overlap-safe 00BF7680 copy of current destination length from current source"
     },
     {
       "address": "007f92dc",
@@ -220,8 +220,8 @@
   "artifact_manifest": {
     "source": {
       "path": "src/native_online_profile_callback.cpp",
-      "bytes": 4948,
-      "sha256": "8d4457c7e20fd7c5e044243c91e45c47eaf18723167effb23e68bbc39db94b41"
+      "bytes": 4959,
+      "sha256": "fe80c95862a10b959ac69dca311093ff73712f2bc68c07eb8d891cbbb76b09bd"
     },
     "header": {
       "path": "include/bsp/native_online_profile_callback.hpp",
@@ -256,24 +256,24 @@
       {
         "path": "local/native_online_notification_leaves_strict.obj",
         "bytes": 59740,
-        "sha256": "0701564dd5d27d8cbcb3a4f9f327dfd94d8252df9287723d94d8c536a1734b18"
+        "sha256": "74c30f5dd41c728e33b1ed3684530e721e0eee22faa781f2f4b6ef2ab8c826ba"
       },
       {
         "path": "local/native_online_profile_callback_strict.obj",
-        "bytes": 7474,
-        "sha256": "0628e59c9cb49759b4c8e0b45ef5f830e555d54bfa3c420af7029b410572a8b5"
+        "bytes": 7492,
+        "sha256": "c35762337c4dec10eb4ada0efdeeb55ab82304b9225e4287a04d251cdbe79a84"
       }
     ],
     "fixture_exe": {
       "path": "local/native_online_notification_leaves_probe.exe",
       "bytes": 27648,
-      "sha256": "395ace5b0f93053b2691370111e799f6f95a148318a578fd55a9ed75c7404d88"
+      "sha256": "3fa3ef1477de2b6cb46e9c6e80041a3eb1e753a070fd09ef85565ec629aa46bc"
     },
     "link_dependencies": [
       {
         "path": "build/win32/Release/bsp_core.lib",
         "bytes": 57245378,
-        "sha256": "a7ae17a66234d6a4cf69b8fda9ec57feb5a204e631db35fd1b659103720e9f00"
+        "sha256": "0019f29143471e87063f25d9a7825dd0d126745bd4343838c5828d29bd210572"
       },
       {
         "path": "build/win32/Release/bsp_lua511.lib",
