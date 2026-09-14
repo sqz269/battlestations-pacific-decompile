@@ -1025,7 +1025,26 @@
       "failed": 0,
       "indirect": "not mechanically verified; resolved from captured current profiles and listing"
     },
-    "frozen_closure": "Final immutable manifest is added in the metadata follow-up after the source commit."
+    "frozen_closure": {
+      "manifest": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-compiler-actual\\local\\verification\\compiler_actual_frozen_20260914\\manifest.json",
+      "manifest_sha256": "bc7ce48a8051ed465afa3d8b698106217b732c68d97eb30947b298c578353df7",
+      "source_commit": "0097f52be23a5c1584ae20eff5963e5d8c353f11",
+      "artifacts": 7655,
+      "total_bytes": 580782569,
+      "compiled_translation_units": 1318,
+      "actual_loaded_modules": 13,
+      "probe_embedded_manifest_resource_id": 24,
+      "driver_command": "python local/verification/compiler_actual/freeze.py > local/verification/compiler_actual_freeze.log",
+      "driver_log_outside_archive": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-compiler-actual\\local\\verification\\compiler_actual_freeze.log",
+      "scope": "Complete source/compiler-read/link/tool/runtime input closure for final build and focused probe; every copy checked against stable before/after source hashes",
+      "exclusions": "Final report manifest references are committed after the immutable source archive; neither report embeds its own hash.",
+      "limits": [
+        "The complete actual compiler and providers link through the exported factory.",
+        "Runtime covers only BE4460/BE40D0 plus real WriteFile and B1FF50; full parent and B44B10 were not executed.",
+        "Tool component closure includes available MSVC components; actual runtime enumeration is for the fixture.",
+        "Original FH3 and game execution remain unvalidated."
+      ]
+    }
   },
   "limits": [
     "Whole source/cached compiler path and B44B10 acquisition not runtime exercised.",
@@ -1035,5 +1054,6 @@
     "No game or render parity claim."
   ],
   "definition_journal": "reports/native_material_compiler_providers_definition.json",
-  "ghidra_mutation": "Only explicitly authorized exact BE40D0..BE40EE half-open definition through official write-lock/save tool; prior/after retained; force export"
+  "ghidra_mutation": "Only explicitly authorized exact BE40D0..BE40EE half-open definition through official write-lock/save tool; prior/after retained; force export",
+  "annotation_handoff": "Primary may append evidence to existing B3B3C0/B44B10/B1FF50 names; proposed BE4460 BSP_Stream_WriteLengthPrefixedString and BE40D0 BSP_Stream_WriteDword. Worker made only authorized BE40D0 function definition."
 }
