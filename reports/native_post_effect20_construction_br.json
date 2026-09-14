@@ -1,0 +1,1550 @@
+{
+  "packet": "orch3_post_effect20_construction_br",
+  "status": "reconstructed_reviewed_win32_build_tested_static_count_x87_capture_evidence_no_constructor_fixture",
+  "base_commit": "7d9a680444e0b5cb6406148b6dec51c232b02928",
+  "source_parent_commit": "7d9a680444e0b5cb6406148b6dec51c232b02928",
+  "dependency_lineage": [
+    "BO93a66683/primaryfb6d43da",
+    "BNac498c87",
+    "BP54c34b9d+8f2c9521",
+    "BQ5a89873e/primary7d9a6804"
+  ],
+  "native_body_credit": 0,
+  "native_bytes_credit": 0,
+  "proposed_native_bodies": 1,
+  "proposed_native_bytes": 974,
+  "credit_note": "One complete admitted constructor proposed for primary review; no new surface-leaf or EH-routing credit; no worker ledger/Ghidra mutation.",
+  "routines": [
+    {
+      "address": "00b4e470",
+      "inclusive_end": "00b4e83d",
+      "bytes": 974,
+      "instructions": 325,
+      "listing_gaps": 0,
+      "source_name": "construct_native_post_effect20_00b4e470",
+      "proposed_name": "BSP_PostEffect20h_Construct",
+      "original_abi": "ECX actual20h/32-byte receiver; stack actual8h effect-name header,vertex-count DWORD,optional size input; EAX captured receiver; RET0Ch at B4E83B; EBX/EBP/ESI/EDI saved.",
+      "source_abi": "New C++ ABI adds allocation extent and caller-owned prepared persistent block. Ordinary C++ exceptions, no drop-in native FH3/ABI.",
+      "coverage": "Complete normal body and logical twelve-state cleanup schedule within documented concrete-provider and valid-storage domains."
+    }
+  ],
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "bridge": "http://127.0.0.1:8089",
+    "image_base": "00400000",
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "native_image_sha256_rechecked": true,
+    "verification": "Read-only BSP CLI client verifies configured existing project/program before each live command. PE hash independently recomputed. Primary separately defined CBFBAB; worker performed no writes."
+  },
+  "native_spans": [
+    {
+      "name": "constructor",
+      "address": "00b4e470",
+      "inclusive_end": "00b4e83d",
+      "bytes": 974,
+      "sha256": "e364bf0f52b153a846b2e4d5c4e36ebba296f55466424e33704d6194f334080b",
+      "live_PE_equal": true
+    },
+    {
+      "name": "funclets_and_handler",
+      "address": "00cbfb30",
+      "inclusive_end": "00cbfbb4",
+      "bytes": 133,
+      "sha256": "a2573d0d0a322aa487dce337fd10884a34bf14b18770a4702692720d09411845",
+      "live_PE_equal": true
+    },
+    {
+      "name": "FuncInfo_and_map",
+      "address": "00df86d4",
+      "inclusive_end": "00df8757",
+      "bytes": 132,
+      "sha256": "1bb0de892d0877d4a7f7d3dacf6f7b63d2fd091c63e6e0f6d5473a65f9223527",
+      "live_PE_equal": true
+    },
+    {
+      "name": "three_literals",
+      "address": "00d61ed0",
+      "inclusive_end": "00d61f09",
+      "bytes": 58,
+      "sha256": "27d699a85defb116d0d98c6c6c3d26c6b7bdf8980b490ac300213d74276c7588",
+      "live_PE_equal": true
+    },
+    {
+      "name": "owner_profile",
+      "address": "00d61ec0",
+      "inclusive_end": "00d61ec7",
+      "bytes": 8,
+      "sha256": "92cfcd9062163a17e4ab4aaa6a432821de199a76bf2e683d8060e42b8dd6a127",
+      "live_PE_equal": true
+    },
+    {
+      "name": "surface_profile",
+      "address": "00d619a0",
+      "inclusive_end": "00d619c3",
+      "bytes": 36,
+      "sha256": "3978ad9d5da55c40b836238ab110d33d0b52b069732173e9887706b9540b0e06",
+      "live_PE_equal": true
+    },
+    {
+      "name": "surface_width",
+      "address": "00b3cd10",
+      "inclusive_end": "00b3cd13",
+      "bytes": 4,
+      "sha256": "0b78473b3a56c63ff2a64431fb600078066cbe407d3dee7ea8fd7575bd7f82d5",
+      "live_PE_equal": true
+    },
+    {
+      "name": "surface_height",
+      "address": "00b3cd20",
+      "inclusive_end": "00b3cd23",
+      "bytes": 4,
+      "sha256": "07ad3a50b1c271e07fb57fb47d2f0e77f3342d41bfa410990cb1320a45035fb2",
+      "live_PE_equal": true
+    },
+    {
+      "name": "model_sentinel",
+      "address": "00d7a260",
+      "inclusive_end": "00d7a263",
+      "bytes": 4,
+      "sha256": "c68830a25204a09f8e77aada6bc5807f607cccaaa0ebb2a7122d317584478a8b",
+      "live_PE_equal": true
+    },
+    {
+      "name": "renderer_profile",
+      "address": "00d5f0a8",
+      "inclusive_end": "00d5f10b",
+      "bytes": 100,
+      "sha256": "dab04f08084a60143678d89bcc6e4ea3c2a0deeb83b88bc1f2949713bcd7432f",
+      "live_PE_equal": true
+    }
+  ],
+  "calls": [
+    {
+      "address": "00b4e4c1",
+      "native": "00bf681b",
+      "function": "00b4e470",
+      "contract": "CRT raw allocation: one stack byte count; ADD ESP,4 after each call. Actual 40h/34h/28h identity is preserved; no refcount owner for draw record."
+    },
+    {
+      "address": "00b4e4d8",
+      "native": "00b1fbb0",
+      "function": "00b4e470",
+      "contract": "ECX raw40h frame; EAX same; RET. Null allocation skips constructor before +08 publication."
+    },
+    {
+      "address": "00b4e4f8",
+      "native": "0041dd40",
+      "function": "00b4e470",
+      "contract": "ECX actual8h header; stack length17,preserve1; RET8. Raw current pool context."
+    },
+    {
+      "address": "00b4e513",
+      "native": "00bf7680",
+      "function": "00b4e470",
+      "contract": "Overlap-safe native CRT copy: stack current destination,literal,current length+1; ADD ESP,0Ch at B4E518. Source memmove."
+    },
+    {
+      "address": "00b4e530",
+      "native": "renderer+vtable38",
+      "function": "00b4e470",
+      "kind": "indirect",
+      "contract": "Current renderer -> B317E0. ECX renderer, stack header, RET4."
+    },
+    {
+      "address": "00b4e54b",
+      "native": "00419cc0",
+      "function": "00b4e470",
+      "contract": "Current raw native string pool getter; no semantic stack inputs; EAX actual pool. May throw before return."
+    },
+    {
+      "address": "00b4e552",
+      "native": "00bd1510",
+      "function": "00b4e470",
+      "contract": "ECX current pool; stack captured data,length+1,unused1; RET0Ch. No header clear or retry added."
+    },
+    {
+      "address": "00b4e56a",
+      "native": "renderer+vtable5c",
+      "function": "00b4e470",
+      "kind": "indirect",
+      "contract": "Fresh current renderer -> B287C0. Stack fixed4,1000h,declaration; RET0Ch."
+    },
+    {
+      "address": "00b4e572",
+      "native": "current_CE2220_IAT",
+      "function": "00b4e470",
+      "kind": "indirect",
+      "contract": "stdcall declaration+4 decrement; RET4; current epoch."
+    },
+    {
+      "address": "00b4e583",
+      "native": "declaration+vtable00",
+      "function": "00b4e470",
+      "kind": "indirect",
+      "contract": "Current D61D1C -> BD30E0 -> current B48CA0 flags1, no extra decrement."
+    },
+    {
+      "address": "00b4e58a",
+      "native": "00b73b60",
+      "function": "00b4e470",
+      "contract": "ECX BCh requested payload; canonical C0h mesh slot allocation; EAX raw slot; RET."
+    },
+    {
+      "address": "00b4e59e",
+      "native": "00b73d70",
+      "function": "00b4e470",
+      "contract": "ECX raw mesh slot; EAX same; RET. Existing exact constructor starts child count lifetime."
+    },
+    {
+      "address": "00b4e5b9",
+      "native": "00b73bb0",
+      "function": "00b4e470",
+      "contract": "ECX captured mesh; stack index0,captured local stream; RET8. Retained assignment before separate B4E5C2 creator decrement."
+    },
+    {
+      "address": "00b4e5c2",
+      "native": "current_CE2220_IAT",
+      "function": "00b4e470",
+      "kind": "indirect",
+      "contract": "stdcall captured local stream+4 decrement after mesh retain; RET4; fresh epoch."
+    },
+    {
+      "address": "00b4e5d2",
+      "native": "stream+vtable00",
+      "function": "00b4e470",
+      "kind": "indirect",
+      "contract": "Current D61D6C -> BD30E0 -> current B4BF10 flags1, no extra decrement."
+    },
+    {
+      "address": "00b4e5d8",
+      "native": "00535320",
+      "function": "00b4e470",
+      "contract": "ECX actual effect-name header; EAX material; RET. Current renderer+48 must be a real callable provider. Internal post-construction release diagnostic identity is not exposed."
+    },
+    {
+      "address": "00b4e5e4",
+      "native": "00b18a40",
+      "function": "00b4e470",
+      "contract": "ECX new material; stack actual parent,retain0; RET8. No extra parent retain."
+    },
+    {
+      "address": "00b4e5e9",
+      "native": "00533fa0",
+      "function": "00b4e470",
+      "contract": "No semantic native inputs; EAX section; RET. Raw concrete section pool/factory."
+    },
+    {
+      "address": "00b4e61f",
+      "native": "00b864c0",
+      "function": "00b4e470",
+      "contract": "ECX section; stack current parent+14 material; RET4."
+    },
+    {
+      "address": "00b4e627",
+      "native": "00b865a0",
+      "function": "00b4e470",
+      "contract": "ECX section; stack captured mesh; RET4. Existing concrete layout services."
+    },
+    {
+      "address": "00b4e62f",
+      "native": "00b73c60",
+      "function": "00b4e470",
+      "contract": "ECX mesh; stack captured section; RET4. Append and retain."
+    },
+    {
+      "address": "00b4e639",
+      "native": "00b74eb0",
+      "function": "00b4e470",
+      "contract": "ECX184h requested payload; canonical188h model slot allocation; EAX raw slot; RET."
+    },
+    {
+      "address": "00b4e656",
+      "native": "0041e870",
+      "function": "00b4e470",
+      "contract": "ECX raw8h output; stack PostEffectSysObj literal; RET4. Actual raw pool overload."
+    },
+    {
+      "address": "00b4e66f",
+      "native": "00b75030",
+      "function": "00b4e470",
+      "contract": "ECX raw184h model; stack actual8h name; EAX same; RET4. Persistent owner with BP actual-header/raw-constant overload."
+    },
+    {
+      "address": "00b4e69e",
+      "native": "00419cc0",
+      "function": "00b4e470",
+      "contract": "Current raw native string pool getter; no semantic stack inputs; EAX actual pool. May throw before return."
+    },
+    {
+      "address": "00b4e6a5",
+      "native": "00bd1510",
+      "function": "00b4e470",
+      "contract": "ECX current pool; stack captured data,length+1,unused1; RET0Ch. No header clear or retry added."
+    },
+    {
+      "address": "00b4e6c3",
+      "native": "00b75170",
+      "function": "00b4e470",
+      "contract": "ECX current parent+10 model; stack0,captured mesh,float178,float17C; RET10h. One current D7A260 FLD then FST/FSTP."
+    },
+    {
+      "address": "00b4e6cd",
+      "native": "00b71930",
+      "function": "00b4e470",
+      "contract": "ECX458h requested payload; canonical45Ch camera slot; EAX raw slot; RET. Wrapper reaches real B71770 pool."
+    },
+    {
+      "address": "00b4e6ef",
+      "native": "0043c130",
+      "function": "00b4e470",
+      "contract": "ECX raw8h output, EDX prefix literal, stack actual effect-name header; EAX output; RET4. BQ actual-header/raw pool overload, consumed cleanup actions and explicit secondary-exception boundary."
+    },
+    {
+      "address": "00b4e701",
+      "native": "00b71a80",
+      "function": "00b4e470",
+      "contract": "ECX raw458h camera; stack actual8h prefixed name; EAX same; RET4. Raw pool and preadmitted initial viewport."
+    },
+    {
+      "address": "00b4e72b",
+      "native": "00419cc0",
+      "function": "00b4e470",
+      "contract": "Current raw native string pool getter; no semantic stack inputs; EAX actual pool. May throw before return."
+    },
+    {
+      "address": "00b4e732",
+      "native": "00bd1510",
+      "function": "00b4e470",
+      "contract": "ECX current pool; stack captured data,length+1,unused1; RET0Ch. No header clear or retry added."
+    },
+    {
+      "address": "00b4e739",
+      "native": "00bf681b",
+      "function": "00b4e470",
+      "contract": "CRT raw allocation: one stack byte count; ADD ESP,4 after each call. Actual 40h/34h/28h identity is preserved; no refcount owner for draw record."
+    },
+    {
+      "address": "00b4e750",
+      "native": "00b1f850",
+      "function": "00b4e470",
+      "contract": "ECX raw34h viewport; EAX same; RET. Null allocation skips ctor."
+    },
+    {
+      "address": "00b4e76c",
+      "native": "optional_input+vtable20",
+      "function": "00b4e470",
+      "kind": "indirect",
+      "contract": "Current D619A0 -> B3CD20, current DWORD+20, ECX input, EAX result, RET."
+    },
+    {
+      "address": "00b4e77b",
+      "native": "optional_input+vtable1c",
+      "function": "00b4e470",
+      "kind": "indirect",
+      "contract": "Fresh current D619A0 -> B3CD10, current DWORD+1C, ECX input, EAX result, RET."
+    },
+    {
+      "address": "00b4e790",
+      "native": "00b1f940",
+      "function": "00b4e470",
+      "contract": "ECX viewport; stack pointer to width,height DWORD pair; RET4."
+    },
+    {
+      "address": "00b4e799",
+      "native": "00b71990",
+      "function": "00b4e470",
+      "contract": "ECX CURRENT parent+0C camera; stack captured replacement viewport; RET4. Retain new and release captured old."
+    },
+    {
+      "address": "00b4e7a6",
+      "native": "current_CE2220_IAT",
+      "function": "00b4e470",
+      "kind": "indirect",
+      "contract": "stdcall viewport+4 decrement; RET4; independent current epoch."
+    },
+    {
+      "address": "00b4e7b7",
+      "native": "viewport+vtable00",
+      "function": "00b4e470",
+      "kind": "indirect",
+      "contract": "Current D5E5F8 -> BD30E0 -> current B1F8F0 flags1, no extra decrement."
+    },
+    {
+      "address": "00b4e7bb",
+      "native": "00bf681b",
+      "function": "00b4e470",
+      "contract": "CRT raw allocation: one stack byte count; ADD ESP,4 after each call. Actual 40h/34h/28h identity is preserved; no refcount owner for draw record."
+    },
+    {
+      "address": "00b4e7ec",
+      "native": "00b51bd0",
+      "function": "00b4e470",
+      "contract": "ECX raw28h draw; six native stack words leading+0,section,mesh,CURRENT model,CURRENT camera,visibility1; EAX same; RET18h. Source adds explicit EDX access context."
+    },
+    {
+      "address": "00b4e806",
+      "native": "captured_CE2220_IAT",
+      "function": "00b4e470",
+      "kind": "indirect",
+      "contract": "stdcall section+4 decrement; RET4; IAT captured B4E7FF."
+    },
+    {
+      "address": "00b4e812",
+      "native": "section+vtable00",
+      "function": "00b4e470",
+      "kind": "indirect",
+      "contract": "Current D63194 -> BD30E0 -> current B86690 flags1, no extra decrement."
+    },
+    {
+      "address": "00b4e818",
+      "native": "captured_CE2220_IAT",
+      "function": "00b4e470",
+      "kind": "indirect",
+      "contract": "stdcall mesh+4 decrement; RET4; SAME IAT captured B4E7FF."
+    },
+    {
+      "address": "00b4e825",
+      "native": "mesh+vtable00",
+      "function": "00b4e470",
+      "kind": "indirect",
+      "contract": "Current D62D60 -> BD30E0 -> current B74280 flags1, no extra decrement."
+    }
+  ],
+  "eh_calls": [
+    {
+      "address": "00cbfb33",
+      "native": "00bd30f0",
+      "function": "00cbfb30",
+      "kind": "tail_jump",
+      "contract": "Captured raw allocation/pool return, actual header destruction or FH3 routing; full raw inclusive bounds retained separately. No typed native FH3 claim."
+    },
+    {
+      "address": "00cbfb3c",
+      "native": "00bf65ac",
+      "function": "00cbfb38",
+      "kind": "direct",
+      "contract": "Captured raw allocation/pool return, actual header destruction or FH3 routing; full raw inclusive bounds retained separately. No typed native FH3 claim."
+    },
+    {
+      "address": "00cbfb46",
+      "native": "0041dd20",
+      "function": "00cbfb43",
+      "kind": "tail_jump",
+      "contract": "Captured raw allocation/pool return, actual header destruction or FH3 routing; full raw inclusive bounds retained separately. No typed native FH3 claim."
+    },
+    {
+      "address": "00cbfb4e",
+      "native": "00b72f70",
+      "function": "00cbfb4b",
+      "kind": "tail_jump",
+      "contract": "Captured raw allocation/pool return, actual header destruction or FH3 routing; full raw inclusive bounds retained separately. No typed native FH3 claim."
+    },
+    {
+      "address": "00cbfb56",
+      "native": "00b748c0",
+      "function": "00cbfb53",
+      "kind": "tail_jump",
+      "contract": "Captured raw allocation/pool return, actual header destruction or FH3 routing; full raw inclusive bounds retained separately. No typed native FH3 claim."
+    },
+    {
+      "address": "00cbfb6e",
+      "native": "0041dd20",
+      "function": "00cbfb5b",
+      "kind": "tail_jump",
+      "contract": "Captured raw allocation/pool return, actual header destruction or FH3 routing; full raw inclusive bounds retained separately. No typed native FH3 claim."
+    },
+    {
+      "address": "00cbfb77",
+      "native": "00b71350",
+      "function": "00cbfb74",
+      "kind": "tail_jump",
+      "contract": "Captured raw allocation/pool return, actual header destruction or FH3 routing; full raw inclusive bounds retained separately. No typed native FH3 claim."
+    },
+    {
+      "address": "00cbfb8f",
+      "native": "0041dd20",
+      "function": "00cbfb7c",
+      "kind": "tail_jump",
+      "contract": "Captured raw allocation/pool return, actual header destruction or FH3 routing; full raw inclusive bounds retained separately. No typed native FH3 claim."
+    },
+    {
+      "address": "00cbfb99",
+      "native": "00bf65ac",
+      "function": "00cbfb95",
+      "kind": "direct",
+      "contract": "Captured raw allocation/pool return, actual header destruction or FH3 routing; full raw inclusive bounds retained separately. No typed native FH3 claim."
+    },
+    {
+      "address": "00cbfba4",
+      "native": "00bf65ac",
+      "function": "00cbfba0",
+      "kind": "direct",
+      "contract": "Captured raw allocation/pool return, actual header destruction or FH3 routing; full raw inclusive bounds retained separately. No typed native FH3 claim."
+    },
+    {
+      "address": "00cbfbb0",
+      "native": "00bf6b43",
+      "function": "00cbfbab",
+      "kind": "tail_jump",
+      "contract": "Captured raw allocation/pool return, actual header destruction or FH3 routing; full raw inclusive bounds retained separately. No typed native FH3 claim."
+    }
+  ],
+  "callers": [
+    {
+      "address": "00b10cd4",
+      "native": "00b4e470",
+      "function": "00b107f0",
+      "contract": "ECX raw20h; actual header,count3,optional0 stacked; callee RET0Ch.",
+      "optional_zero_proof": "B10BDB EBP=0 until first call; remaining ten sites PUSH0.",
+      "argument_window": [
+        "00b10cac: PUSH 0xd5e448 ",
+        "00b10cb1: LEA ECX,[ESP + 0x3c] ",
+        "00b10cb5: CALL 0x0041e870 ",
+        "00b10cba: PUSH EBP ",
+        "00b10cbb: PUSH 0x3 ",
+        "00b10cbd: LEA EAX,[ESP + 0x40] ",
+        "00b10cc1: PUSH EAX ",
+        "00b10cc2: MOV ECX,EDI ",
+        "00b10cc4: MOV byte ptr [ESP + 0x288],0x7 ",
+        "00b10ccc: MOV dword ptr [ESP + 0x1c],0x1 ",
+        "00b10cd4: CALL 0x00b4e470 "
+      ]
+    },
+    {
+      "address": "00b10dba",
+      "native": "00b4e470",
+      "function": "00b107f0",
+      "contract": "ECX raw20h; actual header,count3,optional0 stacked; callee RET0Ch.",
+      "optional_zero_proof": "B10BDB EBP=0 until first call; remaining ten sites PUSH0.",
+      "argument_window": [
+        "00b10d94: PUSH 0xd5e41c ",
+        "00b10d99: LEA ECX,[ESP + 0x4c] ",
+        "00b10d9d: CALL 0x0041e870 ",
+        "00b10da2: OR dword ptr [ESP + 0x10],0x2 ",
+        "00b10da7: PUSH 0x0 ",
+        "00b10da9: PUSH 0x3 ",
+        "00b10dab: LEA EDX,[ESP + 0x50] ",
+        "00b10daf: PUSH EDX ",
+        "00b10db0: MOV ECX,EDI ",
+        "00b10db2: MOV byte ptr [ESP + 0x288],0xb ",
+        "00b10dba: CALL 0x00b4e470 "
+      ]
+    },
+    {
+      "address": "00b1106c",
+      "native": "00b4e470",
+      "function": "00b107f0",
+      "contract": "ECX raw20h; actual header,count3,optional0 stacked; callee RET0Ch.",
+      "optional_zero_proof": "B10BDB EBP=0 until first call; remaining ten sites PUSH0.",
+      "argument_window": [
+        "00b11040: PUSH 0xd5e3fc ",
+        "00b11045: LEA ECX,[ESP + 0x16c] ",
+        "00b1104c: CALL 0x0041e870 ",
+        "00b11051: OR dword ptr [ESP + 0x10],0x4 ",
+        "00b11056: PUSH 0x0 ",
+        "00b11058: PUSH 0x3 ",
+        "00b1105a: LEA ECX,[ESP + 0x170] ",
+        "00b11061: PUSH ECX ",
+        "00b11062: MOV ECX,EDI ",
+        "00b11064: MOV byte ptr [ESP + 0x288],0x11 ",
+        "00b1106c: CALL 0x00b4e470 "
+      ]
+    },
+    {
+      "address": "00b11555",
+      "native": "00b4e470",
+      "function": "00b107f0",
+      "contract": "ECX raw20h; actual header,count3,optional0 stacked; callee RET0Ch.",
+      "optional_zero_proof": "B10BDB EBP=0 until first call; remaining ten sites PUSH0.",
+      "argument_window": [
+        "00b11529: PUSH 0xd5e360 ",
+        "00b1152e: LEA ECX,[ESP + 0xbc] ",
+        "00b11535: CALL 0x0041e870 ",
+        "00b1153a: OR dword ptr [ESP + 0x10],0x8 ",
+        "00b1153f: PUSH 0x0 ",
+        "00b11541: PUSH 0x3 ",
+        "00b11543: LEA EAX,[ESP + 0xc0] ",
+        "00b1154a: PUSH EAX ",
+        "00b1154b: MOV ECX,EDI ",
+        "00b1154d: MOV byte ptr [ESP + 0x288],0x1e ",
+        "00b11555: CALL 0x00b4e470 "
+      ]
+    },
+    {
+      "address": "00b118fa",
+      "native": "00b4e470",
+      "function": "00b107f0",
+      "contract": "ECX raw20h; actual header,count3,optional0 stacked; callee RET0Ch.",
+      "optional_zero_proof": "B10BDB EBP=0 until first call; remaining ten sites PUSH0.",
+      "argument_window": [
+        "00b118ce: PUSH 0xd5e348 ",
+        "00b118d3: LEA ECX,[ESP + 0xfc] ",
+        "00b118da: CALL 0x0041e870 ",
+        "00b118df: OR dword ptr [ESP + 0x10],0x10 ",
+        "00b118e4: PUSH 0x0 ",
+        "00b118e6: PUSH 0x3 ",
+        "00b118e8: LEA EAX,[ESP + 0x100] ",
+        "00b118ef: PUSH EAX ",
+        "00b118f0: MOV ECX,EDI ",
+        "00b118f2: MOV byte ptr [ESP + 0x288],0x28 ",
+        "00b118fa: CALL 0x00b4e470 "
+      ]
+    },
+    {
+      "address": "00b11f3f",
+      "native": "00b4e470",
+      "function": "00b107f0",
+      "contract": "ECX raw20h; actual header,count3,optional0 stacked; callee RET0Ch.",
+      "optional_zero_proof": "B10BDB EBP=0 until first call; remaining ten sites PUSH0.",
+      "argument_window": [
+        "00b11f13: PUSH 0xd5e314 ",
+        "00b11f18: LEA ECX,[ESP + 0x228] ",
+        "00b11f1f: CALL 0x0041e870 ",
+        "00b11f24: OR dword ptr [ESP + 0x10],0x20 ",
+        "00b11f29: PUSH 0x0 ",
+        "00b11f2b: PUSH 0x3 ",
+        "00b11f2d: LEA ECX,[ESP + 0x22c] ",
+        "00b11f34: PUSH ECX ",
+        "00b11f35: MOV ECX,EDI ",
+        "00b11f37: MOV byte ptr [ESP + 0x288],0x39 ",
+        "00b11f3f: CALL 0x00b4e470 "
+      ]
+    },
+    {
+      "address": "00b120fe",
+      "native": "00b4e470",
+      "function": "00b107f0",
+      "contract": "ECX raw20h; actual header,count3,optional0 stacked; callee RET0Ch.",
+      "optional_zero_proof": "B10BDB EBP=0 until first call; remaining ten sites PUSH0.",
+      "argument_window": [
+        "00b120d8: PUSH 0xd5e2cc ",
+        "00b120dd: LEA ECX,[ESP + 0x64] ",
+        "00b120e1: CALL 0x0041e870 ",
+        "00b120e6: OR dword ptr [ESP + 0x10],0x40 ",
+        "00b120eb: PUSH 0x0 ",
+        "00b120ed: PUSH 0x3 ",
+        "00b120ef: LEA EAX,[ESP + 0x68] ",
+        "00b120f3: PUSH EAX ",
+        "00b120f4: MOV ECX,EDI ",
+        "00b120f6: MOV byte ptr [ESP + 0x288],0x3f ",
+        "00b120fe: CALL 0x00b4e470 "
+      ]
+    },
+    {
+      "address": "00b124ef",
+      "native": "00b4e470",
+      "function": "00b107f0",
+      "contract": "ECX raw20h; actual header,count3,optional0 stacked; callee RET0Ch.",
+      "optional_zero_proof": "B10BDB EBP=0 until first call; remaining ten sites PUSH0.",
+      "argument_window": [
+        "00b124c0: PUSH 0xd5e26c ",
+        "00b124c5: LEA ECX,[ESP + 0xf4] ",
+        "00b124cc: CALL 0x0041e870 ",
+        "00b124d1: OR dword ptr [ESP + 0x10],0x80 ",
+        "00b124d9: PUSH 0x0 ",
+        "00b124db: PUSH 0x3 ",
+        "00b124dd: LEA EDX,[ESP + 0xf8] ",
+        "00b124e4: PUSH EDX ",
+        "00b124e5: MOV ECX,EDI ",
+        "00b124e7: MOV byte ptr [ESP + 0x288],0x4a ",
+        "00b124ef: CALL 0x00b4e470 "
+      ]
+    },
+    {
+      "address": "00b129c9",
+      "native": "00b4e470",
+      "function": "00b107f0",
+      "contract": "ECX raw20h; actual header,count3,optional0 stacked; callee RET0Ch.",
+      "optional_zero_proof": "B10BDB EBP=0 until first call; remaining ten sites PUSH0.",
+      "argument_window": [
+        "00b1299e: PUSH 0xd5e240 ",
+        "00b129a3: LEA ECX,[ESP + 0x1a4] ",
+        "00b129aa: CALL 0x0041e870 ",
+        "00b129af: OR dword ptr [ESP + 0x10],EBX ",
+        "00b129b3: PUSH 0x0 ",
+        "00b129b5: PUSH 0x3 ",
+        "00b129b7: LEA EAX,[ESP + 0x1a8] ",
+        "00b129be: PUSH EAX ",
+        "00b129bf: MOV ECX,EDI ",
+        "00b129c1: MOV byte ptr [ESP + 0x288],0x57 ",
+        "00b129c9: CALL 0x00b4e470 "
+      ]
+    },
+    {
+      "address": "00b12ce8",
+      "native": "00b4e470",
+      "function": "00b107f0",
+      "contract": "ECX raw20h; actual header,count3,optional0 stacked; callee RET0Ch.",
+      "optional_zero_proof": "B10BDB EBP=0 until first call; remaining ten sites PUSH0.",
+      "argument_window": [
+        "00b12cb9: PUSH 0xd5e1e4 ",
+        "00b12cbe: LEA ECX,[ESP + 0x210] ",
+        "00b12cc5: CALL 0x0041e870 ",
+        "00b12cca: OR dword ptr [ESP + 0x10],0x200 ",
+        "00b12cd2: PUSH 0x0 ",
+        "00b12cd4: PUSH 0x3 ",
+        "00b12cd6: LEA ECX,[ESP + 0x214] ",
+        "00b12cdd: PUSH ECX ",
+        "00b12cde: MOV ECX,EDI ",
+        "00b12ce0: MOV byte ptr [ESP + 0x288],0x60 ",
+        "00b12ce8: CALL 0x00b4e470 "
+      ]
+    },
+    {
+      "address": "00b12fa3",
+      "native": "00b4e470",
+      "function": "00b107f0",
+      "contract": "ECX raw20h; actual header,count3,optional0 stacked; callee RET0Ch.",
+      "optional_zero_proof": "B10BDB EBP=0 until first call; remaining ten sites PUSH0.",
+      "argument_window": [
+        "00b12f78: PUSH 0xd5e1d0 ",
+        "00b12f7d: LEA ECX,[ESP + 0x270] ",
+        "00b12f84: CALL 0x0041e870 ",
+        "00b12f89: OR dword ptr [ESP + 0x10],EBX ",
+        "00b12f8d: PUSH 0x0 ",
+        "00b12f8f: PUSH 0x3 ",
+        "00b12f91: LEA EDX,[ESP + 0x274] ",
+        "00b12f98: PUSH EDX ",
+        "00b12f99: MOV ECX,EDI ",
+        "00b12f9b: MOV byte ptr [ESP + 0x288],0x68 ",
+        "00b12fa3: CALL 0x00b4e470 "
+      ]
+    },
+    {
+      "address": "00b4f80a",
+      "native": "00b4e470",
+      "function": "00b4f560",
+      "contract": "ECX raw20h; actual header,count3,optional0 stacked; callee RET0Ch.",
+      "optional_zero_proof": "B4F638 EBX=2; loop SUB EBX,1 at B4F682 / JNZ B4F68D exits at zero; no intervening EBX writes through all three calls.",
+      "argument_window": [
+        "00b4f7ea: PUSH EAX ",
+        "00b4f7eb: CALL 0x00bf7680 ",
+        "00b4f7f0: ADD ESP,0xc ",
+        "00b4f7f3: PUSH EBX ",
+        "00b4f7f4: PUSH 0x3 ",
+        "00b4f7f6: LEA EDX,[ESP + 0x1c] ",
+        "00b4f7fa: PUSH EDX ",
+        "00b4f7fb: MOV ECX,EDI ",
+        "00b4f7fd: MOV byte ptr [ESP + 0x40],0x3 ",
+        "00b4f802: MOV dword ptr [ESP + 0x1c],0x1 ",
+        "00b4f80a: CALL 0x00b4e470 "
+      ]
+    },
+    {
+      "address": "00b4fa8f",
+      "native": "00b4e470",
+      "function": "00b4f560",
+      "contract": "ECX raw20h; actual header,count3,optional0 stacked; callee RET0Ch.",
+      "optional_zero_proof": "B4F638 EBX=2; loop SUB EBX,1 at B4F682 / JNZ B4F68D exits at zero; no intervening EBX writes through all three calls.",
+      "argument_window": [
+        "00b4fa72: PUSH EAX ",
+        "00b4fa73: CALL 0x00bf7680 ",
+        "00b4fa78: ADD ESP,0xc ",
+        "00b4fa7b: OR dword ptr [ESP + 0x10],0x2 ",
+        "00b4fa80: PUSH EBX ",
+        "00b4fa81: PUSH 0x3 ",
+        "00b4fa83: LEA EDX,[ESP + 0x1c] ",
+        "00b4fa87: PUSH EDX ",
+        "00b4fa88: MOV ECX,EDI ",
+        "00b4fa8a: MOV byte ptr [ESP + 0x40],0xa ",
+        "00b4fa8f: CALL 0x00b4e470 "
+      ]
+    },
+    {
+      "address": "00b4feeb",
+      "native": "00b4e470",
+      "function": "00b4f560",
+      "contract": "ECX raw20h; actual header,count3,optional0 stacked; callee RET0Ch.",
+      "optional_zero_proof": "B4F638 EBX=2; loop SUB EBX,1 at B4F682 / JNZ B4F68D exits at zero; no intervening EBX writes through all three calls.",
+      "argument_window": [
+        "00b4fece: PUSH EAX ",
+        "00b4fecf: CALL 0x00bf7680 ",
+        "00b4fed4: ADD ESP,0xc ",
+        "00b4fed7: OR dword ptr [ESP + 0x10],0x10 ",
+        "00b4fedc: PUSH EBX ",
+        "00b4fedd: PUSH 0x3 ",
+        "00b4fedf: LEA EDX,[ESP + 0x24] ",
+        "00b4fee3: PUSH EDX ",
+        "00b4fee4: MOV ECX,EDI ",
+        "00b4fee6: MOV byte ptr [ESP + 0x40],0x19 ",
+        "00b4feeb: CALL 0x00b4e470 "
+      ]
+    },
+    {
+      "address": "00b511e0",
+      "native": "00b4e470",
+      "function": "00b51090",
+      "contract": "ECX raw20h; actual header,count3,optional0 stacked; callee RET0Ch.",
+      "optional_zero_proof": "B5111B EBP=0; no subsequent EBP writes through all six calls.",
+      "argument_window": [
+        "00b511c4: PUSH EAX ",
+        "00b511c5: CALL 0x00bf7680 ",
+        "00b511ca: ADD ESP,0xc ",
+        "00b511cd: PUSH EBP ",
+        "00b511ce: PUSH 0x3 ",
+        "00b511d0: LEA EDX,[ESP + 0x24] ",
+        "00b511d4: PUSH EDX ",
+        "00b511d5: MOV ECX,EDI ",
+        "00b511d7: MOV byte ptr [ESP + 0x38],0x4 ",
+        "00b511dc: MOV dword ptr [ESP + 0x1c],EBX ",
+        "00b511e0: CALL 0x00b4e470 "
+      ]
+    },
+    {
+      "address": "00b51287",
+      "native": "00b4e470",
+      "function": "00b51090",
+      "contract": "ECX raw20h; actual header,count3,optional0 stacked; callee RET0Ch.",
+      "optional_zero_proof": "B5111B EBP=0; no subsequent EBP writes through all six calls.",
+      "argument_window": [
+        "00b51269: CALL 0x00bf7680 ",
+        "00b5126e: ADD ESP,0xc ",
+        "00b51271: PUSH EBP ",
+        "00b51272: PUSH 0x3 ",
+        "00b51274: LEA EDX,[ESP + 0x24] ",
+        "00b51278: OR EBX,0x2 ",
+        "00b5127b: PUSH EDX ",
+        "00b5127c: MOV ECX,EDI ",
+        "00b5127e: MOV byte ptr [ESP + 0x38],0x7 ",
+        "00b51283: MOV dword ptr [ESP + 0x1c],EBX ",
+        "00b51287: CALL 0x00b4e470 "
+      ]
+    },
+    {
+      "address": "00b513d8",
+      "native": "00b4e470",
+      "function": "00b51090",
+      "contract": "ECX raw20h; actual header,count3,optional0 stacked; callee RET0Ch.",
+      "optional_zero_proof": "B5111B EBP=0; no subsequent EBP writes through all six calls.",
+      "argument_window": [
+        "00b513ba: CALL 0x00bf7680 ",
+        "00b513bf: ADD ESP,0xc ",
+        "00b513c2: PUSH EBP ",
+        "00b513c3: PUSH 0x3 ",
+        "00b513c5: LEA EDX,[ESP + 0x24] ",
+        "00b513c9: OR EBX,0x4 ",
+        "00b513cc: PUSH EDX ",
+        "00b513cd: MOV ECX,EDI ",
+        "00b513cf: MOV byte ptr [ESP + 0x38],0xb ",
+        "00b513d4: MOV dword ptr [ESP + 0x1c],EBX ",
+        "00b513d8: CALL 0x00b4e470 "
+      ]
+    },
+    {
+      "address": "00b5152b",
+      "native": "00b4e470",
+      "function": "00b51090",
+      "contract": "ECX raw20h; actual header,count3,optional0 stacked; callee RET0Ch.",
+      "optional_zero_proof": "B5111B EBP=0; no subsequent EBP writes through all six calls.",
+      "argument_window": [
+        "00b5150d: CALL 0x00bf7680 ",
+        "00b51512: ADD ESP,0xc ",
+        "00b51515: PUSH EBP ",
+        "00b51516: PUSH 0x3 ",
+        "00b51518: LEA EDX,[ESP + 0x24] ",
+        "00b5151c: OR EBX,0x8 ",
+        "00b5151f: PUSH EDX ",
+        "00b51520: MOV ECX,EDI ",
+        "00b51522: MOV byte ptr [ESP + 0x38],0xf ",
+        "00b51527: MOV dword ptr [ESP + 0x1c],EBX ",
+        "00b5152b: CALL 0x00b4e470 "
+      ]
+    },
+    {
+      "address": "00b5167e",
+      "native": "00b4e470",
+      "function": "00b51090",
+      "contract": "ECX raw20h; actual header,count3,optional0 stacked; callee RET0Ch.",
+      "optional_zero_proof": "B5111B EBP=0; no subsequent EBP writes through all six calls.",
+      "argument_window": [
+        "00b51660: CALL 0x00bf7680 ",
+        "00b51665: ADD ESP,0xc ",
+        "00b51668: PUSH EBP ",
+        "00b51669: PUSH 0x3 ",
+        "00b5166b: LEA EDX,[ESP + 0x24] ",
+        "00b5166f: OR EBX,0x10 ",
+        "00b51672: PUSH EDX ",
+        "00b51673: MOV ECX,EDI ",
+        "00b51675: MOV byte ptr [ESP + 0x38],0x13 ",
+        "00b5167a: MOV dword ptr [ESP + 0x1c],EBX ",
+        "00b5167e: CALL 0x00b4e470 "
+      ]
+    },
+    {
+      "address": "00b517d1",
+      "native": "00b4e470",
+      "function": "00b51090",
+      "contract": "ECX raw20h; actual header,count3,optional0 stacked; callee RET0Ch.",
+      "optional_zero_proof": "B5111B EBP=0; no subsequent EBP writes through all six calls.",
+      "argument_window": [
+        "00b517b3: CALL 0x00bf7680 ",
+        "00b517b8: ADD ESP,0xc ",
+        "00b517bb: PUSH EBP ",
+        "00b517bc: PUSH 0x3 ",
+        "00b517be: LEA EDX,[ESP + 0x24] ",
+        "00b517c2: OR EBX,0x20 ",
+        "00b517c5: PUSH EDX ",
+        "00b517c6: MOV ECX,EDI ",
+        "00b517c8: MOV byte ptr [ESP + 0x38],0x17 ",
+        "00b517cd: MOV dword ptr [ESP + 0x1c],EBX ",
+        "00b517d1: CALL 0x00b4e470 "
+      ]
+    },
+    {
+      "address": "00b54113",
+      "native": "00b4e470",
+      "function": "00b540b0",
+      "contract": "ECX raw20h; actual header,count3,optional0 stacked; callee RET0Ch.",
+      "optional_zero_proof": "PUSH0 B540FA.",
+      "argument_window": [
+        "00b540f1: LEA ECX,[ESP + 0x20] ",
+        "00b540f5: CALL 0x0041e870 ",
+        "00b540fa: PUSH 0x0 ",
+        "00b540fc: PUSH 0x3 ",
+        "00b540fe: LEA EAX,[ESP + 0x24] ",
+        "00b54102: MOV EBX,0x1 ",
+        "00b54107: PUSH EAX ",
+        "00b54108: MOV ECX,ESI ",
+        "00b5410a: MOV byte ptr [ESP + 0x40],0x1 ",
+        "00b5410f: MOV dword ptr [ESP + 0x1c],EBX ",
+        "00b54113: CALL 0x00b4e470 "
+      ]
+    },
+    {
+      "address": "00b54333",
+      "native": "00b4e470",
+      "function": "00b542d0",
+      "contract": "ECX raw20h; actual header,count3,optional0 stacked; callee RET0Ch.",
+      "optional_zero_proof": "PUSH0 B5431A.",
+      "argument_window": [
+        "00b54311: LEA ECX,[ESP + 0x20] ",
+        "00b54315: CALL 0x0041e870 ",
+        "00b5431a: PUSH 0x0 ",
+        "00b5431c: PUSH 0x3 ",
+        "00b5431e: LEA EAX,[ESP + 0x24] ",
+        "00b54322: MOV EBX,0x1 ",
+        "00b54327: PUSH EAX ",
+        "00b54328: MOV ECX,ESI ",
+        "00b5432a: MOV byte ptr [ESP + 0x40],0x1 ",
+        "00b5432f: MOV dword ptr [ESP + 0x1c],EBX ",
+        "00b54333: CALL 0x00b4e470 "
+      ]
+    },
+    {
+      "address": "00b54552",
+      "native": "00b4e470",
+      "function": "00b544f0",
+      "contract": "ECX raw20h; actual header,count3,optional0 stacked; callee RET0Ch.",
+      "optional_zero_proof": "PUSH0 B54539.",
+      "argument_window": [
+        "00b54530: LEA ECX,[ESP + 0x1c] ",
+        "00b54534: CALL 0x0041e870 ",
+        "00b54539: PUSH 0x0 ",
+        "00b5453b: PUSH 0x3 ",
+        "00b5453d: LEA EAX,[ESP + 0x20] ",
+        "00b54541: MOV EBX,0x1 ",
+        "00b54546: PUSH EAX ",
+        "00b54547: MOV ECX,ESI ",
+        "00b54549: MOV byte ptr [ESP + 0x3c],0x1 ",
+        "00b5454e: MOV dword ptr [ESP + 0x18],EBX ",
+        "00b54552: CALL 0x00b4e470 "
+      ]
+    },
+    {
+      "address": "00b54752",
+      "native": "00b4e470",
+      "function": "00b546f0",
+      "contract": "ECX raw20h; actual header,count3,optional0 stacked; callee RET0Ch.",
+      "optional_zero_proof": "PUSH0 B54739.",
+      "argument_window": [
+        "00b54730: LEA ECX,[ESP + 0x1c] ",
+        "00b54734: CALL 0x0041e870 ",
+        "00b54739: PUSH 0x0 ",
+        "00b5473b: PUSH 0x3 ",
+        "00b5473d: LEA EAX,[ESP + 0x20] ",
+        "00b54741: MOV EBX,0x1 ",
+        "00b54746: PUSH EAX ",
+        "00b54747: MOV ECX,EDI ",
+        "00b54749: MOV byte ptr [ESP + 0x34],0x1 ",
+        "00b5474e: MOV dword ptr [ESP + 0x18],EBX ",
+        "00b54752: CALL 0x00b4e470 "
+      ]
+    },
+    {
+      "address": "00b549a4",
+      "native": "00b4e470",
+      "function": "00b54940",
+      "contract": "ECX raw20h; actual header,count3,optional0 stacked; callee RET0Ch.",
+      "optional_zero_proof": "B54962 EBP=0; no intervening writes.",
+      "argument_window": [
+        "00b54983: LEA ECX,[ESP + 0x28] ",
+        "00b54987: CALL 0x0041e870 ",
+        "00b5498c: PUSH EBP ",
+        "00b5498d: PUSH 0x3 ",
+        "00b5498f: LEA EAX,[ESP + 0x2c] ",
+        "00b54993: MOV EBX,0x1 ",
+        "00b54998: PUSH EAX ",
+        "00b54999: MOV ECX,EDI ",
+        "00b5499b: MOV byte ptr [ESP + 0x40],0x1 ",
+        "00b549a0: MOV dword ptr [ESP + 0x1c],EBX ",
+        "00b549a4: CALL 0x00b4e470 "
+      ]
+    },
+    {
+      "address": "00b55161",
+      "native": "00b4e470",
+      "function": "00b54f90",
+      "contract": "ECX raw20h; actual header,count3,optional0 stacked; callee RET0Ch.",
+      "optional_zero_proof": "B55109 EBP=0; no intervening writes through both calls.",
+      "argument_window": [
+        "00b55141: PUSH EAX ",
+        "00b55142: CALL 0x00bf7680 ",
+        "00b55147: ADD ESP,0xc ",
+        "00b5514a: PUSH EBP ",
+        "00b5514b: PUSH 0x3 ",
+        "00b5514d: LEA EDX,[ESP + 0x1c] ",
+        "00b55151: PUSH EDX ",
+        "00b55152: MOV ECX,EDI ",
+        "00b55154: MOV byte ptr [ESP + 0x38],0x2 ",
+        "00b55159: MOV dword ptr [ESP + 0x1c],0x1 ",
+        "00b55161: CALL 0x00b4e470 "
+      ]
+    },
+    {
+      "address": "00b55387",
+      "native": "00b4e470",
+      "function": "00b54f90",
+      "contract": "ECX raw20h; actual header,count3,optional0 stacked; callee RET0Ch.",
+      "optional_zero_proof": "B55109 EBP=0; no intervening writes through both calls.",
+      "argument_window": [
+        "00b5536a: PUSH EAX ",
+        "00b5536b: CALL 0x00bf7680 ",
+        "00b55370: ADD ESP,0xc ",
+        "00b55373: OR dword ptr [ESP + 0x10],0x2 ",
+        "00b55378: PUSH EBP ",
+        "00b55379: PUSH 0x3 ",
+        "00b5537b: LEA EDX,[ESP + 0x1c] ",
+        "00b5537f: PUSH EDX ",
+        "00b55380: MOV ECX,EDI ",
+        "00b55382: MOV byte ptr [ESP + 0x38],0x8 ",
+        "00b55387: CALL 0x00b4e470 "
+      ]
+    }
+  ],
+  "eh": {
+    "handler": "00cbfbab",
+    "handler_inclusive_end": "00cbfbb4",
+    "FuncInfo": "00df86d4",
+    "maxState": 12,
+    "map": "00df86f8",
+    "states": [
+      {
+        "state": 0,
+        "next": -1,
+        "funclet": "00cbfb30",
+        "normal_assignment": true
+      },
+      {
+        "state": 1,
+        "next": 0,
+        "funclet": "00cbfb38",
+        "normal_assignment": true
+      },
+      {
+        "state": 2,
+        "next": 0,
+        "funclet": "00cbfb43",
+        "normal_assignment": true
+      },
+      {
+        "state": 3,
+        "next": 0,
+        "funclet": "00cbfb4b",
+        "normal_assignment": true
+      },
+      {
+        "state": 4,
+        "next": 0,
+        "funclet": "00cbfb53",
+        "normal_assignment": true
+      },
+      {
+        "state": 5,
+        "next": 4,
+        "funclet": "00cbfb5b",
+        "normal_assignment": true
+      },
+      {
+        "state": 6,
+        "next": 0,
+        "funclet": "00cbfb5b",
+        "normal_assignment": false
+      },
+      {
+        "state": 7,
+        "next": 0,
+        "funclet": "00cbfb74",
+        "normal_assignment": true
+      },
+      {
+        "state": 8,
+        "next": 7,
+        "funclet": "00cbfb7c",
+        "normal_assignment": true
+      },
+      {
+        "state": 9,
+        "next": 0,
+        "funclet": "00cbfb7c",
+        "normal_assignment": false
+      },
+      {
+        "state": 10,
+        "next": 0,
+        "funclet": "00cbfb95",
+        "normal_assignment": true
+      },
+      {
+        "state": 11,
+        "next": 0,
+        "funclet": "00cbfba0",
+        "normal_assignment": true
+      }
+    ],
+    "raw_funclets": [
+      {
+        "address": "00cbfb30",
+        "inclusive_end": "00cbfb37"
+      },
+      {
+        "address": "00cbfb38",
+        "inclusive_end": "00cbfb42"
+      },
+      {
+        "address": "00cbfb43",
+        "inclusive_end": "00cbfb4a"
+      },
+      {
+        "address": "00cbfb4b",
+        "inclusive_end": "00cbfb52"
+      },
+      {
+        "address": "00cbfb53",
+        "inclusive_end": "00cbfb5a"
+      },
+      {
+        "address": "00cbfb5b",
+        "inclusive_end": "00cbfb73"
+      },
+      {
+        "address": "00cbfb74",
+        "inclusive_end": "00cbfb7b"
+      },
+      {
+        "address": "00cbfb7c",
+        "inclusive_end": "00cbfb94"
+      },
+      {
+        "address": "00cbfb95",
+        "inclusive_end": "00cbfb9f"
+      },
+      {
+        "address": "00cbfba0",
+        "inclusive_end": "00cbfbaa"
+      },
+      {
+        "address": "00cbfbab",
+        "inclusive_end": "00cbfbb4"
+      }
+    ],
+    "raw_tail_caveat": "Saved CBFB38,CBFB95,CBFBA0 bodies omit their last POP ECX/RET; exact raw inclusive bounds are CBFB42,CBFB9F,CBFBAA. Call sites themselves remain in saved functions.",
+    "source_policy": "Transition/action consumed before call. A second ordinary C++ cleanup exception recursively continues remaining states and replaces the prior exception; native FH3 double-exception and hardware-fault timing excluded."
+  },
+  "ownership": {
+    "initial_writes": [
+      [
+        "B4E493",
+        "+00",
+        "CEB130"
+      ],
+      [
+        "B4E49E",
+        "+04",
+        "placement atomic<int32_t>(1)"
+      ],
+      [
+        "B4E4AF",
+        "+00",
+        "D61EC0"
+      ],
+      [
+        "B4E4B5",
+        "+0C",
+        0
+      ],
+      [
+        "B4E4B8",
+        "+10",
+        0
+      ],
+      [
+        "B4E4BB",
+        "+14",
+        0
+      ],
+      [
+        "B4E4BE",
+        "+1C",
+        "original DWORD"
+      ]
+    ],
+    "preimages_until_publication": [
+      "+08 frame at B4E4ED",
+      "+18 raw draw at B4E7F5"
+    ],
+    "section_write_order": [
+      "B4E5FE +0C=0",
+      "B4E601 +10=original DWORD",
+      "B4E604 +14=0",
+      "B4E610 +08=word==3?4:5",
+      "B4E618 +18=word==3?1:2"
+    ],
+    "stream": "Fixed count4,flags1000h. Captured local stream retained by mesh at B4E5B9; creator decremented at B4E5C2. Never published into parent+18.",
+    "current_reads": [
+      "B4E51B renderer",
+      "B4E557 renderer",
+      "B4E61B parent+14",
+      "B4E6B4 parent+10",
+      "B4E769 optional table+20",
+      "B4E772 optional fresh table+1C",
+      "B4E795 parent+0C",
+      "B4E7D6 parent+10",
+      "B4E7DD parent+0C"
+    ],
+    "decrement_epochs": [
+      "B4E572 declaration current",
+      "B4E5C2 stream current",
+      "B4E7A6 viewport current",
+      "B4E7FF capture once for B4E806 section / B4E818 mesh"
+    ],
+    "host_only": "Externally owned fixed optional companions and two viewport records; scene/lifetime admissions before native effects. Registration may allocate but must preserve native fields/current cells. Completed references exposed before bind, without added retain.",
+    "preserved_failure": "Completed creators survive later failures. No automatic orphan rollback. native_completed after final native releases and before parent bind forbids subsequent base cleanup/raw receiver free. Canonical callbacks use captured keys; reset only after externally proven quiescence."
+  },
+  "uncertainty": [
+    "535320 requires real current D5F0A8 renderer+48 callable binding; renderer/service construction and startup composition remain unproven.",
+    "535320 may complete material before throwing final effect release and exposes no acquired-before-release identity. This inaccessible internal creator cannot be invented or reclaimed by BR.",
+    "B317E0/cache retains its typed nonthrowing nested string-return domain. Material/layout/node/camera/stream/BN retain existing materialization and exception prerequisites; canonical terminal interfaces are noexcept.",
+    "All 27 native calls pass count3/optional0. Complete nonnull branch is admitted only for current D619A0 exact B3CD20/B3CD10; other profiles and a real nonnull caller remain unclosed.",
+    "Prepared model/camera owner materialization and registration may throw. Completed objects survive disarmed native states. Failed camera construction may leave its initial viewport live; no ordinary orphan recovery is claimed.",
+    "BP raw model and BQ raw prefix are used directly; no old typed-prefix adapter requirement remains in BR. Secondary C++ cleanup failure behavior is explicit, without injected cleanup-exception/FH3 proof.",
+    "No B107F0/service+70 source wiring, constructor fixture, binary ABI, hardware-fault/private-frame alias equivalence, GPU or runnable-game validation. Diagnosed native-invalid null dereferences define a source admission boundary."
+  ],
+  "source_sha256": {
+    "include/bsp/native_post_effect20_construction.hpp": "e2b63e4869be9a7568d86c7a271589694404a8e6cc0cda204f33991206018c5c",
+    "src/native_post_effect20_construction.cpp": "5add9da3a697b81554d14c57ee8bd8ce1ac904a2717b63aa7e23181ea16a0315"
+  },
+  "provider_sha256": {
+    "include/bsp/gui_native_geometry.hpp": "c58b10dadbf6d758c09729908b646a8e6544c76d862a1cde61b0bc713c5d4781",
+    "include/bsp/gui_text_native_layout.hpp": "cc831cc840c16567c92e326115341eb9196fa821936e82a3c6cd5341d3f67651",
+    "include/bsp/native_camera_owner.hpp": "527c605fcc55eedd421271a5c4b27d45947e325c391838f14f3cab6d75e1f808",
+    "include/bsp/native_camera_reference.hpp": "5920175404a18b464c3ce826162c8279b98c12405ac28d52363241cd2d79415e",
+    "include/bsp/native_frame_target_owner.hpp": "5bcab0e6bf05a51b8e8a215117ca5621f3c5a51a1aec131eb4b7f86b33246ca8",
+    "include/bsp/native_instance_collection.hpp": "6c60d147f14ca210aa96529e9c45d523053fbf13a103e6dfd705caec54fc2f54",
+    "include/bsp/native_logical_vertex_owner.hpp": "f3a097c42b5289e0f5c14767e17cce85aa409b70f3f854d4ba4f668738aef20c",
+    "include/bsp/native_material_factory.hpp": "ac9602ba2af3a732d0bede15d38d51b948a4aea5c611c10d61eaca7a4c004e70",
+    "include/bsp/native_material_owner.hpp": "e4583162e05d346f05f6f26fd6e9f4ac49368ffa8ccd1fa0939731f1134b0320",
+    "include/bsp/native_mesh_owner.hpp": "540fa95aafcd3b67697998361f9a6b1689bf90348c9c0cdc09bdeb6b9c6ac42c",
+    "include/bsp/native_mesh_pool.hpp": "e5b30e590ec675510a879c071e509f55b642f80a808e7204c093758af61cbc52",
+    "include/bsp/native_mesh_section.hpp": "640506b3947bbf5bb8c0891e07e3ad2c13efc2c4f58bff235290b821fc4e1683",
+    "include/bsp/native_model_owner.hpp": "7bb75bca29ed440709040ce34b217bb9a760741d971d8b6b2fdeb8b77201f47e",
+    "include/bsp/native_node_construction.hpp": "977424218edef9f6eefdafb9463b1ef5be11a4f61554eecca37a7d823b3c7098",
+    "include/bsp/native_node_destruction.hpp": "bd525ac65ff936736cbf5a02bd7b31e12c326ae5ec624c9685315dbcc116c833",
+    "include/bsp/native_physical_file_date.hpp": "158161430fea02951e7449c8c5d1c8ae2fb5f75df70d4b0b0606cf6abcf5ad2f",
+    "include/bsp/native_post_effect_draw_record.hpp": "aa789a071b89943f1f7110c41b84d349d485eb68f083c08c27c9bc033f4df1e4",
+    "include/bsp/native_post_effect_owner_20h.hpp": "d1175b7041aa203a35b9e04a3d18a38759e646a73fa7b4d0b55a75b2dbed80ad",
+    "include/bsp/native_string.hpp": "80013e5a7350120f32fcad1ce54db9b0923ad5b49cc2152823d858534331378f",
+    "include/bsp/native_string_pool_owner.hpp": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff",
+    "include/bsp/native_string_pool_storage.hpp": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d",
+    "include/bsp/native_vertex_declaration_cache.hpp": "14123aa649c71cae8c4c35bad989533402ae66daeaa25bff86dcfd017b2768d1",
+    "include/bsp/native_vertex_declaration_loading.hpp": "9ef3f5c6bd9d535215cfb90630e7d90a7bee00d7988c66243226d8a423248227",
+    "include/bsp/native_viewport_owner.hpp": "0fbadd5eab924627e321a7896bd9796c0aaa17062bbf3953de118fbe2b3867d5",
+    "include/bsp/native_viewport_registry.hpp": "250decc6520abb9d3085670129d0884b087465f4eec1027cb210375619e8d486",
+    "include/bsp/singleton_lifetime.hpp": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+    "src/gui_native_geometry.cpp": "5653e693704a26dd4c263558d85ebb4933be7986c07b1801dcc4e2950934f0df",
+    "src/gui_text_native_layout.cpp": "96c27d78bff8d58b663c649769c4c9b7ac64880ba1115fe5cef4a0fc89bee213",
+    "src/native_camera_owner.cpp": "51f7c97c40027337af8d83b0a35613338a8963ad2664d0d6eaa220be7d22f376",
+    "src/native_camera_reference.cpp": "c877dd80459c1f7ebf2e9e20c4f6fd3f0c349e0ff3b4dbeb8f6553a0fb9badab",
+    "src/native_frame_target_owner.cpp": "60485ba070a77e9de497bff352b16ab664ac4d051e02e671897d2c3082224c60",
+    "src/native_instance_collection.cpp": "794ea4aa0f5e93d55047b8bd24c6b5207a5c0a0af50569fd13a1c708b210bc2f",
+    "src/native_logical_vertex_owner.cpp": "8c3fc9cff8680d9c7fe300bff162c29818b92d71ab813cca2f33476cee953bba",
+    "src/native_material_factory.cpp": "d2d8a25e93852ffbf1c07ac74dcb3e9d0b2f476e0bc4f00d12fa2497a2ac8d2b",
+    "src/native_material_owner.cpp": "349fad1d983e763d4f53e24e99b2b4dcfe104cbf6e246b902b8346ed3e8fe1fc",
+    "src/native_mesh_owner.cpp": "fb263bbe9a631354e3e6943293befdf18fcd7da26a7969df4827e4ea97fb6fd3",
+    "src/native_mesh_pool.cpp": "4b9fc9871b003a25e357a3d7460c7d890431115b8289a012567280e8ca31fa44",
+    "src/native_mesh_section.cpp": "91db099dda46b3c297ee554ec976f238bf968b5f4dfd674496597c2a62a2b74a",
+    "src/native_model_owner.cpp": "abe4817fd6ca9049f720a50e5c5c9a2041112f634dee73b2c4f2a94d4077886a",
+    "src/native_node_construction.cpp": "87a73019511d3575aa0887a4964a2a8703a5248106fdcff2eddfbb424918dd35",
+    "src/native_node_destruction.cpp": "2ee6ba84e759958a8f160cb25ad210076203931d4ae4f2e9265529bff5c57269",
+    "src/native_physical_file_date.cpp": "6ad9b3bff2280f3c27889ba13ef785a236a2f34e2d733b83bcc92ad20a8a55d0",
+    "src/native_post_effect_draw_record.cpp": "e8b44b95775ee17d5e2343daf8b321b8c1110697949c2c90fd7ee5935bab4009",
+    "src/native_post_effect_owner_20h.cpp": "330fe02662fbd32650c17ff35c8217880dbcca3425e4212c079dca3e5838fc1c",
+    "src/native_string.cpp": "0e8819d3a6442fc48c879e85c00899a72beabdc51b3e94a11836ab5314d5e60c",
+    "src/native_string_pool_owner.cpp": "cb52fde795918995689a26567d513e9f3cf75eeb27600eb60c431c37fdd21d6e",
+    "src/native_string_pool_storage.cpp": "5cb79a6ce240205b3f1c81f1fbd6edd49cc1c05f8a20ee8dca8913f44c9095d5",
+    "src/native_vertex_declaration_cache.cpp": "809bf7d8f598d0bdc9768c52e659146c88a9c64ce16e48a0d926dbb24e0ff8c6",
+    "src/native_vertex_declaration_loading.cpp": "518cfecb27a27a43815377c02ce638878d3a8eb2ddeaead30377dc7cb460ef3d",
+    "src/native_viewport_owner.cpp": "d7f733023f89193a4bbd488a9e925b46ac52f2cc0ee1be04f6df2e663616d2ea",
+    "src/native_viewport_registry.cpp": "cf63de25d9e107f83f361db4d4fa7c2a922119fa62584dd3688b8588d201a289",
+    "src/singleton_lifetime.cpp": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+  },
+  "source_review": {
+    "reviewer": "primary /root",
+    "findings": [],
+    "scope": "Full new header/source, full 325-instruction native body and complete EH map/funclets reviewed. Worker generated-code audit passed; primary notified of exact artifacts and pins."
+  },
+  "validation": {
+    "command": "./scripts/build.ps1",
+    "configuration": "MSVC Win32 Release",
+    "build": "PASS",
+    "build_attempts": 1,
+    "tests": {
+      "configured": 1,
+      "passed": 1,
+      "names": [
+        "reconstructed_math"
+      ],
+      "new_tests": 0,
+      "limitation": "Only the test actually configured in this worktree was run. No seed differential or new constructor probe was enabled/executed."
+    },
+    "source_unchanged_since_review_and_compile": true,
+    "source_parent_commit": "7d9a680444e0b5cb6406148b6dec51c232b02928",
+    "input_count": 2561,
+    "input_set_scope": "All tracked CMakeLists/cmake/include/src/tests/third_party/scripts/build.ps1 plus both new BR source files. Captured during the initial full build, then again after it; not a pre-build stamp.",
+    "during_after_inputs_equal": true,
+    "build_input_manifest": "local/br-input-pins-after.json",
+    "call_audit": {
+      "direct_tail_rows": 70,
+      "failed": 0,
+      "indirect_rows": 14,
+      "limitation": "Mechanical tool does not check indirect targets. Their concrete current-profile/slot bodies, source providers, ABI and capture schedule are separately documented."
+    },
+    "generated": {
+      "section_bytes": 5453,
+      "section_sha256": "6138764264b0af28ab6cc85e77dcff5e7623ca848435dc5adb353e55a7dfd881",
+      "relocations": 210,
+      "object_sha256": "466703138e9865aa6c76c9e6bd7b329e05e4593a555385db14413f88eb23da40",
+      "initial_actual_writes": [
+        {
+          "object_offset": 200,
+          "actual_offset": 0,
+          "bytes": 4,
+          "value": 13545776
+        },
+        {
+          "object_offset": 209,
+          "actual_offset": 4,
+          "bytes": 4,
+          "value": 1
+        },
+        {
+          "object_offset": 229,
+          "actual_offset": 0,
+          "bytes": 4,
+          "value": 14032576
+        },
+        {
+          "object_offset": 251,
+          "actual_offset": 12,
+          "bytes": 4,
+          "value": 0
+        },
+        {
+          "object_offset": 273,
+          "actual_offset": 16,
+          "bytes": 4,
+          "value": 0
+        },
+        {
+          "object_offset": 295,
+          "actual_offset": 20,
+          "bytes": 4,
+          "value": 0
+        },
+        {
+          "object_offset": 315,
+          "actual_offset": 28,
+          "bytes": 4,
+          "value": [
+            "vertex_count",
+            0
+          ]
+        }
+      ],
+      "sole_initial_count1": true,
+      "no_initial_count0": true,
+      "x87_operations": [
+        {
+          "offset": 2634,
+          "mnemonic": "fld",
+          "operands": "dword ptr [eax]"
+        },
+        {
+          "offset": 2645,
+          "mnemonic": "fst",
+          "operands": "dword ptr [ebp - 0x68]"
+        },
+        {
+          "offset": 2648,
+          "mnemonic": "fstp",
+          "operands": "dword ptr [ebp - 0x6c]"
+        },
+        {
+          "offset": 3681,
+          "mnemonic": "fld1",
+          "operands": ""
+        },
+        {
+          "offset": 3692,
+          "mnemonic": "fstp",
+          "operands": "dword ptr [ebp - 0x24]"
+        },
+        {
+          "offset": 3701,
+          "mnemonic": "fldz",
+          "operands": ""
+        },
+        {
+          "offset": 3703,
+          "mnemonic": "fstp",
+          "operands": "dword ptr [ebp - 0x50]"
+        }
+      ],
+      "current_field_reads_between_x87_operations": true,
+      "stream_decrement_epoch": {
+        "mesh_call": 1391,
+        "current_IAT_load": 1420,
+        "decrement_call": 1443
+      },
+      "final_decrement_epoch": {
+        "single_current_IAT_load": 3802,
+        "saved_value": 3811,
+        "section_call": 3841,
+        "mesh_same_saved_value_call": 4062,
+        "saved_value_not_overwritten_between_calls": true
+      },
+      "section_store_order": [
+        {
+          "object_offset": 2007,
+          "section_offset": 12
+        },
+        {
+          "object_offset": 2021,
+          "section_offset": 16
+        },
+        {
+          "object_offset": 2037,
+          "section_offset": 20
+        },
+        {
+          "object_offset": 2068,
+          "section_offset": 8
+        },
+        {
+          "object_offset": 2094,
+          "section_offset": 24
+        }
+      ],
+      "model_name_cleanup_order": {
+        "data_load": 2523,
+        "mask_clear": 2529,
+        "getter": 2593,
+        "pool_return": 2614
+      },
+      "limitation": "This records generated source ordering in admitted valid-storage domains, not equivalence of native hardware-fault or compiler-private EH-frame timing."
+    },
+    "artifact_sha256": {
+      "local/br-build-attempt-1.log": "a751ee6ad95202b6365aa6fc7d3ca2b098d68ab73036976c09d51a0fd0df7b6e",
+      "local/br-call-audit-attempt-1.json": "0a06e1cac163abbadf405d3aa09698384cd5fdba6079d447c32945dffd098b24",
+      "local/br-input-pins-during.json": "e63818f565648273facee6e001a66f5f5e613376032bce956cff0d5bb8050226",
+      "local/br-input-pins-after.json": "6e7c647a2696794db4b8e39c2d90452b53549a543b9f8e397f3f7621efb20b42",
+      "local/br_object_review.py": "e6a567039e2890b31f421de9caacfaab2c3f6b5963747260a5d2a8bfc07df1b8",
+      "local/br-object-review.json": "b8143f94d203660ebc8104ca010cbfe35305a4744cb4b965da9b92a11593aeda",
+      "local/br-constructor-object.asm": "b9bd0e76f566a1c2cfa02f61858025a6045f2b4a40a5f77f8f02785567faba30",
+      "build/win32/bsp_core.dir/Release/native_post_effect20_construction.obj": "466703138e9865aa6c76c9e6bd7b329e05e4593a555385db14413f88eb23da40",
+      "build/win32/Release/bsp_core.lib": "fcb3781fa1daaf8875f7ae6374aed65426bbf6fdc732587ad78d78d83cb0464b",
+      "build/win32/Release/bsp_lua511.lib": "796ee10bad66d57fa9292de11910e716c92994c0bbbd72b62693097cb9a127ce",
+      "build/win32/Release/bsp_zlib121.lib": "331782a173688687f537e2f50a0dff1652ea3e49513af65882f63fd3ed8c412b",
+      "build/win32/Release/bsp_game.exe": "3d36fefbb35b5ab199e3977cc2c0af02dcdcd4535e5bed820d87ec7ae1750a35",
+      "build/win32/Release/bsp_math_tests.exe": "99e003e3297591e6ff824d7ba50fcb0011dadb1e995476a79b121d51823f7e18",
+      "cmake/startup.cmake": "37de6416803327e6185407c9ef1fe174b0f047713c1f8c50e6fe5b9d8c19282d",
+      "docs/NATIVE_POST_EFFECT20_CONSTRUCTION_BR.md": "e99382f321d397927c07540bf898d2f4b01295e2f891f2b93504eb029742c158"
+    },
+    "native_fixture": false,
+    "source_constructor_execution": false,
+    "injected_cleanup_exception": false,
+    "native_FH3": false,
+    "drop_in_ABI": false,
+    "game_validation": false,
+    "failed_attempts": "No C++ build/test failure. Ignored preparation utilities preserve a report-key mismatch and a shell quoting SyntaxError; neither changed source or ran a probe."
+  },
+  "provider_base_blob_sha256": {
+    "include/bsp/gui_native_geometry.hpp": "c58b10dadbf6d758c09729908b646a8e6544c76d862a1cde61b0bc713c5d4781",
+    "include/bsp/gui_text_native_layout.hpp": "cc831cc840c16567c92e326115341eb9196fa821936e82a3c6cd5341d3f67651",
+    "include/bsp/native_camera_owner.hpp": "527c605fcc55eedd421271a5c4b27d45947e325c391838f14f3cab6d75e1f808",
+    "include/bsp/native_camera_reference.hpp": "5920175404a18b464c3ce826162c8279b98c12405ac28d52363241cd2d79415e",
+    "include/bsp/native_frame_target_owner.hpp": "5bcab0e6bf05a51b8e8a215117ca5621f3c5a51a1aec131eb4b7f86b33246ca8",
+    "include/bsp/native_instance_collection.hpp": "6c60d147f14ca210aa96529e9c45d523053fbf13a103e6dfd705caec54fc2f54",
+    "include/bsp/native_logical_vertex_owner.hpp": "f3a097c42b5289e0f5c14767e17cce85aa409b70f3f854d4ba4f668738aef20c",
+    "include/bsp/native_material_factory.hpp": "ac9602ba2af3a732d0bede15d38d51b948a4aea5c611c10d61eaca7a4c004e70",
+    "include/bsp/native_material_owner.hpp": "e4583162e05d346f05f6f26fd6e9f4ac49368ffa8ccd1fa0939731f1134b0320",
+    "include/bsp/native_mesh_owner.hpp": "540fa95aafcd3b67697998361f9a6b1689bf90348c9c0cdc09bdeb6b9c6ac42c",
+    "include/bsp/native_mesh_pool.hpp": "e5b30e590ec675510a879c071e509f55b642f80a808e7204c093758af61cbc52",
+    "include/bsp/native_mesh_section.hpp": "640506b3947bbf5bb8c0891e07e3ad2c13efc2c4f58bff235290b821fc4e1683",
+    "include/bsp/native_model_owner.hpp": "7bb75bca29ed440709040ce34b217bb9a760741d971d8b6b2fdeb8b77201f47e",
+    "include/bsp/native_node_construction.hpp": "977424218edef9f6eefdafb9463b1ef5be11a4f61554eecca37a7d823b3c7098",
+    "include/bsp/native_node_destruction.hpp": "bd525ac65ff936736cbf5a02bd7b31e12c326ae5ec624c9685315dbcc116c833",
+    "include/bsp/native_physical_file_date.hpp": "158161430fea02951e7449c8c5d1c8ae2fb5f75df70d4b0b0606cf6abcf5ad2f",
+    "include/bsp/native_post_effect_draw_record.hpp": "aa789a071b89943f1f7110c41b84d349d485eb68f083c08c27c9bc033f4df1e4",
+    "include/bsp/native_post_effect_owner_20h.hpp": "d1175b7041aa203a35b9e04a3d18a38759e646a73fa7b4d0b55a75b2dbed80ad",
+    "include/bsp/native_string.hpp": "80013e5a7350120f32fcad1ce54db9b0923ad5b49cc2152823d858534331378f",
+    "include/bsp/native_string_pool_owner.hpp": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff",
+    "include/bsp/native_string_pool_storage.hpp": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d",
+    "include/bsp/native_vertex_declaration_cache.hpp": "14123aa649c71cae8c4c35bad989533402ae66daeaa25bff86dcfd017b2768d1",
+    "include/bsp/native_vertex_declaration_loading.hpp": "9ef3f5c6bd9d535215cfb90630e7d90a7bee00d7988c66243226d8a423248227",
+    "include/bsp/native_viewport_owner.hpp": "0fbadd5eab924627e321a7896bd9796c0aaa17062bbf3953de118fbe2b3867d5",
+    "include/bsp/native_viewport_registry.hpp": "250decc6520abb9d3085670129d0884b087465f4eec1027cb210375619e8d486",
+    "include/bsp/singleton_lifetime.hpp": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+    "src/gui_native_geometry.cpp": "5653e693704a26dd4c263558d85ebb4933be7986c07b1801dcc4e2950934f0df",
+    "src/gui_text_native_layout.cpp": "96c27d78bff8d58b663c649769c4c9b7ac64880ba1115fe5cef4a0fc89bee213",
+    "src/native_camera_owner.cpp": "51f7c97c40027337af8d83b0a35613338a8963ad2664d0d6eaa220be7d22f376",
+    "src/native_camera_reference.cpp": "c877dd80459c1f7ebf2e9e20c4f6fd3f0c349e0ff3b4dbeb8f6553a0fb9badab",
+    "src/native_frame_target_owner.cpp": "60485ba070a77e9de497bff352b16ab664ac4d051e02e671897d2c3082224c60",
+    "src/native_instance_collection.cpp": "794ea4aa0f5e93d55047b8bd24c6b5207a5c0a0af50569fd13a1c708b210bc2f",
+    "src/native_logical_vertex_owner.cpp": "8c3fc9cff8680d9c7fe300bff162c29818b92d71ab813cca2f33476cee953bba",
+    "src/native_material_factory.cpp": "d2d8a25e93852ffbf1c07ac74dcb3e9d0b2f476e0bc4f00d12fa2497a2ac8d2b",
+    "src/native_material_owner.cpp": "349fad1d983e763d4f53e24e99b2b4dcfe104cbf6e246b902b8346ed3e8fe1fc",
+    "src/native_mesh_owner.cpp": "fb263bbe9a631354e3e6943293befdf18fcd7da26a7969df4827e4ea97fb6fd3",
+    "src/native_mesh_pool.cpp": "4b9fc9871b003a25e357a3d7460c7d890431115b8289a012567280e8ca31fa44",
+    "src/native_mesh_section.cpp": "91db099dda46b3c297ee554ec976f238bf968b5f4dfd674496597c2a62a2b74a",
+    "src/native_model_owner.cpp": "abe4817fd6ca9049f720a50e5c5c9a2041112f634dee73b2c4f2a94d4077886a",
+    "src/native_node_construction.cpp": "87a73019511d3575aa0887a4964a2a8703a5248106fdcff2eddfbb424918dd35",
+    "src/native_node_destruction.cpp": "2ee6ba84e759958a8f160cb25ad210076203931d4ae4f2e9265529bff5c57269",
+    "src/native_physical_file_date.cpp": "6ad9b3bff2280f3c27889ba13ef785a236a2f34e2d733b83bcc92ad20a8a55d0",
+    "src/native_post_effect_draw_record.cpp": "e8b44b95775ee17d5e2343daf8b321b8c1110697949c2c90fd7ee5935bab4009",
+    "src/native_post_effect_owner_20h.cpp": "330fe02662fbd32650c17ff35c8217880dbcca3425e4212c079dca3e5838fc1c",
+    "src/native_string.cpp": "0e8819d3a6442fc48c879e85c00899a72beabdc51b3e94a11836ab5314d5e60c",
+    "src/native_string_pool_owner.cpp": "cb52fde795918995689a26567d513e9f3cf75eeb27600eb60c431c37fdd21d6e",
+    "src/native_string_pool_storage.cpp": "5cb79a6ce240205b3f1c81f1fbd6edd49cc1c05f8a20ee8dca8913f44c9095d5",
+    "src/native_vertex_declaration_cache.cpp": "809bf7d8f598d0bdc9768c52e659146c88a9c64ce16e48a0d926dbb24e0ff8c6",
+    "src/native_vertex_declaration_loading.cpp": "518cfecb27a27a43815377c02ce638878d3a8eb2ddeaead30377dc7cb460ef3d",
+    "src/native_viewport_owner.cpp": "d7f733023f89193a4bbd488a9e925b46ac52f2cc0ee1be04f6df2e663616d2ea",
+    "src/native_viewport_registry.cpp": "cf63de25d9e107f83f361db4d4fa7c2a922119fa62584dd3688b8588d201a289",
+    "src/singleton_lifetime.cpp": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+  },
+  "read_only_evidence_lineage": {
+    "reports/native_post_effect_construction_bo.json": "9b051b38a1fa6fc5fbf3b1910683413ed7eaa53e8d00b84bf4dfa1fddecc7b1f",
+    "reports/native_string_prefix_raw_bq.json": "a63a87ef4f8a26d137cf58b8f72a04f1903921af1bc21dcff062e2a84739ffe9"
+  }
+}
