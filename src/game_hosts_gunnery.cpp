@@ -11,6 +11,7 @@
 #include <cstdarg>
 #include <cstdio>
 #include <cstring>
+#include <set>
 #include <string>
 #include <vector>
 
@@ -832,6 +833,10 @@ public:
         // docs/SHIP_SUB_ENTITY_LIST.md.
         owner_.record("Gunnery::target_sub_entities_slot0fc", 0x008654acu);
         sub_entity_ = target;
+        // Provenance for the diagnostic counters: this method is reached only from
+        // step 8.7's two arms, so anything it hands back came from the director's
+        // targets rather than from the recon sweep.
+        if (target != nullptr) arm_entities_.insert(target);
         return target != nullptr ? 1 : 0;
     }
     void* sub_entity(int index) override {
@@ -905,6 +910,27 @@ public:
         ++row.assigns;
         ++state_.row.assigns;
         ++owner_.summary.assigns;
+        {
+            const bool from_arm = arm_entities_.count(target) != 0;
+            float fraction = 0.0f;
+            if (other < owner_.units.count() && row.max_range > 0.0f) {
+                float mine[3], theirs[3];
+                owner_.unit_aim_point(unit_, mine);
+                owner_.unit_aim_point(other, theirs);
+                const float delta[3] = {theirs[0] - mine[0], theirs[1] - mine[1],
+                    theirs[2] - mine[2]};
+                fraction = length3(delta) / row.max_range;
+            }
+            if (from_arm) {
+                ++owner_.summary.assigns_from_arm;
+                owner_.summary.arm_reach_fraction_sum += fraction;
+                if (fraction > 0.5f) ++owner_.summary.arm_assigns_beyond_half;
+            } else {
+                ++owner_.summary.assigns_from_recon;
+                owner_.summary.recon_reach_fraction_sum += fraction;
+                if (fraction > 0.5f) ++owner_.summary.recon_assigns_beyond_half;
+            }
+        }
         owner_.done("Gunnery::set_bot_fire_target_00727f10", 0x00727f10u);
     }
     void add_gun_to_target_record_00864ca0(void*, void*) override {
@@ -942,6 +968,7 @@ private:
     std::size_t accepted_{0};
     std::size_t rejected_{0};
     void* sub_entity_{nullptr};   // the one entry 00432480 appends: the target itself
+    std::set<void*> arm_entities_;   // entities handed out by step 8.7 this pass
 };
 
 }  // namespace
@@ -965,10 +992,25 @@ void GameGunneryHost::Impl::run_gunnery_pass(std::size_t index, float dt) {
                 if (!row.fire_target.empty() && candidate->name == row.fire_target) {
                     state.fire_target = i + 1;
                 }
-                if (!row.brain_target_name.empty()
-                    && candidate->name == row.brain_target_name) {
-                    state.command_target = i + 1;
-                }
+                // NOT row.brain_target_name. That field is brain+0B20h, the
+                // navigation goal vector's target, which sits beside the goal
+                // position brain+0B2Ch..0B34h and names whatever the ship is
+                // steering toward - frequently the ship itself. 0071EBF0 answers
+                // with the newest QUEUED COMMAND's target, an order's target,
+                // which is a different thing entirely.
+                //
+                // Using the goal target here made every gun engage its own hull:
+                // step 8.7 appends the target itself (00432480), and neither the
+                // native 00863990 nor this host applies a party or self test -
+                // verified in the listing at 00863990..00863A73, which gates only
+                // on the category mask 008633D0, an owner vtable[5Ch](5) test, the
+                // per-category range at owner+category*4+430h and a plane penalty.
+                // The native never meets the case because a queued command's
+                // target is an enemy. See docs/GAME_EXECUTABLE.md.
+                //
+                // No command-target producer is wired in this process, and this
+                // run queues no orders, so the faithful answer is "no command
+                // target" - which is what the native would return here.
             }
         }
     }
@@ -1905,6 +1947,13 @@ void GameGunneryHost::report() {
         s.bridge_applies, s.recon_sweeps, s.candidates, s.candidates_rejected,
         s.assignment_passes, s.gun_evaluations, s.gun_slot_rejects, s.assigns,
         s.clears);
+    host.log.notef("summary mission gunnery source arm=%llu recon=%llu "
+        "arm_mean_reach=%.3f recon_mean_reach=%.3f arm_beyond_half=%llu "
+        "recon_beyond_half=%llu",
+        s.assigns_from_arm, s.assigns_from_recon,
+        s.assigns_from_arm ? s.arm_reach_fraction_sum / double(s.assigns_from_arm) : 0.0,
+        s.assigns_from_recon ? s.recon_reach_fraction_sum / double(s.assigns_from_recon) : 0.0,
+        s.arm_assigns_beyond_half, s.recon_assigns_beyond_half);
     host.log.notef("summary mission gunnery aim angle_sets=%llu refusals=%llu steps=%llu "
         "arc_blocks=%llu arc_unsolved=%llu trigger_rises=%llu fire_messages=%llu "
         "fire_if_ready=%llu can_fire_refusals=%llu shots=%llu first_shot=%.2f s",
