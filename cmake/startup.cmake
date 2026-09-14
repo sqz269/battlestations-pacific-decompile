@@ -26,6 +26,7 @@ cmake_language(DEFER CALL target_sources bsp_core PRIVATE ${CMAKE_CURRENT_SOURCE
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src/game_sound_runtime.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src/game_title_sound.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src/plane_advance_pose.cpp)
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src/plane_angular_velocity.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src/pilot_order_bindings.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src/plane_ai_control.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src/plane_pose_commit.cpp)
