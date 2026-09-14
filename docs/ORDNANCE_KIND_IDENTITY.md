@@ -296,3 +296,37 @@ Not applied — `docs/ATTACK_COMMANDS.md` is outside this packet's lease.
 | `docs/ATTACK_COMMANDS.md` | 107 | `007ED830` / `007B9500` / `31h` is class `levelbomb, primary` | the query is **paratrooper ordnance**; it selects the paradrop admission path *inside* the `levelbomb` command class |
 | `docs/ATTACK_COMMANDS.md` | 102 | "ask the descriptor `vtable[8](kind)`" | correct in shape; `vtable[8]` is the descriptor's class test in the entity class-id space, and the descriptor is the projectile class descriptor `gun[+3F8h][+34h]` |
 | `docs/ATTACK_COMMANDS.md` | 78 | "level-bomb ordnance and target `IsKindOf(1Ch)`" | "**paratrooper** ordnance and target `IsKindOf(1Ch)` = `MCommandBuilding`" |
+
+## Host follow-up: no `BOMBPLATFORM` gun is ever built
+
+With the table above wired into the gunnery host, `USN01` reports its first real ordnance inventory:
+
+```
+ordnance units_with torpedo=5 general_bomb=0 drop_kamikaze=0 paratrooper=0  (of 41 units with guns)
+```
+
+The torpedo count is corroborated by the per-category table's 15 `TORPEDO` guns, and
+`general_bomb=0` is internally consistent: the only `2Ah`-answering guns present are the 10
+`DEPTHCHARGE` ones, and `007B9320` excludes `2Ch`. So the inventory itself is behaving.
+
+But the zero is caused by something upstream, and it is a host gap rather than authored absence:
+
+* `deviceclasses.lua` authors **34** devices with `Function = "BOMBPLATFORM"`.
+* `RealisticTable[78]` is one of them.
+* `VehicleClass[108]` "SBD Dauntless" lists a platform whose `Gun[1] = 78`, alongside `95`
+  (`PLANEGUN`), `95` and `104` (`AAMACHINEGUN`).
+* `ConSBD1` in `USN01` is `type_id=108`, and the host builds it **3** guns - `0:2 1:1` - not 4.
+* The per-category table has no `0Ah` row at all, in any mission run so far.
+
+So the bomb platform is dropped between the authored `Platforms` table and `GameGunRow`. It is not
+the category range filter (`0Ah` is inside `kUnitGunneryCategoryCount`), and it is not the
+`Function` spelling (the flatten chunk emits all twelve names, `BOMBPLATFORM` among them). The
+flatten requires `type(dev) == 'table'` after looking `p.Gun[1]` up in the device table, so the
+likeliest cause is that the device lookup fails for that id - and one candidate worth checking first
+is which of `classtables/arcade` and `classtables/realistic` the host actually loaded, since the two
+tables are indexed independently and `78` need not be the same device in both.
+
+**Why it matters:** until a `BOMBPLATFORM` gun exists, no aircraft can answer
+`has_general_bomb_ordnance` or `has_level_bomb_ordnance`, so `007EEC50` could never choose
+`divebomb` or `levelbomb` for one - even with the ordnance table wired, which it now is. This is on
+the critical path to directed air attack.
