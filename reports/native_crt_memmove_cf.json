@@ -1,0 +1,2251 @@
+{
+  "packet": "orch2_native_crt_memmove_cf",
+  "base": "23028888845db06eb24ff66e0ec30e4751f45337",
+  "status": "complete_qualified_memmove_source_with_actual_vector_provider_win32_build_seeds_ctests_symbolic_object_archive_and_one_source_probe_checked",
+  "source": "src/native_crt_memmove.cpp",
+  "header": "include/bsp/native_crt_memmove.hpp",
+  "documentation": "docs/NATIVE_CRT_MEMMOVE_CF.md",
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "mechanism": "Supported BSP CLI invokes Client.verify before each live batch. Direct-call checker independently verifies before live call-row checks. No settings or target mutation."
+  },
+  "installed_pe": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "size": 12223752,
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "sha512": "7b545a4c47fae14af6c50a1d4d0d2904c1b85f84b9a24d1516b95d77945693fc36b1f6bb9effb7fa29b22b06ebcafc230cdf97f5c332266a3de8dd83bdc29a97"
+  },
+  "provenance": {
+    "native_BY": {
+      "commit": "ee7a0e08c90e0f20f876f1dc10d64d6fc3bb01f6",
+      "report": "reports/native_crt_memmove_by.json",
+      "report_hashes": {
+        "size": 66889,
+        "sha256": "92778e36b0b564b0b2b22209f0ea4c025b60b612a9c122528ef622d91526ee5d",
+        "sha512": "9a8e7e53355305e9cea7b489e9ecbfb8b3f4c41f20bf89ecda01f00dffffc4f8b352a0876ec6146f7e0112f9df2a170431c1f973a674c558dcc081c7fd23007a"
+      },
+      "artifact_count": 93,
+      "complete_path_set_checked": true,
+      "sha256_passes": 2,
+      "sha512_passes": 2,
+      "readiness": "Parent approved complete BF87E0 with qualified fourth borrowed actual-feature argument and eight bounded dispatch ladders, using independently accepted CC pair."
+    },
+    "accepted_CC_and_independent_reviews": {
+      "accepted_cc_commit": "23028888845db06eb24ff66e0ec30e4751f45337",
+      "cc_report": {
+        "size": 65978,
+        "sha256": "bff9216277980cf3be91d2056e39b1540e5f57bed246440f36eb2f396d65f612",
+        "sha512": "e033ac566425f855da27e32957fd6aea1d8ddc559990f7d6462bbcbb18aeffc2e6b6c6bebe87e0d9c1b9c833a5b2703f587c44e41de488b371a7af5edd7d8a91"
+      },
+      "cc_all_local_artifacts": 65,
+      "cc_complete_path_set_verified": true,
+      "cc_sha256_passes": 2,
+      "cc_sha512_passes": 2,
+      "cc_review": {
+        "size": 1438,
+        "sha256": "cad7beaac91e0f47e19faf27b245d661f4621aecfb0ab4907c7d05b36fe5517a",
+        "sha512": "9001a25bf17f85d7192da7fa52f4783f2c2e09bbecb8dc5529a5ce94dbbae0b0a3c5502f460dc96dbbca6e5d8f0ae8220154ec44a21dd0275d5e8925e7b1c356"
+      },
+      "cd_proposal": {
+        "size": 7143,
+        "sha256": "10a56078dbe310556044a5907ad9da885ef80d044f9913846b94ae61d914e280",
+        "sha512": "94d1d2a9dd72d237d609c2e5907e7ee2132b6c3fef10a0982c1d5f0a7441e7894b95ba479fffbf753a848ca4fb61d71b298c1eb0d6596db7bcca26e9fb22fb87"
+      },
+      "cd_mapping": {
+        "size": 15697,
+        "sha256": "6ccadc91bfeecf8aa51d3bb2491069ff2359da765d065a28034913730516c3ae",
+        "sha512": "8028fb68ef157d5f32bdea4c7f65b88550de54f3888e9baf308eebbf270cbf49e3b0c54efe0ad4c6d72813adb7de935c49342d3ec38058b9c3f490b46aa04a30"
+      }
+    }
+  },
+  "native_spans": [
+    {
+      "address": "00bf87e0",
+      "length": 869,
+      "end_exclusive": "00bf8b45",
+      "live_pe_equal": true,
+      "instructions": 247,
+      "reachable_code_bytes": 711,
+      "padding_bytes": 38,
+      "size": 869,
+      "sha256": "20a42c529f48a960faf6a65a969c01f22ea16d71ce20070ee6dbd79a86b5a427",
+      "sha512": "d221d3ac3235c6c96a6ea490c491425b488abd997580ba1aa05a0f3866a24372142d77edb819f7d3c72dfb37743638323aeeb6d131576cd88f03726e84513668",
+      "jump_table_bytes": 120
+    }
+  ],
+  "functions": [
+    {
+      "address": "00bf87e0",
+      "name": "_memmove",
+      "native_end_exclusive": "00bf8b45",
+      "native_bytes": 869,
+      "reachable_code_bytes": 711,
+      "native_instructions": 247,
+      "jump_table_bytes": 120,
+      "skipped_padding_bytes": 38,
+      "source_symbol": "bsp::move_native_crt_bytes_00bf87e0",
+      "compiled_symbol": "?move_native_crt_bytes_00bf87e0@bsp@@YAPAXPAXPBXIADI@Z",
+      "original_abi": "cdecl(D,S,uint32_count) at entry ESP+4/+8/+Ch; EAX original D, RET with 12-byte caller cleanup; EBP/EDI/ESI saved, EBX untouched; arithmetic flags volatile; DF=0 precondition.",
+      "source_abi": "New naked MSVC Win32 cdecl(D,S,uint32_count,const volatile uint32_t& actual_0109EEA4); fourth pointer at entry ESP+10h / EBP+14h; actual restored-frame tail JMP to three-argument CC; original four-argument caller removes16 bytes.",
+      "abi_compatible": false,
+      "native_instruction_abi_preserved_with_relocations": false,
+      "complete_qualified_behavior_source": true,
+      "ordered_paths": [
+        "32-bit wrapped S+count and exact unsigned forward/backward direction selection.",
+        "Forward size>=256 gate then actual borrowed feature-word comparison, then original pointer low-four-bit comparison, register restoration and actual CC tail JMP.",
+        "Forward scalar alignment, original DWORD unroll or REP schedule, zero-to-three-byte tail.",
+        "Backward end-4 pointers, high-end alignment, original negative DWORD dispatch and unroll or STD/REP MOVSD/CLD, then zero-to-three-byte tail.",
+        "Zero count returns D without buffer-data reads; equal pointers retain original copying."
+      ],
+      "preconditions": [
+        "DF=0",
+        "valid readable/writable nonwrapping extents",
+        "buffer extents disjoint from active source/provider frames and live arguments/return slots including new fourth slot",
+        "actual stable borrowed canonical 0109EEA4 word",
+        "actual CPU/OS SSE2 support whenever selected CC path requires it"
+      ],
+      "fault_behavior": "No validation/catch/overflow repair or new exception policy; partial buffer writes remain. Fault after STD and before CLD can expose DF=1. Changed code/stack-reference/table-read and arithmetic-flag identities are explicitly unclaimed."
+    }
+  ],
+  "calls": [
+    {
+      "caller": "00bf87e0",
+      "address": "00bf8822",
+      "native": "00c0c82b",
+      "kind": "tail_jump"
+    }
+  ],
+  "indirect_calls": [],
+  "native_indexed_jumps": 16,
+  "dispatch_domains": [
+    {
+      "domain": "forward_alignment",
+      "selector": "eax",
+      "offset": 678,
+      "end_exclusive": 701,
+      "instructions": [
+        {
+          "offset": 678,
+          "bytes": "83f801",
+          "mnemonic": "cmp",
+          "operand": "eax, 1"
+        },
+        {
+          "offset": 681,
+          "bytes": "0f84d1fdffff",
+          "mnemonic": "je",
+          "operand": "0x80"
+        },
+        {
+          "offset": 687,
+          "bytes": "83f802",
+          "mnemonic": "cmp",
+          "operand": "eax, 2"
+        },
+        {
+          "offset": 690,
+          "bytes": "0f84effdffff",
+          "mnemonic": "je",
+          "operand": "0xa7"
+        },
+        {
+          "offset": 696,
+          "bytes": "e90bfeffff",
+          "mnemonic": "jmp",
+          "operand": "0xc8"
+        }
+      ],
+      "evaluations": [
+        {
+          "selector_bits": "00000001",
+          "signed_selector": 1,
+          "native_slot": "00bf886c",
+          "native_target": "00bf8878",
+          "compiled_target_offset": 128,
+          "matched": true
+        },
+        {
+          "selector_bits": "00000002",
+          "signed_selector": 2,
+          "native_slot": "00bf8870",
+          "native_target": "00bf88a4",
+          "compiled_target_offset": 167,
+          "matched": true
+        },
+        {
+          "selector_bits": "00000003",
+          "signed_selector": 3,
+          "native_slot": "00bf8874",
+          "native_target": "00bf88c8",
+          "compiled_target_offset": 200,
+          "matched": true
+        }
+      ],
+      "proof": "TEST destination,3 selected nonzero; MOV EAX,destination / AND EAX,3 =>1..3. Targets copy3/2/1 leading bytes.",
+      "selector_preserved": true,
+      "no_memory_or_stack_accesses": true,
+      "terminal_jump_without_new_default": true
+    },
+    {
+      "domain": "forward_dwords",
+      "selector": "ecx",
+      "offset": 701,
+      "end_exclusive": 769,
+      "instructions": [
+        {
+          "offset": 701,
+          "bytes": "83f900",
+          "mnemonic": "cmp",
+          "operand": "ecx, 0"
+        },
+        {
+          "offset": 704,
+          "bytes": "0f8460feffff",
+          "mnemonic": "je",
+          "operand": "0x126"
+        },
+        {
+          "offset": 710,
+          "bytes": "83f901",
+          "mnemonic": "cmp",
+          "operand": "ecx, 1"
+        },
+        {
+          "offset": 713,
+          "bytes": "0f8444feffff",
+          "mnemonic": "je",
+          "operand": "0x113"
+        },
+        {
+          "offset": 719,
+          "bytes": "83f902",
+          "mnemonic": "cmp",
+          "operand": "ecx, 2"
+        },
+        {
+          "offset": 722,
+          "bytes": "0f8433feffff",
+          "mnemonic": "je",
+          "operand": "0x10b"
+        },
+        {
+          "offset": 728,
+          "bytes": "83f903",
+          "mnemonic": "cmp",
+          "operand": "ecx, 3"
+        },
+        {
+          "offset": 731,
+          "bytes": "0f8422feffff",
+          "mnemonic": "je",
+          "operand": "0x103"
+        },
+        {
+          "offset": 737,
+          "bytes": "83f904",
+          "mnemonic": "cmp",
+          "operand": "ecx, 4"
+        },
+        {
+          "offset": 740,
+          "bytes": "0f8411feffff",
+          "mnemonic": "je",
+          "operand": "0xfb"
+        },
+        {
+          "offset": 746,
+          "bytes": "83f905",
+          "mnemonic": "cmp",
+          "operand": "ecx, 5"
+        },
+        {
+          "offset": 749,
+          "bytes": "0f8400feffff",
+          "mnemonic": "je",
+          "operand": "0xf3"
+        },
+        {
+          "offset": 755,
+          "bytes": "83f906",
+          "mnemonic": "cmp",
+          "operand": "ecx, 6"
+        },
+        {
+          "offset": 758,
+          "bytes": "0f84effdffff",
+          "mnemonic": "je",
+          "operand": "0xeb"
+        },
+        {
+          "offset": 764,
+          "bytes": "e9e2fdffff",
+          "mnemonic": "jmp",
+          "operand": "0xe3"
+        }
+      ],
+      "evaluations": [
+        {
+          "selector_bits": "00000000",
+          "signed_selector": 0,
+          "native_slot": "00bf88e8",
+          "native_target": "00bf894b",
+          "compiled_target_offset": 294,
+          "matched": true
+        },
+        {
+          "selector_bits": "00000001",
+          "signed_selector": 1,
+          "native_slot": "00bf88ec",
+          "native_target": "00bf8938",
+          "compiled_target_offset": 275,
+          "matched": true
+        },
+        {
+          "selector_bits": "00000002",
+          "signed_selector": 2,
+          "native_slot": "00bf88f0",
+          "native_target": "00bf8930",
+          "compiled_target_offset": 267,
+          "matched": true
+        },
+        {
+          "selector_bits": "00000003",
+          "signed_selector": 3,
+          "native_slot": "00bf88f4",
+          "native_target": "00bf8928",
+          "compiled_target_offset": 259,
+          "matched": true
+        },
+        {
+          "selector_bits": "00000004",
+          "signed_selector": 4,
+          "native_slot": "00bf88f8",
+          "native_target": "00bf8920",
+          "compiled_target_offset": 251,
+          "matched": true
+        },
+        {
+          "selector_bits": "00000005",
+          "signed_selector": 5,
+          "native_slot": "00bf88fc",
+          "native_target": "00bf8918",
+          "compiled_target_offset": 243,
+          "matched": true
+        },
+        {
+          "selector_bits": "00000006",
+          "signed_selector": 6,
+          "native_slot": "00bf8900",
+          "native_target": "00bf8910",
+          "compiled_target_offset": 235,
+          "matched": true
+        },
+        {
+          "selector_bits": "00000007",
+          "signed_selector": 7,
+          "native_slot": "00bf8904",
+          "native_target": "00bf8908",
+          "compiled_target_offset": 227,
+          "matched": true
+        }
+      ],
+      "proof": "Logical SHR ECX,2 followed by unsigned CMP ECX,8 / JB =>0..7.",
+      "selector_preserved": true,
+      "no_memory_or_stack_accesses": true,
+      "terminal_jump_without_new_default": true
+    },
+    {
+      "domain": "forward_remainder",
+      "selector": "edx",
+      "offset": 769,
+      "end_exclusive": 801,
+      "instructions": [
+        {
+          "offset": 769,
+          "bytes": "83fa00",
+          "mnemonic": "cmp",
+          "operand": "edx, 0"
+        },
+        {
+          "offset": 772,
+          "bytes": "0f8421feffff",
+          "mnemonic": "je",
+          "operand": "0x12b"
+        },
+        {
+          "offset": 778,
+          "bytes": "83fa01",
+          "mnemonic": "cmp",
+          "operand": "edx, 1"
+        },
+        {
+          "offset": 781,
+          "bytes": "0f841ffeffff",
+          "mnemonic": "je",
+          "operand": "0x132"
+        },
+        {
+          "offset": 787,
+          "bytes": "83fa02",
+          "mnemonic": "cmp",
+          "operand": "edx, 2"
+        },
+        {
+          "offset": 790,
+          "bytes": "0f8421feffff",
+          "mnemonic": "je",
+          "operand": "0x13d"
+        },
+        {
+          "offset": 796,
+          "bytes": "e92dfeffff",
+          "mnemonic": "jmp",
+          "operand": "0x14e"
+        }
+      ],
+      "evaluations": [
+        {
+          "selector_bits": "00000000",
+          "signed_selector": 0,
+          "native_slot": "00bf8954",
+          "native_target": "00bf8964",
+          "compiled_target_offset": 299,
+          "matched": true
+        },
+        {
+          "selector_bits": "00000001",
+          "signed_selector": 1,
+          "native_slot": "00bf8958",
+          "native_target": "00bf896c",
+          "compiled_target_offset": 306,
+          "matched": true
+        },
+        {
+          "selector_bits": "00000002",
+          "signed_selector": 2,
+          "native_slot": "00bf895c",
+          "native_target": "00bf8978",
+          "compiled_target_offset": 317,
+          "matched": true
+        },
+        {
+          "selector_bits": "00000003",
+          "signed_selector": 3,
+          "native_slot": "00bf8960",
+          "native_target": "00bf898c",
+          "compiled_target_offset": 334,
+          "matched": true
+        }
+      ],
+      "proof": "EDX=count&3, or initialized3 AND adjusted count =>0..3. REP MOVSD and unrolled DWORD payload do not modify EDX.",
+      "selector_preserved": true,
+      "no_memory_or_stack_accesses": true,
+      "terminal_jump_without_new_default": true
+    },
+    {
+      "domain": "forward_short",
+      "selector": "ecx",
+      "offset": 801,
+      "end_exclusive": 833,
+      "instructions": [
+        {
+          "offset": 801,
+          "bytes": "83f9fc",
+          "mnemonic": "cmp",
+          "operand": "ecx, -4"
+        },
+        {
+          "offset": 804,
+          "bytes": "0f8401feffff",
+          "mnemonic": "je",
+          "operand": "0x12b"
+        },
+        {
+          "offset": 810,
+          "bytes": "83f9fd",
+          "mnemonic": "cmp",
+          "operand": "ecx, -3"
+        },
+        {
+          "offset": 813,
+          "bytes": "0f84fffdffff",
+          "mnemonic": "je",
+          "operand": "0x132"
+        },
+        {
+          "offset": 819,
+          "bytes": "83f9fe",
+          "mnemonic": "cmp",
+          "operand": "ecx, -2"
+        },
+        {
+          "offset": 822,
+          "bytes": "0f8401feffff",
+          "mnemonic": "je",
+          "operand": "0x13d"
+        },
+        {
+          "offset": 828,
+          "bytes": "e90dfeffff",
+          "mnemonic": "jmp",
+          "operand": "0x14e"
+        }
+      ],
+      "evaluations": [
+        {
+          "selector_bits": "fffffffc",
+          "signed_selector": -4,
+          "native_slot": "00bf8954",
+          "native_target": "00bf8964",
+          "compiled_target_offset": 299,
+          "matched": true
+        },
+        {
+          "selector_bits": "fffffffd",
+          "signed_selector": -3,
+          "native_slot": "00bf8958",
+          "native_target": "00bf896c",
+          "compiled_target_offset": 306,
+          "matched": true
+        },
+        {
+          "selector_bits": "fffffffe",
+          "signed_selector": -2,
+          "native_slot": "00bf895c",
+          "native_target": "00bf8978",
+          "compiled_target_offset": 317,
+          "matched": true
+        },
+        {
+          "selector_bits": "ffffffff",
+          "signed_selector": -1,
+          "native_slot": "00bf8960",
+          "native_target": "00bf898c",
+          "compiled_target_offset": 334,
+          "matched": true
+        }
+      ],
+      "proof": "Unsigned borrow after SUB ECX,4 means original n in0..3; ECX wrapped to FFFFFFFC..FFFFFFFF.",
+      "selector_preserved": true,
+      "no_memory_or_stack_accesses": true,
+      "terminal_jump_without_new_default": true
+    },
+    {
+      "domain": "backward_alignment",
+      "selector": "eax",
+      "offset": 833,
+      "end_exclusive": 856,
+      "instructions": [
+        {
+          "offset": 833,
+          "bytes": "83f801",
+          "mnemonic": "cmp",
+          "operand": "eax, 1"
+        },
+        {
+          "offset": 836,
+          "bytes": "0f8461feffff",
+          "mnemonic": "je",
+          "operand": "0x1ab"
+        },
+        {
+          "offset": 842,
+          "bytes": "83f802",
+          "mnemonic": "cmp",
+          "operand": "eax, 2"
+        },
+        {
+          "offset": 845,
+          "bytes": "0f8477feffff",
+          "mnemonic": "je",
+          "operand": "0x1ca"
+        },
+        {
+          "offset": 851,
+          "bytes": "e997feffff",
+          "mnemonic": "jmp",
+          "operand": "0x1ef"
+        }
+      ],
+      "evaluations": [
+        {
+          "selector_bits": "00000001",
+          "signed_selector": 1,
+          "native_slot": "00bf89f8",
+          "native_target": "00bf8a04",
+          "compiled_target_offset": 427,
+          "matched": true
+        },
+        {
+          "selector_bits": "00000002",
+          "signed_selector": 2,
+          "native_slot": "00bf89fc",
+          "native_target": "00bf8a28",
+          "compiled_target_offset": 458,
+          "matched": true
+        },
+        {
+          "selector_bits": "00000003",
+          "signed_selector": 3,
+          "native_slot": "00bf8a00",
+          "native_target": "00bf8a50",
+          "compiled_target_offset": 495,
+          "matched": true
+        }
+      ],
+      "proof": "TEST end-4 destination,3 selected nonzero; MOV EAX,EDI / AND EAX,3 =>1..3. Targets copy1/2/3 trailing bytes.",
+      "selector_preserved": true,
+      "no_memory_or_stack_accesses": true,
+      "terminal_jump_without_new_default": true
+    },
+    {
+      "domain": "backward_dwords",
+      "selector": "ecx",
+      "offset": 856,
+      "end_exclusive": 924,
+      "instructions": [
+        {
+          "offset": 856,
+          "bytes": "83f9f9",
+          "mnemonic": "cmp",
+          "operand": "ecx, -7"
+        },
+        {
+          "offset": 859,
+          "bytes": "0f84bdfeffff",
+          "mnemonic": "je",
+          "operand": "0x21e"
+        },
+        {
+          "offset": 865,
+          "bytes": "83f9fa",
+          "mnemonic": "cmp",
+          "operand": "ecx, -6"
+        },
+        {
+          "offset": 868,
+          "bytes": "0f84bcfeffff",
+          "mnemonic": "je",
+          "operand": "0x226"
+        },
+        {
+          "offset": 874,
+          "bytes": "83f9fb",
+          "mnemonic": "cmp",
+          "operand": "ecx, -5"
+        },
+        {
+          "offset": 877,
+          "bytes": "0f84bbfeffff",
+          "mnemonic": "je",
+          "operand": "0x22e"
+        },
+        {
+          "offset": 883,
+          "bytes": "83f9fc",
+          "mnemonic": "cmp",
+          "operand": "ecx, -4"
+        },
+        {
+          "offset": 886,
+          "bytes": "0f84bafeffff",
+          "mnemonic": "je",
+          "operand": "0x236"
+        },
+        {
+          "offset": 892,
+          "bytes": "83f9fd",
+          "mnemonic": "cmp",
+          "operand": "ecx, -3"
+        },
+        {
+          "offset": 895,
+          "bytes": "0f84b9feffff",
+          "mnemonic": "je",
+          "operand": "0x23e"
+        },
+        {
+          "offset": 901,
+          "bytes": "83f9fe",
+          "mnemonic": "cmp",
+          "operand": "ecx, -2"
+        },
+        {
+          "offset": 904,
+          "bytes": "0f84b8feffff",
+          "mnemonic": "je",
+          "operand": "0x246"
+        },
+        {
+          "offset": 910,
+          "bytes": "83f9ff",
+          "mnemonic": "cmp",
+          "operand": "ecx, -1"
+        },
+        {
+          "offset": 913,
+          "bytes": "0f84b7feffff",
+          "mnemonic": "je",
+          "operand": "0x24e"
+        },
+        {
+          "offset": 919,
+          "bytes": "e9c5feffff",
+          "mnemonic": "jmp",
+          "operand": "0x261"
+        }
+      ],
+      "evaluations": [
+        {
+          "selector_bits": "fffffff9",
+          "signed_selector": -7,
+          "native_slot": "00bf8a84",
+          "native_target": "00bf8aa4",
+          "compiled_target_offset": 542,
+          "matched": true
+        },
+        {
+          "selector_bits": "fffffffa",
+          "signed_selector": -6,
+          "native_slot": "00bf8a88",
+          "native_target": "00bf8aac",
+          "compiled_target_offset": 550,
+          "matched": true
+        },
+        {
+          "selector_bits": "fffffffb",
+          "signed_selector": -5,
+          "native_slot": "00bf8a8c",
+          "native_target": "00bf8ab4",
+          "compiled_target_offset": 558,
+          "matched": true
+        },
+        {
+          "selector_bits": "fffffffc",
+          "signed_selector": -4,
+          "native_slot": "00bf8a90",
+          "native_target": "00bf8abc",
+          "compiled_target_offset": 566,
+          "matched": true
+        },
+        {
+          "selector_bits": "fffffffd",
+          "signed_selector": -3,
+          "native_slot": "00bf8a94",
+          "native_target": "00bf8ac4",
+          "compiled_target_offset": 574,
+          "matched": true
+        },
+        {
+          "selector_bits": "fffffffe",
+          "signed_selector": -2,
+          "native_slot": "00bf8a98",
+          "native_target": "00bf8acc",
+          "compiled_target_offset": 582,
+          "matched": true
+        },
+        {
+          "selector_bits": "ffffffff",
+          "signed_selector": -1,
+          "native_slot": "00bf8a9c",
+          "native_target": "00bf8ad4",
+          "compiled_target_offset": 590,
+          "matched": true
+        },
+        {
+          "selector_bits": "00000000",
+          "signed_selector": 0,
+          "native_slot": "00bf8aa0",
+          "native_target": "00bf8ae7",
+          "compiled_target_offset": 609,
+          "matched": true
+        }
+      ],
+      "proof": "Logical DWORD count gated unsigned below8, then NEG ECX =>-7..0. Zero goes directly to remainder dispatch.",
+      "selector_preserved": true,
+      "no_memory_or_stack_accesses": true,
+      "terminal_jump_without_new_default": true
+    },
+    {
+      "domain": "backward_remainder",
+      "selector": "edx",
+      "offset": 924,
+      "end_exclusive": 956,
+      "instructions": [
+        {
+          "offset": 924,
+          "bytes": "83fa00",
+          "mnemonic": "cmp",
+          "operand": "edx, 0"
+        },
+        {
+          "offset": 927,
+          "bytes": "0f84c1feffff",
+          "mnemonic": "je",
+          "operand": "0x266"
+        },
+        {
+          "offset": 933,
+          "bytes": "83fa01",
+          "mnemonic": "cmp",
+          "operand": "edx, 1"
+        },
+        {
+          "offset": 936,
+          "bytes": "0f84bffeffff",
+          "mnemonic": "je",
+          "operand": "0x26d"
+        },
+        {
+          "offset": 942,
+          "bytes": "83fa02",
+          "mnemonic": "cmp",
+          "operand": "edx, 2"
+        },
+        {
+          "offset": 945,
+          "bytes": "0f84c3feffff",
+          "mnemonic": "je",
+          "operand": "0x27a"
+        },
+        {
+          "offset": 951,
+          "bytes": "e9d1feffff",
+          "mnemonic": "jmp",
+          "operand": "0x28d"
+        }
+      ],
+      "evaluations": [
+        {
+          "selector_bits": "00000000",
+          "signed_selector": 0,
+          "native_slot": "00bf8af0",
+          "native_target": "00bf8b00",
+          "compiled_target_offset": 614,
+          "matched": true
+        },
+        {
+          "selector_bits": "00000001",
+          "signed_selector": 1,
+          "native_slot": "00bf8af4",
+          "native_target": "00bf8b08",
+          "compiled_target_offset": 621,
+          "matched": true
+        },
+        {
+          "selector_bits": "00000002",
+          "signed_selector": 2,
+          "native_slot": "00bf8af8",
+          "native_target": "00bf8b18",
+          "compiled_target_offset": 634,
+          "matched": true
+        },
+        {
+          "selector_bits": "00000003",
+          "signed_selector": 3,
+          "native_slot": "00bf8afc",
+          "native_target": "00bf8b2c",
+          "compiled_target_offset": 653,
+          "matched": true
+        }
+      ],
+      "proof": "EDX original count&3, or initialized3 AND adjusted count =>0..3; payload preserves EDX.",
+      "selector_preserved": true,
+      "no_memory_or_stack_accesses": true,
+      "terminal_jump_without_new_default": true
+    },
+    {
+      "domain": "backward_short",
+      "selector": "ecx",
+      "offset": 956,
+      "end_exclusive": 988,
+      "instructions": [
+        {
+          "offset": 956,
+          "bytes": "83f900",
+          "mnemonic": "cmp",
+          "operand": "ecx, 0"
+        },
+        {
+          "offset": 959,
+          "bytes": "0f84a1feffff",
+          "mnemonic": "je",
+          "operand": "0x266"
+        },
+        {
+          "offset": 965,
+          "bytes": "83f901",
+          "mnemonic": "cmp",
+          "operand": "ecx, 1"
+        },
+        {
+          "offset": 968,
+          "bytes": "0f849ffeffff",
+          "mnemonic": "je",
+          "operand": "0x26d"
+        },
+        {
+          "offset": 974,
+          "bytes": "83f902",
+          "mnemonic": "cmp",
+          "operand": "ecx, 2"
+        },
+        {
+          "offset": 977,
+          "bytes": "0f84a3feffff",
+          "mnemonic": "je",
+          "operand": "0x27a"
+        },
+        {
+          "offset": 983,
+          "bytes": "e9b1feffff",
+          "mnemonic": "jmp",
+          "operand": "0x28d"
+        }
+      ],
+      "evaluations": [
+        {
+          "selector_bits": "00000000",
+          "signed_selector": 0,
+          "native_slot": "00bf8af0",
+          "native_target": "00bf8b00",
+          "compiled_target_offset": 614,
+          "matched": true
+        },
+        {
+          "selector_bits": "00000001",
+          "signed_selector": 1,
+          "native_slot": "00bf8af4",
+          "native_target": "00bf8b08",
+          "compiled_target_offset": 621,
+          "matched": true
+        },
+        {
+          "selector_bits": "00000002",
+          "signed_selector": 2,
+          "native_slot": "00bf8af8",
+          "native_target": "00bf8b18",
+          "compiled_target_offset": 634,
+          "matched": true
+        },
+        {
+          "selector_bits": "00000003",
+          "signed_selector": 3,
+          "native_slot": "00bf8afc",
+          "native_target": "00bf8b2c",
+          "compiled_target_offset": 653,
+          "matched": true
+        }
+      ],
+      "proof": "Unsigned CMP ECX,4 / JB =>0..3 without subtracting4.",
+      "selector_preserved": true,
+      "no_memory_or_stack_accesses": true,
+      "terminal_jump_without_new_default": true
+    }
+  ],
+  "native_to_current_instruction_mapping": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-memmove-source-cf\\local\\native_crt_memmove_cf\\compiled_mapping.json",
+    "size": 112268,
+    "sha256": "c93097fcb84d933dfb138a91deb982dd57efb001d5610c201c10a71cabe26bdc",
+    "sha512": "dbb037e7e36320250f60a1742a0882ca76667c7189835a03094070c150112bc3848d2e7e2ff77275760fbdfb7eae7d89e5e86e4a05ca92ad17cda5416ffd3de4"
+  },
+  "compiler_evidence": {
+    "compiler": {
+      "binary": {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\cl.exe",
+        "size": 891752,
+        "sha256": "95db52a9c9bd300131474769df7d32b342725b1e1574e0fc83a266479b196938",
+        "sha512": "390e9a478e6e3dd08f08b4a5d76a32d7d77239ff17f67bb0bf069d103ce1ee991d801353ef843b93b41fe2dd6dd9eff32f78b80dcc439f4eb61aba675394a6ec"
+      },
+      "version": "19.51.36244.0",
+      "architecture": "X86"
+    },
+    "traces": {
+      "command": {
+        "artifact": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-memmove-source-cf\\local\\native_crt_memmove_cf\\CL.command_target.txt",
+          "size": 989,
+          "sha256": "1d6abf1a5a7ec8efcce23c4a7726331a6277c906377ec36281ee7c50285b3c1f",
+          "sha512": "dc09ef3cf745da08e8a97ef92ab6ff5b64b5e2404449ef2186e0b3de57b0c4d6475625d1baf9f30f455dcbd786d82ffd1ec15907584e04ce536929d5d32c3db6"
+        },
+        "lines": 2,
+        "candidate_blocks": 1,
+        "selection": "For write logs, retain all matching-source blocks and select sole block that actually names current object; the failed aggregate may name source but has no object write.",
+        "Fo_argument": "BSP_CORE.DIR\\RELEASE\\\\",
+        "resolved_object": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-memmove-source-cf\\build\\win32\\bsp_core.dir\\Release\\native_crt_memmove.obj"
+      },
+      "read": {
+        "artifact": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-memmove-source-cf\\local\\native_crt_memmove_cf\\CL.read_target.txt",
+          "size": 1212,
+          "sha256": "2084fa0f5ae01c8305c2554b6e7179500aa22d2a68c1058a17ee0bd0c3c663ef",
+          "sha512": "a868591900e34e2f32ed81c52147cf970f4f6b9e0d055d31f0659ed3b196ab5254c5f0b7f0a5e5efa44d1bf15e8664d6014c9ac03f6eb3be4a428b84df3ee9a2"
+        },
+        "lines": 13,
+        "candidate_blocks": 1,
+        "selection": "For write logs, retain all matching-source blocks and select sole block that actually names current object; the failed aggregate may name source but has no object write."
+      },
+      "write": {
+        "artifact": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-memmove-source-cf\\local\\native_crt_memmove_cf\\CL.write_target.txt",
+          "size": 238,
+          "sha256": "d5cb1c38a78d04bbf2addbf301f55b8dd1bf2fd942886159241bec878b41ce4b",
+          "sha512": "358bc867e83c5e9a8c5f41c2a16c7c0b971de5ef7b4c33c589ef58eedc8849353c33cb50a1cf4a6633b898ec792cbb497ad6b3cb4f96bd41bbe93a7f8bc728a5"
+        },
+        "lines": 2,
+        "candidate_blocks": 2,
+        "selection": "For write logs, retain all matching-source blocks and select sole block that actually names current object; the failed aggregate may name source but has no object write."
+      }
+    },
+    "object": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-memmove-source-cf\\build\\win32\\bsp_core.dir\\Release\\native_crt_memmove.obj",
+      "size": 1797,
+      "sha256": "4647c697824d1f6542ed2ae87578faf39bec1d5c379968613da63e60f9bff3a1",
+      "sha512": "478189a87767abc2c7a62fe388e97cce90a2068f540c012710a469821196fff8f67d9a2f6d8b62fad10d0b866af7e7a9e71b53e04d5f05d3b0ff54f5e4f5a3d0"
+    },
+    "archive": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-memmove-source-cf\\build\\win32\\Release\\bsp_core.lib",
+      "size": 57939096,
+      "sha256": "04221699f00945ad0874c0fe2e68ac8466e980a3af50619bf539d7069c625198",
+      "sha512": "8031d61f6fb341b41894e535babf7c56e2a0ce5fc55fede77d37bc28cabd22ef2f0fd1ad5fdb720b3d472e0d1a0c55402833f6d212d38042fe190986cd9fff4c"
+    },
+    "archive_member": "bsp_core.dir\\Release\\native_crt_memmove.obj",
+    "matching_archive_members": 1,
+    "object_archive_equal": true,
+    "object_writable_sections": [],
+    "undefined_external_symbols": [
+      {
+        "index": 9,
+        "name": "?copy_native_crt_vector_00c0c82b@bsp@@YAPAXPAXPBXI@Z",
+        "value": 0,
+        "section": 0,
+        "type": 32,
+        "storage": 2,
+        "auxiliary_count": 0
+      }
+    ],
+    "functions": [
+      {
+        "address": "00bf87e0",
+        "symbol": "?move_native_crt_bytes_00bf87e0@bsp@@YAPAXPAXPBXIADI@Z",
+        "symbol_record": {
+          "name": "?move_native_crt_bytes_00bf87e0@bsp@@YAPAXPAXPBXIADI@Z",
+          "section": 3,
+          "value": 0
+        },
+        "compiled_bytes": 988,
+        "instructions": 316,
+        "artifact": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-memmove-source-cf\\local\\native_crt_memmove_cf\\00bf87e0_compiled.bin",
+          "size": 988,
+          "sha256": "9e19e936b0a80a7fc8a1a02e992847fa2ab9062f3ae00a82651967e18284ab6e",
+          "sha512": "e22d0450ce6269cf4c6908d72a1eeb26a6d7c0508e22b136ca9ea6d51712d826d6a277c2a79a70f78dcb7d0b53fed841268b5bf02397995055db7afdac4e6399"
+        },
+        "relocations": [
+          {
+            "offset": 66,
+            "symbol": "?copy_native_crt_vector_00c0c82b@bsp@@YAPAXPAXPBXI@Z",
+            "symbol_index": 9,
+            "type": 20
+          }
+        ],
+        "archive_symbol_definitions": [
+          "bsp_core.dir\\Release\\native_crt_memmove.obj"
+        ],
+        "full_native_payload_mapping": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-memmove-source-cf\\local\\native_crt_memmove_cf\\compiled_mapping.json",
+          "size": 112268,
+          "sha256": "c93097fcb84d933dfb138a91deb982dd57efb001d5610c201c10a71cabe26bdc",
+          "sha512": "dbb037e7e36320250f60a1742a0882ca76667c7189835a03094070c150112bc3848d2e7e2ff77275760fbdfb7eae7d89e5e86e4a05ca92ad17cda5416ffd3de4"
+        },
+        "native_byte_identity": false,
+        "actual_tail": {
+          "native_site": "00bf8822",
+          "compiled_offset": 65,
+          "relocation": {
+            "offset": 66,
+            "symbol": "?copy_native_crt_vector_00c0c82b@bsp@@YAPAXPAXPBXI@Z",
+            "symbol_index": 9,
+            "type": 20
+          },
+          "encoded_addend": 0,
+          "target_symbol_record": {
+            "index": 9,
+            "name": "?copy_native_crt_vector_00c0c82b@bsp@@YAPAXPAXPBXI@Z",
+            "value": 0,
+            "section": 0,
+            "type": 32,
+            "storage": 2,
+            "auxiliary_count": 0
+          },
+          "restoration_before_tail": [
+            "pop esi",
+            "pop edi",
+            "pop ebp"
+          ],
+          "caller_cleanup_bytes": 16
+        }
+      }
+    ],
+    "provider": {
+      "object": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-memmove-source-cf\\build\\win32\\bsp_core.dir\\Release\\native_crt_vector_copy.obj",
+        "size": 1277,
+        "sha256": "798dc1d2e0ee772886c1f47e91f7576322066016024f4d704b79f82311b47426",
+        "sha512": "9e40304d2e9472abaa72528db1bb22bee2c84d27642a66af872a516c396bf33c512ec718bad040a18613b78f9ce9eb458f120d31bbd373fbc940e6b2468b5c4c"
+      },
+      "unique_archive_member": "bsp_core.dir\\Release\\native_crt_vector_copy.obj",
+      "object_archive_equal": true,
+      "traces": {
+        "command": {
+          "artifact": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-memmove-source-cf\\local\\native_crt_memmove_cf\\CL.command_provider.txt",
+            "size": 997,
+            "sha256": "6e2897f12dcd580f2e7abc8e9f5b6a9a3a8efab4befa3bb5ecf551376dc413a3",
+            "sha512": "5c6504922870c8a5f331aeb3382869d4c030dd9eff24eb3e73f6e27954e4f23e2174212f0da3253828dcebaed30e0bafdc0023f558e80f1afe23ea409148691c"
+          },
+          "lines": 2,
+          "candidate_blocks": 1,
+          "selection": "Sole exact single-source write block after successful rebuild; earlier failed-build aggregate also wrote this provider, and both blocks are retained."
+        },
+        "read": {
+          "artifact": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-memmove-source-cf\\local\\native_crt_memmove_cf\\CL.read_provider.txt",
+            "size": 1023,
+            "sha256": "d1467e1c7f75ddeb126d4ec486da959f355b5c59dca9f9456f988427626b7562",
+            "sha512": "9ca40d1ccc8fb97c50c66c31ff6165a3656727969f6a755d2de8f743268db8d831247281abedbada90312a17b0211b9edd7801d741c3a0d75a848b26a7a43959"
+          },
+          "lines": 10,
+          "candidate_blocks": 1,
+          "selection": "Sole exact single-source write block after successful rebuild; earlier failed-build aggregate also wrote this provider, and both blocks are retained."
+        },
+        "write": {
+          "artifact": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-memmove-source-cf\\local\\native_crt_memmove_cf\\CL.write_provider.txt",
+            "size": 246,
+            "sha256": "c8c82d9a7c2bd2d4500c916730f1b85eed41efe1a2df89dc46c7b435c17bca8e",
+            "sha512": "30dcd7e3029e7a5ed466c884d05dacdc1155f1aa9c20d1f55d2ca85030283c05e3d16521f5ff2c8602ca17ff651f8bd7cb5267802219244566acc2447703d7d0"
+          },
+          "lines": 2,
+          "candidate_blocks": 2,
+          "selection": "Sole exact single-source write block after successful rebuild; earlier failed-build aggregate also wrote this provider, and both blocks are retained."
+        }
+      },
+      "functions": [
+        {
+          "address": "00c0c7a4",
+          "symbol": "?copy_native_crt_aligned_128_chunks_00c0c7a4@bsp@@YAXPAXPBXI@Z",
+          "current_definition": {
+            "name": "?copy_native_crt_aligned_128_chunks_00c0c7a4@bsp@@YAXPAXPBXI@Z",
+            "section": 3,
+            "value": 0
+          },
+          "code_matches_accepted_CC": true,
+          "bytes": 135,
+          "relocations": [],
+          "artifact": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-memmove-source-cf\\local\\native_crt_memmove_cf\\00c0c7a4_current_provider.bin",
+            "size": 135,
+            "sha256": "9e2d48d460a06c1923eddd855566386a388be278cc781390079b72c01be13738",
+            "sha512": "47f6139436088444ed5b82fa2dc0753b7f1b4579bffa9e911efe9c8a9cf61174ebbeed393f2d3893d15d887554eb3270ff4891308e604b14e6c11463ff8b4e01"
+          },
+          "archive_symbol_definitions": [
+            "bsp_core.dir\\Release\\native_crt_vector_copy.obj"
+          ]
+        },
+        {
+          "address": "00c0c82b",
+          "symbol": "?copy_native_crt_vector_00c0c82b@bsp@@YAPAXPAXPBXI@Z",
+          "current_definition": {
+            "name": "?copy_native_crt_vector_00c0c82b@bsp@@YAPAXPAXPBXI@Z",
+            "section": 4,
+            "value": 0
+          },
+          "code_matches_accepted_CC": true,
+          "bytes": 227,
+          "relocations": [
+            {
+              "offset": 78,
+              "symbol": "?copy_native_crt_aligned_128_chunks_00c0c7a4@bsp@@YAXPAXPBXI@Z",
+              "symbol_index": 10,
+              "type": 20
+            },
+            {
+              "offset": 176,
+              "symbol": "?copy_native_crt_vector_00c0c82b@bsp@@YAPAXPAXPBXI@Z",
+              "symbol_index": 11,
+              "type": 20
+            }
+          ],
+          "artifact": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-memmove-source-cf\\local\\native_crt_memmove_cf\\00c0c82b_current_provider.bin",
+            "size": 227,
+            "sha256": "075e092651f50e0e94aa2d4ee6b17f77f8a6afbf6ce48b026e61b87b6d0cfc4f",
+            "sha512": "2c6ccf5b7885e9ecec1e4c598c3aab2517f1c2b7ab43584fc26a414f9cdc5e8cc4859777557421b2b2c32508888503c24bfe8737c95a6b7354e758ae6e441354"
+          },
+          "archive_symbol_definitions": [
+            "bsp_core.dir\\Release\\native_crt_vector_copy.obj"
+          ]
+        }
+      ],
+      "accepted_commit": "23028888845db06eb24ff66e0ec30e4751f45337",
+      "current_source_text_matches_accepted": true,
+      "line_endings": "Fresh git checkout may use CRLF while frozen source uses LF; text and emitted instruction identity checked."
+    },
+    "native_comparison": "All247 native instruction rows mapped in order to current compiled code. Unchanged nonbranch payload bytes exact; all relative predicates/targets,16 dispatch sites,38 cases over8 domains/30 distinct table targets verified. Exact modified gate read and restored-frame E9 tail verified. Native120 table/38 skippedpadding bytes retained as evidence but omitted from source layout. Arithmetic flags, fourth argument, branch widths/layout and removed table reads explicitly qualified.",
+    "runtime_execution": false
+  },
+  "source_probe": {
+    "authorization": "Root requested one focused source-only probe after static object mapping; no original native function execution.",
+    "fixture": {
+      "aligned_bytes": 64,
+      "source_offset": 0,
+      "destination_offset": 1,
+      "count": 26,
+      "feature_fixture_value": 0,
+      "feature_gate_bypassed": true,
+      "domain_path": "backward alignment3 -> DWORD selector-5 -> remainder3",
+      "expected": "byte0 unchanged; bytes1..26 original i-1; bytes27..63 unchanged"
+    },
+    "source": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-memmove-source-cf\\local\\native_crt_memmove_cf\\probe\\cf_memmove_probe_20260914_9f24.cpp",
+      "size": 1367,
+      "sha256": "fba884f89073d15c883eb71b8f1ba6b16f5d7f0abd6b1ac2dd389353cb7069f2",
+      "sha512": "b1b7408079c532798d1f9d11e583fd7f045098d0d506a346c4614deccdc15949d803121ed7f44718851c12f0572c973d2f41e64e5c09c7a667acd7f3b85a8c83"
+    },
+    "compiler": {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\cl.exe",
+      "size": 891752,
+      "sha256": "95db52a9c9bd300131474769df7d32b342725b1e1574e0fc83a266479b196938",
+      "sha512": "390e9a478e6e3dd08f08b4a5d76a32d7d77239ff17f67bb0bf069d103ce1ee991d801353ef843b93b41fe2dd6dd9eff32f78b80dcc439f4eb61aba675394a6ec"
+    },
+    "archive": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-memmove-source-cf\\local\\native_crt_memmove_cf\\probe\\bsp_core_at_probe.lib",
+      "size": 57939096,
+      "sha256": "0f6340c3d7354bb840d318a09e71c5e64051abe90feaec3e35c3e589832d1cb9",
+      "sha512": "49d4fcffd57619c132e1669f3a02de2c5acd2dab68e249647d49de5f01c56e366d92c775bbb980aee59df8cdc5a0ca0e07362841090369f5ff561408e056a291",
+      "path_at_compile": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-memmove-source-cf\\build\\win32\\Release\\bsp_core.lib"
+    },
+    "object": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-memmove-source-cf\\local\\native_crt_memmove_cf\\probe\\cf_memmove_probe_20260914_9f24.obj",
+      "size": 2317,
+      "sha256": "3af258c173ae4aee8ada19c98e8efb68930a769f59f5ba2ccc3dec9a12e11619",
+      "sha512": "1cf467ac85eb3589d70462a61eb5f0ecd0abb0193552483fed61162218677d622394784781917d5b0a08d6aca7af223b4a538bc26bb16cf718383886735de842"
+    },
+    "executable": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-memmove-source-cf\\local\\native_crt_memmove_cf\\probe\\cf_memmove_probe_20260914_9f24.exe",
+      "size": 11264,
+      "sha256": "01bee26c5f71e52f491fd60cf874047cb6801ce7ac8efad1ac0cd8f6ac962ebc",
+      "sha512": "da78296884aee137526e4ff28d8847e18f78bc52e0cfe27e3ee38a3fd3dde3a9c53d556347afd6e933b3f459f8a4aa0587319f05997ba25df205c820902ff41f"
+    },
+    "command": "\"C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\cl.exe\" /nologo /W4 /WX /Od /EHsc /MD /fp:strict /std:c++17 /I\"J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-memmove-source-cf\\include\" /Fo\"J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-memmove-source-cf\\local\\native_crt_memmove_cf\\probe\\cf_memmove_probe_20260914_9f24.obj\" \"J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-memmove-source-cf\\local\\native_crt_memmove_cf\\probe\\cf_memmove_probe_20260914_9f24.cpp\" \"J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-memmove-source-cf\\build\\win32\\Release\\bsp_core.lib\" /link /MANIFEST:EMBED /MAP:\"J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-memmove-source-cf\\local\\native_crt_memmove_cf\\probe\\cf_memmove_probe_20260914_9f24.map\" /OUT:\"J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-memmove-source-cf\\local\\native_crt_memmove_cf\\probe\\cf_memmove_probe_20260914_9f24.exe\"",
+    "compile_exit_code": 0,
+    "run_exit_code": 0,
+    "stdout": "bytes_checked=64 mismatches=0 returned_destination=1 df_zero=1",
+    "embedded_manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-memmove-source-cf\\local\\native_crt_memmove_cf\\probe\\embedded_manifest.xml",
+      "size": 406,
+      "sha256": "be8918559280a2e74748bf8f6238b568ed7cbf75183b2180a6a8a979a1ebf243",
+      "sha512": "ce095bb84dbf2e72304471f97e80799185fab42b843f95bd84df4b97764786687807f057dc4434287c8982937329e664f7de476445ff6e2cbf298d7a44b48d55"
+    },
+    "link_map": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-memmove-source-cf\\local\\native_crt_memmove_cf\\probe\\cf_memmove_probe_20260914_9f24.map",
+      "size": 22843,
+      "sha256": "026e63fad8f212c7592d054a880b9e6a8984e0ed97b8adc1c80f8661e0dd8486",
+      "sha512": "c833b3d5494390ac38ecffe7cf96ecf0c1135de1107940ba8d1d3660448631ce2bac665fd7aaf695e965cbcba5bcc53e5d42a88b3db30d8cfb8f1c1446343f8d"
+    },
+    "native_original_executed": false,
+    "source_fixture_executed": true,
+    "canonical_feature_owner_proved": false,
+    "game_validated": false,
+    "linked_current_function_binding": {
+      "linked_functions": [
+        {
+          "native_address": "00bf87e0",
+          "symbol": "?move_native_crt_bytes_00bf87e0@bsp@@YAPAXPAXPBXIADI@Z",
+          "linked_va": "00401240",
+          "map_row": " 0001:00000240       ?move_native_crt_bytes_00bf87e0@bsp@@YAPAXPAXPBXIADI@Z 00401240 f   bsp_core:native_crt_memmove.obj",
+          "bytes": 988,
+          "linked_code_hashes": {
+            "size": 988,
+            "sha256": "5a0af1e0155a79102e1967f23855419467c9d158750ab97086c0d3aa1878c402",
+            "sha512": "98c8e1bf6f7625a67971893bf92367b7d11859e917d2be6e65338e8591c54c4f4e089d2c94867c7d9efcc45c9217485cc36313d670e46b0eb0db15ce0efce9b5"
+          },
+          "all_current_object_bytes_match_after_exact_actual_REL32_binding": true
+        },
+        {
+          "native_address": "00c0c7a4",
+          "symbol": "?copy_native_crt_aligned_128_chunks_00c0c7a4@bsp@@YAXPAXPBXI@Z",
+          "linked_va": "00401620",
+          "map_row": " 0001:00000620       ?copy_native_crt_aligned_128_chunks_00c0c7a4@bsp@@YAXPAXPBXI@Z 00401620 f   bsp_core:native_crt_vector_copy.obj",
+          "bytes": 135,
+          "linked_code_hashes": {
+            "size": 135,
+            "sha256": "9e2d48d460a06c1923eddd855566386a388be278cc781390079b72c01be13738",
+            "sha512": "47f6139436088444ed5b82fa2dc0753b7f1b4579bffa9e911efe9c8a9cf61174ebbeed393f2d3893d15d887554eb3270ff4891308e604b14e6c11463ff8b4e01"
+          },
+          "all_current_object_bytes_match_after_exact_actual_REL32_binding": true
+        },
+        {
+          "native_address": "00c0c82b",
+          "symbol": "?copy_native_crt_vector_00c0c82b@bsp@@YAPAXPAXPBXI@Z",
+          "linked_va": "004016b0",
+          "map_row": " 0001:000006b0       ?copy_native_crt_vector_00c0c82b@bsp@@YAPAXPAXPBXI@Z 004016b0 f   bsp_core:native_crt_vector_copy.obj",
+          "bytes": 227,
+          "linked_code_hashes": {
+            "size": 227,
+            "sha256": "19941b635786ef65afc209abb035d16d9862bada5b6c3a78f4d7a5a95c5705f6",
+            "sha512": "2d4074f4b9ed5e534c925a85aa7ff15d0d873652ed0e32875ac4335a7f69a42465cca8b1b9f19f0f8e806c5bf438dada8d960b3f5ee86b667e79a0e13715794a"
+          },
+          "all_current_object_bytes_match_after_exact_actual_REL32_binding": true
+        }
+      ],
+      "probe_actual_source_call": {
+        "section": ".text$mn",
+        "relocation": {
+          "offset": 128,
+          "symbol": "?move_native_crt_bytes_00bf87e0@bsp@@YAPAXPAXPBXIADI@Z",
+          "symbol_index": 17,
+          "type": 20
+        },
+        "opcode": "E8",
+        "caller_cleanup": "83c410 (ADD ESP,10h)",
+        "surrounding_bytes": "0000e92d0100008d4d84516a1a8d55b0528d45b150e80000000083c41089857cffffffc74594"
+      },
+      "linked_bytes_checked": 1350,
+      "actual_library_members_only": true,
+      "runtime_rerun": false
+    },
+    "final_source_whitespace_qualification": "Probe ran once before trailing-space-only source cleanup. Its exact archive is retained here; all1350 linked source/provider bytes are rechecked against final current objects without runtime rerun."
+  },
+  "validation": {
+    "strict_full_msvc_win32_build_exit_code": 0,
+    "native_seeds": 8,
+    "native_seed_matches": 8,
+    "ctests": [
+      "reconstructed_math",
+      "native_math_differential"
+    ],
+    "ctests_passed": 2,
+    "new_tracked_tests": 0,
+    "new_local_authorized_source_probe": 1,
+    "owned_source_runtime_executed": true,
+    "source_fixture": "64-byte aligned buffer D=S+1,n26; all64 expected bytes, returnD,normalDF0",
+    "original_owned_body_executed": false,
+    "ghidra_mutated": false,
+    "settings_mutated": false,
+    "warning_or_linker_policy_changed": false,
+    "game_validated": false,
+    "pushed": false
+  },
+  "owner_boundary": {
+    "actual_direct_tail_provider": "accepted CC __VEC_memcpy source dispatcher with its actual engine/self calls",
+    "private_writable_sections": false,
+    "feature_flag_bootstrap_SEH_owner_supplied": false,
+    "host_copy_or_cpu_api_substitution": false
+  },
+  "failures_preserved": [
+    "First full build failed C2220/C4102 on unused inline-assembly address labels. Failed source/generator/log preserved; unreferenced markers changed to comments, without payload/branch/policy change; second full build passed.",
+    "Compiler-evidence pass1 found both failed aggregate and current own write tlog blocks; pass2 found both aggregate and current provider write blocks. All candidates retained; current sole object-producing source block and sole exact provider source block selected with source/read/Fo/object/archive corroboration.",
+    "Final staging whitespace check found24 trailing-space-only no-operand assembly lines. Trimmed, rebuilt, current object/archive and all1350 probe-linked function bytes reverified. One prior source execution only; its exact archive retained.",
+    "Report refresh CLI refused duplicate existing owned function record; rerun with explicit --replace under same address lease.",
+    "Initial missing worktree index query; index built.",
+    "Initial raw byte provenance comparison exposed fresh CRLF versus frozen LF; normalized source text and exact current provider code verified.",
+    "Read-only rg included nonexistent ghidra_queries.py; actual bsp.py client/verification code read."
+  ],
+  "limitations": [
+    "New four-argument interface and current symbolic code locations are not a drop-in original three-argument ABI or binary replacement.",
+    "Eight CMP/JE ladders preserve selector/register values and DF but change arithmetic flags, instruction layout/widths and original constant-table reads. All30 table targets have no incoming arithmetic-flag consumer before complete writer/return; all38 cases and16 sites checked.",
+    "Original120 table bytes and38 skipped padding bytes are evidence, not executable source padding or a private writable owner.",
+    "Only the existing accepted CC dispatcher is an external provider; current full dispatcher/engine bytes, real calls, source/header inputs and unique archive definitions are checked.",
+    "Canonical0109EEA4 bootstrap/publication, native exception/frame ownership, placement, heap integration and gameplay validation remain separate.",
+    "One local source fixture passed; no native original body execution, broad differential suite, exceptional-path execution or original-game validation was performed."
+  ],
+  "local_inventory": {
+    "directory": "local/native_crt_memmove_cf",
+    "files": 138,
+    "bytes": 117566115,
+    "passes": 2,
+    "algorithms": [
+      "sha256",
+      "sha512"
+    ],
+    "complete_path_set_checked": true,
+    "method": "Whole-file first pass and independent chunked second pass. Report outside local avoids self-reference.",
+    "artifacts": [
+      {
+        "path": "local/native_crt_memmove_cf/00bf87e0_asm_000.txt",
+        "size": 1624,
+        "sha256": "f7b01260e0a7e2db5115e283d9b7497125b5db32a4526965d2f57ea2c4645c27",
+        "sha512": "18a655a5cfab286d5fa8ab0317b40070c66fb7f8422a31eeb2665cb7fa559c0e02fecfc49fe8bbdc05a9209d413c4630ea5a8e38d80611fe2ca86ea7a074739c"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/00bf87e0_asm_055.txt",
+        "size": 2029,
+        "sha256": "a655ac4e999d5c0972f095882c19baf2bb504ae1aa5462a7a688a254322a0588",
+        "sha512": "1b4668f26c52427ac6e4d30c5cecd1e955593bcbd199aae358db261d34cccb2cb0257e601b4c075cfd010705429742b963d8fa4e5c253a9039b2c7965bebdf8c"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/00bf87e0_asm_110.txt",
+        "size": 1647,
+        "sha256": "d37d8e490eee67f74eb64326971ed56102cac24e7ac3fcde1a413908988bc3c6",
+        "sha512": "4958351e885cbd60c7b75b8a7822fc0e91311f00181288d87a8f29e947b9bf27f5a86f4dc60d067511ed342a4588122681511185b3f63809c793d0fd640a48be"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/00bf87e0_asm_165.txt",
+        "size": 2017,
+        "sha256": "d35a73bb7fc48abb437b86bfaa9a4f8d4df623d13a460b7c14c061c28f02d7f6",
+        "sha512": "5b31d1ff0c06418914f71633de2f6a239508f815b2d7730b5f97e147b7d0d007d086efd225c69a127e4d708a300946d9e43af5a79f8925f1eab0a656437f0fef"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/00bf87e0_asm_220.txt",
+        "size": 828,
+        "sha256": "fe794d3103a18a58cbe7eca1536944c5e7839b3d62c6430b2e43b0d386eae8aa",
+        "sha512": "a171392574a213ad1a1fad5c5211f540ee0d68e9789370fc34f80e42d8ea736ff7f7f7e253dcb10e9c0bdf1646eae499d4c2db8dff91b8e8ba747084f59493a2"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/00bf87e0_bytes_000.txt",
+        "size": 616,
+        "sha256": "34eacadcda323862001733ed141201c901c4765b0f15c1f682e0526bff00ed22",
+        "sha512": "358e5fe6284123bd80c61ec4bdc30ebeba9fa83d6fb64c4a7f5ce449dbfd37b5601dbb4608564dfbc4d28e26db34dfdaaf272519dca8df3c2409c2cf6586a61c"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/00bf87e0_bytes_128.txt",
+        "size": 616,
+        "sha256": "9a079b9b022b9300a8d0b1fee18eb7e880a90c416b6523ec1cf36fa51a1ae2b8",
+        "sha512": "288ead13a2a38cd97499e4991c4bc972a07d49b0507089e203cd555d47525715084ed43d8fe92a870bb7863c9500b834fceca5d3e4218ca3d1d5bc07ca0756ac"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/00bf87e0_bytes_256.txt",
+        "size": 616,
+        "sha256": "7dc652a8971056b3d5aecc3caa0dd06a987bdd700f39809cf172e3289534da99",
+        "sha512": "5bd99f55f71e3a3b9079bd169638a4d13fec0daf90ce0acd5bdeb1fde9834619d7507b2b461ecee28846a1e9b67b534130b37a6518f1a7e7b549d33940c670c7"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/00bf87e0_bytes_384.txt",
+        "size": 616,
+        "sha256": "1791b666ae01a23d31f6e68eaf725baf6a0e536b6ba8e5f955ddfd2b5b144d7d",
+        "sha512": "34764c62853500167a758972576b54b717bdce6a043487248b7141ded47a3493c0b9f15db4d87fef15727fbfba987c43ff4dfcb8d2a8510c05696d1ba1da6975"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/00bf87e0_bytes_512.txt",
+        "size": 616,
+        "sha256": "91b830423b5a56d0a9354693a7a22dd215f868555f3b846001c4c6767e8a837c",
+        "sha512": "2f74587cb7c2b01b7b5fa59a62b8caa755976fe39c9564331d21a67c98b01e5001ee01132544bba236d9db00f4072e1ceb4ce7f44570788e61af28fb32a494b0"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/00bf87e0_bytes_640.txt",
+        "size": 616,
+        "sha256": "f57c5f2474b737ec076df90cb44c68fb712d6b4311f989334fc85a040163cba9",
+        "sha512": "4929604412bf1a0b7e0fb8c5e15bfa1eab4183a1063eefcc6d0443f39e01e96c2e1d3ca82a83f265252751a386298a37555554e83f4bd098d7955002b8b2e8d7"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/00bf87e0_bytes_768.txt",
+        "size": 495,
+        "sha256": "f43f3ab4a95430382a4d46f8ccf0ad7863da141deb0378df8fc8240a5b0c8cd5",
+        "sha512": "249279e8e28eff6718bac63ce2d6b8f08bd516f0ee54d14a05183585286f0246310e9d40d3426e3131b3f2f392d8737e3478cd43ce368c4e7e68e47d539ce65b"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/00bf87e0_compiled.bin",
+        "size": 988,
+        "sha256": "9e19e936b0a80a7fc8a1a02e992847fa2ab9062f3ae00a82651967e18284ab6e",
+        "sha512": "e22d0450ce6269cf4c6908d72a1eeb26a6d7c0508e22b136ca9ea6d51712d826d6a277c2a79a70f78dcb7d0b53fed841268b5bf02397995055db7afdac4e6399"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/00bf87e0_live.bin",
+        "size": 869,
+        "sha256": "20a42c529f48a960faf6a65a969c01f22ea16d71ce20070ee6dbd79a86b5a427",
+        "sha512": "d221d3ac3235c6c96a6ea490c491425b488abd997580ba1aa05a0f3866a24372142d77edb819f7d3c72dfb37743638323aeeb6d131576cd88f03726e84513668"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/00bf87e0_pe.bin",
+        "size": 869,
+        "sha256": "20a42c529f48a960faf6a65a969c01f22ea16d71ce20070ee6dbd79a86b5a427",
+        "sha512": "d221d3ac3235c6c96a6ea490c491425b488abd997580ba1aa05a0f3866a24372142d77edb819f7d3c72dfb37743638323aeeb6d131576cd88f03726e84513668"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/00bf87e0_proto.txt",
+        "size": 305,
+        "sha256": "fc60eb977178c588b072c7a585867aecadc3a56b1adb85afb64577a772fe3e68",
+        "sha512": "93e989d6a706df4e6404fa31c2f6e99deaa729b55a485ccac340401a3673650ae53938ed9a84caf3d4a77a71faa9cc828b6bca11cfef4957249104bfbaf4d2d2"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/00c0c7a4_current_provider.bin",
+        "size": 135,
+        "sha256": "9e2d48d460a06c1923eddd855566386a388be278cc781390079b72c01be13738",
+        "sha512": "47f6139436088444ed5b82fa2dc0753b7f1b4579bffa9e911efe9c8a9cf61174ebbeed393f2d3893d15d887554eb3270ff4891308e604b14e6c11463ff8b4e01"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/00c0c82b_current_provider.bin",
+        "size": 227,
+        "sha256": "075e092651f50e0e94aa2d4ee6b17f77f8a6afbf6ce48b026e61b87b6d0cfc4f",
+        "sha512": "2c6ccf5b7885e9ecec1e4c598c3aab2517f1c2b7ab43584fc26a414f9cdc5e8cc4859777557421b2b2c32508888503c24bfe8737c95a6b7354e758ae6e441354"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/bsp_core_build.lib",
+        "size": 57939096,
+        "sha256": "04221699f00945ad0874c0fe2e68ac8466e980a3af50619bf539d7069c625198",
+        "sha512": "8031d61f6fb341b41894e535babf7c56e2a0ce5fc55fede77d37bc28cabd22ef2f0fd1ad5fdb720b3d472e0d1a0c55402833f6d212d38042fe190986cd9fff4c"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/build_exit_code.txt",
+        "size": 3,
+        "sha256": "13bf7b3039c63bf5a50491fa3cfd8eb4e699d1ba1436315aef9cbe5711530354",
+        "sha512": "37436ced85e5cd638973e716d6713257d692f9dd2e1975d5511ae3856a7b3b9f0d9e497315a058b516ab31d652ea9950938c77c1ad435ea8d4b49d73427d1237"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/build_final.txt",
+        "size": 2806,
+        "sha256": "24d238ef771273cbbd562bbac92bb27c879708ec8f200a33a76e62dc508222bd",
+        "sha512": "e646836701ac007bd34ece395c81d714f5451590cac8a9720cee7c46e9b407994c202d0a41cc5317c3d2fbb4788fc3faef4b461aaeec1a9946001ed0fd2a828a"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/build_first.txt",
+        "size": 99200,
+        "sha256": "186849c1112bac7da20f587a3e39c31579fa9b15a345b796eeb706c5588500bb",
+        "sha512": "de9e47f54e13a097ee6de793283f43714002a1c911b83990d522c02328dedc199defa9516437ec0f0cf21c0b9778995b2d7545c25f660f65db205a56c0951bdb"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/build_first_exception.txt",
+        "size": 236,
+        "sha256": "6cd98389835465b02ee602d8711205af2d258ff022e42d8965f19cf582fbf85e",
+        "sha512": "bb1d228b4bda3e2d3c58fe246d810b07e6d69e9eea249d4d6407e37f316d6a5514950a2fd03502f7afe42907873e13aaca560a66326d26a0142ae06531afccc4"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/build_first_exit_code.txt",
+        "size": 3,
+        "sha256": "f1b2f662800122bed0ff255693df89c4487fbdcf453d3524a42d4ec20c3d9c04",
+        "sha512": "7c735c613ece191801114785c1ee26a0485cbf1e8ee2c3b85ba1ad290ef75eec9fede5e1a5dc26d504701f3542e6b6457818f4c1d62448d0db40d5f35c357d74"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/build_second.txt",
+        "size": 6296,
+        "sha256": "181da0f9048d9377bc76c1cd076b93465a1b47d2aebc06b7771b187b8e3e5201",
+        "sha512": "72524d858d3a040711e98364df034bb7299e2f1b0a30152b74d04c24dead6576e5d2e47b6e0359b9095d1bf3f528d056c5f25de7a5e7c2f8a0322e4adbed48e1"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/capture.py",
+        "size": 4922,
+        "sha256": "717fd9235e9e621057d0bb895860905b3c1b5996411c9d95050404ecbc91ed77",
+        "sha512": "bfa379c8baee0e1b1ebdc44aa85be719bee0d3bdd197a732df50bfdff8daded739f469518d2ba26f22c4e1820c88036704862c07403bf3f01e8c3b28b6059b7a"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/capture_result.txt",
+        "size": 133,
+        "sha256": "73c159d080d9c37c4b2fcd6959c5b319b32c3d74aad3b6be49d9b7faa8344774",
+        "sha512": "3972b0ba578a2e1b157c363fc4d45902952d118be483a8ce552601cd2395180c22525d7b89a38841bb5b7ee58cbd6bdbc79c705126ede26a4288e98cc3223d47"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/capture_summary.json",
+        "size": 2140,
+        "sha256": "d01f116644cef9f747320d4be77a3f985456b93de55bde3c4d6d5788f9ce8cc9",
+        "sha512": "97fa42ffc027e906b96689661ee7657ad216a9ec09e885e3a9605036fbb5b714eafa52f6c938d2586ce06f726d1c8126d277884f9841cb50bd782224cb0e0cae"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/CL.command_provider.txt",
+        "size": 997,
+        "sha256": "6e2897f12dcd580f2e7abc8e9f5b6a9a3a8efab4befa3bb5ecf551376dc413a3",
+        "sha512": "5c6504922870c8a5f331aeb3382869d4c030dd9eff24eb3e73f6e27954e4f23e2174212f0da3253828dcebaed30e0bafdc0023f558e80f1afe23ea409148691c"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/CL.command_target.txt",
+        "size": 989,
+        "sha256": "1d6abf1a5a7ec8efcce23c4a7726331a6277c906377ec36281ee7c50285b3c1f",
+        "sha512": "dc09ef3cf745da08e8a97ef92ab6ff5b64b5e2404449ef2186e0b3de57b0c4d6475625d1baf9f30f455dcbd786d82ffd1ec15907584e04ce536929d5d32c3db6"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/CL.read_provider.txt",
+        "size": 1023,
+        "sha256": "d1467e1c7f75ddeb126d4ec486da959f355b5c59dca9f9456f988427626b7562",
+        "sha512": "9ca40d1ccc8fb97c50c66c31ff6165a3656727969f6a755d2de8f743268db8d831247281abedbada90312a17b0211b9edd7801d741c3a0d75a848b26a7a43959"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/CL.read_target.txt",
+        "size": 1212,
+        "sha256": "2084fa0f5ae01c8305c2554b6e7179500aa22d2a68c1058a17ee0bd0c3c663ef",
+        "sha512": "a868591900e34e2f32ed81c52147cf970f4f6b9e0d055d31f0659ed3b196ab5254c5f0b7f0a5e5efa44d1bf15e8664d6014c9ac03f6eb3be4a428b84df3ee9a2"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/CL.write_candidate_0.txt",
+        "size": 299701,
+        "sha256": "640fb336569fecf359c6e9174a617bde5fd9af2406e80d7ed61bfe0f649ac7f2",
+        "sha512": "623099e352cb44f5065eb1f770f6285412555321ff1e1c34698c76fa93244ace5ab3cb0e41911e5e54c1b332f5cd06797ecffdce38bef5ea197e64725c797cca"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/CL.write_candidate_1.txt",
+        "size": 238,
+        "sha256": "d5cb1c38a78d04bbf2addbf301f55b8dd1bf2fd942886159241bec878b41ce4b",
+        "sha512": "358bc867e83c5e9a8c5f41c2a16c7c0b971de5ef7b4c33c589ef58eedc8849353c33cb50a1cf4a6633b898ec792cbb497ad6b3cb4f96bd41bbe93a7f8bc728a5"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/CL.write_object_line.txt",
+        "size": 133,
+        "sha256": "73506dc99c5058c92d6b5bbf3f7503fb9b82859d91e8568dfa0f07369a0a92c1",
+        "sha512": "dc3ebae0f8803b923fe14ccdb75b6b7237887bcd8099155e4759815039799f520ed0ea73b768817c5200bcf17d42174e5034bdfac2850e18c04b4fffd0777b7e"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/CL.write_provider.txt",
+        "size": 246,
+        "sha256": "c8c82d9a7c2bd2d4500c916730f1b85eed41efe1a2df89dc46c7b435c17bca8e",
+        "sha512": "30dcd7e3029e7a5ed466c884d05dacdc1155f1aa9c20d1f55d2ca85030283c05e3d16521f5ff2c8602ca17ff651f8bd7cb5267802219244566acc2447703d7d0"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/CL.write_provider_candidate_0.txt",
+        "size": 299701,
+        "sha256": "640fb336569fecf359c6e9174a617bde5fd9af2406e80d7ed61bfe0f649ac7f2",
+        "sha512": "623099e352cb44f5065eb1f770f6285412555321ff1e1c34698c76fa93244ace5ab3cb0e41911e5e54c1b332f5cd06797ecffdce38bef5ea197e64725c797cca"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/CL.write_provider_candidate_1.txt",
+        "size": 246,
+        "sha256": "c8c82d9a7c2bd2d4500c916730f1b85eed41efe1a2df89dc46c7b435c17bca8e",
+        "sha512": "30dcd7e3029e7a5ed466c884d05dacdc1155f1aa9c20d1f55d2ca85030283c05e3d16521f5ff2c8602ca17ff651f8bd7cb5267802219244566acc2447703d7d0"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/CL.write_target.txt",
+        "size": 238,
+        "sha256": "d5cb1c38a78d04bbf2addbf301f55b8dd1bf2fd942886159241bec878b41ce4b",
+        "sha512": "358bc867e83c5e9a8c5f41c2a16c7c0b971de5ef7b4c33c589ef58eedc8849353c33cb50a1cf4a6633b898ec792cbb497ad6b3cb4f96bd41bbe93a7f8bc728a5"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/CMakeCXXCompiler.cmake",
+        "size": 6498,
+        "sha256": "1e335b70d73e508c6038c58b3dee1b26845afbe82697b05b9a0a759c1ae68854",
+        "sha512": "6c66a6c1d55b9d08e5d9146d3f528cdf35f924a22d34e058f3d96ea306fc5923add11ac2d9866e14df89001b24172e45a8eb740b830b547c3f79e8e64aba4ff7"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/commit_message.txt",
+        "size": 741,
+        "sha256": "f443e50dd5a8f28651c7d70f61412f08ef22138e6e82d007918aafd7501aa4c1",
+        "sha512": "ff05432e664b3af3492db2d36f4406502f992a1a1c8fce3fa21590250124ec15785b8f6b3a15f63b6ea07778c78c2f3453b1d8ccfe6c0b38e72fd44bda942544"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/compiled_mapping.json",
+        "size": 112268,
+        "sha256": "c93097fcb84d933dfb138a91deb982dd57efb001d5610c201c10a71cabe26bdc",
+        "sha512": "dbb037e7e36320250f60a1742a0882ca76667c7189835a03094070c150112bc3848d2e7e2ff77275760fbdfb7eae7d89e5e86e4a05ca92ad17cda5416ffd3de4"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/compiler.py",
+        "size": 20850,
+        "sha256": "a59d6a54932653479ed58ee2be2a6e11eac0abb042b38fb1a7bf134f7f986d94",
+        "sha512": "05b06d4dcb44fd8ebade9cf59128bf9ac0c15f9ed93f11ba2aa727e0263d6b23efd51850eff54589a92225cc7993e9ddb2e0c262a98f47cbcaa7e983afdbd912"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/compiler_evidence.json",
+        "size": 12364,
+        "sha256": "46776279067c8031a6417c86e6e875a360c1766e004ac3355b074693dce9048a",
+        "sha512": "72d5ce0901ee5785d0c5063461bff1d70250d0d9f4ad2e4fb52483c577bdda4e66ec2d66644e751700f7084af6af572c341dae74db512edea65e1833c3ba660c"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/compiler_final_result.txt",
+        "size": 326,
+        "sha256": "1be8444173ee4652934731eb16c556dc74016368f86b5b1ad86b4d4daed024eb",
+        "sha512": "a4654e54443011aaaa152828376819c648cb25f176a6753c5074a029f8eab09a19d06019913afa0904543f4407cef6627cf7cbcb8a415ff6e5ff4828d4f13c10"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/compiler_first_failed.py",
+        "size": 19845,
+        "sha256": "598e3a1ae75f4839788de6afff76c93da50a5a9499105fbdb3c3c2d2b79ac79d",
+        "sha512": "80b816c0e68fc54b9235b14c2002656b3b849513cd55c24c33ac5918ed770d7dd7f60883b11a228b3f6b4e41af7611256634817e31805cfde5139058187146e2"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/compiler_first_result.txt",
+        "size": 287,
+        "sha256": "b85fcf48a2cf5ee5682059fc82b447f5e15dd40a7f49a9fcd8c874bcd04260ff",
+        "sha512": "1f397a17e3cb924f85381174cbedf083b267cede0534c0877122eff5efebbf83d7665ea4fe03dc37d7dac4919af3421d3b1e1d6bdd2f1eb88167b68257f7ae4a"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/compiler_second_failed.py",
+        "size": 20374,
+        "sha256": "9c92e0b14512c3aa08e78a901bb58d795a5f680e6d4ae2cd9aae835df05f229a",
+        "sha512": "79e0ee0b45a328b81f89080be111cbb89877ec648152ffc3673aafb37b1b9aaffd86db906a367472702742f0ee30c60a58b67754925930a319f69877a42bdabb"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/compiler_second_result.txt",
+        "size": 370,
+        "sha256": "941733cea1d7566da2422078d42efdf9d19101ac688d884157fbb01d0ec8589e",
+        "sha512": "f8c8f27fa99c0f277c04c99197605d134489e265a657e36bcd67c7c55f370ab98c8d25e0b1f928de3edde23a33ff75ea95193392412872996400cd187f56a4c2"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/compiler_third_result.txt",
+        "size": 326,
+        "sha256": "1be8444173ee4652934731eb16c556dc74016368f86b5b1ad86b4d4daed024eb",
+        "sha512": "a4654e54443011aaaa152828376819c648cb25f176a6753c5074a029f8eab09a19d06019913afa0904543f4407cef6627cf7cbcb8a415ff6e5ff4828d4f13c10"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/final_index.txt",
+        "size": 142,
+        "sha256": "7ba383f34883c637889d8f7bebd9557a3dc8e8b8e7fa4423b87a53c1379c51b5",
+        "sha512": "b5d13c4be93b9cc69ee4b05b7ea29124acbf121434d932f47fd2c5c81cfe0c35ae1d1b064f179150e761c9871c54e546f8ac31f2684a93cd5f5687a3ad5494bd"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/first_failed_source.cpp",
+        "size": 16580,
+        "sha256": "2ade59859ffcf69c6a356ea42697da537fadd4a44fb9d7697c2f4e540a803df6",
+        "sha512": "938f34fccdca73478be1c7ee80f7c2324856e2cd80cc39ec159a6be4629939f44838f46328816195b064866d80657cd9439e73bc45025f0a81282ec379d1ced1"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/first_lookup_failure.txt",
+        "size": 113,
+        "sha256": "efbd2367e8f1bf1d2c162f919a6dc6843b1fb6a8f2e797ea2a406aa6d5a01ecd",
+        "sha512": "bb0ee53f656b48165455fe2660dacfdd0e8e52c02b90aeaa719a610fd31925989393d1bbbfe7b90c2bb7f6e8da60467f312f26caefdd6121ca44b58df8759c09"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/inventory.py",
+        "size": 2521,
+        "sha256": "9a92c6b25dd98cc3b65ae8cc79ea97c987b7ed16d981800deb79e8c47b9d41ff",
+        "sha512": "01e7dad50bc76502c9e243f37e5f9afcc71a80ec03d26778ef467b64cbd27a01cb019d545d37f07a8b72f15439b37368fbcd82703baee29f547ccbeec3e51c53"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/ledger_records.json",
+        "size": 2811,
+        "sha256": "e2e5ce17051cd420e658318f776233223686006feeb4fd7cea18cfc7ecb71db0",
+        "sha512": "6a8af5b63d10c32466f68865f619947190eb2f1502cd68e15da9786d9054868446511c5b7858ec24c67b8a96eddcbcedd44dd70086efba491086a724cb76310f"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/native_call_check.json",
+        "size": 154,
+        "sha256": "ed9b537128f9a1b53c4475cf1200337d0a67858e1095c75961ee64b83ef13973",
+        "sha512": "6547312a95cf82153e4b91d1fa6f9c295c8aca4fad105b8c11000b95e4d52718f81234787a002cc003201cbc4f1ff4f6152d3d6910623d21c7485c08e5fc4378"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/native_crt_memmove_archive.obj",
+        "size": 1797,
+        "sha256": "4647c697824d1f6542ed2ae87578faf39bec1d5c379968613da63e60f9bff3a1",
+        "sha512": "478189a87767abc2c7a62fe388e97cce90a2068f540c012710a469821196fff8f67d9a2f6d8b62fad10d0b866af7e7a9e71b53e04d5f05d3b0ff54f5e4f5a3d0"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/native_crt_memmove_build.obj",
+        "size": 1797,
+        "sha256": "4647c697824d1f6542ed2ae87578faf39bec1d5c379968613da63e60f9bff3a1",
+        "sha512": "478189a87767abc2c7a62fe388e97cce90a2068f540c012710a469821196fff8f67d9a2f6d8b62fad10d0b866af7e7a9e71b53e04d5f05d3b0ff54f5e4f5a3d0"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/native_crt_vector_copy_archive.obj",
+        "size": 1277,
+        "sha256": "798dc1d2e0ee772886c1f47e91f7576322066016024f4d704b79f82311b47426",
+        "sha512": "9e40304d2e9472abaa72528db1bb22bee2c84d27642a66af872a516c396bf33c512ec718bad040a18613b78f9ce9eb458f120d31bbd373fbc940e6b2468b5c4c"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/native_crt_vector_copy_build.obj",
+        "size": 1277,
+        "sha256": "798dc1d2e0ee772886c1f47e91f7576322066016024f4d704b79f82311b47426",
+        "sha512": "9e40304d2e9472abaa72528db1bb22bee2c84d27642a66af872a516c396bf33c512ec718bad040a18613b78f9ce9eb458f120d31bbd373fbc940e6b2468b5c4c"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/pinned/00bf87e0_asm_000.txt",
+        "size": 1624,
+        "sha256": "f7b01260e0a7e2db5115e283d9b7497125b5db32a4526965d2f57ea2c4645c27",
+        "sha512": "18a655a5cfab286d5fa8ab0317b40070c66fb7f8422a31eeb2665cb7fa559c0e02fecfc49fe8bbdc05a9209d413c4630ea5a8e38d80611fe2ca86ea7a074739c"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/pinned/00bf87e0_asm_055.txt",
+        "size": 2029,
+        "sha256": "a655ac4e999d5c0972f095882c19baf2bb504ae1aa5462a7a688a254322a0588",
+        "sha512": "1b4668f26c52427ac6e4d30c5cecd1e955593bcbd199aae358db261d34cccb2cb0257e601b4c075cfd010705429742b963d8fa4e5c253a9039b2c7965bebdf8c"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/pinned/00bf87e0_asm_110.txt",
+        "size": 1647,
+        "sha256": "d37d8e490eee67f74eb64326971ed56102cac24e7ac3fcde1a413908988bc3c6",
+        "sha512": "4958351e885cbd60c7b75b8a7822fc0e91311f00181288d87a8f29e947b9bf27f5a86f4dc60d067511ed342a4588122681511185b3f63809c793d0fd640a48be"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/pinned/00bf87e0_asm_165.txt",
+        "size": 2017,
+        "sha256": "d35a73bb7fc48abb437b86bfaa9a4f8d4df623d13a460b7c14c061c28f02d7f6",
+        "sha512": "5b31d1ff0c06418914f71633de2f6a239508f815b2d7730b5f97e147b7d0d007d086efd225c69a127e4d708a300946d9e43af5a79f8925f1eab0a656437f0fef"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/pinned/00bf87e0_asm_220.txt",
+        "size": 828,
+        "sha256": "fe794d3103a18a58cbe7eca1536944c5e7839b3d62c6430b2e43b0d386eae8aa",
+        "sha512": "a171392574a213ad1a1fad5c5211f540ee0d68e9789370fc34f80e42d8ea736ff7f7f7e253dcb10e9c0bdf1646eae499d4c2db8dff91b8e8ba747084f59493a2"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/pinned/00bf87e0_bytes_000.txt",
+        "size": 616,
+        "sha256": "34eacadcda323862001733ed141201c901c4765b0f15c1f682e0526bff00ed22",
+        "sha512": "358e5fe6284123bd80c61ec4bdc30ebeba9fa83d6fb64c4a7f5ce449dbfd37b5601dbb4608564dfbc4d28e26db34dfdaaf272519dca8df3c2409c2cf6586a61c"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/pinned/00bf87e0_bytes_128.txt",
+        "size": 616,
+        "sha256": "9a079b9b022b9300a8d0b1fee18eb7e880a90c416b6523ec1cf36fa51a1ae2b8",
+        "sha512": "288ead13a2a38cd97499e4991c4bc972a07d49b0507089e203cd555d47525715084ed43d8fe92a870bb7863c9500b834fceca5d3e4218ca3d1d5bc07ca0756ac"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/pinned/00bf87e0_bytes_256.txt",
+        "size": 616,
+        "sha256": "7dc652a8971056b3d5aecc3caa0dd06a987bdd700f39809cf172e3289534da99",
+        "sha512": "5bd99f55f71e3a3b9079bd169638a4d13fec0daf90ce0acd5bdeb1fde9834619d7507b2b461ecee28846a1e9b67b534130b37a6518f1a7e7b549d33940c670c7"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/pinned/00bf87e0_bytes_384.txt",
+        "size": 616,
+        "sha256": "1791b666ae01a23d31f6e68eaf725baf6a0e536b6ba8e5f955ddfd2b5b144d7d",
+        "sha512": "34764c62853500167a758972576b54b717bdce6a043487248b7141ded47a3493c0b9f15db4d87fef15727fbfba987c43ff4dfcb8d2a8510c05696d1ba1da6975"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/pinned/00bf87e0_bytes_512.txt",
+        "size": 616,
+        "sha256": "91b830423b5a56d0a9354693a7a22dd215f868555f3b846001c4c6767e8a837c",
+        "sha512": "2f74587cb7c2b01b7b5fa59a62b8caa755976fe39c9564331d21a67c98b01e5001ee01132544bba236d9db00f4072e1ceb4ce7f44570788e61af28fb32a494b0"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/pinned/00bf87e0_bytes_640.txt",
+        "size": 616,
+        "sha256": "f57c5f2474b737ec076df90cb44c68fb712d6b4311f989334fc85a040163cba9",
+        "sha512": "4929604412bf1a0b7e0fb8c5e15bfa1eab4183a1063eefcc6d0443f39e01e96c2e1d3ca82a83f265252751a386298a37555554e83f4bd098d7955002b8b2e8d7"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/pinned/00bf87e0_bytes_768.txt",
+        "size": 495,
+        "sha256": "f43f3ab4a95430382a4d46f8ccf0ad7863da141deb0378df8fc8240a5b0c8cd5",
+        "sha512": "249279e8e28eff6718bac63ce2d6b8f08bd516f0ee54d14a05183585286f0246310e9d40d3426e3131b3f2f392d8737e3478cd43ce368c4e7e68e47d539ce65b"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/pinned/00bf87e0_decompile_000.txt",
+        "size": 1579,
+        "sha256": "bcd08f12cd5c714eb15e1c162da2d34fbc0098282fa3a2440e38a1613e5e77d1",
+        "sha512": "42bf762dfaf4b1ada255eb32853ddfa3f90b336f28d16552bf92c0ba0a2e727a82991f7346c341411b731a1120399e27e331cfa49d6d4b6526eb68488b31cc2a"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/pinned/00bf87e0_live.bin",
+        "size": 869,
+        "sha256": "20a42c529f48a960faf6a65a969c01f22ea16d71ce20070ee6dbd79a86b5a427",
+        "sha512": "d221d3ac3235c6c96a6ea490c491425b488abd997580ba1aa05a0f3866a24372142d77edb819f7d3c72dfb37743638323aeeb6d131576cd88f03726e84513668"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/pinned/00bf87e0_lookup.txt",
+        "size": 603,
+        "sha256": "ac9dc16bab07c9134d56ed440cc9ba3cb5150994fc4609e72ad7ed07ed0099e1",
+        "sha512": "4fc251e1d840d921eb947fd0cb7f17df01e439e3297f5c2fa11158c2c7eddae8510545829c2280ef4600a0269a90fb15d2fd9c8e0f370939c70384c2c74b00c3"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/pinned/00bf87e0_pe.bin",
+        "size": 869,
+        "sha256": "20a42c529f48a960faf6a65a969c01f22ea16d71ce20070ee6dbd79a86b5a427",
+        "sha512": "d221d3ac3235c6c96a6ea490c491425b488abd997580ba1aa05a0f3866a24372142d77edb819f7d3c72dfb37743638323aeeb6d131576cd88f03726e84513668"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/pinned/00bf87e0_raw_code.txt",
+        "size": 12889,
+        "sha256": "38426d80617b114f12b799bc8dd1cb0cf2fbcbd225eef2f606075e3b25f60fc6",
+        "sha512": "3c1950762eff4da445413b04155dd0ac6a3b9e0b5bf64092ccd8d2bf19f4bf8526c4b1efde4ca9a2da5631f4d094687f7b81ffe9aab9e38825cdeb3a6b174e5d"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/pinned/decoded_code.json",
+        "size": 51641,
+        "sha256": "726cbf76a10b3c94878e06b1204a075c150da61a4730be6b2330710b8df006bd",
+        "sha512": "57aaad3578d8e81d4a18fdcf33de6dcfc0db6a89098f42d6a2eacf655c30e8dc4689a617eb53030162fb99318a21432bf0be0ed312c16397dfb5d905594db9f3"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/pinned_by_report.json",
+        "size": 66889,
+        "sha256": "92778e36b0b564b0b2b22209f0ea4c025b60b612a9c122528ef622d91526ee5d",
+        "sha512": "9a8e7e53355305e9cea7b489e9ecbfb8b3f4c41f20bf89ecda01f00dffffc4f8b352a0876ec6146f7e0112f9df2a170431c1f973a674c558dcc081c7fd23007a"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/pinned_ca_cc_review.json",
+        "size": 1438,
+        "sha256": "cad7beaac91e0f47e19faf27b245d661f4621aecfb0ab4907c7d05b36fe5517a",
+        "sha512": "9001a25bf17f85d7192da7fa52f4783f2c2e09bbecb8dc5529a5ce94dbbae0b0a3c5502f460dc96dbbca6e5d8f0ae8220154ec44a21dd0275d5e8925e7b1c356"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/pinned_cc_report.json",
+        "size": 65978,
+        "sha256": "bff9216277980cf3be91d2056e39b1540e5f57bed246440f36eb2f396d65f612",
+        "sha512": "e033ac566425f855da27e32957fd6aea1d8ddc559990f7d6462bbcbb18aeffc2e6b6c6bebe87e0d9c1b9c833a5b2703f587c44e41de488b371a7af5edd7d8a91"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/pinned_cd_handoff.json",
+        "size": 12436,
+        "sha256": "243cf70e98f8e0b5e23a7831e6dd05e782b5d843a4f51537dba4cf05400b0593",
+        "sha512": "f34d19d83d29ba260f1a5628cae8fcf333c170373b05fd1f1ef48ffb5cb64465236c6c82629d7ddfcda018458e4bb3a55625d7719786461e27131d6056b1b460"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/pinned_cd_proposal_review.json",
+        "size": 7143,
+        "sha256": "10a56078dbe310556044a5907ad9da885ef80d044f9913846b94ae61d914e280",
+        "sha512": "94d1d2a9dd72d237d609c2e5907e7ee2132b6c3fef10a0982c1d5f0a7441e7894b95ba479fffbf753a848ca4fb61d71b298c1eb0d6596db7bcca26e9fb22fb87"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/pinned_cd_table_and_flag_audit.json",
+        "size": 15697,
+        "sha256": "6ccadc91bfeecf8aa51d3bb2491069ff2359da765d065a28034913730516c3ae",
+        "sha512": "8028fb68ef157d5f32bdea4c7f65b88550de54f3888e9baf308eebbf270cbf49e3b0c54efe0ad4c6d72813adb7de935c49342d3ec38058b9c3f490b46aa04a30"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/pre_whitespace_report.json",
+        "size": 100650,
+        "sha256": "14e28d3e1e3ef4188bcce5dea9fc4c465c3b502892bd751a0895ce9bf5afafd6",
+        "sha512": "0e67ba298c14817efd8ea3f0d9614f358719293129b80f950071bd9f208b346b252be2fba25ae3f8458c19ca7cb319c551362bea3a14296a8a8da772183b9562"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/pre_whitespace_source.cpp",
+        "size": 17828,
+        "sha256": "8a3218de0013be64482f0111c032c7109eb5a5b55a79f0dc0fc3352b0b44bf3f",
+        "sha512": "24ce69521cefad76c294ca0228221717cfafb62eb74318c422c5dfc3d6b5dc3f9dc1ab16bd50040103db6df8cb6b430c1980c66dcda72093a8317cd8e429536c"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/pre_whitespace_source.obj",
+        "size": 1797,
+        "sha256": "b4537a22e96db13208d79bc7be75ae61d8a5f7738d72e7296c0b13e1b3fe6333",
+        "sha512": "341e4380e1f7e77c88ab8734921b80ff60421b5dff4347e2b21fe67b81a81336b64bb2e5fcb363eb6f7560f09686649aeb14a18d5d70b7842787bf52600a9aa1"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/probe/bsp_core_at_probe.lib",
+        "size": 57939096,
+        "sha256": "0f6340c3d7354bb840d318a09e71c5e64051abe90feaec3e35c3e589832d1cb9",
+        "sha512": "49d4fcffd57619c132e1669f3a02de2c5acd2dab68e249647d49de5f01c56e366d92c775bbb980aee59df8cdc5a0ca0e07362841090369f5ff561408e056a291"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/probe/cf_memmove_probe_20260914_9f24.cpp",
+        "size": 1367,
+        "sha256": "fba884f89073d15c883eb71b8f1ba6b16f5d7f0abd6b1ac2dd389353cb7069f2",
+        "sha512": "b1b7408079c532798d1f9d11e583fd7f045098d0d506a346c4614deccdc15949d803121ed7f44718851c12f0572c973d2f41e64e5c09c7a667acd7f3b85a8c83"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/probe/cf_memmove_probe_20260914_9f24.exe",
+        "size": 11264,
+        "sha256": "01bee26c5f71e52f491fd60cf874047cb6801ce7ac8efad1ac0cd8f6ac962ebc",
+        "sha512": "da78296884aee137526e4ff28d8847e18f78bc52e0cfe27e3ee38a3fd3dde3a9c53d556347afd6e933b3f459f8a4aa0587319f05997ba25df205c820902ff41f"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/probe/cf_memmove_probe_20260914_9f24.map",
+        "size": 22843,
+        "sha256": "026e63fad8f212c7592d054a880b9e6a8984e0ed97b8adc1c80f8661e0dd8486",
+        "sha512": "c833b3d5494390ac38ecffe7cf96ecf0c1135de1107940ba8d1d3660448631ce2bac665fd7aaf695e965cbcba5bcc53e5d42a88b3db30d8cfb8f1c1446343f8d"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/probe/cf_memmove_probe_20260914_9f24.obj",
+        "size": 2317,
+        "sha256": "3af258c173ae4aee8ada19c98e8efb68930a769f59f5ba2ccc3dec9a12e11619",
+        "sha512": "1cf467ac85eb3589d70462a61eb5f0ecd0abb0193552483fed61162218677d622394784781917d5b0a08d6aca7af223b4a538bc26bb16cf718383886735de842"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/probe/compile_exit_code.txt",
+        "size": 3,
+        "sha256": "13bf7b3039c63bf5a50491fa3cfd8eb4e699d1ba1436315aef9cbe5711530354",
+        "sha512": "37436ced85e5cd638973e716d6713257d692f9dd2e1975d5511ae3856a7b3b9f0d9e497315a058b516ab31d652ea9950938c77c1ad435ea8d4b49d73427d1237"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/probe/compile_launcher_output.txt",
+        "size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "sha512": "cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce47d0d13c5d85f2b0ff8318d2877eec2f63b931bd47417a81a538327af927da3e"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/probe/compile_probe.cmd",
+        "size": 1429,
+        "sha256": "54ec462ad12b79b60f83eca3e6ddba468c279d4920cf27b687d10cd3bd195195",
+        "sha512": "60a935edd475309a7ca8d714db14debb2225f709a65784047ae317ea58249bfcbda3ecda5549a82979292b147ebfa513589c54eb375e78db5fb9303acf8fbfa6"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/probe/compiler_output.txt",
+        "size": 36,
+        "sha256": "f10389f5ce4a90792af7618667176d9a0002c49534c279a9a97ffbe70f4aa101",
+        "sha512": "2dec62a9c93f576deee04a48092410c59e3f5665d2652d81ce9ffc79567f6dcacb2534bf1208c4775fb4bc9252571df0c1a4b6d103e2b5f16da1461742ba2489"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/probe/embedded_manifest.xml",
+        "size": 406,
+        "sha256": "be8918559280a2e74748bf8f6238b568ed7cbf75183b2180a6a8a979a1ebf243",
+        "sha512": "ce095bb84dbf2e72304471f97e80799185fab42b843f95bd84df4b97764786687807f057dc4434287c8982937329e664f7de476445ff6e2cbf298d7a44b48d55"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/probe/manifest_output.txt",
+        "size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "sha512": "cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce47d0d13c5d85f2b0ff8318d2877eec2f63b931bd47417a81a538327af927da3e"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/probe/manifest_read.cmd",
+        "size": 458,
+        "sha256": "e7bf7f8da2621da6c82e53c929f079f1a530d73355f2873d1eb2029907ba6c0e",
+        "sha512": "c12359d6f8f3cc9fd3333059f0e23d677ba1f1a02542058f9e235aed726de096b2cc99fd4ba020573eec80156dc947a3ea76a840f2a3d7f143fe72ad32f43f33"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/probe/probe_executable_dump.txt",
+        "size": 8296,
+        "sha256": "e8b4c5c2f2b916db32f2eb6bbf54f9be23493f0fa080225e53cf607dc51530a8",
+        "sha512": "59c0c580531624f7172d103953a75c9b7f2e7a84f4873c895e710682a7359f9d1f5f02c892afeda46445dafa222b0efe9dd7aa755414c3815d3f53a3389c59ab"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/probe/probe_object_dump.txt",
+        "size": 20100,
+        "sha256": "28e716abdb32e50bbb05db9d6434287c20c44bd8c93f91a9ee1658b41d63c75a",
+        "sha512": "bab4622816a748266570241948ebd7756014bcb305a2d708bc194e32d5539e71b216512c657cf76cafda116efecbf7eb9cae8b049a530a22430d466b20e64498"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/probe/run_exit_code.txt",
+        "size": 3,
+        "sha256": "13bf7b3039c63bf5a50491fa3cfd8eb4e699d1ba1436315aef9cbe5711530354",
+        "sha512": "37436ced85e5cd638973e716d6713257d692f9dd2e1975d5511ae3856a7b3b9f0d9e497315a058b516ab31d652ea9950938c77c1ad435ea8d4b49d73427d1237"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/probe/run_output.txt",
+        "size": 64,
+        "sha256": "670e6fb3c8a348fb898dc838f5cb6436a3b3f6251007aa8ebc4e1480a6843070",
+        "sha512": "134571e72b590d1aa896ff6f8a248a87a908f0a0bafbc04fd2d4d9c4e598482a9b90e51f06cfe4742b665850a02e104d4c6b6629452a81c8018a8069a781095c"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/probe/toolchain_environment.txt",
+        "size": 297,
+        "sha256": "1a4df196337e03bcdb59d67050d46e47764dfc64fa184608219d7e229cd9cb3c",
+        "sha512": "2912afa5d0e8121d385ff1ffa200c4a87f08915485d371d0f1d5f4c95957abde12eb557cd1179ade7953b1a51bbb53817506610991f81da1f416622ea05ec04f"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/probe.py",
+        "size": 4102,
+        "sha256": "4c37df80985baeb4fe2250118b274dd5d47cc5f5d86931c816f1fc79e8612d79",
+        "sha512": "3738480454b42ed20cddb71132cdeac83128f168c5b3f03691984e0175aa743043ffeed096cc2ca816e6cb9efa6d7c1e8a23bc3074e1921184bab8ded7081d50"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/probe_binding.py",
+        "size": 3257,
+        "sha256": "07fed0a663ef046ed21d55380a94429ee6f2b458df3f34fdbdd52b2198df3ae5",
+        "sha512": "6fee22cc2a3c170d16710c3ff4db8fec466407a6181510146df7d201cb5e8a6d26631a2705e4d0d7abc31fe62c40939a1afc88b7fc658f5282f3c6bf782989d3"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/probe_binding_final_result.txt",
+        "size": 150,
+        "sha256": "9e876ca083c903e2a6504a7860f249023575483b9e51fa6c5f0c1f85cff30215",
+        "sha512": "6b9d37e562263fa1ef15bf0253cb64b762122c147d0bb9259607ad49114dd25b38f25d73a3527dd1709f84517b7a651c9662b142d2f5891817557a008e5f9055"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/probe_binding_result.txt",
+        "size": 150,
+        "sha256": "9e876ca083c903e2a6504a7860f249023575483b9e51fa6c5f0c1f85cff30215",
+        "sha512": "6b9d37e562263fa1ef15bf0253cb64b762122c147d0bb9259607ad49114dd25b38f25d73a3527dd1709f84517b7a651c9662b142d2f5891817557a008e5f9055"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/probe_evidence.json",
+        "size": 8046,
+        "sha256": "c7cc6f4dc286a97a2b2a43be0c41ed01f07e4a9f1bf8a8d8d5c0bb18e57feb48",
+        "sha512": "b26f54e41ac8a4f1a4a80dc53004faebb673e5fb6abcb77bb447e8413cc75af203a5467f834c8f11693c109d956a2e7d11c0c4cbb3f2438a397829c1d7d4cd96"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/probe_first_result.txt",
+        "size": 114,
+        "sha256": "e5bb47b23e7e0a9aeeb02913aaca2542972040e71b9fd8abdd0c2948fbd3617a",
+        "sha512": "95cd9d2b2b968cdde9e88cc58a91a2fc5b90650b8c35e38af9fc6941def0d731339270b271ebe476630d0f75013a219e9961f2a911214caf9a4186be66bd4b11"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/probe_link_binding.json",
+        "size": 2669,
+        "sha256": "e5acc3d41a64aaa8a7dc4dd89aaeb4621c438692ff9e988bc0e79281bdfda20e",
+        "sha512": "080f1e14f1cd74a222c47794e652724144ae38938230c98c57c7a99b32b2248994eb0335db6acec490a9addefaf35f93fb43a3ac75648d07f8ef8ab4f58c3c93"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/provenance.py",
+        "size": 2340,
+        "sha256": "c8de67299345b64c530d89ca35708ee4b0a3afa3108e5d3727c1994f91115af1",
+        "sha512": "5ff770b8bef202d837fae05f56bd8afa10babd38ff67a3ab8d3d496cd00b39e59c7621c9b2f7515f3c85f264db8fb12d74ffd2ab72de31e87b67907daa83ffc8"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/provenance_first_failure.txt",
+        "size": 177,
+        "sha256": "7ed84cacd6ab63f5fa9d066017ec9a42d4cd22fce2b44bec37d97d419655e575",
+        "sha512": "a673aad17c937764206aac356fe4fe99841f7c12bb5d2f211af0a90963a894d3c44b622f7f45716fadb4bdbc655f0d0311a7b4cef74cd9cb51ef9ac1460387f9"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/provenance_result.txt",
+        "size": 102,
+        "sha256": "19a0152d63ff3888164b20141cd3f43d3673250574bbf6835439ac9c173b2dc1",
+        "sha512": "b4ca53aff7bb610ecac0c476e3e22d6f5edd82da84ff6ac9ae9673f653493c8c852d18257a14121e22d77257d86910334adfd6a29d1d89c4977bc96418b0e0d1"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/provider_object_dump.txt",
+        "size": 5016,
+        "sha256": "8e4520c852a5ed8381d4295edbca7f2036760959854ba219fa1eff07a16ce8dc",
+        "sha512": "1ea875eaf4263f06a377e76c9d08e03747ff2a5fbf2050c60da3d1dfbd1310d507b6f672fd10985271fa0f88234df766d83e9ececafc187e811fffe096f330bf"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/report.py",
+        "size": 8329,
+        "sha256": "29b1708e1c7e8f2f8d4f4dd282efe205439141469f4799871cb96c2a635bb247",
+        "sha512": "03b1848fa26106dd0586ace9869c41ae329a88562cf992b8c3601485792b2aafbc559c200e0d1ed3948f46cb3ad60c804c7d5bb5c899443c51ef6a21e759f796"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/report_completed_result.txt",
+        "size": 2887,
+        "sha256": "6ae52a25ac4f349a71861cdac385b75bd37fc278480056d4e4a1c5bdaa6bdcd5",
+        "sha512": "f75a9bb9392193d70514dfd608b209370da5fd79033bc6ab1398d16d5e034df5f5a4319a657d54a4d28fe5b71fd15a0f46658246d0e9063d912f95d0a0b2c4af"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/report_final_result.txt",
+        "size": 6177,
+        "sha256": "054622285e29d79e618a18b6d230da16793a31e1f95ceb96f8665606c4cd3a33",
+        "sha512": "529f1a7ddbb273771bbb80eb93c65191eb86fb9fb186812a96205d0cb4eb59d586dfcc0f0562e57dfb9b7cf6388039a0f30e12a7898461feef25fddd4cf1e45c"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/report_result.txt",
+        "size": 169,
+        "sha256": "fe9961343d8bc415f670d434e6b8f18ad4539d243fdf258c4c68f1efe3c5c537",
+        "sha512": "df6ced3efc045d67d34d693b0574e123e603cd7d702edfae9a856c2867005686529a5f8925604d4ee0161fee929c121ca61249a37e7666875263b8801d264134"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/seed_reference.hpp",
+        "size": 2995,
+        "sha256": "26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c",
+        "sha512": "73558474158d529bc96205150b2c52ebc133b1b6bcb743e01ecf14dd4655c2cc594a2b0353e0d2f89977ced7c585fcf9cdd7c00cfe96bfa67eee8a29226d05bf"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/seed_summary.json",
+        "size": 206,
+        "sha256": "234a7d49617221021b567d635dfea852cefd6c3f1ae6af5247c5cfc5093055a5",
+        "sha512": "a36cfc596e3b024affbdeea2419ae6b9b68cb461cbe29b8b977653eb35087bf83acd8a3cbd2ca4ddd7de75717a6afe74b0ef482eb48ff7c26231a0240e12db9c"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/source/cmake/startup.cmake",
+        "size": 117297,
+        "sha256": "b07afcc3b412b16b4a9fb7baeedf48c3ebd201b84b44a6bd4ea5cd002da3f86a",
+        "sha512": "e95cf6604d1ac52e8dd6c6a0208aaa3f7d8ad82eb6925f16b8b94577c2228dbb86334196f9aecaecd588b7f5d72d715c977c805b1c21c2fbf739acd72ea681b2"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/source/CMakeLists.txt",
+        "size": 14869,
+        "sha256": "0bad51a21cd02eb4d8b196a345a3f86418d0dab144d66912f0ad8db06881c5a8",
+        "sha512": "3a5f79736fe4eed9455edaefbbe1d8dd23a555a86efa3935827e3068fc3baa2c82f0d9c69246a5ef74a961d41fbd847f5a5c554c5c91a945d55521212d2ec958"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/source/docs/NATIVE_CRT_MEMMOVE_CF.md",
+        "size": 10396,
+        "sha256": "b8b1481899fdd8a6db9e847fdabd23d26d913ced6336808af7a25d2b611275ee",
+        "sha512": "94d7e71fb0ddb7a8da4144f16391bba52606a16c2c4bbb9c162b83008f2ce4b45077fd48d18e113bb8685659d93bee7b4129869c640d65ca1f8720775855fb70"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/source/include/bsp/native_crt_memmove.hpp",
+        "size": 1512,
+        "sha256": "6982f8b5a7d1f24d66b89b2ee7d2276653c15c1960e8a6123da7f72b1cc19051",
+        "sha512": "06ddb024a325bfc6f619a3baa3ea4c3f9cd921716e81c1466f27f5194544a57c5c8d7d367fce900028bb02ce9b0d5f7490f6a82e7c958c609795eadcea45d95f"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/source/include/bsp/native_crt_vector_copy.hpp",
+        "size": 1569,
+        "sha256": "fbbe9588430ad0dbdbca984fcfb19e36a9e83cf0a903a16c0226685f9ee0dc76",
+        "sha512": "42c0ef8a1a95ab180015ea387b644b7fa83574a41f434b53ce743193117de976e05ecb54e018b1d0832a68a125c1cf2dc82625f9d9ecbde95d5ede935f53d118"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/source/src/native_crt_memmove.cpp",
+        "size": 17804,
+        "sha256": "27646b51cf28ddb3210212bb441a34275bb8b859546072fafed6d5160695d561",
+        "sha512": "e3ca83777f8acc25ee1b93f2b5fe54c5850902b1b70c2992eff14215d05e1d8929fa45e2410fab596d9780500125e9acd901ad6a6fa0c0556acd57fb5f726037"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/source/src/native_crt_vector_copy.cpp",
+        "size": 4811,
+        "sha256": "70123af959c1015e81fc495c2db74162eabfe4e5ee252211baaba2d85241ad71",
+        "sha512": "344c9431f8577ab59416ed898a5ed1b43cf15dae1634dad59dd042dc7b16880bb7639ab70533c78734fca990b0c0aa081ec91b60bc4a439fdc4f6ac1afec3ee4"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/source_generate.py",
+        "size": 4863,
+        "sha256": "a578c016908493f27baf6ea6aca574d0536668558ca560502cc6e7bb08f9e309",
+        "sha512": "c88ba1ee7c7178029625f6e1672b91d7529acd7b57a1369574a0aab1041ce21206c7d4ba76b8e28bd99df6e05cbbbb9a94877a9c35e03cc8f399785b90b0b949"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/source_generate_first_failed.py",
+        "size": 4463,
+        "sha256": "57e5d5d590e02a7f1363db13dc49a1ea7941de2a94712958d6dfbb7ccc9a85dc",
+        "sha512": "6fba51976c823d8bf8c5c2ae557e4d10bdd5f553c0a75dfa3f9e3a5d12d365c9d414d564f52c105ec847011037ae84d6dd297a38163be614b5d7ac1af9150fe6"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/source_mapping.json",
+        "size": 37763,
+        "sha256": "9942729359472e9338002c5a8bf07097fe09ceb3a30d1216e8d939faee07e43e",
+        "sha512": "dd7cc724b260476c06a502563e8fd1e5221a9dcbdd99fc28599af5d54d2fe9ae7abd732f2226ac3e04241000cc6c62f9e3157c1c328535da5fe2881517a170b4"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/source_object_dump.txt",
+        "size": 21891,
+        "sha256": "4c92ea23f69b68022b69f2d46d1ba9a3e07ec3bef876edccdaab09efcaedc7e1",
+        "sha512": "56608a44186d1ed0ac13f25fed3bc139bd774507cd50fd816cc4c34c96c5cd8230b6e5fa845f5b473e17003eec027d467bee76cda2d88118ab8cfdde0a102506"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/source_provenance.json",
+        "size": 1294,
+        "sha256": "259352abe354e9bb71953a132f5f78ec75154462815ef9a1da27c00144215dd1",
+        "sha512": "3d8b1a014d9a75e06ae6b4ee476f93eac45bb910e4c2a66445a9625e96585a101e26015c95d4afec1aca0d807ae11be13fa4a989437a9b17eeb41aab26d9a26b"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/staging_whitespace_failure.txt",
+        "size": 462,
+        "sha256": "65f7f1afd10bd43fe14503bf057f27c343946b63d8fc8b17c6222eabf61e89eb",
+        "sha512": "7746b5740850af96ddb98f83b5b40d094e82794c9492c5364baa19b996b7fdd56c009758dbad746335494af9b8bb17f06cd43d5f12e11efd99cfd2bb96ef983d"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/tool_failures.txt",
+        "size": 424,
+        "sha256": "e8ea80105588e40b129ebbae4ed10005ff9e111db1242e642be8ab68a0301df7",
+        "sha512": "8a8e845bdf45d269e1f74cda5fd900a956c7fd812ed3eecb6a9355afcc2f6dfd0c30d654dee014f35bfdc2d983850f53b7e602733ad3460dd3c64b76160b251b"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/verify_calls.txt",
+        "size": 67,
+        "sha256": "494394d4a7961b8a9f919382cd47f999ade94ddbbee7ae553e4f510b0a698c8e",
+        "sha512": "0010cb6d5f43177271c97d0f10b678119425c589c4969de3905c88f4cbdb9addb9a712fe73447374210bc90e38a3b31a10b2ccda845c81791b09c2519ddb1aba"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/verify_native_calls.txt",
+        "size": 83,
+        "sha256": "f1187d671801b866998b7a32a7a05842803160249a63dde5b4c27d5dd55880c6",
+        "sha512": "f4548d63119793484ffc964dca31ec09ae6e65081a609270f5c5e516a800dc9a71d5745cadc97114eea441a7f6e598575c497ab2139adc10a8de40db8d0f2f6e"
+      },
+      {
+        "path": "local/native_crt_memmove_cf/verify_seeds.txt",
+        "size": 3034,
+        "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773",
+        "sha512": "857449ff384d332baa250c7444daa15f5fbd261c5d4a63b9c1a168cab8c367e343c42dbd412ee38f61ea2c148d63c36eee699b58ac02ae28d087e0ef232e56e8"
+      }
+    ]
+  },
+  "current_source_hashes": [
+    {
+      "path": "src/native_crt_memmove.cpp",
+      "size": 17804,
+      "sha256": "27646b51cf28ddb3210212bb441a34275bb8b859546072fafed6d5160695d561",
+      "sha512": "e3ca83777f8acc25ee1b93f2b5fe54c5850902b1b70c2992eff14215d05e1d8929fa45e2410fab596d9780500125e9acd901ad6a6fa0c0556acd57fb5f726037"
+    },
+    {
+      "path": "include/bsp/native_crt_memmove.hpp",
+      "size": 1512,
+      "sha256": "6982f8b5a7d1f24d66b89b2ee7d2276653c15c1960e8a6123da7f72b1cc19051",
+      "sha512": "06ddb024a325bfc6f619a3baa3ea4c3f9cd921716e81c1466f27f5194544a57c5c8d7d367fce900028bb02ce9b0d5f7490f6a82e7c958c609795eadcea45d95f"
+    },
+    {
+      "path": "src/native_crt_vector_copy.cpp",
+      "size": 4811,
+      "sha256": "70123af959c1015e81fc495c2db74162eabfe4e5ee252211baaba2d85241ad71",
+      "sha512": "344c9431f8577ab59416ed898a5ed1b43cf15dae1634dad59dd042dc7b16880bb7639ab70533c78734fca990b0c0aa081ec91b60bc4a439fdc4f6ac1afec3ee4"
+    },
+    {
+      "path": "include/bsp/native_crt_vector_copy.hpp",
+      "size": 1569,
+      "sha256": "fbbe9588430ad0dbdbca984fcfb19e36a9e83cf0a903a16c0226685f9ee0dc76",
+      "sha512": "42c0ef8a1a95ab180015ea387b644b7fa83574a41f434b53ce743193117de976e05ecb54e018b1d0832a68a125c1cf2dc82625f9d9ecbde95d5ede935f53d118"
+    },
+    {
+      "path": "cmake/startup.cmake",
+      "size": 117297,
+      "sha256": "b07afcc3b412b16b4a9fb7baeedf48c3ebd201b84b44a6bd4ea5cd002da3f86a",
+      "sha512": "e95cf6604d1ac52e8dd6c6a0208aaa3f7d8ad82eb6925f16b8b94577c2228dbb86334196f9aecaecd588b7f5d72d715c977c805b1c21c2fbf739acd72ea681b2"
+    },
+    {
+      "path": "docs/NATIVE_CRT_MEMMOVE_CF.md",
+      "size": 10396,
+      "sha256": "b8b1481899fdd8a6db9e847fdabd23d26d913ced6336808af7a25d2b611275ee",
+      "sha512": "94d7e71fb0ddb7a8da4144f16391bba52606a16c2c4bbb9c162b83008f2ce4b45077fd48d18e113bb8685659d93bee7b4129869c640d65ca1f8720775855fb70"
+    },
+    {
+      "path": "config/reconstruction/00bf0000.jsonl",
+      "size": 68257,
+      "sha256": "af5fcee10209fb25493099906c5a6fd289438478e96676e033292296f61f4768",
+      "sha512": "d82b87c2cbd229ebed617e57dd72529388fe5d27c165663e1be64e809ba898dcfcac0b8f5c613b0fac807394fa979dfd0f7c38982a4f6bbf2c14baa15793850a"
+    }
+  ]
+}
