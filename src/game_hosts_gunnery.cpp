@@ -766,12 +766,37 @@ public:
         const std::size_t count = owner_.units.count();
         for (std::size_t i = 0; i < count; ++i) {
             if (i == unit_) continue;
-            if (owner_.units.unit_side_0054(i) == own_side) continue;
+            ++owner_.summary.contact_considered;
+            if (owner_.units.unit_side_0054(i) == own_side) {
+                ++owner_.summary.contact_reject_side;
+                continue;
+            }
             // docs/RECON_SLOT_LISTS.md rule (a): the class must be one the scan
             // visits. rule (b): +5Ch set, +5Dh / +5Eh / +60h clear.
-            if (!owner_.units.unit_alive_and_visible(i)) continue;
-            if (i < owner_.unit_state.size() && owner_.unit_state[i].dead) continue;
-            if (!owner_.units.unit_is_kind_of(i, bsp::kUnitGunneryKindShipBase)) continue;
+            if (!owner_.units.unit_alive_and_visible(i)) {
+                ++owner_.summary.contact_reject_visible;
+                continue;
+            }
+            if (i < owner_.unit_state.size() && owner_.unit_state[i].dead) {
+                ++owner_.summary.contact_reject_dead;
+                continue;
+            }
+            // Rule (a) is "a class the scan visits", and the native scan
+            // 00806480 visits seven PLANE leaf ids under IsKindOf(02h) as well
+            // as the ship bases. Admitting only ship bases is why nothing ever
+            // shot at an aircraft: on IJN01 the seven A7M fighters took zero
+            // hits and zero damage while 295 AAMACHINEGUN and 60 FLAK guns sat
+            // idle. docs/PLANE_UNIT_TICK.md.
+            const bool ship_base =
+                owner_.units.unit_is_kind_of(i, bsp::kUnitGunneryKindShipBase);
+            const bool plane_base =
+                owner_.units.unit_is_kind_of(i, bsp::kUnitGunneryKindPlaneBase);
+            if (!ship_base && !plane_base) {
+                ++owner_.summary.contact_reject_kind;
+                continue;
+            }
+            if (plane_base) ++owner_.summary.contact_admit_plane;
+            else ++owner_.summary.contact_admit_ship;
             contacts_.push_back(i);
         }
         ++owner_.summary.recon_sweeps;
@@ -2092,6 +2117,11 @@ void GameGunneryHost::report() {
         "swims_started=%llu snaps=%llu bullet_ranges_derived=%llu",
         s.torpedo_ranges_derived, s.torpedo_swims_started,
         s.torpedo_heading_snaps, s.bullet_ranges_derived);
+    host.log.notef("summary mission gunnery contacts considered=%llu side=%llu "
+        "invisible=%llu dead=%llu kind=%llu admit_ship=%llu admit_plane=%llu",
+        s.contact_considered, s.contact_reject_side, s.contact_reject_visible,
+        s.contact_reject_dead, s.contact_reject_kind, s.contact_admit_ship,
+        s.contact_admit_plane);
     host.log.notef("summary mission gunnery aim angle_sets=%llu refusals=%llu steps=%llu "
         "arc_blocks=%llu arc_unsolved=%llu trigger_rises=%llu fire_messages=%llu "
         "fire_if_ready=%llu can_fire_refusals=%llu shots=%llu first_shot=%.2f s",

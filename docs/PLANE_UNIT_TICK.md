@@ -457,3 +457,36 @@ is no new pure rule with explicit inputs here, so there is no header, no source,
 
 `007C6500 BSP_PlaneTickElement_AdvancePose` (`007C6500`-`007C675D`) also has no Ghidra function;
 its bounds are `docs/PLANE_FLIGHT.md`'s, not re-derived here.
+
+## Integration result: planes are contacts, and two bottlenecks remain
+
+Step (1) of the prescription is implemented - the recon-contact stand-in in
+`src/game_hosts_gunnery.cpp` admitted only `IsKindOf(06h)` ship bases, and now admits plane bases
+too. Measured on `IJN01`, with per-gate counters added so a zero can be attributed rather than
+guessed:
+
+```
+contacts considered=673920 side=133068 invisible=0 dead=2728
+         kind=461922 admit_ship=31378 admit_plane=44824
+```
+
+**44824 plane contacts are admitted where there were none.** The `USN02` control is byte-identical
+(`created=273 entity_impacts=167 water=96 expired=29 deaths=2 total_damage=16472.1`) with
+`admit_plane=0` and `kind=0`, which also confirms that mission genuinely carries no aircraft.
+
+**The per-category table does not move**: AAMACHINEGUN stays at 26 assignments and 0 shots, FLAK at
+0. So the contact gate was necessary and is not sufficient, and there are two further bottlenecks,
+both downstream:
+
+1. **From 44824 plane contacts, AA takes only 26 assignments.** The gate is
+   `score_candidate_00863990` - the category mask, the authored rank row, or the range. An AA
+   machine gun's derived range is 960 m, so most of the approach may simply be out of reach, which
+   would be faithful. Unmeasured either way.
+2. **Those 26 assignments produce 10452 window refusals and no shot.** `arc_blocked` is 0, so it is
+   the commanded angle and not the firing window - the same shape as the torpedo defect, where
+   `009003DD` commands a hard `0.0f` vertical and `0085AB50` -> `007F6190` snaps the heading.
+
+**A correction to my own reading.** I first judged this change a no-op from the per-category table
+alone and hypothesised that `kUnitGunneryKindPlaneBase = 0x0F` was the wrong constant, because this
+document cites the native scan as visiting plane leaves under `IsKindOf(02h)`. The counters refute
+that: `0x0F` admits the planes. Acting on the hypothesis would have broken a working predicate.

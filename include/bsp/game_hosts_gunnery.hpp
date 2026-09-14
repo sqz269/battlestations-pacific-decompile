@@ -246,6 +246,15 @@ struct GameGunnerySummary {
     // Guns whose engagement range came from 00855A90's water-travel rule rather
     // than the authored `Range`. Zero here means the Bullets table was not
     // reachable and category 7 is still refused on the 10.0f seed.
+    // Which gate the recon-contact stand-in drops a unit at, so a zero contact
+    // count can be attributed instead of guessed.
+    unsigned long long contact_considered{0};
+    unsigned long long contact_reject_side{0};
+    unsigned long long contact_reject_visible{0};
+    unsigned long long contact_reject_dead{0};
+    unsigned long long contact_reject_kind{0};
+    unsigned long long contact_admit_ship{0};
+    unsigned long long contact_admit_plane{0};
     unsigned long long bullet_ranges_derived{0};   // 006E9890 gave the gun a range
     unsigned long long torpedo_ranges_derived{0};
     unsigned long long torpedo_swims_started{0};   // water crossings that became a swim
