@@ -14,7 +14,7 @@
   "status": "complete_normal_actual_source_strict_win32_linked_leaf_fixture_only",
   "base_commit": "4812aa79d777d216c5c7f15c782ef4cfd369fc00",
   "source_base_equivalent": "a234503d",
-  "source_sha256": "b6a306479bdbbdc02892a033ba6c0d24b161961dd7a1d912dab42e2fec3affac",
+  "source_sha256": "4b2c99f0f2eb5c22b11b0f51481b889282c318955542a333e7c93da7d7f10111",
   "header_sha256": "09d2886d58d2df8d2121dcda454288d2f192adbb5b59d67ac7bcb586a4666fad",
   "routines": [
     {
@@ -7804,61 +7804,71 @@
   ],
   "validation": {
     "seeds": {
-      "command": "python tools/ghidra_export.py verify-seeds",
-      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-compiler-actual\\local\\verification\\compiler_actual\\seeds.json",
-      "matched": 8
+      "count": 8,
+      "matches": true,
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-material-compiler-order-fix\\local\\verification\\compiler_order_fix\\seeds.json",
+      "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
     },
     "build": {
       "command": "./scripts/build.ps1",
-      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-compiler-actual\\local\\verification\\compiler_actual\\build.log",
-      "platform": "MSVC Win32 Release",
-      "ctests": "2/2 passed"
+      "exit": 0,
+      "ctest_passed": 2,
+      "log": "J:\\PROG\\battlestations-pacific-decompile-orch5-material-compiler-order-fix\\local\\verification\\compiler_order_fix\\build.log",
+      "sha256": "250b5eda36d2b41d1e17332703ea229c9788f91470a39fdc151a6f35a19cee45"
     },
     "fixture": {
-      "build_command": "cmd /c local\\verification\\compiler_actual\\build_probe.cmd",
-      "run_command": "./local/verification/compiler_actual/compiler_actual_probe.exe",
-      "source": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-compiler-actual\\local\\verification\\compiler_actual\\compiler_actual_probe.cpp",
-      "build_log": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-compiler-actual\\local\\verification\\compiler_actual\\probe_build.log",
-      "run_log": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-compiler-actual\\local\\verification\\compiler_actual\\probe_run.log",
-      "source_dependencies": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-compiler-actual\\local\\verification\\compiler_actual\\probe_dependencies.json",
-      "link_map": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-compiler-actual\\local\\verification\\compiler_actual\\compiler_actual_probe.map",
-      "executable_sha256": "1e3a19f37924204ecb1b399cf0548dbaf3764a6100b9ce6160bf0751e7044173",
-      "runtime_cases": "Two original/source stream writes with real WriteFile; 3 original/source raw capability getter values",
-      "full_tail_link": "Exported factory retains actual compiler vtable and all concrete provider symbols; no unresolved symbols",
+      "command": "./local/verification/compiler_order_fix/compiler_order_fix_probe.exe",
+      "build_exit": 0,
+      "run_exit": 0,
+      "original_source_cases": 2,
+      "raw_getter_cases": 3,
+      "complete_exported_factory_link": true,
       "full_tail_execution": false,
-      "relocations": [
-        "BE4460+21h: original109DB64 literal operand relocated to fixture empty literal",
-        "BF4F50+1Ah: originalCE2290 import-cell operand relocated to real WriteFile function-pointer cell",
-        "Original vtable slots point to relocated original bytes; source numeric D691B0 profile remains numeric"
-      ],
-      "initial_fixture_failure": "Fixed mappings collided before tested routines executed; retained probe_fixed_mapping_failure.log"
+      "executed": "Unchanged original/source real WriteFile sized-string andDWORD cases; caps pointer arithmetic only.",
+      "limits": "Whole compiler/B44B10/D3DX/FH3/game execution not performed in this correction packet. Runtime worker has a separate in-progress cached-path proof, not attributed here.",
+      "files": [
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-material-compiler-order-fix\\local\\verification\\compiler_order_fix\\compiler_order_fix_probe.cpp",
+          "sha256": "fcf5877295a40712ddb1df460815e41a2fb6a33ad6bdb164211a5495ebafadd9"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-material-compiler-order-fix\\local\\verification\\compiler_order_fix\\compiler_order_fix_probe.exe",
+          "sha256": "665c253c0011b5db49dd9de4109b801a0714a3d773e7d44410a20b72026549df"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-material-compiler-order-fix\\local\\verification\\compiler_order_fix\\compiler_order_fix_probe.map",
+          "sha256": "3128f633c7d73411eecacad3497d93c23a3b97d40b047d44e6cf19c8e82df179"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-material-compiler-order-fix\\local\\verification\\compiler_order_fix\\probe_build.log",
+          "sha256": "7d1be981185d2cb57cfd3e716f70ccdf8a687c21876f3f4681b71f161bc1f188"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-material-compiler-order-fix\\local\\verification\\compiler_order_fix\\probe_run.log",
+          "sha256": "c97c551430ad0311cdf751eeb0a72c7582e1cfa3733af7dd8a5a634081f2af26"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-material-compiler-order-fix\\local\\verification\\compiler_order_fix\\probe_status.json",
+          "sha256": "f819da86ddce2dbc4f311971b9a2f4667598e3f23c095d1b9d693c20d8028117"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-material-compiler-order-fix\\local\\verification\\compiler_order_fix\\probe_dependencies.json",
+          "sha256": "81f7f19d3052d698b6678bd60277126701f7991a11bc38883aa3ae8606f65650"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-material-compiler-order-fix\\local\\verification\\compiler_order_fix\\probe_build_initial_header_failure.log",
+          "sha256": "71f81e03909faf8c6d4dab1aff1579a85991d0c191beecd03fe4500d234e84c0"
+        }
+      ]
     },
     "call_rows": {
-      "command": "python tools/verify_report_calls.py reports/native_material_program_compiler_actual.json reports/native_material_compiler_providers.json",
-      "log": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-compiler-actual\\local\\verification\\compiler_actual\\call_rows.log",
       "numeric_checked": 125,
+      "unsupported_indirect_rows": 19,
       "failed": 0,
-      "indirect": "not mechanically verified; resolved from captured current profiles and listing"
+      "log_sha256": "49a99b1ac922bfce76430302edae0623bda38fcaa4b1571b1b4470720435ce31"
     },
     "frozen_closure": {
-      "manifest": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-compiler-actual\\local\\verification\\compiler_actual_frozen_20260914\\manifest.json",
-      "manifest_sha256": "bc7ce48a8051ed465afa3d8b698106217b732c68d97eb30947b298c578353df7",
-      "source_commit": "0097f52be23a5c1584ae20eff5963e5d8c353f11",
-      "artifacts": 7655,
-      "total_bytes": 580782569,
-      "compiled_translation_units": 1318,
-      "actual_loaded_modules": 13,
-      "probe_embedded_manifest_resource_id": 24,
-      "driver_command": "python local/verification/compiler_actual/freeze.py > local/verification/compiler_actual_freeze.log",
-      "driver_log_outside_archive": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-compiler-actual\\local\\verification\\compiler_actual_freeze.log",
-      "scope": "Complete source/compiler-read/link/tool/runtime input closure for final build and focused probe; every copy checked against stable before/after source hashes",
-      "exclusions": "Final report manifest references are committed after the immutable source archive; neither report embeds its own hash.",
-      "limits": [
-        "The complete actual compiler and providers link through the exported factory.",
-        "Runtime covers only BE4460/BE40D0 plus real WriteFile and B1FF50; full parent and B44B10 were not executed.",
-        "Tool component closure includes available MSVC components; actual runtime enumeration is for the fixture.",
-        "Original FH3 and game execution remain unvalidated."
-      ]
+      "status": "pending_immutable_capture"
     }
   },
   "limits": [
@@ -7932,5 +7942,235 @@
       "is": "Distinct actual overload dispatches current D5F0A8+64 to real B319B0"
     }
   ],
-  "annotation_handoff": "Primary may append evidence to existing B3B3C0/B44B10/B1FF50 names; proposed BE4460 BSP_Stream_WriteLengthPrefixedString and BE40D0 BSP_Stream_WriteDword. Worker made only authorized BE40D0 function definition."
+  "annotation_handoff": "Primary may append evidence to existing B3B3C0/B44B10/B1FF50 names; proposed BE4460 BSP_Stream_WriteLengthPrefixedString and BE40D0 BSP_Stream_WriteDword. Worker made only authorized BE40D0 function definition.",
+  "order_correction": {
+    "source_commit": "d61b6329ab12ba7688a500eb2abb2a0b90ecae24",
+    "base_commit": "c43ceba8793189d3157b1045053193f00d80a887",
+    "original_source_commit": "0097f52be23a5c1584ae20eff5963e5d8c353f11",
+    "review": {
+      "path": "J:/PROG/battlestations-pacific-decompile-orch5-material-compiler-review/local/material-compiler-review.json",
+      "sha256": "03398ee054fa4af04839f54dc52b11e8c80925ed68084e17dd8da2caa24ed56e",
+      "bytes": 19314
+    },
+    "issues": [
+      {
+        "id": "first_shadow_sampler_capture",
+        "status": "corrected_in_source_and_reviewed_compiler_object",
+        "source_lines": [
+          319,
+          327
+        ],
+        "native_sites": [
+          "00B3C2AC",
+          "00B3C2B8",
+          "00B3C2C8",
+          "00B3C309"
+        ],
+        "was": "First+78 read only gates; first loop call rereads after policy+AA.",
+        "is": "Capture+78 once before policy, use captured value for first MAG call, reload+78 for remaining four calls.",
+        "resolution_commit": "d61b6329ab12ba7688a500eb2abb2a0b90ecae24"
+      },
+      {
+        "id": "cached_reflection_read_order",
+        "status": "corrected_in_source_and_reviewed_compiler_object",
+        "source_lines": [
+          150,
+          154,
+          212
+        ],
+        "native_sites": [
+          "00B3B84A",
+          "00B3B84D",
+          "00B3BDB5",
+          "00B3BDB8"
+        ],
+        "was": "Evaluate row+8 before reflect() current pass metadata reload.",
+        "is": "Read current pass+70/+74 metadata first, then row+8 bytecode, adopt child and invoke same real reflection provider.",
+        "resolution_commit": "d61b6329ab12ba7688a500eb2abb2a0b90ecae24"
+      },
+      {
+        "id": "cached_com_captured_profile",
+        "status": "corrected_in_source_and_reviewed_compiler_object",
+        "source_lines": [
+          214,
+          215,
+          217,
+          218
+        ],
+        "native_sites": [
+          "00B3B864",
+          "00B3B86B",
+          "00B3B870",
+          "00B3BDCF",
+          "00B3BDD6",
+          "00B3BDDB"
+        ],
+        "was": "Read row+8 before implicit C++ virtual dispatch reads device table.",
+        "is": "Capture actual returned COM device table, reload row+8 code, read current +16C/+1A8 slot from captured table, invoke exact STDMETHODCALLTYPE signature and preserve ignored HRESULT/output.",
+        "resolution_commit": "d61b6329ab12ba7688a500eb2abb2a0b90ecae24"
+      },
+      {
+        "id": "clear_array_single_captures",
+        "status": "corrected_in_source_and_reviewed_compiler_object",
+        "source_lines": [
+          104,
+          122,
+          123
+        ],
+        "native_sites": [
+          "00B3B87D",
+          "00B3B880",
+          "00B3B887",
+          "00B3B8CD",
+          "00B3B8D4",
+          "00B3B915",
+          "00B3B96A",
+          "00B3B99B",
+          "00B3B9F4",
+          "00B3BA2B",
+          "00B3BA7F"
+        ],
+        "was": "Negative capacity and negative count read twice before decisions/offset.",
+        "is": "Capture capacity once for both tests and capture initial count once for negative test/offset. Preserve current count reloads in reserve-copy and positive decrement loops.",
+        "resolution_commit": "d61b6329ab12ba7688a500eb2abb2a0b90ecae24"
+      },
+      {
+        "id": "literal_and_release_header_reads",
+        "status": "corrected_in_source_and_reviewed_compiler_object",
+        "source_lines": [
+          58,
+          59,
+          81,
+          82,
+          275,
+          283
+        ],
+        "native_sites": [
+          "00B3BB92",
+          "00B3BB9A",
+          "00B3BEA8",
+          "00B3BEB0",
+          "00B3C130",
+          "00B3C138",
+          "00B3C227",
+          "00B3C22F",
+          "00B3C192",
+          "00B3C28F",
+          "00B3BC1A",
+          "00B3BC2D",
+          "00B3BF32",
+          "00B3BF45"
+        ],
+        "was": "literal(false) reads length when data null; release_name reads current length before null guard; repeated shadow captures data by second header read after memcpy.",
+        "is": "Only full captured-data/length literal cases unconditionally read length. Other literal lengths and normal release lengths are read inside native nonnull guards. Retain first literal data read for repeated-shadow later release; length remains current at guarded release.",
+        "resolution_commit": "d61b6329ab12ba7688a500eb2abb2a0b90ecae24"
+      }
+    ],
+    "private_timing_limits": [
+      "Initial load-variant flag capture surrounds private mask clearing differently in source.",
+      "Pixel write-cache captures private pixel_size before volatile cache, native captures cache then private size.",
+      "Private scratch concurrent mutation and exact machine-stack/exception timing are excluded by existing source ABI boundary; not expanded into correction scope."
+    ],
+    "api_changed": false,
+    "new_native_addresses": [],
+    "ghidra_mutated": false,
+    "ownership_changed": false,
+    "compiled_order_audit": {
+      "path": "local/verification/compiler_order_fix/compiled_order_audit.json",
+      "sha256": "452af4c2d33646df96b1f5463ba4ca99970e9a06f12a72f5a612abfd48594d8a"
+    },
+    "validation_status": "strict_build_2ctest_8seeds_125numeric_rows_and_existing_cache_fixture_passed",
+    "source_only_compile": {
+      "command": "local/verification/compiler_order_fix/compile_changed.cmd",
+      "exit": 0,
+      "log_sha256": "ee8f8260a2dd1beeabdedf86deaa51899a52e193aa48a7b5c130f1830f0d70f6"
+    },
+    "call_rows": {
+      "numeric_checked": 125,
+      "unsupported_indirect_rows": 19,
+      "failed": 0,
+      "log_sha256": "49a99b1ac922bfce76430302edae0623bda38fcaa4b1571b1b4470720435ce31"
+    },
+    "upstream_frozen_closure_unchanged": {
+      "manifest": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-compiler-actual\\local\\verification\\compiler_actual_frozen_20260914\\manifest.json",
+      "manifest_sha256": "bc7ce48a8051ed465afa3d8b698106217b732c68d97eb30947b298c578353df7",
+      "source_commit": "0097f52be23a5c1584ae20eff5963e5d8c353f11",
+      "artifacts": 7655,
+      "total_bytes": 580782569,
+      "compiled_translation_units": 1318,
+      "actual_loaded_modules": 13,
+      "probe_embedded_manifest_resource_id": 24,
+      "driver_command": "python local/verification/compiler_actual/freeze.py > local/verification/compiler_actual_freeze.log",
+      "driver_log_outside_archive": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-compiler-actual\\local\\verification\\compiler_actual_freeze.log",
+      "scope": "Complete source/compiler-read/link/tool/runtime input closure for final build and focused probe; every copy checked against stable before/after source hashes",
+      "exclusions": "Final report manifest references are committed after the immutable source archive; neither report embeds its own hash.",
+      "limits": [
+        "The complete actual compiler and providers link through the exported factory.",
+        "Runtime covers only BE4460/BE40D0 plus real WriteFile and B1FF50; full parent and B44B10 were not executed.",
+        "Tool component closure includes available MSVC components; actual runtime enumeration is for the fixture.",
+        "Original FH3 and game execution remain unvalidated."
+      ]
+    },
+    "source_sha256": "4b2c99f0f2eb5c22b11b0f51481b889282c318955542a333e7c93da7d7f10111",
+    "current_fixture_adaptation": "Only isolated output/input path and probe filename changed; original/source test logic retained. An initial copied header-name typo prevented probe compilation; corrected before execution, failure log preserved."
+  },
+  "upstream_validation_before_order_correction": {
+    "seeds": {
+      "command": "python tools/ghidra_export.py verify-seeds",
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-compiler-actual\\local\\verification\\compiler_actual\\seeds.json",
+      "matched": 8
+    },
+    "build": {
+      "command": "./scripts/build.ps1",
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-compiler-actual\\local\\verification\\compiler_actual\\build.log",
+      "platform": "MSVC Win32 Release",
+      "ctests": "2/2 passed"
+    },
+    "fixture": {
+      "build_command": "cmd /c local\\verification\\compiler_actual\\build_probe.cmd",
+      "run_command": "./local/verification/compiler_actual/compiler_actual_probe.exe",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-compiler-actual\\local\\verification\\compiler_actual\\compiler_actual_probe.cpp",
+      "build_log": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-compiler-actual\\local\\verification\\compiler_actual\\probe_build.log",
+      "run_log": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-compiler-actual\\local\\verification\\compiler_actual\\probe_run.log",
+      "source_dependencies": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-compiler-actual\\local\\verification\\compiler_actual\\probe_dependencies.json",
+      "link_map": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-compiler-actual\\local\\verification\\compiler_actual\\compiler_actual_probe.map",
+      "executable_sha256": "1e3a19f37924204ecb1b399cf0548dbaf3764a6100b9ce6160bf0751e7044173",
+      "runtime_cases": "Two original/source stream writes with real WriteFile; 3 original/source raw capability getter values",
+      "full_tail_link": "Exported factory retains actual compiler vtable and all concrete provider symbols; no unresolved symbols",
+      "full_tail_execution": false,
+      "relocations": [
+        "BE4460+21h: original109DB64 literal operand relocated to fixture empty literal",
+        "BF4F50+1Ah: originalCE2290 import-cell operand relocated to real WriteFile function-pointer cell",
+        "Original vtable slots point to relocated original bytes; source numeric D691B0 profile remains numeric"
+      ],
+      "initial_fixture_failure": "Fixed mappings collided before tested routines executed; retained probe_fixed_mapping_failure.log"
+    },
+    "call_rows": {
+      "command": "python tools/verify_report_calls.py reports/native_material_program_compiler_actual.json reports/native_material_compiler_providers.json",
+      "log": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-compiler-actual\\local\\verification\\compiler_actual\\call_rows.log",
+      "numeric_checked": 125,
+      "failed": 0,
+      "indirect": "not mechanically verified; resolved from captured current profiles and listing"
+    },
+    "frozen_closure": {
+      "manifest": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-compiler-actual\\local\\verification\\compiler_actual_frozen_20260914\\manifest.json",
+      "manifest_sha256": "bc7ce48a8051ed465afa3d8b698106217b732c68d97eb30947b298c578353df7",
+      "source_commit": "0097f52be23a5c1584ae20eff5963e5d8c353f11",
+      "artifacts": 7655,
+      "total_bytes": 580782569,
+      "compiled_translation_units": 1318,
+      "actual_loaded_modules": 13,
+      "probe_embedded_manifest_resource_id": 24,
+      "driver_command": "python local/verification/compiler_actual/freeze.py > local/verification/compiler_actual_freeze.log",
+      "driver_log_outside_archive": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-material-compiler-actual\\local\\verification\\compiler_actual_freeze.log",
+      "scope": "Complete source/compiler-read/link/tool/runtime input closure for final build and focused probe; every copy checked against stable before/after source hashes",
+      "exclusions": "Final report manifest references are committed after the immutable source archive; neither report embeds its own hash.",
+      "limits": [
+        "The complete actual compiler and providers link through the exported factory.",
+        "Runtime covers only BE4460/BE40D0 plus real WriteFile and B1FF50; full parent and B44B10 were not executed.",
+        "Tool component closure includes available MSVC components; actual runtime enumeration is for the fixture.",
+        "Original FH3 and game execution remain unvalidated."
+      ]
+    }
+  }
 }

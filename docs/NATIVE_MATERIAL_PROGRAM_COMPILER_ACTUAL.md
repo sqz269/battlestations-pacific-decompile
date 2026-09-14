@@ -119,3 +119,34 @@ An initial fixed-address fixture failed before execution due to an occupied
 mapping; its log is retained separately. Whole compiler generation/cache/pass
 execution, FH3 failure behavior and gameplay have not been runtime validated.
 Final immutable source/compiler-read/link/tool/runtime closure is in the report.
+
+
+## Independent ordering review and correction
+
+The independent full-body review is frozen at
+`orch5-material-compiler-review/local/material-compiler-review.json`, SHA-256
+`03398ee054fa4af04839f54dc52b11e8c80925ed68084e17dd8da2caa24ed56e`.
+It checked all 1,282 exported lines, all four companion bodies, and all 7,655
+upstream frozen artifacts without altering the original compiler archive.
+
+Source correction `d61b6329ab12ba7688a500eb2abb2a0b90ecae24` changes only
+private helpers and the normal continuation's ordered reads:
+
+- B3C2AC captures the first ShadowMap sampler before builder+AA; the first
+  MAG call uses it, and the remaining four state calls reload current pass+78.
+- Cached reflection reads current pass+70/+74 before cache row+8.
+- Cached COM creation captures the actual device table before row+8, then
+  loads its current +16C/+1A8 entry and calls the original stdcall signature.
+- Inline array clearing captures capacity once for both tests and count once
+  for the negative-count offset. Live loop-count reloads remain in place.
+- String literals and normal releases keep native null guards before current
+  length reads. Repeated shadow lookup releases use the pointer captured
+  before the literal copy, with length read only at the guarded release.
+
+No public API, native address ownership, registration policy, child adoption,
+null-return retention or exception cleanup policy changed. The compiled Win32
+object confirms the corrected capture/load order and COM stack signature.
+Initial flag capture around private mask initialization and pixel cache versus
+private-size staging remain within the documented private-scratch timing limit.
+The correction's checks and final frozen closure are recorded separately from
+upstream evidence in the report; whole compiler/B44B10 execution remains open.
