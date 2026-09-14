@@ -720,3 +720,105 @@ pair; **air brake** has only the speed-hold pair, with its trigger unread.
   `0099E53D` was not read, so the demand is not closed.
 * `XMM0` at `0099D8C6`, the speed-hold trigger, and `[ESP+44h]` at `0099DC46`.
 * `task+2B4h`, `task+2C0h` and `task+2D8h`'s producers.
+
+# The yaw arm's last two inputs (packet `cc7_yaw_remaining_inputs`)
+
+Addresses: `0074E260`, `007D9A70`, `007D99C0`, `007C0F40`, `00419010`. Constants `00CE3854`,
+`00CE3868`, `00CE6630`, `00CE74F8`, `00CEFF98`, `00D7A24C`; globals `00F8731C`, `00F87320`.
+
+Ghidra read-only. **Exported, reconstructed, build-tested**; `reconstructed_math` still passes, no
+new tests. Not fixture-tested, not game-validated.
+
+## `unit->vtable[50h]` is the heading field, and every plane class agrees
+
+Enumerated rather than sampled: slot `+50h` read from the vtable of each of the nine plane classes
+in `docs/ENTITY_CLASS_IDS.md` — `00D05F20` (`0F`), `00D06638` (`10`), `00D1A000` (`11`),
+`00D19D28` (`12`), `00D06920` (`13`), `00D00070` (`14`), `00D0BA80` (`15`), `00D00308` (`16`),
+`00D1A2D8` (`17`). **All nine hold `0074E260`**, and its entire body is
+
+```
+0074e260  D9 81 6C 0C 00 00   FLD dword ptr [ECX + 0C6Ch]
+0074e266  C3                  RET
+```
+
+Other families override the slot — `0042B8C0` on `Path`, `006DFD60` on `MDestroyer` and
+`MTorpedoBoat`, `006D2040` on `MAirfield` — so this is the plane family's implementation, not a
+universal one. That is why the slot had to be enumerated before being named.
+
+So the base term's "current heading" is simply **`unit+C6Ch`**, the wrapped `atan2` that
+`007C1ACA` writes (previous section). The base numerator is
+`SubtractWrappedAngle(task+2C0h, unit+C6Ch) * q` with no dispatch involved, and `kUnitHeading` is
+added to `include/bsp/plane_ai_control.hpp`.
+
+## `007D9A70` — the speed factor `R`
+
+`__thiscall(sub)` where `sub` is `unit+AB0h` (`0099E5D1 ADD ECX,0AB0h`), returning in `ST0`:
+
+```
+a      = InterpolateClamped(3.0f, 0, 6.0f, 0.25f, [[sub+8h]+908h])        ; 007D9AA9
+ratio  = BSP_PlaneFlight_ForwardSpeed(sub) / class+184h                    ; 007D9AB4, 007D9ABC
+c      = InterpolateClamped([00F8731C], 0, [00F87320], 1.0f, ratio)        ; 007D9AF0
+v      = c + [[sub+10h]+C0h] * 0.6                                         ; 007D9B02, 00CEFF98
+result = (a > v) ? a : min(v, 1.0f)                                        ; 007D9B1C / 007D9B55
+R      = 007C0F40(sub+8h) * result * result                                ; 007D9B3F, 007D9B45
+```
+
+`007D99C0` is already named `BSP_PlaneFlight_ForwardSpeed`, and `class+184h` is in the speed block
+`+184h`..`+1A4h` that `docs/VEHICLE_CLASS_FIELDS.md` records, so `ratio` is a speed fraction.
+`007D9B3F FMUL ST0` squares `result` (`D8 C8`), the same encoding as `0099E69F`; the bomb-load
+factor is multiplied in separately at `007D9B45` from memory.
+
+### `007C0F40`, the bomb-load factor
+
+```
+m = 1.0f                                                       ; 007C0F41
+for each weapon slot at plane+974h, count plane+994h:
+    if (slot->vtable[210h](2Ah, 0)) {                          ; 007C0F72, 2Ah = MBomb
+        w = slot->vtable[214h]()                               ; 007C0F9D
+        m = InterpolateClamped(0, 1.0f, 0.8f, class+15Ch, w)   ; 007C0FC5, 00CE74F8 = 0.8f
+        break                                                  ; 007C0F76
+    }
+if (plane+BC8h) m *= class+608h                                ; 007C0FCF, 007C0FE4
+```
+
+The `+974h`/`+994h` slot array and the `2Ah` kind are the same ones
+`docs/ORDNANCE_KIND_IDENTITY.md` established, so this is literally "is the plane still carrying
+bombs". `class+608h` is the top of the turbo block `+5FCh`..`+608h`, so turbo scales the result.
+
+### The range, which matters as much as the formula
+
+`R` is **non-negative and bounded by the bomb-load factor**, and this holds whatever the two
+unidentified fields and the two runtime globals turn out to be:
+
+* `a = InterpolateClamped(3, 0, 6, 0.25, ...)` has both y-endpoints in `[0, 0.25]`, so `a ∈ [0, 0.25]`
+  for any input.
+* `result = max(a, min(v, 1))`. Since `a ≥ 0`, `result ≥ 0` even if `v` is negative; since
+  `a ≤ 0.25` and `min(v, 1) ≤ 1`, `result ≤ 1`. So **`result ∈ [0, 1]` unconditionally**, and
+  `result² ∈ [0, 1]`.
+* Therefore `R ∈ [0, m]`, and the yaw turn term's remap `R*0.9 + 0.1` lies in `[0.1, 0.9m + 0.1]`
+  — that is `[0.1, 1.0]` for a clean plane with no turbo, where `m = 1`.
+
+`c` and hence `v` depend on the two globals, but they cannot move the bound, because `result` is
+pinned by `a` from below and by the explicit `1.0f` cap from above.
+
+## What is still unread, named
+
+* **`00F8731C` and `00F87320`**, the `ratio` interpolation's x-endpoints. Both read **zero in the
+  image on disk**, so they are initialised at runtime and their values are not established. They
+  affect `c`, not the bound above. If they really are equal at runtime the interpolation degenerates
+  at `x0 == x1`; `00419010`'s body was not re-read, so that case is not characterised here.
+* **`[[sub+8h]+908h]`** (the `a` input) and **`[[sub+10h]+C0h]`** (the `v` addend): the sub-object
+  fields at `unit+AB0h+8h` and `+10h` were not identified.
+* **`slot->vtable[214h]`**, the per-slot weight `007C0F40` interpolates on.
+* Everything the previous section listed as open is still open: the pitch demand's bank target, the
+  speed-hold trigger, and the producers of `task+2B4h`/`+2C0h`/`+2D8h`.
+
+## Wiring contract
+
+The heading getter needs no host hook at all — read `unit+C6Ch`. `R` needs
+`BSP_PlaneFlight_ForwardSpeed`, `class+184h`, `class+15Ch`, `class+608h`, the ordnance query the
+host already has from `docs/ORDNANCE_KIND_IDENTITY.md`, the turbo byte `plane+BC8h`, and the four
+quantities named above as unread. A host that supplies the unread four as zero gets `a` from a zero
+altitude term and `c` from a zero ratio — a **legal** result, not an obviously wrong one, so this
+is another place to refuse rather than default. The bound `R ∈ [0, m]` is what a host can assert
+against if it wires the axis and wants a cheap sanity check.
