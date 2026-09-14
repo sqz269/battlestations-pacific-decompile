@@ -1,0 +1,281 @@
+{
+  "packet": "orch4_native_resource_container_lifetime_cc",
+  "entries": [
+    {
+      "address": "00718810",
+      "before_documentation": {
+        "hash": "6aae00b53068e4180fe29a36e4b25021dd111a72f6683b19e8dbe0bb489314dd",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00718810",
+        "function_name": "BSP_GameResource_Destroy",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00718810]\nECX resource; no stack arguments; tail JMP00b88430. Set concrete vtable00cfd8cc; free and zero pointer-range triplets at+68,+58,+48 in that order; no item calls or decrements; tail-call base resource destructor. Matched complete body00718810-0071886f to installed PE; normal-path audit only, no native ABI or game validation. reports/resource_item_ownership_audit.json Original ABI: ECX resource; no stack arguments; tail JMP00b88430. Evidence: docs/RESOURCE_ITEM_OWNERSHIP.md; reports/resource_item_ownership_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.",
+        "parameters": [],
+        "local_variables": [],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 28,
+            "name": "LAB_0071882c"
+          },
+          {
+            "relative_offset": 53,
+            "name": "LAB_00718845"
+          },
+          {
+            "relative_offset": 78,
+            "name": "LAB_0071885e"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "before_comment": {
+        "address": "00718810",
+        "function_name": "BSP_GameResource_Destroy",
+        "comment": "[BSP reconstruction 00718810]\nECX resource; no stack arguments; tail JMP00b88430. Set concrete vtable00cfd8cc; free and zero pointer-range triplets at+68,+58,+48 in that order; no item calls or decrements; tail-call base resource destructor. Matched complete body00718810-0071886f to installed PE; normal-path audit only, no native ABI or game validation. reports/resource_item_ownership_audit.json Original ABI: ECX resource; no stack arguments; tail JMP00b88430. Evidence: docs/RESOURCE_ITEM_OWNERSHIP.md; reports/resource_item_ownership_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation."
+      },
+      "complete": true,
+      "after_comment": {
+        "address": "00718810",
+        "function_name": "BSP_GameResource_Destroy",
+        "comment": "[BSP reconstruction 00718810]\nECX resource; no stack arguments; tail JMP00b88430. Set concrete vtable00cfd8cc; free and zero pointer-range triplets at+68,+58,+48 in that order; no item calls or decrements; tail-call base resource destructor. Matched complete body00718810-0071886f to installed PE; normal-path audit only, no native ABI or game validation. reports/resource_item_ownership_audit.json Original ABI: ECX resource; no stack arguments; tail JMP00b88430. Evidence: docs/RESOURCE_ITEM_OWNERSHIP.md; reports/resource_item_ownership_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation."
+      },
+      "prior_comment_preserved": true,
+      "all_instruction_owners_verified": true
+    },
+    {
+      "address": "00b88760",
+      "before_documentation": {
+        "hash": "bb43afd0ab614ecb9dd8355da8b4779dc46d512be1303eb0c885096d8ad31633",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b88760",
+        "function_name": "BSP_Resource_ScalarDeletingDestructor",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00b88760]\nECX resource; byte flags in one stack slot; RET4; EAX original object pointer. Call00b88430 then free object through00bf65ac iff flags bit0; return original object pointer. Matched complete body00b88760-00b8877d to installed PE; normal-path audit only, no native ABI or game validation. reports/resource_item_ownership_audit.json Original ABI: ECX resource; byte flags in one stack slot; RET4; EAX original object pointer. Evidence: docs/RESOURCE_ITEM_OWNERSHIP.md; reports/resource_item_ownership_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.",
+        "parameters": [],
+        "local_variables": [],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 24,
+            "name": "LAB_00b88778"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "before_comment": {
+        "address": "00b88760",
+        "function_name": "BSP_Resource_ScalarDeletingDestructor",
+        "comment": "[BSP reconstruction 00b88760]\nECX resource; byte flags in one stack slot; RET4; EAX original object pointer. Call00b88430 then free object through00bf65ac iff flags bit0; return original object pointer. Matched complete body00b88760-00b8877d to installed PE; normal-path audit only, no native ABI or game validation. reports/resource_item_ownership_audit.json Original ABI: ECX resource; byte flags in one stack slot; RET4; EAX original object pointer. Evidence: docs/RESOURCE_ITEM_OWNERSHIP.md; reports/resource_item_ownership_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation."
+      },
+      "complete": true,
+      "after_comment": {
+        "address": "00b88760",
+        "function_name": "BSP_Resource_ScalarDeletingDestructor",
+        "comment": "[BSP reconstruction 00b88760]\nECX resource; byte flags in one stack slot; RET4; EAX original object pointer. Call00b88430 then free object through00bf65ac iff flags bit0; return original object pointer. Matched complete body00b88760-00b8877d to installed PE; normal-path audit only, no native ABI or game validation. reports/resource_item_ownership_audit.json Original ABI: ECX resource; byte flags in one stack slot; RET4; EAX original object pointer. Evidence: docs/RESOURCE_ITEM_OWNERSHIP.md; reports/resource_item_ownership_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation."
+      },
+      "prior_comment_preserved": true,
+      "all_instruction_owners_verified": true
+    },
+    {
+      "address": "00718c20",
+      "before_documentation": {
+        "hash": "bb43afd0ab614ecb9dd8355da8b4779dc46d512be1303eb0c885096d8ad31633",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00718c20",
+        "function_name": "BSP_GameResource_ScalarDeletingDestructor",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00718c20]\nECX resource; byte flags in one stack slot; RET4; EAX original object pointer. Call00718810 then free object through00bf65ac iff flags bit0; return original object pointer. Matched complete body00718c20-00718c3d to installed PE; normal-path audit only, no native ABI or game validation. reports/resource_item_ownership_audit.json Original ABI: ECX resource; byte flags in one stack slot; RET4; EAX original object pointer. Evidence: docs/RESOURCE_ITEM_OWNERSHIP.md; reports/resource_item_ownership_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.",
+        "parameters": [],
+        "local_variables": [],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 24,
+            "name": "LAB_00718c38"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "before_comment": {
+        "address": "00718c20",
+        "function_name": "BSP_GameResource_ScalarDeletingDestructor",
+        "comment": "[BSP reconstruction 00718c20]\nECX resource; byte flags in one stack slot; RET4; EAX original object pointer. Call00718810 then free object through00bf65ac iff flags bit0; return original object pointer. Matched complete body00718c20-00718c3d to installed PE; normal-path audit only, no native ABI or game validation. reports/resource_item_ownership_audit.json Original ABI: ECX resource; byte flags in one stack slot; RET4; EAX original object pointer. Evidence: docs/RESOURCE_ITEM_OWNERSHIP.md; reports/resource_item_ownership_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation."
+      },
+      "complete": true,
+      "after_comment": {
+        "address": "00718c20",
+        "function_name": "BSP_GameResource_ScalarDeletingDestructor",
+        "comment": "[BSP reconstruction 00718c20]\nECX resource; byte flags in one stack slot; RET4; EAX original object pointer. Call00718810 then free object through00bf65ac iff flags bit0; return original object pointer. Matched complete body00718c20-00718c3d to installed PE; normal-path audit only, no native ABI or game validation. reports/resource_item_ownership_audit.json Original ABI: ECX resource; byte flags in one stack slot; RET4; EAX original object pointer. Evidence: docs/RESOURCE_ITEM_OWNERSHIP.md; reports/resource_item_ownership_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation."
+      },
+      "prior_comment_preserved": true,
+      "all_instruction_owners_verified": true
+    }
+  ],
+  "actions": [
+    {
+      "endpoint": "clear_instruction_flow_override",
+      "body": {
+        "address": "00718824"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Cleared flow override at 00718824 (was: NONE, now: NONE)\"}"
+    },
+    {
+      "endpoint": "clear_instruction_flow_override",
+      "body": {
+        "address": "0071883d"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Cleared flow override at 0071883d (was: NONE, now: NONE)\"}"
+    },
+    {
+      "endpoint": "clear_instruction_flow_override",
+      "body": {
+        "address": "00718856"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Cleared flow override at 00718856 (was: NONE, now: NONE)\"}"
+    },
+    {
+      "endpoint": "delete_function",
+      "body": {
+        "address": "00718810"
+      },
+      "result": "{\"success\": true, \"address\": \"00718810\", \"deleted_function\": \"BSP_GameResource_Destroy\", \"body_size\": 87, \"message\": \"Function 'BSP_GameResource_Destroy' deleted at 00718810\"}"
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00718810",
+        "end_address": "00718870"
+      },
+      "result": "{\"success\": true, \"start_address\": \"00718810\", \"end_address\": \"0071886f\", \"bytes_disassembled\": 96, \"message\": \"Successfully disassembled 96 byte(s)\"}"
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00718810",
+        "name": "BSP_GameResource_Destroy",
+        "disassemble_first": false
+      },
+      "result": "{\"success\": true, \"address\": \"00718810\", \"function_name\": \"BSP_GameResource_Destroy\", \"entry_point\": \"00718810\", \"body_size\": 96, \"message\": \"Function created successfully at 00718810\", \"warnings\": [\"Function name 'BSP_GameResource_Destroy' \\u2014 main part 'GameResource_Destroy' is not PascalCase. Expected: GameresourceDestroy\", \"Function name 'BSP_GameResource_Destroy' \\u2014 main part 'GameResource_Destroy' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_GameResource_Destroy' does not start with a recognized verb. First word 'Game' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00718810",
+        "new_name": "BSP_GameResource_Destroy"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00718810 from 'BSP_GameResource_Destroy' to 'BSP_GameResource_Destroy'\", \"warnings\": [\"Function name 'BSP_GameResource_Destroy' \\u2014 main part 'GameResource_Destroy' is not PascalCase. Expected: GameresourceDestroy\", \"Function name 'BSP_GameResource_Destroy' \\u2014 main part 'GameResource_Destroy' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_GameResource_Destroy' does not start with a recognized verb. First word 'Game' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00718810",
+        "comment": "[BSP reconstruction 00718810]\nECX resource; no stack arguments; tail JMP00b88430. Set concrete vtable00cfd8cc; free and zero pointer-range triplets at+68,+58,+48 in that order; no item calls or decrements; tail-call base resource destructor. Matched complete body00718810-0071886f to installed PE; normal-path audit only, no native ABI or game validation. reports/resource_item_ownership_audit.json Original ABI: ECX resource; no stack arguments; tail JMP00b88430. Evidence: docs/RESOURCE_ITEM_OWNERSHIP.md; reports/resource_item_ownership_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00718810\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "clear_instruction_flow_override",
+      "body": {
+        "address": "00b88770"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Cleared flow override at 00b88770 (was: NONE, now: NONE)\"}"
+    },
+    {
+      "endpoint": "delete_function",
+      "body": {
+        "address": "00b88760"
+      },
+      "result": "{\"success\": true, \"address\": \"00b88760\", \"deleted_function\": \"BSP_Resource_ScalarDeletingDestructor\", \"body_size\": 27, \"message\": \"Function 'BSP_Resource_ScalarDeletingDestructor' deleted at 00b88760\"}"
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00b88760",
+        "end_address": "00b8877e"
+      },
+      "result": "{\"success\": true, \"start_address\": \"00b88760\", \"end_address\": \"00b8877d\", \"bytes_disassembled\": 30, \"message\": \"Successfully disassembled 30 byte(s)\"}"
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00b88760",
+        "name": "BSP_Resource_ScalarDeletingDestructor",
+        "disassemble_first": false
+      },
+      "result": "{\"success\": true, \"address\": \"00b88760\", \"function_name\": \"BSP_Resource_ScalarDeletingDestructor\", \"entry_point\": \"00b88760\", \"body_size\": 30, \"message\": \"Function created successfully at 00b88760\", \"warnings\": [\"Function name 'BSP_Resource_ScalarDeletingDestructor' \\u2014 main part 'Resource_ScalarDeletingDestructor' is not PascalCase. Expected: ResourceScalardeletingdestructor\", \"Function name 'BSP_Resource_ScalarDeletingDestructor' \\u2014 main part 'Resource_ScalarDeletingDestructor' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_Resource_ScalarDeletingDestructor' does not start with a recognized verb. First word 'Resource_' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b88760",
+        "new_name": "BSP_Resource_ScalarDeletingDestructor"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b88760 from 'BSP_Resource_ScalarDeletingDestructor' to 'BSP_Resource_ScalarDeletingDestructor'\", \"warnings\": [\"Function name 'BSP_Resource_ScalarDeletingDestructor' \\u2014 main part 'Resource_ScalarDeletingDestructor' is not PascalCase. Expected: ResourceScalardeletingdestructor\", \"Function name 'BSP_Resource_ScalarDeletingDestructor' \\u2014 main part 'Resource_ScalarDeletingDestructor' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_Resource_ScalarDeletingDestructor' does not start with a recognized verb. First word 'Resource_' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00b88760",
+        "comment": "[BSP reconstruction 00b88760]\nECX resource; byte flags in one stack slot; RET4; EAX original object pointer. Call00b88430 then free object through00bf65ac iff flags bit0; return original object pointer. Matched complete body00b88760-00b8877d to installed PE; normal-path audit only, no native ABI or game validation. reports/resource_item_ownership_audit.json Original ABI: ECX resource; byte flags in one stack slot; RET4; EAX original object pointer. Evidence: docs/RESOURCE_ITEM_OWNERSHIP.md; reports/resource_item_ownership_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00b88760\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "clear_instruction_flow_override",
+      "body": {
+        "address": "00718c30"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Cleared flow override at 00718c30 (was: NONE, now: NONE)\"}"
+    },
+    {
+      "endpoint": "delete_function",
+      "body": {
+        "address": "00718c20"
+      },
+      "result": "{\"success\": true, \"address\": \"00718c20\", \"deleted_function\": \"BSP_GameResource_ScalarDeletingDestructor\", \"body_size\": 27, \"message\": \"Function 'BSP_GameResource_ScalarDeletingDestructor' deleted at 00718c20\"}"
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00718c20",
+        "end_address": "00718c3e"
+      },
+      "result": "{\"success\": true, \"start_address\": \"00718c20\", \"end_address\": \"00718c3d\", \"bytes_disassembled\": 30, \"message\": \"Successfully disassembled 30 byte(s)\"}"
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00718c20",
+        "name": "BSP_GameResource_ScalarDeletingDestructor",
+        "disassemble_first": false
+      },
+      "result": "{\"success\": true, \"address\": \"00718c20\", \"function_name\": \"BSP_GameResource_ScalarDeletingDestructor\", \"entry_point\": \"00718c20\", \"body_size\": 30, \"message\": \"Function created successfully at 00718c20\", \"warnings\": [\"Function name 'BSP_GameResource_ScalarDeletingDestructor' \\u2014 main part 'GameResource_ScalarDeletingDestructor' is not PascalCase. Expected: GameresourceScalardeletingdestructor\", \"Function name 'BSP_GameResource_ScalarDeletingDestructor' \\u2014 main part 'GameResource_ScalarDeletingDestructor' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_GameResource_ScalarDeletingDestructor' does not start with a recognized verb. First word 'Game' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00718c20",
+        "new_name": "BSP_GameResource_ScalarDeletingDestructor"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00718c20 from 'BSP_GameResource_ScalarDeletingDestructor' to 'BSP_GameResource_ScalarDeletingDestructor'\", \"warnings\": [\"Function name 'BSP_GameResource_ScalarDeletingDestructor' \\u2014 main part 'GameResource_ScalarDeletingDestructor' is not PascalCase. Expected: GameresourceScalardeletingdestructor\", \"Function name 'BSP_GameResource_ScalarDeletingDestructor' \\u2014 main part 'GameResource_ScalarDeletingDestructor' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_GameResource_ScalarDeletingDestructor' does not start with a recognized verb. First word 'Game' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00718c20",
+        "comment": "[BSP reconstruction 00718c20]\nECX resource; byte flags in one stack slot; RET4; EAX original object pointer. Call00718810 then free object through00bf65ac iff flags bit0; return original object pointer. Matched complete body00718c20-00718c3d to installed PE; normal-path audit only, no native ABI or game validation. reports/resource_item_ownership_audit.json Original ABI: ECX resource; byte flags in one stack slot; RET4; EAX original object pointer. Evidence: docs/RESOURCE_ITEM_OWNERSHIP.md; reports/resource_item_ownership_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00718c20\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": "{\"success\": true, \"program\": \"battlestationspacific.exe\", \"message\": \"Program saved successfully\"}"
+    }
+  ],
+  "saved": true
+}

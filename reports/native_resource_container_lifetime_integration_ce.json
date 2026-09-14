@@ -1,0 +1,320 @@
+{
+  "packet": "orch4_native_resource_container_lifetime_ce",
+  "state": "complete_source_worktree_override_build_and_paired_fixture_tracked_registration_pending",
+  "base_revision": "dea025502e9c9add82be25497c43cabecf8f642b",
+  "project": {
+    "project_name": "bsp",
+    "current_folder": "/",
+    "folders": [],
+    "files": [
+      {
+        "name": "battlestationspacific.exe",
+        "path": "/battlestationspacific.exe",
+        "content_type": "Program",
+        "version": 2684,
+        "is_read_only": false,
+        "is_versioned": false
+      }
+    ]
+  },
+  "program": {
+    "name": "battlestationspacific.exe",
+    "path": "/battlestationspacific.exe",
+    "executable_path": "/I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "executable_format": "Portable Executable (PE)",
+    "language": "x86:LE:32:default",
+    "compiler": "windows",
+    "address_size": 32,
+    "image_base": "00400000",
+    "min_address": "00400000",
+    "max_address": "ffdfffff",
+    "memory_size": 14876380,
+    "function_count": 64077,
+    "symbol_count": 144274,
+    "data_type_count": 795,
+    "creation_date": "Mon May 04 16:56:25 PDT 2026",
+    "memory_block_count": 6,
+    "address_spaces": [
+      {
+        "name": "ram",
+        "start": "00000000",
+        "end": "ffffffff",
+        "size": 4294967296,
+        "addressable_unit_size": 1,
+        "size_bytes": 4294967296,
+        "address_size_bits": 32,
+        "is_default": true
+      }
+    ],
+    "has_multiple_address_spaces": false
+  },
+  "ordinary_bodies": 4,
+  "ordinary_bytes": 792,
+  "verified_instruction_owners": 272,
+  "preserved_live_comments": 9,
+  "source_inputs": 2673,
+  "source_manifest": {
+    "path": "local/native_resource_container_lifetime_ce/worktree_override/source_manifest.json",
+    "sha256": "7f479cd6f68fa96226172b2601ec79d230c08d07ccc10b4cf8f8bd301c2499b2",
+    "bytes": 289556
+  },
+  "configuration": {
+    "description": "Worktree-only deferred target_sources adds CC and CE to actual bsp_core. The tracked startup.cmake excludes both. Neither a clean-checkout registry build nor main integration is claimed.",
+    "hook": {
+      "path": "local/native_resource_container_lifetime_ce/worktree_override/extra_sources.cmake",
+      "sha256": "c47f20b7b5f00e47ff1c8a7ae04d88edcea4aa042b49143726e4a9d72f8945eb",
+      "bytes": 193
+    },
+    "cache": {
+      "path": "local/native_resource_container_lifetime_ce/worktree_override/CMakeCache.txt",
+      "sha256": "38bc7a267edfdb66d5f603ea48143fc0becb87c5417fb57d2c29e78de3438978",
+      "bytes": 19057
+    },
+    "command": "cmake -S . -B build/win32 -DCMAKE_PROJECT_INCLUDE_BEFORE=J:/PROG/battlestations-pacific-decompile-orch4-20260910/local/native_resource_container_lifetime_ce/extra_sources.cmake",
+    "build": "scripts/build.ps1 with MSBUILDDISABLENODEREUSE=1 and CMAKE_BUILD_PARALLEL_LEVEL=3",
+    "remove_when_registering": "Unset CMAKE_PROJECT_INCLUDE_BEFORE before the build with tracked registration.",
+    "base_revision": "dea025502e9c9add82be25497c43cabecf8f642b",
+    "source_manifest": {
+      "path": "local/native_resource_container_lifetime_ce/worktree_override/source_manifest.json",
+      "sha256": "7f479cd6f68fa96226172b2601ec79d230c08d07ccc10b4cf8f8bd301c2499b2",
+      "bytes": 289556
+    },
+    "binary": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+    }
+  },
+  "validation": {
+    "worktree_override_project_build": "Passed scripts/build.ps1 with strict MSVC Win32 compilation of CC and CE into bsp_core using local CMAKE_PROJECT_INCLUDE_BEFORE deferred target_sources hook. Tracked startup.cmake still excludes both modules.",
+    "existing_ctests": "2/2 passed in that worktree override build",
+    "tracked_project_registration": "pending cc7 startup.cmake lease release",
+    "paired_fixture": "Passed four comparisons/eight executions (source and copied original): actual default44h/game74h resource destruction with scalar flags2 and flags1, actual raw manager/root parser dispatch, duplicate group reference, camera/fallback items, parsed hierarchy pool records, null hierarchy element and name-only cache erase of an unrelated borrowed mapped value.",
+    "source_reference_integration": "Two complete resource-slot release paths traverse actual decrement, BD30E0/current slot4 and flags1 for default/game containers. Raw manager plus six parsers drain canonically; all hierarchy records returned before pool destruction.",
+    "source_exception": "One camera zero-reference callback throws. Derived borrowed vectors are already cleared; only backing arrays/name/base unwind. Cache entry, remaining group/fallback and two hierarchy pointees remain; camera count0 allocation retained. Explicit cleanup occurs only after observation.",
+    "fixture_expectation_correction": "The first run failed only at its final pool teardown assertion: B18470 leaves stale slab count1 after freeing slabs/table and unlinking allocator node. Corrected to this evidenced behavior; CE source unchanged.",
+    "cc_regression": "Existing CC controlled-child fixture passed against the same CMake-built bsp_core, without a standalone CC object.",
+    "native_exception_paths_guarded_out": true
+  },
+  "startup_registry_lease": [
+    {
+      "id": "cc7:cc7_rate_wire",
+      "owner": "cc7",
+      "packet": "cc7_rate_wire",
+      "addresses": [
+        "007d9c80",
+        "007da710",
+        "0085e4d0"
+      ],
+      "ranges": [],
+      "files": [
+        "cmake/startup.cmake",
+        "include/bsp/game_hosts_units.hpp",
+        "include/bsp/plane_control_rate.hpp",
+        "src/game_hosts_units.cpp",
+        "src/plane_control_rate.cpp"
+      ],
+      "claimed": "2026-09-14T21:01:36+00:00",
+      "expires": "2026-09-15T02:09:52+00:00",
+      "status": "active",
+      "worktree": "J:\\PROG\\battlestations-pacific-decompile",
+      "note": ""
+    }
+  ],
+  "main_integration": "Not performed: cc7 holds shared registry and plane-control source/header. CD proved two source floor mismatches in incoming23f78d03; later pinned36d87416 adds unaccepted plan-slot wiring and graph analysis. No owner correction or complete review of that delta is claimed.",
+  "incoming_review": {
+    "reviewed_pin": "23f78d03c0fdb5d40890936193ddbfb5adfc94fb",
+    "later_unaccepted_pin": "36d8741626d0a503c1318de9e988fb8e0d24328e",
+    "confirmed_defects": "docs/NATIVE_PLANE_CONTROL_REVIEW_CD.md",
+    "review_report": "reports/native_plane_control_review_cd.json"
+  },
+  "evidence_limits": [
+    "New explicit-context C++ interfaces are not native register/stack ABI replacements. FH3/SEH/private stack aliasing, original CRT behavior, hardware faults and secondary exception termination were not differentially executed.",
+    "Copied ordinary bodies share established source allocation, cache, string, hierarchy-field and item terminals. Original item slot0 uses fixture tables, restoring the captured numeric profile before calling the shared source terminal. Original native EH is guarded out.",
+    "Original inlined pool return executes against actual hierarchy pool/slab storage using rebound global/import addresses and real Windows atomic/critical-section functions. This proves the exercised one-slab schedules, not all allocation failure, corrupted-header, callback mutation or multi-slab paths.",
+    "Extreme signed count/capacity wrap cases are recovered from instructions but not runtime-probed. Fixture pool/string state is preconstructed; lazy recreation and token startup are not newly validated.",
+    "Only reconstructed GroupParams, Camera and fallback item terminals are exercised. Remaining Mesh, SkinedMesh, MatrixIndexedMesh, animation, graph and other item terminals are still open.",
+    "Tracked registry registration, incoming main conflict corrections/review, main integration, full executable admission and gameplay remain open. The local build cache hook must be removed when tracked registration is added."
+  ],
+  "artifacts": [
+    {
+      "path": "local/native_resource_container_lifetime_ce/worktree_override/initial_audit.json",
+      "sha256": "71cdb19281db668d831e324efad1ff109acdc7c24d5ddd78d7c422103d94bab6",
+      "bytes": 35149
+    },
+    {
+      "path": "local/native_resource_container_lifetime_ce/worktree_override/final_audit.json",
+      "sha256": "83fba6d6168c4631aee8b485c59d8e115389addcfc7bec8b426fd5039c335568",
+      "bytes": 34547
+    },
+    {
+      "path": "local/native_resource_container_lifetime_ce/worktree_override/build.log",
+      "sha256": "19e22509d9b347c6566ccd7cf58681deee4d72991eecb9fb788a28b32ea8c8d5",
+      "bytes": 4012
+    },
+    {
+      "path": "local/native_resource_container_lifetime_ce/worktree_override/extra_sources.cmake",
+      "sha256": "c47f20b7b5f00e47ff1c8a7ae04d88edcea4aa042b49143726e4a9d72f8945eb",
+      "bytes": 193
+    },
+    {
+      "path": "local/native_resource_container_lifetime_ce/worktree_override/compile.log",
+      "sha256": "25d4f66c7c01d5b35c220cb97ffdd1608405f4ab45160497e6cc7ea3079676cf",
+      "bytes": 11
+    },
+    {
+      "path": "local/native_resource_container_lifetime_ce/worktree_override/probe.log",
+      "sha256": "a71b0c9a40ce949721949e4b0bb67757ac762b8fd64b6910aa3f7cf733af6df3",
+      "bytes": 230
+    },
+    {
+      "path": "local/native_resource_container_lifetime_ce/worktree_override/child_probe.log",
+      "sha256": "c1a1138b198fe5156e35ce684d1084222a177abbbfb2ac3095aacf2588d00f2a",
+      "bytes": 194
+    },
+    {
+      "path": "local/native_resource_container_lifetime_ce/worktree_override/probe.cpp",
+      "sha256": "e005ed1c6633222955e4b430f13b4e1aab5476f1daec2a5bb57da840ad08941c",
+      "bytes": 25646
+    },
+    {
+      "path": "local/native_resource_container_lifetime_ce/worktree_override/probe.exe",
+      "sha256": "c0a16ee596954d101fa7aebc2bc72df74a0ab645080532c99aebfb6168e20229",
+      "bytes": 384000
+    },
+    {
+      "path": "local/native_resource_container_lifetime_ce/worktree_override/probe.obj",
+      "sha256": "79007aefc9cbde67a972b6b13e2da98d7c009284cf669f2ae2b0a446a687754f",
+      "bytes": 303818
+    },
+    {
+      "path": "local/native_resource_container_lifetime_ce/worktree_override/probe.map",
+      "sha256": "4f5341562ab58ba8b090a1db8d7d280a98c2bdf054fd557907d901650021ecc4",
+      "bytes": 626310
+    },
+    {
+      "path": "local/native_resource_container_lifetime_ce/worktree_override/original_bodies.hpp",
+      "sha256": "48b6170548c76cedea87beb99366137b8b53748ae6c3991193434a6d271d9742",
+      "bytes": 3981
+    },
+    {
+      "path": "local/native_resource_container_lifetime_ce/worktree_override/original_bodies.json",
+      "sha256": "6d8577210c816ed5133e61a2063d13ed1598514160073580186a2537ea171ede",
+      "bytes": 2507
+    },
+    {
+      "path": "local/native_resource_container_lifetime_ce/worktree_override/compile.cmd",
+      "sha256": "0d10de0bc8c6dc2491f4968faad7f7918f5a38515ab362b8a884c0a52e191b98",
+      "bytes": 748
+    },
+    {
+      "path": "local/native_resource_container_lifetime_ce/worktree_override/bsp_core.lib",
+      "sha256": "b2716f094bfd9389344701019e0216d871f5cbcef05ae5549782f82e54b014d1",
+      "bytes": 58786304
+    },
+    {
+      "path": "local/native_resource_container_lifetime_ce/worktree_override/bsp_lua511.lib",
+      "sha256": "00315ac717aac3d2b2161fefefe71b36a974335ff9c95d48c137423eb4e2f4b2",
+      "bytes": 455244
+    },
+    {
+      "path": "local/native_resource_container_lifetime_ce/worktree_override/bsp_zlib121.lib",
+      "sha256": "73ae30b8adc3adfe5b33285bac533f8e7df7e8ab8d9e44789e6a030fd8a06ad9",
+      "bytes": 71906
+    },
+    {
+      "path": "local/native_resource_container_lifetime_ce/worktree_override/CMakeCache.txt",
+      "sha256": "38bc7a267edfdb66d5f603ea48143fc0becb87c5417fb57d2c29e78de3438978",
+      "bytes": 19057
+    },
+    {
+      "path": "local/native_resource_container_lifetime_ce/worktree_override/bsp_game.exe",
+      "sha256": "5cfd9663158b200d65119c4b4e7f3db650b2862235bdbbcb6a6eb83b5a238645",
+      "bytes": 2168832
+    },
+    {
+      "path": "local/native_resource_container_lifetime_ce/worktree_override/source_manifest.json",
+      "sha256": "7f479cd6f68fa96226172b2601ec79d230c08d07ccc10b4cf8f8bd301c2499b2",
+      "bytes": 289556
+    },
+    {
+      "path": "local/native_resource_container_lifetime_ce/worktree_override/configuration.json",
+      "sha256": "e7f1e56be77a106ad2082dcda95ae8ad6e80284b1c1e5914c7c1e47b48c4fbc1",
+      "bytes": 1527
+    },
+    {
+      "path": "local/native_resource_container_lifetime_ce/worktree_override/cc_regression/compile.log",
+      "sha256": "25d4f66c7c01d5b35c220cb97ffdd1608405f4ab45160497e6cc7ea3079676cf",
+      "bytes": 11
+    },
+    {
+      "path": "local/native_resource_container_lifetime_ce/worktree_override/cc_regression/probe.log",
+      "sha256": "1a608d5b916a6fbd4391a24ea7e214156dcc70eea28a66de02bfc9c951d1dc79",
+      "bytes": 1108
+    },
+    {
+      "path": "local/native_resource_container_lifetime_ce/worktree_override/cc_regression/child_probe.log",
+      "sha256": "0a8f5a633ffb32806128a339127ed470b5aa5db6c291bf4ed9904bf5876a6f54",
+      "bytes": 1061
+    },
+    {
+      "path": "local/native_resource_container_lifetime_ce/worktree_override/cc_regression/probe.cpp",
+      "sha256": "28e44a9243d489a96d962e3d457dfd77ff39545c6a38a68e5f7e5c7f28ee1b13",
+      "bytes": 25466
+    },
+    {
+      "path": "local/native_resource_container_lifetime_ce/worktree_override/cc_regression/probe.exe",
+      "sha256": "349d108284712074a062b9536a56bc48bbd046e15273b2c6264aaeb2d50825a6",
+      "bytes": 375808
+    },
+    {
+      "path": "local/native_resource_container_lifetime_ce/worktree_override/cc_regression/probe.obj",
+      "sha256": "8aa95763a4f8794a76cfede319dec76afcf9883e1f769b6fb1e25eff62640f6f",
+      "bytes": 287358
+    },
+    {
+      "path": "local/native_resource_container_lifetime_ce/worktree_override/cc_regression/probe.map",
+      "sha256": "ab0c491cb2e4af2c4abe0fdf21003499d7a20d78e8746bf2779519f80a2e68e0",
+      "bytes": 603491
+    },
+    {
+      "path": "local/native_resource_container_lifetime_ce/worktree_override/cc_regression/original_bodies.hpp",
+      "sha256": "18a8c25964534fe720707509e38519e6905056252a90348002109387de9c231c",
+      "bytes": 5291
+    },
+    {
+      "path": "local/native_resource_container_lifetime_ce/worktree_override/cc_regression/original_bodies.json",
+      "sha256": "e76a1ce70270d683f4d13d236a4720aa29d1ed232a7019bb88d37e69c2d9f06b",
+      "bytes": 3039
+    },
+    {
+      "path": "local/native_resource_container_lifetime_ce/worktree_override/cc_regression/compile.cmd",
+      "sha256": "76429d39b5e0974adffeb02b74462373740846a4c19d636de2ce16f9974a46b7",
+      "bytes": 846
+    },
+    {
+      "path": "local/native_resource_container_lifetime_ce/worktree_override/cc_regression/bsp_core.lib",
+      "sha256": "b2716f094bfd9389344701019e0216d871f5cbcef05ae5549782f82e54b014d1",
+      "bytes": 58786304
+    },
+    {
+      "path": "local/native_resource_container_lifetime_ce/worktree_override/cc_regression/bsp_lua511.lib",
+      "sha256": "00315ac717aac3d2b2161fefefe71b36a974335ff9c95d48c137423eb4e2f4b2",
+      "bytes": 455244
+    },
+    {
+      "path": "local/native_resource_container_lifetime_ce/worktree_override/cc_regression/bsp_zlib121.lib",
+      "sha256": "73ae30b8adc3adfe5b33285bac533f8e7df7e8ab8d9e44789e6a030fd8a06ad9",
+      "bytes": 71906
+    },
+    {
+      "path": "reports/native_resource_container_lifetime_flow_ce.json",
+      "sha256": "cd476e1185daab8b49bdc5a32534e4527a73994b0bec0f6bb193df6b6596627e",
+      "bytes": 21296
+    },
+    {
+      "path": "reports/native_resource_container_lifetime_annotations_ce.json",
+      "sha256": "56a7e38b34a40fdc3666b3583580a39fb9c1462f15c9f18acb66f8ba1088295f",
+      "bytes": 97120
+    }
+  ]
+}
