@@ -960,5 +960,5 @@ cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_gam
 # inherited reservation owns the four original read-only address bands.
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_game PRIVATE src/game_native_vfs_application.cpp)
 if(MSVC)
-    cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_link_options bsp_game PRIVATE /BASE:0x30000000 /DYNAMICBASE:NO)
+    cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_link_options bsp_game PRIVATE /BASE:0x30000000 /DYNAMICBASE:NO "/MAP:${CMAKE_BINARY_DIR}/bsp_game.map")
 endif()
