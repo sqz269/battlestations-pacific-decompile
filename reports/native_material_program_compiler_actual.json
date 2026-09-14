@@ -7868,7 +7868,22 @@
       "log_sha256": "49a99b1ac922bfce76430302edae0623bda38fcaa4b1571b1b4470720435ce31"
     },
     "frozen_closure": {
-      "status": "pending_immutable_capture"
+      "manifest": "J:\\PROG\\battlestations-pacific-decompile-orch5-material-compiler-order-fix\\local\\verification\\compiler_order_fix_frozen_20260914\\manifest.json",
+      "sha256": "2dcbe1a0cddbd6896a36ad67ccc170e550e3150e3c39f8bba46384f0ab1e95fa",
+      "artifacts": 7667,
+      "total_bytes": 587004191,
+      "compiled_translation_units": 1318,
+      "actual_loaded_modules": 14,
+      "source_commit": "f18a80983c3a3ae9d35f98035eddece9ada90b04",
+      "verified_all_artifact_hashes": true,
+      "freeze_driver_log": "J:\\PROG\\battlestations-pacific-decompile-orch5-material-compiler-order-fix\\local\\verification\\compiler_order_fix_freeze.log",
+      "source_only_correction_commit": "d61b6329ab12ba7688a500eb2abb2a0b90ecae24",
+      "limits": [
+        "The complete actual compiler and providers link through the exported factory.",
+        "Runtime covers only BE4460/BE40D0 plus real WriteFile and B1FF50; full parent and B44B10 were not executed.",
+        "Tool component closure includes available MSVC components; actual runtime enumeration is for the fixture.",
+        "Original FH3 and game execution remain unvalidated."
+      ]
     }
   },
   "limits": [
@@ -8079,7 +8094,7 @@
       "path": "local/verification/compiler_order_fix/compiled_order_audit.json",
       "sha256": "452af4c2d33646df96b1f5463ba4ca99970e9a06f12a72f5a612abfd48594d8a"
     },
-    "validation_status": "strict_build_2ctest_8seeds_125numeric_rows_and_existing_cache_fixture_passed",
+    "validation_status": "complete_frozen_source_compiler_link_tool_runtime_closure",
     "source_only_compile": {
       "command": "local/verification/compiler_order_fix/compile_changed.cmd",
       "exit": 0,
@@ -8112,7 +8127,9 @@
       ]
     },
     "source_sha256": "4b2c99f0f2eb5c22b11b0f51481b889282c318955542a333e7c93da7d7f10111",
-    "current_fixture_adaptation": "Only isolated output/input path and probe filename changed; original/source test logic retained. An initial copied header-name typo prevented probe compilation; corrected before execution, failure log preserved."
+    "current_fixture_adaptation": "Only isolated output/input path and probe filename changed; original/source test logic retained. An initial copied header-name typo prevented probe compilation; corrected before execution, failure log preserved.",
+    "final_evidence_source_snapshot": "f18a80983c3a3ae9d35f98035eddece9ada90b04",
+    "frozen_manifest_sha256": "2dcbe1a0cddbd6896a36ad67ccc170e550e3150e3c39f8bba46384f0ab1e95fa"
   },
   "upstream_validation_before_order_correction": {
     "seeds": {
