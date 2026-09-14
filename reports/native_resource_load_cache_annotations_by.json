@@ -1,0 +1,555 @@
+{
+  "source_functions": [
+    {
+      "address": "00b80720",
+      "function": "load_and_cache_native_resource_00b80720",
+      "source": "src/native_resource_load_cache.cpp",
+      "report": "reports/native_resource_load_cache_by.json",
+      "original_abi": "ECX actual28h manager; stack actual name/factory; EAX resource; RET8",
+      "bytes": 811
+    },
+    {
+      "address": "00b7e8f0",
+      "function": "destroy_native_resource_cache_pair_00b7e8f0",
+      "source": "src/native_resource_load_cache.cpp",
+      "report": "reports/native_resource_load_cache_by.json",
+      "original_abi": "ECX actual0Ch name/resource pair; RET",
+      "bytes": 29
+    },
+    {
+      "address": "00b7e910",
+      "function": "destroy_native_resource_cache_insert_pair_00b7e910",
+      "source": "src/native_resource_load_cache.cpp",
+      "report": "reports/native_resource_load_cache_by.json",
+      "original_abi": "ECX actual0Ch name/resource insertion pair; RET",
+      "bytes": 29
+    },
+    {
+      "address": "00be2700",
+      "function": "read_native_resource_allocation_budget_00be2700",
+      "source": "src/native_resource_load_cache.cpp",
+      "report": "reports/native_resource_load_cache_by.json",
+      "original_abi": "ECX ignored; EAX40000000; RET",
+      "bytes": 30
+    }
+  ],
+  "entries": [
+    {
+      "address": "00b80720",
+      "name": "BSP_ResourceManager_LoadAndCache",
+      "before_comment": {
+        "address": "00b80720",
+        "function_name": "BSP_ResourceManager_LoadAndCache",
+        "comment": "[BSP reconstruction 00b80720]\nECX manager; name/factory stack, EAX resource, RET8. Cache+14 uses original name; hit increments resource+4. Miss factory+4 creates resource, resolved-name VFS stream flags2 feeds reader00bf0430/root00bea700/dispatch00b7f430, original-name entry inserted. Current factory+20/current resource+24; unknown metric difference stored resource+40. Parser and new-result/cache ownership still external. Evidence: docs/VFS_LOAD_WORKER_DISPATCH.md; reports/vfs_load_worker_dispatch_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim."
+      },
+      "evidence": "BY complete raw load/cache composition:4 bodies899bytes,284 ordinary+12 support instruction owners;38 direct transfers and7 indirect calls verified against installed PE/live Ghidra. Build and both tests passed. Actual source fixture covers miss/hit, original-name key after normalization/false resolution, current factory/resource reloads, wrapping metric and return captured before cleanup; parser throw follows five cleanup actions without resource/factory rollback. Original30B BE2700 with canonical memset agrees: zeroed34h local makes ordinary EAX40000000; no OS memory query exists. Open/parser callbacks and empty VFS tree are fixture boundaries. Nested VFS failure retention remains required; native loader/FH3/SEH/private spills/hardware faults, concrete manager/parser bootstrap, resource destructor and gameplay remain unproved. Names are hypotheses; prior comments and correct compiler names retained. See docs/NATIVE_RESOURCE_LOAD_CACHE_BY.md and reports/native_resource_load_cache_by.json. Full ordinary span 811 bytes; ECX actual28h manager; stack actual name/factory; EAX resource; RET8; reports/native_resource_load_cache_by.json.",
+      "before_documentation": {
+        "hash": "d58fb79e0180fdbca00eda3a78fd67e617af9008de77dbed014e5ef7972f0618",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b80720",
+        "function_name": "BSP_ResourceManager_LoadAndCache",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00b80720]\nECX manager; name/factory stack, EAX resource, RET8. Cache+14 uses original name; hit increments resource+4. Miss factory+4 creates resource, resolved-name VFS stream flags2 feeds reader00bf0430/root00bea700/dispatch00b7f430, original-name entry inserted. Current factory+20/current resource+24; unknown metric difference stored resource+40. Parser and new-result/cache ownership still external. Evidence: docs/VFS_LOAD_WORKER_DISPATCH.md; reports/vfs_load_worker_dispatch_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim.",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "_Size",
+            "type": "size_t",
+            "storage": "(stack, 0xffffffffffffff24, 4)"
+          },
+          {
+            "name": "uVar6",
+            "type": "undefined8",
+            "storage": "(VARIABLE, 0x0, 8)"
+          },
+          {
+            "name": "pvVar7",
+            "type": "void *",
+            "storage": "(stack, 0xffffffffffffff28, 4)"
+          },
+          {
+            "name": "local_b0",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffff50, 4)"
+          },
+          {
+            "name": "local_ac",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffff54, 4)"
+          },
+          {
+            "name": "local_98",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffff68, 4)"
+          },
+          {
+            "name": "local_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "iStack_9c",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffff64, 4)"
+          },
+          {
+            "name": "auStack_a4",
+            "type": "undefined1[8]"
+          },
+          {
+            "name": "auStack_94",
+            "type": "undefined1[12]"
+          },
+          {
+            "name": "auStack_7c",
+            "type": "undefined1[92]"
+          },
+          {
+            "name": "auStack_88",
+            "type": "undefined1[12]"
+          },
+          {
+            "name": "pvStack_1c",
+            "type": "void *",
+            "storage": "(stack, 0xffffffffffffffe4, 4)"
+          },
+          {
+            "name": "sStack_20",
+            "type": "size_t",
+            "storage": "(stack, 0xffffffffffffffe0, 4)"
+          },
+          {
+            "name": "uStack_10",
+            "type": "undefined1",
+            "storage": "(stack, 0xfffffffffffffff0, 1)"
+          },
+          {
+            "name": "iStack_4",
+            "type": "int",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "pcStack_8",
+            "type": "undefined *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "uVar2",
+            "type": "undefined4",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "uVar1",
+            "type": "uint",
+            "storage": "(unique, 0x17200, 4)"
+          },
+          {
+            "name": "LVar3",
+            "type": "LONG",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "stream",
+            "type": "undefined4 *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "iVar5",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "puVar4",
+            "type": "uint *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "extraout_EDX",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "unused_edx",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "unused_edx_00",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "extraout_EDX_00",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "unaff_ESI",
+            "type": "uint",
+            "storage": "(register, 0x18, 4)"
+          },
+          {
+            "name": "unaff_EBP",
+            "type": "void *",
+            "storage": "(register, 0x14, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 90,
+            "name": "LAB_00b8077a"
+          },
+          {
+            "relative_offset": 95,
+            "name": "LAB_00b8077f"
+          },
+          {
+            "relative_offset": 114,
+            "name": "LAB_00b80792"
+          },
+          {
+            "relative_offset": 128,
+            "name": "LAB_00b807a0"
+          },
+          {
+            "relative_offset": 156,
+            "name": "LAB_00b807bc"
+          },
+          {
+            "relative_offset": 243,
+            "name": "LAB_00b80813"
+          },
+          {
+            "relative_offset": 369,
+            "name": "LAB_00b80891"
+          },
+          {
+            "relative_offset": 392,
+            "name": "LAB_00b808a8"
+          },
+          {
+            "relative_offset": 488,
+            "name": "LAB_00b80908"
+          },
+          {
+            "relative_offset": 569,
+            "name": "LAB_00b80959"
+          },
+          {
+            "relative_offset": 637,
+            "name": "LAB_00b8099d"
+          },
+          {
+            "relative_offset": 676,
+            "name": "LAB_00b809c4"
+          },
+          {
+            "relative_offset": 782,
+            "name": "LAB_00b80a2e"
+          },
+          {
+            "relative_offset": 784,
+            "name": "LAB_00b80a30"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "prototype": "void* __fastcall BSP_ResourceManager_LoadAndCache(void* manager, void* unused_edx, void* name, void* factory)",
+      "prototype_result": "Successfully set prototype for function at 00b80720 with __fastcall calling convention",
+      "ledger_name_output": "00b80720 -> BSP_ResourceManager_LoadAndCache\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00b80720\", \"name\": \"BSP_ResourceManager_LoadAndCache\", \"evidence\": \"ECX manager; name/factory stack, EAX resource, RET8. Cache+14 uses original name; hit increments resource+4. Miss factory+4 creates resource, resolved-name VFS stream flags2 feeds reader00bf0430/root00bea700/dispatch00b7f430, original-name entry inserted. Current factory+20/current resource+24; unknown metric difference stored resource+40. Parser and new-result/cache ownership still external. Evidence: docs/VFS_LOAD_WORKER_DISPATCH.md; reports/vfs_load_worker_dispatch_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim.\"})\n",
+      "ledger_function_output": "00b80720 function load_and_cache_native_resource_00b80720\n",
+      "prior_comment_preservation_checked": true,
+      "after_comment": {
+        "address": "00b80720",
+        "function_name": "BSP_ResourceManager_LoadAndCache",
+        "comment": "[BSP reconstruction 00b80720]\nECX manager; name/factory stack, EAX resource, RET8. Cache+14 uses original name; hit increments resource+4. Miss factory+4 creates resource, resolved-name VFS stream flags2 feeds reader00bf0430/root00bea700/dispatch00b7f430, original-name entry inserted. Current factory+20/current resource+24; unknown metric difference stored resource+40. Parser and new-result/cache ownership still external. Evidence: docs/VFS_LOAD_WORKER_DISPATCH.md; reports/vfs_load_worker_dispatch_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim.\n\n[BSP reconstruction 00b80720] update\nBY complete raw load/cache composition:4 bodies899bytes,284 ordinary+12 support instruction owners;38 direct transfers and7 indirect calls verified against installed PE/live Ghidra. Build and both tests passed. Actual source fixture covers miss/hit, original-name key after normalization/false resolution, current factory/resource reloads, wrapping metric and return captured before cleanup; parser throw follows five cleanup actions without resource/factory rollback. Original30B BE2700 with canonical memset agrees: zeroed34h local makes ordinary EAX40000000; no OS memory query exists. Open/parser callbacks and empty VFS tree are fixture boundaries. Nested VFS failure retention remains required; native loader/FH3/SEH/private spills/hardware faults, concrete manager/parser bootstrap, resource destructor and gameplay remain unproved. Names are hypotheses; prior comments and correct compiler names retained. See docs/NATIVE_RESOURCE_LOAD_CACHE_BY.md and reports/native_resource_load_cache_by.json. Full ordinary span 811 bytes; ECX actual28h manager; stack actual name/factory; EAX resource; RET8; reports/native_resource_load_cache_by.json."
+      }
+    },
+    {
+      "address": "00b7e8f0",
+      "name": "BSP_ResourceCachePair_DestroyName",
+      "before_comment": {
+        "address": "00b7e8f0",
+        "function_name": "FUN_00b7e8f0"
+      },
+      "evidence": "BY complete raw load/cache composition:4 bodies899bytes,284 ordinary+12 support instruction owners;38 direct transfers and7 indirect calls verified against installed PE/live Ghidra. Build and both tests passed. Actual source fixture covers miss/hit, original-name key after normalization/false resolution, current factory/resource reloads, wrapping metric and return captured before cleanup; parser throw follows five cleanup actions without resource/factory rollback. Original30B BE2700 with canonical memset agrees: zeroed34h local makes ordinary EAX40000000; no OS memory query exists. Open/parser callbacks and empty VFS tree are fixture boundaries. Nested VFS failure retention remains required; native loader/FH3/SEH/private spills/hardware faults, concrete manager/parser bootstrap, resource destructor and gameplay remain unproved. Names are hypotheses; prior comments and correct compiler names retained. See docs/NATIVE_RESOURCE_LOAD_CACHE_BY.md and reports/native_resource_load_cache_by.json. Full ordinary span 29 bytes; ECX actual0Ch name/resource pair; RET; reports/native_resource_load_cache_by.json.",
+      "before_documentation": {
+        "hash": "abccc4a57624ffd26380018c8df4b10608f27abdc02afa1c6e152bbc9aefcfc0",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b7e8f0",
+        "function_name": "FUN_00b7e8f0",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "iVar2",
+            "type": "int",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "iVar1",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "uVar3",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 28,
+            "name": "LAB_00b7e90c"
+          }
+        ],
+        "completeness_score": 50.0
+      },
+      "prototype": "void __fastcall BSP_ResourceCachePair_DestroyName(void* pair, void* unused_edx)",
+      "prototype_result": "Successfully set prototype for function at 00b7e8f0 with __fastcall calling convention",
+      "ledger_name_output": "00b7e8f0 -> BSP_ResourceCachePair_DestroyName\n",
+      "ledger_function_output": "00b7e8f0 function destroy_native_resource_cache_pair_00b7e8f0\n",
+      "prior_comment_preservation_checked": true,
+      "after_comment": {
+        "address": "00b7e8f0",
+        "function_name": "BSP_ResourceCachePair_DestroyName",
+        "comment": "[BSP reconstruction 00b7e8f0]\nBY complete raw load/cache composition:4 bodies899bytes,284 ordinary+12 support instruction owners;38 direct transfers and7 indirect calls verified against installed PE/live Ghidra. Build and both tests passed. Actual source fixture covers miss/hit, original-name key after normalization/false resolution, current factory/resource reloads, wrapping metric and return captured before cleanup; parser throw follows five cleanup actions without resource/factory rollback. Original30B BE2700 with canonical memset agrees: zeroed34h local makes ordinary EAX40000000; no OS memory query exists. Open/parser callbacks and empty VFS tree are fixture boundaries. Nested VFS failure retention remains required; native loader/FH3/SEH/private spills/hardware faults, concrete manager/parser bootstrap, resource destructor and gameplay remain unproved. Names are hypotheses; prior comments and correct compiler names retained. See docs/NATIVE_RESOURCE_LOAD_CACHE_BY.md and reports/native_resource_load_cache_by.json. Full ordinary span 29 bytes; ECX actual0Ch name/resource pair; RET; reports/native_resource_load_cache_by.json."
+      }
+    },
+    {
+      "address": "00b7e910",
+      "name": "BSP_ResourceCacheInsertPair_DestroyName",
+      "before_comment": {
+        "address": "00b7e910",
+        "function_name": "FUN_00b7e910"
+      },
+      "evidence": "BY complete raw load/cache composition:4 bodies899bytes,284 ordinary+12 support instruction owners;38 direct transfers and7 indirect calls verified against installed PE/live Ghidra. Build and both tests passed. Actual source fixture covers miss/hit, original-name key after normalization/false resolution, current factory/resource reloads, wrapping metric and return captured before cleanup; parser throw follows five cleanup actions without resource/factory rollback. Original30B BE2700 with canonical memset agrees: zeroed34h local makes ordinary EAX40000000; no OS memory query exists. Open/parser callbacks and empty VFS tree are fixture boundaries. Nested VFS failure retention remains required; native loader/FH3/SEH/private spills/hardware faults, concrete manager/parser bootstrap, resource destructor and gameplay remain unproved. Names are hypotheses; prior comments and correct compiler names retained. See docs/NATIVE_RESOURCE_LOAD_CACHE_BY.md and reports/native_resource_load_cache_by.json. Full ordinary span 29 bytes; ECX actual0Ch name/resource insertion pair; RET; reports/native_resource_load_cache_by.json.",
+      "before_documentation": {
+        "hash": "abccc4a57624ffd26380018c8df4b10608f27abdc02afa1c6e152bbc9aefcfc0",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b7e910",
+        "function_name": "FUN_00b7e910",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "iVar2",
+            "type": "int",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "iVar1",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "uVar3",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 28,
+            "name": "LAB_00b7e92c"
+          }
+        ],
+        "completeness_score": 50.0
+      },
+      "prototype": "void __fastcall BSP_ResourceCacheInsertPair_DestroyName(void* pair, void* unused_edx)",
+      "prototype_result": "Successfully set prototype for function at 00b7e910 with __fastcall calling convention",
+      "ledger_name_output": "00b7e910 -> BSP_ResourceCacheInsertPair_DestroyName\n",
+      "ledger_function_output": "00b7e910 function destroy_native_resource_cache_insert_pair_00b7e910\n",
+      "prior_comment_preservation_checked": true,
+      "after_comment": {
+        "address": "00b7e910",
+        "function_name": "BSP_ResourceCacheInsertPair_DestroyName",
+        "comment": "[BSP reconstruction 00b7e910]\nBY complete raw load/cache composition:4 bodies899bytes,284 ordinary+12 support instruction owners;38 direct transfers and7 indirect calls verified against installed PE/live Ghidra. Build and both tests passed. Actual source fixture covers miss/hit, original-name key after normalization/false resolution, current factory/resource reloads, wrapping metric and return captured before cleanup; parser throw follows five cleanup actions without resource/factory rollback. Original30B BE2700 with canonical memset agrees: zeroed34h local makes ordinary EAX40000000; no OS memory query exists. Open/parser callbacks and empty VFS tree are fixture boundaries. Nested VFS failure retention remains required; native loader/FH3/SEH/private spills/hardware faults, concrete manager/parser bootstrap, resource destructor and gameplay remain unproved. Names are hypotheses; prior comments and correct compiler names retained. See docs/NATIVE_RESOURCE_LOAD_CACHE_BY.md and reports/native_resource_load_cache_by.json. Full ordinary span 29 bytes; ECX actual0Ch name/resource insertion pair; RET; reports/native_resource_load_cache_by.json."
+      }
+    },
+    {
+      "address": "00be2700",
+      "name": "BSP_AllocationStats_ReadZeroedBudget",
+      "before_comment": {
+        "address": "00be2700",
+        "function_name": "FUN_00be2700"
+      },
+      "evidence": "BY complete raw load/cache composition:4 bodies899bytes,284 ordinary+12 support instruction owners;38 direct transfers and7 indirect calls verified against installed PE/live Ghidra. Build and both tests passed. Actual source fixture covers miss/hit, original-name key after normalization/false resolution, current factory/resource reloads, wrapping metric and return captured before cleanup; parser throw follows five cleanup actions without resource/factory rollback. Original30B BE2700 with canonical memset agrees: zeroed34h local makes ordinary EAX40000000; no OS memory query exists. Open/parser callbacks and empty VFS tree are fixture boundaries. Nested VFS failure retention remains required; native loader/FH3/SEH/private spills/hardware faults, concrete manager/parser bootstrap, resource destructor and gameplay remain unproved. Names are hypotheses; prior comments and correct compiler names retained. See docs/NATIVE_RESOURCE_LOAD_CACHE_BY.md and reports/native_resource_load_cache_by.json. Full ordinary span 30 bytes; ECX ignored; EAX40000000; RET; reports/native_resource_load_cache_by.json.",
+      "before_documentation": {
+        "hash": "a6347f524949b9667ef745fdbbdab713e132bedd5f4b2bcc052dee2d27429c37",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00be2700",
+        "function_name": "FUN_00be2700",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "local_18",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffe8, 4)"
+          },
+          {
+            "name": "local_34",
+            "type": "undefined1[28]"
+          }
+        ],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 50.0
+      },
+      "prototype": "unsigned int __cdecl BSP_AllocationStats_ReadZeroedBudget(void)",
+      "prototype_result": "Successfully set prototype for function at 00be2700 with __cdecl calling convention",
+      "ledger_name_output": "00be2700 -> BSP_AllocationStats_ReadZeroedBudget\n",
+      "ledger_function_output": "00be2700 function read_native_resource_allocation_budget_00be2700\n",
+      "prior_comment_preservation_checked": true,
+      "after_comment": {
+        "address": "00be2700",
+        "function_name": "BSP_AllocationStats_ReadZeroedBudget",
+        "comment": "[BSP reconstruction 00be2700]\nBY complete raw load/cache composition:4 bodies899bytes,284 ordinary+12 support instruction owners;38 direct transfers and7 indirect calls verified against installed PE/live Ghidra. Build and both tests passed. Actual source fixture covers miss/hit, original-name key after normalization/false resolution, current factory/resource reloads, wrapping metric and return captured before cleanup; parser throw follows five cleanup actions without resource/factory rollback. Original30B BE2700 with canonical memset agrees: zeroed34h local makes ordinary EAX40000000; no OS memory query exists. Open/parser callbacks and empty VFS tree are fixture boundaries. Nested VFS failure retention remains required; native loader/FH3/SEH/private spills/hardware faults, concrete manager/parser bootstrap, resource destructor and gameplay remain unproved. Names are hypotheses; prior comments and correct compiler names retained. See docs/NATIVE_RESOURCE_LOAD_CACHE_BY.md and reports/native_resource_load_cache_by.json. Full ordinary span 30 bytes; ECX ignored; EAX40000000; RET; reports/native_resource_load_cache_by.json."
+      }
+    },
+    {
+      "address": "00cc21a4",
+      "name": "EH_handler_00cc21a4",
+      "before_comment": {
+        "address": "00cc21a4",
+        "function_name": "FUN_00cc21a4"
+      },
+      "evidence": "BY complete raw load/cache composition:4 bodies899bytes,284 ordinary+12 support instruction owners;38 direct transfers and7 indirect calls verified against installed PE/live Ghidra. Build and both tests passed. Actual source fixture covers miss/hit, original-name key after normalization/false resolution, current factory/resource reloads, wrapping metric and return captured before cleanup; parser throw follows five cleanup actions without resource/factory rollback. Original30B BE2700 with canonical memset agrees: zeroed34h local makes ordinary EAX40000000; no OS memory query exists. Open/parser callbacks and empty VFS tree are fixture boundaries. Nested VFS failure retention remains required; native loader/FH3/SEH/private spills/hardware faults, concrete manager/parser bootstrap, resource destructor and gameplay remain unproved. Names are hypotheses; prior comments and correct compiler names retained. See docs/NATIVE_RESOURCE_LOAD_CACHE_BY.md and reports/native_resource_load_cache_by.json. Complete MOV EAX,FuncInfo / JMP BF6B43 dispatch handler defined and saved.",
+      "ledger_name_output": "00cc21a4 -> EH_handler_00cc21a4\n",
+      "prior_comment_preservation_checked": true,
+      "after_comment": {
+        "address": "00cc21a4",
+        "function_name": "EH_handler_00cc21a4",
+        "comment": "[BSP reconstruction 00cc21a4]\nBY complete raw load/cache composition:4 bodies899bytes,284 ordinary+12 support instruction owners;38 direct transfers and7 indirect calls verified against installed PE/live Ghidra. Build and both tests passed. Actual source fixture covers miss/hit, original-name key after normalization/false resolution, current factory/resource reloads, wrapping metric and return captured before cleanup; parser throw follows five cleanup actions without resource/factory rollback. Original30B BE2700 with canonical memset agrees: zeroed34h local makes ordinary EAX40000000; no OS memory query exists. Open/parser callbacks and empty VFS tree are fixture boundaries. Nested VFS failure retention remains required; native loader/FH3/SEH/private spills/hardware faults, concrete manager/parser bootstrap, resource destructor and gameplay remain unproved. Names are hypotheses; prior comments and correct compiler names retained. See docs/NATIVE_RESOURCE_LOAD_CACHE_BY.md and reports/native_resource_load_cache_by.json. Complete MOV EAX,FuncInfo / JMP BF6B43 dispatch handler defined and saved."
+      }
+    },
+    {
+      "address": "00cc2170",
+      "name": "Unwind@00cc2170",
+      "before_comment": {
+        "address": "00cc2170",
+        "function_name": "Unwind@00cc2170"
+      },
+      "evidence": "BY complete raw load/cache composition:4 bodies899bytes,284 ordinary+12 support instruction owners;38 direct transfers and7 indirect calls verified against installed PE/live Ghidra. Build and both tests passed. Actual source fixture covers miss/hit, original-name key after normalization/false resolution, current factory/resource reloads, wrapping metric and return captured before cleanup; parser throw follows five cleanup actions without resource/factory rollback. Original30B BE2700 with canonical memset agrees: zeroed34h local makes ordinary EAX40000000; no OS memory query exists. Open/parser callbacks and empty VFS tree are fixture boundaries. Nested VFS failure retention remains required; native loader/FH3/SEH/private spills/hardware faults, concrete manager/parser bootstrap, resource destructor and gameplay remain unproved. Names are hypotheses; prior comments and correct compiler names retained. See docs/NATIVE_RESOURCE_LOAD_CACHE_BY.md and reports/native_resource_load_cache_by.json. Native unwind evidence.",
+      "ledger_name_output": "00cc2170 -> Unwind@00cc2170\n",
+      "prior_comment_preservation_checked": true,
+      "after_comment": {
+        "address": "00cc2170",
+        "function_name": "Unwind@00cc2170",
+        "comment": "[BSP reconstruction 00cc2170]\nBY complete raw load/cache composition:4 bodies899bytes,284 ordinary+12 support instruction owners;38 direct transfers and7 indirect calls verified against installed PE/live Ghidra. Build and both tests passed. Actual source fixture covers miss/hit, original-name key after normalization/false resolution, current factory/resource reloads, wrapping metric and return captured before cleanup; parser throw follows five cleanup actions without resource/factory rollback. Original30B BE2700 with canonical memset agrees: zeroed34h local makes ordinary EAX40000000; no OS memory query exists. Open/parser callbacks and empty VFS tree are fixture boundaries. Nested VFS failure retention remains required; native loader/FH3/SEH/private spills/hardware faults, concrete manager/parser bootstrap, resource destructor and gameplay remain unproved. Names are hypotheses; prior comments and correct compiler names retained. See docs/NATIVE_RESOURCE_LOAD_CACHE_BY.md and reports/native_resource_load_cache_by.json. Native unwind evidence."
+      }
+    },
+    {
+      "address": "00cc217b",
+      "name": "Unwind@00cc217b",
+      "before_comment": {
+        "address": "00cc217b",
+        "function_name": "Unwind@00cc217b"
+      },
+      "evidence": "BY complete raw load/cache composition:4 bodies899bytes,284 ordinary+12 support instruction owners;38 direct transfers and7 indirect calls verified against installed PE/live Ghidra. Build and both tests passed. Actual source fixture covers miss/hit, original-name key after normalization/false resolution, current factory/resource reloads, wrapping metric and return captured before cleanup; parser throw follows five cleanup actions without resource/factory rollback. Original30B BE2700 with canonical memset agrees: zeroed34h local makes ordinary EAX40000000; no OS memory query exists. Open/parser callbacks and empty VFS tree are fixture boundaries. Nested VFS failure retention remains required; native loader/FH3/SEH/private spills/hardware faults, concrete manager/parser bootstrap, resource destructor and gameplay remain unproved. Names are hypotheses; prior comments and correct compiler names retained. See docs/NATIVE_RESOURCE_LOAD_CACHE_BY.md and reports/native_resource_load_cache_by.json. Native unwind evidence.",
+      "ledger_name_output": "00cc217b -> Unwind@00cc217b\n",
+      "prior_comment_preservation_checked": true,
+      "after_comment": {
+        "address": "00cc217b",
+        "function_name": "Unwind@00cc217b",
+        "comment": "[BSP reconstruction 00cc217b]\nBY complete raw load/cache composition:4 bodies899bytes,284 ordinary+12 support instruction owners;38 direct transfers and7 indirect calls verified against installed PE/live Ghidra. Build and both tests passed. Actual source fixture covers miss/hit, original-name key after normalization/false resolution, current factory/resource reloads, wrapping metric and return captured before cleanup; parser throw follows five cleanup actions without resource/factory rollback. Original30B BE2700 with canonical memset agrees: zeroed34h local makes ordinary EAX40000000; no OS memory query exists. Open/parser callbacks and empty VFS tree are fixture boundaries. Nested VFS failure retention remains required; native loader/FH3/SEH/private spills/hardware faults, concrete manager/parser bootstrap, resource destructor and gameplay remain unproved. Names are hypotheses; prior comments and correct compiler names retained. See docs/NATIVE_RESOURCE_LOAD_CACHE_BY.md and reports/native_resource_load_cache_by.json. Native unwind evidence."
+      }
+    },
+    {
+      "address": "00cc2183",
+      "name": "Unwind@00cc2183",
+      "before_comment": {
+        "address": "00cc2183",
+        "function_name": "Unwind@00cc2183"
+      },
+      "evidence": "BY complete raw load/cache composition:4 bodies899bytes,284 ordinary+12 support instruction owners;38 direct transfers and7 indirect calls verified against installed PE/live Ghidra. Build and both tests passed. Actual source fixture covers miss/hit, original-name key after normalization/false resolution, current factory/resource reloads, wrapping metric and return captured before cleanup; parser throw follows five cleanup actions without resource/factory rollback. Original30B BE2700 with canonical memset agrees: zeroed34h local makes ordinary EAX40000000; no OS memory query exists. Open/parser callbacks and empty VFS tree are fixture boundaries. Nested VFS failure retention remains required; native loader/FH3/SEH/private spills/hardware faults, concrete manager/parser bootstrap, resource destructor and gameplay remain unproved. Names are hypotheses; prior comments and correct compiler names retained. See docs/NATIVE_RESOURCE_LOAD_CACHE_BY.md and reports/native_resource_load_cache_by.json. Native unwind evidence.",
+      "ledger_name_output": "00cc2183 -> Unwind@00cc2183\n",
+      "prior_comment_preservation_checked": true,
+      "after_comment": {
+        "address": "00cc2183",
+        "function_name": "Unwind@00cc2183",
+        "comment": "[BSP reconstruction 00cc2183]\nBY complete raw load/cache composition:4 bodies899bytes,284 ordinary+12 support instruction owners;38 direct transfers and7 indirect calls verified against installed PE/live Ghidra. Build and both tests passed. Actual source fixture covers miss/hit, original-name key after normalization/false resolution, current factory/resource reloads, wrapping metric and return captured before cleanup; parser throw follows five cleanup actions without resource/factory rollback. Original30B BE2700 with canonical memset agrees: zeroed34h local makes ordinary EAX40000000; no OS memory query exists. Open/parser callbacks and empty VFS tree are fixture boundaries. Nested VFS failure retention remains required; native loader/FH3/SEH/private spills/hardware faults, concrete manager/parser bootstrap, resource destructor and gameplay remain unproved. Names are hypotheses; prior comments and correct compiler names retained. See docs/NATIVE_RESOURCE_LOAD_CACHE_BY.md and reports/native_resource_load_cache_by.json. Native unwind evidence."
+      }
+    },
+    {
+      "address": "00cc218e",
+      "name": "Unwind@00cc218e",
+      "before_comment": {
+        "address": "00cc218e",
+        "function_name": "Unwind@00cc218e"
+      },
+      "evidence": "BY complete raw load/cache composition:4 bodies899bytes,284 ordinary+12 support instruction owners;38 direct transfers and7 indirect calls verified against installed PE/live Ghidra. Build and both tests passed. Actual source fixture covers miss/hit, original-name key after normalization/false resolution, current factory/resource reloads, wrapping metric and return captured before cleanup; parser throw follows five cleanup actions without resource/factory rollback. Original30B BE2700 with canonical memset agrees: zeroed34h local makes ordinary EAX40000000; no OS memory query exists. Open/parser callbacks and empty VFS tree are fixture boundaries. Nested VFS failure retention remains required; native loader/FH3/SEH/private spills/hardware faults, concrete manager/parser bootstrap, resource destructor and gameplay remain unproved. Names are hypotheses; prior comments and correct compiler names retained. See docs/NATIVE_RESOURCE_LOAD_CACHE_BY.md and reports/native_resource_load_cache_by.json. Native unwind evidence.",
+      "ledger_name_output": "00cc218e -> Unwind@00cc218e\n",
+      "prior_comment_preservation_checked": true,
+      "after_comment": {
+        "address": "00cc218e",
+        "function_name": "Unwind@00cc218e",
+        "comment": "[BSP reconstruction 00cc218e]\nBY complete raw load/cache composition:4 bodies899bytes,284 ordinary+12 support instruction owners;38 direct transfers and7 indirect calls verified against installed PE/live Ghidra. Build and both tests passed. Actual source fixture covers miss/hit, original-name key after normalization/false resolution, current factory/resource reloads, wrapping metric and return captured before cleanup; parser throw follows five cleanup actions without resource/factory rollback. Original30B BE2700 with canonical memset agrees: zeroed34h local makes ordinary EAX40000000; no OS memory query exists. Open/parser callbacks and empty VFS tree are fixture boundaries. Nested VFS failure retention remains required; native loader/FH3/SEH/private spills/hardware faults, concrete manager/parser bootstrap, resource destructor and gameplay remain unproved. Names are hypotheses; prior comments and correct compiler names retained. See docs/NATIVE_RESOURCE_LOAD_CACHE_BY.md and reports/native_resource_load_cache_by.json. Native unwind evidence."
+      }
+    },
+    {
+      "address": "00cc2199",
+      "name": "Unwind@00cc2199",
+      "before_comment": {
+        "address": "00cc2199",
+        "function_name": "Unwind@00cc2199"
+      },
+      "evidence": "BY complete raw load/cache composition:4 bodies899bytes,284 ordinary+12 support instruction owners;38 direct transfers and7 indirect calls verified against installed PE/live Ghidra. Build and both tests passed. Actual source fixture covers miss/hit, original-name key after normalization/false resolution, current factory/resource reloads, wrapping metric and return captured before cleanup; parser throw follows five cleanup actions without resource/factory rollback. Original30B BE2700 with canonical memset agrees: zeroed34h local makes ordinary EAX40000000; no OS memory query exists. Open/parser callbacks and empty VFS tree are fixture boundaries. Nested VFS failure retention remains required; native loader/FH3/SEH/private spills/hardware faults, concrete manager/parser bootstrap, resource destructor and gameplay remain unproved. Names are hypotheses; prior comments and correct compiler names retained. See docs/NATIVE_RESOURCE_LOAD_CACHE_BY.md and reports/native_resource_load_cache_by.json. Native unwind evidence.",
+      "ledger_name_output": "00cc2199 -> Unwind@00cc2199\n",
+      "prior_comment_preservation_checked": true,
+      "after_comment": {
+        "address": "00cc2199",
+        "function_name": "Unwind@00cc2199",
+        "comment": "[BSP reconstruction 00cc2199]\nBY complete raw load/cache composition:4 bodies899bytes,284 ordinary+12 support instruction owners;38 direct transfers and7 indirect calls verified against installed PE/live Ghidra. Build and both tests passed. Actual source fixture covers miss/hit, original-name key after normalization/false resolution, current factory/resource reloads, wrapping metric and return captured before cleanup; parser throw follows five cleanup actions without resource/factory rollback. Original30B BE2700 with canonical memset agrees: zeroed34h local makes ordinary EAX40000000; no OS memory query exists. Open/parser callbacks and empty VFS tree are fixture boundaries. Nested VFS failure retention remains required; native loader/FH3/SEH/private spills/hardware faults, concrete manager/parser bootstrap, resource destructor and gameplay remain unproved. Names are hypotheses; prior comments and correct compiler names retained. See docs/NATIVE_RESOURCE_LOAD_CACHE_BY.md and reports/native_resource_load_cache_by.json. Native unwind evidence."
+      }
+    }
+  ],
+  "actions": [
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00b80720",
+        "prototype": "void* __fastcall BSP_ResourceManager_LoadAndCache(void* manager, void* unused_edx, void* name, void* factory)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00b80720 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00b7e8f0",
+        "prototype": "void __fastcall BSP_ResourceCachePair_DestroyName(void* pair, void* unused_edx)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00b7e8f0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00b7e910",
+        "prototype": "void __fastcall BSP_ResourceCacheInsertPair_DestroyName(void* pair, void* unused_edx)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00b7e910 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00be2700",
+        "prototype": "unsigned int __cdecl BSP_AllocationStats_ReadZeroedBudget(void)",
+        "calling_convention": "__cdecl"
+      },
+      "result": "Successfully set prototype for function at 00be2700 with __cdecl calling convention"
+    }
+  ],
+  "state": "names_and_abi_views_saved_previous_comments_retained",
+  "exports_refreshed": true
+}

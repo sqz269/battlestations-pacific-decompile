@@ -12726,6 +12726,44 @@
       "code_revision": "81472938606e4fdbb3661253456cfa8a33da085d",
       "game_validated": false,
       "follow_up": "Actual raw manager and parser ownership/type publication, B80720 loader/cache composition and queue shutdown"
+    },
+    {
+      "id": "orch4_native_resource_load_cache_by",
+      "state": "integrated_source_build_and_fixture_checked",
+      "status": "integrated_source_build_and_fixture_checked",
+      "addresses": [
+        "00b80720",
+        "00b7e8f0",
+        "00b7e910",
+        "00be2700"
+      ],
+      "owner": "agent/orch4-20260910",
+      "report": "reports/native_resource_load_cache_by.json",
+      "documentation": "docs/NATIVE_RESOURCE_LOAD_CACHE_BY.md",
+      "code_revision": "efbc13b663be04719f89f376801426d0f91572cc",
+      "game_validated": false,
+      "follow_up": "Actual raw manager/parser registration and bootstrap, concrete parser bodies, successful-resource destructor and loading-queue stop/join",
+      "validation": {
+        "strict_msvc_win32": true,
+        "existing_ctests": 2,
+        "source_fixture": true,
+        "misses": 3,
+        "hits": 1,
+        "paired_original_metric": true,
+        "original_metric_bytes": 30,
+        "original_metric_relocations": 1,
+        "original_loader_oracle": false,
+        "native_fh3": false,
+        "production_vfs_open_fixture": false,
+        "game_validated": false,
+        "whole_report_verifier": "38 passed",
+        "combined_strict_win32": true,
+        "combined_existing_ctests": 2,
+        "combined_source_fixture": true,
+        "source_manifest_inputs": 2659,
+        "all_instruction_owners_rechecked": true,
+        "previous_ghidra_comments_preserved": 10
+      }
     }
   ],
   "snapshot_after_analysis": {
