@@ -59,8 +59,15 @@ struct PilotYawInputs {
     float desired_heading = 0.0f;  // plan+2C0h, read once in the whole planner
     float current_heading = 0.0f;  // unit+C6Ch, through unit->vtable[50h] = 0074E260
     float bank = 0.0f;             // unit+C68h
-    // unit+340h. The error is divided by `max(unit+340h * 0.4, 1.0)`, so a zero
-    // here is the identity. Its producer is not established.
+    // unit+340h, and it is **identified**: `plane_advance_pose.hpp:35` records it
+    // as `kTimeScale`, the factor `007C6509` scales the fixed step by when it is
+    // positive, and `plane_ai_control.hpp:190` already had this exact expression
+    // at `0099D4B3`. The error is divided by `max(unit+340h * 0.4, 1.0)`, so the
+    // divisor is **1.0 for every time scale at or below 2.5** - which is normal
+    // play and slow motion alike. The term only bites in fast-forward, where it
+    // damps the heading response so the bot does not over-control a step that
+    // covers more ground. Zero is therefore the correct default here, not a
+    // stand-in.
     float scale_340 = 0.0f;
     float yaw_spd = 0.0f;        // class+1B0h
     float turn_roll_spd = 0.0f;  // class+1C8h
