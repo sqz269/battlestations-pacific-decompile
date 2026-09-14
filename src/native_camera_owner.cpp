@@ -5,6 +5,7 @@
 #include <exception>
 #include <new>
 #include <stdexcept>
+#include <utility>
 
 #if !defined(_MSC_VER) || !defined(_M_IX86)
 #error Native camera ownership requires MSVC Win32.
@@ -146,6 +147,12 @@ void require_live(NativeCameraOwner& owner) {
 }
 
 NativeCameraOwner::NativeCameraOwner(void* slot, std::size_t bytes, NativeCameraEnvironment& access)
+    : NativeCameraOwner(slot, bytes, access, nullptr) {}
+NativeCameraOwner::NativeCameraOwner(void* slot, std::size_t bytes, NativeCameraEnvironment& access,
+    SceneAttachmentRuntime::BindingAdmission&& admission)
+    : NativeCameraOwner(slot, bytes, access, &admission) {}
+NativeCameraOwner::NativeCameraOwner(void* slot, std::size_t bytes, NativeCameraEnvironment& access,
+    SceneAttachmentRuntime::BindingAdmission* admission)
     : storage(prepare_storage(slot, bytes, access)), environment(access),
       node(storage.node, NativeNodePreconstructionBinding{}, access.nodes.node_virtual_0c, set_node_scene_00b6ed80, this),
       projection(CameraProjectionBacking{storage.camera.fov_1c4, storage.camera.aspect_1c8,
@@ -158,7 +165,8 @@ NativeCameraOwner::NativeCameraOwner(void* slot, std::size_t bytes, NativeCamera
     node.scene_attachment.world_changed = native_node_world_changed_00b6dbe0;
     node.scene_attachment.remove_scene = remove_native_node_scene_00b6ee10;
     try {
-        access.nodes.scenes.bind(node.scene_attachment);
+        if (admission) access.nodes.scenes.bind(node.scene_attachment, std::move(*admission));
+        else access.nodes.scenes.bind(node.scene_attachment);
     } catch (...) {
         storage.camera.~NativeCameraTailStorage();
         storage.node.~NativeNodeStorage();

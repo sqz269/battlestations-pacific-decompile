@@ -25,6 +25,10 @@ class NativeCameraReference final : public GeneratedModelNodeLifetime,
     public RenderCommandReference {
 public:
     NativeCameraReference(NativeCameraOwner&, NativeCameraCompanionDisposal);
+    // Existing live-owner/profile checks precede admitted host registration.
+    // Consumes the lifetime-binding credit without retaining it or native +04.
+    NativeCameraReference(NativeCameraOwner&, NativeCameraCompanionDisposal,
+        GeneratedModelLifetimeRuntime::BindingAdmission&&);
     ~NativeCameraReference() override;
     NativeCameraReference(const NativeCameraReference&) = delete;
     NativeCameraReference& operator=(const NativeCameraReference&) = delete;
@@ -37,6 +41,8 @@ public:
     void release_zero_references() noexcept override;
 
 private:
+    NativeCameraReference(NativeCameraOwner&, NativeCameraCompanionDisposal,
+        GeneratedModelLifetimeRuntime::BindingAdmission*);
     enum class Phase { bound, destroying, retired };
     NativeCameraOwner& owner_;
     GeneratedModelLifetimeRuntime& runtime_;
