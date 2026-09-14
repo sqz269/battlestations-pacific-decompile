@@ -1,0 +1,1034 @@
+{
+  "packet": "orch2_native_crt_mutable_owner_cy",
+  "base": "75379b3383780740f61409c4223004a0fc3fd7d1",
+  "status": "complete_selected_canonical_page_owner_feasibility_and_joint_bootstrap_integration_proposal_no_implementation",
+  "documentation": "docs/NATIVE_CRT_MUTABLE_DATA_OWNER_CY.md",
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "bridge": "http://127.0.0.1:8089",
+    "verification": "Every fresh BSP ghidra query and direct-call checker invokes client.verify before analysis. No native process execution."
+  },
+  "installed_pe": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "size": 12223752,
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "sha512": "7b545a4c47fae14af6c50a1d4d0d2904c1b85f84b9a24d1516b95d77945693fc36b1f6bb9effb7fa29b22b06ebcafc230cdf97f5c332266a3de8dd83bdc29a97"
+  },
+  "sections": [
+    {
+      "name": ".rdata",
+      "address": "00ce2000",
+      "virtual_bytes": 1202980,
+      "raw_offset": 9314304,
+      "raw_bytes": 1204224,
+      "flags": "40000040",
+      "end_virtual": "00e07b24"
+    },
+    {
+      "name": ".data",
+      "address": "00e08000",
+      "virtual_bytes": 2719452,
+      "raw_offset": 10518528,
+      "raw_bytes": 65536,
+      "flags": "c0000040",
+      "end_virtual": "0109fedc"
+    }
+  ],
+  "fresh_data_spans": [
+    {
+      "address": "00e15590",
+      "end_exclusive": "00e15598",
+      "zero_fill_bytes": 0,
+      "page": "00e15000",
+      "reservation_band": "00e10000",
+      "words": [
+        "bb40e64e",
+        "44bf19b1"
+      ],
+      "shared_ro_pair_read_only_external": false,
+      "size": 8,
+      "sha256": "29b5066f8e977a643aebc158d86968765fbcdec85d9c5fcff28cc9f68782d5e4",
+      "sha512": "40e2bd5a6b3a1a52d333dc5bfc7555994772ed5eece72f302e65d5cfe1ddc4d39b65f2c3c053be26b03635d62a8c00d8ebd126132b8a665bf5fca051f9fe9398"
+    },
+    {
+      "address": "00e16830",
+      "end_exclusive": "00e16840",
+      "zero_fill_bytes": 0,
+      "page": "00e16000",
+      "reservation_band": "00e10000",
+      "words": [
+        "19930520",
+        "00000000",
+        "00000000",
+        "00000000"
+      ],
+      "shared_ro_pair_read_only_external": false,
+      "size": 16,
+      "sha256": "3081097c647dde03b70e440e85945cc86c977d8402a4b62c04b8b023a511056e",
+      "sha512": "f8efabd0d765e548f72cd505dfd8383a5986512b4bc180205ec0c30d118c2c4a2912a01cc3c4f2f716468091925d35d974476c6a345c32d58b40d428749b315c"
+    },
+    {
+      "address": "0109e568",
+      "end_exclusive": "0109e88c",
+      "zero_fill_bytes": 804,
+      "page": "0109e000",
+      "reservation_band": "01090000",
+      "words": null,
+      "shared_ro_pair_read_only_external": false,
+      "size": 804,
+      "sha256": "60107be66c9efe4d6aa0a3864f71d60b3800c8d6400daa36c05609d099b5f891",
+      "sha512": "0a2410540f096ebd0464f16681b7375152fe8844ad2fed5fe86b352a61d6c65695051c82a36b77156a79ac633943463739752163d48b26abedf2db2c49ba794d"
+    },
+    {
+      "address": "0109eea4",
+      "end_exclusive": "0109eeac",
+      "zero_fill_bytes": 8,
+      "page": "0109e000",
+      "reservation_band": "01090000",
+      "words": [
+        "00000000",
+        "00000000"
+      ],
+      "shared_ro_pair_read_only_external": false,
+      "size": 8,
+      "sha256": "af5570f5a1810b7af78caf4bc70a660f0df51e42baf91d4de5b2328de0e83dfc",
+      "sha512": "1b7409ccf0d5a34d3a77eaabfa9fe27427655be9297127ee9522aa1bf4046d4f945983678169cb1a7348edcac47ef0d9e2c924130e5bcc5f0d94937852c42f1b"
+    },
+    {
+      "address": "00d6e1cc",
+      "end_exclusive": "00d6e1d4",
+      "zero_fill_bytes": 0,
+      "page": "00d6e000",
+      "reservation_band": "00d60000",
+      "words": [
+        "0109e568",
+        "0109e5c0"
+      ],
+      "shared_ro_pair_read_only_external": true,
+      "size": 8,
+      "sha256": "a7b8afc2eb356c8577e0bca58c49d6a4bb52ce9ba1b8f6ea753dafd32e2fb903",
+      "sha512": "9f9e5749d065cf8577215d36f90db29cb9ef4c55e3c7bf894c43bb0a90e1f934a7815684f5253684e04d77aa371c77b7cdfcd3a211c45269b41982312fb97c5c"
+    }
+  ],
+  "selected_page_initial_bytes": [
+    {
+      "address": "00e15000",
+      "zero_fill_bytes": 0,
+      "size": 4096,
+      "sha256": "51be18e468fb62b79487bdb237227fe300bde3411bcab443af715654ef357286",
+      "sha512": "db2e769edf54f5497abec36ae48e38558e03d1e25c28db3eb59427aaf736d74f63635cddff3565af745e06e67570a17e269af0a9120694cb25477624a0f914be"
+    },
+    {
+      "address": "00e16000",
+      "zero_fill_bytes": 0,
+      "size": 4096,
+      "sha256": "87810d15579ff093646c27c3b97db33d93e764ba08d26d5b516bbd8da6175d21",
+      "sha512": "0200c391bc5695076346ae1db80dc69ab590388f3ebf243e61ca7d26cbf7823f2fe0d6fad06a28fa1c5b8834b31d2ab94a858c846a56a07d4ff3150a4bcac12e"
+    },
+    {
+      "address": "0109e000",
+      "zero_fill_bytes": 4096,
+      "size": 4096,
+      "sha256": "ad7facb2586fc6e966c004d7d1d16b024f5805ff7cb47c7a85dabd8b48892ca7",
+      "sha512": "2d23913d3759ef01704a86b4bee3ac8a29002313ecc98a7424425a78170f219577822fd77e4ae96313547696ad7d5949b58e12d5063ef2ee063b595740a3a12d"
+    }
+  ],
+  "current_source_evidence": [
+    {
+      "path": "include/bsp/game_native_readonly_data.hpp",
+      "size": 2212,
+      "sha256": "8e751679e907c9471a6135b090ad5fe7d733cbaae5070484877138f3775fe96b",
+      "sha512": "df237ead4ce8529044f2fafd82369857c22ff2e92f4ce720e8eb0a497222080c70c78b240d85332c151dac340e4bd64d9f9a331d331b8511135f1a5232898256"
+    },
+    {
+      "path": "src/game_native_readonly_data.cpp",
+      "size": 6144,
+      "sha256": "efc2201294dd5b5a3364c611d45b3dbc1760aaa99985e86d947e0b060713dd16",
+      "sha512": "0ddebcc0266cf70776ab87ef40e2f9830351ede6e11ae34d5cea9d0e76d2b7cea99e925332c502a4d22c741b9313356bb77356c1265c954f0a90f78311d5de29"
+    },
+    {
+      "path": "include/bsp/game_native_data_bootstrap.hpp",
+      "size": 3456,
+      "sha256": "4ac5bb6e357c5e9007888bafcb8aae550c6cc5419d6ab417895d48656c403b40",
+      "sha512": "21836ae2656523c8657236f13afbcb7801611332370d7f3a114726e20e01a8871b644aa4a74b7d79ae320ed6a1f22a5c95a41173b0ddce99f7ee351dc9569762"
+    },
+    {
+      "path": "src/game_native_data_bootstrap.cpp",
+      "size": 18983,
+      "sha256": "4bc3e8a3aa45231d19a7be9c79be785842344de2c9fb9983837fa2da10ccd204",
+      "sha512": "47388fac97266b2a2ba2f5104b90b489533c4cb419c116b4c5f430028f37d4173d8ff28cd31fc77f99ea1d18d5c480c525349f0628b771700478f7a5d3af3983"
+    },
+    {
+      "path": "cmake/native_data_placement.cmake",
+      "size": 701,
+      "sha256": "b1671b064f6475994705db67e6fb38e1f3551a421990e4f9c1e4a2b22f1e3288",
+      "sha512": "0893460a05a170f6c25c467e04b616ff9a27bb2d9eaa276986c091faf35be0c3281ac865d78496a8fd7c2a03dc160021d2bbc21dfffcfe8d4b929f1bfa01f17b"
+    },
+    {
+      "path": "src/game_main.cpp",
+      "size": 23453,
+      "sha256": "b6fd8b3ab820838398581828e89998ac9c1f0e5ad82f262c3a31910e0e670ce1",
+      "sha512": "24e03dbdb64406bcff62c75adc9481c7225c66c823f9081285d832dee0195327f8a6706f585949ffc3f1ca3f5c9c99c7f90baa7c5c204143ce76fc74e167d133"
+    },
+    {
+      "path": "src/game_hosts.cpp",
+      "size": 86804,
+      "sha256": "4cfd11e6aadca4c000bb4fd37ac7444644354bc39a9efca3b09fc96ad188575f",
+      "sha512": "085af914fa93907078fe5e5e46ecaf4444a7d345f67485d63f20a382e529f6b559f915c9e8183e003b7771e25ad8f7cec976aad8ff7e5d7da98fc808181f50f9"
+    },
+    {
+      "path": "include/bsp/native_crt_cookie_initialization.hpp",
+      "size": 1913,
+      "sha256": "85acf04f760e43876685008d3c32e900000f809554fa3fc82fa4bbcb81631b4b",
+      "sha512": "dcb93dd93af27a8acbd37584c921e6ad92a76470b429615c7fe8f19f27cc626382c65572ee12980f2db1e0141b16066c5fb2bb66c4d34174b139913f0f5c7288"
+    },
+    {
+      "path": "src/native_crt_cookie_initialization.cpp",
+      "size": 2651,
+      "sha256": "48f957e66f4c3c4f5692a693ef3680cc907f6303ea02212fdbda803ba00aa1c5",
+      "sha512": "9a00d33ead06bd26afb5c0bd6699f8e5f6c0b29a44a9693c0fa00c671f5ad6107d8650e5e3b31007f607eab1c036575ae644231808eb5cee9e0eb17209b7bd2f"
+    },
+    {
+      "path": "cmake/startup.cmake",
+      "size": 121063,
+      "sha256": "b8887e5140de0098db9a27cfd2f9d86bb48c7fd8ddf78bd2101f09bad6b23f4d",
+      "sha512": "56c7e97542ec8006e07d68ae0a7161921b0bca564a749c0d46acadc9a92bb3f72809941f4710b78dbad97fd96ad88a3c2136097499635562470013ba67ac4c5d"
+    },
+    {
+      "path": "docs/NATIVE_DATA_PLACEMENT_AC.md",
+      "size": 4147,
+      "sha256": "1df9890a4e9784c8514741b304e0ce3f846a3017e01c9ee2a96bfcf1164e5c2e",
+      "sha512": "3d59e6586598d7095c55c5de1fd9b9b929a0e165c51ab3a26bb6dad84a4319a5799e2937f87045913aed9d7366263e5b867735d816efd246a31456488c9716e1"
+    }
+  ],
+  "CT_provenance": {
+    "commit": "8aef5c8752e7f30bc9c8df44e4d50a6a7077f692",
+    "whole_local_files": 332,
+    "two_dual_hash_passes": true,
+    "report": {
+      "size": 269082,
+      "sha256": "53f11b902d5f85f2b3441b0beec2ac231aba34d52fd571951b6a365ba2332587",
+      "sha512": "8bacd7590361ab6bb605f9816ad826ef8e99b7a648d7ffaee7ac47fe5c177592e33afc651036f967db364d92ea6bcc232be0f7af2e8b497e97661a7b8c1c2acd"
+    }
+  },
+  "current_game_placement": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-watson-source-ct\\build\\win32\\Release\\bsp_game.exe",
+    "origin": "Frozen CT strict build of75379b33 base plus the separately delivered Watson source; read-only inspection, no new build or launch.",
+    "image_base": "10000000",
+    "size_of_image": 2170880,
+    "dll_characteristics": "8100",
+    "coff_characteristics": "0102",
+    "base_relocation_bytes": 72544,
+    "size": 2157056,
+    "sha256": "c603f3cfb7644e0578e07621fee252780236c7b768a4c886a18ce0039822cde0",
+    "sha512": "5a88a6671c03addc0aac0b4b407574aeba52ed79449528617d147b2a408ee71e6e54f219eaf732b733aa9e8459c155ed2ac6160c3ec49fc07837e5719e356737"
+  },
+  "ownership_plan": {
+    "existing_allowed_ro_bands": [
+      "00ce0000",
+      "00cf0000",
+      "00d00000",
+      "00d10000",
+      "00d20000",
+      "00d30000",
+      "00d40000",
+      "00d50000",
+      "00d60000",
+      "00d70000",
+      "00d80000",
+      "00d90000",
+      "00da0000",
+      "00db0000",
+      "00dc0000",
+      "00dd0000",
+      "00de0000",
+      "00df0000",
+      "00e00000"
+    ],
+    "current_ro_bands": [
+      "00cf0000",
+      "00d10000",
+      "00d50000",
+      "00d60000"
+    ],
+    "new_mutable_bands": [
+      "00e10000",
+      "01090000"
+    ],
+    "selected_rw_pages": [
+      "00e15000",
+      "00e16000",
+      "0109e000"
+    ],
+    "proposed_sparse_slots": [
+      {
+        "slot": 0,
+        "address": "00ce0000",
+        "role": "ro"
+      },
+      {
+        "slot": 1,
+        "address": "00cf0000",
+        "role": "ro"
+      },
+      {
+        "slot": 2,
+        "address": "00d00000",
+        "role": "ro"
+      },
+      {
+        "slot": 3,
+        "address": "00d10000",
+        "role": "ro"
+      },
+      {
+        "slot": 4,
+        "address": "00d20000",
+        "role": "ro"
+      },
+      {
+        "slot": 5,
+        "address": "00d30000",
+        "role": "ro"
+      },
+      {
+        "slot": 6,
+        "address": "00d40000",
+        "role": "ro"
+      },
+      {
+        "slot": 7,
+        "address": "00d50000",
+        "role": "ro"
+      },
+      {
+        "slot": 8,
+        "address": "00d60000",
+        "role": "ro"
+      },
+      {
+        "slot": 9,
+        "address": "00d70000",
+        "role": "ro"
+      },
+      {
+        "slot": 10,
+        "address": "00d80000",
+        "role": "ro"
+      },
+      {
+        "slot": 11,
+        "address": "00d90000",
+        "role": "ro"
+      },
+      {
+        "slot": 12,
+        "address": "00da0000",
+        "role": "ro"
+      },
+      {
+        "slot": 13,
+        "address": "00db0000",
+        "role": "ro"
+      },
+      {
+        "slot": 14,
+        "address": "00dc0000",
+        "role": "ro"
+      },
+      {
+        "slot": 15,
+        "address": "00dd0000",
+        "role": "ro"
+      },
+      {
+        "slot": 16,
+        "address": "00de0000",
+        "role": "ro"
+      },
+      {
+        "slot": 17,
+        "address": "00df0000",
+        "role": "ro"
+      },
+      {
+        "slot": 18,
+        "address": "00e00000",
+        "role": "ro"
+      },
+      {
+        "slot": 19,
+        "address": "00e10000",
+        "role": "mutable_crt"
+      },
+      {
+        "slot": 20,
+        "address": "01090000",
+        "role": "mutable_crt"
+      }
+    ],
+    "current_combined_mask": "0018018a",
+    "full_data_bands": 42,
+    "full_ro_data_union_bands": 60,
+    "ro_data_overlap_band": "00e00000",
+    "ro_commit_end_exclusive": "00e08000",
+    "selected_rw_committed_bytes": 12288,
+    "new_reserved_bytes": 131072,
+    "current_ro_reserved_bytes": 262144,
+    "current_ro_rw_reservations_after_extension": 393216,
+    "claim": "Arithmetic/PE/source feasibility only; no address availability was experimentally checked."
+  },
+  "native_provider_provenance": {
+    "NLG": {
+      "accepted_discovery_commit": "4b524e551c0f86956ec118e60b4d304a61ab817d",
+      "span": {
+        "address": "00c16879",
+        "length": 31,
+        "kind": "complete function",
+        "live_pe_equal": true,
+        "size": 31,
+        "sha256": "1545423549a434218e6e632545bec66021d49e3a2c7acaa6d756c6436a8c82fd",
+        "sha512": "4b844ee54cd21f232291b847b569a8446fedeb62cfe2a5f7d12a3ea8bc6eff7e1b5361fcda590e84b42f8dd6cd4c749b57c04cb0dc7f86c1db9ded6e5f9a63a1"
+      },
+      "contract": {
+        "address": "00c16879",
+        "name": "__NLG_Notify",
+        "length": 31,
+        "original_abi": "EAX transfer address, EBP frame; entryESP+4 code; RET4. Preserve EBX/ECX and arithmetic flags.",
+        "schedule": [
+          "PUSH EBX; PUSH ECX; MOV EBX,actualE16830; load code from ESP+0Ch.",
+          "Store code at+8, EAX at+4, EBP at+Ch in order.",
+          "PUSH EBP/ECX/EAX; POP EAX/ECX/EBP; POP ECX/EBX; RET4."
+        ],
+        "state": "Actual16-byte descriptor E16830; initialPE/live {19930520,0,0,0}; +0 remains unchanged. Also referenced by __NLG_Notify1.",
+        "source_candidate": false,
+        "missing": "Concrete shared descriptor/domain binding and source interface preserving register inputs and full native schedule; no private initialized descriptor or debugger-owner claim."
+      }
+    },
+    "CT": "Complete527B through eight borrowed contexts, exact frozen source8aef5c87; does not supply original no-extra-argument entry."
+  },
+  "current_owner_contract": {
+    "readonly": "GameNativeReadOnlyData validates complete PE size/SHA256, owns requested64KiB bands, commits only section pages, copiesbytes thenPAGE_READONLY. Noimports/original code. Directconstructor reserves; capabilityconstructor adopts. Destructor releases entire owned bands.",
+    "reservation": "Move-only GameNativeDataReservation,19pointerarray+mask+inheritedhandoff handles; expectedmask and exact MEM_RESERVE/PAGE_NOACCESS/MEM_PRIVATE identity before transfer; clears transferred pointers; destructor reclaims only remaining exact owned reservations.",
+    "bootstrap": "Controlled suspended rebuiltchild, one restricted inherited mapping, version1 magic/IDs/mask/state. Parent exactreserve thenready/resume; childinheritedhandle/identity/mask/state/reservation checks and onceCASready->claimed; mapperCASclaimed->mapped; failure/timeoutraces andownedchild termination.",
+    "ack_limit": "Readonlyinitialize currently callsfinish(true), andfinish discardsCASresult. Jointowner requires deferredsingleACK throughmutablepages+cookieinitialization and checkedACK success beforelocalconsumerpublication.",
+    "lifetime": "CurrentGameStartupHost destructor/singletondrain precedes localROmapper destruction. No proof that laterCRT/atexit/thread native-capable consumers have drained; canonical state andD6pair require processlifetimeretention or separately provencompleteconsumerdrain."
+  },
+  "minimum_integration": {
+    "new_files": [
+      "include/bsp/game_native_mutable_crt_data.hpp",
+      "src/game_native_mutable_crt_data.cpp"
+    ],
+    "coordinated_existing_files": [
+      "include/bsp/game_native_data_bootstrap.hpp",
+      "src/game_native_data_bootstrap.cpp",
+      "include/bsp/game_native_readonly_data.hpp",
+      "src/game_native_readonly_data.cpp",
+      "src/game_main.cpp",
+      "cmake/startup.cmake"
+    ],
+    "placement_policy": "Retain present only-bsp_game BASE10000000/DYNAMICBASE:NO/FIXED:NO; preserveDLL/system/NX policies andguardedcollisionfailures. CurrentPE confirmslayout, notnewbandavailability.",
+    "transaction": [
+      "Createjointtypedplan with19RO slots plus sparseE10000/1090000 slots and exact3mutablepage roles; version2payload/childvalidation, notoldaddressformula.",
+      "ReserveallrequestedRO+2newRWbands inowned suspendedchild before resume; neveradopt/freeforeignpages.",
+      "TransfereachbandcapabilitybeforeanyMEM_COMMIT; aftercommitting splitsregions, thepageownerrollsbackitsownedallocationbase ratherthanrequiringoldexactMEM_RESERVEpredicate.",
+      "Consumeonecapability, transferdisjointRO/RWsubsets, deferROACK; validatecompleteoriginalPE, commitE15000/E16000/109E000 asPAGE_READWRITE nonexec.",
+      "CopycompleteverifiedinitializedE15000/E16000 pages; 109E000fullzero-fill; checkD6E1CC actualpointerpair relation whileactualD6ROpage staysmapped.",
+      "InvokecompleteC1815E withactualcookie/complement beforeadmittingnativeguardedframes; preserveoriginalentropy/QPC/publication. NoTLS/heap/lock/SSEownerclaim.",
+      "Afterallmetadata preallocated, checkCASclaimed->mapped succeeds; cancellation preventslocalpublication. Finish successfulretention/publication withoutthrowing.",
+      "RetainjointROobject/D6pair andmutablecapabilities inexplicitprocesslifetimeowner; OSreclamationafterexit. Failurebeforepublication releasesonlyownedsubsets. A shorterreclaiminglifetime needsfullthreads/frames/atexit/callbackdrainproof."
+    ],
+    "capability_api": "Noncopyable ownedfixedreservations withprivatebootstrapadoption and scopedtypedviews toactualcells; noarbitraryadopt, freshprivateCRTstate, TLSsurrogate, repeatedreset orlivecookiereinitialization."
+  },
+  "canonical_native_followups": {
+    "checker_reporter": "Completeoriginal-entry BFE120 ECX/noargs/EAXpreserve/F3C3/directtail andcompleteC185A4 noargs fixedcanonicalcaptures. Actualsourceproviderrelocations, realCL/hook/APIinternalcalls; nooriginal.textmapping orinstalledcodeexecution. CTcontextstack cannotcloseunchangedC0DC54; newfullvariantneeded.",
+    "NLG": "CompleteacceptedC1687931B rawEAX/EBP/stackcodeRET4 usesactualE16830; originalorderedwrites andpush/popdebugsequence, nocallback/private descriptor. C16870additionalentry/common-tail requiresitsowncompletecontractif included.",
+    "still_external": "OriginalCRT featurebootstrap, TLS/PTD, heap/lock state, nativeFS/SEH/cleanup/frame owners and sourcecodeconsumerregistration. Readableinitialpagebytes do notclose them.",
+    "feature_word": "Imagezero initialization ispreserved, notanassumption of completedfeature detection. Watson50hCLfill bypassesfeaturecell/SSE2; other consumers retainexplicitowner limits."
+  },
+  "validation": {
+    "fresh_owned_data_bytes": 836,
+    "fresh_external_ro_pair_bytes": 8,
+    "new_native_code_bodies": 0,
+    "reused_accepted_NLG_body_bytes": 31,
+    "source_implementation": false,
+    "build": false,
+    "tests": false,
+    "mapping_or_allocation_experiment": false,
+    "child_launch": false,
+    "source_or_native_execution": false,
+    "ghidra_or_settings_mutation": false,
+    "CT332_frozen_twice_verified": true,
+    "new_band_runtime_availability_proved": false
+  },
+  "failures_preserved": [
+    "Initial bounded indexed lookup preceded new-worktree index and returned No index; index built before subsequent indexed reads. Initial broad caller grep also matched unrelated reserve_native names; narrowed to actual owner/bootstrap callers.",
+    "First finalplacement assertion expected unquoted /BASE:0x10000000; actualcurrenttlog contains /BASE:\"0x10000000\". Corrected parseracceptsquoted value; actualPE independentlyconfirmsbase/policy. Firstfailurelog retained; no policy/build change."
+  ],
+  "limitations": [
+    "Proposal only; no implementation authorized bythisreport.",
+    "Boundedxref samples arenotexhaustivereader/writerclosure; selectedpagebytesoutsideownedspans have no newCRTservicecontract.",
+    "Currentexistingowner mechanics are source-grounded; proposedextrareservations andlateprocesslifetimecoupling requireimplementationandseparatevalidation.",
+    "No full.datamapping, nativecode/importresolution, gameplay orruntimeparity claim."
+  ],
+  "local_inventory": {
+    "directory": "local/native_crt_mutable_owner_cy",
+    "files": 90,
+    "bytes": 2791661,
+    "passes": 2,
+    "algorithms": [
+      "SHA256",
+      "SHA512"
+    ],
+    "complete_path_set_checked": true,
+    "method": "Complete whole-file pass plus independent chunked pass. Report outside local avoids self-reference.",
+    "artifacts": [
+      {
+        "path": "local/native_crt_mutable_owner_cy/00c16879_live.bin",
+        "size": 31,
+        "sha256": "1545423549a434218e6e632545bec66021d49e3a2c7acaa6d756c6436a8c82fd",
+        "sha512": "4b844ee54cd21f232291b847b569a8446fedeb62cfe2a5f7d12a3ea8bc6eff7e1b5361fcda590e84b42f8dd6cd4c749b57c04cb0dc7f86c1db9ded6e5f9a63a1"
+      },
+      {
+        "path": "local/native_crt_mutable_owner_cy/00c16879_pe.bin",
+        "size": 31,
+        "sha256": "1545423549a434218e6e632545bec66021d49e3a2c7acaa6d756c6436a8c82fd",
+        "sha512": "4b844ee54cd21f232291b847b569a8446fedeb62cfe2a5f7d12a3ea8bc6eff7e1b5361fcda590e84b42f8dd6cd4c749b57c04cb0dc7f86c1db9ded6e5f9a63a1"
+      },
+      {
+        "path": "local/native_crt_mutable_owner_cy/00d6e1cc_bytes_000.txt",
+        "size": 45,
+        "sha256": "c3d9ee127e8e446da6eddd083be65013c40ebf9690643dc85a4d6ddebc70e8cd",
+        "sha512": "7449b74310bf38204d4aeecc10197ff8e9c6ef8c01363bfee45949e79f616fcb61822a4246a701fad9737681f785c7218e3f7af45e72d34835ab6652bea5b5e4"
+      },
+      {
+        "path": "local/native_crt_mutable_owner_cy/00d6e1cc_bytes_000.txt.arguments.json",
+        "size": 50,
+        "sha256": "499a8e90c3e89ccfa8a230aa6f8d49d885eab4cc004efe252e6dc673cbb6e7a3",
+        "sha512": "53f06cf9aeb54c482b2e997554e86e85929c118767137b3bae0d0d48239b63ee5e46164cf5d5645d29f7ba6ea4ed2471d941bd95a29d34ed8de384cbe640361e"
+      },
+      {
+        "path": "local/native_crt_mutable_owner_cy/00d6e1cc_live.bin",
+        "size": 8,
+        "sha256": "a7b8afc2eb356c8577e0bca58c49d6a4bb52ce9ba1b8f6ea753dafd32e2fb903",
+        "sha512": "9f9e5749d065cf8577215d36f90db29cb9ef4c55e3c7bf894c43bb0a90e1f934a7815684f5253684e04d77aa371c77b7cdfcd3a211c45269b41982312fb97c5c"
+      },
+      {
+        "path": "local/native_crt_mutable_owner_cy/00d6e1cc_pe.bin",
+        "size": 8,
+        "sha256": "a7b8afc2eb356c8577e0bca58c49d6a4bb52ce9ba1b8f6ea753dafd32e2fb903",
+        "sha512": "9f9e5749d065cf8577215d36f90db29cb9ef4c55e3c7bf894c43bb0a90e1f934a7815684f5253684e04d77aa371c77b7cdfcd3a211c45269b41982312fb97c5c"
+      },
+      {
+        "path": "local/native_crt_mutable_owner_cy/00e15590_bytes_000.txt",
+        "size": 45,
+        "sha256": "96c8259d56d47d1d905d95d3ef21787fa4f6815f1c9ab529a36365688de4741e",
+        "sha512": "970c69dbfc5cfee9a7dc8fd0b857cd0647eeb1d0c8666e573b9c13f9fffd09daa773cbfde57d72e6859b58b1babfbcfdf4306f9884c6cf3b15247bea5139df49"
+      },
+      {
+        "path": "local/native_crt_mutable_owner_cy/00e15590_bytes_000.txt.arguments.json",
+        "size": 50,
+        "sha256": "66ef59e7baf5e3c7eb78326ad15fb81bd770996ceffe3d533038f8461d828784",
+        "sha512": "7be4e0650dba70acc6f4de17fe1733aa62c858cc7f81eeb65cbccc644a1288a4dcfdda801df03230daf9e8d3f8e099ff2548969e6ce25112b1ad015e0974bb63"
+      },
+      {
+        "path": "local/native_crt_mutable_owner_cy/00e15590_live.bin",
+        "size": 8,
+        "sha256": "29b5066f8e977a643aebc158d86968765fbcdec85d9c5fcff28cc9f68782d5e4",
+        "sha512": "40e2bd5a6b3a1a52d333dc5bfc7555994772ed5eece72f302e65d5cfe1ddc4d39b65f2c3c053be26b03635d62a8c00d8ebd126132b8a665bf5fca051f9fe9398"
+      },
+      {
+        "path": "local/native_crt_mutable_owner_cy/00e15590_pe.bin",
+        "size": 8,
+        "sha256": "29b5066f8e977a643aebc158d86968765fbcdec85d9c5fcff28cc9f68782d5e4",
+        "sha512": "40e2bd5a6b3a1a52d333dc5bfc7555994772ed5eece72f302e65d5cfe1ddc4d39b65f2c3c053be26b03635d62a8c00d8ebd126132b8a665bf5fca051f9fe9398"
+      },
+      {
+        "path": "local/native_crt_mutable_owner_cy/00e15590_xrefs.txt",
+        "size": 407,
+        "sha256": "21f1c70b15135246284622cbda7dd08e54e2c0ddf186bbd1ae2740e303c62592",
+        "sha512": "5c2c9ddf08114eaa4231431ea10263572e9ba0bced28bfdd3b8410cf2f69765617d0fb98eb4afe0a20b79ff09d4be564bd8fcc5e4e0d03ce273ca40c9668951e"
+      },
+      {
+        "path": "local/native_crt_mutable_owner_cy/00e15590_xrefs.txt.arguments.json",
+        "size": 50,
+        "sha256": "d4f6eb769689830773518af00fbf7b6a23858bbd1041e3b4d25af9a23b496fd1",
+        "sha512": "3c9b0fa0871000ca5c3185a968882c44ea2232e0aacd90b610de6dc58e6911f911a325e9b42c8bbdd07f8e2f914374ecf5482c07ea3d427eb2e819c9de2c76ec"
+      },
+      {
+        "path": "local/native_crt_mutable_owner_cy/00e16830_bytes_000.txt",
+        "size": 77,
+        "sha256": "c526ebe7bc3a600b386cd996d38415cad851ff9e5e8b2f3e8c629c586433522e",
+        "sha512": "20ccbb2963a951db2090b35f3289022a6f6bd3e11ddfa121fbf20ae9c87e0bdf8c9689a7f195b4dbc6bd1b22873e49c4a21571db623c5e3f2415356c4690628c"
+      },
+      {
+        "path": "local/native_crt_mutable_owner_cy/00e16830_bytes_000.txt.arguments.json",
+        "size": 51,
+        "sha256": "93c520787f670639cdae964dd99b8a3d8fb15137d53896c5d2e3d83e578f3ff5",
+        "sha512": "cc4ab51abcfc1c0e49e074dc25684cbe0edc20d8c71c0321082a0a40298e3f01999c20612d0f2f338408cd9875af998ed128498177549baba16cb0904183f97b"
+      },
+      {
+        "path": "local/native_crt_mutable_owner_cy/00e16830_live.bin",
+        "size": 16,
+        "sha256": "3081097c647dde03b70e440e85945cc86c977d8402a4b62c04b8b023a511056e",
+        "sha512": "f8efabd0d765e548f72cd505dfd8383a5986512b4bc180205ec0c30d118c2c4a2912a01cc3c4f2f716468091925d35d974476c6a345c32d58b40d428749b315c"
+      },
+      {
+        "path": "local/native_crt_mutable_owner_cy/00e16830_pe.bin",
+        "size": 16,
+        "sha256": "3081097c647dde03b70e440e85945cc86c977d8402a4b62c04b8b023a511056e",
+        "sha512": "f8efabd0d765e548f72cd505dfd8383a5986512b4bc180205ec0c30d118c2c4a2912a01cc3c4f2f716468091925d35d974476c6a345c32d58b40d428749b315c"
+      },
+      {
+        "path": "local/native_crt_mutable_owner_cy/00e16830_xrefs.txt",
+        "size": 77,
+        "sha256": "2f83da2f303420a6e2709d26933c61b33f6fb07ffd60dd03b87daa4234151617",
+        "sha512": "07d54bdef6885c3b3956edb4bc30c3527794adc652281a48225167b610d9631f723c14c97243b09d479c83563217a7583288de69b8cbdfad6d5ded6eb7266f25"
+      },
+      {
+        "path": "local/native_crt_mutable_owner_cy/00e16830_xrefs.txt.arguments.json",
+        "size": 50,
+        "sha256": "706467129391beb20b670dbe0f4ac72c366346c1ce2971f4d5f8288764f8419b",
+        "sha512": "f59df2d1c14d4ed57c2b0f8b09dd89cfeea2112c2db4b48f53ca546cd8e3d1921ae1ef30bc7a181a47986bcd94b06f68e8150c0f788122525885c6d058fe717a"
+      },
+      {
+        "path": "local/native_crt_mutable_owner_cy/00e16834_xrefs.txt",
+        "size": 39,
+        "sha256": "a78249493b7f06df4f7aa5b7791dac32b696c2b9d6b4a6acd1189fd92070427d",
+        "sha512": "fc7c665975b3bf9feb7c35d579e3b428c2ef268de263ceaba9cba15dc148ca59acb8fe6f3e285d77c414719d3c7e73d386e233602c9857ba9340edd1258f292d"
+      },
+      {
+        "path": "local/native_crt_mutable_owner_cy/00e16834_xrefs.txt.arguments.json",
+        "size": 50,
+        "sha256": "094ef508e7cdcccca5fe0e0feda3916017be5cc3636424f3ae19c15b8f6926b1",
+        "sha512": "5d745d78692998d3b7e8d2ee8ea8aa47e856fe802975781628ba71e0d09ea45ee60dc80c0d54f9b10665c907ddd24c41d19e3eb6f3073b9dea6976026ea37c2f"
+      },
+      {
+        "path": "local/native_crt_mutable_owner_cy/00e16838_xrefs.txt",
+        "size": 39,
+        "sha256": "0b01bee754679bc333a3cbbb289d54c3cd97c61e1df1bcc4cd34e6aca3b9c262",
+        "sha512": "60c9f548087f94268603052e749f554061b0c17b520f46f003d38b71a069c7eb09bd2e90a31fb812cfb565c54cdf00dafdc1fb0effff5355652b98c6e4787490"
+      },
+      {
+        "path": "local/native_crt_mutable_owner_cy/00e16838_xrefs.txt.arguments.json",
+        "size": 50,
+        "sha256": "8303c960c23ed4f6068cf88307e26e5902d80ffb427a64c3cdb44282efce0e91",
+        "sha512": "d7af11e5f6f04377dd8cc2c18edf964bdb0515ed7f053befb7feacb1d2715d9153a4ef66ee049d5165bb35713389a686710bb011c6b7c97fac193707a3872499"
+      },
+      {
+        "path": "local/native_crt_mutable_owner_cy/00e1683c_xrefs.txt",
+        "size": 39,
+        "sha256": "c6e5d79891573f24b24921d54e806111b67e61e6c03edb7b57462dedbaef9a6b",
+        "sha512": "fdf6c1b9fb8f63b933c0d7fe9db13e111a90cc5bcd75caef485dfb2845bef11c5d18ef967571a7a44239840574dca95d0a7f0797440ba5a9108e30440a573671"
+      },
+      {
+        "path": "local/native_crt_mutable_owner_cy/00e1683c_xrefs.txt.arguments.json",
+        "size": 50,
+        "sha256": "d068801f11d2e9e8adc8d93cd1fb0527adc6edf56477d05333270ed0a1b5d5ba",
+        "sha512": "a1f369536f1ab9944933930ed48063e25fa4ba4e687d9dc83186e95a009c078013b265e5a23aa79a24cc925bd4433b3544309f0b4d0b61620cb51b9e1517c651"
+      },
+      {
+        "path": "local/native_crt_mutable_owner_cy/0109e568_bytes_000.txt",
+        "size": 616,
+        "sha256": "dca3bf268b557aecfab621507b7df184118edfff650499776dfef114c30a1149",
+        "sha512": "9f4150ef9be7e6334170c0793c967999fa3b1807a909f0ca1d1537ec1cc40210f328dfbafcfc767acab6c89cdaaaf0a7aa27fa8eaad4368afdc13a1dc6300179"
+      },
+      {
+        "path": "local/native_crt_mutable_owner_cy/0109e568_bytes_000.txt.arguments.json",
+        "size": 52,
+        "sha256": "c5163af1628051fc6b048b6ce2b9ef72ad0166e763e7d61b1d8fd3739811c514",
+        "sha512": "7d48e3d5df3a59d6e8dcaf0e059a1fa0afd449fe52bdcd002ab4e48338dffa7f1126fb3ba2e0c28a6cb070d4ddbe132d0e24e8b56bc402aa82c42f682b6f5d19"
+      },
+      {
+        "path": "local/native_crt_mutable_owner_cy/0109e568_bytes_128.txt",
+        "size": 616,
+        "sha256": "d13ede73f6a4fc364eb7e4acfd4440db02e712adc628c591177dfb4260b69301",
+        "sha512": "8ab9a3fcb2499d79568477d3e03e60af203e1bf354b9e286c34b5666254961916bddcfb9221a2a943601b41c925e32ad784a790b8312fd66867c3f7722ec8c65"
+      },
+      {
+        "path": "local/native_crt_mutable_owner_cy/0109e568_bytes_128.txt.arguments.json",
+        "size": 52,
+        "sha256": "c807de2baa90e2debccd06858186353894e2de215e06cf5f1b674ab98845f8c7",
+        "sha512": "dd84b6c4f3cb7e1190f6517f6dc1e2a41c132a9015a33c7ad01c4b4780929487da1c5e184dd583d238a862d00085ed9cba56eef9d1a27ee7905c91c4aa2dc977"
+      },
+      {
+        "path": "local/native_crt_mutable_owner_cy/0109e568_bytes_256.txt",
+        "size": 616,
+        "sha256": "45aa0972a07ac215b819eedc57646d83751ce6a89254e4cae629c6f4e9d10d7f",
+        "sha512": "4f8923d35220d494b00e23f9b98901dc395dadd10d522969c0547f9939c1773981ecbe3e4331f374b426b9dbeca27c6225b955782d3bbc901a951ca6f5284cb1"
+      },
+      {
+        "path": "local/native_crt_mutable_owner_cy/0109e568_bytes_256.txt.arguments.json",
+        "size": 52,
+        "sha256": "bf4f3d9f7015066f922097f1685c868aa1821dd1f0b20c73446e2f4e8b4939c0",
+        "sha512": "3f615bd4198b7dd52dd3d4a79189d414497caaebef9008f75107403d2b0af18f3f3316b45fe1880377edd0e6f9c95204c5ef336ce7eeb8e0ed35625c08e44890"
+      },
+      {
+        "path": "local/native_crt_mutable_owner_cy/0109e568_bytes_384.txt",
+        "size": 616,
+        "sha256": "bf95470b26d02934e596ebb59ad9d7e95b2b1102f4722d6b8d2a78942c500229",
+        "sha512": "a3562526dc68c35a7ccfac449c1d29375b4157f3755802128dc3de06f64fe06dceb68287425428b815aad69cd67a5676d80b098c9ecc8086b74c3c513300807d"
+      },
+      {
+        "path": "local/native_crt_mutable_owner_cy/0109e568_bytes_384.txt.arguments.json",
+        "size": 52,
+        "sha256": "0832ccd7b5902ee8614ba241eac9227a084a2f1da677bbf3a24336dc7a73cb8e",
+        "sha512": "f3b511a83d5c0903b85f1e16f2f8957a6649336885b21c3477e7a729359240dde54ad502e7047669ede415cd08089bfc85ac0f11cf0f33fd87efe79989649383"
+      },
+      {
+        "path": "local/native_crt_mutable_owner_cy/0109e568_bytes_512.txt",
+        "size": 616,
+        "sha256": "811ffca6c5897f4b550551e80d1387bb94f1419bbd7a5eaf3f3a8fd1b260e11e",
+        "sha512": "2395cf2b06b30e190effc0c9b2a37f6b17b3c7c0ae0a6c890c6fc90ae9fa66daa572f391bd054aee1c4bbcdc05ad1a9f61c7b01fa7cb4d0889f09975c9f4772c"
+      },
+      {
+        "path": "local/native_crt_mutable_owner_cy/0109e568_bytes_512.txt.arguments.json",
+        "size": 52,
+        "sha256": "e43c57a8c8aca5236605545661d33a42d9510030126dc7d077dd36860006ed92",
+        "sha512": "8489843084026f1106426ab090ed949f8af1d093a4842b1cf20d2ce2010e78b565afc64dbdbf54d810a6fbee039aa7bdbb78c0c145d0231eedb13ef3547e3ac8"
+      },
+      {
+        "path": "local/native_crt_mutable_owner_cy/0109e568_bytes_640.txt",
+        "size": 616,
+        "sha256": "bd85e437026bf83d09c026c90f691e4ec862e70c86d5ff42b11bb69847d90ba0",
+        "sha512": "f3dfaa547217c3931aa8077731d5c508df13945a2e6b2d68e866d97ed1412d9972e6edc67c29f6c1423a09b38308a4558980c6365a5cc7202b68d5c8f02ddf7f"
+      },
+      {
+        "path": "local/native_crt_mutable_owner_cy/0109e568_bytes_640.txt.arguments.json",
+        "size": 52,
+        "sha256": "5303879ca66049f91b85581998f2b0f4415045733b9b8bc33f4668145ec83555",
+        "sha512": "27806b9e3ab8c8c76be7e58aa68a0d03d63f8627d573ae837d6af59fe38924fae54e1aae045dc88e8ef6391b4b8a4eddfa3309986309f79c3072f675cb185f50"
+      },
+      {
+        "path": "local/native_crt_mutable_owner_cy/0109e568_bytes_768.txt",
+        "size": 183,
+        "sha256": "fa755dac88f54fdb96e2d6d5659d3ab9da201cafe6e5746c8382c9255e6e1925",
+        "sha512": "6fb5086111a02e306e5914a120e69ce9bdb50ec94bde79bbcf6517f07680cecbb3960cf8c1e4c6b8a32b0e0d5df2056cd5fdd9df4fff8bb6ded481f1bddcf392"
+      },
+      {
+        "path": "local/native_crt_mutable_owner_cy/0109e568_bytes_768.txt.arguments.json",
+        "size": 51,
+        "sha256": "f55a766375c99691da3921cb500434b418179a605ef57ec984b33e4a2cdb48d6",
+        "sha512": "c4c05b348773dd2fc4d75db6e79b3977da77e0796205b47c2b2f38e8be2096f2095b7f16bc2a6a4701e69366c65fb728b17df358e5b8964d13c67555b1a6fb09"
+      },
+      {
+        "path": "local/native_crt_mutable_owner_cy/0109e568_live.bin",
+        "size": 804,
+        "sha256": "60107be66c9efe4d6aa0a3864f71d60b3800c8d6400daa36c05609d099b5f891",
+        "sha512": "0a2410540f096ebd0464f16681b7375152fe8844ad2fed5fe86b352a61d6c65695051c82a36b77156a79ac633943463739752163d48b26abedf2db2c49ba794d"
+      },
+      {
+        "path": "local/native_crt_mutable_owner_cy/0109e568_pe.bin",
+        "size": 804,
+        "sha256": "60107be66c9efe4d6aa0a3864f71d60b3800c8d6400daa36c05609d099b5f891",
+        "sha512": "0a2410540f096ebd0464f16681b7375152fe8844ad2fed5fe86b352a61d6c65695051c82a36b77156a79ac633943463739752163d48b26abedf2db2c49ba794d"
+      },
+      {
+        "path": "local/native_crt_mutable_owner_cy/0109eea4_bytes_000.txt",
+        "size": 45,
+        "sha256": "e41402b2785c7309c92d24efbd3fe85b5aef766b489fe28abf13a5611ca93cdc",
+        "sha512": "3674dcdefb41c6ba849131829e10024d0fc15477f25b41f24466a43ed57ffa1de9b8aebb3aa1d18d89a54d044388686d28ec8a1bfb69f6e8ee728541588971b2"
+      },
+      {
+        "path": "local/native_crt_mutable_owner_cy/0109eea4_bytes_000.txt.arguments.json",
+        "size": 50,
+        "sha256": "540feaea3e151ebe39de8b0ceebc77d4798f09c88c2432eac7e084fd278cc040",
+        "sha512": "f4192f75f3c333fd21eb849064e8f5135c5e4b253397370b6a63d016c1ebf6a585a958ee17dd55b18f35587dc45ac63a925a898e1a0c63f09259deb5d56213d8"
+      },
+      {
+        "path": "local/native_crt_mutable_owner_cy/0109eea4_live.bin",
+        "size": 8,
+        "sha256": "af5570f5a1810b7af78caf4bc70a660f0df51e42baf91d4de5b2328de0e83dfc",
+        "sha512": "1b7409ccf0d5a34d3a77eaabfa9fe27427655be9297127ee9522aa1bf4046d4f945983678169cb1a7348edcac47ef0d9e2c924130e5bcc5f0d94937852c42f1b"
+      },
+      {
+        "path": "local/native_crt_mutable_owner_cy/0109eea4_pe.bin",
+        "size": 8,
+        "sha256": "af5570f5a1810b7af78caf4bc70a660f0df51e42baf91d4de5b2328de0e83dfc",
+        "sha512": "1b7409ccf0d5a34d3a77eaabfa9fe27427655be9297127ee9522aa1bf4046d4f945983678169cb1a7348edcac47ef0d9e2c924130e5bcc5f0d94937852c42f1b"
+      },
+      {
+        "path": "local/native_crt_mutable_owner_cy/0109eea4_xrefs.txt",
+        "size": 384,
+        "sha256": "c866965791094f7106947d0c6f279eb11e8ee4a8975dd0c79ac62f0aeda73644",
+        "sha512": "019aa832cc69da1df888b6d2268f2fd8e1f8c6b9d00d1e6b85a1376981fbf408de54e3c75223d092db01e885699e66755dc2e06a2e27c3ee81195e3be8f09090"
+      },
+      {
+        "path": "local/native_crt_mutable_owner_cy/0109eea4_xrefs.txt.arguments.json",
+        "size": 50,
+        "sha256": "5235b09708dac9341e56fbbc8503309a84b0a9ab11ba7e8880e87a989cf4cfb9",
+        "sha512": "17288def3c8cdd172b6334e93da9ff0473f2d245b6b89c919a49c0c63f8dbe2e194c810b883068beb9b80f20cef4843de024aab7fc8e92d22c938c8510f01e25"
+      },
+      {
+        "path": "local/native_crt_mutable_owner_cy/0109eea8_xrefs.txt",
+        "size": 62,
+        "sha256": "8298b2a817069ced86007b6ec71a24446a10efadfccb23bf103f243b3da854c9",
+        "sha512": "112a2c4f50e1169d0d2a52465d4b44e811dae40e29c374dad02381bd577b66e2edeb0d6e773092511ef6c0c2dc8774cb6a87b406cc58ed7f2cd2e5f53b42329b"
+      },
+      {
+        "path": "local/native_crt_mutable_owner_cy/0109eea8_xrefs.txt.arguments.json",
+        "size": 50,
+        "sha256": "a8465751b2218ca46c3ccf111a799b43fbe79a8ade60cbafc484b593faf25f0d",
+        "sha512": "affb9dffc73a6f7296233eebd6ea3298633b73a00d63a25e11b93e5aab658cbb67b8335592524aa1d853dc24a055ee7fa4646096b4ad34e7899e3ba5d98b37c1"
+      },
+      {
+        "path": "local/native_crt_mutable_owner_cy/capture.py",
+        "size": 6752,
+        "sha256": "280fe2463d1157cc9bc9de21553726d16cd8afed1d1fd7f3dc76fe70ecc289fb",
+        "sha512": "c527931f8ea4fc1fffa8c956b821cec4820dc563b7193403b0f25e9786397d0e1c58f7894d2d722cafcd3a6855477eff97fb889523125afc25884d4b6494b588"
+      },
+      {
+        "path": "local/native_crt_mutable_owner_cy/capture_second_stderr.txt",
+        "size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "sha512": "cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce47d0d13c5d85f2b0ff8318d2877eec2f63b931bd47417a81a538327af927da3e"
+      },
+      {
+        "path": "local/native_crt_mutable_owner_cy/capture_second_stdout.txt",
+        "size": 196,
+        "sha256": "e46c4e89617eb2885e46f6b409cc8b19c708a43f0c51a9bffb644ee77b8e2f4b",
+        "sha512": "0e20a31a31d36a5aa06c80f708130ac9f74b53c66f2ddc798e3b4e4cf6675a77ea3d8a70e2f0b31b742826b7ee276a9f2f94b45dce9f10dac492ef9c770d7e6c"
+      },
+      {
+        "path": "local/native_crt_mutable_owner_cy/capture_stderr.txt",
+        "size": 510,
+        "sha256": "dc50774970800ca53e48315a84399da6958d97ee6b77f6d8bf8152c48b57fd54",
+        "sha512": "6d53e2dce27a768df44a69d00471b05ab548d6dece53b20b9d8b0d6988abd2f5813cd7a35ab69f41f19e11c28bec5e65b0fe4b41075b86e49f607de5578b28bc"
+      },
+      {
+        "path": "local/native_crt_mutable_owner_cy/capture_stdout.txt",
+        "size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "sha512": "cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce47d0d13c5d85f2b0ff8318d2877eec2f63b931bd47417a81a538327af927da3e"
+      },
+      {
+        "path": "local/native_crt_mutable_owner_cy/commit_message.txt",
+        "size": 319,
+        "sha256": "a3018f3d8ccac8658effcf0f1c98ad5ea354466b68febaa78310735dfc298a8a",
+        "sha512": "cde1dc26a803cf0cd76fb291d26f5e5514777358bd00b5e87003b29289a75aed95d94d0c01d96313b3d242cb04cf1c704285510ee8ad67d60605af2d11f09b45"
+      },
+      {
+        "path": "local/native_crt_mutable_owner_cy/current_bsp_game_from_ct_build.exe",
+        "size": 2157056,
+        "sha256": "c603f3cfb7644e0578e07621fee252780236c7b768a4c886a18ce0039822cde0",
+        "sha512": "5a88a6671c03addc0aac0b4b407574aeba52ed79449528617d147b2a408ee71e6e54f219eaf732b733aa9e8459c155ed2ac6160c3ec49fc07837e5719e356737"
+      },
+      {
+        "path": "local/native_crt_mutable_owner_cy/current_game_link_command.txt",
+        "size": 8839,
+        "sha256": "b8d8d8580d62de04b635693b342123cc84546c7c2504f1d2daf0dd06e6697948",
+        "sha512": "23964cdc5acb60de8a57ed463ca8fb1a4290d3ba66703a63a73cd9374ede8d0b8510e97f61b8f436d5c77fd0ced6763d6d4cea714522ada466952cf4c9411892"
+      },
+      {
+        "path": "local/native_crt_mutable_owner_cy/current_source/cmake/native_data_placement.cmake",
+        "size": 701,
+        "sha256": "b1671b064f6475994705db67e6fb38e1f3551a421990e4f9c1e4a2b22f1e3288",
+        "sha512": "0893460a05a170f6c25c467e04b616ff9a27bb2d9eaa276986c091faf35be0c3281ac865d78496a8fd7c2a03dc160021d2bbc21dfffcfe8d4b929f1bfa01f17b"
+      },
+      {
+        "path": "local/native_crt_mutable_owner_cy/current_source/cmake/startup.cmake",
+        "size": 121063,
+        "sha256": "b8887e5140de0098db9a27cfd2f9d86bb48c7fd8ddf78bd2101f09bad6b23f4d",
+        "sha512": "56c7e97542ec8006e07d68ae0a7161921b0bca564a749c0d46acadc9a92bb3f72809941f4710b78dbad97fd96ad88a3c2136097499635562470013ba67ac4c5d"
+      },
+      {
+        "path": "local/native_crt_mutable_owner_cy/current_source/docs/NATIVE_DATA_PLACEMENT_AC.md",
+        "size": 4147,
+        "sha256": "1df9890a4e9784c8514741b304e0ce3f846a3017e01c9ee2a96bfcf1164e5c2e",
+        "sha512": "3d59e6586598d7095c55c5de1fd9b9b929a0e165c51ab3a26bb6dad84a4319a5799e2937f87045913aed9d7366263e5b867735d816efd246a31456488c9716e1"
+      },
+      {
+        "path": "local/native_crt_mutable_owner_cy/current_source/include/bsp/game_native_data_bootstrap.hpp",
+        "size": 3456,
+        "sha256": "4ac5bb6e357c5e9007888bafcb8aae550c6cc5419d6ab417895d48656c403b40",
+        "sha512": "21836ae2656523c8657236f13afbcb7801611332370d7f3a114726e20e01a8871b644aa4a74b7d79ae320ed6a1f22a5c95a41173b0ddce99f7ee351dc9569762"
+      },
+      {
+        "path": "local/native_crt_mutable_owner_cy/current_source/include/bsp/game_native_readonly_data.hpp",
+        "size": 2212,
+        "sha256": "8e751679e907c9471a6135b090ad5fe7d733cbaae5070484877138f3775fe96b",
+        "sha512": "df237ead4ce8529044f2fafd82369857c22ff2e92f4ce720e8eb0a497222080c70c78b240d85332c151dac340e4bd64d9f9a331d331b8511135f1a5232898256"
+      },
+      {
+        "path": "local/native_crt_mutable_owner_cy/current_source/include/bsp/native_crt_cookie_initialization.hpp",
+        "size": 1913,
+        "sha256": "85acf04f760e43876685008d3c32e900000f809554fa3fc82fa4bbcb81631b4b",
+        "sha512": "dcb93dd93af27a8acbd37584c921e6ad92a76470b429615c7fe8f19f27cc626382c65572ee12980f2db1e0141b16066c5fb2bb66c4d34174b139913f0f5c7288"
+      },
+      {
+        "path": "local/native_crt_mutable_owner_cy/current_source/src/game_hosts.cpp",
+        "size": 86804,
+        "sha256": "4cfd11e6aadca4c000bb4fd37ac7444644354bc39a9efca3b09fc96ad188575f",
+        "sha512": "085af914fa93907078fe5e5e46ecaf4444a7d345f67485d63f20a382e529f6b559f915c9e8183e003b7771e25ad8f7cec976aad8ff7e5d7da98fc808181f50f9"
+      },
+      {
+        "path": "local/native_crt_mutable_owner_cy/current_source/src/game_main.cpp",
+        "size": 23453,
+        "sha256": "b6fd8b3ab820838398581828e89998ac9c1f0e5ad82f262c3a31910e0e670ce1",
+        "sha512": "24e03dbdb64406bcff62c75adc9481c7225c66c823f9081285d832dee0195327f8a6706f585949ffc3f1ca3f5c9c99c7f90baa7c5c204143ce76fc74e167d133"
+      },
+      {
+        "path": "local/native_crt_mutable_owner_cy/current_source/src/game_native_data_bootstrap.cpp",
+        "size": 18983,
+        "sha256": "4bc3e8a3aa45231d19a7be9c79be785842344de2c9fb9983837fa2da10ccd204",
+        "sha512": "47388fac97266b2a2ba2f5104b90b489533c4cb419c116b4c5f430028f37d4173d8ff28cd31fc77f99ea1d18d5c480c525349f0628b771700478f7a5d3af3983"
+      },
+      {
+        "path": "local/native_crt_mutable_owner_cy/current_source/src/game_native_readonly_data.cpp",
+        "size": 6144,
+        "sha256": "efc2201294dd5b5a3364c611d45b3dbc1760aaa99985e86d947e0b060713dd16",
+        "sha512": "0ddebcc0266cf70776ab87ef40e2f9830351ede6e11ae34d5cea9d0e76d2b7cea99e925332c502a4d22c741b9313356bb77356c1265c954f0a90f78311d5de29"
+      },
+      {
+        "path": "local/native_crt_mutable_owner_cy/current_source/src/native_crt_cookie_initialization.cpp",
+        "size": 2651,
+        "sha256": "48f957e66f4c3c4f5692a693ef3680cc907f6303ea02212fdbda803ba00aa1c5",
+        "sha512": "9a00d33ead06bd26afb5c0bd6699f8e5f6c0b29a44a9693c0fa00c671f5ad6107d8650e5e3b31007f607eab1c036575ae644231808eb5cee9e0eb17209b7bd2f"
+      },
+      {
+        "path": "local/native_crt_mutable_owner_cy/evidence.json",
+        "size": 10183,
+        "sha256": "32ba4b56d0c9e40569fdcb7fe5303d869a30ea735ea11f9f1395deac0307109e",
+        "sha512": "837bff3524ef80b680d41a198cc58f1285dfa1c24d7f3bfa016b8e55381d1586be1dc6e725b160b10d83b1651fd74ee582fe13dfa59a64e43ed04393e58beaf2"
+      },
+      {
+        "path": "local/native_crt_mutable_owner_cy/frozen_ct/native_crt_watson_failure.cpp",
+        "size": 10444,
+        "sha256": "42607b80c06e02b9ab86490b99954adc0a31d785bcd0beb515cbeeda8a6cea1c",
+        "sha512": "138caaf6f891128f0b410411aeab70e4cf347ad45ebb8206b10695d889582f6c86095628b4b1a66ffd5985808b1efc0b16f34f18b66c551e4ac720b9113c0982"
+      },
+      {
+        "path": "local/native_crt_mutable_owner_cy/frozen_ct/native_crt_watson_failure.hpp",
+        "size": 4638,
+        "sha256": "a46a37f7b069bcd2dd68696de222922ac04da572d456255af851d945263c4432",
+        "sha512": "85d251473ab7a94860e1e5a57262d93f7bc9be9dbd57e0b8a7d236f10f500896a080d87fa7880b048f1076b2f64877471f3a6ee5c0c56ce8791cf57764bba8e1"
+      },
+      {
+        "path": "local/native_crt_mutable_owner_cy/frozen_ct/native_crt_watson_failure_ct.json",
+        "size": 269082,
+        "sha256": "53f11b902d5f85f2b3441b0beec2ac231aba34d52fd571951b6a365ba2332587",
+        "sha512": "8bacd7590361ab6bb605f9816ad826ef8e99b7a648d7ffaee7ac47fe5c177592e33afc651036f967db364d92ea6bcc232be0f7af2e8b497e97661a7b8c1c2acd"
+      },
+      {
+        "path": "local/native_crt_mutable_owner_cy/frozen_ct/NATIVE_CRT_WATSON_FAILURE_CT.md",
+        "size": 5403,
+        "sha256": "9eb47e2d0b8e81d77a8ea5a867624f45e4b3de02f9762d6c20b12cf391ba8014",
+        "sha512": "7d94391cf216ff4bcab8a5a2784c842e8999b9076a151a4e54bbb29a887f0ab14c1a8f9b6acc7afcaced4cb2c6ab928baf5ca67ede0bd623b994479fc7893c6c"
+      },
+      {
+        "path": "local/native_crt_mutable_owner_cy/index.txt",
+        "size": 142,
+        "sha256": "8eef2935b34c167529a8eaad80a96be1a003f1c4b5f69f7769b37afb272ee669",
+        "sha512": "7396d9430c42f48dab5366ecaeaa68323e2e34e2586604a7f64ea2aad2c1bffaa935f891e7710574ecf3e6aac5ba6a9cf8b13a61c1d5d3cc6483a652a3bad084"
+      },
+      {
+        "path": "local/native_crt_mutable_owner_cy/lookup_00c04ef3.txt",
+        "size": 1266,
+        "sha256": "fb874ff2623b6813b25e45ea4dccfce7b824deb28633e26bb9cb4166a73c9643",
+        "sha512": "0332fa267b7e94e9dfe79f912c9710d4cd19fd12cb5c3e0b0fd44b910437921761700dd7b55e1c6a2fbb368f77c580b59a6aef54457b404dac626d4aa108e6f8"
+      },
+      {
+        "path": "local/native_crt_mutable_owner_cy/lookup_00c16870.txt",
+        "size": 285,
+        "sha256": "9baac34afa18628aa1326af6be2e11f55f15e0d95feb9d15970a7d046d8c2d22",
+        "sha512": "5c198ac2167c99a3626dae100ca1b94277f6f0cdcf3abe8916048b75be754ba7a3564d74d20c17d48495837038154c6ac07704f606f632a162cead3cee92c0de"
+      },
+      {
+        "path": "local/native_crt_mutable_owner_cy/lookup_00c16879.txt",
+        "size": 450,
+        "sha256": "b0fd5824abcca9767bc1616ca106bfb8430a72fb0a6e0d7cce660edc48ecc5af",
+        "sha512": "b634b595a26fa2f6f496605b13ece9139e60af04cfff5f3b1267a7f3a3ff1643e204447cf150482e36ec721de2f6d3556f259c5053807267d39e6945e23512cd"
+      },
+      {
+        "path": "local/native_crt_mutable_owner_cy/lookup_00c1815e.txt",
+        "size": 1201,
+        "sha256": "1a45154aa56f502a00d22a9d9558768a6d550bba9cd7e7d620bf482b7ac4a77c",
+        "sha512": "7f88a3da42f183b6a9733dd760d40f26b3411a75f04a2b8e06ae5cee3683117e3daccd637893181232f38c310da9d6838fd84896a0219fe56b431f1e03ee0ec0"
+      },
+      {
+        "path": "local/native_crt_mutable_owner_cy/lookup_00c27b7c.txt",
+        "size": 81,
+        "sha256": "0f56ce32e26401a2be2150bccc8abc75c3f8ecbed094cee7415ce3c4f6135ca5",
+        "sha512": "0b96d35be067f7ecabe0d7d3f9b854be51f81f5d36a365f431aa77e118b657941ecb6dd5a878e4c513c83b11ef3582a0516b406f40a58e45262415cd0762dec3"
+      },
+      {
+        "path": "local/native_crt_mutable_owner_cy/nlg_provider_bs_contract.json",
+        "size": 1380,
+        "sha256": "6127016c523293a88c90c88791681c1d1d1c22ca7bbef6cc7cfbbc2a3af5bd4b",
+        "sha512": "3d977abf33c50fe3421c38885d5133ab1edf5a63d6cbf9b129fbf60ef5f6c7322605c2e5deaafa20ca9320f0a085b029a5e230e5e61cdf9b8e7d4bb92a578ad4"
+      },
+      {
+        "path": "local/native_crt_mutable_owner_cy/owner_source_query.txt",
+        "size": 6644,
+        "sha256": "f9a2db6beb2c61c503c97716560c0a382cd04fecbea5c5c04677824395980a21",
+        "sha512": "cd126feceb09704f6dd58db9c061f721f687d2183b164a5cde1d528f1be355c250298a03d5f9bf492e126296678e5dfee888554bdb51614232002f37f83f069c"
+      },
+      {
+        "path": "local/native_crt_mutable_owner_cy/ownership_analysis.json",
+        "size": 2878,
+        "sha256": "8ef74b3ec45b6b26e8b6ba177730c485a2a1a4b7be040ffb625090508ce3640e",
+        "sha512": "ca861a1d356974581d04c35473158ebab2f5e0edc381ce5ae0f677c4e100b2d5d68b1217948c791f08dac07e979d2e1e92c5ab501e779f4928b8f339e2d2f68d"
+      },
+      {
+        "path": "local/native_crt_mutable_owner_cy/page_00e15000_pe.bin",
+        "size": 4096,
+        "sha256": "51be18e468fb62b79487bdb237227fe300bde3411bcab443af715654ef357286",
+        "sha512": "db2e769edf54f5497abec36ae48e38558e03d1e25c28db3eb59427aaf736d74f63635cddff3565af745e06e67570a17e269af0a9120694cb25477624a0f914be"
+      },
+      {
+        "path": "local/native_crt_mutable_owner_cy/page_00e16000_pe.bin",
+        "size": 4096,
+        "sha256": "87810d15579ff093646c27c3b97db33d93e764ba08d26d5b516bbd8da6175d21",
+        "sha512": "0200c391bc5695076346ae1db80dc69ab590388f3ebf243e61ca7d26cbf7823f2fe0d6fad06a28fa1c5b8834b31d2ab94a858c846a56a07d4ff3150a4bcac12e"
+      },
+      {
+        "path": "local/native_crt_mutable_owner_cy/page_0109e000_pe.bin",
+        "size": 4096,
+        "sha256": "ad7facb2586fc6e966c004d7d1d16b024f5805ff7cb47c7a85dabd8b48892ca7",
+        "sha512": "2d23913d3759ef01704a86b4bee3ac8a29002313ecc98a7424425a78170f219577822fd77e4ae96313547696ad7d5949b58e12d5063ef2ee063b595740a3a12d"
+      },
+      {
+        "path": "local/native_crt_mutable_owner_cy/report.py",
+        "size": 9799,
+        "sha256": "80669045d301bc9df24c29ca15801091dac770eef1ee0294a027b2010b9b8cb7",
+        "sha512": "296cc98bc068f284d2ccbd424bfbb3465f94a5df83e887cdd20d7d8b153fd6ea77b88880fa97db6d63e4d039118b4a62b86302e3d82b92fed27c8cd4f073b8ba"
+      },
+      {
+        "path": "local/native_crt_mutable_owner_cy/report_stderr.txt",
+        "size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "sha512": "cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce47d0d13c5d85f2b0ff8318d2877eec2f63b931bd47417a81a538327af927da3e"
+      },
+      {
+        "path": "local/native_crt_mutable_owner_cy/report_stdout.txt",
+        "size": 129,
+        "sha256": "57ac2f941054864ed47b625310c03ddf3cfd0e5a60aebd5abf3b50775a42eb4e",
+        "sha512": "b1e6fbfa3a320d147d419cfa585df6ebb0385de606153217f5001f97f0503f82cc6207b016d9cc1ffcf45351ce52c22e1c71a4c263c2215ba475a169d8a04de7"
+      },
+      {
+        "path": "local/native_crt_mutable_owner_cy/seal.py",
+        "size": 2297,
+        "sha256": "dbe0260a0110544a5e3d371b33db87775c7de299bf2a94751b6647b28d93ac54",
+        "sha512": "5475302ca8a790fe85a63d11327f2d15cca0629482d4107f3796b24db8656a7a3ed1bcaaa51e0a1901c85e16da9ead34b32e24d5157f1540d21bd9fc0ec6a723"
+      },
+      {
+        "path": "local/native_crt_mutable_owner_cy/target_count.txt",
+        "size": 49,
+        "sha256": "472ebca581e412193ca0816e6815f0aa133680cf384e9efbd7f01aa45faaa151",
+        "sha512": "adb5f3d303dbc109e4ad6f1b317f35bce6d99ede9f188ec65164de060b6bb287dba5413634d1e8609750fee5b25c8bf5b7f67e1b8d258955029fef90f0f47cd0"
+      },
+      {
+        "path": "local/native_crt_mutable_owner_cy/target_count.txt.arguments.json",
+        "size": 21,
+        "sha256": "2b9c5109b231829d365d011c7d3f9c1fd5400ad79731dc8dbb618a34c0e73fc9",
+        "sha512": "67fbcd71c6749f61918442f30a9c4a891453316964bdcbb558093b5eb0939b9bc1c7811a6acf62e2e3e5fa457139b4c178d0bb9f4a91f59dad2e0af97cd8ce1f"
+      }
+    ]
+  },
+  "documentation_hash": {
+    "size": 13796,
+    "sha256": "96234c3bfa93fa5a889088db1268953aee74e06e5c2c33bb5a1ca4ccbdc60b4d",
+    "sha512": "449bd0d767aa051b654446798e5e0f6868249768a0743c8300b5dfa2b73e8001668d0c63a06ae81b15b066f2b2d6a87e1bb9b62b2da01026e7f7f5ade797eb9c"
+  }
+}
