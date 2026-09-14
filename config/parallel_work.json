@@ -11721,6 +11721,130 @@
       "parent_integration": "orch4_game_native_vfs_admission_bj",
       "integration_report": "reports/game_native_vfs_admission_bj.json",
       "validated_code_revision": "8e68604bdc4860c5ef250ed147dc4dd8afeaa5a1"
+    },
+    {
+      "id": "orch4_native_vfs_pending_routes_bk",
+      "done": true,
+      "state": "integrated_reviewed_win32_built_source_fixture_and_native_pump_mission_run",
+      "owner": "agent/orch4-vfs-pending-bk",
+      "worktree": "J:/PROG/battlestations-pacific-decompile-orch4-vfs-pending-bk",
+      "base_commit": "f41379f344567836c84dba35cc77ab6c817aa809",
+      "addresses": [
+        "00bdda10",
+        "00bdb0b0",
+        "00bdc100",
+        "00bdb740"
+      ],
+      "files": [
+        "include/bsp/native_vfs_pending_routes.hpp",
+        "src/native_vfs_pending_routes.cpp",
+        "docs/NATIVE_VFS_PENDING_ROUTES_BK.md",
+        "reports/native_vfs_pending_routes_bk.json"
+      ],
+      "model": "gpt-6-astra",
+      "reasoning_effort": "xhigh",
+      "ghidra_mutations": false,
+      "parent_integration": "orch4_native_vfs_pending_integration_bk",
+      "worker_commit": "af26d6b12444f7ab852190cb1876c79002951491",
+      "integration": "reports/native_vfs_pending_integration_bk.json",
+      "code_revision": "66e434fbbe6d0fdc61f768ab198fe0380997113b"
+    },
+    {
+      "id": "orch4_native_physical_pending_bk",
+      "done": true,
+      "state": "integrated_reviewed_win32_built_source_fixture_and_native_pump_mission_run",
+      "owner": "agent/orch4-physical-pending-bk",
+      "worktree": "J:/PROG/battlestations-pacific-decompile-orch4-physical-pending-bk",
+      "base_commit": "f41379f344567836c84dba35cc77ab6c817aa809",
+      "addresses": [
+        "00bf43b0",
+        "00bf46b0",
+        "00bf4240"
+      ],
+      "files": [
+        "include/bsp/native_physical_pending_io.hpp",
+        "src/native_physical_pending_io.cpp",
+        "docs/NATIVE_PHYSICAL_PENDING_IO_BK.md",
+        "reports/native_physical_pending_io_bk.json"
+      ],
+      "model": "gpt-6-astra",
+      "reasoning_effort": "xhigh",
+      "ghidra_mutations": false,
+      "parent_integration": "orch4_native_vfs_pending_integration_bk",
+      "worker_commit": "faa5a58711ecf586393084852b8ae05d3b5c5ae1",
+      "integration": "reports/native_vfs_pending_integration_bk.json",
+      "code_revision": "66e434fbbe6d0fdc61f768ab198fe0380997113b"
+    },
+    {
+      "id": "orch4_native_filestore_request_bk",
+      "done": true,
+      "state": "integrated_reviewed_win32_built_source_fixture_and_native_pump_mission_run",
+      "owner": "agent/orch4-filestore-request-bk",
+      "worktree": "J:/PROG/battlestations-pacific-decompile-orch4-filestore-request-bk",
+      "base_commit": "f41379f344567836c84dba35cc77ab6c817aa809",
+      "addresses": [
+        "00be7cd0"
+      ],
+      "files": [
+        "include/bsp/native_filestore_request.hpp",
+        "src/native_filestore_request.cpp",
+        "docs/NATIVE_FILESTORE_REQUEST_BK.md",
+        "reports/native_filestore_request_bk.json"
+      ],
+      "model": "gpt-6-astra",
+      "reasoning_effort": "xhigh",
+      "ghidra_mutations": false,
+      "parent_integration": "orch4_native_vfs_pending_integration_bk",
+      "worker_commit": "21581aad90ce0ecd1a1f11dcd0063ebf2470c32e",
+      "integration": "reports/native_vfs_pending_integration_bk.json",
+      "code_revision": "66e434fbbe6d0fdc61f768ab198fe0380997113b"
+    },
+    {
+      "id": "orch4_native_filestore_completion_bk",
+      "done": true,
+      "state": "integrated_reviewed_win32_built_source_fixture_and_native_pump_mission_run",
+      "owner": "agent/orch4-20260910",
+      "worktree": "J:/PROG/battlestations-pacific-decompile-orch4-20260910",
+      "addresses": [
+        "00be7760",
+        "00be78b0",
+        "00be7b20",
+        "00be5cf0",
+        "00be6090",
+        "00be6250",
+        "00be7340"
+      ],
+      "files": [
+        "include/bsp/native_filestore_completion.hpp",
+        "src/native_filestore_completion.cpp",
+        "docs/NATIVE_FILESTORE_COMPLETION_BK.md",
+        "reports/native_filestore_completion_bk.json"
+      ],
+      "parent_integration": "orch4_native_vfs_pending_integration_bk",
+      "integration": "reports/native_vfs_pending_integration_bk.json",
+      "code_revision": "66e434fbbe6d0fdc61f768ab198fe0380997113b"
+    },
+    {
+      "id": "orch4_native_filestore_resident_insert_bk",
+      "done": true,
+      "state": "integrated_reviewed_win32_built_source_fixture_and_native_pump_mission_run",
+      "owner": "agent/orch4-physical-pending-bk",
+      "worktree": "J:/PROG/battlestations-pacific-decompile-orch4-physical-pending-bk",
+      "addresses": [
+        "00be4d20",
+        "00be6cf0",
+        "00be6590",
+        "00be6170"
+      ],
+      "files": [
+        "include/bsp/native_filestore_resident_insert.hpp",
+        "src/native_filestore_resident_insert.cpp",
+        "docs/NATIVE_FILESTORE_RESIDENT_INSERT_BK.md",
+        "reports/native_filestore_resident_insert_bk.json"
+      ],
+      "parent_integration": "orch4_native_vfs_pending_integration_bk",
+      "integration": "reports/native_vfs_pending_integration_bk.json",
+      "code_revision": "66e434fbbe6d0fdc61f768ab198fe0380997113b"
     }
   ],
   "snapshot_after_analysis": {

@@ -1,0 +1,105 @@
+{
+  "packet": "orch4_native_filestore_completion_bk",
+  "status": "complete_source_independently_reviewed_strict_compiled_combined_fixture_and_win32_build_passed",
+  "source": "src/native_filestore_completion.cpp",
+  "header": "include/bsp/native_filestore_completion.hpp",
+  "documentation": "docs/NATIVE_FILESTORE_COMPLETION_BK.md",
+  "code_revision": "66e434fbbe6d0fdc61f768ab198fe0380997113b",
+  "functions": [
+    {
+      "address": "00be7760",
+      "inclusive_end": "00be78a0",
+      "bytes": 321,
+      "native_sha256": "fb66b79def9ea3bc9074aea57a4247c7de99d13de973dbd498a5f83cd727f143",
+      "fresh_live_matches_disk": true,
+      "proto": "00be7760 BSP_FileStore_AddFile  undefined BSP_FileStore_AddFile(void)  body 00be7760 - 00be78a0",
+      "live_listing_sha256": "9cf7a3081d3a638bbc72a26c40b99aeb77d81679870b5c7de109ad9196b06e73",
+      "coverage": "complete_read_only_review",
+      "source_coverage": "complete_ordinary_control_flow_with_existing_dependency_contracts",
+      "original_abi": "ECX store; stack name,stream; RET8"
+    },
+    {
+      "address": "00be78b0",
+      "inclusive_end": "00be797e",
+      "bytes": 207,
+      "native_sha256": "ffe366b168f1c38effdc9a28ae7aaa25bc5e572ecebc697798d72f56a2bb5f90",
+      "fresh_live_matches_disk": true,
+      "proto": "00be78b0 BSP_FileStore_CompletePendingRequest  undefined BSP_FileStore_CompletePendingRequest(void)  body 00be78b0 - 00be797e",
+      "live_listing_sha256": "ed4fc932fe2408668a2a9033811f3fa0bce5945ea07c169c1310aebf00507873",
+      "coverage": "complete_read_only_review",
+      "source_coverage": "complete_ordinary_control_flow_with_existing_dependency_contracts",
+      "original_abi": "ECX store; stack first,second,stream; RET0C"
+    },
+    {
+      "address": "00be7b20",
+      "inclusive_end": "00be7b3e",
+      "bytes": 31,
+      "native_sha256": "c56e6b6237f5e7eeb68b08e3bd1d07a0391ca67dc4ceaf01e8b66ff77a403d08",
+      "fresh_live_matches_disk": true,
+      "proto": "00be7b20 BSP_FileStore_CompletePendingRequestAdapter  undefined BSP_FileStore_CompletePendingRequestAdapter(void)  body 00be7b20 - 00be7b3e",
+      "live_listing_sha256": "11224b57f84fd0b6bc526956e9758feedd5fdd1a041fcfa7d33bf1eb10f8a8d4",
+      "coverage": "complete_read_only_review",
+      "source_coverage": "complete_ordinary_control_flow_with_existing_dependency_contracts",
+      "original_abi": "stack stream,first,second; RET0C; calls current factory getter"
+    },
+    {
+      "address": "00be5cf0",
+      "inclusive_end": "00be5d6e",
+      "bytes": 127,
+      "native_sha256": "2f452dfed0e1ba6f8838fc5231fd6faf46e9ba3a4c21067111d099e535e81819",
+      "fresh_live_matches_disk": true,
+      "proto": "00be5cf0 FUN_00be5cf0  undefined FUN_00be5cf0(void)  body 00be5cf0 - 00be5d6e",
+      "live_listing_sha256": "9e9cd45813bdebf05462d4f0e66083b387a8807989e42a138af32f088b65d9bc",
+      "coverage": "complete_read_only_review",
+      "source_coverage": "complete_ordinary_control_flow_with_existing_dependency_contracts",
+      "original_abi": "ECX actual0Ch pair; RET"
+    },
+    {
+      "address": "00be6090",
+      "inclusive_end": "00be6113",
+      "bytes": 132,
+      "native_sha256": "0e010a5c1d7a10592a15ae97a3d21a783dbf72d0978d440625af7b4871923452",
+      "fresh_live_matches_disk": true,
+      "proto": "00be6090 FUN_00be6090  undefined FUN_00be6090(void)  body 00be6090 - 00be6113",
+      "live_listing_sha256": "91c99756ab2ceeeff1cbab5778d7468c10d96f98550e86ac5f6b68f32dc7c81e",
+      "coverage": "complete_read_only_review",
+      "source_coverage": "complete_ordinary_control_flow_with_existing_dependency_contracts",
+      "original_abi": "ECX pair; stack name,stream-pointer-cell; RET8; EAX pair"
+    },
+    {
+      "address": "00be6250",
+      "inclusive_end": "00be62d0",
+      "bytes": 129,
+      "native_sha256": "360894560babad5ef68a14e3db56e3283d95ea1a949b9565f6afa6e60eb45a55",
+      "fresh_live_matches_disk": true,
+      "proto": "00be6250 FUN_00be6250  undefined FUN_00be6250(void)  body 00be6250 - 00be62d0",
+      "live_listing_sha256": "a02e6f490395545ccd3031f298de4911eb383605204a1fc212d0c72c166fca18",
+      "coverage": "complete_read_only_review",
+      "source_coverage": "complete_ordinary_control_flow_with_existing_dependency_contracts",
+      "original_abi": "ECX pair; stack source-pair; RET4; EAX pair"
+    },
+    {
+      "address": "00be7340",
+      "inclusive_end": "00be7453",
+      "bytes": 276,
+      "native_sha256": "d849a4cb9b61ac269fac7f0ba2695920ccd890b595fcf776c51143ff2c229340",
+      "fresh_live_matches_disk": true,
+      "proto": "00be7340 FUN_00be7340  undefined FUN_00be7340(void)  body 00be7340 - 00be7453",
+      "live_listing_sha256": "d4d9e2595dc45f0a4be0f0b0519603859e32be55216fd374d3509f825077c54e",
+      "coverage": "complete_read_only_review",
+      "source_coverage": "complete_ordinary_control_flow_with_existing_dependency_contracts",
+      "original_abi": "ECX tree; stack output,pair; RET8; EAX output"
+    }
+  ],
+  "review": "reports/native_filestore_completion_review_bk.json",
+  "review_sha256": "2611b4714bdc6f1ca3c7add8980d2362ca762b51a15b69df00444f16776d87ed",
+  "source_sha256": "823eb1b8686451b46f7435490ca5134cfe3e273b5adbaea202ce49f7abfe3c8b",
+  "header_sha256": "3db38f2f98207a119d44ded26e68b98065f1dc45b43670b106d215d292f8bff3",
+  "abi_compatible": false,
+  "game_validated": false,
+  "limitations": [
+    "new explicit C++ interfaces and current native services",
+    "ordinary source cleanup only; original FH3 ABI/private-stack alias/hardware fault domain not established",
+    "upstream production loading queue separate"
+  ]
+}
