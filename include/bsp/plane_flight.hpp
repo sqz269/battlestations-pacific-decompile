@@ -205,6 +205,11 @@ inline constexpr float kPlaneQuarterTurn = 1.5707964f;    // 00CE3830, double
 inline constexpr float kPlaneFullTurn = 6.2831855f;       // 00CE3828, double
 inline constexpr float kPlaneControlQuantSteps = 127.0f;  // 00CFD408, double
 inline constexpr float kPlaneControlQuantBias = 128.5f;   // 00D05998, double
+// The sentinel 007D8216 parks dyn+C8h at when the owner+72Ch predicate is
+// false. 00D7A260 is BF800000; the following dword is unrelated.
+inline constexpr float kPlaneContactTimerExpired = -1.0f;  // 00D7A260
+// The duration 007C705C hands to 007D83D0 on the BeginFlying path.
+inline constexpr float kPlaneLaunchHoldSeconds = 0.8f;  // 00CE74F8, 3F4CCCCD
 
 // ---------------------------------------------------------------------------
 // The pilot control block as a value, and the latch 007B9770 performs.
@@ -496,5 +501,44 @@ float free_flight_world_up_acceleration(const PlaneFreeFlightState& state,
                                         const PlaneFreeFlightClass& cls,
                                         const PlaneFreeFlightTuning& tuning, float step,
                                         bool ramp_reset = false);
+
+// The dyn+B4h/+C0h pair (docs/PLANE_DYN_TIMED_HOLD.md). 007D83D0 and 007DB2A4
+// write the two together, so they are one group. "Seconds" is proved, not
+// guessed: 007D902F decrements +C0h by the integrator's own step argument, the
+// same scalar 007D8F39 divides a position delta by to get a velocity. The name
+// "direction hold" is a hypothesis from the two call sites, not a symbol.
+struct PlaneTimedDirectionHold {
+    float direction[3]{};  // dyn+B4h..BCh; normalised at the 007C705C call site
+    float seconds{0.0f};   // dyn+C0h; the yaw law reads it as 0.6f * seconds
+};
+
+// 007D83D0, whole body. Sets both halves at once; no clamping, no validation.
+// 007C705C passes a normalised direction and the literal 0.8f at 00CE74F8;
+// 007C08F7 passes a computed duration.
+PlaneTimedDirectionHold arm_timed_direction_hold_007d83d0(const float direction[3],
+                                                          float seconds);
+
+// 007D8FFE..007D902F, the integrator's tail. Strictly positive values decay by
+// one step and stop at zero; anything at or below zero is left untouched (the
+// native takes the 007D900F JBE exit without storing).
+float decay_direction_hold_007d902f(float seconds, float step);
+
+// 007DC692..007DC6C5, the core law's commit tail. Both reaching paths store
+// zero: no owner takes the 007DC6A8 JZ with XMM0 already cleared at 007DC692,
+// and a false predicate re-clears XMM0 at 007DC6BF because the virtual call
+// clobbers it. A true predicate skips the store, preserving the field.
+// `hold` is the unresolved boolean: owner+72Ch's vtable slot +38h.
+float commit_direction_hold_007dc6c5(float seconds, bool owner_present, bool hold);
+
+// 007D81B0..007D81C7. The clear runs only when GGame+1FE4h equals 2; the
+// caller supplies that comparison rather than the state value, because what
+// state 2 means is not established here.
+float gate_direction_hold_007d81c7(float seconds, bool game_state_is_two);
+
+// 007D81CF..007D8216, the sibling timer at dyn+C8h, included because it is the
+// same shape under the same predicate and settles the polarity. Positive values
+// decay by one step; a false predicate then parks the timer at the -1.0f
+// sentinel from 00D7A260. Non-positive values are left untouched.
+float tick_contact_timer_007d81b0(float seconds, float step, bool hold);
 
 }  // namespace bsp
