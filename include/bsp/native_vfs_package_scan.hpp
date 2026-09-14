@@ -4,6 +4,20 @@
 #include "bsp/native_string.hpp"
 
 namespace bsp {
+struct NativeVfsEnumerationContext;
+struct NativeVfsMountRegistrationContext;
+
+struct NativeVfsPackageScanContext {
+    void* volatile& manager_0109ceec;
+    ActualNativeStringPoolStorage& strings;
+    const SingletonLifetimeCallbacks& invalid_parameters;
+    NativeVfsEnumerationContext& enumeration;
+    NativeVfsMountRegistrationContext& mounting;
+};
+
+// Complete normal 0073CB10 scan of actual manager storage. No stack arguments,
+// incoming ECX ignored, plain RET. The new C++ API borrows all services.
+void scan_native_vfs_packages_0073cb10(NativeVfsPackageScanContext&);
 
 // Complete normal path of 00557A90. ECX is the actual 0Ch list owner, stack
 // argument is an actual 8h string header, EAX returns that header, RET4.

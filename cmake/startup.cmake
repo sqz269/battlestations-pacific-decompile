@@ -929,3 +929,4 @@ cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_vfs_owner_s
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/game_native_vfs_constants.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_vfs_search_groups.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_vfs_extension_prefix.cpp)
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_vfs_package_scan.cpp)
