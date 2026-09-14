@@ -956,6 +956,32 @@ int GameMissionLuaHost::read_vehicle_class_integer(int index, const char* key,
     return value;
 }
 
+float GameMissionLuaHost::read_bullet_class_number(int index, const char* key,
+    float fallback) {
+    // Scripts/datatables/autoload/bulletclasses.lua publishes the selected
+    // variant as the global `Bullets`, indexed by bullet class id: it DoFiles
+    // classtables/<arcade|realistic>/bulletclasses.lua and assigns
+    // `Bullets = ArcadeTable` or `= RealisticTable` on the GameMode switch.
+    // Rows carry string keys, among them "Range", "FlyTime" and
+    // "WaterTravelSpeed". docs/TORPEDO_CATEGORY_ADMISSION.md.
+    if (state_ == nullptr || index < 0 || key == nullptr) return fallback;
+    const int top = ::lua_gettop(state_);
+    float value = fallback;
+    ::lua_getfield(state_, LUA_GLOBALSINDEX, "Bullets");
+    if (::lua_type(state_, -1) == LUA_TTABLE) {
+        ::lua_pushinteger(state_, index);
+        ::lua_gettable(state_, -2);
+        if (::lua_type(state_, -1) == LUA_TTABLE) {
+            ::lua_getfield(state_, -1, key);
+            if (::lua_type(state_, -1) == LUA_TNUMBER) {
+                value = static_cast<float>(::lua_tonumber(state_, -1));
+            }
+        }
+    }
+    ::lua_settop(state_, top);
+    return value;
+}
+
 std::vector<bsp::LuaGlobalEntry> GameMissionLuaHost::lua_global_entries() {
     std::vector<bsp::LuaGlobalEntry> entries;
     if (state_ == nullptr) return entries;
