@@ -1,0 +1,988 @@
+{
+  "source_functions": [
+    {
+      "address": "00be42e0",
+      "function": "read_native_stream_dword_slot34_00be42e0",
+      "source": "src/native_resource_stream_reads.cpp",
+      "report": "reports/native_resource_stream_reads_bs.json",
+      "original_abi": "ECX stream; stacked optional actual pointer; EAX DWORD; RET4",
+      "bytes": 26
+    },
+    {
+      "address": "00be4300",
+      "function": "read_native_stream_dword_slot38_00be4300",
+      "source": "src/native_resource_stream_reads.cpp",
+      "report": "reports/native_resource_stream_reads_bs.json",
+      "original_abi": "ECX stream; stacked optional actual pointer; EAX DWORD; RET4",
+      "bytes": 26
+    },
+    {
+      "address": "00be4620",
+      "function": "read_native_stream_string_00be4620",
+      "source": "src/native_resource_stream_reads.cpp",
+      "report": "reports/native_resource_stream_reads_bs.json",
+      "original_abi": "ECX stream; stacked output header/optional actual; EAX output; RET8",
+      "bytes": 327
+    },
+    {
+      "address": "00bf0280",
+      "function": "read_native_resource_dword_00bf0280",
+      "source": "src/native_resource_stream_reads.cpp",
+      "report": "reports/native_resource_stream_reads_bs.json",
+      "original_abi": "ECX reader; stacked budget pointer; EAX DWORD; RET4",
+      "bytes": 27
+    },
+    {
+      "address": "00bf0510",
+      "function": "read_native_resource_string_00bf0510",
+      "source": "src/native_resource_stream_reads.cpp",
+      "report": "reports/native_resource_stream_reads_bs.json",
+      "original_abi": "ECX reader; stacked output header/budget; EAX captured output; RET8",
+      "bytes": 46
+    },
+    {
+      "address": "00bea380",
+      "function": "construct_native_resource_root_00bea380",
+      "source": "src/native_resource_root_owner.cpp",
+      "report": "reports/native_resource_root_owner_bs.json",
+      "original_abi": "ECX actual24h node; stacked reader; EAX node; RET4",
+      "bytes": 295
+    },
+    {
+      "address": "00bea700",
+      "function": "create_native_resource_root_00bea700",
+      "source": "src/native_resource_root_owner.cpp",
+      "report": "reports/native_resource_root_owner_bs.json",
+      "original_abi": "ECX reader; stacked output handle; EAX output; RET4",
+      "bytes": 119
+    },
+    {
+      "address": "00be9df0",
+      "function": "destroy_native_resource_node_00be9df0",
+      "source": "src/native_resource_root_owner.cpp",
+      "report": "reports/native_resource_root_owner_bs.json",
+      "original_abi": "ECX node; RET; no semantic return",
+      "bytes": 134
+    },
+    {
+      "address": "00be9fc0",
+      "function": "delete_native_resource_node_00be9fc0",
+      "source": "src/native_resource_root_owner.cpp",
+      "report": "reports/native_resource_root_owner_bs.json",
+      "original_abi": "ECX node; stacked flags; EAX captured node; RET4",
+      "bytes": 30
+    }
+  ],
+  "entries": [
+    {
+      "address": "00be42e0",
+      "name": "BSP_Stream_ReadDwordSlot34",
+      "before_comment": {
+        "address": "00be42e0",
+        "function_name": "BSP_Stream_ReadDwordSlot34",
+        "comment": "[BSP reconstruction 00be42e0]\nBSP reconstruction hypothesis: Request4 through virtual+24 using the incoming actual-pointer argument slot as read buffer; return slot EAX. Partial reads preserve unwritten pointer bits when count pointer nonnull. Absent live function at audit start. ABI: ECX stream; stack optional actual pointer; EAX DWORD; RET4. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json. Original ABI: ECX stream; stack optional actual pointer; EAX DWORD; RET4. Evidence: docs/STRUCTURED_READER.md; reports/structured_reader_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\n\n[BSP reconstruction 00be42e0] update\nBSP reconstruction hypothesis: Request4 through virtual+24 using the incoming actual-pointer argument slot as read buffer; return slot EAX. Partial reads preserve unwritten pointer bits when count pointer nonnull. Absent live function at audit start. ABI: ECX stream; stack optional actual pointer; EAX DWORD; RET4. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json. Original ABI: ECX stream; stack optional actual pointer; EAX DWORD; RET4. Evidence: docs/STRUCTURED_READER.md; reports/structured_reader_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation. | BG/BH source evidence: Complete26B: ECX stream, optional actual-count pointer argument, RET4, EAX scalar. Reuse incoming pointer ARGUMENT SLOT as4-byte destination; pass original pointer unchanged to current slot24. Short-read unwritten bytes retain pointer address bits, null pointer seeds zero. Source e37775a4 reloads verified current D642C0/BEF590 or D691B0/BF5030 profile/slot and calls existing real provider; arbitrary profiles and native numeric callable vtables unclaimed. See reports/native_raw_scalar_reader_bh.json and corresponding packet document. Descriptive names are reconstruction hypotheses, not recovered symbols. Merged candidate validation remains separate from worker evidence."
+      },
+      "evidence": "BS actual resource stream reads and structured root/node lifetime. Nine complete ordinary bodies total1030bytes; all354 ordinary instruction starts and full supporting spans verified against installed PE and live Ghidra membership. Strict Win32 source compilation, an actual memory-stream/pool/reader/root/reference fixture and the whole build plus both existing tests passed. Partial scalar reads preserve optional-count pointer bits, short strings retain spaces, budgets wrap, root path index publishes before copy, and node destruction never seeks. Full FH3 maps establish source C++ cleanup order, but original stack/EH-spill aliases, native CRT/FH3/SEH identity and hardware-fault behavior remain unproved; no exception fixture or original-body oracle was run. Current method identities dispatch only to reconstructed source through borrowed actual services; no new ownership domain or numeric original-code call. Raw manager/factory/metric/root dispatch, child traversal, parser owner/registration, production queue/worker and gameplay remain incomplete. Names are descriptive hypotheses; previous compiler/library names and comments retained. See docs/NATIVE_RESOURCE_ROOT_INTEGRATION_BS.md and reports/native_resource_root_integration_bs.json. Full ordinary span 26 bytes; ECX stream; stacked optional actual pointer; EAX DWORD; RET4; reports/native_resource_stream_reads_bs.json. Incoming optional actual-pointer argument slot is also the DWORD read buffer, so unwritten bytes retain pointer bits.",
+      "before_documentation": {
+        "hash": "ae7b568f7a693f79a75465d8dda622d4eeb968290c8b59ad6b2e777a042beb03",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00be42e0",
+        "function_name": "BSP_Stream_ReadDwordSlot34",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00be42e0]\nBSP reconstruction hypothesis: Request4 through virtual+24 using the incoming actual-pointer argument slot as read buffer; return slot EAX. Partial reads preserve unwritten pointer bits when count pointer nonnull. Absent live function at audit start. ABI: ECX stream; stack optional actual pointer; EAX DWORD; RET4. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json. Original ABI: ECX stream; stack optional actual pointer; EAX DWORD; RET4. Evidence: docs/STRUCTURED_READER.md; reports/structured_reader_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\n\n[BSP reconstruction 00be42e0] update\nBSP reconstruction hypothesis: Request4 through virtual+24 using the incoming actual-pointer argument slot as read buffer; return slot EAX. Partial reads preserve unwritten pointer bits when count pointer nonnull. Absent live function at audit start. ABI: ECX stream; stack optional actual pointer; EAX DWORD; RET4. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json. Original ABI: ECX stream; stack optional actual pointer; EAX DWORD; RET4. Evidence: docs/STRUCTURED_READER.md; reports/structured_reader_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation. | BG/BH source evidence: Complete26B: ECX stream, optional actual-count pointer argument, RET4, EAX scalar. Reuse incoming pointer ARGUMENT SLOT as4-byte destination; pass original pointer unchanged to current slot24. Short-read unwritten bytes retain pointer address bits, null pointer seeds zero. Source e37775a4 reloads verified current D642C0/BEF590 or D691B0/BF5030 profile/slot and calls existing real provider; arbitrary profiles and native numeric callable vtables unclaimed. See reports/native_raw_scalar_reader_bh.json and corresponding packet document. Descriptive names are reconstruction hypotheses, not recovered symbols. Merged candidate validation remains separate from worker evidence.",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "uVar1",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 100.0
+      },
+      "prototype": "unsigned int __fastcall BSP_Stream_ReadDwordSlot34(void* stream, void* unused_edx, unsigned int* actual)",
+      "prototype_result": "Successfully set prototype for function at 00be42e0 with __fastcall calling convention",
+      "ledger_name_output": "00be42e0 -> BSP_Stream_ReadDwordSlot34\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00be42e0\", \"name\": \"BSP_Stream_ReadDwordSlot34\", \"evidence\": \"BSP reconstruction hypothesis: Request4 through virtual+24 using the incoming actual-pointer argument slot as read buffer; return slot EAX. Partial reads preserve unwritten pointer bits when count pointer nonnull. Absent live function at audit start. ABI: ECX stream; stack optional actual pointer; EAX DWORD; RET4. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json. Original ABI: ECX stream; stack optional actual pointer; EAX DWORD; RET4. Evidence: docs/STRUCTURED_READER.md; reports/structured_reader_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\"})\n",
+      "ledger_function_output": "00be42e0 function read_native_stream_dword_slot34_00be42e0\n",
+      "prior_comment_preservation_checked": true,
+      "after_comment": {
+        "address": "00be42e0",
+        "function_name": "BSP_Stream_ReadDwordSlot34",
+        "comment": "[BSP reconstruction 00be42e0]\nBSP reconstruction hypothesis: Request4 through virtual+24 using the incoming actual-pointer argument slot as read buffer; return slot EAX. Partial reads preserve unwritten pointer bits when count pointer nonnull. Absent live function at audit start. ABI: ECX stream; stack optional actual pointer; EAX DWORD; RET4. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json. Original ABI: ECX stream; stack optional actual pointer; EAX DWORD; RET4. Evidence: docs/STRUCTURED_READER.md; reports/structured_reader_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\n\n[BSP reconstruction 00be42e0] update\nBSP reconstruction hypothesis: Request4 through virtual+24 using the incoming actual-pointer argument slot as read buffer; return slot EAX. Partial reads preserve unwritten pointer bits when count pointer nonnull. Absent live function at audit start. ABI: ECX stream; stack optional actual pointer; EAX DWORD; RET4. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json. Original ABI: ECX stream; stack optional actual pointer; EAX DWORD; RET4. Evidence: docs/STRUCTURED_READER.md; reports/structured_reader_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation. | BG/BH source evidence: Complete26B: ECX stream, optional actual-count pointer argument, RET4, EAX scalar. Reuse incoming pointer ARGUMENT SLOT as4-byte destination; pass original pointer unchanged to current slot24. Short-read unwritten bytes retain pointer address bits, null pointer seeds zero. Source e37775a4 reloads verified current D642C0/BEF590 or D691B0/BF5030 profile/slot and calls existing real provider; arbitrary profiles and native numeric callable vtables unclaimed. See reports/native_raw_scalar_reader_bh.json and corresponding packet document. Descriptive names are reconstruction hypotheses, not recovered symbols. Merged candidate validation remains separate from worker evidence.\n\n[BSP reconstruction 00be42e0] update\nBS actual resource stream reads and structured root/node lifetime. Nine complete ordinary bodies total1030bytes; all354 ordinary instruction starts and full supporting spans verified against installed PE and live Ghidra membership. Strict Win32 source compilation, an actual memory-stream/pool/reader/root/reference fixture and the whole build plus both existing tests passed. Partial scalar reads preserve optional-count pointer bits, short strings retain spaces, budgets wrap, root path index publishes before copy, and node destruction never seeks. Full FH3 maps establish source C++ cleanup order, but original stack/EH-spill aliases, native CRT/FH3/SEH identity and hardware-fault behavior remain unproved; no exception fixture or original-body oracle was run. Current method identities dispatch only to reconstructed source through borrowed actual services; no new ownership domain or numeric original-code call. Raw manager/factory/metric/root dispatch, child traversal, parser owner/registration, production queue/worker and gameplay remain incomplete. Names are descriptive hypotheses; previous compiler/library names and comments retained. See docs/NATIVE_RESOURCE_ROOT_INTEGRATION_BS.md and reports/native_resource_root_integration_bs.json. Full ordinary span 26 bytes; ECX stream; stacked optional actual pointer; EAX DWORD; RET4; reports/native_resource_stream_reads_bs.json. Incoming optional actual-pointer argument slot is also the DWORD read buffer, so unwritten bytes retain pointer bits."
+      }
+    },
+    {
+      "address": "00be4300",
+      "name": "BSP_Stream_ReadDword",
+      "before_comment": {
+        "address": "00be4300",
+        "function_name": "BSP_Stream_ReadDword",
+        "comment": "[BSP reconstruction 00be4300]\nECX stream, optionalactualpointer stack,RET4/EAX. One virtual+24 read4 into ownargumentslot seededwithpointerbits. Font passesnull=>unreadbyteszero; notendianflag. TypedMemoryStream null-actual fragment checked with installedDAT and EOF.\n\n[BSP reconstruction 00be4300] update\nECX stream, optionalactualpointer stack,RET4/EAX. One virtual+24 read4 into ownargumentslot seededwithpointerbits. Font passesnull=>unreadbyteszero; notendianflag. TypedMemoryStream null-actual fragment checked with installedDAT and EOF. | BI/BK reviewed source evidence: Complete26B: ECX stream, optional actual-count pointer argument, EAX DWORD, RET4. Reuses incoming pointer argument slot as 4-byte read buffer; short tails preserve pointer-address bits. Actual current D642C0/BEF590 memory or D691B0/BF5030 physical provider, explicit source-domain rejection otherwise. Context-bearing C++ interface; native stack-address identity unclaimed. See reports/native_raw_name_reader_bi.json. Worker builds and source probes are retained separately; corrected combined candidate validation is pending. Descriptive names are hypotheses, not recovered symbols."
+      },
+      "evidence": "BS actual resource stream reads and structured root/node lifetime. Nine complete ordinary bodies total1030bytes; all354 ordinary instruction starts and full supporting spans verified against installed PE and live Ghidra membership. Strict Win32 source compilation, an actual memory-stream/pool/reader/root/reference fixture and the whole build plus both existing tests passed. Partial scalar reads preserve optional-count pointer bits, short strings retain spaces, budgets wrap, root path index publishes before copy, and node destruction never seeks. Full FH3 maps establish source C++ cleanup order, but original stack/EH-spill aliases, native CRT/FH3/SEH identity and hardware-fault behavior remain unproved; no exception fixture or original-body oracle was run. Current method identities dispatch only to reconstructed source through borrowed actual services; no new ownership domain or numeric original-code call. Raw manager/factory/metric/root dispatch, child traversal, parser owner/registration, production queue/worker and gameplay remain incomplete. Names are descriptive hypotheses; previous compiler/library names and comments retained. See docs/NATIVE_RESOURCE_ROOT_INTEGRATION_BS.md and reports/native_resource_root_integration_bs.json. Full ordinary span 26 bytes; ECX stream; stacked optional actual pointer; EAX DWORD; RET4; reports/native_resource_stream_reads_bs.json. Distinct slot38 body with same instructions as BE42E0; null-count font projection is narrower than this full pointer-seeded source interface.",
+      "before_documentation": {
+        "hash": "ae7b568f7a693f79a75465d8dda622d4eeb968290c8b59ad6b2e777a042beb03",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00be4300",
+        "function_name": "BSP_Stream_ReadDword",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00be4300]\nECX stream, optionalactualpointer stack,RET4/EAX. One virtual+24 read4 into ownargumentslot seededwithpointerbits. Font passesnull=>unreadbyteszero; notendianflag. TypedMemoryStream null-actual fragment checked with installedDAT and EOF.\n\n[BSP reconstruction 00be4300] update\nECX stream, optionalactualpointer stack,RET4/EAX. One virtual+24 read4 into ownargumentslot seededwithpointerbits. Font passesnull=>unreadbyteszero; notendianflag. TypedMemoryStream null-actual fragment checked with installedDAT and EOF. | BI/BK reviewed source evidence: Complete26B: ECX stream, optional actual-count pointer argument, EAX DWORD, RET4. Reuses incoming pointer argument slot as 4-byte read buffer; short tails preserve pointer-address bits. Actual current D642C0/BEF590 memory or D691B0/BF5030 physical provider, explicit source-domain rejection otherwise. Context-bearing C++ interface; native stack-address identity unclaimed. See reports/native_raw_name_reader_bi.json. Worker builds and source probes are retained separately; corrected combined candidate validation is pending. Descriptive names are hypotheses, not recovered symbols.",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "uVar1",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 100.0
+      },
+      "prototype": "unsigned int __fastcall BSP_Stream_ReadDword(void* stream, void* unused_edx, unsigned int* actual)",
+      "prototype_result": "Successfully set prototype for function at 00be4300 with __fastcall calling convention",
+      "ledger_name_output": "00be4300 -> BSP_Stream_ReadDword\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00be4300\", \"name\": \"BSP_Stream_ReadDword\", \"evidence\": \"ECX stream, optionalactualpointer stack,RET4/EAX. One virtual+24 read4 into ownargumentslot seededwithpointerbits. Font passesnull=>unreadbyteszero; notendianflag. TypedMemoryStream null-actual fragment checked with installedDAT and EOF.\"})\n",
+      "ledger_function_output": "00be4300 function read_native_stream_dword_slot38_00be4300\n",
+      "prior_comment_preservation_checked": true,
+      "after_comment": {
+        "address": "00be4300",
+        "function_name": "BSP_Stream_ReadDword",
+        "comment": "[BSP reconstruction 00be4300]\nECX stream, optionalactualpointer stack,RET4/EAX. One virtual+24 read4 into ownargumentslot seededwithpointerbits. Font passesnull=>unreadbyteszero; notendianflag. TypedMemoryStream null-actual fragment checked with installedDAT and EOF.\n\n[BSP reconstruction 00be4300] update\nECX stream, optionalactualpointer stack,RET4/EAX. One virtual+24 read4 into ownargumentslot seededwithpointerbits. Font passesnull=>unreadbyteszero; notendianflag. TypedMemoryStream null-actual fragment checked with installedDAT and EOF. | BI/BK reviewed source evidence: Complete26B: ECX stream, optional actual-count pointer argument, EAX DWORD, RET4. Reuses incoming pointer argument slot as 4-byte read buffer; short tails preserve pointer-address bits. Actual current D642C0/BEF590 memory or D691B0/BF5030 physical provider, explicit source-domain rejection otherwise. Context-bearing C++ interface; native stack-address identity unclaimed. See reports/native_raw_name_reader_bi.json. Worker builds and source probes are retained separately; corrected combined candidate validation is pending. Descriptive names are hypotheses, not recovered symbols.\n\n[BSP reconstruction 00be4300] update\nBS actual resource stream reads and structured root/node lifetime. Nine complete ordinary bodies total1030bytes; all354 ordinary instruction starts and full supporting spans verified against installed PE and live Ghidra membership. Strict Win32 source compilation, an actual memory-stream/pool/reader/root/reference fixture and the whole build plus both existing tests passed. Partial scalar reads preserve optional-count pointer bits, short strings retain spaces, budgets wrap, root path index publishes before copy, and node destruction never seeks. Full FH3 maps establish source C++ cleanup order, but original stack/EH-spill aliases, native CRT/FH3/SEH identity and hardware-fault behavior remain unproved; no exception fixture or original-body oracle was run. Current method identities dispatch only to reconstructed source through borrowed actual services; no new ownership domain or numeric original-code call. Raw manager/factory/metric/root dispatch, child traversal, parser owner/registration, production queue/worker and gameplay remain incomplete. Names are descriptive hypotheses; previous compiler/library names and comments retained. See docs/NATIVE_RESOURCE_ROOT_INTEGRATION_BS.md and reports/native_resource_root_integration_bs.json. Full ordinary span 26 bytes; ECX stream; stacked optional actual pointer; EAX DWORD; RET4; reports/native_resource_stream_reads_bs.json. Distinct slot38 body with same instructions as BE42E0; null-count font projection is narrower than this full pointer-seeded source interface."
+      }
+    },
+    {
+      "address": "00be4620",
+      "name": "BSP_Stream_ReadLengthPrefixedString",
+      "before_comment": {
+        "address": "00be4620",
+        "function_name": "BSP_Stream_ReadLengthPrefixedString",
+        "comment": "[BSP reconstruction 00be4620]\nBSP reconstruction hypothesis: Read DWORD length through virtual+38; allocate/fill logical bytes with spaces; one raw read virtual+24; report actual prefix plus actual bytes; retain declared tag length even on short raw read. ABI: ECX stream; stack output native string and optional actual pointer; EAX output; RET8. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json. Original ABI: ECX stream; stack output native string and optional actual pointer; EAX output; RET8. Evidence: docs/STRUCTURED_READER.md; reports/structured_reader_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\n\n[BSP reconstruction 00be4620] update\nBSP reconstruction hypothesis: Read DWORD length through virtual+38; allocate/fill logical bytes with spaces; one raw read virtual+24; report actual prefix plus actual bytes; retain declared tag length even on short raw read. ABI: ECX stream; stack output native string and optional actual pointer; EAX output; RET8. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json. Original ABI: ECX stream; stack output native string and optional actual pointer; EAX output; RET8. Evidence: docs/STRUCTURED_READER.md; reports/structured_reader_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation. | BI/BK reviewed source evidence: Complete327B: raw8h output constructor, not an already-live string assignment. Read prefix and payload; publish actual byte count BEFORE output construction. Zero output header before resizing/copying; preserve captured temporary/current output reloads and result-construction bit. Disarm temporary cleanup before actual captured-data pool return; no retry if getter throws. Actual pool/provider composition, source-only AB plus three-space short-payload probe; native FH3/stack and physical-failure identity unclaimed. See reports/native_raw_name_reader_bi.json. Worker builds and source probes are retained separately; corrected combined candidate validation is pending. Descriptive names are hypotheses, not recovered symbols."
+      },
+      "evidence": "BS actual resource stream reads and structured root/node lifetime. Nine complete ordinary bodies total1030bytes; all354 ordinary instruction starts and full supporting spans verified against installed PE and live Ghidra membership. Strict Win32 source compilation, an actual memory-stream/pool/reader/root/reference fixture and the whole build plus both existing tests passed. Partial scalar reads preserve optional-count pointer bits, short strings retain spaces, budgets wrap, root path index publishes before copy, and node destruction never seeks. Full FH3 maps establish source C++ cleanup order, but original stack/EH-spill aliases, native CRT/FH3/SEH identity and hardware-fault behavior remain unproved; no exception fixture or original-body oracle was run. Current method identities dispatch only to reconstructed source through borrowed actual services; no new ownership domain or numeric original-code call. Raw manager/factory/metric/root dispatch, child traversal, parser owner/registration, production queue/worker and gameplay remain incomplete. Names are descriptive hypotheses; previous compiler/library names and comments retained. See docs/NATIVE_RESOURCE_ROOT_INTEGRATION_BS.md and reports/native_resource_root_integration_bs.json. Full ordinary span 327 bytes; ECX stream; stacked output header/optional actual; EAX output; RET8; reports/native_resource_stream_reads_bs.json. Prefix actual starts0. Capture temporary length/data before raw read, report actual before output copy, set completed-output flag before disarming temporary and returning captured buffer.",
+      "before_documentation": {
+        "hash": "056dfbae2821f76916885f2e3b1567fbb20dab8aac5603f44bb4649be51ef19e",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00be4620",
+        "function_name": "BSP_Stream_ReadLengthPrefixedString",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00be4620]\nBSP reconstruction hypothesis: Read DWORD length through virtual+38; allocate/fill logical bytes with spaces; one raw read virtual+24; report actual prefix plus actual bytes; retain declared tag length even on short raw read. ABI: ECX stream; stack output native string and optional actual pointer; EAX output; RET8. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json. Original ABI: ECX stream; stack output native string and optional actual pointer; EAX output; RET8. Evidence: docs/STRUCTURED_READER.md; reports/structured_reader_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\n\n[BSP reconstruction 00be4620] update\nBSP reconstruction hypothesis: Read DWORD length through virtual+38; allocate/fill logical bytes with spaces; one raw read virtual+24; report actual prefix plus actual bytes; retain declared tag length even on short raw read. ABI: ECX stream; stack output native string and optional actual pointer; EAX output; RET8. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json. Original ABI: ECX stream; stack output native string and optional actual pointer; EAX output; RET8. Evidence: docs/STRUCTURED_READER.md; reports/structured_reader_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation. | BI/BK reviewed source evidence: Complete327B: raw8h output constructor, not an already-live string assignment. Read prefix and payload; publish actual byte count BEFORE output construction. Zero output header before resizing/copying; preserve captured temporary/current output reloads and result-construction bit. Disarm temporary cleanup before actual captured-data pool return; no retry if getter throws. Actual pool/provider composition, source-only AB plus three-space short-payload probe; native FH3/stack and physical-failure identity unclaimed. See reports/native_raw_name_reader_bi.json. Worker builds and source probes are retained separately; corrected combined candidate validation is pending. Descriptive names are hypotheses, not recovered symbols.",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "puStack_14",
+            "type": "undefined *",
+            "storage": "(stack, 0xffffffffffffffec, 4)"
+          },
+          {
+            "name": "pvStack_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "pvStack_10",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff0, 4)"
+          },
+          {
+            "name": "uStack_4",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "pcStack_8",
+            "type": "undefined *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "local_20",
+            "type": "int[3]",
+            "storage": "(stack, 0xffffffffffffffe0, 4)"
+          },
+          {
+            "name": "length",
+            "type": "uint",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "unaff_EBX",
+            "type": "int",
+            "storage": "(register, 0xc, 4)"
+          },
+          {
+            "name": "puVar1",
+            "type": "undefined *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "unaff_retaddr",
+            "type": "size_t *",
+            "storage": "(stack, 0x0, 4)"
+          },
+          {
+            "name": "iVar2",
+            "type": "int",
+            "storage": "(register, 0x14, 4)"
+          },
+          {
+            "name": "uVar3",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffc8, 4)"
+          },
+          {
+            "name": "_Src",
+            "type": "undefined *",
+            "storage": "(stack, 0xffffffffffffffc0, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 89,
+            "name": "LAB_00be4679"
+          },
+          {
+            "relative_offset": 116,
+            "name": "LAB_00be4694"
+          },
+          {
+            "relative_offset": 121,
+            "name": "LAB_00be4699"
+          },
+          {
+            "relative_offset": 158,
+            "name": "LAB_00be46be"
+          },
+          {
+            "relative_offset": 177,
+            "name": "LAB_00be46d1"
+          },
+          {
+            "relative_offset": 213,
+            "name": "LAB_00be46f5"
+          },
+          {
+            "relative_offset": 268,
+            "name": "LAB_00be472c"
+          },
+          {
+            "relative_offset": 304,
+            "name": "LAB_00be4750"
+          },
+          {
+            "relative_offset": 305,
+            "name": "LAB_00be4751"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "prototype": "void* __fastcall BSP_Stream_ReadLengthPrefixedString(void* stream, void* unused_edx, void* output, unsigned int* actual)",
+      "prototype_result": "Successfully set prototype for function at 00be4620 with __fastcall calling convention",
+      "ledger_name_output": "00be4620 -> BSP_Stream_ReadLengthPrefixedString\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00be4620\", \"name\": \"BSP_Stream_ReadLengthPrefixedString\", \"evidence\": \"BSP reconstruction hypothesis: Read DWORD length through virtual+38; allocate/fill logical bytes with spaces; one raw read virtual+24; report actual prefix plus actual bytes; retain declared tag length even on short raw read. ABI: ECX stream; stack output native string and optional actual pointer; EAX output; RET8. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json. Original ABI: ECX stream; stack output native string and optional actual pointer; EAX output; RET8. Evidence: docs/STRUCTURED_READER.md; reports/structured_reader_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\"})\n",
+      "ledger_function_output": "00be4620 function read_native_stream_string_00be4620\n",
+      "prior_comment_preservation_checked": true,
+      "after_comment": {
+        "address": "00be4620",
+        "function_name": "BSP_Stream_ReadLengthPrefixedString",
+        "comment": "[BSP reconstruction 00be4620]\nBSP reconstruction hypothesis: Read DWORD length through virtual+38; allocate/fill logical bytes with spaces; one raw read virtual+24; report actual prefix plus actual bytes; retain declared tag length even on short raw read. ABI: ECX stream; stack output native string and optional actual pointer; EAX output; RET8. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json. Original ABI: ECX stream; stack output native string and optional actual pointer; EAX output; RET8. Evidence: docs/STRUCTURED_READER.md; reports/structured_reader_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\n\n[BSP reconstruction 00be4620] update\nBSP reconstruction hypothesis: Read DWORD length through virtual+38; allocate/fill logical bytes with spaces; one raw read virtual+24; report actual prefix plus actual bytes; retain declared tag length even on short raw read. ABI: ECX stream; stack output native string and optional actual pointer; EAX output; RET8. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json. Original ABI: ECX stream; stack output native string and optional actual pointer; EAX output; RET8. Evidence: docs/STRUCTURED_READER.md; reports/structured_reader_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation. | BI/BK reviewed source evidence: Complete327B: raw8h output constructor, not an already-live string assignment. Read prefix and payload; publish actual byte count BEFORE output construction. Zero output header before resizing/copying; preserve captured temporary/current output reloads and result-construction bit. Disarm temporary cleanup before actual captured-data pool return; no retry if getter throws. Actual pool/provider composition, source-only AB plus three-space short-payload probe; native FH3/stack and physical-failure identity unclaimed. See reports/native_raw_name_reader_bi.json. Worker builds and source probes are retained separately; corrected combined candidate validation is pending. Descriptive names are hypotheses, not recovered symbols.\n\n[BSP reconstruction 00be4620] update\nBS actual resource stream reads and structured root/node lifetime. Nine complete ordinary bodies total1030bytes; all354 ordinary instruction starts and full supporting spans verified against installed PE and live Ghidra membership. Strict Win32 source compilation, an actual memory-stream/pool/reader/root/reference fixture and the whole build plus both existing tests passed. Partial scalar reads preserve optional-count pointer bits, short strings retain spaces, budgets wrap, root path index publishes before copy, and node destruction never seeks. Full FH3 maps establish source C++ cleanup order, but original stack/EH-spill aliases, native CRT/FH3/SEH identity and hardware-fault behavior remain unproved; no exception fixture or original-body oracle was run. Current method identities dispatch only to reconstructed source through borrowed actual services; no new ownership domain or numeric original-code call. Raw manager/factory/metric/root dispatch, child traversal, parser owner/registration, production queue/worker and gameplay remain incomplete. Names are descriptive hypotheses; previous compiler/library names and comments retained. See docs/NATIVE_RESOURCE_ROOT_INTEGRATION_BS.md and reports/native_resource_root_integration_bs.json. Full ordinary span 327 bytes; ECX stream; stacked output header/optional actual; EAX output; RET8; reports/native_resource_stream_reads_bs.json. Prefix actual starts0. Capture temporary length/data before raw read, report actual before output copy, set completed-output flag before disarming temporary and returning captured buffer."
+      }
+    },
+    {
+      "address": "00bf0280",
+      "name": "BSP_StreamReader_ReadDwordSlot34AndDebit",
+      "before_comment": {
+        "address": "00bf0280",
+        "function_name": "BSP_StreamReader_ReadDwordSlot34AndDebit",
+        "comment": "[BSP reconstruction 00bf0280]\nBSP reconstruction hypothesis: Same count-debit shape as00bf02a0 but invokes stream virtual+34. Actual concrete DWORD method is identical to slot+38 for full and partial reads. ABI: ECX reader; stack budget pointer; EAX scalar; RET4. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json. Original ABI: ECX reader; stack budget pointer; EAX scalar; RET4. Evidence: docs/STRUCTURED_READER.md; reports/structured_reader_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\n\n[BSP reconstruction 00bf0280] update\nBSP reconstruction hypothesis: Same count-debit shape as00bf02a0 but invokes stream virtual+34. Actual concrete DWORD method is identical to slot+38 for full and partial reads. ABI: ECX reader; stack budget pointer; EAX scalar; RET4. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json. Original ABI: ECX reader; stack budget pointer; EAX scalar; RET4. Evidence: docs/STRUCTURED_READER.md; reports/structured_reader_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation. | BG/BH source evidence: Complete27B: ECX actual reader, stack budget pointer, RET4. Read current stream slot34 using nonnull actual-count local initially seeded with reader address; preserve scalar EAX and subtract actual count from budget modulo DWORD with no status/retry/readiness check. Worker e37775a4 qualified source; one real-memory one-byte source probe preserves pointer-derived upper24 bits and budget0->FFFFFFFF, not original stack-address differential. See reports/native_raw_scalar_reader_bh.json and corresponding packet document. Descriptive names are reconstruction hypotheses, not recovered symbols. Merged candidate validation remains separate from worker evidence."
+      },
+      "evidence": "BS actual resource stream reads and structured root/node lifetime. Nine complete ordinary bodies total1030bytes; all354 ordinary instruction starts and full supporting spans verified against installed PE and live Ghidra membership. Strict Win32 source compilation, an actual memory-stream/pool/reader/root/reference fixture and the whole build plus both existing tests passed. Partial scalar reads preserve optional-count pointer bits, short strings retain spaces, budgets wrap, root path index publishes before copy, and node destruction never seeks. Full FH3 maps establish source C++ cleanup order, but original stack/EH-spill aliases, native CRT/FH3/SEH identity and hardware-fault behavior remain unproved; no exception fixture or original-body oracle was run. Current method identities dispatch only to reconstructed source through borrowed actual services; no new ownership domain or numeric original-code call. Raw manager/factory/metric/root dispatch, child traversal, parser owner/registration, production queue/worker and gameplay remain incomplete. Names are descriptive hypotheses; previous compiler/library names and comments retained. See docs/NATIVE_RESOURCE_ROOT_INTEGRATION_BS.md and reports/native_resource_root_integration_bs.json. Full ordinary span 27 bytes; ECX reader; stacked budget pointer; EAX DWORD; RET4; reports/native_resource_stream_reads_bs.json. Local count is initially incoming reader-address bits. Current stream slot34; subtract current actual from current budget after return.",
+      "before_documentation": {
+        "hash": "d324a703f058520d2c12df274501099e2e644e95d597b8c75c01bad067657c75",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00bf0280",
+        "function_name": "BSP_StreamReader_ReadDwordSlot34AndDebit",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00bf0280]\nBSP reconstruction hypothesis: Same count-debit shape as00bf02a0 but invokes stream virtual+34. Actual concrete DWORD method is identical to slot+38 for full and partial reads. ABI: ECX reader; stack budget pointer; EAX scalar; RET4. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json. Original ABI: ECX reader; stack budget pointer; EAX scalar; RET4. Evidence: docs/STRUCTURED_READER.md; reports/structured_reader_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\n\n[BSP reconstruction 00bf0280] update\nBSP reconstruction hypothesis: Same count-debit shape as00bf02a0 but invokes stream virtual+34. Actual concrete DWORD method is identical to slot+38 for full and partial reads. ABI: ECX reader; stack budget pointer; EAX scalar; RET4. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json. Original ABI: ECX reader; stack budget pointer; EAX scalar; RET4. Evidence: docs/STRUCTURED_READER.md; reports/structured_reader_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation. | BG/BH source evidence: Complete27B: ECX actual reader, stack budget pointer, RET4. Read current stream slot34 using nonnull actual-count local initially seeded with reader address; preserve scalar EAX and subtract actual count from budget modulo DWORD with no status/retry/readiness check. Worker e37775a4 qualified source; one real-memory one-byte source probe preserves pointer-derived upper24 bits and budget0->FFFFFFFF, not original stack-address differential. See reports/native_raw_scalar_reader_bh.json and corresponding packet document. Descriptive names are reconstruction hypotheses, not recovered symbols. Merged candidate validation remains separate from worker evidence.",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "unaff_retaddr",
+            "type": "int *",
+            "storage": "(stack, 0x0, 4)"
+          },
+          {
+            "name": "local_4",
+            "type": "undefined4 *",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 100.0
+      },
+      "prototype": "unsigned int __fastcall BSP_StreamReader_ReadDwordSlot34AndDebit(void* reader, void* unused_edx, unsigned int* budget)",
+      "prototype_result": "Successfully set prototype for function at 00bf0280 with __fastcall calling convention",
+      "ledger_name_output": "00bf0280 -> BSP_StreamReader_ReadDwordSlot34AndDebit\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00bf0280\", \"name\": \"BSP_StreamReader_ReadDwordSlot34AndDebit\", \"evidence\": \"BSP reconstruction hypothesis: Same count-debit shape as00bf02a0 but invokes stream virtual+34. Actual concrete DWORD method is identical to slot+38 for full and partial reads. ABI: ECX reader; stack budget pointer; EAX scalar; RET4. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json. Original ABI: ECX reader; stack budget pointer; EAX scalar; RET4. Evidence: docs/STRUCTURED_READER.md; reports/structured_reader_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\"})\n",
+      "ledger_function_output": "00bf0280 function read_native_resource_dword_00bf0280\n",
+      "prior_comment_preservation_checked": true,
+      "after_comment": {
+        "address": "00bf0280",
+        "function_name": "BSP_StreamReader_ReadDwordSlot34AndDebit",
+        "comment": "[BSP reconstruction 00bf0280]\nBSP reconstruction hypothesis: Same count-debit shape as00bf02a0 but invokes stream virtual+34. Actual concrete DWORD method is identical to slot+38 for full and partial reads. ABI: ECX reader; stack budget pointer; EAX scalar; RET4. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json. Original ABI: ECX reader; stack budget pointer; EAX scalar; RET4. Evidence: docs/STRUCTURED_READER.md; reports/structured_reader_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\n\n[BSP reconstruction 00bf0280] update\nBSP reconstruction hypothesis: Same count-debit shape as00bf02a0 but invokes stream virtual+34. Actual concrete DWORD method is identical to slot+38 for full and partial reads. ABI: ECX reader; stack budget pointer; EAX scalar; RET4. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json. Original ABI: ECX reader; stack budget pointer; EAX scalar; RET4. Evidence: docs/STRUCTURED_READER.md; reports/structured_reader_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation. | BG/BH source evidence: Complete27B: ECX actual reader, stack budget pointer, RET4. Read current stream slot34 using nonnull actual-count local initially seeded with reader address; preserve scalar EAX and subtract actual count from budget modulo DWORD with no status/retry/readiness check. Worker e37775a4 qualified source; one real-memory one-byte source probe preserves pointer-derived upper24 bits and budget0->FFFFFFFF, not original stack-address differential. See reports/native_raw_scalar_reader_bh.json and corresponding packet document. Descriptive names are reconstruction hypotheses, not recovered symbols. Merged candidate validation remains separate from worker evidence.\n\n[BSP reconstruction 00bf0280] update\nBS actual resource stream reads and structured root/node lifetime. Nine complete ordinary bodies total1030bytes; all354 ordinary instruction starts and full supporting spans verified against installed PE and live Ghidra membership. Strict Win32 source compilation, an actual memory-stream/pool/reader/root/reference fixture and the whole build plus both existing tests passed. Partial scalar reads preserve optional-count pointer bits, short strings retain spaces, budgets wrap, root path index publishes before copy, and node destruction never seeks. Full FH3 maps establish source C++ cleanup order, but original stack/EH-spill aliases, native CRT/FH3/SEH identity and hardware-fault behavior remain unproved; no exception fixture or original-body oracle was run. Current method identities dispatch only to reconstructed source through borrowed actual services; no new ownership domain or numeric original-code call. Raw manager/factory/metric/root dispatch, child traversal, parser owner/registration, production queue/worker and gameplay remain incomplete. Names are descriptive hypotheses; previous compiler/library names and comments retained. See docs/NATIVE_RESOURCE_ROOT_INTEGRATION_BS.md and reports/native_resource_root_integration_bs.json. Full ordinary span 27 bytes; ECX reader; stacked budget pointer; EAX DWORD; RET4; reports/native_resource_stream_reads_bs.json. Local count is initially incoming reader-address bits. Current stream slot34; subtract current actual from current budget after return."
+      }
+    },
+    {
+      "address": "00bf0510",
+      "name": "BSP_StreamReader_ReadStringAndDebit",
+      "before_comment": {
+        "address": "00bf0510",
+        "function_name": "BSP_StreamReader_ReadStringAndDebit",
+        "comment": "[BSP reconstruction 00bf0510]\nBSP reconstruction hypothesis: Call stream virtual+48 with output string and nonnull actual-count pointer, then subtract reported count from budget. No validation or clamp. ABI: ECX reader; stack output string and budget pointer; EAX output string; RET8. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json. Original ABI: ECX reader; stack output string and budget pointer; EAX output string; RET8. Evidence: docs/STRUCTURED_READER.md; reports/structured_reader_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\n\n[BSP reconstruction 00bf0510] update\nBSP reconstruction hypothesis: Call stream virtual+48 with output string and nonnull actual-count pointer, then subtract reported count from budget. No validation or clamp. ABI: ECX reader; stack output string and budget pointer; EAX output string; RET8. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json. Original ABI: ECX reader; stack output string and budget pointer; EAX output string; RET8. Evidence: docs/STRUCTURED_READER.md; reports/structured_reader_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation. | BI/BK reviewed source evidence: Complete46B: seed actual-count local with output pointer, call actual current slot6C raw string provider; only after provider returns subtract actual count from budget modulo DWORD. Return original output pointer. No full-read, readiness or retry guard. New context-bearing source; original ABI and native caller-stack equivalence unclaimed. See reports/native_raw_name_reader_bi.json. Worker builds and source probes are retained separately; corrected combined candidate validation is pending. Descriptive names are hypotheses, not recovered symbols."
+      },
+      "evidence": "BS actual resource stream reads and structured root/node lifetime. Nine complete ordinary bodies total1030bytes; all354 ordinary instruction starts and full supporting spans verified against installed PE and live Ghidra membership. Strict Win32 source compilation, an actual memory-stream/pool/reader/root/reference fixture and the whole build plus both existing tests passed. Partial scalar reads preserve optional-count pointer bits, short strings retain spaces, budgets wrap, root path index publishes before copy, and node destruction never seeks. Full FH3 maps establish source C++ cleanup order, but original stack/EH-spill aliases, native CRT/FH3/SEH identity and hardware-fault behavior remain unproved; no exception fixture or original-body oracle was run. Current method identities dispatch only to reconstructed source through borrowed actual services; no new ownership domain or numeric original-code call. Raw manager/factory/metric/root dispatch, child traversal, parser owner/registration, production queue/worker and gameplay remain incomplete. Names are descriptive hypotheses; previous compiler/library names and comments retained. See docs/NATIVE_RESOURCE_ROOT_INTEGRATION_BS.md and reports/native_resource_root_integration_bs.json. Full ordinary span 46 bytes; ECX reader; stacked output header/budget; EAX captured output; RET8; reports/native_resource_stream_reads_bs.json. Actual count aliases native output argument slot, initially output-address bits. The zeroed local is a different stack word. Ignore callee result and return captured output.",
+      "before_documentation": {
+        "hash": "2cb8350dd329dbea1b79de52d9cc905e39c73d778b29105cb8a8dca04ce31ace",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00bf0510",
+        "function_name": "BSP_StreamReader_ReadStringAndDebit",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00bf0510]\nBSP reconstruction hypothesis: Call stream virtual+48 with output string and nonnull actual-count pointer, then subtract reported count from budget. No validation or clamp. ABI: ECX reader; stack output string and budget pointer; EAX output string; RET8. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json. Original ABI: ECX reader; stack output string and budget pointer; EAX output string; RET8. Evidence: docs/STRUCTURED_READER.md; reports/structured_reader_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\n\n[BSP reconstruction 00bf0510] update\nBSP reconstruction hypothesis: Call stream virtual+48 with output string and nonnull actual-count pointer, then subtract reported count from budget. No validation or clamp. ABI: ECX reader; stack output string and budget pointer; EAX output string; RET8. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json. Original ABI: ECX reader; stack output string and budget pointer; EAX output string; RET8. Evidence: docs/STRUCTURED_READER.md; reports/structured_reader_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation. | BI/BK reviewed source evidence: Complete46B: seed actual-count local with output pointer, call actual current slot6C raw string provider; only after provider returns subtract actual count from budget modulo DWORD. Return original output pointer. No full-read, readiness or retry guard. New context-bearing source; original ABI and native caller-stack equivalence unclaimed. See reports/native_raw_name_reader_bi.json. Worker builds and source probes are retained separately; corrected combined candidate validation is pending. Descriptive names are hypotheses, not recovered symbols.",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "unaff_retaddr",
+            "type": "undefined4 *",
+            "storage": "(stack, 0x0, 4)"
+          },
+          {
+            "name": "uVar1",
+            "type": "undefined4",
+            "storage": "(unique, 0x10000021, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 100.0
+      },
+      "prototype": "void* __fastcall BSP_StreamReader_ReadStringAndDebit(void* reader, void* unused_edx, void* output, unsigned int* budget)",
+      "prototype_result": "Successfully set prototype for function at 00bf0510 with __fastcall calling convention",
+      "ledger_name_output": "00bf0510 -> BSP_StreamReader_ReadStringAndDebit\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00bf0510\", \"name\": \"BSP_StreamReader_ReadStringAndDebit\", \"evidence\": \"BSP reconstruction hypothesis: Call stream virtual+48 with output string and nonnull actual-count pointer, then subtract reported count from budget. No validation or clamp. ABI: ECX reader; stack output string and budget pointer; EAX output string; RET8. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json. Original ABI: ECX reader; stack output string and budget pointer; EAX output string; RET8. Evidence: docs/STRUCTURED_READER.md; reports/structured_reader_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\"})\n",
+      "ledger_function_output": "00bf0510 function read_native_resource_string_00bf0510\n",
+      "prior_comment_preservation_checked": true,
+      "after_comment": {
+        "address": "00bf0510",
+        "function_name": "BSP_StreamReader_ReadStringAndDebit",
+        "comment": "[BSP reconstruction 00bf0510]\nBSP reconstruction hypothesis: Call stream virtual+48 with output string and nonnull actual-count pointer, then subtract reported count from budget. No validation or clamp. ABI: ECX reader; stack output string and budget pointer; EAX output string; RET8. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json. Original ABI: ECX reader; stack output string and budget pointer; EAX output string; RET8. Evidence: docs/STRUCTURED_READER.md; reports/structured_reader_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\n\n[BSP reconstruction 00bf0510] update\nBSP reconstruction hypothesis: Call stream virtual+48 with output string and nonnull actual-count pointer, then subtract reported count from budget. No validation or clamp. ABI: ECX reader; stack output string and budget pointer; EAX output string; RET8. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json. Original ABI: ECX reader; stack output string and budget pointer; EAX output string; RET8. Evidence: docs/STRUCTURED_READER.md; reports/structured_reader_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation. | BI/BK reviewed source evidence: Complete46B: seed actual-count local with output pointer, call actual current slot6C raw string provider; only after provider returns subtract actual count from budget modulo DWORD. Return original output pointer. No full-read, readiness or retry guard. New context-bearing source; original ABI and native caller-stack equivalence unclaimed. See reports/native_raw_name_reader_bi.json. Worker builds and source probes are retained separately; corrected combined candidate validation is pending. Descriptive names are hypotheses, not recovered symbols.\n\n[BSP reconstruction 00bf0510] update\nBS actual resource stream reads and structured root/node lifetime. Nine complete ordinary bodies total1030bytes; all354 ordinary instruction starts and full supporting spans verified against installed PE and live Ghidra membership. Strict Win32 source compilation, an actual memory-stream/pool/reader/root/reference fixture and the whole build plus both existing tests passed. Partial scalar reads preserve optional-count pointer bits, short strings retain spaces, budgets wrap, root path index publishes before copy, and node destruction never seeks. Full FH3 maps establish source C++ cleanup order, but original stack/EH-spill aliases, native CRT/FH3/SEH identity and hardware-fault behavior remain unproved; no exception fixture or original-body oracle was run. Current method identities dispatch only to reconstructed source through borrowed actual services; no new ownership domain or numeric original-code call. Raw manager/factory/metric/root dispatch, child traversal, parser owner/registration, production queue/worker and gameplay remain incomplete. Names are descriptive hypotheses; previous compiler/library names and comments retained. See docs/NATIVE_RESOURCE_ROOT_INTEGRATION_BS.md and reports/native_resource_root_integration_bs.json. Full ordinary span 46 bytes; ECX reader; stacked output header/budget; EAX captured output; RET8; reports/native_resource_stream_reads_bs.json. Actual count aliases native output argument slot, initially output-address bits. The zeroed local is a different stack word. Ignore callee result and return captured output."
+      }
+    },
+    {
+      "address": "00bea380",
+      "name": "BSP_StructuredNode_ConstructRoot",
+      "before_comment": {
+        "address": "00bea380",
+        "function_name": "BSP_StructuredNode_ConstructRoot",
+        "comment": "[BSP reconstruction 00bea380]\nBSP reconstruction hypothesis: Initialize ref1, raw reader, null parent, depth0; parse tag and DWORD payload length using local budget1000; declared and remaining equal payload; copy tag into reader path and increment path index without capacity guard. ABI: ECX new node; stack reader; EAX node; RET4. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json. Original ABI: ECX new node; stack reader; EAX node; RET4. Evidence: docs/STRUCTURED_READER.md; reports/structured_reader_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation."
+      },
+      "evidence": "BS actual resource stream reads and structured root/node lifetime. Nine complete ordinary bodies total1030bytes; all354 ordinary instruction starts and full supporting spans verified against installed PE and live Ghidra membership. Strict Win32 source compilation, an actual memory-stream/pool/reader/root/reference fixture and the whole build plus both existing tests passed. Partial scalar reads preserve optional-count pointer bits, short strings retain spaces, budgets wrap, root path index publishes before copy, and node destruction never seeks. Full FH3 maps establish source C++ cleanup order, but original stack/EH-spill aliases, native CRT/FH3/SEH identity and hardware-fault behavior remain unproved; no exception fixture or original-body oracle was run. Current method identities dispatch only to reconstructed source through borrowed actual services; no new ownership domain or numeric original-code call. Raw manager/factory/metric/root dispatch, child traversal, parser owner/registration, production queue/worker and gameplay remain incomplete. Names are descriptive hypotheses; previous compiler/library names and comments retained. See docs/NATIVE_RESOURCE_ROOT_INTEGRATION_BS.md and reports/native_resource_root_integration_bs.json. Full ordinary span 295 bytes; ECX actual24h node; stacked reader; EAX node; RET4; reports/native_resource_root_owner_bs.json. Local budget1000; captured reader used for both header reads, current node+8 for final path selection. Increment current reader+60 before copying tag. No depth/length/magic/rollback guard.",
+      "before_documentation": {
+        "hash": "2ffb35ceb94c7b015469d135835bdcf8073ef359984d8b710ef33aa8634bf002",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00bea380",
+        "function_name": "BSP_StructuredNode_ConstructRoot",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00bea380]\nBSP reconstruction hypothesis: Initialize ref1, raw reader, null parent, depth0; parse tag and DWORD payload length using local budget1000; declared and remaining equal payload; copy tag into reader path and increment path index without capacity guard. ABI: ECX new node; stack reader; EAX node; RET4. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json. Original ABI: ECX new node; stack reader; EAX node; RET4. Evidence: docs/STRUCTURED_READER.md; reports/structured_reader_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "extraout_EDX_00",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "extraout_EDX",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "uVar3",
+            "type": "uint",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "iVar2",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "uVar4",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffd0, 4)"
+          },
+          {
+            "name": "unused_edx",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "extraout_EDX_02",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "extraout_EDX_01",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "local_1c",
+            "type": "uint",
+            "storage": "(stack, 0xffffffffffffffe4, 4)"
+          },
+          {
+            "name": "local_18",
+            "type": "undefined4 *",
+            "storage": "(stack, 0xffffffffffffffe8, 4)"
+          },
+          {
+            "name": "local_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "local_4",
+            "type": "undefined1",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "local_14",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffec, 4)"
+          },
+          {
+            "name": "local_10",
+            "type": "int",
+            "storage": "(stack, 0xfffffffffffffff0, 4)"
+          },
+          {
+            "name": "pcStack_8",
+            "type": "undefined *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "uStack_3",
+            "type": "undefined3",
+            "storage": "(stack, 0xfffffffffffffffd, 3)"
+          },
+          {
+            "name": "puVar1",
+            "type": "uint *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "this",
+            "type": "uint *",
+            "storage": "(unique, 0x6600, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 159,
+            "name": "LAB_00bea41f"
+          },
+          {
+            "relative_offset": 195,
+            "name": "LAB_00bea443"
+          },
+          {
+            "relative_offset": 272,
+            "name": "LAB_00bea490"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "prototype": "void* __fastcall BSP_StructuredNode_ConstructRoot(void* node, void* unused_edx, void* reader)",
+      "prototype_result": "Successfully set prototype for function at 00bea380 with __fastcall calling convention",
+      "ledger_name_output": "00bea380 -> BSP_StructuredNode_ConstructRoot\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00bea380\", \"name\": \"BSP_StructuredNode_ConstructRoot\", \"evidence\": \"BSP reconstruction hypothesis: Initialize ref1, raw reader, null parent, depth0; parse tag and DWORD payload length using local budget1000; declared and remaining equal payload; copy tag into reader path and increment path index without capacity guard. ABI: ECX new node; stack reader; EAX node; RET4. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json. Original ABI: ECX new node; stack reader; EAX node; RET4. Evidence: docs/STRUCTURED_READER.md; reports/structured_reader_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\"})\n",
+      "ledger_function_output": "00bea380 function construct_native_resource_root_00bea380\n",
+      "prior_comment_preservation_checked": true,
+      "after_comment": {
+        "address": "00bea380",
+        "function_name": "BSP_StructuredNode_ConstructRoot",
+        "comment": "[BSP reconstruction 00bea380]\nBSP reconstruction hypothesis: Initialize ref1, raw reader, null parent, depth0; parse tag and DWORD payload length using local budget1000; declared and remaining equal payload; copy tag into reader path and increment path index without capacity guard. ABI: ECX new node; stack reader; EAX node; RET4. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json. Original ABI: ECX new node; stack reader; EAX node; RET4. Evidence: docs/STRUCTURED_READER.md; reports/structured_reader_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\n\n[BSP reconstruction 00bea380] update\nBS actual resource stream reads and structured root/node lifetime. Nine complete ordinary bodies total1030bytes; all354 ordinary instruction starts and full supporting spans verified against installed PE and live Ghidra membership. Strict Win32 source compilation, an actual memory-stream/pool/reader/root/reference fixture and the whole build plus both existing tests passed. Partial scalar reads preserve optional-count pointer bits, short strings retain spaces, budgets wrap, root path index publishes before copy, and node destruction never seeks. Full FH3 maps establish source C++ cleanup order, but original stack/EH-spill aliases, native CRT/FH3/SEH identity and hardware-fault behavior remain unproved; no exception fixture or original-body oracle was run. Current method identities dispatch only to reconstructed source through borrowed actual services; no new ownership domain or numeric original-code call. Raw manager/factory/metric/root dispatch, child traversal, parser owner/registration, production queue/worker and gameplay remain incomplete. Names are descriptive hypotheses; previous compiler/library names and comments retained. See docs/NATIVE_RESOURCE_ROOT_INTEGRATION_BS.md and reports/native_resource_root_integration_bs.json. Full ordinary span 295 bytes; ECX actual24h node; stacked reader; EAX node; RET4; reports/native_resource_root_owner_bs.json. Local budget1000; captured reader used for both header reads, current node+8 for final path selection. Increment current reader+60 before copying tag. No depth/length/magic/rollback guard."
+      }
+    },
+    {
+      "address": "00bea700",
+      "name": "BSP_StructuredReader_CreateRoot",
+      "before_comment": {
+        "address": "00bea700",
+        "function_name": "BSP_StructuredReader_CreateRoot",
+        "comment": "[BSP reconstruction 00bea700]\nBSP reconstruction hypothesis: Allocate24h and call00bea380 with reader; write null output on null allocation. ABI: ECX reader; stack output wrapper; EAX output wrapper; RET4. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json. Original ABI: ECX reader; stack output wrapper; EAX output wrapper; RET4. Evidence: docs/STRUCTURED_READER.md; reports/structured_reader_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation."
+      },
+      "evidence": "BS actual resource stream reads and structured root/node lifetime. Nine complete ordinary bodies total1030bytes; all354 ordinary instruction starts and full supporting spans verified against installed PE and live Ghidra membership. Strict Win32 source compilation, an actual memory-stream/pool/reader/root/reference fixture and the whole build plus both existing tests passed. Partial scalar reads preserve optional-count pointer bits, short strings retain spaces, budgets wrap, root path index publishes before copy, and node destruction never seeks. Full FH3 maps establish source C++ cleanup order, but original stack/EH-spill aliases, native CRT/FH3/SEH identity and hardware-fault behavior remain unproved; no exception fixture or original-body oracle was run. Current method identities dispatch only to reconstructed source through borrowed actual services; no new ownership domain or numeric original-code call. Raw manager/factory/metric/root dispatch, child traversal, parser owner/registration, production queue/worker and gameplay remain incomplete. Names are descriptive hypotheses; previous compiler/library names and comments retained. See docs/NATIVE_RESOURCE_ROOT_INTEGRATION_BS.md and reports/native_resource_root_integration_bs.json. Full ordinary span 119 bytes; ECX reader; stacked output handle; EAX output; RET4; reports/native_resource_root_owner_bs.json. Allocate24h; constructor failure frees captured allocation after constructor unwind; output untouched before successful/null result publication.",
+      "before_documentation": {
+        "hash": "bc3be8f107d9d67e9a960d323cfa808975186a4efdd298513d90b931ce90e224",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00bea700",
+        "function_name": "BSP_StructuredReader_CreateRoot",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00bea700]\nBSP reconstruction hypothesis: Allocate24h and call00bea380 with reader; write null output on null allocation. ABI: ECX reader; stack output wrapper; EAX output wrapper; RET4. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json. Original ABI: ECX reader; stack output wrapper; EAX output wrapper; RET4. Evidence: docs/STRUCTURED_READER.md; reports/structured_reader_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "uVar2",
+            "type": "undefined8",
+            "storage": "(VARIABLE, 0x0, 8)"
+          },
+          {
+            "name": "local_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "pcStack_8",
+            "type": "undefined *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "local_4",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "pvVar1",
+            "type": "void *",
+            "storage": "(register, 0x0, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 93,
+            "name": "LAB_00bea75d"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "prototype": "void* __fastcall BSP_StructuredReader_CreateRoot(void* reader, void* unused_edx, void* output)",
+      "prototype_result": "Successfully set prototype for function at 00bea700 with __fastcall calling convention",
+      "ledger_name_output": "00bea700 -> BSP_StructuredReader_CreateRoot\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00bea700\", \"name\": \"BSP_StructuredReader_CreateRoot\", \"evidence\": \"BSP reconstruction hypothesis: Allocate24h and call00bea380 with reader; write null output on null allocation. ABI: ECX reader; stack output wrapper; EAX output wrapper; RET4. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json. Original ABI: ECX reader; stack output wrapper; EAX output wrapper; RET4. Evidence: docs/STRUCTURED_READER.md; reports/structured_reader_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\"})\n",
+      "ledger_function_output": "00bea700 function create_native_resource_root_00bea700\n",
+      "prior_comment_preservation_checked": true,
+      "after_comment": {
+        "address": "00bea700",
+        "function_name": "BSP_StructuredReader_CreateRoot",
+        "comment": "[BSP reconstruction 00bea700]\nBSP reconstruction hypothesis: Allocate24h and call00bea380 with reader; write null output on null allocation. ABI: ECX reader; stack output wrapper; EAX output wrapper; RET4. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json. Original ABI: ECX reader; stack output wrapper; EAX output wrapper; RET4. Evidence: docs/STRUCTURED_READER.md; reports/structured_reader_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\n\n[BSP reconstruction 00bea700] update\nBS actual resource stream reads and structured root/node lifetime. Nine complete ordinary bodies total1030bytes; all354 ordinary instruction starts and full supporting spans verified against installed PE and live Ghidra membership. Strict Win32 source compilation, an actual memory-stream/pool/reader/root/reference fixture and the whole build plus both existing tests passed. Partial scalar reads preserve optional-count pointer bits, short strings retain spaces, budgets wrap, root path index publishes before copy, and node destruction never seeks. Full FH3 maps establish source C++ cleanup order, but original stack/EH-spill aliases, native CRT/FH3/SEH identity and hardware-fault behavior remain unproved; no exception fixture or original-body oracle was run. Current method identities dispatch only to reconstructed source through borrowed actual services; no new ownership domain or numeric original-code call. Raw manager/factory/metric/root dispatch, child traversal, parser owner/registration, production queue/worker and gameplay remain incomplete. Names are descriptive hypotheses; previous compiler/library names and comments retained. See docs/NATIVE_RESOURCE_ROOT_INTEGRATION_BS.md and reports/native_resource_root_integration_bs.json. Full ordinary span 119 bytes; ECX reader; stacked output handle; EAX output; RET4; reports/native_resource_root_owner_bs.json. Allocate24h; constructor failure frees captured allocation after constructor unwind; output untouched before successful/null result publication."
+      }
+    },
+    {
+      "address": "00be9df0",
+      "name": "BSP_StructuredNode_Destroy",
+      "before_comment": {
+        "address": "00be9df0",
+        "function_name": "BSP_StructuredNode_Destroy",
+        "comment": "[BSP reconstruction 00be9df0]\nBSP reconstruction hypothesis: If attached, debit parent by declared payload, decrement reader path, clear reader. Never seek unread payload. Free copied tag and destroy refcount base. Explicit skip before destructor prevents duplicate debit. ABI: ECX node; no stack arguments; plain RET. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json. Original ABI: ECX node; no stack arguments; plain RET. Evidence: docs/STRUCTURED_READER.md; reports/structured_reader_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\n\n[BSP reconstruction 00be9df0] update\nBSP reconstruction hypothesis: If attached, debit parent by declared payload, decrement reader path, clear reader. Never seek unread payload. Free copied tag and destroy refcount base. Explicit skip before destructor prevents duplicate debit. ABI: ECX node; no stack arguments; plain RET. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json. Original ABI: ECX node; no stack arguments; plain RET. Evidence: docs/STRUCTURED_READER.md; reports/structured_reader_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation. | BG/BH source evidence: Complete134B: stamp D68BB4; only attached reader path debits nonnull parent+20h by FULL node+1Ch, reloads reader, decrements reader+60h and clears node+8. No seek or remaining clear. Actual raw string pool destroys name+10h, then BD30F0 stamps CEB130; source finally also stamps on unwind. Worker886af674 strict build, two CTests, one source-only deliberately invalid-pool fault check. Native FH3 and asynchronous fault identity unclaimed. See reports/native_raw_node_destruction_bh.json and corresponding packet document. Descriptive names are reconstruction hypotheses, not recovered symbols. Merged candidate validation remains separate from worker evidence."
+      },
+      "evidence": "BS actual resource stream reads and structured root/node lifetime. Nine complete ordinary bodies total1030bytes; all354 ordinary instruction starts and full supporting spans verified against installed PE and live Ghidra membership. Strict Win32 source compilation, an actual memory-stream/pool/reader/root/reference fixture and the whole build plus both existing tests passed. Partial scalar reads preserve optional-count pointer bits, short strings retain spaces, budgets wrap, root path index publishes before copy, and node destruction never seeks. Full FH3 maps establish source C++ cleanup order, but original stack/EH-spill aliases, native CRT/FH3/SEH identity and hardware-fault behavior remain unproved; no exception fixture or original-body oracle was run. Current method identities dispatch only to reconstructed source through borrowed actual services; no new ownership domain or numeric original-code call. Raw manager/factory/metric/root dispatch, child traversal, parser owner/registration, production queue/worker and gameplay remain incomplete. Names are descriptive hypotheses; previous compiler/library names and comments retained. See docs/NATIVE_RESOURCE_ROOT_INTEGRATION_BS.md and reports/native_resource_root_integration_bs.json. Full ordinary span 134 bytes; ECX node; RET; no semantic return; reports/native_resource_root_owner_bs.json. Attached only: debit parent current remaining by declared payload, pop current reader path, clear reader. Return tag and stamp base; no seek or remaining clear.",
+      "before_documentation": {
+        "hash": "6c38ea1c5665969557010c7f12e2f4b816efb409e5e1202849e0a3e9eca7936b",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00be9df0",
+        "function_name": "BSP_StructuredNode_Destroy",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00be9df0]\nBSP reconstruction hypothesis: If attached, debit parent by declared payload, decrement reader path, clear reader. Never seek unread payload. Free copied tag and destroy refcount base. Explicit skip before destructor prevents duplicate debit. ABI: ECX node; no stack arguments; plain RET. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json. Original ABI: ECX node; no stack arguments; plain RET. Evidence: docs/STRUCTURED_READER.md; reports/structured_reader_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\n\n[BSP reconstruction 00be9df0] update\nBSP reconstruction hypothesis: If attached, debit parent by declared payload, decrement reader path, clear reader. Never seek unread payload. Free copied tag and destroy refcount base. Explicit skip before destructor prevents duplicate debit. ABI: ECX node; no stack arguments; plain RET. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json. Original ABI: ECX node; no stack arguments; plain RET. Evidence: docs/STRUCTURED_READER.md; reports/structured_reader_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation. | BG/BH source evidence: Complete134B: stamp D68BB4; only attached reader path debits nonnull parent+20h by FULL node+1Ch, reloads reader, decrements reader+60h and clears node+8. No seek or remaining clear. Actual raw string pool destroys name+10h, then BD30F0 stamps CEB130; source finally also stamps on unwind. Worker886af674 strict build, two CTests, one source-only deliberately invalid-pool fault check. Native FH3 and asynchronous fault identity unclaimed. See reports/native_raw_node_destruction_bh.json and corresponding packet document. Descriptive names are reconstruction hypotheses, not recovered symbols. Merged candidate validation remains separate from worker evidence.",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "iVar3",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffe0, 4)"
+          },
+          {
+            "name": "iVar2",
+            "type": "int",
+            "storage": "(register, 0x4, 4)"
+          },
+          {
+            "name": "local_4",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "uVar4",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffe8, 4)"
+          },
+          {
+            "name": "pcStack_8",
+            "type": "undefined *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "piVar1",
+            "type": "int *",
+            "storage": "(unique, 0x6600, 4)"
+          },
+          {
+            "name": "local_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 59,
+            "name": "LAB_00be9e2b"
+          },
+          {
+            "relative_offset": 74,
+            "name": "LAB_00be9e3a"
+          },
+          {
+            "relative_offset": 103,
+            "name": "LAB_00be9e57"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "prototype": "void __fastcall BSP_StructuredNode_Destroy(void* node, void* unused_edx)",
+      "prototype_result": "Successfully set prototype for function at 00be9df0 with __fastcall calling convention",
+      "ledger_name_output": "00be9df0 -> BSP_StructuredNode_Destroy\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00be9df0\", \"name\": \"BSP_StructuredNode_Destroy\", \"evidence\": \"BSP reconstruction hypothesis: If attached, debit parent by declared payload, decrement reader path, clear reader. Never seek unread payload. Free copied tag and destroy refcount base. Explicit skip before destructor prevents duplicate debit. ABI: ECX node; no stack arguments; plain RET. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json. Original ABI: ECX node; no stack arguments; plain RET. Evidence: docs/STRUCTURED_READER.md; reports/structured_reader_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\"})\n",
+      "ledger_function_output": "00be9df0 function destroy_native_resource_node_00be9df0\n",
+      "prior_comment_preservation_checked": true,
+      "after_comment": {
+        "address": "00be9df0",
+        "function_name": "BSP_StructuredNode_Destroy",
+        "comment": "[BSP reconstruction 00be9df0]\nBSP reconstruction hypothesis: If attached, debit parent by declared payload, decrement reader path, clear reader. Never seek unread payload. Free copied tag and destroy refcount base. Explicit skip before destructor prevents duplicate debit. ABI: ECX node; no stack arguments; plain RET. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json. Original ABI: ECX node; no stack arguments; plain RET. Evidence: docs/STRUCTURED_READER.md; reports/structured_reader_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\n\n[BSP reconstruction 00be9df0] update\nBSP reconstruction hypothesis: If attached, debit parent by declared payload, decrement reader path, clear reader. Never seek unread payload. Free copied tag and destroy refcount base. Explicit skip before destructor prevents duplicate debit. ABI: ECX node; no stack arguments; plain RET. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json. Original ABI: ECX node; no stack arguments; plain RET. Evidence: docs/STRUCTURED_READER.md; reports/structured_reader_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation. | BG/BH source evidence: Complete134B: stamp D68BB4; only attached reader path debits nonnull parent+20h by FULL node+1Ch, reloads reader, decrements reader+60h and clears node+8. No seek or remaining clear. Actual raw string pool destroys name+10h, then BD30F0 stamps CEB130; source finally also stamps on unwind. Worker886af674 strict build, two CTests, one source-only deliberately invalid-pool fault check. Native FH3 and asynchronous fault identity unclaimed. See reports/native_raw_node_destruction_bh.json and corresponding packet document. Descriptive names are reconstruction hypotheses, not recovered symbols. Merged candidate validation remains separate from worker evidence.\n\n[BSP reconstruction 00be9df0] update\nBS actual resource stream reads and structured root/node lifetime. Nine complete ordinary bodies total1030bytes; all354 ordinary instruction starts and full supporting spans verified against installed PE and live Ghidra membership. Strict Win32 source compilation, an actual memory-stream/pool/reader/root/reference fixture and the whole build plus both existing tests passed. Partial scalar reads preserve optional-count pointer bits, short strings retain spaces, budgets wrap, root path index publishes before copy, and node destruction never seeks. Full FH3 maps establish source C++ cleanup order, but original stack/EH-spill aliases, native CRT/FH3/SEH identity and hardware-fault behavior remain unproved; no exception fixture or original-body oracle was run. Current method identities dispatch only to reconstructed source through borrowed actual services; no new ownership domain or numeric original-code call. Raw manager/factory/metric/root dispatch, child traversal, parser owner/registration, production queue/worker and gameplay remain incomplete. Names are descriptive hypotheses; previous compiler/library names and comments retained. See docs/NATIVE_RESOURCE_ROOT_INTEGRATION_BS.md and reports/native_resource_root_integration_bs.json. Full ordinary span 134 bytes; ECX node; RET; no semantic return; reports/native_resource_root_owner_bs.json. Attached only: debit parent current remaining by declared payload, pop current reader path, clear reader. Return tag and stamp base; no seek or remaining clear."
+      }
+    },
+    {
+      "address": "00be9fc0",
+      "name": "BSP_StructuredNode_DeletingDestructor",
+      "before_comment": {
+        "address": "00be9fc0",
+        "function_name": "BSP_StructuredNode_DeletingDestructor",
+        "comment": "[BSP reconstruction 00be9fc0]\nBSP reconstruction hypothesis: Call00be9df0; free node if flags bit0 set; return original storage. ABI: ECX node; stack flags; EAX original node storage; RET4. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json. Original ABI: ECX node; stack flags; EAX original node storage; RET4. Evidence: docs/STRUCTURED_READER.md; reports/structured_reader_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation."
+      },
+      "evidence": "BS actual resource stream reads and structured root/node lifetime. Nine complete ordinary bodies total1030bytes; all354 ordinary instruction starts and full supporting spans verified against installed PE and live Ghidra membership. Strict Win32 source compilation, an actual memory-stream/pool/reader/root/reference fixture and the whole build plus both existing tests passed. Partial scalar reads preserve optional-count pointer bits, short strings retain spaces, budgets wrap, root path index publishes before copy, and node destruction never seeks. Full FH3 maps establish source C++ cleanup order, but original stack/EH-spill aliases, native CRT/FH3/SEH identity and hardware-fault behavior remain unproved; no exception fixture or original-body oracle was run. Current method identities dispatch only to reconstructed source through borrowed actual services; no new ownership domain or numeric original-code call. Raw manager/factory/metric/root dispatch, child traversal, parser owner/registration, production queue/worker and gameplay remain incomplete. Names are descriptive hypotheses; previous compiler/library names and comments retained. See docs/NATIVE_RESOURCE_ROOT_INTEGRATION_BS.md and reports/native_resource_root_integration_bs.json. Full ordinary span 30 bytes; ECX node; stacked flags; EAX captured node; RET4; reports/native_resource_root_owner_bs.json. Complete returning-free epilogue membership repaired at BE9FD0; flags bit0 free only after destructor success.",
+      "before_documentation": {
+        "hash": "91e4718dbb451d97dd06d7f5283b45bb8ef330cbc9947aadbab0bee635159320",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00be9fc0",
+        "function_name": "BSP_StructuredNode_DeletingDestructor",
+        "return_type": "void *",
+        "calling_convention": "__fastcall",
+        "plate_comment": "[BSP reconstruction 00be9fc0]\nBSP reconstruction hypothesis: Call00be9df0; free node if flags bit0 set; return original storage. ABI: ECX node; stack flags; EAX original node storage; RET4. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json. Original ABI: ECX node; stack flags; EAX original node storage; RET4. Evidence: docs/STRUCTURED_READER.md; reports/structured_reader_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.",
+        "parameters": [
+          {
+            "ordinal": 0,
+            "name": "owner",
+            "type": "void *"
+          },
+          {
+            "ordinal": 1,
+            "name": "unused_edx",
+            "type": "void *"
+          },
+          {
+            "ordinal": 2,
+            "name": "flags",
+            "type": "uint"
+          }
+        ],
+        "local_variables": [],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 24,
+            "name": "LAB_00be9fd8"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "prototype": "void* __fastcall BSP_StructuredNode_DeletingDestructor(void* node, void* unused_edx, unsigned int flags)",
+      "prototype_result": "Successfully set prototype for function at 00be9fc0 with __fastcall calling convention",
+      "ledger_name_output": "00be9fc0 -> BSP_StructuredNode_DeletingDestructor\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00be9fc0\", \"name\": \"BSP_StructuredNode_DeletingDestructor\", \"evidence\": \"BSP reconstruction hypothesis: Call00be9df0; free node if flags bit0 set; return original storage. ABI: ECX node; stack flags; EAX original node storage; RET4. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json. Original ABI: ECX node; stack flags; EAX original node storage; RET4. Evidence: docs/STRUCTURED_READER.md; reports/structured_reader_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\"})\n",
+      "ledger_function_output": "00be9fc0 function delete_native_resource_node_00be9fc0\n",
+      "prior_comment_preservation_checked": true,
+      "after_comment": {
+        "address": "00be9fc0",
+        "function_name": "BSP_StructuredNode_DeletingDestructor",
+        "comment": "[BSP reconstruction 00be9fc0]\nBSP reconstruction hypothesis: Call00be9df0; free node if flags bit0 set; return original storage. ABI: ECX node; stack flags; EAX original node storage; RET4. Complete native code bytes match installed PE; typed host interfaces are not original ABI. Evidence: docs/STRUCTURED_READER.md and reports/structured_reader_audit.json. Original ABI: ECX node; stack flags; EAX original node storage; RET4. Evidence: docs/STRUCTURED_READER.md; reports/structured_reader_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\n\n[BSP reconstruction 00be9fc0] update\nBS actual resource stream reads and structured root/node lifetime. Nine complete ordinary bodies total1030bytes; all354 ordinary instruction starts and full supporting spans verified against installed PE and live Ghidra membership. Strict Win32 source compilation, an actual memory-stream/pool/reader/root/reference fixture and the whole build plus both existing tests passed. Partial scalar reads preserve optional-count pointer bits, short strings retain spaces, budgets wrap, root path index publishes before copy, and node destruction never seeks. Full FH3 maps establish source C++ cleanup order, but original stack/EH-spill aliases, native CRT/FH3/SEH identity and hardware-fault behavior remain unproved; no exception fixture or original-body oracle was run. Current method identities dispatch only to reconstructed source through borrowed actual services; no new ownership domain or numeric original-code call. Raw manager/factory/metric/root dispatch, child traversal, parser owner/registration, production queue/worker and gameplay remain incomplete. Names are descriptive hypotheses; previous compiler/library names and comments retained. See docs/NATIVE_RESOURCE_ROOT_INTEGRATION_BS.md and reports/native_resource_root_integration_bs.json. Full ordinary span 30 bytes; ECX node; stacked flags; EAX captured node; RET4; reports/native_resource_root_owner_bs.json. Complete returning-free epilogue membership repaired at BE9FD0; flags bit0 free only after destructor success."
+      }
+    },
+    {
+      "address": "00cc6be1",
+      "name": "EH_handler_00cc6be1",
+      "before_comment": {
+        "address": "00cc6be1",
+        "function_name": "FUN_00cc6be1"
+      },
+      "evidence": "BS actual resource stream reads and structured root/node lifetime. Nine complete ordinary bodies total1030bytes; all354 ordinary instruction starts and full supporting spans verified against installed PE and live Ghidra membership. Strict Win32 source compilation, an actual memory-stream/pool/reader/root/reference fixture and the whole build plus both existing tests passed. Partial scalar reads preserve optional-count pointer bits, short strings retain spaces, budgets wrap, root path index publishes before copy, and node destruction never seeks. Full FH3 maps establish source C++ cleanup order, but original stack/EH-spill aliases, native CRT/FH3/SEH identity and hardware-fault behavior remain unproved; no exception fixture or original-body oracle was run. Current method identities dispatch only to reconstructed source through borrowed actual services; no new ownership domain or numeric original-code call. Raw manager/factory/metric/root dispatch, child traversal, parser owner/registration, production queue/worker and gameplay remain incomplete. Names are descriptive hypotheses; previous compiler/library names and comments retained. See docs/NATIVE_RESOURCE_ROOT_INTEGRATION_BS.md and reports/native_resource_root_integration_bs.json. Complete MOV EAX,FuncInfo / JMP BF6B43 dispatch handler defined and saved.",
+      "ledger_name_output": "00cc6be1 -> EH_handler_00cc6be1\n",
+      "prior_comment_preservation_checked": true,
+      "after_comment": {
+        "address": "00cc6be1",
+        "function_name": "EH_handler_00cc6be1",
+        "comment": "[BSP reconstruction 00cc6be1]\nBS actual resource stream reads and structured root/node lifetime. Nine complete ordinary bodies total1030bytes; all354 ordinary instruction starts and full supporting spans verified against installed PE and live Ghidra membership. Strict Win32 source compilation, an actual memory-stream/pool/reader/root/reference fixture and the whole build plus both existing tests passed. Partial scalar reads preserve optional-count pointer bits, short strings retain spaces, budgets wrap, root path index publishes before copy, and node destruction never seeks. Full FH3 maps establish source C++ cleanup order, but original stack/EH-spill aliases, native CRT/FH3/SEH identity and hardware-fault behavior remain unproved; no exception fixture or original-body oracle was run. Current method identities dispatch only to reconstructed source through borrowed actual services; no new ownership domain or numeric original-code call. Raw manager/factory/metric/root dispatch, child traversal, parser owner/registration, production queue/worker and gameplay remain incomplete. Names are descriptive hypotheses; previous compiler/library names and comments retained. See docs/NATIVE_RESOURCE_ROOT_INTEGRATION_BS.md and reports/native_resource_root_integration_bs.json. Complete MOV EAX,FuncInfo / JMP BF6B43 dispatch handler defined and saved."
+      }
+    },
+    {
+      "address": "00cc719b",
+      "name": "EH_handler_00cc719b",
+      "before_comment": {
+        "address": "00cc719b",
+        "function_name": "FUN_00cc719b"
+      },
+      "evidence": "BS actual resource stream reads and structured root/node lifetime. Nine complete ordinary bodies total1030bytes; all354 ordinary instruction starts and full supporting spans verified against installed PE and live Ghidra membership. Strict Win32 source compilation, an actual memory-stream/pool/reader/root/reference fixture and the whole build plus both existing tests passed. Partial scalar reads preserve optional-count pointer bits, short strings retain spaces, budgets wrap, root path index publishes before copy, and node destruction never seeks. Full FH3 maps establish source C++ cleanup order, but original stack/EH-spill aliases, native CRT/FH3/SEH identity and hardware-fault behavior remain unproved; no exception fixture or original-body oracle was run. Current method identities dispatch only to reconstructed source through borrowed actual services; no new ownership domain or numeric original-code call. Raw manager/factory/metric/root dispatch, child traversal, parser owner/registration, production queue/worker and gameplay remain incomplete. Names are descriptive hypotheses; previous compiler/library names and comments retained. See docs/NATIVE_RESOURCE_ROOT_INTEGRATION_BS.md and reports/native_resource_root_integration_bs.json. Complete MOV EAX,FuncInfo / JMP BF6B43 dispatch handler defined and saved.",
+      "ledger_name_output": "00cc719b -> EH_handler_00cc719b\n",
+      "prior_comment_preservation_checked": true,
+      "after_comment": {
+        "address": "00cc719b",
+        "function_name": "EH_handler_00cc719b",
+        "comment": "[BSP reconstruction 00cc719b]\nBS actual resource stream reads and structured root/node lifetime. Nine complete ordinary bodies total1030bytes; all354 ordinary instruction starts and full supporting spans verified against installed PE and live Ghidra membership. Strict Win32 source compilation, an actual memory-stream/pool/reader/root/reference fixture and the whole build plus both existing tests passed. Partial scalar reads preserve optional-count pointer bits, short strings retain spaces, budgets wrap, root path index publishes before copy, and node destruction never seeks. Full FH3 maps establish source C++ cleanup order, but original stack/EH-spill aliases, native CRT/FH3/SEH identity and hardware-fault behavior remain unproved; no exception fixture or original-body oracle was run. Current method identities dispatch only to reconstructed source through borrowed actual services; no new ownership domain or numeric original-code call. Raw manager/factory/metric/root dispatch, child traversal, parser owner/registration, production queue/worker and gameplay remain incomplete. Names are descriptive hypotheses; previous compiler/library names and comments retained. See docs/NATIVE_RESOURCE_ROOT_INTEGRATION_BS.md and reports/native_resource_root_integration_bs.json. Complete MOV EAX,FuncInfo / JMP BF6B43 dispatch handler defined and saved."
+      }
+    },
+    {
+      "address": "00cc721b",
+      "name": "EH_handler_00cc721b",
+      "before_comment": {
+        "address": "00cc721b",
+        "function_name": "FUN_00cc721b"
+      },
+      "evidence": "BS actual resource stream reads and structured root/node lifetime. Nine complete ordinary bodies total1030bytes; all354 ordinary instruction starts and full supporting spans verified against installed PE and live Ghidra membership. Strict Win32 source compilation, an actual memory-stream/pool/reader/root/reference fixture and the whole build plus both existing tests passed. Partial scalar reads preserve optional-count pointer bits, short strings retain spaces, budgets wrap, root path index publishes before copy, and node destruction never seeks. Full FH3 maps establish source C++ cleanup order, but original stack/EH-spill aliases, native CRT/FH3/SEH identity and hardware-fault behavior remain unproved; no exception fixture or original-body oracle was run. Current method identities dispatch only to reconstructed source through borrowed actual services; no new ownership domain or numeric original-code call. Raw manager/factory/metric/root dispatch, child traversal, parser owner/registration, production queue/worker and gameplay remain incomplete. Names are descriptive hypotheses; previous compiler/library names and comments retained. See docs/NATIVE_RESOURCE_ROOT_INTEGRATION_BS.md and reports/native_resource_root_integration_bs.json. Complete MOV EAX,FuncInfo / JMP BF6B43 dispatch handler defined and saved.",
+      "ledger_name_output": "00cc721b -> EH_handler_00cc721b\n",
+      "prior_comment_preservation_checked": true,
+      "after_comment": {
+        "address": "00cc721b",
+        "function_name": "EH_handler_00cc721b",
+        "comment": "[BSP reconstruction 00cc721b]\nBS actual resource stream reads and structured root/node lifetime. Nine complete ordinary bodies total1030bytes; all354 ordinary instruction starts and full supporting spans verified against installed PE and live Ghidra membership. Strict Win32 source compilation, an actual memory-stream/pool/reader/root/reference fixture and the whole build plus both existing tests passed. Partial scalar reads preserve optional-count pointer bits, short strings retain spaces, budgets wrap, root path index publishes before copy, and node destruction never seeks. Full FH3 maps establish source C++ cleanup order, but original stack/EH-spill aliases, native CRT/FH3/SEH identity and hardware-fault behavior remain unproved; no exception fixture or original-body oracle was run. Current method identities dispatch only to reconstructed source through borrowed actual services; no new ownership domain or numeric original-code call. Raw manager/factory/metric/root dispatch, child traversal, parser owner/registration, production queue/worker and gameplay remain incomplete. Names are descriptive hypotheses; previous compiler/library names and comments retained. See docs/NATIVE_RESOURCE_ROOT_INTEGRATION_BS.md and reports/native_resource_root_integration_bs.json. Complete MOV EAX,FuncInfo / JMP BF6B43 dispatch handler defined and saved."
+      }
+    },
+    {
+      "address": "00cc70a8",
+      "name": "EH_handler_00cc70a8",
+      "before_comment": {
+        "address": "00cc70a8",
+        "function_name": "FUN_00cc70a8"
+      },
+      "evidence": "BS actual resource stream reads and structured root/node lifetime. Nine complete ordinary bodies total1030bytes; all354 ordinary instruction starts and full supporting spans verified against installed PE and live Ghidra membership. Strict Win32 source compilation, an actual memory-stream/pool/reader/root/reference fixture and the whole build plus both existing tests passed. Partial scalar reads preserve optional-count pointer bits, short strings retain spaces, budgets wrap, root path index publishes before copy, and node destruction never seeks. Full FH3 maps establish source C++ cleanup order, but original stack/EH-spill aliases, native CRT/FH3/SEH identity and hardware-fault behavior remain unproved; no exception fixture or original-body oracle was run. Current method identities dispatch only to reconstructed source through borrowed actual services; no new ownership domain or numeric original-code call. Raw manager/factory/metric/root dispatch, child traversal, parser owner/registration, production queue/worker and gameplay remain incomplete. Names are descriptive hypotheses; previous compiler/library names and comments retained. See docs/NATIVE_RESOURCE_ROOT_INTEGRATION_BS.md and reports/native_resource_root_integration_bs.json. Complete MOV EAX,FuncInfo / JMP BF6B43 dispatch handler defined and saved.",
+      "ledger_name_output": "00cc70a8 -> EH_handler_00cc70a8\n",
+      "prior_comment_preservation_checked": true,
+      "after_comment": {
+        "address": "00cc70a8",
+        "function_name": "EH_handler_00cc70a8",
+        "comment": "[BSP reconstruction 00cc70a8]\nBS actual resource stream reads and structured root/node lifetime. Nine complete ordinary bodies total1030bytes; all354 ordinary instruction starts and full supporting spans verified against installed PE and live Ghidra membership. Strict Win32 source compilation, an actual memory-stream/pool/reader/root/reference fixture and the whole build plus both existing tests passed. Partial scalar reads preserve optional-count pointer bits, short strings retain spaces, budgets wrap, root path index publishes before copy, and node destruction never seeks. Full FH3 maps establish source C++ cleanup order, but original stack/EH-spill aliases, native CRT/FH3/SEH identity and hardware-fault behavior remain unproved; no exception fixture or original-body oracle was run. Current method identities dispatch only to reconstructed source through borrowed actual services; no new ownership domain or numeric original-code call. Raw manager/factory/metric/root dispatch, child traversal, parser owner/registration, production queue/worker and gameplay remain incomplete. Names are descriptive hypotheses; previous compiler/library names and comments retained. See docs/NATIVE_RESOURCE_ROOT_INTEGRATION_BS.md and reports/native_resource_root_integration_bs.json. Complete MOV EAX,FuncInfo / JMP BF6B43 dispatch handler defined and saved."
+      }
+    },
+    {
+      "address": "00cc6bc0",
+      "name": "Unwind@00cc6bc0",
+      "before_comment": {
+        "address": "00cc6bc0",
+        "function_name": "Unwind@00cc6bc0"
+      },
+      "evidence": "BS actual resource stream reads and structured root/node lifetime. Nine complete ordinary bodies total1030bytes; all354 ordinary instruction starts and full supporting spans verified against installed PE and live Ghidra membership. Strict Win32 source compilation, an actual memory-stream/pool/reader/root/reference fixture and the whole build plus both existing tests passed. Partial scalar reads preserve optional-count pointer bits, short strings retain spaces, budgets wrap, root path index publishes before copy, and node destruction never seeks. Full FH3 maps establish source C++ cleanup order, but original stack/EH-spill aliases, native CRT/FH3/SEH identity and hardware-fault behavior remain unproved; no exception fixture or original-body oracle was run. Current method identities dispatch only to reconstructed source through borrowed actual services; no new ownership domain or numeric original-code call. Raw manager/factory/metric/root dispatch, child traversal, parser owner/registration, production queue/worker and gameplay remain incomplete. Names are descriptive hypotheses; previous compiler/library names and comments retained. See docs/NATIVE_RESOURCE_ROOT_INTEGRATION_BS.md and reports/native_resource_root_integration_bs.json. Native unwind evidence. State1->0 destroys current temporary name at synthetic EBP-14.",
+      "ledger_name_output": "00cc6bc0 -> Unwind@00cc6bc0\n",
+      "prior_comment_preservation_checked": true,
+      "after_comment": {
+        "address": "00cc6bc0",
+        "function_name": "Unwind@00cc6bc0",
+        "comment": "[BSP reconstruction 00cc6bc0]\nBS actual resource stream reads and structured root/node lifetime. Nine complete ordinary bodies total1030bytes; all354 ordinary instruction starts and full supporting spans verified against installed PE and live Ghidra membership. Strict Win32 source compilation, an actual memory-stream/pool/reader/root/reference fixture and the whole build plus both existing tests passed. Partial scalar reads preserve optional-count pointer bits, short strings retain spaces, budgets wrap, root path index publishes before copy, and node destruction never seeks. Full FH3 maps establish source C++ cleanup order, but original stack/EH-spill aliases, native CRT/FH3/SEH identity and hardware-fault behavior remain unproved; no exception fixture or original-body oracle was run. Current method identities dispatch only to reconstructed source through borrowed actual services; no new ownership domain or numeric original-code call. Raw manager/factory/metric/root dispatch, child traversal, parser owner/registration, production queue/worker and gameplay remain incomplete. Names are descriptive hypotheses; previous compiler/library names and comments retained. See docs/NATIVE_RESOURCE_ROOT_INTEGRATION_BS.md and reports/native_resource_root_integration_bs.json. Native unwind evidence. State1->0 destroys current temporary name at synthetic EBP-14."
+      }
+    },
+    {
+      "address": "00cc6bc8",
+      "name": "Unwind@00cc6bc8",
+      "before_comment": {
+        "address": "00cc6bc8",
+        "function_name": "Unwind@00cc6bc8"
+      },
+      "evidence": "BS actual resource stream reads and structured root/node lifetime. Nine complete ordinary bodies total1030bytes; all354 ordinary instruction starts and full supporting spans verified against installed PE and live Ghidra membership. Strict Win32 source compilation, an actual memory-stream/pool/reader/root/reference fixture and the whole build plus both existing tests passed. Partial scalar reads preserve optional-count pointer bits, short strings retain spaces, budgets wrap, root path index publishes before copy, and node destruction never seeks. Full FH3 maps establish source C++ cleanup order, but original stack/EH-spill aliases, native CRT/FH3/SEH identity and hardware-fault behavior remain unproved; no exception fixture or original-body oracle was run. Current method identities dispatch only to reconstructed source through borrowed actual services; no new ownership domain or numeric original-code call. Raw manager/factory/metric/root dispatch, child traversal, parser owner/registration, production queue/worker and gameplay remain incomplete. Names are descriptive hypotheses; previous compiler/library names and comments retained. See docs/NATIVE_RESOURCE_ROOT_INTEGRATION_BS.md and reports/native_resource_root_integration_bs.json. Native unwind evidence. State0->-1 tests/clears EBP-18 completed flag; if set destroys output header from EBP+4.",
+      "ledger_name_output": "00cc6bc8 -> Unwind@00cc6bc8\n",
+      "prior_comment_preservation_checked": true,
+      "after_comment": {
+        "address": "00cc6bc8",
+        "function_name": "Unwind@00cc6bc8",
+        "comment": "[BSP reconstruction 00cc6bc8]\nBS actual resource stream reads and structured root/node lifetime. Nine complete ordinary bodies total1030bytes; all354 ordinary instruction starts and full supporting spans verified against installed PE and live Ghidra membership. Strict Win32 source compilation, an actual memory-stream/pool/reader/root/reference fixture and the whole build plus both existing tests passed. Partial scalar reads preserve optional-count pointer bits, short strings retain spaces, budgets wrap, root path index publishes before copy, and node destruction never seeks. Full FH3 maps establish source C++ cleanup order, but original stack/EH-spill aliases, native CRT/FH3/SEH identity and hardware-fault behavior remain unproved; no exception fixture or original-body oracle was run. Current method identities dispatch only to reconstructed source through borrowed actual services; no new ownership domain or numeric original-code call. Raw manager/factory/metric/root dispatch, child traversal, parser owner/registration, production queue/worker and gameplay remain incomplete. Names are descriptive hypotheses; previous compiler/library names and comments retained. See docs/NATIVE_RESOURCE_ROOT_INTEGRATION_BS.md and reports/native_resource_root_integration_bs.json. Native unwind evidence. State0->-1 tests/clears EBP-18 completed flag; if set destroys output header from EBP+4."
+      }
+    },
+    {
+      "address": "00cc7180",
+      "name": "Unwind@00cc7180",
+      "before_comment": {
+        "address": "00cc7180",
+        "function_name": "Unwind@00cc7180"
+      },
+      "evidence": "BS actual resource stream reads and structured root/node lifetime. Nine complete ordinary bodies total1030bytes; all354 ordinary instruction starts and full supporting spans verified against installed PE and live Ghidra membership. Strict Win32 source compilation, an actual memory-stream/pool/reader/root/reference fixture and the whole build plus both existing tests passed. Partial scalar reads preserve optional-count pointer bits, short strings retain spaces, budgets wrap, root path index publishes before copy, and node destruction never seeks. Full FH3 maps establish source C++ cleanup order, but original stack/EH-spill aliases, native CRT/FH3/SEH identity and hardware-fault behavior remain unproved; no exception fixture or original-body oracle was run. Current method identities dispatch only to reconstructed source through borrowed actual services; no new ownership domain or numeric original-code call. Raw manager/factory/metric/root dispatch, child traversal, parser owner/registration, production queue/worker and gameplay remain incomplete. Names are descriptive hypotheses; previous compiler/library names and comments retained. See docs/NATIVE_RESOURCE_ROOT_INTEGRATION_BS.md and reports/native_resource_root_integration_bs.json. Native unwind evidence. State0->-1 base BD30F0 on saved node EBP-18.",
+      "ledger_name_output": "00cc7180 -> Unwind@00cc7180\n",
+      "prior_comment_preservation_checked": true,
+      "after_comment": {
+        "address": "00cc7180",
+        "function_name": "Unwind@00cc7180",
+        "comment": "[BSP reconstruction 00cc7180]\nBS actual resource stream reads and structured root/node lifetime. Nine complete ordinary bodies total1030bytes; all354 ordinary instruction starts and full supporting spans verified against installed PE and live Ghidra membership. Strict Win32 source compilation, an actual memory-stream/pool/reader/root/reference fixture and the whole build plus both existing tests passed. Partial scalar reads preserve optional-count pointer bits, short strings retain spaces, budgets wrap, root path index publishes before copy, and node destruction never seeks. Full FH3 maps establish source C++ cleanup order, but original stack/EH-spill aliases, native CRT/FH3/SEH identity and hardware-fault behavior remain unproved; no exception fixture or original-body oracle was run. Current method identities dispatch only to reconstructed source through borrowed actual services; no new ownership domain or numeric original-code call. Raw manager/factory/metric/root dispatch, child traversal, parser owner/registration, production queue/worker and gameplay remain incomplete. Names are descriptive hypotheses; previous compiler/library names and comments retained. See docs/NATIVE_RESOURCE_ROOT_INTEGRATION_BS.md and reports/native_resource_root_integration_bs.json. Native unwind evidence. State0->-1 base BD30F0 on saved node EBP-18."
+      }
+    },
+    {
+      "address": "00cc7188",
+      "name": "Unwind@00cc7188",
+      "before_comment": {
+        "address": "00cc7188",
+        "function_name": "Unwind@00cc7188"
+      },
+      "evidence": "BS actual resource stream reads and structured root/node lifetime. Nine complete ordinary bodies total1030bytes; all354 ordinary instruction starts and full supporting spans verified against installed PE and live Ghidra membership. Strict Win32 source compilation, an actual memory-stream/pool/reader/root/reference fixture and the whole build plus both existing tests passed. Partial scalar reads preserve optional-count pointer bits, short strings retain spaces, budgets wrap, root path index publishes before copy, and node destruction never seeks. Full FH3 maps establish source C++ cleanup order, but original stack/EH-spill aliases, native CRT/FH3/SEH identity and hardware-fault behavior remain unproved; no exception fixture or original-body oracle was run. Current method identities dispatch only to reconstructed source through borrowed actual services; no new ownership domain or numeric original-code call. Raw manager/factory/metric/root dispatch, child traversal, parser owner/registration, production queue/worker and gameplay remain incomplete. Names are descriptive hypotheses; previous compiler/library names and comments retained. See docs/NATIVE_RESOURCE_ROOT_INTEGRATION_BS.md and reports/native_resource_root_integration_bs.json. Native unwind evidence. State1->0 destroys saved node+10 tag; node pointer EBP-18.",
+      "ledger_name_output": "00cc7188 -> Unwind@00cc7188\n",
+      "prior_comment_preservation_checked": true,
+      "after_comment": {
+        "address": "00cc7188",
+        "function_name": "Unwind@00cc7188",
+        "comment": "[BSP reconstruction 00cc7188]\nBS actual resource stream reads and structured root/node lifetime. Nine complete ordinary bodies total1030bytes; all354 ordinary instruction starts and full supporting spans verified against installed PE and live Ghidra membership. Strict Win32 source compilation, an actual memory-stream/pool/reader/root/reference fixture and the whole build plus both existing tests passed. Partial scalar reads preserve optional-count pointer bits, short strings retain spaces, budgets wrap, root path index publishes before copy, and node destruction never seeks. Full FH3 maps establish source C++ cleanup order, but original stack/EH-spill aliases, native CRT/FH3/SEH identity and hardware-fault behavior remain unproved; no exception fixture or original-body oracle was run. Current method identities dispatch only to reconstructed source through borrowed actual services; no new ownership domain or numeric original-code call. Raw manager/factory/metric/root dispatch, child traversal, parser owner/registration, production queue/worker and gameplay remain incomplete. Names are descriptive hypotheses; previous compiler/library names and comments retained. See docs/NATIVE_RESOURCE_ROOT_INTEGRATION_BS.md and reports/native_resource_root_integration_bs.json. Native unwind evidence. State1->0 destroys saved node+10 tag; node pointer EBP-18."
+      }
+    },
+    {
+      "address": "00cc7193",
+      "name": "Unwind@00cc7193",
+      "before_comment": {
+        "address": "00cc7193",
+        "function_name": "Unwind@00cc7193"
+      },
+      "evidence": "BS actual resource stream reads and structured root/node lifetime. Nine complete ordinary bodies total1030bytes; all354 ordinary instruction starts and full supporting spans verified against installed PE and live Ghidra membership. Strict Win32 source compilation, an actual memory-stream/pool/reader/root/reference fixture and the whole build plus both existing tests passed. Partial scalar reads preserve optional-count pointer bits, short strings retain spaces, budgets wrap, root path index publishes before copy, and node destruction never seeks. Full FH3 maps establish source C++ cleanup order, but original stack/EH-spill aliases, native CRT/FH3/SEH identity and hardware-fault behavior remain unproved; no exception fixture or original-body oracle was run. Current method identities dispatch only to reconstructed source through borrowed actual services; no new ownership domain or numeric original-code call. Raw manager/factory/metric/root dispatch, child traversal, parser owner/registration, production queue/worker and gameplay remain incomplete. Names are descriptive hypotheses; previous compiler/library names and comments retained. See docs/NATIVE_RESOURCE_ROOT_INTEGRATION_BS.md and reports/native_resource_root_integration_bs.json. Native unwind evidence. State2->1 destroys current temporary at EBP-14.",
+      "ledger_name_output": "00cc7193 -> Unwind@00cc7193\n",
+      "prior_comment_preservation_checked": true,
+      "after_comment": {
+        "address": "00cc7193",
+        "function_name": "Unwind@00cc7193",
+        "comment": "[BSP reconstruction 00cc7193]\nBS actual resource stream reads and structured root/node lifetime. Nine complete ordinary bodies total1030bytes; all354 ordinary instruction starts and full supporting spans verified against installed PE and live Ghidra membership. Strict Win32 source compilation, an actual memory-stream/pool/reader/root/reference fixture and the whole build plus both existing tests passed. Partial scalar reads preserve optional-count pointer bits, short strings retain spaces, budgets wrap, root path index publishes before copy, and node destruction never seeks. Full FH3 maps establish source C++ cleanup order, but original stack/EH-spill aliases, native CRT/FH3/SEH identity and hardware-fault behavior remain unproved; no exception fixture or original-body oracle was run. Current method identities dispatch only to reconstructed source through borrowed actual services; no new ownership domain or numeric original-code call. Raw manager/factory/metric/root dispatch, child traversal, parser owner/registration, production queue/worker and gameplay remain incomplete. Names are descriptive hypotheses; previous compiler/library names and comments retained. See docs/NATIVE_RESOURCE_ROOT_INTEGRATION_BS.md and reports/native_resource_root_integration_bs.json. Native unwind evidence. State2->1 destroys current temporary at EBP-14."
+      }
+    },
+    {
+      "address": "00cc7210",
+      "name": "Unwind@00cc7210",
+      "before_comment": {
+        "address": "00cc7210",
+        "function_name": "Unwind@00cc7210",
+        "comment": ""
+      },
+      "evidence": "BS actual resource stream reads and structured root/node lifetime. Nine complete ordinary bodies total1030bytes; all354 ordinary instruction starts and full supporting spans verified against installed PE and live Ghidra membership. Strict Win32 source compilation, an actual memory-stream/pool/reader/root/reference fixture and the whole build plus both existing tests passed. Partial scalar reads preserve optional-count pointer bits, short strings retain spaces, budgets wrap, root path index publishes before copy, and node destruction never seeks. Full FH3 maps establish source C++ cleanup order, but original stack/EH-spill aliases, native CRT/FH3/SEH identity and hardware-fault behavior remain unproved; no exception fixture or original-body oracle was run. Current method identities dispatch only to reconstructed source through borrowed actual services; no new ownership domain or numeric original-code call. Raw manager/factory/metric/root dispatch, child traversal, parser owner/registration, production queue/worker and gameplay remain incomplete. Names are descriptive hypotheses; previous compiler/library names and comments retained. See docs/NATIVE_RESOURCE_ROOT_INTEGRATION_BS.md and reports/native_resource_root_integration_bs.json. Native unwind evidence. State0->-1 frees captured allocation at EBP-10. Returning-free POP ECX/RET membership repaired and verified.",
+      "ledger_name_output": "00cc7210 -> Unwind@00cc7210\n",
+      "prior_comment_preservation_checked": true,
+      "after_comment": {
+        "address": "00cc7210",
+        "function_name": "Unwind@00cc7210",
+        "comment": "[BSP reconstruction 00cc7210]\nBS actual resource stream reads and structured root/node lifetime. Nine complete ordinary bodies total1030bytes; all354 ordinary instruction starts and full supporting spans verified against installed PE and live Ghidra membership. Strict Win32 source compilation, an actual memory-stream/pool/reader/root/reference fixture and the whole build plus both existing tests passed. Partial scalar reads preserve optional-count pointer bits, short strings retain spaces, budgets wrap, root path index publishes before copy, and node destruction never seeks. Full FH3 maps establish source C++ cleanup order, but original stack/EH-spill aliases, native CRT/FH3/SEH identity and hardware-fault behavior remain unproved; no exception fixture or original-body oracle was run. Current method identities dispatch only to reconstructed source through borrowed actual services; no new ownership domain or numeric original-code call. Raw manager/factory/metric/root dispatch, child traversal, parser owner/registration, production queue/worker and gameplay remain incomplete. Names are descriptive hypotheses; previous compiler/library names and comments retained. See docs/NATIVE_RESOURCE_ROOT_INTEGRATION_BS.md and reports/native_resource_root_integration_bs.json. Native unwind evidence. State0->-1 frees captured allocation at EBP-10. Returning-free POP ECX/RET membership repaired and verified."
+      }
+    },
+    {
+      "address": "00cc70a0",
+      "name": "Unwind@00cc70a0",
+      "before_comment": {
+        "address": "00cc70a0",
+        "function_name": "Unwind@00cc70a0"
+      },
+      "evidence": "BS actual resource stream reads and structured root/node lifetime. Nine complete ordinary bodies total1030bytes; all354 ordinary instruction starts and full supporting spans verified against installed PE and live Ghidra membership. Strict Win32 source compilation, an actual memory-stream/pool/reader/root/reference fixture and the whole build plus both existing tests passed. Partial scalar reads preserve optional-count pointer bits, short strings retain spaces, budgets wrap, root path index publishes before copy, and node destruction never seeks. Full FH3 maps establish source C++ cleanup order, but original stack/EH-spill aliases, native CRT/FH3/SEH identity and hardware-fault behavior remain unproved; no exception fixture or original-body oracle was run. Current method identities dispatch only to reconstructed source through borrowed actual services; no new ownership domain or numeric original-code call. Raw manager/factory/metric/root dispatch, child traversal, parser owner/registration, production queue/worker and gameplay remain incomplete. Names are descriptive hypotheses; previous compiler/library names and comments retained. See docs/NATIVE_RESOURCE_ROOT_INTEGRATION_BS.md and reports/native_resource_root_integration_bs.json. Native unwind evidence. State0->-1 stamps base BD30F0 on saved node EBP-10.",
+      "ledger_name_output": "00cc70a0 -> Unwind@00cc70a0\n",
+      "prior_comment_preservation_checked": true,
+      "after_comment": {
+        "address": "00cc70a0",
+        "function_name": "Unwind@00cc70a0",
+        "comment": "[BSP reconstruction 00cc70a0]\nBS actual resource stream reads and structured root/node lifetime. Nine complete ordinary bodies total1030bytes; all354 ordinary instruction starts and full supporting spans verified against installed PE and live Ghidra membership. Strict Win32 source compilation, an actual memory-stream/pool/reader/root/reference fixture and the whole build plus both existing tests passed. Partial scalar reads preserve optional-count pointer bits, short strings retain spaces, budgets wrap, root path index publishes before copy, and node destruction never seeks. Full FH3 maps establish source C++ cleanup order, but original stack/EH-spill aliases, native CRT/FH3/SEH identity and hardware-fault behavior remain unproved; no exception fixture or original-body oracle was run. Current method identities dispatch only to reconstructed source through borrowed actual services; no new ownership domain or numeric original-code call. Raw manager/factory/metric/root dispatch, child traversal, parser owner/registration, production queue/worker and gameplay remain incomplete. Names are descriptive hypotheses; previous compiler/library names and comments retained. See docs/NATIVE_RESOURCE_ROOT_INTEGRATION_BS.md and reports/native_resource_root_integration_bs.json. Native unwind evidence. State0->-1 stamps base BD30F0 on saved node EBP-10."
+      }
+    }
+  ],
+  "actions": [
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00be42e0",
+        "prototype": "unsigned int __fastcall BSP_Stream_ReadDwordSlot34(void* stream, void* unused_edx, unsigned int* actual)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00be42e0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00be4300",
+        "prototype": "unsigned int __fastcall BSP_Stream_ReadDword(void* stream, void* unused_edx, unsigned int* actual)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00be4300 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00be4620",
+        "prototype": "void* __fastcall BSP_Stream_ReadLengthPrefixedString(void* stream, void* unused_edx, void* output, unsigned int* actual)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00be4620 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00bf0280",
+        "prototype": "unsigned int __fastcall BSP_StreamReader_ReadDwordSlot34AndDebit(void* reader, void* unused_edx, unsigned int* budget)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00bf0280 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00bf0510",
+        "prototype": "void* __fastcall BSP_StreamReader_ReadStringAndDebit(void* reader, void* unused_edx, void* output, unsigned int* budget)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00bf0510 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00bea380",
+        "prototype": "void* __fastcall BSP_StructuredNode_ConstructRoot(void* node, void* unused_edx, void* reader)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00bea380 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00bea700",
+        "prototype": "void* __fastcall BSP_StructuredReader_CreateRoot(void* reader, void* unused_edx, void* output)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00bea700 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00be9df0",
+        "prototype": "void __fastcall BSP_StructuredNode_Destroy(void* node, void* unused_edx)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00be9df0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00be9fc0",
+        "prototype": "void* __fastcall BSP_StructuredNode_DeletingDestructor(void* node, void* unused_edx, unsigned int flags)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00be9fc0 with __fastcall calling convention"
+    }
+  ],
+  "state": "names_and_abi_views_saved_previous_comments_retained",
+  "exports_refreshed": true
+}

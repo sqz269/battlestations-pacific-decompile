@@ -12456,6 +12456,65 @@
       "code_revision": "35c9b762a12bca1ab24972ffae5cebfa349c9ced",
       "game_validated": false,
       "follow_up": "Production queue update/worker and native resource-load/owner closure; no inferred thread shutdown"
+    },
+    {
+      "id": "orch4_native_resource_stream_reads_bs",
+      "state": "reconstructed_source_build_and_fixture_checked",
+      "status": "reconstructed_source_build_and_fixture_checked",
+      "addresses": [
+        "00be42e0",
+        "00be4300",
+        "00be4620",
+        "00bf0280",
+        "00bf0510"
+      ],
+      "owner": "agent/orch4-20260910",
+      "report": "reports/native_resource_stream_reads_bs.json",
+      "documentation": "docs/NATIVE_RESOURCE_STREAM_READS_BS.md",
+      "code_revision": null,
+      "game_validated": false,
+      "follow_up": "Raw structured child/control traversal and B80720 loader/manager/parser closure; retain exact partial-read and cleanup behavior"
+    },
+    {
+      "id": "orch4_native_resource_root_owner_bs",
+      "state": "reconstructed_source_build_and_fixture_checked",
+      "status": "reconstructed_source_build_and_fixture_checked",
+      "addresses": [
+        "00bea380",
+        "00bea700",
+        "00be9df0",
+        "00be9fc0"
+      ],
+      "owner": "agent/orch4-20260910",
+      "report": "reports/native_resource_root_owner_bs.json",
+      "documentation": "docs/NATIVE_RESOURCE_ROOT_OWNER_BS.md",
+      "code_revision": null,
+      "game_validated": false,
+      "follow_up": "Raw structured child/control traversal and B80720 loader/manager/parser closure; retain exact partial-read and cleanup behavior"
+    },
+    {
+      "id": "orch4_native_resource_root_integration_bs",
+      "state": "reconstructed_source_build_and_fixture_checked",
+      "status": "reconstructed_source_build_and_fixture_checked",
+      "addresses": [
+        "00cc6bc0",
+        "00cc6bc8",
+        "00cc6be1",
+        "00cc7180",
+        "00cc7188",
+        "00cc7193",
+        "00cc719b",
+        "00cc7210",
+        "00cc721b",
+        "00cc70a0",
+        "00cc70a8"
+      ],
+      "owner": "agent/orch4-20260910",
+      "report": "reports/native_resource_root_integration_bs.json",
+      "documentation": "docs/NATIVE_RESOURCE_ROOT_INTEGRATION_BS.md",
+      "code_revision": null,
+      "game_validated": false,
+      "follow_up": "Raw structured child/control traversal and B80720 loader/manager/parser closure; retain exact partial-read and cleanup behavior"
     }
   ],
   "snapshot_after_analysis": {
