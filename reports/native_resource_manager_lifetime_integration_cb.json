@@ -1,9 +1,9 @@
 {
   "packet": "orch4_native_resource_manager_lifetime_cb",
-  "state": "source_build_and_original_fixture_passed_publication_pending",
+  "state": "integrated_source_build_and_original_fixture_checked",
   "base_revision": "b0f6b69a3b78c4a288599a1ca6d69ee27f0f3bd8",
   "branch": "agent/orch4-20260910",
-  "code_revision": null,
+  "code_revision": "f0e1c95726dd4d8b088b1b2c924c733292a27b5c",
   "ordinary_bodies": 16,
   "ordinary_bytes": 2254,
   "ordinary_instruction_owners": 785,
@@ -41,7 +41,8 @@
     "stack_walk_limits": "Helper walks listing order, not CFG paths; it uses first observed callee RET and may choose a longer pre-existing spill without proving current-query identity. It does not model all stack writes/register definitions. Treat as a heuristic listing aid, not validated reaching-definition or x87 proof; CB does not rely on it.",
     "rate_law_limits": "Borrowed read-only partial analysis. Clamp expression remains explicitly unresolved; factor1.0 depends on absence of other writers. No native queued planner/aircraft admission or gameplay certification is adopted.",
     "damage_limits": "Copy-count bounds do not exclude writes into class+50 without destination base/interior-pointer provenance. Heuristic/unclassified destinations, SIB, alias and external writes remain outside the proof. No global absence or faithful gameplay zero claim is adopted.",
-    "runtime_independently_rerun": false
+    "runtime_independently_rerun": false,
+    "source_input_comparison": "No src/include/cmake/scripts/CMakeLists changes relative to tested source revision; all2669 raw file hashes match. Build/fixture results reused without a redundant rerun."
   },
   "validation": {
     "strict_win32_build": "passed",
@@ -53,13 +54,17 @@
     "source_canonical_shutdown": "Complete actual manager then six parser-secondary drain cleared all seven publications; no fixture pointer removal or direct parser deletion in this case.",
     "source_constructor_exception": "Third name call throws: completed maps/base cleaned, default factory retained, two parser singleton publications and registrations retained; explicit fixture cleanup afterward.",
     "native_exception_paths_guarded_out": true,
-    "whole_report_verifier": "81 passed"
+    "whole_report_verifier": "81 passed",
+    "source_manifest_inputs": 2669,
+    "previous_ghidra_comments_preserved": 30,
+    "production_inputs_identical_on_merged_tree": true,
+    "build_and_fixture_run": "Successful initial CB run, preserved verbatim; source inputs unchanged by subsequent documentation/tooling-only merge. No additional run claimed."
   },
   "evidence": [
     {
       "path": "reports/native_resource_manager_lifetime_cb.json",
-      "sha256": "4496a62ef787775ed68539a3962ea88b76a8888f71ef0c4c11f4fb40dee35b49",
-      "bytes": 207458
+      "sha256": "509326248e3fbaf13e229aa9f8dc90665c34d6c926226afa5e20a828fbc26efa",
+      "bytes": 212877
     },
     {
       "path": "reports/native_resource_manager_lifetime_annotations_cb.json",
@@ -70,9 +75,98 @@
       "path": "reports/native_resource_manager_lifetime_flow_cb.json",
       "sha256": "322b06efc32b1afff48532da27db8a8fa216210eb1b94061dda5f8fec8f186ab",
       "bytes": 40293
+    },
+    {
+      "path": "local/native_resource_manager_lifetime_cb/final/source_manifest.json",
+      "sha256": "73b512bc1c7530e9a586657096967d29ecb01e1688ce560e4972e4de2b684f35",
+      "bytes": 289088
+    },
+    {
+      "path": "local/native_resource_manager_lifetime_cb/final/libraries.json",
+      "sha256": "6a607037bbfead56ac58891ec5c595c86bfd0d8be5c3e655236c9b79a6a6aa3b",
+      "bytes": 848
+    },
+    {
+      "path": "local/native_resource_manager_lifetime_cb/final/build.log",
+      "sha256": "c5cda800d3bfe261de3583687e9f0c80a6e0b9a09ddf66793d3ce8cd36a132dc",
+      "bytes": 2814
+    },
+    {
+      "path": "local/native_resource_manager_lifetime_cb/final/bsp_core.lib",
+      "sha256": "43507fa616f1fecc95ad7c84f7e291aed2c86b3725b9c4c679ffc62f4d02673d",
+      "bytes": 58727814
+    },
+    {
+      "path": "local/native_resource_manager_lifetime_cb/final/bsp_lua511.lib",
+      "sha256": "00315ac717aac3d2b2161fefefe71b36a974335ff9c95d48c137423eb4e2f4b2",
+      "bytes": 455244
+    },
+    {
+      "path": "local/native_resource_manager_lifetime_cb/final/bsp_zlib121.lib",
+      "sha256": "73ae30b8adc3adfe5b33285bac533f8e7df7e8ab8d9e44789e6a030fd8a06ad9",
+      "bytes": 71906
+    },
+    {
+      "path": "local/native_resource_manager_lifetime_cb/final/probe.cpp",
+      "sha256": "0f25f24d1452d23712429456b37ed52361671129c1109bfe0a2b73716fb7f5b1",
+      "bytes": 20174
+    },
+    {
+      "path": "local/native_resource_manager_lifetime_cb/final/original_bodies.hpp",
+      "sha256": "a2d0743d05bb5b3d48f2606273953181315b52a1254b5823b1c0ffbff7034e0e",
+      "bytes": 11169
+    },
+    {
+      "path": "local/native_resource_manager_lifetime_cb/final/original_bodies.json",
+      "sha256": "54e4224708ec249f9a314bf4e66abee3a2d20c996efcf9861180f431ffb122f9",
+      "bytes": 5204
+    },
+    {
+      "path": "local/native_resource_manager_lifetime_cb/final/compile.cmd",
+      "sha256": "82bb0996a8f5567284a62f0a504f7608dfa8a38960552e1fea9f67e09b15981a",
+      "bytes": 734
+    },
+    {
+      "path": "local/native_resource_manager_lifetime_cb/final/compile.log",
+      "sha256": "25d4f66c7c01d5b35c220cb97ffdd1608405f4ab45160497e6cc7ea3079676cf",
+      "bytes": 11
+    },
+    {
+      "path": "local/native_resource_manager_lifetime_cb/final/probe.exe",
+      "sha256": "7e26b6f5a24333357a8d1fd11ef6619d0e2f475a466880d101a652a17695f391",
+      "bytes": 294912
+    },
+    {
+      "path": "local/native_resource_manager_lifetime_cb/final/probe.obj",
+      "sha256": "0073c4fc3b5648c157153329ab05a6c666aed4d4eebbf4eb6af7c249fd247474",
+      "bytes": 242705
+    },
+    {
+      "path": "local/native_resource_manager_lifetime_cb/final/probe.map",
+      "sha256": "9dc8c3e87b03749f65b0a148e2cb56614bdbdbb6ec6329a76cb80b022bd75d6b",
+      "bytes": 460314
+    },
+    {
+      "path": "local/native_resource_manager_lifetime_cb/final/probe.log",
+      "sha256": "0044037d17b4c267e83b7ac950a236d67ee948206d4938b265271376fe0e082c",
+      "bytes": 699
+    },
+    {
+      "path": "local/native_resource_manager_lifetime_cb/final/child_probe.log",
+      "sha256": "00ae023153e54d961ea7eb98e14173334854aaf24bbfd18e3ec97adbbb57ddcf",
+      "bytes": 659
+    },
+    {
+      "path": "local/native_resource_manager_lifetime_cb/final/bsp_game.exe",
+      "sha256": "7162f4782085a4b892d583f75e647af8c80e758c67668c333abd3b199d2a0f15",
+      "bytes": 2168832
     }
   ],
-  "source_manifest": null,
+  "source_manifest": {
+    "path": "local/native_resource_manager_lifetime_cb/final/source_manifest.json",
+    "sha256": "73b512bc1c7530e9a586657096967d29ecb01e1688ce560e4972e4de2b684f35",
+    "bytes": 289088
+  },
   "evidence_limits": [
     "Explicit-service C++ ABI, source CRT and exceptions; original callable register/stack ABI, FH3/SEH/private spill aliases, fault cleanup and gameplay remain open.",
     "Original normal paths share existing canonical source dependencies for parser getter/name registration, head allocation, string pool, cache erase, rotations and lifetime manager/registration. Original exception/error paths are guarded out.",
@@ -80,5 +174,7 @@
     "Fixture pools are preconstructed and publication-bound to each actual lifetime manager; lazy pool recreation during drain is not newly tested here.",
     "Source constructor failure is exercised; allocation failure and returning-invalid-handler mutation schedules retain their assembly-backed contracts rather than expanded dynamic claims.",
     "Concrete parse-slot8 bodies, nondefault resource-factory deletion targets, game-specific parser registration, executable admission and gameplay remain unresolved."
-  ]
+  ],
+  "source_commit": "f0e1c95726dd4d8b088b1b2c924c733292a27b5c",
+  "source_stable_merge_revision": "a419a94de558e88ec45e8c0b4e2e63727b28af53"
 }
