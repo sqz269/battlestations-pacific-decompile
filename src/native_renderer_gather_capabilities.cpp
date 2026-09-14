@@ -433,8 +433,15 @@ void gather_format_records(void* renderer, void* scratch) {
 }
 } // namespace
 
-void __fastcall gather_native_renderer_capabilities_00b2c8e0(
-    void* renderer, const NativeRendererGatherCapabilitiesContext* context) {
+namespace {
+SingletonLifetimeDomain& pool_lifetime(const NativeRendererGatherCapabilitiesContext* context) noexcept {
+    return context->actual_lifetime;
+}
+void* volatile& pool_lifetime(const NativeRendererGatherCapabilitiesActualContext* context) noexcept {
+    return context->actual_manager_publication_01090aa0;
+}
+template<class Context>
+void gather_capabilities_body(void* renderer, const Context* context) {
     void* const scratch = context->actual_callee_scratch;
     volatile I32 cleanup_state = -1;
 
@@ -485,7 +492,7 @@ void __fastcall gather_native_renderer_capabilities_00b2c8e0(
     } while (character != 0);
     const U32 description_length = cursor - past_first;
     ActualNativeStringPoolStorage storage(context->actual_pool_publication_01090aa8,
-        context->actual_small_returns_disabled_01090aa4, context->actual_lifetime);
+        context->actual_small_returns_disabled_01090aa4, pool_lifetime(context));
     resize_native_string_header_0041dd40(at(scratch, 0x14), storage,
         description_length, true);
     const U32 description_address = load(scratch, 0x18);
@@ -571,9 +578,19 @@ void __fastcall gather_native_renderer_capabilities_00b2c8e0(
         void* const data = pointer(load(scratch, 0x18));
         const U32 bytes = length + 1u;
         auto* const current_pool = native_string_pool_get_or_create_00419cc0(
-            context->actual_pool_publication_01090aa8, context->actual_lifetime);
+            context->actual_pool_publication_01090aa8, pool_lifetime(context));
         return_native_string_pool_00bd1510(current_pool, data, bytes,
             context->actual_small_returns_disabled_01090aa4);
     }
+}
+} // namespace
+
+void __fastcall gather_native_renderer_capabilities_00b2c8e0(
+    void* renderer, const NativeRendererGatherCapabilitiesContext* context) {
+    gather_capabilities_body(renderer, context);
+}
+void __fastcall gather_native_renderer_capabilities_00b2c8e0(
+    void* renderer, const NativeRendererGatherCapabilitiesActualContext* context) {
+    gather_capabilities_body(renderer, context);
 }
 } // namespace bsp
