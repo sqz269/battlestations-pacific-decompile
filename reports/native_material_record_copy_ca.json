@@ -1,0 +1,82 @@
+{
+  "packet": "orch3_native_material_record_copy_ca",
+  "status": "source_reconstructed_release_build_ctest_coff_verified",
+  "source_parent_commit": "d8456ff4a9c3e015daebe26d7a5161d019c73a84",
+  "native_body_credit": 0,
+  "native_bytes_credit": 0,
+  "proposed_native_bodies": 2,
+  "proposed_native_bytes": 302,
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "live_function_count": 64018,
+    "installed_pe": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "routines": [
+    {
+      "address": "00b13070",
+      "inclusive_end": "00b1317e",
+      "bytes": 271,
+      "native_sha256": "b8043f36c93ebdb808cbe559333da42fca277d4f3c29ac3864d1b70a1e2952f9",
+      "old_ghidra_name": "FUN_00b13070",
+      "cpp_symbol": "construct_native_material_record_00b13070",
+      "original_abi": "ECX destination, stack source, EAX destination, preserves EBX/EBP/ESI/EDI, RET4",
+      "source_abi": "ECX destination, EDX raw pool context, stack source, EAX destination, RET4",
+      "prefix": "DWORD0 then five distinct forward REP MOVSD blocks of 14 DWORDs at +04,+3C,+74,+AC,+E4",
+      "headers": "compare actual addresses before zeroing +11C and +124; current source length at resize and post-resize test; current destination length and both data pointers at memcpy",
+      "cleanup": "arm first +11C only after it completes, before second +124 is zeroed"
+    },
+    {
+      "address": "00b0d230",
+      "inclusive_end": "00b0d24e",
+      "bytes": 31,
+      "native_sha256": "6b567ca16f817bfc0b82393d812857a5ca79ec837b2f57dbcd6ab7dfb2bfc79c",
+      "old_ghidra_name": "FUN_00b0d230",
+      "cpp_symbol": "get_native_material_record_vector_size_00b0d230",
+      "original_abi": "ECX actual vector, EAX signed count, plain RET",
+      "behavior": "begin at +4 null -> zero; otherwise signed32(wrapped end-minus-begin)/300 using original IMUL/SAR/sign correction",
+      "caller": "00b145e0"
+    }
+  ],
+  "eh_evidence": {
+    "handler_thunk": "00cbc1fe: MOV EAX,00df42b0; JMP 00bf6b43 ___CxxFrameHandler3",
+    "funcinfo": "00df42b0: magic 19930522, maxState 1, unwind-map pointer 00df42a8",
+    "unwind_map": "00df42a8: toState -1, action 00cbc1f0",
+    "old_funclet_name": "Unwind@00cbc1f0",
+    "funclet": "00cbc1f0: load saved destination, add 11Ch, tail-jump 0041dd20",
+    "state_arm": "00b13137 after first header, before second zero stores",
+    "metadata_edits": "none"
+  },
+  "native_provider_sha256": {
+    "0041dd20_29_bytes": "d67a4742a33b9e89d42784926feb00cfefac93d212ffb06a281eade38be8a626",
+    "0041dd40_164_bytes": "d8be6108b8964c3b25a68dfa85a0a6f6bc7721d1d7d5e9ebe9125ef446557977",
+    "00bf7680_869_bytes": "2eb4a27b7f2608f44cc78077c476658ebbc91ea1f736a39cde93a0194d5dd6c3",
+    "00419cc0_192_bytes": "43eaf61f27efa9fd1c8905e3266d3183717240b825126da7d970fbecb703190a",
+    "00bd1510_95_bytes": "ae7cc468fd929f90e9a2a6a8a5107d4375c16271eb96e9d7829504911105a4d4",
+    "00cbc1fe_10_bytes": "7af37a69b5671c5ce1ec05ce2bce91b9c9cf22926c0670e56a35bea85caab7d0",
+    "00cbc1f0_14_bytes": "524ca7db27703c4bebd5367d62adc77c81cb4a3dd9b30fc086ea9997aa43ee87",
+    "00df42a8_8_bytes": "f91a11cac2b7ffccbe4fec01cb996a4615b09be154c579d2fc884fae8786e0e1"
+  },
+  "source_sha256": {
+    "src/native_material_record_copy.cpp": "c33a822d3ededc37d9f20396a0e306d2a97ab1e0fb46295306d787dd2edd87d5",
+    "include/bsp/native_material_record_copy.hpp": "502c9743de1ed796c10c4c714808b06f32fef2f7ebc89a63b44061beea02feac",
+    "src/native_string.cpp": "0e8819d3a6442fc48c879e85c00899a72beabdc51b3e94a11836ab5314d5e60c",
+    "include/bsp/native_string.hpp": "80013e5a7350120f32fcad1ce54db9b0923ad5b49cc2152823d858534331378f",
+    "src/native_string_pool_storage.cpp": "5cb79a6ce240205b3f1c81f1fbd6edd49cc1c05f8a20ee8dca8913f44c9095d5",
+    "include/bsp/native_string_pool_storage.hpp": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d",
+    "src/native_renderer_begin_frame.cpp": "941cac2c7156a8e4a88455b35be66d8f872f7a9e9a30b134a93787ebd799e41e",
+    "include/bsp/native_renderer_begin_frame.hpp": "0fd98e578cb400ded3f7e51580ac112cdd917f068179e23edc9384f65eddad40"
+  },
+  "validation": {
+    "ghidra_and_pe": "live project/program, original spans, provider spans and EH map read-only verified",
+    "release_build": "scripts/build.ps1 passed with MSVC Win32 Release",
+    "existing_ctest": "reconstructed_math 1/1 passed",
+    "coff_access_order": "constructor arms unwind state only after first helper and before second; header helper compares addresses before zero stores and reloads fields after raw resize; prefix helper has five distinct REP MOVSD blocks",
+    "coff_vector_leaf": "31-byte standalone COMDAT, zero relocations, exact installed PE bytes and SHA-256",
+    "coff_prefix_helper": "90-byte standalone COMDAT, zero relocations, ordered DWORD0 and five REP MOVSD blocks",
+    "local_evidence": "local/output/build-ca.log, coff-ca-disasm.txt, coff-ca-headers.txt, coff-ca-relocs.txt",
+    "game_runtime": "not tested"
+  },
+  "limitations": "New EDX context and C++ cleanup frame are not the original private FH3 binary frame; native hardware faults and whole-game behavior are unverified."
+}
