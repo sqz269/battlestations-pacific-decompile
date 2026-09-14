@@ -13,6 +13,7 @@
 #include "bsp/native_mpkg_provider.hpp"
 #include "bsp/native_mpak_runtime.hpp"
 #include "bsp/native_raw_inflate_stream.hpp"
+#include "bsp/native_vfs_startup_callbacks.hpp"
 #include <stdexcept>
 namespace bsp {
 namespace {
@@ -73,6 +74,11 @@ void* NativeVfsRuntimeBindings::open_manager_entry(std::uintptr_t entry,void* ma
     const void* name,std::uint32_t flags) {
     if(entry!=0x00bdf310)unsupported();
     return open_native_vfs_resource_00bdf310(manager,name,flags,route_);
+}
+void NativeVfsRuntimeBindings::open_failure_entry(std::uintptr_t entry,void* captured_manager) {
+    (void)captured_manager; // The confirmed one-byte RET body reads no inputs.
+    if(entry!=0x00530620)unsupported();
+    ignore_native_vfs_mount_failure_00530620();
 }
 NativeMpkgProviderContext* NativeVfsRuntimeBindings::bind_mpkg_provider(
     NativeMpkgProviderContext* context) noexcept {

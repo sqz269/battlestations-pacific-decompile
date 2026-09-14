@@ -54,6 +54,9 @@ public:
     // Consume already captured entries without re-reading the owner's table.
     void* open_manager_entry(std::uintptr_t entry,void* manager,
         const void* actual_name,std::uint32_t flags);
+    // BDF432 consumes the captured manager+90 code identity. Only the
+    // reconstructed startup no-op target is admitted; never execute an identity.
+    void open_failure_entry(std::uintptr_t entry,void* captured_manager);
     std::uint64_t stream_length_entry(std::uintptr_t entry,void* stream);
     std::uint64_t stream_position_entry(std::uintptr_t entry,void* stream);
     // Explicit borrowed connection permits constructing the actual recursive
