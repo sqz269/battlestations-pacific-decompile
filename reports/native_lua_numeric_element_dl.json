@@ -1,0 +1,75 @@
+{
+  "packet": "orch3_native_lua_numeric_element_dl",
+  "status": "source_complete_validation_pending",
+  "base_commit": "ae3f97efc957d4d177feb4bc588bd3ca5e818c22",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "installed_pe": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+  "installed_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "primary_native_evidence": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\dl-lua-numeric-write-evidence.json",
+    "sha256": "61038d51aa860194c7251d145727a22af3c4decd7676a97d27613aebc8bd0f83"
+  },
+  "routine": {
+    "address": "00b66580",
+    "body_end_inclusive": "00b665ca",
+    "length": 75,
+    "native_sha256": "a9057ed6833cb31797981943ad34600c84d5ab774c122b8e2d6e3db23b528ccf",
+    "original_abi": "thiscall ECX actual 14h LuaObject; public signed int32 key and float32 value stack words; RET8",
+    "coverage": "complete_source_body"
+  },
+  "source_symbol": "bsp::set_native_lua_numeric_element_00b66580",
+  "source_abi": "naked fastcall ECX actual object; unused source EDX; original key/value stack words; RET8; concrete C API bridges",
+  "call_steps": [
+    {
+      "address": "00b6658d",
+      "native": "00a672f0",
+      "function": "00b66580",
+      "hex": "e85e0df0ff"
+    },
+    {
+      "address": "00b665a1",
+      "native": "00a679d0",
+      "function": "00b66580",
+      "hex": "e82a14f0ff"
+    },
+    {
+      "address": "00b665b5",
+      "native": "00a679d0",
+      "function": "00b66580",
+      "hex": "e81614f0ff"
+    },
+    {
+      "address": "00b665c2",
+      "native": "00a67e10",
+      "function": "00b66580",
+      "hex": "e84918f0ff"
+    }
+  ],
+  "source_schedule": [
+    "Current owner/state; checkstack(state,2), ignore return.",
+    "FILD original signed key word; current owner then state; FSTP64; pushnumber.",
+    "Current owner; FLD original float value word; captured owner current state; FSTP64; pushnumber.",
+    "Current owner then index then captured owner state; settable."
+  ],
+  "source_sha256": {
+    "include/bsp/native_lua_numeric_element.hpp": "f760fb07c2ce9c2c8f8332faace3154002bb42a03827df1897c8f6234e99952a",
+    "src/native_lua_numeric_element.cpp": "51a703872ec2400a418d0663a7d051dfd09886fbee83025021e624948c176aa5",
+    "docs/NATIVE_LUA_NUMERIC_ELEMENT_DL.md": "9e45cd4f5b79b32c05484be026657e4cc1501905203079840cd5f6d2dc12ea1f",
+    "cmake/startup.cmake": "06b2d73380b6f6fcc10006b73d5e7694d1f376a5544a125079c32d8778d7bab3"
+  },
+  "provider_sha256": {
+    "include/bsp/native_lua_objects.hpp": "bccf6d4987d710dcbefd0f253cea939db64874f7394bedd432411ce88ae919cf",
+    "src/native_lua_objects.cpp": "c2d70e3c7471688114c14677facb25ef318c224ce0cab8de0ab2ef3be43a0a2e",
+    "cmake/lua.cmake": "50da26a918e8d494aba3ce414e5f550146348a91269318cdcff95e9ae2abe060"
+  },
+  "validation": {
+    "build": "pending",
+    "generated_code": "pending",
+    "focused_probe": "pending",
+    "native_game": "not executed"
+  },
+  "new_function_credit": 1,
+  "new_native_bytes": 75,
+  "limits": "Private native library ABIs inferred from full caller listing and existing recovered library providers; source routes to actual linked Lua5.1.1 C APIs. No game runtime evidence."
+}
