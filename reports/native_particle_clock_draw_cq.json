@@ -1,0 +1,121 @@
+{
+  "packet": "orch3_particle_clock_draw_cq",
+  "status": "raw_source_exact_build_pending",
+  "source_parent_commit": "b57e497c563cd9f1713ca53740001af888c8d29e",
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_home": "J:/tools/ghidra_12.0.4_PUBLIC",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "functions": [
+    {
+      "address": "00b19a10",
+      "inclusive_end": "00b19a56",
+      "bytes": 71,
+      "native_sha256": "0c87a54b594baeb0997f987e4c4b11f69e030aeb62f4442dc293f1824eb543dc",
+      "cpp_symbol": "set_native_particle_clock_time_00b19a10",
+      "ghidra_name": "BSP_ParticleClock_SetFrameTime",
+      "original_abi": "thiscall ECX actual1Ch clock; one float32 stack word; RET4; raw MOVSS payload publication, per-record x87 FLD/FSTP, actual sink ECX and vtable18h call."
+    }
+  ],
+  "native_spans": [
+    {
+      "address": "00b19a10",
+      "bytes": 71,
+      "sha256": "0c87a54b594baeb0997f987e4c4b11f69e030aeb62f4442dc293f1824eb543dc",
+      "hex": "f30f1044240456578bf98b7708f30f1147188b470c6bc02c03c63bf074248bff8b4e28d944240c8b118b421851d91c24ffd08b4f0c6bc92c034f0883c62c3bf175de5f5ec20400",
+      "live_PE_equal": true,
+      "assembly": [
+        "00b19a10: movss xmm0, dword ptr [esp + 4]",
+        "00b19a16: push esi",
+        "00b19a17: push edi",
+        "00b19a18: mov edi, ecx",
+        "00b19a1a: mov esi, dword ptr [edi + 8]",
+        "00b19a1d: movss dword ptr [edi + 0x18], xmm0",
+        "00b19a22: mov eax, dword ptr [edi + 0xc]",
+        "00b19a25: imul eax, eax, 0x2c",
+        "00b19a28: add eax, esi",
+        "00b19a2a: cmp esi, eax",
+        "00b19a2c: je 0xb19a52",
+        "00b19a2e: mov edi, edi",
+        "00b19a30: mov ecx, dword ptr [esi + 0x28]",
+        "00b19a33: fld dword ptr [esp + 0xc]",
+        "00b19a37: mov edx, dword ptr [ecx]",
+        "00b19a39: mov eax, dword ptr [edx + 0x18]",
+        "00b19a3c: push ecx",
+        "00b19a3d: fstp dword ptr [esp]",
+        "00b19a40: call eax",
+        "00b19a42: mov ecx, dword ptr [edi + 0xc]",
+        "00b19a45: imul ecx, ecx, 0x2c",
+        "00b19a48: add ecx, dword ptr [edi + 8]",
+        "00b19a4b: add esi, 0x2c",
+        "00b19a4e: cmp esi, ecx",
+        "00b19a50: jne 0xb19a30",
+        "00b19a52: pop edi",
+        "00b19a53: pop esi",
+        "00b19a54: ret 4"
+      ]
+    },
+    {
+      "address": "004e53ad",
+      "bytes": 5,
+      "sha256": "418ea7c4e11b9478276f3ab20c10e02c17134f8dc46510d9bf298184dda198df",
+      "hex": "e85e466300",
+      "live_PE_equal": true,
+      "assembly": [
+        "004e53ad: call 0xb19a10"
+      ]
+    }
+  ],
+  "call_steps": [
+    {
+      "address": "004e53ad",
+      "native": "00b19a10",
+      "function": "004e4a40"
+    },
+    {
+      "address": "00b19a40",
+      "native": "sink-vtable+18h-via-EAX",
+      "function": "00b19a10",
+      "kind": "indirect",
+      "target_storage": "[[record+28]+0]+18h"
+    }
+  ],
+  "source_sha256": {
+    "include/bsp/native_particle_clock_draw.hpp": "82b3944f56c623b237b432de9a8e28363413536619b8a46079dfc78774a25ae4",
+    "src/native_particle_clock_draw.cpp": "b1f41d2fbf516d3e651326037f96db096de074b82143720335ab673f1adb1cf6"
+  },
+  "provider_sha256": {
+    "include/bsp/render_tail.hpp": "7ded157910928589128f7a1569d18e42877ed2c943649957612fa6060b4646fc",
+    "src/render_tail.cpp": "41c44beddd52b87c71ba8a4809ff1e289fa30e0a9bc4375152360a7aff9712b0",
+    "include/bsp/native_particle_clock_singleton.hpp": "cf420be7c1082e3ab237e8ca3585d94721a5afb6ad2cf05da64706d44d298602",
+    "src/native_particle_clock_singleton.cpp": "970a49f005290b55e6a5dd8b67525a9d7324ae1b3928590e0dbe1b68f97d073d"
+  },
+  "native_body_credit": 0,
+  "native_bytes_credit": 0,
+  "raw_interface_upgrades": 1,
+  "raw_interface_bytes": 71,
+  "review": {
+    "primary_native_source_review": true,
+    "generated_review": "pending",
+    "independent_worker_review": false
+  },
+  "validation": {
+    "new_repository_tests": 0,
+    "native_parent_bytes_executed": false,
+    "game_validated": false
+  },
+  "limits": [
+    "Existing typed full-function record retained, no extra body credit.",
+    "Actual callable sink vtable/thiscall stack contract required. No callback projection or extra storage validation.",
+    "Whole game/module binding and runtime gameplay remain unverified."
+  ]
+}
