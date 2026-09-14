@@ -1,0 +1,345 @@
+{
+  "reason": "Restore decoded returning-free function membership through supported bridge endpoints; preserve original evidence. No script execution or callee no-return changes.",
+  "entries": [
+    {
+      "address": "00be66a2",
+      "end_exclusive": "00be66b7",
+      "sha256": "163c6facb4cc603d0a038c9451748cb9c35ddb17c5b319d461598897d59e6289",
+      "bytes": 21,
+      "before_documentation": {
+        "hash": "509d404985664f99d56a1a689bc96ae42896bf0b871ab6a8cbb96d9e9724a366",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00be66a2",
+        "function_name": "Catch_All@00be66a2",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "unaff_EBP",
+            "type": "int",
+            "storage": "(register, 0x14, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 80.0
+      },
+      "before_ownership": [
+        {
+          "address": "00be66a2",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00be66a5",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00be66a6",
+          "mnemonic": "call",
+          "owned": true
+        },
+        {
+          "address": "00be66ab",
+          "mnemonic": "add",
+          "owned": false
+        },
+        {
+          "address": "00be66ae",
+          "mnemonic": "push",
+          "owned": false
+        },
+        {
+          "address": "00be66b0",
+          "mnemonic": "push",
+          "owned": false
+        },
+        {
+          "address": "00be66b2",
+          "mnemonic": "call",
+          "owned": false
+        }
+      ],
+      "after_documentation": {
+        "hash": "a3c54033cb97ccc7d05b2c45edff2c0ee244d87b7947ee76fa2a81545eeeec70",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00be66a2",
+        "function_name": "Catch_All@00be66a2",
+        "return_type": "void",
+        "calling_convention": "__cdecl",
+        "plate_comment": "",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "unaff_EBP",
+            "type": "int",
+            "storage": "(register, 0x14, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 100.0
+      },
+      "prototype_note": "Previously undefined/unknown/no parameters; void cdecl metadata now records terminal rethrow/no stack arguments. Inherited parent EBP and native FH3 ABI remain external.",
+      "verified_complete": true,
+      "verified_instruction_count": 7,
+      "prior_evidence_preserved": true
+    },
+    {
+      "address": "00be660e",
+      "end_exclusive": "00be6623",
+      "bytes": 21,
+      "sha256": "dbb19375b5a58bec172feabff78ed00bf3c897020f05c026db6867ebbf843686",
+      "before_documentation": {
+        "hash": "509d404985664f99d56a1a689bc96ae42896bf0b871ab6a8cbb96d9e9724a366",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00be660e",
+        "function_name": "Catch_All@00be660e",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "unaff_EBP",
+            "type": "int",
+            "storage": "(register, 0x14, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 80.0
+      },
+      "before_ownership": [
+        {
+          "address": "00be660e",
+          "owned": true
+        },
+        {
+          "address": "00be6611",
+          "owned": true
+        },
+        {
+          "address": "00be6612",
+          "owned": true
+        },
+        {
+          "address": "00be6617",
+          "owned": false
+        },
+        {
+          "address": "00be661a",
+          "owned": false
+        },
+        {
+          "address": "00be661c",
+          "owned": false
+        },
+        {
+          "address": "00be661e",
+          "owned": false
+        }
+      ],
+      "after_documentation": {
+        "hash": "a3c54033cb97ccc7d05b2c45edff2c0ee244d87b7947ee76fa2a81545eeeec70",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00be660e",
+        "function_name": "Catch_All@00be660e",
+        "return_type": "void",
+        "calling_convention": "__cdecl",
+        "plate_comment": "",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "unaff_EBP",
+            "type": "int",
+            "storage": "(register, 0x14, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 100.0
+      },
+      "prototype_note": "Previously undefined/unknown/no parameters; void cdecl metadata now records terminal rethrow/no stack arguments. Inherited parent EBP and native FH3 ABI remain external.",
+      "verified_complete": true,
+      "verified_instruction_count": 7,
+      "prior_evidence_preserved": true
+    }
+  ],
+  "actions": [
+    {
+      "endpoint": "clear_instruction_flow_override",
+      "body": {
+        "address": "00be66a6"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Cleared flow override at 00be66a6 (was: CALL_RETURN, now: NONE)\"}"
+    },
+    {
+      "endpoint": "delete_function",
+      "body": {
+        "address": "00be66a2"
+      },
+      "result": "{\"success\": true, \"address\": \"00be66a2\", \"deleted_function\": \"Catch_All@00be66a2\", \"body_size\": 9, \"message\": \"Function 'Catch_All@00be66a2' deleted at 00be66a2\"}"
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00be66a2",
+        "end_address": "00be66b7"
+      },
+      "result": "{\"success\": true, \"start_address\": \"00be66a2\", \"end_address\": \"00be66b6\", \"bytes_disassembled\": 21, \"message\": \"Successfully disassembled 21 byte(s)\"}"
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00be66a2",
+        "name": "Catch_All@00be66a2",
+        "disassemble_first": false
+      },
+      "result": "{\"success\": true, \"address\": \"00be66a2\", \"function_name\": \"Catch_All@00be66a2\", \"entry_point\": \"00be66a2\", \"body_size\": 21, \"message\": \"Function created successfully at 00be66a2\", \"warnings\": [\"Function name 'Catch_All@00be66a2' \\u2014 main part 'Catch_All@00be66a2' is not PascalCase. Expected: CatchAll@00be66a2\", \"Function name 'Catch_All@00be66a2' \\u2014 main part 'Catch_All@00be66a2' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'Catch_All@00be66a2' does not start with a recognized verb. First word 'Catch_' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00be66a2",
+        "prototype": "undefined Catch_All@00be66a2(void)",
+        "calling_convention": "unknown"
+      }
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00be66a2",
+        "comment": ""
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00be66a2\"}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00be66a2",
+        "comment": ""
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00be66a2\"}"
+    },
+    {
+      "endpoint": "clear_instruction_flow_override",
+      "body": {
+        "address": "00be66a6"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Cleared flow override at 00be66a6 (was: NONE, now: NONE)\"}"
+    },
+    {
+      "endpoint": "delete_function",
+      "body": {
+        "address": "00be66a2"
+      },
+      "result": "{\"success\": true, \"address\": \"00be66a2\", \"deleted_function\": \"Catch_All@00be66a2\", \"body_size\": 9, \"message\": \"Function 'Catch_All@00be66a2' deleted at 00be66a2\"}"
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00be66a2",
+        "end_address": "00be66b7"
+      },
+      "result": "{\"success\": true, \"start_address\": \"00be66a2\", \"end_address\": \"00be66b6\", \"bytes_disassembled\": 21, \"message\": \"Successfully disassembled 21 byte(s)\"}"
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00be66a2",
+        "name": "Catch_All@00be66a2",
+        "disassemble_first": false
+      },
+      "result": "{\"success\": true, \"address\": \"00be66a2\", \"function_name\": \"Catch_All@00be66a2\", \"entry_point\": \"00be66a2\", \"body_size\": 21, \"message\": \"Function created successfully at 00be66a2\", \"warnings\": [\"Function name 'Catch_All@00be66a2' \\u2014 main part 'Catch_All@00be66a2' is not PascalCase. Expected: CatchAll@00be66a2\", \"Function name 'Catch_All@00be66a2' \\u2014 main part 'Catch_All@00be66a2' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'Catch_All@00be66a2' does not start with a recognized verb. First word 'Catch_' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00be66a2",
+        "prototype": "void __cdecl ReviewedCatch(void)",
+        "calling_convention": "__cdecl"
+      },
+      "result": "Successfully set prototype for function at 00be66a2 with __cdecl calling convention"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00be66a2",
+        "new_name": "Catch_All@00be66a2"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00be66a2 from 'Catch_All@00be66a2' to 'Catch_All@00be66a2'\", \"warnings\": [\"Function name 'Catch_All@00be66a2' \\u2014 main part 'Catch_All@00be66a2' is not PascalCase. Expected: CatchAll@00be66a2\", \"Function name 'Catch_All@00be66a2' \\u2014 main part 'Catch_All@00be66a2' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'Catch_All@00be66a2' does not start with a recognized verb. First word 'Catch_' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00be66a2",
+        "comment": ""
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00be66a2\"}"
+    },
+    {
+      "endpoint": "clear_instruction_flow_override",
+      "body": {
+        "address": "00be6612"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Cleared flow override at 00be6612 (was: CALL_RETURN, now: NONE)\"}"
+    },
+    {
+      "endpoint": "delete_function",
+      "body": {
+        "address": "00be660e"
+      },
+      "result": "{\"success\": true, \"address\": \"00be660e\", \"deleted_function\": \"Catch_All@00be660e\", \"body_size\": 9, \"message\": \"Function 'Catch_All@00be660e' deleted at 00be660e\"}"
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00be660e",
+        "end_address": "00be6623"
+      },
+      "result": "{\"success\": true, \"start_address\": \"00be660e\", \"end_address\": \"00be6622\", \"bytes_disassembled\": 21, \"message\": \"Successfully disassembled 21 byte(s)\"}"
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00be660e",
+        "name": "Catch_All@00be660e",
+        "disassemble_first": false
+      },
+      "result": "{\"success\": true, \"address\": \"00be660e\", \"function_name\": \"Catch_All@00be660e\", \"entry_point\": \"00be660e\", \"body_size\": 21, \"message\": \"Function created successfully at 00be660e\", \"warnings\": [\"Function name 'Catch_All@00be660e' \\u2014 main part 'Catch_All@00be660e' is not PascalCase. Expected: CatchAll@00be660e\", \"Function name 'Catch_All@00be660e' \\u2014 main part 'Catch_All@00be660e' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'Catch_All@00be660e' does not start with a recognized verb. First word 'Catch_' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00be660e",
+        "prototype": "void __cdecl ReviewedCatch(void)",
+        "calling_convention": "__cdecl"
+      },
+      "result": "Successfully set prototype for function at 00be660e with __cdecl calling convention"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00be660e",
+        "new_name": "Catch_All@00be660e"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00be660e from 'Catch_All@00be660e' to 'Catch_All@00be660e'\", \"warnings\": [\"Function name 'Catch_All@00be660e' \\u2014 main part 'Catch_All@00be660e' is not PascalCase. Expected: CatchAll@00be660e\", \"Function name 'Catch_All@00be660e' \\u2014 main part 'Catch_All@00be660e' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'Catch_All@00be660e' does not start with a recognized verb. First word 'Catch_' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00be660e",
+        "comment": ""
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00be660e\"}"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": "{\"success\": true, \"program\": \"battlestationspacific.exe\", \"message\": \"Program saved successfully\"}"
+    }
+  ],
+  "state": "complete_catch_membership_saved_prior_evidence_preserved"
+}

@@ -816,7 +816,8 @@ void GameFrameHost::request_loop_exit() {
 }
 
 void GameFrameHost::tick_vfs_providers() {
-    log_.unimplemented("ApplicationFrameHost::tick_vfs_providers", "00bdb0b0");
+    vfs_.pump_pending();
+    log_.implemented("ApplicationFrameHost::tick_vfs_providers", "00bdb0b0");
 }
 
 void GameFrameHost::update_loading_queue() {
@@ -1615,7 +1616,7 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
 
     loop_.frames_enabled = platform_.frames_enabled;
     frame_host_ = new GameFrameHost(log_, clock_, platform_, loop_, game_state_, profiler_,
-        menu_);
+        menu_, *vfs_);
     std::function<void(IDirect3DDevice9&)> capture;
     if (!options_.screenshot_path.empty()) {
         GameFrontendHost* frontend_host = frontend_;

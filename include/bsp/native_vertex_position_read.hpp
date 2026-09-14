@@ -43,4 +43,28 @@ void unpack_native_position_9bit_00475f80(std::uint32_t packed, float* output);
 bool read_native_vertex_position_004768d0(void* actual_logical_vertex_stream,
     std::uint32_t vertex_index, float (&output)[3],
     const NativeD3dx9Float16Import& actual_half_import);
+
+// Same borrowed storage/import contract. Normal fields are +1C/+20/+24;
+// initialized decoded types are2,4,5,7,8,10,12,13,16. Type3 is NOT initialized.
+// The first scale multiplication loads the decoded lane before its scale.
+// Native ECX stream, stack output/index, EAX output, RET8; new C++ ABI.
+bool read_native_vertex_normal_0070fdb0(void* actual_logical_vertex_stream,
+    std::uint32_t vertex_index, float (&output)[3],
+    const NativeD3dx9Float16Import& actual_half_import);
+
+// UV fields +28/+2C/+30, initialized decoded types1,6,9,11,15. Short types
+// read TWO DWORDs and convert THREE lanes even though output has two lanes.
+// Unsupported decoded types return false without output writes, matching the
+// position reader's explicit boundary around native uninitialized scratch.
+bool read_native_vertex_uv_007100a0(void* actual_logical_vertex_stream,
+    std::uint32_t vertex_index, float (&output)[2],
+    const NativeD3dx9Float16Import& actual_half_import);
+
+// Packed offset+34 >=0 copies a DWORD. Otherwise actual float offsets+38/3C/
+// 40/44 supply output byte2/1/0/3. Each value is multiplied by double255 then
+// converted with temporary x87 truncation; low bytes wrap, without clamping.
+// Native control word is restored after each conversion. Valid backing and
+// masked floating exceptions are required; exception/fault delivery unproved.
+void read_native_vertex_colour_00476180(void* actual_logical_vertex_stream,
+    std::uint32_t vertex_index, std::uint32_t& output);
 } // namespace bsp

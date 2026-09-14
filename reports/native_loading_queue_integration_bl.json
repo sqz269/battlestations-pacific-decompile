@@ -1,0 +1,92 @@
+{
+  "packet": "orch4_native_loading_integration_bl",
+  "status": "integrated_independently_reviewed_win32_built_focused_source_fixtures_checked_production_loader_unbound",
+  "remove_worker": "ee981882209a58e76664e14f1d89bec9dddf2f5c",
+  "remove_source_commit": "4183dd69",
+  "remove_review": {
+    "source_header_match": true,
+    "frozen_inputs_verified": 45,
+    "artifacts_verified": 36,
+    "direct_call_rows": 8,
+    "failed": 0,
+    "native_spans_bytes": 281,
+    "fixture_domain": "source behavior over actual native storage, original read-only data spans, and real 257-byte physical file IO; does not execute original BE7130 code"
+  },
+  "ghidra_repairs": [
+    "reports/native_loading_queue_flow_bl.json",
+    "reports/native_loading_queue_storage_flow_bl.json",
+    "reports/native_loading_queue_owner_cleanup_bl.json",
+    "reports/native_loading_queue_enqueue_cleanup_bl.json",
+    "reports/native_filestore_remove_prototype_bl.json",
+    "reports/native_loading_queue_eh_definitions_bl.json"
+  ],
+  "limits": [
+    "Production loading queue update/lifecycle, FileBlock and actual resource loading remain unbound.",
+    "Source fixtures and compilation are distinct from original instruction execution, ABI/FH3/SEH identity and gameplay validation.",
+    "Owner scheduling fixture substitutes isolated services; actual-provider smoke is recorded separately.",
+    "Frozen fixture libraries pin the earlier BK library, not the subsequently rebuilt BL library.",
+    "Original allocation/leak/cleanup order is preserved; private native stack aliases and throwing cleanup remain qualified in the worker reports."
+  ],
+  "code_revision": "4c83a7605bd150dc8d4380e8ec3951619420ca48",
+  "source_manifest": {
+    "path": "local/native_loading_queue_bl_source_4c83a7605bd1.json",
+    "files": 2558,
+    "sha256": "1e19256a86174bd2f24d9fb5edc0b903696121a063ec01663b53393a6a4d3208",
+    "normalization": "Git diff validates repository-normalized source; manifest hashes actual build working bytes."
+  },
+  "worker_commits": {
+    "remove": "ee981882209a58e76664e14f1d89bec9dddf2f5c",
+    "owner": "de1cb16c93d69da1ba015d79cfefe1600b51820d",
+    "storage": "41bb24abfac52e021d62e421abb26c9a00e74037",
+    "fileblock_frontier": "2686c7f4c0a995568ef8e0bd97692b968021bbe2"
+  },
+  "primary_build": {
+    "command": "./scripts/build.ps1",
+    "win32": true,
+    "configuration": "Release",
+    "new_translation_units": 3,
+    "passed": true,
+    "existing_ctests_passed": 2,
+    "log": "local/native_loading_queue_integration_bl_build.log"
+  },
+  "source_artifact_review": {
+    "owner_source_artifacts": 3,
+    "owner_ignored_artifacts": 7,
+    "storage_artifacts": 8,
+    "frozen_libraries_verified": 2,
+    "integrated_source_headers_match": true,
+    "observation": "Verified worker artifacts before appended primary documentation corrections; frozen libraries pin historicalBK source, not currentBL library."
+  },
+  "call_checks": {
+    "remove": 8,
+    "owner": 10,
+    "storage": 31,
+    "source_rows": 49,
+    "frontier_audit_rows": 143,
+    "failed": 0,
+    "log": "local/native_loading_queue_primary_calls_bl.log",
+    "scope": "Imported/indirect calls remain separate listing evidence, not direct-call verifier rows."
+  },
+  "ghidra_annotations": {
+    "report": "reports/native_loading_queue_annotations_bl.json",
+    "source_bodies": 14,
+    "source_bytes": 1737,
+    "evidence_handlers": 7,
+    "repaired_unwind_funclets": 2,
+    "previous_comments_preserved": true,
+    "project_saved": true,
+    "exports_refreshed": true
+  },
+  "current_production_run": "No new game run for this source-only batch. The preceding BK report records the bounded native provider-pump mission at96d910d5. This batch does not connect a loader or exercise asynchronous gameplay loading.",
+  "permanent_tests_added": false,
+  "artifacts": {
+    "local/native_loading_queue_integration_bl_build.log": "4f6c50cf0d027b6fabf60956fa2ebd1a36a063d0e9543f306b33281db9ff9614",
+    "local/native_loading_queue_primary_calls_bl.log": "ba6c230afe8a099591f0c5ff4816bc17282c5f4123cc648737c71e5e8ec8fe5a",
+    "local/native_loading_queue_bl_source_4c83a7605bd1.json": "1e19256a86174bd2f24d9fb5edc0b903696121a063ec01663b53393a6a4d3208",
+    "reports/native_loading_queue_annotations_bl.json": "d3512df1fd232cba71657eb8bcc9347649d259fa394ff7bfc24eaac64a837540",
+    "build/win32/Release/bsp_core.lib": "134578367593f74415bb6fd12b51d103dfc6575dcb94d2f692640dde69c78251",
+    "build/win32/Release/bsp_game.exe": "b2f5c8b3accb338b993b7f6dd28f8261dce4e054ffb92a4a6c81ef010382f127",
+    "build/win32/bsp_game.map": "a68a56a481bad077801cea337ffabba7d7e6825373252824e8080f3345248c40",
+    "local/native_loading_queue_artifact_review_bl.json": "de4e1fbeadadce5bb56287297958f4c6aecf227b278ca569a67f91807246acea"
+  }
+}

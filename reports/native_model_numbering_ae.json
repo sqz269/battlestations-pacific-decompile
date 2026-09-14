@@ -1,0 +1,936 @@
+{
+  "packet": "orch6_model_numbering_ae",
+  "source": "src/native_model_numbering.cpp",
+  "entries": [
+    {
+      "address": "00711510",
+      "name": "set_native_section_numbering_00711510",
+      "ghidra_name": "BSP_DrawSection_SetNumbering",
+      "bytes": 1296,
+      "status": "complete_supported_normal_caller_build_checked_vertex_loop_original_byte_fixture_tested"
+    },
+    {
+      "address": "00711a20",
+      "name": "set_native_node_numbering_00711a20",
+      "ghidra_name": "BSP_SceneNode_SetNumberingRecursive",
+      "bytes": 440,
+      "status": "complete_normal_caller_build_checked_actual_node_type_dispatch_required"
+    },
+    {
+      "address": "00711be0",
+      "name": "set_native_model_numbering_00711be0",
+      "ghidra_name": "BSP_ModelInstance_SetNumbering",
+      "bytes": 21,
+      "status": "complete_wrapper_build_checked_runtime_binding_required"
+    }
+  ],
+  "original_abi": {
+    "00711510": "ECX mesh, EDX section, stack unsigned number, RET4",
+    "00711a20": "ECX node, EDX number, RET",
+    "00711be0": "ECX model, stack number, RET4"
+  },
+  "native": {
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "spans": [
+      {
+        "address": "00711510",
+        "bytes": 1296,
+        "sha256": "0d00fe71e221c4df02b51e50208a1c21c74e6543070839a0a2d0cd6b80005b16",
+        "storage": "PE file bytes",
+        "live_loaded_image_equal": true
+      },
+      {
+        "address": "00711a20",
+        "bytes": 440,
+        "sha256": "c5a13ef0fba44c35e826ac4cd7415cb7183d540c58950e6ad0092798ecb65add",
+        "storage": "PE file bytes",
+        "live_loaded_image_equal": true
+      },
+      {
+        "address": "00711be0",
+        "bytes": 21,
+        "sha256": "d2aedc036649e522e83dab63641aa66e0f08be864dafc1c48b6dc059e4e1667f",
+        "storage": "PE file bytes",
+        "live_loaded_image_equal": true
+      },
+      {
+        "address": "00710630",
+        "bytes": 43,
+        "sha256": "fb310d52f9c0a2a9f3c5982ed0bd0daf56fa8917c5ad5623a29d5d6476247726",
+        "storage": "PE file bytes",
+        "live_loaded_image_equal": true
+      },
+      {
+        "address": "00ce9c1c",
+        "bytes": 5,
+        "sha256": "90f8906f8ba348783621c2f52c8672286fad17c6df121b9653545d1f16f0759c",
+        "storage": "PE file bytes",
+        "live_loaded_image_equal": true
+      },
+      {
+        "address": "00cfd774",
+        "bytes": 6,
+        "sha256": "e2c09ee219603f415aed24ac0993e468c919046cbefae4659db6e5dda78aacc6",
+        "storage": "PE file bytes",
+        "live_loaded_image_equal": true
+      },
+      {
+        "address": "00cfd77c",
+        "bytes": 10,
+        "sha256": "b74c9fd7b2d4a66d265cae5e05b9cdac250bcef46dfafb3ffbfbe979cc5fa484",
+        "storage": "PE file bytes",
+        "live_loaded_image_equal": true
+      },
+      {
+        "address": "00cfd788",
+        "bytes": 19,
+        "sha256": "9ba246c231491a4ace71556adf9cbfe8081a3de9914092b5ca3b65590fcf7140",
+        "storage": "PE file bytes",
+        "live_loaded_image_equal": true
+      },
+      {
+        "address": "00cfd79c",
+        "bytes": 11,
+        "sha256": "8b65b502080809ddb46421717e5ce67a84707cb3b09da98cb00f1a2822fd2a67",
+        "storage": "PE file bytes",
+        "live_loaded_image_equal": true
+      },
+      {
+        "address": "00cfd7a8",
+        "bytes": 6,
+        "sha256": "8a0b89c61ee1e9bf4916be134d244a04a71853327a4fd69b96acfb0bcd8ca8f4",
+        "storage": "PE file bytes",
+        "live_loaded_image_equal": true
+      },
+      {
+        "address": "00e19b4f",
+        "bytes": 1,
+        "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d",
+        "storage": "PE virtual zero fill",
+        "live_loaded_image_equal": true
+      },
+      {
+        "address": "00f8c26c",
+        "bytes": 4,
+        "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+        "storage": "PE virtual zero fill",
+        "live_loaded_image_equal": true
+      }
+    ],
+    "calls": [
+      {
+        "address": "0071155d",
+        "native": "00b33e40",
+        "function": "00711510"
+      },
+      {
+        "address": "00711571",
+        "native": "00bf9440",
+        "function": "00711510"
+      },
+      {
+        "address": "0071159d",
+        "native": "00b33e40",
+        "function": "00711510"
+      },
+      {
+        "address": "007115b5",
+        "native": "00bf9440",
+        "function": "00711510"
+      },
+      {
+        "address": "00711643",
+        "native": "0041e870",
+        "function": "00711510"
+      },
+      {
+        "address": "0071167a",
+        "native": "0041dd20",
+        "function": "00711510"
+      },
+      {
+        "address": "0071169d",
+        "native": "00710630",
+        "function": "00711510"
+      },
+      {
+        "address": "007116d3",
+        "native": "00aefb20",
+        "function": "00711510"
+      },
+      {
+        "address": "007116e1",
+        "native": "00b189f0",
+        "function": "00711510"
+      },
+      {
+        "address": "0071171c",
+        "native": "004768d0",
+        "function": "00711510"
+      },
+      {
+        "address": "00711740",
+        "native": "0070fdb0",
+        "function": "00711510"
+      },
+      {
+        "address": "0071177e",
+        "native": "007100a0",
+        "function": "00711510"
+      },
+      {
+        "address": "007117a0",
+        "native": "00476180",
+        "function": "00711510"
+      },
+      {
+        "address": "00711829",
+        "native": "00b73bb0",
+        "function": "00711510"
+      },
+      {
+        "address": "00711849",
+        "native": "00b865a0",
+        "function": "00711510"
+      },
+      {
+        "address": "0071188c",
+        "native": "0041e870",
+        "function": "00711510"
+      },
+      {
+        "address": "007118a1",
+        "native": "00711370",
+        "function": "00711510"
+      },
+      {
+        "address": "007118b9",
+        "native": "0041e870",
+        "function": "00711510"
+      },
+      {
+        "address": "007118ce",
+        "native": "004261a0",
+        "function": "00711510"
+      },
+      {
+        "address": "007118e7",
+        "native": "004261a0",
+        "function": "00711510"
+      },
+      {
+        "address": "00711907",
+        "native": "00419cc0",
+        "function": "00711510"
+      },
+      {
+        "address": "0071190e",
+        "native": "00bd1510",
+        "function": "00711510"
+      },
+      {
+        "address": "0071192e",
+        "native": "00419cc0",
+        "function": "00711510"
+      },
+      {
+        "address": "00711935",
+        "native": "00bd1510",
+        "function": "00711510"
+      },
+      {
+        "address": "00711955",
+        "native": "00419cc0",
+        "function": "00711510"
+      },
+      {
+        "address": "0071195c",
+        "native": "00bd1510",
+        "function": "00711510"
+      },
+      {
+        "address": "0071197c",
+        "native": "00419cc0",
+        "function": "00711510"
+      },
+      {
+        "address": "00711983",
+        "native": "00bd1510",
+        "function": "00711510"
+      },
+      {
+        "address": "0071199c",
+        "native": "00aefb20",
+        "function": "00711510"
+      },
+      {
+        "address": "007119fd",
+        "native": "00419cc0",
+        "function": "00711510"
+      },
+      {
+        "address": "00711a04",
+        "native": "00bd1510",
+        "function": "00711510"
+      },
+      {
+        "address": "00711a34",
+        "native": "00b74310",
+        "function": "00711a20"
+      },
+      {
+        "address": "00711a5a",
+        "native": "00b74650",
+        "function": "00711a20"
+      },
+      {
+        "address": "00711a73",
+        "native": "00b74640",
+        "function": "00711a20"
+      },
+      {
+        "address": "00711a7e",
+        "native": "00b72b40",
+        "function": "00711a20"
+      },
+      {
+        "address": "00711a93",
+        "native": "00b732c0",
+        "function": "00711a20"
+      },
+      {
+        "address": "00711a9e",
+        "native": "00b172d0",
+        "function": "00711a20"
+      },
+      {
+        "address": "00711ab6",
+        "native": "00bf9440",
+        "function": "00711a20"
+      },
+      {
+        "address": "00711ae0",
+        "native": "00b33e40",
+        "function": "00711a20"
+      },
+      {
+        "address": "00711af4",
+        "native": "00bf9440",
+        "function": "00711a20"
+      },
+      {
+        "address": "00711b16",
+        "native": "00b33e40",
+        "function": "00711a20"
+      },
+      {
+        "address": "00711b2a",
+        "native": "00bf9440",
+        "function": "00711a20"
+      },
+      {
+        "address": "00711b54",
+        "native": "00b732c0",
+        "function": "00711a20"
+      },
+      {
+        "address": "00711b5d",
+        "native": "00711510",
+        "function": "00711a20"
+      },
+      {
+        "address": "00711b67",
+        "native": "00b72b40",
+        "function": "00711a20"
+      },
+      {
+        "address": "00711b85",
+        "native": "00b74650",
+        "function": "00711a20"
+      },
+      {
+        "address": "00711bb2",
+        "native": "00b6da70",
+        "function": "00711a20"
+      },
+      {
+        "address": "00711bc6",
+        "native": "00711a20",
+        "function": "00711a20"
+      },
+      {
+        "address": "00711bed",
+        "native": "00711a20",
+        "function": "00711be0"
+      },
+      {
+        "address": "0087bf43",
+        "native": "00711be0",
+        "function": "0087bcc0"
+      },
+      {
+        "address": "00507e54",
+        "native": "00711be0",
+        "function": "005072c0"
+      },
+      {
+        "address": "00876222",
+        "native": "00711be0",
+        "function": "008761e0"
+      }
+    ],
+    "patches": [
+      {
+        "address": 7410963,
+        "target": 13125920,
+        "kind": "absolute immediate"
+      },
+      {
+        "address": 7411052,
+        "target": 13621160,
+        "kind": "absolute immediate"
+      },
+      {
+        "address": 7411120,
+        "target": 13621148,
+        "kind": "absolute immediate"
+      },
+      {
+        "address": 7411259,
+        "target": 13621128,
+        "kind": "absolute immediate"
+      },
+      {
+        "address": 7411274,
+        "target": 16307092,
+        "kind": "absolute memory"
+      },
+      {
+        "address": 7411329,
+        "target": 16307092,
+        "kind": "absolute memory"
+      },
+      {
+        "address": 7411398,
+        "target": 16302700,
+        "kind": "absolute memory"
+      },
+      {
+        "address": 7411403,
+        "target": 13621116,
+        "kind": "absolute immediate"
+      },
+      {
+        "address": 7411764,
+        "target": 13509152,
+        "kind": "absolute memory"
+      },
+      {
+        "address": 7411844,
+        "target": 13540380,
+        "kind": "absolute immediate"
+      },
+      {
+        "address": 7411881,
+        "target": 13621108,
+        "kind": "absolute immediate"
+      },
+      {
+        "address": 7412119,
+        "target": 16302700,
+        "kind": "absolute memory"
+      }
+    ],
+    "oracle_entry": "007116e6",
+    "oracle_exit": "0071180e",
+    "oracle_exit_replacement": "five-byte jump to harness continuation",
+    "oracle_scope": "Only the vertex loop and digit/atlas branches execute; factories, mapping, ownership and wrapper traversal are not oracle-tested here."
+  },
+  "calls": [
+    {
+      "address": "0071155d",
+      "native": "00b33e40",
+      "function": "00711510"
+    },
+    {
+      "address": "00711571",
+      "native": "00bf9440",
+      "function": "00711510"
+    },
+    {
+      "address": "0071159d",
+      "native": "00b33e40",
+      "function": "00711510"
+    },
+    {
+      "address": "007115b5",
+      "native": "00bf9440",
+      "function": "00711510"
+    },
+    {
+      "address": "00711643",
+      "native": "0041e870",
+      "function": "00711510"
+    },
+    {
+      "address": "0071167a",
+      "native": "0041dd20",
+      "function": "00711510"
+    },
+    {
+      "address": "0071169d",
+      "native": "00710630",
+      "function": "00711510"
+    },
+    {
+      "address": "007116d3",
+      "native": "00aefb20",
+      "function": "00711510"
+    },
+    {
+      "address": "007116e1",
+      "native": "00b189f0",
+      "function": "00711510"
+    },
+    {
+      "address": "0071171c",
+      "native": "004768d0",
+      "function": "00711510"
+    },
+    {
+      "address": "00711740",
+      "native": "0070fdb0",
+      "function": "00711510"
+    },
+    {
+      "address": "0071177e",
+      "native": "007100a0",
+      "function": "00711510"
+    },
+    {
+      "address": "007117a0",
+      "native": "00476180",
+      "function": "00711510"
+    },
+    {
+      "address": "00711829",
+      "native": "00b73bb0",
+      "function": "00711510"
+    },
+    {
+      "address": "00711849",
+      "native": "00b865a0",
+      "function": "00711510"
+    },
+    {
+      "address": "0071188c",
+      "native": "0041e870",
+      "function": "00711510"
+    },
+    {
+      "address": "007118a1",
+      "native": "00711370",
+      "function": "00711510"
+    },
+    {
+      "address": "007118b9",
+      "native": "0041e870",
+      "function": "00711510"
+    },
+    {
+      "address": "007118ce",
+      "native": "004261a0",
+      "function": "00711510"
+    },
+    {
+      "address": "007118e7",
+      "native": "004261a0",
+      "function": "00711510"
+    },
+    {
+      "address": "00711907",
+      "native": "00419cc0",
+      "function": "00711510"
+    },
+    {
+      "address": "0071190e",
+      "native": "00bd1510",
+      "function": "00711510"
+    },
+    {
+      "address": "0071192e",
+      "native": "00419cc0",
+      "function": "00711510"
+    },
+    {
+      "address": "00711935",
+      "native": "00bd1510",
+      "function": "00711510"
+    },
+    {
+      "address": "00711955",
+      "native": "00419cc0",
+      "function": "00711510"
+    },
+    {
+      "address": "0071195c",
+      "native": "00bd1510",
+      "function": "00711510"
+    },
+    {
+      "address": "0071197c",
+      "native": "00419cc0",
+      "function": "00711510"
+    },
+    {
+      "address": "00711983",
+      "native": "00bd1510",
+      "function": "00711510"
+    },
+    {
+      "address": "0071199c",
+      "native": "00aefb20",
+      "function": "00711510"
+    },
+    {
+      "address": "007119fd",
+      "native": "00419cc0",
+      "function": "00711510"
+    },
+    {
+      "address": "00711a04",
+      "native": "00bd1510",
+      "function": "00711510"
+    },
+    {
+      "address": "00711a34",
+      "native": "00b74310",
+      "function": "00711a20"
+    },
+    {
+      "address": "00711a5a",
+      "native": "00b74650",
+      "function": "00711a20"
+    },
+    {
+      "address": "00711a73",
+      "native": "00b74640",
+      "function": "00711a20"
+    },
+    {
+      "address": "00711a7e",
+      "native": "00b72b40",
+      "function": "00711a20"
+    },
+    {
+      "address": "00711a93",
+      "native": "00b732c0",
+      "function": "00711a20"
+    },
+    {
+      "address": "00711a9e",
+      "native": "00b172d0",
+      "function": "00711a20"
+    },
+    {
+      "address": "00711ab6",
+      "native": "00bf9440",
+      "function": "00711a20"
+    },
+    {
+      "address": "00711ae0",
+      "native": "00b33e40",
+      "function": "00711a20"
+    },
+    {
+      "address": "00711af4",
+      "native": "00bf9440",
+      "function": "00711a20"
+    },
+    {
+      "address": "00711b16",
+      "native": "00b33e40",
+      "function": "00711a20"
+    },
+    {
+      "address": "00711b2a",
+      "native": "00bf9440",
+      "function": "00711a20"
+    },
+    {
+      "address": "00711b54",
+      "native": "00b732c0",
+      "function": "00711a20"
+    },
+    {
+      "address": "00711b5d",
+      "native": "00711510",
+      "function": "00711a20"
+    },
+    {
+      "address": "00711b67",
+      "native": "00b72b40",
+      "function": "00711a20"
+    },
+    {
+      "address": "00711b85",
+      "native": "00b74650",
+      "function": "00711a20"
+    },
+    {
+      "address": "00711bb2",
+      "native": "00b6da70",
+      "function": "00711a20"
+    },
+    {
+      "address": "00711bc6",
+      "native": "00711a20",
+      "function": "00711a20"
+    },
+    {
+      "address": "00711bed",
+      "native": "00711a20",
+      "function": "00711be0"
+    },
+    {
+      "address": "0087bf43",
+      "native": "00711be0",
+      "function": "0087bcc0"
+    },
+    {
+      "address": "00507e54",
+      "native": "00711be0",
+      "function": "005072c0"
+    },
+    {
+      "address": "00876222",
+      "native": "00711be0",
+      "function": "008761e0"
+    }
+  ],
+  "no_ghidra_function": [],
+  "reused": [
+    "existing raw NativeNodeStorage, NativeModelTailStorage, NativeMeshStorage and NativeMeshSectionStorage",
+    "GuiTextNativeRendererServices concrete current38/5C, declaration cache and logical vertex factory",
+    "NativeLogicalBufferMappingContext current B49980/B49A80",
+    "existing native string constructors, unsigned formatting and concatenation",
+    "actual raw atlas lookup, texture name/effect name leaves, material texture setter",
+    "existing owner release, mesh stream setter, section layout rebuild and node visibility"
+  ],
+  "verification": {
+    "loop_comparisons": 128,
+    "vertices_compared": 1280,
+    "storage_images": 256,
+    "fp_status_mask": "3a7f",
+    "source_zero_count_checks": 1,
+    "declared_operand_edits": 82,
+    "control_transfer_replacements": 1,
+    "scope": "Native vertex loop and original reader bodies; shared production string/atlas callees via recorded adapters. Factory, mapping, full caller lifetime, recursion, SEH and gameplay are not executed by this oracle."
+  },
+  "build": {
+    "win32": true,
+    "existing_ctests_passed": 2,
+    "log": "local/model_numbering_ae_final_build.txt"
+  },
+  "limits": [
+    "New C++ interfaces, not original register ABI or FH3/SEH replacements.",
+    "Current D61D6C stream slots, real renderer/layout domain and actual node type dispatch are required.",
+    "Original uninitialized reader formats, invalid storage and unmasked FP fault delivery are not implemented as source fallbacks.",
+    "Loop oracle shares source string/atlas callees through recorded adapters; factory, mapping, owner lifetime and recursive traversal are not executed by it.",
+    "The existing unit-health provider still needs live service composition; no runtime admission or gameplay/render parity claim."
+  ],
+  "proof": {
+    "manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\model_numbering_ae\\manifest.json",
+      "bytes": 267595,
+      "sha256": "0f4ad6168bbc4af2dfe353f7f29da0a885fb8ca50df318b8f5b588db4fe8f8eb"
+    },
+    "probe": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\model_numbering_ae\\probe.exe",
+      "bytes": 199168,
+      "sha256": "a5432816fdcf22b1a0e5c9dd7c953ac5b65d09b86c3939589077e23fab060cf7"
+    },
+    "production_object": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\build\\win32\\bsp_core.dir\\Release\\native_model_numbering.obj",
+      "bytes": 27150,
+      "sha256": "a0037d5280a5a3ca6d45ac5e9c767a2c7fcb55aa13cf8a2a091da4f1bcec9d75"
+    },
+    "retained_inputs": 638,
+    "artifacts": 81,
+    "archive_members": 45,
+    "native_seed_matches": 8,
+    "saved_annotations": 3,
+    "unique_direct_call_rows": 52,
+    "mechanical_call_checks": 104,
+    "call_check_note": "The 52 unique rows occur in both native evidence and the top-level list; every check passes."
+  },
+  "integration": {
+    "compiled_commit": "755470a9b91d3a573067f04086af84eae09b4336",
+    "win32_build": true,
+    "existing_ctests_passed": 2,
+    "runtime": {
+      "compiled_commit": "755470a9b91d3a573067f04086af84eae09b4336",
+      "run_commit": "755470a9b91d3a573067f04086af84eae09b4336",
+      "compiled_input_drift": [],
+      "args": [
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\orch6_combined_755470a9.exe",
+        "--frames",
+        "360",
+        "--press-start-frame",
+        "3",
+        "--menu-select",
+        "USN01",
+        "--mission-frames",
+        "120",
+        "--mission-frame-seconds",
+        "0.1",
+        "--game-root",
+        "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific",
+        "--fmod-dll",
+        "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\fmodex.dll",
+        "--fmod-event-dll",
+        "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\fmod_event.dll",
+        "--xlive-dll",
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\gfwl-private-runtime\\xlive.dll",
+        "--xlive-dependency",
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\gfwl-private-runtime\\msidcrl40.dll",
+        "--log",
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\orch6_combined_ae.log",
+        "--order-frame",
+        "0",
+        "--order-unit",
+        "Enterprise",
+        "--order",
+        "moveto:Airfield2",
+        "--trajectory-csv",
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\orch6_combined_ae.csv"
+      ],
+      "exe_sha256": "0223562b72049b99c307d722eb941948617eda10e7d4363266c7e3f0196fdfd9",
+      "preserved_executable": "local\\orch6_combined_755470a9.exe",
+      "source_sha256": {
+        "src/game_hosts_ship_ai.cpp": "d13cf757bd05be794cf8fc7f7fc8fe99ec40f8b4d8fedc9adece77b251a985e3",
+        "src/game_hosts_units.cpp": "753659a4da3654b78ff13fd3b3dbb3881f5061baebcc81245fb8f1a93f365f0c",
+        "src/game_hosts_lua.cpp": "79cb6c63897d4aeac41b67e372f25194ff091b9f0b1ce840df93d43df04ac275",
+        "src/game_avoid_zone_runtime.cpp": "6bac077630082ea2097f53078dcf59bbdeb0fcd5d3260250a92ada5e18c0241b",
+        "src/ship_ai_avoidance_request.cpp": "ac52fdb77798b31f10b6a1927b80d6357844186c2bce0a38176827320df863fc",
+        "src/ship_ai_search_storage.cpp": "5fcc7208710274d7ef3523e23cc1ae74d4483225fd1842373d6066e5808f20e4",
+        "src/session_participant_pools.cpp": "4b3caa17635856f7f32fce4f2af65bc56c96fcde096716374a78a1912956a697",
+        "src/game_ship_avoidance_tuning_lua.cpp": "85243079baf1f442ce313cfd9825fab73fe94920c2087165847bcb494aa8840e",
+        "src/game_hosts_mission_frame.cpp": "650678575f86a3ecdad80750d1ef6aaab7b0245e2e178396b0c26f195606b2d9",
+        "src/game_hosts.cpp": "4cfd11e6aadca4c000bb4fd37ac7444644354bc39a9efca3b09fc96ad188575f",
+        "src/game_hosts_ready.cpp": "e7d4c0d14f4efbfb37b4066c33a9bea10513f4b260a3d32ae7e1d7952e044e8c",
+        "src/game_pending_entity_runtime.cpp": "35124d70097985f350b412243bcce14204b308e43ad16d1102e6274f9dc92236",
+        "include/bsp/game_pending_entity_runtime.hpp": "16292f64307a3de3c93fd96606daad31f31a079e180e6bbb3a2b5e050c546303",
+        "src/game_hosts_menu.cpp": "55e4a8d91840389ada9bb3fb1e719eee782b7bffd95bbedcd50b0f5a528e2f0a",
+        "src/native_pending_entity_lock.cpp": "2b3a8b04354b0733b934a7bc39bd4b455784be805fa706b4feff3b885e17807a",
+        "src/native_singleton_destruction.cpp": "97a91e06f17730a88b0ab06af96ea5ac1fcb296538981f3785dc2a2c991be6f8"
+      },
+      "process_check": "No matching reconstructed game process before launch",
+      "exit": 0,
+      "seconds": 10.45143747329712,
+      "trajectory_audit": {
+        "rows": 18557,
+        "nonfinite_rows": 0,
+        "nonfinite_units": [],
+        "airfield_samples": 241,
+        "airfield_unchanged": true
+      },
+      "avoidance_search": {
+        "queries": 2400,
+        "refills": 10,
+        "clears": 12
+      },
+      "cruise_owners": {
+        "reads": 1080,
+        "unavailable": 0
+      },
+      "generic_tick": {
+        "calls": 10080,
+        "unavailable": 0,
+        "units": 42,
+        "input_one": 42
+      },
+      "participant_pool": {
+        "scene_present": 1,
+        "scene_slots": 8,
+        "mode": 0
+      },
+      "world_registration": {
+        "unavailable": 0,
+        "nodes": 420,
+        "invalid_lists": 0,
+        "ships": 14,
+        "planes": 20
+      },
+      "world_expected_from_native_report": {
+        "created": 77,
+        "unknown": [],
+        "nodes": 420,
+        "counts": {
+          "1": 77,
+          "2": 77,
+          "4": 77,
+          "5": 77,
+          "6": 14,
+          "7": 4,
+          "9": 1,
+          "10": 3,
+          "11": 6,
+          "15": 20,
+          "16": 6,
+          "17": 4,
+          "18": 5,
+          "22": 5,
+          "27": 42,
+          "28": 1,
+          "69": 1
+        }
+      },
+      "observer_runtime": {
+        "initialized": true,
+        "drained": true
+      },
+      "unit_observer_lifetime": {
+        "units": 77,
+        "callback_then_observed": true,
+        "dispatch_owner_live_through_teardown": true,
+        "teardown_before_manager_drain": true
+      },
+      "pending_entity_runtime": {
+        "initial_counts": [
+          0,
+          0
+        ],
+        "atexit_status": [
+          0,
+          0
+        ],
+        "final_counts": [
+          0,
+          0
+        ],
+        "frame_passes": 240,
+        "storage": "same process raw24h owner pair",
+        "exit_scope": "Clean process exit; detailed real CRT callback observations remain in the S actual-library lifecycle fixture."
+      },
+      "limits": [
+        "Process-run evidence, not original-game visual or gameplay parity.",
+        "Constructor-owned unit roles remain unassigned until actual role-message delivery is recovered.",
+        "Obstacle node refresh, several state writers and motion phase remainders remain partial.",
+        "Untouched native cache bounds are preserved; original allocation history is not reproduced."
+      ]
+    },
+    "production_object_identical_to_fixture": true,
+    "production_archive_objects_identical": 45,
+    "fixture_proof_unchanged": true,
+    "closeout_manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\model_numbering_closeout_ae\\755470a9\\manifest.json",
+      "bytes": 38889,
+      "sha256": "e4d45c6a04f8c123a10b7d4b89df47f13685b86f4b1d3de3d604a324db635c2b"
+    },
+    "retained_closeout_artifacts": 93,
+    "workers_dispatched": 0,
+    "runtime_scope": "120-frame USN01 compatibility; execution of the new numbering callers is not established"
+  }
+}

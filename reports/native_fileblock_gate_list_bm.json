@@ -1,0 +1,345 @@
+{
+  "packet": "orch4_native_fileblock_gate_list_bm",
+  "generated_utc": "2026-09-14T06:24:58.911913+00:00",
+  "worker_base_commit": "1ada9f4c",
+  "identity": {
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000"
+  },
+  "binary": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "identity_verification": "Every export/live batch used bsp.py ghidra wrappers verifying configured project/program/language/image base; final capture BSP_GHIDRA_AUTOSTART=0. No inline queries, mutation, restart, script enabling or no-return changes.",
+  "routines": [
+    {
+      "address": "007f8390",
+      "inclusive_end": "007f83c2",
+      "byte_count": 51,
+      "purpose": "gate node producer",
+      "sha256": "cd19feb87fb999c62b5873e5e93b81280c7f4f61d719bba7cc2d9157fd39f4f8",
+      "installed_pe_matches_live_ghidra": true,
+      "evidence": {
+        "path": "local\\gate_list_bm\\007f8390_bytes.txt",
+        "sha256": "1015307eff2ca7fb1ac7bfbbcfac7f64388e2faeae3a4ef96775e0a4c0c58db3"
+      },
+      "native_abi": "Incoming ECX unused; stack(next,previous,pointer-to-gate-byte); EAX new0Ch node; RET0C",
+      "source_symbol": "allocate_native_fileblock_gate_node_007f8390",
+      "ghidra_name_at_export": "FUN_007f8390",
+      "coverage": "complete logical body reconstructed; TU-build and actual-storage fixture passed",
+      "interface_abi": "stdcall argument shape"
+    },
+    {
+      "address": "007fa3a0",
+      "inclusive_end": "007fa430",
+      "byte_count": 145,
+      "purpose": "UINT32_MAX count growth",
+      "sha256": "f52151d5752d51e293bec13a22e1018bb57f280ff22413929c2fcaf8a11a9145",
+      "installed_pe_matches_live_ghidra": true,
+      "evidence": {
+        "path": "local\\gate_list_bm\\007fa3a0_bytes.txt",
+        "sha256": "6c4d89b4075dc292c163cd41401d8cb508222a7ddc06b974159b0c2898084ce8"
+      },
+      "native_abi": "ECX actual list; stack unsigned increment; EAX updated unsigned count; RET4 or native length_error",
+      "source_symbol": "grow_native_fileblock_gate_count_007fa3a0",
+      "ghidra_name_at_export": "STL_list_GrowSizeChecked_007fa3a0",
+      "coverage": "complete logical body reconstructed; TU-build and actual-storage fixture passed",
+      "interface_abi": "new C++ interface"
+    },
+    {
+      "address": "00bdaf40",
+      "inclusive_end": "00bdaf9d",
+      "byte_count": 94,
+      "purpose": "gate iterator erase including decoded membership gap",
+      "sha256": "87ebfe3ac176c4601e85078bbd7959f7eaa2087138eb74b5afc565de489279f0",
+      "installed_pe_matches_live_ghidra": true,
+      "evidence": {
+        "path": "local\\gate_list_bm\\00bdaf40_bytes.txt",
+        "sha256": "4dec161c0dfb4896fb03d7d7da5b739eff8f7102f4356b1e8701f43f5a659460"
+      },
+      "native_abi": "ECX actual list; stack(output iterator,iterator owner,node); EAX output; RET0C",
+      "source_symbol": "erase_native_fileblock_gate_iterator_00bdaf40",
+      "ghidra_name_at_export": "STL_list_EraseNode_00bdaf40",
+      "coverage": "complete logical body reconstructed; TU-build and actual-storage fixture passed",
+      "interface_abi": "new C++ interface"
+    }
+  ],
+  "direct_calls": [
+    {
+      "function": "007f8390",
+      "address": "007f8392",
+      "native": "00bf681b",
+      "instruction": "call 0xbf681b"
+    },
+    {
+      "function": "007fa3a0",
+      "address": "007fa3ea",
+      "native": "00408720",
+      "instruction": "call 0x408720"
+    },
+    {
+      "function": "007fa3a0",
+      "address": "007fa3ff",
+      "native": "00411700",
+      "instruction": "call 0x411700"
+    },
+    {
+      "function": "007fa3a0",
+      "address": "007fa416",
+      "native": "00bf6885",
+      "instruction": "call 0xbf6885"
+    },
+    {
+      "function": "00bdaf40",
+      "address": "00bdaf59",
+      "native": "00bf6713",
+      "instruction": "call 0xbf6713"
+    },
+    {
+      "function": "00bdaf40",
+      "address": "00bdaf63",
+      "native": "00bf6713",
+      "instruction": "call 0xbf6713"
+    },
+    {
+      "function": "00bdaf40",
+      "address": "00bdaf7f",
+      "native": "00bf65ac",
+      "instruction": "call 0xbf65ac"
+    }
+  ],
+  "data_and_eh_spans": [
+    {
+      "address": "00c8f9a0",
+      "inclusive_end": "00c8f9a7",
+      "byte_count": 8,
+      "purpose": "state0 message cleanup",
+      "sha256": "0963f2227d4db2ddfdc0d68388f8c07d6548e915b8d49ccdfb84f22ee8caa684",
+      "installed_pe_matches_live_ghidra": true,
+      "evidence": {
+        "path": "local\\gate_list_bm\\00c8f9a0_bytes.txt",
+        "sha256": "2bd6fef06b95588a8c47d9840e9c24cd5fd10d90f6fe42fb32689adfaa23dabc"
+      }
+    },
+    {
+      "address": "00c8f9a8",
+      "inclusive_end": "00c8f9b1",
+      "byte_count": 10,
+      "purpose": "FH3 handler",
+      "sha256": "805105c0048291c6f9d430203d6be3c2d59f187a507959c1e084edd9975679c6",
+      "installed_pe_matches_live_ghidra": true,
+      "evidence": {
+        "path": "local\\gate_list_bm\\00c8f9a8_bytes.txt",
+        "sha256": "14dac1455853c9c46fcb611cdd2baf2265467595f910fd444bd2e937f6ba49c3"
+      }
+    },
+    {
+      "address": "00dc05a4",
+      "inclusive_end": "00dc05ab",
+      "byte_count": 8,
+      "purpose": "unwind map",
+      "sha256": "2760c98c5f5ce85b1167559e199da11dec3b36fc1205ad09db3344c685a4824b",
+      "installed_pe_matches_live_ghidra": true,
+      "evidence": {
+        "path": "local\\gate_list_bm\\00dc05a4_bytes.txt",
+        "sha256": "05036237f65c1040eb34c942f840d2f4bec89b514223ee0e70f298e3c930e627"
+      }
+    },
+    {
+      "address": "00dc05ac",
+      "inclusive_end": "00dc05cf",
+      "byte_count": 36,
+      "purpose": "FH3 FuncInfo",
+      "sha256": "d24dad00bef7d2c9bd8bbcf9054d174a09fa399a65e1f6fe055360dace359391",
+      "installed_pe_matches_live_ghidra": true,
+      "evidence": {
+        "path": "local\\gate_list_bm\\00dc05ac_bytes.txt",
+        "sha256": "8118c210b23b95af106c7224b40b91d6fa77bf5b6859b0c693e5eddbe770ae5c"
+      }
+    },
+    {
+      "address": "00ce38f8",
+      "inclusive_end": "00ce3907",
+      "byte_count": 16,
+      "purpose": "counted error message",
+      "sha256": "750c956e3fb0f9dec0d3ffdc4371b2412282f67bc88f6a3cba6ef1969ee97ec3",
+      "installed_pe_matches_live_ghidra": true,
+      "evidence": {
+        "path": "local\\gate_list_bm\\00ce38f8_bytes.txt",
+        "sha256": "0096d32a093a6ab272d812fe58f1d901e11a779badf5711a0653da631c56bedf"
+      }
+    },
+    {
+      "address": "00d83f98",
+      "inclusive_end": "00d83fa7",
+      "byte_count": 16,
+      "purpose": "native ThrowInfo",
+      "sha256": "0fb86056d0dd63b9d5d9391ccdcf486f97d3557596015202ea2e40eb6bbae4f6",
+      "installed_pe_matches_live_ghidra": true,
+      "evidence": {
+        "path": "local\\gate_list_bm\\00d83f98_bytes.txt",
+        "sha256": "5f10eb7cf49be13d180612759c9a896e0ab2fd816978195a8af6be39e102689f"
+      }
+    }
+  ],
+  "source_hashes": {
+    "include/bsp/native_fileblock_gate_list.hpp": "755ac7c534faddad0deaa13b9b46b5c5ddf8a17a2e9d0e9b423afbfbcb284ba3",
+    "src/native_fileblock_gate_list.cpp": "5020a60beb19e9f30692db33e3bea4dac9e4c3fb1bfc1e9bc8ff1d4ee9d31cff"
+  },
+  "dependency_hashes": {
+    "include/bsp/native_alias_count_growth.hpp": "78f5a43d626bb1e93bbb9e5d16249830fe5d00a8ef384619269d957c7bbcafd9",
+    "src/native_alias_count_growth.cpp": "fffd7efa15ffbaacc3c9c01ccab291ea3920b2c3391f89f44e673f406fd04a43",
+    "include/bsp/native_legacy_exception_owner.hpp": "98da5a8c50222979739c330b503cc03f2b43e03df5cf15a795f30ed2df3ed727",
+    "src/native_legacy_exception_owner.cpp": "4a35fabcd35adbd986c1c6bc64b2b88bc07323a47b6f0ebf5bf764675925ad60",
+    "include/bsp/native_legacy_sbo_string.hpp": "9729dd1df270ad0c6f3e2601219735bd71f6758a797aaf2b59e687527704f422",
+    "src/native_legacy_sbo_string.cpp": "377004812adb5e8760b02a84fff81f0004f08fd145c4ce4acfebf31cc583164c",
+    "include/bsp/singleton_lifetime.hpp": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+    "src/singleton_lifetime.cpp": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+  },
+  "actual_storage": {
+    "manager_list_offset": "7c",
+    "sentinel_offset": "04",
+    "count_offset": "08",
+    "node_size": "0c",
+    "node_next": "00",
+    "node_previous": "04",
+    "node_gate_byte": "08",
+    "untouched_node_bytes": "09..0b",
+    "private_storage_added": false,
+    "existing_owner": "native_vfs_manager_lifetime"
+  },
+  "material_contracts": [
+    "Producer retains next/previous values, allocates0Ch first, then reads current byte through gate_slot; preserve separate node+0/+4/+8 destination-address checks.",
+    "Growth bound UINT32_MAX, initial unsigned count captured at+8, returns stored sum; overflow does not store count or reclaim a caller-preallocated node.",
+    "Native FileBlock entry calls producer before growth and links after growth; this packet implements only those helpers, not entry/exit state or observers.",
+    "Overflow builds16-byte counted list<T> too long message, arms completed-temporary guard only after assignment, throws existing owning NativeAliasListLengthError prvalue.",
+    "Erase BF6713 checks only nonnull owner and node!=current owner sentinel. It has no owner==receiver check; captured owner/node survive returning callbacks.",
+    "Erase tests current receiver head before capturing successor; first neighbor store precedes current node link reloads; free precedes current count decrement; output+4 is stored before output+0.",
+    "Sentinel path skips free/decrement but still outputs captured successor and iterator owner. Null-owner returning callback still leads to native invalid dereference."
+  ],
+  "native_eh": {
+    "function": "007fa3a0",
+    "handler": "00c8f9a8",
+    "handler_target": "00bf6b43",
+    "func_info": "00dc05ac",
+    "unwind_map": "00dc05a4",
+    "max_state": 1,
+    "try_count": 0,
+    "states": [
+      {
+        "state": 0,
+        "next": -1,
+        "action": "00c8f9a0",
+        "effect": "LEA ECX,[EBP-50h]; JMP004072D0 completed SBO message destructor"
+      }
+    ],
+    "initial_state": -1,
+    "state0_armed_at": "007fa3f7",
+    "throw_info": "00d83f98",
+    "throw_destructor": "00411780",
+    "catchable_array": "00d83fd4",
+    "payload_vtable": "00d69260",
+    "transport": "Existing NativeAliasListLengthError owning28h legacy owner; new host catch type/RTTI/EH ABI",
+    "initial_assignment_failure": "No completed temporary guard in caller; existing SBO assign/growth manages its own failures",
+    "owner_construction_failure": "Completed temporary destroyed; existing owner constructor handles completed base unwind"
+  },
+  "repair_proposals": [
+    {
+      "start": "00bdaf84",
+      "inclusive_end": "00bdaf8a",
+      "intended_parent": "00bdaf40",
+      "decoded_instructions": [
+        "ADD ESP,4",
+        "ADD dword ptr [EDI+8],-1"
+      ],
+      "current_status": "Both endpoints have no Ghidra function; verified fresh",
+      "evidence": {
+        "path": "local\\gate_list_bm\\membership.txt",
+        "sha256": "d751b2d361eb61513a2c03eda7598e2d0f0e31c7a69988eb924b7e4a1c1884e0"
+      },
+      "action": "Primary may restore decoded continuation to parent body in a separately leased write-lock batch; do not clear/disassemble or change no-return flags",
+      "applied": false
+    }
+  ],
+  "ghidra_annotations": {
+    "applied": false,
+    "existing_comments_preserved": true,
+    "note": "Primary owns annotations/ledger integration. Retain correct standard-library names for007FA3A0 and00BDAF40. Descriptive source names are hypotheses."
+  },
+  "validation": {
+    "translation_unit": {
+      "passed": true,
+      "compiler": "MSVC Win32 (VS18 Community)",
+      "flags": [
+        "/std:c++17",
+        "/EHsc",
+        "/O2",
+        "/MD",
+        "/W4",
+        "/WX",
+        "/fp:strict"
+      ],
+      "source": "src/native_fileblock_gate_list.cpp"
+    },
+    "fixture": {
+      "passed": true,
+      "path": "local/gate_list_bm/probe.cpp",
+      "permanent_test": false,
+      "native_original_executed": false,
+      "source_under_test": "Unmodified BM object; frozen library legacy string/exception dependencies; fixture supplies singleton allocation/free observation hooks",
+      "cases": [
+        "late gate read and untouched padding",
+        "UINT32_MAX return and zero increment",
+        "owning overflow payload and cleanup",
+        "owner-allocation failure after both primary/fallback attempts",
+        "no preallocated-node rollback",
+        "callback-written count retained on overflow",
+        "foreign-owner erase",
+        "returning end-iterator validation",
+        "post-free current count",
+        "output remains untouched during free callback"
+      ],
+      "initial_harness_adjustments": "Made cross-exception-destruction active counter volatile; rejected both primary and fallback SBO allocations when injecting owner allocation failure. No production source correction was required.",
+      "manifest": "/link /MANIFEST:EMBED",
+      "exit_code": 0
+    },
+    "frozen_library": {
+      "source": "J:/PROG/battlestations-pacific-decompile-orch4-20260910/build/win32/Release/bsp_core.lib",
+      "copy": "J:\\PROG\\battlestations-pacific-decompile-orch4-fileblock-gate-bm\\local\\gate_list_bm\\bsp_core_frozen.lib",
+      "sha256": "134578367593F74415BB6FD12B51D103DFC6575DCB94D2F692640DDE69C78251",
+      "source_hash_before": "134578367593F74415BB6FD12B51D103DFC6575DCB94D2F692640DDE69C78251",
+      "source_hash_after": "134578367593F74415BB6FD12B51D103DFC6575DCB94D2F692640DDE69C78251",
+      "captured_utc": "2026-09-14T06:21:10.6517746Z"
+    },
+    "artifact_hashes": {
+      "local/gate_list_bm/build_probe.cmd": "a534e895db66ad82a023f9693d073378f39a6b43f1a52b21f7dd6f765eb0e6ea",
+      "local/gate_list_bm/probe.cpp": "83eacc330396c1fb4bd7a973b4165ac7c48fe5cf66b0ed607e7c425af6a9d70c",
+      "local/gate_list_bm/build_probe.log": "7de7a54b235ed3f76c22452efa8d89a4ed8261d484ea0a2f454b35f288c1f2b4",
+      "local/gate_list_bm/probe.exe": "d673433b5573df81665193337d37a1719498c8fe70337c682ef649c34c4a92b5",
+      "local/gate_list_bm/native_fileblock_gate_list.obj": "6677055e104cd8f78f46745682f85727b5e4e889f0b8ba07577d9997d6c95771",
+      "local/gate_list_bm/probe.map": "d6112ec5424bcd4277734f548c36acdb69cbf2acc94af88d930e84365d4db027"
+    },
+    "full_registered_build": false,
+    "ctest": false,
+    "native_abi_certified": false,
+    "game_validated": false
+  },
+  "dependencies": {
+    "allocation": "singleton_lifetime_allocate: established BF681B throwing/new-handler boundary",
+    "free": "singleton_lifetime_free: BF65AC boundary",
+    "invalid_parameter": "Explicit SingletonLifetimeCallbacks::invalid_parameter supplied by caller; BF6713 may return",
+    "owning_length_error": "NativeAliasListLengthError; native_alias_count_growth plus native_legacy_exception_owner/native_legacy_sbo_string",
+    "missing_source_dependencies": []
+  },
+  "scope_limits": [
+    "No observer, VFS state, host gate stack, runtime/CMake/config/ledger changes",
+    "New source interfaces and host exception transport do not establish native binary or exception ABI",
+    "Allocator/free fixture hooks are instrumentation and do not validate native CRT execution",
+    "Known decoded function-membership gap documented without mutation",
+    "Full registered build and production composition are primary integration work"
+  ],
+  "doc_sha256": "32045d624bdd974c6cddf54c930a8e704bb74bda4a58f48a5ca6bb25b23fc054"
+}

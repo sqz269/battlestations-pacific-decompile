@@ -1,0 +1,1034 @@
+{
+  "packet": "orch4_native_filestore_request_bk",
+  "generated_utc": "2026-09-14T05:17:02.533804+00:00",
+  "base_commit": "f41379f344567836c84dba35cc77ab6c817aa809",
+  "ghidra_read_only": true,
+  "identity": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "image_base": "00400000"
+  },
+  "identity_verification": "Every live batch used bsp.py ghidra wrappers, which call Client.verify before reads.",
+  "binary": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "routines": [
+    {
+      "address": "00bd9e30",
+      "inclusive_end": "00bd9e3a",
+      "source": "notify_native_vfs_request_failure_00bd9e30",
+      "coverage": "complete",
+      "byte_count": 11,
+      "sha256": "58246cba1d89a1a17a59328d7a44e07142d11b9540850343ee031982143d014c",
+      "installed_pe_matches_live_ghidra": true,
+      "native_abi": "ECX manager; discarded DWORD stack; RET4; CALL current manager+90 without stack arguments",
+      "normal_body": {
+        "start": "00bd9e30",
+        "inclusive_end": "00bd9e3a"
+      },
+      "export_sha256": {
+        "assembly.txt": "5496ba6d85c2187c0bc754f1da3879cd69485c2c0d66b9e3a42d51e5989aae80",
+        "decompiled.c": "3fc7f8132ec850629856f9ddca0ef55c5e72f32b3a3ca27f0ef72af6cff18eb6"
+      }
+    },
+    {
+      "address": "00be4db0",
+      "inclusive_end": "00be4e38",
+      "source": "decrement_native_file_store_pending_iterator_00be4db0",
+      "coverage": "complete",
+      "byte_count": 137,
+      "sha256": "7ada8abd822c59ea4709510f4a4631181dca74b2181c4151fe84c03788d3d101",
+      "installed_pe_matches_live_ghidra": true,
+      "native_abi": "ECX iterator; RET or BF6713 tail",
+      "normal_body": {
+        "start": "00be4db0",
+        "inclusive_end": "00be4e38"
+      },
+      "export_sha256": {
+        "assembly.txt": "83101ba61ca7d9f7869c2556fc45cb37a27611fb9a6c6e4fa6a0f7ad72823dad",
+        "decompiled.c": "60b5f77df9fbc0d5b185c4a78b08f42699cd5c9e8fe84ed03e8e42976d4f1a8a"
+      }
+    },
+    {
+      "address": "00be5530",
+      "inclusive_end": "00be5582",
+      "source": "lower_bound_native_file_store_pending_name_00be5530",
+      "coverage": "complete",
+      "byte_count": 83,
+      "sha256": "611b49942a288502702a6e57dd247b25d6abb0bd49027751b741639dea52ecd7",
+      "installed_pe_matches_live_ghidra": true,
+      "native_abi": "ECX tree; name stack; EAX node; RET4",
+      "normal_body": {
+        "start": "00be5530",
+        "inclusive_end": "00be5582"
+      },
+      "export_sha256": {
+        "assembly.txt": "c7d3acca41dfcecc866b3ad0caae410f08702bf69fa8ab1415a2cd6458189e5a",
+        "decompiled.c": "7fd6f9a07086ebd441a43b794df30fa54a348650d907eb9cdbf614913cb7fc03"
+      }
+    },
+    {
+      "address": "00be5630",
+      "inclusive_end": "00be5683",
+      "source": "upper_bound_native_file_store_pending_name_00be5630",
+      "coverage": "complete",
+      "byte_count": 84,
+      "sha256": "c7d96d173cfa63f9492e08539be6f81862b945086782bc0201f4dca47ac2c830",
+      "installed_pe_matches_live_ghidra": true,
+      "native_abi": "ECX tree; name stack; EAX node; RET4",
+      "normal_body": {
+        "start": "00be5630",
+        "inclusive_end": "00be5683"
+      },
+      "export_sha256": {
+        "assembly.txt": "a4208efce4fe6604c5597b0cdaa22acca3cf31059b46ba429fc9f71da20a44b5",
+        "decompiled.c": "8a47985a9dfcda81d6d648df1dc2f2412b3a9feeafeb626e6a5cd598c676c5fe"
+      }
+    },
+    {
+      "address": "00be5750",
+      "inclusive_end": "00be5788",
+      "source": "distance_native_file_store_pending_iterators_00be5750",
+      "coverage": "complete",
+      "byte_count": 57,
+      "sha256": "92c0678fd573c9bef4d72a58efe85808460abc62e9462178e8aeed56614be78c",
+      "installed_pe_matches_live_ghidra": true,
+      "native_abi": "cdecl six stack DWORDs; last ignored; RET; caller BE7A0B ADD ESP,18h",
+      "normal_body": {
+        "start": "00be5750",
+        "inclusive_end": "00be5788"
+      },
+      "export_sha256": {
+        "assembly.txt": "780c9e713528d0e261cbe865d301631d190c99a8212dcf7d78757763ff890ba5",
+        "decompiled.c": "6d5d34545526d9c82f7a1192587a5c7df95e3bcc7a33430acb9231cde5e01fa0"
+      }
+    },
+    {
+      "address": "00be5f00",
+      "inclusive_end": "00be5f65",
+      "source": "find_native_file_store_pending_name_00be5f00",
+      "coverage": "complete",
+      "byte_count": 102,
+      "sha256": "965d5fa887b093dec04c5837d26a11096598857850170ddc86c552a002d4f0ab",
+      "installed_pe_matches_live_ghidra": true,
+      "native_abi": "ECX tree; output,name stack; EAX output; RET8",
+      "normal_body": {
+        "start": "00be5f00",
+        "inclusive_end": "00be5f65"
+      },
+      "export_sha256": {
+        "assembly.txt": "61628aba51eda2413d8437241ec39bf0e1d67fb152118c9dd872b1a79ee252e6",
+        "decompiled.c": "fcc9e7bcfb431d4b73acc95eab91f82f25d2a48d061336aa1221ffc57ae220f2"
+      }
+    },
+    {
+      "address": "00be6120",
+      "inclusive_end": "00be616a",
+      "source": "construct_native_file_store_pending_pair_00be6120",
+      "coverage": "complete",
+      "byte_count": 75,
+      "sha256": "8f5c5eea9511bd990f3c28e22b50abfda4850139cd7dc921e5acf6dda846f5d0",
+      "installed_pe_matches_live_ghidra": true,
+      "native_abi": "ECX output; name,callback-word-pointer stack; EAX output; RET8",
+      "normal_body": {
+        "start": "00be6120",
+        "inclusive_end": "00be616a"
+      },
+      "export_sha256": {
+        "assembly.txt": "5e48190dcb63aeaa2f56ad1db91d223d21ed3bc71cdf57c8d6f8c049bcf71e73",
+        "decompiled.c": "b68e76b1fa34e570cf44f218890d17ba2089dd537f423d60bbd5f17d5444baf1"
+      }
+    },
+    {
+      "address": "00be62e0",
+      "inclusive_end": "00be6327",
+      "source": "copy_native_file_store_pending_pair_00be62e0",
+      "coverage": "complete",
+      "byte_count": 72,
+      "sha256": "dcd0d14732ce66667d507dfbc36975f0b591a7cc63214f35722d724f163a216f",
+      "installed_pe_matches_live_ghidra": true,
+      "native_abi": "ECX output; source pair stack; EAX output; RET4",
+      "normal_body": {
+        "start": "00be62e0",
+        "inclusive_end": "00be6327"
+      },
+      "export_sha256": {
+        "assembly.txt": "95e4103146addb69706f444a942a466e6fd6ba87a9037ff47fefe6e3b91d8ebe",
+        "decompiled.c": "9872094046f189a64644ac8f30325437eb1a6a5ba5472d4333ff5ff8b4deaae6"
+      }
+    },
+    {
+      "address": "00be63e0",
+      "inclusive_end": "00be644f",
+      "source": "construct_native_file_store_pending_node_00be63e0",
+      "coverage": "complete",
+      "byte_count": 112,
+      "sha256": "751e2618515e6814a6cc32b3ad157f14c6bc2daab5a15b8a275d2366cbac1261",
+      "installed_pe_matches_live_ghidra": true,
+      "native_abi": "ECX node; left,parent,right,pair,color stack; EAX node; RET14h",
+      "normal_body": {
+        "start": "00be63e0",
+        "inclusive_end": "00be644f"
+      },
+      "export_sha256": {
+        "assembly.txt": "753ff70790b4742c560e6afdf80b38fc5a3d3bf45db81a76f44b4b23081c5174",
+        "decompiled.c": "3546a420f0625902996399fe1e6b8e8dfd991b42efbd856d2f5a9c9c30e66421"
+      }
+    },
+    {
+      "address": "00be6630",
+      "inclusive_end": "00be66a1",
+      "source": "allocate_native_file_store_pending_node_00be6630",
+      "coverage": "complete",
+      "byte_count": 114,
+      "sha256": "af3ee505ec310369270659a58525ce666dfec20a70637d4e1339ef43503900b8",
+      "installed_pe_matches_live_ghidra": true,
+      "native_abi": "five stack DWORDs left,parent,right,pair,color; EAX node; RET14h",
+      "normal_body": {
+        "start": "00be6630",
+        "inclusive_end": "00be66a1"
+      },
+      "export_sha256": {
+        "assembly.txt": "1ccf48fb05b2e84ea746128f132addbc4afcfae186507faf9c2733b83281994b",
+        "decompiled.c": "4ec37395b046788d472a788b364cad63ccaf96b85c8ccbfcce02f5f594b2de8a"
+      }
+    },
+    {
+      "address": "00be6ee0",
+      "inclusive_end": "00be70cb",
+      "source": "link_native_file_store_pending_node_00be6ee0",
+      "coverage": "complete",
+      "byte_count": 492,
+      "sha256": "b5bd58396caf5463589ba47645f98cf7f943cdd141ea2ec0d90fe39f52d8d2ac",
+      "installed_pe_matches_live_ghidra": true,
+      "native_abi": "ECX tree; output,left-byte,parent,pair stack; EAX output; RET10h",
+      "normal_body": {
+        "start": "00be6ee0",
+        "inclusive_end": "00be70cb"
+      },
+      "export_sha256": {
+        "assembly.txt": "7f94a1c8c9357868eb36bfeafa51012df84fd87f682f517237d89cd37e895fba",
+        "decompiled.c": "43b2d6e3597b37f0f90904fb59b25a585b6ef4c770d0f6374275a4cc3dee2f2e"
+      }
+    },
+    {
+      "address": "00be7460",
+      "inclusive_end": "00be7573",
+      "source": "insert_native_file_store_pending_pair_00be7460",
+      "coverage": "complete",
+      "byte_count": 276,
+      "sha256": "76ff99c73f44034330927ffc32fe434b22e17508a6ac22d7695edce3755b5196",
+      "installed_pe_matches_live_ghidra": true,
+      "native_abi": "ECX tree; output,pair stack; EAX output; RET8",
+      "normal_body": {
+        "start": "00be7460",
+        "inclusive_end": "00be7573"
+      },
+      "export_sha256": {
+        "assembly.txt": "3e27dc7b32f53088b6780d4e01667d700d0019dd8d86afdfe236f85ab00ab60f",
+        "decompiled.c": "1d86ebf4239029ac584fd43f2b4e5ed8c34ff8995f5aaa23bae53b41f3c1cac3"
+      }
+    },
+    {
+      "address": "00be79c0",
+      "inclusive_end": "00be7a2a",
+      "source": "erase_native_file_store_pending_name_00be79c0",
+      "coverage": "complete",
+      "byte_count": 107,
+      "sha256": "6e84d6d945e7e641738f42f388c83b11b0baee8ab60f57e16930969deb721b50",
+      "installed_pe_matches_live_ghidra": true,
+      "native_abi": "ECX pending TREE; name stack; EAX erased count; RET4",
+      "normal_body": {
+        "start": "00be79c0",
+        "inclusive_end": "00be7a2a"
+      },
+      "export_sha256": {
+        "assembly.txt": "3eefdb405acbc97a7a7c5f925faa3a93d3bebcf30226a8a05837fd315c414346",
+        "decompiled.c": "843abc219ede505637d22aa50fff5de2fcabe448959cd7903328763ca39a29cc"
+      }
+    },
+    {
+      "address": "00be7cd0",
+      "inclusive_end": "00be7f6f",
+      "source": "request_native_file_store_00be7cd0",
+      "coverage": "complete",
+      "byte_count": 672,
+      "sha256": "b3c3de9393c34484889ba7b9a69049ec9007839098ff1c877a09435fa32f3593",
+      "installed_pe_matches_live_ghidra": true,
+      "native_abi": "ECX actual store; original-name-header,callback DWORD stack; AL boolean; RET8",
+      "normal_body": {
+        "start": "00be7cd0",
+        "inclusive_end": "00be7f6f"
+      },
+      "export_sha256": {
+        "assembly.txt": "3874dae80b139aee4f9f6cb63dce3ab291bcaf287e5f2abd9e748c0816931b54",
+        "decompiled.c": "c2560d880a872b6cc97e5091577507a7fbdcfeabed97d5a109a98b34e2173b91"
+      }
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00be4db8",
+      "native": "00bf6713",
+      "function": "00be4db0",
+      "contract": "direct instruction verified; callee body inspected or existing source CRT/EH dependency"
+    },
+    {
+      "address": "00be4dd3",
+      "native": "00bf6713",
+      "function": "00be4db0",
+      "contract": "direct instruction verified; callee body inspected or existing source CRT/EH dependency",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00be4e2f",
+      "native": "00bf6713",
+      "function": "00be4db0",
+      "contract": "direct instruction verified; callee body inspected or existing source CRT/EH dependency",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00be5560",
+      "native": "00bf7fbf",
+      "function": "00be5530",
+      "contract": "direct instruction verified; callee body inspected or existing source CRT/EH dependency"
+    },
+    {
+      "address": "00be5661",
+      "native": "00bf7fbf",
+      "function": "00be5630",
+      "contract": "direct instruction verified; callee body inspected or existing source CRT/EH dependency"
+    },
+    {
+      "address": "00be576c",
+      "native": "00bf6713",
+      "function": "00be5750",
+      "contract": "direct instruction verified; callee body inspected or existing source CRT/EH dependency"
+    },
+    {
+      "address": "00be577e",
+      "native": "00be4e40",
+      "function": "00be5750",
+      "contract": "direct instruction verified; callee body inspected or existing source CRT/EH dependency"
+    },
+    {
+      "address": "00be5f0d",
+      "native": "00be5530",
+      "function": "00be5f00",
+      "contract": "direct instruction verified; callee body inspected or existing source CRT/EH dependency"
+    },
+    {
+      "address": "00be5f1c",
+      "native": "00bf6713",
+      "function": "00be5f00",
+      "contract": "direct instruction verified; callee body inspected or existing source CRT/EH dependency"
+    },
+    {
+      "address": "00be5f31",
+      "native": "00443d00",
+      "function": "00be5f00",
+      "contract": "direct instruction verified; callee body inspected or existing source CRT/EH dependency"
+    },
+    {
+      "address": "00be613e",
+      "native": "0041dd40",
+      "function": "00be6120",
+      "contract": "direct instruction verified; callee body inspected or existing source CRT/EH dependency"
+    },
+    {
+      "address": "00be6153",
+      "native": "00bf7680",
+      "function": "00be6120",
+      "contract": "direct instruction verified; callee body inspected or existing source CRT/EH dependency"
+    },
+    {
+      "address": "00be62fe",
+      "native": "0041dd40",
+      "function": "00be62e0",
+      "contract": "direct instruction verified; callee body inspected or existing source CRT/EH dependency"
+    },
+    {
+      "address": "00be6313",
+      "native": "00bf7680",
+      "function": "00be62e0",
+      "contract": "direct instruction verified; callee body inspected or existing source CRT/EH dependency"
+    },
+    {
+      "address": "00be6419",
+      "native": "0041dd40",
+      "function": "00be63e0",
+      "contract": "direct instruction verified; callee body inspected or existing source CRT/EH dependency"
+    },
+    {
+      "address": "00be642f",
+      "native": "00bf7680",
+      "function": "00be63e0",
+      "contract": "direct instruction verified; callee body inspected or existing source CRT/EH dependency"
+    },
+    {
+      "address": "00be6653",
+      "native": "00bf681b",
+      "function": "00be6630",
+      "contract": "direct instruction verified; callee body inspected or existing source CRT/EH dependency"
+    },
+    {
+      "address": "00be6688",
+      "native": "00be63e0",
+      "function": "00be6630",
+      "contract": "direct instruction verified; callee body inspected or existing source CRT/EH dependency"
+    },
+    {
+      "address": "00be6f23",
+      "native": "00408720",
+      "function": "00be6ee0",
+      "contract": "direct instruction verified; callee body inspected or existing source CRT/EH dependency"
+    },
+    {
+      "address": "00be6f35",
+      "native": "00411700",
+      "function": "00be6ee0",
+      "contract": "direct instruction verified; callee body inspected or existing source CRT/EH dependency"
+    },
+    {
+      "address": "00be6f4c",
+      "native": "00bf6885",
+      "function": "00be6ee0",
+      "contract": "direct instruction verified; callee body inspected or existing source CRT/EH dependency"
+    },
+    {
+      "address": "00be6f64",
+      "native": "00be6630",
+      "function": "00be6ee0",
+      "contract": "direct instruction verified; callee body inspected or existing source CRT/EH dependency"
+    },
+    {
+      "address": "00be6ff5",
+      "native": "00be5140",
+      "function": "00be6ee0",
+      "contract": "direct instruction verified; callee body inspected or existing source CRT/EH dependency"
+    },
+    {
+      "address": "00be7013",
+      "native": "00be4ad0",
+      "function": "00be6ee0",
+      "contract": "direct instruction verified; callee body inspected or existing source CRT/EH dependency"
+    },
+    {
+      "address": "00be7041",
+      "native": "00be4ad0",
+      "function": "00be6ee0",
+      "contract": "direct instruction verified; callee body inspected or existing source CRT/EH dependency"
+    },
+    {
+      "address": "00be74a6",
+      "native": "00bf7fbf",
+      "function": "00be7460",
+      "contract": "direct instruction verified; callee body inspected or existing source CRT/EH dependency"
+    },
+    {
+      "address": "00be74e8",
+      "native": "00be6ee0",
+      "function": "00be7460",
+      "contract": "direct instruction verified; callee body inspected or existing source CRT/EH dependency"
+    },
+    {
+      "address": "00be750f",
+      "native": "00be4db0",
+      "function": "00be7460",
+      "contract": "direct instruction verified; callee body inspected or existing source CRT/EH dependency"
+    },
+    {
+      "address": "00be751f",
+      "native": "00443d00",
+      "function": "00be7460",
+      "contract": "direct instruction verified; callee body inspected or existing source CRT/EH dependency"
+    },
+    {
+      "address": "00be7536",
+      "native": "00be6ee0",
+      "function": "00be7460",
+      "contract": "direct instruction verified; callee body inspected or existing source CRT/EH dependency"
+    },
+    {
+      "address": "00be79cd",
+      "native": "00be5630",
+      "function": "00be79c0",
+      "contract": "direct instruction verified; callee body inspected or existing source CRT/EH dependency"
+    },
+    {
+      "address": "00be79d8",
+      "native": "00bf6713",
+      "function": "00be79c0",
+      "contract": "direct instruction verified; callee body inspected or existing source CRT/EH dependency"
+    },
+    {
+      "address": "00be79e0",
+      "native": "00be5530",
+      "function": "00be79c0",
+      "contract": "direct instruction verified; callee body inspected or existing source CRT/EH dependency"
+    },
+    {
+      "address": "00be79eb",
+      "native": "00bf6713",
+      "function": "00be79c0",
+      "contract": "direct instruction verified; callee body inspected or existing source CRT/EH dependency"
+    },
+    {
+      "address": "00be7a06",
+      "native": "00be5750",
+      "function": "00be79c0",
+      "contract": "direct instruction verified; callee body inspected or existing source CRT/EH dependency"
+    },
+    {
+      "address": "00be7a19",
+      "native": "00be7580",
+      "function": "00be79c0",
+      "contract": "direct instruction verified; callee body inspected or existing source CRT/EH dependency"
+    },
+    {
+      "address": "00be7cf2",
+      "native": "004254b0",
+      "function": "00be7cd0",
+      "contract": "direct instruction verified; callee body inspected or existing source CRT/EH dependency"
+    },
+    {
+      "address": "00be7d04",
+      "native": "00bee780",
+      "function": "00be7cd0",
+      "contract": "direct instruction verified; callee body inspected or existing source CRT/EH dependency"
+    },
+    {
+      "address": "00be7d1c",
+      "native": "00bdf4c0",
+      "function": "00be7cd0",
+      "contract": "direct instruction verified; callee body inspected or existing source CRT/EH dependency"
+    },
+    {
+      "address": "00be7d28",
+      "native": "004254b0",
+      "function": "00be7cd0",
+      "contract": "direct instruction verified; callee body inspected or existing source CRT/EH dependency"
+    },
+    {
+      "address": "00be7d46",
+      "native": "004254b0",
+      "function": "00be7cd0",
+      "contract": "direct instruction verified; callee body inspected or existing source CRT/EH dependency"
+    },
+    {
+      "address": "00be7d69",
+      "native": "00419cc0",
+      "function": "00be7cd0",
+      "contract": "direct instruction verified; callee body inspected or existing source CRT/EH dependency"
+    },
+    {
+      "address": "00be7d70",
+      "native": "00bd1510",
+      "function": "00be7cd0",
+      "contract": "direct instruction verified; callee body inspected or existing source CRT/EH dependency"
+    },
+    {
+      "address": "00be7d9b",
+      "native": "00be5e90",
+      "function": "00be7cd0",
+      "contract": "direct instruction verified; callee body inspected or existing source CRT/EH dependency"
+    },
+    {
+      "address": "00be7db0",
+      "native": "00bf6713",
+      "function": "00be7cd0",
+      "contract": "direct instruction verified; callee body inspected or existing source CRT/EH dependency"
+    },
+    {
+      "address": "00be7dcd",
+      "native": "004254b0",
+      "function": "00be7cd0",
+      "contract": "direct instruction verified; callee body inspected or existing source CRT/EH dependency"
+    },
+    {
+      "address": "00be7df0",
+      "native": "00419cc0",
+      "function": "00be7cd0",
+      "contract": "direct instruction verified; callee body inspected or existing source CRT/EH dependency"
+    },
+    {
+      "address": "00be7df7",
+      "native": "00bd1510",
+      "function": "00be7cd0",
+      "contract": "direct instruction verified; callee body inspected or existing source CRT/EH dependency"
+    },
+    {
+      "address": "00be7e21",
+      "native": "00be5f00",
+      "function": "00be7cd0",
+      "contract": "direct instruction verified; callee body inspected or existing source CRT/EH dependency"
+    },
+    {
+      "address": "00be7e35",
+      "native": "00bf6713",
+      "function": "00be7cd0",
+      "contract": "direct instruction verified; callee body inspected or existing source CRT/EH dependency"
+    },
+    {
+      "address": "00be7e66",
+      "native": "00be6120",
+      "function": "00be7cd0",
+      "contract": "direct instruction verified; callee body inspected or existing source CRT/EH dependency"
+    },
+    {
+      "address": "00be7e75",
+      "native": "00be62e0",
+      "function": "00be7cd0",
+      "contract": "direct instruction verified; callee body inspected or existing source CRT/EH dependency"
+    },
+    {
+      "address": "00be7e8b",
+      "native": "00be7460",
+      "function": "00be7cd0",
+      "contract": "direct instruction verified; callee body inspected or existing source CRT/EH dependency"
+    },
+    {
+      "address": "00be7ea8",
+      "native": "00419cc0",
+      "function": "00be7cd0",
+      "contract": "direct instruction verified; callee body inspected or existing source CRT/EH dependency"
+    },
+    {
+      "address": "00be7eaf",
+      "native": "00bd1510",
+      "function": "00be7cd0",
+      "contract": "direct instruction verified; callee body inspected or existing source CRT/EH dependency"
+    },
+    {
+      "address": "00be7ecc",
+      "native": "00419cc0",
+      "function": "00be7cd0",
+      "contract": "direct instruction verified; callee body inspected or existing source CRT/EH dependency"
+    },
+    {
+      "address": "00be7ed3",
+      "native": "00bd1510",
+      "function": "00be7cd0",
+      "contract": "direct instruction verified; callee body inspected or existing source CRT/EH dependency"
+    },
+    {
+      "address": "00be7eef",
+      "native": "00bdda10",
+      "function": "00be7cd0",
+      "contract": "direct instruction verified; callee body inspected or existing source CRT/EH dependency"
+    },
+    {
+      "address": "00be7f0e",
+      "native": "004254b0",
+      "function": "00be7cd0",
+      "contract": "direct instruction verified; callee body inspected or existing source CRT/EH dependency"
+    },
+    {
+      "address": "00be7f1d",
+      "native": "00be79c0",
+      "function": "00be7cd0",
+      "contract": "direct instruction verified; callee body inspected or existing source CRT/EH dependency"
+    },
+    {
+      "address": "00be7f2a",
+      "native": "00bd9e30",
+      "function": "00be7cd0",
+      "contract": "direct instruction verified; callee body inspected or existing source CRT/EH dependency"
+    },
+    {
+      "address": "00be7f4e",
+      "native": "00419cc0",
+      "function": "00be7cd0",
+      "contract": "direct instruction verified; callee body inspected or existing source CRT/EH dependency"
+    },
+    {
+      "address": "00be7f55",
+      "native": "00bd1510",
+      "function": "00be7cd0",
+      "contract": "direct instruction verified; callee body inspected or existing source CRT/EH dependency"
+    },
+    {
+      "address": "00bd9e36",
+      "native": "manager+90",
+      "function": "00bd9e30",
+      "kind": "indirect",
+      "contract": "CALL EAX after MOV EAX,[ECX+90]; no pushed callback arguments"
+    },
+    {
+      "address": "00be66a6",
+      "native": "00bf65ac",
+      "function": "00be66a2",
+      "kind": "call",
+      "contract": "EH-owned instruction; complete logical behavior separated from normal owner body"
+    },
+    {
+      "address": "00cc6ce8",
+      "native": "00401130",
+      "function": "00cc6ce0",
+      "kind": "call",
+      "contract": "EH-owned instruction; complete logical behavior separated from normal owner body"
+    },
+    {
+      "address": "00cc6d63",
+      "native": "004072d0",
+      "function": "00cc6d60",
+      "kind": "tail_jump",
+      "contract": "EH-owned instruction; complete logical behavior separated from normal owner body"
+    },
+    {
+      "address": "00cc6e23",
+      "native": "0041dd20",
+      "function": "00cc6e20",
+      "kind": "tail_jump",
+      "contract": "EH-owned instruction; complete logical behavior separated from normal owner body"
+    },
+    {
+      "address": "00cc6e2b",
+      "native": "00be5e50",
+      "function": "00cc6e28",
+      "kind": "tail_jump",
+      "contract": "EH-owned instruction; complete logical behavior separated from normal owner body"
+    },
+    {
+      "address": "00cc6e33",
+      "native": "00be5e70",
+      "function": "00cc6e30",
+      "kind": "tail_jump",
+      "contract": "EH-owned instruction; complete logical behavior separated from normal owner body"
+    }
+  ],
+  "scope": "Complete normal and native-false control flow over actual Win32 FileStore nodes. Source boundary exceptions retain RequestAcquired; original FH3/SEH is not reproduced.",
+  "eh_spans": [
+    {
+      "start": "00be66a2",
+      "inclusive_end": "00be66b6",
+      "role": "catch-all logical body, Ghidra ends at BE66AA",
+      "byte_count": 21,
+      "sha256": "163c6facb4cc603d0a038c9451748cb9c35ddb17c5b319d461598897d59e6289",
+      "installed_pe_matches_live_ghidra": true
+    },
+    {
+      "start": "00cc6ce0",
+      "inclusive_end": "00cc6cfa",
+      "role": "placement unwind and handler",
+      "byte_count": 27,
+      "sha256": "91a6bc6f7e9066831a517fb844714add76bafb7633675c15fbee10f9e5248ff1",
+      "installed_pe_matches_live_ghidra": true
+    },
+    {
+      "start": "00cc6d60",
+      "inclusive_end": "00cc6d71",
+      "role": "length-message unwind and handler",
+      "byte_count": 18,
+      "sha256": "ce1995a9f069b44c34f0d905248c130666ce1a86e2bfcc6b95fa9b47c4b1172d",
+      "installed_pe_matches_live_ghidra": true
+    },
+    {
+      "start": "00cc6e20",
+      "inclusive_end": "00cc6e41",
+      "role": "three request unwind actions and handler",
+      "byte_count": 34,
+      "sha256": "206224eb94e638beb591cfdddac1fb15cf250675f56f5546a052234bf00e3c84",
+      "installed_pe_matches_live_ghidra": true
+    },
+    {
+      "start": "00e01574",
+      "inclusive_end": "00e015d3",
+      "role": "allocation handler catch/try/unwind maps and FuncInfo",
+      "byte_count": 96,
+      "sha256": "3105f04ec5e2dbc99234ad20e8c8c8f517d6cdf0ba7d184a2d12342376e72e5b",
+      "installed_pe_matches_live_ghidra": true
+    },
+    {
+      "start": "00e01658",
+      "inclusive_end": "00e01683",
+      "role": "length-error unwind map and FuncInfo",
+      "byte_count": 44,
+      "sha256": "2e251a2b77324ebd107d64ccabd3327edb8abbcadf9fb9c9b94f4d6ea7bd7fe3",
+      "installed_pe_matches_live_ghidra": true
+    },
+    {
+      "start": "00e0175c",
+      "inclusive_end": "00e01797",
+      "role": "request unwind map and FuncInfo",
+      "byte_count": 60,
+      "sha256": "4bf4f399856bd7c31e96acb5d4c3d838f83b0ecbd937ec3792e441e7669fda4e",
+      "installed_pe_matches_live_ghidra": true
+    }
+  ],
+  "source_eh_boundaries": [
+    {
+      "owner": "00be6630",
+      "normal_inclusive_end": "00be66a1",
+      "catch_entry": "00be66a2",
+      "ghidra_catch_inclusive_end": "00be66aa",
+      "catch_logical_inclusive_end": "00be66b6",
+      "raw_tail": {
+        "start": "00be66ab",
+        "inclusive_end": "00be66b6",
+        "no_ghidra_function": true
+      },
+      "raw_call": {
+        "site": "00be66b2",
+        "native_target": "00bf6885",
+        "no_ghidra_function": true,
+        "contract": "push0,push0,CxxThrowException rethrow"
+      },
+      "state_map": "00e01598",
+      "try_map": "00e01584",
+      "handler": "00cc6cf1",
+      "placement_cleanup": "00cc6ce0..00cc6cf0 calls RET-only00401130; no pair destructor",
+      "source": "captured-node singleton_lifetime_free then rethrow; no key cleanup invented"
+    },
+    {
+      "owner": "00be6ee0",
+      "state_map": "00e01658",
+      "handler": "00cc6d68",
+      "cleanup": "00cc6d60..00cc6d67 tail004072d0",
+      "source": "owning NativeHardwareLayoutTreeLengthError with completed message RAII; native exception identity unproved"
+    },
+    {
+      "owner": "00be7cd0",
+      "state_map": "00e0175c",
+      "handler": "00cc6e38",
+      "states": [
+        {
+          "state": 0,
+          "action": "00cc6e20 -> 0041dd20 resolved header"
+        },
+        {
+          "state": 1,
+          "action": "00cc6e28 -> 00be5e50 first pair"
+        },
+        {
+          "state": 2,
+          "action": "00cc6e30 -> 00be5e70 second pair"
+        }
+      ],
+      "source": "successful construction arms current header; normal path destroys pair2,pair1 before submit, then resolved before return. Source boundary throws retain stable acquired locals and borrowed context for nested native ownership; no guessed cleanup/replay."
+    }
+  ],
+  "corrections": [
+    {
+      "was": "BD9E30 forwards error -1",
+      "is": "BD9E30 discards its own stack DWORD and calls manager+90 without passing stack arguments",
+      "evidence": "BD9E30 MOV EAX,[ECX+90]; BD9E36 CALL EAX; BD9E38 RET4"
+    },
+    {
+      "was": "any supported provider submission exception removes newly inserted pending key in the projected manager integration",
+      "is": "native BE7CD0 only erases after ordinary false AL from BDDA10; native unwind map owns strings, no pending erase",
+      "evidence": "BE7EF4 TEST AL/BE7EF6 JNZ; BE7F1D erase only rejection branch; E0175C three string cleanup states"
+    }
+  ],
+  "integration": {
+    "api": "request_native_file_store_00be7cd0(actual_store, original_header, callback_word, NativeFileStoreRequestContext&, NativeFileStoreRequestAcquired&)",
+    "publish_before_call": true,
+    "stable_frame": "NativeFileStoreRequestAcquired holds actual resolved/pair/iterator/output headers; failed frame destructor terminates",
+    "borrows": [
+      "current publication cell0109CEEC",
+      "NativeStringStorage",
+      "SingletonLifetimeCallbacks",
+      "actual store and original header",
+      "NativeFileStoreRequestDispatch"
+    ],
+    "direct_external_contracts": {
+      "00bdf4c0": "resolve_existing_name_00bdf4c0(manager,mutable header); ordinary false may mutate name",
+      "00bdda10": "open_file_overlapped_00bdda10(manager,resolved,original,BE7B20,2); names must survive accepted physical dispatch via its own native copies",
+      "manager+90": "invoke_manager_failure_callback(current target,manager), no error argument"
+    },
+    "completion": "External BE7B20 must reacquire current factory then store+8; no origin-store capture; root owns BE78B0/BE7760",
+    "exported_pending_helpers": [
+      "find_native_file_store_pending_name_00be5f00",
+      "erase_native_file_store_pending_name_00be79c0"
+    ],
+    "cmake": "Primary integrator adds TU and runs scripts/build.ps1; worker did not modify CMake."
+  },
+  "validation": {
+    "strict_msvc_win32_tu": "passed /c /std:c++17 /W4 /WX /fp:strict",
+    "focused_actual_storage_fixture": "passed; ignored local/native_filestore_request_probe.cpp; /MD /O2 /W4 /WX /fp:strict /link /MANIFEST:EMBED",
+    "fixture_result": [
+      "PASS actual storage: normalized mutation; resident/pending dedup; callback first-wins; rollback; manager reload; 13-node RB invariants; no string leaks",
+      "PASS interrupted resolver retains actual mutable header and failure site BE7D1C"
+    ],
+    "fixture_scope": "source actual-storage + existing primary bsp_core/bsp_zlib121 libraries; no original-instruction execution and no installed game execution",
+    "full_build": "primary integration required; this new TU is intentionally not in worker CMake",
+    "native_abi_compatible": false,
+    "game_validated": false,
+    "call_rows": "69 direct/tail rows passed; one manager+90 indirect separately listing-verified",
+    "fixture_libraries": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\build\\win32\\Release\\bsp_core.lib",
+        "sha256": "ceffc98d95f2fcd03f7f6f05a7f415d116c899e6df3751a46e59b23c761d7a03"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\build\\win32\\Release\\bsp_zlib121.lib",
+        "sha256": "73ae30b8adc3adfe5b33285bac533f8e7df7e8ab8d9e44789e6a030fd8a06ad9"
+      }
+    ]
+  },
+  "artifacts": [
+    {
+      "path": "include/bsp/native_filestore_request.hpp",
+      "sha256": "97531623574597ced253eae5b31429cdf420cac3a076647caf928d2fdc8c817b",
+      "bytes": 6239
+    },
+    {
+      "path": "src/native_filestore_request.cpp",
+      "sha256": "8c7ac7ddfde99d6404a0293a11d5e26841b4e7bc1bf5af1fea704a0f2fd50f46",
+      "bytes": 18899
+    },
+    {
+      "path": "local/native_filestore_request_probe.cpp",
+      "sha256": "471d76a051d8dd4641cac29b035c1dcce92e448fa0e36a247386b8c954bfca37",
+      "bytes": 7446
+    },
+    {
+      "path": "local/native_filestore_request.obj",
+      "sha256": "abe4c15f36fcb776b0983a1ac586c3a857fc04d21aa22fa0127c6efdc0190e8e",
+      "bytes": 31391
+    },
+    {
+      "path": "local/native_filestore_request_probe.exe",
+      "sha256": "65fc7b5672479650107ed536bbb61400f433f5cd32ac130111b2de698c6a2cf2",
+      "bytes": 52736
+    },
+    {
+      "path": "local/native_filestore_request_compile.log",
+      "sha256": "6e597ce03239481df884782fd777246643500f662f1b7cb9528799eadbfdb2c5",
+      "bytes": 30
+    },
+    {
+      "path": "local/native_filestore_request_fixture_compile.log",
+      "sha256": "1d484011f370f46433bc3c26844f485ff7977f3f9af58cecad7d031f8106b3ce",
+      "bytes": 86
+    },
+    {
+      "path": "local/native_filestore_request_fixture_run.log",
+      "sha256": "af4934db5a0495da9930b162f7c68e5707885f3cd69dcfebea763101b8b56cb7",
+      "bytes": 234
+    },
+    {
+      "path": "docs/NATIVE_FILESTORE_REQUEST_BK.md",
+      "sha256": "b134c53e33792ca95dc225b850d20e31c773ad40f8f012a8817d7cacc59680fa",
+      "bytes": 9261
+    },
+    {
+      "path": "local/request_proto.log",
+      "sha256": "a36ac013b55eab817eeff0a3d882b32651b5ad218f481077dd781c0402680d19",
+      "bytes": 1132
+    },
+    {
+      "path": "local/request_bytes.log",
+      "sha256": "db48a073b4285169e7613f6f74ea3d68e92f10a5b1ff4b9c67b805c9d1345938",
+      "bytes": 13130
+    }
+  ],
+  "known_unknowns": [
+    "Original x86 callable ABI, FH3/SEH/native CRT exception identity and hardware-fault cleanup",
+    "Arbitrary original-stack aliasing and concurrent tree/global mutation",
+    "Failed retained request/resolver/provider frames have no reconstructed recovery or destruction operation",
+    "Callback executable availability and actual async completion/factory replacement policy",
+    "Root runtime composition, complete integrated build and gameplay remain separate validation"
+  ],
+  "annotation_proposals": [
+    {
+      "address": "00bd9e30",
+      "old_name": "FUN_00bd9e30",
+      "proposed_name": "BSP_VFS_NotifyCurrentRequestFailure",
+      "status": "proposal only; no Ghidra mutation",
+      "evidence": "docs/NATIVE_FILESTORE_REQUEST_BK.md; exact body/ABI/call/span rows in this report; preserve existing comments"
+    },
+    {
+      "address": "00be4db0",
+      "old_name": "FUN_00be4db0",
+      "proposed_name": "BSP_FileStorePendingIterator_Decrement",
+      "status": "proposal only; no Ghidra mutation",
+      "evidence": "docs/NATIVE_FILESTORE_REQUEST_BK.md; exact body/ABI/call/span rows in this report; preserve existing comments"
+    },
+    {
+      "address": "00be5530",
+      "old_name": "FUN_00be5530",
+      "proposed_name": "BSP_FileStorePendingTree_LowerBound",
+      "status": "proposal only; no Ghidra mutation",
+      "evidence": "docs/NATIVE_FILESTORE_REQUEST_BK.md; exact body/ABI/call/span rows in this report; preserve existing comments"
+    },
+    {
+      "address": "00be5630",
+      "old_name": "FUN_00be5630",
+      "proposed_name": "BSP_FileStorePendingTree_UpperBound",
+      "status": "proposal only; no Ghidra mutation",
+      "evidence": "docs/NATIVE_FILESTORE_REQUEST_BK.md; exact body/ABI/call/span rows in this report; preserve existing comments"
+    },
+    {
+      "address": "00be5750",
+      "old_name": "FUN_00be5750",
+      "proposed_name": "BSP_FileStorePendingIterator_Distance",
+      "status": "proposal only; no Ghidra mutation",
+      "evidence": "docs/NATIVE_FILESTORE_REQUEST_BK.md; exact body/ABI/call/span rows in this report; preserve existing comments"
+    },
+    {
+      "address": "00be5f00",
+      "old_name": "FUN_00be5f00",
+      "proposed_name": "BSP_FileStorePendingTree_FindName",
+      "status": "proposal only; no Ghidra mutation",
+      "evidence": "docs/NATIVE_FILESTORE_REQUEST_BK.md; exact body/ABI/call/span rows in this report; preserve existing comments"
+    },
+    {
+      "address": "00be6120",
+      "old_name": "FUN_00be6120",
+      "proposed_name": "BSP_FileStorePendingPair_Construct",
+      "status": "proposal only; no Ghidra mutation",
+      "evidence": "docs/NATIVE_FILESTORE_REQUEST_BK.md; exact body/ABI/call/span rows in this report; preserve existing comments"
+    },
+    {
+      "address": "00be62e0",
+      "old_name": "FUN_00be62e0",
+      "proposed_name": "BSP_FileStorePendingPair_CopyConstruct",
+      "status": "proposal only; no Ghidra mutation",
+      "evidence": "docs/NATIVE_FILESTORE_REQUEST_BK.md; exact body/ABI/call/span rows in this report; preserve existing comments"
+    },
+    {
+      "address": "00be63e0",
+      "old_name": "FUN_00be63e0",
+      "proposed_name": "BSP_FileStorePendingNode_Construct",
+      "status": "proposal only; no Ghidra mutation",
+      "evidence": "docs/NATIVE_FILESTORE_REQUEST_BK.md; exact body/ABI/call/span rows in this report; preserve existing comments"
+    },
+    {
+      "address": "00be6630",
+      "old_name": "FUN_00be6630",
+      "proposed_name": "BSP_FileStorePendingNode_Allocate",
+      "status": "proposal only; no Ghidra mutation",
+      "evidence": "docs/NATIVE_FILESTORE_REQUEST_BK.md; exact body/ABI/call/span rows in this report; preserve existing comments"
+    },
+    {
+      "address": "00be6ee0",
+      "old_name": "FUN_00be6ee0",
+      "proposed_name": "BSP_FileStorePendingTree_InsertAt",
+      "status": "proposal only; no Ghidra mutation",
+      "evidence": "docs/NATIVE_FILESTORE_REQUEST_BK.md; exact body/ABI/call/span rows in this report; preserve existing comments"
+    },
+    {
+      "address": "00be7460",
+      "old_name": "FUN_00be7460",
+      "proposed_name": "BSP_FileStorePendingTree_InsertPair",
+      "status": "proposal only; no Ghidra mutation",
+      "evidence": "docs/NATIVE_FILESTORE_REQUEST_BK.md; exact body/ABI/call/span rows in this report; preserve existing comments"
+    },
+    {
+      "address": "00be79c0",
+      "old_name": "FUN_00be79c0",
+      "proposed_name": "BSP_FileStorePendingTree_EraseName",
+      "status": "proposal only; no Ghidra mutation",
+      "evidence": "docs/NATIVE_FILESTORE_REQUEST_BK.md; exact body/ABI/call/span rows in this report; preserve existing comments"
+    },
+    {
+      "address": "00be7cd0",
+      "old_name": "BSP_FileStore_RequestFile",
+      "proposed_name": "BSP_FileStore_RequestFile",
+      "status": "proposal only; no Ghidra mutation",
+      "evidence": "docs/NATIVE_FILESTORE_REQUEST_BK.md; exact body/ABI/call/span rows in this report; preserve existing comments"
+    }
+  ]
+}

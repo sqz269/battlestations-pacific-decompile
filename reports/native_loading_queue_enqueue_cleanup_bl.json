@@ -1,0 +1,152 @@
+{
+  "reason": "Restore C69200 returning-free allocation cleanup epilogue membership using supported endpoints; no inline scripts or callee no-return edits.",
+  "entries": [
+    {
+      "address": "00c69200",
+      "end_exclusive": "00c6920b",
+      "bytes": 11,
+      "sha256": "a8a4c97f54352a5176644a613e3d2c569d5729c24e06b6b93bab97e91dbbb868",
+      "before_documentation": {
+        "hash": "be77e5c62609df3e167c809a8220b349e0bc7e4a5be751952a8b2fddd2867ae2",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00c69200",
+        "function_name": "Unwind@00c69200",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "unaff_EBP",
+            "type": "int",
+            "storage": "(register, 0x14, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 80.0
+      },
+      "before_ownership": [
+        {
+          "address": "00c69200",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [ebp - 0x10]",
+          "owned": true
+        },
+        {
+          "address": "00c69203",
+          "mnemonic": "push",
+          "operands": "eax",
+          "owned": true
+        },
+        {
+          "address": "00c69204",
+          "mnemonic": "call",
+          "operands": "0xbf65ac",
+          "owned": true
+        },
+        {
+          "address": "00c69209",
+          "mnemonic": "pop",
+          "operands": "ecx",
+          "owned": false
+        },
+        {
+          "address": "00c6920a",
+          "mnemonic": "ret",
+          "operands": "",
+          "owned": false
+        }
+      ],
+      "original_abi": "Native FH3 unwind funclet inherits EBP; reads allocation from EBP-10h, calls BF65AC, POP ECX/RET. No ordinary source-callable ABI claim.",
+      "prototype_note": "Records old unknown prototype; explicit void cdecl analysis view keeps returning-free continuation. Inherited EBP/native FH3 entry remains an ABI boundary. Original Unwind symbol preserved after parser-safe temporary signature.",
+      "after_documentation": {
+        "hash": "5c9cd88f200a6524c1e9155f5f2323390db18031344564aab6f6375453d4a84f",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00c69200",
+        "function_name": "Unwind@00c69200",
+        "return_type": "void",
+        "calling_convention": "__cdecl",
+        "plate_comment": "",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "unaff_EBP",
+            "type": "int",
+            "storage": "(register, 0x14, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 100.0
+      },
+      "verified_complete": true,
+      "verified_instruction_count": 5,
+      "previous_evidence_preserved": true
+    }
+  ],
+  "actions": [
+    {
+      "endpoint": "clear_instruction_flow_override",
+      "body": {
+        "address": "00c69204"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Cleared flow override at 00c69204 (was: CALL_RETURN, now: NONE)\"}"
+    },
+    {
+      "endpoint": "delete_function",
+      "body": {
+        "address": "00c69200"
+      },
+      "result": "{\"success\": true, \"address\": \"00c69200\", \"deleted_function\": \"Unwind@00c69200\", \"body_size\": 9, \"message\": \"Function 'Unwind@00c69200' deleted at 00c69200\"}"
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00c69200",
+        "end_address": "00c6920b"
+      },
+      "result": "{\"success\": true, \"start_address\": \"00c69200\", \"end_address\": \"00c6920a\", \"bytes_disassembled\": 11, \"message\": \"Successfully disassembled 11 byte(s)\"}"
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00c69200",
+        "name": "Unwind@00c69200",
+        "disassemble_first": false
+      },
+      "result": "{\"success\": true, \"address\": \"00c69200\", \"function_name\": \"Unwind@00c69200\", \"entry_point\": \"00c69200\", \"body_size\": 11, \"message\": \"Function created successfully at 00c69200\", \"warnings\": [\"Function name 'Unwind@00c69200' \\u2014 main part 'Unwind@00c69200' is not PascalCase. Expected: Unwind@00c69200\", \"Function name 'Unwind@00c69200' does not start with a recognized verb. First word 'Unwind@00c69200' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00c69200",
+        "prototype": "void __cdecl ReviewedLoadingQueueAllocationCleanup(void)",
+        "calling_convention": "__cdecl"
+      },
+      "result": "Successfully set prototype for function at 00c69200 with __cdecl calling convention"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00c69200",
+        "new_name": "Unwind@00c69200"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00c69200 from 'Unwind@00c69200' to 'Unwind@00c69200'\", \"warnings\": [\"Function name 'Unwind@00c69200' \\u2014 main part 'Unwind@00c69200' is not PascalCase. Expected: Unwind@00c69200\", \"Function name 'Unwind@00c69200' does not start with a recognized verb. First word 'Unwind@00c69200' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00c69200",
+        "comment": ""
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00c69200\"}"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": "{\"success\": true, \"program\": \"battlestationspacific.exe\", \"message\": \"Program saved successfully\"}"
+    }
+  ],
+  "state": "complete_membership_saved_prior_evidence_preserved",
+  "exports_refreshed": true
+}

@@ -1,0 +1,2511 @@
+{
+  "reason": "Restore decoded returning-free function membership through supported bridge endpoints; preserve original evidence. No script execution or callee no-return changes.",
+  "entries": [
+    {
+      "address": "00bf43b0",
+      "end_exclusive": "00bf46a7",
+      "sha256": "e3d4fe8318b182106310ccbf6a02ca6fc3aa201188d41b43ee18af10591237b7",
+      "bytes": 759,
+      "before_documentation": {
+        "hash": "5b6cf4d5b8f8f4544196061300af6d314afef027f941a4deef355d7b3bdfd914",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00bf43b0",
+        "function_name": "BSP_PhysicalDirectory_OpenFileOverlapped",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00bf43b0]\nECX provider; first name,second name,callback,flags stack; AL accepted; RET 10h. Physical table00d69168 slot+0Ch. Requires bit0 clear and flags&0Eh==2, builds physical path from first name, uses CreateFileA attributes60000000h and ReadFile with heap OVERLAPPED/aligned staging buffer. Accepts ReadFile success or ERROR_IO_PENDING, copies both names and appends request to provider+14h. Both accepted cases defer callback to the completion pump. Original allocation/error/large-size cases are not fully safe host contracts. Evidence: docs/VFS_PENDING_DISPATCH.md and reports/vfs_pending_dispatch_audit.json. Pending I/O submission/pump remains analysis only.\n\n[BSP reconstruction 00bf43b0] update\nECX provider; first name,second name,callback,flags stack; AL accepted; RET 10h. Physical table00d69168 slot+0Ch. Requires bit0 clear and flags&0Eh==2, builds physical path from first name, uses CreateFileA attributes60000000h and ReadFile with heap OVERLAPPED/aligned staging buffer. Accepts ReadFile success or ERROR_IO_PENDING, copies both names and appends request to provider+14h. Both accepted cases defer callback to the completion pump. Original allocation/error/large-size cases are not fully safe host contracts. Evidence: docs/VFS_PENDING_DISPATCH.md and reports/vfs_pending_dispatch_audit.json. Pending I/O submission/pump remains analysis only. Owning host submission implemented: aligned OVERLAPPED|NO_BUFFERING read, all throwing queue allocations before accepted ReadFile, always queued. Real installed71090-byte source requests131072 bytes; callback append and both2/0x32 modes pass. docs/PHYSICAL_PENDING_READS.md.",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "pvStack_4c",
+            "type": "HANDLE",
+            "storage": "(stack, 0xffffffffffffffb4, 4)"
+          },
+          {
+            "name": "iStack_50",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffb0, 4)"
+          },
+          {
+            "name": "uStack_44",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffbc, 4)"
+          },
+          {
+            "name": "p_Stack_48",
+            "type": "LPOVERLAPPED",
+            "storage": "(stack, 0xffffffffffffffb8, 4)"
+          },
+          {
+            "name": "pvStack_3c",
+            "type": "void *",
+            "storage": "(stack, 0xffffffffffffffc4, 4)"
+          },
+          {
+            "name": "pvStack_40",
+            "type": "LPVOID",
+            "storage": "(stack, 0xffffffffffffffc0, 4)"
+          },
+          {
+            "name": "uStack_2c",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffd4, 4)"
+          },
+          {
+            "name": "LStack_34",
+            "type": "LARGE_INTEGER",
+            "storage": "(stack, 0xffffffffffffffcc, 4)"
+          },
+          {
+            "name": "uStack_24",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffdc, 4)"
+          },
+          {
+            "name": "uStack_28",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffd8, 4)"
+          },
+          {
+            "name": "iStack_1c",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffe4, 4)"
+          },
+          {
+            "name": "uStack_20",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffe0, 4)"
+          },
+          {
+            "name": "pvStack_14",
+            "type": "void *",
+            "storage": "(stack, 0xffffffffffffffec, 4)"
+          },
+          {
+            "name": "uStack_4",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "puStack_8",
+            "type": "undefined1 *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "uVar6",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffff8c, 4)"
+          },
+          {
+            "name": "iVar1",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "local_54",
+            "type": "undefined1[4]"
+          },
+          {
+            "name": "local_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "hFile",
+            "type": "HANDLE",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "lpFileName",
+            "type": "LPCSTR",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "BVar3",
+            "type": "BOOL",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "DVar2",
+            "type": "DWORD",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "unaff_ESI",
+            "type": "int",
+            "storage": "(register, 0x18, 4)"
+          },
+          {
+            "name": "puVar4",
+            "type": "undefined *",
+            "storage": "(register, 0x4, 4)"
+          },
+          {
+            "name": "unaff_retaddr",
+            "type": "undefined4",
+            "storage": "(stack, 0x0, 4)"
+          },
+          {
+            "name": "uVar5",
+            "type": "uint",
+            "storage": "(register, 0x18, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 52,
+            "name": "LAB_00bf43e4"
+          },
+          {
+            "relative_offset": 72,
+            "name": "LAB_00bf43f8"
+          },
+          {
+            "relative_offset": 126,
+            "name": "LAB_00bf442e"
+          },
+          {
+            "relative_offset": 183,
+            "name": "LAB_00bf4467"
+          },
+          {
+            "relative_offset": 219,
+            "name": "LAB_00bf448b"
+          },
+          {
+            "relative_offset": 257,
+            "name": "LAB_00bf44b1"
+          },
+          {
+            "relative_offset": 364,
+            "name": "LAB_00bf451c"
+          },
+          {
+            "relative_offset": 394,
+            "name": "LAB_00bf453a"
+          },
+          {
+            "relative_offset": 438,
+            "name": "LAB_00bf4566"
+          },
+          {
+            "relative_offset": 476,
+            "name": "LAB_00bf458c"
+          },
+          {
+            "relative_offset": 593,
+            "name": "LAB_00bf4601"
+          },
+          {
+            "relative_offset": 618,
+            "name": "LAB_00bf461a"
+          },
+          {
+            "relative_offset": 665,
+            "name": "LAB_00bf4649"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "before_ownership": [
+        {
+          "address": "00bf43b0",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bf43b2",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bf43b7",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bf43bd",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bf43be",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bf43c5",
+          "mnemonic": "sub",
+          "owned": true
+        },
+        {
+          "address": "00bf43c8",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bf43c9",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bf43cb",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bf43d0",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bf43d4",
+          "mnemonic": "call",
+          "owned": true
+        },
+        {
+          "address": "00bf43d9",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bf43dd",
+          "mnemonic": "add",
+          "owned": true
+        },
+        {
+          "address": "00bf43e0",
+          "mnemonic": "test",
+          "owned": true
+        },
+        {
+          "address": "00bf43e2",
+          "mnemonic": "je",
+          "owned": true
+        },
+        {
+          "address": "00bf43e4",
+          "mnemonic": "xor",
+          "owned": true
+        },
+        {
+          "address": "00bf43e6",
+          "mnemonic": "pop",
+          "owned": true
+        },
+        {
+          "address": "00bf43e7",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bf43eb",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bf43f2",
+          "mnemonic": "add",
+          "owned": true
+        },
+        {
+          "address": "00bf43f5",
+          "mnemonic": "ret",
+          "owned": true
+        },
+        {
+          "address": "00bf43f8",
+          "mnemonic": "and",
+          "owned": true
+        },
+        {
+          "address": "00bf43fa",
+          "mnemonic": "cmp",
+          "owned": true
+        },
+        {
+          "address": "00bf43fc",
+          "mnemonic": "jne",
+          "owned": true
+        },
+        {
+          "address": "00bf43fe",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bf43ff",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bf4400",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bf4405",
+          "mnemonic": "call",
+          "owned": true
+        },
+        {
+          "address": "00bf440a",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bf440e",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bf4410",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bf4413",
+          "mnemonic": "add",
+          "owned": true
+        },
+        {
+          "address": "00bf4416",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bf4417",
+          "mnemonic": "lea",
+          "owned": true
+        },
+        {
+          "address": "00bf441b",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bf441c",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bf441e",
+          "mnemonic": "call",
+          "owned": true
+        },
+        {
+          "address": "00bf4420",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bf4423",
+          "mnemonic": "xor",
+          "owned": true
+        },
+        {
+          "address": "00bf4425",
+          "mnemonic": "cmp",
+          "owned": true
+        },
+        {
+          "address": "00bf4427",
+          "mnemonic": "jne",
+          "owned": true
+        },
+        {
+          "address": "00bf4429",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bf442e",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bf442f",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bf4430",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bf4435",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bf4437",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bf4438",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bf443a",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bf443f",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bf4440",
+          "mnemonic": "call",
+          "owned": true
+        },
+        {
+          "address": "00bf4446",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bf4448",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bf444c",
+          "mnemonic": "cmp",
+          "owned": true
+        },
+        {
+          "address": "00bf444e",
+          "mnemonic": "je",
+          "owned": true
+        },
+        {
+          "address": "00bf4450",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bf4454",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bf4456",
+          "mnemonic": "add",
+          "owned": true
+        },
+        {
+          "address": "00bf4459",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bf445a",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bf445b",
+          "mnemonic": "call",
+          "owned": true
+        },
+        {
+          "address": "00bf4460",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bf4462",
+          "mnemonic": "call",
+          "owned": true
+        },
+        {
+          "address": "00bf4467",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bf446c",
+          "mnemonic": "call",
+          "owned": true
+        },
+        {
+          "address": "00bf4471",
+          "mnemonic": "add",
+          "owned": true
+        },
+        {
+          "address": "00bf4474",
+          "mnemonic": "cmp",
+          "owned": true
+        },
+        {
+          "address": "00bf4477",
+          "mnemonic": "jne",
+          "owned": true
+        },
+        {
+          "address": "00bf4479",
+          "mnemonic": "call",
+          "owned": true
+        },
+        {
+          "address": "00bf447f",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bf4482",
+          "mnemonic": "cmp",
+          "owned": true
+        },
+        {
+          "address": "00bf4484",
+          "mnemonic": "jne",
+          "owned": true
+        },
+        {
+          "address": "00bf4486",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bf448b",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bf448c",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bf448d",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bf4492",
+          "mnemonic": "call",
+          "owned": true
+        },
+        {
+          "address": "00bf4497",
+          "mnemonic": "add",
+          "owned": true
+        },
+        {
+          "address": "00bf449a",
+          "mnemonic": "pop",
+          "owned": true
+        },
+        {
+          "address": "00bf449b",
+          "mnemonic": "pop",
+          "owned": true
+        },
+        {
+          "address": "00bf449c",
+          "mnemonic": "pop",
+          "owned": true
+        },
+        {
+          "address": "00bf449d",
+          "mnemonic": "xor",
+          "owned": true
+        },
+        {
+          "address": "00bf449f",
+          "mnemonic": "pop",
+          "owned": true
+        },
+        {
+          "address": "00bf44a0",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bf44a4",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bf44ab",
+          "mnemonic": "add",
+          "owned": true
+        },
+        {
+          "address": "00bf44ae",
+          "mnemonic": "ret",
+          "owned": true
+        },
+        {
+          "address": "00bf44b1",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bf44b5",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bf44b9",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bf44bd",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bf44c1",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bf44c5",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bf44c9",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bf44cd",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bf44d1",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bf44d5",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bf44d9",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bf44de",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bf44e2",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bf44e6",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bf44ee",
+          "mnemonic": "call",
+          "owned": true
+        },
+        {
+          "address": "00bf44f3",
+          "mnemonic": "add",
+          "owned": true
+        },
+        {
+          "address": "00bf44f6",
+          "mnemonic": "lea",
+          "owned": true
+        },
+        {
+          "address": "00bf44fa",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bf44fb",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bf44fc",
+          "mnemonic": "call",
+          "owned": true
+        },
+        {
+          "address": "00bf4502",
+          "mnemonic": "test",
+          "owned": true
+        },
+        {
+          "address": "00bf4504",
+          "mnemonic": "jne",
+          "owned": true
+        },
+        {
+          "address": "00bf4506",
+          "mnemonic": "call",
+          "owned": true
+        },
+        {
+          "address": "00bf450c",
+          "mnemonic": "cmp",
+          "owned": true
+        },
+        {
+          "address": "00bf450e",
+          "mnemonic": "je",
+          "owned": true
+        },
+        {
+          "address": "00bf4510",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bf4513",
+          "mnemonic": "cmp",
+          "owned": true
+        },
+        {
+          "address": "00bf4515",
+          "mnemonic": "jne",
+          "owned": true
+        },
+        {
+          "address": "00bf4517",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bf451c",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bf4520",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bf4521",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bf4525",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bf4526",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bf4527",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bf4528",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bf452d",
+          "mnemonic": "call",
+          "owned": true
+        },
+        {
+          "address": "00bf4532",
+          "mnemonic": "add",
+          "owned": true
+        },
+        {
+          "address": "00bf4535",
+          "mnemonic": "jmp",
+          "owned": true
+        },
+        {
+          "address": "00bf453a",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bf453e",
+          "mnemonic": "add",
+          "owned": true
+        },
+        {
+          "address": "00bf4543",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bf4544",
+          "mnemonic": "call",
+          "owned": true
+        },
+        {
+          "address": "00bf4549",
+          "mnemonic": "movzx",
+          "owned": true
+        },
+        {
+          "address": "00bf454c",
+          "mnemonic": "add",
+          "owned": true
+        },
+        {
+          "address": "00bf454f",
+          "mnemonic": "cmp",
+          "owned": true
+        },
+        {
+          "address": "00bf4551",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bf4555",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bf4559",
+          "mnemonic": "je",
+          "owned": true
+        },
+        {
+          "address": "00bf455b",
+          "mnemonic": "sub",
+          "owned": true
+        },
+        {
+          "address": "00bf455d",
+          "mnemonic": "add",
+          "owned": true
+        },
+        {
+          "address": "00bf4562",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bf4566",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bf456a",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bf456e",
+          "mnemonic": "movzx",
+          "owned": true
+        },
+        {
+          "address": "00bf4571",
+          "mnemonic": "cmp",
+          "owned": true
+        },
+        {
+          "address": "00bf4573",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bf4575",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bf4579",
+          "mnemonic": "je",
+          "owned": true
+        },
+        {
+          "address": "00bf457b",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bf4580",
+          "mnemonic": "sub",
+          "owned": true
+        },
+        {
+          "address": "00bf4582",
+          "mnemonic": "xor",
+          "owned": true
+        },
+        {
+          "address": "00bf4584",
+          "mnemonic": "add",
+          "owned": true
+        },
+        {
+          "address": "00bf4586",
+          "mnemonic": "adc",
+          "owned": true
+        },
+        {
+          "address": "00bf4588",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bf458c",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bf458e",
+          "mnemonic": "call",
+          "owned": true
+        },
+        {
+          "address": "00bf4593",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bf4597",
+          "mnemonic": "xor",
+          "owned": true
+        },
+        {
+          "address": "00bf4599",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bf459b",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bf459f",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bf45a2",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bf45a6",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bf45a9",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bf45ad",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bf45b0",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bf45b4",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bf45b7",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bf45bb",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bf45c0",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bf45c4",
+          "mnemonic": "call",
+          "owned": true
+        },
+        {
+          "address": "00bf45c9",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bf45cd",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bf45d1",
+          "mnemonic": "add",
+          "owned": true
+        },
+        {
+          "address": "00bf45d4",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bf45d5",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bf45d6",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bf45d7",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bf45d8",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bf45d9",
+          "mnemonic": "call",
+          "owned": true
+        },
+        {
+          "address": "00bf45df",
+          "mnemonic": "test",
+          "owned": true
+        },
+        {
+          "address": "00bf45e1",
+          "mnemonic": "setne",
+          "owned": true
+        },
+        {
+          "address": "00bf45e4",
+          "mnemonic": "cmp",
+          "owned": true
+        },
+        {
+          "address": "00bf45e6",
+          "mnemonic": "jne",
+          "owned": true
+        },
+        {
+          "address": "00bf45e8",
+          "mnemonic": "call",
+          "owned": true
+        },
+        {
+          "address": "00bf45ee",
+          "mnemonic": "cmp",
+          "owned": true
+        },
+        {
+          "address": "00bf45f3",
+          "mnemonic": "je",
+          "owned": true
+        },
+        {
+          "address": "00bf45f5",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bf45f8",
+          "mnemonic": "cmp",
+          "owned": true
+        },
+        {
+          "address": "00bf45fa",
+          "mnemonic": "jne",
+          "owned": true
+        },
+        {
+          "address": "00bf45fc",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bf4601",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bf4602",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bf4603",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bf4608",
+          "mnemonic": "call",
+          "owned": true
+        },
+        {
+          "address": "00bf460d",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bf4611",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bf4612",
+          "mnemonic": "call",
+          "owned": true
+        },
+        {
+          "address": "00bf4617",
+          "mnemonic": "add",
+          "owned": false
+        },
+        {
+          "address": "00bf461a",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bf461b",
+          "mnemonic": "call",
+          "owned": true
+        },
+        {
+          "address": "00bf4621",
+          "mnemonic": "lea",
+          "owned": true
+        },
+        {
+          "address": "00bf4625",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bf462d",
+          "mnemonic": "call",
+          "owned": true
+        },
+        {
+          "address": "00bf4632",
+          "mnemonic": "pop",
+          "owned": true
+        },
+        {
+          "address": "00bf4633",
+          "mnemonic": "pop",
+          "owned": true
+        },
+        {
+          "address": "00bf4634",
+          "mnemonic": "pop",
+          "owned": true
+        },
+        {
+          "address": "00bf4635",
+          "mnemonic": "xor",
+          "owned": true
+        },
+        {
+          "address": "00bf4637",
+          "mnemonic": "pop",
+          "owned": true
+        },
+        {
+          "address": "00bf4638",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bf463c",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bf4643",
+          "mnemonic": "add",
+          "owned": true
+        },
+        {
+          "address": "00bf4646",
+          "mnemonic": "ret",
+          "owned": true
+        },
+        {
+          "address": "00bf4649",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bf464a",
+          "mnemonic": "lea",
+          "owned": true
+        },
+        {
+          "address": "00bf464e",
+          "mnemonic": "call",
+          "owned": true
+        },
+        {
+          "address": "00bf4653",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bf4657",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bf4658",
+          "mnemonic": "lea",
+          "owned": true
+        },
+        {
+          "address": "00bf465c",
+          "mnemonic": "call",
+          "owned": true
+        },
+        {
+          "address": "00bf4661",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bf4665",
+          "mnemonic": "lea",
+          "owned": true
+        },
+        {
+          "address": "00bf4669",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bf466a",
+          "mnemonic": "add",
+          "owned": true
+        },
+        {
+          "address": "00bf466d",
+          "mnemonic": "call",
+          "owned": true
+        },
+        {
+          "address": "00bf4672",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bf4677",
+          "mnemonic": "call",
+          "owned": true
+        },
+        {
+          "address": "00bf467c",
+          "mnemonic": "add",
+          "owned": true
+        },
+        {
+          "address": "00bf467f",
+          "mnemonic": "lea",
+          "owned": true
+        },
+        {
+          "address": "00bf4683",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bf468b",
+          "mnemonic": "call",
+          "owned": true
+        },
+        {
+          "address": "00bf4690",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bf4694",
+          "mnemonic": "pop",
+          "owned": true
+        },
+        {
+          "address": "00bf4695",
+          "mnemonic": "pop",
+          "owned": true
+        },
+        {
+          "address": "00bf4696",
+          "mnemonic": "pop",
+          "owned": true
+        },
+        {
+          "address": "00bf4697",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bf4699",
+          "mnemonic": "pop",
+          "owned": true
+        },
+        {
+          "address": "00bf469a",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bf46a1",
+          "mnemonic": "add",
+          "owned": true
+        },
+        {
+          "address": "00bf46a4",
+          "mnemonic": "ret",
+          "owned": true
+        }
+      ],
+      "after_documentation": {
+        "hash": "bb68963aec95470a1ddfa8c346d6be307f18313bb9436c86b65b4612b93cd762",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00bf43b0",
+        "function_name": "BSP_PhysicalDirectory_OpenFileOverlapped",
+        "return_type": "bool",
+        "calling_convention": "__fastcall",
+        "plate_comment": "[BSP reconstruction 00bf43b0]\nECX provider; first name,second name,callback,flags stack; AL accepted; RET 10h. Physical table00d69168 slot+0Ch. Requires bit0 clear and flags&0Eh==2, builds physical path from first name, uses CreateFileA attributes60000000h and ReadFile with heap OVERLAPPED/aligned staging buffer. Accepts ReadFile success or ERROR_IO_PENDING, copies both names and appends request to provider+14h. Both accepted cases defer callback to the completion pump. Original allocation/error/large-size cases are not fully safe host contracts. Evidence: docs/VFS_PENDING_DISPATCH.md and reports/vfs_pending_dispatch_audit.json. Pending I/O submission/pump remains analysis only.\n\n[BSP reconstruction 00bf43b0] update\nECX provider; first name,second name,callback,flags stack; AL accepted; RET 10h. Physical table00d69168 slot+0Ch. Requires bit0 clear and flags&0Eh==2, builds physical path from first name, uses CreateFileA attributes60000000h and ReadFile with heap OVERLAPPED/aligned staging buffer. Accepts ReadFile success or ERROR_IO_PENDING, copies both names and appends request to provider+14h. Both accepted cases defer callback to the completion pump. Original allocation/error/large-size cases are not fully safe host contracts. Evidence: docs/VFS_PENDING_DISPATCH.md and reports/vfs_pending_dispatch_audit.json. Pending I/O submission/pump remains analysis only. Owning host submission implemented: aligned OVERLAPPED|NO_BUFFERING read, all throwing queue allocations before accepted ReadFile, always queued. Real installed71090-byte source requests131072 bytes; callback append and both2/0x32 modes pass. docs/PHYSICAL_PENDING_READS.md.",
+        "parameters": [
+          {
+            "ordinal": 0,
+            "name": "provider",
+            "type": "void *"
+          },
+          {
+            "ordinal": 1,
+            "name": "unused_edx",
+            "type": "void *"
+          },
+          {
+            "ordinal": 2,
+            "name": "first_name",
+            "type": "void *"
+          },
+          {
+            "ordinal": 3,
+            "name": "second_name",
+            "type": "void *"
+          },
+          {
+            "ordinal": 4,
+            "name": "callback",
+            "type": "uint"
+          },
+          {
+            "ordinal": 5,
+            "name": "flags",
+            "type": "uint"
+          }
+        ],
+        "local_variables": [
+          {
+            "name": "pvStack_3c",
+            "type": "void *",
+            "storage": "(stack, 0xffffffffffffffc4, 4)"
+          },
+          {
+            "name": "pvStack_40",
+            "type": "LPVOID",
+            "storage": "(stack, 0xffffffffffffffc0, 4)"
+          },
+          {
+            "name": "uStack_2c",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffd4, 4)"
+          },
+          {
+            "name": "LStack_34",
+            "type": "LARGE_INTEGER",
+            "storage": "(stack, 0xffffffffffffffcc, 4)"
+          },
+          {
+            "name": "pvStack_4c",
+            "type": "HANDLE",
+            "storage": "(stack, 0xffffffffffffffb4, 4)"
+          },
+          {
+            "name": "iStack_50",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffb0, 4)"
+          },
+          {
+            "name": "uStack_44",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffbc, 4)"
+          },
+          {
+            "name": "p_Stack_48",
+            "type": "LPOVERLAPPED",
+            "storage": "(stack, 0xffffffffffffffb8, 4)"
+          },
+          {
+            "name": "pvStack_14",
+            "type": "void *",
+            "storage": "(stack, 0xffffffffffffffec, 4)"
+          },
+          {
+            "name": "uStack_4",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "puStack_8",
+            "type": "undefined1 *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "uStack_24",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffdc, 4)"
+          },
+          {
+            "name": "uStack_28",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffd8, 4)"
+          },
+          {
+            "name": "iStack_1c",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffe4, 4)"
+          },
+          {
+            "name": "uStack_20",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffe0, 4)"
+          },
+          {
+            "name": "puVar4",
+            "type": "undefined *",
+            "storage": "(register, 0x4, 4)"
+          },
+          {
+            "name": "BVar3",
+            "type": "BOOL",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "uVar5",
+            "type": "uint",
+            "storage": "(register, 0x18, 4)"
+          },
+          {
+            "name": "unaff_ESI",
+            "type": "int",
+            "storage": "(register, 0x18, 4)"
+          },
+          {
+            "name": "lpFileName",
+            "type": "LPCSTR",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "iVar1",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "DVar2",
+            "type": "DWORD",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "hFile",
+            "type": "HANDLE",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "uVar6",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffff8c, 4)"
+          },
+          {
+            "name": "unaff_retaddr",
+            "type": "undefined4",
+            "storage": "(stack, 0x0, 4)"
+          },
+          {
+            "name": "local_54",
+            "type": "undefined1[4]"
+          },
+          {
+            "name": "local_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 52,
+            "name": "LAB_00bf43e4"
+          },
+          {
+            "relative_offset": 72,
+            "name": "LAB_00bf43f8"
+          },
+          {
+            "relative_offset": 126,
+            "name": "LAB_00bf442e"
+          },
+          {
+            "relative_offset": 183,
+            "name": "LAB_00bf4467"
+          },
+          {
+            "relative_offset": 219,
+            "name": "LAB_00bf448b"
+          },
+          {
+            "relative_offset": 257,
+            "name": "LAB_00bf44b1"
+          },
+          {
+            "relative_offset": 364,
+            "name": "LAB_00bf451c"
+          },
+          {
+            "relative_offset": 394,
+            "name": "LAB_00bf453a"
+          },
+          {
+            "relative_offset": 438,
+            "name": "LAB_00bf4566"
+          },
+          {
+            "relative_offset": 476,
+            "name": "LAB_00bf458c"
+          },
+          {
+            "relative_offset": 593,
+            "name": "LAB_00bf4601"
+          },
+          {
+            "relative_offset": 618,
+            "name": "LAB_00bf461a"
+          },
+          {
+            "relative_offset": 665,
+            "name": "LAB_00bf4649"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "verified_complete": true,
+      "verified_instruction_count": 238,
+      "prior_evidence_preserved": true
+    },
+    {
+      "address": "00bf46b0",
+      "end_exclusive": "00bf47db",
+      "sha256": "af14b1a5ae6bbf0853bb3dca7040be629d29ac6aeb506056af0d2c24df8cd60d",
+      "bytes": 299,
+      "before_documentation": {
+        "hash": "a2703fc6cb93395220a0b94223cef44a4ba70089959023f8f0241b48ca16e4d1",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00bf46b0",
+        "function_name": "BSP_PhysicalDirectory_PollReadCompletions",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00bf46b0]\nECX provider; RET. Physical table slot+28h; diagnostic cPhysicalDirectoryX86::Tick. Skips Internal==103h; calls GetOverlappedResult(wait=false). On success/type1 copies logical low-DWORD size into a new memory stream via00befa40 and calls callback(stream,first-name,second-name), then releases its stream reference. Completed errors skip callback. Raw tail after _free frees staging/OVERLAPPED, closes handle and removes queue entry through00bf4240; current Ghidra decompiler wrongly omits this tail. Actual byte count is not checked against logical size. FileStore pending cleanup on I/O failure is unverified. Evidence: docs/VFS_PENDING_DISPATCH.md and reports/vfs_pending_dispatch_audit.json. Pending I/O submission/pump remains analysis only.\n\n[BSP reconstruction 00bf46b0] update\nECX provider; RET. Physical table slot+28h; diagnostic cPhysicalDirectoryX86::Tick. Skips Internal==103h; calls GetOverlappedResult(wait=false). On success/type1 copies logical low-DWORD size into a new memory stream via00befa40 and calls callback(stream,first-name,second-name), then releases its stream reference. Completed errors skip callback. Raw tail after _free frees staging/OVERLAPPED, closes handle and removes queue entry through00bf4240; current Ghidra decompiler wrongly omits this tail. Actual byte count is not checked against logical size. FileStore pending cleanup on I/O failure is unverified. Evidence: docs/VFS_PENDING_DISPATCH.md and reports/vfs_pending_dispatch_audit.json. Pending I/O submission/pump remains analysis only. ECX physical provider; no stack arguments; RET Reverified completion pump. Callback precedes current-record cleanup/erase; queue base reloaded after callback; same index rechecked after erase and live count used. Recursive pump/name-wrapper invalidation are unsupported lifetime cases. Evidence: docs/VFS_PENDING_LIFETIME.md and reports/vfs_pending_lifetime_audit.json. Read-only contract; no new host implementation or runtime equivalence. reports/vfs_pending_lifetime_audit.json\n\n[BSP reconstruction 00bf46b0] update\nECX provider; RET. Physical table slot+28h; diagnostic cPhysicalDirectoryX86::Tick. Skips Internal==103h; calls GetOverlappedResult(wait=false). On success/type1 copies logical low-DWORD size into a new memory stream via00befa40 and calls callback(stream,first-name,second-name), then releases its stream reference. Completed errors skip callback. Raw tail after _free frees staging/OVERLAPPED, closes handle and removes queue entry through00bf4240; current Ghidra decompiler wrongly omits this tail. Actual byte count is not checked against logical size. FileStore pending cleanup on I/O failure is unverified. Evidence: docs/VFS_PENDING_DISPATCH.md and reports/vfs_pending_dispatch_audit.json. Pending I/O submission/pump remains analysis only. ECX physical provider; no stack arguments; RET Reverified completion pump. Callback precedes current-record cleanup/erase; queue base reloaded after callback; same index rechecked after erase and live count used. Recursive pump/name-wrapper invalidation are unsupported lifetime cases. Evidence: docs/VFS_PENDING_LIFETIME.md and reports/vfs_pending_lifetime_audit.json. Read-only contract; no new host implementation or runtime equivalence. reports/vfs_pending_lifetime_audit.json Host nonblocking ordered pump implemented with callback-before-cleanup/erase and current-count scan. Stable callback names, independently copied stream, exception cleanup and explicit drained destructor precondition. Actual-count guards differ from native ignored count; no invented failure callback/cancel. Real-file2callback fixture passes. docs/PHYSICAL_PENDING_READS.md.",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "DVar4",
+            "type": "DWORD",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "BVar3",
+            "type": "BOOL",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "puVar6",
+            "type": "undefined *",
+            "storage": "(register, 0x4, 4)"
+          },
+          {
+            "name": "LVar5",
+            "type": "LONG",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "puVar8",
+            "type": "undefined4 *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "iVar7",
+            "type": "int",
+            "storage": "(register, 0x14, 4)"
+          },
+          {
+            "name": "iVar9",
+            "type": "int",
+            "storage": "(register, 0x1c, 4)"
+          },
+          {
+            "name": "local_4",
+            "type": "DWORD"
+          },
+          {
+            "name": "piVar1",
+            "type": "int *",
+            "storage": "(unique, 0x6600, 4)"
+          },
+          {
+            "name": "lpOverlapped",
+            "type": "LPOVERLAPPED",
+            "storage": "(unique, 0x17200, 4)"
+          },
+          {
+            "name": "iVar2",
+            "type": "int",
+            "storage": "(unique, 0x6c00, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 32,
+            "name": "LAB_00bf46d0"
+          },
+          {
+            "relative_offset": 97,
+            "name": "LAB_00bf4711"
+          },
+          {
+            "relative_offset": 114,
+            "name": "LAB_00bf4722"
+          },
+          {
+            "relative_offset": 213,
+            "name": "LAB_00bf4785"
+          },
+          {
+            "relative_offset": 276,
+            "name": "LAB_00bf47c4"
+          },
+          {
+            "relative_offset": 282,
+            "name": "LAB_00bf47ca"
+          },
+          {
+            "relative_offset": 294,
+            "name": "LAB_00bf47d6"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "before_ownership": [
+        {
+          "address": "00bf46b0",
+          "mnemonic": "sub",
+          "owned": true
+        },
+        {
+          "address": "00bf46b3",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bf46b4",
+          "mnemonic": "xor",
+          "owned": true
+        },
+        {
+          "address": "00bf46b6",
+          "mnemonic": "cmp",
+          "owned": true
+        },
+        {
+          "address": "00bf46b9",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bf46bd",
+          "mnemonic": "jle",
+          "owned": true
+        },
+        {
+          "address": "00bf46c3",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bf46c4",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bf46c5",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bf46c6",
+          "mnemonic": "lea",
+          "owned": true
+        },
+        {
+          "address": "00bf46c9",
+          "mnemonic": "xor",
+          "owned": true
+        },
+        {
+          "address": "00bf46cb",
+          "mnemonic": "jmp",
+          "owned": true
+        },
+        {
+          "address": "00bf46cd",
+          "mnemonic": "lea",
+          "owned": false
+        },
+        {
+          "address": "00bf46d0",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bf46d2",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bf46d6",
+          "mnemonic": "add",
+          "owned": true
+        },
+        {
+          "address": "00bf46d8",
+          "mnemonic": "cmp",
+          "owned": true
+        },
+        {
+          "address": "00bf46de",
+          "mnemonic": "je",
+          "owned": true
+        },
+        {
+          "address": "00bf46e4",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bf46e6",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bf46e8",
+          "mnemonic": "lea",
+          "owned": true
+        },
+        {
+          "address": "00bf46ec",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bf46ed",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bf46ee",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bf46ef",
+          "mnemonic": "call",
+          "owned": true
+        },
+        {
+          "address": "00bf46f5",
+          "mnemonic": "test",
+          "owned": true
+        },
+        {
+          "address": "00bf46f7",
+          "mnemonic": "jne",
+          "owned": true
+        },
+        {
+          "address": "00bf46f9",
+          "mnemonic": "call",
+          "owned": true
+        },
+        {
+          "address": "00bf46ff",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bf4701",
+          "mnemonic": "lea",
+          "owned": true
+        },
+        {
+          "address": "00bf4705",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bf4708",
+          "mnemonic": "test",
+          "owned": true
+        },
+        {
+          "address": "00bf470a",
+          "mnemonic": "jne",
+          "owned": true
+        },
+        {
+          "address": "00bf470c",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bf4711",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bf4712",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bf4713",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bf4718",
+          "mnemonic": "call",
+          "owned": true
+        },
+        {
+          "address": "00bf471d",
+          "mnemonic": "add",
+          "owned": true
+        },
+        {
+          "address": "00bf4720",
+          "mnemonic": "jmp",
+          "owned": true
+        },
+        {
+          "address": "00bf4722",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bf4724",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bf4728",
+          "mnemonic": "sub",
+          "owned": true
+        },
+        {
+          "address": "00bf472b",
+          "mnemonic": "lea",
+          "owned": true
+        },
+        {
+          "address": "00bf472e",
+          "mnemonic": "jne",
+          "owned": true
+        },
+        {
+          "address": "00bf4730",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bf4735",
+          "mnemonic": "call",
+          "owned": true
+        },
+        {
+          "address": "00bf473a",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bf473d",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bf4740",
+          "mnemonic": "add",
+          "owned": true
+        },
+        {
+          "address": "00bf4743",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bf4744",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bf4745",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bf4748",
+          "mnemonic": "call",
+          "owned": true
+        },
+        {
+          "address": "00bf474d",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bf4752",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bf4754",
+          "mnemonic": "call",
+          "owned": true
+        },
+        {
+          "address": "00bf4759",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bf475b",
+          "mnemonic": "lea",
+          "owned": true
+        },
+        {
+          "address": "00bf475e",
+          "mnemonic": "add",
+          "owned": true
+        },
+        {
+          "address": "00bf4761",
+          "mnemonic": "lea",
+          "owned": true
+        },
+        {
+          "address": "00bf4764",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bf4765",
+          "mnemonic": "lea",
+          "owned": true
+        },
+        {
+          "address": "00bf4768",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bf476b",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bf476c",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bf476d",
+          "mnemonic": "call",
+          "owned": true
+        },
+        {
+          "address": "00bf476f",
+          "mnemonic": "lea",
+          "owned": true
+        },
+        {
+          "address": "00bf4772",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bf4773",
+          "mnemonic": "call",
+          "owned": true
+        },
+        {
+          "address": "00bf4779",
+          "mnemonic": "test",
+          "owned": true
+        },
+        {
+          "address": "00bf477b",
+          "mnemonic": "jne",
+          "owned": true
+        },
+        {
+          "address": "00bf477d",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bf477f",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bf4781",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bf4783",
+          "mnemonic": "call",
+          "owned": true
+        },
+        {
+          "address": "00bf4785",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bf4787",
+          "mnemonic": "mov",
+          "owned": true
+        },
+        {
+          "address": "00bf478b",
+          "mnemonic": "add",
+          "owned": true
+        },
+        {
+          "address": "00bf478d",
+          "mnemonic": "push",
+          "owned": true
+        },
+        {
+          "address": "00bf478e",
+          "mnemonic": "call",
+          "owned": true
+        },
+        {
+          "address": "00bf4793",
+          "mnemonic": "mov",
+          "owned": false
+        },
+        {
+          "address": "00bf4796",
+          "mnemonic": "add",
+          "owned": false
+        },
+        {
+          "address": "00bf4799",
+          "mnemonic": "test",
+          "owned": false
+        },
+        {
+          "address": "00bf479b",
+          "mnemonic": "je",
+          "owned": false
+        },
+        {
+          "address": "00bf479d",
+          "mnemonic": "push",
+          "owned": false
+        },
+        {
+          "address": "00bf479e",
+          "mnemonic": "call",
+          "owned": false
+        },
+        {
+          "address": "00bf47a3",
+          "mnemonic": "add",
+          "owned": false
+        },
+        {
+          "address": "00bf47a6",
+          "mnemonic": "mov",
+          "owned": false
+        },
+        {
+          "address": "00bf47ad",
+          "mnemonic": "mov",
+          "owned": false
+        },
+        {
+          "address": "00bf47af",
+          "mnemonic": "push",
+          "owned": false
+        },
+        {
+          "address": "00bf47b0",
+          "mnemonic": "call",
+          "owned": false
+        },
+        {
+          "address": "00bf47b6",
+          "mnemonic": "push",
+          "owned": false
+        },
+        {
+          "address": "00bf47b7",
+          "mnemonic": "mov",
+          "owned": false
+        },
+        {
+          "address": "00bf47b9",
+          "mnemonic": "call",
+          "owned": false
+        },
+        {
+          "address": "00bf47be",
+          "mnemonic": "mov",
+          "owned": false
+        },
+        {
+          "address": "00bf47c2",
+          "mnemonic": "jmp",
+          "owned": false
+        },
+        {
+          "address": "00bf47c4",
+          "mnemonic": "add",
+          "owned": true
+        },
+        {
+          "address": "00bf47c7",
+          "mnemonic": "add",
+          "owned": true
+        },
+        {
+          "address": "00bf47ca",
+          "mnemonic": "cmp",
+          "owned": true
+        },
+        {
+          "address": "00bf47cd",
+          "mnemonic": "jl",
+          "owned": true
+        },
+        {
+          "address": "00bf47d3",
+          "mnemonic": "pop",
+          "owned": true
+        },
+        {
+          "address": "00bf47d4",
+          "mnemonic": "pop",
+          "owned": true
+        },
+        {
+          "address": "00bf47d5",
+          "mnemonic": "pop",
+          "owned": true
+        },
+        {
+          "address": "00bf47d6",
+          "mnemonic": "pop",
+          "owned": true
+        },
+        {
+          "address": "00bf47d7",
+          "mnemonic": "add",
+          "owned": true
+        },
+        {
+          "address": "00bf47da",
+          "mnemonic": "ret",
+          "owned": true
+        }
+      ],
+      "after_documentation": {
+        "hash": "8e8b16897ee48152c798fa3ef6e659ce258257a8858538ea313b90650ecd1205",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00bf46b0",
+        "function_name": "BSP_PhysicalDirectory_PollReadCompletions",
+        "return_type": "void",
+        "calling_convention": "__fastcall",
+        "plate_comment": "[BSP reconstruction 00bf46b0]\nECX provider; RET. Physical table slot+28h; diagnostic cPhysicalDirectoryX86::Tick. Skips Internal==103h; calls GetOverlappedResult(wait=false). On success/type1 copies logical low-DWORD size into a new memory stream via00befa40 and calls callback(stream,first-name,second-name), then releases its stream reference. Completed errors skip callback. Raw tail after _free frees staging/OVERLAPPED, closes handle and removes queue entry through00bf4240; current Ghidra decompiler wrongly omits this tail. Actual byte count is not checked against logical size. FileStore pending cleanup on I/O failure is unverified. Evidence: docs/VFS_PENDING_DISPATCH.md and reports/vfs_pending_dispatch_audit.json. Pending I/O submission/pump remains analysis only.\n\n[BSP reconstruction 00bf46b0] update\nECX provider; RET. Physical table slot+28h; diagnostic cPhysicalDirectoryX86::Tick. Skips Internal==103h; calls GetOverlappedResult(wait=false). On success/type1 copies logical low-DWORD size into a new memory stream via00befa40 and calls callback(stream,first-name,second-name), then releases its stream reference. Completed errors skip callback. Raw tail after _free frees staging/OVERLAPPED, closes handle and removes queue entry through00bf4240; current Ghidra decompiler wrongly omits this tail. Actual byte count is not checked against logical size. FileStore pending cleanup on I/O failure is unverified. Evidence: docs/VFS_PENDING_DISPATCH.md and reports/vfs_pending_dispatch_audit.json. Pending I/O submission/pump remains analysis only. ECX physical provider; no stack arguments; RET Reverified completion pump. Callback precedes current-record cleanup/erase; queue base reloaded after callback; same index rechecked after erase and live count used. Recursive pump/name-wrapper invalidation are unsupported lifetime cases. Evidence: docs/VFS_PENDING_LIFETIME.md and reports/vfs_pending_lifetime_audit.json. Read-only contract; no new host implementation or runtime equivalence. reports/vfs_pending_lifetime_audit.json\n\n[BSP reconstruction 00bf46b0] update\nECX provider; RET. Physical table slot+28h; diagnostic cPhysicalDirectoryX86::Tick. Skips Internal==103h; calls GetOverlappedResult(wait=false). On success/type1 copies logical low-DWORD size into a new memory stream via00befa40 and calls callback(stream,first-name,second-name), then releases its stream reference. Completed errors skip callback. Raw tail after _free frees staging/OVERLAPPED, closes handle and removes queue entry through00bf4240; current Ghidra decompiler wrongly omits this tail. Actual byte count is not checked against logical size. FileStore pending cleanup on I/O failure is unverified. Evidence: docs/VFS_PENDING_DISPATCH.md and reports/vfs_pending_dispatch_audit.json. Pending I/O submission/pump remains analysis only. ECX physical provider; no stack arguments; RET Reverified completion pump. Callback precedes current-record cleanup/erase; queue base reloaded after callback; same index rechecked after erase and live count used. Recursive pump/name-wrapper invalidation are unsupported lifetime cases. Evidence: docs/VFS_PENDING_LIFETIME.md and reports/vfs_pending_lifetime_audit.json. Read-only contract; no new host implementation or runtime equivalence. reports/vfs_pending_lifetime_audit.json Host nonblocking ordered pump implemented with callback-before-cleanup/erase and current-count scan. Stable callback names, independently copied stream, exception cleanup and explicit drained destructor precondition. Actual-count guards differ from native ignored count; no invented failure callback/cancel. Real-file2callback fixture passes. docs/PHYSICAL_PENDING_READS.md.",
+        "parameters": [
+          {
+            "ordinal": 0,
+            "name": "provider",
+            "type": "void *"
+          },
+          {
+            "ordinal": 1,
+            "name": "unused_edx",
+            "type": "void *"
+          }
+        ],
+        "local_variables": [
+          {
+            "name": "local_4",
+            "type": "DWORD"
+          },
+          {
+            "name": "iVar2",
+            "type": "int",
+            "storage": "(unique, 0x6c00, 4)"
+          },
+          {
+            "name": "piVar1",
+            "type": "int *",
+            "storage": "(unique, 0x6600, 4)"
+          },
+          {
+            "name": "BVar3",
+            "type": "BOOL",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "lpOverlapped",
+            "type": "LPOVERLAPPED",
+            "storage": "(unique, 0x17200, 4)"
+          },
+          {
+            "name": "iVar9",
+            "type": "int",
+            "storage": "(register, 0x1c, 4)"
+          },
+          {
+            "name": "puVar8",
+            "type": "undefined4 *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "LVar5",
+            "type": "LONG",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "DVar4",
+            "type": "DWORD",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "iVar7",
+            "type": "int",
+            "storage": "(register, 0x14, 4)"
+          },
+          {
+            "name": "puVar6",
+            "type": "undefined *",
+            "storage": "(register, 0x4, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 32,
+            "name": "LAB_00bf46d0"
+          },
+          {
+            "relative_offset": 97,
+            "name": "LAB_00bf4711"
+          },
+          {
+            "relative_offset": 114,
+            "name": "LAB_00bf4722"
+          },
+          {
+            "relative_offset": 213,
+            "name": "LAB_00bf4785"
+          },
+          {
+            "relative_offset": 253,
+            "name": "LAB_00bf47ad"
+          },
+          {
+            "relative_offset": 276,
+            "name": "LAB_00bf47c4"
+          },
+          {
+            "relative_offset": 282,
+            "name": "LAB_00bf47ca"
+          },
+          {
+            "relative_offset": 294,
+            "name": "LAB_00bf47d6"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "verified_complete": true,
+      "verified_instruction_count": 106,
+      "prior_evidence_preserved": true,
+      "padding_note": "Unreachable compiler LEA ECX,[ECX] atBF46CD..BF46CF was and remains outside function; all reached instructions verified."
+    }
+  ],
+  "actions": [
+    {
+      "endpoint": "clear_instruction_flow_override",
+      "body": {
+        "address": "00bf4612"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Cleared flow override at 00bf4612 (was: NONE, now: NONE)\"}"
+    },
+    {
+      "endpoint": "delete_function",
+      "body": {
+        "address": "00bf43b0"
+      },
+      "result": "{\"success\": true, \"address\": \"00bf43b0\", \"deleted_function\": \"BSP_PhysicalDirectory_OpenFileOverlapped\", \"body_size\": 756, \"message\": \"Function 'BSP_PhysicalDirectory_OpenFileOverlapped' deleted at 00bf43b0\"}"
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00bf43b0",
+        "end_address": "00bf46a7"
+      },
+      "result": "{\"success\": true, \"start_address\": \"00bf43b0\", \"end_address\": \"00bf46a6\", \"bytes_disassembled\": 759, \"message\": \"Successfully disassembled 759 byte(s)\"}"
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00bf43b0",
+        "name": "BSP_PhysicalDirectory_OpenFileOverlapped",
+        "disassemble_first": false
+      },
+      "result": "{\"success\": true, \"address\": \"00bf43b0\", \"function_name\": \"BSP_PhysicalDirectory_OpenFileOverlapped\", \"entry_point\": \"00bf43b0\", \"body_size\": 759, \"message\": \"Function created successfully at 00bf43b0\", \"warnings\": [\"Function name 'BSP_PhysicalDirectory_OpenFileOverlapped' \\u2014 main part 'PhysicalDirectory_OpenFileOverlapped' is not PascalCase. Expected: PhysicaldirectoryOpenfileoverlapped\", \"Function name 'BSP_PhysicalDirectory_OpenFileOverlapped' \\u2014 main part 'PhysicalDirectory_OpenFileOverlapped' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_PhysicalDirectory_OpenFileOverlapped' does not start with a recognized verb. First word 'Physical' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00bf43b0",
+        "prototype": "bool __fastcall BSP_PhysicalDirectory_OpenFileOverlapped(void* provider, void* unused_edx, void* first_name, void* second_name, uint callback, uint flags)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00bf43b0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00bf43b0",
+        "comment": "[BSP reconstruction 00bf43b0]\nECX provider; first name,second name,callback,flags stack; AL accepted; RET 10h. Physical table00d69168 slot+0Ch. Requires bit0 clear and flags&0Eh==2, builds physical path from first name, uses CreateFileA attributes60000000h and ReadFile with heap OVERLAPPED/aligned staging buffer. Accepts ReadFile success or ERROR_IO_PENDING, copies both names and appends request to provider+14h. Both accepted cases defer callback to the completion pump. Original allocation/error/large-size cases are not fully safe host contracts. Evidence: docs/VFS_PENDING_DISPATCH.md and reports/vfs_pending_dispatch_audit.json. Pending I/O submission/pump remains analysis only.\n\n[BSP reconstruction 00bf43b0] update\nECX provider; first name,second name,callback,flags stack; AL accepted; RET 10h. Physical table00d69168 slot+0Ch. Requires bit0 clear and flags&0Eh==2, builds physical path from first name, uses CreateFileA attributes60000000h and ReadFile with heap OVERLAPPED/aligned staging buffer. Accepts ReadFile success or ERROR_IO_PENDING, copies both names and appends request to provider+14h. Both accepted cases defer callback to the completion pump. Original allocation/error/large-size cases are not fully safe host contracts. Evidence: docs/VFS_PENDING_DISPATCH.md and reports/vfs_pending_dispatch_audit.json. Pending I/O submission/pump remains analysis only. Owning host submission implemented: aligned OVERLAPPED|NO_BUFFERING read, all throwing queue allocations before accepted ReadFile, always queued. Real installed71090-byte source requests131072 bytes; callback append and both2/0x32 modes pass. docs/PHYSICAL_PENDING_READS.md."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00bf43b0\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "clear_instruction_flow_override",
+      "body": {
+        "address": "00bf478e"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Cleared flow override at 00bf478e (was: NONE, now: NONE)\"}"
+    },
+    {
+      "endpoint": "clear_instruction_flow_override",
+      "body": {
+        "address": "00bf479e"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Cleared flow override at 00bf479e (was: NONE, now: NONE)\"}"
+    },
+    {
+      "endpoint": "delete_function",
+      "body": {
+        "address": "00bf46b0"
+      },
+      "result": "{\"success\": true, \"address\": \"00bf46b0\", \"deleted_function\": \"BSP_PhysicalDirectory_PollReadCompletions\", \"body_size\": 247, \"message\": \"Function 'BSP_PhysicalDirectory_PollReadCompletions' deleted at 00bf46b0\"}"
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00bf46b0",
+        "end_address": "00bf47db"
+      },
+      "result": "{\"success\": true, \"start_address\": \"00bf46b0\", \"end_address\": \"00bf47da\", \"bytes_disassembled\": 299, \"message\": \"Successfully disassembled 299 byte(s)\"}"
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00bf46b0",
+        "name": "BSP_PhysicalDirectory_PollReadCompletions",
+        "disassemble_first": false
+      },
+      "result": "{\"success\": true, \"address\": \"00bf46b0\", \"function_name\": \"BSP_PhysicalDirectory_PollReadCompletions\", \"entry_point\": \"00bf46b0\", \"body_size\": 296, \"message\": \"Function created successfully at 00bf46b0\", \"warnings\": [\"Function name 'BSP_PhysicalDirectory_PollReadCompletions' \\u2014 main part 'PhysicalDirectory_PollReadCompletions' is not PascalCase. Expected: PhysicaldirectoryPollreadcompletions\", \"Function name 'BSP_PhysicalDirectory_PollReadCompletions' \\u2014 main part 'PhysicalDirectory_PollReadCompletions' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_PhysicalDirectory_PollReadCompletions' does not start with a recognized verb. First word 'Physical' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00bf46b0",
+        "prototype": "void __fastcall BSP_PhysicalDirectory_PollReadCompletions(void* provider, void* unused_edx)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00bf46b0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00bf46b0",
+        "comment": "[BSP reconstruction 00bf46b0]\nECX provider; RET. Physical table slot+28h; diagnostic cPhysicalDirectoryX86::Tick. Skips Internal==103h; calls GetOverlappedResult(wait=false). On success/type1 copies logical low-DWORD size into a new memory stream via00befa40 and calls callback(stream,first-name,second-name), then releases its stream reference. Completed errors skip callback. Raw tail after _free frees staging/OVERLAPPED, closes handle and removes queue entry through00bf4240; current Ghidra decompiler wrongly omits this tail. Actual byte count is not checked against logical size. FileStore pending cleanup on I/O failure is unverified. Evidence: docs/VFS_PENDING_DISPATCH.md and reports/vfs_pending_dispatch_audit.json. Pending I/O submission/pump remains analysis only.\n\n[BSP reconstruction 00bf46b0] update\nECX provider; RET. Physical table slot+28h; diagnostic cPhysicalDirectoryX86::Tick. Skips Internal==103h; calls GetOverlappedResult(wait=false). On success/type1 copies logical low-DWORD size into a new memory stream via00befa40 and calls callback(stream,first-name,second-name), then releases its stream reference. Completed errors skip callback. Raw tail after _free frees staging/OVERLAPPED, closes handle and removes queue entry through00bf4240; current Ghidra decompiler wrongly omits this tail. Actual byte count is not checked against logical size. FileStore pending cleanup on I/O failure is unverified. Evidence: docs/VFS_PENDING_DISPATCH.md and reports/vfs_pending_dispatch_audit.json. Pending I/O submission/pump remains analysis only. ECX physical provider; no stack arguments; RET Reverified completion pump. Callback precedes current-record cleanup/erase; queue base reloaded after callback; same index rechecked after erase and live count used. Recursive pump/name-wrapper invalidation are unsupported lifetime cases. Evidence: docs/VFS_PENDING_LIFETIME.md and reports/vfs_pending_lifetime_audit.json. Read-only contract; no new host implementation or runtime equivalence. reports/vfs_pending_lifetime_audit.json\n\n[BSP reconstruction 00bf46b0] update\nECX provider; RET. Physical table slot+28h; diagnostic cPhysicalDirectoryX86::Tick. Skips Internal==103h; calls GetOverlappedResult(wait=false). On success/type1 copies logical low-DWORD size into a new memory stream via00befa40 and calls callback(stream,first-name,second-name), then releases its stream reference. Completed errors skip callback. Raw tail after _free frees staging/OVERLAPPED, closes handle and removes queue entry through00bf4240; current Ghidra decompiler wrongly omits this tail. Actual byte count is not checked against logical size. FileStore pending cleanup on I/O failure is unverified. Evidence: docs/VFS_PENDING_DISPATCH.md and reports/vfs_pending_dispatch_audit.json. Pending I/O submission/pump remains analysis only. ECX physical provider; no stack arguments; RET Reverified completion pump. Callback precedes current-record cleanup/erase; queue base reloaded after callback; same index rechecked after erase and live count used. Recursive pump/name-wrapper invalidation are unsupported lifetime cases. Evidence: docs/VFS_PENDING_LIFETIME.md and reports/vfs_pending_lifetime_audit.json. Read-only contract; no new host implementation or runtime equivalence. reports/vfs_pending_lifetime_audit.json Host nonblocking ordered pump implemented with callback-before-cleanup/erase and current-count scan. Stable callback names, independently copied stream, exception cleanup and explicit drained destructor precondition. Actual-count guards differ from native ignored count; no invented failure callback/cancel. Real-file2callback fixture passes. docs/PHYSICAL_PENDING_READS.md."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00bf46b0\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": "{\"success\": true, \"program\": \"battlestationspacific.exe\", \"message\": \"Program saved successfully\"}"
+    }
+  ],
+  "state": "complete_membership_saved_prior_evidence_preserved",
+  "exports_refreshed": true
+}

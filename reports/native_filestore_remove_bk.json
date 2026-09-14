@@ -1,0 +1,727 @@
+{
+  "packet": "orch4_native_filestore_remove_bk",
+  "status": "complete source reconstruction, strict Win32 compile, actual-storage source fixture; primary integration and game validation separate",
+  "source": "src/native_filestore_remove.cpp",
+  "header": "include/bsp/native_filestore_remove.hpp",
+  "documentation": "docs/NATIVE_FILESTORE_REMOVE_BK.md",
+  "owner": "agent/orch4-vfs-pending-bk",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "project_verification": "ghidra ensure --status before each live batch; normal wrappers verify configured project/program/language/image base. No Ghidra mutation, annotation, save, CMake, or primary source edit.",
+  "installed_executable": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+  "installed_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "verification_utc": "2026-09-14T05:49:42.551751+00:00",
+  "functions": [
+    {
+      "address": "00be7130",
+      "inclusive_end": "00be7209",
+      "bytes": 218,
+      "native_sha256": "7df300d6343a2d18304364809d89103bfaea1775cef7bfe4b32f231f56c6e686",
+      "fresh_live_matches_disk": true,
+      "source_name": "remove_native_file_store_file_00be7130",
+      "ghidra_name": "BSP_FileStore_RemoveFile",
+      "coverage": "complete",
+      "original_abi": "ECX actual 2Ch FileStore; one stack actual eight-byte name header; RET4; no specified semantic result",
+      "source_contract": "Actual resident tree at store+14h, explicit borrowed string storage, adopted-stream profile dispatch, and returning CRT callbacks. New C++ interface; no binary ABI/FH3 or arbitrary native frame alias guarantee.",
+      "native_control_flow": "Full listing and live-vs-PE bytes. Current decompiler prototype incorrectly omits the stack name argument.",
+      "source_validation": "strict Win32 TU compile and one source fixture with actual storage and complete existing dependencies"
+    }
+  ],
+  "auxiliary_spans": [
+    {
+      "address": "00cc6d80",
+      "inclusive_end": "00cc6d87",
+      "bytes": 8,
+      "native_sha256": "a7fcb1fc352ce18365abd9e8a3fa6e6e7215a0596bd07d83306073be220621d7",
+      "fresh_live_matches_disk": true,
+      "coverage": "complete existing cleanup funclet",
+      "meaning": "LEA ECX,[EBP-1Ch]; JMP41DD20"
+    },
+    {
+      "address": "00cc6d88",
+      "inclusive_end": "00cc6d91",
+      "bytes": 10,
+      "native_sha256": "8ba84380e1db9f399da9562a5b3e889e69942fde85a4f4fc340045575ca61100",
+      "fresh_live_matches_disk": true,
+      "no_ghidra_function": true,
+      "coverage": "complete raw code span",
+      "meaning": "MOV EAX,E0168C; JMP BF6B43. Original handler bytes, not reconstructed as an ABI thunk.",
+      "tail_target": "00bf6b43",
+      "tail_site": "00cc6d8d"
+    },
+    {
+      "address": "00e01684",
+      "inclusive_end": "00e016af",
+      "bytes": 44,
+      "native_sha256": "9fab3ca74538c132c67355c32e160b093a84035827e0891f115e8a458e041bba",
+      "fresh_live_matches_disk": true,
+      "coverage": "unwind map and FuncInfo data",
+      "meaning": "Map entry previous state -1 / CC6D80; FuncInfo E0168C maxState1, map E01684."
+    },
+    {
+      "address": "004254b0",
+      "inclusive_end": "004254b0",
+      "bytes": 1,
+      "native_sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+      "fresh_live_matches_disk": true,
+      "coverage": "complete existing diagnostic leaf",
+      "meaning": "Single RET byte; no output or error policy"
+    }
+  ],
+  "fresh_byte_comparison": {
+    "spans": 5,
+    "bytes": 281,
+    "all_equal": true
+  },
+  "host_steps": [
+    {
+      "address": "00be7155",
+      "native": "00bee780",
+      "function": "00be7130",
+      "meaning": "Construct and normalize completed local name",
+      "original_abi": "ECX local header; EDX source header; EAX header; RET"
+    },
+    {
+      "address": "00be7171",
+      "native": "00be5e90",
+      "function": "00be7130",
+      "meaning": "Find actual resident iterator",
+      "original_abi": "ECX tree; stack output/name; EAX output; RET8"
+    },
+    {
+      "address": "00be7185",
+      "native": "00bf6713",
+      "function": "00be7130",
+      "meaning": "Returning CRT invalid-parameter path",
+      "original_abi": "No caller stack arguments; source explicit borrowed callback can return"
+    },
+    {
+      "address": "00be719b",
+      "native": "00be6760",
+      "function": "00be7130",
+      "meaning": "Erase by-value owner/node into same iterator output",
+      "original_abi": "ECX resident tree; stack output/owner/node; EAX output; RET0C"
+    },
+    {
+      "address": "00be71c8",
+      "native": "004254b0",
+      "function": "00be7130",
+      "meaning": "Diagnostic leaf whose full body is RET",
+      "original_abi": "Caller pushes format/name; plain RET; caller removes8 bytes"
+    },
+    {
+      "address": "00be71ed",
+      "native": "00419cc0",
+      "function": "00be7130",
+      "meaning": "Obtain current pool for local-buffer release",
+      "original_abi": "No own stack arguments; EAX pool; preserves arguments already pushed for BD1510"
+    },
+    {
+      "address": "00be71f4",
+      "native": "00bd1510",
+      "function": "00be7130",
+      "meaning": "Release current local buffer",
+      "original_abi": "ECX current pool; stack data/current length+1/1; RET0C"
+    },
+    {
+      "address": "00cc6d83",
+      "native": "0041dd20",
+      "function": "00cc6d80",
+      "kind": "tail_jump",
+      "meaning": "Completed-local name unwind cleanup",
+      "original_abi": "ECX frame-local actual header; tail jump into native string destructor"
+    }
+  ],
+  "storage_and_lifetime": [
+    "Use current resident tree fields at actual store+14h, not a container projection. No pending-tree edit.",
+    "BEE780 normalization uses a copied actual header. Source cleanup armed only after construction returns.",
+    "BE7176 captures returned owner; BE717C captures current head before CRT. BE718A reads current iterator node after returning CRT. Same iterator output passed to BE6760.",
+    "BE6760 and its established BE5D70 payload destruction own stream decrement/zero-reference destruction and original-node release. RemoveFile adds no stream retain.",
+    "Both diagnostics call full RET-only4254B0. Missing key has no added exception/result/callback.",
+    "Completed local cleanup releases current normalized storage on normal and source C++ exceptional exit. The existing noexcept string-release contract remains a limit."
+  ],
+  "dependencies": [
+    {
+      "entry": "00bee780",
+      "source": "src/native_pooled_resource_path.cpp",
+      "status": "existing complete constructor and normalization"
+    },
+    {
+      "entry": "00be5e90",
+      "source": "src/native_filestore_open.cpp",
+      "status": "existing complete actual-name iterator find"
+    },
+    {
+      "entry": "00be6760",
+      "source": "src/native_filestore_resident_tree.cpp",
+      "status": "existing complete resident erase, including two-child transplant"
+    },
+    {
+      "entry": "00be5d70",
+      "source": "src/native_filestore_subtree.cpp",
+      "status": "existing payload stream decrement/current string cleanup through resident erase"
+    },
+    {
+      "entry": "0041dd20",
+      "source": "src/native_string.cpp",
+      "status": "existing completed-header string cleanup"
+    },
+    {
+      "entry": "00bd1510",
+      "source": "src/native_string_pool_storage.cpp",
+      "status": "existing actual pool return; current pool exposed through borrowed NativeStringStorage"
+    }
+  ],
+  "verification": {
+    "strict_tu": {
+      "result": "passed",
+      "command": "cmd /c local\\remove_bk\\compile_remove.cmd",
+      "flags": "MSVC x86 /std:c++17 /EHsc /MD /O2 /W4 /WX /fp:strict"
+    },
+    "fixture_build": {
+      "result": "passed",
+      "command": "cmd /c local\\remove_bk\\compile_probe.cmd",
+      "compile_script_text": "@echo off\ncall \"C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Auxiliary\\Build\\vcvarsall.bat\" x86 >nul\ncl /nologo /std:c++17 /EHsc /MD /O2 /W4 /WX /fp:strict /I local\\remove_bk\\include /c local\\remove_bk\\native_filestore_remove.cpp /Folocal\\remove_bk\\native_filestore_remove.obj >local\\remove_bk\\compile.log 2>&1\nif errorlevel 1 exit /b %errorlevel%\ncl /nologo /std:c++20 /EHsc /MD /O2 /W4 /WX /fp:strict /I local\\remove_bk\\include local\\remove_bk\\remove_probe.cpp local\\remove_bk\\native_filestore_remove.obj local\\remove_bk\\bsp_core.lib local\\remove_bk\\bsp_lua511.lib local\\remove_bk\\bsp_zlib121.lib user32.lib d3d9.lib /Folocal\\remove_bk\\remove_probe.obj /Felocal\\remove_bk\\remove_probe.exe /link /MANIFEST:EMBED /BASE:0x30000000 /DYNAMICBASE:NO >local\\remove_bk\\probe_compile.log 2>&1\nexit /b %errorlevel%\n",
+      "link": "frozen complete removal TU and existing bsp_core/bsp_lua511/bsp_zlib121 libraries; user32.lib d3d9.lib; /MANIFEST:EMBED /BASE:0x30000000 /DYNAMICBASE:NO"
+    },
+    "fixture_run": {
+      "result": "passed",
+      "command": ".\\local\\remove_bk\\remove_probe.exe",
+      "exit_code": 0,
+      "stdout": "PASS chain: request resolved/original names; pending duplicate first callback wins; physical queued until pump; current factory/cache completion; pending erased before callback; resident bytes257; refs callback2 then cache1; resident duplicate skips submission\nPASS removal: normalized caller copy unchanged; retained stream survives cache erase; missing key leaves refs unchanged; sole cache owner destroys stream/backing; same-key pending entry preserved\nPASS cleanup: actual resident stream/backing counters returned to zero; no extra lifetime, batch or physical stream pool constructed\n",
+      "domain": "source behavior over actual native storage, original read-only data spans, and real 257-byte physical file IO; does not execute original BE7130 code",
+      "controlled_boundaries": "Resolver maps normalized logical/asset to completion_payload.bin; final completion validates names/state. CRT fixture handler throws on unexpected invalid iterator. No unresolved source success stubs.",
+      "cases": [
+        "request/physical/current-factory completion and resident cache chain",
+        "external reference survives normalized removal with identical257bytes",
+        "missing-key removal preserves external reference",
+        "sole cache reference destroys stream and backing",
+        "same-key pending entry survives resident removal",
+        "all actual stream/backing counters zero after cleanup"
+      ]
+    },
+    "call_verifier": {
+      "command": "python tools/verify_report_calls.py reports/native_filestore_remove_bk.json",
+      "result": "passed",
+      "checked": 8,
+      "failed": 0,
+      "indirect_skipped": 0
+    },
+    "read_only_capture": {
+      "command": "python local/remove_bk/collect_evidence.py",
+      "result": "five fresh native spans match PE"
+    },
+    "frozen_input_verification": "All45 frozen entries rehashed after build; both owned source/header match compiled frozen bytes."
+  },
+  "fixture_inputs": [
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch4-vfs-pending-bk\\src\\native_filestore_remove.cpp",
+      "frozen": "local/remove_bk/native_filestore_remove.cpp",
+      "sha256": "3471dccfe6eb681af7fe3d39c61a4908b13ab806344ccdd17a91fa219044aaad",
+      "bytes": 2264,
+      "kind": "owned_source"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\include\\bsp\\game_native_readonly_data.hpp",
+      "frozen": "local/remove_bk/include/bsp/game_native_readonly_data.hpp",
+      "sha256": "8e751679e907c9471a6135b090ad5fe7d733cbaae5070484877138f3775fe96b",
+      "bytes": 2212,
+      "kind": "header"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\include\\bsp\\native_adopted_substream.hpp",
+      "frozen": "local/remove_bk/include/bsp/native_adopted_substream.hpp",
+      "sha256": "a5d41d65fb462fbe64b002ab38c646a8cb5f066c80415f33523b454100c302d8",
+      "bytes": 4690,
+      "kind": "header"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\include\\bsp\\native_filestore_completion.hpp",
+      "frozen": "local/remove_bk/include/bsp/native_filestore_completion.hpp",
+      "sha256": "3db38f2f98207a119d44ded26e68b98065f1dc45b43670b106d215d292f8bff3",
+      "bytes": 3766,
+      "kind": "header"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch4-vfs-pending-bk\\include\\bsp\\native_filestore_remove.hpp",
+      "frozen": "local/remove_bk/include/bsp/native_filestore_remove.hpp",
+      "sha256": "9d2cf7fe7aa894de9cd9b1d7897c36d0f85580e3698e7507cf6aa4acfc94c08c",
+      "bytes": 1427,
+      "kind": "header"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\include\\bsp\\native_filestore_factory.hpp",
+      "frozen": "local/remove_bk/include/bsp/native_filestore_factory.hpp",
+      "sha256": "7cd1ba457b57d308aa970f3bdbf3a352d51cb90eeb5b3f456094a79b98283b64",
+      "bytes": 3135,
+      "kind": "header"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\include\\bsp\\native_filestore_open.hpp",
+      "frozen": "local/remove_bk/include/bsp/native_filestore_open.hpp",
+      "sha256": "b7ea10798dae64b2e4dfeef9a78693e4462b495fe7dba8c32ad4a7e87d782827",
+      "bytes": 4766,
+      "kind": "header"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\include\\bsp\\native_filestore_provider_lifetime.hpp",
+      "frozen": "local/remove_bk/include/bsp/native_filestore_provider_lifetime.hpp",
+      "sha256": "6823e9ed29918260ae7607960439a59a64f635ab94e5148abe8a78612cc6cab0",
+      "bytes": 3285,
+      "kind": "header"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\include\\bsp\\native_filestore_request.hpp",
+      "frozen": "local/remove_bk/include/bsp/native_filestore_request.hpp",
+      "sha256": "97531623574597ced253eae5b31429cdf420cac3a076647caf928d2fdc8c817b",
+      "bytes": 6239,
+      "kind": "header"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\include\\bsp\\native_memory_stream.hpp",
+      "frozen": "local/remove_bk/include/bsp/native_memory_stream.hpp",
+      "sha256": "1cd41bf0ec1db15bce03acf9d8ecceae4d8b27fe689dea2a3393327ff7e81c88",
+      "bytes": 3230,
+      "kind": "header"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\include\\bsp\\native_physical_file_date.hpp",
+      "frozen": "local/remove_bk/include/bsp/native_physical_file_date.hpp",
+      "sha256": "a7489c4fff08b5289bb2906b72d4b35e27291e23e4fa83061109c0e895460788",
+      "bytes": 5010,
+      "kind": "header"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\include\\bsp\\native_physical_pending_io.hpp",
+      "frozen": "local/remove_bk/include/bsp/native_physical_pending_io.hpp",
+      "sha256": "258d0d7c9a73f89609ad18f987f268b0b846eb940a2d3f3e5bb5bf7e22bff5aa",
+      "bytes": 3988,
+      "kind": "header"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\include\\bsp\\native_physical_pending_records.hpp",
+      "frozen": "local/remove_bk/include/bsp/native_physical_pending_records.hpp",
+      "sha256": "b8ee2df58fee24f572f705bf274f1a51d69f3405cab60865c5b8c1b9aa17364b",
+      "bytes": 2404,
+      "kind": "header"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\include\\bsp\\native_physical_stream_open.hpp",
+      "frozen": "local/remove_bk/include/bsp/native_physical_stream_open.hpp",
+      "sha256": "18877d9eec136087d6947c5b44d7f390d92deb5ffa2e2bd5cea02ae21e209f4b",
+      "bytes": 4717,
+      "kind": "header"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\include\\bsp\\native_render_batch_lifetime.hpp",
+      "frozen": "local/remove_bk/include/bsp/native_render_batch_lifetime.hpp",
+      "sha256": "1644ae033ccae7e02110b14aefac49bd1df1f6aa005b1c36d28926379ac3ae29",
+      "bytes": 6028,
+      "kind": "header"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\include\\bsp\\native_string_pool_storage.hpp",
+      "frozen": "local/remove_bk/include/bsp/native_string_pool_storage.hpp",
+      "sha256": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d",
+      "bytes": 2805,
+      "kind": "header"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\include\\bsp\\native_vfs_lookup_routes.hpp",
+      "frozen": "local/remove_bk/include/bsp/native_vfs_lookup_routes.hpp",
+      "sha256": "238e323fdd16363e5bf88ab4f7375cebc50bfcd6f02ae35269866e7387d7671e",
+      "bytes": 4493,
+      "kind": "header"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\include\\bsp\\native_vfs_open_logging.hpp",
+      "frozen": "local/remove_bk/include/bsp/native_vfs_open_logging.hpp",
+      "sha256": "237b67d1bfa321d9ee74562ff093104f2423bb266a831bd75d15c7a18f2eff4c",
+      "bytes": 2495,
+      "kind": "header"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\include\\bsp\\native_vfs_open_route.hpp",
+      "frozen": "local/remove_bk/include/bsp/native_vfs_open_route.hpp",
+      "sha256": "a44d2136c797e355ae7c48683f8daddefa833608fd9afe8f78a012a91aabe67d",
+      "bytes": 3139,
+      "kind": "header"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\include\\bsp\\native_vfs_pending_routes.hpp",
+      "frozen": "local/remove_bk/include/bsp/native_vfs_pending_routes.hpp",
+      "sha256": "6a836f8ddedbc18aa331f817d22e228ccc22a0e37335fa77b6521a593575464e",
+      "bytes": 4816,
+      "kind": "header"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\include\\bsp\\native_vfs_runtime_bindings.hpp",
+      "frozen": "local/remove_bk/include/bsp/native_vfs_runtime_bindings.hpp",
+      "sha256": "1b2ef8bd680361642fd8c7bd402837e5de8e8cea96a19f817c8abf93b049ba6f",
+      "bytes": 5963,
+      "kind": "header"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\include\\bsp\\native_lua_vfs_dispatch.hpp",
+      "frozen": "local/remove_bk/include/bsp/native_lua_vfs_dispatch.hpp",
+      "sha256": "da795f3a43a6acf1664d6ac00474a170d7196bf4383ca1695960ab685c67bfb2",
+      "bytes": 1569,
+      "kind": "header"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\include\\bsp\\native_vfs_factory_selection.hpp",
+      "frozen": "local/remove_bk/include/bsp/native_vfs_factory_selection.hpp",
+      "sha256": "2e448a1fa5f2a346074454c0ab6855140a8e06c22323d9ee80f2d42014ad8add",
+      "bytes": 1558,
+      "kind": "header"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\include\\bsp\\native_vfs_manager_lifetime.hpp",
+      "frozen": "local/remove_bk/include/bsp/native_vfs_manager_lifetime.hpp",
+      "sha256": "65a07959ad3e0e74b7249363ca1b1767bfa0ab16f236c4dab351336201bd019d",
+      "bytes": 3262,
+      "kind": "header"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\include\\bsp\\sound_lifetime_access.hpp",
+      "frozen": "local/remove_bk/include/bsp/sound_lifetime_access.hpp",
+      "sha256": "671982c50e334f3991871d750535e4a888e3c9f679b44c8bb4fe020e47ea9094",
+      "bytes": 2344,
+      "kind": "header"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\include\\bsp\\singleton_lifetime.hpp",
+      "frozen": "local/remove_bk/include/bsp/singleton_lifetime.hpp",
+      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "bytes": 4372,
+      "kind": "header"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\include\\bsp\\game_entry.hpp",
+      "frozen": "local/remove_bk/include/bsp/game_entry.hpp",
+      "sha256": "055793fab1e425595a1e114160bb5ec76e5656f470527d88e52dfca31f0d916f",
+      "bytes": 5510,
+      "kind": "header"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\include\\bsp\\system_time_constants.hpp",
+      "frozen": "local/remove_bk/include/bsp/system_time_constants.hpp",
+      "sha256": "36d88206bf9dbf4e6cceaab5e0aa6bf4b71172305b79bb98a571063add672ba9",
+      "bytes": 4800,
+      "kind": "header"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\include\\bsp\\frame_clock.hpp",
+      "frozen": "local/remove_bk/include/bsp/frame_clock.hpp",
+      "sha256": "c5ca70e98942784432bfbee0e543d601a495d5ee2c43b17631985288ae98850b",
+      "bytes": 2475,
+      "kind": "header"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\include\\bsp\\render_tail.hpp",
+      "frozen": "local/remove_bk/include/bsp/render_tail.hpp",
+      "sha256": "7ded157910928589128f7a1569d18e42877ed2c943649957612fa6060b4646fc",
+      "bytes": 15566,
+      "kind": "header"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\include\\bsp\\camera_transform.hpp",
+      "frozen": "local/remove_bk/include/bsp/camera_transform.hpp",
+      "sha256": "1f2de265a3479686c68e74802cca45038374bf9be1f882aa8ccbee0086e2635d",
+      "bytes": 7028,
+      "kind": "header"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\include\\bsp\\camera_projection.hpp",
+      "frozen": "local/remove_bk/include/bsp/camera_projection.hpp",
+      "sha256": "bbfe251c983ec82bd132108c32364798a1731f3e4456a77959139e13c0f0c9a4",
+      "bytes": 2413,
+      "kind": "header"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\include\\bsp\\native_string.hpp",
+      "frozen": "local/remove_bk/include/bsp/native_string.hpp",
+      "sha256": "80013e5a7350120f32fcad1ce54db9b0923ad5b49cc2152823d858534331378f",
+      "bytes": 8019,
+      "kind": "header"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\include\\bsp\\native_string_pool_owner.hpp",
+      "frozen": "local/remove_bk/include/bsp/native_string_pool_owner.hpp",
+      "sha256": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff",
+      "bytes": 5893,
+      "kind": "header"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\include\\bsp\\storage_pool.hpp",
+      "frozen": "local/remove_bk/include/bsp/storage_pool.hpp",
+      "sha256": "da1c9a4f88fff56634f69cfb8dc113dc013680ae753a434e1a14aa458d410e33",
+      "bytes": 5571,
+      "kind": "header"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\include\\bsp\\random_threads.hpp",
+      "frozen": "local/remove_bk/include/bsp/random_threads.hpp",
+      "sha256": "41b1402062fdf2afb99afa5b0d2beda697cc0c1b92a13806103b4bc4879d09b9",
+      "bytes": 1446,
+      "kind": "header"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\include\\bsp\\random.hpp",
+      "frozen": "local/remove_bk/include/bsp/random.hpp",
+      "sha256": "7c38db60d138add04d7abf759d23272c357d23bdd64d042ba4a27733c05f630c",
+      "bytes": 791,
+      "kind": "header"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\include\\bsp\\native_retained_memory_owners.hpp",
+      "frozen": "local/remove_bk/include/bsp/native_retained_memory_owners.hpp",
+      "sha256": "c559f53cca95dd93ba9133740e0570b2705c9b4cb9593ab1d050404d8470708c",
+      "bytes": 3829,
+      "kind": "header"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\include\\bsp\\native_vfs_date_leaf_providers.hpp",
+      "frozen": "local/remove_bk/include/bsp/native_vfs_date_leaf_providers.hpp",
+      "sha256": "ab6ba39ac240f79db04b7eb083eec54b58e27a93973c421d4fb03147b7a0a3e0",
+      "bytes": 3083,
+      "kind": "header"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\include\\bsp\\native_filestore_resident_tree.hpp",
+      "frozen": "local/remove_bk/include/bsp/native_filestore_resident_tree.hpp",
+      "sha256": "f870d325c2cab349e573f39c49f92aabdf10a50eeb1debe1d7727becbc7f0199",
+      "bytes": 3192,
+      "kind": "header"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\include\\bsp\\native_pooled_resource_path.hpp",
+      "frozen": "local/remove_bk/include/bsp/native_pooled_resource_path.hpp",
+      "sha256": "2b9b1dad7f2843e0ddcc4d4bf609343ddf02a1516b9c54c2028ea4e78f56bc26",
+      "bytes": 1432,
+      "kind": "header"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\include\\bsp\\native_filestore_subtree.hpp",
+      "frozen": "local/remove_bk/include/bsp/native_filestore_subtree.hpp",
+      "sha256": "337f302856908f35b3563c8f7517edffa54eaa0dd5a314c91e5f68cba400708f",
+      "bytes": 2525,
+      "kind": "header"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\build\\win32\\Release\\bsp_core.lib",
+      "frozen": "local/remove_bk/bsp_core.lib",
+      "sha256": "f475861aca75f2c839f8b45f23147c759be3db14628ee1d8d8c890507ed11188",
+      "bytes": 57973956,
+      "kind": "existing_library"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\build\\win32\\Release\\bsp_lua511.lib",
+      "frozen": "local/remove_bk/bsp_lua511.lib",
+      "sha256": "00315ac717aac3d2b2161fefefe71b36a974335ff9c95d48c137423eb4e2f4b2",
+      "bytes": 455244,
+      "kind": "existing_library"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\build\\win32\\Release\\bsp_zlib121.lib",
+      "frozen": "local/remove_bk/bsp_zlib121.lib",
+      "sha256": "73ae30b8adc3adfe5b33285bac533f8e7df7e8ab8d9e44789e6a030fd8a06ad9",
+      "bytes": 71906,
+      "kind": "existing_library"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "include/bsp/native_filestore_remove.hpp",
+      "bytes": 1427,
+      "sha256": "9d2cf7fe7aa894de9cd9b1d7897c36d0f85580e3698e7507cf6aa4acfc94c08c"
+    },
+    {
+      "path": "src/native_filestore_remove.cpp",
+      "bytes": 2264,
+      "sha256": "3471dccfe6eb681af7fe3d39c61a4908b13ab806344ccdd17a91fa219044aaad"
+    },
+    {
+      "path": "docs/NATIVE_FILESTORE_REMOVE_BK.md",
+      "bytes": 6040,
+      "sha256": "fdd388834d487942ff714d88f35043d81fff00cfa659a4d04f115e66c97f641c"
+    },
+    {
+      "path": "config/target.json",
+      "bytes": 455,
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+    },
+    {
+      "path": "local/remove_bk/remove_probe.cpp",
+      "bytes": 15322,
+      "sha256": "031a7083ecc394ce953ba0a57779f603ddd591f9db34603c3363d31c17bbcb50"
+    },
+    {
+      "path": "local/remove_bk/prepare_probe.py",
+      "bytes": 3394,
+      "sha256": "45171f40de25f67cc618ee9d3c0bbc31c36ea2aba6ba3ae06b01bf632cb010b3"
+    },
+    {
+      "path": "local/remove_bk/freeze_probe.py",
+      "bytes": 1337,
+      "sha256": "06bd67dd456daeaf6842b7c6641d493b30d8d8cfcee51f7377ccb79390ebc2f8"
+    },
+    {
+      "path": "local/remove_bk/collect_evidence.py",
+      "bytes": 2474,
+      "sha256": "53bd32cd326214d531bd98859f09085006d8c3753e0a58603973a8244cf0cc15"
+    },
+    {
+      "path": "local/remove_bk/make_report.py",
+      "bytes": 10349,
+      "sha256": "aa68c3e9968b87b193d397436c0a78cc636fc954fa13b4d742e5d5ddbdff9920"
+    },
+    {
+      "path": "local/remove_bk/compile_remove.cmd",
+      "bytes": 317,
+      "sha256": "25166f8ae08c6e4f4d9b7ddbaccbf55c9791649bfe0157b1a21491ed2df29c59"
+    },
+    {
+      "path": "local/remove_bk/compile_probe.cmd",
+      "bytes": 820,
+      "sha256": "595f6fc14fc9aa9eff0b4e922062b760ea4c68d1fdaa622c1e2128c613d8c54e"
+    },
+    {
+      "path": "local/remove_bk/compile.log",
+      "bytes": 29,
+      "sha256": "c5c30ac42c6f90439eeecee20340df1d73266e0aac0a30101e0bf2864ad77941"
+    },
+    {
+      "path": "local/remove_bk/probe_compile.log",
+      "bytes": 18,
+      "sha256": "3fcf7257f4948ff622654e60ab59fcab7b66e24c807d7f39bb702c981698c6d5"
+    },
+    {
+      "path": "local/remove_bk/run.log",
+      "bytes": 593,
+      "sha256": "f8c76af464d43a86c6ab26a652b7ba8df101a08b969c2a74e93dec1d7374392c"
+    },
+    {
+      "path": "local/remove_bk/call_verification.log",
+      "bytes": 72,
+      "sha256": "03f5d86841d8f49569cba0382c07c85a1ed18a5a725c7f62832a5c90e00736d1"
+    },
+    {
+      "path": "local/remove_bk/source_manifest.json",
+      "bytes": 14703,
+      "sha256": "6d2f2d716a73dcf392376ee44fb503e576b044a92c1dd7b13bd15c2987d94b71"
+    },
+    {
+      "path": "local/remove_bk/native_filestore_remove.obj",
+      "bytes": 4098,
+      "sha256": "ecca97983b258fdc487d5603fffbaeef99e056250118531829b385ea7dcbd6e3"
+    },
+    {
+      "path": "local/remove_bk/remove_probe.obj",
+      "bytes": 301608,
+      "sha256": "25f2bf5a68218b6bedb6fc0a4cfdfbd6defa63a018876e7568159364adae16ed"
+    },
+    {
+      "path": "local/remove_bk/remove_probe.exe",
+      "bytes": 142848,
+      "sha256": "b216506058d716afdf0898e4bc5eb10c29c59885f82cebd8c27f213e2ad40131"
+    },
+    {
+      "path": "local/remove_bk/completion_payload.bin",
+      "bytes": 257,
+      "sha256": "fda6e016c491a294533c3241d2e688c914b2d5db97569e81d8f88851d5686923"
+    },
+    {
+      "path": "local/remove_bk/verified_spans.json",
+      "bytes": 1504,
+      "sha256": "a1f5c8c9ea0c028e06fed3addbe5bace476f8c644d8941f2653d7cc036b37dc0"
+    },
+    {
+      "path": "local/remove_bk/target_status.txt",
+      "bytes": 40,
+      "sha256": "bc2184dc519354322297804695d599ade62ebe5b55a54ab2011cb0bdf82ec6a0"
+    },
+    {
+      "path": "local/remove_bk/004254b0.asm.txt",
+      "bytes": 16,
+      "sha256": "535312dd985c4f64ef6f4996d194d59459edb00e6986c17569565a26411ed677"
+    },
+    {
+      "path": "local/remove_bk/00be7130.asm.txt",
+      "bytes": 1991,
+      "sha256": "7872020ceed9ad71402ffe49d2db1cee09122e9863ddb2282be820ed4fb53e6a"
+    },
+    {
+      "path": "local/remove_bk/00cc6d80.asm.txt",
+      "bytes": 61,
+      "sha256": "d959257559011373b0525c1f5d453a417bd8ff5829a11eff99de15b237777961"
+    },
+    {
+      "path": "local/remove_bk/00cc6d88.asm.txt",
+      "bytes": 110,
+      "sha256": "a2ad3e814e73269f770de4d3240c6a0541cf68957fcb0a7097b6a84fb36c7929"
+    },
+    {
+      "path": "local/remove_bk/004254b0.proto.txt",
+      "bytes": 91,
+      "sha256": "bd662909d5761931a75383465929ae5b6fafbfa83ba2b37b4ef4c83d9c3d975b"
+    },
+    {
+      "path": "local/remove_bk/00be7130.proto.txt",
+      "bytes": 103,
+      "sha256": "a1b18c57d59c5672ae16217dc8ecc594b9dd7d919aa0b7ae3de8fa0eb888df01"
+    },
+    {
+      "path": "local/remove_bk/00cc6d80.proto.txt",
+      "bytes": 85,
+      "sha256": "14c03e37335498c8f06bc58f631f67bad212061de5b858211c2986fac3b9fd06"
+    },
+    {
+      "path": "local/remove_bk/00cc6d88.proto.txt",
+      "bytes": 23,
+      "sha256": "03b0a5c55fc1e14dc51178a1398630f297dc713c87974651748b0b3b622b4acc"
+    },
+    {
+      "path": "local/remove_bk/004254b0.bytes.txt",
+      "bytes": 17,
+      "sha256": "e6d6d0b4e488364531bd906fefa2055dd5f7e0ec3aa7682a4896ad489ba52f57"
+    },
+    {
+      "path": "local/remove_bk/00be7130.bytes.txt",
+      "bytes": 1054,
+      "sha256": "d32b0c05a37cedf26140e9a29f03c9736c704c8a1b9655fabf94c36112df1b46"
+    },
+    {
+      "path": "local/remove_bk/00cc6d80.bytes.txt",
+      "bytes": 45,
+      "sha256": "77a39df63c20bc8cc5f4780dbeee0bd8bfdd8e4bff0da60267afbfb39f1a189f"
+    },
+    {
+      "path": "local/remove_bk/00cc6d88.bytes.txt",
+      "bytes": 53,
+      "sha256": "f9737cfc9a139ca29b5d1c3f46c503d593c338f52c1b46b5765f6094f781ef53"
+    },
+    {
+      "path": "local/remove_bk/00e01684.bytes.txt",
+      "bytes": 215,
+      "sha256": "6420e347fe8fd04c924b18cbbf77780c2c05daf7d4728cc902e464888e593baa"
+    },
+    {
+      "path": "local/remove_bk/00be7130.c.txt",
+      "bytes": 2125,
+      "sha256": "4efd00da79ca29e2004421e8370d479b13950c3ef843d403050cd8a2aef6d3b5"
+    }
+  ],
+  "annotation_proposals": [
+    "Retain existing descriptive BSP_FileStore_RemoveFile name. Correct any zero-argument decompiler prototype to ECX store plus actual name stack argument; preserve original value before any primary-owned annotation. Existing trace wording should state that 4254B0 is a RET-only diagnostic leaf."
+  ],
+  "limitations": [
+    "No original BE7130 machine-code differential or original ABI/FH3 replacement claim.",
+    "No source throw-injection or returning-handler frame-alias fixture; listing and FH3 support those schedules separately.",
+    "String release is noexcept: native throwing pool-getter cleanup, arbitrary native EH spills, SEH, concurrent mutation, and gameplay remain unproved.",
+    "Existing helpers and frozen libraries are dependencies; this packet does not revalidate every helper semantic or perform the primary full build.",
+    "Primary runtime/CMake integration and game validation remain separate."
+  ],
+  "open_dependencies": [],
+  "ownership": "Only BE7130 was leased for reconstruction; other addresses inspected read-only. Commit contains only the four packet-owned files."
+}

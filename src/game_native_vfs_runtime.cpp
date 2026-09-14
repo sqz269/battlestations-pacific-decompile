@@ -3,6 +3,8 @@
 #include "bsp/game_native_readonly_data.hpp"
 #include "bsp/native_filestore_factory.hpp"
 #include "bsp/native_filestore_open.hpp"
+#include "bsp/native_filestore_completion.hpp"
+#include "bsp/native_filestore_request.hpp"
 #include "bsp/native_mpak_storage_services.hpp"
 #include "bsp/native_mpkg_runtime.hpp"
 #include "bsp/native_pak_registry.hpp"
@@ -10,6 +12,7 @@
 #include "bsp/native_physical_factory.hpp"
 #include "bsp/native_physical_provider.hpp"
 #include "bsp/native_physical_provider_pool.hpp"
+#include "bsp/native_physical_pending_io.hpp"
 #include "bsp/native_retained_memory_owners.hpp"
 #include "bsp/native_render_resource_record_construction.hpp"
 #include "bsp/native_singleton_destruction.hpp"
@@ -90,6 +93,15 @@ struct NameResolutionInvocation {
     NameResolutionInvocation(ActualNativeStringPoolStorage& strings, const char* text,
         const char* original = "") : name(strings, text), input(strings, original) {}
 };
+struct FileStoreRequestInvocation {
+    // The nested resolver borrows the request frame's actual mutable header.
+    // Both acquired owners must outlive all interrupted native work.
+    PooledHeader original;
+    NativeFileStoreRequestAcquired acquired;
+    std::unique_ptr<NativeVfsNameResolutionAcquired> resolution;
+    FileStoreRequestInvocation(ActualNativeStringPoolStorage& strings, const char* text)
+        : original(strings, text) {}
+};
 struct PooledNameList {
     ActualNativeStringPoolStorage& strings;
     // BDD990's list has an unwritten +0 preimage, sentinel at +4, count at +8.
@@ -135,7 +147,8 @@ struct OpenedStream {
 };
 }
 
-struct GameNativeVfsRuntime::Impl {
+struct GameNativeVfsRuntime::Impl : NativePhysicalPendingCompletionDispatch,
+    NativeFileStoreCompletionDispatch, NativeFileStoreRequestDispatch {
     const GameNativeVfsRuntimeInputs inputs;
     void* volatile file_log_0109cee8{};
     void* volatile physical_factory_0109dbe8{};
@@ -155,7 +168,12 @@ struct GameNativeVfsRuntime::Impl {
     NativeVfsOpenLoggingContext logging;
     NativeStoredStreamConversionContext conversion;
     NativePhysicalProviderContext physical_provider;
+    NativePhysicalPendingIoContext physical_pending;
     NativeVfsRuntimeBindings bindings;
+    NativeVfsPendingRouteContext pending;
+    NativeFileStoreCompletionContext filestore_completion;
+    NativeFileStoreRequestContext filestore_request_context;
+    std::unique_ptr<FileStoreRequestInvocation> filestore_request;
 
     NativeMpkgRuntimeServices mpkg_services;
     NativeMpkgDirectoryContext mpkg_directory;
@@ -214,8 +232,13 @@ struct GameNativeVfsRuntime::Impl {
           physical_provider{inputs.physical_provider_pool, inputs.owners.strings(),
               inputs.invalid_parameters,
               static_cast<const char*>(required(inputs.data, 0x00cff208, 1))},
+          physical_pending{inputs.owners.physical(), inputs.retained_memory, *this},
           bindings(open, lookup, inputs.owners.streams(), conversion, logging,
-              inputs.retained_memory, &physical_provider, inputs.file_log_lifetime),
+              inputs.retained_memory, &physical_provider, inputs.file_log_lifetime, &physical_pending),
+          pending{lookup, required(inputs.data, 0x00d68478, 12), bindings},
+          filestore_completion{inputs.owners.strings(), inputs.invalid_parameters, bindings, *this},
+          filestore_request_context{inputs.owners.strings(), inputs.invalid_parameters,
+              inputs.owners.vfs_publication_0109ceec(), *this},
           mpkg_services(bindings, path_services, inputs.retained_memory),
           mpkg_directory{inputs.owners.strings(), bindings, mpkg_services},
           mpkg_archive{inputs.owners.vfs_publication_0109ceec(), conversion,
@@ -276,6 +299,7 @@ struct GameNativeVfsRuntime::Impl {
         required(inputs.data, 0x00cfea14, 0x10);
         required(inputs.data, 0x00d68cfc, 0x10);
         required(inputs.data, 0x00d688b4, 0x10);
+        lookup.pending = &pending;
 
         previous_mpkg = bindings.bind_mpkg_provider(&mpkg_provider);
         inputs.owners.bind_deletion(inputs.deletion_bindings);
@@ -286,6 +310,35 @@ struct GameNativeVfsRuntime::Impl {
         inputs.deletion_bindings.pak_registry = &pak_registry_context;
         inputs.deletion_bindings.vfs_manager = &manager_context;
 
+    }
+    void invoke_00bf476d(std::uint32_t callback, void* stream,
+        const void* first, const void* second) override {
+        if (callback != 0x00be7b20)
+            throw std::invalid_argument("Unimplemented native physical completion callback");
+        dispatch_native_file_store_completion_00be7b20(stream, first, second,
+            filestore_factory_context, filestore_completion);
+    }
+    void invoke_00be7942(std::uint32_t callback, const void* first,
+        const void* second) override {
+        if (!inputs.filestore_completions)
+            throw std::invalid_argument("Native FileStore completion dispatcher is not bound");
+        inputs.filestore_completions->invoke_00be7942(callback, first, second);
+    }
+    bool resolve_existing_name_00bdf4c0(void* manager, void* name) override {
+        if (!filestore_request || filestore_request->resolution)
+            throw std::logic_error("Native FileStore resolver retains an invocation");
+        filestore_request->resolution = std::make_unique<NativeVfsNameResolutionAcquired>();
+        const bool found = resolve_native_vfs_existing_name_00bdf4c0(manager, name,
+            name_resolution_context, *filestore_request->resolution);
+        filestore_request->resolution.reset();
+        return found;
+    }
+    bool open_file_overlapped_00bdda10(void* manager, const void* first,
+        const void* second, std::uint32_t callback, std::uint32_t flags) override {
+        return submit_native_vfs_pending_00bdda10(manager, first, second, callback, flags, pending) != 0;
+    }
+    void invoke_manager_failure_callback(std::uintptr_t target, void* manager) override {
+        bindings.open_failure_entry(target, manager);
     }
     void register_core() {
         if (core_started)
@@ -400,6 +453,40 @@ bool GameNativeVfsRuntime::exists(const char* path) {
         throw std::logic_error("Native VFS core is not registered");
     PooledHeader name(impl_->inputs.owners.strings(), path);
     return impl_->bindings.exists(word(actual_manager()), actual_manager(), name.value) != 0;
+}
+void GameNativeVfsRuntime::pump_pending() {
+    if (!impl_->core_registered)
+        throw std::logic_error("Native VFS core is not registered");
+    if (file_store_request_failure_site())
+        throw std::logic_error("Native FileStore retains an interrupted invocation");
+    // 737B79 loads the publication afresh immediately before BDB0B0.
+    pump_native_vfs_pending_00bdb0b0(impl_->inputs.owners.vfs_publication_0109ceec(), impl_->pending);
+}
+bool GameNativeVfsRuntime::request_file_store(const char* path, std::uint32_t callback) {
+    if (!impl_->core_registered || !impl_->inputs.filestore_completions)
+        throw std::logic_error("Native FileStore request requires core and completion binding");
+    if (impl_->filestore_request)
+        throw std::logic_error("Native FileStore retains an invocation");
+    auto* const factory = get_native_filestore_factory_004fc150(impl_->filestore_factory_context);
+    auto* const store = reinterpret_cast<void*>(word(factory, 8));
+    if (!store) throw std::logic_error("Native FileStore factory has no current provider");
+    impl_->filestore_request = std::make_unique<FileStoreRequestInvocation>(
+        impl_->inputs.owners.strings(), path);
+    auto& invocation = *impl_->filestore_request;
+    try {
+        const bool accepted = request_native_file_store_00be7cd0(store,
+            &invocation.original.value, callback, impl_->filestore_request_context, invocation.acquired);
+        impl_->filestore_request.reset();
+        return accepted;
+    } catch (...) {
+        const auto phase = invocation.acquired.phase();
+        if (phase == NativeFileStoreRequestPhase::fresh || phase == NativeFileStoreRequestPhase::complete)
+            impl_->filestore_request.reset();
+        throw;
+    }
+}
+std::uint32_t GameNativeVfsRuntime::file_store_request_failure_site() const noexcept {
+    return impl_->filestore_request ? impl_->filestore_request->acquired.failure_site() : 0;
 }
 bool GameNativeVfsRuntime::resolve_existing(std::string& mutable_name) {
     if (!impl_->core_registered)

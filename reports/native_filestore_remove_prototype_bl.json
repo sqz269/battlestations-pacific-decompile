@@ -1,0 +1,249 @@
+{
+  "address": "00be7130",
+  "actions": [
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00be7130",
+        "prototype": "void __fastcall BSP_FileStore_RemoveFile(void* provider, void* unused_edx, const void* name)",
+        "calling_convention": "__fastcall"
+      }
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00be7130",
+        "prototype": "void __fastcall BSP_FileStore_RemoveFile(void* provider, void* unused_edx, void* name)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00be7130 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": "{\"success\": true, \"program\": \"battlestationspacific.exe\", \"message\": \"Program saved successfully\"}"
+    }
+  ],
+  "reason": "Correct zero-argument decompiler prototype using ECX provider, entry stack name load atBE7148 and RET4 atBE7207. Explicit unused EDX is an analysis representation, not an ABI replacement.",
+  "before_documentation": {
+    "hash": "9cec368f516a382253fce05fb722308cd8d6dac0c9d5a7a5bf92e80b83ff5d4c",
+    "source_program": "battlestationspacific.exe",
+    "source_address": "00be7130",
+    "function_name": "BSP_FileStore_RemoveFile",
+    "return_type": "undefined",
+    "calling_convention": "unknown",
+    "plate_comment": "[BSP reconstruction 00be7130]\nHypothesis, not a recovered symbol. void __thiscall f(provider, const cString *path), RET 4. The stack argument is proven by MOV EDX,[ESP+0x20] at 00be7148 (entry ESP+4) and the RET 0x4 at 00be7207; Ghidra models it as taking the string in ECX, which is wrong because the caller shares one push with 00be80b0 (plain RET, no stack args). It normalizes the path copy via 00bee780, looks it up in the container at provider+0x14 against the end sentinel at provider+0x18 via 00be5e90, erases it via 00be6760 and traces \"cFileStore::RemoveFile: %s removed!\" or \"WARNING: cFileStore::RemoveFile: remove file %s not in store!\".",
+    "parameters": [],
+    "local_variables": [
+      {
+        "name": "local_14",
+        "type": "int",
+        "storage": "(stack, 0xffffffffffffffec, 4)"
+      },
+      {
+        "name": "uVar4",
+        "type": "undefined4",
+        "storage": "(stack, 0xffffffffffffffe0, 4)"
+      },
+      {
+        "name": "local_10",
+        "type": "int",
+        "storage": "(stack, 0xfffffffffffffff0, 4)"
+      },
+      {
+        "name": "pcVar3",
+        "type": "char *",
+        "storage": "(stack, 0xffffffffffffffd0, 4)"
+      },
+      {
+        "name": "iVar2",
+        "type": "int",
+        "storage": "(register, 0x4, 4)"
+      },
+      {
+        "name": "local_1c",
+        "type": "int",
+        "storage": "(stack, 0xffffffffffffffe4, 4)"
+      },
+      {
+        "name": "local_18",
+        "type": "undefined *",
+        "storage": "(stack, 0xffffffffffffffe8, 4)"
+      },
+      {
+        "name": "puVar1",
+        "type": "undefined *",
+        "storage": "(register, 0x0, 4)"
+      },
+      {
+        "name": "local_4",
+        "type": "undefined4",
+        "storage": "(stack, 0xfffffffffffffffc, 4)"
+      },
+      {
+        "name": "pcStack_8",
+        "type": "undefined *",
+        "storage": "(stack, 0xfffffffffffffff8, 4)"
+      },
+      {
+        "name": "pvStack_c",
+        "type": "void *",
+        "storage": "(stack, 0xfffffffffffffff4, 4)"
+      }
+    ],
+    "comments": [],
+    "labels": [
+      {
+        "relative_offset": 85,
+        "name": "LAB_00be7185"
+      },
+      {
+        "relative_offset": 90,
+        "name": "LAB_00be718a"
+      },
+      {
+        "relative_offset": 125,
+        "name": "LAB_00be71ad"
+      },
+      {
+        "relative_offset": 133,
+        "name": "LAB_00be71b5"
+      },
+      {
+        "relative_offset": 146,
+        "name": "LAB_00be71c2"
+      },
+      {
+        "relative_offset": 152,
+        "name": "LAB_00be71c8"
+      },
+      {
+        "relative_offset": 201,
+        "name": "LAB_00be71f9"
+      }
+    ],
+    "completeness_score": 100.0
+  },
+  "bytes": 218,
+  "sha256": "7df300d6343a2d18304364809d89103bfaea1775cef7bfe4b32f231f56c6e686",
+  "parser_note": "Initial const void* name spelling was rejected by the bridge datatype parser. Retrying with void* keeps the same address/ABI representation; source constness remains documented in the header.",
+  "after_documentation": {
+    "hash": "9cec368f516a382253fce05fb722308cd8d6dac0c9d5a7a5bf92e80b83ff5d4c",
+    "source_program": "battlestationspacific.exe",
+    "source_address": "00be7130",
+    "function_name": "BSP_FileStore_RemoveFile",
+    "return_type": "void",
+    "calling_convention": "__fastcall",
+    "plate_comment": "[BSP reconstruction 00be7130]\nHypothesis, not a recovered symbol. void __thiscall f(provider, const cString *path), RET 4. The stack argument is proven by MOV EDX,[ESP+0x20] at 00be7148 (entry ESP+4) and the RET 0x4 at 00be7207; Ghidra models it as taking the string in ECX, which is wrong because the caller shares one push with 00be80b0 (plain RET, no stack args). It normalizes the path copy via 00bee780, looks it up in the container at provider+0x14 against the end sentinel at provider+0x18 via 00be5e90, erases it via 00be6760 and traces \"cFileStore::RemoveFile: %s removed!\" or \"WARNING: cFileStore::RemoveFile: remove file %s not in store!\".",
+    "parameters": [
+      {
+        "ordinal": 0,
+        "name": "provider",
+        "type": "void *"
+      },
+      {
+        "ordinal": 1,
+        "name": "unused_edx",
+        "type": "void *"
+      },
+      {
+        "ordinal": 2,
+        "name": "name",
+        "type": "void *"
+      }
+    ],
+    "local_variables": [
+      {
+        "name": "puVar1",
+        "type": "undefined *",
+        "storage": "(register, 0x0, 4)"
+      },
+      {
+        "name": "pcStack_8",
+        "type": "undefined *",
+        "storage": "(stack, 0xfffffffffffffff8, 4)"
+      },
+      {
+        "name": "pvStack_c",
+        "type": "void *",
+        "storage": "(stack, 0xfffffffffffffff4, 4)"
+      },
+      {
+        "name": "local_14",
+        "type": "int",
+        "storage": "(stack, 0xffffffffffffffec, 4)"
+      },
+      {
+        "name": "local_10",
+        "type": "int",
+        "storage": "(stack, 0xfffffffffffffff0, 4)"
+      },
+      {
+        "name": "uVar4",
+        "type": "undefined4",
+        "storage": "(stack, 0xffffffffffffffe0, 4)"
+      },
+      {
+        "name": "local_1c",
+        "type": "int",
+        "storage": "(stack, 0xffffffffffffffe4, 4)"
+      },
+      {
+        "name": "pcVar3",
+        "type": "char *",
+        "storage": "(stack, 0xffffffffffffffd0, 4)"
+      },
+      {
+        "name": "iVar2",
+        "type": "int",
+        "storage": "(register, 0x4, 4)"
+      },
+      {
+        "name": "local_18",
+        "type": "undefined *",
+        "storage": "(stack, 0xffffffffffffffe8, 4)"
+      },
+      {
+        "name": "local_4",
+        "type": "undefined4",
+        "storage": "(stack, 0xfffffffffffffffc, 4)"
+      }
+    ],
+    "comments": [],
+    "labels": [
+      {
+        "relative_offset": 85,
+        "name": "LAB_00be7185"
+      },
+      {
+        "relative_offset": 90,
+        "name": "LAB_00be718a"
+      },
+      {
+        "relative_offset": 125,
+        "name": "LAB_00be71ad"
+      },
+      {
+        "relative_offset": 133,
+        "name": "LAB_00be71b5"
+      },
+      {
+        "relative_offset": 146,
+        "name": "LAB_00be71c2"
+      },
+      {
+        "relative_offset": 152,
+        "name": "LAB_00be71c8"
+      },
+      {
+        "relative_offset": 201,
+        "name": "LAB_00be71f9"
+      }
+    ],
+    "completeness_score": 100.0
+  },
+  "verified_instruction_count": 71,
+  "previous_names_comments_labels_preserved": true,
+  "project_saved": true,
+  "exports_refreshed": true
+}

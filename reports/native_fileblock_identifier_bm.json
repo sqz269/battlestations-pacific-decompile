@@ -1,0 +1,677 @@
+{
+  "packet": "orch4_native_fileblock_identifier_bm",
+  "generated_utc": "2026-09-14T06:29:00.997078+00:00",
+  "worker_base_commit": "1ada9f4c390d6c1fbc901cc84a59d62e57780ff8",
+  "identity": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000"
+  },
+  "identity_verification": "Every live query/export used tools/bsp.py ghidra wrappers; client.verify checks bsp project, /battlestationspacific.exe, language and image base before querying. No inline Ghidra querying/writes; autostart disabled for this capture.",
+  "binary": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "source_status": "Complete actual-storage identifier and split in assigned source; new explicit-storage C++ ABI; primary owns CMake/runtime integration.",
+  "routines": [
+    {
+      "start": "00bdf950",
+      "inclusive_end": "00bdfd7f",
+      "byte_count": 1072,
+      "sha256": "23f1be0a8d018d432c5bdde27ff48c82a841097fce6cda0622fc2ae435651982",
+      "installed_pe_matches_live_ghidra": true,
+      "backing": "installed PE raw bytes",
+      "purpose": "complete actual FileBlock identifier",
+      "evidence_log": "local/native_fileblock_identifier_bm/bytes_00bdf950.txt",
+      "evidence_sha256": "91bfc48bd9290976f4804374884aa2d3e53d1cc352168820706f6ebb190c9361",
+      "address": "00bdf950",
+      "native_abi": "ECX actual FileBlock; no stack arguments; RET; no stable result contract",
+      "source_symbol": "bsp::prepare_native_fileblock_identifier_00bdf950",
+      "source_file": "src/native_fileblock_identifier.cpp",
+      "actual_layout": "FileBlock name length/data at+14/+18; no other member access",
+      "direct_call_count": 41
+    },
+    {
+      "start": "00bd20a0",
+      "inclusive_end": "00bd216c",
+      "byte_count": 205,
+      "sha256": "22a2f5a63465655e7fc4e37c4c7c3acc452bc917a68880420c7bac296dd9c548",
+      "installed_pe_matches_live_ghidra": true,
+      "backing": "installed PE raw bytes",
+      "purpose": "complete nonempty byte split",
+      "evidence_log": "local/native_fileblock_identifier_bm/bytes_00bd20a0.txt",
+      "evidence_sha256": "7d9172790f9d3fcc2e5e7b87a2e817950de7597d85800eb6b0fdb649dad3c954",
+      "address": "00bd20a0",
+      "native_abi": "ECX source8h header; DL delimiter; stack destination0Ch vector; RET4; no stable result contract",
+      "source_symbol": "bsp::split_native_string_nonempty_on_byte_00bd20a0",
+      "source_file": "src/native_fileblock_identifier.cpp",
+      "actual_layout": "NativeString temporary8h; NativeStringVectorStorage0Ch with8h elements",
+      "direct_call_count": 4
+    }
+  ],
+  "direct_call_rows": [
+    {
+      "address": "00bdf9a4",
+      "native": "00bf9a50",
+      "function": "00bdf950",
+      "bytes": "e8 a7 a0 01 00",
+      "instruction": "call 0xbf9a50"
+    },
+    {
+      "address": "00bdf9e4",
+      "native": "00bd20a0",
+      "function": "00bdf950",
+      "bytes": "e8 b7 26 ff ff",
+      "instruction": "call 0xbd20a0"
+    },
+    {
+      "address": "00bdfa0a",
+      "native": "0041e350",
+      "function": "00bdf950",
+      "bytes": "e8 41 e9 83 ff",
+      "instruction": "call 0x41e350"
+    },
+    {
+      "address": "00bdfa36",
+      "native": "00bf8417",
+      "function": "00bdf950",
+      "bytes": "e8 dc 89 01 00",
+      "instruction": "call 0xbf8417"
+    },
+    {
+      "address": "00bdfa4f",
+      "native": "0041e870",
+      "function": "00bdf950",
+      "bytes": "e8 1c ee 83 ff",
+      "instruction": "call 0x41e870"
+    },
+    {
+      "address": "00bdfa65",
+      "native": "00426060",
+      "function": "00bdf950",
+      "bytes": "e8 f6 65 84 ff",
+      "instruction": "call 0x426060"
+    },
+    {
+      "address": "00bdfa7b",
+      "native": "004261a0",
+      "function": "00bdf950",
+      "bytes": "e8 20 67 84 ff",
+      "instruction": "call 0x4261a0"
+    },
+    {
+      "address": "00bdfa98",
+      "native": "0041dd40",
+      "function": "00bdf950",
+      "bytes": "e8 a3 e2 83 ff",
+      "instruction": "call 0x41dd40"
+    },
+    {
+      "address": "00bdfaa8",
+      "native": "00bf7680",
+      "function": "00bdf950",
+      "bytes": "e8 d3 7b 01 00",
+      "instruction": "call 0xbf7680"
+    },
+    {
+      "address": "00bdfacc",
+      "native": "00419cc0",
+      "function": "00bdf950",
+      "bytes": "e8 ef a1 83 ff",
+      "instruction": "call 0x419cc0"
+    },
+    {
+      "address": "00bdfad3",
+      "native": "00bd1510",
+      "function": "00bdf950",
+      "bytes": "e8 38 1a ff ff",
+      "instruction": "call 0xbd1510"
+    },
+    {
+      "address": "00bdfaf0",
+      "native": "00419cc0",
+      "function": "00bdf950",
+      "bytes": "e8 cb a1 83 ff",
+      "instruction": "call 0x419cc0"
+    },
+    {
+      "address": "00bdfaf7",
+      "native": "00bd1510",
+      "function": "00bdf950",
+      "bytes": "e8 14 1a ff ff",
+      "instruction": "call 0xbd1510"
+    },
+    {
+      "address": "00bdfb1a",
+      "native": "0041e870",
+      "function": "00bdf950",
+      "bytes": "e8 51 ed 83 ff",
+      "instruction": "call 0x41e870"
+    },
+    {
+      "address": "00bdfb34",
+      "native": "00531030",
+      "function": "00bdf950",
+      "bytes": "e8 f7 14 95 ff",
+      "instruction": "call 0x531030"
+    },
+    {
+      "address": "00bdfb4a",
+      "native": "004261a0",
+      "function": "00bdf950",
+      "bytes": "e8 51 66 84 ff",
+      "instruction": "call 0x4261a0"
+    },
+    {
+      "address": "00bdfb67",
+      "native": "0041dd40",
+      "function": "00bdf950",
+      "bytes": "e8 d4 e1 83 ff",
+      "instruction": "call 0x41dd40"
+    },
+    {
+      "address": "00bdfb77",
+      "native": "00bf7680",
+      "function": "00bdf950",
+      "bytes": "e8 04 7b 01 00",
+      "instruction": "call 0xbf7680"
+    },
+    {
+      "address": "00bdfb9b",
+      "native": "00419cc0",
+      "function": "00bdf950",
+      "bytes": "e8 20 a1 83 ff",
+      "instruction": "call 0x419cc0"
+    },
+    {
+      "address": "00bdfba2",
+      "native": "00bd1510",
+      "function": "00bdf950",
+      "bytes": "e8 69 19 ff ff",
+      "instruction": "call 0xbd1510"
+    },
+    {
+      "address": "00bdfbbf",
+      "native": "00419cc0",
+      "function": "00bdf950",
+      "bytes": "e8 fc a0 83 ff",
+      "instruction": "call 0x419cc0"
+    },
+    {
+      "address": "00bdfbc6",
+      "native": "00bd1510",
+      "function": "00bdf950",
+      "bytes": "e8 45 19 ff ff",
+      "instruction": "call 0xbd1510"
+    },
+    {
+      "address": "00bdfbe3",
+      "native": "00419cc0",
+      "function": "00bdf950",
+      "bytes": "e8 d8 a0 83 ff",
+      "instruction": "call 0x419cc0"
+    },
+    {
+      "address": "00bdfbea",
+      "native": "00bd1510",
+      "function": "00bdf950",
+      "bytes": "e8 21 19 ff ff",
+      "instruction": "call 0xbd1510"
+    },
+    {
+      "address": "00bdfc1e",
+      "native": "00bf8417",
+      "function": "00bdf950",
+      "bytes": "e8 f4 87 01 00",
+      "instruction": "call 0xbf8417"
+    },
+    {
+      "address": "00bdfc46",
+      "native": "0041dd40",
+      "function": "00bdf950",
+      "bytes": "e8 f5 e0 83 ff",
+      "instruction": "call 0x41dd40"
+    },
+    {
+      "address": "00bdfc56",
+      "native": "00bf7680",
+      "function": "00bdf950",
+      "bytes": "e8 25 7a 01 00",
+      "instruction": "call 0xbf7680"
+    },
+    {
+      "address": "00bdfc71",
+      "native": "0054aa70",
+      "function": "00bdf950",
+      "bytes": "e8 fa ad 96 ff",
+      "instruction": "call 0x54aa70"
+    },
+    {
+      "address": "00bdfc86",
+      "native": "00469840",
+      "function": "00bdf950",
+      "bytes": "e8 b5 9b 88 ff",
+      "instruction": "call 0x469840"
+    },
+    {
+      "address": "00bdfc9c",
+      "native": "00469840",
+      "function": "00bdf950",
+      "bytes": "e8 9f 9b 88 ff",
+      "instruction": "call 0x469840"
+    },
+    {
+      "address": "00bdfcaf",
+      "native": "004261a0",
+      "function": "00bdf950",
+      "bytes": "e8 ec 64 84 ff",
+      "instruction": "call 0x4261a0"
+    },
+    {
+      "address": "00bdfcc6",
+      "native": "0041dd40",
+      "function": "00bdf950",
+      "bytes": "e8 75 e0 83 ff",
+      "instruction": "call 0x41dd40"
+    },
+    {
+      "address": "00bdfcda",
+      "native": "00bf7680",
+      "function": "00bdf950",
+      "bytes": "e8 a1 79 01 00",
+      "instruction": "call 0xbf7680"
+    },
+    {
+      "address": "00bdfcf9",
+      "native": "00419cc0",
+      "function": "00bdf950",
+      "bytes": "e8 c2 9f 83 ff",
+      "instruction": "call 0x419cc0"
+    },
+    {
+      "address": "00bdfd00",
+      "native": "00bd1510",
+      "function": "00bdf950",
+      "bytes": "e8 0b 18 ff ff",
+      "instruction": "call 0xbd1510"
+    },
+    {
+      "address": "00bdfd1d",
+      "native": "00419cc0",
+      "function": "00bdf950",
+      "bytes": "e8 9e 9f 83 ff",
+      "instruction": "call 0x419cc0"
+    },
+    {
+      "address": "00bdfd24",
+      "native": "00bd1510",
+      "function": "00bdf950",
+      "bytes": "e8 e7 17 ff ff",
+      "instruction": "call 0xbd1510"
+    },
+    {
+      "address": "00bdfd41",
+      "native": "00419cc0",
+      "function": "00bdf950",
+      "bytes": "e8 7a 9f 83 ff",
+      "instruction": "call 0x419cc0"
+    },
+    {
+      "address": "00bdfd48",
+      "native": "00bd1510",
+      "function": "00bdf950",
+      "bytes": "e8 c3 17 ff ff",
+      "instruction": "call 0xbd1510"
+    },
+    {
+      "address": "00bdfd5b",
+      "native": "00427110",
+      "function": "00bdf950",
+      "bytes": "e8 b0 73 84 ff",
+      "instruction": "call 0x427110"
+    },
+    {
+      "address": "00bdfd65",
+      "native": "00bf6989",
+      "function": "00bdf950",
+      "bytes": "e8 1f 6c 01 00",
+      "instruction": "call 0xbf6989"
+    },
+    {
+      "address": "00bd210d",
+      "native": "00469840",
+      "function": "00bd20a0",
+      "bytes": "e8 2e 77 89 ff",
+      "instruction": "call 0x469840"
+    },
+    {
+      "address": "00bd211f",
+      "native": "004cdc20",
+      "function": "00bd20a0",
+      "bytes": "e8 fc ba 8f ff",
+      "instruction": "call 0x4cdc20"
+    },
+    {
+      "address": "00bd213f",
+      "native": "00419cc0",
+      "function": "00bd20a0",
+      "bytes": "e8 7c 7b 84 ff",
+      "instruction": "call 0x419cc0"
+    },
+    {
+      "address": "00bd2146",
+      "native": "00bd1510",
+      "function": "00bd20a0",
+      "bytes": "e8 c5 f3 ff ff",
+      "instruction": "call 0xbd1510"
+    }
+  ],
+  "data_and_eh_spans": [
+    {
+      "start": "00cc6690",
+      "inclusive_end": "00cc6699",
+      "byte_count": 10,
+      "sha256": "59b61d451adb1205a6fc0491dfdad04b05a6c7166091a2a3ebb85d3c741fd821",
+      "installed_pe_matches_live_ghidra": true,
+      "backing": "installed PE raw bytes",
+      "purpose": "identifier FH3 thunk",
+      "evidence_log": "local/native_fileblock_identifier_bm/bytes_00cc6690.txt",
+      "evidence_sha256": "c206eef8ef7fa31c3daa887fab0be7b160e0122d6dbef7188b46af7279212d18"
+    },
+    {
+      "start": "00e00c1c",
+      "inclusive_end": "00e00c3f",
+      "byte_count": 36,
+      "sha256": "f817793e54755dac44407f526003a32a8eead4b7bc5b878d57816b3d71af275e",
+      "installed_pe_matches_live_ghidra": true,
+      "backing": "installed PE raw bytes",
+      "purpose": "identifier FuncInfo",
+      "evidence_log": "local/native_fileblock_identifier_bm/bytes_00e00c1c.txt",
+      "evidence_sha256": "033eac7574a694eddffc14a08b5a89a9f872851c5911b21aef096803bf9ed8dd"
+    },
+    {
+      "start": "00e00c40",
+      "inclusive_end": "00e00c8f",
+      "byte_count": 80,
+      "sha256": "166b7fbaa9ba91c2fd4b00f3c986d43b39c41ecb54151689096ef39938be4150",
+      "installed_pe_matches_live_ghidra": true,
+      "backing": "installed PE raw bytes",
+      "purpose": "identifier ten-state unwind map",
+      "evidence_log": "local/native_fileblock_identifier_bm/bytes_00e00c40.txt",
+      "evidence_sha256": "18df522dc5730b0541596609e2ea2d6268d2e39acfdd8a745d0cdcfa67599b4d"
+    },
+    {
+      "start": "00cc6640",
+      "inclusive_end": "00cc668f",
+      "byte_count": 80,
+      "sha256": "2e325ae38a1c689e73efebe6d67fec7557060e983220353c898a9371d6132dbd",
+      "installed_pe_matches_live_ghidra": true,
+      "backing": "installed PE raw bytes",
+      "purpose": "identifier unwind action thunks",
+      "evidence_log": "local/native_fileblock_identifier_bm/bytes_00cc6640.txt",
+      "evidence_sha256": "10018154ff188ffd2170bbfeb9ef3577cacbba0f8299e177f5297517c7ff410d"
+    },
+    {
+      "start": "00cc55b0",
+      "inclusive_end": "00cc55c1",
+      "byte_count": 18,
+      "sha256": "795d0787aba629f4e18d6dd3a4c403e91c5104cafe174aba26ed2e00b8ce1541",
+      "installed_pe_matches_live_ghidra": true,
+      "backing": "installed PE raw bytes",
+      "purpose": "split unwind action and FH3 thunk",
+      "evidence_log": "local/native_fileblock_identifier_bm/bytes_00cc55b0.txt",
+      "evidence_sha256": "7365fca790b9e16b56cba74c403cc4f4e9c6b9b4f0fa4facefc67a38741c039e"
+    },
+    {
+      "start": "00dff66c",
+      "inclusive_end": "00dff697",
+      "byte_count": 44,
+      "sha256": "34087195a71d49182a17913ee6c13ed10beeba8cc7c0f3322800d6e90cc95ca6",
+      "installed_pe_matches_live_ghidra": true,
+      "backing": "installed PE raw bytes",
+      "purpose": "split unwind map and FuncInfo",
+      "evidence_log": "local/native_fileblock_identifier_bm/bytes_00dff66c.txt",
+      "evidence_sha256": "79c0c3266fa95fa891a6d10fb055f6a0688577f658203e6a76a7911ab31b11cd"
+    },
+    {
+      "start": "00d68520",
+      "inclusive_end": "00d6852f",
+      "byte_count": 16,
+      "sha256": "003e1065bd1e1d0ff97f9f4d291c9a20392328ac4ac4d9dcf184715e349f90ff",
+      "installed_pe_matches_live_ghidra": true,
+      "backing": "installed PE raw bytes",
+      "purpose": "invalid-byte C string",
+      "evidence_log": "local/native_fileblock_identifier_bm/bytes_00d68520.txt",
+      "evidence_sha256": "30fc9b24387f408b7a60df230cd7a7d83dd9774f9a24336873e6ab51d5121091"
+    },
+    {
+      "start": "00ce7890",
+      "inclusive_end": "00ce7893",
+      "byte_count": 4,
+      "sha256": "5e0a69cdb91f050197df9d0847f27c208c308526a65a5d035daa88b209077f26",
+      "installed_pe_matches_live_ghidra": true,
+      "backing": "installed PE raw bytes",
+      "purpose": "underscore C string",
+      "evidence_log": "local/native_fileblock_identifier_bm/bytes_00ce7890.txt",
+      "evidence_sha256": "72ccced85a40f946195d9bedb659281b4187bfa19cab52c9e4d2d767a610585d"
+    },
+    {
+      "start": "00ce3a0c",
+      "inclusive_end": "00ce3a0f",
+      "byte_count": 4,
+      "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+      "installed_pe_matches_live_ghidra": true,
+      "backing": "installed PE raw bytes",
+      "purpose": "empty assigned C string",
+      "evidence_log": "local/native_fileblock_identifier_bm/bytes_00ce3a0c.txt",
+      "evidence_sha256": "b5168f3126c6e9de332447e1a3eec8d33b540fabde7c0dcf77fbb8cfd9cd9dfa"
+    },
+    {
+      "start": "0109cef0",
+      "inclusive_end": "0109cef3",
+      "byte_count": 4,
+      "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+      "installed_pe_matches_live_ghidra": true,
+      "backing": "PE section virtual zero-fill; no raw-file bytes",
+      "purpose": "empty numeric null-data fallback",
+      "evidence_log": "local/native_fileblock_identifier_bm/bytes_0109cef0.txt",
+      "evidence_sha256": "e0ca3d1604d54d4f9322e9790229ef02922aa16198e984126670aadb22ee78e1"
+    },
+    {
+      "start": "00bdfd6a",
+      "inclusive_end": "00bdfd6c",
+      "byte_count": 3,
+      "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d",
+      "installed_pe_matches_live_ghidra": true,
+      "backing": "installed PE raw bytes",
+      "purpose": "decoded unowned ADD ESP4 continuation",
+      "evidence_log": "local/native_fileblock_identifier_bm/bytes_00bdfd6a.txt",
+      "evidence_sha256": "2b30eeb3db2559c5438ac2c2a18bf61b391e41ca3f886235a6cc2db67aeccd74"
+    }
+  ],
+  "native_eh": {
+    "identifier": {
+      "handler": "00cc6690",
+      "func_info": "00e00c1c",
+      "unwind_map": "00e00c40",
+      "try_count": 0,
+      "frame": "F=aligned frame top; steady ESP=S=F-60h; state=S+5Ch; vector=S+44h=F-1Ch; body EBP is repurposed and is not the unwind local base",
+      "states": [
+        {
+          "state": 0,
+          "next": -1,
+          "action": "00cc6640",
+          "local": "vector",
+          "frame_offset": "-1c",
+          "callee": "00427880"
+        },
+        {
+          "state": 1,
+          "next": 0,
+          "action": "00cc6678",
+          "local": "negative slice",
+          "frame_offset": "-34",
+          "callee": "0041dd20"
+        },
+        {
+          "state": 2,
+          "next": 1,
+          "action": "00cc6680",
+          "local": "prefix slice",
+          "frame_offset": "-2c",
+          "callee": "0041dd20"
+        },
+        {
+          "state": 3,
+          "next": 2,
+          "action": "00cc6688",
+          "local": "fallback concatenation",
+          "frame_offset": "-24",
+          "callee": "0041dd20"
+        },
+        {
+          "state": 4,
+          "next": 0,
+          "action": "00cc6648",
+          "local": "numeric underscore",
+          "frame_offset": "-4c",
+          "callee": "0041dd20"
+        },
+        {
+          "state": 5,
+          "next": 4,
+          "action": "00cc6650",
+          "local": "numeric token copy",
+          "frame_offset": "-34",
+          "callee": "0041dd20"
+        },
+        {
+          "state": 6,
+          "next": 5,
+          "action": "00cc6658",
+          "local": "numeric concatenation",
+          "frame_offset": "-3c",
+          "callee": "0041dd20"
+        },
+        {
+          "state": 7,
+          "next": 0,
+          "action": "00cc6660",
+          "local": "byte underscore",
+          "frame_offset": "-44",
+          "callee": "0041dd20"
+        },
+        {
+          "state": 8,
+          "next": 7,
+          "action": "00cc6668",
+          "local": "one-byte token",
+          "frame_offset": "-24",
+          "callee": "0041dd20"
+        },
+        {
+          "state": 9,
+          "next": 8,
+          "action": "00cc6670",
+          "local": "byte concatenation",
+          "frame_offset": "-2c",
+          "callee": "0041dd20"
+        }
+      ],
+      "normal_exit": "BDFD53 disarms vector before427110(0); BDFD65 frees current backing; no added retry/rollback"
+    },
+    "split": {
+      "handler": "00cc55b8",
+      "func_info": "00dff674",
+      "unwind_map": "00dff66c",
+      "states": [
+        {
+          "state": 0,
+          "next": -1,
+          "action": "00cc55b0",
+          "callee": "0041dd20",
+          "local": "completed substring at frame-14"
+        }
+      ],
+      "arming": "BD2117 after469840 returns; disarmBD212A before normal return; no destination vector cleanup in split"
+    }
+  },
+  "contracts": {
+    "sanitization": "Native strcspn exact D68520 set; replace stopping NUL if before stored length, scan again at same offset; signed negative start handling and DWORD result addition retained",
+    "split": "Append only, no clearing; stored-length scan with captured scan pointers, reload length after temporary return; existing substring preserves strncpy padding",
+    "abbreviation": "signed count>=3 and signed(DWORD(3*count-1))<=32; clear name; each nonfinal token: construct underscore, copy numeric token or construct byte, concat token representation+underscore, append, reverse cleanup; final token direct numeric append or54AA70",
+    "predicate": "std::atol(data?data:empty)!=0; originalBF8417 uses strtol(data,nullptr,10); signed decimal prefixes count; no whole-token validation",
+    "fallback": "construct(-64,64), then(0,64), concat second+first, assign, reverse cleanup; no32-byte cap",
+    "native_failure": "caller only cleans completed temporaries; callees retain existing partial-allocation/no-rollback contracts"
+  },
+  "decoded_membership_holes": [
+    {
+      "start": "00bdfd6a",
+      "inclusive_end": "00bdfd6c",
+      "intended_parent": "00bdf950",
+      "bytes": "83 c4 04",
+      "instruction": "ADD ESP,4",
+      "endpoints_have_no_ghidra_function": true,
+      "evidence_log": "local/native_fileblock_identifier_bm/membership.txt",
+      "evidence_sha256": "dfa65383337bf12bd6ef8a7c07a67067c621b6087403bdcaba891c333ac7c231",
+      "exact_repair": "Attach these three already-decoded instruction bytes to existing BDF950 body under the coordinated write lock; preserve name/comments, refresh export, save; no no-return change. Not applied."
+    }
+  ],
+  "source_hashes": {
+    "include/bsp/native_fileblock_identifier.hpp": "ed2fe358ffb60723c904ca7ab3c7abed58f3fb657ca4806365356d8ac8935bd2",
+    "src/native_fileblock_identifier.cpp": "a4f2a236adabe3010bd2ed332ef8e37c8e234ae06b8800d38b33c1cf3a2f3480",
+    "include/bsp/native_string.hpp": "80013e5a7350120f32fcad1ce54db9b0923ad5b49cc2152823d858534331378f",
+    "include/bsp/native_string_vector.hpp": "38a48cf86dc70e46bdb184b1d7738e4221f55ddd045429fa4f47c74cc6b9c2e9",
+    "include/bsp/native_mesh_owner.hpp": "540fa95aafcd3b67697998361f9a6b1689bf90348c9c0cdc09bdeb6b9c6ac42c",
+    "include/bsp/native_physical_file_date.hpp": "a7489c4fff08b5289bb2906b72d4b35e27291e23e4fa83061109c0e895460788",
+    "include/bsp/native_pooled_string_substring.hpp": "1ab8439842d42ad82c129a30ed5d80867fb6ec6175bc7fdf5a4c585dd628905f",
+    "include/bsp/native_string_byte_append.hpp": "3e7d23f32c27f5a9d961c72e17dba0083555f32595ff56f9400c892845ac8e95",
+    "include/bsp/singleton_lifetime.hpp": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+    "src/native_string.cpp": "0e8819d3a6442fc48c879e85c00899a72beabdc51b3e94a11836ab5314d5e60c",
+    "src/native_string_vector.cpp": "4cf86be660ed334e7d7db5072ac6dccce8edfbb02bc3e39dd7437dddd7f995ba",
+    "src/native_mesh_owner.cpp": "fb263bbe9a631354e3e6943293befdf18fcd7da26a7969df4827e4ea97fb6fd3",
+    "src/native_physical_file_date.cpp": "c182b78332b3be7f693c1a20babf703024feca128753ece593b0e50d6f770a02",
+    "src/native_pooled_string_substring.cpp": "3310d48a69a0a20f1d7466fcba1688d8dcc856c7bf4a8048700ccd1fa02db4bc",
+    "src/native_string_byte_append.cpp": "a1baa448afe11188ecd06b442d5cdcef5757c6450afc7e8fbe2517f02fe7e524",
+    "src/singleton_lifetime.cpp": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+  },
+  "validation": {
+    "strict_msvc_win32_tu": "passed /std:c++17 /EHsc /MD /W4 /WX /fp:strict /permissive-",
+    "fixture": {
+      "path": "local/native_fileblock_identifier_bm/probe.cpp",
+      "sha256": "2577ce85174902da016b4cae8e13d59083abe6592d63b022985e180659496af1",
+      "executable_sha256": "81eb85be0683298587ef8805b0c39e8ca4ffa135e1f8b82fdf036ebac6266da5",
+      "manifest": "/link /MANIFEST:EMBED",
+      "output": "PASS actual 1Ch FileBlock, 8h strings, 0Ch vector; abbreviation, 64-byte fallback, embedded NUL, append split, concat failure cleanup",
+      "coverage": [
+        "numeric-prefix and zero-token abbreviation with result>32",
+        "final-byte append",
+        "fallback81->64",
+        "embedded NUL becomes underscore before stored length",
+        "split appends to existing0Ch vector and substring pads embedded NUL",
+        "owner prefix unchanged",
+        "one concat allocation failure: exact reverse cleanup order and no tracked string leaks"
+      ]
+    },
+    "frozen_library": {
+      "copied_from": "J:/PROG/battlestations-pacific-decompile-orch4-20260910/build/win32/Release/bsp_core.lib",
+      "copy": "local/native_fileblock_identifier_bm/bsp_core.frozen.lib",
+      "sha256": "134578367593f74415bb6fd12b51d103dfc6575dcb94d2f692640dde69c78251"
+    },
+    "object_sha256": "63a14c3664f5b7f20cff3af1f9544fe5f7ca6a87183791147cca349e680fb0f3",
+    "repository_build": "Not run in worker; source TU unregistered here and primary owns CMake/build integration",
+    "native_binary_abi_compatible": false,
+    "game_validated": false
+  },
+  "known_unknowns": [
+    "No original native binary ABI/FH3/SEH identity; explicit borrowed NativeStringStorage interface.",
+    "NativeStringStorage return is noexcept; native pool-getter exceptions during return cannot be represented by this interface.",
+    "Host CRT supplies Win32 atol/strcspn; original CRT locale/errno state is not shared.",
+    "Verified empty109CEF0 fallback represented by an empty literal; native mutation of that fallback cell is outside this interface.",
+    "Valid actual storage and distinct compiler locals required; arbitrary native-stack aliases and hardware faults unverified.",
+    "Existing dependency allocation/overlap domains retained, including no added rollback for incomplete vector reserve or string construction.",
+    "No CMake/runtime/shared metadata or Ghidra mutation; parent performs integration and any later coordinated annotation."
+  ],
+  "doc_sha256": "d24fbca5ab27a70f2f033096a77def8550bbb08baa9497ffea94304b1c408a68"
+}

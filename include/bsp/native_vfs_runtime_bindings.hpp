@@ -3,6 +3,7 @@
 #include "bsp/native_adopted_substream.hpp"
 #include "bsp/native_vfs_factory_selection.hpp"
 #include "bsp/native_vfs_manager_lifetime.hpp"
+#include "bsp/native_vfs_pending_routes.hpp"
 namespace bsp {
 struct NativeVfsOpenRouteContext;
 struct NativeVfsLookupRouteContext;
@@ -14,6 +15,7 @@ struct NativePhysicalProviderContext;
 struct NativeFileAccessLogLifetimeBindings;
 struct NativeMpkgProviderContext;
 struct NativeMpakRuntimeContext;
+struct NativePhysicalPendingIoContext;
 // Concrete source dispatch for verified native manager/provider/stream methods.
 // Owners retain their original numeric vtable words. The corresponding native
 // table bytes must be readable at those addresses, as required by the existing
@@ -27,13 +29,14 @@ struct NativeMpakRuntimeContext;
 // publication, callback or lifetime domain is allocated by this binding.
 class NativeVfsRuntimeBindings final : public NativeLuaVfsDispatch,
     public NativeAdoptedSubstreamDispatch, public NativeVfsFactoryCreateDispatch,
-    public NativeVfsManagerVirtualCalls {
+    public NativeVfsManagerVirtualCalls, public NativeVfsProviderPendingDispatch {
 public:
     NativeVfsRuntimeBindings(NativeVfsOpenRouteContext&,NativeVfsLookupRouteContext&,
         NativePhysicalStreamOpenContext&,NativeStoredStreamConversionContext&,
         NativeVfsOpenLoggingContext&,NativeRetainedMemoryOwnerContext&,
         NativePhysicalProviderContext* = nullptr,
-        NativeFileAccessLogLifetimeBindings* = nullptr);
+        NativeFileAccessLogLifetimeBindings* = nullptr,
+        NativePhysicalPendingIoContext* = nullptr);
     ~NativeVfsRuntimeBindings() override;
     NativeVfsRuntimeBindings(const NativeVfsRuntimeBindings&)=delete;
     NativeVfsRuntimeBindings& operator=(const NativeVfsRuntimeBindings&)=delete;
@@ -57,6 +60,10 @@ public:
     // BDF432 consumes the captured manager+90 code identity. Only the
     // reconstructed startup no-op target is admitted; never execute an identity.
     void open_failure_entry(std::uintptr_t entry,void* captured_manager);
+    std::uint8_t invoke_submit(std::uintptr_t captured_entry, void* actual_provider,
+        const void* first_header, const void* second_header,
+        std::uintptr_t opaque_callback, std::uint32_t flags) override;
+    void invoke_tick(std::uintptr_t captured_entry, void* actual_provider) override;
     std::uint64_t stream_length_entry(std::uintptr_t entry,void* stream);
     std::uint64_t stream_position_entry(std::uintptr_t entry,void* stream);
     // Explicit borrowed connection permits constructing the actual recursive
@@ -82,6 +89,7 @@ private:
     NativeRetainedMemoryOwnerContext& memory_;
     NativePhysicalProviderContext* provider_;
     NativeFileAccessLogLifetimeBindings* log_lifetime_;
+    NativePhysicalPendingIoContext* pending_;
     NativeMpkgProviderContext* mpkg_{};
     NativeMpakRuntimeContext* mpak_{};
     NativeVfsRuntimeBindings* previous_;

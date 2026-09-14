@@ -1,0 +1,607 @@
+{
+  "packet": "orch4_native_vfs_pending_routes_bk",
+  "status": "complete_source_strict_TU_compile_seven_original_body_differential; primary_runtime_and_CMake_integration_pending",
+  "source": "src/native_vfs_pending_routes.cpp",
+  "header": "include/bsp/native_vfs_pending_routes.hpp",
+  "documentation": "docs/NATIVE_VFS_PENDING_ROUTES_BK.md",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "project_verification": "Every live wrapper calls Client.verify for bsp project, program_path, x86 language and image base; configured project_file checked. ghidra ensure --status before each batch. No mutation.",
+  "installed_executable": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+  "installed_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "verification_utc": "2026-09-14T05:12:20.269661+00:00",
+  "functions": [
+    {
+      "address": "00bdda10",
+      "inclusive_end": "00bdda96",
+      "bytes": 135,
+      "native_sha256": "863787e64da8b336a152f22c9d18308bc82758c060a228f532d8d9b5d1e29465",
+      "fresh_live_matches_disk": true,
+      "source_name": "submit_native_vfs_pending_00bdda10",
+      "ghidra_name": "BSP_VFS_OpenFileOverlapped",
+      "coverage": "complete",
+      "original_abi": "ECX captured manager; stack first-header,second-header,callback,flags; RET10h; raw AL",
+      "source": "src/native_vfs_pending_routes.cpp",
+      "validation": "strict_TU_compile_and_static_body; primary_traversal_integration_pending",
+      "source_contract": "actual Win32 storage; explicit borrowed route/provider/pool contexts; string release uses existing noexcept bridge; no original binary or FH3 ABI claim",
+      "export_assembly_sha256": "03147700eeef4fedf93ac063f25869ead661c6b60034f3d95cb7306505108ca4",
+      "export_pseudocode_sha256": "701e5009a315d2a11cc3f17b9d75fb53ade0d9475e71e4b9133e7ed2e92c5ccd"
+    },
+    {
+      "address": "00bdb0b0",
+      "inclusive_end": "00bdb11b",
+      "bytes": 108,
+      "native_sha256": "244d6db8597f8891403e5d462c09bc3dfd0d90932678a0c7e835c77d61f8b8be",
+      "fresh_live_matches_disk": true,
+      "source_name": "pump_native_vfs_pending_00bdb0b0",
+      "ghidra_name": "BSP_VFS_TickProviders",
+      "coverage": "complete",
+      "original_abi": "ECX manager; RET; no specified result",
+      "source": "src/native_vfs_pending_routes.cpp",
+      "validation": "strict_TU_compile_and_original_body_differential",
+      "source_contract": "actual Win32 storage; explicit borrowed route/provider/pool contexts; string release uses existing noexcept bridge; no original binary or FH3 ABI claim",
+      "export_assembly_sha256": "52fba0cc4dbb288ebc88c0d540ab1127488f6bdbfd530e8ba235cd9c81e04e39",
+      "export_pseudocode_sha256": "f3a9f843add666aac286da52884d7b1c870b133e4ae03796c1e8104588fd004c"
+    },
+    {
+      "address": "00bdc100",
+      "inclusive_end": "00bdc1c2",
+      "bytes": 195,
+      "native_sha256": "19f017079835b48e6cffabe76353218ac0cbb009cef4887cd4a8a96b5fa9bf29",
+      "fresh_live_matches_disk": true,
+      "source_name": "construct_native_vfs_pending_visitor_00bdc100",
+      "ghidra_name": "BSP_VFS_OverlappedVisitor_Construct",
+      "coverage": "complete",
+      "original_abi": "ECX actual20h visitor; stack first-header,second-header,callback,flags; RET10h; EAX visitor",
+      "source": "src/native_vfs_pending_routes.cpp",
+      "validation": "strict_TU_compile_and_original_body_differential",
+      "source_contract": "actual Win32 storage; explicit borrowed route/provider/pool contexts; string release uses existing noexcept bridge; no original binary or FH3 ABI claim",
+      "export_assembly_sha256": "eb718cb1b73e5c925096bed5b448f7234485ffe9ddf511028a44b09f81e9ad1e",
+      "export_pseudocode_sha256": "b3f7b17d5ad0deae42bb205e71f8ea00cb336b7494a6c79c59b85331fac00994"
+    },
+    {
+      "address": "00bdb740",
+      "inclusive_end": "00bdb7b9",
+      "bytes": 122,
+      "native_sha256": "9c2e4ef6534e8ddb679a2d558bc03220c5ff47b5cc38831f50364dee95f0572c",
+      "fresh_live_matches_disk": true,
+      "source_name": "destroy_native_vfs_pending_visitor_00bdb740",
+      "ghidra_name": "BSP_VFS_OverlappedVisitor_Destroy",
+      "coverage": "complete",
+      "original_abi": "ECX visitor; RET; no specified result",
+      "source": "src/native_vfs_pending_routes.cpp",
+      "validation": "strict_TU_compile_and_original_body_differential",
+      "source_contract": "actual Win32 storage; explicit borrowed route/provider/pool contexts; string release uses existing noexcept bridge; no original binary or FH3 ABI claim",
+      "export_assembly_sha256": "cbe17dab3a41cc6af341a541aaf3f5ebc9d074103a36abbc3a9c5edb5597bdf7",
+      "export_pseudocode_sha256": "468db107c9ae1956b9ee7495062bdaac70a4794ee1c3de85b8b5ceb5b21176c7"
+    },
+    {
+      "address": "00bdc1d0",
+      "inclusive_end": "00bdc1d3",
+      "bytes": 4,
+      "native_sha256": "bc29e77cf9f63e4f2ee3f89f7d24872b50e9c4a50820b39016f3194edda5e499",
+      "fresh_live_matches_disk": true,
+      "source_name": "read_native_vfs_pending_result_00bdc1d0",
+      "ghidra_name": "BSP_VFS_OverlappedVisitor_IsAccepted",
+      "coverage": "complete",
+      "original_abi": "ECX visitor; RET; raw AL=current byte14",
+      "source": "src/native_vfs_pending_routes.cpp",
+      "validation": "strict_TU_compile_and_original_body_differential",
+      "source_contract": "actual Win32 storage; explicit borrowed route/provider/pool contexts; string release uses existing noexcept bridge; no original binary or FH3 ABI claim",
+      "export_assembly_sha256": "2a6fd421a17731e0f62cda58aab1c96d4b8f425efd43cd51c7cbb9087ab8e84a",
+      "export_pseudocode_sha256": "315dfd258a0374fc53a1f8abfb03560fd1721e641d218610711d04d5315c44c2"
+    },
+    {
+      "address": "00bdc1e0",
+      "inclusive_end": "00bdc207",
+      "bytes": 40,
+      "native_sha256": "f138e09efa930df24ef96b0128bfcc1175c9380af3e65e151dfe3f698a8ee1fc",
+      "fresh_live_matches_disk": true,
+      "source_name": "read_native_vfs_pending_provider_00bdc1e0",
+      "ghidra_name": "BSP_VFS_OverlappedVisitor_VisitMount",
+      "coverage": "complete",
+      "original_abi": "ECX visitor; stack payload,unused-suffix; RET8; provider AL stored at14",
+      "source": "src/native_vfs_pending_routes.cpp",
+      "validation": "strict_TU_compile_and_original_body_differential",
+      "source_contract": "actual Win32 storage; explicit borrowed route/provider/pool contexts; string release uses existing noexcept bridge; no original binary or FH3 ABI claim",
+      "export_assembly_sha256": "149cca7cb45b3c91c4c609b045f2853c88be93d04f4cff7f2e477c8287dfe1d7",
+      "export_pseudocode_sha256": "ed1b221ac860a7010e4f6cb8b3194f62d4b92d295c0c91c07148be13385298e2"
+    },
+    {
+      "address": "00be7cb0",
+      "inclusive_end": "00be7cb4",
+      "bytes": 5,
+      "native_sha256": "6497f6ef3c5212d03a0d37de5a4cff8b12711fe6dc5d836fb5deb981a9f5b2d9",
+      "fresh_live_matches_disk": true,
+      "source_name": "decline_native_filestore_pending_00be7cb0",
+      "ghidra_name": "BSP_FileStore_RejectPendingOpen",
+      "coverage": "complete",
+      "original_abi": "ECX and four stack arguments unread; XOR AL,AL; RET10h",
+      "source": "src/native_vfs_pending_routes.cpp",
+      "validation": "strict_TU_compile_and_original_body_differential",
+      "source_contract": "actual Win32 storage; explicit borrowed route/provider/pool contexts; string release uses existing noexcept bridge; no original binary or FH3 ABI claim",
+      "export_assembly_sha256": "db88f343f0344779a96931ea17fe85cbd6e858501e21e633b3350f1fbcc12f79",
+      "export_pseudocode_sha256": "a9e6dc6e0213ef732e4db37710bd993f1548723f93e20cb1f8360b3443170403"
+    },
+    {
+      "address": "00be7cc0",
+      "inclusive_end": "00be7cc0",
+      "bytes": 1,
+      "native_sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+      "fresh_live_matches_disk": true,
+      "source_name": "tick_native_filestore_pending_00be7cc0",
+      "ghidra_name": "BSP_FileStore_TickNoOp",
+      "coverage": "complete",
+      "original_abi": "ECX unread; RET",
+      "source": "src/native_vfs_pending_routes.cpp",
+      "validation": "strict_TU_compile_and_original_body_differential",
+      "source_contract": "actual Win32 storage; explicit borrowed route/provider/pool contexts; string release uses existing noexcept bridge; no original binary or FH3 ABI claim",
+      "export_assembly_sha256": "c55f18cdf18c86f6a1e04ad646b007cc9ab31f4b9cb380c4092b167fb377a0b9",
+      "export_pseudocode_sha256": "8c1afb43c5187eca2f26ebb203a2630f962f7a4501b485d66d6df92a1439f81b"
+    }
+  ],
+  "host_steps": [
+    {
+      "function": "00bdda10",
+      "address": "00bdda32",
+      "native": "004254b0",
+      "contract": "Single RET; no diagnostic side effects",
+      "callee_body_inspected": true
+    },
+    {
+      "function": "00bdda10",
+      "address": "00bdda52",
+      "native": "00bdc100",
+      "contract": "Actual stack visitor receives first/second/callback/flags unchanged; RET10h",
+      "callee_body_inspected": true
+    },
+    {
+      "function": "00bdda10",
+      "address": "00bdda67",
+      "native": "00bdd0a0",
+      "contract": "Existing traversal receives original second-header pointer and constructed visitor; RET8",
+      "callee_body_inspected": true
+    },
+    {
+      "function": "00bdda10",
+      "address": "00bdda7c",
+      "native": "00bdb740",
+      "contract": "Destroy visitor after raw AL saved in BL",
+      "callee_body_inspected": true
+    },
+    {
+      "function": "00bdc100",
+      "address": "00bdc144",
+      "native": "0041dd40",
+      "contract": "Actual header resize from current source length, preserve1, RET8",
+      "callee_body_inspected": true
+    },
+    {
+      "function": "00bdc100",
+      "address": "00bdc17e",
+      "native": "0041dd40",
+      "contract": "Actual header resize from current source length, preserve1, RET8",
+      "callee_body_inspected": true
+    },
+    {
+      "function": "00bdc100",
+      "address": "00bdc159",
+      "native": "00bf7680",
+      "contract": "Current data pointers/current destination length; overlap-capable copy; caller ADD ESP,0Ch",
+      "callee_body_inspected": true
+    },
+    {
+      "function": "00bdc100",
+      "address": "00bdc193",
+      "native": "00bf7680",
+      "contract": "Current data pointers/current destination length; overlap-capable copy; caller ADD ESP,0Ch",
+      "callee_body_inspected": true
+    },
+    {
+      "function": "00bdb740",
+      "address": "00bdb776",
+      "native": "00419cc0",
+      "contract": "Resolve current actual pool without consuming pushed return-block arguments",
+      "callee_body_inspected": true
+    },
+    {
+      "function": "00bdb740",
+      "address": "00bdb798",
+      "native": "00419cc0",
+      "contract": "Resolve current actual pool without consuming pushed return-block arguments",
+      "callee_body_inspected": true
+    },
+    {
+      "function": "00bdb740",
+      "address": "00bdb77d",
+      "native": "00bd1510",
+      "contract": "Return captured data/current length+1/unused1; second then first; RET0Ch",
+      "callee_body_inspected": true
+    },
+    {
+      "function": "00bdb740",
+      "address": "00bdb79f",
+      "native": "00bd1510",
+      "contract": "Return captured data/current length+1/unused1; second then first; RET0Ch",
+      "callee_body_inspected": true
+    },
+    {
+      "function": "00bdb0b0",
+      "address": "00bdb0db",
+      "native": "00bf6713",
+      "contract": "Returning CRT invalid-parameter boundary; no synthetic stop",
+      "callee_body_inspected": true
+    },
+    {
+      "function": "00bdb0b0",
+      "address": "00bdb0e8",
+      "native": "00bf6713",
+      "contract": "Returning CRT invalid-parameter boundary; no synthetic stop",
+      "callee_body_inspected": true
+    },
+    {
+      "function": "00bdb0b0",
+      "address": "00bdb0f2",
+      "native": "00bf6713",
+      "contract": "Returning CRT invalid-parameter boundary; no synthetic stop",
+      "callee_body_inspected": true
+    },
+    {
+      "function": "00bdb0b0",
+      "address": "00bdb105",
+      "native": "00bd97e0",
+      "contract": "Advance existing actual owner/node iterator after provider tick",
+      "callee_body_inspected": true
+    },
+    {
+      "function": "00bdc1e0",
+      "address": "00bdc1ff",
+      "native": "provider+vtable0c",
+      "contract": "Captured actual provider and entry; both complete headers, callback,flags; raw AL stored at14",
+      "callee_body_inspected": "indirect target selected by primary provider dispatch; BE7CB0 body inspected; physical packet independent",
+      "body_range_verified": "00bdc1e0..00bdc207"
+    },
+    {
+      "function": "00bdb0b0",
+      "address": "00bdb0ff",
+      "native": "provider+vtable28",
+      "contract": "Captured actual provider/current entry, no arguments; then iterator advance",
+      "callee_body_inspected": "indirect target selected by primary provider dispatch; BE7CC0 body inspected; physical packet independent",
+      "body_range_verified": "00bdb0b0..00bdb11b"
+    },
+    {
+      "function": "00cc6160",
+      "address": "00cc6163",
+      "native": "00bd8fe0",
+      "contract": "Constructor state0 resets base",
+      "callee_body_inspected": true,
+      "kind": "tail_jump"
+    },
+    {
+      "function": "00cc6168",
+      "address": "00cc616e",
+      "native": "0041dd20",
+      "contract": "Constructor state1 releases completed first header",
+      "callee_body_inspected": true,
+      "kind": "tail_jump"
+    },
+    {
+      "function": "00cc6070",
+      "address": "00cc6073",
+      "native": "00bd8fe0",
+      "contract": "Destructor state0 resets base",
+      "callee_body_inspected": true,
+      "kind": "tail_jump"
+    },
+    {
+      "function": "00cc6078",
+      "address": "00cc607e",
+      "native": "0041dd20",
+      "contract": "Destructor state1 releases first header",
+      "callee_body_inspected": true,
+      "kind": "tail_jump"
+    },
+    {
+      "function": "00cc63e0",
+      "address": "00cc63e3",
+      "native": "00bdb740",
+      "contract": "Dispatcher state0 destroys completed visitor",
+      "callee_body_inspected": true,
+      "kind": "tail_jump"
+    }
+  ],
+  "auxiliary_evidence": [
+    {
+      "address": "00cc6160",
+      "inclusive_end": "00cc6167",
+      "bytes": 8,
+      "native_sha256": "af4b96046d543e7b4e301d706e87124bf183348930a5973cc84de9f715a2027d",
+      "fresh_live_matches_disk": true,
+      "coverage": "evidence_only_not_reconstructed",
+      "no_ghidra_function": false,
+      "kind": "FH3_handler_or_cleanup"
+    },
+    {
+      "address": "00cc6168",
+      "inclusive_end": "00cc6172",
+      "bytes": 11,
+      "native_sha256": "8a3c281bba6ba8bdb079e29ee72f86cc44fbaee77312b84d427db57bf51b124b",
+      "fresh_live_matches_disk": true,
+      "coverage": "evidence_only_not_reconstructed",
+      "no_ghidra_function": false,
+      "kind": "FH3_handler_or_cleanup"
+    },
+    {
+      "address": "00cc6173",
+      "inclusive_end": "00cc617c",
+      "bytes": 10,
+      "native_sha256": "387ee88112573bff65c532a4b7637d4c0d86eeb8c24913ebc79da46604821706",
+      "fresh_live_matches_disk": true,
+      "coverage": "evidence_only_not_reconstructed",
+      "no_ghidra_function": true,
+      "kind": "FH3_handler_or_cleanup"
+    },
+    {
+      "address": "00cc6070",
+      "inclusive_end": "00cc6077",
+      "bytes": 8,
+      "native_sha256": "b45dea6c15ef9aca0929beb0854cab259625a74a711ecdad21b40fe1037d37dd",
+      "fresh_live_matches_disk": true,
+      "coverage": "evidence_only_not_reconstructed",
+      "no_ghidra_function": false,
+      "kind": "FH3_handler_or_cleanup"
+    },
+    {
+      "address": "00cc6078",
+      "inclusive_end": "00cc6082",
+      "bytes": 11,
+      "native_sha256": "70576431cd6c71b8c1e79c446cb32dd25bebad56e48361f7072d58c565b852b1",
+      "fresh_live_matches_disk": true,
+      "coverage": "evidence_only_not_reconstructed",
+      "no_ghidra_function": false,
+      "kind": "FH3_handler_or_cleanup"
+    },
+    {
+      "address": "00cc6083",
+      "inclusive_end": "00cc608c",
+      "bytes": 10,
+      "native_sha256": "d4b0b77ef1b8e71dcecc0fc702095af992e393c6d1fed835dfdcd65409210028",
+      "fresh_live_matches_disk": true,
+      "coverage": "evidence_only_not_reconstructed",
+      "no_ghidra_function": true,
+      "kind": "FH3_handler_or_cleanup"
+    },
+    {
+      "address": "00cc63e0",
+      "inclusive_end": "00cc63e7",
+      "bytes": 8,
+      "native_sha256": "1a170495a893905791fbaf2b883191660dabe841b4bf7b6c678db77282bc68c9",
+      "fresh_live_matches_disk": true,
+      "coverage": "evidence_only_not_reconstructed",
+      "no_ghidra_function": false,
+      "kind": "FH3_handler_or_cleanup"
+    },
+    {
+      "address": "00cc63e8",
+      "inclusive_end": "00cc63f1",
+      "bytes": 10,
+      "native_sha256": "aa3b4578eece2aa22588970ebbcc34e052291099bff84389b00795ad22f612c2",
+      "fresh_live_matches_disk": true,
+      "coverage": "evidence_only_not_reconstructed",
+      "no_ghidra_function": true,
+      "kind": "FH3_handler_or_cleanup"
+    },
+    {
+      "address": "00e0053c",
+      "inclusive_end": "00e00573",
+      "bytes": 56,
+      "native_sha256": "16d39d61fe6b54384f27a4aed3f21904a6c5468e0d0a4015d1979248d3b371ff",
+      "fresh_live_matches_disk": true,
+      "coverage": "evidence_only_not_reconstructed",
+      "kind": "FH3_unwind_map_data"
+    },
+    {
+      "address": "00e003d8",
+      "inclusive_end": "00e0040f",
+      "bytes": 56,
+      "native_sha256": "c18d8817575b64a0e33b064c436e7d9097135a909e719b3bf9e598a219d954ae",
+      "fresh_live_matches_disk": true,
+      "coverage": "evidence_only_not_reconstructed",
+      "kind": "FH3_unwind_map_data"
+    },
+    {
+      "address": "00e008c4",
+      "inclusive_end": "00e008ef",
+      "bytes": 44,
+      "native_sha256": "b207f27c82ebae59de143de07440149f37655eade3ce4bb911c91102d1931d4c",
+      "fresh_live_matches_disk": true,
+      "coverage": "evidence_only_not_reconstructed",
+      "kind": "FH3_unwind_map_data"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "Older VFS_PENDING_DISPATCH.md audit had no Ghidra function definitions at BDC1D0/BDC1E0",
+      "is": "Both are now existing live functions, exact4/40-byte bodies",
+      "evidence": "Current ghidra proto + current eight-body exports and fresh PE span comparison"
+    },
+    {
+      "was": "Projected vfs_pending.cpp enumerates a host mount array and adds validation/snapshot/reentrancy policy",
+      "is": "New actual-storage route calls providers from the live tree without those additions",
+      "evidence": "Complete BDDA10/BDB0B0 listings and live inserted-mount differential trace"
+    }
+  ],
+  "integration_dependencies": [
+    "Primary adds optional NativeVfsLookupRouteContext.pending and D68478 profile/BDC1E0 visit/BDC1D0 stop dispatch; this worker changes no shared traversal files",
+    "Primary binds captured physical BF43B0/BF46B0 and FileStore BE7CB0/BE7CC0 provider entries, CMake and application scheduling",
+    "Adjacent FileStore request BE7CD0 and physical I/O implementation remain separately owned"
+  ],
+  "verification": {
+    "strict_tu_command": "cmd.exe /c local\\compile_pending_routes.cmd",
+    "strict_tu_compiler_arguments": "cl /nologo /std:c++17 /EHsc /W4 /WX /fp:strict /MD /O2 /I include /c src\\native_vfs_pending_routes.cpp /Folocal\\native_vfs_pending_routes.obj",
+    "strict_tu_result": "passed",
+    "native_span_command": "python local/capture_pending_evidence.py",
+    "native_span_result": "19 live spans matched installed PE,842bytes",
+    "probe_build_command": "cmd.exe /c local\\compile_pending_probe.cmd",
+    "probe_run_command": "local\\pending_routes_probe.exe",
+    "probe_link_contract": "/MANIFEST:EMBED; exact frozen local pending_bsp_core/lua511/zlib121 libraries; actual new TU object",
+    "probe_result": "PASS seven original bodies: full visitor/pool postimages (9098432 bytes), raw AL 80, no-read leaves, live inserted mount, repeated provider, current tick slot",
+    "probe_original_bodies": [
+      "00bdc100",
+      "00bdb740",
+      "00bdc1d0",
+      "00bdc1e0",
+      "00bdb0b0",
+      "00be7cb0",
+      "00be7cc0"
+    ],
+    "probe_source_domain": "Ordinary no-throw visitor path, actual pool owning storage, callback mutation and live tree insertion. Native direct dependencies are patched to full existing source resize/pool-release/copy/iterator/CRT bridges. This is not independent original-dependency validation.",
+    "probe_compared_bytes": 9098432,
+    "probe_excludes": "BDDA10 execution, full native BDD0A0 pending visitor wiring, native throwing FH3/SEH, physical I/O, terminal failure lifetime and gameplay",
+    "report_call_command": "python tools/verify_report_calls.py reports/native_vfs_pending_routes_bk.json",
+    "report_call_result": "passed: 21 direct/tail call rows checked,0 failed;2 indirect rows separately body-range checked",
+    "full_build": "primary integrator responsibility; no full-build claim from this worker"
+  },
+  "annotation_proposals": [
+    {
+      "address": "00bdda10",
+      "retain_name": "BSP_VFS_OpenFileOverlapped",
+      "proposed_evidence_comment": "Actual-storage complete source submit_native_vfs_pending_00bdda10; docs/NATIVE_VFS_PENDING_ROUTES_BK.md; strict MSVC Win32 TU and bounded original-body probe; source contexts are not native ABI/FH3/game proof."
+    },
+    {
+      "address": "00bdb0b0",
+      "retain_name": "BSP_VFS_TickProviders",
+      "proposed_evidence_comment": "Actual-storage complete source pump_native_vfs_pending_00bdb0b0; docs/NATIVE_VFS_PENDING_ROUTES_BK.md; strict MSVC Win32 TU and bounded original-body probe; source contexts are not native ABI/FH3/game proof."
+    },
+    {
+      "address": "00bdc100",
+      "retain_name": "BSP_VFS_OverlappedVisitor_Construct",
+      "proposed_evidence_comment": "Actual-storage complete source construct_native_vfs_pending_visitor_00bdc100; docs/NATIVE_VFS_PENDING_ROUTES_BK.md; strict MSVC Win32 TU and bounded original-body probe; source contexts are not native ABI/FH3/game proof."
+    },
+    {
+      "address": "00bdb740",
+      "retain_name": "BSP_VFS_OverlappedVisitor_Destroy",
+      "proposed_evidence_comment": "Actual-storage complete source destroy_native_vfs_pending_visitor_00bdb740; docs/NATIVE_VFS_PENDING_ROUTES_BK.md; strict MSVC Win32 TU and bounded original-body probe; source contexts are not native ABI/FH3/game proof."
+    },
+    {
+      "address": "00bdc1d0",
+      "retain_name": "BSP_VFS_OverlappedVisitor_IsAccepted",
+      "proposed_evidence_comment": "Actual-storage complete source read_native_vfs_pending_result_00bdc1d0; docs/NATIVE_VFS_PENDING_ROUTES_BK.md; strict MSVC Win32 TU and bounded original-body probe; source contexts are not native ABI/FH3/game proof."
+    },
+    {
+      "address": "00bdc1e0",
+      "retain_name": "BSP_VFS_OverlappedVisitor_VisitMount",
+      "proposed_evidence_comment": "Actual-storage complete source read_native_vfs_pending_provider_00bdc1e0; docs/NATIVE_VFS_PENDING_ROUTES_BK.md; strict MSVC Win32 TU and bounded original-body probe; source contexts are not native ABI/FH3/game proof."
+    },
+    {
+      "address": "00be7cb0",
+      "retain_name": "BSP_FileStore_RejectPendingOpen",
+      "proposed_evidence_comment": "Actual-storage complete source decline_native_filestore_pending_00be7cb0; docs/NATIVE_VFS_PENDING_ROUTES_BK.md; strict MSVC Win32 TU and bounded original-body probe; source contexts are not native ABI/FH3/game proof."
+    },
+    {
+      "address": "00be7cc0",
+      "retain_name": "BSP_FileStore_TickNoOp",
+      "proposed_evidence_comment": "Actual-storage complete source tick_native_filestore_pending_00be7cc0; docs/NATIVE_VFS_PENDING_ROUTES_BK.md; strict MSVC Win32 TU and bounded original-body probe; source contexts are not native ABI/FH3/game proof."
+    }
+  ],
+  "ghidra_mutations": false,
+  "ledger_edits": false,
+  "limitations": [
+    "Existing ActualNativeStringPoolStorage.release is noexcept: a throwing pool getter during release is outside the source domain; destructor native unwinds are read but not executable parity",
+    "Native original ABI/SEH/FH3 and game validation are unproven",
+    "BDDA10 has static and compile evidence here; full executable traversal/provider scheduling awaits primary integration",
+    "Unknown provider dispatch behavior is explicit external source boundary; no fallback or stub"
+  ],
+  "artifacts": [
+    {
+      "path": "src/native_vfs_pending_routes.cpp",
+      "sha256": "0b5f25478d6687016dd1c9d1c5f2864faae25544cfecb42d9ed7278c89534b0f",
+      "bytes": 5844
+    },
+    {
+      "path": "include/bsp/native_vfs_pending_routes.hpp",
+      "sha256": "c6d18f408da384daa864174243d9a9064bc22f4d4b0f2d9807e7d251c164f3d8",
+      "bytes": 4394
+    },
+    {
+      "path": "docs/NATIVE_VFS_PENDING_ROUTES_BK.md",
+      "sha256": "0a6bbe6d15a1831047edb345caf6d7243a4c30bc4bb3fbdbe6bf6cda0a477598",
+      "bytes": 8880
+    },
+    {
+      "path": "local/compile_pending_routes.cmd",
+      "sha256": "f446a894f9248f370e66588320168da9fc07e5eec1a6de03f190398f982fa9de",
+      "bytes": 327
+    },
+    {
+      "path": "local/native_vfs_pending_routes_compile.log",
+      "sha256": "11facd6f2769f4bf9e49f029ba3a1c34c7aadac48d88ad03d20a602640368d1c",
+      "bytes": 31
+    },
+    {
+      "path": "local/native_vfs_pending_routes.obj",
+      "sha256": "b1ea119abe65473c45144d791db1656bc61b3bd0fe74280854491ab8bd88d982",
+      "bytes": 9432
+    },
+    {
+      "path": "local/capture_pending_evidence.py",
+      "sha256": "4405088cca594688f4359dabb422f823746fe8e038735d059322c475d09476d5",
+      "bytes": 1893
+    },
+    {
+      "path": "local/pending_verified_spans.json",
+      "sha256": "7f77be6e3e6de4b50fd19fb61d220cb29a2970983baf8bb68fa25fda6d187955",
+      "bytes": 4633
+    },
+    {
+      "path": "local/pending_original_bytes.hpp",
+      "sha256": "85ac6ae2ebf19fb03858ed5dce22c9fefbf8e499dcdb98e17f999e1689f481ff",
+      "bytes": 5155
+    },
+    {
+      "path": "local/pending_routes_probe.cpp",
+      "sha256": "ed27859ce5ab0588c61558b0727725129a34db71c76fe5bf77be7781289452ed",
+      "bytes": 10543
+    },
+    {
+      "path": "local/compile_pending_probe.cmd",
+      "sha256": "93498c15e8b06a7870305d45da07b9dcddbb9b4bc02a2c9cc893ecf1422a7bd5",
+      "bytes": 520
+    },
+    {
+      "path": "local/pending_routes_probe_compile.log",
+      "sha256": "ad3480f311dca6cb08a7909d1bcfac43ae048a79ed6354eaf96904df3cdbd299",
+      "bytes": 26
+    },
+    {
+      "path": "local/pending_routes_probe.obj",
+      "sha256": "68c987d455b2e8b2b7574d3b6f72971546b0c40050081d6e793947f1a8a514e2",
+      "bytes": 84898
+    },
+    {
+      "path": "local/pending_routes_probe.exe",
+      "sha256": "9787104cd703d183b202decba2cc060d3a7e6685a85c6a2103a56005cb9ad2c0",
+      "bytes": 31232
+    },
+    {
+      "path": "local/pending_routes_probe.log",
+      "sha256": "ea56bf7f466b1925334aadcdcd90cc36c10a291d6c124d3d6613a5730f1b7f64",
+      "bytes": 160
+    },
+    {
+      "path": "local/pending_bsp_core.lib",
+      "sha256": "ceffc98d95f2fcd03f7f6f05a7f415d116c899e6df3751a46e59b23c761d7a03",
+      "bytes": 57741816
+    },
+    {
+      "path": "local/pending_bsp_lua511.lib",
+      "sha256": "00315ac717aac3d2b2161fefefe71b36a974335ff9c95d48c137423eb4e2f4b2",
+      "bytes": 455244
+    },
+    {
+      "path": "local/pending_bsp_zlib121.lib",
+      "sha256": "73ae30b8adc3adfe5b33285bac533f8e7df7e8ab8d9e44789e6a030fd8a06ad9",
+      "bytes": 71906
+    }
+  ]
+}

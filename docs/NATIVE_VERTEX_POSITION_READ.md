@@ -113,3 +113,7 @@ wrapped files remain unchanged; integration must supply the borrowed import
 and call this getter to close their decoded-position dependency. The existing
 unsupported-format result remains explicit. Combined build belongs to the
 primary integrator.
+
+## AD validation and shared attribute readers
+
+`docs/NATIVE_VERTEX_ATTRIBUTE_READ_AD.md` adds normal, UV and colour readers in the same module, sharing the existing byte/short, nine-bit and actual half-import implementations. The existing position entry and its coverage boundary remain unchanged. The AD original-byte fixture independently verifies 72 position comparisons across every initialized decoded format and the recorded x87 precision/rounding modes; it does not add a game-render or native ABI claim.

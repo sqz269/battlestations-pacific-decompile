@@ -94,6 +94,7 @@ public:
     VfsMemoryOpen open(const std::string&, std::uint32_t) override;
     std::vector<std::string> enumerate(const std::string&, const std::string&, std::uint32_t) override;
     std::array<std::uint32_t, 5> file_date(const std::string&) override;
+    void pump_pending();
     GameVfsProbeResult resolve_and_read(const std::string&);
     const GameVfsProbeResult& probe(const std::string&);
     const std::vector<GameVfsProbeResult>& probes() const noexcept { return probes_; }

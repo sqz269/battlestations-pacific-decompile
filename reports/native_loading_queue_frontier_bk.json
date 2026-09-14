@@ -1,0 +1,1736 @@
+{
+  "packet": "orch4_native_loading_queue_frontier_bk",
+  "generated_utc": "2026-09-14T05:45:38.605436+00:00",
+  "worker_base_commit": "21581aad90ce0ecd1a1f11dcd0063ebf2470c32e",
+  "primary_semantic_audit_commit": "fd6a5f3ce5f553560e02a492283a3eecc722900d",
+  "primary_hash_capture_commit": "96d910d50a2e98317bb45227d830544ef1727a3d",
+  "primary_hash_capture_dirty_files": [],
+  "primary_snapshot_limit": "Primary source was uncommitted and may continue changing/building. Hashes are historical capture, not claims about a later build or latest source.",
+  "read_only_audit": true,
+  "identity": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "image_base": "00400000"
+  },
+  "identity_verification": "Every live analysis batch uses bsp.py ghidra wrappers and Client.verify. No inline Ghidra script, mutation, annotation, repair, save, or executable instruction invocation.",
+  "binary": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "source_hashes": [
+    {
+      "path": "src/app_frame.cpp",
+      "bytes": 1499,
+      "sha256": "c049f6801753eeb227ecde128b5905d154acc9cd05d6ce96aa4b2b9d67d26308",
+      "checkout": "primary observed during report artifact capture"
+    },
+    {
+      "path": "src/game_hosts.cpp",
+      "bytes": 86804,
+      "sha256": "4cfd11e6aadca4c000bb4fd37ac7444644354bc39a9efca3b09fc96ad188575f",
+      "checkout": "primary observed during report artifact capture"
+    },
+    {
+      "path": "src/game_hosts_vfs.cpp",
+      "bytes": 17929,
+      "sha256": "9f6f27a95b1c7f4a113dbfa738b4484569b3b7e1e0c085426a1a319a9b0dc833",
+      "checkout": "primary observed during report artifact capture"
+    },
+    {
+      "path": "include/bsp/game_hosts.hpp",
+      "bytes": 31269,
+      "sha256": "09169d856660ebab478ee6986a168939bea17ecf445fe417e41064bd196772c0",
+      "checkout": "primary observed during report artifact capture"
+    },
+    {
+      "path": "include/bsp/game_native_vfs_runtime.hpp",
+      "bytes": 6814,
+      "sha256": "17635a12484e362a98bce57ab0777da440f4d7d9926038c8f53080942bf2fd4d",
+      "checkout": "primary observed during report artifact capture"
+    },
+    {
+      "path": "src/game_native_vfs_runtime.cpp",
+      "bytes": 31401,
+      "sha256": "396fe6ae5031ccc3f6bcf6e3adecea70b743944286fae9e5f308a89710358aa7",
+      "checkout": "primary observed during report artifact capture"
+    },
+    {
+      "path": "include/bsp/native_vfs_runtime_bindings.hpp",
+      "bytes": 5963,
+      "sha256": "1b2ef8bd680361642fd8c7bd402837e5de8e8cea96a19f817c8abf93b049ba6f",
+      "checkout": "primary observed during report artifact capture"
+    },
+    {
+      "path": "src/native_vfs_runtime_bindings.cpp",
+      "bytes": 14832,
+      "sha256": "2e6ef9885f98c3adca48553a36fed52b99aded39c134681bc41d1ec02f6e150b",
+      "checkout": "primary observed during report artifact capture"
+    },
+    {
+      "path": "include/bsp/native_event_owner.hpp",
+      "bytes": 1759,
+      "sha256": "b841ef0bd0284fe819cb0a3edde0edfebc520740c41a92fe2d4db09905ff0807",
+      "checkout": "primary observed during report artifact capture"
+    },
+    {
+      "path": "src/native_event_owner.cpp",
+      "bytes": 1741,
+      "sha256": "be104dd9cb118b99190ffc106368aa0d94add12db5c3e5300f949914eec98724",
+      "checkout": "primary observed during report artifact capture"
+    },
+    {
+      "path": "include/bsp/native_singleton_publication.hpp",
+      "bytes": 2293,
+      "sha256": "0ba3bb843ec6048790eb768f46e6cfeb99c8fae8c3e3f3ae59a0e14cca1e72f5",
+      "checkout": "primary observed during report artifact capture"
+    },
+    {
+      "path": "src/native_singleton_publication.cpp",
+      "bytes": 4127,
+      "sha256": "db69108414a5aa844b80b04ca82819139f1dccc422d6f3a954512a4375d07c8a",
+      "checkout": "primary observed during report artifact capture"
+    },
+    {
+      "path": "include/bsp/native_singleton_vector_registration_wrappers.hpp",
+      "bytes": 2373,
+      "sha256": "04d669c9167de50ba74557cc6651ab4dbdc753b8c6f40fdb3a743f65948eab35",
+      "checkout": "primary observed during report artifact capture"
+    },
+    {
+      "path": "src/native_singleton_vector_registration_wrappers.cpp",
+      "bytes": 4283,
+      "sha256": "cd191614f5de77becc8a0a9a73f9c3ebfc1cfd86bb87fdf10a7965d0a5839a90",
+      "checkout": "primary observed during report artifact capture"
+    },
+    {
+      "path": "include/bsp/marker_classes.hpp",
+      "bytes": 4253,
+      "sha256": "1ff4ce013dfbd9fdb5d38d7f11d83fdaae5ad8075d0f9ba9d41bd1d3fadb49d5",
+      "checkout": "primary observed during report artifact capture"
+    },
+    {
+      "path": "src/marker_classes.cpp",
+      "bytes": 9182,
+      "sha256": "80d16e8a88c5c1d67e3a8df94756ecf755b0586a88504fa7f04b14c4bb4d8176",
+      "checkout": "primary observed during report artifact capture"
+    },
+    {
+      "path": "include/bsp/native_game_resource_factory.hpp",
+      "bytes": 2885,
+      "sha256": "27af016f519be76ea85b7fcb81a5fb7372c6b99dc257e30e43ef1c56ea8505e5",
+      "checkout": "primary observed during report artifact capture"
+    },
+    {
+      "path": "src/native_game_resource_factory.cpp",
+      "bytes": 3919,
+      "sha256": "ab31c1170968de9fad743eb5a0151f79b57057d4881cf3d050946bac86a1e022",
+      "checkout": "primary observed during report artifact capture"
+    },
+    {
+      "path": "include/bsp/native_filestore_open.hpp",
+      "bytes": 4766,
+      "sha256": "b7ea10798dae64b2e4dfeef9a78693e4462b495fe7dba8c32ad4a7e87d782827",
+      "checkout": "primary observed during report artifact capture"
+    },
+    {
+      "path": "src/native_filestore_open.cpp",
+      "bytes": 12292,
+      "sha256": "8f844893f5d9bc6545dec4808786b74f098d61180e7f4e8c1c644fb38ceda71f",
+      "checkout": "primary observed during report artifact capture"
+    },
+    {
+      "path": "include/bsp/native_filestore_resident_tree.hpp",
+      "bytes": 3192,
+      "sha256": "f870d325c2cab349e573f39c49f92aabdf10a50eeb1debe1d7727becbc7f0199",
+      "checkout": "primary observed during report artifact capture"
+    },
+    {
+      "path": "src/native_filestore_resident_tree.cpp",
+      "bytes": 13983,
+      "sha256": "802cf5aa7bb00963f97de5df2da782b263cc6af28c8350ac79209e758095cd51",
+      "checkout": "primary observed during report artifact capture"
+    },
+    {
+      "path": "include/bsp/native_filestore_request.hpp",
+      "bytes": 6239,
+      "sha256": "97531623574597ced253eae5b31429cdf420cac3a076647caf928d2fdc8c817b",
+      "checkout": "primary observed during report artifact capture"
+    },
+    {
+      "path": "src/native_filestore_request.cpp",
+      "bytes": 18470,
+      "sha256": "67decb82627642141abd26b650b21094cf75b35e6f4cb3db5dbce25cc28a1107",
+      "checkout": "primary observed during report artifact capture"
+    },
+    {
+      "path": "include/bsp/native_filestore_completion.hpp",
+      "bytes": 3766,
+      "sha256": "3db38f2f98207a119d44ded26e68b98065f1dc45b43670b106d215d292f8bff3",
+      "checkout": "primary observed during report artifact capture"
+    },
+    {
+      "path": "src/native_filestore_completion.cpp",
+      "bytes": 9218,
+      "sha256": "823eb1b8686451b46f7435490ca5134cfe3e273b5adbaea202ce49f7abfe3c8b",
+      "checkout": "primary observed during report artifact capture"
+    }
+  ],
+  "doc_sha256": "d95579377272259266ad7dbbc397da1fa801e7e51ae39b376b1dd2ef333640ad",
+  "routines": [
+    {
+      "address": "00737a50",
+      "inclusive_end": "00737bc2",
+      "byte_count": 371,
+      "sha256": "9b0e757869a0173dff1c11813fa457b74edc848d71abe9d467929d6db752d994",
+      "installed_pe_matches_live_ghidra": true,
+      "native_abi": "ECX application/frame; no stack arguments; outer ABI outside bounded frontier",
+      "source_status": "existing source frame ordering",
+      "audit_coverage": "byte span and function min/max verified; semantic read-only frontier, no implementation",
+      "normal_body": {
+        "start": "00737a50",
+        "inclusive_end": "00737bc2",
+        "membership_caveat": "See decoded_membership_holes; min/max are not contiguous Ghidra body proof"
+      },
+      "native_eh_boundary": "Not reconstructed by this audit; original compiler handlers remain implementation dependencies",
+      "evidence_log": "local/loading_frontier_evidence/00737a50.txt",
+      "evidence_sha256": "d4fbc57d5c242733361047961ce468ce8ee34ef17204ce1391d778cd60ee5dd2"
+    },
+    {
+      "address": "004fde20",
+      "inclusive_end": "004fdedc",
+      "byte_count": 189,
+      "sha256": "31f7c22b4c2a90490f79f0a62a3e685ac51097326553a91af70398c789f05490",
+      "installed_pe_matches_live_ghidra": true,
+      "native_abi": "No inputs; EAX current loader; RET",
+      "source_status": "native implementation absent",
+      "audit_coverage": "byte span and function min/max verified; semantic read-only frontier, no implementation",
+      "normal_body": {
+        "start": "004fde20",
+        "inclusive_end": "004fdedc",
+        "membership_caveat": "See decoded_membership_holes; min/max are not contiguous Ghidra body proof"
+      },
+      "native_eh_boundary": "Not reconstructed by this audit; original compiler handlers remain implementation dependencies",
+      "evidence_log": "local/loading_frontier_evidence/004fde20.txt",
+      "evidence_sha256": "5786c881ada8e367b99d4f0fec31add011b3744efbc417dc990db0004db0a8df",
+      "native_eh_registration_handler": "00c68833",
+      "native_eh_handler_status": "PUSH registration address verified in listing; handler body/table/funclet ranges not reconstructed by frontier. Required next-packet inspection; not complete EH coverage."
+    },
+    {
+      "address": "004fdba0",
+      "inclusive_end": "004fdbf8",
+      "byte_count": 89,
+      "sha256": "d793f9eb7b5998be6333c6a9c52c1381004bc110f1d5cc694f5929873e61f170",
+      "installed_pe_matches_live_ghidra": true,
+      "native_abi": "ECX allocated 20h loader; EAX same loader; RET",
+      "source_status": "native implementation absent",
+      "audit_coverage": "byte span and function min/max verified; semantic read-only frontier, no implementation",
+      "normal_body": {
+        "start": "004fdba0",
+        "inclusive_end": "004fdbf8",
+        "membership_caveat": "See decoded_membership_holes; min/max are not contiguous Ghidra body proof"
+      },
+      "native_eh_boundary": "Not reconstructed by this audit; original compiler handlers remain implementation dependencies",
+      "evidence_log": "local/loading_frontier_evidence/004fdba0.txt",
+      "evidence_sha256": "7379428d18e23773ac72c5ff88cf46fe488056c61fdef5bbb2e0a60d125483a8",
+      "native_eh_registration_handler": "00c68808",
+      "native_eh_handler_status": "PUSH registration address verified in listing; handler body/table/funclet ranges not reconstructed by frontier. Required next-packet inspection; not complete EH coverage."
+    },
+    {
+      "address": "00504850",
+      "inclusive_end": "00504862",
+      "byte_count": 19,
+      "sha256": "78313f12a61614220bc80c3c3eb43959a79039ca4ab99466bbc12521b2b089b2",
+      "installed_pe_matches_live_ghidra": true,
+      "native_abi": "Two ignored stack arguments; RET8; reacquires current loader/front",
+      "source_status": "native implementation absent",
+      "audit_coverage": "byte span and function min/max verified; semantic read-only frontier, no implementation",
+      "normal_body": {
+        "start": "00504850",
+        "inclusive_end": "00504862",
+        "membership_caveat": "See decoded_membership_holes; min/max are not contiguous Ghidra body proof"
+      },
+      "native_eh_boundary": "Not reconstructed by this audit; original compiler handlers remain implementation dependencies",
+      "evidence_log": "local/loading_frontier_evidence/00504850.txt",
+      "evidence_sha256": "456f1667507fecd12f0be27a9fccf5759f55a1ede6d516a8b043ce9f572008b6"
+    },
+    {
+      "address": "00bd1920",
+      "inclusive_end": "00bd1951",
+      "byte_count": 50,
+      "sha256": "c29ec792958f4b95eaa0fc84c30bf85fe7bb071a5c57559df467433030ea1718",
+      "installed_pe_matches_live_ghidra": true,
+      "native_abi": "ECX actual event; raw AL status; RET",
+      "source_status": "native implementation absent; four other event methods exist",
+      "audit_coverage": "byte span and function min/max verified; semantic read-only frontier, no implementation",
+      "normal_body": {
+        "start": "00bd1920",
+        "inclusive_end": "00bd1951",
+        "membership_caveat": "See decoded_membership_holes; min/max are not contiguous Ghidra body proof"
+      },
+      "native_eh_boundary": "Not reconstructed by this audit; original compiler handlers remain implementation dependencies",
+      "evidence_log": "local/loading_frontier_evidence/00bd1920.txt",
+      "evidence_sha256": "1ec61c09208eae33a754cffa0e0e1b836b708a6ad9596e4b8227705b60bb47fa"
+    },
+    {
+      "address": "00509190",
+      "inclusive_end": "005092dc",
+      "byte_count": 333,
+      "sha256": "9477747f64bea79c866dacfe12add284bdf9cc5057b4f38374b3390691258614",
+      "installed_pe_matches_live_ghidra": true,
+      "native_abi": "ECX actual loader; no stack arguments; RET or tail retirement",
+      "source_status": "native implementation absent",
+      "audit_coverage": "byte span and function min/max verified; semantic read-only frontier, no implementation",
+      "normal_body": {
+        "start": "00509190",
+        "inclusive_end": "005092dc",
+        "membership_caveat": "See decoded_membership_holes; min/max are not contiguous Ghidra body proof"
+      },
+      "native_eh_boundary": "Not reconstructed by this audit; original compiler handlers remain implementation dependencies",
+      "evidence_log": "local/loading_frontier_evidence/00509190.txt",
+      "evidence_sha256": "d8cc69ad03db3f9624941a988f28d0e03d8304bf9e571f165d61d1c939b468d8"
+    },
+    {
+      "address": "005092e0",
+      "inclusive_end": "0050934c",
+      "byte_count": 109,
+      "sha256": "c0ead2dcfbefc720daf91a0a91f7b567c7362659520d8a6d705d0553ca5831da",
+      "installed_pe_matches_live_ghidra": true,
+      "native_abi": "ECX actual loader; no stack arguments; final indirect tail dispatch",
+      "source_status": "native implementation absent",
+      "audit_coverage": "byte span and function min/max verified; semantic read-only frontier, no implementation",
+      "normal_body": {
+        "start": "005092e0",
+        "inclusive_end": "0050934c",
+        "membership_caveat": "See decoded_membership_holes; min/max are not contiguous Ghidra body proof"
+      },
+      "native_eh_boundary": "Not reconstructed by this audit; original compiler handlers remain implementation dependencies",
+      "evidence_log": "local/loading_frontier_evidence/005092e0.txt",
+      "evidence_sha256": "bdb4faab7313c65b9a0a53a982f92cd6496fca65f798c5520f5d0e3d101b1de6"
+    },
+    {
+      "address": "00509fd0",
+      "inclusive_end": "0050a052",
+      "byte_count": 131,
+      "sha256": "1cd7601ab5b28ec7e8ebd3d836c86e897c154b0205b3b163f3a41ab5a095fa15",
+      "installed_pe_matches_live_ghidra": true,
+      "native_abi": "ECX actual loader; no stack arguments; RET",
+      "source_status": "native implementation absent",
+      "audit_coverage": "byte span and function min/max verified; semantic read-only frontier, no implementation",
+      "normal_body": {
+        "start": "00509fd0",
+        "inclusive_end": "0050a052",
+        "membership_caveat": "See decoded_membership_holes; min/max are not contiguous Ghidra body proof"
+      },
+      "native_eh_boundary": "Not reconstructed by this audit; original compiler handlers remain implementation dependencies",
+      "evidence_log": "local/loading_frontier_evidence/00509fd0.txt",
+      "evidence_sha256": "f19c86f59903641ca363ba78c64a8cb583f092b199de7af658c257158bcfeb4e"
+    },
+    {
+      "address": "0050ace0",
+      "inclusive_end": "0050acfd",
+      "byte_count": 30,
+      "sha256": "88256eb09a9968ab96d8467a4b26810d9f7e016ac1b8c0ff51ed89155c2e7867",
+      "installed_pe_matches_live_ghidra": true,
+      "native_abi": "ECX actual loader; deletion flags stack; EAX original loader; RET4",
+      "source_status": "native implementation absent",
+      "audit_coverage": "byte span and function min/max verified; semantic read-only frontier, no implementation",
+      "normal_body": {
+        "start": "0050ace0",
+        "inclusive_end": "0050acfd",
+        "membership_caveat": "See decoded_membership_holes; min/max are not contiguous Ghidra body proof"
+      },
+      "native_eh_boundary": "Not reconstructed by this audit; original compiler handlers remain implementation dependencies",
+      "evidence_log": "local/loading_frontier_evidence/0050ace0.txt",
+      "evidence_sha256": "58cff8558c11d912029690ec6d3e800c25774b75265cf778baa649a3cfab86c4"
+    },
+    {
+      "address": "00501620",
+      "inclusive_end": "0050165d",
+      "byte_count": 62,
+      "sha256": "d8b19c496902525aa9c88d6dd6c4a2081a67194bb87608f75aceac9ccffdd1a0",
+      "installed_pe_matches_live_ghidra": true,
+      "native_abi": "ECX loader; job stack argument; RET4",
+      "source_status": "native implementation absent",
+      "audit_coverage": "byte span and function min/max verified; semantic read-only frontier, no implementation",
+      "normal_body": {
+        "start": "00501620",
+        "inclusive_end": "0050165d",
+        "membership_caveat": "See decoded_membership_holes; min/max are not contiguous Ghidra body proof"
+      },
+      "native_eh_boundary": "Not reconstructed by this audit; original compiler handlers remain implementation dependencies",
+      "evidence_log": "local/loading_frontier_evidence/00501620.txt",
+      "evidence_sha256": "95a975788b8b1131820bf82523f5969c39e3ed4c21e02f8568a6f6153fe93af0"
+    },
+    {
+      "address": "00501510",
+      "inclusive_end": "00501615",
+      "byte_count": 262,
+      "sha256": "e655c4a3dd52593bb0f9572a2a4fd9ea33110bf32b5b5c81717f7343821eac75",
+      "installed_pe_matches_live_ghidra": true,
+      "native_abi": "Thread parameter stack points at loader+4; EAX=1 on exit; RET4",
+      "source_status": "native implementation absent",
+      "audit_coverage": "byte span and function min/max verified; semantic read-only frontier, no implementation",
+      "normal_body": {
+        "start": "00501510",
+        "inclusive_end": "00501615",
+        "membership_caveat": "See decoded_membership_holes; min/max are not contiguous Ghidra body proof"
+      },
+      "native_eh_boundary": "Not reconstructed by this audit; original compiler handlers remain implementation dependencies",
+      "evidence_log": "local/loading_frontier_evidence/00501510.txt",
+      "evidence_sha256": "75f80acfe39dec81a38205aa0e2db188217da5ac74f7efe55b95e1526190d8f6"
+    },
+    {
+      "address": "00504790",
+      "inclusive_end": "0050484b",
+      "byte_count": 188,
+      "sha256": "1c5e11921a0ecb02e79e7a65b7d8ce210ea303e0aa468193a2b0e7f9298d7b4c",
+      "installed_pe_matches_live_ghidra": true,
+      "native_abi": "ECX actual job; no stack arguments; RET",
+      "source_status": "native implementation absent",
+      "audit_coverage": "byte span and function min/max verified; semantic read-only frontier, no implementation",
+      "normal_body": {
+        "start": "00504790",
+        "inclusive_end": "0050484b",
+        "membership_caveat": "See decoded_membership_holes; min/max are not contiguous Ghidra body proof"
+      },
+      "native_eh_boundary": "Not reconstructed by this audit; original compiler handlers remain implementation dependencies",
+      "evidence_log": "local/loading_frontier_evidence/00504790.txt",
+      "evidence_sha256": "d03a7e7ee0a40c86e7ec4e467e88fe34c699f7e699808b8ebd7531845a4ccffe"
+    },
+    {
+      "address": "00506bf0",
+      "inclusive_end": "00506c72",
+      "byte_count": 131,
+      "sha256": "7d71157d777118c1f98cb770ca44f0b6a9a1e15c044ce9e9da81c881dd9a3704",
+      "installed_pe_matches_live_ghidra": true,
+      "native_abi": "ECX actual loader; no stack arguments; RET",
+      "source_status": "native implementation absent",
+      "audit_coverage": "byte span and function min/max verified; semantic read-only frontier, no implementation",
+      "normal_body": {
+        "start": "00506bf0",
+        "inclusive_end": "00506c72",
+        "membership_caveat": "See decoded_membership_holes; min/max are not contiguous Ghidra body proof"
+      },
+      "native_eh_boundary": "Not reconstructed by this audit; original compiler handlers remain implementation dependencies",
+      "evidence_log": "local/loading_frontier_evidence/00506bf0.txt",
+      "evidence_sha256": "8f2f35bc53fe7ef5ec0031df0d352986c27319f0e83b4bb4bb5e152011512557"
+    },
+    {
+      "address": "00483850",
+      "inclusive_end": "0048387a",
+      "byte_count": 43,
+      "sha256": "fb310d52f9c0a2a9f3c5982ed0bd0daf56fa8917c5ad5623a29d5d6476247726",
+      "installed_pe_matches_live_ghidra": true,
+      "native_abi": "ECX pointer-to-resource-result cell; EAX cell; RET",
+      "source_status": "native implementation absent",
+      "audit_coverage": "byte span and function min/max verified; semantic read-only frontier, no implementation",
+      "normal_body": {
+        "start": "00483850",
+        "inclusive_end": "0048387a",
+        "membership_caveat": "See decoded_membership_holes; min/max are not contiguous Ghidra body proof"
+      },
+      "native_eh_boundary": "Not reconstructed by this audit; original compiler handlers remain implementation dependencies",
+      "evidence_log": "local/loading_frontier_evidence/00483850.txt",
+      "evidence_sha256": "2df67fa9b2a28c6bb2abd7f7883c319cf8b3db2474ee7167506a554fbabcec63"
+    },
+    {
+      "address": "00be7130",
+      "inclusive_end": "00be7209",
+      "byte_count": 218,
+      "sha256": "7df300d6343a2d18304364809d89103bfaea1775cef7bfe4b32f231f56c6e686",
+      "installed_pe_matches_live_ghidra": true,
+      "native_abi": "ECX FileStore provider; name header stack; RET4 (not decompiler fastcall)",
+      "source_status": "native implementation absent",
+      "audit_coverage": "byte span and function min/max verified; semantic read-only frontier, no implementation",
+      "normal_body": {
+        "start": "00be7130",
+        "inclusive_end": "00be7209",
+        "membership_caveat": "See decoded_membership_holes; min/max are not contiguous Ghidra body proof"
+      },
+      "native_eh_boundary": "Not reconstructed by this audit; original compiler handlers remain implementation dependencies",
+      "evidence_log": "local/loading_frontier_evidence/00be7130.txt",
+      "evidence_sha256": "7a931139ea1bc1b2f4b92211a2b9888f3392b3eff89c902ffcaa54f674d1de85"
+    },
+    {
+      "address": "004fb310",
+      "inclusive_end": "004fb36e",
+      "byte_count": 95,
+      "sha256": "73bf7a06be0e5e8edf583f8eb2a24aff9d594c31e62dabcaf2af8f4138aeb203",
+      "installed_pe_matches_live_ghidra": true,
+      "native_abi": "ECX pointer-vector; requested capacity stack; RET4",
+      "source_status": "native implementation absent",
+      "audit_coverage": "byte span and function min/max verified; semantic read-only frontier, no implementation",
+      "normal_body": {
+        "start": "004fb310",
+        "inclusive_end": "004fb36e",
+        "membership_caveat": "See decoded_membership_holes; min/max are not contiguous Ghidra body proof"
+      },
+      "native_eh_boundary": "Not reconstructed by this audit; original compiler handlers remain implementation dependencies",
+      "evidence_log": "local/loading_frontier_evidence/004fb310.txt",
+      "evidence_sha256": "b3bcae0eabe8c8bb6a91b25bf6b604427922859e06b93b547d853aa6d2df4cc2"
+    },
+    {
+      "address": "004fb4b0",
+      "inclusive_end": "004fb4ff",
+      "byte_count": 80,
+      "sha256": "ca7c1b8344b5b00f8ec3157c40f171415fd785dafbdbf2d4b020885e1385d2cc",
+      "installed_pe_matches_live_ghidra": true,
+      "native_abi": "ECX pointer-vector; requested count stack; RET4",
+      "source_status": "native implementation absent",
+      "audit_coverage": "byte span and function min/max verified; semantic read-only frontier, no implementation",
+      "normal_body": {
+        "start": "004fb4b0",
+        "inclusive_end": "004fb4ff",
+        "membership_caveat": "See decoded_membership_holes; min/max are not contiguous Ghidra body proof"
+      },
+      "native_eh_boundary": "Not reconstructed by this audit; original compiler handlers remain implementation dependencies",
+      "evidence_log": "local/loading_frontier_evidence/004fb4b0.txt",
+      "evidence_sha256": "344325a4031e5b81fb7ce6ffac241f0d77e918e3830d1350cdea942e09b35af8"
+    },
+    {
+      "address": "00501670",
+      "inclusive_end": "00501715",
+      "byte_count": 166,
+      "sha256": "b9528caf2a1653d56afc94a55d3af5faa48f60f876b1f411aa0c344db4d5b3bc",
+      "installed_pe_matches_live_ghidra": true,
+      "native_abi": "ECX work-vector; signed erase index stack; RET4",
+      "source_status": "native implementation absent",
+      "audit_coverage": "byte span and function min/max verified; semantic read-only frontier, no implementation",
+      "normal_body": {
+        "start": "00501670",
+        "inclusive_end": "00501715",
+        "membership_caveat": "See decoded_membership_holes; min/max are not contiguous Ghidra body proof"
+      },
+      "native_eh_boundary": "Not reconstructed by this audit; original compiler handlers remain implementation dependencies",
+      "evidence_log": "local/loading_frontier_evidence/00501670.txt",
+      "evidence_sha256": "8f29524baa4c82dd7f62385c04c93e27a8ebe44b69d0bbe0795a410b03a3d4e4"
+    },
+    {
+      "address": "005018a0",
+      "inclusive_end": "005019c4",
+      "byte_count": 293,
+      "sha256": "14aff6ce51df37f3a955256f200a53abd09ce961b2ed51651092f83c802c2ea3",
+      "installed_pe_matches_live_ghidra": true,
+      "native_abi": "ECX work-vector; requested capacity stack; RET4",
+      "source_status": "native implementation absent",
+      "audit_coverage": "byte span and function min/max verified; semantic read-only frontier, no implementation",
+      "normal_body": {
+        "start": "005018a0",
+        "inclusive_end": "005019c4",
+        "membership_caveat": "See decoded_membership_holes; min/max are not contiguous Ghidra body proof"
+      },
+      "native_eh_boundary": "Not reconstructed by this audit; original compiler handlers remain implementation dependencies",
+      "evidence_log": "local/loading_frontier_evidence/005018a0.txt",
+      "evidence_sha256": "f80ef2a08970817d669a2a1aad85c69ddf5e7dcca778ea03c39ea48f1df088fd",
+      "native_eh_registration_handler": "00c68cf7",
+      "native_eh_handler_status": "PUSH registration address verified in listing; handler body/table/funclet ranges not reconstructed by frontier. Required next-packet inspection; not complete EH coverage."
+    },
+    {
+      "address": "005019d0",
+      "inclusive_end": "00501a49",
+      "byte_count": 122,
+      "sha256": "e19e44e49996eea35d8f391061ae60c2d93a50e3f5f2ef787a21e05a266f3bcd",
+      "installed_pe_matches_live_ghidra": true,
+      "native_abi": "ECX work-vector; requested count stack; RET4",
+      "source_status": "native implementation absent",
+      "audit_coverage": "byte span and function min/max verified; semantic read-only frontier, no implementation",
+      "normal_body": {
+        "start": "005019d0",
+        "inclusive_end": "00501a49",
+        "membership_caveat": "See decoded_membership_holes; min/max are not contiguous Ghidra body proof"
+      },
+      "native_eh_boundary": "Not reconstructed by this audit; original compiler handlers remain implementation dependencies",
+      "evidence_log": "local/loading_frontier_evidence/005019d0.txt",
+      "evidence_sha256": "d79daafa4b6318a3dacbe547e00e7f874e945c91a605df7ebd8b30e76f9c529f"
+    },
+    {
+      "address": "005051a0",
+      "inclusive_end": "00505210",
+      "byte_count": 113,
+      "sha256": "a501f968d120503fac610950af697b81d06966f89175da99bb07e59dfdf3d6b3",
+      "installed_pe_matches_live_ghidra": true,
+      "native_abi": "ECX actual job storage; no stack arguments; RET",
+      "source_status": "native implementation absent",
+      "audit_coverage": "byte span and function min/max verified; semantic read-only frontier, no implementation",
+      "normal_body": {
+        "start": "005051a0",
+        "inclusive_end": "00505210",
+        "membership_caveat": "See decoded_membership_holes; min/max are not contiguous Ghidra body proof"
+      },
+      "native_eh_boundary": "Not reconstructed by this audit; original compiler handlers remain implementation dependencies",
+      "evidence_log": "local/loading_frontier_evidence/005051a0.txt",
+      "evidence_sha256": "66c23c95e74c2f4bf1a7d4b18867aef2c2e114e9e96d78680c83e9c2158c4656"
+    },
+    {
+      "address": "00505530",
+      "inclusive_end": "005055b5",
+      "byte_count": 134,
+      "sha256": "253764de968672f1e8b731c0b369fdc06f1d2943608eda32e0ad464660a10984",
+      "installed_pe_matches_live_ghidra": true,
+      "native_abi": "ECX allocated 24h job; name header stack; EAX job; RET4",
+      "source_status": "native implementation absent",
+      "audit_coverage": "byte span and function min/max verified; semantic read-only frontier, no implementation",
+      "normal_body": {
+        "start": "00505530",
+        "inclusive_end": "005055b5",
+        "membership_caveat": "See decoded_membership_holes; min/max are not contiguous Ghidra body proof"
+      },
+      "native_eh_boundary": "Not reconstructed by this audit; original compiler handlers remain implementation dependencies",
+      "evidence_log": "local/loading_frontier_evidence/00505530.txt",
+      "evidence_sha256": "7852e2b106c92c8567fcaedeb36129e881ed83da684dbcd9737cd855e3dcbc1e",
+      "native_eh_registration_handler": "00c691eb",
+      "native_eh_handler_status": "PUSH registration address verified in listing; handler body/table/funclet ranges not reconstructed by frontier. Required next-packet inspection; not complete EH coverage."
+    },
+    {
+      "address": "005055c0",
+      "inclusive_end": "00505651",
+      "byte_count": 146,
+      "sha256": "90e858c1f4fbc20733066b3b31d137af9e03d1fda90e0af7d4cf3cf22b71d5d4",
+      "installed_pe_matches_live_ghidra": true,
+      "native_abi": "ECX loader; name header stack; RET4",
+      "source_status": "native implementation absent",
+      "audit_coverage": "byte span and function min/max verified; semantic read-only frontier, no implementation",
+      "normal_body": {
+        "start": "005055c0",
+        "inclusive_end": "00505651",
+        "membership_caveat": "See decoded_membership_holes; min/max are not contiguous Ghidra body proof"
+      },
+      "native_eh_boundary": "Not reconstructed by this audit; original compiler handlers remain implementation dependencies",
+      "evidence_log": "local/loading_frontier_evidence/005055c0.txt",
+      "evidence_sha256": "8c5d83e755c36ac0c692a874f964c5e74154ec1bb9a12b1c180835cd2047005e"
+    },
+    {
+      "address": "00504d20",
+      "inclusive_end": "00504df6",
+      "byte_count": 215,
+      "sha256": "15beaf577a37512863c088d9c5ff17553ec29ee69de2353c3add79a01dabc3b7",
+      "installed_pe_matches_live_ghidra": true,
+      "native_abi": "ECX loader; producer stack arguments require next-packet listing review",
+      "source_status": "native implementation absent; direct pair/append helpers unread",
+      "audit_coverage": "byte span and function min/max verified; semantic read-only frontier, no implementation",
+      "normal_body": {
+        "start": "00504d20",
+        "inclusive_end": "00504df6",
+        "membership_caveat": "See decoded_membership_holes; min/max are not contiguous Ghidra body proof"
+      },
+      "native_eh_boundary": "Not reconstructed by this audit; original compiler handlers remain implementation dependencies",
+      "evidence_log": "local/loading_frontier_evidence/00504d20.txt",
+      "evidence_sha256": "e6b8a960caf94262dfa9fbfc285047c0715a2c48e01d9657e42a97d223a83dc9"
+    },
+    {
+      "address": "007188a0",
+      "inclusive_end": "007188bb",
+      "byte_count": 28,
+      "sha256": "7d30e0392e2aec7290e2bca9dd78975e9a6f81b3820fa8f225d2baf3c11499a1",
+      "installed_pe_matches_live_ghidra": true,
+      "native_abi": "ECX mutable name header; no incoming EAX parameter; RET",
+      "source_status": "source wrapper exists; host core resource operation unreconstructed",
+      "audit_coverage": "byte span and function min/max verified; semantic read-only frontier, no implementation",
+      "normal_body": {
+        "start": "007188a0",
+        "inclusive_end": "007188bb",
+        "membership_caveat": "See decoded_membership_holes; min/max are not contiguous Ghidra body proof"
+      },
+      "native_eh_boundary": "Not reconstructed by this audit; original compiler handlers remain implementation dependencies",
+      "evidence_log": "local/loading_frontier_evidence/007188a0.txt",
+      "evidence_sha256": "fdb844bd32a42dd81dbf1bbaf404b1277b6920e41a16bc53680ae4f1b780bc9d"
+    },
+    {
+      "address": "00be0a30",
+      "inclusive_end": "00be0ada",
+      "byte_count": 171,
+      "sha256": "81ab91212b2b6a54b8bc5752481109b794e1b6927c60d1cb5d25165628a81155",
+      "installed_pe_matches_live_ghidra": true,
+      "native_abi": "ECX allocated 1Ch FileBlock; name header and flag stack arguments; EAX owner; RET8",
+      "source_status": "native constructor absent; embedded string fragment only",
+      "audit_coverage": "byte span and function min/max verified; semantic read-only frontier, no implementation",
+      "normal_body": {
+        "start": "00be0a30",
+        "inclusive_end": "00be0ada",
+        "membership_caveat": "See decoded_membership_holes; min/max are not contiguous Ghidra body proof"
+      },
+      "native_eh_boundary": "Not reconstructed by this audit; original compiler handlers remain implementation dependencies",
+      "evidence_log": "local/loading_frontier_evidence/00be0a30.txt",
+      "evidence_sha256": "89d05e26ec49cc6b724299b62319edf685b11cde496395070d0e18a9348bc559",
+      "native_eh_registration_handler": "00cc6753",
+      "native_eh_handler_status": "PUSH registration address verified in listing; handler body/table/funclet ranges not reconstructed by frontier. Required next-packet inspection; not complete EH coverage."
+    },
+    {
+      "address": "00b80720",
+      "inclusive_end": "00b80a4a",
+      "byte_count": 811,
+      "sha256": "72ea3477979b9f5cbb675a52192ffb3c1fcf063130b57e0f1180780e3fb8a1ba",
+      "installed_pe_matches_live_ghidra": true,
+      "native_abi": "Actual resource cache/load ABI not reconstructed in this audit",
+      "source_status": "name only; body not semantically audited",
+      "audit_coverage": "byte span and function min/max verified; semantic read-only frontier, no implementation",
+      "normal_body": {
+        "start": "00b80720",
+        "inclusive_end": "00b80a4a",
+        "membership_caveat": "See decoded_membership_holes; min/max are not contiguous Ghidra body proof"
+      },
+      "native_eh_boundary": "Not reconstructed by this audit; original compiler handlers remain implementation dependencies",
+      "evidence_log": "local/loading_frontier_evidence/00b80720.txt",
+      "evidence_sha256": "b2c4cbfdee3a824ed36b1aa666a1d20100bf96ac24bfbee7026b52d5ab572217"
+    }
+  ],
+  "direct_call_rows": [
+    {
+      "address": "00737b7f",
+      "native": "00bdb0b0",
+      "function": "00737a50",
+      "function_inclusive_end": "00737bc2",
+      "instruction": "CALL 0x00bdb0b0"
+    },
+    {
+      "address": "00737b84",
+      "native": "004fde20",
+      "function": "00737a50",
+      "function_inclusive_end": "00737bc2",
+      "instruction": "CALL 0x004fde20"
+    },
+    {
+      "address": "00737b8b",
+      "native": "00509190",
+      "function": "00737a50",
+      "function_inclusive_end": "00737bc2",
+      "instruction": "CALL 0x00509190"
+    },
+    {
+      "address": "004fde46",
+      "native": "00415350",
+      "function": "004fde20",
+      "function_inclusive_end": "004fdedc",
+      "instruction": "CALL 0x00415350"
+    },
+    {
+      "address": "004fde7c",
+      "native": "00bf681b",
+      "function": "004fde20",
+      "function_inclusive_end": "004fdedc",
+      "instruction": "CALL 0x00bf681b"
+    },
+    {
+      "address": "004fde93",
+      "native": "004fdba0",
+      "function": "004fde20",
+      "function_inclusive_end": "004fdedc",
+      "instruction": "CALL 0x004fdba0"
+    },
+    {
+      "address": "004fdea6",
+      "native": "00415350",
+      "function": "004fde20",
+      "function_inclusive_end": "004fdedc",
+      "instruction": "CALL 0x00415350"
+    },
+    {
+      "address": "004fdeb4",
+      "native": "00bd0c30",
+      "function": "004fde20",
+      "function_inclusive_end": "004fdedc",
+      "instruction": "CALL 0x00bd0c30"
+    },
+    {
+      "address": "004fdbd2",
+      "native": "00bd1970",
+      "function": "004fdba0",
+      "function_inclusive_end": "004fdbf8",
+      "instruction": "CALL 0x00bd1970"
+    },
+    {
+      "address": "00504850",
+      "native": "004fde20",
+      "function": "00504850",
+      "function_inclusive_end": "00504862",
+      "instruction": "CALL 0x004fde20"
+    },
+    {
+      "address": "005091b4",
+      "native": "00506bf0",
+      "function": "00509190",
+      "function_inclusive_end": "005092dc",
+      "instruction": "CALL 0x00506bf0"
+    },
+    {
+      "address": "00509200",
+      "native": "00483850",
+      "function": "00509190",
+      "function_inclusive_end": "005092dc",
+      "instruction": "CALL 0x00483850"
+    },
+    {
+      "address": "00509212",
+      "native": "00506bf0",
+      "function": "00509190",
+      "function_inclusive_end": "005092dc",
+      "instruction": "CALL 0x00506bf0"
+    },
+    {
+      "address": "0050923a",
+      "native": "00501670",
+      "function": "00509190",
+      "function_inclusive_end": "005092dc",
+      "instruction": "CALL 0x00501670"
+    },
+    {
+      "address": "00509250",
+      "native": "00501620",
+      "function": "00509190",
+      "function_inclusive_end": "005092dc",
+      "instruction": "CALL 0x00501620"
+    },
+    {
+      "address": "0050925b",
+      "native": "00504790",
+      "function": "00509190",
+      "function_inclusive_end": "005092dc",
+      "instruction": "CALL 0x00504790"
+    },
+    {
+      "address": "00509269",
+      "native": "00501620",
+      "function": "00509190",
+      "function_inclusive_end": "005092dc",
+      "instruction": "CALL 0x00501620"
+    },
+    {
+      "address": "0050927e",
+      "native": "004fc150",
+      "function": "00509190",
+      "function_inclusive_end": "005092dc",
+      "instruction": "CALL 0x004fc150"
+    },
+    {
+      "address": "00509290",
+      "native": "00be80b0",
+      "function": "00509190",
+      "function_inclusive_end": "005092dc",
+      "instruction": "CALL 0x00be80b0"
+    },
+    {
+      "address": "00509297",
+      "native": "00be7cd0",
+      "function": "00509190",
+      "function_inclusive_end": "005092dc",
+      "instruction": "CALL 0x00be7cd0"
+    },
+    {
+      "address": "005092b2",
+      "native": "004fc150",
+      "function": "00509190",
+      "function_inclusive_end": "005092dc",
+      "instruction": "CALL 0x004fc150"
+    },
+    {
+      "address": "005092c4",
+      "native": "00be80b0",
+      "function": "00509190",
+      "function_inclusive_end": "005092dc",
+      "instruction": "CALL 0x00be80b0"
+    },
+    {
+      "address": "005092cb",
+      "native": "00be7cd0",
+      "function": "00509190",
+      "function_inclusive_end": "005092dc",
+      "instruction": "CALL 0x00be7cd0"
+    },
+    {
+      "address": "005092e8",
+      "native": "004254b0",
+      "function": "005092e0",
+      "function_inclusive_end": "0050934c",
+      "instruction": "CALL 0x004254b0"
+    },
+    {
+      "address": "0050932a",
+      "native": "00bdb0b0",
+      "function": "005092e0",
+      "function_inclusive_end": "0050934c",
+      "instruction": "CALL 0x00bdb0b0"
+    },
+    {
+      "address": "00509331",
+      "native": "00509190",
+      "function": "005092e0",
+      "function_inclusive_end": "0050934c",
+      "instruction": "CALL 0x00509190"
+    },
+    {
+      "address": "00509ffd",
+      "native": "005092e0",
+      "function": "00509fd0",
+      "function_inclusive_end": "0050a052",
+      "instruction": "CALL 0x005092e0"
+    },
+    {
+      "address": "0050a00f",
+      "native": "004fb4b0",
+      "function": "00509fd0",
+      "function_inclusive_end": "0050a052",
+      "instruction": "CALL 0x004fb4b0"
+    },
+    {
+      "address": "0050a017",
+      "native": "00bf6989",
+      "function": "00509fd0",
+      "function_inclusive_end": "0050a052",
+      "instruction": "CALL 0x00bf6989"
+    },
+    {
+      "address": "0050ace3",
+      "native": "00509fd0",
+      "function": "0050ace0",
+      "function_inclusive_end": "0050acfd",
+      "instruction": "CALL 0x00509fd0"
+    },
+    {
+      "address": "0050acf0",
+      "native": "00bf65ac",
+      "function": "0050ace0",
+      "function_inclusive_end": "0050acfd",
+      "instruction": "CALL 0x00bf65ac"
+    },
+    {
+      "address": "00501582",
+      "native": "0041dd40",
+      "function": "00501510",
+      "function_inclusive_end": "00501615",
+      "instruction": "CALL 0x0041dd40"
+    },
+    {
+      "address": "00501599",
+      "native": "00bf7680",
+      "function": "00501510",
+      "function_inclusive_end": "00501615",
+      "instruction": "CALL 0x00bf7680"
+    },
+    {
+      "address": "005015b2",
+      "native": "007188a0",
+      "function": "00501510",
+      "function_inclusive_end": "00501615",
+      "instruction": "CALL 0x007188a0"
+    },
+    {
+      "address": "005015d5",
+      "native": "00419cc0",
+      "function": "00501510",
+      "function_inclusive_end": "00501615",
+      "instruction": "CALL 0x00419cc0"
+    },
+    {
+      "address": "005015dc",
+      "native": "00bd1510",
+      "function": "00501510",
+      "function_inclusive_end": "00501615",
+      "instruction": "CALL 0x00bd1510"
+    },
+    {
+      "address": "005047c7",
+      "native": "00bf681b",
+      "function": "00504790",
+      "function_inclusive_end": "0050484b",
+      "instruction": "CALL 0x00bf681b"
+    },
+    {
+      "address": "005047ee",
+      "native": "00469840",
+      "function": "00504790",
+      "function_inclusive_end": "0050484b",
+      "instruction": "CALL 0x00469840"
+    },
+    {
+      "address": "00504805",
+      "native": "00be0a30",
+      "function": "00504790",
+      "function_inclusive_end": "0050484b",
+      "instruction": "CALL 0x00be0a30"
+    },
+    {
+      "address": "0050482e",
+      "native": "00419cc0",
+      "function": "00504790",
+      "function_inclusive_end": "0050484b",
+      "instruction": "CALL 0x00419cc0"
+    },
+    {
+      "address": "00504835",
+      "native": "00bd1510",
+      "function": "00504790",
+      "function_inclusive_end": "0050484b",
+      "instruction": "CALL 0x00bd1510"
+    },
+    {
+      "address": "00506c11",
+      "native": "004fc150",
+      "function": "00506bf0",
+      "function_inclusive_end": "00506c72",
+      "instruction": "CALL 0x004fc150"
+    },
+    {
+      "address": "00506c1c",
+      "native": "00be80b0",
+      "function": "00506bf0",
+      "function_inclusive_end": "00506c72",
+      "instruction": "CALL 0x00be80b0"
+    },
+    {
+      "address": "00506c23",
+      "native": "00be7130",
+      "function": "00506bf0",
+      "function_inclusive_end": "00506c72",
+      "instruction": "CALL 0x00be7130"
+    },
+    {
+      "address": "00506c33",
+      "native": "005051a0",
+      "function": "00506bf0",
+      "function_inclusive_end": "00506c72",
+      "instruction": "CALL 0x005051a0"
+    },
+    {
+      "address": "00506c39",
+      "native": "00bf65ac",
+      "function": "00506bf0",
+      "function_inclusive_end": "00506c72",
+      "instruction": "CALL 0x00bf65ac"
+    },
+    {
+      "address": "00be7155",
+      "native": "00bee780",
+      "function": "00be7130",
+      "function_inclusive_end": "00be7209",
+      "instruction": "CALL 0x00bee780"
+    },
+    {
+      "address": "00be7171",
+      "native": "00be5e90",
+      "function": "00be7130",
+      "function_inclusive_end": "00be7209",
+      "instruction": "CALL 0x00be5e90"
+    },
+    {
+      "address": "00be7185",
+      "native": "00bf6713",
+      "function": "00be7130",
+      "function_inclusive_end": "00be7209",
+      "instruction": "CALL 0x00bf6713"
+    },
+    {
+      "address": "00be719b",
+      "native": "00be6760",
+      "function": "00be7130",
+      "function_inclusive_end": "00be7209",
+      "instruction": "CALL 0x00be6760"
+    },
+    {
+      "address": "00be71c8",
+      "native": "004254b0",
+      "function": "00be7130",
+      "function_inclusive_end": "00be7209",
+      "instruction": "CALL 0x004254b0"
+    },
+    {
+      "address": "00be71ed",
+      "native": "00419cc0",
+      "function": "00be7130",
+      "function_inclusive_end": "00be7209",
+      "instruction": "CALL 0x00419cc0"
+    },
+    {
+      "address": "00be71f4",
+      "native": "00bd1510",
+      "function": "00be7130",
+      "function_inclusive_end": "00be7209",
+      "instruction": "CALL 0x00bd1510"
+    },
+    {
+      "address": "004fb330",
+      "native": "00bf55be",
+      "function": "004fb310",
+      "function_inclusive_end": "004fb36e",
+      "instruction": "CALL 0x00bf55be"
+    },
+    {
+      "address": "004fb35c",
+      "native": "00bf6989",
+      "function": "004fb310",
+      "function_inclusive_end": "004fb36e",
+      "instruction": "CALL 0x00bf6989"
+    },
+    {
+      "address": "004fb4be",
+      "native": "004fb310",
+      "function": "004fb4b0",
+      "function_inclusive_end": "004fb4ff",
+      "instruction": "CALL 0x004fb310"
+    },
+    {
+      "address": "005016a2",
+      "native": "0041dd40",
+      "function": "00501670",
+      "function_inclusive_end": "00501715",
+      "instruction": "CALL 0x0041dd40"
+    },
+    {
+      "address": "005016b7",
+      "native": "00bf7680",
+      "function": "00501670",
+      "function_inclusive_end": "00501715",
+      "instruction": "CALL 0x00bf7680"
+    },
+    {
+      "address": "00501701",
+      "native": "00419cc0",
+      "function": "00501670",
+      "function_inclusive_end": "00501715",
+      "instruction": "CALL 0x00419cc0"
+    },
+    {
+      "address": "00501708",
+      "native": "00bd1510",
+      "function": "00501670",
+      "function_inclusive_end": "00501715",
+      "instruction": "CALL 0x00bd1510"
+    },
+    {
+      "address": "005018de",
+      "native": "00bf55be",
+      "function": "005018a0",
+      "function_inclusive_end": "005019c4",
+      "instruction": "CALL 0x00bf55be"
+    },
+    {
+      "address": "00501921",
+      "native": "0041dd40",
+      "function": "005018a0",
+      "function_inclusive_end": "005019c4",
+      "instruction": "CALL 0x0041dd40"
+    },
+    {
+      "address": "00501936",
+      "native": "00bf7680",
+      "function": "005018a0",
+      "function_inclusive_end": "005019c4",
+      "instruction": "CALL 0x00bf7680"
+    },
+    {
+      "address": "00501985",
+      "native": "00419cc0",
+      "function": "005018a0",
+      "function_inclusive_end": "005019c4",
+      "instruction": "CALL 0x00419cc0"
+    },
+    {
+      "address": "0050198c",
+      "native": "00bd1510",
+      "function": "005018a0",
+      "function_inclusive_end": "005019c4",
+      "instruction": "CALL 0x00bd1510"
+    },
+    {
+      "address": "0050199f",
+      "native": "00bf6989",
+      "function": "005018a0",
+      "function_inclusive_end": "005019c4",
+      "instruction": "CALL 0x00bf6989"
+    },
+    {
+      "address": "005019df",
+      "native": "005018a0",
+      "function": "005019d0",
+      "function_inclusive_end": "00501a49",
+      "instruction": "CALL 0x005018a0"
+    },
+    {
+      "address": "00501a30",
+      "native": "00419cc0",
+      "function": "005019d0",
+      "function_inclusive_end": "00501a49",
+      "instruction": "CALL 0x00419cc0"
+    },
+    {
+      "address": "00501a37",
+      "native": "00bd1510",
+      "function": "005019d0",
+      "function_inclusive_end": "00501a49",
+      "instruction": "CALL 0x00bd1510"
+    },
+    {
+      "address": "005051d6",
+      "native": "00419cc0",
+      "function": "005051a0",
+      "function_inclusive_end": "00505210",
+      "instruction": "CALL 0x00419cc0"
+    },
+    {
+      "address": "005051dd",
+      "native": "00bd1510",
+      "function": "005051a0",
+      "function_inclusive_end": "00505210",
+      "instruction": "CALL 0x00bd1510"
+    },
+    {
+      "address": "005051f1",
+      "native": "005019d0",
+      "function": "005051a0",
+      "function_inclusive_end": "00505210",
+      "instruction": "CALL 0x005019d0"
+    },
+    {
+      "address": "005051f9",
+      "native": "00bf6989",
+      "function": "005051a0",
+      "function_inclusive_end": "00505210",
+      "instruction": "CALL 0x00bf6989"
+    },
+    {
+      "address": "0050557c",
+      "native": "0041dd40",
+      "function": "00505530",
+      "function_inclusive_end": "005055b5",
+      "instruction": "CALL 0x0041dd40"
+    },
+    {
+      "address": "00505591",
+      "native": "00bf7680",
+      "function": "00505530",
+      "function_inclusive_end": "005055b5",
+      "instruction": "CALL 0x00bf7680"
+    },
+    {
+      "address": "005055dc",
+      "native": "00bf681b",
+      "function": "005055c0",
+      "function_inclusive_end": "00505651",
+      "instruction": "CALL 0x00bf681b"
+    },
+    {
+      "address": "005055fb",
+      "native": "00505530",
+      "function": "005055c0",
+      "function_inclusive_end": "00505651",
+      "instruction": "CALL 0x00505530"
+    },
+    {
+      "address": "00505628",
+      "native": "004fb310",
+      "function": "005055c0",
+      "function_inclusive_end": "00505651",
+      "instruction": "CALL 0x004fb310"
+    },
+    {
+      "address": "00504d7b",
+      "native": "0041dd40",
+      "function": "00504d20",
+      "function_inclusive_end": "00504df6",
+      "instruction": "CALL 0x0041dd40"
+    },
+    {
+      "address": "00504d90",
+      "native": "00bf7680",
+      "function": "00504d20",
+      "function_inclusive_end": "00504df6",
+      "instruction": "CALL 0x00bf7680"
+    },
+    {
+      "address": "00504d9c",
+      "native": "004fe700",
+      "function": "00504d20",
+      "function_inclusive_end": "00504df6",
+      "instruction": "CALL 0x004fe700"
+    },
+    {
+      "address": "00504db7",
+      "native": "005048f0",
+      "function": "00504d20",
+      "function_inclusive_end": "00504df6",
+      "instruction": "CALL 0x005048f0"
+    },
+    {
+      "address": "00504dd7",
+      "native": "00419cc0",
+      "function": "00504d20",
+      "function_inclusive_end": "00504df6",
+      "instruction": "CALL 0x00419cc0"
+    },
+    {
+      "address": "00504dde",
+      "native": "00bd1510",
+      "function": "00504d20",
+      "function_inclusive_end": "00504df6",
+      "instruction": "CALL 0x00bd1510"
+    },
+    {
+      "address": "007188a4",
+      "native": "007175d0",
+      "function": "007188a0",
+      "function_inclusive_end": "007188bb",
+      "instruction": "CALL 0x007175d0"
+    },
+    {
+      "address": "007188ab",
+      "native": "004c1400",
+      "function": "007188a0",
+      "function_inclusive_end": "007188bb",
+      "instruction": "CALL 0x004c1400"
+    },
+    {
+      "address": "007188b4",
+      "native": "00b80720",
+      "function": "007188a0",
+      "function_inclusive_end": "007188bb",
+      "instruction": "CALL 0x00b80720"
+    },
+    {
+      "address": "00be0a8a",
+      "native": "0041dd40",
+      "function": "00be0a30",
+      "function_inclusive_end": "00be0ada",
+      "instruction": "CALL 0x0041dd40"
+    },
+    {
+      "address": "00be0a9f",
+      "native": "00bf7680",
+      "function": "00be0a30",
+      "function_inclusive_end": "00be0ada",
+      "instruction": "CALL 0x00bf7680"
+    },
+    {
+      "address": "00be0aae",
+      "native": "00bdf950",
+      "function": "00be0a30",
+      "function_inclusive_end": "00be0ada",
+      "instruction": "CALL 0x00bdf950"
+    },
+    {
+      "address": "00be0abf",
+      "native": "00be0980",
+      "function": "00be0a30",
+      "function_inclusive_end": "00be0ada",
+      "instruction": "CALL 0x00be0980"
+    }
+  ],
+  "decoded_membership_holes": [
+    {
+      "start": "004fb361",
+      "inclusive_end": "004fb369",
+      "intended_parent": "004fb310",
+      "no_ghidra_function": true,
+      "decoded_continuation": "ADD ESP4; publish new array/capacity; POP EBX",
+      "evidence_sha256": "94c8a6d970a33913598cc90b2a9d6bec823f96d8c6b42e7181577811493a0f73",
+      "scope": "Endpoint membership rechecked; full interval decoded in original audit; no repair performed"
+    },
+    {
+      "start": "005019a4",
+      "inclusive_end": "005019b2",
+      "intended_parent": "005018a0",
+      "no_ghidra_function": true,
+      "decoded_continuation": "Capture requested capacity; ADD ESP4; publish storage/capacity; restore registers",
+      "evidence_sha256": "9e83ed7d47d74ef66817d79a3ac044ac74d16fc2d9c38daab2a08eb829d349df",
+      "scope": "Endpoint membership rechecked; full interval decoded in original audit; no repair performed"
+    },
+    {
+      "start": "00506c3e",
+      "inclusive_end": "00506c46",
+      "intended_parent": "00506bf0",
+      "no_ghidra_function": true,
+      "decoded_continuation": "ADD ESP4; clear captured front pointer",
+      "evidence_sha256": "9ed67e49ba02d326e3a3bc678b612fc8eab112e9fbc81ac66631c66edd0a73c7",
+      "scope": "Endpoint membership rechecked; full interval decoded in original audit; no repair performed"
+    },
+    {
+      "start": "0050acf5",
+      "inclusive_end": "0050acf7",
+      "intended_parent": "0050ace0",
+      "no_ghidra_function": true,
+      "decoded_continuation": "ADD ESP4 after outer free",
+      "evidence_sha256": "a037b6594eeeff04772641ec70151c752761f3c78cd4ea74859db733d588c872",
+      "scope": "Endpoint membership rechecked; full interval decoded in original audit; no repair performed"
+    }
+  ],
+  "ready_packets": [
+    {
+      "packet": "native_loading_queue_owner_entries",
+      "addresses": [
+        "004fde20",
+        "004fdba0",
+        "00504850",
+        "00bd1920"
+      ],
+      "files": [
+        "include/bsp/native_loading_queue_owner.hpp",
+        "src/native_loading_queue_owner.cpp"
+      ],
+      "additional_owned_artifacts": "Each future worker must claim a uniquely named doc/report pair. No shared runtime, CMake, metadata or another packet files.",
+      "suggested_model": "gpt-5.6-sol",
+      "fork_turns": "none",
+      "reasoning_effort": "xhigh",
+      "contract": "Borrow actual E18D4C and lifetime-manager publications; construct 20h owner with manual-reset native event; preserve current-front RET8 callback and raw AL poll. Publication before registration and native EH order. Registered lifetime cannot bind until actual 509FD0/50ACE0/5092E0 deletion domain is complete.",
+      "readiness": "Independent source-body packet, not standalone production-ready; recheck leases when assigning",
+      "lease_check": "004fde20: unleased\n004fdba0: unleased\n00504850: unleased\n00bd1920: unleased\ninclude/bsp/native_loading_queue_owner.hpp: unleased\nsrc/native_loading_queue_owner.cpp: unleased"
+    },
+    {
+      "packet": "native_loading_queue_work_storage",
+      "addresses": [
+        "004fb310",
+        "004fb4b0",
+        "00501670",
+        "005018a0",
+        "005019d0",
+        "005051a0",
+        "00505530",
+        "005055c0"
+      ],
+      "files": [
+        "include/bsp/native_loading_queue_work_items.hpp",
+        "src/native_loading_queue_work_items.cpp"
+      ],
+      "additional_owned_artifacts": "Each future worker must claim a uniquely named doc/report pair. No shared runtime, CMake, metadata or another packet files.",
+      "suggested_model": "gpt-6-astra",
+      "fork_turns": "none",
+      "reasoning_effort": "xhigh",
+      "contract": "Actual pointer arrays, 10h work records and 24h jobs. Own string headers only, retain raw callback context/result values, preserve untouched job padding and native allocation/EH order. Inspect decoded post-free membership holes; do not trust truncated pseudocode.",
+      "readiness": "Independent source-body packet, not standalone production-ready; recheck leases when assigning",
+      "lease_check": "004fb310: unleased\n004fb4b0: unleased\n00501670: unleased\n005018a0: unleased\n005019d0: unleased\n005051a0: unleased\n00505530: unleased\n005055c0: unleased\ninclude/bsp/native_loading_queue_work_items.hpp: unleased\nsrc/native_loading_queue_work_items.cpp: unleased"
+    },
+    {
+      "packet": "native_filestore_remove",
+      "addresses": [
+        "00be7130"
+      ],
+      "files": [
+        "include/bsp/native_filestore_remove.hpp",
+        "src/native_filestore_remove.cpp"
+      ],
+      "additional_owned_artifacts": "Each future worker must claim a uniquely named doc/report pair. No shared runtime, CMake, metadata or another packet files.",
+      "suggested_model": "gpt-5.6-sol",
+      "fork_turns": "none",
+      "reasoning_effort": "xhigh",
+      "contract": "ECX actual provider plus stack name. Normalize stable native header; resident find/erase existing actual helpers. Reuse current NativeStringStorage and NativeAdoptedSubstreamDispatch. No pending map mutation or physical cancellation.",
+      "readiness": "Already claimed by agent/orch4-vfs-pending-bk:orch4_native_filestore_remove_bk during final lease refresh; independently executable source-body packet, do not duplicate assignment.",
+      "lease_check": "00be7130: agent/orch4-vfs-pending-bk:orch4_native_filestore_remove_bk until 2026-09-14T11:40\ninclude/bsp/native_filestore_remove.hpp: agent/orch4-vfs-pending-bk:orch4_native_filestore_remove_bk until 2026-09-14T11:40\nsrc/native_filestore_remove.cpp: agent/orch4-vfs-pending-bk:orch4_native_filestore_remove_bk until 2026-09-14T11:40"
+    }
+  ],
+  "storage": {
+    "loader": {
+      "size": "20h",
+      "publication": "00e18d4c",
+      "profile": "00ceb198",
+      "offsets": {
+        "+0": "numeric profile; slot0=0050ace0",
+        "+4": "worker stop DWORD",
+        "+8": "published job pointer",
+        "+0c": "actual manual-reset event owner",
+        "+10/+14/+18": "job pointer array/count/capacity",
+        "+1c": "worker HANDLE"
+      }
+    },
+    "job": {
+      "size": "24h",
+      "offsets": {
+        "+0": "state DWORD",
+        "+4": "stop byte; padding5..7 untouched",
+        "+8/+0c/+10": "work array/count/capacity",
+        "+14/+18": "owning package-name header",
+        "+1c": "optional result callback",
+        "+20": "FileBlock pointer"
+      }
+    },
+    "work_record": {
+      "stride": "10h",
+      "offsets": {
+        "+0/+4": "owning name header",
+        "+8": "raw callback context",
+        "+0c": "raw result resource"
+      }
+    },
+    "event_slots": {
+      "profile": "00d6821c",
+      "+0": "00bd19b0 actual source",
+      "+4": "00bd1910 actual source",
+      "+8": "00bd17c0 actual source",
+      "+0c": "00bd1960 actual source",
+      "+10": "00bd1920 missing raw-AL poll"
+    }
+  },
+  "contract_edges": [
+    "00737B79 reloads current0109CEEC, BDB0B0 pump, then current loader getter4FDE20 and update509190.",
+    "00504850 ignores both stack names, reloads current loader/front and sets state2; no guard, origin capture or callback identity matching.",
+    "00509190 state1 has no progress branch. RequestFile resident/pending duplicates true without callback can leave state1; preserve behavior.",
+    "00509190 state0 tests currentVFS+78 and uses current FileStore factory/cache; callback address504850 persists across BE80B0 getter.",
+    "00501620 CreateThread receives loader+4 context. 00501510 stores result into captured first work record, resets event and waits again.",
+    "005092E0 marks initial front stopped and loops Sleep100/currentVFS pump/loader update; currentF8D394+18/+1C are external owner operations.",
+    "00509FD0/0050ACE0 do not prove worker stop/wake/join/CloseHandle. Loader count, FileStore pending-key count and physical read count are distinct."
+  ],
+  "dependencies": [
+    {
+      "entries": [
+        "00415350",
+        "00bd0c30"
+      ],
+      "status": "Actual lifetime-manager domain exists; future getter must borrow current raw publications and real registered destruction contract."
+    },
+    {
+      "entries": [
+        "00bd1970",
+        "00bd19b0",
+        "00bd1910",
+        "00bd17c0",
+        "00bd1960"
+      ],
+      "status": "Actual native event storage and operations exist; pollBD1920 still absent."
+    },
+    {
+      "entries": [
+        "004fc150",
+        "00be80b0",
+        "00be7cd0"
+      ],
+      "status": "Actual current FileStore factory/cache/request source exists; root integration snapshot includes retained acquired request+nested resolution."
+    },
+    {
+      "entries": [
+        "00bee780",
+        "00be5e90",
+        "00be6760"
+      ],
+      "status": "Actual normalization/resident find/erase exist; BE7130 can be implemented independently."
+    },
+    {
+      "entries": [
+        "00509190",
+        "005092e0",
+        "00509fd0",
+        "0050ace0",
+        "00501510",
+        "00501620",
+        "00504790",
+        "00506bf0",
+        "00483850"
+      ],
+      "status": "Named or byte-evidenced entry bodies lack actual native source; later update/lifetime/thread work must claim explicit helpers."
+    },
+    {
+      "entries": [
+        "00504d20",
+        "004fe700",
+        "005048f0"
+      ],
+      "status": "Work producer remains missing; 4FE700 pair and 5048F0 append bodies were not read in this audit. No readiness inferred from names."
+    },
+    {
+      "entries": [
+        "00be0a30",
+        "00bdf950",
+        "00be0980",
+        "00bdebe0"
+      ],
+      "status": "FileBlock constructor/id/VFS block-entry/exit/deletion domain unresolved; a present embedded-string fragment is insufficient."
+    },
+    {
+      "entries": [
+        "007188a0"
+      ],
+      "status": "Reconstructed marker_classes wrapper delegates core load_and_cache_resource_00b80720 to explicitly unreconstructed MarkerClassHost interface."
+    },
+    {
+      "entries": [
+        "007175d0"
+      ],
+      "status": "Actual native game-resource factory owner exists; does not implement worker resource loading."
+    },
+    {
+      "entries": [
+        "00b80720",
+        "0071b870",
+        "004c1400"
+      ],
+      "status": "Actual cache/miss/factory-create/manager/resource operation remains separately bounded; B80720 bytes checked but semantics outside audit."
+    },
+    {
+      "entries": [
+        "00f8d394+18",
+        "00f8d394+1c"
+      ],
+      "status": "Current external owner virtual methods in StopAndWait; concrete provider/ABI/lifetime beyond this audit."
+    }
+  ],
+  "known_unknowns": [
+    "Native EH tables and cleanup funclets are not reconstructed by this read-only frontier; implementation workers must inspect original compiler boundaries, especially getter registration and reserve allocation failures.",
+    "Decoded membership holes remain unrepaired because Ghidra is read-only; restarted inline endpoint disabled per primary.",
+    "Earlier blanket hole warning at5051FE and50A01C is stale: current membership includes both destructor sites.",
+    "No production final callback dispatcher installed until actual loader owner/storage/lifecycle and completion integration are complete.",
+    "External producers and prior worker shutdown remain unproved. Large5072C0 and5162B0 callers intentionally excluded; 50B2D0/514FB0 unread."
+  ],
+  "validation": {
+    "build": "not applicable: doc/report-only audit",
+    "fixture": "none",
+    "game_execution": "none",
+    "runtime_or_gameplay_proof": false,
+    "calls_check": {
+      "tool": "python tools/verify_report_calls.py reports/native_loading_queue_frontier_bk.json",
+      "checked_direct_call_rows": 91,
+      "failures": 0,
+      "scope": "Read-only live containing-function and exact CALL-target verification; original ABI, dispatch semantics and source completeness are independent audit evidence."
+    }
+  },
+  "indirect_call_rows": [
+    {
+      "address": "004fde5f",
+      "native": "IAT00ce2218 EnterCriticalSection",
+      "function": "004fde20",
+      "function_inclusive_end": "004fdedc",
+      "instruction": "CALL dword ptr [0x00ce2218]",
+      "native_abi": "Captured manager+10 section; one stdcall argument; increment captured section+18 after return",
+      "verification": "Original listing/producer evidence; direct-call verifier skips indirect target"
+    },
+    {
+      "address": "004fdec2",
+      "native": "IAT00ce2210 LeaveCriticalSection",
+      "function": "004fde20",
+      "function_inclusive_end": "004fdedc",
+      "instruction": "CALL dword ptr [0x00ce2210]",
+      "native_abi": "Decrement captured section+18 first; one stdcall argument",
+      "verification": "Original listing/producer evidence; direct-call verifier skips indirect target"
+    },
+    {
+      "address": "00bd1926",
+      "native": "IAT00ce22b0 WaitForSingleObject",
+      "function": "00bd1920",
+      "function_inclusive_end": "00bd1951",
+      "instruction": "CALL dword ptr [0x00ce22b0]",
+      "native_abi": "stdcall(handle from ECXevent+4,0); raw AL result mapping preserved",
+      "verification": "Original listing/producer evidence; direct-call verifier skips indirect target"
+    },
+    {
+      "address": "00bd1949",
+      "native": "IAT00ce2258 GetLastError",
+      "function": "00bd1920",
+      "function_inclusive_end": "00bd1951",
+      "instruction": "CALL dword ptr [0x00ce2258]",
+      "native_abi": "No stack arguments; only after wait failure; returned AL forced0",
+      "verification": "Original listing/producer evidence; direct-call verifier skips indirect target"
+    },
+    {
+      "address": "005091eb",
+      "native": "current loader.event+vtable10",
+      "function": "00509190",
+      "function_inclusive_end": "005092dc",
+      "instruction": "CALL EAX",
+      "native_abi": "ECX actual event; no stack arguments; raw AL nonzero means return",
+      "verification": "Original listing/producer evidence; direct-call verifier skips indirect target"
+    },
+    {
+      "address": "00509233",
+      "native": "captured front_job+1c result callback",
+      "function": "00509190",
+      "function_inclusive_end": "005092dc",
+      "instruction": "CALL ECX",
+      "native_abi": "Two callee-cleaned arguments: firstWork.result, firstWork.context",
+      "verification": "Original listing/producer evidence; direct-call verifier skips indirect target"
+    },
+    {
+      "address": "00509301",
+      "native": "CURRENT[00f8d394]+vtable18",
+      "function": "005092e0",
+      "function_inclusive_end": "0050934c",
+      "instruction": "CALL EDX",
+      "native_abi": "ECX current external owner; no stack arguments",
+      "verification": "Original listing/producer evidence; direct-call verifier skips indirect target"
+    },
+    {
+      "address": "00509322",
+      "native": "captured IAT00ce2230 Sleep",
+      "function": "005092e0",
+      "function_inclusive_end": "0050934c",
+      "instruction": "CALL EDI",
+      "native_abi": "One stdcall DWORD argument100; capture preserved across loop",
+      "verification": "Original listing/producer evidence; direct-call verifier skips indirect target"
+    },
+    {
+      "address": "0050163a",
+      "native": "IAT00ce2238 CreateThread",
+      "function": "00501620",
+      "function_inclusive_end": "0050165d",
+      "instruction": "CALL dword ptr [0x00ce2238]",
+      "native_abi": "Six stdcall arguments: NULL,0,00501510,loader+4,0,NULL",
+      "verification": "Original listing/producer evidence; direct-call verifier skips indirect target"
+    },
+    {
+      "address": "00501658",
+      "native": "current loader.event+vtable04",
+      "function": "00501620",
+      "function_inclusive_end": "0050165d",
+      "instruction": "CALL EAX",
+      "native_abi": "ECX actual event; no stack arguments; signal only with nonzero job work count",
+      "verification": "Original listing/producer evidence; direct-call verifier skips indirect target"
+    },
+    {
+      "address": "0050153c",
+      "native": "current context.event+vtable08",
+      "function": "00501510",
+      "function_inclusive_end": "00501615",
+      "instruction": "CALL EDX",
+      "native_abi": "ECX actual event; no stack arguments; infinite wait",
+      "verification": "Original listing/producer evidence; direct-call verifier skips indirect target"
+    },
+    {
+      "address": "005015e9",
+      "native": "current context.event+vtable0c",
+      "function": "00501510",
+      "function_inclusive_end": "00501615",
+      "instruction": "CALL EAX",
+      "native_abi": "ECX actual event; no stack arguments; reset after captured work result stored",
+      "verification": "Original listing/producer evidence; direct-call verifier skips indirect target"
+    },
+    {
+      "address": "005015f3",
+      "native": "current context.event+vtable08",
+      "function": "00501510",
+      "function_inclusive_end": "00501615",
+      "instruction": "CALL EAX",
+      "native_abi": "ECX actual event; no stack arguments; wait again before stop check",
+      "verification": "Original listing/producer evidence; direct-call verifier skips indirect target"
+    },
+    {
+      "address": "00506c07",
+      "native": "current job.FileBlock+vtable04",
+      "function": "00506bf0",
+      "function_inclusive_end": "00506c72",
+      "instruction": "CALL EAX",
+      "native_abi": "ECX FileBlock; flag1 stack; callee-cleaned RET4 contract",
+      "verification": "Original listing/producer evidence; direct-call verifier skips indirect target"
+    },
+    {
+      "address": "0048385e",
+      "native": "IAT00ce2220 InterlockedDecrement",
+      "function": "00483850",
+      "function_inclusive_end": "0048387a",
+      "instruction": "CALL dword ptr [0x00ce2220]",
+      "native_abi": "One stdcall argument: captured actual resource+4",
+      "verification": "Original listing/producer evidence; direct-call verifier skips indirect target"
+    },
+    {
+      "address": "0048386e",
+      "native": "current resource+vtable00",
+      "function": "00483850",
+      "function_inclusive_end": "0048387a",
+      "instruction": "CALL EAX",
+      "native_abi": "ECX captured resource; no stack arguments; only on zero refcount",
+      "verification": "Original listing/producer evidence; direct-call verifier skips indirect target"
+    },
+    {
+      "address": "00509349",
+      "native": "CURRENT[00f8d394]+vtable1c",
+      "function": "005092e0",
+      "function_inclusive_end": "0050934c",
+      "kind": "tail_jump",
+      "native_abi": "ECX reloaded external owner; no stack arguments; final JMP EAX loaded from current virtual+1c",
+      "verification": "Original listing; separate external owner dependency"
+    }
+  ],
+  "finalized_utc": "2026-09-14T05:47:40.580698+00:00"
+}
