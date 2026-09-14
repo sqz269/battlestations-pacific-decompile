@@ -51,3 +51,5 @@ No new tests or worker runtime fixture are added. Byte identity and compilation
 do not prove ownership, validity of arbitrary receivers, caller behavior under
 hardware faults, game integration, or gameplay. The original game and Ghidra
 analysis are unchanged by this worker.
+
+Primary validation at exact clean source `dae36fd24b77c9fa0f7d26ad64f26265682297a4` passed the MSVC Win32 Release build and both existing CTests with 2623 unchanged tracked build inputs. All three complete generated code sections match every original byte (13/13/10 bytes), with zero relocations. One ignored local differential case executed the source AD5750 entry and its unmodified original ten bytes on separate writable fixture buffers: public word DEADC0A5 and incoming EAX12345678 produced byte A5 and EAX123456A5, with the other 63 bytes of each 64-byte backing buffer unchanged. The DWORD leaves were not executed in this fixture. No new repository tests were added. Fixture backing is not a constructed game owner; world-builder integration and gameplay remain unvalidated.

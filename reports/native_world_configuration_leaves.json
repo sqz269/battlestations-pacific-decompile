@@ -1,7 +1,7 @@
 {
   "packet": "orch3_native_world_configuration_leaves_ds",
   "base_commit": "1971cf077797e63b4c7fb7e961293977a7694176",
-  "status": "three_complete_raw_sources_build_tested_and_full_generated_bodies_native_byte_identical",
+  "status": "exact_build_whole_native_identity_byte_differential_saved_annotation_sealed",
   "source": "src/native_world_configuration_leaves.cpp",
   "header": "include/bsp/native_world_configuration_leaves.hpp",
   "documentation": "docs/NATIVE_WORLD_CONFIGURATION_LEAVES.md",
@@ -323,5 +323,177 @@
     "body_count": 3,
     "native_bytes": 36,
     "complete_body_equal": true
+  },
+  "tested_commit": "dae36fd24b77c9fa0f7d26ad64f26265682297a4",
+  "validation": {
+    "build": {
+      "commit": "dae36fd24b77c9fa0f7d26ad64f26265682297a4",
+      "passed": true,
+      "pending": false,
+      "exit_code": 0,
+      "clean_tree_before_and_after": true,
+      "all_build_inputs_unchanged": true,
+      "libraries": {
+        "bsp_core.lib": "1732c5bfe406cf377fdcabbc01d0211a2af6a6398913fd0fa2d7db3bbdd312d2",
+        "bsp_lua511.lib": "71e114b0ff6244852d678a5779fcbf28589bdcecbad811aff228ffd5007fe8c7",
+        "bsp_zlib121.lib": "f3f934925213a2ffb81f3aec2afbb065c1733cf43b28dddf31db6a69185c4102",
+        "xlive_stub.lib": "6dfcb5bf13947ffb6883edfde9d189c4c7ae0d702ec8bd81daebf3749e5f1c67"
+      },
+      "log_sha256": "0ec629e3064a3bf3b580abdd43febf5a338120c1d0382d74ff70fc8f4b03640c"
+    },
+    "tracked_build_inputs": 2623,
+    "full_build_stamp": {
+      "path": "local/ds-final-build-stamp.json",
+      "sha256": "c3759d4276512851dcabfefdd8627c9c5e10d062686a6e0f0ac3c974a5c3905c"
+    },
+    "generated_code": {
+      "primary_review_passed": true,
+      "tested_commit": "dae36fd24b77c9fa0f7d26ad64f26265682297a4",
+      "worker_commit": "4458056e9f0e73c94d34195ec3aec41db8893e88",
+      "object_path": "build/win32/bsp_core.dir/Release/native_world_configuration_leaves.obj",
+      "object_sha256": "d6443b03307d77c232c71e047e329671c0810e18a5b5787a3b21bc2c3bc18040",
+      "complete_body_count": 3,
+      "complete_native_bytes": 36,
+      "code": [
+        {
+          "address": "00b6fe50",
+          "symbol": "?set_native_camera_clear_color_00b6fe50@bsp@@YIXPAX0I@Z",
+          "bytes": 13,
+          "hex": "8b442404898190010000c20400",
+          "sha256": "706a642b0750f9d983081af94c16656997a23959697005c22e36842d913dd1f7",
+          "relocations": [],
+          "complete_native_identity": true
+        },
+        {
+          "address": "00b1ffb0",
+          "symbol": "?set_native_renderer_texture_detail_bias_00b1ffb0@bsp@@YIXPAX0I@Z",
+          "bytes": 13,
+          "hex": "8b4424048981841d0000c20400",
+          "sha256": "eb53e25638d84346ec017f4a937bbae3a519b3dd20c0eee6f83059c9988fae1d",
+          "relocations": [],
+          "complete_native_identity": true
+        },
+        {
+          "address": "00ad5750",
+          "symbol": "?set_native_foliage_byte_00ad5750@bsp@@YIXPAX0I@Z",
+          "bytes": 10,
+          "hex": "8a442404884110c20400",
+          "sha256": "1cbf8898809db6e6fee3b7760a0f75e7e04f50b76a40c7ec88bbb1c16faadbdd",
+          "relocations": [],
+          "complete_native_identity": true
+        }
+      ],
+      "source_header_equal_worker": true,
+      "limits": "All three complete generated body sections equal the original machine bytes with zero relocations. Runtime fixture separately covers AD5750 only; constructed receiver lifetimes, world callers and gameplay remain unvalidated."
+    },
+    "focused_probe": {
+      "tested_commit": "dae36fd24b77c9fa0f7d26ad64f26265682297a4",
+      "build_exit_code": 0,
+      "passed": true,
+      "game_validated": false,
+      "run_exit_code": 0,
+      "stdout": "source/native byte=a5/a5 EAX=123456a5/123456a5 complete64-byte backing=equal\nPASS: source and unmodified original byte setter preserve raw A5, surrounding storage and upper EAX bits through RET4.\n",
+      "stderr": "",
+      "source_entry_executed": "00ad5750",
+      "unmodified_original_body_executed": "00ad5750",
+      "native_code_relocations": 0,
+      "other_two_entries_executed": false,
+      "source_symbol_map": [
+        "0001:00000210       ?set_native_foliage_byte_00ad5750@bsp@@YIXPAX0I@Z 00401210 f   bsp_core:native_world_configuration_leaves.obj"
+      ],
+      "artifacts": {
+        "local/ds_probe.cpp": "9c386dca806597822258dfbd823432ed5383e61e3db318df03d749a5f23a1cff",
+        "local/ds_native_byte_leaf.hpp": "aba6e5a82fe118b97f53a987f666c9e7a6a79b3a945bc873978e3035740d63d6",
+        "local/ds-probe-build.cmd": "7763321a88b73267369cf6720e8cb75f44392990d115cdc8c8b25de9da249c98",
+        "local/ds_probe.exe": "8840ea682d661ec54005d1c832117e044c43d2be1c843b72f77d42fb3d2c5edb",
+        "local/ds_probe.obj": "71a88d51487ca9f566b8ab1cd4283df17625ed0603f83d3402c477e3fa6fd519",
+        "local/ds_probe.map": "b60ef9a303e50c25c93ac5f8b5a9ca4a7db289ada4a0f913b008759082d1e335"
+      },
+      "all_build_inputs_and_libraries_preserved": true,
+      "libraries": {
+        "bsp_core.lib": "1732c5bfe406cf377fdcabbc01d0211a2af6a6398913fd0fa2d7db3bbdd312d2",
+        "bsp_lua511.lib": "71e114b0ff6244852d678a5779fcbf28589bdcecbad811aff228ffd5007fe8c7",
+        "bsp_zlib121.lib": "f3f934925213a2ffb81f3aec2afbb065c1733cf43b28dddf31db6a69185c4102",
+        "xlive_stub.lib": "6dfcb5bf13947ffb6883edfde9d189c4c7ae0d702ec8bd81daebf3749e5f1c67"
+      },
+      "limits": "One focused local native/source differential case for the concrete non-bool byte and original public argument/RET4 risk. No relocations or substitute callees exist in this10-byte body. It uses writable fixture backing, not a constructed game owner. The two DWORD entries are compile/whole-generated-byte checked separately, not executed here. No world-builder or gameplay validation; incidental EAX preservation is not a C++ return contract."
+    },
+    "game_validated": false
+  },
+  "worker_snapshot_qualification": "Original checks/uncertainty/source_sha256 sections describe worker4458056e before primary validation; primary validation and annotation sections describe the final integrated source and metadata.",
+  "annotation": {
+    "saved": true,
+    "original_signature_verified": true,
+    "prior_comments_preserved": true,
+    "force_exported": true,
+    "record": "local/ds-ghidra-annotation-record.json"
+  },
+  "artifact_sha256": {
+    "build/win32/bsp_core.dir/Release/native_world_configuration_leaves.obj": "d6443b03307d77c232c71e047e329671c0810e18a5b5787a3b21bc2c3bc18040",
+    "local/annotate_ds.py": "e93146c3f09a6375608cd41c7e37f4bc6f304ff30283b0782107d571b6767696",
+    "local/build_final_ds.py": "ae040964966547a56084a22e3ad9be6a129d7c1ee764ea6624c2b584a4db2c6b",
+    "local/check_ds_probe.py": "5ccb1c76625fde7faf8e2bc08f99bb11ec089fa0eb3cc416593646dc6049ea8f",
+    "local/dl_coff.py": "5749d811f28bc812ff4c66c129000f0ad8a5a95eabf91e29005b23188ec5ca43",
+    "local/ds-annotation.log": "483ec12cfebdfa02c8ab3821beabf74d70cb51441d97ff6b0afc6aa2312391cb",
+    "local/ds-comments-after.json": "3d075f704e7eda869d910089e7feecc0d19044c5d170f537a0fd748cf9a18164",
+    "local/ds-comments-before.json": "b0b3f84901a076b3349fe1d0c8c829632b6a6bdea0d0edb4edbf87fcbfb0191a",
+    "local/ds-export-refresh.log": "253bffaa7990a71e09fbe6da2673c83eeb766bf5c093e2cae75a01f8e0d635b4",
+    "local/ds-final-build-stamp.json": "c3759d4276512851dcabfefdd8627c9c5e10d062686a6e0f0ac3c974a5c3905c",
+    "local/ds-final-build.log": "0ec629e3064a3bf3b580abdd43febf5a338120c1d0382d74ff70fc8f4b03640c",
+    "local/ds-final-call-audit.log": "642daaa4a98061192d0a639061639c8a0060662d015eaeb0dae10ed270d79442",
+    "local/ds-function-records.json": "62d15d31397372726819b7dad2bb788d5243843f8c8e754eaafab2e918481443",
+    "local/ds-ghidra-annotation-record.json": "f456eaf866fefa79c5431ae84f6a34b7766909dc00a26cd1094a5bbcf1fdf766",
+    "local/ds-ledger-before.json": "1a08cb8b383932961b08b338ad66aac808d1b336612aab961b7ad79e93443c98",
+    "local/ds-names-00ad0000-before.jsonl": "082ce4f80daddd71600a51cb9f0903f8b98c05440a42ca4a52a8ee9802c21994",
+    "local/ds-names-00b10000-before.jsonl": "bcf037a9174452331b3f2ce9f1912a85eaf106c228c94436c9cb4506feca8d5d",
+    "local/ds-names-00b60000-before.jsonl": "2158eb4f78d614aee65501fd192a915c7e256556fd5f0effb0116c8d1fa8f67a",
+    "local/ds-native-evidence.json": "97a63f8783b5efcacfa8eaaa00e9e7c47dc6fd4012f829e606edda17cc169a5c",
+    "local/ds-primary-object-review.json": "27d9115a3af0f33a955ba88572c6ed0f6709c88a209b718a3d5ca5252638e1d9",
+    "local/ds-probe-build.cmd": "7763321a88b73267369cf6720e8cb75f44392990d115cdc8c8b25de9da249c98",
+    "local/ds-probe-build.log": "1dac1b02f23359401af44185f2897506ecf119af7dfb0a9b2c0a07dd05820bd5",
+    "local/ds-probe.json": "3da7b3c9fddd9fde92f440830ae0eb68f1201422180c533738fc3b58d82eb289",
+    "local/ds-reconstruction-00ad0000-before.jsonl": "72e0631caef30a528a07bc8dcd1ab9b917861ef57744445153abfb66bf10d2a1",
+    "local/ds-reconstruction-00b10000-before.jsonl": "d104baec9ae5cf62880b42666d3e3b339ba4fd5a79ce224a282054de8d215c7a",
+    "local/ds-reconstruction-00b60000-before.jsonl": "e68c30cc5d33eb31ea4620a8410e537298deb8a36d01fe69acfc2815da60cc07",
+    "local/ds-worker/dr-world-builder-next-admission.json": "0509548480b62d063f01d42290778e65bb6c10f3d025560333a65f32f6156f7c",
+    "local/ds-worker/dr-world-builder-next-admission.md": "08cf6f45e662e13c27e206275d6218021032376099d38004ade8f967f7edcf9c",
+    "local/ds-worker/ds-build.log": "0735162df35302c8937eee625c689313647b94cbc6d6d6a0cde8abf7eb35acf6",
+    "local/ds-worker/ds-caller-0078cff0.txt": "63b7a556ee38007af37b74261c3e29a64535b45cf6a8597b6a11099e0d07c8fa",
+    "local/ds-worker/ds-caller-00865900.txt": "2f2907abb9cad38f3f0b3080629e90aa52d51536b902f16191eeb19b6e0501bd",
+    "local/ds-worker/ds-caller-00ba6c40.txt": "305734f5633d1a6c3296f9b58158877d61385d44c187d2902c35470f9b394fd1",
+    "local/ds-worker/ds-caller-contexts.json": "75f31b66c4f95f59fed18a8fa81bcfe726eadbf275725df03032feb232b1740d",
+    "local/ds-worker/ds-commit-message.txt": "9974f06147dd71173951cb2ccdb0cdaf1a9c7d67824ea2dc5f6072bf2d96fe49",
+    "local/ds-worker/ds-compare-generated.py": "7140e577a039092ad64c924a85906f9ee8959c361da964dda3efc939c7584fb0",
+    "local/ds-worker/ds-generated-body-comparison.json": "b09c734bd8c37ff5c3c3e91853bc4ed5059f9ab43b9485463761c85e84fd516b",
+    "local/ds-worker/ds-generated-tools.json": "d01974703656397725020284b3840473aba944625bc24bbc78b117670cb4142a",
+    "local/ds-worker/ds-object-disassembly.txt": "4a23b77d45092b8c2a9aae87ab016bb9c373db5d0ac085dc6eb4492fe4b75ea4",
+    "local/ds-worker/ds-report-calls.log": "642daaa4a98061192d0a639061639c8a0060662d015eaeb0dae10ed270d79442",
+    "local/ds-worker/ds-seeds.json": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773",
+    "local/ds-worker/worker-report.json": "be93ecd9279384bdc2650472a6be7c3e08884a8cc169ad44fbbd486c59951fa1",
+    "local/ds_native_byte_leaf.hpp": "aba6e5a82fe118b97f53a987f666c9e7a6a79b3a945bc873978e3035740d63d6",
+    "local/ds_probe.cpp": "9c386dca806597822258dfbd823432ed5383e61e3db318df03d749a5f23a1cff",
+    "local/ds_probe.exe": "8840ea682d661ec54005d1c832117e044c43d2be1c843b72f77d42fb3d2c5edb",
+    "local/ds_probe.map": "b60ef9a303e50c25c93ac5f8b5a9ca4a7db289ada4a0f913b008759082d1e335",
+    "local/ds_probe.obj": "71a88d51487ca9f566b8ab1cd4283df17625ed0603f83d3402c477e3fa6fd519",
+    "local/finish_ds.py": "83d7319ec818a486d7ce6bbb01568e1ee2ce5deedb8a0e236a24b70a06892480",
+    "local/prepare_ds_evidence.py": "d6a5c924d736cdeaa68e7c788013d9656461f629ddba7583e6f6e05370889ee3",
+    "local/publish_ds.py": "ab75e33dc703086f969e1fdeea12e69c2cc799c38537f08abced444b6a9e39bf",
+    "local/review_ds_final.py": "cf5abc4848cb7d2e599ad44282b4d71de0a335a9ac85b0d614b6973a9d749ae0",
+    "local/seal_ds.py": "70d3a4c32cadd6171b1f448dd0d6bf97045b46751d1463e47e1f1d8ff9809c9f"
+  },
+  "sealed_attempt": {
+    "tested_commit": "dae36fd24b77c9fa0f7d26ad64f26265682297a4",
+    "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\ds-validated-attempt-dae36fd2.zip",
+    "sha256": "8804d932fc7ee092841ad3d70080711e0510ba23c1dba267293e1aa824e964d0",
+    "payload_members": 2695,
+    "manifest_members": 1,
+    "all_member_hashes_rechecked": true,
+    "libraries": {
+      "bsp_core.lib": "1732c5bfe406cf377fdcabbc01d0211a2af6a6398913fd0fa2d7db3bbdd312d2",
+      "bsp_lua511.lib": "71e114b0ff6244852d678a5779fcbf28589bdcecbad811aff228ffd5007fe8c7",
+      "bsp_zlib121.lib": "f3f934925213a2ffb81f3aec2afbb065c1733cf43b28dddf31db6a69185c4102",
+      "xlive_stub.lib": "6dfcb5bf13947ffb6883edfde9d189c4c7ae0d702ec8bd81daebf3749e5f1c67"
+    },
+    "tracked_build_inputs": 2623
   }
 }
