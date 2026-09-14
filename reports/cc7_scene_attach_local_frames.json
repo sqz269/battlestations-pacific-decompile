@@ -1,0 +1,435 @@
+{
+  "packet": "cc7_scene_attach_local_frames",
+  "owner": "agent/cc7-scene-attach",
+  "date": "2026-09-13",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra": "read-only: no renames, comments, prototypes, function creation or saves",
+  "docs": [
+    "docs/SCENE_ATTACH_LOCAL_FRAMES.md"
+  ],
+  "sources": [],
+  "no_new_module": "No header or source is published. The one rule this packet recovers - that the scene-file entity reader canonicalises an authored localframe to s*R + t - belongs to 0046CF40 and 0085DC80, which are the scene-file/model territory a peer orchestrator owns. This packet reads them as a contract, as the brief directs, and does not reconstruct them; the follow-up packet scene_entity_reader_frames should own that arithmetic. Nothing else here is a new rule: 00B63D50's invertibility criterion is already implemented by derive_pose_affine_inverse_00b63d50 (include/bsp/pose_derived.hpp, packet orch3_pose_derived_i) and re-published by docs/MATRIX_ORTHOGONAL_INVERSE.md, and a predicate wrapping it would duplicate that. The result of this packet is evidence: a caller census and a shipped-data audit.",
+  "answer": "A non-orthonormal local frame DOES reach entity+74h in the shipped game, so docs/MATRIX_ORTHOGONAL_INVERSE.md's bounded negative is superseded. 009258F0 has exactly two direct callers (009288D6, 00929C94, byte-level rel32 scan of all of .text) and is a virtual method in 30 vtables at slot +98h; both other implementations of that slot (00928860 in 44 vtables plus 3 ICF thunks, 00929C80 in 1) forward the localFrame argument verbatim, and 71 load-then-call dispatch sites exist (the single-instruction CALL [reg+98h] form occurs nowhere), 42 of which carry this hierarchy's world argument. The authored producer is the .scn localframe statement: BSP_SceneFile_ReadEntityBlock parses 16 floats at 0046D150, takes s = |row 0| at 0046D168..0046D1B0, orthonormalises through 0085DC80 at 0046D1BA, then multiplies the nine basis elements by s again at 0046D1BF..0046D222, and passes the buffer as the creator's localFrame at 0046D592/0046D5A4. The canonicalisation removes shear and per-row scale but PRESERVES a uniform scale, so the pose local is a similarity s*R + t, not an orthonormal frame. Across all 259 shipped .scn files, 7,621 of 133,655 localframe statements carry s outside 1 +/- 1e-3 (range 0.1586..3.0), including 105 anti-aircraft LandFort emplacements (s = 0.7069 on 'Heavy AA, Japanese 01') and 7 DestroyerGen placements ('L Hancock', s = 0.866). Because 0042D0D0 runs with normalize = 0, the gun reads asin(sin(theta)/s): a true 30 degree pitch reads 45.017 degrees at s = 0.7069 and 35.266 degrees at s = 0.866. Two shipped NavPoint frames author a zero row 2; 0085DC80's zero guard propagates that into two zero basis rows, the divide-by-zero case, but no gun sits under them. HierarchyMatrix, the other unvalidated path, copies 16 arbitrary floats from a property array pointer with no type or count check, but no shipped data file uses that key.",
+  "verification": {
+    "direct_call_census": "Exhaustive. local/scan_attach_refs.py parses the PE section table of I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe and tests EVERY byte offset of .text (00401000..00CE1136, raw 0x1000 + 0x8E1000) for an E8 or E9 whose site+5+rel32 equals 009258F0. Two E8 hits, zero E9 hits. Ghidra's xrefs confirms both but places 00929C94 at row 33, past the 25-row cap a sibling packet hit; the byte scan is the primary evidence.",
+    "vtable_census": "Exhaustive. The same scan, over every section with no alignment filter, finds the little-endian word F0 58 92 00 at 30 .rdata addresses. Slot offset +98h fixed two ways: fifteen sites sit 0x98 above a run of .text pointers terminated by a 00000000 word, and two ambiguous ones are fixed by the constructor that stores the vtable base (0065083A/00650852 store 00CF6250/00CF6218 in one constructor, 00CF62E8 - 00CF6250 = 0x98; 005193FB/0051949A store 00CEC578/00CEC5F0, 00CEC688 - 00CEC5F0 = 0x98). The naive backward walk over consecutive .text pointers over-reports the index when a sibling vtable abuts, which is why it was not trusted alone.",
+    "dispatch_encoding_census": "0x98 > 0x7F so the displacement admits only disp32 (mod = 10). All four encodings tested over every byte of .text: FF /2 and FF /3 disp32 (CALL dword ptr [reg+98h]) = 0 sites; 8B /r disp32 followed within 32 bytes by CALL of that same register = 71 sites (443 instructions carry the disp32 at all); 8D /r disp32 (LEA reg,[reg+98h]) followed within 24 bytes by CALL dword ptr [reg] = 0; 81 /0 imm32 (ADD reg,98h) followed by CALL dword ptr [reg] = 0. Enumerating the encodings was necessary: the one-instruction form is used nowhere in this binary, so a scan for CALL [reg+98h] alone would have reported zero callers.",
+    "argument_roles": "From the RET 0Ch count and the body's own stores, not from the decompiler: 00925902 MOV EAX,[ESP+10h] then MOV [ESI+30h],EAX makes arg2 the world node; 0092592F MOV EAX,[ESP+0Ch] then MOV [ESI+3Ch],EAX makes arg1 the hierarchy parent; 009259BB MOV EAX,[ESP+14h] then PUSH EAX with LEA ECX,[ESI+74h] makes arg3 the local frame. The prologue is PUSH EBX; PUSH ESI only, so those three displacements are the three incoming stack arguments.",
+    "esp_arithmetic": "The two offsets that carry the finding are cross-checked against Ghidra's own stack naming. 0046CF40's prologue is PUSH -1 / PUSH 00C61E08 / PUSH FS:[0] (0x0C) + SUB ESP,190h + four register pushes (0x10), so the frame base is ESP_entry - 1ACh. Ghidra's local_164 is therefore base + 48h, exactly where 0046D15C FSTP [ESP+ESI*4+48h] writes, and local_10c is base + A0h. At 0046D592 two pushes have occurred, so LEA ECX,[ESP+50h] is base + 48h = local_164; at 0046D59D four pushes have occurred, so LEA EDX,[ESP+0B0h] is base + A0h = local_10c, which Ghidra shows as the name argument of BSP_SceneEntity_ShouldGenerate in the same block.",
+    "x87_reading": "0046D168..0046D184 was read as assembly (the FLD/FMULP/FADDP schedule producing |row 0|^2) and then confirmed against Ghidra's decompilation of 0046CF40, which renders the same expression over local_164[0..2] and stores it before the 1e-10 compare. Two representations, not one.",
+    "register_provenance": "0085DC80's row roles come from the whole listing, not one idiom: 0085DC85 MOV ESI,ECX, 0085DC87 LEA EBX,[ESI+20h] (float 8 = row 2, the normalisation reference) and 0085DCB9 LEA EDI,[ESI+10h] (float 4 = row 1). The zero guard is 0085DC96 FLDZ / FCOMI / 0085DCA0 JBE 0085DCAC, which sets the reciprocal to 0.0 via XORPS XMM0,XMM0 rather than dividing.",
+    "data_audit": "Full parse of all 259 .scn files in the shipped installation, not a sample. 133,655 localframe statements. The grep for the property-bag keys was run over the whole installation directory and hit only battlestationspacific.exe; the same grep finds CommandTarget in 257 of the 259 .scn files, so it is not failing on the format.",
+    "body_coverage": "009258F0 complete (all 88 instructions). 00929C80 complete. 00928860 read to the call. 00924280 complete. 0085DC80 read as pseudocode in full plus the first 42 listing lines for the register ABI and the zero guard; its two arms' float arithmetic beyond the branch structure is not re-derived - partial. 0046CF40 read only at 0046D0E0..0046D222 and 0046D54B..0046D5E4 - partial, and it is not this packet's to own."
+  },
+  "host_steps": [
+    {
+      "step": "the copy that makes the caller's matrix the node's pose local",
+      "address": "009259c4",
+      "native": "004134f0",
+      "function": "009258f0",
+      "method": "009259BB MOV EAX,[ESP+14h]; 009259BF PUSH EDI; 009259C0 PUSH EAX; 009259C1 LEA ECX,[ESI+74h]. No validation on the path; the only earlier branches are the +0BCh already-attached gate at 009258F6 and the +0B4h/+0B8h flush at 0092598E."
+    },
+    {
+      "step": "the +0B4h/+0B8h pair flush before the copy",
+      "address": "009259b6",
+      "native": "009245a0",
+      "function": "009258f0",
+      "method": "Reached only when [ESI+0B8h] or [ESI+0B4h] is non-zero; both are cleared before the call."
+    },
+    {
+      "step": "the subtree pose invalidation after the copy",
+      "address": "009259e2",
+      "native": "0042ed50",
+      "function": "009258f0",
+      "method": "Loop over the child list through +44h, from [ESI+48h]. Runs after +74h has been written."
+    },
+    {
+      "step": "direct caller 1: the game-entity placement forwarder",
+      "address": "009288d6",
+      "native": "009258f0",
+      "function": "00928860",
+      "method": "009288C9 MOV EAX,[ESP+30h]; MOV ECX,[ESP+28h]; PUSH EAX; PUSH EBP (=[ESP+2Ch] loaded at 009288A4); PUSH ECX; MOV ECX,ESI. 0x24 of stack below the return address from PUSH -1/PUSH 00CA6FE8/PUSH FS:[0]/SUB ESP,8/PUSH ESI/PUSH EDI/PUSH EBX/PUSH EBP, so those three slots are its own arg3, arg2, arg1. Verbatim forwarder. Itself slot +98h in 44 vtables."
+    },
+    {
+      "step": "the scene-file entity reader parses the localframe keyword",
+      "address": "0046d142",
+      "native": "008d9930",
+      "function": "0046cf40",
+      "method": "0046D13B PUSH 00CE5840 (\"localframe\"); MOV ECX,EBP. The only reference to that string in the image."
+    },
+    {
+      "step": "the sixteen floats of the localframe statement",
+      "address": "0046d157",
+      "native": "008d9b40",
+      "function": "0046cf40",
+      "method": "Loop 0046D150..0046D166: LEA EDX,[ESP+23h]; PUSH EDX; CALL 008D9B40 (RET 4); FSTP [ESP+ESI*4+48h]; CMP ESI,10h. The buffer is frame base + 48h = Ghidra's local_164."
+    },
+    {
+      "step": "the uniform scale extracted from the authored row 0",
+      "address": "0046d198",
+      "native": "00bf7030",
+      "function": "0046cf40",
+      "method": "0046D168..0046D184 accumulate m[0]^2 + m[1]^2 + m[2]^2 into [ESP+14h]; 0046D188 FLD qword [00CE3820] (1e-10); FCOMI; 0046D196 JBE 0046D1AB sets s = 0.0 instead. 00BF7030 is the CRT sqrt helper (SUB ESP,0Ch; FST qword [ESP]; CALL 00C08418; CALL 00BF704D)."
+    },
+    {
+      "step": "the Gram-Schmidt orthonormalisation of the authored basis",
+      "address": "0046d1ba",
+      "native": "0085dc80",
+      "function": "0046cf40",
+      "method": "0046D1B6 LEA ECX,[ESP+48h]. In-place; removes shear and per-row scale differences."
+    },
+    {
+      "step": "the row-2 length that drives the orthonormalisation",
+      "address": "0085dc8d",
+      "native": "00419440",
+      "function": "0085dc80",
+      "method": "0085DC85 MOV ESI,ECX; 0085DC87 LEA EBX,[ESI+20h]; MOV ECX,EBX. Result in ST0, spilled to [ESP+0Ch]; 0085DC96 FLDZ / FCOMI / JBE 0085DCAC makes the reciprocal 0.0 when the length is not positive, so a zero row survives as a zero row."
+    },
+    {
+      "step": "the canonicalised frame becomes the creator's localFrame argument",
+      "address": "0046d5a4",
+      "native": "indirect: [{classId, creator}+4], the ten BSP_SceneUnit_Create* entries",
+      "function": "0046cf40",
+      "method": "0046D57E MOV EAX,[ESP+1B8h]; 0046D585 MOV EDX,[ESP+1B4h]; PUSH EAX; MOV EAX,[ESP+28h]; PUSH EBX; 0046D592 LEA ECX,[ESP+50h] (= base + 48h, local_164); PUSH ECX; MOV ECX,[EAX]; MOV EAX,[EAX+4]; PUSH EDX; 0046D59D LEA EDX,[ESP+0B0h] (= base + A0h, local_10c, the entity name). Matches docs/SCENE_UNIT_CREATORS.md's create(classId /*ECX*/, entityName /*EDX*/, hierarchyParent, localFrame[16], PropertyBag*, unused), RET 10h."
+    },
+    {
+      "step": "the ten unit creators dispatch the attach with that localFrame - destroyer",
+      "address": "004f0584",
+      "native": "indirect: vtable slot +98h",
+      "function": "004f0520",
+      "method": "004F0568 MOV ECX,[00E188A8]; 004F056E MOV EAX,[ECX+19CCh] (world); 004F0574 MOV ECX,[ESP+18h] (parent); 004F0578 MOV EDX,[EBX]; 004F057A MOV EDX,[EDX+98h]; PUSH EAX; PUSH ECX; MOV ECX,EBX. The matrix was pushed at 004F0565 from the creator's own localFrame parameter."
+    },
+    {
+      "step": "same, land fort - the kind that carries the 7,133 scaled placements",
+      "address": "004f1056",
+      "native": "indirect: vtable slot +98h",
+      "function": "004f0fb0",
+      "method": "004F1033 MOV EAX,[ESP+14h] then PUSH EAX at 004F1037 is the creator's localFrame; 004F1040 MOV EAX,[ECX+19CCh] is the world node; 004F1046 MOV ECX,[ESP+14h] is the parent."
+    },
+    {
+      "step": "same, command building",
+      "address": "004f1113",
+      "native": "indirect: vtable slot +98h",
+      "function": "004f10b0",
+      "method": "004F10F0 MOV EAX,[ESP+14h]; PUSH EAX at 004F10F4; 004F10FD MOV EAX,[ECX+19CCh]; 004F1103 MOV ECX,[ESP+14h]."
+    },
+    {
+      "step": "the unit-instance init builds an identity, not a scaled frame",
+      "address": "00823d3d",
+      "native": "indirect: vtable slot +98h",
+      "function": "00822c20",
+      "method": "00823CAD XORPS XMM0,XMM0; 00823CB0 MOVSS XMM1,[00D7A24C] (1.0); 00823CBC LEA EAX,[ESP+38h]; 00823CC0 PUSH EAX; then 00823CC4..00823D1E write sixteen MOVSS into [ESP+3Ch]..[ESP+78h] with XMM1 at +3Ch/+50h/+64h/+78h. Pure identity."
+    },
+    {
+      "step": "the mission spawn descriptor copies an authored HierarchyMatrix",
+      "address": "009271c5",
+      "native": "008f2260",
+      "function": "00927050",
+      "method": "009271C0 PUSH 00CEA008 (\"HierarchyMatrix\"); MOV ECX,[[ESI+0C0h]+8]. 009271CA TEST EAX,EAX / JZ is the ONLY check: no type tag test at +4 (unlike HierarchyParent at 0092717D which requires type 5) and no element-count test at +24h."
+    },
+    {
+      "step": "the sixteen-float copy out of the property's array pointer",
+      "address": "009271d5",
+      "native": "00924280",
+      "function": "00927050",
+      "method": "009271CE LEA EDX,[ESP+70h]; PUSH EDX; MOV ECX,EAX. 00924280 MOV ECX,[ECX+20h] (the array data pointer, docs/SCENE_PROPERTY_BAG.md type 9 FA) then sixteen FLD/FSTP pairs, returning the destination in EAX."
+    },
+    {
+      "step": "that copy becomes the spawn descriptor's local frame",
+      "address": "009271df",
+      "native": "004134f0",
+      "function": "00927050",
+      "method": "009271DA PUSH EAX; 009271DB LEA ECX,[ESP+34h] which after the push is the [ESP+30h] buffer that 009271EC LEA ECX,[ESP+30h] pushes as the attach localFrame at 009271F0."
+    },
+    {
+      "step": "the spawn descriptor's attach dispatch",
+      "address": "00927201",
+      "native": "indirect: vtable slot +98h",
+      "function": "00927050",
+      "method": "009271EA MOV EAX,[ESI]; 009271EC LEA ECX,[ESP+30h]; PUSH ECX; 009271F1 MOV ECX,[EDX+19CCh]; PUSH ECX; PUSH EBP (the HierarchyParent lookup result from 009271B0 CALL 00925A90); MOV ECX,ESI."
+    },
+    {
+      "step": "a caller that propagates an existing pose local instead of building one",
+      "address": "007438bd",
+      "native": "indirect: vtable slot +98h",
+      "function": "00743450",
+      "method": "007438AE LEA EAX,[ESI+74h]; PUSH EAX; 007438A1 MOV ECX,[ESI+30h]; PUSH ECX; 007438B2 MOV EAX,[ESI+3Ch]; PUSH EAX. The child inherits the parent's own +74h verbatim, introducing nothing."
+    },
+    {
+      "step": "the same propagation in the plane squadron attach",
+      "address": "007f48d2",
+      "native": "indirect: vtable slot +98h",
+      "function": "007f4580",
+      "method": "007F48C9 LEA ECX,[ESI+74h]; PUSH ECX; 007F48BE MOV EDX,[ESI+30h]; PUSH EDX; PUSH 0."
+    },
+    {
+      "step": "the computed call Ghidra resolved, a stack matrix whose construction is unread",
+      "address": "004b21b3",
+      "native": "009258f0",
+      "function": "004b2030",
+      "method": "004B219E MOV EDX,[EBP]; 004B21A1 MOV EDX,[EDX+98h]; 004B21A7 LEA ECX,[ESP+2Ch]; PUSH ECX; 004B21AC MOV ECX,[EBX+30h]; PUSH ECX; PUSH EAX (=[ESP+7Ch]); MOV ECX,EBP. Ghidra reports this as a COMPUTED_CALL to 009258F0. The [ESP+2Ch] matrix is not traced by this packet."
+    },
+    {
+      "step": "the matrix-array attach, the untraced producer most likely to be authored",
+      "address": "00491a30",
+      "native": "indirect: vtable slot +98h",
+      "function": "00491950",
+      "method": "00491A15 MOV ECX,[EDI]; MOV EDX,[ECX]; 00491A19 MOV EDX,[EDX+98h]; 00491A1F MOV EAX,EBP; SHL EAX,6; ADD EAX,[EBX+4]; PUSH EAX - element EBP of a 64-byte-stride matrix array; 00491A28 MOV EAX,[ESI+20h]; MOV EBX,[EAX+30h]; PUSH EBX; PUSH EAX."
+    },
+    {
+      "step": "the record-field attach, the second untraced producer",
+      "address": "006f3798",
+      "native": "indirect: vtable slot +98h",
+      "function": "006f3660",
+      "method": "006F3778 LEA EAX,[EDI+ECX]; MOV ECX,[EAX+14h]; MOV EDX,[ECX]; 006F3780 MOV EDX,[EDX+98h]; 006F3786 ADD EAX,18h; PUSH EAX - the 64-byte field at +18h of an array record; 006F378A MOV EAX,[00E188A8]; MOV EAX,[EAX+19CCh]; PUSH EAX; PUSH 0."
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "site": "00929c94",
+      "callee": "009258f0",
+      "step": "direct caller 2 of 2: the derived-class override that forwards then registers. Rows here use site/callee rather than address/native because tools/verify_report_calls.py cannot bind a site that lies in no Ghidra function.",
+      "method": "00929C80 MOV EAX,[ESP+0Ch]; 00929C84 MOV EDX,[ESP+4]; 00929C88 PUSH ESI; 00929C8B MOV ECX,[ESP+0Ch]; PUSH EAX; PUSH ECX; PUSH EDX; MOV ECX,ESI. Verbatim forwarder of all three arguments. The byte-level rel32 scan found it; Ghidra's xrefs listing buried it at row 33, past the 25-row cap.",
+      "containing_routine": "00929C80-00929CA9 INCLUSIVE, end_exclusive 00929CAC. The final instruction is the three-byte RET 0Ch (C2 0C 00) AT 00929CA9 - that address is its first byte, not one past the end - followed by INT3 padding from 00929CAC. The entry is 00929C80 MOV EAX,[ESP+0Ch], immediately after the INT3 at 00929C7F that terminates the preceding function (which ends 00929C7C RET 0Ch). A linear disassembly anchored at 00929C80 runs to the RET with no resync. Ten instructions: MOV EAX,[ESP+0Ch]; MOV EDX,[ESP+4]; PUSH ESI; MOV ESI,ECX; MOV ECX,[ESP+0Ch]; PUSH EAX; PUSH ECX; PUSH EDX; MOV ECX,ESI; CALL 009258F0; MOV ECX,[ESI+30h]; PUSH ESI; ADD ECX,438h; CALL 00484540; POP ESI; RET 0Ch. It is the vtable +98h entry at 00D19598, the only .rdata word equal to 00929C80."
+    },
+    {
+      "site": "00929ca3",
+      "callee": "00484540",
+      "step": "the override's extra registration after forwarding",
+      "method": "00929C99 MOV ECX,[ESI+30h]; PUSH ESI; ADD ECX,438h. Registers the node with a list hanging off the world node. Runs after 009258F0 has already written +74h.",
+      "containing_routine": "00929C80-00929CA9 INCLUSIVE, end_exclusive 00929CAC; the same routine as the row above."
+    },
+    {
+      "site": "007ab672",
+      "callee": "indirect: vtable slot +98h",
+      "containing_routine": "not established. The site lies in a region with no Ghidra function; 007AB5EF LEA ECX,[ESP+1Ch] / PUSH ECX, 007AB5F4 MOV ECX,[EBX-3B4h] / PUSH ECX and 007AB5FB MOV ECX,[EBX-3A8h] / PUSH ECX give the three arguments, but the second is neither [X+19CCh] nor [node+30h], so membership in this hierarchy is probable and unconfirmed. Recorded here rather than in host_steps for that reason; the routine's bounds were not established and no end address is claimed."
+    }
+  ],
+  "routines": [
+    {
+      "address": "009258f0",
+      "name": "BSP_SceneNode_AttachToParents",
+      "abi": "__thiscall(node /*ECX*/, hierarchyParent, worldNode, const float localFrame[16]) -> void, RET 0Ch",
+      "body": "009258f0-009259fa",
+      "instructions": 88,
+      "coverage": "complete",
+      "note": "Name pre-existing, not introduced by this packet. Virtual, slot +98h, present in 30 vtables. The localFrame is copied into +74h at 009259C4 with no validation."
+    },
+    {
+      "address": "0085dc80",
+      "name": "BSP_Matrix_OrthonormalizeBasisRows",
+      "abi": "__fastcall(float m[16] /*ECX*/) -> void, plain RET, in place",
+      "body": "0085dc80-0085dd30",
+      "instructions": 176,
+      "coverage": "partial: the branch structure, the row roles, the zero guard and the two arms' shape are read; the individual float schedules inside each arm are not re-derived",
+      "note": "Gram-Schmidt over the three basis rows of a row-major 4x4. Row 2 (+20h) is the reference and is normalised first; |row1 . row2| is compared against the double 0.9990000128746033 at 00D0D0A0; below it row 1 is orthogonalised, normalised and row 0 = cross(row1, row2); above it row 0 takes that role and the cross product is negated through the float -0.0 at 00D7A208. The translation row is untouched. A zero row 2 survives as a zero row (the reciprocal is set to 0.0 rather than dividing) and then propagates into a zero row 0 through the cross product."
+    },
+    {
+      "address": "00924280",
+      "name": "BSP_SceneProperty_CopyFloat16",
+      "abi": "__thiscall(property /*ECX*/, float destination[16]) -> float* (the destination, in EAX), RET 4",
+      "body": "00924280-009242bc",
+      "instructions": 35,
+      "coverage": "complete",
+      "note": "MOV ECX,[ECX+20h] then sixteen FLD/FSTP pairs. +20h is the property record's array data pointer (docs/SCENE_PROPERTY_BAG.md). No type-tag check, no element-count check; a HierarchyMatrix authored as an FA float array lands verbatim in the caller's buffer."
+    },
+    {
+      "address": "0046cf40",
+      "name": "BSP_SceneFile_ReadEntityBlock",
+      "abi": "not established by this packet",
+      "body": "0046cf40-0046d927",
+      "coverage": "partial: 0046D0E0-0046D222 (the localframe parse and canonicalisation) and 0046D54B-0046D5E4 (the creator dispatch) only",
+      "note": "Name pre-existing. EXTERNAL to this packet - the scene-file/model territory belongs to a peer orchestrator. Read as a contract, not leased and not reconstructed."
+    },
+    {
+      "address": "00928860",
+      "name": "BSP_GameEntity_PlaceInWorld",
+      "abi": "__thiscall(entity /*ECX*/, hierarchyParent, worldNode, const float localFrame[16]), forwards all three",
+      "body": "00928860-00928914",
+      "coverage": "partial: read to the 009288D6 call and its argument setup",
+      "note": "Name pre-existing. The other slot +98h implementation, in 44 vtables plus the three ICF thunks 006DFE40, 0074E180, 007EFA70 (each a single JMP 00928860)."
+    }
+  ],
+  "constants": [
+    {
+      "address": "00ce3820",
+      "width": "double",
+      "bytes": "bb bd d7 d9 df 7c db 3d",
+      "value": "1e-10",
+      "meaning": "0046D188: |row 0|^2 at or below this makes the uniform scale 0.0 instead of sqrt. Never reached by shipped data - |row 0| is non-zero in all 133,655 statements."
+    },
+    {
+      "address": "00d0d0a0",
+      "width": "double",
+      "bytes": "00 00 00 e0 ce f7 ef 3f",
+      "value": "0.9990000128746033",
+      "meaning": "0085DCxx: |row1 . row2| above this means rows 1 and 2 are nearly parallel, so row 0 becomes the orthogonalisation reference instead of row 1."
+    },
+    {
+      "address": "00d7a208",
+      "width": "float",
+      "bytes": "00 00 00 80",
+      "value": "-0.0",
+      "meaning": "The negation of the cross product in 0085DC80's near-parallel arm."
+    },
+    {
+      "address": "00d7a24c",
+      "width": "float",
+      "bytes": "00 00 80 3f",
+      "value": "1.0",
+      "meaning": "The identity diagonal written by BSP_UnitInstance_SEntityInit at 00823CB0. Same constant docs/MATRIX_ORTHOGONAL_INVERSE.md records for 00B63D50's homogeneous 1."
+    },
+    {
+      "address": "00ce5840",
+      "width": "asciz",
+      "bytes": "6c 6f 63 61 6c 66 72 61 6d 65 00",
+      "value": "\"localframe\"",
+      "meaning": "The .scn keyword. Its only reference in the image is 0046D13B."
+    },
+    {
+      "address": "00cea008",
+      "width": "asciz",
+      "bytes": "48 69 65 72 61 72 63 68 79 4d 61 74 72 69 78 00",
+      "value": "\"HierarchyMatrix\"",
+      "meaning": "Property-bag key. Referenced at 004F0410, 004F04A1 and 009271C1. Absent from every shipped data file."
+    },
+    {
+      "address": "00cea018",
+      "width": "asciz",
+      "bytes": "48 69 65 72 61 72 63 68 79 50 61 72 65 6e 74 00",
+      "value": "\"HierarchyParent\"",
+      "meaning": "Property-bag key, type 5 (reference), checked at 0092717D."
+    },
+    {
+      "address": "00cea028",
+      "width": "asciz",
+      "bytes": "53 65 74 48 69 65 72 61 72 63 68 79 00",
+      "value": "\"SetHierarchy\"",
+      "meaning": "Property-bag key written by 004F03C0's deferred path."
+    }
+  ],
+  "shipped_data_audit": {
+    "root": "I:/SteamLibrary/steamapps/common/Battlestations Pacific",
+    "scn_files": 259,
+    "localframe_statements": 133655,
+    "s_exactly_one": 120477,
+    "s_within_1e-3_of_one": 126034,
+    "s_outside_1e-3_of_one": 7621,
+    "s_zero": 0,
+    "s_min": 0.1586,
+    "s_max": 3.0,
+    "scaled_by_entity_kind": {
+      "LandFort": 7133,
+      "Stationary": 421,
+      "CommandBuilding": 17,
+      "DestroyerGen": 7,
+      "Path": 2
+    },
+    "gun_bearing_examples": [
+      "LandFort 'Heavy AA, Japanese 01' s=0.7069  universe/scenes/missions/chg/hrv_mission.scn:6424  (105 scaled LandFort placements have AA in the name)",
+      "LandFort 'Fortress element, Small tower 01' s=1.5045  universe/scenes/missions/COTP-IJN/ijn_11_invasion_of_fiji.scn:8869",
+      "LandFort 'Medium Bunker 03, Concrete 01' s=0.8634  universe/scenes/missions/COTP-USN/usn_11_protecting_iowa.scn:3377",
+      "DestroyerGen 'L Hancock' s=0.866  universe/scenes/missions/COTP-USN/bulls_run.scn:1355",
+      "DestroyerGen 'Fubuki-class 13' s=0.98984  universe/scenes/missions/COTP-IJN/ijn_07_invasion_of_midway.scn:28706",
+      "DestroyerGen 'FakePoW' s=1.00277  universe/scenes/missions/COTP-IJN/ijn_02_force_z.scn:15099",
+      "CommandBuilding 'Headquarter 01' s=1.13864  in eight shipped missions"
+    ],
+    "degenerate_frames": [
+      "NavPoint 'Navpoint Port'  universe/scenes/missions/multi/scene175.scn:27460  authored row 2 = (0,0,0)",
+      "NavPoint 'Java_land'  universe/scenes/missions/multi/scene904.scn:2950  authored row 2 = (0,0,0)"
+    ],
+    "authored_shear_discarded": "5,032 non-orthogonal row pairs (worst |row_i . row_j| = 1.3488) and 24,654 non-unit rows exist in the authored data; 0085DC80 removes all of them. Only the uniform s survives.",
+    "pitch_consequence": "asin(sin(theta)/s) for a true pitch theta, per docs/MATRIX_ORTHOGONAL_INVERSE.md's formula: theta = 30 degrees reads 45.017 at s=0.7069, 35.266 at s=0.866, 26.048 at s=1.13864, 19.411 at s=1.5045, 9.594 at s=3.0. At s=0.7069 any true pitch above 45.05 degrees saturates the clamp at 90 degrees.",
+    "hierarchy_keys_unused": "A grep of the whole installation for HierarchyMatrix, HierarchyParent and SetHierarchy hits only battlestationspacific.exe. No shipped .scn uses any of the three, and none uses the FA type at all; 257 of the 259 contain CommandTarget, so the grep is not failing on the format.",
+    "scripts": [
+      "local/scan_localframes.py",
+      "local/scan_scale.py",
+      "local/detail_cases.py"
+    ]
+  },
+  "corrections": [
+    {
+      "target": "docs/MATRIX_ORTHOGONAL_INVERSE.md, \"Where scale could enter\" and the closing balance-of-evidence sentence",
+      "was": "\"no producer read to date puts scale into a pose local\" and \"on the balance of that evidence the arc's mount bases are orthonormal and both the inverse and the pitch are correct in practice\" - a bounded negative resting on four producers plus an unenumerated attach link.",
+      "is": "The attach link is now enumerated and it DOES introduce scale. BSP_SceneFile_ReadEntityBlock canonicalises the authored .scn localframe to s*R + t and passes it through the ten unit creators to vtable slot +98h; 7,621 of 133,655 shipped localframe statements carry s outside 1 +/- 1e-3 and 105 of them are anti-aircraft LandFort emplacements. The mount bases are orthonormal for the 94.3 per cent of shipped placements with s = 1; for the rest the pitch is asin(sin(theta)/s).",
+      "evidence": "0046D150-0046D222 (parse, sqrt of |row 0|^2, orthonormalise, re-multiply), 0046D592/0046D5A4 (the creator's localFrame argument, ESP arithmetic cross-checked against Ghidra's local_164/local_10c), 004F0584 and the nine sibling creators, 009259C4. Data: full parse of all 259 shipped .scn files."
+    },
+    {
+      "target": "docs/MATRIX_ORTHOGONAL_INVERSE.md, \"Zero-length rows\"",
+      "was": "A zero basis row was treated as a hypothetical the survey had not reached.",
+      "is": "It is reachable from shipped data, though not under a gun. Two NavPoint entities author a zero row 2; 0085DC80's zero guard (0085DC96 FLDZ / FCOMI / JBE 0085DCAC) sets the reciprocal to 0.0 rather than rejecting the frame, leaving row 2 zero, and row 0 = cross(row1, row2) then becomes zero too. 00B63D50 would divide by zero on two of the three rows.",
+      "evidence": "0085DC80 listing lines 1-42; universe/scenes/missions/multi/scene175.scn:27460 and scene904.scn:2950."
+    },
+    {
+      "target": "the packet brief's premise",
+      "was": "\"009259C4 ... copies a caller-supplied localFrame ... Those callers were never enumerated\" - implying the callers are a small set to be read one by one.",
+      "is": "009258F0 is a virtual method at vtable slot +98h in 30 vtables with two further implementations that forward verbatim, so the caller set is a dispatch census, not a call-graph census. Ghidra's xrefs would have shown one direct caller plus one computed call; the byte scan found a second direct caller and the encoding scan found 71 dispatch sites.",
+      "evidence": "30 .rdata words equal to 009258F0; 44 more equal to 00928860; 71 load-then-call dispatches through +98h; zero CALL [reg+98h] sites."
+    },
+    {
+      "target": "the config/names ledger record for 009258F0 (and the generated exports/bsp/functions/009258f0 header)",
+      "was": "\"sole caller 00928860\"",
+      "is": "Two direct callers (009288D6 and 00929C94) and a virtual method at vtable slot +98h in 30 vtables, with 42 confirmed dispatch sites. This packet appended the census with --append-evidence rather than replacing the text, so the old sentence remains in the record; the integrator should decide whether to strike it and refresh the export.",
+      "evidence": "Byte-level rel32 scan of all of .text (2 sites); 30 .rdata words equal to 009258F0, all at +98h from a vtable start; 71 load-then-call dispatches through +98h of which 42 carry this hierarchy world argument."
+    }
+  ],
+  "assumptions": [
+    "That 00414DB0 composes world_child = local_child * world_parent without normalising, so a scaled root pose propagates down the subtree - carried over from docs/MATRIX_ORTHOGONAL_INVERSE.md, not re-derived here.",
+    "That 0042D0D0 runs with normalize = 0 and 00521370 takes asin of the raw y - same source. The pitch table in the audit is that formula with s filled in, not an independent derivation.",
+    "That the model-node chain under a unit inherits the unit's scene-node pose. docs/GUN_MOUNT_POSITIONS.md establishes gun+3CCh as a model node named \"barrel\" or \"base\" and the muzzle as its worldMatrix; the composition step from the scene node into that model node's world matrix is NOT read by this packet and is the gun_mount_world_composition follow-up.",
+    "That nothing rewrites +74h after the attach for these entities. A LandFort is static and has no motion update; whether a DestroyerGen's pose local is later rewritten by ship motion is not established, and if it is, the seven scaled destroyers are harmless and only the static set matters.",
+    "docs/SCENE_UNIT_CREATORS.md for the ten creators' ABI and for 004F03C0's HierarchyMatrix write-back. The creator ABI is independently confirmed here by the four pushes and two LEAs at 0046D57E-0046D5A4; 004F03C0 itself is not re-read.",
+    "docs/SCENE_PROPERTY_BAG.md for the property record layout, specifically that +20h is the array data pointer and type 9 FA is a float array."
+  ],
+  "partial_coverage": [
+    "Fourteen dispatch sites push a local stack matrix whose construction lies outside the addresses this packet read: 004EA6FB, 004EA80B, 006AF842, 0082197D, 007F48BA, 004B21B3, 00484C7D, 00487F16, 0048C819, 00498A61, 0049BD9D, 007A5EB3, 007AB672, 0089AB8E, 00A32433. Each is recorded in the doc's table as construction not read.",
+    "Two of those matter more than the rest because their shape is authored rather than composed: 00491A30 (element EBP of a 64-byte-stride matrix array at [EBX+4]) and 006F3798 (the 64-byte field at +18h of an array record).",
+    "009362FE's third push lies further back than the 160-byte window used and was not located.",
+    "Whether the Stationary kind (421 scaled placements) mounts guns was not established.",
+    "Whether the FUN_004E99B0 / FUN_004F04C0 / FUN_004F0DB0 / FUN_004F0EB0 / FUN_004F1460 / FUN_004F1A60 / FUN_004F2700 sub-family's localFrame parameters come from the same 0046D5A4 creator dispatch as the named ten was not established; they have the same parameter shape but their callers were not read."
+  ],
+  "ledger": [
+    {
+      "address": "0085dc80",
+      "name": "BSP_Matrix_OrthonormalizeBasisRows",
+      "action": "add-name",
+      "note": "Hypothesis, not a recovered symbol. New name, leased by this packet."
+    },
+    {
+      "address": "00924280",
+      "name": "BSP_SceneProperty_CopyFloat16",
+      "action": "add-name",
+      "note": "Hypothesis, not a recovered symbol. New name, leased by this packet."
+    },
+    {
+      "address": "009258f0",
+      "name": "BSP_SceneNode_AttachToParents",
+      "action": "append-evidence",
+      "note": "The name was already recorded and is CONFIRMED, not replaced. The appended evidence is the exhaustive caller census, the vtable slot, and the finding that the localFrame can carry a uniform scale."
+    }
+  ],
+  "leases": {
+    "claimed": [
+      "009258f0",
+      "0085dc80",
+      "00924280"
+    ],
+    "refused": [],
+    "external_read_as_contract": [
+      "0046cf40",
+      "008f2260",
+      "004f03c0",
+      "00b63d50",
+      "00414db0",
+      "0042d0d0",
+      "00521370",
+      "0071ad50",
+      "the ten BSP_SceneUnit_Create* creators",
+      "the model-node system"
+    ],
+    "note": "lease check reported 0046CF40, 0085DC80 and 00924280 unleased at the time of reading; no claim was refused. Only the three addresses this packet names are leased, per rule 9."
+  },
+  "build": "not run - no source was added or changed.",
+  "tests": "none added, per the brief. This packet is evidence, not arithmetic."
+}

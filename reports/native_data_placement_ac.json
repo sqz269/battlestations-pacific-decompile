@@ -77,5 +77,118 @@
   ],
   "relocation_review": "The initial production link stripped relocations after DYNAMICBASE:NO; the final configuration explicitly preserves them with FIXED:NO and the final PE verification checks the directory and file characteristic.",
   "registration": "One cmake_language(DEFER CALL include ...) line, preserved by tools/integrate_workers.py mechanical registry union.",
-  "integration_review": "A concurrent registry merge dropped the initial plain include. The header check caught the restored ASLR/default base, and the registration was corrected before publication."
+  "integration_review": "A concurrent registry merge dropped the initial plain include. The header check caught the restored ASLR/default base, and the registration was corrected before publication.",
+  "final_verification": {
+    "compiled_commit": "e123041f4169e51caf052e09ecc93e501e964aca",
+    "run_commit": "e123041f4169e51caf052e09ecc93e501e964aca",
+    "executable": {
+      "compiled_commit": "e123041f4169e51caf052e09ecc93e501e964aca",
+      "executable_sha256": "6d96913c9aa58ea507dbeaf83fb5d45163307121b6e18d35aaad85a6dff0312a",
+      "image_base": "10000000",
+      "size_of_image": "0020c000",
+      "dll_characteristics": "8100",
+      "relocations_stripped": false,
+      "relocation_rva": "001fa000",
+      "relocation_bytes": 71648,
+      "required_bands_outside_image": true,
+      "launches": [
+        {
+          "index": 0,
+          "exit": 0,
+          "output": "local\\placement_ac\\production_suspended_0.txt",
+          "sha256": "f5db18f238f48bba15e6ace8e8fb0ab161985d05a8bc9b51432701786cac2ee8"
+        },
+        {
+          "index": 1,
+          "exit": 0,
+          "output": "local\\placement_ac\\production_suspended_1.txt",
+          "sha256": "96185703aab553158d1433a88a10d38e2041151a9af092ac1c81db09e56820e5"
+        },
+        {
+          "index": 2,
+          "exit": 0,
+          "output": "local\\placement_ac\\production_suspended_2.txt",
+          "sha256": "190cc466239501b16c03d0199ae10ca24f1315f676ed8e913564cf0990914081"
+        },
+        {
+          "index": 3,
+          "exit": 0,
+          "output": "local\\placement_ac\\production_suspended_3.txt",
+          "sha256": "eb986c5c6ed0d9f890eeeb0875bdf321ca65739ca5c35a83f9553886ff4a587d"
+        }
+      ],
+      "scope": "Four independently created suspended production children; production reservation and resume passed, with ASLR flags 0; this probe alone is not a full mission test"
+    },
+    "win32_build": true,
+    "existing_ctests_passed": 2,
+    "build_log": "local\\orch6_integrate_ac_20260913T222957.log",
+    "mission": {
+      "exit": 0,
+      "seconds": 9.848406791687012,
+      "trajectory_audit": {
+        "rows": 18557,
+        "nonfinite_rows": 0,
+        "nonfinite_units": [],
+        "airfield_samples": 241,
+        "airfield_unchanged": true
+      },
+      "avoidance_search": {
+        "queries": 2400,
+        "refills": 10,
+        "clears": 12
+      },
+      "cruise_owners": {
+        "reads": 1080,
+        "unavailable": 0
+      },
+      "generic_tick": {
+        "calls": 10080,
+        "unavailable": 0,
+        "units": 42,
+        "input_one": 42
+      },
+      "world_registration": {
+        "unavailable": 0,
+        "nodes": 420,
+        "invalid_lists": 0,
+        "ships": 14,
+        "planes": 20
+      },
+      "observer_runtime": {
+        "initialized": true,
+        "drained": true
+      },
+      "unit_observer_lifetime": {
+        "units": 77,
+        "callback_then_observed": true,
+        "dispatch_owner_live_through_teardown": true,
+        "teardown_before_manager_drain": true
+      },
+      "pending_entity_runtime": {
+        "initial_counts": [
+          0,
+          0
+        ],
+        "atexit_status": [
+          0,
+          0
+        ],
+        "final_counts": [
+          0,
+          0
+        ],
+        "frame_passes": 240,
+        "storage": "same process raw24h owner pair",
+        "exit_scope": "Clean process exit; detailed real CRT callback observations remain in the S actual-library lifecycle fixture."
+      }
+    },
+    "native_data_mapping": "Final mission log confirms verified original image mapping before host startup",
+    "manifest": "local\\placement_ac\\manifest.json",
+    "manifest_sha256": "a6d92880d370be572afd2be32a7ba3339ee584eab797c821afb618f01399440d",
+    "retained_files": 42,
+    "bootstrap_probe_source_identical": true,
+    "new_repository_tests": 0,
+    "workers_dispatched": 0,
+    "limit": "Four fresh production-child reservations and one final mission run pass on the current machine. External policies or foreign mappings remain guarded errors; gameplay parity is not established."
+  }
 }
