@@ -416,6 +416,43 @@ void collect_native_instance_entry_00b1dff0(void* command,void* entry,
     }
     append_borrowed(group->source_entries_24[category?0:1],entry,false);
 }
+
+void* prefix_native_string_header_0043c130(void* output, const char* prefix,
+    const void* right, NativeStringRawPoolContext& strings) {
+    // No default initialization or automatic destructor: 41E870 supplies the
+    // two native header stores and owns its own construction failure boundary.
+    std::uint32_t temporary[2];
+    construct_native_string_cstring_0041e870(temporary, prefix, strings);
+    int state = 1;
+    bool output_owned = false;
+    try {
+        concatenate_native_string_headers_004261a0(temporary, output, right, strings);
+        auto* const data = reinterpret_cast<void*>(cell<std::uint32_t>(temporary, 4)); // 43C176
+        output_owned = true; // 43C17C: only after concat returned
+        state = 0; // 43C184: prefix return is consumed before its getter
+        if (data) {
+            const auto bytes = cell<std::uint32_t>(temporary) + 1u; // 43C18B..191
+            auto* const pool = native_string_pool_get_or_create_00419cc0(
+                strings.actual_published_01090aa8, strings.actual_manager_publication_01090aa0);
+            return_native_string_pool_00bd1510(pool, data, bytes,
+                strings.actual_small_returns_disabled_01090aa4);
+        }
+        return output;
+    } catch (...) {
+        if (state == 1) { // C5F350: failed concat owns its output cleanup itself.
+            state = 0;
+            destroy_native_string_header_0041dd20(temporary, strings);
+        }
+        if (output_owned) { // C5F358: never retry a failed normal prefix return.
+            output_owned = false;
+            destroy_native_string_header_0041dd20(output, strings);
+        }
+        // If either cleanup throws, its newer exception propagates immediately.
+        // The other branch has no owned action in that state; native double-
+        // exception/FH3 behavior is explicitly outside this source policy.
+        throw;
+    }
+}
 void NativeInstanceCollectingRenderServices::collect_entry_00b1dff0(void* command,void* entry) {
     collect_native_instance_entry_00b1dff0(command,entry,collection_);
 }
