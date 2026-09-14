@@ -64,6 +64,7 @@
 #include <vector>
 
 #include "bsp/gun_aiming.hpp"
+#include "bsp/gun_pending_timers.hpp"
 #include "bsp/gun_platform_arc.hpp"
 #include "bsp/gunnery_tables.hpp"
 #include "bsp/projectile_impact.hpp"
@@ -138,6 +139,12 @@ struct GameGunRow {
     float muzzle_speed{0.0f};
     float water_travel_speed{0.0f};   // MTorpedo classDesc+0E4h, 008566B0
     float swim_speed{0.0f};           // record+470h, WaterTravelSpeed * 0.6
+    // gun+120h/+124h, the list 0072AD40 ages at the top of every fixed step.
+    // Nothing in this reconstruction pushes to it yet - the producer was not
+    // found - so it stays empty and the aging sweep is a no-op. It is carried
+    // rather than omitted so the shape is in place, and so the counter below
+    // would notice the moment a producer does appear.
+    std::vector<bsp::GunPendingTimerRecord> pending_timers;
     std::vector<bsp::GunFiringArc> arcs;   // platform+3Ch, from `Windows`
     float rest_horz{0.0f};            // "RestAngles[1]", platform+94h
     float rest_vert{0.0f};            // "RestAngles[2]", platform+90h
@@ -262,6 +269,10 @@ struct GameGunnerySummary {
     unsigned long long contact_admit_ship{0};
     unsigned long long contact_admit_plane{0};
     unsigned long long bullet_ranges_derived{0};   // 006E9890 gave the gun a range
+    // 0072AD40's sweep. Both stay 0 while no producer fills gun+120h; a
+    // non-zero `live` is the first sign that one has appeared.
+    unsigned long long gun_pending_timers_expired{0};
+    unsigned long long gun_pending_timers_live{0};
     unsigned long long torpedo_ranges_derived{0};
     unsigned long long torpedo_swims_started{0};   // water crossings that became a swim
     unsigned long long torpedo_heading_snaps{0};   // 007F6190 snapped the heading onto a window edge

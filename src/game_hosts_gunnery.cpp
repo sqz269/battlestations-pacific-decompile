@@ -1161,8 +1161,17 @@ public:
         owner_.record("Gun::stop_firing_0072b4c0", 0x0072b4c0u);
     }
     void release_effect_ref() override {}
-    void base_tick_0072ad40(float) override {
-        owner_.record("Gun::base_tick_0072ad40", 0x0072ad40u);
+    // 0072D18C, the first thing the gun does each step: age the list at
+    // gun+120h and drop the records whose countdown has gone strictly negative.
+    // docs/GUN_BASE_TICK.md. The list has no producer in this reconstruction,
+    // so the sweep is a no-op today; the counter says so out loud rather than
+    // letting an always-zero look like a working path.
+    void base_tick_0072ad40(float dt) override {
+        GameGunRow& row = owner_.guns[gun_];
+        owner_.summary.gun_pending_timers_expired +=
+            bsp::gun_age_pending_timers_0072ad40(row.pending_timers, dt);
+        owner_.summary.gun_pending_timers_live += row.pending_timers.size();
+        owner_.done("Gun::base_tick_0072ad40", 0x0072ad40u);
     }
     void set_barrel_reload_timer_0072cf00(int index, float value) override {
         GameGunRow& row = owner_.guns[gun_];
@@ -2161,9 +2170,11 @@ void GameGunneryHost::report() {
         s.assigns_from_recon ? s.recon_reach_fraction_sum / double(s.assigns_from_recon) : 0.0,
         s.arm_assigns_beyond_half, s.recon_assigns_beyond_half);
     host.log.notef("summary mission gunnery torpedo_ranges_derived=%llu "
-        "swims_started=%llu snaps=%llu bullet_ranges_derived=%llu",
+        "swims_started=%llu snaps=%llu bullet_ranges_derived=%llu "
+        "base_tick_timers_live=%llu expired=%llu",
         s.torpedo_ranges_derived, s.torpedo_swims_started,
-        s.torpedo_heading_snaps, s.bullet_ranges_derived);
+        s.torpedo_heading_snaps, s.bullet_ranges_derived,
+        s.gun_pending_timers_live, s.gun_pending_timers_expired);
     host.log.notef("summary mission gunnery contacts considered=%llu side=%llu "
         "invisible=%llu dead=%llu kind=%llu admit_ship=%llu admit_plane=%llu",
         s.contact_considered, s.contact_reject_side, s.contact_reject_visible,
