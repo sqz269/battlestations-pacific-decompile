@@ -341,3 +341,16 @@ A second item flagged by the same packet: the framing that `node->vtable[0Ch]` a
 part-hit array at `record+3Ch` is off by three frames. The chain is
 `0070F090` -> `0098AAE0` -> `0070F720` -> `00723F80` -> `006D2E30`, and `0070F090` allocates
 nothing; `006D2E30` is the allocator.
+
+## Correction from NATIVE_UNIT_PART_COLLISION_AH.md
+
+The complete `00712440` caller is now reconstructed and original-byte fixture
+checked. Only the base list at node+188 (head+18C) publishes its new shape
+addresses into node+D0. Matches in non-base damage rows enter the separate list
+at+194 (head+198), which does not publish here. Both lists contribute aggregate
+bounds. The former description of +194 as the list directly supplying this
+publication was incomplete. Record+0 supplies bounds through `00723170` and
+becomes shape+24; record+4 is the identity compared with group rows and becomes
+shape+20. These producer relationships alone do not prove the old pointer-class
+labels. The new module also includes the complete local bounds/extent/centre
+setter at `0098A920`; see the linked packet for ABI and validation boundaries.

@@ -45,8 +45,9 @@ inline constexpr std::size_t kTransformedBoxShapeSize = 0x20;
 //   unit part shape: through the explicit node pointer at +1Ch (00724525, 0072452C)
 //   transformed box: at this+70h and this+B0h, which are node+50h and node+90h
 
-// The std::list of shapes a collision node owns. The installer republishes the
-// address of each element value into the inline array.
+// The non-base group shape list. Complete 00712440 routes matches in damage
+// rows >=1 here; its base list at +188 (head+18C) publishes inline pointers.
+// Both lists contribute local bounds. See NATIVE_UNIT_PART_COLLISION_AH.md.
 inline constexpr std::size_t kCollisionNodeOffShapeListProxy = 0x194; // 0071276E, 0074720C
 inline constexpr std::size_t kCollisionNodeOffShapeListHead = 0x198;  // 0071275E, 00747206
 inline constexpr std::size_t kCollisionNodeOffShapeSource = 0x160;    // 00712451
@@ -204,8 +205,8 @@ inline constexpr std::size_t kTickableEntityOffNode = 0x1C4;     // 0092B2B3, 00
 inline constexpr std::size_t kSubobjectOwnerOffShape = 0x344;    // 00883F94, 004F1206
 inline constexpr std::size_t kSubobjectOwnerOffNode = 0x1E4;     // 00883F8E
 
-// FUN_00712440's publish loop, 00712700-00712758: the unit part's node walks the
-// shape list it owns, gives each element its bounds and publishes the element
+// FUN_00712440's base-list publication, 00712700-00712758: the unit part's node
+// gives the newly appended +188-list element its bounds and publishes its
 // address. Returns the number published. coverage: partial, the record decode
 // that fills the list is unread.
 int install_unit_part_shapes(std::uint32_t node, CollisionNodeShapeArray& array,

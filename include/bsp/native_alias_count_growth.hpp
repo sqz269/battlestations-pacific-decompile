@@ -38,4 +38,8 @@ void grow_native_alias_list_count_004ce780(void* actual_owner, std::uint32_t inc
 // Both full bodies and FH3 maps agree after address/bound normalization.
 void grow_native_unit_registry_count_004cee30(void* actual_owner, std::uint32_t increment);
 
+// 00711ED0..00711F62: same checked count/length-error lifetime, limit 06666666
+// for 28h shape values. The allocator's 30h linked node size is not this bound.
+void grow_native_unit_part_shape_count_00711ed0(void* actual_owner, std::uint32_t increment);
+
 } // namespace bsp
