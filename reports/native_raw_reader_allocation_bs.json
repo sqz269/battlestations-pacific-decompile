@@ -1812,7 +1812,7 @@
     "table": "E16478 pairs(pointer,type), stride8; lock/unlock bodies use current pointer.",
     "lock": "C11C21 lazy initializes if null; zero invokes BFBA09(11h), then if it returns reloads current pointer and EnterCriticalSection.",
     "unlock": "C11B31 reloads indexed pointer and LeaveCriticalSection; no private lock/no added null check.",
-    "lazy_allocate": "C11B5E checks native heap then C0481A(18h) before lock10; allocation failure BFFB8B/store12 returns0.",
+    "lazy_allocate": "C11B5E checks native heap, computes indexed slot, then reads it at C11B9C; nonnull selects EAX=1 at C11BA0 and jumps to epilog before allocation/lock10. Only null calls C0481A(18h) before lock10; allocation failure BFFB8B/store12 returns0.",
     "lazy_order": [
       "acquire lock10",
       "arm state0",
@@ -1832,7 +1832,22 @@
     "exception_limit": "Only unlock10 is supplied while armed; no invented candidate free, errno store or rollback on thrown path.",
     "scope": "E03678 -> C11C18",
     "C17653_reuse": "BP197-byte wrapper; selects/caches actual API outside try; only C0000017 handled, conditional SetLastError8 and return0; other exceptions continue search; exact normal API result; no cacheclear on API0.",
-    "static_startup_reuse": "PTD/lock BP evidence supplies native lock table/static pool order. Full C17653/cache and original bootstrap owner remain incomplete."
+    "static_startup_reuse": "PTD/lock BP evidence supplies native lock table/static pool order. Full C17653/cache and original bootstrap owner remain incomplete.",
+    "existing_slot_fast_path": {
+      "compare": "00c11b9c",
+      "null_branch": "00c11b9e -> 00c11ba4",
+      "nonnull_result": "00c11ba0 EAX=EDI=1",
+      "epilog_jump": "00c11ba2 -> 00c11c12",
+      "skips": [
+        "C0481A allocation",
+        "lock10 acquisition",
+        "C17653 initialization",
+        "candidate free",
+        "new pointer publication"
+      ],
+      "heap_check_precedes_it": true,
+      "physical_source": "local/raw_reader_allocation_bs/decoded_00C11B5E.txt"
+    }
   },
   "malloc_crt": {
     "body": "C0481A64B",
@@ -2211,27 +2226,28 @@
   },
   "document": {
     "path": "docs/NATIVE_RAW_READER_ALLOCATION_BS.md",
-    "size": 16400,
-    "sha256": "5455530ac36c2aaa08693cac71b702d4ef45770cdbed9a621b146ffb61b25a8d",
-    "sha512": "2d7000be11a95787794170815fa669938dcdf0a458e10cdfb910a3aa7b85993e78c55e39c34ab69e26d9d40ba638f0e8ba1aa9caf2db7c423d33d734a5426bc0"
+    "size": 16594,
+    "sha256": "1117976fcf82fb70fd29547db028d45123ef5caa2d6f5df23dfa47139fd79218",
+    "sha512": "a6eed88df6ca27038dc56a95087e185b74e545a2e54999d5d6477268f76bc3b9f78101566d78e62d75f786ca7139ce2a12fa3de56ac0c41665c9e438b8474668"
   },
   "mutations": "Only new owned discovery doc/report; ignored local evidence and lease bookkeeping. No source/tools/Ghidra changes or push.",
   "inventory_passes": {
     "equal": true,
-    "file_count_each": 1250,
+    "file_count_each": 1257,
     "pass1": {
-      "path": "local/raw_reader_allocation_bs/inventory_pass1.json",
-      "size": 475811,
-      "sha256": "b838d976f3fb220c4c253e63ceaaf531a35a8f302b27ad21f6f4e9e80d61598d",
-      "sha512": "fded8aa127d150bb72c37cf1dd1cb28715c6cd898ea460426d531b841883867df3c02bbf73039eeaebdb0d77170a4987484cb1730c6ef1b7e4b5b4b14bb8ff4c"
+      "path": "local/raw_reader_allocation_bs_review_fix/inventory_pass1.json",
+      "size": 478135,
+      "sha256": "de4d3d814768cf8fbf159d60c0b099a775a0b268d62aec4dbbdb2489fd454e8c",
+      "sha512": "99314725d9d09553549e8186766b451a514a18b129c1da5d0a2fea8ff76461963ce86fe834ea1f68cdf560e7da18f69471da7db66480401823a6d87039e91f3b"
     },
     "pass2": {
-      "path": "local/raw_reader_allocation_bs/inventory_pass2.json",
-      "size": 475811,
-      "sha256": "b838d976f3fb220c4c253e63ceaaf531a35a8f302b27ad21f6f4e9e80d61598d",
-      "sha512": "fded8aa127d150bb72c37cf1dd1cb28715c6cd898ea460426d531b841883867df3c02bbf73039eeaebdb0d77170a4987484cb1730c6ef1b7e4b5b4b14bb8ff4c"
+      "path": "local/raw_reader_allocation_bs_review_fix/inventory_pass2.json",
+      "size": 478135,
+      "sha256": "de4d3d814768cf8fbf159d60c0b099a775a0b268d62aec4dbbdb2489fd454e8c",
+      "sha512": "99314725d9d09553549e8186766b451a514a18b129c1da5d0a2fea8ff76461963ce86fe834ea1f68cdf560e7da18f69471da7db66480401823a6d87039e91f3b"
     },
-    "method": "Whole-file SHA256/SHA512 pass then independent chunked pass; exact complete local path set checked; final inventory includes both manifest files."
+    "original_manifests_unchanged": true,
+    "method": "Frozen original whole-local tree plus additive review-fix tree, excluding only new two manifests during scans; final report includes those manifests too."
   },
   "local_artifacts": [
     {
@@ -9745,6 +9761,85 @@
       "size": 509,
       "sha256": "3cf2bb41ad488535679688dd4278d30bd2e0f5bbaeeee375d438c3411655c25e",
       "sha512": "f09bca2778a65c884591830d9f4c25d64484b389064935af3f63225c1973c2647a63e82f394528d99254496e685284c2da4ee0148f060146609df2f2f976c94c"
+    },
+    {
+      "path": "local/raw_reader_allocation_bs_review_fix/apply_review.py",
+      "size": 3899,
+      "sha256": "848c4d4137bbbed73de6c6bfcaca4071c9aadda65c7daad274d8488e4e86c3c1",
+      "sha512": "5593a6ae3ab5fa85d04dc75fb93475f47dde59003f976d79de529444e7d3e643d0d9f6071db4b63e886ac16007c60b8e72d6807594efcf8bb9c97d2c42610e4d"
+    },
+    {
+      "path": "local/raw_reader_allocation_bs_review_fix/commit_message.txt",
+      "size": 370,
+      "sha256": "0fc8d0f6b29447df20f58d57847879f91529aca5c12be898ecd84950f00a8e60",
+      "sha512": "3abf0750c97037262860244b63041485e24d5ea8eb79ae99af9eb6b6c9005d9db326d959b32a96d67879b200f6a6cc751c6afa51790a39b8d1d367ecf0a51a01"
+    },
+    {
+      "path": "local/raw_reader_allocation_bs_review_fix/inventory_pass1.json",
+      "size": 478135,
+      "sha256": "de4d3d814768cf8fbf159d60c0b099a775a0b268d62aec4dbbdb2489fd454e8c",
+      "sha512": "99314725d9d09553549e8186766b451a514a18b129c1da5d0a2fea8ff76461963ce86fe834ea1f68cdf560e7da18f69471da7db66480401823a6d87039e91f3b"
+    },
+    {
+      "path": "local/raw_reader_allocation_bs_review_fix/inventory_pass2.json",
+      "size": 478135,
+      "sha256": "de4d3d814768cf8fbf159d60c0b099a775a0b268d62aec4dbbdb2489fd454e8c",
+      "sha512": "99314725d9d09553549e8186766b451a514a18b129c1da5d0a2fea8ff76461963ce86fe834ea1f68cdf560e7da18f69471da7db66480401823a6d87039e91f3b"
+    },
+    {
+      "path": "local/raw_reader_allocation_bs_review_fix/revision.json",
+      "size": 2345,
+      "sha256": "5224a856904fe6d0d0e36253de8fcaf1108becf98192b62fbb4b4b4a9724d89f",
+      "sha512": "cfd99c4e6619a57a8c000df16e364a3303cee9893c924195eeee3a0d6e458e1fe580f634eae6d57db05530fff7f460e215fe5fef3b3469ba9d1f3f625d2b2813"
+    },
+    {
+      "path": "local/raw_reader_allocation_bs_review_fix/v1_document.md",
+      "size": 16400,
+      "sha256": "5455530ac36c2aaa08693cac71b702d4ef45770cdbed9a621b146ffb61b25a8d",
+      "sha512": "2d7000be11a95787794170815fa669938dcdf0a458e10cdfb910a3aa7b85993e78c55e39c34ab69e26d9d40ba638f0e8ba1aa9caf2db7c423d33d734a5426bc0"
+    },
+    {
+      "path": "local/raw_reader_allocation_bs_review_fix/v1_report.json",
+      "size": 561943,
+      "sha256": "80bd37cdbfca475eb2291757412476d83bd13be9c9e6b04713b495af7e404ec1",
+      "sha512": "26433e25590f5dfe482a2b2bd93c5bf16de061506336a95a05f92b32b0fa114ef3694422d02a0fd605fecab7c855447e5d57d1322de81bfef24716720c860ae0"
     }
-  ]
+  ],
+  "review_revision": {
+    "reason": "Independent reviewer identified omitted already-populated slot fast path; no byte/source/tool change.",
+    "reviewer": "/root/raw_node_lifetime_frontier_bh",
+    "original_commit": "10ccd9c95a1bcd04da46db5e1b5bb64b5334fef6",
+    "original_report": {
+      "path": "local/raw_reader_allocation_bs_review_fix/v1_report.json",
+      "size": 561943,
+      "sha256": "80bd37cdbfca475eb2291757412476d83bd13be9c9e6b04713b495af7e404ec1",
+      "sha512": "26433e25590f5dfe482a2b2bd93c5bf16de061506336a95a05f92b32b0fa114ef3694422d02a0fd605fecab7c855447e5d57d1322de81bfef24716720c860ae0"
+    },
+    "original_document": {
+      "path": "local/raw_reader_allocation_bs_review_fix/v1_document.md",
+      "size": 16400,
+      "sha256": "5455530ac36c2aaa08693cac71b702d4ef45770cdbed9a621b146ffb61b25a8d",
+      "sha512": "2d7000be11a95787794170815fa669938dcdf0a458e10cdfb910a3aa7b85993e78c55e39c34ab69e26d9d40ba638f0e8ba1aa9caf2db7c423d33d734a5426bc0"
+    },
+    "original_local_artifacts_unchanged": 1252,
+    "old_lazy_allocate": "C11B5E checks native heap then C0481A(18h) before lock10; allocation failure BFFB8B/store12 returns0.",
+    "current_lazy_allocate": "C11B5E checks native heap, computes indexed slot, then reads it at C11B9C; nonnull selects EAX=1 at C11BA0 and jumps to epilog before allocation/lock10. Only null calls C0481A(18h) before lock10; allocation failure BFFB8B/store12 returns0.",
+    "old_inventory_passes": {
+      "equal": true,
+      "file_count_each": 1250,
+      "pass1": {
+        "path": "local/raw_reader_allocation_bs/inventory_pass1.json",
+        "size": 475811,
+        "sha256": "b838d976f3fb220c4c253e63ceaaf531a35a8f302b27ad21f6f4e9e80d61598d",
+        "sha512": "fded8aa127d150bb72c37cf1dd1cb28715c6cd898ea460426d531b841883867df3c02bbf73039eeaebdb0d77170a4987484cb1730c6ef1b7e4b5b4b14bb8ff4c"
+      },
+      "pass2": {
+        "path": "local/raw_reader_allocation_bs/inventory_pass2.json",
+        "size": 475811,
+        "sha256": "b838d976f3fb220c4c253e63ceaaf531a35a8f302b27ad21f6f4e9e80d61598d",
+        "sha512": "fded8aa127d150bb72c37cf1dd1cb28715c6cd898ea460426d531b841883867df3c02bbf73039eeaebdb0d77170a4987484cb1730c6ef1b7e4b5b4b14bb8ff4c"
+      },
+      "method": "Whole-file SHA256/SHA512 pass then independent chunked pass; exact complete local path set checked; final inventory includes both manifest files."
+    }
+  }
 }
