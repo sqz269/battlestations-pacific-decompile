@@ -32,3 +32,11 @@ the full raw container shutdown was absent was incomplete. Cross-branch review
 is required before implementing further overlapping dependencies. This packet
 does not claim to reconstruct the native private FH3 frame, validate a complete
 mixed-owner shutdown, or run gameplay.
+
+## Primary integration validation
+
+Exact source `34faf91589a7c206df139d06561d084f0b2d38e6` passed MSVC Win32 Release and both existing math CTests with 2607 unchanged tracked inputs and a clean tree before/after. Complete13-byte COMDAT replaces native first10-byte absolute publication store with6-byte MOV[EDX],0; remaining7 bytes identical, zero relocations. Publication clear precedes owner CE3818 store.
+
+A focused raw source composition probe passed normal cleanup and throwing-sink cleanup with actual source storage, real Win32 decrement, and explicitly supplied fixture table/sink slots. Its exact cases and limits are in the companion report. No native parent bytes or concrete native particle terminal ran. Generated secondary initial count load+3Fh precedes host state0 arm+42h; inlined owner array count load+5Eh precedes state1 arm+61h. Native arms before child loads. Completed C++ throwing-call cleanup is preserved; asynchronous hardware faults and native private FH3/double-unwind delivery are excluded.
+
+CU/CW branch-local raw-absence conclusions are superseded by CW2. All eight native bodies already exist in orch5 native_sampler_owner_lifetime source abfc4761e44ab10204871d37618fca226fabb9bd, audited immutable4f5258f36f46bb4cb313f7094391aaa7d6fd80d2. Local missing full-function rows do not grant new credit.

@@ -51,3 +51,11 @@ unresolved cache/sink profiles, fresh concrete particle destruction, complete
 singleton-manager terminal composition and gameplay remain separate validation
 requirements. The companion report records native spans, calls, source/provider
 hashes, exact build, generated-code review and any focused execution evidence.
+
+## Primary integration validation
+
+Exact source `34faf91589a7c206df139d06561d084f0b2d38e6` passed MSVC Win32 Release and both existing math CTests with 2607 unchanged tracked inputs and a clean tree before/after. Sink capture precedes current cache profile/slot10, CV current-IAT/current-sink-slot0 dispatch, then fresh count/data and D45A0 followed by single ADD memory decrement. Secondary guard disarms before normal second resize/free; owner base guard disarms before CX publication/base leaf. Public scalar18-byte adapter passes address of original flags; private41-byte helper calls owner destructor then reads byte at+14h, tests bit0 and conditionally frees. Secondary8-byte SUB ECX,4/JMP preserves the same flags slot. Compiler inlines release-all into secondary and secondary into owner; all helper/cleanup/EH listings reviewed.
+
+A focused raw source composition probe passed normal cleanup and throwing-sink cleanup with actual source storage, real Win32 decrement, and explicitly supplied fixture table/sink slots. Its exact cases and limits are in the companion report. No native parent bytes or concrete native particle terminal ran. Generated secondary initial count load+3Fh precedes host state0 arm+42h; inlined owner array count load+5Eh precedes state1 arm+61h. Native arms before child loads. Completed C++ throwing-call cleanup is preserved; asynchronous hardware faults and native private FH3/double-unwind delivery are excluded.
+
+CU/CW branch-local raw-absence conclusions are superseded by CW2. All eight native bodies already exist in orch5 native_sampler_owner_lifetime source abfc4761e44ab10204871d37618fca226fabb9bd, audited immutable4f5258f36f46bb4cb313f7094391aaa7d6fd80d2. Local missing full-function rows do not grant new credit.

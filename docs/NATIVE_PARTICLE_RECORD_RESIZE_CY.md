@@ -46,3 +46,11 @@ current name header, then rereads current vector data and computes the
 placement address before rethrowing. Native `00401130` is a RET-only target;
 CY supplies no stub or array cleanup. The host C++ catch cannot claim original
 FH3/SEH fault handling, cleanup-exception identity, or game validation.
+
+## Primary integration validation
+
+Exact source `34faf91589a7c206df139d06561d084f0b2d38e6` passed MSVC Win32 Release and both existing math CTests with 2607 unchanged tracked inputs and a clean tree before/after. Original public requested-count slot forwarded by21-byte adapter. Private317-byte section includes53-byte catch slice; do not count catch twice. Reserve uses entry bound; current count/data reloads, nonnull sentinel construction and post-call public-bound reload, descending tail writes retain untouched+8/+28. Shrink uses single memory ADD and current count/data. Catch destroys retained name, freshly reads vector data and computes captured-index placement address before rethrow; original401130 is RET-only. Ten generated extraction rows match worker code and normalized relocations.
+
+A focused raw source composition probe passed normal cleanup and throwing-sink cleanup with actual source storage, real Win32 decrement, and explicitly supplied fixture table/sink slots. Its exact cases and limits are in the companion report. No native parent bytes or concrete native particle terminal ran. Generated secondary initial count load+3Fh precedes host state0 arm+42h; inlined owner array count load+5Eh precedes state1 arm+61h. Native arms before child loads. Completed C++ throwing-call cleanup is preserved; asynchronous hardware faults and native private FH3/double-unwind delivery are excluded.
+
+CU/CW branch-local raw-absence conclusions are superseded by CW2. All eight native bodies already exist in orch5 native_sampler_owner_lifetime source abfc4761e44ab10204871d37618fca226fabb9bd, audited immutable4f5258f36f46bb4cb313f7094391aaa7d6fd80d2. Local missing full-function rows do not grant new credit.
