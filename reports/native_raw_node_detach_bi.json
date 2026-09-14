@@ -1,7 +1,8 @@
 {
   "packet": "orch2_raw_node_detach_bi",
-  "base": "3d6f645b",
-  "status": "complete_source_within_two_profile_domain_strict_build_and_focused_fixture_passed",
+  "base": "cd9fbdbc",
+  "initial_source_base": "3d6f645b",
+  "status": "complete_source_with_explicit_two_profile_domain_rejection_strict_build_and_same_focused_fixture_passed",
   "original_abi_replacement": false,
   "game_validated": false,
   "ghidra_mutated": false,
@@ -236,15 +237,15 @@
     "inputs": [
       {
         "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-raw-node-detach-bi\\src\\native_raw_node_detach.cpp",
-        "size": 3181,
-        "sha256": "ffde1194923272ca210fc139219189d21fe5135f2a523098655affe659ed206d",
-        "sha512": "8859ca31314eaf999feaa9fb3ea895da2cb0ca2ffb0f396ee0a783499478fe45b0a23675cdca33baedb1afafe398fee24cc21644f35f1dc919e89023fef985b4"
+        "size": 3451,
+        "sha256": "c9579f3b859093380ea681e407c9dc0e426e26098d93a84b32cbfa0c322fb9dd",
+        "sha512": "18356a0735738a88322dbf72f4c97bce7613f29ca82a0123cb750444b0f88c1b2c1c6d8305f49f100d2f3f5f28a12dccf2ef71afd0f5c449ef9c4e7d50456020"
       },
       {
         "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-raw-node-detach-bi\\include\\bsp\\native_raw_node_detach.hpp",
-        "size": 1997,
-        "sha256": "d73017e2801354588614c4dfa5df5ec20ce24847fae5b6138b17e95ce435fe0e",
-        "sha512": "87abce09f99bc6dcf09387c36b8f6af16afda54216dbdae0b2eca04ce09de02d5b68a252d1e65f700cea9a1739db908850491b0f3e6ca365d0332973ef17b455"
+        "size": 2232,
+        "sha256": "e4f5ec49eedb7cc07f20b8c652c6e2e0ee8f0b3bdccf8b8c6563d7585ea81533",
+        "sha512": "dd2cc3aaf79fe7efe5b66397e5201b0ab90db1f1fd31a742dce08aeda8d615ff5aaa1d60bfc30e0383bf109a74e7919ae08c2df7cadb17573c8874d870cb12fd"
       },
       {
         "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-raw-node-detach-bi\\src\\native_filestore_open.cpp",
@@ -303,9 +304,9 @@
       "read": {
         "tlog": {
           "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-raw-node-detach-bi\\build\\win32\\bsp_core.dir\\Release\\bsp_core.tlog\\CL.read.1.tlog",
-          "size": 35569832,
-          "sha256": "70557dec9090d532616c0ab59be3a63c15b5a2eb10f1a995cc9071a39923a308",
-          "sha512": "230a39d1a36b774f5057597f743457e3b606ed3ef437891a025ee65b71317fa2b24fec6ff088a291283f2b3b203e87c14aea1a97baceb079e7c5382c77329aec"
+          "size": 35584456,
+          "sha256": "111edd5651b370d5ebfa4d039fa303663aabfaa8c36d98f47acaee7b16389260",
+          "sha512": "1936905cc59a859ccc20aa19edb75ea6c4f3e9cda8c5101f2d722c5a34b98b30f8392f13930c5a97f7b6e899c0f056811b82c6e5c6214176a0db515fae9f9296"
         },
         "binding": [
           "^J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-ORCH2-RAW-NODE-DETACH-BI\\SRC\\NATIVE_RAW_NODE_DETACH.CPP",
@@ -326,13 +327,91 @@
           "C:\\PROGRAM FILES (X86)\\WINDOWS KITS\\10\\INCLUDE\\10.0.26100.0\\UCRT\\STDDEF.H",
           "C:\\PROGRAM FILES (X86)\\WINDOWS KITS\\10\\INCLUDE\\10.0.26100.0\\UCRT\\CORECRT.H",
           "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\XTR1COMMON",
-          "J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-ORCH2-RAW-NODE-DETACH-BI\\INCLUDE\\BSP\\NATIVE_PHYSICAL_STREAM_CONVERSION.HPP"
+          "J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-ORCH2-RAW-NODE-DETACH-BI\\INCLUDE\\BSP\\NATIVE_PHYSICAL_STREAM_CONVERSION.HPP",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\STDEXCEPT",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\EXCEPTION",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\YVALS.H",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\__MSVC_DOOM_CORE.HPP",
+          "C:\\PROGRAM FILES (X86)\\WINDOWS KITS\\10\\INCLUDE\\10.0.26100.0\\UCRT\\CRTDBG.H",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\VCRUNTIME_NEW_DEBUG.H",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\VCRUNTIME_NEW.H",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\CRTDEFS.H",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\USE_ANSI.H",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\CSTDLIB",
+          "C:\\PROGRAM FILES (X86)\\WINDOWS KITS\\10\\INCLUDE\\10.0.26100.0\\UCRT\\MATH.H",
+          "C:\\PROGRAM FILES (X86)\\WINDOWS KITS\\10\\INCLUDE\\10.0.26100.0\\UCRT\\CORECRT_MATH.H",
+          "C:\\PROGRAM FILES (X86)\\WINDOWS KITS\\10\\INCLUDE\\10.0.26100.0\\UCRT\\STDLIB.H",
+          "C:\\PROGRAM FILES (X86)\\WINDOWS KITS\\10\\INCLUDE\\10.0.26100.0\\UCRT\\CORECRT_MALLOC.H",
+          "C:\\PROGRAM FILES (X86)\\WINDOWS KITS\\10\\INCLUDE\\10.0.26100.0\\UCRT\\CORECRT_SEARCH.H",
+          "C:\\PROGRAM FILES (X86)\\WINDOWS KITS\\10\\INCLUDE\\10.0.26100.0\\UCRT\\CORECRT_WSTDLIB.H",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\LIMITS.H",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\TYPE_TRAITS",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\BIN\\HOSTX64\\X86\\1033\\CLUI.DLL",
+          "C:\\PROGRAM FILES (X86)\\WINDOWS KITS\\10\\INCLUDE\\10.0.26100.0\\UCRT\\MALLOC.H",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\VCRUNTIME_EXCEPTION.H",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\EH.H",
+          "C:\\PROGRAM FILES (X86)\\WINDOWS KITS\\10\\INCLUDE\\10.0.26100.0\\UCRT\\CORECRT_TERMINATE.H",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\XSTRING",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\__MSVC_SANITIZER_ANNOTATE_CONTAINER.HPP",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\__MSVC_STRING_VIEW.HPP",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\IOSFWD",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\CSTDIO",
+          "C:\\PROGRAM FILES (X86)\\WINDOWS KITS\\10\\INCLUDE\\10.0.26100.0\\UCRT\\STDIO.H",
+          "C:\\PROGRAM FILES (X86)\\WINDOWS KITS\\10\\INCLUDE\\10.0.26100.0\\UCRT\\CORECRT_WSTDIO.H",
+          "C:\\PROGRAM FILES (X86)\\WINDOWS KITS\\10\\INCLUDE\\10.0.26100.0\\UCRT\\CORECRT_STDIO_CONFIG.H",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\CSTRING",
+          "C:\\PROGRAM FILES (X86)\\WINDOWS KITS\\10\\INCLUDE\\10.0.26100.0\\UCRT\\STRING.H",
+          "C:\\PROGRAM FILES (X86)\\WINDOWS KITS\\10\\INCLUDE\\10.0.26100.0\\UCRT\\CORECRT_MEMORY.H",
+          "C:\\PROGRAM FILES (X86)\\WINDOWS KITS\\10\\INCLUDE\\10.0.26100.0\\UCRT\\CORECRT_MEMCPY_S.H",
+          "C:\\PROGRAM FILES (X86)\\WINDOWS KITS\\10\\INCLUDE\\10.0.26100.0\\UCRT\\ERRNO.H",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\VCRUNTIME_STRING.H",
+          "C:\\PROGRAM FILES (X86)\\WINDOWS KITS\\10\\INCLUDE\\10.0.26100.0\\UCRT\\CORECRT_WSTRING.H",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\CWCHAR",
+          "C:\\PROGRAM FILES (X86)\\WINDOWS KITS\\10\\INCLUDE\\10.0.26100.0\\UCRT\\WCHAR.H",
+          "C:\\PROGRAM FILES (X86)\\WINDOWS KITS\\10\\INCLUDE\\10.0.26100.0\\UCRT\\CORECRT_WCONIO.H",
+          "C:\\PROGRAM FILES (X86)\\WINDOWS KITS\\10\\INCLUDE\\10.0.26100.0\\UCRT\\CORECRT_WCTYPE.H",
+          "C:\\PROGRAM FILES (X86)\\WINDOWS KITS\\10\\INCLUDE\\10.0.26100.0\\UCRT\\CORECRT_WDIRECT.H",
+          "C:\\PROGRAM FILES (X86)\\WINDOWS KITS\\10\\INCLUDE\\10.0.26100.0\\UCRT\\CORECRT_WIO.H",
+          "C:\\PROGRAM FILES (X86)\\WINDOWS KITS\\10\\INCLUDE\\10.0.26100.0\\UCRT\\CORECRT_SHARE.H",
+          "C:\\PROGRAM FILES (X86)\\WINDOWS KITS\\10\\INCLUDE\\10.0.26100.0\\UCRT\\CORECRT_WPROCESS.H",
+          "C:\\PROGRAM FILES (X86)\\WINDOWS KITS\\10\\INCLUDE\\10.0.26100.0\\UCRT\\CORECRT_WTIME.H",
+          "C:\\PROGRAM FILES (X86)\\WINDOWS KITS\\10\\INCLUDE\\10.0.26100.0\\UCRT\\SYS\\STAT.H",
+          "C:\\PROGRAM FILES (X86)\\WINDOWS KITS\\10\\INCLUDE\\10.0.26100.0\\UCRT\\SYS\\TYPES.H",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\INTRIN.H",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\INTRIN0.INL.H",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\SETJMP.H",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\IMMINTRIN.H",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\WMMINTRIN.H",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\NMMINTRIN.H",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\SMMINTRIN.H",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\TMMINTRIN.H",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\PMMINTRIN.H",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\EMMINTRIN.H",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\XMMINTRIN.H",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\MMINTRIN.H",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\ZMMINTRIN.H",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\AMMINTRIN.H",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\MM3DNOW.H",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\XUTILITY",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\__MSVC_ITER_CORE.HPP",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\UTILITY",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\INITIALIZER_LIST",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\CLIMITS",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\XMEMORY",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\LIMITS",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\CFLOAT",
+          "C:\\PROGRAM FILES (X86)\\WINDOWS KITS\\10\\INCLUDE\\10.0.26100.0\\UCRT\\FLOAT.H",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\INTRIN0.H",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\NEW",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\XATOMIC.H",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\XPOLYMORPHIC_ALLOCATOR.H",
+          "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\INCLUDE\\TUPLE"
         ],
         "retained_block": {
           "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-raw-node-detach-bi\\local\\raw_node_detach_bi\\CL.read.source-containing-block.txt",
-          "size": 1767,
-          "sha256": "ffa65e1e545880445405f39b9aaa5ca2cc08026d76209d19f42844fca0da728a",
-          "sha512": "260e0073c7e877d865a79ed057118d623e7fe1b1de787469b5f0df09dfd721359963b7e06d70b46a3e8e54a9d408050743f0a90ea129c05540ec8f382a131599"
+          "size": 9079,
+          "sha256": "37b31c8710b8c6bf624aa29c73dc9c77b180703d69139aea05423f8e562731e6",
+          "sha512": "e223e179aebca553e74986e550150dc276e8a60dbfda0ec412c9f22b3f4f4218f5df7e9b7f0d470b6c1f21a8007cbec326dec06f4c4c6c46e339bf700abbb66f"
         },
         "aggregate_header": false,
         "source_membership_verified": true,
@@ -367,22 +446,22 @@
     },
     "object": {
       "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-raw-node-detach-bi\\build\\win32\\bsp_core.dir\\Release\\native_raw_node_detach.obj",
-      "size": 2346,
-      "sha256": "452c34181cb0d33d6c86feeab4847cfea879733d8ee622badde8b7d32441f0ad",
-      "sha512": "c0a7e50e37249121929088e32f11493a1b7ef4d2739caf6690ab34efb8557ebf8fa1a7baee29ef5f15c523c7a85415b8fcb4d2f7712c88ec02c75ac4ebb87b7f"
+      "size": 11210,
+      "sha256": "edd249bbe4d61f36dfa17062b3cf1e63d2710a08bcaca2676c37b0355b9f8e83",
+      "sha512": "3565816a873472c5f240bc86053a591e2e7ffeb8af4ad88b7b7580d84c92098d63d9bb22471a9d58e591612e80d682f9357dafc78e796a4451ca3cbc267fd5fa"
     },
     "archive": {
       "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-raw-node-detach-bi\\build\\win32\\Release\\bsp_core.lib",
-      "size": 56773298,
-      "sha256": "b72c0da908f993ae600a83292011c2eab0601bb49e4546284d831b30aaa48b03",
-      "sha512": "7a01ff6c049f9b2a7c6915176438c9076eec73ab44e48cf21389f2bda1a2912154f072b3f93a8b3adf149899862562cb9f2925f8178f4ae141fc345d883d8aba"
+      "size": 56782516,
+      "sha256": "6a5336e22d74a349990adc71b11e6852052a0a87a7fb06fa36169fcdcd4edc5f",
+      "sha512": "bf51058af6f6bbebc27792e2f05a1c8b58e8ccd2576ef6c70d1c12ab2af2e774e1b6bcd3c609ec528d165fdea4acbce12760dcd12b8ecaced79b59b49b895308"
     },
     "unique_member": {
       "name": "bsp_core.dir\\Release\\native_raw_node_detach.obj",
-      "archive_offset": 23679242,
-      "size": 2346,
-      "sha256": "452c34181cb0d33d6c86feeab4847cfea879733d8ee622badde8b7d32441f0ad",
-      "sha512": "c0a7e50e37249121929088e32f11493a1b7ef4d2739caf6690ab34efb8557ebf8fa1a7baee29ef5f15c523c7a85415b8fcb4d2f7712c88ec02c75ac4ebb87b7f",
+      "archive_offset": 23679596,
+      "size": 11210,
+      "sha256": "edd249bbe4d61f36dfa17062b3cf1e63d2710a08bcaca2676c37b0355b9f8e83",
+      "sha512": "3565816a873472c5f240bc86053a591e2e7ffeb8af4ad88b7b7580d84c92098d63d9bb22471a9d58e591612e80d682f9357dafc78e796a4451ca3cbc267fd5fa",
       "equals_object": true
     }
   },
@@ -411,7 +490,7 @@
   ],
   "forwarded_result": "BF03E0 returns previous absolute memory cursor bits or full physical BOOL; BE9C40 discards it and explicitly returns reloaded reader pointer after all field updates",
   "validation": {
-    "strict_build": "local/raw_node_detach_bi/build-v2.txt",
+    "strict_build": "local/raw_node_detach_bi/build-v3.txt",
     "flags": [
       "/W4",
       "/WX",
@@ -426,7 +505,7 @@
     "focused_probe": {
       "path": "local/raw_node_detach_bi/detach_probe.cpp",
       "log": "detach_probe.cpp\nparent_remaining=2 declared=8 cursor_delta=3 remaining=0 attached=00000000 path=0 returned_reader=1 untouched_fields=1 passed=1\n",
-      "contract": "One actual memory-source detach case: declared8 remaining3 parent10; verify parent2 cursor+3 remaining0 attachment0 path0 returned reader and preserved unrelated fields",
+      "contract": "Same original actual memory-source detach case: declared8 remaining3 parent10; verify parent2 cursor+3 remaining0 attachment0 path0 returned reader and preserved unrelated fields",
       "scope": "source fixture, not original-game/physical-failure runtime"
     },
     "object_disassembly": "local/raw_node_detach_bi/object-disasm.txt",
@@ -445,16 +524,44 @@
     {
       "failure": "One documentation apply_patch contained an unnecessary unmatched context hunk",
       "correction": "Patch made no changes; reapplied only the intended reader-word wording change"
+    },
+    {
+      "failure": "Two correction apply_patch attempts had unmatched header/metadata contexts and applied no changes",
+      "correction": "Applied edits with the actual contexts"
     }
   ],
   "limitations": [
     "Two context-bearing source interfaces; no native ABI thunks or game-runtime claim",
-    "Only established current D642C0 and D691B0 profiles/slots; mismatches outside input domain with no invented fallback",
+    "Only established current D642C0 and D691B0 profiles/slots; explicit invalid_argument rejects unsupported profile/slot before dispatch as a SOURCE-domain boundary, not native seek failure or native exception behavior",
     "No node/extent/attached/duplicate guard, rollback, Boolean normalization or reference release",
-    "Probe uses independently verified numeric profile fixture and real memory seek source; no physical FALSE runtime fixture",
-    "No existing provider/comparison source or Ghidra mutation; only one deferred source registration",
+    "Probe uses independently verified numeric profile fixture and real memory seek source; no physical FALSE runtime or new rejection-path fixture",
+    "No existing provider/comparison source or Ghidra mutation; original deferred source registration unchanged",
     "Full hierarchy producer still depends on separate name, child-construction and intrusive-lifetime modules"
   ],
+  "correction": {
+    "was": "v1 __assume did not enforce externally read provider profile/slot, permitting unknown profile routing to physical seek",
+    "is": "Explicit current profile and slot comparisons reject unsupported providers with std::invalid_argument before dispatch; actual loads retained",
+    "boundary": "SOURCE-domain qualification only; no native exception/read-failure claim; no node/budget guard or parent-debit rollback"
+  },
+  "primary_v1_retention": {
+    "path": "local/native-raw-node-detach-bi-v1-worker-delivery",
+    "manifest_sha256": "99ace0be4c75020f22df7a6d06f2a3cef8aded21ee0cf39e7d8349847e2c4837",
+    "provenance": "provided by primary reviewer"
+  },
+  "same_probe_source": {
+    "unchanged": true,
+    "sha256": "c798bf66168d8c53be0b51d5f4825b0ba6a94e0880d376310c112198409f568f"
+  },
+  "qualification_object_inspection": {
+    "function": "skip_native_raw_reader_relative_00bf03e0",
+    "memory_profile_compare": "object+2E",
+    "memory_slot_load_compare_reject": "object+46/+4C/+53",
+    "physical_profile_compare_reject": "object+77/+7C/+83",
+    "physical_slot_load_compare_reject": "object+8D/+93/+9A/+A1",
+    "shared_source_boundary_throw": "object+CD",
+    "result_preserved": "memory EAX capture+6D and reload+70; physical provider call+AB followed by stack cleanup/return, no Boolean normalization",
+    "scope": "Source object offsets, not original executable addresses; no rejection runtime case added"
+  },
   "call_verifier": {
     "exit_code": 0,
     "log": "  indirect  report.calls[20]: 00bf03f0 uses CALL through a register or memory operand; the report resolves it to 00bef540 (not verifiable here)\n  indirect  report.calls[21]: 00bf03f0 uses CALL through a register or memory operand; the report resolves it to 00bf4f20 (not verifiable here)\n  indirect  report.calls[22]: native='SetFilePointerEx (IAT00ce22d8)' (not checked)\nJ:\\PROG\\battlestations-pacific-decompile-orch2-raw-node-detach-bi\\reports\\native_raw_node_detach_bi.json: 22 call rows checked, 0 failed\n",
@@ -468,19 +575,25 @@
   "whole_local_inventory": {
     "root": "J:\\PROG\\battlestations-pacific-decompile-orch2-raw-node-detach-bi\\local",
     "double_pass_equal": true,
-    "file_count": 31,
+    "file_count": 39,
     "files": [
       {
         "path": "local\\raw_node_detach_bi\\bindings.py",
         "size": 3857,
-        "sha256": "58d958af2b1cfdf63229431fc82429baf530f70de94cdb5d8949a946028057bb",
-        "sha512": "84c5835711a07d9305a4d05aeb07ceffc8de311d91eb72eab55d96062d4a1233da464a23ca39af532a98266067ac706603f67168d28a5255896c25609234accf"
+        "sha256": "7fea028d569b36d2a22e48c48c12a3185b4e473ce3b79660183eac7991a74017",
+        "sha512": "0101d312682f6efc6b3ae68c72670d872be19f19e17233bdf90d978a85a3a2f131e568c75ff441ec11e6fb017be1e1220b0fe35029ae4f0a5fd237c4e44c350d"
       },
       {
         "path": "local\\raw_node_detach_bi\\build-v2.txt",
         "size": 5865,
         "sha256": "9442973dfba65757b5c47a3288dd51c9e15496116d91957c251870a690901a80",
         "sha512": "6c2a74b2fd0665da4636904f94ca8bf94ce3c5381476acdf23586d227802b2095c3cd7677db2ce527d59cbc0505c385488a1a03bcf7da83d3ca9ad692eff5b90"
+      },
+      {
+        "path": "local\\raw_node_detach_bi\\build-v3.txt",
+        "size": 2650,
+        "sha256": "f8ab7bfa06a97ac79cb7c7f8f73c5f5b8ce39316946b4b9dfbb65bce4ffaaa20",
+        "sha512": "611a4f46459cfa10ba9259460cc3c689e44363a6923d7d27cb7c3e7851208f3a8c1130a5b0b611ce4dbeba3f9076cb51183bf17bd41a921011a9ee3079c8fa31"
       },
       {
         "path": "local\\raw_node_detach_bi\\build.txt",
@@ -496,9 +609,9 @@
       },
       {
         "path": "local\\raw_node_detach_bi\\CL.read.source-containing-block.txt",
-        "size": 1767,
-        "sha256": "ffa65e1e545880445405f39b9aaa5ca2cc08026d76209d19f42844fca0da728a",
-        "sha512": "260e0073c7e877d865a79ed057118d623e7fe1b1de787469b5f0df09dfd721359963b7e06d70b46a3e8e54a9d408050743f0a90ea129c05540ec8f382a131599"
+        "size": 9079,
+        "sha256": "37b31c8710b8c6bf624aa29c73dc9c77b180703d69139aea05423f8e562731e6",
+        "sha512": "e223e179aebca553e74986e550150dc276e8a60dbfda0ec412c9f22b3f4f4218f5df7e9b7f0d470b6c1f21a8007cbec326dec06f4c4c6c46e339bf700abbb66f"
       },
       {
         "path": "local\\raw_node_detach_bi\\CL.write.source-containing-block.txt",
@@ -507,16 +620,28 @@
         "sha512": "e4d69edaa1d916f7822fef1c9cccde3428d35ef2d664b9d46de69cd1db7dc2988ea583b30b92d438b58f94583e0161d6ebed993103d0d112d373fb80f716c8f9"
       },
       {
-        "path": "local\\raw_node_detach_bi\\commit-message.txt",
+        "path": "local\\raw_node_detach_bi\\commit-message-v1.txt",
         "size": 377,
         "sha256": "4cd9f628997b5bdbd7e2ffe356f483238e0b027dec580418ae38324962de388c",
         "sha512": "fa507c99fdd2d18c4a88b6451e7b169918a302ebd3d3fdfc957971fe5349999beb8dcc16067bd8493567c1113eb915722a2141b6b5b353b768351586e515a4a8"
       },
       {
-        "path": "local\\raw_node_detach_bi\\compiler_archive_binding.json",
+        "path": "local\\raw_node_detach_bi\\commit-message.txt",
+        "size": 385,
+        "sha256": "21bb7b0f719c5a134c90d2ddb5bc49ef915c8feb18127a72e87e46b13564dd0a",
+        "sha512": "1dd9715e27ea9fa5b4b2c3a5e58b2874a630dbb13d993d251566241619484369695dc404261b5046ce5978dc1f938108b2dc11d378a651ccd19123b6ce10954b"
+      },
+      {
+        "path": "local\\raw_node_detach_bi\\compiler_archive_binding-v1.json",
         "size": 10797,
         "sha256": "c5fe1a092b438bd0d986016b021e177333770d33894dbfc9faa0b4d2e8f03543",
         "sha512": "a0c7996ac476f8a61c4354afb75560879522f021a14fcd1d4d1cf53e5fcc6fd832efd0e6fdd542d6e6f20125be5dbf14d9dddd80c0c258dd80f427362e0366ff"
+      },
+      {
+        "path": "local\\raw_node_detach_bi\\compiler_archive_binding.json",
+        "size": 19670,
+        "sha256": "58163f5e269e6008bff3612ea49b9fd8a33b951b35874d05ee040f7b92b652ee",
+        "sha512": "38ea379f56b5a252e09a41f9edea3084a9b59018bdadd0362fae8d85a906d806e76808a6918cbe00a1a2c7cd7e8574c8ac9f76b738e66756c035c20e74663f09"
       },
       {
         "path": "local\\raw_node_detach_bi\\current_byte_identity.json",
@@ -580,15 +705,15 @@
       },
       {
         "path": "local\\raw_node_detach_bi\\detach_probe.exe",
-        "size": 21504,
-        "sha256": "5a68f96218db8a8f6abf3773d7b59d2d0529606a32f3232cc1f23c508ff66e4d",
-        "sha512": "29af6090acf3c9963aefa090a1eea8aa009c3c01fd72a76aa1a00190702efd2de308b78f48b56f4ec05ade9dcb9dc9d24ed15d96dca421f2ad5f9979e0c70b81"
+        "size": 23552,
+        "sha256": "8af693cc7cd357e51316c080cf120dbe68b95eb07821d065f53fccb2b4900dfc",
+        "sha512": "033f13d24b6febddcb6abc65fa05957b93831162c87e69cf9e5902cb2c93f6ab7ba777191b3cfeb8bafab37bf6c08fa6b016d7ed72eefd1a1b26001e24f49b90"
       },
       {
         "path": "local\\raw_node_detach_bi\\detach_probe.obj",
         "size": 3134,
-        "sha256": "dd9740f505effd63a9d2bc8dff2a5102d2d0600ceffc729a26e35aa4433f6e31",
-        "sha512": "21b8fdc452dec7b6634f592cee6f7ec00ce5dbbc3a3753f92cbf0d57efb1b0b36a88a0a98b59f3616db1d11ec3a2767dec7f8c29f78a9f9e914204c157c74686"
+        "sha256": "2cce1fcb928091bbf999fcc85388194765293938f6f8afc4e1270d5c6cfe7150",
+        "sha512": "e5a81519e536c537c36dbca237c17dda08eb0f59e388fc3d426c7810056cfe8cbbe11abffb0c64728b43f8ea08f8a3a3de929bd417531a2a1a1d3613d33d5599"
       },
       {
         "path": "local\\raw_node_detach_bi\\native_raw_node_detach_failed_low.cpp",
@@ -597,10 +722,16 @@
         "sha512": "785a939e87df4b2fa3f4fca6924420a747b1d724002f8ff8276122e788dabcb276627a6659c2edac508853e531780d4f11c38d1a092222891e691cf6d648f142"
       },
       {
-        "path": "local\\raw_node_detach_bi\\object-disasm.txt",
+        "path": "local\\raw_node_detach_bi\\object-disasm-v1.txt",
         "size": 11849,
         "sha256": "7fb0dd02e72ae950291e665cb1dbcb682c750f258db35fda1f6f8fb842af7c3c",
         "sha512": "0d1279b4b54da34fa83d8287e0e8ee866cde511696af354eda897014222fc52e36c0720a87fc5f791af1917af41a31823eb8b766fe9a0c1196949c61433ae15c"
+      },
+      {
+        "path": "local\\raw_node_detach_bi\\object-disasm.txt",
+        "size": 26308,
+        "sha256": "aaa450f6159a0e5a634c0a0e03c3f4a504f4217f9d1b8f12793b359d285193e0",
+        "sha512": "1a1829bbd52879c3f0f0e933a60dd503546ed24f783bd5aba18510e1de10dcbe79675780b5d4587e184349ba5d3ad35c0a045c75937403b8749e7f5a880dc916"
       },
       {
         "path": "local\\raw_node_detach_bi\\precompile_inputs.json",
@@ -615,16 +746,34 @@
         "sha512": "35bf8f557c234135aaf0f3be38727f9d3baedc389f4b988fb77d81ca2144173a12ae6ae7b72047c6f42715b69833e0f9b95544f9a572addf31d28176fc8ec916"
       },
       {
+        "path": "local\\raw_node_detach_bi\\precompile_inputs_v3.json",
+        "size": 2676,
+        "sha256": "158fe0c8cae22a8499e6ebd51dfc8f0a86e8f7e7151868f1d4e794f797f53491",
+        "sha512": "a1596eb20444c28073fd68683e988c720918448afa62aea9e1f8d5fe5214bb37059e33d341dfcd151d1089532e649833252dcca6fd17468525f6587f5b113b14"
+      },
+      {
+        "path": "local\\raw_node_detach_bi\\probe-v1.txt",
+        "size": 147,
+        "sha256": "2d3815fd25a4d7679c19fe26c560040e6eb60cae63337145a0f9a81dbb44f115",
+        "sha512": "9217dd8e0fddab50c0c778062e7b2d15c130947c208248a913cc6a7f98b1e64be0f48aa509ad8fe8cefeb2a9efa34e7841c5f5a167860c2937af39048c44cf32"
+      },
+      {
         "path": "local\\raw_node_detach_bi\\probe.txt",
         "size": 147,
         "sha256": "2d3815fd25a4d7679c19fe26c560040e6eb60cae63337145a0f9a81dbb44f115",
         "sha512": "9217dd8e0fddab50c0c778062e7b2d15c130947c208248a913cc6a7f98b1e64be0f48aa509ad8fe8cefeb2a9efa34e7841c5f5a167860c2937af39048c44cf32"
       },
       {
-        "path": "local\\raw_node_detach_bi\\report.py",
+        "path": "local\\raw_node_detach_bi\\report-v1.py",
         "size": 5884,
         "sha256": "32aa190fb7c7509f3f6306a4c96e6b76217acc2c5f39865f4d464c357b237c6e",
         "sha512": "d300cef10a69a5bfc8a9f05ad8a1875765d462c8bf299209274fe08169f45495a134918ec2be1f00cda9215fa30434594bcfd400f210b3404d3ac3c5311932e1"
+      },
+      {
+        "path": "local\\raw_node_detach_bi\\report.py",
+        "size": 7841,
+        "sha256": "daf52363ea36aabc860a4a0d9eb14a513a55271b7ef6ba6831c463c9ae021d0b",
+        "sha512": "62df4cb399de50f5c8b6f92bc918deaaa014c5933fcaa9295f0e9ac54e41b7b945974709517a7c9399043997c260c90949bac1778d963b52cecc572533860c17"
       },
       {
         "path": "local\\raw_node_detach_bi\\run-probe.cmd",
@@ -637,6 +786,12 @@
         "size": 1499,
         "sha256": "3bbdb1561d992cb30c0c07823a7bcded0ac4158643134ad5b46138ead5a542c7",
         "sha512": "8bd71aff3795e1c4d2f4a42ec08d0289330b10a12b2dae0e89a39411c7f137cedf9aa9a11d1a9c49ee303e74836862adf12b178720cd82428499cea1a8de9918"
+      },
+      {
+        "path": "local\\raw_node_detach_bi\\source-report-v1.json",
+        "size": 34710,
+        "sha256": "4d5e0759ea520326e9e9a11c8f6a4a18ea72f01dd6534daa0e96e618c566ef07",
+        "sha512": "abaf443c7d66be610d647068658120f312ab1e0efac4702068b9e60d136966d2b7c39b09ef541cdd9e216d911535ea175d42b4ad362ac90fcf3159406a31a984"
       },
       {
         "path": "local\\raw_node_detach_bi\\verify-seeds.txt",

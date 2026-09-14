@@ -28,8 +28,11 @@ void* skip_and_detach_native_raw_node_00be9c40(const void* actual_wrapper,
     NativeRetainedMemoryOwnerContext&);
 
 // Borrow the existing memory context's original profile words. For physical
-// streams the actual numeric D691B0 words must be readable. Other current
-// profiles/slot identities are outside the domain; there is no invented seek
+// streams the actual numeric D691B0 words must be readable. Unsupported current
+// profiles/slots throw std::invalid_argument before provider dispatch. This is
+// an explicit SOURCE-domain boundary, not recovered native read/seek failure
+// or native exception behavior. It adds no node/attachment/budget guard and
+// does not roll back the prior parent debit. There is no injected seek
 // callback or safe fallback. Existing memory/physical providers are called by
 // their source symbols, never by numeric original table words. No ownership,
 // raw binary ABI, OS-failure fixture, or game-runtime validation is claimed.

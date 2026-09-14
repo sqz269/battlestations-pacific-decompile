@@ -43,9 +43,14 @@ table address, then the existing
 is called. It returns all32 bits of SetFilePointerEx BOOL and writes the OS
 position directly to actual stream+10. No extra physical service context,
 success normalization, manual position update or failure translation is added.
-Unsupported profile/slot identities are outside the source input domain, as
-expressed by the same assumption style as the existing memory dispatcher;
-there is no safe fallback. Numeric original table words are never called.
+Unsupported current profiles and slots are explicitly rejected with
+`std::invalid_argument` before a provider is dispatched. Every original profile
+and slot load remains present. This is a SOURCE-domain boundary, not recovered
+native seek failure or native exception behavior. It adds no node, attachment
+or budget guard and does not roll back a parent debit already performed before
+dispatch. There is no safe fallback, and numeric original table words are never
+called. The earlier v1 assumptions were insufficient to enforce this domain
+and have been replaced with actual comparisons and rejection branches.
 
 The compiled object is inspected for current profile/slot reads, the memory
 source call and EAX capture, no result test after BF03E0's call, and the ordered

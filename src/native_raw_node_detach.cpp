@@ -2,6 +2,8 @@
 #include "bsp/native_filestore_open.hpp"
 #include "bsp/native_physical_stream_conversion.hpp"
 
+#include <stdexcept>
+
 #if !defined(_MSC_VER) || !defined(_M_IX86)
 #error Raw node detach requires MSVC Win32 and actual four-byte pointers.
 #endif
@@ -66,12 +68,15 @@ __declspec(noinline) std::uint32_t skip_native_raw_reader_relative_00bf03e0(
     const auto profile = word(stream);
     if (profile == 0x00d642c0) {
         const auto target = word(memory.actual_stream_profile_00d642c0, 0x1c);
-        __assume(target == 0x00bef540);
+        if (target != 0x00bef540)
+            throw std::invalid_argument("Unimplemented current memory detach seek slot");
         return memory_relative_seek_result(stream, distance_low);
     }
-    __assume(profile == 0x00d691b0);
+    if (profile != 0x00d691b0)
+        throw std::invalid_argument("Unimplemented current raw detach stream profile");
     const auto target = word(reinterpret_cast<const volatile void*>(profile), 0x1c);
-    __assume(target == 0x00bf4f20);
+    if (target != 0x00bf4f20)
+        throw std::invalid_argument("Unimplemented current physical detach seek slot");
     return static_cast<std::uint32_t>(seek_native_physical_stream_00bf4f20(
         stream, distance_low, 0, 1));
 }
