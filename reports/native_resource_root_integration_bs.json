@@ -1,9 +1,9 @@
 {
   "batch": "orch4_native_resource_root_integration_bs",
-  "state": "source_fixture_and_initial_build_passed_combined_revision_pending",
+  "state": "integrated_build_and_actual_service_fixture_passed",
   "branch": "agent/orch4-20260910",
   "base_revision": "600ae3db05a61847094a70f7e01baa2b34d3e10f",
-  "code_revision": null,
+  "code_revision": "95dabdc782c79abbc61097965ec6adc6322e7bff",
   "packets": [
     {
       "packet": "orch4_native_resource_stream_reads_bs",
@@ -29,7 +29,11 @@
     "scope": "Published damage-group production and its unit-part constructor default; script-order ordnance aggregation/issuance projection; plane-flight report correction.",
     "observations": "Incoming code is disjoint from BS source/dependencies. Group-row empty-fill specialization explicitly excludes arbitrary generic containers/native exceptional transfer; report retains paired source/oracle evidence. Script weapon-controller occupancy is projected from plane classification and ordnance from gun records; this integration does not prove equivalence to native squadron storage or gameplay.",
     "independent_native_oracle_or_game_rerun": false,
-    "combined_build": "pending"
+    "combined_build": "passed",
+    "merged_revision": "8a84b78abf21f0cfbb41b32574a3545927ac9d2d",
+    "merge": "clean",
+    "subsequent_review": "8a84b78a adds partial pilot-axis laws with explicit untraced scratch inputs; no BS dependency changed. Incoming interpolation and floating-point projections were not independently verified as native x87 behavior.",
+    "borrowed_native_oracle_and_game_claims_independently_rerun": false
   },
   "validation": {
     "strict_msvc_win32": "passed",
@@ -43,7 +47,10 @@
     "original_body_oracle": false,
     "native_binary_abi_compatible": false,
     "production_resource_load_bound": false,
-    "game_validated": false
+    "game_validated": false,
+    "combined_fixture_modes": 1,
+    "final_library_hash_matches_tested_libraries": true,
+    "controlled_data_reservation": "passed with existing bootstrap"
   },
   "initial_build": {
     "log": {
@@ -57,13 +64,13 @@
   "evidence": [
     {
       "path": "reports/native_resource_stream_reads_bs.json",
-      "sha256": "f7aae1fab41bd98b5e146bfc478e7f2b44d5cb30e014cf79a85c921b4dd1320b",
-      "bytes": 31477
+      "sha256": "e60da702d8c5ddf62aa899c81e20032f0ccfd4ea720b3a1c48ee48aadd488eb3",
+      "bytes": 31741
     },
     {
       "path": "reports/native_resource_root_owner_bs.json",
-      "sha256": "f6f5c8455c63318190e7351a9350c70170a208480e2e57f30b7cddff60f50301",
-      "bytes": 39948
+      "sha256": "9a460e9c7832a5595e326c2ee053c822957ce444f74b91636d5091a653841d59",
+      "bytes": 40212
     },
     {
       "path": "reports/native_resource_root_flow_bs.json",
@@ -81,11 +88,120 @@
       "bytes": 138318
     }
   ],
-  "source_manifest": null,
+  "source_manifest": {
+    "path": "local/native_resource_root_bs/source_95dabdc782c7.json",
+    "sha256": "d42eb6fcade4c781317d06856edf42d6314598dd4bf8428e61516599cf921dd4",
+    "bytes": 284742,
+    "files": 2631
+  },
   "limitations": [
     "No original-body oracle or exception-mode fixture in BS.",
     "Original private stack/EH aliases, native CRT/FH3/SEH and hardware faults remain unproved.",
     "Null temporary destination fallback borrows a mutable cell and is not exercised.",
     "Raw manager/factory/metric/root-dispatch, child traversal, parser registration and production queue/worker/shutdown remain incomplete."
-  ]
+  ],
+  "first_source_revision": "c7d4aeed89e62f3ad267cd1c141062f5f108c790",
+  "primary_build": {
+    "log": {
+      "path": "local/native_resource_root_bs/final_build.log",
+      "sha256": "316eb90bd822fe227ba70052b3c15879cb5d2b19782530506fa931791e3c4261",
+      "bytes": 2484
+    },
+    "core_sha256": "4ee2e66226adf0f6966835b7cf3cf414c3661c3b933d3a93b03924486042444f",
+    "game_sha256": "338faf9013560ceab5abd537d16326a053cf3afbb2fc5fa0afadde99cb3dc740",
+    "configuration": "MSVC Win32 Release",
+    "existing_ctests_passed": 2
+  },
+  "combined_fixture": {
+    "source_commit": "95dabdc782c79abbc61097965ec6adc6322e7bff",
+    "modes": 1,
+    "passed": true,
+    "controlled_child_exit": 0,
+    "note": "The plain integrated fixture hit a fixed-data reservation conflict before testing. The existing suspended-child handoff now reserves exact bands before CRT startup; child output uses its own file because standard handles are deliberately not inherited.",
+    "earlier_combined_source_commit": "91775eb7f1179ba2d42323518610613ccaae7436",
+    "local_artifacts": [
+      {
+        "path": "local/native_resource_root_bs/final/libraries.json",
+        "sha256": "72fee788e8ddd692e36219813012dadbd6f8e7eba0e95966f4915ac1300ff427",
+        "bytes": 1204
+      },
+      {
+        "path": "local/native_resource_root_bs/final/bootstrapped_probe.cpp",
+        "sha256": "cfdd1387b688f4a7e3ab26aa941b333609d0f27b26b4274d97874402fa0cfd83",
+        "bytes": 11964
+      },
+      {
+        "path": "local/native_resource_root_bs/final/compile_bootstrap.cmd",
+        "sha256": "45f1dca080be736ea13557f53de85d398567a7611fdb8741cb94e824e44054ac",
+        "bytes": 681
+      },
+      {
+        "path": "local/native_resource_root_bs/final/compile_bootstrap.log",
+        "sha256": "977466a646a36cdf921703cec74b8a6ea3c8bcf08a2d2d16d5a04cda8541b893",
+        "bytes": 24
+      },
+      {
+        "path": "local/native_resource_root_bs/final/bootstrapped_probe.obj",
+        "sha256": "ba3db7a4ca69c8d720bbb47dc6d78fbc80c73de3f07683956fc3619a118b8447",
+        "bytes": 90744
+      },
+      {
+        "path": "local/native_resource_root_bs/final/bootstrapped_probe.exe",
+        "sha256": "4bb254b29ff87254e0a68c6dc27440c29ea9bf9b7d831e3f5677949d443cee6e",
+        "bytes": 147456
+      },
+      {
+        "path": "local/native_resource_root_bs/final/bootstrapped_probe.log",
+        "sha256": "ae9771b0ea2d8411bb74fb102edc0748d1c150fced169a1d244253a56518c864",
+        "bytes": 434
+      },
+      {
+        "path": "local/native_resource_root_bs/final/child_probe.log",
+        "sha256": "05fa1a424b194a2307a220f7c0c51fac9c8372f26d5a95ce4f22d90ed838d8dc",
+        "bytes": 388
+      }
+    ],
+    "earlier_local_artifacts": [
+      {
+        "path": "local/native_resource_root_bs/combined/libraries.json",
+        "sha256": "868c41630bde825def4a7143e58fcac726fec4f587fed1d742788fc94e85f250",
+        "bytes": 1213
+      },
+      {
+        "path": "local/native_resource_root_bs/combined/bootstrapped_probe.cpp",
+        "sha256": "3b96c9cd86312d8395e901fd78b8cee8f80b6472151d360fe3b3907930620f10",
+        "bytes": 11970
+      },
+      {
+        "path": "local/native_resource_root_bs/combined/compile_bootstrap.cmd",
+        "sha256": "cbc35f12f275a06ad6de079adca6170278c08a8a63cebb318f6ff2766b3383c4",
+        "bytes": 699
+      },
+      {
+        "path": "local/native_resource_root_bs/combined/compile_bootstrap.log",
+        "sha256": "977466a646a36cdf921703cec74b8a6ea3c8bcf08a2d2d16d5a04cda8541b893",
+        "bytes": 24
+      },
+      {
+        "path": "local/native_resource_root_bs/combined/bootstrapped_probe.obj",
+        "sha256": "37afd9b1971d91f97c235dad7af066ed3a259274310281f8191a5879efdb94ef",
+        "bytes": 90764
+      },
+      {
+        "path": "local/native_resource_root_bs/combined/bootstrapped_probe.exe",
+        "sha256": "9fda654d79f7e2d623c6d33bac8616ddd82b4b00dbe4c2d455a880d416782777",
+        "bytes": 147456
+      },
+      {
+        "path": "local/native_resource_root_bs/combined/bootstrapped_probe.log",
+        "sha256": "bc0c98557c8cf711053641db60508e0e14bf6b5f70d071743917adbc5a019e3c",
+        "bytes": 434
+      },
+      {
+        "path": "local/native_resource_root_bs/combined/child_probe.log",
+        "sha256": "05fa1a424b194a2307a220f7c0c51fac9c8372f26d5a95ce4f22d90ed838d8dc",
+        "bytes": 388
+      }
+    ]
+  }
 }

@@ -28,3 +28,5 @@ Detailed evidence and boundaries are in `NATIVE_RESOURCE_STREAM_READS_BS.md`,
 raw manager/factory/metric/root-dispatch composition, child traversal, parser
 singletons/registration, queue update/worker and thread shutdown remain open.
 No original executable or gameplay run is claimed for these fixtures.
+
+Final code revision `95dabdc782c79abbc61097965ec6adc6322e7bff` includes published main `8a84b78abf21f0cfbb41b32574a3545927ac9d2d`. The clean combined Win32 build and both tests passed. The actual-service fixture also passed linked to copied, hash-verified libraries from this exact revision. The source manifest records 2631 exact build inputs. Its integrated harness uses the existing suspended-child reservation/handoff and a child-owned log file, avoiding the observed fixed-band and absent-standard-handle conflicts without changing reconstructed source. All 354 ordinary and 31 EH-support instruction starts, 33 direct transfers, six indirect sites and 20 preserved Ghidra annotations are recorded. Incoming pilot-axis and script-order projections are not certified here as native x87, squadron-storage or gameplay parity.
