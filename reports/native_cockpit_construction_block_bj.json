@@ -12,14 +12,26 @@
     "project": "C:/Users/sqz269/bsp.gpr",
     "program": "/battlestationspacific.exe",
     "identity_guard": "BSP CLI live prototype checks and verify_report_calls Client.verify before analysis",
-    "live_prototypes": ["00B3C800", "00B71AD1"],
+    "live_prototypes": [
+      "00B3C800",
+      "00B71AD1"
+    ],
     "mutations": false,
     "exports_written": false
   },
   "prerequisites": [
-    {"path": "docs/NATIVE_COCKPIT_CONSTRUCTION_COMPOSITION_BG.md", "use": "Full native constructor/EH order; unchanged from prior review except address heading."},
-    {"path": "docs/NATIVE_COCKPIT_REGISTRY_ADMISSION_BH.md", "use": "Protected node credits, canonical identity, token lifetime and capacity accounting; unchanged design revision 33940421."},
-    {"path": "docs/NATIVE_COCKPIT_VIEWPORT_LIFETIME_BH.md", "use": "Two persistent records, native survivors, local replacement identity, semantic/raw borrow distinction and remaining liveness proof."}
+    {
+      "path": "docs/NATIVE_COCKPIT_CONSTRUCTION_COMPOSITION_BG.md",
+      "use": "Full native constructor/EH order; unchanged from prior review except address heading."
+    },
+    {
+      "path": "docs/NATIVE_COCKPIT_REGISTRY_ADMISSION_BH.md",
+      "use": "Protected node credits, canonical identity, token lifetime and capacity accounting; unchanged design revision 33940421."
+    },
+    {
+      "path": "docs/NATIVE_COCKPIT_VIEWPORT_LIFETIME_BH.md",
+      "use": "Two persistent records, native survivors, local replacement identity, semantic/raw borrow distinction and remaining liveness proof."
+    }
   ],
   "bi_dependency": {
     "implementation_commit": "5f2574ac2b107f71002141afe52f938e8ef6edcd",
@@ -29,49 +41,286 @@
     "mechanism": "Raw B71A80 validates active installed admission and exact resolver, moves token before phase/native callbacks, uses admitted first viewport factory before +180 publication; late failure preserves consumed live record."
   },
   "routines_reviewed": [
-    {"address": "00B3C800", "end_inclusive": "00B3C952", "abi": "ECX actual 24h helper, no stack args, EAX same, RET", "coverage": "complete current normal decompilation and 108-instruction listing; existing BG scoped EH reused, no implementation"},
-    {"address": "00B71930", "end_inclusive": "00B71939", "abi": "no args; ECX overwritten with 0108FFB0; tail B71770", "coverage": "complete wrapper decompilation/listing; existing pool provider contract reused"},
-    {"address": "00B71A80", "abi": "ECX actual slot, stacked name header, EAX same, RET4", "coverage": "partial native listing B71A80 through B71B50; remaining B71B52..B71CDB and scoped EH use prior BG/BH; current raw source and BI diff read"},
-    {"address": "00B1F850", "end_inclusive": "00B1F8EB", "abi": "ECX actual viewport, EAX same, RET", "coverage": "complete normal decompilation/listing; existing source exception projection read"},
-    {"address": "00B71990", "end_inclusive": "00B719D0", "abi": "ECX current camera, stack actual viewport, RET4", "coverage": "complete normal decompilation/listing"},
-    {"address": "00BF681B", "abi": "cdecl size, EAX raw pointer, RET on success; throwing exhaustion", "coverage": "complete normal decompilation/listing; existing CRT service contract reused"},
-    {"address": "0041E870", "abi": "ECX actual 8h header, stack source text, EAX same header, RET4", "coverage": "complete decompiled callee body read; current source and BG raw-string contract reused"}
+    {
+      "address": "00B3C800",
+      "end_inclusive": "00B3C952",
+      "abi": "ECX actual 24h helper, no stack args, EAX same, RET",
+      "coverage": "complete current normal decompilation and 108-instruction listing; existing BG scoped EH reused, no implementation"
+    },
+    {
+      "address": "00B71930",
+      "end_inclusive": "00B71939",
+      "abi": "no args; ECX overwritten with 0108FFB0; tail B71770",
+      "coverage": "complete wrapper decompilation/listing; existing pool provider contract reused"
+    },
+    {
+      "address": "00B71A80",
+      "abi": "ECX actual slot, stacked name header, EAX same, RET4",
+      "coverage": "partial native listing B71A80 through B71B50; remaining B71B52..B71CDB and scoped EH use prior BG/BH; current raw source and BI diff read"
+    },
+    {
+      "address": "00B1F850",
+      "end_inclusive": "00B1F8EB",
+      "abi": "ECX actual viewport, EAX same, RET",
+      "coverage": "complete normal decompilation/listing; existing source exception projection read"
+    },
+    {
+      "address": "00B71990",
+      "end_inclusive": "00B719D0",
+      "abi": "ECX current camera, stack actual viewport, RET4",
+      "coverage": "complete normal decompilation/listing"
+    },
+    {
+      "address": "00BF681B",
+      "abi": "cdecl size, EAX raw pointer, RET on success; throwing exhaustion",
+      "coverage": "complete normal decompilation/listing; existing CRT service contract reused"
+    },
+    {
+      "address": "0041E870",
+      "abi": "ECX actual 8h header, stack source text, EAX same header, RET4",
+      "coverage": "complete decompiled callee body read; current source and BG raw-string contract reused"
+    }
   ],
   "native_calls": [
-    {"address": "00B3C84F", "native": "00B71930", "function": "00B3C800", "contract": "Allocate the actual raw camera slot at its native event; no preflight allocation.", "cleanup": "no stack args"},
-    {"address": "00B3C86C", "native": "0041E870", "function": "00B3C800", "contract": "Construct actual local 8h name header before host camera owner emplacement.", "cleanup": "RET4"},
-    {"address": "00B3C886", "native": "00B71A80", "function": "00B3C800", "contract": "Construct captured raw slot using the same local name header and explicit first viewport admission.", "cleanup": "RET4"},
-    {"address": "00B71ABA", "native": "00BF681B", "function": "00B71A80", "contract": "Native first viewport raw allocation.", "cleanup": "PUSH34h; ADD ESP,4 at B71ABF"},
-    {"address": "00B71AD1", "native": "00B1F850", "function": "00B71A80", "contract": "Construct first actual 34h viewport before registry success and B71ADD camera+180 publication.", "cleanup": "no stack args; RET"},
-    {"address": "00B3C8F8", "native": "00BF681B", "function": "00B3C800", "contract": "Native replacement viewport allocation remains at this point.", "cleanup": "PUSH34h; ADD ESP,4 at B3C8FD"},
-    {"address": "00B3C90F", "native": "00B1F850", "function": "00B3C800", "contract": "Construct replacement allocation, then consume record1 admission and preserve returned actual local identity.", "cleanup": "no stack args; RET"},
-    {"address": "00B3C923", "native": "00B71990", "function": "00B3C800", "contract": "Use current helper+0C camera and local EDI viewport; identity skip or publish/retain/release captured old.", "cleanup": "RET4"},
-    {"address": "00B3C92C", "native": "00CE2220+iat", "function": "00B3C800", "contract": "Current IAT decrement on local EDI+4, not current camera+180.", "verification": "manual containing normal listing; indirect row excluded by verifier"},
-    {"address": "00B3C93C", "native": "local_viewport+vtable00", "function": "00B3C800", "contract": "On zero only, current slot0 of the same local EDI viewport.", "verification": "manual containing normal listing; indirect row excluded by verifier"}
+    {
+      "address": "00B3C84F",
+      "native": "00B71930",
+      "function": "00B3C800",
+      "contract": "Allocate the actual raw camera slot at its native event; no preflight allocation.",
+      "cleanup": "no stack args"
+    },
+    {
+      "address": "00B3C86C",
+      "native": "0041E870",
+      "function": "00B3C800",
+      "contract": "Construct actual local 8h name header before host camera owner emplacement.",
+      "cleanup": "RET4"
+    },
+    {
+      "address": "00B3C886",
+      "native": "00B71A80",
+      "function": "00B3C800",
+      "contract": "Construct captured raw slot using the same local name header and explicit first viewport admission.",
+      "cleanup": "RET4"
+    },
+    {
+      "address": "00B71ABA",
+      "native": "00BF681B",
+      "function": "00B71A80",
+      "contract": "Native first viewport raw allocation.",
+      "cleanup": "PUSH34h; ADD ESP,4 at B71ABF"
+    },
+    {
+      "address": "00B71AD1",
+      "native": "00B1F850",
+      "function": "00B71A80",
+      "contract": "Construct first actual 34h viewport before registry success and B71ADD camera+180 publication.",
+      "cleanup": "no stack args; RET"
+    },
+    {
+      "address": "00B3C8F8",
+      "native": "00BF681B",
+      "function": "00B3C800",
+      "contract": "Native replacement viewport allocation remains at this point.",
+      "cleanup": "PUSH34h; ADD ESP,4 at B3C8FD"
+    },
+    {
+      "address": "00B3C90F",
+      "native": "00B1F850",
+      "function": "00B3C800",
+      "contract": "Construct replacement allocation, then consume record1 admission and preserve returned actual local identity.",
+      "cleanup": "no stack args; RET"
+    },
+    {
+      "address": "00B3C923",
+      "native": "00B71990",
+      "function": "00B3C800",
+      "contract": "Use current helper+0C camera and local EDI viewport; identity skip or publish/retain/release captured old.",
+      "cleanup": "RET4"
+    },
+    {
+      "address": "00B3C92C",
+      "native": "00CE2220+iat",
+      "function": "00B3C800",
+      "contract": "Current IAT decrement on local EDI+4, not current camera+180.",
+      "verification": "manual containing normal listing; indirect row excluded by verifier"
+    },
+    {
+      "address": "00B3C93C",
+      "native": "local_viewport+vtable00",
+      "function": "00B3C800",
+      "contract": "On zero only, current slot0 of the same local EDI viewport.",
+      "verification": "manual containing normal listing; indirect row excluded by verifier"
+    }
   ],
   "source_anchors": [
-    {"path": "include/bsp/native_viewport_registry.hpp", "lines": [16, 69], "evidence": "Stable caller-owned Storage, exact Admission, observable host phases and explicit quiescent forgetting."},
-    {"path": "src/native_viewport_registry.cpp", "lines": [14, 40], "evidence": "Record destructor guard, token move/cancel and installed-reserved validation."},
-    {"path": "src/native_viewport_registry.cpp", "lines": [46, 83], "evidence": "Nonallocating admission/cancellation/success, inline CameraViewport optional emplace, consumed token empties."},
-    {"path": "src/native_viewport_registry.cpp", "lines": [93, 116], "evidence": "Actual destruction retires identity; quiescent forget accepts only retired/cancelled and resets to unused without native reads."},
-    {"path": "src/native_viewport_registry.cpp", "lines": [119, 131], "evidence": "One installed registry, no competing nested binding, teardown requires all records forgotten."},
-    {"path": "src/native_viewport_owner.cpp", "lines": [58, 109], "evidence": "Preimage-preserving real viewport construction, exact failure free, local admission taken before callbacks, registered success before return."},
-    {"path": "src/native_viewport_owner.cpp", "lines": [112, 130], "evidence": "Actual counts authoritative; common destructor retires flags0/flags1 identity before native lifetime end/free."},
-    {"path": "src/native_camera_owner.cpp", "lines": [149, 181], "evidence": "Canonical optional owner can use admitted scene binding; prepared catch/destructor cleanup remains explicit."},
-    {"path": "src/native_camera_owner.cpp", "lines": [265, 288], "evidence": "Baseline raw camera checks actual raw mode/shared D7A24C but still uses legacy viewport allocation; BI dependency replaces only factory/preflight plumbing."},
-    {"path": "src/native_camera_reference.cpp", "lines": [19, 41], "evidence": "Nonallocating successful admitted reference constructor with existing count/profile/uniqueness checks; premature destruction terminates."},
-    {"path": "src/native_camera_reference.cpp", "lines": [76, 91], "evidence": "Terminal path destroys/returns native camera, unbinds lifetime, then invokes companion disposal with no later access."},
-    {"path": "src/generated_model_lifetime.cpp", "lines": [65, 117], "evidence": "Protected credits, canonical admitted scene/key checks, actual-key lookup and identity-only unbind."},
-    {"path": "src/native_cockpit_helper_lifetime.cpp", "lines": [24, 29], "evidence": "Helper owner requires already-constructed actual profile and positive count."},
-    {"path": "src/native_cockpit_helper_lifetime.cpp", "lines": [61, 81], "evidence": "Helper reference requires unique live binding/retirement, borrows actual +04, retires only after native deletion."},
-    {"path": "include/bsp/native_viewport_owner.hpp", "lines": [54, 75], "evidence": "Real current renderer publication, captured renderer dispatch and actual width/height references; no fallback dimensions."},
-    {"path": "include/bsp/native_node_construction.hpp", "lines": [76, 101], "evidence": "Borrowed actual raw constant cells and raw-name construction/cleanup lifetime limits."},
-    {"path": "src/native_camera_owner.cpp", "revision": "5f2574ac2b107f71002141afe52f938e8ef6edcd", "lines": [266, 299], "additional_lines": [363, 365], "evidence": "Exact diff read and line locations checked: installed registry/resolver validation, local token move before native callbacks, admitted first allocation, public overload forwarding; remaining native continuation unchanged."},
-    {"path": "src/camera_frame_state.cpp", "lines": [1108, 1113], "evidence": "Semantic viewport binding stores the host view address; include/bsp/camera_frame_state.hpp:156 exposes it through viewport()."},
-    {"path": "src/native_camera_frame_command.cpp", "lines": [45, 50], "evidence": "Actual native camera path calls the raw viewport binder; it does not establish a semantic CameraViewport wrapper borrow."}
+    {
+      "path": "include/bsp/native_viewport_registry.hpp",
+      "lines": [
+        16,
+        69
+      ],
+      "evidence": "Stable caller-owned Storage, exact Admission, observable host phases and explicit quiescent forgetting."
+    },
+    {
+      "path": "src/native_viewport_registry.cpp",
+      "lines": [
+        14,
+        40
+      ],
+      "evidence": "Record destructor guard, token move/cancel and installed-reserved validation."
+    },
+    {
+      "path": "src/native_viewport_registry.cpp",
+      "lines": [
+        46,
+        83
+      ],
+      "evidence": "Nonallocating admission/cancellation/success, inline CameraViewport optional emplace, consumed token empties."
+    },
+    {
+      "path": "src/native_viewport_registry.cpp",
+      "lines": [
+        93,
+        116
+      ],
+      "evidence": "Actual destruction retires identity; quiescent forget accepts only retired/cancelled and resets to unused without native reads."
+    },
+    {
+      "path": "src/native_viewport_registry.cpp",
+      "lines": [
+        119,
+        131
+      ],
+      "evidence": "One installed registry, no competing nested binding, teardown requires all records forgotten."
+    },
+    {
+      "path": "src/native_viewport_owner.cpp",
+      "lines": [
+        58,
+        109
+      ],
+      "evidence": "Preimage-preserving real viewport construction, exact failure free, local admission taken before callbacks, registered success before return."
+    },
+    {
+      "path": "src/native_viewport_owner.cpp",
+      "lines": [
+        112,
+        130
+      ],
+      "evidence": "Actual counts authoritative; common destructor retires flags0/flags1 identity before native lifetime end/free."
+    },
+    {
+      "path": "src/native_camera_owner.cpp",
+      "lines": [
+        149,
+        181
+      ],
+      "evidence": "Canonical optional owner can use admitted scene binding; prepared catch/destructor cleanup remains explicit."
+    },
+    {
+      "path": "src/native_camera_owner.cpp",
+      "lines": [
+        265,
+        288
+      ],
+      "evidence": "Baseline raw camera checks actual raw mode/shared D7A24C but still uses legacy viewport allocation; BI dependency replaces only factory/preflight plumbing."
+    },
+    {
+      "path": "src/native_camera_reference.cpp",
+      "lines": [
+        19,
+        41
+      ],
+      "evidence": "Nonallocating successful admitted reference constructor with existing count/profile/uniqueness checks; premature destruction terminates."
+    },
+    {
+      "path": "src/native_camera_reference.cpp",
+      "lines": [
+        76,
+        91
+      ],
+      "evidence": "Terminal path destroys/returns native camera, unbinds lifetime, then invokes companion disposal with no later access."
+    },
+    {
+      "path": "src/generated_model_lifetime.cpp",
+      "lines": [
+        65,
+        117
+      ],
+      "evidence": "Protected credits, canonical admitted scene/key checks, actual-key lookup and identity-only unbind."
+    },
+    {
+      "path": "src/native_cockpit_helper_lifetime.cpp",
+      "lines": [
+        24,
+        29
+      ],
+      "evidence": "Helper owner requires already-constructed actual profile and positive count."
+    },
+    {
+      "path": "src/native_cockpit_helper_lifetime.cpp",
+      "lines": [
+        61,
+        81
+      ],
+      "evidence": "Helper reference requires unique live binding/retirement, borrows actual +04, retires only after native deletion."
+    },
+    {
+      "path": "include/bsp/native_viewport_owner.hpp",
+      "lines": [
+        54,
+        75
+      ],
+      "evidence": "Real current renderer publication, captured renderer dispatch and actual width/height references; no fallback dimensions."
+    },
+    {
+      "path": "include/bsp/native_node_construction.hpp",
+      "lines": [
+        76,
+        101
+      ],
+      "evidence": "Borrowed actual raw constant cells and raw-name construction/cleanup lifetime limits."
+    },
+    {
+      "path": "src/native_camera_owner.cpp",
+      "revision": "5f2574ac2b107f71002141afe52f938e8ef6edcd",
+      "lines": [
+        266,
+        299
+      ],
+      "additional_lines": [
+        363,
+        365
+      ],
+      "evidence": "Exact diff read and line locations checked: installed registry/resolver validation, local token move before native callbacks, admitted first allocation, public overload forwarding; remaining native continuation unchanged."
+    },
+    {
+      "path": "src/camera_frame_state.cpp",
+      "lines": [
+        1108,
+        1113
+      ],
+      "evidence": "Semantic viewport binding stores the host view address; include/bsp/camera_frame_state.hpp:156 exposes it through viewport()."
+    },
+    {
+      "path": "src/native_camera_frame_command.cpp",
+      "lines": [
+        45,
+        50
+      ],
+      "evidence": "Actual native camera path calls the raw viewport binder; it does not establish a semantic CameraViewport wrapper borrow."
+    }
   ],
   "block_contract": {
-    "fields": ["NativeViewportRegistry::Storage viewport_records_[2]", "optional<NativeCameraOwner>", "optional<NativeCameraReference>", "borrowed NativeViewportRegistry pointer", "Phase idle/preparing/prepared/executing/settled", "bool camera_retired host notification"],
+    "fields": [
+      "NativeViewportRegistry::Storage viewport_records_[2]",
+      "optional<NativeCameraOwner>",
+      "optional<NativeCameraReference>",
+      "borrowed NativeViewportRegistry pointer",
+      "Phase idle/preparing/prepared/executing/settled",
+      "bool camera_retired host notification"
+    ],
     "identity": "Stable noncopyable/nonmovable caller-owned block; no new native fields, native counts, identity registry, helper companion or raw allocation owner.",
     "admission": "Move-only per-attempt capability with block/environment/raw-constant pointers, one scene credit, one lifetime credit and two explicit viewport admissions.",
     "preparation": "Persistent caller ownership installed before native sequence; check domains, reserve node credits, admit both unused records. Partial failure cancels and forgets unexposed records, returning idle.",
@@ -96,14 +345,26 @@
     "domain": "Existing serialized owning-thread registry domain; no callbacks inside registry mutation/identity getters.",
     "nested_attempt": "Different stable block and all its credits/admissions prepared before outer native sequence, explicitly moved to nested constructor; no ambient environment token or nested registry installation.",
     "replacement_camera": "Reload current helper+0C at native sites; find canonical node then checked NativeCameraReference projection. Do not close over original block owner or add an identity map.",
-    "allowed": ["field mutation", "real renderer publication replacement", "independently prepared nested construction", "current helper camera replacement", "unrelated release"],
+    "allowed": [
+      "field mutation",
+      "real renderer publication replacement",
+      "independently prepared nested construction",
+      "current helper camera replacement",
+      "unrelated release"
+    ],
     "remaining": "Captured actual viewport liveness across destructive renderer/device callbacks and semantic host-view/cache quiescence require their own concrete provider proof."
   },
   "implementation_packet": {
-    "ready_files": ["include/bsp/native_cockpit_construction_block.hpp", "src/native_cockpit_construction_block.cpp"],
+    "ready_files": [
+      "include/bsp/native_cockpit_construction_block.hpp",
+      "src/native_cockpit_construction_block.cpp"
+    ],
     "ready_work": "Implement stable storage, exact preparation/cancellation, private one-attempt tokens, phase guards, fixed retirement notification and explicit quiescent reset; no native body stub.",
     "integration_owned": "Integrator source registration and normal Win32 build/applicable existing checks after implementation.",
-    "later_body_files": ["include/bsp/native_cockpit_helper_construction.hpp", "src/native_cockpit_helper_construction.cpp"],
+    "later_body_files": [
+      "include/bsp/native_cockpit_helper_construction.hpp",
+      "src/native_cockpit_helper_construction.cpp"
+    ],
     "later_body": "Consume the prepared block capability through the complete BG sequence/EH projection and original x87 materialization, with checked current-camera projection.",
     "outside_caller_contract": "Preallocate persistent block and separate stable helper companion storage, bind actual provider/table/constant inputs including the exact same canonical 0108FFB0 owner for static allocation/raw return and environment terminal return, own actual 24h helper allocation, publish helper interface only after success-only nonallocating owner/reference binding, and reclaim each lifetime independently."
   },
@@ -125,5 +386,12 @@
     "Current helper+0C lookup needs a checked canonical camera projection in the later body.",
     "Semantic host-view/cache quiescence and arbitrary destructive renderer callback liveness are not proved by stable records.",
     "No original binary ABI, unrestricted FH3/SEH, concurrent mutation, whole render-service or game-validation claim."
-  ]
+  ],
+  "integration_validation": {
+    "tested_commit": "0307b963f66a80caa7f9308cecbfc2d5d6b780da",
+    "bi_validation_report": "reports/native_camera_viewport_admission_bi_validation.json",
+    "design_call_rows_checked": 8,
+    "design_call_rows_failed": 0,
+    "scope": "BI dependency passed the combined build and current-library fixture. BJ block remains a reviewed design, with no implementation or native body credit."
+  }
 }

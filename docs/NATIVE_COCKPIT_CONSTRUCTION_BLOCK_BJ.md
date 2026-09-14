@@ -334,3 +334,7 @@ and semantic-view quiescence or renderer destructive-callback liveness wherever
 those domains are exercised. Existing APIs alone prove none of these consumers.
 No build, fixture, game run, original ABI or full FH3/SEH validation is claimed by
 this document/report-only packet.
+
+## Integration validation
+
+BI dependency at exact combined source `0307b963f66a80caa7f9308cecbfc2d5d6b780da` passed the strict Win32 build, both existing CTests, eight seed checks and the current-library successful native/source and source-only failure fixture. See `reports/native_camera_viewport_admission_bi_validation.json`. This closes the pending BI validation dependency above; this BJ packet remains design only.
