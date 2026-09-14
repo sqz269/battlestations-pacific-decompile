@@ -329,3 +329,28 @@ Ghidra function, which is why it is not a `host_steps` row of `reports/sensor_ta
 - **Was:** The four depth words and the periscope byte are produced elsewhere and are not read here.
   **Is:** The producers are now named. The four depth words at unit+1200h..+120Ch are built once at scene attach by 00853630's loop at 00853A90-00853AC5 from the class keys PeriscopeDepth, SwimDepth2 and SwimDepth3 against a default table of 0.0, -20.0, -40.0, -80.0 at 00E0B578; band 0 is always the default. The periscope byte at unit+1234h is cleared every frame at 00854b00 and set at 00855057 only when the extending mast reaches class.PeriscopeMoveRange + periscopeY - 1.0.
   **Evidence:** 00853630 008539e0-00853a7c for the band loop, 00854b00 and 00855057 for the byte, and the save schema binding at 00854008 which names the byte periscopeOut.
+
+## Correction from docs/SENSOR_TABLE_DATA.md (packet cc7_sensor_table_data)
+
+- **Was:** "no category value reaches 7: **column 7 of every row is allocated and unreachable**".
+  **Is:** column 7 of each observer group is the `GUIRange` list. It is reached at `008087B2`, which
+  is the push that fills it, so the column is allocated *and used* - just not by the same key that
+  fills columns 1 through 6.
+
+- **Was:** the vehicle counts for `recon-2` and `recon-5` given as 99 and 67.
+  **Is:** 97 and 65 in this installation. Four `ReconClass` keys sit inside `--[[ ]]` comment
+  blocks and were counted as live.
+
+- **Was:** "the `Color` values in `GUIRange` are Lua constants (`COL_BLUE`, `COL_RED`, `COL_GREEN`)
+  that this packet did not decode".
+  **Is:** each `Color` word is four floats, and `COL_RED`, `COL_GREEN` and `COL_BLUE` decode.
+
+- **Provenance, which applies to every authored value in this document and in the new one.** The
+  installation under `I:/SteamLibrary/steamapps/common/Battlestations Pacific` is **modded** - it
+  carries BSPRM/AlterBSP artefacts. The three `reconclasses.lua` files carry `2024-07-13`, the
+  timestamp of the untouched datatables bulk, but `scripts/datatables/autoload/vehicleclasses.lua`
+  carries `2026-05-09` and is **locally modified**. Verified at integration with
+  `find ./scripts -name "<file>" -printf "%TY-%Tm-%Td %p\n"`. So the detection rows dumped from
+  `reconclasses.lua` are very likely retail, while any per-class association taken from
+  `vehicleclasses.lua` describes *this installation*. No pristine copy exists on this machine to
+  diff against. Prefer "this installation" over "retail" for authored values until one does.
