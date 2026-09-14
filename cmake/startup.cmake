@@ -114,6 +114,7 @@ cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_unit_group_
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_unit_health_parts.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_unit_killed_base.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_unit_part_construction.cpp)
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_unit_part_collision.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_unit_part_vector.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_vfs_derived_manager.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_vfs_enumeration.cpp)

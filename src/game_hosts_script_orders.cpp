@@ -319,6 +319,30 @@ int GameScriptOrdersHost::run_pilot_set_target(GameScriptOrderRow& row) {
     const bsp::PilotAttackSelectorFlags flags =
         bsp::pilot_attack_selector_flags_008a4e54(attack_type);
 
+    // docs/ATTACK_CAPABILITY_INPUTS.md: eight of 007EEC50's eleven feasibility
+    // inputs are answerable from an authored class id alone, and this host
+    // already holds the machinery - unit_is_kind_of walks the 88 compiled
+    // vt[5Ch] bodies, which is the same question the native asks. Report them so
+    // the remaining gap is a measured list rather than an assertion.
+    const std::size_t target_index = target.object != nullptr
+        ? index_of(target.object)
+        : (target.object_id > 0 ? static_cast<std::size_t>(target.object_id - 1)
+                                : ~static_cast<std::size_t>(0));
+    const int self_class = units_.unit_class_id(row.unit_index);
+    const int target_class = units_.unit_class_id(target_index);
+    log_.notef("  PilotSetTarget caps: self_class=%d level_bomber=%d kamikaze_capable=%d "
+        "dogfight_excluded=%d | target_class=%d structure=%d bomb_excluded=%d "
+        "submarine=%d ship_family=%d | REFUSED: weapon_controller, target_is_air, "
+        "target_is_surface (need live +5Dh); gates 0047B850/00604A50/00828EC0 unread",
+        self_class,
+        units_.unit_is_kind_of(row.unit_index, 0x10) ? 1 : 0,
+        units_.unit_is_kind_of(row.unit_index, 0x17) ? 1 : 0,
+        units_.unit_is_kind_of(row.unit_index, 0x16) ? 1 : 0,
+        target_class,
+        units_.unit_is_kind_of(target_index, 0x1c) ? 1 : 0,
+        units_.unit_is_kind_of(target_index, 0x0e) ? 1 : 0,
+        units_.unit_is_kind_of(target_index, 0x08) ? 1 : 0,
+        units_.unit_is_kind_of(target_index, 0x06) ? 1 : 0);
     log_.notef("  PilotSetTarget: unit=%s target_object_id=%u target_valid=%d "
         "pos=(%.1f %.1f %.1f) attack_type=%d prefer_ordnance=%d allow_guns=%d "
         "-> NOT ISSUED, 007EEC50 needs per-class capability inputs this host "

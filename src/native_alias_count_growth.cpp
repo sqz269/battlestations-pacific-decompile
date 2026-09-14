@@ -56,4 +56,8 @@ void grow_native_unit_registry_count_004cee30(void* actual_owner, std::uint32_t 
     grow_count(actual_owner, increment, 0x3fffffff);
 }
 
+void grow_native_unit_part_shape_count_00711ed0(void* actual_owner, std::uint32_t increment) {
+    grow_count(actual_owner, increment, 0x06666666);
+}
+
 } // namespace bsp
