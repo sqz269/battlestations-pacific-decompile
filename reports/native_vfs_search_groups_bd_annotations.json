@@ -1,0 +1,180 @@
+{
+  "reason": "Actual native VFS search-group registration over constructed manager storage",
+  "entries": [
+    {
+      "address": "00be25e0",
+      "lease_owner": "agent/orch4-vfs-search-bd",
+      "before": "Function: BSP_VFS_RegisterSearchExtension at 00be25e0\nSignature: undefined BSP_VFS_RegisterSearchExtension(void)\nEntry: 00be25e0\nBody: 00be25e0 - 00be25f3",
+      "before_comment": {
+        "address": "00be25e0",
+        "function_name": "BSP_VFS_RegisterSearchExtension",
+        "comment": "[BSP reconstruction 00be25e0]\nECX manager; group/extension stack RET8. Pushes selector0 and forwards00be2310;20-byte full body verified."
+      },
+      "name": "BSP_VFS_RegisterSearchExtension",
+      "prototype": "void __thiscall BSP_VFS_RegisterSearchExtension(void* group, void* extension)",
+      "prototype_apply": "Successfully set prototype for function at 00be25e0 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead.",
+      "after": "Function: BSP_VFS_RegisterSearchExtension at 00be25e0\nSignature: void __thiscall BSP_VFS_RegisterSearchExtension(void * this, void * group, void * extension)\nEntry: 00be25e0\nBody: 00be25e0 - 00be25f3",
+      "after_comment": {
+        "address": "00be25e0",
+        "function_name": "BSP_VFS_RegisterSearchExtension",
+        "comment": "[BSP reconstruction 00be25e0]\nECX manager; group/extension stack RET8. Pushes selector0 and forwards00be2310;20-byte full body verified.\n\n[BSP reconstruction 00be25e0] update\nHypothesis, not a recovered symbol. BD integration: docs/NATIVE_VFS_COMPOSITION_BD_INTEGRATION.md; reports/native_vfs_composition_bd_validation.json. ECX actual manager; stack group/extension; RET8. Forward exact headers to BE2310 with selector0. Primary verified three complete live/disk envelopes,320 saved instruction owners and31 internal direct CALLs; worker additionally verifies32 startup caller sites. Source uses the constructed A0h VFS manager, actual pooled headers and retained string pool; populated graph fixture checks group prepend/dedup/directory normalization and manager drain. Separate +54 prefix tree and full00738360 startup sequence remain followups. Original FH3/CRT identity, malformed/empty-directory domain, native ABI compatibility and production gameplay are not claimed."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "00be2600",
+      "lease_owner": "agent/orch4-vfs-search-bd",
+      "before": "Function: BSP_VFS_RegisterSearchDirectory at 00be2600\nSignature: undefined BSP_VFS_RegisterSearchDirectory(void)\nEntry: 00be2600\nBody: 00be2600 - 00be26f1",
+      "before_comment": {
+        "address": "00be2600",
+        "function_name": "BSP_VFS_RegisterSearchDirectory",
+        "comment": "[BSP reconstruction 00be2600]\nECX manager; group/directory stack RET8. Copies lowercases directory, changes backslash to slash and adds trailing slash before00be2310 selector1. Native empty-directory last-byte access unsafe; typed startup literals are nonempty."
+      },
+      "name": "BSP_VFS_RegisterSearchDirectory",
+      "prototype": "void __thiscall BSP_VFS_RegisterSearchDirectory(void* group, void* directory)",
+      "prototype_apply": "Successfully set prototype for function at 00be2600 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead.",
+      "after": "Function: BSP_VFS_RegisterSearchDirectory at 00be2600\nSignature: void __thiscall BSP_VFS_RegisterSearchDirectory(void * this, void * group, void * directory)\nEntry: 00be2600\nBody: 00be2600 - 00be26f1",
+      "after_comment": {
+        "address": "00be2600",
+        "function_name": "BSP_VFS_RegisterSearchDirectory",
+        "comment": "[BSP reconstruction 00be2600]\nECX manager; group/directory stack RET8. Copies lowercases directory, changes backslash to slash and adds trailing slash before00be2310 selector1. Native empty-directory last-byte access unsafe; typed startup literals are nonempty.\n\n[BSP reconstruction 00be2600] update\nHypothesis, not a recovered symbol. BD integration: docs/NATIVE_VFS_COMPOSITION_BD_INTEGRATION.md; reports/native_vfs_composition_bd_validation.json. ECX actual manager; stack group/directory; RET8. Copy and lowercase directory, replace backslashes and append trailing slash, then forward selector1 and release temporary. Primary verified three complete live/disk envelopes,320 saved instruction owners and31 internal direct CALLs; worker additionally verifies32 startup caller sites. Source uses the constructed A0h VFS manager, actual pooled headers and retained string pool; populated graph fixture checks group prepend/dedup/directory normalization and manager drain. Separate +54 prefix tree and full00738360 startup sequence remain followups. Original FH3/CRT identity, malformed/empty-directory domain, native ABI compatibility and production gameplay are not claimed."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "00be2310",
+      "lease_owner": "agent/orch4-vfs-search-bd",
+      "before": "Function: BSP_VFS_RegisterSearchGroupValue at 00be2310\nSignature: undefined BSP_VFS_RegisterSearchGroupValue(void)\nEntry: 00be2310\nBody: 00be2310 - 00be25bb",
+      "before_comment": {
+        "address": "00be2310",
+        "function_name": "BSP_VFS_RegisterSearchGroupValue",
+        "comment": "[BSP reconstruction 00be2310]\nECX manager; group/value/selector stack RET0C. Lowercases group/value, selector0 extension list node+10, selector1 directory list+1C with slash/trailing normalization. New group prepends to+60; values append, equal-length _stricmp duplicates skipped. docs/VFS_SEARCH_REGISTRATION.md."
+      },
+      "name": "BSP_VFS_RegisterSearchGroupValue",
+      "prototype": "void __thiscall BSP_VFS_RegisterSearchGroupValue(void* group, void* value, unsigned int selector)",
+      "prototype_apply": "Successfully set prototype for function at 00be2310 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead.",
+      "after": "Function: BSP_VFS_RegisterSearchGroupValue at 00be2310\nSignature: void __thiscall BSP_VFS_RegisterSearchGroupValue(void * this, void * group, void * value, uint selector)\nEntry: 00be2310\nBody: 00be2310 - 00be25bb",
+      "after_comment": {
+        "address": "00be2310",
+        "function_name": "BSP_VFS_RegisterSearchGroupValue",
+        "comment": "[BSP reconstruction 00be2310]\nECX manager; group/value/selector stack RET0C. Lowercases group/value, selector0 extension list node+10, selector1 directory list+1C with slash/trailing normalization. New group prepends to+60; values append, equal-length _stricmp duplicates skipped. docs/VFS_SEARCH_REGISTRATION.md.\n\n[BSP reconstruction 00be2310] update\nHypothesis, not a recovered symbol. BD integration: docs/NATIVE_VFS_COMPOSITION_BD_INTEGRATION.md; reports/native_vfs_composition_bd_validation.json. ECX actual manager; stack group/value/selector; RET0C. Actual +60 intrusive group list, 28h node with20h payload. New groups prepend; selected extension/directory values append before sentinel; equal counted length and case-insensitive comparison suppress duplicates. New temporary payload is destroyed before value-node allocation. Primary verified three complete live/disk envelopes,320 saved instruction owners and31 internal direct CALLs; worker additionally verifies32 startup caller sites. Source uses the constructed A0h VFS manager, actual pooled headers and retained string pool; populated graph fixture checks group prepend/dedup/directory normalization and manager drain. Separate +54 prefix tree and full00738360 startup sequence remain followups. Original FH3/CRT identity, malformed/empty-directory domain, native ABI compatibility and production gameplay are not claimed."
+      },
+      "readback_verified": true
+    }
+  ],
+  "actions": [
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00be25e0",
+        "prototype": "void __thiscall BSP_VFS_RegisterSearchExtension(void* manager, void* group, void* extension)",
+        "calling_convention": "__thiscall"
+      },
+      "result": "Successfully set prototype for function at 00be25e0 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00be25e0",
+        "prototype": "void __thiscall BSP_VFS_RegisterSearchExtension(void* manager, void* group, void* extension)",
+        "calling_convention": "__thiscall"
+      },
+      "result": "Successfully set prototype for function at 00be25e0 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00be2600",
+        "prototype": "void __thiscall BSP_VFS_RegisterSearchDirectory(void* manager, void* group, void* directory)",
+        "calling_convention": "__thiscall"
+      },
+      "result": "Successfully set prototype for function at 00be2600 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00be2310",
+        "prototype": "void __thiscall BSP_VFS_RegisterSearchGroupValue(void* manager, void* group, void* value, unsigned int selector)",
+        "calling_convention": "__thiscall"
+      },
+      "result": "Successfully set prototype for function at 00be2310 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": "{\"success\": true, \"program\": \"battlestationspacific.exe\", \"message\": \"Program saved successfully\"}"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00be25e0",
+        "prototype": "void __thiscall BSP_VFS_RegisterSearchExtension(void* group, void* extension)",
+        "calling_convention": "__thiscall"
+      },
+      "result": "Successfully set prototype for function at 00be25e0 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00be2600",
+        "prototype": "void __thiscall BSP_VFS_RegisterSearchDirectory(void* group, void* directory)",
+        "calling_convention": "__thiscall"
+      },
+      "result": "Successfully set prototype for function at 00be2600 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00be2310",
+        "prototype": "void __thiscall BSP_VFS_RegisterSearchGroupValue(void* group, void* value, unsigned int selector)",
+        "calling_convention": "__thiscall"
+      },
+      "result": "Successfully set prototype for function at 00be2310 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": "{\"success\": true, \"program\": \"battlestationspacific.exe\", \"message\": \"Program saved successfully\"}"
+    }
+  ],
+  "corrections": [
+    {
+      "address": "00be25e0",
+      "reason": "Ghidra adds the ECX this parameter implicitly for __thiscall; remove duplicated explicit manager from API declaration.",
+      "before": "Function: BSP_VFS_RegisterSearchExtension at 00be25e0\nSignature: void __thiscall BSP_VFS_RegisterSearchExtension(void * this, void * manager, void * group, void * extension)\nEntry: 00be25e0\nBody: 00be25e0 - 00be25f3",
+      "before_prototype": "void __thiscall BSP_VFS_RegisterSearchExtension(void* manager, void* group, void* extension)",
+      "after": "Function: BSP_VFS_RegisterSearchExtension at 00be25e0\nSignature: void __thiscall BSP_VFS_RegisterSearchExtension(void * this, void * group, void * extension)\nEntry: 00be25e0\nBody: 00be25e0 - 00be25f3",
+      "readback_verified": true
+    },
+    {
+      "address": "00be25e0",
+      "reason": "Final ABI audit found duplicated explicit manager in thiscall API declaration; native RET8/RET0C requires only two/three stack arguments. Correct generator tuple field and reapply.",
+      "before": "Function: BSP_VFS_RegisterSearchExtension at 00be25e0\nSignature: void __thiscall BSP_VFS_RegisterSearchExtension(void * this, void * manager, void * group, void * extension)\nEntry: 00be25e0\nBody: 00be25e0 - 00be25f3",
+      "before_prototype": "void __thiscall BSP_VFS_RegisterSearchExtension(void* manager, void* group, void* extension)",
+      "after": "Function: BSP_VFS_RegisterSearchExtension at 00be25e0\nSignature: void __thiscall BSP_VFS_RegisterSearchExtension(void * this, void * group, void * extension)\nEntry: 00be25e0\nBody: 00be25e0 - 00be25f3",
+      "readback_verified": true
+    },
+    {
+      "address": "00be2600",
+      "reason": "Final ABI audit found duplicated explicit manager in thiscall API declaration; native RET8/RET0C requires only two/three stack arguments. Correct generator tuple field and reapply.",
+      "before": "Function: BSP_VFS_RegisterSearchDirectory at 00be2600\nSignature: void __thiscall BSP_VFS_RegisterSearchDirectory(void * this, void * manager, void * group, void * directory)\nEntry: 00be2600\nBody: 00be2600 - 00be26f1",
+      "before_prototype": "void __thiscall BSP_VFS_RegisterSearchDirectory(void* manager, void* group, void* directory)",
+      "after": "Function: BSP_VFS_RegisterSearchDirectory at 00be2600\nSignature: void __thiscall BSP_VFS_RegisterSearchDirectory(void * this, void * group, void * directory)\nEntry: 00be2600\nBody: 00be2600 - 00be26f1",
+      "readback_verified": true
+    },
+    {
+      "address": "00be2310",
+      "reason": "Final ABI audit found duplicated explicit manager in thiscall API declaration; native RET8/RET0C requires only two/three stack arguments. Correct generator tuple field and reapply.",
+      "before": "Function: BSP_VFS_RegisterSearchGroupValue at 00be2310\nSignature: void __thiscall BSP_VFS_RegisterSearchGroupValue(void * this, void * manager, void * group, void * value, uint selector)\nEntry: 00be2310\nBody: 00be2310 - 00be25bb",
+      "before_prototype": "void __thiscall BSP_VFS_RegisterSearchGroupValue(void* manager, void* group, void* value, unsigned int selector)",
+      "after": "Function: BSP_VFS_RegisterSearchGroupValue at 00be2310\nSignature: void __thiscall BSP_VFS_RegisterSearchGroupValue(void * this, void * group, void * value, uint selector)\nEntry: 00be2310\nBody: 00be2310 - 00be25bb",
+      "readback_verified": true
+    }
+  ],
+  "state": "three_names_abis_comments_saved_verified",
+  "exports_refreshed": [
+    "00be25e0",
+    "00be2600",
+    "00be2310"
+  ]
+}

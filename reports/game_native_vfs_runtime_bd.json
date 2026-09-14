@@ -1,0 +1,44 @@
+{
+  "packet": "orch4_game_native_vfs_runtime_bd",
+  "kind": "source composition; no newly reconstructed native body or direct CALL attribution",
+  "source_files": [
+    "include/bsp/game_native_vfs_runtime.hpp",
+    "src/game_native_vfs_runtime.cpp"
+  ],
+  "native_addresses_owned": [],
+  "native_calls_owned": [],
+  "composition": [
+    "00BEDA60 derived manager over caller's raw A0h owner; physical factory appended internally",
+    "004FC150 and 00736A90 getters followed by 00BE0660 registration",
+    "00BE1890 three phase-2 loose-path mounts with actual pooled headers",
+    "00736B60 MPAK factory tail after caller's package/search phase",
+    "00BDD440 exists and 00BDF310 open/read on the same raw manager",
+    "actual 01090AA0 singleton deletion bindings installed before any getter"
+  ],
+  "source_abi": "new C++ retained composer, not a drop-in original ABI",
+  "external_data": "E144F0 MPKG key and E17BF0 MPAK null pattern are required separately verified writable-data snapshots, not supplied by GameNativeReadOnlyData",
+  "validation": {
+    "win32_build": "./scripts/build.ps1 passed with node reuse disabled and parallelism 2",
+    "existing_ctest": "reconstructed_math 1/1 passed",
+    "focused_fixture": "local/game_native_vfs_runtime_bd_probe.cpp compiled with /MANIFEST:EMBED and passed",
+    "fixture_source_sha256": "03c2fc37732926fbd78313f654e26ff4049eb96c733b064168c42c89e6d9a48a",
+    "core_archive_sha256": "1448d5ed1619534d3ef5b0e3c48f1ba8daaf88b5987fc41c4851bb044ab41bb2",
+    "original_executable_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "installed_member": "scripts/fundamentals.lua, 657 bytes, SHA-256 20e128ebe9a1cb7678e3324b0baae93adab4f34f4d96bd081fb7b86505f63526",
+    "observed_raw_counts": "factory list 3 after core, 4 after tail; mount count 3; exists true; read 657 equal bytes; singleton drain cleared stream/string/batch/type publications and retained-memory counts; retire cleared matching VFS publication and deletion bindings",
+    "report_calls": "tools/verify_report_calls.py checked zero new owned CALL rows"
+  },
+  "limits": [
+    "No projected VFS manager or GameVfsHost consumer is rewired.",
+    "Package scans, search-path registration and BE1480 prefix tree remain separate work.",
+    "Caller must drain the single raw singleton manager before retained context destruction.",
+    "Original FH3/SEH, runtime profile mutations and gameplay remain unverified."
+  ],
+  "primary_integration": {
+    "report": "reports/native_vfs_composition_bd_validation.json",
+    "status": "actual_vfs_graph_search_groups_and_initial_constants_integrated_exact_build_and_fixtures_passed",
+    "source_revision": "adacdd852a47375fe7f0ccac6cb1110b7a9f3200",
+    "scope": "Exact combined core archive; real raw provider graph and populated search groups; independently verified native roots/data and saved ABI corrections.",
+    "game_validated": false
+  }
+}

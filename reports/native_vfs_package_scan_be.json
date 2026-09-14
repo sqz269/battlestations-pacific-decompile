@@ -1,0 +1,287 @@
+{
+  "packet": "orch4_native_vfs_package_scan_be",
+  "owner": "agent/orch4-vfs-package-scan-be",
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "bridge": "127.0.0.1:8089"
+  },
+  "source": "src/native_vfs_package_scan.cpp",
+  "root": {
+    "entry": "0073cb10",
+    "exclusive_end": "0073ce16",
+    "bytes": 774,
+    "original_abi": "ECX unused, no stack arguments, plain RET",
+    "source_coverage": "complete ordinary normal-return source path through actual BDD990 enumeration, 557A90 pop, BDB120 lookup and BE1890 mount; native SEH and huge-length wrap excluded",
+    "two_startup_calls": [
+      "0073d881",
+      "0073d888"
+    ],
+    "source_api": "scan_native_vfs_packages_0073cb10",
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "helper": {
+    "entry": "00557a90",
+    "exclusive_end": "00557b2f",
+    "bytes": 159,
+    "original_abi": "ECX actual list, stack output native string header, EAX same header, RET4",
+    "source_coverage": "complete normal path with actual pool and existing 004D0990 erase; native FH3 unwind excluded",
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "direct_calls": [
+    {
+      "function": "0073cb10",
+      "address": "0073cb36",
+      "native": "004c3020"
+    },
+    {
+      "function": "0073cb10",
+      "address": "0073cb59",
+      "native": "0041dd40"
+    },
+    {
+      "function": "0073cb10",
+      "address": "0073cb74",
+      "native": "00bf7680"
+    },
+    {
+      "function": "0073cb10",
+      "address": "0073cb91",
+      "native": "0041dd40"
+    },
+    {
+      "function": "0073cb10",
+      "address": "0073cbac",
+      "native": "00bf7680"
+    },
+    {
+      "function": "0073cb10",
+      "address": "0073cbcf",
+      "native": "00bdd990"
+    },
+    {
+      "function": "0073cb10",
+      "address": "0073cbec",
+      "native": "00419cc0"
+    },
+    {
+      "function": "0073cb10",
+      "address": "0073cbf3",
+      "native": "00bd1510"
+    },
+    {
+      "function": "0073cb10",
+      "address": "0073cc10",
+      "native": "00419cc0"
+    },
+    {
+      "function": "0073cb10",
+      "address": "0073cc17",
+      "native": "00bd1510"
+    },
+    {
+      "function": "0073cb10",
+      "address": "0073cc36",
+      "native": "0041dd40"
+    },
+    {
+      "function": "0073cb10",
+      "address": "0073cc51",
+      "native": "00bf7680"
+    },
+    {
+      "function": "0073cb10",
+      "address": "0073cc67",
+      "native": "00557a90"
+    },
+    {
+      "function": "0073cb10",
+      "address": "0073cc9f",
+      "native": "00bfae6b"
+    },
+    {
+      "function": "0073cb10",
+      "address": "0073cccb",
+      "native": "00469840"
+    },
+    {
+      "function": "0073cb10",
+      "address": "0073ccdd",
+      "native": "00bf8417"
+    },
+    {
+      "function": "0073cb10",
+      "address": "0073cd00",
+      "native": "00419cc0"
+    },
+    {
+      "function": "0073cb10",
+      "address": "0073cd07",
+      "native": "00bd1510"
+    },
+    {
+      "function": "0073cb10",
+      "address": "0073cd19",
+      "native": "00bdb120"
+    },
+    {
+      "function": "0073cb10",
+      "address": "0073cd32",
+      "native": "0041dd40"
+    },
+    {
+      "function": "0073cb10",
+      "address": "0073cd4d",
+      "native": "00bf7680"
+    },
+    {
+      "function": "0073cb10",
+      "address": "0073cd6e",
+      "native": "00be1890"
+    },
+    {
+      "function": "0073cb10",
+      "address": "0073cd8b",
+      "native": "00419cc0"
+    },
+    {
+      "function": "0073cb10",
+      "address": "0073cd92",
+      "native": "00bd1510"
+    },
+    {
+      "function": "0073cb10",
+      "address": "0073cdaf",
+      "native": "00419cc0"
+    },
+    {
+      "function": "0073cb10",
+      "address": "0073cdb6",
+      "native": "00bd1510"
+    },
+    {
+      "function": "0073cb10",
+      "address": "0073cdcf",
+      "native": "00419cc0"
+    },
+    {
+      "function": "0073cb10",
+      "address": "0073cdd6",
+      "native": "00bd1510"
+    },
+    {
+      "function": "0073cb10",
+      "address": "0073cdf1",
+      "native": "004d05e0"
+    },
+    {
+      "function": "0073cb10",
+      "address": "0073cdfb",
+      "native": "00bf65ac"
+    },
+    {
+      "function": "00557a90",
+      "address": "00557ac1",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00557a90",
+      "address": "00557add",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00557a90",
+      "address": "00557af1",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00557a90",
+      "address": "00557b13",
+      "native": "004d0990"
+    },
+    {
+      "function": "00bdb120",
+      "address": "00bdb14b",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00bdb120",
+      "address": "00bdb158",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00bdb120",
+      "address": "00bdb162",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00bdb120",
+      "address": "00bdb197",
+      "native": "00bf7fbf"
+    },
+    {
+      "function": "00bdb120",
+      "address": "00bdb1ac",
+      "native": "00bd97e0"
+    },
+    {
+      "function": "00bdb120",
+      "address": "00bdb1c0",
+      "native": "00bf6713"
+    }
+  ],
+  "validation": {
+    "translation_unit": "MSVC Win32 /std:c++20 /EHsc /W4 /WX /Zs passed",
+    "full_build": "pending combined dependency build",
+    "fixture": "none",
+    "cmake_registration": "src/native_vfs_package_scan.cpp appended once to bsp_core",
+    "runtime": "not observed: no installed authentic package archive"
+  },
+  "lookup": {
+    "entry": "00bdb120",
+    "exclusive_end": "00bdb1de",
+    "bytes": 190,
+    "original_abi": "ECX actual manager, stack actual8h system-name header, EAX first matching provider/null, RET4",
+    "source_coverage": "complete normal path through existing 00BD97E0 actual mount iterator",
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "dependencies": {
+    "enumeration": "00bdd990 concrete actual-manager visitor/provider dispatch from dependency 25829fc0",
+    "mount": "00be1890 concrete actual manager mount",
+    "pool": "004c3020 sentinel, 004d05e0 list clear and native actual string pool"
+  },
+  "limits": [
+    "new C++ context and RAII are not original binary ABI/SEH",
+    "exceptional dependency throw cleanup can differ from original FH3",
+    "huge signed-wrap header lengths and returning invalid-parameter repair not fixture-proven",
+    "no authentic installed archive/runtime game proof"
+  ],
+  "primary_integration": {
+    "report": "reports/native_vfs_phase2_bg_validation.json",
+    "status": "native_phase2_integrated_build_and_installed_loose_fixture_verified",
+    "source_revision": "dcff4d91d2709a7124bfd39826a12256b5f3b07a",
+    "scope": "Combined source archive, native envelopes and installed loose phase2 graph; authentic archive and gameplay remain unvalidated.",
+    "game_validated": false
+  },
+  "primary_range_corrections": [
+    {
+      "address": "0073cb10",
+      "change": "Restored22-byte saved tail through RET0073CE15 with all prior names, comments, labels and _Str storage retained; callee no-return flags unchanged."
+    },
+    {
+      "address": "00557a90",
+      "prior_exclusive_end": "00557b2e",
+      "exclusive_end": "00557b2f",
+      "bytes": 159
+    },
+    {
+      "address": "00bdb120",
+      "prior_exclusive_end": "00bdb1dc",
+      "exclusive_end": "00bdb1de",
+      "bytes": 190
+    }
+  ]
+}

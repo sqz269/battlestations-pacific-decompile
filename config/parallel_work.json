@@ -11388,30 +11388,32 @@
     {
       "id": "orch4_game_native_vfs_runtime_bd",
       "worker": "orch4-native-vfs-game-bd",
-      "done": false,
-      "state": "source_build_passed_installed_loose_fixture_in_progress",
+      "done": true,
+      "state": "actual_vfs_graph_search_groups_and_initial_constants_integrated_exact_build_and_fixtures_passed",
       "function_addresses": [],
       "code_ownership": [
         "include/bsp/game_native_vfs_runtime.hpp",
         "src/game_native_vfs_runtime.cpp"
-      ]
+      ],
+      "integration_report": "reports/native_vfs_composition_bd_validation.json"
     },
     {
       "id": "orch4_game_native_vfs_constants_bd",
       "worker": "orch4-vfs-constants-bd",
-      "done": false,
-      "state": "worker_committed_data_identity_fixture_passed_primary_review_pending",
+      "done": true,
+      "state": "actual_vfs_graph_search_groups_and_initial_constants_integrated_exact_build_and_fixtures_passed",
       "function_addresses": [],
       "code_ownership": [
         "include/bsp/game_native_vfs_constants.hpp",
         "src/game_native_vfs_constants.cpp"
-      ]
+      ],
+      "integration_report": "reports/native_vfs_composition_bd_validation.json"
     },
     {
       "id": "orch4_native_vfs_search_groups_bd",
       "worker": "orch4-vfs-search-bd",
-      "done": false,
-      "state": "worker_committed_build_passed_primary_native_review_pending",
+      "done": true,
+      "state": "actual_vfs_graph_search_groups_and_initial_constants_integrated_exact_build_and_fixtures_passed",
       "function_addresses": [
         "00be25e0",
         "00be2600",
@@ -11420,33 +11422,203 @@
       "code_ownership": [
         "include/bsp/native_vfs_search_groups.hpp",
         "src/native_vfs_search_groups.cpp"
-      ]
+      ],
+      "integration_report": "reports/native_vfs_composition_bd_validation.json"
     },
     {
       "id": "orch4_native_vfs_extension_prefix_be",
       "worker": "orch4-vfs-prefix-be",
-      "done": false,
-      "state": "dispatched_bounded_actual_tree_source",
+      "done": true,
+      "state": "native_phase2_integrated_build_and_installed_loose_fixture_verified",
       "function_addresses": [
         "00be1480"
       ],
       "code_ownership": [
         "include/bsp/native_vfs_extension_prefix.hpp",
         "src/native_vfs_extension_prefix.cpp"
-      ]
+      ],
+      "worker_commit": "e6bbbf30",
+      "integration_report": "reports/native_vfs_phase2_bg_validation.json"
     },
     {
       "id": "orch4_native_vfs_search_defaults_be",
       "worker": "orch4-vfs-search-defaults-be",
-      "done": false,
-      "state": "dispatched_full_native_registration_sequence",
+      "done": true,
+      "state": "native_phase2_integrated_build_and_installed_loose_fixture_verified",
       "function_addresses": [
         "00738360"
       ],
       "code_ownership": [
         "include/bsp/native_vfs_search_defaults.hpp",
         "src/native_vfs_search_defaults.cpp"
-      ]
+      ],
+      "worker_commit": "2b8186606be37f86ce3bd00564c9934a2eb1397e",
+      "integration_report": "reports/native_vfs_phase2_bg_validation.json"
+    },
+    {
+      "id": "orch4_native_vfs_package_scan_be",
+      "worker": "orch4-vfs-package-scan-be",
+      "done": true,
+      "state": "native_phase2_integrated_build_and_installed_loose_fixture_verified",
+      "function_addresses": [
+        "0073cb10",
+        "00557a90",
+        "00bdb120"
+      ],
+      "code_ownership": [
+        "include/bsp/native_vfs_package_scan.hpp",
+        "src/native_vfs_package_scan.cpp"
+      ],
+      "worker_commit": "11fcece7cbae6759614a2bf8da8972c4aac79ed0",
+      "integration_report": "reports/native_vfs_phase2_bg_validation.json"
+    },
+    {
+      "id": "orch4_native_vfs_enumeration_bf",
+      "worker": "orch4-vfs-enumeration-bf",
+      "done": true,
+      "state": "native_phase2_integrated_build_and_installed_loose_fixture_verified",
+      "function_addresses": [
+        "00bdd990",
+        "00bdbe20",
+        "00bdd0a0",
+        "00bdb6e0"
+      ],
+      "code_ownership": [
+        "include/bsp/native_vfs_enumeration.hpp",
+        "src/native_vfs_enumeration.cpp"
+      ],
+      "worker_commit": "e32c2ad704f54e657f79d97e3e4e5b497e8f3dde",
+      "integration_report": "reports/native_vfs_phase2_bg_validation.json"
+    },
+    {
+      "id": "orch4_native_physical_enumeration_bf",
+      "worker": "orch4-physical-enumeration-bf",
+      "done": true,
+      "state": "native_phase2_integrated_build_and_installed_loose_fixture_verified",
+      "function_addresses": [
+        "00bf47e0",
+        "00bee520"
+      ],
+      "code_ownership": [
+        "include/bsp/native_physical_enumeration.hpp",
+        "src/native_physical_enumeration.cpp"
+      ],
+      "worker_commit": "10bd658d1b487906bece49f68b28baa4dbb9899f",
+      "integration_report": "reports/native_vfs_phase2_bg_validation.json"
+    },
+    {
+      "id": "orch4_native_filestore_enumeration_bf",
+      "worker": "orch4-filestore-enumeration-bf",
+      "done": true,
+      "state": "native_phase2_integrated_build_and_installed_loose_fixture_verified",
+      "function_addresses": [
+        "00be6480"
+      ],
+      "code_ownership": [
+        "include/bsp/native_filestore_enumeration.hpp",
+        "src/native_filestore_enumeration.cpp"
+      ],
+      "worker_commit": "861ed9c1ec12fea1d422982c82b6e5c4fef5940c",
+      "integration_report": "reports/native_vfs_phase2_bg_validation.json"
+    },
+    {
+      "id": "orch4_native_mpkg_enumeration_bf",
+      "worker": "orch4-mpkg-enumeration-bf",
+      "done": true,
+      "state": "native_phase2_integrated_build_and_installed_loose_fixture_verified",
+      "function_addresses": [
+        "00bb98f0",
+        "00bb97b0"
+      ],
+      "code_ownership": [
+        "include/bsp/native_mpkg_enumeration.hpp",
+        "src/native_mpkg_enumeration.cpp"
+      ],
+      "worker_commit": "9b62daa5bcdea54f669cce04c2f1f1406558fac2",
+      "integration_report": "reports/native_vfs_phase2_bg_validation.json"
+    },
+    {
+      "id": "orch4_native_vfs_provider_enumeration_bindings_bg",
+      "worker": "orch4-vfs-provider-enumeration-bg",
+      "done": true,
+      "state": "native_phase2_integrated_build_and_installed_loose_fixture_verified",
+      "function_addresses": [],
+      "code_ownership": [
+        "include/bsp/native_vfs_provider_enumeration_bindings.hpp",
+        "src/native_vfs_provider_enumeration_bindings.cpp"
+      ],
+      "worker_commit": "25829fc0b9e71fd64ca466dbccfb86947705aeb7",
+      "integration_report": "reports/native_vfs_phase2_bg_validation.json"
+    },
+    {
+      "id": "orch4_game_native_vfs_phase2_bg",
+      "done": true,
+      "state": "native_phase2_integrated_build_and_installed_loose_fixture_verified",
+      "integration_report": "reports/native_vfs_phase2_bg_validation.json"
+    },
+    {
+      "id": "orch4_native_data_startup_reservation_bg",
+      "done": true,
+      "state": "diagnostic_committed_ownership_handoff_pending",
+      "integration_report": "reports/native_vfs_phase2_bg_validation.json"
+    },
+    {
+      "id": "orch4_native_data_reservation_handoff_bh",
+      "worker": "orch4-data-handoff-bh",
+      "function_addresses": [],
+      "output_files": [
+        "include/bsp/game_native_readonly_data.hpp",
+        "src/game_native_readonly_data.cpp",
+        "include/bsp/game_native_data_bootstrap.hpp",
+        "src/game_native_data_bootstrap.cpp",
+        "docs/NATIVE_DATA_RESERVATION_HANDOFF_BH.md",
+        "reports/native_data_reservation_handoff_bh.json"
+      ],
+      "contract": "Controlled suspended-child reservation and one-time proven ownership adoption by readonly-data mapper; preserve foreign allocations and readonly/noexecute hash checks; original game entrypoint remains integration.",
+      "done": false,
+      "state": "dispatched_source_worker",
+      "base_revision": "bf478455030453d9e37eecb4e08d0b60be302031",
+      "cmake_registration_owner": "primary; no worker lease on shared cmake/startup.cmake",
+      "depends_on": []
+    },
+    {
+      "id": "orch4_native_string_byte_append_bh",
+      "worker": "orch4-string-byte-bh",
+      "function_addresses": [
+        "00531030",
+        "0054aa70"
+      ],
+      "output_files": [
+        "include/bsp/native_string_byte_append.hpp",
+        "src/native_string_byte_append.cpp",
+        "src/native_physical_enumeration.cpp",
+        "include/bsp/native_physical_enumeration.hpp",
+        "docs/NATIVE_STRING_BYTE_APPEND_BH.md",
+        "reports/native_string_byte_append_bh.json"
+      ],
+      "contract": "Recover exact native byte append pool getter and temporary schedule and use in physical enumeration; source fidelity, native ABI/envelopes/call evidence.",
+      "done": false,
+      "state": "dispatched_source_worker",
+      "base_revision": "bf478455030453d9e37eecb4e08d0b60be302031",
+      "cmake_registration_owner": "primary; no worker lease on shared cmake/startup.cmake",
+      "depends_on": []
+    },
+    {
+      "id": "orch4_game_native_vfs_read_adapter_bh",
+      "worker": "orch4-vfs-read-adapter-bh",
+      "function_addresses": [],
+      "output_files": [
+        "include/bsp/game_native_vfs_runtime.hpp",
+        "src/game_native_vfs_runtime.cpp",
+        "docs/GAME_NATIVE_VFS_READ_ADAPTER_BH.md",
+        "reports/game_native_vfs_read_adapter_bh.json"
+      ],
+      "contract": "Owned full-file reads on same raw VFS using captured length/read/release, explicit length/short-read/failure behavior; revalidate consumers for later coordinated host migration.",
+      "done": false,
+      "state": "dispatched_source_worker",
+      "base_revision": "bf478455030453d9e37eecb4e08d0b60be302031",
+      "cmake_registration_owner": "primary; no worker lease on shared cmake/startup.cmake",
+      "depends_on": []
     }
   ],
   "snapshot_after_analysis": {

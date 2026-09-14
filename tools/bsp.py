@@ -10,6 +10,7 @@ from the snapshot, sharded ledgers, tags, call graph, partition, PE strings and 
   python tools/bsp.py range 00ab0000 00ac0000 --only FUN_
   python tools/bsp.py callers|callees|docs-for 00ab9fd0 / segment 12 / find GuiManager
   python tools/bsp.py ghidra count|proto|flow|xrefs|callers|callees|bytes|comments|decompile|disasm|export ...
+  python tools/bsp.py ghidra ensure [--status]     start Ghidra when nothing answers (autostart --install: at logon)
   python tools/bsp.py snapshot [--force]         snapshot + index only if Ghidra's function count changed
   python tools/bsp.py index [--if-stale]
   python tools/bsp.py ledger add-name|add-function|add-fragment|migrate ...
@@ -632,6 +633,14 @@ def state(args):
         print(f"index: built {meta.get('built_utc', '?')[:19]}  {'fresh' if fresh else 'STALE -> python tools/bsp.py index'}")
     else:
         print('index: none -> python tools/bsp.py index')
+    try:
+        import ghidra_launch
+        config = json.loads((ROOT / 'config/target.json').read_text(encoding='utf-8'))
+        live, detail = ghidra_launch.probe(config, timeout=1.0)
+        print(f"ghidra: up  {detail}" if live == 'up' else
+              f"ghidra: {live.upper()} ({detail}) -> python tools/bsp.py ghidra ensure")
+    except Exception as error:  # orientation must never fail on a probe
+        print(f'ghidra: unprobed ({type(error).__name__})')
     status = git('status', '--short').splitlines()
     modified = sum(1 for l in status if not l.startswith('??'))
     untracked = sum(1 for l in status if l.startswith('??'))
@@ -664,8 +673,20 @@ def state(args):
 
 def client():
     from ghidra_export import Client
-    c = Client(json.loads((ROOT / 'config/target.json').read_text(encoding='utf-8')))
-    c.verify()
+    config = json.loads((ROOT / 'config/target.json').read_text(encoding='utf-8'))
+    c = Client(config)
+    try:
+        c.verify()
+    except (OSError, RuntimeError) as error:
+        import ghidra_launch
+        # Only a dead server is ours to fix; a wrong project or a broken endpoint is not.
+        if os.environ.get('BSP_GHIDRA_AUTOSTART', '1') == '0' or ghidra_launch.probe(config)[0] != 'down':
+            raise
+        note = lambda line: print(line, file=sys.stderr)  # noqa: E731  keep progress out of the capped stdout
+        note(f'ghidra: {config["ghidra_url"]} not answering ({type(error).__name__}); starting it')
+        if not ghidra_launch.ensure(config, report=note):
+            raise
+        c.verify()
     return c
 
 
@@ -679,8 +700,17 @@ def first_int(text):
 
 
 def ghidra_cmd(args):
-    c = client()
     sub = args.ghidra_command
+    if sub in ('ensure', 'autostart'):
+        import ghidra_launch
+        live = lambda line: print(line, file=sys.stderr, flush=True)  # noqa: E731  a launch takes minutes; stream it
+        if sub == 'autostart':
+            ghidra_launch.autostart(install=not args.remove, delay=args.delay, wait=args.wait, report=live)
+            return
+        ok = ghidra_launch.ensure(wait=args.wait, restart=args.restart, force_kill=args.force_kill,
+                                  status_only=args.status, report=live)
+        raise SystemExit(0 if ok else 1)
+    c = client()
     db = connect(required=False)
     if sub == 'count':
         live = first_int(c.get('get_function_count'))
@@ -1004,6 +1034,8 @@ local/output/ and prints the path. --full or BSP_OUTPUT_BUDGET=0 lifts the cap.
   scan-bytes '<pat ?? pat>'      byte pattern search, with the enclosing function
 
   ghidra count|proto|flow|xrefs|callers|callees|bytes|comments|decompile|disasm|documentation|export
+  ghidra ensure [--status] [--restart] [--wait 300]   start Ghidra when nothing answers on ghidra_url
+  ghidra autostart [--remove]                        do that at every logon (Startup folder, no elevation)
       proto/flow/comments take several addresses; decompile/disasm take one plus --lines
       bytes <addr> --length N (NOT --limit)
 
@@ -1097,6 +1129,13 @@ def main():
         if name == 'decompile':
             q.add_argument('--force', action='store_true', help='flush Ghidra decompiler cache before reading')
     q = gs.add_parser('export'); q.add_argument('addresses', nargs='+'); q.add_argument('--force', action='store_true')
+    q = gs.add_parser('ensure', help='start Ghidra with the project and program restored when nothing answers')
+    q.add_argument('--status', action='store_true', help='probe only, never launch')
+    q.add_argument('--restart', action='store_true', help='also relaunch a front end that is running without a server')
+    q.add_argument('--force-kill', action='store_true', help='with --restart, kill a front end that will not close (discards unsaved state)')
+    q.add_argument('--wait', type=int, default=300, help='seconds to wait for the server')
+    q = gs.add_parser('autostart', help='run that same check at every logon (Startup folder entry, no elevation)')
+    q.add_argument('--remove', action='store_true'); q.add_argument('--delay', type=int, default=60); q.add_argument('--wait', type=int, default=420)
     p.set_defaults(func=ghidra_cmd)
     p = sub.add_parser('lease', help='address/file leases shared across worktrees and harnesses'); lz = p.add_subparsers(dest='lease_command', required=True)
     q = lz.add_parser('claim'); q.add_argument('--packet', required=True); q.add_argument('--owner'); q.add_argument('--addresses', nargs='*')

@@ -1,0 +1,371 @@
+{
+  "packet": "orch4_native_vfs_composition_bd_integration",
+  "status": "actual_vfs_graph_search_groups_and_initial_constants_integrated_exact_build_and_fixtures_passed",
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe"
+  },
+  "documentation": "docs/NATIVE_VFS_COMPOSITION_BD_INTEGRATION.md",
+  "annotations": "reports/native_vfs_search_groups_bd_annotations.json",
+  "worker_reports": [
+    "reports/game_native_vfs_runtime_bd.json",
+    "reports/game_native_vfs_constants_bd.json",
+    "reports/native_vfs_search_groups_bd.json"
+  ],
+  "byte_spans": [
+    {
+      "address": "00be25e0",
+      "bytes": 20,
+      "end_inclusive": "00be25f3",
+      "sha256": "5940556a3f4dc9af0142fcb77a6898ce03d010bf378c53b208468e7fb56d5c0c",
+      "live_disk_equal": true,
+      "before_annotation": "Function: BSP_VFS_RegisterSearchExtension at 00be25e0\nSignature: undefined BSP_VFS_RegisterSearchExtension(void)\nEntry: 00be25e0\nBody: 00be25e0 - 00be25f3",
+      "instructions": 7,
+      "all_instruction_owners_verified": true,
+      "returns": [
+        {
+          "site": "00be25f1",
+          "operand": "8"
+        }
+      ]
+    },
+    {
+      "address": "00be2600",
+      "bytes": 242,
+      "end_inclusive": "00be26f1",
+      "sha256": "2be45ed54c251183a01b1dcdfa73d1d93352568f3c22b96c6553ab5eafff3b61",
+      "live_disk_equal": true,
+      "before_annotation": "Function: BSP_VFS_RegisterSearchDirectory at 00be2600\nSignature: undefined BSP_VFS_RegisterSearchDirectory(void)\nEntry: 00be2600\nBody: 00be2600 - 00be26f1",
+      "instructions": 82,
+      "all_instruction_owners_verified": true,
+      "returns": [
+        {
+          "site": "00be26ef",
+          "operand": "8"
+        }
+      ]
+    },
+    {
+      "address": "00be2310",
+      "bytes": 684,
+      "end_inclusive": "00be25bb",
+      "sha256": "2767433449ca084f49ee036e150d1ec2a93e068e8f336c34693281f38657ada7",
+      "live_disk_equal": true,
+      "before_annotation": "Function: BSP_VFS_RegisterSearchGroupValue at 00be2310\nSignature: undefined BSP_VFS_RegisterSearchGroupValue(void)\nEntry: 00be2310\nBody: 00be2310 - 00be25bb",
+      "instructions": 231,
+      "all_instruction_owners_verified": true,
+      "returns": [
+        {
+          "site": "00be2533",
+          "operand": "0xc"
+        }
+      ]
+    }
+  ],
+  "data_spans": [
+    {
+      "address": "00e144f0",
+      "bytes": 537,
+      "sha256": "26abd3e2995fdbacecb6f352b5c0eb20ff20c9a7ada6312ba619c9d4c6fa6183",
+      "live_disk_equal": true,
+      "provider_is_verified_initial_image_snapshot": true,
+      "original_section_writable": true
+    },
+    {
+      "address": "00e17bf0",
+      "bytes": 1,
+      "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d",
+      "live_disk_equal": true,
+      "provider_is_verified_initial_image_snapshot": true,
+      "original_section_writable": true
+    }
+  ],
+  "calls": [
+    {
+      "function": "00be25e0",
+      "address": "00be25ec",
+      "native": "00be2310",
+      "evidence": "Full live/disk envelope and every saved instruction owner verified by primary."
+    },
+    {
+      "function": "00be2600",
+      "address": "00be263f",
+      "native": "0041dd40",
+      "evidence": "Full live/disk envelope and every saved instruction owner verified by primary."
+    },
+    {
+      "function": "00be2600",
+      "address": "00be2656",
+      "native": "00bf7680",
+      "evidence": "Full live/disk envelope and every saved instruction owner verified by primary."
+    },
+    {
+      "function": "00be2600",
+      "address": "00be266a",
+      "native": "004bcc00",
+      "evidence": "Full live/disk envelope and every saved instruction owner verified by primary."
+    },
+    {
+      "function": "00be2600",
+      "address": "00be269e",
+      "native": "0054aa70",
+      "evidence": "Full live/disk envelope and every saved instruction owner verified by primary."
+    },
+    {
+      "function": "00be2600",
+      "address": "00be26b9",
+      "native": "00be2310",
+      "evidence": "Full live/disk envelope and every saved instruction owner verified by primary."
+    },
+    {
+      "function": "00be2600",
+      "address": "00be26d1",
+      "native": "00419cc0",
+      "evidence": "Full live/disk envelope and every saved instruction owner verified by primary."
+    },
+    {
+      "function": "00be2600",
+      "address": "00be26d8",
+      "native": "00bd1510",
+      "evidence": "Full live/disk envelope and every saved instruction owner verified by primary."
+    },
+    {
+      "function": "00be2310",
+      "address": "00be233e",
+      "native": "00bdc230",
+      "evidence": "Full live/disk envelope and every saved instruction owner verified by primary."
+    },
+    {
+      "function": "00be2310",
+      "address": "00be2362",
+      "native": "0041dd40",
+      "evidence": "Full live/disk envelope and every saved instruction owner verified by primary."
+    },
+    {
+      "function": "00be2310",
+      "address": "00be2379",
+      "native": "00bf7680",
+      "evidence": "Full live/disk envelope and every saved instruction owner verified by primary."
+    },
+    {
+      "function": "00be2310",
+      "address": "00be2395",
+      "native": "004bcc00",
+      "evidence": "Full live/disk envelope and every saved instruction owner verified by primary."
+    },
+    {
+      "function": "00be2310",
+      "address": "00be23d0",
+      "native": "0054aa70",
+      "evidence": "Full live/disk envelope and every saved instruction owner verified by primary."
+    },
+    {
+      "function": "00be2310",
+      "address": "00be23eb",
+      "native": "00bf6713",
+      "evidence": "Full live/disk envelope and every saved instruction owner verified by primary."
+    },
+    {
+      "function": "00be2310",
+      "address": "00be2419",
+      "native": "0041dd40",
+      "evidence": "Full live/disk envelope and every saved instruction owner verified by primary."
+    },
+    {
+      "function": "00be2310",
+      "address": "00be2431",
+      "native": "00bf7680",
+      "evidence": "Full live/disk envelope and every saved instruction owner verified by primary."
+    },
+    {
+      "function": "00be2310",
+      "address": "00be2442",
+      "native": "004bcc00",
+      "evidence": "Full live/disk envelope and every saved instruction owner verified by primary."
+    },
+    {
+      "function": "00be2310",
+      "address": "00be2450",
+      "native": "00be10a0",
+      "evidence": "Full live/disk envelope and every saved instruction owner verified by primary."
+    },
+    {
+      "function": "00be2310",
+      "address": "00be246b",
+      "native": "00be1a20",
+      "evidence": "Full live/disk envelope and every saved instruction owner verified by primary."
+    },
+    {
+      "function": "00be2310",
+      "address": "00be2476",
+      "native": "00bded80",
+      "evidence": "Full live/disk envelope and every saved instruction owner verified by primary."
+    },
+    {
+      "function": "00be2310",
+      "address": "00be249e",
+      "native": "00bdb2e0",
+      "evidence": "Full live/disk envelope and every saved instruction owner verified by primary."
+    },
+    {
+      "function": "00be2310",
+      "address": "00be24ae",
+      "native": "00be1220",
+      "evidence": "Full live/disk envelope and every saved instruction owner verified by primary."
+    },
+    {
+      "function": "00be2310",
+      "address": "00be24c7",
+      "native": "00419cc0",
+      "evidence": "Full live/disk envelope and every saved instruction owner verified by primary."
+    },
+    {
+      "function": "00be2310",
+      "address": "00be24ce",
+      "native": "00bd1510",
+      "evidence": "Full live/disk envelope and every saved instruction owner verified by primary."
+    },
+    {
+      "function": "00be2310",
+      "address": "00be24e2",
+      "native": "004ce6f0",
+      "evidence": "Full live/disk envelope and every saved instruction owner verified by primary."
+    },
+    {
+      "function": "00be2310",
+      "address": "00be24ed",
+      "native": "004ce780",
+      "evidence": "Full live/disk envelope and every saved instruction owner verified by primary."
+    },
+    {
+      "function": "00be2310",
+      "address": "00be2515",
+      "native": "00419cc0",
+      "evidence": "Full live/disk envelope and every saved instruction owner verified by primary."
+    },
+    {
+      "function": "00be2310",
+      "address": "00be251c",
+      "native": "00bd1510",
+      "evidence": "Full live/disk envelope and every saved instruction owner verified by primary."
+    },
+    {
+      "function": "00be2310",
+      "address": "00be2542",
+      "native": "00bdb2e0",
+      "evidence": "Full live/disk envelope and every saved instruction owner verified by primary."
+    },
+    {
+      "function": "00be2310",
+      "address": "00be257e",
+      "native": "00bf7fbf",
+      "evidence": "Full live/disk envelope and every saved instruction owner verified by primary."
+    },
+    {
+      "function": "00be2310",
+      "address": "00be2594",
+      "native": "00bf6713",
+      "evidence": "Full live/disk envelope and every saved instruction owner verified by primary."
+    }
+  ],
+  "indirect_calls": [],
+  "instruction_ownership_failures": [],
+  "final_validation": {
+    "utc": "2026-09-14T00:46:55.852810+00:00",
+    "source_revision": "adacdd852a47375fe7f0ccac6cb1110b7a9f3200",
+    "merged_main_revision": "20ace1358700e43c75035b55e6b8b0a0c68ee520",
+    "code_files": 2477,
+    "code_manifest": "local/native_vfs_composition_bd_source_manifest.json",
+    "code_manifest_sha256": "7816464ba4c0a713d5e5a9cc73bb1eaa70e3a265165d4455da64ef413fbb9ac2",
+    "core_archive_sha256": "613f78550bd26d24e6dfb5ff5dab444c1f966fd1416f233f89ca8247036a5163",
+    "game_executable_sha256": "f1720d9fdb0e034212234957051ca232e26c9d506f74d6d35922969912e88674",
+    "strict_win32_build": true,
+    "ctests_passed": 2,
+    "build_log": "local/native_vfs_composition_bd_combined_build.log",
+    "build_log_sha256": "285237c71e110d78246c87b222043c47d8234f5893f397048b75b6d68c8b5ffd",
+    "fixtures": [
+      {
+        "name": "graph",
+        "source": "local/game_native_vfs_runtime_bd_probe.cpp",
+        "runner": "local/run_game_native_vfs_runtime_bd_probe.ps1",
+        "executable": "local/game_native_vfs_runtime_bd_probe.exe",
+        "log": "local/native_vfs_composition_bd_combined_graph_probe.log",
+        "source_sha256": "6259938e5fe6c34bd91f1a4c12fbf69f92037cc977b9190abe2636298f8a7611",
+        "runner_sha256": "0a095057a137921d70ec89eb9d1a7dd940b7d3005d619287b922c283b40370de",
+        "executable_sha256": "fdf97426615d5bd9da0f181f6558361a186ed714370f950375891010daddc0d0",
+        "log_sha256": "ac51c0a19d244446ddbb64e939cf4ee4e83773850bf5928dbcf6daff093c9a81"
+      },
+      {
+        "name": "constants",
+        "source": "local/vfs_constants_bd_probe.cpp",
+        "runner": "local/run_vfs_constants_bd_probe.ps1",
+        "executable": "local/vfs_constants_bd_probe.exe",
+        "log": "local/native_vfs_composition_bd_combined_constants_probe.log",
+        "source_sha256": "4fa6627c925af5f746e8377dfc07f44df14051aec0e43250ab756ae92349eef2",
+        "runner_sha256": "bf6aa1360336aa9a6932bfb6c0d17f24d7c52b0c1ebb552e7beb8c5e2547da64",
+        "executable_sha256": "7d9ce330cf8822803802757fb2ce8d6f6217f057b315f0838ec029bcaa947ed4",
+        "log_sha256": "62861cb51a80308a3a6aebdf86f95d98d0a02259741e611f3e0d8fbadb09cdc1"
+      }
+    ],
+    "support_hashes": {
+      "local/audit_native_vfs_composition_bd.py": "5ca201cd6e6994db7794e3647b0abf8f2ca51f17015b233eeb00cc588e28dbd8",
+      "local/prepare_native_vfs_group_annotations_bd.py": "9b388815e373da1b83ed2101a1a302765f0362aaea7a38a55076eceb3a98911a",
+      "local/annotate_native_vfs_groups_bd.py": "19edcf5d38625d3b64702d1797f248b5679ab2f754f843f3ae217936fcee251f",
+      "local/native_vfs_composition_bd_calls.log": "c82172b568b7159d6c3edb9732b2abf02267ef52ce042de4a4f6ef8d51c706ec",
+      "local/native_vfs_composition_bd_seeds.log": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773",
+      "local/native_vfs_bd_collision_probe.cpp": "6259938e5fe6c34bd91f1a4c12fbf69f92037cc977b9190abe2636298f8a7611",
+      "local/native_vfs_bd_collision_probe.exe": "44e31096b1953253e5efc48b256a5b15df69ccaed4af7e0f15f96639b03a587b",
+      "local/native_vfs_composition_bd_repeat_diagnostic.log": "cd214dcfcfc6b9944591e49d637f0952df96d5d23e1ccb8d5c03dd6a4c914cb6"
+    },
+    "installed_executable_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "installed_asset_hashes": {
+      "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\scripts\\fundamentals.lua": "20e128ebe9a1cb7678e3324b0baae93adab4f34f4d96bd081fb7b86505f63526"
+    },
+    "unique_owned_direct_call_sites": 63,
+    "call_report_rows": 94,
+    "call_rows_failed": 0,
+    "live_disk_function_envelopes": 3,
+    "saved_instruction_owners_verified": 320,
+    "saved_annotations_readback": 3,
+    "annotation_receipt_sha256": "dc96069f527e9bf3804a4cf15498f7eab1c0814a049b458b16d2b45927dd8a8c",
+    "disk_live_seed_spans_equal": 8,
+    "verified_initial_data_bytes": 538,
+    "raw_provider_graph_constructed": true,
+    "populated_search_group_count": 2,
+    "body_repair_receipt_hashes": {},
+    "additional_native_evidence_hashes": {},
+    "original_abi_compatible": false,
+    "production_host_reachable": false,
+    "game_validated": false,
+    "reservation_precondition": {
+      "required_bands": [
+        "00cf0000",
+        "00d10000",
+        "00d50000",
+        "00d60000"
+      ],
+      "intermittent_rejection_observed": true,
+      "occupied_band": "00d10000",
+      "allocation_kind": "MEM_PRIVATE committed PAGE_READWRITE",
+      "region_bytes": 36864,
+      "graph_successes_before_rejection": 21,
+      "original_failfast_inference": "Former fixture had no top-level C++ exception handler; diagnostic runs reproduce the reservation exception explicitly.",
+      "mapper_rejection_unchanged": true,
+      "reliable_production_startup_reservation_proven": false,
+      "diagnostic_log": "local/native_vfs_composition_bd_repeat_diagnostic.log"
+    }
+  },
+  "limits": [
+    "Actual raw construction/loose reads and populated-group drain are fixture-proven when required native data bands are available; repeated process launches reproduce a preexisting private allocation at D10000 and safe mapping rejection. Reliable production startup reservation remains unproved.",
+    "GameVfsHost and external consumers are not switched.",
+    "The composer requires initialized owner/type/pool inputs and retained contexts through shared drain; original partial construction/FH3/CRT behavior is not established by this normal-path fixture.",
+    "Archive constants are verified initial .data snapshots, not aliases of mutable process globals.",
+    "Full00738360/+54 prefix setup, package scan and provider enumeration remain pending; no original game or authentic archive member test."
+  ],
+  "pending_followups": [
+    "orch4_native_vfs_extension_prefix_be",
+    "orch4_native_vfs_search_defaults_be",
+    "orch4_native_vfs_package_scan_be",
+    "orch4_native_vfs_enumeration_bf"
+  ]
+}

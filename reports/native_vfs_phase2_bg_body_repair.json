@@ -1,0 +1,2036 @@
+{
+  "reason": "Restore native package scan saved instruction ownership; verify complete bytes and preserve existing names, comments, labels and callee flags.",
+  "entries": [
+    {
+      "address": "0073cb10",
+      "end_exclusive": "0073ce16",
+      "bytes": 774,
+      "sha256": "d6f12a9f69158bb91207a30f83b1c56f532ecd830274fc17c7684d3bad51f2fa",
+      "before": "Function: BSP_Application_MountPackages at 0073cb10\nSignature: undefined BSP_Application_MountPackages(void)\nEntry: 0073cb10\nBody: 0073cb10 - 0073cdff",
+      "before_documentation": {
+        "hash": "277be4cdcafe2119902e7880c0117a2c1b51f2086e4559a246fcd42a9a64aeb8",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "0073cb10",
+        "function_name": "BSP_Application_MountPackages",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 0073cb10]\nNoargs plainRET; incomingECXunused. Freshenumeration dot/mpkg/flag0 through00bdd990; consume front, priority1000 unless case-insensitive patch startsat0 then1000+atol(fullsuffix) wrappingDWORD. Skipalready-mounted provider systemname00bdb120; mount(name,dot,priority,0,-1). Calledtwice0073d881/888 withsamecontext; no sorting. Full774-bytebody rawthroughRET0073ce15 afterfalsenoreturnfree. docs/PACKAGE_MOUNT_STARTUP.md.\n\n[BSP reconstruction 0073cb10] update\nNoargs plainRET; incomingECXunused. Freshenumeration dot/mpkg/flag0 through00bdd990; consume front, priority1000 unless case-insensitive patch startsat0 then1000+atol(fullsuffix) wrappingDWORD. Skipalready-mounted provider systemname00bdb120; mount(name,dot,priority,0,-1). Calledtwice0073d881/888 withsamecontext; no sorting. Full774-bytebody rawthroughRET0073ce15 afterfalsenoreturnfree. docs/PACKAGE_MOUNT_STARTUP.md. Incoming ECX application unused; no stack args; plain RET Fresh dot/mpkg/flag0 enumeration; front order, mounted-system-name skip, existing priority and mount(name,dot,priority,0,-1). Read-only contract; no new host implementation or runtime equivalence. reports/mpkg_mount_integration_audit.json\n\n[BSP reconstruction 0073cb10] update\nNoargs plainRET; incomingECXunused. Freshenumeration dot/mpkg/flag0 through00bdd990; consume front, priority1000 unless case-insensitive patch startsat0 then1000+atol(fullsuffix) wrappingDWORD. Skipalready-mounted provider systemname00bdb120; mount(name,dot,priority,0,-1). Calledtwice0073d881/888 withsamecontext; no sorting. Full774-bytebody rawthroughRET0073ce15 afterfalsenoreturnfree. docs/PACKAGE_MOUNT_STARTUP.md. Incoming ECX application unused; no stack args; plain RET Fresh dot/mpkg/flag0 enumeration; front order, mounted-system-name skip, existing priority and mount(name,dot,priority,0,-1). Read-only contract; no new host implementation or runtime equivalence. reports/mpkg_mount_integration_audit.json Implemented fresh dot/mpkg/flag0 query, private fixed name list, whole-name priority before live system-name lookup; mount unchanged name at dot, priority, ownership0, device-1. Returning mount failures do not stop later entries. Two-pass nested synthetic archive and failure/decline continuation pass. No arguments, plain RET; new host aggregate diagnostics not native return. docs/PACKAGE_SCAN_IMPLEMENTATION.md; reports/package_scan_audit.json.",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "local_44",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffbc, 4)"
+          },
+          {
+            "name": "local_3c",
+            "type": "size_t",
+            "storage": "(stack, 0xffffffffffffffc4, 4)"
+          },
+          {
+            "name": "local_40",
+            "type": "void *",
+            "storage": "(stack, 0xffffffffffffffc0, 4)"
+          },
+          {
+            "name": "local_34",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffcc, 4)"
+          },
+          {
+            "name": "local_38",
+            "type": "char *",
+            "storage": "(stack, 0xffffffffffffffc8, 4)"
+          },
+          {
+            "name": "local_2c",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffd4, 4)"
+          },
+          {
+            "name": "local_30",
+            "type": "void *",
+            "storage": "(stack, 0xffffffffffffffd0, 4)"
+          },
+          {
+            "name": "local_24",
+            "type": "undefined1[4]"
+          },
+          {
+            "name": "local_28",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffd8, 4)"
+          },
+          {
+            "name": "local_1c",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffe4, 4)"
+          },
+          {
+            "name": "local_20",
+            "type": "void *",
+            "storage": "(stack, 0xffffffffffffffe0, 4)"
+          },
+          {
+            "name": "local_c",
+            "type": "int",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "puStack_10",
+            "type": "undefined1 *",
+            "storage": "(stack, 0xfffffffffffffff0, 4)"
+          },
+          {
+            "name": "pvStack_14",
+            "type": "void *",
+            "storage": "(stack, 0xffffffffffffffec, 4)"
+          },
+          {
+            "name": "_Str",
+            "type": "char *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "iVar2",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "iVar1",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "pcVar6",
+            "type": "char *",
+            "storage": "(stack, 0xffffffffffffff9c, 4)"
+          },
+          {
+            "name": "iVar5",
+            "type": "int",
+            "storage": "(register, 0x1c, 4)"
+          },
+          {
+            "name": "iVar4",
+            "type": "int",
+            "storage": "(register, 0x14, 4)"
+          },
+          {
+            "name": "lVar3",
+            "type": "long",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "uVar8",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffa4, 4)"
+          },
+          {
+            "name": "pvVar7",
+            "type": "void *",
+            "storage": "(stack, 0xffffffffffffff9c, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 108,
+            "name": "LAB_0073cb7c"
+          },
+          {
+            "relative_offset": 164,
+            "name": "LAB_0073cbb4"
+          },
+          {
+            "relative_offset": 232,
+            "name": "LAB_0073cbf8"
+          },
+          {
+            "relative_offset": 268,
+            "name": "LAB_0073cc1c"
+          },
+          {
+            "relative_offset": 278,
+            "name": "LAB_0073cc26"
+          },
+          {
+            "relative_offset": 329,
+            "name": "LAB_0073cc59"
+          },
+          {
+            "relative_offset": 386,
+            "name": "LAB_0073cc92"
+          },
+          {
+            "relative_offset": 420,
+            "name": "LAB_0073ccb4"
+          },
+          {
+            "relative_offset": 460,
+            "name": "LAB_0073ccdc"
+          },
+          {
+            "relative_offset": 508,
+            "name": "LAB_0073cd0c"
+          },
+          {
+            "relative_offset": 510,
+            "name": "LAB_0073cd0e"
+          },
+          {
+            "relative_offset": 581,
+            "name": "LAB_0073cd55"
+          },
+          {
+            "relative_offset": 647,
+            "name": "LAB_0073cd97"
+          },
+          {
+            "relative_offset": 683,
+            "name": "LAB_0073cdbb"
+          },
+          {
+            "relative_offset": 715,
+            "name": "LAB_0073cddb"
+          },
+          {
+            "relative_offset": 725,
+            "name": "LAB_0073cde5"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "before_instruction_ownership": [
+        {
+          "address": "0073cb10",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cb11",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cb13",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cb16",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cb18",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cb1d",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cb23",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cb24",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cb2b",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cb2e",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cb2f",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cb30",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cb31",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cb32",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cb36",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cb3b",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cb3d",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cb41",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cb45",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cb47",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cb49",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cb4d",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cb51",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cb55",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cb59",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cb5e",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cb62",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cb64",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cb66",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cb6a",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cb6d",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cb6e",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cb73",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cb74",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cb79",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cb7c",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cb7e",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cb80",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cb84",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cb89",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cb8d",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cb91",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cb96",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cb9a",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cb9c",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cb9e",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cba2",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cba5",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cba6",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cbab",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cbac",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cbb1",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cbb4",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cbb8",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cbb9",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cbba",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cbbe",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cbbf",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cbc5",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cbc9",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cbca",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cbcf",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cbd4",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cbd8",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cbda",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cbdf",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cbe1",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cbe5",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cbe7",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cbea",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cbeb",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cbec",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cbf1",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cbf3",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cbf8",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cbfc",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cbfe",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cc03",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cc05",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cc09",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cc0b",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cc0e",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cc0f",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cc10",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cc15",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cc17",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cc1c",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cc20",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cc26",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cc28",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cc2a",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cc2e",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cc32",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cc36",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cc3b",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cc3f",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cc41",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cc43",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cc47",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cc4a",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cc4b",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cc50",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cc51",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cc56",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cc59",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cc5d",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cc5e",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cc62",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cc67",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cc6c",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cc70",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cc75",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cc7a",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cc80",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cc82",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cc88",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cc8c",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cc90",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cc92",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cc96",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cc9a",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cc9b",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cc9d",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cc9e",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cc9f",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cca4",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cca7",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cca9",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073ccab",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073ccae",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073ccb0",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073ccb2",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073ccb4",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073ccb6",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073ccb8",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073ccbc",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073ccc1",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073ccc2",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073ccc6",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073ccc7",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cccb",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073ccd0",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073ccd3",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073ccd5",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073ccd7",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073ccdc",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073ccdd",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cce2",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cce4",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cce8",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cceb",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073ccf1",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073ccf3",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073ccf5",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073ccf9",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073ccfb",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073ccfe",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073ccff",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cd00",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cd05",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cd07",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cd0c",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cd0e",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cd14",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cd18",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cd19",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cd1e",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cd20",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cd22",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cd24",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cd26",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cd2a",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cd2e",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cd32",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cd37",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cd3b",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cd3d",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cd3f",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cd43",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cd46",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cd47",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cd4c",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cd4d",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cd52",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cd55",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cd5b",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cd5d",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cd5e",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cd5f",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cd63",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cd64",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cd68",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cd69",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cd6e",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cd73",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cd77",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cd79",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cd7e",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cd80",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cd84",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cd86",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cd89",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cd8a",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cd8b",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cd90",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cd92",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cd97",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cd9b",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cd9d",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cda2",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cda4",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cda8",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cdaa",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cdad",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cdae",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cdaf",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cdb4",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cdb6",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cdbb",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cdbd",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cdc2",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cdc4",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cdc8",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cdca",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cdcd",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cdce",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cdcf",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cdd4",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cdd6",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cddb",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cddf",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cde5",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cde9",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cdf1",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cdf6",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cdfa",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073cdfb",
+          "owner": "0073cb10"
+        },
+        {
+          "address": "0073ce00",
+          "owner": null
+        },
+        {
+          "address": "0073ce04",
+          "owner": null
+        },
+        {
+          "address": "0073ce07",
+          "owner": null
+        },
+        {
+          "address": "0073ce08",
+          "owner": null
+        },
+        {
+          "address": "0073ce0f",
+          "owner": null
+        },
+        {
+          "address": "0073ce10",
+          "owner": null
+        },
+        {
+          "address": "0073ce11",
+          "owner": null
+        },
+        {
+          "address": "0073ce12",
+          "owner": null
+        },
+        {
+          "address": "0073ce14",
+          "owner": null
+        },
+        {
+          "address": "0073ce15",
+          "owner": null
+        }
+      ],
+      "after": "Function: BSP_Application_MountPackages at 0073cb10\nSignature: void __cdecl BSP_Application_MountPackages(void)\nEntry: 0073cb10\nBody: 0073cb10 - 0073ce15",
+      "after_documentation": {
+        "hash": "4003e918b05fe819bf4147af3e9ef57b88d2f4f65231690ca11681c083ebb27d",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "0073cb10",
+        "function_name": "BSP_Application_MountPackages",
+        "return_type": "void",
+        "calling_convention": "__cdecl",
+        "plate_comment": "[BSP reconstruction 0073cb10]\nNoargs plainRET; incomingECXunused. Freshenumeration dot/mpkg/flag0 through00bdd990; consume front, priority1000 unless case-insensitive patch startsat0 then1000+atol(fullsuffix) wrappingDWORD. Skipalready-mounted provider systemname00bdb120; mount(name,dot,priority,0,-1). Calledtwice0073d881/888 withsamecontext; no sorting. Full774-bytebody rawthroughRET0073ce15 afterfalsenoreturnfree. docs/PACKAGE_MOUNT_STARTUP.md.\n\n[BSP reconstruction 0073cb10] update\nNoargs plainRET; incomingECXunused. Freshenumeration dot/mpkg/flag0 through00bdd990; consume front, priority1000 unless case-insensitive patch startsat0 then1000+atol(fullsuffix) wrappingDWORD. Skipalready-mounted provider systemname00bdb120; mount(name,dot,priority,0,-1). Calledtwice0073d881/888 withsamecontext; no sorting. Full774-bytebody rawthroughRET0073ce15 afterfalsenoreturnfree. docs/PACKAGE_MOUNT_STARTUP.md. Incoming ECX application unused; no stack args; plain RET Fresh dot/mpkg/flag0 enumeration; front order, mounted-system-name skip, existing priority and mount(name,dot,priority,0,-1). Read-only contract; no new host implementation or runtime equivalence. reports/mpkg_mount_integration_audit.json\n\n[BSP reconstruction 0073cb10] update\nNoargs plainRET; incomingECXunused. Freshenumeration dot/mpkg/flag0 through00bdd990; consume front, priority1000 unless case-insensitive patch startsat0 then1000+atol(fullsuffix) wrappingDWORD. Skipalready-mounted provider systemname00bdb120; mount(name,dot,priority,0,-1). Calledtwice0073d881/888 withsamecontext; no sorting. Full774-bytebody rawthroughRET0073ce15 afterfalsenoreturnfree. docs/PACKAGE_MOUNT_STARTUP.md. Incoming ECX application unused; no stack args; plain RET Fresh dot/mpkg/flag0 enumeration; front order, mounted-system-name skip, existing priority and mount(name,dot,priority,0,-1). Read-only contract; no new host implementation or runtime equivalence. reports/mpkg_mount_integration_audit.json Implemented fresh dot/mpkg/flag0 query, private fixed name list, whole-name priority before live system-name lookup; mount unchanged name at dot, priority, ownership0, device-1. Returning mount failures do not stop later entries. Two-pass nested synthetic archive and failure/decline continuation pass. No arguments, plain RET; new host aggregate diagnostics not native return. docs/PACKAGE_SCAN_IMPLEMENTATION.md; reports/package_scan_audit.json.",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "local_24",
+            "type": "undefined1[4]"
+          },
+          {
+            "name": "iVar1",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "local_20",
+            "type": "void *",
+            "storage": "(stack, 0xffffffffffffffe0, 4)"
+          },
+          {
+            "name": "iVar2",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "local_2c",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffd4, 4)"
+          },
+          {
+            "name": "_Str",
+            "type": "char *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "local_28",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffd8, 4)"
+          },
+          {
+            "name": "local_c",
+            "type": "int",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "local_1c",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffe4, 4)"
+          },
+          {
+            "name": "local_14",
+            "type": "void *",
+            "storage": "(stack, 0xffffffffffffffec, 4)"
+          },
+          {
+            "name": "puStack_10",
+            "type": "undefined1 *",
+            "storage": "(stack, 0xfffffffffffffff0, 4)"
+          },
+          {
+            "name": "pvVar7",
+            "type": "void *",
+            "storage": "(stack, 0xffffffffffffff9c, 4)"
+          },
+          {
+            "name": "uVar8",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffa4, 4)"
+          },
+          {
+            "name": "lVar3",
+            "type": "long",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "iVar4",
+            "type": "int",
+            "storage": "(register, 0x14, 4)"
+          },
+          {
+            "name": "iVar5",
+            "type": "int",
+            "storage": "(register, 0x1c, 4)"
+          },
+          {
+            "name": "pcVar6",
+            "type": "char *",
+            "storage": "(stack, 0xffffffffffffff9c, 4)"
+          },
+          {
+            "name": "local_44",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffbc, 4)"
+          },
+          {
+            "name": "local_40",
+            "type": "void *",
+            "storage": "(stack, 0xffffffffffffffc0, 4)"
+          },
+          {
+            "name": "local_34",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffcc, 4)"
+          },
+          {
+            "name": "local_30",
+            "type": "void *",
+            "storage": "(stack, 0xffffffffffffffd0, 4)"
+          },
+          {
+            "name": "local_3c",
+            "type": "size_t",
+            "storage": "(stack, 0xffffffffffffffc4, 4)"
+          },
+          {
+            "name": "local_38",
+            "type": "char *",
+            "storage": "(stack, 0xffffffffffffffc8, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 108,
+            "name": "LAB_0073cb7c"
+          },
+          {
+            "relative_offset": 164,
+            "name": "LAB_0073cbb4"
+          },
+          {
+            "relative_offset": 232,
+            "name": "LAB_0073cbf8"
+          },
+          {
+            "relative_offset": 268,
+            "name": "LAB_0073cc1c"
+          },
+          {
+            "relative_offset": 278,
+            "name": "LAB_0073cc26"
+          },
+          {
+            "relative_offset": 329,
+            "name": "LAB_0073cc59"
+          },
+          {
+            "relative_offset": 386,
+            "name": "LAB_0073cc92"
+          },
+          {
+            "relative_offset": 420,
+            "name": "LAB_0073ccb4"
+          },
+          {
+            "relative_offset": 460,
+            "name": "LAB_0073ccdc"
+          },
+          {
+            "relative_offset": 508,
+            "name": "LAB_0073cd0c"
+          },
+          {
+            "relative_offset": 510,
+            "name": "LAB_0073cd0e"
+          },
+          {
+            "relative_offset": 581,
+            "name": "LAB_0073cd55"
+          },
+          {
+            "relative_offset": 647,
+            "name": "LAB_0073cd97"
+          },
+          {
+            "relative_offset": 683,
+            "name": "LAB_0073cdbb"
+          },
+          {
+            "relative_offset": 715,
+            "name": "LAB_0073cddb"
+          },
+          {
+            "relative_offset": 725,
+            "name": "LAB_0073cde5"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "complete_body": true,
+      "prior_evidence_preserved": true,
+      "after_instruction_ownership_verified": 247
+    },
+    {
+      "address": "00be1130",
+      "end_exclusive": "00be1215",
+      "bytes": 229,
+      "sha256": "8ff18707b0dc279b87eaab60a5a6505a20bf87664bc7a684d1d05fe04c451909",
+      "before": "Function: BSP_VfsEnumerationVisitor_CollectMount at 00be1130\nSignature: void __thiscall BSP_VfsEnumerationVisitor_CollectMount(void * this, void * mount_payload, void * suffix)\nEntry: 00be1130\nBody: 00be1130 - 00be11fc",
+      "before_documentation": {
+        "hash": "74ca2b09f4bbd55e6ca179e845bc973c174b8558b4095668757bd009c9dba343",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00be1130",
+        "function_name": "BSP_VfsEnumerationVisitor_CollectMount",
+        "return_type": "void",
+        "calling_convention": "__thiscall",
+        "plate_comment": "[BSP reconstruction 00be1130]\nECX callback; stack mount_record,suffix; RET8 Provider+14 dispatch four args, forwards whole names without prefix reattachment; complete tail through00be1214. Read-only contract; no new host implementation or runtime equivalence. reports/mpkg_mount_integration_audit.json\n\n[BSP reconstruction 00be1130] update\nHypothesis, not a recovered symbol. BG primary integration: docs/NATIVE_VFS_PHASE2_BG_INTEGRATION.md; reports/native_vfs_phase2_bg_validation.json. ECX visitor; RET8. Capture current provider table+14, enumerate into actual0Ch native string vector, copy each header to unique result append, reverse vector cleanup. Concrete binding now covers physical/FileStore/MPKG/MPAK profiles. Primary verified16 complete live/disk envelopes,5822 saved instruction owners and799 internal direct CALLs. Source uses retained actual manager/pool and raw storage. Original FH3/CRT ABI identity, malformed-input domains, authentic archive payloads, GameVfsHost migration, reliable startup reservation and gameplay are not claimed.",
+        "parameters": [
+          {
+            "ordinal": 0,
+            "name": "this",
+            "type": "void *"
+          },
+          {
+            "ordinal": 1,
+            "name": "mount_payload",
+            "type": "void *"
+          },
+          {
+            "ordinal": 2,
+            "name": "suffix",
+            "type": "void *"
+          }
+        ],
+        "local_variables": [
+          {
+            "name": "puStack_8",
+            "type": "undefined1 *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "puVar1",
+            "type": "uint *",
+            "storage": "(unique, 0x6c00, 4)"
+          },
+          {
+            "name": "puVar2",
+            "type": "undefined1 *",
+            "storage": "(unique, 0x100000ed, 4)"
+          },
+          {
+            "name": "iVar3",
+            "type": "int",
+            "storage": "(register, 0xc, 4)"
+          },
+          {
+            "name": "unaff_EBP",
+            "type": "int",
+            "storage": "(register, 0x14, 4)"
+          },
+          {
+            "name": "unaff_ESI",
+            "type": "void *",
+            "storage": "(register, 0x18, 4)"
+          },
+          {
+            "name": "unaff_EDI",
+            "type": "int",
+            "storage": "(register, 0x1c, 4)"
+          },
+          {
+            "name": "_Size",
+            "type": "uint",
+            "storage": "(stack, 0xffffffffffffffbc, 4)"
+          },
+          {
+            "name": "name_data",
+            "type": "char *",
+            "storage": "(stack, 0xffffffffffffffc0, 4)"
+          },
+          {
+            "name": "local_4",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "puStack_c",
+            "type": "undefined1 *"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 96,
+            "name": "LAB_00be1190"
+          },
+          {
+            "relative_offset": 156,
+            "name": "LAB_00be11cc"
+          },
+          {
+            "relative_offset": 177,
+            "name": "LAB_00be11e1"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "before_instruction_ownership": [
+        {
+          "address": "00be1130",
+          "owner": "00be1130"
+        },
+        {
+          "address": "00be1132",
+          "owner": "00be1130"
+        },
+        {
+          "address": "00be1137",
+          "owner": "00be1130"
+        },
+        {
+          "address": "00be113d",
+          "owner": "00be1130"
+        },
+        {
+          "address": "00be113e",
+          "owner": "00be1130"
+        },
+        {
+          "address": "00be1145",
+          "owner": "00be1130"
+        },
+        {
+          "address": "00be1148",
+          "owner": "00be1130"
+        },
+        {
+          "address": "00be1149",
+          "owner": "00be1130"
+        },
+        {
+          "address": "00be114a",
+          "owner": "00be1130"
+        },
+        {
+          "address": "00be114c",
+          "owner": "00be1130"
+        },
+        {
+          "address": "00be114d",
+          "owner": "00be1130"
+        },
+        {
+          "address": "00be114f",
+          "owner": "00be1130"
+        },
+        {
+          "address": "00be1150",
+          "owner": "00be1130"
+        },
+        {
+          "address": "00be1154",
+          "owner": "00be1130"
+        },
+        {
+          "address": "00be1158",
+          "owner": "00be1130"
+        },
+        {
+          "address": "00be115c",
+          "owner": "00be1130"
+        },
+        {
+          "address": "00be1160",
+          "owner": "00be1130"
+        },
+        {
+          "address": "00be1164",
+          "owner": "00be1130"
+        },
+        {
+          "address": "00be1168",
+          "owner": "00be1130"
+        },
+        {
+          "address": "00be116b",
+          "owner": "00be1130"
+        },
+        {
+          "address": "00be116d",
+          "owner": "00be1130"
+        },
+        {
+          "address": "00be1170",
+          "owner": "00be1130"
+        },
+        {
+          "address": "00be1174",
+          "owner": "00be1130"
+        },
+        {
+          "address": "00be1175",
+          "owner": "00be1130"
+        },
+        {
+          "address": "00be1176",
+          "owner": "00be1130"
+        },
+        {
+          "address": "00be1179",
+          "owner": "00be1130"
+        },
+        {
+          "address": "00be117a",
+          "owner": "00be1130"
+        },
+        {
+          "address": "00be117e",
+          "owner": "00be1130"
+        },
+        {
+          "address": "00be117f",
+          "owner": "00be1130"
+        },
+        {
+          "address": "00be1183",
+          "owner": "00be1130"
+        },
+        {
+          "address": "00be1185",
+          "owner": "00be1130"
+        },
+        {
+          "address": "00be1187",
+          "owner": "00be1130"
+        },
+        {
+          "address": "00be118b",
+          "owner": "00be1130"
+        },
+        {
+          "address": "00be118d",
+          "owner": "00be1130"
+        },
+        {
+          "address": "00be1190",
+          "owner": "00be1130"
+        },
+        {
+          "address": "00be1194",
+          "owner": "00be1130"
+        },
+        {
+          "address": "00be1197",
+          "owner": "00be1130"
+        },
+        {
+          "address": "00be1199",
+          "owner": "00be1130"
+        },
+        {
+          "address": "00be119c",
+          "owner": "00be1130"
+        },
+        {
+          "address": "00be119e",
+          "owner": "00be1130"
+        },
+        {
+          "address": "00be11a2",
+          "owner": "00be1130"
+        },
+        {
+          "address": "00be11a4",
+          "owner": "00be1130"
+        },
+        {
+          "address": "00be11a7",
+          "owner": "00be1130"
+        },
+        {
+          "address": "00be11a9",
+          "owner": "00be1130"
+        },
+        {
+          "address": "00be11ab",
+          "owner": "00be1130"
+        },
+        {
+          "address": "00be11ad",
+          "owner": "00be1130"
+        },
+        {
+          "address": "00be11ae",
+          "owner": "00be1130"
+        },
+        {
+          "address": "00be11b0",
+          "owner": "00be1130"
+        },
+        {
+          "address": "00be11b5",
+          "owner": "00be1130"
+        },
+        {
+          "address": "00be11b7",
+          "owner": "00be1130"
+        },
+        {
+          "address": "00be11b9",
+          "owner": "00be1130"
+        },
+        {
+          "address": "00be11bb",
+          "owner": "00be1130"
+        },
+        {
+          "address": "00be11be",
+          "owner": "00be1130"
+        },
+        {
+          "address": "00be11c1",
+          "owner": "00be1130"
+        },
+        {
+          "address": "00be11c2",
+          "owner": "00be1130"
+        },
+        {
+          "address": "00be11c3",
+          "owner": "00be1130"
+        },
+        {
+          "address": "00be11c4",
+          "owner": "00be1130"
+        },
+        {
+          "address": "00be11c9",
+          "owner": "00be1130"
+        },
+        {
+          "address": "00be11cc",
+          "owner": "00be1130"
+        },
+        {
+          "address": "00be11d0",
+          "owner": "00be1130"
+        },
+        {
+          "address": "00be11d3",
+          "owner": "00be1130"
+        },
+        {
+          "address": "00be11d8",
+          "owner": "00be1130"
+        },
+        {
+          "address": "00be11db",
+          "owner": "00be1130"
+        },
+        {
+          "address": "00be11df",
+          "owner": "00be1130"
+        },
+        {
+          "address": "00be11e1",
+          "owner": "00be1130"
+        },
+        {
+          "address": "00be11e2",
+          "owner": "00be1130"
+        },
+        {
+          "address": "00be11e6",
+          "owner": "00be1130"
+        },
+        {
+          "address": "00be11ee",
+          "owner": "00be1130"
+        },
+        {
+          "address": "00be11f3",
+          "owner": "00be1130"
+        },
+        {
+          "address": "00be11f7",
+          "owner": "00be1130"
+        },
+        {
+          "address": "00be11f8",
+          "owner": "00be1130"
+        },
+        {
+          "address": "00be11fd",
+          "owner": null
+        },
+        {
+          "address": "00be1201",
+          "owner": null
+        },
+        {
+          "address": "00be1204",
+          "owner": null
+        },
+        {
+          "address": "00be1205",
+          "owner": null
+        },
+        {
+          "address": "00be1206",
+          "owner": null
+        },
+        {
+          "address": "00be1207",
+          "owner": null
+        },
+        {
+          "address": "00be120e",
+          "owner": null
+        },
+        {
+          "address": "00be120f",
+          "owner": null
+        },
+        {
+          "address": "00be1212",
+          "owner": null
+        }
+      ],
+      "after": "Function: BSP_VfsEnumerationVisitor_CollectMount at 00be1130\nSignature: void __thiscall BSP_VfsEnumerationVisitor_CollectMount(void * this, void * mount_payload, void * suffix)\nEntry: 00be1130\nBody: 00be1130 - 00be1214",
+      "after_documentation": {
+        "hash": "17f44e64848a7ca868c96a5fe34f311c2bb0ffcdfea787ccfe2f989cca82d22c",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00be1130",
+        "function_name": "BSP_VfsEnumerationVisitor_CollectMount",
+        "return_type": "void",
+        "calling_convention": "__thiscall",
+        "plate_comment": "[BSP reconstruction 00be1130]\nECX callback; stack mount_record,suffix; RET8 Provider+14 dispatch four args, forwards whole names without prefix reattachment; complete tail through00be1214. Read-only contract; no new host implementation or runtime equivalence. reports/mpkg_mount_integration_audit.json\n\n[BSP reconstruction 00be1130] update\nHypothesis, not a recovered symbol. BG primary integration: docs/NATIVE_VFS_PHASE2_BG_INTEGRATION.md; reports/native_vfs_phase2_bg_validation.json. ECX visitor; RET8. Capture current provider table+14, enumerate into actual0Ch native string vector, copy each header to unique result append, reverse vector cleanup. Concrete binding now covers physical/FileStore/MPKG/MPAK profiles. Primary verified16 complete live/disk envelopes,5822 saved instruction owners and799 internal direct CALLs. Source uses retained actual manager/pool and raw storage. Original FH3/CRT ABI identity, malformed-input domains, authentic archive payloads, GameVfsHost migration, reliable startup reservation and gameplay are not claimed.",
+        "parameters": [
+          {
+            "ordinal": 0,
+            "name": "this",
+            "type": "void *"
+          },
+          {
+            "ordinal": 1,
+            "name": "mount_payload",
+            "type": "void *"
+          },
+          {
+            "ordinal": 2,
+            "name": "suffix",
+            "type": "void *"
+          }
+        ],
+        "local_variables": [
+          {
+            "name": "unaff_EDI",
+            "type": "int",
+            "storage": "(register, 0x1c, 4)"
+          },
+          {
+            "name": "unaff_ESI",
+            "type": "void *",
+            "storage": "(register, 0x18, 4)"
+          },
+          {
+            "name": "name_data",
+            "type": "char *",
+            "storage": "(stack, 0xffffffffffffffc0, 4)"
+          },
+          {
+            "name": "_Size",
+            "type": "uint",
+            "storage": "(stack, 0xffffffffffffffbc, 4)"
+          },
+          {
+            "name": "puStack_8",
+            "type": "undefined1 *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "puStack_c",
+            "type": "undefined1 *"
+          },
+          {
+            "name": "puVar2",
+            "type": "undefined1 *",
+            "storage": "(unique, 0x100000ed, 4)"
+          },
+          {
+            "name": "puVar1",
+            "type": "uint *",
+            "storage": "(unique, 0x6c00, 4)"
+          },
+          {
+            "name": "unaff_EBP",
+            "type": "int",
+            "storage": "(register, 0x14, 4)"
+          },
+          {
+            "name": "iVar3",
+            "type": "int",
+            "storage": "(register, 0xc, 4)"
+          },
+          {
+            "name": "local_4",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 96,
+            "name": "LAB_00be1190"
+          },
+          {
+            "relative_offset": 156,
+            "name": "LAB_00be11cc"
+          },
+          {
+            "relative_offset": 177,
+            "name": "LAB_00be11e1"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "complete_body": true,
+      "prior_evidence_preserved": true,
+      "after_instruction_ownership_verified": 80
+    }
+  ],
+  "actions": [
+    {
+      "endpoint": "clear_instruction_flow_override",
+      "body": {
+        "address": "0073cdfb"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Cleared flow override at 0073cdfb (was: NONE, now: NONE)\"}"
+    },
+    {
+      "endpoint": "delete_function",
+      "body": {
+        "address": "0073cb10"
+      },
+      "result": "{\"success\": true, \"address\": \"0073cb10\", \"deleted_function\": \"BSP_Application_MountPackages\", \"body_size\": 752, \"message\": \"Function 'BSP_Application_MountPackages' deleted at 0073cb10\"}"
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "0073cb10",
+        "end_address": "0073ce16"
+      },
+      "result": "{\"success\": true, \"start_address\": \"0073cb10\", \"end_address\": \"0073ce15\", \"bytes_disassembled\": 774, \"message\": \"Successfully disassembled 774 byte(s)\"}"
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "0073cb10",
+        "name": "BSP_Application_MountPackages",
+        "disassemble_first": false
+      },
+      "result": "{\"success\": true, \"address\": \"0073cb10\", \"function_name\": \"BSP_Application_MountPackages\", \"entry_point\": \"0073cb10\", \"body_size\": 774, \"message\": \"Function created successfully at 0073cb10\", \"warnings\": [\"Function name 'BSP_Application_MountPackages' \\u2014 main part 'Application_MountPackages' is not PascalCase. Expected: ApplicationMountpackages\", \"Function name 'BSP_Application_MountPackages' \\u2014 main part 'Application_MountPackages' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_Application_MountPackages' does not start with a recognized verb. First word 'Application_' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "0073cb10",
+        "prototype": "void __cdecl BSP_Application_MountPackages(void)",
+        "calling_convention": "__cdecl"
+      },
+      "result": "Successfully set prototype for function at 0073cb10 with __cdecl calling convention"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "0073cb10",
+        "comment": "[BSP reconstruction 0073cb10]\nNoargs plainRET; incomingECXunused. Freshenumeration dot/mpkg/flag0 through00bdd990; consume front, priority1000 unless case-insensitive patch startsat0 then1000+atol(fullsuffix) wrappingDWORD. Skipalready-mounted provider systemname00bdb120; mount(name,dot,priority,0,-1). Calledtwice0073d881/888 withsamecontext; no sorting. Full774-bytebody rawthroughRET0073ce15 afterfalsenoreturnfree. docs/PACKAGE_MOUNT_STARTUP.md.\n\n[BSP reconstruction 0073cb10] update\nNoargs plainRET; incomingECXunused. Freshenumeration dot/mpkg/flag0 through00bdd990; consume front, priority1000 unless case-insensitive patch startsat0 then1000+atol(fullsuffix) wrappingDWORD. Skipalready-mounted provider systemname00bdb120; mount(name,dot,priority,0,-1). Calledtwice0073d881/888 withsamecontext; no sorting. Full774-bytebody rawthroughRET0073ce15 afterfalsenoreturnfree. docs/PACKAGE_MOUNT_STARTUP.md. Incoming ECX application unused; no stack args; plain RET Fresh dot/mpkg/flag0 enumeration; front order, mounted-system-name skip, existing priority and mount(name,dot,priority,0,-1). Read-only contract; no new host implementation or runtime equivalence. reports/mpkg_mount_integration_audit.json\n\n[BSP reconstruction 0073cb10] update\nNoargs plainRET; incomingECXunused. Freshenumeration dot/mpkg/flag0 through00bdd990; consume front, priority1000 unless case-insensitive patch startsat0 then1000+atol(fullsuffix) wrappingDWORD. Skipalready-mounted provider systemname00bdb120; mount(name,dot,priority,0,-1). Calledtwice0073d881/888 withsamecontext; no sorting. Full774-bytebody rawthroughRET0073ce15 afterfalsenoreturnfree. docs/PACKAGE_MOUNT_STARTUP.md. Incoming ECX application unused; no stack args; plain RET Fresh dot/mpkg/flag0 enumeration; front order, mounted-system-name skip, existing priority and mount(name,dot,priority,0,-1). Read-only contract; no new host implementation or runtime equivalence. reports/mpkg_mount_integration_audit.json Implemented fresh dot/mpkg/flag0 query, private fixed name list, whole-name priority before live system-name lookup; mount unchanged name at dot, priority, ownership0, device-1. Returning mount failures do not stop later entries. Two-pass nested synthetic archive and failure/decline continuation pass. No arguments, plain RET; new host aggregate diagnostics not native return. docs/PACKAGE_SCAN_IMPLEMENTATION.md; reports/package_scan_audit.json."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 0073cb10\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": "{\"success\": true, \"program\": \"battlestationspacific.exe\", \"message\": \"Program saved successfully\"}"
+    },
+    {
+      "endpoint": "clear_instruction_flow_override",
+      "body": {
+        "address": "00be11f8"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Cleared flow override at 00be11f8 (was: NONE, now: NONE)\"}"
+    },
+    {
+      "endpoint": "delete_function",
+      "body": {
+        "address": "00be1130"
+      },
+      "result": "{\"success\": true, \"address\": \"00be1130\", \"deleted_function\": \"BSP_VfsEnumerationVisitor_CollectMount\", \"body_size\": 205, \"message\": \"Function 'BSP_VfsEnumerationVisitor_CollectMount' deleted at 00be1130\"}"
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00be1130",
+        "end_address": "00be1215"
+      },
+      "result": "{\"success\": true, \"start_address\": \"00be1130\", \"end_address\": \"00be1214\", \"bytes_disassembled\": 229, \"message\": \"Successfully disassembled 229 byte(s)\"}"
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00be1130",
+        "name": "BSP_VfsEnumerationVisitor_CollectMount",
+        "disassemble_first": false
+      },
+      "result": "{\"success\": true, \"address\": \"00be1130\", \"function_name\": \"BSP_VfsEnumerationVisitor_CollectMount\", \"entry_point\": \"00be1130\", \"body_size\": 229, \"message\": \"Function created successfully at 00be1130\", \"warnings\": [\"Function name 'BSP_VfsEnumerationVisitor_CollectMount' \\u2014 main part 'VfsEnumerationVisitor_CollectMount' is not PascalCase. Expected: VfsenumerationvisitorCollectmount\", \"Function name 'BSP_VfsEnumerationVisitor_CollectMount' \\u2014 main part 'VfsEnumerationVisitor_CollectMount' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_VfsEnumerationVisitor_CollectMount' does not start with a recognized verb. First word 'Vfs' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00be1130",
+        "prototype": "void __thiscall BSP_VfsEnumerationVisitor_CollectMount(void* mount_payload, void* suffix)",
+        "calling_convention": "__thiscall"
+      },
+      "result": "Successfully set prototype for function at 00be1130 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00be1130",
+        "comment": "[BSP reconstruction 00be1130]\nECX callback; stack mount_record,suffix; RET8 Provider+14 dispatch four args, forwards whole names without prefix reattachment; complete tail through00be1214. Read-only contract; no new host implementation or runtime equivalence. reports/mpkg_mount_integration_audit.json\n\n[BSP reconstruction 00be1130] update\nHypothesis, not a recovered symbol. BG primary integration: docs/NATIVE_VFS_PHASE2_BG_INTEGRATION.md; reports/native_vfs_phase2_bg_validation.json. ECX visitor; RET8. Capture current provider table+14, enumerate into actual0Ch native string vector, copy each header to unique result append, reverse vector cleanup. Concrete binding now covers physical/FileStore/MPKG/MPAK profiles. Primary verified16 complete live/disk envelopes,5822 saved instruction owners and799 internal direct CALLs. Source uses retained actual manager/pool and raw storage. Original FH3/CRT ABI identity, malformed-input domains, authentic archive payloads, GameVfsHost migration, reliable startup reservation and gameplay are not claimed."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00be1130\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": "{\"success\": true, \"program\": \"battlestationspacific.exe\", \"message\": \"Program saved successfully\"}"
+    }
+  ],
+  "state": "complete_bodies_saved_prior_evidence_retained",
+  "exports_refreshed": [
+    "0073cb10",
+    "00be1130"
+  ]
+}
