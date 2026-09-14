@@ -1,0 +1,503 @@
+{
+  "packet": "cc7_gun_dispersion",
+  "owner": "agent/cc7-gun-dispersion",
+  "docs": "docs/GUN_DISPERSION.md",
+  "sources": [
+    "include/bsp/gun_dispersion.hpp",
+    "src/gun_dispersion.cpp"
+  ],
+  "subject": "The two producers of miss between a gun's aim and a shell's flight: the per-shot Throw cone drawn in BSP_Gun_Fire 00730160, and the gun bot's aim error pair rerolled by 006DEFF0. Ghidra was read-only for this packet.",
+  "reuses": [
+    "include/bsp/random.hpp for RandomState and random_next_u32_00ba2c20; 00BD2E60's uniform mapping sits on top of it",
+    "include/bsp/bot_fire_target.hpp for GunAimAngles",
+    "include/bsp/unit_rudder.hpp for wrapped_angle_add_00438aa0, the wrap the bot's error pair is applied through",
+    "include/bsp/gun_bot_ticks.hpp already has gun_bot_muzzle_error_006df520, the interpolation between the two error pairs; this packet adds the draw that feeds it and does not duplicate it",
+    "docs/ROBOT_CONFIG.md and include/bsp/robot_config.hpp for the six-level descriptor shape and the ArtilleryGunnerBot / ArtillerySubDirectorBot / TailGunnerBot field names",
+    "std::array<float,3> as the house float3, per include/bsp/camera_affine.hpp"
+  ],
+  "brief_correction": {
+    "was": "the per-pellet perturbation is 0072F830, which builds a perturbation of the muzzle direction from the weapon class field Throw",
+    "is": "0072F830 contains exactly one RNG call, an effect timer, and one deterministic ring; the Throw cone is drawn in its caller BSP_Gun_Fire 00730160 at 00730540..0073058F",
+    "evidence": "the only CALL 00BD2F10 inside 0072F830..0073015C is at 0072FB6A and its result is stored to gun[+3F0h]+6F8h; the 0072FEFB loop's angle is 2*pi*i/gunclass[+0CCh] with no draw; 00730557 and 00730575 are the two draws that write gun+400h and gun+404h"
+  },
+  "functions": [
+    {
+      "address": "00730160",
+      "name": "BSP_Gun_Fire",
+      "abi": "__thiscall(gun, int useExplicitThrow, float throwA, float throwB), RET 0Ch at 00730A1B, body 00730160-00730A1D. Three stack arguments from the cleanup, not from the decompiler; frame A is entry-108h after SUB ESP,0FCh / PUSH EBP / PUSH ESI / PUSH EDI, which puts the arguments at [ESP+10Ch], [ESP+110h] and [ESP+114h].",
+      "coverage": "partial: 0073031D..0073075E complete; head 00730160..0073031C and tail 00730762..00730A1B by call shape only",
+      "no_ghidra_function": false,
+      "note": "The throw magnitude starts as gun[+3F8h]+4h (the Lua Throw), is zeroed when weapon Function gunclass[+80h] is 1, 5 or 6 under GameSettings+760h (TurnOffAAGunThrow), and is multiplied by one seat's vtable[24h]() BulletThrowMul. A magnitude at or below zero skips the block. The draw is throwA = U(0, 2*pi) and throwB = tan(magnitude) * U(0, 1); the direction becomes row2 + throwB*(cos(throwA)*row1 + sin(throwA)*row0) of the barrel node matrix at gun[+3CCh]+0F0h.",
+      "calls": [
+        {
+          "address": "007301cc",
+          "native": "00b6db70",
+          "role": "refreshes the barrel node before its world matrix is copied; contract: unread"
+        },
+        {
+          "address": "00730288",
+          "native": "006fdd70",
+          "role": "the muzzle-point count, ([gunclass+0A0h]-[gunclass+9Ch])/18h"
+        },
+        {
+          "address": "00730306",
+          "native": "00424c40",
+          "role": "the settings singleton whose +760h byte is TurnOffAAGunThrow"
+        },
+        {
+          "address": "00730367",
+          "native": "00521e70",
+          "role": "role 3 AI test on gun[+3F0h], the player-artillery arm"
+        },
+        {
+          "address": "007303ba",
+          "native": "00521e70",
+          "role": "role 5, bullet sub-type 0Ah, seat gun+39Ch"
+        },
+        {
+          "address": "007303df",
+          "native": "00521e70",
+          "role": "role 7, bullet sub-type 0Bh, seat gun+3A4h or gun+3A0h"
+        },
+        {
+          "address": "0073041a",
+          "native": "00521e70",
+          "role": "role 3, bullet sub-type 10h, seat gun+394h"
+        },
+        {
+          "address": "0073044b",
+          "native": "00521e70",
+          "role": "role 4, bullet sub-types 4..7, seat gun+398h"
+        },
+        {
+          "address": "00730471",
+          "native": "00521e70",
+          "role": "role 2, the default arm's first gate"
+        },
+        {
+          "address": "00730482",
+          "native": "00521e70",
+          "role": "role 3, the default arm's second gate; both must pass before seat gun+390h is used"
+        },
+        {
+          "address": "007304b7",
+          "native": "006fdd70",
+          "role": "torpedo fan: fewer than two muzzle points zeroes the magnitude"
+        },
+        {
+          "address": "007304d6",
+          "native": "006fdd70",
+          "role": "torpedo fan: the n-1 denominator"
+        },
+        {
+          "address": "00730515",
+          "native": "0085c3f0",
+          "role": "rotates the direction by the torpedo fan offset about the matrix's row 1; ECX = EDX = &direction, stack (&row1, offset). Contract: entry and argument binding only"
+        },
+        {
+          "address": "00730557",
+          "native": "00bd2f10",
+          "role": "throwA = U(0, 6.2831855f), ECX = 1, constant 00CE3D9C"
+        },
+        {
+          "address": "00730575",
+          "native": "00bd2f10",
+          "role": "the radial fraction U(0, 1), ECX = 1, kept as a double at [ESP+14h]"
+        },
+        {
+          "address": "00730586",
+          "native": "00412e20",
+          "role": "BSP_Math_TangentX87Float, FSINCOS then FDIVP; turns the half-angle into the tangent throwB is a multiple of"
+        },
+        {
+          "address": "00730619",
+          "native": "00470440",
+          "role": "the gameplay-modifier product for category 7; scales both throwA and throwB at 0073062C and 00730646"
+        }
+      ]
+    },
+    {
+      "address": "0072f830",
+      "name": "BSP_Gun_SpawnShotAndEffects",
+      "abi": "__thiscall(gun, float* spawnPos, float* dir, void* up, int flag), RET 10h at 0073015A, body 0072F830-0073015C (existing ledger record, unchanged)",
+      "coverage": "partial: the 0072FB2C..0072FB7E RNG arm and the 0072FEFB..00730080 ring only",
+      "no_ghidra_function": false,
+      "note": "Not a dispersion producer. Its one RNG draw is an effect timer; its per-pellet loop is a deterministic ring at theta_i = 2*pi*i/gunclass[+0CCh] and radius gunclass[+0D0h], so every pellet of a burst lands at the same phase on every shot.",
+      "calls": [
+        {
+          "address": "0072fb6a",
+          "native": "00bd2f10",
+          "role": "U(0.075f, 0.225f) from 00CEED68 and 00CFE2B4, ECX = 1, stored to gun[+3F0h]+6F8h for weapon Functions 2, 3, 4 and 6. Not dispersion."
+        },
+        {
+          "address": "0072feca",
+          "native": "00b63f10",
+          "role": "BSP_Matrix_BuildLookAt, one of the two producers of the ring's basis; provenance unread"
+        },
+        {
+          "address": "0072fed3",
+          "native": "006fdd00",
+          "role": "the second basis producer; contract: unread"
+        },
+        {
+          "address": "00730042",
+          "native": "0072bf10",
+          "role": "one projectile per ring position, gunclass[+0CCh] times"
+        },
+        {
+          "address": "00730076",
+          "native": "0072bf10",
+          "role": "the single-projectile path when the count is not positive"
+        }
+      ]
+    },
+    {
+      "address": "007313e0",
+      "name": "FUN_007313e0",
+      "abi": "__thiscall(record, LuaObject*), body 007313E0-00731A00; writes only record+0h..+34h",
+      "coverage": "partial: the field binds only",
+      "no_ghidra_function": false,
+      "note": "The producer of Throw. Binds the Lua key \"Throw\" to record+4h, and also FireEfx +0Ch, ContFireEfx +10h, FireRumble +14h, ContFireRumble +18h, PlayerCameraShake +1Ch, TracerRatio +24h, ReloadTime[1]/[2] +28h/+2Ch, BarrelDelayTime +30h and Bullet +34h. The record is element index of a 48h-stride array at gunclass+74h with its count at gunclass+78h; gun[+3F8h] is the element in use.",
+      "calls": []
+    },
+    {
+      "address": "007327b0",
+      "name": "BSP_GunClass_ReadLuaFields",
+      "abi": "existing ledger record, unchanged",
+      "coverage": "partial: the 00732AE4 / 00732B1C / 00732CAE sites only",
+      "no_ghidra_function": false,
+      "note": "Produces the two multi-bullet ring fields: 00732AE4 stores the integer OneTimeBulletAmount to gunclass+0CCh and 00732B1C the float MultiBulletConeAngle to gunclass+0D0h.",
+      "calls": [
+        {
+          "address": "00732cae",
+          "native": "007313e0",
+          "role": "one fire-parameter record per array element; ECX = [gunclass+74h] + 48h*index from LEA EDX,[EBP+EBP*8] then [EAX+EDX*8]"
+        }
+      ]
+    },
+    {
+      "address": "00521e70",
+      "name": "FUN_00521e70",
+      "abi": "__thiscall(unit, int role) -> bool, RET 4 at 00521E8C/00521E94, body 00521E70-00521E94",
+      "coverage": "complete",
+      "no_ghidra_function": false,
+      "note": "return unit[+1ACh + role*4] == 8 || BSP_PartySlot_IsAiHeld(that slot). The nine-role assignment table of docs/SHIP_AI_ROLE_OWNERS.md. It is an AI-role test on the owning unit, not an ammo-provider call.",
+      "calls": [
+        {
+          "address": "00521e81",
+          "native": "00927f10",
+          "role": "BSP_PartySlot_IsAiHeld on the assigned slot"
+        }
+      ]
+    },
+    {
+      "address": "00470440",
+      "name": "FUN_00470440",
+      "abi": "__thiscall([00F88C30], int category, entity* unit) -> float in ST0, RET 8 at 00470465, body 00470440-00470467",
+      "coverage": "complete",
+      "no_ghidra_function": false,
+      "note": "return ([00E0C978] && [ECX + 0Ch*category + 88h]) ? BSP_GameplayModifiers_ProductForUnit(category, unit) : 1.0f. docs/GAME_EXECUTABLE.md records 008E6430 running over an empty category list in bsp_game.exe, so the dispersion scale is exactly 1.0f in the harness.",
+      "calls": [
+        {
+          "address": "0047045e",
+          "native": "008e6430",
+          "kind": "tail_jump",
+          "role": "the modifier product; the category argument is left in place at [ESP+4]"
+        }
+      ]
+    },
+    {
+      "address": "0083b5e0",
+      "name": "BSP_GameSettings_LoadFromLuaGlobals",
+      "abi": "existing ledger record, unchanged",
+      "coverage": "partial: the 00841B37..00841B68 field only",
+      "no_ghidra_function": false,
+      "note": "The producer of settings+760h. The Lua global name is the literal at 00D0A240, \"TurnOffAAGunThrow\"; the boolean default pushed at 00841B50 is 0 and AL is stored to settings+760h at 00841B68.",
+      "calls": [
+        {
+          "address": "00841b4b",
+          "native": "00b67800",
+          "role": "BSP_LuaObject_GetByName with the 00D0A240 literal"
+        },
+        {
+          "address": "00841b5c",
+          "native": "00b662f0",
+          "role": "the boolean read whose AL lands at settings+760h"
+        }
+      ]
+    },
+    {
+      "address": "00bd2f10",
+      "name": "BSP_Random_UniformFloatRange",
+      "abi": "(float lo, float hi) with the caller's ECX as the stream index, RET 8 consumed by 00BD2E60, ST0 result, body 00BD2F10-00BD2F30",
+      "coverage": "complete",
+      "no_ghidra_function": false,
+      "note": "A three-hop forward. Every dispersion draw in this packet sets MOV ECX,1 immediately before the call, i.e. stream 1 of the two per thread.",
+      "calls": [
+        {
+          "address": "00bd2f22",
+          "native": "00bd2ed0",
+          "role": "resolve the MT19937 state for (stream, thread)"
+        },
+        {
+          "address": "00bd2f29",
+          "native": "00bd2e60",
+          "role": "the draw and the range map; it also pops the two floats"
+        }
+      ]
+    },
+    {
+      "address": "00bd2ed0",
+      "name": "BSP_Random_StateForStream",
+      "abi": "__thiscall(int streamIndex) -> RandomState*, plain RET at 00BD2EFB/00BD2F0B, body 00BD2ED0-00BD2F0B",
+      "coverage": "complete",
+      "no_ghidra_function": false,
+      "note": "GetCurrentThreadId through the import at [00CE223C], a linear search of the [0109 0AEC]-long table at [0109 0AC4], then 0109 0AF0 + 9C8h*(streamIndex + 2*threadSlot); an unregistered thread gets the fallback state at 00E14748. Two states per thread. Hypothesis, not a recovered symbol.",
+      "calls": []
+    },
+    {
+      "address": "00bd2e60",
+      "name": "BSP_RandomState_UniformFloatRange",
+      "abi": "__thiscall(RandomState*)(float lo, float hi) -> float in ST0, RET 8 at 00BD2ECB, body 00BD2E60-00BD2ECB",
+      "coverage": "complete",
+      "no_ghidra_function": false,
+      "note": "u = (uint32)next / 2^32, with the FILD sign fixup adding [00CE3978] = 4294967296.0f and the scale [00D63B80] = 2^-32; result = lo + u*(hi - lo), rounded to float32 once at 00BD2EC2. The two guard bytes at +9C4h/+9C5h trigger a deliberate null write.",
+      "calls": [
+        {
+          "address": "00bd2e91",
+          "native": "00ba2c20",
+          "role": "the raw MT19937 word"
+        }
+      ]
+    },
+    {
+      "address": "00ba2c20",
+      "name": "BSP_RandomState_NextU32",
+      "abi": "existing ledger record, unchanged",
+      "coverage": "complete",
+      "no_ghidra_function": false,
+      "note": "MT19937. The tempering masks are pre-shifted, which is why they do not look standard: AND 0FF3A58ADh then SHL 7 is (y<<7) & 9D2C5680h, and AND 0FFFFDF8Ch then SHL 0Fh is (y<<15) & 0EFC60000h.",
+      "calls": [
+        {
+          "address": "00ba2c45",
+          "native": "00bf0d20",
+          "role": "the 624-word refill when the index reaches 270h"
+        }
+      ]
+    },
+    {
+      "address": "006deff0",
+      "name": "BSP_GunBot_RerollAimErrorEnvelope",
+      "abi": "__thiscall(bot), plain RET at 006DF12B - no stack arguments, body 006DEFF0-006DF12B",
+      "coverage": "complete",
+      "no_ghidra_function": false,
+      "note": "r = U(0, MaxAngleError) * U(0,1)^Power, phi = U(0, 2*pi), and the new pair is (r*sin(phi), r*cos(phi)) in radians at bot+6Ch/+70h, with the outgoing pair shuffled into bot+64h/+68h and copied to the current pair bot+5Ch/+60h. The power is t^k, not 2^(k*t): 006DF065 pushes k and 006DF069 pushes t on top of it, and FYL2X computes ST(1)*log2(ST(0)).",
+      "calls": [
+        {
+          "address": "006df009",
+          "native": "00bd2f10",
+          "role": "t = U(0, 1), the exponent's base; ECX = 1"
+        },
+        {
+          "address": "006df0b8",
+          "native": "00bd2f10",
+          "role": "U(0, MaxAngleError), the magnitude before the t^Power weight; ECX = 1"
+        },
+        {
+          "address": "006df0dc",
+          "native": "00bd2f10",
+          "role": "phi = U(0, 6.2831855f); ECX = 1"
+        }
+      ]
+    },
+    {
+      "address": "006df520",
+      "name": "BSP_GunBot_MuzzleSolutionAimTick",
+      "abi": "existing ledger record, unchanged; read only, never modified",
+      "coverage": "partial: 006DF59F..006DF659 (the cadence and the interpolation) and 006DFAD4..006DFB5B (the application) only",
+      "no_ghidra_function": false,
+      "note": "bot+74h -= dt at 006DF5A2; a countdown still at or above zero keeps the pair (FLDZ/FCOMIP/JBE at 006DF5B1). On expiry the period is U(3.0f, 8.0f) from the constants at 00CE3854 and 00CE3918 - a hard-coded pair, not an authored field - written to both bot+78h and bot+74h before the reroll. The pair is applied as two angles added to the arc solution and wrapped, never to the aim point.",
+      "calls": [
+        {
+          "address": "006df5d4",
+          "native": "00bd2f10",
+          "role": "the reroll period U(3.0f, 8.0f); ECX = 1"
+        },
+        {
+          "address": "006df5e9",
+          "native": "006deff0",
+          "role": "the reroll itself"
+        },
+        {
+          "address": "006df623",
+          "native": "00419010",
+          "role": "BSP_Math_InterpolateClamped(0.0f, bot+6Ch, bot+78h, bot+64h, bot+74h) -> bot+5Ch"
+        },
+        {
+          "address": "006df651",
+          "native": "00419010",
+          "role": "the same over bot+70h and bot+68h -> bot+60h"
+        },
+        {
+          "address": "006dfad4",
+          "native": "00955630",
+          "role": "the gravity arc a sibling packet owns; leaves two angles in [ESP+14h]/[ESP+18h] and an aim point in [ESP+24h]..[ESP+2Ch]. Contract only, body not read."
+        },
+        {
+          "address": "006dfb1c",
+          "native": "00438aa0",
+          "role": "BSP_Math_AddWrappedAngle(horizontal angle, bot+5Ch)"
+        },
+        {
+          "address": "006dfb36",
+          "native": "00438aa0",
+          "role": "BSP_Math_AddWrappedAngle(vertical angle, bot+60h)"
+        },
+        {
+          "address": "006dfb54",
+          "native": "0085aba0",
+          "role": "BSP_TurningGun_SetTargetAngles with the perturbed pair; its bool is ANDed with the arc's"
+        }
+      ]
+    },
+    {
+      "address": "006df1f0",
+      "name": "BSP_GunBot_AttachMuzzleClass",
+      "abi": "__thiscall(bot, node), RET 4 at 006DF250, body 006DF1F0-006DF250",
+      "coverage": "complete",
+      "no_ghidra_function": false,
+      "note": "The second call site of the reroll. Sets bot+58h from bot+50h, zeroes the ErrorOffset triple bot+84h..+8Ch from [00F87574..], sets bot+74h = 0.0f and bot+78h = [00D7A24C] = 1.0f, then primes the pair. Because the countdown starts at zero, the first tick after an attach always rerolls.",
+      "calls": [
+        {
+          "address": "006df1f8",
+          "native": "008fbc80",
+          "role": "the shared gun-bot attach"
+        },
+        {
+          "address": "006df24a",
+          "native": "006deff0",
+          "role": "prime the error pair"
+        }
+      ]
+    },
+    {
+      "address": "00901610",
+      "name": "load_robot_config_00901610",
+      "abi": "existing ledger record, unchanged",
+      "coverage": "partial: the 009019DC..00901A58 name-to-global tail only",
+      "no_ghidra_function": false,
+      "note": "Eight MOV ECX,<name> / CALL 00900AF0 / MOV [global],EAX triples in which each store lands one call after the name that produced it. The pairing this packet needs: 00D17D90 \"ArtilleryGunnerBot\" -> [00E19990] and 00D17D78 \"ArtillerySubDirectorBot\" -> [00E19994]. 00900AF0 is a name-keyed lookup in the map at 00F89994, not a constructor; it returns 0 for an absent name.",
+      "calls": [
+        {
+          "address": "00901a1d",
+          "native": "00900af0",
+          "role": "ArtillerySubDirectorBot; result stored to [00E19994] at 00901A27"
+        },
+        {
+          "address": "00901a2c",
+          "native": "00900af0",
+          "role": "ArtilleryGunnerBot; result stored to [00E19990] at 00901A36"
+        }
+      ]
+    },
+    {
+      "address": "006fdd70",
+      "name": "FUN_006fdd70",
+      "abi": "__thiscall(gunclass) -> int, plain RET at 006FDD7A/006FDD93",
+      "coverage": "complete",
+      "no_ghidra_function": false,
+      "note": "([gunclass+0A0h] - [gunclass+9Ch]) / 18h by the 2AAAAAABh magic divide; zero when the base pointer is null. The 18h-stride array at gunclass+98h is the per-muzzle offset table docs/UNIT_WEAPON_DEVICES.md step 9 already names.",
+      "calls": []
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "address": "006dee00",
+      "end": "006dee10",
+      "name": "BSP_ArtilleryGunnerBot_GetBulletThrowMul",
+      "abi": "__thiscall(bot) -> float in ST0, plain RET at 006DEE10, inclusive final byte 006DEE10; int3 padding from 006DEE11",
+      "note": "Slot +24h of the vtable at 00CFE000, whose +0Ch is BSP_GunBot_MuzzleSolutionAimTick 006DF520. Returns [[00E19994] + 28h*bot[+34h] + 30h], that is ArtillerySubDirectorBot level bot[+34h] field +30h, which include/bsp/robot_config.hpp names bullet_throw_mul_030. Reading the sub-director's table is deliberate: ArtilleryGunnerBotParameters has no BulletThrowMul field. Read with disasm-raw; Ghidra's enclosing candidate 006DEDC0 is a different function and has no start here."
+    },
+    {
+      "address": "008fb4e0",
+      "end": "008fb4f0",
+      "name": "BSP_TailGunnerBot_GetBulletThrowMul",
+      "abi": "__thiscall(bot) -> float in ST0, plain RET at 008FB4F0, inclusive final byte 008FB4F0; int3 padding from 008FB4F1",
+      "note": "Slot +24h of the vtable at 00D18140, whose +0Ch is BSP_GunBot_TurretAimAndFireTick 008FFA20. Returns [[00E199A0] + 24h*bot[+34h] + 1Ch], TailGunnerBot level bot[+34h] field +1Ch, bullet_throw_mul_01c. Read with disasm-raw."
+    }
+  ],
+  "distributions": [
+    {
+      "name": "per-shot throw cone",
+      "site": "00730540..0073058F in BSP_Gun_Fire 00730160",
+      "rule": "throwA = U(0, 2*pi); throwB = tan(Throw') * U(0, 1), where Throw' is the authored Throw after the TurnOffAAGunThrow gate and the seat's BulletThrowMul. The direction becomes forward + throwB*(cos(throwA)*up + sin(throwA)*right) and is not renormalised, so the realised half-angle is atan(throwB).",
+      "shape": "uniform in roll, uniform in radius (not in area), so the areal density falls off as 1/r and the mean miss angle is half the maximum",
+      "authored_inputs": "Throw at gun[+3F8h]+4h from 007313E0; TurnOffAAGunThrow at GameSettings+760h from 0083B5E0; BulletThrowMul per robot class from 00901610's readers; unit+63Ch for bullet sub-types 4..7 (producer unread); gameplay-modifier category 7 through 00470440"
+    },
+    {
+      "name": "gun bot aim error pair",
+      "site": "006DEFF0, rerolled from 006DF5E9 and primed from 006DF24A",
+      "rule": "r = U(0, MaxAngleError) * U(0,1)^Power; phi = U(0, 2*pi); pair = (r*sin(phi), r*cos(phi)) radians. Applied as two wrapped angle additions to the arc solution at 006DFB1C and 006DFB36.",
+      "shape": "uniform in roll; the magnitude is a product of two independent draws, centre-heavy already at Power = 1 and pulled towards zero for Power > 1",
+      "authored_inputs": "ArtilleryGunnerBot level fields MaxAngleError (+0Ch) and Power (+10h), produced by read_ArtilleryGunnerBot_parameters_008FD370 out of Robots.lua. The 3-8 second reroll period is hard-coded at 00CE3854 and 00CE3918."
+    }
+  ],
+  "corrections": [
+    {
+      "document": "docs/GUN_BOT_TICKS.md section 6 step 2",
+      "was": "006DEFF0 re-rolls the error envelope with 2^(k*rand(0,1)), k from descriptor + 10h + skill*1Ch",
+      "is": "the weight is rand(0,1)^Power, and the routine also reads descriptor+0Ch, MaxAngleError, as the magnitude bound",
+      "evidence": "006DF065 FLD [ESP+0Ch] pushes k and 006DF069 FLD [ESP+4] pushes the draw on top of it; FYL2X at 006DF06D computes ST(1)*log2(ST(0)) = k*log2(draw), so 2^that is draw^k. 006DF09D FLD [EDX+ECX*4+0Ch] with ECX = 7*bot[+34h] is the second field."
+    },
+    {
+      "document": "docs/GUN_BOT_TICKS.md section 4",
+      "was": "006DF520's descriptor fields +18h, +1Ch, +20h and +24h are the four lead scalars and +14h the lead re-roll period",
+      "is": "they are SectionTargetChance, EngineRoomWeight, MagazineWeight, FueltankWeight and TargetPointRefreshTime - the target-section weights, not lead coefficients",
+      "evidence": "read_ArtilleryGunnerBot_parameters_008FD370 binds those five Lua keys to those offsets; the rows are tabulated at src/robot_config.cpp:216 and the struct at include/bsp/robot_config.hpp:244"
+    },
+    {
+      "document": "docs/UNIT_WEAPON_DEVICES.md, Firing: 00730160",
+      "was": "Ghidra has no function object at 00730160; reports/unit_weapons.json records it as no_ghidra_function",
+      "is": "BSP_Gun_Fire exists with body 00730160-00730A1D",
+      "evidence": "python tools/bsp.py ghidra proto 00730160 --brief"
+    },
+    {
+      "document": "docs/UNIT_WEAPON_DEVICES.md step 7",
+      "was": "the spread is zeroed for weapon types 1, 5 and 6 under a settings flag, then scaled by the ammo provider through 00521E70",
+      "is": "00521E70 is an AI-role test on the owning unit (gun+3F0h), and the scale comes from vtable[24h] on one of six seat pointers at gun+390h..+3A4h chosen by bullet sub-type",
+      "evidence": "00521E70's complete body reads unit[+1ACh + role*4]; the shared tail at 00730491 loads [ECX] from the seat, and each dispatch arm sets ECX from a different gun+39xh slot before jumping there"
+    },
+    {
+      "document": "the packet brief",
+      "was": "0072F830 builds a perturbation of the muzzle direction from the weapon class field Throw",
+      "is": "0072F830 has one RNG call, an effect timer at 0072FB6A, and one deterministic ring; the Throw cone is in BSP_Gun_Fire 00730160",
+      "evidence": "the 0072FEFB loop's angle is FILD i, FMUL [00CE3828], FIDIV [gunclass+0CCh] with no draw anywhere in 0072FEDE..00730080; the two draws that write gun+400h and gun+404h are at 00730557 and 00730575"
+    }
+  ],
+  "open_questions": [
+    "The writer of gun+390h..+3A4h. The role-2..7 indexing is derived from the four-byte covariance of offset and role id across the five dispatch arms, not from a producer, and every BulletThrowMul claim rests on it.",
+    "Which gameplay-modifier category 7 is. The 0Ch-stride table at [00F88C30]+88h is consumed by 00470440 and never traced; category 8 is the reload rate per docs/UNIT_WEAPON_DEVICES.md, so one producer read would name both.",
+    "The producer of unit+63Ch, the per-unit radius multiplier applied at 007305D6 for bullet sub-types 4, 5, 6 and 7.",
+    "0085C3F0's contract. Only its entry and argument binding were read; the axis-angle reading is provisional and the torpedo fan depends on it.",
+    "006FDD00 and the 00B63F10 look-at that build 0072F830's ring basis; the header takes the two axes as parameters because their provenance is unread.",
+    "Which of the two per-thread MT19937 streams is replicated. Every dispersion draw uses stream 1 (MOV ECX,1); what uses stream 0, and whether 00BD2ED0's fallback state at 00E14748 is ever reached on the game thread, was not established.",
+    "Why 0073062C scales the roll angle throwA by the gameplay modifier as well as the radius. It is harmless at 1.0f but is not a rotation-invariant scaling."
+  ],
+  "tool_problems": [
+    {
+      "tool": "python tools/bsp.py show <addr> --asm",
+      "symptom": "inside a worktree the printed path exports/bsp/functions/<addr>/assembly.txt does not resolve; the shared export lives in the main checkout",
+      "workaround": "page J:/PROG/battlestations-pacific-decompile/exports/bsp/functions/<addr>/assembly.txt directly, or use show --start/--lines"
+    },
+    {
+      "tool": "python tools/bsp.py ghidra disasm",
+      "symptom": "refuses an address that has no function start and names an 'enclosing candidate' that does not actually contain it (006DEE00 was offered 006DEDC0)",
+      "workaround": "disasm-raw with an explicit --length; the int3 run after the RET gives the inclusive end"
+    },
+    {
+      "tool": "python tools/bsp.py strings <fn>",
+      "symptom": "the ledger's per-function string list is a set, not a sequence, so it cannot order Lua keys against their field offsets",
+      "workaround": "read the offsets from the assembly and take the names from the existing src/robot_config.cpp row tables"
+    }
+  ]
+}

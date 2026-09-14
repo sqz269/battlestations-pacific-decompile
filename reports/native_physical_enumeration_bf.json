@@ -1,0 +1,300 @@
+{
+  "packet": "orch4_native_physical_enumeration_bf",
+  "owner": "agent/orch4-physical-enumeration-bf",
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "bridge": "127.0.0.1:8089",
+    "installed_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "vtable": {
+    "address": "00d6917c",
+    "bytes": "e0 47 bf 00",
+    "target": "00bf47e0"
+  },
+  "routines": [
+    {
+      "entry": "00bf47e0",
+      "exclusive_end": "00bf4b70",
+      "bytes": 912,
+      "sha256": "22bfdb84f7a28f1575d605e31fd73c6796d0c830f1f279570070e087ed5cef39",
+      "saved_owner": true,
+      "original_abi": "ECX physical provider; stack actual directory, extension, DWORD flags, actual output vector; RET10h; no semantic result",
+      "source_api": "enumerate_native_physical_names_00bf47e0",
+      "coverage": "complete Win32 normal/result algorithm in explicit-service source domain; one-byte helper getter schedule and native FH3 excluded",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "entry": "00bee520",
+      "exclusive_end": "00bee684",
+      "bytes": 356,
+      "sha256": "80b2cba3a3c109ea684cedcf661eaf44846a867d9e700baac181f2eef36ca9d6",
+      "saved_owner": true,
+      "original_abi": "ECX output actual string, EDX directory actual string, stack child actual string; EAX output; RET4",
+      "source_api": "join_native_physical_enumerated_name_00bee520",
+      "coverage": "complete normal algorithm and reverse temporary cleanup in explicit-service source domain; FH3 excluded",
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "indirect_calls": [
+    {
+      "function": "00bf47e0",
+      "address": "00bf4815",
+      "native": "00bf47e0+vtable1c",
+      "proven_target": "00bf3970"
+    },
+    {
+      "function": "00bf47e0",
+      "address": "00bf4a95",
+      "native": "00bf47e0+vtable14",
+      "proven_target": "00bf47e0"
+    },
+    {
+      "function": "00bf47e0",
+      "address": "00bf4910",
+      "native": "00ce2128+iat",
+      "proven_target": "KERNEL32!FindFirstFileA"
+    },
+    {
+      "function": "00bf47e0",
+      "address": "00bf4aef",
+      "native": "00ce212c+iat",
+      "proven_target": "KERNEL32!FindNextFileA"
+    },
+    {
+      "function": "00bf47e0",
+      "address": "00bf4afe",
+      "native": "00ce2130+iat",
+      "proven_target": "KERNEL32!FindClose"
+    }
+  ],
+  "direct_calls": [
+    {
+      "function": "00bf47e0",
+      "address": "00bf4835",
+      "native": "0054aa70"
+    },
+    {
+      "function": "00bf47e0",
+      "address": "00bf484d",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00bf47e0",
+      "address": "00bf4867",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00bf47e0",
+      "address": "00bf4887",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00bf47e0",
+      "address": "00bf48a2",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00bf47e0",
+      "address": "00bf48c6",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00bf47e0",
+      "address": "00bf48d4",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00bf47e0",
+      "address": "00bf48f3",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00bf47e0",
+      "address": "00bf48fa",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00bf47e0",
+      "address": "00bf49a0",
+      "native": "00425850"
+    },
+    {
+      "function": "00bf47e0",
+      "address": "00bf49b7",
+      "native": "00bf7fbf"
+    },
+    {
+      "function": "00bf47e0",
+      "address": "00bf49d0",
+      "native": "0041e870"
+    },
+    {
+      "function": "00bf47e0",
+      "address": "00bf49e9",
+      "native": "00bee520"
+    },
+    {
+      "function": "00bf47e0",
+      "address": "00bf49f9",
+      "native": "004cdc20"
+    },
+    {
+      "function": "00bf47e0",
+      "address": "00bf4a19",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00bf47e0",
+      "address": "00bf4a20",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00bf47e0",
+      "address": "00bf4a59",
+      "native": "0041e870"
+    },
+    {
+      "function": "00bf47e0",
+      "address": "00bf4a76",
+      "native": "00bee520"
+    },
+    {
+      "function": "00bf47e0",
+      "address": "00bf4ab2",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00bf47e0",
+      "address": "00bf4ab9",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00bf47e0",
+      "address": "00bf4ad9",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00bf47e0",
+      "address": "00bf4ae0",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00bf47e0",
+      "address": "00bf4b1f",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00bf47e0",
+      "address": "00bf4b26",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00bf47e0",
+      "address": "00bf4b49",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00bf47e0",
+      "address": "00bf4b50",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00bee520",
+      "address": "00bee553",
+      "native": "00bee390"
+    },
+    {
+      "function": "00bee520",
+      "address": "00bee577",
+      "native": "00bee390"
+    },
+    {
+      "function": "00bee520",
+      "address": "00bee58a",
+      "native": "0041e870"
+    },
+    {
+      "function": "00bee520",
+      "address": "00bee5a3",
+      "native": "004261a0"
+    },
+    {
+      "function": "00bee520",
+      "address": "00bee5b5",
+      "native": "004261a0"
+    },
+    {
+      "function": "00bee520",
+      "address": "00bee5c5",
+      "native": "00bee390"
+    },
+    {
+      "function": "00bee520",
+      "address": "00bee5e2",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00bee520",
+      "address": "00bee5e9",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00bee520",
+      "address": "00bee606",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00bee520",
+      "address": "00bee60d",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00bee520",
+      "address": "00bee62a",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00bee520",
+      "address": "00bee631",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00bee520",
+      "address": "00bee63d",
+      "native": "00426060"
+    },
+    {
+      "function": "00bee520",
+      "address": "00bee662",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00bee520",
+      "address": "00bee669",
+      "native": "00bd1510"
+    }
+  ],
+  "no_ghidra_function": [],
+  "validation": {
+    "translation_unit": "MSVC Win32 /std:c++20 /EHsc /W4 /WX /Zs passed",
+    "full_build": "Win32 Release build and existing CTest 1/1 passed; new TU not registered in shared CMake",
+    "fixture": "none",
+    "cmake_registration": "deferred to primary shared-file integration"
+  },
+  "limits": [
+    "empty constructed physical path rejected explicitly",
+    "C++ find-handle exception cleanup is new; original FH3 handlers not reproduced",
+    "00531030/0054AA70 one-byte temporary helper sequence represented through established raw constructor and append, not claimed as exact helper-body port",
+    "no game or archive execution"
+  ],
+  "primary_integration": {
+    "report": "reports/native_vfs_phase2_bg_validation.json",
+    "status": "native_phase2_integrated_build_and_installed_loose_fixture_verified",
+    "source_revision": "dcff4d91d2709a7124bfd39826a12256b5f3b07a",
+    "scope": "Combined source archive, native envelopes and installed loose phase2 graph; authentic archive and gameplay remain unvalidated.",
+    "game_validated": false
+  }
+}

@@ -1,0 +1,81 @@
+{
+  "packet": "orch4_game_native_vfs_constants_bd",
+  "status": "verified_initial_data_provider_win32_build_and_fixture_passed",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_mutations": false,
+  "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+  "binary_size": 12223752,
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "section": {
+    "name": ".data",
+    "virtual_begin": "00e08000",
+    "virtual_size": "00297edc",
+    "raw_begin": "00a08000",
+    "raw_size": "00010000",
+    "characteristics": "c0000040",
+    "writable": true
+  },
+  "spans": [
+    {
+      "address": "00e144f0",
+      "end_exclusive": "00e14709",
+      "length": 537,
+      "raw_offset": "00a144f0",
+      "sha256": "26abd3e2995fdbacecb6f352b5c0eb20ff20c9a7ada6312ba619c9d4c6fa6183",
+      "disk_live_equal": true,
+      "meaning": "MPKG XOR table, period 0x219",
+      "direct_xrefs": [
+        {
+          "function": "00bb9920",
+          "address": "00bb9a8b",
+          "kind": "DATA read"
+        }
+      ]
+    },
+    {
+      "address": "00e17bf0",
+      "end_exclusive": "00e17bf1",
+      "length": 1,
+      "raw_offset": "00a17bf0",
+      "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d",
+      "disk_live_equal": true,
+      "meaning": "one-byte NUL, empty C-string fallback for native null data pointers",
+      "direct_xrefs": [
+        {
+          "function": "0043e9a0",
+          "address": "0043e9ac",
+          "kind": "DATA address load"
+        },
+        {
+          "function": "0043ea80",
+          "address": "0043eac7",
+          "kind": "DATA address load"
+        }
+      ]
+    }
+  ],
+  "mutability_limit": "Both original spans are writable .data. Current direct xrefs show reads/address loads and no direct writes, but indirect/runtime mutation is unproved. Provider supplies verified initial-image snapshots, not live global aliases.",
+  "source_abi": "GameNativeVfsConstants(path), const uint8_t* mpkg_xor_key_00e144f0(), const char* null_pattern_00e17bf0(); retain owner through all consumers.",
+  "source_scope": "Whole-file size/SHA-256 check; copy exactly 537 key bytes and one NUL into owned arrays. No fixed mapping or unrelated mutable globals. Image validation constants duplicate GameNativeReadOnlyData because no shared helper lease was taken.",
+  "validation": {
+    "strict_build": "Full MSVC Win32 build and reconstructed_math CTest passed with src/game_native_vfs_constants.cpp registered once in cmake/startup.cmake.",
+    "fixture": "Ignored /MANIFEST:EMBED Win32 executable compared complete 537-byte key and one-byte NUL to the verified original file, checked stable accessor addresses, rejected same-size one-byte corruption and wrong-size input.",
+    "observation": "PASS verified .data snapshots: 537-byte XOR key and one-byte empty pattern; stable accessors; wrong size/hash rejected",
+    "source_header_sha256": "11b0132f81d892b8714535b13793c30c3f0f6ff2e20e9a08e0bcccb9d5bd9ff5",
+    "source_cpp_sha256": "b48777356a0eedebbe4ce69a312243e66f3234e7e9314aa717f176fece217270",
+    "fixture_source_sha256": "4fa6627c925af5f746e8377dfc07f44df14051aec0e43250ab756ae92349eef2",
+    "fixture_runner_sha256": "bf6aa1360336aa9a6932bfb6c0d17f24d7c52b0c1ebb552e7beb8c5e2547da64",
+    "fixture_exe_sha256": "b40438939e0b27ca640d1b54f2a2df4eeb0587ee6741cc3dc633a4c98242aff0",
+    "core_archive_sha256": "ab05f66e101b3674fd47a99c3ee84ee25abd3d1f9ead6cd1835c037c478588ba"
+  },
+  "native_game_process_exercised": false,
+  "calls": [],
+  "primary_integration": {
+    "report": "reports/native_vfs_composition_bd_validation.json",
+    "status": "actual_vfs_graph_search_groups_and_initial_constants_integrated_exact_build_and_fixtures_passed",
+    "source_revision": "adacdd852a47375fe7f0ccac6cb1110b7a9f3200",
+    "scope": "Exact combined core archive; real raw provider graph and populated search groups; independently verified native roots/data and saved ABI corrections.",
+    "game_validated": false
+  }
+}

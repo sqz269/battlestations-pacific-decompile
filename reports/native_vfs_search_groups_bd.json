@@ -1,0 +1,384 @@
+{
+  "packet": "orch4_native_vfs_search_groups_bd",
+  "status": "bounded actual-storage source",
+  "source": "src/native_vfs_search_groups.cpp",
+  "header": "include/bsp/native_vfs_search_groups.hpp",
+  "documentation": "docs/NATIVE_VFS_SEARCH_GROUPS_BD.md",
+  "program": "/battlestationspacific.exe",
+  "roots": [
+    {
+      "address": "00be25e0",
+      "name": "register_native_vfs_search_extension_00be25e0",
+      "original_abi": "ECX manager; stack group and extension; RET8",
+      "coverage": "full normal wrapper; 20 disk/live bytes, 7/7 saved instructions owned",
+      "sha256": "5940556a3f4dc9af0142fcb77a6898ce03d010bf378c53b208468e7fb56d5c0c"
+    },
+    {
+      "address": "00be2600",
+      "name": "register_native_vfs_search_directory_00be2600",
+      "original_abi": "ECX manager; stack group and directory; RET8",
+      "coverage": "valid nonempty normal directory; 242 disk/live bytes, 82/82 saved instructions owned",
+      "sha256": "2be45ed54c251183a01b1dcdfa73d1d93352568f3c22b96c6553ab5eafff3b61"
+    },
+    {
+      "address": "00be2310",
+      "name": "register_native_vfs_search_group_value_00be2310",
+      "original_abi": "ECX manager; stack group,value,selector; RET0C",
+      "coverage": "valid initialized manager, new and existing groups, append and duplicate behavior; 684 disk/live bytes, 231/231 saved instructions owned",
+      "sha256": "2767433449ca084f49ee036e150d1ec2a93e068e8f336c34693281f38657ada7"
+    }
+  ],
+  "calls": [
+    {
+      "function": "00738360",
+      "address": "00738401",
+      "native": "00be25e0"
+    },
+    {
+      "function": "00738360",
+      "address": "007384d2",
+      "native": "00be25e0"
+    },
+    {
+      "function": "00738360",
+      "address": "007385a1",
+      "native": "00be2600"
+    },
+    {
+      "function": "00738360",
+      "address": "00738670",
+      "native": "00be2600"
+    },
+    {
+      "function": "00738360",
+      "address": "0073873f",
+      "native": "00be2600"
+    },
+    {
+      "function": "00738360",
+      "address": "0073880e",
+      "native": "00be2600"
+    },
+    {
+      "function": "00738360",
+      "address": "007388dd",
+      "native": "00be2600"
+    },
+    {
+      "function": "00738360",
+      "address": "007389ac",
+      "native": "00be2600"
+    },
+    {
+      "function": "00738360",
+      "address": "00738a7b",
+      "native": "00be2600"
+    },
+    {
+      "function": "00738360",
+      "address": "00738b4a",
+      "native": "00be2600"
+    },
+    {
+      "function": "00738360",
+      "address": "00738c19",
+      "native": "00be2600"
+    },
+    {
+      "function": "00738360",
+      "address": "00738ce8",
+      "native": "00be2600"
+    },
+    {
+      "function": "00738360",
+      "address": "00738db7",
+      "native": "00be2600"
+    },
+    {
+      "function": "00738360",
+      "address": "00738e86",
+      "native": "00be2600"
+    },
+    {
+      "function": "00738360",
+      "address": "00738f55",
+      "native": "00be2600"
+    },
+    {
+      "function": "00738360",
+      "address": "00739024",
+      "native": "00be2600"
+    },
+    {
+      "function": "00738360",
+      "address": "007390f3",
+      "native": "00be2600"
+    },
+    {
+      "function": "00738360",
+      "address": "007391c2",
+      "native": "00be2600"
+    },
+    {
+      "function": "00738360",
+      "address": "00739291",
+      "native": "00be2600"
+    },
+    {
+      "function": "00738360",
+      "address": "00739360",
+      "native": "00be2600"
+    },
+    {
+      "function": "00738360",
+      "address": "0073942f",
+      "native": "00be2600"
+    },
+    {
+      "function": "00738360",
+      "address": "007394fe",
+      "native": "00be2600"
+    },
+    {
+      "function": "00738360",
+      "address": "007395cd",
+      "native": "00be2600"
+    },
+    {
+      "function": "00738360",
+      "address": "0073969c",
+      "native": "00be2600"
+    },
+    {
+      "function": "00738360",
+      "address": "0073976b",
+      "native": "00be2600"
+    },
+    {
+      "function": "00738360",
+      "address": "00739c45",
+      "native": "00be25e0"
+    },
+    {
+      "function": "00738360",
+      "address": "00739d14",
+      "native": "00be2600"
+    },
+    {
+      "function": "00738360",
+      "address": "00739de3",
+      "native": "00be2600"
+    },
+    {
+      "function": "00738360",
+      "address": "0073a6c8",
+      "native": "00be25e0"
+    },
+    {
+      "function": "00738360",
+      "address": "0073af8f",
+      "native": "00be25e0"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b5cb",
+      "native": "00be25e0"
+    },
+    {
+      "function": "00738360",
+      "address": "0073b75a",
+      "native": "00be25e0"
+    },
+    {
+      "function": "00be2310",
+      "address": "00be233e",
+      "native": "00bdc230"
+    },
+    {
+      "function": "00be2310",
+      "address": "00be2362",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00be2310",
+      "address": "00be2379",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00be2310",
+      "address": "00be2395",
+      "native": "004bcc00"
+    },
+    {
+      "function": "00be2310",
+      "address": "00be23d0",
+      "native": "0054aa70"
+    },
+    {
+      "function": "00be2310",
+      "address": "00be23eb",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00be2310",
+      "address": "00be2419",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00be2310",
+      "address": "00be2431",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00be2310",
+      "address": "00be2442",
+      "native": "004bcc00"
+    },
+    {
+      "function": "00be2310",
+      "address": "00be2450",
+      "native": "00be10a0"
+    },
+    {
+      "function": "00be2310",
+      "address": "00be246b",
+      "native": "00be1a20"
+    },
+    {
+      "function": "00be2310",
+      "address": "00be2476",
+      "native": "00bded80"
+    },
+    {
+      "function": "00be2310",
+      "address": "00be249e",
+      "native": "00bdb2e0"
+    },
+    {
+      "function": "00be2310",
+      "address": "00be24ae",
+      "native": "00be1220"
+    },
+    {
+      "function": "00be2310",
+      "address": "00be24c7",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00be2310",
+      "address": "00be24ce",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00be2310",
+      "address": "00be24e2",
+      "native": "004ce6f0"
+    },
+    {
+      "function": "00be2310",
+      "address": "00be24ed",
+      "native": "004ce780"
+    },
+    {
+      "function": "00be2310",
+      "address": "00be2515",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00be2310",
+      "address": "00be251c",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00be2310",
+      "address": "00be2542",
+      "native": "00bdb2e0"
+    },
+    {
+      "function": "00be2310",
+      "address": "00be257e",
+      "native": "00bf7fbf"
+    },
+    {
+      "function": "00be2310",
+      "address": "00be2594",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00be25e0",
+      "address": "00be25ec",
+      "native": "00be2310"
+    },
+    {
+      "function": "00be2600",
+      "address": "00be263f",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00be2600",
+      "address": "00be2656",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00be2600",
+      "address": "00be266a",
+      "native": "004bcc00"
+    },
+    {
+      "function": "00be2600",
+      "address": "00be269e",
+      "native": "0054aa70"
+    },
+    {
+      "function": "00be2600",
+      "address": "00be26b9",
+      "native": "00be2310"
+    },
+    {
+      "function": "00be2600",
+      "address": "00be26d1",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00be2600",
+      "address": "00be26d8",
+      "native": "00bd1510"
+    }
+  ],
+  "call_scope": {
+    "within_roots": 31,
+    "external_direct_startup_callers": 32,
+    "total": 63
+  },
+  "helpers_reused": [
+    "0041DD40 actual resize and 004BCC00 counted lowercase",
+    "004C3020 nested sentinel allocation",
+    "004CE6F0 actual pooled value-node copy",
+    "004CE780 value-list count growth",
+    "004D2640 temporary nested list destruction",
+    "00BE1DC0 actual manager+60 list construction"
+  ],
+  "helpers_inspected_not_claimed": [
+    "00BDC230 group lookup",
+    "00BE10A0 temporary payload construction",
+    "00BE13E0 group payload copy",
+    "00BE1A20 group-node allocation",
+    "00BDB2E0 selector",
+    "00BDED80 outer-list count"
+  ],
+  "exclusions": [
+    "00BE1480 extension-prefix tree",
+    "00738360 literal startup registration body",
+    "empty-directory native out-of-bounds access",
+    "original FH3/SEH and legacy exception identity",
+    "malformed list/returning-invalid-parameter postconditions"
+  ],
+  "validation": "Fresh ./scripts/build.ps1 MSVC Win32 Release passed (bsp_core, bsp_game, reconstructed_math CTest); 63/63 direct CALL rows verified; disk/live/listing and 320/320 saved instructions owned. No native fixture, archive or game execution.",
+  "primary_integration": {
+    "report": "reports/native_vfs_composition_bd_validation.json",
+    "status": "actual_vfs_graph_search_groups_and_initial_constants_integrated_exact_build_and_fixtures_passed",
+    "source_revision": "adacdd852a47375fe7f0ccac6cb1110b7a9f3200",
+    "scope": "Exact combined core archive; real raw provider graph and populated search groups; independently verified native roots/data and saved ABI corrections.",
+    "game_validated": false
+  }
+}

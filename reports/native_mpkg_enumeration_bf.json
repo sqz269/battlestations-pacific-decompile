@@ -1,0 +1,98 @@
+{
+  "packet": "orch4_native_mpkg_enumeration_bf",
+  "program": "/battlestationspacific.exe",
+  "source": "src/native_mpkg_enumeration.cpp",
+  "header": "include/bsp/native_mpkg_enumeration.hpp",
+  "roots": [
+    {
+      "address": "00bb98f0",
+      "name": "enumerate_native_mpkg_names_00bb98f0",
+      "original_abi": "ECX provider; stack directory,extension,flags,output; JMP BB97B0 inherits RET10h",
+      "coverage": "complete valid provider wrapper; 8 disk/live bytes; 2/2 saved instructions owned",
+      "sha256": "ba0187b768c21f5b75aa5df70de8d5cf6a2b6fcbb96333043b46624d1721ebaa"
+    },
+    {
+      "address": "00bb97b0",
+      "name": "append filtered central-directory names",
+      "original_abi": "ECX archive; stack directory,extension,flags,output; RET10h",
+      "coverage": "complete valid scan and cleanup; 319 disk/live bytes; 109/109 saved instructions owned",
+      "sha256": "0164b11c0dbcc07f24e5d53d65d5502ae5ef9d909000476e824f2e646fca9b90"
+    }
+  ],
+  "calls": [
+    {
+      "function": "00bb97b0",
+      "address": "00bb97ed",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00bb97b0",
+      "address": "00bb9804",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00bb97b0",
+      "address": "00bb9828",
+      "native": "0041e870"
+    },
+    {
+      "function": "00bb97b0",
+      "address": "00bb9848",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00bb97b0",
+      "address": "00bb9856",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00bb97b0",
+      "address": "00bb986e",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00bb97b0",
+      "address": "00bb9875",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00bb97b0",
+      "address": "00bb9896",
+      "native": "00bee340"
+    },
+    {
+      "function": "00bb97b0",
+      "address": "00bb98a4",
+      "native": "004cdc20"
+    },
+    {
+      "function": "00bb97b0",
+      "address": "00bb98d2",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00bb97b0",
+      "address": "00bb98d9",
+      "native": "00bd1510"
+    }
+  ],
+  "tail_jump": "00bb98f3 JMP 00bb97b0; not a direct CALL row",
+  "dependencies": [
+    "00bee340 actual provider enumeration filter, reused from native_mpak_enumeration.cpp",
+    "004cdc20 actual pooled vector append",
+    "0041dd40,0041e870 and 00419cc0/00bd1510 actual string allocation and release"
+  ],
+  "exclusions": [
+    "empty-directory prebuffer read",
+    "original FH3/SEH failure identity",
+    "game or authentic archive execution"
+  ],
+  "validation": "explicit MSVC Win32 translation-unit compilation passed; no shared CMake registration or full build",
+  "primary_integration": {
+    "report": "reports/native_vfs_phase2_bg_validation.json",
+    "status": "native_phase2_integrated_build_and_installed_loose_fixture_verified",
+    "source_revision": "dcff4d91d2709a7124bfd39826a12256b5f3b07a",
+    "scope": "Combined source archive, native envelopes and installed loose phase2 graph; authentic archive and gameplay remain unvalidated.",
+    "game_validated": false
+  }
+}

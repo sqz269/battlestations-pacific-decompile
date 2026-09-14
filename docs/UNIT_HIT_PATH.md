@@ -161,7 +161,7 @@ After the health block, `0087BCC0` builds the unit's part table:
 | `0087BD4F` | `0087B460(this+344h, n, 0)` resizes the vector at `this+344h` to `n` null pointers (4-byte elements: `SUB EAX,ECX / SAR EAX,2` at `0087BD62`) |
 | `0087BD58..0087BDC7` | for `i` in `[0, n)`: `this+344h[i] = [desc+1Ch] + i*30h`, with a bounds check on both vectors that falls into `00BF6713` (the CRT range throw) |
 | `0087BDC9..0087BDF3` | walk the hierarchy parent chain `+3Ch` calling `vtable[B0h]` until one returns non-zero, then call it once more |
-| `0087BDF5..0087BEA4` | when `[desc+50h]` is non-null, `operator new(1ACh)` and `007135C0(obj, this, [desc+50h]->vtable[8](lod))`, where `lod = 0.95f` (`00CED9E0`) if `this->vtable[5Ch](1Bh)` and `1.0f` otherwise, and `lod` is passed through `this->vtable[190h](lod)` first |
+| `0087BDF5..0087BEA4` | when `[desc+50h]` is non-null, `operator new(1ACh)` and `007135C0(obj, this, [desc+50h]->vtable[8](selector, lod))`; `lod` is `0.95f` (`00CED9E0`) for kind `1Bh`, otherwise `1.0f`. `selector = this->vtable[190h]()` takes no stack argument; the pre-pushed float survives its bare RET. See `NATIVE_UNIT_HEALTH_PARTS.md`. |
 | `0087BEA4` | `this+360h = obj` (or `0` when the allocation returned null) |
 
 | offset | type | meaning | evidence |
@@ -169,7 +169,7 @@ After the health block, `0087BCC0` builds the unit's part table:
 | `desc+18h` | vector header | part descriptors: begin `+1Ch`, end `+20h`, stride `30h` | `0087BD20`, `0087BD71`, `0087BDC2` |
 | `desc+48h` | float | `HP`, the unit's maximum health | `0087BCFC` |
 | `desc+4Ch` | float | `Armour`, subtracted per hit | `0087BCE7` |
-| `desc+50h` | ptr | source of the `1ACh` part instance; `vtable[8h](lod)` selects by detail | `0087BDFB`, `0087BE3A` |
+| `desc+50h` | ptr | source of the `1ACh` part instance; `vtable[8h](selector, lod)` receives two arguments | `0087BDFB`, `0087BE3A` |
 | `unit+344h` | vector | `const PartDesc*` per part, pointing into `desc+18h` | `0087BD4F`, `0087BDBC` |
 | `unit+360h` | ptr | the `1ACh` part instance `007135C0` constructs | `0087BEA4` |
 | `unit+368h` | float | armour | `0087BCF4` |
@@ -293,8 +293,8 @@ One row per native call site the reconstruction models as a virtual method of `U
 | `0093C900`, `0093C913` | `[vt+5Ch]` | `unit_is_kind_of` | child / class id / bool | per child |
 | `0087BD4F` | `0087B460` | `resize_part_table` | vector / count, `0` / void | none |
 | `0087BE1C`, `0087BE5F` | `00BF681B` | `allocate_part_instance` | - / `1ACh` / ptr | `[desc+50h]` non-null |
-| `0087BE4B`, `0087BE8E` | `[vt+190h]` | `unit_detail_for_lod` | unit / float / handle | none |
-| `0087BE52`, `0087BE95` | `[[desc+50h] vt+8]` | `part_set_for_detail` | part set / handle / ptr | none |
+| `0087BE4B`, `0087BE8E` | `[vt+190h]` | `call_unit_190` | unit / none / selector; checked `0080DF80` returns 6, bare RET | none |
+| `0087BE52`, `0087BE95` | `[[desc+50h] vt+8]` | `call_part_set_08` | part set / selector, detail / ptr; required RET8 provider | none |
 | `0087BE58`, `0087BE9B` | `007135C0` | `construct_part_instance` | new object / unit, part set / void | none |
 | `0080E467` | `00934150` | `detach_part` | parts object / index, impulse / void | none |
 | `0087834A` | `00877B90` | `unit_set_health` | unit / max health / void | none |
