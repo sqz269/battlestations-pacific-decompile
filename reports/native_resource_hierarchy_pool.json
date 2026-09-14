@@ -1,0 +1,433 @@
+{
+  "packet": "orch2_native_resource_hierarchy_pool_bf",
+  "utc": "2026-09-13T18:21:59.782346+00:00",
+  "source_base_commit": "dac86b0ddfcf08b5c37d9b824d24b1a714793eea",
+  "accepted_discovery_commit": "70d75bb30100d2b1265d1771e91750d30679d9ff",
+  "identity": {
+    "identity": {
+      "project": "bsp",
+      "program": "battlestationspacific.exe",
+      "program_path": "/battlestationspacific.exe",
+      "language": "x86:LE:32:default",
+      "image_base": "00400000",
+      "ghidra_url": "http://127.0.0.1:8089",
+      "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "project_file": "C:/Users/sqz269/bsp.gpr",
+      "coordination_dir": "C:/Users/sqz269/.bsp"
+    },
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "evidence_directory": "local/hierarchy-pool-bf",
+  "original_bytes": 146,
+  "functions": [
+    {
+      "address": "00b17af0",
+      "name": "BSP_ReturnNative88BytePoolSlot",
+      "source_name": "return_native_hierarchy_pool_slot_00b17af0",
+      "source": "src/native_resource_hierarchy_pool.cpp",
+      "original_abi": "thiscall: ECX is the initialized 38h pool; [entry ESP+4] is raw 88h slot; RET 4; ESI/EDI/EBX preserved; no meaningful return value.",
+      "coverage": "Complete 104-byte algorithm delegated to NativeMaterialParameterPool::return_slot_00b193fa_fragment with the supplied owner. Native entry also has material callers.",
+      "original_span": {
+        "address": "00b17af0",
+        "end": "00b17b57",
+        "byte_count": 104,
+        "sha256": "bc9e39170df0e708bff6012fa99bb3638b975255dd40052302a02fd62cae2d31",
+        "live_equals_pe": true,
+        "instruction_count": 33,
+        "decoded_to_end": true
+      },
+      "no_ghidra_function": false
+    },
+    {
+      "address": "00b87a90",
+      "name": "BSP_AllocateStaticNativeHierarchySlot",
+      "source_name": "allocate_static_native_hierarchy_slot_00b87a90",
+      "source": "src/native_resource_hierarchy_pool.cpp",
+      "original_abi": "ECX overwritten with 0109022c, then tail JMP 00b185a0; no stack arguments; EAX raw slot. Incoming ECX=84h at the producer is discarded.",
+      "coverage": "Complete 10-byte owner-selecting allocation entry through the explicitly bound canonical hierarchy companion.",
+      "original_span": {
+        "address": "00b87a90",
+        "end": "00b87a99",
+        "byte_count": 10,
+        "sha256": "a65a3c5e528b0859e98acedf6f1d206efc1275ffd26edd6497033527d994a5ed",
+        "live_equals_pe": true,
+        "instruction_count": 2,
+        "decoded_to_end": true
+      },
+      "no_ghidra_function": false
+    },
+    {
+      "address": "00cd82d0",
+      "name": "BSP_InitializeStaticNativeHierarchyPool",
+      "source_name": "initialize_static_native_hierarchy_pool_00cd82d0",
+      "source": "src/native_resource_hierarchy_pool.cpp",
+      "original_abi": "cdecl no arguments; ECX=0109022c for constructor; one cdecl callback argument to 00bf6ff5 consumed by POP ECX; RET; EAX registration result.",
+      "coverage": "Complete 22-byte raw startup body: constructor before real std::atexit, preserving registration result and absence of rollback. Ghidra function definition pending integrator.",
+      "original_span": {
+        "address": "00cd82d0",
+        "end": "00cd82e5",
+        "byte_count": 22,
+        "sha256": "f841dadfaba4737c074bde9e2b8ff208fc69946aeb3bddd00db3e49c5c3748cb",
+        "live_equals_pe": true,
+        "instruction_count": 6,
+        "decoded_to_end": true
+      },
+      "no_ghidra_function": true
+    },
+    {
+      "address": "00ce0ed0",
+      "name": "BSP_DestroyStaticNativeHierarchyPool",
+      "source_name": "destroy_static_native_hierarchy_pool_00ce0ed0",
+      "source": "src/native_resource_hierarchy_pool.cpp",
+      "original_abi": "cdecl callback with no arguments; ECX overwritten with 0109022c, then tail JMP 00b18470; no meaningful return value.",
+      "coverage": "Complete 10-byte owner-selecting shutdown callback through the same immutable companion binding.",
+      "original_span": {
+        "address": "00ce0ed0",
+        "end": "00ce0ed9",
+        "byte_count": 10,
+        "sha256": "49114224b429e5ed79a054561bab842953ed53b9bf860f515ab6c19a3d4ba546",
+        "live_equals_pe": true,
+        "instruction_count": 2,
+        "decoded_to_end": true
+      },
+      "no_ghidra_function": false
+    }
+  ],
+  "direct_calls": [
+    {
+      "function": "00b87a90",
+      "address": "00b87a95",
+      "native": "00b185a0",
+      "kind": "tail_jump",
+      "contract": "ECX=0109022c, no stack arguments, EAX raw slot; source uses existing allocate_slot_00b185a0."
+    },
+    {
+      "function": "00ce0ed0",
+      "address": "00ce0ed5",
+      "native": "00b18470",
+      "kind": "tail_jump",
+      "contract": "ECX=0109022c; source uses existing destroy_00b18470."
+    },
+    {
+      "function": "00cd82d0",
+      "address": "00cd82d5",
+      "native": "00b18340",
+      "no_ghidra_function": true,
+      "contract": "ECX=0109022c; initialization finishes before callback registration; no local EH frame."
+    },
+    {
+      "function": "00cd82d0",
+      "address": "00cd82df",
+      "native": "00bf6ff5",
+      "no_ghidra_function": true,
+      "contract": "One cdecl stack argument 00ce0ed0, caller POP ECX; EAX atexit result returned unchanged; no rollback."
+    },
+    {
+      "function": "00b191d0",
+      "address": "00b191fc",
+      "native": "00b17af0",
+      "contract": "ECX=00f8d3e4, stack ESI slot, after name cleanup and flag bit 0 gate; callee RET 4."
+    },
+    {
+      "function": "00b19210",
+      "address": "00b19299",
+      "native": "00b17af0",
+      "contract": "ECX=00f8d3e4, stack ESI slot after name cleanup; callee RET 4."
+    },
+    {
+      "function": "00b88320",
+      "address": "00b88335",
+      "native": "00b17af0",
+      "contract": "ECX=0109022c, stack ESI record, after 00b88180 and flag bit 0 gate; callee RET 4. Caller excluded."
+    },
+    {
+      "function": "00b7eb90",
+      "address": "00b7ebb4",
+      "native": "00b87a90",
+      "contract": "Incoming ECX=84h payload size overwritten by wrapper; no stack arguments; EAX slot used by producer. Caller excluded."
+    }
+  ],
+  "indirect_calls": [
+    {
+      "function": "00b17af0",
+      "address": "00b17af9",
+      "native": "00ce2218+iat",
+      "contract": "EnterCriticalSection, stdcall one stack argument pool+0Ch; native lock and depth order supplied by existing provider."
+    },
+    {
+      "function": "00b17af0",
+      "address": "00b17b4c",
+      "native": "00ce2210+iat",
+      "contract": "LeaveCriticalSection, stdcall one stack argument pool+0Ch after depth decrement; provider preserves lock domain."
+    }
+  ],
+  "previous_ghidra_documentation": [
+    {
+      "address": "00b17af0",
+      "name": "FUN_00b17af0",
+      "comments": [],
+      "documentation_hash": "dff6753a905e008142e0d568210424d81cdf45377a113f562ccf23fcfbe9411d"
+    },
+    {
+      "address": "00b87a90",
+      "name": "CG_static_dtor_stub_00b87a90",
+      "comments": [],
+      "documentation_hash": "0fc97865f5775aa4e1c6a98772d7f162000fbe3a97d627dbe734652525ad6762"
+    },
+    {
+      "address": "00ce0ed0",
+      "name": "CG_static_init_00ce0ed0",
+      "comments": [],
+      "documentation_hash": "0fc97865f5775aa4e1c6a98772d7f162000fbe3a97d627dbe734652525ad6762"
+    }
+  ],
+  "ghidra_mutations": [],
+  "canonical_binding": {
+    "actual_owner": "0109022c",
+    "size": "38h",
+    "material_owner_not_interchangeable": "00f8d3e4",
+    "implementation": "NativeMaterialParameterPool borrowing actual hierarchy storage and the same existing AllocatorListDomain",
+    "source_binding": "bind_static_native_hierarchy_pool_0109022c",
+    "requirements": [
+      "Construct companion with actual hierarchy owner storage and shared allocator-list domain before startup.",
+      "Bind once before startup and keep binding immutable thereafter; setter adds no guard or registry.",
+      "Companion, storage, allocator-list domain and providers outlive the real std::atexit callback.",
+      "Hierarchy payload lifetimes end before pool destruction; destruction does not visit payloads.",
+      "No material singleton substitution, new native pool storage, copied state, startup wiring or fake provider."
+    ],
+    "observed_fields": {
+      "allocator_element": "+00/+04/+08",
+      "critical_section": "01090238 (+0c)",
+      "recursion_depth": "01090250 (+24)",
+      "slab_table": "01090254 (+28)",
+      "slab_count": "01090258 (+2c)",
+      "table_capacity": "0109025c (+30)",
+      "first_nonfull_slab": "01090260 (+34)"
+    },
+    "profile": "00d5e51c / 00b18500; same algorithms and shared 00e188b4 allocator-list domain, distinct native storage",
+    "shape": {
+      "slot_size": "88h",
+      "payload_size": "84h",
+      "hidden_slab_id": "+84h",
+      "slots_per_slab": 128,
+      "free_indices": "+4400h",
+      "word_free_count": "+4500h",
+      "slab_size": "4504h"
+    }
+  },
+  "return_schedule": [
+    "Enter actual pool critical section; increment depth.",
+    "Load current slot+84h slab ID and current slab-table pointer under the lock.",
+    "Compute signed DWORD slot-minus-slab delta divided by 88h with truncation toward zero.",
+    "Store WORD index into freeIndices[current WORD freeCount]; increment current WORD freeCount.",
+    "Lower first-free cursor only when slab ID compares unsigned below it.",
+    "Decrement depth, leave section, RET 4; no payload operation or validation."
+  ],
+  "exception_and_runtime_limits": [
+    "The four native entries contain no local EH handler or unwind funclet.",
+    "Constructor/provider failure paths are delegated to existing provider contracts; registration is not reached if construction throws.",
+    "No rollback on registration failure; real std::atexit result is returned.",
+    "Source return retains the existing noexcept provider contract; source shutdown follows the existing factory noexcept callback interface within supported initialized valid-storage domain.",
+    "Current source shutdown emits EH metadata for its noexcept boundary, unlike the native tail jump; an escaping provider exception is outside the equivalence claim.",
+    "New explicit C++ interfaces are not drop-in native ABI replacements; asynchronous SEH and invalid-memory behavior are not proven.",
+    "No application binding, startup dispatch, runtime callback execution, fixture or game validation is claimed."
+  ],
+  "named_but_incomplete_dependencies": [
+    {
+      "function": "00b7eb90",
+      "role": "hierarchy record producer; record construction/append/caller ownership remains outside this packet"
+    },
+    {
+      "function": "00b88320",
+      "role": "hierarchy scalar deletion wrapper; field cleanup before optional slot return remains outside this packet"
+    },
+    {
+      "function": "00b88430",
+      "role": "resource base teardown and finite item lifetime dispatch remain outside this packet"
+    }
+  ],
+  "existing_dependencies": [
+    "NativeMaterialParameterPool constructor, initialize_00b18340, allocate_slot_00b185a0, return_slot_00b193fa_fragment, destroy_00b18470, trim_empty_slabs_00b18500 and same allocator-list domain.",
+    "The existing descriptive native_global=F8D3E4 constant does not drive provider storage accesses; existing pool source unchanged from discovery baseline.",
+    "Real C/C++ std::atexit service replaces native CRT registration entry 00bf6ff5 without a CRT port or local registry."
+  ],
+  "source_sha256": {
+    "include/bsp/native_resource_hierarchy_pool.hpp": "126d441f55b45c1c20e45f763eca7584d8ca986fd2daa1a85d3ffe7f2fa4100d",
+    "src/native_resource_hierarchy_pool.cpp": "4b1a00ae565b019c1335e6944bbb9145566a9ffa5e163ab3895ced226e1b24c8",
+    "include/bsp/native_material_pools.hpp": "1d2c422a4739356a86962b785335e54f93760374e38e673003404f4475806715",
+    "src/native_material_pools.cpp": "912a99731808b59da5344f93a5d68ab46e295be668f17cb93f99d7baab19f317",
+    "include/bsp/allocator_list.hpp": "39ef9a5be06269f83af556cd80d0d68af3e983e1912154b2255ed7060f6fdae8",
+    "src/allocator_list.cpp": "cdbf79e61ecda228f41e07832ab0e175bf812b4cb78f921043e83a3e63e60732",
+    "include/bsp/native_material_factory.hpp": "ac9602ba2af3a732d0bede15d38d51b948a4aea5c611c10d61eaca7a4c004e70",
+    "src/native_material_factory.cpp": "d2d8a25e93852ffbf1c07ac74dcb3e9d0b2f476e0bc4f00d12fa2497a2ac8d2b",
+    "cmake/startup.cmake": "6ffcd8ef0010f4d740d8f309db2f121d304727794871796e4ab4d3103064dfee",
+    "CMakeLists.txt": "0bad51a21cd02eb4d8b196a345a3f86418d0dab144d66912f0ad8db06881c5a8"
+  },
+  "original_evidence_sha256": {
+    "00b17af0-asm.txt": "71e6320e26dc5885cc8a3e305ae7704bccdbfab9cb5c50821fcff79f6b702a6b",
+    "00b17af0-bytes.txt": "05db05f477acab4e246d957c0d4fc3b116dd4d16cac1e9d4ff8e334f03d20713",
+    "00b17af0-decoded.txt": "df84867eaed790f99022d7b09e3efa6db422e5f91ce122d1c49e45fee205f22a",
+    "00b17af0-span.json": "1b31ce4648428a0e13e815b9739405a4b5a28ecabfba2972c1398d341b17bb78",
+    "00b17af0-xrefs.txt": "851d8dd5c025b55793971d92a44375dd65a8e19dce53e60b8f56d7c5bf58609f",
+    "00b17af0.bin": "bc9e39170df0e708bff6012fa99bb3638b975255dd40052302a02fd62cae2d31",
+    "00b87a90-asm.txt": "b4eb8de02b5ca71e7ba708a567a84b0401fa0802ce8a89843f5b9b3857eb496d",
+    "00b87a90-bytes.txt": "cb7ad3226b21ba02037832bb786f67c92472a74f4b27a9e8e0ef9a7532add81c",
+    "00b87a90-decoded.txt": "2a6abc915d238585fdd109627a56df591d05f57afb36bc37c57862893091de1c",
+    "00b87a90-span.json": "ae07d7edf6e7a902eb19c40067bba035f22b05cad73fd95f587371e846cbbfc1",
+    "00b87a90-xrefs.txt": "8d8bc0de01e48294afc6b26b89fe75069b1689c2baad140551470cd556e8dfc9",
+    "00b87a90.bin": "a65a3c5e528b0859e98acedf6f1d206efc1275ffd26edd6497033527d994a5ed",
+    "00cd82d0-asm.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "00cd82d0-bytes.txt": "39d2e74ac3fcb921cacd26afe217ea99b13cf378ad3f5a9fdd70a312602863f4",
+    "00cd82d0-decoded.txt": "6bd78d3a9d0b69a0ca93bcc21a9ee5408b8a935f1f77e8a664455c72f317959d",
+    "00cd82d0-span.json": "7223eabb761b08e24fd7fa120026544b8866886b884109e38ef5a920a6e231bd",
+    "00cd82d0-xrefs.txt": "f30174c126577059dcc42d55b819e2260667f5a4e7138d34ea4387192ba76925",
+    "00cd82d0.bin": "f841dadfaba4737c074bde9e2b8ff208fc69946aeb3bddd00db3e49c5c3748cb",
+    "00ce0ed0-asm.txt": "8a0e422b732de22bcf226e7235efd0c4dead1f0db199bcb86fb5f9f078732bf0",
+    "00ce0ed0-bytes.txt": "e96660bbd21f8b99acf5eee263fc6a28f73a13b51ac448464ec09984f5d25ea6",
+    "00ce0ed0-decoded.txt": "e3e16650c9bc3d46ce58400a69d83d54ce64780aa259c7c157cb8c96adb3b760",
+    "00ce0ed0-span.json": "1e0a9ba383bce6e1cbdc730a0108b7675ea65a7e6eb2e5ea9414bfbb3de48bc8",
+    "00ce0ed0-xrefs.txt": "be37bb094235415115bbfc3829738c946229b1ee519035ef75a5d3da6ad2d095",
+    "00ce0ed0.bin": "49114224b429e5ed79a054561bab842953ed53b9bf860f515ab6c19a3d4ba546",
+    "identity-and-protos.txt": "10de209f5ef606277111e2744c4b186c7640bb8a68b9c07d9ee6b338a73c55f8",
+    "identity.json": "ac3bf52c6d4737c4dedf3b6bb455b73acd73afbf9cb2c972fa3bbb1bd0d7bead",
+    "original-documentation.json": "38f68409268d12e0c2703ee6f28f044268fd7c2b782e2b81ba74602df3e31e34"
+  },
+  "validation": {
+    "build": "Strict MSVC Win32 Release build passed; reconstructed_math and native_math_differential passed (2/2).",
+    "call_verification": "Six direct rows expected to pass; exactly two containing-function failures at CD82D5/CD82DF remain until root defines CD82D0. Two IAT rows indirect/skipped.",
+    "required_before_integration": "Root defines only verified CD82D0-CD82E5 after lease release, then reruns unchanged call rows.",
+    "capsule": "none; parent accepted source/listing and existing build checks for these delegating wrappers",
+    "build_evidence": {
+      "path": "local/hierarchy-pool-bf/build-evidence.json",
+      "sha256": "55cf387403f0794e2cb58b138fa95d4befa6b3bafdd4b526f64d85f6fac7aa01",
+      "compiler": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\cl.exe",
+      "compiler_version": "19.51.36244.0",
+      "target": "MSVC Win32 Release",
+      "flags": [
+        "/W4",
+        "/WX",
+        "/O2",
+        "/EHsc",
+        "/MD",
+        "/fp:strict",
+        "/std:c++17"
+      ],
+      "tests": [
+        "reconstructed_math: passed",
+        "native_math_differential: passed"
+      ],
+      "artifacts": [
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch2-resource-hierarchy-pool-bf\\build\\win32\\bsp_core.dir\\Release\\native_resource_hierarchy_pool.obj",
+          "preserved": "local/hierarchy-pool-bf/build-closure/current-native_resource_hierarchy_pool.obj",
+          "size": 4717,
+          "sha256": "2a7d6e67c3b4e2216daa04f21c6c251d44900f6d764386a6d98f86624cb01807"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch2-resource-hierarchy-pool-bf\\build\\win32\\bsp_core.dir\\Release\\native_material_pools.obj",
+          "preserved": "local/hierarchy-pool-bf/build-closure/current-native_material_pools.obj",
+          "size": 39757,
+          "sha256": "6cd7a3c5438e8019df2dc6b87ce129c194ca709c51f1ef97020a5e48648f3c5d"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch2-resource-hierarchy-pool-bf\\build\\win32\\Release\\bsp_core.lib",
+          "preserved": "local/hierarchy-pool-bf/build-closure/current-bsp_core.lib",
+          "size": 56087288,
+          "sha256": "062f5ff034c9c8213ec9e6c6ff09244e0a2c05bcb9f2f21f3d4ca9dedc6f4960"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch2-resource-hierarchy-pool-bf\\build\\win32\\Testing\\Temporary\\LastTest.log",
+          "preserved": "local/hierarchy-pool-bf/build-closure/LastTest.log",
+          "size": 1785,
+          "sha256": "7cd70510faa24fae19576dde60e7695f9493aa20059ed537d0550bb74c1b2ba3"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch2-resource-hierarchy-pool-bf\\build\\win32\\CMakeCache.txt",
+          "preserved": "local/hierarchy-pool-bf/build-closure/CMakeCache.txt",
+          "size": 18983,
+          "sha256": "c4ff1f370519c5b389a0fd5e3b9768d78b1dc8ee6f5633fa188c71191e1abaa0"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch2-resource-hierarchy-pool-bf\\build\\win32\\CMakeFiles\\4.2.3-msvc3\\CMakeCXXCompiler.cmake",
+          "preserved": "local/hierarchy-pool-bf/build-closure/CMakeCXXCompiler.cmake",
+          "size": 6498,
+          "sha256": "1e335b70d73e508c6038c58b3dee1b26845afbe82697b05b9a0a759c1ae68854"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch2-resource-hierarchy-pool-bf\\build\\win32\\bsp_core.vcxproj",
+          "preserved": "local/hierarchy-pool-bf/build-closure/bsp_core.vcxproj",
+          "size": 206250,
+          "sha256": "2a8f35826e194e0bfdc090947e959a2b1211c9d9589d7c4b83541de412bb4d71"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch2-resource-hierarchy-pool-bf\\build\\win32\\bsp_core.dir\\Release\\bsp_core.tlog\\CL.command.1.tlog",
+          "preserved": "local/hierarchy-pool-bf/build-closure/CL.command.1.tlog",
+          "size": 2241934,
+          "sha256": "77ccacb7c567c665d90f41389dbc0abd9aa0dd161784b850e1bfc071a11352cd"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch2-resource-hierarchy-pool-bf\\build\\win32\\bsp_core.dir\\Release\\bsp_core.tlog\\CL.read.1.tlog",
+          "preserved": "local/hierarchy-pool-bf/build-closure/CL.read.1.tlog",
+          "size": 35014984,
+          "sha256": "d6664c3a53f85559b71aa50b9a2a362f847d67d782690153a4425fb3f1ff0e03"
+        }
+      ],
+      "candidate_archive": {
+        "path": "local/hierarchy-pool-bf/build-closure/candidate-hierarchy-pool-bf.lib",
+        "size": 6224,
+        "sha256": "dbf1afb5d726ceb4769fded346c6aed7b8c6b54c9b7cbe3bf352bd7ce2daab0d",
+        "members": 1,
+        "source": "Copied exact current production object; no separate source compilation or executable."
+      },
+      "preserved_input_files": 265,
+      "preserved_compiler_tools": 6,
+      "preserved_evidence_files": 290,
+      "symbol_validation": "Five source entries defined; four real NativeMaterialParameterPool methods unresolved in wrapper and defined in current provider object; real _atexit reference retained.",
+      "limits": "Archive and source compilation evidence only. No capsule, fixture, callback execution, application binding or game validation. Existing CTests cover repository math, not hierarchy wrapper runtime behavior."
+    },
+    "call_verification_result": {
+      "command": "python tools/verify_report_calls.py reports/native_resource_hierarchy_pool.json",
+      "exit_code": 1,
+      "direct_rows": 8,
+      "passed": 6,
+      "failed": 2,
+      "indirect_rows_skipped": 2,
+      "failures": [
+        "FAIL      report.direct_calls[2]: call site 00cd82d5 is in no Ghidra function",
+        "FAIL      report.direct_calls[3]: call site 00cd82df is in no Ghidra function"
+      ],
+      "log": "local/hierarchy-pool-bf/final-call-verification.log",
+      "sha256": "fa466279d3ce10593533fd0a5e91039edc4f4019b2a1e46a2d85165fd8a1d63c",
+      "interpretation": "Exactly the two expected missing-containing-function failures for the undefined CD82D0 startup body. Root must define verified 22 bytes and rerun unchanged call rows before integration."
+    }
+  },
+  "bf_integrator_correction_20260913": {
+    "scope": "Append-only correction to historical worker observations; source semantics and frozen baseline artifacts unchanged.",
+    "definitions_record": "reports/native_resource_lifetime_bf_function_definitions.json",
+    "flow_repair_record": "reports/native_resource_lifetime_bf_flow_repairs.json",
+    "defined_addresses": [
+      "00cd82d0",
+      "00b86860",
+      "00b86950",
+      "006f9d20",
+      "00b86870",
+      "00b86880",
+      "006f9d30",
+      "00b868a0",
+      "00cd82c0",
+      "00cc1fe3",
+      "00cc25f9"
+    ],
+    "reserve_function_body_inclusive": [
+      "00b7d640",
+      "00b7d69e"
+    ],
+    "reserve_body_bytes": 95,
+    "direct_call_rows_checked": 8,
+    "direct_call_rows_failed": 0,
+    "verification": "Unchanged worker report rerun against live verified bsp project after function definitions and flow repair. Indirect rows retain their original unchecked scope.",
+    "call_check_log": "local/native-bf-call-checks/native_resource_hierarchy_pool.log",
+    "source_coverage": "Nine complete source bodies,494 original bytes across hierarchy fields, finite fallback lifetime and pool wrappers; pool packet build-only. Analysis-only leaves/handlers are excluded from this count.",
+    "validation_at_metadata_edit": "Source reviews accepted; combined root build and exact candidate fixture gate remain pending."
+  }
+}

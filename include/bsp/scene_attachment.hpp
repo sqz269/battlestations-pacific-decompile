@@ -125,9 +125,35 @@ public:
 // bound. Hierarchy mutation/reentry is allowed; concurrent mutation is not.
 class SceneAttachmentRuntime : public SystemDirectionalLightResolver {
 public:
+    // Host registration credit only. The stable runtime outlives active tokens;
+    // use one serialized owning thread, with no reentry inside registry methods.
+    class BindingAdmission final {
+    public:
+        BindingAdmission() noexcept = default;
+        BindingAdmission(const BindingAdmission&) = delete;
+        BindingAdmission& operator=(const BindingAdmission&) = delete;
+        BindingAdmission(BindingAdmission&&) noexcept;
+        BindingAdmission& operator=(BindingAdmission&&) noexcept;
+        ~BindingAdmission() noexcept;
+        void cancel() noexcept;
+        explicit operator bool() const noexcept { return runtime_ != nullptr; }
+    private:
+        friend class SceneAttachmentRuntime;
+        explicit BindingAdmission(SceneAttachmentRuntime& runtime) noexcept : runtime_(&runtime) {}
+        SceneAttachmentRuntime* runtime_{};
+    };
     SceneAttachmentRuntime(std::uint32_t registry_token,
         std::array<std::uint32_t, 3> object_tokens);
+    SceneAttachmentRuntime(const SceneAttachmentRuntime&) = delete;
+    SceneAttachmentRuntime& operator=(const SceneAttachmentRuntime&) = delete;
+    SceneAttachmentRuntime(SceneAttachmentRuntime&&) = delete;
+    SceneAttachmentRuntime& operator=(SceneAttachmentRuntime&&) = delete;
+    ~SceneAttachmentRuntime() noexcept;
+    [[nodiscard]] BindingAdmission reserve_binding();
     void bind(SceneNodeAttachment&);
+    // Successful admission does not allocate. Invalid input leaves the token
+    // active; an already-bound identical companion cancels its unused credit.
+    void bind(SceneNodeAttachment&, BindingAdmission&&);
     void unbind(SceneNodeAttachment&); // requires explicit prior detach
     // After native cleanup has ended backing lifetime, remove this external
     // association by identity only and clear its live companion resolver.
@@ -142,7 +168,10 @@ public:
     std::uint32_t registry_type_token;
     std::array<std::uint32_t, 3> object_type_tokens; // c3dObject/c3dNode/cRoot, 01090034/38/3C
 private:
+    bool validate_binding(SceneNodeAttachment&) const;
+    void reserve_binding_capacity();
     std::vector<SceneNodeAttachment*> bindings_;
+    std::size_t pending_bindings_{}; // bindings_.size() + pending <= capacity
 };
 
 std::uint32_t scene_pointer_hash(std::uint32_t pointer_key) noexcept;

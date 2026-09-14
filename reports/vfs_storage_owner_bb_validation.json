@@ -1,0 +1,218 @@
+{
+  "packet": "orch4_vfs_storage_owner_bb_integration",
+  "status": "bounded_vfs_owner_storage_source_integrated_exact_combined_build_and_three_fixtures_passed",
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe"
+  },
+  "documentation": "docs/VFS_STORAGE_OWNER_BB_INTEGRATION.md",
+  "annotations": "reports/type_counter_raw_lifetime_bb_annotations.json",
+  "worker_reports": [
+    "reports/native_type_counter_raw_lifetime_bb.json",
+    "reports/native_vfs_owner_services_bb.json",
+    "reports/native_mpak_storage_services_bb.json"
+  ],
+  "byte_spans": [
+    {
+      "address": "006fac20",
+      "bytes": 181,
+      "end_inclusive": "006facd4",
+      "sha256": "70526b13aa54e4afb188a2aeb0facac4a3e61c6770e787563b2c8e5d68a8d678",
+      "live_disk_equal": true,
+      "before_annotation": "Function: BSP_TypeId_GetCounterSingleton at 006fac20\nSignature: undefined BSP_TypeId_GetCounterSingleton(void)\nEntry: 006fac20\nBody: 006fac20 - 006facd4",
+      "instructions": 48,
+      "all_instruction_owners_verified": true,
+      "returns": [
+        {
+          "site": "006facd4",
+          "operand": ""
+        }
+      ]
+    },
+    {
+      "address": "006fad40",
+      "bytes": 41,
+      "end_inclusive": "006fad68",
+      "sha256": "6f167643b027f016e3e3560ccaf18bc54a49088ec5e3d37a985e3aca014fc8ce",
+      "live_disk_equal": true,
+      "before_annotation": "Function: BSP_TypeIdCounter_DeletingDestructor at 006fad40\nSignature: void * __fastcall BSP_TypeIdCounter_DeletingDestructor(void * owner, void * unused_edx, uint flags)\nEntry: 006fad40\nBody: 006fad40 - 006fad68",
+      "instructions": 12,
+      "all_instruction_owners_verified": true,
+      "returns": [
+        {
+          "site": "006fad66",
+          "operand": "4"
+        }
+      ]
+    }
+  ],
+  "calls": [
+    {
+      "function": "006fac20",
+      "address": "006fac46",
+      "native": "00415350",
+      "evidence": "Complete live/disk root envelope with every saved instruction owner verified."
+    },
+    {
+      "function": "006fac20",
+      "address": "006fac7c",
+      "native": "00bf681b",
+      "evidence": "Complete live/disk root envelope with every saved instruction owner verified."
+    },
+    {
+      "function": "006fac20",
+      "address": "006fac9e",
+      "native": "00415350",
+      "evidence": "Complete live/disk root envelope with every saved instruction owner verified."
+    },
+    {
+      "function": "006fac20",
+      "address": "006facac",
+      "native": "00bd0c30",
+      "evidence": "Complete live/disk root envelope with every saved instruction owner verified."
+    },
+    {
+      "function": "006fad40",
+      "address": "006fad5b",
+      "native": "00bf65ac",
+      "evidence": "Complete live/disk root envelope with every saved instruction owner verified."
+    }
+  ],
+  "indirect_calls": [
+    {
+      "function": "006fac20",
+      "call_site": "006fac5f",
+      "operand": "dword ptr [0xce2218]"
+    },
+    {
+      "function": "006fac20",
+      "call_site": "006facba",
+      "operand": "dword ptr [0xce2210]"
+    }
+  ],
+  "instruction_ownership_failures": [],
+  "table_data_spans": [
+    {
+      "address": "00cfb6c4",
+      "bytes": 4,
+      "hex": "40ad6f00",
+      "sha256": "177b648fbc3c235dd9eb88ca22452350e22943faf064857f5ed5cf830b4f9a6f",
+      "live_disk_equal": true
+    }
+  ],
+  "body_repairs": [
+    "reports/type_counter_raw_lifetime_bb_body_repair.json"
+  ],
+  "additional_native_evidence": [
+    "reports/native_mpkg_factory_deletion_bd.json"
+  ],
+  "composition_and_migration_reports": [
+    "reports/raw_vfs_lua_composition_bc.json",
+    "reports/game_vfs_native_startup_migration_bc.json",
+    "reports/native_mpak_real_archive_composition_bc.json"
+  ],
+  "final_validation": {
+    "utc": "2026-09-14T00:22:56.219581+00:00",
+    "source_revision": "62279e9f92e8e2dea6e816e9f451770e47fce0f9",
+    "merged_main_revision": "9b890a53e587ae0c62bfbfdc10d3f1c9502cfad8",
+    "code_files": 2471,
+    "code_manifest": "local/vfs_storage_owner_bb_source_manifest.json",
+    "code_manifest_sha256": "b9be6ffe97815ec33d6dfaf7f4f175268d0914bfeebe77300982e9d1ad00f5eb",
+    "core_archive_sha256": "be8578121d2d2fd220569efefc19e8c4734300fc6582e3445d0b99cb00e7703c",
+    "game_executable_sha256": "add962015c0e7f0f0f3117178e29b076b26cc32e5e2f51852cf298bacf4d0bd7",
+    "strict_win32_build": true,
+    "ctests_passed": 2,
+    "build_log": "local/vfs_storage_owner_bb_combined_build.log",
+    "build_log_sha256": "736d548166694de91043b9c04d159f2f21ea3d07c27508b6b68e030110ac522d",
+    "fixtures": [
+      {
+        "name": "owners",
+        "source": "local/vfs_owner_services_bb_probe.cpp",
+        "runner": "local/run_vfs_owner_services_bb_probe.ps1",
+        "executable": "local/vfs_owner_services_bb_probe.exe",
+        "log": "local/vfs_storage_owner_bb_combined_owners_probe.log",
+        "source_sha256": "a69d4bb192a6c79ebf2afd0b8b1da8c2ebaa469875559af023d2f81f0d0cc00f",
+        "runner_sha256": "87514226b66a88d778c0f296683586b821875b14c6bf1e196c3c5bebadada738",
+        "executable_sha256": "97e72273e3d3d2b1c1390e1ea45c11f444a3dd94a6aefd54d7fd8dc48cd525be",
+        "log_sha256": "7da2320b16d8af6353694d5c5d93828b0d775d8751b4febe27be51d796452ed4"
+      },
+      {
+        "name": "raw_lua",
+        "source": "local/raw_vfs_lua_bc_probe.cpp",
+        "runner": "local/run_raw_vfs_lua_bc_probe.ps1",
+        "executable": "local/raw_vfs_lua_bc_probe.exe",
+        "log": "local/vfs_storage_owner_bb_combined_raw_lua_probe.log",
+        "source_sha256": "06fbead6574930c8627e003aa12a0e6a7ea32885cdce66a98072808e6d9d7471",
+        "runner_sha256": "1e08914a8aaedfb4d6c42662239139a3de694c1e7446fde5fdd8cf9f1152d7e5",
+        "executable_sha256": "a1851892bdf3acaab3df9a6b3efa6b62650cb1212ad4d782d807b03ab3a1e512",
+        "log_sha256": "7aee2a507fb17629dd76b921128607ad076fcc9510c41a3f2b6996aa3b7a3817"
+      },
+      {
+        "name": "semantic_lua",
+        "source": "local/native_lua_service_bindings_az_composition.cpp",
+        "runner": "local/run_native_lua_service_bindings_az_composition.ps1",
+        "executable": "local/native_lua_service_bindings_az_composition.exe",
+        "log": "local/vfs_storage_owner_bb_combined_semantic_lua_probe.log",
+        "source_sha256": "4eb206627becdd5e4e85e765c23b556747498437840d8fe240ff8dfa1947b9c6",
+        "runner_sha256": "f6514f25d55cd178680dafb2b2000e0e15fc005154de933f132417cde846fe28",
+        "executable_sha256": "5a73caf70364ec05b28debf89cc1c2b8c1d55d31ba3fa5c01cca4621c55a9fd6",
+        "log_sha256": "fc54f6788567ef3eba252753eb7eecea5d06a51769c38ac6f0b35391cfc082a5"
+      }
+    ],
+    "support_hashes": {
+      "local/audit_vfs_storage_owner_bb.py": "a3b23f4dd9d98e35fe09185aa2759cfec05884d9f6a370cc87a4f9ac5c7909a4",
+      "local/prepare_type_counter_bb_body_repair.py": "a8201e375f164903a7e188c67130d95bd42178b1c6a84a23f94cf80efa536da6",
+      "local/repair_type_counter_bb_body.py": "c9a4fa07a986a7a34c4cd4864583a1e02cd460b74c62db6dd185147bcf18ef53",
+      "local/prepare_type_counter_bb_annotations.py": "2db993a8ca34dbb929ce0872f624575cc6e6e27770657ac209451ba0ad048bdc",
+      "local/annotate_type_counter_bb.py": "f6c817ac14231ed2ad978bc9362bf045a08affca4605a6c47939501f10cd250f",
+      "local/correct_type_counter_bb_annotation.py": "74d1bd84e8c37d57a62f389368decf150bc31ee8ead97513d2ba5d51048776c9",
+      "local/audit_annotate_mpkg_factory_deletion_bd.py": "1ffef932175b5a443d9819bceccba6e34ab647b63329cdabe573605c0bfe35e9",
+      "local/vfs_storage_owner_bb_calls.log": "e239e0a062230b675d8602baf590c9caa311e667748e6da200066e150adb6556",
+      "local/vfs_storage_owner_bb_seeds.log": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+    },
+    "installed_executable_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "installed_asset_hashes": {
+      "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\Scripts\\fundamentals.lua": "20e128ebe9a1cb7678e3324b0baae93adab4f34f4d96bd081fb7b86505f63526",
+      "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\common\\debugshader.shfx": "d45e91ef1a3f11c654b97ac3a9d293b9a24b597b68fb315d611638d3b6933476",
+      "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\common\\alphablend.shfx": "37cc55352deb1ea4b9685eb4dd3d0f89cb9958bd7a786d24bb34857ed9747f64"
+    },
+    "unique_owned_direct_call_sites": 35,
+    "call_report_rows": 40,
+    "call_rows_failed": 0,
+    "live_disk_function_envelopes": 5,
+    "saved_annotations_readback": 5,
+    "repaired_instruction_ownership": [
+      "006fad60"
+    ],
+    "disk_live_seed_spans_equal": 8,
+    "annotation_receipt_sha256": "39b5cdf4997930e8e51acc97e80f62a9ac76ea6bc441f44bc44ae7d310f61973",
+    "body_repair_receipt_hashes": {
+      "reports/type_counter_raw_lifetime_bb_body_repair.json": "2e44361da22b4bcf2603b9591d98595a6d7d91e801b0345114a039149e384923"
+    },
+    "additional_native_evidence_hashes": {
+      "reports/native_mpkg_factory_deletion_bd.json": "bc6f3f4cc0f7b19ca03135fd3c4e9ad678d602ba205bd418c2cd390e9642d795"
+    },
+    "deletion_tables_verified": [
+      "00cfb6c4",
+      "00cfea10"
+    ],
+    "original_abi_compatible": false,
+    "original_fh3_executed": false,
+    "production_host_reachable": false,
+    "game_validated": false
+  },
+  "limits": [
+    "Owner and storage bundles retain existing actual cells and contexts; no second manager or implicit shutdown.",
+    "Raw-owner fixture checks six registered owners including secondary MPKG registration and changed-publication deletion. The populated raw VFS/Lua fixture checks a different six-owner set over seeded VFS/provider/FileStore records.",
+    "Production native manager/factory/mount construction is pending in the BD composer; current fixtures do not prove GameVfsHost migration.",
+    "The authentic installed archive inventory is empty for .mpak/.mpkg/.pak; no authentic archive member comparison ran.",
+    "Initial-image constants provider and actual search registration packets are separate work. Original FH3/CRT identity, ABI compatibility and gameplay remain unvalidated."
+  ],
+  "pending_followups": [
+    "orch4_game_native_vfs_runtime_bd",
+    "orch4_game_native_vfs_constants_bd",
+    "orch4_native_vfs_search_groups_bd",
+    "orch4_native_vfs_extension_prefix_be",
+    "orch4_native_vfs_search_defaults_be"
+  ]
+}

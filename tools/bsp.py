@@ -66,26 +66,26 @@ def output_budget(argv=(), full=False):
         text = buf.getvalue()
         if len(text) <= limit:
             real.write(text)
-            return
-        slug = re.sub(r'[^a-z0-9]+', '-', ' '.join(str(a) for a in argv).lower()).strip('-')[:60] or 'output'
-        path = ROOT / 'local/output' / f"{slug}-{datetime.now().strftime('%H%M%S')}.txt"
-        path.parent.mkdir(parents=True, exist_ok=True)
-        path.write_text(text, encoding='utf-8')
-        head, shown = [], 0
-        for line in text.splitlines(True):
-            if shown + len(line) > limit:
-                break
-            head.append(line)
-            shown += len(line)
-        rest = len(text.splitlines()) - len(head)
-        real.write(''.join(head))
-        if not head or not head[-1].endswith('\n'):
-            real.write('\n')
-        rel = path.relative_to(ROOT).as_posix()
-        real.write(f"[bsp: TRUNCATED at {budget} tokens. {rest} more lines, {len(text) - shown} more bytes.\n"
-                   f" Whole output: {rel}  (ignored by git)\n"
-                   f" Read the rest with:  rg -n '<term>' {rel}   or   sed -n '{len(head) + 1},{len(head) + 80}p' {rel}\n"
-                   f" Re-run uncapped with --full, or BSP_OUTPUT_BUDGET=0. Do not conclude from the head alone.]\n")
+        else:
+            slug = re.sub(r'[^a-z0-9]+', '-', ' '.join(str(a) for a in argv).lower()).strip('-')[:60] or 'output'
+            path = ROOT / 'local/output' / f"{slug}-{datetime.now().strftime('%H%M%S')}.txt"
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_text(text, encoding='utf-8')
+            head, shown = [], 0
+            for line in text.splitlines(True):
+                if shown + len(line) > limit:
+                    break
+                head.append(line)
+                shown += len(line)
+            rest = len(text.splitlines()) - len(head)
+            real.write(''.join(head))
+            if not head or not head[-1].endswith('\n'):
+                real.write('\n')
+            rel = path.relative_to(ROOT).as_posix()
+            real.write(f"[bsp: TRUNCATED at {budget} tokens. {rest} more lines, {len(text) - shown} more bytes.\n"
+                       f" Whole output: {rel}  (ignored by git)\n"
+                       f" Read the rest with:  rg -n '<term>' {rel}   or   sed -n '{len(head) + 1},{len(head) + 80}p' {rel}\n"
+                       f" Re-run uncapped with --full, or BSP_OUTPUT_BUDGET=0. Do not conclude from the head alone.]\n")
 
 
 SCHEMA = """

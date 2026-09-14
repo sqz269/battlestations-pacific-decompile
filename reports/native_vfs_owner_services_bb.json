@@ -3,7 +3,12 @@
   "base_commit": "165f14658a9ba44e1d2ba7c70f55c91f9b2b65fe",
   "status": "source_ownership_composition_five_owner_raw_drain_fixture_passed",
   "scope": {
-    "files": ["include/bsp/native_vfs_owner_services.hpp", "src/native_vfs_owner_services.cpp", "docs/NATIVE_VFS_OWNER_SERVICES_BB.md", "reports/native_vfs_owner_services_bb.json"],
+    "files": [
+      "include/bsp/native_vfs_owner_services.hpp",
+      "src/native_vfs_owner_services.cpp",
+      "docs/NATIVE_VFS_OWNER_SERVICES_BB.md",
+      "reports/native_vfs_owner_services_bb.json"
+    ],
     "native_addresses": [],
     "ghidra_mutations": false,
     "tracked_tests_added": 0
@@ -25,5 +30,13 @@
     "core_archive_sha256": "21a18214c669880c0e047429095d0d535ac6d4a01325dfcb7c7b462eb70864e6"
   },
   "integration_requirement": "Integrator must register src/native_vfs_owner_services.cpp in cmake/startup.cmake before production source consumption; the worker's lease owns only four new files.",
-  "calls": []
+  "calls": [],
+  "primary_integration": {
+    "report": "reports/vfs_storage_owner_bb_validation.json",
+    "status": "bounded_vfs_owner_storage_source_integrated_exact_combined_build_and_three_fixtures_passed",
+    "source_revision": "62279e9f92e8e2dea6e816e9f451770e47fce0f9",
+    "source_registration": "Owner-services source is registered in bsp_core; all three primary fixtures link the combined archive only.",
+    "saved_evidence": "Type-counter saved ownership restored at006FAD60 and zero-initialization annotation corrected with retained receipt.",
+    "game_validated": false
+  }
 }

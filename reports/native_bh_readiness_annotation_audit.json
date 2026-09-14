@@ -1,0 +1,100 @@
+{
+  "status": "saved_original_names_signatures_and_bounded_readiness_evidence",
+  "accepted_workers": [
+    "ff8e720f4e0f01aca0760a51d0b2fae3ae721369",
+    "6d0bc024c9e86f24aa6533ed5b8dc94a269363cb"
+  ],
+  "new_reconstructed_bodies": 0,
+  "new_native_bytes": 0,
+  "reviewed_static_native_bytes": 361,
+  "functions": [
+    {
+      "address": "00b3c800",
+      "end_inclusive": "00b3c952",
+      "bytes": 339,
+      "sha256": "21fc45bafe861070036aad3aedb79758e5e3a50bb275e3f189cde9e8fea9d3df",
+      "live_PE_equal": true,
+      "ghidra_name": "BSP_CockpitHelper_Construct",
+      "native_prototype": "void * BSP_CockpitHelper_Construct(void)",
+      "native_calling_convention": "__thiscall",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Static constructor contract over actual24h helper,12directcalls/twoindirecteffects andfive-state EH metadata. Preserve10/14/1C/20, rawstring/currentpoolreturn, rawcamera andviewport allocation domains, originalx87materializations andfreshhelper0Cloads. Publishedcamera surviveslatefailure. Concrete persistentcompanion/registry admission andviewportview lifetimes remain implementationgates. No reconstructedB3C800 body, nativeFH3/SEH, binaryABI or gameplaycredit. Evidence docs/NATIVE_COCKPIT_CONSTRUCTION_COMPOSITION_BG.md; reports/native_cockpit_construction_composition_bg.json.",
+      "new_native_body": false
+    },
+    {
+      "address": "00cd7f00",
+      "end_inclusive": "00cd7f15",
+      "bytes": 22,
+      "sha256": "6710dc7f7e04675e307a41b3f5ff461b0dba625dda2639fb30e221d6879c4b58",
+      "live_PE_equal": true,
+      "ghidra_name": "BSP_NativeModelPool_StaticInitialize",
+      "native_prototype": "int BSP_NativeModelPool_StaticInitialize(void)",
+      "native_calling_convention": "__cdecl",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Existing sourcebody reused, no newbodycredit. ECX01090054 thenB74B80, PUSHCE0E50 toBF6FF5, POPECX cleanup andRET leave realatexitstatus inEAX. DistinctactualD62DD0 NativeModelPool, not0109008C model-basepool. Existing C++int returncorrect; recover originalnoargumentcdeclint signature. CRTtablemembership doesnotproveinvocationorder; appstartup/lifetimewiring unverified. Evidence docs/NATIVE_MODEL_NEIGHBOR_BOOTSTRAP_READINESS_BG.md; reports/native_model_neighbor_bootstrap_readiness_bg.json.",
+      "new_native_body": false
+    }
+  ],
+  "annotation_and_signature_audit": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "changes": [
+      {
+        "address": "00b3c800",
+        "prototype": "void * BSP_CockpitHelper_Construct(void)",
+        "calling_convention": "__thiscall",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00b3c800 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00cd7f00",
+        "prototype": "int BSP_NativeModelPool_StaticInitialize(void)",
+        "calling_convention": "__cdecl",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00cd7f00 with __cdecl calling convention"
+        }
+      }
+    ],
+    "before_by_address": {
+      "00b3c800": "00b3c800 FUN_00b3c800  undefined FUN_00b3c800(void)  body 00b3c800 - 00b3c952",
+      "00cd7f00": "00cd7f00 BSP_NativeModelPool_StaticInitialize  undefined BSP_NativeModelPool_StaticInitialize(void)  body 00cd7f00 - 00cd7f15"
+    },
+    "readback_passed": true,
+    "calling_conventions_readback_passed": true,
+    "export_refresh_passed": true,
+    "expected_addresses": [
+      "00b3c800",
+      "00cd7f00"
+    ],
+    "pending_stage": null,
+    "prototype_change_batches": [
+      {
+        "before": "00b3c800 BSP_CockpitHelper_Construct  undefined BSP_CockpitHelper_Construct(void)  body 00b3c800 - 00b3c952\n00cd7f00 BSP_NativeModelPool_StaticInitialize  undefined BSP_NativeModelPool_StaticInitialize(void)  body 00cd7f00 - 00cd7f15\n",
+        "addresses": [
+          "00b3c800",
+          "00cd7f00"
+        ]
+      }
+    ],
+    "save": {
+      "success": true,
+      "program": "battlestationspacific.exe",
+      "message": "Program saved successfully"
+    },
+    "after": "00b3c800 BSP_CockpitHelper_Construct  void * __thiscall BSP_CockpitHelper_Construct(void * this)  body 00b3c800 - 00b3c952\n00cd7f00 BSP_NativeModelPool_StaticInitialize  int __cdecl BSP_NativeModelPool_StaticInitialize(void)  body 00cd7f00 - 00cd7f15\n",
+    "stored_body_limits": {},
+    "verified_addresses": [
+      "00b3c800",
+      "00cd7f00"
+    ]
+  },
+  "code_changes": false,
+  "build_required": false,
+  "game_validated": false,
+  "original_binary_abi_validated": false,
+  "integration_notes": [
+    "Parent independently read completeB3C800listing andcurrentregistry/resolver providers;19directcallrowspassed,twoindirectmanuallyreviewed.",
+    "Parent reviewed existingNativeModelPool source/header/currentledger andcompleteCD7F00listing;10directcallrowspassed,threeIATexplicitlynotdirect.",
+    "Currentbefore-prototypeCD7F00wasundefined; workerobservedvoiddecompilation. ExplicitintcdeclreturnnowmatchesoriginalEAXstatus.",
+    "BGpublished sourcebuild remainsunchanged; thispacketaddsdocs/reports/names/prototypes only."
+  ]
+}

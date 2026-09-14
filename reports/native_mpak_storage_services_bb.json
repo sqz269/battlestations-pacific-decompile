@@ -23,5 +23,13 @@
     "No new original ABI is inferred by this source bundle.",
     "Prior AZ reports define each concrete method's native coverage and remaining body ownership gaps.",
     "Game startup reachability and provider drain under a composed live owner remain unverified."
-  ]
+  ],
+  "primary_integration": {
+    "report": "reports/vfs_storage_owner_bb_validation.json",
+    "status": "bounded_vfs_owner_storage_source_integrated_exact_combined_build_and_three_fixtures_passed",
+    "source_revision": "62279e9f92e8e2dea6e816e9f451770e47fce0f9",
+    "source_registration": "Owner-services source is registered in bsp_core; all three primary fixtures link the combined archive only.",
+    "saved_evidence": "Type-counter saved ownership restored at006FAD60 and zero-initialization annotation corrected with retained receipt.",
+    "game_validated": false
+  }
 }

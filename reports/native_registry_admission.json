@@ -1,0 +1,92 @@
+{
+  "packet": "orch3_registry_admission_impl_bh",
+  "status": "host_registration_implemented_build_and_registration_fixture_verified",
+  "coverage": "complete scoped host registry admission; no native body",
+  "base_commit": "452ff94dffadcf9976ccea4b850e39e4f7f6bc1b",
+  "branch": "agent/orch3-registry-admission-impl-bh",
+  "source_boundary": "Complete worker base plus exactly four source changes, pinned by external SHA-256 manifests; build precedes final evidence commit.",
+  "approved_design": "docs/NATIVE_COCKPIT_REGISTRY_ADMISSION_BH.md",
+  "source_files": [
+    "include/bsp/scene_attachment.hpp",
+    "src/scene_attachment.cpp",
+    "include/bsp/generated_model_lifetime.hpp",
+    "src/generated_model_lifetime.cpp"
+  ],
+  "source_sha256": {
+    "include/bsp/scene_attachment.hpp": "D2BB5D004129A418961BF13E60C0F8324A077B5647CA8450602421190841D322",
+    "src/scene_attachment.cpp": "305A4A35EC34C7DCE51A1D4FCB5B0B6B05B6543C9435D45F1AD2C1D37C5603DE",
+    "include/bsp/generated_model_lifetime.hpp": "370DDAEDD31013C97FC41B2774020F75DDDAE9D5D6F546D3A2063CCC49088B64",
+    "src/generated_model_lifetime.cpp": "562ABEE94147D59344ED89045B6E0E9970E9B6413547DE4FAE361F292F418343"
+  },
+  "no_ghidra_function": [],
+  "reconstructed_functions": [],
+  "native_body_credit_bytes": 0,
+  "native_calls": [],
+  "invariant": "L + P <= vector capacity; one runtime-pointer-only token per pending credit",
+  "legacy_validation": "Shared original scene and lifetime checks; only fresh ordinary-bind capacity accounting changes.",
+  "admitted_validation": "Check active/same-runtime token before node access, then original checks; scene same-binding idempotence cancels credit; lifetime additionally checks exact canonical attachment and duplicate actual key before mutation.",
+  "static_review": {
+    "overflow_and_allocation_failure": "Checked max_size minus live size before addition; reserve before pending increment or append; pointer-vector strong guarantee preserves entries and tokens.",
+    "nonallocating_success": "Active credit implies free pointer slot; no callback, reserve, resize or temporary container follows validation.",
+    "token_rejection": "All failures precede append, decrement and token clearing; rvalue-reference binding alone never consumes a credit.",
+    "moves": "Self assignment does nothing; other assignment cancels prior destination credit before transferring pointer, including different runtimes.",
+    "cancel": "Clears only active credit; no node access, allocation, native operation or implicit unbind.",
+    "runtime_teardown": "Copy/move deleted; destructor terminates for pending credits only, without visiting bindings.",
+    "unchanged_paths": "Unbind, forget, attachment-link vector, native pool return and all native reference counts unchanged."
+  },
+  "verification": {
+    "worker_checklist": "docs/WORKER_VERIFICATION_CHECKLIST.md",
+    "ghidra_mutations": false,
+    "native_call_row_verifier": "not applicable: zero native call rows and no new native semantics",
+    "repository_tests_added": 0,
+    "external_fixture": "One registration-only credit-isolation scenario applied to both concrete registries; terminal callbacks are never exercised.",
+    "build": "PASS fresh whole-worker scripts/build.ps1; MSVC Win32 Release, core /W4 /WX /fp:strict; no old-header library mixing and no unowned caller edits",
+    "ctests": [
+      "PASS reconstructed_math",
+      "PASS native_math_differential"
+    ],
+    "seed_ranges": 8,
+    "seed_result": "PASS all eight Ghidra/disk byte ranges; configured C:/Users/sqz269/bsp.gpr and /battlestationspacific.exe verified by exporter",
+    "probe": "PASS: scene ordinary allocations=2, lifetime ordinary allocations=2, forbidden host-new attempts=0; canonical identities and explicit cleanup passed",
+    "probe_link_flags": "/MANIFEST:EMBED; fresh whole-worker bsp_core.lib, bsp_lua511.lib and bsp_zlib121.lib with frozen matching headers",
+    "source_inputs_before_after": 2451,
+    "fixture_inputs_before_after": 2604,
+    "included_headers_before_after": 292,
+    "input_hashes_unchanged": true,
+    "source_input_manifest_sha256": "ADDB8C3760DB2774633674D05246E5E506635BE574552F0BDCFB7374DE4BB30C",
+    "fixture_input_manifest_sha256": "BA5578217440730AC05B22BA1032F709CA4198BD1AE841A2D6DC7F8BF9B1549C",
+    "probe_executable_sha256": "E48346B1C8D3DD50312110497A176228A006EDED0FCF743C515794130D80D756",
+    "library_sha256": {
+      "bsp_core.lib": "BA65F6CAFDA40E742619A228A2B3383B600DE01C202A13F647D5540E542732D8",
+      "bsp_lua511.lib": "9B9A1C3FF442A64FE502888B80E2C5EFCF1DDD5BA80250A9C4A2DDA33B270DE4",
+      "bsp_zlib121.lib": "2186FFCAE0758433633DAF8D481556730DD92C37C6F880362772D36CA16F2D90"
+    }
+  },
+  "external_evidence": {
+    "archive": "J:/PROG/bsp-evidence/orch3-registry-admission-impl-bh-20260913.zip",
+    "archive_sha256": "76970190A5793AC401FD72114C4A8749790243AE78CCCFFA68689DC499B16775",
+    "archive_bytes": 19411791,
+    "payload_files": 2620,
+    "payload_manifest_sha256": "A6CECC7ECCCECFD82C5B57E7080A1C154F7DD0F1985CD7261A41E73A9A5B02C3",
+    "committed_source_manifest": "J:/PROG/bsp-evidence/orch3-registry-admission-impl-bh-20260913.manifest.json",
+    "contents": "Frozen whole-worker source/header/build inputs, dependency inputs, fresh three libraries, external probe source/executable/recipes, full build/CTest/probe logs, seed comparison and before/after hash manifests.",
+    "commit_boundary": "Build and probe ran on the base plus the four source hashes above before this evidence commit. The separate final manifest verifies committed source bytes against those build hashes. Combined integration build remains required."
+  },
+  "limitations": [
+    "Single serialized owning thread; stable runtime outlives active tokens and registered uses.",
+    "Identity accessors are nonallocating leaves; no allocator/new-handler or getter mutation reentry.",
+    "Contract diagnostic exceptions may allocate; successful valid admission alone is nonallocating.",
+    "Normal serialized concrete raw-slot reuse after terminal release is supported; no new reuse restriction.",
+    "Camera overloads and concrete cockpit/viewport ownership composition are not included.",
+    "No native body, ABI, native EH, native execution or gameplay proof from the external registration fixture."
+  ],
+  "integration_growth_correction": {
+    "reason": "Preserve ordinary std::vector append growth with no pending admission; reserve extra capacity only when P is nonzero.",
+    "source_sha256": {
+      "src/scene_attachment.cpp": "58fa851ddc57a0910f4903da4d08fa74cf56b41af352b8d9b8ba8f4ff7715719",
+      "src/generated_model_lifetime.cpp": "d8c5990909d169f0f70d9e3320b4e671da6fcb58694cc9ac5f7d621cbdeabd64"
+    },
+    "native_semantics_changed": false,
+    "combined_validation_report": "reports/native_cockpit_admission_bh_validation.json"
+  }
+}
