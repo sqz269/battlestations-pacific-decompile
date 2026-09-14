@@ -11,14 +11,17 @@
 #include "bsp/native_physical_provider.hpp"
 #include "bsp/native_physical_provider_pool.hpp"
 #include "bsp/native_retained_memory_owners.hpp"
+#include "bsp/native_render_resource_record_construction.hpp"
 #include "bsp/native_singleton_destruction.hpp"
 #include "bsp/native_stream_type_ids.hpp"
 #include "bsp/native_string.hpp"
 #include "bsp/native_vfs_derived_manager.hpp"
+#include "bsp/native_vfs_date_route.hpp"
 #include "bsp/native_vfs_enumeration.hpp"
 #include "bsp/native_vfs_factory_registration.hpp"
 #include "bsp/native_vfs_lookup_routes.hpp"
 #include "bsp/native_vfs_mount_registration.hpp"
+#include "bsp/native_vfs_name_resolution.hpp"
 #include "bsp/native_vfs_open_logging.hpp"
 #include "bsp/native_vfs_open_route.hpp"
 #include "bsp/native_vfs_owner_services.hpp"
@@ -78,6 +81,32 @@ struct PooledHeader {
     ~PooledHeader() { value.release_to(strings); }
     PooledHeader(const PooledHeader&) = delete;
     PooledHeader& operator=(const PooledHeader&) = delete;
+};
+struct NameResolutionInvocation {
+    // Declaration order keeps the mutable caller alive until after its frame.
+    PooledHeader name;
+    PooledHeader input;
+    NativeVfsNameResolutionAcquired acquired;
+    NameResolutionInvocation(ActualNativeStringPoolStorage& strings, const char* text,
+        const char* original = "") : name(strings, text), input(strings, original) {}
+};
+struct PooledNameList {
+    ActualNativeStringPoolStorage& strings;
+    // BDD990's list has an unwritten +0 preimage, sentinel at +4, count at +8.
+    alignas(4) std::byte value[0x0c];
+    explicit PooledNameList(ActualNativeStringPoolStorage& storage) : strings(storage) {
+        put_word(value, 4, reinterpret_cast<std::uint32_t>(
+            allocate_native_render_alias_sentinel_004c3020()));
+        put_word(value, 8, 0);
+    }
+    ~PooledNameList() {
+        destroy_native_render_alias_list_004d0a10(value, strings);
+    }
+    NativeRenderResourceAliasNode* sentinel() const noexcept {
+        return reinterpret_cast<NativeRenderResourceAliasNode*>(word(value, 4));
+    }
+    PooledNameList(const PooledNameList&) = delete;
+    PooledNameList& operator=(const PooledNameList&) = delete;
 };
 // The stream returned by the manager carries one caller reference. Keep its
 // release paired with that open even when length, allocation, or read throws.
@@ -140,6 +169,9 @@ struct GameNativeVfsRuntime::Impl {
     NativeMpakStorageRuntimeDependencies mpak_dependencies;
     NativeMpakRuntimeInputs mpak_inputs;
     NativeMpakRuntime mpak_runtime;
+    NativeVfsNameResolutionContext name_resolution_context;
+    std::unique_ptr<NameResolutionInvocation> name_resolution;
+    NativeVfsDateRouteContext date_context;
 
     NativePhysicalFactoryContext physical_factory_context;
     NativeFileStoreFactoryContext filestore_factory_context;
@@ -201,6 +233,9 @@ struct GameNativeVfsRuntime::Impl {
               inputs.actual_mpak_null_pattern_00e17bf0},
           mpak_inputs(mpak_storage.runtime_inputs(mpak_dependencies)),
           mpak_runtime(bindings, mpak_inputs),
+          name_resolution_context{mpak_runtime.device_context(), logging,
+              inputs.actual_empty_name_0109cef0},
+          date_context{inputs.owners.physical(), required(inputs.data, 0x00d683b0, 12)},
           physical_factory_context{inputs.actual_manager_publication_01090aa0,
               physical_factory_0109dbe8},
           filestore_factory_context{inputs.actual_manager_publication_01090aa0,
@@ -366,6 +401,89 @@ bool GameNativeVfsRuntime::exists(const char* path) {
     PooledHeader name(impl_->inputs.owners.strings(), path);
     return impl_->bindings.exists(word(actual_manager()), actual_manager(), name.value) != 0;
 }
+bool GameNativeVfsRuntime::resolve_existing(std::string& mutable_name) {
+    if (!impl_->core_registered)
+        throw std::logic_error("Native VFS core is not registered");
+    if (impl_->name_resolution)
+        throw std::logic_error("Native VFS name resolution retains an interrupted invocation");
+    // Publish the complete caller/frame owner before entering native source.
+    // Unknown provider targets throw with the failed frame still inspectable.
+    impl_->name_resolution = std::make_unique<NameResolutionInvocation>(
+        impl_->inputs.owners.strings(), mutable_name.c_str());
+    auto& invocation = *impl_->name_resolution;
+    try {
+        const bool found = resolve_native_vfs_existing_name_00bdf4c0(actual_manager(),
+            &invocation.name.value, impl_->name_resolution_context, invocation.acquired);
+        const auto& name = invocation.name.value;
+        mutable_name.assign(name.data() ? name.data() : "", name.length());
+        impl_->name_resolution.reset();
+        return found;
+    } catch (...) {
+        const auto phase = invocation.acquired.phase();
+        if (phase == NativeVfsNameResolutionPhase::fresh ||
+            phase == NativeVfsNameResolutionPhase::complete)
+            impl_->name_resolution.reset();
+        throw;
+    }
+}
+bool GameNativeVfsRuntime::has_failed_name_resolution() const noexcept {
+    return impl_->name_resolution &&
+        impl_->name_resolution->acquired.phase() == NativeVfsNameResolutionPhase::failed;
+}
+std::uint32_t GameNativeVfsRuntime::name_resolution_failure_site() const noexcept {
+    return impl_->name_resolution ? impl_->name_resolution->acquired.failure_site() : 0;
+}
+bool GameNativeVfsRuntime::direct_resolve(const std::string& input, std::string& output) {
+    if (!impl_->core_registered)
+        throw std::logic_error("Native VFS core is not registered");
+    if (impl_->name_resolution)
+        throw std::logic_error("Native VFS name resolution retains an interrupted invocation");
+    impl_->name_resolution = std::make_unique<NameResolutionInvocation>(
+        impl_->inputs.owners.strings(), output.c_str(), input.c_str());
+    auto& invocation = *impl_->name_resolution;
+    try {
+        const bool found = resolve_native_vfs_direct_name_00bdd6e0(actual_manager(),
+            &invocation.input.value, &invocation.name.value,
+            impl_->name_resolution_context, invocation.acquired);
+        if (found)
+            output.assign(invocation.name.value.data() ? invocation.name.value.data() : "",
+                invocation.name.value.length());
+        impl_->name_resolution.reset();
+        return found;
+    } catch (...) {
+        const auto phase = invocation.acquired.phase();
+        if (phase == NativeVfsNameResolutionPhase::fresh ||
+            phase == NativeVfsNameResolutionPhase::complete)
+            impl_->name_resolution.reset();
+        throw;
+    }
+}
+std::vector<std::string> GameNativeVfsRuntime::enumerate(const char* directory,
+    const char* extension, std::uint32_t flags) {
+    if (!impl_->core_registered)
+        throw std::logic_error("Native VFS core is not registered");
+    auto& strings = impl_->inputs.owners.strings();
+    PooledHeader directory_name(strings, directory), extension_name(strings, extension);
+    PooledNameList names(strings);
+    enumerate_native_vfs_resources_00bdd990(actual_manager(), &directory_name.value,
+        &extension_name.value, flags, names.value, impl_->enumeration_context);
+    std::vector<std::string> output;
+    output.reserve(word(names.value, 8));
+    auto* const head = names.sentinel();
+    for (auto* node = head->next_00; node != head; node = node->next_00)
+        output.emplace_back(node->string_data_0c ? node->string_data_0c : "",
+            node->string_length_08);
+    return output;
+}
+std::array<std::uint32_t, 5> GameNativeVfsRuntime::file_date(const char* path) {
+    if (!impl_->core_registered)
+        throw std::logic_error("Native VFS core is not registered");
+    PooledHeader name(impl_->inputs.owners.strings(), path);
+    std::array<std::uint32_t, 5> date;
+    query_native_vfs_file_date_00bdd340(actual_manager(), date.data(), &name.value,
+        impl_->date_context);
+    return date;
+}
 bool GameNativeVfsRuntime::read(const char* path, void* output,
     std::uint32_t capacity, std::uint32_t& bytes_read) {
     if (!impl_->core_registered)
@@ -384,11 +502,15 @@ bool GameNativeVfsRuntime::read(const char* path, void* output,
 }
 std::optional<std::vector<std::uint8_t>> GameNativeVfsRuntime::read_all(
     const char* path) {
+    return read_all(path, 2);
+}
+std::optional<std::vector<std::uint8_t>> GameNativeVfsRuntime::read_all(
+    const char* path, std::uint32_t flags) {
     if (!impl_->core_registered)
         throw std::logic_error("Native VFS core is not registered");
     PooledHeader name(impl_->inputs.owners.strings(), path);
     void* const stream = impl_->bindings.open(word(actual_manager()), actual_manager(),
-        name.value, 2);
+        name.value, flags);
     if (!stream) return std::nullopt;
     OpenedStream opened(impl_->bindings, stream);
     const std::uint64_t length = impl_->bindings.length(opened.table, stream);
