@@ -1,6 +1,6 @@
 {
   "packet": "orch3_material_record_vector_ch",
-  "status": "source_reconstructed_exact_build_pending",
+  "status": "exact_committed_build_source_probe_native_generated_review_saved_annotations_passed_sealed",
   "source_parent_commit": "b6e25ef6345b1c3386b713a48c056691266cb138",
   "target": {
     "project": "bsp",
@@ -556,17 +556,14 @@
     {
       "address": "00b147a6",
       "native": "00b143a0",
-      "function": "00b145e0"
+      "function": "00b1479b",
+      "native_parent_function": "00b145e0"
     },
     {
       "address": "00b147ac",
       "native": "00bf65ac",
-      "function": "00b145e0"
-    },
-    {
-      "address": "00b147b8",
-      "native": "00bf6885",
-      "function": "00b145e0"
+      "function": "00b1479b",
+      "native_parent_function": "00b145e0"
     },
     {
       "address": "00b147f5",
@@ -586,12 +583,14 @@
     {
       "address": "00b14865",
       "native": "00b143a0",
-      "function": "00b145e0"
+      "function": "00b1484d",
+      "native_parent_function": "00b145e0"
     },
     {
       "address": "00b1486e",
       "native": "00bf6885",
-      "function": "00b145e0"
+      "function": "00b1484d",
+      "native_parent_function": "00b145e0"
     },
     {
       "address": "00b14885",
@@ -695,8 +694,8 @@
     "include/bsp/singleton_lifetime.hpp": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
     "src/singleton_lifetime.cpp": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
   },
-  "native_body_credit": 0,
-  "native_bytes_credit": 0,
+  "native_body_credit": 3,
+  "native_bytes_credit": 1091,
   "proposed_native_bodies": 3,
   "proposed_native_bytes": 1091,
   "review": {
@@ -706,8 +705,48 @@
     "independent_worker_review": false
   },
   "validation": {
-    "new_tests": 0,
-    "raw_entries_executed": false,
+    "command": "./scripts/build.ps1",
+    "configuration": "MSVC Win32 Release",
+    "exit_code": 0,
+    "ctests_passed": 2,
+    "ctests": [
+      "reconstructed_math",
+      "native_math_differential"
+    ],
+    "exact_commit": "8b5c20da64531031c264d85c4edd2187cf806ff3",
+    "tracked_build_inputs": 2589,
+    "clean_before_after": true,
+    "all_build_input_hashes_preserved": true,
+    "new_repository_tests": 0,
+    "new_local_focused_probes": 1,
+    "source_raw_entries_executed": true,
+    "native_parent_bytes_executed": false,
+    "source_probe": {
+      "exit_code": 0,
+      "log": "local/chcj-probe-run.log",
+      "source": "local/chcj_probe.cpp",
+      "executable": "local/chcj_probe.exe",
+      "source_sha256": "6dab24b3577f96e2deabc8dc574e0ef791b07a7bc714b613ebec1a455a648932",
+      "executable_sha256": "f5fd194b09ecb3cb1138d7581d5bf29125ae75d2b70cebf7635e0bc8db139f57",
+      "core_library_sha256": "03ded13648d49f987383c5bb6c9892e324913889a6ebfb8fd83878a007a9dc82",
+      "branches": [
+        "null-vector append",
+        "growth with aliased source",
+        "spare append",
+        "zero count",
+        "short in-place tail",
+        "long in-place tail",
+        "insert-one output pair",
+        "shared owning length-error propagation",
+        "zero-byte allocation",
+        "allocation overflow"
+      ],
+      "limits": [
+        "Only empty raw string headers; pool/manager publication remains null.",
+        "No injected constructor/destructor failure or returning invalid-parameter callback mutation.",
+        "No native parent-byte execution, original CRT/FH3 identity or gameplay validation."
+      ]
+    },
     "game_validated": false
   },
   "limits": [
@@ -715,5 +754,1108 @@
     "Existing source CRT invalid-parameter handler, allocation/free, SBO length error and raw record providers are used directly.",
     "Host C++ unwind uses terminate if temporary destruction throws during unwind; normal temporary destruction remains throwable.",
     "Full material diagnostics, rendering and runnable/gameplay validation remain unfinished."
-  ]
+  ],
+  "restored_unowned_tail_call": {
+    "site": "00b147b8",
+    "target": "00bf6885",
+    "native_parent": "00b145e0",
+    "semantic_catch": "00b1479b",
+    "installed_PE_and_live_bytes_equal": true,
+    "instruction_hex": "e8c8200e00",
+    "verification": "Complete live/PE span and linear Capstone decode in native_spans; flow repair restored listing. Standard containing-function audit cannot cover this instruction because stored catch ends B147B0.",
+    "body_repair_attempt": "local/ch-catch-body-repair.json",
+    "body_repair_result": "No mutation: server rejects run_script_inline because GHIDRA_MCP_ALLOW_SCRIPTS is disabled."
+  },
+  "tested_commit": "8b5c20da64531031c264d85c4edd2187cf806ff3",
+  "primary_review": {
+    "primary_complete_native_source_generated_review": true,
+    "independent_CJ_worker_review": true,
+    "independent_CH_worker_review": false,
+    "blocking_source_findings": [],
+    "wrappers": "Three18-byte naked wrappers capture actual public argument slots at+0h, pass context/vector at+5h/+6h, call at+7h and RET10h/RET4 at+Fh.",
+    "insertion": {
+      "temporary_constructor": "66h",
+      "completed_temporary_state0": "97h",
+      "count_read": "D1h",
+      "count_zero_branch": "E3h",
+      "allocator": "1ACh",
+      "allocation_cursor_slot": "1CBh",
+      "allocation_source_slot": "1E7h",
+      "construction_state1": "1FBh",
+      "prefix_copy": "20Bh",
+      "fill": "236h",
+      "end_read_before_cursor_store": [
+        "246h",
+        "251h"
+      ],
+      "suffix_copy": "271h",
+      "return_to_state0": "279h",
+      "old_destroy": "2BBh",
+      "fresh_old_begin_before_free": [
+        "2C3h",
+        "2C9h"
+      ],
+      "saved_allocation_read": "2D4h",
+      "publication_capacity_end_begin": [
+        "2EBh",
+        "300h",
+        "309h"
+      ],
+      "short_tail_copy": "39Ah",
+      "short_fill_state3": "3C5h",
+      "short_fill": "3D8h",
+      "short_return_state0": "3E0h",
+      "single_current_end_ADD": "3F4h",
+      "fresh_end": "3FCh",
+      "fill_assignment": "412h",
+      "long_tail_copy": "43Fh",
+      "current_first_tail_before_publish": [
+        "449h",
+        "454h"
+      ],
+      "backward_assignment": "471h",
+      "fill_assignment_long": "485h",
+      "disarm_before_normal_destroy": [
+        "499h",
+        "4A1h"
+      ]
+    },
+    "catch_slices": "Parent COMDAT1404 bytes includes catch slices at4D5h/525h (80/87 bytes); these are not separate full function COMDATs. Allocation catch loads actual cursor/allocation then destroys/frees/rethrows. Short-tail catch reloads count/vector end/position and destroys only its derived range.",
+    "unwind": "58-byte EH COMDAT includes prefix cleanup jump to CompletedTemporary and host FH3 handler.97-byte destructor tests armed, calls B10740, catches escaping unwind failure and terminates. Normal destruction is separately disarmed before call.",
+    "insert_one": "317-byte body preserves position/begin, returning checks and source reload, child callADh, current bound checks and actual position-slot storeF0h, output-pair read116h and owner/position stores121h/12Ch.",
+    "append": "209-byte body preserves captured begin/end, duplicate source-slot reads51h/59h, fill78h and captured-end publication87h; slow path calls insert-oneC5h.",
+    "allocation": "CJ92-byte allocator compares ECX toDA740D and computes count*300 once for both request sizes.111-byte length-error initializes SBO before assign42h, arms cleanup54h, calls shared exception constructor5Bh and throws69h;42-byte EH COMDAT and9-byte destructor reviewed. All4 primary code sections and relocations equal worker after anonymous namespace path normalization.",
+    "helpers": "18-byte signed quotient retains IMUL/SAR/sign correction;3-byte end ADD is single raw DWORD RMW.14/17-byte load/store helpers access raw DWORDs; concrete invalid parameter is6-byte tail jump to host CRT."
+  },
+  "generated_code": [
+    {
+      "module": "native_material_record_vector",
+      "stem": "insert_native_material_records_00b145e0",
+      "symbol": "?insert_native_material_records_00b145e0@bsp@@YIXPAXAAUNativeStringRawPoolContext@1@00IPBX@Z",
+      "section_offset": 0,
+      "bytes": 18,
+      "sha256": "60b4a910e6ab0cbd9bf0bd09863adff2421f4a44ae7078dae967a8446c0ad336",
+      "object_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\bsp_core.dir\\Release\\native_material_record_vector.obj",
+      "object_sha256": "8eb46057a0fe3e7344feacde7acbaf00279d31e39c76140e2d0b55f0fe4631c5",
+      "relocations": [
+        {
+          "offset": 8,
+          "type": 20,
+          "symbol": "?insert_body@?A0xcd8f3945@bsp@@YAXPAXPAUNativeStringRawPoolContext@2@0@Z"
+        }
+      ],
+      "listing": "local/chcj-generated-insert_native_material_records_00b145e0-0.asm",
+      "primary_worker_code_and_symbolic_relocations_equal": false
+    },
+    {
+      "module": "native_material_record_vector",
+      "stem": "insert_one_native_material_record_00b150d0",
+      "symbol": "?insert_one_native_material_record_00b150d0@bsp@@YIPAXPAXAAUNativeStringRawPoolContext@1@000PBX@Z",
+      "section_offset": 0,
+      "bytes": 18,
+      "sha256": "60b4a910e6ab0cbd9bf0bd09863adff2421f4a44ae7078dae967a8446c0ad336",
+      "object_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\bsp_core.dir\\Release\\native_material_record_vector.obj",
+      "object_sha256": "8eb46057a0fe3e7344feacde7acbaf00279d31e39c76140e2d0b55f0fe4631c5",
+      "relocations": [
+        {
+          "offset": 8,
+          "type": 20,
+          "symbol": "?insert_one_body@?A0xcd8f3945@bsp@@YAPAXPAXPAUNativeStringRawPoolContext@2@0@Z"
+        }
+      ],
+      "listing": "local/chcj-generated-insert_one_native_material_record_00b150d0-0.asm",
+      "primary_worker_code_and_symbolic_relocations_equal": false
+    },
+    {
+      "module": "native_material_record_vector",
+      "stem": "append_native_material_record_00b15610",
+      "symbol": "?append_native_material_record_00b15610@bsp@@YIXPAXAAUNativeStringRawPoolContext@1@PBX@Z",
+      "section_offset": 0,
+      "bytes": 18,
+      "sha256": "d6f5cfd9fc6a5cd93a59c464b685cb9227a3b3fc7894547cd7c0ddf25382f488",
+      "object_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\bsp_core.dir\\Release\\native_material_record_vector.obj",
+      "object_sha256": "8eb46057a0fe3e7344feacde7acbaf00279d31e39c76140e2d0b55f0fe4631c5",
+      "relocations": [
+        {
+          "offset": 8,
+          "type": 20,
+          "symbol": "?append_body@?A0xcd8f3945@bsp@@YAXPAXPAUNativeStringRawPoolContext@2@0@Z"
+        }
+      ],
+      "listing": "local/chcj-generated-append_native_material_record_00b15610-0.asm",
+      "primary_worker_code_and_symbolic_relocations_equal": false
+    },
+    {
+      "module": "native_material_record_vector",
+      "stem": "load",
+      "symbol": "?load@?A0xcd8f3945@bsp@@YAIPBXI@Z",
+      "section_offset": 0,
+      "bytes": 14,
+      "sha256": "968c17a0375a47c786e584c230018ee9ddbb72bfbd8b42d8ffe49fefcecff650",
+      "object_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\bsp_core.dir\\Release\\native_material_record_vector.obj",
+      "object_sha256": "8eb46057a0fe3e7344feacde7acbaf00279d31e39c76140e2d0b55f0fe4631c5",
+      "relocations": [],
+      "listing": "local/chcj-generated-load-0.asm",
+      "primary_worker_code_and_symbolic_relocations_equal": false
+    },
+    {
+      "module": "native_material_record_vector",
+      "stem": "store",
+      "symbol": "?store@?A0xcd8f3945@bsp@@YAXPAXII@Z",
+      "section_offset": 0,
+      "bytes": 17,
+      "sha256": "cdb70beb04767abdb190d475687cb3d73f5a60446387ee001a9169bd0ce2b7eb",
+      "object_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\bsp_core.dir\\Release\\native_material_record_vector.obj",
+      "object_sha256": "8eb46057a0fe3e7344feacde7acbaf00279d31e39c76140e2d0b55f0fe4631c5",
+      "relocations": [],
+      "listing": "local/chcj-generated-store-0.asm",
+      "primary_worker_code_and_symbolic_relocations_equal": false
+    },
+    {
+      "module": "native_material_record_vector",
+      "stem": "add_current",
+      "symbol": "?add_current@?A0xcd8f3945@bsp@@YIXPAXI@Z",
+      "section_offset": 0,
+      "bytes": 3,
+      "sha256": "7d46d2df42c4ec52b281b20cf1830b1f4b7149321264ce7e424b54d4e6475ea2",
+      "object_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\bsp_core.dir\\Release\\native_material_record_vector.obj",
+      "object_sha256": "8eb46057a0fe3e7344feacde7acbaf00279d31e39c76140e2d0b55f0fe4631c5",
+      "relocations": [],
+      "listing": "local/chcj-generated-add_current-0.asm",
+      "primary_worker_code_and_symbolic_relocations_equal": false
+    },
+    {
+      "module": "native_material_record_vector",
+      "stem": "record_quotient",
+      "symbol": "?record_quotient@?A0xcd8f3945@bsp@@YIII@Z",
+      "section_offset": 0,
+      "bytes": 18,
+      "sha256": "60242a9e9431f9cad753118b7de2a3a8c9773db157bef53439fc0e51821be929",
+      "object_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\bsp_core.dir\\Release\\native_material_record_vector.obj",
+      "object_sha256": "8eb46057a0fe3e7344feacde7acbaf00279d31e39c76140e2d0b55f0fe4631c5",
+      "relocations": [],
+      "listing": "local/chcj-generated-record_quotient-0.asm",
+      "primary_worker_code_and_symbolic_relocations_equal": false
+    },
+    {
+      "module": "native_material_record_vector",
+      "stem": "current_invalid_parameter",
+      "symbol": "?current_invalid_parameter@?A0xcd8f3945@bsp@@YAXXZ",
+      "section_offset": 0,
+      "bytes": 6,
+      "sha256": "365ca74968b71c0e8eebac7dcaa4c31f2f2d100d636910526a14dcf73ecfe2eb",
+      "object_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\bsp_core.dir\\Release\\native_material_record_vector.obj",
+      "object_sha256": "8eb46057a0fe3e7344feacde7acbaf00279d31e39c76140e2d0b55f0fe4631c5",
+      "relocations": [
+        {
+          "offset": 2,
+          "type": 6,
+          "symbol": "__imp___invalid_parameter_noinfo"
+        }
+      ],
+      "listing": "local/chcj-generated-current_invalid_parameter-0.asm",
+      "primary_worker_code_and_symbolic_relocations_equal": false
+    },
+    {
+      "module": "native_material_record_vector",
+      "stem": "insert_body",
+      "symbol": "?insert_body@?A0xcd8f3945@bsp@@YAXPAXPAUNativeStringRawPoolContext@2@0@Z",
+      "section_offset": 0,
+      "bytes": 1404,
+      "sha256": "21fa6cafd491f0cf30e942ea1e50386c7c916dbf0a3048ee48a307584fdc5fbe",
+      "object_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\bsp_core.dir\\Release\\native_material_record_vector.obj",
+      "object_sha256": "8eb46057a0fe3e7344feacde7acbaf00279d31e39c76140e2d0b55f0fe4631c5",
+      "relocations": [
+        {
+          "offset": 6,
+          "type": 6,
+          "symbol": "__ehhandler$?insert_body@?A0xcd8f3945@bsp@@YAXPAXPAUNativeStringRawPoolContext@2@0@Z"
+        },
+        {
+          "offset": 24,
+          "type": 6,
+          "symbol": "___security_cookie"
+        },
+        {
+          "offset": 86,
+          "type": 20,
+          "symbol": "?load@?A0xcd8f3945@bsp@@YAIPBXI@Z"
+        },
+        {
+          "offset": 103,
+          "type": 20,
+          "symbol": "?construct_native_material_record_00b13070@bsp@@YIPAXPAXAAUNativeStringRawPoolContext@1@PBX@Z"
+        },
+        {
+          "offset": 111,
+          "type": 20,
+          "symbol": "?load@?A0xcd8f3945@bsp@@YAIPBXI@Z"
+        },
+        {
+          "offset": 166,
+          "type": 20,
+          "symbol": "?load@?A0xcd8f3945@bsp@@YAIPBXI@Z"
+        },
+        {
+          "offset": 178,
+          "type": 20,
+          "symbol": "?record_quotient@?A0xcd8f3945@bsp@@YIII@Z"
+        },
+        {
+          "offset": 210,
+          "type": 20,
+          "symbol": "?load@?A0xcd8f3945@bsp@@YAIPBXI@Z"
+        },
+        {
+          "offset": 241,
+          "type": 20,
+          "symbol": "?load@?A0xcd8f3945@bsp@@YAIPBXI@Z"
+        },
+        {
+          "offset": 253,
+          "type": 20,
+          "symbol": "?record_quotient@?A0xcd8f3945@bsp@@YIII@Z"
+        },
+        {
+          "offset": 292,
+          "type": 20,
+          "symbol": "?load@?A0xcd8f3945@bsp@@YAIPBXI@Z"
+        },
+        {
+          "offset": 304,
+          "type": 20,
+          "symbol": "?record_quotient@?A0xcd8f3945@bsp@@YIII@Z"
+        },
+        {
+          "offset": 372,
+          "type": 20,
+          "symbol": "?load@?A0xcd8f3945@bsp@@YAIPBXI@Z"
+        },
+        {
+          "offset": 384,
+          "type": 20,
+          "symbol": "?record_quotient@?A0xcd8f3945@bsp@@YIII@Z"
+        },
+        {
+          "offset": 413,
+          "type": 20,
+          "symbol": "?get_native_material_record_vector_size_00b0d230@bsp@@YIHPBX@Z"
+        },
+        {
+          "offset": 429,
+          "type": 20,
+          "symbol": "?allocate_native_material_records_00b0d3b0@bsp@@YIPAXIPAX@Z"
+        },
+        {
+          "offset": 445,
+          "type": 20,
+          "symbol": "?load@?A0xcd8f3945@bsp@@YAIPBXI@Z"
+        },
+        {
+          "offset": 460,
+          "type": 20,
+          "symbol": "?store@?A0xcd8f3945@bsp@@YAXPAXII@Z"
+        },
+        {
+          "offset": 468,
+          "type": 20,
+          "symbol": "?load@?A0xcd8f3945@bsp@@YAIPBXI@Z"
+        },
+        {
+          "offset": 488,
+          "type": 20,
+          "symbol": "?store@?A0xcd8f3945@bsp@@YAXPAXII@Z"
+        },
+        {
+          "offset": 524,
+          "type": 20,
+          "symbol": "?copy_construct_native_material_records_00b13920@bsp@@YIPAXPBX0PAXAAUNativeStringRawPoolContext@1@@Z"
+        },
+        {
+          "offset": 539,
+          "type": 20,
+          "symbol": "?store@?A0xcd8f3945@bsp@@YAXPAXII@Z"
+        },
+        {
+          "offset": 567,
+          "type": 20,
+          "symbol": "?fill_construct_native_material_record_tail_00b14360@bsp@@YGPAXPAXIPBXAAUNativeStringRawPoolContext@1@@Z"
+        },
+        {
+          "offset": 583,
+          "type": 20,
+          "symbol": "?load@?A0xcd8f3945@bsp@@YAIPBXI@Z"
+        },
+        {
+          "offset": 594,
+          "type": 20,
+          "symbol": "?store@?A0xcd8f3945@bsp@@YAXPAXII@Z"
+        },
+        {
+          "offset": 602,
+          "type": 20,
+          "symbol": "?load@?A0xcd8f3945@bsp@@YAIPBXI@Z"
+        },
+        {
+          "offset": 626,
+          "type": 20,
+          "symbol": "?copy_construct_native_material_records_00b13920@bsp@@YIPAXPBX0PAXAAUNativeStringRawPoolContext@1@@Z"
+        },
+        {
+          "offset": 641,
+          "type": 20,
+          "symbol": "?load@?A0xcd8f3945@bsp@@YAIPBXI@Z"
+        },
+        {
+          "offset": 658,
+          "type": 20,
+          "symbol": "?load@?A0xcd8f3945@bsp@@YAIPBXI@Z"
+        },
+        {
+          "offset": 670,
+          "type": 20,
+          "symbol": "?record_quotient@?A0xcd8f3945@bsp@@YIII@Z"
+        },
+        {
+          "offset": 684,
+          "type": 20,
+          "symbol": "?load@?A0xcd8f3945@bsp@@YAIPBXI@Z"
+        },
+        {
+          "offset": 700,
+          "type": 20,
+          "symbol": "?destroy_native_material_record_range_00b143a0@bsp@@YGXPAXPBXAAUNativeStringRawPoolContext@1@@Z"
+        },
+        {
+          "offset": 708,
+          "type": 20,
+          "symbol": "?load@?A0xcd8f3945@bsp@@YAIPBXI@Z"
+        },
+        {
+          "offset": 714,
+          "type": 20,
+          "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z"
+        },
+        {
+          "offset": 725,
+          "type": 20,
+          "symbol": "?load@?A0xcd8f3945@bsp@@YAIPBXI@Z"
+        },
+        {
+          "offset": 748,
+          "type": 20,
+          "symbol": "?store@?A0xcd8f3945@bsp@@YAXPAXII@Z"
+        },
+        {
+          "offset": 769,
+          "type": 20,
+          "symbol": "?store@?A0xcd8f3945@bsp@@YAXPAXII@Z"
+        },
+        {
+          "offset": 778,
+          "type": 20,
+          "symbol": "?store@?A0xcd8f3945@bsp@@YAXPAXII@Z"
+        },
+        {
+          "offset": 794,
+          "type": 20,
+          "symbol": "?load@?A0xcd8f3945@bsp@@YAIPBXI@Z"
+        },
+        {
+          "offset": 810,
+          "type": 20,
+          "symbol": "?load@?A0xcd8f3945@bsp@@YAIPBXI@Z"
+        },
+        {
+          "offset": 828,
+          "type": 20,
+          "symbol": "?record_quotient@?A0xcd8f3945@bsp@@YIII@Z"
+        },
+        {
+          "offset": 844,
+          "type": 20,
+          "symbol": "?store@?A0xcd8f3945@bsp@@YAXPAXII@Z"
+        },
+        {
+          "offset": 890,
+          "type": 20,
+          "symbol": "?store@?A0xcd8f3945@bsp@@YAXPAXII@Z"
+        },
+        {
+          "offset": 923,
+          "type": 20,
+          "symbol": "?copy_construct_native_material_record_tail_00b14550@bsp@@YGPAXPBX0PAXAAUNativeStringRawPoolContext@1@@Z"
+        },
+        {
+          "offset": 931,
+          "type": 20,
+          "symbol": "?load@?A0xcd8f3945@bsp@@YAIPBXI@Z"
+        },
+        {
+          "offset": 953,
+          "type": 20,
+          "symbol": "?record_quotient@?A0xcd8f3945@bsp@@YIII@Z"
+        },
+        {
+          "offset": 985,
+          "type": 20,
+          "symbol": "?fill_construct_native_material_record_tail_00b14360@bsp@@YGPAXPAXIPBXAAUNativeStringRawPoolContext@1@@Z"
+        },
+        {
+          "offset": 1000,
+          "type": 20,
+          "symbol": "?load@?A0xcd8f3945@bsp@@YAIPBXI@Z"
+        },
+        {
+          "offset": 1013,
+          "type": 20,
+          "symbol": "?add_current@?A0xcd8f3945@bsp@@YIXPAXI@Z"
+        },
+        {
+          "offset": 1021,
+          "type": 20,
+          "symbol": "?load@?A0xcd8f3945@bsp@@YAIPBXI@Z"
+        },
+        {
+          "offset": 1043,
+          "type": 20,
+          "symbol": "?fill_assign_native_material_records_00b13ad0@bsp@@YAXPAX0PBXAAUNativeStringRawPoolContext@1@@Z"
+        },
+        {
+          "offset": 1065,
+          "type": 20,
+          "symbol": "?store@?A0xcd8f3945@bsp@@YAXPAXII@Z"
+        },
+        {
+          "offset": 1088,
+          "type": 20,
+          "symbol": "?copy_construct_native_material_record_tail_00b14550@bsp@@YGPAXPBX0PAXAAUNativeStringRawPoolContext@1@@Z"
+        },
+        {
+          "offset": 1098,
+          "type": 20,
+          "symbol": "?load@?A0xcd8f3945@bsp@@YAIPBXI@Z"
+        },
+        {
+          "offset": 1109,
+          "type": 20,
+          "symbol": "?store@?A0xcd8f3945@bsp@@YAXPAXII@Z"
+        },
+        {
+          "offset": 1117,
+          "type": 20,
+          "symbol": "?load@?A0xcd8f3945@bsp@@YAIPBXI@Z"
+        },
+        {
+          "offset": 1138,
+          "type": 20,
+          "symbol": "?copy_assign_native_material_record_head_wrapper_00b13f50@bsp@@YAPAXPBX0PAXAAUNativeStringRawPoolContext@1@@Z"
+        },
+        {
+          "offset": 1158,
+          "type": 20,
+          "symbol": "?fill_assign_native_material_records_00b13ad0@bsp@@YAXPAX0PBXAAUNativeStringRawPoolContext@1@@Z"
+        },
+        {
+          "offset": 1186,
+          "type": 20,
+          "symbol": "?destroy_native_renderer_record_00b10740@bsp@@YAXPAXAAUNativeStringRawPoolContext@1@@Z"
+        },
+        {
+          "offset": 1200,
+          "type": 20,
+          "symbol": "??1CompletedTemporary@?A0xcd8f3945@bsp@@QAE@XZ"
+        },
+        {
+          "offset": 1224,
+          "type": 20,
+          "symbol": "@__security_check_cookie@4"
+        },
+        {
+          "offset": 1233,
+          "type": 20,
+          "symbol": "?STL_xlen_throw_00b135c0@bsp@@YAXXZ"
+        },
+        {
+          "offset": 1247,
+          "type": 20,
+          "symbol": "?load@?A0xcd8f3945@bsp@@YAIPBXI@Z"
+        },
+        {
+          "offset": 1257,
+          "type": 20,
+          "symbol": "?load@?A0xcd8f3945@bsp@@YAIPBXI@Z"
+        },
+        {
+          "offset": 1265,
+          "type": 20,
+          "symbol": "?pointer@?A0xcd8f3945@bsp@@YAPAXI@Z"
+        },
+        {
+          "offset": 1273,
+          "type": 20,
+          "symbol": "?pointer@?A0xcd8f3945@bsp@@YAPAXI@Z"
+        },
+        {
+          "offset": 1289,
+          "type": 20,
+          "symbol": "?destroy_native_material_record_range_00b143a0@bsp@@YGXPAXPBXAAUNativeStringRawPoolContext@1@@Z"
+        },
+        {
+          "offset": 1295,
+          "type": 20,
+          "symbol": "?pointer@?A0xcd8f3945@bsp@@YAPAXI@Z"
+        },
+        {
+          "offset": 1301,
+          "type": 20,
+          "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z"
+        },
+        {
+          "offset": 1313,
+          "type": 20,
+          "symbol": "__CxxThrowException@8"
+        },
+        {
+          "offset": 1327,
+          "type": 20,
+          "symbol": "?load@?A0xcd8f3945@bsp@@YAIPBXI@Z"
+        },
+        {
+          "offset": 1346,
+          "type": 20,
+          "symbol": "?load@?A0xcd8f3945@bsp@@YAIPBXI@Z"
+        },
+        {
+          "offset": 1357,
+          "type": 20,
+          "symbol": "?load@?A0xcd8f3945@bsp@@YAIPBXI@Z"
+        },
+        {
+          "offset": 1366,
+          "type": 20,
+          "symbol": "?pointer@?A0xcd8f3945@bsp@@YAPAXI@Z"
+        },
+        {
+          "offset": 1374,
+          "type": 20,
+          "symbol": "?pointer@?A0xcd8f3945@bsp@@YAPAXI@Z"
+        },
+        {
+          "offset": 1390,
+          "type": 20,
+          "symbol": "?destroy_native_material_record_range_00b143a0@bsp@@YGXPAXPBXAAUNativeStringRawPoolContext@1@@Z"
+        },
+        {
+          "offset": 1399,
+          "type": 20,
+          "symbol": "__CxxThrowException@8"
+        }
+      ],
+      "listing": "local/chcj-generated-insert_body-0.asm",
+      "primary_worker_code_and_symbolic_relocations_equal": false
+    },
+    {
+      "module": "native_material_record_vector",
+      "stem": "insert_one_body",
+      "symbol": "?insert_one_body@?A0xcd8f3945@bsp@@YAPAXPAXPAUNativeStringRawPoolContext@2@0@Z",
+      "section_offset": 0,
+      "bytes": 317,
+      "sha256": "1983c7b3b57b19f5985485e0f1e306cf1594231b3243c200eb7f6275427e7814",
+      "object_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\bsp_core.dir\\Release\\native_material_record_vector.obj",
+      "object_sha256": "8eb46057a0fe3e7344feacde7acbaf00279d31e39c76140e2d0b55f0fe4631c5",
+      "relocations": [
+        {
+          "offset": 16,
+          "type": 20,
+          "symbol": "?load@?A0xcd8f3945@bsp@@YAIPBXI@Z"
+        },
+        {
+          "offset": 30,
+          "type": 20,
+          "symbol": "?load@?A0xcd8f3945@bsp@@YAIPBXI@Z"
+        },
+        {
+          "offset": 54,
+          "type": 20,
+          "symbol": "?load@?A0xcd8f3945@bsp@@YAIPBXI@Z"
+        },
+        {
+          "offset": 68,
+          "type": 20,
+          "symbol": "?record_quotient@?A0xcd8f3945@bsp@@YIII@Z"
+        },
+        {
+          "offset": 91,
+          "type": 20,
+          "symbol": "?current_invalid_parameter@?A0xcd8f3945@bsp@@YAXXZ"
+        },
+        {
+          "offset": 99,
+          "type": 20,
+          "symbol": "?load@?A0xcd8f3945@bsp@@YAIPBXI@Z"
+        },
+        {
+          "offset": 117,
+          "type": 20,
+          "symbol": "?current_invalid_parameter@?A0xcd8f3945@bsp@@YAXXZ"
+        },
+        {
+          "offset": 128,
+          "type": 20,
+          "symbol": "?record_quotient@?A0xcd8f3945@bsp@@YIII@Z"
+        },
+        {
+          "offset": 141,
+          "type": 20,
+          "symbol": "?load@?A0xcd8f3945@bsp@@YAIPBXI@Z"
+        },
+        {
+          "offset": 154,
+          "type": 20,
+          "symbol": "?load@?A0xcd8f3945@bsp@@YAIPBXI@Z"
+        },
+        {
+          "offset": 174,
+          "type": 20,
+          "symbol": "?insert_native_material_records_00b145e0@bsp@@YIXPAXAAUNativeStringRawPoolContext@1@00IPBX@Z"
+        },
+        {
+          "offset": 182,
+          "type": 20,
+          "symbol": "?load@?A0xcd8f3945@bsp@@YAIPBXI@Z"
+        },
+        {
+          "offset": 195,
+          "type": 20,
+          "symbol": "?load@?A0xcd8f3945@bsp@@YAIPBXI@Z"
+        },
+        {
+          "offset": 207,
+          "type": 20,
+          "symbol": "?current_invalid_parameter@?A0xcd8f3945@bsp@@YAXXZ"
+        },
+        {
+          "offset": 230,
+          "type": 20,
+          "symbol": "?load@?A0xcd8f3945@bsp@@YAIPBXI@Z"
+        },
+        {
+          "offset": 241,
+          "type": 20,
+          "symbol": "?store@?A0xcd8f3945@bsp@@YAXPAXII@Z"
+        },
+        {
+          "offset": 259,
+          "type": 20,
+          "symbol": "?load@?A0xcd8f3945@bsp@@YAIPBXI@Z"
+        },
+        {
+          "offset": 271,
+          "type": 20,
+          "symbol": "?current_invalid_parameter@?A0xcd8f3945@bsp@@YAXXZ"
+        },
+        {
+          "offset": 279,
+          "type": 20,
+          "symbol": "?load@?A0xcd8f3945@bsp@@YAIPBXI@Z"
+        },
+        {
+          "offset": 290,
+          "type": 20,
+          "symbol": "?store@?A0xcd8f3945@bsp@@YAXPAXII@Z"
+        },
+        {
+          "offset": 301,
+          "type": 20,
+          "symbol": "?store@?A0xcd8f3945@bsp@@YAXPAXII@Z"
+        }
+      ],
+      "listing": "local/chcj-generated-insert_one_body-0.asm",
+      "primary_worker_code_and_symbolic_relocations_equal": false
+    },
+    {
+      "module": "native_material_record_vector",
+      "stem": "append_body",
+      "symbol": "?append_body@?A0xcd8f3945@bsp@@YAXPAXPAUNativeStringRawPoolContext@2@0@Z",
+      "section_offset": 0,
+      "bytes": 209,
+      "sha256": "bcd4b24fc38af599c5510fccdc1081ad72408dd35e684077503abc2845e826d5",
+      "object_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\bsp_core.dir\\Release\\native_material_record_vector.obj",
+      "object_sha256": "8eb46057a0fe3e7344feacde7acbaf00279d31e39c76140e2d0b55f0fe4631c5",
+      "relocations": [
+        {
+          "offset": 16,
+          "type": 20,
+          "symbol": "?load@?A0xcd8f3945@bsp@@YAIPBXI@Z"
+        },
+        {
+          "offset": 33,
+          "type": 20,
+          "symbol": "?load@?A0xcd8f3945@bsp@@YAIPBXI@Z"
+        },
+        {
+          "offset": 45,
+          "type": 20,
+          "symbol": "?record_quotient@?A0xcd8f3945@bsp@@YIII@Z"
+        },
+        {
+          "offset": 55,
+          "type": 20,
+          "symbol": "?load@?A0xcd8f3945@bsp@@YAIPBXI@Z"
+        },
+        {
+          "offset": 67,
+          "type": 20,
+          "symbol": "?record_quotient@?A0xcd8f3945@bsp@@YIII@Z"
+        },
+        {
+          "offset": 82,
+          "type": 20,
+          "symbol": "?load@?A0xcd8f3945@bsp@@YAIPBXI@Z"
+        },
+        {
+          "offset": 90,
+          "type": 20,
+          "symbol": "?load@?A0xcd8f3945@bsp@@YAIPBXI@Z"
+        },
+        {
+          "offset": 100,
+          "type": 20,
+          "symbol": "?load@?A0xcd8f3945@bsp@@YAIPBXI@Z"
+        },
+        {
+          "offset": 121,
+          "type": 20,
+          "symbol": "?fill_construct_native_material_records_00b13b00@bsp@@YIXPAXIPBXAAUNativeStringRawPoolContext@1@@Z"
+        },
+        {
+          "offset": 136,
+          "type": 20,
+          "symbol": "?store@?A0xcd8f3945@bsp@@YAXPAXII@Z"
+        },
+        {
+          "offset": 154,
+          "type": 20,
+          "symbol": "?load@?A0xcd8f3945@bsp@@YAIPBXI@Z"
+        },
+        {
+          "offset": 168,
+          "type": 20,
+          "symbol": "?current_invalid_parameter@?A0xcd8f3945@bsp@@YAXXZ"
+        },
+        {
+          "offset": 178,
+          "type": 20,
+          "symbol": "?load@?A0xcd8f3945@bsp@@YAIPBXI@Z"
+        },
+        {
+          "offset": 198,
+          "type": 20,
+          "symbol": "?insert_one_native_material_record_00b150d0@bsp@@YIPAXPAXAAUNativeStringRawPoolContext@1@000PBX@Z"
+        }
+      ],
+      "listing": "local/chcj-generated-append_body-0.asm",
+      "primary_worker_code_and_symbolic_relocations_equal": false
+    },
+    {
+      "module": "native_material_record_vector",
+      "stem": "catch:insert_body",
+      "symbol": "__catch$?insert_body@?A0xcd8f3945@bsp@@YAXPAXPAUNativeStringRawPoolContext@2@0@Z$0",
+      "section_offset": 1237,
+      "bytes": 80,
+      "sha256": "6e194dbec47ce218207a7d120e5509beb9ecd2d676ed2ada654207c2c62cd5bf",
+      "object_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\bsp_core.dir\\Release\\native_material_record_vector.obj",
+      "object_sha256": "8eb46057a0fe3e7344feacde7acbaf00279d31e39c76140e2d0b55f0fe4631c5",
+      "relocations": [
+        {
+          "offset": 10,
+          "type": 20,
+          "symbol": "?load@?A0xcd8f3945@bsp@@YAIPBXI@Z"
+        },
+        {
+          "offset": 20,
+          "type": 20,
+          "symbol": "?load@?A0xcd8f3945@bsp@@YAIPBXI@Z"
+        },
+        {
+          "offset": 28,
+          "type": 20,
+          "symbol": "?pointer@?A0xcd8f3945@bsp@@YAPAXI@Z"
+        },
+        {
+          "offset": 36,
+          "type": 20,
+          "symbol": "?pointer@?A0xcd8f3945@bsp@@YAPAXI@Z"
+        },
+        {
+          "offset": 52,
+          "type": 20,
+          "symbol": "?destroy_native_material_record_range_00b143a0@bsp@@YGXPAXPBXAAUNativeStringRawPoolContext@1@@Z"
+        },
+        {
+          "offset": 58,
+          "type": 20,
+          "symbol": "?pointer@?A0xcd8f3945@bsp@@YAPAXI@Z"
+        },
+        {
+          "offset": 64,
+          "type": 20,
+          "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z"
+        },
+        {
+          "offset": 76,
+          "type": 20,
+          "symbol": "__CxxThrowException@8"
+        }
+      ],
+      "listing": "local/chcj-generated-catch-insert_body-0.asm",
+      "primary_worker_code_and_symbolic_relocations_equal": false
+    },
+    {
+      "module": "native_material_record_vector",
+      "stem": "catch:insert_body",
+      "symbol": "__catch$?insert_body@?A0xcd8f3945@bsp@@YAXPAXPAUNativeStringRawPoolContext@2@0@Z$2",
+      "section_offset": 1317,
+      "bytes": 87,
+      "sha256": "ec8da7c9ffd3ad6a7f54b59acb91f890606220a6abfdc7b670f095784f63e3d2",
+      "object_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\bsp_core.dir\\Release\\native_material_record_vector.obj",
+      "object_sha256": "8eb46057a0fe3e7344feacde7acbaf00279d31e39c76140e2d0b55f0fe4631c5",
+      "relocations": [
+        {
+          "offset": 10,
+          "type": 20,
+          "symbol": "?load@?A0xcd8f3945@bsp@@YAIPBXI@Z"
+        },
+        {
+          "offset": 29,
+          "type": 20,
+          "symbol": "?load@?A0xcd8f3945@bsp@@YAIPBXI@Z"
+        },
+        {
+          "offset": 40,
+          "type": 20,
+          "symbol": "?load@?A0xcd8f3945@bsp@@YAIPBXI@Z"
+        },
+        {
+          "offset": 49,
+          "type": 20,
+          "symbol": "?pointer@?A0xcd8f3945@bsp@@YAPAXI@Z"
+        },
+        {
+          "offset": 57,
+          "type": 20,
+          "symbol": "?pointer@?A0xcd8f3945@bsp@@YAPAXI@Z"
+        },
+        {
+          "offset": 73,
+          "type": 20,
+          "symbol": "?destroy_native_material_record_range_00b143a0@bsp@@YGXPAXPBXAAUNativeStringRawPoolContext@1@@Z"
+        },
+        {
+          "offset": 82,
+          "type": 20,
+          "symbol": "__CxxThrowException@8"
+        }
+      ],
+      "listing": "local/chcj-generated-catch-insert_body-1.asm",
+      "primary_worker_code_and_symbolic_relocations_equal": false
+    },
+    {
+      "module": "native_material_record_vector",
+      "stem": "pointer",
+      "symbol": "?pointer@?A0xcd8f3945@bsp@@YAPAXI@Z",
+      "section_offset": 0,
+      "bytes": 8,
+      "sha256": "d5a2b635b0bbb254914f2641e4508361a0c95686c0422dcebeb3abbcca7f1d2b",
+      "object_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\bsp_core.dir\\Release\\native_material_record_vector.obj",
+      "object_sha256": "8eb46057a0fe3e7344feacde7acbaf00279d31e39c76140e2d0b55f0fe4631c5",
+      "relocations": [],
+      "listing": "local/chcj-generated-pointer-0.asm",
+      "primary_worker_code_and_symbolic_relocations_equal": false
+    },
+    {
+      "module": "native_material_record_vector",
+      "stem": "dtor:CompletedTemporary",
+      "symbol": "??1CompletedTemporary@?A0xcd8f3945@bsp@@QAE@XZ",
+      "section_offset": 0,
+      "bytes": 97,
+      "sha256": "356287d4c14318904a384edd93f056b88d2b2838c22a7f8b2c8687c91cf58335",
+      "object_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\bsp_core.dir\\Release\\native_material_record_vector.obj",
+      "object_sha256": "8eb46057a0fe3e7344feacde7acbaf00279d31e39c76140e2d0b55f0fe4631c5",
+      "relocations": [
+        {
+          "offset": 6,
+          "type": 6,
+          "symbol": "__ehhandler$??1CompletedTemporary@?A0xcd8f3945@bsp@@QAE@XZ"
+        },
+        {
+          "offset": 22,
+          "type": 6,
+          "symbol": "___security_cookie"
+        },
+        {
+          "offset": 60,
+          "type": 20,
+          "symbol": "?destroy_native_renderer_record_00b10740@bsp@@YAXPAXAAUNativeStringRawPoolContext@1@@Z"
+        },
+        {
+          "offset": 87,
+          "type": 6,
+          "symbol": "__imp__terminate"
+        }
+      ],
+      "listing": "local/chcj-generated-dtor-CompletedTemporary-0.asm",
+      "primary_worker_code_and_symbolic_relocations_equal": false
+    },
+    {
+      "module": "native_material_record_vector",
+      "stem": "eh:insert_body",
+      "symbol": "__ehhandler$?insert_body@?A0xcd8f3945@bsp@@YAXPAXPAUNativeStringRawPoolContext@2@0@Z",
+      "section_offset": 0,
+      "bytes": 58,
+      "sha256": "75cbe5d1ae6d59563fec93563793636694ffd29cc35826d3ab77453f823644d7",
+      "object_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\bsp_core.dir\\Release\\native_material_record_vector.obj",
+      "object_sha256": "8eb46057a0fe3e7344feacde7acbaf00279d31e39c76140e2d0b55f0fe4631c5",
+      "relocations": [
+        {
+          "offset": 7,
+          "type": 20,
+          "symbol": "??1CompletedTemporary@?A0xcd8f3945@bsp@@QAE@XZ"
+        },
+        {
+          "offset": 34,
+          "type": 20,
+          "symbol": "@__security_check_cookie@4"
+        },
+        {
+          "offset": 44,
+          "type": 20,
+          "symbol": "@__security_check_cookie@4"
+        },
+        {
+          "offset": 49,
+          "type": 6,
+          "symbol": "__ehfuncinfo$?insert_body@?A0xcd8f3945@bsp@@YAXPAXPAUNativeStringRawPoolContext@2@0@Z"
+        },
+        {
+          "offset": 54,
+          "type": 20,
+          "symbol": "___CxxFrameHandler3"
+        }
+      ],
+      "listing": "local/chcj-generated-eh-insert_body-0.asm",
+      "primary_worker_code_and_symbolic_relocations_equal": false
+    }
+  ],
+  "primary_call_audit": {
+    "direct_rows": 28,
+    "indirect_rows": 0,
+    "failed": 0,
+    "log": "local/chcj-call-audit-native_material_record_vector_ch.log",
+    "separate_unowned_tail_rows": 1
+  },
+  "annotation": {
+    "saved": true,
+    "readback_passed": true,
+    "prior_comments_preserved": true,
+    "record": "local/chcj-ghidra-annotation-record.json",
+    "force_refreshed_exports": [
+      "00b145e0",
+      "00b150d0",
+      "00b15610"
+    ],
+    "correct_existing_names_preserved": true,
+    "original_abi_signatures": true,
+    "original_calling_conventions": {
+      "00b145e0": "__thiscall",
+      "00b150d0": "__thiscall",
+      "00b15610": "__thiscall"
+    }
+  },
+  "artifact_sha256": {
+    "build/win32/bsp_core.dir/Release/native_material_record_allocation.obj": "0a00cf2b96547492564dfaaa60208b51b6f495cb46de757e4a9a7385f82d30da",
+    "build/win32/bsp_core.dir/Release/native_material_record_vector.obj": "8eb46057a0fe3e7344feacde7acbaf00279d31e39c76140e2d0b55f0fe4631c5",
+    "local/CHCatchBodyRepair.java": "e9de76e537cceba930e75945b61b0d0cc15243e06d950d8e7a11206fd9f2b192",
+    "local/annotate_chcj.py": "0664cde8a293f71c4135588d347a6c17189feea0c36a7dda6a766862b888dfd8",
+    "local/bq_object_review.py": "93d9b6dc62ddcd4bc7e0aab0ba75a9ef29e60fa15638adba14eb9a9fd7de862a",
+    "local/build_final_chcj.py": "4c72d8655a39a95d0df39bac7abe2be9cdb47b69a74076e16b10725fb25f05b8",
+    "local/ch-catch-body-repair.json": "71677c682df722c039fe14b63c28bfd8ea913f6aa7be41498ba326ff8d4e99be",
+    "local/ch-record-vector-native.json": "ee3a3ff7555f4a92955ef2f23ca6f388edca716707215e8989762f77198e7f57",
+    "local/ch-record-vector-readiness.json": "61356365fb4ff2131db0aade9bf82b3b2bfd72fbb3e0d37c80e77d910cb52ccd",
+    "local/ch-record-vector-readiness.md": "2c14a8dd4d8d029908258064a3db8532d913c99bbc279e9a345f718228507731",
+    "local/chcj-annotation.log": "e6f8de5b6cc0f52fc57892c5a71d1825ee29826a17f98e450c2c8b8398b437a5",
+    "local/chcj-call-audit-native_material_record_allocation_cj.log": "b923dd533974a6d5c7c059224a7561b2f6c6f61bc8a223414c4831cae4a2e6f9",
+    "local/chcj-call-audit-native_material_record_vector_ch.log": "a7c44a8e942295f85d61ae3f749a6712a591eb91a2ced5cf06bf7b96cd6a2f68",
+    "local/chcj-comments-after.json": "1ded4272dc5a5eb773ed3985ea965f7960dd52f595cc275a194f9f09296ccf29",
+    "local/chcj-comments-before.json": "cc4b7503f2e87ae0000db25950a05d3ae1fe519a0ac24db715901e3da1405847",
+    "local/chcj-export-refresh.log": "88db42a802119d2c4aec1df0a7f1efce10d4c7a6b41c7e622e49afe847fdfedc",
+    "local/chcj-final-build-stamp.json": "443ae61ecf7848aa48397f1f27566a59a9e1d1741959ce5326104601441de53b",
+    "local/chcj-final-combined-build.log": "56d1e47af37112d10b1e43e86ef841c72b2bf0e26c06cb52e7203c9a46e70b0e",
+    "local/chcj-function-records.json": "436ac60f2911d17ce87bf912eafb73adf9e61095e4eee80ff8afe7967477e401",
+    "local/chcj-generated-STL_xlen_throw_00b135c0-0.asm": "def186328ccc6013954569159c5fb6f24753f1d21ac2f6090c0abd1b6bfb7da1",
+    "local/chcj-generated-add_current-0.asm": "99dd9cdb5e77bc21c7085a6a31cd3b9dbfdac5ca30201e0a23afa14c268e111d",
+    "local/chcj-generated-allocate_native_material_records_00b0d3b0-0.asm": "89ae1429121cd08b75e587531a57b124baf3185d9eceb7ac47eed16569030b0f",
+    "local/chcj-generated-append_body-0.asm": "37ac0109aac47d0d8405f573e3a1cb2b95f0a319eaac955f8e8d5a8018e3939b",
+    "local/chcj-generated-append_native_material_record_00b15610-0.asm": "4d99e8f85aa8f1fb881b3174e9022c3653bd0be81422b47b3a2f53a013909766",
+    "local/chcj-generated-catch-insert_body-0.asm": "5b24ed7bb01012cfb3e83ca7db729b50dd2a6053dba556460a54d067011246a2",
+    "local/chcj-generated-catch-insert_body-1.asm": "41c8f77b16db27828f8833fd0b9834df2a0b515f7d4228016ca29b3939615f96",
+    "local/chcj-generated-current_invalid_parameter-0.asm": "38f7456b0ddb6448d1eaafb007cefa6e7a21acc8948f59f0353a55f26b9312bc",
+    "local/chcj-generated-dtor-CompletedMessage-0.asm": "66333fb63311c527e442743b494ab9ee8ffaa7c04b603a9a358d6ec1bb21e2f3",
+    "local/chcj-generated-dtor-CompletedTemporary-0.asm": "ebf981f2f0770da3b39f7eca7386c8f7936ffb3a43fa903298e2b4e548df837c",
+    "local/chcj-generated-eh-STL_xlen_throw_00b135c0-0.asm": "c9a0a08bd1b6c467bf5f64648de81368624d3b0c4ba0b3a5e6ba31b616d04aff",
+    "local/chcj-generated-eh-insert_body-0.asm": "b6f5af460027026b792779a77e73bdc1a9f9b14a6c9672656e3fca102cb9e14f",
+    "local/chcj-generated-insert_body-0.asm": "9169087048ed78aa7ac65a01da1b0a426dc89512b2bb1192cf8b0e5490e5db27",
+    "local/chcj-generated-insert_native_material_records_00b145e0-0.asm": "e8cf50690cc4337e5f65e8e51b7ff389f319e03ae656b141e37035892795568a",
+    "local/chcj-generated-insert_one_body-0.asm": "dab304fe41e3b438ebb238d577a6bc1b957fb7f56bacd04b214ea5c5e98fdf4c",
+    "local/chcj-generated-insert_one_native_material_record_00b150d0-0.asm": "51a8094a73923850eb170f81bc3b2c8259f754ef0a1ce6686c54174e3a69da69",
+    "local/chcj-generated-load-0.asm": "ff87901fba0c6a63581bff6f97b098ddc6570dd02af42e4f232cb7952fb71a5f",
+    "local/chcj-generated-pointer-0.asm": "f7a580fc027f4f3765ab863ba64e3bfdc76be0cd414febcd03c040d718f3ab45",
+    "local/chcj-generated-record_quotient-0.asm": "c212d22cf330c50bfd896130c2365c5c7ec416ec991983ced87662b2f3133e92",
+    "local/chcj-generated-store-0.asm": "c893708af0f0724f42624c31921dffe24bde7058dcea720f25f3202ea7941fad",
+    "local/chcj-ghidra-annotation-record.json": "1e98e75a9153d9b1af926cd10128063322d486b171d2afdfef883a3891f74431",
+    "local/chcj-ledger-before.json": "fda52f8e5cf8d5753d61010cb9ec621f49993dd551e4156a115944fa79f23671",
+    "local/chcj-object-review.json": "7c1979096155d9f7b3d7df1c90012c3ddd1bf4496f279f17aa982050cebbbc6c",
+    "local/chcj-primary-review.json": "1de908403fc23f56d37b1b309ea269f73fc9487862494df91fcb918e71d2d68b",
+    "local/chcj-probe-build.cmd": "1c2811d345b64f92a69c7837e4d51b33093eaf450ea5951542ee8330a8a9ed54",
+    "local/chcj-probe-run.log": "e7f791edef5b276d96c59a7c66129af5102041179bc472a5baf381dbdcdaf12c",
+    "local/chcj-source-probe.json": "e44eae5af41b5e55a701f7003d78f1bf1b50d3a8579c184c787e4674be15561c",
+    "local/chcj-worker/build-cj.log": "70143f9cfce856bb591ea043d858eef86211913b2fd42a66ac58cb46d064c421",
+    "local/chcj-worker/cj-original.py": "2e25198816f2e3015f2593a0f179d4f74c87fbe8e6274d15c48d82c63b614409",
+    "local/chcj-worker/ck-system-constants-provider-audit.json": "b8a9e9b7a637d86c63b7690911d6ce352b6477278bf97194706f944cea89481e",
+    "local/chcj-worker/ck-system-constants-provider-audit.md": "4ff21178f4ccd963494ca8d698430a3144b9a84b66ee1ef2a08684732387b7ed",
+    "local/chcj-worker/coff-cj-disasm.txt": "d9949da7c2f75ef29a4cbc856d927c1454758e2ba9d6bbe5fe3c4408daeba1bd",
+    "local/chcj-worker/coff-cj-headers.txt": "afa38ac48dc4bcac73d41fb72dc059d0a71dade9caa1e21fd442f677a727db86",
+    "local/chcj-worker/coff-cj-relocs.txt": "a45d32294707f26eae7a077c4a5cf8bc496d9421424dac20fde38dc7f4987973",
+    "local/chcj-worker/coff-cj-symbols.txt": "c6aa47aeaaddd35f50d32b93ff4ebc1fdb1a96bde9b051bbc70c220b2ce302d7",
+    "local/chcj-worker/commit-cj-message.txt": "c465821a2ab4ad56fa550cd3e60b57c2748a50f99af564ea8d8ffdb228be32bd",
+    "local/chcj-worker/native_material_record_allocation_cj.json": "0e2c434eeeba39484cfb4d45eef68d5bb3208e66066b7e85e4654209ff0c5fc1",
+    "local/chcj-worker/verify-cj-coff.py": "929a4a6b7be759b6239165e256315bea4187971084b2b8e9a9c309b50b1bcdba",
+    "local/chcj-worker/verify-cj-report.py": "f433bc1cb398d8cfdc2dbb9d84c7cd277e4a095b71f6aa4d1c84b142d8357b29",
+    "local/chcj_probe.cpp": "6dab24b3577f96e2deabc8dc574e0ef791b07a7bc714b613ebec1a455a648932",
+    "local/chcj_probe.exe": "f5fd194b09ecb3cb1138d7581d5bf29125ae75d2b70cebf7635e0bc8db139f57",
+    "local/chcj_probe.obj": "bca9a1da43372254ca97ffd2288973baadd6180368e8da38b9a5d7dcb88da29a",
+    "local/finish_chcj.py": "40bde060fcac7619ee080fddfb9f8bfdda3b4fff75977b0f3c5e5bb8c1537724",
+    "local/prepare_ch.py": "7dc0a848129e67c749ab7c4d5793123b2e4957658ac408910ca1be7fc24816e0",
+    "local/prepare_ch_audit.py": "50dea7bf41a8a974d248eb4b6e4f21c7eb83d3c5a53b8dbbf7d51297baf3101e",
+    "local/repair_ch_catch.py": "28eb25e447e45be0e7a473175ce284ec58c43f55d360243263ad5eec21c0b55a",
+    "local/review_cacc_objects.py": "7a6aefb0b31f2cdca236b1bd82b86da80b93ec3e87d2cb680c816fc9a1c8db82",
+    "local/review_chcj_objects.py": "458b59cc7de0c17aa7d0e417ee00aec80d97ad9055597b78c44f5f5011d913e5",
+    "local/seal_chcj.py": "5312386759ec7f9748dc1364250076252d995a0e112e0cb3bc07700c74c4ff63",
+    "reports/native_material_record_vector_ch_flow.json": "bbfcff8d10655dbfa8f8ffd2ccc972b45869b6d583cfea7240ac0e67ba365250"
+  },
+  "sealed_attempt": {
+    "tested_commit": "8b5c20da64531031c264d85c4edd2187cf806ff3",
+    "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\chcj-validated-attempt-8b5c20da.zip",
+    "sha256": "e75665e8d9d1003aa807f9af9c7213f6b3477210a7d8e456ac5db397160d3441",
+    "payload_members": 2684,
+    "manifest_members": 1,
+    "all_member_hashes_rechecked": true,
+    "libraries": {
+      "bsp_core.lib": "03ded13648d49f987383c5bb6c9892e324913889a6ebfb8fd83878a007a9dc82",
+      "bsp_lua511.lib": "71e114b0ff6244852d678a5779fcbf28589bdcecbad811aff228ffd5007fe8c7",
+      "bsp_zlib121.lib": "f3f934925213a2ffb81f3aec2afbb065c1733cf43b28dddf31db6a69185c4102"
+    },
+    "tracked_build_inputs": 2589
+  }
 }

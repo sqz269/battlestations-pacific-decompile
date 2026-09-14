@@ -68,6 +68,13 @@ these bytes against the installed PE, recorded both old overrides, restored
 the listing, saved the project and refreshed the export. It changed no global
 callee no-return flag. See the separate CH flow report.
 
+The restored rethrow at B147B8 still has no containing Ghidra function: the
+stored B1479B catch body ends at B147B0. A locked, exact-tail body-extension
+attempt was rejected because the server has inline script execution disabled;
+that attempt made no mutation. The report checks this instruction separately
+against the complete PE/live bytes and linear decode, and keeps the metadata
+limitation explicit. It does not define an artificial function at the rethrow.
+
 ## Evidence and validation
 
 The CH report pins all three complete bodies, both EH helpers and the EH tables
@@ -77,3 +84,12 @@ Compilation and the existing math CTests do not establish vector execution or
 gameplay behavior. Any focused local probe is reported separately with its
 exercised branches and limits. Full diagnostics and material rendering remain
 unfinished.
+
+Exact source commit `8b5c20da64531031c264d85c4edd2187cf806ff3` passed Win32
+Release and both existing math CTests with 2,589 unchanged tracked build inputs.
+The primary reviewed all three generated bodies, wrappers, helper instructions,
+both catch slices and the temporary unwind handler. A single local source probe
+passed null-vector growth, aliased-source growth, both in-place tail branches,
+append, output iterator publication, zero count, shared length-error propagation
+and allocator overflow. Its records use empty raw string headers; it exercises
+no native parent bytes, constructor-failure injection or nonempty pool storage.
