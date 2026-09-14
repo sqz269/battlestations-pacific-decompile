@@ -1,0 +1,329 @@
+{
+  "packet": "orch4_native_resource_cache_lookup_bn",
+  "generated_utc": "2026-09-14T06:52:23.436804+00:00",
+  "branch": "agent/orch4-resource-cache-lookup-bn",
+  "base_commit": "942f454c003868062d01e3320b2fb2e164b228cb",
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "project": "bsp",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "verification": "bsp.py ghidra verifies project/program/language/base before every live batch"
+  },
+  "functions": [
+    {
+      "address": "00b7dfa0",
+      "inclusive_end": "00b7dff2",
+      "byte_count": 83,
+      "existing_ghidra_name": "BSP_ResourceNameTree_LowerBound",
+      "cpp": "bsp::lower_bound_native_resource_cache_name_00b7dfa0",
+      "coverage": "complete ordinary body",
+      "native_abi": "ECX tree; stack query; EAX candidate node; RET4",
+      "listed_instructions": 36,
+      "listing_gaps": 0
+    },
+    {
+      "address": "00b7e7b0",
+      "inclusive_end": "00b7e815",
+      "byte_count": 102,
+      "existing_ghidra_name": "BSP_ResourceNameTree_FindEquivalent",
+      "cpp": "bsp::find_native_resource_cache_name_00b7e7b0",
+      "coverage": "complete ordinary body",
+      "native_abi": "ECX tree; stack output/query; EAX output; RET8",
+      "listed_instructions": 39,
+      "listing_gaps": 0
+    }
+  ],
+  "native_spans": [
+    {
+      "address": "00b7dfa0",
+      "inclusive_end": "00b7dff2",
+      "byte_count": 83,
+      "role": "complete lower-bound body",
+      "sha256": "65041a7e404412cdd0c7a58a5c93e1cccc06dd7a1be19d1f254794811fc295ca",
+      "installed_pe_matches_live_ghidra": true,
+      "evidence_log": "local/cache_lookup_bn/live_00b7dfa0.txt",
+      "evidence_log_sha256": "7160b387e2b9d7277f342cdea58298b3f453f4659ee600285b27631895276d9f"
+    },
+    {
+      "address": "00b7e7b0",
+      "inclusive_end": "00b7e815",
+      "byte_count": 102,
+      "role": "complete find body",
+      "sha256": "3af881d888dda97addbc00eef1afc789386342dc7ce964dc1ccfc5dc625a1d3b",
+      "installed_pe_matches_live_ghidra": true,
+      "evidence_log": "local/cache_lookup_bn/live_00b7e7b0.txt",
+      "evidence_log_sha256": "6dbb0b3d861515b1fed8e07376292b5c7f86cd9b31a58dba81596c260fe19a85"
+    },
+    {
+      "address": "00443d00",
+      "inclusive_end": "00443d50",
+      "byte_count": 81,
+      "role": "existing raw-header comparator",
+      "sha256": "27301d40c436429db8b8537a7d62d230661837d45c3197510469311e73823ec6",
+      "installed_pe_matches_live_ghidra": true,
+      "evidence_log": "local/cache_lookup_bn/live_00443d00.txt",
+      "evidence_log_sha256": "097a76761789041c35ef6b290ce655b26a669f998ac931e36ca7ea16bcbc3cf9"
+    },
+    {
+      "address": "00b7f220",
+      "inclusive_end": "00b7f28f",
+      "byte_count": 112,
+      "role": "layout producer",
+      "sha256": "df8d6833d6619f9a8e5201b0999755e206e963e100434a966c2c0aa7c31bede3",
+      "installed_pe_matches_live_ghidra": true,
+      "evidence_log": "local/cache_lookup_bn/live_00b7f220.txt",
+      "evidence_log_sha256": "c2467dd6a6de0dabe9418fc08fa3a4d6ad22385805b1dfc65c2fdd483ace8343"
+    }
+  ],
+  "direct_calls": [
+    {
+      "address": "00b7dfd0",
+      "native": "00bf7fbf",
+      "function": "00b7dfa0"
+    },
+    {
+      "address": "00b7e7bd",
+      "native": "00b7dfa0",
+      "function": "00b7e7b0"
+    },
+    {
+      "address": "00b7e7cc",
+      "native": "00bf6713",
+      "function": "00b7e7b0"
+    },
+    {
+      "address": "00b7e7e1",
+      "native": "00443d00",
+      "function": "00b7e7b0"
+    },
+    {
+      "address": "00b801d5",
+      "native": "00b7e7b0",
+      "function": "00b801c0",
+      "setup": "ECX manager+14; stack(output local iterator,query); callee RET8"
+    },
+    {
+      "address": "00b8075d",
+      "native": "00b7e7b0",
+      "function": "00b80720",
+      "setup": "ECX manager+14; stack(output local iterator,original name); callee RET8"
+    }
+  ],
+  "no_ghidra_function": [],
+  "storage": {
+    "tree": "actual0Ch,head+4,count+8; allocator word+0 untouched",
+    "node": "actual1Ch: links0/4/8,key length/data+C/+10,borrowed resource+14,color+18,nil+19",
+    "producer": "00b7f220",
+    "lookup_reads": "head/root/current child links,nil,key headers; no resource/count/color read",
+    "iterator": "actual8h owner/node, both captured before owner-then-node output stores"
+  },
+  "ordering": "zero stored length sorts before nonempty; otherwise CRT _stricmp, right-data read before left-data, no stored-length tie-break or bound",
+  "current_captured_contract": [
+    "lower-bound captures initial head/root then traverses current links",
+    "find captures lower-bound candidate before returning CRT diagnostic",
+    "find compares against current tree+4 and reloads current head for miss",
+    "capture both selected iterator words before writes, including output aliasing actual storage"
+  ],
+  "source_composition": "reuse actual less_native_string_headers_00443d00 and SingletonLifetimeCallbacks; independent lookup bodies; no aliases to B19B90/B19D60",
+  "checklist": {
+    "callee_before_contract": "443D00/BF6713 bodies read",
+    "boundary_before_attribution": "both full bodies and manager call-site memberships verified live",
+    "all_call_sites": "current xrefs show B7E7BD, B801D5 and B8075D; setups inspected",
+    "producer_before_layout": "B7F220 producer read and prior ownership audit reconciled",
+    "partial_projection_label": "both ordinary bodies complete",
+    "runtime_frame_evidence": "not applicable; no production route bound or frame/gameplay claim",
+    "argument_cleanup": "RET4 and RET8 confirmed in complete listings",
+    "register_provenance": "all36/39 instructions reviewed; original captured owner/node preserved",
+    "lease_scope": "only owned two routine addresses and four output files",
+    "report_calls": "all four owned direct calls plus two manager call rows recorded"
+  },
+  "validation": {
+    "strict_tu_compile": {
+      "passed": true,
+      "compiler": "MSVC Win32",
+      "flags": "/std:c++17 /EHsc /W4 /WX /O2 /fp:strict /MD",
+      "log": "local/cache_lookup_bn/compile.log"
+    },
+    "fixture": {
+      "passed": true,
+      "exit_code": 0,
+      "frozen_input_count": 11,
+      "frozen_inputs": "local/cache_lookup_bn/frozen_inputs.json",
+      "executable": "local/cache_lookup_bn/lookup_probe.exe",
+      "manifest_link_flag": "/MANIFEST:EMBED",
+      "log": "local/cache_lookup_bn/probe.log",
+      "coverage": [
+        "empty markers skip invalid data pointers",
+        "nonempty stored lengths differ but case-equivalent C strings match",
+        "greater candidate and missing lower bounds",
+        "no tree/input/resource mutation",
+        "tree+4 output alias captures original head before store",
+        "candidate-key and query-header output aliases",
+        "empty tree bypasses invalid query pointer"
+      ],
+      "static_only": "returning CRT continuation after tree-null diagnostic",
+      "locale": "C"
+    },
+    "core_library": {
+      "source": "J:/PROG/battlestations-pacific-decompile-orch4-20260910/build/win32/Release/bsp_core.lib",
+      "before": "134578367593F74415BB6FD12B51D103DFC6575DCB94D2F692640DDE69C78251",
+      "after": "134578367593F74415BB6FD12B51D103DFC6575DCB94D2F692640DDE69C78251",
+      "copy": "134578367593F74415BB6FD12B51D103DFC6575DCB94D2F692640DDE69C78251"
+    },
+    "full_integration_build": false,
+    "permanent_tests_added": false,
+    "native_original_executable_run": false,
+    "game_validated": false
+  },
+  "source_files": [
+    {
+      "path": "src/native_resource_cache_lookup.cpp",
+      "sha256": "1d35c1ba8450bd6a18efc052d5d7a8515fd2c746d00010d74aa0f427de49027f"
+    },
+    {
+      "path": "include/bsp/native_resource_cache_lookup.hpp",
+      "sha256": "15a3e9d3c7416b2580819a71c5b5ae654cf16f51eeea8c583e1593b8f2027497"
+    },
+    {
+      "path": "docs/NATIVE_RESOURCE_CACHE_LOOKUP_BN.md",
+      "sha256": "cf259770880d985dc33f051e222c3f4daf919fff15b1cd17f43d252ba686849c"
+    }
+  ],
+  "local_artifacts": [
+    {
+      "path": "local/cache_lookup_bn/bsp_core.lib",
+      "byte_count": 57996726,
+      "sha256": "134578367593f74415bb6fd12b51d103dfc6575dcb94d2f692640dde69c78251"
+    },
+    {
+      "path": "local/cache_lookup_bn/bsp_lua511.lib",
+      "byte_count": 455244,
+      "sha256": "00315ac717aac3d2b2161fefefe71b36a974335ff9c95d48c137423eb4e2f4b2"
+    },
+    {
+      "path": "local/cache_lookup_bn/bsp_zlib121.lib",
+      "byte_count": 71906,
+      "sha256": "73ae30b8adc3adfe5b33285bac533f8e7df7e8ab8d9e44789e6a030fd8a06ad9"
+    },
+    {
+      "path": "local/cache_lookup_bn/compile.cmd",
+      "byte_count": 337,
+      "sha256": "3ee6b119be2f706e4f5104d486f78e570b045fc2c45566d225d83bffc9138318"
+    },
+    {
+      "path": "local/cache_lookup_bn/compile.log",
+      "byte_count": 34,
+      "sha256": "d06ef836b48049d8546b3fffe89714a1aa48c8726b22638389fb7427454cd639"
+    },
+    {
+      "path": "local/cache_lookup_bn/compile_probe.cmd",
+      "byte_count": 547,
+      "sha256": "7c9178483776f503dab1833f201085d78027cd2468b42e902151e11b37277390"
+    },
+    {
+      "path": "local/cache_lookup_bn/dependent_library_hashes.jsonl",
+      "byte_count": 637,
+      "sha256": "8e2276f74c7d8f6f3883abc6374154c86d75f4edcaaf176029ac8a11c7017a82"
+    },
+    {
+      "path": "local/cache_lookup_bn/freeze_inputs.py",
+      "byte_count": 1063,
+      "sha256": "9917ded612d11df85dbc756d0f315ca96cbfa9f52ce07f2a27be7af8813bf9a9"
+    },
+    {
+      "path": "local/cache_lookup_bn/frozen_inputs.json",
+      "byte_count": 2426,
+      "sha256": "d271ccbcd56fc26de983d16d9be9a54069ec0525d5480cd11f5ecdaa4ea0b0a3"
+    },
+    {
+      "path": "local/cache_lookup_bn/library_hash.json",
+      "byte_count": 350,
+      "sha256": "41216b566a2eb0d0562f5535d9b87609d6fd5933cb5c0d045073157b6dbfda15"
+    },
+    {
+      "path": "local/cache_lookup_bn/live_00443d00.txt",
+      "byte_count": 402,
+      "sha256": "097a76761789041c35ef6b290ce655b26a669f998ac931e36ca7ea16bcbc3cf9"
+    },
+    {
+      "path": "local/cache_lookup_bn/live_00b7dfa0.txt",
+      "byte_count": 410,
+      "sha256": "7160b387e2b9d7277f342cdea58298b3f453f4659ee600285b27631895276d9f"
+    },
+    {
+      "path": "local/cache_lookup_bn/live_00b7e7b0.txt",
+      "byte_count": 499,
+      "sha256": "6dbb0b3d861515b1fed8e07376292b5c7f86cd9b31a58dba81596c260fe19a85"
+    },
+    {
+      "path": "local/cache_lookup_bn/live_00b7f220.txt",
+      "byte_count": 539,
+      "sha256": "c2467dd6a6de0dabe9418fc08fa3a4d6ad22385805b1dfc65c2fdd483ace8343"
+    },
+    {
+      "path": "local/cache_lookup_bn/lookup_probe.cpp",
+      "byte_count": 4547,
+      "sha256": "ddb55a1f5d2ccf7d4a7b582d208b2ec1a70b80c4235134b34c0218d7b910bc44"
+    },
+    {
+      "path": "local/cache_lookup_bn/lookup_probe.exe",
+      "byte_count": 13312,
+      "sha256": "4f501325750804426438fae92ed12cffd81267ea599ec5a9e1dff6db9db49d2b"
+    },
+    {
+      "path": "local/cache_lookup_bn/lookup_probe.obj",
+      "byte_count": 20680,
+      "sha256": "27d9d6448891497ae64b69defc7dbaf80803df9ac813d581ebb79f0500da152e"
+    },
+    {
+      "path": "local/cache_lookup_bn/make_report.py",
+      "byte_count": 7945,
+      "sha256": "7072861bb521e56e987ff06db755fb76f9fb431c462bb9507fc72d149da1dc29"
+    },
+    {
+      "path": "local/cache_lookup_bn/native_resource_cache_lookup.obj",
+      "byte_count": 2589,
+      "sha256": "8b1b880eb80b6365d18770851af08528f270607d78834166557622cf51bafa95"
+    },
+    {
+      "path": "local/cache_lookup_bn/probe.log",
+      "byte_count": 277,
+      "sha256": "9a826af4cce849300ab556575a549afad4373b6859d020734ed3f55b3f2227ce"
+    },
+    {
+      "path": "local/cache_lookup_bn/probe_compile.log",
+      "byte_count": 18,
+      "sha256": "ddb7f10d89da4203d9cccd3fe2635ffaeddc3ee6e57a9214429ff148fa25966e"
+    },
+    {
+      "path": "local/cache_lookup_bn/verify_calls.log",
+      "byte_count": 77,
+      "sha256": "dfeb5c1fffddcd13ec3beeabc101b840a89064a67d9781db04bd1e02f855516d"
+    }
+  ],
+  "ghidra_mutations": false,
+  "limitations": [
+    "source stack/SEH ABI differs",
+    "valid raw storage and current CRT behavior required",
+    "returning null-tree continuation listing-verified only",
+    "original stack/register-spill aliases and concurrency unproved",
+    "manager/insertion/resource lifetime and production glue outside packet",
+    "primary owns CMake/runtime integration, full build and Ghidra evidence comments"
+  ],
+  "requested_primary_annotation": {
+    "preserve_existing_names": true,
+    "preserve_existing_comments": true,
+    "append_evidence": "docs/NATIVE_RESOURCE_CACHE_LOOKUP_BN.md and reports/native_resource_cache_lookup_bn.json"
+  },
+  "call_site_validation": {
+    "checked": 6,
+    "failed": 0,
+    "exit_code": 0,
+    "tool": "tools/verify_report_calls.py",
+    "log": "local/cache_lookup_bn/verify_calls.log"
+  }
+}
