@@ -1,0 +1,87 @@
+{
+  "tested_commit": "9cb8a3e1b3093187bb9151270567d0b16ef7dbff",
+  "accepted_workers": {
+    "registry": "9ea01f7c0b80ac93d69b13f020b0acd7822076e7",
+    "camera": "a92db8bda296bb245b8259aeb59c23ea2dd69495"
+  },
+  "strict_msvc_win32_build_passed": true,
+  "existing_ctests_passed": 2,
+  "seed_spans_passed": 8,
+  "new_native_bodies": 0,
+  "new_native_bytes": 0,
+  "build_input_count": 2466,
+  "build_input_manifest_sha256": "2e18ee6945c8eddd7f4bd427b54b8fe5e67d8d70991b7209ac2cf8aa7be1b95c",
+  "build_input_scope": "All tracked src/include/tests/cmake/scripts/CMake inputs; compiler, system SDK and downloaded third-party trees outside tracked pins; three resulting libraries separately pinned.",
+  "source_header_sha256": {
+    "include/bsp/scene_attachment.hpp": "d2bb5d004129a418961bf13e60c0f8324a077b5647ca8450602421190841d322",
+    "src/scene_attachment.cpp": "58fa851ddc57a0910f4903da4d08fa74cf56b41af352b8d9b8ba8f4ff7715719",
+    "include/bsp/generated_model_lifetime.hpp": "370ddaedd31013c97fc41b2774020f75dddae9d5d6f546d3a2063ccc49088b64",
+    "src/generated_model_lifetime.cpp": "d8c5990909d169f0f70d9e3320b4e671da6fcb58694cc9ac5f7d621cbdeabd64",
+    "include/bsp/native_camera_owner.hpp": "dcfda0fcb24a3415787d43eb5204116afb18bd77d7a4d0b4a297351cd02e4153",
+    "src/native_camera_owner.cpp": "ca6a751f6956c2989073f072359f78fe64e2df1ee6071bdfb2af9f8cbe4c69e1",
+    "include/bsp/native_camera_reference.hpp": "5920175404a18b464c3ce826162c8279b98c12405ac28d52363241cd2d79415e",
+    "src/native_camera_reference.cpp": "c877dd80459c1f7ebf2e9e20c4f6fd3f0c349e0ff3b4dbeb8f6553a0fb9badab",
+    "include/bsp/native_viewport_registry.hpp": "250decc6520abb9d3085670129d0884b087465f4eec1027cb210375619e8d486",
+    "src/native_viewport_registry.cpp": "cf63de25d9e107f83f361db4d4fa7c2a922119fa62584dd3688b8588d201a289",
+    "include/bsp/native_viewport_owner.hpp": "0fbadd5eab924627e321a7896bd9796c0aaa17062bbf3953de118fbe2b3867d5",
+    "src/native_viewport_owner.cpp": "d7f733023f89193a4bbd488a9e925b46ac52f2cc0ee1be04f6df2e663616d2ea"
+  },
+  "libraries": {
+    "bsp_core.lib": "8f4d17fe37d541e0e0b3d419b99522cd9e78b539673ffe1b2269aac0ea0bfd74",
+    "bsp_lua511.lib": "71e114b0ff6244852d678a5779fcbf28589bdcecbad811aff228ffd5007fe8c7",
+    "bsp_zlib121.lib": "f3f934925213a2ffb81f3aec2afbb065c1733cf43b28dddf31db6a69185c4102"
+  },
+  "build_log_sha256": "4d9ed09421d3b7c67df57aaab977c82c134def9f7f3f441a5bb29f87479fb78c",
+  "worker_archives": {
+    "registry": {
+      "archive": "J:\\PROG\\bsp-evidence\\orch3-registry-admission-impl-bh-20260913.zip",
+      "archive_sha256": "76970190a5793ac401fd72114c4a8749790243ae78cccffa68689dc499b16775",
+      "verified_members": 2620
+    },
+    "camera": {
+      "archive": "J:\\PROG\\bsp-evidence\\orch3-camera-binding-admission-bh-20260913.zip",
+      "archive_sha256": "d48acca8d8c828ed176653b055ce00adcbeab561205a6d375a0779fef8819796",
+      "verified_members": 2609
+    }
+  },
+  "current_library_replays": {
+    "viewport": {
+      "folder": "J:\\PROG\\bsp-evidence\\orch3-viewport-registry-bh",
+      "passed": true,
+      "current_library_only": true,
+      "input_pins_unchanged": 2461,
+      "run_output": "PASS viewport host lifecycle: stable borrowed views, flags0 retirement, same-address reuse, terminal release, cancelled failure, zero guarded host new\n"
+    },
+    "registry": {
+      "folder": "J:\\PROG\\bsp-evidence\\orch3-registry-admission-bh-current",
+      "passed": true,
+      "current_library_only": true,
+      "input_pins_unchanged": 2461,
+      "run_output": "PASS registration-only credit isolation: scene ordinary allocations=2, lifetime ordinary allocations=2, forbidden host-new attempts=0; canonical identities and explicit cleanup passed\nLIMIT: diagnostic registration objects; virtual behavior callbacks terminate if called; no native behavior exercised\n"
+    },
+    "coupled": {
+      "folder": "C:\\Users\\sqz269\\bsp-bh-cockpit-admission\\current",
+      "passed": true,
+      "current_library_only": true,
+      "input_pins_unchanged": 2462,
+      "run_output": "PASS native cw027f liveone0 states15 raw_camera_bytes16740 events11\nPASS host cw027f liveone0 states15 raw_camera_bytes16740 events11\nPASS immutable mapped original code 8880 bytes\nPASS admitted camera companions with zero guarded host new and actual viewport registration; focused cockpit helper actual24h terminal pair; pre-free36 bytes equal, camera count1-to0, name and pool returned, source companions retired after native free; +08/+18 zero; CW027F; no FH3 exception execution\n"
+    }
+  },
+  "ghidra_evidence": "reports/native_bh_readiness_annotation_audit.json",
+  "ghidra_names_and_prototypes_read_back": true,
+  "final_archive": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\bh-validated-attempt-9cb8a3e1.zip",
+    "sha256": "03f2015fa02e00f3ae0b3fc4568bd02122141fd07b28a2d964b4b96ba87d213d",
+    "verified_members": 2524
+  },
+  "first_viewport_boundary": "Fixture manually associates first owner after B71A80 publication; production admission remains open.",
+  "remaining": [
+    "Production first viewport registration before B71A80 publishes camera+180",
+    "Persistent cockpit construction block and actual B3C800 normal/EH composition",
+    "Published failure-survivor storage and host frame/cache quiescence wiring",
+    "Native FH3, original replacement ABI, CRT/application startup invocation and game validation"
+  ],
+  "game_validated": false,
+  "original_binary_abi_validated": false,
+  "native_fh3_validated": false
+}

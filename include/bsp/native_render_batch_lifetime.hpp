@@ -2,6 +2,7 @@
 
 #include "bsp/random_threads.hpp"
 #include "bsp/singleton_lifetime.hpp"
+#include "bsp/sound_lifetime_access.hpp"
 #include <atomic>
 #include <cstddef>
 #include <cstdint>
@@ -66,14 +67,17 @@ void reserve_native_render_batch_free_slots_00b1c830(NativeRenderBatchFreeSlots&
 void resize_native_render_batch_free_slots_00b1ce50(NativeRenderBatchFreeSlots&, std::int32_t);
 void destroy_native_render_batch_free_slots_00b1d8a0(NativeRenderBatchFreeSlots&);
 
-// Shared actual native singleton domain and publication fields. The immutable
+// Borrowed actual01090AA0 manager publication (or the existing semantic
+// fixture domain) and live pool/lock publications. The immutable
 // table is the real D5E5AC profile (>=4 words); recycle reads its current +4
 // slot after reading the owner's current table identity. This concrete profile
 // requires B1C630. Unsupported/unbound tables fail before batch destruction.
 // No companion destructor implicitly drains, unregisters or clears owners.
 class NativeRenderBatchLifetime final {
 public:
-    NativeRenderBatchLifetime(SingletonLifetimeDomain&,
+    // Caller keeps the manager and both publication cells alive through drain.
+    // Implicit SoundLifetimeAccess conversion retains existing domain callers.
+    NativeRenderBatchLifetime(SoundLifetimeAccess,
         NativeRenderBatchPoolStorage* volatile& global_0108fe8c,
         NativeRenderBatchLockOwner* volatile& global_0109dbbc,
         const volatile std::uint32_t* vtable_00d5e5ac);
@@ -98,7 +102,7 @@ public:
     void recycle_zero_reference_00b55680(NativeRenderBatchStorage&);
 
 private:
-    SingletonLifetimeDomain& domain_;
+    SoundLifetimeAccess lifetime_;
     NativeRenderBatchPoolStorage* volatile& global_0108fe8c_;
     NativeRenderBatchLockOwner* volatile& global_0109dbbc_;
     const volatile std::uint32_t* vtable_00d5e5ac_;

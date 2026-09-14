@@ -81,6 +81,7 @@ void GuiNativeScene::notify_group(void* identity) {
     notify_native_group_bounds_00b6dbc0(group);
 }
 NativeGroupReference& GuiNativeScene::create_group(const std::string& name) {
+    auto& name_pool = environment_.nodes.require_semantic_name_pool();
     auto record = std::make_unique<GroupRecord>();
     void* slot = environment_.pool_010902f4.allocate_raw_slot_00b8f310();
     if (!slot) throw std::runtime_error("GUI plain page root allocation returned null");
@@ -88,7 +89,7 @@ NativeGroupReference& GuiNativeScene::create_group(const std::string& name) {
     if (groups_.count(slot))
         throw std::logic_error("group pool returned an occupied GUI root slot");
     NativeString native_name;
-    PooledStringStorage strings(environment_.nodes.strings);
+    PooledStringStorage strings(name_pool);
     bool inserted = false;
     try {
         groups_.emplace(slot, nullptr);

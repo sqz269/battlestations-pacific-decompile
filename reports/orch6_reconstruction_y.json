@@ -1,0 +1,232 @@
+{
+  "packet": "orch6_reconstruction_y",
+  "status": "current_set_integrated_and_verified_no_new_work_dispatched",
+  "packets": [
+    {
+      "packet": "orch6-unit-scene-initialization-y",
+      "commit": "67dd29748b723ce660f0dc787b1001bbea26881e",
+      "report": "reports\\native_unit_scene_initialization.json",
+      "report_sha256": "406f06577444cffcf7e72a82e85885e1f1a7e093a7e90013a509bdb08d97b9ed",
+      "coverage": "Complete 383-byte normal scene-initialization caller: actual model/handle/pose, current globals/holder reloads, kind gating, repeated property lookups and SSE payload conversion.",
+      "validation": "Four original-byte/source cases, 21 relocations, 14 direct call checks; actual canonical pose, handle and root providers reused.",
+      "limits": "Required health/Lua/registration/property/flag/material providers and actual scene bindings remain explicit; no complete constructor or gameplay proof.",
+      "archived_artifacts": 494
+    },
+    {
+      "packet": "orch6-wreck-effect-item-cleanup-y",
+      "commit": "70a3392ed3d90c36d38af1fcd11ef5fbbd2f4d5f",
+      "report": "reports\\native_wreck_effect_item_cleanup.json",
+      "report_sha256": "9902bcb0a60009fd3084b269143d260fbb85b6dbde5d56511015e6cf9c520492",
+      "coverage": "Complete 238-byte normal item cleanup: captured section/child span, duplicate clears, fixed auxiliary iterator with current header reloads, byte09 before unlock.",
+      "validation": "Eight native/source pairs, X-to-Y source composition and source failure check; exact 131-byte raw-array provider reuse; 10 direct rows pass and 11 indirect boundaries explicit.",
+      "limits": "Getter projection and virtual dispatch use explicit fixture bridges. Original unwinding/dynamic destructors and production same-item mapping remain unproved.",
+      "archived_artifacts": 532
+    },
+    {
+      "packet": "orch6-mission-entity-lua-self-y",
+      "commit": "8e9331ee3679c4ad33e83344b48df9cc60dde0f0",
+      "report": "reports\\native_mission_entity_lua_self.json",
+      "report_sha256": "12f27a490f421bba39f6be46b21e6a79712db257656c27585e0a9f83a40bfc0e",
+      "coverage": "Complete 162-byte Lua-self getter: capture current world once, use actual embedded Lua owner and late actual pooled key, preserve temporary/output tracking cleanup.",
+      "validation": "Original-byte/source fixture uses actual Lua 5.1.1, pooled strings and world/key metamethod mutations; existing object providers reused.",
+      "limits": "Original FH3, Lua errors/longjmp, cleanup failure, mutable native stack aliases and runtime host binding remain unproved.",
+      "archived_artifacts": 319
+    }
+  ],
+  "validation": {
+    "compiled_commit": "ab297da426c15402763569b6e242112a79810497",
+    "exe_sha256": "4d44239546c2b3aef1ef6f0a4c7e51ac6797df5e01dade76ad710b5896e005de",
+    "build": "MSVC Win32 Release and both existing CTests passed",
+    "build_record": {
+      "compiled_commit": "ab297da426c15402763569b6e242112a79810497",
+      "command": [
+        "C:\\ProgramData\\miniconda3\\python.exe",
+        "-u",
+        "tools/integrate_workers.py",
+        "agent/orch6-20260912",
+        "--no-push"
+      ],
+      "log": "local\\orch6_integrate_y_20260913T112458.log"
+    },
+    "process_run": {
+      "compiled_commit": "ab297da426c15402763569b6e242112a79810497",
+      "run_commit": "ab297da426c15402763569b6e242112a79810497",
+      "compiled_input_drift": [],
+      "args": [
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\orch6_combined_ab297da4.exe",
+        "--frames",
+        "360",
+        "--press-start-frame",
+        "3",
+        "--menu-select",
+        "USN01",
+        "--mission-frames",
+        "120",
+        "--mission-frame-seconds",
+        "0.1",
+        "--game-root",
+        "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific",
+        "--fmod-dll",
+        "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\fmodex.dll",
+        "--fmod-event-dll",
+        "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\fmod_event.dll",
+        "--xlive-dll",
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\gfwl-private-runtime\\xlive.dll",
+        "--xlive-dependency",
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\gfwl-private-runtime\\msidcrl40.dll",
+        "--log",
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\orch6_combined_y.log",
+        "--order-frame",
+        "0",
+        "--order-unit",
+        "Enterprise",
+        "--order",
+        "moveto:Airfield2",
+        "--trajectory-csv",
+        "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\orch6_combined_y.csv"
+      ],
+      "exe_sha256": "4d44239546c2b3aef1ef6f0a4c7e51ac6797df5e01dade76ad710b5896e005de",
+      "preserved_executable": "local\\orch6_combined_ab297da4.exe",
+      "source_sha256": {
+        "src/game_hosts_ship_ai.cpp": "d13cf757bd05be794cf8fc7f7fc8fe99ec40f8b4d8fedc9adece77b251a985e3",
+        "src/game_hosts_units.cpp": "753659a4da3654b78ff13fd3b3dbb3881f5061baebcc81245fb8f1a93f365f0c",
+        "src/game_hosts_lua.cpp": "b9a66e97a871069a585a79501bd98b25a471140b943c79694c89552d9ea97e09",
+        "src/game_avoid_zone_runtime.cpp": "6bac077630082ea2097f53078dcf59bbdeb0fcd5d3260250a92ada5e18c0241b",
+        "src/ship_ai_avoidance_request.cpp": "ac52fdb77798b31f10b6a1927b80d6357844186c2bce0a38176827320df863fc",
+        "src/ship_ai_search_storage.cpp": "5fcc7208710274d7ef3523e23cc1ae74d4483225fd1842373d6066e5808f20e4",
+        "src/session_participant_pools.cpp": "4b3caa17635856f7f32fce4f2af65bc56c96fcde096716374a78a1912956a697",
+        "src/game_ship_avoidance_tuning_lua.cpp": "85243079baf1f442ce313cfd9825fab73fe94920c2087165847bcb494aa8840e",
+        "src/game_hosts_mission_frame.cpp": "650678575f86a3ecdad80750d1ef6aaab7b0245e2e178396b0c26f195606b2d9",
+        "src/game_hosts.cpp": "4bd96b3cf84309f1da8839eaebabc9bbd953f0571731f22bd27b1ac2d2d68b0a",
+        "src/game_hosts_ready.cpp": "e7d4c0d14f4efbfb37b4066c33a9bea10513f4b260a3d32ae7e1d7952e044e8c",
+        "src/game_pending_entity_runtime.cpp": "35124d70097985f350b412243bcce14204b308e43ad16d1102e6274f9dc92236",
+        "include/bsp/game_pending_entity_runtime.hpp": "16292f64307a3de3c93fd96606daad31f31a079e180e6bbb3a2b5e050c546303",
+        "src/game_hosts_menu.cpp": "55e4a8d91840389ada9bb3fb1e719eee782b7bffd95bbedcd50b0f5a528e2f0a",
+        "src/native_pending_entity_lock.cpp": "2b3a8b04354b0733b934a7bc39bd4b455784be805fa706b4feff3b885e17807a",
+        "src/native_singleton_destruction.cpp": "2270d642ebe0d41359dc4e847635fa5dcc5919f34e97f97008852fe3ab835134"
+      },
+      "process_check": "No matching reconstructed game process before launch",
+      "exit": 0,
+      "seconds": 10.378080368041992,
+      "trajectory_audit": {
+        "rows": 18557,
+        "nonfinite_rows": 0,
+        "nonfinite_units": [],
+        "airfield_samples": 241,
+        "airfield_unchanged": true
+      },
+      "avoidance_search": {
+        "queries": 2400,
+        "refills": 10,
+        "clears": 12
+      },
+      "cruise_owners": {
+        "reads": 1080,
+        "unavailable": 0
+      },
+      "generic_tick": {
+        "calls": 10080,
+        "unavailable": 0,
+        "units": 42,
+        "input_one": 42
+      },
+      "participant_pool": {
+        "scene_present": 1,
+        "scene_slots": 8,
+        "mode": 0
+      },
+      "world_registration": {
+        "unavailable": 0,
+        "nodes": 420,
+        "invalid_lists": 0,
+        "ships": 14,
+        "planes": 20
+      },
+      "world_expected_from_native_report": {
+        "created": 77,
+        "unknown": [],
+        "nodes": 420,
+        "counts": {
+          "1": 77,
+          "2": 77,
+          "4": 77,
+          "5": 77,
+          "6": 14,
+          "7": 4,
+          "9": 1,
+          "10": 3,
+          "11": 6,
+          "15": 20,
+          "16": 6,
+          "17": 4,
+          "18": 5,
+          "22": 5,
+          "27": 42,
+          "28": 1,
+          "69": 1
+        }
+      },
+      "observer_runtime": {
+        "initialized": true,
+        "drained": true
+      },
+      "unit_observer_lifetime": {
+        "units": 77,
+        "callback_then_observed": true,
+        "dispatch_owner_live_through_teardown": true,
+        "teardown_before_manager_drain": true
+      },
+      "pending_entity_runtime": {
+        "initial_counts": [
+          0,
+          0
+        ],
+        "atexit_status": [
+          0,
+          0
+        ],
+        "final_counts": [
+          0,
+          0
+        ],
+        "frame_passes": 240,
+        "storage": "same process raw24h owner pair",
+        "exit_scope": "Clean process exit; detailed real CRT callback observations remain in the S actual-library lifecycle fixture."
+      },
+      "limits": [
+        "Process-run evidence, not original-game visual or gameplay parity.",
+        "Constructor-owned unit roles remain unassigned until actual role-message delivery is recovered.",
+        "Obstacle node refresh, several state writers and motion phase remainders remain partial.",
+        "Untouched native cache bounds are preserved; original allocation history is not reproduced."
+      ]
+    },
+    "scope": "Application compatibility only. Empty mission queues do not establish execution of these new lifecycle paths; scoped native/source fixtures supply their stated evidence."
+  },
+  "evidence_archive": {
+    "worker_manifest": "local\\orch6_worker_archive_y.json",
+    "worker_sha256": "9a06a8790b0fce8b5cdb9cafd3c68929e8a71d4b8961eb3aa198f1698edde3fb",
+    "worker_artifacts": 1345,
+    "metadata_manifest": "local\\orch6_metadata_proof_y.json",
+    "metadata_sha256": "e3867cbf67235650a1bfd3796731920b5df58ad2dd59788492e26d15ea884050",
+    "metadata_artifacts": 6
+  },
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "saved": true,
+    "definitions": [
+      "reports/native_scene_initialization_function_definitions.json",
+      "reports/native_mission_entity_lua_self_function_definitions.json"
+    ],
+    "annotations": "Formal locked names/comments with prior values preserved and affected exports refreshed.",
+    "limits": "Supporting 42E950 getter is defined/analyzed only; no new C++ provider claimed. Native exception and dynamic-dispatch fixture boundaries remain explicit."
+  },
+  "corrections": [
+    "Property holder+04 is a kind discriminator, proven by 922DE0 copy dispatch and 922E20/774DC0 producers. Header comment corrected; historical constant and stored value preserved."
+  ],
+  "limitations": [
+    "Full game reconstruction, scene/lifecycle host binding and original visual/gameplay parity remain incomplete.",
+    "Required native providers and unsupported exception behavior remain documented; no successful defaults added."
+  ],
+  "stop_scope": "Finish and clean up the three already-assigned Y packets. No new reconstruction packets or agents were dispatched after the user requested closure."
+}

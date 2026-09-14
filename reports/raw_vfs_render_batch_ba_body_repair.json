@@ -1,0 +1,375 @@
+{
+  "reason": "Restore render batch scalar destructors saved instruction ownership; verify complete bytes and preserve existing names, comments, labels and callee flags.",
+  "entries": [
+    {
+      "address": "00b1e930",
+      "end_exclusive": "00b1e961",
+      "bytes": 49,
+      "sha256": "889fb208a153f16f193de1a3cc4581c8bbd6a204e65b8461f14120a0842828d3",
+      "before": "Function: BSP_RenderBatchPool_DeletingDestructor at 00b1e930\nSignature: undefined BSP_RenderBatchPool_DeletingDestructor(void)\nEntry: 00b1e930\nBody: 00b1e930 - 00b1e960",
+      "before_documentation": {
+        "hash": "3d9d72fb96d238b8a7a2c7119c13dd0feb4e51bcd830f71641380289152325a8",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b1e930",
+        "function_name": "BSP_RenderBatchPool_DeletingDestructor",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00b1e930]\nNative [00b1e930,00b1e961); ECX pool; stack flags; EAX original address; RET4. Clear 0108FE8C first, simple-owner phase, destroy dead slots, optional scalar-free. Actual18h batch,10h pool,8h lock owner and SAME singleton lifetime domain. Full raw borrowed entry arrays/free list, actual04, preserved08 and stale cells. Primary original/host17phase288word rerun passed. Zero recycle can allocate/throw; native EH static only. Component: reports/native_render_batch_lifetime_audit.json. Integration: docs/NATIVE_CAMERA_REFERENCE.md; reports/native_camera_reference_audit.json. Descriptive names are hypotheses; typed interfaces are not drop-in ABI or gameplay proof.",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "extraout_EAX",
+            "type": "undefined4 *",
+            "storage": "(register, 0x0, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 43,
+            "name": "LAB_00b1e95b"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "before_instruction_ownership": [
+        {
+          "address": "00b1e930",
+          "owner": "00b1e930"
+        },
+        {
+          "address": "00b1e931",
+          "owner": "00b1e930"
+        },
+        {
+          "address": "00b1e933",
+          "owner": "00b1e930"
+        },
+        {
+          "address": "00b1e93d",
+          "owner": "00b1e930"
+        },
+        {
+          "address": "00b1e940",
+          "owner": "00b1e930"
+        },
+        {
+          "address": "00b1e946",
+          "owner": "00b1e930"
+        },
+        {
+          "address": "00b1e94b",
+          "owner": "00b1e930"
+        },
+        {
+          "address": "00b1e950",
+          "owner": "00b1e930"
+        },
+        {
+          "address": "00b1e952",
+          "owner": "00b1e930"
+        },
+        {
+          "address": "00b1e953",
+          "owner": "00b1e930"
+        },
+        {
+          "address": "00b1e958",
+          "owner": null
+        },
+        {
+          "address": "00b1e95b",
+          "owner": "00b1e930"
+        },
+        {
+          "address": "00b1e95d",
+          "owner": "00b1e930"
+        },
+        {
+          "address": "00b1e95e",
+          "owner": "00b1e930"
+        }
+      ],
+      "after": "Function: BSP_RenderBatchPool_DeletingDestructor at 00b1e930\nSignature: void * __fastcall BSP_RenderBatchPool_DeletingDestructor(void * owner, void * unused_edx, uint flags)\nEntry: 00b1e930\nBody: 00b1e930 - 00b1e960",
+      "after_documentation": {
+        "hash": "3a124d71c9e2ece1686fc833155cfaeed85cb147ae910101084fa6e1bb47c865",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b1e930",
+        "function_name": "BSP_RenderBatchPool_DeletingDestructor",
+        "return_type": "void *",
+        "calling_convention": "__fastcall",
+        "plate_comment": "[BSP reconstruction 00b1e930]\nNative [00b1e930,00b1e961); ECX pool; stack flags; EAX original address; RET4. Clear 0108FE8C first, simple-owner phase, destroy dead slots, optional scalar-free. Actual18h batch,10h pool,8h lock owner and SAME singleton lifetime domain. Full raw borrowed entry arrays/free list, actual04, preserved08 and stale cells. Primary original/host17phase288word rerun passed. Zero recycle can allocate/throw; native EH static only. Component: reports/native_render_batch_lifetime_audit.json. Integration: docs/NATIVE_CAMERA_REFERENCE.md; reports/native_camera_reference_audit.json. Descriptive names are hypotheses; typed interfaces are not drop-in ABI or gameplay proof.",
+        "parameters": [
+          {
+            "ordinal": 0,
+            "name": "owner",
+            "type": "void *"
+          },
+          {
+            "ordinal": 1,
+            "name": "unused_edx",
+            "type": "void *"
+          },
+          {
+            "ordinal": 2,
+            "name": "flags",
+            "type": "uint"
+          }
+        ],
+        "local_variables": [],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 43,
+            "name": "LAB_00b1e95b"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "complete_body": true,
+      "prior_evidence_preserved": true,
+      "after_instruction_ownership_verified": 14
+    },
+    {
+      "address": "00b1d530",
+      "end_exclusive": "00b1d567",
+      "bytes": 55,
+      "sha256": "27638b0bf86644024f9c29830349d1f43b026856b157a9902072011cb81385a1",
+      "before": "Function: BSP_RenderBatchLock_DeletingDestructor at 00b1d530\nSignature: undefined BSP_RenderBatchLock_DeletingDestructor(void)\nEntry: 00b1d530\nBody: 00b1d530 - 00b1d566",
+      "before_documentation": {
+        "hash": "38ea2813ff9cbc80aa1c51c9ae10e6753e71a4195005df4f15956612ad743270",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b1d530",
+        "function_name": "BSP_RenderBatchLock_DeletingDestructor",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00b1d530]\nNative [00b1d530,00b1d567); ECX lock owner; stack flags; EAX original address; RET4. Concrete phase, existing actual owned-section destroy/drain, clear global, base phase, optional free. Actual18h batch,10h pool,8h lock owner and SAME singleton lifetime domain. Full raw borrowed entry arrays/free list, actual04, preserved08 and stale cells. Primary original/host17phase288word rerun passed. Zero recycle can allocate/throw; native EH static only. Component: reports/native_render_batch_lifetime_audit.json. Integration: docs/NATIVE_CAMERA_REFERENCE.md; reports/native_camera_reference_audit.json. Descriptive names are hypotheses; typed interfaces are not drop-in ABI or gameplay proof.",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "extraout_EAX",
+            "type": "undefined4 *",
+            "storage": "(register, 0x0, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 49,
+            "name": "LAB_00b1d561"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "before_instruction_ownership": [
+        {
+          "address": "00b1d530",
+          "owner": "00b1d530"
+        },
+        {
+          "address": "00b1d531",
+          "owner": "00b1d530"
+        },
+        {
+          "address": "00b1d533",
+          "owner": "00b1d530"
+        },
+        {
+          "address": "00b1d536",
+          "owner": "00b1d530"
+        },
+        {
+          "address": "00b1d53c",
+          "owner": "00b1d530"
+        },
+        {
+          "address": "00b1d541",
+          "owner": "00b1d530"
+        },
+        {
+          "address": "00b1d546",
+          "owner": "00b1d530"
+        },
+        {
+          "address": "00b1d550",
+          "owner": "00b1d530"
+        },
+        {
+          "address": "00b1d556",
+          "owner": "00b1d530"
+        },
+        {
+          "address": "00b1d558",
+          "owner": "00b1d530"
+        },
+        {
+          "address": "00b1d559",
+          "owner": "00b1d530"
+        },
+        {
+          "address": "00b1d55e",
+          "owner": null
+        },
+        {
+          "address": "00b1d561",
+          "owner": "00b1d530"
+        },
+        {
+          "address": "00b1d563",
+          "owner": "00b1d530"
+        },
+        {
+          "address": "00b1d564",
+          "owner": "00b1d530"
+        }
+      ],
+      "after": "Function: BSP_RenderBatchLock_DeletingDestructor at 00b1d530\nSignature: void * __fastcall BSP_RenderBatchLock_DeletingDestructor(void * owner, void * unused_edx, uint flags)\nEntry: 00b1d530\nBody: 00b1d530 - 00b1d566",
+      "after_documentation": {
+        "hash": "2a4c359bc7f424d6e62e0de9aaab5c155aabf95d2c08f800c185153d7ebc14d5",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b1d530",
+        "function_name": "BSP_RenderBatchLock_DeletingDestructor",
+        "return_type": "void *",
+        "calling_convention": "__fastcall",
+        "plate_comment": "[BSP reconstruction 00b1d530]\nNative [00b1d530,00b1d567); ECX lock owner; stack flags; EAX original address; RET4. Concrete phase, existing actual owned-section destroy/drain, clear global, base phase, optional free. Actual18h batch,10h pool,8h lock owner and SAME singleton lifetime domain. Full raw borrowed entry arrays/free list, actual04, preserved08 and stale cells. Primary original/host17phase288word rerun passed. Zero recycle can allocate/throw; native EH static only. Component: reports/native_render_batch_lifetime_audit.json. Integration: docs/NATIVE_CAMERA_REFERENCE.md; reports/native_camera_reference_audit.json. Descriptive names are hypotheses; typed interfaces are not drop-in ABI or gameplay proof.",
+        "parameters": [
+          {
+            "ordinal": 0,
+            "name": "owner",
+            "type": "void *"
+          },
+          {
+            "ordinal": 1,
+            "name": "unused_edx",
+            "type": "void *"
+          },
+          {
+            "ordinal": 2,
+            "name": "flags",
+            "type": "uint"
+          }
+        ],
+        "local_variables": [],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 49,
+            "name": "LAB_00b1d561"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "complete_body": true,
+      "prior_evidence_preserved": true,
+      "after_instruction_ownership_verified": 15
+    }
+  ],
+  "actions": [
+    {
+      "endpoint": "clear_instruction_flow_override",
+      "body": {
+        "address": "00b1e953"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Cleared flow override at 00b1e953 (was: CALL_RETURN, now: NONE)\"}"
+    },
+    {
+      "endpoint": "delete_function",
+      "body": {
+        "address": "00b1e930"
+      },
+      "result": "{\"success\": true, \"address\": \"00b1e930\", \"deleted_function\": \"BSP_RenderBatchPool_DeletingDestructor\", \"body_size\": 46, \"message\": \"Function 'BSP_RenderBatchPool_DeletingDestructor' deleted at 00b1e930\"}"
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00b1e930",
+        "end_address": "00b1e961"
+      },
+      "result": "{\"success\": true, \"start_address\": \"00b1e930\", \"end_address\": \"00b1e960\", \"bytes_disassembled\": 49, \"message\": \"Successfully disassembled 49 byte(s)\"}"
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00b1e930",
+        "name": "BSP_RenderBatchPool_DeletingDestructor",
+        "disassemble_first": false
+      },
+      "result": "{\"success\": true, \"address\": \"00b1e930\", \"function_name\": \"BSP_RenderBatchPool_DeletingDestructor\", \"entry_point\": \"00b1e930\", \"body_size\": 49, \"message\": \"Function created successfully at 00b1e930\", \"warnings\": [\"Function name 'BSP_RenderBatchPool_DeletingDestructor' \\u2014 main part 'RenderBatchPool_DeletingDestructor' is not PascalCase. Expected: RenderbatchpoolDeletingdestructor\", \"Function name 'BSP_RenderBatchPool_DeletingDestructor' \\u2014 main part 'RenderBatchPool_DeletingDestructor' contains underscores. Use PascalCase after the module prefix.\"]}"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00b1e930",
+        "prototype": "void* __fastcall BSP_RenderBatchPool_DeletingDestructor(void* owner, void* unused_edx, unsigned int flags)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00b1e930 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00b1e930",
+        "comment": "[BSP reconstruction 00b1e930]\nNative [00b1e930,00b1e961); ECX pool; stack flags; EAX original address; RET4. Clear 0108FE8C first, simple-owner phase, destroy dead slots, optional scalar-free. Actual18h batch,10h pool,8h lock owner and SAME singleton lifetime domain. Full raw borrowed entry arrays/free list, actual04, preserved08 and stale cells. Primary original/host17phase288word rerun passed. Zero recycle can allocate/throw; native EH static only. Component: reports/native_render_batch_lifetime_audit.json. Integration: docs/NATIVE_CAMERA_REFERENCE.md; reports/native_camera_reference_audit.json. Descriptive names are hypotheses; typed interfaces are not drop-in ABI or gameplay proof."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00b1e930\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "clear_instruction_flow_override",
+      "body": {
+        "address": "00b1d559"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Cleared flow override at 00b1d559 (was: CALL_RETURN, now: NONE)\"}"
+    },
+    {
+      "endpoint": "delete_function",
+      "body": {
+        "address": "00b1d530"
+      },
+      "result": "{\"success\": true, \"address\": \"00b1d530\", \"deleted_function\": \"BSP_RenderBatchLock_DeletingDestructor\", \"body_size\": 52, \"message\": \"Function 'BSP_RenderBatchLock_DeletingDestructor' deleted at 00b1d530\"}"
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00b1d530",
+        "end_address": "00b1d567"
+      },
+      "result": "{\"success\": true, \"start_address\": \"00b1d530\", \"end_address\": \"00b1d566\", \"bytes_disassembled\": 55, \"message\": \"Successfully disassembled 55 byte(s)\"}"
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00b1d530",
+        "name": "BSP_RenderBatchLock_DeletingDestructor",
+        "disassemble_first": false
+      },
+      "result": "{\"success\": true, \"address\": \"00b1d530\", \"function_name\": \"BSP_RenderBatchLock_DeletingDestructor\", \"entry_point\": \"00b1d530\", \"body_size\": 55, \"message\": \"Function created successfully at 00b1d530\", \"warnings\": [\"Function name 'BSP_RenderBatchLock_DeletingDestructor' \\u2014 main part 'RenderBatchLock_DeletingDestructor' is not PascalCase. Expected: RenderbatchlockDeletingdestructor\", \"Function name 'BSP_RenderBatchLock_DeletingDestructor' \\u2014 main part 'RenderBatchLock_DeletingDestructor' contains underscores. Use PascalCase after the module prefix.\"]}"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00b1d530",
+        "prototype": "void* __fastcall BSP_RenderBatchLock_DeletingDestructor(void* owner, void* unused_edx, unsigned int flags)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00b1d530 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00b1d530",
+        "comment": "[BSP reconstruction 00b1d530]\nNative [00b1d530,00b1d567); ECX lock owner; stack flags; EAX original address; RET4. Concrete phase, existing actual owned-section destroy/drain, clear global, base phase, optional free. Actual18h batch,10h pool,8h lock owner and SAME singleton lifetime domain. Full raw borrowed entry arrays/free list, actual04, preserved08 and stale cells. Primary original/host17phase288word rerun passed. Zero recycle can allocate/throw; native EH static only. Component: reports/native_render_batch_lifetime_audit.json. Integration: docs/NATIVE_CAMERA_REFERENCE.md; reports/native_camera_reference_audit.json. Descriptive names are hypotheses; typed interfaces are not drop-in ABI or gameplay proof."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00b1d530\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": "{\"success\": true, \"program\": \"battlestationspacific.exe\", \"message\": \"Program saved successfully\"}"
+    }
+  ],
+  "state": "complete_bodies_saved_prior_evidence_retained",
+  "exports_refreshed": [
+    "00b1e930",
+    "00b1d530"
+  ]
+}

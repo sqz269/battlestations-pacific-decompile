@@ -5,6 +5,7 @@
 #include <exception>
 #include <new>
 #include <stdexcept>
+#include <utility>
 
 #if !defined(_MSC_VER) || !defined(_M_IX86)
 #error Native camera ownership requires MSVC Win32.
@@ -121,7 +122,11 @@ void end_tail(NativeCameraOwner& owner) noexcept {
 }
 void finish_node(NativeCameraOwner& owner) {
     try {
-        destroy_native_node_00b6f440(owner.environment.nodes, owner.node);
+        auto& nodes = owner.environment.nodes;
+        if (nodes.uses_raw_name_pool())
+            destroy_native_node_00b6f440(nodes, owner.node, nodes.require_raw_name_pool());
+        else
+            destroy_native_node_00b6f440(nodes, owner.node);
     } catch (...) {
         end_tail(owner);
         throw;
@@ -142,6 +147,12 @@ void require_live(NativeCameraOwner& owner) {
 }
 
 NativeCameraOwner::NativeCameraOwner(void* slot, std::size_t bytes, NativeCameraEnvironment& access)
+    : NativeCameraOwner(slot, bytes, access, nullptr) {}
+NativeCameraOwner::NativeCameraOwner(void* slot, std::size_t bytes, NativeCameraEnvironment& access,
+    SceneAttachmentRuntime::BindingAdmission&& admission)
+    : NativeCameraOwner(slot, bytes, access, &admission) {}
+NativeCameraOwner::NativeCameraOwner(void* slot, std::size_t bytes, NativeCameraEnvironment& access,
+    SceneAttachmentRuntime::BindingAdmission* admission)
     : storage(prepare_storage(slot, bytes, access)), environment(access),
       node(storage.node, NativeNodePreconstructionBinding{}, access.nodes.node_virtual_0c, set_node_scene_00b6ed80, this),
       projection(CameraProjectionBacking{storage.camera.fov_1c4, storage.camera.aspect_1c8,
@@ -154,7 +165,8 @@ NativeCameraOwner::NativeCameraOwner(void* slot, std::size_t bytes, NativeCamera
     node.scene_attachment.world_changed = native_node_world_changed_00b6dbe0;
     node.scene_attachment.remove_scene = remove_native_node_scene_00b6ee10;
     try {
-        access.nodes.scenes.bind(node.scene_attachment);
+        if (admission) access.nodes.scenes.bind(node.scene_attachment, std::move(*admission));
+        else access.nodes.scenes.bind(node.scene_attachment);
     } catch (...) {
         storage.camera.~NativeCameraTailStorage();
         storage.node.~NativeNodeStorage();
@@ -172,11 +184,12 @@ NativeCameraOwner::~NativeCameraOwner() {
 void* construct_native_camera_00b71a80(NativeCameraOwner& owner, const NativeString& name) {
     if (owner.phase != NativeCameraOwner::Phase::prepared)
         throw std::logic_error("camera constructor requires its unused prepared slot");
+    auto& name_pool = owner.environment.nodes.require_semantic_name_pool();
     owner.phase = NativeCameraOwner::Phase::constructing;
     try {
         // Same-type placement transparently replaces the prefix; every binding
         // still addresses the actual fields. B6F5A0 owns its own failure cleanup.
-        construct_native_node_00b6f5a0(&owner.storage.node, 0x45c, name, owner.environment.nodes.strings);
+        construct_native_node_00b6f5a0(&owner.storage.node, 0x45c, name, name_pool);
     } catch (...) {
         end_tail(owner);
         throw;
@@ -245,6 +258,111 @@ void* construct_native_camera_00b71a80(NativeCameraOwner& owner, const NativeStr
     }
     owner.phase = NativeCameraOwner::Phase::live;
     return &owner.storage.node;
+}
+
+// Keep the native continuation literal: its volatile load and alias schedule
+// must remain identical to the established semantic entry above.
+namespace {
+void* construct_native_camera_raw(NativeCameraOwner& owner, const void* actual_name_header,
+    const NativeNodeRawConstants& constants, NativeViewportRegistry::Admission* admission) {
+    if (owner.phase != NativeCameraOwner::Phase::prepared)
+        throw std::logic_error("camera constructor requires its unused prepared slot");
+    auto& name_pool = owner.environment.nodes.require_raw_name_pool();
+    if (&constants.one_00d7a24c != &owner.environment.viewport.one_bits_00d7a24c)
+        throw std::logic_error("camera and node require the same actual D7A24C cell");
+    NativeViewportRegistry::Admission prepared;
+    const bool has_admission = admission != nullptr;
+    if (admission) {
+        auto& registry = admission->require_registry();
+        if (&owner.environment.viewport_views != &registry)
+            throw std::logic_error("camera viewport admission requires its exact installed resolver");
+        prepared = std::move(*admission); // caller token is empty before native callbacks
+    }
+    owner.phase = NativeCameraOwner::Phase::constructing;
+    try {
+        // Same-type placement transparently replaces the prefix; every binding
+        // still addresses the actual fields. B6F5A0 owns its own failure cleanup.
+        construct_native_node_00b6f5a0(&owner.storage.node, 0x45c, actual_name_header, name_pool, constants);
+    } catch (...) {
+        end_tail(owner);
+        throw;
+    }
+    camera_phase(owner);
+    auto& tail = owner.storage.camera;
+    auto& environment = owner.environment;
+    unsigned unwind_state = 0;
+    try {
+        // Shared allocator wrapper supplies exact state1 raw-allocation cleanup.
+        // If the viewport constructor throws, no +180 publication occurs.
+        tail.viewport_180 = has_admission
+            ? allocate_native_viewport_owner(environment.viewport, std::move(prepared))
+            : allocate_native_viewport_owner(environment.viewport);
+        initialize_system_fog_camera_slot_00b71ae3(owner.frame.fog_184);
+        for (auto& value : tail.zero_1b8) word(value, 0);
+        construct_camera_plane_set_00b659d0(tail.planes_2f4, environment.viewport.one_bits_00d7a24c);
+        tail.retained_438 = nullptr;
+        unwind_state = 2;
+        tail.borrowed_context_43c = nullptr;
+        const DWORD origin[2] = {0, 0};
+        set_native_viewport_origin_00b1f920(*tail.viewport_180, origin);
+        auto* const renderer = environment.viewport.renderer_00f8d394;
+        if (!renderer) throw std::logic_error("camera constructor requires the actual renderer");
+        const DWORD height = environment.viewport.renderer_access.parameters_00b1ff60(*renderer).height_10;
+        const DWORD width = environment.viewport.renderer_access.parameters_00b1ff60(*renderer).width_0c;
+        const DWORD dimensions[2] = {width, height};
+        set_native_viewport_dimensions_00b1f940(*tail.viewport_180, dimensions);
+        std::uint32_t depth;
+        __asm { fldz }
+        __asm { fstp dword ptr [depth] }
+        set_native_viewport_min_depth_00b1f750(*tail.viewport_180, depth);
+        __asm { fld1 }
+        __asm { fstp dword ptr [depth] }
+        set_native_viewport_max_depth_00b1f760(*tail.viewport_180, depth);
+        const std::uint32_t hundred = environment.constants.hundred_00ce3d08;
+        CameraAxis eye, target;
+        word(target[0], 0); word(target[1], hundred); word(target[2], hundred);
+        word(eye[0], 0); word(eye[1], hundred); word(eye[2], 0);
+        set_camera_look_at_00b700e0(owner.camera, eye, target, owner.pose, environment.crt,
+            environment.viewport.one_bits_00d7a24c);
+
+        const auto fov = environment.constants.fov_00ce7d20;
+        const auto far_plane = environment.constants.far_00d0c5f8;
+        const auto one = environment.viewport.one_bits_00d7a24c;
+        word(tail.fov_1c4, fov);
+        word(tail.aspect_1c8, environment.constants.aspect_00d5bd98);
+        word(tail.far_1d8, far_plane);
+        const auto scalar = environment.constants.scalar_00ce77fc;
+        word(tail.scalar_1cc, 0); word(tail.scalar_1d0, 0);
+        word(tail.near_1d4, one); word(tail.scalar_178, scalar);
+        tail.valid_flags_2f0 = 1;
+        tail.render_mode_198 = 0; tail.render_mask_19c = 1;
+        tail.clear_flags_188 = 0;
+        const auto scalar_1dc = environment.constants.scalar_00ce3c88;
+        tail.clear_stencil_194 = 0; tail.enabled_17c = 1;
+        word(tail.clear_depth_18c, one); word(tail.scalar_1dc, scalar_1dc);
+        tail.clear_color_190 = 0;
+        word(tail.axis_y_440[0], 0); word(tail.axis_y_440[1], one); word(tail.axis_y_440[2], 0);
+        word(tail.axis_x_44c[0], one); word(tail.axis_x_44c[1], 0); word(tail.axis_x_44c[2], 0);
+        tail.byte_174 = 1;
+    } catch (...) {
+        try {
+            if (unwind_state == 2) release_438(owner); // CC1AE3 ->605FD0
+            finish_node(owner); // CC1AD0, no published viewport/fog cleanup
+        } catch (...) { std::terminate(); }
+        throw;
+    }
+    owner.phase = NativeCameraOwner::Phase::live;
+    return &owner.storage.node;
+}
+} // namespace
+
+void* construct_native_camera_00b71a80(NativeCameraOwner& owner, const void* actual_name_header,
+    const NativeNodeRawConstants& constants) {
+    return construct_native_camera_raw(owner, actual_name_header, constants, nullptr);
+}
+void* construct_native_camera_00b71a80(NativeCameraOwner& owner, const void* actual_name_header,
+    const NativeNodeRawConstants& constants, NativeViewportRegistry::Admission&& admission) {
+    return construct_native_camera_raw(owner, actual_name_header, constants, &admission);
 }
 
 void set_native_camera_viewport_00b71990(NativeCameraOwner& owner, NativeViewportOwner* value) {

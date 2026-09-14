@@ -69,6 +69,10 @@ public:
     // pool slot, preserving its entire preimage. Registers only the external
     // scene association. Call B71A80 below before using any native fields.
     NativeCameraOwner(void* actual_slot, std::size_t slot_bytes, NativeCameraEnvironment&);
+    // Consume only a prepared host scene-binding credit; native construction
+    // and raw-slot ownership remain explicit. No token is retained by the owner.
+    NativeCameraOwner(void* actual_slot, std::size_t slot_bytes, NativeCameraEnvironment&,
+        SceneAttachmentRuntime::BindingAdmission&&);
     NativeCameraOwner(const NativeCameraOwner&) = delete;
     NativeCameraOwner& operator=(const NativeCameraOwner&) = delete;
     // Abandoned preparation only removes its host association and ends the
@@ -85,6 +89,9 @@ public:
     CameraFrameState frame;
     const CameraPoseAccess pose;
     Phase phase{Phase::prepared}; // external lifetime bookkeeping, no native word
+private:
+    NativeCameraOwner(void*, std::size_t, NativeCameraEnvironment&,
+        SceneAttachmentRuntime::BindingAdmission*);
 };
 
 // Original ECX=actual slot, stack name pointer, EAX=same slot, RET4. Runs the
@@ -92,6 +99,19 @@ public:
 // in native order. Constructor unwind follows states0/1/2; it does not release
 // published +180/+184. The caller still owns the physical slot on failure.
 void* construct_native_camera_00b71a80(NativeCameraOwner&, const NativeString&);
+// Actual header forwarded unchanged; the persistent runtime selects raw cleanup.
+// Context, publication cells, providers and companions outlive retained references.
+// Node and viewport must borrow the same actual D7A24C cell; mode/identity
+// rejection leaves prepared lifetimes intact. Direct cleanup can throw; queue
+// callbacks retain their noexcept boundary.
+void* construct_native_camera_00b71a80(NativeCameraOwner&, const void* actual_name_header,
+    const NativeNodeRawConstants&);
+// Prepared first-viewport association in the same installed resolver. Validate
+// and take the token before native construction; register the successful owner
+// before +180 publication. Early unused admission is cancelled on unwind;
+// a published viewport and its live record survive late native constructor failure.
+void* construct_native_camera_00b71a80(NativeCameraOwner&, const void* actual_name_header,
+    const NativeNodeRawConstants&, NativeViewportRegistry::Admission&&);
 // Actual raw +180 publication, retain new, release captured old; same identity
 // skips both counts. Supports the concrete D5E5F8 viewport profile.
 void set_native_camera_viewport_00b71990(NativeCameraOwner&, NativeViewportOwner*);

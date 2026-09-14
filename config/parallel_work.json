@@ -10730,6 +10730,723 @@
       "new_native_bodies": 0,
       "existing_body_extensions": 1,
       "boundary": "Actual storage and bounded module validation; full service/camera, native ABI and gameplay remain open; reports/native_node_lifetime_bd_validation.json"
+    },
+    {
+      "id": "orch4_input_device_index_ax",
+      "worker": "orch4-device-tree-ax",
+      "done": true,
+      "state": "integrated_source_or_evidence_validated",
+      "function_addresses": [
+        "0055c110",
+        "00554980",
+        "0055b520",
+        "0055ba80",
+        "0055bf00"
+      ],
+      "code_ownership": [
+        "include/bsp/native_input_device_index.hpp",
+        "src/native_input_device_index.cpp",
+        "docs/NATIVE_INPUT_DEVICE_INDEX.md",
+        "reports/native_input_device_index.json"
+      ],
+      "dependencies": [
+        "reports/native_input_settings_tree_insertion.json",
+        "reports/native_input_settings_tree_cleanup.json",
+        "reports/native_input_settings_vector_storage.json"
+      ],
+      "boundary": "Actual native storage and complete normal root contracts; shared APIs and Ghidra mutations owned by orch4 integrator. No game interaction. Helpers may have explicitly bounded reached-path coverage.",
+      "output_files": [
+        "include/bsp/native_input_device_index.hpp",
+        "src/native_input_device_index.cpp",
+        "docs/NATIVE_INPUT_DEVICE_INDEX.md",
+        "reports/native_input_device_index.json"
+      ],
+      "integration_report": "reports/native_input_keyboard_storage_ax_validation.json"
+    },
+    {
+      "id": "orch4_input_vector_map_index_ax",
+      "worker": "orch4-vector-maps-ax",
+      "done": true,
+      "state": "integrated_source_or_evidence_validated",
+      "function_addresses": [
+        "006a44b0",
+        "006a45c0",
+        "006a4ca0",
+        "005548c0",
+        "006a1a20",
+        "006a38b0",
+        "006a19a0",
+        "006a3ab0",
+        "0069ccf0",
+        "006a20d0",
+        "006a47f0",
+        "0069cd50"
+      ],
+      "code_ownership": [
+        "include/bsp/native_input_vector_map_index.hpp",
+        "src/native_input_vector_map_index.cpp",
+        "docs/NATIVE_INPUT_VECTOR_MAP_INDEX.md",
+        "reports/native_input_vector_map_index.json"
+      ],
+      "dependencies": [
+        "reports/native_input_settings_tree_insertion.json",
+        "reports/native_input_settings_tree_cleanup.json",
+        "reports/native_input_settings_vector_storage.json"
+      ],
+      "boundary": "Actual native storage and complete normal root contracts; shared APIs and Ghidra mutations owned by orch4 integrator. No game interaction. Helpers may have explicitly bounded reached-path coverage.",
+      "output_files": [
+        "include/bsp/native_input_vector_map_index.hpp",
+        "src/native_input_vector_map_index.cpp",
+        "docs/NATIVE_INPUT_VECTOR_MAP_INDEX.md",
+        "reports/native_input_vector_map_index.json"
+      ],
+      "integration_report": "reports/native_input_keyboard_storage_ax_validation.json"
+    },
+    {
+      "id": "orch4_input_scale_maps_ax",
+      "worker": "orch4-scale-maps-ax",
+      "done": true,
+      "state": "integrated_source_or_evidence_validated",
+      "function_addresses": [
+        "0055b400",
+        "0055b490",
+        "00444be0",
+        "006a5aa0",
+        "00443d60",
+        "00444910",
+        "00554ec0",
+        "00558570",
+        "006a4dc0",
+        "00554cd0",
+        "0055b300"
+      ],
+      "code_ownership": [
+        "include/bsp/native_input_scale_maps.hpp",
+        "src/native_input_scale_maps.cpp",
+        "docs/NATIVE_INPUT_SCALE_MAPS.md",
+        "reports/native_input_scale_maps.json"
+      ],
+      "dependencies": [
+        "reports/native_input_settings_tree_insertion.json",
+        "reports/native_input_settings_tree_cleanup.json",
+        "reports/native_input_settings_vector_storage.json"
+      ],
+      "boundary": "Actual native storage and complete normal root contracts; shared APIs and Ghidra mutations owned by orch4 integrator. No game interaction. Helpers may have explicitly bounded reached-path coverage.",
+      "output_files": [
+        "include/bsp/native_input_scale_maps.hpp",
+        "src/native_input_scale_maps.cpp",
+        "docs/NATIVE_INPUT_SCALE_MAPS.md",
+        "reports/native_input_scale_maps.json"
+      ],
+      "integration_report": "reports/native_input_keyboard_storage_ax_validation.json"
+    },
+    {
+      "id": "orch4_input_keyboard_iterators_ax",
+      "worker": "orch4-20260910",
+      "done": true,
+      "state": "integrated_source_or_evidence_validated",
+      "function_addresses": [
+        "0048d3b0",
+        "00546840",
+        "00552770",
+        "00552d40",
+        "00552e20",
+        "005540c0",
+        "0055ac80",
+        "0055b230"
+      ],
+      "code_ownership": [
+        "include/bsp/native_input_keyboard_iterators.hpp",
+        "src/native_input_keyboard_iterators.cpp",
+        "docs/NATIVE_INPUT_KEYBOARD_ITERATORS.md",
+        "reports/native_input_keyboard_iterators.json",
+        "include/bsp/native_input_keyboard_apply.hpp",
+        "src/native_input_keyboard_apply.cpp",
+        "include/bsp/native_input_settings_tables.hpp",
+        "src/native_input_settings_tables.cpp"
+      ],
+      "dependencies": [
+        "reports/native_input_settings_tree_insertion.json",
+        "reports/native_input_settings_tree_cleanup.json",
+        "reports/native_input_settings_vector_storage.json"
+      ],
+      "boundary": "Actual native storage and complete normal root contracts; shared APIs and Ghidra mutations owned by orch4 integrator. No game interaction. Helpers may have explicitly bounded reached-path coverage.",
+      "output_files": [
+        "docs/NATIVE_INPUT_KEYBOARD_ITERATORS.md",
+        "docs/NATIVE_INPUT_KEYBOARD_STORAGE_AX.md",
+        "include/bsp/native_input_keyboard_apply.hpp",
+        "include/bsp/native_input_keyboard_iterators.hpp",
+        "include/bsp/native_input_keyboard_storage.hpp",
+        "include/bsp/native_input_settings_tables.hpp",
+        "include/bsp/native_input_settings_tree_cleanup.hpp",
+        "reports/native_input_keyboard_iterators.json",
+        "reports/native_input_keyboard_iterators_ax_abi_repair.json",
+        "reports/native_input_keyboard_iterators_ax_body_repair.json",
+        "reports/native_input_keyboard_iterators_ax_flow_repair.json",
+        "reports/native_input_keyboard_storage_ax_annotations.json",
+        "reports/native_input_keyboard_storage_ax_validation.json",
+        "reports/native_input_scale_maps_ax_body_repair.json",
+        "reports/native_input_scale_maps_ax_destructor_flow_repair.json",
+        "reports/native_input_scale_maps_ax_flow_repair.json",
+        "reports/native_input_vector_map_index_ax_body_repair.json",
+        "reports/native_input_vector_map_index_ax_flow_repair.json",
+        "src/native_input_keyboard_apply.cpp",
+        "src/native_input_keyboard_iterators.cpp",
+        "src/native_input_keyboard_storage.cpp",
+        "src/native_input_settings_tables.cpp",
+        "src/native_input_settings_tree_cleanup.cpp"
+      ],
+      "integration_report": "reports/native_input_keyboard_storage_ax_validation.json"
+    },
+    {
+      "id": "orch4_input_host_gap_ax",
+      "worker": "orch4-input-host-audit-ax",
+      "done": true,
+      "state": "integrated_source_or_evidence_validated",
+      "function_addresses": [],
+      "output_files": [
+        "docs/NATIVE_INPUT_HOST_INTEGRATION_GAP_AX.md",
+        "reports/native_input_host_integration_gap_ax.json"
+      ],
+      "code_ownership": [
+        "docs/NATIVE_INPUT_HOST_INTEGRATION_GAP_AX.md",
+        "reports/native_input_host_integration_gap_ax.json"
+      ],
+      "dependencies": [
+        "reports/native_input_keyboard_storage_ax_validation.json"
+      ],
+      "boundary": "Bounded integration evidence, no production/Ghidra/game mutation.",
+      "integration_report": "reports/native_input_keyboard_storage_ax_validation.json"
+    },
+    {
+      "id": "orch4_scale_range_validation_ax",
+      "worker": "orch4-vector-maps-ax",
+      "done": true,
+      "state": "integrated_source_or_evidence_validated",
+      "function_addresses": [],
+      "output_files": [
+        "reports/native_input_scale_range_ax_validation.json"
+      ],
+      "code_ownership": [
+        "reports/native_input_scale_range_ax_validation.json"
+      ],
+      "dependencies": [
+        "reports/native_input_keyboard_storage_ax_validation.json"
+      ],
+      "boundary": "Bounded integration evidence, no production/Ghidra/game mutation.",
+      "integration_report": "reports/native_input_keyboard_storage_ax_validation.json"
+    },
+    {
+      "id": "orch4_input_preimages_ay",
+      "worker": "orch4-input-host-audit-ax",
+      "done": true,
+      "state": "integrated_source_or_evidence_validated",
+      "function_addresses": [],
+      "output_files": [
+        "docs/NATIVE_INPUT_PREIMAGE_PROVENANCE_AY.md",
+        "reports/native_input_preimage_provenance_ay.json"
+      ],
+      "code_ownership": [
+        "docs/NATIVE_INPUT_PREIMAGE_PROVENANCE_AY.md",
+        "reports/native_input_preimage_provenance_ay.json"
+      ],
+      "dependencies": [
+        "reports/native_input_keyboard_storage_ax_validation.json"
+      ],
+      "boundary": "Bounded integration evidence, no production/Ghidra/game mutation.",
+      "integration_report": "reports/native_input_keyboard_storage_ax_validation.json"
+    },
+    {
+      "id": "orch4_input_settings_runtime_ay",
+      "worker": "orch4-settings-runtime-ay",
+      "done": true,
+      "state": "source_integrated_combined_build_and_fixtures_passed",
+      "function_addresses": [],
+      "code_ownership": [
+        "include/bsp/game_input_settings_runtime.hpp",
+        "src/game_input_settings_runtime.cpp",
+        "docs/GAME_INPUT_SETTINGS_RUNTIME_AY.md",
+        "reports/game_input_settings_runtime_ay.json"
+      ],
+      "output_files": [
+        "include/bsp/game_input_settings_runtime.hpp",
+        "src/game_input_settings_runtime.cpp",
+        "docs/GAME_INPUT_SETTINGS_RUNTIME_AY.md",
+        "reports/game_input_settings_runtime_ay.json"
+      ],
+      "dependencies": [
+        "reports/native_input_keyboard_storage_ax_validation.json"
+      ],
+      "boundary": "Source composition over actual publications and existing reconstructed methods; no native/Ghidra mutation or gameplay claim.",
+      "integration_report": "reports/input_composition_ay_validation.json"
+    },
+    {
+      "id": "orch4_input_settings_singleton_ay",
+      "worker": "orch4-settings-singleton-ay",
+      "done": true,
+      "state": "source_integrated_combined_build_and_fixtures_passed",
+      "function_addresses": [],
+      "code_ownership": [
+        "include/bsp/game_hosts_singletons.hpp",
+        "src/game_hosts_singletons.cpp",
+        "docs/GAME_INPUT_SETTINGS_SINGLETON_AY.md",
+        "reports/game_input_settings_singleton_ay.json"
+      ],
+      "output_files": [
+        "include/bsp/game_hosts_singletons.hpp",
+        "src/game_hosts_singletons.cpp",
+        "docs/GAME_INPUT_SETTINGS_SINGLETON_AY.md",
+        "reports/game_input_settings_singleton_ay.json"
+      ],
+      "dependencies": [
+        "reports/native_input_keyboard_storage_ax_validation.json"
+      ],
+      "boundary": "Source composition over actual publications and existing reconstructed methods; no native/Ghidra mutation or gameplay claim.",
+      "integration_report": "reports/input_composition_ay_validation.json"
+    },
+    {
+      "id": "orch4_input_action_contexts_ay",
+      "worker": "orch4-action-contexts-ay",
+      "done": true,
+      "state": "source_integrated_combined_build_and_fixtures_passed",
+      "function_addresses": [],
+      "code_ownership": [
+        "include/bsp/game_input_actions.hpp",
+        "src/game_input_actions.cpp",
+        "docs/GAME_INPUT_ACTION_CONTEXTS_AY.md",
+        "reports/game_input_action_contexts_ay.json"
+      ],
+      "output_files": [
+        "include/bsp/game_input_actions.hpp",
+        "src/game_input_actions.cpp",
+        "docs/GAME_INPUT_ACTION_CONTEXTS_AY.md",
+        "reports/game_input_action_contexts_ay.json"
+      ],
+      "dependencies": [
+        "reports/native_input_keyboard_storage_ax_validation.json"
+      ],
+      "boundary": "Source composition over actual publications and existing reconstructed methods; no native/Ghidra mutation or gameplay claim.",
+      "integration_report": "reports/input_composition_ay_validation.json"
+    },
+    {
+      "id": "orch4_raw_lua_fundamentals_ay",
+      "worker": "orch4-20260910",
+      "done": true,
+      "state": "source_integrated_combined_build_and_fixtures_passed",
+      "function_addresses": [
+        "00884770",
+        "00b68340",
+        "00b667d0",
+        "00b66b80"
+      ],
+      "code_ownership": [
+        "include/bsp/native_lua_fundamentals.hpp",
+        "src/native_lua_fundamentals.cpp",
+        "include/bsp/native_singleton_destruction.hpp",
+        "src/native_singleton_destruction.cpp",
+        "docs/NATIVE_LUA_FUNDAMENTALS_RAW_LIFETIME_AY.md",
+        "reports/native_lua_fundamentals_raw_lifetime_ay.json",
+        "reports/native_lua_fundamentals_raw_lifetime_ay_annotations.json",
+        "reports/native_lua_fundamentals_raw_lifetime_ay_body_repair.json"
+      ],
+      "output_files": [
+        "include/bsp/native_lua_fundamentals.hpp",
+        "src/native_lua_fundamentals.cpp",
+        "include/bsp/native_singleton_destruction.hpp",
+        "src/native_singleton_destruction.cpp",
+        "docs/NATIVE_LUA_FUNDAMENTALS_RAW_LIFETIME_AY.md",
+        "reports/native_lua_fundamentals_raw_lifetime_ay.json",
+        "reports/native_lua_fundamentals_raw_lifetime_ay_annotations.json",
+        "reports/native_lua_fundamentals_raw_lifetime_ay_body_repair.json"
+      ],
+      "dependencies": [
+        "reports/input_composition_ay_validation.json"
+      ],
+      "boundary": "Bounded source composition, storage behavior or evidence; no original game/ABI claim.",
+      "integration_report": "reports/input_composition_ay_validation.json"
+    },
+    {
+      "id": "orch4_settings_host_validation_ay",
+      "worker": "orch4-settings-singleton-ay",
+      "done": true,
+      "state": "source_integrated_combined_build_and_fixtures_passed",
+      "function_addresses": [],
+      "code_ownership": [
+        "reports/game_input_settings_host_ay_validation.json"
+      ],
+      "output_files": [
+        "reports/game_input_settings_host_ay_validation.json"
+      ],
+      "dependencies": [
+        "reports/input_composition_ay_validation.json"
+      ],
+      "boundary": "Bounded source composition, storage behavior or evidence; no original game/ABI claim.",
+      "integration_report": "reports/input_composition_ay_validation.json"
+    },
+    {
+      "id": "orch4_raw_vfs_host_graph_az",
+      "worker": "orch4-raw-vfs-audit-az",
+      "done": true,
+      "state": "source_dependency_audit_integrated",
+      "function_addresses": [],
+      "code_ownership": [
+        "docs/NATIVE_VFS_HOST_GRAPH_AZ.md",
+        "reports/native_vfs_host_graph_az.json"
+      ],
+      "output_files": [
+        "docs/NATIVE_VFS_HOST_GRAPH_AZ.md",
+        "reports/native_vfs_host_graph_az.json"
+      ],
+      "dependencies": [
+        "reports/input_composition_ay_validation.json"
+      ],
+      "boundary": "Bounded source composition, storage behavior or evidence; no original game/ABI claim."
+    },
+    {
+      "id": "orch4_native_lua_service_bindings_az",
+      "worker": "orch4-lua-bindings-az",
+      "done": true,
+      "state": "source_integrated_exact_combined_build_and_fixtures_passed",
+      "function_addresses": [],
+      "code_ownership": [
+        "include/bsp/native_lua_service_bindings.hpp",
+        "src/native_lua_service_bindings.cpp",
+        "docs/NATIVE_LUA_SERVICE_BINDINGS_AZ.md",
+        "reports/native_lua_service_bindings_az.json"
+      ],
+      "output_files": [
+        "include/bsp/native_lua_service_bindings.hpp",
+        "src/native_lua_service_bindings.cpp",
+        "docs/NATIVE_LUA_SERVICE_BINDINGS_AZ.md",
+        "reports/native_lua_service_bindings_az.json"
+      ],
+      "dependencies": [
+        "reports/input_composition_ay_validation.json"
+      ],
+      "boundary": "Bounded source composition, storage behavior or evidence; no original game/ABI claim.",
+      "integration_report": "reports/input_lua_vfs_services_az_validation.json"
+    },
+    {
+      "id": "orch4_mpak_lookup_storage_az",
+      "worker": "orch4-mpak-lookup-az",
+      "done": true,
+      "state": "source_integrated_exact_combined_build_and_fixtures_passed",
+      "function_addresses": [
+        "00bb4140",
+        "00bb4f40",
+        "005efba0"
+      ],
+      "code_ownership": [
+        "include/bsp/native_mpak_lookup_storage.hpp",
+        "src/native_mpak_lookup_storage.cpp",
+        "docs/NATIVE_MPAK_LOOKUP_STORAGE_AZ.md",
+        "reports/native_mpak_lookup_storage_az.json"
+      ],
+      "output_files": [
+        "include/bsp/native_mpak_lookup_storage.hpp",
+        "src/native_mpak_lookup_storage.cpp",
+        "docs/NATIVE_MPAK_LOOKUP_STORAGE_AZ.md",
+        "reports/native_mpak_lookup_storage_az.json"
+      ],
+      "dependencies": [
+        "reports/input_composition_ay_validation.json"
+      ],
+      "boundary": "Bounded source composition, storage behavior or evidence; no original game/ABI claim.",
+      "integration_report": "reports/input_lua_vfs_services_az_validation.json"
+    },
+    {
+      "id": "orch4_mpak_offset_copy_storage_az",
+      "worker": "orch4-mpak-offset-copy-az",
+      "done": true,
+      "state": "source_integrated_exact_combined_build_and_fixtures_passed",
+      "function_addresses": [
+        "00bb6180"
+      ],
+      "code_ownership": [
+        "include/bsp/native_mpak_offset_copy_storage.hpp",
+        "src/native_mpak_offset_copy_storage.cpp",
+        "docs/NATIVE_MPAK_OFFSET_COPY_STORAGE_AZ.md",
+        "reports/native_mpak_offset_copy_storage_az.json"
+      ],
+      "output_files": [
+        "include/bsp/native_mpak_offset_copy_storage.hpp",
+        "src/native_mpak_offset_copy_storage.cpp",
+        "docs/NATIVE_MPAK_OFFSET_COPY_STORAGE_AZ.md",
+        "reports/native_mpak_offset_copy_storage_az.json"
+      ],
+      "dependencies": [
+        "reports/input_composition_ay_validation.json"
+      ],
+      "boundary": "Bounded source composition, storage behavior or evidence; no original game/ABI claim.",
+      "integration_report": "reports/input_lua_vfs_services_az_validation.json"
+    },
+    {
+      "id": "orch4_readonly_native_data_az",
+      "worker": "orch4-20260910",
+      "done": true,
+      "state": "source_integrated_exact_combined_build_and_fixtures_passed",
+      "function_addresses": [],
+      "code_ownership": [
+        "include/bsp/game_native_readonly_data.hpp",
+        "src/game_native_readonly_data.cpp",
+        "docs/GAME_NATIVE_READONLY_DATA_AZ.md",
+        "reports/game_native_readonly_data_az.json"
+      ],
+      "output_files": [
+        "include/bsp/game_native_readonly_data.hpp",
+        "src/game_native_readonly_data.cpp",
+        "docs/GAME_NATIVE_READONLY_DATA_AZ.md",
+        "reports/game_native_readonly_data_az.json"
+      ],
+      "dependencies": [
+        "reports/input_lua_vfs_services_az_validation.json"
+      ],
+      "boundary": "Actual source services; retain native/storage/exception/host boundaries.",
+      "integration_report": "reports/input_lua_vfs_services_az_validation.json"
+    },
+    {
+      "id": "orch4_mpak_container_storage_az",
+      "worker": "orch4-mpak-containers-az",
+      "done": true,
+      "state": "bounded_source_integrated_saved_bodies_repaired_exact_combined_fixtures_passed",
+      "function_addresses": [
+        "00bb7a20",
+        "00bb7ba0",
+        "00a40d60",
+        "00bb6220",
+        "00bb6e60",
+        "00bb71f0"
+      ],
+      "code_ownership": [
+        "include/bsp/native_mpak_container_storage.hpp",
+        "src/native_mpak_container_storage.cpp",
+        "docs/NATIVE_MPAK_CONTAINER_STORAGE_AZ.md",
+        "reports/native_mpak_container_storage_az.json"
+      ],
+      "output_files": [
+        "include/bsp/native_mpak_container_storage.hpp",
+        "src/native_mpak_container_storage.cpp",
+        "docs/NATIVE_MPAK_CONTAINER_STORAGE_AZ.md",
+        "reports/native_mpak_container_storage_az.json"
+      ],
+      "dependencies": [
+        "reports/input_lua_vfs_services_az_validation.json"
+      ],
+      "boundary": "Actual source services; retain native/storage/exception/host boundaries.",
+      "integration_report": "reports/raw_vfs_lifetime_ba_validation.json"
+    },
+    {
+      "id": "orch4_physical_stream_lifetime_ba",
+      "worker": "orch4-physical-lifetime-ba",
+      "done": true,
+      "state": "bounded_source_integrated_saved_bodies_repaired_exact_combined_fixtures_passed",
+      "function_addresses": [
+        "00bf42a0",
+        "00bf4370"
+      ],
+      "code_ownership": [
+        "include/bsp/native_physical_stream_open.hpp",
+        "src/native_physical_stream_open.cpp",
+        "include/bsp/native_singleton_destruction.hpp",
+        "src/native_singleton_destruction.cpp",
+        "docs/NATIVE_PHYSICAL_STREAM_RAW_LIFETIME_BA.md",
+        "reports/native_physical_stream_raw_lifetime_ba.json"
+      ],
+      "output_files": [
+        "include/bsp/native_physical_stream_open.hpp",
+        "src/native_physical_stream_open.cpp",
+        "include/bsp/native_singleton_destruction.hpp",
+        "src/native_singleton_destruction.cpp",
+        "docs/NATIVE_PHYSICAL_STREAM_RAW_LIFETIME_BA.md",
+        "reports/native_physical_stream_raw_lifetime_ba.json"
+      ],
+      "dependencies": [
+        "reports/input_lua_vfs_services_az_validation.json"
+      ],
+      "boundary": "Actual source services; retain native/storage/exception/host boundaries.",
+      "integration_report": "reports/raw_vfs_lifetime_ba_validation.json"
+    },
+    {
+      "id": "orch4_render_batch_lifetime_ba",
+      "worker": "orch4-batch-lifetime-ba",
+      "done": true,
+      "state": "bounded_source_integrated_saved_bodies_repaired_exact_combined_fixtures_passed",
+      "function_addresses": [
+        "00b1e870",
+        "00b1cd90",
+        "00b1e930",
+        "00b1d530"
+      ],
+      "code_ownership": [
+        "include/bsp/native_render_batch_lifetime.hpp",
+        "src/native_render_batch_lifetime.cpp",
+        "docs/NATIVE_RENDER_BATCH_RAW_LIFETIME_BA.md",
+        "reports/native_render_batch_raw_lifetime_ba.json"
+      ],
+      "output_files": [
+        "include/bsp/native_render_batch_lifetime.hpp",
+        "src/native_render_batch_lifetime.cpp",
+        "docs/NATIVE_RENDER_BATCH_RAW_LIFETIME_BA.md",
+        "reports/native_render_batch_raw_lifetime_ba.json"
+      ],
+      "dependencies": [
+        "reports/input_lua_vfs_services_az_validation.json"
+      ],
+      "boundary": "Actual source services; retain native/storage/exception/host boundaries.",
+      "integration_report": "reports/raw_vfs_lifetime_ba_validation.json"
+    },
+    {
+      "id": "orch4_type_counter_raw_lifetime_bb",
+      "worker": "orch4-type-counter-bb",
+      "done": true,
+      "state": "bounded_source_integrated_saved_body_repaired_combined_fixture_passed",
+      "function_addresses": [
+        "006fac20",
+        "006fad40"
+      ],
+      "code_ownership": [
+        "include/bsp/light_type_bootstrap.hpp",
+        "src/light_type_bootstrap.cpp"
+      ],
+      "dependencies": [
+        "orch4_physical_stream_lifetime_ba",
+        "orch4_render_batch_lifetime_ba"
+      ],
+      "boundary": "Source owner/storage composition only; inherited native EH and production host limits remain.",
+      "integration_report": "reports/vfs_storage_owner_bb_validation.json"
+    },
+    {
+      "id": "orch4_vfs_raw_ownership_composition_bb",
+      "worker": "orch4-vfs-raw-bb",
+      "done": true,
+      "state": "source_owner_bundle_integrated_combined_raw_fixtures_passed",
+      "function_addresses": [],
+      "code_ownership": [
+        "include/bsp/native_vfs_owner_services.hpp",
+        "src/native_vfs_owner_services.cpp"
+      ],
+      "dependencies": [
+        "orch4_type_counter_raw_lifetime_bb"
+      ],
+      "boundary": "Source owner/storage composition only; inherited native EH and production host limits remain.",
+      "integration_report": "reports/vfs_storage_owner_bb_validation.json"
+    },
+    {
+      "id": "orch4_mpak_storage_composition_bb",
+      "worker": "orch4-mpak-storage-bb",
+      "done": true,
+      "state": "source_storage_bundle_integrated_build_and_contract_review_passed",
+      "function_addresses": [],
+      "code_ownership": [
+        "include/bsp/native_mpak_storage_services.hpp",
+        "src/native_mpak_storage_services.cpp"
+      ],
+      "dependencies": [
+        "orch4_mpak_container_storage_az",
+        "orch4_mpak_lookup_storage_az",
+        "orch4_mpak_offset_copy_storage_az"
+      ],
+      "boundary": "Source owner/storage composition only; inherited native EH and production host limits remain.",
+      "integration_report": "reports/vfs_storage_owner_bb_validation.json"
+    },
+    {
+      "id": "orch4_raw_vfs_lua_composition_bc",
+      "worker": "orch4-raw-vfs-lua-bc",
+      "function_addresses": [],
+      "code_ownership": [],
+      "done": true,
+      "state": "populated_seeded_raw_vfs_lua_combined_fixture_passed",
+      "integration_report": "reports/vfs_storage_owner_bb_validation.json"
+    },
+    {
+      "id": "orch4_game_vfs_startup_migration_bc",
+      "worker": "orch4-vfs-startup-bc",
+      "function_addresses": [],
+      "code_ownership": [],
+      "done": true,
+      "state": "read_only_migration_contract_audit_complete",
+      "integration_report": "reports/vfs_storage_owner_bb_validation.json"
+    },
+    {
+      "id": "orch4_mpak_real_archive_composition_bc",
+      "worker": "orch4-mpak-archive-bc",
+      "function_addresses": [],
+      "code_ownership": [],
+      "done": true,
+      "state": "authentic_archive_inventory_complete_no_installed_archive_fixture_input",
+      "integration_report": "reports/vfs_storage_owner_bb_validation.json"
+    },
+    {
+      "id": "orch4_mpkg_factory_deletion_bd",
+      "worker": "orch4-20260910",
+      "function_addresses": [],
+      "code_ownership": [],
+      "done": true,
+      "state": "existing_secondary_deletion_binding_integrated_native_evidence_and_raw_fixture_passed",
+      "integration_report": "reports/vfs_storage_owner_bb_validation.json"
+    },
+    {
+      "id": "orch4_game_native_vfs_runtime_bd",
+      "worker": "orch4-native-vfs-game-bd",
+      "done": false,
+      "state": "source_build_passed_installed_loose_fixture_in_progress",
+      "function_addresses": [],
+      "code_ownership": [
+        "include/bsp/game_native_vfs_runtime.hpp",
+        "src/game_native_vfs_runtime.cpp"
+      ]
+    },
+    {
+      "id": "orch4_game_native_vfs_constants_bd",
+      "worker": "orch4-vfs-constants-bd",
+      "done": false,
+      "state": "worker_committed_data_identity_fixture_passed_primary_review_pending",
+      "function_addresses": [],
+      "code_ownership": [
+        "include/bsp/game_native_vfs_constants.hpp",
+        "src/game_native_vfs_constants.cpp"
+      ]
+    },
+    {
+      "id": "orch4_native_vfs_search_groups_bd",
+      "worker": "orch4-vfs-search-bd",
+      "done": false,
+      "state": "worker_committed_build_passed_primary_native_review_pending",
+      "function_addresses": [
+        "00be25e0",
+        "00be2600",
+        "00be2310"
+      ],
+      "code_ownership": [
+        "include/bsp/native_vfs_search_groups.hpp",
+        "src/native_vfs_search_groups.cpp"
+      ]
+    },
+    {
+      "id": "orch4_native_vfs_extension_prefix_be",
+      "worker": "orch4-vfs-prefix-be",
+      "done": false,
+      "state": "dispatched_bounded_actual_tree_source",
+      "function_addresses": [
+        "00be1480"
+      ],
+      "code_ownership": [
+        "include/bsp/native_vfs_extension_prefix.hpp",
+        "src/native_vfs_extension_prefix.cpp"
+      ]
+    },
+    {
+      "id": "orch4_native_vfs_search_defaults_be",
+      "worker": "orch4-vfs-search-defaults-be",
+      "done": false,
+      "state": "dispatched_full_native_registration_sequence",
+      "function_addresses": [
+        "00738360"
+      ],
+      "code_ownership": [
+        "include/bsp/native_vfs_search_defaults.hpp",
+        "src/native_vfs_search_defaults.cpp"
+      ]
     }
   ],
   "snapshot_after_analysis": {

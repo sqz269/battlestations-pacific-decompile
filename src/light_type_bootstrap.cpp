@@ -15,37 +15,15 @@ static_assert(sizeof(NodeTypeDescriptor) == 12);
 static_assert(sizeof(LightTypeDescriptor) == 16);
 static_assert(sizeof(DirectionalLightTypeDescriptor) == 20);
 
-namespace {
-class CapturedCounterSection final {
-public:
-    explicit CapturedCounterSection(SystemSingletonCriticalSection* section)
-        : section_(section) {
-        if (section_) {
-            singleton_enter_critical_section(*section_);
-            ++section_->recursion_18;
-        }
-    }
-    ~CapturedCounterSection() {
-        if (section_) {
-            --section_->recursion_18;
-            singleton_leave_critical_section(*section_);
-        }
-    }
-private:
-    SystemSingletonCriticalSection* section_;
-};
-} // namespace
-
-TypeIdCounterLifetime::TypeIdCounterLifetime(SingletonLifetimeDomain& lifetime,
+TypeIdCounterLifetime::TypeIdCounterLifetime(SoundLifetimeAccess lifetime,
     TypeIdCounterStorage* volatile& actual_global) noexcept
     : lifetime_(lifetime), global_0109db7c_(actual_global) {}
 
 TypeIdCounterStorage* TypeIdCounterLifetime::get_006fac20() {
     auto* existing = global_0109db7c_;
     if (existing) return existing; // Fast path returns its first global load.
-    auto& manager = lifetime_.get_manager_00415350()->system_owner();
     {
-        CapturedCounterSection guard(manager.section_10);
+        CapturedSoundLifetimeSection guard(lifetime_);
         if (!global_0109db7c_) {
             void* raw = singleton_lifetime_allocate(
                 {SingletonAllocationKind::object, 8, sizeof(TypeIdCounterStorage)});
@@ -58,7 +36,7 @@ TypeIdCounterStorage* TypeIdCounterLifetime::get_006fac20() {
             global_0109db7c_ = allocated;
             // Native calls the manager getter a second time, then reloads the
             // published slot for registration, even if allocation returned null.
-            auto* registration_manager = lifetime_.get_manager_00415350();
+            auto registration_manager = lifetime_.get_manager_00415350();
             registration_manager->register_object(global_0109db7c_);
         }
     } // Release the originally captured section before the final slot reload.

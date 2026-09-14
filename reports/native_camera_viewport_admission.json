@@ -1,0 +1,79 @@
+{
+  "packet": "orch3_camera_viewport_admission_impl_bi",
+  "status": "strict_win32_build_and_current_library_publication_failure_fixture_passed",
+  "coverage": "Explicit first-viewport host admission inside existing raw B71A80 source",
+  "source_files": [
+    "include/bsp/native_camera_owner.hpp",
+    "src/native_camera_owner.cpp"
+  ],
+  "design": "docs/NATIVE_CAMERA_VIEWPORT_ADMISSION_BI.md",
+  "new_native_bodies": 0,
+  "new_native_bytes": 0,
+  "no_ghidra_function": [],
+  "reconstructed_functions": [],
+  "native_abi": "B71A80 ECX camera, stacked name, EAX same, RET4; new source overload remains a separate C++ ABI",
+  "native_extent": "00B71A80..00B71CDB inclusive, 604 bytes",
+  "native_calls": [
+    {
+      "address": "00B71AA7",
+      "native": "00B6F5A0",
+      "function": "00B71A80",
+      "role": "Unchanged raw node construction after host preflight/token transfer"
+    },
+    {
+      "address": "00B71ABA",
+      "native": "00BF681B",
+      "function": "00B71A80",
+      "role": "Actual34h allocation, ADD ESP4 at B71ABF"
+    },
+    {
+      "address": "00B71AD1",
+      "native": "00B1F850",
+      "function": "00B71A80",
+      "role": "Construct actual viewport before B71ADD publication"
+    },
+    {
+      "address": "00CC1AD3",
+      "native": "00B6F440",
+      "function": "00CC1AD0",
+      "kind": "tail_jump",
+      "role": "State0 node cleanup"
+    },
+    {
+      "address": "00CC1ADC",
+      "native": "00BF65AC",
+      "function": "00CC1AD8",
+      "role": "State1 raw viewport free, then state0"
+    },
+    {
+      "address": "00CC1AEC",
+      "native": "00605FD0",
+      "function": "00CC1AE3",
+      "kind": "tail_jump",
+      "role": "State2 +438 action, then state0; no published viewport release"
+    }
+  ],
+  "implementation": {
+    "shared_raw_body": "Existing raw wrapper passes nullptr; new wrapper passes admission address to file-private helper; semantic body unchanged",
+    "preflight": "Existing checks then installed token and exact environment resolver identity; move to local guard before phase/native effects",
+    "publication": "Existing admitted viewport factory completes live registry association before returning to +180 assignment",
+    "early_failure": "Existing native cleanup plus cancellation of unused record; physical camera slot still caller-owned",
+    "late_failure": "Consumed live record and actual viewport survive existing node/+438 cleanup independently of ended camera storage",
+    "no_ambient_state": true,
+    "new_native_retain": false
+  },
+  "verification": {
+    "build": "PASS exact combined MSVC Win32 source, two existing CTests, eight seeds",
+    "coupled_fixture": "PASS successful original/source pair plus source-only early/late admission failure checks",
+    "repository_tests_added": 0,
+    "game_validated": false,
+    "tested_commit": "0307b963f66a80caa7f9308cecbfc2d5d6b780da",
+    "combined_validation_report": "reports/native_camera_viewport_admission_bi_validation.json"
+  },
+  "limitations": [
+    "No original native FH3/SEH exception identity or replacement ABI proof",
+    "Persistent cockpit construction block and B3C800 normal/EH composition remain separate",
+    "Published failure survivors and semantic host-view quiescence require persistent caller ownership",
+    "No arbitrary destructive callback or concurrent registry mutation guarantee"
+  ]
+}

@@ -1,0 +1,101 @@
+{
+  "reason": "Shared raw type-counter lifetime and retained owner/storage bindings",
+  "entries": [
+    {
+      "address": "006fac20",
+      "lease_owner": "agent/orch4-type-counter-bb",
+      "before": "Function: BSP_TypeId_GetCounterSingleton at 006fac20\nSignature: undefined BSP_TypeId_GetCounterSingleton(void)\nEntry: 006fac20\nBody: 006fac20 - 006facd4",
+      "before_comment": {
+        "address": "006fac20",
+        "function_name": "BSP_TypeId_GetCounterSingleton",
+        "comment": "[BSP reconstruction 006fac20]\nReturn shared type-ID singleton0109DB7C. First allocation initializes8-byte owner with vtable and counter+4=0; descriptor initializers consume and increment this same counter. Original ABI: no arguments; EAX=shared counter owner; RET Evidence: docs/SCENE_NODE_ATTACHMENT.md; reports/scene_node_attachment_audit.json. Descriptive names are hypotheses; typed C++ interfaces are not native ABI or game validation.\n\n[BSP reconstruction 006fac20] update\nReturn shared type-ID singleton0109DB7C. First allocation initializes8-byte owner with vtable and counter+4=0; descriptor initializers consume and increment this same counter. Original ABI: no arguments; EAX=shared counter owner; RET Evidence: docs/SCENE_NODE_ATTACHMENT.md; reports/scene_node_attachment_audit.json. Descriptive names are hypotheses; typed C++ interfaces are not native ABI or game validation. | Native [006fac20,006facd5); No arguments; EAX actual shared owner; RET. Fast first-load return; lazy allocation and second slot check under captured shared-manager section; initialize8 bytes, publish, re-get manager, reload/register slot, release captured section, reload result. Uses the actual supplied global counter slot, shared SingletonLifetimeDomain, and borrowed process guards/descriptors. Original native fast counter, descriptor and predicate sequence matched six snapshots totaling480bytes and108predicate calls per path; real host counter creation and lifetime manager teardown separately checked. Integration: docs/NATIVE_LIGHT_CHAIN_INTEGRATION.md; reports/native_light_chain_integration_audit.json. Descriptive names are hypotheses; new C++ interface, not native ABI or game validation."
+      },
+      "name": "BSP_TypeId_GetCounterSingleton",
+      "prototype": "void* __cdecl BSP_TypeId_GetCounterSingleton(void)",
+      "prototype_apply": "Successfully set prototype for function at 006fac20 with __cdecl calling convention",
+      "after": "Function: BSP_TypeId_GetCounterSingleton at 006fac20\nSignature: void * __cdecl BSP_TypeId_GetCounterSingleton(void)\nEntry: 006fac20\nBody: 006fac20 - 006facd4",
+      "after_comment": {
+        "address": "006fac20",
+        "function_name": "BSP_TypeId_GetCounterSingleton",
+        "comment": "[BSP reconstruction 006fac20]\nReturn shared type-ID singleton0109DB7C. First allocation initializes8-byte owner with vtable and counter+4=0; descriptor initializers consume and increment this same counter. Original ABI: no arguments; EAX=shared counter owner; RET Evidence: docs/SCENE_NODE_ATTACHMENT.md; reports/scene_node_attachment_audit.json. Descriptive names are hypotheses; typed C++ interfaces are not native ABI or game validation.\n\n[BSP reconstruction 006fac20] update\nReturn shared type-ID singleton0109DB7C. First allocation initializes8-byte owner with vtable and counter+4=0; descriptor initializers consume and increment this same counter. Original ABI: no arguments; EAX=shared counter owner; RET Evidence: docs/SCENE_NODE_ATTACHMENT.md; reports/scene_node_attachment_audit.json. Descriptive names are hypotheses; typed C++ interfaces are not native ABI or game validation. | Native [006fac20,006facd5); No arguments; EAX actual shared owner; RET. Fast first-load return; lazy allocation and second slot check under captured shared-manager section; initialize8 bytes, publish, re-get manager, reload/register slot, release captured section, reload result. Uses the actual supplied global counter slot, shared SingletonLifetimeDomain, and borrowed process guards/descriptors. Original native fast counter, descriptor and predicate sequence matched six snapshots totaling480bytes and108predicate calls per path; real host counter creation and lifetime manager teardown separately checked. Integration: docs/NATIVE_LIGHT_CHAIN_INTEGRATION.md; reports/native_light_chain_integration_audit.json. Descriptive names are hypotheses; new C++ interface, not native ABI or game validation.\n\n[BSP reconstruction 006fac20] update\nHypothesis, not a recovered symbol. BB integration: docs/VFS_STORAGE_OWNER_BB_INTEGRATION.md; reports/vfs_storage_owner_bb_validation.json. First read of0109DB7C is the fast return. On miss capture first manager section, recheck, construct8h CFB6C4 owner with next-id0, publish, resolve second manager and register current publication, release captured section then reload. Raw01090AA0 and retained semantic callers share existing SoundLifetimeAccess. Two complete live/disk envelopes,5 internal direct CALLs and CFB6C4 deletion table; saved ownership restored for ADD ESP,4 at006FAD60 with prior metadata preserved. NativeVfsOwnerServices borrows existing publication cells and installs five source-owner deletion bindings; NativeMpakStorageServices retains existing storage implementations. Exact combined source/build and raw-drain fixture validation is pinned separately. No original FH3/CRT/ABI identity, descriptor-layout rewrite or production game reachability claim."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "006fad40",
+      "lease_owner": "agent/orch4-type-counter-bb",
+      "before": "Function: BSP_TypeIdCounter_DeletingDestructor at 006fad40\nSignature: void * __fastcall BSP_TypeIdCounter_DeletingDestructor(void * owner, void * unused_edx, uint flags)\nEntry: 006fad40\nBody: 006fad40 - 006fad68",
+      "before_comment": {
+        "address": "006fad40",
+        "function_name": "BSP_TypeIdCounter_DeletingDestructor",
+        "comment": "[BSP reconstruction 006fad40]\nNative [006fad40,006fad69); ECX owner; stack flags; EAX original address; RET4. Unconditionally clear actual0109DB7C, write baseVT00CE3818, free ifflags bit0; no unregister/count/guard reset. Uses the actual supplied global counter slot, shared SingletonLifetimeDomain, and borrowed process guards/descriptors. Original native fast counter, descriptor and predicate sequence matched six snapshots totaling480bytes and108predicate calls per path; real host counter creation and lifetime manager teardown separately checked. Integration: docs/NATIVE_LIGHT_CHAIN_INTEGRATION.md; reports/native_light_chain_integration_audit.json. Descriptive names are hypotheses; new C++ interface, not native ABI or game validation."
+      },
+      "name": "BSP_TypeIdCounter_DeletingDestructor",
+      "prototype": "void* __fastcall BSP_TypeIdCounter_DeletingDestructor(void* owner, void* unused_edx, unsigned int flags)",
+      "prototype_apply": "Successfully set prototype for function at 006fad40 with __fastcall calling convention",
+      "after": "Function: BSP_TypeIdCounter_DeletingDestructor at 006fad40\nSignature: void * __fastcall BSP_TypeIdCounter_DeletingDestructor(void * owner, void * unused_edx, uint flags)\nEntry: 006fad40\nBody: 006fad40 - 006fad68",
+      "after_comment": {
+        "address": "006fad40",
+        "function_name": "BSP_TypeIdCounter_DeletingDestructor",
+        "comment": "[BSP reconstruction 006fad40]\nNative [006fad40,006fad69); ECX owner; stack flags; EAX original address; RET4. Unconditionally clear actual0109DB7C, write baseVT00CE3818, free ifflags bit0; no unregister/count/guard reset. Uses the actual supplied global counter slot, shared SingletonLifetimeDomain, and borrowed process guards/descriptors. Original native fast counter, descriptor and predicate sequence matched six snapshots totaling480bytes and108predicate calls per path; real host counter creation and lifetime manager teardown separately checked. Integration: docs/NATIVE_LIGHT_CHAIN_INTEGRATION.md; reports/native_light_chain_integration_audit.json. Descriptive names are hypotheses; new C++ interface, not native ABI or game validation.\n\n[BSP reconstruction 006fad40] update\nHypothesis, not a recovered symbol. BB integration: docs/VFS_STORAGE_OWNER_BB_INTEGRATION.md; reports/vfs_storage_owner_bb_validation.json. Popped CFB6C4 owner clears the original0109DB7C cell unconditionally, writes CE3818, frees only for low flag bit, returns original owner. Leaves process type descriptors and their guards unchanged. Two complete live/disk envelopes,5 internal direct CALLs and CFB6C4 deletion table; saved ownership restored for ADD ESP,4 at006FAD60 with prior metadata preserved. NativeVfsOwnerServices borrows existing publication cells and installs five source-owner deletion bindings; NativeMpakStorageServices retains existing storage implementations. Exact combined source/build and raw-drain fixture validation is pinned separately. No original FH3/CRT/ABI identity, descriptor-layout rewrite or production game reachability claim."
+      },
+      "readback_verified": true
+    }
+  ],
+  "actions": [
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "006fac20",
+        "prototype": "void* __cdecl BSP_TypeId_GetCounterSingleton(void)",
+        "calling_convention": "__cdecl"
+      },
+      "result": "Successfully set prototype for function at 006fac20 with __cdecl calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "006fad40",
+        "prototype": "void* __fastcall BSP_TypeIdCounter_DeletingDestructor(void* owner, void* unused_edx, unsigned int flags)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 006fad40 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": "{\"success\": true, \"program\": \"battlestationspacific.exe\", \"message\": \"Program saved successfully\"}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "006fac20",
+        "comment": "[BSP reconstruction 006fac20]\nReturn shared type-ID singleton0109DB7C. First allocation initializes8-byte owner with vtable and counter+4=0; descriptor initializers consume and increment this same counter. Original ABI: no arguments; EAX=shared counter owner; RET Evidence: docs/SCENE_NODE_ATTACHMENT.md; reports/scene_node_attachment_audit.json. Descriptive names are hypotheses; typed C++ interfaces are not native ABI or game validation.\n\n[BSP reconstruction 006fac20] update\nReturn shared type-ID singleton0109DB7C. First allocation initializes8-byte owner with vtable and counter+4=0; descriptor initializers consume and increment this same counter. Original ABI: no arguments; EAX=shared counter owner; RET Evidence: docs/SCENE_NODE_ATTACHMENT.md; reports/scene_node_attachment_audit.json. Descriptive names are hypotheses; typed C++ interfaces are not native ABI or game validation. | Native [006fac20,006facd5); No arguments; EAX actual shared owner; RET. Fast first-load return; lazy allocation and second slot check under captured shared-manager section; initialize8 bytes, publish, re-get manager, reload/register slot, release captured section, reload result. Uses the actual supplied global counter slot, shared SingletonLifetimeDomain, and borrowed process guards/descriptors. Original native fast counter, descriptor and predicate sequence matched six snapshots totaling480bytes and108predicate calls per path; real host counter creation and lifetime manager teardown separately checked. Integration: docs/NATIVE_LIGHT_CHAIN_INTEGRATION.md; reports/native_light_chain_integration_audit.json. Descriptive names are hypotheses; new C++ interface, not native ABI or game validation.\n\n[BSP reconstruction 006fac20] update\nHypothesis, not a recovered symbol. BB integration: docs/VFS_STORAGE_OWNER_BB_INTEGRATION.md; reports/vfs_storage_owner_bb_validation.json. First read of0109DB7C is the fast return. On miss capture first manager section, recheck, construct8h CFB6C4 owner with next-id0, publish, resolve second manager and register current publication, release captured section then reload. Raw01090AA0 and retained semantic callers share existing SoundLifetimeAccess. Two complete live/disk envelopes,5 internal direct CALLs and CFB6C4 deletion table; saved ownership restored for ADD ESP,4 at006FAD60 with prior metadata preserved. NativeVfsOwnerServices borrows existing publication cells and installs five source-owner deletion bindings; NativeMpakStorageServices retains existing storage implementations. Exact combined source/build and raw-drain fixture validation is pinned separately. No original FH3/CRT/ABI identity, descriptor-layout rewrite or production game reachability claim."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 006fac20\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": "{\"success\": true, \"program\": \"battlestationspacific.exe\", \"message\": \"Program saved successfully\"}"
+    }
+  ],
+  "state": "two_names_abis_comments_saved_verified",
+  "exports_refreshed": [
+    "006fac20",
+    "006fad40"
+  ],
+  "corrections": [
+    {
+      "address": "006fac20",
+      "reason": "Typo in newly added BB annotation: native006FAC8E stores0, not1. Original pre-BB evidence already recorded0.",
+      "before": {
+        "address": "006fac20",
+        "function_name": "BSP_TypeId_GetCounterSingleton",
+        "comment": "[BSP reconstruction 006fac20]\nReturn shared type-ID singleton0109DB7C. First allocation initializes8-byte owner with vtable and counter+4=0; descriptor initializers consume and increment this same counter. Original ABI: no arguments; EAX=shared counter owner; RET Evidence: docs/SCENE_NODE_ATTACHMENT.md; reports/scene_node_attachment_audit.json. Descriptive names are hypotheses; typed C++ interfaces are not native ABI or game validation.\n\n[BSP reconstruction 006fac20] update\nReturn shared type-ID singleton0109DB7C. First allocation initializes8-byte owner with vtable and counter+4=0; descriptor initializers consume and increment this same counter. Original ABI: no arguments; EAX=shared counter owner; RET Evidence: docs/SCENE_NODE_ATTACHMENT.md; reports/scene_node_attachment_audit.json. Descriptive names are hypotheses; typed C++ interfaces are not native ABI or game validation. | Native [006fac20,006facd5); No arguments; EAX actual shared owner; RET. Fast first-load return; lazy allocation and second slot check under captured shared-manager section; initialize8 bytes, publish, re-get manager, reload/register slot, release captured section, reload result. Uses the actual supplied global counter slot, shared SingletonLifetimeDomain, and borrowed process guards/descriptors. Original native fast counter, descriptor and predicate sequence matched six snapshots totaling480bytes and108predicate calls per path; real host counter creation and lifetime manager teardown separately checked. Integration: docs/NATIVE_LIGHT_CHAIN_INTEGRATION.md; reports/native_light_chain_integration_audit.json. Descriptive names are hypotheses; new C++ interface, not native ABI or game validation.\n\n[BSP reconstruction 006fac20] update\nHypothesis, not a recovered symbol. BB integration: docs/VFS_STORAGE_OWNER_BB_INTEGRATION.md; reports/vfs_storage_owner_bb_validation.json. First read of0109DB7C is the fast return. On miss capture first manager section, recheck, construct8h CFB6C4 owner with next-id1, publish, resolve second manager and register current publication, release captured section then reload. Raw01090AA0 and retained semantic callers share existing SoundLifetimeAccess. Two complete live/disk envelopes,5 internal direct CALLs and CFB6C4 deletion table; saved ownership restored for ADD ESP,4 at006FAD60 with prior metadata preserved. NativeVfsOwnerServices borrows existing publication cells and installs five source-owner deletion bindings; NativeMpakStorageServices retains existing storage implementations. Exact combined source/build and raw-drain fixture validation is pinned separately. No original FH3/CRT/ABI identity, descriptor-layout rewrite or production game reachability claim."
+      },
+      "after_comment": "[BSP reconstruction 006fac20]\nReturn shared type-ID singleton0109DB7C. First allocation initializes8-byte owner with vtable and counter+4=0; descriptor initializers consume and increment this same counter. Original ABI: no arguments; EAX=shared counter owner; RET Evidence: docs/SCENE_NODE_ATTACHMENT.md; reports/scene_node_attachment_audit.json. Descriptive names are hypotheses; typed C++ interfaces are not native ABI or game validation.\n\n[BSP reconstruction 006fac20] update\nReturn shared type-ID singleton0109DB7C. First allocation initializes8-byte owner with vtable and counter+4=0; descriptor initializers consume and increment this same counter. Original ABI: no arguments; EAX=shared counter owner; RET Evidence: docs/SCENE_NODE_ATTACHMENT.md; reports/scene_node_attachment_audit.json. Descriptive names are hypotheses; typed C++ interfaces are not native ABI or game validation. | Native [006fac20,006facd5); No arguments; EAX actual shared owner; RET. Fast first-load return; lazy allocation and second slot check under captured shared-manager section; initialize8 bytes, publish, re-get manager, reload/register slot, release captured section, reload result. Uses the actual supplied global counter slot, shared SingletonLifetimeDomain, and borrowed process guards/descriptors. Original native fast counter, descriptor and predicate sequence matched six snapshots totaling480bytes and108predicate calls per path; real host counter creation and lifetime manager teardown separately checked. Integration: docs/NATIVE_LIGHT_CHAIN_INTEGRATION.md; reports/native_light_chain_integration_audit.json. Descriptive names are hypotheses; new C++ interface, not native ABI or game validation.\n\n[BSP reconstruction 006fac20] update\nHypothesis, not a recovered symbol. BB integration: docs/VFS_STORAGE_OWNER_BB_INTEGRATION.md; reports/vfs_storage_owner_bb_validation.json. First read of0109DB7C is the fast return. On miss capture first manager section, recheck, construct8h CFB6C4 owner with next-id0, publish, resolve second manager and register current publication, release captured section then reload. Raw01090AA0 and retained semantic callers share existing SoundLifetimeAccess. Two complete live/disk envelopes,5 internal direct CALLs and CFB6C4 deletion table; saved ownership restored for ADD ESP,4 at006FAD60 with prior metadata preserved. NativeVfsOwnerServices borrows existing publication cells and installs five source-owner deletion bindings; NativeMpakStorageServices retains existing storage implementations. Exact combined source/build and raw-drain fixture validation is pinned separately. No original FH3/CRT/ABI identity, descriptor-layout rewrite or production game reachability claim.",
+      "readback_verified": true
+    }
+  ]
+}

@@ -6,12 +6,17 @@
 #include "bsp/game_sound_runtime.hpp"
 #include "bsp/native_input_action_owner.hpp"
 #include "bsp/native_input_settings_lifetime.hpp"
+#include "bsp/native_lua_fundamentals.hpp"
 #include "bsp/native_debug_feature_owner.hpp"
 #include "bsp/native_game_resource_factory.hpp"
 #include "bsp/native_input_backend_owner.hpp"
 #include "bsp/native_physical_factory.hpp"
+#include "bsp/native_physical_stream_open.hpp"
+#include "bsp/native_render_batch_lifetime.hpp"
+#include "bsp/light_type_bootstrap.hpp"
 #include "bsp/native_filestore_factory.hpp"
 #include "bsp/native_mpak_factory.hpp"
+#include "bsp/native_mpkg_provider.hpp"
 #include "bsp/native_pak_registry.hpp"
 #include "bsp/native_vfs_derived_manager.hpp"
 #include "bsp/native_string_pool_owner.hpp"
@@ -116,6 +121,49 @@ __declspec(noinline) void __fastcall delete_current_profile(void* owner,
         if (bindings.input_settings != nullptr) {
             scalar_delete_native_input_settings_006ab800(owner, flags,
                 *bindings.input_settings);
+            return;
+        }
+        break;
+    case 0x00d62c18:
+        if (bindings.actual_lua_fundamentals_publication_0108ff1c != nullptr) {
+            delete_native_lua_fundamentals_00b66b80(
+                *static_cast<NativeLuaFundamentalsOwner*>(owner), flags,
+                *bindings.actual_lua_fundamentals_publication_0108ff1c);
+            return;
+        }
+        break;
+    case 0x00d68ec0:
+        if (bindings.physical_stream_pool != nullptr) {
+            delete_native_physical_stream_pool_00bf4370(owner, flags,
+                *bindings.physical_stream_pool);
+            return;
+        }
+        break;
+    case 0x00d5e5dc:
+        if (bindings.render_batch_lifetime != nullptr) {
+            bindings.render_batch_lifetime->delete_pool_00b1e930(
+                static_cast<NativeRenderBatchPoolStorage*>(owner), flags);
+            return;
+        }
+        break;
+    case 0x00d5e5d4:
+        if (bindings.render_batch_lifetime != nullptr) {
+            bindings.render_batch_lifetime->delete_lock_owner_00b1d530(
+                static_cast<NativeRenderBatchLockOwner*>(owner), flags);
+            return;
+        }
+        break;
+    case 0x00cfea10:
+        if (bindings.mpkg_factory != nullptr) {
+            delete_native_mpkg_factory_secondary_00735d00(owner, flags,
+                *bindings.mpkg_factory);
+            return;
+        }
+        break;
+    case 0x00cfb6c4:
+        if (bindings.type_id_counter_lifetime != nullptr) {
+            bindings.type_id_counter_lifetime->deleting_destructor_006fad40(
+                static_cast<TypeIdCounterStorage*>(owner), flags);
             return;
         }
         break;

@@ -1,0 +1,61 @@
+{
+ "events": [
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00ca6ef9",
+    "end_address": "00ca6f03"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00ca6ef9",
+    "end_address": "00ca6f02",
+    "bytes_disassembled": 10,
+    "message": "Successfully disassembled 10 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00ca6ef9",
+    "disassemble_first": false,
+    "name": "EH_MissionEntity_LuaSelfObject"
+   },
+   "result": {
+    "success": true,
+    "address": "00ca6ef9",
+    "function_name": "EH_MissionEntity_LuaSelfObject",
+    "entry_point": "00ca6ef9",
+    "body_size": 10,
+    "message": "Function created successfully at 00ca6ef9",
+    "warnings": [
+     "Function name 'EH_MissionEntity_LuaSelfObject' \u2014 main part 'MissionEntity_LuaSelfObject' is not PascalCase. Expected: MissionentityLuaselfobject",
+     "Function name 'EH_MissionEntity_LuaSelfObject' \u2014 main part 'MissionEntity_LuaSelfObject' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'EH_MissionEntity_LuaSelfObject' does not start with a recognized verb. First word 'Mission' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00ca6ef9",
+   "end": "00ca6f03",
+   "name": "EH_MissionEntity_LuaSelfObject",
+   "after": "Function: EH_MissionEntity_LuaSelfObject at 00ca6ef9\nSignature: undefined EH_MissionEntity_LuaSelfObject(void)\nEntry: 00ca6ef9\nBody: 00ca6ef9 - 00ca6f02"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}

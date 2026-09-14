@@ -401,6 +401,7 @@ GuiWidgetOwner& GuiWidgetOwnerRuntime::construct_base(GuiLayoutWidget& layout) {
 NativeNodeBinding* GuiWidgetOwnerRuntime::create_model(const std::string& name,
     NativeNodeBinding** publication) {
     auto& environment = environment_.models;
+    auto& name_pool = environment.nodes.require_semantic_name_pool();
     auto record = std::make_unique<ModelRecord>();
     void* slot = environment.pool_01090054.allocate_raw_slot_00b74d00();
     if (!slot) {
@@ -411,7 +412,7 @@ NativeNodeBinding* GuiWidgetOwnerRuntime::create_model(const std::string& name,
     // of that slot. Do not erase its live record or return it in the unwind.
     if (models_.count(slot))
         throw std::logic_error("canonical model pool returned an occupied slot");
-    PooledStringStorage strings(environment.nodes.strings);
+    PooledStringStorage strings(name_pool);
     NativeString native_name;
     try {
         //Reserve the map node before constructing a native live object.

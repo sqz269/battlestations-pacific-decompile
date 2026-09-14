@@ -1,0 +1,27 @@
+{
+  "packet": "orch4_game_vfs_startup_migration_bc",
+  "revision": "294b90ad3321da62be0b690f46d9ac9f0ba803cb",
+  "kind": "read-only source routing and lifetime audit",
+  "status": "migration-dependency-graph",
+  "documentation": "docs/GAME_VFS_NATIVE_STARTUP_MIGRATION_BC.md",
+  "calls": [],
+  "native_call_attribution": "none; addresses in document are existing source contract labels, not new listing claims",
+  "observed_source": [
+    "src/game_hosts_vfs.cpp:51-383 projected manager, token factories, mounts, scans, read and exists",
+    "include/bsp/game_hosts_vfs.hpp:82-181 projected manager and retained owner fields",
+    "src/game_hosts.cpp:1014-1052,1258-1262,1306-1339,1642-1646 singleton and VFS order",
+    "src/game_hosts_fonts.cpp:57-68,game_hosts_frontend.cpp:225-240,game_hosts_init_tail.cpp:334-350,game_hosts_lua.cpp:181-183,game_hosts_mission.cpp:1149-1163,game_hosts_scene_contents.cpp:334-349,403-418 direct manager consumers",
+    "include/bsp/native_vfs_manager_lifetime.hpp, native_vfs_derived_manager.hpp, native_vfs_factory_registration.hpp, native_vfs_mount_registration.hpp, native_vfs_open_route.hpp, native_vfs_runtime_bindings.hpp raw source contracts",
+    "concurrent agent/orch4-vfs-raw-bb/include/bsp/native_vfs_owner_services.hpp:13-91 inspected as integration input, absent at audit base"
+  ],
+  "first_packet": "new disjoint game-side retained raw VFS composer and cmake/startup.cmake registration, before modifying GameVfsHost or any manager() consumer",
+  "next_packet": "coordinated game-host/consumer route migration after the full raw graph and raw read adapter are proved",
+  "blockers": [
+    "no host-owned raw A0h manager, all-four-factory registration, three-mount composition, or 0109CEEC publication",
+    "no host-provided readable original numeric table data and complete retained dispatch/canonicalizer/stream/logging contexts",
+    "package scan and search registration still consume projected VfsMountContext",
+    "eight direct manager() consumer source files require raw-backed read/exists adapters; projected pointers cannot be cast",
+    "shutdown must drain one shared raw manager while every registered owner and borrowed context remains live"
+  ],
+  "validation": "source-only review; no build, native fixture, archive or game runtime execution"
+}

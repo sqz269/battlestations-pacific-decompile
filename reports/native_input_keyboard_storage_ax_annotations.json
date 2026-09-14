@@ -1,0 +1,923 @@
+{
+  "reason": "Verified AX source keyboard storage integration",
+  "entries": [
+    {
+      "address": "00443d60",
+      "lease_owner": "agent/orch4-scale-maps-ax",
+      "before": "Function: BSP_WeatherFloatMap_LowerBound at 00443d60\nSignature: undefined BSP_WeatherFloatMap_LowerBound(void)\nEntry: 00443d60\nBody: 00443d60 - 00443db2",
+      "before_comment": {
+        "address": "00443d60",
+        "function_name": "BSP_WeatherFloatMap_LowerBound",
+        "comment": "[BSP reconstruction 00443d60]\nDescriptive role hypothesis, not recovered symbol. ECX=map; name* stack; EAX=node; RET4. Semantic lower-bound preserving native empty-length gates and CRT case-insensitive comparison through existing00443D00. Native tree shape/checked-iterator ABI excluded. docs/WEATHER_CONFIG.md; reports/weather_config.json; src/weather_config.cpp. Worker Ghidra read-only; new C++ interfaces, not native ABI."
+      },
+      "name": "BSP_WeatherFloatMap_LowerBound",
+      "after": "Function: BSP_WeatherFloatMap_LowerBound at 00443d60\nSignature: undefined BSP_WeatherFloatMap_LowerBound(void)\nEntry: 00443d60\nBody: 00443d60 - 00443db2",
+      "after_comment": {
+        "address": "00443d60",
+        "function_name": "BSP_WeatherFloatMap_LowerBound",
+        "comment": "[BSP reconstruction 00443d60]\nDescriptive role hypothesis, not recovered symbol. ECX=map; name* stack; EAX=node; RET4. Semantic lower-bound preserving native empty-length gates and CRT case-insensitive comparison through existing00443D00. Native tree shape/checked-iterator ABI excluded. docs/WEATHER_CONFIG.md; reports/weather_config.json; src/weather_config.cpp. Worker Ghidra read-only; new C++ interfaces, not native ABI.\n\n[BSP reconstruction 00443d60] update\nHypothesis, not a recovered symbol. AX: docs/NATIVE_INPUT_KEYBOARD_STORAGE_AX.md and reports/native_input_keyboard_storage_ax_validation.json. NativeInputKeyboardStorage now provides all fourteen operations as source over actual owned headers. Device/vector map roots cover fresh empty default copies only; populated scale-map copy/destruction, checked iterators and scale erasure retain typed node/color/nil layouts. Five map/destructor bodies and partial scale eraser repaired; 00552E20 iterator ABI restores the two-child erase branch. 40 live/disk envelopes and241 owned CALLs verified. Strict Win32 and2 CTests passed; native/source122545 lifetime,309711 range,168378 insertion,1448 vector,335 string,372 keyboard values and9409 bit-position pairs matched. Existing interface retained; source string lifetime explicit. No original FH3/CRT ABI, malformed/private-alias behavior, general populated device/vector copy, production host wiring or gameplay claim. Prior comments preserved."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "00444910",
+      "lease_owner": "agent/orch4-scale-maps-ax",
+      "before": "Function: STL_StringFloatMap_InsertHint_00444910 at 00444910\nSignature: undefined STL_StringFloatMap_InsertHint_00444910(void)\nEntry: 00444910\nBody: 00444910 - 00444b0b",
+      "before_comment": {
+        "address": "00444910",
+        "function_name": "STL_StringFloatMap_InsertHint_00444910",
+        "comment": "[BSP reconstruction 00444910]\nProvisional descriptive library specialization, not recovered symbol. ECX=map; output*,hint owner/node,pair* stack; EAX=output; RET10h. Checked hinted unique insertion with fallback004447C0; library behavior represented by standard map. No full STL port or native iterator diagnostic equivalence claimed. See docs/WEATHER_CONFIG.md and reports/weather_config.json."
+      },
+      "name": "STL_StringFloatMap_InsertHint_00444910",
+      "after": "Function: STL_StringFloatMap_InsertHint_00444910 at 00444910\nSignature: undefined STL_StringFloatMap_InsertHint_00444910(void)\nEntry: 00444910\nBody: 00444910 - 00444b0b",
+      "after_comment": {
+        "address": "00444910",
+        "function_name": "STL_StringFloatMap_InsertHint_00444910",
+        "comment": "[BSP reconstruction 00444910]\nProvisional descriptive library specialization, not recovered symbol. ECX=map; output*,hint owner/node,pair* stack; EAX=output; RET10h. Checked hinted unique insertion with fallback004447C0; library behavior represented by standard map. No full STL port or native iterator diagnostic equivalence claimed. See docs/WEATHER_CONFIG.md and reports/weather_config.json.\n\n[BSP reconstruction 00444910] update\nHypothesis, not a recovered symbol. AX: docs/NATIVE_INPUT_KEYBOARD_STORAGE_AX.md and reports/native_input_keyboard_storage_ax_validation.json. NativeInputKeyboardStorage now provides all fourteen operations as source over actual owned headers. Device/vector map roots cover fresh empty default copies only; populated scale-map copy/destruction, checked iterators and scale erasure retain typed node/color/nil layouts. Five map/destructor bodies and partial scale eraser repaired; 00552E20 iterator ABI restores the two-child erase branch. 40 live/disk envelopes and241 owned CALLs verified. Strict Win32 and2 CTests passed; native/source122545 lifetime,309711 range,168378 insertion,1448 vector,335 string,372 keyboard values and9409 bit-position pairs matched. Existing interface retained; source string lifetime explicit. No original FH3/CRT ABI, malformed/private-alias behavior, general populated device/vector copy, production host wiring or gameplay claim. Prior comments preserved."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "00444be0",
+      "lease_owner": "agent/orch4-scale-maps-ax",
+      "before": "Function: BSP_WeatherFloatMap_LookupOrInsert at 00444be0\nSignature: undefined BSP_WeatherFloatMap_LookupOrInsert(void)\nEntry: 00444be0\nBody: 00444be0 - 00444cd8",
+      "before_comment": {
+        "address": "00444be0",
+        "function_name": "BSP_WeatherFloatMap_LookupOrInsert",
+        "comment": "[BSP reconstruction 00444be0]\nDescriptive role hypothesis, not recovered symbol. ECX=map; name* stack; EAX=borrowed node+14 float; RET4. Existing case-insensitive match keeps identity/value. Missing pair explicitly initializes+0 via XORPS/MOVSS; preserve two key deep copies and captured temporary data-pointer release after insertion. Generic tree allocation/linking/rebalance uses standard containers. docs/WEATHER_CONFIG.md; reports/weather_config.json; src/weather_config.cpp. Worker Ghidra read-only; new C++ interfaces, not native ABI."
+      },
+      "name": "BSP_WeatherFloatMap_LookupOrInsert",
+      "prototype": "void* __fastcall BSP_WeatherFloatMap_LookupOrInsert(void* self, void* unused_edx, void* input)",
+      "prototype_apply": "Successfully set prototype for function at 00444be0 with __fastcall calling convention",
+      "after": "Function: BSP_WeatherFloatMap_LookupOrInsert at 00444be0\nSignature: void * __fastcall BSP_WeatherFloatMap_LookupOrInsert(void * self, void * unused_edx, void * input)\nEntry: 00444be0\nBody: 00444be0 - 00444cd8",
+      "after_comment": {
+        "address": "00444be0",
+        "function_name": "BSP_WeatherFloatMap_LookupOrInsert",
+        "comment": "[BSP reconstruction 00444be0]\nDescriptive role hypothesis, not recovered symbol. ECX=map; name* stack; EAX=borrowed node+14 float; RET4. Existing case-insensitive match keeps identity/value. Missing pair explicitly initializes+0 via XORPS/MOVSS; preserve two key deep copies and captured temporary data-pointer release after insertion. Generic tree allocation/linking/rebalance uses standard containers. docs/WEATHER_CONFIG.md; reports/weather_config.json; src/weather_config.cpp. Worker Ghidra read-only; new C++ interfaces, not native ABI.\n\n[BSP reconstruction 00444be0] update\nHypothesis, not a recovered symbol. AX: docs/NATIVE_INPUT_KEYBOARD_STORAGE_AX.md and reports/native_input_keyboard_storage_ax_validation.json. NativeInputKeyboardStorage now provides all fourteen operations as source over actual owned headers. Device/vector map roots cover fresh empty default copies only; populated scale-map copy/destruction, checked iterators and scale erasure retain typed node/color/nil layouts. Five map/destructor bodies and partial scale eraser repaired; 00552E20 iterator ABI restores the two-child erase branch. 40 live/disk envelopes and241 owned CALLs verified. Strict Win32 and2 CTests passed; native/source122545 lifetime,309711 range,168378 insertion,1448 vector,335 string,372 keyboard values and9409 bit-position pairs matched. Existing interface retained; source string lifetime explicit. No original FH3/CRT ABI, malformed/private-alias behavior, general populated device/vector copy, production host wiring or gameplay claim. Prior comments preserved."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "0048d3b0",
+      "lease_owner": "agent/orch4-20260910",
+      "before": "Function: FUN_0048d3b0 at 0048d3b0\nSignature: undefined FUN_0048d3b0(void)\nEntry: 0048d3b0\nBody: 0048d3b0 - 0048d47a",
+      "before_comment": {
+        "address": "0048d3b0",
+        "function_name": "FUN_0048d3b0"
+      },
+      "name": "STL_BitIterator_Advance_0048D3B0",
+      "prototype": "void* __fastcall STL_BitIterator_Advance_0048D3B0(void* self, void* unused_edx, int distance)",
+      "prototype_apply": "Successfully set prototype for function at 0048d3b0 with __fastcall calling convention",
+      "after": "Function: STL_BitIterator_Advance_0048D3B0 at 0048d3b0\nSignature: void * __fastcall STL_BitIterator_Advance_0048D3B0(void * self, void * unused_edx, int distance)\nEntry: 0048d3b0\nBody: 0048d3b0 - 0048d47a",
+      "after_comment": {
+        "address": "0048d3b0",
+        "function_name": "STL_BitIterator_Advance_0048D3B0",
+        "comment": "[BSP reconstruction 0048d3b0]\nHypothesis, not a recovered symbol. AX: docs/NATIVE_INPUT_KEYBOARD_STORAGE_AX.md and reports/native_input_keyboard_storage_ax_validation.json. NativeInputKeyboardStorage now provides all fourteen operations as source over actual owned headers. Device/vector map roots cover fresh empty default copies only; populated scale-map copy/destruction, checked iterators and scale erasure retain typed node/color/nil layouts. Five map/destructor bodies and partial scale eraser repaired; 00552E20 iterator ABI restores the two-child erase branch. 40 live/disk envelopes and241 owned CALLs verified. Strict Win32 and2 CTests passed; native/source122545 lifetime,309711 range,168378 insertion,1448 vector,335 string,372 keyboard values and9409 bit-position pairs matched. Existing interface retained; source string lifetime explicit. No original FH3/CRT ABI, malformed/private-alias behavior, general populated device/vector copy, production host wiring or gameplay claim. Prior comments preserved."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "00546840",
+      "lease_owner": "agent/orch4-20260910",
+      "before": "Function: FUN_00546840 at 00546840\nSignature: undefined FUN_00546840(void)\nEntry: 00546840\nBody: 00546840 - 005468a8",
+      "before_comment": {
+        "address": "00546840",
+        "function_name": "FUN_00546840"
+      },
+      "name": "STL_IntSet_Find_N14_00546840",
+      "prototype": "void* __fastcall STL_IntSet_Find_N14_00546840(void* self, void* unused_edx, void* output, int* key)",
+      "prototype_apply": "Successfully set prototype for function at 00546840 with __fastcall calling convention",
+      "after": "Function: STL_IntSet_Find_N14_00546840 at 00546840\nSignature: void * __fastcall STL_IntSet_Find_N14_00546840(void * self, void * unused_edx, void * output, int * key)\nEntry: 00546840\nBody: 00546840 - 005468a8",
+      "after_comment": {
+        "address": "00546840",
+        "function_name": "STL_IntSet_Find_N14_00546840",
+        "comment": "[BSP reconstruction 00546840]\nHypothesis, not a recovered symbol. AX: docs/NATIVE_INPUT_KEYBOARD_STORAGE_AX.md and reports/native_input_keyboard_storage_ax_validation.json. NativeInputKeyboardStorage now provides all fourteen operations as source over actual owned headers. Device/vector map roots cover fresh empty default copies only; populated scale-map copy/destruction, checked iterators and scale erasure retain typed node/color/nil layouts. Five map/destructor bodies and partial scale eraser repaired; 00552E20 iterator ABI restores the two-child erase branch. 40 live/disk envelopes and241 owned CALLs verified. Strict Win32 and2 CTests passed; native/source122545 lifetime,309711 range,168378 insertion,1448 vector,335 string,372 keyboard values and9409 bit-position pairs matched. Existing interface retained; source string lifetime explicit. No original FH3/CRT ABI, malformed/private-alias behavior, general populated device/vector copy, production host wiring or gameplay claim. Prior comments preserved."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "00552770",
+      "lease_owner": "agent/orch4-20260910",
+      "before": "Function: FUN_00552770 at 00552770\nSignature: undefined FUN_00552770(void)\nEntry: 00552770\nBody: 00552770 - 005527d2",
+      "before_comment": {
+        "address": "00552770",
+        "function_name": "FUN_00552770"
+      },
+      "name": "STL_SensitivityIterator_Next_00552770",
+      "prototype": "void __fastcall STL_SensitivityIterator_Next_00552770(void* self, void* unused_edx)",
+      "prototype_apply": "Successfully set prototype for function at 00552770 with __fastcall calling convention",
+      "after": "Function: STL_SensitivityIterator_Next_00552770 at 00552770\nSignature: void __fastcall STL_SensitivityIterator_Next_00552770(void * self, void * unused_edx)\nEntry: 00552770\nBody: 00552770 - 005527d2",
+      "after_comment": {
+        "address": "00552770",
+        "function_name": "STL_SensitivityIterator_Next_00552770",
+        "comment": "[BSP reconstruction 00552770]\nHypothesis, not a recovered symbol. AX: docs/NATIVE_INPUT_KEYBOARD_STORAGE_AX.md and reports/native_input_keyboard_storage_ax_validation.json. NativeInputKeyboardStorage now provides all fourteen operations as source over actual owned headers. Device/vector map roots cover fresh empty default copies only; populated scale-map copy/destruction, checked iterators and scale erasure retain typed node/color/nil layouts. Five map/destructor bodies and partial scale eraser repaired; 00552E20 iterator ABI restores the two-child erase branch. 40 live/disk envelopes and241 owned CALLs verified. Strict Win32 and2 CTests passed; native/source122545 lifetime,309711 range,168378 insertion,1448 vector,335 string,372 keyboard values and9409 bit-position pairs matched. Existing interface retained; source string lifetime explicit. No original FH3/CRT ABI, malformed/private-alias behavior, general populated device/vector copy, production host wiring or gameplay claim. Prior comments preserved."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "00552d40",
+      "lease_owner": "agent/orch4-20260910",
+      "before": "Function: FUN_00552d40 at 00552d40\nSignature: undefined FUN_00552d40(void)\nEntry: 00552d40\nBody: 00552d40 - 00552da2",
+      "before_comment": {
+        "address": "00552d40",
+        "function_name": "FUN_00552d40"
+      },
+      "name": "STL_WordVectorMapIterator_Next_00552D40",
+      "prototype": "void __fastcall STL_WordVectorMapIterator_Next_00552D40(void* self, void* unused_edx)",
+      "prototype_apply": "Successfully set prototype for function at 00552d40 with __fastcall calling convention",
+      "after": "Function: STL_WordVectorMapIterator_Next_00552D40 at 00552d40\nSignature: void __fastcall STL_WordVectorMapIterator_Next_00552D40(void * self, void * unused_edx)\nEntry: 00552d40\nBody: 00552d40 - 00552da2",
+      "after_comment": {
+        "address": "00552d40",
+        "function_name": "STL_WordVectorMapIterator_Next_00552D40",
+        "comment": "[BSP reconstruction 00552d40]\nHypothesis, not a recovered symbol. AX: docs/NATIVE_INPUT_KEYBOARD_STORAGE_AX.md and reports/native_input_keyboard_storage_ax_validation.json. NativeInputKeyboardStorage now provides all fourteen operations as source over actual owned headers. Device/vector map roots cover fresh empty default copies only; populated scale-map copy/destruction, checked iterators and scale erasure retain typed node/color/nil layouts. Five map/destructor bodies and partial scale eraser repaired; 00552E20 iterator ABI restores the two-child erase branch. 40 live/disk envelopes and241 owned CALLs verified. Strict Win32 and2 CTests passed; native/source122545 lifetime,309711 range,168378 insertion,1448 vector,335 string,372 keyboard values and9409 bit-position pairs matched. Existing interface retained; source string lifetime explicit. No original FH3/CRT ABI, malformed/private-alias behavior, general populated device/vector copy, production host wiring or gameplay claim. Prior comments preserved."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "00552e20",
+      "lease_owner": "agent/orch4-20260910",
+      "before": "Function: FUN_00552e20 at 00552e20\nSignature: void __fastcall FUN_00552e20(void * iterator, void * unused_edx)\nEntry: 00552e20\nBody: 00552e20 - 00552e82",
+      "before_comment": {
+        "address": "00552e20",
+        "function_name": "FUN_00552e20"
+      },
+      "name": "STL_IntScalarTreeMapIterator_Next_00552E20",
+      "prototype": "void __fastcall STL_IntScalarTreeMapIterator_Next_00552E20(void* self, void* unused_edx)",
+      "prototype_apply": "Successfully set prototype for function at 00552e20 with __fastcall calling convention",
+      "after": "Function: STL_IntScalarTreeMapIterator_Next_00552E20 at 00552e20\nSignature: void __fastcall STL_IntScalarTreeMapIterator_Next_00552E20(void * self, void * unused_edx)\nEntry: 00552e20\nBody: 00552e20 - 00552e82",
+      "after_comment": {
+        "address": "00552e20",
+        "function_name": "STL_IntScalarTreeMapIterator_Next_00552E20",
+        "comment": "[BSP reconstruction 00552e20]\nHypothesis, not a recovered symbol. AX: docs/NATIVE_INPUT_KEYBOARD_STORAGE_AX.md and reports/native_input_keyboard_storage_ax_validation.json. NativeInputKeyboardStorage now provides all fourteen operations as source over actual owned headers. Device/vector map roots cover fresh empty default copies only; populated scale-map copy/destruction, checked iterators and scale erasure retain typed node/color/nil layouts. Five map/destructor bodies and partial scale eraser repaired; 00552E20 iterator ABI restores the two-child erase branch. 40 live/disk envelopes and241 owned CALLs verified. Strict Win32 and2 CTests passed; native/source122545 lifetime,309711 range,168378 insertion,1448 vector,335 string,372 keyboard values and9409 bit-position pairs matched. Existing interface retained; source string lifetime explicit. No original FH3/CRT ABI, malformed/private-alias behavior, general populated device/vector copy, production host wiring or gameplay claim. Prior comments preserved."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "005540c0",
+      "lease_owner": "agent/orch4-20260910",
+      "before": "Function: FUN_005540c0 at 005540c0\nSignature: undefined FUN_005540c0(void)\nEntry: 005540c0\nBody: 005540c0 - 0055413d",
+      "before_comment": {
+        "address": "005540c0",
+        "function_name": "FUN_005540c0"
+      },
+      "name": "STL_InputDeviceIterator_Next_005540C0",
+      "prototype": "void __fastcall STL_InputDeviceIterator_Next_005540C0(void* self, void* unused_edx)",
+      "prototype_apply": "Successfully set prototype for function at 005540c0 with __fastcall calling convention",
+      "after": "Function: STL_InputDeviceIterator_Next_005540C0 at 005540c0\nSignature: void __fastcall STL_InputDeviceIterator_Next_005540C0(void * self, void * unused_edx)\nEntry: 005540c0\nBody: 005540c0 - 0055413d",
+      "after_comment": {
+        "address": "005540c0",
+        "function_name": "STL_InputDeviceIterator_Next_005540C0",
+        "comment": "[BSP reconstruction 005540c0]\nHypothesis, not a recovered symbol. AX: docs/NATIVE_INPUT_KEYBOARD_STORAGE_AX.md and reports/native_input_keyboard_storage_ax_validation.json. NativeInputKeyboardStorage now provides all fourteen operations as source over actual owned headers. Device/vector map roots cover fresh empty default copies only; populated scale-map copy/destruction, checked iterators and scale erasure retain typed node/color/nil layouts. Five map/destructor bodies and partial scale eraser repaired; 00552E20 iterator ABI restores the two-child erase branch. 40 live/disk envelopes and241 owned CALLs verified. Strict Win32 and2 CTests passed; native/source122545 lifetime,309711 range,168378 insertion,1448 vector,335 string,372 keyboard values and9409 bit-position pairs matched. Existing interface retained; source string lifetime explicit. No original FH3/CRT ABI, malformed/private-alias behavior, general populated device/vector copy, production host wiring or gameplay claim. Prior comments preserved."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "005548c0",
+      "lease_owner": "agent/orch4-vector-maps-ax",
+      "before": "Function: FUN_005548c0 at 005548c0\nSignature: undefined FUN_005548c0(void)\nEntry: 005548c0\nBody: 005548c0 - 00554912",
+      "before_comment": {
+        "address": "005548c0",
+        "function_name": "FUN_005548c0"
+      },
+      "name": "STL_WordVectorMap_LowerBound_005548C0",
+      "after": "Function: STL_WordVectorMap_LowerBound_005548C0 at 005548c0\nSignature: undefined STL_WordVectorMap_LowerBound_005548C0(void)\nEntry: 005548c0\nBody: 005548c0 - 00554912",
+      "after_comment": {
+        "address": "005548c0",
+        "function_name": "STL_WordVectorMap_LowerBound_005548C0",
+        "comment": "[BSP reconstruction 005548c0]\nHypothesis, not a recovered symbol. AX: docs/NATIVE_INPUT_KEYBOARD_STORAGE_AX.md and reports/native_input_keyboard_storage_ax_validation.json. NativeInputKeyboardStorage now provides all fourteen operations as source over actual owned headers. Device/vector map roots cover fresh empty default copies only; populated scale-map copy/destruction, checked iterators and scale erasure retain typed node/color/nil layouts. Five map/destructor bodies and partial scale eraser repaired; 00552E20 iterator ABI restores the two-child erase branch. 40 live/disk envelopes and241 owned CALLs verified. Strict Win32 and2 CTests passed; native/source122545 lifetime,309711 range,168378 insertion,1448 vector,335 string,372 keyboard values and9409 bit-position pairs matched. Existing interface retained; source string lifetime explicit. No original FH3/CRT ABI, malformed/private-alias behavior, general populated device/vector copy, production host wiring or gameplay claim. Prior comments preserved."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "00554980",
+      "lease_owner": "agent/orch4-device-tree-ax",
+      "before": "Function: FUN_00554980 at 00554980\nSignature: undefined FUN_00554980(void)\nEntry: 00554980\nBody: 00554980 - 005549d8",
+      "before_comment": {
+        "address": "00554980",
+        "function_name": "FUN_00554980"
+      },
+      "name": "STL_InputDeviceMap_LowerBound_00554980",
+      "after": "Function: STL_InputDeviceMap_LowerBound_00554980 at 00554980\nSignature: undefined STL_InputDeviceMap_LowerBound_00554980(void)\nEntry: 00554980\nBody: 00554980 - 005549d8",
+      "after_comment": {
+        "address": "00554980",
+        "function_name": "STL_InputDeviceMap_LowerBound_00554980",
+        "comment": "[BSP reconstruction 00554980]\nHypothesis, not a recovered symbol. AX: docs/NATIVE_INPUT_KEYBOARD_STORAGE_AX.md and reports/native_input_keyboard_storage_ax_validation.json. NativeInputKeyboardStorage now provides all fourteen operations as source over actual owned headers. Device/vector map roots cover fresh empty default copies only; populated scale-map copy/destruction, checked iterators and scale erasure retain typed node/color/nil layouts. Five map/destructor bodies and partial scale eraser repaired; 00552E20 iterator ABI restores the two-child erase branch. 40 live/disk envelopes and241 owned CALLs verified. Strict Win32 and2 CTests passed; native/source122545 lifetime,309711 range,168378 insertion,1448 vector,335 string,372 keyboard values and9409 bit-position pairs matched. Existing interface retained; source string lifetime explicit. No original FH3/CRT ABI, malformed/private-alias behavior, general populated device/vector copy, production host wiring or gameplay claim. Prior comments preserved."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "00554cd0",
+      "lease_owner": "agent/orch4-scale-maps-ax",
+      "before": "Function: FUN_00554cd0 at 00554cd0\nSignature: undefined FUN_00554cd0(void)\nEntry: 00554cd0\nBody: 00554cd0 - 00554d06",
+      "before_comment": {
+        "address": "00554cd0",
+        "function_name": "FUN_00554cd0"
+      },
+      "name": "STL_IntScalarTreeMap_AllocateHead_N20_00554CD0",
+      "after": "Function: STL_IntScalarTreeMap_AllocateHead_N20_00554CD0 at 00554cd0\nSignature: undefined STL_IntScalarTreeMap_AllocateHead_N20_00554CD0(void)\nEntry: 00554cd0\nBody: 00554cd0 - 00554d06",
+      "after_comment": {
+        "address": "00554cd0",
+        "function_name": "STL_IntScalarTreeMap_AllocateHead_N20_00554CD0",
+        "comment": "[BSP reconstruction 00554cd0]\nHypothesis, not a recovered symbol. AX: docs/NATIVE_INPUT_KEYBOARD_STORAGE_AX.md and reports/native_input_keyboard_storage_ax_validation.json. NativeInputKeyboardStorage now provides all fourteen operations as source over actual owned headers. Device/vector map roots cover fresh empty default copies only; populated scale-map copy/destruction, checked iterators and scale erasure retain typed node/color/nil layouts. Five map/destructor bodies and partial scale eraser repaired; 00552E20 iterator ABI restores the two-child erase branch. 40 live/disk envelopes and241 owned CALLs verified. Strict Win32 and2 CTests passed; native/source122545 lifetime,309711 range,168378 insertion,1448 vector,335 string,372 keyboard values and9409 bit-position pairs matched. Existing interface retained; source string lifetime explicit. No original FH3/CRT ABI, malformed/private-alias behavior, general populated device/vector copy, production host wiring or gameplay claim. Prior comments preserved."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "00554ec0",
+      "lease_owner": "agent/orch4-scale-maps-ax",
+      "before": "Function: FUN_00554ec0 at 00554ec0\nSignature: undefined FUN_00554ec0(void)\nEntry: 00554ec0\nBody: 00554ec0 - 00554ef6",
+      "before_comment": {
+        "address": "00554ec0",
+        "function_name": "FUN_00554ec0"
+      },
+      "name": "STL_IntScalarTree_AllocateHead_N18_00554EC0",
+      "after": "Function: STL_IntScalarTree_AllocateHead_N18_00554EC0 at 00554ec0\nSignature: undefined STL_IntScalarTree_AllocateHead_N18_00554EC0(void)\nEntry: 00554ec0\nBody: 00554ec0 - 00554ef6",
+      "after_comment": {
+        "address": "00554ec0",
+        "function_name": "STL_IntScalarTree_AllocateHead_N18_00554EC0",
+        "comment": "[BSP reconstruction 00554ec0]\nHypothesis, not a recovered symbol. AX: docs/NATIVE_INPUT_KEYBOARD_STORAGE_AX.md and reports/native_input_keyboard_storage_ax_validation.json. NativeInputKeyboardStorage now provides all fourteen operations as source over actual owned headers. Device/vector map roots cover fresh empty default copies only; populated scale-map copy/destruction, checked iterators and scale erasure retain typed node/color/nil layouts. Five map/destructor bodies and partial scale eraser repaired; 00552E20 iterator ABI restores the two-child erase branch. 40 live/disk envelopes and241 owned CALLs verified. Strict Win32 and2 CTests passed; native/source122545 lifetime,309711 range,168378 insertion,1448 vector,335 string,372 keyboard values and9409 bit-position pairs matched. Existing interface retained; source string lifetime explicit. No original FH3/CRT ABI, malformed/private-alias behavior, general populated device/vector copy, production host wiring or gameplay claim. Prior comments preserved."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "00554f50",
+      "lease_owner": "agent/orch4-scale-maps-ax",
+      "before": "Function: FUN_00554f50 at 00554f50\nSignature: undefined FUN_00554f50(void)\nEntry: 00554f50\nBody: 00554f50 - 00554f8e",
+      "before_comment": {
+        "address": "00554f50",
+        "function_name": "FUN_00554f50"
+      },
+      "name": "STL_IntScalarTree_AllocateCopyNode_N18_00554F50",
+      "after": "Function: STL_IntScalarTree_AllocateCopyNode_N18_00554F50 at 00554f50\nSignature: undefined STL_IntScalarTree_AllocateCopyNode_N18_00554F50(void)\nEntry: 00554f50\nBody: 00554f50 - 00554f8e",
+      "after_comment": {
+        "address": "00554f50",
+        "function_name": "STL_IntScalarTree_AllocateCopyNode_N18_00554F50",
+        "comment": "[BSP reconstruction 00554f50]\nHypothesis, not a recovered symbol. AX: docs/NATIVE_INPUT_KEYBOARD_STORAGE_AX.md and reports/native_input_keyboard_storage_ax_validation.json. NativeInputKeyboardStorage now provides all fourteen operations as source over actual owned headers. Device/vector map roots cover fresh empty default copies only; populated scale-map copy/destruction, checked iterators and scale erasure retain typed node/color/nil layouts. Five map/destructor bodies and partial scale eraser repaired; 00552E20 iterator ABI restores the two-child erase branch. 40 live/disk envelopes and241 owned CALLs verified. Strict Win32 and2 CTests passed; native/source122545 lifetime,309711 range,168378 insertion,1448 vector,335 string,372 keyboard values and9409 bit-position pairs matched. Existing interface retained; source string lifetime explicit. No original FH3/CRT ABI, malformed/private-alias behavior, general populated device/vector copy, production host wiring or gameplay claim. Prior comments preserved."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "005555b0",
+      "lease_owner": "agent/orch4-scale-maps-ax",
+      "before": "Function: FUN_005555b0 at 005555b0\nSignature: undefined FUN_005555b0(void)\nEntry: 005555b0\nBody: 005555b0 - 00555641",
+      "before_comment": {
+        "address": "005555b0",
+        "function_name": "FUN_005555b0"
+      },
+      "name": "STL_IntScalarTree_CopySubtree_N18_005555B0",
+      "after": "Function: STL_IntScalarTree_CopySubtree_N18_005555B0 at 005555b0\nSignature: undefined STL_IntScalarTree_CopySubtree_N18_005555B0(void)\nEntry: 005555b0\nBody: 005555b0 - 00555641",
+      "after_comment": {
+        "address": "005555b0",
+        "function_name": "STL_IntScalarTree_CopySubtree_N18_005555B0",
+        "comment": "[BSP reconstruction 005555b0]\nHypothesis, not a recovered symbol. AX: docs/NATIVE_INPUT_KEYBOARD_STORAGE_AX.md and reports/native_input_keyboard_storage_ax_validation.json. NativeInputKeyboardStorage now provides all fourteen operations as source over actual owned headers. Device/vector map roots cover fresh empty default copies only; populated scale-map copy/destruction, checked iterators and scale erasure retain typed node/color/nil layouts. Five map/destructor bodies and partial scale eraser repaired; 00552E20 iterator ABI restores the two-child erase branch. 40 live/disk envelopes and241 owned CALLs verified. Strict Win32 and2 CTests passed; native/source122545 lifetime,309711 range,168378 insertion,1448 vector,335 string,372 keyboard values and9409 bit-position pairs matched. Existing interface retained; source string lifetime explicit. No original FH3/CRT ABI, malformed/private-alias behavior, general populated device/vector copy, production host wiring or gameplay claim. Prior comments preserved."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "00558570",
+      "lease_owner": "agent/orch4-scale-maps-ax",
+      "before": "Function: FUN_00558570 at 00558570\nSignature: undefined FUN_00558570(void)\nEntry: 00558570\nBody: 00558570 - 005585e0",
+      "before_comment": {
+        "address": "00558570",
+        "function_name": "FUN_00558570"
+      },
+      "name": "STL_IntScalarTree_CopyConstruct_N18_00558570",
+      "after": "Function: STL_IntScalarTree_CopyConstruct_N18_00558570 at 00558570\nSignature: undefined STL_IntScalarTree_CopyConstruct_N18_00558570(void)\nEntry: 00558570\nBody: 00558570 - 005585e0",
+      "after_comment": {
+        "address": "00558570",
+        "function_name": "STL_IntScalarTree_CopyConstruct_N18_00558570",
+        "comment": "[BSP reconstruction 00558570]\nHypothesis, not a recovered symbol. AX: docs/NATIVE_INPUT_KEYBOARD_STORAGE_AX.md and reports/native_input_keyboard_storage_ax_validation.json. NativeInputKeyboardStorage now provides all fourteen operations as source over actual owned headers. Device/vector map roots cover fresh empty default copies only; populated scale-map copy/destruction, checked iterators and scale erasure retain typed node/color/nil layouts. Five map/destructor bodies and partial scale eraser repaired; 00552E20 iterator ABI restores the two-child erase branch. 40 live/disk envelopes and241 owned CALLs verified. Strict Win32 and2 CTests passed; native/source122545 lifetime,309711 range,168378 insertion,1448 vector,335 string,372 keyboard values and9409 bit-position pairs matched. Existing interface retained; source string lifetime explicit. No original FH3/CRT ABI, malformed/private-alias behavior, general populated device/vector copy, production host wiring or gameplay claim. Prior comments preserved."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "0055a290",
+      "lease_owner": "agent/orch4-scale-maps-ax",
+      "before": "Function: FUN_0055a290 at 0055a290\nSignature: undefined FUN_0055a290(void)\nEntry: 0055a290\nBody: 0055a290 - 0055a315",
+      "before_comment": {
+        "address": "0055a290",
+        "function_name": "FUN_0055a290"
+      },
+      "name": "STL_IntScalarTreeMap_AllocateCopyNode_N20_0055A290",
+      "after": "Function: STL_IntScalarTreeMap_AllocateCopyNode_N20_0055A290 at 0055a290\nSignature: undefined STL_IntScalarTreeMap_AllocateCopyNode_N20_0055A290(void)\nEntry: 0055a290\nBody: 0055a290 - 0055a315",
+      "after_comment": {
+        "address": "0055a290",
+        "function_name": "STL_IntScalarTreeMap_AllocateCopyNode_N20_0055A290",
+        "comment": "[BSP reconstruction 0055a290]\nHypothesis, not a recovered symbol. AX: docs/NATIVE_INPUT_KEYBOARD_STORAGE_AX.md and reports/native_input_keyboard_storage_ax_validation.json. NativeInputKeyboardStorage now provides all fourteen operations as source over actual owned headers. Device/vector map roots cover fresh empty default copies only; populated scale-map copy/destruction, checked iterators and scale erasure retain typed node/color/nil layouts. Five map/destructor bodies and partial scale eraser repaired; 00552E20 iterator ABI restores the two-child erase branch. 40 live/disk envelopes and241 owned CALLs verified. Strict Win32 and2 CTests passed; native/source122545 lifetime,309711 range,168378 insertion,1448 vector,335 string,372 keyboard values and9409 bit-position pairs matched. Existing interface retained; source string lifetime explicit. No original FH3/CRT ABI, malformed/private-alias behavior, general populated device/vector copy, production host wiring or gameplay claim. Prior comments preserved."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "0055ac80",
+      "lease_owner": "agent/orch4-20260910",
+      "before": "Function: STL_xlen_throw_0055ac80 at 0055ac80\nSignature: void * __fastcall STL_xlen_throw_0055ac80(void * tree, void * unused_edx, void * output, void * owner, void * node)\nEntry: 0055ac80\nBody: 0055ac80 - 0055af57",
+      "before_comment": {
+        "address": "0055ac80",
+        "function_name": "STL_xlen_throw_0055ac80",
+        "comment": ""
+      },
+      "name": "STL_IntScalarTreeMap_EraseOne_N20_0055AC80",
+      "prototype": "void* __fastcall STL_IntScalarTreeMap_EraseOne_N20_0055AC80(void* self, void* unused_edx, void* output, void* position_owner, void* position_node)",
+      "prototype_apply": "Successfully set prototype for function at 0055ac80 with __fastcall calling convention",
+      "after": "Function: STL_IntScalarTreeMap_EraseOne_N20_0055AC80 at 0055ac80\nSignature: void * __fastcall STL_IntScalarTreeMap_EraseOne_N20_0055AC80(void * self, void * unused_edx, void * output, void * position_owner, void * position_node)\nEntry: 0055ac80\nBody: 0055ac80 - 0055af57",
+      "after_comment": {
+        "address": "0055ac80",
+        "function_name": "STL_IntScalarTreeMap_EraseOne_N20_0055AC80",
+        "comment": "[BSP reconstruction 0055ac80]\nHypothesis, not a recovered symbol. AX: docs/NATIVE_INPUT_KEYBOARD_STORAGE_AX.md and reports/native_input_keyboard_storage_ax_validation.json. NativeInputKeyboardStorage now provides all fourteen operations as source over actual owned headers. Device/vector map roots cover fresh empty default copies only; populated scale-map copy/destruction, checked iterators and scale erasure retain typed node/color/nil layouts. Five map/destructor bodies and partial scale eraser repaired; 00552E20 iterator ABI restores the two-child erase branch. 40 live/disk envelopes and241 owned CALLs verified. Strict Win32 and2 CTests passed; native/source122545 lifetime,309711 range,168378 insertion,1448 vector,335 string,372 keyboard values and9409 bit-position pairs matched. Existing interface retained; source string lifetime explicit. No original FH3/CRT ABI, malformed/private-alias behavior, general populated device/vector copy, production host wiring or gameplay claim. Prior comments preserved."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "0055b060",
+      "lease_owner": "agent/orch4-scale-maps-ax",
+      "before": "Function: FUN_0055b060 at 0055b060\nSignature: undefined FUN_0055b060(void)\nEntry: 0055b060\nBody: 0055b060 - 0055b0f1",
+      "before_comment": {
+        "address": "0055b060",
+        "function_name": "FUN_0055b060"
+      },
+      "name": "STL_IntScalarTreeMap_CopySubtree_N20_0055B060",
+      "after": "Function: STL_IntScalarTreeMap_CopySubtree_N20_0055B060 at 0055b060\nSignature: undefined STL_IntScalarTreeMap_CopySubtree_N20_0055B060(void)\nEntry: 0055b060\nBody: 0055b060 - 0055b0f1",
+      "after_comment": {
+        "address": "0055b060",
+        "function_name": "STL_IntScalarTreeMap_CopySubtree_N20_0055B060",
+        "comment": "[BSP reconstruction 0055b060]\nHypothesis, not a recovered symbol. AX: docs/NATIVE_INPUT_KEYBOARD_STORAGE_AX.md and reports/native_input_keyboard_storage_ax_validation.json. NativeInputKeyboardStorage now provides all fourteen operations as source over actual owned headers. Device/vector map roots cover fresh empty default copies only; populated scale-map copy/destruction, checked iterators and scale erasure retain typed node/color/nil layouts. Five map/destructor bodies and partial scale eraser repaired; 00552E20 iterator ABI restores the two-child erase branch. 40 live/disk envelopes and241 owned CALLs verified. Strict Win32 and2 CTests passed; native/source122545 lifetime,309711 range,168378 insertion,1448 vector,335 string,372 keyboard values and9409 bit-position pairs matched. Existing interface retained; source string lifetime explicit. No original FH3/CRT ABI, malformed/private-alias behavior, general populated device/vector copy, production host wiring or gameplay claim. Prior comments preserved."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "0055b230",
+      "lease_owner": "agent/orch4-20260910",
+      "before": "Function: STL_IntIntTreeTree_EraseRange_N20_0055B230 at 0055b230\nSignature: void * __fastcall STL_IntIntTreeTree_EraseRange_N20_0055B230(void * tree, void * unused_edx, void * output, void * first_owner, void * first_node, void * last_owner, void * last_node)\nEntry: 0055b230\nBody: 0055b230 - 0055b2f8",
+      "before_comment": {
+        "address": "0055b230",
+        "function_name": "STL_IntIntTreeTree_EraseRange_N20_0055B230",
+        "comment": "[BSP reconstruction 0055b230]\nHypothesis, not a recovered symbol. AV evidence: docs/NATIVE_INPUT_SETTINGS_TREE_CLEANUP.md; reports/native_input_settings_tree_cleanup.json. Actual populated device/controller/default/preset cleanup now supplies source subtree/payload destruction and complete four range-erasure contracts including successor transplant, extrema and red-black fixup. Removes five required callbacks and the entire settings destruction provider interface. Nested device50h tree nil byte15h differs from device78h nil11h. Right-recursive/captured-left cleanup; current backing/head free then pointer reset; keys released after mapped ownership. Strict Win32 and2 CTests; native/source309711 partial/full tree values,122545 lifetime,1448 vector,335 string values matched with zero pooled leaks and successful constructor-failure/manager cleanup.33 live/disk byte envelopes and211 owned CALLs passed. Seven saved bodies repaired with all decoded instruction owners verified; prior annotations retained and actual ABIs restored. Supporting device range helpers are analyzed; source payloads consume their actual full-range cleanup uses. Original STL/CRT/exception ABI, FH3/private-stack aliases, malformed trees, structurally mutating release callbacks, remaining lookup/insertion providers, application wiring and gameplay are unvalidated."
+      },
+      "name": "STL_IntIntTreeTree_EraseRange_N20_0055B230",
+      "prototype": "void* __fastcall STL_IntIntTreeTree_EraseRange_N20_0055B230(void* self, void* unused_edx, void* output, void* first_owner, void* first_node, void* last_owner, void* last_node)",
+      "prototype_apply": "Successfully set prototype for function at 0055b230 with __fastcall calling convention",
+      "after": "Function: STL_IntIntTreeTree_EraseRange_N20_0055B230 at 0055b230\nSignature: void * __fastcall STL_IntIntTreeTree_EraseRange_N20_0055B230(void * self, void * unused_edx, void * output, void * first_owner, void * first_node, void * last_owner, void * last_node)\nEntry: 0055b230\nBody: 0055b230 - 0055b2f8",
+      "after_comment": {
+        "address": "0055b230",
+        "function_name": "STL_IntIntTreeTree_EraseRange_N20_0055B230",
+        "comment": "[BSP reconstruction 0055b230]\nHypothesis, not a recovered symbol. AV evidence: docs/NATIVE_INPUT_SETTINGS_TREE_CLEANUP.md; reports/native_input_settings_tree_cleanup.json. Actual populated device/controller/default/preset cleanup now supplies source subtree/payload destruction and complete four range-erasure contracts including successor transplant, extrema and red-black fixup. Removes five required callbacks and the entire settings destruction provider interface. Nested device50h tree nil byte15h differs from device78h nil11h. Right-recursive/captured-left cleanup; current backing/head free then pointer reset; keys released after mapped ownership. Strict Win32 and2 CTests; native/source309711 partial/full tree values,122545 lifetime,1448 vector,335 string values matched with zero pooled leaks and successful constructor-failure/manager cleanup.33 live/disk byte envelopes and211 owned CALLs passed. Seven saved bodies repaired with all decoded instruction owners verified; prior annotations retained and actual ABIs restored. Supporting device range helpers are analyzed; source payloads consume their actual full-range cleanup uses. Original STL/CRT/exception ABI, FH3/private-stack aliases, malformed trees, structurally mutating release callbacks, remaining lookup/insertion providers, application wiring and gameplay are unvalidated.\n\n[BSP reconstruction 0055b230] update\nHypothesis, not a recovered symbol. AX: docs/NATIVE_INPUT_KEYBOARD_STORAGE_AX.md and reports/native_input_keyboard_storage_ax_validation.json. NativeInputKeyboardStorage now provides all fourteen operations as source over actual owned headers. Device/vector map roots cover fresh empty default copies only; populated scale-map copy/destruction, checked iterators and scale erasure retain typed node/color/nil layouts. Five map/destructor bodies and partial scale eraser repaired; 00552E20 iterator ABI restores the two-child erase branch. 40 live/disk envelopes and241 owned CALLs verified. Strict Win32 and2 CTests passed; native/source122545 lifetime,309711 range,168378 insertion,1448 vector,335 string,372 keyboard values and9409 bit-position pairs matched. Existing interface retained; source string lifetime explicit. No original FH3/CRT ABI, malformed/private-alias behavior, general populated device/vector copy, production host wiring or gameplay claim. Prior comments preserved."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "0055b300",
+      "lease_owner": "agent/orch4-scale-maps-ax",
+      "before": "Function: FUN_0055b300 at 0055b300\nSignature: undefined FUN_0055b300(void)\nEntry: 0055b300\nBody: 0055b300 - 0055b374",
+      "before_comment": {
+        "address": "0055b300",
+        "function_name": "FUN_0055b300"
+      },
+      "name": "STL_IntScalarTreeMap_CopyBody_N20_0055B300",
+      "after": "Function: STL_IntScalarTreeMap_CopyBody_N20_0055B300 at 0055b300\nSignature: undefined STL_IntScalarTreeMap_CopyBody_N20_0055B300(void)\nEntry: 0055b300\nBody: 0055b300 - 0055b374",
+      "after_comment": {
+        "address": "0055b300",
+        "function_name": "STL_IntScalarTreeMap_CopyBody_N20_0055B300",
+        "comment": "[BSP reconstruction 0055b300]\nHypothesis, not a recovered symbol. AX: docs/NATIVE_INPUT_KEYBOARD_STORAGE_AX.md and reports/native_input_keyboard_storage_ax_validation.json. NativeInputKeyboardStorage now provides all fourteen operations as source over actual owned headers. Device/vector map roots cover fresh empty default copies only; populated scale-map copy/destruction, checked iterators and scale erasure retain typed node/color/nil layouts. Five map/destructor bodies and partial scale eraser repaired; 00552E20 iterator ABI restores the two-child erase branch. 40 live/disk envelopes and241 owned CALLs verified. Strict Win32 and2 CTests passed; native/source122545 lifetime,309711 range,168378 insertion,1448 vector,335 string,372 keyboard values and9409 bit-position pairs matched. Existing interface retained; source string lifetime explicit. No original FH3/CRT ABI, malformed/private-alias behavior, general populated device/vector copy, production host wiring or gameplay claim. Prior comments preserved."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "0055b400",
+      "lease_owner": "agent/orch4-scale-maps-ax",
+      "before": "Function: FUN_0055b400 at 0055b400\nSignature: undefined FUN_0055b400(void)\nEntry: 0055b400\nBody: 0055b400 - 0055b470",
+      "before_comment": {
+        "address": "0055b400",
+        "function_name": "FUN_0055b400"
+      },
+      "name": "STL_IntScalarTreeMap_CopyConstruct_N20_0055B400",
+      "prototype": "void* __fastcall STL_IntScalarTreeMap_CopyConstruct_N20_0055B400(void* self, void* unused_edx, void* input)",
+      "prototype_apply": "Successfully set prototype for function at 0055b400 with __fastcall calling convention",
+      "after": "Function: STL_IntScalarTreeMap_CopyConstruct_N20_0055B400 at 0055b400\nSignature: void * __fastcall STL_IntScalarTreeMap_CopyConstruct_N20_0055B400(void * self, void * unused_edx, void * input)\nEntry: 0055b400\nBody: 0055b400 - 0055b470",
+      "after_comment": {
+        "address": "0055b400",
+        "function_name": "STL_IntScalarTreeMap_CopyConstruct_N20_0055B400",
+        "comment": "[BSP reconstruction 0055b400]\nHypothesis, not a recovered symbol. AX: docs/NATIVE_INPUT_KEYBOARD_STORAGE_AX.md and reports/native_input_keyboard_storage_ax_validation.json. NativeInputKeyboardStorage now provides all fourteen operations as source over actual owned headers. Device/vector map roots cover fresh empty default copies only; populated scale-map copy/destruction, checked iterators and scale erasure retain typed node/color/nil layouts. Five map/destructor bodies and partial scale eraser repaired; 00552E20 iterator ABI restores the two-child erase branch. 40 live/disk envelopes and241 owned CALLs verified. Strict Win32 and2 CTests passed; native/source122545 lifetime,309711 range,168378 insertion,1448 vector,335 string,372 keyboard values and9409 bit-position pairs matched. Existing interface retained; source string lifetime explicit. No original FH3/CRT ABI, malformed/private-alias behavior, general populated device/vector copy, production host wiring or gameplay claim. Prior comments preserved."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "0055b490",
+      "lease_owner": "agent/orch4-scale-maps-ax",
+      "before": "Function: FUN_0055b490 at 0055b490\nSignature: void __fastcall FUN_0055b490(void * tree, void * unused_edx)\nEntry: 0055b490\nBody: 0055b490 - 0055b4c3",
+      "before_comment": {
+        "address": "0055b490",
+        "function_name": "FUN_0055b490",
+        "comment": ""
+      },
+      "name": "STL_IntScalarTreeMap_Destroy_N20_0055B490",
+      "prototype": "void __fastcall STL_IntScalarTreeMap_Destroy_N20_0055B490(void* self, void* unused_edx)",
+      "prototype_apply": "Successfully set prototype for function at 0055b490 with __fastcall calling convention",
+      "after": "Function: STL_IntScalarTreeMap_Destroy_N20_0055B490 at 0055b490\nSignature: void __fastcall STL_IntScalarTreeMap_Destroy_N20_0055B490(void * self, void * unused_edx)\nEntry: 0055b490\nBody: 0055b490 - 0055b4c3",
+      "after_comment": {
+        "address": "0055b490",
+        "function_name": "STL_IntScalarTreeMap_Destroy_N20_0055B490",
+        "comment": "[BSP reconstruction 0055b490]\nHypothesis, not a recovered symbol. AX: docs/NATIVE_INPUT_KEYBOARD_STORAGE_AX.md and reports/native_input_keyboard_storage_ax_validation.json. NativeInputKeyboardStorage now provides all fourteen operations as source over actual owned headers. Device/vector map roots cover fresh empty default copies only; populated scale-map copy/destruction, checked iterators and scale erasure retain typed node/color/nil layouts. Five map/destructor bodies and partial scale eraser repaired; 00552E20 iterator ABI restores the two-child erase branch. 40 live/disk envelopes and241 owned CALLs verified. Strict Win32 and2 CTests passed; native/source122545 lifetime,309711 range,168378 insertion,1448 vector,335 string,372 keyboard values and9409 bit-position pairs matched. Existing interface retained; source string lifetime explicit. No original FH3/CRT ABI, malformed/private-alias behavior, general populated device/vector copy, production host wiring or gameplay claim. Prior comments preserved."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "0055b520",
+      "lease_owner": "agent/orch4-device-tree-ax",
+      "before": "Function: FUN_0055b520 at 0055b520\nSignature: undefined FUN_0055b520(void)\nEntry: 0055b520\nBody: 0055b520 - 0055b686",
+      "before_comment": {
+        "address": "0055b520",
+        "function_name": "FUN_0055b520"
+      },
+      "name": "STL_InputDevice_ConstructEmpty_0055B520",
+      "after": "Function: STL_InputDevice_ConstructEmpty_0055B520 at 0055b520\nSignature: undefined STL_InputDevice_ConstructEmpty_0055B520(void)\nEntry: 0055b520\nBody: 0055b520 - 0055b686",
+      "after_comment": {
+        "address": "0055b520",
+        "function_name": "STL_InputDevice_ConstructEmpty_0055B520",
+        "comment": "[BSP reconstruction 0055b520]\nHypothesis, not a recovered symbol. AX: docs/NATIVE_INPUT_KEYBOARD_STORAGE_AX.md and reports/native_input_keyboard_storage_ax_validation.json. NativeInputKeyboardStorage now provides all fourteen operations as source over actual owned headers. Device/vector map roots cover fresh empty default copies only; populated scale-map copy/destruction, checked iterators and scale erasure retain typed node/color/nil layouts. Five map/destructor bodies and partial scale eraser repaired; 00552E20 iterator ABI restores the two-child erase branch. 40 live/disk envelopes and241 owned CALLs verified. Strict Win32 and2 CTests passed; native/source122545 lifetime,309711 range,168378 insertion,1448 vector,335 string,372 keyboard values and9409 bit-position pairs matched. Existing interface retained; source string lifetime explicit. No original FH3/CRT ABI, malformed/private-alias behavior, general populated device/vector copy, production host wiring or gameplay claim. Prior comments preserved."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "0055ba80",
+      "lease_owner": "agent/orch4-device-tree-ax",
+      "before": "Function: FUN_0055ba80 at 0055ba80\nSignature: undefined FUN_0055ba80(void)\nEntry: 0055ba80\nBody: 0055ba80 - 0055bafe",
+      "before_comment": {
+        "address": "0055ba80",
+        "function_name": "FUN_0055ba80"
+      },
+      "name": "STL_InputDevicePair_Construct_0055BA80",
+      "after": "Function: STL_InputDevicePair_Construct_0055BA80 at 0055ba80\nSignature: undefined STL_InputDevicePair_Construct_0055BA80(void)\nEntry: 0055ba80\nBody: 0055ba80 - 0055bafe",
+      "after_comment": {
+        "address": "0055ba80",
+        "function_name": "STL_InputDevicePair_Construct_0055BA80",
+        "comment": "[BSP reconstruction 0055ba80]\nHypothesis, not a recovered symbol. AX: docs/NATIVE_INPUT_KEYBOARD_STORAGE_AX.md and reports/native_input_keyboard_storage_ax_validation.json. NativeInputKeyboardStorage now provides all fourteen operations as source over actual owned headers. Device/vector map roots cover fresh empty default copies only; populated scale-map copy/destruction, checked iterators and scale erasure retain typed node/color/nil layouts. Five map/destructor bodies and partial scale eraser repaired; 00552E20 iterator ABI restores the two-child erase branch. 40 live/disk envelopes and241 owned CALLs verified. Strict Win32 and2 CTests passed; native/source122545 lifetime,309711 range,168378 insertion,1448 vector,335 string,372 keyboard values and9409 bit-position pairs matched. Existing interface retained; source string lifetime explicit. No original FH3/CRT ABI, malformed/private-alias behavior, general populated device/vector copy, production host wiring or gameplay claim. Prior comments preserved."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "0055bf00",
+      "lease_owner": "agent/orch4-device-tree-ax",
+      "before": "Function: FUN_0055bf00 at 0055bf00\nSignature: undefined FUN_0055bf00(void)\nEntry: 0055bf00\nBody: 0055bf00 - 0055c101",
+      "before_comment": {
+        "address": "0055bf00",
+        "function_name": "FUN_0055bf00"
+      },
+      "name": "STL_InputDeviceMap_InsertHint_0055BF00",
+      "after": "Function: STL_InputDeviceMap_InsertHint_0055BF00 at 0055bf00\nSignature: undefined STL_InputDeviceMap_InsertHint_0055BF00(void)\nEntry: 0055bf00\nBody: 0055bf00 - 0055c101",
+      "after_comment": {
+        "address": "0055bf00",
+        "function_name": "STL_InputDeviceMap_InsertHint_0055BF00",
+        "comment": "[BSP reconstruction 0055bf00]\nHypothesis, not a recovered symbol. AX: docs/NATIVE_INPUT_KEYBOARD_STORAGE_AX.md and reports/native_input_keyboard_storage_ax_validation.json. NativeInputKeyboardStorage now provides all fourteen operations as source over actual owned headers. Device/vector map roots cover fresh empty default copies only; populated scale-map copy/destruction, checked iterators and scale erasure retain typed node/color/nil layouts. Five map/destructor bodies and partial scale eraser repaired; 00552E20 iterator ABI restores the two-child erase branch. 40 live/disk envelopes and241 owned CALLs verified. Strict Win32 and2 CTests passed; native/source122545 lifetime,309711 range,168378 insertion,1448 vector,335 string,372 keyboard values and9409 bit-position pairs matched. Existing interface retained; source string lifetime explicit. No original FH3/CRT ABI, malformed/private-alias behavior, general populated device/vector copy, production host wiring or gameplay claim. Prior comments preserved."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "0055c110",
+      "lease_owner": "agent/orch4-device-tree-ax",
+      "before": "Function: FUN_0055c110 at 0055c110\nSignature: undefined FUN_0055c110(void)\nEntry: 0055c110\nBody: 0055c110 - 0055c1f2",
+      "before_comment": {
+        "address": "0055c110",
+        "function_name": "FUN_0055c110"
+      },
+      "name": "STL_InputDeviceMap_Index_N9C_0055C110",
+      "prototype": "void* __fastcall STL_InputDeviceMap_Index_N9C_0055C110(void* self, void* unused_edx, void* input)",
+      "prototype_apply": "Successfully set prototype for function at 0055c110 with __fastcall calling convention",
+      "after": "Function: STL_InputDeviceMap_Index_N9C_0055C110 at 0055c110\nSignature: void * __fastcall STL_InputDeviceMap_Index_N9C_0055C110(void * self, void * unused_edx, void * input)\nEntry: 0055c110\nBody: 0055c110 - 0055c1f2",
+      "after_comment": {
+        "address": "0055c110",
+        "function_name": "STL_InputDeviceMap_Index_N9C_0055C110",
+        "comment": "[BSP reconstruction 0055c110]\nHypothesis, not a recovered symbol. AX: docs/NATIVE_INPUT_KEYBOARD_STORAGE_AX.md and reports/native_input_keyboard_storage_ax_validation.json. NativeInputKeyboardStorage now provides all fourteen operations as source over actual owned headers. Device/vector map roots cover fresh empty default copies only; populated scale-map copy/destruction, checked iterators and scale erasure retain typed node/color/nil layouts. Five map/destructor bodies and partial scale eraser repaired; 00552E20 iterator ABI restores the two-child erase branch. 40 live/disk envelopes and241 owned CALLs verified. Strict Win32 and2 CTests passed; native/source122545 lifetime,309711 range,168378 insertion,1448 vector,335 string,372 keyboard values and9409 bit-position pairs matched. Existing interface retained; source string lifetime explicit. No original FH3/CRT ABI, malformed/private-alias behavior, general populated device/vector copy, production host wiring or gameplay claim. Prior comments preserved."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "0069ccf0",
+      "lease_owner": "agent/orch4-vector-maps-ax",
+      "before": "Function: STL_Tree_Lbound_StrKeyCI_N28_0069ccf0 at 0069ccf0\nSignature: undefined STL_Tree_Lbound_StrKeyCI_N28_0069ccf0(void)\nEntry: 0069ccf0\nBody: 0069ccf0 - 0069cd42",
+      "before_comment": {
+        "address": "0069ccf0",
+        "function_name": "STL_Tree_Lbound_StrKeyCI_N28_0069ccf0",
+        "comment": "[BSP reconstruction 0069ccf0]\nHypothesis, not a recovered symbol. _Lbound(const key&) returning _Nodeptr, same __stricmp descent as 0069cdb0 but on _Isnil at +0x25; __thiscall, RET 0x4. Instantiation N28: node 0x28 (_Myval+0x0c[24]; _Color+0x24,_Isnil+0x25)."
+      },
+      "name": "STL_Tree_Lbound_StrKeyCI_N28_0069ccf0",
+      "after": "Function: STL_Tree_Lbound_StrKeyCI_N28_0069ccf0 at 0069ccf0\nSignature: undefined STL_Tree_Lbound_StrKeyCI_N28_0069ccf0(void)\nEntry: 0069ccf0\nBody: 0069ccf0 - 0069cd42",
+      "after_comment": {
+        "address": "0069ccf0",
+        "function_name": "STL_Tree_Lbound_StrKeyCI_N28_0069ccf0",
+        "comment": "[BSP reconstruction 0069ccf0]\nHypothesis, not a recovered symbol. _Lbound(const key&) returning _Nodeptr, same __stricmp descent as 0069cdb0 but on _Isnil at +0x25; __thiscall, RET 0x4. Instantiation N28: node 0x28 (_Myval+0x0c[24]; _Color+0x24,_Isnil+0x25).\n\n[BSP reconstruction 0069ccf0] update\nHypothesis, not a recovered symbol. AX: docs/NATIVE_INPUT_KEYBOARD_STORAGE_AX.md and reports/native_input_keyboard_storage_ax_validation.json. NativeInputKeyboardStorage now provides all fourteen operations as source over actual owned headers. Device/vector map roots cover fresh empty default copies only; populated scale-map copy/destruction, checked iterators and scale erasure retain typed node/color/nil layouts. Five map/destructor bodies and partial scale eraser repaired; 00552E20 iterator ABI restores the two-child erase branch. 40 live/disk envelopes and241 owned CALLs verified. Strict Win32 and2 CTests passed; native/source122545 lifetime,309711 range,168378 insertion,1448 vector,335 string,372 keyboard values and9409 bit-position pairs matched. Existing interface retained; source string lifetime explicit. No original FH3/CRT ABI, malformed/private-alias behavior, general populated device/vector copy, production host wiring or gameplay claim. Prior comments preserved."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "0069cd50",
+      "lease_owner": "agent/orch4-vector-maps-ax",
+      "before": "Function: STL_Tree_Lbound_StrKeyCI_N2CB_0069cd50 at 0069cd50\nSignature: undefined STL_Tree_Lbound_StrKeyCI_N2CB_0069cd50(void)\nEntry: 0069cd50\nBody: 0069cd50 - 0069cda2",
+      "before_comment": {
+        "address": "0069cd50",
+        "function_name": "STL_Tree_Lbound_StrKeyCI_N2CB_0069cd50",
+        "comment": "[BSP reconstruction 0069cd50]\nHypothesis, not a recovered symbol. _Lbound(const key&) returning _Nodeptr, byte-identical to 0069cdb0 but a separate emitted copy with a different caller set (0069d7c0, 006a4ca0); __thiscall, RET 0x4. Instantiation N2CB: node 0x2c, same layout and case-insensitive string key as the 0069fbc0 instantiation but a separate emitted copy (identical body to 0069cdb0, not folded)."
+      },
+      "name": "STL_Tree_Lbound_StrKeyCI_N2CB_0069cd50",
+      "after": "Function: STL_Tree_Lbound_StrKeyCI_N2CB_0069cd50 at 0069cd50\nSignature: undefined STL_Tree_Lbound_StrKeyCI_N2CB_0069cd50(void)\nEntry: 0069cd50\nBody: 0069cd50 - 0069cda2",
+      "after_comment": {
+        "address": "0069cd50",
+        "function_name": "STL_Tree_Lbound_StrKeyCI_N2CB_0069cd50",
+        "comment": "[BSP reconstruction 0069cd50]\nHypothesis, not a recovered symbol. _Lbound(const key&) returning _Nodeptr, byte-identical to 0069cdb0 but a separate emitted copy with a different caller set (0069d7c0, 006a4ca0); __thiscall, RET 0x4. Instantiation N2CB: node 0x2c, same layout and case-insensitive string key as the 0069fbc0 instantiation but a separate emitted copy (identical body to 0069cdb0, not folded).\n\n[BSP reconstruction 0069cd50] update\nHypothesis, not a recovered symbol. AX: docs/NATIVE_INPUT_KEYBOARD_STORAGE_AX.md and reports/native_input_keyboard_storage_ax_validation.json. NativeInputKeyboardStorage now provides all fourteen operations as source over actual owned headers. Device/vector map roots cover fresh empty default copies only; populated scale-map copy/destruction, checked iterators and scale erasure retain typed node/color/nil layouts. Five map/destructor bodies and partial scale eraser repaired; 00552E20 iterator ABI restores the two-child erase branch. 40 live/disk envelopes and241 owned CALLs verified. Strict Win32 and2 CTests passed; native/source122545 lifetime,309711 range,168378 insertion,1448 vector,335 string,372 keyboard values and9409 bit-position pairs matched. Existing interface retained; source string lifetime explicit. No original FH3/CRT ABI, malformed/private-alias behavior, general populated device/vector copy, production host wiring or gameplay claim. Prior comments preserved."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "006a19a0",
+      "lease_owner": "agent/orch4-vector-maps-ax",
+      "before": "Function: FUN_006a19a0 at 006a19a0\nSignature: undefined FUN_006a19a0(void)\nEntry: 006a19a0\nBody: 006a19a0 - 006a1a1e",
+      "before_comment": {
+        "address": "006a19a0",
+        "function_name": "FUN_006a19a0"
+      },
+      "name": "STL_StringDescriptorVectorPair_Construct_006A19A0",
+      "after": "Function: STL_StringDescriptorVectorPair_Construct_006A19A0 at 006a19a0\nSignature: undefined STL_StringDescriptorVectorPair_Construct_006A19A0(void)\nEntry: 006a19a0\nBody: 006a19a0 - 006a1a1e",
+      "after_comment": {
+        "address": "006a19a0",
+        "function_name": "STL_StringDescriptorVectorPair_Construct_006A19A0",
+        "comment": "[BSP reconstruction 006a19a0]\nHypothesis, not a recovered symbol. AX: docs/NATIVE_INPUT_KEYBOARD_STORAGE_AX.md and reports/native_input_keyboard_storage_ax_validation.json. NativeInputKeyboardStorage now provides all fourteen operations as source over actual owned headers. Device/vector map roots cover fresh empty default copies only; populated scale-map copy/destruction, checked iterators and scale erasure retain typed node/color/nil layouts. Five map/destructor bodies and partial scale eraser repaired; 00552E20 iterator ABI restores the two-child erase branch. 40 live/disk envelopes and241 owned CALLs verified. Strict Win32 and2 CTests passed; native/source122545 lifetime,309711 range,168378 insertion,1448 vector,335 string,372 keyboard values and9409 bit-position pairs matched. Existing interface retained; source string lifetime explicit. No original FH3/CRT ABI, malformed/private-alias behavior, general populated device/vector copy, production host wiring or gameplay claim. Prior comments preserved."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "006a1a20",
+      "lease_owner": "agent/orch4-vector-maps-ax",
+      "before": "Function: FUN_006a1a20 at 006a1a20\nSignature: undefined FUN_006a1a20(void)\nEntry: 006a1a20\nBody: 006a1a20 - 006a1a9e",
+      "before_comment": {
+        "address": "006a1a20",
+        "function_name": "FUN_006a1a20"
+      },
+      "name": "STL_StringWordVectorPair_Construct_006A1A20",
+      "after": "Function: STL_StringWordVectorPair_Construct_006A1A20 at 006a1a20\nSignature: undefined STL_StringWordVectorPair_Construct_006A1A20(void)\nEntry: 006a1a20\nBody: 006a1a20 - 006a1a9e",
+      "after_comment": {
+        "address": "006a1a20",
+        "function_name": "STL_StringWordVectorPair_Construct_006A1A20",
+        "comment": "[BSP reconstruction 006a1a20]\nHypothesis, not a recovered symbol. AX: docs/NATIVE_INPUT_KEYBOARD_STORAGE_AX.md and reports/native_input_keyboard_storage_ax_validation.json. NativeInputKeyboardStorage now provides all fourteen operations as source over actual owned headers. Device/vector map roots cover fresh empty default copies only; populated scale-map copy/destruction, checked iterators and scale erasure retain typed node/color/nil layouts. Five map/destructor bodies and partial scale eraser repaired; 00552E20 iterator ABI restores the two-child erase branch. 40 live/disk envelopes and241 owned CALLs verified. Strict Win32 and2 CTests passed; native/source122545 lifetime,309711 range,168378 insertion,1448 vector,335 string,372 keyboard values and9409 bit-position pairs matched. Existing interface retained; source string lifetime explicit. No original FH3/CRT ABI, malformed/private-alias behavior, general populated device/vector copy, production host wiring or gameplay claim. Prior comments preserved."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "006a20d0",
+      "lease_owner": "agent/orch4-vector-maps-ax",
+      "before": "Function: FUN_006a20d0 at 006a20d0\nSignature: undefined FUN_006a20d0(void)\nEntry: 006a20d0\nBody: 006a20d0 - 006a2156",
+      "before_comment": {
+        "address": "006a20d0",
+        "function_name": "FUN_006a20d0"
+      },
+      "name": "STL_StringBitVectorPair_Construct_006A20D0",
+      "after": "Function: STL_StringBitVectorPair_Construct_006A20D0 at 006a20d0\nSignature: undefined STL_StringBitVectorPair_Construct_006A20D0(void)\nEntry: 006a20d0\nBody: 006a20d0 - 006a2156",
+      "after_comment": {
+        "address": "006a20d0",
+        "function_name": "STL_StringBitVectorPair_Construct_006A20D0",
+        "comment": "[BSP reconstruction 006a20d0]\nHypothesis, not a recovered symbol. AX: docs/NATIVE_INPUT_KEYBOARD_STORAGE_AX.md and reports/native_input_keyboard_storage_ax_validation.json. NativeInputKeyboardStorage now provides all fourteen operations as source over actual owned headers. Device/vector map roots cover fresh empty default copies only; populated scale-map copy/destruction, checked iterators and scale erasure retain typed node/color/nil layouts. Five map/destructor bodies and partial scale eraser repaired; 00552E20 iterator ABI restores the two-child erase branch. 40 live/disk envelopes and241 owned CALLs verified. Strict Win32 and2 CTests passed; native/source122545 lifetime,309711 range,168378 insertion,1448 vector,335 string,372 keyboard values and9409 bit-position pairs matched. Existing interface retained; source string lifetime explicit. No original FH3/CRT ABI, malformed/private-alias behavior, general populated device/vector copy, production host wiring or gameplay claim. Prior comments preserved."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "006a38b0",
+      "lease_owner": "agent/orch4-vector-maps-ax",
+      "before": "Function: FUN_006a38b0 at 006a38b0\nSignature: undefined FUN_006a38b0(void)\nEntry: 006a38b0\nBody: 006a38b0 - 006a3aab",
+      "before_comment": {
+        "address": "006a38b0",
+        "function_name": "FUN_006a38b0"
+      },
+      "name": "STL_WordVectorMap_InsertHint_006A38B0",
+      "after": "Function: STL_WordVectorMap_InsertHint_006A38B0 at 006a38b0\nSignature: undefined STL_WordVectorMap_InsertHint_006A38B0(void)\nEntry: 006a38b0\nBody: 006a38b0 - 006a3aab",
+      "after_comment": {
+        "address": "006a38b0",
+        "function_name": "STL_WordVectorMap_InsertHint_006A38B0",
+        "comment": "[BSP reconstruction 006a38b0]\nHypothesis, not a recovered symbol. AX: docs/NATIVE_INPUT_KEYBOARD_STORAGE_AX.md and reports/native_input_keyboard_storage_ax_validation.json. NativeInputKeyboardStorage now provides all fourteen operations as source over actual owned headers. Device/vector map roots cover fresh empty default copies only; populated scale-map copy/destruction, checked iterators and scale erasure retain typed node/color/nil layouts. Five map/destructor bodies and partial scale eraser repaired; 00552E20 iterator ABI restores the two-child erase branch. 40 live/disk envelopes and241 owned CALLs verified. Strict Win32 and2 CTests passed; native/source122545 lifetime,309711 range,168378 insertion,1448 vector,335 string,372 keyboard values and9409 bit-position pairs matched. Existing interface retained; source string lifetime explicit. No original FH3/CRT ABI, malformed/private-alias behavior, general populated device/vector copy, production host wiring or gameplay claim. Prior comments preserved."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "006a3ab0",
+      "lease_owner": "agent/orch4-vector-maps-ax",
+      "before": "Function: FUN_006a3ab0 at 006a3ab0\nSignature: undefined FUN_006a3ab0(void)\nEntry: 006a3ab0\nBody: 006a3ab0 - 006a3cab",
+      "before_comment": {
+        "address": "006a3ab0",
+        "function_name": "FUN_006a3ab0"
+      },
+      "name": "STL_DescriptorVectorMap_InsertHint_006A3AB0",
+      "after": "Function: STL_DescriptorVectorMap_InsertHint_006A3AB0 at 006a3ab0\nSignature: undefined STL_DescriptorVectorMap_InsertHint_006A3AB0(void)\nEntry: 006a3ab0\nBody: 006a3ab0 - 006a3cab",
+      "after_comment": {
+        "address": "006a3ab0",
+        "function_name": "STL_DescriptorVectorMap_InsertHint_006A3AB0",
+        "comment": "[BSP reconstruction 006a3ab0]\nHypothesis, not a recovered symbol. AX: docs/NATIVE_INPUT_KEYBOARD_STORAGE_AX.md and reports/native_input_keyboard_storage_ax_validation.json. NativeInputKeyboardStorage now provides all fourteen operations as source over actual owned headers. Device/vector map roots cover fresh empty default copies only; populated scale-map copy/destruction, checked iterators and scale erasure retain typed node/color/nil layouts. Five map/destructor bodies and partial scale eraser repaired; 00552E20 iterator ABI restores the two-child erase branch. 40 live/disk envelopes and241 owned CALLs verified. Strict Win32 and2 CTests passed; native/source122545 lifetime,309711 range,168378 insertion,1448 vector,335 string,372 keyboard values and9409 bit-position pairs matched. Existing interface retained; source string lifetime explicit. No original FH3/CRT ABI, malformed/private-alias behavior, general populated device/vector copy, production host wiring or gameplay claim. Prior comments preserved."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "006a44b0",
+      "lease_owner": "agent/orch4-vector-maps-ax",
+      "before": "Function: FUN_006a44b0 at 006a44b0\nSignature: void * __fastcall FUN_006a44b0(void * tree, void * unused_edx, void * key)\nEntry: 006a44b0\nBody: 006a44b0 - 006a45b1",
+      "before_comment": {
+        "address": "006a44b0",
+        "function_name": "FUN_006a44b0",
+        "comment": ""
+      },
+      "name": "STL_WordVectorMap_Index_N28_006A44B0",
+      "prototype": "void* __fastcall STL_WordVectorMap_Index_N28_006A44B0(void* self, void* unused_edx, void* input)",
+      "prototype_apply": "Successfully set prototype for function at 006a44b0 with __fastcall calling convention",
+      "after": "Function: STL_WordVectorMap_Index_N28_006A44B0 at 006a44b0\nSignature: void * __fastcall STL_WordVectorMap_Index_N28_006A44B0(void * self, void * unused_edx, void * input)\nEntry: 006a44b0\nBody: 006a44b0 - 006a45b1",
+      "after_comment": {
+        "address": "006a44b0",
+        "function_name": "STL_WordVectorMap_Index_N28_006A44B0",
+        "comment": "[BSP reconstruction 006a44b0]\nHypothesis, not a recovered symbol. AX: docs/NATIVE_INPUT_KEYBOARD_STORAGE_AX.md and reports/native_input_keyboard_storage_ax_validation.json. NativeInputKeyboardStorage now provides all fourteen operations as source over actual owned headers. Device/vector map roots cover fresh empty default copies only; populated scale-map copy/destruction, checked iterators and scale erasure retain typed node/color/nil layouts. Five map/destructor bodies and partial scale eraser repaired; 00552E20 iterator ABI restores the two-child erase branch. 40 live/disk envelopes and241 owned CALLs verified. Strict Win32 and2 CTests passed; native/source122545 lifetime,309711 range,168378 insertion,1448 vector,335 string,372 keyboard values and9409 bit-position pairs matched. Existing interface retained; source string lifetime explicit. No original FH3/CRT ABI, malformed/private-alias behavior, general populated device/vector copy, production host wiring or gameplay claim. Prior comments preserved."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "006a45c0",
+      "lease_owner": "agent/orch4-vector-maps-ax",
+      "before": "Function: FUN_006a45c0 at 006a45c0\nSignature: void * __fastcall FUN_006a45c0(void * tree, void * unused_edx, void * key)\nEntry: 006a45c0\nBody: 006a45c0 - 006a46c1",
+      "before_comment": {
+        "address": "006a45c0",
+        "function_name": "FUN_006a45c0",
+        "comment": ""
+      },
+      "name": "STL_DescriptorVectorMap_Index_N28_006A45C0",
+      "prototype": "void* __fastcall STL_DescriptorVectorMap_Index_N28_006A45C0(void* self, void* unused_edx, void* input)",
+      "prototype_apply": "Successfully set prototype for function at 006a45c0 with __fastcall calling convention",
+      "after": "Function: STL_DescriptorVectorMap_Index_N28_006A45C0 at 006a45c0\nSignature: void * __fastcall STL_DescriptorVectorMap_Index_N28_006A45C0(void * self, void * unused_edx, void * input)\nEntry: 006a45c0\nBody: 006a45c0 - 006a46c1",
+      "after_comment": {
+        "address": "006a45c0",
+        "function_name": "STL_DescriptorVectorMap_Index_N28_006A45C0",
+        "comment": "[BSP reconstruction 006a45c0]\nHypothesis, not a recovered symbol. AX: docs/NATIVE_INPUT_KEYBOARD_STORAGE_AX.md and reports/native_input_keyboard_storage_ax_validation.json. NativeInputKeyboardStorage now provides all fourteen operations as source over actual owned headers. Device/vector map roots cover fresh empty default copies only; populated scale-map copy/destruction, checked iterators and scale erasure retain typed node/color/nil layouts. Five map/destructor bodies and partial scale eraser repaired; 00552E20 iterator ABI restores the two-child erase branch. 40 live/disk envelopes and241 owned CALLs verified. Strict Win32 and2 CTests passed; native/source122545 lifetime,309711 range,168378 insertion,1448 vector,335 string,372 keyboard values and9409 bit-position pairs matched. Existing interface retained; source string lifetime explicit. No original FH3/CRT ABI, malformed/private-alias behavior, general populated device/vector copy, production host wiring or gameplay claim. Prior comments preserved."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "006a47f0",
+      "lease_owner": "agent/orch4-vector-maps-ax",
+      "before": "Function: FUN_006a47f0 at 006a47f0\nSignature: undefined FUN_006a47f0(void)\nEntry: 006a47f0\nBody: 006a47f0 - 006a49eb",
+      "before_comment": {
+        "address": "006a47f0",
+        "function_name": "FUN_006a47f0"
+      },
+      "name": "STL_BitVectorMap_InsertHint_006A47F0",
+      "after": "Function: STL_BitVectorMap_InsertHint_006A47F0 at 006a47f0\nSignature: undefined STL_BitVectorMap_InsertHint_006A47F0(void)\nEntry: 006a47f0\nBody: 006a47f0 - 006a49eb",
+      "after_comment": {
+        "address": "006a47f0",
+        "function_name": "STL_BitVectorMap_InsertHint_006A47F0",
+        "comment": "[BSP reconstruction 006a47f0]\nHypothesis, not a recovered symbol. AX: docs/NATIVE_INPUT_KEYBOARD_STORAGE_AX.md and reports/native_input_keyboard_storage_ax_validation.json. NativeInputKeyboardStorage now provides all fourteen operations as source over actual owned headers. Device/vector map roots cover fresh empty default copies only; populated scale-map copy/destruction, checked iterators and scale erasure retain typed node/color/nil layouts. Five map/destructor bodies and partial scale eraser repaired; 00552E20 iterator ABI restores the two-child erase branch. 40 live/disk envelopes and241 owned CALLs verified. Strict Win32 and2 CTests passed; native/source122545 lifetime,309711 range,168378 insertion,1448 vector,335 string,372 keyboard values and9409 bit-position pairs matched. Existing interface retained; source string lifetime explicit. No original FH3/CRT ABI, malformed/private-alias behavior, general populated device/vector copy, production host wiring or gameplay claim. Prior comments preserved."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "006a4ca0",
+      "lease_owner": "agent/orch4-vector-maps-ax",
+      "before": "Function: FUN_006a4ca0 at 006a4ca0\nSignature: void * __fastcall FUN_006a4ca0(void * tree, void * unused_edx, void * key)\nEntry: 006a4ca0\nBody: 006a4ca0 - 006a4db9",
+      "before_comment": {
+        "address": "006a4ca0",
+        "function_name": "FUN_006a4ca0",
+        "comment": ""
+      },
+      "name": "STL_BitVectorMap_Index_N2C_006A4CA0",
+      "prototype": "void* __fastcall STL_BitVectorMap_Index_N2C_006A4CA0(void* self, void* unused_edx, void* input)",
+      "prototype_apply": "Successfully set prototype for function at 006a4ca0 with __fastcall calling convention",
+      "after": "Function: STL_BitVectorMap_Index_N2C_006A4CA0 at 006a4ca0\nSignature: void * __fastcall STL_BitVectorMap_Index_N2C_006A4CA0(void * self, void * unused_edx, void * input)\nEntry: 006a4ca0\nBody: 006a4ca0 - 006a4db9",
+      "after_comment": {
+        "address": "006a4ca0",
+        "function_name": "STL_BitVectorMap_Index_N2C_006A4CA0",
+        "comment": "[BSP reconstruction 006a4ca0]\nHypothesis, not a recovered symbol. AX: docs/NATIVE_INPUT_KEYBOARD_STORAGE_AX.md and reports/native_input_keyboard_storage_ax_validation.json. NativeInputKeyboardStorage now provides all fourteen operations as source over actual owned headers. Device/vector map roots cover fresh empty default copies only; populated scale-map copy/destruction, checked iterators and scale erasure retain typed node/color/nil layouts. Five map/destructor bodies and partial scale eraser repaired; 00552E20 iterator ABI restores the two-child erase branch. 40 live/disk envelopes and241 owned CALLs verified. Strict Win32 and2 CTests passed; native/source122545 lifetime,309711 range,168378 insertion,1448 vector,335 string,372 keyboard values and9409 bit-position pairs matched. Existing interface retained; source string lifetime explicit. No original FH3/CRT ABI, malformed/private-alias behavior, general populated device/vector copy, production host wiring or gameplay claim. Prior comments preserved."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "006a4dc0",
+      "lease_owner": "agent/orch4-scale-maps-ax",
+      "before": "Function: FUN_006a4dc0 at 006a4dc0\nSignature: undefined FUN_006a4dc0(void)\nEntry: 006a4dc0\nBody: 006a4dc0 - 006a4f7b",
+      "before_comment": {
+        "address": "006a4dc0",
+        "function_name": "FUN_006a4dc0"
+      },
+      "name": "STL_IntScalarTreeMap_InsertHint_006A4DC0",
+      "after": "Function: STL_IntScalarTreeMap_InsertHint_006A4DC0 at 006a4dc0\nSignature: undefined STL_IntScalarTreeMap_InsertHint_006A4DC0(void)\nEntry: 006a4dc0\nBody: 006a4dc0 - 006a4f7b",
+      "after_comment": {
+        "address": "006a4dc0",
+        "function_name": "STL_IntScalarTreeMap_InsertHint_006A4DC0",
+        "comment": "[BSP reconstruction 006a4dc0]\nHypothesis, not a recovered symbol. AX: docs/NATIVE_INPUT_KEYBOARD_STORAGE_AX.md and reports/native_input_keyboard_storage_ax_validation.json. NativeInputKeyboardStorage now provides all fourteen operations as source over actual owned headers. Device/vector map roots cover fresh empty default copies only; populated scale-map copy/destruction, checked iterators and scale erasure retain typed node/color/nil layouts. Five map/destructor bodies and partial scale eraser repaired; 00552E20 iterator ABI restores the two-child erase branch. 40 live/disk envelopes and241 owned CALLs verified. Strict Win32 and2 CTests passed; native/source122545 lifetime,309711 range,168378 insertion,1448 vector,335 string,372 keyboard values and9409 bit-position pairs matched. Existing interface retained; source string lifetime explicit. No original FH3/CRT ABI, malformed/private-alias behavior, general populated device/vector copy, production host wiring or gameplay claim. Prior comments preserved."
+      },
+      "readback_verified": true
+    },
+    {
+      "address": "006a5aa0",
+      "lease_owner": "agent/orch4-scale-maps-ax",
+      "before": "Function: FUN_006a5aa0 at 006a5aa0\nSignature: void * __fastcall FUN_006a5aa0(void * tree, void * unused_edx, void * key)\nEntry: 006a5aa0\nBody: 006a5aa0 - 006a5bee",
+      "before_comment": {
+        "address": "006a5aa0",
+        "function_name": "FUN_006a5aa0",
+        "comment": ""
+      },
+      "name": "STL_IntScalarTreeMap_Index_N20_006A5AA0",
+      "prototype": "void* __fastcall STL_IntScalarTreeMap_Index_N20_006A5AA0(void* self, void* unused_edx, void* input)",
+      "prototype_apply": "Successfully set prototype for function at 006a5aa0 with __fastcall calling convention",
+      "after": "Function: STL_IntScalarTreeMap_Index_N20_006A5AA0 at 006a5aa0\nSignature: void * __fastcall STL_IntScalarTreeMap_Index_N20_006A5AA0(void * self, void * unused_edx, void * input)\nEntry: 006a5aa0\nBody: 006a5aa0 - 006a5bee",
+      "after_comment": {
+        "address": "006a5aa0",
+        "function_name": "STL_IntScalarTreeMap_Index_N20_006A5AA0",
+        "comment": "[BSP reconstruction 006a5aa0]\nHypothesis, not a recovered symbol. AX: docs/NATIVE_INPUT_KEYBOARD_STORAGE_AX.md and reports/native_input_keyboard_storage_ax_validation.json. NativeInputKeyboardStorage now provides all fourteen operations as source over actual owned headers. Device/vector map roots cover fresh empty default copies only; populated scale-map copy/destruction, checked iterators and scale erasure retain typed node/color/nil layouts. Five map/destructor bodies and partial scale eraser repaired; 00552E20 iterator ABI restores the two-child erase branch. 40 live/disk envelopes and241 owned CALLs verified. Strict Win32 and2 CTests passed; native/source122545 lifetime,309711 range,168378 insertion,1448 vector,335 string,372 keyboard values and9409 bit-position pairs matched. Existing interface retained; source string lifetime explicit. No original FH3/CRT ABI, malformed/private-alias behavior, general populated device/vector copy, production host wiring or gameplay claim. Prior comments preserved."
+      },
+      "readback_verified": true
+    }
+  ],
+  "actions": [
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00444be0",
+        "prototype": "void* __fastcall BSP_WeatherFloatMap_LookupOrInsert(void* self, void* unused_edx, void* input)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00444be0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "0048d3b0",
+        "prototype": "void* __fastcall STL_BitIterator_Advance_0048D3B0(void* self, void* unused_edx, int distance)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 0048d3b0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00546840",
+        "prototype": "void* __fastcall STL_IntSet_Find_N14_00546840(void* self, void* unused_edx, void* output, int* key)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00546840 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00552770",
+        "prototype": "void __fastcall STL_SensitivityIterator_Next_00552770(void* self, void* unused_edx)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00552770 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00552d40",
+        "prototype": "void __fastcall STL_WordVectorMapIterator_Next_00552D40(void* self, void* unused_edx)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00552d40 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00552e20",
+        "prototype": "void __fastcall STL_IntScalarTreeMapIterator_Next_00552E20(void* self, void* unused_edx)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00552e20 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "005540c0",
+        "prototype": "void __fastcall STL_InputDeviceIterator_Next_005540C0(void* self, void* unused_edx)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 005540c0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "0055ac80",
+        "prototype": "void* __fastcall STL_IntScalarTreeMap_EraseOne_N20_0055AC80(void* self, void* unused_edx, void* output, void* position_owner, void* position_node)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 0055ac80 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "0055b230",
+        "prototype": "void* __fastcall STL_IntIntTreeTree_EraseRange_N20_0055B230(void* self, void* unused_edx, void* output, void* first_owner, void* first_node, void* last_owner, void* last_node)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 0055b230 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "0055b400",
+        "prototype": "void* __fastcall STL_IntScalarTreeMap_CopyConstruct_N20_0055B400(void* self, void* unused_edx, void* input)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 0055b400 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "0055b490",
+        "prototype": "void __fastcall STL_IntScalarTreeMap_Destroy_N20_0055B490(void* self, void* unused_edx)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 0055b490 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "0055c110",
+        "prototype": "void* __fastcall STL_InputDeviceMap_Index_N9C_0055C110(void* self, void* unused_edx, void* input)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 0055c110 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "006a44b0",
+        "prototype": "void* __fastcall STL_WordVectorMap_Index_N28_006A44B0(void* self, void* unused_edx, void* input)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 006a44b0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "006a45c0",
+        "prototype": "void* __fastcall STL_DescriptorVectorMap_Index_N28_006A45C0(void* self, void* unused_edx, void* input)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 006a45c0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "006a4ca0",
+        "prototype": "void* __fastcall STL_BitVectorMap_Index_N2C_006A4CA0(void* self, void* unused_edx, void* input)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 006a4ca0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "006a5aa0",
+        "prototype": "void* __fastcall STL_IntScalarTreeMap_Index_N20_006A5AA0(void* self, void* unused_edx, void* input)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 006a5aa0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": "{\"success\": true, \"program\": \"battlestationspacific.exe\", \"message\": \"Program saved successfully\"}"
+    }
+  ],
+  "state": "names_comments_fourteen_root_and_two_helper_abis_saved_verified",
+  "exports_refreshed": [
+    "00443d60",
+    "00444910",
+    "00444be0",
+    "0048d3b0",
+    "00546840",
+    "00552770",
+    "00552d40",
+    "00552e20",
+    "005540c0",
+    "005548c0",
+    "00554980",
+    "00554cd0",
+    "00554ec0",
+    "00554f50",
+    "005555b0",
+    "00558570",
+    "0055a290",
+    "0055ac80",
+    "0055b060",
+    "0055b230",
+    "0055b300",
+    "0055b400",
+    "0055b490",
+    "0055b520",
+    "0055ba80",
+    "0055bf00",
+    "0055c110",
+    "0069ccf0",
+    "0069cd50",
+    "006a19a0",
+    "006a1a20",
+    "006a20d0",
+    "006a38b0",
+    "006a3ab0",
+    "006a44b0",
+    "006a45c0",
+    "006a47f0",
+    "006a4ca0",
+    "006a4dc0",
+    "006a5aa0"
+  ]
+}

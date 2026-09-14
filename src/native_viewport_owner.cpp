@@ -6,6 +6,7 @@
 #include <new>
 #include <stdexcept>
 #include <type_traits>
+#include <utility>
 
 #if !defined(_MSC_VER) || !defined(_M_IX86)
 #error Native viewport ownership requires MSVC Win32 pointer and LONG widths.
@@ -99,6 +100,15 @@ NativeViewportOwner* allocate_native_viewport_owner(NativeViewportEnvironment& e
     }
 }
 
+NativeViewportOwner* allocate_native_viewport_owner(NativeViewportEnvironment& environment,
+    NativeViewportRegistry::Admission&& admission) {
+    auto& registry = admission.require_registry(); // before native allocation
+    auto prepared = std::move(admission); // callbacks cannot consume the caller's token
+    auto* const owner = allocate_native_viewport_owner(environment);
+    registry.constructed(prepared, *owner);
+    return owner;
+}
+
 void retain_native_viewport_owner(NativeViewportOwner& owner) noexcept {
     (void)::InterlockedIncrement(&owner.references_04);
 }
@@ -113,6 +123,7 @@ void invoke_native_viewport_deleting_destructor_00bd30e0(NativeViewportOwner* ow
 NativeViewportOwner* delete_native_viewport_owner_00b1f8f0(
     NativeViewportOwner* owner, std::uint32_t flags) noexcept {
     auto* const original = owner;
+    retire_registered_native_viewport_before_destroy(*owner);
     owner->native_vtable_00 = kNativeViewportVtable;
     owner->native_vtable_00 = kNativeViewportBaseVtable;
     owner->~NativeViewportOwner();

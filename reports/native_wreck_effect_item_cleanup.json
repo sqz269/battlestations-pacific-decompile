@@ -1,0 +1,488 @@
+{
+  "packet": "orch6_wreck_effect_item_cleanup_y",
+  "base_commit": "2aa42082a0dd89fee5b2397978704c5194ff6eaf",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_access": "STRICT READ ONLY formal BSP CLI; no annotation/save/body/export mutations",
+  "source": "src/native_wreck_effect_item_cleanup.cpp",
+  "header": "include/bsp/native_wreck_effect_item_cleanup.hpp",
+  "doc": "docs/NATIVE_WRECK_EFFECT_ITEM_CLEANUP.md",
+  "new_library_ports": 0,
+  "functions": [
+    {
+      "address": "008673B0",
+      "end_inclusive": "0086749D",
+      "native_bytes": 238,
+      "name": "cleanup_native_wreck_effect_item_008673b0",
+      "coverage": "complete normal control and actual owner field-store sequence; existing getter/raw erase/reference providers; native EH transport remains unproved",
+      "original_abi": "ECX actual item, no stack args, plain RET, no defined result",
+      "source_abi": "borrowed actual same-item raw header/byte view and existing required provider context; not native ABI compatible"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "008673CE",
+      "native": "00866440",
+      "function": "008673B0",
+      "contract": "no-input existing canonical insertion-lock getter, EAX current owner; plain RET"
+    },
+    {
+      "address": "008673E7",
+      "native": "IAT00CE2218:EnterCriticalSection",
+      "function": "008673B0",
+      "contract": "one stdcall raw section argument; capture once from returned owner+04"
+    },
+    {
+      "address": "0086741A",
+      "native": "IAT00CE2220:InterlockedDecrement",
+      "function": "008673B0",
+      "contract": "one stdcall actual captured child+04 argument; DWORD count wrap; current virtual0 only if newcount0"
+    },
+    {
+      "address": "0086742A",
+      "native": "current-child-virtual0",
+      "function": "008673B0",
+      "contract": "ECX captured raw child; current vtable selected after decrement returns0; no stack arguments; required terminal provider"
+    },
+    {
+      "address": "00867467",
+      "native": "00867210",
+      "function": "008673B0",
+      "contract": "ECX actual auxiliary header; stack address of unchanged captured iterator cell; RET4; reuse byte-identical existing raw81B010 provider"
+    },
+    {
+      "address": "00867485",
+      "native": "IAT00CE2210:LeaveCriticalSection",
+      "function": "008673B0",
+      "contract": "decrement actual+18 before leaving same captured section; byte09 already1"
+    }
+  ],
+  "incoming_calls": [
+    {
+      "address": "004661AA",
+      "native": "008673B0",
+      "function": "004661A0",
+      "contract": "caller supplies current own+44 after nonnull test and clears its field only after return"
+    },
+    {
+      "address": "008674E0",
+      "native": "008673B0",
+      "function": "008674C0",
+      "contract": "X supplies each selected current cell; null filter forwards null too, no successful null-item cleanup default"
+    }
+  ],
+  "eh_calls": [
+    {
+      "address": "00C94E63",
+      "native": "00411EE0",
+      "function": "00C94E60",
+      "contract": "LEA ECX,[EBP-14h]; tail jump to actual captured guard destructor",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00411EF2",
+      "native": "IAT00CE2210:LeaveCriticalSection",
+      "function": "00411EE0",
+      "contract": "stamp guard identity, decrement nonnull captured section+18 then leave"
+    }
+  ],
+  "erase_graph_calls": [
+    {
+      "address": "00867243",
+      "native": "IAT00CE221C:InterlockedIncrement",
+      "function": "00867210",
+      "contract": "retain published incoming current tail before releasing old destination"
+    },
+    {
+      "address": "00867251",
+      "native": "EBP:IAT00CE2220:InterlockedDecrement",
+      "function": "00867210",
+      "contract": "EBP loaded once at867218; captured old destination+04"
+    },
+    {
+      "address": "0086725D",
+      "native": "current-old-virtual0",
+      "function": "00867210",
+      "contract": "current target after zero decrement, ECX old destination"
+    },
+    {
+      "address": "00867274",
+      "native": "EBP:IAT00CE2220:InterlockedDecrement",
+      "function": "00867210",
+      "contract": "freshly reloaded current header tail owner+04"
+    },
+    {
+      "address": "00867280",
+      "native": "current-tail-virtual0",
+      "function": "00867210",
+      "contract": "current target after zero decrement; captured tail cell cleared after callback"
+    }
+  ],
+  "reused_getter_calls": [
+    {
+      "address": "00866466",
+      "native": "00415350",
+      "function": "00866440",
+      "contract": "first canonical shared lifetime manager lookup"
+    },
+    {
+      "address": "0086649C",
+      "native": "00BF681B",
+      "function": "00866440",
+      "contract": "allocate native8 bytes; cdecl ADD ESP4"
+    },
+    {
+      "address": "008664B3",
+      "native": "00866230",
+      "function": "00866440",
+      "contract": "construct nonnull actual source lock owner; plainRET"
+    },
+    {
+      "address": "008664C6",
+      "native": "00415350",
+      "function": "00866440",
+      "contract": "second shared manager lookup after publication"
+    },
+    {
+      "address": "008664D4",
+      "native": "00BD0C30",
+      "function": "00866440",
+      "contract": "reload current publication for registration; one stack pointer; RET4"
+    }
+  ],
+  "fixture_reference_graph": [
+    {
+      "address": "00BD30EB",
+      "native": "current-context-virtual04",
+      "function": "00BD30E0",
+      "contract": "retained fixture profileD5E5C4 selects BD30E0 at virtual0; this body supplies literal1 to current deleting destructor; original dispatch remains unexecuted"
+    }
+  ],
+  "no_ghidra_function": [],
+  "native_evidence": {
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "spans": [
+      {
+        "address": "008673B0",
+        "length": 238,
+        "sha256": "5d4be4644fddc446dbbdbbdf2f02a669568044d00207925d90804439bcac358c",
+        "file": "local/wreck_item.bin",
+        "live_file": "local/wreck_item.bytes",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00867210",
+        "length": 131,
+        "sha256": "2050c0e554cf55a6951ed2aff78b22328792899f3214fc35a3e64b6ee9f7c3e5",
+        "file": "local/wreck_item_erase.bin",
+        "live_file": "local/wreck_item_erase.bytes",
+        "live_disk_equal": true
+      },
+      {
+        "address": "0081B010",
+        "length": 131,
+        "sha256": "2050c0e554cf55a6951ed2aff78b22328792899f3214fc35a3e64b6ee9f7c3e5",
+        "file": "local/wreck_item_existing_erase.bin",
+        "live_file": "local/wreck_item_existing_erase.bytes",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00866440",
+        "length": 189,
+        "sha256": "f58e183b2a69de65c9d23fde12b76b19434a8fe8c946f35322e50ff9fbf47c97",
+        "file": "local/wreck_item_getter.bin",
+        "live_file": "local/wreck_item_getter.bytes",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00411EE0",
+        "length": 25,
+        "sha256": "bc62d20fb11c300342533b8e94fc0319bb550dcd5bb5ecd734f2e03c92cc3382",
+        "file": "local/wreck_item_guard.bin",
+        "live_file": "local/wreck_item_guard.bytes",
+        "live_disk_equal": true
+      },
+      {
+        "address": "008680D9",
+        "length": 186,
+        "sha256": "6e597ac53f2c2fe40d828a7f51c0a522799f2c38656227d7dcfb1b370a412f90",
+        "file": "local/wreck_item_producer.bin",
+        "live_file": "local/wreck_item_producer.bytes",
+        "live_disk_equal": true
+      },
+      {
+        "address": "008680B0",
+        "length": 41,
+        "sha256": "a14e7824f2e8c67209fcb1b83bc5c1dbf0f89b0531cbc9eea8e8a9b537e22785",
+        "file": "local/wreck_item_producer_entry.bin",
+        "live_file": "local/wreck_item_producer_entry.bytes",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00C94E68",
+        "length": 10,
+        "sha256": "3e344f14ee192e7bffe56675ff42ad8aac696e0f686eba6ef0030ca2c73ebefd",
+        "file": "local/wreck_item_eh_handler.bin",
+        "live_file": "local/wreck_item_eh_handler.bytes",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00DC6CC8",
+        "length": 36,
+        "sha256": "788d224ba8e8186c69d22bb2bc763fcabbf584385052e20fc72360a1a205932d",
+        "file": "local/wreck_item_eh_funcinfo.bin",
+        "live_file": "local/wreck_item_eh_funcinfo.bytes",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00DC6CC0",
+        "length": 8,
+        "sha256": "07accd0cb90e530a807cc10a5e33521025b45f2313cf8a48bf56f8144a2fbc02",
+        "file": "local/wreck_item_eh_unwindmap.bin",
+        "live_file": "local/wreck_item_eh_unwindmap.bytes",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00C94E60",
+        "length": 8,
+        "sha256": "d84af939bc7b5b2f5a153397b9a9ca44157ec551deeb558a9ec871dcdec1fd9b",
+        "file": "local/wreck_item_eh_cleanup.bin",
+        "live_file": "local/wreck_item_eh_cleanup.bytes",
+        "live_disk_equal": true
+      },
+      {
+        "address": "008674C0",
+        "length": 50,
+        "sha256": "b58664d6d50bd3152445582d3ea5b8d3a2f7e9a7f94b0f96c5b05a7e3e29a607",
+        "file": "local/wreck_item_scan_caller.bin",
+        "live_file": "local/wreck_item_scan_caller.bytes",
+        "live_disk_equal": true
+      },
+      {
+        "address": "004661A0",
+        "length": 24,
+        "sha256": "a0e68752dd78ce5478289e9208f2cdba46c9c0f67b0d1c47a1f0a652d4e1a6c3",
+        "file": "local/wreck_item_small_caller.bin",
+        "live_file": "local/wreck_item_small_caller.bytes",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00B1EDD3",
+        "length": 31,
+        "sha256": "b7a65827772c3e6f220fa07ebb6a746ce1c4f9dc37ea7b94ccfeaf44bf2dc8cf",
+        "file": "local/wreck_item_reference_producer.bin",
+        "live_file": "local/wreck_item_reference_producer.bytes",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00D5E5C4",
+        "length": 8,
+        "sha256": "0eeeccf08ee7e596f5b8059481d2d0b0e1cbca1fd5e1e608da5371288438511f",
+        "file": "local/wreck_item_reference_table.bin",
+        "live_file": "local/wreck_item_reference_table.bytes",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00BD30E0",
+        "length": 14,
+        "sha256": "736f250e66b094b45227c156ef6ad7091fc6a0a2791c5f0aa5d52d9430d96c01",
+        "file": "local/wreck_item_reference_terminal.bin",
+        "live_file": "local/wreck_item_reference_terminal.bytes",
+        "live_disk_equal": true
+      }
+    ],
+    "erase_reuse": {
+      "addresses": [
+        "00867210",
+        "0081B010"
+      ],
+      "complete_bytes": 131,
+      "identical": true,
+      "relative_calls": [],
+      "iat_addresses": [
+        "00CE2220",
+        "00CE221C"
+      ],
+      "virtual0_sequences": [
+        "00867257..0086725E",
+        "0086727A..00867281"
+      ],
+      "native_eh_metadata": false
+    },
+    "item_eh": {
+      "handler": "00C94E68",
+      "funcinfo": "00DC6CC8",
+      "unwindmap": "00DC6CC0",
+      "state0_cleanup": "00C94E60",
+      "cleanup_tail_target": "00411EE0",
+      "transport_validated": false
+    }
+  },
+  "storage_provenance": {
+    "item": "borrowed actual same-item raw headers0C/18 and byte09; physical layout from complete producer stage8680D9..868192 with prior EBP=ECX,EBX=0,EDI=1; semantic PointEffectInstanceStorage companion headers are never cast",
+    "arrays": "existing NativeRenderPointerArrayStorage; raw four-byte identities; existing81B010 provider reused after complete131-byte live/PE alias proof",
+    "references": "existing NativeRenderActualOwners and release_native_render_actual_owner; actual aligned raw+04 atomic, companion borrows identical word; required current-profile nonthrowing terminal. Fixture context producerB1EDD3..B1EDF1, tableD5E5C4 and complete virtual0 targetBD30E0 retained; BD30E0 invokes current virtual04 with literal1. Native deleting destructor remains an observed boundary.",
+    "lock": "existing EffectManager publication866440/lifetime access and canonical SystemSingletonCriticalSection projection; native_section and recursion_18 refer to same actual Win32 storage; no private domain or copied depth"
+  },
+  "ordering": [
+    "get current lock owner; capture section; enter then increment depth",
+    "capture child data then count; fixed original span",
+    "release captured nonnull current child; clear once after callback; unconditionally clear again",
+    "capture current auxiliary data then count; fixed iterator; current count then backing after each canonical erase",
+    "write byte09=1; decrement captured depth then leave original section"
+  ],
+  "corrections": [
+    {
+      "was": "X008674C0 required an external008673B0 body",
+      "is": "normal item cleanup is supplied with canonical actual lock/reference/raw-array providers",
+      "evidence": "complete238-byte listing, producer,131-byte alias and focused differential fixture"
+    },
+    {
+      "was": "existing point-effect array helper uses semantic companion-pointer storage",
+      "is": "Y lends actual raw headers and reuses existing raw81B010 specialization instead of casting semantic storage",
+      "evidence": "PointEffectInstanceStorage declaration, live_effect_update.cpp and complete native erase alias equality"
+    }
+  ],
+  "boundaries": {
+    "required": "application must supply proven same-item field mapping and actual current-profile terminal owner domain; no guessed unknown owner success",
+    "fixture_replacements": [
+      "008673D3..008673D5 owner+04 read replaced by MOV EBP,EAX;NOP because concrete getter bridge returns its actual section directly, avoiding a synthetic lock owner",
+      "00867424..0086742B,00867257..0086725E,0086727A..00867281 current virtual0 load/call sequences each replaced by explicit terminal capture bridge"
+    ],
+    "fixture_abi": "getter cdecl/no stack args returns actual section; replacement establishes EBP; virtual bridges MOV ECX,EDI then fastcall no-stack call preserve EBX/ESI/EDI/EBP; EAX/EDX/flags caller-saved; native erase retains RET4",
+    "native_eh": "retained handlerC94E68,FuncInfoDC6CC8,unwindmapDC6CC0,cleanupC94E60->411EE0; copied normal EH setup/restoration executes but the original handler address is never invoked. Only source failure cleanup tested, not native FH3/SEH. Native state0 arms after span capture; C++ guard exists during plain field reads. Hardware-fault timing/transport is unproved.",
+    "native_eh_validated": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "original_dynamic_destructors_executed": false,
+    "concurrent_pointer_mutation_validated": false
+  },
+  "verification": {
+    "build_tested": true,
+    "fixture_tested": true,
+    "abi_compatible": false,
+    "native_eh_validated": false,
+    "game_validated": false,
+    "build": {
+      "command": "./scripts/build.ps1",
+      "configuration": "MSVC Win32 Release",
+      "log": "local/wreck_item_build.log",
+      "ctest": "2/2 passed: reconstructed_math and native_math_differential"
+    },
+    "native_seeds": {
+      "command": "python tools/ghidra_export.py verify-seeds",
+      "verified": 8,
+      "log": "local/wreck_item_verify_seeds.log"
+    },
+    "call_verifier": {
+      "command": "python tools/verify_report_calls.py reports/native_wreck_effect_item_cleanup.json",
+      "direct_rows": 10,
+      "indirect_rows": 11,
+      "failures": 0,
+      "log": "local/wreck_item_report_calls.log"
+    },
+    "fixture": {
+      "normal_native_source_pairs": 8,
+      "source_composition_cases": 1,
+      "source_failure_cases": 1,
+      "input_bytes": 3744,
+      "record_bytes": 3840,
+      "input_sha256": "934e4b5c1af77c9614514d325de13b21cb21b03f476877c5bc498a26d501f8eb",
+      "record_sha256": "3f55b1382879789d3b7e702f8117a1a344aa668e0ce23f28611f42331e5adb92",
+      "relocations": [
+        {
+          "address": "008673CF",
+          "length": 4,
+          "original": "6df0ffff",
+          "replacement": "bd1f5cff",
+          "boundary": "call/IAT operand relocation"
+        },
+        {
+          "address": "008673D3",
+          "length": 3,
+          "original": "8b6804",
+          "replacement": "8be890",
+          "boundary": "getter section projection bridge"
+        },
+        {
+          "address": "008673E9",
+          "length": 4,
+          "original": "1822ce00",
+          "replacement": "04e35600",
+          "boundary": "call/IAT operand relocation"
+        },
+        {
+          "address": "0086741C",
+          "length": 4,
+          "original": "2022ce00",
+          "replacement": "0ce35600",
+          "boundary": "call/IAT operand relocation"
+        },
+        {
+          "address": "00867424",
+          "length": 8,
+          "original": "8b078b108bcfffd2",
+          "replacement": "8bcfe865295cff90",
+          "boundary": "terminal fixture bridge"
+        },
+        {
+          "address": "00867468",
+          "length": 4,
+          "original": "a4fdffff",
+          "replacement": "44010000",
+          "boundary": "call/IAT operand relocation"
+        },
+        {
+          "address": "00867487",
+          "length": 4,
+          "original": "1022ce00",
+          "replacement": "08e35600",
+          "boundary": "call/IAT operand relocation"
+        },
+        {
+          "address": "0086721A",
+          "length": 4,
+          "original": "2022ce00",
+          "replacement": "0ce35600",
+          "boundary": "call/IAT operand relocation"
+        },
+        {
+          "address": "00867245",
+          "length": 4,
+          "original": "1c22ce00",
+          "replacement": "10e35600",
+          "boundary": "call/IAT operand relocation"
+        },
+        {
+          "address": "00867257",
+          "length": 8,
+          "original": "8b178b028bcfffd0",
+          "replacement": "8bcfe892275cff90",
+          "boundary": "terminal fixture bridge"
+        },
+        {
+          "address": "0086727A",
+          "length": 8,
+          "original": "8b178b028bcfffd0",
+          "replacement": "8bcfe86f275cff90",
+          "boundary": "terminal fixture bridge"
+        }
+      ],
+      "result": "PASS native/source item pairs=8; source X-Y composition=1; source failure=1; explicit getter/virtual bridges; native EH unexecuted"
+    },
+    "proof_manifest": "local/wreck_item_proof/manifest.json",
+    "proof_manifest_sha256": "9389fdb167841621dd8a7c90fab8d64b70da2bce8c87b269ed9d8dfdcdc7728e",
+    "retained_files": 208,
+    "retained_libraries": 19,
+    "retained_toolchain": 16,
+    "retained_additional_headers": 241,
+    "retained_runtime_dlls": 2
+  },
+  "compiled_evidence": {
+    "item": "local/wreck_item_compiled.asm",
+    "erase": "local/wreck_item_compiled_erase.asm",
+    "actual_release": "local/wreck_item_compiled_release.asm",
+    "observed": "both volatile clear stores+82/+88; auxiliary count-before-data reload+BF/+C5; byte09 write+D4 before captured depth decrement+DF and leave+E1; canonical erase retains incoming with LOCK XADD before old release, then current-tail/header reload"
+  }
+}

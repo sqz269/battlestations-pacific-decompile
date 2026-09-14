@@ -1,0 +1,793 @@
+{
+  "reason": "Restore MPAK container cleanup saved instruction ownership; verify complete bytes and preserve existing names, comments, labels and callee flags.",
+  "entries": [
+    {
+      "address": "00bb6220",
+      "end_exclusive": "00bb6275",
+      "bytes": 85,
+      "sha256": "19ba3a36f61750d342eaab71c3a6d2e05810dca52707b609c491ce766e3a4146",
+      "before": "Function: FUN_00bb6220 at 00bb6220\nSignature: undefined FUN_00bb6220(void)\nEntry: 00bb6220\nBody: 00bb6220 - 00bb6274",
+      "before_documentation": {
+        "hash": "2f47cf01cf90d3c31eb8925020372cf3dc8881410e71d699bcbaa7eac0c305d7",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00bb6220",
+        "function_name": "FUN_00bb6220",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "iVar1",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "uVar4",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffec, 4)"
+          },
+          {
+            "name": "piVar2",
+            "type": "int *",
+            "storage": "(register, 0x18, 4)"
+          },
+          {
+            "name": "iVar3",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffe4, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 17,
+            "name": "LAB_00bb6231"
+          },
+          {
+            "relative_offset": 32,
+            "name": "LAB_00bb6240"
+          },
+          {
+            "relative_offset": 68,
+            "name": "LAB_00bb6264"
+          },
+          {
+            "relative_offset": 80,
+            "name": "LAB_00bb6270"
+          }
+        ],
+        "completeness_score": 50.0
+      },
+      "before_instruction_ownership": [
+        {
+          "address": "00bb6220",
+          "owner": "00bb6220"
+        },
+        {
+          "address": "00bb6221",
+          "owner": "00bb6220"
+        },
+        {
+          "address": "00bb6222",
+          "owner": "00bb6220"
+        },
+        {
+          "address": "00bb6224",
+          "owner": "00bb6220"
+        },
+        {
+          "address": "00bb6226",
+          "owner": "00bb6220"
+        },
+        {
+          "address": "00bb6228",
+          "owner": "00bb6220"
+        },
+        {
+          "address": "00bb622a",
+          "owner": "00bb6220"
+        },
+        {
+          "address": "00bb622b",
+          "owner": "00bb6220"
+        },
+        {
+          "address": "00bb622c",
+          "owner": "00bb6220"
+        },
+        {
+          "address": "00bb622f",
+          "owner": "00bb6220"
+        },
+        {
+          "address": "00bb6231",
+          "owner": "00bb6220"
+        },
+        {
+          "address": "00bb6233",
+          "owner": "00bb6220"
+        },
+        {
+          "address": "00bb6235",
+          "owner": "00bb6220"
+        },
+        {
+          "address": "00bb6237",
+          "owner": "00bb6220"
+        },
+        {
+          "address": "00bb6238",
+          "owner": "00bb6220"
+        },
+        {
+          "address": "00bb623d",
+          "owner": null
+        },
+        {
+          "address": "00bb6240",
+          "owner": "00bb6220"
+        },
+        {
+          "address": "00bb6242",
+          "owner": "00bb6220"
+        },
+        {
+          "address": "00bb6245",
+          "owner": "00bb6220"
+        },
+        {
+          "address": "00bb6248",
+          "owner": "00bb6220"
+        },
+        {
+          "address": "00bb624b",
+          "owner": "00bb6220"
+        },
+        {
+          "address": "00bb624d",
+          "owner": "00bb6220"
+        },
+        {
+          "address": "00bb624f",
+          "owner": "00bb6220"
+        },
+        {
+          "address": "00bb6251",
+          "owner": "00bb6220"
+        },
+        {
+          "address": "00bb6253",
+          "owner": "00bb6220"
+        },
+        {
+          "address": "00bb6256",
+          "owner": "00bb6220"
+        },
+        {
+          "address": "00bb6257",
+          "owner": "00bb6220"
+        },
+        {
+          "address": "00bb6258",
+          "owner": "00bb6220"
+        },
+        {
+          "address": "00bb625d",
+          "owner": "00bb6220"
+        },
+        {
+          "address": "00bb625f",
+          "owner": "00bb6220"
+        },
+        {
+          "address": "00bb6264",
+          "owner": "00bb6220"
+        },
+        {
+          "address": "00bb6267",
+          "owner": "00bb6220"
+        },
+        {
+          "address": "00bb626a",
+          "owner": "00bb6220"
+        },
+        {
+          "address": "00bb626c",
+          "owner": "00bb6220"
+        },
+        {
+          "address": "00bb626e",
+          "owner": "00bb6220"
+        },
+        {
+          "address": "00bb626f",
+          "owner": "00bb6220"
+        },
+        {
+          "address": "00bb6270",
+          "owner": "00bb6220"
+        },
+        {
+          "address": "00bb6271",
+          "owner": "00bb6220"
+        },
+        {
+          "address": "00bb6272",
+          "owner": "00bb6220"
+        }
+      ],
+      "after": "Function: FUN_00bb6220 at 00bb6220\nSignature: void __fastcall FUN_00bb6220(void * first, void * end, void * opaque_1, void * opaque_2)\nEntry: 00bb6220\nBody: 00bb6220 - 00bb6274",
+      "after_documentation": {
+        "hash": "060cdd68826af974acd392db4a6690e10463df12a39845cb72f491b605978c77",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00bb6220",
+        "function_name": "FUN_00bb6220",
+        "return_type": "void",
+        "calling_convention": "__fastcall",
+        "plate_comment": "",
+        "parameters": [
+          {
+            "ordinal": 0,
+            "name": "first",
+            "type": "void *"
+          },
+          {
+            "ordinal": 1,
+            "name": "end",
+            "type": "void *"
+          },
+          {
+            "ordinal": 2,
+            "name": "opaque_1",
+            "type": "void *"
+          },
+          {
+            "ordinal": 3,
+            "name": "opaque_2",
+            "type": "void *"
+          }
+        ],
+        "local_variables": [
+          {
+            "name": "iVar1",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "puVar2",
+            "type": "undefined4 *",
+            "storage": "(register, 0x18, 4)"
+          },
+          {
+            "name": "iVar3",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffe4, 4)"
+          },
+          {
+            "name": "uVar4",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffec, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 17,
+            "name": "LAB_00bb6231"
+          },
+          {
+            "relative_offset": 32,
+            "name": "LAB_00bb6240"
+          },
+          {
+            "relative_offset": 68,
+            "name": "LAB_00bb6264"
+          },
+          {
+            "relative_offset": 80,
+            "name": "LAB_00bb6270"
+          }
+        ],
+        "completeness_score": 70.0
+      },
+      "complete_body": true,
+      "prior_evidence_preserved": true,
+      "after_instruction_ownership_verified": 39
+    },
+    {
+      "address": "00bb6e60",
+      "end_exclusive": "00bb6e9d",
+      "bytes": 61,
+      "sha256": "c5b97452695152b1e34e891a4d95c193eb82791b26e5df93d8a7d62b88eb8679",
+      "before": "Function: FUN_00bb6e60 at 00bb6e60\nSignature: undefined FUN_00bb6e60(void)\nEntry: 00bb6e60\nBody: 00bb6e60 - 00bb6e9c",
+      "before_documentation": {
+        "hash": "7449600feee5a3f9929a4d847b0307fd64590893a815904f7c973f96b3a0707f",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00bb6e60",
+        "function_name": "FUN_00bb6e60",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 37,
+            "name": "LAB_00bb6e85"
+          }
+        ],
+        "completeness_score": 50.0
+      },
+      "before_instruction_ownership": [
+        {
+          "address": "00bb6e60",
+          "owner": "00bb6e60"
+        },
+        {
+          "address": "00bb6e61",
+          "owner": "00bb6e60"
+        },
+        {
+          "address": "00bb6e62",
+          "owner": "00bb6e60"
+        },
+        {
+          "address": "00bb6e64",
+          "owner": "00bb6e60"
+        },
+        {
+          "address": "00bb6e67",
+          "owner": "00bb6e60"
+        },
+        {
+          "address": "00bb6e69",
+          "owner": "00bb6e60"
+        },
+        {
+          "address": "00bb6e6b",
+          "owner": "00bb6e60"
+        },
+        {
+          "address": "00bb6e6f",
+          "owner": "00bb6e60"
+        },
+        {
+          "address": "00bb6e72",
+          "owner": "00bb6e60"
+        },
+        {
+          "address": "00bb6e73",
+          "owner": "00bb6e60"
+        },
+        {
+          "address": "00bb6e74",
+          "owner": "00bb6e60"
+        },
+        {
+          "address": "00bb6e79",
+          "owner": "00bb6e60"
+        },
+        {
+          "address": "00bb6e7c",
+          "owner": "00bb6e60"
+        },
+        {
+          "address": "00bb6e7d",
+          "owner": "00bb6e60"
+        },
+        {
+          "address": "00bb6e82",
+          "owner": null
+        },
+        {
+          "address": "00bb6e85",
+          "owner": "00bb6e60"
+        },
+        {
+          "address": "00bb6e8c",
+          "owner": "00bb6e60"
+        },
+        {
+          "address": "00bb6e93",
+          "owner": "00bb6e60"
+        },
+        {
+          "address": "00bb6e9a",
+          "owner": "00bb6e60"
+        },
+        {
+          "address": "00bb6e9b",
+          "owner": "00bb6e60"
+        },
+        {
+          "address": "00bb6e9c",
+          "owner": "00bb6e60"
+        }
+      ],
+      "after": "Function: FUN_00bb6e60 at 00bb6e60\nSignature: void __fastcall FUN_00bb6e60(void * vector)\nEntry: 00bb6e60\nBody: 00bb6e60 - 00bb6e9c",
+      "after_documentation": {
+        "hash": "d0c2434ba5502f47bb62b9ad3d2ae6cbf9d39d99f7fb736fbd4a8091edb89e72",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00bb6e60",
+        "function_name": "FUN_00bb6e60",
+        "return_type": "void",
+        "calling_convention": "__fastcall",
+        "plate_comment": "",
+        "parameters": [
+          {
+            "ordinal": 0,
+            "name": "vector",
+            "type": "void *"
+          }
+        ],
+        "local_variables": [],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 37,
+            "name": "LAB_00bb6e85"
+          }
+        ],
+        "completeness_score": 70.0
+      },
+      "complete_body": true,
+      "prior_evidence_preserved": true,
+      "after_instruction_ownership_verified": 21
+    },
+    {
+      "address": "00bb71f0",
+      "end_exclusive": "00bb7236",
+      "bytes": 70,
+      "sha256": "67b64ee41b05b78b1c3d71b704d1b9c46b87f8f1b8653c58b56314b2737043f4",
+      "before": "Function: FUN_00bb71f0 at 00bb71f0\nSignature: undefined FUN_00bb71f0(void)\nEntry: 00bb71f0\nBody: 00bb71f0 - 00bb7235",
+      "before_documentation": {
+        "hash": "358efdfc7f84ea67cf69e539d4380f2b6b5fe0a996cb6d788d69f6e5c8d2e194",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00bb71f0",
+        "function_name": "FUN_00bb71f0",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "iVar2",
+            "type": "int",
+            "storage": "(register, 0x18, 4)"
+          },
+          {
+            "name": "iVar1",
+            "type": "int",
+            "storage": "(unique, 0x17200, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 19,
+            "name": "LAB_00bb7203"
+          },
+          {
+            "relative_offset": 33,
+            "name": "LAB_00bb7211"
+          },
+          {
+            "relative_offset": 46,
+            "name": "LAB_00bb721e"
+          }
+        ],
+        "completeness_score": 50.0
+      },
+      "before_instruction_ownership": [
+        {
+          "address": "00bb71f0",
+          "owner": "00bb71f0"
+        },
+        {
+          "address": "00bb71f1",
+          "owner": "00bb71f0"
+        },
+        {
+          "address": "00bb71f3",
+          "owner": "00bb71f0"
+        },
+        {
+          "address": "00bb71f4",
+          "owner": "00bb71f0"
+        },
+        {
+          "address": "00bb71f7",
+          "owner": "00bb71f0"
+        },
+        {
+          "address": "00bb71f9",
+          "owner": "00bb71f0"
+        },
+        {
+          "address": "00bb71fb",
+          "owner": "00bb71f0"
+        },
+        {
+          "address": "00bb71fc",
+          "owner": "00bb71f0"
+        },
+        {
+          "address": "00bb71ff",
+          "owner": "00bb71f0"
+        },
+        {
+          "address": "00bb7201",
+          "owner": "00bb71f0"
+        },
+        {
+          "address": "00bb7203",
+          "owner": "00bb71f0"
+        },
+        {
+          "address": "00bb7205",
+          "owner": "00bb71f0"
+        },
+        {
+          "address": "00bb720a",
+          "owner": "00bb71f0"
+        },
+        {
+          "address": "00bb720d",
+          "owner": "00bb71f0"
+        },
+        {
+          "address": "00bb720f",
+          "owner": "00bb71f0"
+        },
+        {
+          "address": "00bb7211",
+          "owner": "00bb71f0"
+        },
+        {
+          "address": "00bb7214",
+          "owner": "00bb71f0"
+        },
+        {
+          "address": "00bb7215",
+          "owner": "00bb71f0"
+        },
+        {
+          "address": "00bb721a",
+          "owner": null
+        },
+        {
+          "address": "00bb721d",
+          "owner": null
+        },
+        {
+          "address": "00bb721e",
+          "owner": "00bb71f0"
+        },
+        {
+          "address": "00bb721f",
+          "owner": "00bb71f0"
+        },
+        {
+          "address": "00bb7226",
+          "owner": "00bb71f0"
+        },
+        {
+          "address": "00bb722d",
+          "owner": "00bb71f0"
+        },
+        {
+          "address": "00bb7234",
+          "owner": "00bb71f0"
+        },
+        {
+          "address": "00bb7235",
+          "owner": "00bb71f0"
+        }
+      ],
+      "after": "Function: FUN_00bb71f0 at 00bb71f0\nSignature: void __fastcall FUN_00bb71f0(void * vector)\nEntry: 00bb71f0\nBody: 00bb71f0 - 00bb7235",
+      "after_documentation": {
+        "hash": "c26df9275624588cff4ac9141ad6145e6bdb948e7ea32975f8b864632c456c9d",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00bb71f0",
+        "function_name": "FUN_00bb71f0",
+        "return_type": "void",
+        "calling_convention": "__fastcall",
+        "plate_comment": "",
+        "parameters": [
+          {
+            "ordinal": 0,
+            "name": "vector",
+            "type": "void *"
+          }
+        ],
+        "local_variables": [
+          {
+            "name": "iVar1",
+            "type": "int",
+            "storage": "(unique, 0x17200, 4)"
+          },
+          {
+            "name": "iVar2",
+            "type": "int",
+            "storage": "(register, 0x18, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 19,
+            "name": "LAB_00bb7203"
+          },
+          {
+            "relative_offset": 33,
+            "name": "LAB_00bb7211"
+          },
+          {
+            "relative_offset": 46,
+            "name": "LAB_00bb721e"
+          }
+        ],
+        "completeness_score": 70.0
+      },
+      "complete_body": true,
+      "prior_evidence_preserved": true,
+      "after_instruction_ownership_verified": 26
+    }
+  ],
+  "actions": [
+    {
+      "endpoint": "clear_instruction_flow_override",
+      "body": {
+        "address": "00bb6238"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Cleared flow override at 00bb6238 (was: NONE, now: NONE)\"}"
+    },
+    {
+      "endpoint": "delete_function",
+      "body": {
+        "address": "00bb6220"
+      },
+      "result": "{\"success\": true, \"address\": \"00bb6220\", \"deleted_function\": \"FUN_00bb6220\", \"body_size\": 82, \"message\": \"Function 'FUN_00bb6220' deleted at 00bb6220\"}"
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00bb6220",
+        "end_address": "00bb6275"
+      },
+      "result": "{\"success\": true, \"start_address\": \"00bb6220\", \"end_address\": \"00bb6274\", \"bytes_disassembled\": 85, \"message\": \"Successfully disassembled 85 byte(s)\"}"
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00bb6220",
+        "name": "FUN_00bb6220",
+        "disassemble_first": false
+      },
+      "result": "{\"success\": true, \"address\": \"00bb6220\", \"function_name\": \"FUN_00bb6220\", \"entry_point\": \"00bb6220\", \"body_size\": 85, \"message\": \"Function created successfully at 00bb6220\"}"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00bb6220",
+        "prototype": "void __fastcall FUN_00bb6220(void* first, void* end, void* opaque_1, void* opaque_2)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00bb6220 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00bb6220",
+        "comment": ""
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00bb6220\"}"
+    },
+    {
+      "endpoint": "clear_instruction_flow_override",
+      "body": {
+        "address": "00bb6e7d"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Cleared flow override at 00bb6e7d (was: NONE, now: NONE)\"}"
+    },
+    {
+      "endpoint": "delete_function",
+      "body": {
+        "address": "00bb6e60"
+      },
+      "result": "{\"success\": true, \"address\": \"00bb6e60\", \"deleted_function\": \"FUN_00bb6e60\", \"body_size\": 58, \"message\": \"Function 'FUN_00bb6e60' deleted at 00bb6e60\"}"
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00bb6e60",
+        "end_address": "00bb6e9d"
+      },
+      "result": "{\"success\": true, \"start_address\": \"00bb6e60\", \"end_address\": \"00bb6e9c\", \"bytes_disassembled\": 61, \"message\": \"Successfully disassembled 61 byte(s)\"}"
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00bb6e60",
+        "name": "FUN_00bb6e60",
+        "disassemble_first": false
+      },
+      "result": "{\"success\": true, \"address\": \"00bb6e60\", \"function_name\": \"FUN_00bb6e60\", \"entry_point\": \"00bb6e60\", \"body_size\": 61, \"message\": \"Function created successfully at 00bb6e60\"}"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00bb6e60",
+        "prototype": "void __fastcall FUN_00bb6e60(void* vector)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00bb6e60 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00bb6e60",
+        "comment": ""
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00bb6e60\"}"
+    },
+    {
+      "endpoint": "clear_instruction_flow_override",
+      "body": {
+        "address": "00bb7215"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Cleared flow override at 00bb7215 (was: NONE, now: NONE)\"}"
+    },
+    {
+      "endpoint": "delete_function",
+      "body": {
+        "address": "00bb71f0"
+      },
+      "result": "{\"success\": true, \"address\": \"00bb71f0\", \"deleted_function\": \"FUN_00bb71f0\", \"body_size\": 66, \"message\": \"Function 'FUN_00bb71f0' deleted at 00bb71f0\"}"
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00bb71f0",
+        "end_address": "00bb7236"
+      },
+      "result": "{\"success\": true, \"start_address\": \"00bb71f0\", \"end_address\": \"00bb7235\", \"bytes_disassembled\": 70, \"message\": \"Successfully disassembled 70 byte(s)\"}"
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00bb71f0",
+        "name": "FUN_00bb71f0",
+        "disassemble_first": false
+      },
+      "result": "{\"success\": true, \"address\": \"00bb71f0\", \"function_name\": \"FUN_00bb71f0\", \"entry_point\": \"00bb71f0\", \"body_size\": 70, \"message\": \"Function created successfully at 00bb71f0\"}"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00bb71f0",
+        "prototype": "void __fastcall FUN_00bb71f0(void* vector)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00bb71f0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00bb71f0",
+        "comment": ""
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00bb71f0\"}"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": "{\"success\": true, \"program\": \"battlestationspacific.exe\", \"message\": \"Program saved successfully\"}"
+    }
+  ],
+  "state": "complete_bodies_saved_prior_evidence_retained",
+  "exports_refreshed": [
+    "00bb6220",
+    "00bb6e60",
+    "00bb71f0"
+  ]
+}

@@ -10,7 +10,8 @@ static_assert(sizeof(NativeKeyboardBitIterator) == 12);
 
 // Required native library-storage operations, not callbacks that return parsed
 // substitutes. All receivers, returned mapped addresses, iterators and pooled
-// string keys belong to the actual settings tree/storage. No default provider.
+// string keys belong to the actual settings tree/storage. A concrete source
+// provider is declared in native_input_keyboard_storage.hpp.
 struct NativeInputKeyboardLibrary {
     virtual ~NativeInputKeyboardLibrary() = default;
     virtual void* device_0055c110(void* tree, const void* pooled_name) = 0;

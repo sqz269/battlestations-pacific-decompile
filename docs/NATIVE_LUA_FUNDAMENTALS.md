@@ -143,3 +143,17 @@ runtime game integration or game validation is claimed.
 ## Integration correction
 
 The integrator repaired both B66B80 internal fall-through gaps; no call gap remains in that body. Standard repair decoded C970C1..C970C2, but those two bytes remain outside the C970B8 stored function body. All four names/comments were preserved and saved, with exports refreshed. The combined Win32 build and both existing tests pass. Worker evidence remains its original pre-integration snapshot. See `reports/native_am_integration.json` for the integration evidence and remaining boundaries.
+
+
+## AY raw lifetime integration correction
+
+The getter now also borrows the actual 01090AA0 publication through the existing
+lifetime adapter. Raw D62C18 deletion uses the popped owner and clears the same
+0108FF1C cell even if publication changed. The current 70-byte destructor body
+needed instruction ownership restored at B66B96, B66B99 and B66BBD; the AY receipt
+records the prior state and full readback. Four raw native/source getter runs,
+manager replacement, changed-publication drain and retained semantic comparisons
+pass. See `NATIVE_LUA_FUNDAMENTALS_RAW_LIFETIME_AY.md` and
+`reports/input_composition_ay_validation.json` for exact source/build evidence
+and original ABI, exception and production-wiring limits. Earlier worker reports
+remain historical snapshots.

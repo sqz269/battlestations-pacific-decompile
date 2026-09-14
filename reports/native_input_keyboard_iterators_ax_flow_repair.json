@@ -1,0 +1,60 @@
+{
+ "repairs": [
+  {
+   "function": "0055ac80",
+   "owner": "agent/orch4-20260910",
+   "when": "2026-09-13T21:17:13Z",
+   "decompile_lines_before": 175,
+   "gaps": [
+    {
+     "site": "0055af0b",
+     "mnemonic": "CALL",
+     "operands": "0x00bf65ac",
+     "gap_start": "0055af10",
+     "gap_end_exclusive": "0055af58",
+     "bytes": 72,
+     "after_call": true,
+     "sha256": "42e696671ffc607020ed56edab5e806dbdbf2e51a9b466d78168f628faf0e0bd"
+    }
+   ],
+   "events": [
+    {
+     "gap": {
+      "site": "0055af0b",
+      "mnemonic": "CALL",
+      "operands": "0x00bf65ac",
+      "gap_start": "0055af10",
+      "gap_end_exclusive": "0055af58",
+      "bytes": 72,
+      "after_call": true,
+      "sha256": "42e696671ffc607020ed56edab5e806dbdbf2e51a9b466d78168f628faf0e0bd"
+     },
+     "clear": "Success: Cleared flow override at 0055af0b (was: CALL_RETURN, now: NONE)",
+     "disassemble": "Successfully disassembled 72 byte(s)"
+    },
+    {
+     "explicit_tail_call": "0055af0b",
+     "clear": {
+      "status": "success",
+      "message": "Success: Cleared flow override at 0055af0b (was: NONE, now: NONE)"
+     }
+    },
+    {
+     "explicit_tail_call": "0055af19",
+     "clear": {
+      "status": "success",
+      "message": "Success: Cleared flow override at 0055af19 (was: NONE, now: NONE)"
+     }
+    }
+   ],
+   "explicit_tail_end_exclusive": "0055af58",
+   "explicit_body_sha256": "638c0878447e730da33a473ea065ce03c37e97cd6ba946bedcfb039d9e6c163a",
+   "body_before": "Function: STL_xlen_throw_0055ac80 at 0055ac80\nSignature: undefined STL_xlen_throw_0055ac80(void)\nEntry: 0055ac80\nBody: 0055ac80 - 0055af0f",
+   "decompile_lines_after": 184,
+   "gaps_remaining": 1,
+   "body_after": "Function: STL_xlen_throw_0055ac80 at 0055ac80\nSignature: undefined STL_xlen_throw_0055ac80(void)\nEntry: 0055ac80\nBody: 0055ac80 - 0055af0f",
+   "stored_body_tail_complete": false,
+   "body_extension_limit": "Explicit tail decoding/CRT overrides do not extend stored function-body metadata; the body still requires a separate supported repair."
+  }
+ ]
+}
