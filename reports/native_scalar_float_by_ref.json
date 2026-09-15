@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "packet": "orch3_native_scalar_float_ee",
-  "status": "raw_source_implemented_pending_primary_review_and_build",
+  "status": "exact_source_build_and_complete_emitted_byte_identity_passed",
   "source_base": "d0481c6812af58a399d5759c33c0a8492346ef64",
   "created_utc": "2026-09-15T01:31:55.075263+00:00",
   "source": "src/native_scalar_float_by_ref.cpp",
@@ -542,18 +542,328 @@
     }
   },
   "validation": {
-    "source_review": "pending primary acceptance of clean source commit",
+    "source_review": {
+      "accepted": true,
+      "source_commit": "06aa8fa3d86e4d79c418a2e896504d523f8cde10",
+      "reviewer": "primary",
+      "findings": [],
+      "scope": "Complete header/source/doc and CMake append; accepted before EE verify-seeds/build and after EC terminal pass.",
+      "artifact": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\ee-primary-source-review.json",
+        "sha256": "9c4c8ceb80d8eef1f2c6318a3502671a4cf9f7519c4e5368bda5cc4795bdf645"
+      }
+    },
     "build": {
-      "pending": true,
-      "passed": false
+      "commit": "06aa8fa3d86e4d79c418a2e896504d523f8cde10",
+      "started_utc": "2026-09-15T01:35:15.948083+00:00",
+      "passed": true,
+      "pending": false,
+      "command": [
+        "C:/Windows/System32/WindowsPowerShell/v1.0/powershell.exe",
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "scripts/build.ps1"
+      ],
+      "runner_sha256": "c19728d037062fe1aa1a318fcf48fda8099cdfc667f6b9658bff043d9b13eb7a",
+      "tracked_build_input_count": 2635,
+      "verified_seed_header_included": true,
+      "finished_utc": "2026-09-15T01:44:16.547850+00:00",
+      "exit_code": 0,
+      "head_after": "06aa8fa3d86e4d79c418a2e896504d523f8cde10",
+      "same_commit_after": true,
+      "clean_tree_before_and_after": true,
+      "all_build_inputs_unchanged": true,
+      "changed_inputs": [],
+      "libraries": {
+        "build/win32/Release/bsp_core.lib": "f6f8ed8934beac27f15bb7b1e2037278a94366832401d228d0eaa42695138a51",
+        "build/win32/Release/bsp_lua511.lib": "93d84a228a2c839266befd90eef9af8ec7a7a020a9263be513e6de5be8b7650e",
+        "build/win32/Release/bsp_zlib121.lib": "cb51b4feaf3fed4cda419f5655190e1be1262e7f34c82820276d80dfb27d49e5",
+        "build/win32/Release/xlive_stub.lib": "6dfcb5bf13947ffb6883edfde9d189c4c7ae0d702ec8bd81daebf3749e5f1c67"
+      },
+      "log_sha256": "c34bd80c62a578e2a245f73a1460c263f940251a923c657a0ee7ab0e9d61ba8a",
+      "existing_ctest_summary": [
+        "1/2 Test #1: reconstructed_math ...............   Passed    0.05 sec",
+        "2/2 Test #2: native_math_differential .........   Passed    0.06 sec",
+        "100% tests passed, 0 tests failed out of 2"
+      ],
+      "generated_object": {
+        "path": "build/win32/bsp_core.dir/Release/native_scalar_float_by_ref.obj",
+        "sha256": "762cea26201120be67947383965592ff18b40c944060bc8181d3110103ec0afe"
+      },
+      "stamp": {
+        "path": "local/ee-final-build-stamp.json",
+        "sha256": "621179ab67899117f013838e334c77c64ca1e55ac0dc64aa5467451e9a2453db"
+      },
+      "complete_input_count": 2636,
+      "compiler_warnings_or_errors": 0,
+      "seed_verification": {
+        "command": "python tools/ghidra_export.py verify-seeds",
+        "ranges": 8,
+        "all_matched": true,
+        "actual_ignored_header_sha256": "26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c"
+      }
     },
     "generated_min_identity": {
-      "pending": true,
-      "expected_bytes": 62,
-      "expected_instructions": 20,
-      "expected_relocations": 0,
-      "expected_sha256": "6dbad5358822151fed88ad431af0f75739a5861dbde58b95a29721a732e500af",
-      "expected_ret_exits": 2
+      "pending": false,
+      "passed": true,
+      "source_commit": "06aa8fa3d86e4d79c418a2e896504d523f8cde10",
+      "artifact": {
+        "path": "local/ee-generated-review.json",
+        "sha256": "b39cb450d80f099f09e760a19478e3adaa0fa6d2aff2abbb6314b8e2e5f86566"
+      },
+      "rows": [
+        {
+          "object_path": "build/win32/bsp_core.dir/Release/native_scalar_float_by_ref.obj",
+          "object_sha256": "762cea26201120be67947383965592ff18b40c944060bc8181d3110103ec0afe",
+          "machine": 332,
+          "rows": [
+            {
+              "symbol": "?min_native_float_by_ref_00415510@bsp@@YIMPBM0@Z",
+              "section": 3,
+              "symbol_value": 0,
+              "storage_class": 2,
+              "function_type": 32,
+              "section_bytes": 62,
+              "relocation_count": 0,
+              "whole_native_identity": true,
+              "native_address": "00415510",
+              "hex": "83ec08d901d91c24d902d95c2404d90424d9442404dff1ddd87611f30f100424f30f110424d9042483c408c3f30f10442404f30f110424d9042483c408c3",
+              "sha256": "6dbad5358822151fed88ad431af0f75739a5861dbde58b95a29721a732e500af",
+              "instructions": [
+                {
+                  "offset": 0,
+                  "bytes": "83ec08",
+                  "instruction": "sub esp, 8"
+                },
+                {
+                  "offset": 3,
+                  "bytes": "d901",
+                  "instruction": "fld dword ptr [ecx]"
+                },
+                {
+                  "offset": 5,
+                  "bytes": "d91c24",
+                  "instruction": "fstp dword ptr [esp]"
+                },
+                {
+                  "offset": 8,
+                  "bytes": "d902",
+                  "instruction": "fld dword ptr [edx]"
+                },
+                {
+                  "offset": 10,
+                  "bytes": "d95c2404",
+                  "instruction": "fstp dword ptr [esp + 4]"
+                },
+                {
+                  "offset": 14,
+                  "bytes": "d90424",
+                  "instruction": "fld dword ptr [esp]"
+                },
+                {
+                  "offset": 17,
+                  "bytes": "d9442404",
+                  "instruction": "fld dword ptr [esp + 4]"
+                },
+                {
+                  "offset": 21,
+                  "bytes": "dff1",
+                  "instruction": "fcompi st(1)"
+                },
+                {
+                  "offset": 23,
+                  "bytes": "ddd8",
+                  "instruction": "fstp st(0)"
+                },
+                {
+                  "offset": 25,
+                  "bytes": "7611",
+                  "instruction": "jbe 0x2c"
+                },
+                {
+                  "offset": 27,
+                  "bytes": "f30f100424",
+                  "instruction": "movss xmm0, dword ptr [esp]"
+                },
+                {
+                  "offset": 32,
+                  "bytes": "f30f110424",
+                  "instruction": "movss dword ptr [esp], xmm0"
+                },
+                {
+                  "offset": 37,
+                  "bytes": "d90424",
+                  "instruction": "fld dword ptr [esp]"
+                },
+                {
+                  "offset": 40,
+                  "bytes": "83c408",
+                  "instruction": "add esp, 8"
+                },
+                {
+                  "offset": 43,
+                  "bytes": "c3",
+                  "instruction": "ret "
+                },
+                {
+                  "offset": 44,
+                  "bytes": "f30f10442404",
+                  "instruction": "movss xmm0, dword ptr [esp + 4]"
+                },
+                {
+                  "offset": 50,
+                  "bytes": "f30f110424",
+                  "instruction": "movss dword ptr [esp], xmm0"
+                },
+                {
+                  "offset": 55,
+                  "bytes": "d90424",
+                  "instruction": "fld dword ptr [esp]"
+                },
+                {
+                  "offset": 58,
+                  "bytes": "83c408",
+                  "instruction": "add esp, 8"
+                },
+                {
+                  "offset": 61,
+                  "bytes": "c3",
+                  "instruction": "ret "
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "object_path": "build/win32/bsp_core.dir/Release/native_traceline_render.obj",
+          "object_sha256": "730f1c5e65e8acfd224f16839d6a68698171d17a809e9b61b91e8c689b46c510",
+          "machine": 332,
+          "rows": [
+            {
+              "symbol": "?max_native_float_by_ref_00415550@bsp@@YIMPBM0@Z",
+              "section": 23,
+              "symbol_value": 0,
+              "storage_class": 2,
+              "function_type": 32,
+              "section_bytes": 62,
+              "relocation_count": 0,
+              "whole_native_identity": true,
+              "native_address": "00415550",
+              "hex": "83ec08d901d91c24d902d95c2404d9442404d90424dff1ddd87611f30f100424f30f110424d9042483c408c3f30f10442404f30f110424d9042483c408c3",
+              "sha256": "53e6afce10160ae6a6da1e8f06f258a91ced43d8f16cd813ddd0df88c94f9a22",
+              "instructions": [
+                {
+                  "offset": 0,
+                  "bytes": "83ec08",
+                  "instruction": "sub esp, 8"
+                },
+                {
+                  "offset": 3,
+                  "bytes": "d901",
+                  "instruction": "fld dword ptr [ecx]"
+                },
+                {
+                  "offset": 5,
+                  "bytes": "d91c24",
+                  "instruction": "fstp dword ptr [esp]"
+                },
+                {
+                  "offset": 8,
+                  "bytes": "d902",
+                  "instruction": "fld dword ptr [edx]"
+                },
+                {
+                  "offset": 10,
+                  "bytes": "d95c2404",
+                  "instruction": "fstp dword ptr [esp + 4]"
+                },
+                {
+                  "offset": 14,
+                  "bytes": "d9442404",
+                  "instruction": "fld dword ptr [esp + 4]"
+                },
+                {
+                  "offset": 18,
+                  "bytes": "d90424",
+                  "instruction": "fld dword ptr [esp]"
+                },
+                {
+                  "offset": 21,
+                  "bytes": "dff1",
+                  "instruction": "fcompi st(1)"
+                },
+                {
+                  "offset": 23,
+                  "bytes": "ddd8",
+                  "instruction": "fstp st(0)"
+                },
+                {
+                  "offset": 25,
+                  "bytes": "7611",
+                  "instruction": "jbe 0x2c"
+                },
+                {
+                  "offset": 27,
+                  "bytes": "f30f100424",
+                  "instruction": "movss xmm0, dword ptr [esp]"
+                },
+                {
+                  "offset": 32,
+                  "bytes": "f30f110424",
+                  "instruction": "movss dword ptr [esp], xmm0"
+                },
+                {
+                  "offset": 37,
+                  "bytes": "d90424",
+                  "instruction": "fld dword ptr [esp]"
+                },
+                {
+                  "offset": 40,
+                  "bytes": "83c408",
+                  "instruction": "add esp, 8"
+                },
+                {
+                  "offset": 43,
+                  "bytes": "c3",
+                  "instruction": "ret "
+                },
+                {
+                  "offset": 44,
+                  "bytes": "f30f10442404",
+                  "instruction": "movss xmm0, dword ptr [esp + 4]"
+                },
+                {
+                  "offset": 50,
+                  "bytes": "f30f110424",
+                  "instruction": "movss dword ptr [esp], xmm0"
+                },
+                {
+                  "offset": 55,
+                  "bytes": "d90424",
+                  "instruction": "fld dword ptr [esp]"
+                },
+                {
+                  "offset": 58,
+                  "bytes": "83c408",
+                  "instruction": "add esp, 8"
+                },
+                {
+                  "offset": 61,
+                  "bytes": "c3",
+                  "instruction": "ret "
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "verifier": {
+        "path": "local/ee-review-object.py",
+        "sha256": "5f7da5e1a4e73f8666fae33bb183bafddbd2aa2551d4b52bcc45a36966e00d8b"
+      },
+      "qualification": "Exact complete emitted bytes and expected external MSVC fastcall symbols for min and reused max, no relocations, twenty instructions and two RET exits each. Static inspection, not native execution or a new fixture."
     },
     "report_call_verifier": "Not required: both leaf bodies contain no calls and native_calls is empty.",
     "new_tests": 0,
@@ -561,7 +871,7 @@
     "game_validated": false
   },
   "partial_limits": [
-    "This new source revision has not yet been built or its emitted body inspected; prior max object evidence stays historical.",
+    "Exact source commit 06aa8fa3 passed the coupled build and full emitted min/max byte identity. Historical ED/EA max proof remains separately identified; the new current object evidence is retained in validation.",
     "Existing eight value-taking helpers and callers remain unchanged, including their unequal NaN/tie semantics and limited host interfaces.",
     "Caller provides valid actual input/stack storage and x87 capacity. Literal body does not alone establish native FP fault delivery, injected caller ABI use, or game integration.",
     "No new unique-address credit, duplicate max definition, generic math framework, native metadata edit or runtime fixture."
@@ -580,7 +890,30 @@
     "shared_append_only": [
       "cmake/startup.cmake"
     ],
-    "build_gate": "Primary source acceptance plus preceding EC build pass; no EE build before authorization",
+    "build_gate": "Primary accepted exact clean source, preceding EC build passed, then authorized one EE build. Build ran once; only docs/report validation metadata changed afterward.",
     "Ghidra_ledger_integration": "primary only"
-  }
+  },
+  "tested_commit": "06aa8fa3d86e4d79c418a2e896504d523f8cde10",
+  "artifacts": [
+    {
+      "path": "local/ee-final-build-stamp.json",
+      "sha256": "621179ab67899117f013838e334c77c64ca1e55ac0dc64aa5467451e9a2453db"
+    },
+    {
+      "path": "local/ee-final-build.log",
+      "sha256": "c34bd80c62a578e2a245f73a1460c263f940251a923c657a0ee7ab0e9d61ba8a"
+    },
+    {
+      "path": "local/ee-generated-review.json",
+      "sha256": "b39cb450d80f099f09e760a19478e3adaa0fa6d2aff2abbb6314b8e2e5f86566"
+    },
+    {
+      "path": "local/build_final_ee.py",
+      "sha256": "c19728d037062fe1aa1a318fcf48fda8099cdfc667f6b9658bff043d9b13eb7a"
+    },
+    {
+      "path": "local/ee-review-object.py",
+      "sha256": "5f7da5e1a4e73f8666fae33bb183bafddbd2aa2551d4b52bcc45a36966e00d8b"
+    }
+  ]
 }

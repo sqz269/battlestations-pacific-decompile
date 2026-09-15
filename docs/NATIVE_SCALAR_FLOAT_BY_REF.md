@@ -53,9 +53,19 @@ disclaimer. No ledger or Ghidra metadata is changed by this worker.
 
 The accepted ED admission pins complete native/live/PE bodies and the existing
 max's complete 62-byte, zero-relocation emitted section in the previous EA build.
-That max object is also an exact member of its pinned library. Those are retained
-historical validation inputs, not a build of this new source revision. A clean
-coupled Win32 build and complete emitted minimum identity are pending primary
-source acceptance and completion of the preceding EC build. Required proof is
-all 62 bytes equal, zero relocations, the external pointer ABI and both RET exits.
-No new fixture or repository test is added; no runtime/game claim is made.
+That max object is also an exact member of its pinned library. Those ED inputs
+remain historical and are separate from the current EE verification.
+
+Primary accepted clean source `06aa8fa3d86e4d79c418a2e896504d523f8cde10` before
+the one EE Win32 Release build. Both existing CTests passed, with all 2,635
+tracked inputs plus the actual verified seed header unchanged. There were no
+compiler warnings/errors. The complete stdout/stderr log, both input maps, four
+libraries and generated min object are retained by the final build stamp.
+
+The current emitted minimum and reused maximum each match all 62 original/live
+bytes, with zero relocations, twenty instructions and both plain RET exits.
+Their exact external MSVC fastcall symbols agree with the public pointer
+signatures. `local/ee-generated-review.json` retains full section bytes,
+disassembly, object/source hashes and the verifier hash. This is static emitted
+body/ABI evidence; no new fixture, test, original-caller execution, FP-fault
+delivery or runtime/game validation is claimed.
