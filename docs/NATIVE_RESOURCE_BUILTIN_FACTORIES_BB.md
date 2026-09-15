@@ -76,3 +76,7 @@ names and raw slots; it is not proof of live scene/group destruction. Canonical
 group companions, type publications, item providers, and executable model/resource
 admission still have to be composed by the application. This packet does not
 establish a runnable populated graph or gameplay validation.
+
+## Retained evidence
+
+The immutable manifest `local/resource_builtin_factories_bb/manifest.json` retains 306 exact inputs and 68 artifacts, including 24 linked production objects, original bytes, paired images, unwind metadata, source/header/compiler/library inputs and saved Ghidra comments/exports. Source commit `e9390bd99729e72f99ca6cb9b7e9c848e09629b8` contains the tested source bytes. The build began at `a9c705a69bb46e53b001be868d1fe9e5819e7cc0` with the owned source edits present; the retained source hashes and dependency records identify those inputs. No production changes followed verification.
