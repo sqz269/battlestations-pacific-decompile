@@ -1,0 +1,166 @@
+{
+  "packet": "orch4_render_surfaces_cu",
+  "entries": [
+    {
+      "address": "00b2a9a0",
+      "before_documentation": {
+        "no_function": true
+      },
+      "before_comment": {
+        "no_function": true,
+        "comment": ""
+      },
+      "complete": true,
+      "after_comment": {
+        "address": "00b2a9a0",
+        "function_name": "BSP_D3D9Renderer_CreateDepthSurface",
+        "comment": ""
+      },
+      "prior_comment_preserved": true,
+      "all_instruction_owners_verified": true
+    },
+    {
+      "address": "00cbd3d0",
+      "before_documentation": {
+        "no_function": true
+      },
+      "before_comment": {
+        "no_function": true,
+        "comment": ""
+      },
+      "complete": true,
+      "after_comment": {
+        "address": "00cbd3d0",
+        "function_name": "BSP_EH_RenderTargetFactory_00cbd3d0",
+        "comment": ""
+      },
+      "prior_comment_preserved": true,
+      "all_instruction_owners_verified": true
+    },
+    {
+      "address": "00cbd3f0",
+      "before_documentation": {
+        "no_function": true
+      },
+      "before_comment": {
+        "no_function": true,
+        "comment": ""
+      },
+      "complete": true,
+      "after_comment": {
+        "address": "00cbd3f0",
+        "function_name": "BSP_EH_DepthSurfaceFactory_00cbd3f0",
+        "comment": ""
+      },
+      "prior_comment_preserved": true,
+      "all_instruction_owners_verified": true
+    }
+  ],
+  "actions": [
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00b2a9a0",
+        "end_address": "00b2abae"
+      },
+      "result": "{\"success\": true, \"start_address\": \"00b2a9a0\", \"end_address\": \"00b2abad\", \"bytes_disassembled\": 526, \"message\": \"Successfully disassembled 526 byte(s)\"}"
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00b2a9a0",
+        "name": "BSP_D3D9Renderer_CreateDepthSurface",
+        "disassemble_first": false
+      },
+      "result": "{\"success\": true, \"address\": \"00b2a9a0\", \"function_name\": \"BSP_D3D9Renderer_CreateDepthSurface\", \"entry_point\": \"00b2a9a0\", \"body_size\": 526, \"message\": \"Function created successfully at 00b2a9a0\", \"warnings\": [\"Function name 'BSP_D3D9Renderer_CreateDepthSurface' \\u2014 main part 'D3D9Renderer_CreateDepthSurface' is not PascalCase. Expected: D3d9rendererCreatedepthsurface\", \"Function name 'BSP_D3D9Renderer_CreateDepthSurface' \\u2014 main part 'D3D9Renderer_CreateDepthSurface' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_D3D9Renderer_CreateDepthSurface' does not start with a recognized verb. First word 'D3' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b2a9a0",
+        "new_name": "BSP_D3D9Renderer_CreateDepthSurface"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b2a9a0 from 'BSP_D3D9Renderer_CreateDepthSurface' to 'BSP_D3D9Renderer_CreateDepthSurface'\", \"warnings\": [\"Function name 'BSP_D3D9Renderer_CreateDepthSurface' \\u2014 main part 'D3D9Renderer_CreateDepthSurface' is not PascalCase. Expected: D3d9rendererCreatedepthsurface\", \"Function name 'BSP_D3D9Renderer_CreateDepthSurface' \\u2014 main part 'D3D9Renderer_CreateDepthSurface' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_D3D9Renderer_CreateDepthSurface' does not start with a recognized verb. First word 'D3' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00b2a9a0",
+        "comment": ""
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00b2a9a0\"}"
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00cbd3d0",
+        "end_address": "00cbd3da"
+      },
+      "result": "{\"success\": true, \"start_address\": \"00cbd3d0\", \"end_address\": \"00cbd3d9\", \"bytes_disassembled\": 10, \"message\": \"Successfully disassembled 10 byte(s)\"}"
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00cbd3d0",
+        "name": "BSP_EH_RenderTargetFactory_00cbd3d0",
+        "disassemble_first": false
+      },
+      "result": "{\"success\": true, \"address\": \"00cbd3d0\", \"function_name\": \"BSP_EH_RenderTargetFactory_00cbd3d0\", \"entry_point\": \"00cbd3d0\", \"body_size\": 10, \"message\": \"Function created successfully at 00cbd3d0\", \"warnings\": [\"Function name 'BSP_EH_RenderTargetFactory_00cbd3d0' \\u2014 main part 'EH_RenderTargetFactory_00cbd3d0' is not PascalCase. Expected: EhRendertargetfactory00cbd3d0\", \"Function name 'BSP_EH_RenderTargetFactory_00cbd3d0' \\u2014 main part 'EH_RenderTargetFactory_00cbd3d0' contains underscores. Use PascalCase after the module prefix.\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00cbd3d0",
+        "new_name": "BSP_EH_RenderTargetFactory_00cbd3d0"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00cbd3d0 from 'BSP_EH_RenderTargetFactory_00cbd3d0' to 'BSP_EH_RenderTargetFactory_00cbd3d0'\", \"warnings\": [\"Function name 'BSP_EH_RenderTargetFactory_00cbd3d0' \\u2014 main part 'EH_RenderTargetFactory_00cbd3d0' is not PascalCase. Expected: EhRendertargetfactory00cbd3d0\", \"Function name 'BSP_EH_RenderTargetFactory_00cbd3d0' \\u2014 main part 'EH_RenderTargetFactory_00cbd3d0' contains underscores. Use PascalCase after the module prefix.\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00cbd3d0",
+        "comment": ""
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00cbd3d0\"}"
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00cbd3f0",
+        "end_address": "00cbd3fa"
+      },
+      "result": "{\"success\": true, \"start_address\": \"00cbd3f0\", \"end_address\": \"00cbd3f9\", \"bytes_disassembled\": 10, \"message\": \"Successfully disassembled 10 byte(s)\"}"
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00cbd3f0",
+        "name": "BSP_EH_DepthSurfaceFactory_00cbd3f0",
+        "disassemble_first": false
+      },
+      "result": "{\"success\": true, \"address\": \"00cbd3f0\", \"function_name\": \"BSP_EH_DepthSurfaceFactory_00cbd3f0\", \"entry_point\": \"00cbd3f0\", \"body_size\": 10, \"message\": \"Function created successfully at 00cbd3f0\", \"warnings\": [\"Function name 'BSP_EH_DepthSurfaceFactory_00cbd3f0' \\u2014 main part 'EH_DepthSurfaceFactory_00cbd3f0' is not PascalCase. Expected: EhDepthsurfacefactory00cbd3f0\", \"Function name 'BSP_EH_DepthSurfaceFactory_00cbd3f0' \\u2014 main part 'EH_DepthSurfaceFactory_00cbd3f0' contains underscores. Use PascalCase after the module prefix.\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00cbd3f0",
+        "new_name": "BSP_EH_DepthSurfaceFactory_00cbd3f0"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00cbd3f0 from 'BSP_EH_DepthSurfaceFactory_00cbd3f0' to 'BSP_EH_DepthSurfaceFactory_00cbd3f0'\", \"warnings\": [\"Function name 'BSP_EH_DepthSurfaceFactory_00cbd3f0' \\u2014 main part 'EH_DepthSurfaceFactory_00cbd3f0' is not PascalCase. Expected: EhDepthsurfacefactory00cbd3f0\", \"Function name 'BSP_EH_DepthSurfaceFactory_00cbd3f0' \\u2014 main part 'EH_DepthSurfaceFactory_00cbd3f0' contains underscores. Use PascalCase after the module prefix.\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00cbd3f0",
+        "comment": ""
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00cbd3f0\"}"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": "{\"success\": true, \"program\": \"battlestationspacific.exe\", \"message\": \"Program saved successfully\"}"
+    }
+  ],
+  "saved": true
+}

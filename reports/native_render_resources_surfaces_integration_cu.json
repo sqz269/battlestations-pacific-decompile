@@ -1,0 +1,282 @@
+{
+  "packet": "orch4_render_surfaces_cu",
+  "state": "reconstructed_tracked_win32_and_actual_surface_factory_fixture_validated",
+  "base_revision": "aa450c84a29cd038303bc753c869c416edd420a9",
+  "project": {
+    "project_name": "bsp",
+    "current_folder": "/",
+    "folders": [],
+    "files": [
+      {
+        "name": "battlestationspacific.exe",
+        "path": "/battlestationspacific.exe",
+        "content_type": "Program",
+        "version": 2797,
+        "is_read_only": false,
+        "is_versioned": false
+      }
+    ]
+  },
+  "program": {
+    "name": "battlestationspacific.exe",
+    "path": "/battlestationspacific.exe",
+    "executable_path": "/I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "executable_format": "Portable Executable (PE)",
+    "language": "x86:LE:32:default",
+    "compiler": "windows",
+    "address_size": 32,
+    "image_base": "00400000",
+    "min_address": "00400000",
+    "max_address": "ffdfffff",
+    "memory_size": 14876380,
+    "function_count": 64122,
+    "symbol_count": 144562,
+    "data_type_count": 795,
+    "creation_date": "Mon May 04 16:56:25 PDT 2026",
+    "memory_block_count": 6,
+    "address_spaces": [
+      {
+        "name": "ram",
+        "start": "00000000",
+        "end": "ffffffff",
+        "size": 4294967296,
+        "addressable_unit_size": 1,
+        "size_bytes": 4294967296,
+        "address_size_bits": 32,
+        "is_default": true
+      }
+    ],
+    "has_multiple_address_spaces": false
+  },
+  "new_unique_functions": 5,
+  "ordinary_bytes": 1361,
+  "support_bytes": 52,
+  "instruction_owners": 454,
+  "integrated_remap_instruction_owners": 206,
+  "preserved_comments": 17,
+  "source_manifest": {
+    "path": "local/render_resources_surfaces_cu/registered/source_manifest.json",
+    "sha256": "e5ca1082cf93019f95f2ac9ecbd01d645e8d8e2c278c858674cb32f9f6bc9a2c",
+    "bytes": 291866
+  },
+  "source_inputs": 2693,
+  "changed_existing_source": [
+    "cmake/startup.cmake"
+  ],
+  "added_source": [
+    "include/bsp/native_render_resources_surfaces.hpp",
+    "src/native_render_resources_surfaces.cpp"
+  ],
+  "build": "Normal tracked MSVC Win32 build and both CTests passed; CU surfaces and CT remap each registered once",
+  "fixture_child_pid": 68160,
+  "validation": {
+    "tracked_build": "scripts/build.ps1 MSVC Win32 and both existing CTests passed; both remap and surface modules registered once, no CMake override",
+    "remap_now_in_tracked_cmake": true,
+    "surfaces_in_tracked_cmake": true,
+    "actual_d3d9_color_and_depth": true,
+    "frame_depth_replacement": true,
+    "unsigned_x87_accounting": true,
+    "fractional_quality_truncation": true,
+    "borrowed_array_growth_and_retirement": true,
+    "original_format_machine_code_cases": 113,
+    "constructor_and_mesh_regression": true,
+    "all_canonical_companions_retired": 64,
+    "device_recreation_retry": false,
+    "enabled_optional_guard": false,
+    "allocation_constructor_exception": false,
+    "post_effect_material_reset": false,
+    "full_parent_destructor": false,
+    "new_application_run": false,
+    "application_wired": false,
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "evidence_limits": [
+    "Actual D3D9 successful creation and retirement are exercised; native failed-HRESULT retry/B29670, allocator/constructor exceptions and enabled optional synchronization remain unexecuted.",
+    "Only B21210 has an original-machine differential:113 cases against a private copy with two table operands/seven internal targets relocated. Factory x87 accounting is assembly-reviewed and source-fixture checked, not original-factory differential execution.",
+    "The accounting switch returns the original values, including64 for many tokens; no nominal SDK-format correction is inferred.",
+    "Current CT remap validation still uses explicit2D cache hits; nonzero post-effect/material reset, cube/volume, cold texture loading and shader compilation remain unexecuted.",
+    "Original stack/register/FH3/SEH, unmasked floating exceptions, concurrent mutation and full parent lifetime remain outside proved runtime scope.",
+    "No new application run or native renderer/service wiring. The full game/gameplay objective remains incomplete."
+  ],
+  "remaining": "Compose the native renderer/service with application startup and actual post-effect producers, close full parent ownership/initialization, and validate renderer retry and gameplay. The prior CT registration blocker is resolved.",
+  "cmake_lease_released": true,
+  "main_integration": "Agent branch only; ready for the main integrator",
+  "artifacts": [
+    {
+      "path": "local/render_resources_surfaces_cu/registered/audit.json",
+      "sha256": "dc6f2c28379239b18811fd0e613c03433215fcde9845e312f0468561bfe239d1",
+      "bytes": 74902
+    },
+    {
+      "path": "local/render_resources_surfaces_cu/registered/probe.cpp",
+      "sha256": "f926ae17aff1879852d12ec292de78332a616b4aca1086d80319801af5688def",
+      "bytes": 75242
+    },
+    {
+      "path": "local/render_resources_surfaces_cu/registered/probe.exe",
+      "sha256": "b40d9a21529bb3e8d7bcf560d55cd3313b0fbb4c4369c36f990cee0ec37293c4",
+      "bytes": 699392
+    },
+    {
+      "path": "local/render_resources_surfaces_cu/registered/probe.obj",
+      "sha256": "f921628359aa29ff55753da93643dfe2e98240a30d63aeead5ee2342d4caecd7",
+      "bytes": 591667
+    },
+    {
+      "path": "local/render_resources_surfaces_cu/registered/probe.map",
+      "sha256": "48740f2dc552d66b8a76db09e9d223f8928abd4a7b73b7d287bdfdb8f86d70c4",
+      "bytes": 1211435
+    },
+    {
+      "path": "local/render_resources_surfaces_cu/registered/compile.cmd",
+      "sha256": "77a25774fad728919e3fed614f6fd6ec5efa8d2bdebd4032888cca6533ec04a1",
+      "bytes": 690
+    },
+    {
+      "path": "local/render_resources_surfaces_cu/registered/compile.log",
+      "sha256": "25d4f66c7c01d5b35c220cb97ffdd1608405f4ab45160497e6cc7ea3079676cf",
+      "bytes": 11
+    },
+    {
+      "path": "local/render_resources_surfaces_cu/registered/probe.log",
+      "sha256": "8f15d7854628a11ca407437fac790fa76dffd83b84bf1159a13ec2d3949a542d",
+      "bytes": 2783
+    },
+    {
+      "path": "local/render_resources_surfaces_cu/registered/child_probe.log",
+      "sha256": "5b53ae349f4a81f11a5efa184171a41a266ddd57bf458e9131508b5e401b8268",
+      "bytes": 2722
+    },
+    {
+      "path": "local/render_resources_surfaces_cu/registered/build.log",
+      "sha256": "47c00e8e5b9f6a72a8747169a832f445480b9b036ba47b160a133a5f37595382",
+      "bytes": 2500
+    },
+    {
+      "path": "local/render_resources_surfaces_cu/registered/call_check.log",
+      "sha256": "b50db62e23439c34429b39552ebe512bc0f19d2541032029371ee980dae8e175",
+      "bytes": 82
+    },
+    {
+      "path": "local/render_resources_surfaces_cu/registered/annotation.log",
+      "sha256": "56486c8906a4a03cf5c75b5b52700c1c2c628a435e3afcfc14d8d323d0765a73",
+      "bytes": 121
+    },
+    {
+      "path": "local/render_resources_surfaces_cu/registered/format_original.bin",
+      "sha256": "cb3c99ca213c8c1e4bdfb6d06a22be2f17bb73e5ef0864eb0b8c6fd23c103594",
+      "bytes": 286
+    },
+    {
+      "path": "local/render_resources_surfaces_cu/registered/bsp_core.lib",
+      "sha256": "a70d8662b4ab5b212183dc9252b286687dcae86f39245bd008891dc1e3cdbc01",
+      "bytes": 59627494
+    },
+    {
+      "path": "local/render_resources_surfaces_cu/registered/bsp_lua511.lib",
+      "sha256": "00315ac717aac3d2b2161fefefe71b36a974335ff9c95d48c137423eb4e2f4b2",
+      "bytes": 455244
+    },
+    {
+      "path": "local/render_resources_surfaces_cu/registered/bsp_zlib121.lib",
+      "sha256": "73ae30b8adc3adfe5b33285bac533f8e7df7e8ab8d9e44789e6a030fd8a06ad9",
+      "bytes": 71906
+    },
+    {
+      "path": "local/render_resources_surfaces_cu/registered/sources/include/bsp/native_render_resources_surfaces.hpp",
+      "sha256": "70e34fb2098da5ccccb3d9b5f81e129d98c28efec7576c5677071b45cede6a0e",
+      "bytes": 4673
+    },
+    {
+      "path": "local/render_resources_surfaces_cu/registered/sources/src/native_render_resources_surfaces.cpp",
+      "sha256": "24aee52fa0cd5d1fccf6143d5a04ece86d7eafb49442bcdc657cf33d10997761",
+      "bytes": 13986
+    },
+    {
+      "path": "local/render_resources_surfaces_cu/registered/sources/cmake/startup.cmake",
+      "sha256": "9c8c58089d8e862f5da7a71ca6984d3e5fbe2d270d0d06efa1b816d7f000b535",
+      "bytes": 122999
+    },
+    {
+      "path": "local/render_resources_surfaces_cu/registered/sources/include/bsp/native_render_resources_remap.hpp",
+      "sha256": "16dafe2fb5b980218f154c978652ecfb486765842562280801931d1ecf458027",
+      "bytes": 3306
+    },
+    {
+      "path": "local/render_resources_surfaces_cu/registered/sources/src/native_render_resources_remap.cpp",
+      "sha256": "43d050e2724eac61e0706b361d1622a43553c77b4a9ac1d6c374d89d3d1c3b44",
+      "bytes": 5176
+    },
+    {
+      "path": "local/render_resources_surfaces_cu/registered/CMakeCache.txt",
+      "sha256": "2ab657bd06bb97731372c10fc883040590ccedec539b0406ba2554bab45f7835",
+      "bytes": 18839
+    },
+    {
+      "path": "local/render_resources_surfaces_cu/registered/bsp_core.vcxproj",
+      "sha256": "3e7ce79c838e1ea5b4026fec49a518991f6e3a898eadbcd29e99183441250696",
+      "bytes": 200569
+    },
+    {
+      "path": "local/render_resources_surfaces_cu/registered/prepare_render_surfaces_cu.py",
+      "sha256": "f59389c1c1444abff508bd3cd9c8684f2892f811ffd64e1fa19f1871caaa714e",
+      "bytes": 7465
+    },
+    {
+      "path": "local/render_resources_surfaces_cu/registered/audit_render_surfaces_cu.py",
+      "sha256": "2a15da985caf9d219caca90babf866b39ec9cff04f5df100427b5ec9719aa3cc",
+      "bytes": 3460
+    },
+    {
+      "path": "local/render_resources_surfaces_cu/registered/record_render_surfaces_cu.py",
+      "sha256": "57d41ef2c90b75db5afef0aa9f040b18592f4182452670b4359c5c6a67843fb5",
+      "bytes": 7200
+    },
+    {
+      "path": "local/render_resources_surfaces_cu/registered/annotate_render_surfaces_cu.py",
+      "sha256": "5d401bd1fa411a30724871fca2dd870d0b547118bb95334bef7bb43686a0d9e8",
+      "bytes": 4413
+    },
+    {
+      "path": "local/render_resources_surfaces_cu/registered/seal_render_surfaces_cu.py",
+      "sha256": "8cd7723d07bc576a03afb06fc3025e89692dc488c0e1fb76398beeb14a4019bd",
+      "bytes": 7482
+    },
+    {
+      "path": "local/render_resources_surfaces_cu/registered/check_render_surfaces_cu.py",
+      "sha256": "3d5f66584eebb685c9ad21324b44268f7fd32343604beb9f0a88f861e96e7cbe",
+      "bytes": 1781
+    },
+    {
+      "path": "local/render_resources_surfaces_cu/registered/define_render_surfaces_cu.py",
+      "sha256": "b29041ddf8cb538fbcc51f4e514544e15c73589f5be4f0021df7214e12a84b04",
+      "bytes": 1029
+    },
+    {
+      "path": "local/render_resources_surfaces_cu/registered/repair_mesh_resource_co.py",
+      "sha256": "65e10c6912f83f1e96ac1655b2c282c11072127954d2c4ee64faf2e42c46eb20",
+      "bytes": 3301
+    },
+    {
+      "path": "reports/native_render_resources_surfaces_cu.json",
+      "sha256": "fd6bf229a4ad864151328fc2be741c60a77f442428ebe068089961ab6aa84797",
+      "bytes": 95086
+    },
+    {
+      "path": "reports/native_render_resources_surfaces_flow_cu.json",
+      "sha256": "550ab2c9dcac2e04f8aa5fd52d9c8ce71d6364132344b0ab156df2cc01a238b4",
+      "bytes": 8315
+    },
+    {
+      "path": "reports/native_render_resources_surfaces_annotations_cu.json",
+      "sha256": "98d7e27df891219ca1380666ab5a665166256f266d82121f54845e152d8feeb1",
+      "bytes": 235969
+    },
+    {
+      "path": "docs/NATIVE_RENDER_RESOURCES_SURFACES_CU.md",
+      "sha256": "ad7e642303770310433e2d740801850d367c936dcc319b09f8f64dc76de481a1",
+      "bytes": 6484
+    }
+  ]
+}
