@@ -71,14 +71,13 @@ minimum four. All three observed resize callers pass zero; AE1C56 follows its
 separate node-release loop, AE1C65 precedes backing free, and AE1D91 uses the
 owner+44 header during destruction. Those enclosing bodies gain no credit.
 
-Source is complete; build and generated-code verification await the primary's
-combined EP+EQ source approval. Required object proof is the full 95-byte reserve after only its
-two CALL operands, full 80-byte resize after only its one CALL operand, exact
-alignment/RET4 bytes, concrete allocation/free relocation targets, and the full
-source adapter's actual allocator call. One isolated startup append registers
-the source; no CMake or ledger-shard lease is taken. No new test or fixture is
-added. Compilation, object agreement, source CRT compatibility and gameplay
-validation remain distinct.
+The final coupled EP+EQ source `4d0a0cbd5a27bceec34d39576228dc2b309397e6` passes the Win32 build and both existing math CTests. All 2,647 tracked inputs plus the actual verified seed remained unchanged with clean exact HEAD before and after. No new tests or runtime fixtures were added.
+
+The complete 95-byte reserve and 80-byte resize match their native bodies after only three CALL-rel32 operands. Both RET4 instructions and exact alignment bytes are preserved. The full 58-byte allocation adapter passes kind 3 and the same wrapped DWORD as both native/host request sizes to the actual existing CRT provider. Primary and independent reviews cover all three code sections,89 instructions, actual call relocations and exact current-library membership.
+
+The first parallel build stopped on CMake generate.stamp timestamp restoration with Access is denied before tests. The full attempt is archived. An otherwise identical local wrapper using explicit --parallel 1 passed; all four libraries and both complete packet objects remained byte-identical. Normal file ACL/attributes and multiple shared-stamp project rules support a contention hypothesis; the denying handle is unproven. No tracked build-script/source or permission changes were made.
+
+Both descriptive Ghidra names, original native prototypes and evidence comments are saved with previous values preserved and exports refreshed. All eight direct report call rows pass. The final report identifies the sealed actual-input/output/native/generated archive. Static source CRT compatibility, runtime behavior and gameplay validation remain separate.
 
 AE15E0/AE0A50, actual node-release closure in AE1C20, AD7A30 and the larger shadow
 update remain incomplete. This packet provides no parent or missing-child body

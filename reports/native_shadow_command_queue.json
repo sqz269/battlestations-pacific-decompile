@@ -1,7 +1,7 @@
 {
   "schema": "bsp.worker.native_shadow_command_queue.v1",
   "packet": "orch3_native_shadow_command_queue_eq",
-  "status": "complete_normal_source_candidate_pending_primary_review_and_coupled_build",
+  "status": "complete_source_exact_build_primary_generated_review_ghidra_saved",
   "base_commit": "d854e0f04072cc7ccd455af91639394fb5a16fdf",
   "native_body_count": 4,
   "normal_native_bytes": 132,
@@ -350,8 +350,272 @@
     "bytes": 8349
   },
   "analysis_corrections": [],
-  "metadata": "Original placeholder names/prototypes/comments preserved in native artifact; no Ghidra mutation. Byte/listing/caller evidence establishes ABI.",
+  "metadata": "Primary saved all four descriptive names/native prototypes/evidence comments, retained original values, and refreshed full exports.",
   "validation": {
+    "source_review": "Accepted complete source and generated object",
+    "build": {
+      "passed": true,
+      "existing_ctests": 2,
+      "tracked_inputs": 2647,
+      "verified_seed_headers": 1,
+      "total_inputs": 2648,
+      "all_inputs_unchanged": true,
+      "clean_exact_head_before_and_after": true,
+      "stamp_sha256": "f01e9e092b6aa12cbf899cf9bf1f20f6e9861fa075da0a7f33fbeb8f6d80a591",
+      "log_sha256": "8876e15368df2eab6f56b262ac0bb7fa5c835d113447bf15a40a633b0ed7e698",
+      "runner_sha256": "e2904d6542440e476b612a4bb6456fcb8bc0096804463588a1c7543b31ce8759",
+      "serial_retry": true,
+      "objects": {
+        "build/win32/bsp_core.dir/Release/native_shadow_pointer_vector.obj": "1548c1a7a3ac55c7323a9423b5daabfa7e0cf43e9714c799e4a0f92400ecd8aa",
+        "build/win32/bsp_core.dir/Release/native_shadow_command_queue.obj": "c4680b81458d479c0595f91d3bf94fd023433b04070cc870421c2560b272f64b"
+      },
+      "libraries": {
+        "build/win32/Release/bsp_core.lib": "ba9c683fdedeb9f344e5edc326d8308eeaece7a8d80996676678ccef823a0a4e",
+        "build/win32/Release/bsp_lua511.lib": "1f1a621904b4de19719a7cffdc9c02db3504eddc1b4fed9caced0aba27519fcf",
+        "build/win32/Release/bsp_zlib121.lib": "ec01a6912845b2c727d06f9d1c46806400162c5ab2a47b05183180440747c24d",
+        "build/win32/Release/xlive_stub.lib": "6dfcb5bf13947ffb6883edfde9d189c4c7ae0d702ec8bd81daebf3749e5f1c67"
+      }
+    },
+    "generated_review": {
+      "status": "accepted_complete_two_object_source_and_generated_review",
+      "findings": [],
+      "artifact": "local/epeq-primary-generated-review.json",
+      "sha256": "c1e50e14ab12fab75ad2c13290aa57135be1feeb8fa002134d377760b8407413",
+      "reviewed_semantics": [
+        "EP allocator adapter58 bytes: cdecl requested DWORD at EBP+8 copied into native_bytes and host_bytes, object kind3; passes address of actual12byte SingletonAllocationRequest to existing singleton_lifetime_allocate; security-cookie prologue/epilogue and no invented allocator. Preserves result EAX, balances argument/local stack, returns C3. No native OOM/CRT/fault/unwind parity.",
+        "EP reserve95 bytes: full signed min4/capacity gate; wrapped DWORD scale; actual allocation adapter; forward current-count/current-data loop with computed-null destination skip; current old-data load/free then data and capacity publication; count unchanged; conditional EBX save/restore, ESI/EDI and RET4.",
+        "EP resize80 bytes: original requested capture and current capacity reserve gate; original count capture, zero-fill current-data/computed-null slot loop; exact6byte LEA EBX alignment and MOV EDI,EDI; shrink current count memory RMW/fresh compare; final requested count store; ESI/EDI and RET4.",
+        "EQ queue100 bytes: private EDX save before native current-capacity MOV/CMP; native ESI/EDI saves and LEA preserve flags. Equality-only growth doubled DWORD/signed min1 calls real19byte reserve adapter. Current count,data and ORIGINAL public command at ESP+10h are read before computed-null skip; store then increment CURRENT count then ORIGINAL low flag byte at ESP+14h. Flag0 never dereferences command/access. Nonzero captures command+28 then+4, pushes context before loading same access/render pointer at ESP+0Ch; actual EL traversal RET4; original captured command to actual upload adapter with access at ESP+8; discard private word and RET8.",
+        "EQ job52 bytes: private access plus ESI saved; original command ESP+0Ch captured once. Real context getter then PUSH EAX before scene getter; outgoing context already present when same access/render pointer ESP+8 is loaded; actual EL traversal; original command plus same access ESP+4 to real upload adapter; pop ESI/private word and RET4.",
+        "EQ exact getters each4 bytes: MOV EAX,[ECX+4 or+28], literal C3, no relocations. Raw current_word3 bytes MOV EAX,[ECX]/C3, call-free integer read. No incidental C20000 encoding for native getters.",
+        "EQ reserve adapter19 bytes converts ECX actual header plus one public request to existing cdecl B1C6C0 source provider; cleans two cdecl words then RET4. Upload adapter11 bytes pushes EDX actual access then ECX same captured command for existing cdecl B1E990 provider, cleans8 and C3. Both bind actual named providers; no default success or B1CC20 append substitution.",
+        "EQ dispatcher111 bytes loads current actual job profile via current_word. Other profiles forward same original arguments to real remaining dispatcher virtual+4. D5B570 loads current borrowed table entry0, requires A8AE50, then same original command word/access/job passed to actual52byte job body. Unsupported current entry throws invalid_argument; no fabricated registry/table/retention or default success.",
+        "EQ constructor138 bytes borrows actual access/table/remaining pointers, requires nonnull actual table and current entry A8AE50. Real source-class vtable and MSVC constructor unwind/support are distinct from native job lifetime. Source-class destructors, deleting destructors, exception constructors/destructors/copy/what, EH code, security support, vtable/RTTI, standard strings, debug/linker/checksum/data sections reviewed/classified with zero native body credit."
+      ],
+      "independent_EP_sha256": "f1b0c65e83607172b243fc924de836efe47f05b22ce1673fa02493e9520c56ac",
+      "independent_EQ_sha256": "e47063ed74b7012fe471ff2fa1c0139cc693ead82a7f346f4726e803dee9692a",
+      "whole_objects_equal_preserved_first_attempt": true
+    },
+    "call_verifier": {
+      "checked": 17,
+      "failed": 0,
+      "artifact": "local/epeq-call-audit.json",
+      "sha256": "3c7a6da2cdb5756d8a3260a78322459f18b96c6e5a835cbdc8e4a1eea8a7b379"
+    },
+    "new_tests": 0,
+    "runtime_fixture": false,
+    "game_validated": false
+  },
+  "limits": [
+    "Source explicit EDX/private frame and C++ provider adapters are not whole native ABI/argument-alias or incidental-register equality.",
+    "No native FH3/SEH or exception unwinding through naked frames proven; valid storage/nonthrowing traversal-upload services bound the path.",
+    "B1C6C0 existing typed/CRT provider limitations retained; no B1CC20 reuse or broad array implementation replacement.",
+    "No fake owner, provider, retention, automatic rollback or successful unknown-profile/changed-target callback.",
+    "A8EA20/A8BD20/B101C0 and complete scheduling/lifetime/gameplay remain outside132-byte credit."
+  ],
+  "primary_publication": {
+    "tested_commit": "4d0a0cbd5a27bceec34d39576228dc2b309397e6",
+    "source_candidates": {
+      "EP": "e97182e08327b723284648342dc592ee8d43fcf8",
+      "EQ": "443bd3a0972f400eeacda222e7ec09ed7758d2c6"
+    },
+    "sealed_attempt": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\epeq-validated-attempt.zip",
+      "sha256": "d3c5c943f57960b58cb381cd41601d4d2f7464f09aca5122ddfc725fd00b8057",
+      "bytes": 79345739,
+      "payload_count": 2745,
+      "all_payload_hashes_reread": true,
+      "tested_commit": "4d0a0cbd5a27bceec34d39576228dc2b309397e6",
+      "tracked_inputs": 2647,
+      "verified_seed_headers": 1,
+      "root_raw_identical_inputs": 2638,
+      "root_newline_only_variants": 9,
+      "export_metadata_qualification": "Exporter inventory may retain historical names; preserved live prototype/comment readback records current names and bounds.",
+      "qualification": "Explicit source-context/actual provider domains. No original CRT/OOM/hardware-fault/exception or arbitrary slot alias parity; no parent pipeline, runtime rendering or gameplay validation."
+    },
+    "build": {
+      "passed": true,
+      "existing_ctests": 2,
+      "tracked_inputs": 2647,
+      "verified_seed_headers": 1,
+      "total_inputs": 2648,
+      "all_inputs_unchanged": true,
+      "clean_exact_head_before_and_after": true,
+      "stamp_sha256": "f01e9e092b6aa12cbf899cf9bf1f20f6e9861fa075da0a7f33fbeb8f6d80a591",
+      "log_sha256": "8876e15368df2eab6f56b262ac0bb7fa5c835d113447bf15a40a633b0ed7e698",
+      "runner_sha256": "e2904d6542440e476b612a4bb6456fcb8bc0096804463588a1c7543b31ce8759",
+      "serial_retry": true,
+      "objects": {
+        "build/win32/bsp_core.dir/Release/native_shadow_pointer_vector.obj": "1548c1a7a3ac55c7323a9423b5daabfa7e0cf43e9714c799e4a0f92400ecd8aa",
+        "build/win32/bsp_core.dir/Release/native_shadow_command_queue.obj": "c4680b81458d479c0595f91d3bf94fd023433b04070cc870421c2560b272f64b"
+      },
+      "libraries": {
+        "build/win32/Release/bsp_core.lib": "ba9c683fdedeb9f344e5edc326d8308eeaece7a8d80996676678ccef823a0a4e",
+        "build/win32/Release/bsp_lua511.lib": "1f1a621904b4de19719a7cffdc9c02db3504eddc1b4fed9caced0aba27519fcf",
+        "build/win32/Release/bsp_zlib121.lib": "ec01a6912845b2c727d06f9d1c46806400162c5ab2a47b05183180440747c24d",
+        "build/win32/Release/xlive_stub.lib": "6dfcb5bf13947ffb6883edfde9d189c4c7ae0d702ec8bd81daebf3749e5f1c67"
+      }
+    },
+    "generated_review": {
+      "status": "accepted_complete_two_object_source_and_generated_review",
+      "findings": [],
+      "artifact": "local/epeq-primary-generated-review.json",
+      "sha256": "c1e50e14ab12fab75ad2c13290aa57135be1feeb8fa002134d377760b8407413",
+      "reviewed_semantics": [
+        "EP allocator adapter58 bytes: cdecl requested DWORD at EBP+8 copied into native_bytes and host_bytes, object kind3; passes address of actual12byte SingletonAllocationRequest to existing singleton_lifetime_allocate; security-cookie prologue/epilogue and no invented allocator. Preserves result EAX, balances argument/local stack, returns C3. No native OOM/CRT/fault/unwind parity.",
+        "EP reserve95 bytes: full signed min4/capacity gate; wrapped DWORD scale; actual allocation adapter; forward current-count/current-data loop with computed-null destination skip; current old-data load/free then data and capacity publication; count unchanged; conditional EBX save/restore, ESI/EDI and RET4.",
+        "EP resize80 bytes: original requested capture and current capacity reserve gate; original count capture, zero-fill current-data/computed-null slot loop; exact6byte LEA EBX alignment and MOV EDI,EDI; shrink current count memory RMW/fresh compare; final requested count store; ESI/EDI and RET4.",
+        "EQ queue100 bytes: private EDX save before native current-capacity MOV/CMP; native ESI/EDI saves and LEA preserve flags. Equality-only growth doubled DWORD/signed min1 calls real19byte reserve adapter. Current count,data and ORIGINAL public command at ESP+10h are read before computed-null skip; store then increment CURRENT count then ORIGINAL low flag byte at ESP+14h. Flag0 never dereferences command/access. Nonzero captures command+28 then+4, pushes context before loading same access/render pointer at ESP+0Ch; actual EL traversal RET4; original captured command to actual upload adapter with access at ESP+8; discard private word and RET8.",
+        "EQ job52 bytes: private access plus ESI saved; original command ESP+0Ch captured once. Real context getter then PUSH EAX before scene getter; outgoing context already present when same access/render pointer ESP+8 is loaded; actual EL traversal; original command plus same access ESP+4 to real upload adapter; pop ESI/private word and RET4.",
+        "EQ exact getters each4 bytes: MOV EAX,[ECX+4 or+28], literal C3, no relocations. Raw current_word3 bytes MOV EAX,[ECX]/C3, call-free integer read. No incidental C20000 encoding for native getters.",
+        "EQ reserve adapter19 bytes converts ECX actual header plus one public request to existing cdecl B1C6C0 source provider; cleans two cdecl words then RET4. Upload adapter11 bytes pushes EDX actual access then ECX same captured command for existing cdecl B1E990 provider, cleans8 and C3. Both bind actual named providers; no default success or B1CC20 append substitution.",
+        "EQ dispatcher111 bytes loads current actual job profile via current_word. Other profiles forward same original arguments to real remaining dispatcher virtual+4. D5B570 loads current borrowed table entry0, requires A8AE50, then same original command word/access/job passed to actual52byte job body. Unsupported current entry throws invalid_argument; no fabricated registry/table/retention or default success.",
+        "EQ constructor138 bytes borrows actual access/table/remaining pointers, requires nonnull actual table and current entry A8AE50. Real source-class vtable and MSVC constructor unwind/support are distinct from native job lifetime. Source-class destructors, deleting destructors, exception constructors/destructors/copy/what, EH code, security support, vtable/RTTI, standard strings, debug/linker/checksum/data sections reviewed/classified with zero native body credit."
+      ],
+      "independent_EP_sha256": "f1b0c65e83607172b243fc924de836efe47f05b22ce1673fa02493e9520c56ac",
+      "independent_EQ_sha256": "e47063ed74b7012fe471ff2fa1c0139cc693ead82a7f346f4726e803dee9692a",
+      "whole_objects_equal_preserved_first_attempt": true
+    },
+    "first_attempt": {
+      "commit": "4d0a0cbd5a27bceec34d39576228dc2b309397e6",
+      "passed": false,
+      "ctests_run": 0,
+      "error": "CMake generate.stamp timestamp restoration: Access is denied",
+      "source_or_input_changes": 0,
+      "archive_sha256": "8851a8cd650488ac7bd103df99242d449dccc60a0efd5c7dc1c1b16438ce2799",
+      "preserved": true,
+      "diagnosis": "Normal ACL/attributes; parallel project stamp contention is plausible but denying handle/process unproven. Same script sequence with only explicit --parallel 1 succeeded; original tracked script untouched."
+    },
+    "root_inputs": {
+      "tested_commit": "4d0a0cbd5a27bceec34d39576228dc2b309397e6",
+      "tracked_inputs": 2647,
+      "total_inputs": 2648,
+      "raw_identical": 2638,
+      "newline_only_variants": [
+        {
+          "path": "include/bsp/native_particle_model_construction.hpp",
+          "tested_sha256": "224d95392e8fe949a0059e6428528bdeadfbc7cffc8e02201459521b769befc6",
+          "root_sha256": "7f5bd53cb3fed8ecdc0bdf678f766105e082bdef949d79cb5f3c4a40ab8721e8",
+          "newline_only": true
+        },
+        {
+          "path": "include/bsp/native_particle_model_update.hpp",
+          "tested_sha256": "261cafbe182db8cd55636eb1c47732b5a7acc40235d733cb9801a8c8b8befac4",
+          "root_sha256": "7578f73927ae1d7214e9a0ee285fabcf7797597e4b1d26f5dfbb87d0a889485d",
+          "newline_only": true
+        },
+        {
+          "path": "include/bsp/native_particle_record_update.hpp",
+          "tested_sha256": "93ad6d88437eb448bead0b14e6697b2fb24c111adfe166eecdb6860bd3d8d3f6",
+          "root_sha256": "8a2e359c9453f479f6afcb8fd51669138202349f6619616d32dadad04e1b4c0b",
+          "newline_only": true
+        },
+        {
+          "path": "include/bsp/native_post_effect_owner_20h.hpp",
+          "tested_sha256": "d1175b7041aa203a35b9e04a3d18a38759e646a73fa7b4d0b55a75b2dbed80ad",
+          "root_sha256": "a05e7bf9f16f2fca5ee3976d6ed5199df98b881951f2f18218862f58caed450a",
+          "newline_only": true
+        },
+        {
+          "path": "src/native_particle_model_construction.cpp",
+          "tested_sha256": "b14939017920fa5def99fe21bee763b7258acc25277024b74c611c7086fc415c",
+          "root_sha256": "1081e0cdf6470efa389ac8f1abf96863c02ad66f2caa9a6e7ac01adeea89bccc",
+          "newline_only": true
+        },
+        {
+          "path": "src/native_particle_model_update.cpp",
+          "tested_sha256": "284118adc64ece074bb472396795a3811371801fa470f3ac7e647158e40b94f7",
+          "root_sha256": "9db5e5aed36166bfe0384a70c33005fc626b4a2a3ab74f2214d95a230fa718c1",
+          "newline_only": true
+        },
+        {
+          "path": "src/native_particle_record_update.cpp",
+          "tested_sha256": "ff80442280c3cdfe4ca918fa10a7288577a8c7e0c1de704431c25a0bde1fb057",
+          "root_sha256": "c09d90371c1adde6cc169b06f79f65780aa9a1db67efcd93c74e0ea7f6dfeb1d",
+          "newline_only": true
+        },
+        {
+          "path": "src/native_particle_type_loading.cpp",
+          "tested_sha256": "8426d5312eb51ef1a6075cada010c57d256fbddfc9061e5e61719be847f3b375",
+          "root_sha256": "87840100602a06d5656692631430b2ada665a75ae4dc99aad99b467a4ea7d1ac",
+          "newline_only": true
+        },
+        {
+          "path": "src/native_post_effect_owner_20h.cpp",
+          "tested_sha256": "330fe02662fbd32650c17ff35c8217880dbcca3425e4212c079dca3e5838fc1c",
+          "root_sha256": "a9060716c813ecdec58c1556f1c76bb807b76a82340ebf0c9109601ac448aa07",
+          "newline_only": true
+        }
+      ],
+      "seed_sha256": "26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c",
+      "qualification": "Actual tested input bytes retained; root Git inputs identical with separately recorded newline-only variants. No redundant root build."
+    },
+    "ghidra": {
+      "project": "C:/Users/sqz269/bsp.gpr",
+      "program": "/battlestationspacific.exe",
+      "saved": true,
+      "old_values_preserved": true,
+      "exports_refreshed": true,
+      "functions": {
+        "00ae1440": [
+          "Function: BSP_Shadow_ReservePointerVector at 00ae1440",
+          "Signature: void __thiscall BSP_Shadow_ReservePointerVector(void * this, int requested)",
+          "Entry: 00ae1440",
+          "Body: 00ae1440 - 00ae149e"
+        ],
+        "00ae19b0": [
+          "Function: BSP_Shadow_ResizePointerVector at 00ae19b0",
+          "Signature: void __thiscall BSP_Shadow_ResizePointerVector(void * this, int requested)",
+          "Entry: 00ae19b0",
+          "Body: 00ae19b0 - 00ae19ff"
+        ],
+        "00b1eb80": [
+          "Function: BSP_ShadowQueue_AppendCommand at 00b1eb80",
+          "Signature: void __thiscall BSP_ShadowQueue_AppendCommand(void * this, void * command, uint immediate)",
+          "Entry: 00b1eb80",
+          "Body: 00b1eb80 - 00b1ebd5"
+        ],
+        "00a8ae50": [
+          "Function: BSP_ShadowFrameJob_Execute at 00a8ae50",
+          "Signature: void __thiscall BSP_ShadowFrameJob_Execute(void * this, void * command)",
+          "Entry: 00a8ae50",
+          "Body: 00a8ae50 - 00a8ae75"
+        ],
+        "00b1bf20": [
+          "Function: BSP_ShadowCommand_GetScene at 00b1bf20",
+          "Signature: void * __thiscall BSP_ShadowCommand_GetScene(void * this)",
+          "Entry: 00b1bf20",
+          "Body: 00b1bf20 - 00b1bf23"
+        ],
+        "00b1bf30": [
+          "Function: BSP_ShadowCommand_GetContext at 00b1bf30",
+          "Signature: void * __thiscall BSP_ShadowCommand_GetContext(void * this)",
+          "Entry: 00b1bf30",
+          "Body: 00b1bf30 - 00b1bf33"
+        ]
+      },
+      "prototype_save_retry": "Initial save blocked by active analysis transaction; saved without reapplying annotations/prototypes and independently read back.",
+      "export_metadata_qualification": "Exporter inventory may retain historical names; preserved live prototype/comment readback records current names and bounds."
+    },
+    "original_call_verification": {
+      "checked": 17,
+      "failed": 0,
+      "artifact": "local/epeq-call-audit.json",
+      "sha256": "3c7a6da2cdb5756d8a3260a78322459f18b96c6e5a835cbdc8e4a1eea8a7b379"
+    },
+    "tests_added": 0,
+    "fixture_tested": false,
+    "native_fixture_tested": false,
+    "game_validated": false,
+    "limits": "Explicit source-context/actual provider domains. No original CRT/OOM/hardware-fault/exception or arbitrary slot alias parity; no parent pipeline, runtime rendering or gameplay validation.",
+    "packet": "EQ",
+    "native_credit": {
+      "normal_bodies": 4,
+      "normal_bytes": 132,
+      "parent_and_eh_bytes": 0
+    }
+  },
+  "historical_candidate_validation": {
     "source_review": "candidate pending primary review",
     "call_verifier": {
       "command": "python tools/verify_report_calls.py reports/native_shadow_command_queue.json",
@@ -368,11 +632,5 @@
     "game_validation": "none",
     "generated_required": "Complete new object, both main naked bodies/all exits, exact4-byte getters, both provider adapter ABIs, current-word helper and both real dispatcher paths."
   },
-  "limits": [
-    "Source explicit EDX/private frame and C++ provider adapters are not whole native ABI/argument-alias or incidental-register equality.",
-    "No native FH3/SEH or exception unwinding through naked frames proven; valid storage/nonthrowing traversal-upload services bound the path.",
-    "B1C6C0 existing typed/CRT provider limitations retained; no B1CC20 reuse or broad array implementation replacement.",
-    "No fake owner, provider, retention, automatic rollback or successful unknown-profile/changed-target callback.",
-    "A8EA20/A8BD20/B101C0 and complete scheduling/lifetime/gameplay remain outside132-byte credit."
-  ]
+  "historical_candidate_metadata": "Original placeholder names/prototypes/comments preserved in native artifact; no Ghidra mutation. Byte/listing/caller evidence establishes ABI."
 }
