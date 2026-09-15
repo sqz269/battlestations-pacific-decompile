@@ -94,3 +94,7 @@ Native FH3, throwing cleanup, unmasked hardware exceptions, malformed/private-st
 aliases, actual Lua/resource parsing and game execution are unvalidated. This is
 a new C++ interface, not a binary replacement. Full 95F500/82FE30 binding, vehicle
 entry activation and executable admission remain open. No workers were dispatched.
+
+## Retained evidence
+
+The immutable manifest `local/damageable_binding_bg/manifest.json` retains 324 exact inputs and 141 artifacts, including 10 linked production objects, original binder/helper/matrix/library/producer bytes, compared output images, compiled disassembly, compiler/library inputs and saved Ghidra comments/exports. Source commit `33c7b47e264e9dac23de4d2bda922b01936fd8b3` contains the tested source. The build began at `62ee237fa31508697bc00ca0c0b837b6a79a91a0` with owned edits present; source hashes and compiler dependency records identify the actual inputs. No source changes followed verification.
