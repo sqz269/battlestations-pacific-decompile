@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "packet": "orch3_shadow_owner_construction_dz",
-  "status": "source_drafted_validation_pending",
+  "status": "reconstructed_build_tested_generated_review_pending",
   "native_body_credit": 2145,
   "source_base": "d68f8770ce5ee5108dbd636badf515e610a1b47e",
   "created_utc": "2026-09-15T00:15:02.933435+00:00",
@@ -1875,8 +1875,44 @@
   "no_ghidra_function": [],
   "validation": {
     "all_28_dx_input_pins_match": true,
-    "build": "pending single clean exact-source-commit build",
-    "existing_tests": "pending; no new repository tests",
+    "build": {
+      "status": "passed",
+      "runs": 1,
+      "exact_clean_source_commit": "c6ea046ecdde8a4bc6cc892e2c0787e5f9987dcb",
+      "input_count": 2632,
+      "tracked_input_count": 2631,
+      "verified_seed_header_count": 1,
+      "all_inputs_unchanged": true,
+      "clean_tree_before_and_after": true,
+      "compiler_warning_count": 0,
+      "compiler_error_count": 0,
+      "manifest_path": "local/dz-final-build-stamp.json",
+      "manifest_sha256": "b12ee021140089f031831d74c42e96024173747d528a5ec860581e7ac680ff43",
+      "log_path": "local/dz-final-build.log",
+      "log_sha256": "d97a78ed8f18250aafac1fcd9b2d8296cd7cbbd0b0c0b6a226191115c90bb830",
+      "runner_path": "local/build_final_dz.py",
+      "runner_sha256": "4925ac0ad8c800321e5931adfcad62420702489856f404f6e4d9d241e256ffe8",
+      "libraries": {
+        "build/win32/Release/bsp_core.lib": "a21aeeb025f60a5c6184b0de8642a72f8dda156cc32522534644754432fd2850",
+        "build/win32/Release/bsp_lua511.lib": "e9e7f3a0d61ffdc47cab7b9ebcd9cd0afd6044c3eed21de81eac0735a1473ce0",
+        "build/win32/Release/bsp_zlib121.lib": "43610e06cb4585c65469eb3dd1eb814b918f5d6e11e6888d136d9dfbe66198f8",
+        "build/win32/Release/xlive_stub.lib": "6dfcb5bf13947ffb6883edfde9d189c4c7ae0d702ec8bd81daebf3749e5f1c67"
+      },
+      "object": {
+        "path": "build/win32/bsp_core.dir/Release/native_directional_shadow_owner_construction.obj",
+        "sha256": "ee97de0ccc55eec87fbf0f1b46fc84f220880bae88dea699a53383ad85abf277"
+      }
+    },
+    "existing_tests": {
+      "passed": 2,
+      "total": 2,
+      "names": [
+        "reconstructed_math",
+        "native_math_differential"
+      ],
+      "new_tests": 0,
+      "scope": "Existing tests/build only; no directional-shadow constructor runtime fixture or game validation."
+    },
     "verify_seeds": {
       "ran_once": true,
       "ranges": 8,
@@ -1894,8 +1930,24 @@
     "source_review": {
       "primary": "no remaining source/header finding",
       "independent": "no remaining normal/EH finding after direct includes",
-      "source_sha256": "62e3c24a85dd3db0f80756fbfef408733e6fc1b65f7ea5310929d272dc070154"
+      "source_sha256": "62e3c24a85dd3db0f80756fbfef408733e6fc1b65f7ea5310929d272dc070154",
+      "artifacts": [
+        {
+          "path": "J:/PROG/battlestations-pacific-decompile-orch3-shadow-construction-block-dy/local/dz-independent-source-review.json",
+          "sha256": "78b7017f662c8e1ed3ff120076267a9d98e1be7218e3fdd281faee73461137a5"
+        },
+        {
+          "path": "J:/PROG/battlestations-pacific-decompile-orch3-shadow-construction-block-dy/local/dz-independent-source-review.md",
+          "sha256": "116384040340a72b58c6ad5f304407331e79f4304087e766a48023b36b22b0bb"
+        }
+      ]
+    },
+    "generated_review": {
+      "status": "pending separate primary and independent COFF review",
+      "object_sha256": "ee97de0ccc55eec87fbf0f1b46fc84f220880bae88dea699a53383ad85abf277",
+      "code_and_build_artifacts_frozen": true
     }
   },
-  "integration_base": "08361fdef464acbd44490cd4e495a5b2f7d124ec"
+  "integration_base": "08361fdef464acbd44490cd4e495a5b2f7d124ec",
+  "source_commit": "c6ea046ecdde8a4bc6cc892e2c0787e5f9987dcb"
 }

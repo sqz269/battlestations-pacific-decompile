@@ -148,6 +148,15 @@ does not add the deferred D5B574/A8E160 deleting dispatch. Concurrent invalidati
 arbitrary private-frame aliases, unmasked faults, native binary compatibility,
 runtime, GPU and game behavior require separate evidence.
 
-Validation is recorded in the accompanying report. No new repository tests are
-added; generated x87 order and integration/fixture validation are separate from
-source composition review.
+The single clean source commit `c6ea046ecdde8a4bc6cc892e2c0787e5f9987dcb`
+passed the Win32 Release build with no compiler warnings/errors. All 2632 inputs
+(2631 tracked inputs plus the verified seed header) remained unchanged. Both
+existing CTests passed after all eight seed ranges matched the executable.
+Primary and independent source reviews found no remaining issue after adding
+two required direct includes; primary checked all 91 direct call rows with zero
+failures. The indirect slot64 remains separately current-profile-qualified.
+
+The report pins the full input manifest, four libraries, build log and generated
+object. No new tests or constructor fixture ran. Separate primary/independent
+generated-code review is pending at this metadata commit; compilation and these
+general math tests do not establish constructor runtime or game behavior.
