@@ -669,7 +669,6 @@
     "coordination_dir": "C:/Users/sqz269/.bsp"
   },
   "installed_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
-  "fresh_live_pe_evidence_bytes": 1021,
   "incoming_calls": {
     "count": 8,
     "setter": 5,
@@ -727,84 +726,6 @@
       }
     ]
   },
-  "evidence": [
-    {
-      "path": "local/dt-shadow-owner-replacement-admission.json",
-      "sha256": "50141818e6f35e402ffa2911c0384d9e04033dc564ecc1237df564fa311b04aa"
-    },
-    {
-      "path": "local/dt-shadow-owner-replacement-admission.md",
-      "sha256": "922ceb49899857b476265f0792b6372a9e75980cdbb3206a8ef16b3ec9f173ad"
-    },
-    {
-      "path": "local/du-native-evidence.json",
-      "sha256": "ab9ad65e8d2bab37258a4b1c304dc52eda2628c78ed10373664a1caf66c34596"
-    },
-    {
-      "path": "local/du-caller-contexts.json",
-      "sha256": "53e5d381b84bb83bd1096045fb3c2b7eb4fa13a841681ff2ce1d20bbaa3a81be"
-    },
-    {
-      "path": "local/du-a8dec0-disasm.txt",
-      "sha256": "083ed6ee3ab29e96df97dfddb727b265baa0c9ca9eceed303279f6b2f82dfc60"
-    },
-    {
-      "path": "local/du-seeds.json",
-      "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
-    },
-    {
-      "path": "local/du-capture-evidence.py",
-      "sha256": "2aee26d60e95405c3acb2ba9ecf1c174c18140b6ca85befa90b889a92a775822"
-    },
-    {
-      "path": "local/du-capture-callers.py",
-      "sha256": "835776ad07dbd8dd5cfb29dfd9d8c67e27855c7964545a7515e9d9ed499a0c86"
-    },
-    {
-      "path": "local/du-build-input-pins.json",
-      "sha256": "355f604dee97a12788909abff1c937d481c70092648cb0fb78757803f4a46a52"
-    },
-    {
-      "path": "local/du-build-attempt1-input-pins.json",
-      "sha256": "665343c58c22211c8ada9e4ed52c9c4b48d4d79e8ba060249faa2ffbe7c301b5"
-    },
-    {
-      "path": "local/du-build-attempt1.log",
-      "sha256": "65bbb3d03671721c59a05f75a53f87c2f770fe9d01eea6d40ca6dac8b9227bc4"
-    },
-    {
-      "path": "local/du-build.log",
-      "sha256": "56b9cf99ba675780fa541bebbffa7cd1266796a655fe5eb24ae7d56305375b49"
-    },
-    {
-      "path": "local/du-report-calls.log",
-      "sha256": "546c54c2f4684b1d51526350ba97b040dd4c9b969d713e87d9ba06c956ce4795"
-    },
-    {
-      "path": "local/du-import-call-evidence.json",
-      "sha256": "7c6f3e6eb89a782ab419073514c449e5098832a04c001b7fbea0d9df5a0e1896"
-    },
-    {
-      "path": "local/du-object-disassembly.txt",
-      "sha256": "ca0bafce513c39911ca99286de81f1fef4008d515760e502ff5b38dfd0fc5608"
-    },
-    {
-      "path": "local/du-generated-tools.json",
-      "sha256": "8724baefcbc7e0b7ead6f1fdb44e8cf270b30696808af4ca603e9a44ccb8dde4"
-    },
-    {
-      "path": "local/du-generated-order.json",
-      "sha256": "176232d20b8b9f2a3ba12ff5fe61d3f185ceb41c71563c27c445c1666c58ec0f"
-    },
-    {
-      "path": "local/du-generated-evidence.py",
-      "sha256": "880391729d3b43433c975f7b3a12fbb18025193b6186aa357f46de6a075f6a0d"
-    },
-    {
-      "path": "local/du-write-report.py",
-      "sha256": "6f4418f27db7959231451d1b23ab6251240280be364c22acd005cb1f778edc4a"
-    }
-  ],
   "corrections": [
     {
       "was": "Ghidra A8FCD0 listing omits A8FCE5 ADD ESP,4 and decompiler reports extraout_EAX after free",
@@ -1655,11 +1576,90 @@
     ],
     "qualification": "All old build, object, review, source hash and annotation evidence below belongs to DU at exact tested commit 42603ccf159dad821d9b51ceca44e5092d7187a3, not the changed EA source/context/dispatcher. Original native metadata and producer discovery remain historical evidence.",
     "previous_report_sha256": "21314babcee91b5ec28be9cfb9412f466dec1e0243e4dbab44381a987f380048",
-    "previous_report_git_revision": "78931f6d4bc58ee9e40ac777b1f1383eaa0075fc"
+    "previous_report_git_revision": "78931f6d4bc58ee9e40ac777b1f1383eaa0075fc",
+    "evidence": [
+      {
+        "path": "local/dt-shadow-owner-replacement-admission.json",
+        "sha256": "50141818e6f35e402ffa2911c0384d9e04033dc564ecc1237df564fa311b04aa"
+      },
+      {
+        "path": "local/dt-shadow-owner-replacement-admission.md",
+        "sha256": "922ceb49899857b476265f0792b6372a9e75980cdbb3206a8ef16b3ec9f173ad"
+      },
+      {
+        "path": "local/du-native-evidence.json",
+        "sha256": "ab9ad65e8d2bab37258a4b1c304dc52eda2628c78ed10373664a1caf66c34596"
+      },
+      {
+        "path": "local/du-caller-contexts.json",
+        "sha256": "53e5d381b84bb83bd1096045fb3c2b7eb4fa13a841681ff2ce1d20bbaa3a81be"
+      },
+      {
+        "path": "local/du-a8dec0-disasm.txt",
+        "sha256": "083ed6ee3ab29e96df97dfddb727b265baa0c9ca9eceed303279f6b2f82dfc60"
+      },
+      {
+        "path": "local/du-seeds.json",
+        "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+      },
+      {
+        "path": "local/du-capture-evidence.py",
+        "sha256": "2aee26d60e95405c3acb2ba9ecf1c174c18140b6ca85befa90b889a92a775822"
+      },
+      {
+        "path": "local/du-capture-callers.py",
+        "sha256": "835776ad07dbd8dd5cfb29dfd9d8c67e27855c7964545a7515e9d9ed499a0c86"
+      },
+      {
+        "path": "local/du-build-input-pins.json",
+        "sha256": "355f604dee97a12788909abff1c937d481c70092648cb0fb78757803f4a46a52"
+      },
+      {
+        "path": "local/du-build-attempt1-input-pins.json",
+        "sha256": "665343c58c22211c8ada9e4ed52c9c4b48d4d79e8ba060249faa2ffbe7c301b5"
+      },
+      {
+        "path": "local/du-build-attempt1.log",
+        "sha256": "65bbb3d03671721c59a05f75a53f87c2f770fe9d01eea6d40ca6dac8b9227bc4"
+      },
+      {
+        "path": "local/du-build.log",
+        "sha256": "56b9cf99ba675780fa541bebbffa7cd1266796a655fe5eb24ae7d56305375b49"
+      },
+      {
+        "path": "local/du-report-calls.log",
+        "sha256": "546c54c2f4684b1d51526350ba97b040dd4c9b969d713e87d9ba06c956ce4795"
+      },
+      {
+        "path": "local/du-import-call-evidence.json",
+        "sha256": "7c6f3e6eb89a782ab419073514c449e5098832a04c001b7fbea0d9df5a0e1896"
+      },
+      {
+        "path": "local/du-object-disassembly.txt",
+        "sha256": "ca0bafce513c39911ca99286de81f1fef4008d515760e502ff5b38dfd0fc5608"
+      },
+      {
+        "path": "local/du-generated-tools.json",
+        "sha256": "8724baefcbc7e0b7ead6f1fdb44e8cf270b30696808af4ca603e9a44ccb8dde4"
+      },
+      {
+        "path": "local/du-generated-order.json",
+        "sha256": "176232d20b8b9f2a3ba12ff5fe61d3f185ceb41c71563c27c445c1666c58ec0f"
+      },
+      {
+        "path": "local/du-generated-evidence.py",
+        "sha256": "880391729d3b43433c975f7b3a12fbb18025193b6186aa357f46de6a075f6a0d"
+      },
+      {
+        "path": "local/du-write-report.py",
+        "sha256": "6f4418f27db7959231451d1b23ab6251240280be364c22acd005cb1f778edc4a"
+      }
+    ],
+    "fresh_live_pe_evidence_bytes": 1021
   },
   "packet": "orch3_shadow_base_terminal_impl_ea",
   "base_commit": "78931f6d4bc58ee9e40ac777b1f1383eaa0075fc",
-  "status": "source_implemented_pending_primary_review_and_clean_build",
+  "status": "exact_source_build_passed_generated_review_pending",
   "incremental_native_body_credit": 30,
   "ea_contract": {
     "wrapper": "Capture owner identity, call existing A8DEC0, only after normal return read low byte of borrowed flags slot; bit0 invokes existing shared CRT free; return original identity. No own EH state/cleanup and no free if destruction throws.",
@@ -1755,7 +1755,8 @@
           }
         ]
       }
-    }
+    },
+    "fresh_normal_body_bytes": 30
   },
   "source_sha256": {
     "include/bsp/native_directional_shadow_owner_lifetime.hpp": "3b7fa2d2124617916e2a761e350fbec5e0a04a437eeae443b73e8feee0aeb6fe",
@@ -1869,22 +1870,79 @@
   ],
   "source_anchors": {
     "include/bsp/native_directional_shadow_owner_lifetime.hpp": [
-      "NativeDirectionalShadowOwnerContext::table_00d5b574 optional appended binding",
-      "delete_native_directional_shadow_base_00a8e160 borrowed flags declaration"
+      27,
+      49,
+      58
     ],
     "src/native_directional_shadow_owner_lifetime.cpp": [
-      "table(): Terminal::shadow exact profile binding",
-      "ConcreteDelete::delete_vslot04(): exact profile/terminal pairs",
-      "delete_native_directional_shadow_base_00a8e160(): late byte() after A8DEC0 normal return"
+      52,
+      81,
+      191,
+      200,
+      209
     ]
   },
   "validation": {
-    "source_review": "pending primary review of clean source commit",
-    "build": {
-      "pending": true,
-      "passed": false
+    "source_review": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\ea-primary-source-review.json",
+      "sha256": "6ef61b7f04799e1c6363dc498d955a1f284c8e952c0e97be091ac535598fd6f6",
+      "source_commit": "5611325fa323373f94baa935574f296a21bea794",
+      "findings": []
     },
-    "generated_review": "pending new current source object; old DU object is historical only",
+    "build": {
+      "commit": "5611325fa323373f94baa935574f296a21bea794",
+      "started_utc": "2026-09-15T01:00:17.796839+00:00",
+      "passed": true,
+      "pending": false,
+      "command": [
+        "C:/Windows/System32/WindowsPowerShell/v1.0/powershell.exe",
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "scripts/build.ps1"
+      ],
+      "runner_sha256": "57a403a09ecf6e02de89b80f0e12ce525e708a54d17e9fd1a5986cac82b049bf",
+      "tracked_build_input_count": 2631,
+      "verified_seed_header_included": true,
+      "finished_utc": "2026-09-15T01:09:26.505012+00:00",
+      "exit_code": 0,
+      "clean_tree_before_and_after": true,
+      "same_commit_after": "5611325fa323373f94baa935574f296a21bea794",
+      "all_build_inputs_unchanged": true,
+      "changed_inputs": [],
+      "libraries": {
+        "build/win32/Release/bsp_core.lib": "1feaad47d4b0b76683f5f8d87081ece3dc27221560b5ad68dca7f0c387f5c700",
+        "build/win32/Release/bsp_lua511.lib": "0ef66d86d10ce15b7704cd6007a25aa4e1b7d32565337a655393614013d46c9b",
+        "build/win32/Release/bsp_zlib121.lib": "42ee2cb10e4127f036e51f7f17b4f08f79dc955709622835801ef2f5718d59b2",
+        "build/win32/Release/xlive_stub.lib": "6dfcb5bf13947ffb6883edfde9d189c4c7ae0d702ec8bd81daebf3749e5f1c67"
+      },
+      "log_sha256": "f9bf82141432bd16f57288549a1b4ed5eaf7edca6429484a06fdac0f80cacd94",
+      "existing_ctest_summary": [
+        "1/2 Test #1: reconstructed_math ...............   Passed    0.04 sec",
+        "2/2 Test #2: native_math_differential .........   Passed    0.04 sec",
+        "100% tests passed, 0 tests failed out of 2"
+      ],
+      "generated_object": {
+        "path": "build/win32/bsp_core.dir/Release/native_directional_shadow_owner_lifetime.obj",
+        "sha256": "615150741787e98af4696f69ba8ff37af24088a3c0859ee5b0fd9dffe7edc1ca"
+      },
+      "stamp": {
+        "path": "local/ea-final-build-stamp.json",
+        "sha256": "f45e3b791b803d742f4dbd9f37a754eb3651c35de90f4ec860d74e219b82cf34"
+      },
+      "schema_qualification": "Frozen runner/stamp records actual after-HEAD string in same_commit_after rather than a boolean. Before metadata edits, an independent read verified actual HEAD equals that string and commit, clean status, and all 2632 current input hashes equal the retained before/after maps. The original stamp and runner are preserved unchanged; no build repeated.",
+      "independent_after_head_equality_verified": true,
+      "independent_clean_status_before_metadata": true,
+      "compiler_warnings_or_errors": 0,
+      "seed_verification": {
+        "command": "python tools/ghidra_export.py verify-seeds",
+        "ranges": 8,
+        "all_matched": true,
+        "header_sha256": "26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c"
+      }
+    },
+    "generated_review": "Current 5611325f object is retained and frozen; primary full generated-order review pending. Prior 42603ccf object evidence remains historical only.",
     "fixture_tested": false,
     "game_validated": false,
     "call_rows": {
@@ -1910,5 +1968,33 @@
     "no_new_cmake_or_tests": true,
     "Ghidra_and_ledgers": "primary only"
   },
-  "no_ghidra_function": []
+  "no_ghidra_function": [],
+  "tested_commit": "5611325fa323373f94baa935574f296a21bea794",
+  "evidence": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-shadow-base-terminal-ea\\local\\ea-final-build-stamp.json",
+      "sha256": "f45e3b791b803d742f4dbd9f37a754eb3651c35de90f4ec860d74e219b82cf34",
+      "kind": "current exact build stamp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-shadow-base-terminal-ea\\local\\ea-final-build.log",
+      "sha256": "f9bf82141432bd16f57288549a1b4ed5eaf7edca6429484a06fdac0f80cacd94",
+      "kind": "current complete stdout/stderr log"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-shadow-base-terminal-ea\\local\\build_final_ea.py",
+      "sha256": "57a403a09ecf6e02de89b80f0e12ce525e708a54d17e9fd1a5986cac82b049bf",
+      "kind": "frozen build runner"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-shadow-base-terminal-ea\\build\\win32\\bsp_core.dir\\Release\\native_directional_shadow_owner_lifetime.obj",
+      "sha256": "615150741787e98af4696f69ba8ff37af24088a3c0859ee5b0fd9dffe7edc1ca",
+      "kind": "current exact generated object"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\ea-primary-source-review.json",
+      "sha256": "6ef61b7f04799e1c6363dc498d955a1f284c8e952c0e97be091ac535598fd6f6",
+      "kind": "primary current source review"
+    }
+  ]
 }

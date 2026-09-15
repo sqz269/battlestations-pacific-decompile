@@ -132,6 +132,16 @@ Primary also cleared the erroneous CALL_RETURN override at A8FCE0 under the Ghid
 
 For EA, primary likewise cleared A8E170's CALL_RETURN override to NONE, restored
 the three-byte ADD ESP,4 at A8E175, and saved/refreshed the complete 11-instruction
-body. The report pins that repair and the read-only EA admission. Current EA
-source review, exact coupled build and generated-order validation are pending;
-the prior DU object/build/annotation records are retained as historical evidence.
+body. The report pins that repair and the read-only EA admission. Primary source
+review accepted clean commit `5611325fa323373f94baa935574f296a21bea794` with no
+findings. Its single Win32 Release build passed both existing CTests with all
+2,631 tracked inputs and the verified ignored seed header unchanged. No compiler
+warnings/errors were reported. The complete log, both input maps, four libraries
+and current lifetime object are pinned in `local/ea-final-build-stamp.json`.
+
+The frozen runner records the actual after-HEAD string in `same_commit_after`;
+independent equality, clean status and input-hash checks confirmed the exact
+built revision before metadata edits. The original runner/stamp remain intact.
+Current generated-order review is pending primary inspection of that new object;
+old DU object/build/annotation records remain historical. No runtime fixture or
+new repository test was added.
