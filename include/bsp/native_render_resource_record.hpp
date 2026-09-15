@@ -9,6 +9,7 @@ namespace bsp {
 
 struct SingletonLifetimeCallbacks;
 class ActualNativeStringPoolStorage;
+struct NativeStringRawPoolContext;
 
 struct NativeRenderResourceAliasNode {
     NativeRenderResourceAliasNode* next_00;
@@ -75,5 +76,10 @@ void destroy_native_render_resource_record_00b2f990(
 // Same native body through current actual 419CC0/BD1510 publication.
 void destroy_native_render_resource_record_00b2f990(
     NativeRenderResourceRecord&, ActualNativeStringPoolStorage&);
+
+
+// Complete raw publication variant. Every nonnull return resolves the current
+// pool and can throw before freeing its node; actual owner reloads are retained.
+void clear_native_render_resource_aliases_004d05e0(void*, NativeStringRawPoolContext&);
 
 }

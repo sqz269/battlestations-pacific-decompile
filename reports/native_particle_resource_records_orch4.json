@@ -1,0 +1,1241 @@
+{
+  "schema_version": 1,
+  "packet": "orch4_particle_records_h8",
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_home": "J:/tools/ghidra_12.0.4_PUBLIC",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "base_commit": "6627f50d2",
+  "status": "six_complete_raw_bodies_and_seven_existing_raw_alias_overloads_build_and_source_probe_checked",
+  "functions": [
+    {
+      "address": "0086fcf0",
+      "end_exclusive": "0086fd68",
+      "length": 120,
+      "cpp_symbol": "destroy_native_particle_resource_record_0086fcf0",
+      "original_ABI": "ECX record, RET",
+      "source": "src/native_particle_resource_records.cpp",
+      "header": "include/bsp/native_particle_resource_records.hpp",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "0086ff50",
+      "end_exclusive": "0086fff2",
+      "length": 162,
+      "cpp_symbol": "copy_construct_native_particle_resource_record_0086ff50",
+      "original_ABI": "ECX destination, stack source, EAX destination, RET4",
+      "source": "src/native_particle_resource_records.cpp",
+      "header": "include/bsp/native_particle_resource_records.hpp",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00870000",
+      "end_exclusive": "008700dd",
+      "length": 221,
+      "cpp_symbol": "reserve_native_particle_resource_records_00870000",
+      "original_ABI": "ECX vector, stack signed capacity, RET4",
+      "source": "src/native_particle_resource_records.cpp",
+      "header": "include/bsp/native_particle_resource_records.hpp",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00870ac0",
+      "end_exclusive": "00870b2f",
+      "length": 111,
+      "cpp_symbol": "append_native_particle_resource_record_00870ac0",
+      "original_ABI": "ECX vector, stack source, RET4",
+      "source": "src/native_particle_resource_records.cpp",
+      "header": "include/bsp/native_particle_resource_records.hpp",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00870b30",
+      "end_exclusive": "00870bfc",
+      "length": 204,
+      "cpp_symbol": "resize_native_particle_resource_records_00870b30",
+      "original_ABI": "ECX vector, stack signed count, RET4",
+      "source": "src/native_particle_resource_records.cpp",
+      "header": "include/bsp/native_particle_resource_records.hpp",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00871310",
+      "end_exclusive": "00871364",
+      "length": 84,
+      "cpp_symbol": "clear_native_particle_resource_cache_00871310",
+      "original_ABI": "ECX cache owner, RET",
+      "source": "src/native_particle_resource_records.cpp",
+      "header": "include/bsp/native_particle_resource_records.hpp",
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "spans": [
+    {
+      "address": "0086fcf0",
+      "end_exclusive": "0086fd68",
+      "length": 120,
+      "sha256": "f9221dcc917f14f87ca93b486ae646558f0df1ea0ecfc81908dd4b417d9bbf26",
+      "bytes_hex": "6aff68f85dc90064a10000000050648925000000005156578bf9897c24088d77088bcec744241400000000e8c008c6ff8b460450e883683800c74604000000008b470483c40485c0c7442414ffffffff74158b3f6a0183c7015750e8709fbaff8bc8e8b91736008b4c240c5f5e64890d0000000083c410c3",
+      "fresh_live_disk_equal": true,
+      "role": "owned_complete_entry"
+    },
+    {
+      "address": "0086ff50",
+      "end_exclusive": "0086fff2",
+      "length": 162,
+      "sha256": "8434d1f84e2c628dcd342ea131b2891b5745ae79dbc29841af0d091af3730a90",
+      "bytes_hex": "6aff68385ec90064a100000000506489250000000051568bf1578b7c241c3bf789742408c70600000000c746040000000074228b076a0150e8b3ddbaff833f0074138b068b4e04508b47045051e8de76380083c40c8d5708528d4e08c744241800000000e8e748c6ff8b47148946148b4f18894e188b571c89561c8b47208946208b4f24894e248b57288b4c240c8956285f8bc65e64890d0000000083c410c20400",
+      "fresh_live_disk_equal": true,
+      "role": "owned_complete_entry"
+    },
+    {
+      "address": "00870000",
+      "end_exclusive": "008700dd",
+      "length": 221,
+      "sha256": "6480d950e02ff5c8486515ce23c41180a8209f91508c6b3c5d77b2e565139be2",
+      "bytes_hex": "64a1000000006aff68675ec900506489250000000083ec0c538b5c242083fb40568bf17d0cc7442424400000008b5c2424395e080f8d900000008bc36bc02c555750e87755380033ff83c404397e048be8896c2414897c24107e3beb038d49008bc76bc02c8d0c28894c241885c9c744242400000000740a8b1603d052e8cefeffff83c7013b7e04c7442424ffffffff897c24107cca33ff397e047e1b33db908b0e03cbe847fcffff83c70183c32c3b7e047cec8b5c242c8b0650e8c968380083c4045f892e895e085d8b4c24145e5b64890d0000000083c418c20400",
+      "fresh_live_disk_equal": true,
+      "role": "owned_complete_entry"
+    },
+    {
+      "address": "00870ac0",
+      "end_exclusive": "00870b2f",
+      "length": 111,
+      "sha256": "46b5fdc1e66c8d21ab1f9878c217bee3263d607b52f5bbe6fc91b155070a7d03",
+      "bytes_hex": "6aff687c5fc90064a100000000506489250000000083ec08568bf18b460839460489742404751203c083f8407f05b84000000050e807f5ffff8b4e046bc92c030e894c2408c744241400000000740a8b44241c50e837f4ffff834604018b4c240c5e64890d0000000083c414c20400",
+      "fresh_live_disk_equal": true,
+      "role": "owned_complete_entry"
+    },
+    {
+      "address": "00870b30",
+      "end_exclusive": "00870bfc",
+      "length": 204,
+      "sha256": "6792f6c2413f2cdc31d1a0fc43e9eacdd0efc91548356860e4602211fdddbd70",
+      "bytes_hex": "6aff68b15fc90064a100000000506489250000000083ec0c558b6c2420578bf93b6f08897c240c7e0655e8a1f4ffff8b47043bc5894424087d5d535633db8bff8bf06bf62c033789742418895c24247431891e895e048d6e088bcdc644242401e88b24c5ff8945048b442410895d088b6c242c895e24895e20895e1c895e18895e1483c0013bc5c7442424ffffffff894424107cab5e5b3b6f047d1a8d642400834704ff8b4f046bc92c030fe80ff1ffff3b6f047cea8b4c2414896f045f5d64890d0000000083c418c20400",
+      "fresh_live_disk_equal": true,
+      "role": "owned_complete_entry"
+    },
+    {
+      "address": "00871310",
+      "end_exclusive": "00871364",
+      "length": 84,
+      "sha256": "ee44aff7b85199f79a248a5f86cae636bdfe5132d2c2b03e83ecc1ce674a885a",
+      "bytes_hex": "51568bf1837e0800743d8d9b000000008b46088b4e046bc02c8b4408fc8b168b5210508bceffd28b460885c074138b4e046bc02c8d4c08d4e8a3e9ffff834608ff837e080075c96a008d4e04e8cff7ffff5e59c3",
+      "fresh_live_disk_equal": true,
+      "role": "owned_complete_entry"
+    },
+    {
+      "address": "0044bcb0",
+      "end_exclusive": "0044bd26",
+      "length": 118,
+      "sha256": "19e95f36a47ba139e7914057677fb7e5f46c16600abb39fd565196a09daeebef",
+      "bytes_hex": "6aff68c1ffc50064a100000000506489250000000083ec08568bf1578bfa897424088974240c85f6c74424180000000074333bf7c70600000000c746040000000074228b076a0150e84320fdff833f0074138b0e8b57048b4604515250e86eb97a0083c40c8b4c24105f5e64890d0000000083c414c3",
+      "fresh_live_disk_equal": true,
+      "role": "raw_alias_dependency"
+    },
+    {
+      "address": "004ce6f0",
+      "end_exclusive": "004ce75c",
+      "length": 108,
+      "sha256": "a98d5b9f021b980dbdae7f7288f45918818b9c979e81898488d130ee28eeca21",
+      "bytes_hex": "558bec6aff68705ac60064a100000000506489250000000083ec085356578965f06a10e8038172008bf083c40485f68975ecc745fc0000000074058b450889068d460485c074058b4d0c89088b55108d4e08e869d5f7ff8b4df45f8bc65e64890d000000005b8be55dc20c00",
+      "fresh_live_disk_equal": true,
+      "role": "raw_alias_dependency"
+    },
+    {
+      "address": "004ce75c",
+      "end_exclusive": "004ce771",
+      "length": 21,
+      "sha256": "ed475c06fb5df27f7cec406abe8554aa3dca0995b3d74ec0d3a4e430abafc625",
+      "bytes_hex": "8b55ec52e8477e720083c4046a006a00e814817200",
+      "fresh_live_disk_equal": true,
+      "role": "raw_alias_dependency"
+    },
+    {
+      "address": "004d05e0",
+      "end_exclusive": "004d0633",
+      "length": 83,
+      "sha256": "5ca7928c4a04fbc82dc7af332a3da235b13ce64f685dd7f5b97ad64fff1ed89a",
+      "bytes_hex": "56578bf98b47048b3089008b47048940043b7704c74708000000007433538bff8b4e0c85c98b1e74168b46086a0183c0015051e8a896f4ff8bc8e8f10e700056e8875f720083c4043b5f048bf375d15b5f5ec3",
+      "fresh_live_disk_equal": true,
+      "role": "raw_alias_dependency"
+    },
+    {
+      "address": "004d0990",
+      "end_exclusive": "004d0a0b",
+      "length": 123,
+      "sha256": "99641bf00cce78f2e5e2a8378ca2c7511429fa609cf46bb0f6d26dc3172604b4",
+      "bytes_hex": "83ec08538b5c241485db55568b742420578bf9895c24107505e8655d72003b73047505e85b5d72003b77048b2e74398b46048bcd89088b168b46048942048b4e0c85c974168b46086a0183c0015051e8dc92f4ff8bc8e8250b700056e8bb5b720083c404834708ff8b44241c5f5e8968045d89185b83c408c20c00",
+      "fresh_live_disk_equal": true,
+      "role": "raw_alias_dependency"
+    },
+    {
+      "address": "004d26a0",
+      "end_exclusive": "004d27b4",
+      "length": 276,
+      "sha256": "22d83d64383cddfb2dd96d69fd52e2552f850defde92778abda6811cc950a7aa",
+      "bytes_hex": "558bec6aff68b05ec60064a100000000506489250000000083ec10538b5d0c568b7510578b7d148965f0894dec8975e4897de8c745fc000000008d9b0000000085f674053b75187405e8254072003b7d1c0f84aa00000085f67505e8134072003b7e047505e8094072008b4dec8d4708508b43045053e8d5bfffff8b4dec6a018bf0e859c0ffff8b55108973048b4e0489313b7a047505e8d73f72008b3f8b7510897d14eb9a8d4510508d4de4e8cec0feff84c074428b75ec8b7d0c8b5d08908d4d08895d08897d0ce852c5feff8b48048b1051528d4518508bcee810e2ffff8d4de4e86878feff8d4d10518d4de4e88cc0feff84c075c86a006a00e8e44072008b4df45f5e64890d000000005b8be55dc21c00",
+      "fresh_live_disk_equal": true,
+      "role": "raw_alias_dependency"
+    },
+    {
+      "address": "004d0a10",
+      "end_exclusive": "004d0a2d",
+      "length": 29,
+      "sha256": "271c0147decc0725cafb2939111aca067926e2155be3d22035080168058c5d25",
+      "bytes_hex": "568bf1e8c8fbffff8b460450e88b5b720083c404c74604000000005ec3",
+      "fresh_live_disk_equal": true,
+      "role": "raw_alias_dependency"
+    },
+    {
+      "address": "004d48a0",
+      "end_exclusive": "004d490c",
+      "length": 108,
+      "sha256": "ff902583a2bcf7247cedaf5c3786feff0f024e0f453bc8af3d81e816822b516b",
+      "bytes_hex": "558bec6aff683060c60064a100000000506489250000000083ec085356578bf18965f08975ece855e7feff8b4d088b5d0853894604c74608000000008b51048b3a8b005251575150568bcec745fc00000000e8a9ddffff8b4df45f8bc65e64890d000000005b8be55dc20400",
+      "fresh_live_disk_equal": true,
+      "role": "raw_alias_dependency"
+    },
+    {
+      "address": "004d490c",
+      "end_exclusive": "004d491d",
+      "length": 17,
+      "sha256": "9cb038c0d2940b5cec1de7eccdcd341c22c17e600f2556b741881e529891dd27",
+      "bytes_hex": "8b4dece8fcc0ffff6a006a00e8681f7200",
+      "fresh_live_disk_equal": true,
+      "role": "raw_alias_dependency"
+    },
+    {
+      "address": "00401130",
+      "end_exclusive": "00401131",
+      "length": 1,
+      "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+      "bytes_hex": "c3",
+      "fresh_live_disk_equal": true,
+      "role": "raw_alias_dependency"
+    },
+    {
+      "address": "004c3020",
+      "end_exclusive": "004c303a",
+      "length": 26,
+      "sha256": "26e8567348cafc27e9775c7948b101ae4331dbd853d3dd3baa8c820e6c106eb4",
+      "bytes_hex": "6a10e8f437730083c40485c0740289008d480485c974028901c3",
+      "fresh_live_disk_equal": true,
+      "role": "raw_alias_dependency"
+    },
+    {
+      "address": "00c95df0",
+      "end_exclusive": "00c95e02",
+      "length": 18,
+      "sha256": "3718761a6180bd580d207ea9a30b348c4d384007573b2d9a102283801f01b8dd",
+      "bytes_hex": "8b4df0e9287f78ffb8687ddc00e9410df6ff",
+      "fresh_live_disk_equal": true,
+      "role": "EH_or_vtable_evidence"
+    },
+    {
+      "address": "00c95e30",
+      "end_exclusive": "00c95e42",
+      "length": 18,
+      "sha256": "cebfcebe565c33a3a08c18aa3766831c3fb3c994f6a51e16f0fcb523f5ff8f07",
+      "bytes_hex": "8b4df0e9e87e78ffb8c87ddc00e9010df6ff",
+      "fresh_live_disk_equal": true,
+      "role": "EH_or_vtable_evidence"
+    },
+    {
+      "address": "00c95e50",
+      "end_exclusive": "00c95e72",
+      "length": 34,
+      "sha256": "b1e5103dec3092caa3d75878efb30fd267448a93b5a3ce5c36a336ea925048d2",
+      "bytes_hex": "8b45e86bc02c0345ec508b4df051e8cdb276ff83c408c3b8f47ddc00e9d20cf6ffcc",
+      "fresh_live_disk_equal": true,
+      "role": "EH_or_vtable_evidence"
+    },
+    {
+      "address": "00c95f60",
+      "end_exclusive": "00c95f86",
+      "length": 38,
+      "sha256": "cf8d1768b3594420145f291d622bbe2c8e383e854a6760658756c360ea9167b3",
+      "bytes_hex": "8b45ec8b48046bc92c8b55ec030a518b45f050e8b8b176ff83c408c3b80c7fdc00e9bd0bf6ff",
+      "fresh_live_disk_equal": true,
+      "role": "EH_or_vtable_evidence"
+    },
+    {
+      "address": "00c95f90",
+      "end_exclusive": "00c95fbb",
+      "length": 43,
+      "sha256": "401f8c0051784df2e9a99906ff868a5c0ddcbe08ea45f93a67d02237f9ea5941",
+      "bytes_hex": "8b45e86bc02c8b4dec0301508b55f052e88bb176ff83c408c38b4df0e96f7d78ffb8407fdc00e9880bf6ff",
+      "fresh_live_disk_equal": true,
+      "role": "EH_or_vtable_evidence"
+    },
+    {
+      "address": "00dc7d60",
+      "end_exclusive": "00dc7d8c",
+      "length": 44,
+      "sha256": "62966a92ca4a5370736bedb023cc45230b67be77b04c000ce7d1de1c6009bb47",
+      "bytes_hex": "fffffffff05dc9002205931901000000607ddc00000000000000000000000000000000000000000001000000",
+      "fresh_live_disk_equal": true,
+      "role": "EH_or_vtable_evidence"
+    },
+    {
+      "address": "00dc7dc0",
+      "end_exclusive": "00dc7dec",
+      "length": 44,
+      "sha256": "7edb47642b01051d40f75c5dbd34aac59ebe58a3832e4f8f558a4cfe42a1ce1f",
+      "bytes_hex": "ffffffff305ec9002205931901000000c07ddc00000000000000000000000000000000000000000001000000",
+      "fresh_live_disk_equal": true,
+      "role": "EH_or_vtable_evidence"
+    },
+    {
+      "address": "00dc7dec",
+      "end_exclusive": "00dc7e18",
+      "length": 44,
+      "sha256": "a6f397ad06013bdab45034a5926f1963cdae2bf12cda46a0eddd28b82e368aae",
+      "bytes_hex": "ffffffff505ec9002205931901000000ec7ddc00000000000000000000000000000000000000000001000000",
+      "fresh_live_disk_equal": true,
+      "role": "EH_or_vtable_evidence"
+    },
+    {
+      "address": "00dc7f04",
+      "end_exclusive": "00dc7f30",
+      "length": 44,
+      "sha256": "6e3ecc73db5deb85236490f25d129dce2f259e7a9e57851bf6c4d829a2473f39",
+      "bytes_hex": "ffffffff605fc9002205931901000000047fdc00000000000000000000000000000000000000000001000000",
+      "fresh_live_disk_equal": true,
+      "role": "EH_or_vtable_evidence"
+    },
+    {
+      "address": "00dc7f30",
+      "end_exclusive": "00dc7f64",
+      "length": 52,
+      "sha256": "7234fbbfb630deb718b4a0413db12c0a74f9111bfb4272c20a7aee9deea6a083",
+      "bytes_hex": "ffffffff905fc90000000000a95fc9002205931902000000307fdc00000000000000000000000000000000000000000001000000",
+      "fresh_live_disk_equal": true,
+      "role": "EH_or_vtable_evidence"
+    },
+    {
+      "address": "00d0daf0",
+      "end_exclusive": "00d0db04",
+      "length": 20,
+      "sha256": "24a14467e57dc968437e38d9b62cdfcff8b4d5b70ddc47e7578c41b088c5ae1a",
+      "bytes_hex": "e01687008e69bf008e69bf000014870020148700",
+      "fresh_live_disk_equal": true,
+      "role": "EH_or_vtable_evidence"
+    },
+    {
+      "address": "00d0db40",
+      "end_exclusive": "00d0db54",
+      "length": 20,
+      "sha256": "e064f3904c82d5a3ad1e131362fe9bf757720c347b08be2ab971cc06f0108724",
+      "bytes_hex": "3017870010ba860060ba86000014870020148700",
+      "fresh_live_disk_equal": true,
+      "role": "EH_or_vtable_evidence"
+    }
+  ],
+  "calls": [
+    {
+      "address": "0086fd1b",
+      "native": "004d05e0",
+      "function": "0086fcf0"
+    },
+    {
+      "address": "0086fd24",
+      "native": "00bf65ac",
+      "function": "0086fcf0"
+    },
+    {
+      "address": "0086fd4b",
+      "native": "00419cc0",
+      "function": "0086fcf0"
+    },
+    {
+      "address": "0086fd52",
+      "native": "00bd1510",
+      "function": "0086fcf0"
+    },
+    {
+      "address": "0086ff88",
+      "native": "0041dd40",
+      "function": "0086ff50"
+    },
+    {
+      "address": "0086ff9d",
+      "native": "00bf7680",
+      "function": "0086ff50"
+    },
+    {
+      "address": "0086ffb4",
+      "native": "004d48a0",
+      "function": "0086ff50"
+    },
+    {
+      "address": "00870042",
+      "native": "00bf55be",
+      "function": "00870000"
+    },
+    {
+      "address": "0087007d",
+      "native": "0086ff50",
+      "function": "00870000"
+    },
+    {
+      "address": "008700a4",
+      "native": "0086fcf0",
+      "function": "00870000"
+    },
+    {
+      "address": "008700bb",
+      "native": "00bf6989",
+      "function": "00870000"
+    },
+    {
+      "address": "00870af4",
+      "native": "00870000",
+      "function": "00870ac0"
+    },
+    {
+      "address": "00870b14",
+      "native": "0086ff50",
+      "function": "00870ac0"
+    },
+    {
+      "address": "00870b5a",
+      "native": "00870000",
+      "function": "00870b30"
+    },
+    {
+      "address": "00870b90",
+      "native": "004c3020",
+      "function": "00870b30"
+    },
+    {
+      "address": "00870bdc",
+      "native": "0086fcf0",
+      "function": "00870b30"
+    },
+    {
+      "address": "00871335",
+      "native": "00871310+vtable10",
+      "function": "00871310"
+    },
+    {
+      "address": "00871348",
+      "native": "0086fcf0",
+      "function": "00871310"
+    },
+    {
+      "address": "0087135c",
+      "native": "00870b30",
+      "function": "00871310"
+    }
+  ],
+  "prior_documentation": [
+    {
+      "address": "0086fcf0",
+      "documentation": {
+        "hash": "e7ee210a823d45272169766627b38c5bd26eb52919c37f9dbac6b6953b0ca7c5",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "0086fcf0",
+        "function_name": "FUN_0086fcf0",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "local_4",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "pvStack_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "puStack_8",
+            "type": "undefined1 *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 50.0
+      }
+    },
+    {
+      "address": "0086ff50",
+      "documentation": {
+        "hash": "77f12d1651027805017ccddcb592284c038984c8ff85c52e1703120e2820c881",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "0086ff50",
+        "function_name": "FUN_0086ff50",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "local_4",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "local_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "puStack_8",
+            "type": "undefined1 *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 85,
+            "name": "LAB_0086ffa5"
+          }
+        ],
+        "completeness_score": 50.0
+      }
+    },
+    {
+      "address": "00870000",
+      "documentation": {
+        "hash": "518da6d5f19edbdfe1e2c1addeaee2510a7fb2d2027614b2be8917bc72e34626",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00870000",
+        "function_name": "FUN_00870000",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "local_4",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "local_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "puStack_8",
+            "type": "undefined1 *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "iVar2",
+            "type": "int",
+            "storage": "(register, 0x1c, 4)"
+          },
+          {
+            "name": "iVar1",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 49,
+            "name": "LAB_00870031"
+          },
+          {
+            "relative_offset": 96,
+            "name": "LAB_00870060"
+          },
+          {
+            "relative_offset": 130,
+            "name": "LAB_00870082"
+          },
+          {
+            "relative_offset": 150,
+            "name": "LAB_00870096"
+          },
+          {
+            "relative_offset": 160,
+            "name": "LAB_008700a0"
+          },
+          {
+            "relative_offset": 184,
+            "name": "LAB_008700b8"
+          },
+          {
+            "relative_offset": 202,
+            "name": "LAB_008700ca"
+          }
+        ],
+        "completeness_score": 50.0
+      }
+    },
+    {
+      "address": "00870ac0",
+      "documentation": {
+        "hash": "ff4b1aa7eb2e2e2529ecae3dd31821b012cffc7c7d3907011d96503541878215",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00870ac0",
+        "function_name": "FUN_00870ac0",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "puStack_8",
+            "type": "undefined1 *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "iVar1",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "local_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "local_4",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 51,
+            "name": "LAB_00870af3"
+          },
+          {
+            "relative_offset": 57,
+            "name": "LAB_00870af9"
+          },
+          {
+            "relative_offset": 89,
+            "name": "LAB_00870b19"
+          }
+        ],
+        "completeness_score": 50.0
+      }
+    },
+    {
+      "address": "00870b30",
+      "documentation": {
+        "hash": "cd96641eaf9dfae025328aba1d1ce63f5614040fac90722deaf56cbdefb95a05",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00870b30",
+        "function_name": "FUN_00870b30",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "puStack_8",
+            "type": "undefined1 *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "local_4",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "local_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "puVar3",
+            "type": "undefined4 *",
+            "storage": "(register, 0x18, 4)"
+          },
+          {
+            "name": "iVar2",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "uVar1",
+            "type": "undefined4",
+            "storage": "(register, 0x0, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 47,
+            "name": "LAB_00870b5f"
+          },
+          {
+            "relative_offset": 64,
+            "name": "LAB_00870b70"
+          },
+          {
+            "relative_offset": 130,
+            "name": "LAB_00870bb2"
+          },
+          {
+            "relative_offset": 151,
+            "name": "LAB_00870bc7"
+          },
+          {
+            "relative_offset": 160,
+            "name": "LAB_00870bd0"
+          },
+          {
+            "relative_offset": 182,
+            "name": "LAB_00870be6"
+          }
+        ],
+        "completeness_score": 50.0
+      }
+    },
+    {
+      "address": "00871310",
+      "documentation": {
+        "hash": "d181582de2d309985346c45fde7aac51f1c8dd32b90d353222fd28bed85b2166",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00871310",
+        "function_name": "FUN_00871310",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "iVar1",
+            "type": "int",
+            "storage": "(unique, 0x17200, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 16,
+            "name": "LAB_00871320"
+          },
+          {
+            "relative_offset": 65,
+            "name": "LAB_00871351"
+          },
+          {
+            "relative_offset": 71,
+            "name": "LAB_00871357"
+          }
+        ],
+        "completeness_score": 50.0
+      }
+    }
+  ],
+  "prior_alias_documentation": [
+    {
+      "address": "0044bcb0",
+      "documentation": {
+        "hash": "9070349333d7ae85fcb12c9eb051c22f4c18d216a5edf13505061a51125a612e",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "0044bcb0",
+        "function_name": "BSP_NativeString_ConstructCopy",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 0044bcb0]\nComplete original[0044bcb0,0044bd26); ECX actual8-byte destination header; EDX source header; RET0; no semantic return value.. Complete118-byte string copy constructor. Null destination skips all source reads. Compare identity, zero actual length/data, then self exit; distinct source resizes through0041DD40(preserve1), rereads source length/data and actual destination length/data after allocation, copies destination-length bytes. EH leafC5FFB0 calls original RET-only placement delete00401130; no buffer cleanup or rollback. Host accesses same actual header fields using shared SizedStoragePool, not a second NativeString. Evidence reports/native_render_resource_alias_nodes_audit.json; reports/native_model_group_integration_audit.json. StrictMSVCWin32 build2/2 and focused originalmachine-code comparisons passed; new C++ ABI, no nativeEH execution/fullcommand/fullrenderer/game validation.\n\n[BSP reconstruction 0044bcb0] update\nComplete existing0044bcb0 algorithm and new actual-owning-pool overload; native ABI: ECX destination actual header; EDX source actual header; RET; no specified result. Seven existing complete alias algorithms now additionally select ActualNativeStringPoolStorage and current419CC0/BD1120/BD1510 through private compile-time helpers. Legacy SizedStoragePool interfaces and historical proof remain unchanged. Existing complete raw41DD40 resizes actual headers. Both copy-destroy and range-erase catch chains select actual-pool overloads; selected COFF edges contain no SizedStoragePool provider. Full node-catch21bytes and list-clear83bytes verified; historical82-byte clear dependency captures remain partial, not rewritten. Strict main Win32/twoCTests/eightseeds pass. Primary verifies63workerpins25currentfiles28freshspans3250bytes, actualmainlib12exactarchiveobjects266code sections17542bytes637relocations, all code/data/directive section bytes and relocations agree with worker except private scope/debug identity. Unchanged focused original4D26A0 complete normal/catch versus rebuilt parent composes same complete actual-library helpers and matches301words; small arena copy/destruction/exact buffer reuse composes all7algorithms, string-copy inlined. Original4D490C and4CE75C catches static only, not every original helper executes; original helper5-byte entry patches are explicit ABI bridges. No runtime code postimages/general nativeSEH/lazy-getter throwing-release parity/binaryABI/game validation; release retains existing noexcept source boundary. Full cache/vector/record consumer still separate. reports/native_resource_alias_pool_integration_audit.json",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "local_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "local_4",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "puStack_8",
+            "type": "undefined1 *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 101,
+            "name": "LAB_0044bd15"
+          }
+        ],
+        "completeness_score": 100.0
+      }
+    },
+    {
+      "address": "004ce6f0",
+      "documentation": {
+        "hash": "b933f8ab3aea65fa1398c7149a61ebb2940577d91a9d1bdd3cfb2de0cc20ce46",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "004ce6f0",
+        "function_name": "BSP_NativeRenderResourceAliasNode_AllocateCopy",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 004ce6f0]\nComplete original[004ce6f0,004ce75c); ECX/EDX not inputs; stack next,previous,source-header; EAX actual10h node; RET0C.. Allocate actual10h node viaBF681B before catch activation; store next/previous, copy actual embedded string+8 via0044BCB0, return same allocation. Parent catch004CE75C..004CE770 ordinary-frees captured raw node and rethrows throughBF6885(NULL,NULL). No neighbor-link/count writes and no cleanup of later004CE780 count errors. Uses existing exact NativeRenderResourceAliasNode plus shared native CRT/string pool domains. Evidence reports/native_render_resource_alias_nodes_audit.json; reports/native_model_group_integration_audit.json. StrictMSVCWin32 build2/2 and focused originalmachine-code comparisons passed; new C++ ABI, no nativeEH execution/fullcommand/fullrenderer/game validation.\n\n[BSP reconstruction 004ce6f0] update\nComplete existing004ce6f0 algorithm and new actual-owning-pool overload; native ABI: stack next/previous/source header; ECX and EDX unused; EAX node; RET0C. Seven existing complete alias algorithms now additionally select ActualNativeStringPoolStorage and current419CC0/BD1120/BD1510 through private compile-time helpers. Legacy SizedStoragePool interfaces and historical proof remain unchanged. Existing complete raw41DD40 resizes actual headers. Both copy-destroy and range-erase catch chains select actual-pool overloads; selected COFF edges contain no SizedStoragePool provider. Full node-catch21bytes and list-clear83bytes verified; historical82-byte clear dependency captures remain partial, not rewritten. Strict main Win32/twoCTests/eightseeds pass. Primary verifies63workerpins25currentfiles28freshspans3250bytes, actualmainlib12exactarchiveobjects266code sections17542bytes637relocations, all code/data/directive section bytes and relocations agree with worker except private scope/debug identity. Unchanged focused original4D26A0 complete normal/catch versus rebuilt parent composes same complete actual-library helpers and matches301words; small arena copy/destruction/exact buffer reuse composes all7algorithms, string-copy inlined. Original4D490C and4CE75C catches static only, not every original helper executes; original helper5-byte entry patches are explicit ABI bridges. No runtime code postimages/general nativeSEH/lazy-getter throwing-release parity/binaryABI/game validation; release retains existing noexcept source boundary. Full cache/vector/record consumer still separate. reports/native_resource_alias_pool_integration_audit.json",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "puVar1",
+            "type": "undefined4 *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "puStack_c",
+            "type": "undefined1 *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "local_10",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff0, 4)"
+          },
+          {
+            "name": "local_8",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 64,
+            "name": "LAB_004ce730"
+          },
+          {
+            "relative_offset": 76,
+            "name": "LAB_004ce73c"
+          }
+        ],
+        "completeness_score": 100.0
+      }
+    },
+    {
+      "address": "004d05e0",
+      "documentation": {
+        "hash": "dc0cdc45115c6721ee6dec45e02fe68b9813bb0d3e680989d4f39ff466a7cc99",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "004d05e0",
+        "function_name": "BSP_PooledStringList_ClearStorage",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 004d05e0]\nReconstructed particle lifetime scope: typed normal-flow body. Original ABI: ECX embedded list; RET0. Concrete shared manager/allocator/Win32 lock and actual owned2C records; pooled record/node strings; InterlockedDecrement sink+4 with required actual no-argument virtual0 on zero. Unconditional same singleton slot clear; no invented manager unregister. Allocation preserves raw+18 bytes. Evidence docs/PARTICLE_CLOCK_LIFETIME.md; reports/particle_clock_lifetime_audit.json. Lifecycle fixture checked; no native SEH-table or nonempty concrete sink class claim. Composed system prefix integration: docs/SYSTEM_CONSTANT_BUILDER.md; reports/system_constant_builder_audit.json. Earlier bounded-worker limitations describe the worker snapshot; current root composition uses explicit actual owners and has a new typed ABI, without gameplay validation.\n\n[BSP reconstruction 004d05e0] update\nComplete original[004d05e0,004d0633); ECX actual list owner, RET0, no semantic return. Complete actual list clear: owner+4 sentinel and +8 count, captured first node, two sentinel reloads, initial compare before zero count, captured data/next, current-sentinel reload after actual pool return and node free. Retains actual sentinel and surrounding storage. Evidence reports/native_render_alias_list_clear_audit.json. Original installed bytes and actual pool/malloc/free fixture match four-event clear and six-event composed lifetime; strict MSVC Win32 build2/2. New C++ ABI, no native EH injection or game validation.\n\n[BSP reconstruction 004d05e0] update\nComplete existing004d05e0 algorithm and new actual-owning-pool overload; native ABI: ECX actual list owner; RET; no specified result. Seven existing complete alias algorithms now additionally select ActualNativeStringPoolStorage and current419CC0/BD1120/BD1510 through private compile-time helpers. Legacy SizedStoragePool interfaces and historical proof remain unchanged. Existing complete raw41DD40 resizes actual headers. Both copy-destroy and range-erase catch chains select actual-pool overloads; selected COFF edges contain no SizedStoragePool provider. Full node-catch21bytes and list-clear83bytes verified; historical82-byte clear dependency captures remain partial, not rewritten. Strict main Win32/twoCTests/eightseeds pass. Primary verifies63workerpins25currentfiles28freshspans3250bytes, actualmainlib12exactarchiveobjects266code sections17542bytes637relocations, all code/data/directive section bytes and relocations agree with worker except private scope/debug identity. Unchanged focused original4D26A0 complete normal/catch versus rebuilt parent composes same complete actual-library helpers and matches301words; small arena copy/destruction/exact buffer reuse composes all7algorithms, string-copy inlined. Original4D490C and4CE75C catches static only, not every original helper executes; original helper5-byte entry patches are explicit ABI bridges. No runtime code postimages/general nativeSEH/lazy-getter throwing-release parity/binaryABI/game validation; release retains existing noexcept source boundary. Full cache/vector/record consumer still separate. reports/native_resource_alias_pool_integration_audit.json",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "iVar2",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "_Memory",
+            "type": "int *",
+            "storage": "(register, 0x18, 4)"
+          },
+          {
+            "name": "piVar1",
+            "type": "int *",
+            "storage": "(unique, 0x17200, 4)"
+          },
+          {
+            "name": "iVar3",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffe8, 4)"
+          },
+          {
+            "name": "uVar4",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffff0, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 32,
+            "name": "LAB_004d0600"
+          },
+          {
+            "relative_offset": 63,
+            "name": "LAB_004d061f"
+          },
+          {
+            "relative_offset": 80,
+            "name": "LAB_004d0630"
+          }
+        ],
+        "completeness_score": 100.0
+      }
+    },
+    {
+      "address": "004d0990",
+      "documentation": {
+        "hash": "68ccece57d0e55cc59686517ebf9e94947dd6cf9cd43c96a39df2ab4184aac40",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "004d0990",
+        "function_name": "BSP_RenderAliasList_EraseNode",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 004d0990]\nComplete original[004d0990,004d0a0b); ECX destination owner; stack output iterator address, input owner pointer, input node pointer; EAX output address; RET0Ch. Capture destination and by-value input owner/node. Validate input owner nonnull and node not input sentinel. No owner equality check. Compare node with current destination sentinel and capture next even on suppressed branch. Otherwise unlink, release captured string, free captured node, decrement current destination count. Publish output node before input owner and return output address. Captured null input owner remains null after callback and is subsequently dereferenced; caller iterator repair does not change the captured value. Current destination sentinel and count are reloaded at their native points. Link writes reload node next/previous after first neighbor write. Evidence reports/native_render_alias_checked_ops_audit.json; reports/native_command_alias_integration_audit.json. Strict MSVC Win32 build2/2 and focused original-machine-code comparisons passed; new C++ ABI; no full command execution, native command EH ABI or game validation.\n\n[BSP reconstruction 004d0990] update\nComplete existing004d0990 algorithm and new actual-owning-pool overload; native ABI: ECX destination; stack output/input-owner/input-node; EAX output; RET0C. Seven existing complete alias algorithms now additionally select ActualNativeStringPoolStorage and current419CC0/BD1120/BD1510 through private compile-time helpers. Legacy SizedStoragePool interfaces and historical proof remain unchanged. Existing complete raw41DD40 resizes actual headers. Both copy-destroy and range-erase catch chains select actual-pool overloads; selected COFF edges contain no SizedStoragePool provider. Full node-catch21bytes and list-clear83bytes verified; historical82-byte clear dependency captures remain partial, not rewritten. Strict main Win32/twoCTests/eightseeds pass. Primary verifies63workerpins25currentfiles28freshspans3250bytes, actualmainlib12exactarchiveobjects266code sections17542bytes637relocations, all code/data/directive section bytes and relocations agree with worker except private scope/debug identity. Unchanged focused original4D26A0 complete normal/catch versus rebuilt parent composes same complete actual-library helpers and matches301words; small arena copy/destruction/exact buffer reuse composes all7algorithms, string-copy inlined. Original4D490C and4CE75C catches static only, not every original helper executes; original helper5-byte entry patches are explicit ABI bridges. No runtime code postimages/general nativeSEH/lazy-getter throwing-release parity/binaryABI/game validation; release retains existing noexcept source boundary. Full cache/vector/record consumer still separate. reports/native_resource_alias_pool_integration_audit.json",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "iVar1",
+            "type": "int",
+            "storage": "(unique, 0x17200, 4)"
+          },
+          {
+            "name": "uVar4",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffe4, 4)"
+          },
+          {
+            "name": "iVar2",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "iVar3",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffdc, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 30,
+            "name": "LAB_004d09ae"
+          },
+          {
+            "relative_offset": 40,
+            "name": "LAB_004d09b8"
+          },
+          {
+            "relative_offset": 91,
+            "name": "LAB_004d09eb"
+          },
+          {
+            "relative_offset": 104,
+            "name": "LAB_004d09f8"
+          }
+        ],
+        "completeness_score": 100.0
+      }
+    },
+    {
+      "address": "004d26a0",
+      "documentation": {
+        "hash": "c11dfe9afc1b22e28e247073485bca91ca50d364d83d9bd48d5929b8bcb9e40a",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "004d26a0",
+        "function_name": "BSP_RenderAliasList_InsertRange",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 004d26a0]\nComplete native[004d26a0,004d27b4); ECX actual destination; seven stack DWORDs; RET1Ch; three by-value iterator pairs plus unread word. Complete normal and parent-catch body; retain captures/current argument words, allocate-before-count-before-links, source owner captured before links, rollback bounded by source advances. Evidence reports/native_render_alias_insertion_audit.json; reports/native_render_alias_insertion_verification.json. Independent review and257-word original single/range/catch partial-rollback fixture passed with concrete shared helper/host CRT-EH boundaries; primary strict Win32 build2/2. Descriptive hypothesis/new C++ ABI; not game validated.\n\n[BSP reconstruction 004d26a0] update\nComplete existing004d26a0 algorithm and new actual-owning-pool overload; native ABI: ECX destination; seven stack DWORDs: three iterator pairs and unread final word; RET1C. Seven existing complete alias algorithms now additionally select ActualNativeStringPoolStorage and current419CC0/BD1120/BD1510 through private compile-time helpers. Legacy SizedStoragePool interfaces and historical proof remain unchanged. Existing complete raw41DD40 resizes actual headers. Both copy-destroy and range-erase catch chains select actual-pool overloads; selected COFF edges contain no SizedStoragePool provider. Full node-catch21bytes and list-clear83bytes verified; historical82-byte clear dependency captures remain partial, not rewritten. Strict main Win32/twoCTests/eightseeds pass. Primary verifies63workerpins25currentfiles28freshspans3250bytes, actualmainlib12exactarchiveobjects266code sections17542bytes637relocations, all code/data/directive section bytes and relocations agree with worker except private scope/debug identity. Unchanged focused original4D26A0 complete normal/catch versus rebuilt parent composes same complete actual-library helpers and matches301words; small arena copy/destruction/exact buffer reuse composes all7algorithms, string-copy inlined. Original4D490C and4CE75C catches static only, not every original helper executes; original helper5-byte entry patches are explicit ABI bridges. No runtime code postimages/general nativeSEH/lazy-getter throwing-release parity/binaryABI/game validation; release retains existing noexcept source boundary. Full cache/vector/record consumer still separate. reports/native_resource_alias_pool_integration_audit.json",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "local_8",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "iVar1",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "puStack_c",
+            "type": "undefined1 *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "local_10",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff0, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 64,
+            "name": "LAB_004d26e0"
+          },
+          {
+            "relative_offset": 73,
+            "name": "LAB_004d26e9"
+          },
+          {
+            "relative_offset": 78,
+            "name": "LAB_004d26ee"
+          },
+          {
+            "relative_offset": 96,
+            "name": "LAB_004d2700"
+          },
+          {
+            "relative_offset": 106,
+            "name": "LAB_004d270a"
+          },
+          {
+            "relative_offset": 156,
+            "name": "LAB_004d273c"
+          },
+          {
+            "relative_offset": 257,
+            "name": "LAB_004d27a1"
+          }
+        ],
+        "completeness_score": 100.0
+      }
+    },
+    {
+      "address": "004d0a10",
+      "documentation": {
+        "hash": "3b37f53021d476c693a858c70e644109ccf654f75a2e93f168e2ebaf4abf8212",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "004d0a10",
+        "function_name": "BSP_PooledStringList_DestroyStorage",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 004d0a10]\nFull29-byte list storage destructor including hidden returning-free continuation. ECX actual owner, RET.004D05E0 clear, reload CURRENT sentinel+4, free throughBF65AC, then004D0A24 nulls owner+4. Preserve other callback-mutated fields. False no-return listing truncates atfree; inspect original bytes through004D0A2D. docs/NATIVE_RENDER_RESOURCE_RECORD_CONSTRUCTION.md and audit. Original ABI: ECX actual owner; plain RET; no semantic result. Evidence reports/native_render_resource_record_construction_audit.json. Primary-library originalcaller fixture720words/7variants includes actual list catch/rethrow and2record-name unwind actions; strictWin32 build+2existingCTests pass. All native allocation, pool and exception ABI limits remain explicit; no fullcontainer/game claim.\n\n[BSP reconstruction 004d0a10] update\nComplete existing004d0a10 algorithm and new actual-owning-pool overload; native ABI: ECX actual list owner; RET; no specified result. Seven existing complete alias algorithms now additionally select ActualNativeStringPoolStorage and current419CC0/BD1120/BD1510 through private compile-time helpers. Legacy SizedStoragePool interfaces and historical proof remain unchanged. Existing complete raw41DD40 resizes actual headers. Both copy-destroy and range-erase catch chains select actual-pool overloads; selected COFF edges contain no SizedStoragePool provider. Full node-catch21bytes and list-clear83bytes verified; historical82-byte clear dependency captures remain partial, not rewritten. Strict main Win32/twoCTests/eightseeds pass. Primary verifies63workerpins25currentfiles28freshspans3250bytes, actualmainlib12exactarchiveobjects266code sections17542bytes637relocations, all code/data/directive section bytes and relocations agree with worker except private scope/debug identity. Unchanged focused original4D26A0 complete normal/catch versus rebuilt parent composes same complete actual-library helpers and matches301words; small arena copy/destruction/exact buffer reuse composes all7algorithms, string-copy inlined. Original4D490C and4CE75C catches static only, not every original helper executes; original helper5-byte entry patches are explicit ABI bridges. No runtime code postimages/general nativeSEH/lazy-getter throwing-release parity/binaryABI/game validation; release retains existing noexcept source boundary. Full cache/vector/record consumer still separate. reports/native_resource_alias_pool_integration_audit.json",
+        "parameters": [],
+        "local_variables": [],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 100.0
+      }
+    },
+    {
+      "address": "004d48a0",
+      "documentation": {
+        "hash": "a151a0ac6c4d169377ffbc6600be9b07bb43517989f1e25a2f717797827c0053",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "004d48a0",
+        "function_name": "BSP_PooledStringList_CopyConstruct",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 004d48a0]\nFull108-byte main plus17-byte catch004D490C reconstructed. ECX dest, stack src, EAX dest, RET4. New sentinel/count published before current source sentinel/first reads; self construction abandons old graph and copies empty new list. Actual range004D26A0; complete FuncInfoD8EE1C/try/catch maps. Catch destroys current list via004D0A10 then native rethrow. No invented rollback. docs/NATIVE_RENDER_RESOURCE_RECORD_CONSTRUCTION.md and audit. Original ABI: ECX destination owner; stack source owner; EAX destination; RET4. Evidence reports/native_render_resource_record_construction_audit.json. Primary-library originalcaller fixture720words/7variants includes actual list catch/rethrow and2record-name unwind actions; strictWin32 build+2existingCTests pass. All native allocation, pool and exception ABI limits remain explicit; no fullcontainer/game claim.\n\n[BSP reconstruction 004d48a0] update\nComplete existing004d48a0 algorithm and new actual-owning-pool overload; native ABI: ECX destination; stack source; EAX destination; RET4. Seven existing complete alias algorithms now additionally select ActualNativeStringPoolStorage and current419CC0/BD1120/BD1510 through private compile-time helpers. Legacy SizedStoragePool interfaces and historical proof remain unchanged. Existing complete raw41DD40 resizes actual headers. Both copy-destroy and range-erase catch chains select actual-pool overloads; selected COFF edges contain no SizedStoragePool provider. Full node-catch21bytes and list-clear83bytes verified; historical82-byte clear dependency captures remain partial, not rewritten. Strict main Win32/twoCTests/eightseeds pass. Primary verifies63workerpins25currentfiles28freshspans3250bytes, actualmainlib12exactarchiveobjects266code sections17542bytes637relocations, all code/data/directive section bytes and relocations agree with worker except private scope/debug identity. Unchanged focused original4D26A0 complete normal/catch versus rebuilt parent composes same complete actual-library helpers and matches301words; small arena copy/destruction/exact buffer reuse composes all7algorithms, string-copy inlined. Original4D490C and4CE75C catches static only, not every original helper executes; original helper5-byte entry patches are explicit ABI bridges. No runtime code postimages/general nativeSEH/lazy-getter throwing-release parity/binaryABI/game validation; release retains existing noexcept source boundary. Full cache/vector/record consumer still separate. reports/native_resource_alias_pool_integration_audit.json",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "local_10",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff0, 4)"
+          },
+          {
+            "name": "puVar1",
+            "type": "undefined4 *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "local_8",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "puStack_c",
+            "type": "undefined1 *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 100.0
+      }
+    }
+  ],
+  "source_contract": {
+    "record_stride": 44,
+    "vector_offsets": {
+      "data": 0,
+      "count": 4,
+      "capacity": 8
+    },
+    "record_offsets": {
+      "name_length": 0,
+      "name_data": 4,
+      "untouched": 8,
+      "sentinel": 12,
+      "alias_count": 16,
+      "payload": 20,
+      "resource": 40
+    },
+    "pool": "NativeStringRawPoolContext actual 01090AA8,01090AA4,01090AA0 cells",
+    "validation": "fixed current source CRT _invalid_parameter_noinfo; no caller callback",
+    "resource_release": "concrete sibling871420 for original identitiesD0DAF0/D0DB40; current callable thiscall+10 for others",
+    "allocation": "existing singleton_lifetime_allocate with identical raw native/host byte count; current malloc/new-handler/free domain",
+    "true_unwind": "noexcept RAII current-name guards terminate on second exception",
+    "reserve_failure": "no invented new-allocation/completed-record rollback; original only placement-delete no-op",
+    "resize_default": "preserve record+8/+28 and surrounding bytes"
+  },
+  "eh_states": [
+    {
+      "function": "0086fcf0",
+      "func_info": "00dc7d68",
+      "unwind_map": "00dc7d60",
+      "states": [
+        {
+          "state": 0,
+          "next": -1,
+          "action": "00c95df0",
+          "target": "0041dd20"
+        }
+      ]
+    },
+    {
+      "function": "0086ff50",
+      "func_info": "00dc7dc8",
+      "unwind_map": "00dc7dc0",
+      "states": [
+        {
+          "state": 0,
+          "next": -1,
+          "action": "00c95e30",
+          "target": "0041dd20"
+        }
+      ]
+    },
+    {
+      "function": "00870000",
+      "func_info": "00dc7df4",
+      "unwind_map": "00dc7dec",
+      "states": [
+        {
+          "state": 0,
+          "next": -1,
+          "action": "00c95e50",
+          "target": "00401130"
+        }
+      ]
+    },
+    {
+      "function": "00870ac0",
+      "func_info": "00dc7f0c",
+      "unwind_map": "00dc7f04",
+      "states": [
+        {
+          "state": 0,
+          "next": -1,
+          "action": "00c95f60",
+          "target": "00401130"
+        }
+      ]
+    },
+    {
+      "function": "00870b30",
+      "func_info": "00dc7f40",
+      "unwind_map": "00dc7f30",
+      "states": [
+        {
+          "state": 0,
+          "next": -1,
+          "action": "00c95f90",
+          "target": "00401130"
+        },
+        {
+          "state": 1,
+          "next": 0,
+          "action": "00c95fa9",
+          "target": "0041dd20"
+        }
+      ]
+    }
+  ],
+  "raw_alias_overloads": [
+    "0044bcb0",
+    "004ce6f0",
+    "004d05e0",
+    "004d0990",
+    "004d26a0",
+    "004d0a10",
+    "004d48a0"
+  ],
+  "new_unique_function_claims": 6,
+  "limitations": [
+    "Source APIs are not original ABI replacements.",
+    "Source CRT and C++ exception transport apply; arbitrary SEH/OOM and native FH3 transport unproved.",
+    "Cache resource acquisition86BA60 is outside this packet.",
+    "Peer cache871420 genuine provider must be linked; resource terminal vtable remains actual runtime dispatch.",
+    "No game validation."
+  ],
+  "validation": {
+    "live_disk_spans": 29,
+    "owned_full_bytes": 902,
+    "verify_report_calls": "18 rows,0 failed; virtual slot row intentionally not verifiable",
+    "strict_win32_build": "scripts/build.ps1 Release passed;2 existing CTests passed",
+    "source_probe": "PASS raw default unknown bytes, pooled deep reserve/append/shrink, genuine peer871420 release/clear",
+    "original_clear_probe": "PASS complete installed84-byte871310 against source, terminal callback changes count0; two exact direct-call ABI bridges to genuine rebuilt record destroy/resize providers; genuine peer871420 executes"
+  },
+  "file_hashes": {
+    "include/bsp/native_particle_resource_records.hpp": "179be74bf9fc09eb0e295bb0c95fae15e3cc511b2f6ae9a2142b4a85ba87e6cd",
+    "src/native_particle_resource_records.cpp": "2cdaf79f06394cac4e715bb32ac08ed692c6c3c99c13253d41e55046f689f7ad",
+    "docs/NATIVE_PARTICLE_RESOURCE_RECORDS_ORCH4.md": "496145cee37bb1425f9f2a2140a33654f380395c8a8cdf706712dc7cf578e127",
+    "include/bsp/native_render_resource_alias_nodes.hpp": "84494dd08830e1d38c7ce90a26516b2fb4a9fdd66ab3b7e62ff7e37dae19a570",
+    "src/native_render_resource_alias_nodes.cpp": "5277f50931f27e67579ca22346f7adde5a2ffced83e508e6cbdded150edffc7d",
+    "include/bsp/native_render_resource_record.hpp": "5aa38d6351388c4fc6e97799712f9b7e85b6f65468aa51d37563793208930e11",
+    "src/native_render_resource_record.cpp": "10acb5c4e8ba5192003aa8e0738b83306e7a135055a6a15ab6fb57379417af1f",
+    "include/bsp/native_render_alias_checked_ops.hpp": "baeef7364b3ca8adf48a24af1168e20594e98be025fccbf75a2c70489da6d674",
+    "src/native_render_alias_checked_ops.cpp": "41ab01971f4a4ee56f42abe4555d53212c8d8235e8dd43583d28afca08d6f61a",
+    "include/bsp/native_render_alias_insertion.hpp": "3ec008cf2f95b6eeaa80d0818b06ba3c27580395d1d4fe032606bf40d17cee2a",
+    "src/native_render_alias_insertion.cpp": "128d517ca9273e9e0a3a2ace961299fc1b9964fe4689c519770162848fe9100f",
+    "include/bsp/native_render_resource_record_construction.hpp": "49cbc1e7fcbf1581e24a874203e40dba0929acb8f333645bb7b967d1c8bb451a",
+    "src/native_render_resource_record_construction.cpp": "7c1309fa8d22fee2c6720893307f596c37fa41ab0b059b6b31d918044af772a7",
+    "local/particle_records_probe.cpp": "a4101e9886a08a0dad5580ed66fccc41fe405c19c16311b409a0bf6d907882d4",
+    "local/particle_records_probe.log": "303c97bdad6cbc9fc643ca1e9713b04c89afc9641a238d7537901744b4595c99",
+    "local/particle_records_build.log": "592be693e84055fdf92b1bc21879eae3a726dfd2249664da10a261aeb27a252c",
+    "local/particle_records_calls.log": "1af66717620d897bd82f9440bfc9841679c989a05e43b6fcffef337f2f23c80d",
+    "local/particle_records_probe.exe": "ceb6437b07060973f2ab760503c9b71c79838fda5f3ff4197578bbeb6bb983ac",
+    "local/particle_clear_bytes.hpp": "85102a33ec092fc4e247d3a1f6cd0830515125d49279784b970c78ea2a133513",
+    "local/peer_particle_resource_cache.cpp": "f2b15bbbe40ca6b69228fc73d7d8833393aab34bd41006a540e0b3db2a494b86",
+    "local/probe_include/bsp/native_particle_resource_cache.hpp": "e21d7d226b0cc995a84ce291f11d9f0af40637ef0dac2db758dd0b443e1474c6",
+    "build/win32/bsp_core.dir/Release/native_particle_resource_records.obj": "4ed601d760cc1803ce2062a913d973a65ec7a7978a0f3e7d185b4e608eeed93e",
+    "build/win32/bsp_core.dir/Release/native_render_resource_alias_nodes.obj": "bd20d9801840abac67138f0bd65f2f94c7c31ea4bf7568a9217077520586cc89",
+    "build/win32/bsp_core.dir/Release/native_render_resource_record.obj": "cf92684f0aa6581a370d9dc5f588cae42f627f437e5e729cb87e97b2e9e3e33c",
+    "build/win32/bsp_core.dir/Release/native_render_alias_checked_ops.obj": "8570a572ffc46dfff702b6f0f5d39ffc6104ed92ec600df9eef8acaf86c0d969",
+    "build/win32/bsp_core.dir/Release/native_render_alias_insertion.obj": "379e556e719ad61f74eaca43c1dc321551da4afd1f3c3279c21cceb2a28ed8a0",
+    "build/win32/bsp_core.dir/Release/native_render_resource_record_construction.obj": "8cc539777da209333b3f90e265d316f1ad89e15ddafb2710bea93bf67ab89bfe"
+  },
+  "original_clear_probe": {
+    "span": "00871310..00871363",
+    "length": 84,
+    "original_direct_call_adapters": [
+      {
+        "site": "00871348",
+        "source_provider": "destroy_native_particle_resource_record_0086fcf0",
+        "patch_offset": 57,
+        "next_offset": 61
+      },
+      {
+        "site": "0087135c",
+        "source_provider": "resize_native_particle_resource_records_00870b30",
+        "patch_offset": 77,
+        "next_offset": 81
+      }
+    ],
+    "clear_dispatch": "actual callable fixture cache vslot10 ABI bridge invokes genuine peer871420; terminal resource slot0 fixture changes current owner count to0",
+    "scope": "Original clear executed completely. Copy/reserve/resize/raw-alias behavior is source-only composition. No original record/list helper execution or fault injection claimed."
+  },
+  "genuine_peer_cache_source": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915-particle-cache-h8\\src\\native_particle_resource_cache.cpp",
+    "sha256": "f2b15bbbe40ca6b69228fc73d7d8833393aab34bd41006a540e0b3db2a494b86"
+  }
+}

@@ -3,6 +3,7 @@
 #include "bsp/singleton_lifetime.hpp"
 #include <cstring>
 #include <new>
+#include <type_traits>
 
 namespace bsp {
 namespace {
@@ -25,6 +26,10 @@ template<class T> void write(void* header, std::size_t offset, T value) noexcept
 void resize_fresh_header(void* destination, std::uint32_t requested,
     ActualNativeStringPoolStorage& strings) {
     resize_native_string_header_0041dd40(destination, strings, requested, true);
+}
+
+void resize_fresh_header(void* destination, std::uint32_t requested, NativeStringRawPoolContext& pool) {
+    resize_native_string_header_0041dd40(destination, pool, requested, true);
 }
 
 void resize_fresh_header(void* destination, std::uint32_t requested, SizedStoragePool& pool) {
@@ -62,7 +67,12 @@ static void construct_alias_string_with_pool(void* destination,
         const auto copied = read<std::uint32_t>(destination, 0);
         auto* current_source = read<char*>(source, 4);
         auto* current_destination = read<char*>(destination, 4);
-        if (copied != 0) std::memcpy(current_destination, current_source, copied);
+        if (copied != 0) {
+            if constexpr (std::is_same_v<Pool, NativeStringRawPoolContext>)
+                std::memmove(current_destination, current_source, copied);
+            else
+                std::memcpy(current_destination, current_source, copied);
+        }
     }
     // 00C5FFB0 -> 00401130 is a RET-only placement-delete unwind leaf.
     // No string destruction or synthesized exception cleanup belongs here.
@@ -110,4 +120,14 @@ NativeRenderResourceAliasNode* allocate_native_render_alias_node_004ce6f0(
     const void* source, ActualNativeStringPoolStorage& pool) {
     return allocate_alias_node_with_pool(next, previous, source, pool);
 }
+
+void construct_native_render_alias_string_0044bcb0(void* d, const void* s, NativeStringRawPoolContext& pool) {
+    construct_alias_string_with_pool(d, s, pool);
+}
+NativeRenderResourceAliasNode* allocate_native_render_alias_node_004ce6f0(
+    NativeRenderResourceAliasNode* next, NativeRenderResourceAliasNode* previous,
+    const void* source, NativeStringRawPoolContext& pool) {
+    return allocate_alias_node_with_pool(next, previous, source, pool);
+}
+
 } // namespace bsp

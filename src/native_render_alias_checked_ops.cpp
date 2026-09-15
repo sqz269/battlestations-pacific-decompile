@@ -1,5 +1,6 @@
 #include "bsp/native_render_alias_checked_ops.hpp"
 #include "bsp/native_string_pool_storage.hpp"
+#include <cstdlib>
 
 #if !defined(_MSC_VER) || !defined(_M_IX86)
 #error Native render alias checked operations require MSVC Win32 pointer widths.
@@ -20,6 +21,11 @@ static_assert(offsetof(NativeRenderResourceRecord, sentinel_0c) == 0x0c);
 static_assert(offsetof(NativeRenderResourceRecord, alias_count_10) == 0x10);
 
 namespace {
+void release_alias_string(NativeStringRawPoolContext& strings, char* data, std::uint32_t size) {
+    auto* const pool = native_string_pool_get_or_create_00419cc0(
+        strings.actual_published_01090aa8, strings.actual_manager_publication_01090aa0);
+    return_native_string_pool_00bd1510(pool, data, size, strings.actual_small_returns_disabled_01090aa4);
+}
 void release_alias_string(SizedStoragePool& pool, char* data, std::uint32_t size) {
     pool.release_00bd1510(data, size);
 }
@@ -140,6 +146,15 @@ volatile NativeRenderAliasIterator* erase_native_render_alias_node_004d0990(
     NativeRenderAliasIterator input_by_value, ActualNativeStringPoolStorage& actual_string_pool,
     const SingletonLifetimeCallbacks& callbacks) {
     return erase_alias_node_with_pool(actual_destination_owner, output, input_by_value, actual_string_pool, callbacks);
+}
+
+
+volatile NativeRenderAliasIterator* erase_native_render_alias_node_004d0990(
+    void* owner, volatile NativeRenderAliasIterator& output,
+    NativeRenderAliasIterator input, NativeStringRawPoolContext& strings) {
+    const SingletonLifetimeCallbacks validation{nullptr, nullptr,
+        [](void*) { _invalid_parameter_noinfo(); }};
+    return erase_alias_node_with_pool(owner, output, input, strings, validation);
 }
 
 }

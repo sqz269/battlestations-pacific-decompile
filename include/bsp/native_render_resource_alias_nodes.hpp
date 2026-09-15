@@ -38,4 +38,11 @@ NativeRenderResourceAliasNode* allocate_native_render_alias_node_004ce6f0(
     NativeRenderResourceAliasNode* next, NativeRenderResourceAliasNode* previous,
     const void* actual_source_string_header, ActualNativeStringPoolStorage& actual_string_pool);
 
+
+// Raw publication overloads. Getter failures propagate; no noexcept adapter or
+// injected validation callback is interposed. Same actual header/node storage.
+void construct_native_render_alias_string_0044bcb0(void*, const void*, NativeStringRawPoolContext&);
+NativeRenderResourceAliasNode* allocate_native_render_alias_node_004ce6f0(
+    NativeRenderResourceAliasNode*, NativeRenderResourceAliasNode*, const void*, NativeStringRawPoolContext&);
+
 } // namespace bsp
