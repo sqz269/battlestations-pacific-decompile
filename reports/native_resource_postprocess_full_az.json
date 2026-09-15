@@ -797,5 +797,25 @@
       "status": "complete_source_under_actual_provider_contract_strict_win32_and_bounded_differential_tested",
       "evidence": "Complete80-byte ECX actual0Ch header/stack signed count/RET4 matches canonicalB40E00 after equivalent B76890/B40C80 reserve relocation. Existing canonical valid-extent and overflow policy remains explicit; no copied container or borrowed-item destruction. Hypothesis, not a recovered symbol. docs/NATIVE_RESOURCE_POSTPROCESS_FULL_AZ.md; reports/native_resource_postprocess_full_az.json. Strict Win32 and both CTests pass; all107 call rows pass. No game validation or original FH3 ABI claim."
     }
-  ]
+  ],
+  "proof": {
+    "manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\resource_postprocess_full_az\\manifest.json",
+      "bytes": 329410,
+      "sha256": "2a3bf7479dfcacc751d9faf374cc33896db747c554b5239f5af5824d8be286a5"
+    },
+    "source_commit": "aa7e7abf3c59132fe2f42a5cdc512d2fff4540b8",
+    "implementation_commit": "77d8e274f095331374f564124291d0bd5cb2dee9",
+    "build_checkout_head": "aa7e7abf3c59132fe2f42a5cdc512d2fff4540b8",
+    "build_had_owned_source_changes": false,
+    "inputs": 733,
+    "artifacts": 133,
+    "fixture_production_objects": 80,
+    "complete_new_bodies": 8,
+    "complete_source_bytes": 3681,
+    "canonical_reuse_bytes": 80,
+    "saved_annotations": 9,
+    "paired_full_caller_cases": 5,
+    "source_failure_cases": 1
+  }
 }

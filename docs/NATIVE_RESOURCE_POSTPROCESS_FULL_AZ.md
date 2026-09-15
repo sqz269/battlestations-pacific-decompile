@@ -100,3 +100,7 @@ All 107 address/native call rows validate against current Ghidra. Full traces,
 PE spans, unwind data, saved annotations, compiler inputs and linked objects are
 retained locally. No workers were dispatched. Full B891A0 graph admission and
 a runnable, gameplay-validated game rebuild remain outside this batch.
+
+## Retained evidence
+
+Implementation commit `77d8e274f095331374f564124291d0bd5cb2dee9` is integrated in `aa7e7abf3c59132fe2f42a5cdc512d2fff4540b8`, which was built as a clean checkout. The immutable local manifest retains 733 exact inputs and 133 artifacts, including 80 linked production objects, source/header/compiler/library inputs, ten original spans, paired comparison images, unwind records and saved Ghidra annotations/exports. The provider and game-validation boundaries above remain unchanged.
