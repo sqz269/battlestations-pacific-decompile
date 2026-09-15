@@ -1,0 +1,318 @@
+{
+  "packet": "orch3_shadow_entry_iteration_en",
+  "base_commit": "76ebaeec3c740be11baf39b2c72015b0593e3920",
+  "status": "complete_source_pending_primary_review_and_build",
+  "coverage": {
+    "native_bodies": 3,
+    "native_bytes": 190,
+    "additional_crt_body_credit": 0
+  },
+  "routines": [
+    {
+      "entry": "00ad7440",
+      "end": "00ad74fb",
+      "size": 188,
+      "instructions": 69,
+      "coverage": "complete literal naked traversal",
+      "native_abi": "ECX actual owner, no public stack arguments, RET",
+      "source_abi": "void __fastcall dispatch_native_entry_pass_00ad7440(void*, void* unused_edx)"
+    },
+    {
+      "entry": "00ae2ca0",
+      "end": "00ae2ca0",
+      "size": 1,
+      "instructions": 1,
+      "coverage": "complete separately named private naked RET body",
+      "source": "native_entry_return_00ae2ca0",
+      "contract": "No receiver read or other operation; fixed explicit call retained"
+    },
+    {
+      "entry": "00ae0750",
+      "end": "00ae0750",
+      "size": 1,
+      "instructions": 1,
+      "coverage": "complete separately named private naked RET body",
+      "source": "native_entry_return_00ae0750",
+      "contract": "No receiver read or other operation; fixed explicit call retained"
+    }
+  ],
+  "storage": {
+    "first_descriptor": "actual owner+64h; current begin+68h/end+6Ch",
+    "second_descriptor": "actual owner+54h; current begin+58h/end+5Ch",
+    "entry": "Actual four-byte pointer word at captured cursor",
+    "limit": "No complete class layout, std::vector or host owner proxy inferred; caller provides valid actual32-bit memory/lifetimes."
+  },
+  "schedule": [
+    "Capture cursor from begin; compare against current end.",
+    "Each loop head captures current end in EBX, then checks current begin against that captured end.",
+    "Preserve owner/self validation, cursor equality against captured end, and current-end checks before dereference.",
+    "Read entry through captured cursor; call fixed literal RET body.",
+    "Check cursor against current end after the call, then increment4 and reload at next head.",
+    "Only after first range completion read the second descriptor.",
+    "Returning validation handlers do not implicitly refresh captured cursor/end or add an early-exit policy."
+  ],
+  "crt_service": {
+    "source": "Private noinline cdecl current_crt_invalid_parameter calls real SDK _invalid_parameter_noinfo()",
+    "precedent": "src/native_singleton_vector_registration_wrappers.cpp:12",
+    "returning_contract": "Can return; all12 original continuation sites are preserved",
+    "original": "BF6713 pushes five zeros, calls BF66EF, ADD ESP14h, RET",
+    "limits": "Current source-CRT handler domain only. Original encoded handler109DD64, BF66EF/Watson, service register identities and exception ABI unproved. No arbitrary callback, default-success, unconditional throw or fatal replacement."
+  },
+  "generated_expectations": {
+    "main_body": "Complete188-byte section; exactly14CALL rel32 operands normalized; all other bytes identical",
+    "call_targets": "12 fixed concrete CRT shim calls plus AE2CA0 and AE0750 literal RET callees",
+    "alignment": "AD74AD bytes8D4900 emitted explicitly",
+    "ret_callees": "Each complete1-byte C3 section; no relocations",
+    "service": "Inspect full current SDK shim and concrete _invalid_parameter_noinfo relocation; no original CRT body equivalence claim"
+  },
+  "build_validation": {
+    "status": "pending_primary_source_acceptance",
+    "plan": "One coupled EL+EN build after both source candidates and integrated exact commit are accepted. Verify seeds once; pin all tracked inputs+actual seed before/after,4libraries,new scene object,changed native_traceline_render.obj,new native_shadow_entry_iteration.obj,full stdout/stderr and actual existingCTest count.",
+    "EL_dependency": "Separate disjoint source candidate logically accepted by primary; exact commit/integration instruction pending. No build or seed verification started."
+  },
+  "partial_limits": [
+    "Source complete; build and emitted-code verification pending at draft revision.",
+    "Current source CRT replaces the original CRT service domain explicitly; original global/Watson/exception/register identity is not claimed.",
+    "Actual one-byte RET functions are proven native bodies, not placeholders for unread callees.",
+    "No parent AD7A30, AD7360/AD72A0, missing descendant, owner proxy, callback abstraction or extra lifetime operation.",
+    "No new tests, runtime fixture, game/renderer, concurrency or fault/exception behavior proof.",
+    "No Ghidra mutation, ledger edit or push."
+  ],
+  "no_ghidra_function": [],
+  "admission_inputs": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-shadow-update-children-admission-ek\\local\\ek-shadow-update-children-admission.json",
+      "sha256": "9b9b6694c204284d10b98fd0bb544a93dd005259831a66656158c630d24bad69"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-shadow-update-children-admission-ek\\local\\ek-shadow-update-children-admission.md",
+      "sha256": "0605e0ec00bf6a14665d446a58126a01e01efd1e13b55d66bfbd75eef1506a87"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-shadow-update-children-admission-ek\\local\\ek-shadow-update-children-native.json",
+      "sha256": "43e5c48c8e8326a1cc5af775c1d43a153c7cfffb3c0c3f10625ebde5603b321d"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-shadow-update-children-admission-ek\\local\\ek-capture-shadow-update-children.py",
+      "sha256": "26b423637883ea29cee61d9d4aca5065bc620400849f1f7c87f22c7ce56d8371"
+    }
+  ],
+  "native_pins": {
+    "00ad7440": {
+      "address": "00ad7440",
+      "end": "00ad74fb",
+      "length": 188,
+      "pe_hex": "5355568be98d7564578b7e043b7e087605e8bdf211008b5e08395e047605e8b0f2110085f674043bf67405e8a3f211003bfb742985f67505e896f211003b7e087205e88cf211008b0fe812b800003b7e087205e87bf2110083c704ebb98b7d583b7d5c8d75547608e866f211008d49008b5e08395e047605e856f2110085f674043bf67405e849f211003bfb742985f67505e83cf211003b7e087205e832f211008b0fe8689200003b7e087205e821f2110083c704ebb95f5e5d5bc3",
+      "pe_sha256": "fb19b3f4869df1eba9251cb757574e134eb08d718315b51100d3d7f39c33c941",
+      "live_sha256": "fb19b3f4869df1eba9251cb757574e134eb08d718315b51100d3d7f39c33c941",
+      "instruction_count": 69,
+      "live_equals_original_pe": true
+    },
+    "00ae2ca0": {
+      "address": "00ae2ca0",
+      "end": "00ae2ca0",
+      "length": 1,
+      "pe_hex": "c3",
+      "pe_sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+      "live_sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+      "instruction_count": 1,
+      "live_equals_original_pe": true
+    },
+    "00ae0750": {
+      "address": "00ae0750",
+      "end": "00ae0750",
+      "length": 1,
+      "pe_hex": "c3",
+      "pe_sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+      "live_sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+      "instruction_count": 1,
+      "live_equals_original_pe": true
+    }
+  },
+  "original_pe": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "imagebase": "00400000"
+  },
+  "host_steps": [
+    {
+      "address": "00ad7451",
+      "native": "00bf6713",
+      "function": "00ad7440",
+      "contract": "Fixed current SDK service shim; original service identity qualified"
+    },
+    {
+      "address": "00ad745e",
+      "native": "00bf6713",
+      "function": "00ad7440",
+      "contract": "Fixed current SDK service shim; original service identity qualified"
+    },
+    {
+      "address": "00ad746b",
+      "native": "00bf6713",
+      "function": "00ad7440",
+      "contract": "Fixed current SDK service shim; original service identity qualified"
+    },
+    {
+      "address": "00ad7478",
+      "native": "00bf6713",
+      "function": "00ad7440",
+      "contract": "Fixed current SDK service shim; original service identity qualified"
+    },
+    {
+      "address": "00ad7482",
+      "native": "00bf6713",
+      "function": "00ad7440",
+      "contract": "Fixed current SDK service shim; original service identity qualified"
+    },
+    {
+      "address": "00ad7489",
+      "native": "00ae2ca0",
+      "function": "00ad7440",
+      "contract": "Complete fixed one-byte native RET callee, not a stub"
+    },
+    {
+      "address": "00ad7493",
+      "native": "00bf6713",
+      "function": "00ad7440",
+      "contract": "Fixed current SDK service shim; original service identity qualified"
+    },
+    {
+      "address": "00ad74a8",
+      "native": "00bf6713",
+      "function": "00ad7440",
+      "contract": "Fixed current SDK service shim; original service identity qualified"
+    },
+    {
+      "address": "00ad74b8",
+      "native": "00bf6713",
+      "function": "00ad7440",
+      "contract": "Fixed current SDK service shim; original service identity qualified"
+    },
+    {
+      "address": "00ad74c5",
+      "native": "00bf6713",
+      "function": "00ad7440",
+      "contract": "Fixed current SDK service shim; original service identity qualified"
+    },
+    {
+      "address": "00ad74d2",
+      "native": "00bf6713",
+      "function": "00ad7440",
+      "contract": "Fixed current SDK service shim; original service identity qualified"
+    },
+    {
+      "address": "00ad74dc",
+      "native": "00bf6713",
+      "function": "00ad7440",
+      "contract": "Fixed current SDK service shim; original service identity qualified"
+    },
+    {
+      "address": "00ad74e3",
+      "native": "00ae0750",
+      "function": "00ad7440",
+      "contract": "Complete fixed one-byte native RET callee, not a stub"
+    },
+    {
+      "address": "00ad74ed",
+      "native": "00bf6713",
+      "function": "00ad7440",
+      "contract": "Fixed current SDK service shim; original service identity qualified"
+    },
+    {
+      "address": "00ad7b2b",
+      "native": "00ad7440",
+      "function": "00ad7a30",
+      "contract": "Sole observed parent caller, current owner+6 byte zero arm"
+    }
+  ],
+  "source_anchors": [
+    {
+      "path": "include/bsp/native_shadow_entry_iteration.hpp",
+      "sha256": "46453dce9c5ec66abfd2ceba03055aae1389486223a7f677c42761ed64f6f16a",
+      "lines": [
+        8,
+        15,
+        18
+      ],
+      "anchor_text": {
+        "8": "",
+        "15": "void __fastcall dispatch_native_entry_pass_00ad7440(",
+        "18": "// Validation calls use the real SDK _invalid_parameter_noinfo service through"
+      }
+    },
+    {
+      "path": "src/native_shadow_entry_iteration.cpp",
+      "sha256": "78aeeb6b3c89f59046c3ffe12b6717d523a908526a61f655345838169eac09ec",
+      "lines": [
+        10,
+        16,
+        20,
+        26,
+        75
+      ],
+      "anchor_text": {
+        "10": "__declspec(noinline) void __cdecl current_crt_invalid_parameter() {",
+        "16": "__declspec(naked) void __fastcall native_entry_return_00ae2ca0(void*, void*) {",
+        "20": "__declspec(naked) void __fastcall native_entry_return_00ae0750(void*, void*) {",
+        "26": "__declspec(naked) void __fastcall dispatch_native_entry_pass_00ad7440(",
+        "75": "        call current_crt_invalid_parameter"
+      }
+    },
+    {
+      "path": "include/bsp/native_singleton_vector_registration_wrappers.hpp",
+      "sha256": "04d669c9167de50ba74557cc6651ab4dbdc753b8c6f40fdb3a743f65948eab35",
+      "lines": [
+        34,
+        35,
+        36
+      ],
+      "anchor_text": {
+        "34": "// captured/current read schedule. Native BF6713 calls use a fixed real SDK",
+        "35": "// _invalid_parameter_noinfo shim and its current source-CRT handler domain.",
+        "36": "// It can return; no noop/fatal/throw callback is substituted. Original encoded"
+      }
+    },
+    {
+      "path": "src/native_singleton_vector_registration_wrappers.cpp",
+      "sha256": "cd191614f5de77becc8a0a9a73f9c3ebfc1cfd86bb87fdf10a7965d0a5839a90",
+      "lines": [
+        12,
+        13
+      ],
+      "anchor_text": {
+        "12": "__declspec(noinline) void __cdecl current_crt_invalid_parameter() {",
+        "13": "    _invalid_parameter_noinfo();"
+      }
+    },
+    {
+      "path": "docs/COORDINATION.md",
+      "sha256": "78855253c7aed405a9c72cc8491abe063820c2976590852dc644117807e2bbc3",
+      "lines": [
+        72,
+        73
+      ],
+      "anchor_text": {
+        "72": "Do not lease shared append-only registries: never lease `cmake/startup.cmake` (every worker appends",
+        "73": "one deferred `target_sources` or `add_executable` line and the integration resolver unions the lines),"
+      }
+    },
+    {
+      "path": "cmake/startup.cmake",
+      "sha256": "e3688634e2ca629da4d693b1e0366cdc2cb496f59ca21a52d5cbe01ecc5f803f",
+      "lines": [],
+      "anchor_text": {}
+    },
+    {
+      "path": "tools/verify_report_calls.py",
+      "sha256": "396e6d544dece7c9551ff10ee15ab234a0ad1c4a339fd118ddec20de1bb7a8cd",
+      "lines": [],
+      "anchor_text": {}
+    }
+  ],
+  "call_verification": {
+    "returncode": 0,
+    "stdout": "J:\\PROG\\battlestations-pacific-decompile-orch3-shadow-entry-iteration-en\\reports\\native_shadow_entry_iteration.json: 15 call rows checked, 0 failed\n",
+    "stderr": ""
+  }
+}
