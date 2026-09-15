@@ -692,3 +692,21 @@ reconstruction rolls a plane level, so an aircraft that banks stays banked indef
 state the game's own pilot bot would never leave it in. Whether the reconstructed drag is also too
 weak to terminate the resulting spiral is **not established** - it would need a plane held in a bank
 deliberately, with the roll arm wired, to tell the two apart.
+
+### And the banked-plane divergence, resolved for commanded aircraft only
+
+With the roll arm wired the spiral is gone for any aircraft the planner runs on. USN01's five
+ordered planes hold level flight for 150 seconds - `final_pitch_mean 0.001 rad` - and the mission's
+twenty aircraft cover 368945 m, about 123 m/s of mean speed, which is below cruise because they
+spend the run turning.
+
+**It is not gone for uncommanded aircraft, and that is a host scope limit rather than a physics
+one.** This reconstruction runs the planner only for a plane whose current command names a target;
+every other plane flies with a centred stick forever. IJN01's 33 aircraft have no commands, so the
+ones whose authored placement banks them stay banked, and their path length is still elevated
+(1221362 m). The game's own bot gives every aircraft a task, so no plane in the original is ever
+left in that state.
+
+Closing it means running the planner for a plane with no commanded target, which needs the
+task kinds this reconstruction has not read - `docs/PILOT_TASK_HEADING_ARM.md` covers 2 of 14 arms.
+It does not affect any validated result: combat outcomes in all three missions are unchanged.
