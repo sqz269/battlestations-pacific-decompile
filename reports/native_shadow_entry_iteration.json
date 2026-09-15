@@ -1,7 +1,7 @@
 {
   "packet": "orch3_shadow_entry_iteration_en",
   "base_commit": "76ebaeec3c740be11baf39b2c72015b0593e3920",
-  "status": "complete_source_build_and_generated_verified_pending_primary_integration",
+  "status": "complete_source_exact_build_primary_generated_review_ghidra_saved",
   "coverage": {
     "native_bodies": 3,
     "native_bytes": 190,
@@ -547,5 +547,208 @@
     "commit": "ac3784a5f737fe6b5b384a06901ea033e39d5a5d",
     "findings": [],
     "scope": "Primary independently re-extracted all3 current library members, complete AD7440188bytes with14CALL operands and two distinct C3 zero-relocation leaf sections. Shared integration/annotation evidence remains primary-owned."
+  },
+  "primary_publication": {
+    "tested_commit": "ac3784a5f737fe6b5b384a06901ea033e39d5a5d",
+    "worker_final_commit": "d854e0f04072cc7ccd455af91639394fb5a16fdf",
+    "sealed_attempt": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\elen-validated-attempt.zip",
+      "sha256": "23c8a67dbe96e594c4224d675ea9305039993d9c8c2f0656c88712d18956ae69",
+      "bytes": 120997333,
+      "payload_count": 2744,
+      "all_payload_hashes_reread": true,
+      "tested_commit": "ac3784a5f737fe6b5b384a06901ea033e39d5a5d",
+      "tracked_inputs": 2643,
+      "verified_seed_headers": 1,
+      "root_raw_identical_inputs": 2634,
+      "root_newline_only_variants": 9,
+      "export_metadata_qualification": "Exporter inventory metadata may retain historical names; separate live prototype/comment readback records current names and bounds.",
+      "qualification": "Finite four-table render source domain and actual existing storage/allocator/CRT providers. New borrowed-context ABI; no injected caller, FP fault, hardware fault, original exception frame, renderer execution or game validation. Existing math CTests do not exercise these bodies. Parent shadow/frame/queue/update bodies remain incomplete."
+    },
+    "build": {
+      "passed": true,
+      "existing_ctests": 2,
+      "tracked_inputs": 2643,
+      "verified_seed_headers": 1,
+      "total_inputs": 2644,
+      "all_inputs_unchanged": true,
+      "clean_tree_before_and_after": true,
+      "exact_head_before_and_after": true,
+      "stamp_sha256": "bbd562168782928d12d906d881374bb63f49cbf7c7880a302d08679ad8acfa20",
+      "log_sha256": "b60284af2a740ccd1d0fea3401cafe6631a9d0ff9ff89bbc3c2e7ab31aab7882",
+      "objects": {
+        "build/win32/bsp_core.dir/Release/native_scene_render_traversal.obj": "c7dfd1b867c8dd31a27c733b1c8cea680121de15fd7667ec45aa13bc458dc9ef",
+        "build/win32/bsp_core.dir/Release/native_traceline_render.obj": "5d146bdac11280311d81b3e01a07b7a63a5957e8a6218602c9c6e7280b528ec0",
+        "build/win32/bsp_core.dir/Release/native_shadow_entry_iteration.obj": "f04420e163d84a82af11339013a8f493f0d63719c79ed4a295b739d0c1ddae61"
+      },
+      "libraries": {
+        "build/win32/Release/bsp_core.lib": "4f831abaa586956b5bbe687d7d59aefc274d282348baf31eed590d2a03bbc4c5",
+        "build/win32/Release/bsp_lua511.lib": "992a097f5ba6774e5986512cbdecec8af10f46a6a2fafba6cfd0dd1962468515",
+        "build/win32/Release/bsp_zlib121.lib": "6765f14f69c59cc18762b0bf6f62828742bd9151db1c66adc8c73a36f8826286",
+        "build/win32/Release/xlive_stub.lib": "6dfcb5bf13947ffb6883edfde9d189c4c7ae0d702ec8bd81daebf3749e5f1c67"
+      }
+    },
+    "generated_review": {
+      "status": "accepted_complete_three_object_source_and_generated_review",
+      "findings": [],
+      "artifact": "local/elen-primary-generated-review.json",
+      "sha256": "aed101c9d1f19a84b44ce5ffecb81070abcbd81a61c4a63d59e19277c5b83431",
+      "reviewed_semantics": [
+        "Scene125 bytes preserves scene+18 MOVSS before first node; TEST flags survive private LEA stack allocation; actual context and camera captured even empty; original context backing S+4 overwritten; per-node flags/camera filter, FLD1, captured profile translation then current slot20, original LOD spill, next link after callback, RET4.",
+        "Node143 bytes preserves current parent+AC COMISS/JBE including unordered; original visibility reload at each child; captured profile translation is integer-only while x87 live; FMUL current parent+AC occurs before slot20; FSTP32 overwrites original flags backing S+10 and reloads that word; original LOD/context/captured flags outgoing; next+3C after callback; all normal paths balance stack and RET10h.",
+        "Camera44 bytes preserves outgoing flags/context and x87 visibility then LOD spills. New private access word recovered before real node body CALL and removed afterward; RET10h.",
+        "Captured-profile translator53 bytes is call-free integer-only and maps exactly D62C88/D62CF0/D62DE8/D0C928 to borrowed current tables. Selector65 bytes is call-free integer-only, maps existing real model/line bodies, conditionally node/camera with nonnull access+38h. No profile or slot target reread in captured dispatch46 bytes.",
+        "Application entry25 bytes copies exactly original four words plus captured target. Concrete68-byte C++ adapter uses integer copies and MOVSS bit transfers into actual services->call_virtual20. Missing-profile34-byte logic_error path occurs after original FP spills and has no successful default. Native fault/exception-stack/volatile-register equivalence not claimed through these source adapters.",
+        "Profiles constructor114 bytes borrows four tables, checks each nonnull and actual node/model pointer identity across supplied camera/model/line-model environments. No allocation or snapshot of table words on valid path. SDK exception/RTTI/helper sections are source compiler support with zero native body credit.",
+        "Full changed render_child_bridge95 bytes reviewed. Its profile callback remains after caller native FP spills. Current +20 target read moves to generated+15 before local SSE argument copies, versus prior+1D after visibility MOVSS. This C++ boundary is qualified and not old emitted instruction identity. Other27 renderer code sections retain exact priorEI bytes and normalized relocation triples.",
+        "Complete AD7440 188 bytes equal native after exactly14 E8 rel32 operands;12 calls bind actual six-byte SDK invalid-parameter IAT jump, two calls bind separate exact C3 leaves with no relocations. Native descriptor current reads, handler-return paths, traversal order and 8D4900 retained; original CRT implementation/hooks/exception ABI unproved."
+      ],
+      "independent_EL_review": "4263f86619494f2e9373c4ab9a22f51c9ef920de8f7f8e7370a352cac865b041"
+    },
+    "root_inputs": {
+      "tested_commit": "ac3784a5f737fe6b5b384a06901ea033e39d5a5d",
+      "tracked_inputs": 2643,
+      "total_inputs": 2644,
+      "raw_identical": 2634,
+      "newline_only_variants": [
+        {
+          "path": "include/bsp/native_particle_model_construction.hpp",
+          "tested_sha256": "224d95392e8fe949a0059e6428528bdeadfbc7cffc8e02201459521b769befc6",
+          "root_sha256": "7f5bd53cb3fed8ecdc0bdf678f766105e082bdef949d79cb5f3c4a40ab8721e8",
+          "newline_only": true
+        },
+        {
+          "path": "include/bsp/native_particle_model_update.hpp",
+          "tested_sha256": "261cafbe182db8cd55636eb1c47732b5a7acc40235d733cb9801a8c8b8befac4",
+          "root_sha256": "7578f73927ae1d7214e9a0ee285fabcf7797597e4b1d26f5dfbb87d0a889485d",
+          "newline_only": true
+        },
+        {
+          "path": "include/bsp/native_particle_record_update.hpp",
+          "tested_sha256": "93ad6d88437eb448bead0b14e6697b2fb24c111adfe166eecdb6860bd3d8d3f6",
+          "root_sha256": "8a2e359c9453f479f6afcb8fd51669138202349f6619616d32dadad04e1b4c0b",
+          "newline_only": true
+        },
+        {
+          "path": "include/bsp/native_post_effect_owner_20h.hpp",
+          "tested_sha256": "d1175b7041aa203a35b9e04a3d18a38759e646a73fa7b4d0b55a75b2dbed80ad",
+          "root_sha256": "a05e7bf9f16f2fca5ee3976d6ed5199df98b881951f2f18218862f58caed450a",
+          "newline_only": true
+        },
+        {
+          "path": "src/native_particle_model_construction.cpp",
+          "tested_sha256": "b14939017920fa5def99fe21bee763b7258acc25277024b74c611c7086fc415c",
+          "root_sha256": "1081e0cdf6470efa389ac8f1abf96863c02ad66f2caa9a6e7ac01adeea89bccc",
+          "newline_only": true
+        },
+        {
+          "path": "src/native_particle_model_update.cpp",
+          "tested_sha256": "284118adc64ece074bb472396795a3811371801fa470f3ac7e647158e40b94f7",
+          "root_sha256": "9db5e5aed36166bfe0384a70c33005fc626b4a2a3ab74f2214d95a230fa718c1",
+          "newline_only": true
+        },
+        {
+          "path": "src/native_particle_record_update.cpp",
+          "tested_sha256": "ff80442280c3cdfe4ca918fa10a7288577a8c7e0c1de704431c25a0bde1fb057",
+          "root_sha256": "c09d90371c1adde6cc169b06f79f65780aa9a1db67efcd93c74e0ea7f6dfeb1d",
+          "newline_only": true
+        },
+        {
+          "path": "src/native_particle_type_loading.cpp",
+          "tested_sha256": "8426d5312eb51ef1a6075cada010c57d256fbddfc9061e5e61719be847f3b375",
+          "root_sha256": "87840100602a06d5656692631430b2ada665a75ae4dc99aad99b467a4ea7d1ac",
+          "newline_only": true
+        },
+        {
+          "path": "src/native_post_effect_owner_20h.cpp",
+          "tested_sha256": "330fe02662fbd32650c17ff35c8217880dbcca3425e4212c079dca3e5838fc1c",
+          "root_sha256": "a9060716c813ecdec58c1556f1c76bb807b76a82340ebf0c9109601ac448aa07",
+          "newline_only": true
+        }
+      ],
+      "seed_sha256": "26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c",
+      "qualification": "All actual tested inputs archived; root Git inputs match, raw newline-only variants recorded separately. No redundant root build."
+    },
+    "ghidra": {
+      "project": "C:/Users/sqz269/bsp.gpr",
+      "program": "/battlestationspacific.exe",
+      "saved": true,
+      "comments_preserved": true,
+      "exports_refreshed": true,
+      "functions": {
+        "00b72190": [
+          "Function: BSP_Scene_TraverseVisibleNodes at 00b72190",
+          "Signature: void __thiscall BSP_Scene_TraverseVisibleNodes(void * this, void * context)",
+          "Entry: 00b72190",
+          "Body: 00b72190 - 00b721e3"
+        ],
+        "00b6d990": [
+          "Function: BSP_Node_RenderChildren at 00b6d990",
+          "Signature: void __thiscall BSP_Node_RenderChildren(void * this, void * context, float lod, float visibility, uint flags)",
+          "Entry: 00b6d990",
+          "Body: 00b6d990 - 00b6d9f8"
+        ],
+        "00b6fb80": [
+          "Function: BSP_Camera_RenderChildren at 00b6fb80",
+          "Signature: void __thiscall BSP_Camera_RenderChildren(void * this, void * context, float lod, float visibility, uint flags)",
+          "Entry: 00b6fb80",
+          "Body: 00b6fb80 - 00b6fba3"
+        ],
+        "00ad7440": [
+          "Function: BSP_ShadowOwner_DispatchEntryPass at 00ad7440",
+          "Signature: void __thiscall BSP_ShadowOwner_DispatchEntryPass(void * this)",
+          "Entry: 00ad7440",
+          "Body: 00ad7440 - 00ad74fb"
+        ],
+        "00ae2ca0": [
+          "Function: BSP_ShadowEntry_Return_00ae2ca0 at 00ae2ca0",
+          "Signature: void __thiscall BSP_ShadowEntry_Return_00ae2ca0(void * this)",
+          "Entry: 00ae2ca0",
+          "Body: 00ae2ca0 - 00ae2ca0"
+        ],
+        "00ae0750": [
+          "Function: BSP_ShadowEntry_Return_00ae0750 at 00ae0750",
+          "Signature: void __thiscall BSP_ShadowEntry_Return_00ae0750(void * this)",
+          "Entry: 00ae0750",
+          "Body: 00ae0750 - 00ae0750"
+        ]
+      },
+      "export_metadata_qualification": "Exporter inventory metadata may retain historical names; separate live prototype/comment readback records current names and bounds."
+    },
+    "original_call_verification": {
+      "checked": 21,
+      "failed": 0,
+      "indirect_unverified": 3,
+      "artifact": "local/elen-call-audit.json",
+      "sha256": "9915996f795187a779998f4e43f6c3a1ff9d65365ca1321c678afb2c8f249c34"
+    },
+    "evidence_artifacts": {
+      "el-primary-source-review.json": "bc177d8badc864d2f07fc710d603a619f64c5d17bf58126040d6a10877a40ae2",
+      "en-primary-source-review.json": "b8f12fd092b899414c1fc184d3aa24d356186814f300a0dc7f1fd08ce2706f7d",
+      "elen-primary-source-review.json": "69eb957c3b39fbd82f793c80fdedfe35e5e6f4f76faff92b12cbf1eee0746208",
+      "elen-primary-generated-review.json": "aed101c9d1f19a84b44ce5ffecb81070abcbd81a61c4a63d59e19277c5b83431",
+      "elen-primary-build-input-review.json": "ceaf4222698f3d30bab5509191b017eb1c6dc0e2fa10adda570c28de0f5c2a77",
+      "elen-ghidra-before.json": "49b6be5bcd18671656b3890f4d0218519a409b1c6467a130b7ef6360cdffac78",
+      "elen-ghidra-after.json": "8e9079e5a35c65e738ded3611468e994a31499c101c2dd1b0a108bfac1b06ea6",
+      "elen-ghidra-prototypes.json": "59af53f83ffa34c541da7276ec331f37b6ed340acbae93f731efae7849dc7d43",
+      "el-defined-functions.json": "6bf53e14788302283e1099ee3dae3600cd137938cca637d77643b578bcf92481",
+      "el-before-definition.json": "0c249035fb7258713f2edc4c576fabb0955904b53fb5be3be2c0b231793a2d48",
+      "elen-label-correction.json": "2cc1b7373664c6b3fcc52cedead1f33a0a61228b47c379077116bece7dc58ac4"
+    },
+    "tests_added": 0,
+    "fixture_tested": false,
+    "native_fixture_tested": false,
+    "game_validated": false,
+    "limits": "Finite four-table render source domain and actual existing storage/allocator/CRT providers. New borrowed-context ABI; no injected caller, FP fault, hardware fault, original exception frame, renderer execution or game validation. Existing math CTests do not exercise these bodies. Parent shadow/frame/queue/update bodies remain incomplete.",
+    "packet": "EN",
+    "native_credit": {
+      "normal_bodies": 3,
+      "normal_bytes": 190,
+      "parent_and_eh_bytes": 0
+    },
+    "documentation": {
+      "path": "docs/NATIVE_SHADOW_ENTRY_ITERATION.md",
+      "sha256": "f6a5664e961bddef5719d96e4bd439ea8daac1e828f8b5468e4231c6b6a0b04d"
+    }
   }
 }
