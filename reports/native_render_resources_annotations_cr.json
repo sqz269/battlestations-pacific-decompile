@@ -1,0 +1,729 @@
+{
+  "packet": "orch4_native_render_resources_cr",
+  "entries": [
+    {
+      "address": "00b14a10",
+      "name": "BSP_RenderResources_Construct",
+      "before_comment": {
+        "address": "00b14a10",
+        "function_name": "BSP_RenderResources_Construct",
+        "comment": "[BSP reconstruction 00b14a10]\nHypothesis, not a recovered symbol. Direct callee of BSP_Application_Initialize (0073d410); analysis-only packet app_initialize_map, no reconstruction. Called at 0073df01 in the renderer resource run. References noise.dds and black.tga, the two fallback textures. Ghidra reports an unreachable block at 00b14e69 and unaffected EBX/ESI/EDI inputs, so the body is only partially recovered. Evidence: docs/APP_INITIALIZE_MAP.md; reports/app_initialize_map.json.\n\n[BSP reconstruction 00b14a10] update\nHypothesis, not a recovered symbol. Direct callee of BSP_Application_Initialize (0073d410); analysis-only packet app_initialize_map, no reconstruction. Called at 0073df01 in the renderer resource run. References noise.dds and black.tga, the two fallback textures. Ghidra reports an unreachable block at 00b14e69 and unaffected EBX/ESI/EDI inputs, so the body is only partially recovered. Evidence: docs/APP_INITIALIZE_MAP.md; reports/app_initialize_map.json. | Packet app_init_renderer_device, read from the listing 00b14a10-00b14f5b because the pseudocode is truncated. thiscall(this), plain RET at 00b14f44 with a second RET at 00b14f5b on the failed-allocation tail, returns this; object 6ACh allocated at 0073dedf and constructed at 0073df01 (phase 9 step 50). Base 00b0f020 installs vtable 00d5e158, publishes this into DAT_00f8d39c at 00b0f076 and registers it with the lifetime manager (00415350 singleton 01090aa0, then 00bd0c30); 00b14a36 installs derived vtable 00d5e480. Load-bearing steps: 00b0cd80 on this+2ACh at 00b14bef; operator new(40h) -> 00b1fbb0 into this+1D4h at 00b14d89; renderer virtual +128h (00b24dc0, returns renderer+197Ch) fed to 00b1fab0(this+1D4h,0,value) at 00b14dac; renderer virtual +12Ch (00b20090, returns renderer+198Ch) fed to 00b1fb00(this+1D4h,value) at 00b14dc9; renderer virtual +64h (00b319b0 BSP_Renderer_LoadTextureByName, RET 8) with ('noise.dds' at 00d5e474, flag 0) into this+668h at 00b14e20 and ('black.tga' at 00d5e468, flag 0) into this+67Ch at 00b14e95; operator new(0CCh) -> 00b52550 into this+34h; the 4-byte string 'XXXX' (00d5e460) into this+684h; operator new(24h) -> 00b3c800 into this+0Ch, else 0. Both textures are loaded unconditionally, with no command-line or settings gate. The rest of the body is float and pointer field initialisation. Evidence: docs/APP_INIT_RENDERER.md; reports/app_init_renderer.json.\n\n[BSP reconstruction 00b14a10] update\nHypothesis, not a recovered symbol. Direct callee of BSP_Application_Initialize (0073d410); analysis-only packet app_initialize_map, no reconstruction. Called at 0073df01 in the renderer resource run. References noise.dds and black.tga, the two fallback textures. Ghidra reports an unreachable block at 00b14e69 and unaffected EBX/ESI/EDI inputs, so the body is only partially recovered. Evidence: docs/APP_INITIALIZE_MAP.md; reports/app_initialize_map.json. | Packet app_init_renderer_device, read from the listing 00b14a10-00b14f5b because the pseudocode is truncated. thiscall(this), plain RET at 00b14f44 with a second RET at 00b14f5b on the failed-allocation tail, returns this; object 6ACh allocated at 0073dedf and constructed at 0073df01 (phase 9 step 50). Base 00b0f020 installs vtable 00d5e158, publishes this into DAT_00f8d39c at 00b0f076 and registers it with the lifetime manager (00415350 singleton 01090aa0, then 00bd0c30); 00b14a36 installs derived vtable 00d5e480. Load-bearing steps: 00b0cd80 on this+2ACh at 00b14bef; operator new(40h) -> 00b1fbb0 into this+1D4h at 00b14d89; renderer virtual +128h (00b24dc0, returns renderer+197Ch) fed to 00b1fab0(this+1D4h,0,value) at 00b14dac; renderer virtual +12Ch (00b20090, returns renderer+198Ch) fed to 00b1fb00(this+1D4h,value) at 00b14dc9; renderer virtual +64h (00b319b0 BSP_Renderer_LoadTextureByName, RET 8) with ('noise.dds' at 00d5e474, flag 0) into this+668h at 00b14e20 and ('black.tga' at 00d5e468, flag 0) into this+67Ch at 00b14e95; operator new(0CCh) -> 00b52550 into this+34h; the 4-byte string 'XXXX' (00d5e460) into this+684h; operator new(24h) -> 00b3c800 into this+0Ch, else 0. Both textures are loaded unconditionally, with no command-line or settings gate. The rest of the body is float and pointer field initialisation. Evidence: docs/APP_INIT_RENDERER.md; reports/app_init_renderer.json. | Descriptive hypothesis, not a recovered symbol. Complete 00b14a10..00b14f5b native body reconstructed against the original assembly, register/stack ABI and live/original-PE bytes. ECX actual6ACh receiver; no stacked arguments; EAX original ECX; RET at B14F44/B14F5B. Source preserves captured identities/IAT values, current concrete profiles, ordered stores and recovered cleanup states within its documented provider domain. Evidence: docs/NATIVE_RENDER_RESOURCES_CONSTRUCTION_BK.md; reports/native_render_resources_construction_bk.json; docs/NATIVE_RENDER_RESOURCES_BK_INTEGRATION.md. Combined Win32 build and both existing math CTests passed; no new native differential fixture, drop-in ABI, unrestricted FH3/SEH, startup closure or gameplay validation."
+      },
+      "before_documentation": {
+        "hash": "0351249dc25c383239bebe2d8bbedcb486dc97792cc618b54355486e9e6411ad",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b14a10",
+        "function_name": "BSP_RenderResources_Construct",
+        "return_type": "void *",
+        "calling_convention": "__thiscall",
+        "plate_comment": "[BSP reconstruction 00b14a10]\nHypothesis, not a recovered symbol. Direct callee of BSP_Application_Initialize (0073d410); analysis-only packet app_initialize_map, no reconstruction. Called at 0073df01 in the renderer resource run. References noise.dds and black.tga, the two fallback textures. Ghidra reports an unreachable block at 00b14e69 and unaffected EBX/ESI/EDI inputs, so the body is only partially recovered. Evidence: docs/APP_INITIALIZE_MAP.md; reports/app_initialize_map.json.\n\n[BSP reconstruction 00b14a10] update\nHypothesis, not a recovered symbol. Direct callee of BSP_Application_Initialize (0073d410); analysis-only packet app_initialize_map, no reconstruction. Called at 0073df01 in the renderer resource run. References noise.dds and black.tga, the two fallback textures. Ghidra reports an unreachable block at 00b14e69 and unaffected EBX/ESI/EDI inputs, so the body is only partially recovered. Evidence: docs/APP_INITIALIZE_MAP.md; reports/app_initialize_map.json. | Packet app_init_renderer_device, read from the listing 00b14a10-00b14f5b because the pseudocode is truncated. thiscall(this), plain RET at 00b14f44 with a second RET at 00b14f5b on the failed-allocation tail, returns this; object 6ACh allocated at 0073dedf and constructed at 0073df01 (phase 9 step 50). Base 00b0f020 installs vtable 00d5e158, publishes this into DAT_00f8d39c at 00b0f076 and registers it with the lifetime manager (00415350 singleton 01090aa0, then 00bd0c30); 00b14a36 installs derived vtable 00d5e480. Load-bearing steps: 00b0cd80 on this+2ACh at 00b14bef; operator new(40h) -> 00b1fbb0 into this+1D4h at 00b14d89; renderer virtual +128h (00b24dc0, returns renderer+197Ch) fed to 00b1fab0(this+1D4h,0,value) at 00b14dac; renderer virtual +12Ch (00b20090, returns renderer+198Ch) fed to 00b1fb00(this+1D4h,value) at 00b14dc9; renderer virtual +64h (00b319b0 BSP_Renderer_LoadTextureByName, RET 8) with ('noise.dds' at 00d5e474, flag 0) into this+668h at 00b14e20 and ('black.tga' at 00d5e468, flag 0) into this+67Ch at 00b14e95; operator new(0CCh) -> 00b52550 into this+34h; the 4-byte string 'XXXX' (00d5e460) into this+684h; operator new(24h) -> 00b3c800 into this+0Ch, else 0. Both textures are loaded unconditionally, with no command-line or settings gate. The rest of the body is float and pointer field initialisation. Evidence: docs/APP_INIT_RENDERER.md; reports/app_init_renderer.json.\n\n[BSP reconstruction 00b14a10] update\nHypothesis, not a recovered symbol. Direct callee of BSP_Application_Initialize (0073d410); analysis-only packet app_initialize_map, no reconstruction. Called at 0073df01 in the renderer resource run. References noise.dds and black.tga, the two fallback textures. Ghidra reports an unreachable block at 00b14e69 and unaffected EBX/ESI/EDI inputs, so the body is only partially recovered. Evidence: docs/APP_INITIALIZE_MAP.md; reports/app_initialize_map.json. | Packet app_init_renderer_device, read from the listing 00b14a10-00b14f5b because the pseudocode is truncated. thiscall(this), plain RET at 00b14f44 with a second RET at 00b14f5b on the failed-allocation tail, returns this; object 6ACh allocated at 0073dedf and constructed at 0073df01 (phase 9 step 50). Base 00b0f020 installs vtable 00d5e158, publishes this into DAT_00f8d39c at 00b0f076 and registers it with the lifetime manager (00415350 singleton 01090aa0, then 00bd0c30); 00b14a36 installs derived vtable 00d5e480. Load-bearing steps: 00b0cd80 on this+2ACh at 00b14bef; operator new(40h) -> 00b1fbb0 into this+1D4h at 00b14d89; renderer virtual +128h (00b24dc0, returns renderer+197Ch) fed to 00b1fab0(this+1D4h,0,value) at 00b14dac; renderer virtual +12Ch (00b20090, returns renderer+198Ch) fed to 00b1fb00(this+1D4h,value) at 00b14dc9; renderer virtual +64h (00b319b0 BSP_Renderer_LoadTextureByName, RET 8) with ('noise.dds' at 00d5e474, flag 0) into this+668h at 00b14e20 and ('black.tga' at 00d5e468, flag 0) into this+67Ch at 00b14e95; operator new(0CCh) -> 00b52550 into this+34h; the 4-byte string 'XXXX' (00d5e460) into this+684h; operator new(24h) -> 00b3c800 into this+0Ch, else 0. Both textures are loaded unconditionally, with no command-line or settings gate. The rest of the body is float and pointer field initialisation. Evidence: docs/APP_INIT_RENDERER.md; reports/app_init_renderer.json. | Descriptive hypothesis, not a recovered symbol. Complete 00b14a10..00b14f5b native body reconstructed against the original assembly, register/stack ABI and live/original-PE bytes. ECX actual6ACh receiver; no stacked arguments; EAX original ECX; RET at B14F44/B14F5B. Source preserves captured identities/IAT values, current concrete profiles, ordered stores and recovered cleanup states within its documented provider domain. Evidence: docs/NATIVE_RENDER_RESOURCES_CONSTRUCTION_BK.md; reports/native_render_resources_construction_bk.json; docs/NATIVE_RENDER_RESOURCES_BK_INTEGRATION.md. Combined Win32 build and both existing math CTests passed; no new native differential fixture, drop-in ABI, unrestricted FH3/SEH, startup closure or gameplay validation.",
+        "parameters": [
+          {
+            "ordinal": 0,
+            "name": "this",
+            "type": "void *"
+          }
+        ],
+        "local_variables": [
+          {
+            "name": "unaff_EDI",
+            "type": "int",
+            "storage": "(register, 0x1c, 4)"
+          },
+          {
+            "name": "unaff_ESI",
+            "type": "int",
+            "storage": "(register, 0x18, 4)"
+          },
+          {
+            "name": "unaff_EBX",
+            "type": "int",
+            "storage": "(register, 0xc, 4)"
+          },
+          {
+            "name": "iVar6",
+            "type": "int",
+            "storage": "(register, 0x4, 4)"
+          },
+          {
+            "name": "pvVar5",
+            "type": "void *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "uVar4",
+            "type": "undefined4",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "uVar3",
+            "type": "undefined4",
+            "storage": "(unique, 0x1000024d, 4)"
+          },
+          {
+            "name": "uVar2",
+            "type": "undefined4",
+            "storage": "(unique, 0x10000231, 4)"
+          },
+          {
+            "name": "uVar1",
+            "type": "undefined4",
+            "storage": "(unique, 0x10000229, 4)"
+          },
+          {
+            "name": "this_00",
+            "type": "size_t *",
+            "storage": "(unique, 0x6800, 4)"
+          },
+          {
+            "name": "pcStack_8",
+            "type": "undefined *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "local_14",
+            "type": "void *",
+            "storage": "(stack, 0xffffffffffffffec, 4)"
+          },
+          {
+            "name": "pvStack_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "local_4",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "uStack_10",
+            "type": "undefined1",
+            "storage": "(stack, 0xfffffffffffffff0, 1)"
+          },
+          {
+            "name": "local_18",
+            "type": "void *",
+            "storage": "(stack, 0xffffffffffffffe8, 4)"
+          },
+          {
+            "name": "iVar7",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffd8, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 896,
+            "name": "LAB_00b14d90"
+          },
+          {
+            "relative_offset": 898,
+            "name": "LAB_00b14d92"
+          },
+          {
+            "relative_offset": 1018,
+            "name": "LAB_00b14e0a"
+          },
+          {
+            "relative_offset": 1084,
+            "name": "LAB_00b14e4c"
+          },
+          {
+            "relative_offset": 1135,
+            "name": "LAB_00b14e7f"
+          },
+          {
+            "relative_offset": 1201,
+            "name": "LAB_00b14ec1"
+          },
+          {
+            "relative_offset": 1236,
+            "name": "LAB_00b14ee4"
+          },
+          {
+            "relative_offset": 1238,
+            "name": "LAB_00b14ee6"
+          },
+          {
+            "relative_offset": 1280,
+            "name": "LAB_00b14f10"
+          },
+          {
+            "relative_offset": 1333,
+            "name": "LAB_00b14f45"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "evidence": "CR full B14A10..B14F5B1356B and ten compiler supports109B, all live/installed-PE equal and instruction ownership complete. Actual6ACh service; ECX receiver/no stack args/EAX same/RET. Base B0F020 publication precedes derived initialization; raw MOVSS loads/stores and untouched preimages preserved; B0CD80 member2AC; actual frame40h/B1FBB0 and current D5F0A8 slots128=B24DC0,12C=B20090 with retaining setters; current64=B319B0 black/noise publications precede captured current-pool returns; CCh/B52550 helper; four-byte unterminated member marker;24h/B3C800 cockpit consumes persistent admission. Nine-state compiler map preserves member/base cleanup and raw allocation/name unwind without rollback of completed resource fields. Tracked Win32 build/both CTests pass. One current-library first-allocation failure fixture verifies early publication, aliased constant timing, untouched bytes, member headers, native state3 vector/string/base unwind and manager removal; later constructor calls are unexecuted. Existing actualD3D9 three-parser mesh fixture passes with57canonicalcompanions retired. Full successful B14A10 execution, original ABI/FH3/SEH, application wiring/rendering/gameplay remain unvalidated. See docs/NATIVE_RENDER_RESOURCES_CR.md. Complete 1356B. ECX actual6ACh receiver; no stack arguments; EAX original receiver; RET. Source construct_native_render_resources_00b14a10.",
+      "prototype": "void * __thiscall BSP_RenderResources_Construct(void * this)",
+      "prototype_result": "Successfully set prototype for function at 00b14a10 with __thiscall calling convention",
+      "ledger_name_output": "00b14a10 -> BSP_RenderResources_Construct\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00b14a10\", \"name\": \"BSP_RenderResources_LoadDefaultTextures\", \"evidence\": \"Hypothesis, not a recovered symbol. Direct callee of BSP_Application_Initialize (0073d410); analysis-only packet app_initialize_map, no reconstruction. Called at 0073df01 in the renderer resource run. References noise.dds and black.tga, the two fallback textures. Ghidra reports an unreachable block at 00b14e69 and unaffected EBX/ESI/EDI inputs, so the body is only partially recovered. Evidence: docs/APP_INITIALIZE_MAP.md; reports/app_initialize_map.json. | Packet app_init_renderer_device, read from the listing 00b14a10-00b14f5b because the pseudocode is truncated. thiscall(this), plain RET at 00b14f44 with a second RET at 00b14f5b on the failed-allocation tail, returns this; object 6ACh allocated at 0073dedf and constructed at 0073df01 (phase 9 step 50). Base 00b0f020 installs vtable 00d5e158, publishes this into DAT_00f8d39c at 00b0f076 and registers it with the lifetime manager (00415350 singleton 01090aa0, then 00bd0c30); 00b14a36 installs derived vtable 00d5e480. Load-bearing steps: 00b0cd80 on this+2ACh at 00b14bef; operator new(40h) -> 00b1fbb0 into this+1D4h at 00b14d89; renderer virtual +128h (00b24dc0, returns renderer+197Ch) fed to 00b1fab0(this+1D4h,0,value) at 00b14dac; renderer virtual +12Ch (00b20090, returns renderer+198Ch) fed to 00b1fb00(this+1D4h,value) at 00b14dc9; renderer virtual +64h (00b319b0 BSP_Renderer_LoadTextureByName, RET 8) with ('noise.dds' at 00d5e474, flag 0) into this+668h at 00b14e20 and ('black.tga' at 00d5e468, flag 0) into this+67Ch at 00b14e95; operator new(0CCh) -> 00b52550 into this+34h; the 4-byte string 'XXXX' (00d5e460) into this+684h; operator new(24h) -> 00b3c800 into this+0Ch, else 0. Both textures are loaded unconditionally, with no command-line or settings gate. The rest of the body is float and pointer field initialisation. Evidence: docs/APP_INIT_RENDERER.md; reports/app_init_renderer.json.\"})\n",
+      "ledger_function_output": "00b14a10 function construct_native_render_resources_00b14a10\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00b14a10",
+        "function_name": "BSP_RenderResources_Construct",
+        "comment": "[BSP reconstruction 00b14a10]\nHypothesis, not a recovered symbol. Direct callee of BSP_Application_Initialize (0073d410); analysis-only packet app_initialize_map, no reconstruction. Called at 0073df01 in the renderer resource run. References noise.dds and black.tga, the two fallback textures. Ghidra reports an unreachable block at 00b14e69 and unaffected EBX/ESI/EDI inputs, so the body is only partially recovered. Evidence: docs/APP_INITIALIZE_MAP.md; reports/app_initialize_map.json.\n\n[BSP reconstruction 00b14a10] update\nHypothesis, not a recovered symbol. Direct callee of BSP_Application_Initialize (0073d410); analysis-only packet app_initialize_map, no reconstruction. Called at 0073df01 in the renderer resource run. References noise.dds and black.tga, the two fallback textures. Ghidra reports an unreachable block at 00b14e69 and unaffected EBX/ESI/EDI inputs, so the body is only partially recovered. Evidence: docs/APP_INITIALIZE_MAP.md; reports/app_initialize_map.json. | Packet app_init_renderer_device, read from the listing 00b14a10-00b14f5b because the pseudocode is truncated. thiscall(this), plain RET at 00b14f44 with a second RET at 00b14f5b on the failed-allocation tail, returns this; object 6ACh allocated at 0073dedf and constructed at 0073df01 (phase 9 step 50). Base 00b0f020 installs vtable 00d5e158, publishes this into DAT_00f8d39c at 00b0f076 and registers it with the lifetime manager (00415350 singleton 01090aa0, then 00bd0c30); 00b14a36 installs derived vtable 00d5e480. Load-bearing steps: 00b0cd80 on this+2ACh at 00b14bef; operator new(40h) -> 00b1fbb0 into this+1D4h at 00b14d89; renderer virtual +128h (00b24dc0, returns renderer+197Ch) fed to 00b1fab0(this+1D4h,0,value) at 00b14dac; renderer virtual +12Ch (00b20090, returns renderer+198Ch) fed to 00b1fb00(this+1D4h,value) at 00b14dc9; renderer virtual +64h (00b319b0 BSP_Renderer_LoadTextureByName, RET 8) with ('noise.dds' at 00d5e474, flag 0) into this+668h at 00b14e20 and ('black.tga' at 00d5e468, flag 0) into this+67Ch at 00b14e95; operator new(0CCh) -> 00b52550 into this+34h; the 4-byte string 'XXXX' (00d5e460) into this+684h; operator new(24h) -> 00b3c800 into this+0Ch, else 0. Both textures are loaded unconditionally, with no command-line or settings gate. The rest of the body is float and pointer field initialisation. Evidence: docs/APP_INIT_RENDERER.md; reports/app_init_renderer.json.\n\n[BSP reconstruction 00b14a10] update\nHypothesis, not a recovered symbol. Direct callee of BSP_Application_Initialize (0073d410); analysis-only packet app_initialize_map, no reconstruction. Called at 0073df01 in the renderer resource run. References noise.dds and black.tga, the two fallback textures. Ghidra reports an unreachable block at 00b14e69 and unaffected EBX/ESI/EDI inputs, so the body is only partially recovered. Evidence: docs/APP_INITIALIZE_MAP.md; reports/app_initialize_map.json. | Packet app_init_renderer_device, read from the listing 00b14a10-00b14f5b because the pseudocode is truncated. thiscall(this), plain RET at 00b14f44 with a second RET at 00b14f5b on the failed-allocation tail, returns this; object 6ACh allocated at 0073dedf and constructed at 0073df01 (phase 9 step 50). Base 00b0f020 installs vtable 00d5e158, publishes this into DAT_00f8d39c at 00b0f076 and registers it with the lifetime manager (00415350 singleton 01090aa0, then 00bd0c30); 00b14a36 installs derived vtable 00d5e480. Load-bearing steps: 00b0cd80 on this+2ACh at 00b14bef; operator new(40h) -> 00b1fbb0 into this+1D4h at 00b14d89; renderer virtual +128h (00b24dc0, returns renderer+197Ch) fed to 00b1fab0(this+1D4h,0,value) at 00b14dac; renderer virtual +12Ch (00b20090, returns renderer+198Ch) fed to 00b1fb00(this+1D4h,value) at 00b14dc9; renderer virtual +64h (00b319b0 BSP_Renderer_LoadTextureByName, RET 8) with ('noise.dds' at 00d5e474, flag 0) into this+668h at 00b14e20 and ('black.tga' at 00d5e468, flag 0) into this+67Ch at 00b14e95; operator new(0CCh) -> 00b52550 into this+34h; the 4-byte string 'XXXX' (00d5e460) into this+684h; operator new(24h) -> 00b3c800 into this+0Ch, else 0. Both textures are loaded unconditionally, with no command-line or settings gate. The rest of the body is float and pointer field initialisation. Evidence: docs/APP_INIT_RENDERER.md; reports/app_init_renderer.json. | Descriptive hypothesis, not a recovered symbol. Complete 00b14a10..00b14f5b native body reconstructed against the original assembly, register/stack ABI and live/original-PE bytes. ECX actual6ACh receiver; no stacked arguments; EAX original ECX; RET at B14F44/B14F5B. Source preserves captured identities/IAT values, current concrete profiles, ordered stores and recovered cleanup states within its documented provider domain. Evidence: docs/NATIVE_RENDER_RESOURCES_CONSTRUCTION_BK.md; reports/native_render_resources_construction_bk.json; docs/NATIVE_RENDER_RESOURCES_BK_INTEGRATION.md. Combined Win32 build and both existing math CTests passed; no new native differential fixture, drop-in ABI, unrestricted FH3/SEH, startup closure or gameplay validation.\n\n[BSP reconstruction 00b14a10] CR update\nCR full B14A10..B14F5B1356B and ten compiler supports109B, all live/installed-PE equal and instruction ownership complete. Actual6ACh service; ECX receiver/no stack args/EAX same/RET. Base B0F020 publication precedes derived initialization; raw MOVSS loads/stores and untouched preimages preserved; B0CD80 member2AC; actual frame40h/B1FBB0 and current D5F0A8 slots128=B24DC0,12C=B20090 with retaining setters; current64=B319B0 black/noise publications precede captured current-pool returns; CCh/B52550 helper; four-byte unterminated member marker;24h/B3C800 cockpit consumes persistent admission. Nine-state compiler map preserves member/base cleanup and raw allocation/name unwind without rollback of completed resource fields. Tracked Win32 build/both CTests pass. One current-library first-allocation failure fixture verifies early publication, aliased constant timing, untouched bytes, member headers, native state3 vector/string/base unwind and manager removal; later constructor calls are unexecuted. Existing actualD3D9 three-parser mesh fixture passes with57canonicalcompanions retired. Full successful B14A10 execution, original ABI/FH3/SEH, application wiring/rendering/gameplay remain unvalidated. See docs/NATIVE_RENDER_RESOURCES_CR.md. Complete 1356B. ECX actual6ACh receiver; no stack arguments; EAX original receiver; RET. Source construct_native_render_resources_00b14a10."
+      }
+    },
+    {
+      "address": "00cbc390",
+      "name": "Unwind@00cbc390",
+      "before_comment": {
+        "address": "00cbc390",
+        "function_name": "Unwind@00cbc390"
+      },
+      "before_documentation": {
+        "hash": "f9f19db48b123a3ddf265c892d5a1642e01d509e3e04c7a3feeb8e38a649cfb0",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00cbc390",
+        "function_name": "Unwind@00cbc390",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "unaff_EBP",
+            "type": "int",
+            "storage": "(register, 0x14, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 80.0
+      },
+      "evidence": "CR full B14A10..B14F5B1356B and ten compiler supports109B, all live/installed-PE equal and instruction ownership complete. Actual6ACh service; ECX receiver/no stack args/EAX same/RET. Base B0F020 publication precedes derived initialization; raw MOVSS loads/stores and untouched preimages preserved; B0CD80 member2AC; actual frame40h/B1FBB0 and current D5F0A8 slots128=B24DC0,12C=B20090 with retaining setters; current64=B319B0 black/noise publications precede captured current-pool returns; CCh/B52550 helper; four-byte unterminated member marker;24h/B3C800 cockpit consumes persistent admission. Nine-state compiler map preserves member/base cleanup and raw allocation/name unwind without rollback of completed resource fields. Tracked Win32 build/both CTests pass. One current-library first-allocation failure fixture verifies early publication, aliased constant timing, untouched bytes, member headers, native state3 vector/string/base unwind and manager removal; later constructor calls are unexecuted. Existing actualD3D9 three-parser mesh fixture passes with57canonicalcompanions retired. Full successful B14A10 execution, original ABI/FH3/SEH, application wiring/rendering/gameplay remain unvalidated. See docs/NATIVE_RENDER_RESOURCES_CR.md. Complete unwind or dispatch handler; support evidence only.",
+      "ledger_name_output": "00cbc390 -> Unwind@00cbc390\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00cbc390",
+        "function_name": "Unwind@00cbc390",
+        "comment": "\n\n[BSP reconstruction 00cbc390] CR update\nCR full B14A10..B14F5B1356B and ten compiler supports109B, all live/installed-PE equal and instruction ownership complete. Actual6ACh service; ECX receiver/no stack args/EAX same/RET. Base B0F020 publication precedes derived initialization; raw MOVSS loads/stores and untouched preimages preserved; B0CD80 member2AC; actual frame40h/B1FBB0 and current D5F0A8 slots128=B24DC0,12C=B20090 with retaining setters; current64=B319B0 black/noise publications precede captured current-pool returns; CCh/B52550 helper; four-byte unterminated member marker;24h/B3C800 cockpit consumes persistent admission. Nine-state compiler map preserves member/base cleanup and raw allocation/name unwind without rollback of completed resource fields. Tracked Win32 build/both CTests pass. One current-library first-allocation failure fixture verifies early publication, aliased constant timing, untouched bytes, member headers, native state3 vector/string/base unwind and manager removal; later constructor calls are unexecuted. Existing actualD3D9 three-parser mesh fixture passes with57canonicalcompanions retired. Full successful B14A10 execution, original ABI/FH3/SEH, application wiring/rendering/gameplay remain unvalidated. See docs/NATIVE_RENDER_RESOURCES_CR.md. Complete unwind or dispatch handler; support evidence only."
+      }
+    },
+    {
+      "address": "00cbc398",
+      "name": "Unwind@00cbc398",
+      "before_comment": {
+        "address": "00cbc398",
+        "function_name": "Unwind@00cbc398"
+      },
+      "before_documentation": {
+        "hash": "690572277e8a63d52dd613eab7e63691737af89c20070f065f8918afe90497c0",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00cbc398",
+        "function_name": "Unwind@00cbc398",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "unaff_EBP",
+            "type": "int",
+            "storage": "(register, 0x14, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 80.0
+      },
+      "evidence": "CR full B14A10..B14F5B1356B and ten compiler supports109B, all live/installed-PE equal and instruction ownership complete. Actual6ACh service; ECX receiver/no stack args/EAX same/RET. Base B0F020 publication precedes derived initialization; raw MOVSS loads/stores and untouched preimages preserved; B0CD80 member2AC; actual frame40h/B1FBB0 and current D5F0A8 slots128=B24DC0,12C=B20090 with retaining setters; current64=B319B0 black/noise publications precede captured current-pool returns; CCh/B52550 helper; four-byte unterminated member marker;24h/B3C800 cockpit consumes persistent admission. Nine-state compiler map preserves member/base cleanup and raw allocation/name unwind without rollback of completed resource fields. Tracked Win32 build/both CTests pass. One current-library first-allocation failure fixture verifies early publication, aliased constant timing, untouched bytes, member headers, native state3 vector/string/base unwind and manager removal; later constructor calls are unexecuted. Existing actualD3D9 three-parser mesh fixture passes with57canonicalcompanions retired. Full successful B14A10 execution, original ABI/FH3/SEH, application wiring/rendering/gameplay remain unvalidated. See docs/NATIVE_RENDER_RESOURCES_CR.md. Complete unwind or dispatch handler; support evidence only.",
+      "ledger_name_output": "00cbc398 -> Unwind@00cbc398\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00cbc398",
+        "function_name": "Unwind@00cbc398",
+        "comment": "\n\n[BSP reconstruction 00cbc398] CR update\nCR full B14A10..B14F5B1356B and ten compiler supports109B, all live/installed-PE equal and instruction ownership complete. Actual6ACh service; ECX receiver/no stack args/EAX same/RET. Base B0F020 publication precedes derived initialization; raw MOVSS loads/stores and untouched preimages preserved; B0CD80 member2AC; actual frame40h/B1FBB0 and current D5F0A8 slots128=B24DC0,12C=B20090 with retaining setters; current64=B319B0 black/noise publications precede captured current-pool returns; CCh/B52550 helper; four-byte unterminated member marker;24h/B3C800 cockpit consumes persistent admission. Nine-state compiler map preserves member/base cleanup and raw allocation/name unwind without rollback of completed resource fields. Tracked Win32 build/both CTests pass. One current-library first-allocation failure fixture verifies early publication, aliased constant timing, untouched bytes, member headers, native state3 vector/string/base unwind and manager removal; later constructor calls are unexecuted. Existing actualD3D9 three-parser mesh fixture passes with57canonicalcompanions retired. Full successful B14A10 execution, original ABI/FH3/SEH, application wiring/rendering/gameplay remain unvalidated. See docs/NATIVE_RENDER_RESOURCES_CR.md. Complete unwind or dispatch handler; support evidence only."
+      }
+    },
+    {
+      "address": "00cbc3a6",
+      "name": "Unwind@00cbc3a6",
+      "before_comment": {
+        "address": "00cbc3a6",
+        "function_name": "Unwind@00cbc3a6"
+      },
+      "before_documentation": {
+        "hash": "788d9ab4bfda9c4ec1d39de229240c9cba8400ba5b67ca0ace4e8936305f92fc",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00cbc3a6",
+        "function_name": "Unwind@00cbc3a6",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "unaff_EBP",
+            "type": "int",
+            "storage": "(register, 0x14, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 80.0
+      },
+      "evidence": "CR full B14A10..B14F5B1356B and ten compiler supports109B, all live/installed-PE equal and instruction ownership complete. Actual6ACh service; ECX receiver/no stack args/EAX same/RET. Base B0F020 publication precedes derived initialization; raw MOVSS loads/stores and untouched preimages preserved; B0CD80 member2AC; actual frame40h/B1FBB0 and current D5F0A8 slots128=B24DC0,12C=B20090 with retaining setters; current64=B319B0 black/noise publications precede captured current-pool returns; CCh/B52550 helper; four-byte unterminated member marker;24h/B3C800 cockpit consumes persistent admission. Nine-state compiler map preserves member/base cleanup and raw allocation/name unwind without rollback of completed resource fields. Tracked Win32 build/both CTests pass. One current-library first-allocation failure fixture verifies early publication, aliased constant timing, untouched bytes, member headers, native state3 vector/string/base unwind and manager removal; later constructor calls are unexecuted. Existing actualD3D9 three-parser mesh fixture passes with57canonicalcompanions retired. Full successful B14A10 execution, original ABI/FH3/SEH, application wiring/rendering/gameplay remain unvalidated. See docs/NATIVE_RENDER_RESOURCES_CR.md. Complete unwind or dispatch handler; support evidence only.",
+      "ledger_name_output": "00cbc3a6 -> Unwind@00cbc3a6\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00cbc3a6",
+        "function_name": "Unwind@00cbc3a6",
+        "comment": "\n\n[BSP reconstruction 00cbc3a6] CR update\nCR full B14A10..B14F5B1356B and ten compiler supports109B, all live/installed-PE equal and instruction ownership complete. Actual6ACh service; ECX receiver/no stack args/EAX same/RET. Base B0F020 publication precedes derived initialization; raw MOVSS loads/stores and untouched preimages preserved; B0CD80 member2AC; actual frame40h/B1FBB0 and current D5F0A8 slots128=B24DC0,12C=B20090 with retaining setters; current64=B319B0 black/noise publications precede captured current-pool returns; CCh/B52550 helper; four-byte unterminated member marker;24h/B3C800 cockpit consumes persistent admission. Nine-state compiler map preserves member/base cleanup and raw allocation/name unwind without rollback of completed resource fields. Tracked Win32 build/both CTests pass. One current-library first-allocation failure fixture verifies early publication, aliased constant timing, untouched bytes, member headers, native state3 vector/string/base unwind and manager removal; later constructor calls are unexecuted. Existing actualD3D9 three-parser mesh fixture passes with57canonicalcompanions retired. Full successful B14A10 execution, original ABI/FH3/SEH, application wiring/rendering/gameplay remain unvalidated. See docs/NATIVE_RENDER_RESOURCES_CR.md. Complete unwind or dispatch handler; support evidence only."
+      }
+    },
+    {
+      "address": "00cbc3b4",
+      "name": "Unwind@00cbc3b4",
+      "before_comment": {
+        "address": "00cbc3b4",
+        "function_name": "Unwind@00cbc3b4"
+      },
+      "before_documentation": {
+        "hash": "c02e0554a6b4f50c9768119fc7e1acd79cca22fe851bf6b1bb3589cf39d3d0ac",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00cbc3b4",
+        "function_name": "Unwind@00cbc3b4",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "unaff_EBP",
+            "type": "int",
+            "storage": "(register, 0x14, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 80.0
+      },
+      "evidence": "CR full B14A10..B14F5B1356B and ten compiler supports109B, all live/installed-PE equal and instruction ownership complete. Actual6ACh service; ECX receiver/no stack args/EAX same/RET. Base B0F020 publication precedes derived initialization; raw MOVSS loads/stores and untouched preimages preserved; B0CD80 member2AC; actual frame40h/B1FBB0 and current D5F0A8 slots128=B24DC0,12C=B20090 with retaining setters; current64=B319B0 black/noise publications precede captured current-pool returns; CCh/B52550 helper; four-byte unterminated member marker;24h/B3C800 cockpit consumes persistent admission. Nine-state compiler map preserves member/base cleanup and raw allocation/name unwind without rollback of completed resource fields. Tracked Win32 build/both CTests pass. One current-library first-allocation failure fixture verifies early publication, aliased constant timing, untouched bytes, member headers, native state3 vector/string/base unwind and manager removal; later constructor calls are unexecuted. Existing actualD3D9 three-parser mesh fixture passes with57canonicalcompanions retired. Full successful B14A10 execution, original ABI/FH3/SEH, application wiring/rendering/gameplay remain unvalidated. See docs/NATIVE_RENDER_RESOURCES_CR.md. Complete unwind or dispatch handler; support evidence only.",
+      "ledger_name_output": "00cbc3b4 -> Unwind@00cbc3b4\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00cbc3b4",
+        "function_name": "Unwind@00cbc3b4",
+        "comment": "\n\n[BSP reconstruction 00cbc3b4] CR update\nCR full B14A10..B14F5B1356B and ten compiler supports109B, all live/installed-PE equal and instruction ownership complete. Actual6ACh service; ECX receiver/no stack args/EAX same/RET. Base B0F020 publication precedes derived initialization; raw MOVSS loads/stores and untouched preimages preserved; B0CD80 member2AC; actual frame40h/B1FBB0 and current D5F0A8 slots128=B24DC0,12C=B20090 with retaining setters; current64=B319B0 black/noise publications precede captured current-pool returns; CCh/B52550 helper; four-byte unterminated member marker;24h/B3C800 cockpit consumes persistent admission. Nine-state compiler map preserves member/base cleanup and raw allocation/name unwind without rollback of completed resource fields. Tracked Win32 build/both CTests pass. One current-library first-allocation failure fixture verifies early publication, aliased constant timing, untouched bytes, member headers, native state3 vector/string/base unwind and manager removal; later constructor calls are unexecuted. Existing actualD3D9 three-parser mesh fixture passes with57canonicalcompanions retired. Full successful B14A10 execution, original ABI/FH3/SEH, application wiring/rendering/gameplay remain unvalidated. See docs/NATIVE_RENDER_RESOURCES_CR.md. Complete unwind or dispatch handler; support evidence only."
+      }
+    },
+    {
+      "address": "00cbc3c2",
+      "name": "Unwind@00cbc3c2",
+      "before_comment": {
+        "address": "00cbc3c2",
+        "function_name": "Unwind@00cbc3c2"
+      },
+      "before_documentation": {
+        "hash": "e66bf418a1c968050174478d8296a5e7a1f2f19be95c6d5dfaa12a4676e4bd66",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00cbc3c2",
+        "function_name": "Unwind@00cbc3c2",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "unaff_EBP",
+            "type": "int",
+            "storage": "(register, 0x14, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 80.0
+      },
+      "evidence": "CR full B14A10..B14F5B1356B and ten compiler supports109B, all live/installed-PE equal and instruction ownership complete. Actual6ACh service; ECX receiver/no stack args/EAX same/RET. Base B0F020 publication precedes derived initialization; raw MOVSS loads/stores and untouched preimages preserved; B0CD80 member2AC; actual frame40h/B1FBB0 and current D5F0A8 slots128=B24DC0,12C=B20090 with retaining setters; current64=B319B0 black/noise publications precede captured current-pool returns; CCh/B52550 helper; four-byte unterminated member marker;24h/B3C800 cockpit consumes persistent admission. Nine-state compiler map preserves member/base cleanup and raw allocation/name unwind without rollback of completed resource fields. Tracked Win32 build/both CTests pass. One current-library first-allocation failure fixture verifies early publication, aliased constant timing, untouched bytes, member headers, native state3 vector/string/base unwind and manager removal; later constructor calls are unexecuted. Existing actualD3D9 three-parser mesh fixture passes with57canonicalcompanions retired. Full successful B14A10 execution, original ABI/FH3/SEH, application wiring/rendering/gameplay remain unvalidated. See docs/NATIVE_RENDER_RESOURCES_CR.md. Complete unwind or dispatch handler; support evidence only.",
+      "ledger_name_output": "00cbc3c2 -> Unwind@00cbc3c2\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00cbc3c2",
+        "function_name": "Unwind@00cbc3c2",
+        "comment": "\n\n[BSP reconstruction 00cbc3c2] CR update\nCR full B14A10..B14F5B1356B and ten compiler supports109B, all live/installed-PE equal and instruction ownership complete. Actual6ACh service; ECX receiver/no stack args/EAX same/RET. Base B0F020 publication precedes derived initialization; raw MOVSS loads/stores and untouched preimages preserved; B0CD80 member2AC; actual frame40h/B1FBB0 and current D5F0A8 slots128=B24DC0,12C=B20090 with retaining setters; current64=B319B0 black/noise publications precede captured current-pool returns; CCh/B52550 helper; four-byte unterminated member marker;24h/B3C800 cockpit consumes persistent admission. Nine-state compiler map preserves member/base cleanup and raw allocation/name unwind without rollback of completed resource fields. Tracked Win32 build/both CTests pass. One current-library first-allocation failure fixture verifies early publication, aliased constant timing, untouched bytes, member headers, native state3 vector/string/base unwind and manager removal; later constructor calls are unexecuted. Existing actualD3D9 three-parser mesh fixture passes with57canonicalcompanions retired. Full successful B14A10 execution, original ABI/FH3/SEH, application wiring/rendering/gameplay remain unvalidated. See docs/NATIVE_RENDER_RESOURCES_CR.md. Complete unwind or dispatch handler; support evidence only."
+      }
+    },
+    {
+      "address": "00cbc3cd",
+      "name": "Unwind@00cbc3cd",
+      "before_comment": {
+        "address": "00cbc3cd",
+        "function_name": "Unwind@00cbc3cd"
+      },
+      "before_documentation": {
+        "hash": "5160a80448bef202077805e7b60dba17ba6bee56bd919d0f4086d51e5634aef7",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00cbc3cd",
+        "function_name": "Unwind@00cbc3cd",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "unaff_EBP",
+            "type": "int",
+            "storage": "(register, 0x14, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 80.0
+      },
+      "evidence": "CR full B14A10..B14F5B1356B and ten compiler supports109B, all live/installed-PE equal and instruction ownership complete. Actual6ACh service; ECX receiver/no stack args/EAX same/RET. Base B0F020 publication precedes derived initialization; raw MOVSS loads/stores and untouched preimages preserved; B0CD80 member2AC; actual frame40h/B1FBB0 and current D5F0A8 slots128=B24DC0,12C=B20090 with retaining setters; current64=B319B0 black/noise publications precede captured current-pool returns; CCh/B52550 helper; four-byte unterminated member marker;24h/B3C800 cockpit consumes persistent admission. Nine-state compiler map preserves member/base cleanup and raw allocation/name unwind without rollback of completed resource fields. Tracked Win32 build/both CTests pass. One current-library first-allocation failure fixture verifies early publication, aliased constant timing, untouched bytes, member headers, native state3 vector/string/base unwind and manager removal; later constructor calls are unexecuted. Existing actualD3D9 three-parser mesh fixture passes with57canonicalcompanions retired. Full successful B14A10 execution, original ABI/FH3/SEH, application wiring/rendering/gameplay remain unvalidated. See docs/NATIVE_RENDER_RESOURCES_CR.md. Complete unwind or dispatch handler; support evidence only.",
+      "ledger_name_output": "00cbc3cd -> Unwind@00cbc3cd\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00cbc3cd",
+        "function_name": "Unwind@00cbc3cd",
+        "comment": "\n\n[BSP reconstruction 00cbc3cd] CR update\nCR full B14A10..B14F5B1356B and ten compiler supports109B, all live/installed-PE equal and instruction ownership complete. Actual6ACh service; ECX receiver/no stack args/EAX same/RET. Base B0F020 publication precedes derived initialization; raw MOVSS loads/stores and untouched preimages preserved; B0CD80 member2AC; actual frame40h/B1FBB0 and current D5F0A8 slots128=B24DC0,12C=B20090 with retaining setters; current64=B319B0 black/noise publications precede captured current-pool returns; CCh/B52550 helper; four-byte unterminated member marker;24h/B3C800 cockpit consumes persistent admission. Nine-state compiler map preserves member/base cleanup and raw allocation/name unwind without rollback of completed resource fields. Tracked Win32 build/both CTests pass. One current-library first-allocation failure fixture verifies early publication, aliased constant timing, untouched bytes, member headers, native state3 vector/string/base unwind and manager removal; later constructor calls are unexecuted. Existing actualD3D9 three-parser mesh fixture passes with57canonicalcompanions retired. Full successful B14A10 execution, original ABI/FH3/SEH, application wiring/rendering/gameplay remain unvalidated. See docs/NATIVE_RENDER_RESOURCES_CR.md. Complete unwind or dispatch handler; support evidence only."
+      }
+    },
+    {
+      "address": "00cbc3d5",
+      "name": "Unwind@00cbc3d5",
+      "before_comment": {
+        "address": "00cbc3d5",
+        "function_name": "Unwind@00cbc3d5"
+      },
+      "before_documentation": {
+        "hash": "5160a80448bef202077805e7b60dba17ba6bee56bd919d0f4086d51e5634aef7",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00cbc3d5",
+        "function_name": "Unwind@00cbc3d5",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "unaff_EBP",
+            "type": "int",
+            "storage": "(register, 0x14, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 80.0
+      },
+      "evidence": "CR full B14A10..B14F5B1356B and ten compiler supports109B, all live/installed-PE equal and instruction ownership complete. Actual6ACh service; ECX receiver/no stack args/EAX same/RET. Base B0F020 publication precedes derived initialization; raw MOVSS loads/stores and untouched preimages preserved; B0CD80 member2AC; actual frame40h/B1FBB0 and current D5F0A8 slots128=B24DC0,12C=B20090 with retaining setters; current64=B319B0 black/noise publications precede captured current-pool returns; CCh/B52550 helper; four-byte unterminated member marker;24h/B3C800 cockpit consumes persistent admission. Nine-state compiler map preserves member/base cleanup and raw allocation/name unwind without rollback of completed resource fields. Tracked Win32 build/both CTests pass. One current-library first-allocation failure fixture verifies early publication, aliased constant timing, untouched bytes, member headers, native state3 vector/string/base unwind and manager removal; later constructor calls are unexecuted. Existing actualD3D9 three-parser mesh fixture passes with57canonicalcompanions retired. Full successful B14A10 execution, original ABI/FH3/SEH, application wiring/rendering/gameplay remain unvalidated. See docs/NATIVE_RENDER_RESOURCES_CR.md. Complete unwind or dispatch handler; support evidence only.",
+      "ledger_name_output": "00cbc3d5 -> Unwind@00cbc3d5\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00cbc3d5",
+        "function_name": "Unwind@00cbc3d5",
+        "comment": "\n\n[BSP reconstruction 00cbc3d5] CR update\nCR full B14A10..B14F5B1356B and ten compiler supports109B, all live/installed-PE equal and instruction ownership complete. Actual6ACh service; ECX receiver/no stack args/EAX same/RET. Base B0F020 publication precedes derived initialization; raw MOVSS loads/stores and untouched preimages preserved; B0CD80 member2AC; actual frame40h/B1FBB0 and current D5F0A8 slots128=B24DC0,12C=B20090 with retaining setters; current64=B319B0 black/noise publications precede captured current-pool returns; CCh/B52550 helper; four-byte unterminated member marker;24h/B3C800 cockpit consumes persistent admission. Nine-state compiler map preserves member/base cleanup and raw allocation/name unwind without rollback of completed resource fields. Tracked Win32 build/both CTests pass. One current-library first-allocation failure fixture verifies early publication, aliased constant timing, untouched bytes, member headers, native state3 vector/string/base unwind and manager removal; later constructor calls are unexecuted. Existing actualD3D9 three-parser mesh fixture passes with57canonicalcompanions retired. Full successful B14A10 execution, original ABI/FH3/SEH, application wiring/rendering/gameplay remain unvalidated. See docs/NATIVE_RENDER_RESOURCES_CR.md. Complete unwind or dispatch handler; support evidence only."
+      }
+    },
+    {
+      "address": "00cbc3dd",
+      "name": "Unwind@00cbc3dd",
+      "before_comment": {
+        "address": "00cbc3dd",
+        "function_name": "Unwind@00cbc3dd"
+      },
+      "before_documentation": {
+        "hash": "e66bf418a1c968050174478d8296a5e7a1f2f19be95c6d5dfaa12a4676e4bd66",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00cbc3dd",
+        "function_name": "Unwind@00cbc3dd",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "unaff_EBP",
+            "type": "int",
+            "storage": "(register, 0x14, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 80.0
+      },
+      "evidence": "CR full B14A10..B14F5B1356B and ten compiler supports109B, all live/installed-PE equal and instruction ownership complete. Actual6ACh service; ECX receiver/no stack args/EAX same/RET. Base B0F020 publication precedes derived initialization; raw MOVSS loads/stores and untouched preimages preserved; B0CD80 member2AC; actual frame40h/B1FBB0 and current D5F0A8 slots128=B24DC0,12C=B20090 with retaining setters; current64=B319B0 black/noise publications precede captured current-pool returns; CCh/B52550 helper; four-byte unterminated member marker;24h/B3C800 cockpit consumes persistent admission. Nine-state compiler map preserves member/base cleanup and raw allocation/name unwind without rollback of completed resource fields. Tracked Win32 build/both CTests pass. One current-library first-allocation failure fixture verifies early publication, aliased constant timing, untouched bytes, member headers, native state3 vector/string/base unwind and manager removal; later constructor calls are unexecuted. Existing actualD3D9 three-parser mesh fixture passes with57canonicalcompanions retired. Full successful B14A10 execution, original ABI/FH3/SEH, application wiring/rendering/gameplay remain unvalidated. See docs/NATIVE_RENDER_RESOURCES_CR.md. Complete unwind or dispatch handler; support evidence only.",
+      "ledger_name_output": "00cbc3dd -> Unwind@00cbc3dd\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00cbc3dd",
+        "function_name": "Unwind@00cbc3dd",
+        "comment": "\n\n[BSP reconstruction 00cbc3dd] CR update\nCR full B14A10..B14F5B1356B and ten compiler supports109B, all live/installed-PE equal and instruction ownership complete. Actual6ACh service; ECX receiver/no stack args/EAX same/RET. Base B0F020 publication precedes derived initialization; raw MOVSS loads/stores and untouched preimages preserved; B0CD80 member2AC; actual frame40h/B1FBB0 and current D5F0A8 slots128=B24DC0,12C=B20090 with retaining setters; current64=B319B0 black/noise publications precede captured current-pool returns; CCh/B52550 helper; four-byte unterminated member marker;24h/B3C800 cockpit consumes persistent admission. Nine-state compiler map preserves member/base cleanup and raw allocation/name unwind without rollback of completed resource fields. Tracked Win32 build/both CTests pass. One current-library first-allocation failure fixture verifies early publication, aliased constant timing, untouched bytes, member headers, native state3 vector/string/base unwind and manager removal; later constructor calls are unexecuted. Existing actualD3D9 three-parser mesh fixture passes with57canonicalcompanions retired. Full successful B14A10 execution, original ABI/FH3/SEH, application wiring/rendering/gameplay remain unvalidated. See docs/NATIVE_RENDER_RESOURCES_CR.md. Complete unwind or dispatch handler; support evidence only."
+      }
+    },
+    {
+      "address": "00cbc3e8",
+      "name": "Unwind@00cbc3e8",
+      "before_comment": {
+        "address": "00cbc3e8",
+        "function_name": "Unwind@00cbc3e8"
+      },
+      "before_documentation": {
+        "hash": "e66bf418a1c968050174478d8296a5e7a1f2f19be95c6d5dfaa12a4676e4bd66",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00cbc3e8",
+        "function_name": "Unwind@00cbc3e8",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "unaff_EBP",
+            "type": "int",
+            "storage": "(register, 0x14, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 80.0
+      },
+      "evidence": "CR full B14A10..B14F5B1356B and ten compiler supports109B, all live/installed-PE equal and instruction ownership complete. Actual6ACh service; ECX receiver/no stack args/EAX same/RET. Base B0F020 publication precedes derived initialization; raw MOVSS loads/stores and untouched preimages preserved; B0CD80 member2AC; actual frame40h/B1FBB0 and current D5F0A8 slots128=B24DC0,12C=B20090 with retaining setters; current64=B319B0 black/noise publications precede captured current-pool returns; CCh/B52550 helper; four-byte unterminated member marker;24h/B3C800 cockpit consumes persistent admission. Nine-state compiler map preserves member/base cleanup and raw allocation/name unwind without rollback of completed resource fields. Tracked Win32 build/both CTests pass. One current-library first-allocation failure fixture verifies early publication, aliased constant timing, untouched bytes, member headers, native state3 vector/string/base unwind and manager removal; later constructor calls are unexecuted. Existing actualD3D9 three-parser mesh fixture passes with57canonicalcompanions retired. Full successful B14A10 execution, original ABI/FH3/SEH, application wiring/rendering/gameplay remain unvalidated. See docs/NATIVE_RENDER_RESOURCES_CR.md. Complete unwind or dispatch handler; support evidence only.",
+      "ledger_name_output": "00cbc3e8 -> Unwind@00cbc3e8\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00cbc3e8",
+        "function_name": "Unwind@00cbc3e8",
+        "comment": "\n\n[BSP reconstruction 00cbc3e8] CR update\nCR full B14A10..B14F5B1356B and ten compiler supports109B, all live/installed-PE equal and instruction ownership complete. Actual6ACh service; ECX receiver/no stack args/EAX same/RET. Base B0F020 publication precedes derived initialization; raw MOVSS loads/stores and untouched preimages preserved; B0CD80 member2AC; actual frame40h/B1FBB0 and current D5F0A8 slots128=B24DC0,12C=B20090 with retaining setters; current64=B319B0 black/noise publications precede captured current-pool returns; CCh/B52550 helper; four-byte unterminated member marker;24h/B3C800 cockpit consumes persistent admission. Nine-state compiler map preserves member/base cleanup and raw allocation/name unwind without rollback of completed resource fields. Tracked Win32 build/both CTests pass. One current-library first-allocation failure fixture verifies early publication, aliased constant timing, untouched bytes, member headers, native state3 vector/string/base unwind and manager removal; later constructor calls are unexecuted. Existing actualD3D9 three-parser mesh fixture passes with57canonicalcompanions retired. Full successful B14A10 execution, original ABI/FH3/SEH, application wiring/rendering/gameplay remain unvalidated. See docs/NATIVE_RENDER_RESOURCES_CR.md. Complete unwind or dispatch handler; support evidence only."
+      }
+    },
+    {
+      "address": "00cbc3f3",
+      "name": "BSP_EH_RenderResourcesConstruct_00cbc3f3",
+      "before_comment": {
+        "address": "00cbc3f3",
+        "function_name": "FUN_00cbc3f3"
+      },
+      "before_documentation": {
+        "hash": "f0f2f68cf1132ae80dae34c6f69542164e987ef3beaddd17388b21e68e3a2bc1",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00cbc3f3",
+        "function_name": "FUN_00cbc3f3",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 50.0
+      },
+      "evidence": "CR full B14A10..B14F5B1356B and ten compiler supports109B, all live/installed-PE equal and instruction ownership complete. Actual6ACh service; ECX receiver/no stack args/EAX same/RET. Base B0F020 publication precedes derived initialization; raw MOVSS loads/stores and untouched preimages preserved; B0CD80 member2AC; actual frame40h/B1FBB0 and current D5F0A8 slots128=B24DC0,12C=B20090 with retaining setters; current64=B319B0 black/noise publications precede captured current-pool returns; CCh/B52550 helper; four-byte unterminated member marker;24h/B3C800 cockpit consumes persistent admission. Nine-state compiler map preserves member/base cleanup and raw allocation/name unwind without rollback of completed resource fields. Tracked Win32 build/both CTests pass. One current-library first-allocation failure fixture verifies early publication, aliased constant timing, untouched bytes, member headers, native state3 vector/string/base unwind and manager removal; later constructor calls are unexecuted. Existing actualD3D9 three-parser mesh fixture passes with57canonicalcompanions retired. Full successful B14A10 execution, original ABI/FH3/SEH, application wiring/rendering/gameplay remain unvalidated. See docs/NATIVE_RENDER_RESOURCES_CR.md. Complete unwind or dispatch handler; support evidence only.",
+      "ledger_name_output": "00cbc3f3 -> BSP_EH_RenderResourcesConstruct_00cbc3f3\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00cbc3f3",
+        "function_name": "BSP_EH_RenderResourcesConstruct_00cbc3f3",
+        "comment": "\n\n[BSP reconstruction 00cbc3f3] CR update\nCR full B14A10..B14F5B1356B and ten compiler supports109B, all live/installed-PE equal and instruction ownership complete. Actual6ACh service; ECX receiver/no stack args/EAX same/RET. Base B0F020 publication precedes derived initialization; raw MOVSS loads/stores and untouched preimages preserved; B0CD80 member2AC; actual frame40h/B1FBB0 and current D5F0A8 slots128=B24DC0,12C=B20090 with retaining setters; current64=B319B0 black/noise publications precede captured current-pool returns; CCh/B52550 helper; four-byte unterminated member marker;24h/B3C800 cockpit consumes persistent admission. Nine-state compiler map preserves member/base cleanup and raw allocation/name unwind without rollback of completed resource fields. Tracked Win32 build/both CTests pass. One current-library first-allocation failure fixture verifies early publication, aliased constant timing, untouched bytes, member headers, native state3 vector/string/base unwind and manager removal; later constructor calls are unexecuted. Existing actualD3D9 three-parser mesh fixture passes with57canonicalcompanions retired. Full successful B14A10 execution, original ABI/FH3/SEH, application wiring/rendering/gameplay remain unvalidated. See docs/NATIVE_RENDER_RESOURCES_CR.md. Complete unwind or dispatch handler; support evidence only."
+      }
+    }
+  ],
+  "actions": [
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00b14a10",
+        "prototype": "void * __thiscall BSP_RenderResources_Construct(void * this)",
+        "calling_convention": "__thiscall"
+      },
+      "result": "Successfully set prototype for function at 00b14a10 with __thiscall calling convention"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b14a10",
+        "new_name": "BSP_RenderResources_Construct"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b14a10 from 'BSP_RenderResources_Construct' to 'BSP_RenderResources_Construct'\", \"warnings\": [\"Function name 'BSP_RenderResources_Construct' \\u2014 main part 'RenderResources_Construct' is not PascalCase. Expected: RenderresourcesConstruct\", \"Function name 'BSP_RenderResources_Construct' \\u2014 main part 'RenderResources_Construct' contains underscores. Use PascalCase after the module prefix.\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b14a10",
+        "new_name": "BSP_RenderResources_Construct"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b14a10 from 'BSP_RenderResources_Construct' to 'BSP_RenderResources_Construct'\", \"warnings\": [\"Function name 'BSP_RenderResources_Construct' \\u2014 main part 'RenderResources_Construct' is not PascalCase. Expected: RenderresourcesConstruct\", \"Function name 'BSP_RenderResources_Construct' \\u2014 main part 'RenderResources_Construct' contains underscores. Use PascalCase after the module prefix.\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00b14a10",
+        "comment": "[BSP reconstruction 00b14a10]\nHypothesis, not a recovered symbol. Direct callee of BSP_Application_Initialize (0073d410); analysis-only packet app_initialize_map, no reconstruction. Called at 0073df01 in the renderer resource run. References noise.dds and black.tga, the two fallback textures. Ghidra reports an unreachable block at 00b14e69 and unaffected EBX/ESI/EDI inputs, so the body is only partially recovered. Evidence: docs/APP_INITIALIZE_MAP.md; reports/app_initialize_map.json.\n\n[BSP reconstruction 00b14a10] update\nHypothesis, not a recovered symbol. Direct callee of BSP_Application_Initialize (0073d410); analysis-only packet app_initialize_map, no reconstruction. Called at 0073df01 in the renderer resource run. References noise.dds and black.tga, the two fallback textures. Ghidra reports an unreachable block at 00b14e69 and unaffected EBX/ESI/EDI inputs, so the body is only partially recovered. Evidence: docs/APP_INITIALIZE_MAP.md; reports/app_initialize_map.json. | Packet app_init_renderer_device, read from the listing 00b14a10-00b14f5b because the pseudocode is truncated. thiscall(this), plain RET at 00b14f44 with a second RET at 00b14f5b on the failed-allocation tail, returns this; object 6ACh allocated at 0073dedf and constructed at 0073df01 (phase 9 step 50). Base 00b0f020 installs vtable 00d5e158, publishes this into DAT_00f8d39c at 00b0f076 and registers it with the lifetime manager (00415350 singleton 01090aa0, then 00bd0c30); 00b14a36 installs derived vtable 00d5e480. Load-bearing steps: 00b0cd80 on this+2ACh at 00b14bef; operator new(40h) -> 00b1fbb0 into this+1D4h at 00b14d89; renderer virtual +128h (00b24dc0, returns renderer+197Ch) fed to 00b1fab0(this+1D4h,0,value) at 00b14dac; renderer virtual +12Ch (00b20090, returns renderer+198Ch) fed to 00b1fb00(this+1D4h,value) at 00b14dc9; renderer virtual +64h (00b319b0 BSP_Renderer_LoadTextureByName, RET 8) with ('noise.dds' at 00d5e474, flag 0) into this+668h at 00b14e20 and ('black.tga' at 00d5e468, flag 0) into this+67Ch at 00b14e95; operator new(0CCh) -> 00b52550 into this+34h; the 4-byte string 'XXXX' (00d5e460) into this+684h; operator new(24h) -> 00b3c800 into this+0Ch, else 0. Both textures are loaded unconditionally, with no command-line or settings gate. The rest of the body is float and pointer field initialisation. Evidence: docs/APP_INIT_RENDERER.md; reports/app_init_renderer.json.\n\n[BSP reconstruction 00b14a10] update\nHypothesis, not a recovered symbol. Direct callee of BSP_Application_Initialize (0073d410); analysis-only packet app_initialize_map, no reconstruction. Called at 0073df01 in the renderer resource run. References noise.dds and black.tga, the two fallback textures. Ghidra reports an unreachable block at 00b14e69 and unaffected EBX/ESI/EDI inputs, so the body is only partially recovered. Evidence: docs/APP_INITIALIZE_MAP.md; reports/app_initialize_map.json. | Packet app_init_renderer_device, read from the listing 00b14a10-00b14f5b because the pseudocode is truncated. thiscall(this), plain RET at 00b14f44 with a second RET at 00b14f5b on the failed-allocation tail, returns this; object 6ACh allocated at 0073dedf and constructed at 0073df01 (phase 9 step 50). Base 00b0f020 installs vtable 00d5e158, publishes this into DAT_00f8d39c at 00b0f076 and registers it with the lifetime manager (00415350 singleton 01090aa0, then 00bd0c30); 00b14a36 installs derived vtable 00d5e480. Load-bearing steps: 00b0cd80 on this+2ACh at 00b14bef; operator new(40h) -> 00b1fbb0 into this+1D4h at 00b14d89; renderer virtual +128h (00b24dc0, returns renderer+197Ch) fed to 00b1fab0(this+1D4h,0,value) at 00b14dac; renderer virtual +12Ch (00b20090, returns renderer+198Ch) fed to 00b1fb00(this+1D4h,value) at 00b14dc9; renderer virtual +64h (00b319b0 BSP_Renderer_LoadTextureByName, RET 8) with ('noise.dds' at 00d5e474, flag 0) into this+668h at 00b14e20 and ('black.tga' at 00d5e468, flag 0) into this+67Ch at 00b14e95; operator new(0CCh) -> 00b52550 into this+34h; the 4-byte string 'XXXX' (00d5e460) into this+684h; operator new(24h) -> 00b3c800 into this+0Ch, else 0. Both textures are loaded unconditionally, with no command-line or settings gate. The rest of the body is float and pointer field initialisation. Evidence: docs/APP_INIT_RENDERER.md; reports/app_init_renderer.json. | Descriptive hypothesis, not a recovered symbol. Complete 00b14a10..00b14f5b native body reconstructed against the original assembly, register/stack ABI and live/original-PE bytes. ECX actual6ACh receiver; no stacked arguments; EAX original ECX; RET at B14F44/B14F5B. Source preserves captured identities/IAT values, current concrete profiles, ordered stores and recovered cleanup states within its documented provider domain. Evidence: docs/NATIVE_RENDER_RESOURCES_CONSTRUCTION_BK.md; reports/native_render_resources_construction_bk.json; docs/NATIVE_RENDER_RESOURCES_BK_INTEGRATION.md. Combined Win32 build and both existing math CTests passed; no new native differential fixture, drop-in ABI, unrestricted FH3/SEH, startup closure or gameplay validation.\n\n[BSP reconstruction 00b14a10] CR update\nCR full B14A10..B14F5B1356B and ten compiler supports109B, all live/installed-PE equal and instruction ownership complete. Actual6ACh service; ECX receiver/no stack args/EAX same/RET. Base B0F020 publication precedes derived initialization; raw MOVSS loads/stores and untouched preimages preserved; B0CD80 member2AC; actual frame40h/B1FBB0 and current D5F0A8 slots128=B24DC0,12C=B20090 with retaining setters; current64=B319B0 black/noise publications precede captured current-pool returns; CCh/B52550 helper; four-byte unterminated member marker;24h/B3C800 cockpit consumes persistent admission. Nine-state compiler map preserves member/base cleanup and raw allocation/name unwind without rollback of completed resource fields. Tracked Win32 build/both CTests pass. One current-library first-allocation failure fixture verifies early publication, aliased constant timing, untouched bytes, member headers, native state3 vector/string/base unwind and manager removal; later constructor calls are unexecuted. Existing actualD3D9 three-parser mesh fixture passes with57canonicalcompanions retired. Full successful B14A10 execution, original ABI/FH3/SEH, application wiring/rendering/gameplay remain unvalidated. See docs/NATIVE_RENDER_RESOURCES_CR.md. Complete 1356B. ECX actual6ACh receiver; no stack arguments; EAX original receiver; RET. Source construct_native_render_resources_00b14a10."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00b14a10\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00cbc390",
+        "new_name": "Unwind@00cbc390"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00cbc390 from 'Unwind@00cbc390' to 'Unwind@00cbc390'\", \"warnings\": [\"Function name 'Unwind@00cbc390' \\u2014 main part 'Unwind@00cbc390' is not PascalCase. Expected: Unwind@00cbc390\", \"Function name 'Unwind@00cbc390' does not start with a recognized verb. First word 'Unwind@00cbc390' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00cbc390",
+        "comment": "\n\n[BSP reconstruction 00cbc390] CR update\nCR full B14A10..B14F5B1356B and ten compiler supports109B, all live/installed-PE equal and instruction ownership complete. Actual6ACh service; ECX receiver/no stack args/EAX same/RET. Base B0F020 publication precedes derived initialization; raw MOVSS loads/stores and untouched preimages preserved; B0CD80 member2AC; actual frame40h/B1FBB0 and current D5F0A8 slots128=B24DC0,12C=B20090 with retaining setters; current64=B319B0 black/noise publications precede captured current-pool returns; CCh/B52550 helper; four-byte unterminated member marker;24h/B3C800 cockpit consumes persistent admission. Nine-state compiler map preserves member/base cleanup and raw allocation/name unwind without rollback of completed resource fields. Tracked Win32 build/both CTests pass. One current-library first-allocation failure fixture verifies early publication, aliased constant timing, untouched bytes, member headers, native state3 vector/string/base unwind and manager removal; later constructor calls are unexecuted. Existing actualD3D9 three-parser mesh fixture passes with57canonicalcompanions retired. Full successful B14A10 execution, original ABI/FH3/SEH, application wiring/rendering/gameplay remain unvalidated. See docs/NATIVE_RENDER_RESOURCES_CR.md. Complete unwind or dispatch handler; support evidence only."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00cbc390\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00cbc398",
+        "new_name": "Unwind@00cbc398"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00cbc398 from 'Unwind@00cbc398' to 'Unwind@00cbc398'\", \"warnings\": [\"Function name 'Unwind@00cbc398' \\u2014 main part 'Unwind@00cbc398' is not PascalCase. Expected: Unwind@00cbc398\", \"Function name 'Unwind@00cbc398' does not start with a recognized verb. First word 'Unwind@00cbc398' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00cbc398",
+        "comment": "\n\n[BSP reconstruction 00cbc398] CR update\nCR full B14A10..B14F5B1356B and ten compiler supports109B, all live/installed-PE equal and instruction ownership complete. Actual6ACh service; ECX receiver/no stack args/EAX same/RET. Base B0F020 publication precedes derived initialization; raw MOVSS loads/stores and untouched preimages preserved; B0CD80 member2AC; actual frame40h/B1FBB0 and current D5F0A8 slots128=B24DC0,12C=B20090 with retaining setters; current64=B319B0 black/noise publications precede captured current-pool returns; CCh/B52550 helper; four-byte unterminated member marker;24h/B3C800 cockpit consumes persistent admission. Nine-state compiler map preserves member/base cleanup and raw allocation/name unwind without rollback of completed resource fields. Tracked Win32 build/both CTests pass. One current-library first-allocation failure fixture verifies early publication, aliased constant timing, untouched bytes, member headers, native state3 vector/string/base unwind and manager removal; later constructor calls are unexecuted. Existing actualD3D9 three-parser mesh fixture passes with57canonicalcompanions retired. Full successful B14A10 execution, original ABI/FH3/SEH, application wiring/rendering/gameplay remain unvalidated. See docs/NATIVE_RENDER_RESOURCES_CR.md. Complete unwind or dispatch handler; support evidence only."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00cbc398\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00cbc3a6",
+        "new_name": "Unwind@00cbc3a6"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00cbc3a6 from 'Unwind@00cbc3a6' to 'Unwind@00cbc3a6'\", \"warnings\": [\"Function name 'Unwind@00cbc3a6' \\u2014 main part 'Unwind@00cbc3a6' is not PascalCase. Expected: Unwind@00cbc3a6\", \"Function name 'Unwind@00cbc3a6' does not start with a recognized verb. First word 'Unwind@00cbc3a6' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00cbc3a6",
+        "comment": "\n\n[BSP reconstruction 00cbc3a6] CR update\nCR full B14A10..B14F5B1356B and ten compiler supports109B, all live/installed-PE equal and instruction ownership complete. Actual6ACh service; ECX receiver/no stack args/EAX same/RET. Base B0F020 publication precedes derived initialization; raw MOVSS loads/stores and untouched preimages preserved; B0CD80 member2AC; actual frame40h/B1FBB0 and current D5F0A8 slots128=B24DC0,12C=B20090 with retaining setters; current64=B319B0 black/noise publications precede captured current-pool returns; CCh/B52550 helper; four-byte unterminated member marker;24h/B3C800 cockpit consumes persistent admission. Nine-state compiler map preserves member/base cleanup and raw allocation/name unwind without rollback of completed resource fields. Tracked Win32 build/both CTests pass. One current-library first-allocation failure fixture verifies early publication, aliased constant timing, untouched bytes, member headers, native state3 vector/string/base unwind and manager removal; later constructor calls are unexecuted. Existing actualD3D9 three-parser mesh fixture passes with57canonicalcompanions retired. Full successful B14A10 execution, original ABI/FH3/SEH, application wiring/rendering/gameplay remain unvalidated. See docs/NATIVE_RENDER_RESOURCES_CR.md. Complete unwind or dispatch handler; support evidence only."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00cbc3a6\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00cbc3b4",
+        "new_name": "Unwind@00cbc3b4"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00cbc3b4 from 'Unwind@00cbc3b4' to 'Unwind@00cbc3b4'\", \"warnings\": [\"Function name 'Unwind@00cbc3b4' \\u2014 main part 'Unwind@00cbc3b4' is not PascalCase. Expected: Unwind@00cbc3b4\", \"Function name 'Unwind@00cbc3b4' does not start with a recognized verb. First word 'Unwind@00cbc3b4' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00cbc3b4",
+        "comment": "\n\n[BSP reconstruction 00cbc3b4] CR update\nCR full B14A10..B14F5B1356B and ten compiler supports109B, all live/installed-PE equal and instruction ownership complete. Actual6ACh service; ECX receiver/no stack args/EAX same/RET. Base B0F020 publication precedes derived initialization; raw MOVSS loads/stores and untouched preimages preserved; B0CD80 member2AC; actual frame40h/B1FBB0 and current D5F0A8 slots128=B24DC0,12C=B20090 with retaining setters; current64=B319B0 black/noise publications precede captured current-pool returns; CCh/B52550 helper; four-byte unterminated member marker;24h/B3C800 cockpit consumes persistent admission. Nine-state compiler map preserves member/base cleanup and raw allocation/name unwind without rollback of completed resource fields. Tracked Win32 build/both CTests pass. One current-library first-allocation failure fixture verifies early publication, aliased constant timing, untouched bytes, member headers, native state3 vector/string/base unwind and manager removal; later constructor calls are unexecuted. Existing actualD3D9 three-parser mesh fixture passes with57canonicalcompanions retired. Full successful B14A10 execution, original ABI/FH3/SEH, application wiring/rendering/gameplay remain unvalidated. See docs/NATIVE_RENDER_RESOURCES_CR.md. Complete unwind or dispatch handler; support evidence only."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00cbc3b4\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00cbc3c2",
+        "new_name": "Unwind@00cbc3c2"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00cbc3c2 from 'Unwind@00cbc3c2' to 'Unwind@00cbc3c2'\", \"warnings\": [\"Function name 'Unwind@00cbc3c2' \\u2014 main part 'Unwind@00cbc3c2' is not PascalCase. Expected: Unwind@00cbc3c2\", \"Function name 'Unwind@00cbc3c2' does not start with a recognized verb. First word 'Unwind@00cbc3c2' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00cbc3c2",
+        "comment": "\n\n[BSP reconstruction 00cbc3c2] CR update\nCR full B14A10..B14F5B1356B and ten compiler supports109B, all live/installed-PE equal and instruction ownership complete. Actual6ACh service; ECX receiver/no stack args/EAX same/RET. Base B0F020 publication precedes derived initialization; raw MOVSS loads/stores and untouched preimages preserved; B0CD80 member2AC; actual frame40h/B1FBB0 and current D5F0A8 slots128=B24DC0,12C=B20090 with retaining setters; current64=B319B0 black/noise publications precede captured current-pool returns; CCh/B52550 helper; four-byte unterminated member marker;24h/B3C800 cockpit consumes persistent admission. Nine-state compiler map preserves member/base cleanup and raw allocation/name unwind without rollback of completed resource fields. Tracked Win32 build/both CTests pass. One current-library first-allocation failure fixture verifies early publication, aliased constant timing, untouched bytes, member headers, native state3 vector/string/base unwind and manager removal; later constructor calls are unexecuted. Existing actualD3D9 three-parser mesh fixture passes with57canonicalcompanions retired. Full successful B14A10 execution, original ABI/FH3/SEH, application wiring/rendering/gameplay remain unvalidated. See docs/NATIVE_RENDER_RESOURCES_CR.md. Complete unwind or dispatch handler; support evidence only."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00cbc3c2\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00cbc3cd",
+        "new_name": "Unwind@00cbc3cd"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00cbc3cd from 'Unwind@00cbc3cd' to 'Unwind@00cbc3cd'\", \"warnings\": [\"Function name 'Unwind@00cbc3cd' \\u2014 main part 'Unwind@00cbc3cd' is not PascalCase. Expected: Unwind@00cbc3cd\", \"Function name 'Unwind@00cbc3cd' does not start with a recognized verb. First word 'Unwind@00cbc3cd' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00cbc3cd",
+        "comment": "\n\n[BSP reconstruction 00cbc3cd] CR update\nCR full B14A10..B14F5B1356B and ten compiler supports109B, all live/installed-PE equal and instruction ownership complete. Actual6ACh service; ECX receiver/no stack args/EAX same/RET. Base B0F020 publication precedes derived initialization; raw MOVSS loads/stores and untouched preimages preserved; B0CD80 member2AC; actual frame40h/B1FBB0 and current D5F0A8 slots128=B24DC0,12C=B20090 with retaining setters; current64=B319B0 black/noise publications precede captured current-pool returns; CCh/B52550 helper; four-byte unterminated member marker;24h/B3C800 cockpit consumes persistent admission. Nine-state compiler map preserves member/base cleanup and raw allocation/name unwind without rollback of completed resource fields. Tracked Win32 build/both CTests pass. One current-library first-allocation failure fixture verifies early publication, aliased constant timing, untouched bytes, member headers, native state3 vector/string/base unwind and manager removal; later constructor calls are unexecuted. Existing actualD3D9 three-parser mesh fixture passes with57canonicalcompanions retired. Full successful B14A10 execution, original ABI/FH3/SEH, application wiring/rendering/gameplay remain unvalidated. See docs/NATIVE_RENDER_RESOURCES_CR.md. Complete unwind or dispatch handler; support evidence only."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00cbc3cd\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00cbc3d5",
+        "new_name": "Unwind@00cbc3d5"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00cbc3d5 from 'Unwind@00cbc3d5' to 'Unwind@00cbc3d5'\", \"warnings\": [\"Function name 'Unwind@00cbc3d5' \\u2014 main part 'Unwind@00cbc3d5' is not PascalCase. Expected: Unwind@00cbc3d5\", \"Function name 'Unwind@00cbc3d5' does not start with a recognized verb. First word 'Unwind@00cbc3d5' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00cbc3d5",
+        "comment": "\n\n[BSP reconstruction 00cbc3d5] CR update\nCR full B14A10..B14F5B1356B and ten compiler supports109B, all live/installed-PE equal and instruction ownership complete. Actual6ACh service; ECX receiver/no stack args/EAX same/RET. Base B0F020 publication precedes derived initialization; raw MOVSS loads/stores and untouched preimages preserved; B0CD80 member2AC; actual frame40h/B1FBB0 and current D5F0A8 slots128=B24DC0,12C=B20090 with retaining setters; current64=B319B0 black/noise publications precede captured current-pool returns; CCh/B52550 helper; four-byte unterminated member marker;24h/B3C800 cockpit consumes persistent admission. Nine-state compiler map preserves member/base cleanup and raw allocation/name unwind without rollback of completed resource fields. Tracked Win32 build/both CTests pass. One current-library first-allocation failure fixture verifies early publication, aliased constant timing, untouched bytes, member headers, native state3 vector/string/base unwind and manager removal; later constructor calls are unexecuted. Existing actualD3D9 three-parser mesh fixture passes with57canonicalcompanions retired. Full successful B14A10 execution, original ABI/FH3/SEH, application wiring/rendering/gameplay remain unvalidated. See docs/NATIVE_RENDER_RESOURCES_CR.md. Complete unwind or dispatch handler; support evidence only."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00cbc3d5\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00cbc3dd",
+        "new_name": "Unwind@00cbc3dd"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00cbc3dd from 'Unwind@00cbc3dd' to 'Unwind@00cbc3dd'\", \"warnings\": [\"Function name 'Unwind@00cbc3dd' \\u2014 main part 'Unwind@00cbc3dd' is not PascalCase. Expected: Unwind@00cbc3dd\", \"Function name 'Unwind@00cbc3dd' does not start with a recognized verb. First word 'Unwind@00cbc3dd' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00cbc3dd",
+        "comment": "\n\n[BSP reconstruction 00cbc3dd] CR update\nCR full B14A10..B14F5B1356B and ten compiler supports109B, all live/installed-PE equal and instruction ownership complete. Actual6ACh service; ECX receiver/no stack args/EAX same/RET. Base B0F020 publication precedes derived initialization; raw MOVSS loads/stores and untouched preimages preserved; B0CD80 member2AC; actual frame40h/B1FBB0 and current D5F0A8 slots128=B24DC0,12C=B20090 with retaining setters; current64=B319B0 black/noise publications precede captured current-pool returns; CCh/B52550 helper; four-byte unterminated member marker;24h/B3C800 cockpit consumes persistent admission. Nine-state compiler map preserves member/base cleanup and raw allocation/name unwind without rollback of completed resource fields. Tracked Win32 build/both CTests pass. One current-library first-allocation failure fixture verifies early publication, aliased constant timing, untouched bytes, member headers, native state3 vector/string/base unwind and manager removal; later constructor calls are unexecuted. Existing actualD3D9 three-parser mesh fixture passes with57canonicalcompanions retired. Full successful B14A10 execution, original ABI/FH3/SEH, application wiring/rendering/gameplay remain unvalidated. See docs/NATIVE_RENDER_RESOURCES_CR.md. Complete unwind or dispatch handler; support evidence only."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00cbc3dd\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00cbc3e8",
+        "new_name": "Unwind@00cbc3e8"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00cbc3e8 from 'Unwind@00cbc3e8' to 'Unwind@00cbc3e8'\", \"warnings\": [\"Function name 'Unwind@00cbc3e8' \\u2014 main part 'Unwind@00cbc3e8' is not PascalCase. Expected: Unwind@00cbc3e8\", \"Function name 'Unwind@00cbc3e8' does not start with a recognized verb. First word 'Unwind@00cbc3e8' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00cbc3e8",
+        "comment": "\n\n[BSP reconstruction 00cbc3e8] CR update\nCR full B14A10..B14F5B1356B and ten compiler supports109B, all live/installed-PE equal and instruction ownership complete. Actual6ACh service; ECX receiver/no stack args/EAX same/RET. Base B0F020 publication precedes derived initialization; raw MOVSS loads/stores and untouched preimages preserved; B0CD80 member2AC; actual frame40h/B1FBB0 and current D5F0A8 slots128=B24DC0,12C=B20090 with retaining setters; current64=B319B0 black/noise publications precede captured current-pool returns; CCh/B52550 helper; four-byte unterminated member marker;24h/B3C800 cockpit consumes persistent admission. Nine-state compiler map preserves member/base cleanup and raw allocation/name unwind without rollback of completed resource fields. Tracked Win32 build/both CTests pass. One current-library first-allocation failure fixture verifies early publication, aliased constant timing, untouched bytes, member headers, native state3 vector/string/base unwind and manager removal; later constructor calls are unexecuted. Existing actualD3D9 three-parser mesh fixture passes with57canonicalcompanions retired. Full successful B14A10 execution, original ABI/FH3/SEH, application wiring/rendering/gameplay remain unvalidated. See docs/NATIVE_RENDER_RESOURCES_CR.md. Complete unwind or dispatch handler; support evidence only."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00cbc3e8\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00cbc3f3",
+        "new_name": "BSP_EH_RenderResourcesConstruct_00cbc3f3"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00cbc3f3 from 'FUN_00cbc3f3' to 'BSP_EH_RenderResourcesConstruct_00cbc3f3'\", \"warnings\": [\"Function name 'BSP_EH_RenderResourcesConstruct_00cbc3f3' \\u2014 main part 'EH_RenderResourcesConstruct_00cbc3f3' is not PascalCase. Expected: EhRenderresourcesconstruct00cbc3f3\", \"Function name 'BSP_EH_RenderResourcesConstruct_00cbc3f3' \\u2014 main part 'EH_RenderResourcesConstruct_00cbc3f3' contains underscores. Use PascalCase after the module prefix.\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00cbc3f3",
+        "comment": "\n\n[BSP reconstruction 00cbc3f3] CR update\nCR full B14A10..B14F5B1356B and ten compiler supports109B, all live/installed-PE equal and instruction ownership complete. Actual6ACh service; ECX receiver/no stack args/EAX same/RET. Base B0F020 publication precedes derived initialization; raw MOVSS loads/stores and untouched preimages preserved; B0CD80 member2AC; actual frame40h/B1FBB0 and current D5F0A8 slots128=B24DC0,12C=B20090 with retaining setters; current64=B319B0 black/noise publications precede captured current-pool returns; CCh/B52550 helper; four-byte unterminated member marker;24h/B3C800 cockpit consumes persistent admission. Nine-state compiler map preserves member/base cleanup and raw allocation/name unwind without rollback of completed resource fields. Tracked Win32 build/both CTests pass. One current-library first-allocation failure fixture verifies early publication, aliased constant timing, untouched bytes, member headers, native state3 vector/string/base unwind and manager removal; later constructor calls are unexecuted. Existing actualD3D9 three-parser mesh fixture passes with57canonicalcompanions retired. Full successful B14A10 execution, original ABI/FH3/SEH, application wiring/rendering/gameplay remain unvalidated. See docs/NATIVE_RENDER_RESOURCES_CR.md. Complete unwind or dispatch handler; support evidence only."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00cbc3f3\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": "{\"success\": true, \"program\": \"battlestationspacific.exe\", \"message\": \"Program saved successfully\"}"
+    }
+  ],
+  "saved": true,
+  "exports_refreshed": true
+}

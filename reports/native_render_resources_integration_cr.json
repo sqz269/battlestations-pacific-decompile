@@ -1,0 +1,244 @@
+{
+  "packet": "orch4_native_render_resources_cr",
+  "state": "complete_native_schedule_build_and_first_allocation_failure_fixture_only",
+  "base_revision": "f499f696efac905edb52e69d3a6f55a64851c6a8",
+  "project": {
+    "project_name": "bsp",
+    "current_folder": "/",
+    "folders": [],
+    "files": [
+      {
+        "name": "battlestationspacific.exe",
+        "path": "/battlestationspacific.exe",
+        "content_type": "Program",
+        "version": 2779,
+        "is_read_only": false,
+        "is_versioned": false
+      }
+    ]
+  },
+  "program": {
+    "name": "battlestationspacific.exe",
+    "path": "/battlestationspacific.exe",
+    "executable_path": "/I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "executable_format": "Portable Executable (PE)",
+    "language": "x86:LE:32:default",
+    "compiler": "windows",
+    "address_size": 32,
+    "image_base": "00400000",
+    "min_address": "00400000",
+    "max_address": "ffdfffff",
+    "memory_size": 14876380,
+    "function_count": 64116,
+    "symbol_count": 144523,
+    "data_type_count": 795,
+    "creation_date": "Mon May 04 16:56:25 PDT 2026",
+    "memory_block_count": 6,
+    "address_spaces": [
+      {
+        "name": "ram",
+        "start": "00000000",
+        "end": "ffffffff",
+        "size": 4294967296,
+        "addressable_unit_size": 1,
+        "size_bytes": 4294967296,
+        "address_size_bits": 32,
+        "is_default": true
+      }
+    ],
+    "has_multiple_address_spaces": false
+  },
+  "ordinary_bytes": 1356,
+  "support_bytes": 109,
+  "instruction_owners": 334,
+  "preserved_comments": 11,
+  "source_manifest": {
+    "path": "local/native_render_resources_cr/registered/source_manifest.json",
+    "sha256": "b78805f2ac166bd6b56335967c203f8086f672a0c3c33a1dac5b849a0794d6ca",
+    "bytes": 291152
+  },
+  "source_inputs": 2687,
+  "changed_existing_source": [
+    "cmake/startup.cmake"
+  ],
+  "added_source": [
+    "include/bsp/native_render_resources_construction.hpp",
+    "src/native_render_resources_construction.cpp"
+  ],
+  "build": "Tracked incremental MSVC Win32 scripts/build.ps1 with parallel level3; both existing CTests; no CMake override",
+  "validation": {
+    "build": "Tracked MSVC Win32 scripts/build.ps1 and both existing CTests passed",
+    "fixture": "One first-allocation source exception: early publication, aliased constant timing, untouched storage, member headers, state3 unwind and manager removal; existing57-owner actualD3D9 mesh regression passed",
+    "full_constructor_normal_execution": false,
+    "application_wired": false,
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "evidence_limits": [
+    "Later B14A10 frame/texture/cockpit calls are source-reviewed and build-tested but unexecuted by the new fixture.",
+    "The existing mesh fixture uses its documented hot-cache/effect fixture conditions and does not prove cold shader compilation or full service construction.",
+    "Original B14A10 machine-code differential, FH3/SEH, complete derived destruction, application wiring and gameplay remain unvalidated.",
+    "Decompiler stack/register warnings remain; complete verified assembly is authoritative. No listing repair or global analysis-policy change."
+  ],
+  "remaining": "Execute full constructor with actual frame surfaces, six textures and cockpit admission/retirement, then wire application startup to the native renderer domain. Full goal remains active.",
+  "startup_registry_leases": [
+    {
+      "id": "agent/orch5-20260911:orch5_native_render_service_cmake",
+      "owner": "agent/orch5-20260911",
+      "packet": "orch5_native_render_service_cmake",
+      "addresses": [],
+      "ranges": [],
+      "files": [
+        "cmake/startup.cmake"
+      ],
+      "claimed": "2026-09-15T03:46:42+00:00",
+      "expires": "2026-09-15T04:46:42+00:00",
+      "status": "active",
+      "worktree": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911",
+      "note": ""
+    }
+  ],
+  "main_integration": "Agent branch only; moving main unreviewed",
+  "artifacts": [
+    {
+      "path": "local/native_render_resources_cr/registered/final_audit.json",
+      "sha256": "61a28562c36dc783445ad10c75dc244da018d70c121c57fc6e7b627785476a62",
+      "bytes": 49074
+    },
+    {
+      "path": "local/native_render_resources_cr/registered/probe.cpp",
+      "sha256": "95e0eed4f0073bad1f059dff4c2aa85ee8fc4253e72a891386cfa3e06192ec8b",
+      "bytes": 55640
+    },
+    {
+      "path": "local/native_render_resources_cr/registered/probe.exe",
+      "sha256": "a1bdd6fef6c6165ef42701b79ef17b064e02d009f4c9d7f5803928e9ad3f1f5b",
+      "bytes": 632320
+    },
+    {
+      "path": "local/native_render_resources_cr/registered/probe.obj",
+      "sha256": "f028adbf16dbff5a66fd6a01e82a4e68614585f3acab0623d55c49085ed64e77",
+      "bytes": 490060
+    },
+    {
+      "path": "local/native_render_resources_cr/registered/probe.map",
+      "sha256": "bb156e235ccc52c189b93f8f3f91e131519ba7a814517af46fec5b5d1e945257",
+      "bytes": 1107936
+    },
+    {
+      "path": "local/native_render_resources_cr/registered/compile.cmd",
+      "sha256": "c4f30ddee9cd78796fe33fc7a64d6000c381ed220050e37462d4871790cdf934",
+      "bytes": 676
+    },
+    {
+      "path": "local/native_render_resources_cr/registered/compile.log",
+      "sha256": "25d4f66c7c01d5b35c220cb97ffdd1608405f4ab45160497e6cc7ea3079676cf",
+      "bytes": 11
+    },
+    {
+      "path": "local/native_render_resources_cr/registered/probe.log",
+      "sha256": "4dc99baed8da85fa88f945551a69671536c80e5ed0094637083c6dd07c1b965e",
+      "bytes": 1649
+    },
+    {
+      "path": "local/native_render_resources_cr/registered/child_probe.log",
+      "sha256": "78aab0d5cd67f3bf2649f1b48e84c12ce8d66fd23fd7eb41707a0c7e8ba4fedd",
+      "bytes": 1601
+    },
+    {
+      "path": "local/native_render_resources_cr/registered/build.log",
+      "sha256": "80dff8b47a3b7190627d20b6c00ac0642e689668fc42428c697b6e18f8e8c078",
+      "bytes": 2504
+    },
+    {
+      "path": "local/native_render_resources_cr/registered/call_check.log",
+      "sha256": "b9fe4a7feccde6a27882dc4760a62fa13478cca6267bc608070f28abe30c08c9",
+      "bytes": 73
+    },
+    {
+      "path": "local/native_render_resources_cr/registered/annotation.log",
+      "sha256": "2b2e1f354a1b9a41ae6b0bee6fdbcd066dcd56b0b2f532ee763e4196628e4040",
+      "bytes": 96
+    },
+    {
+      "path": "local/native_render_resources_cr/registered/field_schedule.inc",
+      "sha256": "84dd9d0b291ff0ebace2396def78aea34fa639235baf31fe30aac5cb60c93514",
+      "bytes": 5986
+    },
+    {
+      "path": "local/native_render_resources_cr/registered/bsp_core.lib",
+      "sha256": "e6d06a680505d09861a9d430ae3a29d2498ece835ba1b87af20aef72ade917aa",
+      "bytes": 59529584
+    },
+    {
+      "path": "local/native_render_resources_cr/registered/bsp_lua511.lib",
+      "sha256": "00315ac717aac3d2b2161fefefe71b36a974335ff9c95d48c137423eb4e2f4b2",
+      "bytes": 455244
+    },
+    {
+      "path": "local/native_render_resources_cr/registered/bsp_zlib121.lib",
+      "sha256": "73ae30b8adc3adfe5b33285bac533f8e7df7e8ab8d9e44789e6a030fd8a06ad9",
+      "bytes": 71906
+    },
+    {
+      "path": "local/native_render_resources_cr/registered/sources/include/bsp/native_render_resources_construction.hpp",
+      "sha256": "08700a13ff33938845bbcfdcbd9805d98d601ee502ade15fc06e087e5604a036",
+      "bytes": 4592
+    },
+    {
+      "path": "local/native_render_resources_cr/registered/sources/src/native_render_resources_construction.cpp",
+      "sha256": "b8d644b808876260a8bc6b56b92ae14efc21fcd8bdb76e18448c6a59b8b16803",
+      "bytes": 14416
+    },
+    {
+      "path": "local/native_render_resources_cr/registered/sources/cmake/startup.cmake",
+      "sha256": "b07253cd38fcf2d0423cb93a6c2ef940bf2a259d0fc99c4a4d9abf12fb371082",
+      "bytes": 122600
+    },
+    {
+      "path": "local/native_render_resources_cr/registered/CMakeCache.txt",
+      "sha256": "2ab657bd06bb97731372c10fc883040590ccedec539b0406ba2554bab45f7835",
+      "bytes": 18839
+    },
+    {
+      "path": "local/native_render_resources_cr/registered/bsp_core.vcxproj",
+      "sha256": "81232f5b781b2afcb79bf34ca750e4e8ed47b8b7a3fa7c947a42942fcaf8d944",
+      "bytes": 200188
+    },
+    {
+      "path": "local/native_render_resources_cr/registered/prepare_render_resources_cr.py",
+      "sha256": "8b6c487c4acdc444e5b4057d99d0069530717d09ed0bd9d15135f38a8eed7f5b",
+      "bytes": 8992
+    },
+    {
+      "path": "local/native_render_resources_cr/registered/audit_render_resources_cr.py",
+      "sha256": "2e63c7d1a868c11315b416ffe2acbc423a081a1a3f775394a6f94db83dce1331",
+      "bytes": 2620
+    },
+    {
+      "path": "local/native_render_resources_cr/registered/record_render_resources_cr.py",
+      "sha256": "17a977b5fb067f4f4bc9a6750a8f974a29d54eb284041f669ef04cf4f770336f",
+      "bytes": 5137
+    },
+    {
+      "path": "local/native_render_resources_cr/registered/annotate_render_resources_cr.py",
+      "sha256": "4ec166b9499b6c1e1d61ef01e0763577ece17400776ebd9b41ba0d4e793264b4",
+      "bytes": 4284
+    },
+    {
+      "path": "local/native_render_resources_cr/registered/seal_render_resources_cr.py",
+      "sha256": "33274d438fd7e9012ebef754cd076a246e291dd2dc99d1685c55e295ab631f46",
+      "bytes": 6161
+    },
+    {
+      "path": "reports/native_render_resources_flow_cr.json",
+      "sha256": "61a28562c36dc783445ad10c75dc244da018d70c121c57fc6e7b627785476a62",
+      "bytes": 49074
+    },
+    {
+      "path": "reports/native_render_resources_annotations_cr.json",
+      "sha256": "07da9bb24d9c6676ea9f14c6b4e1cb90294bc8fb6c84b103069dda356e3a16bd",
+      "bytes": 95064
+    }
+  ]
+}
