@@ -6,6 +6,8 @@
 #include "bsp/native_mesh_buffer_fields.hpp"
 #include "bsp/native_mesh_texture_field.hpp"
 #include "bsp/native_resource_root_dispatch.hpp"
+#include "bsp/native_game_resource_classification.hpp"
+#include "bsp/light_type_bootstrap.hpp"
 #include <memory>
 #include <vector>
 
@@ -157,5 +159,66 @@ public:
 private:
     NativeAdoptedSubstreamDispatch& other_;
     NativeRenderActualOwners& owners_;
+};
+
+// Borrow actual process guards/descriptors without resetting them. Scene is
+// [own,root,name], mesh [own,scene,root,name], each derived descriptor is
+// [own,mesh,scene,root,name]. Last words are numeric original image addresses.
+struct NativeMeshResourceTypeStorage {
+    volatile std::uint8_t& scene_guard_0109020c;
+    volatile std::uint32_t* scene_01090210; // exactly3 words
+    volatile std::uint8_t& mesh_guard_01090440;
+    volatile std::uint32_t* mesh_01090444; // exactly4 words
+    volatile std::uint8_t& skined_guard_01090441;
+    volatile std::uint32_t* skined_01090454; // exactly5 words; native spelling
+    volatile std::uint8_t& matrix_guard_01090442;
+    volatile std::uint32_t* matrix_01090468; // exactly5 words
+};
+class NativeMeshResourceTypeIds final {
+public:
+    // SAME process counter, root bootstrap, scene and mesh storage required.
+    // Binding performs no initialization. Guards precede all fallible calls;
+    // partial descriptor writes and counter increments survive exceptions.
+    NativeMeshResourceTypeIds(TypeIdCounterLifetime&, LightTypeBootstrap&,
+        NativeMeshResourceTypeStorage) noexcept;
+    // ECX caller-supplied descriptor, process-wide guard, no stack args, RET.
+    void initialize_scene_resource_00b869c0(volatile std::uint32_t* target);
+    void initialize_mesh_resource_00b93bd0(volatile std::uint32_t* target);
+    // CRT entries use the actual global descriptors; no ordinary args, RET.
+    // Derived entries capture the mesh guard BEFORE publishing their own guard
+    // and name. Do not recheck that guard before the inlined base initializer.
+    void initialize_mesh_resource_00cd8690();
+    void initialize_skined_mesh_resource_00cd86f0();
+    void initialize_matrix_mesh_resource_00cd87b0();
+    NativeMeshResourceTypeStorage storage() const noexcept { return storage_; }
+private:
+    std::uint32_t consume_id();
+    void initialize_mesh_after_guard_check();
+    void initialize_derived(volatile std::uint8_t&, volatile std::uint32_t*, std::uint32_t);
+    TypeIdCounterLifetime& counter_;
+    LightTypeBootstrap& root_;
+    NativeMeshResourceTypeStorage storage_;
+};
+// Six MOV EAX,[current global];RET leaves. Native ignores receiver, takes no
+// stack args. Each name getter returns its current name word, not a literal.
+std::uint32_t read_native_mesh_resource_type_00b93000(const volatile std::uint32_t&);
+std::uint32_t read_native_mesh_resource_name_00b93010(const volatile std::uint32_t&);
+std::uint32_t read_native_mesh_resource_type_00b930d0(const volatile std::uint32_t&);
+std::uint32_t read_native_mesh_resource_name_00b930e0(const volatile std::uint32_t&);
+std::uint32_t read_native_mesh_resource_type_00b931d0(const volatile std::uint32_t&);
+std::uint32_t read_native_mesh_resource_name_00b931e0(const volatile std::uint32_t&);
+// Actual slotC predicates: ECX ignored; stacked token; AL bool; RET4.
+// Compare CURRENT IDs in order with short-circuiting, excluding the name.
+// No lazy initialization, guard check, nonzero filtering or snapshot.
+std::uint8_t matches_native_mesh_resource_type_00b936b0(std::uint32_t, const volatile std::uint32_t* three_ids);
+std::uint8_t matches_native_mesh_resource_type_00b939c0(std::uint32_t, const volatile std::uint32_t* four_ids);
+std::uint8_t matches_native_mesh_resource_type_00b93a40(std::uint32_t, const volatile std::uint32_t* four_ids);
+class NativeMeshResourceTypeCalls final : public NativeResourceItemTypeCalls {
+public:
+    NativeMeshResourceTypeCalls(NativeResourceItemTypeCalls&, NativeMeshResourceTypeStorage) noexcept;
+    std::uint8_t matches_type(std::uintptr_t, void*, std::uint32_t) override;
+private:
+    NativeResourceItemTypeCalls& other_;
+    NativeMeshResourceTypeStorage storage_;
 };
 } // namespace bsp

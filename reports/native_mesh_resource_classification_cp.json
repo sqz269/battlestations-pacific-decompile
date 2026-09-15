@@ -1,0 +1,1549 @@
+{
+  "packet": "orch4_native_mesh_resource_classification_cp",
+  "base_revision": "8ba3d833dcf7cdaf22ff710497938298daa1488e",
+  "documentation": "docs/NATIVE_MESH_RESOURCE_CLASSIFICATION_CP.md",
+  "project": {
+    "project_name": "bsp",
+    "current_folder": "/",
+    "folders": [],
+    "files": [
+      {
+        "name": "battlestationspacific.exe",
+        "path": "/battlestationspacific.exe",
+        "content_type": "Program",
+        "version": 2765,
+        "is_read_only": false,
+        "is_versioned": false
+      }
+    ]
+  },
+  "program": {
+    "name": "battlestationspacific.exe",
+    "path": "/battlestationspacific.exe",
+    "executable_path": "/I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "executable_format": "Portable Executable (PE)",
+    "language": "x86:LE:32:default",
+    "compiler": "windows",
+    "address_size": 32,
+    "image_base": "00400000",
+    "min_address": "00400000",
+    "max_address": "ffdfffff",
+    "memory_size": 14876380,
+    "function_count": 64112,
+    "symbol_count": 144495,
+    "data_type_count": 795,
+    "creation_date": "Mon May 04 16:56:25 PDT 2026",
+    "memory_block_count": 6,
+    "address_spaces": [
+      {
+        "name": "ram",
+        "start": "00000000",
+        "end": "ffffffff",
+        "size": 4294967296,
+        "addressable_unit_size": 1,
+        "size_bytes": 4294967296,
+        "address_size_bits": 32,
+        "is_default": true
+      }
+    ],
+    "has_multiple_address_spaces": false
+  },
+  "routines": [
+    {
+      "address": "00b93000",
+      "bytes": 6,
+      "function": "read_native_mesh_resource_type_00b93000",
+      "source": "src/native_mesh_subset_loading.cpp",
+      "result": "uint",
+      "convention": "__cdecl",
+      "parameters": "void",
+      "original_abi": "No ordinary inputs; ECX ignored; EAX current global DWORD; RET",
+      "status": "complete_native_mesh_resource_type_source_tracked_build_native_leaf_oracle_and_classification_fixture_checked",
+      "code": {
+        "address": "00b93000",
+        "bytes": 6,
+        "sha256": "6d02f8b4e526b37a6de7bb35a21e9e634e715af6caaef084c26a00abeb566ac0",
+        "instructions": [
+          [
+            12136448,
+            5,
+            "mov",
+            "eax, dword ptr [0x1090444]"
+          ],
+          [
+            12136453,
+            1,
+            "ret",
+            ""
+          ]
+        ]
+      }
+    },
+    {
+      "address": "00b93010",
+      "bytes": 6,
+      "function": "read_native_mesh_resource_name_00b93010",
+      "source": "src/native_mesh_subset_loading.cpp",
+      "result": "uint",
+      "convention": "__cdecl",
+      "parameters": "void",
+      "original_abi": "No ordinary inputs; ECX ignored; EAX current global DWORD; RET",
+      "status": "complete_native_mesh_resource_type_source_tracked_build_native_leaf_oracle_and_classification_fixture_checked",
+      "code": {
+        "address": "00b93010",
+        "bytes": 6,
+        "sha256": "d7dea7f6e8f5a3e912851bf28d5a755d367071af18318d854862db8a8f250c8c",
+        "instructions": [
+          [
+            12136464,
+            5,
+            "mov",
+            "eax, dword ptr [0x1090450]"
+          ],
+          [
+            12136469,
+            1,
+            "ret",
+            ""
+          ]
+        ]
+      }
+    },
+    {
+      "address": "00b930d0",
+      "bytes": 6,
+      "function": "read_native_mesh_resource_type_00b930d0",
+      "source": "src/native_mesh_subset_loading.cpp",
+      "result": "uint",
+      "convention": "__cdecl",
+      "parameters": "void",
+      "original_abi": "No ordinary inputs; ECX ignored; EAX current global DWORD; RET",
+      "status": "complete_native_mesh_resource_type_source_tracked_build_native_leaf_oracle_and_classification_fixture_checked",
+      "code": {
+        "address": "00b930d0",
+        "bytes": 6,
+        "sha256": "0d02d0f812aea17604f7e5c49ac28e385c5c4c5107c1a3f714ddf1dd5962d350",
+        "instructions": [
+          [
+            12136656,
+            5,
+            "mov",
+            "eax, dword ptr [0x1090454]"
+          ],
+          [
+            12136661,
+            1,
+            "ret",
+            ""
+          ]
+        ]
+      }
+    },
+    {
+      "address": "00b930e0",
+      "bytes": 6,
+      "function": "read_native_mesh_resource_name_00b930e0",
+      "source": "src/native_mesh_subset_loading.cpp",
+      "result": "uint",
+      "convention": "__cdecl",
+      "parameters": "void",
+      "original_abi": "No ordinary inputs; ECX ignored; EAX current global DWORD; RET",
+      "status": "complete_native_mesh_resource_type_source_tracked_build_native_leaf_oracle_and_classification_fixture_checked",
+      "code": {
+        "address": "00b930e0",
+        "bytes": 6,
+        "sha256": "ec1c548f0af6238f9ea9f0b5d55b84caa74fc134813aa8cfacca8d0c6b033c21",
+        "instructions": [
+          [
+            12136672,
+            5,
+            "mov",
+            "eax, dword ptr [0x1090464]"
+          ],
+          [
+            12136677,
+            1,
+            "ret",
+            ""
+          ]
+        ]
+      }
+    },
+    {
+      "address": "00b931d0",
+      "bytes": 6,
+      "function": "read_native_mesh_resource_type_00b931d0",
+      "source": "src/native_mesh_subset_loading.cpp",
+      "result": "uint",
+      "convention": "__cdecl",
+      "parameters": "void",
+      "original_abi": "No ordinary inputs; ECX ignored; EAX current global DWORD; RET",
+      "status": "complete_native_mesh_resource_type_source_tracked_build_native_leaf_oracle_and_classification_fixture_checked",
+      "code": {
+        "address": "00b931d0",
+        "bytes": 6,
+        "sha256": "87baaf3418f6edc2f12fde69058500ba8e5884d9e8ae821ef88028ea8a5c2be9",
+        "instructions": [
+          [
+            12136912,
+            5,
+            "mov",
+            "eax, dword ptr [0x1090468]"
+          ],
+          [
+            12136917,
+            1,
+            "ret",
+            ""
+          ]
+        ]
+      }
+    },
+    {
+      "address": "00b931e0",
+      "bytes": 6,
+      "function": "read_native_mesh_resource_name_00b931e0",
+      "source": "src/native_mesh_subset_loading.cpp",
+      "result": "uint",
+      "convention": "__cdecl",
+      "parameters": "void",
+      "original_abi": "No ordinary inputs; ECX ignored; EAX current global DWORD; RET",
+      "status": "complete_native_mesh_resource_type_source_tracked_build_native_leaf_oracle_and_classification_fixture_checked",
+      "code": {
+        "address": "00b931e0",
+        "bytes": 6,
+        "sha256": "f534dd17df64d47a9a73fe84611386be8a1dd17011bda3b0bfbdbd18d419c584",
+        "instructions": [
+          [
+            12136928,
+            5,
+            "mov",
+            "eax, dword ptr [0x1090478]"
+          ],
+          [
+            12136933,
+            1,
+            "ret",
+            ""
+          ]
+        ]
+      }
+    },
+    {
+      "address": "00b936b0",
+      "bytes": 40,
+      "function": "matches_native_mesh_resource_type_00b936b0",
+      "source": "src/native_mesh_subset_loading.cpp",
+      "result": "byte",
+      "convention": "__fastcall",
+      "parameters": "void* unused_receiver, void* unused_edx, uint token",
+      "original_abi": "ECX ignored; stacked token; AL Boolean, upper EAX unspecified; RET4",
+      "status": "complete_native_mesh_resource_type_source_tracked_build_native_leaf_oracle_and_classification_fixture_checked",
+      "code": {
+        "address": "00b936b0",
+        "bytes": 40,
+        "sha256": "553ec3d680dad53169a39a3ed9644005b05807e2d0949c255df290216bed1c10",
+        "instructions": [
+          [
+            12138160,
+            4,
+            "mov",
+            "ecx, dword ptr [esp + 4]"
+          ],
+          [
+            12138164,
+            5,
+            "mov",
+            "eax, 0x1090444"
+          ],
+          [
+            12138169,
+            7,
+            "lea",
+            "esp, [esp]"
+          ],
+          [
+            12138176,
+            2,
+            "cmp",
+            "dword ptr [eax], ecx"
+          ],
+          [
+            12138178,
+            2,
+            "je",
+            "0xb936d3"
+          ],
+          [
+            12138180,
+            3,
+            "add",
+            "eax, 4"
+          ],
+          [
+            12138183,
+            5,
+            "cmp",
+            "eax, 0x1090450"
+          ],
+          [
+            12138188,
+            2,
+            "jne",
+            "0xb936c0"
+          ],
+          [
+            12138190,
+            2,
+            "xor",
+            "al, al"
+          ],
+          [
+            12138192,
+            3,
+            "ret",
+            "4"
+          ],
+          [
+            12138195,
+            2,
+            "mov",
+            "al, 1"
+          ],
+          [
+            12138197,
+            3,
+            "ret",
+            "4"
+          ]
+        ]
+      }
+    },
+    {
+      "address": "00b939c0",
+      "bytes": 40,
+      "function": "matches_native_mesh_resource_type_00b939c0",
+      "source": "src/native_mesh_subset_loading.cpp",
+      "result": "byte",
+      "convention": "__fastcall",
+      "parameters": "void* unused_receiver, void* unused_edx, uint token",
+      "original_abi": "ECX ignored; stacked token; AL Boolean, upper EAX unspecified; RET4",
+      "status": "complete_native_mesh_resource_type_source_tracked_build_native_leaf_oracle_and_classification_fixture_checked",
+      "code": {
+        "address": "00b939c0",
+        "bytes": 40,
+        "sha256": "04beb53a0392603fd26f6f526ffb33030e72191c3960920cce1ca74527d73ac7",
+        "instructions": [
+          [
+            12138944,
+            4,
+            "mov",
+            "ecx, dword ptr [esp + 4]"
+          ],
+          [
+            12138948,
+            5,
+            "mov",
+            "eax, 0x1090454"
+          ],
+          [
+            12138953,
+            7,
+            "lea",
+            "esp, [esp]"
+          ],
+          [
+            12138960,
+            2,
+            "cmp",
+            "dword ptr [eax], ecx"
+          ],
+          [
+            12138962,
+            2,
+            "je",
+            "0xb939e3"
+          ],
+          [
+            12138964,
+            3,
+            "add",
+            "eax, 4"
+          ],
+          [
+            12138967,
+            5,
+            "cmp",
+            "eax, 0x1090464"
+          ],
+          [
+            12138972,
+            2,
+            "jne",
+            "0xb939d0"
+          ],
+          [
+            12138974,
+            2,
+            "xor",
+            "al, al"
+          ],
+          [
+            12138976,
+            3,
+            "ret",
+            "4"
+          ],
+          [
+            12138979,
+            2,
+            "mov",
+            "al, 1"
+          ],
+          [
+            12138981,
+            3,
+            "ret",
+            "4"
+          ]
+        ]
+      }
+    },
+    {
+      "address": "00b93a40",
+      "bytes": 40,
+      "function": "matches_native_mesh_resource_type_00b93a40",
+      "source": "src/native_mesh_subset_loading.cpp",
+      "result": "byte",
+      "convention": "__fastcall",
+      "parameters": "void* unused_receiver, void* unused_edx, uint token",
+      "original_abi": "ECX ignored; stacked token; AL Boolean, upper EAX unspecified; RET4",
+      "status": "complete_native_mesh_resource_type_source_tracked_build_native_leaf_oracle_and_classification_fixture_checked",
+      "code": {
+        "address": "00b93a40",
+        "bytes": 40,
+        "sha256": "e97671f718774fba45b612d5b17811e72e39ede5985a914eebaa015a7c06b3d0",
+        "instructions": [
+          [
+            12139072,
+            4,
+            "mov",
+            "ecx, dword ptr [esp + 4]"
+          ],
+          [
+            12139076,
+            5,
+            "mov",
+            "eax, 0x1090468"
+          ],
+          [
+            12139081,
+            7,
+            "lea",
+            "esp, [esp]"
+          ],
+          [
+            12139088,
+            2,
+            "cmp",
+            "dword ptr [eax], ecx"
+          ],
+          [
+            12139090,
+            2,
+            "je",
+            "0xb93a63"
+          ],
+          [
+            12139092,
+            3,
+            "add",
+            "eax, 4"
+          ],
+          [
+            12139095,
+            5,
+            "cmp",
+            "eax, 0x1090478"
+          ],
+          [
+            12139100,
+            2,
+            "jne",
+            "0xb93a50"
+          ],
+          [
+            12139102,
+            2,
+            "xor",
+            "al, al"
+          ],
+          [
+            12139104,
+            3,
+            "ret",
+            "4"
+          ],
+          [
+            12139107,
+            2,
+            "mov",
+            "al, 1"
+          ],
+          [
+            12139109,
+            3,
+            "ret",
+            "4"
+          ]
+        ]
+      }
+    },
+    {
+      "address": "00b869c0",
+      "bytes": 62,
+      "function": "initialize_scene_resource_00b869c0",
+      "source": "src/native_mesh_subset_loading.cpp",
+      "result": "void",
+      "convention": "__fastcall",
+      "parameters": "uint* target, void* unused_edx",
+      "original_abi": "ECX actual caller-supplied descriptor; process-wide guard; no stack arguments; RET",
+      "status": "complete_native_mesh_resource_type_source_tracked_build_native_leaf_oracle_and_classification_fixture_checked",
+      "code": {
+        "address": "00b869c0",
+        "bytes": 62,
+        "sha256": "af48e99aa4bd1016d210ef05785e025295dbdbf39cf15c6f42a548ce45e3f7c7",
+        "instructions": [
+          [
+            12085696,
+            7,
+            "cmp",
+            "byte ptr [0x109020c], 0"
+          ],
+          [
+            12085703,
+            1,
+            "push",
+            "esi"
+          ],
+          [
+            12085704,
+            2,
+            "mov",
+            "esi, ecx"
+          ],
+          [
+            12085706,
+            2,
+            "jne",
+            "0xb869fc"
+          ],
+          [
+            12085708,
+            7,
+            "mov",
+            "byte ptr [0x109020c], 1"
+          ],
+          [
+            12085715,
+            5,
+            "mov",
+            "ecx, 0x109db84"
+          ],
+          [
+            12085720,
+            7,
+            "mov",
+            "dword ptr [esi + 8], 0xd631e4"
+          ],
+          [
+            12085727,
+            5,
+            "call",
+            "0xbea780"
+          ],
+          [
+            12085732,
+            5,
+            "mov",
+            "eax, dword ptr [0x109db84]"
+          ],
+          [
+            12085737,
+            3,
+            "mov",
+            "dword ptr [esi + 4], eax"
+          ],
+          [
+            12085740,
+            5,
+            "call",
+            "0x6fac20"
+          ],
+          [
+            12085745,
+            3,
+            "mov",
+            "ecx, dword ptr [eax + 4]"
+          ],
+          [
+            12085748,
+            3,
+            "lea",
+            "edx, [ecx + 1]"
+          ],
+          [
+            12085751,
+            3,
+            "mov",
+            "dword ptr [eax + 4], edx"
+          ],
+          [
+            12085754,
+            2,
+            "mov",
+            "dword ptr [esi], ecx"
+          ],
+          [
+            12085756,
+            1,
+            "pop",
+            "esi"
+          ],
+          [
+            12085757,
+            1,
+            "ret",
+            ""
+          ]
+        ]
+      }
+    },
+    {
+      "address": "00b93bd0",
+      "bytes": 71,
+      "function": "initialize_mesh_resource_00b93bd0",
+      "source": "src/native_mesh_subset_loading.cpp",
+      "result": "void",
+      "convention": "__fastcall",
+      "parameters": "uint* target, void* unused_edx",
+      "original_abi": "ECX actual caller-supplied descriptor; process-wide guard; no stack arguments; RET",
+      "status": "complete_native_mesh_resource_type_source_tracked_build_native_leaf_oracle_and_classification_fixture_checked",
+      "code": {
+        "address": "00b93bd0",
+        "bytes": 71,
+        "sha256": "a77ad761d204a8d15cffbbff0a1dac4df878b4ac139bc64bbc645d725d452847",
+        "instructions": [
+          [
+            12139472,
+            7,
+            "cmp",
+            "byte ptr [0x1090440], 0"
+          ],
+          [
+            12139479,
+            1,
+            "push",
+            "esi"
+          ],
+          [
+            12139480,
+            2,
+            "mov",
+            "esi, ecx"
+          ],
+          [
+            12139482,
+            2,
+            "jne",
+            "0xb93c15"
+          ],
+          [
+            12139484,
+            7,
+            "mov",
+            "byte ptr [0x1090440], 1"
+          ],
+          [
+            12139491,
+            5,
+            "mov",
+            "ecx, 0x1090210"
+          ],
+          [
+            12139496,
+            7,
+            "mov",
+            "dword ptr [esi + 0xc], 0xd637a4"
+          ],
+          [
+            12139503,
+            5,
+            "call",
+            "0xb869c0"
+          ],
+          [
+            12139508,
+            5,
+            "mov",
+            "eax, dword ptr [0x1090210]"
+          ],
+          [
+            12139513,
+            3,
+            "mov",
+            "dword ptr [esi + 4], eax"
+          ],
+          [
+            12139516,
+            6,
+            "mov",
+            "ecx, dword ptr [0x1090214]"
+          ],
+          [
+            12139522,
+            3,
+            "mov",
+            "dword ptr [esi + 8], ecx"
+          ],
+          [
+            12139525,
+            5,
+            "call",
+            "0x6fac20"
+          ],
+          [
+            12139530,
+            3,
+            "mov",
+            "ecx, dword ptr [eax + 4]"
+          ],
+          [
+            12139533,
+            3,
+            "lea",
+            "edx, [ecx + 1]"
+          ],
+          [
+            12139536,
+            3,
+            "mov",
+            "dword ptr [eax + 4], edx"
+          ],
+          [
+            12139539,
+            2,
+            "mov",
+            "dword ptr [esi], ecx"
+          ],
+          [
+            12139541,
+            1,
+            "pop",
+            "esi"
+          ],
+          [
+            12139542,
+            1,
+            "ret",
+            ""
+          ]
+        ]
+      }
+    },
+    {
+      "address": "00cd8690",
+      "bytes": 79,
+      "function": "initialize_mesh_resource_00cd8690",
+      "source": "src/native_mesh_subset_loading.cpp",
+      "result": "void",
+      "convention": "__cdecl",
+      "parameters": "void",
+      "original_abi": "CRT initializer; no ordinary inputs; no stable result; RET",
+      "status": "complete_native_mesh_resource_type_source_tracked_build_native_leaf_oracle_and_classification_fixture_checked",
+      "code": {
+        "address": "00cd8690",
+        "bytes": 79,
+        "sha256": "d08a997f0ee7575ccca96812708f801a92a47fb51d8d81dce406fc50d284c9f7",
+        "instructions": [
+          [
+            13469328,
+            7,
+            "cmp",
+            "byte ptr [0x1090440], 0"
+          ],
+          [
+            13469335,
+            2,
+            "jne",
+            "0xcd86de"
+          ],
+          [
+            13469337,
+            5,
+            "mov",
+            "ecx, 0x1090210"
+          ],
+          [
+            13469342,
+            7,
+            "mov",
+            "byte ptr [0x1090440], 1"
+          ],
+          [
+            13469349,
+            10,
+            "mov",
+            "dword ptr [0x1090450], 0xd637a4"
+          ],
+          [
+            13469359,
+            5,
+            "call",
+            "0xb869c0"
+          ],
+          [
+            13469364,
+            5,
+            "mov",
+            "eax, dword ptr [0x1090210]"
+          ],
+          [
+            13469369,
+            6,
+            "mov",
+            "ecx, dword ptr [0x1090214]"
+          ],
+          [
+            13469375,
+            5,
+            "mov",
+            "dword ptr [0x1090448], eax"
+          ],
+          [
+            13469380,
+            6,
+            "mov",
+            "dword ptr [0x109044c], ecx"
+          ],
+          [
+            13469386,
+            5,
+            "call",
+            "0x6fac20"
+          ],
+          [
+            13469391,
+            3,
+            "mov",
+            "ecx, dword ptr [eax + 4]"
+          ],
+          [
+            13469394,
+            3,
+            "lea",
+            "edx, [ecx + 1]"
+          ],
+          [
+            13469397,
+            3,
+            "mov",
+            "dword ptr [eax + 4], edx"
+          ],
+          [
+            13469400,
+            6,
+            "mov",
+            "dword ptr [0x1090444], ecx"
+          ],
+          [
+            13469406,
+            1,
+            "ret",
+            ""
+          ]
+        ]
+      }
+    },
+    {
+      "address": "00cd86f0",
+      "bytes": 161,
+      "function": "initialize_skined_mesh_resource_00cd86f0",
+      "source": "src/native_mesh_subset_loading.cpp",
+      "result": "void",
+      "convention": "__cdecl",
+      "parameters": "void",
+      "original_abi": "CRT initializer; no ordinary inputs; no stable result; RET",
+      "status": "complete_native_mesh_resource_type_source_tracked_build_native_leaf_oracle_and_classification_fixture_checked",
+      "code": {
+        "address": "00cd86f0",
+        "bytes": 161,
+        "sha256": "6ff7daf6c45a1c518dfe53976fef03f0769966c5b74135f69d4cbc3eb21bdfe5",
+        "instructions": [
+          [
+            13469424,
+            7,
+            "cmp",
+            "byte ptr [0x1090441], 0"
+          ],
+          [
+            13469431,
+            6,
+            "jne",
+            "0xcd8790"
+          ],
+          [
+            13469437,
+            7,
+            "cmp",
+            "byte ptr [0x1090440], 0"
+          ],
+          [
+            13469444,
+            2,
+            "mov",
+            "al, 1"
+          ],
+          [
+            13469446,
+            5,
+            "mov",
+            "byte ptr [0x1090441], al"
+          ],
+          [
+            13469451,
+            10,
+            "mov",
+            "dword ptr [0x1090464], 0xd637b8"
+          ],
+          [
+            13469461,
+            2,
+            "jne",
+            "0xcd875a"
+          ],
+          [
+            13469463,
+            5,
+            "mov",
+            "ecx, 0x1090210"
+          ],
+          [
+            13469468,
+            5,
+            "mov",
+            "byte ptr [0x1090440], al"
+          ],
+          [
+            13469473,
+            10,
+            "mov",
+            "dword ptr [0x1090450], 0xd637a4"
+          ],
+          [
+            13469483,
+            5,
+            "call",
+            "0xb869c0"
+          ],
+          [
+            13469488,
+            5,
+            "mov",
+            "eax, dword ptr [0x1090210]"
+          ],
+          [
+            13469493,
+            6,
+            "mov",
+            "ecx, dword ptr [0x1090214]"
+          ],
+          [
+            13469499,
+            5,
+            "mov",
+            "dword ptr [0x1090448], eax"
+          ],
+          [
+            13469504,
+            6,
+            "mov",
+            "dword ptr [0x109044c], ecx"
+          ],
+          [
+            13469510,
+            5,
+            "call",
+            "0x6fac20"
+          ],
+          [
+            13469515,
+            3,
+            "mov",
+            "ecx, dword ptr [eax + 4]"
+          ],
+          [
+            13469518,
+            3,
+            "lea",
+            "edx, [ecx + 1]"
+          ],
+          [
+            13469521,
+            3,
+            "mov",
+            "dword ptr [eax + 4], edx"
+          ],
+          [
+            13469524,
+            6,
+            "mov",
+            "dword ptr [0x1090444], ecx"
+          ],
+          [
+            13469530,
+            5,
+            "mov",
+            "eax, dword ptr [0x1090444]"
+          ],
+          [
+            13469535,
+            6,
+            "mov",
+            "ecx, dword ptr [0x1090448]"
+          ],
+          [
+            13469541,
+            6,
+            "mov",
+            "edx, dword ptr [0x109044c]"
+          ],
+          [
+            13469547,
+            5,
+            "mov",
+            "dword ptr [0x1090458], eax"
+          ],
+          [
+            13469552,
+            6,
+            "mov",
+            "dword ptr [0x109045c], ecx"
+          ],
+          [
+            13469558,
+            6,
+            "mov",
+            "dword ptr [0x1090460], edx"
+          ],
+          [
+            13469564,
+            5,
+            "call",
+            "0x6fac20"
+          ],
+          [
+            13469569,
+            3,
+            "mov",
+            "ecx, dword ptr [eax + 4]"
+          ],
+          [
+            13469572,
+            3,
+            "lea",
+            "edx, [ecx + 1]"
+          ],
+          [
+            13469575,
+            3,
+            "mov",
+            "dword ptr [eax + 4], edx"
+          ],
+          [
+            13469578,
+            6,
+            "mov",
+            "dword ptr [0x1090454], ecx"
+          ],
+          [
+            13469584,
+            1,
+            "ret",
+            ""
+          ]
+        ]
+      }
+    },
+    {
+      "address": "00cd87b0",
+      "bytes": 161,
+      "function": "initialize_matrix_mesh_resource_00cd87b0",
+      "source": "src/native_mesh_subset_loading.cpp",
+      "result": "void",
+      "convention": "__cdecl",
+      "parameters": "void",
+      "original_abi": "CRT initializer; no ordinary inputs; no stable result; RET",
+      "status": "complete_native_mesh_resource_type_source_tracked_build_native_leaf_oracle_and_classification_fixture_checked",
+      "code": {
+        "address": "00cd87b0",
+        "bytes": 161,
+        "sha256": "ef6c79daa9642d9070207e43123c98f66aeecff532dcaaa7e64fa715488c90ef",
+        "instructions": [
+          [
+            13469616,
+            7,
+            "cmp",
+            "byte ptr [0x1090442], 0"
+          ],
+          [
+            13469623,
+            6,
+            "jne",
+            "0xcd8850"
+          ],
+          [
+            13469629,
+            7,
+            "cmp",
+            "byte ptr [0x1090440], 0"
+          ],
+          [
+            13469636,
+            2,
+            "mov",
+            "al, 1"
+          ],
+          [
+            13469638,
+            5,
+            "mov",
+            "byte ptr [0x1090442], al"
+          ],
+          [
+            13469643,
+            10,
+            "mov",
+            "dword ptr [0x1090478], 0xd637cc"
+          ],
+          [
+            13469653,
+            2,
+            "jne",
+            "0xcd881a"
+          ],
+          [
+            13469655,
+            5,
+            "mov",
+            "ecx, 0x1090210"
+          ],
+          [
+            13469660,
+            5,
+            "mov",
+            "byte ptr [0x1090440], al"
+          ],
+          [
+            13469665,
+            10,
+            "mov",
+            "dword ptr [0x1090450], 0xd637a4"
+          ],
+          [
+            13469675,
+            5,
+            "call",
+            "0xb869c0"
+          ],
+          [
+            13469680,
+            5,
+            "mov",
+            "eax, dword ptr [0x1090210]"
+          ],
+          [
+            13469685,
+            6,
+            "mov",
+            "ecx, dword ptr [0x1090214]"
+          ],
+          [
+            13469691,
+            5,
+            "mov",
+            "dword ptr [0x1090448], eax"
+          ],
+          [
+            13469696,
+            6,
+            "mov",
+            "dword ptr [0x109044c], ecx"
+          ],
+          [
+            13469702,
+            5,
+            "call",
+            "0x6fac20"
+          ],
+          [
+            13469707,
+            3,
+            "mov",
+            "ecx, dword ptr [eax + 4]"
+          ],
+          [
+            13469710,
+            3,
+            "lea",
+            "edx, [ecx + 1]"
+          ],
+          [
+            13469713,
+            3,
+            "mov",
+            "dword ptr [eax + 4], edx"
+          ],
+          [
+            13469716,
+            6,
+            "mov",
+            "dword ptr [0x1090444], ecx"
+          ],
+          [
+            13469722,
+            5,
+            "mov",
+            "eax, dword ptr [0x1090444]"
+          ],
+          [
+            13469727,
+            6,
+            "mov",
+            "ecx, dword ptr [0x1090448]"
+          ],
+          [
+            13469733,
+            6,
+            "mov",
+            "edx, dword ptr [0x109044c]"
+          ],
+          [
+            13469739,
+            5,
+            "mov",
+            "dword ptr [0x109046c], eax"
+          ],
+          [
+            13469744,
+            6,
+            "mov",
+            "dword ptr [0x1090470], ecx"
+          ],
+          [
+            13469750,
+            6,
+            "mov",
+            "dword ptr [0x1090474], edx"
+          ],
+          [
+            13469756,
+            5,
+            "call",
+            "0x6fac20"
+          ],
+          [
+            13469761,
+            3,
+            "mov",
+            "ecx, dword ptr [eax + 4]"
+          ],
+          [
+            13469764,
+            3,
+            "lea",
+            "edx, [ecx + 1]"
+          ],
+          [
+            13469767,
+            3,
+            "mov",
+            "dword ptr [eax + 4], edx"
+          ],
+          [
+            13469770,
+            6,
+            "mov",
+            "dword ptr [0x1090468], ecx"
+          ],
+          [
+            13469776,
+            1,
+            "ret",
+            ""
+          ]
+        ]
+      }
+    }
+  ],
+  "support": [],
+  "ordinary_bytes": 690,
+  "support_bytes": 0,
+  "verified_instruction_owners": 164,
+  "direct_transfers": [
+    {
+      "address": "00b869df",
+      "native": "00bea780",
+      "function": "00b869c0",
+      "kind": "call"
+    },
+    {
+      "address": "00b869ec",
+      "native": "006fac20",
+      "function": "00b869c0",
+      "kind": "call"
+    },
+    {
+      "address": "00b93bef",
+      "native": "00b869c0",
+      "function": "00b93bd0",
+      "kind": "call"
+    },
+    {
+      "address": "00b93c05",
+      "native": "006fac20",
+      "function": "00b93bd0",
+      "kind": "call"
+    },
+    {
+      "address": "00cd86af",
+      "native": "00b869c0",
+      "function": "00cd8690",
+      "kind": "call"
+    },
+    {
+      "address": "00cd86ca",
+      "native": "006fac20",
+      "function": "00cd8690",
+      "kind": "call"
+    },
+    {
+      "address": "00cd872b",
+      "native": "00b869c0",
+      "function": "00cd86f0",
+      "kind": "call"
+    },
+    {
+      "address": "00cd8746",
+      "native": "006fac20",
+      "function": "00cd86f0",
+      "kind": "call"
+    },
+    {
+      "address": "00cd877c",
+      "native": "006fac20",
+      "function": "00cd86f0",
+      "kind": "call"
+    },
+    {
+      "address": "00cd87eb",
+      "native": "00b869c0",
+      "function": "00cd87b0",
+      "kind": "call"
+    },
+    {
+      "address": "00cd8806",
+      "native": "006fac20",
+      "function": "00cd87b0",
+      "kind": "call"
+    },
+    {
+      "address": "00cd883c",
+      "native": "006fac20",
+      "function": "00cd87b0",
+      "kind": "call"
+    }
+  ],
+  "indirect_transfers": [],
+  "data": [
+    {
+      "address": "00d63738",
+      "bytes": 108,
+      "hex": "e030bd00403bb9000030b900b036b900209d6f001030b9002040b900a030b9008030b900e030bd00603bb900d030b900c039b900209d6f00e030b9002040b900a031b9005031b900e030bd00803bb900d031b900403ab900209d6f00e031b9002040b900a032b9005032b900",
+      "sha256": "147ac36ea051f50fb9867b05e871860d91329e4f4dd4fb94e4fee8b37b040db9"
+    },
+    {
+      "address": "00d637a4",
+      "bytes": 68,
+      "hex": "6352656e6465724d6573685265736f757263650063536b696e65644d6573685265736f7572636500634d6174726978496e64657865644d6573685265736f757263650000",
+      "sha256": "4160e00b840715a3279dfda892684476158d0b0ec06e77f18d929eefa23108ed"
+    },
+    {
+      "address": "00d631e4",
+      "bytes": 15,
+      "hex": "635363656e655265736f7572636500",
+      "sha256": "9fdeebe31d6457532722c6555cf6b4b17476791860856c1f84f07e3712ad6174"
+    },
+    {
+      "address": "00ce35f0",
+      "bytes": 24,
+      "hex": "9086cd00e086cd00f086cd00a087cd00b087cd006088cd00",
+      "sha256": "a6e7d3d211831c5cc9fbf3fd084d6a05b6e8cdeaee9de5d225aa094bf63c5781"
+    }
+  ],
+  "eh_maps": {},
+  "membership_gaps": [],
+  "evidence_summary": "CP complete14 native mesh resource type routines690B: 164 instruction owners,12 direct calls, saved Ghidra and installed PE equal. Six6B getters read current own-ID/name cells; three40B predicates are current slotC, not slot8, compare3/4/4 current IDs excluding name and never initialize/filter zero. B869C0 scene and B93BD0 mesh initializers use process guards with caller-target descriptors; CD8690/CD86F0/CD87B0 publish cRenderMeshResource/cSkinedMeshResource/cMatrixIndexedMeshResource from SAME cold type-counter/root/scene inheritance. Runtime mesh alternates source load/store; CRT base captures both parents before stores; derived initializer captures mesh guard before own guard/name and copies three parents before stores. Guards/names precede fallible calls; no rollback, atomicization or counter saturation. Numeric NativeResourceItemTypeCalls adapter composes actual71BB40 classification. Twelve missing functions defined under lock with before-state and prior-comment preservation;14 ABI/source records. Strict Win32 build/both existing CTests pass. Existing D3D9 fixture runs actual cold shared counter/manager, alternate caller-target guard, CRT cold base, derived-first base, unsigned counter wrap and idempotence; six unchanged native getters and three unchanged native predicates run against original-address RW globals and agree with source before/after publication/current-ID mutation. Allthree full mesh parsers execute actual71B810 game resource construction/71BB40 classification with real predicates and explicit fixture selector cells, then real deletion;57canonical owners and new counter/manager retire. Production E19 selector-cell publication, full root/game startup dispatch, cold shaders, initializer native-machine-code oracle, ABI/FH3/SEH and gameplay remain unproven.",
+  "validation": {
+    "build": "Tracked scripts/build.ps1 MSVC Win32 and both existing CTests pass; only registered mesh-loading source/header changed; CMake unchanged",
+    "native_leaf_oracle": "Nine unchanged installed-PE leaves execute against original absolute0109xxxx descriptor cells. Six getter values and24 postpublication predicate comparisons plus three zero-prepublication and current-ID mutation checks agree with source.",
+    "startup": "Actual cold TypeIdCounterLifetime with actual manager publication, root/scene initializers; caller-target runtime mesh; guard suppresses later global initialization; explicit independent reset then cold CRT base and derived-first mesh, FFFFFFFE/FFFFFFFF/0 wrap and repeated no-op guards",
+    "classification": "All three actual full mesh parser items enter actual71B810 game-resource object and71BB40 using real slotC predicates. Explicit fixture selectors yield44 for mesh/matrix,64 for skined; primary item and mesh references remain1; scalar deletion follows actualcurrentprofile.",
+    "cleanup": "57 canonical geometry owners retire; actual type counter unregisters and deletes, new actual lifetime manager drains/frees; descriptor window and oracle code freed; pools/caches/tree/list empty and device/APIrefs0",
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "evidence_limits": [
+    "Only six getter and three predicate bodies execute unchanged installed-PE bytes. Startup initializer behavior is source execution plus complete byte/listing evidence, not native-machine-code differential proof.",
+    "Fixture reserves original01090000..0109FFFF in its suspended child before CRT startup; commits owned RW globals there. Nine copied executable leaves retain original absolute operands and unmodified bytes. No game process or installed executable is modified.",
+    "Fixture explicitly resets a mesh guard/counter between independent preimage scenarios to check alternate-target/global-guard behavior and unsigned wrap. Production initialization order is not inferred from fixture IDs.",
+    "Game classification selectors are fixture cells containing recovered family IDs/nonmatch. Production E19B64/E19A98/E19BE4 publication, meaning and full application startup routing are not established. The fixture reaches64 and44 classifications; prior54 helper remains separately validated.",
+    "Guards set before a throwing root/counter call, aliases/concurrent guard changes, and failure after partial publication are listing-checked but not newly fault-injected. All scopes retain current global read/write semantics, no reset/rollback.",
+    "Hot effect fixture remains actual B407A0 on explicit zero-pass preimage and actual B43700 descriptor named generic; cold shaders/compiler/cache providers remain unexecuted.",
+    "No full root traversal, complete application startup, native ABI/FH3/SEH, gameplay or rendered-image parity proof."
+  ],
+  "remaining": {
+    "startup": "Verify actual CRT/router consumers of CD8690/CD86F0/CD87B0 and reconstruct production selector-cell producers E19B64/E19A98/E19BE4. Source type IDs must share the application actual root/counter domain.",
+    "item_methods": "B94020/shared clone-copy and per-profile accessors still require separate evidence; previous CO handoff mislabeled slotC predicates as other item methods.",
+    "cold_effect": "General material admission still needs real cold effect children.",
+    "main": "Agent branch only; moving main is unreviewed."
+  },
+  "evidence": [
+    {
+      "path": "local/native_mesh_resource_classification_cp/registered/annotation.log",
+      "sha256": "f1ab6186acaf665f47d46a889ed484e3dc1f740d65c5a806fd62be56247e95d8",
+      "bytes": 95
+    },
+    {
+      "path": "local/native_mesh_resource_classification_cp/registered/bsp_core.lib",
+      "sha256": "a17e44bf429ca91eec4bb4690d2859c8be1e35f4f099711bb4eba24c6a25c63f",
+      "bytes": 59501366
+    },
+    {
+      "path": "local/native_mesh_resource_classification_cp/registered/bsp_core.vcxproj",
+      "sha256": "1e55c5d486d29e9c0e2f17e73b489630f62e7859faacb6bc5c60a781ed7d7705",
+      "bytes": 200058
+    },
+    {
+      "path": "local/native_mesh_resource_classification_cp/registered/bsp_game.exe",
+      "sha256": "7415ad10c06463a6e3033211ff64fc2aa60cb92ab731db880742cac945dcc290",
+      "bytes": 2168832
+    },
+    {
+      "path": "local/native_mesh_resource_classification_cp/registered/bsp_lua511.lib",
+      "sha256": "00315ac717aac3d2b2161fefefe71b36a974335ff9c95d48c137423eb4e2f4b2",
+      "bytes": 455244
+    },
+    {
+      "path": "local/native_mesh_resource_classification_cp/registered/bsp_zlib121.lib",
+      "sha256": "73ae30b8adc3adfe5b33285bac533f8e7df7e8ab8d9e44789e6a030fd8a06ad9",
+      "bytes": 71906
+    },
+    {
+      "path": "local/native_mesh_resource_classification_cp/registered/build.log",
+      "sha256": "8f58919881cd1d50e94d77d363781426bb64809ea394a86d2e99608ec5b9adcc",
+      "bytes": 2494
+    },
+    {
+      "path": "local/native_mesh_resource_classification_cp/registered/call_check.log",
+      "sha256": "34acdb4fbab72b4773e4827e33647576057f1f5e78c867f0d183a50b3b7f8194",
+      "bytes": 85
+    },
+    {
+      "path": "local/native_mesh_resource_classification_cp/registered/child_probe.log",
+      "sha256": "ac2530edf776f7227c17d8630bc6141a597a5ea16063975de59f347ff617e552",
+      "bytes": 1400
+    },
+    {
+      "path": "local/native_mesh_resource_classification_cp/registered/CMakeCache.txt",
+      "sha256": "2ab657bd06bb97731372c10fc883040590ccedec539b0406ba2554bab45f7835",
+      "bytes": 18839
+    },
+    {
+      "path": "local/native_mesh_resource_classification_cp/registered/compile.cmd",
+      "sha256": "c70180822d68804f1c5e26e67cf322ceb867c3acca0b6517fc7aee84c37f7add",
+      "bytes": 760
+    },
+    {
+      "path": "local/native_mesh_resource_classification_cp/registered/compile.log",
+      "sha256": "25d4f66c7c01d5b35c220cb97ffdd1608405f4ab45160497e6cc7ea3079676cf",
+      "bytes": 11
+    },
+    {
+      "path": "local/native_mesh_resource_classification_cp/registered/configuration.json",
+      "sha256": "1ddbb2177874e351e3459e2c0491785cc5f2c7b44272b3afc25c6cf35bacd654",
+      "bytes": 889
+    },
+    {
+      "path": "local/native_mesh_resource_classification_cp/registered/final_audit.json",
+      "sha256": "7c250c2e7f921332d6ab06609076c527170daaaa44392dc73d81c5f8fd0ce477",
+      "bytes": 24245
+    },
+    {
+      "path": "local/native_mesh_resource_classification_cp/registered/probe.cpp",
+      "sha256": "853121eb5257b9d1314720c3ce0376e53632f1f105e3447ddf1648fc6409b891",
+      "bytes": 55496
+    },
+    {
+      "path": "local/native_mesh_resource_classification_cp/registered/probe.exe",
+      "sha256": "77e73d89707cafa7a15ceb0592b521e4ea9b3604a8fee29223831bc97a8146e2",
+      "bytes": 553984
+    },
+    {
+      "path": "local/native_mesh_resource_classification_cp/registered/probe.log",
+      "sha256": "3abcf76fa7a3a19e154a7502b503e0b1e88c73a22f42b092ec07d0516dcf3e20",
+      "bytes": 1447
+    },
+    {
+      "path": "local/native_mesh_resource_classification_cp/registered/probe.map",
+      "sha256": "90e1a7c79888a90b754f354e1a90b4ed38e33f01572c5d63ae4f83f9a8dd2158",
+      "bytes": 990564
+    },
+    {
+      "path": "local/native_mesh_resource_classification_cp/registered/probe.obj",
+      "sha256": "0bafd445935d916b82b4aeb56530a33ea9a33eaa7ed30258e46b8029fcc44ed3",
+      "bytes": 470536
+    },
+    {
+      "path": "local/native_mesh_resource_classification_cp/registered/source_manifest.json",
+      "sha256": "a0cc5c3d582fabe1e25f3f5cc53f60d33d630dff6e4cc7ca32f456e026995270",
+      "bytes": 290908
+    },
+    {
+      "path": "reports/native_mesh_resource_classification_annotations_cp.json",
+      "sha256": "e973cf2d86cb6bd4836991d60eaae51fe4d7de956af4d50f28a7303d1cf9a448",
+      "bytes": 137636
+    }
+  ],
+  "configuration": {
+    "base_revision": "8ba3d833dcf7cdaf22ff710497938298daa1488e",
+    "override_absent": true,
+    "build": "scripts/build.ps1 with MSBUILDDISABLENODEREUSE=1 and CMAKE_BUILD_PARALLEL_LEVEL=3",
+    "build_scope": "Tracked default Win32 CMake incremental rebuild; not a fresh empty directory",
+    "source_inputs": 2685,
+    "source_manifest": {
+      "path": "local/native_mesh_resource_classification_cp/registered/source_manifest.json",
+      "sha256": "a0cc5c3d582fabe1e25f3f5cc53f60d33d630dff6e4cc7ca32f456e026995270",
+      "bytes": 290908
+    },
+    "changed_source_files": [
+      "include/bsp/native_mesh_subset_loading.hpp",
+      "src/native_mesh_subset_loading.cpp"
+    ],
+    "registry_unchanged": true,
+    "binary": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+    }
+  }
+}

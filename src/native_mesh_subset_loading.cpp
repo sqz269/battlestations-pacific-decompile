@@ -432,4 +432,93 @@ void NativeMeshResourceReferences::source_zero_reference(std::uintptr_t e, void*
     }
     other_.source_zero_reference(e, p, table);
 }
+NativeMeshResourceTypeIds::NativeMeshResourceTypeIds(TypeIdCounterLifetime& counter,
+    LightTypeBootstrap& root, NativeMeshResourceTypeStorage storage) noexcept
+    : counter_(counter), root_(root), storage_(storage) {}
+U NativeMeshResourceTypeIds::consume_id() {
+    volatile auto* owner = counter_.get_006fac20();
+    const U id = owner->next_id_04;
+    owner->next_id_04 = id + 1u;
+    return id;
+}
+void NativeMeshResourceTypeIds::initialize_scene_resource_00b869c0(volatile U* target) {
+    if (storage_.scene_guard_0109020c == 0) {
+        storage_.scene_guard_0109020c = 1;
+        target[2] = 0x00d631e4;
+        auto& root = root_.storage().root_0109db84;
+        root_.initialize_root_00bea780(root);
+        target[1] = root.own_id;
+        target[0] = consume_id();
+    }
+}
+void NativeMeshResourceTypeIds::initialize_mesh_resource_00b93bd0(volatile U* target) {
+    if (storage_.mesh_guard_01090440 == 0) {
+        storage_.mesh_guard_01090440 = 1;
+        target[3] = 0x00d637a4;
+        initialize_scene_resource_00b869c0(storage_.scene_01090210);
+        // Runtime entry alternates each source load and destination store.
+        target[1] = storage_.scene_01090210[0];
+        target[2] = storage_.scene_01090210[1];
+        target[0] = consume_id();
+    }
+}
+void NativeMeshResourceTypeIds::initialize_mesh_after_guard_check() {
+    storage_.mesh_guard_01090440 = 1;
+    storage_.mesh_01090444[3] = 0x00d637a4;
+    initialize_scene_resource_00b869c0(storage_.scene_01090210);
+    // CRT form captures both source words before either destination store.
+    const U scene = storage_.scene_01090210[0];
+    const U root = storage_.scene_01090210[1];
+    storage_.mesh_01090444[1] = scene;
+    storage_.mesh_01090444[2] = root;
+    storage_.mesh_01090444[0] = consume_id();
+}
+void NativeMeshResourceTypeIds::initialize_mesh_resource_00cd8690() {
+    if (storage_.mesh_guard_01090440 == 0) initialize_mesh_after_guard_check();
+}
+void NativeMeshResourceTypeIds::initialize_derived(volatile std::uint8_t& guard,
+    volatile U* descriptor, U name) {
+    if (guard != 0) return;
+    const bool initialize_mesh = storage_.mesh_guard_01090440 == 0;
+    guard = 1;
+    descriptor[4] = name;
+    if (initialize_mesh) initialize_mesh_after_guard_check();
+    const U mesh = storage_.mesh_01090444[0];
+    const U scene = storage_.mesh_01090444[1];
+    const U root = storage_.mesh_01090444[2];
+    descriptor[1] = mesh; descriptor[2] = scene; descriptor[3] = root;
+    descriptor[0] = consume_id();
+}
+void NativeMeshResourceTypeIds::initialize_skined_mesh_resource_00cd86f0() {
+    initialize_derived(storage_.skined_guard_01090441, storage_.skined_01090454, 0x00d637b8);
+}
+void NativeMeshResourceTypeIds::initialize_matrix_mesh_resource_00cd87b0() {
+    initialize_derived(storage_.matrix_guard_01090442, storage_.matrix_01090468, 0x00d637cc);
+}
+U read_native_mesh_resource_type_00b93000(const volatile U& v) { return v; }
+U read_native_mesh_resource_name_00b93010(const volatile U& v) { return v; }
+U read_native_mesh_resource_type_00b930d0(const volatile U& v) { return v; }
+U read_native_mesh_resource_name_00b930e0(const volatile U& v) { return v; }
+U read_native_mesh_resource_type_00b931d0(const volatile U& v) { return v; }
+U read_native_mesh_resource_name_00b931e0(const volatile U& v) { return v; }
+std::uint8_t matches_native_mesh_resource_type_00b936b0(U token, const volatile U* ids) {
+    for (unsigned i = 0; i != 3; ++i) if (ids[i] == token) return 1;
+    return 0;
+}
+std::uint8_t matches_native_mesh_resource_type_00b939c0(U token, const volatile U* ids) {
+    for (unsigned i = 0; i != 4; ++i) if (ids[i] == token) return 1;
+    return 0;
+}
+std::uint8_t matches_native_mesh_resource_type_00b93a40(U token, const volatile U* ids) {
+    for (unsigned i = 0; i != 4; ++i) if (ids[i] == token) return 1;
+    return 0;
+}
+NativeMeshResourceTypeCalls::NativeMeshResourceTypeCalls(NativeResourceItemTypeCalls& other,
+    NativeMeshResourceTypeStorage storage) noexcept : other_(other), storage_(storage) {}
+std::uint8_t NativeMeshResourceTypeCalls::matches_type(std::uintptr_t target, void* item, U token) {
+    if (target == 0x00b936b0) return matches_native_mesh_resource_type_00b936b0(token, storage_.mesh_01090444);
+    if (target == 0x00b939c0) return matches_native_mesh_resource_type_00b939c0(token, storage_.skined_01090454);
+    if (target == 0x00b93a40) return matches_native_mesh_resource_type_00b93a40(token, storage_.matrix_01090468);
+    return other_.matches_type(target, item, token);
+}
 } // namespace bsp

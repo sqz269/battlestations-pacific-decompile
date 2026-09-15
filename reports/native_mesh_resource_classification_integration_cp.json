@@ -1,0 +1,236 @@
+{
+  "packet": "orch4_native_mesh_resource_classification_cp",
+  "state": "complete_mesh_resource_type_publication_native_leaf_oracle_and_classification_fixture_passed_production_selectors_unvalidated",
+  "base_revision": "8ba3d833dcf7cdaf22ff710497938298daa1488e",
+  "project": {
+    "project_name": "bsp",
+    "current_folder": "/",
+    "folders": [],
+    "files": [
+      {
+        "name": "battlestationspacific.exe",
+        "path": "/battlestationspacific.exe",
+        "content_type": "Program",
+        "version": 2766,
+        "is_read_only": false,
+        "is_versioned": false
+      }
+    ]
+  },
+  "program": {
+    "name": "battlestationspacific.exe",
+    "path": "/battlestationspacific.exe",
+    "executable_path": "/I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "executable_format": "Portable Executable (PE)",
+    "language": "x86:LE:32:default",
+    "compiler": "windows",
+    "address_size": 32,
+    "image_base": "00400000",
+    "min_address": "00400000",
+    "max_address": "ffdfffff",
+    "memory_size": 14876380,
+    "function_count": 64112,
+    "symbol_count": 144508,
+    "data_type_count": 795,
+    "creation_date": "Mon May 04 16:56:25 PDT 2026",
+    "memory_block_count": 6,
+    "address_spaces": [
+      {
+        "name": "ram",
+        "start": "00000000",
+        "end": "ffffffff",
+        "size": 4294967296,
+        "addressable_unit_size": 1,
+        "size_bytes": 4294967296,
+        "address_size_bits": 32,
+        "is_default": true
+      }
+    ],
+    "has_multiple_address_spaces": false
+  },
+  "ordinary_bodies": 14,
+  "ordinary_bytes": 690,
+  "support_bytes": 0,
+  "verified_instruction_owners": 164,
+  "preserved_comments": 14,
+  "source_manifest": {
+    "path": "local/native_mesh_resource_classification_cp/registered/source_manifest.json",
+    "sha256": "a0cc5c3d582fabe1e25f3f5cc53f60d33d630dff6e4cc7ca32f456e026995270",
+    "bytes": 290908
+  },
+  "configuration": {
+    "base_revision": "8ba3d833dcf7cdaf22ff710497938298daa1488e",
+    "override_absent": true,
+    "build": "scripts/build.ps1 with MSBUILDDISABLENODEREUSE=1 and CMAKE_BUILD_PARALLEL_LEVEL=3",
+    "build_scope": "Tracked default Win32 CMake incremental rebuild; not a fresh empty directory",
+    "source_inputs": 2685,
+    "source_manifest": {
+      "path": "local/native_mesh_resource_classification_cp/registered/source_manifest.json",
+      "sha256": "a0cc5c3d582fabe1e25f3f5cc53f60d33d630dff6e4cc7ca32f456e026995270",
+      "bytes": 290908
+    },
+    "changed_source_files": [
+      "include/bsp/native_mesh_subset_loading.hpp",
+      "src/native_mesh_subset_loading.cpp"
+    ],
+    "registry_unchanged": true,
+    "binary": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+    }
+  },
+  "validation": {
+    "build": "Tracked scripts/build.ps1 MSVC Win32 and both existing CTests pass; only registered mesh-loading source/header changed; CMake unchanged",
+    "native_leaf_oracle": "Nine unchanged installed-PE leaves execute against original absolute0109xxxx descriptor cells. Six getter values and24 postpublication predicate comparisons plus three zero-prepublication and current-ID mutation checks agree with source.",
+    "startup": "Actual cold TypeIdCounterLifetime with actual manager publication, root/scene initializers; caller-target runtime mesh; guard suppresses later global initialization; explicit independent reset then cold CRT base and derived-first mesh, FFFFFFFE/FFFFFFFF/0 wrap and repeated no-op guards",
+    "classification": "All three actual full mesh parser items enter actual71B810 game-resource object and71BB40 using real slotC predicates. Explicit fixture selectors yield44 for mesh/matrix,64 for skined; primary item and mesh references remain1; scalar deletion follows actualcurrentprofile.",
+    "cleanup": "57 canonical geometry owners retire; actual type counter unregisters and deletes, new actual lifetime manager drains/frees; descriptor window and oracle code freed; pools/caches/tree/list empty and device/APIrefs0",
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "startup_registry_leases": [
+    {
+      "id": "agent/orch5-20260911:orch5_native_focus_cmake",
+      "owner": "agent/orch5-20260911",
+      "packet": "orch5_native_focus_cmake",
+      "addresses": [],
+      "ranges": [],
+      "files": [
+        "cmake/startup.cmake"
+      ],
+      "claimed": "2026-09-15T02:59:56+00:00",
+      "expires": "2026-09-15T03:59:56+00:00",
+      "status": "active",
+      "worktree": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911",
+      "note": ""
+    }
+  ],
+  "main_integration": "Not performed; agent branch only. Later main deltas remain unreviewed.",
+  "remaining": {
+    "startup": "Verify actual CRT/router consumers of CD8690/CD86F0/CD87B0 and reconstruct production selector-cell producers E19B64/E19A98/E19BE4. Source type IDs must share the application actual root/counter domain.",
+    "item_methods": "B94020/shared clone-copy and per-profile accessors still require separate evidence; previous CO handoff mislabeled slotC predicates as other item methods.",
+    "cold_effect": "General material admission still needs real cold effect children.",
+    "main": "Agent branch only; moving main is unreviewed."
+  },
+  "evidence_limits": [
+    "Only six getter and three predicate bodies execute unchanged installed-PE bytes. Startup initializer behavior is source execution plus complete byte/listing evidence, not native-machine-code differential proof.",
+    "Fixture reserves original01090000..0109FFFF in its suspended child before CRT startup; commits owned RW globals there. Nine copied executable leaves retain original absolute operands and unmodified bytes. No game process or installed executable is modified.",
+    "Fixture explicitly resets a mesh guard/counter between independent preimage scenarios to check alternate-target/global-guard behavior and unsigned wrap. Production initialization order is not inferred from fixture IDs.",
+    "Game classification selectors are fixture cells containing recovered family IDs/nonmatch. Production E19B64/E19A98/E19BE4 publication, meaning and full application startup routing are not established. The fixture reaches64 and44 classifications; prior54 helper remains separately validated.",
+    "Guards set before a throwing root/counter call, aliases/concurrent guard changes, and failure after partial publication are listing-checked but not newly fault-injected. All scopes retain current global read/write semantics, no reset/rollback.",
+    "Hot effect fixture remains actual B407A0 on explicit zero-pass preimage and actual B43700 descriptor named generic; cold shaders/compiler/cache providers remain unexecuted.",
+    "No full root traversal, complete application startup, native ABI/FH3/SEH, gameplay or rendered-image parity proof."
+  ],
+  "artifacts": [
+    {
+      "path": "local/native_mesh_resource_classification_cp/registered/annotation.log",
+      "sha256": "f1ab6186acaf665f47d46a889ed484e3dc1f740d65c5a806fd62be56247e95d8",
+      "bytes": 95
+    },
+    {
+      "path": "local/native_mesh_resource_classification_cp/registered/bsp_core.lib",
+      "sha256": "a17e44bf429ca91eec4bb4690d2859c8be1e35f4f099711bb4eba24c6a25c63f",
+      "bytes": 59501366
+    },
+    {
+      "path": "local/native_mesh_resource_classification_cp/registered/bsp_core.vcxproj",
+      "sha256": "1e55c5d486d29e9c0e2f17e73b489630f62e7859faacb6bc5c60a781ed7d7705",
+      "bytes": 200058
+    },
+    {
+      "path": "local/native_mesh_resource_classification_cp/registered/bsp_game.exe",
+      "sha256": "7415ad10c06463a6e3033211ff64fc2aa60cb92ab731db880742cac945dcc290",
+      "bytes": 2168832
+    },
+    {
+      "path": "local/native_mesh_resource_classification_cp/registered/bsp_lua511.lib",
+      "sha256": "00315ac717aac3d2b2161fefefe71b36a974335ff9c95d48c137423eb4e2f4b2",
+      "bytes": 455244
+    },
+    {
+      "path": "local/native_mesh_resource_classification_cp/registered/bsp_zlib121.lib",
+      "sha256": "73ae30b8adc3adfe5b33285bac533f8e7df7e8ab8d9e44789e6a030fd8a06ad9",
+      "bytes": 71906
+    },
+    {
+      "path": "local/native_mesh_resource_classification_cp/registered/build.log",
+      "sha256": "8f58919881cd1d50e94d77d363781426bb64809ea394a86d2e99608ec5b9adcc",
+      "bytes": 2494
+    },
+    {
+      "path": "local/native_mesh_resource_classification_cp/registered/call_check.log",
+      "sha256": "34acdb4fbab72b4773e4827e33647576057f1f5e78c867f0d183a50b3b7f8194",
+      "bytes": 85
+    },
+    {
+      "path": "local/native_mesh_resource_classification_cp/registered/child_probe.log",
+      "sha256": "ac2530edf776f7227c17d8630bc6141a597a5ea16063975de59f347ff617e552",
+      "bytes": 1400
+    },
+    {
+      "path": "local/native_mesh_resource_classification_cp/registered/CMakeCache.txt",
+      "sha256": "2ab657bd06bb97731372c10fc883040590ccedec539b0406ba2554bab45f7835",
+      "bytes": 18839
+    },
+    {
+      "path": "local/native_mesh_resource_classification_cp/registered/compile.cmd",
+      "sha256": "c70180822d68804f1c5e26e67cf322ceb867c3acca0b6517fc7aee84c37f7add",
+      "bytes": 760
+    },
+    {
+      "path": "local/native_mesh_resource_classification_cp/registered/compile.log",
+      "sha256": "25d4f66c7c01d5b35c220cb97ffdd1608405f4ab45160497e6cc7ea3079676cf",
+      "bytes": 11
+    },
+    {
+      "path": "local/native_mesh_resource_classification_cp/registered/configuration.json",
+      "sha256": "1ddbb2177874e351e3459e2c0491785cc5f2c7b44272b3afc25c6cf35bacd654",
+      "bytes": 889
+    },
+    {
+      "path": "local/native_mesh_resource_classification_cp/registered/final_audit.json",
+      "sha256": "7c250c2e7f921332d6ab06609076c527170daaaa44392dc73d81c5f8fd0ce477",
+      "bytes": 24245
+    },
+    {
+      "path": "local/native_mesh_resource_classification_cp/registered/probe.cpp",
+      "sha256": "853121eb5257b9d1314720c3ce0376e53632f1f105e3447ddf1648fc6409b891",
+      "bytes": 55496
+    },
+    {
+      "path": "local/native_mesh_resource_classification_cp/registered/probe.exe",
+      "sha256": "77e73d89707cafa7a15ceb0592b521e4ea9b3604a8fee29223831bc97a8146e2",
+      "bytes": 553984
+    },
+    {
+      "path": "local/native_mesh_resource_classification_cp/registered/probe.log",
+      "sha256": "3abcf76fa7a3a19e154a7502b503e0b1e88c73a22f42b092ec07d0516dcf3e20",
+      "bytes": 1447
+    },
+    {
+      "path": "local/native_mesh_resource_classification_cp/registered/probe.map",
+      "sha256": "90e1a7c79888a90b754f354e1a90b4ed38e33f01572c5d63ae4f83f9a8dd2158",
+      "bytes": 990564
+    },
+    {
+      "path": "local/native_mesh_resource_classification_cp/registered/probe.obj",
+      "sha256": "0bafd445935d916b82b4aeb56530a33ea9a33eaa7ed30258e46b8029fcc44ed3",
+      "bytes": 470536
+    },
+    {
+      "path": "local/native_mesh_resource_classification_cp/registered/source_manifest.json",
+      "sha256": "a0cc5c3d582fabe1e25f3f5cc53f60d33d630dff6e4cc7ca32f456e026995270",
+      "bytes": 290908
+    },
+    {
+      "path": "reports/native_mesh_resource_classification_flow_cp.json",
+      "sha256": "6622eb7cff97c2a58db4386fd3e2baf0936d598ee9660ff2a396703bc1e07641",
+      "bytes": 34498
+    },
+    {
+      "path": "reports/native_mesh_resource_classification_annotations_cp.json",
+      "sha256": "e973cf2d86cb6bd4836991d60eaae51fe4d7de956af4d50f28a7303d1cf9a448",
+      "bytes": 137636
+    }
+  ]
+}

@@ -126,3 +126,10 @@ B936B0/B939C0/B93A40, shared B94020 and remaining per-profile accessors are
 separate bounded work. General material admission still needs cold effect
 children. Changes were published only on `agent/orch4-20260910`; moving main
 deltas remain unreviewed.
+
+Correction from [NATIVE_MESH_RESOURCE_CLASSIFICATION_CP.md](NATIVE_MESH_RESOURCE_CLASSIFICATION_CP.md):
+B93000/B930D0/B931D0 at item slot8 are current own-ID getters, not predicates.
+B936B0/B939C0/B93A40 at slotC are the actual 3/4/4-ID classification predicates.
+CP reconstructs those nine leaves plus the scene/mesh/derived type producers
+and composes the real predicates with game-resource classification. Production
+selector-cell publication and application startup routing remain separate work.

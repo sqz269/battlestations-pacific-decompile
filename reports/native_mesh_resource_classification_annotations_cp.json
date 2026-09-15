@@ -1,0 +1,1080 @@
+{
+  "packet": "orch4_native_mesh_resource_classification_cp",
+  "entries": [
+    {
+      "address": "00b93000",
+      "name": "BSP_ReadNativeMeshResourceType_00b93000",
+      "before_comment": {
+        "address": "00b93000",
+        "function_name": "BSP_MeshResourceType_00b93000",
+        "comment": ""
+      },
+      "before_documentation": {
+        "hash": "78a2898b7dd7261f622ec5448c4deb109aa77146ffcfe1db7a5b7d06a6e696d3",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b93000",
+        "function_name": "BSP_MeshResourceType_00b93000",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "",
+        "parameters": [],
+        "local_variables": [],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 100.0
+      },
+      "evidence": "CP complete14 native mesh resource type routines690B: 164 instruction owners,12 direct calls, saved Ghidra and installed PE equal. Six6B getters read current own-ID/name cells; three40B predicates are current slotC, not slot8, compare3/4/4 current IDs excluding name and never initialize/filter zero. B869C0 scene and B93BD0 mesh initializers use process guards with caller-target descriptors; CD8690/CD86F0/CD87B0 publish cRenderMeshResource/cSkinedMeshResource/cMatrixIndexedMeshResource from SAME cold type-counter/root/scene inheritance. Runtime mesh alternates source load/store; CRT base captures both parents before stores; derived initializer captures mesh guard before own guard/name and copies three parents before stores. Guards/names precede fallible calls; no rollback, atomicization or counter saturation. Numeric NativeResourceItemTypeCalls adapter composes actual71BB40 classification. Twelve missing functions defined under lock with before-state and prior-comment preservation;14 ABI/source records. Strict Win32 build/both existing CTests pass. Existing D3D9 fixture runs actual cold shared counter/manager, alternate caller-target guard, CRT cold base, derived-first base, unsigned counter wrap and idempotence; six unchanged native getters and three unchanged native predicates run against original-address RW globals and agree with source before/after publication/current-ID mutation. Allthree full mesh parsers execute actual71B810 game resource construction/71BB40 classification with real predicates and explicit fixture selector cells, then real deletion;57canonical owners and new counter/manager retire. Production E19 selector-cell publication, full root/game startup dispatch, cold shaders, initializer native-machine-code oracle, ABI/FH3/SEH and gameplay remain unproven. Complete 6B. No ordinary inputs; ECX ignored; EAX current global DWORD; RET. Source read_native_mesh_resource_type_00b93000.",
+      "prototype": "uint __cdecl BSP_ReadNativeMeshResourceType_00b93000(void)",
+      "prototype_result": "Successfully set prototype for function at 00b93000 with __cdecl calling convention",
+      "ledger_name_output": "00b93000 -> BSP_ReadNativeMeshResourceType_00b93000\n",
+      "ledger_function_output": "00b93000 function read_native_mesh_resource_type_00b93000\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00b93000",
+        "function_name": "BSP_ReadNativeMeshResourceType_00b93000",
+        "comment": "\n\n[BSP reconstruction 00b93000] CP update\nCP complete14 native mesh resource type routines690B: 164 instruction owners,12 direct calls, saved Ghidra and installed PE equal. Six6B getters read current own-ID/name cells; three40B predicates are current slotC, not slot8, compare3/4/4 current IDs excluding name and never initialize/filter zero. B869C0 scene and B93BD0 mesh initializers use process guards with caller-target descriptors; CD8690/CD86F0/CD87B0 publish cRenderMeshResource/cSkinedMeshResource/cMatrixIndexedMeshResource from SAME cold type-counter/root/scene inheritance. Runtime mesh alternates source load/store; CRT base captures both parents before stores; derived initializer captures mesh guard before own guard/name and copies three parents before stores. Guards/names precede fallible calls; no rollback, atomicization or counter saturation. Numeric NativeResourceItemTypeCalls adapter composes actual71BB40 classification. Twelve missing functions defined under lock with before-state and prior-comment preservation;14 ABI/source records. Strict Win32 build/both existing CTests pass. Existing D3D9 fixture runs actual cold shared counter/manager, alternate caller-target guard, CRT cold base, derived-first base, unsigned counter wrap and idempotence; six unchanged native getters and three unchanged native predicates run against original-address RW globals and agree with source before/after publication/current-ID mutation. Allthree full mesh parsers execute actual71B810 game resource construction/71BB40 classification with real predicates and explicit fixture selector cells, then real deletion;57canonical owners and new counter/manager retire. Production E19 selector-cell publication, full root/game startup dispatch, cold shaders, initializer native-machine-code oracle, ABI/FH3/SEH and gameplay remain unproven. Complete 6B. No ordinary inputs; ECX ignored; EAX current global DWORD; RET. Source read_native_mesh_resource_type_00b93000."
+      }
+    },
+    {
+      "address": "00b93010",
+      "name": "BSP_ReadNativeMeshResourceName_00b93010",
+      "before_comment": {
+        "address": "00b93010",
+        "function_name": "BSP_MeshResourceType_00b93010",
+        "comment": ""
+      },
+      "before_documentation": {
+        "hash": "78a2898b7dd7261f622ec5448c4deb109aa77146ffcfe1db7a5b7d06a6e696d3",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b93010",
+        "function_name": "BSP_MeshResourceType_00b93010",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "",
+        "parameters": [],
+        "local_variables": [],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 100.0
+      },
+      "evidence": "CP complete14 native mesh resource type routines690B: 164 instruction owners,12 direct calls, saved Ghidra and installed PE equal. Six6B getters read current own-ID/name cells; three40B predicates are current slotC, not slot8, compare3/4/4 current IDs excluding name and never initialize/filter zero. B869C0 scene and B93BD0 mesh initializers use process guards with caller-target descriptors; CD8690/CD86F0/CD87B0 publish cRenderMeshResource/cSkinedMeshResource/cMatrixIndexedMeshResource from SAME cold type-counter/root/scene inheritance. Runtime mesh alternates source load/store; CRT base captures both parents before stores; derived initializer captures mesh guard before own guard/name and copies three parents before stores. Guards/names precede fallible calls; no rollback, atomicization or counter saturation. Numeric NativeResourceItemTypeCalls adapter composes actual71BB40 classification. Twelve missing functions defined under lock with before-state and prior-comment preservation;14 ABI/source records. Strict Win32 build/both existing CTests pass. Existing D3D9 fixture runs actual cold shared counter/manager, alternate caller-target guard, CRT cold base, derived-first base, unsigned counter wrap and idempotence; six unchanged native getters and three unchanged native predicates run against original-address RW globals and agree with source before/after publication/current-ID mutation. Allthree full mesh parsers execute actual71B810 game resource construction/71BB40 classification with real predicates and explicit fixture selector cells, then real deletion;57canonical owners and new counter/manager retire. Production E19 selector-cell publication, full root/game startup dispatch, cold shaders, initializer native-machine-code oracle, ABI/FH3/SEH and gameplay remain unproven. Complete 6B. No ordinary inputs; ECX ignored; EAX current global DWORD; RET. Source read_native_mesh_resource_name_00b93010.",
+      "prototype": "uint __cdecl BSP_ReadNativeMeshResourceName_00b93010(void)",
+      "prototype_result": "Successfully set prototype for function at 00b93010 with __cdecl calling convention",
+      "ledger_name_output": "00b93010 -> BSP_ReadNativeMeshResourceName_00b93010\n",
+      "ledger_function_output": "00b93010 function read_native_mesh_resource_name_00b93010\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00b93010",
+        "function_name": "BSP_ReadNativeMeshResourceName_00b93010",
+        "comment": "\n\n[BSP reconstruction 00b93010] CP update\nCP complete14 native mesh resource type routines690B: 164 instruction owners,12 direct calls, saved Ghidra and installed PE equal. Six6B getters read current own-ID/name cells; three40B predicates are current slotC, not slot8, compare3/4/4 current IDs excluding name and never initialize/filter zero. B869C0 scene and B93BD0 mesh initializers use process guards with caller-target descriptors; CD8690/CD86F0/CD87B0 publish cRenderMeshResource/cSkinedMeshResource/cMatrixIndexedMeshResource from SAME cold type-counter/root/scene inheritance. Runtime mesh alternates source load/store; CRT base captures both parents before stores; derived initializer captures mesh guard before own guard/name and copies three parents before stores. Guards/names precede fallible calls; no rollback, atomicization or counter saturation. Numeric NativeResourceItemTypeCalls adapter composes actual71BB40 classification. Twelve missing functions defined under lock with before-state and prior-comment preservation;14 ABI/source records. Strict Win32 build/both existing CTests pass. Existing D3D9 fixture runs actual cold shared counter/manager, alternate caller-target guard, CRT cold base, derived-first base, unsigned counter wrap and idempotence; six unchanged native getters and three unchanged native predicates run against original-address RW globals and agree with source before/after publication/current-ID mutation. Allthree full mesh parsers execute actual71B810 game resource construction/71BB40 classification with real predicates and explicit fixture selector cells, then real deletion;57canonical owners and new counter/manager retire. Production E19 selector-cell publication, full root/game startup dispatch, cold shaders, initializer native-machine-code oracle, ABI/FH3/SEH and gameplay remain unproven. Complete 6B. No ordinary inputs; ECX ignored; EAX current global DWORD; RET. Source read_native_mesh_resource_name_00b93010."
+      }
+    },
+    {
+      "address": "00b930d0",
+      "name": "BSP_ReadNativeMeshResourceType_00b930d0",
+      "before_comment": {
+        "address": "00b930d0",
+        "function_name": "BSP_MeshResourceType_00b930d0",
+        "comment": ""
+      },
+      "before_documentation": {
+        "hash": "78a2898b7dd7261f622ec5448c4deb109aa77146ffcfe1db7a5b7d06a6e696d3",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b930d0",
+        "function_name": "BSP_MeshResourceType_00b930d0",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "",
+        "parameters": [],
+        "local_variables": [],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 100.0
+      },
+      "evidence": "CP complete14 native mesh resource type routines690B: 164 instruction owners,12 direct calls, saved Ghidra and installed PE equal. Six6B getters read current own-ID/name cells; three40B predicates are current slotC, not slot8, compare3/4/4 current IDs excluding name and never initialize/filter zero. B869C0 scene and B93BD0 mesh initializers use process guards with caller-target descriptors; CD8690/CD86F0/CD87B0 publish cRenderMeshResource/cSkinedMeshResource/cMatrixIndexedMeshResource from SAME cold type-counter/root/scene inheritance. Runtime mesh alternates source load/store; CRT base captures both parents before stores; derived initializer captures mesh guard before own guard/name and copies three parents before stores. Guards/names precede fallible calls; no rollback, atomicization or counter saturation. Numeric NativeResourceItemTypeCalls adapter composes actual71BB40 classification. Twelve missing functions defined under lock with before-state and prior-comment preservation;14 ABI/source records. Strict Win32 build/both existing CTests pass. Existing D3D9 fixture runs actual cold shared counter/manager, alternate caller-target guard, CRT cold base, derived-first base, unsigned counter wrap and idempotence; six unchanged native getters and three unchanged native predicates run against original-address RW globals and agree with source before/after publication/current-ID mutation. Allthree full mesh parsers execute actual71B810 game resource construction/71BB40 classification with real predicates and explicit fixture selector cells, then real deletion;57canonical owners and new counter/manager retire. Production E19 selector-cell publication, full root/game startup dispatch, cold shaders, initializer native-machine-code oracle, ABI/FH3/SEH and gameplay remain unproven. Complete 6B. No ordinary inputs; ECX ignored; EAX current global DWORD; RET. Source read_native_mesh_resource_type_00b930d0.",
+      "prototype": "uint __cdecl BSP_ReadNativeMeshResourceType_00b930d0(void)",
+      "prototype_result": "Successfully set prototype for function at 00b930d0 with __cdecl calling convention",
+      "ledger_name_output": "00b930d0 -> BSP_ReadNativeMeshResourceType_00b930d0\n",
+      "ledger_function_output": "00b930d0 function read_native_mesh_resource_type_00b930d0\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00b930d0",
+        "function_name": "BSP_ReadNativeMeshResourceType_00b930d0",
+        "comment": "\n\n[BSP reconstruction 00b930d0] CP update\nCP complete14 native mesh resource type routines690B: 164 instruction owners,12 direct calls, saved Ghidra and installed PE equal. Six6B getters read current own-ID/name cells; three40B predicates are current slotC, not slot8, compare3/4/4 current IDs excluding name and never initialize/filter zero. B869C0 scene and B93BD0 mesh initializers use process guards with caller-target descriptors; CD8690/CD86F0/CD87B0 publish cRenderMeshResource/cSkinedMeshResource/cMatrixIndexedMeshResource from SAME cold type-counter/root/scene inheritance. Runtime mesh alternates source load/store; CRT base captures both parents before stores; derived initializer captures mesh guard before own guard/name and copies three parents before stores. Guards/names precede fallible calls; no rollback, atomicization or counter saturation. Numeric NativeResourceItemTypeCalls adapter composes actual71BB40 classification. Twelve missing functions defined under lock with before-state and prior-comment preservation;14 ABI/source records. Strict Win32 build/both existing CTests pass. Existing D3D9 fixture runs actual cold shared counter/manager, alternate caller-target guard, CRT cold base, derived-first base, unsigned counter wrap and idempotence; six unchanged native getters and three unchanged native predicates run against original-address RW globals and agree with source before/after publication/current-ID mutation. Allthree full mesh parsers execute actual71B810 game resource construction/71BB40 classification with real predicates and explicit fixture selector cells, then real deletion;57canonical owners and new counter/manager retire. Production E19 selector-cell publication, full root/game startup dispatch, cold shaders, initializer native-machine-code oracle, ABI/FH3/SEH and gameplay remain unproven. Complete 6B. No ordinary inputs; ECX ignored; EAX current global DWORD; RET. Source read_native_mesh_resource_type_00b930d0."
+      }
+    },
+    {
+      "address": "00b930e0",
+      "name": "BSP_ReadNativeMeshResourceName_00b930e0",
+      "before_comment": {
+        "address": "00b930e0",
+        "function_name": "BSP_MeshResourceType_00b930e0",
+        "comment": ""
+      },
+      "before_documentation": {
+        "hash": "78a2898b7dd7261f622ec5448c4deb109aa77146ffcfe1db7a5b7d06a6e696d3",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b930e0",
+        "function_name": "BSP_MeshResourceType_00b930e0",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "",
+        "parameters": [],
+        "local_variables": [],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 100.0
+      },
+      "evidence": "CP complete14 native mesh resource type routines690B: 164 instruction owners,12 direct calls, saved Ghidra and installed PE equal. Six6B getters read current own-ID/name cells; three40B predicates are current slotC, not slot8, compare3/4/4 current IDs excluding name and never initialize/filter zero. B869C0 scene and B93BD0 mesh initializers use process guards with caller-target descriptors; CD8690/CD86F0/CD87B0 publish cRenderMeshResource/cSkinedMeshResource/cMatrixIndexedMeshResource from SAME cold type-counter/root/scene inheritance. Runtime mesh alternates source load/store; CRT base captures both parents before stores; derived initializer captures mesh guard before own guard/name and copies three parents before stores. Guards/names precede fallible calls; no rollback, atomicization or counter saturation. Numeric NativeResourceItemTypeCalls adapter composes actual71BB40 classification. Twelve missing functions defined under lock with before-state and prior-comment preservation;14 ABI/source records. Strict Win32 build/both existing CTests pass. Existing D3D9 fixture runs actual cold shared counter/manager, alternate caller-target guard, CRT cold base, derived-first base, unsigned counter wrap and idempotence; six unchanged native getters and three unchanged native predicates run against original-address RW globals and agree with source before/after publication/current-ID mutation. Allthree full mesh parsers execute actual71B810 game resource construction/71BB40 classification with real predicates and explicit fixture selector cells, then real deletion;57canonical owners and new counter/manager retire. Production E19 selector-cell publication, full root/game startup dispatch, cold shaders, initializer native-machine-code oracle, ABI/FH3/SEH and gameplay remain unproven. Complete 6B. No ordinary inputs; ECX ignored; EAX current global DWORD; RET. Source read_native_mesh_resource_name_00b930e0.",
+      "prototype": "uint __cdecl BSP_ReadNativeMeshResourceName_00b930e0(void)",
+      "prototype_result": "Successfully set prototype for function at 00b930e0 with __cdecl calling convention",
+      "ledger_name_output": "00b930e0 -> BSP_ReadNativeMeshResourceName_00b930e0\n",
+      "ledger_function_output": "00b930e0 function read_native_mesh_resource_name_00b930e0\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00b930e0",
+        "function_name": "BSP_ReadNativeMeshResourceName_00b930e0",
+        "comment": "\n\n[BSP reconstruction 00b930e0] CP update\nCP complete14 native mesh resource type routines690B: 164 instruction owners,12 direct calls, saved Ghidra and installed PE equal. Six6B getters read current own-ID/name cells; three40B predicates are current slotC, not slot8, compare3/4/4 current IDs excluding name and never initialize/filter zero. B869C0 scene and B93BD0 mesh initializers use process guards with caller-target descriptors; CD8690/CD86F0/CD87B0 publish cRenderMeshResource/cSkinedMeshResource/cMatrixIndexedMeshResource from SAME cold type-counter/root/scene inheritance. Runtime mesh alternates source load/store; CRT base captures both parents before stores; derived initializer captures mesh guard before own guard/name and copies three parents before stores. Guards/names precede fallible calls; no rollback, atomicization or counter saturation. Numeric NativeResourceItemTypeCalls adapter composes actual71BB40 classification. Twelve missing functions defined under lock with before-state and prior-comment preservation;14 ABI/source records. Strict Win32 build/both existing CTests pass. Existing D3D9 fixture runs actual cold shared counter/manager, alternate caller-target guard, CRT cold base, derived-first base, unsigned counter wrap and idempotence; six unchanged native getters and three unchanged native predicates run against original-address RW globals and agree with source before/after publication/current-ID mutation. Allthree full mesh parsers execute actual71B810 game resource construction/71BB40 classification with real predicates and explicit fixture selector cells, then real deletion;57canonical owners and new counter/manager retire. Production E19 selector-cell publication, full root/game startup dispatch, cold shaders, initializer native-machine-code oracle, ABI/FH3/SEH and gameplay remain unproven. Complete 6B. No ordinary inputs; ECX ignored; EAX current global DWORD; RET. Source read_native_mesh_resource_name_00b930e0."
+      }
+    },
+    {
+      "address": "00b931d0",
+      "name": "BSP_ReadNativeMeshResourceType_00b931d0",
+      "before_comment": {
+        "address": "00b931d0",
+        "function_name": "BSP_MeshResourceType_00b931d0",
+        "comment": ""
+      },
+      "before_documentation": {
+        "hash": "78a2898b7dd7261f622ec5448c4deb109aa77146ffcfe1db7a5b7d06a6e696d3",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b931d0",
+        "function_name": "BSP_MeshResourceType_00b931d0",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "",
+        "parameters": [],
+        "local_variables": [],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 100.0
+      },
+      "evidence": "CP complete14 native mesh resource type routines690B: 164 instruction owners,12 direct calls, saved Ghidra and installed PE equal. Six6B getters read current own-ID/name cells; three40B predicates are current slotC, not slot8, compare3/4/4 current IDs excluding name and never initialize/filter zero. B869C0 scene and B93BD0 mesh initializers use process guards with caller-target descriptors; CD8690/CD86F0/CD87B0 publish cRenderMeshResource/cSkinedMeshResource/cMatrixIndexedMeshResource from SAME cold type-counter/root/scene inheritance. Runtime mesh alternates source load/store; CRT base captures both parents before stores; derived initializer captures mesh guard before own guard/name and copies three parents before stores. Guards/names precede fallible calls; no rollback, atomicization or counter saturation. Numeric NativeResourceItemTypeCalls adapter composes actual71BB40 classification. Twelve missing functions defined under lock with before-state and prior-comment preservation;14 ABI/source records. Strict Win32 build/both existing CTests pass. Existing D3D9 fixture runs actual cold shared counter/manager, alternate caller-target guard, CRT cold base, derived-first base, unsigned counter wrap and idempotence; six unchanged native getters and three unchanged native predicates run against original-address RW globals and agree with source before/after publication/current-ID mutation. Allthree full mesh parsers execute actual71B810 game resource construction/71BB40 classification with real predicates and explicit fixture selector cells, then real deletion;57canonical owners and new counter/manager retire. Production E19 selector-cell publication, full root/game startup dispatch, cold shaders, initializer native-machine-code oracle, ABI/FH3/SEH and gameplay remain unproven. Complete 6B. No ordinary inputs; ECX ignored; EAX current global DWORD; RET. Source read_native_mesh_resource_type_00b931d0.",
+      "prototype": "uint __cdecl BSP_ReadNativeMeshResourceType_00b931d0(void)",
+      "prototype_result": "Successfully set prototype for function at 00b931d0 with __cdecl calling convention",
+      "ledger_name_output": "00b931d0 -> BSP_ReadNativeMeshResourceType_00b931d0\n",
+      "ledger_function_output": "00b931d0 function read_native_mesh_resource_type_00b931d0\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00b931d0",
+        "function_name": "BSP_ReadNativeMeshResourceType_00b931d0",
+        "comment": "\n\n[BSP reconstruction 00b931d0] CP update\nCP complete14 native mesh resource type routines690B: 164 instruction owners,12 direct calls, saved Ghidra and installed PE equal. Six6B getters read current own-ID/name cells; three40B predicates are current slotC, not slot8, compare3/4/4 current IDs excluding name and never initialize/filter zero. B869C0 scene and B93BD0 mesh initializers use process guards with caller-target descriptors; CD8690/CD86F0/CD87B0 publish cRenderMeshResource/cSkinedMeshResource/cMatrixIndexedMeshResource from SAME cold type-counter/root/scene inheritance. Runtime mesh alternates source load/store; CRT base captures both parents before stores; derived initializer captures mesh guard before own guard/name and copies three parents before stores. Guards/names precede fallible calls; no rollback, atomicization or counter saturation. Numeric NativeResourceItemTypeCalls adapter composes actual71BB40 classification. Twelve missing functions defined under lock with before-state and prior-comment preservation;14 ABI/source records. Strict Win32 build/both existing CTests pass. Existing D3D9 fixture runs actual cold shared counter/manager, alternate caller-target guard, CRT cold base, derived-first base, unsigned counter wrap and idempotence; six unchanged native getters and three unchanged native predicates run against original-address RW globals and agree with source before/after publication/current-ID mutation. Allthree full mesh parsers execute actual71B810 game resource construction/71BB40 classification with real predicates and explicit fixture selector cells, then real deletion;57canonical owners and new counter/manager retire. Production E19 selector-cell publication, full root/game startup dispatch, cold shaders, initializer native-machine-code oracle, ABI/FH3/SEH and gameplay remain unproven. Complete 6B. No ordinary inputs; ECX ignored; EAX current global DWORD; RET. Source read_native_mesh_resource_type_00b931d0."
+      }
+    },
+    {
+      "address": "00b931e0",
+      "name": "BSP_ReadNativeMeshResourceName_00b931e0",
+      "before_comment": {
+        "address": "00b931e0",
+        "function_name": "BSP_MeshResourceType_00b931e0",
+        "comment": ""
+      },
+      "before_documentation": {
+        "hash": "78a2898b7dd7261f622ec5448c4deb109aa77146ffcfe1db7a5b7d06a6e696d3",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b931e0",
+        "function_name": "BSP_MeshResourceType_00b931e0",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "",
+        "parameters": [],
+        "local_variables": [],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 100.0
+      },
+      "evidence": "CP complete14 native mesh resource type routines690B: 164 instruction owners,12 direct calls, saved Ghidra and installed PE equal. Six6B getters read current own-ID/name cells; three40B predicates are current slotC, not slot8, compare3/4/4 current IDs excluding name and never initialize/filter zero. B869C0 scene and B93BD0 mesh initializers use process guards with caller-target descriptors; CD8690/CD86F0/CD87B0 publish cRenderMeshResource/cSkinedMeshResource/cMatrixIndexedMeshResource from SAME cold type-counter/root/scene inheritance. Runtime mesh alternates source load/store; CRT base captures both parents before stores; derived initializer captures mesh guard before own guard/name and copies three parents before stores. Guards/names precede fallible calls; no rollback, atomicization or counter saturation. Numeric NativeResourceItemTypeCalls adapter composes actual71BB40 classification. Twelve missing functions defined under lock with before-state and prior-comment preservation;14 ABI/source records. Strict Win32 build/both existing CTests pass. Existing D3D9 fixture runs actual cold shared counter/manager, alternate caller-target guard, CRT cold base, derived-first base, unsigned counter wrap and idempotence; six unchanged native getters and three unchanged native predicates run against original-address RW globals and agree with source before/after publication/current-ID mutation. Allthree full mesh parsers execute actual71B810 game resource construction/71BB40 classification with real predicates and explicit fixture selector cells, then real deletion;57canonical owners and new counter/manager retire. Production E19 selector-cell publication, full root/game startup dispatch, cold shaders, initializer native-machine-code oracle, ABI/FH3/SEH and gameplay remain unproven. Complete 6B. No ordinary inputs; ECX ignored; EAX current global DWORD; RET. Source read_native_mesh_resource_name_00b931e0.",
+      "prototype": "uint __cdecl BSP_ReadNativeMeshResourceName_00b931e0(void)",
+      "prototype_result": "Successfully set prototype for function at 00b931e0 with __cdecl calling convention",
+      "ledger_name_output": "00b931e0 -> BSP_ReadNativeMeshResourceName_00b931e0\n",
+      "ledger_function_output": "00b931e0 function read_native_mesh_resource_name_00b931e0\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00b931e0",
+        "function_name": "BSP_ReadNativeMeshResourceName_00b931e0",
+        "comment": "\n\n[BSP reconstruction 00b931e0] CP update\nCP complete14 native mesh resource type routines690B: 164 instruction owners,12 direct calls, saved Ghidra and installed PE equal. Six6B getters read current own-ID/name cells; three40B predicates are current slotC, not slot8, compare3/4/4 current IDs excluding name and never initialize/filter zero. B869C0 scene and B93BD0 mesh initializers use process guards with caller-target descriptors; CD8690/CD86F0/CD87B0 publish cRenderMeshResource/cSkinedMeshResource/cMatrixIndexedMeshResource from SAME cold type-counter/root/scene inheritance. Runtime mesh alternates source load/store; CRT base captures both parents before stores; derived initializer captures mesh guard before own guard/name and copies three parents before stores. Guards/names precede fallible calls; no rollback, atomicization or counter saturation. Numeric NativeResourceItemTypeCalls adapter composes actual71BB40 classification. Twelve missing functions defined under lock with before-state and prior-comment preservation;14 ABI/source records. Strict Win32 build/both existing CTests pass. Existing D3D9 fixture runs actual cold shared counter/manager, alternate caller-target guard, CRT cold base, derived-first base, unsigned counter wrap and idempotence; six unchanged native getters and three unchanged native predicates run against original-address RW globals and agree with source before/after publication/current-ID mutation. Allthree full mesh parsers execute actual71B810 game resource construction/71BB40 classification with real predicates and explicit fixture selector cells, then real deletion;57canonical owners and new counter/manager retire. Production E19 selector-cell publication, full root/game startup dispatch, cold shaders, initializer native-machine-code oracle, ABI/FH3/SEH and gameplay remain unproven. Complete 6B. No ordinary inputs; ECX ignored; EAX current global DWORD; RET. Source read_native_mesh_resource_name_00b931e0."
+      }
+    },
+    {
+      "address": "00b936b0",
+      "name": "BSP_MatchesNativeMeshResourceType_00b936b0",
+      "before_comment": {
+        "address": "00b936b0",
+        "function_name": "BSP_MeshResourceType_00b936b0",
+        "comment": ""
+      },
+      "before_documentation": {
+        "hash": "f58185f24c08315547326633f7d831d79032495a9e2845419dc6c3399c26b9f0",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b936b0",
+        "function_name": "BSP_MeshResourceType_00b936b0",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "piVar1",
+            "type": "int *",
+            "storage": "(register, 0x0, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 16,
+            "name": "LAB_00b936c0"
+          },
+          {
+            "relative_offset": 35,
+            "name": "LAB_00b936d3"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "evidence": "CP complete14 native mesh resource type routines690B: 164 instruction owners,12 direct calls, saved Ghidra and installed PE equal. Six6B getters read current own-ID/name cells; three40B predicates are current slotC, not slot8, compare3/4/4 current IDs excluding name and never initialize/filter zero. B869C0 scene and B93BD0 mesh initializers use process guards with caller-target descriptors; CD8690/CD86F0/CD87B0 publish cRenderMeshResource/cSkinedMeshResource/cMatrixIndexedMeshResource from SAME cold type-counter/root/scene inheritance. Runtime mesh alternates source load/store; CRT base captures both parents before stores; derived initializer captures mesh guard before own guard/name and copies three parents before stores. Guards/names precede fallible calls; no rollback, atomicization or counter saturation. Numeric NativeResourceItemTypeCalls adapter composes actual71BB40 classification. Twelve missing functions defined under lock with before-state and prior-comment preservation;14 ABI/source records. Strict Win32 build/both existing CTests pass. Existing D3D9 fixture runs actual cold shared counter/manager, alternate caller-target guard, CRT cold base, derived-first base, unsigned counter wrap and idempotence; six unchanged native getters and three unchanged native predicates run against original-address RW globals and agree with source before/after publication/current-ID mutation. Allthree full mesh parsers execute actual71B810 game resource construction/71BB40 classification with real predicates and explicit fixture selector cells, then real deletion;57canonical owners and new counter/manager retire. Production E19 selector-cell publication, full root/game startup dispatch, cold shaders, initializer native-machine-code oracle, ABI/FH3/SEH and gameplay remain unproven. Complete 40B. ECX ignored; stacked token; AL Boolean, upper EAX unspecified; RET4. Source matches_native_mesh_resource_type_00b936b0.",
+      "prototype": "byte __fastcall BSP_MatchesNativeMeshResourceType_00b936b0(void* unused_receiver, void* unused_edx, uint token)",
+      "prototype_result": "Successfully set prototype for function at 00b936b0 with __fastcall calling convention",
+      "ledger_name_output": "00b936b0 -> BSP_MatchesNativeMeshResourceType_00b936b0\n",
+      "ledger_function_output": "00b936b0 function matches_native_mesh_resource_type_00b936b0\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00b936b0",
+        "function_name": "BSP_MatchesNativeMeshResourceType_00b936b0",
+        "comment": "\n\n[BSP reconstruction 00b936b0] CP update\nCP complete14 native mesh resource type routines690B: 164 instruction owners,12 direct calls, saved Ghidra and installed PE equal. Six6B getters read current own-ID/name cells; three40B predicates are current slotC, not slot8, compare3/4/4 current IDs excluding name and never initialize/filter zero. B869C0 scene and B93BD0 mesh initializers use process guards with caller-target descriptors; CD8690/CD86F0/CD87B0 publish cRenderMeshResource/cSkinedMeshResource/cMatrixIndexedMeshResource from SAME cold type-counter/root/scene inheritance. Runtime mesh alternates source load/store; CRT base captures both parents before stores; derived initializer captures mesh guard before own guard/name and copies three parents before stores. Guards/names precede fallible calls; no rollback, atomicization or counter saturation. Numeric NativeResourceItemTypeCalls adapter composes actual71BB40 classification. Twelve missing functions defined under lock with before-state and prior-comment preservation;14 ABI/source records. Strict Win32 build/both existing CTests pass. Existing D3D9 fixture runs actual cold shared counter/manager, alternate caller-target guard, CRT cold base, derived-first base, unsigned counter wrap and idempotence; six unchanged native getters and three unchanged native predicates run against original-address RW globals and agree with source before/after publication/current-ID mutation. Allthree full mesh parsers execute actual71B810 game resource construction/71BB40 classification with real predicates and explicit fixture selector cells, then real deletion;57canonical owners and new counter/manager retire. Production E19 selector-cell publication, full root/game startup dispatch, cold shaders, initializer native-machine-code oracle, ABI/FH3/SEH and gameplay remain unproven. Complete 40B. ECX ignored; stacked token; AL Boolean, upper EAX unspecified; RET4. Source matches_native_mesh_resource_type_00b936b0."
+      }
+    },
+    {
+      "address": "00b939c0",
+      "name": "BSP_MatchesNativeMeshResourceType_00b939c0",
+      "before_comment": {
+        "address": "00b939c0",
+        "function_name": "BSP_MeshResourceType_00b939c0",
+        "comment": ""
+      },
+      "before_documentation": {
+        "hash": "f58185f24c08315547326633f7d831d79032495a9e2845419dc6c3399c26b9f0",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b939c0",
+        "function_name": "BSP_MeshResourceType_00b939c0",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "piVar1",
+            "type": "int *",
+            "storage": "(register, 0x0, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 16,
+            "name": "LAB_00b939d0"
+          },
+          {
+            "relative_offset": 35,
+            "name": "LAB_00b939e3"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "evidence": "CP complete14 native mesh resource type routines690B: 164 instruction owners,12 direct calls, saved Ghidra and installed PE equal. Six6B getters read current own-ID/name cells; three40B predicates are current slotC, not slot8, compare3/4/4 current IDs excluding name and never initialize/filter zero. B869C0 scene and B93BD0 mesh initializers use process guards with caller-target descriptors; CD8690/CD86F0/CD87B0 publish cRenderMeshResource/cSkinedMeshResource/cMatrixIndexedMeshResource from SAME cold type-counter/root/scene inheritance. Runtime mesh alternates source load/store; CRT base captures both parents before stores; derived initializer captures mesh guard before own guard/name and copies three parents before stores. Guards/names precede fallible calls; no rollback, atomicization or counter saturation. Numeric NativeResourceItemTypeCalls adapter composes actual71BB40 classification. Twelve missing functions defined under lock with before-state and prior-comment preservation;14 ABI/source records. Strict Win32 build/both existing CTests pass. Existing D3D9 fixture runs actual cold shared counter/manager, alternate caller-target guard, CRT cold base, derived-first base, unsigned counter wrap and idempotence; six unchanged native getters and three unchanged native predicates run against original-address RW globals and agree with source before/after publication/current-ID mutation. Allthree full mesh parsers execute actual71B810 game resource construction/71BB40 classification with real predicates and explicit fixture selector cells, then real deletion;57canonical owners and new counter/manager retire. Production E19 selector-cell publication, full root/game startup dispatch, cold shaders, initializer native-machine-code oracle, ABI/FH3/SEH and gameplay remain unproven. Complete 40B. ECX ignored; stacked token; AL Boolean, upper EAX unspecified; RET4. Source matches_native_mesh_resource_type_00b939c0.",
+      "prototype": "byte __fastcall BSP_MatchesNativeMeshResourceType_00b939c0(void* unused_receiver, void* unused_edx, uint token)",
+      "prototype_result": "Successfully set prototype for function at 00b939c0 with __fastcall calling convention",
+      "ledger_name_output": "00b939c0 -> BSP_MatchesNativeMeshResourceType_00b939c0\n",
+      "ledger_function_output": "00b939c0 function matches_native_mesh_resource_type_00b939c0\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00b939c0",
+        "function_name": "BSP_MatchesNativeMeshResourceType_00b939c0",
+        "comment": "\n\n[BSP reconstruction 00b939c0] CP update\nCP complete14 native mesh resource type routines690B: 164 instruction owners,12 direct calls, saved Ghidra and installed PE equal. Six6B getters read current own-ID/name cells; three40B predicates are current slotC, not slot8, compare3/4/4 current IDs excluding name and never initialize/filter zero. B869C0 scene and B93BD0 mesh initializers use process guards with caller-target descriptors; CD8690/CD86F0/CD87B0 publish cRenderMeshResource/cSkinedMeshResource/cMatrixIndexedMeshResource from SAME cold type-counter/root/scene inheritance. Runtime mesh alternates source load/store; CRT base captures both parents before stores; derived initializer captures mesh guard before own guard/name and copies three parents before stores. Guards/names precede fallible calls; no rollback, atomicization or counter saturation. Numeric NativeResourceItemTypeCalls adapter composes actual71BB40 classification. Twelve missing functions defined under lock with before-state and prior-comment preservation;14 ABI/source records. Strict Win32 build/both existing CTests pass. Existing D3D9 fixture runs actual cold shared counter/manager, alternate caller-target guard, CRT cold base, derived-first base, unsigned counter wrap and idempotence; six unchanged native getters and three unchanged native predicates run against original-address RW globals and agree with source before/after publication/current-ID mutation. Allthree full mesh parsers execute actual71B810 game resource construction/71BB40 classification with real predicates and explicit fixture selector cells, then real deletion;57canonical owners and new counter/manager retire. Production E19 selector-cell publication, full root/game startup dispatch, cold shaders, initializer native-machine-code oracle, ABI/FH3/SEH and gameplay remain unproven. Complete 40B. ECX ignored; stacked token; AL Boolean, upper EAX unspecified; RET4. Source matches_native_mesh_resource_type_00b939c0."
+      }
+    },
+    {
+      "address": "00b93a40",
+      "name": "BSP_MatchesNativeMeshResourceType_00b93a40",
+      "before_comment": {
+        "address": "00b93a40",
+        "function_name": "BSP_MeshResourceType_00b93a40",
+        "comment": ""
+      },
+      "before_documentation": {
+        "hash": "f58185f24c08315547326633f7d831d79032495a9e2845419dc6c3399c26b9f0",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b93a40",
+        "function_name": "BSP_MeshResourceType_00b93a40",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "piVar1",
+            "type": "int *",
+            "storage": "(register, 0x0, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 16,
+            "name": "LAB_00b93a50"
+          },
+          {
+            "relative_offset": 35,
+            "name": "LAB_00b93a63"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "evidence": "CP complete14 native mesh resource type routines690B: 164 instruction owners,12 direct calls, saved Ghidra and installed PE equal. Six6B getters read current own-ID/name cells; three40B predicates are current slotC, not slot8, compare3/4/4 current IDs excluding name and never initialize/filter zero. B869C0 scene and B93BD0 mesh initializers use process guards with caller-target descriptors; CD8690/CD86F0/CD87B0 publish cRenderMeshResource/cSkinedMeshResource/cMatrixIndexedMeshResource from SAME cold type-counter/root/scene inheritance. Runtime mesh alternates source load/store; CRT base captures both parents before stores; derived initializer captures mesh guard before own guard/name and copies three parents before stores. Guards/names precede fallible calls; no rollback, atomicization or counter saturation. Numeric NativeResourceItemTypeCalls adapter composes actual71BB40 classification. Twelve missing functions defined under lock with before-state and prior-comment preservation;14 ABI/source records. Strict Win32 build/both existing CTests pass. Existing D3D9 fixture runs actual cold shared counter/manager, alternate caller-target guard, CRT cold base, derived-first base, unsigned counter wrap and idempotence; six unchanged native getters and three unchanged native predicates run against original-address RW globals and agree with source before/after publication/current-ID mutation. Allthree full mesh parsers execute actual71B810 game resource construction/71BB40 classification with real predicates and explicit fixture selector cells, then real deletion;57canonical owners and new counter/manager retire. Production E19 selector-cell publication, full root/game startup dispatch, cold shaders, initializer native-machine-code oracle, ABI/FH3/SEH and gameplay remain unproven. Complete 40B. ECX ignored; stacked token; AL Boolean, upper EAX unspecified; RET4. Source matches_native_mesh_resource_type_00b93a40.",
+      "prototype": "byte __fastcall BSP_MatchesNativeMeshResourceType_00b93a40(void* unused_receiver, void* unused_edx, uint token)",
+      "prototype_result": "Successfully set prototype for function at 00b93a40 with __fastcall calling convention",
+      "ledger_name_output": "00b93a40 -> BSP_MatchesNativeMeshResourceType_00b93a40\n",
+      "ledger_function_output": "00b93a40 function matches_native_mesh_resource_type_00b93a40\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00b93a40",
+        "function_name": "BSP_MatchesNativeMeshResourceType_00b93a40",
+        "comment": "\n\n[BSP reconstruction 00b93a40] CP update\nCP complete14 native mesh resource type routines690B: 164 instruction owners,12 direct calls, saved Ghidra and installed PE equal. Six6B getters read current own-ID/name cells; three40B predicates are current slotC, not slot8, compare3/4/4 current IDs excluding name and never initialize/filter zero. B869C0 scene and B93BD0 mesh initializers use process guards with caller-target descriptors; CD8690/CD86F0/CD87B0 publish cRenderMeshResource/cSkinedMeshResource/cMatrixIndexedMeshResource from SAME cold type-counter/root/scene inheritance. Runtime mesh alternates source load/store; CRT base captures both parents before stores; derived initializer captures mesh guard before own guard/name and copies three parents before stores. Guards/names precede fallible calls; no rollback, atomicization or counter saturation. Numeric NativeResourceItemTypeCalls adapter composes actual71BB40 classification. Twelve missing functions defined under lock with before-state and prior-comment preservation;14 ABI/source records. Strict Win32 build/both existing CTests pass. Existing D3D9 fixture runs actual cold shared counter/manager, alternate caller-target guard, CRT cold base, derived-first base, unsigned counter wrap and idempotence; six unchanged native getters and three unchanged native predicates run against original-address RW globals and agree with source before/after publication/current-ID mutation. Allthree full mesh parsers execute actual71B810 game resource construction/71BB40 classification with real predicates and explicit fixture selector cells, then real deletion;57canonical owners and new counter/manager retire. Production E19 selector-cell publication, full root/game startup dispatch, cold shaders, initializer native-machine-code oracle, ABI/FH3/SEH and gameplay remain unproven. Complete 40B. ECX ignored; stacked token; AL Boolean, upper EAX unspecified; RET4. Source matches_native_mesh_resource_type_00b93a40."
+      }
+    },
+    {
+      "address": "00b869c0",
+      "name": "BSP_InitializeSceneResource_00b869c0",
+      "before_comment": {
+        "address": "00b869c0",
+        "function_name": "FUN_00b869c0"
+      },
+      "before_documentation": {
+        "hash": "055380a71af13ba08263c7973125cde6ab09fee20edd98e4cd6bebfa757e020a",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b869c0",
+        "function_name": "FUN_00b869c0",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "iVar1",
+            "type": "int",
+            "storage": "(unique, 0x17200, 4)"
+          },
+          {
+            "name": "pvVar2",
+            "type": "void *",
+            "storage": "(register, 0x0, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 60,
+            "name": "LAB_00b869fc"
+          }
+        ],
+        "completeness_score": 50.0
+      },
+      "evidence": "CP complete14 native mesh resource type routines690B: 164 instruction owners,12 direct calls, saved Ghidra and installed PE equal. Six6B getters read current own-ID/name cells; three40B predicates are current slotC, not slot8, compare3/4/4 current IDs excluding name and never initialize/filter zero. B869C0 scene and B93BD0 mesh initializers use process guards with caller-target descriptors; CD8690/CD86F0/CD87B0 publish cRenderMeshResource/cSkinedMeshResource/cMatrixIndexedMeshResource from SAME cold type-counter/root/scene inheritance. Runtime mesh alternates source load/store; CRT base captures both parents before stores; derived initializer captures mesh guard before own guard/name and copies three parents before stores. Guards/names precede fallible calls; no rollback, atomicization or counter saturation. Numeric NativeResourceItemTypeCalls adapter composes actual71BB40 classification. Twelve missing functions defined under lock with before-state and prior-comment preservation;14 ABI/source records. Strict Win32 build/both existing CTests pass. Existing D3D9 fixture runs actual cold shared counter/manager, alternate caller-target guard, CRT cold base, derived-first base, unsigned counter wrap and idempotence; six unchanged native getters and three unchanged native predicates run against original-address RW globals and agree with source before/after publication/current-ID mutation. Allthree full mesh parsers execute actual71B810 game resource construction/71BB40 classification with real predicates and explicit fixture selector cells, then real deletion;57canonical owners and new counter/manager retire. Production E19 selector-cell publication, full root/game startup dispatch, cold shaders, initializer native-machine-code oracle, ABI/FH3/SEH and gameplay remain unproven. Complete 62B. ECX actual caller-supplied descriptor; process-wide guard; no stack arguments; RET. Source initialize_scene_resource_00b869c0.",
+      "prototype": "void __fastcall BSP_InitializeSceneResource_00b869c0(uint* target, void* unused_edx)",
+      "prototype_result": "Successfully set prototype for function at 00b869c0 with __fastcall calling convention",
+      "ledger_name_output": "00b869c0 -> BSP_InitializeSceneResource_00b869c0\n",
+      "ledger_function_output": "00b869c0 function initialize_scene_resource_00b869c0\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00b869c0",
+        "function_name": "BSP_InitializeSceneResource_00b869c0",
+        "comment": "\n\n[BSP reconstruction 00b869c0] CP update\nCP complete14 native mesh resource type routines690B: 164 instruction owners,12 direct calls, saved Ghidra and installed PE equal. Six6B getters read current own-ID/name cells; three40B predicates are current slotC, not slot8, compare3/4/4 current IDs excluding name and never initialize/filter zero. B869C0 scene and B93BD0 mesh initializers use process guards with caller-target descriptors; CD8690/CD86F0/CD87B0 publish cRenderMeshResource/cSkinedMeshResource/cMatrixIndexedMeshResource from SAME cold type-counter/root/scene inheritance. Runtime mesh alternates source load/store; CRT base captures both parents before stores; derived initializer captures mesh guard before own guard/name and copies three parents before stores. Guards/names precede fallible calls; no rollback, atomicization or counter saturation. Numeric NativeResourceItemTypeCalls adapter composes actual71BB40 classification. Twelve missing functions defined under lock with before-state and prior-comment preservation;14 ABI/source records. Strict Win32 build/both existing CTests pass. Existing D3D9 fixture runs actual cold shared counter/manager, alternate caller-target guard, CRT cold base, derived-first base, unsigned counter wrap and idempotence; six unchanged native getters and three unchanged native predicates run against original-address RW globals and agree with source before/after publication/current-ID mutation. Allthree full mesh parsers execute actual71B810 game resource construction/71BB40 classification with real predicates and explicit fixture selector cells, then real deletion;57canonical owners and new counter/manager retire. Production E19 selector-cell publication, full root/game startup dispatch, cold shaders, initializer native-machine-code oracle, ABI/FH3/SEH and gameplay remain unproven. Complete 62B. ECX actual caller-supplied descriptor; process-wide guard; no stack arguments; RET. Source initialize_scene_resource_00b869c0."
+      }
+    },
+    {
+      "address": "00b93bd0",
+      "name": "BSP_InitializeMeshResource_00b93bd0",
+      "before_comment": {
+        "address": "00b93bd0",
+        "function_name": "FUN_00b93bd0"
+      },
+      "before_documentation": {
+        "hash": "268b628d8ce455ec8d1e8364c530e289c8b5ebcdd82ee52e44c0fd8b934dca6e",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b93bd0",
+        "function_name": "FUN_00b93bd0",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "iVar1",
+            "type": "int",
+            "storage": "(unique, 0x17200, 4)"
+          },
+          {
+            "name": "pvVar2",
+            "type": "void *",
+            "storage": "(register, 0x0, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 69,
+            "name": "LAB_00b93c15"
+          }
+        ],
+        "completeness_score": 50.0
+      },
+      "evidence": "CP complete14 native mesh resource type routines690B: 164 instruction owners,12 direct calls, saved Ghidra and installed PE equal. Six6B getters read current own-ID/name cells; three40B predicates are current slotC, not slot8, compare3/4/4 current IDs excluding name and never initialize/filter zero. B869C0 scene and B93BD0 mesh initializers use process guards with caller-target descriptors; CD8690/CD86F0/CD87B0 publish cRenderMeshResource/cSkinedMeshResource/cMatrixIndexedMeshResource from SAME cold type-counter/root/scene inheritance. Runtime mesh alternates source load/store; CRT base captures both parents before stores; derived initializer captures mesh guard before own guard/name and copies three parents before stores. Guards/names precede fallible calls; no rollback, atomicization or counter saturation. Numeric NativeResourceItemTypeCalls adapter composes actual71BB40 classification. Twelve missing functions defined under lock with before-state and prior-comment preservation;14 ABI/source records. Strict Win32 build/both existing CTests pass. Existing D3D9 fixture runs actual cold shared counter/manager, alternate caller-target guard, CRT cold base, derived-first base, unsigned counter wrap and idempotence; six unchanged native getters and three unchanged native predicates run against original-address RW globals and agree with source before/after publication/current-ID mutation. Allthree full mesh parsers execute actual71B810 game resource construction/71BB40 classification with real predicates and explicit fixture selector cells, then real deletion;57canonical owners and new counter/manager retire. Production E19 selector-cell publication, full root/game startup dispatch, cold shaders, initializer native-machine-code oracle, ABI/FH3/SEH and gameplay remain unproven. Complete 71B. ECX actual caller-supplied descriptor; process-wide guard; no stack arguments; RET. Source initialize_mesh_resource_00b93bd0.",
+      "prototype": "void __fastcall BSP_InitializeMeshResource_00b93bd0(uint* target, void* unused_edx)",
+      "prototype_result": "Successfully set prototype for function at 00b93bd0 with __fastcall calling convention",
+      "ledger_name_output": "00b93bd0 -> BSP_InitializeMeshResource_00b93bd0\n",
+      "ledger_function_output": "00b93bd0 function initialize_mesh_resource_00b93bd0\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00b93bd0",
+        "function_name": "BSP_InitializeMeshResource_00b93bd0",
+        "comment": "\n\n[BSP reconstruction 00b93bd0] CP update\nCP complete14 native mesh resource type routines690B: 164 instruction owners,12 direct calls, saved Ghidra and installed PE equal. Six6B getters read current own-ID/name cells; three40B predicates are current slotC, not slot8, compare3/4/4 current IDs excluding name and never initialize/filter zero. B869C0 scene and B93BD0 mesh initializers use process guards with caller-target descriptors; CD8690/CD86F0/CD87B0 publish cRenderMeshResource/cSkinedMeshResource/cMatrixIndexedMeshResource from SAME cold type-counter/root/scene inheritance. Runtime mesh alternates source load/store; CRT base captures both parents before stores; derived initializer captures mesh guard before own guard/name and copies three parents before stores. Guards/names precede fallible calls; no rollback, atomicization or counter saturation. Numeric NativeResourceItemTypeCalls adapter composes actual71BB40 classification. Twelve missing functions defined under lock with before-state and prior-comment preservation;14 ABI/source records. Strict Win32 build/both existing CTests pass. Existing D3D9 fixture runs actual cold shared counter/manager, alternate caller-target guard, CRT cold base, derived-first base, unsigned counter wrap and idempotence; six unchanged native getters and three unchanged native predicates run against original-address RW globals and agree with source before/after publication/current-ID mutation. Allthree full mesh parsers execute actual71B810 game resource construction/71BB40 classification with real predicates and explicit fixture selector cells, then real deletion;57canonical owners and new counter/manager retire. Production E19 selector-cell publication, full root/game startup dispatch, cold shaders, initializer native-machine-code oracle, ABI/FH3/SEH and gameplay remain unproven. Complete 71B. ECX actual caller-supplied descriptor; process-wide guard; no stack arguments; RET. Source initialize_mesh_resource_00b93bd0."
+      }
+    },
+    {
+      "address": "00cd8690",
+      "name": "BSP_InitializeMeshResource_00cd8690",
+      "before_comment": {
+        "address": "00cd8690",
+        "function_name": "BSP_MeshResourceType_00cd8690",
+        "comment": ""
+      },
+      "before_documentation": {
+        "hash": "3e3f68814b9285252866c105c5130ae727fc06872fb90e4cdc3fa35fc40639d5",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00cd8690",
+        "function_name": "BSP_MeshResourceType_00cd8690",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "pvVar1",
+            "type": "void *",
+            "storage": "(register, 0x0, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 78,
+            "name": "LAB_00cd86de"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "evidence": "CP complete14 native mesh resource type routines690B: 164 instruction owners,12 direct calls, saved Ghidra and installed PE equal. Six6B getters read current own-ID/name cells; three40B predicates are current slotC, not slot8, compare3/4/4 current IDs excluding name and never initialize/filter zero. B869C0 scene and B93BD0 mesh initializers use process guards with caller-target descriptors; CD8690/CD86F0/CD87B0 publish cRenderMeshResource/cSkinedMeshResource/cMatrixIndexedMeshResource from SAME cold type-counter/root/scene inheritance. Runtime mesh alternates source load/store; CRT base captures both parents before stores; derived initializer captures mesh guard before own guard/name and copies three parents before stores. Guards/names precede fallible calls; no rollback, atomicization or counter saturation. Numeric NativeResourceItemTypeCalls adapter composes actual71BB40 classification. Twelve missing functions defined under lock with before-state and prior-comment preservation;14 ABI/source records. Strict Win32 build/both existing CTests pass. Existing D3D9 fixture runs actual cold shared counter/manager, alternate caller-target guard, CRT cold base, derived-first base, unsigned counter wrap and idempotence; six unchanged native getters and three unchanged native predicates run against original-address RW globals and agree with source before/after publication/current-ID mutation. Allthree full mesh parsers execute actual71B810 game resource construction/71BB40 classification with real predicates and explicit fixture selector cells, then real deletion;57canonical owners and new counter/manager retire. Production E19 selector-cell publication, full root/game startup dispatch, cold shaders, initializer native-machine-code oracle, ABI/FH3/SEH and gameplay remain unproven. Complete 79B. CRT initializer; no ordinary inputs; no stable result; RET. Source initialize_mesh_resource_00cd8690.",
+      "prototype": "void __cdecl BSP_InitializeMeshResource_00cd8690(void)",
+      "prototype_result": "Successfully set prototype for function at 00cd8690 with __cdecl calling convention",
+      "ledger_name_output": "00cd8690 -> BSP_InitializeMeshResource_00cd8690\n",
+      "ledger_function_output": "00cd8690 function initialize_mesh_resource_00cd8690\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00cd8690",
+        "function_name": "BSP_InitializeMeshResource_00cd8690",
+        "comment": "\n\n[BSP reconstruction 00cd8690] CP update\nCP complete14 native mesh resource type routines690B: 164 instruction owners,12 direct calls, saved Ghidra and installed PE equal. Six6B getters read current own-ID/name cells; three40B predicates are current slotC, not slot8, compare3/4/4 current IDs excluding name and never initialize/filter zero. B869C0 scene and B93BD0 mesh initializers use process guards with caller-target descriptors; CD8690/CD86F0/CD87B0 publish cRenderMeshResource/cSkinedMeshResource/cMatrixIndexedMeshResource from SAME cold type-counter/root/scene inheritance. Runtime mesh alternates source load/store; CRT base captures both parents before stores; derived initializer captures mesh guard before own guard/name and copies three parents before stores. Guards/names precede fallible calls; no rollback, atomicization or counter saturation. Numeric NativeResourceItemTypeCalls adapter composes actual71BB40 classification. Twelve missing functions defined under lock with before-state and prior-comment preservation;14 ABI/source records. Strict Win32 build/both existing CTests pass. Existing D3D9 fixture runs actual cold shared counter/manager, alternate caller-target guard, CRT cold base, derived-first base, unsigned counter wrap and idempotence; six unchanged native getters and three unchanged native predicates run against original-address RW globals and agree with source before/after publication/current-ID mutation. Allthree full mesh parsers execute actual71B810 game resource construction/71BB40 classification with real predicates and explicit fixture selector cells, then real deletion;57canonical owners and new counter/manager retire. Production E19 selector-cell publication, full root/game startup dispatch, cold shaders, initializer native-machine-code oracle, ABI/FH3/SEH and gameplay remain unproven. Complete 79B. CRT initializer; no ordinary inputs; no stable result; RET. Source initialize_mesh_resource_00cd8690."
+      }
+    },
+    {
+      "address": "00cd86f0",
+      "name": "BSP_InitializeSkinedMeshResource_00cd86f0",
+      "before_comment": {
+        "address": "00cd86f0",
+        "function_name": "BSP_MeshResourceType_00cd86f0",
+        "comment": ""
+      },
+      "before_documentation": {
+        "hash": "9eea0c9e673e495d04ef2d2471b70f404a07cf3708a3813d6416d7bea5cb9f8d",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00cd86f0",
+        "function_name": "BSP_MeshResourceType_00cd86f0",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "pvVar1",
+            "type": "void *",
+            "storage": "(register, 0x0, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 106,
+            "name": "LAB_00cd875a"
+          },
+          {
+            "relative_offset": 160,
+            "name": "LAB_00cd8790"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "evidence": "CP complete14 native mesh resource type routines690B: 164 instruction owners,12 direct calls, saved Ghidra and installed PE equal. Six6B getters read current own-ID/name cells; three40B predicates are current slotC, not slot8, compare3/4/4 current IDs excluding name and never initialize/filter zero. B869C0 scene and B93BD0 mesh initializers use process guards with caller-target descriptors; CD8690/CD86F0/CD87B0 publish cRenderMeshResource/cSkinedMeshResource/cMatrixIndexedMeshResource from SAME cold type-counter/root/scene inheritance. Runtime mesh alternates source load/store; CRT base captures both parents before stores; derived initializer captures mesh guard before own guard/name and copies three parents before stores. Guards/names precede fallible calls; no rollback, atomicization or counter saturation. Numeric NativeResourceItemTypeCalls adapter composes actual71BB40 classification. Twelve missing functions defined under lock with before-state and prior-comment preservation;14 ABI/source records. Strict Win32 build/both existing CTests pass. Existing D3D9 fixture runs actual cold shared counter/manager, alternate caller-target guard, CRT cold base, derived-first base, unsigned counter wrap and idempotence; six unchanged native getters and three unchanged native predicates run against original-address RW globals and agree with source before/after publication/current-ID mutation. Allthree full mesh parsers execute actual71B810 game resource construction/71BB40 classification with real predicates and explicit fixture selector cells, then real deletion;57canonical owners and new counter/manager retire. Production E19 selector-cell publication, full root/game startup dispatch, cold shaders, initializer native-machine-code oracle, ABI/FH3/SEH and gameplay remain unproven. Complete 161B. CRT initializer; no ordinary inputs; no stable result; RET. Source initialize_skined_mesh_resource_00cd86f0.",
+      "prototype": "void __cdecl BSP_InitializeSkinedMeshResource_00cd86f0(void)",
+      "prototype_result": "Successfully set prototype for function at 00cd86f0 with __cdecl calling convention",
+      "ledger_name_output": "00cd86f0 -> BSP_InitializeSkinedMeshResource_00cd86f0\n",
+      "ledger_function_output": "00cd86f0 function initialize_skined_mesh_resource_00cd86f0\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00cd86f0",
+        "function_name": "BSP_InitializeSkinedMeshResource_00cd86f0",
+        "comment": "\n\n[BSP reconstruction 00cd86f0] CP update\nCP complete14 native mesh resource type routines690B: 164 instruction owners,12 direct calls, saved Ghidra and installed PE equal. Six6B getters read current own-ID/name cells; three40B predicates are current slotC, not slot8, compare3/4/4 current IDs excluding name and never initialize/filter zero. B869C0 scene and B93BD0 mesh initializers use process guards with caller-target descriptors; CD8690/CD86F0/CD87B0 publish cRenderMeshResource/cSkinedMeshResource/cMatrixIndexedMeshResource from SAME cold type-counter/root/scene inheritance. Runtime mesh alternates source load/store; CRT base captures both parents before stores; derived initializer captures mesh guard before own guard/name and copies three parents before stores. Guards/names precede fallible calls; no rollback, atomicization or counter saturation. Numeric NativeResourceItemTypeCalls adapter composes actual71BB40 classification. Twelve missing functions defined under lock with before-state and prior-comment preservation;14 ABI/source records. Strict Win32 build/both existing CTests pass. Existing D3D9 fixture runs actual cold shared counter/manager, alternate caller-target guard, CRT cold base, derived-first base, unsigned counter wrap and idempotence; six unchanged native getters and three unchanged native predicates run against original-address RW globals and agree with source before/after publication/current-ID mutation. Allthree full mesh parsers execute actual71B810 game resource construction/71BB40 classification with real predicates and explicit fixture selector cells, then real deletion;57canonical owners and new counter/manager retire. Production E19 selector-cell publication, full root/game startup dispatch, cold shaders, initializer native-machine-code oracle, ABI/FH3/SEH and gameplay remain unproven. Complete 161B. CRT initializer; no ordinary inputs; no stable result; RET. Source initialize_skined_mesh_resource_00cd86f0."
+      }
+    },
+    {
+      "address": "00cd87b0",
+      "name": "BSP_InitializeMatrixMeshResource_00cd87b0",
+      "before_comment": {
+        "address": "00cd87b0",
+        "function_name": "BSP_MeshResourceType_00cd87b0",
+        "comment": ""
+      },
+      "before_documentation": {
+        "hash": "9eea0c9e673e495d04ef2d2471b70f404a07cf3708a3813d6416d7bea5cb9f8d",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00cd87b0",
+        "function_name": "BSP_MeshResourceType_00cd87b0",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "pvVar1",
+            "type": "void *",
+            "storage": "(register, 0x0, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 106,
+            "name": "LAB_00cd881a"
+          },
+          {
+            "relative_offset": 160,
+            "name": "LAB_00cd8850"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "evidence": "CP complete14 native mesh resource type routines690B: 164 instruction owners,12 direct calls, saved Ghidra and installed PE equal. Six6B getters read current own-ID/name cells; three40B predicates are current slotC, not slot8, compare3/4/4 current IDs excluding name and never initialize/filter zero. B869C0 scene and B93BD0 mesh initializers use process guards with caller-target descriptors; CD8690/CD86F0/CD87B0 publish cRenderMeshResource/cSkinedMeshResource/cMatrixIndexedMeshResource from SAME cold type-counter/root/scene inheritance. Runtime mesh alternates source load/store; CRT base captures both parents before stores; derived initializer captures mesh guard before own guard/name and copies three parents before stores. Guards/names precede fallible calls; no rollback, atomicization or counter saturation. Numeric NativeResourceItemTypeCalls adapter composes actual71BB40 classification. Twelve missing functions defined under lock with before-state and prior-comment preservation;14 ABI/source records. Strict Win32 build/both existing CTests pass. Existing D3D9 fixture runs actual cold shared counter/manager, alternate caller-target guard, CRT cold base, derived-first base, unsigned counter wrap and idempotence; six unchanged native getters and three unchanged native predicates run against original-address RW globals and agree with source before/after publication/current-ID mutation. Allthree full mesh parsers execute actual71B810 game resource construction/71BB40 classification with real predicates and explicit fixture selector cells, then real deletion;57canonical owners and new counter/manager retire. Production E19 selector-cell publication, full root/game startup dispatch, cold shaders, initializer native-machine-code oracle, ABI/FH3/SEH and gameplay remain unproven. Complete 161B. CRT initializer; no ordinary inputs; no stable result; RET. Source initialize_matrix_mesh_resource_00cd87b0.",
+      "prototype": "void __cdecl BSP_InitializeMatrixMeshResource_00cd87b0(void)",
+      "prototype_result": "Successfully set prototype for function at 00cd87b0 with __cdecl calling convention",
+      "ledger_name_output": "00cd87b0 -> BSP_InitializeMatrixMeshResource_00cd87b0\n",
+      "ledger_function_output": "00cd87b0 function initialize_matrix_mesh_resource_00cd87b0\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00cd87b0",
+        "function_name": "BSP_InitializeMatrixMeshResource_00cd87b0",
+        "comment": "\n\n[BSP reconstruction 00cd87b0] CP update\nCP complete14 native mesh resource type routines690B: 164 instruction owners,12 direct calls, saved Ghidra and installed PE equal. Six6B getters read current own-ID/name cells; three40B predicates are current slotC, not slot8, compare3/4/4 current IDs excluding name and never initialize/filter zero. B869C0 scene and B93BD0 mesh initializers use process guards with caller-target descriptors; CD8690/CD86F0/CD87B0 publish cRenderMeshResource/cSkinedMeshResource/cMatrixIndexedMeshResource from SAME cold type-counter/root/scene inheritance. Runtime mesh alternates source load/store; CRT base captures both parents before stores; derived initializer captures mesh guard before own guard/name and copies three parents before stores. Guards/names precede fallible calls; no rollback, atomicization or counter saturation. Numeric NativeResourceItemTypeCalls adapter composes actual71BB40 classification. Twelve missing functions defined under lock with before-state and prior-comment preservation;14 ABI/source records. Strict Win32 build/both existing CTests pass. Existing D3D9 fixture runs actual cold shared counter/manager, alternate caller-target guard, CRT cold base, derived-first base, unsigned counter wrap and idempotence; six unchanged native getters and three unchanged native predicates run against original-address RW globals and agree with source before/after publication/current-ID mutation. Allthree full mesh parsers execute actual71B810 game resource construction/71BB40 classification with real predicates and explicit fixture selector cells, then real deletion;57canonical owners and new counter/manager retire. Production E19 selector-cell publication, full root/game startup dispatch, cold shaders, initializer native-machine-code oracle, ABI/FH3/SEH and gameplay remain unproven. Complete 161B. CRT initializer; no ordinary inputs; no stable result; RET. Source initialize_matrix_mesh_resource_00cd87b0."
+      }
+    }
+  ],
+  "actions": [
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00b93000",
+        "prototype": "uint __cdecl BSP_ReadNativeMeshResourceType_00b93000(void)",
+        "calling_convention": "__cdecl"
+      },
+      "result": "Successfully set prototype for function at 00b93000 with __cdecl calling convention"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b93000",
+        "new_name": "BSP_ReadNativeMeshResourceType_00b93000"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b93000 from 'BSP_MeshResourceType_00b93000' to 'BSP_ReadNativeMeshResourceType_00b93000'\", \"warnings\": [\"Function name 'BSP_ReadNativeMeshResourceType_00b93000' \\u2014 main part 'ReadNativeMeshResourceType_00b93000' is not PascalCase. Expected: Readnativemeshresourcetype00b93000\", \"Function name 'BSP_ReadNativeMeshResourceType_00b93000' \\u2014 main part 'ReadNativeMeshResourceType_00b93000' contains underscores. Use PascalCase after the module prefix.\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b93000",
+        "new_name": "BSP_ReadNativeMeshResourceType_00b93000"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b93000 from 'BSP_ReadNativeMeshResourceType_00b93000' to 'BSP_ReadNativeMeshResourceType_00b93000'\", \"warnings\": [\"Function name 'BSP_ReadNativeMeshResourceType_00b93000' \\u2014 main part 'ReadNativeMeshResourceType_00b93000' is not PascalCase. Expected: Readnativemeshresourcetype00b93000\", \"Function name 'BSP_ReadNativeMeshResourceType_00b93000' \\u2014 main part 'ReadNativeMeshResourceType_00b93000' contains underscores. Use PascalCase after the module prefix.\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00b93000",
+        "comment": "\n\n[BSP reconstruction 00b93000] CP update\nCP complete14 native mesh resource type routines690B: 164 instruction owners,12 direct calls, saved Ghidra and installed PE equal. Six6B getters read current own-ID/name cells; three40B predicates are current slotC, not slot8, compare3/4/4 current IDs excluding name and never initialize/filter zero. B869C0 scene and B93BD0 mesh initializers use process guards with caller-target descriptors; CD8690/CD86F0/CD87B0 publish cRenderMeshResource/cSkinedMeshResource/cMatrixIndexedMeshResource from SAME cold type-counter/root/scene inheritance. Runtime mesh alternates source load/store; CRT base captures both parents before stores; derived initializer captures mesh guard before own guard/name and copies three parents before stores. Guards/names precede fallible calls; no rollback, atomicization or counter saturation. Numeric NativeResourceItemTypeCalls adapter composes actual71BB40 classification. Twelve missing functions defined under lock with before-state and prior-comment preservation;14 ABI/source records. Strict Win32 build/both existing CTests pass. Existing D3D9 fixture runs actual cold shared counter/manager, alternate caller-target guard, CRT cold base, derived-first base, unsigned counter wrap and idempotence; six unchanged native getters and three unchanged native predicates run against original-address RW globals and agree with source before/after publication/current-ID mutation. Allthree full mesh parsers execute actual71B810 game resource construction/71BB40 classification with real predicates and explicit fixture selector cells, then real deletion;57canonical owners and new counter/manager retire. Production E19 selector-cell publication, full root/game startup dispatch, cold shaders, initializer native-machine-code oracle, ABI/FH3/SEH and gameplay remain unproven. Complete 6B. No ordinary inputs; ECX ignored; EAX current global DWORD; RET. Source read_native_mesh_resource_type_00b93000."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00b93000\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00b93010",
+        "prototype": "uint __cdecl BSP_ReadNativeMeshResourceName_00b93010(void)",
+        "calling_convention": "__cdecl"
+      },
+      "result": "Successfully set prototype for function at 00b93010 with __cdecl calling convention"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b93010",
+        "new_name": "BSP_ReadNativeMeshResourceName_00b93010"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b93010 from 'BSP_MeshResourceType_00b93010' to 'BSP_ReadNativeMeshResourceName_00b93010'\", \"warnings\": [\"Function name 'BSP_ReadNativeMeshResourceName_00b93010' \\u2014 main part 'ReadNativeMeshResourceName_00b93010' is not PascalCase. Expected: Readnativemeshresourcename00b93010\", \"Function name 'BSP_ReadNativeMeshResourceName_00b93010' \\u2014 main part 'ReadNativeMeshResourceName_00b93010' contains underscores. Use PascalCase after the module prefix.\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b93010",
+        "new_name": "BSP_ReadNativeMeshResourceName_00b93010"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b93010 from 'BSP_ReadNativeMeshResourceName_00b93010' to 'BSP_ReadNativeMeshResourceName_00b93010'\", \"warnings\": [\"Function name 'BSP_ReadNativeMeshResourceName_00b93010' \\u2014 main part 'ReadNativeMeshResourceName_00b93010' is not PascalCase. Expected: Readnativemeshresourcename00b93010\", \"Function name 'BSP_ReadNativeMeshResourceName_00b93010' \\u2014 main part 'ReadNativeMeshResourceName_00b93010' contains underscores. Use PascalCase after the module prefix.\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00b93010",
+        "comment": "\n\n[BSP reconstruction 00b93010] CP update\nCP complete14 native mesh resource type routines690B: 164 instruction owners,12 direct calls, saved Ghidra and installed PE equal. Six6B getters read current own-ID/name cells; three40B predicates are current slotC, not slot8, compare3/4/4 current IDs excluding name and never initialize/filter zero. B869C0 scene and B93BD0 mesh initializers use process guards with caller-target descriptors; CD8690/CD86F0/CD87B0 publish cRenderMeshResource/cSkinedMeshResource/cMatrixIndexedMeshResource from SAME cold type-counter/root/scene inheritance. Runtime mesh alternates source load/store; CRT base captures both parents before stores; derived initializer captures mesh guard before own guard/name and copies three parents before stores. Guards/names precede fallible calls; no rollback, atomicization or counter saturation. Numeric NativeResourceItemTypeCalls adapter composes actual71BB40 classification. Twelve missing functions defined under lock with before-state and prior-comment preservation;14 ABI/source records. Strict Win32 build/both existing CTests pass. Existing D3D9 fixture runs actual cold shared counter/manager, alternate caller-target guard, CRT cold base, derived-first base, unsigned counter wrap and idempotence; six unchanged native getters and three unchanged native predicates run against original-address RW globals and agree with source before/after publication/current-ID mutation. Allthree full mesh parsers execute actual71B810 game resource construction/71BB40 classification with real predicates and explicit fixture selector cells, then real deletion;57canonical owners and new counter/manager retire. Production E19 selector-cell publication, full root/game startup dispatch, cold shaders, initializer native-machine-code oracle, ABI/FH3/SEH and gameplay remain unproven. Complete 6B. No ordinary inputs; ECX ignored; EAX current global DWORD; RET. Source read_native_mesh_resource_name_00b93010."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00b93010\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00b930d0",
+        "prototype": "uint __cdecl BSP_ReadNativeMeshResourceType_00b930d0(void)",
+        "calling_convention": "__cdecl"
+      },
+      "result": "Successfully set prototype for function at 00b930d0 with __cdecl calling convention"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b930d0",
+        "new_name": "BSP_ReadNativeMeshResourceType_00b930d0"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b930d0 from 'BSP_MeshResourceType_00b930d0' to 'BSP_ReadNativeMeshResourceType_00b930d0'\", \"warnings\": [\"Function name 'BSP_ReadNativeMeshResourceType_00b930d0' \\u2014 main part 'ReadNativeMeshResourceType_00b930d0' is not PascalCase. Expected: Readnativemeshresourcetype00b930d0\", \"Function name 'BSP_ReadNativeMeshResourceType_00b930d0' \\u2014 main part 'ReadNativeMeshResourceType_00b930d0' contains underscores. Use PascalCase after the module prefix.\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b930d0",
+        "new_name": "BSP_ReadNativeMeshResourceType_00b930d0"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b930d0 from 'BSP_ReadNativeMeshResourceType_00b930d0' to 'BSP_ReadNativeMeshResourceType_00b930d0'\", \"warnings\": [\"Function name 'BSP_ReadNativeMeshResourceType_00b930d0' \\u2014 main part 'ReadNativeMeshResourceType_00b930d0' is not PascalCase. Expected: Readnativemeshresourcetype00b930d0\", \"Function name 'BSP_ReadNativeMeshResourceType_00b930d0' \\u2014 main part 'ReadNativeMeshResourceType_00b930d0' contains underscores. Use PascalCase after the module prefix.\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00b930d0",
+        "comment": "\n\n[BSP reconstruction 00b930d0] CP update\nCP complete14 native mesh resource type routines690B: 164 instruction owners,12 direct calls, saved Ghidra and installed PE equal. Six6B getters read current own-ID/name cells; three40B predicates are current slotC, not slot8, compare3/4/4 current IDs excluding name and never initialize/filter zero. B869C0 scene and B93BD0 mesh initializers use process guards with caller-target descriptors; CD8690/CD86F0/CD87B0 publish cRenderMeshResource/cSkinedMeshResource/cMatrixIndexedMeshResource from SAME cold type-counter/root/scene inheritance. Runtime mesh alternates source load/store; CRT base captures both parents before stores; derived initializer captures mesh guard before own guard/name and copies three parents before stores. Guards/names precede fallible calls; no rollback, atomicization or counter saturation. Numeric NativeResourceItemTypeCalls adapter composes actual71BB40 classification. Twelve missing functions defined under lock with before-state and prior-comment preservation;14 ABI/source records. Strict Win32 build/both existing CTests pass. Existing D3D9 fixture runs actual cold shared counter/manager, alternate caller-target guard, CRT cold base, derived-first base, unsigned counter wrap and idempotence; six unchanged native getters and three unchanged native predicates run against original-address RW globals and agree with source before/after publication/current-ID mutation. Allthree full mesh parsers execute actual71B810 game resource construction/71BB40 classification with real predicates and explicit fixture selector cells, then real deletion;57canonical owners and new counter/manager retire. Production E19 selector-cell publication, full root/game startup dispatch, cold shaders, initializer native-machine-code oracle, ABI/FH3/SEH and gameplay remain unproven. Complete 6B. No ordinary inputs; ECX ignored; EAX current global DWORD; RET. Source read_native_mesh_resource_type_00b930d0."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00b930d0\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00b930e0",
+        "prototype": "uint __cdecl BSP_ReadNativeMeshResourceName_00b930e0(void)",
+        "calling_convention": "__cdecl"
+      },
+      "result": "Successfully set prototype for function at 00b930e0 with __cdecl calling convention"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b930e0",
+        "new_name": "BSP_ReadNativeMeshResourceName_00b930e0"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b930e0 from 'BSP_MeshResourceType_00b930e0' to 'BSP_ReadNativeMeshResourceName_00b930e0'\", \"warnings\": [\"Function name 'BSP_ReadNativeMeshResourceName_00b930e0' \\u2014 main part 'ReadNativeMeshResourceName_00b930e0' is not PascalCase. Expected: Readnativemeshresourcename00b930e0\", \"Function name 'BSP_ReadNativeMeshResourceName_00b930e0' \\u2014 main part 'ReadNativeMeshResourceName_00b930e0' contains underscores. Use PascalCase after the module prefix.\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b930e0",
+        "new_name": "BSP_ReadNativeMeshResourceName_00b930e0"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b930e0 from 'BSP_ReadNativeMeshResourceName_00b930e0' to 'BSP_ReadNativeMeshResourceName_00b930e0'\", \"warnings\": [\"Function name 'BSP_ReadNativeMeshResourceName_00b930e0' \\u2014 main part 'ReadNativeMeshResourceName_00b930e0' is not PascalCase. Expected: Readnativemeshresourcename00b930e0\", \"Function name 'BSP_ReadNativeMeshResourceName_00b930e0' \\u2014 main part 'ReadNativeMeshResourceName_00b930e0' contains underscores. Use PascalCase after the module prefix.\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00b930e0",
+        "comment": "\n\n[BSP reconstruction 00b930e0] CP update\nCP complete14 native mesh resource type routines690B: 164 instruction owners,12 direct calls, saved Ghidra and installed PE equal. Six6B getters read current own-ID/name cells; three40B predicates are current slotC, not slot8, compare3/4/4 current IDs excluding name and never initialize/filter zero. B869C0 scene and B93BD0 mesh initializers use process guards with caller-target descriptors; CD8690/CD86F0/CD87B0 publish cRenderMeshResource/cSkinedMeshResource/cMatrixIndexedMeshResource from SAME cold type-counter/root/scene inheritance. Runtime mesh alternates source load/store; CRT base captures both parents before stores; derived initializer captures mesh guard before own guard/name and copies three parents before stores. Guards/names precede fallible calls; no rollback, atomicization or counter saturation. Numeric NativeResourceItemTypeCalls adapter composes actual71BB40 classification. Twelve missing functions defined under lock with before-state and prior-comment preservation;14 ABI/source records. Strict Win32 build/both existing CTests pass. Existing D3D9 fixture runs actual cold shared counter/manager, alternate caller-target guard, CRT cold base, derived-first base, unsigned counter wrap and idempotence; six unchanged native getters and three unchanged native predicates run against original-address RW globals and agree with source before/after publication/current-ID mutation. Allthree full mesh parsers execute actual71B810 game resource construction/71BB40 classification with real predicates and explicit fixture selector cells, then real deletion;57canonical owners and new counter/manager retire. Production E19 selector-cell publication, full root/game startup dispatch, cold shaders, initializer native-machine-code oracle, ABI/FH3/SEH and gameplay remain unproven. Complete 6B. No ordinary inputs; ECX ignored; EAX current global DWORD; RET. Source read_native_mesh_resource_name_00b930e0."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00b930e0\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00b931d0",
+        "prototype": "uint __cdecl BSP_ReadNativeMeshResourceType_00b931d0(void)",
+        "calling_convention": "__cdecl"
+      },
+      "result": "Successfully set prototype for function at 00b931d0 with __cdecl calling convention"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b931d0",
+        "new_name": "BSP_ReadNativeMeshResourceType_00b931d0"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b931d0 from 'BSP_MeshResourceType_00b931d0' to 'BSP_ReadNativeMeshResourceType_00b931d0'\", \"warnings\": [\"Function name 'BSP_ReadNativeMeshResourceType_00b931d0' \\u2014 main part 'ReadNativeMeshResourceType_00b931d0' is not PascalCase. Expected: Readnativemeshresourcetype00b931d0\", \"Function name 'BSP_ReadNativeMeshResourceType_00b931d0' \\u2014 main part 'ReadNativeMeshResourceType_00b931d0' contains underscores. Use PascalCase after the module prefix.\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b931d0",
+        "new_name": "BSP_ReadNativeMeshResourceType_00b931d0"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b931d0 from 'BSP_ReadNativeMeshResourceType_00b931d0' to 'BSP_ReadNativeMeshResourceType_00b931d0'\", \"warnings\": [\"Function name 'BSP_ReadNativeMeshResourceType_00b931d0' \\u2014 main part 'ReadNativeMeshResourceType_00b931d0' is not PascalCase. Expected: Readnativemeshresourcetype00b931d0\", \"Function name 'BSP_ReadNativeMeshResourceType_00b931d0' \\u2014 main part 'ReadNativeMeshResourceType_00b931d0' contains underscores. Use PascalCase after the module prefix.\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00b931d0",
+        "comment": "\n\n[BSP reconstruction 00b931d0] CP update\nCP complete14 native mesh resource type routines690B: 164 instruction owners,12 direct calls, saved Ghidra and installed PE equal. Six6B getters read current own-ID/name cells; three40B predicates are current slotC, not slot8, compare3/4/4 current IDs excluding name and never initialize/filter zero. B869C0 scene and B93BD0 mesh initializers use process guards with caller-target descriptors; CD8690/CD86F0/CD87B0 publish cRenderMeshResource/cSkinedMeshResource/cMatrixIndexedMeshResource from SAME cold type-counter/root/scene inheritance. Runtime mesh alternates source load/store; CRT base captures both parents before stores; derived initializer captures mesh guard before own guard/name and copies three parents before stores. Guards/names precede fallible calls; no rollback, atomicization or counter saturation. Numeric NativeResourceItemTypeCalls adapter composes actual71BB40 classification. Twelve missing functions defined under lock with before-state and prior-comment preservation;14 ABI/source records. Strict Win32 build/both existing CTests pass. Existing D3D9 fixture runs actual cold shared counter/manager, alternate caller-target guard, CRT cold base, derived-first base, unsigned counter wrap and idempotence; six unchanged native getters and three unchanged native predicates run against original-address RW globals and agree with source before/after publication/current-ID mutation. Allthree full mesh parsers execute actual71B810 game resource construction/71BB40 classification with real predicates and explicit fixture selector cells, then real deletion;57canonical owners and new counter/manager retire. Production E19 selector-cell publication, full root/game startup dispatch, cold shaders, initializer native-machine-code oracle, ABI/FH3/SEH and gameplay remain unproven. Complete 6B. No ordinary inputs; ECX ignored; EAX current global DWORD; RET. Source read_native_mesh_resource_type_00b931d0."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00b931d0\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00b931e0",
+        "prototype": "uint __cdecl BSP_ReadNativeMeshResourceName_00b931e0(void)",
+        "calling_convention": "__cdecl"
+      },
+      "result": "Successfully set prototype for function at 00b931e0 with __cdecl calling convention"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b931e0",
+        "new_name": "BSP_ReadNativeMeshResourceName_00b931e0"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b931e0 from 'BSP_MeshResourceType_00b931e0' to 'BSP_ReadNativeMeshResourceName_00b931e0'\", \"warnings\": [\"Function name 'BSP_ReadNativeMeshResourceName_00b931e0' \\u2014 main part 'ReadNativeMeshResourceName_00b931e0' is not PascalCase. Expected: Readnativemeshresourcename00b931e0\", \"Function name 'BSP_ReadNativeMeshResourceName_00b931e0' \\u2014 main part 'ReadNativeMeshResourceName_00b931e0' contains underscores. Use PascalCase after the module prefix.\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b931e0",
+        "new_name": "BSP_ReadNativeMeshResourceName_00b931e0"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b931e0 from 'BSP_ReadNativeMeshResourceName_00b931e0' to 'BSP_ReadNativeMeshResourceName_00b931e0'\", \"warnings\": [\"Function name 'BSP_ReadNativeMeshResourceName_00b931e0' \\u2014 main part 'ReadNativeMeshResourceName_00b931e0' is not PascalCase. Expected: Readnativemeshresourcename00b931e0\", \"Function name 'BSP_ReadNativeMeshResourceName_00b931e0' \\u2014 main part 'ReadNativeMeshResourceName_00b931e0' contains underscores. Use PascalCase after the module prefix.\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00b931e0",
+        "comment": "\n\n[BSP reconstruction 00b931e0] CP update\nCP complete14 native mesh resource type routines690B: 164 instruction owners,12 direct calls, saved Ghidra and installed PE equal. Six6B getters read current own-ID/name cells; three40B predicates are current slotC, not slot8, compare3/4/4 current IDs excluding name and never initialize/filter zero. B869C0 scene and B93BD0 mesh initializers use process guards with caller-target descriptors; CD8690/CD86F0/CD87B0 publish cRenderMeshResource/cSkinedMeshResource/cMatrixIndexedMeshResource from SAME cold type-counter/root/scene inheritance. Runtime mesh alternates source load/store; CRT base captures both parents before stores; derived initializer captures mesh guard before own guard/name and copies three parents before stores. Guards/names precede fallible calls; no rollback, atomicization or counter saturation. Numeric NativeResourceItemTypeCalls adapter composes actual71BB40 classification. Twelve missing functions defined under lock with before-state and prior-comment preservation;14 ABI/source records. Strict Win32 build/both existing CTests pass. Existing D3D9 fixture runs actual cold shared counter/manager, alternate caller-target guard, CRT cold base, derived-first base, unsigned counter wrap and idempotence; six unchanged native getters and three unchanged native predicates run against original-address RW globals and agree with source before/after publication/current-ID mutation. Allthree full mesh parsers execute actual71B810 game resource construction/71BB40 classification with real predicates and explicit fixture selector cells, then real deletion;57canonical owners and new counter/manager retire. Production E19 selector-cell publication, full root/game startup dispatch, cold shaders, initializer native-machine-code oracle, ABI/FH3/SEH and gameplay remain unproven. Complete 6B. No ordinary inputs; ECX ignored; EAX current global DWORD; RET. Source read_native_mesh_resource_name_00b931e0."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00b931e0\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00b936b0",
+        "prototype": "byte __fastcall BSP_MatchesNativeMeshResourceType_00b936b0(void* unused_receiver, void* unused_edx, uint token)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00b936b0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b936b0",
+        "new_name": "BSP_MatchesNativeMeshResourceType_00b936b0"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b936b0 from 'BSP_MeshResourceType_00b936b0' to 'BSP_MatchesNativeMeshResourceType_00b936b0'\", \"warnings\": [\"Function name 'BSP_MatchesNativeMeshResourceType_00b936b0' \\u2014 main part 'MatchesNativeMeshResourceType_00b936b0' is not PascalCase. Expected: Matchesnativemeshresourcetype00b936b0\", \"Function name 'BSP_MatchesNativeMeshResourceType_00b936b0' \\u2014 main part 'MatchesNativeMeshResourceType_00b936b0' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_MatchesNativeMeshResourceType_00b936b0' does not start with a recognized verb. First word 'Matches' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b936b0",
+        "new_name": "BSP_MatchesNativeMeshResourceType_00b936b0"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b936b0 from 'BSP_MatchesNativeMeshResourceType_00b936b0' to 'BSP_MatchesNativeMeshResourceType_00b936b0'\", \"warnings\": [\"Function name 'BSP_MatchesNativeMeshResourceType_00b936b0' \\u2014 main part 'MatchesNativeMeshResourceType_00b936b0' is not PascalCase. Expected: Matchesnativemeshresourcetype00b936b0\", \"Function name 'BSP_MatchesNativeMeshResourceType_00b936b0' \\u2014 main part 'MatchesNativeMeshResourceType_00b936b0' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_MatchesNativeMeshResourceType_00b936b0' does not start with a recognized verb. First word 'Matches' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00b936b0",
+        "comment": "\n\n[BSP reconstruction 00b936b0] CP update\nCP complete14 native mesh resource type routines690B: 164 instruction owners,12 direct calls, saved Ghidra and installed PE equal. Six6B getters read current own-ID/name cells; three40B predicates are current slotC, not slot8, compare3/4/4 current IDs excluding name and never initialize/filter zero. B869C0 scene and B93BD0 mesh initializers use process guards with caller-target descriptors; CD8690/CD86F0/CD87B0 publish cRenderMeshResource/cSkinedMeshResource/cMatrixIndexedMeshResource from SAME cold type-counter/root/scene inheritance. Runtime mesh alternates source load/store; CRT base captures both parents before stores; derived initializer captures mesh guard before own guard/name and copies three parents before stores. Guards/names precede fallible calls; no rollback, atomicization or counter saturation. Numeric NativeResourceItemTypeCalls adapter composes actual71BB40 classification. Twelve missing functions defined under lock with before-state and prior-comment preservation;14 ABI/source records. Strict Win32 build/both existing CTests pass. Existing D3D9 fixture runs actual cold shared counter/manager, alternate caller-target guard, CRT cold base, derived-first base, unsigned counter wrap and idempotence; six unchanged native getters and three unchanged native predicates run against original-address RW globals and agree with source before/after publication/current-ID mutation. Allthree full mesh parsers execute actual71B810 game resource construction/71BB40 classification with real predicates and explicit fixture selector cells, then real deletion;57canonical owners and new counter/manager retire. Production E19 selector-cell publication, full root/game startup dispatch, cold shaders, initializer native-machine-code oracle, ABI/FH3/SEH and gameplay remain unproven. Complete 40B. ECX ignored; stacked token; AL Boolean, upper EAX unspecified; RET4. Source matches_native_mesh_resource_type_00b936b0."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00b936b0\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00b939c0",
+        "prototype": "byte __fastcall BSP_MatchesNativeMeshResourceType_00b939c0(void* unused_receiver, void* unused_edx, uint token)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00b939c0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b939c0",
+        "new_name": "BSP_MatchesNativeMeshResourceType_00b939c0"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b939c0 from 'BSP_MeshResourceType_00b939c0' to 'BSP_MatchesNativeMeshResourceType_00b939c0'\", \"warnings\": [\"Function name 'BSP_MatchesNativeMeshResourceType_00b939c0' \\u2014 main part 'MatchesNativeMeshResourceType_00b939c0' is not PascalCase. Expected: Matchesnativemeshresourcetype00b939c0\", \"Function name 'BSP_MatchesNativeMeshResourceType_00b939c0' \\u2014 main part 'MatchesNativeMeshResourceType_00b939c0' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_MatchesNativeMeshResourceType_00b939c0' does not start with a recognized verb. First word 'Matches' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b939c0",
+        "new_name": "BSP_MatchesNativeMeshResourceType_00b939c0"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b939c0 from 'BSP_MatchesNativeMeshResourceType_00b939c0' to 'BSP_MatchesNativeMeshResourceType_00b939c0'\", \"warnings\": [\"Function name 'BSP_MatchesNativeMeshResourceType_00b939c0' \\u2014 main part 'MatchesNativeMeshResourceType_00b939c0' is not PascalCase. Expected: Matchesnativemeshresourcetype00b939c0\", \"Function name 'BSP_MatchesNativeMeshResourceType_00b939c0' \\u2014 main part 'MatchesNativeMeshResourceType_00b939c0' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_MatchesNativeMeshResourceType_00b939c0' does not start with a recognized verb. First word 'Matches' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00b939c0",
+        "comment": "\n\n[BSP reconstruction 00b939c0] CP update\nCP complete14 native mesh resource type routines690B: 164 instruction owners,12 direct calls, saved Ghidra and installed PE equal. Six6B getters read current own-ID/name cells; three40B predicates are current slotC, not slot8, compare3/4/4 current IDs excluding name and never initialize/filter zero. B869C0 scene and B93BD0 mesh initializers use process guards with caller-target descriptors; CD8690/CD86F0/CD87B0 publish cRenderMeshResource/cSkinedMeshResource/cMatrixIndexedMeshResource from SAME cold type-counter/root/scene inheritance. Runtime mesh alternates source load/store; CRT base captures both parents before stores; derived initializer captures mesh guard before own guard/name and copies three parents before stores. Guards/names precede fallible calls; no rollback, atomicization or counter saturation. Numeric NativeResourceItemTypeCalls adapter composes actual71BB40 classification. Twelve missing functions defined under lock with before-state and prior-comment preservation;14 ABI/source records. Strict Win32 build/both existing CTests pass. Existing D3D9 fixture runs actual cold shared counter/manager, alternate caller-target guard, CRT cold base, derived-first base, unsigned counter wrap and idempotence; six unchanged native getters and three unchanged native predicates run against original-address RW globals and agree with source before/after publication/current-ID mutation. Allthree full mesh parsers execute actual71B810 game resource construction/71BB40 classification with real predicates and explicit fixture selector cells, then real deletion;57canonical owners and new counter/manager retire. Production E19 selector-cell publication, full root/game startup dispatch, cold shaders, initializer native-machine-code oracle, ABI/FH3/SEH and gameplay remain unproven. Complete 40B. ECX ignored; stacked token; AL Boolean, upper EAX unspecified; RET4. Source matches_native_mesh_resource_type_00b939c0."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00b939c0\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00b93a40",
+        "prototype": "byte __fastcall BSP_MatchesNativeMeshResourceType_00b93a40(void* unused_receiver, void* unused_edx, uint token)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00b93a40 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b93a40",
+        "new_name": "BSP_MatchesNativeMeshResourceType_00b93a40"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b93a40 from 'BSP_MeshResourceType_00b93a40' to 'BSP_MatchesNativeMeshResourceType_00b93a40'\", \"warnings\": [\"Function name 'BSP_MatchesNativeMeshResourceType_00b93a40' \\u2014 main part 'MatchesNativeMeshResourceType_00b93a40' is not PascalCase. Expected: Matchesnativemeshresourcetype00b93a40\", \"Function name 'BSP_MatchesNativeMeshResourceType_00b93a40' \\u2014 main part 'MatchesNativeMeshResourceType_00b93a40' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_MatchesNativeMeshResourceType_00b93a40' does not start with a recognized verb. First word 'Matches' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b93a40",
+        "new_name": "BSP_MatchesNativeMeshResourceType_00b93a40"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b93a40 from 'BSP_MatchesNativeMeshResourceType_00b93a40' to 'BSP_MatchesNativeMeshResourceType_00b93a40'\", \"warnings\": [\"Function name 'BSP_MatchesNativeMeshResourceType_00b93a40' \\u2014 main part 'MatchesNativeMeshResourceType_00b93a40' is not PascalCase. Expected: Matchesnativemeshresourcetype00b93a40\", \"Function name 'BSP_MatchesNativeMeshResourceType_00b93a40' \\u2014 main part 'MatchesNativeMeshResourceType_00b93a40' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_MatchesNativeMeshResourceType_00b93a40' does not start with a recognized verb. First word 'Matches' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00b93a40",
+        "comment": "\n\n[BSP reconstruction 00b93a40] CP update\nCP complete14 native mesh resource type routines690B: 164 instruction owners,12 direct calls, saved Ghidra and installed PE equal. Six6B getters read current own-ID/name cells; three40B predicates are current slotC, not slot8, compare3/4/4 current IDs excluding name and never initialize/filter zero. B869C0 scene and B93BD0 mesh initializers use process guards with caller-target descriptors; CD8690/CD86F0/CD87B0 publish cRenderMeshResource/cSkinedMeshResource/cMatrixIndexedMeshResource from SAME cold type-counter/root/scene inheritance. Runtime mesh alternates source load/store; CRT base captures both parents before stores; derived initializer captures mesh guard before own guard/name and copies three parents before stores. Guards/names precede fallible calls; no rollback, atomicization or counter saturation. Numeric NativeResourceItemTypeCalls adapter composes actual71BB40 classification. Twelve missing functions defined under lock with before-state and prior-comment preservation;14 ABI/source records. Strict Win32 build/both existing CTests pass. Existing D3D9 fixture runs actual cold shared counter/manager, alternate caller-target guard, CRT cold base, derived-first base, unsigned counter wrap and idempotence; six unchanged native getters and three unchanged native predicates run against original-address RW globals and agree with source before/after publication/current-ID mutation. Allthree full mesh parsers execute actual71B810 game resource construction/71BB40 classification with real predicates and explicit fixture selector cells, then real deletion;57canonical owners and new counter/manager retire. Production E19 selector-cell publication, full root/game startup dispatch, cold shaders, initializer native-machine-code oracle, ABI/FH3/SEH and gameplay remain unproven. Complete 40B. ECX ignored; stacked token; AL Boolean, upper EAX unspecified; RET4. Source matches_native_mesh_resource_type_00b93a40."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00b93a40\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00b869c0",
+        "prototype": "void __fastcall BSP_InitializeSceneResource_00b869c0(uint* target, void* unused_edx)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00b869c0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b869c0",
+        "new_name": "BSP_InitializeSceneResource_00b869c0"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b869c0 from 'BSP_InitializeSceneResource_00b869c0' to 'BSP_InitializeSceneResource_00b869c0'\", \"warnings\": [\"Function name 'BSP_InitializeSceneResource_00b869c0' \\u2014 main part 'InitializeSceneResource_00b869c0' is not PascalCase. Expected: Initializesceneresource00b869c0\", \"Function name 'BSP_InitializeSceneResource_00b869c0' \\u2014 main part 'InitializeSceneResource_00b869c0' contains underscores. Use PascalCase after the module prefix.\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b869c0",
+        "new_name": "BSP_InitializeSceneResource_00b869c0"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b869c0 from 'BSP_InitializeSceneResource_00b869c0' to 'BSP_InitializeSceneResource_00b869c0'\", \"warnings\": [\"Function name 'BSP_InitializeSceneResource_00b869c0' \\u2014 main part 'InitializeSceneResource_00b869c0' is not PascalCase. Expected: Initializesceneresource00b869c0\", \"Function name 'BSP_InitializeSceneResource_00b869c0' \\u2014 main part 'InitializeSceneResource_00b869c0' contains underscores. Use PascalCase after the module prefix.\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00b869c0",
+        "comment": "\n\n[BSP reconstruction 00b869c0] CP update\nCP complete14 native mesh resource type routines690B: 164 instruction owners,12 direct calls, saved Ghidra and installed PE equal. Six6B getters read current own-ID/name cells; three40B predicates are current slotC, not slot8, compare3/4/4 current IDs excluding name and never initialize/filter zero. B869C0 scene and B93BD0 mesh initializers use process guards with caller-target descriptors; CD8690/CD86F0/CD87B0 publish cRenderMeshResource/cSkinedMeshResource/cMatrixIndexedMeshResource from SAME cold type-counter/root/scene inheritance. Runtime mesh alternates source load/store; CRT base captures both parents before stores; derived initializer captures mesh guard before own guard/name and copies three parents before stores. Guards/names precede fallible calls; no rollback, atomicization or counter saturation. Numeric NativeResourceItemTypeCalls adapter composes actual71BB40 classification. Twelve missing functions defined under lock with before-state and prior-comment preservation;14 ABI/source records. Strict Win32 build/both existing CTests pass. Existing D3D9 fixture runs actual cold shared counter/manager, alternate caller-target guard, CRT cold base, derived-first base, unsigned counter wrap and idempotence; six unchanged native getters and three unchanged native predicates run against original-address RW globals and agree with source before/after publication/current-ID mutation. Allthree full mesh parsers execute actual71B810 game resource construction/71BB40 classification with real predicates and explicit fixture selector cells, then real deletion;57canonical owners and new counter/manager retire. Production E19 selector-cell publication, full root/game startup dispatch, cold shaders, initializer native-machine-code oracle, ABI/FH3/SEH and gameplay remain unproven. Complete 62B. ECX actual caller-supplied descriptor; process-wide guard; no stack arguments; RET. Source initialize_scene_resource_00b869c0."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00b869c0\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00b93bd0",
+        "prototype": "void __fastcall BSP_InitializeMeshResource_00b93bd0(uint* target, void* unused_edx)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00b93bd0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b93bd0",
+        "new_name": "BSP_InitializeMeshResource_00b93bd0"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b93bd0 from 'BSP_InitializeMeshResource_00b93bd0' to 'BSP_InitializeMeshResource_00b93bd0'\", \"warnings\": [\"Function name 'BSP_InitializeMeshResource_00b93bd0' \\u2014 main part 'InitializeMeshResource_00b93bd0' is not PascalCase. Expected: Initializemeshresource00b93bd0\", \"Function name 'BSP_InitializeMeshResource_00b93bd0' \\u2014 main part 'InitializeMeshResource_00b93bd0' contains underscores. Use PascalCase after the module prefix.\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b93bd0",
+        "new_name": "BSP_InitializeMeshResource_00b93bd0"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b93bd0 from 'BSP_InitializeMeshResource_00b93bd0' to 'BSP_InitializeMeshResource_00b93bd0'\", \"warnings\": [\"Function name 'BSP_InitializeMeshResource_00b93bd0' \\u2014 main part 'InitializeMeshResource_00b93bd0' is not PascalCase. Expected: Initializemeshresource00b93bd0\", \"Function name 'BSP_InitializeMeshResource_00b93bd0' \\u2014 main part 'InitializeMeshResource_00b93bd0' contains underscores. Use PascalCase after the module prefix.\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00b93bd0",
+        "comment": "\n\n[BSP reconstruction 00b93bd0] CP update\nCP complete14 native mesh resource type routines690B: 164 instruction owners,12 direct calls, saved Ghidra and installed PE equal. Six6B getters read current own-ID/name cells; three40B predicates are current slotC, not slot8, compare3/4/4 current IDs excluding name and never initialize/filter zero. B869C0 scene and B93BD0 mesh initializers use process guards with caller-target descriptors; CD8690/CD86F0/CD87B0 publish cRenderMeshResource/cSkinedMeshResource/cMatrixIndexedMeshResource from SAME cold type-counter/root/scene inheritance. Runtime mesh alternates source load/store; CRT base captures both parents before stores; derived initializer captures mesh guard before own guard/name and copies three parents before stores. Guards/names precede fallible calls; no rollback, atomicization or counter saturation. Numeric NativeResourceItemTypeCalls adapter composes actual71BB40 classification. Twelve missing functions defined under lock with before-state and prior-comment preservation;14 ABI/source records. Strict Win32 build/both existing CTests pass. Existing D3D9 fixture runs actual cold shared counter/manager, alternate caller-target guard, CRT cold base, derived-first base, unsigned counter wrap and idempotence; six unchanged native getters and three unchanged native predicates run against original-address RW globals and agree with source before/after publication/current-ID mutation. Allthree full mesh parsers execute actual71B810 game resource construction/71BB40 classification with real predicates and explicit fixture selector cells, then real deletion;57canonical owners and new counter/manager retire. Production E19 selector-cell publication, full root/game startup dispatch, cold shaders, initializer native-machine-code oracle, ABI/FH3/SEH and gameplay remain unproven. Complete 71B. ECX actual caller-supplied descriptor; process-wide guard; no stack arguments; RET. Source initialize_mesh_resource_00b93bd0."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00b93bd0\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00cd8690",
+        "prototype": "void __cdecl BSP_InitializeMeshResource_00cd8690(void)",
+        "calling_convention": "__cdecl"
+      },
+      "result": "Successfully set prototype for function at 00cd8690 with __cdecl calling convention"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00cd8690",
+        "new_name": "BSP_InitializeMeshResource_00cd8690"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00cd8690 from 'BSP_MeshResourceType_00cd8690' to 'BSP_InitializeMeshResource_00cd8690'\", \"warnings\": [\"Function name 'BSP_InitializeMeshResource_00cd8690' \\u2014 main part 'InitializeMeshResource_00cd8690' is not PascalCase. Expected: Initializemeshresource00cd8690\", \"Function name 'BSP_InitializeMeshResource_00cd8690' \\u2014 main part 'InitializeMeshResource_00cd8690' contains underscores. Use PascalCase after the module prefix.\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00cd8690",
+        "new_name": "BSP_InitializeMeshResource_00cd8690"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00cd8690 from 'BSP_InitializeMeshResource_00cd8690' to 'BSP_InitializeMeshResource_00cd8690'\", \"warnings\": [\"Function name 'BSP_InitializeMeshResource_00cd8690' \\u2014 main part 'InitializeMeshResource_00cd8690' is not PascalCase. Expected: Initializemeshresource00cd8690\", \"Function name 'BSP_InitializeMeshResource_00cd8690' \\u2014 main part 'InitializeMeshResource_00cd8690' contains underscores. Use PascalCase after the module prefix.\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00cd8690",
+        "comment": "\n\n[BSP reconstruction 00cd8690] CP update\nCP complete14 native mesh resource type routines690B: 164 instruction owners,12 direct calls, saved Ghidra and installed PE equal. Six6B getters read current own-ID/name cells; three40B predicates are current slotC, not slot8, compare3/4/4 current IDs excluding name and never initialize/filter zero. B869C0 scene and B93BD0 mesh initializers use process guards with caller-target descriptors; CD8690/CD86F0/CD87B0 publish cRenderMeshResource/cSkinedMeshResource/cMatrixIndexedMeshResource from SAME cold type-counter/root/scene inheritance. Runtime mesh alternates source load/store; CRT base captures both parents before stores; derived initializer captures mesh guard before own guard/name and copies three parents before stores. Guards/names precede fallible calls; no rollback, atomicization or counter saturation. Numeric NativeResourceItemTypeCalls adapter composes actual71BB40 classification. Twelve missing functions defined under lock with before-state and prior-comment preservation;14 ABI/source records. Strict Win32 build/both existing CTests pass. Existing D3D9 fixture runs actual cold shared counter/manager, alternate caller-target guard, CRT cold base, derived-first base, unsigned counter wrap and idempotence; six unchanged native getters and three unchanged native predicates run against original-address RW globals and agree with source before/after publication/current-ID mutation. Allthree full mesh parsers execute actual71B810 game resource construction/71BB40 classification with real predicates and explicit fixture selector cells, then real deletion;57canonical owners and new counter/manager retire. Production E19 selector-cell publication, full root/game startup dispatch, cold shaders, initializer native-machine-code oracle, ABI/FH3/SEH and gameplay remain unproven. Complete 79B. CRT initializer; no ordinary inputs; no stable result; RET. Source initialize_mesh_resource_00cd8690."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00cd8690\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00cd86f0",
+        "prototype": "void __cdecl BSP_InitializeSkinedMeshResource_00cd86f0(void)",
+        "calling_convention": "__cdecl"
+      },
+      "result": "Successfully set prototype for function at 00cd86f0 with __cdecl calling convention"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00cd86f0",
+        "new_name": "BSP_InitializeSkinedMeshResource_00cd86f0"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00cd86f0 from 'BSP_MeshResourceType_00cd86f0' to 'BSP_InitializeSkinedMeshResource_00cd86f0'\", \"warnings\": [\"Function name 'BSP_InitializeSkinedMeshResource_00cd86f0' \\u2014 main part 'InitializeSkinedMeshResource_00cd86f0' is not PascalCase. Expected: Initializeskinedmeshresource00cd86f0\", \"Function name 'BSP_InitializeSkinedMeshResource_00cd86f0' \\u2014 main part 'InitializeSkinedMeshResource_00cd86f0' contains underscores. Use PascalCase after the module prefix.\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00cd86f0",
+        "new_name": "BSP_InitializeSkinedMeshResource_00cd86f0"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00cd86f0 from 'BSP_InitializeSkinedMeshResource_00cd86f0' to 'BSP_InitializeSkinedMeshResource_00cd86f0'\", \"warnings\": [\"Function name 'BSP_InitializeSkinedMeshResource_00cd86f0' \\u2014 main part 'InitializeSkinedMeshResource_00cd86f0' is not PascalCase. Expected: Initializeskinedmeshresource00cd86f0\", \"Function name 'BSP_InitializeSkinedMeshResource_00cd86f0' \\u2014 main part 'InitializeSkinedMeshResource_00cd86f0' contains underscores. Use PascalCase after the module prefix.\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00cd86f0",
+        "comment": "\n\n[BSP reconstruction 00cd86f0] CP update\nCP complete14 native mesh resource type routines690B: 164 instruction owners,12 direct calls, saved Ghidra and installed PE equal. Six6B getters read current own-ID/name cells; three40B predicates are current slotC, not slot8, compare3/4/4 current IDs excluding name and never initialize/filter zero. B869C0 scene and B93BD0 mesh initializers use process guards with caller-target descriptors; CD8690/CD86F0/CD87B0 publish cRenderMeshResource/cSkinedMeshResource/cMatrixIndexedMeshResource from SAME cold type-counter/root/scene inheritance. Runtime mesh alternates source load/store; CRT base captures both parents before stores; derived initializer captures mesh guard before own guard/name and copies three parents before stores. Guards/names precede fallible calls; no rollback, atomicization or counter saturation. Numeric NativeResourceItemTypeCalls adapter composes actual71BB40 classification. Twelve missing functions defined under lock with before-state and prior-comment preservation;14 ABI/source records. Strict Win32 build/both existing CTests pass. Existing D3D9 fixture runs actual cold shared counter/manager, alternate caller-target guard, CRT cold base, derived-first base, unsigned counter wrap and idempotence; six unchanged native getters and three unchanged native predicates run against original-address RW globals and agree with source before/after publication/current-ID mutation. Allthree full mesh parsers execute actual71B810 game resource construction/71BB40 classification with real predicates and explicit fixture selector cells, then real deletion;57canonical owners and new counter/manager retire. Production E19 selector-cell publication, full root/game startup dispatch, cold shaders, initializer native-machine-code oracle, ABI/FH3/SEH and gameplay remain unproven. Complete 161B. CRT initializer; no ordinary inputs; no stable result; RET. Source initialize_skined_mesh_resource_00cd86f0."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00cd86f0\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00cd87b0",
+        "prototype": "void __cdecl BSP_InitializeMatrixMeshResource_00cd87b0(void)",
+        "calling_convention": "__cdecl"
+      },
+      "result": "Successfully set prototype for function at 00cd87b0 with __cdecl calling convention"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00cd87b0",
+        "new_name": "BSP_InitializeMatrixMeshResource_00cd87b0"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00cd87b0 from 'BSP_MeshResourceType_00cd87b0' to 'BSP_InitializeMatrixMeshResource_00cd87b0'\", \"warnings\": [\"Function name 'BSP_InitializeMatrixMeshResource_00cd87b0' \\u2014 main part 'InitializeMatrixMeshResource_00cd87b0' is not PascalCase. Expected: Initializematrixmeshresource00cd87b0\", \"Function name 'BSP_InitializeMatrixMeshResource_00cd87b0' \\u2014 main part 'InitializeMatrixMeshResource_00cd87b0' contains underscores. Use PascalCase after the module prefix.\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00cd87b0",
+        "new_name": "BSP_InitializeMatrixMeshResource_00cd87b0"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00cd87b0 from 'BSP_InitializeMatrixMeshResource_00cd87b0' to 'BSP_InitializeMatrixMeshResource_00cd87b0'\", \"warnings\": [\"Function name 'BSP_InitializeMatrixMeshResource_00cd87b0' \\u2014 main part 'InitializeMatrixMeshResource_00cd87b0' is not PascalCase. Expected: Initializematrixmeshresource00cd87b0\", \"Function name 'BSP_InitializeMatrixMeshResource_00cd87b0' \\u2014 main part 'InitializeMatrixMeshResource_00cd87b0' contains underscores. Use PascalCase after the module prefix.\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00cd87b0",
+        "comment": "\n\n[BSP reconstruction 00cd87b0] CP update\nCP complete14 native mesh resource type routines690B: 164 instruction owners,12 direct calls, saved Ghidra and installed PE equal. Six6B getters read current own-ID/name cells; three40B predicates are current slotC, not slot8, compare3/4/4 current IDs excluding name and never initialize/filter zero. B869C0 scene and B93BD0 mesh initializers use process guards with caller-target descriptors; CD8690/CD86F0/CD87B0 publish cRenderMeshResource/cSkinedMeshResource/cMatrixIndexedMeshResource from SAME cold type-counter/root/scene inheritance. Runtime mesh alternates source load/store; CRT base captures both parents before stores; derived initializer captures mesh guard before own guard/name and copies three parents before stores. Guards/names precede fallible calls; no rollback, atomicization or counter saturation. Numeric NativeResourceItemTypeCalls adapter composes actual71BB40 classification. Twelve missing functions defined under lock with before-state and prior-comment preservation;14 ABI/source records. Strict Win32 build/both existing CTests pass. Existing D3D9 fixture runs actual cold shared counter/manager, alternate caller-target guard, CRT cold base, derived-first base, unsigned counter wrap and idempotence; six unchanged native getters and three unchanged native predicates run against original-address RW globals and agree with source before/after publication/current-ID mutation. Allthree full mesh parsers execute actual71B810 game resource construction/71BB40 classification with real predicates and explicit fixture selector cells, then real deletion;57canonical owners and new counter/manager retire. Production E19 selector-cell publication, full root/game startup dispatch, cold shaders, initializer native-machine-code oracle, ABI/FH3/SEH and gameplay remain unproven. Complete 161B. CRT initializer; no ordinary inputs; no stable result; RET. Source initialize_matrix_mesh_resource_00cd87b0."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00cd87b0\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": "{\"success\": true, \"program\": \"battlestationspacific.exe\", \"message\": \"Program saved successfully\"}"
+    }
+  ],
+  "saved": true,
+  "exports_refreshed": true
+}
