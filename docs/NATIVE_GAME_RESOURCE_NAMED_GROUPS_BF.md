@@ -68,3 +68,7 @@ default x87 control word; unmasked hardware exceptions and full floating-point
 environment equivalence are not claimed. These are new C++ interfaces, not
 drop-in ABI replacements. The real vehicle binder, entry activation and gameplay
 remain open. No workers were dispatched.
+
+## Retained evidence
+
+The immutable manifest `local/named_groups_bf/manifest.json` retains 303 exact inputs and 87 artifacts, including 3 linked production objects, original lookup/access/library/producer bytes, compared output images, compiled disassembly, compiler/library inputs and saved Ghidra comments/exports. Source commit `e05f4d9e47f1f90fc2d3efff524df46c09d340f1` contains the tested source. The build began at `18c7d4c9b5b138e6b76b0b7cdc520bd18e906a5c` with owned edits present; source hashes and compiler dependency records identify the actual inputs. No source changes followed verification.
