@@ -1,0 +1,115 @@
+{
+  "packet": "orch4_native_mesh_loading_cn",
+  "entries": [
+    {
+      "address": "00cc2eb8",
+      "before_documentation": {
+        "no_function": true
+      },
+      "before_comment": {
+        "no_function": true,
+        "comment": ""
+      },
+      "complete": true,
+      "after_comment": {
+        "address": "00cc2eb8",
+        "function_name": "BSP_Mesh_FieldsHandler_00cc2eb8",
+        "comment": ""
+      },
+      "prior_comment_preserved": true,
+      "all_instruction_owners_verified": true
+    },
+    {
+      "address": "00cc2ed8",
+      "before_documentation": {
+        "no_function": true
+      },
+      "before_comment": {
+        "no_function": true,
+        "comment": ""
+      },
+      "complete": true,
+      "after_comment": {
+        "address": "00cc2ed8",
+        "function_name": "BSP_Mesh_NodeConstructorHandler_00cc2ed8",
+        "comment": ""
+      },
+      "prior_comment_preserved": true,
+      "all_instruction_owners_verified": true
+    }
+  ],
+  "actions": [
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00cc2eb8",
+        "end_address": "00cc2ec2"
+      },
+      "result": "{\"success\": true, \"start_address\": \"00cc2eb8\", \"end_address\": \"00cc2ec1\", \"bytes_disassembled\": 10, \"message\": \"Successfully disassembled 10 byte(s)\"}"
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00cc2eb8",
+        "name": "BSP_Mesh_FieldsHandler_00cc2eb8",
+        "disassemble_first": false
+      },
+      "result": "{\"success\": true, \"address\": \"00cc2eb8\", \"function_name\": \"BSP_Mesh_FieldsHandler_00cc2eb8\", \"entry_point\": \"00cc2eb8\", \"body_size\": 10, \"message\": \"Function created successfully at 00cc2eb8\", \"warnings\": [\"Function name 'BSP_Mesh_FieldsHandler_00cc2eb8' \\u2014 main part 'Mesh_FieldsHandler_00cc2eb8' is not PascalCase. Expected: MeshFieldshandler00cc2eb8\", \"Function name 'BSP_Mesh_FieldsHandler_00cc2eb8' \\u2014 main part 'Mesh_FieldsHandler_00cc2eb8' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_Mesh_FieldsHandler_00cc2eb8' does not start with a recognized verb. First word 'Mesh_' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00cc2eb8",
+        "new_name": "BSP_Mesh_FieldsHandler_00cc2eb8"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00cc2eb8 from 'BSP_Mesh_FieldsHandler_00cc2eb8' to 'BSP_Mesh_FieldsHandler_00cc2eb8'\", \"warnings\": [\"Function name 'BSP_Mesh_FieldsHandler_00cc2eb8' \\u2014 main part 'Mesh_FieldsHandler_00cc2eb8' is not PascalCase. Expected: MeshFieldshandler00cc2eb8\", \"Function name 'BSP_Mesh_FieldsHandler_00cc2eb8' \\u2014 main part 'Mesh_FieldsHandler_00cc2eb8' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_Mesh_FieldsHandler_00cc2eb8' does not start with a recognized verb. First word 'Mesh_' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00cc2eb8",
+        "comment": ""
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00cc2eb8\"}"
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00cc2ed8",
+        "end_address": "00cc2ee2"
+      },
+      "result": "{\"success\": true, \"start_address\": \"00cc2ed8\", \"end_address\": \"00cc2ee1\", \"bytes_disassembled\": 10, \"message\": \"Successfully disassembled 10 byte(s)\"}"
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00cc2ed8",
+        "name": "BSP_Mesh_NodeConstructorHandler_00cc2ed8",
+        "disassemble_first": false
+      },
+      "result": "{\"success\": true, \"address\": \"00cc2ed8\", \"function_name\": \"BSP_Mesh_NodeConstructorHandler_00cc2ed8\", \"entry_point\": \"00cc2ed8\", \"body_size\": 10, \"message\": \"Function created successfully at 00cc2ed8\", \"warnings\": [\"Function name 'BSP_Mesh_NodeConstructorHandler_00cc2ed8' \\u2014 main part 'Mesh_NodeConstructorHandler_00cc2ed8' is not PascalCase. Expected: MeshNodeconstructorhandler00cc2ed8\", \"Function name 'BSP_Mesh_NodeConstructorHandler_00cc2ed8' \\u2014 main part 'Mesh_NodeConstructorHandler_00cc2ed8' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_Mesh_NodeConstructorHandler_00cc2ed8' does not start with a recognized verb. First word 'Mesh_' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00cc2ed8",
+        "new_name": "BSP_Mesh_NodeConstructorHandler_00cc2ed8"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00cc2ed8 from 'BSP_Mesh_NodeConstructorHandler_00cc2ed8' to 'BSP_Mesh_NodeConstructorHandler_00cc2ed8'\", \"warnings\": [\"Function name 'BSP_Mesh_NodeConstructorHandler_00cc2ed8' \\u2014 main part 'Mesh_NodeConstructorHandler_00cc2ed8' is not PascalCase. Expected: MeshNodeconstructorhandler00cc2ed8\", \"Function name 'BSP_Mesh_NodeConstructorHandler_00cc2ed8' \\u2014 main part 'Mesh_NodeConstructorHandler_00cc2ed8' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_Mesh_NodeConstructorHandler_00cc2ed8' does not start with a recognized verb. First word 'Mesh_' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00cc2ed8",
+        "comment": ""
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00cc2ed8\"}"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": "{\"success\": true, \"program\": \"battlestationspacific.exe\", \"message\": \"Program saved successfully\"}"
+    }
+  ],
+  "saved": true
+}

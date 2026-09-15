@@ -1,0 +1,665 @@
+{
+  "packet": "orch4_native_mesh_loading_cn",
+  "entries": [
+    {
+      "address": "00b944e0",
+      "name": "BSP_MeshHandle_ReadStructuredFields",
+      "before_comment": {
+        "address": "00b944e0",
+        "function_name": "BSP_MeshHandle_ReadStructuredFields",
+        "comment": "[BSP reconstruction 00b944e0]\nBSP reconstruction hypothesis: Read prefix DWORD through00be99f0 into pair+4, then ordered child dispatch for nine verified tags. LODValue reads float and calls setter; eight fields delegate; unknown fields skip; every normal child releases without implicit seek. No explicit error-status branch. ABI: ECX output pair; stack input node-wrapper pointer; RET4. Full native span matches installed PE. Field decode/renderer dependencies remain explicit; not a loaded-mesh or native ABI claim. Evidence: docs/RESOURCE_MESH_PARSER_BOUNDARY.md; reports/resource_mesh_parser_boundary_audit.json. Original ABI: ECX output pair; stack input node-wrapper pointer; RET4.. Evidence: docs/RESOURCE_MESH_PARSER_BOUNDARY.md; reports/resource_mesh_parser_boundary_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\n\n[BSP reconstruction 00b944e0] update\nAggregate native field-order parser implemented as owning wire values; preserves prefix, native LOD1.0 default, append/replace rules, preceding-stream metadata attachment, unknown skip and mesh bounds discard. Runtime retained bindings remain separate. Evidence: docs/MESH_RESOURCE_INTEGRATION.md; reports/mesh_resource_annotations.json. Original ABI unchanged; no gameplay validation."
+      },
+      "before_documentation": {
+        "hash": "8a7212d8f90b3bbd7625bfb52cc80633110564a65181caf1d97bd695f329a6aa",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b944e0",
+        "function_name": "BSP_MeshHandle_ReadStructuredFields",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00b944e0]\nBSP reconstruction hypothesis: Read prefix DWORD through00be99f0 into pair+4, then ordered child dispatch for nine verified tags. LODValue reads float and calls setter; eight fields delegate; unknown fields skip; every normal child releases without implicit seek. No explicit error-status branch. ABI: ECX output pair; stack input node-wrapper pointer; RET4. Full native span matches installed PE. Field decode/renderer dependencies remain explicit; not a loaded-mesh or native ABI claim. Evidence: docs/RESOURCE_MESH_PARSER_BOUNDARY.md; reports/resource_mesh_parser_boundary_audit.json. Original ABI: ECX output pair; stack input node-wrapper pointer; RET4.. Evidence: docs/RESOURCE_MESH_PARSER_BOUNDARY.md; reports/resource_mesh_parser_boundary_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\n\n[BSP reconstruction 00b944e0] update\nAggregate native field-order parser implemented as owning wire values; preserves prefix, native LOD1.0 default, append/replace rules, preceding-stream metadata attachment, unknown skip and mesh bounds discard. Runtime retained bindings remain separate. Evidence: docs/MESH_RESOURCE_INTEGRATION.md; reports/mesh_resource_annotations.json. Original ABI unchanged; no gameplay validation.",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "extraout_EDX_00",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "unused_edx_02",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "extraout_EDX_01",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "local_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "local_4",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "unused_edx_03",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "unused_edx",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "extraout_EDX",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "unused_edx_00",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "unused_edx_01",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "handle",
+            "type": "void *",
+            "storage": "(unique, 0x10000295, 4)"
+          },
+          {
+            "name": "cVar1",
+            "type": "char",
+            "storage": "(register, 0x0, 1)"
+          },
+          {
+            "name": "uVar2",
+            "type": "uint",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "iVar3",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "unused_edx_07",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "extraout_EDX_10",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "value",
+            "type": "float",
+            "storage": "(VARIABLE, 0x0, 4)"
+          },
+          {
+            "name": "unused_edx_06",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "extraout_EDX_08",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "extraout_EDX_09",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "pvVar4",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "extraout_EDX_05",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "unused_edx_05",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "extraout_EDX_06",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "extraout_EDX_07",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "extraout_EDX_02",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "unused_edx_04",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "extraout_EDX_03",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "extraout_EDX_04",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "pcStack_8",
+            "type": "undefined *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 56,
+            "name": "LAB_00b94518"
+          },
+          {
+            "relative_offset": 145,
+            "name": "LAB_00b94571"
+          },
+          {
+            "relative_offset": 199,
+            "name": "LAB_00b945a7"
+          },
+          {
+            "relative_offset": 253,
+            "name": "LAB_00b945dd"
+          },
+          {
+            "relative_offset": 307,
+            "name": "LAB_00b94613"
+          },
+          {
+            "relative_offset": 348,
+            "name": "LAB_00b9463c"
+          },
+          {
+            "relative_offset": 386,
+            "name": "LAB_00b94662"
+          },
+          {
+            "relative_offset": 424,
+            "name": "LAB_00b94688"
+          },
+          {
+            "relative_offset": 462,
+            "name": "LAB_00b946ae"
+          },
+          {
+            "relative_offset": 500,
+            "name": "LAB_00b946d4"
+          },
+          {
+            "relative_offset": 505,
+            "name": "LAB_00b946d9"
+          },
+          {
+            "relative_offset": 538,
+            "name": "LAB_00b946fa"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "evidence": "CN complete native mesh aggregate B944E0[557] and constructor B94710[131], plus exact volatile B72B40[4] leaf and four compiler supports36B: 235 instruction owners,34 direct transfers, saved Ghidra/disk equal. Aggregate prefix publishes pair+4, then ordered nine-child dispatch: four nullable C-string comparisons followed by five counted425850 comparisons; LOD preserves two x87 float32 stores and captures mesh before reading. Every stateful child retains its own acquired frame; EH owns only current completed child. Constructor raw-slot unwind ends at native B94756 state-1 before added canonical admission; actual pair[0] and completed mesh survive metadata or parsing failure. Final empty loop captures current pair mesh before each local increment and rereads unsigned count; no per-section action or cached count. Two missing handlers created/saved under lock, seven prior comments preserved; no byte clear/no-return changes. Actual RTX5090 D3D9 fixture executes all nine fields, two full subsets with explicit/default stream paths and generic layout readback, normal count2 loop, mesh bind rejection after pair publication, and second outer sphere read failure after completed subset publication;31 canonical owners retire. Cached effect pass preimage remains explicit; no cold shader/compiler, original full-parent execution, native ABI/FH3/SEH or game claim. Complete 557B. ECX actual8h output pair; stacked parent handle; RET4. Source read_native_mesh_fields_00b944e0.",
+      "prototype": "void __fastcall BSP_MeshHandle_ReadStructuredFields(void* pair, void* unused_edx, void* parent_handle)",
+      "prototype_result": "Successfully set prototype for function at 00b944e0 with __fastcall calling convention",
+      "ledger_name_output": "00b944e0 -> BSP_MeshHandle_ReadStructuredFields\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00b944e0\", \"name\": \"BSP_MeshHandle_ReadStructuredFields\", \"evidence\": \"Aggregate native field-order parser implemented as owning wire values; preserves prefix, native LOD1.0 default, append/replace rules, preceding-stream metadata attachment, unknown skip and mesh bounds discard. Runtime retained bindings remain separate. Evidence: docs/MESH_RESOURCE_INTEGRATION.md; reports/mesh_resource_annotations.json. Original ABI unchanged; no gameplay validation.\"})\n",
+      "ledger_function_output": "00b944e0 function read_native_mesh_fields_00b944e0\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00b944e0",
+        "function_name": "BSP_MeshHandle_ReadStructuredFields",
+        "comment": "[BSP reconstruction 00b944e0]\nBSP reconstruction hypothesis: Read prefix DWORD through00be99f0 into pair+4, then ordered child dispatch for nine verified tags. LODValue reads float and calls setter; eight fields delegate; unknown fields skip; every normal child releases without implicit seek. No explicit error-status branch. ABI: ECX output pair; stack input node-wrapper pointer; RET4. Full native span matches installed PE. Field decode/renderer dependencies remain explicit; not a loaded-mesh or native ABI claim. Evidence: docs/RESOURCE_MESH_PARSER_BOUNDARY.md; reports/resource_mesh_parser_boundary_audit.json. Original ABI: ECX output pair; stack input node-wrapper pointer; RET4.. Evidence: docs/RESOURCE_MESH_PARSER_BOUNDARY.md; reports/resource_mesh_parser_boundary_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\n\n[BSP reconstruction 00b944e0] update\nAggregate native field-order parser implemented as owning wire values; preserves prefix, native LOD1.0 default, append/replace rules, preceding-stream metadata attachment, unknown skip and mesh bounds discard. Runtime retained bindings remain separate. Evidence: docs/MESH_RESOURCE_INTEGRATION.md; reports/mesh_resource_annotations.json. Original ABI unchanged; no gameplay validation.\n\n[BSP reconstruction 00b944e0] CN update\nCN complete native mesh aggregate B944E0[557] and constructor B94710[131], plus exact volatile B72B40[4] leaf and four compiler supports36B: 235 instruction owners,34 direct transfers, saved Ghidra/disk equal. Aggregate prefix publishes pair+4, then ordered nine-child dispatch: four nullable C-string comparisons followed by five counted425850 comparisons; LOD preserves two x87 float32 stores and captures mesh before reading. Every stateful child retains its own acquired frame; EH owns only current completed child. Constructor raw-slot unwind ends at native B94756 state-1 before added canonical admission; actual pair[0] and completed mesh survive metadata or parsing failure. Final empty loop captures current pair mesh before each local increment and rereads unsigned count; no per-section action or cached count. Two missing handlers created/saved under lock, seven prior comments preserved; no byte clear/no-return changes. Actual RTX5090 D3D9 fixture executes all nine fields, two full subsets with explicit/default stream paths and generic layout readback, normal count2 loop, mesh bind rejection after pair publication, and second outer sphere read failure after completed subset publication;31 canonical owners retire. Cached effect pass preimage remains explicit; no cold shader/compiler, original full-parent execution, native ABI/FH3/SEH or game claim. Complete 557B. ECX actual8h output pair; stacked parent handle; RET4. Source read_native_mesh_fields_00b944e0."
+      }
+    },
+    {
+      "address": "00b94710",
+      "name": "BSP_MeshHandle_ConstructFromStructuredNode",
+      "before_comment": {
+        "address": "00b94710",
+        "function_name": "BSP_MeshHandle_ConstructFromStructuredNode",
+        "comment": "[BSP reconstruction 00b94710]\nBSP reconstruction hypothesis: Call context entry00b73b60 after settingECX=BC (entry discards it); construct nonnull storage through00b73d70, write pair[0], parse via00b944e0 which writes pair[1]; poll object+58 count with a local loop and no visible per-element action. ABI: ECX eight-byte output pair; stack node-wrapper pointer; EAX underlying object pointer; RET4. Full native span matches installed PE. Field decode/renderer dependencies remain explicit; not a loaded-mesh or native ABI claim. Evidence: docs/RESOURCE_MESH_PARSER_BOUNDARY.md; reports/resource_mesh_parser_boundary_audit.json. Original ABI: ECX eight-byte output pair; stack node-wrapper pointer; EAX underlying object pointer; RET4.. Evidence: docs/RESOURCE_MESH_PARSER_BOUNDARY.md; reports/resource_mesh_parser_boundary_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation."
+      },
+      "before_documentation": {
+        "hash": "8798c48cee7f13a208cb6db1dce5880501208a10d944ffc769455f450d19e404",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b94710",
+        "function_name": "BSP_MeshHandle_ConstructFromStructuredNode",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00b94710]\nBSP reconstruction hypothesis: Call context entry00b73b60 after settingECX=BC (entry discards it); construct nonnull storage through00b73d70, write pair[0], parse via00b944e0 which writes pair[1]; poll object+58 count with a local loop and no visible per-element action. ABI: ECX eight-byte output pair; stack node-wrapper pointer; EAX underlying object pointer; RET4. Full native span matches installed PE. Field decode/renderer dependencies remain explicit; not a loaded-mesh or native ABI claim. Evidence: docs/RESOURCE_MESH_PARSER_BOUNDARY.md; reports/resource_mesh_parser_boundary_audit.json. Original ABI: ECX eight-byte output pair; stack node-wrapper pointer; EAX underlying object pointer; RET4.. Evidence: docs/RESOURCE_MESH_PARSER_BOUNDARY.md; reports/resource_mesh_parser_boundary_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "iVar1",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "pcStack_8",
+            "type": "undefined *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "local_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "uVar2",
+            "type": "uint",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "local_4",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "uVar3",
+            "type": "uint",
+            "storage": "(register, 0x1c, 4)"
+          },
+          {
+            "name": "uVar4",
+            "type": "ulonglong",
+            "storage": "(VARIABLE, 0x0, 8)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 59,
+            "name": "LAB_00b9474b"
+          },
+          {
+            "relative_offset": 61,
+            "name": "LAB_00b9474d"
+          },
+          {
+            "relative_offset": 96,
+            "name": "LAB_00b94770"
+          },
+          {
+            "relative_offset": 110,
+            "name": "LAB_00b9477e"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "evidence": "CN complete native mesh aggregate B944E0[557] and constructor B94710[131], plus exact volatile B72B40[4] leaf and four compiler supports36B: 235 instruction owners,34 direct transfers, saved Ghidra/disk equal. Aggregate prefix publishes pair+4, then ordered nine-child dispatch: four nullable C-string comparisons followed by five counted425850 comparisons; LOD preserves two x87 float32 stores and captures mesh before reading. Every stateful child retains its own acquired frame; EH owns only current completed child. Constructor raw-slot unwind ends at native B94756 state-1 before added canonical admission; actual pair[0] and completed mesh survive metadata or parsing failure. Final empty loop captures current pair mesh before each local increment and rereads unsigned count; no per-section action or cached count. Two missing handlers created/saved under lock, seven prior comments preserved; no byte clear/no-return changes. Actual RTX5090 D3D9 fixture executes all nine fields, two full subsets with explicit/default stream paths and generic layout readback, normal count2 loop, mesh bind rejection after pair publication, and second outer sphere read failure after completed subset publication;31 canonical owners retire. Cached effect pass preimage remains explicit; no cold shader/compiler, original full-parent execution, native ABI/FH3/SEH or game claim. Complete 131B. ECX actual8h output pair; stacked parent handle; EAX current pair[0]; RET4. Source construct_native_mesh_from_node_00b94710.",
+      "prototype": "void* __fastcall BSP_MeshHandle_ConstructFromStructuredNode(void* pair, void* unused_edx, void* parent_handle)",
+      "prototype_result": "Successfully set prototype for function at 00b94710 with __fastcall calling convention",
+      "ledger_name_output": "00b94710 -> BSP_MeshHandle_ConstructFromStructuredNode\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00b94710\", \"name\": \"BSP_MeshHandle_ConstructFromStructuredNode\", \"evidence\": \"BSP reconstruction hypothesis: Call context entry00b73b60 after settingECX=BC (entry discards it); construct nonnull storage through00b73d70, write pair[0], parse via00b944e0 which writes pair[1]; poll object+58 count with a local loop and no visible per-element action. ABI: ECX eight-byte output pair; stack node-wrapper pointer; EAX underlying object pointer; RET4. Full native span matches installed PE. Field decode/renderer dependencies remain explicit; not a loaded-mesh or native ABI claim. Evidence: docs/RESOURCE_MESH_PARSER_BOUNDARY.md; reports/resource_mesh_parser_boundary_audit.json. Original ABI: ECX eight-byte output pair; stack node-wrapper pointer; EAX underlying object pointer; RET4.. Evidence: docs/RESOURCE_MESH_PARSER_BOUNDARY.md; reports/resource_mesh_parser_boundary_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\"})\n",
+      "ledger_function_output": "00b94710 function construct_native_mesh_from_node_00b94710\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00b94710",
+        "function_name": "BSP_MeshHandle_ConstructFromStructuredNode",
+        "comment": "[BSP reconstruction 00b94710]\nBSP reconstruction hypothesis: Call context entry00b73b60 after settingECX=BC (entry discards it); construct nonnull storage through00b73d70, write pair[0], parse via00b944e0 which writes pair[1]; poll object+58 count with a local loop and no visible per-element action. ABI: ECX eight-byte output pair; stack node-wrapper pointer; EAX underlying object pointer; RET4. Full native span matches installed PE. Field decode/renderer dependencies remain explicit; not a loaded-mesh or native ABI claim. Evidence: docs/RESOURCE_MESH_PARSER_BOUNDARY.md; reports/resource_mesh_parser_boundary_audit.json. Original ABI: ECX eight-byte output pair; stack node-wrapper pointer; EAX underlying object pointer; RET4.. Evidence: docs/RESOURCE_MESH_PARSER_BOUNDARY.md; reports/resource_mesh_parser_boundary_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\n\n[BSP reconstruction 00b94710] CN update\nCN complete native mesh aggregate B944E0[557] and constructor B94710[131], plus exact volatile B72B40[4] leaf and four compiler supports36B: 235 instruction owners,34 direct transfers, saved Ghidra/disk equal. Aggregate prefix publishes pair+4, then ordered nine-child dispatch: four nullable C-string comparisons followed by five counted425850 comparisons; LOD preserves two x87 float32 stores and captures mesh before reading. Every stateful child retains its own acquired frame; EH owns only current completed child. Constructor raw-slot unwind ends at native B94756 state-1 before added canonical admission; actual pair[0] and completed mesh survive metadata or parsing failure. Final empty loop captures current pair mesh before each local increment and rereads unsigned count; no per-section action or cached count. Two missing handlers created/saved under lock, seven prior comments preserved; no byte clear/no-return changes. Actual RTX5090 D3D9 fixture executes all nine fields, two full subsets with explicit/default stream paths and generic layout readback, normal count2 loop, mesh bind rejection after pair publication, and second outer sphere read failure after completed subset publication;31 canonical owners retire. Cached effect pass preimage remains explicit; no cold shader/compiler, original full-parent execution, native ABI/FH3/SEH or game claim. Complete 131B. ECX actual8h output pair; stacked parent handle; EAX current pair[0]; RET4. Source construct_native_mesh_from_node_00b94710."
+      }
+    },
+    {
+      "address": "00b72b40",
+      "name": "BSP_MeshObject_GetCount58",
+      "before_comment": {
+        "address": "00b72b40",
+        "function_name": "BSP_MeshObject_GetCount58",
+        "comment": "[BSP reconstruction 00b72b40]\nBSP reconstruction hypothesis: Return object+58 without checks. Constructor zeros this field; semantic meaning beyond counter-like polling is unknown. ABI: ECX object; EAX DWORD from object+58; plain RET. Full native span matches installed PE. Field decode/renderer dependencies remain explicit; not a loaded-mesh or native ABI claim. Evidence: docs/RESOURCE_MESH_PARSER_BOUNDARY.md; reports/resource_mesh_parser_boundary_audit.json. Original ABI: ECX object; EAX DWORD from object+58; plain RET.. Evidence: docs/RESOURCE_MESH_PARSER_BOUNDARY.md; reports/resource_mesh_parser_boundary_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\n\n[BSP reconstruction 00b72b40] update\nBSP reconstruction hypothesis: Return object+58 without checks. Constructor zeros this field; semantic meaning beyond counter-like polling is unknown. ABI: ECX object; EAX DWORD from object+58; plain RET. Full native span matches installed PE. Field decode/renderer dependencies remain explicit; not a loaded-mesh or native ABI claim. Evidence: docs/RESOURCE_MESH_PARSER_BOUNDARY.md; reports/resource_mesh_parser_boundary_audit.json. Original ABI: ECX object; EAX DWORD from object+58; plain RET.. Evidence: docs/RESOURCE_MESH_PARSER_BOUNDARY.md; reports/resource_mesh_parser_boundary_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation. | GUI color00AA6870 gates element0 access on this actual mesh+58 count; full raw DWORD accessor reused by concrete GUI binding. ABI: ECX actual mesh; EAX DWORD+58; RET. Final instruction00b72b43 length1; full saved span matches installed PE. docs/GUI_MATERIAL_BINDING.md; reports/gui_material_binding.json. New C++ semantic interface; required canonical lifetime/material owner remains external; no runtime/game validation."
+      },
+      "before_documentation": {
+        "hash": "fef0ffabfe5fbe0ee603d7a2a1ccada16cfd736279cb75ba0801cacc74df11f5",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b72b40",
+        "function_name": "BSP_MeshObject_GetCount58",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00b72b40]\nBSP reconstruction hypothesis: Return object+58 without checks. Constructor zeros this field; semantic meaning beyond counter-like polling is unknown. ABI: ECX object; EAX DWORD from object+58; plain RET. Full native span matches installed PE. Field decode/renderer dependencies remain explicit; not a loaded-mesh or native ABI claim. Evidence: docs/RESOURCE_MESH_PARSER_BOUNDARY.md; reports/resource_mesh_parser_boundary_audit.json. Original ABI: ECX object; EAX DWORD from object+58; plain RET.. Evidence: docs/RESOURCE_MESH_PARSER_BOUNDARY.md; reports/resource_mesh_parser_boundary_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\n\n[BSP reconstruction 00b72b40] update\nBSP reconstruction hypothesis: Return object+58 without checks. Constructor zeros this field; semantic meaning beyond counter-like polling is unknown. ABI: ECX object; EAX DWORD from object+58; plain RET. Full native span matches installed PE. Field decode/renderer dependencies remain explicit; not a loaded-mesh or native ABI claim. Evidence: docs/RESOURCE_MESH_PARSER_BOUNDARY.md; reports/resource_mesh_parser_boundary_audit.json. Original ABI: ECX object; EAX DWORD from object+58; plain RET.. Evidence: docs/RESOURCE_MESH_PARSER_BOUNDARY.md; reports/resource_mesh_parser_boundary_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation. | GUI color00AA6870 gates element0 access on this actual mesh+58 count; full raw DWORD accessor reused by concrete GUI binding. ABI: ECX actual mesh; EAX DWORD+58; RET. Final instruction00b72b43 length1; full saved span matches installed PE. docs/GUI_MATERIAL_BINDING.md; reports/gui_material_binding.json. New C++ semantic interface; required canonical lifetime/material owner remains external; no runtime/game validation.",
+        "parameters": [],
+        "local_variables": [],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 100.0
+      },
+      "evidence": "CN complete native mesh aggregate B944E0[557] and constructor B94710[131], plus exact volatile B72B40[4] leaf and four compiler supports36B: 235 instruction owners,34 direct transfers, saved Ghidra/disk equal. Aggregate prefix publishes pair+4, then ordered nine-child dispatch: four nullable C-string comparisons followed by five counted425850 comparisons; LOD preserves two x87 float32 stores and captures mesh before reading. Every stateful child retains its own acquired frame; EH owns only current completed child. Constructor raw-slot unwind ends at native B94756 state-1 before added canonical admission; actual pair[0] and completed mesh survive metadata or parsing failure. Final empty loop captures current pair mesh before each local increment and rereads unsigned count; no per-section action or cached count. Two missing handlers created/saved under lock, seven prior comments preserved; no byte clear/no-return changes. Actual RTX5090 D3D9 fixture executes all nine fields, two full subsets with explicit/default stream paths and generic layout readback, normal count2 loop, mesh bind rejection after pair publication, and second outer sphere read failure after completed subset publication;31 canonical owners retire. Cached effect pass preimage remains explicit; no cold shader/compiler, original full-parent execution, native ABI/FH3/SEH or game claim. Complete 4B. ECX actual mesh; EAX current DWORD+58; RET. Source native_mesh_section_count_00b72b40.",
+      "prototype": "uint __fastcall BSP_MeshObject_GetCount58(void* mesh, void* unused_edx)",
+      "prototype_result": "Successfully set prototype for function at 00b72b40 with __fastcall calling convention",
+      "ledger_name_output": "00b72b40 -> BSP_MeshObject_GetCount58\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00b72b40\", \"name\": \"BSP_MeshObject_GetCount58\", \"evidence\": \"BSP reconstruction hypothesis: Return object+58 without checks. Constructor zeros this field; semantic meaning beyond counter-like polling is unknown. ABI: ECX object; EAX DWORD from object+58; plain RET. Full native span matches installed PE. Field decode/renderer dependencies remain explicit; not a loaded-mesh or native ABI claim. Evidence: docs/RESOURCE_MESH_PARSER_BOUNDARY.md; reports/resource_mesh_parser_boundary_audit.json. Original ABI: ECX object; EAX DWORD from object+58; plain RET.. Evidence: docs/RESOURCE_MESH_PARSER_BOUNDARY.md; reports/resource_mesh_parser_boundary_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation. | GUI color00AA6870 gates element0 access on this actual mesh+58 count; full raw DWORD accessor reused by concrete GUI binding. ABI: ECX actual mesh; EAX DWORD+58; RET. Final instruction00b72b43 length1; full saved span matches installed PE. docs/GUI_MATERIAL_BINDING.md; reports/gui_material_binding.json. New C++ semantic interface; required canonical lifetime/material owner remains external; no runtime/game validation.\"})\n",
+      "ledger_function_output": "00b72b40 function native_mesh_section_count_00b72b40\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00b72b40",
+        "function_name": "BSP_MeshObject_GetCount58",
+        "comment": "[BSP reconstruction 00b72b40]\nBSP reconstruction hypothesis: Return object+58 without checks. Constructor zeros this field; semantic meaning beyond counter-like polling is unknown. ABI: ECX object; EAX DWORD from object+58; plain RET. Full native span matches installed PE. Field decode/renderer dependencies remain explicit; not a loaded-mesh or native ABI claim. Evidence: docs/RESOURCE_MESH_PARSER_BOUNDARY.md; reports/resource_mesh_parser_boundary_audit.json. Original ABI: ECX object; EAX DWORD from object+58; plain RET.. Evidence: docs/RESOURCE_MESH_PARSER_BOUNDARY.md; reports/resource_mesh_parser_boundary_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\n\n[BSP reconstruction 00b72b40] update\nBSP reconstruction hypothesis: Return object+58 without checks. Constructor zeros this field; semantic meaning beyond counter-like polling is unknown. ABI: ECX object; EAX DWORD from object+58; plain RET. Full native span matches installed PE. Field decode/renderer dependencies remain explicit; not a loaded-mesh or native ABI claim. Evidence: docs/RESOURCE_MESH_PARSER_BOUNDARY.md; reports/resource_mesh_parser_boundary_audit.json. Original ABI: ECX object; EAX DWORD from object+58; plain RET.. Evidence: docs/RESOURCE_MESH_PARSER_BOUNDARY.md; reports/resource_mesh_parser_boundary_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation. | GUI color00AA6870 gates element0 access on this actual mesh+58 count; full raw DWORD accessor reused by concrete GUI binding. ABI: ECX actual mesh; EAX DWORD+58; RET. Final instruction00b72b43 length1; full saved span matches installed PE. docs/GUI_MATERIAL_BINDING.md; reports/gui_material_binding.json. New C++ semantic interface; required canonical lifetime/material owner remains external; no runtime/game validation.\n\n[BSP reconstruction 00b72b40] CN update\nCN complete native mesh aggregate B944E0[557] and constructor B94710[131], plus exact volatile B72B40[4] leaf and four compiler supports36B: 235 instruction owners,34 direct transfers, saved Ghidra/disk equal. Aggregate prefix publishes pair+4, then ordered nine-child dispatch: four nullable C-string comparisons followed by five counted425850 comparisons; LOD preserves two x87 float32 stores and captures mesh before reading. Every stateful child retains its own acquired frame; EH owns only current completed child. Constructor raw-slot unwind ends at native B94756 state-1 before added canonical admission; actual pair[0] and completed mesh survive metadata or parsing failure. Final empty loop captures current pair mesh before each local increment and rereads unsigned count; no per-section action or cached count. Two missing handlers created/saved under lock, seven prior comments preserved; no byte clear/no-return changes. Actual RTX5090 D3D9 fixture executes all nine fields, two full subsets with explicit/default stream paths and generic layout readback, normal count2 loop, mesh bind rejection after pair publication, and second outer sphere read failure after completed subset publication;31 canonical owners retire. Cached effect pass preimage remains explicit; no cold shader/compiler, original full-parent execution, native ABI/FH3/SEH or game claim. Complete 4B. ECX actual mesh; EAX current DWORD+58; RET. Source native_mesh_section_count_00b72b40."
+      }
+    },
+    {
+      "address": "00cc2eb0",
+      "name": "Unwind@00cc2eb0",
+      "before_comment": {
+        "address": "00cc2eb0",
+        "function_name": "Unwind@00cc2eb0"
+      },
+      "before_documentation": {
+        "hash": "53b86aea9df3cafd1f75414d5408204710ce3a0cc9072525c12ebf19c2adc51f",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00cc2eb0",
+        "function_name": "Unwind@00cc2eb0",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "unaff_EBP",
+            "type": "int",
+            "storage": "(register, 0x14, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 80.0
+      },
+      "evidence": "CN complete native mesh aggregate B944E0[557] and constructor B94710[131], plus exact volatile B72B40[4] leaf and four compiler supports36B: 235 instruction owners,34 direct transfers, saved Ghidra/disk equal. Aggregate prefix publishes pair+4, then ordered nine-child dispatch: four nullable C-string comparisons followed by five counted425850 comparisons; LOD preserves two x87 float32 stores and captures mesh before reading. Every stateful child retains its own acquired frame; EH owns only current completed child. Constructor raw-slot unwind ends at native B94756 state-1 before added canonical admission; actual pair[0] and completed mesh survive metadata or parsing failure. Final empty loop captures current pair mesh before each local increment and rereads unsigned count; no per-section action or cached count. Two missing handlers created/saved under lock, seven prior comments preserved; no byte clear/no-return changes. Actual RTX5090 D3D9 fixture executes all nine fields, two full subsets with explicit/default stream paths and generic layout readback, normal count2 loop, mesh bind rejection after pair publication, and second outer sphere read failure after completed subset publication;31 canonical owners retire. Cached effect pass preimage remains explicit; no cold shader/compiler, original full-parent execution, native ABI/FH3/SEH or game claim. Complete unwind or dispatch handler; support evidence only.",
+      "ledger_name_output": "00cc2eb0 -> Unwind@00cc2eb0\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00cc2eb0",
+        "function_name": "Unwind@00cc2eb0",
+        "comment": "\n\n[BSP reconstruction 00cc2eb0] CN update\nCN complete native mesh aggregate B944E0[557] and constructor B94710[131], plus exact volatile B72B40[4] leaf and four compiler supports36B: 235 instruction owners,34 direct transfers, saved Ghidra/disk equal. Aggregate prefix publishes pair+4, then ordered nine-child dispatch: four nullable C-string comparisons followed by five counted425850 comparisons; LOD preserves two x87 float32 stores and captures mesh before reading. Every stateful child retains its own acquired frame; EH owns only current completed child. Constructor raw-slot unwind ends at native B94756 state-1 before added canonical admission; actual pair[0] and completed mesh survive metadata or parsing failure. Final empty loop captures current pair mesh before each local increment and rereads unsigned count; no per-section action or cached count. Two missing handlers created/saved under lock, seven prior comments preserved; no byte clear/no-return changes. Actual RTX5090 D3D9 fixture executes all nine fields, two full subsets with explicit/default stream paths and generic layout readback, normal count2 loop, mesh bind rejection after pair publication, and second outer sphere read failure after completed subset publication;31 canonical owners retire. Cached effect pass preimage remains explicit; no cold shader/compiler, original full-parent execution, native ABI/FH3/SEH or game claim. Complete unwind or dispatch handler; support evidence only."
+      }
+    },
+    {
+      "address": "00cc2eb8",
+      "name": "BSP_Mesh_FieldsHandler_00cc2eb8",
+      "before_comment": {
+        "address": "00cc2eb8",
+        "function_name": "BSP_Mesh_FieldsHandler_00cc2eb8",
+        "comment": ""
+      },
+      "before_documentation": {
+        "hash": "f0f2f68cf1132ae80dae34c6f69542164e987ef3beaddd17388b21e68e3a2bc1",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00cc2eb8",
+        "function_name": "BSP_Mesh_FieldsHandler_00cc2eb8",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "",
+        "parameters": [],
+        "local_variables": [],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 100.0
+      },
+      "evidence": "CN complete native mesh aggregate B944E0[557] and constructor B94710[131], plus exact volatile B72B40[4] leaf and four compiler supports36B: 235 instruction owners,34 direct transfers, saved Ghidra/disk equal. Aggregate prefix publishes pair+4, then ordered nine-child dispatch: four nullable C-string comparisons followed by five counted425850 comparisons; LOD preserves two x87 float32 stores and captures mesh before reading. Every stateful child retains its own acquired frame; EH owns only current completed child. Constructor raw-slot unwind ends at native B94756 state-1 before added canonical admission; actual pair[0] and completed mesh survive metadata or parsing failure. Final empty loop captures current pair mesh before each local increment and rereads unsigned count; no per-section action or cached count. Two missing handlers created/saved under lock, seven prior comments preserved; no byte clear/no-return changes. Actual RTX5090 D3D9 fixture executes all nine fields, two full subsets with explicit/default stream paths and generic layout readback, normal count2 loop, mesh bind rejection after pair publication, and second outer sphere read failure after completed subset publication;31 canonical owners retire. Cached effect pass preimage remains explicit; no cold shader/compiler, original full-parent execution, native ABI/FH3/SEH or game claim. Complete unwind or dispatch handler; support evidence only.",
+      "ledger_name_output": "00cc2eb8 -> BSP_Mesh_FieldsHandler_00cc2eb8\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00cc2eb8",
+        "function_name": "BSP_Mesh_FieldsHandler_00cc2eb8",
+        "comment": "\n\n[BSP reconstruction 00cc2eb8] CN update\nCN complete native mesh aggregate B944E0[557] and constructor B94710[131], plus exact volatile B72B40[4] leaf and four compiler supports36B: 235 instruction owners,34 direct transfers, saved Ghidra/disk equal. Aggregate prefix publishes pair+4, then ordered nine-child dispatch: four nullable C-string comparisons followed by five counted425850 comparisons; LOD preserves two x87 float32 stores and captures mesh before reading. Every stateful child retains its own acquired frame; EH owns only current completed child. Constructor raw-slot unwind ends at native B94756 state-1 before added canonical admission; actual pair[0] and completed mesh survive metadata or parsing failure. Final empty loop captures current pair mesh before each local increment and rereads unsigned count; no per-section action or cached count. Two missing handlers created/saved under lock, seven prior comments preserved; no byte clear/no-return changes. Actual RTX5090 D3D9 fixture executes all nine fields, two full subsets with explicit/default stream paths and generic layout readback, normal count2 loop, mesh bind rejection after pair publication, and second outer sphere read failure after completed subset publication;31 canonical owners retire. Cached effect pass preimage remains explicit; no cold shader/compiler, original full-parent execution, native ABI/FH3/SEH or game claim. Complete unwind or dispatch handler; support evidence only."
+      }
+    },
+    {
+      "address": "00cc2ed0",
+      "name": "Unwind@00cc2ed0",
+      "before_comment": {
+        "address": "00cc2ed0",
+        "function_name": "Unwind@00cc2ed0"
+      },
+      "before_documentation": {
+        "hash": "ceb09f5d0998ca7550e96f747eb1510ddd7fa64d0dd3b26c0f52e63402e8e0d3",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00cc2ed0",
+        "function_name": "Unwind@00cc2ed0",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 80.0
+      },
+      "evidence": "CN complete native mesh aggregate B944E0[557] and constructor B94710[131], plus exact volatile B72B40[4] leaf and four compiler supports36B: 235 instruction owners,34 direct transfers, saved Ghidra/disk equal. Aggregate prefix publishes pair+4, then ordered nine-child dispatch: four nullable C-string comparisons followed by five counted425850 comparisons; LOD preserves two x87 float32 stores and captures mesh before reading. Every stateful child retains its own acquired frame; EH owns only current completed child. Constructor raw-slot unwind ends at native B94756 state-1 before added canonical admission; actual pair[0] and completed mesh survive metadata or parsing failure. Final empty loop captures current pair mesh before each local increment and rereads unsigned count; no per-section action or cached count. Two missing handlers created/saved under lock, seven prior comments preserved; no byte clear/no-return changes. Actual RTX5090 D3D9 fixture executes all nine fields, two full subsets with explicit/default stream paths and generic layout readback, normal count2 loop, mesh bind rejection after pair publication, and second outer sphere read failure after completed subset publication;31 canonical owners retire. Cached effect pass preimage remains explicit; no cold shader/compiler, original full-parent execution, native ABI/FH3/SEH or game claim. Complete unwind or dispatch handler; support evidence only.",
+      "ledger_name_output": "00cc2ed0 -> Unwind@00cc2ed0\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00cc2ed0",
+        "function_name": "Unwind@00cc2ed0",
+        "comment": "\n\n[BSP reconstruction 00cc2ed0] CN update\nCN complete native mesh aggregate B944E0[557] and constructor B94710[131], plus exact volatile B72B40[4] leaf and four compiler supports36B: 235 instruction owners,34 direct transfers, saved Ghidra/disk equal. Aggregate prefix publishes pair+4, then ordered nine-child dispatch: four nullable C-string comparisons followed by five counted425850 comparisons; LOD preserves two x87 float32 stores and captures mesh before reading. Every stateful child retains its own acquired frame; EH owns only current completed child. Constructor raw-slot unwind ends at native B94756 state-1 before added canonical admission; actual pair[0] and completed mesh survive metadata or parsing failure. Final empty loop captures current pair mesh before each local increment and rereads unsigned count; no per-section action or cached count. Two missing handlers created/saved under lock, seven prior comments preserved; no byte clear/no-return changes. Actual RTX5090 D3D9 fixture executes all nine fields, two full subsets with explicit/default stream paths and generic layout readback, normal count2 loop, mesh bind rejection after pair publication, and second outer sphere read failure after completed subset publication;31 canonical owners retire. Cached effect pass preimage remains explicit; no cold shader/compiler, original full-parent execution, native ABI/FH3/SEH or game claim. Complete unwind or dispatch handler; support evidence only."
+      }
+    },
+    {
+      "address": "00cc2ed8",
+      "name": "BSP_Mesh_NodeConstructorHandler_00cc2ed8",
+      "before_comment": {
+        "address": "00cc2ed8",
+        "function_name": "BSP_Mesh_NodeConstructorHandler_00cc2ed8",
+        "comment": ""
+      },
+      "before_documentation": {
+        "hash": "f0f2f68cf1132ae80dae34c6f69542164e987ef3beaddd17388b21e68e3a2bc1",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00cc2ed8",
+        "function_name": "BSP_Mesh_NodeConstructorHandler_00cc2ed8",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "",
+        "parameters": [],
+        "local_variables": [],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 100.0
+      },
+      "evidence": "CN complete native mesh aggregate B944E0[557] and constructor B94710[131], plus exact volatile B72B40[4] leaf and four compiler supports36B: 235 instruction owners,34 direct transfers, saved Ghidra/disk equal. Aggregate prefix publishes pair+4, then ordered nine-child dispatch: four nullable C-string comparisons followed by five counted425850 comparisons; LOD preserves two x87 float32 stores and captures mesh before reading. Every stateful child retains its own acquired frame; EH owns only current completed child. Constructor raw-slot unwind ends at native B94756 state-1 before added canonical admission; actual pair[0] and completed mesh survive metadata or parsing failure. Final empty loop captures current pair mesh before each local increment and rereads unsigned count; no per-section action or cached count. Two missing handlers created/saved under lock, seven prior comments preserved; no byte clear/no-return changes. Actual RTX5090 D3D9 fixture executes all nine fields, two full subsets with explicit/default stream paths and generic layout readback, normal count2 loop, mesh bind rejection after pair publication, and second outer sphere read failure after completed subset publication;31 canonical owners retire. Cached effect pass preimage remains explicit; no cold shader/compiler, original full-parent execution, native ABI/FH3/SEH or game claim. Complete unwind or dispatch handler; support evidence only.",
+      "ledger_name_output": "00cc2ed8 -> BSP_Mesh_NodeConstructorHandler_00cc2ed8\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00cc2ed8",
+        "function_name": "BSP_Mesh_NodeConstructorHandler_00cc2ed8",
+        "comment": "\n\n[BSP reconstruction 00cc2ed8] CN update\nCN complete native mesh aggregate B944E0[557] and constructor B94710[131], plus exact volatile B72B40[4] leaf and four compiler supports36B: 235 instruction owners,34 direct transfers, saved Ghidra/disk equal. Aggregate prefix publishes pair+4, then ordered nine-child dispatch: four nullable C-string comparisons followed by five counted425850 comparisons; LOD preserves two x87 float32 stores and captures mesh before reading. Every stateful child retains its own acquired frame; EH owns only current completed child. Constructor raw-slot unwind ends at native B94756 state-1 before added canonical admission; actual pair[0] and completed mesh survive metadata or parsing failure. Final empty loop captures current pair mesh before each local increment and rereads unsigned count; no per-section action or cached count. Two missing handlers created/saved under lock, seven prior comments preserved; no byte clear/no-return changes. Actual RTX5090 D3D9 fixture executes all nine fields, two full subsets with explicit/default stream paths and generic layout readback, normal count2 loop, mesh bind rejection after pair publication, and second outer sphere read failure after completed subset publication;31 canonical owners retire. Cached effect pass preimage remains explicit; no cold shader/compiler, original full-parent execution, native ABI/FH3/SEH or game claim. Complete unwind or dispatch handler; support evidence only."
+      }
+    }
+  ],
+  "actions": [
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00b944e0",
+        "prototype": "void __fastcall BSP_MeshHandle_ReadStructuredFields(void* pair, void* unused_edx, void* parent_handle)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00b944e0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b944e0",
+        "new_name": "BSP_MeshHandle_ReadStructuredFields"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b944e0 from 'BSP_MeshHandle_ReadStructuredFields' to 'BSP_MeshHandle_ReadStructuredFields'\", \"warnings\": [\"Function name 'BSP_MeshHandle_ReadStructuredFields' \\u2014 main part 'MeshHandle_ReadStructuredFields' is not PascalCase. Expected: MeshhandleReadstructuredfields\", \"Function name 'BSP_MeshHandle_ReadStructuredFields' \\u2014 main part 'MeshHandle_ReadStructuredFields' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_MeshHandle_ReadStructuredFields' does not start with a recognized verb. First word 'Mesh' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b944e0",
+        "new_name": "BSP_MeshHandle_ReadStructuredFields"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b944e0 from 'BSP_MeshHandle_ReadStructuredFields' to 'BSP_MeshHandle_ReadStructuredFields'\", \"warnings\": [\"Function name 'BSP_MeshHandle_ReadStructuredFields' \\u2014 main part 'MeshHandle_ReadStructuredFields' is not PascalCase. Expected: MeshhandleReadstructuredfields\", \"Function name 'BSP_MeshHandle_ReadStructuredFields' \\u2014 main part 'MeshHandle_ReadStructuredFields' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_MeshHandle_ReadStructuredFields' does not start with a recognized verb. First word 'Mesh' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00b944e0",
+        "comment": "[BSP reconstruction 00b944e0]\nBSP reconstruction hypothesis: Read prefix DWORD through00be99f0 into pair+4, then ordered child dispatch for nine verified tags. LODValue reads float and calls setter; eight fields delegate; unknown fields skip; every normal child releases without implicit seek. No explicit error-status branch. ABI: ECX output pair; stack input node-wrapper pointer; RET4. Full native span matches installed PE. Field decode/renderer dependencies remain explicit; not a loaded-mesh or native ABI claim. Evidence: docs/RESOURCE_MESH_PARSER_BOUNDARY.md; reports/resource_mesh_parser_boundary_audit.json. Original ABI: ECX output pair; stack input node-wrapper pointer; RET4.. Evidence: docs/RESOURCE_MESH_PARSER_BOUNDARY.md; reports/resource_mesh_parser_boundary_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\n\n[BSP reconstruction 00b944e0] update\nAggregate native field-order parser implemented as owning wire values; preserves prefix, native LOD1.0 default, append/replace rules, preceding-stream metadata attachment, unknown skip and mesh bounds discard. Runtime retained bindings remain separate. Evidence: docs/MESH_RESOURCE_INTEGRATION.md; reports/mesh_resource_annotations.json. Original ABI unchanged; no gameplay validation.\n\n[BSP reconstruction 00b944e0] CN update\nCN complete native mesh aggregate B944E0[557] and constructor B94710[131], plus exact volatile B72B40[4] leaf and four compiler supports36B: 235 instruction owners,34 direct transfers, saved Ghidra/disk equal. Aggregate prefix publishes pair+4, then ordered nine-child dispatch: four nullable C-string comparisons followed by five counted425850 comparisons; LOD preserves two x87 float32 stores and captures mesh before reading. Every stateful child retains its own acquired frame; EH owns only current completed child. Constructor raw-slot unwind ends at native B94756 state-1 before added canonical admission; actual pair[0] and completed mesh survive metadata or parsing failure. Final empty loop captures current pair mesh before each local increment and rereads unsigned count; no per-section action or cached count. Two missing handlers created/saved under lock, seven prior comments preserved; no byte clear/no-return changes. Actual RTX5090 D3D9 fixture executes all nine fields, two full subsets with explicit/default stream paths and generic layout readback, normal count2 loop, mesh bind rejection after pair publication, and second outer sphere read failure after completed subset publication;31 canonical owners retire. Cached effect pass preimage remains explicit; no cold shader/compiler, original full-parent execution, native ABI/FH3/SEH or game claim. Complete 557B. ECX actual8h output pair; stacked parent handle; RET4. Source read_native_mesh_fields_00b944e0."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00b944e0\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00b94710",
+        "prototype": "void* __fastcall BSP_MeshHandle_ConstructFromStructuredNode(void* pair, void* unused_edx, void* parent_handle)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00b94710 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b94710",
+        "new_name": "BSP_MeshHandle_ConstructFromStructuredNode"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b94710 from 'BSP_MeshHandle_ConstructFromStructuredNode' to 'BSP_MeshHandle_ConstructFromStructuredNode'\", \"warnings\": [\"Function name 'BSP_MeshHandle_ConstructFromStructuredNode' \\u2014 main part 'MeshHandle_ConstructFromStructuredNode' is not PascalCase. Expected: MeshhandleConstructfromstructurednode\", \"Function name 'BSP_MeshHandle_ConstructFromStructuredNode' \\u2014 main part 'MeshHandle_ConstructFromStructuredNode' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_MeshHandle_ConstructFromStructuredNode' does not start with a recognized verb. First word 'Mesh' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b94710",
+        "new_name": "BSP_MeshHandle_ConstructFromStructuredNode"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b94710 from 'BSP_MeshHandle_ConstructFromStructuredNode' to 'BSP_MeshHandle_ConstructFromStructuredNode'\", \"warnings\": [\"Function name 'BSP_MeshHandle_ConstructFromStructuredNode' \\u2014 main part 'MeshHandle_ConstructFromStructuredNode' is not PascalCase. Expected: MeshhandleConstructfromstructurednode\", \"Function name 'BSP_MeshHandle_ConstructFromStructuredNode' \\u2014 main part 'MeshHandle_ConstructFromStructuredNode' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_MeshHandle_ConstructFromStructuredNode' does not start with a recognized verb. First word 'Mesh' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00b94710",
+        "comment": "[BSP reconstruction 00b94710]\nBSP reconstruction hypothesis: Call context entry00b73b60 after settingECX=BC (entry discards it); construct nonnull storage through00b73d70, write pair[0], parse via00b944e0 which writes pair[1]; poll object+58 count with a local loop and no visible per-element action. ABI: ECX eight-byte output pair; stack node-wrapper pointer; EAX underlying object pointer; RET4. Full native span matches installed PE. Field decode/renderer dependencies remain explicit; not a loaded-mesh or native ABI claim. Evidence: docs/RESOURCE_MESH_PARSER_BOUNDARY.md; reports/resource_mesh_parser_boundary_audit.json. Original ABI: ECX eight-byte output pair; stack node-wrapper pointer; EAX underlying object pointer; RET4.. Evidence: docs/RESOURCE_MESH_PARSER_BOUNDARY.md; reports/resource_mesh_parser_boundary_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\n\n[BSP reconstruction 00b94710] CN update\nCN complete native mesh aggregate B944E0[557] and constructor B94710[131], plus exact volatile B72B40[4] leaf and four compiler supports36B: 235 instruction owners,34 direct transfers, saved Ghidra/disk equal. Aggregate prefix publishes pair+4, then ordered nine-child dispatch: four nullable C-string comparisons followed by five counted425850 comparisons; LOD preserves two x87 float32 stores and captures mesh before reading. Every stateful child retains its own acquired frame; EH owns only current completed child. Constructor raw-slot unwind ends at native B94756 state-1 before added canonical admission; actual pair[0] and completed mesh survive metadata or parsing failure. Final empty loop captures current pair mesh before each local increment and rereads unsigned count; no per-section action or cached count. Two missing handlers created/saved under lock, seven prior comments preserved; no byte clear/no-return changes. Actual RTX5090 D3D9 fixture executes all nine fields, two full subsets with explicit/default stream paths and generic layout readback, normal count2 loop, mesh bind rejection after pair publication, and second outer sphere read failure after completed subset publication;31 canonical owners retire. Cached effect pass preimage remains explicit; no cold shader/compiler, original full-parent execution, native ABI/FH3/SEH or game claim. Complete 131B. ECX actual8h output pair; stacked parent handle; EAX current pair[0]; RET4. Source construct_native_mesh_from_node_00b94710."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00b94710\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00b72b40",
+        "prototype": "uint __fastcall BSP_MeshObject_GetCount58(void* mesh, void* unused_edx)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00b72b40 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b72b40",
+        "new_name": "BSP_MeshObject_GetCount58"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b72b40 from 'BSP_MeshObject_GetCount58' to 'BSP_MeshObject_GetCount58'\", \"warnings\": [\"Function name 'BSP_MeshObject_GetCount58' \\u2014 main part 'MeshObject_GetCount58' is not PascalCase. Expected: MeshobjectGetcount58\", \"Function name 'BSP_MeshObject_GetCount58' \\u2014 main part 'MeshObject_GetCount58' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_MeshObject_GetCount58' does not start with a recognized verb. First word 'Mesh' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b72b40",
+        "new_name": "BSP_MeshObject_GetCount58"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b72b40 from 'BSP_MeshObject_GetCount58' to 'BSP_MeshObject_GetCount58'\", \"warnings\": [\"Function name 'BSP_MeshObject_GetCount58' \\u2014 main part 'MeshObject_GetCount58' is not PascalCase. Expected: MeshobjectGetcount58\", \"Function name 'BSP_MeshObject_GetCount58' \\u2014 main part 'MeshObject_GetCount58' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_MeshObject_GetCount58' does not start with a recognized verb. First word 'Mesh' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00b72b40",
+        "comment": "[BSP reconstruction 00b72b40]\nBSP reconstruction hypothesis: Return object+58 without checks. Constructor zeros this field; semantic meaning beyond counter-like polling is unknown. ABI: ECX object; EAX DWORD from object+58; plain RET. Full native span matches installed PE. Field decode/renderer dependencies remain explicit; not a loaded-mesh or native ABI claim. Evidence: docs/RESOURCE_MESH_PARSER_BOUNDARY.md; reports/resource_mesh_parser_boundary_audit.json. Original ABI: ECX object; EAX DWORD from object+58; plain RET.. Evidence: docs/RESOURCE_MESH_PARSER_BOUNDARY.md; reports/resource_mesh_parser_boundary_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\n\n[BSP reconstruction 00b72b40] update\nBSP reconstruction hypothesis: Return object+58 without checks. Constructor zeros this field; semantic meaning beyond counter-like polling is unknown. ABI: ECX object; EAX DWORD from object+58; plain RET. Full native span matches installed PE. Field decode/renderer dependencies remain explicit; not a loaded-mesh or native ABI claim. Evidence: docs/RESOURCE_MESH_PARSER_BOUNDARY.md; reports/resource_mesh_parser_boundary_audit.json. Original ABI: ECX object; EAX DWORD from object+58; plain RET.. Evidence: docs/RESOURCE_MESH_PARSER_BOUNDARY.md; reports/resource_mesh_parser_boundary_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation. | GUI color00AA6870 gates element0 access on this actual mesh+58 count; full raw DWORD accessor reused by concrete GUI binding. ABI: ECX actual mesh; EAX DWORD+58; RET. Final instruction00b72b43 length1; full saved span matches installed PE. docs/GUI_MATERIAL_BINDING.md; reports/gui_material_binding.json. New C++ semantic interface; required canonical lifetime/material owner remains external; no runtime/game validation.\n\n[BSP reconstruction 00b72b40] CN update\nCN complete native mesh aggregate B944E0[557] and constructor B94710[131], plus exact volatile B72B40[4] leaf and four compiler supports36B: 235 instruction owners,34 direct transfers, saved Ghidra/disk equal. Aggregate prefix publishes pair+4, then ordered nine-child dispatch: four nullable C-string comparisons followed by five counted425850 comparisons; LOD preserves two x87 float32 stores and captures mesh before reading. Every stateful child retains its own acquired frame; EH owns only current completed child. Constructor raw-slot unwind ends at native B94756 state-1 before added canonical admission; actual pair[0] and completed mesh survive metadata or parsing failure. Final empty loop captures current pair mesh before each local increment and rereads unsigned count; no per-section action or cached count. Two missing handlers created/saved under lock, seven prior comments preserved; no byte clear/no-return changes. Actual RTX5090 D3D9 fixture executes all nine fields, two full subsets with explicit/default stream paths and generic layout readback, normal count2 loop, mesh bind rejection after pair publication, and second outer sphere read failure after completed subset publication;31 canonical owners retire. Cached effect pass preimage remains explicit; no cold shader/compiler, original full-parent execution, native ABI/FH3/SEH or game claim. Complete 4B. ECX actual mesh; EAX current DWORD+58; RET. Source native_mesh_section_count_00b72b40."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00b72b40\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00cc2eb0",
+        "new_name": "Unwind@00cc2eb0"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00cc2eb0 from 'Unwind@00cc2eb0' to 'Unwind@00cc2eb0'\", \"warnings\": [\"Function name 'Unwind@00cc2eb0' \\u2014 main part 'Unwind@00cc2eb0' is not PascalCase. Expected: Unwind@00cc2eb0\", \"Function name 'Unwind@00cc2eb0' does not start with a recognized verb. First word 'Unwind@00cc2eb0' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00cc2eb0",
+        "comment": "\n\n[BSP reconstruction 00cc2eb0] CN update\nCN complete native mesh aggregate B944E0[557] and constructor B94710[131], plus exact volatile B72B40[4] leaf and four compiler supports36B: 235 instruction owners,34 direct transfers, saved Ghidra/disk equal. Aggregate prefix publishes pair+4, then ordered nine-child dispatch: four nullable C-string comparisons followed by five counted425850 comparisons; LOD preserves two x87 float32 stores and captures mesh before reading. Every stateful child retains its own acquired frame; EH owns only current completed child. Constructor raw-slot unwind ends at native B94756 state-1 before added canonical admission; actual pair[0] and completed mesh survive metadata or parsing failure. Final empty loop captures current pair mesh before each local increment and rereads unsigned count; no per-section action or cached count. Two missing handlers created/saved under lock, seven prior comments preserved; no byte clear/no-return changes. Actual RTX5090 D3D9 fixture executes all nine fields, two full subsets with explicit/default stream paths and generic layout readback, normal count2 loop, mesh bind rejection after pair publication, and second outer sphere read failure after completed subset publication;31 canonical owners retire. Cached effect pass preimage remains explicit; no cold shader/compiler, original full-parent execution, native ABI/FH3/SEH or game claim. Complete unwind or dispatch handler; support evidence only."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00cc2eb0\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00cc2eb8",
+        "new_name": "BSP_Mesh_FieldsHandler_00cc2eb8"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00cc2eb8 from 'BSP_Mesh_FieldsHandler_00cc2eb8' to 'BSP_Mesh_FieldsHandler_00cc2eb8'\", \"warnings\": [\"Function name 'BSP_Mesh_FieldsHandler_00cc2eb8' \\u2014 main part 'Mesh_FieldsHandler_00cc2eb8' is not PascalCase. Expected: MeshFieldshandler00cc2eb8\", \"Function name 'BSP_Mesh_FieldsHandler_00cc2eb8' \\u2014 main part 'Mesh_FieldsHandler_00cc2eb8' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_Mesh_FieldsHandler_00cc2eb8' does not start with a recognized verb. First word 'Mesh_' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00cc2eb8",
+        "comment": "\n\n[BSP reconstruction 00cc2eb8] CN update\nCN complete native mesh aggregate B944E0[557] and constructor B94710[131], plus exact volatile B72B40[4] leaf and four compiler supports36B: 235 instruction owners,34 direct transfers, saved Ghidra/disk equal. Aggregate prefix publishes pair+4, then ordered nine-child dispatch: four nullable C-string comparisons followed by five counted425850 comparisons; LOD preserves two x87 float32 stores and captures mesh before reading. Every stateful child retains its own acquired frame; EH owns only current completed child. Constructor raw-slot unwind ends at native B94756 state-1 before added canonical admission; actual pair[0] and completed mesh survive metadata or parsing failure. Final empty loop captures current pair mesh before each local increment and rereads unsigned count; no per-section action or cached count. Two missing handlers created/saved under lock, seven prior comments preserved; no byte clear/no-return changes. Actual RTX5090 D3D9 fixture executes all nine fields, two full subsets with explicit/default stream paths and generic layout readback, normal count2 loop, mesh bind rejection after pair publication, and second outer sphere read failure after completed subset publication;31 canonical owners retire. Cached effect pass preimage remains explicit; no cold shader/compiler, original full-parent execution, native ABI/FH3/SEH or game claim. Complete unwind or dispatch handler; support evidence only."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00cc2eb8\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00cc2ed0",
+        "new_name": "Unwind@00cc2ed0"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00cc2ed0 from 'Unwind@00cc2ed0' to 'Unwind@00cc2ed0'\", \"warnings\": [\"Function name 'Unwind@00cc2ed0' \\u2014 main part 'Unwind@00cc2ed0' is not PascalCase. Expected: Unwind@00cc2ed0\", \"Function name 'Unwind@00cc2ed0' does not start with a recognized verb. First word 'Unwind@00cc2ed0' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00cc2ed0",
+        "comment": "\n\n[BSP reconstruction 00cc2ed0] CN update\nCN complete native mesh aggregate B944E0[557] and constructor B94710[131], plus exact volatile B72B40[4] leaf and four compiler supports36B: 235 instruction owners,34 direct transfers, saved Ghidra/disk equal. Aggregate prefix publishes pair+4, then ordered nine-child dispatch: four nullable C-string comparisons followed by five counted425850 comparisons; LOD preserves two x87 float32 stores and captures mesh before reading. Every stateful child retains its own acquired frame; EH owns only current completed child. Constructor raw-slot unwind ends at native B94756 state-1 before added canonical admission; actual pair[0] and completed mesh survive metadata or parsing failure. Final empty loop captures current pair mesh before each local increment and rereads unsigned count; no per-section action or cached count. Two missing handlers created/saved under lock, seven prior comments preserved; no byte clear/no-return changes. Actual RTX5090 D3D9 fixture executes all nine fields, two full subsets with explicit/default stream paths and generic layout readback, normal count2 loop, mesh bind rejection after pair publication, and second outer sphere read failure after completed subset publication;31 canonical owners retire. Cached effect pass preimage remains explicit; no cold shader/compiler, original full-parent execution, native ABI/FH3/SEH or game claim. Complete unwind or dispatch handler; support evidence only."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00cc2ed0\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00cc2ed8",
+        "new_name": "BSP_Mesh_NodeConstructorHandler_00cc2ed8"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00cc2ed8 from 'BSP_Mesh_NodeConstructorHandler_00cc2ed8' to 'BSP_Mesh_NodeConstructorHandler_00cc2ed8'\", \"warnings\": [\"Function name 'BSP_Mesh_NodeConstructorHandler_00cc2ed8' \\u2014 main part 'Mesh_NodeConstructorHandler_00cc2ed8' is not PascalCase. Expected: MeshNodeconstructorhandler00cc2ed8\", \"Function name 'BSP_Mesh_NodeConstructorHandler_00cc2ed8' \\u2014 main part 'Mesh_NodeConstructorHandler_00cc2ed8' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_Mesh_NodeConstructorHandler_00cc2ed8' does not start with a recognized verb. First word 'Mesh_' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00cc2ed8",
+        "comment": "\n\n[BSP reconstruction 00cc2ed8] CN update\nCN complete native mesh aggregate B944E0[557] and constructor B94710[131], plus exact volatile B72B40[4] leaf and four compiler supports36B: 235 instruction owners,34 direct transfers, saved Ghidra/disk equal. Aggregate prefix publishes pair+4, then ordered nine-child dispatch: four nullable C-string comparisons followed by five counted425850 comparisons; LOD preserves two x87 float32 stores and captures mesh before reading. Every stateful child retains its own acquired frame; EH owns only current completed child. Constructor raw-slot unwind ends at native B94756 state-1 before added canonical admission; actual pair[0] and completed mesh survive metadata or parsing failure. Final empty loop captures current pair mesh before each local increment and rereads unsigned count; no per-section action or cached count. Two missing handlers created/saved under lock, seven prior comments preserved; no byte clear/no-return changes. Actual RTX5090 D3D9 fixture executes all nine fields, two full subsets with explicit/default stream paths and generic layout readback, normal count2 loop, mesh bind rejection after pair publication, and second outer sphere read failure after completed subset publication;31 canonical owners retire. Cached effect pass preimage remains explicit; no cold shader/compiler, original full-parent execution, native ABI/FH3/SEH or game claim. Complete unwind or dispatch handler; support evidence only."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00cc2ed8\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": "{\"success\": true, \"program\": \"battlestationspacific.exe\", \"message\": \"Program saved successfully\"}"
+    }
+  ],
+  "saved": true,
+  "exports_refreshed": true
+}

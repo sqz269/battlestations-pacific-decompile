@@ -1,0 +1,242 @@
+{
+  "packet": "orch4_native_mesh_loading_cn",
+  "state": "complete_mesh_constructor_and_fields_build_and_actual_hot_cache_fixture_passed_cold_shader_unvalidated",
+  "base_revision": "b7327bebf5001d587af4a4dc5030494388a2a1e1",
+  "project": {
+    "project_name": "bsp",
+    "current_folder": "/",
+    "folders": [],
+    "files": [
+      {
+        "name": "battlestationspacific.exe",
+        "path": "/battlestationspacific.exe",
+        "content_type": "Program",
+        "version": 2754,
+        "is_read_only": false,
+        "is_versioned": false
+      }
+    ]
+  },
+  "program": {
+    "name": "battlestationspacific.exe",
+    "path": "/battlestationspacific.exe",
+    "executable_path": "/I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "executable_format": "Portable Executable (PE)",
+    "language": "x86:LE:32:default",
+    "compiler": "windows",
+    "address_size": 32,
+    "image_base": "00400000",
+    "min_address": "00400000",
+    "max_address": "ffdfffff",
+    "memory_size": 14876380,
+    "function_count": 64096,
+    "symbol_count": 144449,
+    "data_type_count": 795,
+    "creation_date": "Mon May 04 16:56:25 PDT 2026",
+    "memory_block_count": 6,
+    "address_spaces": [
+      {
+        "name": "ram",
+        "start": "00000000",
+        "end": "ffffffff",
+        "size": 4294967296,
+        "addressable_unit_size": 1,
+        "size_bytes": 4294967296,
+        "address_size_bits": 32,
+        "is_default": true
+      }
+    ],
+    "has_multiple_address_spaces": false
+  },
+  "ordinary_bodies": 3,
+  "ordinary_bytes": 692,
+  "support_bytes": 36,
+  "verified_instruction_owners": 235,
+  "preserved_comments": 7,
+  "source_manifest": {
+    "path": "local/native_mesh_loading_cn/registered/source_manifest.json",
+    "sha256": "0cc92e9ac38b8e02f219d6e87b0267cf7199b4c3e62f2e1c65da45f844106810",
+    "bytes": 290908
+  },
+  "configuration": {
+    "base_revision": "b7327bebf5001d587af4a4dc5030494388a2a1e1",
+    "override_absent": true,
+    "build": "scripts/build.ps1 with MSBUILDDISABLENODEREUSE=1 and CMAKE_BUILD_PARALLEL_LEVEL=3",
+    "build_scope": "Tracked default Win32 CMake incremental rebuild; not a fresh empty directory",
+    "source_inputs": 2685,
+    "source_manifest": {
+      "path": "local/native_mesh_loading_cn/registered/source_manifest.json",
+      "sha256": "0cc92e9ac38b8e02f219d6e87b0267cf7199b4c3e62f2e1c65da45f844106810",
+      "bytes": 290908
+    },
+    "changed_source_files": [
+      "include/bsp/gui_native_geometry.hpp",
+      "include/bsp/native_mesh_subset_loading.hpp",
+      "src/gui_native_geometry.cpp",
+      "src/native_mesh_subset_loading.cpp"
+    ],
+    "registry_unchanged": true,
+    "binary": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+    }
+  },
+  "validation": {
+    "build": "Tracked default scripts/build.ps1 MSVC Win32; both existing CTests pass; CMake registry unchanged",
+    "normal": "Full actual mesh constructor and nine-field dispatcher: prefix/LOD/phases, retained-memory vertex and index uploads, raw compressed metadata, weight names, two complete subsets, sphere/bounds discard, unknown skip, mesh return and two count-loop iterations",
+    "gpu": "Actual D3D9 generic generator declaration readback for both subsets; explicit and default stream0 selection share actual hardware layouts",
+    "metadata_failure": "Bind rejection occurs after B94756 state-1: actual constructed mesh+04=1 remains in pair[0], pair[1] is untouched, unbound companion persists until explicit fixture retirement",
+    "read_failure": "Second OUTER sphere read throws after both subsets complete: current child cleaned, original published mesh/streams/sections/materials remain; no constructor/aggregate rollback",
+    "cleanup": "31 successful canonical binds/retirements and one rejected mesh bind; actual caches/tree/allocator list empty, raw slots returned and final D3D9 device/API refs zero",
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "startup_registry_leases": [
+    {
+      "id": "agent/orch5-20260911:orch5_render_entry_cache_cmake",
+      "owner": "agent/orch5-20260911",
+      "packet": "orch5_render_entry_cache_cmake",
+      "addresses": [],
+      "ranges": [],
+      "files": [
+        "cmake/startup.cmake"
+      ],
+      "claimed": "2026-09-15T02:15:37+00:00",
+      "expires": "2026-09-15T03:15:37+00:00",
+      "status": "active",
+      "worktree": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911",
+      "note": ""
+    }
+  ],
+  "main_integration": "Not performed; agent branch only. Later main deltas remain unreviewed.",
+  "remaining": {
+    "wrappers": "Live callers of B94710: B947A0[169], B94850[175], B94900[175]. Implement their actual resource-item/pair ownership and register them in the existing native resource-dispatch path after complete body/ABI audit.",
+    "resource_boundary": "B947A0 known evidence indicates10h resource wrapper, D63738, mesh+8/prefix+C, retained assignment then local mesh release. Current compiled structured_resource_registry remains an owning wire-value projection.",
+    "cold_effect": "Actual B43B00/B3C3A0 and state/pass cache children remain required for cold material/resource admission",
+    "main": "Agent branch only; unreviewed moving main deltas remain separate"
+  },
+  "evidence_limits": [
+    "B944E0 and B94710 now execute through concrete native field, buffer, subset, cache and lifetime services. B72B40 was already understood; CN adds a volatile source interface so the empty native polling loop retains its repeated loads.",
+    "The fixture seeds a constructed derived effect with zero pass slots BEFORE B407A0 and an actual B43700 descriptor carrying generic as explicit fixture input. It is not a successful B46950/B43B00 shader-load substitute.",
+    "Cold descriptor/compiler/state-cache providers throw if reached. Populated actual caches support this runtime proof; cold game-resource loading is not established.",
+    "No original aggregate/constructor machine-code oracle, native ABI/FH3/SEH equivalence or gameplay/render-parity proof.",
+    "The constructor count2 loop is exercised under a stable actual mesh. Reentrant/concurrent pair/count mutation, null allocation faults and unmasked x87 hardware exceptions are outside this fixture."
+  ],
+  "artifacts": [
+    {
+      "path": "local/native_mesh_loading_cn/registered/annotation.log",
+      "sha256": "a7f3b18958dab4439797efe737439e94db67e8ba9b841cf93333ebedb30b7b75",
+      "bytes": 98
+    },
+    {
+      "path": "local/native_mesh_loading_cn/registered/bsp_core.lib",
+      "sha256": "7dd30ee4306d413917c75f987ca586f5f0e8dd23b12c78f3774675b476e238be",
+      "bytes": 59374828
+    },
+    {
+      "path": "local/native_mesh_loading_cn/registered/bsp_core.vcxproj",
+      "sha256": "1e55c5d486d29e9c0e2f17e73b489630f62e7859faacb6bc5c60a781ed7d7705",
+      "bytes": 200058
+    },
+    {
+      "path": "local/native_mesh_loading_cn/registered/bsp_game.exe",
+      "sha256": "89932f4f44a62761b84e5b793b6a70439280773e760636a2dbada27da7aabbf1",
+      "bytes": 2168832
+    },
+    {
+      "path": "local/native_mesh_loading_cn/registered/bsp_lua511.lib",
+      "sha256": "00315ac717aac3d2b2161fefefe71b36a974335ff9c95d48c137423eb4e2f4b2",
+      "bytes": 455244
+    },
+    {
+      "path": "local/native_mesh_loading_cn/registered/bsp_zlib121.lib",
+      "sha256": "73ae30b8adc3adfe5b33285bac533f8e7df7e8ab8d9e44789e6a030fd8a06ad9",
+      "bytes": 71906
+    },
+    {
+      "path": "local/native_mesh_loading_cn/registered/build.log",
+      "sha256": "d1d9459893a230138ac5d226a959027a72896d85a620f14b440f6f3f098c28ee",
+      "bytes": 4958
+    },
+    {
+      "path": "local/native_mesh_loading_cn/registered/call_check.log",
+      "sha256": "0baa37260df63294d4878e0b826c6f4d05852c1804e601b3b993030c07bac35f",
+      "bytes": 69
+    },
+    {
+      "path": "local/native_mesh_loading_cn/registered/child_probe.log",
+      "sha256": "1bfad7ed54ed5b843fe4de4c025e642cd2b3ed432be938b25838c38c95b12624",
+      "bytes": 958
+    },
+    {
+      "path": "local/native_mesh_loading_cn/registered/CMakeCache.txt",
+      "sha256": "2ab657bd06bb97731372c10fc883040590ccedec539b0406ba2554bab45f7835",
+      "bytes": 18839
+    },
+    {
+      "path": "local/native_mesh_loading_cn/registered/compile.cmd",
+      "sha256": "dc2a28fad2d1a311ad1e3024d28135a4ec5dfc38b4df4f6c8ed98c0c0f393e1b",
+      "bytes": 643
+    },
+    {
+      "path": "local/native_mesh_loading_cn/registered/compile.log",
+      "sha256": "25d4f66c7c01d5b35c220cb97ffdd1608405f4ab45160497e6cc7ea3079676cf",
+      "bytes": 11
+    },
+    {
+      "path": "local/native_mesh_loading_cn/registered/configuration.json",
+      "sha256": "9cb769593709818d6d310130974a451b91137f28192d3cb980ace0bce971a91c",
+      "bytes": 951
+    },
+    {
+      "path": "local/native_mesh_loading_cn/registered/final_audit.json",
+      "sha256": "ed4755d0bbb39146d90365b3a0b0dde9fe7bab3837f382d9f45ebb4c24246c3a",
+      "bytes": 30679
+    },
+    {
+      "path": "local/native_mesh_loading_cn/registered/initial_audit.json",
+      "sha256": "c888fab736e45c0e024c2fde164628a65c28cdf43fa1bec8b33dd8c86a836d60",
+      "bytes": 31161
+    },
+    {
+      "path": "local/native_mesh_loading_cn/registered/probe.cpp",
+      "sha256": "f4f8664ebe165c43040d17603aec9c283c0f6ff5176cab6b128b5d04c9cb05d1",
+      "bytes": 44168
+    },
+    {
+      "path": "local/native_mesh_loading_cn/registered/probe.exe",
+      "sha256": "008074198ea362c0eeb987c37f3722b68cb1633ad033229f673bb505d5226804",
+      "bytes": 493568
+    },
+    {
+      "path": "local/native_mesh_loading_cn/registered/probe.log",
+      "sha256": "bc6d5f43607b4b69f6cd83545a06cbcda81fcf083220e5ab837006c6e1062edc",
+      "bytes": 1002
+    },
+    {
+      "path": "local/native_mesh_loading_cn/registered/probe.map",
+      "sha256": "a975c96b9a5532a66589993c2db57ade93f869577ae106718449013e3adf4b5e",
+      "bytes": 875239
+    },
+    {
+      "path": "local/native_mesh_loading_cn/registered/probe.obj",
+      "sha256": "acc0a454db335ad4db20704e134fe2aaa9ae540aa15d603fb044109baf3a91b4",
+      "bytes": 435256
+    },
+    {
+      "path": "local/native_mesh_loading_cn/registered/source_manifest.json",
+      "sha256": "0cc92e9ac38b8e02f219d6e87b0267cf7199b4c3e62f2e1c65da45f844106810",
+      "bytes": 290908
+    },
+    {
+      "path": "reports/native_mesh_loading_flow_cn.json",
+      "sha256": "1867b17ce058b8f374dfa2b61bdf8d1ab210ba9b4ff9b2df08441ecd90498ef1",
+      "bytes": 6228
+    },
+    {
+      "path": "reports/native_mesh_loading_annotations_cn.json",
+      "sha256": "acd6ef1e03b65efc764b461252159cd834a720c24c72b27552ca747d6443c94b",
+      "bytes": 78076
+    }
+  ]
+}

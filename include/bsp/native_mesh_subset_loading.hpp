@@ -2,6 +2,7 @@
 #include "bsp/native_instance_generator_owner.hpp"
 #include "bsp/native_material_effect_cache.hpp"
 #include "bsp/native_mesh_remaining_fields.hpp"
+#include "bsp/native_mesh_buffer_fields.hpp"
 #include "bsp/native_mesh_texture_field.hpp"
 #include <memory>
 #include <vector>
@@ -52,4 +53,42 @@ struct NativeMeshSubsetAcquired {
 // no successful substitute is provided. New Win32 source, not native SEH/ABI.
 void read_native_mesh_subset_00b941d0(void* actual_mesh, void* actual_parent_handle,
     NativeMeshSubsetLoadingContext&, NativeMeshSubsetAcquired&);
+
+struct NativeMeshLoadingContext {
+    NativeMeshSubsetLoadingContext& subsets;
+    NativeMeshMetadataReadContext& metadata; // SAME actual reader as subsets.
+};
+struct NativeMeshFieldsAcquired {
+    enum class Phase { empty, prefix, child, field, child_release, complete };
+    Phase phase{Phase::empty};
+    std::uint32_t native_site{};
+    void* child{};
+    bool child_cleanup_armed{};
+    std::vector<std::unique_ptr<NativeMeshSubsetAcquired>> subsets;
+    std::vector<std::unique_ptr<NativeMeshBufferReadAcquired>> buffers;
+    std::vector<std::unique_ptr<NativeMeshMetadataReadAcquired>> metadata;
+};
+struct NativeMeshLoadingAcquired {
+    enum class Phase { empty, construction, fields, polling, complete };
+    Phase phase{Phase::empty};
+    std::uint32_t native_site{}, poll_iterations{};
+    GuiNativeMeshAcquired mesh;
+    NativeMeshFieldsAcquired fields;
+};
+// B72B40[4], ECX actual mesh; EAX current DWORD+58; RET. Volatile read keeps
+// each native count sample, including the constructor's otherwise empty loop.
+std::uint32_t native_mesh_section_count_00b72b40(const void* actual_mesh) noexcept;
+// B944E0[557], ECX actual8h output pair; stacked parent handle; RET4. Prefix
+// DWORD publishes pair+4. First four tags compare nullable C strings; later
+// five compare the actual counted node+10 header with425850. Ordered native
+// children share one actual mesh domain; only current completed child is an
+// EH obligation. Distinct child acquisition frames persist through failure.
+void read_native_mesh_fields_00b944e0(void* actual_pair, void* actual_parent_handle,
+    NativeMeshLoadingContext&, NativeMeshFieldsAcquired&);
+// B94710[131], ECX actual8h output pair; stacked parent; EAX current pair[0];
+// RET4. Raw-slot-only constructor state, publish pair[0], parse, then sample
+// current pair mesh/count in the original unsigned empty loop. No mesh/pair
+// rollback, synthetic completion, fixed count snapshot or per-section action.
+void* construct_native_mesh_from_node_00b94710(void* actual_pair, void* actual_parent_handle,
+    NativeMeshLoadingContext&, NativeMeshLoadingAcquired&);
 } // namespace bsp

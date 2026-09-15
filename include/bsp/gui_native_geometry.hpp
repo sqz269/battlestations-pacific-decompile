@@ -14,6 +14,14 @@ struct GuiNativeSectionAcquired {
     void* owner_record{};
     bool started{}, registered{};
 };
+struct GuiNativeMeshAcquired {
+    void* raw_slot{};
+    NativeMeshStorage* creator{};
+    RenderCommandReference* companion{};
+    void* owner_record{};
+    std::uint32_t native_site{};
+    bool started{}, constructor_complete{}, published{}, registered{};
+};
 struct GuiNativeDeclarationAcquired {
     void* reference{}; // Caller reference returned by the actual cache.
     RenderCommandReference* companion{}; // Borrows SAME actual+04.
@@ -58,6 +66,14 @@ public:
     // native creator/companion remains in acquired on host allocation/bind
     // failure; no destructor rollback or extra reference. One fresh call only.
     NativeMeshSectionStorage* create_native_section_00533fa0(GuiNativeSectionAcquired&);
+    // B94710 allocation/constructor/publication prefix using the SAME native
+    // pool/constants. Publish actual pair[0] BEFORE host canonical admission.
+    // Host admission follows native state-1 at B94756. Raw constructor unwind
+    // only; completed creator/pair/metadata survive a
+    // bind failure. Does not parse fields or consume the creator reference.
+    NativeMeshStorage* create_native_mesh_and_publish(void* actual_pair,
+        GuiNativeMeshAcquired&);
+    NativeMeshConstants mesh_constants() const noexcept;
 
     // B742A0 -> B73F50, Text flags26h or exactly3E when streams is supplied.
     // Source is a registered actual

@@ -5,6 +5,7 @@
 #include "bsp/native_resource_reader_references.hpp"
 #include "bsp/native_string_pool_owner.hpp"
 #include "bsp/native_string_pool_storage.hpp"
+#include "bsp/native_string_compare.hpp"
 #include <cstring>
 #include <stdexcept>
 
@@ -171,5 +172,138 @@ void read_native_mesh_subset_00b941d0(void* mesh, void* parent,
         if (a.name_cleanup_armed) unwind_name(a, reads.strings);
         throw;
     }
+}
+namespace {
+template<class T> T& append_frame(std::vector<std::unique_ptr<T>>& frames) {
+    auto frame = std::make_unique<T>();
+    frames.push_back(std::move(frame));
+    return *frames.back();
+}
+// Native B94559/5D/64 rounds to float32, reloads, and stores the stack
+// argument again. Keep both x87 stores before the B72710 MOVSS bit copy.
+__declspec(naked) U __cdecl read_lod_bits(void*, NativeResourceStreamReadContext&) {
+    __asm {
+        push ebp
+        mov ebp, esp
+        sub esp, 4
+        push dword ptr [ebp+12]
+        push dword ptr [ebp+8]
+        call read_native_resource_node_float_00be99d0
+        add esp, 8
+        fstp dword ptr [ebp-4]
+        fld dword ptr [ebp-4]
+        fstp dword ptr [ebp-4]
+        mov eax, dword ptr [ebp-4]
+        mov esp, ebp
+        pop ebp
+        ret
+    }
+}
+void unwind_mesh_child(NativeMeshFieldsAcquired& a, NativeAdoptedSubstreamDispatch& streams) noexcept {
+    a.child_cleanup_armed = false;
+    release_native_structured_node_handle_00be9ed0(&a.child, streams);
+}
+void require_loading_domain(NativeMeshLoadingContext& c) {
+    require_domain(c.subsets);
+    if (&c.metadata.reads != &c.subsets.texture_fields.reads)
+        throw std::invalid_argument("Native mesh fields require the same actual reader");
+}
+} // namespace
+
+U native_mesh_section_count_00b72b40(const void* mesh) noexcept { return word(mesh, 0x58); }
+
+void read_native_mesh_fields_00b944e0(void* pair, void* parent,
+    NativeMeshLoadingContext& c, NativeMeshFieldsAcquired& a) {
+    using FieldPhase = NativeMeshFieldsAcquired::Phase;
+    if (a.phase != FieldPhase::empty || a.child || a.child_cleanup_armed ||
+        !a.subsets.empty() || !a.buffers.empty() || !a.metadata.empty())
+        throw std::logic_error("Native mesh fields cannot replay acquired children");
+    require_loading_domain(c);
+    auto& reads = c.subsets.texture_fields.reads;
+    NativeMeshBufferReadContext buffers{reads, c.subsets.generators.context().graphics};
+    a.phase = FieldPhase::prefix; a.native_site = 0x00b94500;
+    put(pair, 4, read_native_resource_node_control_dword_00be99f0(parent, reads));
+    while (native_resource_node_has_remaining_00715bf0(parent)) {
+        a.phase = FieldPhase::child; a.native_site = 0x00b9451f;
+        create_native_resource_child_00bea680(parent, &a.child, reads);
+        a.child_cleanup_armed = true;
+        try {
+            a.phase = FieldPhase::field;
+            if (child_named(a.child, "LODValue")) {
+                void* captured_mesh = ptr(word(pair)); // ESI before the scalar read.
+                a.native_site = 0x00b94554;
+                const auto value = read_lod_bits(&a.child, reads);
+                a.native_site = 0x00b94567;
+                set_native_mesh_lod_00b72710(captured_mesh, value);
+            } else if (child_named(a.child, "LODPhases")) {
+                const auto constants = c.subsets.geometry.mesh_constants();
+                a.native_site = 0x00b9459d;
+                read_native_mesh_lod_phases_00b93710(ptr(word(pair)), &a.child, reads,
+                    constants.minimum_00ce4adc, constants.maximum_00ce4970);
+            } else if (child_named(a.child, "Subset")) {
+                auto& frame = append_frame(a.subsets);
+                a.native_site = 0x00b945d3;
+                read_native_mesh_subset_00b941d0(ptr(word(pair)), &a.child, c.subsets, frame);
+            } else if (child_named(a.child, "Indices")) {
+                auto& frame = append_frame(a.buffers);
+                a.native_site = 0x00b94609;
+                read_native_mesh_indices_00b93aa0(ptr(word(pair)), &a.child, buffers, frame);
+            } else if (equal_native_string_header_00425850(at(a.child, 0x10), "VertexStream")) {
+                auto& frame = append_frame(a.buffers);
+                a.native_site = 0x00b94632;
+                read_native_mesh_vertex_stream_00b93e60(ptr(word(pair)), &a.child, buffers, frame);
+            } else if (equal_native_string_header_00425850(at(a.child, 0x10), "CompressedVertexFormatData")) {
+                auto& frame = append_frame(a.metadata);
+                a.native_site = 0x00b9465b;
+                read_native_mesh_compressed_format_00b93800(ptr(word(pair)), &a.child, c.metadata, frame);
+            } else if (equal_native_string_header_00425850(at(a.child, 0x10), "BoundingSphere")) {
+                a.native_site = 0x00b94681;
+                consume_native_mesh_sphere_00b93590(ptr(word(pair)), &a.child, reads);
+            } else if (equal_native_string_header_00425850(at(a.child, 0x10), "BoundingBox")) {
+                a.native_site = 0x00b946a7;
+                consume_native_mesh_bounds_00b935c0(ptr(word(pair)), &a.child, reads);
+            } else if (equal_native_string_header_00425850(at(a.child, 0x10), "WeightMapNames")) {
+                a.native_site = 0x00b946cd;
+                read_native_mesh_weight_names_00b93f90(ptr(word(pair)), &a.child, reads);
+            } else {
+                a.native_site = 0x00b946d4;
+                skip_native_resource_node_00be9c40(&a.child, reads);
+            }
+        } catch (...) {
+            unwind_mesh_child(a, reads.streams);
+            throw;
+        }
+        a.child_cleanup_armed = false;
+        a.phase = FieldPhase::child_release; a.native_site = 0x00b946e5;
+        release_native_structured_node_handle_00be9ed0(&a.child, reads.streams);
+    }
+    a.phase = FieldPhase::complete;
+}
+
+void* construct_native_mesh_from_node_00b94710(void* pair, void* parent,
+    NativeMeshLoadingContext& c, NativeMeshLoadingAcquired& a) {
+    using LoadPhase = NativeMeshLoadingAcquired::Phase;
+    if (a.phase != LoadPhase::empty || a.mesh.started ||
+        a.fields.phase != NativeMeshFieldsAcquired::Phase::empty || a.poll_iterations)
+        throw std::logic_error("Native mesh construction cannot replay its acquired operation");
+    require_loading_domain(c);
+    a.phase = LoadPhase::construction; a.native_site = 0x00b9472f;
+    (void)c.subsets.geometry.create_native_mesh_and_publish(pair, a.mesh);
+    a.phase = LoadPhase::fields; a.native_site = 0x00b9475e;
+    read_native_mesh_fields_00b944e0(pair, parent, c, a.fields);
+    a.phase = LoadPhase::polling; a.native_site = 0x00b94765;
+    if (native_mesh_section_count_00b72b40(ptr(word(pair))) != 0) {
+        U index = 0;
+        U current_count;
+        do {
+            void* current_mesh = ptr(word(pair));
+            ++index;
+            a.poll_iterations = index;
+            a.native_site = 0x00b94775;
+            current_count = native_mesh_section_count_00b72b40(current_mesh);
+        } while (index < current_count);
+    }
+    a.phase = LoadPhase::complete;
+    return ptr(word(pair));
 }
 } // namespace bsp
