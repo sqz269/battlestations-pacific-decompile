@@ -1,0 +1,142 @@
+{
+  "packet": "orch4_effect_reader_h8",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "source": "src/native_effect_component_reader.cpp",
+  "header": "include/bsp/native_effect_component_reader.hpp",
+  "documentation": "docs/NATIVE_EFFECT_COMPONENT_READER_ORCH4.md",
+  "functions": [
+    {
+      "address": "00868bf0",
+      "end_exclusive": "00868cc8",
+      "bytes": 216,
+      "sha256": "c4cb668513eefa759aad0a24b921d5dce074543d373fd2bd4ad9c1d3c6b40d0b",
+      "live_disk_match": true,
+      "name": "read_native_effect_component_base_00868bf0",
+      "proposed_name": "BSP_EffectComponent_ReadLuaBase",
+      "coverage": "complete",
+      "status": "complete_native_storage_source_build_and_focused_fixture_checked",
+      "original_abi": "ECX actual component; stack actual14h Lua object; RET4",
+      "old_name": "BSP_EffectComponent_ReadLuaBase",
+      "old_plate_comment": "[BSP reconstruction 00868bf0]\nHypothesis, not a recovered symbol. ECX actual component; one stack LuaObject pointer; RET4. Autostart truthiness byte10; number-only Delay14 default0 through binary32 and late actual CRT conversion; lookup NoFilterDist before x87 current18 fallback load, number-only float32 or captured default, store before Lua ref release. Full-span disk/live SHA256 c4cb668513eefa759aad0a24b921d5dce074543d373fd2bd4ad9c1d3c6b40d0b. See docs/GAMEPLAY_EFFECT_COMPONENTS.md. Win32 checks and native-constructor/real-Lua fixture passed; component-specific virtuals, native ABI/SEH and gameplay remain unvalidated.",
+      "old_ledger_name": {
+        "address": "00868bf0",
+        "name": "BSP_EffectComponent_ReadLuaBase",
+        "evidence": "Hypothesis, not a recovered symbol. ECX actual component; one stack LuaObject pointer; RET4. Autostart truthiness byte10; number-only Delay14 default0 through binary32 and late actual CRT conversion; lookup NoFilterDist before x87 current18 fallback load, number-only float32 or captured default, store before Lua ref release. Full-span disk/live SHA256 c4cb668513eefa759aad0a24b921d5dce074543d373fd2bd4ad9c1d3c6b40d0b. See docs/GAMEPLAY_EFFECT_COMPONENTS.md. Win32 checks and native-constructor/real-Lua fixture passed; component-specific virtuals, native ABI/SEH and gameplay remain unvalidated."
+      },
+      "evidence": "Hypothesis, not recovered symbol. Actual native Lua stack-object composition: Autostart truthiness byte10, exact-number Delay14 default0 via genuine B66380 and borrowed late CRT mode, NoFilterDist lookup before CURRENT18 x87 fallback, final store before release. Three completed-object unwind states clean real B67700; second unwind exception terminates. Complete216B live/disk SHA256 c4cb668513eefa759aad0a24b921d5dce074543d373fd2bd4ad9c1d3c6b40d0b. ECX actual component; stack actual14h Lua object; RET4. See docs/NATIVE_EFFECT_COMPONENT_READER_ORCH4.md and reports/native_effect_component_reader_orch4.json. Strict Win32 build/3CTests and focused copied-original/native-Lua composition probe passed. Original ABI/FH3/SEH/gameplay unvalidated."
+    },
+    {
+      "address": "00af3e10",
+      "end_exclusive": "00af3e1a",
+      "bytes": 10,
+      "sha256": "ad034d3aebb337c5103073a1501e1837d9628292eb2d94d2a2d8be20b9384e43",
+      "live_disk_match": true,
+      "name": "set_native_particle_resource_underwater_00af3e10",
+      "proposed_name": "ParticleResource_SetUnderWater_00AF3E10",
+      "coverage": "complete",
+      "status": "complete_native_storage_source_build_and_focused_fixture_checked",
+      "original_abi": "ECX actual resource; stack byte; RET4",
+      "old_name": "FUN_00af3e10",
+      "old_plate_comment": null,
+      "old_ledger_name": null,
+      "evidence": "Hypothesis, not recovered symbol. Store the entire supplied byte at resource+70; no normalization, ownership change or other writes. Complete10B live/disk SHA256 ad034d3aebb337c5103073a1501e1837d9628292eb2d94d2a2d8be20b9384e43. ECX actual resource; stack byte; RET4. See docs/NATIVE_EFFECT_COMPONENT_READER_ORCH4.md and reports/native_effect_component_reader_orch4.json. Strict Win32 build/3CTests and focused copied-original/native-Lua composition probe passed. Original ABI/FH3/SEH/gameplay unvalidated."
+    }
+  ],
+  "call_sites": [
+    {
+      "address": "00868c1c",
+      "native": "00b67800",
+      "function": "00868bf0"
+    },
+    {
+      "address": "00868c2b",
+      "native": "00b66250",
+      "function": "00868bf0"
+    },
+    {
+      "address": "00868c3f",
+      "native": "00b67700",
+      "function": "00868bf0"
+    },
+    {
+      "address": "00868c50",
+      "native": "00b67800",
+      "function": "00868bf0"
+    },
+    {
+      "address": "00868c61",
+      "native": "00b66380",
+      "function": "00868bf0"
+    },
+    {
+      "address": "00868c75",
+      "native": "00b67700",
+      "function": "00868bf0"
+    },
+    {
+      "address": "00868c86",
+      "native": "00b67800",
+      "function": "00868bf0"
+    },
+    {
+      "address": "00868c9c",
+      "native": "00b66330",
+      "function": "00868bf0"
+    },
+    {
+      "address": "00868cb0",
+      "native": "00b67700",
+      "function": "00868bf0"
+    }
+  ],
+  "exception_bytes": [
+    {
+      "address": "00c95170",
+      "end_exclusive": "00c95192",
+      "bytes": 34,
+      "sha256": "31c6829323ad2529ce82f2ffedd51aa6d2f12e77356064e51f2d7a2ba722de90",
+      "live_disk_match": true
+    },
+    {
+      "address": "00dc7028",
+      "end_exclusive": "00dc7064",
+      "bytes": 60,
+      "sha256": "a5eaf27e5a4ec59e266fe396f195610ee52ca00e019e3f8a6876f59cf5071db3",
+      "live_disk_match": true
+    }
+  ],
+  "exception_evidence": {
+    "handler": "00c95188",
+    "funcinfo": "00dc7040",
+    "max_state": 3,
+    "unwind_map": "00dc7028",
+    "actions": [
+      "state0->-1 C95170 first object EBP-34",
+      "state1->-1 C95178 first object EBP-34",
+      "state2->-1 C95180 second object EBP-20"
+    ]
+  },
+  "validation": {
+    "strict_win32_build": "passed;local/effect_reader_build_h8.log",
+    "existing_ctests": "3/3 passed",
+    "focused_probe": {
+      "exit_code": 0,
+      "output": "PASS 4 original/source native Lua reader scenarios and exact-byte resource setter; full component bytes, stack/tracking counts, late fallback and x87 flags agree. No native exception path executed.\n",
+      "reader_sha256": "c4cb668513eefa759aad0a24b921d5dce074543d373fd2bd4ad9c1d3c6b40d0b",
+      "setter_sha256": "ad034d3aebb337c5103073a1501e1837d9628292eb2d94d2a2d8be20b9384e43",
+      "scope": "Complete copied original reader; direct calls bridged to genuine native Lua source. Actual Lua5.1.1/14h stack objects. No native EH/FH3/SEH path. Manifest embedded; actual parent bsp_core.lib."
+    },
+    "direct_call_rows": "9 exact rows checked;0 failed"
+  },
+  "source_absent": [
+    "00871d00 full Particle reader",
+    "00870dd0 full resource acquisition",
+    "0086ba60 native resource-loader virtual function"
+  ],
+  "boundaries": [
+    "No original ABI/FH3/SEH/gameplay validation.",
+    "Original reader calls are bridged to the genuine source Lua providers; those providers are not separately differential-tested here.",
+    "Original exception paths were not executed."
+  ]
+}
