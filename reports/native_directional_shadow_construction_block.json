@@ -3,7 +3,7 @@
   "module": "native_directional_shadow_construction_block",
   "packet": "orch3_shadow_construction_block_dy",
   "source_baseline": "d68f8770ce5ee5108dbd636badf515e610a1b47e",
-  "status": "source_reviewed_build_pending",
+  "status": "build_tested_host_storage_prerequisite",
   "coverage": "complete host storage/admission prerequisite; no native function implementation",
   "native_functions": [],
   "native_calls": [],
@@ -393,15 +393,36 @@
       },
       {
         "path": "docs/NATIVE_DIRECTIONAL_SHADOW_CONSTRUCTION_BLOCK.md",
-        "sha256": "6e96e75b8fbbef8c65fcf04b8983bda6e068a584af7e5fee4464aedd8de57a2a"
+        "sha256": "86b101ce2f0bcbd6cc973d124ca0b74c09c30a90b6681b7c701024e28148dce8"
       }
     ]
   },
   "validation": {
-    "build": "pending, to run once from clean source commit",
+    "build": {
+      "commit": "d9c0f13e81b2bd1872b9cb20cd6fb5c15a744143",
+      "passed": true,
+      "pending": false,
+      "exit_code": 0,
+      "clean_tree_before_and_after": true,
+      "all_build_inputs_unchanged": true,
+      "libraries": {
+        "build\\win32\\Release\\bsp_core.lib": "3ca021c52bd61a17594b2b204bfd0a186789e9cd9fbe2494b1d633b94c2d818f",
+        "build\\win32\\Release\\bsp_lua511.lib": "713e1c4cde87ef94799672653cae285bc989d0612f3289cef622e46ba70c809b",
+        "build\\win32\\Release\\bsp_zlib121.lib": "a22e460f740ac03cd370936d5e574271756d8ffe7bf4482964e92567aa609c9d",
+        "build\\win32\\Release\\xlive_stub.lib": "6dfcb5bf13947ffb6883edfde9d189c4c7ae0d702ec8bd81daebf3749e5f1c67"
+      },
+      "log_sha256": "9b5b9282c233b8651469186926412afc4215b2368a3902380dfc5b883cd4aff0",
+      "existing_ctest_summary": [
+        "1/1 Test #1: reconstructed_math ...............   Passed    0.07 sec",
+        "100% tests passed, 0 tests failed out of 1"
+      ]
+    },
     "tests_added": 0,
     "runtime_fixture": false,
     "ghidra_queries": 0,
-    "ghidra_mutations": 0
-  }
+    "ghidra_mutations": 0,
+    "tracked_build_input_count": 2629,
+    "build_stamp_sha256": "eff34759dc3f63b00671b6e46a54a5818e6da0613c53a5a919c150719ba62ecc"
+  },
+  "tested_source_commit": "d9c0f13e81b2bd1872b9cb20cd6fb5c15a744143"
 }

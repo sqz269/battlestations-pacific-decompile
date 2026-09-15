@@ -125,6 +125,13 @@ is `77675f12e46af94ccdf6cdb9099cd685d2825efe89737f85e249e2f28179d05c`; its desig
 SHA256 is `31bbb897e801724abd3f6e16cbe1223785d43586333a2c790003ff1c40dede11`.
 The report pins the concrete cockpit/admission/lifetime/cache provider inputs.
 No Ghidra query or mutation, new native recovery, ledger change, repository test
-addition or fixture is part of DY. Build results are recorded in the report
-after the primary's source review; no source execution claim follows from a
-successful build alone.
+addition or fixture is part of DY.
+
+The single MSVC Win32 Release build passed at source commit
+`d9c0f13e81b2bd1872b9cb20cd6fb5c15a744143`, with the existing
+`reconstructed_math` CTest passing **1/1**. The local
+`dy-final-build-stamp.json` pins all **2,629 tracked build inputs**, four produced
+libraries and the build log; the tree was clean before and after and every input
+hash remained unchanged. The final documentation/report commit changes no build
+input. This is compilation and existing-test evidence, not a runtime admission
+or original/source constructor fixture, original ABI proof or game validation.
