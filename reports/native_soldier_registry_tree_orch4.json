@@ -1,0 +1,196 @@
+{
+  "packet": "orch4_soldier_tree_g7",
+  "result": "thirteen_complete_raw_registry_tree_bodies_build_checked",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "base_commit": "f4b545e6c60e1e97fd1a1e7b2b8e84e4b06f132a",
+  "source": "src/native_soldier_registry_tree.cpp",
+  "header": "include/bsp/native_soldier_registry_tree.hpp",
+  "documentation": "docs/NATIVE_SOLDIER_REGISTRY_TREE_ORCH4.md",
+  "names_are_hypotheses": true,
+  "functions": [
+    {
+      "address": "004afe50", "end_exclusive": "004afea3", "bytes": 83,
+      "sha256": "2559bd21653dff3a08fdfac30194b17d8c0f4f87997df6eeb8533c9b229373cb",
+      "name": "lower_bound_native_soldier_registry_004afe50",
+      "original_abi": "ECX tree; key-header stack; EAX selected node; RET4",
+      "coverage": "complete", "live_disk_match": true,
+      "status": "complete_source_strict_win32_build_checked"
+    },
+    {
+      "address": "004b0cb0", "end_exclusive": "004b0d9e", "bytes": 238,
+      "sha256": "8ef4f466e5b1265289183620d3fe78f0f850937dfac5b2e49b2dab1be98c3399",
+      "name": "get_or_insert_native_soldier_registry_mapped_004b0cb0",
+      "original_abi": "ECX tree; key-header stack; EAX mapped-cell pointer; RET4",
+      "coverage": "complete", "live_disk_match": true,
+      "status": "complete_source_strict_win32_build_checked"
+    },
+    {
+      "address": "004b0a70", "end_exclusive": "004b0c6c", "bytes": 508,
+      "sha256": "1476060f21e360be57910ef9d3ccf3c8cec5945ef0c4db0a59a1cd3f63961015",
+      "name": "insert_hint_native_soldier_registry_pair_004b0a70",
+      "original_abi": "ECX tree; stack output,hint-owner,hint-node,pair; EAX output; RET10h",
+      "coverage": "complete", "live_disk_match": true,
+      "status": "complete_source_strict_win32_build_checked"
+    },
+    {
+      "address": "004b0660", "end_exclusive": "004b084c", "bytes": 492,
+      "sha256": "6f8695d1a81524fb7ae318eef474e6954a56eabde6f013c0ca048014fe106461",
+      "name": "link_native_soldier_registry_node_004b0660",
+      "old_name": "STL_xlen_throw_004b0660",
+      "original_abi": "ECX tree; stack output,left-byte,parent,pair; EAX output; RET10h",
+      "coverage": "complete", "live_disk_match": true,
+      "status": "complete_source_strict_win32_build_checked"
+    },
+    {
+      "address": "004b0880", "end_exclusive": "004b0994", "bytes": 276,
+      "sha256": "8268d50973fabbf35562948eda8b8e61f5d1adc134a52523c77a656408a9a1c8",
+      "name": "insert_native_soldier_registry_pair_004b0880",
+      "original_abi": "ECX tree; stack output,pair; EAX output; RET8",
+      "coverage": "complete", "live_disk_match": true,
+      "status": "complete_source_strict_win32_build_checked"
+    },
+    {
+      "address": "004af530", "end_exclusive": "004af559", "bytes": 41,
+      "sha256": "2164c2ba780ae674bae3580580ea062b2fcd67d1a8986695703d885d7c52dbe8",
+      "name": "equal_native_soldier_registry_iterators_004af530",
+      "old_name": "STL_inst_004af530",
+      "original_abi": "ECX left iterator; right iterator stack; AL bool; RET4",
+      "coverage": "complete", "live_disk_match": true,
+      "status": "complete_source_strict_win32_build_checked"
+    },
+    {
+      "address": "004afb50", "end_exclusive": "004afbb3", "bytes": 99,
+      "sha256": "dedd2998c4b5aefa1688e8de3bf7042a72cc079494a2903bdba2109ae84a82ed",
+      "name": "increment_native_soldier_registry_iterator_004afb50",
+      "original_abi": "ECX iterator; RET or invalid-parameter tail",
+      "coverage": "complete", "live_disk_match": true,
+      "status": "complete_source_strict_win32_build_checked"
+    },
+    {
+      "address": "004afbe0", "end_exclusive": "004afc69", "bytes": 137,
+      "sha256": "f63282b35b2049ff146395d6b99166d20f7f5b2794377cd922910cbcf7da4a72",
+      "name": "decrement_native_soldier_registry_iterator_004afbe0",
+      "original_abi": "ECX iterator; RET or invalid-parameter tail",
+      "coverage": "complete", "live_disk_match": true,
+      "status": "complete_source_strict_win32_build_checked"
+    },
+    {
+      "address": "004afaa0", "end_exclusive": "004afaee", "bytes": 78,
+      "sha256": "0439f0befe0245fd4352ce96b0a1925cf906071c3d97d0d6b31232037d4a02b4",
+      "name": "rotate_native_soldier_registry_left_004afaa0",
+      "original_abi": "ECX tree; node stack; RET4",
+      "coverage": "complete", "live_disk_match": true,
+      "status": "complete_source_strict_win32_build_checked"
+    },
+    {
+      "address": "004afaf0", "end_exclusive": "004afb42", "bytes": 82,
+      "sha256": "e42b0897d23d00413aefba0f2366246f1aae06cad9b22bfcdbe23fa0d8ffe502",
+      "name": "rotate_native_soldier_registry_right_004afaf0",
+      "original_abi": "ECX tree; node stack; RET4",
+      "coverage": "complete", "live_disk_match": true,
+      "status": "complete_source_strict_win32_build_checked"
+    },
+    {
+      "address": "004b02a0", "end_exclusive": "004b0312", "bytes": 114,
+      "sha256": "96cbc3ce1e86986d8d5bac9be249d07dffa1ce7ed74bc4630551e16ca4da2573",
+      "name": "allocate_native_soldier_registry_node_004b02a0",
+      "original_abi": "five stack arguments; EAX allocated node; RET14h; detached FH3 catch",
+      "coverage": "complete", "live_disk_match": true,
+      "status": "complete_source_with_external_catch_definition_strict_win32_build_checked"
+    },
+    {
+      "address": "004b01e0", "end_exclusive": "004b0250", "bytes": 112,
+      "sha256": "7f2ee6a16d7ecc77ff0408f6a419b6860212080f50aae33c00d7fb014aa35c58",
+      "name": "initialize_native_soldier_registry_node_004b01e0",
+      "original_abi": "ECX node; stack left,parent,right,pair,color; EAX node; RET14h",
+      "coverage": "complete", "live_disk_match": true,
+      "status": "complete_source_strict_win32_build_checked"
+    },
+    {
+      "address": "004b0090", "end_exclusive": "004b00ad", "bytes": 29,
+      "sha256": "3307cb8ab6f6ff1a7b52cd56505af9de015deee2a5d3e0c33a29bba5193bec02",
+      "name": "destroy_native_soldier_registry_pair_004b0090",
+      "original_abi": "ECX pair; RET",
+      "coverage": "complete", "live_disk_match": true,
+      "status": "complete_source_strict_win32_build_checked"
+    }
+  ],
+  "original_bytes": 2289,
+  "external_support": [
+    {
+      "address": "004b0312", "end_exclusive": "004b0327", "bytes": 21,
+      "sha256": "3655097cb2c3c5d17bafd2f70e2aec3f1371c4d4e2ca4bc8304320cd1f27b303",
+      "name": "Catch_All@004b0312", "owner": "parent_integrator",
+      "coverage": "complete_saved_definition_after_serialized_flow_repair",
+      "contract": "Free captured raw node at EBP-14, then PUSH0/PUSH0 and rethrow through 00BF6885. No key destruction."
+    }
+  ],
+  "call_sites": [
+    {"address":"004afe80","native":"00bf7fbf","function":"004afe50"},
+    {"address":"004b0cd2","native":"004afe50","function":"004b0cb0"},
+    {"address":"004b0cdd","native":"00bf6713","function":"004b0cb0"},
+    {"address":"004b0cee","native":"00443d00","function":"004b0cb0"},
+    {"address":"004b0d0f","native":"0041dd40","function":"004b0cb0"},
+    {"address":"004b0d26","native":"00bf7680","function":"004b0cb0"},
+    {"address":"004b0d46","native":"004b0a70","function":"004b0cb0"},
+    {"address":"004b0d67","native":"00419cc0","function":"004b0cb0"},
+    {"address":"004b0d6e","native":"00bd1510","function":"004b0cb0"},
+    {"address":"004b0d78","native":"00bf6713","function":"004b0cb0"},
+    {"address":"004b0d82","native":"00bf6713","function":"004b0cb0"},
+    {"address":"004b0a8f","native":"004b0660","function":"004b0a70"},
+    {"address":"004b0ab0","native":"00bf6713","function":"004b0a70"},
+    {"address":"004b0ac9","native":"00443d00","function":"004b0a70"},
+    {"address":"004b0ae1","native":"004b0660","function":"004b0a70"},
+    {"address":"004b0afd","native":"00bf6713","function":"004b0a70"},
+    {"address":"004b0b17","native":"00443d00","function":"004b0a70"},
+    {"address":"004b0b35","native":"004b0660","function":"004b0a70"},
+    {"address":"004b0b4d","native":"00443d00","function":"004b0a70"},
+    {"address":"004b0b62","native":"004afbe0","function":"004b0a70"},
+    {"address":"004b0b72","native":"00443d00","function":"004b0a70"},
+    {"address":"004b0b93","native":"004b0660","function":"004b0a70"},
+    {"address":"004b0ba8","native":"004b0660","function":"004b0a70"},
+    {"address":"004b0bc0","native":"00443d00","function":"004b0a70"},
+    {"address":"004b0be0","native":"004afb50","function":"004b0a70"},
+    {"address":"004b0bee","native":"004af530","function":"004b0a70"},
+    {"address":"004b0c02","native":"00443d00","function":"004b0a70"},
+    {"address":"004b0c1f","native":"004b0660","function":"004b0a70"},
+    {"address":"004b0c34","native":"004b0660","function":"004b0a70"},
+    {"address":"004b0c4d","native":"004b0880","function":"004b0a70"},
+    {"address":"004b06a3","native":"00408720","function":"004b0660"},
+    {"address":"004b06b5","native":"00411700","function":"004b0660"},
+    {"address":"004b06cc","native":"00bf6885","function":"004b0660"},
+    {"address":"004b06e4","native":"004b02a0","function":"004b0660"},
+    {"address":"004b0775","native":"004afaa0","function":"004b0660"},
+    {"address":"004b0793","native":"004afaf0","function":"004b0660"},
+    {"address":"004b07c1","native":"004afaf0","function":"004b0660"},
+    {"address":"004b08c6","native":"00bf7fbf","function":"004b0880"},
+    {"address":"004b0908","native":"004b0660","function":"004b0880"},
+    {"address":"004b092f","native":"004afbe0","function":"004b0880"},
+    {"address":"004b093f","native":"00443d00","function":"004b0880"},
+    {"address":"004b0956","native":"004b0660","function":"004b0880"},
+    {"address":"004af542","native":"00bf6713","function":"004af530"},
+    {"address":"004afb58","native":"00bf6713","function":"004afb50"},
+    {"address":"004afbe8","native":"00bf6713","function":"004afbe0"},
+    {"address":"004b02c3","native":"00bf681b","function":"004b02a0"},
+    {"address":"004b02f8","native":"004b01e0","function":"004b02a0"},
+    {"address":"004b0219","native":"0041dd40","function":"004b01e0"},
+    {"address":"004b022f","native":"00bf7680","function":"004b01e0"},
+    {"address":"004b00a0","native":"00419cc0","function":"004b0090"},
+    {"address":"004b00a7","native":"00bd1510","function":"004b0090"},
+    {"address":"004b0316","native":"00bf65ac","function":"004b0312"},
+    {"address":"004b0322","native":"00bf6885","function":"004b0312"}
+  ],
+  "validation": {
+    "live_span_sha256": "14_of_14_match_installed_PE",
+    "strict_build": "passed",
+    "ctest": "2_of_2_passed",
+    "verify_report_calls": "53_rows_checked_0_failed",
+    "native_differential_fixture": false,
+    "binary_abi_compatible": false,
+    "native_fh3_or_seh_validated": false,
+    "game_validated": false
+  }
+}
