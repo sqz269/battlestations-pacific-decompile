@@ -29,6 +29,7 @@ NativeKeyboardTreeIterator* erase_native_soldier_registry_iterator_004b0330(
 // EAX output, RET14h. Preserve captured/current loads around returning invalid
 // handlers; full range drains and self-links the current head. Partial range
 // advances first before single-node erase; no mapped-pointer ownership.
+// An absent invalid callback uses the canonical source-CRT current handler.
 NativeKeyboardTreeIterator* erase_native_soldier_registry_range_004b09a0(
     void* tree, NativeKeyboardTreeIterator* output, NativeKeyboardTreeIterator first,
     NativeKeyboardTreeIterator last, NativeStringRawPoolContext&,

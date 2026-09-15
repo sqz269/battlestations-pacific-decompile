@@ -17,7 +17,7 @@
       "original_abi": "ECX node; EAX minimum; RET",
       "coverage": "complete",
       "contract": "Follow left links while reached child nil19 is zero.",
-      "status": "complete_source_compiled_and_focused_fixture_checked",
+      "status": "complete_source_build_checked",
       "source": "src/native_soldier_registry_lifetime.cpp",
       "original_runtime_abi": false,
       "gameplay_validated": false,
@@ -37,7 +37,7 @@
       "original_abi": "ECX node; EAX maximum; RET",
       "coverage": "complete",
       "contract": "Follow right links while reached child nil19 is zero; skipped alignment included in span.",
-      "status": "complete_source_compiled_and_focused_fixture_checked",
+      "status": "complete_source_build_checked",
       "source": "src/native_soldier_registry_lifetime.cpp",
       "original_runtime_abi": false,
       "gameplay_validated": false,
@@ -57,7 +57,7 @@
       "original_abi": "ECX tree; stack output/owner/node; EAX output; RET0Ch",
       "coverage": "complete",
       "contract": "Nil owning out_of_range; successor, two-child transplant, red-black fixup, raw key pool return, node free, current nonzero-count decrement, owner/node output.",
-      "status": "complete_source_compiled_and_focused_fixture_checked",
+      "status": "complete_source_build_checked",
       "source": "src/native_soldier_registry_lifetime.cpp",
       "original_runtime_abi": false,
       "gameplay_validated": false,
@@ -77,7 +77,7 @@
       "original_abi": "ECX tree; stack node; RET4",
       "coverage": "complete",
       "contract": "Right-recursive left-iterative drain. Capture data then left then length; actual pool return then node free. No mapped-pointer deletion.",
-      "status": "complete_source_compiled_and_focused_fixture_checked",
+      "status": "complete_source_build_checked",
       "source": "src/native_soldier_registry_lifetime.cpp",
       "original_runtime_abi": false,
       "gameplay_validated": false,
@@ -97,7 +97,7 @@
       "original_abi": "ECX tree; stack output/first owner/node/last owner/node; EAX output; RET14h",
       "coverage": "complete",
       "contract": "Returning validation preserves captured/current reads. Full range drains and self-links current head; partial advance then erase.",
-      "status": "complete_source_compiled_and_focused_fixture_checked",
+      "status": "complete_source_build_checked",
       "source": "src/native_soldier_registry_lifetime.cpp",
       "original_runtime_abi": false,
       "gameplay_validated": false,
@@ -117,7 +117,7 @@
       "original_abi": "ECX owner; RET",
       "coverage": "complete",
       "contract": "Real range drain; free current sentinel; clear head/count; clear current E187F0 then stamp CE3818. True unwind only4AF950.",
-      "status": "complete_source_compiled_and_focused_fixture_checked",
+      "status": "complete_source_build_checked",
       "source": "src/native_soldier_registry_lifetime.cpp",
       "original_runtime_abi": false,
       "gameplay_validated": false,
@@ -137,7 +137,7 @@
       "original_abi": "ECX owner; stack flags; EAX captured owner; RET4",
       "coverage": "complete",
       "contract": "Call complete destructor, free iff flags bit0, return captured owner; preserve existing correct library classification.",
-      "status": "complete_source_compiled_and_focused_fixture_checked",
+      "status": "complete_source_build_checked",
       "source": "src/native_soldier_registry_lifetime.cpp",
       "original_runtime_abi": false,
       "gameplay_validated": false,
@@ -157,7 +157,7 @@
       "original_abi": "No input; EAX registry; RET",
       "coverage": "complete",
       "contract": "Fast captured publication. Real415350; captured section+10 enter/depth+18; recheck; allocate10h/construct; publish; reacquire manager; register current publication; release captured guard; slow reload.",
-      "status": "complete_source_compiled_and_focused_fixture_checked",
+      "status": "complete_source_build_checked",
       "source": "src/native_soldier_registry_lifetime.cpp",
       "original_runtime_abi": false,
       "gameplay_validated": false,
@@ -390,9 +390,42 @@
     "focused_probe": {
       "path": "local/soldier_lifetime_probe.cpp",
       "command": "local/run_soldier_lifetime_probe.cmd",
-      "result": "PASS copied original vs source transplant, rebalance, partial/full range/drain, destructor tail, and returning invalid-handler current-head schedule",
-      "source_dependencies": "Genuine SoldierClass constructor/base source, tree worker source and existing bsp_core providers; no stub destructor, host map or fake raw-pool provider.",
-      "limits": "Tree fixture keys are null. Original allocator/free call is redirected to source CRT; copied original exception handlers are not entered. Raw pool getter failure/FH3/SEH and gameplay are not covered."
-    }
-  }
+      "result": "PASS copied original/source transplant, rebalance, partial/full range/drain, destructor tail and returning canonical CRT-handler head schedule",
+      "source_dependencies": "Integrated genuine Soldier registry tree, SoldierClass constructor/base source and bsp_core providers; no stub teardown, host map or fake raw-pool provider.",
+      "limits": "Tree fixture keys are null. Original allocator/free call is redirected to source CRT; copied original exception handlers are not entered. Raw pool getter failure/FH3/SEH and gameplay are not covered.",
+      "log": "local/soldier_lifetime_integrated_probe.log",
+      "directly_exercised_packet_entries": [
+        "004b0330",
+        "004b0600",
+        "004b09a0",
+        "004b1210"
+      ],
+      "not_native_differentially_exercised": [
+        "004b1330 getter",
+        "004b1280 scalar deleter",
+        "004af680/004af6c0 min/max leaves not independently compared",
+        "Raw string-pool paths with nonnull keys",
+        "Original C++ unwind handlers and SEH"
+      ]
+    },
+    "strict_build": {
+      "command": "./scripts/build.ps1",
+      "result": "PASS; 2/2 existing CTests",
+      "log": "local/soldier_lifetime_integrated_build.log",
+      "dependency_commit": "9f1eb132c",
+      "main_merged_into_worker": "d0734e116",
+      "external_include_path_required": false
+    },
+    "ignored_evidence": [
+      "local/soldier_lifetime_g7/*.live.txt",
+      "local/soldier_lifetime_g7/*.bin",
+      "local/soldier_lifetime_probe.cpp",
+      "local/make_soldier_probe_data.py",
+      "local/soldier_probe_bytes.hpp",
+      "local/run_soldier_lifetime_probe.cmd",
+      "local/soldier_lifetime_integrated_build.log",
+      "local/soldier_lifetime_integrated_probe.log"
+    ]
+  },
+  "result": "eight_complete_source_bodies_integrated_dependency_build_checked"
 }

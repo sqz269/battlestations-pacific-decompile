@@ -7,6 +7,7 @@
 #define WIN32_LEAN_AND_MEAN
 #define NOMINMAX
 #include <Windows.h>
+#include <cstdlib>
 #include <exception>
 
 #include <cstdint>
@@ -30,7 +31,8 @@ volatile std::uint8_t& color(void* node) noexcept { return byte(node, 0x18); }
 bool sentinel(void* node) noexcept { return byte(node, 0x19) != 0; }
 void* head(void* tree) noexcept { return word(tree, 4); }
 void invalid(const SingletonLifetimeCallbacks& callbacks) {
-    callbacks.invalid_parameter(callbacks.context);
+    if (callbacks.invalid_parameter) callbacks.invalid_parameter(callbacks.context);
+    else _invalid_parameter_noinfo();
 }
 struct CompletedTemporary {
     NativeLegacySboStringStorage& storage;

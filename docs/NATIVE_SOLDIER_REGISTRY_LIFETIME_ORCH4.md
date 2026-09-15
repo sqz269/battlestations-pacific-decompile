@@ -60,6 +60,8 @@ head between the root, minimum and maximum stores. Partial range checks the
 captured first.owner against current last.owner, advances first, erases the
 captured old iterator, then reloads first.node/owner. Returning handlers remain
 observable; no unconditional failure or recovery branch replaces them.
+An absent callback uses the canonical source-CRT `_invalid_parameter_noinfo`
+boundary and its current handler, matching the shared registry-tree provider.
 
 004B1210 uses that actual range erasure, frees the current head, clears the
 current tree's head/count, clears current E187F0, then stamps CE3818. It neither
@@ -91,7 +93,19 @@ according to the native sequence; no extra retry is introduced.
 
 ## Validation and remaining boundaries
 
-Validation results are recorded in the report. These are new source interfaces,
+Plain `scripts/build.ps1` passed after the genuine tree dependency was integrated;
+both existing CTests passed. All 34 report call rows passed live verification.
+A focused ignored MSVC Win32 probe linked the actual source providers and compared
+copied original instructions against source for two-child transplant, red-black
+fixup, partial/full range drain, destructor tail and a returning canonical CRT
+handler that replaces the current head after minimum capture. It passed with
+`/W4 /WX` and an embedded manifest. Fixture keys were null: raw-pool return and
+failure behavior come from their established provider, not this comparison.
+The probe did not enter original exception handlers or execute the singleton
+getter/scalar deleter; these retain source/build evidence rather than native
+differential proof. Logs and probe inputs remain ignored under `local/`.
+
+These are new source interfaces,
 not original ABI, FH3 or SEH replacements. Numeric profile identities are not
 callable host vtables. Canonical mixed-owner manager draining still needs the
 actual SoldierRegistry profile dispatch; registering a raw owner does not prove
