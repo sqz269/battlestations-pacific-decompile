@@ -25,3 +25,7 @@ Two existing reference bodies total 1,312 bytes; disk/live Ghidra byte compariso
 This is source composition evidence. This batch does not execute the original graph caller or deleting destructor. Earlier BA/BB native comparisons remain separate evidence. Publication-only fixture items leave animation and mesh postprocessor ranges empty; populated postprocessors were tested separately. Controlled-listener and resource-zero branches are not reached. Canonical scene/group companion materialization and attached-array projection limits remain, including the native parent publish-before-equality behavior documented in BC. Actual resource/class producers, executable graph admission, original FH3 behavior and gameplay validation remain open.
 
 Evidence: `reports/native_resource_graph_builtin_dispatch_bd.json` and ignored `local/resource_graph_builtin_dispatch_bd/`.
+
+## Retained evidence
+
+The immutable manifest `local/resource_graph_builtin_dispatch_bd/manifest.json` retains 839 exact inputs and 51 artifacts, including 124 linked production objects, original reference bytes, source graph and failure results, source/header/compiler/library inputs and saved Ghidra comments/exports. Source commit `0187e5239539fcfe5ce30cacb6c8902cf7e8a928` contains the tested source bytes. The build began at `40f0e6b3bc96df03f93ccc0ba813e54a9cfcd53a` with the owned source edits present; the retained source hashes and dependency records identify those inputs. No production changes followed verification.
