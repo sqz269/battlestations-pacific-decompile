@@ -1,7 +1,7 @@
 {
   "packet": "orch3_shadow_entry_iteration_en",
   "base_commit": "76ebaeec3c740be11baf39b2c72015b0593e3920",
-  "status": "complete_source_pending_primary_review_and_build",
+  "status": "complete_source_explicit_c3_correction_pending_primary_review_and_build",
   "coverage": {
     "native_bodies": 3,
     "native_bytes": 190,
@@ -66,12 +66,13 @@
     "service": "Inspect full current SDK shim and concrete _invalid_parameter_noinfo relocation; no original CRT body equivalence claim"
   },
   "build_validation": {
-    "status": "pending_primary_source_acceptance",
-    "plan": "One coupled EL+EN build after both source candidates and integrated exact commit are accepted. Verify seeds once; pin all tracked inputs+actual seed before/after,4libraries,new scene object,changed native_traceline_render.obj,new native_shadow_entry_iteration.obj,full stdout/stderr and actual existingCTest count.",
-    "EL_dependency": "Separate disjoint source candidate logically accepted by primary; exact commit/integration instruction pending. No build or seed verification started."
+    "status": "explicit_c3_source_pending_primary_review_and_followup_build",
+    "plan": "Fresh en3 runner/stamp/log will retain both prior attempts and all current inputs/fourlibraries/threeobjects; verify exact1-byte helpers and prove complete EL scene/traceline objects unchanged from passing en2.",
+    "last_build_tested_commit": "07dd326abfdf78a6b80804036af2ce2e180841f6",
+    "last_generated_result": "188-byte traversal,14CALL operands,SDKshim and library membership passed; exact two1-byte helper claims failed."
   },
   "partial_limits": [
-    "Source complete; build and emitted-code verification pending at draft revision.",
+    "Passing build/test revision07dd326a has a concrete C20000 versus C3 helper-byte discrepancy; current explicit-C3 source awaits primary review and fresh build/generated verification.",
     "Current source CRT replaces the original CRT service domain explicitly; original global/Watson/exception/register identity is not claimed.",
     "Actual one-byte RET functions are proven native bodies, not placeholders for unread callees.",
     "No parent AD7A30, AD7360/AD72A0, missing descendant, owner proxy, callback abstraction or extra lifetime operation.",
@@ -251,11 +252,13 @@
     },
     {
       "path": "src/native_shadow_entry_iteration.cpp",
-      "sha256": "78aeeb6b3c89f59046c3ffe12b6717d523a908526a61f655345838169eac09ec",
+      "sha256": "6a17f2a0ff304ef2b0dfdf72d661e5ec89669baef4d4fb5a807e7146c1819538",
       "lines": [
         10,
         16,
+        17,
         20,
+        21,
         26,
         29,
         76,
@@ -272,7 +275,9 @@
         "76": "        // AD74AD: preserve the three-byte LEA ECX,[ECX+0] alignment form.",
         "77": "        _emit 08dh",
         "78": "        _emit 049h",
-        "79": "        _emit 000h"
+        "79": "        _emit 000h",
+        "17": "    __asm { _emit 0c3h }",
+        "21": "    __asm { _emit 0c3h }"
       },
       "anchor_labels": {
         "10": "concrete current CRT shim",
@@ -283,7 +288,9 @@
         "76": "AD74AD alignment comment",
         "77": "LEA opcode byte",
         "78": "LEA modrm byte",
-        "79": "explicit zero displacement byte"
+        "79": "explicit zero displacement byte",
+        "17": "explicit original one-byte C3 return",
+        "21": "explicit original one-byte C3 return"
       }
     },
     {
@@ -326,9 +333,11 @@
     },
     {
       "path": "cmake/startup.cmake",
-      "sha256": "e3688634e2ca629da4d693b1e0366cdc2cb496f59ca21a52d5cbe01ecc5f803f",
+      "sha256": "fdd2c795bf0e1ddd6a8e3d6abe807dc6245a2450c80729ad72dc24a1f4902f32",
       "lines": [],
-      "anchor_text": {}
+      "anchor_text": {},
+      "initial_en_candidate_sha256": "e3688634e2ca629da4d693b1e0366cdc2cb496f59ca21a52d5cbe01ecc5f803f",
+      "scope": "Combined EL+EN two-row union; unchanged by C3 correction."
     },
     {
       "path": "tools/verify_report_calls.py",
@@ -346,5 +355,64 @@
     "source_commit": "c44ccb401148204ba584ffa4cd3b249a739e8052",
     "logic_findings": [],
     "scope": "Complete header/source/doc/report and69 native operations,15 original call rows. Refreshed report line references only; header/source bytes unchanged. Joint source integration/build still pending."
+  },
+  "build_attempt_history": [
+    {
+      "commit": "cd637cb1e8e841b790d33abaceb2d5a061ae2c12",
+      "build_passed": false,
+      "exit_code": 1,
+      "clean_before_after": true,
+      "all_inputs_unchanged": true,
+      "tracked_input_count": 2643,
+      "actual_seed_included": true,
+      "ctest_summary": [],
+      "stamp": "local/en-final-build-stamp.json",
+      "stamp_sha256": "7d91cb8ee2d8f31f381208cf376068aae472a637b24eed0fb7d22f529f727a54",
+      "log": "local/en-final-build.log",
+      "log_sha256": "0e6bda33a6483c3b06296d617b28536611128948e687639fb4e19f9253cf8f8b",
+      "archive": "local/en-failed-attempt-cd637cb1.zip",
+      "archive_sha256": "c242cc5ea0e44f1de1793a2dca7b7a532ff34e22065fb977322eae63c258c0ca",
+      "reason": "EL reserved bound assembler labels prevented compilation; no CTests ran.",
+      "full_build_archive": {
+        "path": "local/en-failed-build-tree-cd637cb1.zip",
+        "sha256": "fb0e96ef6916216d27566aea0b720eae717217376b1f9905450c76914435ef71"
+      }
+    },
+    {
+      "commit": "07dd326abfdf78a6b80804036af2ce2e180841f6",
+      "build_passed": true,
+      "exit_code": 0,
+      "clean_before_after": true,
+      "all_inputs_unchanged": true,
+      "tracked_input_count": 2643,
+      "actual_seed_included": true,
+      "ctest_summary": [
+        "1/2 Test #1: reconstructed_math ...............   Passed    0.04 sec",
+        "2/2 Test #2: native_math_differential .........   Passed    0.04 sec",
+        "100% tests passed, 0 tests failed out of 2"
+      ],
+      "stamp": "local/en2-final-build-stamp.json",
+      "stamp_sha256": "f8d6f1414dad206173b25295b5832b9ed20c4a42826971efa1059d2b8c074c96",
+      "log": "local/en2-final-build.log",
+      "log_sha256": "d050b1091e76b5f8f4256e5292663ded0657a79d8be278225e2aa123d51cb122",
+      "archive": "local/en2-ret0-attempt.zip",
+      "archive_sha256": "6591abdef36cce1d90ece21a702314b8dafd5d54f1840e7305c64ef5d4964d7c",
+      "reason": "Build and2/2CTests passed; generated review found both private helpers emitted C20000 RET0 instead of native C3."
+    }
+  ],
+  "source_correction": {
+    "base_commit": "07dd326abfdf78a6b80804036af2ce2e180841f6",
+    "change": "Exactly both private helper __asm { ret } statements become __asm { _emit 0c3h }; signatures, calls and all other source bytes unchanged.",
+    "prior_source_sha256": "78aeeb6b3c89f59046c3ffe12b6717d523a908526a61f655345838169eac09ec",
+    "current_source_sha256": "6a17f2a0ff304ef2b0dfdf72d661e5ec89669baef4d4fb5a807e7146c1819538",
+    "prior_generated_review": {
+      "path": "local/en2-generated-review.json",
+      "sha256": "410d4cf8a354f50377a50bc1e0e18a2142cfbef894f0facfb6c0afec67ea04a7",
+      "findings": [
+        "00ae2ca0 one-byte RET body mismatch: C20000 versus C3",
+        "00ae0750 one-byte RET body mismatch: C20000 versus C3"
+      ]
+    },
+    "native_credit_change": 0
   }
 }

@@ -14,11 +14,11 @@ __declspec(noinline) void __cdecl current_crt_invalid_parameter() {
 // Each complete native function is a separately named one-byte RET. These are
 // proved bodies, not placeholder behavior for an unread callee. ECX is unused.
 __declspec(naked) void __fastcall native_entry_return_00ae2ca0(void*, void*) {
-    __asm { ret }
+    __asm { _emit 0c3h }
 }
 
 __declspec(naked) void __fastcall native_entry_return_00ae0750(void*, void*) {
-    __asm { ret }
+    __asm { _emit 0c3h }
 }
 
 } // namespace
