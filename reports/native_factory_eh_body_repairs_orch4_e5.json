@@ -1,0 +1,702 @@
+{
+  "events": [
+    {
+      "recreate": "00c5fb80",
+      "previous": "Function: Unwind@00c5fb80 at 00c5fb80\nSignature: undefined Unwind@00c5fb80(void)\nEntry: 00c5fb80\nBody: 00c5fb80 - 00c5fb88",
+      "plate": null
+    },
+    {
+      "endpoint": "delete_function",
+      "body": {
+        "address": "00c5fb80"
+      },
+      "result": {
+        "success": true,
+        "address": "00c5fb80",
+        "deleted_function": "Unwind@00c5fb80",
+        "body_size": 9,
+        "message": "Function 'Unwind@00c5fb80' deleted at 00c5fb80"
+      }
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00c5fb80",
+        "end_address": "00c5fb8b"
+      },
+      "result": {
+        "success": true,
+        "start_address": "00c5fb80",
+        "end_address": "00c5fb8a",
+        "bytes_disassembled": 11,
+        "message": "Successfully disassembled 11 byte(s)"
+      }
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00c5fb80",
+        "disassemble_first": false,
+        "name": "Unwind@00c5fb80"
+      },
+      "result": {
+        "success": true,
+        "address": "00c5fb80",
+        "function_name": "Unwind@00c5fb80",
+        "entry_point": "00c5fb80",
+        "body_size": 11,
+        "message": "Function created successfully at 00c5fb80",
+        "warnings": [
+          "Function name 'Unwind@00c5fb80' \u2014 main part 'Unwind@00c5fb80' is not PascalCase. Expected: Unwind@00c5fb80",
+          "Function name 'Unwind@00c5fb80' does not start with a recognized verb. First word 'Unwind@00c5fb80' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+        ]
+      }
+    },
+    {
+      "defined": "00c5fb80",
+      "end": "00c5fb8b",
+      "name": "Unwind@00c5fb80",
+      "after": "Function: Unwind@00c5fb80 at 00c5fb80\nSignature: undefined Unwind@00c5fb80(void)\nEntry: 00c5fb80\nBody: 00c5fb80 - 00c5fb8a"
+    },
+    {
+      "recreate": "00c5fb8b",
+      "previous": "Function: Unwind@00c5fb8b at 00c5fb8b\nSignature: undefined Unwind@00c5fb8b(void)\nEntry: 00c5fb8b\nBody: 00c5fb8b - 00c5fb93",
+      "plate": null
+    },
+    {
+      "endpoint": "delete_function",
+      "body": {
+        "address": "00c5fb8b"
+      },
+      "result": {
+        "success": true,
+        "address": "00c5fb8b",
+        "deleted_function": "Unwind@00c5fb8b",
+        "body_size": 9,
+        "message": "Function 'Unwind@00c5fb8b' deleted at 00c5fb8b"
+      }
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00c5fb8b",
+        "end_address": "00c5fb96"
+      },
+      "result": {
+        "success": true,
+        "start_address": "00c5fb8b",
+        "end_address": "00c5fb95",
+        "bytes_disassembled": 11,
+        "message": "Successfully disassembled 11 byte(s)"
+      }
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00c5fb8b",
+        "disassemble_first": false,
+        "name": "Unwind@00c5fb8b"
+      },
+      "result": {
+        "success": true,
+        "address": "00c5fb8b",
+        "function_name": "Unwind@00c5fb8b",
+        "entry_point": "00c5fb8b",
+        "body_size": 11,
+        "message": "Function created successfully at 00c5fb8b",
+        "warnings": [
+          "Function name 'Unwind@00c5fb8b' \u2014 main part 'Unwind@00c5fb8b' is not PascalCase. Expected: Unwind@00c5fb8b",
+          "Function name 'Unwind@00c5fb8b' does not start with a recognized verb. First word 'Unwind@00c5fb8b' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+        ]
+      }
+    },
+    {
+      "defined": "00c5fb8b",
+      "end": "00c5fb96",
+      "name": "Unwind@00c5fb8b",
+      "after": "Function: Unwind@00c5fb8b at 00c5fb8b\nSignature: undefined Unwind@00c5fb8b(void)\nEntry: 00c5fb8b\nBody: 00c5fb8b - 00c5fb95"
+    },
+    {
+      "recreate": "00c5fb96",
+      "previous": "Function: Unwind@00c5fb96 at 00c5fb96\nSignature: undefined Unwind@00c5fb96(void)\nEntry: 00c5fb96\nBody: 00c5fb96 - 00c5fb9e",
+      "plate": null
+    },
+    {
+      "endpoint": "delete_function",
+      "body": {
+        "address": "00c5fb96"
+      },
+      "result": {
+        "success": true,
+        "address": "00c5fb96",
+        "deleted_function": "Unwind@00c5fb96",
+        "body_size": 9,
+        "message": "Function 'Unwind@00c5fb96' deleted at 00c5fb96"
+      }
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00c5fb96",
+        "end_address": "00c5fba1"
+      },
+      "result": {
+        "success": true,
+        "start_address": "00c5fb96",
+        "end_address": "00c5fba0",
+        "bytes_disassembled": 11,
+        "message": "Successfully disassembled 11 byte(s)"
+      }
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00c5fb96",
+        "disassemble_first": false,
+        "name": "Unwind@00c5fb96"
+      },
+      "result": {
+        "success": true,
+        "address": "00c5fb96",
+        "function_name": "Unwind@00c5fb96",
+        "entry_point": "00c5fb96",
+        "body_size": 11,
+        "message": "Function created successfully at 00c5fb96",
+        "warnings": [
+          "Function name 'Unwind@00c5fb96' \u2014 main part 'Unwind@00c5fb96' is not PascalCase. Expected: Unwind@00c5fb96",
+          "Function name 'Unwind@00c5fb96' does not start with a recognized verb. First word 'Unwind@00c5fb96' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+        ]
+      }
+    },
+    {
+      "defined": "00c5fb96",
+      "end": "00c5fba1",
+      "name": "Unwind@00c5fb96",
+      "after": "Function: Unwind@00c5fb96 at 00c5fb96\nSignature: undefined Unwind@00c5fb96(void)\nEntry: 00c5fb96\nBody: 00c5fb96 - 00c5fba0"
+    },
+    {
+      "recreate": "00c5fba1",
+      "previous": "Function: Unwind@00c5fba1 at 00c5fba1\nSignature: undefined Unwind@00c5fba1(void)\nEntry: 00c5fba1\nBody: 00c5fba1 - 00c5fba9",
+      "plate": null
+    },
+    {
+      "endpoint": "delete_function",
+      "body": {
+        "address": "00c5fba1"
+      },
+      "result": {
+        "success": true,
+        "address": "00c5fba1",
+        "deleted_function": "Unwind@00c5fba1",
+        "body_size": 9,
+        "message": "Function 'Unwind@00c5fba1' deleted at 00c5fba1"
+      }
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00c5fba1",
+        "end_address": "00c5fbac"
+      },
+      "result": {
+        "success": true,
+        "start_address": "00c5fba1",
+        "end_address": "00c5fbab",
+        "bytes_disassembled": 11,
+        "message": "Successfully disassembled 11 byte(s)"
+      }
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00c5fba1",
+        "disassemble_first": false,
+        "name": "Unwind@00c5fba1"
+      },
+      "result": {
+        "success": true,
+        "address": "00c5fba1",
+        "function_name": "Unwind@00c5fba1",
+        "entry_point": "00c5fba1",
+        "body_size": 11,
+        "message": "Function created successfully at 00c5fba1",
+        "warnings": [
+          "Function name 'Unwind@00c5fba1' \u2014 main part 'Unwind@00c5fba1' is not PascalCase. Expected: Unwind@00c5fba1",
+          "Function name 'Unwind@00c5fba1' does not start with a recognized verb. First word 'Unwind@00c5fba1' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+        ]
+      }
+    },
+    {
+      "defined": "00c5fba1",
+      "end": "00c5fbac",
+      "name": "Unwind@00c5fba1",
+      "after": "Function: Unwind@00c5fba1 at 00c5fba1\nSignature: undefined Unwind@00c5fba1(void)\nEntry: 00c5fba1\nBody: 00c5fba1 - 00c5fbab"
+    },
+    {
+      "recreate": "00c5fbac",
+      "previous": "Function: Unwind@00c5fbac at 00c5fbac\nSignature: undefined Unwind@00c5fbac(void)\nEntry: 00c5fbac\nBody: 00c5fbac - 00c5fbb4",
+      "plate": null
+    },
+    {
+      "endpoint": "delete_function",
+      "body": {
+        "address": "00c5fbac"
+      },
+      "result": {
+        "success": true,
+        "address": "00c5fbac",
+        "deleted_function": "Unwind@00c5fbac",
+        "body_size": 9,
+        "message": "Function 'Unwind@00c5fbac' deleted at 00c5fbac"
+      }
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00c5fbac",
+        "end_address": "00c5fbb7"
+      },
+      "result": {
+        "success": true,
+        "start_address": "00c5fbac",
+        "end_address": "00c5fbb6",
+        "bytes_disassembled": 11,
+        "message": "Successfully disassembled 11 byte(s)"
+      }
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00c5fbac",
+        "disassemble_first": false,
+        "name": "Unwind@00c5fbac"
+      },
+      "result": {
+        "success": true,
+        "address": "00c5fbac",
+        "function_name": "Unwind@00c5fbac",
+        "entry_point": "00c5fbac",
+        "body_size": 11,
+        "message": "Function created successfully at 00c5fbac",
+        "warnings": [
+          "Function name 'Unwind@00c5fbac' \u2014 main part 'Unwind@00c5fbac' is not PascalCase. Expected: Unwind@00c5fbac",
+          "Function name 'Unwind@00c5fbac' does not start with a recognized verb. First word 'Unwind@00c5fbac' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+        ]
+      }
+    },
+    {
+      "defined": "00c5fbac",
+      "end": "00c5fbb7",
+      "name": "Unwind@00c5fbac",
+      "after": "Function: Unwind@00c5fbac at 00c5fbac\nSignature: undefined Unwind@00c5fbac(void)\nEntry: 00c5fbac\nBody: 00c5fbac - 00c5fbb6"
+    },
+    {
+      "recreate": "00c5fbb7",
+      "previous": "Function: Unwind@00c5fbb7 at 00c5fbb7\nSignature: undefined Unwind@00c5fbb7(void)\nEntry: 00c5fbb7\nBody: 00c5fbb7 - 00c5fbbf",
+      "plate": null
+    },
+    {
+      "endpoint": "delete_function",
+      "body": {
+        "address": "00c5fbb7"
+      },
+      "result": {
+        "success": true,
+        "address": "00c5fbb7",
+        "deleted_function": "Unwind@00c5fbb7",
+        "body_size": 9,
+        "message": "Function 'Unwind@00c5fbb7' deleted at 00c5fbb7"
+      }
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00c5fbb7",
+        "end_address": "00c5fbc2"
+      },
+      "result": {
+        "success": true,
+        "start_address": "00c5fbb7",
+        "end_address": "00c5fbc1",
+        "bytes_disassembled": 11,
+        "message": "Successfully disassembled 11 byte(s)"
+      }
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00c5fbb7",
+        "disassemble_first": false,
+        "name": "Unwind@00c5fbb7"
+      },
+      "result": {
+        "success": true,
+        "address": "00c5fbb7",
+        "function_name": "Unwind@00c5fbb7",
+        "entry_point": "00c5fbb7",
+        "body_size": 11,
+        "message": "Function created successfully at 00c5fbb7",
+        "warnings": [
+          "Function name 'Unwind@00c5fbb7' \u2014 main part 'Unwind@00c5fbb7' is not PascalCase. Expected: Unwind@00c5fbb7",
+          "Function name 'Unwind@00c5fbb7' does not start with a recognized verb. First word 'Unwind@00c5fbb7' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+        ]
+      }
+    },
+    {
+      "defined": "00c5fbb7",
+      "end": "00c5fbc2",
+      "name": "Unwind@00c5fbb7",
+      "after": "Function: Unwind@00c5fbb7 at 00c5fbb7\nSignature: undefined Unwind@00c5fbb7(void)\nEntry: 00c5fbb7\nBody: 00c5fbb7 - 00c5fbc1"
+    },
+    {
+      "recreate": "00c5fbc2",
+      "previous": "Function: Unwind@00c5fbc2 at 00c5fbc2\nSignature: undefined Unwind@00c5fbc2(void)\nEntry: 00c5fbc2\nBody: 00c5fbc2 - 00c5fbca",
+      "plate": null
+    },
+    {
+      "endpoint": "delete_function",
+      "body": {
+        "address": "00c5fbc2"
+      },
+      "result": {
+        "success": true,
+        "address": "00c5fbc2",
+        "deleted_function": "Unwind@00c5fbc2",
+        "body_size": 9,
+        "message": "Function 'Unwind@00c5fbc2' deleted at 00c5fbc2"
+      }
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00c5fbc2",
+        "end_address": "00c5fbcd"
+      },
+      "result": {
+        "success": true,
+        "start_address": "00c5fbc2",
+        "end_address": "00c5fbcc",
+        "bytes_disassembled": 11,
+        "message": "Successfully disassembled 11 byte(s)"
+      }
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00c5fbc2",
+        "disassemble_first": false,
+        "name": "Unwind@00c5fbc2"
+      },
+      "result": {
+        "success": true,
+        "address": "00c5fbc2",
+        "function_name": "Unwind@00c5fbc2",
+        "entry_point": "00c5fbc2",
+        "body_size": 11,
+        "message": "Function created successfully at 00c5fbc2",
+        "warnings": [
+          "Function name 'Unwind@00c5fbc2' \u2014 main part 'Unwind@00c5fbc2' is not PascalCase. Expected: Unwind@00c5fbc2",
+          "Function name 'Unwind@00c5fbc2' does not start with a recognized verb. First word 'Unwind@00c5fbc2' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+        ]
+      }
+    },
+    {
+      "defined": "00c5fbc2",
+      "end": "00c5fbcd",
+      "name": "Unwind@00c5fbc2",
+      "after": "Function: Unwind@00c5fbc2 at 00c5fbc2\nSignature: undefined Unwind@00c5fbc2(void)\nEntry: 00c5fbc2\nBody: 00c5fbc2 - 00c5fbcc"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": {
+        "success": true,
+        "program": "battlestationspacific.exe",
+        "message": "Program saved successfully"
+      }
+    }
+  ],
+  "preflight": [
+    {
+      "address": "00c5fb80",
+      "end_exclusive": "00c5fb8b",
+      "bytes": 11,
+      "sha256": "dbd3fbf956a64143cd99b0f9973ea850f36e8dae6f8329781e8150ac175dbe81",
+      "live_disk_match": true,
+      "previous_documentation": {
+        "hash": "460d2bf8fbb0232ce2119835cab1b2e594a8f26b3a8ae623de6305bd252a01cb",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00c5fb80",
+        "function_name": "Unwind@00c5fb80",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "unaff_EBP",
+            "type": "int",
+            "storage": "(register, 0x14, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 80.0
+      }
+    },
+    {
+      "address": "00c5fb8b",
+      "end_exclusive": "00c5fb96",
+      "bytes": 11,
+      "sha256": "0dca43b535faa1bdba8e0fe2c483d4c51f267d8608b7db0df554ec85d187b882",
+      "live_disk_match": true,
+      "previous_documentation": {
+        "hash": "460d2bf8fbb0232ce2119835cab1b2e594a8f26b3a8ae623de6305bd252a01cb",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00c5fb8b",
+        "function_name": "Unwind@00c5fb8b",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "unaff_EBP",
+            "type": "int",
+            "storage": "(register, 0x14, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 80.0
+      }
+    },
+    {
+      "address": "00c5fb96",
+      "end_exclusive": "00c5fba1",
+      "bytes": 11,
+      "sha256": "2d3a524875eff0f8b0bc2f8d3b020867a2490d0e53873cf8ab38ab7f510d7a58",
+      "live_disk_match": true,
+      "previous_documentation": {
+        "hash": "460d2bf8fbb0232ce2119835cab1b2e594a8f26b3a8ae623de6305bd252a01cb",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00c5fb96",
+        "function_name": "Unwind@00c5fb96",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "unaff_EBP",
+            "type": "int",
+            "storage": "(register, 0x14, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 80.0
+      }
+    },
+    {
+      "address": "00c5fba1",
+      "end_exclusive": "00c5fbac",
+      "bytes": 11,
+      "sha256": "6f09d9380dbfdcc6d1ac6b4386433735d60ad6b5544269f0bee30bfb89f73865",
+      "live_disk_match": true,
+      "previous_documentation": {
+        "hash": "460d2bf8fbb0232ce2119835cab1b2e594a8f26b3a8ae623de6305bd252a01cb",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00c5fba1",
+        "function_name": "Unwind@00c5fba1",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "unaff_EBP",
+            "type": "int",
+            "storage": "(register, 0x14, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 80.0
+      }
+    },
+    {
+      "address": "00c5fbac",
+      "end_exclusive": "00c5fbb7",
+      "bytes": 11,
+      "sha256": "70c46ab4c56d04ccfd75f11d019a95e716dcecd70e11dc3c4e03b6ede6985acc",
+      "live_disk_match": true,
+      "previous_documentation": {
+        "hash": "460d2bf8fbb0232ce2119835cab1b2e594a8f26b3a8ae623de6305bd252a01cb",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00c5fbac",
+        "function_name": "Unwind@00c5fbac",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "unaff_EBP",
+            "type": "int",
+            "storage": "(register, 0x14, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 80.0
+      }
+    },
+    {
+      "address": "00c5fbb7",
+      "end_exclusive": "00c5fbc2",
+      "bytes": 11,
+      "sha256": "6a8b9353f7f04c3a2fff301bbf9c50053c6c1c50c21f27fe16d1e7bca405fed5",
+      "live_disk_match": true,
+      "previous_documentation": {
+        "hash": "460d2bf8fbb0232ce2119835cab1b2e594a8f26b3a8ae623de6305bd252a01cb",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00c5fbb7",
+        "function_name": "Unwind@00c5fbb7",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "unaff_EBP",
+            "type": "int",
+            "storage": "(register, 0x14, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 80.0
+      }
+    },
+    {
+      "address": "00c5fbc2",
+      "end_exclusive": "00c5fbcd",
+      "bytes": 11,
+      "sha256": "3a354b712b905b6a39bb08f3caad50f21317d73b0c4480a368dcdf2f167274aa",
+      "live_disk_match": true,
+      "previous_documentation": {
+        "hash": "460d2bf8fbb0232ce2119835cab1b2e594a8f26b3a8ae623de6305bd252a01cb",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00c5fbc2",
+        "function_name": "Unwind@00c5fbc2",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "unaff_EBP",
+            "type": "int",
+            "storage": "(register, 0x14, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 80.0
+      }
+    }
+  ],
+  "calls": [
+    {
+      "address": "00c5fb84",
+      "native": "00bf65ac",
+      "function": "00c5fb80"
+    },
+    {
+      "address": "00c5fb8f",
+      "native": "00bf65ac",
+      "function": "00c5fb8b"
+    },
+    {
+      "address": "00c5fb9a",
+      "native": "00bf65ac",
+      "function": "00c5fb96"
+    },
+    {
+      "address": "00c5fba5",
+      "native": "00bf65ac",
+      "function": "00c5fba1"
+    },
+    {
+      "address": "00c5fbb0",
+      "native": "00bf65ac",
+      "function": "00c5fbac"
+    },
+    {
+      "address": "00c5fbbb",
+      "native": "00bf65ac",
+      "function": "00c5fbb7"
+    },
+    {
+      "address": "00c5fbc6",
+      "native": "00bf65ac",
+      "function": "00c5fbc2"
+    }
+  ],
+  "readback": [
+    {
+      "address": "00c5fb80",
+      "end_inclusive": "00c5fb8a",
+      "instructions": 5,
+      "flow_gaps": 0,
+      "name_preserved": true,
+      "previous_comments_preserved": true
+    },
+    {
+      "address": "00c5fb8b",
+      "end_inclusive": "00c5fb95",
+      "instructions": 5,
+      "flow_gaps": 0,
+      "name_preserved": true,
+      "previous_comments_preserved": true
+    },
+    {
+      "address": "00c5fb96",
+      "end_inclusive": "00c5fba0",
+      "instructions": 5,
+      "flow_gaps": 0,
+      "name_preserved": true,
+      "previous_comments_preserved": true
+    },
+    {
+      "address": "00c5fba1",
+      "end_inclusive": "00c5fbab",
+      "instructions": 5,
+      "flow_gaps": 0,
+      "name_preserved": true,
+      "previous_comments_preserved": true
+    },
+    {
+      "address": "00c5fbac",
+      "end_inclusive": "00c5fbb6",
+      "instructions": 5,
+      "flow_gaps": 0,
+      "name_preserved": true,
+      "previous_comments_preserved": true
+    },
+    {
+      "address": "00c5fbb7",
+      "end_inclusive": "00c5fbc1",
+      "instructions": 5,
+      "flow_gaps": 0,
+      "name_preserved": true,
+      "previous_comments_preserved": true
+    },
+    {
+      "address": "00c5fbc2",
+      "end_inclusive": "00c5fbcc",
+      "instructions": 5,
+      "flow_gaps": 0,
+      "name_preserved": true,
+      "previous_comments_preserved": true
+    }
+  ],
+  "saved_project": true,
+  "exports_refreshed": true,
+  "coverage": "analysis metadata repair only; no reconstructed factory, native exception ABI or gameplay claim",
+  "evidence": "docs/NATIVE_DEVICE_CLASS_RESOLUTION_ORCH4.md"
+}

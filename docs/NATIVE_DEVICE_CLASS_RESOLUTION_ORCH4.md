@@ -180,8 +180,13 @@ The parent repaired the first three issues under its own lease and write
 lock, saved the project, and verified disk/live byte parity. This worker then
 refreshed those exports and read both complete terminal pseudocode bodies and
 stored assembly listings. `0043FA60` now includes all four missing instructions.
-The seven factory EH tail extents remain an explicit metadata limitation;
-their complete action bytes were independently read from the original PE.
+The seven factory EH tail extents were subsequently repaired by the primary
+coordinator under a separate lease and write lock. All seven complete 11-byte
+actions matched disk/live before recreation; each now lists five instructions
+through `POP ECX; RET` with zero flow gaps. Existing `Unwind@<address>` names
+and comments were retained. The saved mutation and preflight records are
+`reports/native_factory_eh_flow_repairs_orch4_e5.json` and
+`reports/native_factory_eh_body_repairs_orch4_e5.json`. Exports were refreshed.
 
 `00731A50` is 131 bytes, ECX class plus one stacked enemy argument, `RET 4`.
 It captures the entry end once after model activation and does not reread count
@@ -252,10 +257,16 @@ remain evidence-only.
 | `0043FA60/00440180` registry array reserve/resize | [Native device registry array](NATIVE_DEVICE_REGISTRY_ARRAY_ORCH4.md) | Strict Win32 build, combined 3 CTests, ten live call rows; count-only shrink and free-before-publication reviewed against both complete listings |
 | `00B673A0` native-string-key boolean setter | [Native Lua boolean setter](NATIVE_LUA_OBJECT_BOOLEAN_ORCH4.md) | Strict Win32 build, combined 3 CTests, 20 live call rows; the additional undefined-region caller is retained as raw-byte evidence |
 | `00730CB0` device vslot+14h recoil and conditional model load | [Native gun recoil activation](NATIVE_GUN_RECOIL_ACTIVATION_ORCH4.md) | Strict Win32 build, combined 3 CTests, nine original/source pairs including selected floating invalid-operation traps; model path covers the existing-model guard |
+| `00441780/00441360/00441840/0043EBF0` registry lifecycle | [Native device registry](NATIVE_DEVICE_REGISTRY_ORCH4.md) | Strict Win32 build, combined 3 CTests, eight call rows; focused canonical manager-drain and retained-owner teardown checks |
+| `0087C640/00877FA0` damageable base and five cleanup helpers | [Native damageable construction](NATIVE_DAMAGEABLE_CLASS_CONSTRUCTION_ORCH4.md) | Strict Win32 build, combined 3 CTests, eight call/tail rows; ordinary original/source object and sentinel comparison plus source failure-order fixture |
+| `00442B90` and seven derived constructors | [Native device constructors](NATIVE_DEVICE_CLASS_CONSTRUCTION_ORCH4.md) | All 260 bytes matched disk/live, 15 direct call rows, strict Win32 build and 3 CTests; genuine base composition and partial ordered stores |
+| `007149D0` borrowed category-table lookup | [Damageable Lua reader audit](NATIVE_DAMAGEABLE_CLASS_LUA_ORCH4.md) | Strict Win32 build and 3 CTests; repeated actual-table loads through existing comparison provider with explicit host CRT/locale boundary |
 
-Registry lifecycle, native class construction/readers, bullet resolution,
+Native class readers, complete class destruction, bullet resolution,
 vslot+10h activation and final `00443090/00443490` composition remain open.
-The seven factory EH funclets' final two bytes are still absent from their
-stored Ghidra bodies, with complete action bytes recorded in this audit.
+The complete `0087CA80` reader now has a separate 858-instruction/37-state
+audit, including its container, SoldierClass and effect-provider dependencies;
+the reader itself remains source absent. The repaired factory EH listings
+improve evidence coverage and do not implement the factory.
 Source/helper checks do not establish original ABI/FH3 compatibility,
 fresh resource loading, complete native vehicle activation or gameplay.

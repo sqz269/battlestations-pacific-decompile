@@ -56,6 +56,10 @@
 #include "bsp/weapon_director.hpp"
 #include "bsp/world_deferred_destroy.hpp"
 #include "bsp/native_string.hpp"
+#include "bsp/native_device_registry.hpp"
+#include "bsp/native_singleton_destruction.hpp"
+#include "bsp/native_singleton_vector_leaves.hpp"
+#include "bsp/singleton_lifetime.hpp"
 #include "bsp/renderer_startup.hpp"
 #include "bsp/scene_contents_hosts.hpp"
 #include "bsp/scene_entity_factory.hpp"
@@ -215,6 +219,44 @@ private:
 }
 
 int main() {
+    {
+        // 00441780 publishes before registering, but normal manager drain must
+        // still recognize CE44DC, pop the owner, and clear the same E17BF4 cell.
+        void* volatile manager = nullptr;
+        auto& publication = bsp::process_native_device_registry_00e17bf4();
+        check(publication == nullptr,
+            "the process device registry fixture starts unpublished");
+        auto* const first = bsp::get_process_native_device_registry_00441780(manager);
+        auto* const second = bsp::get_process_native_device_registry_00441780(manager);
+        check(first != nullptr && second == first && publication == first
+                && first->native_vtable_00 == bsp::kNativeDeviceRegistryDeletingProfile
+                && first->classes_04.data_00 == 0 && first->classes_04.count_04 == 0
+                && first->classes_04.capacity_08 == 0
+                && bsp::count_native_singleton_slots_00bcf910(manager, nullptr) == 1,
+            "00441780 initializes one raw10h CE44DC owner and registers it once");
+
+        bsp::NativeSingletonDeletionBindings bindings{};
+        bsp::destroy_native_singleton_manager_00bd0400(manager, bindings);
+        check(publication == nullptr,
+            "CE44DC manager drain clears the canonical E17BF4 publication");
+        bsp::singleton_lifetime_free(manager);
+
+        // The nondeleting scalar path exposes the post-destruction profile and
+        // also proves borrowed class DWORDs are not dereferenced or released.
+        bsp::NativeDeviceRegistryStorage retained{
+            bsp::kNativeDeviceRegistryDeletingProfile, {0, 0, 0}};
+        bsp::NativeDeviceRegistryStorage* volatile retained_publication = &retained;
+        bsp::resize_native_device_registry_array_00440180(retained.classes_04, 1);
+        *reinterpret_cast<std::uint32_t*>(
+            static_cast<std::uintptr_t>(retained.classes_04.data_00)) = 1;
+        check(bsp::delete_native_device_registry_00441840(
+                  &retained, 0, retained_publication) == &retained
+                && retained_publication == nullptr
+                && retained.native_vtable_00 == bsp::kNativeSingletonBaseProfile
+                && retained.classes_04.count_04 == 0,
+            "00441840 flags0 retains the owner after unpublish/base-profile teardown");
+    }
+
     using namespace bsp;
     check(abs_00401170(-3.5f) == 3.5f, "absolute value");
     check(!std::signbit(abs_00401170(-0.0f)), "negative zero becomes positive");

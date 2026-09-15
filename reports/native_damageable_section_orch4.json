@@ -1,0 +1,194 @@
+{
+  "schema_version": 1,
+  "packet": "orch4_damageable_section_e5",
+  "utc": "2026-09-15T21:37:54.241739+00:00",
+  "base_commit": "8abe3db020af9065ffe95a3fd0c8aa3068f2fe4e",
+  "status": "complete_borrowed_source_ordered_x87_build_and_native_fixture_tested",
+  "owned_addresses": [
+    "00878b40",
+    "00878ef0",
+    "0041de40"
+  ],
+  "source": "src/native_damageable_section.cpp",
+  "header": "include/bsp/native_damageable_section.hpp",
+  "evidence": "docs/NATIVE_DAMAGEABLE_SECTION_ORCH4.md",
+  "interfaces": [
+    {
+      "address": "00878b40",
+      "length": 108,
+      "end_exclusive": "00878bac",
+      "sha256": "81ef3219b16655b9286256ddcccb2a50a6b750f23b4cf8616d5ec09369c0ec21",
+      "disk_equals_live": true,
+      "name": "copy_construct_native_damageable_section_00878b40",
+      "proposed_name": "BSP_DamageableSection_CopyConstruct",
+      "previous_ghidra_name": "FUN_00878b40",
+      "original_abi": "ECX destination; stack source; EAX destination; RET4"
+    },
+    {
+      "address": "00878ef0",
+      "length": 49,
+      "end_exclusive": "00878f21",
+      "sha256": "bd9a020206094a7533eab2eb3c335348f438422a4a57ee9d289e634b192b36b3",
+      "disk_equals_live": true,
+      "name": "destroy_native_damageable_section_00878ef0",
+      "proposed_name": "BSP_DamageableSection_Destroy",
+      "previous_ghidra_name": "FUN_00878ef0",
+      "original_abi": "ECX actual30h record; RET"
+    },
+    {
+      "address": "0041de40",
+      "length": 41,
+      "end_exclusive": "0041de69",
+      "sha256": "6da47eb4546ed6edfd547bfb7cc08840ea3f31b89f985f07267f5b4b3e74fb21",
+      "disk_equals_live": true,
+      "name": "release_native_ref_counted_handle_0041de40",
+      "proposed_name": "BSP_RefCountedHandle_Release",
+      "previous_ghidra_name": "FUN_0041de40",
+      "original_abi": "ECX actualoneword handle slot; RET"
+    }
+  ],
+  "byte_total": 198,
+  "body_bytes": [
+    {
+      "address": "00878b40",
+      "length": 108,
+      "end_exclusive": "00878bac",
+      "sha256": "81ef3219b16655b9286256ddcccb2a50a6b750f23b4cf8616d5ec09369c0ec21",
+      "disk_equals_live": true
+    },
+    {
+      "address": "00878ef0",
+      "length": 49,
+      "end_exclusive": "00878f21",
+      "sha256": "bd9a020206094a7533eab2eb3c335348f438422a4a57ee9d289e634b192b36b3",
+      "disk_equals_live": true
+    },
+    {
+      "address": "0041de40",
+      "length": 41,
+      "end_exclusive": "0041de69",
+      "sha256": "6da47eb4546ed6edfd547bfb7cc08840ea3f31b89f985f07267f5b4b3e74fb21",
+      "disk_equals_live": true
+    }
+  ],
+  "imports": [
+    {
+      "address": "00ce221c",
+      "dll": "KERNEL32.dll",
+      "name": "InterlockedIncrement"
+    },
+    {
+      "address": "00ce2220",
+      "dll": "KERNEL32.dll",
+      "name": "InterlockedDecrement"
+    }
+  ],
+  "target": {
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "verification": "Client.verify before each bsp.py ghidra batch; all three complete exports refreshed without program edits"
+  },
+  "indirect_calls": [
+    {
+      "function": "00878b40",
+      "address": "00878b93",
+      "native": "IAT[00ce221c]",
+      "operation": "Publish owner then InterlockedIncrement(owner+4)",
+      "instruction": "call dword ptr [0xce221c]"
+    },
+    {
+      "function": "00878ef0",
+      "address": "00878f05",
+      "native": "IAT[00ce2220]",
+      "operation": "InterlockedDecrement(captured owner+4)",
+      "instruction": "call dword ptr [0xce2220]"
+    },
+    {
+      "function": "00878ef0",
+      "address": "00878f15",
+      "native": "captured_owner+vtable00",
+      "operation": "Actual vslot0,ECXcapturedowner,noargs; only atomic result zero",
+      "instruction": "call eax"
+    },
+    {
+      "function": "0041de40",
+      "address": "0041de4e",
+      "native": "IAT[00ce2220]",
+      "operation": "InterlockedDecrement(captured owner+4)",
+      "instruction": "call dword ptr [0xce2220]"
+    },
+    {
+      "function": "0041de40",
+      "address": "0041de5e",
+      "native": "captured_owner+vtable00",
+      "operation": "Actual vslot0,ECXcapturedowner,noargs; only atomic result zero",
+      "instruction": "call eax"
+    }
+  ],
+  "direct_call_count": 0,
+  "indirect_call_count": 5,
+  "x87_copy_schedule": {
+    "before_handle": [
+      "0c",
+      "10",
+      "14",
+      "18",
+      "1c",
+      "20"
+    ],
+    "after_handle": [
+      "28",
+      "2c"
+    ],
+    "instructions": "Each is FLD m32real followed by FSTP m32real; no staged payload or integer/SSE copy",
+    "environment": "Current CW used unchanged; normal x87 NaN,exception/status,stack effects remain observable"
+  },
+  "handle_schedule": "Clear destination24 before reading source24, publish captured nonnull source handle then increment its count4. Self-copy loses handle without retain/release.",
+  "release_schedule": "Capture owner once; decrement owner4; current actual vslot0 on zero; clear original slot after callback returns. Null skips writes.",
+  "vtable_boundary": "Stable borrowed actual D0DF04 DWORD byvalue; no fabricated table or terminal dispatch callback",
+  "dependency_closure": "Both release entries use actual Win32 atomic decrement and actual owner vslot0. Section destroy composes complete41DE40. No other unresolved source helper.",
+  "no_own_eh": true,
+  "ghidra_mutations": false,
+  "listing_repairs_needed": false,
+  "verification": {
+    "build": {
+      "command": "./scripts/build.ps1",
+      "configuration": "Release Win32",
+      "status": "passed",
+      "ctest_passed": 2,
+      "log": "local/damageable_section_build.log"
+    },
+    "report_calls": {
+      "status": "passed",
+      "direct_or_tail_checked": 0,
+      "failed": 0,
+      "indirect_rows_documented": 5,
+      "boundary": "No direct/tail call sites exist in these bodies; all5indirect sites independently decoded from disk/live-verified198B, imports resolved from PE and instruction schedule inspected live"
+    },
+    "fixture": {
+      "status": "passed",
+      "ignored_source": "local/damageable_section_probe.cpp",
+      "sha256": "85775c205e3a5bf49bbe6f62116976c6df228ac695d955a807befde6eaa68de3",
+      "result": "PASS: original/source x87 bytes/CW/SW/MXCSR with sNaNs, self/forward alias; retain and actual virtual release ordering",
+      "copy": "Original/source full backing bytes, refcount, x87CW/SW and MXCSR; two masked rounding modes, live stack item, sNaNs/denormals/signedzero/qNaN/infinities; disjoint,self andforward8-byte overlap",
+      "cleanup": "Both original/source functions: null,nonterminal andterminal count; real fixture-owner virtual method replaces original slot before function clears it",
+      "original_bindings": "Copied complete bodies rebind only IAT operands to real kernel32 Interlocked exports; actual fixture-owner vtable is dispatched",
+      "compile_flags": "/EHsc /std:c++17 /O2 /W4; /link /MANIFEST:EMBED /INCREMENTAL:NO",
+      "not_covered": [
+        "Unmasked hardware exceptions",
+        "Original/game exception unwinding",
+        "x87 FIP/FDP identity",
+        "Real game owner terminal release",
+        "Concurrent mutation",
+        "Full87CA80 reader",
+        "Gameplay"
+      ]
+    },
+    "verify_seeds": {
+      "status": "passed",
+      "seed_spans": 8,
+      "all_match_disk": true
+    }
+  }
+}
