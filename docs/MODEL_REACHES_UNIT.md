@@ -326,3 +326,7 @@ All three need the call graph or a runtime observation. **Byte scanning has noth
 about this question**, and the part-damage line should be recorded as closed to it: the zero is
 proved faithful, the feature gap is bounded, and the missing writer is a call-graph question now.
 
+
+## Correction from NATIVE_DAMAGEABLE_CLASS_MODEL_BE.md
+
+The GeomMesh `shape+24h` relationship above remains valid, but the claim that class+50h was a red herring is incorrect. They are different owners. `00879590` publishes the `007188A0` game-resource result at class+50h (`00879768`), and `00879AA0` subsequently invokes class slot+20h (`00879ABA`). The concrete vehicle factory reaches this path through slot+10h and `009598D0`; the class-owned resource later supplies the established per-instance graph and item route. Positive disk/live byte and controlled original/source caller evidence is recorded in [NATIVE_DAMAGEABLE_CLASS_MODEL_BE.md](NATIVE_DAMAGEABLE_CLASS_MODEL_BE.md). This establishes the native producer and source caller composition, not current executable/gameplay admission.

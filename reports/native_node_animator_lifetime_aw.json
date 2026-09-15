@@ -1,0 +1,627 @@
+{
+  "packet": "orch6_node_animator_lifetime_aw",
+  "status": "complete_animator_finalizers_and_physical_lifetimes_build_and_fixture_tested_destructor_metadata_incomplete",
+  "worker_dispatches": 0,
+  "native": {
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "spans": [
+      {
+        "entry": "00b780d0",
+        "end": "00b78161",
+        "stored_end": "00b78138",
+        "bytes": 146,
+        "sha256": "f06156fab40fa69fbd3e4ea4a36525a114a7841bd388dd2774d71ce1b80eaede",
+        "live_disk_equal": true
+      },
+      {
+        "entry": "00b786e0",
+        "end": "00b786fd",
+        "stored_end": "00b786fd",
+        "bytes": 30,
+        "sha256": "eceb81af7fcf6a47ffe765bf51683201f796e2d733b28c274ce932a468edd2d7",
+        "live_disk_equal": true
+      },
+      {
+        "entry": "00b78720",
+        "end": "00b78743",
+        "stored_end": "00b78743",
+        "bytes": 36,
+        "sha256": "8f08cd2f1889983b50f8de3c13c65b36f879423da8124ac0c4d506c07ac0b1d6",
+        "live_disk_equal": true
+      },
+      {
+        "entry": "00b77990",
+        "end": "00b77a08",
+        "stored_end": "00b77a08",
+        "bytes": 121,
+        "sha256": "91e3c1812f0bc7f66593e05c03b341f8c45a00d94980b73fb73e1a0a627d2b98",
+        "live_disk_equal": true
+      },
+      {
+        "entry": "00b75ee0",
+        "end": "00b75ef2",
+        "stored_end": "00b75ef2",
+        "bytes": 19,
+        "sha256": "3a9707e6fc5f4b344f3cd2acd5331fa6b6cab615ea133d12a3ccc6d858918aa8",
+        "live_disk_equal": true
+      },
+      {
+        "entry": "00b92610",
+        "end": "00b92646",
+        "stored_end": "00b92646",
+        "bytes": 55,
+        "sha256": "4d733621e0552fc3f88307504a6a1b7fbb9b0418fe3edc8f055817140ef921e3",
+        "live_disk_equal": true
+      },
+      {
+        "entry": "00b77530",
+        "end": "00b7757f",
+        "stored_end": "00b7757f",
+        "bytes": 80,
+        "sha256": "a80d2e68310f711bf0c52d8a3a4bdd037e9d7bc1140fdeb3446156c589d7d6ab",
+        "live_disk_equal": true
+      },
+      {
+        "entry": "00b76790",
+        "end": "00b767ee",
+        "stored_end": "00b767ee",
+        "bytes": 95,
+        "sha256": "a87ec37011616fdde11b8c4325bc80c10650adf8187084ddb559c5f257dd4a7e",
+        "live_disk_equal": true
+      },
+      {
+        "entry": "00b778c0",
+        "end": "00b7790f",
+        "stored_end": "00b7790f",
+        "bytes": 80,
+        "sha256": "8a468c2992ea069543220ebc64bb929832cc26fb5401d74013eb9cb2f29ffad8",
+        "live_disk_equal": true
+      },
+      {
+        "entry": "00818030",
+        "end": "008180d1",
+        "stored_end": "008180d1",
+        "bytes": 162,
+        "sha256": "d963982ef79a965da0077c62448c9c228cb18ff5dca3f9c82a3d59042bb50988",
+        "live_disk_equal": true
+      },
+      {
+        "entry": "008153e0",
+        "end": "0081543e",
+        "stored_end": "0081543e",
+        "bytes": 95,
+        "sha256": "3179a0efd54be3f7364b858ecf0626b8603201be46afb9399a2e1003ad5798ee",
+        "live_disk_equal": true
+      },
+      {
+        "entry": "00b1c500",
+        "end": "00b1c55e",
+        "stored_end": "00b1c55e",
+        "bytes": 95,
+        "sha256": "26fbb8c002375c4f2b460b6a1aa3b25a9c50ffc8969eef774195d5a803086485",
+        "live_disk_equal": true
+      },
+      {
+        "entry": "00b1c770",
+        "end": "00b1c7bf",
+        "stored_end": "00b1c7bf",
+        "bytes": 80,
+        "sha256": "a1d2f4b216c00662361c78f24bf309aced250f8890a19bf6157068fd6d5c3a94",
+        "live_disk_equal": true
+      },
+      {
+        "entry": "00bd30f0",
+        "end": "00bd30f6",
+        "stored_end": "00bd30f6",
+        "bytes": 7,
+        "sha256": "8daac2aa1112cc210d755933c76c5b27923094750190fdb37502dbc648eb7d16",
+        "live_disk_equal": true
+      }
+    ],
+    "fragments": [
+      {
+        "entry": "00b79d44",
+        "end_exclusive": "00b79daa",
+        "function": "00b79bc0",
+        "bytes": 102,
+        "sha256": "856fa3fd40e94bcc271d5f01a6ca7c8012531e56190596d21d8764782be3e9ad",
+        "live_disk_equal": true,
+        "scope": "object writes only; surrounding allocation/type predicate and caller scratch writes are not separate constructors"
+      },
+      {
+        "entry": "00b7a0ba",
+        "end_exclusive": "00b7a117",
+        "function": "00b79bc0",
+        "bytes": 93,
+        "sha256": "d13b994d4c33f315253c89c6c1ed5a4f217f1ffeeb8cbc34badfa91e9d19f5f1",
+        "live_disk_equal": true,
+        "scope": "object writes only; surrounding allocation/type predicate and caller scratch writes are not separate constructors"
+      }
+    ],
+    "tables": [
+      {
+        "entry": "00d62e60",
+        "words": [
+          "00bd30e0",
+          "00b786e0",
+          "00b75d60",
+          "00b780a0",
+          "006f9d20",
+          "00b75d70",
+          "00b77360",
+          "00b77430",
+          "00b77990"
+        ],
+        "sha256": "a95dbdf4fdfc2a96903b8acdb6c6f90d6547b3db0a7e86d7038ac16ccc902138",
+        "live_disk_equal": true
+      },
+      {
+        "entry": "00d62eb0",
+        "words": [
+          "00bd30e0",
+          "00b78720",
+          "00b75e70",
+          "00b782d0",
+          "006f9d20",
+          "00b75e80",
+          "00b75e90",
+          "00b75ed0",
+          "00b75ee0"
+        ],
+        "sha256": "3a3f5a704e1b2f19188e18aa01ddfd978791584ed4bf1f2046dfb8786476a183",
+        "live_disk_equal": true
+      },
+      {
+        "entry": "00d62ef4",
+        "words": [
+          "00bd30e0",
+          "00b79ba0"
+        ],
+        "sha256": "1170519102e17d1be179b135ab0034562d65c51d24ac9e42ea9d3e4cb598ec7d",
+        "live_disk_equal": true
+      }
+    ],
+    "reference_bytes": 1101
+  },
+  "calls": [
+    {
+      "function": "00b780d0",
+      "address": "00b7812c",
+      "native": "00b77530"
+    },
+    {
+      "function": "00b780d0",
+      "address": "00b78134",
+      "native": "00bf6989"
+    },
+    {
+      "function": "00b786e0",
+      "address": "00b786e3",
+      "native": "00b780d0"
+    },
+    {
+      "function": "00b786e0",
+      "address": "00b786f0",
+      "native": "00bf65ac"
+    },
+    {
+      "function": "00b78720",
+      "address": "00b78729",
+      "native": "00b780d0"
+    },
+    {
+      "function": "00b78720",
+      "address": "00b78736",
+      "native": "00bf65ac"
+    },
+    {
+      "function": "00b77990",
+      "address": "00b779c8",
+      "native": "00818030"
+    },
+    {
+      "function": "00b75ee0",
+      "address": "00b75eed",
+      "native": "00b92610"
+    },
+    {
+      "function": "00b92610",
+      "address": "00b92630",
+      "native": "00b778c0"
+    },
+    {
+      "function": "00b77530",
+      "address": "00b7753e",
+      "native": "00b76790"
+    },
+    {
+      "function": "00b76790",
+      "address": "00b767b0",
+      "native": "00bf55be"
+    },
+    {
+      "function": "00b76790",
+      "address": "00b767dc",
+      "native": "00bf6989"
+    },
+    {
+      "function": "00b778c0",
+      "address": "00b778d4",
+      "native": "00818030"
+    },
+    {
+      "function": "00818030",
+      "address": "0081803e",
+      "native": "008153e0"
+    },
+    {
+      "function": "008153e0",
+      "address": "00815400",
+      "native": "00bf55be"
+    },
+    {
+      "function": "008153e0",
+      "address": "0081542c",
+      "native": "00bf6989"
+    },
+    {
+      "function": "00b1c500",
+      "address": "00b1c520",
+      "native": "00bf55be"
+    },
+    {
+      "function": "00b1c500",
+      "address": "00b1c54c",
+      "native": "00bf6989"
+    },
+    {
+      "function": "00b1c770",
+      "address": "00b1c77e",
+      "native": "00b1c500"
+    }
+  ],
+  "unowned_stored_body_tail_calls": [
+    {
+      "function": "00b780d0",
+      "address": "00b7814c",
+      "native": "00bd30f0"
+    }
+  ],
+  "reuse": [
+    {
+      "entry": "00b76790",
+      "canonical": "00b1c500",
+      "bytes": 95,
+      "normalized_native_bytes_equal": true
+    },
+    {
+      "entry": "00b77530",
+      "canonical": "00b1c770",
+      "bytes": 80,
+      "normalized_native_bytes_equal": true
+    }
+  ],
+  "limitations": [
+    "B780D0 complete physical body through B78161 is decoded and byte-matched but stored Ghidra body still ends at B78138. B7814C to BD30F0 remains an explicitly failing mechanical attribution row.",
+    "Initialization source covers two object-write fragments inside B79BC0, not standalone constructors or the complete postprocessor.",
+    "Current slot-zero registry destruction requires the existing complete actual lifetime provider; native FH3/SEH and full graph/gameplay admission remain unproved."
+  ],
+  "validation": {
+    "summary": {
+      "passed": true,
+      "constructor_fragments": 3,
+      "paired_lifetimes": 6,
+      "paired_maximum_variants": 16,
+      "source_exception_cases": 1,
+      "normalized_finalizer_kernels": 4
+    },
+    "comparisons": [
+      {
+        "index": 0,
+        "words": 14,
+        "sha256": "40884e5e079a482adf4d61ca2ea1fe4889b52863a320f19edebad4793db20505",
+        "equal": true
+      },
+      {
+        "index": 1,
+        "words": 14,
+        "sha256": "58870e8c7d600553012453f703c91d00e418e075aff422d2b8785a4d13cf1c57",
+        "equal": true
+      },
+      {
+        "index": 2,
+        "words": 14,
+        "sha256": "37b5fe36f0d750f61ea2f6f407d711dfffcc3e200f5e7532001761ca105719d6",
+        "equal": true
+      },
+      {
+        "index": 3,
+        "words": 106,
+        "sha256": "037311bab9ac4f0ee016f6b8cf350e10de0577777b2955a5695ac8a1fd18fd5b",
+        "equal": true
+      },
+      {
+        "index": 4,
+        "words": 205,
+        "sha256": "795e6a9acf42de9024d33b81a5217665345be7891515c6dffef26e7b2847e891",
+        "equal": true
+      },
+      {
+        "index": 5,
+        "words": 217,
+        "sha256": "b93aa0ab22c147c515d3c383e6c5ccf688cc95a12b60fd757457a393a4df3375",
+        "equal": true
+      },
+      {
+        "index": 6,
+        "words": 162,
+        "sha256": "3635aa9620381bcbbb12dc0dfe891ac1fd33607e67b05774e7b6e883d86f5c4b",
+        "equal": true
+      },
+      {
+        "index": 7,
+        "words": 206,
+        "sha256": "9aaa4138d8da94978bf48b51f12d44ef19b1ac167b6223edc94d18ceed56ca53",
+        "equal": true
+      },
+      {
+        "index": 8,
+        "words": 206,
+        "sha256": "ec79f9eaf9e17b88f064ccae74728a6227926a958b1aba6e8fbece2bf3c7e909",
+        "equal": true
+      },
+      {
+        "index": 9,
+        "words": 192,
+        "sha256": "bf70e372ae796cf2156c817ef353df432dee58e773575658eb36ee13c356b19f",
+        "equal": true
+      },
+      {
+        "index": 10,
+        "words": 192,
+        "sha256": "0adf02b1093c24b827508fe749d0666af03efe725cd68542764dbac61fa88b05",
+        "equal": true
+      },
+      {
+        "index": 11,
+        "words": 192,
+        "sha256": "e935908b2b731eea059acdc3b3b6a25326df09aa4b1e3140b41a2b195f2cde10",
+        "equal": true
+      },
+      {
+        "index": 12,
+        "words": 192,
+        "sha256": "5a727d8c9916802613e8abd00c984ec275f30ba100c6bc4e3b7bb3b1fd8c8411",
+        "equal": true
+      },
+      {
+        "index": 13,
+        "words": 192,
+        "sha256": "12b7d1191d89c6f0363780bde0805dd90d1d6aeb5be8c72e4bab92c222d6c11c",
+        "equal": true
+      },
+      {
+        "index": 14,
+        "words": 192,
+        "sha256": "a1a19e99d8860c3f7c43455c0aba39811210b178a223e694b2ed736225369322",
+        "equal": true
+      },
+      {
+        "index": 15,
+        "words": 192,
+        "sha256": "9757cc0ee923e39916f93bdf188cdd6f73055c878d5a168edb690d12f7b3f2e6",
+        "equal": true
+      },
+      {
+        "index": 16,
+        "words": 192,
+        "sha256": "006d64cf04ecc77abb22b8850ec92e4c6c5c0ab630686543d91dd9c38944b231",
+        "equal": true
+      },
+      {
+        "index": 17,
+        "words": 192,
+        "sha256": "a08d4b39852ace9f42073f98998526c5cf755f2ec7ee2b03abeb8c563ece2ef0",
+        "equal": true
+      },
+      {
+        "index": 18,
+        "words": 192,
+        "sha256": "4d68c436af7b5d64658c24c1a0b5efc36cc777681f347fb6543f5c4ad6b87021",
+        "equal": true
+      },
+      {
+        "index": 19,
+        "words": 192,
+        "sha256": "253654563836b205d12c0f2a8ecb777a0f537d8c404609daef2ef751e84d9ee4",
+        "equal": true
+      },
+      {
+        "index": 20,
+        "words": 192,
+        "sha256": "27780d8aa17ccd2666ae2dbd09c083f462ffe149196f29eacff3af3f14c89692",
+        "equal": true
+      },
+      {
+        "index": 21,
+        "words": 192,
+        "sha256": "e5b61c5072c794cc098c3fcbfbd8ff9ad01cb3fd8efdd34c1b656c284bcec30b",
+        "equal": true
+      },
+      {
+        "index": 22,
+        "words": 192,
+        "sha256": "bc71e4f5480715ea199639f4af6e77a9a065065c87eae223990f4dea6b45d29d",
+        "equal": true
+      },
+      {
+        "index": 23,
+        "words": 192,
+        "sha256": "a961869d7ee16add8699bc094f92af2b4b6ad641ea99772e2672b8b298dbc18d",
+        "equal": true
+      },
+      {
+        "index": 24,
+        "words": 192,
+        "sha256": "35b3df32710922306256ae633a10003cd8f49a0133252eec1c89e7497e64bca2",
+        "equal": true
+      }
+    ],
+    "output_sha256": {
+      "results.bin": "d593896b8cb9a5658fe5196b43936b8a9ffef0101926d751ad36ac1af76e634b",
+      "source_failure.bin": "dad10633b0310df35efa52f4e42e9d6cd2ea1edc77676f2014d272db9e7341a8"
+    },
+    "repeat_stable": true,
+    "win32_build": true,
+    "existing_ctests_passed": 2,
+    "mechanical_calls": {
+      "passed": false,
+      "checked": 20,
+      "passed_rows": 19,
+      "failed_rows": 1,
+      "site": "00b7814c",
+      "reason": "B780D0 stored function body remains truncated"
+    },
+    "resize_abi_adapter": {
+      "callers": [
+        {
+          "function": "include_native_animation_sample_00b778c0",
+          "target": "00404500"
+        },
+        {
+          "function": "finalize_native_track_animator_00b77990",
+          "target": "00404500"
+        }
+      ],
+      "entry": "00404500",
+      "source_resize": "00404e60",
+      "verified_call_and_ret4": true
+    },
+    "source_sha256": {
+      "src/native_node_animator_lifetime.cpp": "110ad93852a40d44eabb1a97746e5c5e1ecffe44f3b41cd5c35280e327efb1a3",
+      "include/bsp/native_node_animator_lifetime.hpp": "975f39ed7a8803fd0ee5a876af06019c9ed998dc24f733e45f28bedea37d190d"
+    },
+    "scope": "Three constructor object-image comparisons, six complete original/source lifetimes and16 maxima variants over actual CRT allocations and canonical AU registry/string-pool storage. Observe current registry release target, replacement track backing after release, current producer backing/count after allocation, incoming/old exceptional floats and x87/SSE status. Four finalizer bodies have normalized instruction identity; their direct targets and resize ABI adapter are independently checked. Source registry exception preserves prior effects; original FH3 is unproved. Initializers are object-write fragments, not full standalone constructors. Full B79BC0, all virtual animator evaluation services, graph admission and gameplay remain open.",
+    "saved_annotations": 10,
+    "complete_helper_or_reuse_bytes": 662
+  },
+  "entries": [
+    {
+      "address": "00b780d0",
+      "ghidra_name": "BSP_NodeAnimator_Destroy",
+      "name": "destroy_native_node_animator_00b780d0",
+      "bytes": 146,
+      "source": "src/native_node_animator_lifetime.cpp",
+      "evidence": "Complete PHYSICAL146-byte ECX animator/plain RET destructor through B78161. Stamp D62E60, release registry2C via current slot0 on zero then clear2C. Resize current borrowed track array20 to0/free current backing; stamp D5C104 then BD30F0. Preserve callback replacement and dangling pointer/capacity. STORED body still ends B78138; B7814C attribution fails. Source context changes ABI; native FH3 unproved."
+    },
+    {
+      "address": "00b786e0",
+      "ghidra_name": "BSP_NodeAnimator_ScalarDeletingDestructor",
+      "name": "delete_native_track_animator_00b786e0",
+      "bytes": 30,
+      "source": "src/native_node_animator_lifetime.cpp",
+      "evidence": "Complete ECX self/stack flags/EAX original self/RET4 wrapper: common payload destruction, free self iff bit0. Three post-free bytes repaired and saved."
+    },
+    {
+      "address": "00b78720",
+      "ghidra_name": "BSP_Optimized3dNodeAnimator_ScalarDeletingDestructor",
+      "name": "delete_native_compact_animator_00b78720",
+      "bytes": 36,
+      "source": "src/native_node_animator_lifetime.cpp",
+      "evidence": "Complete ECX self/stack flags/EAX original self/RET4 wrapper: first stamp D62EB0, common payload destructor restamps D62E60, free self iff bit0. Three post-free bytes repaired and saved."
+    },
+    {
+      "address": "00b77990",
+      "ghidra_name": "BSP_NodeAnimator_FinalizeTrackSamples",
+      "name": "finalize_native_track_animator_00b77990",
+      "bytes": 121,
+      "source": "src/native_node_animator_lifetime.cpp",
+      "evidence": "Complete121-byte ECX animator/plain RET. Current track count/backing per iteration; nonnull track captures registry2C and track1C bits BEFORE resize. Old sample x87 spill, FCOMIP and MOVSS selection; incoming wins equal/unordered. Preserve signaling payload and flags. Complete instruction identity after verified resize adapter call relocation."
+    },
+    {
+      "address": "00b778c0",
+      "ghidra_name": "BSP_AnimationRegistry_IncludeSampleMaximum",
+      "name": "include_native_animation_sample_00b778c0",
+      "bytes": 80,
+      "source": "src/native_node_animator_lifetime.cpp",
+      "evidence": "Complete80-byte ECX registry/stack signed index and float bits/RET8. Resize sample header14 if count<=index; x87-copy old sample into former index stack slot then compare; incoming wins equal/unordered and selected incoming MOVSS keeps original payload. Complete instruction identity after verified resize ABI adapter call relocation."
+    },
+    {
+      "address": "00b92610",
+      "ghidra_name": "BSP_CompactTrackItem_IncludeSamples",
+      "name": "include_native_compact_track_samples_00b92610",
+      "bytes": 55,
+      "source": "src/native_node_animator_lifetime.cpp",
+      "evidence": "Complete55-byte ECX item/stack registry/RET4. Current itemC backing/current signed10 count; stride18h, scalar at record0. x87-copy argument (quieting signaling NaN) then include maximum by ordinal index through B778C0. Complete instruction identity after verified direct call relocation."
+    },
+    {
+      "address": "00b75ee0",
+      "ghidra_name": "BSP_Optimized3dNodeAnimator_FinalizeSamples",
+      "name": "finalize_native_compact_animator_00b75ee0",
+      "bytes": 19,
+      "source": "src/native_node_animator_lifetime.cpp",
+      "evidence": "Complete19-byte ECX animator/plain RET. If current borrowed item34 nonnull, call B92610 with current registry2C; flag30 unread. Newly defined from exact physical extent B75EE0..B75EF2 under lock, no function recreation. Complete instruction identity after verified direct call relocation."
+    },
+    {
+      "address": "00b76790",
+      "ghidra_name": "BSP_AnimatorTrackPointers_Reserve",
+      "name": "reserve_native_instance_entry_pointers_00b1c500",
+      "bytes": 95,
+      "source": "src/native_render_pointer_arrays.cpp",
+      "evidence": "Complete95-byte ECX actual header/stack signed capacity/RET4 specialization equal to B1C500 after call normalization, with identical allocator/free targets. Reuse same actual borrowed pointer source on animator20. Nine post-free publication bytes repaired and saved."
+    },
+    {
+      "address": "00b77530",
+      "ghidra_name": "BSP_AnimatorTrackPointers_Resize",
+      "name": "resize_native_instance_entry_pointers_00b1c770",
+      "bytes": 80,
+      "source": "src/native_render_pointer_arrays.cpp",
+      "evidence": "Complete80-byte ECX actual header/stack signed count/RET4 specialization equal to B1C770 after call normalization; sole reserve target is verified B76790/B1C500 alias. Grow zeros/shrink count only; no pointed-track release. Reuse canonical actual header implementation."
+    }
+  ],
+  "source_fragments": [
+    {
+      "address": "00b79d44",
+      "name": "initialize_native_compact_animator_fragment_00b79d44",
+      "source": "src/native_node_animator_lifetime.cpp",
+      "end_exclusive": "00b79daa",
+      "function": "00b79bc0",
+      "evidence": "Object-write fragment only: ESI allocated38h animator, EAX nullable earlier type result, ECX0; XORPS initializes XMM0. CEB130/ref1, zero header/registry and transforms, D62EB0, byte30=(EAX==0), borrowed34=null; padding31..33 preserved. Native caller scratch-vector stores remain outside this source helper. Allocation precedes type lookup; neither belongs to this fragment."
+    },
+    {
+      "address": "00b7a0ba",
+      "name": "initialize_native_track_animator_fragment_00b7a0ba",
+      "source": "src/native_node_animator_lifetime.cpp",
+      "end_exclusive": "00b7a117",
+      "function": "00b79bc0",
+      "evidence": "Object-write fragment only: EAX allocated30h animator, EDI0; XORPS initializes XMM0. CEB130/ref1 then D62E60 before zero header/registry/transforms. Native caller scratch stores and output-register transport are not a standalone source constructor; no allocation/type lookup included."
+    }
+  ],
+  "parent_annotation": {
+    "address": "00b79bc0",
+    "evidence": "AW update: B79BC0 remains ANALYZED ONLY as a complete caller. Object writes at B79D44..B79DA9 and B7A0BA..B7A116 now have bounded source fragments; the allocation/type predicate and caller scratch-vector writes are not standalone constructors. AU registry, AV skin finalizer, and AW two animator slot20 finalizers/destructors are implemented with their stated provider/metadata limits. Temporary arrays, B630F0, camera sequencing and populated caller/admission remain required."
+  },
+  "proof": {
+    "manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\node_animator_aw\\manifest.json",
+      "bytes": 138433,
+      "sha256": "efd96eaee0542f92d2a9bffc5a35b8e0071b4703279c0aad7e3c3adeaae45b56"
+    },
+    "source_commit": "d3bb4d4fd6e465f951220a71726b322563df5ef8",
+    "build_checkout_head": "5de02dec4cd0b7e54d788c91ac5ad782dd253707",
+    "build_had_owned_source_changes": true,
+    "inputs": 295,
+    "artifacts": 96,
+    "fixture_production_objects": 19,
+    "complete_or_reused_bodies": 9,
+    "complete_helper_or_reuse_bytes": 662,
+    "source_fragments": 2,
+    "saved_annotations": 10,
+    "paired_constructor_fragments": 3,
+    "paired_lifetimes": 6,
+    "paired_maximum_variants": 16,
+    "source_exception_cases": 1,
+    "known_metadata_failures": 1
+  }
+}

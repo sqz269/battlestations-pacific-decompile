@@ -58,8 +58,10 @@ public:
         explicit operator bool() const noexcept { return runtime_ != nullptr; }
     private:
         friend class GeneratedModelLifetimeRuntime;
-        explicit BindingAdmission(GeneratedModelLifetimeRuntime& runtime) noexcept : runtime_(&runtime) {}
+        explicit BindingAdmission(GeneratedModelLifetimeRuntime& runtime, bool attachment = false) noexcept
+            : runtime_(&runtime), attachment_(attachment) {}
         GeneratedModelLifetimeRuntime* runtime_{};
+        bool attachment_{};
     };
     explicit GeneratedModelLifetimeRuntime(SceneAttachmentRuntime& scenes) noexcept : scenes(scenes) {}
     GeneratedModelLifetimeRuntime(const GeneratedModelLifetimeRuntime&) = delete;
@@ -68,6 +70,9 @@ public:
     GeneratedModelLifetimeRuntime& operator=(GeneratedModelLifetimeRuntime&&) = delete;
     ~GeneratedModelLifetimeRuntime() noexcept;
     [[nodiscard]] BindingAdmission reserve_binding();
+    // Separate credit for the existing actual attachment array association.
+    // Reentrant admissions preserve every outstanding credit on the same thread.
+    [[nodiscard]] BindingAdmission reserve_attachment_binding();
     void bind(GeneratedModelNodeLifetime&);
     // Successful admission does not allocate and requires the exact canonical
     // scene attachment and a unique actual key. Failure leaves the token active.
@@ -79,15 +84,19 @@ public:
     // particular C++ owner or create another node/identity registry.
     GeneratedModelNodeLifetime* find_actual_node(std::uint32_t pointer_key) const noexcept;
     void bind_attachment(GeneratedModelAttachmentLinks&);
+    void bind_attachment(GeneratedModelAttachmentLinks&, BindingAdmission&&);
     void unbind_attachment(GeneratedModelAttachmentLinks&) noexcept;
     GeneratedModelAttachmentLinks& attachment(void* identity) const noexcept;
     SceneAttachmentRuntime& scenes;
 private:
     void validate_binding(GeneratedModelNodeLifetime&) const;
     void reserve_binding_capacity();
+    void validate_attachment_binding(GeneratedModelAttachmentLinks&) const;
+    void reserve_attachment_binding_capacity();
     std::vector<GeneratedModelNodeLifetime*> nodes_;
     std::size_t pending_bindings_{}; // nodes_.size() + pending <= capacity
     std::vector<GeneratedModelAttachmentLinks*> attachments_;
+    std::size_t pending_attachment_bindings_{};
 };
 
 // Borrowed access to the SAME native +164/+168/+16C list or diagnostic vector.

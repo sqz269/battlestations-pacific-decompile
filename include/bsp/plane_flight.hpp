@@ -144,22 +144,33 @@ inline constexpr int kHeadingDemand = 0x2C0;  // 009F9EB9
 inline constexpr int kPitchMode = 0x2D0;      // 009FB93F, literal 2
 inline constexpr int kStateHeadingMode = 0x2CC;    // 009F9EC1, literal 2
 
-// The five plan slots 0099B450 seeds and 0099D300 overrides: {current, desired, flag}.
+// The five plan slots 0099B450 seeds and 0099D300 overrides:
+// {current: float, desired: float, active: BYTE} with three bytes of padding,
+// stride 0Ch. The third field is a byte, not a dword - 0099B46E zeroes DL and
+// stores it with MOV byte ptr, and 0099D362 sets it the same width.
 inline constexpr int kThrottleCurrent = 0x274;  // 0099B466 from unit+9F0h
 inline constexpr int kThrottleDesired = 0x278;  // 0099B45E, 0099D399
 inline constexpr int kThrottleFlag = 0x27C;     // 0099B470 clear, 0099D3A1 set
-inline constexpr int kRollCurrent = 0x280;      // 0099B486 from unit+9E4h
-inline constexpr int kRollDesired = 0x284;      // 0099B47E, 0099D35A
-inline constexpr int kRollFlag = 0x288;         // 0099B48E clear, 0099D362 set
-inline constexpr int kYawCurrent = 0x28C;       // 0099B4A4 from unit+9ECh
-inline constexpr int kYawDesired = 0x290;       // 0099B49C, 0099D384
-inline constexpr int kYawFlag = 0x294;          // 0099B4AC clear, 0099D38C set
+// CORRECTED (packet cc7-recon-slot). These two slots were named roll and yaw the
+// wrong way round, and each contradicted its own evidence comment: +280h is
+// seeded from unit+9E4h, which this header's own kLiveYaw says is the YAW input,
+// and +28Ch from unit+9ECh, which is roll. plane_ai_control.hpp's PlanSlotIndex
+// had it right, so the two headers disagreed. Nothing referenced either name.
+inline constexpr int kYawCurrent = 0x280;       // 0099B486 from unit+9E4h
+inline constexpr int kYawDesired = 0x284;       // 0099B47E, 0099D35A
+inline constexpr int kYawFlag = 0x288;          // 0099B48E clear, 0099D362 set
+inline constexpr int kRollCurrent = 0x28C;      // 0099B4A4 from unit+9ECh
+inline constexpr int kRollDesired = 0x290;      // 0099B49C, 0099D384
+inline constexpr int kRollFlag = 0x294;         // 0099B4AC clear, 0099D38C set
 inline constexpr int kPitchCurrent = 0x298;     // 0099B4C2 from unit+9E8h
 inline constexpr int kPitchDesired = 0x29C;     // 0099B4BA, 0099D36F
 inline constexpr int kPitchFlag = 0x2A0;        // 0099B4CA clear, 0099D377 set
-inline constexpr int kAuxCurrent = 0x2A4;       // 0099B450's fifth slot, from unit+9F4h
-inline constexpr int kAuxDesired = 0x2A8;       // 0099B4D8, 0099D3A8
-inline constexpr int kAuxFlag = 0x2AC;          // 0099D3B0 set
+// The fifth slot is the AIR BRAKE, not an unspecified aux: it is seeded from
+// unit+9F4h, which this header's kLiveAirBrake names, and 007BB920's override
+// writes unit+A0Ch - the same axis through the command buffer's index 4.
+inline constexpr int kAirBrakeCurrent = 0x2A4;  // 0099B450's fifth slot, from unit+9F4h
+inline constexpr int kAirBrakeDesired = 0x2A8;  // 0099B4D8, 0099D3A8
+inline constexpr int kAirBrakeFlag = 0x2AC;     // 0099D3B0 set
 }  // namespace plane_pilot_command_off
 
 // ---------------------------------------------------------------------------

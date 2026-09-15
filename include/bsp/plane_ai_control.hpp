@@ -45,8 +45,10 @@ inline constexpr int kPlanSlotBase = 0x274;   // 0099BEF7 LEA ECX,[ESI+274h]
 inline constexpr int kPlanSlotStride = 0x0C;  // 0099BC56 / BCA9 / BCFB / BD4E
 inline constexpr int kUnit = 0x2F0;           // 0099D31D; the plane unit
 inline constexpr int kRequestByte14 = 0x2E4;  // 0099BF18 -> buf+14h -> unit+A10h
-inline constexpr int kRequestByte15 = 0x2E5;  // 0099BF0F -> buf+15h, no reader
-inline constexpr int kRequestByte16 = 0x2DC;  // 0099BF06 -> buf+16h, no reader
+// CORRECTED (packet cc7-recon-slot): both have readers, in 007BB6E0's tail.
+inline constexpr int kRequestByte15 = 0x2E5;  // 0099BF0F -> buf+15h -> unit+9F9h, 007BB8D6
+inline constexpr int kRequestByte16 = 0x2DC;  // 0099BF06 -> buf+16h -> unit+9FAh, 007BB8C2,
+                                              // gated on unit+5Dh (out of action)
 }  // namespace pilot_bot_off
 
 // 00CE3D34, the slew rate 0099B0A0 pushes for all five axes.
@@ -164,6 +166,42 @@ struct PilotBotYawScratch {
 // 0099E75E's `JNZ` on a non-zero task+2D4h.
 float plan_yaw_0099e81a(const PilotBotFrame& frame, const PilotBotTuning& tuning,
                         const PilotBotYawScratch& scratch, float yaw_spd);
+
+// 0099E490-0099E689 (packet cc7-pitchroll, docs/PILOT_PLANNER_PITCH_ROLL.md): the
+// demand `plan_pitch_0099e68d` was declared against, and the nose-up floor that
+// is the only thing keeping a planned bot from following its pitch target into
+// the ground. There is NO altitude term anywhere in this chain - nothing reads a
+// world position, a Y coordinate or a sea height - so what holds the nose up is
+// an attitude floor that rises with bank and with heading error.
+struct PilotBotPitchInputs {
+    float bank = 0.0f;         // unit+C68h
+    float pitch = 0.0f;        // unit+C64h
+    float held_pitch = 0.0f;   // slot 12: unit+C84h in mode 2, else unit+C64h
+    float pitch_target = 0.0f; // plan+2BCh on entry; the floor can only raise it
+    float heading_error = 0.0f;  // the yaw arm's base numerator, |h| drives the ramp
+    float control_authority = 0.0f;  // 007D9A70's return, through unit+AB0h
+    float dt_scale = 1.0f;     // 1 / max(unit+340h * 0.4, 1.0)
+    // Class fields.
+    float turn_roll = 0.0f;            // class+25Ch TurnRoll, the bank normaliser
+    float pitch_spd = 0.0f;            // class+1ACh
+    float yaw_spd = 0.0f;              // class+1B0h
+    float slide_ratio = 0.0f;          // class+1B8h
+    float negative_pitch_ratio = 0.0f; // class+1D8h
+    // Tuning, all Pilot/General/*.
+    float pitch_turn_max_pitch = 0.0f;   // tuning+88h, singleton +5C0h
+    float pitch_turn_hdg_range_1 = 0.0f; // tuning+8Ch, +5C4h
+    float pitch_turn_hdg_range_2 = 0.0f; // tuning+90h, +5C8h
+    float pitch_ctrl_set_time_mul = 0.0f;  // tuning+A0h, +5D8h
+};
+
+struct PilotBotPitchResult {
+    float floored_target = 0.0f;  // plan+2BCh after 0099E512
+    float demand = 0.0f;          // [ESP+44h] at 0099E689
+};
+
+// The demand, and the floor that is applied to the target on the way.
+// `plan_pitch_0099e68d(result.demand)` is then the stored `desired`.
+PilotBotPitchResult pilot_pitch_demand_0099e490(const PilotBotPitchInputs& in);
 
 // 0099E68D-0099E752. The pitch arm's terminal law: a plain saturation of its demand.
 // `demand` is [ESP+44h], formed at 0099E664-0099E689 from x87-stack values this packet did
@@ -291,7 +329,13 @@ float bomb_load_fraction_006e4130(const BombLoadFraction& in);
 
 // The pilot bot's target/mode pairs, all set by the bot state machine.
 namespace pilot_task_off {
-inline constexpr int kBankTargetLimited = 0x2BC;  // the slewed bank target, 0099DD4E
+// CORRECTED (packet cc7-pitchroll): plan+2BCh is the **pitch** target, not a
+// bank target. Its arm is gated on task+2D0h - which this same header calls
+// kPitchMode - and it terminates at the pitch slot's desired at +29Ch. The
+// algebra docs/PILOT_BOT_PLAN_CONTROLS.md recorded for the "bank-target arm" is
+// right; only the axis was wrong. The bank target is plan+2C4h (0099E23E).
+inline constexpr int kPitchTargetFloored = 0x2BC;  // the pitch target, 0099DD4E / 0099E512
+inline constexpr int kBankTargetLimited = 0x2C4;   // the bank target, 0099E23E
 inline constexpr int kSpeedTarget = 0x2B4;        // read at 0099D8C6
 inline constexpr int kHeadingTarget = 0x2C0;      // read at 0099DEAF; valid when mode 2CCh == 2
 inline constexpr int kRollMode = 0x2CC;           // 0, 1 or 2; 2 means "hold kHeadingTarget"
@@ -309,5 +353,86 @@ struct SpeedHoldResult {
     float air_brake = 0.0f;  // 0099D8DD stores 1.0f (00D7A24C)
 };
 SpeedHoldResult speed_hold_0099d8c1(int speed_mode, float speed_target);
+
+
+// ---------------------------------------------------------------------------
+// The roll arm (packets cc7-pitchroll and cc7-hdgdiff).
+// docs/PILOT_PLANNER_PITCH_ROLL.md and docs/PILOT_HEADING_DIFF_SCALE.md.
+
+// 0099D0A0, `float __thiscall(plan, float w)`, RET 4. The four tuning keys it
+// reads are all `Pilot/General/HdgDiffCalc*`, and they name it: it answers **how
+// much further the plane would turn while rolling back to level from bank `w`**.
+// That is the scale the bank target divides the heading error by, so the whole
+// magnitude of a coordinated turn rests on it.
+//
+// Read as physics: `T` is a roll-out time - bank over roll rate, plus a
+// 1/RollAccel allowance for getting the roll started - and `Q * sin(W)` is the
+// turn rate the airframe holds at that bank. Their product is an angle.
+struct PilotHeadingDiffInputs {
+    float bank_request = 0.0f;   // the argument; the caller passes min(|bank|*1.5, maxBank)
+    float pitch_angle = 0.0f;    // unit+C64h
+    float pitch_command = 0.0f;  // plan+29Ch when the pitch slot is active, else plan+298h
+    bool unit_is_null = false;   // plan+2F0h == 0 -> the 0.5f early return
+    // unit->vtable[5Ch](10h) || (16h). Caps the rate multiplier at 1.0.
+    bool caps_rate_at_one = false;
+    float roll_spd = 0.0f;        // class+1A8h
+    float pitch_spd = 0.0f;       // class+1ACh
+    float yaw_spd = 0.0f;         // class+1B0h
+    float slide_ratio = 0.0f;     // class+1B8h
+    float roll_accel = 0.0f;      // class+1BCh
+    float turn_roll_spd = 0.0f;   // class+1C8h
+    float turn_roll = 0.0f;       // class+25Ch
+    float hdg_diff_calc_limit_1 = 0.0f;    // tuning+4Ch, singleton +584h
+    float hdg_diff_calc_limit_2 = 0.0f;    // tuning+50h, +588h
+    float hdg_diff_calc_min_pitch = 0.0f;  // tuning+54h, +58Ch
+    float hdg_diff_calc_min_roll = 0.0f;   // tuning+58h, +590h
+};
+
+float pilot_heading_diff_0099d0a0(const PilotHeadingDiffInputs& in);
+
+// 0099DE93-0099E25C, the bank target `plan+2C4h`, and 0099E2BA-0099E39D, the
+// roll command that servos onto it.
+struct PilotBotRollInputs {
+    float heading_error = 0.0f;  // the yaw arm's base numerator, the same [ESP+6Ch]
+    float bank = 0.0f;           // unit+C68h
+    float pitch_error = 0.0f;    // wrap(measured pitch - plan+2BCh), the roll limit's schedule
+    float dt_scale = 1.0f;       // 1 / max(unit+340h * 0.4, 1.0)
+    float turn_scale_2e8 = 1.0f; // plan+2E8h, 1.0f out of the plan reset
+    float bank_limit_2c8 = 20.0f;  // plan+2C8h, 20.0f out of the plan reset
+    // 0047B880(unit) picks TurnRollLimitSmall over Large. The predicate is NOT
+    // identified, so the caller says which cap it wants and this header does not
+    // pretend to know: `false` takes Large, and since the cap enters as
+    // min(maxBank, cap) the larger value is the weaker limit.
+    bool small_turn_roll_limit = false;
+    PilotHeadingDiffInputs scale;   // the 0099D0A0 call at 0099E0C1
+    // Tuning.
+    float turn_roll_limit_small = 0.0f;   // tuning+64h, singleton +59Ch
+    float turn_roll_limit_large = 0.0f;   // tuning+68h, +5A0h
+    float turn_roll_pitch_limit_pitch_1 = 0.0f;  // tuning+6Ch, +5A4h
+    float turn_roll_pitch_limit_pitch_2 = 0.0f;  // tuning+70h, +5A8h
+    float turn_roll_pitch_limit_roll_1 = 0.0f;   // tuning+74h, +5ACh
+    float turn_roll_pitch_limit_roll_2 = 0.0f;   // tuning+78h, +5B0h
+    float pitch_turn_hdg_range_1 = 0.0f;  // tuning+8Ch, +5C4h
+    float pitch_turn_hdg_range_2 = 0.0f;  // tuning+90h, +5C8h
+    float soft_roll_ctrl = 0.0f;   // tuning+40h, +578h
+    float soft_roll_mul = 0.0f;    // tuning+44h, +57Ch
+    // tuning+48h, singleton +580h. The singleton records it as derived by
+    // 007E6FD4 as (1 - SoftRollMul) * SoftRollCtrl - which is exactly the value
+    // that makes the soft zone join the outside branch continuously. The two
+    // were recovered in different packets and they agree, so the join is a
+    // property of the data rather than a coincidence.
+    float soft_roll_offset = 0.0f;
+    float roll_spd = 0.0f;        // class+1A8h
+    float roll_accel = 0.0f;      // class+1BCh
+    float waggle_limit = 0.0f;    // tuning+0h, singleton +538h
+};
+
+struct PilotBotRollResult {
+    float bank_target = 0.0f;   // plan+2C4h
+    float desired = 0.0f;       // the roll slot's desired, clamped to [-1, +1]
+    float hdg_ramp = 0.0f;      // the slot the PITCH arm's floor also reads
+};
+
+PilotBotRollResult pilot_plan_roll_0099e2ba(const PilotBotRollInputs& in);
 
 }  // namespace bsp

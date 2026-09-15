@@ -118,7 +118,8 @@ void release_native_unit_part_selected_set_00711080(void* cell,
     auto* references = reinterpret_cast<volatile LONG*>(owner + 4);
     if (InterlockedDecrement(references) == 0) {
         const Word table = read(pointer(owner));
-        const Word entry = read(pointer(table));
+        const Word entry = callbacks.read_slot_zero
+            ? callbacks.read_slot_zero(callbacks.context, table) : read(pointer(table));
         callbacks.dispatch_zero(callbacks.context, entry, pointer(owner));
     }
     write(cell, 0, 0);

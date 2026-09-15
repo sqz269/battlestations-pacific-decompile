@@ -1,0 +1,821 @@
+{
+  "packet": "orch6_resource_postprocess_full_az",
+  "status": "complete_source_under_actual_provider_contract_strict_win32_and_bounded_differential_tested",
+  "worker_dispatches": 0,
+  "native": {
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "spans": [
+      {
+        "entry": "00b79bc0",
+        "end": "00b7a9dc",
+        "bytes": 3613,
+        "sha256": "79e115d20ec77e266a251609c03716d6161091d337797afebb7f6044c1e7b119",
+        "live_disk_equal": true
+      },
+      {
+        "entry": "00b8f920",
+        "end": "00b8f925",
+        "bytes": 6,
+        "sha256": "a7ce78a0e06a51baa38ea0e3b891fc8b61a13c01050e54c9bffb6e70344bc7c9",
+        "live_disk_equal": true
+      },
+      {
+        "entry": "00b8a180",
+        "end": "00b8a183",
+        "bytes": 4,
+        "sha256": "840cd7c1c41b518c1fe191951395dcac56c16a63d65f97ad855355ba794b2ca7",
+        "live_disk_equal": true
+      },
+      {
+        "entry": "00b8a190",
+        "end": "00b8a193",
+        "bytes": 4,
+        "sha256": "108eb05660dfe1a041240deb6da273082575a75017fa45a5f13e0086c713bc3d",
+        "live_disk_equal": true
+      },
+      {
+        "entry": "00b8a1a0",
+        "end": "00b8a1a3",
+        "bytes": 4,
+        "sha256": "39037bd522bd24697e9aa9c37a7994cf406a3a03a890d4ba43d9496dd6c9e8c5",
+        "live_disk_equal": true
+      },
+      {
+        "entry": "00b8a1b0",
+        "end": "00b8a1b3",
+        "bytes": 4,
+        "sha256": "27e4dfbe05c492938bf67dd00ba580fac1f526fd352e12ff761c7a7c2f75d2f6",
+        "live_disk_equal": true
+      },
+      {
+        "entry": "00b78f60",
+        "end": "00b78f76",
+        "bytes": 23,
+        "sha256": "d9fc4b715f8c3f0bf7404f0b783c8cd1bb4d93422ace065055dd78988ce4043c",
+        "live_disk_equal": true
+      },
+      {
+        "entry": "00b77cd0",
+        "end": "00b77ce6",
+        "bytes": 23,
+        "sha256": "ebf25a504749bd9949b19d4dfe4de1b097084422f01f6406ab5c1721ba1cbd50",
+        "live_disk_equal": true
+      },
+      {
+        "entry": "00b76b50",
+        "end": "00b76b9f",
+        "bytes": 80,
+        "sha256": "b98e43fe1879d1048ed8b5306766bc170137e5494f08f649b199d0f6e8314888",
+        "live_disk_equal": true
+      },
+      {
+        "entry": "00b40e00",
+        "end": "00b40e4f",
+        "bytes": 80,
+        "sha256": "77b387d77567ef88960753ac104bab6c17a2c38164b74728d2cc1a046610dc34",
+        "live_disk_equal": true
+      }
+    ],
+    "unwind": [
+      {
+        "entry": "00cc1e00",
+        "bytes": 14,
+        "sha256": "3dbd443da6b81a8d9b79f7213fa179bedb948e608faee291f58afc873213c52a"
+      },
+      {
+        "entry": "00cc1e0e",
+        "bytes": 14,
+        "sha256": "8d786d7fd197ffcb30e5c5dfd7c819ef53e6770eca6850406167e0e41ffd5487"
+      },
+      {
+        "entry": "00cc1e1c",
+        "bytes": 14,
+        "sha256": "4d7c0103f6fc13be55e4a1b316db83cf89179c337244970c23993fdab26b0347"
+      },
+      {
+        "entry": "00cc1e2a",
+        "bytes": 11,
+        "sha256": "e085500d28fbf80b34be48a702a9c0afdde671b382bda1a5070df2901f05608a"
+      },
+      {
+        "entry": "00cc1e35",
+        "bytes": 11,
+        "sha256": "9d8c3bf899dfc2913f64e746c4b64fc2df93b0d2bc55964fd0fe50f9d8ee5c87"
+      },
+      {
+        "entry": "00cc1e40",
+        "bytes": 10,
+        "sha256": "dcec5e055114515b9cb178db1f812088313340ded6041e7bf412c18a38a06ec8"
+      },
+      {
+        "entry": "00dfaec4",
+        "bytes": 36,
+        "sha256": "806a5048e53df42fb2caa18a4cde7f5b11f6fa89d1c04d4df31b1572028c6a9e"
+      },
+      {
+        "entry": "00dfaee8",
+        "bytes": 40,
+        "sha256": "c60aecb35f293431b7bf1464d3fe2bba586014adecacb643193fe5f24a6f74ff"
+      }
+    ]
+  },
+  "calls": [
+    {
+      "function": "00b79bc0",
+      "address": "00b79bf0",
+      "native": "00b78750"
+    },
+    {
+      "function": "00b79bc0",
+      "address": "00b79c02",
+      "native": "00bf681b"
+    },
+    {
+      "function": "00b79bc0",
+      "address": "00b79c1d",
+      "native": "00b79a80"
+    },
+    {
+      "function": "00b79bc0",
+      "address": "00b79c4c",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00b79bc0",
+      "address": "00b79c5a",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00b79bc0",
+      "address": "00b79c72",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00b79bc0",
+      "address": "00b79c80",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00b79bc0",
+      "address": "00b79c98",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00b79bc0",
+      "address": "00b79ca9",
+      "native": "00b925d0"
+    },
+    {
+      "function": "00b79bc0",
+      "address": "00b79cbf",
+      "native": "00b76510"
+    },
+    {
+      "function": "00b79bc0",
+      "address": "00b79ce5",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00b79bc0",
+      "address": "00b79cfa",
+      "native": "00bf681b"
+    },
+    {
+      "function": "00b79bc0",
+      "address": "00b79d27",
+      "native": "00b8f920"
+    },
+    {
+      "function": "00b79bc0",
+      "address": "00b79dcc",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00b79bc0",
+      "address": "00b79dda",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00b79bc0",
+      "address": "00b79df2",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00b79bc0",
+      "address": "00b79e15",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00b79bc0",
+      "address": "00b79e23",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00b79bc0",
+      "address": "00b79e3b",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00b79bc0",
+      "address": "00b79e4f",
+      "native": "00b6ee80"
+    },
+    {
+      "function": "00b79bc0",
+      "address": "00b79eb1",
+      "native": "00b76510"
+    },
+    {
+      "function": "00b79bc0",
+      "address": "00b79ee0",
+      "native": "00b78810"
+    },
+    {
+      "function": "00b79bc0",
+      "address": "00b79ef6",
+      "native": "00bf681b"
+    },
+    {
+      "function": "00b79bc0",
+      "address": "00b79f13",
+      "native": "00b79a80"
+    },
+    {
+      "function": "00b79bc0",
+      "address": "00b79f51",
+      "native": "00b78d70"
+    },
+    {
+      "function": "00b79bc0",
+      "address": "00b79f5a",
+      "native": "00b76510"
+    },
+    {
+      "function": "00b79bc0",
+      "address": "00b79f7a",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00b79bc0",
+      "address": "00b79f8f",
+      "native": "00b76510"
+    },
+    {
+      "function": "00b79bc0",
+      "address": "00b79fbb",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00b79bc0",
+      "address": "00b79fc5",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00b79bc0",
+      "address": "00b79fdd",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00b79bc0",
+      "address": "00b79fed",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00b79bc0",
+      "address": "00b7a005",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00b79bc0",
+      "address": "00b7a052",
+      "native": "00b76830"
+    },
+    {
+      "function": "00b79bc0",
+      "address": "00b7a070",
+      "native": "00b8a330"
+    },
+    {
+      "function": "00b79bc0",
+      "address": "00b7a0ac",
+      "native": "00bf681b"
+    },
+    {
+      "function": "00b79bc0",
+      "address": "00b7a129",
+      "native": "00b76790"
+    },
+    {
+      "function": "00b79bc0",
+      "address": "00b7a186",
+      "native": "00b6ee80"
+    },
+    {
+      "function": "00b79bc0",
+      "address": "00b7a1f4",
+      "native": "00b8a2d0"
+    },
+    {
+      "function": "00b79bc0",
+      "address": "00b7a214",
+      "native": "00b8a370"
+    },
+    {
+      "function": "00b79bc0",
+      "address": "00b7a229",
+      "native": "00b76910"
+    },
+    {
+      "function": "00b79bc0",
+      "address": "00b7a23b",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00b79bc0",
+      "address": "00b7a268",
+      "native": "00bf7fbf"
+    },
+    {
+      "function": "00b79bc0",
+      "address": "00b7a2a3",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00b79bc0",
+      "address": "00b7a2b7",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00b79bc0",
+      "address": "00b7a2c1",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00b79bc0",
+      "address": "00b7a2e2",
+      "native": "00b8a2d0"
+    },
+    {
+      "function": "00b79bc0",
+      "address": "00b7a318",
+      "native": "00b788d0"
+    },
+    {
+      "function": "00b79bc0",
+      "address": "00b7a345",
+      "native": "00b8f920"
+    },
+    {
+      "function": "00b79bc0",
+      "address": "00b7a383",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00b79bc0",
+      "address": "00b7a391",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00b79bc0",
+      "address": "00b7a3a9",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00b79bc0",
+      "address": "00b7a3c5",
+      "native": "00b75f00"
+    },
+    {
+      "function": "00b79bc0",
+      "address": "00b7a3db",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00b79bc0",
+      "address": "00b7a3f3",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00b79bc0",
+      "address": "00b7a40b",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00b79bc0",
+      "address": "00b7a423",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00b79bc0",
+      "address": "00b7a448",
+      "native": "00b76890"
+    },
+    {
+      "function": "00b79bc0",
+      "address": "00b7a480",
+      "native": "00b91590"
+    },
+    {
+      "function": "00b79bc0",
+      "address": "00b7a489",
+      "native": "00b74640"
+    },
+    {
+      "function": "00b79bc0",
+      "address": "00b7a490",
+      "native": "00b72730"
+    },
+    {
+      "function": "00b79bc0",
+      "address": "00b7a4a3",
+      "native": "00b87200"
+    },
+    {
+      "function": "00b79bc0",
+      "address": "00b7a4b5",
+      "native": "00b87260"
+    },
+    {
+      "function": "00b79bc0",
+      "address": "00b7a4bf",
+      "native": "00b8a120"
+    },
+    {
+      "function": "00b79bc0",
+      "address": "00b7a523",
+      "native": "00b8a180"
+    },
+    {
+      "function": "00b79bc0",
+      "address": "00b7a54d",
+      "native": "00bf7fbf"
+    },
+    {
+      "function": "00b79bc0",
+      "address": "00b7a570",
+      "native": "00b8a1b0"
+    },
+    {
+      "function": "00b79bc0",
+      "address": "00b7a57b",
+      "native": "00b8a1a0"
+    },
+    {
+      "function": "00b79bc0",
+      "address": "00b7a583",
+      "native": "00b8a190"
+    },
+    {
+      "function": "00b79bc0",
+      "address": "00b7a593",
+      "native": "00b90c30"
+    },
+    {
+      "function": "00b79bc0",
+      "address": "00b7a5be",
+      "native": "00b87200"
+    },
+    {
+      "function": "00b79bc0",
+      "address": "00b7a5cf",
+      "native": "00b91000"
+    },
+    {
+      "function": "00b79bc0",
+      "address": "00b7a5eb",
+      "native": "00bf55be"
+    },
+    {
+      "function": "00b79bc0",
+      "address": "00b7a61e",
+      "native": "00bf6989"
+    },
+    {
+      "function": "00b79bc0",
+      "address": "00b7a667",
+      "native": "00bf6989"
+    },
+    {
+      "function": "00b79bc0",
+      "address": "00b7a687",
+      "native": "00b6db60"
+    },
+    {
+      "function": "00b79bc0",
+      "address": "00b7a6db",
+      "native": "00b630f0"
+    },
+    {
+      "function": "00b79bc0",
+      "address": "00b7a72c",
+      "native": "00b78d70"
+    },
+    {
+      "function": "00b79bc0",
+      "address": "00b7a736",
+      "native": "00bf6989"
+    },
+    {
+      "function": "00b79bc0",
+      "address": "00b7a748",
+      "native": "00b76510"
+    },
+    {
+      "function": "00b79bc0",
+      "address": "00b7a764",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00b79bc0",
+      "address": "00b7a785",
+      "native": "00b76510"
+    },
+    {
+      "function": "00b79bc0",
+      "address": "00b7a796",
+      "native": "00b78990"
+    },
+    {
+      "function": "00b79bc0",
+      "address": "00b7a7bd",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00b79bc0",
+      "address": "00b7a7ce",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00b79bc0",
+      "address": "00b7a7ea",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00b79bc0",
+      "address": "00b7a7fe",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00b79bc0",
+      "address": "00b7a816",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00b79bc0",
+      "address": "00b7a831",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00b79bc0",
+      "address": "00b7a84c",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00b79bc0",
+      "address": "00b7a871",
+      "native": "00bf7fbf"
+    },
+    {
+      "function": "00b79bc0",
+      "address": "00b7a889",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00b79bc0",
+      "address": "00b7a890",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00b79bc0",
+      "address": "00b7a8a5",
+      "native": "00b76510"
+    },
+    {
+      "function": "00b79bc0",
+      "address": "00b7a8c5",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00b79bc0",
+      "address": "00b7a8d0",
+      "native": "00b6d800"
+    },
+    {
+      "function": "00b79bc0",
+      "address": "00b7a8fb",
+      "native": "00bf7fbf"
+    },
+    {
+      "function": "00b79bc0",
+      "address": "00b7a911",
+      "native": "00b76510"
+    },
+    {
+      "function": "00b79bc0",
+      "address": "00b7a927",
+      "native": "00b6fbb0"
+    },
+    {
+      "function": "00b79bc0",
+      "address": "00b7a935",
+      "native": "00b6fbd0"
+    },
+    {
+      "function": "00b79bc0",
+      "address": "00b7a97b",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00b78f60",
+      "address": "00b78f65",
+      "native": "00b78d70"
+    },
+    {
+      "function": "00b78f60",
+      "address": "00b78f6d",
+      "native": "00bf6989"
+    },
+    {
+      "function": "00b77cd0",
+      "address": "00b77cd5",
+      "native": "00b76b50"
+    },
+    {
+      "function": "00b77cd0",
+      "address": "00b77cdd",
+      "native": "00bf6989"
+    },
+    {
+      "function": "00b76b50",
+      "address": "00b76b5e",
+      "native": "00b76890"
+    },
+    {
+      "function": "00b40e00",
+      "address": "00b40e0e",
+      "native": "00b40c80"
+    }
+  ],
+  "reuses": [
+    {
+      "address": "00b76b50",
+      "canonical": "00b40e00",
+      "bytes": 80,
+      "normalized_identity": true
+    }
+  ],
+  "body_metadata_limits": [
+    {
+      "address": "00b77cd0",
+      "stored_end": "00b77ce1",
+      "physical_end": "00b77ce6"
+    },
+    {
+      "address": "00b78f60",
+      "stored_end": "00b78f71",
+      "physical_end": "00b78f76"
+    }
+  ],
+  "boundaries": [
+    "Full source entry uses borrowed actual providers and canonical recovered dependencies; original FH3 ABI is not reproduced.",
+    "Corrupt or overflowing extents rejected by canonical pair storage remain outside the admitted native domain.",
+    "No game execution, graph-builder admission or gameplay validation claimed."
+  ],
+  "validation": {
+    "strict_win32": true,
+    "existing_ctests": 2,
+    "paired_full_caller_cases": 5,
+    "source_failure_cases": 1,
+    "byte_identical_leaves": 4,
+    "live_type_reload": true,
+    "repeat_stable": true,
+    "call_rows": 107,
+    "call_failures": 0,
+    "output_sha256": {
+      "case_0_original.bin": "d3a275bc58e5d1b4066ad377d44323bf16d3d77316b74c79ccf5ed08014264c8",
+      "case_0_source.bin": "d3a275bc58e5d1b4066ad377d44323bf16d3d77316b74c79ccf5ed08014264c8",
+      "case_1_original.bin": "9b5189a6089d8f08f0e50e192b4af6381377a88852bbe11dd7182d53bf544f97",
+      "case_1_source.bin": "9b5189a6089d8f08f0e50e192b4af6381377a88852bbe11dd7182d53bf544f97",
+      "case_2_original.bin": "67651ce121bdc3d777280d5211096c10afc6a7267158df7341ca11ce4a151a75",
+      "case_2_source.bin": "67651ce121bdc3d777280d5211096c10afc6a7267158df7341ca11ce4a151a75",
+      "case_3_original.bin": "d3a275bc58e5d1b4066ad377d44323bf16d3d77316b74c79ccf5ed08014264c8",
+      "case_3_source.bin": "d3a275bc58e5d1b4066ad377d44323bf16d3d77316b74c79ccf5ed08014264c8",
+      "case_4_original.bin": "7314d2d29314894107c28f640056f0a9cb1bf3f48e2a9b815235aded6d3d5f63",
+      "case_4_source.bin": "7314d2d29314894107c28f640056f0a9cb1bf3f48e2a9b815235aded6d3d5f63",
+      "source_failure.bin": "ddf12f7d4e13290e66301062fbbb85f1f6ad370bd81613a4432c3b548c220100",
+      "results.txt": "df353b9af0a59801ab0e00a119c200cd5991ffb9dc065aa93b6f2b0bc8d4c828"
+    },
+    "source_sha256": {
+      "include/bsp/native_resource_postprocess_full.hpp": "033dd9565846ea33075095156e906caaf8c5c151eee65951caf513dfac876af7",
+      "src/native_resource_postprocess_full.cpp": "d4a227b7bb19b039057f16d110d6d77e10e942351f25dc98b3da86ac4a3129a6"
+    },
+    "scope": "Complete3613-byte B79BC0 caller under explicit actual-provider bindings; five paired valid graphs, current-node mutation and one source failure. Four leaf identities. Type predicate is fixture protocol, not game type recovery. Native EH, malformed graphs, B891A0 admission and gameplay unproved.",
+    "saved_annotations": 9,
+    "new_physical_source_bytes": 3681,
+    "canonical_reuse_bytes": 80
+  },
+  "entries": [
+    {
+      "address": "00b79bc0",
+      "ghidra_name": "BSP_ResourceInstance_BindAnimatorsSkinAndCameraTargets",
+      "name": "postprocess_native_resource_instance_00b79bc0",
+      "source": "src/native_resource_postprocess_full.cpp",
+      "bytes": 3613,
+      "status": "complete_source_under_actual_provider_contract_strict_win32_and_bounded_differential_tested",
+      "evidence": "AZ supersedes prior ANALYZED ONLY status: complete3613-byte caller now reconstructed under explicit borrowed actual providers. Compact registry/38h animators; ordinary registry/30h animators/current track-name slots; skin/default poses gated by nonempty ordinary range; current animator slot20; camera first-name target release-before-clear/publish/retain including same pointer, then FOV/current aspect. Original ECXinstance/RET, source borrows contextEDX. Five paired full original callers and one source constructor failure; original FH3/type hierarchy/game admission/gameplay remain unproved. Hypothesis, not a recovered symbol. docs/NATIVE_RESOURCE_POSTPROCESS_FULL_AZ.md; reports/native_resource_postprocess_full_az.json. Strict Win32 and both CTests pass; all107 call rows pass. No game validation or original FH3 ABI claim."
+    },
+    {
+      "address": "00b8f920",
+      "ghidra_name": "BSP_SkinModel_GetCurrentType",
+      "name": "native_skin_model_type_00b8f920",
+      "source": "src/native_resource_postprocess_full.cpp",
+      "bytes": 6,
+      "status": "complete_source_under_actual_provider_contract_strict_win32_and_bounded_differential_tested",
+      "evidence": "Complete6-byte MOV EAX,[01090344]/RET. Source takes explicit borrowed current volatile cell; live reload checked. Caller captures node table before this load and dispatches captured slot0C afterward. Hypothesis, not a recovered symbol. docs/NATIVE_RESOURCE_POSTPROCESS_FULL_AZ.md; reports/native_resource_postprocess_full_az.json. Strict Win32 and both CTests pass; all107 call rows pass. No game validation or original FH3 ABI claim."
+    },
+    {
+      "address": "00b8a180",
+      "ghidra_name": "BSP_SkinItem_GetName",
+      "name": "native_skin_item_name_00b8a180",
+      "source": "src/native_resource_postprocess_full.cpp",
+      "bytes": 4,
+      "status": "complete_source_under_actual_provider_contract_strict_win32_and_bounded_differential_tested",
+      "evidence": "Complete4-byte LEA EAX,[ECX+8]/RET returns same native string header; compiled byte identity. Hypothesis, not a recovered symbol. docs/NATIVE_RESOURCE_POSTPROCESS_FULL_AZ.md; reports/native_resource_postprocess_full_az.json. Strict Win32 and both CTests pass; all107 call rows pass. No game validation or original FH3 ABI claim."
+    },
+    {
+      "address": "00b8a190",
+      "ghidra_name": "BSP_SkinItem_GetTranslation",
+      "name": "native_skin_item_translation_00b8a190",
+      "source": "src/native_resource_postprocess_full.cpp",
+      "bytes": 4,
+      "status": "complete_source_under_actual_provider_contract_strict_win32_and_bounded_differential_tested",
+      "evidence": "Complete4-byte LEA EAX,[ECX+10]/RET returns same float3; compiled byte identity. Hypothesis, not a recovered symbol. docs/NATIVE_RESOURCE_POSTPROCESS_FULL_AZ.md; reports/native_resource_postprocess_full_az.json. Strict Win32 and both CTests pass; all107 call rows pass. No game validation or original FH3 ABI claim."
+    },
+    {
+      "address": "00b8a1a0",
+      "ghidra_name": "BSP_SkinItem_GetAngles",
+      "name": "native_skin_item_angles_00b8a1a0",
+      "source": "src/native_resource_postprocess_full.cpp",
+      "bytes": 4,
+      "status": "complete_source_under_actual_provider_contract_strict_win32_and_bounded_differential_tested",
+      "evidence": "Complete4-byte LEA EAX,[ECX+1C]/RET returns same float3; compiled byte identity. Hypothesis, not a recovered symbol. docs/NATIVE_RESOURCE_POSTPROCESS_FULL_AZ.md; reports/native_resource_postprocess_full_az.json. Strict Win32 and both CTests pass; all107 call rows pass. No game validation or original FH3 ABI claim."
+    },
+    {
+      "address": "00b8a1b0",
+      "ghidra_name": "BSP_SkinItem_GetScalar",
+      "name": "native_skin_item_scalar_00b8a1b0",
+      "source": "src/native_resource_postprocess_full.cpp",
+      "bytes": 4,
+      "status": "complete_source_under_actual_provider_contract_strict_win32_and_bounded_differential_tested",
+      "evidence": "Complete4-byte FLD float[ECX+28]/RET, scalar in ST0. Caller spills once into float32 binding argument; compiled byte identity. Hypothesis, not a recovered symbol. docs/NATIVE_RESOURCE_POSTPROCESS_FULL_AZ.md; reports/native_resource_postprocess_full_az.json. Strict Win32 and both CTests pass; all107 call rows pass. No game validation or original FH3 ABI claim."
+    },
+    {
+      "address": "00b78f60",
+      "ghidra_name": "BSP_PostprocessNodeTracks_Destroy",
+      "name": "destroy_native_postprocess_node_tracks_00b78f60",
+      "source": "src/native_resource_postprocess_full.cpp",
+      "bytes": 23,
+      "status": "complete_source_under_actual_provider_contract_strict_win32_and_bounded_differential_tested",
+      "evidence": "Complete23-byte physical ECX actual0Ch header/RET body: B78D70 resize0 then shared free current backing; stale data/capacity preserved. Native unwind state3 calls this helper. Ghidra stored body endsB78F71; five-byte physical return tail throughB78F76 retained live/disk-equal, not hidden. Hypothesis, not a recovered symbol. docs/NATIVE_RESOURCE_POSTPROCESS_FULL_AZ.md; reports/native_resource_postprocess_full_az.json. Strict Win32 and both CTests pass; all107 call rows pass. No game validation or original FH3 ABI claim."
+    },
+    {
+      "address": "00b77cd0",
+      "ghidra_name": "BSP_PostprocessPairs_Destroy",
+      "name": "destroy_native_postprocess_pairs_00b77cd0",
+      "source": "src/native_resource_postprocess_full.cpp",
+      "bytes": 23,
+      "status": "complete_source_under_actual_provider_contract_strict_win32_and_bounded_differential_tested",
+      "evidence": "Complete23-byte physical ECX actual0Ch header/RET body: B76B50 resize0 then shared free current backing; stale data/capacity preserved. Native unwind state4->3 calls this helper. Ghidra stored body endsB77CE1; five-byte physical return tail throughB77CE6 retained live/disk-equal. Hypothesis, not a recovered symbol. docs/NATIVE_RESOURCE_POSTPROCESS_FULL_AZ.md; reports/native_resource_postprocess_full_az.json. Strict Win32 and both CTests pass; all107 call rows pass. No game validation or original FH3 ABI claim."
+    },
+    {
+      "address": "00b76b50",
+      "ghidra_name": "BSP_PostprocessPairs_Resize",
+      "name": "resize_native_material_pass_pairs_00b40e00",
+      "source": "src/native_material_pass_base.cpp",
+      "bytes": 80,
+      "status": "complete_source_under_actual_provider_contract_strict_win32_and_bounded_differential_tested",
+      "evidence": "Complete80-byte ECX actual0Ch header/stack signed count/RET4 matches canonicalB40E00 after equivalent B76890/B40C80 reserve relocation. Existing canonical valid-extent and overflow policy remains explicit; no copied container or borrowed-item destruction. Hypothesis, not a recovered symbol. docs/NATIVE_RESOURCE_POSTPROCESS_FULL_AZ.md; reports/native_resource_postprocess_full_az.json. Strict Win32 and both CTests pass; all107 call rows pass. No game validation or original FH3 ABI claim."
+    }
+  ],
+  "proof": {
+    "manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\resource_postprocess_full_az\\manifest.json",
+      "bytes": 329410,
+      "sha256": "2a3bf7479dfcacc751d9faf374cc33896db747c554b5239f5af5824d8be286a5"
+    },
+    "source_commit": "aa7e7abf3c59132fe2f42a5cdc512d2fff4540b8",
+    "implementation_commit": "77d8e274f095331374f564124291d0bd5cb2dee9",
+    "build_checkout_head": "aa7e7abf3c59132fe2f42a5cdc512d2fff4540b8",
+    "build_had_owned_source_changes": false,
+    "inputs": 733,
+    "artifacts": 133,
+    "fixture_production_objects": 80,
+    "complete_new_bodies": 8,
+    "complete_source_bytes": 3681,
+    "canonical_reuse_bytes": 80,
+    "saved_annotations": 9,
+    "paired_full_caller_cases": 5,
+    "source_failure_cases": 1
+  }
+}

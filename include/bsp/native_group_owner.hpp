@@ -45,6 +45,17 @@ public:
     // Stable companion over one actual18Ch slot. Preserve all allocation bytes;
     // bind the SAME scene/hierarchy, reference count and actual backlink array.
     NativeGroupOwner(void* actual_slot, std::size_t slot_bytes, NativeGroupEnvironment&);
+    // Adopt one already constructed B8F5E0 group, such as the actual owner
+    // returned by B86780. Its prefix/tail lifetimes already exist. Register
+    // the canonical scene/backlink companions without reconstructing, retaining,
+    // copying or changing native storage. Binding failure leaves the constructed
+    // owner alive for its caller; the supplied name domain must match construction.
+    NativeGroupOwner(NativeGroupStorageView actual_constructed, NativeGroupEnvironment&);
+    // Caller reserves both host associations before invoking a native factory.
+    // Successful adoption consumes the credits without allocating after it.
+    NativeGroupOwner(NativeGroupStorageView actual_constructed, NativeGroupEnvironment&,
+        SceneAttachmentRuntime::BindingAdmission&&,
+        GeneratedModelLifetimeRuntime::BindingAdmission&& attachment_admission);
     ~NativeGroupOwner();
     NativeGroupOwner(const NativeGroupOwner&) = delete;
     NativeGroupOwner& operator=(const NativeGroupOwner&) = delete;

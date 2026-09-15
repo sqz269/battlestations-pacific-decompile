@@ -289,3 +289,384 @@ exact expression is not traced and is **not** being inferred from that shape.
 
 No pure rule is written yet for this reason: the law is four-fifths established and the clamp is the
 remaining fifth. Everything above is evidence; the clamp would be a guess.
+
+## Correction: the clamp is not a bound, and the factor is not in the step
+
+Two claims published above are **wrong**, and both were wrong in the same way - a shape assumed from
+a fragment rather than traced. Tracing the x87 stack through the clamp settles both.
+
+### The clamp is the interval between the current value and the target
+
+The published form said `clamp(..., -|bound|, +|bound|)`. There is no such bound. `007DACE0`-`007DAD01`
+reads:
+
+```
+007dacdc  FLD   [ESP+68h]        ; cand
+007dace0  FLD   [ESP+30h]        ; A          frame=-52
+007dace4  FCOMIP ST0,ST1         ; A vs cand
+007dace6  JBE   007dacef
+007dacea  MOVAPS XMM1,XMM3       ;   A > cand  -> result = A
+007dacef  FLD   [ESP+2Ch]        ; B          frame=-56
+007dacf5  FCOMIP ST0,ST1         ; cand vs B
+007dacf9  JA    007dad01         ;   cand > B -> result = B  (XMM1 still holds B)
+007dacfb  MOVSS XMM1,[ESP+68h]   ;   otherwise -> result = cand
+007dad01  MOVSS [ESI+48h],XMM1
+```
+
+and `A` and `B` are built immediately before it, at `007DAC59`-`007DAC9E`, by comparing the current
+axis value against **the target**:
+
+```
+007dac59  FLD   [ESI+48h]        ; cur
+007dac5c  MOVSS XMM3,[ESP+1Ch]   ; XMM3 = T   frame=-72, the pitch target
+007dac6a  FCOMIP ST0,ST4         ; cur vs ST4
+007dac6c  JBE   007dac76         ;   -> XMM1 = max(cur, T)  stored to frame=-56 at 007DAC7C
+007dac8a  FXCH  ST4
+007dac8c  FCOMIP ST0,ST4
+007dac90  JBE   007dac98         ;   -> XMM3 = min(cur, T)  stored to frame=-52 at 007DAC9E
+```
+
+`ST4` is the target, and that is **traced, not assumed**. The three deltas at `007DAB52`-`007DAB75`
+are each formed by `FLD target / FLD ST0 / FSUB [ESI+axis] / FSTP delta`, which leaves a copy of each
+target on the x87 stack; after the three the stack holds, bottom to top, the pitch, yaw and roll
+targets. `007DABB2`-`007DABE0` pushes and pops in balance, `007DABE4` pushes one more, and `007DAC59`
+pushes `cur`, putting the pitch target at exactly `ST4`.
+
+So the law's last step is
+
+```
+new = clamp(cand, min(current, target), max(current, target))
+```
+
+which is not a bound at all - it is a **non-overshoot guard**. The rate law moves an axis toward its
+target at a constant rate and this stops it passing the target in a single step. Axes 1 and 2 repeat
+the identical shape at `007DAE62`-`007DAE85` and in the third block, with the branch senses inverted
+and the registers reallocated.
+
+### `unit+BC4h` scales the yaw target, not the step
+
+The published form said `FMUL [ESP+14h]` at `007DACC5` multiplies the sign by "the factor at
+unit+BC4h". It does not. `[ESP+14h]` is `frame=-80`, a **scratch slot reused three times**, once per
+axis, and the `+BC4h` value it holds early is dead by the time the step is formed:
+
+* `007DA983`-`007DAA14` builds the `+BC4h`-derived value in `frame=-80`.
+* `007DAA18` reads it out and `007DAA1F` stores it to `frame=-44`, where `007DAA4E` multiplies it
+  into the **yaw target** alongside `YawSpd +1B0h` and `cos(+0C64h)`. That is its only consumer.
+* `007DABE0` then **overwrites** `frame=-80` with a value of its own, and `007DAD6C` and `007DAEEF`
+  overwrite it again for axes 1 and 2. Every write and read of the slot is accounted for; there is no
+  path by which the `+BC4h` value reaches `007DACC5`.
+
+The earlier finding that `+BC4h` resolves to 1.0 still stands. Its **placement** was wrong, and
+because 1.0 is a no-op either way, nothing downstream would have exposed the error.
+
+## The rate is a quadratic in the remaining error, and it is named
+
+What `007DACC5` actually multiplies is built at `007DABB2`-`007DABE0`:
+
+```
+007dabb2  FLD   [00F872FCh]      ; A
+007dabb8  FLD   [ESP+40h]        ; delta
+007dabc4  FLD   ST0
+007dabc6  FMULP ST2              ; A*delta
+007dabc8  FMULP                  ; A*delta^2
+007dabca  FLD   [ESP+30h]        ; |delta|
+007dabce  FMUL  [00F87300h]      ; B*|delta|
+007dabd4  FADDP                  ; A*delta^2 + B*|delta|
+007dabd6  FADD  [00F87304h]      ; + C
+007dabdc  FMUL  [ESP+2Ch]        ; x |accel term|   (|frame=-24|, the PitchAccel +1C0h product)
+007dabe0  FSTP  [ESP+14h]        ; -> the rate
+```
+
+The three globals are read only here, once per axis. Their names are recovered: the loader that
+fills them pushes `00CE608C`, `00CE60E4` and `00D08204`, and those are not names of fields but the
+one-character strings **"A", "B" and "C"** - property-bag keys, read at `007E3CBE`, `007E3D00`
+and `007E3D42`. The section string sitting beside "C" at `00D08208` is `RotationFactors`.
+
+Then a floor, and only a floor - there is no ceiling:
+
+```
+BL == 0   ->  rate = max(rate, 0.15f)             ; 00CE3D30 = 3F19999Ah, .rdata, a real constant
+BL != 0   ->  rate = max(rate, 1.5 * |current|)   ; 00CE3D78 = 1.5 as a double
+```
+
+and the second floor is guarded by a sign test at `007DABEA`-`007DAC06` which, decoded branch by
+branch, applies it exactly when **the delta and the current deflection lie on opposite sides of zero**
+- when the axis has to cross neutral to reach its target. A surface reversing direction gets a
+minimum rate proportional to how far it is currently deflected, so the harder it is over, the faster
+it comes back. `BL` is an output byte from `007DA380`, whose address `007DA717` takes in the prologue;
+what it distinguishes is **not** established.
+
+## The trap in A, B and C, worth recording on its own
+
+Read statically, all three coefficients are **0.0**, and Ghidra finds no writer for any of them. The
+obvious conclusion - a disabled tuning term, rate reduced to the floor - is wrong, and it is worth
+setting down why, because the same shape has now cost this project time twice.
+
+`00F872FC` is in `.data`, but `.data` has `vsize=0x297EDC` against `rawsize=0x10000`: the section is
+mostly **uninitialised**, and `00F872FC` sits far past the file-backed part. The zeros are the
+loader's zero-fill, not authored data, so reading them establishes nothing about runtime.
+
+And there is a writer. It does not xref because it is a block copy:
+
+```
+007eaad7  MOV  ECX,4Eh           ; 78 dwords = 312 bytes
+007eaadc  MOV  EDI,0F872F0h
+007eaae1  REP MOVSD              ; bytes F3 A5 - a copy, not a STOSD fill
+```
+
+from `ESI = EBP+210h` (`007E2D03`), `EBP` being the `this` of `BSP_GameTuning_LoadFromPlaneGlobals`,
+and `ESI` is provably untouched across the 6250 instructions in between - the function mentions it
+fifteen times and writes it twice, `XOR ESI,ESI` and that `LEA`. So the whole plane tuning block is a
+312-byte mirror of `this+210h..348h`, and A, B, C are entries 3, 4 and 5 of it.
+
+This is the `class+50h` hazard again, and this time it is confirmed rather than suspected: **a
+`REP MOVSD` writes 78 globals and xrefs only one of them.** A negative from Ghidra's xref table over
+a `.data` address means "no literal-address writer", never "no writer". Two checks are needed: the
+section's file-backed extent, and a scan for the region's base address as an immediate.
+
+## The law, as far as it is established
+
+```
+delta  = target - current                                  ; 007DAB52..007DAB75
+rate   = (A*delta^2 + B*|delta| + C) * |accelTerm|          ; 007DABB2..007DABE0
+rate   = max(rate, BL ? 1.5*|current| : 0.15f)              ; 007DABE4..007DAC53
+cand   = current + sign(delta) * rate * step                ; 007DAC9B..007DACD4
+new    = clamp(cand, min(current, target), max(current, target))   ; 007DACE0..007DAD01
+```
+
+with `step` the single stack argument at `frame=4` - used directly for axis 0 at `007DACC9`, then
+reused as scratch for the candidate at `007DACD8`, with axes 1 and 2 taking it from an x87 copy at
+`007DAE55`. `this` is the control block: `ECX` at entry, axes at `+48h` pitch, `+4Ch` yaw, `+50h` roll.
+
+**Open, and each is a value rather than a shape:** A, B and C's runtime values, which are
+authored data reached through `RotationFactors`; the meaning of `BL`, which needs `007DA380`; and the
+`|accelTerm|`'s full provenance beyond the `PitchAccel +1C0h` product at `007DAA7F`.
+
+The structure is now complete and traced end to end. What is missing is three numbers and a flag, not
+a form - which is a different kind of gap, and a wireable one, because a rate law with the wrong
+coefficients moves an axis at the wrong speed toward the right place, where a law with the wrong
+clamp or the wrong sign moves it to the wrong place entirely.
+
+## The three numbers, from authored data
+
+`A`, `B` and `C` are not in the executable at all. `BSP_GameTuning_LoadFromPlaneGlobals` is named for
+where it reads them, and this repository had already recovered the field names and their property
+paths - `include/bsp/game_tuning_singleton.hpp:172-174` carries
+`Dynamics/RotationFactors/{A,B,C}` at `+21Ch`, `+220h`, `+224h`, which is exactly the block offsets
+the `REP MOVSD` maps to `00F872FC`, `00F87300` and `00F87304`. The two halves were recovered
+independently and meet.
+
+The values are in `scripts/datatables/planeglobals.lua`:
+
+```lua
+["RotationFactors"]=
+{
+    ["A"]=0.5,
+    ["B"]=1.5,
+    ["C"]=0.1,
+},
+```
+
+**A caveat that has to travel with the numbers.** This installation is modded, and
+`planeglobals.lua` is not part of the untouched bulk: 29 of the 38 files in `scripts/datatables`
+carry the install date `2024-07-13`, and this file is one of only two at `2024-10-29`. It is not
+locally edited - the one file this user has changed carries `2026-05-09` - but it was replaced after
+the original install, so these are **this installation's** rotation factors and not provably retail.
+
+There is one piece of evidence that they are nevertheless the original values, and it is worth
+stating because it is inference rather than proof. The reverse-crossing floor hard-coded in the
+executable is `1.5 * |current|`, from the double at `00CE3D78`; the authored linear coefficient `B`
+is also `1.5`. The floor is the linear term with `|current|` substituted for `|delta|` - the same
+coefficient, applied to the deflection instead of the error, which is what you would write if the
+axis has to treat its own deflection as the error while crossing neutral. A modder retuning `B` would
+have no reason to also match a constant compiled into the exe, so the agreement is more easily
+explained by `B` never having been retuned. Suggestive, not conclusive.
+
+`C = 0.1` sits just under the `0.15f` idle floor at `00CE3D30`, so as an axis converges and `delta`
+goes to zero the authored polynomial falls below the floor and the floor takes over. The two were
+tuned against each other, which is a further small sign the pair is coherent.
+
+## The floor selector, read rather than named
+
+`BL` came from `007DA380`, and calling it "crossing" - which the shape of the branch invites - would
+have been wrong. `007DA380` is a three-out-parameter helper (`RET 0Ch`; `&f1` to `frame=-68`, `&f2`
+to `frame=-52`, `&flag` to `frame=-81`) that **switches on `this+0FCh`**:
+
+```
+007da38d  MOV EAX,[ESI+0FCh]
+007da393  SUB EAX,0 / JZ 007da6e6      ; mode 0
+007da39c  SUB EAX,1 / JZ 007da542      ; mode 1
+007da3a6  SUB EAX,1 / JZ 007da3d0      ; mode 2
+          default: flag = 0, f1 = f2 = [00D7A238]
+```
+
+So the flag is a **flight-mode output**, not a geometric predicate, and the mode field `this+0FCh` is
+the input that decides it. Only the default arm is read here, and it clears the flag.
+
+That matters, because the two conditions are nested and easy to collapse into one. Read correctly:
+
+```
+BL == 0                              ->  rate = max(rate, 0.15)
+BL != 0  and delta, current are not strictly the same sign
+                                     ->  rate = max(rate, 1.5*|current|)
+BL != 0  and delta, current are both positive or both negative
+                                     ->  no floor at all
+```
+
+The third case is a real branch - `007DABFC` and `007DAC06` jump past the floor entirely - and
+writing `max(rate, BL ? 1.5*|current| : 0.15)` would have silently imposed a floor the game does not
+apply while an axis is already moving the right way.
+
+The sign test at `007DABEA`-`007DAC06`, branch by branch: `delta >= 0` with `current <= 0` floors;
+`delta < 0` with `current >= 0` floors; `delta == 0` with `current > 0` floors; the two same-sign
+cases skip.
+
+## The law, complete but for one input
+
+```
+delta  = target - current
+rate   = (0.5*delta^2 + 1.5*|delta| + 0.1) * |accelTerm|
+if      (!flag)                        rate = max(rate, 0.15)
+else if (!same_strict_sign(delta, current))  rate = max(rate, 1.5*|current|)
+cand   = current + sign(delta) * rate * step
+new    = clamp(cand, min(current, target), max(current, target))
+```
+
+per axis, `current` being `this+48h` pitch, `this+4Ch` yaw, `this+50h` roll, and `step` the single
+stack argument. `flag` is `007DA380`'s third output, driven by the flight mode at `this+0FCh`; three
+of its four arms are unread, which is what stands between this and a pure rule.
+
+## The flag, closed for free flight
+
+`007DA380` already had a name and an ABI in this ledger -
+`BSP_PlaneFlight_ControllerModeFactors`, `__thiscall(ctl, float*, float*, unsigned char*)`,
+`RET 0Ch`, recovered by packet `cc2_loose_ends_2` - and the ABI I walked to independently matches it
+exactly. `docs/PLANE_FLIGHT.md:79` already had the mode field: `ctl+FCh`, **zeroed every step** at
+`007DC841`, with `== 1` meaning on the ground.
+
+Zeroed every step means the free-flight case is **mode 0**, and mode 0's arm is ten instructions:
+
+```
+007da6e6  MOVSS XMM0,[ESP+4]     ; the scalar 007D9A70(this) returned
+007da6f8  MOVSS [ECX],XMM0       ; f1
+007da6fc  MOVSS [EDX],XMM0       ; f2 - the same value
+007da700  MOV byte ptr [EAX],1   ; flag = 1
+```
+
+So in free flight the flag is **1**, and the `0.15` idle floor never applies to a plane in the air;
+the sign-guarded `1.5 * |current|` floor does, and only while the axis has to cross neutral. The
+`0.15` branch belongs to the default arm (`007DA3AB`, which clears the flag) and to whichever of the
+two remaining modes clears it.
+
+That closes the last input for the case the reconstruction needs. It came out of two facts this
+repository had already recorded and I had not connected - the name and ABI in the ledger, and the
+per-step zeroing in `PLANE_FLIGHT.md` - which is worth noting, because I spent a call reading a
+dispatcher whose answer was already written down.
+
+## The accel term
+
+`|accelTerm|` is `frame=-24`, built at `007DAA7F`-`007DAA9D`:
+
+```
+007daa7f  FLD  [EAX+1C0h]        ; PitchAccel, EAX = this+0Ch, the class descriptor
+007daa93  FMUL ST1               ; bytes D8 C9 = FMUL ST(0),ST(1) - ST0 *= f1
+007daa9d  FSTP [ESP+4Ch]         ; frame=-24 = PitchAccel * f1
+```
+
+The direction of that `FMUL` had to be read from the bytes: Ghidra prints `FMUL ST1` for both
+`D8 C8+i` (`ST0 *= STi`) and `DC C8+i` (`STi *= ST0`), and the two give different answers here. `D8 C9`
+is the first. The same check settles `007DAA66`, where `DE CA` is `FMULP ST(2),ST(0)`.
+
+The yaw and roll terms follow in the same block - `class+1C4h` against `-f2` into `frame=-20`, and
+`PitchAccel * f1 * class+1BCh` into `frame=-16` - and all three axes then run the **identical**
+polynomial: `007DAD4E`-`007DAD6C` and `007DAED0`-`007DAEEF` read the same `A`, `B`, `C` globals and
+multiply by their own accel term, exactly as `007DABB2`-`007DABE0` does for pitch.
+
+## Free flight, as a rule
+
+```
+delta = target - current
+rate  = (0.5*delta^2 + 1.5*|delta| + 0.1) * |accel_axis|
+if (sign(delta) != sign(current))      rate = max(rate, 1.5*|current|)
+cand  = current + sign(delta) * rate * step
+new   = clamp(cand, min(current, target), max(current, target))
+```
+
+where `sign(delta) != sign(current)` is the strict reading decoded at `007DABEA`-`007DAC06` - either
+being zero counts as a mismatch except `delta == 0` with `current < 0`, which skips.
+
+This is wireable. The structure is traced end to end, the coefficients are authored data read from
+this installation's `planeglobals.lua` with the provenance caveat above, and the one runtime flag is
+resolved for the free-flight path. What is not yet verified is the rule's **behaviour** - nothing has
+been run, and until a plane under a bot task actually turns toward its target in a mission, this is a
+recovered law and not a validated one.
+
+## Corrections from packet `cc7_plane_control_targets`
+
+Three claims above are wrong, all mine, and all wrong the same way. I read a stack slot's first
+producer and assumed it was still live at a later read, without checking for a write in between.
+`tools/stack_frame_walk.py` exists precisely because a literal `[ESP+N]` names different storage at
+different depths - and I applied that discipline to the offsets while skipping it for the values in
+them. The slots in this function are scratch, reused three and four times each. **A slot's value has
+to be traced from the read backwards to its nearest preceding write, every time.**
+
+### `unit+BC4h` reaches the yaw target, but not the way the section above says
+
+The conclusion stands - `+BC4h` does not multiply the step. The mechanism, the address, the slot and
+the arithmetic in that section are all wrong:
+
+* `007DAA12 FSIN` / `007DAA14 FSTP [ESP+14h]` **overwrites** `frame=-80` with `sin(unit+C68h)`
+  before `007DAA18` reads it. So `frame=-44` holds the sine, not the `+BC4h` value.
+* The `+BC4h` chain ends at `007DA9E3 MOVSS [EDI+0BC4h],XMM0`: it writes the **field** and goes no
+  further.
+* `007DAA4E`'s term is `SlideRatio(class+1B8h) * YawSpd * sin(bank) * cos(pitch)`, and it is
+  **subtracted** at `007DAA56` (`DE E9 FSUBP`), not multiplied in.
+* `+BC4h`'s real consumer is `007DA94B`, through `frame=-56`, 280 bytes earlier - inside the yaw
+  raw product, which is where it does scale the yaw target.
+
+### The roll acceleration term is `f1 * RollAccel`, and the oddity I flagged was my own slip
+
+The section above reports `frame=-16 = PitchAccel * f1 * class+1BCh` and then flags the dependence
+on `PitchAccel` as surprising, worth a second pair of eyes, possibly a shipped bug. It is none of
+those. It is an arithmetic error of mine:
+
+```
+007daa7f  FLD  [EAX+1C0h]    ; stack: f1, PitchAccel        ST0 = PitchAccel
+007daa93  FMUL ST1           ; D8 C9 = FMUL ST(0),ST(1)     ST0 = PitchAccel * f1
+007daa9d  FSTP [ESP+4Ch]     ; frame=-24 = PitchAccel * f1, POP
+                             ; ST0 is now f1 again - not the product
+007daab3  FMUL [EAX+1BCh]    ; ST0 = f1 * RollAccel
+007daab9  FSTP [ESP+54h]     ; frame=-16 = f1 * RollAccel
+```
+
+I tracked the `FSTP` as storing and forgot it pops, so I carried the product forward where the
+listing carries `f1`. The three acceleration terms are perfectly symmetric -
+`f1 * PitchAccel`, `-f2 * YawAccel`, `f1 * RollAccel` - which is what one would expect, and my
+flagged anomaly was an invitation to go looking for intent behind a mistake I had made myself.
+`docs/PLANE_CONTROL_AUTHORITY.md` repeats the same error in its table and is corrected there.
+
+### The latched block is on the unit, not the controller
+
+`007DA72D MOV EDI,[ESI+8]` makes `EDI` the unit, and **every** structure field this function reads -
+`+BB0h`, `+BB4h`, `+BB8h`, `+BC4h`, `+838h`, `+900h`, `+5Dh`, `+C36h`, `+C37h`, `+C3Ch`, `+C64h`,
+`+C68h` - is `EDI`-based. Writing them `ctl+BB0h`, as this doc did throughout, sends a reader to the
+wrong object by one indirection. `include/bsp/plane_flight.hpp` never had this wrong; its comment
+says "the pilot control block, **unit+9E4h**". Only the namespace's name suggests a controller base.
+
+The three axis fields the law WRITES - `+48h`, `+4Ch`, `+50h` - are genuinely `ctl`-relative
+(`ESI`-based), so the two bases really are mixed inside one function, which is how the confusion
+started. It is not an excuse: `007DA72D` is the twelfth instruction.
+
+### Two open items closed by the same packet
+
+The **ground gate**: `007DA8D9 CMP [ESI+FCh],1` / `007DA8E3 JNZ 007DA8EB` zeroes the roll target
+when the mode **is** 1, on the ground. The Ghidra plate comment inherited from packet
+`cc2_plane_flight` has this backwards - "discarded when controller+FCh is not 1" - and is corrected
+in the ledger by this packet.
+
+The **flag**: `007DA9F5 JZ 007DAA7C` gates a block that adds the yaw slide term and the yaw-roll
+coupling. Free flight sets the flag to 1, so in the air both apply. On the ground the flag comes
+from `007DA542`, unread, so whether the coupling is added back onto a roll target `007DA8E5` has
+just zeroed is open.
+
+The three complete target expressions are in **`docs/PLANE_CONTROL_TARGETS.md`**.

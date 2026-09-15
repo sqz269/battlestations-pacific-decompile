@@ -76,6 +76,12 @@ def main():
     parser.add_argument('address')
     parser.add_argument('--limit', type=int, default=700)
     parser.add_argument('--filter', default='', help='only print lines containing this')
+    parser.add_argument('--indirect-pops', type=int, default=None,
+                        help='assume every indirect CALL pops this many bytes instead of '
+                             'marking the rest of the walk unknown. There is no safe '
+                             'default: use the pushed-since-last-call figure the walker '
+                             'reports at each indirect call, and only when you have '
+                             'established the callee convention.')
     args = parser.parse_args()
 
     text = run(['ghidra', 'disasm', args.address, '--limit', str(args.limit)])
@@ -108,10 +114,26 @@ def main():
     depth = 0
     unknown = False
     cache = {}
+    # Bytes pushed since the last CALL of any kind. At an indirect call this is
+    # the argument block a __stdcall or __thiscall callee would pop, which is the
+    # number the analyst needs in order to correct the walk.
+    pushed_since_call = 0
+    indirect_pops = args.indirect_pops
+    crossed_return = False
+    warned_return = False
+    last_ret = ''
     for address, text_ in lines:
         note = ''
         upper = text_.upper()
         before = depth
+        if crossed_return and not warned_return:
+            warned_return = True
+            print('*** the walk has crossed a RET at %s. This is a LINEAR walk: the '
+                  'epilogue it just stepped through popped a depth that belongs to a '
+                  'different path, so every depth and frame below here is offset by '
+                  'that epilogue. Add back the POPs and ADD ESP of every epilogue '
+                  'crossed (4 bytes per POP) to recover the true frame. Relative '
+                  'comparisons within one basic block are still sound.' % last_ret)
 
         for operand in ESP_OPERAND.finditer(text_):
             if unknown:
@@ -120,12 +142,21 @@ def main():
             note += '  frame=%d(0x%x)' % (imm(operand.group(1)) - depth,
                                           (imm(operand.group(1)) - depth) & 0xffffffff)
 
+        # A RET ends a path, and the walk is LINEAR - the next instruction belongs
+        # to some other basic block that a jump reaches from above the epilogue.
+        # So every epilogue the walk crosses subtracts its own POPs and ADD ESP
+        # from a depth that was never theirs. 0099D0A0's two early returns put
+        # its whole main body 64 bytes out, which is enough to make the wrong
+        # stack slot look like the right one. The walk cannot fix this without a
+        # control-flow graph, so it says so, loudly, once per crossing.
         if upper.startswith('PUSH'):
             depth += 4
+            pushed_since_call += 4
         elif upper.startswith('POP'):
             depth -= 4
         elif upper.startswith('SUB ESP,'):
             depth += imm(text_.split(',')[1].strip())
+            pushed_since_call += imm(text_.split(',')[1].strip())
         elif upper.startswith('ADD ESP,'):
             depth -= imm(text_.split(',')[1].strip())
         else:
@@ -139,9 +170,30 @@ def main():
                     depth -= cleanup
                     if cleanup:
                         note += '  [callee pops %d]' % cleanup
+                pushed_since_call = 0
             elif 'CALL' in upper:
-                unknown = True
-                note += '  [INDIRECT CALL - cleanup unknown, frame unknown after this]'
+                # An indirect call's callee cannot be resolved, so its cleanup is
+                # unknowable and everything after it is marked frame=?. That is
+                # safe but unhelpful, and two packets have had to correct the
+                # walk by hand here - so report the pushes standing since the
+                # last call, which is what the cleanup will be if the callee is
+                # __stdcall or __thiscall. The analyst supplies the answer with
+                # --indirect-pops; the walker never guesses it.
+                if indirect_pops is None:
+                    unknown = True
+                    note += ('  [INDIRECT CALL - %d bytes pushed since the last call; '
+                             'cleanup unknown, frame unknown after this. Re-run with '
+                             '--indirect-pops N to assume a cleanup]' % pushed_since_call)
+                else:
+                    depth -= indirect_pops
+                    note += ('  [INDIRECT CALL - assuming it pops %d (--indirect-pops); '
+                             '%d bytes had been pushed since the last call]'
+                             % (indirect_pops, pushed_since_call))
+                pushed_since_call = 0
+
+        if upper.startswith('RET'):
+            crossed_return = True
+            last_ret = address
 
         if args.filter and args.filter.upper() not in upper:
             continue

@@ -1,0 +1,171 @@
+{
+  "packet": "orch6_resource_group_ownership_bc",
+  "status": "source_ownership_integration_build_and_focused_fixture_tested",
+  "worker_dispatches": 0,
+  "native": {
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "spans": [
+      {
+        "entry": "00b8f680",
+        "end": "00b8f6e5",
+        "bytes": 102,
+        "sha256": "6684d19ff491a5a4cc0e27a08de6ef74b938a478b97def897c5ba61ebd0ac562",
+        "live_disk_equal": true
+      },
+      {
+        "entry": "00b8f8c0",
+        "end": "00b8f8df",
+        "bytes": 32,
+        "sha256": "0b3372729ddf58c38abf77fd87bc82a4717aee15de7e128c26877c6c8cab6d6f",
+        "live_disk_equal": true
+      },
+      {
+        "entry": "00b8f4f0",
+        "end": "00b8f538",
+        "bytes": 73,
+        "sha256": "7df342027caecee78d82115d8f69ba9a0168e7b7ac5bad74efa76e9ab604d62b",
+        "live_disk_equal": true
+      },
+      {
+        "entry": "00b8f460",
+        "end": "00b8f4b6",
+        "bytes": 87,
+        "sha256": "4dad3ac0b7279718f5eb6fe5ee8aab8ea046fa1b709fea96c7e0933b2dee1213",
+        "live_disk_equal": true
+      }
+    ],
+    "unwind_and_constants": [
+      {
+        "entry": "00d634f8",
+        "bytes": 88,
+        "sha256": "f59b0caec65eb336d74bd451a0fce1696b1e4a0c2d1ffd1db44dbb2e39ba2721"
+      },
+      {
+        "entry": "00d62c88",
+        "bytes": 88,
+        "sha256": "abf911873a8d5a0f1016b627e3be77a3aa83dc97542846f011e901aefaf1c0a9"
+      }
+    ]
+  },
+  "calls": [
+    {
+      "function": "00b8f680",
+      "address": "00b8f6b6",
+      "native": "0059fce0"
+    },
+    {
+      "function": "00b8f680",
+      "address": "00b8f6be",
+      "native": "00bf6989"
+    },
+    {
+      "function": "00b8f680",
+      "address": "00b8f6d0",
+      "native": "00b6f440"
+    },
+    {
+      "function": "00b8f8c0",
+      "address": "00b8f8c3",
+      "native": "00b8f680"
+    },
+    {
+      "function": "00b8f8c0",
+      "address": "00b8f8d5",
+      "native": "00b8ed40"
+    },
+    {
+      "function": "00b8f4f0",
+      "address": "00b8f511",
+      "native": "00b7bed0"
+    },
+    {
+      "function": "00b8f4f0",
+      "address": "00b8f52f",
+      "native": "00b8f460"
+    },
+    {
+      "function": "00b8f460",
+      "address": "00b8f494",
+      "native": "0059e5e0"
+    }
+  ],
+  "boundaries": [
+    "Source integration fixture, not original native destructor/FH3 execution.",
+    "Existing canonical scene/backlink companion projection and raw-node materialization limits remain.",
+    "No populated scene/resource graph admission or gameplay claim."
+  ],
+  "validation": {
+    "strict_win32": true,
+    "existing_ctests": 2,
+    "source_ownership_sequences": 1,
+    "adopted_owners": 2,
+    "duplicate_binding_refusals": 2,
+    "parent_child_links": 1,
+    "ordered_terminal_releases": 2,
+    "exact_slot_returns": 2,
+    "call_rows": 8,
+    "call_failures": 0,
+    "complete_new_native_bodies": 0,
+    "reference_bodies": 4,
+    "reference_bytes": 294,
+    "original_destructor_execution": false,
+    "source_sha256": {
+      "include/bsp/native_group_owner.hpp": "bddbb20587b3ca88288bb63e3575801b7390575a80ea18a413792b00063e496d",
+      "src/native_group_owner.cpp": "f9dfdbe054ffaaeef3439e38cdeaef9ec49fc69b628c2060c6fd408180193fa1"
+    },
+    "output_sha256": {
+      "owner_0_adopted.bin": "967dfd698eb5fae281b82caca8ba2c429abfa7b7375365d843c570c381c9d972",
+      "owner_0_before.bin": "967dfd698eb5fae281b82caca8ba2c429abfa7b7375365d843c570c381c9d972",
+      "owner_1_adopted.bin": "bf89fdc7e895e84b8372de7b12ff999d070dc05168c0046bb09ebcf65f6c7ebc",
+      "owner_1_before.bin": "bf89fdc7e895e84b8372de7b12ff999d070dc05168c0046bb09ebcf65f6c7ebc"
+    },
+    "scope": "Adopt actual factory groups into the canonical scene/lifetime/backlink companions without changing native bytes, then destroy through the same raw string domain. Source parent-child release sequence verifies both names and captured pool slots. No original destructor/FH3 execution, populated scene or executable graph admission, or gameplay proof.",
+    "saved_annotations": 2
+  },
+  "fixture_corrections": [
+    "Initial reverse-array assertion failed; full B8F4F0/B8F460 listing confirms publish-before-equality guard means no append. Existing parenting source was preserved."
+  ],
+  "functions": [
+    {
+      "address": "00b8f680",
+      "ghidra_name": "BSP_Group_Destroy",
+      "name": "BSP_Group_Destroy",
+      "source": "src/native_group_owner.cpp",
+      "bytes": 102,
+      "status": "source_ownership_integration_build_and_focused_fixture_tested",
+      "evidence": "BC composes existing complete group destructor with the NativeNodeDestructionRuntime immutable name domain. Raw factory owners call full B6F440 with require_raw_name_pool; existing semantic owners retain their provider. Actual178 array shrink/free precedes node destruction; companion unbinding remains after native cleanup. New NativeGroupOwner constructed-storage adoption does not reconstruct, retain or modify native words; failed binding preserves the caller owner. Hypothesis, not a recovered symbol. Strict Win32/two CTests, one source ownership sequence with two adoptions, duplicate refusals, ordered terminal releases and exact slot returns; eight native call rows pass. Original native destructor/FH3, populated scenes, executable graph admission and gameplay remain unproved. docs/NATIVE_RESOURCE_GROUP_OWNERSHIP_BC.md; reports/native_resource_group_ownership_bc.json."
+    },
+    {
+      "address": "00b8f8c0",
+      "ghidra_name": "BSP_Group_DeletingDestructor",
+      "name": "BSP_Group_DeletingDestructor",
+      "source": "src/native_group_owner.cpp",
+      "bytes": 32,
+      "status": "source_ownership_integration_build_and_focused_fixture_tested",
+      "evidence": "BC verifies the existing32-byte deleting-destructor composition through raw factory ownership. Destroy group first, return captured actual18Ch slot to same010902F4 pool iff flags bit0, then retire canonical scene/lifetime companion. Source parent-child logical release verifies child then root cleanup and exact pool-slot recovery; both raw names use their original domain. No new native body or original destructor execution is claimed. Hypothesis, not a recovered symbol. Strict Win32/two CTests, one source ownership sequence with two adoptions, duplicate refusals, ordered terminal releases and exact slot returns; eight native call rows pass. Original native destructor/FH3, populated scenes, executable graph admission and gameplay remain unproved. docs/NATIVE_RESOURCE_GROUP_OWNERSHIP_BC.md; reports/native_resource_group_ownership_bc.json."
+    }
+  ],
+  "proof": {
+    "manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\resource_group_ownership_bc\\manifest.json",
+      "bytes": 172759,
+      "sha256": "0120e4c7df07a667e7e5520c6917e10a65e66dd45cb7862e360ee23fc7c5e197"
+    },
+    "source_commit": "395c538eaea69eaaa570f610c6becaccfb29b868",
+    "implementation_commit": "395c538eaea69eaaa570f610c6becaccfb29b868",
+    "build_checkout_head": "d27cd068dec478b34721ca456d6c7a41a5d6cf64",
+    "build_had_owned_source_changes": true,
+    "inputs": 398,
+    "artifacts": 55,
+    "fixture_production_objects": 36,
+    "complete_new_native_bodies": 0,
+    "reference_bytes": 294,
+    "saved_annotations": 2,
+    "source_ownership_sequences": 1,
+    "adopted_owners": 2,
+    "duplicate_binding_refusals": 2,
+    "ordered_terminal_releases": 2,
+    "exact_slot_returns": 2
+  }
+}

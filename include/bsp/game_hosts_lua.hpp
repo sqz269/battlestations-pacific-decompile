@@ -34,6 +34,7 @@
 #include "bsp/mission_load_hosts.hpp"
 #include "bsp/mission_lua_host.hpp"
 #include "bsp/ship_ai_obstacle_tables.hpp"
+#include "bsp/game_tuning_singleton.hpp"
 #include "bsp/unit_rudder_curve.hpp"
 #include "bsp/vehicle_class_lua_load.hpp"
 
@@ -93,6 +94,28 @@ struct GameVehicleClassRow {
     // 1.0f. 00937C90 puts it in the body descriptor's +04h at 009399F7 and
     // 00937CF1 compares it against 100.0 to choose the physics material.
     float mass{0.0f};
+    // The plane rate and acceleration keys 007D1F70 reads into the plane class
+    // descriptor. src/plane_class_fields.cpp carries the store address for each
+    // one; the key spellings here are that reader's, not guesses. They are zero
+    // on a ship row, which is correct - only a plane row carries them.
+    //
+    // CAVEAT that has to travel with the numbers: vehicleclasses.lua is the one
+    // file in this installation's scripts/datatables that carries a local
+    // modification date, so these are this installation's plane rates and not
+    // provably retail. The tuning in planeglobals.lua is a separate question
+    // (docs/PLANE_CONTROL_RATE_LAW.md).
+    float roll_spd{0.0f};             // desc+1A8h, 007D2530
+    float pitch_spd{0.0f};            // desc+1ACh, 007D2569
+    float yaw_spd{0.0f};              // desc+1B0h, 007D25A2
+    float yaw_roll_ratio{0.0f};       // desc+1B4h
+    float slide_ratio{0.0f};          // desc+1B8h
+    float roll_accel{0.0f};           // desc+1BCh
+    float pitch_accel{0.0f};          // desc+1C0h, 007D2731
+    float yaw_accel{0.0f};            // desc+1C4h
+    float negative_pitch_ratio{0.0f}; // desc+1D8h
+    float plane_stall_spd{0.0f};      // desc+184h, 007D2351
+    float turn_roll_spd{0.0f};        // desc+1C8h, 007D25DB
+    float turn_roll{0.0f};            // desc+25Ch, 007D289B - the bank normaliser
 };
 
 // Actual selected class+570 bits and the existing producer's provenance.
@@ -229,6 +252,24 @@ public:
     // recovered file runner 00885110 on that state and records 00b69d40.
     // Returns true when the global is a table afterwards.
     bool load_ship_globals_0083b6e6();
+
+    // 007E2A20 BSP_GameTuning_LoadFromPlaneGlobals, driven by the reconstruction
+    // in bsp/game_tuning_singleton.hpp over the live interpreter. The native
+    // runs Scripts/datatables/PlaneGlobals.lua in a PRIVATE Lua state and copies
+    // 423 key paths into a 6D0h-byte singleton, whose first 312 bytes it then
+    // mirrors into the globals at 00F872F0 with one REP MOVSD at 007EAAE1 - the
+    // rotation factors 007DA710 reads are three of them
+    // (docs/PLANE_CONTROL_RATE_LAW.md). This process has one Lua state, so the
+    // script runs on the mission state the same way ShipGlobals does.
+    //
+    // Returns true when the `PlaneGlobals` global is a table afterwards. The
+    // block is left at its defaults when it is not; the native has no such
+    // fallback, because operator new hands it raw storage and it would read
+    // whatever was there.
+    bool load_plane_globals_007e2a20();
+    // The loaded block. All zeroes until load_plane_globals_007e2a20 succeeds.
+    const GameTuningBlock& plane_globals() const noexcept { return plane_globals_; }
+    bool plane_globals_loaded() const noexcept { return plane_globals_loaded_; }
 
     // Stored settings+4 projection: loader store 0083BCD5, mutable mission
     // binding store 008D0852. False means no producer has established it and
@@ -426,6 +467,15 @@ private:
         std::vector<std::uint8_t> bytes;
         bool open{false};
     };
+
+    // 007E2A20's 6D0h-byte block, as far as kGameTuningKeys names it. Value
+    // initialised rather than left raw, which is a deliberate divergence:
+    // operator new at 0042E7A2 hands the native raw storage and it writes only
+    // the keys, so a key the data file omits reads whatever was there. Zero is
+    // the honest stand-in and plane_globals_loaded_ says whether any of it is
+    // real.
+    GameTuningBlock plane_globals_{};
+    bool plane_globals_loaded_{false};
 
     GameHostLog& log_;
     GameVfsHost& vfs_;

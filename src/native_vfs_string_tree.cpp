@@ -1,4 +1,6 @@
 #include "bsp/native_vfs_string_tree.hpp"
+#include "bsp/detail/native_tree_insert_storage.hpp"
+#include "bsp/detail/native_tree_subtree_storage.hpp"
 #include "bsp/native_hardware_layout_tree.hpp"
 #include "bsp/native_string.hpp"
 #include "bsp/singleton_lifetime.hpp"
@@ -129,15 +131,13 @@ void increment_native_vfs_string_iterator_004be730(void* iterator,
 }
 void erase_native_vfs_string_subtree_004cec60(void* tree, void* node,
     NativeStringStorage& storage) noexcept {
-    if (sentinel(node)) return;
-    do {
-        erase_native_vfs_string_subtree_004cec60(tree, right(node), storage);
-        auto* const data = static_cast<char*>(word(node, 0x10));
-        auto* const next = left(node); // captured before getter/return/free
-        if (data != nullptr) storage.release(data, number(node, 0x0c) + std::uint32_t{1});
-        singleton_lifetime_free(node);
-        node = next;
-    } while (!sentinel(node));
+    (void)tree;
+    detail::erase_tree_subtree_right_first<detail::TreeInsertAccess<0x14, 0x15>>(node,
+        [](void* current) { return static_cast<char*>(word(current, 0x10)); },
+        [&storage](void* current, char* data) {
+            if (data != nullptr)
+                storage.release(data, number(current, 0x0c) + std::uint32_t{1});
+        }, [](void* current) { singleton_lifetime_free(current); });
 }
 
 void* erase_native_vfs_string_iterator_004cf8a0(void* tree, void* output,

@@ -7,8 +7,10 @@
 
 namespace bsp {
 
-void* delete_native_plain_node_00b6f8d0(NativeNodeDestructionRuntime& nodes,
-    NativeNodeBinding& binding, NativeStringStorage& strings, void* pool,
+namespace {
+template<class Strings>
+void* delete_plain_node(NativeNodeDestructionRuntime& nodes,
+    NativeNodeBinding& binding, Strings& strings, void* pool,
     std::uint32_t flags) {
     void* const original = &binding.storage;
     try {
@@ -21,12 +23,29 @@ void* delete_native_plain_node_00b6f8d0(NativeNodeDestructionRuntime& nodes,
     if (flags & 1u) return_native_node_pool_slot_00b6e490(pool, original);
     return original;
 }
+} // namespace
+void* delete_native_plain_node_00b6f8d0(NativeNodeDestructionRuntime& nodes,
+    NativeNodeBinding& binding, NativeStringStorage& strings, void* pool, std::uint32_t flags) {
+    return delete_plain_node(nodes, binding, strings, pool, flags);
+}
+void* delete_native_plain_node_00b6f8d0(NativeNodeDestructionRuntime& nodes,
+    NativeNodeBinding& binding, NativeStringRawPoolContext& strings, void* pool, std::uint32_t flags) {
+    return delete_plain_node(nodes, binding, strings, pool, flags);
+}
 
 NativePlainNodeReference::NativePlainNodeReference(NativeNodeBinding& node,
     NativeNodeDestructionRuntime& nodes, NativeStringStorage& strings, void* pool,
     const volatile std::uint32_t* table, NativePlainNodeCompanionDisposal disposal)
+    : NativePlainNodeReference(node, nodes, &strings, nullptr, pool, table, disposal) {}
+NativePlainNodeReference::NativePlainNodeReference(NativeNodeBinding& node,
+    NativeNodeDestructionRuntime& nodes, NativeStringRawPoolContext& strings, void* pool,
+    const volatile std::uint32_t* table, NativePlainNodeCompanionDisposal disposal)
+    : NativePlainNodeReference(node, nodes, nullptr, &strings, pool, table, disposal) {}
+NativePlainNodeReference::NativePlainNodeReference(NativeNodeBinding& node,
+    NativeNodeDestructionRuntime& nodes, NativeStringStorage* semantic, NativeStringRawPoolContext* raw,
+    void* pool, const volatile std::uint32_t* table, NativePlainNodeCompanionDisposal disposal)
     : RenderCommandReference(node.storage.references_04), node_(node), nodes_(nodes),
-      strings_(strings), pool_(pool), table_(table), disposal_(disposal) {
+      semantic_strings_(semantic), raw_strings_(raw), pool_(pool), table_(table), disposal_(disposal) {
     if (!pool || !table || !disposal.retire || node.storage.vtable_00 != 0x00d62c88u ||
         table[0] != 0x00bd30e0u || table[1] != 0x00b6f8d0u ||
         table[3] != 0x00b6f570u || table[13] != 0x00b6e870u ||
@@ -91,7 +110,8 @@ void NativePlainNodeReference::release_zero_references() noexcept {
     phase_ = Phase::destroying;
     auto& lifetime = nodes_.attachments;
     const auto disposal = disposal_;
-    delete_native_plain_node_00b6f8d0(nodes_, node_, strings_, pool_, 1);
+    if (raw_strings_) delete_native_plain_node_00b6f8d0(nodes_, node_, *raw_strings_, pool_, 1);
+    else delete_native_plain_node_00b6f8d0(nodes_, node_, *semantic_strings_, pool_, 1);
     lifetime.unbind(*this);
     phase_ = Phase::retired;
     disposal.retire(disposal.context, *this);

@@ -1,5 +1,9 @@
 #include "bsp/plane_ai_control.hpp"
 
+#include <cmath>
+
+#include "bsp/unit_rudder.hpp"
+
 #include <cstring>
 
 // Reconstruction of the plane AI's control-writing step. docs/PLANE_AI_CONTROL.md carries the
@@ -306,6 +310,211 @@ float bomb_load_fraction_006e4130(const BombLoadFraction& in) {
     const int numerator = in.single ? in.remaining + in.pending : in.remaining;  // 006E414E
     // 006E415C / 006E3720 FIDIV: an integer divide of an integer-converted numerator.
     return static_cast<float>(numerator) / static_cast<float>(in.capacity);
+}
+
+
+
+PilotBotPitchResult pilot_pitch_demand_0099e490(const PilotBotPitchInputs& in) {
+    PilotBotPitchResult out;
+
+    // 0099E496-0099E4CC. The bank fraction and the heading ramp, multiplied.
+    // hdgRamp is path-dependent in the native - it holds this interpolation only
+    // on the pass that re-planned the bank target, and 0.0f otherwise - so a
+    // caller that never re-plans the bank gets the lowest floor. That coupling
+    // between the two arms is deliberate in the original and is preserved by
+    // making the ramp an explicit input rather than recomputing it here from
+    // whatever is to hand.
+    float bank_fraction = 0.0f;
+    if (in.turn_roll != 0.0f) {
+        bank_fraction = std::fabs(in.bank) / in.turn_roll;
+    }
+    if (bank_fraction > 1.0f) {
+        bank_fraction = 1.0f;                                  // 0099E4AA
+    }
+    const float hdg_ramp = interpolate_clamped(
+        in.pitch_turn_hdg_range_1, 0.0f, in.pitch_turn_hdg_range_2, 1.0f,
+        std::fabs(in.heading_error));                          // 0099E07E
+    const float q = bank_fraction * hdg_ramp;                  // 0099E4CC
+
+    // 0099E4DC-0099E512. The floor: PitchTurnMaxPitch when the turn is hard,
+    // 2.5 radians below it when the plane is level and on heading. It is applied
+    // unconditionally on every pass of the law, and it can only RAISE the
+    // target - which is the whole of what stops a bot flying into the sea.
+    const float floor_target = in.pitch_turn_max_pitch -
+        static_cast<float>(2.5 * (1.0 - static_cast<double>(q)));
+    out.floored_target = (floor_target > in.pitch_target) ? floor_target : in.pitch_target;
+
+    // 0099E51A-0099E554. The measured angle has a sideslip correction taken off
+    // it - note the sin(bank) is SQUARED, and note it is subtracted from the
+    // measurement rather than from the target.
+    const float sin_bank = std::sin(in.bank);
+    const float cos_bank = std::cos(in.bank);
+    const float correction = sin_bank * sin_bank * std::cos(in.pitch) *
+        in.slide_ratio * in.yaw_spd * in.pitch_ctrl_set_time_mul;
+    const float measured = in.held_pitch - correction;
+    const float error = wrapped_angle_subtract_00438b10(out.floored_target, measured);
+
+    // 0099E5D7-0099E689. The demand is the required pitch rate divided by the
+    // rate one unit of elevator buys, so it collapses toward knife-edge where
+    // cos(bank) goes to zero - which is what the 0.001f guard and its
+    // hundred-fold fallback exist for.
+    const float authority = in.control_authority * 0.9f + 0.1f;   // 0099E5FC
+    const bool inverted = cos_bank < 0.0f;                        // 0099E5EB
+    const float k = inverted ? in.negative_pitch_ratio : 1.0f;    // 0099E61C
+    const float n = (in.dt_scale != 0.0f) ? error / in.dt_scale : error;
+    const float x = in.pitch_spd * authority * cos_bank;          // 0099E63A
+    const float d = x * k * in.pitch_ctrl_set_time_mul;           // 0099E644
+    if (std::fabs(d) > 0.001f) {
+        out.demand = n / d;
+    } else {
+        const float sign = (cos_bank > 0.0f) ? 1.0f : ((cos_bank < 0.0f) ? -1.0f : 0.0f);
+        out.demand = static_cast<float>(static_cast<double>(n) * 100.0 *
+                                        static_cast<double>(sign));
+    }
+    return out;
+}
+
+
+
+float pilot_heading_diff_0099d0a0(const PilotHeadingDiffInputs& in) {
+    // 0099D0A6: no unit, no answer. 00CE3800 = 0.5f.
+    if (in.unit_is_null) {
+        return 0.5f;
+    }
+    const float w = in.bank_request;
+    const float magnitude = std::fabs(w);           // 0099D0C2-0099D0DF, the -0.0f idiom
+    // 0099D0E9: below 0.1 the roll-out sweep is not worth computing and the
+    // function answers with the request negated. 00D7A3A0 is the float 0.1
+    // widened to a double.
+    if (static_cast<double>(0.1f) > static_cast<double>(magnitude)) {
+        return -w;                                  // 0099D0F5-0099D0FF, FCHS
+    }
+
+    // 0099D181: the magnitude is clamped IN PLACE into [HdgDiffCalcMinRoll, 1.5].
+    float clamped = magnitude;
+    if (clamped < in.hdg_diff_calc_min_roll) clamped = in.hdg_diff_calc_min_roll;
+    if (clamped > 1.5f) clamped = 1.5f;             // 00CE380C
+
+    // 0099D14D-0099D165: the pitch command, floored.
+    float pitch_command = in.pitch_command;
+    if (in.hdg_diff_calc_min_pitch > pitch_command) {
+        pitch_command = in.hdg_diff_calc_min_pitch;
+    }
+
+    // 0099D1B4, and the cap at 0099D1C2-0099D1EA for the two entity kinds.
+    float rate = interpolate_clamped(0.0f, in.hdg_diff_calc_limit_1,
+                                     in.turn_roll, in.hdg_diff_calc_limit_2, clamped);
+    if (in.caps_rate_at_one && rate >= 1.0f) {
+        rate = 1.0f;
+    }
+
+    // 0099D1F6-0099D210: the roll-out time. Bank over roll rate, plus a
+    // 1/RollAccel allowance for starting the roll.
+    const float roll_out_time =
+        (in.roll_spd != 0.0f && rate != 0.0f ? clamped / in.roll_spd / rate : 0.0f) +
+        (in.roll_accel != 0.0f ? 1.0f / in.roll_accel : 0.0f);
+
+    // 0099D25B-0099D2AB: the turn rate the airframe holds at that bank, summed
+    // over its turn-roll, elevator, sideslip-yaw and a constant yaw floor. The
+    // 0.8 at 0099D2A3 is a double.
+    // CORRECTED. The first term takes cos of the PITCH angle, not of the roll.
+    // 0099D255's POP EDI shifts every later [ESP+n] by four, so 0099D256's
+    // [ESP+0x10] is the slot 0099D22E wrote - cos(pitch) - and not the one
+    // 0099D224 wrote. Reading the literal offset across a POP is the trap this
+    // project has tools and memory entries about, and it still caught me here.
+    // Only the pitch COMMAND enters linearly; both trig terms below are angles.
+    const float cos_pitch = std::cos(in.pitch_angle);
+    const float cos_bank = std::cos(clamped);
+    float turn_rate = in.turn_roll_spd * cos_pitch;
+    turn_rate += in.pitch_spd * pitch_command;
+    turn_rate += in.yaw_spd * in.slide_ratio * cos_pitch * cos_bank;
+    // 00CE3D40 is 3FE99999A0000000h - the exact widening of the FLOAT 0.8f, not
+    // the nearest double to 0.8. Same for the 0.1 threshold above (00D7A3A0).
+    // Writing the decimal literal loses bit-identity.
+    turn_rate = static_cast<float>(static_cast<double>(turn_rate) +
+                                   static_cast<double>(0.8f) *
+                                       static_cast<double>(in.yaw_spd));
+
+    // 0099D2AF-0099D2BD, then the sign from the ORIGINAL argument at 0099D244.
+    const float sweep = turn_rate * std::sin(clamped) * roll_out_time;
+    return (w >= 0.0f) ? -sweep : sweep;            // 0099D2C1
+}
+
+PilotBotRollResult pilot_plan_roll_0099e2ba(const PilotBotRollInputs& in) {
+    PilotBotRollResult out;
+    const float h = in.heading_error;
+    const float abs_bank = std::fabs(in.bank);
+
+    // 0099DFAA-0099DFF3: how far the plane is allowed to bank for this turn.
+    const float cap = in.small_turn_roll_limit ? in.turn_roll_limit_small
+                                               : in.turn_roll_limit_large;
+    float max_bank = in.turn_scale_2e8 * in.scale.turn_roll;
+    if (cap < max_bank) max_bank = cap;
+
+    // 0099E07E. This ramp is shared with the PITCH arm's floor, which is why it
+    // comes back in the result: the two arms read the same slot on purpose, and
+    // a pass that does not re-plan the bank leaves the pitch floor at its lowest.
+    out.hdg_ramp = interpolate_clamped(in.pitch_turn_hdg_range_1, 0.0f,
+                                       in.pitch_turn_hdg_range_2, 1.0f, std::fabs(h));
+
+    // 0099E087-0099E0CA: the heading sweep a roll-out from this bank would add,
+    // with a floor so the division below cannot blow up.
+    float w = static_cast<float>(1.5 * static_cast<double>(abs_bank));
+    if (w > max_bank) w = max_bank;
+    PilotHeadingDiffInputs scale = in.scale;
+    scale.bank_request = w;
+    const float raw_scale = pilot_heading_diff_0099d0a0(scale);
+    float c = raw_scale;
+    if (!(std::fabs(raw_scale) > 0.01f)) {
+        c = (raw_scale < 0.0f) ? -0.1f : 0.01f;     // 00CE3CB4, 00D7A238
+    }
+
+    // 0099E17B-0099E19E: a deadband of 30 percent of the scale, then the bank
+    // the remaining error asks for, capped at max_bank.
+    const float s = interpolate_clamped(-c, static_cast<float>(-0.3 * static_cast<double>(c)),
+                                        c, static_cast<float>(0.3 * static_cast<double>(c)), h);
+    float raw = (c != 0.0f) ? (h - s) / c : 0.0f;
+    if (raw < -1.0f) raw = -1.0f;
+    if (raw > 1.0f) raw = 1.0f;
+    raw *= max_bank;
+
+    // 0099E1CC-0099E23E: the bank limit is scheduled on the PITCH error, which
+    // is what the tuning key name TurnRollPitchLimit says it should be.
+    float limit = interpolate_clamped(in.turn_roll_pitch_limit_pitch_1,
+                                      in.turn_roll_pitch_limit_roll_1,
+                                      in.turn_roll_pitch_limit_pitch_2,
+                                      in.turn_roll_pitch_limit_roll_2, in.pitch_error);
+    if (abs_bank > limit) limit = abs_bank;
+    if (limit < -2.0f) limit = -2.0f;
+    if (limit > 2.0f) limit = 2.0f;
+    out.bank_target = raw;
+    if (out.bank_target < -limit) out.bank_target = -limit;
+    if (out.bank_target > limit) out.bank_target = limit;
+
+    // 0099E27B: and the per-task bank limit, when it is tighter than pi.
+    if (static_cast<double>(in.bank_limit_2c8) < 3.14159274) {
+        if (out.bank_target < -in.bank_limit_2c8) out.bank_target = -in.bank_limit_2c8;
+        if (out.bank_target > in.bank_limit_2c8) out.bank_target = in.bank_limit_2c8;
+    }
+
+    // 0099E2CE-0099E390, the servo. The sign is INVERTED: a positive bank error
+    // yields a negative roll command.
+    float v = wrapped_angle_subtract_00438b10(out.bank_target, in.bank);
+    if (in.dt_scale != 0.0f) v /= in.dt_scale;
+    const float a_mag = std::fabs(v);
+    float a = 0.0f;
+    if (in.soft_roll_ctrl > a_mag) {
+        a = v * in.soft_roll_mul;                   // 0099E30E
+    } else {
+        a = (v > 0.0f) ? v - in.soft_roll_offset : v + in.soft_roll_offset;   // 0099E332
+    }
+    // 0099E357: the servo's own scale, a pure class/tuning product with no
+    // runtime guard - so the t == 0 case really can happen and really does
+    // return the interpolation's y0 of +1.0f.
+    const float denom = in.roll_accel * in.waggle_limit;
+    const float t = (denom != 0.0f) ? in.roll_spd * in.roll_spd / denom : 0.0f;
+    out.desired = interpolate_clamped(-t, 1.0f, t, -1.0f, a);   // 0099E390
+    return out;
 }
 
 }  // namespace bsp

@@ -229,6 +229,21 @@ GameVehicleClassRow GameMissionLuaHost::read_vehicle_class_row(int index) {
             row.max_rot_angle = number("MaxRotAngle");
             row.max_rot_angle_change_ratio = number("MaxRotAngleChangeRatio");
             row.length = number("Length");
+            // The plane rate/accel keys, in the spellings 007D1F70's reader
+            // uses (src/plane_class_fields.cpp:301-311). A ship row has none of
+            // them and reads zero, which is what a caller should see.
+            row.roll_spd = number("RollSpd");
+            row.pitch_spd = number("PitchSpd");
+            row.yaw_spd = number("YawSpd");
+            row.yaw_roll_ratio = number("YawRollRatio");
+            row.slide_ratio = number("SlideRatio");
+            row.roll_accel = number("RollAccel");
+            row.pitch_accel = number("PitchAccel");
+            row.yaw_accel = number("YawAccel");
+            row.negative_pitch_ratio = number("NegativePitchRatio");
+            row.plane_stall_spd = number("StallSpd");
+            row.turn_roll_spd = number("TurnRollSpd");
+            row.turn_roll = number("TurnRoll");
             // 00960363 uses bare GetNumber, including numeric strings and
             // the native float32 spill. Other row readers keep their scope.
             ::lua_getfield(state_, -1, "Width");
@@ -374,6 +389,283 @@ bool GameMissionLuaHost::load_ship_globals_0083b6e6() {
         ok ? 1 : 0, kShipGlobalsGlobal, table ? "a table" : "absent");
     return table;
 }
+
+namespace {
+
+// The two script paths 007E2A20 runs, in its order, and the global the second
+// defines; include/bsp/game_tuning_singleton.hpp carries the literals. These are
+// the forward-slash spellings this process's VFS takes, matching
+// kShipGlobalsScriptPath above.
+constexpr const char* kPlaneGlobalsConstantsPath = "Scripts/global/luaMW_init.lua";
+constexpr const char* kPlaneGlobalsScriptPath = "Scripts/datatables/PlaneGlobals.lua";
+
+// bsp::GameTuningLuaHost over a **private** Lua state.
+//
+// The private state is not a convenience, it is required, and the requirement
+// was found the hard way. 007E2A20 creates its own Lua state owner and runs the
+// two scripts in it; the first run of this adapter used the mission state
+// instead, on the reasoning that this process has one interpreter. That run
+// died at the first unit with "unit observer creator projection is
+// unavailable", because `Scripts/global/luaMW_init.lua` line 432 is
+// `VehicleClass = {}`. Running it on the shared state wipes the table the
+// autoload step filled from vehicleclasses.lua, and every unit afterwards has
+// no class. The native's private state is what keeps that from mattering, so
+// this reproduces it.
+//
+// The file bytes still come through the mission host's VFS - that part is
+// shared and correct - but the chunks run on the private state.
+//
+// A handle is a registry reference, not a stack index, and that is also forced:
+// the recovered driver takes the globals table, then PlaneGlobals out of it,
+// then releases the globals table while still holding the root. Stack indices
+// cannot express that. luaL_ref answers LUA_REFNIL for a nil value and
+// lua_rawgeti pushes nil back for it, so a key the data file omits travels
+// through as nil and lands on the kind's default.
+class LuaGameTuningHost final : public bsp::GameTuningLuaHost {
+public:
+    LuaGameTuningHost(GameMissionLuaHost& owner, GameHostLog& log)
+        : owner_(owner), log_(log) {
+        state_ = luaL_newstate();
+        if (state_ != nullptr) {
+            // The same seven openers 006B8740 step 4 installs on the mission
+            // state, in the order of the pair table at 00CF8350. The private
+            // state gets the libraries the scripts expect and no more;
+            // luaopen_package is absent from the native's table too.
+            for (std::size_t i = 0; i < bsp::kMissionLuaStandardLibraryCount; ++i) {
+                lua_pushcfunction(state_, kLibraryOpeners[i]);
+                lua_pushstring(state_, "");
+                if (lua_pcall(state_, 1, 0, 0) != 0) {
+                    lua_settop(state_, lua_gettop(state_) - 1);
+                }
+            }
+            // 00B6A303 with callback 00B69E00: DoFile is a global the binding
+            // table does not carry, installed separately on the state. The
+            // private state needs it because luaMW_init.lua line 455 calls
+            // DoFile("unlocks.lua") - without it the constants script aborts
+            // there, which leaves the DEG/KMH helpers defined (they are above
+            // it) but everything below it undefined.
+            lua_pushlightuserdata(state_, this);
+            lua_pushcclosure(state_, &LuaGameTuningHost::dofile_trampoline, 1);
+            lua_setfield(state_, LUA_GLOBALSINDEX, "DoFile");
+        }
+    }
+    ~LuaGameTuningHost() override {
+        if (state_ != nullptr) {
+            lua_close(state_);
+        }
+    }
+    LuaGameTuningHost(const LuaGameTuningHost&) = delete;
+    LuaGameTuningHost& operator=(const LuaGameTuningHost&) = delete;
+
+    void run_script(const char* path) override {
+        // 00B69D40, the private state owner's own runner. The bytes come from
+        // the same VFS-backed reader 00885110 uses; only the state differs.
+        log_.implemented("GameTuning::run_script", "00b69d40");
+        if (state_ == nullptr || path == nullptr) {
+            ++script_failures_;
+            return;
+        }
+        const std::string script_path(path);
+        if (!owner_.open_script(script_path)) {
+            ++script_failures_;
+            log_.notef("plane globals: %s did not open", path);
+            return;
+        }
+        const int size = owner_.script_size();
+        std::vector<char> buffer(static_cast<std::size_t>(size < 0 ? 0 : size));
+        owner_.read_script(buffer.empty() ? nullptr : buffer.data(), size);
+        owner_.close_script();
+        if (buffer.empty()) {
+            ++script_failures_;
+            log_.notef("plane globals: %s is empty", path);
+            return;
+        }
+        if (luaL_loadbuffer(state_, buffer.data(), buffer.size(), path) != 0 ||
+            lua_pcall(state_, 0, 0, 0) != 0) {
+            ++script_failures_;
+            const char* message = lua_tolstring(state_, -1, nullptr);
+            log_.notef("plane globals: %s failed: %s", path,
+                message != nullptr ? message : "(no message)");
+            lua_settop(state_, lua_gettop(state_) - 1);
+        }
+    }
+
+    Handle globals() override {
+        log_.implemented("GameTuning::globals", "00b67980");
+        if (state_ == nullptr) return encode(LUA_REFNIL);
+        lua_pushvalue(state_, LUA_GLOBALSINDEX);
+        return encode(luaL_ref(state_, LUA_REGISTRYINDEX));
+    }
+
+    Handle table_field(Handle parent, const char* key) override {
+        log_.implemented("GameTuning::table_field", "00b67800");
+        if (state_ == nullptr) return encode(LUA_REFNIL);
+        push(parent);
+        if (lua_type(state_, -1) != LUA_TTABLE) {
+            lua_settop(state_, lua_gettop(state_) - 1);
+            ++missing_;
+            return encode(LUA_REFNIL);
+        }
+        lua_getfield(state_, -1, key);
+        const int ref = luaL_ref(state_, LUA_REGISTRYINDEX);
+        lua_settop(state_, lua_gettop(state_) - 1);
+        if (ref == LUA_REFNIL) {
+            ++missing_;
+            if (missing_names_.size() < 8 && key != nullptr) {
+                missing_names_.push_back(key);
+            }
+        }
+        return encode(ref);
+    }
+
+    Handle table_element(Handle parent, int one_based_index) override {
+        log_.implemented("GameTuning::table_element", "00b67720");
+        if (state_ == nullptr) return encode(LUA_REFNIL);
+        push(parent);
+        if (lua_type(state_, -1) != LUA_TTABLE) {
+            lua_settop(state_, lua_gettop(state_) - 1);
+            ++missing_;
+            return encode(LUA_REFNIL);
+        }
+        lua_pushinteger(state_, one_based_index);
+        lua_gettable(state_, -2);
+        const int ref = luaL_ref(state_, LUA_REGISTRYINDEX);
+        lua_settop(state_, lua_gettop(state_) - 1);
+        if (ref == LUA_REFNIL) ++missing_;
+        return encode(ref);
+    }
+
+    bsp::GameTuningLuaValue value(Handle handle) override {
+        log_.implemented("GameTuning::value", "00b66270");
+        bsp::GameTuningLuaValue out;
+        out.nil = true;
+        if (state_ == nullptr) return out;
+        push(handle);
+        const int type = lua_type(state_, -1);
+        if (type == LUA_TNUMBER) {
+            out.nil = false;
+            out.number = lua_tonumber(state_, -1);
+            out.boolean = out.number != 0.0;
+        } else if (type == LUA_TBOOLEAN) {
+            out.nil = false;
+            out.boolean = lua_toboolean(state_, -1) != 0;
+            out.number = out.boolean ? 1.0 : 0.0;
+        } else if (type == LUA_TSTRING) {
+            // 00B66270 is a bare GetNumber, so it converts a numeric string.
+            out.nil = false;
+            out.number = lua_tonumber(state_, -1);
+            out.boolean = out.number != 0.0;
+        }
+        lua_settop(state_, lua_gettop(state_) - 1);
+        return out;
+    }
+
+    void number_triple(Handle handle, float out[3]) override {
+        log_.implemented("GameTuning::number_triple", "00b67a80");
+        out[0] = out[1] = out[2] = 0.0f;
+        if (state_ == nullptr) return;
+        push(handle);
+        if (lua_type(state_, -1) == LUA_TTABLE) {
+            for (int i = 0; i < 3; ++i) {
+                lua_pushinteger(state_, i + 1);
+                lua_gettable(state_, -2);
+                if (lua_type(state_, -1) == LUA_TNUMBER) {
+                    out[i] = static_cast<float>(lua_tonumber(state_, -1));
+                }
+                lua_settop(state_, lua_gettop(state_) - 1);
+            }
+        }
+        lua_settop(state_, lua_gettop(state_) - 1);
+    }
+
+    void release(Handle handle) override {
+        log_.implemented("GameTuning::release", "00b67700");
+        ++releases_;
+        if (state_ == nullptr) return;
+        luaL_unref(state_, LUA_REGISTRYINDEX, decode(handle));
+    }
+
+    // Whether the private state ended up with the root table 007E2A20 reads.
+    bool root_is_table(const char* name) {
+        if (state_ == nullptr) return false;
+        const int top = lua_gettop(state_);
+        lua_getfield(state_, LUA_GLOBALSINDEX, name);
+        const bool table = lua_type(state_, -1) == LUA_TTABLE;
+        lua_settop(state_, top);
+        return table;
+    }
+
+    std::size_t missing() const noexcept { return missing_; }
+    std::string missing_names() const {
+        std::string out;
+        for (const std::string& name : missing_names_) {
+            if (!out.empty()) out += ",";
+            out += name;
+        }
+        return out;
+    }
+    std::size_t script_failures() const noexcept { return script_failures_; }
+
+private:
+    // LUA_REFNIL is -1 and LUA_NOREF is -2, so the bias keeps every encoded
+    // handle a small positive number and round-trips both.
+    static int dofile_trampoline(lua_State* state) {
+        LuaGameTuningHost* self = static_cast<LuaGameTuningHost*>(
+            lua_touserdata(state, lua_upvalueindex(1)));
+        const char* path = lua_tolstring(state, 1, nullptr);
+        if (self != nullptr && path != nullptr) {
+            self->run_script(path);
+        }
+        return 0;
+    }
+
+    static Handle encode(int ref) { return static_cast<Handle>(ref + 8); }
+    static int decode(Handle handle) { return static_cast<int>(handle) - 8; }
+    void push(Handle handle) { lua_rawgeti(state_, LUA_REGISTRYINDEX, decode(handle)); }
+
+    lua_State* state_{nullptr};
+    GameMissionLuaHost& owner_;
+    GameHostLog& log_;
+    std::size_t missing_{0};
+    std::vector<std::string> missing_names_;
+    std::size_t releases_{0};
+    std::size_t script_failures_{0};
+};
+
+}  // namespace
+
+bool GameMissionLuaHost::load_plane_globals_007e2a20() {
+    set_phase("plane globals");
+    LuaGameTuningHost host(*this, log_);
+    bsp::GameTuningBlock block{};
+    // The recovered driver runs both scripts itself, in the native's order, and
+    // walks all 423 key paths. Nothing here chooses keys.
+    bsp::game_tuning_load_007e2a20(host, block);
+    const bool table = host.root_is_table(bsp::kGameTuningRootTable);
+
+    if (table) {
+        plane_globals_ = block;
+        plane_globals_loaded_ = true;
+        log_.implemented("GameTuning::load_from_plane_globals", "007e2a20");
+    }
+    // The four values the plane control path actually consumes, logged so a run
+    // says whether the authored data arrived rather than leaving it assumed.
+    // The rotation factors are what 007DA710's rate polynomial reads through the
+    // 00F872F0 mirror; the control range is what 007D9A70's speed ramp reads.
+    // docs/PLANE_CONTROL_RATE_LAW.md, docs/PLANE_CONTROL_AUTHORITY.md.
+    log_.notef("plane globals: `%s` is %s, keys missing=%zu script failures=%zu; "
+        "RotationFactors A=%.9g B=%.9g C=%.9g, ControlRange %.9g..%.9g; missing keys: %s",
+        bsp::kGameTuningRootTable, table ? "a table" : "absent",
+        host.missing(), host.script_failures(),
+        static_cast<double>(block.dynamics_rotation_factors_a),
+        static_cast<double>(block.dynamics_rotation_factors_b),
+        static_cast<double>(block.dynamics_rotation_factors_c),
+        static_cast<double>(block.dynamics_spd_multipliers_control_range_min),
+        static_cast<double>(block.dynamics_spd_multipliers_control_range_max),
+        host.missing_names().c_str());
+    return table;
+}
+
 
 bool GameMissionLuaHost::read_avoid_all_ship_collision(bool& value) const noexcept {
     if (!avoid_all_ship_collision_loaded_) return false;

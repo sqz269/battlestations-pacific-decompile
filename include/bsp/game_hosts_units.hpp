@@ -172,6 +172,21 @@ struct GameUnitsSummary {
     // silently zeroed a basis, which the native does not guard either.
     unsigned long long plane_pose_right_reference{0};
     unsigned long long plane_pose_collapsed{0};
+    // 0085E4D0's two outcomes, and what they did to the heading. `rotations`
+    // counts the steps where it wrote a pose at all; it returns false and
+    // writes nothing through the 0085E871 exit when the angular velocity is too
+    // short to normalise. `heading_change` sums |delta atan2(row2.x, row2.z)|
+    // over every free-flight step, so it is the total turning a plane did
+    // rather than the net - a plane that turns and turns back still shows it.
+    // 0099ACD0's think gate firing, and 007BB920 committing a command block
+    // into the live control axes. Both stay 0 while no plane is ticked.
+    unsigned long long pilot_thinks{0};
+    unsigned long long pilot_commits{0};
+    // 0099D300's yaw arm writing a `desired` - only for a plane with a commanded
+    // target, so 0 means no aircraft was ever ordered at anything.
+    unsigned long long pilot_yaw_plans{0};
+    unsigned long long plane_pose_rotations{0};
+    double plane_heading_change{0.0};
     unsigned long long generic_tick_calls{0}; //00953CC0 with available live inputs
     unsigned long long generic_tick_unavailable{0};
     unsigned long long player_orders{0};
@@ -320,6 +335,10 @@ public:
     // see the other. Zero for a unit with no guns, which is also the correct
     // answer for one whose guns carry nothing the family asks about.
     void store_unit_ordnance(std::size_t index, std::uint64_t mask) noexcept;
+    // The commanded target the gunnery host resolved for this unit, plus one,
+    // or 0 for none. Pushed rather than pulled so the two hosts agree by
+    // construction on which entity a command names.
+    void store_unit_command_target(std::size_t index, std::size_t target_plus_one) noexcept;
     std::uint64_t unit_ordnance(std::size_t index) const noexcept;
     bool unit_flag_0061(std::size_t index) const;
     // 0092d730 over the unit's body axis and linear velocity, the same value the

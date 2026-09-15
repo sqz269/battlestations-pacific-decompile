@@ -333,3 +333,7 @@ The `memcpy` / `REP MOVSD` scan named above is now the only byte-reachable angle
 the model reaches the **unit** rather than the class, in which case `class+50h` is a red herring and
 the search should start from `docs/GEOM_MESH_RESOURCE.md`'s decoder and
 `docs/GAME_RESOURCE_PARSER_REGISTRATION.md`'s registration row instead.
+
+## Correction from NATIVE_DAMAGEABLE_CLASS_MODEL_BE.md
+
+The earlier conclusion that class+50h remains null and slot+20h is unreachable is superseded by positive matched-byte evidence. `00879590`, outside the scanned vehicle-class window, calls `007188A0` at `00879763` and writes its returned resource to class+50h at `00879768`. `00879AA0` receives that class as a parameter, calls the writer, reloads+50h and invokes current slot+20h at `00879ABA`, then sets byte+44h. The full vehicle route is `00964790` current slot+10h at `00965143`, concrete `D1ACF8+10h=009598D0`, then `009598DF -> 00879AA0`. `D1ACF8+20h=0082FE30` is the established ship model-data consumer. The missed parameter-dispatch case identified above is present in the executable. Five original/source caller pairs and two source failure checks accompany four complete source bodies; current host/gameplay admission remains open. See [NATIVE_DAMAGEABLE_CLASS_MODEL_BE.md](NATIVE_DAMAGEABLE_CLASS_MODEL_BE.md) and its report. The historical scans above retain their original scope and are not evidence of absence.

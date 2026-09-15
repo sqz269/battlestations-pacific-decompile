@@ -15,6 +15,9 @@ namespace bsp {
 void* delete_native_plain_node_00b6f8d0(NativeNodeDestructionRuntime&,
     NativeNodeBinding&, NativeStringStorage& actual_name_storage,
     void* actual_pool_0108ff58, std::uint32_t flags);
+void* delete_native_plain_node_00b6f8d0(NativeNodeDestructionRuntime&,
+    NativeNodeBinding&, NativeStringRawPoolContext& actual_name_pool,
+    void* actual_pool_0108ff58, std::uint32_t flags);
 
 class NativePlainNodeReference;
 struct NativePlainNodeCompanionDisposal {
@@ -40,6 +43,10 @@ public:
         NativeStringStorage& actual_name_storage, void* actual_pool_0108ff58,
         const volatile std::uint32_t* actual_vtable_00d62c88,
         NativePlainNodeCompanionDisposal);
+    NativePlainNodeReference(NativeNodeBinding&, NativeNodeDestructionRuntime&,
+        NativeStringRawPoolContext& actual_name_pool, void* actual_pool_0108ff58,
+        const volatile std::uint32_t* actual_vtable_00d62c88,
+        NativePlainNodeCompanionDisposal);
     ~NativePlainNodeReference() override;
     NativePlainNodeReference(const NativePlainNodeReference&) = delete;
     NativePlainNodeReference& operator=(const NativePlainNodeReference&) = delete;
@@ -50,10 +57,14 @@ public:
     void release_model_virtual18_00b6f310() noexcept override;
     void release_zero_references() noexcept override;
 private:
+    NativePlainNodeReference(NativeNodeBinding&, NativeNodeDestructionRuntime&,
+        NativeStringStorage*, NativeStringRawPoolContext*, void*,
+        const volatile std::uint32_t*, NativePlainNodeCompanionDisposal);
     enum class Phase { bound, destroying, retired };
     NativeNodeBinding& node_;
     NativeNodeDestructionRuntime& nodes_;
-    NativeStringStorage& strings_;
+    NativeStringStorage* const semantic_strings_;
+    NativeStringRawPoolContext* const raw_strings_;
     void* pool_;
     const volatile std::uint32_t* table_;
     NativePlainNodeCompanionDisposal disposal_;

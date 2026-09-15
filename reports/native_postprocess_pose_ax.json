@@ -1,0 +1,305 @@
+{
+  "packet": "orch6_postprocess_pose_ax",
+  "status": "complete_caller_build_and_original_byte_comparison_tested_with_explicit_crt_boundaries",
+  "worker_dispatches": 0,
+  "native": {
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "spans": [
+      {
+        "entry": "00b630f0",
+        "end": "00b632c7",
+        "bytes": 472,
+        "sha256": "d14cb46d299bd5bf79cf8698484c3afca67b6bba9027c311937bebf7e4e95dc8",
+        "live_disk_equal": true
+      },
+      {
+        "entry": "00419440",
+        "end": "004194a1",
+        "bytes": 98,
+        "sha256": "d5f5657abc11375962f710514119fcfe29745cb7bc22a7a54e7d2586fefe785f",
+        "live_disk_equal": true
+      }
+    ],
+    "reference_bytes": 570,
+    "constants": [
+      {
+        "entry": "00d7a208",
+        "bits": "80000000",
+        "live_disk_equal": true
+      },
+      {
+        "entry": "00d7a268",
+        "bits": "3f1a36e2e0000000",
+        "live_disk_equal": true
+      }
+    ]
+  },
+  "calls": [
+    {
+      "function": "00b630f0",
+      "address": "00b630f6",
+      "native": "00419440"
+    },
+    {
+      "function": "00b630f0",
+      "address": "00b63146",
+      "native": "00419440"
+    },
+    {
+      "function": "00b630f0",
+      "address": "00b6318c",
+      "native": "00419440"
+    },
+    {
+      "function": "00b630f0",
+      "address": "00b63255",
+      "native": "00bf701a"
+    },
+    {
+      "function": "00b630f0",
+      "address": "00b6328b",
+      "native": "00bf701a"
+    },
+    {
+      "function": "00b630f0",
+      "address": "00b632b0",
+      "native": "00bf701a"
+    },
+    {
+      "function": "00419440",
+      "address": "00419491",
+      "native": "00bf7030"
+    }
+  ],
+  "entries": [
+    {
+      "address": "00b630f0",
+      "name": "BSP_Matrix_ExtractNodeAnimatorAngles",
+      "bytes": 472,
+      "source": "src/native_postprocess_pose.cpp",
+      "abi": "Native ECX matrix, stack float3 destination, RET4, EAX destination. Source adds required CameraAxesCrtAccess in EDX.",
+      "evidence": "Hypothesis, not a recovered symbol. Complete 472-byte ECX matrix/stack float3 output/RET4/EAX output caller through B632C7. Three canonical 419440 length calls with current row reads and float reciprocal spills. Literal FSIN then negative-zero SSE subtraction writes Y; FCOS/float spill and threshold double bits3F1A36E2E0000000 choose two atan2 calls or positive-zero Z fallback. Output order Y,Z,X, basis reads before writes, no clamp or asin substitution. Source adds borrowed sqrt CRT access in EDX; host _CIatan2 is a genuine library provider, original atan2 dispatch/diagnostic/exception policy unproved. Strict Win32 and both CTests pass. 24 repeated paired caller variants, 28 diagnostic callbacks per side, 472-byte normalized identity with checked wrapper/adapters/constants/targets; seven call rows pass. docs/NATIVE_POSTPROCESS_POSE_AX.md; reports/native_postprocess_pose_ax.json."
+    }
+  ],
+  "boundaries": [
+    "The 472-byte caller is complete; canonical 00419440 and its explicit sqrt CRT binding are reused.",
+    "The linked host CRT _CIatan2 is a real library provider shared by source and reference. Original atan2 dispatch globals, diagnostics, errno/matherr/SEH policy and full original CRT numerical identity are outside this caller proof.",
+    "Literal FSIN is preserved, not changed to asin. Float32 spills, negative-zero SSE arithmetic and unordered branches are preserved.",
+    "Camera FOV/aspect setters already exist in src/camera_projection.cpp and are not duplicated or reannotated.",
+    "Complete B79BC0, B891A0 graph admission and gameplay remain open."
+  ],
+  "validation": {
+    "summary": {
+      "passed": true,
+      "paired_variants": 24,
+      "normalized_caller_bytes": 472,
+      "diagnostic_callbacks": 28
+    },
+    "comparisons": [
+      {
+        "index": 0,
+        "words": 27,
+        "equal": true,
+        "sha256": "6c7e34960cdb01ff392d617c132858d316dc313bc6a8208278eb8ffbf933ddc2",
+        "sqrt_diagnostics": 0
+      },
+      {
+        "index": 1,
+        "words": 48,
+        "equal": true,
+        "sha256": "237063ee920a6bd5b26e9fa27553998dc0bbe07c92b1995efb48441253f27c97",
+        "sqrt_diagnostics": 3
+      },
+      {
+        "index": 2,
+        "words": 41,
+        "equal": true,
+        "sha256": "1995b459e2fba3ab37a742e4fbcced3a4e7f4cb3d42deb868d5f8fc54af99441",
+        "sqrt_diagnostics": 2
+      },
+      {
+        "index": 3,
+        "words": 27,
+        "equal": true,
+        "sha256": "bac524aadbb5ee6311f5c9c54051c2a3c6f4fdf65440a0a7fa1fd9b242646ef2",
+        "sqrt_diagnostics": 0
+      },
+      {
+        "index": 4,
+        "words": 27,
+        "equal": true,
+        "sha256": "0284d0b1e0451699c60783dece23be6eb5157fe1e12e08c9be59d8e2f26dacae",
+        "sqrt_diagnostics": 0
+      },
+      {
+        "index": 5,
+        "words": 34,
+        "equal": true,
+        "sha256": "62437124d6859a1bf6eec629bf771b857df8c8b27758590b567f4c23621f1906",
+        "sqrt_diagnostics": 1
+      },
+      {
+        "index": 6,
+        "words": 27,
+        "equal": true,
+        "sha256": "322b6bdc0ec1c455076ee59a0954f2a5bbb199064d6ad6622f26106fb9797225",
+        "sqrt_diagnostics": 0
+      },
+      {
+        "index": 7,
+        "words": 27,
+        "equal": true,
+        "sha256": "172695e120e4ac501e22474ce05416993b8a1e9efb247b1a382949bcbf031e4d",
+        "sqrt_diagnostics": 0
+      },
+      {
+        "index": 8,
+        "words": 48,
+        "equal": true,
+        "sha256": "24226e3a80a4a56b14f753b62d02ba8ec1063358de4b7a784fb52e9b01dca13e",
+        "sqrt_diagnostics": 3
+      },
+      {
+        "index": 9,
+        "words": 27,
+        "equal": true,
+        "sha256": "1dde15df328e39044ee35ff2aeea17fae67101404ae70e844e773b6a35dd700b",
+        "sqrt_diagnostics": 0
+      },
+      {
+        "index": 10,
+        "words": 48,
+        "equal": true,
+        "sha256": "898819f5c3a55ce54ef9709f9e25369e8522c3fbcf4fddb8c5c6079ca53da946",
+        "sqrt_diagnostics": 3
+      },
+      {
+        "index": 11,
+        "words": 34,
+        "equal": true,
+        "sha256": "a0039c3d8e8476808805a38a399b81298672d239abf5658ec888c87780d2cc66",
+        "sqrt_diagnostics": 1
+      },
+      {
+        "index": 12,
+        "words": 27,
+        "equal": true,
+        "sha256": "5c991295c044d82f8900e22e05890c5f27558f86af58a526f73304c026ad1e21",
+        "sqrt_diagnostics": 0
+      },
+      {
+        "index": 13,
+        "words": 48,
+        "equal": true,
+        "sha256": "f6bd69d6a9269a8601f7dba079484b11ef41eaad2545a5b569f949efb7d2f96a",
+        "sqrt_diagnostics": 3
+      },
+      {
+        "index": 14,
+        "words": 41,
+        "equal": true,
+        "sha256": "bc97aca0f78c97a50fdf9ac1b33eff01c18bc4091cf25fadfc05e28e678e3e65",
+        "sqrt_diagnostics": 2
+      },
+      {
+        "index": 15,
+        "words": 27,
+        "equal": true,
+        "sha256": "3d57ae28327937cea45d746b1e6f42756aee90247db74e04bcf5cac5731a8b3e",
+        "sqrt_diagnostics": 0
+      },
+      {
+        "index": 16,
+        "words": 27,
+        "equal": true,
+        "sha256": "504b2ce0bb413245554c609de6c0f3d8d30409967d3c05a0d801f564a5d98807",
+        "sqrt_diagnostics": 0
+      },
+      {
+        "index": 17,
+        "words": 34,
+        "equal": true,
+        "sha256": "28043f671979d4e3838a877908e77ab60f05d7ea42c141854b3e3decb0602799",
+        "sqrt_diagnostics": 1
+      },
+      {
+        "index": 18,
+        "words": 27,
+        "equal": true,
+        "sha256": "105119a9c7b60c3d9411d7d2b58d3ccd30d0d776502d72390fdf97b9e70d8c50",
+        "sqrt_diagnostics": 0
+      },
+      {
+        "index": 19,
+        "words": 27,
+        "equal": true,
+        "sha256": "8cb1f0748301cf03dc1edb9329ee0aec51888bf2066f7a28696965c39b1c88fc",
+        "sqrt_diagnostics": 0
+      },
+      {
+        "index": 20,
+        "words": 48,
+        "equal": true,
+        "sha256": "2c3f422262fbe064c9e2475f63242abb371bdd8ef6c2e5d94e9393e494c88cfc",
+        "sqrt_diagnostics": 3
+      },
+      {
+        "index": 21,
+        "words": 27,
+        "equal": true,
+        "sha256": "100ec6d85fda0c1277798ba3edb810a971365e5cc8ca7e3f0d8c359ecb4fde00",
+        "sqrt_diagnostics": 0
+      },
+      {
+        "index": 22,
+        "words": 48,
+        "equal": true,
+        "sha256": "65ad06af9e9e5ab5d4ba97763c2c9bcefbc6444c70c7262db5504edde19413c1",
+        "sqrt_diagnostics": 3
+      },
+      {
+        "index": 23,
+        "words": 49,
+        "equal": true,
+        "sha256": "519883581077ee0a03dced08db4d913c8457fde7090a9f7bfa18f895878efbe3",
+        "sqrt_diagnostics": 3
+      }
+    ],
+    "output_sha256": {
+      "results.bin": "4963d368195a56e7ca27cd8b3efbee4e7d81fc6cc90090c6f78aeddc669df9d9"
+    },
+    "repeat_stable": true,
+    "win32_build": true,
+    "existing_ctests_passed": 2,
+    "call_rows": 7,
+    "source_sha256": {
+      "src/native_postprocess_pose.cpp": "7d221fff6b756770f6186a58ca4d2379c032b7fe6a78a1541cd174f3807355c0",
+      "include/bsp/native_postprocess_pose.hpp": "fac8bf1698633f8d5acce9b93a73b5fb78772f14a9891cd26543325ec9560533"
+    },
+    "scope": "Complete 472-byte caller and canonical length reuse. Twenty-four paired numerical, FP-environment and alias variants include 28 diagnostic callbacks per side and a result-changing callback that mutates current rows. Wrapper, integer-only length adapter, all call targets and constant bits are checked with full normalized caller identity. Both sides use the same real host _CIatan2 and existing recovered sqrt provider. Original atan2 dispatch and diagnostic/exception policy, full postprocessor, graph admission and gameplay remain unproved.",
+    "saved_annotations": 2
+  },
+  "parent_annotation": {
+    "address": "00b79bc0",
+    "evidence": "AX update: complete B630F0 matrix-to-animator angle caller is now reconstructed with exact FSIN/FCOS and explicit CRT boundaries. B79BC0 remains ANALYZED ONLY. Temporary arrays, camera ownership sequencing and populated caller/admission remain required. Camera FOV/aspect setters already exist. docs/NATIVE_POSTPROCESS_POSE_AX.md; reports/native_postprocess_pose_ax.json."
+  },
+  "proof": {
+    "manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\postprocess_pose_ax\\manifest.json",
+      "bytes": 121535,
+      "sha256": "7a1c44e881d27328be2081874fb7743bf8a66720daa3000bd2d7f5e29bff8163"
+    },
+    "source_commit": "227d233e57e33c63e876b96ed4663dc6dbe3cf0a",
+    "build_checkout_head": "ee5086e940d942ff806d41f57a968d3b81545dd2",
+    "build_had_owned_source_changes": true,
+    "inputs": 290,
+    "artifacts": 43,
+    "fixture_production_objects": 5,
+    "complete_bodies": 1,
+    "complete_source_bytes": 472,
+    "saved_annotations": 2,
+    "paired_variants": 24,
+    "diagnostic_callbacks": 28
+  }
+}

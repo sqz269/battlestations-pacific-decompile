@@ -5,6 +5,7 @@
 #include <limits>
 #include <new>
 #include <stdexcept>
+#include <utility>
 
 #if !defined(_MSC_VER) || !defined(_M_IX86)
 #error Native group ownership requires MSVC Win32.
@@ -79,6 +80,13 @@ NativeGroupStorageView prepare_storage(void* slot, std::size_t bytes, NativeGrou
     std::memcpy(slot, preimage.data(), preimage.size());
     return {node, group};
 }
+NativeGroupStorageView adopt_storage(NativeGroupStorageView storage, NativeGroupEnvironment& environment) {
+    if (reinterpret_cast<std::uintptr_t>(&storage.node) % alignof(NativeNodeStorage) ||
+        reinterpret_cast<std::byte*>(&storage.group) != reinterpret_cast<std::byte*>(&storage.node) + 0x174 ||
+        storage.node.vtable_00 != group_table || !environment.vtable_00d634f8 || !environment.vtable_00d62c88)
+        throw std::invalid_argument("group adoption requires one constructed native group and current tables");
+    return storage;
+}
 bool group_is_type(SceneAttachmentRuntime& runtime, SceneNodeAttachment& binding, std::uint32_t token) {
     auto& owner = *static_cast<NativeGroupOwner*>(binding.context);
     const auto* table = current_table(owner, true);
@@ -114,7 +122,13 @@ void end_tail(NativeGroupOwner& owner) noexcept {
     owner.phase = NativeGroupOwner::Phase::dead;
 }
 void finish_node(NativeGroupOwner& owner) {
-    try { destroy_native_node_00b6f440(owner.environment.nodes, owner.node); }
+    try {
+        auto& nodes = owner.environment.nodes;
+        if (nodes.uses_raw_name_pool())
+            destroy_native_node_00b6f440(nodes, owner.node, nodes.require_raw_name_pool());
+        else
+            destroy_native_node_00b6f440(nodes, owner.node);
+    }
     catch (...) { end_tail(owner); throw; }
     end_tail(owner);
 }
@@ -179,6 +193,30 @@ NativeGroupOwner::NativeGroupOwner(void* slot, std::size_t bytes, NativeGroupEnv
         storage.node.~NativeNodeStorage();
         throw;
     }
+}
+NativeGroupOwner::NativeGroupOwner(NativeGroupStorageView constructed, NativeGroupEnvironment& access)
+    : storage(adopt_storage(constructed, access)), environment(access),
+      node(storage.node, group_is_type, group_attach_scene, nullptr, this),
+      attached_nodes{&storage.node, {}, {this, append_actual, erase_actual}} {
+    node.scene_attachment.world_changed = native_group_world_changed_00b8e6b0;
+    node.scene_attachment.remove_scene = group_remove_scene;
+    access.nodes.scenes.bind(node.scene_attachment);
+    try { access.nodes.attachments.bind_attachment(attached_nodes); }
+    catch (...) { access.nodes.scenes.forget_destroyed_binding(node.scene_attachment); throw; }
+    phase = Phase::live;
+}
+NativeGroupOwner::NativeGroupOwner(NativeGroupStorageView constructed, NativeGroupEnvironment& access,
+    SceneAttachmentRuntime::BindingAdmission&& scene_admission,
+    GeneratedModelLifetimeRuntime::BindingAdmission&& attachment_admission)
+    : storage(adopt_storage(constructed, access)), environment(access),
+      node(storage.node, group_is_type, group_attach_scene, nullptr, this),
+      attached_nodes{&storage.node, {}, {this, append_actual, erase_actual}} {
+    node.scene_attachment.world_changed = native_group_world_changed_00b8e6b0;
+    node.scene_attachment.remove_scene = group_remove_scene;
+    access.nodes.scenes.bind(node.scene_attachment, std::move(scene_admission));
+    try { access.nodes.attachments.bind_attachment(attached_nodes, std::move(attachment_admission)); }
+    catch (...) { access.nodes.scenes.forget_destroyed_binding(node.scene_attachment); throw; }
+    phase = Phase::live;
 }
 NativeGroupOwner::~NativeGroupOwner() {
     if (phase == Phase::prepared) {

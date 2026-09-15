@@ -1,0 +1,503 @@
+{
+  "packet": "orch6_skin_model_binding_av",
+  "status": "complete_skin_binding_storage_and_recursive_finalizer_build_and_bounded_original_code_fixture_tested",
+  "worker_dispatches": 0,
+  "native": {
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "spans": [
+      {
+        "entry": "00b91000",
+        "end": "00b911cf",
+        "bytes": 464,
+        "sha256": "85e357e47ecbd790d992c1f5f7ebb4791cf32d5c8b385067c4f8bd5912e6a64d",
+        "live_disk_equal": true
+      },
+      {
+        "entry": "00b91590",
+        "end": "00b9159a",
+        "bytes": 11,
+        "sha256": "1025de70d037391323dc0cbb0ac1fd89ee3d0f6500cf62d6f4aed899d2e7b3ef",
+        "live_disk_equal": true
+      },
+      {
+        "entry": "00b91460",
+        "end": "00b9155f",
+        "bytes": 256,
+        "sha256": "ddc058dce232301bc1b0bfe9194bd9c1f172b4a8f71d33fbd2295bd4a54a0142",
+        "live_disk_equal": true
+      },
+      {
+        "entry": "00b90c30",
+        "end": "00b90cbe",
+        "bytes": 143,
+        "sha256": "5c584ef29b44537d7203800c8a59bfe7591df20f690e402ea7384e9a83982445",
+        "live_disk_equal": true
+      },
+      {
+        "entry": "00b64db0",
+        "end": "00b65054",
+        "bytes": 677,
+        "sha256": "0c86af1e8f2e8c6b3326d1187c71c5f6d420c85eebee046f1e2ce860fc20641e",
+        "live_disk_equal": true
+      },
+      {
+        "entry": "00b75d80",
+        "end": "00b75d97",
+        "bytes": 24,
+        "sha256": "e6b709ae24557383e1840c2e76f0a4fc1243f53b6436ce4c2e8c29a7c2030b72",
+        "live_disk_equal": true
+      },
+      {
+        "entry": "00b76570",
+        "end": "00b76587",
+        "bytes": 24,
+        "sha256": "b83a631730d2c87c15af2304e84f8f4186e90698e736e071cf1bbd3b63f954a7",
+        "live_disk_equal": true
+      },
+      {
+        "entry": "00b90cc0",
+        "end": "00b90df6",
+        "bytes": 311,
+        "sha256": "a37c08a195cc3dc5408159e025ee6edf99609c38dc75bfc37d3ffbf670a205be",
+        "live_disk_equal": true
+      },
+      {
+        "entry": "00b90ea0",
+        "end": "00b90fab",
+        "bytes": 268,
+        "sha256": "cbdbcc5073a7634efa5552bcc5fefc73f032e7bbc5164ab039760a7e85cd39b9",
+        "live_disk_equal": true
+      },
+      {
+        "entry": "00413920",
+        "end": "00413c89",
+        "bytes": 874,
+        "sha256": "a2ae101c6235ce95cd7cffdc28deb5797b9d844dbc809e729db5ac5b134e29d9",
+        "live_disk_equal": true
+      },
+      {
+        "entry": "00b632d0",
+        "end": "00b63b27",
+        "bytes": 2136,
+        "sha256": "f1a374834a148171e1aa76817a43669359640372ed6a44394a9ab1428b37a6f7",
+        "live_disk_equal": true
+      }
+    ],
+    "reference_bytes": 5188,
+    "constants": [
+      {
+        "entry": "00d7a208",
+        "bits": "80000000",
+        "live_disk_equal": true
+      },
+      {
+        "entry": "00d7a24c",
+        "bits": "3f800000",
+        "live_disk_equal": true
+      }
+    ]
+  },
+  "calls": [
+    {
+      "function": "00b91000",
+      "address": "00b91039",
+      "native": "00b75d80"
+    },
+    {
+      "function": "00b91000",
+      "address": "00b9104f",
+      "native": "00b76570"
+    },
+    {
+      "function": "00b91000",
+      "address": "00b91121",
+      "native": "00b64db0"
+    },
+    {
+      "function": "00b91000",
+      "address": "00b91133",
+      "native": "00413920"
+    },
+    {
+      "function": "00b91000",
+      "address": "00b9119b",
+      "native": "00b90cc0"
+    },
+    {
+      "function": "00b91590",
+      "address": "00b91596",
+      "native": "00b91460",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "00b91460",
+      "address": "00b9146e",
+      "native": "00b90ea0"
+    },
+    {
+      "function": "00b64db0",
+      "address": "00b65011",
+      "native": "00413920"
+    },
+    {
+      "function": "00b64db0",
+      "address": "00b65018",
+      "native": "00413920"
+    },
+    {
+      "function": "00b64db0",
+      "address": "00b65043",
+      "native": "00b632d0"
+    },
+    {
+      "function": "00b90cc0",
+      "address": "00b90d57",
+      "native": "00b64db0"
+    },
+    {
+      "function": "00b90cc0",
+      "address": "00b90d64",
+      "native": "00413920"
+    },
+    {
+      "function": "00b90ea0",
+      "address": "00b90ecc",
+      "native": "00bf55be"
+    },
+    {
+      "function": "00b90ea0",
+      "address": "00b90f8d",
+      "native": "00bf6989"
+    }
+  ],
+  "boundaries": [
+    "Original matrix multiply413920 and general inverseB632D0 reuse existing raw implementations; no host-math substitution.",
+    "Actual node lifetime uses the existing borrowed current slot-zero table/dispatch protocol. No synthetic owner or successful no-op callback.",
+    "Reserve shallow-copies node pointers without increment, then releases old records. New scalar1C remains untouched. Native behavior is not repaired by adding retains/defaults.",
+    "Native exception ABI, full B79BC0 postprocessor and populated B891A0 graph admission/gameplay remain unproved."
+  ],
+  "validation": {
+    "summary": {
+      "passed": true,
+      "paired_lifetimes_and_finalizers": 5,
+      "paired_math_variants": 24,
+      "source_allocation_failures": 1,
+      "normalized_kernel_identity": true,
+      "byte_identical_setters": 2
+    },
+    "comparisons": [
+      {
+        "index": 0,
+        "kind": "lifetime_or_finalizer",
+        "words": 3202,
+        "sha256": "fa70a3ae7c4a7a7727e92d4307cba208a3525397fc404a4b9e2b2193bd7ef540",
+        "equal": true
+      },
+      {
+        "index": 1,
+        "kind": "lifetime_or_finalizer",
+        "words": 686,
+        "sha256": "161d490cd91309ebc7321d8f4152e308b344ee898d42620d0e9224dfc3a197e2",
+        "equal": true
+      },
+      {
+        "index": 2,
+        "kind": "lifetime_or_finalizer",
+        "words": 734,
+        "sha256": "715310031674b644494fcb3ce0b474c8a77bcad6d73de301758916e371528fce",
+        "equal": true
+      },
+      {
+        "index": 3,
+        "kind": "lifetime_or_finalizer",
+        "words": 568,
+        "sha256": "56a4e23b2f602bb7d2ab98dd833b6c54c3602c94c7bed21958205e3bf2e2a1f7",
+        "equal": true
+      },
+      {
+        "index": 4,
+        "kind": "lifetime_or_finalizer",
+        "words": 863,
+        "sha256": "1f084a4208e68614250ade71c6e5c1ecec019cf0c5f35c9551048e705800980a",
+        "equal": true
+      },
+      {
+        "index": 5,
+        "kind": "inverse_pose_math",
+        "words": 35,
+        "sha256": "4864a9e184ff98fd89d65716401ddb2f94e821b33031daa79ad5ba6df3ef013d",
+        "equal": true
+      },
+      {
+        "index": 6,
+        "kind": "inverse_pose_math",
+        "words": 35,
+        "sha256": "4864a9e184ff98fd89d65716401ddb2f94e821b33031daa79ad5ba6df3ef013d",
+        "equal": true
+      },
+      {
+        "index": 7,
+        "kind": "inverse_pose_math",
+        "words": 35,
+        "sha256": "40892aa2f313cb882b4bc30f7ef7f0372b949cff1c69fe91adba75d7fcdec751",
+        "equal": true
+      },
+      {
+        "index": 8,
+        "kind": "inverse_pose_math",
+        "words": 35,
+        "sha256": "22e432981628faa4c707701c02c214ec6ad288109475cfdecfbd57ab21111571",
+        "equal": true
+      },
+      {
+        "index": 9,
+        "kind": "inverse_pose_math",
+        "words": 35,
+        "sha256": "b9d3a4df342f2d47a295b69be710c322d2f714adc6613fc46d30588b4173d43c",
+        "equal": true
+      },
+      {
+        "index": 10,
+        "kind": "inverse_pose_math",
+        "words": 35,
+        "sha256": "3653de66e03a0bc36be81ecab74d4c960763db111accf461725e745d78156244",
+        "equal": true
+      },
+      {
+        "index": 11,
+        "kind": "inverse_pose_math",
+        "words": 35,
+        "sha256": "61658485c41f945898f6a05b13762e7334c376f709571093d1edebd4837846a2",
+        "equal": true
+      },
+      {
+        "index": 12,
+        "kind": "inverse_pose_math",
+        "words": 35,
+        "sha256": "be8ac58ad92c27ac058b31523be18152dd8378b95c183f4ba9373e0a0f6b1e08",
+        "equal": true
+      },
+      {
+        "index": 13,
+        "kind": "inverse_pose_math",
+        "words": 35,
+        "sha256": "4864a9e184ff98fd89d65716401ddb2f94e821b33031daa79ad5ba6df3ef013d",
+        "equal": true
+      },
+      {
+        "index": 14,
+        "kind": "inverse_pose_math",
+        "words": 35,
+        "sha256": "4864a9e184ff98fd89d65716401ddb2f94e821b33031daa79ad5ba6df3ef013d",
+        "equal": true
+      },
+      {
+        "index": 15,
+        "kind": "inverse_pose_math",
+        "words": 35,
+        "sha256": "40892aa2f313cb882b4bc30f7ef7f0372b949cff1c69fe91adba75d7fcdec751",
+        "equal": true
+      },
+      {
+        "index": 16,
+        "kind": "inverse_pose_math",
+        "words": 35,
+        "sha256": "22e432981628faa4c707701c02c214ec6ad288109475cfdecfbd57ab21111571",
+        "equal": true
+      },
+      {
+        "index": 17,
+        "kind": "inverse_pose_math",
+        "words": 35,
+        "sha256": "b9d3a4df342f2d47a295b69be710c322d2f714adc6613fc46d30588b4173d43c",
+        "equal": true
+      },
+      {
+        "index": 18,
+        "kind": "inverse_pose_math",
+        "words": 35,
+        "sha256": "3653de66e03a0bc36be81ecab74d4c960763db111accf461725e745d78156244",
+        "equal": true
+      },
+      {
+        "index": 19,
+        "kind": "inverse_pose_math",
+        "words": 35,
+        "sha256": "61658485c41f945898f6a05b13762e7334c376f709571093d1edebd4837846a2",
+        "equal": true
+      },
+      {
+        "index": 20,
+        "kind": "inverse_pose_math",
+        "words": 35,
+        "sha256": "be8ac58ad92c27ac058b31523be18152dd8378b95c183f4ba9373e0a0f6b1e08",
+        "equal": true
+      },
+      {
+        "index": 21,
+        "kind": "inverse_pose_math",
+        "words": 35,
+        "sha256": "4864a9e184ff98fd89d65716401ddb2f94e821b33031daa79ad5ba6df3ef013d",
+        "equal": true
+      },
+      {
+        "index": 22,
+        "kind": "inverse_pose_math",
+        "words": 35,
+        "sha256": "4864a9e184ff98fd89d65716401ddb2f94e821b33031daa79ad5ba6df3ef013d",
+        "equal": true
+      },
+      {
+        "index": 23,
+        "kind": "inverse_pose_math",
+        "words": 35,
+        "sha256": "40892aa2f313cb882b4bc30f7ef7f0372b949cff1c69fe91adba75d7fcdec751",
+        "equal": true
+      },
+      {
+        "index": 24,
+        "kind": "inverse_pose_math",
+        "words": 35,
+        "sha256": "22e432981628faa4c707701c02c214ec6ad288109475cfdecfbd57ab21111571",
+        "equal": true
+      },
+      {
+        "index": 25,
+        "kind": "inverse_pose_math",
+        "words": 35,
+        "sha256": "b9d3a4df342f2d47a295b69be710c322d2f714adc6613fc46d30588b4173d43c",
+        "equal": true
+      },
+      {
+        "index": 26,
+        "kind": "inverse_pose_math",
+        "words": 35,
+        "sha256": "3653de66e03a0bc36be81ecab74d4c960763db111accf461725e745d78156244",
+        "equal": true
+      },
+      {
+        "index": 27,
+        "kind": "inverse_pose_math",
+        "words": 35,
+        "sha256": "61658485c41f945898f6a05b13762e7334c376f709571093d1edebd4837846a2",
+        "equal": true
+      },
+      {
+        "index": 28,
+        "kind": "inverse_pose_math",
+        "words": 35,
+        "sha256": "be8ac58ad92c27ac058b31523be18152dd8378b95c183f4ba9373e0a0f6b1e08",
+        "equal": true
+      }
+    ],
+    "output_sha256": {
+      "results.bin": "03f827d1b0b28ff3b05e84043ad7c1910f6941380dbb40e2d839bd02ae490f16",
+      "source_failure.bin": "f5f3a920ae66d1037558d593e6e7d0e09ca1d6edc8bb0819f1486ab2a6df5bad"
+    },
+    "repeat_stable": true,
+    "win32_build": true,
+    "existing_ctests_passed": 2,
+    "call_rows": 14,
+    "source_sha256": {
+      "src/native_skin_model_bindings.cpp": "c1b122d5c1e39603d0fe16f2e7e28aa7ea471186c889c96dd2d32be3e444f816",
+      "include/bsp/native_skin_model_bindings.hpp": "761a2bbb65997ae9630ebf40acf38104232298cf0da80ec79cdf07f0bd75879a"
+    },
+    "scope": "Five complete storage/lifetime/finalizer scenarios and24 inverse-pose numerical variants compare compiled source with11 original bodies. Cover growth without retain, untouched scalar, shrink with count mutation, bind with backing mutation, empty/populated recursive finalization, missing ancestor and duplicate match behavior. Math covers exceptional bit patterns, DAZ/FTZ and destination aliasing translation/angles; kernel is byte-identical after verified call and constant relocation normalization, two setters are literally byte-identical. Actual CRT allocation/free and OS interlocked services are shared. Node slot-zero callbacks are concrete fixture lifetimes, not complete game node destruction. One source allocation failure is not native exception ABI proof. No full B79BC0, B891A0 admission or gameplay claim.",
+    "saved_annotations": 9,
+    "complete_source_bytes": 2178
+  },
+  "entries": [
+    {
+      "address": "00b91000",
+      "ghidra_name": "BSP_SkinModel_FinalizeBindings",
+      "name": "finalize_native_skin_bindings_00b91000",
+      "bytes": 464,
+      "source": "src/native_skin_model_bindings.cpp",
+      "evidence": "Complete ECX model / plain RET finalizer. First update every present node current animator from translation/angles. Then each direct-child record gets identity times inverse pose, 16 x87 copies and recursive child processing. Current backing/count/animator reloads preserved. No missing-animator or cycle guard."
+    },
+    {
+      "address": "00b90cc0",
+      "ghidra_name": "BSP_SkinModel_BuildDescendantMatrices",
+      "name": "build_native_skin_descendant_matrices_00b90cc0",
+      "bytes": 311,
+      "source": "src/native_skin_model_bindings.cpp",
+      "evidence": "Complete ECX model / stacked parent node and parent index / RET8. Walk child34 and sibling3C; capture current count/backing per child; first matching record only. Parent matrix times inverse child pose, 16 x87 copies, recurse only through matched children. Unmatched intermediate nodes are not traversed."
+    },
+    {
+      "address": "00b64db0",
+      "ghidra_name": "BSP_SkinBinding_BuildInversePoseMatrix",
+      "name": "build_native_skin_inverse_pose_00b64db0",
+      "bytes": 677,
+      "source": "src/native_skin_model_bindings.cpp",
+      "evidence": "Complete ECX destination / EDX translation / stacked angles and UNUSED second pointer / EAX destination / RET8. Preserve FSIN then FCOS single-precision spills and SSE negative-zero subtraction, two canonical 413920 multiplies, current translation and canonical B632D0 general inverse. Second stack pointer is never read; do not infer scaling. Compiled kernel matches all bytes after verified call/immutable constant relocations."
+    },
+    {
+      "address": "00b75d80",
+      "ghidra_name": "BSP_NodeAnimator_SetTranslation",
+      "name": "set_native_animator_translation_00b75d80",
+      "bytes": 24,
+      "source": "src/native_skin_model_bindings.cpp",
+      "evidence": "Complete 24-byte ECX animator / stacked float3 / RET4 setter at animator8/C/10. Three ordered x87 FLD/FSTP copies preserve NaN/status and alias effects. Compiled body is byte-identical."
+    },
+    {
+      "address": "00b76570",
+      "ghidra_name": "BSP_NodeAnimator_SetAngles",
+      "name": "set_native_animator_angles_00b76570",
+      "bytes": 24,
+      "source": "src/native_skin_model_bindings.cpp",
+      "evidence": "Complete 24-byte ECX animator / stacked float3 / RET4 setter at animator14/18/1C. Three ordered x87 FLD/FSTP copies preserve NaN/status and alias effects. Compiled body is byte-identical."
+    },
+    {
+      "address": "00b90ea0",
+      "ghidra_name": "BSP_SkinBindingArray_Reserve",
+      "name": "reserve_native_skin_bindings_00b90ea0",
+      "bytes": 268,
+      "source": "src/native_skin_model_bindings.cpp",
+      "evidence": "Complete ECX actual 0Ch header / signed stacked capacity / RET4. Clamp >=1, allocate capacity*60h with DWORD arithmetic. Copy node WITHOUT retain, seven x87 floats, REP MOVSD16 matrix; release old records ascending, clear captured old cell, free current backing then publish data/capacity. Count/backing remain live. The 19-byte post-free gap was repaired and saved."
+    },
+    {
+      "address": "00b91460",
+      "ghidra_name": "BSP_SkinBindingArray_Resize",
+      "name": "resize_native_skin_bindings_00b91460",
+      "bytes": 256,
+      "source": "src/native_skin_model_bindings.cpp",
+      "evidence": "Complete ECX actual 0Ch header / signed stacked count / RET4. Reserve as needed. Growth writes six zero floats, null node and identity matrix but leaves scalar1C UNTOUCHED. Capture growth count; backing stays live. Shrink decrements current count before release and rechecks callback-mutated count; clears captured old record then publishes requested count."
+    },
+    {
+      "address": "00b91590",
+      "ghidra_name": "BSP_SkinModel_ResizeBindings",
+      "name": "resize_native_skin_model_bindings_00b91590",
+      "bytes": 11,
+      "source": "src/native_skin_model_bindings.cpp",
+      "evidence": "Complete 11-byte ECX model adapter: add184 then tail-jump B91460 with the same stacked count/RET4. The 60h skin-record array is distinct from the ordinary model four-byte bone-pointer array at the same offset."
+    },
+    {
+      "address": "00b90c30",
+      "ghidra_name": "BSP_SkinModel_BindNode",
+      "name": "bind_native_skin_node_00b90c30",
+      "bytes": 143,
+      "source": "src/native_skin_model_bindings.cpp",
+      "evidence": "Complete ECX model / five stacked arguments index,node,translation,angles,scalar / RET14h. Same node skips ownership. Otherwise publish/retain incoming before releasing old through current slot0. Reacquire current model184 after callback; two ordered x87 float3 copies, raw MOVSS scalar at1C. Source borrows the existing actual slot-zero lifetime protocol."
+    }
+  ],
+  "proof": {
+    "manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\skin_bindings_av\\manifest.json",
+      "bytes": 115100,
+      "sha256": "ea7a9a3f30b4873a31463c9eb2baf4afc466062c7fe7ce951c39ddd8e61b41a3"
+    },
+    "source_commit": "ed9831e6dd8bdc0d1c22463391c0ad3612200af7",
+    "build_checkout_head": "9467196ab2e673a9ee4a9d33c85342d7e453eeff",
+    "build_had_owned_source_changes": true,
+    "inputs": 251,
+    "artifacts": 77,
+    "fixture_production_objects": 4,
+    "complete_bodies": 9,
+    "complete_source_bytes": 2178,
+    "saved_annotations": 9,
+    "paired_lifetimes_and_finalizers": 5,
+    "paired_math_variants": 24,
+    "source_allocation_failures": 1
+  }
+}

@@ -40,7 +40,7 @@ void shrink_diagnostic_lights_to_zero(void* context) noexcept {
 }
 
 GeneratedModelLifetimeRuntime::BindingAdmission::BindingAdmission(BindingAdmission&& other) noexcept
-    : runtime_(other.runtime_) {
+    : runtime_(other.runtime_), attachment_(other.attachment_) {
     other.runtime_ = nullptr;
 }
 GeneratedModelLifetimeRuntime::BindingAdmission& GeneratedModelLifetimeRuntime::BindingAdmission::operator=(
@@ -48,6 +48,7 @@ GeneratedModelLifetimeRuntime::BindingAdmission& GeneratedModelLifetimeRuntime::
     if (this != &other) {
         cancel();
         runtime_ = other.runtime_;
+        attachment_ = other.attachment_;
         other.runtime_ = nullptr;
     }
     return *this;
@@ -55,12 +56,13 @@ GeneratedModelLifetimeRuntime::BindingAdmission& GeneratedModelLifetimeRuntime::
 GeneratedModelLifetimeRuntime::BindingAdmission::~BindingAdmission() noexcept { cancel(); }
 void GeneratedModelLifetimeRuntime::BindingAdmission::cancel() noexcept {
     if (runtime_) {
-        --runtime_->pending_bindings_;
+        if (attachment_) --runtime_->pending_attachment_bindings_;
+        else --runtime_->pending_bindings_;
         runtime_ = nullptr;
     }
 }
 GeneratedModelLifetimeRuntime::~GeneratedModelLifetimeRuntime() noexcept {
-    if (pending_bindings_) std::terminate();
+    if (pending_bindings_ || pending_attachment_bindings_) std::terminate();
 }
 void GeneratedModelLifetimeRuntime::reserve_binding_capacity() {
     if (pending_bindings_ >= nodes_.max_size() - nodes_.size())
@@ -72,6 +74,17 @@ GeneratedModelLifetimeRuntime::BindingAdmission GeneratedModelLifetimeRuntime::r
     reserve_binding_capacity();
     ++pending_bindings_;
     return BindingAdmission(*this);
+}
+void GeneratedModelLifetimeRuntime::reserve_attachment_binding_capacity() {
+    if (pending_attachment_bindings_ >= attachments_.max_size() - attachments_.size())
+        throw std::length_error("attachment binding admission exceeds maximum size");
+    const auto required = attachments_.size() + pending_attachment_bindings_ + 1;
+    if (required > attachments_.capacity()) attachments_.reserve(required);
+}
+GeneratedModelLifetimeRuntime::BindingAdmission GeneratedModelLifetimeRuntime::reserve_attachment_binding() {
+    reserve_attachment_binding_capacity();
+    ++pending_attachment_bindings_;
+    return BindingAdmission(*this, true);
 }
 void GeneratedModelLifetimeRuntime::validate_binding(GeneratedModelNodeLifetime& node) const {
     if (&node.scene_attachment().transform != &node.transform())
@@ -87,7 +100,7 @@ void GeneratedModelLifetimeRuntime::bind(GeneratedModelNodeLifetime& node) {
     nodes_.push_back(&node);
 }
 void GeneratedModelLifetimeRuntime::bind(GeneratedModelNodeLifetime& node, BindingAdmission&& admission) {
-    if (admission.runtime_ != this)
+    if (admission.runtime_ != this || admission.attachment_)
         throw std::invalid_argument("generated model binding requires an active admission for this runtime");
     validate_binding(node);
     auto& attachment = node.scene_attachment();
@@ -116,7 +129,7 @@ GeneratedModelNodeLifetime* GeneratedModelLifetimeRuntime::find_actual_node(std:
         if (lifetime->scene_attachment().pointer_key == key) return lifetime;
     return nullptr;
 }
-void GeneratedModelLifetimeRuntime::bind_attachment(GeneratedModelAttachmentLinks& attachment) {
+void GeneratedModelLifetimeRuntime::validate_attachment_binding(GeneratedModelAttachmentLinks& attachment) const {
     if (!attachment.identity) throw std::invalid_argument("Null generated model attachment identity");
     const auto& view = attachment.native_array;
     if ((view.context || view.append || view.erase) &&
@@ -125,7 +138,19 @@ void GeneratedModelLifetimeRuntime::bind_attachment(GeneratedModelAttachmentLink
     for (auto* existing : attachments_)
         if (existing->identity == attachment.identity)
             throw std::invalid_argument("Duplicate generated model attachment binding");
+}
+void GeneratedModelLifetimeRuntime::bind_attachment(GeneratedModelAttachmentLinks& attachment) {
+    validate_attachment_binding(attachment);
+    if (pending_attachment_bindings_ != 0) reserve_attachment_binding_capacity();
     attachments_.push_back(&attachment);
+}
+void GeneratedModelLifetimeRuntime::bind_attachment(GeneratedModelAttachmentLinks& attachment, BindingAdmission&& admission) {
+    if (admission.runtime_ != this || !admission.attachment_)
+        throw std::invalid_argument("attachment requires an active attachment admission for this runtime");
+    validate_attachment_binding(attachment);
+    attachments_.push_back(&attachment);
+    --pending_attachment_bindings_;
+    admission.runtime_ = nullptr;
 }
 void GeneratedModelLifetimeRuntime::unbind_attachment(GeneratedModelAttachmentLinks& attachment) noexcept {
     const auto found = std::find(attachments_.begin(), attachments_.end(), &attachment);

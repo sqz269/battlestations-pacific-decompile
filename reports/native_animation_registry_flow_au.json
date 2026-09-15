@@ -1,0 +1,60 @@
+{
+ "repairs": [
+  {
+   "function": "00b79b00",
+   "owner": "agent/orch6-20260912",
+   "when": "2026-09-14T23:28:59Z",
+   "decompile_lines_before": 18,
+   "gaps": [
+    {
+     "site": "00b79b3d",
+     "mnemonic": "CALL",
+     "operands": "0x00bf6989",
+     "gap_start": "00b79b42",
+     "gap_end_exclusive": "00b79b9c",
+     "bytes": 90,
+     "after_call": true,
+     "sha256": "58aa9965e3540e6e8d63e3663d57c6a0120fc832c48680b7b8f6e002c6b2575d"
+    }
+   ],
+   "events": [
+    {
+     "gap": {
+      "site": "00b79b3d",
+      "mnemonic": "CALL",
+      "operands": "0x00bf6989",
+      "gap_start": "00b79b42",
+      "gap_end_exclusive": "00b79b9c",
+      "bytes": 90,
+      "after_call": true,
+      "sha256": "58aa9965e3540e6e8d63e3663d57c6a0120fc832c48680b7b8f6e002c6b2575d"
+     },
+     "clear": "Success: Cleared flow override at 00b79b3d (was: CALL_RETURN, now: NONE)",
+     "disassemble": "Successfully disassembled 90 byte(s)"
+    },
+    {
+     "explicit_tail_call": "00b79b3d",
+     "clear": {
+      "status": "success",
+      "message": "Success: Cleared flow override at 00b79b3d (was: NONE, now: NONE)"
+     }
+    },
+    {
+     "explicit_tail_call": "00b79b66",
+     "clear": {
+      "status": "success",
+      "message": "Success: Cleared flow override at 00b79b66 (was: NONE, now: NONE)"
+     }
+    }
+   ],
+   "explicit_tail_end_exclusive": "00b79b9c",
+   "explicit_body_sha256": "94035a5afb235b58915cdd729d7ec8ce4291a49bf288d60b94079f55b826ffd4",
+   "body_before": "Function: FUN_00b79b00 at 00b79b00\nSignature: undefined FUN_00b79b00(void)\nEntry: 00b79b00\nBody: 00b79b00 - 00b79b41",
+   "decompile_lines_after": 28,
+   "gaps_remaining": 1,
+   "body_after": "Function: FUN_00b79b00 at 00b79b00\nSignature: undefined FUN_00b79b00(void)\nEntry: 00b79b00\nBody: 00b79b00 - 00b79b41",
+   "stored_body_tail_complete": false,
+   "body_extension_limit": "Explicit tail decoding/CRT overrides do not extend stored function-body metadata; the body still requires a separate supported repair."
+  }
+ ]
+}

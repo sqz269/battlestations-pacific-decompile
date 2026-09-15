@@ -1,0 +1,473 @@
+{
+  "packet": "orch6_resource_graph_builder_ba",
+  "status": "complete_caller_source_under_explicit_provider_contract_strict_win32_and_bounded_differential_tested",
+  "worker_dispatches": 0,
+  "native": {
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "spans": [
+      {
+        "entry": "00b891a0",
+        "end": "00b8969f",
+        "bytes": 1280,
+        "sha256": "8d05eccc6f9bd7376ff3894dad37ef89b8f76bc91a070b36ad1b809ad749b3a2",
+        "live_disk_equal": true
+      },
+      {
+        "entry": "00b88b60",
+        "end": "00b88c12",
+        "bytes": 179,
+        "sha256": "a0a785220626174bc70f532c537e101dde19ceeaf089944f2c2d4154a95bd42d",
+        "live_disk_equal": true
+      },
+      {
+        "entry": "004fcbe0",
+        "end": "004fcc39",
+        "bytes": 90,
+        "sha256": "cce10bf4553c0766fe18ee809e64818deb1a32951be2d34666ba19eaccae2e6a",
+        "live_disk_equal": true
+      },
+      {
+        "entry": "007137f0",
+        "end": "00713804",
+        "bytes": 21,
+        "sha256": "39fb193ad0ba06bdc4d336b33cb7afde3d61c52b3fadb0432daed6ab3e62f0ba",
+        "live_disk_equal": true
+      },
+      {
+        "entry": "00b8e6f0",
+        "end": "00b8e727",
+        "bytes": 56,
+        "sha256": "bb42f8d28755c04f055a8aa92ae95963e66db12eabafd5826ae254646153f111",
+        "live_disk_equal": true
+      },
+      {
+        "entry": "00b8f0f0",
+        "end": "00b8f0fb",
+        "bytes": 12,
+        "sha256": "ede24e4295688dcbbb71854fa3428eb1574bf800deb4b38243cf3debea023f44",
+        "live_disk_equal": true
+      },
+      {
+        "entry": "00b74310",
+        "end": "00b74315",
+        "bytes": 6,
+        "sha256": "89ee46b4e9b4045f8f99863ce38bb25dfdaf4025440214b0d3db0fb85a1a22f7",
+        "live_disk_equal": true
+      },
+      {
+        "entry": "00b8e600",
+        "end": "00b8e605",
+        "bytes": 6,
+        "sha256": "828bce419428d5b8c7ff23a15f4424c79ac140b66125392f05244d5d1dcf5763",
+        "live_disk_equal": true
+      }
+    ],
+    "unwind_and_constants": [
+      {
+        "entry": "00cc2690",
+        "bytes": 167,
+        "sha256": "af9c015eedfe418cbe1a71e2af0fdc09bf233cb3d6f889672a5a2e80b7f3a297"
+      },
+      {
+        "entry": "00dfbc24",
+        "bytes": 36,
+        "sha256": "f5e4cdcf70ae39989251bbbee0d9fbf97b8de987a65c22baea6a32e5c5664f4f"
+      },
+      {
+        "entry": "00dfbc48",
+        "bytes": 112,
+        "sha256": "c98d4f6c7e3b496e4ab68568a0eea7efd59c637b0db0678c558dc6ac27fe2cd7"
+      },
+      {
+        "entry": "00b86b50",
+        "bytes": 7,
+        "sha256": "d34c22004cc749d17a9fb55cbe9703bea2c2fdd6228487fa574bba47778adfd9"
+      },
+      {
+        "entry": "00b86b60",
+        "bytes": 7,
+        "sha256": "d34c22004cc749d17a9fb55cbe9703bea2c2fdd6228487fa574bba47778adfd9"
+      },
+      {
+        "entry": "00b86b70",
+        "bytes": 7,
+        "sha256": "d34c22004cc749d17a9fb55cbe9703bea2c2fdd6228487fa574bba47778adfd9"
+      },
+      {
+        "entry": "00d63210",
+        "bytes": 24,
+        "sha256": "2ed9b8263c5cf9959aee2cf337d07bfe223984d39dc5b6a4e672be4ade5b6f05"
+      },
+      {
+        "entry": "00cfd358",
+        "bytes": 2,
+        "sha256": "0d549a9e1389098a9e7c5d1e01e30a361da49f46c8f166e55d8a7f18e063b3c3"
+      },
+      {
+        "entry": "00d6323c",
+        "bytes": 7,
+        "sha256": "d8247037b4f78a7f4e472fc443c0e996dd8fcd33760c5b7a65f4a9469666f018"
+      }
+    ]
+  },
+  "calls": [
+    {
+      "function": "00b891a0",
+      "address": "00b891e2",
+      "native": "00b88b60"
+    },
+    {
+      "function": "00b891a0",
+      "address": "00b89274",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00b891a0",
+      "address": "00b89291",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00b891a0",
+      "address": "00b892ae",
+      "native": "004260b0"
+    },
+    {
+      "function": "00b891a0",
+      "address": "00b892d4",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00b891a0",
+      "address": "00b892ef",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00b891a0",
+      "address": "00b89310",
+      "native": "004261a0"
+    },
+    {
+      "function": "00b891a0",
+      "address": "00b89330",
+      "native": "004261a0"
+    },
+    {
+      "function": "00b891a0",
+      "address": "00b89361",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00b891a0",
+      "address": "00b89379",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00b891a0",
+      "address": "00b893a8",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00b891a0",
+      "address": "00b893af",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00b891a0",
+      "address": "00b893d8",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00b891a0",
+      "address": "00b893df",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00b891a0",
+      "address": "00b89408",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00b891a0",
+      "address": "00b8940f",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00b891a0",
+      "address": "00b89438",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00b891a0",
+      "address": "00b8943f",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00b891a0",
+      "address": "00b89468",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00b891a0",
+      "address": "00b8946f",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00b891a0",
+      "address": "00b8949b",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00b891a0",
+      "address": "00b894d4",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00b891a0",
+      "address": "00b8951e",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00b891a0",
+      "address": "00b89536",
+      "native": "00b6e680"
+    },
+    {
+      "function": "00b891a0",
+      "address": "00b89540",
+      "native": "00b74310"
+    },
+    {
+      "function": "00b891a0",
+      "address": "00b89557",
+      "native": "00b74390"
+    },
+    {
+      "function": "00b891a0",
+      "address": "00b8958a",
+      "native": "00b8e600"
+    },
+    {
+      "function": "00b891a0",
+      "address": "00b895a3",
+      "native": "00b8f0f0"
+    },
+    {
+      "function": "00b891a0",
+      "address": "00b895ae",
+      "native": "00b8e6f0"
+    },
+    {
+      "function": "00b891a0",
+      "address": "00b895b9",
+      "native": "00b8e6c0"
+    },
+    {
+      "function": "00b891a0",
+      "address": "00b895d6",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00b891a0",
+      "address": "00b895dd",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00b891a0",
+      "address": "00b8962e",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00b891a0",
+      "address": "00b8967d",
+      "native": "00b79bc0"
+    },
+    {
+      "function": "00b891a0",
+      "address": "00b89684",
+      "native": "00b87e80"
+    },
+    {
+      "function": "00b88b60",
+      "address": "00b88b9b",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00b88b60",
+      "address": "00b88bac",
+      "native": "005058e0"
+    },
+    {
+      "function": "00b88b60",
+      "address": "00b88bd1",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00b88b60",
+      "address": "00b88bde",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00b88b60",
+      "address": "00b88bf4",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00b88b60",
+      "address": "00b88c04",
+      "native": "004fcbe0"
+    },
+    {
+      "function": "004fcbe0",
+      "address": "004fcbf3",
+      "native": "00bf6713"
+    },
+    {
+      "function": "004fcbe0",
+      "address": "004fcc1f",
+      "native": "00bf67a7"
+    },
+    {
+      "function": "007137f0",
+      "address": "007137fd",
+      "native": "00b891a0"
+    },
+    {
+      "function": "00b8f0f0",
+      "address": "00b8f0f7",
+      "native": "00b8ebe0",
+      "kind": "tail_jump"
+    }
+  ],
+  "boundaries": [
+    "Original FH3 and arbitrary native factory/item providers are not supplied by the borrowed context.",
+    "Existing group companion projection and complete original string/CRT providers retain their explicit source boundaries.",
+    "No graph admission into the executable or gameplay claim."
+  ],
+  "validation": {
+    "strict_win32": true,
+    "existing_ctests": 2,
+    "paired_graph_cases": 3,
+    "paired_vector_sequences": 1,
+    "source_failure_cases": 1,
+    "byte_identical_group_box": true,
+    "repeat_stable": true,
+    "call_rows": 45,
+    "call_failures": 0,
+    "tail_jumps": 1,
+    "output_sha256": {
+      "graph_0_original.bin": "3e92452b39007a83b061fb537f6f64d043480b7017e08577e8d91c3566ee01cb",
+      "graph_0_source.bin": "3e92452b39007a83b061fb537f6f64d043480b7017e08577e8d91c3566ee01cb",
+      "graph_1_original.bin": "61f3d76206067c1c4e16c551d8e76669209aac1b14ad61dfc77e6410016ab418",
+      "graph_1_source.bin": "61f3d76206067c1c4e16c551d8e76669209aac1b14ad61dfc77e6410016ab418",
+      "graph_2_original.bin": "8ee9eeac58087940177564edce3dc9e6c7b89dfa6a745a38fb1e88f23ae23d45",
+      "graph_2_source.bin": "8ee9eeac58087940177564edce3dc9e6c7b89dfa6a745a38fb1e88f23ae23d45",
+      "vector_original.bin": "2e7c151d69ca59707b44415b0c544b821000090e81b37bc332445b9662f6c57f",
+      "vector_source.bin": "2e7c151d69ca59707b44415b0c544b821000090e81b37bc332445b9662f6c57f",
+      "source_failure.bin": "2907e542a94f381701f957b7f988465e93f77d5fe4b7ccde533611fd5c88907b",
+      "results.txt": "c3e8b13f8a20a6f4f3ed8961acd1938ffb576a41af0328394bff95c019ae01d7"
+    },
+    "source_sha256": {
+      "include/bsp/native_resource_graph_builder.hpp": "571cee0719acae8649ed4c8c9761fa89bf87509c5c1214613bc245e248147474",
+      "src/native_resource_graph_builder.cpp": "372a67325f8b03f9fa2cd818d352c469bd008805ccac267c4fa291dbaf93a446"
+    },
+    "scope": "Full1280-byte graph caller and21-byte wrapper under existing actual providers, including canonical ModelBase factory, parenting, item publication and both postprocessors. Three paired graph callers, one vector sequence and source factory failure. Group-factory/automatic-group branch not exercised in caller fixture; original FH3, arbitrary item providers, executable graph admission and gameplay unproved.",
+    "saved_annotations": 8,
+    "complete_source_bytes": 1650
+  },
+  "entries": [
+    {
+      "address": "00b891a0",
+      "ghidra_name": "BSP_Resource_BuildNodeInstanceGraph",
+      "name": "build_native_resource_graph_00b891a0",
+      "source": "src/native_resource_graph_builder.cpp",
+      "bytes": 1280,
+      "status": "complete_caller_source_under_explicit_provider_contract_strict_win32_and_bounded_differential_tested",
+      "evidence": "BA supersedes analyzed-only status: complete1280-byte ECXresource/two stacked words/EAXinstance/RET8 caller. Source context inEDX. Full instance creation, checked node vector, last-nonnull item factory then flag override, pooled synthesized names, captured destination cell before factory, current node reload, first-node root, parent/bounds setup, item slot18 and complete B79BC0/B87E80 postprocessors. Complete actual providers and existing companion projections required; arbitrary group/item admission, original FH3 and gameplay unproved. Hypothesis, not a recovered symbol. docs/NATIVE_RESOURCE_GRAPH_BUILDER_BA.md; reports/native_resource_graph_builder_ba.json. Strict Win32/two CTests, three paired graph callers, one paired vector sequence, one source factory failure and45 call/tail rows pass. Native EH/executable graph admission/gameplay remain unproved."
+    },
+    {
+      "address": "007137f0",
+      "ghidra_name": "BSP_GameResource_BuildNodeInstanceGraph",
+      "name": "build_native_game_resource_graph_007137f0",
+      "source": "src/native_resource_graph_builder.cpp",
+      "bytes": 21,
+      "status": "complete_caller_source_under_explicit_provider_contract_strict_win32_and_bounded_differential_tested",
+      "evidence": "Complete21-byte ECXresource/two stack words/EAXinstance/RET8 wrapper. FLD/FSTP second word before forwarding both toB891A0. Builder never reads second word but wrapper still has x87 effects; paired signaling-NaN case retains them. Hypothesis, not a recovered symbol. docs/NATIVE_RESOURCE_GRAPH_BUILDER_BA.md; reports/native_resource_graph_builder_ba.json. Strict Win32/two CTests, three paired graph callers, one paired vector sequence, one source factory failure and45 call/tail rows pass. Native EH/executable graph admission/gameplay remain unproved."
+    },
+    {
+      "address": "00b88b60",
+      "ghidra_name": "STL_ResourceNodeVector_Resize_00b88b60",
+      "name": "resize_native_resource_node_vector_00b88b60",
+      "source": "src/native_resource_graph_builder.cpp",
+      "bytes": 179,
+      "status": "complete_caller_source_under_explicit_provider_contract_strict_win32_and_bounded_differential_tested",
+      "evidence": "Complete179-byte ECX actual checked vector, unsigned requested count/value on stack,RET8. Grow through005058E0 verified canonicalBD0700; preserve captured begin/end and current returning validations; shrink via4FCBE0. No substituted container, retention or capacity reduction. Hypothesis, not a recovered symbol. docs/NATIVE_RESOURCE_GRAPH_BUILDER_BA.md; reports/native_resource_graph_builder_ba.json. Strict Win32/two CTests, three paired graph callers, one paired vector sequence, one source factory failure and45 call/tail rows pass. Native EH/executable graph admission/gameplay remain unproved."
+    },
+    {
+      "address": "004fcbe0",
+      "ghidra_name": "STL_CheckedDwordVector_EraseRange_004fcbe0",
+      "name": "erase_native_graph_node_range_004fcbe0",
+      "source": "src/native_resource_graph_builder.cpp",
+      "bytes": 90,
+      "status": "complete_caller_source_under_explicit_provider_contract_strict_win32_and_bounded_differential_tested",
+      "evidence": "Complete90-byte actual vector contract adapter. ECXvector; output,firstowner,first,lastowner,last stack/EAXoutput/RET14. One invalid-parameter call for absent/mismatched iterator owners. If endpoints differ, capture signed current tail count, actual CRT memmove_s iffpositive, publish captured resultingend, then firstiterator. No free. Retain library identity. Hypothesis, not a recovered symbol. docs/NATIVE_RESOURCE_GRAPH_BUILDER_BA.md; reports/native_resource_graph_builder_ba.json. Strict Win32/two CTests, three paired graph callers, one paired vector sequence, one source factory failure and45 call/tail rows pass. Native EH/executable graph admission/gameplay remain unproved."
+    },
+    {
+      "address": "00b74310",
+      "ghidra_name": "BSP_GeneratedModel_GetCurrentType",
+      "name": "native_graph_model_type_00b74310",
+      "source": "src/native_resource_graph_builder.cpp",
+      "bytes": 6,
+      "status": "complete_caller_source_under_explicit_provider_contract_strict_win32_and_bounded_differential_tested",
+      "evidence": "Complete6-byte MOV EAX,[01090034]/RET. Source borrows same current volatile type cell; caller captures table before getter and selected slot afterward. Hypothesis, not a recovered symbol. docs/NATIVE_RESOURCE_GRAPH_BUILDER_BA.md; reports/native_resource_graph_builder_ba.json. Strict Win32/two CTests, three paired graph callers, one paired vector sequence, one source factory failure and45 call/tail rows pass. Native EH/executable graph admission/gameplay remain unproved."
+    },
+    {
+      "address": "00b8e600",
+      "ghidra_name": "BSP_Group_GetCurrentType",
+      "name": "native_graph_group_type_00b8e600",
+      "source": "src/native_resource_graph_builder.cpp",
+      "bytes": 6,
+      "status": "complete_caller_source_under_explicit_provider_contract_strict_win32_and_bounded_differential_tested",
+      "evidence": "Complete6-byte MOV EAX,[0109032C]/RET. Source borrows same current volatile type cell; no implicit type bootstrap or cached identifier. Hypothesis, not a recovered symbol. docs/NATIVE_RESOURCE_GRAPH_BUILDER_BA.md; reports/native_resource_graph_builder_ba.json. Strict Win32/two CTests, three paired graph callers, one paired vector sequence, one source factory failure and45 call/tail rows pass. Native EH/executable graph admission/gameplay remain unproved."
+    },
+    {
+      "address": "00b8e6f0",
+      "ghidra_name": "BSP_Group_SetExplicitLocalBox",
+      "name": "set_native_graph_group_box_00b8e6f0",
+      "source": "src/native_resource_graph_builder.cpp",
+      "bytes": 56,
+      "status": "complete_caller_source_under_explicit_provider_contract_strict_win32_and_bounded_differential_tested",
+      "evidence": "Complete56-byte ECXactualgroup/stackbox/RET4; flags138 AND~30h, byte175=0, six ordered FLD/FSTP copies into18..2C. Pseudocode integer-copy appearance is incorrect. Compiled source is byte-identical. Hypothesis, not a recovered symbol. docs/NATIVE_RESOURCE_GRAPH_BUILDER_BA.md; reports/native_resource_graph_builder_ba.json. Strict Win32/two CTests, three paired graph callers, one paired vector sequence, one source factory failure and45 call/tail rows pass. Native EH/executable graph admission/gameplay remain unproved."
+    },
+    {
+      "address": "00b8f0f0",
+      "ghidra_name": "BSP_Group_EnableAutomaticWorldSphere",
+      "name": "enable_native_graph_group_auto_bounds_00b8f0f0",
+      "source": "src/native_resource_graph_builder.cpp",
+      "bytes": 12,
+      "status": "complete_caller_source_under_explicit_provider_contract_strict_win32_and_bounded_differential_tested",
+      "evidence": "Complete12-byte caller: actualbyte175=1 then tailJMPB8EBE0. Source dispatches complete existing aggregator over the same NativeGroupOwner and runtime; its established companion/attached-array projection boundary remains. Group automatic caller path not executed by BA graph fixture. Hypothesis, not a recovered symbol. docs/NATIVE_RESOURCE_GRAPH_BUILDER_BA.md; reports/native_resource_graph_builder_ba.json. Strict Win32/two CTests, three paired graph callers, one paired vector sequence, one source factory failure and45 call/tail rows pass. Native EH/executable graph admission/gameplay remain unproved."
+    }
+  ],
+  "proof": {
+    "manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\resource_graph_builder_ba\\manifest.json",
+      "bytes": 362480,
+      "sha256": "a293644956c318d7a1da8518d3b91c9ef6a30a590055f57d47d5d832fbf6e738"
+    },
+    "source_commit": "f9c2873031b81d2314f4918aee97500c27051f2c",
+    "implementation_commit": "06891b527bdd0315725786efde13d7de4c6fcf0b",
+    "build_checkout_head": "f9c2873031b81d2314f4918aee97500c27051f2c",
+    "build_had_owned_source_changes": false,
+    "inputs": 822,
+    "artifacts": 124,
+    "fixture_production_objects": 112,
+    "complete_new_bodies": 8,
+    "complete_source_bytes": 1650,
+    "canonical_reuse_bytes": 0,
+    "saved_annotations": 8,
+    "paired_graph_cases": 3,
+    "paired_vector_sequences": 1,
+    "source_failure_cases": 1
+  }
+}

@@ -620,3 +620,93 @@ predicate on `unit+72Ch` holds, and `007D902F` decays it by one `step` per tick 
 zero. There are six writers, not the three previously recorded, and `007DC6C5` only ever stores
 zero. The pure rules are `arm_timed_direction_hold_007d83d0`, `gate_direction_hold_007d81c7`,
 `commit_direction_hold_007dc6c5` and `decay_direction_hold_007d902f` in `src/plane_flight.cpp`.
+
+## Open: the host's integration frame, and what changed when it was corrected
+
+`007D8470` returns a **body-frame** acceleration. The host's free-flight arm added it directly to a
+**world-frame** velocity, which is correct only at the identity, and nothing in this reconstruction
+had ever rotated a plane until the pilot bot's yaw arm was wired. The integration now rotates back
+through the transpose of the same matrix, `world = M^T * body`, which is what
+`free_flight_world_up_acceleration` in `include/bsp/plane_flight.hpp` already did for its own
+acceptance quantity.
+
+**What the correction is worth, and what it leaves open.**
+
+It behaves like a frame fix should: where the two frames agree it is a no-op, and where they do not
+it changes the answer. USN01's planes spawn with `forward = (0,0,1)` and near-identity placements,
+and their 500-step path length moved 70832 m to 70810 m - 0.03 percent, which is float noise. It
+also removed a runaway that only appeared once a bot turned: 636 m/s and a hundred kilometres in the
+wrong direction, down to roughly cruise at twenty-five seconds.
+
+But IJN01's planes carry rotated authored placements, and their 3000-step path length moved from
+**699762 m to 1178402 m** - the same 33 aircraft, no commands, no rotation during the run, purely
+the change of frame. That is 141 m/s of mean speed before and 238 m/s after. **Which of the two is
+right is not established here.** The argument for the new one is textual and structural: the fold's
+own name, the transpose in the sibling function, and the no-op at identity. The argument against is
+that 141.67 m/s is the spawn airspeed and the old number sat on it exactly, in both missions.
+
+Two readings fit and this doc does not choose between them:
+
+* The plane's equilibrium airspeed genuinely is near the spawn value in level flight, and IJN01's
+  aircraft are pitched in their placements, so the corrected frame lets gravity do work on them that
+  the old one misdirected. The new number is then right and the old agreement was an artefact of
+  applying a non-zero acceleration along the wrong axis.
+* Or `body.total` is not in the body frame after all, somewhere between the accumulators and the
+  sum, and the old code was accidentally right for a reason not yet found.
+
+Settling it needs a single plane's speed traced against its authored pitch, which is a measurement
+nobody has taken. Combat outcomes are unaffected either way: USN02 still gives 2 kills and 18525.6
+damage and IJN01 still gives 1 kill and 300.0 with the correction in place.
+
+### Settled: the frame correction is right, and the residual divergence is a banked plane
+
+The open question above is closed by a per-plane audit of IJN01 under the corrected integration.
+The test that decides it is **heading invariance**: physics does not care which way an aeroplane
+points, so a plane's speed must not depend on its heading. Under the old frame it would; under the
+corrected one it must not.
+
+Over 3000 steps - 150 seconds - with 33 aircraft:
+
+| heading | pitch | bank | speed |
+| --- | --- | --- | --- |
+| `0.8219` | `0.0000` | `0.0000` | **141.67** |
+| `3.1416` | `-0.0003` | `0.0003` | **142.31** |
+| `-0.8626` | `0.0751` | `-1.0362` | **4397.84** |
+| `0.4169` | `0.1026` | `1.0259` | **4470.35** |
+
+A plane pointing at 0.82 rad and one pointing at 3.14 rad hold the **same** speed, and that speed is
+141.67 m/s - the spawn airspeed, and exactly what USN01's identity-pose aircraft hold. The
+equilibrium is heading-invariant to the last digit it prints. That is the correction working, and it
+also explains the old agreement: averaging `distance_moved` over aircraft at many headings, some too
+fast and some too slow, lands near the seed and hides the dependence. The 68 percent change in the
+mission's path length is the artefact being removed, not introduced.
+
+**What is left diverges only when the plane is banked.** The two aircraft above at 4400 m/s are the
+ones sitting in a 59-degree bank; every level one holds cruise for the full 150 seconds. At 25
+seconds the same banked aircraft was at 119.61 m/s and **decelerating**, which is what a banked plane
+losing lift should do, so the blow-up develops over the next two minutes rather than being present
+from the start.
+
+That is downstream of the missing roll arm rather than a second frame error: nothing in this
+reconstruction rolls a plane level, so an aircraft that banks stays banked indefinitely, which is a
+state the game's own pilot bot would never leave it in. Whether the reconstructed drag is also too
+weak to terminate the resulting spiral is **not established** - it would need a plane held in a bank
+deliberately, with the roll arm wired, to tell the two apart.
+
+### And the banked-plane divergence, resolved for commanded aircraft only
+
+With the roll arm wired the spiral is gone for any aircraft the planner runs on. USN01's five
+ordered planes hold level flight for 150 seconds - `final_pitch_mean 0.001 rad` - and the mission's
+twenty aircraft cover 368945 m, about 123 m/s of mean speed, which is below cruise because they
+spend the run turning.
+
+**It is not gone for uncommanded aircraft, and that is a host scope limit rather than a physics
+one.** This reconstruction runs the planner only for a plane whose current command names a target;
+every other plane flies with a centred stick forever. IJN01's 33 aircraft have no commands, so the
+ones whose authored placement banks them stay banked, and their path length is still elevated
+(1221362 m). The game's own bot gives every aircraft a task, so no plane in the original is ever
+left in that state.
+
+Closing it means running the planner for a plane with no commanded target, which needs the
+task kinds this reconstruction has not read - `docs/PILOT_TASK_HEADING_ARM.md` covers 2 of 14 arms.
+It does not affect any validated result: combat outcomes in all three missions are unchanged.
