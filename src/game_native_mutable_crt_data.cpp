@@ -1,6 +1,6 @@
 #include "bsp/game_native_mutable_crt_data.hpp"
 #include "bsp/game_native_data_bootstrap.hpp"
-#include "bsp/native_crt_cookie_initialization.hpp"
+#include "bsp/native_crt_canonical_cookie_initialization.hpp"
 #ifndef WIN32_LEAN_AND_MEAN
 #define WIN32_LEAN_AND_MEAN
 #endif
@@ -152,9 +152,7 @@ GameNativeCanonicalDataOwner::GameNativeCanonicalDataOwner(const std::filesystem
     readonly_->initialize(path,spans,count,nullptr,false,true);
     mutable_->initialize(path);
     verify_joint();
-    bsp::NativeCrtCookieInitializationContext cookie_context{
-        mutable_->cookie(),mutable_->complement()};
-    bsp::initialize_native_crt_security_cookie_00c1815e(cookie_context);
+    bsp::initialize_native_crt_canonical_security_cookie_00c1815e();
     if ((mutable_->cookie() ^ mutable_->complement())!=0xffffffffu ||
         mutable_->cookie()==0xbb40e64e)
         throw std::runtime_error("Canonical CRT cookie initialization did not publish its complement");
