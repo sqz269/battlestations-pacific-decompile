@@ -1,0 +1,163 @@
+{
+  "schema_version": 1,
+  "packet": "orch4_effect_services_g7",
+  "utc": "2026-09-15T23:02:30.0570835Z",
+  "base_commit": "f4b545e6c",
+  "status": "complete_raw_effect_manager_cache_tree_providers_build_and_checks_passed",
+  "owned_addresses": [
+    "0086b650",
+    "0086f930",
+    "00869990",
+    "0086ebe0",
+    "0086ab70"
+  ],
+  "source": "src/native_effect_handle_acquisition.cpp",
+  "header": "include/bsp/native_effect_handle_acquisition.hpp",
+  "document": "docs/NATIVE_EFFECT_HANDLE_ACQUISITION_ORCH4.md",
+  "routines": [
+    {
+      "address": "0086b650",
+      "name": "find_native_int_pointer_tree18_0086b650",
+      "proposed_name": "STL_IntPointerTree18_Find",
+      "previous_ghidra_name": "STL_IntPointerTree18_Find",
+      "coverage": "complete",
+      "original_abi": "ECX tree; stack output iterator and signed-key pointer; EAX output; RET8",
+      "length": 105,
+      "end_exclusive": "0086b6b9",
+      "sha256": "3be84050d552bc5febe06a6be1b509ce5db9dd0cc3a4d6ea9b57ade5bde24229",
+      "disk_equals_live": true,
+      "evidence": "Signed lower-bound and a fresh reverse comparison publish owner/node or current end sentinel. Descriptive name is a hypothesis."
+    },
+    {
+      "address": "00869990",
+      "name": "decrement_native_int_pointer_tree18_00869990",
+      "proposed_name": "STL_IntPointerTree18_DecrementCheckedIterator",
+      "previous_ghidra_name": "STL_IntPointerTree18_DecrementCheckedIterator",
+      "coverage": "complete",
+      "original_abi": "ECX mutable owner/node iterator; RET",
+      "length": 137,
+      "end_exclusive": "00869a19",
+      "sha256": "43e49dd8e7fa699689c3c027cba14a065d33e6a7acecd6e8f5b3fa1eec8204f8",
+      "disk_equals_live": true,
+      "evidence": "Checked predecessor includes end-to-maximum and preserves returning invalid-parameter-handler control flow. Descriptive name is a hypothesis."
+    },
+    {
+      "address": "0086ab70",
+      "name": "allocate_native_int_pointer_tree18_node_0086ab70",
+      "proposed_name": "STL_IntPointerTree18_AllocateNode",
+      "previous_ghidra_name": "STL_IntPointerTree18_AllocateNode",
+      "coverage": "complete",
+      "original_abi": "stack left, parent, right, pair and color; EAX node; RET14h",
+      "length": 63,
+      "end_exclusive": "0086abaf",
+      "sha256": "db4454cc0ca1b1697f659f8fcb2ebc8066732e82c94b942c6c15a1c39bb02d58",
+      "disk_equals_live": true,
+      "evidence": "Actual18h allocation copies links, signed key and weak pointer, writes color/nil and leaves padding16/17 untouched. Descriptive name is a hypothesis."
+    },
+    {
+      "address": "0086ebe0",
+      "name": "link_native_int_pointer_tree18_node_0086ebe0",
+      "proposed_name": "STL_IntPointerTree18_InsertAndRebalance",
+      "previous_ghidra_name": "STL_IntPointerTree18_InsertAndRebalance",
+      "coverage": "complete",
+      "original_abi": "ECX tree; stack output, insert-left byte, parent and pair; EAX output; RET10h",
+      "length": 492,
+      "end_exclusive": "0086edcc",
+      "sha256": "377286b55cf3c98fbf4bb5e2d5a340e334f0c0f845ada3a92877eee0f112f7ad",
+      "disk_equals_live": true,
+      "evidence": "Count limit1FFFFFFEh, complete length branch, raw node link, red-black repair and node-before-owner output publication. Descriptive name is a hypothesis."
+    },
+    {
+      "address": "0086f930",
+      "name": "insert_native_int_pointer_tree18_unique_0086f930",
+      "proposed_name": "STL_IntPointerTree18_InsertUnique",
+      "previous_ghidra_name": "STL_IntPointerTree18_InsertUnique",
+      "coverage": "complete",
+      "original_abi": "ECX tree; stack output result and pair; EAX output; RET8",
+      "length": 185,
+      "end_exclusive": "0086f9e9",
+      "sha256": "807a9e71a9edfe0ac8c6f52b098b8a3820fe06df4c037a6e6723385e91ec31d5",
+      "disk_equals_live": true,
+      "evidence": "Signed unique search, checked predecessor, complete insertion/duplicate result and no mapped-pointer ownership operation. Descriptive name is a hypothesis."
+    }
+  ],
+  "byte_total": 982,
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "verification": "bsp.py Ghidra queries verified the configured project/program for every live batch; Ghidra remained read-only"
+  },
+  "raw_layout": {
+    "tree": "manager+4; opaque allocator0, head4, unsigned count8",
+    "node": "18h bytes: left0,parent4,right8,signed key0C,weak pointer10,color14,nil15,padding16/17",
+    "ownership": "The tree owns nodes only. Definition pointers are weak and insertion performs no retain or release."
+  },
+  "existing_manager_closure": [
+    "004c1650 raw singleton getter over actual01090AA0/00F87664",
+    "00870370 raw10h constructor and00869C50 publication-reset unwind",
+    "0086fe20 raw destructor and008703e0 deleting destructor",
+    "0086ac00 sentinel allocation,0086aa60 subtree erase and existing raw range cleanup"
+  ],
+  "projection_mismatch": "gameplay_effect_acquisition.cpp uses a std::map projection and GuiLua51Host registry handles. Native004C1650 returns a raw10h manager and native acquisition uses14h tracked stack Lua objects; neither representation can be reinterpreted safely.",
+  "outbound_calls": [
+    {"function":"00869990","address":"00869998","native":"00bf6713","kind":"call","meaning":"null-owner invalid parameter"},
+    {"function":"00869990","address":"008699b3","target":"00bf6713","kind":"tail","meaning":"invalid end predecessor after maximum reload"},
+    {"function":"00869990","address":"00869a0f","target":"00bf6713","kind":"tail","meaning":"invalid ancestor result"},
+    {"function":"0086ab70","address":"0086ab72","native":"00bf681b","kind":"call","meaning":"actual18h allocation"},
+    {"function":"0086ebe0","address":"0086ec23","native":"00408720","kind":"call","meaning":"assign map length message"},
+    {"function":"0086ebe0","address":"0086ec35","native":"00411700","kind":"call","meaning":"construct logic-error payload"},
+    {"function":"0086ebe0","address":"0086ec4c","native":"00bf6885","kind":"call","meaning":"throw native length-error object"},
+    {"function":"0086ebe0","address":"0086ec64","native":"0086ab70","kind":"call","meaning":"allocate raw18h node"},
+    {"function":"0086ebe0","address":"0086ecf5","native":"0086a2f0","kind":"call","meaning":"left rotation"},
+    {"function":"0086ebe0","address":"0086ed13","native":"00869810","kind":"call","meaning":"right rotation"},
+    {"function":"0086ebe0","address":"0086ed41","native":"00869810","kind":"call","meaning":"right rotation"},
+    {"function":"0086f930","address":"0086f98e","native":"0086ebe0","kind":"call","meaning":"link unique node"},
+    {"function":"0086f930","address":"0086f9b0","native":"00869990","kind":"call","meaning":"checked predecessor"}
+  ],
+  "inbound_calls": [
+    {"function":"008700e0","address":"00870142","native":"0086b650","meaning":"effect acquisition cache lookup"},
+    {"function":"0086ef20","address":"0086ef33","native":"0086b650","meaning":"integer-pointer cache lookup"},
+    {"function":"00870d00","address":"00870d49","native":"0086b650","meaning":"definition destruction lookup"},
+    {"function":"008700e0","address":"008702a9","native":"0086f930","meaning":"effect definition unique insertion"},
+    {"function":"0086f930","address":"0086f9b0","native":"00869990","meaning":"unique insertion predecessor"},
+    {"function":"0086a5a0","address":"0086a5a3","native":"00869990","meaning":"checked predecessor wrapper"},
+    {"function":"0086ab60","address":"0086ab63","native":"00869990","meaning":"checked predecessor wrapper"},
+    {"function":"0086f930","address":"0086f98e","native":"0086ebe0","meaning":"unique insertion link/rebalance"},
+    {"function":"0086ebe0","address":"0086ec64","native":"0086ab70","meaning":"raw node allocation"}
+  ],
+  "direct_or_tail_row_count": 22,
+  "remaining_component_blocks": [
+    {"family":"Particle","reader":"00871d00..00871f90","scalar":"0086bc60..0086bc7d"},
+    {"family":"Tracer","reader":"00858700..00859231","scalar":"0086b9a0 stored body absent"},
+    {"family":"WaterTracer","reader":"0086d180..0086e591","scalar":"0086d080..0086d09d"},
+    {"family":"Flare","reader":"0086c240..0086cd0a","scalar":"0086e870..0086e88d"},
+    {"family":"ThunderStorm","reader":"0086f3b0..0086f8f5","scalar":"0086ff00..0086ff1d"}
+  ],
+  "remaining_acquisition_boundary": "00870cd0 stays source-absent until the complete raw008700e0 Lua miss path and00870400 component virtual closure exist. No cache-hit-only or callback wrapper was added.",
+  "ghidra_mutations": false,
+  "source_sha256": "3b7794d963c4885bbb818bd15d5592c487157863183e0f3db692d089893cef4a",
+  "verification": {
+    "build": {
+      "command": "./scripts/build.ps1",
+      "configuration": "Release Win32",
+      "status": "passed",
+      "ctest_passed": 2,
+      "library_sha256": "c79707af42f3b24b5847833936310d950454a692117ccef7b6f10523a8eaea6e"
+    },
+    "report_calls": {
+      "command": "python tools/verify_report_calls.py reports/native_effect_handle_acquisition_orch4.json",
+      "status": "passed",
+      "call_rows_checked": 20,
+      "failed": 0,
+      "tail_rows_documented_separately": 2
+    },
+    "not_validated": [
+      "original FH3 exception identity",
+      "concurrent tree mutation",
+      "complete raw008700e0 miss path",
+      "five remaining component virtual families",
+      "native differential execution",
+      "gameplay/runtime behavior"
+    ]
+  }
+}
