@@ -1,0 +1,224 @@
+{
+  "events": [
+    {
+      "recreate": "00441360",
+      "previous": "Function: FUN_00441360 at 00441360\nSignature: undefined FUN_00441360(void)\nEntry: 00441360\nBody: 00441360 - 00441399",
+      "plate": null
+    },
+    {
+      "endpoint": "delete_function",
+      "body": {
+        "address": "00441360"
+      },
+      "result": {
+        "success": true,
+        "address": "00441360",
+        "deleted_function": "FUN_00441360",
+        "body_size": 58,
+        "message": "Function 'FUN_00441360' deleted at 00441360"
+      }
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00441360",
+        "end_address": "004413be"
+      },
+      "result": {
+        "success": true,
+        "start_address": "00441360",
+        "end_address": "004413bd",
+        "bytes_disassembled": 94,
+        "message": "Successfully disassembled 94 byte(s)"
+      }
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00441360",
+        "disassemble_first": false
+      },
+      "result": {
+        "success": true,
+        "address": "00441360",
+        "function_name": "FUN_00441360",
+        "entry_point": "00441360",
+        "body_size": 94,
+        "message": "Function created successfully at 00441360"
+      }
+    },
+    {
+      "defined": "00441360",
+      "end": "004413be",
+      "name": null,
+      "after": "Function: FUN_00441360 at 00441360\nSignature: undefined FUN_00441360(void)\nEntry: 00441360\nBody: 00441360 - 004413bd"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": {
+        "success": true,
+        "program": "battlestationspacific.exe",
+        "message": "Program saved successfully"
+      }
+    },
+    {
+      "recreate": "0081b0a0",
+      "previous": "Function: FUN_0081b0a0 at 0081b0a0\nSignature: undefined FUN_0081b0a0(void)\nEntry: 0081b0a0\nBody: 0081b0a0 - 0081b0d7",
+      "plate": null
+    },
+    {
+      "endpoint": "delete_function",
+      "body": {
+        "address": "0081b0a0"
+      },
+      "result": {
+        "success": true,
+        "address": "0081b0a0",
+        "deleted_function": "FUN_0081b0a0",
+        "body_size": 56,
+        "message": "Function 'FUN_0081b0a0' deleted at 0081b0a0"
+      }
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "0081b0a0",
+        "end_address": "0081b0dd"
+      },
+      "result": {
+        "success": true,
+        "start_address": "0081b0a0",
+        "end_address": "0081b0dc",
+        "bytes_disassembled": 61,
+        "message": "Successfully disassembled 61 byte(s)"
+      }
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "0081b0a0",
+        "disassemble_first": false
+      },
+      "result": {
+        "success": true,
+        "address": "0081b0a0",
+        "function_name": "FUN_0081b0a0",
+        "entry_point": "0081b0a0",
+        "body_size": 61,
+        "message": "Function created successfully at 0081b0a0"
+      }
+    },
+    {
+      "defined": "0081b0a0",
+      "end": "0081b0dd",
+      "name": null,
+      "after": "Function: FUN_0081b0a0 at 0081b0a0\nSignature: undefined FUN_0081b0a0(void)\nEntry: 0081b0a0\nBody: 0081b0a0 - 0081b0dc"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": {
+        "success": true,
+        "program": "battlestationspacific.exe",
+        "message": "Program saved successfully"
+      }
+    }
+  ],
+  "preflight": [
+    {
+      "address": "00441360",
+      "end_exclusive": "004413be",
+      "bytes": 94,
+      "sha256": "b900a3793a7b20769837e038b9d1f2d730921883cb0fbdee82468555dc5bb454",
+      "live_disk_match": true
+    },
+    {
+      "address": "0081b0a0",
+      "end_exclusive": "0081b0dd",
+      "bytes": 61,
+      "sha256": "b4946d4c0b0ce5ce2744e9e5027fd54803369398fb8067188b24bace79182e1c",
+      "live_disk_match": true
+    }
+  ],
+  "coordinator": "primary orchestrator; serialized locked commands from owning worktrees under their existing address leases",
+  "documentation_before": "local/d4_lifetime_documentation_before.json",
+  "documentation_after": "local/d4_lifetime_documentation_after.json",
+  "post_save_display_errors": "Three registry-worktree commands saved successfully then raised relative_to(ROOT) ValueError for absolute record paths; actual results verified by live readback.",
+  "readback": [
+    {
+      "address": "00441360",
+      "instructions": 27,
+      "flow_gaps": 0
+    },
+    {
+      "address": "00441840",
+      "instructions": 11,
+      "flow_gaps": 0
+    },
+    {
+      "address": "0081b0a0",
+      "instructions": 20,
+      "flow_gaps": 0
+    },
+    {
+      "address": "0087c260",
+      "instructions": 21,
+      "flow_gaps": 0
+    },
+    {
+      "address": "00879240",
+      "instructions": 29,
+      "flow_gaps": 0
+    }
+  ],
+  "calls": [
+    {
+      "address": "0044138d",
+      "native": "00440180",
+      "function": "00441360"
+    },
+    {
+      "address": "00441395",
+      "native": "00bf6989",
+      "function": "00441360"
+    },
+    {
+      "address": "00441843",
+      "native": "00441360",
+      "function": "00441840"
+    },
+    {
+      "address": "00441850",
+      "native": "00bf65ac",
+      "function": "00441840"
+    },
+    {
+      "address": "0081b0ab",
+      "native": "0074d190",
+      "function": "0081b0a0"
+    },
+    {
+      "address": "0081b0d3",
+      "native": "00bf6989",
+      "function": "0081b0a0"
+    },
+    {
+      "address": "0087c274",
+      "native": "0087ab30",
+      "function": "0087c260"
+    },
+    {
+      "address": "0087c27d",
+      "native": "00bf65ac",
+      "function": "0087c260"
+    },
+    {
+      "address": "00879268",
+      "native": "00bf65ac",
+      "function": "00879240"
+    }
+  ],
+  "saved_project": true,
+  "exports_refreshed": true
+}
