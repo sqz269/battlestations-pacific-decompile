@@ -1,0 +1,586 @@
+{
+  "schema_version": 1,
+  "packet": "orch3_native_scalar_float_ee",
+  "status": "raw_source_implemented_pending_primary_review_and_build",
+  "source_base": "d0481c6812af58a399d5759c33c0a8492346ef64",
+  "created_utc": "2026-09-15T01:31:55.075263+00:00",
+  "source": "src/native_scalar_float_by_ref.cpp",
+  "header": "include/bsp/native_scalar_float_by_ref.hpp",
+  "new_raw_implementation_bytes": 62,
+  "new_unique_address_credit": 0,
+  "duplicate_max_implementation_bytes": 0,
+  "routines": [
+    {
+      "address": "00415510",
+      "end_inclusive": "0041554d",
+      "end_exclusive": "0041554e",
+      "bytes": 62,
+      "instructions": 20,
+      "coverage": "complete raw body",
+      "source_function": "min_native_float_by_ref_00415510",
+      "native_sha256": "6dbad5358822151fed88ad431af0f75739a5861dbde58b95a29721a732e500af",
+      "original_abi": "ECX const float* left, EDX const float* right, ST0 float result, plain RET, no public stack arguments",
+      "source_abi": "MSVC Win32 naked __fastcall float(const float*, const float*); no added noexcept",
+      "current_pre_annotation_name": "BSP_Math_MinFloatByRef",
+      "current_pre_annotation_prototype": "undefined BSP_Math_MinFloatByRef(void)"
+    }
+  ],
+  "read_only_reuse": [
+    {
+      "address": "00415550",
+      "bytes": 62,
+      "source": "src/native_traceline_render.cpp",
+      "function": "max_native_float_by_ref_00415550",
+      "work": "public header declaration only; existing body and registration unchanged",
+      "native_sha256": "53e6afce10160ae6a6da1e8f06f258a91ced43d8f16cd813ddd0df88c94f9a22",
+      "external_symbol": "?max_native_float_by_ref_00415550@bsp@@YIMPBM0@Z",
+      "new_credit": 0
+    }
+  ],
+  "original_pe": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "native_byte_evidence": [
+    {
+      "address": "00415510",
+      "length": 62,
+      "original_pe_offset": 87312,
+      "section": ".text",
+      "hex": "83ec08d901d91c24d902d95c2404d90424d9442404dff1ddd87611f30f100424f30f110424d9042483c408c3f30f10442404f30f110424d9042483c408c3",
+      "sha256": "6dbad5358822151fed88ad431af0f75739a5861dbde58b95a29721a732e500af",
+      "live_matches_original_pe": true,
+      "full_disassembly": [
+        {
+          "address": "00415510",
+          "bytes": "83ec08",
+          "instruction": "sub esp, 8"
+        },
+        {
+          "address": "00415513",
+          "bytes": "d901",
+          "instruction": "fld dword ptr [ecx]"
+        },
+        {
+          "address": "00415515",
+          "bytes": "d91c24",
+          "instruction": "fstp dword ptr [esp]"
+        },
+        {
+          "address": "00415518",
+          "bytes": "d902",
+          "instruction": "fld dword ptr [edx]"
+        },
+        {
+          "address": "0041551a",
+          "bytes": "d95c2404",
+          "instruction": "fstp dword ptr [esp + 4]"
+        },
+        {
+          "address": "0041551e",
+          "bytes": "d90424",
+          "instruction": "fld dword ptr [esp]"
+        },
+        {
+          "address": "00415521",
+          "bytes": "d9442404",
+          "instruction": "fld dword ptr [esp + 4]"
+        },
+        {
+          "address": "00415525",
+          "bytes": "dff1",
+          "instruction": "fcompi st(1)"
+        },
+        {
+          "address": "00415527",
+          "bytes": "ddd8",
+          "instruction": "fstp st(0)"
+        },
+        {
+          "address": "00415529",
+          "bytes": "7611",
+          "instruction": "jbe 0x41553c"
+        },
+        {
+          "address": "0041552b",
+          "bytes": "f30f100424",
+          "instruction": "movss xmm0, dword ptr [esp]"
+        },
+        {
+          "address": "00415530",
+          "bytes": "f30f110424",
+          "instruction": "movss dword ptr [esp], xmm0"
+        },
+        {
+          "address": "00415535",
+          "bytes": "d90424",
+          "instruction": "fld dword ptr [esp]"
+        },
+        {
+          "address": "00415538",
+          "bytes": "83c408",
+          "instruction": "add esp, 8"
+        },
+        {
+          "address": "0041553b",
+          "bytes": "c3",
+          "instruction": "ret "
+        },
+        {
+          "address": "0041553c",
+          "bytes": "f30f10442404",
+          "instruction": "movss xmm0, dword ptr [esp + 4]"
+        },
+        {
+          "address": "00415542",
+          "bytes": "f30f110424",
+          "instruction": "movss dword ptr [esp], xmm0"
+        },
+        {
+          "address": "00415547",
+          "bytes": "d90424",
+          "instruction": "fld dword ptr [esp]"
+        },
+        {
+          "address": "0041554a",
+          "bytes": "83c408",
+          "instruction": "add esp, 8"
+        },
+        {
+          "address": "0041554d",
+          "bytes": "c3",
+          "instruction": "ret "
+        }
+      ]
+    },
+    {
+      "address": "00415550",
+      "length": 62,
+      "original_pe_offset": 87376,
+      "section": ".text",
+      "hex": "83ec08d901d91c24d902d95c2404d9442404d90424dff1ddd87611f30f100424f30f110424d9042483c408c3f30f10442404f30f110424d9042483c408c3",
+      "sha256": "53e6afce10160ae6a6da1e8f06f258a91ced43d8f16cd813ddd0df88c94f9a22",
+      "live_matches_original_pe": true,
+      "full_disassembly": [
+        {
+          "address": "00415550",
+          "bytes": "83ec08",
+          "instruction": "sub esp, 8"
+        },
+        {
+          "address": "00415553",
+          "bytes": "d901",
+          "instruction": "fld dword ptr [ecx]"
+        },
+        {
+          "address": "00415555",
+          "bytes": "d91c24",
+          "instruction": "fstp dword ptr [esp]"
+        },
+        {
+          "address": "00415558",
+          "bytes": "d902",
+          "instruction": "fld dword ptr [edx]"
+        },
+        {
+          "address": "0041555a",
+          "bytes": "d95c2404",
+          "instruction": "fstp dword ptr [esp + 4]"
+        },
+        {
+          "address": "0041555e",
+          "bytes": "d9442404",
+          "instruction": "fld dword ptr [esp + 4]"
+        },
+        {
+          "address": "00415562",
+          "bytes": "d90424",
+          "instruction": "fld dword ptr [esp]"
+        },
+        {
+          "address": "00415565",
+          "bytes": "dff1",
+          "instruction": "fcompi st(1)"
+        },
+        {
+          "address": "00415567",
+          "bytes": "ddd8",
+          "instruction": "fstp st(0)"
+        },
+        {
+          "address": "00415569",
+          "bytes": "7611",
+          "instruction": "jbe 0x41557c"
+        },
+        {
+          "address": "0041556b",
+          "bytes": "f30f100424",
+          "instruction": "movss xmm0, dword ptr [esp]"
+        },
+        {
+          "address": "00415570",
+          "bytes": "f30f110424",
+          "instruction": "movss dword ptr [esp], xmm0"
+        },
+        {
+          "address": "00415575",
+          "bytes": "d90424",
+          "instruction": "fld dword ptr [esp]"
+        },
+        {
+          "address": "00415578",
+          "bytes": "83c408",
+          "instruction": "add esp, 8"
+        },
+        {
+          "address": "0041557b",
+          "bytes": "c3",
+          "instruction": "ret "
+        },
+        {
+          "address": "0041557c",
+          "bytes": "f30f10442404",
+          "instruction": "movss xmm0, dword ptr [esp + 4]"
+        },
+        {
+          "address": "00415582",
+          "bytes": "f30f110424",
+          "instruction": "movss dword ptr [esp], xmm0"
+        },
+        {
+          "address": "00415587",
+          "bytes": "d90424",
+          "instruction": "fld dword ptr [esp]"
+        },
+        {
+          "address": "0041558a",
+          "bytes": "83c408",
+          "instruction": "add esp, 8"
+        },
+        {
+          "address": "0041558d",
+          "bytes": "c3",
+          "instruction": "ret "
+        }
+      ]
+    },
+    {
+      "address": "0041554e",
+      "length": 2,
+      "original_pe_offset": 87374,
+      "section": ".text",
+      "hex": "cccc",
+      "sha256": "e3966e3275be536a16092ec0cadf1638f718218e616fbbe8ff1c5e67fff4def2",
+      "live_matches_original_pe": true
+    },
+    {
+      "address": "0041558e",
+      "length": 2,
+      "original_pe_offset": 87438,
+      "section": ".text",
+      "hex": "cccc",
+      "sha256": "e3966e3275be536a16092ec0cadf1638f718218e616fbbe8ff1c5e67fff4def2",
+      "live_matches_original_pe": true
+    }
+  ],
+  "native_calls": [],
+  "no_ghidra_function": [],
+  "fp_contract": {
+    "memory_order": [
+      "SUB ESP,8",
+      "FLD32 [ECX]",
+      "FSTP32 [ESP]",
+      "FLD32 [EDX]",
+      "FSTP32 [ESP+4]",
+      "FLD32 left spill",
+      "FLD32 right spill",
+      "FCOMIP ST0,ST1 (DF F1), right versus left",
+      "FSTP ST0 (DD D8)",
+      "JBE right path (76 11)"
+    ],
+    "selection": "Left only when spilled right > spilled left; equality and masked unordered comparison select right spill. Max mirrors the comparison operands and also selects right for equality/masked unordered.",
+    "returns": "Both paths MOVSS selected spill through XMM0 into [ESP], FLD32 result to ST0, ADD ESP,8, plain RET. Return is selected spill conversion, not necessarily untouched input bits.",
+    "environment": "Preserve actual x87 load/store, compare and final load timing. FCOMIP is not FUCOMIP. No FP control/status guard, mask changes, C++ value adapter, SSE min/max arithmetic, preload, callback, allocation or external constant. Inputs may alias; literal read/spill order remains.",
+    "registers": "Eight private stack bytes restored; EAX/ECX/EDX/EBX/EBP/ESI/EDI untouched by body, XMM0 overwritten, final ADD changes flags. Two extra x87 entries may be live; successful return leaves ST0 result."
+  },
+  "source_anchors": {
+    "include/bsp/native_scalar_float_by_ref.hpp": [
+      "public min and existing max pointer signatures, no noexcept"
+    ],
+    "src/native_scalar_float_by_ref.cpp": [
+      "naked min at line9",
+      "native instructions each carry exact trailing address",
+      "FCOMIP DF F1 at 00415525, JBE at 00415529, returns at 0041553B/0041554D"
+    ],
+    "cmake/startup.cmake": [
+      "one appended registration for new scalar source"
+    ]
+  },
+  "source_sha256": {
+    "include/bsp/native_scalar_float_by_ref.hpp": "5e8ef63d05b6265516f929539268632b4f08e5be45b25bbf3efff829059a8b73",
+    "src/native_scalar_float_by_ref.cpp": "e8146130c83cc52845c5effc1f49fd51c62dc3a36f7e14b0eef9ffe34bde35fe",
+    "cmake/startup.cmake": "fcf2c3a5e85ef38c94ca12c854698aba0f3f7d79e5356577de2583503bc5a6ac"
+  },
+  "unchanged_legacy_source_pins": [
+    {
+      "path": "src/ship_ai_approach_update.cpp",
+      "bytes": 51309,
+      "sha256": "1836ce258178fffe45b81c57a0b64d703f6a1808accd619a43e64806ff0cd43d"
+    },
+    {
+      "path": "src/ship_ai_arm_final_step.cpp",
+      "bytes": 23195,
+      "sha256": "5151717b9cefb9c85c990f02ada1309ccde92254922db38c79ce20d940542c71"
+    },
+    {
+      "path": "src/ship_ai_bearing_rating.cpp",
+      "bytes": 17524,
+      "sha256": "d7805505ab634e0881215eec63f31ea36e03a835886107c9fd4409cd11f2fe51"
+    },
+    {
+      "path": "src/ship_ai_navigation.cpp",
+      "bytes": 12724,
+      "sha256": "f8678b644b6679ec202568e21bc842c1dfa4eb8ae1cee50156c7c7b17efcb9c9"
+    },
+    {
+      "path": "src/ship_ai_navigation_arm_tail.cpp",
+      "bytes": 17984,
+      "sha256": "10a058bc83893ee975d2a88650161220aaa2115ee71d029a4fc8d80a8cefef36"
+    },
+    {
+      "path": "src/ship_ai_neighbour_box.cpp",
+      "bytes": 26759,
+      "sha256": "5eccbac6505048690f5ccb6f30aa3a92cf204141dac0232d04b0ef753c11b810"
+    },
+    {
+      "path": "src/ship_ai_path_planner.cpp",
+      "bytes": 17478,
+      "sha256": "166b3b6edf9d95fbe6c1cfd0f37a7082e4011d4b31f44c78da7544e3c8b71533"
+    },
+    {
+      "path": "src/ship_ai_path_search.cpp",
+      "bytes": 36255,
+      "sha256": "742f8aee85d07e9d33c9edb5906dfca931ec81ceb3d02949accff56b82967154"
+    },
+    {
+      "path": "src/native_traceline_render.cpp",
+      "bytes": 73527,
+      "sha256": "409f4c679ff1aa635b9d347c8049600079e822649e3ec751b32ed9d5100fa627"
+    },
+    {
+      "path": "include/bsp/native_traceline_render.hpp",
+      "bytes": 6793,
+      "sha256": "71c88e0aa16eacc035ddeec264b9cba33aacef845ba10cf549409a66473085f3"
+    }
+  ],
+  "accepted_admission": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-native-min-float-admission-ed\\local\\ed-native-min-float-admission.json",
+    "sha256": "248d82746bfbb2028ca6fb7fefa39a2b6707b8e2b7782872de5959f6647592db",
+    "status": "Accepted by primary after full min assembly and contract review"
+  },
+  "ledger_redirect_history": {
+    "old_records": {
+      "config/reconstruction/00410000.jsonl": [
+        {
+          "address": "00415510",
+          "name": "min_by_ref_00415510",
+          "source": "src/ship_ai_approach_update.cpp",
+          "status": "reconstructed_ledger_backfilled_from_source",
+          "evidence": "C++ body at src/ship_ai_approach_update.cpp:41 (min_by_ref_00415510), a definition named after the address. Documents: docs/GUN_BOT_TICKS.md, docs/SHIP_AI_APPROACH_UPDATE.md, docs/SHIP_AI_ARM_FINAL_STEP.md, docs/SHIP_AI_BEARING_RATING.md. Ledger record backfilled 2026-09-12 from the source tree because the reconstructing commit recorded none; the document holds the ABI, coverage and validation evidence. The backfill re-verified nothing. Source file is listed in the CMake build. Source comment: 00415510 BSP_Math_MinFloatByRef: FCOMIP of b against a with JBE returning b, so an unordered pair returns b. 00415550 is the mirror.",
+          "cpp_symbol": "min_by_ref_00415510",
+          "abi_compatible": false,
+          "game_validated": false,
+          "kind": "function",
+          "notes": "8 column-0 definitions carry this address suffix in src/; this record points at the first."
+        },
+        {
+          "address": "00415550",
+          "source": "src/native_traceline_render.cpp",
+          "header": "include/bsp/native_traceline_render.hpp",
+          "evidence": "Descriptive hypothesis, not a recovered symbol. Complete normal native body over actual storage with explicit existing service boundaries. Full live/disk range and original ABI reviewed; targeted native fixtures cover only documented paths. Native EH, whole render/GPU composition and gameplay remain unverified. Evidence: docs/NATIVE_TRACELINE_RENDER.md; reports/native_traceline_render.json.",
+          "name": "max_native_float_by_ref_00415550",
+          "status": "reconstructed_build_tested_bounded_fixture_coverage",
+          "native_abi": "ECX left float, EDX right float; 41557B/41558D RET length1; ST0 result.",
+          "kind": "function"
+        }
+      ],
+      "config/names/00410000.jsonl": [
+        {
+          "address": "00415510",
+          "name": "BSP_Math_MinFloatByRef",
+          "evidence": "Hypothesis, not a recovered symbol. Packet cc_ai_order_hop, read-only analysis. __fastcall(ECX = const float* a, EDX = const float* b) -> float in ST0, RET 0, body 00415510-0041554E, complete. Loads both through the stack, one FCOMIP of b against a with JBE returning b, so the result is the smaller and an unordered compare yields b. Four call sites inside 009ED6B0's navigation arm (009EE87B, 009EE97F, 009EEA9D and one in the unread first half)."
+        },
+        {
+          "address": "00415550",
+          "name": "BSP_Math_MaxFloatByRef",
+          "evidence": "Hypothesis, not a recovered symbol. Packet cc_ai_order_hop, read-only analysis. __fastcall(ECX = const float* a, EDX = const float* b) -> float in ST0, RET 0, body 00415550-0041558E, complete. The mirror of 00415510: one FCOMIP of a against b with JBE returning b, so the result is the larger and an unordered compare yields b. Call sites 009EE9AA and 009EEA84. | Descriptive hypothesis, not a recovered symbol. Complete normal native body over actual storage with explicit existing service boundaries. Full live/disk range and original ABI reviewed; targeted native fixtures cover only documented paths. Native EH, whole render/GPU composition and gameplay remain unverified. Evidence: docs/NATIVE_TRACELINE_RENDER.md; reports/native_traceline_render.json."
+        }
+      ]
+    },
+    "old_projections": [
+      {
+        "file": "src/ship_ai_approach_update.cpp",
+        "line": 41,
+        "declaration": "float min_by_ref_00415510(float a, float b) noexcept { return (b < a) ? b : a; }",
+        "expression": "(b < a) ? b : a"
+      },
+      {
+        "file": "src/ship_ai_arm_final_step.cpp",
+        "line": 23,
+        "declaration": "float min_float_by_ref_00415510(float a, float b) noexcept {",
+        "expression": "(b > a) ? a : b"
+      },
+      {
+        "file": "src/ship_ai_bearing_rating.cpp",
+        "line": 40,
+        "declaration": "float min_by_ref_00415510(float a, float b) noexcept",
+        "expression": "(b <= a) ? b : a"
+      },
+      {
+        "file": "src/ship_ai_navigation.cpp",
+        "line": 26,
+        "declaration": "float native_min_00415510(float a, float b) noexcept {",
+        "expression": "(b <= a) ? b : a"
+      },
+      {
+        "file": "src/ship_ai_navigation_arm_tail.cpp",
+        "line": 23,
+        "declaration": "float min_by_ref_00415510(float a, float b) noexcept {",
+        "expression": "(b < a) ? b : a"
+      },
+      {
+        "file": "src/ship_ai_neighbour_box.cpp",
+        "line": 28,
+        "declaration": "float min_by_ref_00415510(float a, float b) noexcept",
+        "expression": "(b > a) ? a : b"
+      },
+      {
+        "file": "src/ship_ai_path_planner.cpp",
+        "line": 16,
+        "declaration": "float min_float_by_ref_00415510(float a, float b) noexcept {",
+        "expression": "(b > a) ? a : b"
+      },
+      {
+        "file": "src/ship_ai_path_search.cpp",
+        "line": 20,
+        "declaration": "float min_float_by_ref_00415510(float a, float b) noexcept {",
+        "expression": "(b > a) ? a : b"
+      }
+    ],
+    "instruction": "Primary later redirects the existing 415510 reconstruction record to validated raw source/header, preserving old source-backfill evidence and its no-reverification disclaimer. Address already counted: zero new unique-address progress. Record 62 newly supplied raw bytes replacing approximate backing. Max receives no new body credit.",
+    "mutated_by_worker": false
+  },
+  "historical_existing_max_validation": {
+    "qualification": "Read-only ED inspection of a previous EA build, not validation of current EE source. Existing max code is unchanged.",
+    "generated": {
+      "object_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-shadow-base-terminal-ea\\build\\win32\\bsp_core.dir\\Release\\native_traceline_render.obj",
+      "object_sha256": "8307e3cccdac176e8503a1b79e0454bc3dc54da6ba32f7192f3cdafd27d311a2",
+      "machine": "014c",
+      "symbols": [
+        {
+          "symbol": "?max_native_float_by_ref_00415550@bsp@@YIMPBM0@Z",
+          "value": 0,
+          "section": 23,
+          "storage_class": 2,
+          "type": 32,
+          "section_bytes": 62,
+          "relocation_count": 0,
+          "hex": "83ec08d901d91c24d902d95c2404d9442404d90424dff1ddd87611f30f100424f30f110424d9042483c408c3f30f10442404f30f110424d9042483c408c3",
+          "sha256": "53e6afce10160ae6a6da1e8f06f258a91ced43d8f16cd813ddd0df88c94f9a22",
+          "entire_section_native_identity": true
+        }
+      ],
+      "library_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-shadow-base-terminal-ea\\build\\win32\\Release\\bsp_core.lib",
+      "library_sha256": "1feaad47d4b0b76683f5f8d87081ece3dc27221560b5ad68dca7f0c387f5c700",
+      "exact_object_members": [
+        {
+          "header_name": "/14903",
+          "member_offset": 23055692,
+          "payload_offset": 23055752,
+          "bytes": 15271
+        }
+      ],
+      "existing_source_commit": "12a268697a39e7482462f047d9de06edb4ce6427"
+    },
+    "validation": {
+      "current_static_max_body_identity": true,
+      "current_coupled_source_commit": "5611325fa323373f94baa935574f296a21bea794",
+      "current_existing_ctests": [
+        "1/2 Test #1: reconstructed_math ...............   Passed    0.04 sec",
+        "2/2 Test #2: native_math_differential .........   Passed    0.04 sec",
+        "100% tests passed, 0 tests failed out of 2"
+      ],
+      "current_existing_build_input_count": 2632,
+      "source_matches_existing_build_input": true,
+      "historical_max_report_fixture": {
+        "total": 96,
+        "AF26A0": 40,
+        "B748E0": 32,
+        "B72F80": 24,
+        "x87_control_words": [
+          "007f",
+          "027f",
+          "037f",
+          "0e7f"
+        ],
+        "compared": [
+          "actual node/vertex/section/cache/entry bytes",
+          "x87 status/control",
+          "MXCSR",
+          "collection row identity/order",
+          "child context/LOD/visibility/flags"
+        ],
+        "limits": [
+          "B1DFF0 is a recording fixture service: its grouping/fade/batch/allocation body is NOT executed",
+          "Logical map/unmap use the existing real provider with absent physical owner and preexisting mapped+08 pointer",
+          "No stream constructor, registration, physical D3D lock, final draw, scene composition, original-caller ABI or game validation",
+          "Existing world/camera/frustum/CRT/mapping providers are shared boundaries in both compared executions",
+          "Finite ordinary render fixtures; arbitrary malformed/exceptional storage and hardware-fault unwind not tested"
+        ]
+      },
+      "qualification": "No ED build or runtime rerun. Historical fixtures are ordinary finite renderer cases, not direct min or exhaustive max exceptional-value/fault proof. Current max entire emitted section/native identity is fresh read-only evidence."
+    }
+  },
+  "validation": {
+    "source_review": "pending primary acceptance of clean source commit",
+    "build": {
+      "pending": true,
+      "passed": false
+    },
+    "generated_min_identity": {
+      "pending": true,
+      "expected_bytes": 62,
+      "expected_instructions": 20,
+      "expected_relocations": 0,
+      "expected_sha256": "6dbad5358822151fed88ad431af0f75739a5861dbde58b95a29721a732e500af",
+      "expected_ret_exits": 2
+    },
+    "report_call_verifier": "Not required: both leaf bodies contain no calls and native_calls is empty.",
+    "new_tests": 0,
+    "fixture_tested": false,
+    "game_validated": false
+  },
+  "partial_limits": [
+    "This new source revision has not yet been built or its emitted body inspected; prior max object evidence stays historical.",
+    "Existing eight value-taking helpers and callers remain unchanged, including their unequal NaN/tie semantics and limited host interfaces.",
+    "Caller provides valid actual input/stack storage and x87 capacity. Literal body does not alone establish native FP fault delivery, injected caller ABI use, or game integration.",
+    "No new unique-address credit, duplicate max definition, generic math framework, native metadata edit or runtime fixture."
+  ],
+  "coordination": {
+    "owner": "agent/orch3-native-scalar-float-ee",
+    "leased_addresses": [
+      "00415510"
+    ],
+    "owned_files": [
+      "include/bsp/native_scalar_float_by_ref.hpp",
+      "src/native_scalar_float_by_ref.cpp",
+      "docs/NATIVE_SCALAR_FLOAT_BY_REF.md",
+      "reports/native_scalar_float_by_ref.json"
+    ],
+    "shared_append_only": [
+      "cmake/startup.cmake"
+    ],
+    "build_gate": "Primary source acceptance plus preceding EC build pass; no EE build before authorization",
+    "Ghidra_ledger_integration": "primary only"
+  }
+}
