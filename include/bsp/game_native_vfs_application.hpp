@@ -29,7 +29,8 @@ public:
     GameNativeVfsApplication(GameNativeVfsApplication&&) = delete;
     GameNativeVfsApplication& operator=(GameNativeVfsApplication&&) = delete;
 
-    // One attempt. Bind deletion before type getters; initialize memory type
+    // One attempt. Bind deletion before type getters; initialize recovered
+    // resource selectors/mesh types in their relative CRT order, memory type
     // CD8FC0, process pool CD9010, physical type CD9030, then retain and bind
     // the VFS runtime before BEDA60/registration. A nonzero CRT registration
     // status does not mean that the native pool construction failed.

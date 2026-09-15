@@ -93,6 +93,7 @@ struct GameNativeVfsApplication::Impl {
 
         auto& deletion = singleton_host.native_deletion_bindings();
         owner_services.bind_deletion(deletion); // before any type getter/registration
+        type_storage.initialize_resource_types(owner_services.types(), common_types);
         type_storage.initialize_memory_00cd8fc0(owner_services.types(), common_types);
         auto& process_pool = game_native_physical_pool_process();
         pool_registration_status = process_pool.initialize_once_00cd9010();

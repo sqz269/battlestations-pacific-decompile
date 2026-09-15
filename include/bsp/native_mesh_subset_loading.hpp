@@ -221,4 +221,34 @@ private:
     NativeResourceItemTypeCalls& other_;
     NativeMeshResourceTypeStorage storage_;
 };
+
+// Production selector families used by 71BB40. Each descriptor is exactly
+// [own,scene,root,name]. The names are MConvexObject, MAux and MGeomMesh;
+// these are distinct from cRenderMeshResource and its derived families.
+struct NativeGameResourceSelectorStorage {
+    volatile std::uint8_t& convex_guard_00e19a94;
+    volatile std::uint32_t* convex_00e19a98;
+    volatile std::uint8_t& aux_guard_00e19b51;
+    volatile std::uint32_t* aux_00e19b64;
+    volatile std::uint8_t& geom_mesh_guard_00e19bd4;
+    volatile std::uint32_t* geom_mesh_00e19be4;
+};
+class NativeGameResourceSelectorTypes final {
+public:
+    // SAME process counter and scene descriptor as all other resource types.
+    // Binding does not initialize, reset or retain a native resource object.
+    NativeGameResourceSelectorTypes(TypeIdCounterLifetime&, NativeMeshResourceTypeIds&,
+        NativeGameResourceSelectorStorage) noexcept;
+    // Each native body79B, no ordinary args, RET. Guard/name before B869C0,
+    // capture both parent IDs before stores;6FAC20 current counter increment
+    // before own-ID store. Guard and partial writes remain if a call throws.
+    void initialize_convex_object_00ccec00();
+    void initialize_aux_00ccf740();
+    void initialize_geom_mesh_00ccf980();
+private:
+    void initialize(volatile std::uint8_t&, volatile std::uint32_t*, std::uint32_t);
+    TypeIdCounterLifetime& counter_;
+    NativeMeshResourceTypeIds& scene_;
+    NativeGameResourceSelectorStorage storage_;
+};
 } // namespace bsp

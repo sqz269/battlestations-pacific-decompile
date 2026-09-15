@@ -1,0 +1,251 @@
+{
+  "packet": "orch4_native_resource_selector_cq",
+  "entries": [
+    {
+      "address": "00ccec00",
+      "name": "BSP_InitializeConvexObject_00ccec00",
+      "before_comment": {
+        "address": "00ccec00",
+        "function_name": "BSP_ResourceSelector_00ccec00",
+        "comment": ""
+      },
+      "before_documentation": {
+        "hash": "3e3f68814b9285252866c105c5130ae727fc06872fb90e4cdc3fa35fc40639d5",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00ccec00",
+        "function_name": "BSP_ResourceSelector_00ccec00",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "pvVar1",
+            "type": "void *",
+            "storage": "(register, 0x0, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 78,
+            "name": "LAB_00ccec4e"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "evidence": "CQ complete three production game-resource selector initializers237B:48 instruction owners,6 direct calls, saved Ghidra/installed PE equal. CCEC00/CCF740/CCF980 publish MConvexObject/MAux/MGeomMesh own IDs at E19A98/E19B64/E19BE4. Each guard/name precedes B869C0; both inherited scene/root IDs are captured before stores; same6FAC20 counter increments with unsigned wrap before own-ID store. CRT cells CE2E04/CE2E44/CE2E80 verify ordering before recovered mesh/stream initializers. Borrowed NativeGameResourceSelectorTypes shares the actual scene/counter domain. GameNativeTypeStorage now retains real selector and mesh guards/descriptors; GameNativeVfsApplication binds deletion, then initializes represented resource families before memory/physical stream types in relative CRT order. Three missing functions defined/annotated with prior comments preserved. Win32 build/both CTests and actualD3D9 fixture pass: application storage cold initialization, selectors distinct from mesh IDs, repeated guards preserve IDs, sharedcountercontinues through streamtypes, allthree fullmeshitems stay primary-only under real selectors;57 canonicalowners andcounter/manager retire. Configured bsp_game one-frame run exits0 with verified privateGFWL override and isolatedwindowedsettings. Default game-directory xlive.dll producesC0000005 in both current/frozenCP;debuggerlocates loadtimewritefault atDLLRVA319049 to10640F5E. No installedDLL/executable change. FullCRT absolutetypeID parity, source-equivalent wholeengine/gameplay and logged unimplementedfrontend/render/shutdown remain outstanding. Complete 79B. CRT initializer; no ordinary inputs; no stable result; RET. Source initialize_convex_object_00ccec00.",
+      "prototype": "void __cdecl BSP_InitializeConvexObject_00ccec00(void)",
+      "prototype_result": "Successfully set prototype for function at 00ccec00 with __cdecl calling convention",
+      "ledger_name_output": "00ccec00 -> BSP_InitializeConvexObject_00ccec00\n",
+      "ledger_function_output": "00ccec00 function initialize_convex_object_00ccec00\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00ccec00",
+        "function_name": "BSP_InitializeConvexObject_00ccec00",
+        "comment": "\n\n[BSP reconstruction 00ccec00] CQ update\nCQ complete three production game-resource selector initializers237B:48 instruction owners,6 direct calls, saved Ghidra/installed PE equal. CCEC00/CCF740/CCF980 publish MConvexObject/MAux/MGeomMesh own IDs at E19A98/E19B64/E19BE4. Each guard/name precedes B869C0; both inherited scene/root IDs are captured before stores; same6FAC20 counter increments with unsigned wrap before own-ID store. CRT cells CE2E04/CE2E44/CE2E80 verify ordering before recovered mesh/stream initializers. Borrowed NativeGameResourceSelectorTypes shares the actual scene/counter domain. GameNativeTypeStorage now retains real selector and mesh guards/descriptors; GameNativeVfsApplication binds deletion, then initializes represented resource families before memory/physical stream types in relative CRT order. Three missing functions defined/annotated with prior comments preserved. Win32 build/both CTests and actualD3D9 fixture pass: application storage cold initialization, selectors distinct from mesh IDs, repeated guards preserve IDs, sharedcountercontinues through streamtypes, allthree fullmeshitems stay primary-only under real selectors;57 canonicalowners andcounter/manager retire. Configured bsp_game one-frame run exits0 with verified privateGFWL override and isolatedwindowedsettings. Default game-directory xlive.dll producesC0000005 in both current/frozenCP;debuggerlocates loadtimewritefault atDLLRVA319049 to10640F5E. No installedDLL/executable change. FullCRT absolutetypeID parity, source-equivalent wholeengine/gameplay and logged unimplementedfrontend/render/shutdown remain outstanding. Complete 79B. CRT initializer; no ordinary inputs; no stable result; RET. Source initialize_convex_object_00ccec00."
+      }
+    },
+    {
+      "address": "00ccf740",
+      "name": "BSP_InitializeAux_00ccf740",
+      "before_comment": {
+        "address": "00ccf740",
+        "function_name": "BSP_ResourceSelector_00ccf740",
+        "comment": ""
+      },
+      "before_documentation": {
+        "hash": "3e3f68814b9285252866c105c5130ae727fc06872fb90e4cdc3fa35fc40639d5",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00ccf740",
+        "function_name": "BSP_ResourceSelector_00ccf740",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "pvVar1",
+            "type": "void *",
+            "storage": "(register, 0x0, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 78,
+            "name": "LAB_00ccf78e"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "evidence": "CQ complete three production game-resource selector initializers237B:48 instruction owners,6 direct calls, saved Ghidra/installed PE equal. CCEC00/CCF740/CCF980 publish MConvexObject/MAux/MGeomMesh own IDs at E19A98/E19B64/E19BE4. Each guard/name precedes B869C0; both inherited scene/root IDs are captured before stores; same6FAC20 counter increments with unsigned wrap before own-ID store. CRT cells CE2E04/CE2E44/CE2E80 verify ordering before recovered mesh/stream initializers. Borrowed NativeGameResourceSelectorTypes shares the actual scene/counter domain. GameNativeTypeStorage now retains real selector and mesh guards/descriptors; GameNativeVfsApplication binds deletion, then initializes represented resource families before memory/physical stream types in relative CRT order. Three missing functions defined/annotated with prior comments preserved. Win32 build/both CTests and actualD3D9 fixture pass: application storage cold initialization, selectors distinct from mesh IDs, repeated guards preserve IDs, sharedcountercontinues through streamtypes, allthree fullmeshitems stay primary-only under real selectors;57 canonicalowners andcounter/manager retire. Configured bsp_game one-frame run exits0 with verified privateGFWL override and isolatedwindowedsettings. Default game-directory xlive.dll producesC0000005 in both current/frozenCP;debuggerlocates loadtimewritefault atDLLRVA319049 to10640F5E. No installedDLL/executable change. FullCRT absolutetypeID parity, source-equivalent wholeengine/gameplay and logged unimplementedfrontend/render/shutdown remain outstanding. Complete 79B. CRT initializer; no ordinary inputs; no stable result; RET. Source initialize_aux_00ccf740.",
+      "prototype": "void __cdecl BSP_InitializeAux_00ccf740(void)",
+      "prototype_result": "Successfully set prototype for function at 00ccf740 with __cdecl calling convention",
+      "ledger_name_output": "00ccf740 -> BSP_InitializeAux_00ccf740\n",
+      "ledger_function_output": "00ccf740 function initialize_aux_00ccf740\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00ccf740",
+        "function_name": "BSP_InitializeAux_00ccf740",
+        "comment": "\n\n[BSP reconstruction 00ccf740] CQ update\nCQ complete three production game-resource selector initializers237B:48 instruction owners,6 direct calls, saved Ghidra/installed PE equal. CCEC00/CCF740/CCF980 publish MConvexObject/MAux/MGeomMesh own IDs at E19A98/E19B64/E19BE4. Each guard/name precedes B869C0; both inherited scene/root IDs are captured before stores; same6FAC20 counter increments with unsigned wrap before own-ID store. CRT cells CE2E04/CE2E44/CE2E80 verify ordering before recovered mesh/stream initializers. Borrowed NativeGameResourceSelectorTypes shares the actual scene/counter domain. GameNativeTypeStorage now retains real selector and mesh guards/descriptors; GameNativeVfsApplication binds deletion, then initializes represented resource families before memory/physical stream types in relative CRT order. Three missing functions defined/annotated with prior comments preserved. Win32 build/both CTests and actualD3D9 fixture pass: application storage cold initialization, selectors distinct from mesh IDs, repeated guards preserve IDs, sharedcountercontinues through streamtypes, allthree fullmeshitems stay primary-only under real selectors;57 canonicalowners andcounter/manager retire. Configured bsp_game one-frame run exits0 with verified privateGFWL override and isolatedwindowedsettings. Default game-directory xlive.dll producesC0000005 in both current/frozenCP;debuggerlocates loadtimewritefault atDLLRVA319049 to10640F5E. No installedDLL/executable change. FullCRT absolutetypeID parity, source-equivalent wholeengine/gameplay and logged unimplementedfrontend/render/shutdown remain outstanding. Complete 79B. CRT initializer; no ordinary inputs; no stable result; RET. Source initialize_aux_00ccf740."
+      }
+    },
+    {
+      "address": "00ccf980",
+      "name": "BSP_InitializeGeomMesh_00ccf980",
+      "before_comment": {
+        "address": "00ccf980",
+        "function_name": "BSP_ResourceSelector_00ccf980",
+        "comment": ""
+      },
+      "before_documentation": {
+        "hash": "3e3f68814b9285252866c105c5130ae727fc06872fb90e4cdc3fa35fc40639d5",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00ccf980",
+        "function_name": "BSP_ResourceSelector_00ccf980",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "pvVar1",
+            "type": "void *",
+            "storage": "(register, 0x0, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 78,
+            "name": "LAB_00ccf9ce"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "evidence": "CQ complete three production game-resource selector initializers237B:48 instruction owners,6 direct calls, saved Ghidra/installed PE equal. CCEC00/CCF740/CCF980 publish MConvexObject/MAux/MGeomMesh own IDs at E19A98/E19B64/E19BE4. Each guard/name precedes B869C0; both inherited scene/root IDs are captured before stores; same6FAC20 counter increments with unsigned wrap before own-ID store. CRT cells CE2E04/CE2E44/CE2E80 verify ordering before recovered mesh/stream initializers. Borrowed NativeGameResourceSelectorTypes shares the actual scene/counter domain. GameNativeTypeStorage now retains real selector and mesh guards/descriptors; GameNativeVfsApplication binds deletion, then initializes represented resource families before memory/physical stream types in relative CRT order. Three missing functions defined/annotated with prior comments preserved. Win32 build/both CTests and actualD3D9 fixture pass: application storage cold initialization, selectors distinct from mesh IDs, repeated guards preserve IDs, sharedcountercontinues through streamtypes, allthree fullmeshitems stay primary-only under real selectors;57 canonicalowners andcounter/manager retire. Configured bsp_game one-frame run exits0 with verified privateGFWL override and isolatedwindowedsettings. Default game-directory xlive.dll producesC0000005 in both current/frozenCP;debuggerlocates loadtimewritefault atDLLRVA319049 to10640F5E. No installedDLL/executable change. FullCRT absolutetypeID parity, source-equivalent wholeengine/gameplay and logged unimplementedfrontend/render/shutdown remain outstanding. Complete 79B. CRT initializer; no ordinary inputs; no stable result; RET. Source initialize_geom_mesh_00ccf980.",
+      "prototype": "void __cdecl BSP_InitializeGeomMesh_00ccf980(void)",
+      "prototype_result": "Successfully set prototype for function at 00ccf980 with __cdecl calling convention",
+      "ledger_name_output": "00ccf980 -> BSP_InitializeGeomMesh_00ccf980\n",
+      "ledger_function_output": "00ccf980 function initialize_geom_mesh_00ccf980\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00ccf980",
+        "function_name": "BSP_InitializeGeomMesh_00ccf980",
+        "comment": "\n\n[BSP reconstruction 00ccf980] CQ update\nCQ complete three production game-resource selector initializers237B:48 instruction owners,6 direct calls, saved Ghidra/installed PE equal. CCEC00/CCF740/CCF980 publish MConvexObject/MAux/MGeomMesh own IDs at E19A98/E19B64/E19BE4. Each guard/name precedes B869C0; both inherited scene/root IDs are captured before stores; same6FAC20 counter increments with unsigned wrap before own-ID store. CRT cells CE2E04/CE2E44/CE2E80 verify ordering before recovered mesh/stream initializers. Borrowed NativeGameResourceSelectorTypes shares the actual scene/counter domain. GameNativeTypeStorage now retains real selector and mesh guards/descriptors; GameNativeVfsApplication binds deletion, then initializes represented resource families before memory/physical stream types in relative CRT order. Three missing functions defined/annotated with prior comments preserved. Win32 build/both CTests and actualD3D9 fixture pass: application storage cold initialization, selectors distinct from mesh IDs, repeated guards preserve IDs, sharedcountercontinues through streamtypes, allthree fullmeshitems stay primary-only under real selectors;57 canonicalowners andcounter/manager retire. Configured bsp_game one-frame run exits0 with verified privateGFWL override and isolatedwindowedsettings. Default game-directory xlive.dll producesC0000005 in both current/frozenCP;debuggerlocates loadtimewritefault atDLLRVA319049 to10640F5E. No installedDLL/executable change. FullCRT absolutetypeID parity, source-equivalent wholeengine/gameplay and logged unimplementedfrontend/render/shutdown remain outstanding. Complete 79B. CRT initializer; no ordinary inputs; no stable result; RET. Source initialize_geom_mesh_00ccf980."
+      }
+    }
+  ],
+  "actions": [
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00ccec00",
+        "prototype": "void __cdecl BSP_InitializeConvexObject_00ccec00(void)",
+        "calling_convention": "__cdecl"
+      },
+      "result": "Successfully set prototype for function at 00ccec00 with __cdecl calling convention"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00ccec00",
+        "new_name": "BSP_InitializeConvexObject_00ccec00"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00ccec00 from 'BSP_ResourceSelector_00ccec00' to 'BSP_InitializeConvexObject_00ccec00'\", \"warnings\": [\"Function name 'BSP_InitializeConvexObject_00ccec00' \\u2014 main part 'InitializeConvexObject_00ccec00' is not PascalCase. Expected: Initializeconvexobject00ccec00\", \"Function name 'BSP_InitializeConvexObject_00ccec00' \\u2014 main part 'InitializeConvexObject_00ccec00' contains underscores. Use PascalCase after the module prefix.\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00ccec00",
+        "new_name": "BSP_InitializeConvexObject_00ccec00"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00ccec00 from 'BSP_InitializeConvexObject_00ccec00' to 'BSP_InitializeConvexObject_00ccec00'\", \"warnings\": [\"Function name 'BSP_InitializeConvexObject_00ccec00' \\u2014 main part 'InitializeConvexObject_00ccec00' is not PascalCase. Expected: Initializeconvexobject00ccec00\", \"Function name 'BSP_InitializeConvexObject_00ccec00' \\u2014 main part 'InitializeConvexObject_00ccec00' contains underscores. Use PascalCase after the module prefix.\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00ccec00",
+        "comment": "\n\n[BSP reconstruction 00ccec00] CQ update\nCQ complete three production game-resource selector initializers237B:48 instruction owners,6 direct calls, saved Ghidra/installed PE equal. CCEC00/CCF740/CCF980 publish MConvexObject/MAux/MGeomMesh own IDs at E19A98/E19B64/E19BE4. Each guard/name precedes B869C0; both inherited scene/root IDs are captured before stores; same6FAC20 counter increments with unsigned wrap before own-ID store. CRT cells CE2E04/CE2E44/CE2E80 verify ordering before recovered mesh/stream initializers. Borrowed NativeGameResourceSelectorTypes shares the actual scene/counter domain. GameNativeTypeStorage now retains real selector and mesh guards/descriptors; GameNativeVfsApplication binds deletion, then initializes represented resource families before memory/physical stream types in relative CRT order. Three missing functions defined/annotated with prior comments preserved. Win32 build/both CTests and actualD3D9 fixture pass: application storage cold initialization, selectors distinct from mesh IDs, repeated guards preserve IDs, sharedcountercontinues through streamtypes, allthree fullmeshitems stay primary-only under real selectors;57 canonicalowners andcounter/manager retire. Configured bsp_game one-frame run exits0 with verified privateGFWL override and isolatedwindowedsettings. Default game-directory xlive.dll producesC0000005 in both current/frozenCP;debuggerlocates loadtimewritefault atDLLRVA319049 to10640F5E. No installedDLL/executable change. FullCRT absolutetypeID parity, source-equivalent wholeengine/gameplay and logged unimplementedfrontend/render/shutdown remain outstanding. Complete 79B. CRT initializer; no ordinary inputs; no stable result; RET. Source initialize_convex_object_00ccec00."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00ccec00\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00ccf740",
+        "prototype": "void __cdecl BSP_InitializeAux_00ccf740(void)",
+        "calling_convention": "__cdecl"
+      },
+      "result": "Successfully set prototype for function at 00ccf740 with __cdecl calling convention"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00ccf740",
+        "new_name": "BSP_InitializeAux_00ccf740"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00ccf740 from 'BSP_ResourceSelector_00ccf740' to 'BSP_InitializeAux_00ccf740'\", \"warnings\": [\"Function name 'BSP_InitializeAux_00ccf740' \\u2014 main part 'InitializeAux_00ccf740' is not PascalCase. Expected: Initializeaux00ccf740\", \"Function name 'BSP_InitializeAux_00ccf740' \\u2014 main part 'InitializeAux_00ccf740' contains underscores. Use PascalCase after the module prefix.\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00ccf740",
+        "new_name": "BSP_InitializeAux_00ccf740"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00ccf740 from 'BSP_InitializeAux_00ccf740' to 'BSP_InitializeAux_00ccf740'\", \"warnings\": [\"Function name 'BSP_InitializeAux_00ccf740' \\u2014 main part 'InitializeAux_00ccf740' is not PascalCase. Expected: Initializeaux00ccf740\", \"Function name 'BSP_InitializeAux_00ccf740' \\u2014 main part 'InitializeAux_00ccf740' contains underscores. Use PascalCase after the module prefix.\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00ccf740",
+        "comment": "\n\n[BSP reconstruction 00ccf740] CQ update\nCQ complete three production game-resource selector initializers237B:48 instruction owners,6 direct calls, saved Ghidra/installed PE equal. CCEC00/CCF740/CCF980 publish MConvexObject/MAux/MGeomMesh own IDs at E19A98/E19B64/E19BE4. Each guard/name precedes B869C0; both inherited scene/root IDs are captured before stores; same6FAC20 counter increments with unsigned wrap before own-ID store. CRT cells CE2E04/CE2E44/CE2E80 verify ordering before recovered mesh/stream initializers. Borrowed NativeGameResourceSelectorTypes shares the actual scene/counter domain. GameNativeTypeStorage now retains real selector and mesh guards/descriptors; GameNativeVfsApplication binds deletion, then initializes represented resource families before memory/physical stream types in relative CRT order. Three missing functions defined/annotated with prior comments preserved. Win32 build/both CTests and actualD3D9 fixture pass: application storage cold initialization, selectors distinct from mesh IDs, repeated guards preserve IDs, sharedcountercontinues through streamtypes, allthree fullmeshitems stay primary-only under real selectors;57 canonicalowners andcounter/manager retire. Configured bsp_game one-frame run exits0 with verified privateGFWL override and isolatedwindowedsettings. Default game-directory xlive.dll producesC0000005 in both current/frozenCP;debuggerlocates loadtimewritefault atDLLRVA319049 to10640F5E. No installedDLL/executable change. FullCRT absolutetypeID parity, source-equivalent wholeengine/gameplay and logged unimplementedfrontend/render/shutdown remain outstanding. Complete 79B. CRT initializer; no ordinary inputs; no stable result; RET. Source initialize_aux_00ccf740."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00ccf740\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00ccf980",
+        "prototype": "void __cdecl BSP_InitializeGeomMesh_00ccf980(void)",
+        "calling_convention": "__cdecl"
+      },
+      "result": "Successfully set prototype for function at 00ccf980 with __cdecl calling convention"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00ccf980",
+        "new_name": "BSP_InitializeGeomMesh_00ccf980"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00ccf980 from 'BSP_ResourceSelector_00ccf980' to 'BSP_InitializeGeomMesh_00ccf980'\", \"warnings\": [\"Function name 'BSP_InitializeGeomMesh_00ccf980' \\u2014 main part 'InitializeGeomMesh_00ccf980' is not PascalCase. Expected: Initializegeommesh00ccf980\", \"Function name 'BSP_InitializeGeomMesh_00ccf980' \\u2014 main part 'InitializeGeomMesh_00ccf980' contains underscores. Use PascalCase after the module prefix.\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00ccf980",
+        "new_name": "BSP_InitializeGeomMesh_00ccf980"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00ccf980 from 'BSP_InitializeGeomMesh_00ccf980' to 'BSP_InitializeGeomMesh_00ccf980'\", \"warnings\": [\"Function name 'BSP_InitializeGeomMesh_00ccf980' \\u2014 main part 'InitializeGeomMesh_00ccf980' is not PascalCase. Expected: Initializegeommesh00ccf980\", \"Function name 'BSP_InitializeGeomMesh_00ccf980' \\u2014 main part 'InitializeGeomMesh_00ccf980' contains underscores. Use PascalCase after the module prefix.\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00ccf980",
+        "comment": "\n\n[BSP reconstruction 00ccf980] CQ update\nCQ complete three production game-resource selector initializers237B:48 instruction owners,6 direct calls, saved Ghidra/installed PE equal. CCEC00/CCF740/CCF980 publish MConvexObject/MAux/MGeomMesh own IDs at E19A98/E19B64/E19BE4. Each guard/name precedes B869C0; both inherited scene/root IDs are captured before stores; same6FAC20 counter increments with unsigned wrap before own-ID store. CRT cells CE2E04/CE2E44/CE2E80 verify ordering before recovered mesh/stream initializers. Borrowed NativeGameResourceSelectorTypes shares the actual scene/counter domain. GameNativeTypeStorage now retains real selector and mesh guards/descriptors; GameNativeVfsApplication binds deletion, then initializes represented resource families before memory/physical stream types in relative CRT order. Three missing functions defined/annotated with prior comments preserved. Win32 build/both CTests and actualD3D9 fixture pass: application storage cold initialization, selectors distinct from mesh IDs, repeated guards preserve IDs, sharedcountercontinues through streamtypes, allthree fullmeshitems stay primary-only under real selectors;57 canonicalowners andcounter/manager retire. Configured bsp_game one-frame run exits0 with verified privateGFWL override and isolatedwindowedsettings. Default game-directory xlive.dll producesC0000005 in both current/frozenCP;debuggerlocates loadtimewritefault atDLLRVA319049 to10640F5E. No installedDLL/executable change. FullCRT absolutetypeID parity, source-equivalent wholeengine/gameplay and logged unimplementedfrontend/render/shutdown remain outstanding. Complete 79B. CRT initializer; no ordinary inputs; no stable result; RET. Source initialize_geom_mesh_00ccf980."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00ccf980\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": "{\"success\": true, \"program\": \"battlestationspacific.exe\", \"message\": \"Program saved successfully\"}"
+    }
+  ],
+  "saved": true,
+  "exports_refreshed": true
+}

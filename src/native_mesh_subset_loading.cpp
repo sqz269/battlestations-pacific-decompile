@@ -521,4 +521,31 @@ std::uint8_t NativeMeshResourceTypeCalls::matches_type(std::uintptr_t target, vo
     if (target == 0x00b93a40) return matches_native_mesh_resource_type_00b93a40(token, storage_.matrix_01090468);
     return other_.matches_type(target, item, token);
 }
+NativeGameResourceSelectorTypes::NativeGameResourceSelectorTypes(TypeIdCounterLifetime& counter,
+    NativeMeshResourceTypeIds& scene, NativeGameResourceSelectorStorage storage) noexcept
+    : counter_(counter), scene_(scene), storage_(storage) {}
+void NativeGameResourceSelectorTypes::initialize(volatile std::uint8_t& guard,
+    volatile U* descriptor, U name) {
+    if (guard != 0) return;
+    guard = 1;
+    descriptor[3] = name;
+    auto* parent = scene_.storage().scene_01090210;
+    scene_.initialize_scene_resource_00b869c0(parent);
+    const U scene = parent[0];
+    const U root = parent[1];
+    descriptor[1] = scene; descriptor[2] = root;
+    volatile auto* counter = counter_.get_006fac20();
+    const U id = counter->next_id_04;
+    counter->next_id_04 = id + 1u;
+    descriptor[0] = id;
+}
+void NativeGameResourceSelectorTypes::initialize_convex_object_00ccec00() {
+    initialize(storage_.convex_guard_00e19a94, storage_.convex_00e19a98, 0x00cfb6c8);
+}
+void NativeGameResourceSelectorTypes::initialize_aux_00ccf740() {
+    initialize(storage_.aux_guard_00e19b51, storage_.aux_00e19b64, 0x00cfd880);
+}
+void NativeGameResourceSelectorTypes::initialize_geom_mesh_00ccf980() {
+    initialize(storage_.geom_mesh_guard_00e19bd4, storage_.geom_mesh_00e19be4, 0x00cfdbbc);
+}
 } // namespace bsp

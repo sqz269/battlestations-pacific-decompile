@@ -1,0 +1,166 @@
+{
+  "packet": "orch4_native_resource_selector_cq",
+  "entries": [
+    {
+      "address": "00ccec00",
+      "before_documentation": {
+        "no_function": true
+      },
+      "before_comment": {
+        "no_function": true,
+        "comment": ""
+      },
+      "complete": true,
+      "after_comment": {
+        "address": "00ccec00",
+        "function_name": "BSP_ResourceSelector_00ccec00",
+        "comment": ""
+      },
+      "prior_comment_preserved": true,
+      "all_instruction_owners_verified": true
+    },
+    {
+      "address": "00ccf740",
+      "before_documentation": {
+        "no_function": true
+      },
+      "before_comment": {
+        "no_function": true,
+        "comment": ""
+      },
+      "complete": true,
+      "after_comment": {
+        "address": "00ccf740",
+        "function_name": "BSP_ResourceSelector_00ccf740",
+        "comment": ""
+      },
+      "prior_comment_preserved": true,
+      "all_instruction_owners_verified": true
+    },
+    {
+      "address": "00ccf980",
+      "before_documentation": {
+        "no_function": true
+      },
+      "before_comment": {
+        "no_function": true,
+        "comment": ""
+      },
+      "complete": true,
+      "after_comment": {
+        "address": "00ccf980",
+        "function_name": "BSP_ResourceSelector_00ccf980",
+        "comment": ""
+      },
+      "prior_comment_preserved": true,
+      "all_instruction_owners_verified": true
+    }
+  ],
+  "actions": [
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00ccec00",
+        "end_address": "00ccec4f"
+      },
+      "result": "{\"success\": true, \"start_address\": \"00ccec00\", \"end_address\": \"00ccec4e\", \"bytes_disassembled\": 79, \"message\": \"Successfully disassembled 79 byte(s)\"}"
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00ccec00",
+        "name": "BSP_ResourceSelector_00ccec00",
+        "disassemble_first": false
+      },
+      "result": "{\"success\": true, \"address\": \"00ccec00\", \"function_name\": \"BSP_ResourceSelector_00ccec00\", \"entry_point\": \"00ccec00\", \"body_size\": 79, \"message\": \"Function created successfully at 00ccec00\", \"warnings\": [\"Function name 'BSP_ResourceSelector_00ccec00' \\u2014 main part 'ResourceSelector_00ccec00' is not PascalCase. Expected: Resourceselector00ccec00\", \"Function name 'BSP_ResourceSelector_00ccec00' \\u2014 main part 'ResourceSelector_00ccec00' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_ResourceSelector_00ccec00' does not start with a recognized verb. First word 'Resource' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00ccec00",
+        "new_name": "BSP_ResourceSelector_00ccec00"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00ccec00 from 'BSP_ResourceSelector_00ccec00' to 'BSP_ResourceSelector_00ccec00'\", \"warnings\": [\"Function name 'BSP_ResourceSelector_00ccec00' \\u2014 main part 'ResourceSelector_00ccec00' is not PascalCase. Expected: Resourceselector00ccec00\", \"Function name 'BSP_ResourceSelector_00ccec00' \\u2014 main part 'ResourceSelector_00ccec00' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_ResourceSelector_00ccec00' does not start with a recognized verb. First word 'Resource' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00ccec00",
+        "comment": ""
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00ccec00\"}"
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00ccf740",
+        "end_address": "00ccf78f"
+      },
+      "result": "{\"success\": true, \"start_address\": \"00ccf740\", \"end_address\": \"00ccf78e\", \"bytes_disassembled\": 79, \"message\": \"Successfully disassembled 79 byte(s)\"}"
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00ccf740",
+        "name": "BSP_ResourceSelector_00ccf740",
+        "disassemble_first": false
+      },
+      "result": "{\"success\": true, \"address\": \"00ccf740\", \"function_name\": \"BSP_ResourceSelector_00ccf740\", \"entry_point\": \"00ccf740\", \"body_size\": 79, \"message\": \"Function created successfully at 00ccf740\", \"warnings\": [\"Function name 'BSP_ResourceSelector_00ccf740' \\u2014 main part 'ResourceSelector_00ccf740' is not PascalCase. Expected: Resourceselector00ccf740\", \"Function name 'BSP_ResourceSelector_00ccf740' \\u2014 main part 'ResourceSelector_00ccf740' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_ResourceSelector_00ccf740' does not start with a recognized verb. First word 'Resource' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00ccf740",
+        "new_name": "BSP_ResourceSelector_00ccf740"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00ccf740 from 'BSP_ResourceSelector_00ccf740' to 'BSP_ResourceSelector_00ccf740'\", \"warnings\": [\"Function name 'BSP_ResourceSelector_00ccf740' \\u2014 main part 'ResourceSelector_00ccf740' is not PascalCase. Expected: Resourceselector00ccf740\", \"Function name 'BSP_ResourceSelector_00ccf740' \\u2014 main part 'ResourceSelector_00ccf740' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_ResourceSelector_00ccf740' does not start with a recognized verb. First word 'Resource' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00ccf740",
+        "comment": ""
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00ccf740\"}"
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00ccf980",
+        "end_address": "00ccf9cf"
+      },
+      "result": "{\"success\": true, \"start_address\": \"00ccf980\", \"end_address\": \"00ccf9ce\", \"bytes_disassembled\": 79, \"message\": \"Successfully disassembled 79 byte(s)\"}"
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00ccf980",
+        "name": "BSP_ResourceSelector_00ccf980",
+        "disassemble_first": false
+      },
+      "result": "{\"success\": true, \"address\": \"00ccf980\", \"function_name\": \"BSP_ResourceSelector_00ccf980\", \"entry_point\": \"00ccf980\", \"body_size\": 79, \"message\": \"Function created successfully at 00ccf980\", \"warnings\": [\"Function name 'BSP_ResourceSelector_00ccf980' \\u2014 main part 'ResourceSelector_00ccf980' is not PascalCase. Expected: Resourceselector00ccf980\", \"Function name 'BSP_ResourceSelector_00ccf980' \\u2014 main part 'ResourceSelector_00ccf980' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_ResourceSelector_00ccf980' does not start with a recognized verb. First word 'Resource' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00ccf980",
+        "new_name": "BSP_ResourceSelector_00ccf980"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00ccf980 from 'BSP_ResourceSelector_00ccf980' to 'BSP_ResourceSelector_00ccf980'\", \"warnings\": [\"Function name 'BSP_ResourceSelector_00ccf980' \\u2014 main part 'ResourceSelector_00ccf980' is not PascalCase. Expected: Resourceselector00ccf980\", \"Function name 'BSP_ResourceSelector_00ccf980' \\u2014 main part 'ResourceSelector_00ccf980' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_ResourceSelector_00ccf980' does not start with a recognized verb. First word 'Resource' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00ccf980",
+        "comment": ""
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00ccf980\"}"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": "{\"success\": true, \"program\": \"battlestationspacific.exe\", \"message\": \"Program saved successfully\"}"
+    }
+  ],
+  "saved": true
+}

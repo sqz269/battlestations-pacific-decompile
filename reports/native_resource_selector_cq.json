@@ -1,0 +1,795 @@
+{
+  "packet": "orch4_native_resource_selector_cq",
+  "base_revision": "4e277b6775fe51240eb7e4bc2a8ca26cc39e4c4f",
+  "documentation": "docs/NATIVE_RESOURCE_SELECTOR_CQ.md",
+  "project": {
+    "project_name": "bsp",
+    "current_folder": "/",
+    "folders": [],
+    "files": [
+      {
+        "name": "battlestationspacific.exe",
+        "path": "/battlestationspacific.exe",
+        "content_type": "Program",
+        "version": 2770,
+        "is_read_only": false,
+        "is_versioned": false
+      }
+    ]
+  },
+  "program": {
+    "name": "battlestationspacific.exe",
+    "path": "/battlestationspacific.exe",
+    "executable_path": "/I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "executable_format": "Portable Executable (PE)",
+    "language": "x86:LE:32:default",
+    "compiler": "windows",
+    "address_size": 32,
+    "image_base": "00400000",
+    "min_address": "00400000",
+    "max_address": "ffdfffff",
+    "memory_size": 14876380,
+    "function_count": 64116,
+    "symbol_count": 144514,
+    "data_type_count": 795,
+    "creation_date": "Mon May 04 16:56:25 PDT 2026",
+    "memory_block_count": 6,
+    "address_spaces": [
+      {
+        "name": "ram",
+        "start": "00000000",
+        "end": "ffffffff",
+        "size": 4294967296,
+        "addressable_unit_size": 1,
+        "size_bytes": 4294967296,
+        "address_size_bits": 32,
+        "is_default": true
+      }
+    ],
+    "has_multiple_address_spaces": false
+  },
+  "routines": [
+    {
+      "address": "00ccec00",
+      "bytes": 79,
+      "function": "initialize_convex_object_00ccec00",
+      "source": "src/native_mesh_subset_loading.cpp",
+      "result": "void",
+      "convention": "__cdecl",
+      "parameters": "void",
+      "original_abi": "CRT initializer; no ordinary inputs; no stable result; RET",
+      "status": "complete_native_resource_selector_source_application_wired_build_fixture_and_configured_startup_smoke_checked",
+      "code": {
+        "address": "00ccec00",
+        "bytes": 79,
+        "sha256": "2bccea0743fa2f172410560f7f0f47195747141003bc9ba8f06e3678bca6b442",
+        "instructions": [
+          [
+            13429760,
+            7,
+            "cmp",
+            "byte ptr [0xe19a94], 0"
+          ],
+          [
+            13429767,
+            2,
+            "jne",
+            "0xccec4e"
+          ],
+          [
+            13429769,
+            5,
+            "mov",
+            "ecx, 0x1090210"
+          ],
+          [
+            13429774,
+            7,
+            "mov",
+            "byte ptr [0xe19a94], 1"
+          ],
+          [
+            13429781,
+            10,
+            "mov",
+            "dword ptr [0xe19aa4], 0xcfb6c8"
+          ],
+          [
+            13429791,
+            5,
+            "call",
+            "0xb869c0"
+          ],
+          [
+            13429796,
+            5,
+            "mov",
+            "eax, dword ptr [0x1090210]"
+          ],
+          [
+            13429801,
+            6,
+            "mov",
+            "ecx, dword ptr [0x1090214]"
+          ],
+          [
+            13429807,
+            5,
+            "mov",
+            "dword ptr [0xe19a9c], eax"
+          ],
+          [
+            13429812,
+            6,
+            "mov",
+            "dword ptr [0xe19aa0], ecx"
+          ],
+          [
+            13429818,
+            5,
+            "call",
+            "0x6fac20"
+          ],
+          [
+            13429823,
+            3,
+            "mov",
+            "ecx, dword ptr [eax + 4]"
+          ],
+          [
+            13429826,
+            3,
+            "lea",
+            "edx, [ecx + 1]"
+          ],
+          [
+            13429829,
+            3,
+            "mov",
+            "dword ptr [eax + 4], edx"
+          ],
+          [
+            13429832,
+            6,
+            "mov",
+            "dword ptr [0xe19a98], ecx"
+          ],
+          [
+            13429838,
+            1,
+            "ret",
+            ""
+          ]
+        ]
+      }
+    },
+    {
+      "address": "00ccf740",
+      "bytes": 79,
+      "function": "initialize_aux_00ccf740",
+      "source": "src/native_mesh_subset_loading.cpp",
+      "result": "void",
+      "convention": "__cdecl",
+      "parameters": "void",
+      "original_abi": "CRT initializer; no ordinary inputs; no stable result; RET",
+      "status": "complete_native_resource_selector_source_application_wired_build_fixture_and_configured_startup_smoke_checked",
+      "code": {
+        "address": "00ccf740",
+        "bytes": 79,
+        "sha256": "587a2d102f7db7b1bed8e3e106803fb61f57acfbc0fc56eeb99247e827f6862a",
+        "instructions": [
+          [
+            13432640,
+            7,
+            "cmp",
+            "byte ptr [0xe19b51], 0"
+          ],
+          [
+            13432647,
+            2,
+            "jne",
+            "0xccf78e"
+          ],
+          [
+            13432649,
+            5,
+            "mov",
+            "ecx, 0x1090210"
+          ],
+          [
+            13432654,
+            7,
+            "mov",
+            "byte ptr [0xe19b51], 1"
+          ],
+          [
+            13432661,
+            10,
+            "mov",
+            "dword ptr [0xe19b70], 0xcfd880"
+          ],
+          [
+            13432671,
+            5,
+            "call",
+            "0xb869c0"
+          ],
+          [
+            13432676,
+            5,
+            "mov",
+            "eax, dword ptr [0x1090210]"
+          ],
+          [
+            13432681,
+            6,
+            "mov",
+            "ecx, dword ptr [0x1090214]"
+          ],
+          [
+            13432687,
+            5,
+            "mov",
+            "dword ptr [0xe19b68], eax"
+          ],
+          [
+            13432692,
+            6,
+            "mov",
+            "dword ptr [0xe19b6c], ecx"
+          ],
+          [
+            13432698,
+            5,
+            "call",
+            "0x6fac20"
+          ],
+          [
+            13432703,
+            3,
+            "mov",
+            "ecx, dword ptr [eax + 4]"
+          ],
+          [
+            13432706,
+            3,
+            "lea",
+            "edx, [ecx + 1]"
+          ],
+          [
+            13432709,
+            3,
+            "mov",
+            "dword ptr [eax + 4], edx"
+          ],
+          [
+            13432712,
+            6,
+            "mov",
+            "dword ptr [0xe19b64], ecx"
+          ],
+          [
+            13432718,
+            1,
+            "ret",
+            ""
+          ]
+        ]
+      }
+    },
+    {
+      "address": "00ccf980",
+      "bytes": 79,
+      "function": "initialize_geom_mesh_00ccf980",
+      "source": "src/native_mesh_subset_loading.cpp",
+      "result": "void",
+      "convention": "__cdecl",
+      "parameters": "void",
+      "original_abi": "CRT initializer; no ordinary inputs; no stable result; RET",
+      "status": "complete_native_resource_selector_source_application_wired_build_fixture_and_configured_startup_smoke_checked",
+      "code": {
+        "address": "00ccf980",
+        "bytes": 79,
+        "sha256": "cac78bd37818ec57baef5f98ec72b8715bd935bd5c6502050c020418c0f5f838",
+        "instructions": [
+          [
+            13433216,
+            7,
+            "cmp",
+            "byte ptr [0xe19bd4], 0"
+          ],
+          [
+            13433223,
+            2,
+            "jne",
+            "0xccf9ce"
+          ],
+          [
+            13433225,
+            5,
+            "mov",
+            "ecx, 0x1090210"
+          ],
+          [
+            13433230,
+            7,
+            "mov",
+            "byte ptr [0xe19bd4], 1"
+          ],
+          [
+            13433237,
+            10,
+            "mov",
+            "dword ptr [0xe19bf0], 0xcfdbbc"
+          ],
+          [
+            13433247,
+            5,
+            "call",
+            "0xb869c0"
+          ],
+          [
+            13433252,
+            5,
+            "mov",
+            "eax, dword ptr [0x1090210]"
+          ],
+          [
+            13433257,
+            6,
+            "mov",
+            "ecx, dword ptr [0x1090214]"
+          ],
+          [
+            13433263,
+            5,
+            "mov",
+            "dword ptr [0xe19be8], eax"
+          ],
+          [
+            13433268,
+            6,
+            "mov",
+            "dword ptr [0xe19bec], ecx"
+          ],
+          [
+            13433274,
+            5,
+            "call",
+            "0x6fac20"
+          ],
+          [
+            13433279,
+            3,
+            "mov",
+            "ecx, dword ptr [eax + 4]"
+          ],
+          [
+            13433282,
+            3,
+            "lea",
+            "edx, [ecx + 1]"
+          ],
+          [
+            13433285,
+            3,
+            "mov",
+            "dword ptr [eax + 4], edx"
+          ],
+          [
+            13433288,
+            6,
+            "mov",
+            "dword ptr [0xe19be4], ecx"
+          ],
+          [
+            13433294,
+            1,
+            "ret",
+            ""
+          ]
+        ]
+      }
+    }
+  ],
+  "support": [],
+  "ordinary_bytes": 237,
+  "support_bytes": 0,
+  "verified_instruction_owners": 48,
+  "direct_transfers": [
+    {
+      "address": "00ccec1f",
+      "native": "00b869c0",
+      "function": "00ccec00",
+      "kind": "call"
+    },
+    {
+      "address": "00ccec3a",
+      "native": "006fac20",
+      "function": "00ccec00",
+      "kind": "call"
+    },
+    {
+      "address": "00ccf75f",
+      "native": "00b869c0",
+      "function": "00ccf740",
+      "kind": "call"
+    },
+    {
+      "address": "00ccf77a",
+      "native": "006fac20",
+      "function": "00ccf740",
+      "kind": "call"
+    },
+    {
+      "address": "00ccf99f",
+      "native": "00b869c0",
+      "function": "00ccf980",
+      "kind": "call"
+    },
+    {
+      "address": "00ccf9ba",
+      "native": "006fac20",
+      "function": "00ccf980",
+      "kind": "call"
+    }
+  ],
+  "indirect_transfers": [],
+  "data": [
+    {
+      "address": "00cfb6c8",
+      "bytes": 14,
+      "hex": "4d436f6e7665784f626a65637400",
+      "sha256": "aba1350558328aa3463c965031b2f029e734d51280a2d350553e9f7a08856456"
+    },
+    {
+      "address": "00cfd880",
+      "bytes": 5,
+      "hex": "4d41757800",
+      "sha256": "b7ae7c8176b470c1e65c0f7955d546613149f1f205d1c0cbc3051fd4e35db479"
+    },
+    {
+      "address": "00cfdbbc",
+      "bytes": 10,
+      "hex": "4d47656f6d4d65736800",
+      "sha256": "f6f7f8bc33a8be620eab6ff019bc9a3443949bb259c23da6d4ed3828752ed6fe"
+    },
+    {
+      "address": "00ce2e04",
+      "bytes": 4,
+      "hex": "00eccc00",
+      "sha256": "8a7dab5c4eaf72aae5e318d9f81ab311e34b942c8069c825d698c00b55c4e901"
+    },
+    {
+      "address": "00ce2e44",
+      "bytes": 4,
+      "hex": "40f7cc00",
+      "sha256": "999b494565a1e5fcc2fc6ba48ba657e8558ae2ea666c24e05b0e9351eac5dedb"
+    },
+    {
+      "address": "00ce2e80",
+      "bytes": 4,
+      "hex": "80f9cc00",
+      "sha256": "ff2c2a22c478939734ee28be8a646891ab516de7f0b0533e3daf6f581e922d38"
+    }
+  ],
+  "eh_maps": {},
+  "membership_gaps": [],
+  "evidence_summary": "CQ complete three production game-resource selector initializers237B:48 instruction owners,6 direct calls, saved Ghidra/installed PE equal. CCEC00/CCF740/CCF980 publish MConvexObject/MAux/MGeomMesh own IDs at E19A98/E19B64/E19BE4. Each guard/name precedes B869C0; both inherited scene/root IDs are captured before stores; same6FAC20 counter increments with unsigned wrap before own-ID store. CRT cells CE2E04/CE2E44/CE2E80 verify ordering before recovered mesh/stream initializers. Borrowed NativeGameResourceSelectorTypes shares the actual scene/counter domain. GameNativeTypeStorage now retains real selector and mesh guards/descriptors; GameNativeVfsApplication binds deletion, then initializes represented resource families before memory/physical stream types in relative CRT order. Three missing functions defined/annotated with prior comments preserved. Win32 build/both CTests and actualD3D9 fixture pass: application storage cold initialization, selectors distinct from mesh IDs, repeated guards preserve IDs, sharedcountercontinues through streamtypes, allthree fullmeshitems stay primary-only under real selectors;57 canonicalowners andcounter/manager retire. Configured bsp_game one-frame run exits0 with verified privateGFWL override and isolatedwindowedsettings. Default game-directory xlive.dll producesC0000005 in both current/frozenCP;debuggerlocates loadtimewritefault atDLLRVA319049 to10640F5E. No installedDLL/executable change. FullCRT absolutetypeID parity, source-equivalent wholeengine/gameplay and logged unimplementedfrontend/render/shutdown remain outstanding.",
+  "validation": {
+    "build": "Tracked default Win32 scripts/build.ps1 and both existing CTests pass; CMake unchanged",
+    "types": "Retained GameNativeTypeStorage initializes root/scene, actual three production selector families, mesh variants, memory/file/physical types with one cold counter; repeated resource initialization leaves IDs/counter unchanged",
+    "classification": "Allthree actualfullmeshparseritems enter71B810game resource and71BB40 with actual initializedselectorcells. Everyderivedclassificationarrayremains empty; primaryitemarray count1, item/meshref1;actualprofiledeletionretiresowners",
+    "fixture_cleanup": "57canonicalgeometryowners;actualtypecounter unregister/delete andrawmanagerdrain/free; allpools/caches/tree/list empty andD3D9device/APIrefs0",
+    "application": "Currentbsp_game reachesVFS,phase5,one applicationframeandshutdown,exit0 usingexplicit verifiedprivateGFWL runtime andisolatedwindowed640x480settings; existingunimplementedcalltrace remains",
+    "default_library_failure": {
+      "current_pid": 52504,
+      "baseline_pid": 24136,
+      "exit_code_unsigned": "0xc0000005",
+      "last_phase": "phase5 settings completed; then XLiveLibrary load",
+      "baseline_executable": "local/native_mesh_resource_classification_cp/registered/bsp_game.exe",
+      "baseline_sha256": "7415ad10c06463a6e3033211ff64fc2aa60cb92ab731db880742cac945dcc290",
+      "fault_module": {
+        "base": "0x5b910000",
+        "size": 5234688,
+        "path": "\\\\?\\I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\xlive.dll"
+      },
+      "fault_module_rva": "0x319049",
+      "fault_address": "0x5bc29049",
+      "information": [
+        "0x1",
+        "0x10640f5e"
+      ],
+      "registers": {
+        "edi": "0x10640f5e",
+        "esi": "0x1adf88",
+        "ebx": "0x0",
+        "edx": "0x90909090",
+        "ecx": "0x1",
+        "eax": "0x5",
+        "ebp": "0x1adf98",
+        "eip": "0x5bc29049",
+        "eflags": "0x10212",
+        "esp": "0x1ade94"
+      },
+      "debugger": "existing BJ child-only DEBUG_PROCESS helper adapted to current10000000 map interval; raw-stack candidates are not an unwound call stack"
+    },
+    "configured_runtime": {
+      "command": [
+        "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\build\\win32\\Release\\bsp_game.exe",
+        "--frames",
+        "1",
+        "--game-root",
+        "I:/SteamLibrary/steamapps/common/Battlestations Pacific",
+        "--settings-personal-root",
+        "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\local\\native_resource_selector_cq\\private_runtime_personal",
+        "--log",
+        "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\local\\native_resource_selector_cq\\private_runtime_application.log",
+        "--xlive-dll",
+        "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\local\\gfwl-private-runtime\\xlive.dll",
+        "--xlive-dependency",
+        "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\local\\gfwl-private-runtime\\msidcrl40.dll"
+      ],
+      "pid": 79508,
+      "exit_code": 0,
+      "exit_hex": "0x0",
+      "executable_sha256": "846a355188f2eed004d6c6619f77404361f97e2cf2568b0a7b98d8f2bb8b8e8e",
+      "private_runtime_sha256": {
+        "xlive.dll": "79da26ab6b2dc25936c3354087de0ba41da1a8b62924972e9100c29b95d34385",
+        "msidcrl40.dll": "623cb6ca98e566357abbd0e76b15713921e1d7e1144c0c4f589a0407c7eff1ee"
+      },
+      "configuration": "one frame; explicit private DLL/dependency; isolated windowed640x480 settings; installed game read as input"
+    },
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "evidence_limits": [
+    "Three initializers are complete source and listing/PE comparisons; no newly executed original-machine-code initializer oracle.",
+    "Application schedules the recovered resource subset in verified relative CRT order. Many other native CRT entries are not represented, so absolute original-game type numbers are not claimed.",
+    "The actual application type storage holds host addresses for its stable native-layout descriptors; only their name words retain original-image addresses. No fake selector IDs or second type counter/root domain is introduced.",
+    "Guard-before-throw, aliases/concurrent writes and partial-publication failure are listing-checked, not newly injected.",
+    "Configured one-frame bsp_game success uses explicit verified private xlive.dll/msidcrl40.dll override. Default game-directory DLL fails during loading on both current and frozen previous executables. No loader default, installed file, registry or system DLL policy was changed.",
+    "One-frame process success is not complete native application behavior or gameplay: the trace still marks GUI/render/loading/sign-in/shutdown paths UNIMPLEMENTED.",
+    "The D3D9 mesh probe retains the prior explicit hot-effect zero-pass preimage/actualgenericdescriptor; it does not execute cold shader/compiler children.",
+    "No full native ABI/FH3/SEH, complete shutdown parity, scene rendering or gameplay validation claim."
+  ],
+  "remaining": {
+    "application": "Replace remaining logged UNIMPLEMENTED frontend GUI/game rendering/loading/shutdown calls with evidence-backed actual-domain compositions; oneframeexit0doesnotmeangameplay.",
+    "loader": "Use existing explicit verifiedprivateGFWLoverride forcurrent configuredstartup verification. Any defaultDLLselectionchange requires separate source/evidence review; installedgameDLL stays unchanged.",
+    "resource": "Wire futureactualresource consumers to application types().mesh_resource_types()/resource_selectors(); allmustborrowthesamecounter/root/scene.",
+    "cold_effect": "Realcoldshader/compilerchildren andrenderadmission remain necessary forgeneralmeshloading.",
+    "main": "Agentbranchonly;movingmainunreviewed."
+  },
+  "evidence": [
+    {
+      "path": "local/native_resource_selector_cq/registered/annotation.log",
+      "sha256": "87570ffac650b2e17b50f16d1e94ec2f0e3ec7261605ca28cbe18713b855dcb3",
+      "bytes": 92
+    },
+    {
+      "path": "local/native_resource_selector_cq/registered/application.log",
+      "sha256": "5aabcc5a0fef99287f7e6865fe574a86f5b27e9ea4a3c00ed65845ef0957cdbf",
+      "bytes": 4340
+    },
+    {
+      "path": "local/native_resource_selector_cq/registered/application_review.json",
+      "sha256": "53edb63c60975cd60f15e497682f3f744483e4dbea68331acc3a6135b8313ab2",
+      "bytes": 2634
+    },
+    {
+      "path": "local/native_resource_selector_cq/registered/application_stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "local/native_resource_selector_cq/registered/application_stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "local/native_resource_selector_cq/registered/baseline_application.log",
+      "sha256": "1114e4394f904dbf670e4b968112ed159fa8c3e9face0a0b881d7a93c4ebdaa7",
+      "bytes": 4394
+    },
+    {
+      "path": "local/native_resource_selector_cq/registered/baseline_stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "local/native_resource_selector_cq/registered/baseline_stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "local/native_resource_selector_cq/registered/bsp_core.lib",
+      "sha256": "ace93203ae2b7510cdd975608f68aaba9acb0e5437f7ab26cd1f2120976cf07f",
+      "bytes": 59507162
+    },
+    {
+      "path": "local/native_resource_selector_cq/registered/bsp_core.vcxproj",
+      "sha256": "1e55c5d486d29e9c0e2f17e73b489630f62e7859faacb6bc5c60a781ed7d7705",
+      "bytes": 200058
+    },
+    {
+      "path": "local/native_resource_selector_cq/registered/bsp_game.exe",
+      "sha256": "846a355188f2eed004d6c6619f77404361f97e2cf2568b0a7b98d8f2bb8b8e8e",
+      "bytes": 2169856
+    },
+    {
+      "path": "local/native_resource_selector_cq/registered/bsp_game.map",
+      "sha256": "077179a386c4ea2b72e0ff6062946fae1b417d04ea9e36c4558c02ec1496ed34",
+      "bytes": 3963263
+    },
+    {
+      "path": "local/native_resource_selector_cq/registered/bsp_game.vcxproj",
+      "sha256": "00ededc59e017f735c2a6ea77bc6adcf082930215e483346d96db75d7fae68fe",
+      "bytes": 60925
+    },
+    {
+      "path": "local/native_resource_selector_cq/registered/bsp_lua511.lib",
+      "sha256": "00315ac717aac3d2b2161fefefe71b36a974335ff9c95d48c137423eb4e2f4b2",
+      "bytes": 455244
+    },
+    {
+      "path": "local/native_resource_selector_cq/registered/bsp_zlib121.lib",
+      "sha256": "73ae30b8adc3adfe5b33285bac533f8e7df7e8ab8d9e44789e6a030fd8a06ad9",
+      "bytes": 71906
+    },
+    {
+      "path": "local/native_resource_selector_cq/registered/build.log",
+      "sha256": "51262b9daa2e8d93baf81d7bad6d0e91ac38d940bfd5463eeec8cd2700c35ca0",
+      "bytes": 2854
+    },
+    {
+      "path": "local/native_resource_selector_cq/registered/call_check.log",
+      "sha256": "5224e0c781f9ea856b8acefd0253534ad1f603c846e56ecebdc9a51a5feae64c",
+      "bytes": 73
+    },
+    {
+      "path": "local/native_resource_selector_cq/registered/child_probe.log",
+      "sha256": "862b8cdb15e1f92f01f6e0ecd8bdea1cb6b7d762f6dda30f4a2e605c710ed0d3",
+      "bytes": 1378
+    },
+    {
+      "path": "local/native_resource_selector_cq/registered/CMakeCache.txt",
+      "sha256": "2ab657bd06bb97731372c10fc883040590ccedec539b0406ba2554bab45f7835",
+      "bytes": 18839
+    },
+    {
+      "path": "local/native_resource_selector_cq/registered/compile.cmd",
+      "sha256": "1b304bce8a7cb159c2ff1a0e6df704d9f5cb12b14e4675c29a73e254bbe66677",
+      "bytes": 683
+    },
+    {
+      "path": "local/native_resource_selector_cq/registered/compile.log",
+      "sha256": "25d4f66c7c01d5b35c220cb97ffdd1608405f4ab45160497e6cc7ea3079676cf",
+      "bytes": 11
+    },
+    {
+      "path": "local/native_resource_selector_cq/registered/configuration.json",
+      "sha256": "c64baa0246522ddc58085e746948a410cdba97a30bc1483afdc57c32eadcd329",
+      "bytes": 1247
+    },
+    {
+      "path": "local/native_resource_selector_cq/registered/debug_application.log",
+      "sha256": "2d6d5259db90a33549c4aca7ffc5bf3247e5c4c0aa6a8de6790c012099e9ea4a",
+      "bytes": 4346
+    },
+    {
+      "path": "local/native_resource_selector_cq/registered/debug_resource_selector_cq.py",
+      "sha256": "275fbe872c5a61a64915cfd40cb4ff891609b074a5cc8ab373dfbdd21d3c9fc0",
+      "bytes": 9060
+    },
+    {
+      "path": "local/native_resource_selector_cq/registered/debug_result.json",
+      "sha256": "d5a848584f44e711a5d7fc568264bebce5b9fc2f35cf2b5781c5ca776152f326",
+      "bytes": 79262
+    },
+    {
+      "path": "local/native_resource_selector_cq/registered/debugger.log",
+      "sha256": "a4ae124b0407f85260e3e6c81ec85dbb45c3b1cf58564209bf2265be41fe55d3",
+      "bytes": 10276
+    },
+    {
+      "path": "local/native_resource_selector_cq/registered/final_audit.json",
+      "sha256": "35e128abe85204e8073934102e81d7a3ac866d0e725735dc8e4ef198090fea5c",
+      "bytes": 9010
+    },
+    {
+      "path": "local/native_resource_selector_cq/registered/options.txt",
+      "sha256": "c47dd8b6d51ff16705c76d21b00f734e71282202527484ed72fbb9b76d797189",
+      "bytes": 176
+    },
+    {
+      "path": "local/native_resource_selector_cq/registered/private_runtime_application.log",
+      "sha256": "9c5f32c720e785aad6a4ba7306fa94634b0ac3e5f062474a5e8c38a0672ff779",
+      "bytes": 45227
+    },
+    {
+      "path": "local/native_resource_selector_cq/registered/private_runtime_receipt.json",
+      "sha256": "f1edf26c8ee632780a6afb2802765c477146ecb7ba01470142553abddd7ac2c3",
+      "bytes": 1280
+    },
+    {
+      "path": "local/native_resource_selector_cq/registered/private_runtime_stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "local/native_resource_selector_cq/registered/private_runtime_stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "local/native_resource_selector_cq/registered/probe.cpp",
+      "sha256": "851cacc3b42fa06b0af6bea47182538c166f98c106a6debe4433cde6e5c573ee",
+      "bytes": 49765
+    },
+    {
+      "path": "local/native_resource_selector_cq/registered/probe.exe",
+      "sha256": "b4935b92e21aa0743cee666a067377421caa9615d1958f81856ab515ae9707f2",
+      "bytes": 553472
+    },
+    {
+      "path": "local/native_resource_selector_cq/registered/probe.log",
+      "sha256": "6f0fad9ec5f2246087c938e01a29284f58d5d8424414c77e7f97deaab5b134eb",
+      "bytes": 1425
+    },
+    {
+      "path": "local/native_resource_selector_cq/registered/probe.map",
+      "sha256": "9f8a428f6f2f7e9695c9cc010b102f2974b3f954a8f5123e6aa47ae5f775c049",
+      "bytes": 990393
+    },
+    {
+      "path": "local/native_resource_selector_cq/registered/probe.obj",
+      "sha256": "53cde3baf12a157689fec80d87b53d95db280a620e28311d15f7425696c4b165",
+      "bytes": 466121
+    },
+    {
+      "path": "local/native_resource_selector_cq/registered/run_resource_selector_app_cq.py",
+      "sha256": "177f105082bda5fe6e564fe635fb8a1ba59051e8b3f365159c8ca207d6cf3d6f",
+      "bytes": 2128
+    },
+    {
+      "path": "local/native_resource_selector_cq/registered/source_manifest.json",
+      "sha256": "0f815500714f56661b3a0f8aef3bf2fba7dd7388a355decb6edadb4ab67bfdeb",
+      "bytes": 290908
+    },
+    {
+      "path": "reports/native_resource_selector_annotations_cq.json",
+      "sha256": "297d08fc10cc0bdd5b77cabaf6e68299e44a4d9a7f874ad9c09b4fc4eec21939",
+      "bytes": 26916
+    }
+  ],
+  "configuration": {
+    "base_revision": "4e277b6775fe51240eb7e4bc2a8ca26cc39e4c4f",
+    "override_absent": true,
+    "build": "scripts/build.ps1 with MSBUILDDISABLENODEREUSE=1 and CMAKE_BUILD_PARALLEL_LEVEL=3",
+    "build_scope": "Tracked default Win32 CMake incremental rebuild; not a fresh empty directory",
+    "source_inputs": 2685,
+    "source_manifest": {
+      "path": "local/native_resource_selector_cq/registered/source_manifest.json",
+      "sha256": "0f815500714f56661b3a0f8aef3bf2fba7dd7388a355decb6edadb4ab67bfdeb",
+      "bytes": 290908
+    },
+    "changed_source_files": [
+      "include/bsp/game_native_type_storage.hpp",
+      "include/bsp/game_native_vfs_application.hpp",
+      "include/bsp/native_mesh_subset_loading.hpp",
+      "src/game_native_type_storage.cpp",
+      "src/game_native_vfs_application.cpp",
+      "src/native_mesh_subset_loading.cpp"
+    ],
+    "registry_unchanged": true,
+    "binary": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+    },
+    "source_targets": {
+      "src/native_mesh_subset_loading.cpp": "bsp_core",
+      "src/game_native_type_storage.cpp": "bsp_core",
+      "src/game_native_vfs_application.cpp": "bsp_game"
+    }
+  }
+}
