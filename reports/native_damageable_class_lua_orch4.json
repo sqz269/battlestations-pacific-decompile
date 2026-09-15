@@ -1,0 +1,2510 @@
+{
+  "packet": "orch4_damageable_reader_d4",
+  "schema_version": 1,
+  "result": "Full0087CA80 remains source absent; independent007149D0 dependency implemented",
+  "evidence": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "original_body_hashes": "sha256 over original installed PE bytes",
+    "ghidra": "read-only bsp.py client verification before every live batch; no mutation",
+    "starting_commit": "f37fdcff9",
+    "reader_listing": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\0087ca80\\assembly.txt"
+  },
+  "reader": {
+    "address": "0087ca80",
+    "end_inclusive": "0087d725",
+    "byte_count": 3238,
+    "instruction_count": 858,
+    "sha256": "00d679920bd1b8f8653e9a0ab1de627f954cfadaf48b8bf0642676fde5162808",
+    "source_present": false,
+    "source_symbol": null,
+    "original_abi": "ECX actual descriptor; stack actual LuaObject* row; RET4; no result contract",
+    "status": "complete_body_field_abi_eh_callsite_audit_source_absent",
+    "direct_call_instruction_count": 131,
+    "direct_callee_count": 35,
+    "indirect_call_instruction_count": 17,
+    "saved_listing_direct_calls_match_installed_PE": true
+  },
+  "category_lookup": {
+    "address": "007149d0",
+    "end_inclusive": "00714a0e",
+    "byte_count": 63,
+    "instruction_count": 24,
+    "sha256": "4fcf053c802072eb6f41f56de33e81bc3d6aa1003cd321c96ba4d87230ffb250",
+    "source_present": true,
+    "source": "src/native_damageable_class_lua.cpp",
+    "header": "include/bsp/native_damageable_class_lua.hpp",
+    "symbol": "native_mesh_category_from_name_007149d0",
+    "original_abi": "ECX const char*; EAX signed index or -1; RET",
+    "source_abi": "new explicit C++ ABI with borrowed const volatile category-table pointer",
+    "provider": "compare_insensitive_00438e10 in src/entity_identity.cpp",
+    "status": "complete_borrowed_table_source_strict_win32_build_and_existing_ctests_passed",
+    "boundary": "Host CRT _stricmp and host current locale; original CRT internal state/locale parity and asynchronous mutation unproved"
+  },
+  "field_schedule": [
+    {
+      "key": "Name",
+      "descriptor_offset": "54",
+      "kind": "char_pointer",
+      "store_site": "0087cada",
+      "semantics": "duplicate and overwrite; no release old pointer"
+    },
+    {
+      "key": "Unique",
+      "descriptor_offset": "34",
+      "kind": "byte",
+      "store_site": "0087cb41",
+      "semantics": "exact boolean; Lua object retained until final cleanup"
+    },
+    {
+      "key": "Mesh",
+      "descriptor_offset": "38",
+      "kind": "NativeString8",
+      "default": ""
+    },
+    {
+      "key": "Comment",
+      "descriptor_offset": "58",
+      "kind": "NativeString8",
+      "default": ""
+    },
+    {
+      "key": "HP",
+      "descriptor_offset": "48",
+      "kind": "float32",
+      "default": 100.0,
+      "store_site": "0087cc98"
+    },
+    {
+      "key": "Armour",
+      "descriptor_offset": "4c",
+      "kind": "float32",
+      "default": 0.0,
+      "store_site": "0087ccce"
+    },
+    {
+      "key": "ExplosionType",
+      "descriptor_offset": "40",
+      "kind": "int32",
+      "semantics": "probe/destroy then relookup/get/store only when probe true",
+      "store_site": "0087cd3d"
+    },
+    {
+      "key": "Damage.Sections",
+      "descriptor_offset": "18",
+      "kind": "native_vector",
+      "stride": 48,
+      "mode": "append; native Lua iterator"
+    },
+    {
+      "key": "Damage.Sections[].MshCategory",
+      "row_offset": "04",
+      "kind": "category_index",
+      "store_site": "0087cf8e"
+    },
+    {
+      "key": "Damage.Sections[].Index",
+      "row_offset": "08",
+      "kind": "int32_from_float32_via_BF7420",
+      "store_site": "0087cf60"
+    },
+    {
+      "key": "Damage.Sections[].FireEfx",
+      "row_offset": "24",
+      "kind": "intrusive_effect_pointer",
+      "default_id": 0,
+      "fallback_name": "BigFire"
+    },
+    {
+      "key": "Damage.Sections[].FailureChance",
+      "row_offset": "28",
+      "kind": "float32",
+      "default_before_division": -100.0,
+      "x87_binary64_divisor": 100.0,
+      "store_site": "0087d139"
+    },
+    {
+      "key": "Damage.Sections[].FailureDamageThreshold",
+      "row_offset": "2c",
+      "kind": "float32",
+      "default": -1.0,
+      "store_site": "0087d16d"
+    },
+    {
+      "key": "FakeExplosionEffects",
+      "descriptor_offset": "08",
+      "kind": "native_vector",
+      "stride": 16,
+      "mode": "append; decimal string keys from0 stop at first non-table"
+    },
+    {
+      "key": "FakeExplosionEffects[key][1]",
+      "row_offset": "00",
+      "kind": "float32",
+      "store_site": "0087d34a"
+    },
+    {
+      "key": "FakeExplosionEffects[key][2]",
+      "row_offset": "08",
+      "kind": "int32",
+      "store_site": "0087d3a4"
+    },
+    {
+      "key": "FakeExplosionEffects[key][3]",
+      "row_offset": "04",
+      "kind": "int32",
+      "store_site": "0087d3fa"
+    },
+    {
+      "key": "FakeExplosionEffects[key][4]",
+      "row_offset": "0c",
+      "kind": "intrusive_effect_pointer",
+      "acquire_flag": 1
+    },
+    {
+      "key": "Emberkek",
+      "descriptor_offset": "60",
+      "kind": "int32_to_44byte_native_map",
+      "node_size": 88,
+      "key_offset": "0c",
+      "value_offset": "10",
+      "store_site": "0087d665",
+      "assigned_mapped_offset": "40",
+      "assigned_node_offset": "50",
+      "factory": "004b1400"
+    }
+  ],
+  "call_sites": [
+    {
+      "address": "0087cab8",
+      "native": "00b67800",
+      "function": "0087ca80",
+      "phase": "name_unique_mesh_comment_scalars"
+    },
+    {
+      "address": "0087caca",
+      "native": "00b662b0",
+      "function": "0087ca80",
+      "phase": "name_unique_mesh_comment_scalars"
+    },
+    {
+      "address": "0087cad1",
+      "native": "00438e40",
+      "function": "0087ca80",
+      "phase": "name_unique_mesh_comment_scalars"
+    },
+    {
+      "address": "0087cae8",
+      "native": "00b67700",
+      "function": "0087ca80",
+      "phase": "name_unique_mesh_comment_scalars"
+    },
+    {
+      "address": "0087cafc",
+      "native": "00b67800",
+      "function": "0087ca80",
+      "phase": "name_unique_mesh_comment_scalars"
+    },
+    {
+      "address": "0087cb13",
+      "native": "00b66000",
+      "function": "0087ca80",
+      "phase": "name_unique_mesh_comment_scalars"
+    },
+    {
+      "address": "0087cb23",
+      "native": "00b66250",
+      "function": "0087ca80",
+      "phase": "name_unique_mesh_comment_scalars"
+    },
+    {
+      "address": "0087cb44",
+      "native": "00b67800",
+      "function": "0087ca80",
+      "phase": "name_unique_mesh_comment_scalars"
+    },
+    {
+      "address": "0087cb5d",
+      "native": "00b685c0",
+      "function": "0087ca80",
+      "phase": "name_unique_mesh_comment_scalars"
+    },
+    {
+      "address": "0087cb7a",
+      "native": "0041dd40",
+      "function": "0087ca80",
+      "phase": "name_unique_mesh_comment_scalars"
+    },
+    {
+      "address": "0087cb8f",
+      "native": "00bf7680",
+      "function": "0087ca80",
+      "phase": "name_unique_mesh_comment_scalars"
+    },
+    {
+      "address": "0087cbb2",
+      "native": "00419cc0",
+      "function": "0087ca80",
+      "phase": "name_unique_mesh_comment_scalars"
+    },
+    {
+      "address": "0087cbb9",
+      "native": "00bd1510",
+      "function": "0087ca80",
+      "phase": "name_unique_mesh_comment_scalars"
+    },
+    {
+      "address": "0087cbca",
+      "native": "00b67700",
+      "function": "0087ca80",
+      "phase": "name_unique_mesh_comment_scalars"
+    },
+    {
+      "address": "0087cbdb",
+      "native": "00b67800",
+      "function": "0087ca80",
+      "phase": "name_unique_mesh_comment_scalars"
+    },
+    {
+      "address": "0087cbf4",
+      "native": "00b685c0",
+      "function": "0087ca80",
+      "phase": "name_unique_mesh_comment_scalars"
+    },
+    {
+      "address": "0087cc11",
+      "native": "0041dd40",
+      "function": "0087ca80",
+      "phase": "name_unique_mesh_comment_scalars"
+    },
+    {
+      "address": "0087cc26",
+      "native": "00bf7680",
+      "function": "0087ca80",
+      "phase": "name_unique_mesh_comment_scalars"
+    },
+    {
+      "address": "0087cc49",
+      "native": "00419cc0",
+      "function": "0087ca80",
+      "phase": "name_unique_mesh_comment_scalars"
+    },
+    {
+      "address": "0087cc50",
+      "native": "00bd1510",
+      "function": "0087ca80",
+      "phase": "name_unique_mesh_comment_scalars"
+    },
+    {
+      "address": "0087cc61",
+      "native": "00b67700",
+      "function": "0087ca80",
+      "phase": "name_unique_mesh_comment_scalars"
+    },
+    {
+      "address": "0087cc72",
+      "native": "00b67800",
+      "function": "0087ca80",
+      "phase": "name_unique_mesh_comment_scalars"
+    },
+    {
+      "address": "0087cc8b",
+      "native": "00b66330",
+      "function": "0087ca80",
+      "phase": "name_unique_mesh_comment_scalars"
+    },
+    {
+      "address": "0087cca3",
+      "native": "00b67700",
+      "function": "0087ca80",
+      "phase": "name_unique_mesh_comment_scalars"
+    },
+    {
+      "address": "0087ccb4",
+      "native": "00b67800",
+      "function": "0087ca80",
+      "phase": "name_unique_mesh_comment_scalars"
+    },
+    {
+      "address": "0087ccc9",
+      "native": "00b66330",
+      "function": "0087ca80",
+      "phase": "name_unique_mesh_comment_scalars"
+    },
+    {
+      "address": "0087ccdd",
+      "native": "00b67700",
+      "function": "0087ca80",
+      "phase": "name_unique_mesh_comment_scalars"
+    },
+    {
+      "address": "0087ccee",
+      "native": "00b67800",
+      "function": "0087ca80",
+      "phase": "name_unique_mesh_comment_scalars"
+    },
+    {
+      "address": "0087ccfd",
+      "native": "00b66a60",
+      "function": "0087ca80",
+      "phase": "name_unique_mesh_comment_scalars"
+    },
+    {
+      "address": "0087cd10",
+      "native": "00b67700",
+      "function": "0087ca80",
+      "phase": "name_unique_mesh_comment_scalars"
+    },
+    {
+      "address": "0087cd25",
+      "native": "00b67800",
+      "function": "0087ca80",
+      "phase": "name_unique_mesh_comment_scalars"
+    },
+    {
+      "address": "0087cd34",
+      "native": "00b66290",
+      "function": "0087ca80",
+      "phase": "name_unique_mesh_comment_scalars"
+    },
+    {
+      "address": "0087cd48",
+      "native": "00b67700",
+      "function": "0087ca80",
+      "phase": "name_unique_mesh_comment_scalars"
+    },
+    {
+      "address": "0087cd59",
+      "native": "00b67800",
+      "function": "0087ca80",
+      "phase": "damage_sections"
+    },
+    {
+      "address": "0087cd6a",
+      "native": "00b661b0",
+      "function": "0087ca80",
+      "phase": "damage_sections"
+    },
+    {
+      "address": "0087cd88",
+      "native": "00b67800",
+      "function": "0087ca80",
+      "phase": "damage_sections"
+    },
+    {
+      "address": "0087cd9c",
+      "native": "00b661b0",
+      "function": "0087ca80",
+      "phase": "damage_sections"
+    },
+    {
+      "address": "0087cdad",
+      "native": "00b65f50",
+      "function": "0087ca80",
+      "phase": "damage_sections"
+    },
+    {
+      "address": "0087cdbe",
+      "native": "00b65f50",
+      "function": "0087ca80",
+      "phase": "damage_sections"
+    },
+    {
+      "address": "0087cddc",
+      "native": "00b67080",
+      "function": "0087ca80",
+      "phase": "damage_sections"
+    },
+    {
+      "address": "0087cded",
+      "native": "00b66420",
+      "function": "0087ca80",
+      "phase": "damage_sections"
+    },
+    {
+      "address": "0087ce0d",
+      "native": "00bf79f0",
+      "function": "0087ca80",
+      "phase": "damage_sections"
+    },
+    {
+      "address": "0087ce48",
+      "native": "0087c870",
+      "function": "0087ca80",
+      "phase": "damage_sections"
+    },
+    {
+      "address": "0087ce90",
+      "native": "00bf6713",
+      "function": "0087ca80",
+      "phase": "damage_sections"
+    },
+    {
+      "address": "0087cea9",
+      "native": "00bf6713",
+      "function": "0087ca80",
+      "phase": "damage_sections"
+    },
+    {
+      "address": "0087ceb6",
+      "native": "00bf6713",
+      "function": "0087ca80",
+      "phase": "damage_sections"
+    },
+    {
+      "address": "0087cecc",
+      "native": "00b67800",
+      "function": "0087ca80",
+      "phase": "damage_sections"
+    },
+    {
+      "address": "0087cedb",
+      "native": "00b662b0",
+      "function": "0087ca80",
+      "phase": "damage_sections"
+    },
+    {
+      "address": "0087cf02",
+      "native": "0041dd40",
+      "function": "0087ca80",
+      "phase": "damage_sections"
+    },
+    {
+      "address": "0087cf19",
+      "native": "00bf7680",
+      "function": "0087ca80",
+      "phase": "damage_sections"
+    },
+    {
+      "address": "0087cf30",
+      "native": "00b67700",
+      "function": "0087ca80",
+      "phase": "damage_sections"
+    },
+    {
+      "address": "0087cf43",
+      "native": "00b67800",
+      "function": "0087ca80",
+      "phase": "damage_sections"
+    },
+    {
+      "address": "0087cf52",
+      "native": "00b66270",
+      "function": "0087ca80",
+      "phase": "damage_sections"
+    },
+    {
+      "address": "0087cf57",
+      "native": "00bf7420",
+      "function": "0087ca80",
+      "phase": "damage_sections"
+    },
+    {
+      "address": "0087cf6b",
+      "native": "00b67700",
+      "function": "0087ca80",
+      "phase": "damage_sections"
+    },
+    {
+      "address": "0087cf7b",
+      "native": "007149d0",
+      "function": "0087ca80",
+      "phase": "damage_sections"
+    },
+    {
+      "address": "0087cf91",
+      "native": "00b67800",
+      "function": "0087ca80",
+      "phase": "damage_sections"
+    },
+    {
+      "address": "0087cfa4",
+      "native": "00b66380",
+      "function": "0087ca80",
+      "phase": "damage_sections"
+    },
+    {
+      "address": "0087cfaf",
+      "native": "00870cd0",
+      "function": "0087ca80",
+      "phase": "damage_sections"
+    },
+    {
+      "address": "0087d02c",
+      "native": "00b67700",
+      "function": "0087ca80",
+      "phase": "damage_sections"
+    },
+    {
+      "address": "0087d04c",
+      "native": "0041e870",
+      "function": "0087ca80",
+      "phase": "damage_sections"
+    },
+    {
+      "address": "0087d063",
+      "native": "00871ba0",
+      "function": "0087ca80",
+      "phase": "damage_sections"
+    },
+    {
+      "address": "0087d0ef",
+      "native": "00419cc0",
+      "function": "0087ca80",
+      "phase": "damage_sections"
+    },
+    {
+      "address": "0087d0f6",
+      "native": "00bd1510",
+      "function": "0087ca80",
+      "phase": "damage_sections"
+    },
+    {
+      "address": "0087d109",
+      "native": "00b67800",
+      "function": "0087ca80",
+      "phase": "damage_sections"
+    },
+    {
+      "address": "0087d122",
+      "native": "00b66330",
+      "function": "0087ca80",
+      "phase": "damage_sections"
+    },
+    {
+      "address": "0087d13c",
+      "native": "00b67700",
+      "function": "0087ca80",
+      "phase": "damage_sections"
+    },
+    {
+      "address": "0087d14f",
+      "native": "00b67800",
+      "function": "0087ca80",
+      "phase": "damage_sections"
+    },
+    {
+      "address": "0087d168",
+      "native": "00b66330",
+      "function": "0087ca80",
+      "phase": "damage_sections"
+    },
+    {
+      "address": "0087d17c",
+      "native": "00b67700",
+      "function": "0087ca80",
+      "phase": "damage_sections"
+    },
+    {
+      "address": "0087d194",
+      "native": "00419cc0",
+      "function": "0087ca80",
+      "phase": "damage_sections"
+    },
+    {
+      "address": "0087d19b",
+      "native": "00bd1510",
+      "function": "0087ca80",
+      "phase": "damage_sections"
+    },
+    {
+      "address": "0087d1b1",
+      "native": "00b67190",
+      "function": "0087ca80",
+      "phase": "damage_sections"
+    },
+    {
+      "address": "0087d1c2",
+      "native": "00b66420",
+      "function": "0087ca80",
+      "phase": "damage_sections"
+    },
+    {
+      "address": "0087d1db",
+      "native": "00b67700",
+      "function": "0087ca80",
+      "phase": "damage_sections"
+    },
+    {
+      "address": "0087d1ec",
+      "native": "00b67700",
+      "function": "0087ca80",
+      "phase": "damage_sections"
+    },
+    {
+      "address": "0087d207",
+      "native": "00b67700",
+      "function": "0087ca80",
+      "phase": "damage_sections"
+    },
+    {
+      "address": "0087d218",
+      "native": "00b67700",
+      "function": "0087ca80",
+      "phase": "damage_sections"
+    },
+    {
+      "address": "0087d229",
+      "native": "00b67800",
+      "function": "0087ca80",
+      "phase": "fake_explosion_effects"
+    },
+    {
+      "address": "0087d23a",
+      "native": "00b661b0",
+      "function": "0087ca80",
+      "phase": "fake_explosion_effects"
+    },
+    {
+      "address": "0087d24b",
+      "native": "00b65f50",
+      "function": "0087ca80",
+      "phase": "fake_explosion_effects"
+    },
+    {
+      "address": "0087d26c",
+      "native": "00bf7a6a",
+      "function": "0087ca80",
+      "phase": "fake_explosion_effects"
+    },
+    {
+      "address": "0087d282",
+      "native": "00b67800",
+      "function": "0087ca80",
+      "phase": "fake_explosion_effects"
+    },
+    {
+      "address": "0087d294",
+      "native": "00b67690",
+      "function": "0087ca80",
+      "phase": "fake_explosion_effects"
+    },
+    {
+      "address": "0087d2a5",
+      "native": "00b67700",
+      "function": "0087ca80",
+      "phase": "fake_explosion_effects"
+    },
+    {
+      "address": "0087d2ae",
+      "native": "00b661b0",
+      "function": "0087ca80",
+      "phase": "fake_explosion_effects"
+    },
+    {
+      "address": "0087d2fe",
+      "native": "0087c920",
+      "function": "0087ca80",
+      "phase": "fake_explosion_effects"
+    },
+    {
+      "address": "0087d30e",
+      "native": "00b67720",
+      "function": "0087ca80",
+      "phase": "fake_explosion_effects"
+    },
+    {
+      "address": "0087d332",
+      "native": "00bf6713",
+      "function": "0087ca80",
+      "phase": "fake_explosion_effects"
+    },
+    {
+      "address": "0087d345",
+      "native": "00b66270",
+      "function": "0087ca80",
+      "phase": "fake_explosion_effects"
+    },
+    {
+      "address": "0087d359",
+      "native": "00b67700",
+      "function": "0087ca80",
+      "phase": "fake_explosion_effects"
+    },
+    {
+      "address": "0087d369",
+      "native": "00b67720",
+      "function": "0087ca80",
+      "phase": "fake_explosion_effects"
+    },
+    {
+      "address": "0087d38d",
+      "native": "00bf6713",
+      "function": "0087ca80",
+      "phase": "fake_explosion_effects"
+    },
+    {
+      "address": "0087d39b",
+      "native": "00b66290",
+      "function": "0087ca80",
+      "phase": "fake_explosion_effects"
+    },
+    {
+      "address": "0087d3af",
+      "native": "00b67700",
+      "function": "0087ca80",
+      "phase": "fake_explosion_effects"
+    },
+    {
+      "address": "0087d3bf",
+      "native": "00b67720",
+      "function": "0087ca80",
+      "phase": "fake_explosion_effects"
+    },
+    {
+      "address": "0087d3e3",
+      "native": "00bf6713",
+      "function": "0087ca80",
+      "phase": "fake_explosion_effects"
+    },
+    {
+      "address": "0087d3f1",
+      "native": "00b66290",
+      "function": "0087ca80",
+      "phase": "fake_explosion_effects"
+    },
+    {
+      "address": "0087d405",
+      "native": "00b67700",
+      "function": "0087ca80",
+      "phase": "fake_explosion_effects"
+    },
+    {
+      "address": "0087d415",
+      "native": "00b67720",
+      "function": "0087ca80",
+      "phase": "fake_explosion_effects"
+    },
+    {
+      "address": "0087d426",
+      "native": "00b66290",
+      "function": "0087ca80",
+      "phase": "fake_explosion_effects"
+    },
+    {
+      "address": "0087d431",
+      "native": "00870cd0",
+      "function": "0087ca80",
+      "phase": "fake_explosion_effects"
+    },
+    {
+      "address": "0087d453",
+      "native": "00bf6713",
+      "function": "0087ca80",
+      "phase": "fake_explosion_effects"
+    },
+    {
+      "address": "0087d4ce",
+      "native": "00b67700",
+      "function": "0087ca80",
+      "phase": "fake_explosion_effects"
+    },
+    {
+      "address": "0087d4e9",
+      "native": "00bf7a6a",
+      "function": "0087ca80",
+      "phase": "fake_explosion_effects"
+    },
+    {
+      "address": "0087d4ff",
+      "native": "00b67800",
+      "function": "0087ca80",
+      "phase": "fake_explosion_effects"
+    },
+    {
+      "address": "0087d511",
+      "native": "00b67690",
+      "function": "0087ca80",
+      "phase": "fake_explosion_effects"
+    },
+    {
+      "address": "0087d522",
+      "native": "00b67700",
+      "function": "0087ca80",
+      "phase": "fake_explosion_effects"
+    },
+    {
+      "address": "0087d52b",
+      "native": "00b661b0",
+      "function": "0087ca80",
+      "phase": "fake_explosion_effects"
+    },
+    {
+      "address": "0087d544",
+      "native": "00b67700",
+      "function": "0087ca80",
+      "phase": "fake_explosion_effects"
+    },
+    {
+      "address": "0087d55c",
+      "native": "00b67700",
+      "function": "0087ca80",
+      "phase": "fake_explosion_effects"
+    },
+    {
+      "address": "0087d56d",
+      "native": "00b67800",
+      "function": "0087ca80",
+      "phase": "crew_and_final_cleanup"
+    },
+    {
+      "address": "0087d57e",
+      "native": "00b661b0",
+      "function": "0087ca80",
+      "phase": "crew_and_final_cleanup"
+    },
+    {
+      "address": "0087d592",
+      "native": "00b65f50",
+      "function": "0087ca80",
+      "phase": "crew_and_final_cleanup"
+    },
+    {
+      "address": "0087d5a3",
+      "native": "00b65f50",
+      "function": "0087ca80",
+      "phase": "crew_and_final_cleanup"
+    },
+    {
+      "address": "0087d5c1",
+      "native": "00b67080",
+      "function": "0087ca80",
+      "phase": "crew_and_final_cleanup"
+    },
+    {
+      "address": "0087d5d2",
+      "native": "00b66420",
+      "function": "0087ca80",
+      "phase": "crew_and_final_cleanup"
+    },
+    {
+      "address": "0087d5f4",
+      "native": "00b662b0",
+      "function": "0087ca80",
+      "phase": "crew_and_final_cleanup"
+    },
+    {
+      "address": "0087d618",
+      "native": "0041dd40",
+      "function": "0087ca80",
+      "phase": "crew_and_final_cleanup"
+    },
+    {
+      "address": "0087d62f",
+      "native": "00bf7680",
+      "function": "0087ca80",
+      "phase": "crew_and_final_cleanup"
+    },
+    {
+      "address": "0087d645",
+      "native": "00b66290",
+      "function": "0087ca80",
+      "phase": "crew_and_final_cleanup"
+    },
+    {
+      "address": "0087d652",
+      "native": "004b1400",
+      "function": "0087ca80",
+      "phase": "crew_and_final_cleanup"
+    },
+    {
+      "address": "0087d660",
+      "native": "0087b750",
+      "function": "0087ca80",
+      "phase": "crew_and_final_cleanup"
+    },
+    {
+      "address": "0087d683",
+      "native": "00419cc0",
+      "function": "0087ca80",
+      "phase": "crew_and_final_cleanup"
+    },
+    {
+      "address": "0087d68a",
+      "native": "00bd1510",
+      "function": "0087ca80",
+      "phase": "crew_and_final_cleanup"
+    },
+    {
+      "address": "0087d6a0",
+      "native": "00b67190",
+      "function": "0087ca80",
+      "phase": "crew_and_final_cleanup"
+    },
+    {
+      "address": "0087d6b1",
+      "native": "00b66420",
+      "function": "0087ca80",
+      "phase": "crew_and_final_cleanup"
+    },
+    {
+      "address": "0087d6ca",
+      "native": "00b67700",
+      "function": "0087ca80",
+      "phase": "crew_and_final_cleanup"
+    },
+    {
+      "address": "0087d6de",
+      "native": "00b67700",
+      "function": "0087ca80",
+      "phase": "crew_and_final_cleanup"
+    },
+    {
+      "address": "0087d6ef",
+      "native": "00b67700",
+      "function": "0087ca80",
+      "phase": "crew_and_final_cleanup"
+    },
+    {
+      "address": "0087d706",
+      "native": "00b67700",
+      "function": "0087ca80",
+      "phase": "crew_and_final_cleanup"
+    },
+    {
+      "address": "007149e7",
+      "native": "00438e10",
+      "function": "007149d0",
+      "phase": "borrowed_category_lookup"
+    }
+  ],
+  "indirect_call_sites": [
+    {
+      "site": "0087ce6f",
+      "instruction": "call dword ptr [0xce2220]",
+      "contract": "InterlockedDecrement",
+      "phase": "damage_sections"
+    },
+    {
+      "site": "0087ce7f",
+      "instruction": "call eax",
+      "contract": "zero_argument_intrusive_virtual_0",
+      "phase": "damage_sections"
+    },
+    {
+      "site": "0087cfd0",
+      "instruction": "call dword ptr [0xce221c]",
+      "contract": "InterlockedIncrement",
+      "phase": "damage_sections"
+    },
+    {
+      "site": "0087cfde",
+      "instruction": "call dword ptr [0xce2220]",
+      "contract": "InterlockedDecrement",
+      "phase": "damage_sections"
+    },
+    {
+      "site": "0087cfee",
+      "instruction": "call edx",
+      "contract": "zero_argument_intrusive_virtual_0",
+      "phase": "damage_sections"
+    },
+    {
+      "site": "0087d006",
+      "instruction": "call dword ptr [0xce2220]",
+      "contract": "InterlockedDecrement",
+      "phase": "damage_sections"
+    },
+    {
+      "site": "0087d016",
+      "instruction": "call edx",
+      "contract": "zero_argument_intrusive_virtual_0",
+      "phase": "damage_sections"
+    },
+    {
+      "site": "0087d084",
+      "instruction": "call dword ptr [0xce221c]",
+      "contract": "InterlockedIncrement",
+      "phase": "damage_sections"
+    },
+    {
+      "site": "0087d092",
+      "instruction": "call dword ptr [0xce2220]",
+      "contract": "InterlockedDecrement",
+      "phase": "damage_sections"
+    },
+    {
+      "site": "0087d0a2",
+      "instruction": "call eax",
+      "contract": "zero_argument_intrusive_virtual_0",
+      "phase": "damage_sections"
+    },
+    {
+      "site": "0087d0ba",
+      "instruction": "call dword ptr [0xce2220]",
+      "contract": "InterlockedDecrement",
+      "phase": "damage_sections"
+    },
+    {
+      "site": "0087d0ca",
+      "instruction": "call eax",
+      "contract": "zero_argument_intrusive_virtual_0",
+      "phase": "damage_sections"
+    },
+    {
+      "site": "0087d472",
+      "instruction": "call dword ptr [0xce221c]",
+      "contract": "InterlockedIncrement",
+      "phase": "fake_explosion_effects"
+    },
+    {
+      "site": "0087d480",
+      "instruction": "call dword ptr [0xce2220]",
+      "contract": "InterlockedDecrement",
+      "phase": "fake_explosion_effects"
+    },
+    {
+      "site": "0087d490",
+      "instruction": "call eax",
+      "contract": "zero_argument_intrusive_virtual_0",
+      "phase": "fake_explosion_effects"
+    },
+    {
+      "site": "0087d4a8",
+      "instruction": "call dword ptr [0xce2220]",
+      "contract": "InterlockedDecrement",
+      "phase": "fake_explosion_effects"
+    },
+    {
+      "site": "0087d4b8",
+      "instruction": "call eax",
+      "contract": "zero_argument_intrusive_virtual_0",
+      "phase": "fake_explosion_effects"
+    }
+  ],
+  "eh": {
+    "handler": "00c96a7d",
+    "info": "00dc8d9c",
+    "magic": "19930522",
+    "max_state_count": 37,
+    "unwind_map": "00dc8dc0",
+    "flags": 1,
+    "try_block_count": 0,
+    "ip_map_count": 0,
+    "states": [
+      {
+        "state": 0,
+        "parent": -1,
+        "action": "00c96900",
+        "cleanup_target": "00b67700",
+        "storage": "ecx, [ebp - 0xbc]"
+      },
+      {
+        "state": 1,
+        "parent": -1,
+        "action": "00c9690b",
+        "cleanup_target": "00b67700",
+        "storage": "ecx, [ebp - 0x6c]"
+      },
+      {
+        "state": 2,
+        "parent": 1,
+        "action": "00c96913",
+        "cleanup_target": "00b67700",
+        "storage": "ecx, [ebp - 0xbc]"
+      },
+      {
+        "state": 3,
+        "parent": 2,
+        "action": "00c9691e",
+        "cleanup_target": "0041dd20",
+        "storage": "ecx, [ebp - 0xf0]"
+      },
+      {
+        "state": 4,
+        "parent": 1,
+        "action": "00c96929",
+        "cleanup_target": "00b67700",
+        "storage": "ecx, [ebp - 0xbc]"
+      },
+      {
+        "state": 5,
+        "parent": 4,
+        "action": "00c96934",
+        "cleanup_target": "0041dd20",
+        "storage": "ecx, [ebp - 0xf0]"
+      },
+      {
+        "state": 6,
+        "parent": 1,
+        "action": "00c9693f",
+        "cleanup_target": "00b67700",
+        "storage": "ecx, [ebp - 0xbc]"
+      },
+      {
+        "state": 7,
+        "parent": 1,
+        "action": "00c9694a",
+        "cleanup_target": "00b67700",
+        "storage": "ecx, [ebp - 0xbc]"
+      },
+      {
+        "state": 8,
+        "parent": 1,
+        "action": "00c96955",
+        "cleanup_target": "00b67700",
+        "storage": "ecx, [ebp - 0xbc]"
+      },
+      {
+        "state": 9,
+        "parent": 1,
+        "action": "00c96960",
+        "cleanup_target": "00b67700",
+        "storage": "ecx, [ebp - 0xbc]"
+      },
+      {
+        "state": 10,
+        "parent": 1,
+        "action": "00c9696b",
+        "cleanup_target": "00b67700",
+        "storage": "ecx, [ebp - 0xbc]"
+      },
+      {
+        "state": 11,
+        "parent": 10,
+        "action": "00c96976",
+        "cleanup_target": "00b67700",
+        "storage": "ecx, [ebp - 0x80]"
+      },
+      {
+        "state": 12,
+        "parent": 11,
+        "action": "00c9697e",
+        "cleanup_target": "00b67700",
+        "storage": "ecx, [ebp - 0xa8]"
+      },
+      {
+        "state": 13,
+        "parent": 12,
+        "action": "00c96989",
+        "cleanup_target": "00b67700",
+        "storage": "ecx, [ebp - 0xd4]"
+      },
+      {
+        "state": 14,
+        "parent": 13,
+        "action": "00c96994",
+        "cleanup_target": "00878ef0",
+        "storage": "ecx, [ebp - 0x58]"
+      },
+      {
+        "state": 15,
+        "parent": 13,
+        "action": "00c9699c",
+        "cleanup_target": "00b67700",
+        "storage": "ecx, [ebp - 0x20]"
+      },
+      {
+        "state": 16,
+        "parent": 15,
+        "action": "00c969a4",
+        "cleanup_target": "0041dd20",
+        "storage": "ecx, [ebp - 0xe8]"
+      },
+      {
+        "state": 17,
+        "parent": 13,
+        "action": "00c969a4",
+        "cleanup_target": "0041dd20",
+        "storage": "ecx, [ebp - 0xe8]"
+      },
+      {
+        "state": 18,
+        "parent": 17,
+        "action": "00c969af",
+        "cleanup_target": "00b67700",
+        "storage": "ecx, [ebp - 0x94]"
+      },
+      {
+        "state": 19,
+        "parent": 17,
+        "action": "00c969ba",
+        "cleanup_target": "00b67700",
+        "storage": "ecx, [ebp - 0x94]"
+      },
+      {
+        "state": 20,
+        "parent": 19,
+        "action": "00c969c5",
+        "cleanup_target": "0041de40",
+        "storage": "ecx, [ebp - 0xd8]"
+      },
+      {
+        "state": 21,
+        "parent": 17,
+        "action": "00c969d0",
+        "cleanup_target": "0041dd20",
+        "storage": "ecx, [ebp - 0xf0]"
+      },
+      {
+        "state": 22,
+        "parent": 21,
+        "action": "00c969db",
+        "cleanup_target": "0041de40",
+        "storage": "ecx, [ebp - 0xe0]"
+      },
+      {
+        "state": 23,
+        "parent": 17,
+        "action": "00c969e6",
+        "cleanup_target": "00b67700",
+        "storage": "ecx, [ebp - 0x94]"
+      },
+      {
+        "state": 24,
+        "parent": 17,
+        "action": "00c969f1",
+        "cleanup_target": "00b67700",
+        "storage": "ecx, [ebp - 0x94]"
+      },
+      {
+        "state": 25,
+        "parent": 1,
+        "action": "00c969fc",
+        "cleanup_target": "00b67700",
+        "storage": "ecx, [ebp - 0xa8]"
+      },
+      {
+        "state": 26,
+        "parent": 25,
+        "action": "00c96a07",
+        "cleanup_target": "00b67700",
+        "storage": "ecx, [ebp - 0xd4]"
+      },
+      {
+        "state": 27,
+        "parent": 26,
+        "action": "00c96a12",
+        "cleanup_target": "00b67700",
+        "storage": "ecx, [ebp - 0xbc]"
+      },
+      {
+        "state": 28,
+        "parent": 26,
+        "action": "00c96a1d",
+        "cleanup_target": "00b67700",
+        "storage": "ecx, [ebp - 0x94]"
+      },
+      {
+        "state": 29,
+        "parent": 26,
+        "action": "00c96a28",
+        "cleanup_target": "00b67700",
+        "storage": "ecx, [ebp - 0x94]"
+      },
+      {
+        "state": 30,
+        "parent": 26,
+        "action": "00c96a33",
+        "cleanup_target": "00b67700",
+        "storage": "ecx, [ebp - 0x94]"
+      },
+      {
+        "state": 31,
+        "parent": 26,
+        "action": "00c96a3e",
+        "cleanup_target": "00b67700",
+        "storage": "ecx, [ebp - 0x94]"
+      },
+      {
+        "state": 32,
+        "parent": 31,
+        "action": "00c96a49",
+        "cleanup_target": "0041de40",
+        "storage": "ecx, [ebp - 0xe0]"
+      },
+      {
+        "state": 33,
+        "parent": 1,
+        "action": "00c96a54",
+        "cleanup_target": "00b67700",
+        "storage": "ecx, [ebp - 0xd4]"
+      },
+      {
+        "state": 34,
+        "parent": 33,
+        "action": "00c96a5f",
+        "cleanup_target": "00b67700",
+        "storage": "ecx, [ebp - 0x80]"
+      },
+      {
+        "state": 35,
+        "parent": 34,
+        "action": "00c96a67",
+        "cleanup_target": "00b67700",
+        "storage": "ecx, [ebp - 0xa8]"
+      },
+      {
+        "state": 36,
+        "parent": 35,
+        "action": "00c96a72",
+        "cleanup_target": "0041dd20",
+        "storage": "ecx, [ebp - 0xe0]"
+      }
+    ],
+    "ordinary_state_stores": [
+      {
+        "site": "0087cabf",
+        "instruction": "mov dword ptr [esp + 0xfc], 0"
+      },
+      {
+        "site": "0087cadd",
+        "instruction": "mov dword ptr [esp + 0xfc], 0xffffffff"
+      },
+      {
+        "site": "0087cb08",
+        "instruction": "mov dword ptr [esp + 0xfc], 1"
+      },
+      {
+        "site": "0087cb55",
+        "instruction": "mov byte ptr [esp + 0x104], 2"
+      },
+      {
+        "site": "0087cb69",
+        "instruction": "mov byte ptr [esp + 0xfc], 3"
+      },
+      {
+        "site": "0087cb9d",
+        "instruction": "mov byte ptr [esp + 0xfc], 2"
+      },
+      {
+        "site": "0087cbc2",
+        "instruction": "mov byte ptr [esp + 0xfc], 1"
+      },
+      {
+        "site": "0087cbec",
+        "instruction": "mov byte ptr [esp + 0x104], 4"
+      },
+      {
+        "site": "0087cc00",
+        "instruction": "mov byte ptr [esp + 0xfc], 5"
+      },
+      {
+        "site": "0087cc34",
+        "instruction": "mov byte ptr [esp + 0xfc], 4"
+      },
+      {
+        "site": "0087cc59",
+        "instruction": "mov byte ptr [esp + 0xfc], 1"
+      },
+      {
+        "site": "0087cc83",
+        "instruction": "mov byte ptr [esp + 0x100], 6"
+      },
+      {
+        "site": "0087cc9b",
+        "instruction": "mov byte ptr [esp + 0xfc], 1"
+      },
+      {
+        "site": "0087ccc1",
+        "instruction": "mov byte ptr [esp + 0x100], 7"
+      },
+      {
+        "site": "0087ccd5",
+        "instruction": "mov byte ptr [esp + 0xfc], 1"
+      },
+      {
+        "site": "0087ccf5",
+        "instruction": "mov byte ptr [esp + 0xfc], 8"
+      },
+      {
+        "site": "0087cd08",
+        "instruction": "mov byte ptr [esp + 0xfc], 1"
+      },
+      {
+        "site": "0087cd2c",
+        "instruction": "mov byte ptr [esp + 0xfc], 9"
+      },
+      {
+        "site": "0087cd40",
+        "instruction": "mov byte ptr [esp + 0xfc], 1"
+      },
+      {
+        "site": "0087cd62",
+        "instruction": "mov byte ptr [esp + 0xfc], 0xa"
+      },
+      {
+        "site": "0087cd94",
+        "instruction": "mov byte ptr [esp + 0xfc], 0xb"
+      },
+      {
+        "site": "0087cdb6",
+        "instruction": "mov byte ptr [esp + 0xfc], 0xc"
+      },
+      {
+        "site": "0087cdd4",
+        "instruction": "mov byte ptr [esp + 0x104], 0xd"
+      },
+      {
+        "site": "0087ce40",
+        "instruction": "mov byte ptr [esp + 0x100], 0xe"
+      },
+      {
+        "site": "0087ce56",
+        "instruction": "mov byte ptr [esp + 0xfc], 0xd"
+      },
+      {
+        "site": "0087ced3",
+        "instruction": "mov byte ptr [esp + 0xfc], 0xf"
+      },
+      {
+        "site": "0087cf28",
+        "instruction": "mov byte ptr [esp + 0xfc], 0x11"
+      },
+      {
+        "site": "0087cf4a",
+        "instruction": "mov byte ptr [esp + 0xfc], 0x12"
+      },
+      {
+        "site": "0087cf63",
+        "instruction": "mov byte ptr [esp + 0xfc], 0x11"
+      },
+      {
+        "site": "0087cf9c",
+        "instruction": "mov byte ptr [esp + 0x104], 0x13"
+      },
+      {
+        "site": "0087cfbb",
+        "instruction": "mov byte ptr [esp + 0xfc], 0x14"
+      },
+      {
+        "site": "0087cff6",
+        "instruction": "mov byte ptr [esp + 0xfc], 0x13"
+      },
+      {
+        "site": "0087d024",
+        "instruction": "mov byte ptr [esp + 0xfc], 0x11"
+      },
+      {
+        "site": "0087d05b",
+        "instruction": "mov byte ptr [esp + 0x100], 0x15"
+      },
+      {
+        "site": "0087d06f",
+        "instruction": "mov byte ptr [esp + 0xfc], 0x16"
+      },
+      {
+        "site": "0087d0aa",
+        "instruction": "mov byte ptr [esp + 0xfc], 0x15"
+      },
+      {
+        "site": "0087d0da",
+        "instruction": "mov byte ptr [esp + 0xfc], 0x11"
+      },
+      {
+        "site": "0087d11a",
+        "instruction": "mov byte ptr [esp + 0x100], 0x17"
+      },
+      {
+        "site": "0087d131",
+        "instruction": "mov byte ptr [esp + 0xfc], 0x11"
+      },
+      {
+        "site": "0087d160",
+        "instruction": "mov byte ptr [esp + 0x100], 0x18"
+      },
+      {
+        "site": "0087d174",
+        "instruction": "mov byte ptr [esp + 0xfc], 0x11"
+      },
+      {
+        "site": "0087d183",
+        "instruction": "mov byte ptr [esp + 0xfc], 0xd"
+      },
+      {
+        "site": "0087d1d3",
+        "instruction": "mov byte ptr [esp + 0xfc], 0xc"
+      },
+      {
+        "site": "0087d1e4",
+        "instruction": "mov byte ptr [esp + 0xfc], 0xb"
+      },
+      {
+        "site": "0087d1ff",
+        "instruction": "mov byte ptr [esp + 0xfc], 0xa"
+      },
+      {
+        "site": "0087d210",
+        "instruction": "mov byte ptr [esp + 0xfc], 1"
+      },
+      {
+        "site": "0087d232",
+        "instruction": "mov byte ptr [esp + 0xfc], 0x19"
+      },
+      {
+        "site": "0087d25c",
+        "instruction": "mov byte ptr [esp + 0x108], 0x1a"
+      },
+      {
+        "site": "0087d28c",
+        "instruction": "mov byte ptr [esp + 0x100], 0x1b"
+      },
+      {
+        "site": "0087d29d",
+        "instruction": "mov byte ptr [esp + 0xfc], 0x1a"
+      },
+      {
+        "site": "0087d31c",
+        "instruction": "mov byte ptr [esp + 0xfc], 0x1c"
+      },
+      {
+        "site": "0087d351",
+        "instruction": "mov byte ptr [esp + 0xfc], 0x1a"
+      },
+      {
+        "site": "0087d377",
+        "instruction": "mov byte ptr [esp + 0xfc], 0x1d"
+      },
+      {
+        "site": "0087d3a7",
+        "instruction": "mov byte ptr [esp + 0xfc], 0x1a"
+      },
+      {
+        "site": "0087d3cd",
+        "instruction": "mov byte ptr [esp + 0xfc], 0x1e"
+      },
+      {
+        "site": "0087d3fd",
+        "instruction": "mov byte ptr [esp + 0xfc], 0x1a"
+      },
+      {
+        "site": "0087d41e",
+        "instruction": "mov byte ptr [esp + 0x100], 0x1f"
+      },
+      {
+        "site": "0087d43d",
+        "instruction": "mov byte ptr [esp + 0xfc], 0x20"
+      },
+      {
+        "site": "0087d498",
+        "instruction": "mov byte ptr [esp + 0xfc], 0x1f"
+      },
+      {
+        "site": "0087d4c6",
+        "instruction": "mov byte ptr [esp + 0xfc], 0x1a"
+      },
+      {
+        "site": "0087d509",
+        "instruction": "mov byte ptr [esp + 0x100], 0x1b"
+      },
+      {
+        "site": "0087d51a",
+        "instruction": "mov byte ptr [esp + 0xfc], 0x1a"
+      },
+      {
+        "site": "0087d53c",
+        "instruction": "mov byte ptr [esp + 0xfc], 0x19"
+      },
+      {
+        "site": "0087d554",
+        "instruction": "mov byte ptr [esp + 0xfc], 1"
+      },
+      {
+        "site": "0087d576",
+        "instruction": "mov byte ptr [esp + 0xfc], 0x21"
+      },
+      {
+        "site": "0087d59b",
+        "instruction": "mov byte ptr [esp + 0xfc], 0x22"
+      },
+      {
+        "site": "0087d5b9",
+        "instruction": "mov byte ptr [esp + 0x104], 0x23"
+      },
+      {
+        "site": "0087d63e",
+        "instruction": "mov byte ptr [esp + 0xfc], bl"
+      },
+      {
+        "site": "0087d66e",
+        "instruction": "mov byte ptr [esp + 0xfc], 0x23"
+      },
+      {
+        "site": "0087d6c2",
+        "instruction": "mov byte ptr [esp + 0xfc], 0x22"
+      },
+      {
+        "site": "0087d6d6",
+        "instruction": "mov byte ptr [esp + 0xfc], 0x21"
+      },
+      {
+        "site": "0087d6e7",
+        "instruction": "mov byte ptr [esp + 0xfc], 1"
+      },
+      {
+        "site": "0087d6fb",
+        "instruction": "mov dword ptr [esp + 0xfc], 0xffffffff"
+      }
+    ],
+    "cleanup_tail_jumps": [
+      {
+        "address": "00c96906",
+        "native": "00b67700",
+        "function": "00c96900",
+        "kind": "tail_jump"
+      },
+      {
+        "address": "00c9690e",
+        "native": "00b67700",
+        "function": "00c9690b",
+        "kind": "tail_jump"
+      },
+      {
+        "address": "00c96919",
+        "native": "00b67700",
+        "function": "00c96913",
+        "kind": "tail_jump"
+      },
+      {
+        "address": "00c96924",
+        "native": "0041dd20",
+        "function": "00c9691e",
+        "kind": "tail_jump"
+      },
+      {
+        "address": "00c9692f",
+        "native": "00b67700",
+        "function": "00c96929",
+        "kind": "tail_jump"
+      },
+      {
+        "address": "00c9693a",
+        "native": "0041dd20",
+        "function": "00c96934",
+        "kind": "tail_jump"
+      },
+      {
+        "address": "00c96945",
+        "native": "00b67700",
+        "function": "00c9693f",
+        "kind": "tail_jump"
+      },
+      {
+        "address": "00c96950",
+        "native": "00b67700",
+        "function": "00c9694a",
+        "kind": "tail_jump"
+      },
+      {
+        "address": "00c9695b",
+        "native": "00b67700",
+        "function": "00c96955",
+        "kind": "tail_jump"
+      },
+      {
+        "address": "00c96966",
+        "native": "00b67700",
+        "function": "00c96960",
+        "kind": "tail_jump"
+      },
+      {
+        "address": "00c96971",
+        "native": "00b67700",
+        "function": "00c9696b",
+        "kind": "tail_jump"
+      },
+      {
+        "address": "00c96979",
+        "native": "00b67700",
+        "function": "00c96976",
+        "kind": "tail_jump"
+      },
+      {
+        "address": "00c96984",
+        "native": "00b67700",
+        "function": "00c9697e",
+        "kind": "tail_jump"
+      },
+      {
+        "address": "00c9698f",
+        "native": "00b67700",
+        "function": "00c96989",
+        "kind": "tail_jump"
+      },
+      {
+        "address": "00c96997",
+        "native": "00878ef0",
+        "function": "00c96994",
+        "kind": "tail_jump"
+      },
+      {
+        "address": "00c9699f",
+        "native": "00b67700",
+        "function": "00c9699c",
+        "kind": "tail_jump"
+      },
+      {
+        "address": "00c969aa",
+        "native": "0041dd20",
+        "function": "00c969a4",
+        "kind": "tail_jump"
+      },
+      {
+        "address": "00c969b5",
+        "native": "00b67700",
+        "function": "00c969af",
+        "kind": "tail_jump"
+      },
+      {
+        "address": "00c969c0",
+        "native": "00b67700",
+        "function": "00c969ba",
+        "kind": "tail_jump"
+      },
+      {
+        "address": "00c969cb",
+        "native": "0041de40",
+        "function": "00c969c5",
+        "kind": "tail_jump"
+      },
+      {
+        "address": "00c969d6",
+        "native": "0041dd20",
+        "function": "00c969d0",
+        "kind": "tail_jump"
+      },
+      {
+        "address": "00c969e1",
+        "native": "0041de40",
+        "function": "00c969db",
+        "kind": "tail_jump"
+      },
+      {
+        "address": "00c969ec",
+        "native": "00b67700",
+        "function": "00c969e6",
+        "kind": "tail_jump"
+      },
+      {
+        "address": "00c969f7",
+        "native": "00b67700",
+        "function": "00c969f1",
+        "kind": "tail_jump"
+      },
+      {
+        "address": "00c96a02",
+        "native": "00b67700",
+        "function": "00c969fc",
+        "kind": "tail_jump"
+      },
+      {
+        "address": "00c96a0d",
+        "native": "00b67700",
+        "function": "00c96a07",
+        "kind": "tail_jump"
+      },
+      {
+        "address": "00c96a18",
+        "native": "00b67700",
+        "function": "00c96a12",
+        "kind": "tail_jump"
+      },
+      {
+        "address": "00c96a23",
+        "native": "00b67700",
+        "function": "00c96a1d",
+        "kind": "tail_jump"
+      },
+      {
+        "address": "00c96a2e",
+        "native": "00b67700",
+        "function": "00c96a28",
+        "kind": "tail_jump"
+      },
+      {
+        "address": "00c96a39",
+        "native": "00b67700",
+        "function": "00c96a33",
+        "kind": "tail_jump"
+      },
+      {
+        "address": "00c96a44",
+        "native": "00b67700",
+        "function": "00c96a3e",
+        "kind": "tail_jump"
+      },
+      {
+        "address": "00c96a4f",
+        "native": "0041de40",
+        "function": "00c96a49",
+        "kind": "tail_jump"
+      },
+      {
+        "address": "00c96a5a",
+        "native": "00b67700",
+        "function": "00c96a54",
+        "kind": "tail_jump"
+      },
+      {
+        "address": "00c96a62",
+        "native": "00b67700",
+        "function": "00c96a5f",
+        "kind": "tail_jump"
+      },
+      {
+        "address": "00c96a6d",
+        "native": "00b67700",
+        "function": "00c96a67",
+        "kind": "tail_jump"
+      },
+      {
+        "address": "00c96a78",
+        "native": "0041dd20",
+        "function": "00c96a72",
+        "kind": "tail_jump"
+      }
+    ],
+    "scope": "Complete metadata/funclet audit; no claim of source FH3, faults, longjmp or double-exception parity"
+  },
+  "provider_assessment": [
+    {
+      "entry": "00419cc0",
+      "status": "available_raw_pool_provider",
+      "source": "src/native_string_pool_owner.cpp",
+      "sites": [
+        "0087cbb2",
+        "0087cc49",
+        "0087d0ef",
+        "0087d194",
+        "0087d683"
+      ]
+    },
+    {
+      "entry": "0041dd40",
+      "status": "available_actual_header_provider",
+      "source": "src/native_string.cpp",
+      "sites": [
+        "0087cb7a",
+        "0087cc11",
+        "0087cf02",
+        "0087d618"
+      ]
+    },
+    {
+      "entry": "0041e870",
+      "status": "available_native_string_provider_requires_callsite_composition",
+      "source": "src/native_string.cpp",
+      "sites": [
+        "0087d04c"
+      ]
+    },
+    {
+      "entry": "00438e40",
+      "status": "available_string_duplicate_host_allocation_boundary",
+      "source": "src/native_string.cpp",
+      "sites": [
+        "0087cad1"
+      ]
+    },
+    {
+      "entry": "004b1400",
+      "status": "source_absent_soldier_factory_and_cache",
+      "source": null,
+      "sites": [
+        "0087d652"
+      ]
+    },
+    {
+      "entry": "007149d0",
+      "status": "implemented_actual_borrowed_table_host_crt_compare_boundary",
+      "source": "src/native_damageable_class_lua.cpp",
+      "sites": [
+        "0087cf7b"
+      ]
+    },
+    {
+      "entry": "00870cd0",
+      "status": "source_absent_wrapper_and_qualified_effect_provider",
+      "source": null,
+      "sites": [
+        "0087cfaf",
+        "0087d431"
+      ]
+    },
+    {
+      "entry": "00871ba0",
+      "status": "existing_provider_requires_gameplay_component_services",
+      "source": "src/gameplay_effect_acquisition.cpp",
+      "sites": [
+        "0087d063"
+      ]
+    },
+    {
+      "entry": "0087b750",
+      "status": "source_absent_actual_int_to_44_byte_tree_index",
+      "source": null,
+      "sites": [
+        "0087d660"
+      ]
+    },
+    {
+      "entry": "0087c870",
+      "status": "source_absent_actual_30_byte_vector_append",
+      "source": null,
+      "sites": [
+        "0087ce48"
+      ]
+    },
+    {
+      "entry": "0087c920",
+      "status": "source_absent_actual_10_byte_vector_resize",
+      "source": null,
+      "sites": [
+        "0087d2fe"
+      ]
+    },
+    {
+      "entry": "00b65f50",
+      "status": "available_actual_lua_stack_provider_unintegrated_with_reader",
+      "source": "src/native_lua_objects.cpp",
+      "sites": [
+        "0087cdad",
+        "0087cdbe",
+        "0087d24b",
+        "0087d592",
+        "0087d5a3"
+      ]
+    },
+    {
+      "entry": "00b66000",
+      "status": "available_actual_lua_stack_provider_unintegrated_with_reader",
+      "source": "src/native_lua_objects.cpp",
+      "sites": [
+        "0087cb13"
+      ]
+    },
+    {
+      "entry": "00b661b0",
+      "status": "available_actual_lua_stack_provider_unintegrated_with_reader",
+      "source": "src/native_lua_objects.cpp",
+      "sites": [
+        "0087cd6a",
+        "0087cd9c",
+        "0087d23a",
+        "0087d2ae",
+        "0087d52b",
+        "0087d57e"
+      ]
+    },
+    {
+      "entry": "00b66250",
+      "status": "available_actual_lua_stack_provider_unintegrated_with_reader",
+      "source": "src/native_lua_objects.cpp",
+      "sites": [
+        "0087cb23"
+      ]
+    },
+    {
+      "entry": "00b66270",
+      "status": "available_actual_lua_stack_provider_unintegrated_with_reader",
+      "source": "src/native_lua_objects.cpp",
+      "sites": [
+        "0087cf52",
+        "0087d345"
+      ]
+    },
+    {
+      "entry": "00b66290",
+      "status": "available_actual_lua_stack_provider_unintegrated_with_reader",
+      "source": "src/native_lua_objects.cpp",
+      "sites": [
+        "0087cd34",
+        "0087d39b",
+        "0087d3f1",
+        "0087d426",
+        "0087d645"
+      ]
+    },
+    {
+      "entry": "00b662b0",
+      "status": "available_actual_lua_stack_provider_unintegrated_with_reader",
+      "source": "src/native_lua_objects.cpp",
+      "sites": [
+        "0087caca",
+        "0087cedb",
+        "0087d5f4"
+      ]
+    },
+    {
+      "entry": "00b66330",
+      "status": "available_actual_lua_stack_provider_unintegrated_with_reader",
+      "source": "src/native_lua_objects.cpp",
+      "sites": [
+        "0087cc8b",
+        "0087ccc9",
+        "0087d122",
+        "0087d168"
+      ]
+    },
+    {
+      "entry": "00b66380",
+      "status": "available_actual_lua_stack_provider_unintegrated_with_reader",
+      "source": "src/native_lua_objects.cpp",
+      "sites": [
+        "0087cfa4"
+      ]
+    },
+    {
+      "entry": "00b66420",
+      "status": "available_actual_lua_stack_provider_unintegrated_with_reader",
+      "source": "src/native_lua_objects.cpp",
+      "sites": [
+        "0087cded",
+        "0087d1c2",
+        "0087d5d2",
+        "0087d6b1"
+      ]
+    },
+    {
+      "entry": "00b66a60",
+      "status": "available_actual_lua_stack_provider_unintegrated_with_reader",
+      "source": "src/native_lua_objects.cpp",
+      "sites": [
+        "0087ccfd"
+      ]
+    },
+    {
+      "entry": "00b67080",
+      "status": "available_actual_lua_stack_provider_unintegrated_with_reader",
+      "source": "src/native_lua_objects.cpp",
+      "sites": [
+        "0087cddc",
+        "0087d5c1"
+      ]
+    },
+    {
+      "entry": "00b67190",
+      "status": "available_actual_lua_stack_provider_unintegrated_with_reader",
+      "source": "src/native_lua_objects.cpp",
+      "sites": [
+        "0087d1b1",
+        "0087d6a0"
+      ]
+    },
+    {
+      "entry": "00b67690",
+      "status": "available_actual_lua_stack_provider_unintegrated_with_reader",
+      "source": "src/native_lua_objects.cpp",
+      "sites": [
+        "0087d294",
+        "0087d511"
+      ]
+    },
+    {
+      "entry": "00b67700",
+      "status": "available_actual_lua_stack_provider_unintegrated_with_reader",
+      "source": "src/native_lua_objects.cpp",
+      "sites": [
+        "0087cae8",
+        "0087cbca",
+        "0087cc61",
+        "0087cca3",
+        "0087ccdd",
+        "0087cd10",
+        "0087cd48",
+        "0087cf30",
+        "0087cf6b",
+        "0087d02c",
+        "0087d13c",
+        "0087d17c",
+        "0087d1db",
+        "0087d1ec",
+        "0087d207",
+        "0087d218",
+        "0087d2a5",
+        "0087d359",
+        "0087d3af",
+        "0087d405",
+        "0087d4ce",
+        "0087d522",
+        "0087d544",
+        "0087d55c",
+        "0087d6ca",
+        "0087d6de",
+        "0087d6ef",
+        "0087d706"
+      ]
+    },
+    {
+      "entry": "00b67720",
+      "status": "available_actual_lua_stack_provider_unintegrated_with_reader",
+      "source": "src/native_lua_objects.cpp",
+      "sites": [
+        "0087d30e",
+        "0087d369",
+        "0087d3bf",
+        "0087d415"
+      ]
+    },
+    {
+      "entry": "00b67800",
+      "status": "available_actual_lua_stack_provider_unintegrated_with_reader",
+      "source": "src/native_lua_objects.cpp",
+      "sites": [
+        "0087cab8",
+        "0087cafc",
+        "0087cb44",
+        "0087cbdb",
+        "0087cc72",
+        "0087ccb4",
+        "0087ccee",
+        "0087cd25",
+        "0087cd59",
+        "0087cd88",
+        "0087cecc",
+        "0087cf43",
+        "0087cf91",
+        "0087d109",
+        "0087d14f",
+        "0087d229",
+        "0087d282",
+        "0087d4ff",
+        "0087d56d"
+      ]
+    },
+    {
+      "entry": "00b685c0",
+      "status": "available_actual_lua_stack_provider_unintegrated_with_reader",
+      "source": "src/native_lua_objects.cpp",
+      "sites": [
+        "0087cb5d",
+        "0087cbf4"
+      ]
+    },
+    {
+      "entry": "00bd1510",
+      "status": "available_actual_raw_pool_provider",
+      "source": "src/native_string_pool_storage.cpp",
+      "sites": [
+        "0087cbb9",
+        "0087cc50",
+        "0087d0f6",
+        "0087d19b",
+        "0087d68a"
+      ]
+    },
+    {
+      "entry": "00bf6713",
+      "status": "existing_invalid_parameter_dispatch_boundary",
+      "source": null,
+      "sites": [
+        "0087ce90",
+        "0087cea9",
+        "0087ceb6",
+        "0087d332",
+        "0087d38d",
+        "0087d3e3",
+        "0087d453"
+      ]
+    },
+    {
+      "entry": "00bf7420",
+      "status": "existing_qualified_x87_conversion_fragment_current_mode_required",
+      "source": "src/gui_group_bounds.cpp",
+      "sites": [
+        "0087cf57"
+      ]
+    },
+    {
+      "entry": "00bf7680",
+      "status": "crt_memcpy_boundary",
+      "source": null,
+      "sites": [
+        "0087cb8f",
+        "0087cc26",
+        "0087cf19",
+        "0087d62f"
+      ]
+    },
+    {
+      "entry": "00bf79f0",
+      "status": "existing_qualified_native_memset_body",
+      "source": null,
+      "sites": [
+        "0087ce0d"
+      ]
+    },
+    {
+      "entry": "00bf7a6a",
+      "status": "crt_sprintf_current_locale_boundary",
+      "source": null,
+      "sites": [
+        "0087d26c",
+        "0087d4e9"
+      ]
+    }
+  ],
+  "extra_EH_only_dependencies": [
+    "00878ef0",
+    "0041de40",
+    "0041dd20",
+    "00bf6b43"
+  ],
+  "next_source_packets": [
+    {
+      "id": "native_damageable_section_vector",
+      "files": [
+        "include/bsp/native_damageable_section_vector.hpp",
+        "src/native_damageable_section_vector.cpp"
+      ],
+      "entry_bodies": [
+        {
+          "entry": "0087c870",
+          "end": "0087c910",
+          "size": 161,
+          "abi": "ECX vector; stack row*; RET4; no own EH"
+        },
+        {
+          "entry": "0087c2d0",
+          "end": "0087c37c",
+          "size": 173,
+          "abi": "ECX vector; checked iterator insert; verify stack words from full listing"
+        },
+        {
+          "entry": "0087b950",
+          "end": "0087bc40",
+          "size": 753,
+          "abi": "ECX vector; four stack words; RET10h; C967B8 EH"
+        }
+      ],
+      "exact_observed_dependencies_to_close": [
+        "008798f0",
+        "00878b40",
+        "00744070",
+        "00876a10",
+        "00878ac0",
+        "00879390",
+        "008794f0",
+        "008798c0",
+        "0087ad20",
+        "0087b610",
+        "0087a580"
+      ],
+      "contract": "Actual 10h header/30h records; vptr, handle copy, 1.5x growth, checked iterators, aliases, partial construction, catch cleanup and rethrow; expand each actual callee before source closure."
+    },
+    {
+      "id": "native_damageable_fake_effect_vector",
+      "files": [
+        "include/bsp/native_damageable_fake_effect_vector.hpp",
+        "src/native_damageable_fake_effect_vector.cpp"
+      ],
+      "entry_bodies": [
+        {
+          "entry": "0087c920",
+          "end": "0087ca14",
+          "size": 245,
+          "abi": "ECX vector; stack size plus by-value16B record; RET14h; C968E8 EH"
+        },
+        {
+          "entry": "0087c380",
+          "end": "0087c633",
+          "size": 692,
+          "abi": "ECX vector; four stack words; RET10h; C96818 EH"
+        },
+        {
+          "entry": "0087b8f0",
+          "end": "0087b947",
+          "size": 88,
+          "abi": "Checked erase range; recover original iterator ABI"
+        }
+      ],
+      "exact_observed_dependencies_to_close": [
+        "008769b0",
+        "00878c40",
+        "00879330",
+        "00878820",
+        "00879870",
+        "008799f0",
+        "0087ab80",
+        "0087b5b0",
+        "0087b5d0",
+        "0087bc50",
+        "0087a510"
+      ],
+      "reuse_after_integration": [
+        "0087ab30"
+      ],
+      "contract": "Actual 10h records and intrusive handles; retain unknown default+8 preimage; by-value cleanup, resize shrink and growth, alias safety, catch cleanup/rethrow; revalidate helper graph."
+    },
+    {
+      "id": "native_damageable_crew_tree",
+      "files": [
+        "include/bsp/native_damageable_crew_tree.hpp",
+        "src/native_damageable_crew_tree.cpp"
+      ],
+      "entry_bodies": [
+        {
+          "entry": "0087b750",
+          "end": "0087b7e2",
+          "size": 147,
+          "abi": "ECX tree; stack int32*; EAX node+10h; RET4; no own EH"
+        },
+        {
+          "entry": "0087b260",
+          "end": "0087b41b",
+          "size": 444,
+          "abi": "Hint insertion; recover exact iterator/result ABI"
+        },
+        {
+          "entry": "0087adb0",
+          "end": "0087ae68",
+          "size": 185,
+          "abi": "Tree insertion path; recover exact ABI"
+        }
+      ],
+      "exact_observed_dependencies_to_close": [
+        "00876340",
+        "008767a0",
+        "0087a5f0"
+      ],
+      "reuse_after_source_review": [
+        "008772b0",
+        "00877fa0"
+      ],
+      "contract": "Signed int32 lower_bound; 58h nodes; nil+55; preserve uninitialized44h default; real allocation, rotations and hints required."
+    },
+    {
+      "id": "native_soldier_class_resolution",
+      "files": [
+        "include/bsp/native_soldier_class_resolution.hpp",
+        "src/native_soldier_class_resolution.cpp"
+      ],
+      "entry_bodies": [
+        {
+          "entry": "004b1400",
+          "end": "004b1537",
+          "size": 312,
+          "abi": "ECX NativeString*; EAX class*; RET; C64A93 EH"
+        }
+      ],
+      "exact_observed_dependencies_to_close": [
+        "004b1330",
+        "004b11a0",
+        "004b0cb0",
+        "004afe50",
+        "004b12a0",
+        "00489e60"
+      ],
+      "reuse_after_source_review": [
+        "00443e20"
+      ],
+      "open_virtual_contracts": [
+        "class vtable+4 called at004B14DC reads Lua row",
+        "class vtable+0C called at004B1523 before return"
+      ],
+      "contract": "Actual cache and34h descriptor, current E188A8+1A0C Lua owner, exact NativeString comparison and pool publication, native reader and lifetime virtuals; no factory facade."
+    },
+    {
+      "id": "native_damageable_effect_handle_dependencies",
+      "files": [
+        "include/bsp/native_damageable_effect_handles.hpp",
+        "src/native_damageable_effect_handles.cpp"
+      ],
+      "entry_bodies": [
+        {
+          "entry": "00870cd0",
+          "end": "00870cf9",
+          "size": 42,
+          "abi": "ECX output; EDX ID; stack flag; EAX output; RET4"
+        },
+        {
+          "entry": "00878ef0",
+          "end": "00878f20",
+          "size": 49,
+          "abi": "ECX section; RET; publishD0DF04 then release+24"
+        },
+        {
+          "entry": "0041de40",
+          "end": "0041de68",
+          "size": 41,
+          "abi": "ECX pointer slot; RET; decrement and zero slot"
+        }
+      ],
+      "exact_observed_dependencies_to_close": [
+        "004c1650",
+        "008700e0"
+      ],
+      "contract": "Manager and component providers remain qualified; no wrapper-only completion. Cleanup bodies need actual interlocked and zero-argument vtable0 dispatch."
+    }
+  ],
+  "ready_leaf_source_packet": {
+    "entry": "00878b40",
+    "end": "00878bab",
+    "bytes": 108,
+    "original_abi": "ECX destination; stack source; EAX destination; RET4; no own EH",
+    "files": [
+      "include/bsp/native_damageable_section_vector.hpp",
+      "src/native_damageable_section_vector.cpp"
+    ],
+    "contract": "D0DF04 vptr, integer+4/+8, eight ordered x87 FLD/FSTP pairs, zero destination+24 before source+24 read/retain; preserve aliases and x87 flags; source absent.",
+    "model_required_by_AGENTS": "gpt-6-astra due to x87 arithmetic"
+  },
+  "annotation_proposals_for_integrator": [
+    {
+      "entry": "007149d0",
+      "existing_name": "BSP_MeshCategory_FromName",
+      "append_comment": "Complete63-byte borrowed-table source in native_damageable_class_lua.cpp, with repeated current00E08138 cell loads and existing00438E10 comparison; host CRT _stricmp/current locale remains explicit boundary. New source ABI, not binary replacement. See NATIVE_DAMAGEABLE_CLASS_LUA_ORCH4.md."
+    },
+    {
+      "entry": "0087ca80",
+      "existing_name": "BSP_DamageableClass_ReadLuaFields",
+      "append_comment": "Complete3238B/858-instruction ordinary and37-state FH3 audit; SOURCE ABSENT. Sections30h-byte vector at+18h; Index at row+8 and category at+4; failure chance default-100f divided by binary64 100. Fake effects10h-byte vector+8 with decimal STRING keys starting0. Emberkek int-to44h-byte tree+60h, SoldierClass pointer at mapped+40h. Unique Lua object stays live through all loops. Missing actual containers, Soldier factory, effect provider and EH cleanup bodies remain. See NATIVE_DAMAGEABLE_CLASS_LUA_ORCH4.md."
+    }
+  ],
+  "numeric_constants": [
+    {
+      "location": "00ce38b8",
+      "bits": "00002041",
+      "type": "float32",
+      "value": 10.0
+    },
+    {
+      "location": "00ce3d08",
+      "bits": "0000c842",
+      "type": "float32",
+      "value": 100.0
+    },
+    {
+      "location": "00ce65d8",
+      "bits": "0000c8c2",
+      "type": "float32",
+      "value": -100.0
+    },
+    {
+      "location": "00d7a220",
+      "bits": "0000000000005940",
+      "type": "float64",
+      "value": 100.0
+    },
+    {
+      "location": "00d7a260",
+      "bits": "000080bf",
+      "type": "float32",
+      "value": -1.0
+    }
+  ],
+  "material_risks": [
+    "Unique Lua object remains live across all loops; native tracked cleanup changes indices.",
+    "ExplosionType is looked up twice; effects and map storage are reloaded at specific sites.",
+    "Sections, fake effects and crew tree are mutated incrementally and never cleared here.",
+    "Fake by-value default record+8 and crew default44-byte mapped value retain uninitialized preimage.",
+    "Float32 Lua GetNumber then BF7420 differs from direct double-to-int conversion.",
+    "FailureChance uses x87 FDIV binary64 constant before float32 spill.",
+    "Effect publication precedes retain/release; cleanup and BigFire fallback order are observable.",
+    "Soldier factory virtual+0C lifetime meaning remains unproved; caller directly overwrites map pointer.",
+    "Current helper feature counts and snapshot edges omit catch paths; use full instructions."
+  ],
+  "validation": {
+    "strict_win32_build": "passed scripts/build.ps1 default Release without -Diagnostic",
+    "live_call_verifier": "passed168 call rows,0 failed",
+    "fixture_tested": false,
+    "game_validated": false,
+    "binary_ABI_replacement": false,
+    "reader_source_implemented": false,
+    "build_log": "local/damageable_reader_build.log",
+    "existing_ctest_count": 2,
+    "call_verifier_log": "local/damageable_reader_call_verifier.log",
+    "new_tests_added": 0
+  }
+}
