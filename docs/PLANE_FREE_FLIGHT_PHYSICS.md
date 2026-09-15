@@ -657,3 +657,38 @@ Two readings fit and this doc does not choose between them:
 Settling it needs a single plane's speed traced against its authored pitch, which is a measurement
 nobody has taken. Combat outcomes are unaffected either way: USN02 still gives 2 kills and 18525.6
 damage and IJN01 still gives 1 kill and 300.0 with the correction in place.
+
+### Settled: the frame correction is right, and the residual divergence is a banked plane
+
+The open question above is closed by a per-plane audit of IJN01 under the corrected integration.
+The test that decides it is **heading invariance**: physics does not care which way an aeroplane
+points, so a plane's speed must not depend on its heading. Under the old frame it would; under the
+corrected one it must not.
+
+Over 3000 steps - 150 seconds - with 33 aircraft:
+
+| heading | pitch | bank | speed |
+| --- | --- | --- | --- |
+| `0.8219` | `0.0000` | `0.0000` | **141.67** |
+| `3.1416` | `-0.0003` | `0.0003` | **142.31** |
+| `-0.8626` | `0.0751` | `-1.0362` | **4397.84** |
+| `0.4169` | `0.1026` | `1.0259` | **4470.35** |
+
+A plane pointing at 0.82 rad and one pointing at 3.14 rad hold the **same** speed, and that speed is
+141.67 m/s - the spawn airspeed, and exactly what USN01's identity-pose aircraft hold. The
+equilibrium is heading-invariant to the last digit it prints. That is the correction working, and it
+also explains the old agreement: averaging `distance_moved` over aircraft at many headings, some too
+fast and some too slow, lands near the seed and hides the dependence. The 68 percent change in the
+mission's path length is the artefact being removed, not introduced.
+
+**What is left diverges only when the plane is banked.** The two aircraft above at 4400 m/s are the
+ones sitting in a 59-degree bank; every level one holds cruise for the full 150 seconds. At 25
+seconds the same banked aircraft was at 119.61 m/s and **decelerating**, which is what a banked plane
+losing lift should do, so the blow-up develops over the next two minutes rather than being present
+from the start.
+
+That is downstream of the missing roll arm rather than a second frame error: nothing in this
+reconstruction rolls a plane level, so an aircraft that banks stays banked indefinitely, which is a
+state the game's own pilot bot would never leave it in. Whether the reconstructed drag is also too
+weak to terminate the resulting spiral is **not established** - it would need a plane held in a bank
+deliberately, with the roll arm wired, to tell the two apart.
