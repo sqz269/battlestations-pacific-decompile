@@ -8,6 +8,7 @@
 #include "bsp/native_input_settings_lifetime.hpp"
 #include "bsp/native_lua_fundamentals.hpp"
 #include "bsp/native_debug_feature_owner.hpp"
+#include "bsp/native_device_registry.hpp"
 #include "bsp/native_game_resource_factory.hpp"
 #include "bsp/native_shadow_job_lifetime.hpp"
 #include "bsp/native_input_backend_owner.hpp"
@@ -273,6 +274,11 @@ __declspec(noinline) void __fastcall delete_current_profile(void* owner,
             return;
         }
         break;
+    case 0x00ce44dc:
+        delete_native_device_registry_00441840(
+            static_cast<NativeDeviceRegistryStorage*>(owner), flags,
+            process_native_device_registry_00e17bf4());
+        return;
     }
     throw std::logic_error("raw singleton deletion requires a recovered profile and its actual bindings");
 }

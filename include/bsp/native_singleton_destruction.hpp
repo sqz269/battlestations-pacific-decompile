@@ -34,7 +34,7 @@ namespace game { class GameSoundRuntime; }
 // D2413C, D5B5F4, D5B5F8, D5B72C, D5B630, D68200, D68CF8, D68D04 or
 // D688B0, CFEA1C, D6418C, CF7E70, CF7E74, CE7548, D190C4, CF81CC, D68B94,
 // CFD84C, D62C18, D68EC0, D5E5DC, D5E5D4, CFB6C4, CFEA10, D63128,
-// D63084, D63094, D630A4, D630B4, D630C4, D630D4 or D5B56C. D0DA64
+// D63084, D63094, D630A4, D630B4, D630C4, D630D4, D5B56C or CE44DC. D0DA64
 // requires its actual publication cell; registry and sound profiles require
 // their concrete borrowed bindings. Sound and XLive owners retain C++ projected
 // storage; XLive additionally requires the exact allocation identity. Input

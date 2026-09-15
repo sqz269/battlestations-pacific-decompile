@@ -1,0 +1,114 @@
+{
+  "packet": "orch4_device_registry_d4",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "coverage": "complete getter, destructor unwind helper, nondeleting destructor and scalar deleting destructor; canonical raw-manager dispatch",
+  "source": "src/native_device_registry.cpp",
+  "header": "include/bsp/native_device_registry.hpp",
+  "documentation": "docs/NATIVE_DEVICE_REGISTRY_ORCH4.md",
+  "bodies": [
+    {
+      "address": "00441780",
+      "end_inclusive": "00441831",
+      "bytes": 178,
+      "source_symbol": "get_native_device_registry_00441780",
+      "original_abi": "no inputs; EAX captured fast/current slow publication; RET",
+      "status": "complete source behavior"
+    },
+    {
+      "address": "00441360",
+      "end_inclusive": "004413bd",
+      "bytes": 94,
+      "source_symbol": "destroy_native_device_registry_00441360",
+      "original_abi": "ECX actual raw10h owner; RET",
+      "status": "complete source behavior including file-backed continuation beyond current Ghidra body"
+    },
+    {
+      "address": "0043ebf0",
+      "end_inclusive": "0043ec00",
+      "bytes": 17,
+      "source_symbol": "unwind_native_device_registry_0043ebf0",
+      "original_abi": "ECX actual raw10h owner; RET",
+      "status": "complete unwind helper"
+    },
+    {
+      "address": "00441840",
+      "end_inclusive": "0044185d",
+      "bytes": 30,
+      "source_symbol": "delete_native_device_registry_00441840",
+      "original_abi": "ECX owner; stacked DWORD flags; EAX captured owner; RET4",
+      "status": "complete scalar deleting destructor including file-backed ADD ESP,4 gap"
+    }
+  ],
+  "calls": [
+    {"address": "004417a5", "native": "00415350", "function": "00441780", "contract": "first shared manager lookup before capturing manager+10"},
+    {"address": "004417d6", "native": "00bf681b", "function": "00441780", "contract": "raw10h allocation after locked publication recheck"},
+    {"address": "004417fa", "native": "00415350", "function": "00441780", "contract": "second manager lookup after registry publication"},
+    {"address": "00441808", "native": "00bd0c30", "function": "00441780", "contract": "register current E17BF4 owner in current manager"},
+    {"address": "0044138d", "native": "00440180", "function": "00441360", "contract": "resize actual owner+4 header to zero"},
+    {"address": "00441395", "native": "00bf6989", "function": "00441360", "contract": "free current array data DWORD before unpublish/base stamp"},
+    {"address": "00441843", "native": "00441360", "function": "00441840", "contract": "complete nondeleting destructor"},
+    {"address": "00441850", "native": "00bf65ac", "function": "00441840", "contract": "operator delete when current flags bit0 is set"}
+  ],
+  "indirect_calls": [
+    {"address": "004417be", "iat": "00ce2218", "target": "EnterCriticalSection", "contract": "enter first captured manager section"},
+    {"address": "00441816", "iat": "00ce2210", "target": "LeaveCriticalSection", "contract": "leave first captured section after decrementing physical +18"}
+  ],
+  "exception_evidence": [
+    {
+      "function": "00441780",
+      "func_info": "00d86418",
+      "max_state": 1,
+      "unwind_map": "00d86410",
+      "state0_action": "00c5f8d0 -> 00411ee0",
+      "effect": "destroy raw CE37FC guard at EBP-14h; release captured section"
+    },
+    {
+      "function": "00441360",
+      "func_info": "00d8632c",
+      "max_state": 1,
+      "unwind_map": "00d86324",
+      "state0_action": "00c5f850 -> 0043ebf0",
+      "effect": "clear E17BF4 then write owner profile CE3818"
+    }
+  ],
+  "listing_repairs": [
+    {
+      "address": "00441360",
+      "initial_body_end": "00441399",
+      "actual_body_end": "004413bd",
+      "file_backed_continuation": "0044139a..004413bd",
+      "current_live_readback": "27 instructions, zero gaps through 004413bd",
+      "ghidra_mutation": "parent-coordinated repair; worker read-only"
+    },
+    {
+      "address": "00441840",
+      "gap": "00441855..00441857",
+      "decoded_instruction": "ADD ESP,4",
+      "current_live_readback": "11 instructions, zero gaps through 0044185d",
+      "ghidra_mutation": "parent-coordinated repair; worker read-only"
+    }
+  ],
+  "semantics": {
+    "storage": "actual raw10h profile/data/count/capacity owner",
+    "publication_order": "initialize all four DWORDs, publish E17BF4, second manager lookup, reread E17BF4, register",
+    "lock": "capture first manager+10 once; physical +18 increment/decrement around double-check and construction",
+    "destruction": "resize count to zero, free current data, clear E17BF4, write CE3818; scalar bit0 additionally frees owner",
+    "ownership": "borrowed class pointers; no class release and no unregister in these bodies",
+    "dispatcher": "CE44DC direct canonical raw-manager deletion through process E17BF4 cell"
+  },
+  "verification": {
+    "live_function_count": 64124,
+    "independent_listing_comparison": "passed",
+    "report_call_verifier": "8 call rows checked, 0 failed",
+    "strict_msvc_win32_build": "passed /W4 /WX; 2 of 2 existing CTests passed",
+    "focused_lifecycle_fixture": "passed in reconstructed_math: one initialized owner, fast reuse, one registration, canonical CE44DC drain and retained-owner scalar teardown",
+    "runtime_game_validation": false
+  },
+  "limitations": [
+    "new C++ interfaces are not original binary ABI shims",
+    "original FH3/SEH stack layout, arbitrary hardware-fault cleanup and provider register identity are not reproduced",
+    "source publication is the reconstructed process-static E17BF4 cell, not a mapping into the shipped executable image",
+    "gameplay behavior is not validated"
+  ]
+}
