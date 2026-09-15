@@ -1,0 +1,288 @@
+{
+  "packet": "orch3_particle_clock_draw_cq",
+  "status": "exact_committed_build_source_probe_native_generated_review_saved_annotations_passed_sealed",
+  "source_parent_commit": "b57e497c563cd9f1713ca53740001af888c8d29e",
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_home": "J:/tools/ghidra_12.0.4_PUBLIC",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "functions": [
+    {
+      "address": "00b19a10",
+      "inclusive_end": "00b19a56",
+      "bytes": 71,
+      "native_sha256": "0c87a54b594baeb0997f987e4c4b11f69e030aeb62f4442dc293f1824eb543dc",
+      "cpp_symbol": "set_native_particle_clock_time_00b19a10",
+      "ghidra_name": "BSP_ParticleClock_SetFrameTime",
+      "original_abi": "thiscall ECX actual1Ch clock; one float32 stack word; RET4; raw MOVSS payload publication, per-record x87 FLD/FSTP, actual sink ECX and vtable18h call."
+    }
+  ],
+  "native_spans": [
+    {
+      "address": "00b19a10",
+      "bytes": 71,
+      "sha256": "0c87a54b594baeb0997f987e4c4b11f69e030aeb62f4442dc293f1824eb543dc",
+      "hex": "f30f1044240456578bf98b7708f30f1147188b470c6bc02c03c63bf074248bff8b4e28d944240c8b118b421851d91c24ffd08b4f0c6bc92c034f0883c62c3bf175de5f5ec20400",
+      "live_PE_equal": true,
+      "assembly": [
+        "00b19a10: movss xmm0, dword ptr [esp + 4]",
+        "00b19a16: push esi",
+        "00b19a17: push edi",
+        "00b19a18: mov edi, ecx",
+        "00b19a1a: mov esi, dword ptr [edi + 8]",
+        "00b19a1d: movss dword ptr [edi + 0x18], xmm0",
+        "00b19a22: mov eax, dword ptr [edi + 0xc]",
+        "00b19a25: imul eax, eax, 0x2c",
+        "00b19a28: add eax, esi",
+        "00b19a2a: cmp esi, eax",
+        "00b19a2c: je 0xb19a52",
+        "00b19a2e: mov edi, edi",
+        "00b19a30: mov ecx, dword ptr [esi + 0x28]",
+        "00b19a33: fld dword ptr [esp + 0xc]",
+        "00b19a37: mov edx, dword ptr [ecx]",
+        "00b19a39: mov eax, dword ptr [edx + 0x18]",
+        "00b19a3c: push ecx",
+        "00b19a3d: fstp dword ptr [esp]",
+        "00b19a40: call eax",
+        "00b19a42: mov ecx, dword ptr [edi + 0xc]",
+        "00b19a45: imul ecx, ecx, 0x2c",
+        "00b19a48: add ecx, dword ptr [edi + 8]",
+        "00b19a4b: add esi, 0x2c",
+        "00b19a4e: cmp esi, ecx",
+        "00b19a50: jne 0xb19a30",
+        "00b19a52: pop edi",
+        "00b19a53: pop esi",
+        "00b19a54: ret 4"
+      ]
+    },
+    {
+      "address": "004e53ad",
+      "bytes": 5,
+      "sha256": "418ea7c4e11b9478276f3ab20c10e02c17134f8dc46510d9bf298184dda198df",
+      "hex": "e85e466300",
+      "live_PE_equal": true,
+      "assembly": [
+        "004e53ad: call 0xb19a10"
+      ]
+    }
+  ],
+  "call_steps": [
+    {
+      "address": "004e53ad",
+      "native": "00b19a10",
+      "function": "004e4a40"
+    },
+    {
+      "address": "00b19a40",
+      "native": "sink-vtable+18h-via-EAX",
+      "function": "00b19a10",
+      "kind": "indirect",
+      "target_storage": "[[record+28]+0]+18h"
+    }
+  ],
+  "source_sha256": {
+    "include/bsp/native_particle_clock_draw.hpp": "82b3944f56c623b237b432de9a8e28363413536619b8a46079dfc78774a25ae4",
+    "src/native_particle_clock_draw.cpp": "b1f41d2fbf516d3e651326037f96db096de074b82143720335ab673f1adb1cf6"
+  },
+  "provider_sha256": {
+    "include/bsp/render_tail.hpp": "7ded157910928589128f7a1569d18e42877ed2c943649957612fa6060b4646fc",
+    "src/render_tail.cpp": "41c44beddd52b87c71ba8a4809ff1e289fa30e0a9bc4375152360a7aff9712b0",
+    "include/bsp/native_particle_clock_singleton.hpp": "cf420be7c1082e3ab237e8ca3585d94721a5afb6ad2cf05da64706d44d298602",
+    "src/native_particle_clock_singleton.cpp": "970a49f005290b55e6a5dd8b67525a9d7324ae1b3928590e0dbe1b68f97d073d"
+  },
+  "native_body_credit": 0,
+  "native_bytes_credit": 0,
+  "raw_interface_upgrades": 1,
+  "raw_interface_bytes": 71,
+  "review": {
+    "primary_native_source_review": true,
+    "generated_review": "pending",
+    "independent_worker_review": false
+  },
+  "validation": {
+    "command": "./scripts/build.ps1",
+    "configuration": "MSVC Win32 Release",
+    "exit_code": 0,
+    "ctests_passed": 2,
+    "ctests": [
+      "reconstructed_math",
+      "native_math_differential"
+    ],
+    "exact_commit": "f4e629edab9b2e3ce1fdd905521d5ee8a830765e",
+    "tracked_build_inputs": 2597,
+    "clean_before_after": true,
+    "all_build_input_hashes_preserved": true,
+    "new_repository_tests": 0,
+    "new_local_focused_probes": 1,
+    "source_raw_entry_executed": true,
+    "source_probe": {
+      "exit_code": 0,
+      "log": "local/cpcq-probe-run.log",
+      "source": "local/cpcq_probe.cpp",
+      "source_sha256": "b5c25638c61b2468d22e2a0442cc59c146a3dfd07a8b0dcc3beb8d0994119997",
+      "executable": "local/cpcq_probe.exe",
+      "executable_sha256": "d17147b18080cdec9d9207baf247c87862a71ab5147753f79e4c5b80ac2f5daa",
+      "core_library_sha256": "50fe1e581a0f41a5deb28de45ebd6666a026f5902de8007d54845630ddd14751",
+      "branches": [
+        "actual manager registration vector and critical-section depth",
+        "singleton publication and existing-instance fast return",
+        "zero-record raw time publication",
+        "actual vtable sink dispatch",
+        "callback-shrunk traversal and two-sink traversal"
+      ],
+      "limits": [
+        "No allocation preimage +18 read.",
+        "No injected allocation, lock or cleanup failure.",
+        "Source entry execution only, no native parent execution or complete mixed-owner shutdown.",
+        "No original CRT/FH3 or gameplay claim."
+      ]
+    },
+    "native_parent_bytes_executed": false,
+    "game_validated": false
+  },
+  "limits": [
+    "Existing typed full-function record retained, no extra body credit.",
+    "Actual callable sink vtable/thiscall stack contract required. No callback projection or extra storage validation.",
+    "Whole game/module binding and runtime gameplay remain unverified."
+  ],
+  "tested_commit": "f4e629edab9b2e3ce1fdd905521d5ee8a830765e",
+  "primary_review": {
+    "primary_complete_native_source_generated_review": true,
+    "independent_CP_worker_review": true,
+    "independent_CQ_worker_review": false,
+    "blocking_source_findings": [],
+    "CP": {
+      "public_comdat_bytes": 301,
+      "catch_slice_bytes": 27,
+      "catch_is_inside_public_comdat": true,
+      "eh_comdat_bytes": 39,
+      "worker_primary_code_and_relocations_equal": true,
+      "initial_publication": "34h",
+      "first_manager_call": "3Fh",
+      "captured_section": "47h",
+      "guard_profile": "4Ah",
+      "enter": "59h",
+      "depth_increment": "5Fh..63h",
+      "second_publication_compare": "66h",
+      "source_state0": "69h",
+      "allocation": "8Bh",
+      "initialization": "99h..C4h; +18 intentionally unwritten",
+      "publication": "CCh",
+      "fresh_manager": "CEh",
+      "fresh_publication": "D8h",
+      "registration": "DDh",
+      "depth_decrement_store": "EBh",
+      "leave": "EEh",
+      "final_publication": "F4h",
+      "catch_guard_destroy": "public+116h",
+      "catch_rethrow": "public+122h"
+    },
+    "CP_EH_limit": "Native state 0 arms at 004DE4FC before the second publication CMP at 004DE500. Source state store is at +69h after CMP +66h. C++ source-call cleanup is retained; asynchronous hardware faults, original private FH3 frames and native CRT identity are outside this source-interface claim.",
+    "CQ": "Entire 71-byte COMDAT equals installed/live native body, zero relocations: captured cursor before raw MOVSS payload store; per-iteration public stack reload through x87 FLD/FSTP, actual sink ECX/vtable18h; fresh end before cursor+2Ch; RET4.",
+    "source_boundary": "CP exposes explicit borrowed publication cells and uses concrete host allocation/Win32 providers. Native identity profiles are not host C++ vtables. Full mixed-owner destruction and native binary replacement remain unproven."
+  },
+  "generated_code": [
+    {
+      "module": "native_particle_clock_draw",
+      "stem": "set_native_particle_clock_time_00b19a10",
+      "symbol": "?set_native_particle_clock_time_00b19a10@bsp@@YIXPAX0M@Z",
+      "section_offset": 0,
+      "bytes": 71,
+      "sha256": "0c87a54b594baeb0997f987e4c4b11f69e030aeb62f4442dc293f1824eb543dc",
+      "object_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\bsp_core.dir\\Release\\native_particle_clock_draw.obj",
+      "object_sha256": "a6668753e888da2c5c786c6143c1c8295a000d74392243f51c08535e3be6cee1",
+      "relocations": [],
+      "listing": "local/cpcq-generated-set_native_particle_clock_time_00b19a10.asm",
+      "primary_worker_code_and_relocation_identity": false,
+      "whole_native_code_identity": true
+    }
+  ],
+  "primary_call_audit": {
+    "direct_rows": 1,
+    "indirect_rows": 1,
+    "failed": 0,
+    "log": "local/cpcq-call-audit-native_particle_clock_draw_cq.log"
+  },
+  "annotation": {
+    "saved": true,
+    "readback_passed": true,
+    "prior_comments_preserved": true,
+    "record": "local/cpcq-ghidra-annotation-record.json",
+    "force_refreshed_exports": [
+      "00b19a10"
+    ],
+    "correct_existing_names_preserved": true,
+    "original_abi_signatures": true,
+    "original_calling_conventions": {
+      "00b19a10": "__thiscall"
+    }
+  },
+  "artifact_sha256": {
+    "build/win32/bsp_core.dir/Release/native_particle_clock_draw.obj": "a6668753e888da2c5c786c6143c1c8295a000d74392243f51c08535e3be6cee1",
+    "build/win32/bsp_core.dir/Release/native_particle_clock_singleton.obj": "cdb986e8973931a4c93ad5d327656e9573fd56e0384d37937e7367a03b4d517b",
+    "local/adapt_cpcq_seal.py": "64b00a218635d4253bb980d00f685a30fb3c45927df62a309331c63627181da5",
+    "local/annotate_cpcq.py": "9faafe6c5fd67a6a45da875e40e95b7a3481bc1954b3e877ea30f318c4a50982",
+    "local/bq_object_review.py": "93d9b6dc62ddcd4bc7e0aab0ba75a9ef29e60fa15638adba14eb9a9fd7de862a",
+    "local/build_final_cpcq.py": "275c606a6d857855ffbae6cad4d97f2eaa4a3ffee4a0fa05a1159ec679a2b725",
+    "local/cpcq-annotation.log": "66df2f8d25d84df30085a70c44c3e51d5b3e15b8c5650e70067dd75e7628899e",
+    "local/cpcq-call-audit-native_particle_clock_draw_cq.log": "ee2489a2252b32be8dd77fa8a69d67399ece4a99e638c358bec862faa852516f",
+    "local/cpcq-call-audit-native_particle_clock_singleton_cp.log": "96f85b6a731340fa3bd2309e72d4c7ac13480b5fc2daeab689ff1b4f58b9e508",
+    "local/cpcq-comments-after.json": "640910c75fa169c1dd997bdc24714063cda69359f1d1784315e3968462f748f9",
+    "local/cpcq-comments-before.json": "0f9e646b8bf0ff9e7f71c8ee1b92b291d686892200268d66378d8c586756ed52",
+    "local/cpcq-export-refresh.log": "888bb7a4f7c7e5a144326a2f060e2873c54048ff3e42dbea876eb986fa7720f4",
+    "local/cpcq-final-build-stamp.json": "222ea8bf798b78247f7331f8800dff1eaae7576a6725b03a0b335ba76098cbae",
+    "local/cpcq-final-combined-build.log": "09629dc56007e0dff160168d1093ad17d1b47f4f8d1eb977f53fdd84d651c902",
+    "local/cpcq-function-records.json": "f7f88296ce79902ab9a5a06563653e146e97ecbf422b559ae909b5ff39914f39",
+    "local/cpcq-generated-catch-get_native_particle_clock_singleton_004de4b0.asm": "d265498b253c51deacd412e7149813b095e73dd3e7e757663bb100dc11ac3710",
+    "local/cpcq-generated-eh-get_native_particle_clock_singleton_004de4b0.asm": "a36703f863e562d62fdece82a9ad7befbc2c4ba5de3a6a3150819c528880086a",
+    "local/cpcq-generated-get_native_particle_clock_singleton_004de4b0.asm": "b788b80f2d3ca62c3ddf6da951163922c74c76ccc981ae3e612db2c61f4d5abc",
+    "local/cpcq-generated-set_native_particle_clock_time_00b19a10.asm": "e0cd3745f2b80889e38ba67922be28b319c35c8cde1fb5645c80be07acd349c7",
+    "local/cpcq-ghidra-annotation-record.json": "66d18812cf5540946ce8f08779ca33bf2b2ed2b1dc2ce7553c9c9ecbd09a8270",
+    "local/cpcq-ledger-before.json": "d57d03098a2bc02227858eaaed9e615c45aa41b4b4650349eebc2d620ccd997a",
+    "local/cpcq-live-004de4b0.txt": "04251e16e17994c37a5dfbdad7145af03bff9ba5feba0c9d3145ee240f67b535",
+    "local/cpcq-live-004e53ad.txt": "e693dedb623557ed45654ba20695b5b945d522ce417b0a89f869f1ecc0ae05e1",
+    "local/cpcq-live-00b19a10.txt": "1e136f3783be6df8df613ec9a947aaed741878638e2179a3dc34647f66f6c5ad",
+    "local/cpcq-live-native-spans.json": "d55912f506327f61144862abb8ca07002f143436f60caecf6b930dd582dbfefb",
+    "local/cpcq-object-review.json": "bd226f0f01d9b98c2b650d693f6b41b878981a33ce04f326f63cec593d6be569",
+    "local/cpcq-primary-review.json": "0e59b5b6275f89df1a59d39cd49bba31482ed63daca0207e651dea9282802343",
+    "local/cpcq-probe-build.cmd": "8233e7ed0f95023aab99bae68219f258350607feca3c281c4eab6dafa12af4dc",
+    "local/cpcq-probe-run.log": "378461b445e4208c69b12472c24eca2618e4c21f633bbbd6bdb6ca92fb67dcdd",
+    "local/cpcq-source-probe.json": "92a3961ea45d2e99b8040cf39c09e37cc026c1945746e5a0b493bdbf961470db",
+    "local/cpcq-worker/cp-commit-message.txt": "fd07aef516ac80c1b29d0294057ce48fba7fc7b670a19e6668e8a4639e98fc8a",
+    "local/cpcq-worker/cp-generated-object.txt": "3d838b073f11d9f05a1953cabe7177a161385258c0f780cc782d69988f16758d",
+    "local/cpcq-worker/cs-post-effect-submission-audit.json": "cc7d343ba410795ac782b33ca71a9aedd1d116d66544d4cca40713ea1ad8f0b9",
+    "local/cpcq-worker/cs-post-effect-submission-audit.md": "08a17072c14bb808632eb30745c7d4e609d235a42498994a5384ec00a733f86d",
+    "local/cpcq-worker/native_particle_clock_singleton_cp.json": "3d0b42b7069c78429b5ebdb29d60b82029bb00588c5dbb15b0015f8dc55fabcb",
+    "local/cpcq_probe.cpp": "b5c25638c61b2468d22e2a0442cc59c146a3dfd07a8b0dcc3beb8d0994119997",
+    "local/cpcq_probe.exe": "d17147b18080cdec9d9207baf247c87862a71ab5147753f79e4c5b80ac2f5daa",
+    "local/cpcq_probe.obj": "65a0caac9e374e1ca9e1414130e7f46fa73f945f451b9d08943b176aa2829f60",
+    "local/finish_cpcq.py": "17080b22e06fe1ead8fd225ef3add26cf7caae4d243f1dbf2a78fb669febcd23",
+    "local/prepare_cpcq.py": "ea73d7416110ca8a8fa7f24cacd3f501e69704d44ac2993eb66e98ee3aaba15e",
+    "local/review_cacc_objects.py": "7a6aefb0b31f2cdca236b1bd82b86da80b93ec3e87d2cb680c816fc9a1c8db82",
+    "local/review_cpcq_objects.py": "2c9e3545751410a9973582f43f7769bbab255801b674b9b6e06d62d36e11b7e0",
+    "local/seal_cpcq.py": "b6c78adda1712fb970d7faec3f4bbb201b1ac79b9879f0628591b672015b7fa2"
+  },
+  "sealed_attempt": {
+    "tested_commit": "f4e629edab9b2e3ce1fdd905521d5ee8a830765e",
+    "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\cpcq-validated-attempt-f4e629ed.zip",
+    "sha256": "1ecfc1cd85abe527b11c8a1416332b24fe66fadf146986661f80585ca6f31991",
+    "payload_members": 2657,
+    "manifest_members": 1,
+    "all_member_hashes_rechecked": true,
+    "libraries": {
+      "bsp_core.lib": "50fe1e581a0f41a5deb28de45ebd6666a026f5902de8007d54845630ddd14751",
+      "bsp_lua511.lib": "71e114b0ff6244852d678a5779fcbf28589bdcecbad811aff228ffd5007fe8c7",
+      "bsp_zlib121.lib": "f3f934925213a2ffb81f3aec2afbb065c1733cf43b28dddf31db6a69185c4102"
+    },
+    "tracked_build_inputs": 2597
+  }
+}

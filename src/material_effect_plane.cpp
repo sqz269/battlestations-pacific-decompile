@@ -10,10 +10,12 @@ namespace bsp {
 namespace {
 // Native00D7A208 is80000000, not positive zero.00D7A24C is3F800000.
 const float negative_zero = -0.0f;
+} // namespace
 
 // One stack argument in this host kernel; normalize=false is selected by its
 // interface. The arithmetic body and spill offsets are those of0042D0D0.
-__declspec(naked) float* __fastcall direction_kernel(float*, const float*, const float*) {
+__declspec(naked) float* __fastcall transform_native_effect_direction_0042d0d0_no_normalize(
+    float*, const float*, const float*) {
     __asm {
         sub esp, 0x18
         fld dword ptr [edx + 4]
@@ -74,6 +76,7 @@ __declspec(naked) float* __fastcall direction_kernel(float*, const float*, const
     }
 }
 
+namespace {
 //00B448FC..00B44959; retain the native distance spill and simultaneous x87
 // products/SSE negative-zero subtraction. Inputs/destinations here are disjoint.
 void scale_and_negate(const float& live_distance, const EffectPlaneVector& direction,
@@ -180,7 +183,8 @@ RenderCommandContext* get_material_plane_context_00b1bfa0(const RenderCommandQue
 
 void transform_effect_direction_0042d0d0_no_normalize(EffectPlaneVector& destination,
     const EffectPlaneVector& source, const CameraMatrix& matrix) {
-    direction_kernel(destination.data(), source.data(), matrix.data());
+    transform_native_effect_direction_0042d0d0_no_normalize(
+        destination.data(), source.data(), matrix.data());
 }
 
 void copy_transpose_effect_matrix_00b23360(CameraMatrix& destination, const CameraMatrix& source) {

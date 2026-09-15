@@ -1,0 +1,277 @@
+{
+  "packet": "orch3_native_lua_numeric_element_dl",
+  "status": "exact_build_generated_review_bridged_native_differential_saved_annotation_sealed",
+  "base_commit": "ae3f97efc957d4d177feb4bc588bd3ca5e818c22",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "installed_pe": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+  "installed_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "primary_native_evidence": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\dl-lua-numeric-write-evidence.json",
+    "sha256": "61038d51aa860194c7251d145727a22af3c4decd7676a97d27613aebc8bd0f83"
+  },
+  "routine": {
+    "address": "00b66580",
+    "body_end_inclusive": "00b665ca",
+    "length": 75,
+    "native_sha256": "a9057ed6833cb31797981943ad34600c84d5ab774c122b8e2d6e3db23b528ccf",
+    "original_abi": "thiscall ECX actual 14h LuaObject; public signed int32 key and float32 value stack words; RET8",
+    "coverage": "complete_source_body"
+  },
+  "source_symbol": "bsp::set_native_lua_numeric_element_00b66580",
+  "source_abi": "naked fastcall ECX actual object; unused source EDX; original key/value stack words; RET8; concrete C API bridges",
+  "call_steps": [
+    {
+      "address": "00b6658d",
+      "native": "00a672f0",
+      "function": "00b66580",
+      "hex": "e85e0df0ff"
+    },
+    {
+      "address": "00b665a1",
+      "native": "00a679d0",
+      "function": "00b66580",
+      "hex": "e82a14f0ff"
+    },
+    {
+      "address": "00b665b5",
+      "native": "00a679d0",
+      "function": "00b66580",
+      "hex": "e81614f0ff"
+    },
+    {
+      "address": "00b665c2",
+      "native": "00a67e10",
+      "function": "00b66580",
+      "hex": "e84918f0ff"
+    }
+  ],
+  "source_schedule": [
+    "Current owner/state; checkstack(state,2), ignore return.",
+    "FILD original signed key word; current owner then state; FSTP64; pushnumber.",
+    "Current owner; FLD original float value word; captured owner current state; FSTP64; pushnumber.",
+    "Current owner then index then captured owner state; settable."
+  ],
+  "source_sha256": {
+    "include/bsp/native_lua_numeric_element.hpp": "f760fb07c2ce9c2c8f8332faace3154002bb42a03827df1897c8f6234e99952a",
+    "src/native_lua_numeric_element.cpp": "51a703872ec2400a418d0663a7d051dfd09886fbee83025021e624948c176aa5",
+    "docs/NATIVE_LUA_NUMERIC_ELEMENT_DL.md": "9e45cd4f5b79b32c05484be026657e4cc1501905203079840cd5f6d2dc12ea1f",
+    "cmake/startup.cmake": "06b2d73380b6f6fcc10006b73d5e7694d1f376a5544a125079c32d8778d7bab3"
+  },
+  "provider_sha256": {
+    "include/bsp/native_lua_objects.hpp": "bccf6d4987d710dcbefd0f253cea939db64874f7394bedd432411ce88ae919cf",
+    "src/native_lua_objects.cpp": "c2d70e3c7471688114c14677facb25ef318c224ce0cab8de0ab2ef3be43a0a2e",
+    "cmake/lua.cmake": "50da26a918e8d494aba3ce414e5f550146348a91269318cdcff95e9ae2abe060"
+  },
+  "validation": {
+    "build": {
+      "commit": "61fc799eb36dfb3f33762b3bc08cd34c7e2262ca",
+      "passed": true,
+      "pending": false,
+      "exit_code": 0,
+      "clean_tree_before_and_after": true,
+      "all_build_inputs_unchanged": true,
+      "libraries": {
+        "bsp_core.lib": "99588b284850f007326dbe151d5a6c73fa9e77b991b356d61eb8d61faf7f7e97",
+        "bsp_lua511.lib": "71e114b0ff6244852d678a5779fcbf28589bdcecbad811aff228ffd5007fe8c7",
+        "bsp_zlib121.lib": "f3f934925213a2ffb81f3aec2afbb065c1733cf43b28dddf31db6a69185c4102",
+        "xlive_stub.lib": "6dfcb5bf13947ffb6883edfde9d189c4c7ae0d702ec8bd81daebf3749e5f1c67"
+      },
+      "log_sha256": "01862d1ae65e659e93baa78455710c390cf2aae5fe9b49017966539529dc3fd9",
+      "tracked_build_inputs": 2619
+    },
+    "generated_code": {
+      "symbol": "?set_native_lua_numeric_element_00b66580@bsp@@YIXPAUNativeLuaObjectStorage@1@PAXHM@Z",
+      "bytes": 89,
+      "hex": "568bf18b068b48046a0251e80000000083c408db4424088b0e8b490483ec08dd1c2451e80000000083c40c8b16d944240c8b4a0483ec08dd1c2451e80000000083c40c8b068b56088b48045251e80000000083c4085ec20800",
+      "sha256": "de6b5de6d8b7320823477872c353a6bcb35d10a1273b02d4f35c7674d61e327d",
+      "relocations": [
+        {
+          "offset": 12,
+          "type": 20,
+          "symbol": "_lua_checkstack"
+        },
+        {
+          "offset": 36,
+          "type": 20,
+          "symbol": "_lua_pushnumber"
+        },
+        {
+          "offset": 60,
+          "type": 20,
+          "symbol": "_lua_pushnumber"
+        },
+        {
+          "offset": 78,
+          "type": 20,
+          "symbol": "_lua_settable"
+        }
+      ],
+      "object_sha256": "094515fab5029e2c601d85619e9ac4f7ecd5e9f812d8eed70b494a3cf102b8a5",
+      "native_noncall_bytes_exact": true,
+      "bridges_all_checked": true,
+      "derivation": "Complete generated body is the native noncall instruction bytes, replacing native checkstack EDX=2 with C arguments and adapting all four C call stacks. No other body bytes differ.",
+      "tested_commit": "61fc799eb36dfb3f33762b3bc08cd34c7e2262ca",
+      "existing_ctests": 2,
+      "primary_review_passed": true
+    },
+    "focused_probe": {
+      "tested_commit": "61fc799eb36dfb3f33762b3bc08cd34c7e2262ca",
+      "build_exit_code": 0,
+      "passed": true,
+      "native_game": false,
+      "run_exit_code": 0,
+      "stdout": "case 0 bits=36a0000000000000 native=36a0000000000000 sw=0002/0002 cw=037f/037f storage=1/1 stack=1/1 PASS\ncase 1 bits=7ff8000020000000 native=7ff8000020000000 sw=0001/0001 cw=037f/037f storage=1/1 stack=1/1 PASS\nPASS: source and relocated original numeric setter agree through explicit Lua C API bridges.\n",
+      "stderr": "",
+      "source_entry_executed": "00b66580",
+      "relocated_native_body_executed": true,
+      "native_library_calls_replaced_by_explicit_c_bridges": true,
+      "map_symbols": {
+        "set_native_lua_numeric_element_00b66580": [
+          "0001:00000630       ?set_native_lua_numeric_element_00b66580@bsp@@YIXPAUNativeLuaObjectStorage@1@PAXHM@Z 00401630 f   bsp_core:native_lua_numeric_element.obj"
+        ],
+        "construct_native_lua_state_00b66bd0": [
+          "0001:000005b0       ?construct_native_lua_state_00b66bd0@bsp@@YAPAUNativeLuaStateStorage@1@PAX@Z 004015b0 f   bsp_core:native_lua_objects.obj"
+        ],
+        "native_lua_globals_00b67980": [
+          "0001:00000600       ?native_lua_globals_00b67980@bsp@@YAPAUNativeLuaObjectStorage@1@AAUNativeLuaStateStorage@1@PAX@Z 00401600 f   bsp_core:native_lua_objects.obj"
+        ],
+        "bridge_checkstack": [
+          "0001:00000000       ?bridge_checkstack@@YAXXZ  00401000 f   dl_probe.obj"
+        ],
+        "bridge_pushnumber": [
+          "0001:00000010       ?bridge_pushnumber@@YAXXZ  00401010 f   dl_probe.obj"
+        ],
+        "bridge_settable": [
+          "0001:00000030       ?bridge_settable@@YAXXZ    00401030 f   dl_probe.obj"
+        ]
+      },
+      "artifacts": {
+        "local/dl_probe.cpp": "0ce99ceea240603019f6b83fa28a7e5d68df2a948fda9a6173c3685b9c150080",
+        "local/dl_native_bytes.hpp": "75f3c94a1623aec560ba8a028a4de3bfd115ebdad436231a43a241804973866b",
+        "local/dl-probe-build.cmd": "5f27b987d44fa6692467cc4101df5ce47bc4ba2bb21f31c08f38532f7b3763be",
+        "local/dl_probe.exe": "15448ef4de1d377864ed240aa0b0c3ecfe723fa6060306909e7686c9445bd6a2",
+        "local/dl_probe.obj": "5d621e17ffd30fb36cd658921e60ae806db56772f1eae35b9e484e1bd7a9811f",
+        "local/dl_probe.map": "65665dba493d0961cf4e6817af2c42dea0c84badae532be8afb202c8bd394a66"
+      },
+      "all_build_inputs_and_libraries_preserved": true,
+      "libraries": {
+        "bsp_core.lib": "99588b284850f007326dbe151d5a6c73fa9e77b991b356d61eb8d61faf7f7e97",
+        "bsp_lua511.lib": "71e114b0ff6244852d678a5779fcbf28589bdcecbad811aff228ffd5007fe8c7",
+        "bsp_zlib121.lib": "f3f934925213a2ffb81f3aec2afbb065c1733cf43b28dddf31db6a69185c4102",
+        "xlive_stub.lib": "6dfcb5bf13947ffb6883edfde9d189c4c7ae0d702ec8bd81daebf3749e5f1c67"
+      },
+      "limits": "One local differential fixture, two x87-sensitive input pairs. Actual constructed source owner bound explicitly to a fresh linked Lua5.1.1 VM; actual globals storage. Original75-byte function executes only after four REL32 call patches to explicit private-to-C ABI bridges. No original Lua VM, unmasked FPU faults, native game exception/longjmp path or gameplay proof."
+    },
+    "native_game": "not executed",
+    "full_build_stamp": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\dl-final-build-stamp.json",
+      "sha256": "78729dd201eba4268f80be615dc1a7e22a0f95061f6ca1690e83d9933af1d67a"
+    }
+  },
+  "new_function_credit": 1,
+  "new_native_bytes": 75,
+  "limits": "Private native library ABIs inferred from full caller listing and existing recovered library providers; source routes to actual linked Lua5.1.1 C APIs. No game runtime evidence.",
+  "tested_commit": "61fc799eb36dfb3f33762b3bc08cd34c7e2262ca",
+  "annotation": {
+    "saved": true,
+    "original_signature_verified": true,
+    "prior_comments_preserved": true,
+    "force_exported": true,
+    "record": "local/dl-ghidra-annotation-record.json"
+  },
+  "independent_review": {
+    "accepted": true,
+    "review_sha256": "782043eb43e82dc829c024e55b939acc95a7f7bae9d672243736670d71de07cd",
+    "source_commit": "61fc799eb36dfb3f33762b3bc08cd34c7e2262ca",
+    "reviewed_input_sha256": {
+      "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\include\\bsp\\native_lua_numeric_element.hpp": "f760fb07c2ce9c2c8f8332faace3154002bb42a03827df1897c8f6234e99952a",
+      "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\src\\native_lua_numeric_element.cpp": "51a703872ec2400a418d0663a7d051dfd09886fbee83025021e624948c176aa5",
+      "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\dl-lua-numeric-write-evidence.json": "61038d51aa860194c7251d145727a22af3c4decd7676a97d27613aebc8bd0f83",
+      "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\dl-primary-object-review.json": "1d05bdd0839309512c599261a6348e3d51a12a08ff79ef83e7a406f9fb3e8749",
+      "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\dl-complete-generated.asm": "8754ede631500735b55691d50feebc852cc49697b7aa5ff4f7808d81d69bf022",
+      "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\dl_probe.cpp": "0ce99ceea240603019f6b83fa28a7e5d68df2a948fda9a6173c3685b9c150080",
+      "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\dl_native_bytes.hpp": "75f3c94a1623aec560ba8a028a4de3bfd115ebdad436231a43a241804973866b",
+      "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\dl-probe.json": "2334770ae694cd11063fe8a5e2c82a4a1f33bb1a4dd08196bf8f3d14e511bebc",
+      "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\dl-probe-build.cmd": "5f27b987d44fa6692467cc4101df5ce47bc4ba2bb21f31c08f38532f7b3763be",
+      "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\bsp_core.dir\\Release\\native_lua_numeric_element.obj": "094515fab5029e2c601d85619e9ac4f7ecd5e9f812d8eed70b494a3cf102b8a5",
+      "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\dl_probe.exe": "15448ef4de1d377864ed240aa0b0c3ecfe723fa6060306909e7686c9445bd6a2",
+      "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\dl_probe.obj": "5d621e17ffd30fb36cd658921e60ae806db56772f1eae35b9e484e1bd7a9811f",
+      "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\dl_probe.map": "65665dba493d0961cf4e6817af2c42dea0c84badae532be8afb202c8bd394a66",
+      "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_core.lib": "99588b284850f007326dbe151d5a6c73fa9e77b991b356d61eb8d61faf7f7e97",
+      "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_lua511.lib": "71e114b0ff6244852d678a5779fcbf28589bdcecbad811aff228ffd5007fe8c7",
+      "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_zlib121.lib": "f3f934925213a2ffb81f3aec2afbb065c1733cf43b28dddf31db6a69185c4102"
+    },
+    "review_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-record-setter-provider-audit-dn\\local\\dp-numeric-setter-review.json",
+    "no_findings": true,
+    "scope": "Independent whole source/native-byte derivation, actual COFF relocations, actual probe bridges/injector and recorded two-case masked-x87 result. No repeat execution or game claim."
+  },
+  "next_parent_evidence": {
+    "dm_sha256": "aac45ed3d29df6f064107214fad8d2ac3008e98b1b9fcd855689c4bf4db6c90b",
+    "dn_sha256": "8290f3f61013e2e401a319b4465f7e9958db87e87e6c46b9978981bfd1e552aa",
+    "status": "B1B890 native236-byte body and EH recovered; existing providers present; independent implementation in progress"
+  },
+  "artifact_sha256": {
+    "local/accept_dl_review.py": "83c022ddee8851563afafaefa01ee9a6fc0e8664d8d2bbf9430ab4e5a1102eee",
+    "local/annotate_dl.py": "e604d660456a90e83c76a2fcb7c7510088e4ed90fb35e7fecc0d5a0ed662e812",
+    "local/build_final_dl.py": "558ebde92c67903b80b0b9cd44a489cb013c3c161f26996e63e2b92781e6e7d9",
+    "local/check_dl_probe.py": "ac4e7f0710677a7d9df3e15d8d37f7d230719be1a24aafbcb3079e0da4195387",
+    "local/commit_dl_source.py": "0b04a0e6857dbf9fc072b9f29e23a724fc01704c4fcf5f2522356eaae4da9afe",
+    "local/dl-annotation.log": "fd050d3574678a1283b3d4edcae16add3aed1b0a1f9edf9fb9465d88c78932fb",
+    "local/dl-comments-after.json": "97f531aa47e8e67ec43ec8ebaf371aafe13757b3e3af6cf77d5008064989a9fb",
+    "local/dl-comments-before.json": "b90454da03ae8445504fa47c71f092a115f312636f80000c8428f18f43f794c2",
+    "local/dl-complete-generated.asm": "8754ede631500735b55691d50feebc852cc49697b7aa5ff4f7808d81d69bf022",
+    "local/dl-dm-world-parameter-record-evidence.json": "aac45ed3d29df6f064107214fad8d2ac3008e98b1b9fcd855689c4bf4db6c90b",
+    "local/dl-dm-world-parameter-record-evidence.md": "457620313a546c5ce315a1fcb8d28bbecdc6cc9ad9e45d0928a53fa506647897",
+    "local/dl-dn-record-setter-provider-audit.json": "8290f3f61013e2e401a319b4465f7e9958db87e87e6c46b9978981bfd1e552aa",
+    "local/dl-dn-record-setter-provider-audit.md": "1860a93f3d0517935bf474cdd0eb7a061775ed2fdcb1344b3231186a60840e88",
+    "local/dl-dp-numeric-setter-review.json": "782043eb43e82dc829c024e55b939acc95a7f7bae9d672243736670d71de07cd",
+    "local/dl-dp-numeric-setter-review.md": "f0304e600b7e6ec495e77c11c56042ab7081e16f5b280a3adde3abe806e33e28",
+    "local/dl-export-refresh.log": "61826123becb62cca2bdc334595121e1e46537ed07a627b8efe5953fac1555f4",
+    "local/dl-final-build-stamp.json": "78729dd201eba4268f80be615dc1a7e22a0f95061f6ca1690e83d9933af1d67a",
+    "local/dl-final-build.log": "01862d1ae65e659e93baa78455710c390cf2aae5fe9b49017966539529dc3fd9",
+    "local/dl-final-call-audit.log": "fd6337253b55be53d9c043ad87ad5fb924905e6f4eff5f779457c6c754603702",
+    "local/dl-function-records.json": "51037ec5143e6d5e1fb84fd1394e4f02a3cd96245a428bcbdc3dce697366377b",
+    "local/dl-ghidra-annotation-record.json": "c25aa37bc69722b715016c32753cc140c7b2065c6bb3d184e4ecf45748d9faba",
+    "local/dl-independent-review-acceptance.json": "e3abe46937cab911cb220dc65286425c614e79c5f099779755935c8c7acca85d",
+    "local/dl-ledger-before.json": "b0750b29d25a5642527c25f5d94730f4c888ec44be45d4171b5d2d2f5d8b10ef",
+    "local/dl-lua-numeric-write-evidence.json": "61038d51aa860194c7251d145727a22af3c4decd7676a97d27613aebc8bd0f83",
+    "local/dl-lua-numeric-write-evidence.md": "bfcc3a8b17c615d8d7898782b36b69aa8667ca9dfb939ac6b00d86e2e1ef77ed",
+    "local/dl-names-shard-before.jsonl": "d7cf359309512596b453f39490b2866d16e4aa2ad1b13f723596e1c33c3f38cc",
+    "local/dl-primary-object-review.json": "1d05bdd0839309512c599261a6348e3d51a12a08ff79ef83e7a406f9fb3e8749",
+    "local/dl-probe-build.cmd": "5f27b987d44fa6692467cc4101df5ce47bc4ba2bb21f31c08f38532f7b3763be",
+    "local/dl-probe-build.log": "16034a1d4458a103a478f4c3db29b6fd32b9acf1874761b047de33eea0d7de0d",
+    "local/dl-probe.json": "2334770ae694cd11063fe8a5e2c82a4a1f33bb1a4dd08196bf8f3d14e511bebc",
+    "local/dl-reconstruction-shard-before.jsonl": "dca7ac3decfc7767c30e656881404976dd0187b5ccae1005b466e14c9e2f4a07",
+    "local/dl-seal-first-attempt.json": "3ce8d54c33c3ecdb270dc3ad995c40c63a0a2dc37fa270f57cf3ce2bc4a77d5c",
+    "local/dl-source-call-audit.log": "e6d20b95c33e9e6fddaa319ebcdfaae9f5833aa9c9f2683a8b00293210302acb",
+    "local/dl-source-commit.txt": "c953df26f9971de856113cad039a88e20ad68422bc29f888cf65c62a304541c2",
+    "local/dl_coff.py": "5749d811f28bc812ff4c66c129000f0ad8a5a95eabf91e29005b23188ec5ca43",
+    "local/dl_native_bytes.hpp": "75f3c94a1623aec560ba8a028a4de3bfd115ebdad436231a43a241804973866b",
+    "local/dl_probe.cpp": "0ce99ceea240603019f6b83fa28a7e5d68df2a948fda9a6173c3685b9c150080",
+    "local/dl_probe.exe": "15448ef4de1d377864ed240aa0b0c3ecfe723fa6060306909e7686c9445bd6a2",
+    "local/dl_probe.map": "65665dba493d0961cf4e6817af2c42dea0c84badae532be8afb202c8bd394a66",
+    "local/dl_probe.obj": "5d621e17ffd30fb36cd658921e60ae806db56772f1eae35b9e484e1bd7a9811f",
+    "local/finish_dl.py": "59a62ea7f5fc6a33f2ba4ed7482d202d5da0330082b8b46c5a6597131994964d",
+    "local/prepare_dl.py": "72a5461b73eadb1cf9a9a798604ed0082e27e8ca8189564486e05f6c24a1b930",
+    "local/prepare_dl_probe.py": "0d7cd81aa1aeb22266267f9cfeb619b47e06aec83aea854928ca0560eadd8dce",
+    "local/review_dl_object.py": "97d189cc90ca9f9027f8418b54113a68e5f35517ad559e356ae34c6e21cb4c18",
+    "local/seal_dl.py": "4db779a602835ddca00b262e3566d1b32da7383a9037c5061827adeb23466427",
+    "build/win32/bsp_core.dir/Release/native_lua_numeric_element.obj": "094515fab5029e2c601d85619e9ac4f7ecd5e9f812d8eed70b494a3cf102b8a5"
+  },
+  "sealed_attempt": {
+    "tested_commit": "61fc799eb36dfb3f33762b3bc08cd34c7e2262ca",
+    "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\dl-validated-attempt-61fc799e-v2.zip",
+    "sha256": "c4f403ff6302c55d1f7597d20bed6cdc94e78b3b3d31848e1db248457ce48343",
+    "payload_members": 2676,
+    "manifest_members": 1,
+    "all_member_hashes_rechecked": true,
+    "libraries": {
+      "bsp_core.lib": "99588b284850f007326dbe151d5a6c73fa9e77b991b356d61eb8d61faf7f7e97",
+      "bsp_lua511.lib": "71e114b0ff6244852d678a5779fcbf28589bdcecbad811aff228ffd5007fe8c7",
+      "bsp_zlib121.lib": "f3f934925213a2ffb81f3aec2afbb065c1733cf43b28dddf31db6a69185c4102",
+      "xlive_stub.lib": "6dfcb5bf13947ffb6883edfde9d189c4c7ae0d702ec8bd81daebf3749e5f1c67"
+    },
+    "tracked_build_inputs": 2619
+  }
+}

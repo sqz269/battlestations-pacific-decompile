@@ -1,0 +1,588 @@
+{
+  "packet": "orch3_material_record_allocation_cj",
+  "status": "exact_committed_build_source_probe_native_generated_review_saved_annotations_passed_sealed",
+  "source_parent_commit": "91ec29c54466e4e7b7834470379765b3098f5dcf",
+  "native_body_credit": 2,
+  "native_bytes_credit": 191,
+  "proposed_native_bodies": 2,
+  "proposed_native_bytes": 191,
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "installed_pe": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "provider_sha256": {
+    "include/bsp/native_singleton_vector_allocation.hpp": "2910d0e12e3ecce6820cc1a083a3bfba9c5478fbbea9cdf9dc4c2926bdb0296a",
+    "src/native_singleton_vector_allocation.cpp": "4771197c3f1ead7dd635637c849c60f8f525c4d482dcc4a33c8617922362e09e",
+    "include/bsp/native_legacy_exception_owner.hpp": "98da5a8c50222979739c330b503cc03f2b43e03df5cf15a795f30ed2df3ed727",
+    "src/native_legacy_exception_owner.cpp": "4a35fabcd35adbd986c1c6bc64b2b88bc07323a47b6f0ebf5bf764675925ad60",
+    "include/bsp/native_legacy_sbo_string.hpp": "9729dd1df270ad0c6f3e2601219735bd71f6758a797aaf2b59e687527704f422",
+    "src/native_legacy_sbo_string.cpp": "377004812adb5e8760b02a84fff81f0004f08fd145c4ce4acfebf31cc583164c",
+    "include/bsp/singleton_lifetime.hpp": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+    "src/singleton_lifetime.cpp": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+    "include/bsp/native_material_record_copy.hpp": "502c9743de1ed796c10c4c714808b06f32fef2f7ebc89a63b44061beea02feac",
+    "src/native_material_record_copy.cpp": "c33a822d3ededc37d9f20396a0e306d2a97ab1e0fb46295306d787dd2edd87d5"
+  },
+  "source_sha256": {
+    "include/bsp/native_material_record_allocation.hpp": "3f0b20ebbbaa0d5f7f6b1bf6421465b764ddc1ad9a7087ac73abd1486700f699",
+    "src/native_material_record_allocation.cpp": "99f16e0c423ac2b0e6e146bbb7b0630c2fb9e0c12707aaaa81973cf6988d970a"
+  },
+  "generated_object": {
+    "path": "build/win32/bsp_core.dir/Release/native_material_record_allocation.obj",
+    "sha256": "565d3fe6d000e9388542c999b0cebca0c7bfe8418475660f302358b5e9547830",
+    "format": "MSVC Win32 COFF, machine 014C",
+    "sections": [
+      {
+        "coff_section_hex": "11",
+        "symbol": "STL_xlen_throw_00b135c0",
+        "size": 111,
+        "sha256": "7f0d0a7e916dbbb9d59d9ac28453c45957661910199ae53e1175dff9edfda670",
+        "relocations": 7,
+        "relocation_offsets_hex": [
+          "06",
+          "15",
+          "32",
+          "43",
+          "5c",
+          "61",
+          "6a"
+        ],
+        "review": "Cap 15, length 0 and inline byte 0 precede counted assign at +42; state 0 store at +54 follows assign and precedes NativeSingletonVectorLengthError construction at +5B and host throw at +69."
+      },
+      {
+        "coff_section_hex": "12",
+        "symbol": "__ehhandler$STL_xlen_throw_00b135c0",
+        "size": 42,
+        "sha256": "e2a0b1cc92067e79dba62402c0bbd51040d7b383f02bef870bb5044e6b4b50a7",
+        "relocations": 4,
+        "relocation_offsets_hex": [
+          "04",
+          "1c",
+          "21",
+          "26"
+        ],
+        "review": "State 0 unwind funclet invokes CompletedMessage destructor, which calls raw native_legacy_sbo_string_destroy_004072d0; generated handler uses host __CxxFrameHandler3."
+      },
+      {
+        "coff_section_hex": "13",
+        "symbol": "allocate_native_material_records_00b0d3b0",
+        "size": 92,
+        "sha256": "482054836708d87a9b6fefa3afd60a0c8122c5da6873a82261220b75107a78f7",
+        "relocations": 6,
+        "relocation_offsets_hex": [
+          "07",
+          "30",
+          "3d",
+          "49",
+          "4e",
+          "57"
+        ],
+        "review": "Unsigned ECX comparison with 0xDA740D admits IMUL count*0x12C; the same computed byte count fills native and host request fields before singleton_lifetime_allocate. Overflow constructs and throws host std::bad_alloc."
+      }
+    ],
+    "native_binary_equality": false,
+    "reason": "Source uses concrete host CRT and C++ EH services; original PE uses private BF681B/BF6885 and FH3/SEH data."
+  },
+  "validation": {
+    "command": "./scripts/build.ps1",
+    "configuration": "MSVC Win32 Release",
+    "exit_code": 0,
+    "ctests_passed": 2,
+    "ctests": [
+      "reconstructed_math",
+      "native_math_differential"
+    ],
+    "exact_commit": "8b5c20da64531031c264d85c4edd2187cf806ff3",
+    "tracked_build_inputs": 2589,
+    "clean_before_after": true,
+    "all_build_input_hashes_preserved": true,
+    "new_repository_tests": 0,
+    "new_local_focused_probes": 1,
+    "source_raw_entries_executed": true,
+    "native_parent_bytes_executed": false,
+    "source_probe": {
+      "exit_code": 0,
+      "log": "local/chcj-probe-run.log",
+      "source": "local/chcj_probe.cpp",
+      "executable": "local/chcj_probe.exe",
+      "source_sha256": "6dab24b3577f96e2deabc8dc574e0ef791b07a7bc714b613ebec1a455a648932",
+      "executable_sha256": "f5fd194b09ecb3cb1138d7581d5bf29125ae75d2b70cebf7635e0bc8db139f57",
+      "core_library_sha256": "03ded13648d49f987383c5bb6c9892e324913889a6ebfb8fd83878a007a9dc82",
+      "branches": [
+        "null-vector append",
+        "growth with aliased source",
+        "spare append",
+        "zero count",
+        "short in-place tail",
+        "long in-place tail",
+        "insert-one output pair",
+        "shared owning length-error propagation",
+        "zero-byte allocation",
+        "allocation overflow"
+      ],
+      "limits": [
+        "Only empty raw string headers; pool/manager publication remains null.",
+        "No injected constructor/destructor failure or returning invalid-parameter callback mutation.",
+        "No native parent-byte execution, original CRT/FH3 identity or gameplay validation."
+      ]
+    },
+    "game_validated": false
+  },
+  "limits": "Equal admitted allocation bytes and ordered source SBO cleanup/catch transport, not native binary heap, std::exception/bad_alloc RTTI, private FH3/SEH, or game validation.",
+  "functions": [
+    {
+      "address": "00b0d3b0",
+      "inclusive_end": "00b0d405",
+      "bytes": 86,
+      "native_bytes_hex": "83ec1085c9771533c969c92c01000051e856940e0083c40483c410c383c8ff33d2f7f13d2c01000073df8d0424508d4c2408c744240400000000e8518f0e0068c03ce0008d4c240851c744240c3c92d600e87f940e00",
+      "native_sha256": "187fc8ecddb674807e4cdceaf7de5f19b21c51084202ce989e93999da82ed123",
+      "ghidra_name_at_review": "FUN_00b0d3b0",
+      "cpp_symbol": "allocate_native_material_records_00b0d3b0",
+      "source_signature": "void* __fastcall allocate_native_material_records_00b0d3b0(uint32_t count, void* unused_edx)",
+      "original_abi": "ECX unsigned count, EDX unused, EAX allocation, plain RET",
+      "caller": "00b145e0 at 00b146e3; caller clears EDX before ECX count",
+      "normal_contract": "Zero requests zero bytes; 1..14316557 request count*300 native and host bytes from concrete malloc/new-handler service; release with singleton_lifetime_free",
+      "overflow_contract": "Positive count above UINT32_MAX/300: original BF6340 null-message std::exception, vtable D6923C, BF6885 ThrowInfo E03CC0; source throws host std::bad_alloc",
+      "native_call_sites": [
+        {
+          "site": "00b0d3c0",
+          "target": "00bf681b"
+        },
+        {
+          "site": "00b0d3ea",
+          "target": "00bf6340"
+        },
+        {
+          "site": "00b0d401",
+          "target": "00bf6885"
+        }
+      ],
+      "ghidra_name": "BSP_MaterialRecords_Allocate"
+    },
+    {
+      "address": "00b135c0",
+      "inclusive_end": "00b13628",
+      "bytes": 105,
+      "native_bytes_hex": "6aff6898c2cb0064a100000000506489250000000083ec446a1268e037ce008d4c2408c74424200f000000c744241c00000000c644240c00e823518fff8d0424508d4c2420c744245000000000e8eee08fff68983fd8008d4c242051c74424246092d600e85c320e00",
+      "native_sha256": "7d3b2e223f800dbc771a2a1b867891f27e3b314e0f5734ea2088cfa138b9ee56",
+      "ghidra_name_at_review": "STL_xlen_throw_00b135c0",
+      "cpp_symbol": "STL_xlen_throw_00b135c0",
+      "source_signature": "[[noreturn]] void __cdecl STL_xlen_throw_00b135c0()",
+      "original_abi": "No arguments or normal return; private FH3/SEH frame; native BF6885 throw",
+      "caller": "00b145e0 at 00b1466e",
+      "message": {
+        "address": "00ce37e0",
+        "length": 18,
+        "text": "vector<T> too long"
+      },
+      "native_call_sites": [
+        {
+          "site": "00b135f8",
+          "target": "00408720"
+        },
+        {
+          "site": "00b1360d",
+          "target": "00411700"
+        },
+        {
+          "site": "00b13624",
+          "target": "00bf6885"
+        }
+      ],
+      "exception_metadata": {
+        "handler": "00cbc298",
+        "frame_handler": "00bf6b43",
+        "funcinfo": "00df438c",
+        "magic": "19930522",
+        "max_state": 1,
+        "unwind_map": "00df4384",
+        "state0_to": -1,
+        "state0_action": "00cbc290",
+        "cleanup_this": "[EBP-50h]",
+        "cleanup_target": "004072d0",
+        "arm_after_assign": "00b13605",
+        "throwinfo": "00d83f98",
+        "native_vtable": "00d69260"
+      },
+      "source_catch_type": "NativeSingletonVectorLengthError",
+      "analogy": "00bd0590 is identical after masking handler address and three relative call displacements; uses the same message, ThrowInfo and native vtable",
+      "ghidra_name": "STL_xlen_throw_00b135c0"
+    }
+  ],
+  "worker_validation": {
+    "installed_pe_and_live_project": "verified C:/Users/sqz269/bsp.gpr /battlestationspacific.exe against installed PE SHA-256 and both complete live function ranges",
+    "source_evidence": "ignored local/output/verify-cj-report.py passed: both original PE spans, six original call targets, both B145E0 call sites, EH unwind/state, BD0590 analogue and all pinned source/provider hashes",
+    "generated_evidence": "ignored local/output/verify-cj-coff.py passed: object hash, three code COMDAT hashes, 17 relocation offsets and provider/exception symbol targets; dumpbin disassembly reviewed",
+    "build": "./scripts/build.ps1 passed, Win32 Release bsp_game linked",
+    "ctest": "existing reconstructed_math 1/1 passed (0.07 sec)",
+    "new_tests": 0
+  },
+  "worker_source_sha256": {
+    "include/bsp/native_material_record_allocation.hpp": "3f0b20ebbbaa0d5f7f6b1bf6421465b764ddc1ad9a7087ac73abd1486700f699",
+    "src/native_material_record_allocation.cpp": "99f16e0c423ac2b0e6e146bbb7b0630c2fb9e0c12707aaaa81973cf6988d970a"
+  },
+  "call_steps": [
+    {
+      "address": "00b0d3c0",
+      "native": "00bf681b",
+      "function": "00b0d3b0"
+    },
+    {
+      "address": "00b0d3ea",
+      "native": "00bf6340",
+      "function": "00b0d3b0"
+    },
+    {
+      "address": "00b0d401",
+      "native": "00bf6885",
+      "function": "00b0d3b0"
+    },
+    {
+      "address": "00b135f8",
+      "native": "00408720",
+      "function": "00b135c0"
+    },
+    {
+      "address": "00b1360d",
+      "native": "00411700",
+      "function": "00b135c0"
+    },
+    {
+      "address": "00b13624",
+      "native": "00bf6885",
+      "function": "00b135c0"
+    },
+    {
+      "address": "00b146e3",
+      "native": "00b0d3b0",
+      "function": "00b145e0"
+    },
+    {
+      "address": "00b1466e",
+      "native": "00b135c0",
+      "function": "00b145e0"
+    }
+  ],
+  "primary_integration": {
+    "worker_commit": "c6c6750e799156362af3d2b7be70ffc176670ad6",
+    "source_header_unchanged": true,
+    "worker_primary_code_and_relocation_identity": true
+  },
+  "tested_commit": "8b5c20da64531031c264d85c4edd2187cf806ff3",
+  "primary_review": {
+    "primary_complete_native_source_generated_review": true,
+    "independent_CJ_worker_review": true,
+    "independent_CH_worker_review": false,
+    "blocking_source_findings": [],
+    "wrappers": "Three18-byte naked wrappers capture actual public argument slots at+0h, pass context/vector at+5h/+6h, call at+7h and RET10h/RET4 at+Fh.",
+    "insertion": {
+      "temporary_constructor": "66h",
+      "completed_temporary_state0": "97h",
+      "count_read": "D1h",
+      "count_zero_branch": "E3h",
+      "allocator": "1ACh",
+      "allocation_cursor_slot": "1CBh",
+      "allocation_source_slot": "1E7h",
+      "construction_state1": "1FBh",
+      "prefix_copy": "20Bh",
+      "fill": "236h",
+      "end_read_before_cursor_store": [
+        "246h",
+        "251h"
+      ],
+      "suffix_copy": "271h",
+      "return_to_state0": "279h",
+      "old_destroy": "2BBh",
+      "fresh_old_begin_before_free": [
+        "2C3h",
+        "2C9h"
+      ],
+      "saved_allocation_read": "2D4h",
+      "publication_capacity_end_begin": [
+        "2EBh",
+        "300h",
+        "309h"
+      ],
+      "short_tail_copy": "39Ah",
+      "short_fill_state3": "3C5h",
+      "short_fill": "3D8h",
+      "short_return_state0": "3E0h",
+      "single_current_end_ADD": "3F4h",
+      "fresh_end": "3FCh",
+      "fill_assignment": "412h",
+      "long_tail_copy": "43Fh",
+      "current_first_tail_before_publish": [
+        "449h",
+        "454h"
+      ],
+      "backward_assignment": "471h",
+      "fill_assignment_long": "485h",
+      "disarm_before_normal_destroy": [
+        "499h",
+        "4A1h"
+      ]
+    },
+    "catch_slices": "Parent COMDAT1404 bytes includes catch slices at4D5h/525h (80/87 bytes); these are not separate full function COMDATs. Allocation catch loads actual cursor/allocation then destroys/frees/rethrows. Short-tail catch reloads count/vector end/position and destroys only its derived range.",
+    "unwind": "58-byte EH COMDAT includes prefix cleanup jump to CompletedTemporary and host FH3 handler.97-byte destructor tests armed, calls B10740, catches escaping unwind failure and terminates. Normal destruction is separately disarmed before call.",
+    "insert_one": "317-byte body preserves position/begin, returning checks and source reload, child callADh, current bound checks and actual position-slot storeF0h, output-pair read116h and owner/position stores121h/12Ch.",
+    "append": "209-byte body preserves captured begin/end, duplicate source-slot reads51h/59h, fill78h and captured-end publication87h; slow path calls insert-oneC5h.",
+    "allocation": "CJ92-byte allocator compares ECX toDA740D and computes count*300 once for both request sizes.111-byte length-error initializes SBO before assign42h, arms cleanup54h, calls shared exception constructor5Bh and throws69h;42-byte EH COMDAT and9-byte destructor reviewed. All4 primary code sections and relocations equal worker after anonymous namespace path normalization.",
+    "helpers": "18-byte signed quotient retains IMUL/SAR/sign correction;3-byte end ADD is single raw DWORD RMW.14/17-byte load/store helpers access raw DWORDs; concrete invalid parameter is6-byte tail jump to host CRT."
+  },
+  "generated_code": [
+    {
+      "module": "native_material_record_allocation",
+      "stem": "allocate_native_material_records_00b0d3b0",
+      "symbol": "?allocate_native_material_records_00b0d3b0@bsp@@YIPAXIPAX@Z",
+      "section_offset": 0,
+      "bytes": 92,
+      "sha256": "482054836708d87a9b6fefa3afd60a0c8122c5da6873a82261220b75107a78f7",
+      "object_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\bsp_core.dir\\Release\\native_material_record_allocation.obj",
+      "object_sha256": "0a00cf2b96547492564dfaaa60208b51b6f495cb46de757e4a9a7385f82d30da",
+      "relocations": [
+        {
+          "offset": 7,
+          "type": 6,
+          "symbol": "___security_cookie"
+        },
+        {
+          "offset": 48,
+          "type": 20,
+          "symbol": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z"
+        },
+        {
+          "offset": 61,
+          "type": 20,
+          "symbol": "@__security_check_cookie@4"
+        },
+        {
+          "offset": 73,
+          "type": 20,
+          "symbol": "??0bad_alloc@std@@QAE@XZ"
+        },
+        {
+          "offset": 78,
+          "type": 6,
+          "symbol": "__TI2?AVbad_alloc@std@@"
+        },
+        {
+          "offset": 87,
+          "type": 20,
+          "symbol": "__CxxThrowException@8"
+        }
+      ],
+      "listing": "local/chcj-generated-allocate_native_material_records_00b0d3b0-0.asm",
+      "primary_worker_code_and_symbolic_relocations_equal": true
+    },
+    {
+      "module": "native_material_record_allocation",
+      "stem": "STL_xlen_throw_00b135c0",
+      "symbol": "?STL_xlen_throw_00b135c0@bsp@@YAXXZ",
+      "section_offset": 0,
+      "bytes": 111,
+      "sha256": "7f0d0a7e916dbbb9d59d9ac28453c45957661910199ae53e1175dff9edfda670",
+      "object_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\bsp_core.dir\\Release\\native_material_record_allocation.obj",
+      "object_sha256": "0a00cf2b96547492564dfaaa60208b51b6f495cb46de757e4a9a7385f82d30da",
+      "relocations": [
+        {
+          "offset": 6,
+          "type": 6,
+          "symbol": "__ehhandler$?STL_xlen_throw_00b135c0@bsp@@YAXXZ"
+        },
+        {
+          "offset": 21,
+          "type": 6,
+          "symbol": "___security_cookie"
+        },
+        {
+          "offset": 50,
+          "type": 6,
+          "symbol": "??_C@_0BD@OLBABOEK@vector?$DMT?$DO?5too?5long@"
+        },
+        {
+          "offset": 67,
+          "type": 20,
+          "symbol": "?native_legacy_sbo_string_assign_counted_00408720@bsp@@YAAAUNativeLegacySboStringStorage@1@AAU21@PBDI@Z"
+        },
+        {
+          "offset": 92,
+          "type": 20,
+          "symbol": "??0NativeSingletonVectorLengthError@bsp@@QAE@ABUNativeLegacySboStringStorage@1@@Z"
+        },
+        {
+          "offset": 97,
+          "type": 6,
+          "symbol": "__TI1?AVNativeSingletonVectorLengthError@bsp@@"
+        },
+        {
+          "offset": 106,
+          "type": 20,
+          "symbol": "__CxxThrowException@8"
+        }
+      ],
+      "listing": "local/chcj-generated-STL_xlen_throw_00b135c0-0.asm",
+      "primary_worker_code_and_symbolic_relocations_equal": true
+    },
+    {
+      "module": "native_material_record_allocation",
+      "stem": "dtor:CompletedMessage",
+      "symbol": "??1CompletedMessage@?A0xc1a897a5@bsp@@QAE@XZ",
+      "section_offset": 0,
+      "bytes": 9,
+      "sha256": "6031c734230453a782cac9cac1384bb585652067006962f8d87fb1924a0624c7",
+      "object_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\bsp_core.dir\\Release\\native_material_record_allocation.obj",
+      "object_sha256": "0a00cf2b96547492564dfaaa60208b51b6f495cb46de757e4a9a7385f82d30da",
+      "relocations": [
+        {
+          "offset": 3,
+          "type": 20,
+          "symbol": "?native_legacy_sbo_string_destroy_004072d0@bsp@@YAXAAUNativeLegacySboStringStorage@1@@Z"
+        }
+      ],
+      "listing": "local/chcj-generated-dtor-CompletedMessage-0.asm",
+      "primary_worker_code_and_symbolic_relocations_equal": true
+    },
+    {
+      "module": "native_material_record_allocation",
+      "stem": "eh:STL_xlen_throw_00b135c0",
+      "symbol": "__ehhandler$?STL_xlen_throw_00b135c0@bsp@@YAXXZ",
+      "section_offset": 0,
+      "bytes": 42,
+      "sha256": "e2a0b1cc92067e79dba62402c0bbd51040d7b383f02bef870bb5044e6b4b50a7",
+      "object_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\bsp_core.dir\\Release\\native_material_record_allocation.obj",
+      "object_sha256": "0a00cf2b96547492564dfaaa60208b51b6f495cb46de757e4a9a7385f82d30da",
+      "relocations": [
+        {
+          "offset": 4,
+          "type": 20,
+          "symbol": "??1CompletedMessage@?A0xc1a897a5@bsp@@QAE@XZ"
+        },
+        {
+          "offset": 28,
+          "type": 20,
+          "symbol": "@__security_check_cookie@4"
+        },
+        {
+          "offset": 33,
+          "type": 6,
+          "symbol": "__ehfuncinfo$?STL_xlen_throw_00b135c0@bsp@@YAXXZ"
+        },
+        {
+          "offset": 38,
+          "type": 20,
+          "symbol": "___CxxFrameHandler3"
+        }
+      ],
+      "listing": "local/chcj-generated-eh-STL_xlen_throw_00b135c0-0.asm",
+      "primary_worker_code_and_symbolic_relocations_equal": true
+    }
+  ],
+  "primary_call_audit": {
+    "direct_rows": 8,
+    "indirect_rows": 0,
+    "failed": 0,
+    "log": "local/chcj-call-audit-native_material_record_allocation_cj.log"
+  },
+  "annotation": {
+    "saved": true,
+    "readback_passed": true,
+    "prior_comments_preserved": true,
+    "record": "local/chcj-ghidra-annotation-record.json",
+    "force_refreshed_exports": [
+      "00b0d3b0",
+      "00b135c0"
+    ],
+    "correct_existing_names_preserved": true,
+    "original_abi_signatures": true,
+    "original_calling_conventions": {
+      "00b0d3b0": "__fastcall",
+      "00b135c0": "__cdecl"
+    }
+  },
+  "artifact_sha256": {
+    "build/win32/bsp_core.dir/Release/native_material_record_allocation.obj": "0a00cf2b96547492564dfaaa60208b51b6f495cb46de757e4a9a7385f82d30da",
+    "build/win32/bsp_core.dir/Release/native_material_record_vector.obj": "8eb46057a0fe3e7344feacde7acbaf00279d31e39c76140e2d0b55f0fe4631c5",
+    "local/CHCatchBodyRepair.java": "e9de76e537cceba930e75945b61b0d0cc15243e06d950d8e7a11206fd9f2b192",
+    "local/annotate_chcj.py": "0664cde8a293f71c4135588d347a6c17189feea0c36a7dda6a766862b888dfd8",
+    "local/bq_object_review.py": "93d9b6dc62ddcd4bc7e0aab0ba75a9ef29e60fa15638adba14eb9a9fd7de862a",
+    "local/build_final_chcj.py": "4c72d8655a39a95d0df39bac7abe2be9cdb47b69a74076e16b10725fb25f05b8",
+    "local/ch-catch-body-repair.json": "71677c682df722c039fe14b63c28bfd8ea913f6aa7be41498ba326ff8d4e99be",
+    "local/ch-record-vector-native.json": "ee3a3ff7555f4a92955ef2f23ca6f388edca716707215e8989762f77198e7f57",
+    "local/ch-record-vector-readiness.json": "61356365fb4ff2131db0aade9bf82b3b2bfd72fbb3e0d37c80e77d910cb52ccd",
+    "local/ch-record-vector-readiness.md": "2c14a8dd4d8d029908258064a3db8532d913c99bbc279e9a345f718228507731",
+    "local/chcj-annotation.log": "e6f8de5b6cc0f52fc57892c5a71d1825ee29826a17f98e450c2c8b8398b437a5",
+    "local/chcj-call-audit-native_material_record_allocation_cj.log": "b923dd533974a6d5c7c059224a7561b2f6c6f61bc8a223414c4831cae4a2e6f9",
+    "local/chcj-call-audit-native_material_record_vector_ch.log": "a7c44a8e942295f85d61ae3f749a6712a591eb91a2ced5cf06bf7b96cd6a2f68",
+    "local/chcj-comments-after.json": "1ded4272dc5a5eb773ed3985ea965f7960dd52f595cc275a194f9f09296ccf29",
+    "local/chcj-comments-before.json": "cc4b7503f2e87ae0000db25950a05d3ae1fe519a0ac24db715901e3da1405847",
+    "local/chcj-export-refresh.log": "88db42a802119d2c4aec1df0a7f1efce10d4c7a6b41c7e622e49afe847fdfedc",
+    "local/chcj-final-build-stamp.json": "443ae61ecf7848aa48397f1f27566a59a9e1d1741959ce5326104601441de53b",
+    "local/chcj-final-combined-build.log": "56d1e47af37112d10b1e43e86ef841c72b2bf0e26c06cb52e7203c9a46e70b0e",
+    "local/chcj-function-records.json": "436ac60f2911d17ce87bf912eafb73adf9e61095e4eee80ff8afe7967477e401",
+    "local/chcj-generated-STL_xlen_throw_00b135c0-0.asm": "def186328ccc6013954569159c5fb6f24753f1d21ac2f6090c0abd1b6bfb7da1",
+    "local/chcj-generated-add_current-0.asm": "99dd9cdb5e77bc21c7085a6a31cd3b9dbfdac5ca30201e0a23afa14c268e111d",
+    "local/chcj-generated-allocate_native_material_records_00b0d3b0-0.asm": "89ae1429121cd08b75e587531a57b124baf3185d9eceb7ac47eed16569030b0f",
+    "local/chcj-generated-append_body-0.asm": "37ac0109aac47d0d8405f573e3a1cb2b95f0a319eaac955f8e8d5a8018e3939b",
+    "local/chcj-generated-append_native_material_record_00b15610-0.asm": "4d99e8f85aa8f1fb881b3174e9022c3653bd0be81422b47b3a2f53a013909766",
+    "local/chcj-generated-catch-insert_body-0.asm": "5b24ed7bb01012cfb3e83ca7db729b50dd2a6053dba556460a54d067011246a2",
+    "local/chcj-generated-catch-insert_body-1.asm": "41c8f77b16db27828f8833fd0b9834df2a0b515f7d4228016ca29b3939615f96",
+    "local/chcj-generated-current_invalid_parameter-0.asm": "38f7456b0ddb6448d1eaafb007cefa6e7a21acc8948f59f0353a55f26b9312bc",
+    "local/chcj-generated-dtor-CompletedMessage-0.asm": "66333fb63311c527e442743b494ab9ee8ffaa7c04b603a9a358d6ec1bb21e2f3",
+    "local/chcj-generated-dtor-CompletedTemporary-0.asm": "ebf981f2f0770da3b39f7eca7386c8f7936ffb3a43fa903298e2b4e548df837c",
+    "local/chcj-generated-eh-STL_xlen_throw_00b135c0-0.asm": "c9a0a08bd1b6c467bf5f64648de81368624d3b0c4ba0b3a5e6ba31b616d04aff",
+    "local/chcj-generated-eh-insert_body-0.asm": "b6f5af460027026b792779a77e73bdc1a9f9b14a6c9672656e3fca102cb9e14f",
+    "local/chcj-generated-insert_body-0.asm": "9169087048ed78aa7ac65a01da1b0a426dc89512b2bb1192cf8b0e5490e5db27",
+    "local/chcj-generated-insert_native_material_records_00b145e0-0.asm": "e8cf50690cc4337e5f65e8e51b7ff389f319e03ae656b141e37035892795568a",
+    "local/chcj-generated-insert_one_body-0.asm": "dab304fe41e3b438ebb238d577a6bc1b957fb7f56bacd04b214ea5c5e98fdf4c",
+    "local/chcj-generated-insert_one_native_material_record_00b150d0-0.asm": "51a8094a73923850eb170f81bc3b2c8259f754ef0a1ce6686c54174e3a69da69",
+    "local/chcj-generated-load-0.asm": "ff87901fba0c6a63581bff6f97b098ddc6570dd02af42e4f232cb7952fb71a5f",
+    "local/chcj-generated-pointer-0.asm": "f7a580fc027f4f3765ab863ba64e3bfdc76be0cd414febcd03c040d718f3ab45",
+    "local/chcj-generated-record_quotient-0.asm": "c212d22cf330c50bfd896130c2365c5c7ec416ec991983ced87662b2f3133e92",
+    "local/chcj-generated-store-0.asm": "c893708af0f0724f42624c31921dffe24bde7058dcea720f25f3202ea7941fad",
+    "local/chcj-ghidra-annotation-record.json": "1e98e75a9153d9b1af926cd10128063322d486b171d2afdfef883a3891f74431",
+    "local/chcj-ledger-before.json": "fda52f8e5cf8d5753d61010cb9ec621f49993dd551e4156a115944fa79f23671",
+    "local/chcj-object-review.json": "7c1979096155d9f7b3d7df1c90012c3ddd1bf4496f279f17aa982050cebbbc6c",
+    "local/chcj-primary-review.json": "1de908403fc23f56d37b1b309ea269f73fc9487862494df91fcb918e71d2d68b",
+    "local/chcj-probe-build.cmd": "1c2811d345b64f92a69c7837e4d51b33093eaf450ea5951542ee8330a8a9ed54",
+    "local/chcj-probe-run.log": "e7f791edef5b276d96c59a7c66129af5102041179bc472a5baf381dbdcdaf12c",
+    "local/chcj-source-probe.json": "e44eae5af41b5e55a701f7003d78f1bf1b50d3a8579c184c787e4674be15561c",
+    "local/chcj-worker/build-cj.log": "70143f9cfce856bb591ea043d858eef86211913b2fd42a66ac58cb46d064c421",
+    "local/chcj-worker/cj-original.py": "2e25198816f2e3015f2593a0f179d4f74c87fbe8e6274d15c48d82c63b614409",
+    "local/chcj-worker/ck-system-constants-provider-audit.json": "b8a9e9b7a637d86c63b7690911d6ce352b6477278bf97194706f944cea89481e",
+    "local/chcj-worker/ck-system-constants-provider-audit.md": "4ff21178f4ccd963494ca8d698430a3144b9a84b66ee1ef2a08684732387b7ed",
+    "local/chcj-worker/coff-cj-disasm.txt": "d9949da7c2f75ef29a4cbc856d927c1454758e2ba9d6bbe5fe3c4408daeba1bd",
+    "local/chcj-worker/coff-cj-headers.txt": "afa38ac48dc4bcac73d41fb72dc059d0a71dade9caa1e21fd442f677a727db86",
+    "local/chcj-worker/coff-cj-relocs.txt": "a45d32294707f26eae7a077c4a5cf8bc496d9421424dac20fde38dc7f4987973",
+    "local/chcj-worker/coff-cj-symbols.txt": "c6aa47aeaaddd35f50d32b93ff4ebc1fdb1a96bde9b051bbc70c220b2ce302d7",
+    "local/chcj-worker/commit-cj-message.txt": "c465821a2ab4ad56fa550cd3e60b57c2748a50f99af564ea8d8ffdb228be32bd",
+    "local/chcj-worker/native_material_record_allocation_cj.json": "0e2c434eeeba39484cfb4d45eef68d5bb3208e66066b7e85e4654209ff0c5fc1",
+    "local/chcj-worker/verify-cj-coff.py": "929a4a6b7be759b6239165e256315bea4187971084b2b8e9a9c309b50b1bcdba",
+    "local/chcj-worker/verify-cj-report.py": "f433bc1cb398d8cfdc2dbb9d84c7cd277e4a095b71f6aa4d1c84b142d8357b29",
+    "local/chcj_probe.cpp": "6dab24b3577f96e2deabc8dc574e0ef791b07a7bc714b613ebec1a455a648932",
+    "local/chcj_probe.exe": "f5fd194b09ecb3cb1138d7581d5bf29125ae75d2b70cebf7635e0bc8db139f57",
+    "local/chcj_probe.obj": "bca9a1da43372254ca97ffd2288973baadd6180368e8da38b9a5d7dcb88da29a",
+    "local/finish_chcj.py": "40bde060fcac7619ee080fddfb9f8bfdda3b4fff75977b0f3c5e5bb8c1537724",
+    "local/prepare_ch.py": "7dc0a848129e67c749ab7c4d5793123b2e4957658ac408910ca1be7fc24816e0",
+    "local/prepare_ch_audit.py": "50dea7bf41a8a974d248eb4b6e4f21c7eb83d3c5a53b8dbbf7d51297baf3101e",
+    "local/repair_ch_catch.py": "28eb25e447e45be0e7a473175ce284ec58c43f55d360243263ad5eec21c0b55a",
+    "local/review_cacc_objects.py": "7a6aefb0b31f2cdca236b1bd82b86da80b93ec3e87d2cb680c816fc9a1c8db82",
+    "local/review_chcj_objects.py": "458b59cc7de0c17aa7d0e417ee00aec80d97ad9055597b78c44f5f5011d913e5",
+    "local/seal_chcj.py": "5312386759ec7f9748dc1364250076252d995a0e112e0cb3bc07700c74c4ff63",
+    "reports/native_material_record_vector_ch_flow.json": "bbfcff8d10655dbfa8f8ffd2ccc972b45869b6d583cfea7240ac0e67ba365250"
+  },
+  "sealed_attempt": {
+    "tested_commit": "8b5c20da64531031c264d85c4edd2187cf806ff3",
+    "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\chcj-validated-attempt-8b5c20da.zip",
+    "sha256": "e75665e8d9d1003aa807f9af9c7213f6b3477210a7d8e456ac5db397160d3441",
+    "payload_members": 2684,
+    "manifest_members": 1,
+    "all_member_hashes_rechecked": true,
+    "libraries": {
+      "bsp_core.lib": "03ded13648d49f987383c5bb6c9892e324913889a6ebfb8fd83878a007a9dc82",
+      "bsp_lua511.lib": "71e114b0ff6244852d678a5779fcbf28589bdcecbad811aff228ffd5007fe8c7",
+      "bsp_zlib121.lib": "f3f934925213a2ffb81f3aec2afbb065c1733cf43b28dddf31db6a69185c4102"
+    },
+    "tracked_build_inputs": 2589
+  }
+}

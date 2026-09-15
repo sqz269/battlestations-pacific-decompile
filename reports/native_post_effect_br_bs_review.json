@@ -1,0 +1,1848 @@
+{
+  "packet": "orch3_post_effect_br_bs_integration",
+  "status": "independently_reviewed_combined_build_passed_sealed",
+  "completed_utc": "2026-09-14T07:31:42.217610+00:00",
+  "tested_commit": "32e81952f34ffd0afe2e98afdb146aee50cf4d9b",
+  "worker_br_commit": "30b9eec42d19b3136c8703fcfa8728d82b64f7ca",
+  "root_br_cherry_pick": "32e81952f34ffd0afe2e98afdb146aee50cf4d9b",
+  "root_bs_commit": "d663bddf",
+  "native_body_credit": 3,
+  "native_bytes_credit": 1284,
+  "functions": [
+    {
+      "address": "00b4e470",
+      "bytes": 974,
+      "name": "BSP_PostEffect20h_Construct",
+      "object_size_bytes": 32
+    },
+    {
+      "address": "00b52860",
+      "bytes": 306,
+      "name": "BSP_PostEffectState_InitializeDust",
+      "child_size_bytes": 36
+    },
+    {
+      "address": "00b4cbf0",
+      "bytes": 4,
+      "name": "BSP_PostEffect_GetMaterial"
+    }
+  ],
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "bridge": "http://127.0.0.1:8089",
+    "image_base": "00400000",
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "native_image_sha256_rechecked": true,
+    "verification": "Read-only BSP CLI client verifies configured existing project/program before each live command. PE hash independently recomputed. Primary separately defined CBFBAB; worker performed no writes."
+  },
+  "native_spans": [
+    {
+      "name": "constructor",
+      "address": "00b4e470",
+      "inclusive_end": "00b4e83d",
+      "bytes": 974,
+      "sha256": "e364bf0f52b153a846b2e4d5c4e36ebba296f55466424e33704d6194f334080b",
+      "live_PE_equal": true,
+      "report": "reports/native_post_effect20_construction_br.json",
+      "primary_rechecked_live_PE_equal": true
+    },
+    {
+      "name": "funclets_and_handler",
+      "address": "00cbfb30",
+      "inclusive_end": "00cbfbb4",
+      "bytes": 133,
+      "sha256": "a2573d0d0a322aa487dce337fd10884a34bf14b18770a4702692720d09411845",
+      "live_PE_equal": true,
+      "report": "reports/native_post_effect20_construction_br.json",
+      "primary_rechecked_live_PE_equal": true
+    },
+    {
+      "name": "FuncInfo_and_map",
+      "address": "00df86d4",
+      "inclusive_end": "00df8757",
+      "bytes": 132,
+      "sha256": "1bb0de892d0877d4a7f7d3dacf6f7b63d2fd091c63e6e0f6d5473a65f9223527",
+      "live_PE_equal": true,
+      "report": "reports/native_post_effect20_construction_br.json",
+      "primary_rechecked_live_PE_equal": true
+    },
+    {
+      "name": "three_literals",
+      "address": "00d61ed0",
+      "inclusive_end": "00d61f09",
+      "bytes": 58,
+      "sha256": "27d699a85defb116d0d98c6c6c3d26c6b7bdf8980b490ac300213d74276c7588",
+      "live_PE_equal": true,
+      "report": "reports/native_post_effect20_construction_br.json",
+      "primary_rechecked_live_PE_equal": true
+    },
+    {
+      "name": "owner_profile",
+      "address": "00d61ec0",
+      "inclusive_end": "00d61ec7",
+      "bytes": 8,
+      "sha256": "92cfcd9062163a17e4ab4aaa6a432821de199a76bf2e683d8060e42b8dd6a127",
+      "live_PE_equal": true,
+      "report": "reports/native_post_effect20_construction_br.json",
+      "primary_rechecked_live_PE_equal": true
+    },
+    {
+      "name": "surface_profile",
+      "address": "00d619a0",
+      "inclusive_end": "00d619c3",
+      "bytes": 36,
+      "sha256": "3978ad9d5da55c40b836238ab110d33d0b52b069732173e9887706b9540b0e06",
+      "live_PE_equal": true,
+      "report": "reports/native_post_effect20_construction_br.json",
+      "primary_rechecked_live_PE_equal": true
+    },
+    {
+      "name": "surface_width",
+      "address": "00b3cd10",
+      "inclusive_end": "00b3cd13",
+      "bytes": 4,
+      "sha256": "0b78473b3a56c63ff2a64431fb600078066cbe407d3dee7ea8fd7575bd7f82d5",
+      "live_PE_equal": true,
+      "report": "reports/native_post_effect20_construction_br.json",
+      "primary_rechecked_live_PE_equal": true
+    },
+    {
+      "name": "surface_height",
+      "address": "00b3cd20",
+      "inclusive_end": "00b3cd23",
+      "bytes": 4,
+      "sha256": "07ad3a50b1c271e07fb57fb47d2f0e77f3342d41bfa410990cb1320a45035fb2",
+      "live_PE_equal": true,
+      "report": "reports/native_post_effect20_construction_br.json",
+      "primary_rechecked_live_PE_equal": true
+    },
+    {
+      "name": "model_sentinel",
+      "address": "00d7a260",
+      "inclusive_end": "00d7a263",
+      "bytes": 4,
+      "sha256": "c68830a25204a09f8e77aada6bc5807f607cccaaa0ebb2a7122d317584478a8b",
+      "live_PE_equal": true,
+      "report": "reports/native_post_effect20_construction_br.json",
+      "primary_rechecked_live_PE_equal": true
+    },
+    {
+      "name": "renderer_profile",
+      "address": "00d5f0a8",
+      "inclusive_end": "00d5f10b",
+      "bytes": 100,
+      "sha256": "dab04f08084a60143678d89bcc6e4ea3c2a0deeb83b88bc1f2949713bcd7432f",
+      "live_PE_equal": true,
+      "report": "reports/native_post_effect20_construction_br.json",
+      "primary_rechecked_live_PE_equal": true
+    },
+    {
+      "name": "initializer",
+      "address": "00b52860",
+      "inclusive_end": "00b52991",
+      "bytes": 306,
+      "sha256": "84df7f29070c6fbf167285d2e37308b2bc379af773b0a68b9955e5630cb6450c",
+      "live_PE_equal": true,
+      "report": "reports/native_post_effect_dust_bs.json",
+      "primary_rechecked_live_PE_equal": true
+    },
+    {
+      "name": "material_getter",
+      "address": "00b4cbf0",
+      "inclusive_end": "00b4cbf3",
+      "bytes": 4,
+      "sha256": "01d3abacb68aac3537badfe563d0e21d0244fb61db1d805bcef8f455407fad96",
+      "live_PE_equal": true,
+      "report": "reports/native_post_effect_dust_bs.json",
+      "primary_rechecked_live_PE_equal": true
+    },
+    {
+      "name": "funclets_and_handler",
+      "address": "00cbfff0",
+      "inclusive_end": "00cc001d",
+      "bytes": 46,
+      "sha256": "6211814c13cffd3d8b7377d549485c11f40152a6fd34ee2392cbf70de61cb67a",
+      "live_PE_equal": true,
+      "report": "reports/native_post_effect_dust_bs.json",
+      "primary_rechecked_live_PE_equal": true
+    },
+    {
+      "name": "EH_map_and_info",
+      "address": "00df8b4c",
+      "inclusive_end": "00df8b87",
+      "bytes": 60,
+      "sha256": "4a52ea5ec2b67ae05984c444a1f86b2eadc0a3c40a15e31150896b414591ae79",
+      "live_PE_equal": true,
+      "report": "reports/native_post_effect_dust_bs.json",
+      "primary_rechecked_live_PE_equal": true
+    },
+    {
+      "name": "effect_name",
+      "address": "00d620ac",
+      "inclusive_end": "00d620bd",
+      "bytes": 18,
+      "sha256": "b08766afc5d6ce3093c2ff6757eb7b4af26edc45edbf1744ddee54544c6fe6f5",
+      "live_PE_equal": true,
+      "report": "reports/native_post_effect_dust_bs.json",
+      "primary_rechecked_live_PE_equal": true
+    },
+    {
+      "name": "one_cell",
+      "address": "00d7a24c",
+      "inclusive_end": "00d7a24f",
+      "bytes": 4,
+      "sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c",
+      "live_PE_equal": true,
+      "report": "reports/native_post_effect_dust_bs.json",
+      "primary_rechecked_live_PE_equal": true
+    }
+  ],
+  "source_pin_checks": {
+    "reports/native_post_effect20_construction_br.json": {
+      "source_sha256": {
+        "count": 2,
+        "exact_matches": 2,
+        "line_ending_only_differences": {}
+      },
+      "provider_sha256": {
+        "count": 52,
+        "exact_matches": 50,
+        "line_ending_only_differences": {
+          "include/bsp/native_post_effect_owner_20h.hpp": {
+            "expected": "d1175b7041aa203a35b9e04a3d18a38759e646a73fa7b4d0b55a75b2dbed80ad",
+            "current": "a05e7bf9f16f2fca5ee3976d6ed5199df98b881951f2f18218862f58caed450a",
+            "same_committed_blob": true,
+            "difference": "Working-checkout CRLF/LF only; exact root bytes separately build-pinned."
+          },
+          "src/native_post_effect_owner_20h.cpp": {
+            "expected": "330fe02662fbd32650c17ff35c8217880dbcca3425e4212c079dca3e5838fc1c",
+            "current": "a9060716c813ecdec58c1556f1c76bb807b76a82340ebf0c9109601ac448aa07",
+            "same_committed_blob": true,
+            "difference": "Working-checkout CRLF/LF only; exact root bytes separately build-pinned."
+          }
+        }
+      }
+    },
+    "reports/native_post_effect_dust_bs.json": {
+      "source_sha256": {
+        "count": 2,
+        "exact_matches": 2,
+        "line_ending_only_differences": {}
+      },
+      "provider_sha256": {
+        "count": 10,
+        "exact_matches": 10,
+        "line_ending_only_differences": {}
+      }
+    }
+  },
+  "source_sha256": {
+    "include/bsp/native_post_effect20_construction.hpp": "e2b63e4869be9a7568d86c7a271589694404a8e6cc0cda204f33991206018c5c",
+    "src/native_post_effect20_construction.cpp": "5add9da3a697b81554d14c57ee8bd8ce1ac904a2717b63aa7e23181ea16a0315",
+    "include/bsp/native_post_effect_dust_initializer.hpp": "5c6758fc0988f1424ef7d006ab39d5b60ab157fe229e24d08a68e4abe9a0432c",
+    "src/native_post_effect_dust_initializer.cpp": "9e93cfd8336acc0d8256c4cca849d7521a3abd87a02f24766a2225a8c471e634"
+  },
+  "review": {
+    "br_reviewer": "primary integrator independent of worker author",
+    "bs_reviewer": "/root/render_resources_constructor_bk (Astra), independent of primary author",
+    "br_complete_header_source_325_instruction_normal_listing_and_12_state_EH_reviewed": true,
+    "bs_complete_header_source_82_instruction_normal_listing_getter_and_3_state_EH_reviewed": true,
+    "remaining_blocking_source_findings": [],
+    "br_observations": [
+      "20h means32bytes. Sole count1 store follows base vtable; +08/+18 preimages survive until publication; input DWORD +1C is not clamped.",
+      "Real stream creator decrement occurs after mesh attachment and uses a freshly loaded CE2220 epoch. Final section and mesh decrement share one captured epoch.",
+      "Section +C/+10/+14 precede +8/+18; both vertex-count branches are implemented. All27 observed caller sites use count3 and null optional size.",
+      "Model-name data is captured before mask1 clear; camera mask2 remains set on normal cleanup. Normal native state visits omit6/9.",
+      "Persistent canonical owners, actual raw strings and allocation domains retain acquired-reference handles before host registration; no completed creator rollback is invented."
+    ],
+    "bs_observations": [
+      "Existing BO36byte child is constructed with oldfilm_dust.mshd, count2 and null optional size. Parent +68 publication and state-1 precede normal raw name return.",
+      "Texture +3C is captured before current child +68 and current material +14; real B189F0 slot0 binding precedes current D7A24C capture and exact reset writes.",
+      "Completed nested child suppresses raw free after host binding failure, without inventing parent publication when the C++ call never returned.",
+      "Prepared unentered child is cancelled; surviving settled child disposition/reset and quiescence remain external responsibilities."
+    ]
+  },
+  "generated_code": {
+    "br": {
+      "object_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\bsp_core.dir\\Release\\native_post_effect20_construction.obj",
+      "object_sha256": "f7acd976a6b0731ad66b9c0c15b2f8006c4dba3e1aa57e62313b5af658cbdc6b",
+      "function": "?construct_native_post_effect20_00b4e470@bsp@@YAPAXPAXIAAVNativeString@1@IPBXAAVNativePostEffect20ConstructionBlock@1@@Z",
+      "section_bytes": 5453,
+      "section_sha256": "6138764264b0af28ab6cc85e77dcff5e7623ca848435dc5adb353e55a7dfd881",
+      "relocations": [
+        {
+          "offset": 6,
+          "type": 6,
+          "symbol": "__ehhandler$?construct_native_post_effect20_00b4e470@bsp@@YAPAXPAXIAAVNativeString@1@IPBXAAVNativePostEffect20ConstructionBlock@1@@Z"
+        },
+        {
+          "offset": 24,
+          "type": 6,
+          "symbol": "___security_cookie"
+        },
+        {
+          "offset": 115,
+          "type": 20,
+          "symbol": "?validate@NativePostEffect20ConstructionBlock@bsp@@ABEXXZ"
+        },
+        {
+          "offset": 358,
+          "type": 20,
+          "symbol": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z"
+        },
+        {
+          "offset": 388,
+          "type": 20,
+          "symbol": "?construct_native_frame_target_owner_00b1fbb0@bsp@@YAPAUNativeFrameTargetOwnerStorage@1@PAX@Z"
+        },
+        {
+          "offset": 454,
+          "type": 20,
+          "symbol": "?resize_native_string_header_0041dd40@bsp@@YAXPAXAAUNativeStringRawPoolContext@1@I_N@Z"
+        },
+        {
+          "offset": 519,
+          "type": 20,
+          "symbol": "_memmove"
+        },
+        {
+          "offset": 630,
+          "type": 20,
+          "symbol": "?load_native_renderer_vertex_declaration_00b317e0@bsp@@YAPAXPAXPBXAAUNativeVertexDeclarationCacheContext@1@@Z"
+        },
+        {
+          "offset": 673,
+          "type": 20,
+          "symbol": "?register_native_declaration_reference@GuiNativeGeometryOwners@bsp@@QAEXAAUGuiNativeDeclarationAcquired@2@AAUNativeVertexDeclarationLoadingContext@2@@Z"
+        },
+        {
+          "offset": 687,
+          "type": 20,
+          "symbol": "?string_cleanup@NativePostEffect20ConstructionBlock@bsp@@AAEXAAVNativeString@2@@Z"
+        },
+        {
+          "offset": 786,
+          "type": 20,
+          "symbol": "?create_native_registered_vertex_stream_00b287c0@bsp@@YAPAXPAXII0AAUNativeLogicalVertexOwnerContext@1@PAPAX@Z"
+        },
+        {
+          "offset": 827,
+          "type": 20,
+          "symbol": "??1NativeLogicalVertexReference@bsp@@UAE@XZ"
+        },
+        {
+          "offset": 845,
+          "type": 6,
+          "symbol": "?retire_stream@NativePostEffect20ConstructionBlock@bsp@@CAXPAXAAVNativeLogicalVertexReference@2@@Z"
+        },
+        {
+          "offset": 857,
+          "type": 20,
+          "symbol": "??0NativeLogicalVertexReference@bsp@@QAE@PAXAAUNativeLogicalVertexOwnerContext@1@UNativeLogicalVertexCompanionDisposal@1@@Z"
+        },
+        {
+          "offset": 895,
+          "type": 20,
+          "symbol": "?registration@GuiNativeGeometryOwners@bsp@@QBEABUGuiNativeGeometryRegistration@2@XZ"
+        },
+        {
+          "offset": 1116,
+          "type": 6,
+          "symbol": "??_R0?AVNativeVertexDeclarationReference@bsp@@@8"
+        },
+        {
+          "offset": 1121,
+          "type": 6,
+          "symbol": "??_R0?AVRenderCommandReference@bsp@@@8"
+        },
+        {
+          "offset": 1132,
+          "type": 20,
+          "symbol": "___RTDynamicCast"
+        },
+        {
+          "offset": 1165,
+          "type": 20,
+          "symbol": "?release_zero_references@NativeVertexDeclarationReference@bsp@@UAEXXZ"
+        },
+        {
+          "offset": 1170,
+          "type": 20,
+          "symbol": "?allocate_native_mesh_slot_00b73b60@bsp@@YAPAXXZ"
+        },
+        {
+          "offset": 1219,
+          "type": 20,
+          "symbol": "?construct_native_mesh_00b73d70@bsp@@YAPAUNativeMeshStorage@1@PAXUNativeMeshConstants@1@@Z"
+        },
+        {
+          "offset": 1282,
+          "type": 20,
+          "symbol": "??1NativeMeshReference@bsp@@UAE@XZ"
+        },
+        {
+          "offset": 1300,
+          "type": 6,
+          "symbol": "?retire_mesh@NativePostEffect20ConstructionBlock@bsp@@CAXPAXAAVNativeMeshReference@2@@Z"
+        },
+        {
+          "offset": 1312,
+          "type": 20,
+          "symbol": "??0NativeMeshReference@bsp@@QAE@AAUNativeMeshStorage@1@AAUNativeMeshEnvironment@1@UNativeMeshCompanionDisposal@1@@Z"
+        },
+        {
+          "offset": 1347,
+          "type": 20,
+          "symbol": "?registration@GuiNativeGeometryOwners@bsp@@QBEABUGuiNativeGeometryRegistration@2@XZ"
+        },
+        {
+          "offset": 1392,
+          "type": 20,
+          "symbol": "?set_native_mesh_vertex_stream_00b73bb0@bsp@@YAXAAUNativeMeshStorage@1@AAVNativeRenderActualOwners@1@HPAX@Z"
+        },
+        {
+          "offset": 1588,
+          "type": 6,
+          "symbol": "??_R0?AVNativeLogicalVertexReference@bsp@@@8"
+        },
+        {
+          "offset": 1593,
+          "type": 6,
+          "symbol": "??_R0?AVRenderCommandReference@bsp@@@8"
+        },
+        {
+          "offset": 1604,
+          "type": 20,
+          "symbol": "___RTDynamicCast"
+        },
+        {
+          "offset": 1637,
+          "type": 20,
+          "symbol": "?release_zero_references@NativeLogicalVertexReference@bsp@@UAEXXZ"
+        },
+        {
+          "offset": 1658,
+          "type": 20,
+          "symbol": "?create_native_material_for_effect_00535320@bsp@@YAPAUNativeMaterialStorage@1@AAVNativeString@1@ADSAXAAVNativeMaterialSlotPool@1@AAVNativeRenderActualOwners@1@@Z"
+        },
+        {
+          "offset": 1734,
+          "type": 20,
+          "symbol": "??1NativeMaterialReference@bsp@@UAE@XZ"
+        },
+        {
+          "offset": 1755,
+          "type": 6,
+          "symbol": "?retire_material@NativePostEffect20ConstructionBlock@bsp@@CAXPAXAAVNativeMaterialReference@2@@Z"
+        },
+        {
+          "offset": 1767,
+          "type": 20,
+          "symbol": "??0NativeMaterialReference@bsp@@QAE@AAUNativeMaterialStorage@1@AAUNativeMaterialDestructionAccess@1@PDIUNativeMaterialCompanionDisposal@1@@Z"
+        },
+        {
+          "offset": 1805,
+          "type": 20,
+          "symbol": "?registration@GuiNativeGeometryOwners@bsp@@QBEABUGuiNativeGeometryRegistration@2@XZ"
+        },
+        {
+          "offset": 1850,
+          "type": 20,
+          "symbol": "?set_native_material_parameter_owner_00b18a40@bsp@@YAXAAUNativeMaterialStorage@1@PAXEAAVNativeRenderActualOwners@1@@Z"
+        },
+        {
+          "offset": 1866,
+          "type": 20,
+          "symbol": "?create_native_mesh_section_00533fa0@bsp@@YAPAUNativeMeshSectionStorage@1@AAVNativeMeshSectionPool@1@ADI@Z"
+        },
+        {
+          "offset": 1914,
+          "type": 20,
+          "symbol": "??1NativeMeshSectionReference@bsp@@UAE@XZ"
+        },
+        {
+          "offset": 1929,
+          "type": 6,
+          "symbol": "?retire_section@NativePostEffect20ConstructionBlock@bsp@@CAXPAXAAVNativeMeshSectionReference@2@@Z"
+        },
+        {
+          "offset": 1939,
+          "type": 20,
+          "symbol": "??0NativeMeshSectionReference@bsp@@QAE@AAUNativeMeshSectionStorage@1@AAUNativeMeshSectionEnvironment@1@UNativeMeshSectionCompanionDisposal@1@@Z"
+        },
+        {
+          "offset": 1968,
+          "type": 20,
+          "symbol": "?registration@GuiNativeGeometryOwners@bsp@@QBEABUGuiNativeGeometryRegistration@2@XZ"
+        },
+        {
+          "offset": 2125,
+          "type": 20,
+          "symbol": "?set_native_mesh_section_material_00b864c0@bsp@@YAXAAUNativeMeshSectionStorage@1@AAVNativeRenderActualOwners@1@PAX@Z"
+        },
+        {
+          "offset": 2146,
+          "type": 20,
+          "symbol": "?rebuild_native_mesh_section_vertex_layout_00b865a0@bsp@@YAXAAUNativeMeshSectionStorage@1@AAVNativeRenderActualOwners@1@PAXAAVNativeMeshSectionLayoutServices@1@@Z"
+        },
+        {
+          "offset": 2160,
+          "type": 20,
+          "symbol": "?append_native_mesh_draw_section_00b73c60@bsp@@YAXAAUNativeMeshStorage@1@PAX@Z"
+        },
+        {
+          "offset": 2168,
+          "type": 20,
+          "symbol": "?allocate_native_model_slot_00b74eb0@bsp@@YAPAXXZ"
+        },
+        {
+          "offset": 2228,
+          "type": 20,
+          "symbol": "??1NativeModelOwner@bsp@@QAE@XZ"
+        },
+        {
+          "offset": 2261,
+          "type": 20,
+          "symbol": "??0NativeModelOwner@bsp@@QAE@PAXIAAUNativeModelEnvironment@1@@Z"
+        },
+        {
+          "offset": 2295,
+          "type": 20,
+          "symbol": "?construct_native_string_cstring_0041e870@bsp@@YAPAXPAXPBDAAUNativeStringRawPoolContext@1@@Z"
+        },
+        {
+          "offset": 2338,
+          "type": 20,
+          "symbol": "?construct_native_model_00b75030@bsp@@YAPAXAAVNativeModelOwner@1@PBXABUNativeNodeRawConstants@1@@Z"
+        },
+        {
+          "offset": 2409,
+          "type": 20,
+          "symbol": "??1NativeModelReference@bsp@@UAE@XZ"
+        },
+        {
+          "offset": 2418,
+          "type": 6,
+          "symbol": "?retire_model@NativePostEffect20ConstructionBlock@bsp@@CAXPAXAAVNativeModelReference@2@@Z"
+        },
+        {
+          "offset": 2433,
+          "type": 20,
+          "symbol": "??0NativeModelReference@bsp@@QAE@AAVNativeModelOwner@1@UNativeModelCompanionDisposal@1@@Z"
+        },
+        {
+          "offset": 2471,
+          "type": 20,
+          "symbol": "?registration@GuiNativeGeometryOwners@bsp@@QBEABUGuiNativeGeometryRegistration@2@XZ"
+        },
+        {
+          "offset": 2594,
+          "type": 20,
+          "symbol": "?native_string_pool_get_or_create_00419cc0@bsp@@YAPAUNativeStringPoolStorage@1@ACRAU21@ACRAX@Z"
+        },
+        {
+          "offset": 2615,
+          "type": 20,
+          "symbol": "?return_native_string_pool_00bd1510@bsp@@YAXPAUNativeStringPoolStorage@1@PAXIACI@Z"
+        },
+        {
+          "offset": 2683,
+          "type": 20,
+          "symbol": "?find_actual_node@GeneratedModelLifetimeRuntime@bsp@@QBEPAVGeneratedModelNodeLifetime@2@I@Z"
+        },
+        {
+          "offset": 2690,
+          "type": 6,
+          "symbol": "??_R0?AVNativeModelReference@bsp@@@8"
+        },
+        {
+          "offset": 2695,
+          "type": 6,
+          "symbol": "??_R0?AVGeneratedModelNodeLifetime@bsp@@@8"
+        },
+        {
+          "offset": 2703,
+          "type": 20,
+          "symbol": "___RTDynamicCast"
+        },
+        {
+          "offset": 2764,
+          "type": 20,
+          "symbol": "?set_native_model_geometry_00b75170@bsp@@YAXAAVNativeModelOwner@1@IPAXMM@Z"
+        },
+        {
+          "offset": 2772,
+          "type": 20,
+          "symbol": "?allocate_native_camera_slot_00b71930@bsp@@YAPAXXZ"
+        },
+        {
+          "offset": 2838,
+          "type": 20,
+          "symbol": "??1NativeCameraOwner@bsp@@QAE@XZ"
+        },
+        {
+          "offset": 2877,
+          "type": 20,
+          "symbol": "??0NativeCameraOwner@bsp@@QAE@PAXIAAUNativeCameraEnvironment@1@$$QAVBindingAdmission@SceneAttachmentRuntime@1@@Z"
+        },
+        {
+          "offset": 2914,
+          "type": 20,
+          "symbol": "?prefix_native_string_header_0043c130@bsp@@YAPAXPAXPBDPBXAAUNativeStringRawPoolContext@1@@Z"
+        },
+        {
+          "offset": 2964,
+          "type": 20,
+          "symbol": "?construct_native_camera_00b71a80@bsp@@YAPAXAAVNativeCameraOwner@1@PBXABUNativeNodeRawConstants@1@$$QAVAdmission@NativeViewportRegistry@1@@Z"
+        },
+        {
+          "offset": 3051,
+          "type": 20,
+          "symbol": "??1NativeCameraReference@bsp@@UAE@XZ"
+        },
+        {
+          "offset": 3073,
+          "type": 6,
+          "symbol": "?retire_camera@NativePostEffect20ConstructionBlock@bsp@@CAXPAXAAVNativeCameraReference@2@@Z"
+        },
+        {
+          "offset": 3082,
+          "type": 20,
+          "symbol": "??0NativeCameraReference@bsp@@QAE@AAVNativeCameraOwner@1@UNativeCameraCompanionDisposal@1@$$QAVBindingAdmission@GeneratedModelLifetimeRuntime@1@@Z"
+        },
+        {
+          "offset": 3120,
+          "type": 20,
+          "symbol": "?registration@GuiNativeGeometryOwners@bsp@@QBEABUGuiNativeGeometryRegistration@2@XZ"
+        },
+        {
+          "offset": 3165,
+          "type": 20,
+          "symbol": "?string_cleanup@NativePostEffect20ConstructionBlock@bsp@@AAEXAAVNativeString@2@@Z"
+        },
+        {
+          "offset": 3195,
+          "type": 20,
+          "symbol": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z"
+        },
+        {
+          "offset": 3233,
+          "type": 20,
+          "symbol": "?initialize_native_viewport_owner_00b1f850@bsp@@YAPAUNativeViewportOwner@1@PAXAAUNativeViewportEnvironment@1@@Z"
+        },
+        {
+          "offset": 3283,
+          "type": 20,
+          "symbol": "?constructed@NativeViewportRegistry@bsp@@QAEXAAVAdmission@12@AAUNativeViewportOwner@2@@Z"
+        },
+        {
+          "offset": 3299,
+          "type": 20,
+          "symbol": "?surface_dimension@?A0xf34db7a3@bsp@@YAIPBXAAUNativePostEffect20ConstructionContext@2@_N@Z"
+        },
+        {
+          "offset": 3317,
+          "type": 20,
+          "symbol": "?surface_dimension@?A0xf34db7a3@bsp@@YAIPBXAAUNativePostEffect20ConstructionContext@2@_N@Z"
+        },
+        {
+          "offset": 3350,
+          "type": 20,
+          "symbol": "?set_native_viewport_dimensions_00b1f940@bsp@@YAXAAUNativeViewportOwner@1@PBX@Z"
+        },
+        {
+          "offset": 3383,
+          "type": 20,
+          "symbol": "?find_actual_node@GeneratedModelLifetimeRuntime@bsp@@QBEPAVGeneratedModelNodeLifetime@2@I@Z"
+        },
+        {
+          "offset": 3390,
+          "type": 6,
+          "symbol": "??_R0?AVNativeCameraReference@bsp@@@8"
+        },
+        {
+          "offset": 3395,
+          "type": 6,
+          "symbol": "??_R0?AVGeneratedModelNodeLifetime@bsp@@@8"
+        },
+        {
+          "offset": 3403,
+          "type": 20,
+          "symbol": "___RTDynamicCast"
+        },
+        {
+          "offset": 3438,
+          "type": 20,
+          "symbol": "?set_native_camera_viewport_00b71990@bsp@@YAXAAVNativeCameraOwner@1@PAUNativeViewportOwner@1@@Z"
+        },
+        {
+          "offset": 3613,
+          "type": 20,
+          "symbol": "?invoke_native_viewport_deleting_destructor_00bd30e0@bsp@@YAXPAUNativeViewportOwner@1@@Z"
+        },
+        {
+          "offset": 3646,
+          "type": 20,
+          "symbol": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z"
+        },
+        {
+          "offset": 3747,
+          "type": 20,
+          "symbol": "?construct_native_post_effect_draw_record_00b51bd0@bsp@@YIPAXPAXPBUNativeTracelineRenderAccess@1@M0000M@Z"
+        },
+        {
+          "offset": 3986,
+          "type": 6,
+          "symbol": "??_R0?AVNativeMeshSectionReference@bsp@@@8"
+        },
+        {
+          "offset": 3991,
+          "type": 6,
+          "symbol": "??_R0?AVRenderCommandReference@bsp@@@8"
+        },
+        {
+          "offset": 4002,
+          "type": 20,
+          "symbol": "___RTDynamicCast"
+        },
+        {
+          "offset": 4035,
+          "type": 20,
+          "symbol": "?release_zero_references@NativeMeshSectionReference@bsp@@UAEXXZ"
+        },
+        {
+          "offset": 4208,
+          "type": 6,
+          "symbol": "??_R0?AVNativeMeshReference@bsp@@@8"
+        },
+        {
+          "offset": 4213,
+          "type": 6,
+          "symbol": "??_R0?AVRenderCommandReference@bsp@@@8"
+        },
+        {
+          "offset": 4224,
+          "type": 20,
+          "symbol": "___RTDynamicCast"
+        },
+        {
+          "offset": 4263,
+          "type": 20,
+          "symbol": "?release_zero_references@NativeMeshReference@bsp@@UAEXXZ"
+        },
+        {
+          "offset": 4302,
+          "type": 20,
+          "symbol": "??0NativePostEffect20Owner@bsp@@QAE@PAXAAUNativePostEffect20OwnerContext@1@@Z"
+        },
+        {
+          "offset": 4323,
+          "type": 20,
+          "symbol": "?registration@GuiNativeGeometryOwners@bsp@@QBEABUGuiNativeGeometryRegistration@2@XZ"
+        },
+        {
+          "offset": 4348,
+          "type": 20,
+          "symbol": "??1NativePostEffect20Reference@bsp@@UAE@XZ"
+        },
+        {
+          "offset": 4366,
+          "type": 6,
+          "symbol": "?retire_owner@NativePostEffect20ConstructionBlock@bsp@@CAXPAXAAVNativePostEffect20Reference@2@@Z"
+        },
+        {
+          "offset": 4392,
+          "type": 20,
+          "symbol": "??0NativePostEffect20Reference@bsp@@QAE@AAVNativePostEffect20Owner@1@UGuiNativeGeometryRegistration@1@UNativePostEffect20CompanionDisposal@1@@Z"
+        },
+        {
+          "offset": 4425,
+          "type": 20,
+          "symbol": "?cancel@BindingAdmission@SceneAttachmentRuntime@bsp@@QAEXXZ"
+        },
+        {
+          "offset": 4436,
+          "type": 20,
+          "symbol": "?cancel@BindingAdmission@GeneratedModelLifetimeRuntime@bsp@@QAEXXZ"
+        },
+        {
+          "offset": 4459,
+          "type": 20,
+          "symbol": "?cancel@Admission@NativeViewportRegistry@bsp@@QAEXXZ"
+        },
+        {
+          "offset": 4501,
+          "type": 20,
+          "symbol": "@__security_check_cookie@4"
+        },
+        {
+          "offset": 4510,
+          "type": 6,
+          "symbol": "??_C@_0FH@FGDNIKAG@post?9effect?5constructor?5requires@"
+        },
+        {
+          "offset": 4521,
+          "type": 20,
+          "symbol": "??0logic_error@std@@QAE@PBD@Z"
+        },
+        {
+          "offset": 4526,
+          "type": 6,
+          "symbol": "__TI2?AVlogic_error@std@@"
+        },
+        {
+          "offset": 4538,
+          "type": 20,
+          "symbol": "__CxxThrowException@8"
+        },
+        {
+          "offset": 4543,
+          "type": 6,
+          "symbol": "??_C@_0CB@LIAMDAKD@missing?5current?5CE2220?5decrement@"
+        },
+        {
+          "offset": 4551,
+          "type": 20,
+          "symbol": "??0logic_error@std@@QAE@PBD@Z"
+        },
+        {
+          "offset": 4556,
+          "type": 6,
+          "symbol": "__TI2?AVlogic_error@std@@"
+        },
+        {
+          "offset": 4565,
+          "type": 20,
+          "symbol": "__CxxThrowException@8"
+        },
+        {
+          "offset": 4570,
+          "type": 6,
+          "symbol": "??_C@_0ED@KLJDCMHH@post?9effect?5creator?5lacks?5its?5ca@"
+        },
+        {
+          "offset": 4581,
+          "type": 20,
+          "symbol": "??0logic_error@std@@QAE@PBD@Z"
+        },
+        {
+          "offset": 4586,
+          "type": 6,
+          "symbol": "__TI2?AVlogic_error@std@@"
+        },
+        {
+          "offset": 4598,
+          "type": 20,
+          "symbol": "__CxxThrowException@8"
+        },
+        {
+          "offset": 4603,
+          "type": 6,
+          "symbol": "??_C@_0DG@CJDGCBH@unsupported?5current?5post?9effect?5@"
+        },
+        {
+          "offset": 4614,
+          "type": 20,
+          "symbol": "??0logic_error@std@@QAE@PBD@Z"
+        },
+        {
+          "offset": 4619,
+          "type": 6,
+          "symbol": "__TI2?AVlogic_error@std@@"
+        },
+        {
+          "offset": 4631,
+          "type": 20,
+          "symbol": "__CxxThrowException@8"
+        },
+        {
+          "offset": 4636,
+          "type": 6,
+          "symbol": "??_C@_0DF@BMBBIGLF@unsupported?5current?5post?9effect?5@"
+        },
+        {
+          "offset": 4647,
+          "type": 20,
+          "symbol": "??0logic_error@std@@QAE@PBD@Z"
+        },
+        {
+          "offset": 4652,
+          "type": 6,
+          "symbol": "__TI2?AVlogic_error@std@@"
+        },
+        {
+          "offset": 4664,
+          "type": 20,
+          "symbol": "__CxxThrowException@8"
+        },
+        {
+          "offset": 4669,
+          "type": 6,
+          "symbol": "??_C@_0CB@LIAMDAKD@missing?5current?5CE2220?5decrement@"
+        },
+        {
+          "offset": 4680,
+          "type": 20,
+          "symbol": "??0logic_error@std@@QAE@PBD@Z"
+        },
+        {
+          "offset": 4685,
+          "type": 6,
+          "symbol": "__TI2?AVlogic_error@std@@"
+        },
+        {
+          "offset": 4697,
+          "type": 20,
+          "symbol": "__CxxThrowException@8"
+        },
+        {
+          "offset": 4702,
+          "type": 6,
+          "symbol": "??_C@_0EH@DDOOCNIP@native?5post?9effect?5material?5dere@"
+        },
+        {
+          "offset": 4713,
+          "type": 20,
+          "symbol": "??0logic_error@std@@QAE@PBD@Z"
+        },
+        {
+          "offset": 4718,
+          "type": 6,
+          "symbol": "__TI2?AVlogic_error@std@@"
+        },
+        {
+          "offset": 4730,
+          "type": 20,
+          "symbol": "__CxxThrowException@8"
+        },
+        {
+          "offset": 4735,
+          "type": 6,
+          "symbol": "??_C@_0ED@KLJDCMHH@post?9effect?5creator?5lacks?5its?5ca@"
+        },
+        {
+          "offset": 4746,
+          "type": 20,
+          "symbol": "??0logic_error@std@@QAE@PBD@Z"
+        },
+        {
+          "offset": 4751,
+          "type": 6,
+          "symbol": "__TI2?AVlogic_error@std@@"
+        },
+        {
+          "offset": 4763,
+          "type": 20,
+          "symbol": "__CxxThrowException@8"
+        },
+        {
+          "offset": 4768,
+          "type": 6,
+          "symbol": "??_C@_0DG@CJDGCBH@unsupported?5current?5post?9effect?5@"
+        },
+        {
+          "offset": 4779,
+          "type": 20,
+          "symbol": "??0logic_error@std@@QAE@PBD@Z"
+        },
+        {
+          "offset": 4784,
+          "type": 6,
+          "symbol": "__TI2?AVlogic_error@std@@"
+        },
+        {
+          "offset": 4796,
+          "type": 20,
+          "symbol": "__CxxThrowException@8"
+        },
+        {
+          "offset": 4801,
+          "type": 6,
+          "symbol": "??_C@_0DF@BMBBIGLF@unsupported?5current?5post?9effect?5@"
+        },
+        {
+          "offset": 4812,
+          "type": 20,
+          "symbol": "??0logic_error@std@@QAE@PBD@Z"
+        },
+        {
+          "offset": 4817,
+          "type": 6,
+          "symbol": "__TI2?AVlogic_error@std@@"
+        },
+        {
+          "offset": 4829,
+          "type": 20,
+          "symbol": "__CxxThrowException@8"
+        },
+        {
+          "offset": 4834,
+          "type": 6,
+          "symbol": "??_C@_0EG@PKDBLPNC@native?5post?9effect?5section?5deref@"
+        },
+        {
+          "offset": 4845,
+          "type": 20,
+          "symbol": "??0logic_error@std@@QAE@PBD@Z"
+        },
+        {
+          "offset": 4850,
+          "type": 6,
+          "symbol": "__TI2?AVlogic_error@std@@"
+        },
+        {
+          "offset": 4862,
+          "type": 20,
+          "symbol": "__CxxThrowException@8"
+        },
+        {
+          "offset": 4867,
+          "type": 6,
+          "symbol": "??_C@_0EF@MKJFFCFK@native?5post?9effect?5viewport?5dime@"
+        },
+        {
+          "offset": 4878,
+          "type": 20,
+          "symbol": "??0logic_error@std@@QAE@PBD@Z"
+        },
+        {
+          "offset": 4883,
+          "type": 6,
+          "symbol": "__TI2?AVlogic_error@std@@"
+        },
+        {
+          "offset": 4895,
+          "type": 20,
+          "symbol": "__CxxThrowException@8"
+        },
+        {
+          "offset": 4900,
+          "type": 6,
+          "symbol": "??_C@_0CK@GJBKKAEA@missing?5current?5CE2220?5viewport?5@"
+        },
+        {
+          "offset": 4911,
+          "type": 20,
+          "symbol": "??0logic_error@std@@QAE@PBD@Z"
+        },
+        {
+          "offset": 4916,
+          "type": 6,
+          "symbol": "__TI2?AVlogic_error@std@@"
+        },
+        {
+          "offset": 4928,
+          "type": 20,
+          "symbol": "__CxxThrowException@8"
+        },
+        {
+          "offset": 4933,
+          "type": 6,
+          "symbol": "??_C@_0CB@LIAMDAKD@missing?5current?5CE2220?5decrement@"
+        },
+        {
+          "offset": 4944,
+          "type": 20,
+          "symbol": "??0logic_error@std@@QAE@PBD@Z"
+        },
+        {
+          "offset": 4949,
+          "type": 6,
+          "symbol": "__TI2?AVlogic_error@std@@"
+        },
+        {
+          "offset": 4961,
+          "type": 20,
+          "symbol": "__CxxThrowException@8"
+        },
+        {
+          "offset": 4966,
+          "type": 6,
+          "symbol": "??_C@_0DC@JKBHLOIK@unsupported?5current?5post?9effect?5@"
+        },
+        {
+          "offset": 4977,
+          "type": 20,
+          "symbol": "??0logic_error@std@@QAE@PBD@Z"
+        },
+        {
+          "offset": 4982,
+          "type": 6,
+          "symbol": "__TI2?AVlogic_error@std@@"
+        },
+        {
+          "offset": 4994,
+          "type": 20,
+          "symbol": "__CxxThrowException@8"
+        },
+        {
+          "offset": 4999,
+          "type": 6,
+          "symbol": "??_C@_0ED@KLJDCMHH@post?9effect?5creator?5lacks?5its?5ca@"
+        },
+        {
+          "offset": 5010,
+          "type": 20,
+          "symbol": "??0logic_error@std@@QAE@PBD@Z"
+        },
+        {
+          "offset": 5015,
+          "type": 6,
+          "symbol": "__TI2?AVlogic_error@std@@"
+        },
+        {
+          "offset": 5027,
+          "type": 20,
+          "symbol": "__CxxThrowException@8"
+        },
+        {
+          "offset": 5032,
+          "type": 6,
+          "symbol": "??_C@_0DG@CJDGCBH@unsupported?5current?5post?9effect?5@"
+        },
+        {
+          "offset": 5043,
+          "type": 20,
+          "symbol": "??0logic_error@std@@QAE@PBD@Z"
+        },
+        {
+          "offset": 5048,
+          "type": 6,
+          "symbol": "__TI2?AVlogic_error@std@@"
+        },
+        {
+          "offset": 5060,
+          "type": 20,
+          "symbol": "__CxxThrowException@8"
+        },
+        {
+          "offset": 5065,
+          "type": 6,
+          "symbol": "??_C@_0DF@BMBBIGLF@unsupported?5current?5post?9effect?5@"
+        },
+        {
+          "offset": 5076,
+          "type": 20,
+          "symbol": "??0logic_error@std@@QAE@PBD@Z"
+        },
+        {
+          "offset": 5081,
+          "type": 6,
+          "symbol": "__TI2?AVlogic_error@std@@"
+        },
+        {
+          "offset": 5093,
+          "type": 20,
+          "symbol": "__CxxThrowException@8"
+        },
+        {
+          "offset": 5098,
+          "type": 6,
+          "symbol": "??_C@_0ED@KLJDCMHH@post?9effect?5creator?5lacks?5its?5ca@"
+        },
+        {
+          "offset": 5109,
+          "type": 20,
+          "symbol": "??0logic_error@std@@QAE@PBD@Z"
+        },
+        {
+          "offset": 5114,
+          "type": 6,
+          "symbol": "__TI2?AVlogic_error@std@@"
+        },
+        {
+          "offset": 5126,
+          "type": 20,
+          "symbol": "__CxxThrowException@8"
+        },
+        {
+          "offset": 5131,
+          "type": 6,
+          "symbol": "??_C@_0DG@CJDGCBH@unsupported?5current?5post?9effect?5@"
+        },
+        {
+          "offset": 5142,
+          "type": 20,
+          "symbol": "??0logic_error@std@@QAE@PBD@Z"
+        },
+        {
+          "offset": 5147,
+          "type": 6,
+          "symbol": "__TI2?AVlogic_error@std@@"
+        },
+        {
+          "offset": 5159,
+          "type": 20,
+          "symbol": "__CxxThrowException@8"
+        },
+        {
+          "offset": 5164,
+          "type": 6,
+          "symbol": "??_C@_0DF@BMBBIGLF@unsupported?5current?5post?9effect?5@"
+        },
+        {
+          "offset": 5175,
+          "type": 20,
+          "symbol": "??0logic_error@std@@QAE@PBD@Z"
+        },
+        {
+          "offset": 5180,
+          "type": 6,
+          "symbol": "__TI2?AVlogic_error@std@@"
+        },
+        {
+          "offset": 5192,
+          "type": 20,
+          "symbol": "__CxxThrowException@8"
+        },
+        {
+          "offset": 5197,
+          "type": 6,
+          "symbol": "??_C@_0DL@HMGOCDOB@current?5post?9effect?5camera?5is?5ou@"
+        },
+        {
+          "offset": 5208,
+          "type": 20,
+          "symbol": "??0logic_error@std@@QAE@PBD@Z"
+        },
+        {
+          "offset": 5213,
+          "type": 6,
+          "symbol": "__TI2?AVlogic_error@std@@"
+        },
+        {
+          "offset": 5225,
+          "type": 20,
+          "symbol": "__CxxThrowException@8"
+        },
+        {
+          "offset": 5230,
+          "type": 6,
+          "symbol": "??_C@_0DK@NKGMNKOM@current?5post?9effect?5model?5is?5out@"
+        },
+        {
+          "offset": 5241,
+          "type": 20,
+          "symbol": "??0logic_error@std@@QAE@PBD@Z"
+        },
+        {
+          "offset": 5246,
+          "type": 6,
+          "symbol": "__TI2?AVlogic_error@std@@"
+        },
+        {
+          "offset": 5258,
+          "type": 20,
+          "symbol": "__CxxThrowException@8"
+        },
+        {
+          "offset": 5263,
+          "type": 6,
+          "symbol": "??_C@_0ED@ICKAHAOC@native?5post?9effect?5mesh?5derefere@"
+        },
+        {
+          "offset": 5274,
+          "type": 20,
+          "symbol": "??0logic_error@std@@QAE@PBD@Z"
+        },
+        {
+          "offset": 5279,
+          "type": 6,
+          "symbol": "__TI2?AVlogic_error@std@@"
+        },
+        {
+          "offset": 5291,
+          "type": 20,
+          "symbol": "__CxxThrowException@8"
+        },
+        {
+          "offset": 5296,
+          "type": 6,
+          "symbol": "??_C@_0EE@CFHBEBCM@post?9effect?5constructor?5requires@"
+        },
+        {
+          "offset": 5307,
+          "type": 20,
+          "symbol": "??0logic_error@std@@QAE@PBD@Z"
+        },
+        {
+          "offset": 5312,
+          "type": 6,
+          "symbol": "__TI2?AVlogic_error@std@@"
+        },
+        {
+          "offset": 5324,
+          "type": 20,
+          "symbol": "__CxxThrowException@8"
+        },
+        {
+          "offset": 5329,
+          "type": 6,
+          "symbol": "??_C@_0EE@CFHBEBCM@post?9effect?5constructor?5requires@"
+        },
+        {
+          "offset": 5340,
+          "type": 20,
+          "symbol": "??0logic_error@std@@QAE@PBD@Z"
+        },
+        {
+          "offset": 5345,
+          "type": 6,
+          "symbol": "__TI2?AVlogic_error@std@@"
+        },
+        {
+          "offset": 5357,
+          "type": 20,
+          "symbol": "__CxxThrowException@8"
+        },
+        {
+          "offset": 5403,
+          "type": 20,
+          "symbol": "?unwind@NativePostEffect20ConstructionBlock@bsp@@AAEXAAHAAPAX11AAI@Z"
+        },
+        {
+          "offset": 5417,
+          "type": 20,
+          "symbol": "?settle@NativePostEffect20ConstructionBlock@bsp@@AAEXXZ"
+        },
+        {
+          "offset": 5426,
+          "type": 20,
+          "symbol": "__CxxThrowException@8"
+        },
+        {
+          "offset": 5434,
+          "type": 20,
+          "symbol": "?settle@NativePostEffect20ConstructionBlock@bsp@@AAEXXZ"
+        },
+        {
+          "offset": 5443,
+          "type": 20,
+          "symbol": "__CxxThrowException@8"
+        }
+      ],
+      "disassembly": "local/br-constructor-object.asm",
+      "source_sha256": "5add9da3a697b81554d14c57ee8bd8ce1ac904a2717b63aa7e23181ea16a0315",
+      "limitation": "Generated source static evidence only; no native/source constructor fixture, native FH3 or binary ABI claim.",
+      "initial_actual_writes": [
+        {
+          "object_offset": 200,
+          "actual_offset": 0,
+          "bytes": 4,
+          "value": 13545776
+        },
+        {
+          "object_offset": 209,
+          "actual_offset": 4,
+          "bytes": 4,
+          "value": 1
+        },
+        {
+          "object_offset": 229,
+          "actual_offset": 0,
+          "bytes": 4,
+          "value": 14032576
+        },
+        {
+          "object_offset": 251,
+          "actual_offset": 12,
+          "bytes": 4,
+          "value": 0
+        },
+        {
+          "object_offset": 273,
+          "actual_offset": 16,
+          "bytes": 4,
+          "value": 0
+        },
+        {
+          "object_offset": 295,
+          "actual_offset": 20,
+          "bytes": 4,
+          "value": 0
+        },
+        {
+          "object_offset": 315,
+          "actual_offset": 28,
+          "bytes": 4,
+          "value": [
+            "vertex_count",
+            0
+          ]
+        }
+      ],
+      "sole_count1_write": true,
+      "no_count0_write": true,
+      "x87_operations": [
+        {
+          "offset": 2634,
+          "mnemonic": "fld",
+          "operands": "dword ptr [eax]"
+        },
+        {
+          "offset": 2645,
+          "mnemonic": "fst",
+          "operands": "dword ptr [ebp - 0x68]"
+        },
+        {
+          "offset": 2648,
+          "mnemonic": "fstp",
+          "operands": "dword ptr [ebp - 0x6c]"
+        },
+        {
+          "offset": 3681,
+          "mnemonic": "fld1",
+          "operands": ""
+        },
+        {
+          "offset": 3692,
+          "mnemonic": "fstp",
+          "operands": "dword ptr [ebp - 0x24]"
+        },
+        {
+          "offset": 3701,
+          "mnemonic": "fldz",
+          "operands": ""
+        },
+        {
+          "offset": 3703,
+          "mnemonic": "fstp",
+          "operands": "dword ptr [ebp - 0x50]"
+        }
+      ],
+      "x87_single_sentinel_load_fst_fstp": true,
+      "current_field_reads_between_x87_operations": true,
+      "arithmetic_after_spills": "Generated MOVSS copies transport the already-spilled words; no further x87 operation occurs before existing callees.",
+      "stream_decrement_current_epoch_after_mesh_attachment": {
+        "mesh_call": 1391,
+        "current_IAT_load": 1420,
+        "decrement_call": 1443
+      },
+      "final_decrement_epoch": {
+        "single_current_IAT_load": 3802,
+        "saved_value": 3811,
+        "section_call": 3841,
+        "mesh_same_saved_value_call": 4062,
+        "saved_value_not_overwritten_between_calls": true
+      },
+      "section_store_order": [
+        {
+          "object_offset": 2007,
+          "section_offset": 12
+        },
+        {
+          "object_offset": 2021,
+          "section_offset": 16
+        },
+        {
+          "object_offset": 2037,
+          "section_offset": 20
+        },
+        {
+          "object_offset": 2068,
+          "section_offset": 8
+        },
+        {
+          "object_offset": 2094,
+          "section_offset": 24
+        }
+      ],
+      "model_normal_name_data_before_mask_clear": {
+        "data_load": 2523,
+        "mask_clear": 2529,
+        "getter": 2593,
+        "pool_return": 2614
+      },
+      "byte_identity_limit": "This records generated source ordering in admitted valid-storage domains, not equivalence of native hardware-fault or compiler-private EH-frame timing."
+    },
+    "br_manual_parser_and_generated_review": true,
+    "br_admitted_path": "EBP prologue and actual +8/count +14 argument mapping checked; initial guard branches leave the admitted path. No actual writes precede the traced prefix.",
+    "br_final_epoch": "Generated 0EDA load saved at0EE3; section0F01 and mesh0FDE use the same value. Intermediate admitted branches and stores inspected; no overwritten spill or escaped spill address.",
+    "bs": [
+      {
+        "symbol": "?get_native_post_effect_material_00b4cbf0@bsp@@YIPAXPBX@Z",
+        "bytes": 4,
+        "sha256": "01d3abacb68aac3537badfe563d0e21d0244fb61db1d805bcef8f455407fad96",
+        "relocations": [],
+        "root_object_sha256": "35498481c21697c174a01dc881bea79d23e4882b3847cf83b4aabcee39881f6f",
+        "unchanged_from_independently_reviewed_preliminary_section": true
+      },
+      {
+        "symbol": "?initialize_native_post_effect_dust_00b52860@bsp@@YAXPAXIAAVNativePostEffectDustBlock@1@@Z",
+        "bytes": 712,
+        "sha256": "2d5091897f64b5221eed99af837514c6fc5dcaf95310b214364fc566ec818907",
+        "relocations": [
+          {
+            "offset": 6,
+            "type": 6,
+            "symbol": "__ehhandler$?initialize_native_post_effect_dust_00b52860@bsp@@YAXPAXIAAVNativePostEffectDustBlock@1@@Z"
+          },
+          {
+            "offset": 21,
+            "type": 6,
+            "symbol": "___security_cookie"
+          },
+          {
+            "offset": 169,
+            "type": 20,
+            "symbol": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z"
+          },
+          {
+            "offset": 217,
+            "type": 20,
+            "symbol": "?construct_native_string_cstring_0041e870@bsp@@YAPAXPAXPBDAAUNativeStringRawPoolContext@1@@Z"
+          },
+          {
+            "offset": 267,
+            "type": 20,
+            "symbol": "?construct_native_post_effect_00b4e840@bsp@@YAPAXPAXIAAVNativeString@1@IPBXAAVNativePostEffectConstructionBlock@1@@Z"
+          },
+          {
+            "offset": 323,
+            "type": 20,
+            "symbol": "?destroy_native_string_header_0041dd20@bsp@@YAXPAXAAUNativeStringRawPoolContext@1@@Z"
+          },
+          {
+            "offset": 354,
+            "type": 20,
+            "symbol": "?get_native_post_effect_material_00b4cbf0@bsp@@YIPAXPBX@Z"
+          },
+          {
+            "offset": 388,
+            "type": 20,
+            "symbol": "?set_native_material_texture_00b189f0@bsp@@YAXAAUNativeMaterialStorage@1@IPAXAAVNativeRenderActualOwners@1@@Z"
+          },
+          {
+            "offset": 521,
+            "type": 20,
+            "symbol": "?cancel_preparation@NativePostEffectConstructionBlock@bsp@@QAEXXZ"
+          },
+          {
+            "offset": 552,
+            "type": 20,
+            "symbol": "@__security_check_cookie@4"
+          },
+          {
+            "offset": 561,
+            "type": 6,
+            "symbol": "??_C@_0FI@FNCCHCLP@dust?5initialization?5requires?5an?5@"
+          },
+          {
+            "offset": 569,
+            "type": 20,
+            "symbol": "??0logic_error@std@@QAE@PBD@Z"
+          },
+          {
+            "offset": 574,
+            "type": 6,
+            "symbol": "__TI2?AVlogic_error@std@@"
+          },
+          {
+            "offset": 583,
+            "type": 20,
+            "symbol": "__CxxThrowException@8"
+          },
+          {
+            "offset": 588,
+            "type": 6,
+            "symbol": "??_C@_0EB@DGHGOONI@native?5dust?5material?5getter?5requ@"
+          },
+          {
+            "offset": 596,
+            "type": 20,
+            "symbol": "??0logic_error@std@@QAE@PBD@Z"
+          },
+          {
+            "offset": 601,
+            "type": 6,
+            "symbol": "__TI2?AVlogic_error@std@@"
+          },
+          {
+            "offset": 610,
+            "type": 20,
+            "symbol": "__CxxThrowException@8"
+          },
+          {
+            "offset": 615,
+            "type": 6,
+            "symbol": "??_C@_0DO@MKMPNEPI@native?5dust?5texture?5binding?5requ@"
+          },
+          {
+            "offset": 623,
+            "type": 20,
+            "symbol": "??0logic_error@std@@QAE@PBD@Z"
+          },
+          {
+            "offset": 628,
+            "type": 6,
+            "symbol": "__TI2?AVlogic_error@std@@"
+          },
+          {
+            "offset": 637,
+            "type": 20,
+            "symbol": "__CxxThrowException@8"
+          },
+          {
+            "offset": 662,
+            "type": 20,
+            "symbol": "?unwind@NativePostEffectDustBlock@bsp@@AAEXAAHAA_N@Z"
+          },
+          {
+            "offset": 676,
+            "type": 20,
+            "symbol": "?settle@NativePostEffectDustBlock@bsp@@AAEXXZ"
+          },
+          {
+            "offset": 685,
+            "type": 20,
+            "symbol": "__CxxThrowException@8"
+          },
+          {
+            "offset": 693,
+            "type": 20,
+            "symbol": "?settle@NativePostEffectDustBlock@bsp@@AAEXXZ"
+          },
+          {
+            "offset": 702,
+            "type": 20,
+            "symbol": "__CxxThrowException@8"
+          }
+        ],
+        "root_object_sha256": "35498481c21697c174a01dc881bea79d23e4882b3847cf83b4aabcee39881f6f",
+        "unchanged_from_independently_reviewed_preliminary_section": true
+      }
+    ],
+    "bs_manual_complete_initializer_listing_reviewed": true,
+    "bs_exact_field_store_and_capture_order_checks": true,
+    "bs_compiler_timing": "Generated CMP of the private name bit moves before parent publication; private EH-state stores also follow C++ code generation. No private-frame alias or hardware-fault timing equivalence is claimed."
+  },
+  "annotation": {
+    "record": "local/brbs-ghidra-annotation-record.json",
+    "saved": true,
+    "readback_passed": true,
+    "prior_comments_preserved": true,
+    "original_calling_conventions": "Three __thiscall signatures recovered. The new naked one-input __fastcall getter has the same physical ECX/EAX/RET register behavior; no whole-program ABI claim.",
+    "force_refreshed_exports": [
+      "00b4e470",
+      "00b52860",
+      "00b4cbf0"
+    ],
+    "separately_defined_saved_exported_EH_handlers": [
+      "00cbfbab",
+      "00cc0014"
+    ],
+    "EH_body_credit": 0
+  },
+  "validation": {
+    "command": "./scripts/build.ps1",
+    "configuration": "MSVC Win32 Release",
+    "exit_code": 0,
+    "ctests_passed": 2,
+    "ctests": [
+      "reconstructed_math",
+      "native_math_differential"
+    ],
+    "tracked_build_inputs": 2559,
+    "exact_commit": "32e81952f34ffd0afe2e98afdb146aee50cf4d9b",
+    "clean_before_after": true,
+    "all_build_input_hashes_preserved": true,
+    "new_tests": 0,
+    "call_audits": {
+      "br": {
+        "report": "reports/native_post_effect20_construction_br.json",
+        "direct_tail_rows": 70,
+        "failed": 0,
+        "indirect_rows": 14,
+        "log": "local/brbs-br-call-audit.log",
+        "sha256": "0a06e1cac163abbadf405d3aa09698384cd5fdba6079d447c32945dffd098b24"
+      },
+      "bs": {
+        "report": "reports/native_post_effect_dust_bs.json",
+        "direct_tail_rows": 10,
+        "failed": 0,
+        "indirect_rows": 0,
+        "log": "local/brbs-bs-call-audit.log",
+        "sha256": "d601993084882c867f6bc73eaf4404387ac2d050758ef57f8c2cdddfd961a130"
+      }
+    },
+    "worker_br": {
+      "configured": 1,
+      "passed": 1,
+      "names": [
+        "reconstructed_math"
+      ],
+      "new_tests": 0,
+      "limitation": "Only the test actually configured in this worktree was run. No seed differential or new constructor probe was enabled/executed."
+    },
+    "worker_br_input_count": 2561,
+    "worker_br_input_scope": "All tracked CMakeLists/cmake/include/src/tests/third_party/scripts/build.ps1 plus both new BR source files. Captured during the initial full build, then again after it; not a pre-build stamp.",
+    "bs_preliminary_scope": "Earlier dirty working-tree build is preserved as preliminary evidence only; the committed combined build supplies the exact-commit validation.",
+    "constructor_or_initializer_executed": false,
+    "new_native_fixture": false,
+    "injected_cleanup_failure": false,
+    "drop_in_ABI": false,
+    "native_FH3_SEH": false,
+    "GPU_validated": false,
+    "game_validated": false
+  },
+  "worker_artifact_checks": {
+    "local/br-build-attempt-1.log": {
+      "sha256": "a751ee6ad95202b6365aa6fc7d3ca2b098d68ab73036976c09d51a0fd0df7b6e",
+      "primary_rechecked": true,
+      "archived_as": "local/br-worker/local/br-build-attempt-1.log"
+    },
+    "local/br-call-audit-attempt-1.json": {
+      "sha256": "0a06e1cac163abbadf405d3aa09698384cd5fdba6079d447c32945dffd098b24",
+      "primary_rechecked": true,
+      "archived_as": "local/br-worker/local/br-call-audit-attempt-1.json"
+    },
+    "local/br-input-pins-during.json": {
+      "sha256": "e63818f565648273facee6e001a66f5f5e613376032bce956cff0d5bb8050226",
+      "primary_rechecked": true,
+      "archived_as": "local/br-worker/local/br-input-pins-during.json"
+    },
+    "local/br-input-pins-after.json": {
+      "sha256": "6e7c647a2696794db4b8e39c2d90452b53549a543b9f8e397f3f7621efb20b42",
+      "primary_rechecked": true,
+      "archived_as": "local/br-worker/local/br-input-pins-after.json"
+    },
+    "local/br_object_review.py": {
+      "sha256": "e6a567039e2890b31f421de9caacfaab2c3f6b5963747260a5d2a8bfc07df1b8",
+      "primary_rechecked": true,
+      "archived_as": "local/br-worker/local/br_object_review.py"
+    },
+    "local/br-object-review.json": {
+      "sha256": "b8143f94d203660ebc8104ca010cbfe35305a4744cb4b965da9b92a11593aeda",
+      "primary_rechecked": true,
+      "archived_as": "local/br-worker/local/br-object-review.json"
+    },
+    "local/br-constructor-object.asm": {
+      "sha256": "b9bd0e76f566a1c2cfa02f61858025a6045f2b4a40a5f77f8f02785567faba30",
+      "primary_rechecked": true,
+      "archived_as": "local/br-worker/local/br-constructor-object.asm"
+    },
+    "build/win32/bsp_core.dir/Release/native_post_effect20_construction.obj": {
+      "sha256": "466703138e9865aa6c76c9e6bd7b329e05e4593a555385db14413f88eb23da40",
+      "primary_rechecked": true,
+      "archived_as": "local/br-worker/build/win32/bsp_core.dir/Release/native_post_effect20_construction.obj"
+    },
+    "build/win32/Release/bsp_core.lib": {
+      "sha256": "fcb3781fa1daaf8875f7ae6374aed65426bbf6fdc732587ad78d78d83cb0464b",
+      "primary_rechecked": true,
+      "archived_as": null
+    },
+    "build/win32/Release/bsp_lua511.lib": {
+      "sha256": "796ee10bad66d57fa9292de11910e716c92994c0bbbd72b62693097cb9a127ce",
+      "primary_rechecked": true,
+      "archived_as": null
+    },
+    "build/win32/Release/bsp_zlib121.lib": {
+      "sha256": "331782a173688687f537e2f50a0dff1652ea3e49513af65882f63fd3ed8c412b",
+      "primary_rechecked": true,
+      "archived_as": null
+    },
+    "build/win32/Release/bsp_game.exe": {
+      "sha256": "3d36fefbb35b5ab199e3977cc2c0af02dcdcd4535e5bed820d87ec7ae1750a35",
+      "primary_rechecked": true,
+      "archived_as": null
+    },
+    "build/win32/Release/bsp_math_tests.exe": {
+      "sha256": "99e003e3297591e6ff824d7ba50fcb0011dadb1e995476a79b121d51823f7e18",
+      "primary_rechecked": true,
+      "archived_as": null
+    },
+    "cmake/startup.cmake": {
+      "sha256": "37de6416803327e6185407c9ef1fe174b0f047713c1f8c50e6fe5b9d8c19282d",
+      "primary_rechecked": true,
+      "archived_as": "local/br-worker/cmake/startup.cmake"
+    },
+    "docs/NATIVE_POST_EFFECT20_CONSTRUCTION_BR.md": {
+      "sha256": "e99382f321d397927c07540bf898d2f4b01295e2f891f2b93504eb029742c158",
+      "primary_rechecked": true,
+      "archived_as": "local/br-worker/docs/NATIVE_POST_EFFECT20_CONSTRUCTION_BR.md"
+    }
+  },
+  "worker_archive_scope": "Worker logs, input manifests, parser, object review/disassembly, object, CMake and document copied and hash checked. Five worker libraries/executables were hash checked in the preserved worker tree but are not duplicated in this archive; exact primary libraries are archived.",
+  "limitations": [
+    "Both constructors still require the real callable renderer+48 binding, shared canonical owners and actual constant/pool domains.",
+    "Existing material factory failure can leave a completed internal material without an exposed acquired identity. Existing provider/terminal noexcept domains and external disposition/quiescence remain.",
+    "Secondary cleanup failures consume remaining actions and propagate the newest C++ exception; native FH3 double-exception and hardware-fault behavior is not reconstructed.",
+    "Optional non-null sizing, other BR count values, constructor/initializer execution, injected failures and gameplay remain untested.",
+    "B529A0 parent composition and BT geometry integration remain open; BT is excluded from this tested batch."
+  ],
+  "artifact_sha256": {
+    "local/brbs-final-build-stamp.json": "8c7246cdbfd7e1ed4074756566024f44b964c1e028782dee301be8c40daff65e",
+    "local/brbs-final-combined-build.log": "c8e4efaec60a4b68c0c207f0b0861753e078051ca32f48d8ac9150b8d7aa0e4e",
+    "local/build_final_brbs.py": "fb2f52c51c40aa03a0f91aebe4c42d6caebddc76472f31e40da486f1f8048b1b",
+    "local/prepare_brbs.py": "22cc8e17bc8799dc10b8ef6a47f158efaef25f292ab83b59c0f9060a7fb0cb70",
+    "local/annotate_brbs.py": "f0527405a6aa7ea6973a7106588d9210c30e928d4080114852efe3b2b95997b7",
+    "local/record_brbs.py": "d7d0f4e12c08ddb006135afea2d653150c990789543ce6b83e49398e54013c53",
+    "local/brbs-ledger-before.json": "95c4fa929ab655b65eb34a69f2eae61336bb2ea1e5e4866009e35eb8c8d45e05",
+    "local/brbs-function-records.json": "7dcc1958fc0d8a0f20695dea76f1b1c9d6b62db4b2270d2adc45b517e204ed90",
+    "local/brbs-native-spans.json": "c3ac3215717b4f01aa0596f34b247041d090fa15b5a4ad13afa59a7fbad9eabc",
+    "local/brbs-source-pins.json": "49b288e3d9558d160e6840d10eda148d4db7626116d8f35450fdc5fec193ef4d",
+    "local/brbs-ghidra-annotation-record.json": "5d71a4dc63b3238474b554a2c13ae6eecdc23c269f5620a236bbb18d214592b7",
+    "local/brbs-comments-before.json": "a4484be2c8d636be72eeea7ccf5d4ece9032f20c7ed813d5ea36b062d04c8b96",
+    "local/brbs-comments-after.json": "c7827c9db50a21005571ddc574f4ddcad25ca8743552583bf9e32ad55c22de93",
+    "local/brbs-annotation.log": "8f1e74d67efcf09bdd8dbe03cb82b22ad73a181e49a5396f19ce38d8f8497752",
+    "local/brbs-export-refresh.log": "6f2069afe005de1edabdcda699abc8f997551d86cea7f8c71363bad98316d0da",
+    "local/brbs-br-call-audit.log": "0a06e1cac163abbadf405d3aa09698384cd5fdba6079d447c32945dffd098b24",
+    "local/brbs-bs-call-audit.log": "d601993084882c867f6bc73eaf4404387ac2d050758ef57f8c2cdddfd961a130",
+    "local/br_object_review.py": "e6a567039e2890b31f421de9caacfaab2c3f6b5963747260a5d2a8bfc07df1b8",
+    "local/br-object-review.json": "88cfd4e2ec057c9994252ea43649285ae54d4f77ad13dc11b93bfea0fc54ff87",
+    "local/br-constructor-object.asm": "171733bdfe732ece13c15a7e05e43534db2ddd515729123c354ff0d2f7ab4c18",
+    "local/bq_object_review.py": "93d9b6dc62ddcd4bc7e0aab0ba75a9ef29e60fa15638adba14eb9a9fd7de862a",
+    "local/prepare_bs_report.py": "c112f4cc8e1311d9e7b9e06bb1f3894ed07c3a2669fc9f68b9eda428f23e0d56",
+    "local/bs-first-build.log": "f936a5f21e4f1128cbb656b295ab280e159d4dc55385950a9701bc97966fefc6",
+    "local/bs-getter-object.asm": "275d005dfd8fee193106ace5c8fb97e03ae9cd874092772b18e11c9cad68fc55",
+    "local/bs-initializer-object.asm": "b80ab3c29aa297be79b5ef180a2d00378eb85d6dc310a5b99cd556ec065040bb",
+    "build/win32/bsp_core.dir/Release/native_post_effect20_construction.obj": "f7acd976a6b0731ad66b9c0c15b2f8006c4dba3e1aa57e62313b5af658cbdc6b",
+    "build/win32/bsp_core.dir/Release/native_post_effect_dust_initializer.obj": "35498481c21697c174a01dc881bea79d23e4882b3847cf83b4aabcee39881f6f",
+    "reports/native_post_effect20_construction_br.json": "fdc0ddc17883b6c83402100836e99d27856f3e9fbf3c60ce4ae03fa5c3b77adf",
+    "reports/native_post_effect20_construction_eh_br.json": "af111570a7e5137a2f1179819bfd56ed0e55541b54e38b1dad6a87df078966aa",
+    "reports/native_post_effect_dust_bs.json": "41f6505ad11739e17918680fa5506a026898dbfd87cb69e0a95a61a21e4803be",
+    "reports/native_post_effect_dust_eh_bs.json": "69c51d7b9f8631ea17b81a2a3431bf8cffebfa3c513e0eed787f9d625af3bfb1",
+    "local/br-worker/local/br-build-attempt-1.log": "a751ee6ad95202b6365aa6fc7d3ca2b098d68ab73036976c09d51a0fd0df7b6e",
+    "local/br-worker/local/br-call-audit-attempt-1.json": "0a06e1cac163abbadf405d3aa09698384cd5fdba6079d447c32945dffd098b24",
+    "local/br-worker/local/br-input-pins-during.json": "e63818f565648273facee6e001a66f5f5e613376032bce956cff0d5bb8050226",
+    "local/br-worker/local/br-input-pins-after.json": "6e7c647a2696794db4b8e39c2d90452b53549a543b9f8e397f3f7621efb20b42",
+    "local/br-worker/local/br_object_review.py": "e6a567039e2890b31f421de9caacfaab2c3f6b5963747260a5d2a8bfc07df1b8",
+    "local/br-worker/local/br-object-review.json": "b8143f94d203660ebc8104ca010cbfe35305a4744cb4b965da9b92a11593aeda",
+    "local/br-worker/local/br-constructor-object.asm": "b9bd0e76f566a1c2cfa02f61858025a6045f2b4a40a5f77f8f02785567faba30",
+    "local/br-worker/build/win32/bsp_core.dir/Release/native_post_effect20_construction.obj": "466703138e9865aa6c76c9e6bd7b329e05e4593a555385db14413f88eb23da40",
+    "local/br-worker/cmake/startup.cmake": "37de6416803327e6185407c9ef1fe174b0f047713c1f8c50e6fe5b9d8c19282d",
+    "local/br-worker/docs/NATIVE_POST_EFFECT20_CONSTRUCTION_BR.md": "e99382f321d397927c07540bf898d2f4b01295e2f891f2b93504eb029742c158",
+    "local/brbs-live-00b3cd10.txt": "58fa8f6d31ea0356be1edc3f4167f9da160ead1645a762bc036ee651c79db52c",
+    "local/brbs-live-00b3cd20.txt": "5d77ca0dc71930b8624ae3c613b9a173e29a0f9b90af27acc484d2758f5c9b89",
+    "local/brbs-live-00b4cbf0.txt": "321d40002beda89eb7c94873251137baa5ce58fbd5c9e3abb60fc3415d12aa49",
+    "local/brbs-live-00b4e470.txt": "15e6e5d172140e6a89c6a3f6c46537cdeead5638352c0dc393d242feac7de1ad",
+    "local/brbs-live-00b52860.txt": "243cb83b4e837666491bdb6c8c21178ed7457bdcddcdddab46b3cd6ef1ee03f9",
+    "local/brbs-live-00cbfb30.txt": "24aec39c8cd69ee1d98258ec252b85df88c261305823cd7e5d653c82070e4ef4",
+    "local/brbs-live-00cbfff0.txt": "fd7677f42ffda789348992151b3adec79d5c0fce0b22f8214f4a58e546090fac",
+    "local/brbs-live-00d5f0a8.txt": "2c3a5b2f56379bd2b0c075a538940ceaad4c5aaffb62c4069247bac47088d3f3",
+    "local/brbs-live-00d619a0.txt": "3667bf8b46185380af10fe3a1988480d0895b7bceef2ec701ae4d02e7224e0ea",
+    "local/brbs-live-00d61ec0.txt": "311ee1e38c06f127d355254f3ef02b83266739dabacdf2284d2555068eabaec8",
+    "local/brbs-live-00d61ed0.txt": "920018b9976248a7eea538d91398abe238727f604794d523c0e3d0ff12107798",
+    "local/brbs-live-00d620ac.txt": "523c0c6bba2c14a7ff497c7b69e6e91ea25d5fde2ed6c07107522d503d7eab66",
+    "local/brbs-live-00d7a24c.txt": "fd6f7a7d3874dfe569d075d61e99337d9cca002b06a4ebed7f03e974e26bdabc",
+    "local/brbs-live-00d7a260.txt": "90071f406f4f041b108ed68b33991d361286aa04206bb39036f73ba957c52cba",
+    "local/brbs-live-00df86d4.txt": "e8cb2f7a9c59763b0644a984e91034f2741a74ea62dbd45609412e96da49684b",
+    "local/brbs-live-00df8b4c.txt": "742ea5ba63abef2bc974129be2070b34caf138bfef2ab70ad64f9262486ad04e"
+  },
+  "sealed_attempt": {
+    "tested_commit": "32e81952f34ffd0afe2e98afdb146aee50cf4d9b",
+    "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\brbs-validated-attempt-32e81952.zip",
+    "sha256": "5ecdcaaeb5e0917eeac4cdda6f76a2edc6fd75022fd58532c6748a95bc70eff0",
+    "payload_members": 2643,
+    "manifest_members": 1,
+    "all_member_hashes_rechecked": true,
+    "libraries": {
+      "bsp_core.lib": "35914b1478d7dd296ef13a85f520c571e6baea537e587d66765d70b657821a4e",
+      "bsp_lua511.lib": "71e114b0ff6244852d678a5779fcbf28589bdcecbad811aff228ffd5007fe8c7",
+      "bsp_zlib121.lib": "f3f934925213a2ffb81f3aec2afbb065c1733cf43b28dddf31db6a69185c4102"
+    },
+    "tracked_build_inputs": 2559
+  }
+}

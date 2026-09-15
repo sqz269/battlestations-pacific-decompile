@@ -1,0 +1,202 @@
+{
+  "packet": "orch3_particle_record_clear_dc",
+  "source_parent_commit": "07ede2547ec7010dd294b958db3c039389cebbb8",
+  "status": "exact_committed_build_native_generated_review_saved_annotation_passed_sealed",
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "installed_pe": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "installed_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "functions": [
+    {
+      "address": "004dcaa0",
+      "inclusive_end": "004dcaa7",
+      "bytes": 8,
+      "native_sha256": "8aa7daca038196ca7639887f2cc73d4b9edd716432837d154d82cfe9a1fa14ef",
+      "cpp_symbol": "clear_native_particle_record_array_004dcaa0",
+      "ghidra_name": "BSP_ParticleRecordArray_Clear",
+      "original_abi": "__thiscall; ECX actual0Ch vector; no original stack arguments; plain RET. Push signed0 to004DC410, whose RET4 removes the argument."
+    }
+  ],
+  "native_spans": [
+    {
+      "address": "004dcaa0",
+      "inclusive_end": "004dcaa7",
+      "bytes": 8,
+      "hex": "6a00e869f9ffffc3",
+      "sha256": "8aa7daca038196ca7639887f2cc73d4b9edd716432837d154d82cfe9a1fa14ef",
+      "live_installed_identity": true
+    },
+    {
+      "address": "004dca80",
+      "end_inclusive": "004dca9f",
+      "bytes": 32,
+      "hex": "5183ec608bc433d289500889500c8b4424688964246050e824f8ffff59c20400",
+      "sha256": "e74201f1ca97e1edf70592634a82465f8aef61880b7a7f7cdf06f5e1b2d2e92e",
+      "installed_live_identity": true
+    }
+  ],
+  "call_steps": [
+    {
+      "address": "004dcaa2",
+      "native": "004dc410",
+      "function": "004dcaa0",
+      "hex": "e869f9ffff"
+    },
+    {
+      "address": "004dca97",
+      "native": "004dc2c0",
+      "function": "004dca80",
+      "hex": "e824f8ffff"
+    }
+  ],
+  "source_sha256": {
+    "src/native_particle_record_clear.cpp": "04afd1d4b0a819fd764f1765fe4979fbb644aa4750866d2d6b71f3cfe0577e4c",
+    "include/bsp/native_particle_record_clear.hpp": "d0f48670a1030e7e93083d90644841b16f6cca234e6235e03893b5ba7e3c4ef0"
+  },
+  "provider_sha256": {
+    "src/native_particle_record_resize.cpp": "5a4b7db2a73d3b0a8b5d6a69372f9e645455bffd65a613c206af25628efeef2b",
+    "include/bsp/native_particle_record_resize.hpp": "6595699d66ba3b21af20d8b272b9dda9b88adbd444e815d1f53a9e2a8a240f7e"
+  },
+  "function_definition": "reports/native_particle_record_clear_dc_function_definition.json",
+  "graph_correction": {
+    "previous_advisory_callers": [
+      "004dca80",
+      "004dda40",
+      "004ddaa0",
+      "004de290"
+    ],
+    "corrected_callers": [
+      "004dcaa0",
+      "004dda40",
+      "004ddaa0",
+      "004de290"
+    ],
+    "cause": "Unvalidated linear candidate sweep attributed the separately undecoded4DCAA0 wrapper to the preceding4DCA80 body because there was no INT3 padding. A snapshot refresh alone preserved the edge; defining the actual eight-byte function and regenerating the graph corrected its ownership.",
+    "previous_lookup": "004dca80  FUN_004dca80  thunk=no  export=none\nsegment 10 [004d0920-004e7db0] 250 candidates wave 2  keywords: ggame, collect, collectgarbage, ingame, universe, scene, skiptitle, skiplogos\ncallers (1): 004dd7c0 FUN_004dd7c0\ncallees (2): 004dc2c0 FUN_004dc2c0, 004dc410 BSP_ParticleRecordArray_Resize\n",
+    "current_lookup": "004dca80  FUN_004dca80  thunk=no  export=exports/bsp/functions/004dca80\nsegment 10 [004d0920-004e7db0] 250 candidates wave 2  keywords: ggame, collect, collectgarbage, ingame, universe, scene, skiptitle, skiplogos\ncallers (1): 004dd7c0 FUN_004dd7c0\ncallees (1): 004dc2c0 FUN_004dc2c0\ndocs (1): docs/NATIVE_PARTICLE_RECORD_CLEAR_DC.md (Native particle-record clear and candidate-graph c)\n",
+    "current_clear_lookup": "004dcaa0  FUN_004dcaa0  thunk=no  export=none\nsegment 10 [004d0920-004e7db0] 250 candidates wave 2  keywords: ggame, collect, collectgarbage, ingame, universe, scene, skiptitle, skiplogos\ncallers (0): \ncallees (1): 004dc410 BSP_ParticleRecordArray_Resize\ndocs (1): docs/NATIVE_PARTICLE_RECORD_CLEAR_DC.md (Native particle-record clear and candidate-graph c)\n",
+    "live_resize_callers": "BSP_ParticleRecordContainer_Destroy @ 004de290\nBSP_ParticleRecordContainer_ReleaseAll @ 004dda40\nBSP_SamplerRecordArray_Destroy @ 004ddaa0\nFUN_004dcaa0 @ 004dcaa0\n",
+    "previous_body_unchanged": true,
+    "original_CY_outgoing_call_and_source_evidence_unchanged": true
+  },
+  "credit": {
+    "new_functions": 1,
+    "new_native_code_bytes": 8,
+    "preceding_audited_wrapper_new_credit": 0
+  },
+  "review": {
+    "primary_complete_native_source_reviewed": true,
+    "expected_generated": "Eight bytes6a00e800000000c3 with one REL32 call relocation to the complete CY raw resize provider; all non-relocation bytes native-identical."
+  },
+  "validation": {
+    "command": "./scripts/build.ps1",
+    "configuration": "MSVC Win32 Release",
+    "exit_code": 0,
+    "ctests_passed": 2,
+    "ctests": [
+      "reconstructed_math",
+      "native_math_differential"
+    ],
+    "exact_commit": "21a288f2d3c596036498905e77fb7ea991d2bb33",
+    "tracked_build_inputs": 2609,
+    "clean_before_after": true,
+    "all_build_input_hashes_preserved": true,
+    "new_repository_tests": 0,
+    "new_local_focused_probes": 0,
+    "source_entry_executed": false,
+    "native_parent_bytes_executed": false,
+    "game_validated": false
+  },
+  "limits": [
+    "No original caller to4DCAA0 is established.",
+    "EDX now supplies the concrete resize context; original private ABI/FH3 and game execution are not claimed.",
+    "4DCA80/4DC2C0/4DD7C0 are not reconstructed by this packet."
+  ],
+  "tested_commit": "21a288f2d3c596036498905e77fb7ea991d2bb33",
+  "generated_code": {
+    "tested_commit": "21a288f2d3c596036498905e77fb7ea991d2bb33",
+    "object": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\bsp_core.dir\\Release\\native_particle_record_clear.obj",
+    "object_sha256": "c22bf98d22938d71a5d6ff544d8c656a5bc310989f95b2558aa1ae2cd7684393",
+    "symbol": "?clear_native_particle_record_array_004dcaa0@bsp@@YIXAAUNativeResourceRecordVectorStorage@1@AAUNativeParticleRecordResizeContext@1@@Z",
+    "section_offset": 0,
+    "bytes": 8,
+    "hex": "6a00e800000000c3",
+    "sha256": "c04539b8f1e1064c3215f0928a6165e3199bcd8c819834f86cbe60c7a840aa2b",
+    "relocations": [
+      {
+        "offset": 3,
+        "type": 20,
+        "symbol": "?resize_native_particle_record_array_004dc410@bsp@@YIXAAUNativeResourceRecordVectorStorage@1@AAUNativeParticleRecordResizeContext@1@H@Z"
+      }
+    ],
+    "normalized_call_relocation_native_identity": true,
+    "whole_native_code_identity": false,
+    "listing": "local/dc-generated-clear.asm",
+    "review": "Whole8-byte COMDAT PUSH0, REL32 CALL to existing raw CY resize, RET. All non-relocation bytes exactly native; original stack argument removed by CY RET4. Source EDX context is explicitly additional. No new frame or exception policy."
+  },
+  "external_duplicate_audit": "local/dc-worker-dd/dd-particle-cache-provider-audit.json",
+  "primary_call_audit": {
+    "direct_rows": 2,
+    "failed": 0,
+    "log": "local/dc-call-audit.log",
+    "note": "One new clear CALL and the sole CALL in the preceding audited but unreconstructed4DCA80 body."
+  },
+  "annotation": {
+    "saved": true,
+    "readback_passed": true,
+    "prior_comments_preserved": true,
+    "record": "local/dc-ghidra-annotation-record.json",
+    "force_refreshed_exports": [
+      "004dcaa0"
+    ],
+    "original_abi_signatures": true
+  },
+  "artifact_sha256": {
+    "build/win32/bsp_core.dir/Release/native_particle_record_clear.obj": "c22bf98d22938d71a5d6ff544d8c656a5bc310989f95b2558aa1ae2cd7684393",
+    "local/annotate_dc.py": "9c5cca6345b49fdea63f710df17c024f1aa5505737dbef861fa402df37579cd7",
+    "local/bq_object_review.py": "93d9b6dc62ddcd4bc7e0aab0ba75a9ef29e60fa15638adba14eb9a9fd7de862a",
+    "local/build_final_dc.py": "7fd4e5f4c6c8ce47d39a1b7f140d6cdb8f980c80e8db60faf5f9bd3b7f438687",
+    "local/dc-admission-comments.json": "763168ee8abaa69df3872cbb780fc67511e13fbab391775d07a56aa294e90d23",
+    "local/dc-annotation.log": "8e3149de94a065e0359b0362586055cce68ec40891995a39e07461cef6c567dc",
+    "local/dc-call-audit.log": "1bd3258d9da06abe62a094c8347eea79d238be54475e05252707993d7730c57f",
+    "local/dc-comments-after.json": "02c2d372eec4849ed4e07d54e96c0b0b44a2aa3e7d4c5b79527c1c8e8cb39ef0",
+    "local/dc-comments-before.json": "7a791c0ad58ca9c925d513cfd125225afb69db4a96326ac966925850b518f3d1",
+    "local/dc-corrected-callgraph.json": "94557cb733f942437f3bfb1b5bcb1442af8a83ad4c06a99ed9f5e11035066ca3",
+    "local/dc-export-refresh.log": "58fced8d4ddd4edf2207fecad64f9b615372f705f35c974a3b34b429e69800aa",
+    "local/dc-final-build-stamp.json": "cd419e4abfed0528f2c79443f42ab628788a448ba85c0ae1aa921eab1d3f63a2",
+    "local/dc-final-combined-build.log": "32ffc32fdd67e2d235338b131e67004967a20248eceac9421e0503be45153622",
+    "local/dc-function-records.json": "49045f6234283a8c75d1a9b541da251d3abe6912efe4341567325696a7dcdf21",
+    "local/dc-generated-clear.asm": "36bdfcc21b652bf34c0c36e55969121bbcf5044cd9c11202c08707c1d14f7e0d",
+    "local/dc-ghidra-annotation-record.json": "9969f9a3be47053a6d9b3d064d4894ecaa0966d951cf07dd36c14e5be379a325",
+    "local/dc-ledger-before.json": "7ad1f096535b23866b7f682b3cba2bdab3e05831be002ddf4d9ba25abcce52e7",
+    "local/dc-object-review.json": "4b1cf7cd39b3e73643b9ad45231c626832297666b69630c6e8e8ab224bd96b73",
+    "local/dc-particle-record-admission.json": "572c5c2bb143f6ec8c49580e32f0965a421003c6a9d85f1f5f6c2d71ae9abf5b",
+    "local/dc-source-commit-message.txt": "3f8ab4b3f6e15e60f0e56b15632a3e2b49cfed582185792bcb270d950cd42b61",
+    "local/dc-worker-dd/dd-particle-cache-provider-audit.json": "a30a2118a33a74ba1f65a8ad96aa008ec2ec955c4a189686b995771f8895fddb",
+    "local/dc-worker-dd/dd-particle-cache-provider-audit.md": "8c4fb773773b65d7e999b2dbf96acbb74604b28a148a7d99e480d438c37fb233",
+    "local/finish_dc.py": "016d8ae790b362ab3b58dd590366662f3da48b166cfa32539da4ccbcee2eeaa9",
+    "local/prepare_dc_graph_correction.py": "5ab8a608f4ad692627eeb7c3a68d735ee2497bb157a9698ce9afa7a222e14f8e",
+    "local/prepare_dc_report.py": "e7cea7fdec79c9eded807702c3618b7b9fb71eb7954dde1f0e2d7eda46ad9d34",
+    "local/publish_dc.py": "e5d2c270386ea6c938619f85cb474327443da28b53f5a97f0629481cce02a686",
+    "local/review_cacc_objects.py": "7a6aefb0b31f2cdca236b1bd82b86da80b93ec3e87d2cb680c816fc9a1c8db82",
+    "local/review_dc_object.py": "bc3d8889c4490a9aa5c7a6d591d84be05f9f3bbe3f04778778b4831a7d325b8f",
+    "local/seal_dc.py": "5396e7e1a7452cffaf2f1525a0d7d3aeb20dd9aad9984dcd8611164aba36631b",
+    "reports/native_particle_record_clear_dc_function_definition.json": "224d20487744469d1b084a5123c6622c81a218dd482f9bd577a62101ed298300"
+  },
+  "sealed_attempt": {
+    "tested_commit": "21a288f2d3c596036498905e77fb7ea991d2bb33",
+    "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\dc-validated-attempt-21a288f2.zip",
+    "sha256": "1fe122afc5ba08e7a5b1bd922e31f21c2d026ddeba7130eb21aa8287f5cbccaf",
+    "payload_members": 2653,
+    "manifest_members": 1,
+    "all_member_hashes_rechecked": true,
+    "libraries": {
+      "bsp_core.lib": "a5a26173e936ff4fb38ef32341ac52c0aeccb6c36c7c26ee58f2c83dc164e6c8",
+      "bsp_lua511.lib": "71e114b0ff6244852d678a5779fcbf28589bdcecbad811aff228ffd5007fe8c7",
+      "bsp_zlib121.lib": "f3f934925213a2ffb81f3aec2afbb065c1733cf43b28dddf31db6a69185c4102"
+    },
+    "tracked_build_inputs": 2609
+  }
+}

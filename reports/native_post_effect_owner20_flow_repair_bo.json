@@ -1,0 +1,76 @@
+{
+ "repairs": [
+  {
+   "function": "00b4e1f0",
+   "owner": "agent/orch3-20260910",
+   "when": "2026-09-14T05:21:20Z",
+   "decompile_lines_before": 49,
+   "gaps": [
+    {
+     "site": "00b4e264",
+     "mnemonic": "CALL",
+     "operands": "0x00bf65ac",
+     "gap_start": "00b4e269",
+     "gap_end_exclusive": "00b4e26f",
+     "bytes": 6,
+     "after_call": true,
+     "sha256": "52853f2a63b1facda05964c1732f00bc55518b51e1c1211c459f4dac714920bc"
+    }
+   ],
+   "events": [
+    {
+     "gap": {
+      "site": "00b4e264",
+      "mnemonic": "CALL",
+      "operands": "0x00bf65ac",
+      "gap_start": "00b4e269",
+      "gap_end_exclusive": "00b4e26f",
+      "bytes": 6,
+      "after_call": true,
+      "sha256": "52853f2a63b1facda05964c1732f00bc55518b51e1c1211c459f4dac714920bc"
+     },
+     "clear": "Success: Cleared flow override at 00b4e264 (was: CALL_RETURN, now: NONE)",
+     "disassemble": "Successfully disassembled 6 byte(s)"
+    }
+   ],
+   "decompile_lines_after": 49,
+   "gaps_remaining": 0
+  },
+  {
+   "function": "00b4e430",
+   "owner": "agent/orch3-20260910",
+   "when": "2026-09-14T05:21:21Z",
+   "decompile_lines_before": 14,
+   "gaps": [
+    {
+     "site": "00b4e440",
+     "mnemonic": "CALL",
+     "operands": "0x00bf65ac",
+     "gap_start": "00b4e445",
+     "gap_end_exclusive": "00b4e448",
+     "bytes": 3,
+     "after_call": true,
+     "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+    }
+   ],
+   "events": [
+    {
+     "gap": {
+      "site": "00b4e440",
+      "mnemonic": "CALL",
+      "operands": "0x00bf65ac",
+      "gap_start": "00b4e445",
+      "gap_end_exclusive": "00b4e448",
+      "bytes": 3,
+      "after_call": true,
+      "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+     },
+     "clear": "Success: Cleared flow override at 00b4e440 (was: CALL_RETURN, now: NONE)",
+     "disassemble": "Successfully disassembled 3 byte(s)"
+    }
+   ],
+   "decompile_lines_after": 11,
+   "gaps_remaining": 0
+  }
+ ]
+}

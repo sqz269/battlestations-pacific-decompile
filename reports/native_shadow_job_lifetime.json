@@ -1,0 +1,1017 @@
+{
+  "schema": "bsp.native_shadow_job_lifetime.v1",
+  "packet": "orch3_native_shadow_job_lifetime_eh",
+  "base_commit": "af212ef31f008889ada610a07b9f29e4f0e9996e",
+  "status": "complete_source_exact_build_primary_generated_review_ghidra_saved",
+  "native_normal_bytes": 266,
+  "routine_count": 3,
+  "newly_defined_function_credit": 1,
+  "standalone_eh_credit": 0,
+  "functions": [
+    {
+      "address": "00a8e090",
+      "end_inclusive": "00a8e15d",
+      "native_bytes": 206,
+      "sha256": "f051cdbc17296f9e1b6165992f72b01d3daa8257786c71d944392041de4f6f23",
+      "live_equals_installed": true,
+      "current_function_status": "defined_full_native_body",
+      "original_abi": "no input; EAX primary; RET",
+      "source": "get_native_shadow_job_00a8e090",
+      "coverage": "complete normal body",
+      "source_file": "src/native_shadow_job_lifetime.cpp"
+    },
+    {
+      "address": "00a8dde0",
+      "end_inclusive": "00a8de13",
+      "native_bytes": 52,
+      "sha256": "6a0884d3a3c0a372dfdc1a3a3dcb18db8249ec345cd458964c9c1a90b5461af7",
+      "live_equals_installed": true,
+      "current_function_status": "defined_full_native_body",
+      "original_abi": "ECX primary; stack flags; EAX primary; RET4",
+      "source": "delete_native_shadow_job_00a8dde0",
+      "coverage": "complete normal body",
+      "source_file": "src/native_shadow_job_lifetime.cpp"
+    },
+    {
+      "address": "00a8ddb0",
+      "end_inclusive": "00a8ddb7",
+      "native_bytes": 8,
+      "sha256": "9d16783b9649f14f2aadbcb7e8e497774fdfd650cc3a294d71f1002fd560a73b",
+      "live_equals_installed": true,
+      "current_function_status": "defined_full_native_body",
+      "original_abi": "ECX secondary; subtract4 then tail A8DDE0; same stack flags",
+      "source": "delete_native_shadow_job_secondary_00a8ddb0",
+      "coverage": "complete normal body",
+      "source_file": "src/native_shadow_job_lifetime.cpp"
+    }
+  ],
+  "native_calls": [
+    {
+      "address": "00a8e0b6",
+      "native": "00415350",
+      "function": "00a8e090",
+      "kind": "direct_call",
+      "contract": "first actual manager"
+    },
+    {
+      "address": "00a8e0ec",
+      "native": "00bf681b",
+      "function": "00a8e090",
+      "kind": "direct_call",
+      "contract": "actual8-byte allocation; ADD ESP,4"
+    },
+    {
+      "address": "00a8e12e",
+      "native": "00415350",
+      "function": "00a8e090",
+      "kind": "direct_call",
+      "contract": "second manager after captured secondary"
+    },
+    {
+      "address": "00a8e135",
+      "native": "00bd0c30",
+      "function": "00a8e090",
+      "kind": "direct_call",
+      "contract": "register captured nullable secondary; provider RET4"
+    },
+    {
+      "address": "00a8de06",
+      "native": "00bf65ac",
+      "function": "00a8dde0",
+      "kind": "direct_call",
+      "contract": "free original primary; ADD ESP,4 at A8DE0B"
+    },
+    {
+      "address": "00a8ddb3",
+      "native": "00a8dde0",
+      "function": "00a8ddb0",
+      "kind": "tail_jump",
+      "contract": "SUB ECX,4; original flags through tail; current caller function undefined"
+    },
+    {
+      "address": "00cb63f3",
+      "native": "00411ee0",
+      "function": "00cb63f0",
+      "kind": "tail_jump",
+      "contract": "existing unwind action only, not standalone source credit"
+    },
+    {
+      "address": "00a8ec5d",
+      "native": "00a8e090",
+      "function": "00a8ea20",
+      "kind": "direct_call",
+      "contract": "caller prepares borrowed job for frame enqueue"
+    }
+  ],
+  "native_import_calls": [
+    {
+      "callsite": "00a8e0cf",
+      "iat_cell": "00ce2218",
+      "import": "EnterCriticalSection",
+      "function": "00a8e090"
+    },
+    {
+      "callsite": "00a8e143",
+      "iat_cell": "00ce2210",
+      "import": "LeaveCriticalSection",
+      "function": "00a8e090"
+    }
+  ],
+  "evidence": {
+    "admission": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-shadow-job-queue-admission-ef\\local\\ef-shadow-job-queue-admission.json",
+      "sha256": "9601e1af7ea4ae114d634fc929dd5888302d8a6fbd5b584e1ae1c8b05c281c37"
+    },
+    "native_capture": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-shadow-job-lifetime-eh\\local\\eh-native-evidence.json",
+      "sha256": "e3a85d4732e22f1abb1af035db776c4007f8fe64bbefde7d3ce171f0ff65c771"
+    },
+    "installed_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "fresh_live_spans": [
+      {
+        "address": "00a8e090",
+        "length": 206,
+        "sha256": "f051cdbc17296f9e1b6165992f72b01d3daa8257786c71d944392041de4f6f23",
+        "disk_hex": "64a1000000006aff68f863cb005064892500000000a1d48ae10083ec0885c00f859a00000056e8957298ff8b701085f6c7442404fc37ce0089742408740b56ff151822ce0083461801c744241400000000833dd48ae1000075506a08e82a87160083c40485c0741bc7400468b5d500c70070b5d500c740046cb5d500a3d48ae100eb0ac705d48ae10000000000a1d48ae10085c0740583c004eb0233c050e81d7298ff8bc8e8f62a140085f6740b834618ff56ff151022ce00a1d48ae1005e8b4c240864890d0000000083c414c3",
+        "live_hex": "64a1000000006aff68f863cb005064892500000000a1d48ae10083ec0885c00f859a00000056e8957298ff8b701085f6c7442404fc37ce0089742408740b56ff151822ce0083461801c744241400000000833dd48ae1000075506a08e82a87160083c40485c0741bc7400468b5d500c70070b5d500c740046cb5d500a3d48ae100eb0ac705d48ae10000000000a1d48ae10085c0740583c004eb0233c050e81d7298ff8bc8e8f62a140085f6740b834618ff56ff151022ce00a1d48ae1005e8b4c240864890d0000000083c414c3",
+        "matches": true
+      },
+      {
+        "address": "00a8dde0",
+        "length": 52,
+        "sha256": "6a0884d3a3c0a372dfdc1a3a3dcb18db8249ec345cd458964c9c1a90b5461af7",
+        "disk_hex": "568bf185f674058d4604eb0233c0f644240801c705d48ae10000000000c7001838ce00740956e8a187160083c4048bc65ec20400",
+        "live_hex": "568bf185f674058d4604eb0233c0f644240801c705d48ae10000000000c7001838ce00740956e8a187160083c4048bc65ec20400",
+        "matches": true
+      },
+      {
+        "address": "00a8ddb0",
+        "length": 8,
+        "sha256": "9d16783b9649f14f2aadbcb7e8e497774fdfd650cc3a294d71f1002fd560a73b",
+        "disk_hex": "83e904e928000000",
+        "live_hex": "83e904e928000000",
+        "matches": true
+      }
+    ],
+    "provider_base_pins": [
+      {
+        "path": "include/bsp/native_render_pointer_arrays.hpp",
+        "disk_sha256": "d9cf406a178986114205fe9a154a2b74c0f8dd857b6186d7d840d8fe398ae881",
+        "git_base_blob_sha256": "d9cf406a178986114205fe9a154a2b74c0f8dd857b6186d7d840d8fe398ae881",
+        "published_root_blob_sha256": "d9cf406a178986114205fe9a154a2b74c0f8dd857b6186d7d840d8fe398ae881",
+        "published_root_same_blob": true
+      },
+      {
+        "path": "src/native_render_pointer_arrays.cpp",
+        "disk_sha256": "ac16b7251f6df37193b88d5d92e8288044872bc2df39b71f29ed83c7291b193c",
+        "git_base_blob_sha256": "ac16b7251f6df37193b88d5d92e8288044872bc2df39b71f29ed83c7291b193c",
+        "published_root_blob_sha256": "ac16b7251f6df37193b88d5d92e8288044872bc2df39b71f29ed83c7291b193c",
+        "published_root_same_blob": true
+      },
+      {
+        "path": "include/bsp/native_instance_group_upload.hpp",
+        "disk_sha256": "e4cf00546eafd12d49f5b8d4b3b15f6c9ad0c8868be3da4acf76a470117a2d99",
+        "git_base_blob_sha256": "e4cf00546eafd12d49f5b8d4b3b15f6c9ad0c8868be3da4acf76a470117a2d99",
+        "published_root_blob_sha256": "e4cf00546eafd12d49f5b8d4b3b15f6c9ad0c8868be3da4acf76a470117a2d99",
+        "published_root_same_blob": true
+      },
+      {
+        "path": "src/native_instance_group_upload.cpp",
+        "disk_sha256": "d233b97b78404568d75e0a7e56f8337d921e1b67c0de75929d237377a1e8c651",
+        "git_base_blob_sha256": "d233b97b78404568d75e0a7e56f8337d921e1b67c0de75929d237377a1e8c651",
+        "published_root_blob_sha256": "d233b97b78404568d75e0a7e56f8337d921e1b67c0de75929d237377a1e8c651",
+        "published_root_same_blob": true
+      },
+      {
+        "path": "include/bsp/native_traceline_render.hpp",
+        "disk_sha256": "71c88e0aa16eacc035ddeec264b9cba33aacef845ba10cf549409a66473085f3",
+        "git_base_blob_sha256": "71c88e0aa16eacc035ddeec264b9cba33aacef845ba10cf549409a66473085f3",
+        "published_root_blob_sha256": "71c88e0aa16eacc035ddeec264b9cba33aacef845ba10cf549409a66473085f3",
+        "published_root_same_blob": true
+      },
+      {
+        "path": "src/native_traceline_render.cpp",
+        "disk_sha256": "409f4c679ff1aa635b9d347c8049600079e822649e3ec751b32ed9d5100fa627",
+        "git_base_blob_sha256": "409f4c679ff1aa635b9d347c8049600079e822649e3ec751b32ed9d5100fa627",
+        "published_root_blob_sha256": "409f4c679ff1aa635b9d347c8049600079e822649e3ec751b32ed9d5100fa627",
+        "published_root_same_blob": true
+      },
+      {
+        "path": "include/bsp/native_instance_collection.hpp",
+        "disk_sha256": "6c60d147f14ca210aa96529e9c45d523053fbf13a103e6dfd705caec54fc2f54",
+        "git_base_blob_sha256": "6c60d147f14ca210aa96529e9c45d523053fbf13a103e6dfd705caec54fc2f54",
+        "published_root_blob_sha256": "6c60d147f14ca210aa96529e9c45d523053fbf13a103e6dfd705caec54fc2f54",
+        "published_root_same_blob": true
+      },
+      {
+        "path": "src/native_instance_collection.cpp",
+        "disk_sha256": "794ea4aa0f5e93d55047b8bd24c6b5207a5c0a0af50569fd13a1c708b210bc2f",
+        "git_base_blob_sha256": "794ea4aa0f5e93d55047b8bd24c6b5207a5c0a0af50569fd13a1c708b210bc2f",
+        "published_root_blob_sha256": "794ea4aa0f5e93d55047b8bd24c6b5207a5c0a0af50569fd13a1c708b210bc2f",
+        "published_root_same_blob": true
+      },
+      {
+        "path": "include/bsp/native_singleton_publication.hpp",
+        "disk_sha256": "0ba3bb843ec6048790eb768f46e6cfeb99c8fae8c3e3f3ae59a0e14cca1e72f5",
+        "git_base_blob_sha256": "0ba3bb843ec6048790eb768f46e6cfeb99c8fae8c3e3f3ae59a0e14cca1e72f5",
+        "published_root_blob_sha256": "0ba3bb843ec6048790eb768f46e6cfeb99c8fae8c3e3f3ae59a0e14cca1e72f5",
+        "published_root_same_blob": true
+      },
+      {
+        "path": "src/native_singleton_publication.cpp",
+        "disk_sha256": "db69108414a5aa844b80b04ca82819139f1dccc422d6f3a954512a4375d07c8a",
+        "git_base_blob_sha256": "db69108414a5aa844b80b04ca82819139f1dccc422d6f3a954512a4375d07c8a",
+        "published_root_blob_sha256": "db69108414a5aa844b80b04ca82819139f1dccc422d6f3a954512a4375d07c8a",
+        "published_root_same_blob": true
+      },
+      {
+        "path": "include/bsp/native_singleton_vector_registration_wrappers.hpp",
+        "disk_sha256": "04d669c9167de50ba74557cc6651ab4dbdc753b8c6f40fdb3a743f65948eab35",
+        "git_base_blob_sha256": "04d669c9167de50ba74557cc6651ab4dbdc753b8c6f40fdb3a743f65948eab35",
+        "published_root_blob_sha256": "04d669c9167de50ba74557cc6651ab4dbdc753b8c6f40fdb3a743f65948eab35",
+        "published_root_same_blob": true
+      },
+      {
+        "path": "src/native_singleton_vector_registration_wrappers.cpp",
+        "disk_sha256": "cd191614f5de77becc8a0a9a73f9c3ebfc1cfd86bb87fdf10a7965d0a5839a90",
+        "git_base_blob_sha256": "cd191614f5de77becc8a0a9a73f9c3ebfc1cfd86bb87fdf10a7965d0a5839a90",
+        "published_root_blob_sha256": "cd191614f5de77becc8a0a9a73f9c3ebfc1cfd86bb87fdf10a7965d0a5839a90",
+        "published_root_same_blob": true
+      },
+      {
+        "path": "include/bsp/native_diagnostic_sink_lifetime.hpp",
+        "disk_sha256": "17bf59a7aee1bda0ceb66989c177ed8e32f207c55087f10b5ecfaaa275791af6",
+        "git_base_blob_sha256": "17bf59a7aee1bda0ceb66989c177ed8e32f207c55087f10b5ecfaaa275791af6",
+        "published_root_blob_sha256": "17bf59a7aee1bda0ceb66989c177ed8e32f207c55087f10b5ecfaaa275791af6",
+        "published_root_same_blob": true
+      },
+      {
+        "path": "src/native_diagnostic_sink_lifetime.cpp",
+        "disk_sha256": "c74781854e773ffdf76f46b823b6751ca795709f277fefc874a2bdfdefd63131",
+        "git_base_blob_sha256": "c74781854e773ffdf76f46b823b6751ca795709f277fefc874a2bdfdefd63131",
+        "published_root_blob_sha256": "c74781854e773ffdf76f46b823b6751ca795709f277fefc874a2bdfdefd63131",
+        "published_root_same_blob": true
+      },
+      {
+        "path": "include/bsp/native_singleton_destruction.hpp",
+        "disk_sha256": "8b16b6514d1cea625520377c7ce38114b30f7be76ed0577a84011814b2b6c60d",
+        "git_base_blob_sha256": "8b16b6514d1cea625520377c7ce38114b30f7be76ed0577a84011814b2b6c60d",
+        "published_root_blob_sha256": "8b16b6514d1cea625520377c7ce38114b30f7be76ed0577a84011814b2b6c60d",
+        "published_root_same_blob": true
+      },
+      {
+        "path": "src/native_singleton_destruction.cpp",
+        "disk_sha256": "97a91e06f17730a88b0ab06af96ea5ac1fcb296538981f3785dc2a2c991be6f8",
+        "git_base_blob_sha256": "97a91e06f17730a88b0ab06af96ea5ac1fcb296538981f3785dc2a2c991be6f8",
+        "published_root_blob_sha256": "97a91e06f17730a88b0ab06af96ea5ac1fcb296538981f3785dc2a2c991be6f8",
+        "published_root_same_blob": true
+      },
+      {
+        "path": "include/bsp/singleton_lifetime.hpp",
+        "disk_sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+        "git_base_blob_sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+        "published_root_blob_sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+        "published_root_same_blob": true
+      },
+      {
+        "path": "src/singleton_lifetime.cpp",
+        "disk_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+        "git_base_blob_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+        "published_root_blob_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+        "published_root_same_blob": true
+      },
+      {
+        "path": "include/bsp/native_game_resource_factory.hpp",
+        "disk_sha256": "27af016f519be76ea85b7fcb81a5fb7372c6b99dc257e30e43ef1c56ea8505e5",
+        "git_base_blob_sha256": "27af016f519be76ea85b7fcb81a5fb7372c6b99dc257e30e43ef1c56ea8505e5",
+        "published_root_blob_sha256": "27af016f519be76ea85b7fcb81a5fb7372c6b99dc257e30e43ef1c56ea8505e5",
+        "published_root_same_blob": true
+      },
+      {
+        "path": "src/native_game_resource_factory.cpp",
+        "disk_sha256": "ab31c1170968de9fad743eb5a0151f79b57057d4881cf3d050946bac86a1e022",
+        "git_base_blob_sha256": "ab31c1170968de9fad743eb5a0151f79b57057d4881cf3d050946bac86a1e022",
+        "published_root_blob_sha256": "ab31c1170968de9fad743eb5a0151f79b57057d4881cf3d050946bac86a1e022",
+        "published_root_same_blob": true
+      },
+      {
+        "path": "include/bsp/native_frame_job_execution.hpp",
+        "disk_sha256": "e90dc5ccead03c5a20f5d9436396dbddd9ee8b2244f25f0c8bca6f57d9bb2f97",
+        "git_base_blob_sha256": "e90dc5ccead03c5a20f5d9436396dbddd9ee8b2244f25f0c8bca6f57d9bb2f97",
+        "published_root_blob_sha256": "e90dc5ccead03c5a20f5d9436396dbddd9ee8b2244f25f0c8bca6f57d9bb2f97",
+        "published_root_same_blob": true
+      },
+      {
+        "path": "src/native_frame_job_execution.cpp",
+        "disk_sha256": "2731bd4ad4a2a1e1a96cc90e5b64b819065db7c45b5f29d5c34b5c27625d4354",
+        "git_base_blob_sha256": "2731bd4ad4a2a1e1a96cc90e5b64b819065db7c45b5f29d5c34b5c27625d4354",
+        "published_root_blob_sha256": "2731bd4ad4a2a1e1a96cc90e5b64b819065db7c45b5f29d5c34b5c27625d4354",
+        "published_root_same_blob": true
+      },
+      {
+        "path": "include/bsp/native_render_command_preparation.hpp",
+        "disk_sha256": "f9d8315d474faf725493ab57827bccac911befc4b568267b1dadded2fa6a4bc0",
+        "git_base_blob_sha256": "f9d8315d474faf725493ab57827bccac911befc4b568267b1dadded2fa6a4bc0",
+        "published_root_blob_sha256": "f9d8315d474faf725493ab57827bccac911befc4b568267b1dadded2fa6a4bc0",
+        "published_root_same_blob": true
+      },
+      {
+        "path": "src/native_render_command_preparation.cpp",
+        "disk_sha256": "866357004ff1cee4058b8be6ccf2a36583b72c66d35d7d52cdf7819355c5205b",
+        "git_base_blob_sha256": "866357004ff1cee4058b8be6ccf2a36583b72c66d35d7d52cdf7819355c5205b",
+        "published_root_blob_sha256": "866357004ff1cee4058b8be6ccf2a36583b72c66d35d7d52cdf7819355c5205b",
+        "published_root_same_blob": true
+      },
+      {
+        "path": "include/bsp/render_command_queue.hpp",
+        "disk_sha256": "bc5b28823becf3dbe9628f7393be7f3ba399895d6935829921113a7496fe8f1a",
+        "git_base_blob_sha256": "bc5b28823becf3dbe9628f7393be7f3ba399895d6935829921113a7496fe8f1a",
+        "published_root_blob_sha256": "bc5b28823becf3dbe9628f7393be7f3ba399895d6935829921113a7496fe8f1a",
+        "published_root_same_blob": true
+      },
+      {
+        "path": "src/render_command_queue.cpp",
+        "disk_sha256": "5ec78b4d95eef3cb597d789b04ab7bb6f0a44915932b721cb8e2e2a65418cb02",
+        "git_base_blob_sha256": "5ec78b4d95eef3cb597d789b04ab7bb6f0a44915932b721cb8e2e2a65418cb02",
+        "published_root_blob_sha256": "5ec78b4d95eef3cb597d789b04ab7bb6f0a44915932b721cb8e2e2a65418cb02",
+        "published_root_same_blob": true
+      },
+      {
+        "path": "src/native_camera_probe.cpp",
+        "disk_sha256": "93754513f93a00a97f775035023b8d2dea1bf28b5e8b99f04c5110a74315b9f5",
+        "git_base_blob_sha256": "93754513f93a00a97f775035023b8d2dea1bf28b5e8b99f04c5110a74315b9f5",
+        "published_root_blob_sha256": "93754513f93a00a97f775035023b8d2dea1bf28b5e8b99f04c5110a74315b9f5",
+        "published_root_same_blob": true
+      }
+    ],
+    "source_pins": [
+      {
+        "path": "include/bsp/native_shadow_job_lifetime.hpp",
+        "sha256": "ce7c1d07105aaeb0acccc5eddbe019f9da398dfd9a9fb545b43c352692b682a3"
+      },
+      {
+        "path": "src/native_shadow_job_lifetime.cpp",
+        "sha256": "43fe79a30d999e53a03ada17f828391a01a16e2dd8c572460aed00f00c90486e"
+      },
+      {
+        "path": "include/bsp/native_singleton_destruction.hpp",
+        "sha256": "31490c096a63c178ed68eaeb0b3525eaaa6b468ae32ff81aeeb9665c5c9a81c5"
+      },
+      {
+        "path": "src/native_singleton_destruction.cpp",
+        "sha256": "77008dbc9c277520f9cd9dcaac8395a25cf1d8ca764021e3a2d966af1d6de409"
+      },
+      {
+        "path": "cmake/startup.cmake",
+        "sha256": "41de40554b865f93591f1e7bec0ed122a8f58329c7ea8ee89f3ea25bb0e5594b"
+      }
+    ]
+  },
+  "contracts": {
+    "context": "Borrow volatile void*& manager01090AA0 and jobE18AD4 through singleton drain; no private registry/owner/callback.",
+    "getter": "Captured fast publication, guarded second read; real8-byte allocation; D5B568/D5B570/D5B56C store order; publication; captured nullable secondary before second manager getter; real BD0C30 registration; captured-section release; fresh post-leave result.",
+    "guard": "State0 after Enter and section+18 increment; catch calls411EE0 only and rethrows; no allocation/publication rollback. Original FH3 installed before fast-path load, unlike explicit source C++ frame.",
+    "terminal": "Public fastcall context wrapper may copy flags. Private naked body TESTs lowbit before unconditional actualpublication clear and nullable secondaryCE3818 stamp, frees actualprimary only on captured bit, returns primary. No normal destructor callback/null success/identity check.",
+    "adjustor": "Naked source SUB ECX,4 and tail JMP to public source terminal wrapper, not numeric game address. Context in EDX and flags stack pass through this shim.",
+    "map": "Current popped D5B56C routes via actual adjustor with same retained context. New default-null pointer at92; prior final member88; total96. All previous members remain in order. Missing binding/unknown profile retain source logic_error and existing manager cleanup behavior.",
+    "producer": "Getter inline stores establish raw8-byte layout. Native tables are D5B568:A8DD60, D5B56C:A8DDB0, D5B570:A8AE50. Transient D5B568 and primary execution not deleting substitutes.",
+    "caller": "Only getter caller A8EC5D inA8EA20, after queueappend/framegetter and before fresh frame-table load/virtual04 enqueue. Raw job/command/pool borrowed through execution; no extra retain/rollback."
+  },
+  "eh": {
+    "function": "00a8e090",
+    "handler": "00cb63f8",
+    "handler_size": 10,
+    "handler_defined": false,
+    "func_info": "00dec650",
+    "unwind_map": "00dec648",
+    "states": [
+      {
+        "state": 0,
+        "next_state": -1,
+        "action": "00cb63f0",
+        "action_size": 8,
+        "body": "LEA ECX,[EBP-14h]; JMP 00411ee0"
+      }
+    ],
+    "arming": "after actual EnterCriticalSection and section+18 increment",
+    "cleanup": "captured local guard only, no allocation/publication/queue rollback",
+    "other_candidate_entries_have_local_eh": false
+  },
+  "analysis_gaps": [],
+  "changes_to_existing": {
+    "files": [
+      "include/bsp/native_singleton_destruction.hpp",
+      "src/native_singleton_destruction.cpp"
+    ],
+    "binding_size_was": 92,
+    "binding_size_is": 96,
+    "old_last_member_offset": 88,
+    "appended_member_offset": 92,
+    "new_profile": "00d5b56c",
+    "new_binding": "NativeShadowJobContext* shadow_job{}",
+    "native_BD0400_credit_added": false,
+    "existing_unknown_profile_diagnostic_preserved": true
+  },
+  "validation": {
+    "source_review": "accepted exact coupled source and complete current generated objects",
+    "native_call_verifier": {
+      "checked": 8,
+      "failed": 0,
+      "output": "J:\\PROG\\battlestations-pacific-decompile-orch3-shadow-update-leaves-ei\\reports\\native_shadow_job_lifetime.json: 8 call rows checked, 0 failed\n",
+      "historical_worker_failure": "Originaldraft8/1retainedbecauseadjustorwasundefinedthen."
+    },
+    "build": {
+      "tested_commit": "3c584d0b28e40ff1f15ddb7b42ba47dfc1ec97d7",
+      "passed": true,
+      "existing_ctests": 2,
+      "tracked_inputs": 2639,
+      "verified_seed_headers": 1,
+      "stamp_sha256": "6ba07923ccdfbf714baefcf3e920ea5fe8f518df503d7b77e3ce46c6996281c9",
+      "objects": {
+        "build/win32/bsp_core.dir/Release/native_shadow_update_leaves.obj": "d418853f49a568b1f6d7486ab4bd651034116a73bd4f1bdf1741fbb30b741380",
+        "build/win32/bsp_core.dir/Release/native_shadow_job_lifetime.obj": "521fcd5bbd9ac5fa21fd58949918279a9a0dcfeca8231023c65bfa1b17cb277b",
+        "build/win32/bsp_core.dir/Release/native_singleton_destruction.obj": "a4bd82546d39ce6fd6dfc3af04dd5520a47b38d382917997fa8b555a5ca4490a"
+      }
+    },
+    "generated_review": "accepted getter/terminal/adjustor and entire current dispatcher;17 other singleton code sections unchanged",
+    "tests_added": 0,
+    "runtime_fixture": "none",
+    "game_validated": false
+  },
+  "limits": [
+    "Explicit context C++ ABI, not original no-input getter or whole52-byte/native public-stack alias identity.",
+    "Source wrapper may capture/copy flags before private naked terminal. Private terminal ordering is explicit; generated target must be checked.",
+    "No standalone EH body credit or Ghidra definition/annotation by worker; primary owns actual override repair and adjustor definition.",
+    "No arbitrary original IAT replacement, SEH/hardware-fault/nativeFH3 parity, foreign longjmp or concurrent teardown proof.",
+    "Current CRT and raw manager/guard/registration providers retain their established restrictions.",
+    "No primary job execution, transient base-profile admission, A8EA20/queue/A8BD20 implementation or game/render validation."
+  ],
+  "worker_rules": {
+    "callee_before_contract": "current actual source providers plus pinned native EF/EH evidence",
+    "boundary_before_attribution": "Original undefined adjustor and deleting-function body hole recorded in historical evidence; primary defined/recreated full spans, preserving existing name/comments before reviewed annotation.",
+    "all_callsites": "fresh xrefs for all3; caller preparations retained inEF",
+    "producer_before_layout": "actual getter stores and pinned3-word table",
+    "coverage": "3 complete normal bodies,266bytes, explicit-context ABI",
+    "runtime_claim": "none",
+    "argument_count": "native getterRET, terminalRET4, adjustortail; cdeclfreeADDESP4 retained",
+    "register_provenance": "full54-instruction getter and17-instruction installed terminal plus2-instruction adjustor",
+    "lease_scope": "only3 reconstructed addresses and owned/coordinated files; no registry lease",
+    "numeric_call_rows": "all6 direct and2 tail rows; imports separately identified by numeric IAT cell"
+  },
+  "primary_publication": {
+    "tested_commit": "3c584d0b28e40ff1f15ddb7b42ba47dfc1ec97d7",
+    "worker_final_commit": "9cdfda75261de1e03c4d0da59006b1dbc035eb0a",
+    "sealed_attempt": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\ehi-validated-attempt.zip",
+      "sha256": "2d874bffde82b207e428bee0ad512aec8dc275bd75bb7bac9a933bbc20e8d9bf",
+      "bytes": 19921698,
+      "payload_count": 2720,
+      "all_payload_hashes_reread": true,
+      "tested_commit": "3c584d0b28e40ff1f15ddb7b42ba47dfc1ec97d7",
+      "tracked_inputs": 2639,
+      "verified_seed_headers": 1,
+      "root_raw_identical_inputs": 2630,
+      "root_newline_only_variants": 9,
+      "seed": {
+        "tested_sha256": "26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c",
+        "root_sha256": "26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c",
+        "ignored": true
+      },
+      "export_metadata_qualification": "Exporter inventory metadata can retain historical names; refreshed code plus separate live prototype/comment readback records current reviewed names and bounds.",
+      "qualification": "Six normal bodies,307 native bytes. Exact EI setters35 bytes; other interfaces have explicit source contexts. No standalone EH credit, lifetime/material fixture, original exception-frame identity or gameplay/render validation. Existing tests are general math tests."
+    },
+    "generated_review": {
+      "status": "accepted_complete_current_objects_and_changed_dispatcher",
+      "tested_commit": "3c584d0b28e40ff1f15ddb7b42ba47dfc1ec97d7",
+      "objects": {
+        "native_shadow_job_lifetime": {
+          "sha256": "521fcd5bbd9ac5fa21fd58949918279a9a0dcfeca8231023c65bfa1b17cb277b",
+          "bytes": 4519,
+          "exact_library_member_offset": 12692642
+        },
+        "native_shadow_update_leaves": {
+          "sha256": "d418853f49a568b1f6d7486ab4bd651034116a73bd4f1bdf1741fbb30b741380",
+          "bytes": 1106,
+          "exact_library_member_offset": 12691476
+        },
+        "native_singleton_destruction": {
+          "sha256": "a4bd82546d39ce6fd6dfc3af04dd5520a47b38d382917997fa8b555a5ca4490a",
+          "bytes": 16680,
+          "exact_library_member_offset": 51071906
+        }
+      },
+      "build_stamp_sha256": "6ba07923ccdfbf714baefcf3e920ea5fe8f518df503d7b77e3ce46c6996281c9",
+      "coff_sha256": "64caac190222e052914b16e9eb853ef7a5b703eafa04dd92d714775f327591ff",
+      "listing_sha256": "f910b5eaa7d96ee01fb23381f9f7c1457ae392ea73f557840198f82f97cb4ad6",
+      "source_review_pins": {
+        "eh-primary-source-review.json": "37493267c3becfaea414c46f0d8745a74c8e2870d82fc4b9f666494de6382fb6",
+        "ei-primary-source-review.json": "c217a2ad6a5c77c2ba6568368caec6a30fe2b19b154b2d14e3ee118ee1399db5"
+      },
+      "singleton_prior_comparison": {
+        "tested_commit": "06aa8fa3d86e4d79c418a2e896504d523f8cde10",
+        "object_sha256": "002105ece94954dcc1abdd95db117240a116d02fb5cadeca8375bc3757e2b89d",
+        "sections": [
+          {
+            "section": 6,
+            "symbol": "??0exception@std@@QAE@ABV01@@Z",
+            "bytes": 45,
+            "same_code_and_normalized_relocations": true
+          },
+          {
+            "section": 7,
+            "symbol": "??0exception@std@@QAE@QBD@Z",
+            "bytes": 57,
+            "same_code_and_normalized_relocations": true
+          },
+          {
+            "section": 8,
+            "symbol": "??0logic_error@std@@QAE@ABV01@@Z",
+            "bytes": 51,
+            "same_code_and_normalized_relocations": true
+          },
+          {
+            "section": 9,
+            "symbol": "??0logic_error@std@@QAE@PBD@Z",
+            "bytes": 66,
+            "same_code_and_normalized_relocations": true
+          },
+          {
+            "section": 10,
+            "symbol": "??1exception@std@@UAE@XZ",
+            "bytes": 17,
+            "same_code_and_normalized_relocations": true
+          },
+          {
+            "section": 12,
+            "symbol": "??1logic_error@std@@UAE@XZ",
+            "bytes": 17,
+            "same_code_and_normalized_relocations": true
+          },
+          {
+            "section": 14,
+            "symbol": "??_Gexception@std@@UAEPAXI@Z",
+            "bytes": 48,
+            "same_code_and_normalized_relocations": true
+          },
+          {
+            "section": 15,
+            "symbol": "??_Glogic_error@std@@UAEPAXI@Z",
+            "bytes": 48,
+            "same_code_and_normalized_relocations": true
+          },
+          {
+            "section": 16,
+            "symbol": "??_H@YGXPAXIIP6EPAX0@Z@Z",
+            "bytes": 38,
+            "same_code_and_normalized_relocations": true
+          },
+          {
+            "section": 17,
+            "symbol": "?current_crt_invalid_parameter@ANON@bsp@@YAXXZ",
+            "bytes": 6,
+            "same_code_and_normalized_relocations": true
+          },
+          {
+            "section": 18,
+            "symbol": "?delete_current_profile@ANON@bsp@@YIXPAXABUNativeSingletonDeletionBindings@2@II@Z",
+            "bytes": 1347,
+            "same_code_and_normalized_relocations": false
+          },
+          {
+            "section": 19,
+            "symbol": "?delete_native_singleton_base_00412440@bsp@@YIPAXPAX0I@Z",
+            "bytes": 31,
+            "same_code_and_normalized_relocations": true
+          },
+          {
+            "section": 20,
+            "symbol": "?destroy_manager_body@ANON@bsp@@YIXPAXABUNativeSingletonDeletionBindings@2@@Z",
+            "bytes": 167,
+            "same_code_and_normalized_relocations": true
+          },
+          {
+            "section": 21,
+            "symbol": "?destroy_native_singleton_manager_00bd0400@bsp@@YIXPAXABUNativeSingletonDeletionBindings@1@@Z",
+            "bytes": 101,
+            "same_code_and_normalized_relocations": true
+          },
+          {
+            "section": 22,
+            "symbol": "__ehhandler$?destroy_native_singleton_manager_00bd0400@bsp@@YIXPAXABUNativeSingletonDeletionBindings@1@@Z",
+            "bytes": 29,
+            "same_code_and_normalized_relocations": true
+          },
+          {
+            "section": 23,
+            "symbol": "?owns_identity@XLiveOwnerAllocation@bsp@@QBE_NPBX@Z",
+            "bytes": 13,
+            "same_code_and_normalized_relocations": true
+          },
+          {
+            "section": 24,
+            "symbol": "?probe_native_gameplay_effect_registry_0086b0b0@bsp@@YIXPAX0PBD@Z",
+            "bytes": 68,
+            "same_code_and_normalized_relocations": true
+          },
+          {
+            "section": 25,
+            "symbol": "?what@exception@std@@UBEPBDXZ",
+            "bytes": 14,
+            "same_code_and_normalized_relocations": true
+          }
+        ]
+      },
+      "checks": [
+        "All three complete current objects are exact members of the pinned current bsp_core.lib. All sections, symbols and relocations retained. EI setters equal complete native13/22-byte bodies, zero relocations; getter10 bytes has one current cell read.",
+        "EH complete getter S9: current publication+34, manager+40, section load+48, enter+61, counter read+6A/store+74, state0+7F, recheck+86. Allocation+ A4, table writes+BA/C7/D4 precede publication+DF, fresh publication+E6 and nullable secondary+EC/EF precede second manager+F2 and real registration+FF. Counter decrement+10B/115 then leave+11E before current publication+127.",
+        "Getter catch begins+145, concrete guard destruction+149 then rethrow+155. Current FH3 handler S10 and88-byte S13 C++ exception tables retained/reviewed as compiler output, not original FH3 identity or separate native reconstruction credit.",
+        "EH primary public wrapper12 bytes restores frame then tail-jumps with EDX bound to actual publication cell. Private48-byte body tests original low flags byte before unconditional global clear and secondary CE3818 stamp, conditionally frees original primary, returns EAX primary and RET4. Secondary8-byte adjustor tail targets the public source primary wrapper, not original numeric address.",
+        "Entire changed1347-byte dispatcher reviewed. D5B56C compare reaches+284, loads binding+5C, null goes to existing logic_error+527, otherwise forwards flags and actual owner to current secondary source body+292. All17 other current code sections match prior validated EE object bytes and normalized relocation triples. Existing binding offsets preserved; appended context92, struct96."
+      ],
+      "findings": [],
+      "fixture_tested": false,
+      "native_fixture_tested": false,
+      "game_validated": false,
+      "limits": "New explicit-context C++ EH and getter ABIs; exact setter instruction/call shape only. No injected caller, hardware-fault/FP-fault, original exception frame or game/render validation. Existing math CTests do not exercise job lifetime or material effect behavior.",
+      "ledger_verification_history": [
+        {
+          "first_attempt": "All six add-name/add-function operations succeeded; ordered unowned-row assertion failed because ledger CLI sorts shards.",
+          "resolution": "Compared every unowned JSON record as a multiset against the saved before snapshot, then restored original row order and exact unowned JSON text with owned replacements/appends. An intermediate serialization changed whitespace; diff review caught it and exact saved lines were restored. No repeated ledger additions or lost rows."
+        }
+      ],
+      "ledger_rows": [
+        {
+          "address": "00a8e090",
+          "ghidra_name": "BSP_ShadowJob_Get",
+          "cpp_symbol": "get_native_shadow_job_00a8e090",
+          "name": "get_native_shadow_job_00a8e090",
+          "source": "src/native_shadow_job_lifetime.cpp",
+          "header": "include/bsp/native_shadow_job_lifetime.hpp",
+          "doc": "docs/NATIVE_SHADOW_JOB_LIFETIME.md",
+          "report": "reports/native_shadow_job_lifetime.json",
+          "end_inclusive": "00a8e15d",
+          "native_bytes": 206,
+          "native_sha256": "f051cdbc17296f9e1b6165992f72b01d3daa8257786c71d944392041de4f6f23",
+          "original_abi": "no input; EAX primary; RET",
+          "native_prototype": "void* BSP_ShadowJob_Get(void)",
+          "native_calling_convention": "__cdecl",
+          "whole_native_code_identity": false,
+          "abi_compatible": false,
+          "native_end_exclusive": "00a8e15e",
+          "status": "complete_actual_storage_source_build_and_generated_order_reviewed",
+          "tested_commit": "3c584d0b28e40ff1f15ddb7b42ba47dfc1ec97d7",
+          "unique_native_body_credit": 1,
+          "body_role": "normal_function",
+          "fixture_tested": false,
+          "native_fixture_tested": false,
+          "game_validated": false,
+          "abi_qualification": "New explicit borrowed context/cell C++ ABI; no complete original ABI or code identity.",
+          "evidence": "Provisional descriptive name from complete native 00a8e090..00a8e15d, SHA256 f051cdbc17296f9e1b6165992f72b01d3daa8257786c71d944392041de4f6f23. no input; EAX primary; RET. See docs/NATIVE_SHADOW_JOB_LIFETIME.md and reports/native_shadow_job_lifetime.json for actual storage/providers and ordering. Single clean coupled EH+EI Win32 3c584d0b28e40ff1f15ddb7b42ba47dfc1ec97d7,2 existing math CTests, complete3-object primary review; New explicit borrowed context/cell C++ ABI; no complete original ABI or code identity. No runtime fixture or gameplay validation. Parent frame/update bodies remain incomplete."
+        },
+        {
+          "address": "00a8dde0",
+          "ghidra_name": "BSP_ShadowJob_DeletingDestructor",
+          "cpp_symbol": "delete_native_shadow_job_00a8dde0",
+          "name": "delete_native_shadow_job_00a8dde0",
+          "source": "src/native_shadow_job_lifetime.cpp",
+          "header": "include/bsp/native_shadow_job_lifetime.hpp",
+          "doc": "docs/NATIVE_SHADOW_JOB_LIFETIME.md",
+          "report": "reports/native_shadow_job_lifetime.json",
+          "end_inclusive": "00a8de13",
+          "native_bytes": 52,
+          "native_sha256": "6a0884d3a3c0a372dfdc1a3a3dcb18db8249ec345cd458964c9c1a90b5461af7",
+          "original_abi": "ECX primary; stack flags; EAX primary; RET4",
+          "native_prototype": "void* BSP_ShadowJob_DeletingDestructor(uint flags)",
+          "native_calling_convention": "__thiscall",
+          "whole_native_code_identity": false,
+          "abi_compatible": false,
+          "native_end_exclusive": "00a8de14",
+          "status": "complete_actual_storage_source_build_and_generated_order_reviewed",
+          "tested_commit": "3c584d0b28e40ff1f15ddb7b42ba47dfc1ec97d7",
+          "unique_native_body_credit": 1,
+          "body_role": "normal_function",
+          "fixture_tested": false,
+          "native_fixture_tested": false,
+          "game_validated": false,
+          "abi_qualification": "New explicit borrowed context/cell C++ ABI; no complete original ABI or code identity.",
+          "evidence": "Provisional descriptive name from complete native 00a8dde0..00a8de13, SHA256 6a0884d3a3c0a372dfdc1a3a3dcb18db8249ec345cd458964c9c1a90b5461af7. ECX primary; stack flags; EAX primary; RET4. See docs/NATIVE_SHADOW_JOB_LIFETIME.md and reports/native_shadow_job_lifetime.json for actual storage/providers and ordering. Single clean coupled EH+EI Win32 3c584d0b28e40ff1f15ddb7b42ba47dfc1ec97d7,2 existing math CTests, complete3-object primary review; New explicit borrowed context/cell C++ ABI; no complete original ABI or code identity. No runtime fixture or gameplay validation. Parent frame/update bodies remain incomplete."
+        },
+        {
+          "address": "00a8ddb0",
+          "ghidra_name": "BSP_ShadowJob_Secondary_DeletingDestructor",
+          "cpp_symbol": "delete_native_shadow_job_secondary_00a8ddb0",
+          "name": "delete_native_shadow_job_secondary_00a8ddb0",
+          "source": "src/native_shadow_job_lifetime.cpp",
+          "header": "include/bsp/native_shadow_job_lifetime.hpp",
+          "doc": "docs/NATIVE_SHADOW_JOB_LIFETIME.md",
+          "report": "reports/native_shadow_job_lifetime.json",
+          "end_inclusive": "00a8ddb7",
+          "native_bytes": 8,
+          "native_sha256": "9d16783b9649f14f2aadbcb7e8e497774fdfd650cc3a294d71f1002fd560a73b",
+          "original_abi": "ECX secondary; subtract4 then tail A8DDE0; same stack flags",
+          "native_prototype": "void* BSP_ShadowJob_Secondary_DeletingDestructor(uint flags)",
+          "native_calling_convention": "__thiscall",
+          "whole_native_code_identity": false,
+          "abi_compatible": false,
+          "native_end_exclusive": "00a8ddb8",
+          "status": "complete_actual_storage_source_build_and_generated_order_reviewed",
+          "tested_commit": "3c584d0b28e40ff1f15ddb7b42ba47dfc1ec97d7",
+          "unique_native_body_credit": 1,
+          "body_role": "normal_function",
+          "fixture_tested": false,
+          "native_fixture_tested": false,
+          "game_validated": false,
+          "abi_qualification": "New explicit borrowed context/cell C++ ABI; no complete original ABI or code identity.",
+          "evidence": "Provisional descriptive name from complete native 00a8ddb0..00a8ddb7, SHA256 9d16783b9649f14f2aadbcb7e8e497774fdfd650cc3a294d71f1002fd560a73b. ECX secondary; subtract4 then tail A8DDE0; same stack flags. See docs/NATIVE_SHADOW_JOB_LIFETIME.md and reports/native_shadow_job_lifetime.json for actual storage/providers and ordering. Single clean coupled EH+EI Win32 3c584d0b28e40ff1f15ddb7b42ba47dfc1ec97d7,2 existing math CTests, complete3-object primary review; New explicit borrowed context/cell C++ ABI; no complete original ABI or code identity. No runtime fixture or gameplay validation. Parent frame/update bodies remain incomplete."
+        },
+        {
+          "address": "00b7aae0",
+          "ghidra_name": "BSP_Render_GetOverrideContextWord",
+          "cpp_symbol": "get_native_override_context_word_00b7aae0",
+          "name": "get_native_override_context_word_00b7aae0",
+          "source": "src/native_shadow_update_leaves.cpp",
+          "header": "include/bsp/native_shadow_update_leaves.hpp",
+          "doc": "docs/NATIVE_SHADOW_UPDATE_LEAVES.md",
+          "report": "reports/native_shadow_update_leaves.json",
+          "end_inclusive": "00b7aae5",
+          "native_bytes": 6,
+          "native_sha256": "1fd7c5b1649c49e88c0890a04663dd3d92480c34f886fe031c3aa1938f2a6b98",
+          "original_abi": "No receiver or public stack inputs. MOV EAX,[0109019C]; RET.",
+          "native_prototype": "uint BSP_Render_GetOverrideContextWord(void)",
+          "native_calling_convention": "__cdecl",
+          "whole_native_code_identity": false,
+          "abi_compatible": false,
+          "native_end_exclusive": "00b7aae6",
+          "status": "complete_actual_storage_source_build_and_generated_order_reviewed",
+          "tested_commit": "3c584d0b28e40ff1f15ddb7b42ba47dfc1ec97d7",
+          "unique_native_body_credit": 1,
+          "body_role": "normal_function",
+          "fixture_tested": false,
+          "native_fixture_tested": false,
+          "game_validated": false,
+          "abi_qualification": "New explicit borrowed context/cell C++ ABI; no complete original ABI or code identity.",
+          "evidence": "Provisional descriptive name from complete native 00b7aae0..00b7aae5, SHA256 1fd7c5b1649c49e88c0890a04663dd3d92480c34f886fe031c3aa1938f2a6b98. No receiver or public stack inputs. MOV EAX,[0109019C]; RET.. See docs/NATIVE_SHADOW_UPDATE_LEAVES.md and reports/native_shadow_update_leaves.json for actual storage/providers and ordering. Single clean coupled EH+EI Win32 3c584d0b28e40ff1f15ddb7b42ba47dfc1ec97d7,2 existing math CTests, complete3-object primary review; New explicit borrowed context/cell C++ ABI; no complete original ABI or code identity. No runtime fixture or gameplay validation. Parent frame/update bodies remain incomplete."
+        },
+        {
+          "address": "00b400c0",
+          "ghidra_name": "BSP_MaterialEffect_SetByte13C",
+          "cpp_symbol": "set_native_material_effect_byte_00b400c0",
+          "name": "set_native_material_effect_byte_00b400c0",
+          "source": "src/native_shadow_update_leaves.cpp",
+          "header": "include/bsp/native_shadow_update_leaves.hpp",
+          "doc": "docs/NATIVE_SHADOW_UPDATE_LEAVES.md",
+          "report": "reports/native_shadow_update_leaves.json",
+          "end_inclusive": "00b400cc",
+          "native_bytes": 13,
+          "native_sha256": "70946b1c143595bd0b6bbde95c841671836d10acbc07d2c467544b26a485c469",
+          "original_abi": "ECX receiver; public DWORD low byte at entryESP+4; RET4; upper EAX bits retained by AL-only load.",
+          "native_prototype": "void BSP_MaterialEffect_SetByte13C(uint word)",
+          "native_calling_convention": "__thiscall",
+          "whole_native_code_identity": true,
+          "abi_compatible": true,
+          "native_end_exclusive": "00b400cd",
+          "status": "complete_actual_storage_source_build_and_generated_order_reviewed",
+          "tested_commit": "3c584d0b28e40ff1f15ddb7b42ba47dfc1ec97d7",
+          "unique_native_body_credit": 1,
+          "body_role": "normal_function",
+          "fixture_tested": false,
+          "native_fixture_tested": false,
+          "game_validated": false,
+          "abi_qualification": "Exact emitted setter body and native raw call shape; no injected caller/fault proof.",
+          "evidence": "Provisional descriptive name from complete native 00b400c0..00b400cc, SHA256 70946b1c143595bd0b6bbde95c841671836d10acbc07d2c467544b26a485c469. ECX receiver; public DWORD low byte at entryESP+4; RET4; upper EAX bits retained by AL-only load.. See docs/NATIVE_SHADOW_UPDATE_LEAVES.md and reports/native_shadow_update_leaves.json for actual storage/providers and ordering. Single clean coupled EH+EI Win32 3c584d0b28e40ff1f15ddb7b42ba47dfc1ec97d7,2 existing math CTests, complete3-object primary review; Exact emitted setter body and native raw call shape; no injected caller/fault proof. No runtime fixture or gameplay validation. Parent frame/update bodies remain incomplete."
+        },
+        {
+          "address": "00b40820",
+          "ghidra_name": "BSP_MaterialEffect_SetIndexedFloatBits",
+          "cpp_symbol": "set_native_material_effect_float_bits_00b40820",
+          "name": "set_native_material_effect_float_bits_00b40820",
+          "source": "src/native_shadow_update_leaves.cpp",
+          "header": "include/bsp/native_shadow_update_leaves.hpp",
+          "doc": "docs/NATIVE_SHADOW_UPDATE_LEAVES.md",
+          "report": "reports/native_shadow_update_leaves.json",
+          "end_inclusive": "00b40835",
+          "native_bytes": 22,
+          "native_sha256": "a00913eac55b683f5cfa2f7f95c5872ef64a04e67f152ff56c19e54b47f8e57f",
+          "original_abi": "ECX receiver; DWORD index at entryESP+4 and binary32 bits at entryESP+8; RET8.",
+          "native_prototype": "void BSP_MaterialEffect_SetIndexedFloatBits(uint index, uint value_bits)",
+          "native_calling_convention": "__thiscall",
+          "whole_native_code_identity": true,
+          "abi_compatible": true,
+          "native_end_exclusive": "00b40836",
+          "status": "complete_actual_storage_source_build_and_generated_order_reviewed",
+          "tested_commit": "3c584d0b28e40ff1f15ddb7b42ba47dfc1ec97d7",
+          "unique_native_body_credit": 1,
+          "body_role": "normal_function",
+          "fixture_tested": false,
+          "native_fixture_tested": false,
+          "game_validated": false,
+          "abi_qualification": "Exact emitted setter body and native raw call shape; no injected caller/fault proof.",
+          "evidence": "Provisional descriptive name from complete native 00b40820..00b40835, SHA256 a00913eac55b683f5cfa2f7f95c5872ef64a04e67f152ff56c19e54b47f8e57f. ECX receiver; DWORD index at entryESP+4 and binary32 bits at entryESP+8; RET8.. See docs/NATIVE_SHADOW_UPDATE_LEAVES.md and reports/native_shadow_update_leaves.json for actual storage/providers and ordering. Single clean coupled EH+EI Win32 3c584d0b28e40ff1f15ddb7b42ba47dfc1ec97d7,2 existing math CTests, complete3-object primary review; Exact emitted setter body and native raw call shape; no injected caller/fault proof. No runtime fixture or gameplay validation. Parent frame/update bodies remain incomplete."
+        }
+      ]
+    },
+    "root_inputs": {
+      "tested_commit": "3c584d0b28e40ff1f15ddb7b42ba47dfc1ec97d7",
+      "tracked_inputs": 2639,
+      "raw_identical": 2630,
+      "newline_only_variants": [
+        {
+          "path": "include/bsp/native_particle_model_construction.hpp",
+          "tested_sha256": "224d95392e8fe949a0059e6428528bdeadfbc7cffc8e02201459521b769befc6",
+          "root_sha256": "7f5bd53cb3fed8ecdc0bdf678f766105e082bdef949d79cb5f3c4a40ab8721e8",
+          "tested_bytes": 7466,
+          "root_bytes": 7609,
+          "newline_only": true
+        },
+        {
+          "path": "include/bsp/native_particle_model_update.hpp",
+          "tested_sha256": "261cafbe182db8cd55636eb1c47732b5a7acc40235d733cb9801a8c8b8befac4",
+          "root_sha256": "7578f73927ae1d7214e9a0ee285fabcf7797597e4b1d26f5dfbb87d0a889485d",
+          "tested_bytes": 3494,
+          "root_bytes": 3559,
+          "newline_only": true
+        },
+        {
+          "path": "include/bsp/native_particle_record_update.hpp",
+          "tested_sha256": "93ad6d88437eb448bead0b14e6697b2fb24c111adfe166eecdb6860bd3d8d3f6",
+          "root_sha256": "8a2e359c9453f479f6afcb8fd51669138202349f6619616d32dadad04e1b4c0b",
+          "tested_bytes": 3039,
+          "root_bytes": 3091,
+          "newline_only": true
+        },
+        {
+          "path": "include/bsp/native_post_effect_owner_20h.hpp",
+          "tested_sha256": "d1175b7041aa203a35b9e04a3d18a38759e646a73fa7b4d0b55a75b2dbed80ad",
+          "root_sha256": "a05e7bf9f16f2fca5ee3976d6ed5199df98b881951f2f18218862f58caed450a",
+          "tested_bytes": 4115,
+          "root_bytes": 4199,
+          "newline_only": true
+        },
+        {
+          "path": "src/native_particle_model_construction.cpp",
+          "tested_sha256": "b14939017920fa5def99fe21bee763b7258acc25277024b74c611c7086fc415c",
+          "root_sha256": "1081e0cdf6470efa389ac8f1abf96863c02ad66f2caa9a6e7ac01adeea89bccc",
+          "tested_bytes": 17269,
+          "root_bytes": 17607,
+          "newline_only": true
+        },
+        {
+          "path": "src/native_particle_model_update.cpp",
+          "tested_sha256": "284118adc64ece074bb472396795a3811371801fa470f3ac7e647158e40b94f7",
+          "root_sha256": "9db5e5aed36166bfe0384a70c33005fc626b4a2a3ab74f2214d95a230fa718c1",
+          "tested_bytes": 26303,
+          "root_bytes": 26930,
+          "newline_only": true
+        },
+        {
+          "path": "src/native_particle_record_update.cpp",
+          "tested_sha256": "ff80442280c3cdfe4ca918fa10a7288577a8c7e0c1de704431c25a0bde1fb057",
+          "root_sha256": "c09d90371c1adde6cc169b06f79f65780aa9a1db67efcd93c74e0ea7f6dfeb1d",
+          "tested_bytes": 40274,
+          "root_bytes": 41231,
+          "newline_only": true
+        },
+        {
+          "path": "src/native_particle_type_loading.cpp",
+          "tested_sha256": "8426d5312eb51ef1a6075cada010c57d256fbddfc9061e5e61719be847f3b375",
+          "root_sha256": "87840100602a06d5656692631430b2ada665a75ae4dc99aad99b467a4ea7d1ac",
+          "tested_bytes": 21517,
+          "root_bytes": 22018,
+          "newline_only": true
+        },
+        {
+          "path": "src/native_post_effect_owner_20h.cpp",
+          "tested_sha256": "330fe02662fbd32650c17ff35c8217880dbcca3425e4212c079dca3e5838fc1c",
+          "root_sha256": "a9060716c813ecdec58c1556f1c76bb807b76a82340ebf0c9109601ac448aa07",
+          "tested_bytes": 7675,
+          "root_bytes": 7830,
+          "newline_only": true
+        }
+      ],
+      "seed": {
+        "tested_sha256": "26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c",
+        "root_sha256": "26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c",
+        "ignored": true
+      },
+      "qualification": "Actual worker inputs were tested and archived; root Git inputs match. Raw newline variants retained separately; no redundant root build."
+    },
+    "ghidra": {
+      "project": "C:/Users/sqz269/bsp.gpr",
+      "program": "/battlestationspacific.exe",
+      "saved": true,
+      "comments_preserved": true,
+      "exports_refreshed": true,
+      "functions": {
+        "00a8e090": "Function: BSP_ShadowJob_Get at 00a8e090\nSignature: void * __cdecl BSP_ShadowJob_Get(void)\nEntry: 00a8e090\nBody: 00a8e090 - 00a8e15d\n{\n \"function_name\": \"BSP_ShadowJob_Get\",\n \"address\": \"00a8e090\",\n \"program\": \"battlestationspacific.exe\",\n \"instruction_count\": 54,\n \"basic_block_count\": 15,\n \"edge_count\": 20,\n \"call_count\": 4,\n \"string_ref_count\": 0,\n \"param_count\": 0,\n \"cyclomatic_complexity\": 7,\n \"prologue_stripped\": false,\n \"epilogue_stripped\": false,\n \"callee_names\": [\n  \"BSP_SingletonLifetime_GetManager\",\n  \"BSP_SingletonLifetime_Register\",\n  \"operator_new\"\n ],\n \"string_constants\": [],\n \"immediate_values\": [\n  -1,\n  1,\n  4,\n  20,\n  8\n ],\n \"basic_block_hashes\": [\n  \"c29a653e415ac6669e62c0d52616a063823dc937d7aab93382ce56b00e113789\",\n  \"3cf84defe1b9279b912add7e5503e7a918a38b19b28110b9353e6e4872769fae\",\n  \"018627bb02e209bd2982254ee53099c59b56df6631a3f05f87e937c0d50e4e30\",\n  \"b4add7b56f8b2044db0a18618270273f050c945d64adf3b76b4994e71c3f300e\",\n  \"cb3812e23706c83ddab216377e7fbcbae11ea267f52b32694548a073042a78a3\",\n  \"777b6cd7e5474985b4d428cba45712bef3c052381ea1dd41ad3259387b0722b8\",\n  \"9b579a67b3194e1a06bcc9b1ac6a826e7a4390c6e241cb64ed1510028211b4db\",\n  \"de57b4f39729aaf93d99753f98aecf7ff95b271cf39df8ce5559778806091e9f\",\n  \"759cba6dc609fe7a3e5078baa8134db30c1e5e31cee1bc1d2b9cc9a001710fa1\",\n  \"0592648e751381af844bb5ce754cd6d400932e42470bd01a38a326fe4dff30b4\",\n  \"310d4b2248d5ec6bed496426cd09203e61e695b6d064228d4e73e609a27c8605\",\n  \"08028fd15ef8d0c3f2834644075f7b96595d75451ee0044290563a7fccea3483\",\n  \"55df6c99df04b9fa4506f77fb49c64fc7929d9056f447b5bfada12d0ca544442\",\n  \"b91ab93caf19cecae10e2df6cb69217c90dd84fc713cbb6ff9fb7529e068fa37\",\n  \"fed0e8f5ee3f121326ddd80376752633a4b076eeb81bced7a43009166f645539\"\n ]\n}\n",
+        "00a8dde0": "Function: BSP_ShadowJob_DeletingDestructor at 00a8dde0\nSignature: void * __thiscall BSP_ShadowJob_DeletingDestructor(void * this, uint flags)\nEntry: 00a8dde0\nBody: 00a8dde0 - 00a8de13\n{\n \"function_name\": \"BSP_ShadowJob_DeletingDestructor\",\n \"address\": \"00a8dde0\",\n \"program\": \"battlestationspacific.exe\",\n \"instruction_count\": 17,\n \"basic_block_count\": 6,\n \"edge_count\": 7,\n \"call_count\": 1,\n \"string_ref_count\": 0,\n \"param_count\": 2,\n \"cyclomatic_complexity\": 3,\n \"prologue_stripped\": false,\n \"epilogue_stripped\": false,\n \"callee_names\": [\n  \"_free\"\n ],\n \"string_constants\": [],\n \"immediate_values\": [\n  1,\n  4\n ],\n \"basic_block_hashes\": [\n  \"891b22fb8e9407fd8a30a92c73cbd5371b839ae903cc6bb12e5cc72250560dee\",\n  \"2bf84378b89a9bde4ccc6b3991908d8a7625b6717d23a41df70fb76e7b7a940f\",\n  \"0592648e751381af844bb5ce754cd6d400932e42470bd01a38a326fe4dff30b4\",\n  \"7b79a8e7f749eac1b2dbe944afd47e5ae963c5793f8d1577f347a21b24bb6539\",\n  \"dee373613c7688d4270eaf82a8c4225f18b8d5e7cc115b54eec9dbec105941ca\",\n  \"9c81eefb63a8692e9f972e32485c113fefae12b53e04b0109b3e7bd00bcbd933\"\n ]\n}\n",
+        "00a8ddb0": "Function: BSP_ShadowJob_Secondary_DeletingDestructor at 00a8ddb0\nSignature: void * __thiscall BSP_ShadowJob_Secondary_DeletingDestructor(void * this, uint flags)\nEntry: 00a8ddb0\nBody: 00a8ddb0 - 00a8ddb7\n{\n \"function_name\": \"BSP_ShadowJob_Secondary_DeletingDestructor\",\n \"address\": \"00a8ddb0\",\n \"program\": \"battlestationspacific.exe\",\n \"instruction_count\": 2,\n \"basic_block_count\": 1,\n \"edge_count\": 0,\n \"call_count\": 1,\n \"string_ref_count\": 0,\n \"param_count\": 2,\n \"cyclomatic_complexity\": 1,\n \"prologue_stripped\": false,\n \"epilogue_stripped\": false,\n \"callee_names\": [\n  \"BSP_ShadowJob_DeletingDestructor\"\n ],\n \"string_constants\": [],\n \"immediate_values\": [\n  4\n ],\n \"basic_block_hashes\": [\n  \"07ff986ab66e8dbddb515a44a8e9567710f0084cfe014f4505fa16dbd3f61243\"\n ]\n}\n",
+        "00b7aae0": "Function: BSP_Render_GetOverrideContextWord at 00b7aae0\nSignature: uint __cdecl BSP_Render_GetOverrideContextWord(void)\nEntry: 00b7aae0\nBody: 00b7aae0 - 00b7aae5\n{\n \"function_name\": \"BSP_Render_GetOverrideContextWord\",\n \"address\": \"00b7aae0\",\n \"program\": \"battlestationspacific.exe\",\n \"instruction_count\": 2,\n \"basic_block_count\": 1,\n \"edge_count\": 0,\n \"call_count\": 0,\n \"string_ref_count\": 0,\n \"param_count\": 0,\n \"cyclomatic_complexity\": 1,\n \"prologue_stripped\": false,\n \"epilogue_stripped\": false,\n \"callee_names\": [],\n \"string_constants\": [],\n \"immediate_values\": [],\n \"basic_block_hashes\": [\n  \"6b4b55cb4fa49e38488c2e484c05100655b92e33d4b929f9a9963d4ca523697e\"\n ]\n}\n",
+        "00b400c0": "Function: BSP_MaterialEffect_SetByte13C at 00b400c0\nSignature: void __thiscall BSP_MaterialEffect_SetByte13C(void * this, uint word)\nEntry: 00b400c0\nBody: 00b400c0 - 00b400cc\n{\n \"function_name\": \"BSP_MaterialEffect_SetByte13C\",\n \"address\": \"00b400c0\",\n \"program\": \"battlestationspacific.exe\",\n \"instruction_count\": 3,\n \"basic_block_count\": 1,\n \"edge_count\": 0,\n \"call_count\": 0,\n \"string_ref_count\": 0,\n \"param_count\": 2,\n \"cyclomatic_complexity\": 1,\n \"prologue_stripped\": false,\n \"epilogue_stripped\": false,\n \"callee_names\": [],\n \"string_constants\": [],\n \"immediate_values\": [\n  4\n ],\n \"basic_block_hashes\": [\n  \"08054796fe391a0b880537f0ea6e8a5585af6d837480a1874a9d29a59ace0cc7\"\n ]\n}\n",
+        "00b40820": "Function: BSP_MaterialEffect_SetIndexedFloatBits at 00b40820\nSignature: void __thiscall BSP_MaterialEffect_SetIndexedFloatBits(void * this, uint index, uint value_bits)\nEntry: 00b40820\nBody: 00b40820 - 00b40835\n{\n \"function_name\": \"BSP_MaterialEffect_SetIndexedFloatBits\",\n \"address\": \"00b40820\",\n \"program\": \"battlestationspacific.exe\",\n \"instruction_count\": 4,\n \"basic_block_count\": 1,\n \"edge_count\": 0,\n \"call_count\": 0,\n \"string_ref_count\": 0,\n \"param_count\": 3,\n \"cyclomatic_complexity\": 1,\n \"prologue_stripped\": false,\n \"epilogue_stripped\": false,\n \"callee_names\": [],\n \"string_constants\": [],\n \"immediate_values\": [\n  8\n ],\n \"basic_block_hashes\": [\n  \"67c0b63ff0b755321c19dccefae942772b328d4a68b6db39e034d8aec692b00d\"\n ]\n}\n"
+      },
+      "export_metadata_qualification": "Exporter inventory metadata can retain historical names; refreshed code plus separate live prototype/comment readback records current reviewed names and bounds."
+    },
+    "evidence_artifacts": {
+      "eh-primary-source-review.json": "37493267c3becfaea414c46f0d8745a74c8e2870d82fc4b9f666494de6382fb6",
+      "ei-primary-source-review.json": "c217a2ad6a5c77c2ba6568368caec6a30fe2b19b154b2d14e3ee118ee1399db5",
+      "ehi-primary-generated-review.json": "6aa5578a823dc4558cf725ff4004d96b40bc5dfc5fca88345082b9972c369b29",
+      "ehi-build-input-variants.json": "d83f4be3b2194c538f77658f9c93fc15b20329b9954cf709e5fcb2439efe71e2",
+      "ehi-ghidra-before.json": "cc15354edbaa7e4d35970df16cf8e58db84ccd39f356e353c803a7d98931f7d9",
+      "ehi-ghidra-after.json": "16348256ad9e5415461a8e1d1f115553814b645cf31031ac4c93b0ff5e22b44b",
+      "ehi-ghidra-prototypes.json": "4365a14360699212da2d113cc81088aef90d8509dea9c18dcf1fc9b09e3f802c",
+      "eh-defined-functions.json": "9d7a09b5a275fda6b94058d0d6c46c7cc8328f069291efeded6d604557a684d3",
+      "eh-listing-flow-repair.json": "a078d7be690c66e02344b3a9ac47f8b046ea8a0fc7a170df1892d8bd38b51f5a"
+    },
+    "new_tests": 0,
+    "fixture_tested": false,
+    "game_validated": false,
+    "packet": "EH",
+    "native_credit": {
+      "normal_bodies": 3,
+      "normal_bytes": 266,
+      "parent_and_eh_bytes": 0
+    },
+    "source_review": {
+      "status": "accepted_complete_source_header_doc_report_and_map_delta",
+      "source_commit": "96907b532a143c218af01812a78a0332659b877f",
+      "coupled_source_commit": "3c584d0b28e40ff1f15ddb7b42ba47dfc1ec97d7",
+      "source_pins": {
+        "include/bsp/native_shadow_job_lifetime.hpp": "ce7c1d07105aaeb0acccc5eddbe019f9da398dfd9a9fb545b43c352692b682a3",
+        "src/native_shadow_job_lifetime.cpp": "43fe79a30d999e53a03ada17f828391a01a16e2dd8c572460aed00f00c90486e",
+        "include/bsp/native_singleton_destruction.hpp": "31490c096a63c178ed68eaeb0b3525eaaa6b468ae32ff81aeeb9665c5c9a81c5",
+        "src/native_singleton_destruction.cpp": "77008dbc9c277520f9cd9dcaac8395a25cf1d8ca764021e3a2d966af1d6de409"
+      },
+      "findings": [],
+      "checks": [
+        "Full actual206-byte getter composition preserves capturedfastpublication, capturedmanagersection, guardarmingafterenter/counter, secondpublicationcheck,8byteallocation/tableorder/publication, secondarycapturebeforesecondmanager andpostleavefreshreturn.",
+        "ExplicitrawMOVhelpers preserve actualmanager/section/profileword accesses; sameexistingCRT/guard/manager/registration providers.",
+        "Private nakedterminalTESTslowflags beforeunconditionalglobalclear/stamp/free. Publicfastcallwrapper addscontextandmaycopyflags; no originalpublicstackalias orwhole52byteidentityclaim.",
+        "SecondarynakedSUB4tail retainsEDXcontextandpublicflags toactualsourcewrapper; generatedtargetpendingreview.",
+        "ExactlyonefinalD5B56Ccase anddefaultnullbindingat92, sizeof96. Prioroffsets preserved; existingcurrentprofiledrain route/unknownbindingdiagnostic unchanged. No transientprofile/jobexecution substitute."
+      ],
+      "analysis_repairs": {
+        "defined_adjustor": "00a8ddb0..00a8ddb7,2instructions",
+        "terminal": "A8DE06actualCALL_RETURNclearedtoNONE;ADD83C404atA8DE0Brestored. Functionhadnoncontiguousbodyholeafterdisassembly; recreatedwitholdname/commentpreservation, now17instructions/full52bytes.",
+        "logs": [
+          "local/eh-defined-functions.json",
+          "local/eh-listing-flow-repair.json"
+        ]
+      },
+      "call_verification": {
+        "checked": 8,
+        "failed": 0,
+        "output": "J:\\PROG\\battlestations-pacific-decompile-orch3-shadow-update-leaves-ei\\reports\\native_shadow_job_lifetime.json: 8 call rows checked, 0 failed\n",
+        "historical_worker_failure": "Originaldraft8/1retainedbecauseadjustorwasundefinedthen."
+      },
+      "build": "authorizedcoupledEH+EI;notyetpassed",
+      "fixture_tested": false,
+      "game_validated": false
+    }
+  },
+  "historical_worker_validation": {
+    "source_review": "primary full header/source/dispatcher/registry logic accepted; final clean source pin and draft evidence review pending",
+    "native_call_verifier": {
+      "checked": 8,
+      "failed": 1,
+      "passed": false,
+      "failure": "00a8ddb3 is in no Ghidra function; original8-byte adjustor currently undefined",
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-shadow-job-lifetime-eh\\local\\eh-call-verification.txt",
+      "sha256": "53372de606ecf9427d39b74cedea693cbb3014e5b60f1b3c1dc071040b5ab00b",
+      "bytes_and_tail_target_independently_pinned": true
+    },
+    "build": "pending single coupled EH+EI exact clean Win32 build in EI worktree after primary combined source acceptance; no standalone EH build",
+    "tests_added": 0,
+    "runtime_fixture": "none",
+    "generated_review": "pending joint build; both EH objects plus EI object and full singleton dispatcher",
+    "build_worker": "EI worker; exact worktree/source commit and build artifact pins to be supplied after joint validation"
+  },
+  "historical_analysis_gaps": [
+    {
+      "function": "00a8dde0",
+      "callsite": "00a8de06",
+      "target": "00bf65ac",
+      "gap_start": "00a8de0b",
+      "gap_end_inclusive": "00a8de0d",
+      "next_listed": "00a8de0e",
+      "bytes": "83c404",
+      "instruction": "ADD ESP,4",
+      "old_override": null,
+      "expected_old_override": "CALL_RETURN",
+      "old_override_verified": false,
+      "reason": "Safe BSP flow query is listing/disk comparison; read-only endpoint does not return enum. Supposed dry-run clear endpoint mutates. Later owned repair must retain actual old enum before mutation."
+    },
+    {
+      "address": "00a8ddb0",
+      "size": 8,
+      "kind": "undefined adjustor definition; source implementation credit separate"
+    }
+  ],
+  "analysis_repairs": {
+    "defined_adjustor": "00a8ddb0..00a8ddb7,2instructions",
+    "terminal": "A8DE06actualCALL_RETURNclearedtoNONE;ADD83C404atA8DE0Brestored. Functionhadnoncontiguousbodyholeafterdisassembly; recreatedwitholdname/commentpreservation, now17instructions/full52bytes.",
+    "logs": [
+      "local/eh-defined-functions.json",
+      "local/eh-listing-flow-repair.json"
+    ]
+  }
+}

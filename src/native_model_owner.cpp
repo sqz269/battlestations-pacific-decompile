@@ -104,6 +104,9 @@ void finish_node(NativeModelOwner& owner) {
         if (owner.environment.actual_names)
             destroy_native_node_00b6f440(owner.environment.nodes, owner.node,
                 *owner.environment.actual_names);
+        else if (owner.environment.nodes.uses_raw_name_pool())
+            destroy_native_node_00b6f440(owner.environment.nodes, owner.node,
+                owner.environment.nodes.require_raw_name_pool());
         else
             destroy_native_node_00b6f440(owner.environment.nodes, owner.node);
     } catch (...) {
@@ -183,6 +186,42 @@ void* construct_native_model_00b75030(NativeModelOwner& owner, const NativeStrin
     }
     const auto minimum = owner.environment.constants.minimum_00ce4adc;
     publish_model_phase(owner);
+    auto& model = owner.storage.model;
+    model.retained_174 = nullptr;
+    word(model.scalar_178, minimum);
+    word(model.scalar_17c, owner.environment.constants.maximum_00ce4970);
+    const auto negative_zero = owner.environment.constants.negative_zero_00d7a208;
+    model.geometry_180 = nullptr;
+    auto& node = owner.storage.node;
+    pose_word(node, 0x18, negative_zero);
+    pose_word(node, 0x1c, negative_zero);
+    pose_word(node, 0x20, negative_zero);
+    pose_word(node, 0x24, 0); pose_word(node, 0x28, 0); pose_word(node, 0x2c, 0);
+    pose_word(node, 0x08, 0); pose_word(node, 0x0c, 0); pose_word(node, 0x10, 0);
+    pose_word(node, 0x14, 0);
+    owner.phase = NativeModelOwner::Phase::live;
+    return &owner.storage.node;
+}
+void* construct_native_model_00b75030(NativeModelOwner& owner, const void* actual_name_header,
+    const NativeNodeRawConstants& constants) {
+    if (owner.phase != NativeModelOwner::Phase::prepared)
+        throw std::logic_error("model constructor requires its unused prepared slot");
+    auto& name_pool = owner.environment.nodes.require_raw_name_pool();
+    if (owner.environment.actual_names ||
+        &constants.positive_bound_00ce4970 != &owner.environment.constants.maximum_00ce4970 ||
+        &constants.negative_bound_00ce4adc != &owner.environment.constants.minimum_00ce4adc)
+        throw std::logic_error("raw model requires its persistent raw cleanup and shared actual bound cells");
+    owner.phase = NativeModelOwner::Phase::constructing;
+    try {
+        construct_native_node_00b6f5a0(&owner.storage.node, NativeModelPool::slot_bytes,
+            actual_name_header, name_pool, constants); // B75038; no copied header
+    } catch (...) {
+        end_tail(owner); // B6F5A0 already consumed its own prefix cleanup states.
+        throw; // Caller still owns the physical model slot.
+    }
+    // Keep this continuation literal, including volatile load/alias order.
+    const auto minimum = owner.environment.constants.minimum_00ce4adc; // B7503D
+    publish_model_phase(owner); // B75045
     auto& model = owner.storage.model;
     model.retained_174 = nullptr;
     word(model.scalar_178, minimum);

@@ -9,6 +9,7 @@
 #include "bsp/native_lua_fundamentals.hpp"
 #include "bsp/native_debug_feature_owner.hpp"
 #include "bsp/native_game_resource_factory.hpp"
+#include "bsp/native_shadow_job_lifetime.hpp"
 #include "bsp/native_input_backend_owner.hpp"
 #include "bsp/native_physical_factory.hpp"
 #include "bsp/native_physical_stream_open.hpp"
@@ -262,6 +263,13 @@ __declspec(noinline) void __fastcall delete_current_profile(void* owner,
         if (bindings.game_resource_factory != nullptr) {
             delete_native_game_resource_factory_secondary_00716520(owner, flags,
                 *bindings.game_resource_factory);
+            return;
+        }
+        break;
+    case 0x00d5b56c:
+        if (bindings.shadow_job != nullptr) {
+            delete_native_shadow_job_secondary_00a8ddb0(
+                owner, *bindings.shadow_job, flags);
             return;
         }
         break;

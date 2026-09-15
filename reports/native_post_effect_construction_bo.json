@@ -1,0 +1,1777 @@
+{
+  "packet": "orch3_post_effect_construction_bo",
+  "status": "reconstructed_reviewed_win32_build_tested_static_count_and_x87_evidence_no_fixture",
+  "base_commit": "077cf16e67e65115700793e4adc9aad5b1225ffe",
+  "dependency_commits": [
+    "ac498c87d80598ba7dc682e22b3b52b0be7a044a",
+    "54c34b9d59e29460d335649d76c76c89f03ffea7",
+    "8f2c9521e5c62f314f8fed1e3a729f569d404565"
+  ],
+  "source_parent_commit": "dfbd91052687f7112a7d2101bfc8d2ce0d3725ff",
+  "native_body_credit": 0,
+  "native_bytes_credit": 0,
+  "credit_note": "Worker proposes one948-byte constructor plus two4-byte leaves for primary review; no ledger credit, native FH3, binary ABI or gameplay claim.",
+  "routines": [
+    {
+      "address": "00b4e840",
+      "inclusive_end": "00b4ebf3",
+      "bytes": 948,
+      "instructions": 312,
+      "listing_gaps": 0,
+      "source_name": "construct_native_post_effect_00b4e840",
+      "proposed_name": "BSP_PostEffect24h_Construct",
+      "original_abi": "ECX actual24h/36-byte receiver; stack name header, primitive count, optional size input; EAX captured receiver; RET0Ch; saves EBX/EBP/ESI/EDI.",
+      "source_abi": "New C++ interface includes allocation extent and explicit caller-owned persistent preparation block. No drop-in ABI claim.",
+      "coverage": "complete normal body and logical12-state cleanup schedule within documented existing-provider admission domains"
+    },
+    {
+      "address": "00b3cd10",
+      "inclusive_end": "00b3cd13",
+      "bytes": 4,
+      "source_name": "surface_width_00b3cd10",
+      "original_abi": "ECX surface; EAX current DWORD+1C; RET",
+      "coverage": "complete4-byte leaf",
+      "no_ghidra_function": true
+    },
+    {
+      "address": "00b3cd20",
+      "inclusive_end": "00b3cd23",
+      "bytes": 4,
+      "source_name": "surface_height_00b3cd20",
+      "original_abi": "ECX surface; EAX current DWORD+20; RET",
+      "coverage": "complete4-byte leaf",
+      "no_ghidra_function": true
+    }
+  ],
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "bridge": "http://127.0.0.1:8089",
+    "image_base": "00400000",
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "native_image_sha256_rechecked": true,
+    "verification": "Read-only BSP CLI verifies the configured target before each native read batch. No worker mutations."
+  },
+  "native_spans": [
+    {
+      "name": "constructor",
+      "address": "00b4e840",
+      "inclusive_end": "00b4ebf3",
+      "bytes": 948,
+      "sha256": "c1f4708108c23918782936ec5ba979ae4b523e876b201b936ee5e5ba0e1906cb",
+      "live_PE_equal": true
+    },
+    {
+      "name": "funclets_and_handler",
+      "address": "00cbfbc0",
+      "inclusive_end": "00cbfc44",
+      "bytes": 133,
+      "sha256": "11008c7829dd7209846d4b98c88cf9c84a2b2078c7b508ac5154f89a02f7c361",
+      "live_PE_equal": true
+    },
+    {
+      "name": "FH3_info_and_map",
+      "address": "00df8758",
+      "inclusive_end": "00df87db",
+      "bytes": 132,
+      "sha256": "d0fdafaeed317d1a8e3913f8dfa3b1809fb027d9a87ca4c40d2e7d3da4305b42",
+      "live_PE_equal": true
+    },
+    {
+      "name": "surface_width",
+      "address": "00b3cd10",
+      "inclusive_end": "00b3cd13",
+      "bytes": 4,
+      "sha256": "0b78473b3a56c63ff2a64431fb600078066cbe407d3dee7ea8fd7575bd7f82d5",
+      "live_PE_equal": true
+    },
+    {
+      "name": "surface_height",
+      "address": "00b3cd20",
+      "inclusive_end": "00b3cd23",
+      "bytes": 4,
+      "sha256": "07ad3a50b1c271e07fb57fb47d2f0e77f3342d41bfa410990cb1320a45035fb2",
+      "live_PE_equal": true
+    }
+  ],
+  "call_steps": [
+    {
+      "address": "00b4e891",
+      "native": "00bf681b",
+      "function": "00b4e840",
+      "contract": "CRT raw allocation: one stack byte count; ADD ESP,4 after each call. Actual 40h/34h/28h identity is preserved; no refcount owner for draw record."
+    },
+    {
+      "address": "00b4e8a8",
+      "native": "00b1fbb0",
+      "function": "00b4e840",
+      "contract": "ECX raw40h frame; EAX same; RET. Null allocation skips constructor before +08 publication."
+    },
+    {
+      "address": "00b4e8c8",
+      "native": "0041dd40",
+      "function": "00b4e840",
+      "contract": "ECX actual8h header; stack length15,preserve1; RET8. Raw current pool context, current reads and original field order."
+    },
+    {
+      "address": "00b4e8e3",
+      "native": "00bf7680",
+      "function": "00b4e840",
+      "contract": "CRT copy of current destination, literal source, current length+1; ADD ESP,0Ch at B4E8E8."
+    },
+    {
+      "address": "00b4e900",
+      "native": "renderer+vtable38",
+      "function": "00b4e840",
+      "kind": "indirect",
+      "contract": "Current renderer/table -> B317E0; ECX renderer, stack actual name header, RET4."
+    },
+    {
+      "address": "00b4e91b",
+      "native": "00419cc0",
+      "function": "00b4e840",
+      "contract": "Current raw native string pool getter; no semantic stack inputs; EAX actual pool. May throw before return."
+    },
+    {
+      "address": "00b4e922",
+      "native": "00bd1510",
+      "function": "00b4e840",
+      "contract": "ECX current pool, stack captured data,current length+1,unused0; RET0Ch. No header clear or retry added."
+    },
+    {
+      "address": "00b4e941",
+      "native": "renderer+vtable5c",
+      "function": "00b4e840",
+      "kind": "indirect",
+      "contract": "Fresh current renderer/table -> B287C0; ECX renderer, stack count*3,1000h,declaration; RET0Ch."
+    },
+    {
+      "address": "00b4e94a",
+      "native": "current_CE2220_IAT",
+      "function": "00b4e840",
+      "kind": "indirect",
+      "contract": "stdcall decrement declaration+4; RET4; independent current epoch."
+    },
+    {
+      "address": "00b4e95a",
+      "native": "declaration+vtable00",
+      "function": "00b4e840",
+      "kind": "indirect",
+      "contract": "Current D61D1C -> BD30E0 -> current deleting B48CA0 flags1; no second decrement."
+    },
+    {
+      "address": "00b4e961",
+      "native": "00b73b60",
+      "function": "00b4e840",
+      "contract": "ECX BCh requested payload; canonical C0h mesh slot allocation; EAX raw slot; RET."
+    },
+    {
+      "address": "00b4e975",
+      "native": "00b73d70",
+      "function": "00b4e840",
+      "contract": "ECX raw mesh slot; EAX same; RET. Existing exact constructor starts child count lifetime."
+    },
+    {
+      "address": "00b4e993",
+      "native": "00b73bb0",
+      "function": "00b4e840",
+      "contract": "ECX captured mesh; stack stream-index0,current parent+18; RET8. Concrete retained assignment."
+    },
+    {
+      "address": "00b4e99c",
+      "native": "00535320",
+      "function": "00b4e840",
+      "contract": "ECX actual effect-name header; EAX material; RET. Current renderer+48 must be a real callable provider. Internal post-construction release diagnostic identity is not exposed."
+    },
+    {
+      "address": "00b4e9a8",
+      "native": "00b18a40",
+      "function": "00b4e840",
+      "contract": "ECX new material; stack actual parent,retain0; RET8. No extra parent retain."
+    },
+    {
+      "address": "00b4e9ad",
+      "native": "00533fa0",
+      "function": "00b4e840",
+      "contract": "No semantic native inputs; EAX section; RET. Raw concrete section pool/factory."
+    },
+    {
+      "address": "00b4e9d5",
+      "native": "00b864c0",
+      "function": "00b4e840",
+      "contract": "ECX section; stack CURRENT parent+14 material; RET4."
+    },
+    {
+      "address": "00b4e9dd",
+      "native": "00b865a0",
+      "function": "00b4e840",
+      "contract": "ECX section; stack captured mesh; RET4. Existing concrete layout services."
+    },
+    {
+      "address": "00b4e9e5",
+      "native": "00b73c60",
+      "function": "00b4e840",
+      "contract": "ECX mesh; stack captured section; RET4. Append and retain."
+    },
+    {
+      "address": "00b4e9ef",
+      "native": "00b74eb0",
+      "function": "00b4e840",
+      "contract": "ECX184h requested payload; canonical188h model slot allocation; EAX raw slot; RET."
+    },
+    {
+      "address": "00b4ea0c",
+      "native": "0041e870",
+      "function": "00b4e840",
+      "contract": "ECX raw8h output; stack PostEffectSysObj literal; RET4. Actual raw pool overload."
+    },
+    {
+      "address": "00b4ea25",
+      "native": "00b75030",
+      "function": "00b4e840",
+      "contract": "ECX raw184h model; stack actual8h name; EAX same; RET4. Persistent owner with BP actual-header/raw-constant overload."
+    },
+    {
+      "address": "00b4ea54",
+      "native": "00419cc0",
+      "function": "00b4e840",
+      "contract": "Current raw native string pool getter; no semantic stack inputs; EAX actual pool. May throw before return."
+    },
+    {
+      "address": "00b4ea5b",
+      "native": "00bd1510",
+      "function": "00b4e840",
+      "contract": "ECX current pool, stack captured data,current length+1,unused0; RET0Ch. No header clear or retry added."
+    },
+    {
+      "address": "00b4ea79",
+      "native": "00b75170",
+      "function": "00b4e840",
+      "contract": "ECX CURRENT parent+10 model; stack0,captured mesh,float178,float17C; RET10h. One D7A260 FLD then FST/FSTP in native order."
+    },
+    {
+      "address": "00b4ea83",
+      "native": "00b71930",
+      "function": "00b4e840",
+      "contract": "ECX458h requested payload; canonical45Ch camera slot; EAX raw slot; RET. Wrapper reaches real B71770 pool."
+    },
+    {
+      "address": "00b4eaa5",
+      "native": "0043c130",
+      "function": "00b4e840",
+      "contract": "ECX output8h, EDX prefix literal, stack actual effect-name header; EAX output; RET4. Existing source nonthrowing nested cleanup domain."
+    },
+    {
+      "address": "00b4eab7",
+      "native": "00b71a80",
+      "function": "00b4e840",
+      "contract": "ECX raw458h camera; stack actual8h prefixed name; EAX same; RET4. Raw pool and preadmitted initial viewport."
+    },
+    {
+      "address": "00b4eae1",
+      "native": "00419cc0",
+      "function": "00b4e840",
+      "contract": "Current raw native string pool getter; no semantic stack inputs; EAX actual pool. May throw before return."
+    },
+    {
+      "address": "00b4eae8",
+      "native": "00bd1510",
+      "function": "00b4e840",
+      "contract": "ECX current pool, stack captured data,current length+1,unused0; RET0Ch. No header clear or retry added."
+    },
+    {
+      "address": "00b4eaef",
+      "native": "00bf681b",
+      "function": "00b4e840",
+      "contract": "CRT raw allocation: one stack byte count; ADD ESP,4 after each call. Actual 40h/34h/28h identity is preserved; no refcount owner for draw record."
+    },
+    {
+      "address": "00b4eb06",
+      "native": "00b1f850",
+      "function": "00b4e840",
+      "contract": "ECX raw34h viewport; EAX same; RET. Null allocation skips ctor."
+    },
+    {
+      "address": "00b4eb22",
+      "native": "optional_input+vtable20",
+      "function": "00b4e840",
+      "kind": "indirect",
+      "contract": "Current D619A0 -> raw B3CD20; ECX surface; EAX current DWORD+20; RET. Other profiles unclosed."
+    },
+    {
+      "address": "00b4eb31",
+      "native": "optional_input+vtable1c",
+      "function": "00b4e840",
+      "kind": "indirect",
+      "contract": "Fresh current D619A0 -> raw B3CD10; ECX surface; EAX current DWORD+1C; RET."
+    },
+    {
+      "address": "00b4eb46",
+      "native": "00b1f940",
+      "function": "00b4e840",
+      "contract": "ECX viewport; stack pointer to width,height DWORD pair; RET4."
+    },
+    {
+      "address": "00b4eb4f",
+      "native": "00b71990",
+      "function": "00b4e840",
+      "contract": "ECX CURRENT parent+0C camera; stack captured replacement viewport; RET4. Retain new and release captured old."
+    },
+    {
+      "address": "00b4eb5c",
+      "native": "current_CE2220_IAT",
+      "function": "00b4e840",
+      "kind": "indirect",
+      "contract": "stdcall decrement viewport+4; RET4; independent epoch."
+    },
+    {
+      "address": "00b4eb6d",
+      "native": "viewport+vtable00",
+      "function": "00b4e840",
+      "kind": "indirect",
+      "contract": "Current D5E5F8 -> BD30E0 -> current deleting B1F8F0 flags1; no second decrement."
+    },
+    {
+      "address": "00b4eb71",
+      "native": "00bf681b",
+      "function": "00b4e840",
+      "contract": "CRT raw allocation: one stack byte count; ADD ESP,4 after each call. Actual 40h/34h/28h identity is preserved; no refcount owner for draw record."
+    },
+    {
+      "address": "00b4eba2",
+      "native": "00b51bd0",
+      "function": "00b4e840",
+      "contract": "ECX raw28h draw; six native stack words leading+0,section,mesh,CURRENT model,CURRENT camera,visibility1; EAX same; RET18h. Source adds explicit EDX access context."
+    },
+    {
+      "address": "00b4ebbc",
+      "native": "captured_CE2220_IAT",
+      "function": "00b4e840",
+      "kind": "indirect",
+      "contract": "stdcall section+4 decrement; RET4; IAT captured once at B4EBB5."
+    },
+    {
+      "address": "00b4ebc8",
+      "native": "section+vtable00",
+      "function": "00b4e840",
+      "kind": "indirect",
+      "contract": "Current D63194 -> BD30E0 -> current deleting B86690 flags1; no second decrement."
+    },
+    {
+      "address": "00b4ebce",
+      "native": "captured_CE2220_IAT",
+      "function": "00b4e840",
+      "kind": "indirect",
+      "contract": "stdcall mesh+4 decrement; RET4; SAME B4EBB5 captured IAT."
+    },
+    {
+      "address": "00b4ebdb",
+      "native": "mesh+vtable00",
+      "function": "00b4e840",
+      "kind": "indirect",
+      "contract": "Current D62D60 -> BD30E0 -> current deleting B74280 flags1; no second decrement."
+    }
+  ],
+  "eh_calls": [
+    {
+      "address": "00cbfbc3",
+      "native": "00bd30f0",
+      "function": "00cbfbc0",
+      "kind": "tail_jump",
+      "contract": "Raw captured frame/slot or actual header cleanup; transition is consumed before the call. Raw free funclets include trailing POP ECX/RET omitted by some saved function bounds."
+    },
+    {
+      "address": "00cbfbcc",
+      "native": "00bf65ac",
+      "function": "00cbfbc8",
+      "kind": "direct",
+      "contract": "Raw captured frame/slot or actual header cleanup; transition is consumed before the call. Raw free funclets include trailing POP ECX/RET omitted by some saved function bounds."
+    },
+    {
+      "address": "00cbfbd6",
+      "native": "0041dd20",
+      "function": "00cbfbd3",
+      "kind": "tail_jump",
+      "contract": "Raw captured frame/slot or actual header cleanup; transition is consumed before the call. Raw free funclets include trailing POP ECX/RET omitted by some saved function bounds."
+    },
+    {
+      "address": "00cbfbde",
+      "native": "00b72f70",
+      "function": "00cbfbdb",
+      "kind": "tail_jump",
+      "contract": "Raw captured frame/slot or actual header cleanup; transition is consumed before the call. Raw free funclets include trailing POP ECX/RET omitted by some saved function bounds."
+    },
+    {
+      "address": "00cbfbe6",
+      "native": "00b748c0",
+      "function": "00cbfbe3",
+      "kind": "tail_jump",
+      "contract": "Raw captured frame/slot or actual header cleanup; transition is consumed before the call. Raw free funclets include trailing POP ECX/RET omitted by some saved function bounds."
+    },
+    {
+      "address": "00cbfbfe",
+      "native": "0041dd20",
+      "function": "00cbfbeb",
+      "kind": "tail_jump",
+      "contract": "Raw captured frame/slot or actual header cleanup; transition is consumed before the call. Raw free funclets include trailing POP ECX/RET omitted by some saved function bounds."
+    },
+    {
+      "address": "00cbfc07",
+      "native": "00b71350",
+      "function": "00cbfc04",
+      "kind": "tail_jump",
+      "contract": "Raw captured frame/slot or actual header cleanup; transition is consumed before the call. Raw free funclets include trailing POP ECX/RET omitted by some saved function bounds."
+    },
+    {
+      "address": "00cbfc1f",
+      "native": "0041dd20",
+      "function": "00cbfc0c",
+      "kind": "tail_jump",
+      "contract": "Raw captured frame/slot or actual header cleanup; transition is consumed before the call. Raw free funclets include trailing POP ECX/RET omitted by some saved function bounds."
+    },
+    {
+      "address": "00cbfc29",
+      "native": "00bf65ac",
+      "function": "00cbfc25",
+      "kind": "direct",
+      "contract": "Raw captured frame/slot or actual header cleanup; transition is consumed before the call. Raw free funclets include trailing POP ECX/RET omitted by some saved function bounds."
+    },
+    {
+      "address": "00cbfc34",
+      "native": "00bf65ac",
+      "function": "00cbfc30",
+      "kind": "direct",
+      "contract": "Raw captured frame/slot or actual header cleanup; transition is consumed before the call. Raw free funclets include trailing POP ECX/RET omitted by some saved function bounds."
+    },
+    {
+      "address": "00cbfc40",
+      "native": "00bf6b43",
+      "function": "00cbfc3b",
+      "kind": "tail_jump",
+      "contract": "Raw captured frame/slot or actual header cleanup; transition is consumed before the call. Raw free funclets include trailing POP ECX/RET omitted by some saved function bounds."
+    }
+  ],
+  "caller_steps": [
+    {
+      "address": "00b528d2",
+      "native": "00b4e840",
+      "function": "00b52860",
+      "contract": "Third stack DWORD literal0 at B528B9; other args actual name and count; callee RET0Ch."
+    },
+    {
+      "address": "00b52b2a",
+      "native": "00b4e840",
+      "function": "00b529a0",
+      "contract": "Optional input PUSH0 B52AEC; callee RET0Ch."
+    },
+    {
+      "address": "00b52dc1",
+      "native": "00b4e840",
+      "function": "00b529a0",
+      "contract": "Optional input PUSHEdi B52DAD; XOR EDI,EDI B52D5A, no intervening EDI write; callee RET0Ch."
+    },
+    {
+      "address": "00b52f39",
+      "native": "00b4e840",
+      "function": "00b529a0",
+      "contract": "Optional input PUSHEdi B52F08; XOR EDI,EDI B52EAB, no intervening EDI write; callee RET0Ch."
+    }
+  ],
+  "eh": {
+    "info": "00df8758",
+    "max_state": 12,
+    "map": "00df877c",
+    "raw_handler_bounds": [
+      "00cbfc3b",
+      "00cbfc44"
+    ],
+    "handler_live_function": "00cbfc3b..00cbfc44, defined separately by primary; worker read-only",
+    "raw_funclet_bounds": [
+      "00cbfbc0",
+      "00cbfc3a"
+    ],
+    "raw_funclet_bytes": 123,
+    "states": [
+      {
+        "state": 0,
+        "next": -1,
+        "funclet": "00cbfbc0"
+      },
+      {
+        "state": 1,
+        "next": 0,
+        "funclet": "00cbfbc8"
+      },
+      {
+        "state": 2,
+        "next": 0,
+        "funclet": "00cbfbd3"
+      },
+      {
+        "state": 3,
+        "next": 0,
+        "funclet": "00cbfbdb"
+      },
+      {
+        "state": 4,
+        "next": 0,
+        "funclet": "00cbfbe3"
+      },
+      {
+        "state": 5,
+        "next": 4,
+        "funclet": "00cbfbeb"
+      },
+      {
+        "state": 6,
+        "next": 0,
+        "funclet": "00cbfbeb"
+      },
+      {
+        "state": 7,
+        "next": 0,
+        "funclet": "00cbfc04"
+      },
+      {
+        "state": 8,
+        "next": 7,
+        "funclet": "00cbfc0c"
+      },
+      {
+        "state": 9,
+        "next": 0,
+        "funclet": "00cbfc0c"
+      },
+      {
+        "state": 10,
+        "next": 0,
+        "funclet": "00cbfc25"
+      },
+      {
+        "state": 11,
+        "next": 0,
+        "funclet": "00cbfc30"
+      }
+    ],
+    "body_state_visits": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      7,
+      8,
+      10,
+      11
+    ],
+    "schedule": "Disarm/consume before calls. Conditional EH masks clear before string cleanup; normal model clears bit1, normal camera leaves bit2. Secondary cleanup exceptions continue remaining ordinary C++ schedule and the newest replaces the earlier exception. This source policy excludes native FH3 equivalence and is not a terminate-on-double-failure policy."
+  },
+  "ownership": {
+    "receiver_bytes": 36,
+    "base_count_site": "00b4e86e",
+    "atomic_lifetime": "Placement atomic<int32_t>(1) at original count1 write, no earlier count0/reset or whole-object initialization.",
+    "untouched_until_publication": [
+      "+08",
+      "+18",
+      "+1c"
+    ],
+    "permanently_preserved": "No fabricated write to receiver preimage beyond native stores; draw-record+20/+24 remain untouched through BN.",
+    "current_read_sites": [
+      "B4E8EB renderer",
+      "B4E927 renderer",
+      "B4E988 parent+18",
+      "B4E9CF parent+14",
+      "B4EA6A parent+10",
+      "B4EB4B parent+0C",
+      "B4EB8C parent+10",
+      "B4EB93 parent+0C"
+    ],
+    "decrement_epochs": [
+      "B4E94A declaration current CE2220",
+      "B4EB5C viewport current CE2220",
+      "B4EBB5 one captured CE2220 for B4EBBC section and B4EBCE mesh"
+    ],
+    "host_only": "Persistent fixed optional companions; camera scene/lifetime and two viewport admissions before native effects. Canonical binding can allocate metadata. No added retain/count initialization.",
+    "diagnostic_preservation": "Creators whose native states disarm survive host bind failures. Every completed reference is exposed as a borrowed acquired pointer before bind, permitting explicit external disposition of the exact unregistered companion. native_completed is set after native releases, before final post-effect owner/reference bind; later diagnostics must not trigger base cleanup or raw receiver free.",
+    "quiescence": "Terminal callbacks unbind captured keys without ended-storage reads. Optional objects and viewport records persist; explicit reset does no native cleanup. Failed camera initial viewport and unbound completed owners have no invented ordinary recovery."
+  },
+  "uncertainty": [
+    "535320 directly calls renderer actual+48. A real callable provider in the admitted D5F0A8/current table domain remains a concrete caller prerequisite; renderer construction/binding closure is not established.",
+    "535320 final effect release may throw after completed material construction; existing factory preserves that material but exposes no acquired-before-release output. BO cannot identify that internal creator or invent cleanup.",
+    "43C130 current existing overload uses ActualNativeStringPoolStorage and admits nonthrowing nested cleanup. BO-owned temporaries use throwing raw pool cleanup; no silent broadening of the nested helper.",
+    "B317E0/cache, material, layout, node/camera/stream, and B51A20 retain documented service/materialization/exception domains. Source canonical terminal callbacks are noexcept.",
+    "All observed callers pass optional null; full nonnull branch supports evidenced D619A0 B3CD20/B3CD10 only. Other profiles and actual nonnull caller integration remain unclosed.",
+    "No B52860/B529A0 source composition, injected failure fixture, native FH3, binary ABI, hardware fault or game validation. Native-invalid null dereferences are diagnosed only at source admission boundaries."
+  ],
+  "source_sha256": {
+    "include/bsp/native_post_effect_construction.hpp": "65a3332cee75378284f9376c991c7c6e35cc46dd65d3b222fb0e5fd086715560",
+    "src/native_post_effect_construction.cpp": "23cb98c01d988c942ac29f2c16a443818478453326b6e4a9b1a4646ea4458f0f"
+  },
+  "provider_sha256": {
+    "include/bsp/native_post_effect_owner.hpp": "b23ead881361ba39679b0418f52ffd32e69bdee59932afb6f47399e3c1095e3a",
+    "src/native_post_effect_owner.cpp": "4243e1ed5e55858bf1df2d741d9d8989b0a3bc9599834816211d7f1c9d10053d",
+    "include/bsp/native_post_effect_draw_record.hpp": "aa789a071b89943f1f7110c41b84d349d485eb68f083c08c27c9bc033f4df1e4",
+    "src/native_post_effect_draw_record.cpp": "e8b44b95775ee17d5e2343daf8b321b8c1110697949c2c90fd7ee5935bab4009",
+    "include/bsp/native_model_owner.hpp": "7bb75bca29ed440709040ce34b217bb9a760741d971d8b6b2fdeb8b77201f47e",
+    "src/native_model_owner.cpp": "abe4817fd6ca9049f720a50e5c5c9a2041112f634dee73b2c4f2a94d4077886a",
+    "include/bsp/native_camera_owner.hpp": "527c605fcc55eedd421271a5c4b27d45947e325c391838f14f3cab6d75e1f808",
+    "src/native_camera_owner.cpp": "51f7c97c40027337af8d83b0a35613338a8963ad2664d0d6eaa220be7d22f376",
+    "include/bsp/native_camera_reference.hpp": "5920175404a18b464c3ce826162c8279b98c12405ac28d52363241cd2d79415e",
+    "src/native_camera_reference.cpp": "c877dd80459c1f7ebf2e9e20c4f6fd3f0c349e0ff3b4dbeb8f6553a0fb9badab",
+    "include/bsp/native_viewport_owner.hpp": "0fbadd5eab924627e321a7896bd9796c0aaa17062bbf3953de118fbe2b3867d5",
+    "src/native_viewport_owner.cpp": "d7f733023f89193a4bbd488a9e925b46ac52f2cc0ee1be04f6df2e663616d2ea",
+    "include/bsp/native_viewport_registry.hpp": "250decc6520abb9d3085670129d0884b087465f4eec1027cb210375619e8d486",
+    "src/native_viewport_registry.cpp": "cf63de25d9e107f83f361db4d4fa7c2a922119fa62584dd3688b8588d201a289",
+    "include/bsp/native_mesh_owner.hpp": "540fa95aafcd3b67697998361f9a6b1689bf90348c9c0cdc09bdeb6b9c6ac42c",
+    "src/native_mesh_owner.cpp": "fb263bbe9a631354e3e6943293befdf18fcd7da26a7969df4827e4ea97fb6fd3",
+    "include/bsp/native_mesh_pool.hpp": "e5b30e590ec675510a879c071e509f55b642f80a808e7204c093758af61cbc52",
+    "src/native_mesh_pool.cpp": "4b9fc9871b003a25e357a3d7460c7d890431115b8289a012567280e8ca31fa44",
+    "include/bsp/native_mesh_section.hpp": "640506b3947bbf5bb8c0891e07e3ad2c13efc2c4f58bff235290b821fc4e1683",
+    "src/native_mesh_section.cpp": "91db099dda46b3c297ee554ec976f238bf968b5f4dfd674496597c2a62a2b74a",
+    "include/bsp/native_material_owner.hpp": "e4583162e05d346f05f6f26fd6e9f4ac49368ffa8ccd1fa0939731f1134b0320",
+    "src/native_material_owner.cpp": "349fad1d983e763d4f53e24e99b2b4dcfe104cbf6e246b902b8346ed3e8fe1fc",
+    "include/bsp/native_material_factory.hpp": "ac9602ba2af3a732d0bede15d38d51b948a4aea5c611c10d61eaca7a4c004e70",
+    "src/native_material_factory.cpp": "d2d8a25e93852ffbf1c07ac74dcb3e9d0b2f476e0bc4f00d12fa2497a2ac8d2b",
+    "include/bsp/native_logical_vertex_owner.hpp": "f3a097c42b5289e0f5c14767e17cce85aa409b70f3f854d4ba4f668738aef20c",
+    "src/native_logical_vertex_owner.cpp": "8c3fc9cff8680d9c7fe300bff162c29818b92d71ab813cca2f33476cee953bba",
+    "include/bsp/native_vertex_declaration_cache.hpp": "14123aa649c71cae8c4c35bad989533402ae66daeaa25bff86dcfd017b2768d1",
+    "src/native_vertex_declaration_cache.cpp": "809bf7d8f598d0bdc9768c52e659146c88a9c64ce16e48a0d926dbb24e0ff8c6",
+    "include/bsp/native_vertex_declaration_loading.hpp": "9ef3f5c6bd9d535215cfb90630e7d90a7bee00d7988c66243226d8a423248227",
+    "src/native_vertex_declaration_loading.cpp": "518cfecb27a27a43815377c02ce638878d3a8eb2ddeaead30377dc7cb460ef3d",
+    "include/bsp/native_node_construction.hpp": "977424218edef9f6eefdafb9463b1ef5be11a4f61554eecca37a7d823b3c7098",
+    "src/native_node_construction.cpp": "87a73019511d3575aa0887a4964a2a8703a5248106fdcff2eddfbb424918dd35",
+    "include/bsp/native_node_destruction.hpp": "bd525ac65ff936736cbf5a02bd7b31e12c326ae5ec624c9685315dbcc116c833",
+    "src/native_node_destruction.cpp": "2ee6ba84e759958a8f160cb25ad210076203931d4ae4f2e9265529bff5c57269",
+    "include/bsp/native_string.hpp": "80013e5a7350120f32fcad1ce54db9b0923ad5b49cc2152823d858534331378f",
+    "src/native_string.cpp": "0e8819d3a6442fc48c879e85c00899a72beabdc51b3e94a11836ab5314d5e60c",
+    "include/bsp/native_string_pool_storage.hpp": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d",
+    "src/native_string_pool_storage.cpp": "5cb79a6ce240205b3f1c81f1fbd6edd49cc1c05f8a20ee8dca8913f44c9095d5",
+    "include/bsp/native_instance_collection.hpp": "3ac226fbdc3f51e073720c23234816ded5d7b10e6a7911243639367a830075e6",
+    "src/native_instance_collection.cpp": "f3b8e1da4eaf39b44f3bd41b9109b3d996fb8dee6a0609b984f2224bc8622fc8",
+    "include/bsp/gui_native_geometry.hpp": "c58b10dadbf6d758c09729908b646a8e6544c76d862a1cde61b0bc713c5d4781",
+    "src/gui_native_geometry.cpp": "5653e693704a26dd4c263558d85ebb4933be7986c07b1801dcc4e2950934f0df",
+    "include/bsp/gui_text_native_layout.hpp": "cc831cc840c16567c92e326115341eb9196fa821936e82a3c6cd5341d3f67651",
+    "src/gui_text_native_layout.cpp": "96c27d78bff8d58b663c649769c4c9b7ac64880ba1115fe5cef4a0fc89bee213",
+    "include/bsp/native_frame_target_owner.hpp": "5bcab0e6bf05a51b8e8a215117ca5621f3c5a51a1aec131eb4b7f86b33246ca8",
+    "src/native_frame_target_owner.cpp": "60485ba070a77e9de497bff352b16ab664ac4d051e02e671897d2c3082224c60",
+    "include/bsp/native_physical_file_date.hpp": "a7489c4fff08b5289bb2906b72d4b35e27291e23e4fa83061109c0e895460788",
+    "src/native_physical_file_date.cpp": "c182b78332b3be7f693c1a20babf703024feca128753ece593b0e50d6f770a02",
+    "include/bsp/singleton_lifetime.hpp": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+    "src/singleton_lifetime.cpp": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+  },
+  "validation": {
+    "completed_utc": "2026-09-14T06:17:33.434749+00:00",
+    "command": "./scripts/build.ps1",
+    "build_exit_code": 0,
+    "build": "MSVC Win32 Release passed; fresh worktree config has one existing test",
+    "ctest": {
+      "configured": 1,
+      "passed": 1,
+      "names": [
+        "reconstructed_math"
+      ]
+    },
+    "build_log": "J:\\PROG\\battlestations-pacific-decompile-orch3-post-effect-construction-bo\\local\\bo-build-final-comment.log",
+    "build_log_sha256": "60d9c43a28a2de67493d1a82c0419c649d0577969a2b8a471d844ff3eefefd23",
+    "call_audit": {
+      "command": "python tools/verify_report_calls.py reports/native_post_effect_construction_bo.json",
+      "exit_code": 0,
+      "checked_direct_or_tail_rows": 47,
+      "failed": 0,
+      "explicit_indirect_rows": 12,
+      "log": "J:\\PROG\\battlestations-pacific-decompile-orch3-post-effect-construction-bo\\local\\bo-call-audit-final.log",
+      "log_sha256": "b08e4ad1ba18234e060c9115a7c799983f1c1c0054f4f7371316bf437884f0b0"
+    },
+    "source_object": {
+      "object_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-post-effect-construction-bo\\build\\win32\\bsp_core.dir\\Release\\native_post_effect_construction.obj",
+      "object_sha256": "8aa832f3c42c480ffc3f5fb300e8adbfbfaa60536c6862960c269bc7def20a7e",
+      "function": "?construct_native_post_effect_00b4e840@bsp@@YAPAXPAXIAAVNativeString@1@IPBXAAVNativePostEffectConstructionBlock@1@@Z",
+      "section_bytes": 5025,
+      "section_sha256": "d89c11f25d3dc5474e7d6bda5ac90bd9368271359c11a265416ed2e585f5083f",
+      "relocations": [
+        {
+          "offset": 6,
+          "type": 6,
+          "symbol": "__ehhandler$?construct_native_post_effect_00b4e840@bsp@@YAPAXPAXIAAVNativeString@1@IPBXAAVNativePostEffectConstructionBlock@1@@Z"
+        },
+        {
+          "offset": 24,
+          "type": 6,
+          "symbol": "___security_cookie"
+        },
+        {
+          "offset": 115,
+          "type": 20,
+          "symbol": "?validate@NativePostEffectConstructionBlock@bsp@@ABEXXZ"
+        },
+        {
+          "offset": 358,
+          "type": 20,
+          "symbol": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z"
+        },
+        {
+          "offset": 388,
+          "type": 20,
+          "symbol": "?construct_native_frame_target_owner_00b1fbb0@bsp@@YAPAUNativeFrameTargetOwnerStorage@1@PAX@Z"
+        },
+        {
+          "offset": 454,
+          "type": 20,
+          "symbol": "?resize_native_string_header_0041dd40@bsp@@YAXPAXAAUNativeStringRawPoolContext@1@I_N@Z"
+        },
+        {
+          "offset": 519,
+          "type": 20,
+          "symbol": "_memcpy"
+        },
+        {
+          "offset": 630,
+          "type": 20,
+          "symbol": "?load_native_renderer_vertex_declaration_00b317e0@bsp@@YAPAXPAXPBXAAUNativeVertexDeclarationCacheContext@1@@Z"
+        },
+        {
+          "offset": 673,
+          "type": 20,
+          "symbol": "?register_native_declaration_reference@GuiNativeGeometryOwners@bsp@@QAEXAAUGuiNativeDeclarationAcquired@2@AAUNativeVertexDeclarationLoadingContext@2@@Z"
+        },
+        {
+          "offset": 687,
+          "type": 20,
+          "symbol": "?string_cleanup@NativePostEffectConstructionBlock@bsp@@AAEXAAVNativeString@2@@Z"
+        },
+        {
+          "offset": 794,
+          "type": 20,
+          "symbol": "?create_native_registered_vertex_stream_00b287c0@bsp@@YAPAXPAXII0AAUNativeLogicalVertexOwnerContext@1@PAPAX@Z"
+        },
+        {
+          "offset": 860,
+          "type": 20,
+          "symbol": "??1NativeLogicalVertexReference@bsp@@UAE@XZ"
+        },
+        {
+          "offset": 878,
+          "type": 6,
+          "symbol": "?retire_stream@NativePostEffectConstructionBlock@bsp@@CAXPAXAAVNativeLogicalVertexReference@2@@Z"
+        },
+        {
+          "offset": 890,
+          "type": 20,
+          "symbol": "??0NativeLogicalVertexReference@bsp@@QAE@PAXAAUNativeLogicalVertexOwnerContext@1@UNativeLogicalVertexCompanionDisposal@1@@Z"
+        },
+        {
+          "offset": 928,
+          "type": 20,
+          "symbol": "?registration@GuiNativeGeometryOwners@bsp@@QBEABUGuiNativeGeometryRegistration@2@XZ"
+        },
+        {
+          "offset": 1149,
+          "type": 6,
+          "symbol": "??_R0?AVNativeVertexDeclarationReference@bsp@@@8"
+        },
+        {
+          "offset": 1154,
+          "type": 6,
+          "symbol": "??_R0?AVRenderCommandReference@bsp@@@8"
+        },
+        {
+          "offset": 1165,
+          "type": 20,
+          "symbol": "___RTDynamicCast"
+        },
+        {
+          "offset": 1198,
+          "type": 20,
+          "symbol": "?release_zero_references@NativeVertexDeclarationReference@bsp@@UAEXXZ"
+        },
+        {
+          "offset": 1203,
+          "type": 20,
+          "symbol": "?allocate_native_mesh_slot_00b73b60@bsp@@YAPAXXZ"
+        },
+        {
+          "offset": 1252,
+          "type": 20,
+          "symbol": "?construct_native_mesh_00b73d70@bsp@@YAPAUNativeMeshStorage@1@PAXUNativeMeshConstants@1@@Z"
+        },
+        {
+          "offset": 1313,
+          "type": 20,
+          "symbol": "??1NativeMeshReference@bsp@@UAE@XZ"
+        },
+        {
+          "offset": 1334,
+          "type": 6,
+          "symbol": "?retire_mesh@NativePostEffectConstructionBlock@bsp@@CAXPAXAAVNativeMeshReference@2@@Z"
+        },
+        {
+          "offset": 1344,
+          "type": 20,
+          "symbol": "??0NativeMeshReference@bsp@@QAE@AAUNativeMeshStorage@1@AAUNativeMeshEnvironment@1@UNativeMeshCompanionDisposal@1@@Z"
+        },
+        {
+          "offset": 1379,
+          "type": 20,
+          "symbol": "?registration@GuiNativeGeometryOwners@bsp@@QBEABUGuiNativeGeometryRegistration@2@XZ"
+        },
+        {
+          "offset": 1447,
+          "type": 20,
+          "symbol": "?set_native_mesh_vertex_stream_00b73bb0@bsp@@YAXAAUNativeMeshStorage@1@AAVNativeRenderActualOwners@1@HPAX@Z"
+        },
+        {
+          "offset": 1471,
+          "type": 20,
+          "symbol": "?create_native_material_for_effect_00535320@bsp@@YAPAUNativeMaterialStorage@1@AAVNativeString@1@ADSAXAAVNativeMaterialSlotPool@1@AAVNativeRenderActualOwners@1@@Z"
+        },
+        {
+          "offset": 1547,
+          "type": 20,
+          "symbol": "??1NativeMaterialReference@bsp@@UAE@XZ"
+        },
+        {
+          "offset": 1568,
+          "type": 6,
+          "symbol": "?retire_material@NativePostEffectConstructionBlock@bsp@@CAXPAXAAVNativeMaterialReference@2@@Z"
+        },
+        {
+          "offset": 1580,
+          "type": 20,
+          "symbol": "??0NativeMaterialReference@bsp@@QAE@AAUNativeMaterialStorage@1@AAUNativeMaterialDestructionAccess@1@PDIUNativeMaterialCompanionDisposal@1@@Z"
+        },
+        {
+          "offset": 1615,
+          "type": 20,
+          "symbol": "?registration@GuiNativeGeometryOwners@bsp@@QBEABUGuiNativeGeometryRegistration@2@XZ"
+        },
+        {
+          "offset": 1660,
+          "type": 20,
+          "symbol": "?set_native_material_parameter_owner_00b18a40@bsp@@YAXAAUNativeMaterialStorage@1@PAXEAAVNativeRenderActualOwners@1@@Z"
+        },
+        {
+          "offset": 1676,
+          "type": 20,
+          "symbol": "?create_native_mesh_section_00533fa0@bsp@@YAPAUNativeMeshSectionStorage@1@AAVNativeMeshSectionPool@1@ADI@Z"
+        },
+        {
+          "offset": 1724,
+          "type": 20,
+          "symbol": "??1NativeMeshSectionReference@bsp@@UAE@XZ"
+        },
+        {
+          "offset": 1742,
+          "type": 6,
+          "symbol": "?retire_section@NativePostEffectConstructionBlock@bsp@@CAXPAXAAVNativeMeshSectionReference@2@@Z"
+        },
+        {
+          "offset": 1754,
+          "type": 20,
+          "symbol": "??0NativeMeshSectionReference@bsp@@QAE@AAUNativeMeshSectionStorage@1@AAUNativeMeshSectionEnvironment@1@UNativeMeshSectionCompanionDisposal@1@@Z"
+        },
+        {
+          "offset": 1789,
+          "type": 20,
+          "symbol": "?registration@GuiNativeGeometryOwners@bsp@@QBEABUGuiNativeGeometryRegistration@2@XZ"
+        },
+        {
+          "offset": 1922,
+          "type": 20,
+          "symbol": "?set_native_mesh_section_material_00b864c0@bsp@@YAXAAUNativeMeshSectionStorage@1@AAVNativeRenderActualOwners@1@PAX@Z"
+        },
+        {
+          "offset": 1943,
+          "type": 20,
+          "symbol": "?rebuild_native_mesh_section_vertex_layout_00b865a0@bsp@@YAXAAUNativeMeshSectionStorage@1@AAVNativeRenderActualOwners@1@PAXAAVNativeMeshSectionLayoutServices@1@@Z"
+        },
+        {
+          "offset": 1957,
+          "type": 20,
+          "symbol": "?append_native_mesh_draw_section_00b73c60@bsp@@YAXAAUNativeMeshStorage@1@PAX@Z"
+        },
+        {
+          "offset": 1965,
+          "type": 20,
+          "symbol": "?allocate_native_model_slot_00b74eb0@bsp@@YAPAXXZ"
+        },
+        {
+          "offset": 2025,
+          "type": 20,
+          "symbol": "??1NativeModelOwner@bsp@@QAE@XZ"
+        },
+        {
+          "offset": 2058,
+          "type": 20,
+          "symbol": "??0NativeModelOwner@bsp@@QAE@PAXIAAUNativeModelEnvironment@1@@Z"
+        },
+        {
+          "offset": 2092,
+          "type": 20,
+          "symbol": "?construct_native_string_cstring_0041e870@bsp@@YAPAXPAXPBDAAUNativeStringRawPoolContext@1@@Z"
+        },
+        {
+          "offset": 2135,
+          "type": 20,
+          "symbol": "?construct_native_model_00b75030@bsp@@YAPAXAAVNativeModelOwner@1@PBXABUNativeNodeRawConstants@1@@Z"
+        },
+        {
+          "offset": 2206,
+          "type": 20,
+          "symbol": "??1NativeModelReference@bsp@@UAE@XZ"
+        },
+        {
+          "offset": 2215,
+          "type": 6,
+          "symbol": "?retire_model@NativePostEffectConstructionBlock@bsp@@CAXPAXAAVNativeModelReference@2@@Z"
+        },
+        {
+          "offset": 2230,
+          "type": 20,
+          "symbol": "??0NativeModelReference@bsp@@QAE@AAVNativeModelOwner@1@UNativeModelCompanionDisposal@1@@Z"
+        },
+        {
+          "offset": 2268,
+          "type": 20,
+          "symbol": "?registration@GuiNativeGeometryOwners@bsp@@QBEABUGuiNativeGeometryRegistration@2@XZ"
+        },
+        {
+          "offset": 2320,
+          "type": 20,
+          "symbol": "?string_cleanup@NativePostEffectConstructionBlock@bsp@@AAEXAAVNativeString@2@@Z"
+        },
+        {
+          "offset": 2385,
+          "type": 20,
+          "symbol": "?find_actual_node@GeneratedModelLifetimeRuntime@bsp@@QBEPAVGeneratedModelNodeLifetime@2@I@Z"
+        },
+        {
+          "offset": 2392,
+          "type": 6,
+          "symbol": "??_R0?AVNativeModelReference@bsp@@@8"
+        },
+        {
+          "offset": 2397,
+          "type": 6,
+          "symbol": "??_R0?AVGeneratedModelNodeLifetime@bsp@@@8"
+        },
+        {
+          "offset": 2405,
+          "type": 20,
+          "symbol": "___RTDynamicCast"
+        },
+        {
+          "offset": 2466,
+          "type": 20,
+          "symbol": "?set_native_model_geometry_00b75170@bsp@@YAXAAVNativeModelOwner@1@IPAXMM@Z"
+        },
+        {
+          "offset": 2474,
+          "type": 20,
+          "symbol": "?allocate_native_camera_slot_00b71930@bsp@@YAPAXXZ"
+        },
+        {
+          "offset": 2540,
+          "type": 20,
+          "symbol": "??1NativeCameraOwner@bsp@@QAE@XZ"
+        },
+        {
+          "offset": 2579,
+          "type": 20,
+          "symbol": "??0NativeCameraOwner@bsp@@QAE@PAXIAAUNativeCameraEnvironment@1@$$QAVBindingAdmission@SceneAttachmentRuntime@1@@Z"
+        },
+        {
+          "offset": 2616,
+          "type": 20,
+          "symbol": "?prefix_native_string_header_0043c130@bsp@@YAPAXPAXPBDPBXAAVActualNativeStringPoolStorage@1@@Z"
+        },
+        {
+          "offset": 2666,
+          "type": 20,
+          "symbol": "?construct_native_camera_00b71a80@bsp@@YAPAXAAVNativeCameraOwner@1@PBXABUNativeNodeRawConstants@1@$$QAVAdmission@NativeViewportRegistry@1@@Z"
+        },
+        {
+          "offset": 2753,
+          "type": 20,
+          "symbol": "??1NativeCameraReference@bsp@@UAE@XZ"
+        },
+        {
+          "offset": 2775,
+          "type": 6,
+          "symbol": "?retire_camera@NativePostEffectConstructionBlock@bsp@@CAXPAXAAVNativeCameraReference@2@@Z"
+        },
+        {
+          "offset": 2784,
+          "type": 20,
+          "symbol": "??0NativeCameraReference@bsp@@QAE@AAVNativeCameraOwner@1@UNativeCameraCompanionDisposal@1@$$QAVBindingAdmission@GeneratedModelLifetimeRuntime@1@@Z"
+        },
+        {
+          "offset": 2822,
+          "type": 20,
+          "symbol": "?registration@GuiNativeGeometryOwners@bsp@@QBEABUGuiNativeGeometryRegistration@2@XZ"
+        },
+        {
+          "offset": 2867,
+          "type": 20,
+          "symbol": "?string_cleanup@NativePostEffectConstructionBlock@bsp@@AAEXAAVNativeString@2@@Z"
+        },
+        {
+          "offset": 2897,
+          "type": 20,
+          "symbol": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z"
+        },
+        {
+          "offset": 2935,
+          "type": 20,
+          "symbol": "?initialize_native_viewport_owner_00b1f850@bsp@@YAPAUNativeViewportOwner@1@PAXAAUNativeViewportEnvironment@1@@Z"
+        },
+        {
+          "offset": 2985,
+          "type": 20,
+          "symbol": "?constructed@NativeViewportRegistry@bsp@@QAEXAAVAdmission@12@AAUNativeViewportOwner@2@@Z"
+        },
+        {
+          "offset": 3001,
+          "type": 20,
+          "symbol": "?surface_dimension@?A0x8caa62ea@bsp@@YAIPBXAAUNativePostEffectConstructionContext@2@_N@Z"
+        },
+        {
+          "offset": 3019,
+          "type": 20,
+          "symbol": "?surface_dimension@?A0x8caa62ea@bsp@@YAIPBXAAUNativePostEffectConstructionContext@2@_N@Z"
+        },
+        {
+          "offset": 3052,
+          "type": 20,
+          "symbol": "?set_native_viewport_dimensions_00b1f940@bsp@@YAXAAUNativeViewportOwner@1@PBX@Z"
+        },
+        {
+          "offset": 3085,
+          "type": 20,
+          "symbol": "?find_actual_node@GeneratedModelLifetimeRuntime@bsp@@QBEPAVGeneratedModelNodeLifetime@2@I@Z"
+        },
+        {
+          "offset": 3092,
+          "type": 6,
+          "symbol": "??_R0?AVNativeCameraReference@bsp@@@8"
+        },
+        {
+          "offset": 3097,
+          "type": 6,
+          "symbol": "??_R0?AVGeneratedModelNodeLifetime@bsp@@@8"
+        },
+        {
+          "offset": 3105,
+          "type": 20,
+          "symbol": "___RTDynamicCast"
+        },
+        {
+          "offset": 3140,
+          "type": 20,
+          "symbol": "?set_native_camera_viewport_00b71990@bsp@@YAXAAVNativeCameraOwner@1@PAUNativeViewportOwner@1@@Z"
+        },
+        {
+          "offset": 3315,
+          "type": 20,
+          "symbol": "?invoke_native_viewport_deleting_destructor_00bd30e0@bsp@@YAXPAUNativeViewportOwner@1@@Z"
+        },
+        {
+          "offset": 3348,
+          "type": 20,
+          "symbol": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z"
+        },
+        {
+          "offset": 3449,
+          "type": 20,
+          "symbol": "?construct_native_post_effect_draw_record_00b51bd0@bsp@@YIPAXPAXPBUNativeTracelineRenderAccess@1@M0000M@Z"
+        },
+        {
+          "offset": 3688,
+          "type": 6,
+          "symbol": "??_R0?AVNativeMeshSectionReference@bsp@@@8"
+        },
+        {
+          "offset": 3693,
+          "type": 6,
+          "symbol": "??_R0?AVRenderCommandReference@bsp@@@8"
+        },
+        {
+          "offset": 3704,
+          "type": 20,
+          "symbol": "___RTDynamicCast"
+        },
+        {
+          "offset": 3737,
+          "type": 20,
+          "symbol": "?release_zero_references@NativeMeshSectionReference@bsp@@UAEXXZ"
+        },
+        {
+          "offset": 3913,
+          "type": 6,
+          "symbol": "??_R0?AVNativeMeshReference@bsp@@@8"
+        },
+        {
+          "offset": 3918,
+          "type": 6,
+          "symbol": "??_R0?AVRenderCommandReference@bsp@@@8"
+        },
+        {
+          "offset": 3929,
+          "type": 20,
+          "symbol": "___RTDynamicCast"
+        },
+        {
+          "offset": 3962,
+          "type": 20,
+          "symbol": "?release_zero_references@NativeMeshReference@bsp@@UAEXXZ"
+        },
+        {
+          "offset": 4001,
+          "type": 20,
+          "symbol": "??0NativePostEffectOwner@bsp@@QAE@PAXAAUNativePostEffectOwnerContext@1@@Z"
+        },
+        {
+          "offset": 4022,
+          "type": 20,
+          "symbol": "?registration@GuiNativeGeometryOwners@bsp@@QBEABUGuiNativeGeometryRegistration@2@XZ"
+        },
+        {
+          "offset": 4047,
+          "type": 20,
+          "symbol": "??1NativePostEffectReference@bsp@@UAE@XZ"
+        },
+        {
+          "offset": 4065,
+          "type": 6,
+          "symbol": "?retire_owner@NativePostEffectConstructionBlock@bsp@@CAXPAXAAVNativePostEffectReference@2@@Z"
+        },
+        {
+          "offset": 4091,
+          "type": 20,
+          "symbol": "??0NativePostEffectReference@bsp@@QAE@AAVNativePostEffectOwner@1@UGuiNativeGeometryRegistration@1@UNativePostEffectCompanionDisposal@1@@Z"
+        },
+        {
+          "offset": 4124,
+          "type": 20,
+          "symbol": "?cancel@BindingAdmission@SceneAttachmentRuntime@bsp@@QAEXXZ"
+        },
+        {
+          "offset": 4135,
+          "type": 20,
+          "symbol": "?cancel@BindingAdmission@GeneratedModelLifetimeRuntime@bsp@@QAEXXZ"
+        },
+        {
+          "offset": 4163,
+          "type": 20,
+          "symbol": "?cancel@Admission@NativeViewportRegistry@bsp@@QAEXXZ"
+        },
+        {
+          "offset": 4205,
+          "type": 20,
+          "symbol": "@__security_check_cookie@4"
+        },
+        {
+          "offset": 4214,
+          "type": 6,
+          "symbol": "??_C@_0FH@EPJBAFBN@post?9effect?5constructor?5requires@"
+        },
+        {
+          "offset": 4225,
+          "type": 20,
+          "symbol": "??0logic_error@std@@QAE@PBD@Z"
+        },
+        {
+          "offset": 4230,
+          "type": 6,
+          "symbol": "__TI2?AVlogic_error@std@@"
+        },
+        {
+          "offset": 4242,
+          "type": 20,
+          "symbol": "__CxxThrowException@8"
+        },
+        {
+          "offset": 4247,
+          "type": 6,
+          "symbol": "??_C@_0CB@LIAMDAKD@missing?5current?5CE2220?5decrement@"
+        },
+        {
+          "offset": 4255,
+          "type": 20,
+          "symbol": "??0logic_error@std@@QAE@PBD@Z"
+        },
+        {
+          "offset": 4260,
+          "type": 6,
+          "symbol": "__TI2?AVlogic_error@std@@"
+        },
+        {
+          "offset": 4269,
+          "type": 20,
+          "symbol": "__CxxThrowException@8"
+        },
+        {
+          "offset": 4274,
+          "type": 6,
+          "symbol": "??_C@_0ED@KLJDCMHH@post?9effect?5creator?5lacks?5its?5ca@"
+        },
+        {
+          "offset": 4285,
+          "type": 20,
+          "symbol": "??0logic_error@std@@QAE@PBD@Z"
+        },
+        {
+          "offset": 4290,
+          "type": 6,
+          "symbol": "__TI2?AVlogic_error@std@@"
+        },
+        {
+          "offset": 4302,
+          "type": 20,
+          "symbol": "__CxxThrowException@8"
+        },
+        {
+          "offset": 4307,
+          "type": 6,
+          "symbol": "??_C@_0DG@CJDGCBH@unsupported?5current?5post?9effect?5@"
+        },
+        {
+          "offset": 4318,
+          "type": 20,
+          "symbol": "??0logic_error@std@@QAE@PBD@Z"
+        },
+        {
+          "offset": 4323,
+          "type": 6,
+          "symbol": "__TI2?AVlogic_error@std@@"
+        },
+        {
+          "offset": 4335,
+          "type": 20,
+          "symbol": "__CxxThrowException@8"
+        },
+        {
+          "offset": 4340,
+          "type": 6,
+          "symbol": "??_C@_0DF@BMBBIGLF@unsupported?5current?5post?9effect?5@"
+        },
+        {
+          "offset": 4351,
+          "type": 20,
+          "symbol": "??0logic_error@std@@QAE@PBD@Z"
+        },
+        {
+          "offset": 4356,
+          "type": 6,
+          "symbol": "__TI2?AVlogic_error@std@@"
+        },
+        {
+          "offset": 4368,
+          "type": 20,
+          "symbol": "__CxxThrowException@8"
+        },
+        {
+          "offset": 4373,
+          "type": 6,
+          "symbol": "??_C@_0ED@ICKAHAOC@native?5post?9effect?5mesh?5derefere@"
+        },
+        {
+          "offset": 4384,
+          "type": 20,
+          "symbol": "??0logic_error@std@@QAE@PBD@Z"
+        },
+        {
+          "offset": 4389,
+          "type": 6,
+          "symbol": "__TI2?AVlogic_error@std@@"
+        },
+        {
+          "offset": 4401,
+          "type": 20,
+          "symbol": "__CxxThrowException@8"
+        },
+        {
+          "offset": 4406,
+          "type": 6,
+          "symbol": "??_C@_0EH@DDOOCNIP@native?5post?9effect?5material?5dere@"
+        },
+        {
+          "offset": 4417,
+          "type": 20,
+          "symbol": "??0logic_error@std@@QAE@PBD@Z"
+        },
+        {
+          "offset": 4422,
+          "type": 6,
+          "symbol": "__TI2?AVlogic_error@std@@"
+        },
+        {
+          "offset": 4434,
+          "type": 20,
+          "symbol": "__CxxThrowException@8"
+        },
+        {
+          "offset": 4439,
+          "type": 6,
+          "symbol": "??_C@_0EG@PKDBLPNC@native?5post?9effect?5section?5deref@"
+        },
+        {
+          "offset": 4450,
+          "type": 20,
+          "symbol": "??0logic_error@std@@QAE@PBD@Z"
+        },
+        {
+          "offset": 4455,
+          "type": 6,
+          "symbol": "__TI2?AVlogic_error@std@@"
+        },
+        {
+          "offset": 4467,
+          "type": 20,
+          "symbol": "__CxxThrowException@8"
+        },
+        {
+          "offset": 4472,
+          "type": 6,
+          "symbol": "??_C@_0EF@MKJFFCFK@native?5post?9effect?5viewport?5dime@"
+        },
+        {
+          "offset": 4483,
+          "type": 20,
+          "symbol": "??0logic_error@std@@QAE@PBD@Z"
+        },
+        {
+          "offset": 4488,
+          "type": 6,
+          "symbol": "__TI2?AVlogic_error@std@@"
+        },
+        {
+          "offset": 4500,
+          "type": 20,
+          "symbol": "__CxxThrowException@8"
+        },
+        {
+          "offset": 4505,
+          "type": 6,
+          "symbol": "??_C@_0CK@GJBKKAEA@missing?5current?5CE2220?5viewport?5@"
+        },
+        {
+          "offset": 4516,
+          "type": 20,
+          "symbol": "??0logic_error@std@@QAE@PBD@Z"
+        },
+        {
+          "offset": 4521,
+          "type": 6,
+          "symbol": "__TI2?AVlogic_error@std@@"
+        },
+        {
+          "offset": 4533,
+          "type": 20,
+          "symbol": "__CxxThrowException@8"
+        },
+        {
+          "offset": 4538,
+          "type": 6,
+          "symbol": "??_C@_0CB@LIAMDAKD@missing?5current?5CE2220?5decrement@"
+        },
+        {
+          "offset": 4549,
+          "type": 20,
+          "symbol": "??0logic_error@std@@QAE@PBD@Z"
+        },
+        {
+          "offset": 4554,
+          "type": 6,
+          "symbol": "__TI2?AVlogic_error@std@@"
+        },
+        {
+          "offset": 4566,
+          "type": 20,
+          "symbol": "__CxxThrowException@8"
+        },
+        {
+          "offset": 4571,
+          "type": 6,
+          "symbol": "??_C@_0DC@JKBHLOIK@unsupported?5current?5post?9effect?5@"
+        },
+        {
+          "offset": 4582,
+          "type": 20,
+          "symbol": "??0logic_error@std@@QAE@PBD@Z"
+        },
+        {
+          "offset": 4587,
+          "type": 6,
+          "symbol": "__TI2?AVlogic_error@std@@"
+        },
+        {
+          "offset": 4599,
+          "type": 20,
+          "symbol": "__CxxThrowException@8"
+        },
+        {
+          "offset": 4604,
+          "type": 6,
+          "symbol": "??_C@_0ED@KLJDCMHH@post?9effect?5creator?5lacks?5its?5ca@"
+        },
+        {
+          "offset": 4615,
+          "type": 20,
+          "symbol": "??0logic_error@std@@QAE@PBD@Z"
+        },
+        {
+          "offset": 4620,
+          "type": 6,
+          "symbol": "__TI2?AVlogic_error@std@@"
+        },
+        {
+          "offset": 4632,
+          "type": 20,
+          "symbol": "__CxxThrowException@8"
+        },
+        {
+          "offset": 4637,
+          "type": 6,
+          "symbol": "??_C@_0DG@CJDGCBH@unsupported?5current?5post?9effect?5@"
+        },
+        {
+          "offset": 4648,
+          "type": 20,
+          "symbol": "??0logic_error@std@@QAE@PBD@Z"
+        },
+        {
+          "offset": 4653,
+          "type": 6,
+          "symbol": "__TI2?AVlogic_error@std@@"
+        },
+        {
+          "offset": 4665,
+          "type": 20,
+          "symbol": "__CxxThrowException@8"
+        },
+        {
+          "offset": 4670,
+          "type": 6,
+          "symbol": "??_C@_0DF@BMBBIGLF@unsupported?5current?5post?9effect?5@"
+        },
+        {
+          "offset": 4681,
+          "type": 20,
+          "symbol": "??0logic_error@std@@QAE@PBD@Z"
+        },
+        {
+          "offset": 4686,
+          "type": 6,
+          "symbol": "__TI2?AVlogic_error@std@@"
+        },
+        {
+          "offset": 4698,
+          "type": 20,
+          "symbol": "__CxxThrowException@8"
+        },
+        {
+          "offset": 4703,
+          "type": 6,
+          "symbol": "??_C@_0ED@KLJDCMHH@post?9effect?5creator?5lacks?5its?5ca@"
+        },
+        {
+          "offset": 4714,
+          "type": 20,
+          "symbol": "??0logic_error@std@@QAE@PBD@Z"
+        },
+        {
+          "offset": 4719,
+          "type": 6,
+          "symbol": "__TI2?AVlogic_error@std@@"
+        },
+        {
+          "offset": 4731,
+          "type": 20,
+          "symbol": "__CxxThrowException@8"
+        },
+        {
+          "offset": 4736,
+          "type": 6,
+          "symbol": "??_C@_0DG@CJDGCBH@unsupported?5current?5post?9effect?5@"
+        },
+        {
+          "offset": 4747,
+          "type": 20,
+          "symbol": "??0logic_error@std@@QAE@PBD@Z"
+        },
+        {
+          "offset": 4752,
+          "type": 6,
+          "symbol": "__TI2?AVlogic_error@std@@"
+        },
+        {
+          "offset": 4764,
+          "type": 20,
+          "symbol": "__CxxThrowException@8"
+        },
+        {
+          "offset": 4769,
+          "type": 6,
+          "symbol": "??_C@_0DF@BMBBIGLF@unsupported?5current?5post?9effect?5@"
+        },
+        {
+          "offset": 4780,
+          "type": 20,
+          "symbol": "??0logic_error@std@@QAE@PBD@Z"
+        },
+        {
+          "offset": 4785,
+          "type": 6,
+          "symbol": "__TI2?AVlogic_error@std@@"
+        },
+        {
+          "offset": 4797,
+          "type": 20,
+          "symbol": "__CxxThrowException@8"
+        },
+        {
+          "offset": 4802,
+          "type": 6,
+          "symbol": "??_C@_0DL@HMGOCDOB@current?5post?9effect?5camera?5is?5ou@"
+        },
+        {
+          "offset": 4813,
+          "type": 20,
+          "symbol": "??0logic_error@std@@QAE@PBD@Z"
+        },
+        {
+          "offset": 4818,
+          "type": 6,
+          "symbol": "__TI2?AVlogic_error@std@@"
+        },
+        {
+          "offset": 4830,
+          "type": 20,
+          "symbol": "__CxxThrowException@8"
+        },
+        {
+          "offset": 4835,
+          "type": 6,
+          "symbol": "??_C@_0DK@NKGMNKOM@current?5post?9effect?5model?5is?5out@"
+        },
+        {
+          "offset": 4846,
+          "type": 20,
+          "symbol": "??0logic_error@std@@QAE@PBD@Z"
+        },
+        {
+          "offset": 4851,
+          "type": 6,
+          "symbol": "__TI2?AVlogic_error@std@@"
+        },
+        {
+          "offset": 4863,
+          "type": 20,
+          "symbol": "__CxxThrowException@8"
+        },
+        {
+          "offset": 4868,
+          "type": 6,
+          "symbol": "??_C@_0EE@CFHBEBCM@post?9effect?5constructor?5requires@"
+        },
+        {
+          "offset": 4879,
+          "type": 20,
+          "symbol": "??0logic_error@std@@QAE@PBD@Z"
+        },
+        {
+          "offset": 4884,
+          "type": 6,
+          "symbol": "__TI2?AVlogic_error@std@@"
+        },
+        {
+          "offset": 4896,
+          "type": 20,
+          "symbol": "__CxxThrowException@8"
+        },
+        {
+          "offset": 4901,
+          "type": 6,
+          "symbol": "??_C@_0EE@CFHBEBCM@post?9effect?5constructor?5requires@"
+        },
+        {
+          "offset": 4912,
+          "type": 20,
+          "symbol": "??0logic_error@std@@QAE@PBD@Z"
+        },
+        {
+          "offset": 4917,
+          "type": 6,
+          "symbol": "__TI2?AVlogic_error@std@@"
+        },
+        {
+          "offset": 4929,
+          "type": 20,
+          "symbol": "__CxxThrowException@8"
+        },
+        {
+          "offset": 4975,
+          "type": 20,
+          "symbol": "?unwind@NativePostEffectConstructionBlock@bsp@@AAEXAAHAAPAX11AAI@Z"
+        },
+        {
+          "offset": 4989,
+          "type": 20,
+          "symbol": "?settle@NativePostEffectConstructionBlock@bsp@@AAEXXZ"
+        },
+        {
+          "offset": 4998,
+          "type": 20,
+          "symbol": "__CxxThrowException@8"
+        },
+        {
+          "offset": 5006,
+          "type": 20,
+          "symbol": "?settle@NativePostEffectConstructionBlock@bsp@@AAEXXZ"
+        },
+        {
+          "offset": 5015,
+          "type": 20,
+          "symbol": "__CxxThrowException@8"
+        }
+      ],
+      "disassembly": "local/bo-constructor-object.asm",
+      "source_sha256": "23cb98c01d988c942ac29f2c16a443818478453326b6e4a9b1a4646ea4458f0f",
+      "limitation": "Generated source static evidence only; no native/source constructor fixture, native FH3 or binary ABI claim.",
+      "initial_actual_writes": [
+        {
+          "object_offset": 200,
+          "actual_offset": 0,
+          "bytes": 4,
+          "value": 13545776
+        },
+        {
+          "object_offset": 209,
+          "actual_offset": 4,
+          "bytes": 4,
+          "value": 1
+        },
+        {
+          "object_offset": 229,
+          "actual_offset": 0,
+          "bytes": 4,
+          "value": 14032584
+        },
+        {
+          "object_offset": 251,
+          "actual_offset": 12,
+          "bytes": 4,
+          "value": 0
+        },
+        {
+          "object_offset": 273,
+          "actual_offset": 16,
+          "bytes": 4,
+          "value": 0
+        },
+        {
+          "object_offset": 295,
+          "actual_offset": 20,
+          "bytes": 4,
+          "value": 0
+        },
+        {
+          "object_offset": 315,
+          "actual_offset": 32,
+          "bytes": 4,
+          "value": [
+            "primitive_count",
+            0
+          ]
+        }
+      ],
+      "sole_count1_write": true,
+      "no_count0_write": true,
+      "x87_operations": [
+        {
+          "offset": 2336,
+          "mnemonic": "fld",
+          "operands": "dword ptr [eax]"
+        },
+        {
+          "offset": 2347,
+          "mnemonic": "fst",
+          "operands": "dword ptr [ebp - 0x68]"
+        },
+        {
+          "offset": 2350,
+          "mnemonic": "fstp",
+          "operands": "dword ptr [ebp - 0x6c]"
+        },
+        {
+          "offset": 3383,
+          "mnemonic": "fld1",
+          "operands": ""
+        },
+        {
+          "offset": 3394,
+          "mnemonic": "fstp",
+          "operands": "dword ptr [ebp - 0x24]"
+        },
+        {
+          "offset": 3403,
+          "mnemonic": "fldz",
+          "operands": ""
+        },
+        {
+          "offset": 3405,
+          "mnemonic": "fstp",
+          "operands": "dword ptr [ebp - 0x50]"
+        }
+      ],
+      "x87_single_sentinel_load_fst_fstp": true,
+      "current_field_reads_between_x87_operations": true,
+      "arithmetic_after_spills": "Generated MOVSS copies transport the already-spilled words; no further x87 operation occurs before existing callees."
+    },
+    "linked_libraries_sha256": {
+      "bsp_core.lib": "d175126995bdee4e1c4efc122193a1b370ca15b47b1920072a9f121b40e082b6",
+      "bsp_lua511.lib": "5083c61c0af513327c64b1bfa5a879f01deeacc62835c7e4517151caaa562b1b",
+      "bsp_zlib121.lib": "b11bc6d4da727d5c69fc78578d779876a50d45234db4d0d12d1a112409b308d4"
+    },
+    "header_sha256": "65a3332cee75378284f9376c991c7c6e35cc46dd65d3b222fb0e5fd086715560",
+    "source_sha256": "23cb98c01d988c942ac29f2c16a443818478453326b6e4a9b1a4646ea4458f0f",
+    "registration_sha256": "6706440a75aea5aafb84c2b129eebba664a067fc9ca97b3590a3fa2a5de3c183",
+    "object_parser": "J:\\PROG\\battlestations-pacific-decompile-orch3-post-effect-construction-bo\\local\\bo_object_review.py",
+    "object_parser_sha256": "d4c099f510a703808554443a81585772a1a9160188415b2fd779ed6621341928",
+    "first_build": "Passed; primary review correction exposed borrowed reference companions, then incremental builds passed.",
+    "new_tests": 0,
+    "native_fixture": false,
+    "game_validation": false,
+    "scope": "Compilation/existing math check plus read-only PE/live, call-site and generated-code evidence. New constructor, host failure disposition and secondary-cleanup exception paths were not executed."
+  },
+  "corrections": [
+    {
+      "was": "MSVC asm helper parameter named offset",
+      "is": "byte_offset",
+      "evidence": "Primary independent review caught reserved assembler keyword before BO compilation."
+    },
+    {
+      "was": "Completed child references were privately preserved after bind failure",
+      "is": "Borrowed acquired reference pointers are exposed before bind",
+      "evidence": "Primary ownership review identified that external disposition needs the exact unregistered companion, not only its native identity."
+    }
+  ],
+  "review": {
+    "reviewer": "primary /root",
+    "findings_resolved": [
+      "Reserved MSVC inline-asm keyword offset renamed byte_offset before first compilation.",
+      "Completed reference companion pointers exposed as borrowed diagnostics before potentially throwing canonical bind.",
+      "Secondary cleanup exception policy explicitly documented; it propagates the newest exception after remaining actions and is excluded from native FH3 equivalence."
+    ],
+    "remaining_blocking_findings": [],
+    "retained_boundaries": [
+      "real callable renderer+48 prerequisite",
+      "535320 internal completed-material identity not exposed after final-release failure",
+      "43C130 inherited nonthrowing nested cleanup",
+      "provider materialization/terminal noexcept domains",
+      "external quiescence and failed-camera viewport orphan disposition"
+    ]
+  }
+}

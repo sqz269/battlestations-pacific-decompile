@@ -1,0 +1,341 @@
+{
+  "packet": "orch3_native_inverse_world_getter_cg",
+  "status": "exact_committed_build_static_native_review_saved_annotations_passed_sealed",
+  "source_parent_commit": "8382be3c07897e1db711ab391d7df6a3d185cc4f",
+  "native_body_credit": 0,
+  "native_bytes_credit": 0,
+  "raw_upgrade_of_existing_typed_full_function": true,
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "live_function_count": 64026,
+    "installed_pe": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "provider_signatures": {
+    "00b6db70": "void __fastcall refresh_native_camera_world_00b6db70(void* actual_node)",
+    "00b63b30": "void* __fastcall invert_native_camera_scaled_affine_00b63b30(void* actual_destination, const void* actual_source)",
+    "004134f0": "void* __fastcall copy_native_camera_matrix_004134f0(void* destination, void* unused_edx, const void* source)",
+    "00b6fcb0_sibling": "void* __fastcall get_native_camera_view_00b6fcb0(void* actual_camera)",
+    "00b6e0d0_existing_typed": "const CameraMatrix& get_transform_inverse_world_00b6e0d0(CameraTransform&)"
+  },
+  "provider_sha256": {
+    "include/bsp/native_camera_world.hpp": "a6279c88e8efc27e2b81476385fd7f4269b444e17c824838a90a512b2fca3755",
+    "src/native_camera_world.cpp": "ce38ae3bb4fa869751c746092097ab4be1cf7b8947ce2ed2342da687d645563a",
+    "include/bsp/native_camera_matrix_math.hpp": "1a3d64ca2fb309bc24aaa36278b2f7be38e086c4faef36ad674a5c888cc93f1d",
+    "src/native_camera_matrix_math.cpp": "ca793757d2bb262ae48cf09a29be44462714da585b430db68c5b3e9262277fa0",
+    "include/bsp/native_camera_matrix_copy.hpp": "70e741350edb66be14fc9d1b981181fe5ecf8c536f33eab47221469d8d3f1a7a",
+    "src/native_camera_matrix_copy.cpp": "31840777adef31ac0717e7bc4cb148ecd9aa45be8e5d2d52eb79f3c8a00a708d",
+    "include/bsp/native_camera_cache_getters.hpp": "6ed2ed227a3fb53db7a4b9d5890f241d1b011f3699eb0868733e312e3e3d813b",
+    "src/native_camera_cache_getters.cpp": "d4801cdeb8761b98399a111992f583f721b820c476174255ae037ae778e6c65f",
+    "include/bsp/material_transform_constants.hpp": "c08f7fdd5300130b13ee53bd09d880cc42b456468a9fa46ca5ca857e22cf5e47",
+    "src/material_transform_constants.cpp": "0e0a4caf7f924d5dd45601b8e78efa26e31f32b35ccdb6341a79a5a999b85fc4"
+  },
+  "source_sha256": {
+    "include/bsp/native_inverse_world_getter.hpp": "6bcdf46e55238626c84650479409479fb1d59f62571d0fcd0fade7693e444fa4",
+    "src/native_inverse_world_getter.cpp": "ee914cc413e979f03a4faab67ace45e6445dd7c82b910cb9c7f99f1fe9d8f6d5"
+  },
+  "generated_coff": {
+    "path": "build/win32/bsp_core.dir/Release/native_inverse_world_getter.obj",
+    "sha256": "d4640cf4454cbf11e885892916414e57cebdbc676b21681f61b6c7de1805b087",
+    "machine": "i386",
+    "section": 3,
+    "section_bytes": 58,
+    "section_bytes_hex": "83ec40568bf18b465ca8087525a8027505e8000000008d96f00000008d4c2404e800000000508d4e60e800000000834e5c088d46605e83c440c3",
+    "whole_comdat_matches_native_except_call_displacements": true,
+    "relocations": [
+      {
+        "offset": "12",
+        "type": "REL32",
+        "target_symbol": "refresh_native_camera_world_00b6db70"
+      },
+      {
+        "offset": "21",
+        "type": "REL32",
+        "target_symbol": "invert_native_camera_scaled_affine_00b63b30"
+      },
+      {
+        "offset": "2a",
+        "type": "REL32",
+        "target_symbol": "copy_native_camera_matrix_004134f0"
+      }
+    ]
+  },
+  "validation": {
+    "command": "./scripts/build.ps1",
+    "configuration": "MSVC Win32 Release",
+    "exit_code": 0,
+    "ctests_passed": 2,
+    "ctests": [
+      "reconstructed_math",
+      "native_math_differential"
+    ],
+    "exact_commit": "3e5d090de8f982e9dbd4a4e16875d746fa51283d",
+    "tracked_build_inputs": 2585,
+    "clean_before_after": true,
+    "all_build_input_hashes_preserved": true,
+    "new_tests": 0,
+    "new_native_fixture": false,
+    "raw_entries_executed": false,
+    "game_validated": false
+  },
+  "limits": "Raw source/interface upgrade only; existing typed full-function record remains. No added native EH frame, full builder composition, or game validation.",
+  "functions": [
+    {
+      "address": "00b6e0d0",
+      "inclusive_end": "00b6e109",
+      "bytes": 58,
+      "native_bytes_hex": "83ec40568bf18b465ca8087525a8027505e88afaffff8d96f00000008d4c2404e83b5affff508d4e60e8f2538aff834e5c088d46605e83c440c3",
+      "native_sha256": "60c75eba2be14db5ef3fa77834b5811c9e2ecc4a851a6913cb47536d043c63a6",
+      "ghidra_name": "BSP_Node_GetInverseWorldMatrix",
+      "cpp_symbol": "get_native_node_inverse_world_00b6e0d0",
+      "source_signature": "void* __fastcall get_native_node_inverse_world_00b6e0d0(void* actual_node)",
+      "original_abi": "ECX actual node, EAX actual node+60h cache address, preserves ESI, plain RET",
+      "direct_builder_calls": [
+        "00b4283a",
+        "00b42f13"
+      ],
+      "original_calls": [
+        {
+          "site": "00b6e0e1",
+          "target": "00b6db70",
+          "source_symbol": "refresh_native_camera_world_00b6db70"
+        },
+        {
+          "site": "00b6e0f0",
+          "target": "00b63b30",
+          "source_symbol": "invert_native_camera_scaled_affine_00b63b30"
+        },
+        {
+          "site": "00b6e0f9",
+          "target": "004134f0",
+          "source_symbol": "copy_native_camera_matrix_004134f0"
+        }
+      ],
+      "storage_contract": "Capture one flags DWORD+5C; cache hit returns actual+60; on miss optionally refresh when captured bit2 clear, invert current world+F0 into 40h stack scratch, copy into actual+60, OR current flags DWORD with8 after calls; no typed cache or repair"
+    }
+  ],
+  "worker_validation": {
+    "original_pe_span_equal_live_ghidra_bytes": true,
+    "three_original_calls_resolve_to_expected_providers": true,
+    "both_direct_builder_call_sites_verified": true,
+    "coff_method": "dumpbin /DISASM:BYTES, /HEADERS, /SYMBOLS, /RELOCATIONS and full-section masking/symbol assertions in ignored local/output/verify-cg-coff.py",
+    "scripts_build_ps1_release": "passed",
+    "ctest": "1/1 reconstructed_math passed"
+  },
+  "worker_source_sha256": {
+    "include/bsp/native_inverse_world_getter.hpp": "6bcdf46e55238626c84650479409479fb1d59f62571d0fcd0fade7693e444fa4",
+    "src/native_inverse_world_getter.cpp": "ee914cc413e979f03a4faab67ace45e6445dd7c82b910cb9c7f99f1fe9d8f6d5",
+    "cmake/startup.cmake": "7408ce2b79d297094c531bc18e6b64b833ac863055de747209b0d76aa5e82856"
+  },
+  "call_steps": [
+    {
+      "address": "00b6e0e1",
+      "native": "00b6db70",
+      "function": "00b6e0d0"
+    },
+    {
+      "address": "00b6e0f0",
+      "native": "00b63b30",
+      "function": "00b6e0d0"
+    },
+    {
+      "address": "00b6e0f9",
+      "native": "004134f0",
+      "function": "00b6e0d0"
+    },
+    {
+      "address": "00b4283a",
+      "native": "00b6e0d0",
+      "function": "00b42350"
+    },
+    {
+      "address": "00b42f13",
+      "native": "00b6e0d0",
+      "function": "00b42350"
+    }
+  ],
+  "primary_integration": {
+    "worker_commit": "289d2ab8e2cdbacb8a212c44be73d70cd70f8211",
+    "source_header_unchanged": true,
+    "full_source_native_generated_review": true,
+    "worker_primary_code_and_relocation_identity": true
+  },
+  "tested_commit": "3e5d090de8f982e9dbd4a4e16875d746fa51283d",
+  "primary_review": {
+    "primary_complete_native_source_generated_review": true,
+    "independent_CG_worker_review": true,
+    "independent_CI_worker_review": false,
+    "backward_loop": {
+      "capture_first": "01h",
+      "capture_last": "06h",
+      "compare": "0Ah",
+      "capture_output": "0Fh",
+      "decrement_source": "18h",
+      "decrement_output": "1Eh",
+      "assignment": "27h",
+      "equal_range_output_load": "3Ah"
+    },
+    "head_adapter": {
+      "capture_first": "01h",
+      "capture_last": "06h",
+      "capture_output": "0Bh",
+      "backward_call": "16h",
+      "signed_input_difference": "1Eh",
+      "signed_imul": "25h",
+      "sar": "27h",
+      "correction": "2Ch-2Fh",
+      "multiply300": "33h",
+      "captured_output_subtraction": "3Dh"
+    },
+    "fill_loop": {
+      "compare": "0Ah",
+      "capture_source": "0Fh",
+      "assignment": "1Bh",
+      "advance": "23h"
+    },
+    "forwarding_wrappers": {
+      "B13F50": "9-byte prologue/tail jump to exact head adapter; unused original padding omitted.",
+      "B14550": "24-byte stdcall wrapper: context push03h, output push09h, actual copy call0Fh, RET10h at15h. Child EAX retained."
+    },
+    "inverse_world": {
+      "flags_capture": "06h",
+      "same_capture_tests": [
+        "09h",
+        "0Dh"
+      ],
+      "world_refresh": "11h",
+      "raw_inverse": "20h",
+      "raw_copy": "29h",
+      "current_flags_OR": "2Eh",
+      "return_cache_address": "32h",
+      "full58_byte_match_except_three_verified_CALL_displacements": true
+    },
+    "limits": "No new native execution, full vector insertion/constants builder, private-frame alias/SEH, drop-in module or gameplay verification.",
+    "blocking_findings": []
+  },
+  "generated_code": [
+    {
+      "address": "00b6e0d0",
+      "cpp_symbol": "get_native_node_inverse_world_00b6e0d0",
+      "symbol": "?get_native_node_inverse_world_00b6e0d0@bsp@@YIPAXPAX@Z",
+      "native_bytes": 58,
+      "native_sha256": "60c75eba2be14db5ef3fa77834b5811c9e2ecc4a851a6913cb47536d043c63a6",
+      "object_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\bsp_core.dir\\Release\\native_inverse_world_getter.obj",
+      "object_sha256": "ceee000fdc9b37aa115ca27d389e1f723e6f8daae7f4c4e2bea37a1c6457c32f",
+      "source_bytes": 58,
+      "source_sha256": "bb451417e668ddf3877bc1388145c0f6ccabc584ff1dec78626a79e0b8dd90f9",
+      "relocations": [
+        {
+          "offset": 18,
+          "type": 20,
+          "symbol": "?refresh_native_camera_world_00b6db70@bsp@@YIXPAX@Z"
+        },
+        {
+          "offset": 33,
+          "type": 20,
+          "symbol": "?invert_native_camera_scaled_affine_00b63b30@bsp@@YIPAXPAXPBX@Z"
+        },
+        {
+          "offset": 42,
+          "type": 20,
+          "symbol": "?copy_native_camera_matrix_004134f0@bsp@@YIPAXPAX0PBX@Z"
+        }
+      ],
+      "whole_native_identity_except_bound_call_displacements": true,
+      "worker_primary_code_and_relocation_identity": true,
+      "listing": "local/cgci-generated-00b6e0d0.asm"
+    }
+  ],
+  "primary_call_audit": {
+    "direct_rows": 5,
+    "indirect_rows": 0,
+    "failed": 0,
+    "log": "local/cgci-call-audit-native_inverse_world_getter_cg.log"
+  },
+  "annotation": {
+    "saved": true,
+    "readback_passed": true,
+    "prior_comments_preserved": true,
+    "record": "local/cgci-ghidra-annotation-record.json",
+    "force_refreshed_exports": [
+      "00b6e0d0"
+    ],
+    "correct_existing_names_preserved": true,
+    "original_abi_signatures": true,
+    "original_calling_conventions": {
+      "00b6e0d0": "__thiscall"
+    }
+  },
+  "artifact_sha256": {
+    "build/win32/bsp_core.dir/Release/native_inverse_world_getter.obj": "ceee000fdc9b37aa115ca27d389e1f723e6f8daae7f4c4e2bea37a1c6457c32f",
+    "build/win32/bsp_core.dir/Release/native_material_record_assignment.obj": "3127a4aead12599f4f0769fade16b60859cff18a5157f28fbe3115ed7d639f99",
+    "local/adapt_cgci_seal.py": "5a386cfc59bf21782f17c18b40ee3c7029c5d7a7673d1b6032112629c838482d",
+    "local/annotate_cgci.py": "1c4377fa7fad03a40dbacd47271923920dedc60c52f5918b136f3926a1b0883d",
+    "local/bq_object_review.py": "93d9b6dc62ddcd4bc7e0aab0ba75a9ef29e60fa15638adba14eb9a9fd7de862a",
+    "local/build_final_cgci.py": "71285bbda5030ef14cf3dbfdb5ebe67a34edee62c83063f9dd75f235c5fb4941",
+    "local/cgci-annotation.log": "43cef34945f7a0a272f2546d8abfae5b93770e0675a78c2f44ec6c0d54698b97",
+    "local/cgci-call-audit-native_inverse_world_getter_cg.log": "1da451fd7e441b2b3e111b2f738d9a9cd0b5eef1c11900ee6b3729547413588d",
+    "local/cgci-call-audit-native_material_record_assignment_ci.log": "f3f8cf06d5d2b3a50e75470a9b3c6e36f6c73a8001de69920ea01c161ee8aeed",
+    "local/cgci-comments-after.json": "335cd24228a0b2eab50d877089eccb0cba0887b0e990c183e8fca12e9389058e",
+    "local/cgci-comments-before.json": "093d410ed28f3e59e3264c995012be39fad478d46a9913f7fa9e7bcca160145d",
+    "local/cgci-export-refresh.log": "152b35144d0e7ea50d6f714b1ee24cbc625e791ef387cdc94e1c377f95e943e8",
+    "local/cgci-final-build-stamp.json": "4abf2c01945cb483148587bc226ebb29c570b8531a8088190fd5113a71cad9b2",
+    "local/cgci-final-combined-build.log": "9e29c06f264a503f4058a6566b73e67e35202eb564ace0e80e9961e8431edf32",
+    "local/cgci-function-records.json": "e2bd7a5e9ce6ddf76e11a20a1e845b143cc3576d0eb026da93d25bc652736f6e",
+    "local/cgci-generated-00b13310.asm": "7be400d7c03fca5c1d52bd60bcee08e4a57d1ba95968a197d3bcca0f0255a320",
+    "local/cgci-generated-00b13720.asm": "4924646beb72e7d882e96200c95e4edd6eb7501efe6b0eaed48a0d89855056e9",
+    "local/cgci-generated-00b13ad0.asm": "fb5b00b9a748dd3978b47f4e3333d21b1343698517d0318b5aa7eab885763b12",
+    "local/cgci-generated-00b13f50.asm": "23b0a786021975f9cbff4d69bc4008160d22fdcd6d004768571e2ebcab4a137a",
+    "local/cgci-generated-00b14550.asm": "492d73a31f3d58db8b66ab526a28c270a25c854945a69abc18c74312bdcb5352",
+    "local/cgci-generated-00b6e0d0.asm": "45d6a744cea8cf7fac99696886f06d9910e653067b81197aafac8d160f5093f2",
+    "local/cgci-ghidra-annotation-record.json": "373fe80996d8ea409a4f7fd46ca1ab01befc874d209c2cdf0e5724ec09e21ea1",
+    "local/cgci-ledger-before.json": "bbb7cd16365682cc0f41988f9ef7b2c321b169506bdf0ac045ce7142e0b74197",
+    "local/cgci-live-00b13310.txt": "9e6311b6270dcb3184d82e00c24e391aceb6a3ee97d5dade2a62b35c5bfc722d",
+    "local/cgci-live-00b13720.txt": "0f5752342f315c9c933b50a79318221f4a65eea9761f98a23334edf999dd503a",
+    "local/cgci-live-00b13ad0.txt": "e03c70203b3c45318cc9e8f6f90dbefa0fd65401898dbddfa40075df045737a0",
+    "local/cgci-live-00b13f50.txt": "949746b922fc55654379569ae409f3d4ba3500dc172ff08e76073ce996863a5b",
+    "local/cgci-live-00b14550.txt": "22c1cc3d23edbd1b33fe6df3b77f82452bfc3a91d4470a8d9c1c3e06990afc15",
+    "local/cgci-live-00b6e0d0.txt": "08c116df66173e548c57ae70cff5cffc5aa31b02551af0f504bb26692c5e6d7d",
+    "local/cgci-native-00b13310.asm": "14cc0ad82efa08cda226dd28923c62c7b999c45d1d71a2b3011e61b5a5df6a02",
+    "local/cgci-native-00b13720.asm": "3b2f78aa87edc79285d0f66fe1245f71a5a3ef70cbd95f4d9f605d9dfcf45d5a",
+    "local/cgci-native-00b13ad0.asm": "6e78d6de3cedff8bdfc7a26717e3e187d5e925d415fb91d5de28515d723f670c",
+    "local/cgci-native-00b13f50.asm": "3a2be9a23e85244c05b38fae6324ba206bd8a2b178374e2e97277f07a707fc07",
+    "local/cgci-native-00b14550.asm": "027b6b7d75b058a34350592e0841f3db1fa23f7ad4f4605413e5f04996f5f1d3",
+    "local/cgci-native-00b6e0d0.asm": "4f65c48ff29408fc1e2e6d41b520bf25bb075fdd8cd5882d0ebee46e1464305a",
+    "local/cgci-object-review.json": "b6c3904ee69653aebd392f1dc3b92f92eb2fc5474baaa4ec5670b49b7ac42a61",
+    "local/cgci-primary-review.json": "d1e71392563f0583995c1a85493d0a899dbd0cd3441ffdf00b58faab9a80e74c",
+    "local/cgci-worker/build-cg.log": "ffe5ca0d28bedf26ad526cf4586888d2a2b1681d3dd6c3d6b2163219e163cd09",
+    "local/cgci-worker/cg-original.py": "f73bf51f8e4503122c2517847071d6fc3a3bfc268b86c1d0fdd01e27b052c3c0",
+    "local/cgci-worker/coff-cg-disasm.txt": "1f9389f14a48728a7c82e0b96dd774b45f015797e7d5868e5290396e2c5ac5c5",
+    "local/cgci-worker/coff-cg-headers.txt": "83ebb22ca8631120a1076232bf5a599ebc10601a1661417b6da376f51e968620",
+    "local/cgci-worker/coff-cg-relocs.txt": "943ed915906cd1db4e76b00030f02cc181799ffc1fa699e3e72ed9c19e0c938d",
+    "local/cgci-worker/coff-cg-symbols.txt": "d935cb7d407aeb39109d00796cd62c046f03136ab2020bcd0eda32b3991aba9e",
+    "local/cgci-worker/commit-cg.txt": "f9802dd2d835973e911f21807730eefded9bfba13168045ed8bba1634fe4542c",
+    "local/cgci-worker/native_inverse_world_getter_cg.json": "49b27f583b06b26ac109960e7675f59b11fa17aabb76c8141b9930afbeb2682a",
+    "local/cgci-worker/verify-cg-coff.py": "248708612241b8d54c9fa26a746a86d98e506bb781d1ea867bcc034a07b730ab",
+    "local/cgci-worker/verify-cg-report.py": "2dcde8f5d14e44210e861202da7ef953b57ecb918ae8a16b09f79e1677142fcc",
+    "local/ch-record-vector-native.json": "ee3a3ff7555f4a92955ef2f23ca6f388edca716707215e8989762f77198e7f57",
+    "local/ch-record-vector-readiness.json": "61356365fb4ff2131db0aade9bf82b3b2bfd72fbb3e0d37c80e77d910cb52ccd",
+    "local/ch-record-vector-readiness.md": "2c14a8dd4d8d029908258064a3db8532d913c99bbc279e9a345f718228507731",
+    "local/finish_cgci.py": "06d8c584580a009c7647d41923d6390aaa591aae2774494d5842f58d2dbaa6cc",
+    "local/prepare_ch_audit.py": "50dea7bf41a8a974d248eb4b6e4f21c7eb83d3c5a53b8dbbf7d51297baf3101e",
+    "local/prepare_ci.py": "018429d803be09d93d022755d2a08e3813a7f68e735661d9af2271b782ef8b78",
+    "local/review_cgci_objects.py": "881234f3eb7a455dbdf609297529700ab9541cc6b9d24749bec03a84359bb3d8",
+    "local/seal_cgci.py": "1e623445a6451f7bba7c6075ebbfb80877121bba27ba236e098685cbbb76ab20"
+  },
+  "sealed_attempt": {
+    "tested_commit": "3e5d090de8f982e9dbd4a4e16875d746fa51283d",
+    "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\cgci-validated-attempt-3e5d090d.zip",
+    "sha256": "07c0918ab9d4bccca4ec3ae793c7d8182187a25f14d5ba0ff496f316db065ddc",
+    "payload_members": 2669,
+    "manifest_members": 1,
+    "all_member_hashes_rechecked": true,
+    "libraries": {
+      "bsp_core.lib": "b9597cdb035fa7b0493b8604a3938ea002da4ae605c8e1beef9f21b0c53e4ba2",
+      "bsp_lua511.lib": "71e114b0ff6244852d678a5779fcbf28589bdcecbad811aff228ffd5007fe8c7",
+      "bsp_zlib121.lib": "f3f934925213a2ffb81f3aec2afbb065c1733cf43b28dddf31db6a69185c4102"
+    },
+    "tracked_build_inputs": 2585
+  }
+}

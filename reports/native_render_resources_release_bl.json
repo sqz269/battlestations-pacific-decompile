@@ -1,0 +1,2007 @@
+{
+  "packet": "orch3_render_resources_release_bl",
+  "created_utc": "2026-09-14T03:18:32.276336+00:00",
+  "base_commit": "59e84616a3bc5ccc065fdf094738319e88d41004",
+  "bk_commit": "2eea9361f82614818242f31f518b3d24ca4285a9",
+  "status": "analysis_only_saved_listing_repaired_no_source_reconstruction",
+  "native_body_credit": 0,
+  "source_files_added": false,
+  "target": {
+    "project": "bsp",
+    "program": "/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "bridge": "http://127.0.0.1:8089",
+    "image_base": "00400000",
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "verification": "Every live BSP CLI calls Client.verify; config verifies project/program/language/base before read-only batch."
+  },
+  "routines": [
+    {
+      "address": "00b14f60",
+      "inclusive_end": "00b15085",
+      "bytes": 294,
+      "complete_original_instructions": 99,
+      "span_sha256": "79ab901371bdc493916d8cf5400f4e214b34326f83d0f17e6f3b692f321ef19f",
+      "coverage": "complete original-body analysis, no reconstructed-body credit",
+      "original_abi": "ECX actual receiver; no stacked arguments; RET; no semantic EAX established",
+      "owned_address": true
+    },
+    {
+      "address": "00b151c0",
+      "inclusive_end": "00b151dd",
+      "bytes": 30,
+      "complete_original_instructions": 11,
+      "span_sha256": "38e785be09ba6d9c61acadec95ec3e966c8e787236420ad662eab052114e4af4",
+      "coverage": "complete original-body analysis, no reconstructed-body credit",
+      "original_abi": "ECX actual allocation; stack DWORD flags; EAX captured allocation; RET4; destroy before flags&1 free",
+      "owned_address": true
+    },
+    {
+      "address": "00b0f6e0",
+      "inclusive_end": "00b0fbf8",
+      "bytes": 1305,
+      "complete_original_instructions": 561,
+      "span_sha256": "c984babdef3c4d0de1a029f4a699aa1a653e856c70374f7d2ff191031f28d0db",
+      "coverage": "complete original-body analysis, no reconstructed-body credit",
+      "original_abi": "ECX actual receiver; no stacked arguments; RET; no semantic EAX established",
+      "owned_address": true
+    },
+    {
+      "address": "00b52270",
+      "inclusive_end": "00b522fe",
+      "bytes": 143,
+      "complete_original_instructions": 64,
+      "span_sha256": "c9fdc73b9f6facc30fb90836e6fe00a7e3d773b917471767ec2e22b56bf89fd0",
+      "coverage": "complete original-body analysis, no reconstructed-body credit",
+      "original_abi": "ECX actual receiver; no stacked arguments; RET; no semantic EAX established",
+      "owned_address": true
+    },
+    {
+      "address": "00b52400",
+      "inclusive_end": "00b52543",
+      "bytes": 324,
+      "complete_original_instructions": 116,
+      "span_sha256": "82506c5d90f36aded021ac436cb21df815837ab4164674ed9c7e451e8675f310",
+      "coverage": "complete original-body analysis, no reconstructed-body credit",
+      "original_abi": "ECX actual receiver; no stacked arguments; RET; no semantic EAX established",
+      "owned_address": false
+    },
+    {
+      "address": "00b52840",
+      "inclusive_end": "00b5285d",
+      "bytes": 30,
+      "complete_original_instructions": 11,
+      "span_sha256": "91cff2503f5b485107b2914ebc3d54551f367e1ee1c7ff2dc8b9aac8c3c9e1f2",
+      "coverage": "complete original-body analysis, no reconstructed-body credit",
+      "original_abi": "ECX actual allocation; stack DWORD flags; EAX captured allocation; RET4; destroy before flags&1 free",
+      "owned_address": false
+    }
+  ],
+  "listing_defects": [
+    {
+      "call_site": "00b1501c",
+      "native": "00bf65ac",
+      "inclusive_missing": [
+        "00b15021",
+        "00b15023"
+      ],
+      "instruction": "ADD ESP,4",
+      "bytes": "83c404",
+      "status": "repaired_and_saved",
+      "repair_report": "reports/native_render_resources_listing_repair_bl.json"
+    },
+    {
+      "call_site": "00b151d0",
+      "native": "00bf65ac",
+      "inclusive_missing": [
+        "00b151d5",
+        "00b151d7"
+      ],
+      "instruction": "ADD ESP,4",
+      "bytes": "83c404",
+      "status": "repaired_and_saved",
+      "repair_report": "reports/native_render_resources_listing_repair_bl.json"
+    },
+    {
+      "call_site": "00b52850",
+      "native": "00bf65ac",
+      "inclusive_missing": [
+        "00b52855",
+        "00b52857"
+      ],
+      "instruction": "ADD ESP,4",
+      "bytes": "83c404",
+      "status": "repaired_and_saved",
+      "repair_report": "reports/native_render_resources_listing_repair_bl.json"
+    },
+    {
+      "call_site": "00b524c7",
+      "native": "00bf6989",
+      "saved_body_end": "00b524cb",
+      "inclusive_missing": [
+        "00b524cc",
+        "00b52543"
+      ],
+      "evidence": "Full original continuous fallthrough tail120bytes; native RET atB52543 thenINT3; live proto samples have no function; ghidra flow reports0gaps because tail lies outside body; this is the pre-repair observation, superseded by the saved repair report.",
+      "status": "repaired_and_saved",
+      "repair_report": "reports/native_render_resources_listing_repair_bl.json"
+    }
+  ],
+  "call_steps": [
+    {
+      "address": "00b14f8e",
+      "function": "00b14f60",
+      "instruction": "call 0xb0f6e0",
+      "native": "00b0f6e0"
+    },
+    {
+      "address": "00b14fa6",
+      "function": "00b14f60",
+      "instruction": "call ebp",
+      "native": "00ce2220+captured_IAT",
+      "contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes"
+    },
+    {
+      "address": "00b14fb2",
+      "function": "00b14f60",
+      "instruction": "call eax",
+      "native": "captured_owner+vtable00",
+      "contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return"
+    },
+    {
+      "address": "00b14fc5",
+      "function": "00b14f60",
+      "instruction": "call ebp",
+      "native": "00ce2220+captured_IAT",
+      "contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes"
+    },
+    {
+      "address": "00b14fd1",
+      "function": "00b14f60",
+      "instruction": "call eax",
+      "native": "captured_owner+vtable00",
+      "contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return"
+    },
+    {
+      "address": "00b14fe4",
+      "function": "00b14f60",
+      "instruction": "call ebp",
+      "native": "00ce2220+captured_IAT",
+      "contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes"
+    },
+    {
+      "address": "00b14ff0",
+      "function": "00b14f60",
+      "instruction": "call eax",
+      "native": "captured_owner+vtable00",
+      "contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return"
+    },
+    {
+      "address": "00b15013",
+      "function": "00b14f60",
+      "instruction": "call 0x432050",
+      "native": "00432050"
+    },
+    {
+      "address": "00b1501c",
+      "function": "00b14f60",
+      "instruction": "call 0xbf65ac",
+      "native": "00bf65ac"
+    },
+    {
+      "address": "00b15038",
+      "function": "00b14f60",
+      "instruction": "call 0xb14500",
+      "native": "00b14500"
+    },
+    {
+      "address": "00b15058",
+      "function": "00b14f60",
+      "instruction": "call 0x419cc0",
+      "native": "00419cc0"
+    },
+    {
+      "address": "00b1505f",
+      "function": "00b14f60",
+      "instruction": "call 0xbd1510",
+      "native": "00bd1510"
+    },
+    {
+      "address": "00b1506e",
+      "function": "00b14f60",
+      "instruction": "call 0xb0f0c0",
+      "native": "00b0f0c0"
+    },
+    {
+      "address": "00b151c3",
+      "function": "00b151c0",
+      "instruction": "call 0xb14f60",
+      "native": "00b14f60"
+    },
+    {
+      "address": "00b151d0",
+      "function": "00b151c0",
+      "instruction": "call 0xbf65ac",
+      "native": "00bf65ac"
+    },
+    {
+      "address": "00b0f6e9",
+      "function": "00b0f6e0",
+      "instruction": "call 0xb52270",
+      "native": "00b52270"
+    },
+    {
+      "address": "00b0f701",
+      "function": "00b0f6e0",
+      "instruction": "call ebp",
+      "native": "00ce2220+captured_IAT",
+      "contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes"
+    },
+    {
+      "address": "00b0f70d",
+      "function": "00b0f6e0",
+      "instruction": "call eax",
+      "native": "captured_owner+vtable00",
+      "contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return"
+    },
+    {
+      "address": "00b0f720",
+      "function": "00b0f6e0",
+      "instruction": "call ebp",
+      "native": "00ce2220+captured_IAT",
+      "contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes"
+    },
+    {
+      "address": "00b0f72c",
+      "function": "00b0f6e0",
+      "instruction": "call eax",
+      "native": "captured_owner+vtable00",
+      "contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return"
+    },
+    {
+      "address": "00b0f73f",
+      "function": "00b0f6e0",
+      "instruction": "call ebp",
+      "native": "00ce2220+captured_IAT",
+      "contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes"
+    },
+    {
+      "address": "00b0f74b",
+      "function": "00b0f6e0",
+      "instruction": "call eax",
+      "native": "captured_owner+vtable00",
+      "contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return"
+    },
+    {
+      "address": "00b0f75b",
+      "function": "00b0f6e0",
+      "instruction": "call ebp",
+      "native": "00ce2220+captured_IAT",
+      "contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes"
+    },
+    {
+      "address": "00b0f767",
+      "function": "00b0f6e0",
+      "instruction": "call eax",
+      "native": "captured_owner+vtable00",
+      "contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return"
+    },
+    {
+      "address": "00b0f777",
+      "function": "00b0f6e0",
+      "instruction": "call ebp",
+      "native": "00ce2220+captured_IAT",
+      "contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes"
+    },
+    {
+      "address": "00b0f783",
+      "function": "00b0f6e0",
+      "instruction": "call eax",
+      "native": "captured_owner+vtable00",
+      "contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return"
+    },
+    {
+      "address": "00b0f793",
+      "function": "00b0f6e0",
+      "instruction": "call ebp",
+      "native": "00ce2220+captured_IAT",
+      "contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes"
+    },
+    {
+      "address": "00b0f79f",
+      "function": "00b0f6e0",
+      "instruction": "call eax",
+      "native": "captured_owner+vtable00",
+      "contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return"
+    },
+    {
+      "address": "00b0f7b2",
+      "function": "00b0f6e0",
+      "instruction": "call ebp",
+      "native": "00ce2220+captured_IAT",
+      "contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes"
+    },
+    {
+      "address": "00b0f7be",
+      "function": "00b0f6e0",
+      "instruction": "call eax",
+      "native": "captured_owner+vtable00",
+      "contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return"
+    },
+    {
+      "address": "00b0f7d4",
+      "function": "00b0f6e0",
+      "instruction": "call ebp",
+      "native": "00ce2220+captured_IAT",
+      "contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes"
+    },
+    {
+      "address": "00b0f7e0",
+      "function": "00b0f6e0",
+      "instruction": "call eax",
+      "native": "captured_owner+vtable00",
+      "contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return"
+    },
+    {
+      "address": "00b0f7f6",
+      "function": "00b0f6e0",
+      "instruction": "call ebp",
+      "native": "00ce2220+captured_IAT",
+      "contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes"
+    },
+    {
+      "address": "00b0f802",
+      "function": "00b0f6e0",
+      "instruction": "call eax",
+      "native": "captured_owner+vtable00",
+      "contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return"
+    },
+    {
+      "address": "00b0f818",
+      "function": "00b0f6e0",
+      "instruction": "call ebp",
+      "native": "00ce2220+captured_IAT",
+      "contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes"
+    },
+    {
+      "address": "00b0f824",
+      "function": "00b0f6e0",
+      "instruction": "call eax",
+      "native": "captured_owner+vtable00",
+      "contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return"
+    },
+    {
+      "address": "00b0f837",
+      "function": "00b0f6e0",
+      "instruction": "call ebp",
+      "native": "00ce2220+captured_IAT",
+      "contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes"
+    },
+    {
+      "address": "00b0f843",
+      "function": "00b0f6e0",
+      "instruction": "call eax",
+      "native": "captured_owner+vtable00",
+      "contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return"
+    },
+    {
+      "address": "00b0f853",
+      "function": "00b0f6e0",
+      "instruction": "call ebp",
+      "native": "00ce2220+captured_IAT",
+      "contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes"
+    },
+    {
+      "address": "00b0f85f",
+      "function": "00b0f6e0",
+      "instruction": "call eax",
+      "native": "captured_owner+vtable00",
+      "contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return"
+    },
+    {
+      "address": "00b0f86f",
+      "function": "00b0f6e0",
+      "instruction": "call ebp",
+      "native": "00ce2220+captured_IAT",
+      "contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes"
+    },
+    {
+      "address": "00b0f87b",
+      "function": "00b0f6e0",
+      "instruction": "call eax",
+      "native": "captured_owner+vtable00",
+      "contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return"
+    },
+    {
+      "address": "00b0f88b",
+      "function": "00b0f6e0",
+      "instruction": "call ebp",
+      "native": "00ce2220+captured_IAT",
+      "contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes"
+    },
+    {
+      "address": "00b0f897",
+      "function": "00b0f6e0",
+      "instruction": "call eax",
+      "native": "captured_owner+vtable00",
+      "contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return"
+    },
+    {
+      "address": "00b0f8a7",
+      "function": "00b0f6e0",
+      "instruction": "call ebp",
+      "native": "00ce2220+captured_IAT",
+      "contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes"
+    },
+    {
+      "address": "00b0f8b3",
+      "function": "00b0f6e0",
+      "instruction": "call eax",
+      "native": "captured_owner+vtable00",
+      "contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return"
+    },
+    {
+      "address": "00b0f8c3",
+      "function": "00b0f6e0",
+      "instruction": "call ebp",
+      "native": "00ce2220+captured_IAT",
+      "contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes"
+    },
+    {
+      "address": "00b0f8cf",
+      "function": "00b0f6e0",
+      "instruction": "call eax",
+      "native": "captured_owner+vtable00",
+      "contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return"
+    },
+    {
+      "address": "00b0f8df",
+      "function": "00b0f6e0",
+      "instruction": "call ebp",
+      "native": "00ce2220+captured_IAT",
+      "contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes"
+    },
+    {
+      "address": "00b0f8eb",
+      "function": "00b0f6e0",
+      "instruction": "call eax",
+      "native": "captured_owner+vtable00",
+      "contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return"
+    },
+    {
+      "address": "00b0f8fe",
+      "function": "00b0f6e0",
+      "instruction": "call ebp",
+      "native": "00ce2220+captured_IAT",
+      "contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes"
+    },
+    {
+      "address": "00b0f90a",
+      "function": "00b0f6e0",
+      "instruction": "call eax",
+      "native": "captured_owner+vtable00",
+      "contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return"
+    },
+    {
+      "address": "00b0f920",
+      "function": "00b0f6e0",
+      "instruction": "call ebp",
+      "native": "00ce2220+captured_IAT",
+      "contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes"
+    },
+    {
+      "address": "00b0f92c",
+      "function": "00b0f6e0",
+      "instruction": "call eax",
+      "native": "captured_owner+vtable00",
+      "contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return"
+    },
+    {
+      "address": "00b0f942",
+      "function": "00b0f6e0",
+      "instruction": "call ebp",
+      "native": "00ce2220+captured_IAT",
+      "contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes"
+    },
+    {
+      "address": "00b0f94e",
+      "function": "00b0f6e0",
+      "instruction": "call eax",
+      "native": "captured_owner+vtable00",
+      "contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return"
+    },
+    {
+      "address": "00b0f964",
+      "function": "00b0f6e0",
+      "instruction": "call ebp",
+      "native": "00ce2220+captured_IAT",
+      "contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes"
+    },
+    {
+      "address": "00b0f970",
+      "function": "00b0f6e0",
+      "instruction": "call eax",
+      "native": "captured_owner+vtable00",
+      "contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return"
+    },
+    {
+      "address": "00b0f983",
+      "function": "00b0f6e0",
+      "instruction": "call ebp",
+      "native": "00ce2220+captured_IAT",
+      "contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes"
+    },
+    {
+      "address": "00b0f98f",
+      "function": "00b0f6e0",
+      "instruction": "call eax",
+      "native": "captured_owner+vtable00",
+      "contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return"
+    },
+    {
+      "address": "00b0f99f",
+      "function": "00b0f6e0",
+      "instruction": "call ebp",
+      "native": "00ce2220+captured_IAT",
+      "contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes"
+    },
+    {
+      "address": "00b0f9ab",
+      "function": "00b0f6e0",
+      "instruction": "call eax",
+      "native": "captured_owner+vtable00",
+      "contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return"
+    },
+    {
+      "address": "00b0f9be",
+      "function": "00b0f6e0",
+      "instruction": "call ebp",
+      "native": "00ce2220+captured_IAT",
+      "contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes"
+    },
+    {
+      "address": "00b0f9ca",
+      "function": "00b0f6e0",
+      "instruction": "call eax",
+      "native": "captured_owner+vtable00",
+      "contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return"
+    },
+    {
+      "address": "00b0f9dd",
+      "function": "00b0f6e0",
+      "instruction": "call ebp",
+      "native": "00ce2220+captured_IAT",
+      "contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes"
+    },
+    {
+      "address": "00b0f9e9",
+      "function": "00b0f6e0",
+      "instruction": "call eax",
+      "native": "captured_owner+vtable00",
+      "contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return"
+    },
+    {
+      "address": "00b0f9f9",
+      "function": "00b0f6e0",
+      "instruction": "call ebp",
+      "native": "00ce2220+captured_IAT",
+      "contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes"
+    },
+    {
+      "address": "00b0fa05",
+      "function": "00b0f6e0",
+      "instruction": "call eax",
+      "native": "captured_owner+vtable00",
+      "contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return"
+    },
+    {
+      "address": "00b0fa15",
+      "function": "00b0f6e0",
+      "instruction": "call ebp",
+      "native": "00ce2220+captured_IAT",
+      "contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes"
+    },
+    {
+      "address": "00b0fa21",
+      "function": "00b0f6e0",
+      "instruction": "call eax",
+      "native": "captured_owner+vtable00",
+      "contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return"
+    },
+    {
+      "address": "00b0fa31",
+      "function": "00b0f6e0",
+      "instruction": "call ebp",
+      "native": "00ce2220+captured_IAT",
+      "contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes"
+    },
+    {
+      "address": "00b0fa3d",
+      "function": "00b0f6e0",
+      "instruction": "call eax",
+      "native": "captured_owner+vtable00",
+      "contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return"
+    },
+    {
+      "address": "00b0fa4d",
+      "function": "00b0f6e0",
+      "instruction": "call ebp",
+      "native": "00ce2220+captured_IAT",
+      "contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes"
+    },
+    {
+      "address": "00b0fa59",
+      "function": "00b0f6e0",
+      "instruction": "call eax",
+      "native": "captured_owner+vtable00",
+      "contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return"
+    },
+    {
+      "address": "00b0fa6c",
+      "function": "00b0f6e0",
+      "instruction": "call ebp",
+      "native": "00ce2220+captured_IAT",
+      "contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes"
+    },
+    {
+      "address": "00b0fa78",
+      "function": "00b0f6e0",
+      "instruction": "call eax",
+      "native": "captured_owner+vtable00",
+      "contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return"
+    },
+    {
+      "address": "00b0fa8b",
+      "function": "00b0f6e0",
+      "instruction": "call ebp",
+      "native": "00ce2220+captured_IAT",
+      "contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes"
+    },
+    {
+      "address": "00b0fa97",
+      "function": "00b0f6e0",
+      "instruction": "call eax",
+      "native": "captured_owner+vtable00",
+      "contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return"
+    },
+    {
+      "address": "00b0faa7",
+      "function": "00b0f6e0",
+      "instruction": "call ebp",
+      "native": "00ce2220+captured_IAT",
+      "contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes"
+    },
+    {
+      "address": "00b0fab3",
+      "function": "00b0f6e0",
+      "instruction": "call eax",
+      "native": "captured_owner+vtable00",
+      "contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return"
+    },
+    {
+      "address": "00b0fac3",
+      "function": "00b0f6e0",
+      "instruction": "call ebp",
+      "native": "00ce2220+captured_IAT",
+      "contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes"
+    },
+    {
+      "address": "00b0facf",
+      "function": "00b0f6e0",
+      "instruction": "call eax",
+      "native": "captured_owner+vtable00",
+      "contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return"
+    },
+    {
+      "address": "00b0fae2",
+      "function": "00b0f6e0",
+      "instruction": "call ebp",
+      "native": "00ce2220+captured_IAT",
+      "contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes"
+    },
+    {
+      "address": "00b0faee",
+      "function": "00b0f6e0",
+      "instruction": "call eax",
+      "native": "captured_owner+vtable00",
+      "contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return"
+    },
+    {
+      "address": "00b0fb01",
+      "function": "00b0f6e0",
+      "instruction": "call ebp",
+      "native": "00ce2220+captured_IAT",
+      "contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes"
+    },
+    {
+      "address": "00b0fb0d",
+      "function": "00b0f6e0",
+      "instruction": "call eax",
+      "native": "captured_owner+vtable00",
+      "contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return"
+    },
+    {
+      "address": "00b0fb20",
+      "function": "00b0f6e0",
+      "instruction": "call ebp",
+      "native": "00ce2220+captured_IAT",
+      "contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes"
+    },
+    {
+      "address": "00b0fb2c",
+      "function": "00b0f6e0",
+      "instruction": "call eax",
+      "native": "captured_owner+vtable00",
+      "contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return"
+    },
+    {
+      "address": "00b0fb42",
+      "function": "00b0f6e0",
+      "instruction": "call ebp",
+      "native": "00ce2220+captured_IAT",
+      "contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes"
+    },
+    {
+      "address": "00b0fb4e",
+      "function": "00b0f6e0",
+      "instruction": "call eax",
+      "native": "captured_owner+vtable00",
+      "contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return"
+    },
+    {
+      "address": "00b0fb64",
+      "function": "00b0f6e0",
+      "instruction": "call ebp",
+      "native": "00ce2220+captured_IAT",
+      "contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes"
+    },
+    {
+      "address": "00b0fb70",
+      "function": "00b0f6e0",
+      "instruction": "call eax",
+      "native": "captured_owner+vtable00",
+      "contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return"
+    },
+    {
+      "address": "00b0fb86",
+      "function": "00b0f6e0",
+      "instruction": "call ebp",
+      "native": "00ce2220+captured_IAT",
+      "contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes"
+    },
+    {
+      "address": "00b0fb92",
+      "function": "00b0f6e0",
+      "instruction": "call eax",
+      "native": "captured_owner+vtable00",
+      "contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return"
+    },
+    {
+      "address": "00b0fba5",
+      "function": "00b0f6e0",
+      "instruction": "call ebp",
+      "native": "00ce2220+captured_IAT",
+      "contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes"
+    },
+    {
+      "address": "00b0fbb1",
+      "function": "00b0f6e0",
+      "instruction": "call eax",
+      "native": "captured_owner+vtable00",
+      "contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return"
+    },
+    {
+      "address": "00b0fbc1",
+      "function": "00b0f6e0",
+      "instruction": "call ebp",
+      "native": "00ce2220+captured_IAT",
+      "contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes"
+    },
+    {
+      "address": "00b0fbcd",
+      "function": "00b0f6e0",
+      "instruction": "call eax",
+      "native": "captured_owner+vtable00",
+      "contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return"
+    },
+    {
+      "address": "00b0fbdd",
+      "function": "00b0f6e0",
+      "instruction": "call ebp",
+      "native": "00ce2220+captured_IAT",
+      "contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes"
+    },
+    {
+      "address": "00b0fbe9",
+      "function": "00b0f6e0",
+      "instruction": "call eax",
+      "native": "captured_owner+vtable00",
+      "contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return"
+    },
+    {
+      "address": "00b52289",
+      "function": "00b52270",
+      "instruction": "call ebx",
+      "native": "00ce2220+captured_IAT",
+      "contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes"
+    },
+    {
+      "address": "00b52295",
+      "function": "00b52270",
+      "instruction": "call eax",
+      "native": "captured_owner+vtable00",
+      "contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return"
+    },
+    {
+      "address": "00b522a5",
+      "function": "00b52270",
+      "instruction": "call ebx",
+      "native": "00ce2220+captured_IAT",
+      "contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes"
+    },
+    {
+      "address": "00b522b1",
+      "function": "00b52270",
+      "instruction": "call eax",
+      "native": "captured_owner+vtable00",
+      "contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return"
+    },
+    {
+      "address": "00b522c4",
+      "function": "00b52270",
+      "instruction": "call ebx",
+      "native": "00ce2220+captured_IAT",
+      "contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes"
+    },
+    {
+      "address": "00b522d0",
+      "function": "00b52270",
+      "instruction": "call eax",
+      "native": "captured_owner+vtable00",
+      "contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return"
+    },
+    {
+      "address": "00b522e6",
+      "function": "00b52270",
+      "instruction": "call ebx",
+      "native": "00ce2220+captured_IAT",
+      "contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes"
+    },
+    {
+      "address": "00b522f2",
+      "function": "00b52270",
+      "instruction": "call eax",
+      "native": "captured_owner+vtable00",
+      "contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return"
+    },
+    {
+      "address": "00b5242e",
+      "function": "00b52400",
+      "instruction": "call 0xb52270",
+      "native": "00b52270"
+    },
+    {
+      "address": "00b52446",
+      "function": "00b52400",
+      "instruction": "call ebp",
+      "native": "00ce2220+captured_IAT",
+      "contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes"
+    },
+    {
+      "address": "00b52452",
+      "function": "00b52400",
+      "instruction": "call eax",
+      "native": "captured_owner+vtable00",
+      "contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return"
+    },
+    {
+      "address": "00b52462",
+      "function": "00b52400",
+      "instruction": "call ebp",
+      "native": "00ce2220+captured_IAT",
+      "contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes"
+    },
+    {
+      "address": "00b5246e",
+      "function": "00b52400",
+      "instruction": "call eax",
+      "native": "captured_owner+vtable00",
+      "contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return"
+    },
+    {
+      "address": "00b5247e",
+      "function": "00b52400",
+      "instruction": "call ebp",
+      "native": "00ce2220+captured_IAT",
+      "contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes"
+    },
+    {
+      "address": "00b5248a",
+      "function": "00b52400",
+      "instruction": "call eax",
+      "native": "captured_owner+vtable00",
+      "contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return"
+    },
+    {
+      "address": "00b5249d",
+      "function": "00b52400",
+      "instruction": "call ebp",
+      "native": "00ce2220+captured_IAT",
+      "contract": "Captured InterlockedDecrement; stdcall pointer to actual captured owner+4; consumes4 stack bytes"
+    },
+    {
+      "address": "00b524a9",
+      "function": "00b52400",
+      "instruction": "call eax",
+      "native": "captured_owner+vtable00",
+      "contract": "Only after captured count reaches zero: reread captured object current profile/slot0, no stacked arguments; field clear only after return"
+    },
+    {
+      "address": "00b524bf",
+      "function": "00b52400",
+      "instruction": "call 0xb52170",
+      "native": "00b52170"
+    },
+    {
+      "address": "00b524c7",
+      "function": "00b52400",
+      "instruction": "call 0xbf6989",
+      "native": "00bf6989"
+    },
+    {
+      "address": "00b524dd",
+      "function": "00b52400",
+      "instruction": "call 0xb521e0",
+      "native": "00b521e0",
+      "pre_repair_boundary": "00b524cc..00b52543 inclusive; actual B52400 fallthrough tail"
+    },
+    {
+      "address": "00b524e5",
+      "function": "00b52400",
+      "instruction": "call 0xbf6989",
+      "native": "00bf6989",
+      "pre_repair_boundary": "00b524cc..00b52543 inclusive; actual B52400 fallthrough tail"
+    },
+    {
+      "address": "00b524f8",
+      "function": "00b52400",
+      "instruction": "call 0xb52170",
+      "native": "00b52170",
+      "pre_repair_boundary": "00b524cc..00b52543 inclusive; actual B52400 fallthrough tail"
+    },
+    {
+      "address": "00b52500",
+      "function": "00b52400",
+      "instruction": "call 0xbf6989",
+      "native": "00bf6989",
+      "pre_repair_boundary": "00b524cc..00b52543 inclusive; actual B52400 fallthrough tail"
+    },
+    {
+      "address": "00b52512",
+      "function": "00b52400",
+      "instruction": "call 0xb52170",
+      "native": "00b52170",
+      "pre_repair_boundary": "00b524cc..00b52543 inclusive; actual B52400 fallthrough tail"
+    },
+    {
+      "address": "00b5251a",
+      "function": "00b52400",
+      "instruction": "call 0xbf6989",
+      "native": "00bf6989",
+      "pre_repair_boundary": "00b524cc..00b52543 inclusive; actual B52400 fallthrough tail"
+    },
+    {
+      "address": "00b5252c",
+      "function": "00b52400",
+      "instruction": "call 0xbd30f0",
+      "native": "00bd30f0",
+      "pre_repair_boundary": "00b524cc..00b52543 inclusive; actual B52400 fallthrough tail"
+    },
+    {
+      "address": "00b52843",
+      "function": "00b52840",
+      "instruction": "call 0xb52400",
+      "native": "00b52400"
+    },
+    {
+      "address": "00b52850",
+      "function": "00b52840",
+      "instruction": "call 0xbf65ac",
+      "native": "00bf65ac"
+    },
+    {
+      "address": "00cbc403",
+      "native": "00b0f0c0",
+      "function": "00cbc400",
+      "kind": "tail_jump",
+      "contract": "Native EBP-relative saved receiver, optional member offset; tail transfer retains stack"
+    },
+    {
+      "address": "00cbc411",
+      "native": "0041dd20",
+      "function": "00cbc408",
+      "kind": "tail_jump",
+      "contract": "Native EBP-relative saved receiver, optional member offset; tail transfer retains stack"
+    },
+    {
+      "address": "00cbc41f",
+      "native": "00b14590",
+      "function": "00cbc416",
+      "kind": "tail_jump",
+      "contract": "Native EBP-relative saved receiver, optional member offset; tail transfer retains stack"
+    },
+    {
+      "address": "00cbc42d",
+      "native": "004324a0",
+      "function": "00cbc424",
+      "kind": "tail_jump",
+      "contract": "Native EBP-relative saved receiver, optional member offset; tail transfer retains stack"
+    },
+    {
+      "address": "00cbff33",
+      "native": "00bd30f0",
+      "function": "00cbff30",
+      "kind": "tail_jump",
+      "contract": "Native EBP-relative saved receiver, optional member offset; tail transfer retains stack"
+    },
+    {
+      "address": "00cbff3e",
+      "native": "00b523c0",
+      "function": "00cbff38",
+      "kind": "tail_jump",
+      "contract": "Native EBP-relative saved receiver, optional member offset; tail transfer retains stack"
+    },
+    {
+      "address": "00cbff49",
+      "native": "00b523c0",
+      "function": "00cbff43",
+      "kind": "tail_jump",
+      "contract": "Native EBP-relative saved receiver, optional member offset; tail transfer retains stack"
+    },
+    {
+      "address": "00cbff57",
+      "native": "00b523e0",
+      "function": "00cbff4e",
+      "kind": "tail_jump",
+      "contract": "Native EBP-relative saved receiver, optional member offset; tail transfer retains stack"
+    },
+    {
+      "address": "00cbff65",
+      "native": "00b523c0",
+      "function": "00cbff5c",
+      "kind": "tail_jump",
+      "contract": "Native EBP-relative saved receiver, optional member offset; tail transfer retains stack"
+    },
+    {
+      "address": "00cbc437",
+      "native": "00bf6b43",
+      "function": "00cbc432",
+      "kind": "tail_jump",
+      "pre_repair_boundary": "00cbc432..00cbc43b inclusive"
+    },
+    {
+      "address": "00cbff6f",
+      "native": "00bf6b43",
+      "function": "00cbff6a",
+      "kind": "tail_jump",
+      "pre_repair_boundary": "00cbff6a..00cbff73 inclusive"
+    },
+    {
+      "address": "00b0fc00",
+      "native": "00b0f6e0",
+      "function": "00b0fc00",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "008d606c",
+      "native": "00b0fc00",
+      "function": "008d5b50",
+      "contract": "008D6066 freshly loads ECX from actual F8D39C before call"
+    }
+  ],
+  "ordered_release_fields": {
+    "00b14f60": [
+      {
+        "offset": "034",
+        "load_site": "00b14f93",
+        "decrement_site": "00b14fa6",
+        "terminal_site": "00b14fb2",
+        "clear_site": "00b14fb4",
+        "clear_instruction": "mov dword ptr [esi + 0x34], ebx"
+      },
+      {
+        "offset": "668",
+        "load_site": "00b14fb7",
+        "decrement_site": "00b14fc5",
+        "terminal_site": "00b14fd1",
+        "clear_site": "00b14fd3",
+        "clear_instruction": "mov dword ptr [esi + 0x668], ebx"
+      },
+      {
+        "offset": "00c",
+        "load_site": "00b14fd9",
+        "decrement_site": "00b14fe4",
+        "terminal_site": "00b14ff0",
+        "clear_site": "00b14ff2",
+        "clear_instruction": "mov dword ptr [esi + 0xc], ebx"
+      }
+    ],
+    "00b0f6e0": [
+      {
+        "offset": "050",
+        "load_site": "00b0f6ee",
+        "decrement_site": "00b0f701",
+        "terminal_site": "00b0f70d",
+        "clear_site": "00b0f70f",
+        "clear_instruction": "mov dword ptr [esi + 0x50], ebx",
+        "bk_constructor_zero_site": "00b14c73",
+        "producer_evidence": "BK raw zero initialization; nonzero producers/profile domain open"
+      },
+      {
+        "offset": "1d0",
+        "load_site": "00b0f712",
+        "decrement_site": "00b0f720",
+        "terminal_site": "00b0f72c",
+        "clear_site": "00b0f72e",
+        "clear_instruction": "mov dword ptr [esi + 0x1d0], ebx",
+        "bk_constructor_zero_site": "00b14d12",
+        "producer_evidence": "BK raw zero initialization; nonzero producers/profile domain open"
+      },
+      {
+        "offset": "044",
+        "load_site": "00b0f734",
+        "decrement_site": "00b0f73f",
+        "terminal_site": "00b0f74b",
+        "clear_site": "00b0f74d",
+        "clear_instruction": "mov dword ptr [esi + 0x44], ebx",
+        "bk_constructor_zero_site": "00b14cbe",
+        "producer_evidence": "BK raw zero initialization; nonzero producers/profile domain open"
+      },
+      {
+        "offset": "048",
+        "load_site": "00b0f750",
+        "decrement_site": "00b0f75b",
+        "terminal_site": "00b0f767",
+        "clear_site": "00b0f769",
+        "clear_instruction": "mov dword ptr [esi + 0x48], ebx",
+        "bk_constructor_zero_site": "00b14cc1",
+        "producer_evidence": "BK raw zero initialization; nonzero producers/profile domain open"
+      },
+      {
+        "offset": "04c",
+        "load_site": "00b0f76c",
+        "decrement_site": "00b0f777",
+        "terminal_site": "00b0f783",
+        "clear_site": "00b0f785",
+        "clear_instruction": "mov dword ptr [esi + 0x4c], ebx",
+        "bk_constructor_zero_site": "00b14d03",
+        "producer_evidence": "BK raw zero initialization; nonzero producers/profile domain open"
+      },
+      {
+        "offset": "02c",
+        "load_site": "00b0f788",
+        "decrement_site": "00b0f793",
+        "terminal_site": "00b0f79f",
+        "clear_site": "00b0f7a1",
+        "clear_instruction": "mov dword ptr [esi + 0x2c], ebx",
+        "bk_constructor_zero_site": "00b14d0f",
+        "producer_evidence": "BK raw zero initialization; nonzero producers/profile domain open"
+      },
+      {
+        "offset": "650",
+        "load_site": "00b0f7a4",
+        "decrement_site": "00b0f7b2",
+        "terminal_site": "00b0f7be",
+        "clear_site": "00b0f7c0",
+        "clear_instruction": "mov dword ptr [esi + 0x650], ebx",
+        "bk_constructor_zero_site": "00b14ceb",
+        "producer_evidence": "BK raw zero initialization; nonzero producers/profile domain open"
+      },
+      {
+        "offset": "658",
+        "load_site": "00b0f7c6",
+        "decrement_site": "00b0f7d4",
+        "terminal_site": "00b0f7e0",
+        "clear_site": "00b0f7e2",
+        "clear_instruction": "mov dword ptr [esi + 0x658], ebx",
+        "bk_constructor_zero_site": "00b14cf1",
+        "producer_evidence": "BK raw zero initialization; nonzero producers/profile domain open"
+      },
+      {
+        "offset": "65c",
+        "load_site": "00b0f7e8",
+        "decrement_site": "00b0f7f6",
+        "terminal_site": "00b0f802",
+        "clear_site": "00b0f804",
+        "clear_instruction": "mov dword ptr [esi + 0x65c], ebx",
+        "bk_constructor_zero_site": "00b14cf7",
+        "producer_evidence": "BK raw zero initialization; nonzero producers/profile domain open"
+      },
+      {
+        "offset": "664",
+        "load_site": "00b0f80a",
+        "decrement_site": "00b0f818",
+        "terminal_site": "00b0f824",
+        "clear_site": "00b0f826",
+        "clear_instruction": "mov dword ptr [esi + 0x664], ebx",
+        "bk_constructor_zero_site": "00b14cfd",
+        "producer_evidence": "BK raw zero initialization; nonzero producers/profile domain open"
+      },
+      {
+        "offset": "018",
+        "load_site": "00b0f82c",
+        "decrement_site": "00b0f837",
+        "terminal_site": "00b0f843",
+        "clear_site": "00b0f845",
+        "clear_instruction": "mov dword ptr [esi + 0x18], ebx",
+        "bk_constructor_zero_site": "00b14cc4",
+        "producer_evidence": "BK raw zero initialization; nonzero producers/profile domain open"
+      },
+      {
+        "offset": "020",
+        "load_site": "00b0f848",
+        "decrement_site": "00b0f853",
+        "terminal_site": "00b0f85f",
+        "clear_site": "00b0f861",
+        "clear_instruction": "mov dword ptr [esi + 0x20], ebx",
+        "bk_constructor_zero_site": "00b14cc7",
+        "producer_evidence": "BK raw zero initialization; nonzero producers/profile domain open"
+      },
+      {
+        "offset": "024",
+        "load_site": "00b0f864",
+        "decrement_site": "00b0f86f",
+        "terminal_site": "00b0f87b",
+        "clear_site": "00b0f87d",
+        "clear_instruction": "mov dword ptr [esi + 0x24], ebx",
+        "bk_constructor_zero_site": "00b14cca",
+        "producer_evidence": "BK raw zero initialization; nonzero producers/profile domain open"
+      },
+      {
+        "offset": "028",
+        "load_site": "00b0f880",
+        "decrement_site": "00b0f88b",
+        "terminal_site": "00b0f897",
+        "clear_site": "00b0f899",
+        "clear_instruction": "mov dword ptr [esi + 0x28], ebx",
+        "bk_constructor_zero_site": "00b14ccd",
+        "producer_evidence": "BK raw zero initialization; nonzero producers/profile domain open"
+      },
+      {
+        "offset": "038",
+        "load_site": "00b0f89c",
+        "decrement_site": "00b0f8a7",
+        "terminal_site": "00b0f8b3",
+        "clear_site": "00b0f8b5",
+        "clear_instruction": "mov dword ptr [esi + 0x38], ebx",
+        "bk_constructor_zero_site": "00b14cd0",
+        "producer_evidence": "BK raw zero initialization; nonzero producers/profile domain open"
+      },
+      {
+        "offset": "03c",
+        "load_site": "00b0f8b8",
+        "decrement_site": "00b0f8c3",
+        "terminal_site": "00b0f8cf",
+        "clear_site": "00b0f8d1",
+        "clear_instruction": "mov dword ptr [esi + 0x3c], ebx",
+        "bk_constructor_zero_site": "00b14cd3",
+        "producer_evidence": "BK raw zero initialization; nonzero producers/profile domain open"
+      },
+      {
+        "offset": "040",
+        "load_site": "00b0f8d4",
+        "decrement_site": "00b0f8df",
+        "terminal_site": "00b0f8eb",
+        "clear_site": "00b0f8ed",
+        "clear_instruction": "mov dword ptr [esi + 0x40], ebx",
+        "bk_constructor_zero_site": "00b14cd6",
+        "producer_evidence": "BK raw zero initialization; nonzero producers/profile domain open"
+      },
+      {
+        "offset": "1cc",
+        "load_site": "00b0f8f0",
+        "decrement_site": "00b0f8fe",
+        "terminal_site": "00b0f90a",
+        "clear_site": "00b0f90c",
+        "clear_instruction": "mov dword ptr [esi + 0x1cc], ebx",
+        "bk_constructor_zero_site": "00b14cd9",
+        "producer_evidence": "BK raw zero initialization; nonzero producers/profile domain open"
+      },
+      {
+        "offset": "1d4",
+        "load_site": "00b0f912",
+        "decrement_site": "00b0f920",
+        "terminal_site": "00b0f92c",
+        "clear_site": "00b0f92e",
+        "clear_instruction": "mov dword ptr [esi + 0x1d4], ebx",
+        "bk_constructor_zero_site": "00b14cdf",
+        "producer_evidence": "B14D89 B1FBB0 actual40h owner; B14D92 publishes D5E600 owner; existing frame-target lifetime"
+      },
+      {
+        "offset": "1c8",
+        "load_site": "00b0f934",
+        "decrement_site": "00b0f942",
+        "terminal_site": "00b0f94e",
+        "clear_site": "00b0f950",
+        "clear_instruction": "mov dword ptr [esi + 0x1c8], ebx",
+        "bk_constructor_zero_site": "00b14ce5",
+        "producer_evidence": "BK raw zero initialization; nonzero producers/profile domain open"
+      },
+      {
+        "offset": "1d4",
+        "load_site": "00b0f956",
+        "decrement_site": "00b0f964",
+        "terminal_site": "00b0f970",
+        "clear_site": "00b0f972",
+        "clear_instruction": "mov dword ptr [esi + 0x1d4], ebx",
+        "bk_constructor_zero_site": "00b14cdf",
+        "producer_evidence": "B14D89 B1FBB0 actual40h owner; B14D92 publishes D5E600 owner; existing frame-target lifetime"
+      },
+      {
+        "offset": "070",
+        "load_site": "00b0f978",
+        "decrement_site": "00b0f983",
+        "terminal_site": "00b0f98f",
+        "clear_site": "00b0f991",
+        "clear_instruction": "mov dword ptr [esi + 0x70], ebx",
+        "bk_constructor_zero_site": null,
+        "producer_evidence": "untouched receiver preimage; native postconstruction producer/domain open"
+      },
+      {
+        "offset": "074",
+        "load_site": "00b0f994",
+        "decrement_site": "00b0f99f",
+        "terminal_site": "00b0f9ab",
+        "clear_site": "00b0f9ad",
+        "clear_instruction": "mov dword ptr [esi + 0x74], ebx",
+        "bk_constructor_zero_site": "00b14d18",
+        "producer_evidence": "BK raw zero initialization; nonzero producers/profile domain open"
+      },
+      {
+        "offset": "080",
+        "load_site": "00b0f9b0",
+        "decrement_site": "00b0f9be",
+        "terminal_site": "00b0f9ca",
+        "clear_site": "00b0f9cc",
+        "clear_instruction": "mov dword ptr [esi + 0x80], ebx",
+        "bk_constructor_zero_site": "00b14d1b",
+        "producer_evidence": "BK raw zero initialization; nonzero producers/profile domain open"
+      },
+      {
+        "offset": "01c",
+        "load_site": "00b0f9d2",
+        "decrement_site": "00b0f9dd",
+        "terminal_site": "00b0f9e9",
+        "clear_site": "00b0f9eb",
+        "clear_instruction": "mov dword ptr [esi + 0x1c], ebx",
+        "bk_constructor_zero_site": "00b14d54",
+        "producer_evidence": "BK raw zero initialization; nonzero producers/profile domain open"
+      },
+      {
+        "offset": "060",
+        "load_site": "00b0f9ee",
+        "decrement_site": "00b0f9f9",
+        "terminal_site": "00b0fa05",
+        "clear_site": "00b0fa07",
+        "clear_instruction": "mov dword ptr [esi + 0x60], ebx",
+        "bk_constructor_zero_site": "00b14d57",
+        "producer_evidence": "BK raw zero initialization; nonzero producers/profile domain open"
+      },
+      {
+        "offset": "064",
+        "load_site": "00b0fa0a",
+        "decrement_site": "00b0fa15",
+        "terminal_site": "00b0fa21",
+        "clear_site": "00b0fa23",
+        "clear_instruction": "mov dword ptr [esi + 0x64], ebx",
+        "bk_constructor_zero_site": "00b14d5a",
+        "producer_evidence": "BK raw zero initialization; nonzero producers/profile domain open"
+      },
+      {
+        "offset": "06c",
+        "load_site": "00b0fa26",
+        "decrement_site": "00b0fa31",
+        "terminal_site": "00b0fa3d",
+        "clear_site": "00b0fa3f",
+        "clear_instruction": "mov dword ptr [esi + 0x6c], ebx",
+        "bk_constructor_zero_site": "00b14d5d",
+        "producer_evidence": "BK raw zero initialization; nonzero producers/profile domain open"
+      },
+      {
+        "offset": "068",
+        "load_site": "00b0fa42",
+        "decrement_site": "00b0fa4d",
+        "terminal_site": "00b0fa59",
+        "clear_site": "00b0fa5b",
+        "clear_instruction": "mov dword ptr [esi + 0x68], ebx",
+        "bk_constructor_zero_site": "00b14d60",
+        "producer_evidence": "BK raw zero initialization; nonzero producers/profile domain open"
+      },
+      {
+        "offset": "654",
+        "load_site": "00b0fa5e",
+        "decrement_site": "00b0fa6c",
+        "terminal_site": "00b0fa78",
+        "clear_site": "00b0fa7a",
+        "clear_instruction": "mov dword ptr [esi + 0x654], ebx",
+        "bk_constructor_zero_site": "00b14d21",
+        "producer_evidence": "BK raw zero initialization; nonzero producers/profile domain open"
+      },
+      {
+        "offset": "078",
+        "load_site": "00b0fa80",
+        "decrement_site": "00b0fa8b",
+        "terminal_site": "00b0fa97",
+        "clear_site": "00b0fa99",
+        "clear_instruction": "mov dword ptr [esi + 0x78], ebx",
+        "bk_constructor_zero_site": "00b14d2a",
+        "producer_evidence": "BK raw zero initialization; nonzero producers/profile domain open"
+      },
+      {
+        "offset": "07c",
+        "load_site": "00b0fa9c",
+        "decrement_site": "00b0faa7",
+        "terminal_site": "00b0fab3",
+        "clear_site": "00b0fab5",
+        "clear_instruction": "mov dword ptr [esi + 0x7c], ebx",
+        "bk_constructor_zero_site": "00b14d27",
+        "producer_evidence": "BK raw zero initialization; nonzero producers/profile domain open"
+      },
+      {
+        "offset": "030",
+        "load_site": "00b0fab8",
+        "decrement_site": "00b0fac3",
+        "terminal_site": "00b0facf",
+        "clear_site": "00b0fad1",
+        "clear_instruction": "mov dword ptr [esi + 0x30], ebx",
+        "bk_constructor_zero_site": "00b14d2d",
+        "producer_evidence": "BK raw zero initialization; nonzero producers/profile domain open"
+      },
+      {
+        "offset": "660",
+        "load_site": "00b0fad4",
+        "decrement_site": "00b0fae2",
+        "terminal_site": "00b0faee",
+        "clear_site": "00b0faf0",
+        "clear_instruction": "mov dword ptr [esi + 0x660], ebx",
+        "bk_constructor_zero_site": "00b14d63",
+        "producer_evidence": "BK raw zero initialization; nonzero producers/profile domain open"
+      },
+      {
+        "offset": "010",
+        "load_site": "00b0faf6",
+        "decrement_site": "00b0fb01",
+        "terminal_site": "00b0fb0d",
+        "clear_site": "00b0fb0f",
+        "clear_instruction": "mov dword ptr [esi + 0x10], ebx",
+        "bk_constructor_zero_site": "00b14a59",
+        "producer_evidence": "BK raw zero initialization; nonzero producers/profile domain open"
+      },
+      {
+        "offset": "66c",
+        "load_site": "00b0fb12",
+        "decrement_site": "00b0fb20",
+        "terminal_site": "00b0fb2c",
+        "clear_site": "00b0fb2e",
+        "clear_instruction": "mov dword ptr [esi + 0x66c], ebx",
+        "bk_constructor_zero_site": "00b14d3c",
+        "producer_evidence": "BK raw zero initialization; nonzero producers/profile domain open; nearby named remap setters are analysis-only, not reconstructed producers"
+      },
+      {
+        "offset": "670",
+        "load_site": "00b0fb34",
+        "decrement_site": "00b0fb42",
+        "terminal_site": "00b0fb4e",
+        "clear_site": "00b0fb50",
+        "clear_instruction": "mov dword ptr [esi + 0x670], ebx",
+        "bk_constructor_zero_site": "00b14d42",
+        "producer_evidence": "BK raw zero initialization; nonzero producers/profile domain open; nearby named remap setters are analysis-only, not reconstructed producers"
+      },
+      {
+        "offset": "674",
+        "load_site": "00b0fb56",
+        "decrement_site": "00b0fb64",
+        "terminal_site": "00b0fb70",
+        "clear_site": "00b0fb72",
+        "clear_instruction": "mov dword ptr [esi + 0x674], ebx",
+        "bk_constructor_zero_site": "00b14d48",
+        "producer_evidence": "BK raw zero initialization; nonzero producers/profile domain open; nearby named remap setters are analysis-only, not reconstructed producers"
+      },
+      {
+        "offset": "678",
+        "load_site": "00b0fb78",
+        "decrement_site": "00b0fb86",
+        "terminal_site": "00b0fb92",
+        "clear_site": "00b0fb94",
+        "clear_instruction": "mov dword ptr [esi + 0x678], ebx",
+        "bk_constructor_zero_site": "00b14d4e",
+        "producer_evidence": "BK raw zero initialization; nonzero producers/profile domain open; nearby named remap setters are analysis-only, not reconstructed producers"
+      },
+      {
+        "offset": "054",
+        "load_site": "00b0fb9a",
+        "decrement_site": "00b0fba5",
+        "terminal_site": "00b0fbb1",
+        "clear_site": "00b0fbb3",
+        "clear_instruction": "mov dword ptr [esi + 0x54], ebx",
+        "bk_constructor_zero_site": "00b14d06",
+        "producer_evidence": "BK raw zero initialization; nonzero producers/profile domain open"
+      },
+      {
+        "offset": "05c",
+        "load_site": "00b0fbb6",
+        "decrement_site": "00b0fbc1",
+        "terminal_site": "00b0fbcd",
+        "clear_site": "00b0fbcf",
+        "clear_instruction": "mov dword ptr [esi + 0x5c], ebx",
+        "bk_constructor_zero_site": "00b14d0c",
+        "producer_evidence": "BK raw zero initialization; nonzero producers/profile domain open"
+      },
+      {
+        "offset": "058",
+        "load_site": "00b0fbd2",
+        "decrement_site": "00b0fbdd",
+        "terminal_site": "00b0fbe9",
+        "clear_site": "00b0fbeb",
+        "clear_instruction": "mov dword ptr [esi + 0x58], ebx",
+        "bk_constructor_zero_site": "00b14d09",
+        "producer_evidence": "BK raw zero initialization; nonzero producers/profile domain open"
+      }
+    ],
+    "00b52270": [
+      {
+        "offset": "030",
+        "load_site": "00b5227c",
+        "decrement_site": "00b52289",
+        "terminal_site": "00b52295",
+        "clear_site": "00b52297",
+        "clear_instruction": "mov dword ptr [esi + 0x30], ebp"
+      },
+      {
+        "offset": "068",
+        "load_site": "00b5229a",
+        "decrement_site": "00b522a5",
+        "terminal_site": "00b522b1",
+        "clear_site": "00b522b3",
+        "clear_instruction": "mov dword ptr [esi + 0x68], ebp"
+      },
+      {
+        "offset": "088",
+        "load_site": "00b522b6",
+        "decrement_site": "00b522c4",
+        "terminal_site": "00b522d0",
+        "clear_site": "00b522d2",
+        "clear_instruction": "mov dword ptr [esi + 0x88], ebp"
+      },
+      {
+        "offset": "0b0",
+        "load_site": "00b522d8",
+        "decrement_site": "00b522e6",
+        "terminal_site": "00b522f2",
+        "clear_site": "00b522f4",
+        "clear_instruction": "mov dword ptr [esi + 0xb0], ebp"
+      }
+    ],
+    "00b52400": [
+      {
+        "offset": "018",
+        "load_site": "00b52433",
+        "decrement_site": "00b52446",
+        "terminal_site": "00b52452",
+        "clear_site": "00b52454",
+        "clear_instruction": "mov dword ptr [esi + 0x18], ebx"
+      },
+      {
+        "offset": "03c",
+        "load_site": "00b52457",
+        "decrement_site": "00b52462",
+        "terminal_site": "00b5246e",
+        "clear_site": "00b52470",
+        "clear_instruction": "mov dword ptr [esi + 0x3c], ebx"
+      },
+      {
+        "offset": "070",
+        "load_site": "00b52473",
+        "decrement_site": "00b5247e",
+        "terminal_site": "00b5248a",
+        "clear_site": "00b5248c",
+        "clear_instruction": "mov dword ptr [esi + 0x70], ebx"
+      },
+      {
+        "offset": "098",
+        "load_site": "00b5248f",
+        "decrement_site": "00b5249d",
+        "terminal_site": "00b524a9",
+        "clear_site": "00b524ab",
+        "clear_instruction": "mov dword ptr [esi + 0x98], ebx"
+      }
+    ]
+  },
+  "profile_evidence": [
+    {
+      "profile": "00d5e600",
+      "slot00": "00bd30e0",
+      "slot04": "00b1fcf0",
+      "role": "actual40h frame targets",
+      "current_capture": "Load current owner profile after zero; current slot0 then BD30E0 rereads current slot4; no added decrement"
+    },
+    {
+      "profile": "00d62074",
+      "slot00": "00bd30e0",
+      "slot04": "00b52840",
+      "role": "actualCCh texture child",
+      "current_capture": "Load current owner profile after zero; current slot0 then BD30E0 rereads current slot4; no added decrement"
+    },
+    {
+      "profile": "00d61948",
+      "slot00": "00bd30e0",
+      "slot04": "00b3f590",
+      "role": "admitted actual2D texture owner",
+      "current_capture": "Load current owner profile after zero; current slot0 then BD30E0 rereads current slot4; no added decrement"
+    },
+    {
+      "profile": "00d61854",
+      "slot00": "00bd30e0",
+      "slot04": "00b3c6c0",
+      "role": "actual24h helper",
+      "current_capture": "Load current owner profile after zero; current slot0 then BD30E0 rereads current slot4; no added decrement"
+    }
+  ],
+  "eh": [
+    {
+      "owner": "00b14f60",
+      "funcinfo": "00df4640",
+      "funcinfo_hex": "22059319040000002046df00000000000000000000000000000000000000000001000000",
+      "unwind_map": "00df4620",
+      "states": [
+        {
+          "state": 0,
+          "next_state": -1,
+          "funclet": "00cbc400",
+          "inclusive_end": "00cbc407",
+          "instructions": [
+            "00cbc400: mov ecx, dword ptr [ebp - 0x10]",
+            "00cbc403: jmp 0xb0f0c0"
+          ]
+        },
+        {
+          "state": 1,
+          "next_state": 0,
+          "funclet": "00cbc408",
+          "inclusive_end": "00cbc415",
+          "instructions": [
+            "00cbc408: mov ecx, dword ptr [ebp - 0x10]",
+            "00cbc40b: add ecx, 0x684",
+            "00cbc411: jmp 0x41dd20"
+          ]
+        },
+        {
+          "state": 2,
+          "next_state": 1,
+          "funclet": "00cbc416",
+          "inclusive_end": "00cbc423",
+          "instructions": [
+            "00cbc416: mov ecx, dword ptr [ebp - 0x10]",
+            "00cbc419: add ecx, 0x68c",
+            "00cbc41f: jmp 0xb14590"
+          ]
+        },
+        {
+          "state": 3,
+          "next_state": 2,
+          "funclet": "00cbc424",
+          "inclusive_end": "00cbc431",
+          "instructions": [
+            "00cbc424: mov ecx, dword ptr [ebp - 0x10]",
+            "00cbc427: add ecx, 0x69c",
+            "00cbc42d: jmp 0x4324a0"
+          ]
+        }
+      ]
+    },
+    {
+      "owner": "00b52400",
+      "funcinfo": "00df8a94",
+      "funcinfo_hex": "2205931905000000b88adf00000000000000000000000000000000000000000001000000",
+      "unwind_map": "00df8ab8",
+      "states": [
+        {
+          "state": 0,
+          "next_state": -1,
+          "funclet": "00cbff30",
+          "inclusive_end": "00cbff37",
+          "instructions": [
+            "00cbff30: mov ecx, dword ptr [ebp - 0x10]",
+            "00cbff33: jmp 0xbd30f0"
+          ]
+        },
+        {
+          "state": 1,
+          "next_state": 0,
+          "funclet": "00cbff38",
+          "inclusive_end": "00cbff42",
+          "instructions": [
+            "00cbff38: mov ecx, dword ptr [ebp - 0x10]",
+            "00cbff3b: add ecx, 0x24",
+            "00cbff3e: jmp 0xb523c0"
+          ]
+        },
+        {
+          "state": 2,
+          "next_state": 1,
+          "funclet": "00cbff43",
+          "inclusive_end": "00cbff4d",
+          "instructions": [
+            "00cbff43: mov ecx, dword ptr [ebp - 0x10]",
+            "00cbff46: add ecx, 0x7c",
+            "00cbff49: jmp 0xb523c0"
+          ]
+        },
+        {
+          "state": 3,
+          "next_state": 2,
+          "funclet": "00cbff4e",
+          "inclusive_end": "00cbff5b",
+          "instructions": [
+            "00cbff4e: mov ecx, dword ptr [ebp - 0x10]",
+            "00cbff51: add ecx, 0x8c",
+            "00cbff57: jmp 0xb523e0"
+          ]
+        },
+        {
+          "state": 4,
+          "next_state": 3,
+          "funclet": "00cbff5c",
+          "inclusive_end": "00cbff69",
+          "instructions": [
+            "00cbff5c: mov ecx, dword ptr [ebp - 0x10]",
+            "00cbff5f: add ecx, 0xa4",
+            "00cbff65: jmp 0xb523c0"
+          ]
+        }
+      ]
+    }
+  ],
+  "iat_capture_epochs": [
+    {
+      "function": "00b52270",
+      "site": "00b52271",
+      "register": "EBX",
+      "before": "first auxiliary member load"
+    },
+    {
+      "function": "00b0f6e0",
+      "site": "00b0f6f1",
+      "register": "EBP",
+      "after": "B52270 returns; first service member captured"
+    },
+    {
+      "function": "00b14f60",
+      "site": "00b14f96",
+      "register": "EBP",
+      "after": "B0F6E0 returns; service+34 captured"
+    },
+    {
+      "function": "00b52400",
+      "site": "00b52436",
+      "register": "EBP",
+      "after": "B52270 returns; child+18 captured"
+    }
+  ],
+  "register_provenance": {
+    "B14F60/B52400": "ESI=ECX once; EDI captured current member; EBP captured IAT; EBX zero; native EH saved receiver at EBP-10 in funclets",
+    "B0F6E0": "ESI=ECX atB0F6E3, never reassigned; ECX loads current[ESI+34] atB0F6E5; EBP currentIAT atB0F6F1 then unchanged; EBX zero atB0F6F7; EDI freshly captures every member",
+    "B52270": "EBX currentIAT atB52271; ESI=ECX atB52279; EBP zero atB5227F; EDI current member; no FH3 registration",
+    "wrappers": "ESI captures original ECX; flags lowbyte tested atESP+8 after destructor; return EAX=ESI after optional free"
+  },
+  "ownership_findings": [
+    {
+      "field": "service+070",
+      "finding": "B14A10/BK does not initialize this DWORD, butB0F6E0 loads/releases it atB0F978..B0F991",
+      "implication": "Do not assume postconstructor null; require valid separately evidenced producer/preimage/domain. No extra constructor zero or release skip."
+    },
+    {
+      "field": "service+67c",
+      "finding": "BK second default load publishes here; neitherB0F6E0 norB14F60 releases it",
+      "implication": "No explicit matching release and field untouched in this closure; do not invent release or infer overall lifetime/leak without callback/other-path evidence."
+    },
+    {
+      "field": "service+1d4",
+      "finding": "Two distinct visits with+1c8 between; callbacks can repopulate+1d4",
+      "implication": "Preserve both actual loads; never deduplicate into a set."
+    },
+    {
+      "field": "service+34",
+      "finding": "B0F6E0 unconditionally callsB52270 on current field before ownIAT capture; B14F60 later decrements whole CCh child",
+      "implication": "No null successful fallback; child auxiliary cleanup may run twice in final destruction when child count reacheszero."
+    },
+    {
+      "field": "service+0c",
+      "finding": "BK existing bound helper reference is authoritative; helper retirement callback/host quiescence are separate",
+      "implication": "Use canonical companion terminal after exactlyone native decrement, preserve host storage if nonzero or failed. No direct bound-owner deletion or stack-local companion."
+    },
+    {
+      "field": "BK helper_binding_failed",
+      "finding": "Completed helper may never have been published toservice+0c",
+      "implication": "Ordinary derived destruction cannot discover/retire that captured allocation. Retain explicit external helper/block obligation; no automatic recovery claimed."
+    }
+  ],
+  "missing_bodies": [
+    "00b52270",
+    "00b52400",
+    "00b52840",
+    "00b0f6e0",
+    "00b14f60",
+    "00b151c0"
+  ],
+  "source_sha256": {
+    "include/bsp/native_render_service_base.hpp": "9bb9796506476fbd7f64ee5eb43588ffae142d385dfe24ba5274fdb4a0bbc82a",
+    "src/native_render_service_base.cpp": "ff129b13b2e39cad4f9615b94529f8f5bf49321da4e3e935e17952ec41e2cdaf",
+    "include/bsp/native_render_service_texture_construction.hpp": "700e0fecf55236b51fb73ea236c6c02117f798c9d473e3b8d8caee21b35b7794",
+    "src/native_render_service_texture_construction.cpp": "44e74e84fdde75716988b5fe70f6ca63e793c355efd8608a1b5cffa8b80585df",
+    "include/bsp/native_render_service_vector_cleanup.hpp": "34035e6bef6840298913a0d50a25991a1567546dd576578dc5857d9e69174c80",
+    "src/native_render_service_vector_cleanup.cpp": "fd7c581522967ab66036064404d62838eba860ae93677314e4594c9628dd3d41",
+    "include/bsp/native_render_service_texture_vectors.hpp": "87a991b960d1ab4e8d6dd9ad8450a69fe7e6f7a00fba9cfe8ef1718cf3091471",
+    "src/native_render_service_texture_vectors.cpp": "a9a028939d9cced314d111549c79d772b1aefde1f1e6c8d8fa6cb85d3ec81934",
+    "include/bsp/native_frame_target_owner.hpp": "5bcab0e6bf05a51b8e8a215117ca5621f3c5a51a1aec131eb4b7f86b33246ca8",
+    "src/native_frame_target_owner.cpp": "60485ba070a77e9de497bff352b16ab664ac4d051e02e671897d2c3082224c60",
+    "include/bsp/native_texture_2d_owner.hpp": "9a4db4ac7413f02d69fe2d7b62709e01b1dfa12a4452483cb34b26e10a1958fc",
+    "src/native_texture_2d_owner.cpp": "8824e7624fec3faa637aa8ce1a90a7e8eba15b8a203253ccf00e9aafdae54ada",
+    "include/bsp/native_cockpit_helper_lifetime.hpp": "916ffb8d9eca76945cf942de85958589e150a0996144cc97bb7ad716ce858239",
+    "src/native_cockpit_helper_lifetime.cpp": "6c418bf84029528abe82915e74ef4b61e3ac91bd5beed8cbe9126ce794d1f65f",
+    "include/bsp/native_cockpit_construction_block.hpp": "f7d39d48cf096ef0fdc11d3aac49ba0f0dcfc8ab7d058961916a4fad3be3bb9d",
+    "src/native_cockpit_construction_block.cpp": "82b94ea93e18ed2a1bb765d37daab6a48ce501c4ce0ced8b612a3cf95a3c6ca1",
+    "src/native_ref_counted.cpp": "b56eb6cde8b0aa0c590ecb52500918839723eb61a135578b95cc2ed6e2e695d9",
+    "src/singleton_lifetime.cpp": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+  },
+  "bk_source_sha256": {
+    "include/bsp/native_render_resources_construction.hpp": "6dab58d13e683dd54eec5aff275004c3b85179a164bd95d1df0431a5d5980298",
+    "src/native_render_resources_construction.cpp": "477b7699cd9781cc78ade9b89ecd8c1e0e4e9ce59aeeb40f6c07593ff3d8a7c9",
+    "reports/native_render_resources_construction_bk.json": "56a23497b74affb82ce7719cd38f7adb6338747904bea8afe508d2f784064840"
+  },
+  "followup_packets": [
+    {
+      "id": "native_render_service_texture_lifetime",
+      "addresses": [
+        "00b52270",
+        "00b52400",
+        "00b52840"
+      ],
+      "files": [
+        "include/bsp/native_render_service_texture_lifetime.hpp",
+        "src/native_render_service_texture_lifetime.cpp"
+      ],
+      "requires": [
+        "concrete nonzero auxiliary reference producers/current profiles",
+        "existing vector cleanup, 2D texture terminal and exactCRT domain"
+      ],
+      "contract": "Four auxiliary releases, four loaded texture releases, reverse four-vector cleanup, five-state EH, flags1 exactCCh free; no new owner/count."
+    },
+    {
+      "id": "native_render_resources_member_release",
+      "addresses": [
+        "00b0f6e0"
+      ],
+      "optional_thunk": "00b0fc00",
+      "files": [
+        "include/bsp/native_render_resources_member_release.hpp",
+        "src/native_render_resources_member_release.cpp"
+      ],
+      "requires": [
+        "native_render_service_texture_lifetime",
+        "current profile/producer domains for admitted service members, explicitly+70"
+      ],
+      "contract": "Current+34 B52270 then42 release visits, callback-visible repeated+1D4, final byte+1C4 zero, once-captured IAT."
+    },
+    {
+      "id": "native_render_resources_lifetime",
+      "addresses": [
+        "00b14f60",
+        "00b151c0"
+      ],
+      "files": [
+        "include/bsp/native_render_resources_lifetime.hpp",
+        "src/native_render_resources_lifetime.cpp"
+      ],
+      "requires": [
+        "first two packets",
+        "canonical persistentBK helper retirement and external host quiescence"
+      ],
+      "contract": "Derived profile, release helper, then+34/+668/+0C, member/base EH and flags1free; preserve+67C and nativepreimages."
+    },
+    {
+      "id": "native_render_resources_saved_analysis_repair",
+      "mutations": "primary-only authorized address/body repair; no source credit",
+      "ranges": [
+        "00b15021..00b15023",
+        "00b151d5..00b151d7",
+        "00b52855..00b52857",
+        "00b524cc..00b52543",
+        "00cbc432..00cbc43b",
+        "00cbff6a..00cbff73"
+      ],
+      "requires": [
+        "recordold annotations",
+        "write lease/lock",
+        "readback/save/export refresh",
+        "repeat verifier"
+      ]
+    }
+  ],
+  "verification": {
+    "build": "not run",
+    "fixture": "none added/run",
+    "runtime": "not run",
+    "ghidra_mutations": "Primary saved four flow repairs, one truncated function recreation and two raw handler definitions.",
+    "metadata_edits": false,
+    "source_pins": "18 source-provider pins and3 BK pins match",
+    "before_listing_repair": {
+      "command": "python tools/verify_report_calls.py reports/native_render_resources_release_bl.json",
+      "exit_code": 1,
+      "total_call_rows": 141,
+      "numeric_rows_checked": 35,
+      "numeric_rows_passed": 26,
+      "failed_rows": 9,
+      "failed_sites": [
+        "00b524dd",
+        "00b524e5",
+        "00b524f8",
+        "00b52500",
+        "00b52512",
+        "00b5251a",
+        "00b5252c",
+        "00cbc437",
+        "00cbff6f"
+      ],
+      "indirect_rows_skipped": 106,
+      "expected_failure": "All nine numeric failures are no containing Ghidra function at seven raw tail calls and two raw EH handler jumps; raw inclusive bounds retained. No other reported errors.",
+      "log_sha256": "5597b94cb7d4d0219ab22164cb4aad482e18f026028935d89a7dddd3c534c175"
+    },
+    "listing_repair_report": "reports/native_render_resources_listing_repair_bl.json",
+    "report_call_verifier": {
+      "command": "python tools/verify_report_calls.py reports/native_render_resources_release_bl.json",
+      "exit_code": 0,
+      "total_call_rows": 141,
+      "numeric_rows_checked": 35,
+      "numeric_rows_passed": 35,
+      "failed_rows": 0,
+      "indirect_rows_skipped": 106,
+      "scope": "Current saved containing functions and numeric calls checked; dynamic profile targets remain listing/provider evidence.",
+      "log_sha256": "863d1a09cdca40c4ae1aea5ea0a0c98b956add7565a9a9598c5555bd05b23cf3"
+    }
+  },
+  "boundaries": [
+    "Complete body analysis is not complete concrete ownership closure. Unknown member producers/profiles remain explicit dependencies.",
+    "Supported current2D/frame/helper profiles do not establish arbitrary genericrefcounted member implementations.",
+    "No abstract native stubs, invented defaults, extra retains/releases or constructor changes.",
+    "NativeFH3/SEH/CRT exception identity and failure-compatible helper terminal composition remain unproved.",
+    "No proposed name was applied; correct library/scalar-deleting roles preserved."
+  ],
+  "prior_raw_spans": [
+    {
+      "inclusive_start": "00b524cc",
+      "inclusive_end": "00b52543",
+      "role": "120-byte continuous B52400 tail beyond saved body",
+      "containing_original_entry": "00b52400",
+      "verified_no_function_samples": [
+        "00b524cc",
+        "00b52540"
+      ],
+      "current_status": "Now covered by a saved Ghidra function; previous absence is retained as pre-repair evidence."
+    },
+    {
+      "inclusive_start": "00cbc432",
+      "inclusive_end": "00cbc43b",
+      "role": "B14F60 FH3 handler; MOV EAX,DF4640; JMP BF6B43",
+      "current_status": "Now covered by a saved Ghidra function; previous absence is retained as pre-repair evidence."
+    },
+    {
+      "inclusive_start": "00cbff6a",
+      "inclusive_end": "00cbff73",
+      "role": "B52400 FH3 handler; MOV EAX,DF8A94; JMP BF6B43",
+      "current_status": "Now covered by a saved Ghidra function; previous absence is retained as pre-repair evidence."
+    }
+  ],
+  "no_ghidra_function": []
+}

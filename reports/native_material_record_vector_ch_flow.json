@@ -1,0 +1,71 @@
+{
+  "repairs": [
+    {
+      "function": "00b145e0",
+      "owner": "agent/orch3-20260910",
+      "when": "2026-09-14T17:42:48Z",
+      "decompile_lines_before": 121,
+      "gaps": [
+        {
+          "site": "00b14772",
+          "mnemonic": "CALL",
+          "operands": "0x00bf65ac",
+          "gap_start": "00b14777",
+          "gap_end_exclusive": "00b1477a",
+          "bytes": 3,
+          "after_call": true,
+          "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+        },
+        {
+          "site": "00b147ac",
+          "mnemonic": "CALL",
+          "operands": "0x00bf65ac",
+          "gap_start": "00b147b1",
+          "gap_end_exclusive": "00b147bd",
+          "bytes": 12,
+          "after_call": true,
+          "sha256": "4299b013315e6da386fb86cd4e09a6ee0faae09e5253d5fa14ea2aaf4339eb3f"
+        }
+      ],
+      "events": [
+        {
+          "gap": {
+            "site": "00b14772",
+            "mnemonic": "CALL",
+            "operands": "0x00bf65ac",
+            "gap_start": "00b14777",
+            "gap_end_exclusive": "00b1477a",
+            "bytes": 3,
+            "after_call": true,
+            "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+          },
+          "clear": "Success: Cleared flow override at 00b14772 (was: CALL_RETURN, now: NONE)",
+          "disassemble": "Successfully disassembled 3 byte(s)"
+        },
+        {
+          "gap": {
+            "site": "00b147ac",
+            "mnemonic": "CALL",
+            "operands": "0x00bf65ac",
+            "gap_start": "00b147b1",
+            "gap_end_exclusive": "00b147bd",
+            "bytes": 12,
+            "after_call": true,
+            "sha256": "4299b013315e6da386fb86cd4e09a6ee0faae09e5253d5fa14ea2aaf4339eb3f"
+          },
+          "clear": "Success: Cleared flow override at 00b147ac (was: CALL_RETURN, now: NONE)",
+          "disassemble": "Successfully disassembled 12 byte(s)"
+        }
+      ],
+      "decompile_lines_after": 120,
+      "gaps_remaining": 0
+    }
+  ],
+  "catch_body_extension_attempt": {
+    "before": "00b1479b Catch_All@00b1479b  undefined Catch_All@00b1479b(void)  body 00b1479b - 00b147b0\n",
+    "script_sha256": "e9de76e537cceba930e75945b61b0d0cc15243e06d950d8e7a11206fd9f2b192",
+    "result": "{\"error\":\"Script execution disabled. Set GHIDRA_MCP_ALLOW_SCRIPTS=1 (and GHIDRA_MCP_AUTH_TOKEN if exposing beyond loopback) to enable. /run_script_inline executes arbitrary Java against the Ghidra process.\"}"
+  },
+  "catch_body_extension_applied": false,
+  "remaining_metadata_limit": "Catch B1479B stored body ends B147B0. Restored rethrow B147B8 has no containing function. No source byte or call-target uncertainty."
+}

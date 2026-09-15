@@ -1,0 +1,203 @@
+{
+  "packet": "orch3_native_effect_direction_interface_cb",
+  "status": "exact_committed_build_static_native_review_saved_annotations_passed_sealed",
+  "source_parent_commit": "3351a4525bd72cca42c33221cad81999f3780bfa",
+  "source_sha256": {
+    "include/bsp/material_effect_plane.hpp": "c1c98d09b887efd3a8905c3630c1f791e0d90060ec04b98821902aeef3bc29e0",
+    "src/material_effect_plane.cpp": "ea9ca3b939f51146f79fe4e9d73a5decb79338486860724958c40680d954aeb5"
+  },
+  "before_object_sha256": "0d56abb035fab6b9d683c87e887061371ea096e068d040edc4b8d108578b8a65",
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_home": "J:/tools/ghidra_12.0.4_PUBLIC",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "native_spans": [
+    {
+      "address": "0042d0d0",
+      "bytes": 187,
+      "sha256": "b15282939ead3cf84c443e3092841998741ebf62b02f712287eed22fa32f767a",
+      "live_PE_equal": true,
+      "hex": "83ec18807c242000d94204d91c248b44241cd90256d95c24088bf1d94208d95c240cd94010d9442404d9c0decad900d9442408d9c0decad9cbdec1d94020d944240cd9c0decad9cadec1d95c2410d94004d8cbd94014d8cbdec1d94024d8cadec1d95c2414d94008decbd94018decad9cadec1d94028decadec1d95c241874128d542410e8b7c3feff8bc65e83c418c20800f30f10442410f30f1106f30f10442414f30f114604f30f10442418f30f1146088bc65e83c418c20800"
+    },
+    {
+      "address": "00b448e0",
+      "bytes": 18,
+      "sha256": "7f7be9952e37717b5076bd86b472d1bd44bab5f49cb9e0a7b095b60c54c4ed90",
+      "live_PE_equal": true,
+      "hex": "54243c8d4c241cf30f11442444e8de878eff"
+    },
+    {
+      "address": "00b448bf",
+      "bytes": 51,
+      "sha256": "511622b7e31547c127f5a5d48c3440321c32c2b2448d1f9072ff6524ea5717fd",
+      "live_PE_equal": true,
+      "hex": "0f57c06a008d8ef0000000f30f11442438f30f1144243cf30f10054ca2d700518d54243c8d4c241cf30f11442444e8de878eff"
+    },
+    {
+      "address": "00d7a24c",
+      "bytes": 4,
+      "sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c",
+      "live_PE_equal": true,
+      "hex": "0000803f"
+    }
+  ],
+  "address": "0042d0d0",
+  "inclusive_end": "0042d18a",
+  "original_function_bytes": 187,
+  "source_symbol": "transform_native_effect_direction_0042d0d0_no_normalize",
+  "native_body_credit": 0,
+  "native_bytes_credit": 0,
+  "existing_kernel_exposed": true,
+  "arithmetic_implementation_changed": false,
+  "complete_function_reconstructed": false,
+  "original_abi": "ECX destination, EDX source, stack matrix and normalize DWORD slot; EAX destination; RET8.",
+  "source_abi": "ECX destination, EDX source, one stack matrix pointer; EAX destination; RET4. Interface selects normalize=false.",
+  "call_steps": [
+    {
+      "address": "00b448ed",
+      "native": "0042d0d0",
+      "function": "00b44750",
+      "normalize_argument": 0
+    }
+  ],
+  "remaining_normalization_dependencies": [
+    "00419510",
+    "00419440",
+    "00bf7030"
+  ],
+  "validation": {
+    "command": "./scripts/build.ps1",
+    "configuration": "MSVC Win32 Release",
+    "exit_code": 0,
+    "ctests_passed": 2,
+    "ctests": [
+      "reconstructed_math",
+      "native_math_differential"
+    ],
+    "exact_commit": "42eff0fb09a3a0641e05637b3223855421aecaec",
+    "tracked_build_inputs": 2573,
+    "clean_before_after": true,
+    "all_build_input_hashes_preserved": true,
+    "new_tests": 0,
+    "new_native_fixture": false,
+    "raw_entries_executed": false,
+    "game_validated": false
+  },
+  "limitations": [
+    "Selected false branch only, zero new native function/byte credit; typed wrapper preserved.",
+    "No raw normalize-true/CRT exception reconstruction, native execution, drop-in ABI, complete material submission or game validation."
+  ],
+  "tested_commit": "42eff0fb09a3a0641e05637b3223855421aecaec",
+  "generated_code": {
+    "bytes": 162,
+    "sha256": "276309a86270da83b0c4bc41c1d386603f6efada73d8122ab10a5e2ef7cfe2d6",
+    "symbol": "?transform_native_effect_direction_0042d0d0_no_normalize@bsp@@YIPAMPAMPBM1@Z",
+    "relocations": [],
+    "before_object_sha256": "0d56abb035fab6b9d683c87e887061371ea096e068d040edc4b8d108578b8a65",
+    "after_object_sha256": "26c61dcf12fa1e6c02c646d7ab351e467e09b16ee02af3cbb661618883f3754e",
+    "complete_old_new_COMDAT_identity": true,
+    "exact_native_span_composition": true,
+    "native_span_recipe": "native[0:3]+native[8:0x7E]+native[0x92:0xBB]; only RET8 immediate changed to RET4; excludes normalize CMP and taken-call branch.",
+    "typed_wrapper_bytes": 19,
+    "typed_wrapper_bytes_identical": true,
+    "typed_wrapper_relocations_equal_after_target_rename": true,
+    "scope": "Static identity of unchanged kernel and typed wrapper. Original normalize=true branch and original RET8 interface are excluded."
+  },
+  "functions": [
+    {
+      "address": "0042d0d0",
+      "inclusive_end": "0042d18a",
+      "complete_function_reconstructed": false,
+      "fragment_only": true
+    }
+  ],
+  "primary_call_audit": {
+    "direct_rows": 1,
+    "indirect_rows": 0,
+    "failed": 0,
+    "log": "local/cb-call-audit-native_effect_direction_interface_cb.log"
+  },
+  "annotation": {
+    "saved": true,
+    "readback_passed": true,
+    "prior_comments_preserved": true,
+    "record": "local/cb-ghidra-annotation-record.json",
+    "force_refreshed_exports": [
+      "0042d0d0"
+    ],
+    "correct_existing_names_preserved": true,
+    "original_fastcall_signature": true
+  },
+  "artifact_sha256": {
+    "build/win32/bsp_core.dir/Release/material_effect_plane.obj": "26c61dcf12fa1e6c02c646d7ab351e467e09b16ee02af3cbb661618883f3754e",
+    "local/adapt_cb_seal.py": "cb703175b026b1168b3d9a979e7e81a18d29975a4f51fba6cc510c3cea475c85",
+    "local/annotate_cb.py": "562f14d8321e102d504782c4144a60c50563078c202dc3e911ef9689a94df00d",
+    "local/bq_object_review.py": "93d9b6dc62ddcd4bc7e0aab0ba75a9ef29e60fa15638adba14eb9a9fd7de862a",
+    "local/build_final_cb.py": "49fec4284b2d4b0d968c68f060713ebaf4279064ab6310970a9e87e75b9e8e25",
+    "local/cb-annotation.log": "8caec50cb08bf76a2ec35f7a4e21e287fc68788ce9a0ac3b4dcd8ce076536fb8",
+    "local/cb-before-material_effect_plane.obj": "0d56abb035fab6b9d683c87e887061371ea096e068d040edc4b8d108578b8a65",
+    "local/cb-call-audit-native_effect_direction_interface_cb.log": "017c5c6b1c5b5631b7aa45aa56d2671d3a0e224e4c116be6e84273db7fe60f87",
+    "local/cb-comments-after.json": "0e6686256b6c9fe166f50e45c6e0245e4c348e82060bebd616ca5a6ed5dcb725",
+    "local/cb-comments-before.json": "cdb01e7d74b60af5785bf12544f2ce51a0f015b4ad1e603d5e380744638a813c",
+    "local/cb-export-refresh.log": "626b817a6d4bb5812a6eebd891b249720ac6f096f4efa51bbba750b85009a1e2",
+    "local/cb-final-build-stamp.json": "6480afd5fa2de3b2810f53ad1e2cd3398e258e118af082faed7298d3a4b80c4b",
+    "local/cb-final-combined-build.log": "8c20b0ac067d1def96260ec890082c34cb6b8d692201704686aa03d96168e446",
+    "local/cb-function-records.json": "7b2d133db56a76fa512e8b343608780e14efa0df92e00f92d9b403d7fb8f0912",
+    "local/cb-generated-kernel.asm": "a10d0f5f488d196862f6f847c6f717b27bd4c6e45e0de2ad8010acf818a3bef7",
+    "local/cb-ghidra-annotation-record.json": "ad229251d34572682a7d8a9bd1b24069c6adeda8182c221a39d0e7c6ea49121d",
+    "local/cb-ledger-before.json": "5a69d261dc9ac8d144aacdc91d0a5d855245683ebdb1daa76ee5c5810d095aa9",
+    "local/cb-live-0042d0d0.txt": "2dc70e959dd84e8e68733f84fdf3157f640a44c216b361a145befec91ced8cc2",
+    "local/cb-live-00b448bf.txt": "078643b3491d85546d2781cb358be884230bbe310fe5659e599cc35a77c3a7da",
+    "local/cb-live-00b448e0.txt": "ec5d6fc21ec29691a510425f1b1ec797e1c80c91d6f4acd456b85d1464f6ccdd",
+    "local/cb-live-00d7a24c.txt": "fd6f7a7d3874dfe569d075d61e99337d9cca002b06a4ebed7f03e974e26bdabc",
+    "local/cb-object-review.json": "c430a07d1c54127eeff28b234cc525b47ff69358d69d22c7d3b19e9428dd67e7",
+    "local/cb-seal-metadata-correction.json": "e176ef1fd124502e6e35aacb2862a3a62c0e82c6cb43a11d1fb8bc9e346402a1",
+    "local/finish_cb.py": "00044216ec6d4e428c179f2b54b7faef68e864fa6cacedd2fcc03517c11ea95b",
+    "local/prepare_cb.py": "88b0c2baa2b6bea69677af6ddcb310a59730435d0d10ef0784132636be8b5a40",
+    "local/seal_cb.py": "00111319faa69ba988ad320714de29342f592aacb9fe22418efa3452c7162153"
+  },
+  "superseded_seal_metadata": {
+    "superseded_archive": {
+      "tested_commit": "42eff0fb09a3a0641e05637b3223855421aecaec",
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\cb-validated-attempt-42eff0fb.zip",
+      "sha256": "b104f37c3eb1289b5a81f56e27e56cff353b2899014f9557f9ed9d4cf772af0f",
+      "payload_members": 2608,
+      "manifest_members": 1,
+      "all_member_hashes_rechecked": true,
+      "libraries": {
+        "bsp_core.lib": "1f3155c32cd0a4e5a1ce044781c87aaf03f855d34615e5c524dcae9ec42ee6c0",
+        "bsp_lua511.lib": "71e114b0ff6244852d678a5779fcbf28589bdcecbad811aff228ffd5007fe8c7",
+        "bsp_zlib121.lib": "f3f934925213a2ffb81f3aec2afbb065c1733cf43b28dddf31db6a69185c4102"
+      },
+      "tracked_build_inputs": 2573
+    },
+    "reason": "Inherited seal recipe labeled original_thiscall_signatures=True; saved and verified Ghidra prototype is __fastcall. Report label corrected, source/build/Ghidra state unchanged.",
+    "source_or_build_inputs_changed": false,
+    "ghidra_signature_changed": false,
+    "old_archive_preserved": true,
+    "new_archive_pending": true
+  },
+  "sealed_attempt": {
+    "tested_commit": "42eff0fb09a3a0641e05637b3223855421aecaec",
+    "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\cb-validated-attempt-42eff0fb-corrected.zip",
+    "sha256": "9cd5b6648d9af1a2b61c5f520041fe88412d2e5fa9b0031a315f57defc95ecee",
+    "payload_members": 2609,
+    "manifest_members": 1,
+    "all_member_hashes_rechecked": true,
+    "libraries": {
+      "bsp_core.lib": "1f3155c32cd0a4e5a1ce044781c87aaf03f855d34615e5c524dcae9ec42ee6c0",
+      "bsp_lua511.lib": "71e114b0ff6244852d678a5779fcbf28589bdcecbad811aff228ffd5007fe8c7",
+      "bsp_zlib121.lib": "f3f934925213a2ffb81f3aec2afbb065c1733cf43b28dddf31db6a69185c4102"
+    },
+    "tracked_build_inputs": 2573
+  }
+}

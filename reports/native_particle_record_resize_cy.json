@@ -1,0 +1,649 @@
+{
+  "packet": "orch3_particle_record_resize_cy",
+  "created_utc": "2026-09-14T19:40:47Z",
+  "base_commit": "9e7454ba53529c526b26d7027dedc4c31e88a59a",
+  "credit": {
+    "new_functions": 0,
+    "new_native_code_bytes": 0,
+    "reason": "Standalone source interface for the already credited orch5 raw 004DC410 normal body; source algorithm/evidence commit abfc4761e44ab10204871d37618fca226fabb9bd, audited branch head 4f5258f36f46bb4cb313f7094391aaa7d6fd80d2."
+  },
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "live_count": 64046
+  },
+  "original": {
+    "address": "004dc410",
+    "inclusive_end": "004dc4db",
+    "bytes": 204,
+    "pe_sha256": "92fe6a11dfd0a9384aac242baf0cc794edd44777f5ebb0994fe9203421b0682d",
+    "live_sha256": "92fe6a11dfd0a9384aac242baf0cc794edd44777f5ebb0994fe9203421b0682d",
+    "pe_live_equal": true,
+    "abi": "ECX actual 0Ch vector; signed requested count in original stack word; RET4; EDX unused.",
+    "direct_callers": [
+      "004dcaa0",
+      "004dda40",
+      "004ddaa0",
+      "004de290"
+    ],
+    "direct_calls": [
+      {
+        "site": "004dc43a",
+        "target": "004da180",
+        "hex": "e841ddffff"
+      },
+      {
+        "site": "004dc470",
+        "target": "004c3020",
+        "hex": "e8ab6bfeff"
+      },
+      {
+        "site": "004dc4bc",
+        "target": "004d45a0",
+        "hex": "e8df80ffff"
+      }
+    ],
+    "requested_slot_reads": [
+      "004dc429 initial capture",
+      "004dc47f after each nonnull C3020 return; no reload on null branch"
+    ],
+    "retained_and_current_reads": [
+      "004dc43f current count after reserve",
+      "004dc455 current data on each growth iteration",
+      "004dc4a7 current count before shrink",
+      "004dc4b0 decrement current count",
+      "004dc4b4 current count and 004dc4ba current data before each D45A0",
+      "004dc4c1 current count after each D45A0",
+      "004dc4ca final retained bound publication"
+    ]
+  },
+  "provider_sha256": {
+    "include/bsp/native_resource_record_vector.hpp": "fb85cb890ab99aeb91cf40b8d06acdf61a6194e28025952569c5c9846c152b47",
+    "src/native_resource_record_vector.cpp": "84b2b2a9014c8f398c82a5420e905819d495310b54b33ef1a3771a4ae9fbe4d4",
+    "include/bsp/native_render_resource_record_construction.hpp": "9c79ba1484463c66957c0c330148ee2572f07c9192ee7e6e96bd40ba65994f65",
+    "src/native_render_resource_record_construction.cpp": "a2014615290441972dfe1c0bdadb29c5e1f7585a5858e0c108c636f2a0691e08",
+    "include/bsp/native_resource_record_copy.hpp": "f3ca7414372dbc7c67412d8e77fbc26ac921e140aad847abcaa62bb04aeb2ada",
+    "src/native_resource_record_copy.cpp": "f5ee6fde9661b6d396171fa3f3c530e314fae2c1deea9b457b3f92a8aa0dc8b7",
+    "include/bsp/native_string.hpp": "80013e5a7350120f32fcad1ce54db9b0923ad5b49cc2152823d858534331378f",
+    "src/native_string.cpp": "0e8819d3a6442fc48c879e85c00899a72beabdc51b3e94a11836ab5314d5e60c",
+    "include/bsp/native_string_pool_storage.hpp": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d",
+    "src/native_string_pool_storage.cpp": "5cb79a6ce240205b3f1c81f1fbd6edd49cc1c05f8a20ee8dca8913f44c9095d5",
+    "include/bsp/singleton_lifetime.hpp": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+    "src/singleton_lifetime.cpp": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+  },
+  "eh_boundary": {
+    "root_evidence": "Root independently recovered C669C1 FuncInfo D8F898, state1 current-name action and state0 current-vector-data/ret-only placement action; CY did not query or mutate those handler addresses.",
+    "source_behavior": "C++ catch after C3020 failure destroys retained name, reads current vector data and computes retained-index placement address, then rethrows. No no-op 00401130 stub, new array/prefix rollback or ownership repair.",
+    "limit": "C++ EH and host CRT are not native FH3/SEH, exception identity, or game validation."
+  },
+  "validation": {
+    "command": "./scripts/build.ps1",
+    "configuration": "MSVC Win32 Release",
+    "exit_code": 0,
+    "ctests_passed": 2,
+    "ctests": [
+      "reconstructed_math",
+      "native_math_differential"
+    ],
+    "exact_commit": "34faf91589a7c206df139d06561d084f0b2d38e6",
+    "tracked_build_inputs": 2607,
+    "clean_before_after": true,
+    "all_build_input_hashes_preserved": true,
+    "new_repository_tests": 0,
+    "new_local_focused_probes": 1,
+    "source_probe": {
+      "packet": "orch3_particle_shutdown_probe_db",
+      "passed": true,
+      "tested_commit": "34faf91589a7c206df139d06561d084f0b2d38e6",
+      "source_head": "34faf91589a7c206df139d06561d084f0b2d38e6",
+      "probe_source": "local/cxcyda_probe.cpp",
+      "probe_source_sha256": "9F0AE63337B791A9CFEC68C9C81CEA8493505B2CD5B43BBD4F0D367B2685E2DD",
+      "probe_build_command": "local/cxcyda_probe.cmd",
+      "probe_build_command_sha256": "0F65FDE3876667D30893CBE1B5E734759B257C4228171B232DC2C34357831362",
+      "probe_executable": "local/cxcyda_probe.exe",
+      "probe_executable_sha256": "F2CDDEBFDFEEB9CA09E8438E74071E433E89E08354DEDCF59CE56551FBBB8926",
+      "probe_object_sha256": "D82BAB4E8F3736E78B4F0F0A90E1CC50972D1B5DF1058AF88767080C4DB23065",
+      "library_root": "J:/PROG/battlestations-pacific-decompile-orch3-20260910/build/win32/Release",
+      "library_sha256_before": {
+        "bsp_core.lib": "231ECDFD5E1E8CC0AE143B6C23694EABDFDD8CA1CDB702D1CBA5265ABFC42F11",
+        "bsp_lua511.lib": "71E114B0FF6244852D678A5779FCBF28589BDCECBAD811AFF228FFD5007FE8C7",
+        "bsp_zlib121.lib": "F3F934925213A2FFB81F3AEC2AFBB065C1733CF43B28DDDF31DB6A69185C4102"
+      },
+      "library_sha256_after": {
+        "bsp_core.lib": "231ECDFD5E1E8CC0AE143B6C23694EABDFDD8CA1CDB702D1CBA5265ABFC42F11",
+        "bsp_lua511.lib": "71E114B0FF6244852D678A5779FCBF28589BDCECBAD811AFF228FFD5007FE8C7",
+        "bsp_zlib121.lib": "F3F934925213A2FFB81F3AEC2AFBB065C1733CF43B28DDDF31DB6A69185C4102"
+      },
+      "toolchain": "Visual Studio 18 Community Win32 cl, /std:c++17 /EHsc /O2 /MD /W4 /WX /fp:strict, /link /MANIFEST:EMBED",
+      "build_exit_code": 0,
+      "run_exit_code": 0,
+      "build_log": "local/cxcyda-probe-build.log",
+      "run_log": "local/cxcyda-probe-run.log",
+      "executed_cases": [
+        {
+          "name": "normal_flags0",
+          "result": "passed",
+          "observed": "CP constructed/published/registered actual 1Ch owner in actual 14h manager; CY grew actual 0Ch vector to two 2Ch records, allocated names through constructed BD1480 pool, shrank to one; DA dispatched actual sink slot0 through current Win32 InterlockedDecrement pointer cell, left refcount zero and one visit, returned retained owner, cleared publication, set primary base CE3818, and left count zero and manager lock depth zero"
+        },
+        {
+          "name": "throwing_sink",
+          "result": "passed",
+          "observed": "Sink slot0 threw one std::runtime_error after one visit at zero refcount; source exception was caught; DA completed array/name/base cleanup, cleared publication, set primary base CE3818 and count zero, and left manager lock depth zero"
+        },
+        {
+          "name": "pool_teardown",
+          "result": "passed",
+          "observed": "Constructed BD1480 pool stayed published and unlocked through both cases, then BD14C0 cleared its publication and set the small-return shutdown gate"
+        }
+      ],
+      "fixture_inputs": [
+        "CE7D08 and CE7D24 profile views are borrowed five-DWORD fixture arrays with slot+10 equal to 004DDB40; they do not prove live native table contents",
+        "Sink is a fixture with callable slot0 __fastcall sink-only, volatile refcount at +4, and one deliberate source exception",
+        "The decrement pointer cell contains the real Win32 GetProcAddress InterlockedDecrement target, not the installed game's 00CE2220 IAT cell",
+        "CY validation callbacks are null because these cases have valid storage and no validation failure"
+      ],
+      "limits": [
+        "Local source composition against exact built libraries; no original binary parent call, native private FH3/SEH parity, native cache table proof, full manager shutdown, or gameplay validation",
+        "The probe never reads clock+18 before a write, dereferences freed record data, frees the stale vector pointer twice, or inspects freed flags1 owner storage",
+        "Retained flags0 owners and raw manager registration arrays were freed by the fixture; actual string pool owner was destructed and freed"
+      ]
+    },
+    "native_parent_bytes_executed": false,
+    "game_validated": false
+  },
+  "scope_exclusions": [
+    "No Ghidra/ledger edits or private handler queries.",
+    "DDA40/DE290 current-IAT/raw sink composition belongs to root DA.",
+    "No new native body/byte credit."
+  ],
+  "worker_validation": {
+    "scripts_build_ps1": "passed Win32 Release, bsp_core.lib and bsp_game.exe linked",
+    "existing_ctest": "reconstructed_math 1/1 passed",
+    "new_tests": 0,
+    "game_validated": false,
+    "object_access_order_reviewed": true
+  },
+  "worker_generated": {
+    "object": "build\\win32\\bsp_core.dir\\Release\\native_particle_record_resize.obj",
+    "object_sha256": "49e3837d01971abcd25b44476343f4cc5af501476f44aece014af1d36bb54fcc",
+    "machine": "IMAGE_FILE_MACHINE_I386",
+    "sections": {
+      "fastcall_adapter": {
+        "coff_section_index": 8,
+        "name": ".text$mn",
+        "bytes": 21,
+        "relocations": 1,
+        "sha256": "b9d1c0a2f2feb47a8b18a6cec1001b29882d32bcadc8f9af232afebad9c551f5"
+      },
+      "cpp_resize_body_and_catch": {
+        "coff_section_index": 9,
+        "name": ".text$mn",
+        "bytes": 317,
+        "relocations": 8,
+        "sha256": "cf9b9eeaa5dd01975e383f652a3ee7ad6b881a0c7cdc72ac2f2ad7948545dd5b"
+      }
+    },
+    "adapter_hex": "558bec8d4508505251e80000000083c40c5dc20400",
+    "adapter_evidence": [
+      "lea eax,[ebp+8] is address of original third-argument public stack word",
+      "push eax; push edx; push ecx; call private body; add esp,0Ch; ret4",
+      "one REL32 relocation to private body"
+    ],
+    "body_evidence": [
+      "entry request load through pointer at helper+0034; initial bound retained through DA180 call at +004A",
+      "current vector.count load at +0052 and vector.data load at +005C",
+      "C3020 call +007C; original public requested word reload at +008E; tail stores +0090..+00AF",
+      "shrink single memory ADD at helper+00D3, fresh count +00D7/current data +00DA, D45A0 call +00E4, final count store +00F3",
+      "catch calls current-name destructor +0110, freshly reads vector data via load call +011A, computes placement address +011F..+012A, rethrows"
+    ],
+    "provider_relocations": [
+      "reserve_native_resource_record_vector_004da180 REL32 +004B",
+      "allocate_native_render_alias_sentinel_004c3020 REL32 +007D",
+      "destroy_native_resource_record_004d45a0 REL32 +00E5",
+      "destroy_native_string_header_0041dd20 REL32 +0111"
+    ]
+  },
+  "worker_source": {
+    "header": "include/bsp/native_particle_record_resize.hpp",
+    "header_sha256": "6595699d66ba3b21af20d8b272b9dda9b88adbd444e815d1f53a9e2a8a240f7e",
+    "cpp": "src/native_particle_record_resize.cpp",
+    "cpp_sha256": "5a4b7db2a73d3b0a8b5d6a69372f9e645455bffd65a613c206af25628efeef2b",
+    "documentation": "docs/NATIVE_PARTICLE_RECORD_RESIZE_CY.md",
+    "documentation_sha256": "418fcd37f259fcac3ab7d4dd4ae4654b4c61d629a29d00eb8065dec338f72027",
+    "cmake": "cmake/startup.cmake",
+    "cmake_sha256": "a15306ebb82a3faf51c6c5ff5e63b8140928be6c091c3df9d1b2a0c5fad1deed",
+    "signature": "void __fastcall resize_native_particle_record_array_004dc410(NativeResourceRecordVectorStorage&, NativeParticleRecordResizeContext&, volatile int32_t requested_count)",
+    "context": "NativeParticleRecordResizeContext borrows ActualNativeStringPoolStorage& strings and const SingletonLifetimeCallbacks& validation.",
+    "registered_target": "bsp_core"
+  },
+  "source_sha256": {
+    "include/bsp/native_particle_record_resize.hpp": "6595699d66ba3b21af20d8b272b9dda9b88adbd444e815d1f53a9e2a8a240f7e",
+    "src/native_particle_record_resize.cpp": "5a4b7db2a73d3b0a8b5d6a69372f9e645455bffd65a613c206af25628efeef2b"
+  },
+  "functions": [
+    {
+      "address": "004dc410",
+      "inclusive_end": "004dc4db",
+      "bytes": 204,
+      "native_sha256": "92fe6a11dfd0a9384aac242baf0cc794edd44777f5ebb0994fe9203421b0682d",
+      "cpp_symbol": "resize_native_particle_record_array_004dc410",
+      "ghidra_name": "BSP_ParticleRecordArray_Resize",
+      "original_abi": "ECX actual 0Ch vector; signed requested count in original stack word; RET4; EDX unused."
+    }
+  ],
+  "call_steps": [
+    {
+      "address": "004dc43a",
+      "native": "004da180",
+      "function": "004dc410",
+      "hex": "e841ddffff"
+    },
+    {
+      "address": "004dc470",
+      "native": "004c3020",
+      "function": "004dc410",
+      "hex": "e8ab6bfeff"
+    },
+    {
+      "address": "004dc4bc",
+      "native": "004d45a0",
+      "function": "004dc410",
+      "hex": "e8df80ffff"
+    }
+  ],
+  "existing_external_full_functions": {
+    "commit": "4f5258f36f46bb4cb313f7094391aaa7d6fd80d2",
+    "source_introduction_commit": "abfc4761e44ab10204871d37618fca226fabb9bd",
+    "git_blob_content_sha256": {
+      "include/bsp/native_sampler_owner_lifetime.hpp": "1551528393bd30bd8ae3cda1f986654bd5524b2486ae4ed55b4eeb53237139d3",
+      "src/native_sampler_owner_lifetime.cpp": "4a0cf0bca7b441de44dd937600bd6aa7656d9053d0108210c517fe11de7dbcb7",
+      "reports/native_sampler_owner_lifetime.json": "658512f7af7c501d842ced0f714f2250d62887351db069d6496dd968775f05af"
+    },
+    "new_body_credit": 0
+  },
+  "primary_integration": {
+    "worker_commit": "7a11431aca2379eaba7f535ae22dca665bae6774",
+    "integrated_commit": "34faf91589a7c206df139d06561d084f0b2d38e6",
+    "source_header_unchanged": true,
+    "worker_primary_whole_code_and_normalized_relocation_identity": true
+  },
+  "review": {},
+  "tested_commit": "34faf91589a7c206df139d06561d084f0b2d38e6",
+  "native_body_credit": 0,
+  "native_bytes_credit": 0,
+  "raw_interface_upgrades": 1,
+  "raw_interface_bytes": 204,
+  "primary_review": {
+    "primary_complete_native_source_generated_review": true,
+    "independent_DB_source_generated_review": "local/cxcyda-worker/db/db-native-particle-shutdown-review.json",
+    "blocking_source_findings": [],
+    "source_probe": "local/cxcyda-worker/db/cxcyda-probe-result.json",
+    "CX": "Complete13-byte COMDAT replaces native first10-byte absolute publication store with6-byte MOV[EDX],0; remaining7 bytes identical, zero relocations. Publication clear precedes owner CE3818 store.",
+    "CY": "Original public requested-count slot forwarded by21-byte adapter. Private317-byte section includes53-byte catch slice; do not count catch twice. Reserve uses entry bound; current count/data reloads, nonnull sentinel construction and post-call public-bound reload, descending tail writes retain untouched+8/+28. Shrink uses single memory ADD and current count/data. Catch destroys retained name, freshly reads vector data and computes captured-index placement address before rethrow; original401130 is RET-only. Ten generated extraction rows match worker code and normalized relocations.",
+    "DA": "Sink capture precedes current cache profile/slot10, CV current-IAT/current-sink-slot0 dispatch, then fresh count/data and D45A0 followed by single ADD memory decrement. Secondary guard disarms before normal second resize/free; owner base guard disarms before CX publication/base leaf. Public scalar18-byte adapter passes address of original flags; private41-byte helper calls owner destructor then reads byte at+14h, tests bit0 and conditionally frees. Secondary8-byte SUB ECX,4/JMP preserves the same flags slot. Compiler inlines release-all into secondary and secondary into owner; all helper/cleanup/EH listings reviewed.",
+    "host_EH_limit": "Generated secondary initial count load+3Fh precedes host state0 arm+42h; inlined owner array count load+5Eh precedes state1 arm+61h. Native arms before child loads. Completed C++ throwing-call cleanup is preserved; asynchronous hardware faults and native private FH3/double-unwind delivery are excluded.",
+    "provider_domain": "Supplied CE7D08/CE7D24 current table views must identify DDB40 at+10; actual sink profile must be callable. Unknown/changed cache target throws logic_error rather than native arbitrary indirect dispatch. Fixture views do not establish live game table identity. Actual pool/current IAT/publication and compatible CRT required.",
+    "cross_branch_correction": "CU/CW branch-local raw-absence conclusions are superseded by CW2. All eight native bodies already exist in orch5 native_sampler_owner_lifetime source abfc4761e44ab10204871d37618fca226fabb9bd, audited immutable4f5258f36f46bb4cb313f7094391aaa7d6fd80d2. Local missing full-function rows do not grant new credit."
+  },
+  "generated_code": [
+    {
+      "module": "native_particle_record_resize",
+      "stem": "resize_native_particle_record_array_004dc410",
+      "symbol": "?resize_native_particle_record_array_004dc410@bsp@@YIXAAUNativeResourceRecordVectorStorage@1@AAUNativeParticleRecordResizeContext@1@H@Z",
+      "section_offset": 0,
+      "bytes": 21,
+      "sha256": "b9d1c0a2f2feb47a8b18a6cec1001b29882d32bcadc8f9af232afebad9c551f5",
+      "object_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\bsp_core.dir\\Release\\native_particle_record_resize.obj",
+      "object_sha256": "7bf5ff436337f93312c75bb3d65e144cac4c687348742ffc3e33e291ec55a23d",
+      "relocations": [
+        {
+          "offset": 10,
+          "type": 20,
+          "symbol": "?resize_with_public_slot@?A0xabe3a611@bsp@@YAXAAUNativeResourceRecordVectorStorage@2@AAUNativeParticleRecordResizeContext@2@QCH@Z"
+        }
+      ],
+      "listing": "local/cxcyda-generated-native_particle_record_resize-resize_native_particle_record_array_004dc410.asm",
+      "primary_worker_code_and_normalized_relocation_identity": true,
+      "explicit_native_transformation_identity": false,
+      "whole_native_code_identity": false
+    },
+    {
+      "module": "native_particle_record_resize",
+      "stem": "resize_with_public_slot",
+      "symbol": "?resize_with_public_slot@?A0xabe3a611@bsp@@YAXAAUNativeResourceRecordVectorStorage@2@AAUNativeParticleRecordResizeContext@2@QCH@Z",
+      "section_offset": 0,
+      "bytes": 317,
+      "sha256": "cf9b9eeaa5dd01975e383f652a3ee7ad6b881a0c7cdc72ac2f2ad7948545dd5b",
+      "object_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\bsp_core.dir\\Release\\native_particle_record_resize.obj",
+      "object_sha256": "7bf5ff436337f93312c75bb3d65e144cac4c687348742ffc3e33e291ec55a23d",
+      "relocations": [
+        {
+          "offset": 6,
+          "type": 6,
+          "symbol": "__ehhandler$?resize_with_public_slot@?A0xabe3a611@bsp@@YAXAAUNativeResourceRecordVectorStorage@2@AAUNativeParticleRecordResizeContext@2@QCH@Z"
+        },
+        {
+          "offset": 24,
+          "type": 6,
+          "symbol": "___security_cookie"
+        },
+        {
+          "offset": 75,
+          "type": 20,
+          "symbol": "?reserve_native_resource_record_vector_004da180@bsp@@YAXAAUNativeResourceRecordVectorStorage@1@HAAVActualNativeStringPoolStorage@1@ABUSingletonLifetimeCallbacks@1@@Z"
+        },
+        {
+          "offset": 125,
+          "type": 20,
+          "symbol": "?allocate_native_render_alias_sentinel_004c3020@bsp@@YAPAUNativeRenderResourceAliasNode@1@XZ"
+        },
+        {
+          "offset": 229,
+          "type": 20,
+          "symbol": "?destroy_native_resource_record_004d45a0@bsp@@YAXAAUNativeRenderResourceRecord@1@AAVActualNativeStringPoolStorage@1@@Z"
+        },
+        {
+          "offset": 273,
+          "type": 20,
+          "symbol": "?destroy_native_string_header_0041dd20@bsp@@YAXPAXAAVNativeStringStorage@1@@Z"
+        },
+        {
+          "offset": 283,
+          "type": 20,
+          "symbol": "?load@?A0xabe3a611@bsp@@YAIPAXI@Z"
+        },
+        {
+          "offset": 307,
+          "type": 20,
+          "symbol": "__CxxThrowException@8"
+        }
+      ],
+      "listing": "local/cxcyda-generated-native_particle_record_resize-resize_with_public_slot.asm",
+      "primary_worker_code_and_normalized_relocation_identity": true,
+      "explicit_native_transformation_identity": false,
+      "whole_native_code_identity": false
+    },
+    {
+      "module": "native_particle_record_resize",
+      "stem": "catch:resize_with_public_slot",
+      "symbol": "__catch$?resize_with_public_slot@?A0xabe3a611@bsp@@YAXAAUNativeResourceRecordVectorStorage@2@AAUNativeParticleRecordResizeContext@2@QCH@Z$0",
+      "section_offset": 264,
+      "bytes": 53,
+      "sha256": "942ee6e695a2eab13f502bed633e5050b94a176234e7c4081e4afc5d447ec2ff",
+      "object_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\bsp_core.dir\\Release\\native_particle_record_resize.obj",
+      "object_sha256": "7bf5ff436337f93312c75bb3d65e144cac4c687348742ffc3e33e291ec55a23d",
+      "relocations": [
+        {
+          "offset": 9,
+          "type": 20,
+          "symbol": "?destroy_native_string_header_0041dd20@bsp@@YAXPAXAAVNativeStringStorage@1@@Z"
+        },
+        {
+          "offset": 19,
+          "type": 20,
+          "symbol": "?load@?A0xabe3a611@bsp@@YAIPAXI@Z"
+        },
+        {
+          "offset": 43,
+          "type": 20,
+          "symbol": "__CxxThrowException@8"
+        }
+      ],
+      "listing": "local/cxcyda-generated-native_particle_record_resize-catch-resize_with_public_slot.asm",
+      "primary_worker_code_and_normalized_relocation_identity": true,
+      "explicit_native_transformation_identity": false,
+      "whole_native_code_identity": false
+    },
+    {
+      "module": "native_particle_record_resize",
+      "stem": "eh:resize_with_public_slot",
+      "symbol": "__ehhandler$?resize_with_public_slot@?A0xabe3a611@bsp@@YAXAAUNativeResourceRecordVectorStorage@2@AAUNativeParticleRecordResizeContext@2@QCH@Z",
+      "section_offset": 0,
+      "bytes": 29,
+      "sha256": "8afea02d98ad0c01a97364d71172448b65489b675b09649b09075195de9cdd27",
+      "object_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\bsp_core.dir\\Release\\native_particle_record_resize.obj",
+      "object_sha256": "7bf5ff436337f93312c75bb3d65e144cac4c687348742ffc3e33e291ec55a23d",
+      "relocations": [
+        {
+          "offset": 15,
+          "type": 20,
+          "symbol": "@__security_check_cookie@4"
+        },
+        {
+          "offset": 20,
+          "type": 6,
+          "symbol": "__ehfuncinfo$?resize_with_public_slot@?A0xabe3a611@bsp@@YAXAAUNativeResourceRecordVectorStorage@2@AAUNativeParticleRecordResizeContext@2@QCH@Z"
+        },
+        {
+          "offset": 25,
+          "type": 20,
+          "symbol": "___CxxFrameHandler3"
+        }
+      ],
+      "listing": "local/cxcyda-generated-native_particle_record_resize-eh-resize_with_public_slot.asm",
+      "primary_worker_code_and_normalized_relocation_identity": true,
+      "explicit_native_transformation_identity": false,
+      "whole_native_code_identity": false
+    },
+    {
+      "module": "native_particle_record_resize",
+      "stem": "at",
+      "symbol": "?at@?A0xabe3a611@bsp@@YAPAXPBXI@Z",
+      "section_offset": 0,
+      "bytes": 11,
+      "sha256": "bd938e409fd7adea661f129903b0c423217965673832a58652967e992d90b850",
+      "object_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\bsp_core.dir\\Release\\native_particle_record_resize.obj",
+      "object_sha256": "7bf5ff436337f93312c75bb3d65e144cac4c687348742ffc3e33e291ec55a23d",
+      "relocations": [],
+      "listing": "local/cxcyda-generated-native_particle_record_resize-at.asm",
+      "primary_worker_code_and_normalized_relocation_identity": true,
+      "explicit_native_transformation_identity": false,
+      "whole_native_code_identity": false
+    },
+    {
+      "module": "native_particle_record_resize",
+      "stem": "word",
+      "symbol": "?word@?A0xabe3a611@bsp@@YAACIPAXI@Z",
+      "section_offset": 0,
+      "bytes": 11,
+      "sha256": "bd938e409fd7adea661f129903b0c423217965673832a58652967e992d90b850",
+      "object_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\bsp_core.dir\\Release\\native_particle_record_resize.obj",
+      "object_sha256": "7bf5ff436337f93312c75bb3d65e144cac4c687348742ffc3e33e291ec55a23d",
+      "relocations": [],
+      "listing": "local/cxcyda-generated-native_particle_record_resize-word.asm",
+      "primary_worker_code_and_normalized_relocation_identity": true,
+      "explicit_native_transformation_identity": false,
+      "whole_native_code_identity": false
+    },
+    {
+      "module": "native_particle_record_resize",
+      "stem": "load",
+      "symbol": "?load@?A0xabe3a611@bsp@@YAIPAXI@Z",
+      "section_offset": 0,
+      "bytes": 14,
+      "sha256": "968c17a0375a47c786e584c230018ee9ddbb72bfbd8b42d8ffe49fefcecff650",
+      "object_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\bsp_core.dir\\Release\\native_particle_record_resize.obj",
+      "object_sha256": "7bf5ff436337f93312c75bb3d65e144cac4c687348742ffc3e33e291ec55a23d",
+      "relocations": [],
+      "listing": "local/cxcyda-generated-native_particle_record_resize-load.asm",
+      "primary_worker_code_and_normalized_relocation_identity": true,
+      "explicit_native_transformation_identity": false,
+      "whole_native_code_identity": false
+    },
+    {
+      "module": "native_particle_record_resize",
+      "stem": "store",
+      "symbol": "?store@?A0xabe3a611@bsp@@YAXPAXII@Z",
+      "section_offset": 0,
+      "bytes": 17,
+      "sha256": "cdb70beb04767abdb190d475687cb3d73f5a60446387ee001a9169bd0ce2b7eb",
+      "object_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\bsp_core.dir\\Release\\native_particle_record_resize.obj",
+      "object_sha256": "7bf5ff436337f93312c75bb3d65e144cac4c687348742ffc3e33e291ec55a23d",
+      "relocations": [],
+      "listing": "local/cxcyda-generated-native_particle_record_resize-store.asm",
+      "primary_worker_code_and_normalized_relocation_identity": true,
+      "explicit_native_transformation_identity": false,
+      "whole_native_code_identity": false
+    },
+    {
+      "module": "native_particle_record_resize",
+      "stem": "pointer",
+      "symbol": "?pointer@?A0xabe3a611@bsp@@YAPAXPAXI@Z",
+      "section_offset": 0,
+      "bytes": 14,
+      "sha256": "968c17a0375a47c786e584c230018ee9ddbb72bfbd8b42d8ffe49fefcecff650",
+      "object_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\bsp_core.dir\\Release\\native_particle_record_resize.obj",
+      "object_sha256": "7bf5ff436337f93312c75bb3d65e144cac4c687348742ffc3e33e291ec55a23d",
+      "relocations": [],
+      "listing": "local/cxcyda-generated-native_particle_record_resize-pointer.asm",
+      "primary_worker_code_and_normalized_relocation_identity": true,
+      "explicit_native_transformation_identity": false,
+      "whole_native_code_identity": false
+    },
+    {
+      "module": "native_particle_record_resize",
+      "stem": "signed_bits",
+      "symbol": "?signed_bits@?A0xabe3a611@bsp@@YAHI@Z",
+      "section_offset": 0,
+      "bytes": 8,
+      "sha256": "d5a2b635b0bbb254914f2641e4508361a0c95686c0422dcebeb3abbcca7f1d2b",
+      "object_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\bsp_core.dir\\Release\\native_particle_record_resize.obj",
+      "object_sha256": "7bf5ff436337f93312c75bb3d65e144cac4c687348742ffc3e33e291ec55a23d",
+      "relocations": [],
+      "listing": "local/cxcyda-generated-native_particle_record_resize-signed_bits.asm",
+      "primary_worker_code_and_normalized_relocation_identity": true,
+      "explicit_native_transformation_identity": false,
+      "whole_native_code_identity": false
+    }
+  ],
+  "status": "exact_committed_build_source_probe_native_generated_review_saved_annotations_passed_sealed",
+  "primary_call_audit": {
+    "direct_rows": 3,
+    "indirect_rows": 0,
+    "failed": 0,
+    "log": "local/cxcyda-call-audit-native_particle_record_resize_cy.log",
+    "E9_tail_jumps_checked_separately": true
+  },
+  "annotation": {
+    "saved": true,
+    "readback_passed": true,
+    "prior_comments_preserved": true,
+    "record": "local/cxcyda-ghidra-annotation-record.json",
+    "force_refreshed_exports": [
+      "004dc410"
+    ],
+    "correct_existing_names_preserved": true,
+    "original_abi_signatures": true,
+    "original_calling_conventions": {
+      "004dc410": "__thiscall"
+    }
+  },
+  "artifact_sha256": {
+    "build/win32/bsp_core.dir/Release/native_particle_clock_publication_base.obj": "3629119eca5ca06f2f7e7f61f00e32254b27184efff1c5c56e525cbc7bf9891a",
+    "build/win32/bsp_core.dir/Release/native_particle_clock_shutdown.obj": "4b93f15c686feca4a43e76f10af76390571077ce63657ff1bc853d0be16dd23a",
+    "build/win32/bsp_core.dir/Release/native_particle_record_resize.obj": "7bf5ff436337f93312c75bb3d65e144cac4c687348742ffc3e33e291ec55a23d",
+    "local/annotate_cxcyda.py": "26de3da13de06c75b4e9d009d3ca8f3c6344f44fb8a786caa8b30a3ac9abe7bf",
+    "local/bq_object_review.py": "93d9b6dc62ddcd4bc7e0aab0ba75a9ef29e60fa15638adba14eb9a9fd7de862a",
+    "local/build_final_cxcyda.py": "381f832c8890a610fdc2e7fe6914f9d6a7247bf00563d190fa13545991632692",
+    "local/cx-particle-clock-destructor-eh.json": "63ebeb0f397436e597ef302bb9c6237abab88824b258d23fb61c961a25b45a9d",
+    "local/cx-particle-clock-destructor-eh.md": "2ff2e16e2ea9557d1b12ff72318adef1e744eb49d02fda217ff77cb423530e29",
+    "local/cxcyda-annotation.log": "ed51ae77d61aa0eb83cda198dfb64702ae6d53b394b8575d94556e784a2e4820",
+    "local/cxcyda-call-audit-cz-particle-record-resize-eh.log": "1a396f87a12aad8b8eb61e9ba64cbca228cc2f886134c5a4ab963b63f6bc1e58",
+    "local/cxcyda-call-audit-native_particle_clock_publication_base_cx.log": "135378f92ac30ab753aac27aef723a6834f30afa9e7ca47786fd26400412807f",
+    "local/cxcyda-call-audit-native_particle_clock_shutdown_da.log": "a3dc0ce6071d12e4caee890da49742d4f4cc64ddf5c17a3c21b48db6e3e8cd62",
+    "local/cxcyda-call-audit-native_particle_record_resize_cy.log": "4b13ba0542bf5b35f186339a0098a19cddce20149f52dc65cdecbd873e65cc74",
+    "local/cxcyda-comments-after.json": "04e33497d2d6e47e237fda5cf77aadebdadc4b57ee98f898ed48e456c4cd01e8",
+    "local/cxcyda-comments-before.json": "f46553db0491bfcf5b87213e23d38db365f43b50468a454ea702ea780cb44be6",
+    "local/cxcyda-cx-report-before.json": "fdd65ced44d63c28cee35a7c190d707e97aeb14793283dcf1578adfe631214aa",
+    "local/cxcyda-cy-report-before.json": "9dda8263dc62189a903aa168089d2de58650da5c618dd97c3ef58d5133bec5c5",
+    "local/cxcyda-da-report-before.json": "08ed613cd467d06a71cec7f6d9c04bf7ffcfc1b925374b96c95e0acbad2b6e6f",
+    "local/cxcyda-db-artifacts.json": "e9b297dc0571347e15124f28b0ca50e09a523a0a75f6dd80b0a4de3ceb961df0",
+    "local/cxcyda-export-refresh.log": "d56dda71ce20daafcc126aff2b3f07470d61b05362bc4850e9ffe2d3b434ab46",
+    "local/cxcyda-final-build-stamp.json": "3c67324e9a6bd3301e4a569f5bae723e5e049e893df009816807fa74a337ae0f",
+    "local/cxcyda-final-combined-build.log": "67df4688840b587a136c3dc2a61b06562b94a3d2c3e272baac04b799bf61449c",
+    "local/cxcyda-function-records.json": "cbc565d5fcda814798a8b79a10de0dc5d60d23779e554c000220e307c08b9795",
+    "local/cxcyda-generated-native_particle_clock_publication_base-clear_native_particle_clock_publication_base_004b4f10.asm": "96590508334c96a3aee9362e41ccf13d0b12591b364ddd2b57f47a5410146fcc",
+    "local/cxcyda-generated-native_particle_clock_shutdown-at.asm": "52be8102affede235036cb0229c26cb42fe676939d4dc79ab092dee2d4955884",
+    "local/cxcyda-generated-native_particle_clock_shutdown-clear_native_particle_clock_records_004dda40.asm": "83a4aaaed17759951ddc790171315728a74b5f3551b0fc7b1c57ab49f2fd52e6",
+    "local/cxcyda-generated-native_particle_clock_shutdown-decrement_current_count.asm": "8a45043f4e3a198f61ff62485df7f5457939bd473f4806da911fd87044dd42f7",
+    "local/cxcyda-generated-native_particle_clock_shutdown-delete_native_particle_clock_004de340.asm": "65f00788e88ec3ea22864e401986b230bb8fc11f3ba31dd198307b7064c94eec",
+    "local/cxcyda-generated-native_particle_clock_shutdown-delete_native_particle_clock_impl.asm": "3c4b383060d2942294cf14e1b25b85880061cf480219e2ec160f533c9aa3f314",
+    "local/cxcyda-generated-native_particle_clock_shutdown-delete_native_particle_clock_secondary_004de360.asm": "41d54fe995b1466eb728d867124c2f46a253a8c97ccddaeefc9a728234ae6c0a",
+    "local/cxcyda-generated-native_particle_clock_shutdown-destroy_native_particle_clock_00b1b680.asm": "0810c93a2216215441b787eff5b42421fb95a188fe59b85324454a8b1ef95e3f",
+    "local/cxcyda-generated-native_particle_clock_shutdown-destroy_native_particle_clock_records_004de290.asm": "da8ede51f35ce7b9b4f56a0dad8f9c3b9e0e8b20ca08c6cb2b6fa1d777dfef55",
+    "local/cxcyda-generated-native_particle_clock_shutdown-destroy_native_particle_record_array_004ddaa0.asm": "2c4c63e5456173a391cf7fcd6abbd22a926afb4e4a3fa1a2fd01fe9295e39d63",
+    "local/cxcyda-generated-native_particle_clock_shutdown-dtor-ArrayCleanup.asm": "c3c950cd3e264d45a7efee4038497d7b756d4acad120ff16d01efe5d4f32a760",
+    "local/cxcyda-generated-native_particle_clock_shutdown-dtor-BaseCleanup.asm": "fdc6e6424773c5d681b880345177e6181780ace9f123e0652fcd58327586b52d",
+    "local/cxcyda-generated-native_particle_clock_shutdown-eh-destroy_native_particle_clock_00b1b680.asm": "713a900db1113c19bfaa32aa1c25ee03f78cd4ef5507f287557aab2e2bbdef72",
+    "local/cxcyda-generated-native_particle_clock_shutdown-eh-destroy_native_particle_clock_records_004de290.asm": "e673016a8c7537afaa03418e61b79ebfa3aee1563ae3a144c87b672d3e14c4fa",
+    "local/cxcyda-generated-native_particle_clock_shutdown-eh-dtor-ArrayCleanup.asm": "3fba5dfb70c633b1ad3126ca76238466875240c3df339e90450bdf71622f9528",
+    "local/cxcyda-generated-native_particle_clock_shutdown-load.asm": "ff87901fba0c6a63581bff6f97b098ddc6570dd02af42e4f232cb7952fb71a5f",
+    "local/cxcyda-generated-native_particle_clock_shutdown-release_current_sink.asm": "c5fb07f78ef055b4b7d3d53b7e0ee8d0759cc06edcdbecf77cce50c1342880b1",
+    "local/cxcyda-generated-native_particle_clock_shutdown-store.asm": "c893708af0f0724f42624c31921dffe24bde7058dcea720f25f3202ea7941fad",
+    "local/cxcyda-generated-native_particle_clock_shutdown-vector_at.asm": "ca4bcc74765f1c9bf67a28dbd13d4aea638b360aef16a75cb8d554a50301dddb",
+    "local/cxcyda-generated-native_particle_record_resize-at.asm": "52be8102affede235036cb0229c26cb42fe676939d4dc79ab092dee2d4955884",
+    "local/cxcyda-generated-native_particle_record_resize-catch-resize_with_public_slot.asm": "6392744301582781b36bfd04a627358f8e24d44a9af27b68df1a9914347d3537",
+    "local/cxcyda-generated-native_particle_record_resize-eh-resize_with_public_slot.asm": "e8d22029e5a5dcc8af62fe6883bb01fee7f81bbb277d6a0b03709ddebd5999bd",
+    "local/cxcyda-generated-native_particle_record_resize-load.asm": "ff87901fba0c6a63581bff6f97b098ddc6570dd02af42e4f232cb7952fb71a5f",
+    "local/cxcyda-generated-native_particle_record_resize-pointer.asm": "ff87901fba0c6a63581bff6f97b098ddc6570dd02af42e4f232cb7952fb71a5f",
+    "local/cxcyda-generated-native_particle_record_resize-resize_native_particle_record_array_004dc410.asm": "341488dffb10912ba744d251ce28136f11bd1a1a95c73e0ed6048ce0e30ed8ae",
+    "local/cxcyda-generated-native_particle_record_resize-resize_with_public_slot.asm": "929702380d28804781b6480b70d25a247d0927619cc833ef40132e2ac3b92c9e",
+    "local/cxcyda-generated-native_particle_record_resize-signed_bits.asm": "f7a580fc027f4f3765ab863ba64e3bfdc76be0cd414febcd03c040d718f3ab45",
+    "local/cxcyda-generated-native_particle_record_resize-store.asm": "c893708af0f0724f42624c31921dffe24bde7058dcea720f25f3202ea7941fad",
+    "local/cxcyda-generated-native_particle_record_resize-word.asm": "52be8102affede235036cb0229c26cb42fe676939d4dc79ab092dee2d4955884",
+    "local/cxcyda-ghidra-annotation-record.json": "fc3a01cab07cb5f95e52d0f5eb9750c5f400916370912a3792cbfbc552c4ed13",
+    "local/cxcyda-ledger-before.json": "661fb77cfbe0de358ed27393fb2ef856a2dc9393b086821aa446978118f353df",
+    "local/cxcyda-object-review.json": "9954516830fb0a9b065b323b6371b4e6b01f0f21d30de778e957c2fc583a62d4",
+    "local/cxcyda-primary-review.json": "1da262791e893a1b32cfe5d2d7161f0ebf3df0b6f963ce26b99eaaa7d1d0c7e2",
+    "local/cxcyda-worker/cw/cw-particle-container-provider-audit.json": "1bcf746425c2f964896af66f93991b5ea84385e1378c3a06fd79cebd96442028",
+    "local/cxcyda-worker/cw/cw-particle-container-provider-audit.md": "52686627f57dccf202785296d33132971feaf8a2f10cd99469e8e30de3e03c77",
+    "local/cxcyda-worker/cw/cw2-sampler-lifetime-cross-branch.json": "bd217ff54b1b617a0bebac8493e8a4382383fb183976d40a01dfffd7be06ee74",
+    "local/cxcyda-worker/cw/cw2-sampler-lifetime-cross-branch.md": "aa69acdf484e32af8f984335c838170d75c15f997c2d090e578136576e5debc6",
+    "local/cxcyda-worker/cy/native_particle_record_resize.obj": "49e3837d01971abcd25b44476343f4cc5af501476f44aece014af1d36bb54fcc",
+    "local/cxcyda-worker/cy/worker-report.json": "9dda8263dc62189a903aa168089d2de58650da5c618dd97c3ef58d5133bec5c5",
+    "local/cxcyda-worker/db/cxcyda-probe-build.log": "0c7285d88387b7a2ee522152ea08099a945684a7605f9b1297a9a32b7052be2c",
+    "local/cxcyda-worker/db/cxcyda-probe-result.json": "56948dbdbb750b0439f8ef7aca38bd3483c5da2f04da74f257b451722198cc9f",
+    "local/cxcyda-worker/db/cxcyda-probe-run.log": "0c42dd1ed2642296cfddda3a8a35eecccbe695f638061f2e46312ca5aebb359e",
+    "local/cxcyda-worker/db/cxcyda_probe.cmd": "0f65fde3876667d30893cbe1b5e734759b257c4228171b232dc2c34357831362",
+    "local/cxcyda-worker/db/cxcyda_probe.cpp": "9f0ae63337b791a9cfec68c9c81cea8493505b2cd5b43bbd4f0d367b2685e2dd",
+    "local/cxcyda-worker/db/cxcyda_probe.exe": "f2cddebfdfeeb9ca09e8438e74071e433e89e08354dedcf59ce56551fbbb8926",
+    "local/cxcyda-worker/db/cxcyda_probe.obj": "d82bab4e8f3736e78b4f0f0a90e1cc50972d1b5df1058af88767080c4db23065",
+    "local/cxcyda-worker/db/db-native-particle-shutdown-review.json": "e204dd0ea59cc7224a72f1e3013107490b7ea2ac135a2b7df01d1448c65cf4ad",
+    "local/cxcyda-worker/db/db-native-particle-shutdown-review.md": "3bcc905a4959f178cd8c69a56a1ada74c19f33d0a53ab4dbacb80e7e3e6a5e33",
+    "local/cxcyda-worker/external/include/bsp/native_sampler_owner_lifetime.hpp": "1551528393bd30bd8ae3cda1f986654bd5524b2486ae4ed55b4eeb53237139d3",
+    "local/cxcyda-worker/external/reports/native_sampler_owner_lifetime.json": "658512f7af7c501d842ced0f714f2250d62887351db069d6496dd968775f05af",
+    "local/cxcyda-worker/external/src/native_sampler_owner_lifetime.cpp": "4a0cf0bca7b441de44dd937600bd6aa7656d9053d0108210c517fe11de7dbcb7",
+    "local/cxcyda_object_symbols.py": "129ae8913c77bb4e115a7d80b74aac7f4342231b31b0c2f2ade8de778642d134",
+    "local/cz-particle-record-resize-eh.json": "99380d48ea79b9e26e159e581fabfd92ad524a653aa647da5653f2a3e0f3bfea",
+    "local/cz-particle-record-resize-eh.md": "fef321b76182879c01eb76628963c9282ebc3015af54d95b8dc9e86c4d71492d",
+    "local/finish_cxcyda.py": "a6de482b3c50638600802526316948d1fa279dc016d1911f29e9aaa5f8499fa4",
+    "local/prepare_cx.py": "d65957c4392b690144f6fd006c5e275749a646714d1ecae1c0044b356316cdfc",
+    "local/prepare_shutdown_evidence.py": "05ce548063d05ce2b5c60e0f62bcb7682c5beb01b510a5461903943c5efb7e4e",
+    "local/publish_cxcyda.py": "b71e84adf83543fe2c92d83b1e6088ac6f28c0a1c02b828d17714772abe0bedf",
+    "local/review_cacc_objects.py": "7a6aefb0b31f2cdca236b1bd82b86da80b93ec3e87d2cb680c816fc9a1c8db82",
+    "local/review_cxcyda_objects.py": "a5f69eac9cfb0e4a868708d95d13d5db16895d15351fce293e3fdf1016c28c89",
+    "local/seal_cxcyda.py": "c5b919faa7d988e6eb05e1dcca16ce1dbff6d0b696ea4c8810b61dd109915c59"
+  },
+  "sealed_attempt": {
+    "tested_commit": "34faf91589a7c206df139d06561d084f0b2d38e6",
+    "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\cxcyda-validated-attempt-34faf915.zip",
+    "sha256": "feef138322ed8f904887ac0c2861da8af15bbc8ac7345cb9a7c1c4c855b6582a",
+    "payload_members": 2730,
+    "manifest_members": 1,
+    "all_member_hashes_rechecked": true,
+    "libraries": {
+      "bsp_core.lib": "231ecdfd5e1e8cc0ae143b6c23694eabdfdd8ca1cdb702d1cba5265abfc42f11",
+      "bsp_lua511.lib": "71e114b0ff6244852d678a5779fcbf28589bdcecbad811aff228ffd5007fe8c7",
+      "bsp_zlib121.lib": "f3f934925213a2ffb81f3aec2afbb065c1733cf43b28dddf31db6a69185c4102"
+    },
+    "tracked_build_inputs": 2607
+  },
+  "caller_boundary_correction": {
+    "report": "reports/native_particle_record_clear_dc.json",
+    "cause": "Unvalidated linear candidate sweep attributed the separately undecoded4DCAA0 wrapper to the preceding4DCA80 body because there was no INT3 padding. A snapshot refresh alone preserved the edge; defining the actual eight-byte function and regenerating the graph corrected its ownership.",
+    "prior_sealed_attempt_preserved": true,
+    "source_and_outgoing_calls_unchanged": true
+  }
+}

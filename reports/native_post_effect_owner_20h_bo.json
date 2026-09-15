@@ -1,0 +1,231 @@
+{
+  "packet": "orch3_post_effect_owner20_bo",
+  "created_utc": "2026-09-14T05:23:31.152184+00:00",
+  "base_commit": "077cf16e67e65115700793e4adc9aad5b1225ffe",
+  "status": "reconstructed_combined_build_tested_concrete_provider_domain",
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "native_body_credit": 2,
+  "native_bytes_credit": 219,
+  "routines": [
+    {
+      "address": "00b4e1f0",
+      "inclusive_end": "00b4e2ac",
+      "bytes": 189,
+      "instructions": 70,
+      "source_api": "destroy_native_post_effect_owner_00b4e1f0",
+      "sha256": "35e8540ec16ea29238accd0f93035843839276c42d3c2ae04dceb132881aa2fb",
+      "original_abi": "ECX actual20h owner; no stack arguments; RET; no semantic EAX",
+      "coverage": "Complete body in the documented actual material/frame/node/CRT provider domain; explicit new source ABI."
+    },
+    {
+      "address": "00b4e430",
+      "inclusive_end": "00b4e44d",
+      "bytes": 30,
+      "instructions": 11,
+      "source_api": "delete_native_post_effect_owner_00b4e430",
+      "sha256": "a38fd7bc339ae6a2217a05f876d2f15feee8856a9130ff46c0aaa03d3b17e9ee",
+      "original_abi": "ECX actual20h owner; stackDWORDflags; EAX original allocation; RET4",
+      "coverage": "Complete body in the documented actual material/frame/node/CRT provider domain; explicit new source ABI."
+    }
+  ],
+  "native_spans": [
+    {
+      "address": "00b4e1f0",
+      "bytes": 189,
+      "sha256": "35e8540ec16ea29238accd0f93035843839276c42d3c2ae04dceb132881aa2fb",
+      "live_PE_equal": true
+    },
+    {
+      "address": "00b4e430",
+      "bytes": 30,
+      "sha256": "a38fd7bc339ae6a2217a05f876d2f15feee8856a9130ff46c0aaa03d3b17e9ee",
+      "live_PE_equal": true
+    },
+    {
+      "address": "00cbfaf0",
+      "bytes": 18,
+      "sha256": "7a370bd8671ba7cf868cc416aacfec50ebfaea0c3aadc655deb19d61fe005691",
+      "live_PE_equal": true
+    },
+    {
+      "address": "00df867c",
+      "bytes": 44,
+      "sha256": "247c3279b91d4ffb8a9ce62080a021f389698473f9560c9ad6c5e85d2be64e93",
+      "live_PE_equal": true
+    },
+    {
+      "address": "00d61ec0",
+      "bytes": 8,
+      "sha256": "92cfcd9062163a17e4ab4aaa6a432821de199a76bf2e683d8060e42b8dd6a127",
+      "live_PE_equal": true
+    },
+    {
+      "address": "00d5e520",
+      "bytes": 8,
+      "sha256": "ec587f40209b2c26a75177bbea577637cfdf4e8b825200c7a68c46940cdebf1d",
+      "live_PE_equal": true
+    },
+    {
+      "address": "00d5e600",
+      "bytes": 8,
+      "sha256": "b1ecc67d201a3405d2c2382c329b4233e9c30bd2c6da012c61e444134bb6cd9b",
+      "live_PE_equal": true
+    }
+  ],
+  "call_steps": [
+    {
+      "address": "00b4e22d",
+      "function": "00b4e1f0",
+      "native": "captured_CE2220_IAT",
+      "instruction": "call ebp"
+    },
+    {
+      "address": "00b4e239",
+      "function": "00b4e1f0",
+      "native": "captured_member_current_virtual0",
+      "instruction": "call eax"
+    },
+    {
+      "address": "00b4e245",
+      "function": "00b4e1f0",
+      "native": "00b6dfa0",
+      "instruction": "call 0xb6dfa0"
+    },
+    {
+      "address": "00b4e254",
+      "function": "00b4e1f0",
+      "native": "00b6dfa0",
+      "instruction": "call 0xb6dfa0"
+    },
+    {
+      "address": "00b4e264",
+      "function": "00b4e1f0",
+      "native": "00bf65ac",
+      "instruction": "call 0xbf65ac"
+    },
+    {
+      "address": "00b4e27a",
+      "function": "00b4e1f0",
+      "native": "captured_CE2220_IAT",
+      "instruction": "call ebp"
+    },
+    {
+      "address": "00b4e286",
+      "function": "00b4e1f0",
+      "native": "captured_member_current_virtual0",
+      "instruction": "call eax"
+    },
+    {
+      "address": "00b4e295",
+      "function": "00b4e1f0",
+      "native": "00bd30f0",
+      "instruction": "call 0xbd30f0"
+    },
+    {
+      "address": "00b4e433",
+      "function": "00b4e430",
+      "native": "00b4e1f0",
+      "instruction": "call 0xb4e1f0"
+    },
+    {
+      "address": "00b4e440",
+      "function": "00b4e430",
+      "native": "00bf65ac",
+      "instruction": "call 0xbf65ac"
+    },
+    {
+      "address": "00cbfaf3",
+      "function": "00cbfaf0",
+      "native": "00bd30f0",
+      "kind": "tail_jump",
+      "instruction": "jmp 0xbd30f0"
+    }
+  ],
+  "source_sha256": {
+    "include/bsp/native_post_effect_owner_20h.hpp": "a05e7bf9f16f2fca5ee3976d6ed5199df98b881951f2f18218862f58caed450a",
+    "src/native_post_effect_owner_20h.cpp": "a9060716c813ecdec58c1556f1c76bb807b76a82340ebf0c9109601ac448aa07",
+    "include/bsp/native_material_owner.hpp": "e4583162e05d346f05f6f26fd6e9f4ac49368ffa8ccd1fa0939731f1134b0320",
+    "src/native_material_owner.cpp": "349fad1d983e763d4f53e24e99b2b4dcfe104cbf6e246b902b8346ed3e8fe1fc",
+    "include/bsp/native_frame_target_owner.hpp": "5bcab0e6bf05a51b8e8a215117ca5621f3c5a51a1aec131eb4b7f86b33246ca8",
+    "src/native_frame_target_owner.cpp": "60485ba070a77e9de497bff352b16ab664ac4d051e02e671897d2c3082224c60",
+    "include/bsp/native_node_destruction.hpp": "bd525ac65ff936736cbf5a02bd7b31e12c326ae5ec624c9685315dbcc116c833",
+    "src/native_node_destruction.cpp": "2ee6ba84e759958a8f160cb25ad210076203931d4ae4f2e9265529bff5c57269",
+    "include/bsp/gui_native_geometry.hpp": "c58b10dadbf6d758c09729908b646a8e6544c76d862a1cde61b0bc713c5d4781",
+    "src/gui_native_geometry.cpp": "5653e693704a26dd4c263558d85ebb4933be7986c07b1801dcc4e2950934f0df",
+    "include/bsp/render_command_queue.hpp": "bc5b28823becf3dbe9628f7393be7f3ba399895d6935829921113a7496fe8f1a",
+    "src/render_command_queue.cpp": "5ec78b4d95eef3cb597d789b04ab7bb6f0a44915932b721cb8e2e2a65418cb02",
+    "include/bsp/singleton_lifetime.hpp": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+    "src/singleton_lifetime.cpp": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+  },
+  "owner_contract": "Actual20h/32bytes, D61EC0->BD30E0/B4E430, produced by B4E470. Distinct from24h/36byteD61EC8. Actual+04 must contain a live atomic<int32_t>; lifetime binding never initializes, resets or retains it.",
+  "release_order": [
+    "capture material+14",
+    "capture CE2220 atB4E219",
+    "release material;clear+14 after return",
+    "unlink nodes+0C,+10,clear each after return",
+    "CRT free raw+18,clear after return",
+    "release frame+08 using same captured IAT,clear after return",
+    "baseBD30F0"
+  ],
+  "producer_evidence": {
+    "report": "reports/native_render_resource_member_producers_bm.json",
+    "constructor": "00b4e470",
+    "raw_record": "28h allocation atB4E7BB; B51BD0 atB4E7EC; publish+18 atB4E7F5. No refcounted logical stream field in this owner.",
+    "startup_limit": "Service+70 is written after initialized byte+1C4 becomes1; these terminal bodies do not admit failed-init parent cleanup."
+  },
+  "eh": {
+    "handler": "00cbfaf8",
+    "handler_end_exclusive": "00cbfb02",
+    "info": "00df8684",
+    "max_state": 1,
+    "map": "00df867c",
+    "states": [
+      {
+        "state": 0,
+        "next": -1,
+        "funclet": "00cbfaf0",
+        "action": "BD30F0 base profile only"
+      }
+    ],
+    "source_projection": "State0 begins after material and IAT capture. On C++ failure restore base, mark host dead, rethrow; do not release later members or raw owner allocation."
+  },
+  "saved_analysis_repairs": [
+    "reports/native_post_effect_owner20_flow_repair_bo.json",
+    "reports/native_post_effect_owner20_eh_bo.json"
+  ],
+  "canonical_reference": "Externally stored unique companion in same GuiNativeGeometryRegistration and actual+04; current owner profile/slot checks, concrete material companion, actual node runtime, direct frame terminal. Destroy/free before unbind using captured identity; unbind preserves host companions until final disposal notification.",
+  "validation": {
+    "build": {
+      "command": "./scripts/build.ps1",
+      "tested_commit": "afee0acdebab4e3b8152159b83e13de51fb8068c",
+      "exit_code": 0,
+      "ctests_passed": 2,
+      "report": "reports/native_post_effect_bn_bo_validation.json"
+    },
+    "new_native_fixture": false,
+    "native_FH3_SEH": false,
+    "drop_in_ABI": false,
+    "gameplay": false,
+    "call_audit": "reports/native_post_effect_owner_20h_bo.json: 7 call rows checked, 0 failed"
+  },
+  "boundaries": [
+    "B4E470 source construction and atomic-count lifetime remain separate. No startup producer closure.",
+    "Registry binding can allocate metadata; no blanket allocation-free claim.",
+    "Direct destruction while canonical reference is bound is outside contract; no retry after failure.",
+    "Canonical terminal inherits noexcept; direct C++ cleanup does not prove native FH3/SEH propagation.",
+    "Existing nonnull material/frame/node/CRT providers must share actual owner and lifetime domains; no fallback terminal or synthetic owner."
+  ],
+  "combined_integration_bn_bo": {
+    "tested_commit": "afee0acdebab4e3b8152159b83e13de51fb8068c",
+    "report": "reports/native_post_effect_bn_bo_validation.json",
+    "ctests_passed": 2,
+    "new_native_fixture": false,
+    "provider_modules_integrated": true,
+    "main_integration_pending": true
+  }
+}

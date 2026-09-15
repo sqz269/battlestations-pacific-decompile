@@ -1,0 +1,2095 @@
+{
+  "source": "src/native_directional_shadow_owner_lifetime.cpp",
+  "header": "include/bsp/native_directional_shadow_owner_lifetime.hpp",
+  "documentation": "docs/NATIVE_DIRECTIONAL_SHADOW_OWNER_LIFETIME.md",
+  "normal_body_count": 4,
+  "normal_body_bytes": 580,
+  "unwind_action_count": 1,
+  "unwind_action_bytes": 8,
+  "native_bytes": 588,
+  "routines": [
+    {
+      "address": "00a8dec0",
+      "end_inclusive": "00a8e086",
+      "native_bytes": 455,
+      "coverage": "complete",
+      "source_function": "destroy_native_directional_shadow_owner_00a8dec0",
+      "original_metadata": {
+        "address": "00a8dec0",
+        "proto": "00a8dec0 FUN_00a8dec0  undefined FUN_00a8dec0(void)  body 00a8dec0 - 00a8e086\n",
+        "comments": "[\n {\n  \"address\": \"00a8dec0\",\n  \"annotation\": {\n   \"address\": \"00a8dec0\",\n   \"function_name\": \"FUN_00a8dec0\"\n  }\n }\n]\n",
+        "xrefs": "From 00cb6553 in Unwind@00cb6550 [UNCONDITIONAL_CALL]\nFrom 00a8e163 in CG_scalar_deleting_dtor_00a8e160 [UNCONDITIONAL_CALL]\nFrom 00a8fcd3 in CG_scalar_deleting_dtor_00a8fcd0 [UNCONDITIONAL_CALL]\n"
+      },
+      "native_hex": "6aff68d863cb0064a1000000005064892500000000515355568bf15789742410c70674b5d5008bbe040500008b2d2022ce0033db3bfb895c241c74188d470450ffd585c075088b178b028bcfffd0899e040500008b7e103bfb74158d4f0451ffd585c075088b178b028bcfffd0895e108b7e143bfb74158d4f0451ffd585c075088b178b028bcfffd0895e148b7e183bfb74158d4f0451ffd585c075088b178b028bcfffd0895e188b7e1c3bfb74158d4f0451ffd585c075088b178b028bcfffd0895e1c8b4e2053e8033a0e008b4e203bcb7408e807000e00895e208b4e2453e8eb390e008b4e243bcb7408e8efff0d00895e248b4e2853e8d3390e008b4e283bcb7408e8d7ff0d00895e288b4e2c53e8bb390e008b4e2c3bcb7408e8bfff0d00895e2c8bbe840300003bfb74188d4f0451ffd585c075088b178b028bcfffd0899e840300008d9ef0040000bd040000008b3b85ff741c8d4f0451ff152022ce0085c075088b178b028bcfffd0c7030000000083c30483ed0175d68bbe0005000085ff74208d4f0451ff152022ce0085c075088b178b028bcfffd0c78600050000000000008bcec744241cffffffffe87c5014008b4c24145f5e5d5b64890d0000000083c410c3",
+      "native_sha256": "b449ab693f8fa225a4c85d4b65dc996e7f46f8b0b085b7c959bb6eed56bb8550",
+      "installed_pe_offset": 6872768,
+      "fresh_live_installed_identity": true
+    },
+    {
+      "address": "00a8e160",
+      "end_inclusive": "00a8e17d",
+      "native_bytes": 30,
+      "coverage": "complete",
+      "source_function": "delete_native_directional_shadow_base_00a8e160",
+      "original_metadata": {
+        "pre_annotation_name": "CG_scalar_deleting_dtor_00a8e160",
+        "prototype": "undefined CG_scalar_deleting_dtor_00a8e160(void)",
+        "qualification": "Pre-name recorded by EA admission before integrator annotation; corrected full body is 11 instructions after root flow repair."
+      },
+      "native_hex": "568bf1e858fdfffff644240801740956e83784160083c4048bc65ec20400",
+      "native_sha256": "d5afdf935492e6d411307a853b722ee9dbe2d9197f1aeba604ef2eddf3045f39",
+      "installed_pe_offset": 6873440,
+      "fresh_live_installed_identity": true
+    },
+    {
+      "address": "00a8fcd0",
+      "end_inclusive": "00a8fced",
+      "native_bytes": 30,
+      "coverage": "complete",
+      "source_function": "delete_native_directional_shadow_owner_00a8fcd0",
+      "original_metadata": {
+        "address": "00a8fcd0",
+        "proto": "00a8fcd0 CG_scalar_deleting_dtor_00a8fcd0  undefined CG_scalar_deleting_dtor_00a8fcd0(void)  body 00a8fcd0 - 00a8fced\n",
+        "comments": "[\n {\n  \"address\": \"00a8fcd0\",\n  \"annotation\": {\n   \"address\": \"00a8fcd0\",\n   \"function_name\": \"CG_scalar_deleting_dtor_00a8fcd0\"\n  }\n }\n]\n",
+        "xrefs": "From 00d5b5dc [DATA]\n"
+      },
+      "native_hex": "568bf1e8e8e1fffff644240801740956e8c768160083c4048bc65ec20400",
+      "native_sha256": "6681dcd6540bf390c3d5a85a339cbc5dbcb137c39e9c6f608cfcb142622097bf",
+      "installed_pe_offset": 6880464,
+      "fresh_live_installed_identity": true
+    },
+    {
+      "address": "00b7bdf0",
+      "end_inclusive": "00b7be30",
+      "native_bytes": 65,
+      "coverage": "complete",
+      "source_function": "set_native_directional_light_shadow_owner_00b7bdf0",
+      "original_metadata": {
+        "address": "00b7bdf0",
+        "proto": "00b7bdf0 FUN_00b7bdf0  undefined FUN_00b7bdf0(void)  body 00b7bdf0 - 00b7be30\n",
+        "comments": "[\n {\n  \"address\": \"00b7bdf0\",\n  \"annotation\": {\n   \"address\": \"00b7bdf0\",\n   \"function_name\": \"FUN_00b7bdf0\"\n  }\n }\n]\n",
+        "xrefs": "From 00ba1ef7 in FUN_00ba1400 [UNCONDITIONAL_CALL]\nFrom 004df3d6 in BSP_Game_ConstructWorld [UNCONDITIONAL_CALL]\nFrom 00504657 in FUN_00504130 [UNCONDITIONAL_CALL]\nFrom 005ab359 in BSP_HudMapScreen_Register [UNCONDITIONAL_CALL]\nFrom 0067f39b in FUN_0067f080 [UNCONDITIONAL_CALL]\n"
+      },
+      "native_hex": "8b442404568bb1740100003bf0742e85c0898174010000740a83c00450ff151c22ce0085f674168d460450ff152022ce0085c075088b168b028bceffd05ec20400",
+      "native_sha256": "487ef62dcfdc3741edc8e55d6b622c86dc79ecf884bd61ef6fee82bb52f090fb",
+      "installed_pe_offset": 7847408,
+      "fresh_live_installed_identity": true
+    },
+    {
+      "address": "00cb63d0",
+      "end_inclusive": "00cb63d7",
+      "native_bytes": 8,
+      "coverage": "complete action",
+      "source_function": "unwind_native_directional_shadow_base_00cb63d0",
+      "original_metadata": {
+        "address": "00cb63d0",
+        "proto": "00cb63d0 Unwind@00cb63d0  undefined Unwind@00cb63d0(void)  body 00cb63d0 - 00cb63d7\n",
+        "comments": "[\n {\n  \"address\": \"00cb63d0\",\n  \"annotation\": {\n   \"address\": \"00cb63d0\",\n   \"function_name\": \"Unwind@00cb63d0\"\n  }\n }\n]\n",
+        "xrefs": "From 00dec620 [DATA]\n"
+      },
+      "native_hex": "8b4df0e918cdf1ff",
+      "native_sha256": "0317f439d6dc14f70e4ea2b83f7c450e7fc33c658a965ea88cce2ba56ced180e",
+      "installed_pe_offset": 9135056,
+      "fresh_live_installed_identity": true
+    }
+  ],
+  "original_abi": {
+    "setter": "ECX actual light; [entry ESP+4] replacement pointer captured first; ESI preserved; RET4; no semantic EAX result established; no local EH frame.",
+    "factory": "ECX borrowed actual light, no public stack argument, EAX actual owner or null, RET. World XOR DL,DL is not consumed by the reviewed factory/open constructor argument forwarding.",
+    "constructors": "Historical DU discovery reviewed only prefixes. Complete A8E2E0/A8FA30/A8FD30 construction is now supplied by separate DY/DZ modules (source commit c6ea046ecdde8a4bc6cc892e2c0787e5f9987dcb); no additional constructor credit here.",
+    "complete_destructor": "ECX actual 508h owner, no public stack arguments, RET; EBX/EBP/ESI/EDI preserved, FH3 state0 base-only unwind.",
+    "deleting_destructors": "ECX owner, public DWORD flags slot with low-byte bit0 test, preserve original identity in ESI, call complete destructor then BF65AC only on bit0. Returning free tail ADD ESP,4; EAX=original; RET4.",
+    "slot0": "BD30E0 takes ECX owner and no flags; null returns. Otherwise capture current profile, load current slot+04, push1, call terminal. It does not decrement."
+  },
+  "source_abi": "Explicit raw owner/light and borrowed actual provider context. A8FCD0 and A8E160 borrow the actual public flags word and read its low byte after normal destruction. CB63D0 source receives owner explicitly instead of consuming native EBP-10h. Optional appended base table preserves existing aggregate initialization at source level; context size changes and all coupled code rebuilds. Not drop-in original ABI.",
+  "call_steps": [
+    {
+      "address": "00a8df00",
+      "native": "00ce2220+IAT",
+      "function": "00a8dec0",
+      "kind": "call",
+      "contract": "Captured actual owner+4 for field 504; stdcall one pointer, RET4; callable captured once at A8DEEC",
+      "import_cell": "00ce2220",
+      "external_symbol": "InterlockedDecrement",
+      "external_address": "EXTERNAL:0000015d",
+      "callable": "EBP"
+    },
+    {
+      "address": "00a8df0c",
+      "native": "00bd30e0",
+      "function": "00a8dec0",
+      "kind": "call",
+      "contract": "Only final zero: current captured owner profile/current slot0 for field 504; ECX owner, no stack args, RET",
+      "resolved_indirect": true,
+      "clear_only_after_normal_return": "00a8df0e"
+    },
+    {
+      "address": "00a8df1f",
+      "native": "00ce2220+IAT",
+      "function": "00a8dec0",
+      "kind": "call",
+      "contract": "Captured actual owner+4 for field 10; stdcall one pointer, RET4; callable captured once at A8DEEC",
+      "import_cell": "00ce2220",
+      "external_symbol": "InterlockedDecrement",
+      "external_address": "EXTERNAL:0000015d",
+      "callable": "EBP"
+    },
+    {
+      "address": "00a8df2b",
+      "native": "00bd30e0",
+      "function": "00a8dec0",
+      "kind": "call",
+      "contract": "Only final zero: current captured owner profile/current slot0 for field 10; ECX owner, no stack args, RET",
+      "resolved_indirect": true,
+      "clear_only_after_normal_return": "00a8df2d"
+    },
+    {
+      "address": "00a8df3b",
+      "native": "00ce2220+IAT",
+      "function": "00a8dec0",
+      "kind": "call",
+      "contract": "Captured actual owner+4 for field 14; stdcall one pointer, RET4; callable captured once at A8DEEC",
+      "import_cell": "00ce2220",
+      "external_symbol": "InterlockedDecrement",
+      "external_address": "EXTERNAL:0000015d",
+      "callable": "EBP"
+    },
+    {
+      "address": "00a8df47",
+      "native": "00bd30e0",
+      "function": "00a8dec0",
+      "kind": "call",
+      "contract": "Only final zero: current captured owner profile/current slot0 for field 14; ECX owner, no stack args, RET",
+      "resolved_indirect": true,
+      "clear_only_after_normal_return": "00a8df49"
+    },
+    {
+      "address": "00a8df57",
+      "native": "00ce2220+IAT",
+      "function": "00a8dec0",
+      "kind": "call",
+      "contract": "Captured actual owner+4 for field 18; stdcall one pointer, RET4; callable captured once at A8DEEC",
+      "import_cell": "00ce2220",
+      "external_symbol": "InterlockedDecrement",
+      "external_address": "EXTERNAL:0000015d",
+      "callable": "EBP"
+    },
+    {
+      "address": "00a8df63",
+      "native": "00bd30e0",
+      "function": "00a8dec0",
+      "kind": "call",
+      "contract": "Only final zero: current captured owner profile/current slot0 for field 18; ECX owner, no stack args, RET",
+      "resolved_indirect": true,
+      "clear_only_after_normal_return": "00a8df65"
+    },
+    {
+      "address": "00a8df73",
+      "native": "00ce2220+IAT",
+      "function": "00a8dec0",
+      "kind": "call",
+      "contract": "Captured actual owner+4 for field 1c; stdcall one pointer, RET4; callable captured once at A8DEEC",
+      "import_cell": "00ce2220",
+      "external_symbol": "InterlockedDecrement",
+      "external_address": "EXTERNAL:0000015d",
+      "callable": "EBP"
+    },
+    {
+      "address": "00a8df7f",
+      "native": "00bd30e0",
+      "function": "00a8dec0",
+      "kind": "call",
+      "contract": "Only final zero: current captured owner profile/current slot0 for field 1c; ECX owner, no stack args, RET",
+      "resolved_indirect": true,
+      "clear_only_after_normal_return": "00a8df81"
+    },
+    {
+      "address": "00a8dff2",
+      "native": "00ce2220+IAT",
+      "function": "00a8dec0",
+      "kind": "call",
+      "contract": "Captured actual owner+4 for field 384; stdcall one pointer, RET4; callable captured once at A8DEEC",
+      "import_cell": "00ce2220",
+      "external_symbol": "InterlockedDecrement",
+      "external_address": "EXTERNAL:0000015d",
+      "callable": "EBP"
+    },
+    {
+      "address": "00a8dffe",
+      "native": "00bd30e0",
+      "function": "00a8dec0",
+      "kind": "call",
+      "contract": "Only final zero: current captured owner profile/current slot0 for field 384; ECX owner, no stack args, RET",
+      "resolved_indirect": true,
+      "clear_only_after_normal_return": "00a8e000"
+    },
+    {
+      "address": "00a8e01b",
+      "native": "00ce2220+IAT",
+      "function": "00a8dec0",
+      "kind": "call",
+      "contract": "Captured actual owner+4 for field 4f0,4f4,4f8,4fc in ascending four-entry loop; stdcall one pointer, RET4; fresh current import cell only after nonnull field",
+      "import_cell": "00ce2220",
+      "external_symbol": "InterlockedDecrement",
+      "external_address": "EXTERNAL:0000015d",
+      "callable": "[00ce2220]"
+    },
+    {
+      "address": "00a8e02b",
+      "native": "00bd30e0",
+      "function": "00a8dec0",
+      "kind": "call",
+      "contract": "Only final zero: current captured owner profile/current slot0 for field 4f0,4f4,4f8,4fc in ascending four-entry loop; ECX owner, no stack args, RET",
+      "resolved_indirect": true,
+      "clear_only_after_normal_return": "00a8e02d"
+    },
+    {
+      "address": "00a8e049",
+      "native": "00ce2220+IAT",
+      "function": "00a8dec0",
+      "kind": "call",
+      "contract": "Captured actual owner+4 for field 500; stdcall one pointer, RET4; fresh current import cell only after nonnull field",
+      "import_cell": "00ce2220",
+      "external_symbol": "InterlockedDecrement",
+      "external_address": "EXTERNAL:0000015d",
+      "callable": "[00ce2220]"
+    },
+    {
+      "address": "00a8e059",
+      "native": "00bd30e0",
+      "function": "00a8dec0",
+      "kind": "call",
+      "contract": "Only final zero: current captured owner profile/current slot0 for field 500; ECX owner, no stack args, RET",
+      "resolved_indirect": true,
+      "clear_only_after_normal_return": "00a8e05b"
+    },
+    {
+      "address": "00a8df88",
+      "native": "00b71990",
+      "function": "00a8dec0",
+      "kind": "call",
+      "contract": "Unconditional current owner+20 camera, push null viewport, RET4; exact canonical companion required"
+    },
+    {
+      "address": "00a8df94",
+      "native": "00b6dfa0",
+      "function": "00a8dec0",
+      "kind": "call",
+      "contract": "Reload owner+20 at 00a8df8d; independent canonical lookup only if nonnull; no stack args, RET; clear after return at 00a8df99"
+    },
+    {
+      "address": "00a8dfa0",
+      "native": "00b71990",
+      "function": "00a8dec0",
+      "kind": "call",
+      "contract": "Unconditional current owner+24 camera, push null viewport, RET4; exact canonical companion required"
+    },
+    {
+      "address": "00a8dfac",
+      "native": "00b6dfa0",
+      "function": "00a8dec0",
+      "kind": "call",
+      "contract": "Reload owner+24 at 00a8dfa5; independent canonical lookup only if nonnull; no stack args, RET; clear after return at 00a8dfb1"
+    },
+    {
+      "address": "00a8dfb8",
+      "native": "00b71990",
+      "function": "00a8dec0",
+      "kind": "call",
+      "contract": "Unconditional current owner+28 camera, push null viewport, RET4; exact canonical companion required"
+    },
+    {
+      "address": "00a8dfc4",
+      "native": "00b6dfa0",
+      "function": "00a8dec0",
+      "kind": "call",
+      "contract": "Reload owner+28 at 00a8dfbd; independent canonical lookup only if nonnull; no stack args, RET; clear after return at 00a8dfc9"
+    },
+    {
+      "address": "00a8dfd0",
+      "native": "00b71990",
+      "function": "00a8dec0",
+      "kind": "call",
+      "contract": "Unconditional current owner+2c camera, push null viewport, RET4; exact canonical companion required"
+    },
+    {
+      "address": "00a8dfdc",
+      "native": "00b6dfa0",
+      "function": "00a8dec0",
+      "kind": "call",
+      "contract": "Reload owner+2c at 00a8dfd5; independent canonical lookup only if nonnull; no stack args, RET; clear after return at 00a8dfe1"
+    },
+    {
+      "address": "00a8e06f",
+      "native": "00bd30f0",
+      "function": "00a8dec0",
+      "kind": "call",
+      "contract": "ECX captured owner after state0 disarm; no arguments, RET; stamp CEB130 only"
+    },
+    {
+      "address": "00a8fcd3",
+      "native": "00a8dec0",
+      "function": "00a8fcd0",
+      "kind": "call",
+      "contract": "ECX captured owner, no stacked arguments, RET"
+    },
+    {
+      "address": "00a8fce0",
+      "native": "00bf65ac",
+      "function": "00a8fcd0",
+      "kind": "call",
+      "contract": "Only normal destruction and late flags low-byte bit0; push original owner; cdecl ADD ESP,4 at A8FCE5; EAX original, RET4 afterward"
+    },
+    {
+      "address": "00b7be0d",
+      "native": "00ce221c+IAT",
+      "function": "00b7bdf0",
+      "kind": "call",
+      "contract": "After publication retain nonnull captured incoming+4 using current import callable; stdcall one pointer/RET4",
+      "import_cell": "00ce221c",
+      "external_symbol": "InterlockedIncrement",
+      "external_address": "EXTERNAL:0000015c"
+    },
+    {
+      "address": "00b7be1b",
+      "native": "00ce2220+IAT",
+      "function": "00b7bdf0",
+      "kind": "call",
+      "contract": "After retain callback decrement captured old+4 using current import callable; stdcall one pointer/RET4",
+      "import_cell": "00ce2220",
+      "external_symbol": "InterlockedDecrement",
+      "external_address": "EXTERNAL:0000015d"
+    },
+    {
+      "address": "00b7be2b",
+      "native": "00bd30e0",
+      "function": "00b7bdf0",
+      "kind": "call",
+      "contract": "Only final zero: current old profile/current slot0; ECX old, no stacked flags, RET",
+      "resolved_indirect": true
+    },
+    {
+      "address": "00cb63d3",
+      "native": "00bd30f0",
+      "function": "00cb63d0",
+      "kind": "tail_jump",
+      "contract": "ECX from native [EBP-10h]; base-only state0 action, no unvisited-member cleanup or allocation free"
+    },
+    {
+      "address": "00ba1ef7",
+      "native": "00b7bdf0",
+      "function": "00ba1400",
+      "kind": "call",
+      "contract": "Full caller preparation preserved in local/du-caller-contexts.json"
+    },
+    {
+      "address": "004df3d6",
+      "native": "00b7bdf0",
+      "function": "004de610",
+      "kind": "call",
+      "contract": "Full caller preparation preserved in local/du-caller-contexts.json"
+    },
+    {
+      "address": "00504657",
+      "native": "00b7bdf0",
+      "function": "00504130",
+      "kind": "call",
+      "contract": "Full caller preparation preserved in local/du-caller-contexts.json"
+    },
+    {
+      "address": "005ab359",
+      "native": "00b7bdf0",
+      "function": "005ab190",
+      "kind": "call",
+      "contract": "Full caller preparation preserved in local/du-caller-contexts.json"
+    },
+    {
+      "address": "0067f39b",
+      "native": "00b7bdf0",
+      "function": "0067f080",
+      "kind": "call",
+      "contract": "Full caller preparation preserved in local/du-caller-contexts.json"
+    },
+    {
+      "address": "00a8e163",
+      "native": "00a8dec0",
+      "function": "00a8e160",
+      "kind": "call",
+      "contract": "Full caller preparation preserved in local/du-caller-contexts.json"
+    },
+    {
+      "address": "00cb6553",
+      "native": "00a8dec0",
+      "function": "00cb6550",
+      "kind": "tail_jump",
+      "contract": "Full caller preparation preserved in local/du-caller-contexts.json"
+    },
+    {
+      "address": "00a8e163",
+      "native": "00a8dec0",
+      "function": "00a8e160",
+      "kind": "direct_call",
+      "contract": "ECX still original owner; existing complete member/base destruction and its base-only exceptional cleanup."
+    },
+    {
+      "address": "00a8e170",
+      "native": "00bf65ac",
+      "function": "00a8e160",
+      "kind": "direct_call",
+      "contract": "Push captured ESI only if late flags low byte bit0 is set; caller ADD ESP,4 at A8E175."
+    }
+  ],
+  "concrete_bd30e0_targets": [
+    {
+      "address": "00bd30eb",
+      "native": "00a8fcd0",
+      "function": "00bd30e0",
+      "resolved_indirect": true,
+      "profile": "00d5b5d8",
+      "contract": "Fresh current profile/slot4, ECX owner, PUSH1, scalar RET4; BD30E0 does not decrement"
+    },
+    {
+      "address": "00bd30eb",
+      "native": "00a8e160",
+      "function": "00bd30e0",
+      "resolved_indirect": true,
+      "profile": "00d5b574",
+      "contract": "Only explicitly bound actual base table: current slot0 BD30E0, provider reloads current profile, current slot4 A8E160, flags1; no second decrement."
+    },
+    {
+      "address": "00bd30eb",
+      "native": "00b1f8f0",
+      "function": "00bd30e0",
+      "resolved_indirect": true,
+      "profile": "00d5e5f8",
+      "contract": "Fresh current profile/slot4, ECX owner, PUSH1, scalar RET4; BD30E0 does not decrement"
+    },
+    {
+      "address": "00bd30eb",
+      "native": "00b3f590",
+      "function": "00bd30e0",
+      "resolved_indirect": true,
+      "profile": "00d61948",
+      "contract": "Fresh current profile/slot4, ECX owner, PUSH1, scalar RET4; BD30E0 does not decrement"
+    },
+    {
+      "address": "00bd30eb",
+      "native": "00b1fcf0",
+      "function": "00bd30e0",
+      "resolved_indirect": true,
+      "profile": "00d5e600",
+      "contract": "Fresh current profile/slot4, ECX owner, PUSH1, scalar RET4; BD30E0 does not decrement"
+    }
+  ],
+  "destructor_contract": {
+    "profile_entry": "00a8dee0 stamps D5B574 before payload release",
+    "iat_timing": "00a8deec captures current CE2220 into EBP once, before state0/first release. This captured callable serves five viewport releases and fallback+384, across camera callbacks. Target-group loop at A8E01B and final group at A8E049 each load current CE2220 afresh.",
+    "intrusive_release_order": [
+      {
+        "field": "504",
+        "decrement": "00a8df00",
+        "slot0": "00a8df0c",
+        "clear": "00a8df0e"
+      },
+      {
+        "field": "10",
+        "decrement": "00a8df1f",
+        "slot0": "00a8df2b",
+        "clear": "00a8df2d"
+      },
+      {
+        "field": "14",
+        "decrement": "00a8df3b",
+        "slot0": "00a8df47",
+        "clear": "00a8df49"
+      },
+      {
+        "field": "18",
+        "decrement": "00a8df57",
+        "slot0": "00a8df63",
+        "clear": "00a8df65"
+      },
+      {
+        "field": "1c",
+        "decrement": "00a8df73",
+        "slot0": "00a8df7f",
+        "clear": "00a8df81"
+      },
+      {
+        "field": "384",
+        "decrement": "00a8dff2",
+        "slot0": "00a8dffe",
+        "clear": "00a8e000"
+      },
+      {
+        "field": "4f0,4f4,4f8,4fc in ascending four-entry loop",
+        "decrement": "00a8e01b",
+        "slot0": "00a8e02b",
+        "clear": "00a8e02d"
+      },
+      {
+        "field": "500",
+        "decrement": "00a8e049",
+        "slot0": "00a8e059",
+        "clear": "00a8e05b"
+      }
+    ],
+    "camera_order": [
+      {
+        "field": "20",
+        "clear_viewport_call": "00a8df88",
+        "reload": "00a8df8d",
+        "unlink_release_call": "00a8df94",
+        "field_zero": "00a8df99"
+      },
+      {
+        "field": "24",
+        "clear_viewport_call": "00a8dfa0",
+        "reload": "00a8dfa5",
+        "unlink_release_call": "00a8dfac",
+        "field_zero": "00a8dfb1"
+      },
+      {
+        "field": "28",
+        "clear_viewport_call": "00a8dfb8",
+        "reload": "00a8dfbd",
+        "unlink_release_call": "00a8dfc4",
+        "field_zero": "00a8dfc9"
+      },
+      {
+        "field": "2c",
+        "clear_viewport_call": "00a8dfd0",
+        "reload": "00a8dfd5",
+        "unlink_release_call": "00a8dfdc",
+        "field_zero": "00a8dfe1"
+      }
+    ],
+    "camera_contract": "B71990(actual current camera,null) executes unconditionally. Only then reload this field; if nonnull call B6DFA0 on the reloaded identity and clear after return. Do not skip initial null or cache the first camera across its callback. Resolve canonical existing companions independently at the two actual read points.",
+    "child_zero_contract": "For each captured intrusive owner, after its count becomes zero, load its current profile/current slot0. BD30E0 performs another current profile/+04 load before flags1 terminal dispatch. Clear containing field only after normal callback return.",
+    "eh": {
+      "handler": "00cb63d8",
+      "funcinfo": "00dec624",
+      "max_state": 1,
+      "map": "00dec61c",
+      "state0_next": -1,
+      "action": "00cb63d0: MOV ECX,[EBP-10]; JMP BD30F0",
+      "state0_armed": "00a8def6",
+      "normal_disarm": "00a8e067",
+      "normal_base_call": "00a8e06f",
+      "meaning": "A throwing payload release restores only CEB130 via existing BD30F0. It does not replay completed destructors, finish unvisited fields or free the508h allocation. A8FCD0 free runs only after normal A8DEC0 return."
+    },
+    "untouched": "No destructor release of borrowed+0c, transient+30 or copied+34; do not invent it. +30 omitted release was recorded by prior report and current full destructor confirms no access."
+  },
+  "setter_contract": {
+    "sequence": [
+      "B7BDF0 captures stack replacement before saving ESI; B7BDF5 captures old light+174.",
+      "B7BDFB compares identities; equal returns without counts/profile reads or callbacks.",
+      "B7BE01 publishes incoming before any intrusive operation; nonnull incoming retains through current CE221C at B7BE0D.",
+      "Captured nonnull old decrements through current CE2220 at B7BE1B.",
+      "Only zero reads CURRENT old profile at B7BE25, CURRENT slot0 at B7BE27, invokes at B7BE2B with ECX=old and no stacked flags.",
+      "No second light-slot write, post-terminal clear, rollback, guard retain or owner fabrication."
+    ],
+    "reentrancy": "A callback may replace light+174 again; outer call uses captured old and must not restore/clear the current slot afterwards. Keep storage/providers valid at each native read. No new prohibition on supported synchronous callback replacement; concurrent unsynchronized mutation is outside existing source domain.",
+    "exceptions": "The body has no cleanup state. Any supported callback exception leaves all completed writes/count changes intact. A source diagnostic is not native exception parity and must not create rollback or owner destruction."
+  },
+  "producer_evidence": {
+    "world_owner_function": "004de610",
+    "world_sites": {
+      "light_input": "004df3c0 loads game+19f8 into ECX",
+      "factory": "004df3c8",
+      "published_light_reload": "004df3cd reloads game+19f8",
+      "capture_owner": "004df3d3 EDI=EAX",
+      "setter_argument": "004df3d5 PUSH EDI",
+      "setter": "004df3d6",
+      "creator_decrement": "004df3e5 via captured CE2220",
+      "creator_zero_current_slot0": "004df3f1"
+    },
+    "world_limit": "World unconditionally forms EDI+4 and decrements after factory/setter; factory-null is not repaired here. Authored follow-up optionally writes scene+a84 to current light shadow+08. No semantic name for +08 is added.",
+    "factory_sites": [
+      {
+        "site": "00a8fd4e",
+        "target": "00bf681b",
+        "contract": "allocate508h"
+      },
+      {
+        "site": "00a8fd69",
+        "target": "00a8fa30",
+        "contract": "ECX raw result; stacked captured light"
+      }
+    ],
+    "derived_sites": [
+      {
+        "site": "00a8fa57",
+        "target": "00a8e2e0",
+        "contract": "forwards light pointer into base constructor"
+      },
+      {
+        "site": "00a8fa6a",
+        "write": "[this]=00d5b5d8"
+      }
+    ],
+    "base_prefix": {
+      "reference_one": "00a8e30d [this+04]=1",
+      "base_profile": "00a8e317 [this]=00d5b574",
+      "borrowed_light": "00a8e37d [this+0c]=stack light",
+      "copied_word": "00a8e380 reads light+a4, 00a8e388 stores owner+34"
+    },
+    "profiles": {
+      "final": {
+        "address": "00d5b5d8",
+        "slot0": "00bd30e0",
+        "slot4": "00a8fcd0",
+        "slot8": "00a8fcf0",
+        "slotC": "00a8fd10"
+      },
+      "base": {
+        "address": "00d5b574",
+        "slot0": "00bd30e0",
+        "slot4": "00a8e160"
+      }
+    },
+    "narrow_domain": "Factory-established final D5B5D8 is sufficient for the proposed setter terminal domain. D5B574/A8E160 was also concretely proved; it need not be reconstructed for publication of fully constructed final owners. Unknown current profiles are not silently mapped to this destructor."
+  },
+  "source_cleanup": {
+    "state0": "Armed after base stamp, captured+504 and current CE2220 read; normal disarm immediately before BD30F0. Ordinary source C++ unwind and source binding diagnostics restore only base; no retry, unfinished cleanup or free.",
+    "flags": "Borrowed actual word storage read as one low byte after complete destructor normal return. Incoming identity retained for returned EAX semantics.",
+    "camera": "Independently nonallocating exact-key attachments.find_actual_node and checked NativeCameraReference at each actual native field read. No second map, retain, registration, allocation or default owner.",
+    "reentrancy": "Captured outgoing/current publication semantics retained. Context/provider/actual storage and canonical companions survive callbacks; no extra ban on supported synchronous replacement."
+  },
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_home": "J:/tools/ghidra_12.0.4_PUBLIC",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "installed_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "incoming_calls": {
+    "count": 8,
+    "setter": 5,
+    "destructor": 3,
+    "artifact": "local/du-caller-contexts.json",
+    "complete_containing_listing_instructions": 6406,
+    "sites": [
+      {
+        "site": "00ba1ef7",
+        "callee": "00b7bdf0",
+        "containing_function": "00ba1400",
+        "kind": "call"
+      },
+      {
+        "site": "004df3d6",
+        "callee": "00b7bdf0",
+        "containing_function": "004de610",
+        "kind": "call"
+      },
+      {
+        "site": "00504657",
+        "callee": "00b7bdf0",
+        "containing_function": "00504130",
+        "kind": "call"
+      },
+      {
+        "site": "005ab359",
+        "callee": "00b7bdf0",
+        "containing_function": "005ab190",
+        "kind": "call"
+      },
+      {
+        "site": "0067f39b",
+        "callee": "00b7bdf0",
+        "containing_function": "0067f080",
+        "kind": "call"
+      },
+      {
+        "site": "00a8e163",
+        "callee": "00a8dec0",
+        "containing_function": "00a8e160",
+        "kind": "call"
+      },
+      {
+        "site": "00a8fcd3",
+        "callee": "00a8dec0",
+        "containing_function": "00a8fcd0",
+        "kind": "call"
+      },
+      {
+        "site": "00cb6553",
+        "callee": "00a8dec0",
+        "containing_function": "00cb6550",
+        "kind": "tail_jump"
+      }
+    ]
+  },
+  "corrections": [
+    {
+      "was": "Ghidra A8FCD0 listing omits A8FCE5 ADD ESP,4 and decompiler reports extraout_EAX after free",
+      "is": "Complete native body includes cdecl stack cleanup then MOV EAX,ESI; RET4 returns captured original identity",
+      "evidence": "Fresh installed/live 30-byte span; no worker Ghidra edits"
+    }
+  ],
+  "limits": [
+    "EA adds only A8E160 normal body (30 bytes). Existing four-body package totals 580 normal bytes plus CB63D0 eight-byte action once, 588 bytes. The prior DU 558 bytes and separate DY/DZ constructors receive no new credit.",
+    "Supported shadow pairs are D5B5D8/BD30E0/A8FCD0 and explicitly bound D5B574/BD30E0/A8E160, plus prior child profiles D5E5F8, D61948 and D5E600. Read current table words at native sites. Missing bindings, unexpected profile/slot pairs or companions diagnose; no table guess or fallback.",
+    "Parent IAT contexts project parent sites only. Existing camera/viewport/frame-target children use their established direct Win32 intrusive helpers; arbitrary game-IAT replacement inside children is not newly modeled.",
+    "Raw storage must be initialized, valid at every access and compatible with existing pools/shared CRT disposal. No dummy owner, copied count, substitute allocator, second camera registry or arbitrary successful terminal callback is added.",
+    "Canonical companions and providers must survive callbacks/deferred queue ownership. Existing B6DFA0 and camera terminal noexcept restrictions remain; child operations are not claimed allocation-free.",
+    "Source binding diagnostics have source C++ base-only cleanup effects; native hardware-fault, arbitrary FH3/SEH, foreign unwind, invalid backing, concurrency, ABI equivalence and gameplay remain unproved.",
+    "No new repository tests, worker runtime fixture, Ghidra mutation or ledger edit. Root owns metadata/integration and exact combined validation.",
+    "Historical DU generated-code optimization and source ABI findings remain in historical_du_revision. Current changed EA source requires its own exact coupled build and generated-order review before equivalent current claims.",
+    "No observed native game publication of a standalone completed base owner was established. DZ direct base construction supplies initialized actual storage; an in-progress destructor stamp alone does not prove an independently releasable owner.",
+    "Native owner deallocation does not retire host semantic borrows or reclaim the persistent construction block. Existing native child terminals and explicit host-quiescent reset remain separate."
+  ],
+  "historical_du_revision": {
+    "packet": "orch3_native_directional_shadow_owner_lifetime_du",
+    "base_commit": "1971cf077797e63b4c7fb7e961293977a7694176",
+    "status": "exact_build_generated_order_independent_review_saved_annotation_sealed",
+    "checks": {
+      "build": "PASS: scripts/build.ps1 MSVC Win32 Release completed after necessary class-forward-declaration correction; initial attempt exit1, incremental correction retry exit0 (session83571)",
+      "existing_ctests": "PASS 2/2 existing reconstructed_math and native_math_differential; no new tests",
+      "seeds": "PASS 8/8 installed/live byte matches; no shadow-owner runtime fixture",
+      "numeric_calls": "PASS 32 numeric rows, 0 failed; 19 direct and 13 resolved-indirect rows, including four possible BD30E0 terminals; indirect target semantics rely on current table/provider evidence. Ten external IAT rows separately match installed call bytes.",
+      "generated_order": "PASS: 14 complete COFF sections pinned; 21 focused instruction checks plus full pertinent body/helper schedule review. Native/source whole-body byte identity is not claimed.",
+      "new_tests": 0,
+      "worker_fixture": "No shadow-owner fixture run; root owns any focused callback-mutation probe",
+      "gameplay": "not run"
+    },
+    "coordination": {
+      "owned_addresses": [
+        "00a8dec0",
+        "00a8fcd0",
+        "00b7bdf0",
+        "00cb63d0"
+      ],
+      "owned_files": [
+        "include/bsp/native_directional_shadow_owner_lifetime.hpp",
+        "src/native_directional_shadow_owner_lifetime.cpp",
+        "docs/NATIVE_DIRECTIONAL_SHADOW_OWNER_LIFETIME.md",
+        "reports/native_directional_shadow_owner_lifetime.json"
+      ],
+      "registry_append": "Exactly one appended cmake/startup.cmake target_sources line; shared registry not leased",
+      "lease": "Release after final owned-file commit; shared coordination registry records authoritative state."
+    },
+    "build_attempts": [
+      {
+        "attempt": 1,
+        "exit_code": 1,
+        "log": "local/du-build-attempt1.log",
+        "log_sha256": "65bbb3d03671721c59a05f75a53f87c2f770fe9d01eea6d40ca6dac8b9227bc4",
+        "input_pins": "local/du-build-attempt1-input-pins.json",
+        "reason": "MSVC /WX C4099: forward declaration used struct, existing NativeNodeDestructionRuntime is class. Only that header keyword changed; source body unchanged."
+      },
+      {
+        "attempt": 2,
+        "exit_code": 0,
+        "log": "local/du-build.log",
+        "log_sha256": "56b9cf99ba675780fa541bebbffa7cd1266796a655fe5eb24ae7d56305375b49",
+        "input_pins": "local/du-build-input-pins.json",
+        "ctests_passed": 2,
+        "reason": "Necessary incremental retry after fixing build error; no additional behavior or tests introduced."
+      }
+    ],
+    "generated_evidence": {
+      "path": "local/du-generated-order.json",
+      "sha256": "176232d20b8b9f2a3ba12ff5fe61d3f185ceb41c71563c27c445c1666c58ec0f",
+      "object_sha256": "81697367ea632e11d8350f319aa3eea4f4baf460d47d896d898d54bf92edb7cb",
+      "scope": "Complete COFF sections, relocations and critical generated order, not native ABI or byte identity."
+    },
+    "tested_commit": "42603ccf159dad821d9b51ceca44e5092d7187a3",
+    "validation": {
+      "build": {
+        "commit": "42603ccf159dad821d9b51ceca44e5092d7187a3",
+        "passed": true,
+        "pending": false,
+        "exit_code": 0,
+        "clean_tree_before_and_after": true,
+        "all_build_inputs_unchanged": true,
+        "libraries": {
+          "bsp_core.lib": "4b78d8f84cffbd646d0bd556c368e367fd387c3618505cb6001567acf4fa948f",
+          "bsp_lua511.lib": "71e114b0ff6244852d678a5779fcbf28589bdcecbad811aff228ffd5007fe8c7",
+          "bsp_zlib121.lib": "f3f934925213a2ffb81f3aec2afbb065c1733cf43b28dddf31db6a69185c4102",
+          "xlive_stub.lib": "6dfcb5bf13947ffb6883edfde9d189c4c7ae0d702ec8bd81daebf3749e5f1c67"
+        },
+        "log_sha256": "487f9f089dc7c07a22a9faae3dee0c55e0c789c74cb1e110d8bfc9b6d9a4482a"
+      },
+      "tracked_build_inputs": 2627,
+      "full_build_stamp": {
+        "path": "local/du-final-build-stamp.json",
+        "sha256": "34ed37981e746497a7b45d700c0f53ff70092a6c59496792c080a459108e74b9"
+      },
+      "generated_review": {
+        "path": "local/du-primary-object-review.json",
+        "sha256": "7b8315cda3d6fca3a7937c5be344d85cfcb766e2e3c106f5e51c9c71198a853c",
+        "rows": 14,
+        "instruction_checks": 21,
+        "worker_root_section_identity": true,
+        "shared_sections_qualification": "14 symbol rows include one shared44-byte unwindtable/FuncInfo section and one42-byte funclet/EH handler section; rows are not14 distinct function bodies.",
+        "normal_cleanup_optimization": "MSVC removes the source normal disarm store before the known-noexcept BD30F0 call0x25b and frame exit. The generated state0 action only restores base; ordinary C++ semantics agree. Raw hardware-fault/FH3/SEH identity is not claimed."
+      },
+      "fixture_tested": false,
+      "game_validated": false
+    },
+    "flow_repair": {
+      "repairs": [
+        {
+          "function": "00a8fcd0",
+          "owner": "agent/orch3-20260910",
+          "when": "2026-09-14T23:29:57Z",
+          "decompile_lines_before": 14,
+          "gaps": [
+            {
+              "site": "00a8fce0",
+              "mnemonic": "CALL",
+              "operands": "0x00bf65ac",
+              "gap_start": "00a8fce5",
+              "gap_end_exclusive": "00a8fce8",
+              "bytes": 3,
+              "after_call": true,
+              "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+            }
+          ],
+          "events": [
+            {
+              "gap": {
+                "site": "00a8fce0",
+                "mnemonic": "CALL",
+                "operands": "0x00bf65ac",
+                "gap_start": "00a8fce5",
+                "gap_end_exclusive": "00a8fce8",
+                "bytes": 3,
+                "after_call": true,
+                "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+              },
+              "clear": "Success: Cleared flow override at 00a8fce0 (was: CALL_RETURN, now: NONE)",
+              "disassemble": "Successfully disassembled 3 byte(s)"
+            }
+          ],
+          "decompile_lines_after": 11,
+          "gaps_remaining": 0
+        }
+      ]
+    },
+    "worker_snapshot_qualification": "Original worker checks/source hashes and omission description precede primary integration. Primary validation and flow_repair describe final source and saved analysis; primary did not execute a shadow-owner fixture.",
+    "independent_review": {
+      "accepted": true,
+      "status": "no_concrete_findings",
+      "tested_commit": "42603ccf159dad821d9b51ceca44e5092d7187a3",
+      "reviews": [
+        {
+          "name": "du-independent-source-review",
+          "status": "no_concrete_findings",
+          "json_sha256": "ac82f5aa0463a7e13a2a8e7813584b1b942407947e4603d88c10b1db668186eb",
+          "markdown_sha256": "a30b67e9599d0d0a2fade1473a025865dce80bb0fb2e7aa17cca50d3304d7a71",
+          "input_count": 2
+        },
+        {
+          "name": "du-independent-generated-review",
+          "status": "pass_no_findings",
+          "json_sha256": "7cc0f859a34a6389fb3c345422a1a8268274acfa4e3a519dd93f4da898e27c94",
+          "markdown_sha256": "1d08da6df0aad9f64a4c5f678f6166d9e8a4b34a05e9abc86d55de2738a6e578",
+          "input_count": 39
+        }
+      ],
+      "reviewed_inputs": 39,
+      "reviewed_input_sha256": {
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\include\\bsp\\native_directional_shadow_owner_lifetime.hpp": "a544ff94b8f8f37797e5c8f416db80e327847108b76ba841774ae853b541e9ee",
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\src\\native_directional_shadow_owner_lifetime.cpp": "624869089b172d8ddc15774e36b0730dfeb52e6d6897b373fbb03a8db21ad7f2",
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\bsp_core.dir\\Release\\native_directional_shadow_owner_lifetime.obj": "d70ab7da9e5dce9e73593d43021c0008090df29ee118f18e5fe192747698ac94",
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-shadow-owner-lifetime-du\\include\\bsp\\native_directional_shadow_owner_lifetime.hpp": "a544ff94b8f8f37797e5c8f416db80e327847108b76ba841774ae853b541e9ee",
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-shadow-owner-lifetime-du\\src\\native_directional_shadow_owner_lifetime.cpp": "624869089b172d8ddc15774e36b0730dfeb52e6d6897b373fbb03a8db21ad7f2",
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-shadow-owner-lifetime-du\\build\\win32\\bsp_core.dir\\Release\\native_directional_shadow_owner_lifetime.obj": "81697367ea632e11d8350f319aa3eea4f4baf460d47d896d898d54bf92edb7cb",
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-shadow-owner-lifetime-du\\local\\du-generated-order.json": "176232d20b8b9f2a3ba12ff5fe61d3f185ceb41c71563c27c445c1666c58ec0f",
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-shadow-owner-lifetime-du\\local\\du-object-disassembly.txt": "ca0bafce513c39911ca99286de81f1fef4008d515760e502ff5b38dfd0fc5608",
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-shadow-owner-lifetime-du\\local\\du-generated-evidence.py": "880391729d3b43433c975f7b3a12fbb18025193b6186aa357f46de6a075f6a0d",
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-shadow-owner-lifetime-du\\local\\du-generated-tools.json": "8724baefcbc7e0b7ead6f1fdb44e8cf270b30696808af4ca603e9a44ccb8dde4",
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-shadow-owner-lifetime-du\\local\\du-build-input-pins.json": "355f604dee97a12788909abff1c937d481c70092648cb0fb78757803f4a46a52",
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\du-final-build-stamp.json": "34ed37981e746497a7b45d700c0f53ff70092a6c59496792c080a459108e74b9",
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\du-final-build.log": "487f9f089dc7c07a22a9faae3dee0c55e0c789c74cb1e110d8bfc9b6d9a4482a",
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\du-flow-repair.json": "3abbddd182a608d162bc8ab301c974a0bb8123fa3e7e34a4c885c3fc49b74d3c",
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-record-setter-provider-audit-dn\\local\\du-independent-source-review.json": "ac82f5aa0463a7e13a2a8e7813584b1b942407947e4603d88c10b1db668186eb",
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-record-setter-provider-audit-dn\\local\\dt-shadow-owner-replacement-admission.json": "50141818e6f35e402ffa2911c0384d9e04033dc564ecc1237df564fa311b04aa",
+        "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\include\\bsp\\generated_model_lifetime.hpp": "370ddaedd31013c97fc41b2774020f75dddae9d5d6f546d3a2063ccc49088b64",
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\include\\bsp\\native_camera_owner.hpp": "527c605fcc55eedd421271a5c4b27d45947e325c391838f14f3cab6d75e1f808",
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\include\\bsp\\native_camera_reference.hpp": "5920175404a18b464c3ce826162c8279b98c12405ac28d52363241cd2d79415e",
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\include\\bsp\\native_frame_target_owner.hpp": "5bcab0e6bf05a51b8e8a215117ca5621f3c5a51a1aec131eb4b7f86b33246ca8",
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\include\\bsp\\native_node_destruction.hpp": "bd525ac65ff936736cbf5a02bd7b31e12c326ae5ec624c9685315dbcc116c833",
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\include\\bsp\\native_ref_counted.hpp": "3012884c86aac66804d98ebb7453f3cc6f4b42580a85731d7eca0b3868ddca82",
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\include\\bsp\\native_shader_owner_texture_release.hpp": "b42b42f25a916289d5398c8ca4b69cb226604c809092df9d13b937c50e9bc8c0",
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\include\\bsp\\native_shader_shadow_source.hpp": "45094ffbe1aca7e24030223cbcd994848edc238e0863d1129c3ad402b77c7d9e",
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\include\\bsp\\native_shadow_texture_access.hpp": "0819902d4b87e0958abbb7abefa61d4bb9ed2fd387fcf7f65da0d5c031768b0b",
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\include\\bsp\\native_texture_2d_owner.hpp": "9a4db4ac7413f02d69fe2d7b62709e01b1dfa12a4452483cb34b26e10a1958fc",
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\include\\bsp\\native_viewport_owner.hpp": "0fbadd5eab924627e321a7896bd9796c0aaa17062bbf3953de118fbe2b3867d5",
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\include\\bsp\\render_command_queue.hpp": "bc5b28823becf3dbe9628f7393be7f3ba399895d6935829921113a7496fe8f1a",
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\include\\bsp\\singleton_lifetime.hpp": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\src\\generated_model_lifetime.cpp": "d8c5990909d169f0f70d9e3320b4e671da6fcb58694cc9ac5f7d621cbdeabd64",
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\src\\native_camera_owner.cpp": "51f7c97c40027337af8d83b0a35613338a8963ad2664d0d6eaa220be7d22f376",
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\src\\native_camera_reference.cpp": "c877dd80459c1f7ebf2e9e20c4f6fd3f0c349e0ff3b4dbeb8f6553a0fb9badab",
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\src\\native_frame_target_owner.cpp": "60485ba070a77e9de497bff352b16ab664ac4d051e02e671897d2c3082224c60",
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\src\\native_ref_counted.cpp": "b56eb6cde8b0aa0c590ecb52500918839723eb61a135578b95cc2ed6e2e695d9",
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\src\\native_texture_2d_owner.cpp": "8824e7624fec3faa637aa8ce1a90a7e8eba15b8a203253ccf00e9aafdae54ada",
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\src\\native_viewport_owner.cpp": "d7f733023f89193a4bbd488a9e925b46ac52f2cc0ee1be04f6df2e663616d2ea",
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\src\\render_command_queue.cpp": "5ec78b4d95eef3cb597d789b04ab7bb6f0a44915932b721cb8e2e2a65418cb02",
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\src\\singleton_lifetime.cpp": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+      },
+      "original_reviewed_inputs": {
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\include\\bsp\\native_directional_shadow_owner_lifetime.hpp": {
+          "sha256": "a544ff94b8f8f37797e5c8f416db80e327847108b76ba841774ae853b541e9ee",
+          "retained_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\include\\bsp\\native_directional_shadow_owner_lifetime.hpp"
+        },
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\src\\native_directional_shadow_owner_lifetime.cpp": {
+          "sha256": "624869089b172d8ddc15774e36b0730dfeb52e6d6897b373fbb03a8db21ad7f2",
+          "retained_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\src\\native_directional_shadow_owner_lifetime.cpp"
+        },
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\bsp_core.dir\\Release\\native_directional_shadow_owner_lifetime.obj": {
+          "sha256": "d70ab7da9e5dce9e73593d43021c0008090df29ee118f18e5fe192747698ac94",
+          "retained_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\bsp_core.dir\\Release\\native_directional_shadow_owner_lifetime.obj"
+        },
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-shadow-owner-lifetime-du\\include\\bsp\\native_directional_shadow_owner_lifetime.hpp": {
+          "sha256": "a544ff94b8f8f37797e5c8f416db80e327847108b76ba841774ae853b541e9ee",
+          "retained_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-shadow-owner-lifetime-du\\include\\bsp\\native_directional_shadow_owner_lifetime.hpp"
+        },
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-shadow-owner-lifetime-du\\src\\native_directional_shadow_owner_lifetime.cpp": {
+          "sha256": "624869089b172d8ddc15774e36b0730dfeb52e6d6897b373fbb03a8db21ad7f2",
+          "retained_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-shadow-owner-lifetime-du\\src\\native_directional_shadow_owner_lifetime.cpp"
+        },
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-shadow-owner-lifetime-du\\build\\win32\\bsp_core.dir\\Release\\native_directional_shadow_owner_lifetime.obj": {
+          "sha256": "81697367ea632e11d8350f319aa3eea4f4baf460d47d896d898d54bf92edb7cb",
+          "retained_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-shadow-owner-lifetime-du\\build\\win32\\bsp_core.dir\\Release\\native_directional_shadow_owner_lifetime.obj"
+        },
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-shadow-owner-lifetime-du\\local\\du-generated-order.json": {
+          "sha256": "176232d20b8b9f2a3ba12ff5fe61d3f185ceb41c71563c27c445c1666c58ec0f",
+          "retained_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-shadow-owner-lifetime-du\\local\\du-generated-order.json"
+        },
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-shadow-owner-lifetime-du\\local\\du-object-disassembly.txt": {
+          "sha256": "ca0bafce513c39911ca99286de81f1fef4008d515760e502ff5b38dfd0fc5608",
+          "retained_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-shadow-owner-lifetime-du\\local\\du-object-disassembly.txt"
+        },
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-shadow-owner-lifetime-du\\local\\du-generated-evidence.py": {
+          "sha256": "880391729d3b43433c975f7b3a12fbb18025193b6186aa357f46de6a075f6a0d",
+          "retained_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-shadow-owner-lifetime-du\\local\\du-generated-evidence.py"
+        },
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-shadow-owner-lifetime-du\\local\\du-generated-tools.json": {
+          "sha256": "8724baefcbc7e0b7ead6f1fdb44e8cf270b30696808af4ca603e9a44ccb8dde4",
+          "retained_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-shadow-owner-lifetime-du\\local\\du-generated-tools.json"
+        },
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-shadow-owner-lifetime-du\\local\\du-build-input-pins.json": {
+          "sha256": "355f604dee97a12788909abff1c937d481c70092648cb0fb78757803f4a46a52",
+          "retained_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-shadow-owner-lifetime-du\\local\\du-build-input-pins.json"
+        },
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\du-final-build-stamp.json": {
+          "sha256": "34ed37981e746497a7b45d700c0f53ff70092a6c59496792c080a459108e74b9",
+          "retained_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\du-final-build-stamp.json"
+        },
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\du-final-build.log": {
+          "sha256": "487f9f089dc7c07a22a9faae3dee0c55e0c789c74cb1e110d8bfc9b6d9a4482a",
+          "retained_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\du-final-build.log"
+        },
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\du-flow-repair.json": {
+          "sha256": "3abbddd182a608d162bc8ab301c974a0bb8123fa3e7e34a4c885c3fc49b74d3c",
+          "retained_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\du-flow-repair.json"
+        },
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-record-setter-provider-audit-dn\\local\\du-independent-source-review.json": {
+          "sha256": "ac82f5aa0463a7e13a2a8e7813584b1b942407947e4603d88c10b1db668186eb",
+          "retained_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-record-setter-provider-audit-dn\\local\\du-independent-source-review.json"
+        },
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-record-setter-provider-audit-dn\\local\\dt-shadow-owner-replacement-admission.json": {
+          "sha256": "50141818e6f35e402ffa2911c0384d9e04033dc564ecc1237df564fa311b04aa",
+          "retained_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-record-setter-provider-audit-dn\\local\\dt-shadow-owner-replacement-admission.json"
+        },
+        "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe": {
+          "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+          "retained_path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe"
+        },
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\include\\bsp\\generated_model_lifetime.hpp": {
+          "sha256": "370ddaedd31013c97fc41b2774020f75dddae9d5d6f546d3a2063ccc49088b64",
+          "retained_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\include\\bsp\\generated_model_lifetime.hpp"
+        },
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\include\\bsp\\native_camera_owner.hpp": {
+          "sha256": "527c605fcc55eedd421271a5c4b27d45947e325c391838f14f3cab6d75e1f808",
+          "retained_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\include\\bsp\\native_camera_owner.hpp"
+        },
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\include\\bsp\\native_camera_reference.hpp": {
+          "sha256": "5920175404a18b464c3ce826162c8279b98c12405ac28d52363241cd2d79415e",
+          "retained_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\include\\bsp\\native_camera_reference.hpp"
+        },
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\include\\bsp\\native_frame_target_owner.hpp": {
+          "sha256": "5bcab0e6bf05a51b8e8a215117ca5621f3c5a51a1aec131eb4b7f86b33246ca8",
+          "retained_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\include\\bsp\\native_frame_target_owner.hpp"
+        },
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\include\\bsp\\native_node_destruction.hpp": {
+          "sha256": "bd525ac65ff936736cbf5a02bd7b31e12c326ae5ec624c9685315dbcc116c833",
+          "retained_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\include\\bsp\\native_node_destruction.hpp"
+        },
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\include\\bsp\\native_ref_counted.hpp": {
+          "sha256": "3012884c86aac66804d98ebb7453f3cc6f4b42580a85731d7eca0b3868ddca82",
+          "retained_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\include\\bsp\\native_ref_counted.hpp"
+        },
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\include\\bsp\\native_shader_owner_texture_release.hpp": {
+          "sha256": "b42b42f25a916289d5398c8ca4b69cb226604c809092df9d13b937c50e9bc8c0",
+          "retained_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\include\\bsp\\native_shader_owner_texture_release.hpp"
+        },
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\include\\bsp\\native_shader_shadow_source.hpp": {
+          "sha256": "45094ffbe1aca7e24030223cbcd994848edc238e0863d1129c3ad402b77c7d9e",
+          "retained_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\include\\bsp\\native_shader_shadow_source.hpp"
+        },
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\include\\bsp\\native_shadow_texture_access.hpp": {
+          "sha256": "0819902d4b87e0958abbb7abefa61d4bb9ed2fd387fcf7f65da0d5c031768b0b",
+          "retained_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\include\\bsp\\native_shadow_texture_access.hpp"
+        },
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\include\\bsp\\native_texture_2d_owner.hpp": {
+          "sha256": "9a4db4ac7413f02d69fe2d7b62709e01b1dfa12a4452483cb34b26e10a1958fc",
+          "retained_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\include\\bsp\\native_texture_2d_owner.hpp"
+        },
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\include\\bsp\\native_viewport_owner.hpp": {
+          "sha256": "0fbadd5eab924627e321a7896bd9796c0aaa17062bbf3953de118fbe2b3867d5",
+          "retained_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\include\\bsp\\native_viewport_owner.hpp"
+        },
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\include\\bsp\\render_command_queue.hpp": {
+          "sha256": "bc5b28823becf3dbe9628f7393be7f3ba399895d6935829921113a7496fe8f1a",
+          "retained_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\include\\bsp\\render_command_queue.hpp"
+        },
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\include\\bsp\\singleton_lifetime.hpp": {
+          "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+          "retained_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\include\\bsp\\singleton_lifetime.hpp"
+        },
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\src\\generated_model_lifetime.cpp": {
+          "sha256": "d8c5990909d169f0f70d9e3320b4e671da6fcb58694cc9ac5f7d621cbdeabd64",
+          "retained_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\src\\generated_model_lifetime.cpp"
+        },
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\src\\native_camera_owner.cpp": {
+          "sha256": "51f7c97c40027337af8d83b0a35613338a8963ad2664d0d6eaa220be7d22f376",
+          "retained_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\src\\native_camera_owner.cpp"
+        },
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\src\\native_camera_reference.cpp": {
+          "sha256": "c877dd80459c1f7ebf2e9e20c4f6fd3f0c349e0ff3b4dbeb8f6553a0fb9badab",
+          "retained_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\src\\native_camera_reference.cpp"
+        },
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\src\\native_frame_target_owner.cpp": {
+          "sha256": "60485ba070a77e9de497bff352b16ab664ac4d051e02e671897d2c3082224c60",
+          "retained_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\src\\native_frame_target_owner.cpp"
+        },
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\src\\native_ref_counted.cpp": {
+          "sha256": "b56eb6cde8b0aa0c590ecb52500918839723eb61a135578b95cc2ed6e2e695d9",
+          "retained_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\src\\native_ref_counted.cpp"
+        },
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\src\\native_texture_2d_owner.cpp": {
+          "sha256": "8824e7624fec3faa637aa8ce1a90a7e8eba15b8a203253ccf00e9aafdae54ada",
+          "retained_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\src\\native_texture_2d_owner.cpp"
+        },
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\src\\native_viewport_owner.cpp": {
+          "sha256": "d7f733023f89193a4bbd488a9e925b46ac52f2cc0ee1be04f6df2e663616d2ea",
+          "retained_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\src\\native_viewport_owner.cpp"
+        },
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\src\\render_command_queue.cpp": {
+          "sha256": "5ec78b4d95eef3cb597d789b04ab7bb6f0a44915932b721cb8e2e2a65418cb02",
+          "retained_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\src\\render_command_queue.cpp"
+        },
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\src\\singleton_lifetime.cpp": {
+          "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+          "retained_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\src\\singleton_lifetime.cpp"
+        }
+      },
+      "scope": "Independent full source composition and generated/evidence inspection, with worker/root exact section comparisons and explicit shared metadata/exception limits. No new execution, shadow-owner fixture, native calling convention or game proof."
+    },
+    "annotation": {
+      "saved": true,
+      "three_normal_original_signatures_verified": true,
+      "custom_unwind_name_and_prototype_preserved": true,
+      "prior_comments_preserved": true,
+      "force_exported": true,
+      "record": "local/du-ghidra-annotation-record.json"
+    },
+    "artifact_sha256": {
+      "build/win32/bsp_core.dir/Release/native_directional_shadow_owner_lifetime.obj": "d70ab7da9e5dce9e73593d43021c0008090df29ee118f18e5fe192747698ac94",
+      "local/accept_du_reviews.py": "5c7034b75bb3b7e75c78c34029011acb58f1eea7adba66780d3f0543da65d072",
+      "local/annotate_du.py": "9cae40b615bfe1ce20e9c08e8e074b2152463616ff8dcf78cad4122e914df595",
+      "local/build_final_du.py": "8f5be73a1085d0a02f57fe17729fff5ae9291245362f9984d4a01dc54dc4475f",
+      "local/du-annotation.log": "25ddbed9517cd08238a1ba60911851d2b5f7b75ad7208ac0643b6bdae8a31929",
+      "local/du-comments-after.json": "ddfc0741d4bee17d68dd91e3c6135cce7fa3ab00e07a65562793e0fd483af31b",
+      "local/du-comments-before.json": "34eabf6f6648d4e5867a4024006b3a2baebb6048cd763abe63be13dd96596423",
+      "local/du-export-refresh.log": "dbc3765b6a6c0d670ce92843fa02a9e8615344e008a8e905d579ac8f249b61cf",
+      "local/du-final-build-stamp.json": "34ed37981e746497a7b45d700c0f53ff70092a6c59496792c080a459108e74b9",
+      "local/du-final-build.log": "487f9f089dc7c07a22a9faae3dee0c55e0c789c74cb1e110d8bfc9b6d9a4482a",
+      "local/du-final-call-audit.log": "546c54c2f4684b1d51526350ba97b040dd4c9b969d713e87d9ba06c956ce4795",
+      "local/du-flow-repair.json": "3abbddd182a608d162bc8ab301c974a0bb8123fa3e7e34a4c885c3fc49b74d3c",
+      "local/du-function-records.json": "5021e2cbba2d2eceeac5d0c37e757de89109addbcfcc63091a20db72b563e398",
+      "local/du-ghidra-annotation-record.json": "eaa2f2eefd949c12bc6be0cf7ead264e8f7dca80fa562b4f49c6b906a5835432",
+      "local/du-independent-generated-review.json": "7cc0f859a34a6389fb3c345422a1a8268274acfa4e3a519dd93f4da898e27c94",
+      "local/du-independent-generated-review.md": "1d08da6df0aad9f64a4c5f678f6166d9e8a4b34a05e9abc86d55de2738a6e578",
+      "local/du-independent-review-acceptance.json": "f40d2f43d406a790cc207fadca384b1d1b11ab0c81e19e1e5fecf6837080ac91",
+      "local/du-independent-source-review.json": "ac82f5aa0463a7e13a2a8e7813584b1b942407947e4603d88c10b1db668186eb",
+      "local/du-independent-source-review.md": "a30b67e9599d0d0a2fade1473a025865dce80bb0fb2e7aa17cca50d3304d7a71",
+      "local/du-ledger-before.json": "36aac4fd16d21fc5e49b9619fd23d2912dd1c90371644e055e4f9a2cbaae7eb8",
+      "local/du-names-00a80000-before.jsonl": "aea60446f655cb5b95483263ab51b4451c89ab3c093b485600c9b9729c9b251f",
+      "local/du-names-00b70000-before.jsonl": "afead5e878990eeb47a7f3c97e67e2652f3093ad2d58b63f67f42ab2e796ca5c",
+      "local/du-names-00cb0000-before.jsonl": "13525c34c3fe0cf8269e33032dd25fcfdee1399aeefa00a017840e3848710c70",
+      "local/du-primary-1BaseCleanup.asm": "07c6432fc6b650158e7631a448c148203e8dfd9c515f8e38f114bf4252f4a312",
+      "local/du-primary-camera.asm": "738b60d02a4b828a60b57f2204c594fe398b41ff38626dcca52372d8e44b56df",
+      "local/du-primary-delete_native_directional_shadow_owner_00a8fcd0.asm": "5447e1cd4ea8c1a167bad0954dfa7ffcc2db7dabe21cda8ffb1aac60de0b6f80",
+      "local/du-primary-delete_vslot04.asm": "f6d21267e7c68f5f77cb59ee21ab33f734424163ef8602bb26eb02b3b1c3347e",
+      "local/du-primary-destroy_native_directional_shadow_owner_00a8dec0.asm": "8724dbe281aca374f337664846dcf1bdac25ab380f8032516474aa0376db7f38",
+      "local/du-primary-object-review.json": "7b8315cda3d6fca3a7937c5be344d85cfcb766e2e3c106f5e51c9c71198a853c",
+      "local/du-primary-release_zero.asm": "34924220b135babc07a885f4c7fe5f8e23c015c4b98ccbecff06d0c65e446781",
+      "local/du-primary-set_native_directional_light_shadow_owner_00b7bdf0.asm": "3241bf5673fe8cd84a3f7e3850e50a21c02cc31c430ee1ab2d88074530970a5f",
+      "local/du-reconstruction-00a80000-before.jsonl": "75949dc8564c8786182a14422cb3e580fcee86158cf24aeddaeae33b07d6f9f5",
+      "local/du-reconstruction-00b70000-before.jsonl": "6120c49a30e195cfeb0da41518295c1a0eef4af87ceb8e8830cb26f6e5689202",
+      "local/du-reconstruction-00cb0000-before.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "local/du-worker/dt-shadow-owner-replacement-admission.json": "50141818e6f35e402ffa2911c0384d9e04033dc564ecc1237df564fa311b04aa",
+      "local/du-worker/dt-shadow-owner-replacement-admission.md": "922ceb49899857b476265f0792b6372a9e75980cdbb3206a8ef16b3ec9f173ad",
+      "local/du-worker/du-00a8dec0-bytes.txt": "9a49d9f87cd5f7afdf2581a5e458d55858209796dd9c53310172a86b86a2c359",
+      "local/du-worker/du-00a8dec0-comments.txt": "bfb7aa5f7a82348380b86f30289ec2b2f4719749b86639072a6f299ca07d3fb7",
+      "local/du-worker/du-00a8dec0-proto.txt": "4e5741789dd1bb3ccb42e5642758a686b7c12fb81a8ee6bebb4ee211fc1ad2bb",
+      "local/du-worker/du-00a8dec0-xrefs.txt": "4b3e1df38821cd095e62ae2c0fea60aefea62bef56ba39fc41bfda86e6c7b046",
+      "local/du-worker/du-00a8e160-bytes.txt": "e432230066ef24b26bfddf2d32ac2de9c7fe194d8dd74bd3014100ca012f63c0",
+      "local/du-worker/du-00a8e2e0-bytes.txt": "077535cbe856759265b49c2fe2af0656fb48ab6fe50d3a61a303e7e1bfb39101",
+      "local/du-worker/du-00a8fa30-bytes.txt": "d640e6e43793adb2ce0d1862c07136792c92a62ace1d024887476efb4ffd3846",
+      "local/du-worker/du-00a8fcd0-bytes.txt": "8f8c0af615d4dc993eee21cabdcf0af064b373bfdbb94f0c72eda572bb4cc24b",
+      "local/du-worker/du-00a8fcd0-comments.txt": "4caee5e76e8eabbefa20a3d317714e02fa49d3fce6b4be51c8d3e4d2f1700750",
+      "local/du-worker/du-00a8fcd0-proto.txt": "87568b791a2c83aad4603c2291598d566c3098f955b524544bff241e6f51ae5c",
+      "local/du-worker/du-00a8fcd0-xrefs.txt": "386c53d3995cb7e896b5cc8596b3b270faba409cd0c031193fe6ca2bae3357f9",
+      "local/du-worker/du-00a8fd30-bytes.txt": "2863e218438258de19d99eb73d814d5d9c2e6874b44106800f4e68ec6ee72698",
+      "local/du-worker/du-00b7bdf0-bytes.txt": "f4ce9ab3c5294db9a8e6aa2ec7e807e6318eb09dcf1a34b6bcafe3dc179d203f",
+      "local/du-worker/du-00b7bdf0-comments.txt": "9d111d21b07756a7f34fe960c7a8a6db9c7f4ec5ae00c0f22d5e7fe4caa70302",
+      "local/du-worker/du-00b7bdf0-proto.txt": "7129d4b94da1f76fedb5a5a7652884a82c9736d948af1f8cfac32e1317a66c32",
+      "local/du-worker/du-00b7bdf0-xrefs.txt": "68df611e88997ebb42cbef08734cb7867c36db0db9448b6b6167bb0c2e29499d",
+      "local/du-worker/du-00cb63d0-bytes.txt": "707f16393a575ff7c24bc57ef308491be7e276ca6a6122c00fd65a7c54cc4ac8",
+      "local/du-worker/du-00cb63d0-comments.txt": "e0d6e59e014f9b3c91aabcf4180fc4fbc2805822304492281058158cd7abe76e",
+      "local/du-worker/du-00cb63d0-proto.txt": "bc4f97ff1f84029345d0b62c2bb1036b65533ac71dec4caaeb1f757c0be3eed7",
+      "local/du-worker/du-00cb63d0-xrefs.txt": "0cc95fa6e192a9102a7a4978aadea4a95575443176de9d99bb2eb9df400872ba",
+      "local/du-worker/du-00d5b574-bytes.txt": "643c8ae034624e104d6dd4f5774a8fe22921beb7d9cb5dd38cb1af9f703ae41f",
+      "local/du-worker/du-00d5b5d8-bytes.txt": "dd0240fb3c6a263240d8d8943a8c3f117ce51d565998e909d9203281f40a0562",
+      "local/du-worker/du-00d5e5f8-bytes.txt": "fe430dcdd08ee8a11152bf48391b0961fd4453a973b966dbee8e4ed19a26ffd8",
+      "local/du-worker/du-00d5e600-bytes.txt": "85c1389ef3ac62e9b0dfaa8c329c7f6e736ffa6e5876710f056745dd34dd1589",
+      "local/du-worker/du-00d61948-bytes.txt": "6c735c70f282ec7c32c87977cc7c3ec6c5ad85d61417d8cce33b37b7acecd253",
+      "local/du-worker/du-00dec61c-bytes.txt": "d8f358e14027cc3541f1fdf1826f72d3bc2e74f548074cbbdbeff1e4fbbfe12b",
+      "local/du-worker/du-00dec624-bytes.txt": "6d3d11f5a4631e66cbc13d0a4c76e8b88c6cea60c610ddaa909e6399acc41632",
+      "local/du-worker/du-a8dec0-disasm.txt": "083ed6ee3ab29e96df97dfddb727b265baa0c9ca9eceed303279f6b2f82dfc60",
+      "local/du-worker/du-build-attempt1-input-pins.json": "665343c58c22211c8ada9e4ed52c9c4b48d4d79e8ba060249faa2ffbe7c301b5",
+      "local/du-worker/du-build-attempt1.log": "65bbb3d03671721c59a05f75a53f87c2f770fe9d01eea6d40ca6dac8b9227bc4",
+      "local/du-worker/du-build-input-pins.json": "355f604dee97a12788909abff1c937d481c70092648cb0fb78757803f4a46a52",
+      "local/du-worker/du-build.log": "56b9cf99ba675780fa541bebbffa7cd1266796a655fe5eb24ae7d56305375b49",
+      "local/du-worker/du-caller-004de610.txt": "22791ef9f800c32c8e4eedd81be34959046a513967f17d543bef02b43097944a",
+      "local/du-worker/du-caller-00504130.txt": "8ecdbfd4409eeb39aee0d5fe83ad0b164800fc552039f6b7882d416d10d8dff4",
+      "local/du-worker/du-caller-005ab190.txt": "3cfb55cec1128414f84b20538bc80ce147807c46c41c5e04b904e41f3d72166e",
+      "local/du-worker/du-caller-0067f080.txt": "303780d5633a9da6f3e20229faaf075f949ae8274aacb03a1211a4f354a98be7",
+      "local/du-worker/du-caller-00a8e160.txt": "4ba8b3437f34b9b845dc379a410128401e575b31caa83754ad97a842dc528d2b",
+      "local/du-worker/du-caller-00a8fcd0.txt": "6286194b6d1c4dd851de397e18ab84ae2249592739aec5f3b579ecb18db42634",
+      "local/du-worker/du-caller-00ba1400.txt": "ee33a0204512e691fc6bdce292b4b4bef896729c0cf8ad9a54a2555ab6c4046e",
+      "local/du-worker/du-caller-00cb6550.txt": "2df1f3595a76f4bab599db3c4a3f39859634bb33c69b40c47401b023c61ba847",
+      "local/du-worker/du-caller-contexts.json": "53e5d381b84bb83bd1096045fb3c2b7eb4fa13a841681ff2ce1d20bbaa3a81be",
+      "local/du-worker/du-capture-callers.py": "835776ad07dbd8dd5cfb29dfd9d8c67e27855c7964545a7515e9d9ed499a0c86",
+      "local/du-worker/du-capture-evidence.py": "2aee26d60e95405c3acb2ba9ecf1c174c18140b6ca85befa90b889a92a775822",
+      "local/du-worker/du-commit-message.txt": "d417352f3d61f802e98f8ac5daefc9820e4ca69dc016974cb6b84097b7702202",
+      "local/du-worker/du-generated-evidence.py": "880391729d3b43433c975f7b3a12fbb18025193b6186aa357f46de6a075f6a0d",
+      "local/du-worker/du-generated-order.json": "176232d20b8b9f2a3ba12ff5fe61d3f185ceb41c71563c27c445c1666c58ec0f",
+      "local/du-worker/du-generated-tools.json": "8724baefcbc7e0b7ead6f1fdb44e8cf270b30696808af4ca603e9a44ccb8dde4",
+      "local/du-worker/du-import-call-evidence.json": "7c6f3e6eb89a782ab419073514c449e5098832a04c001b7fbea0d9df5a0e1896",
+      "local/du-worker/du-native-evidence.json": "ab9ad65e8d2bab37258a4b1c304dc52eda2628c78ed10373664a1caf66c34596",
+      "local/du-worker/du-object-disassembly.txt": "ca0bafce513c39911ca99286de81f1fef4008d515760e502ff5b38dfd0fc5608",
+      "local/du-worker/du-report-calls.log": "546c54c2f4684b1d51526350ba97b040dd4c9b969d713e87d9ba06c956ce4795",
+      "local/du-worker/du-seeds.json": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773",
+      "local/du-worker/du-write-report.py": "6f4418f27db7959231451d1b23ab6251240280be364c22acd005cb1f778edc4a",
+      "local/du-worker/worker-report.json": "9343a7e1a73a5dd7ec84ba65d185211444c6ee0449336396d9fdec3c30743cb2",
+      "local/finish_du.py": "e564dca8f1552fdd571ffc464b3516c1d184ffb62c411ac1e5877dcbcf38368d",
+      "local/publish_du.py": "4523efe74276b50e9b49e25558ab759bad35f1ce6b61abc8b538fd2493c322f1",
+      "local/review_du_final.py": "0b4c831c1aa46604b568f2c0bb11466a5e51bccb767db47654d7d0c773b2e650",
+      "local/seal_du.py": "427263f40555e912d64838c3a4afdc93670d9daa05cbf72100cc9aeab764583a"
+    },
+    "sealed_attempt": {
+      "tested_commit": "42603ccf159dad821d9b51ceca44e5092d7187a3",
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\du-validated-attempt-42603ccf.zip",
+      "sha256": "43158c53c341788325e5fcb4ee52157cabc4a42d3ea56cc143eb7c79afbe5bb7",
+      "payload_members": 2745,
+      "manifest_members": 1,
+      "all_member_hashes_rechecked": true,
+      "libraries": {
+        "bsp_core.lib": "4b78d8f84cffbd646d0bd556c368e367fd387c3618505cb6001567acf4fa948f",
+        "bsp_lua511.lib": "71e114b0ff6244852d678a5779fcbf28589bdcecbad811aff228ffd5007fe8c7",
+        "bsp_zlib121.lib": "f3f934925213a2ffb81f3aec2afbb065c1733cf43b28dddf31db6a69185c4102",
+        "xlive_stub.lib": "6dfcb5bf13947ffb6883edfde9d189c4c7ae0d702ec8bd81daebf3749e5f1c67"
+      },
+      "tracked_build_inputs": 2627
+    },
+    "source_sha256": {
+      "include/bsp/native_directional_shadow_owner_lifetime.hpp": "a544ff94b8f8f37797e5c8f416db80e327847108b76ba841774ae853b541e9ee",
+      "src/native_directional_shadow_owner_lifetime.cpp": "624869089b172d8ddc15774e36b0730dfeb52e6d6897b373fbb03a8db21ad7f2",
+      "docs/NATIVE_DIRECTIONAL_SHADOW_OWNER_LIFETIME.md": "9a1609982e7479bf18d9f60556bd8f1a9cd3874ad454eb2d57a205c13571c877",
+      "cmake/startup.cmake": "35603daeb15bf84c7f06e459147489e92105013f7e22433cf00e8152f411f4ed"
+    },
+    "provider_pins": [
+      {
+        "path": "include/bsp/generated_model_lifetime.hpp",
+        "sha256": "370ddaedd31013c97fc41b2774020f75dddae9d5d6f546d3a2063ccc49088b64",
+        "review": "existing concrete provider source/header contract; no new full-body credit",
+        "anchors": [
+          {
+            "line": 80,
+            "text": "GeneratedModelNodeLifetime* find_actual_node(std::uint32_t pointer_key) const noexcept;"
+          },
+          {
+            "line": 133,
+            "text": "void release_zero_references() noexcept override;"
+          },
+          {
+            "line": 169,
+            "text": "void release_zero_references() noexcept override;"
+          }
+        ]
+      },
+      {
+        "path": "include/bsp/native_camera_owner.hpp",
+        "sha256": "527c605fcc55eedd421271a5c4b27d45947e325c391838f14f3cab6d75e1f808",
+        "review": "existing concrete provider source/header contract; no new full-body credit",
+        "anchors": [
+          {
+            "line": 117,
+            "text": "void set_native_camera_viewport_00b71990(NativeCameraOwner&, NativeViewportOwner*);"
+          }
+        ]
+      },
+      {
+        "path": "include/bsp/native_camera_reference.hpp",
+        "sha256": "5920175404a18b464c3ce826162c8279b98c12405ac28d52363241cd2d79415e",
+        "review": "existing concrete provider source/header contract; no new full-body credit",
+        "anchors": [
+          {
+            "line": 41,
+            "text": "void release_zero_references() noexcept override;"
+          }
+        ]
+      },
+      {
+        "path": "include/bsp/native_frame_target_owner.hpp",
+        "sha256": "5bcab0e6bf05a51b8e8a215117ca5621f3c5a51a1aec131eb4b7f86b33246ca8",
+        "review": "existing concrete provider source/header contract; no new full-body credit",
+        "anchors": [
+          {
+            "line": 51,
+            "text": "void destroy_native_frame_target_owner_00b1fc00("
+          },
+          {
+            "line": 56,
+            "text": "NativeFrameTargetOwnerStorage* delete_native_frame_target_owner_00b1fcf0("
+          }
+        ]
+      },
+      {
+        "path": "include/bsp/native_node_destruction.hpp",
+        "sha256": "bd525ac65ff936736cbf5a02bd7b31e12c326ae5ec624c9685315dbcc116c833",
+        "review": "existing concrete provider source/header contract; no new full-body credit",
+        "anchors": []
+      },
+      {
+        "path": "include/bsp/native_ref_counted.hpp",
+        "sha256": "3012884c86aac66804d98ebb7453f3cc6f4b42580a85731d7eca0b3868ddca82",
+        "review": "existing concrete provider source/header contract; no new full-body credit",
+        "anchors": [
+          {
+            "line": 16,
+            "text": "void invoke_native_ref_counted_delete_00bd30e0(void*, NativeRefCountedDeleteCalls&);"
+          },
+          {
+            "line": 20,
+            "text": "void __fastcall destroy_native_ref_counted_base_00bd30f0(void*) noexcept;"
+          }
+        ]
+      },
+      {
+        "path": "include/bsp/native_shader_owner_texture_release.hpp",
+        "sha256": "b42b42f25a916289d5398c8ca4b69cb226604c809092df9d13b937c50e9bc8c0",
+        "review": "existing concrete provider source/header contract; no new full-body credit",
+        "anchors": []
+      },
+      {
+        "path": "include/bsp/native_shader_shadow_source.hpp",
+        "sha256": "45094ffbe1aca7e24030223cbcd994848edc238e0863d1129c3ad402b77c7d9e",
+        "review": "existing concrete provider source/header contract; no new full-body credit",
+        "anchors": []
+      },
+      {
+        "path": "include/bsp/native_shadow_texture_access.hpp",
+        "sha256": "0819902d4b87e0958abbb7abefa61d4bb9ed2fd387fcf7f65da0d5c031768b0b",
+        "review": "existing concrete provider source/header contract; no new full-body credit",
+        "anchors": []
+      },
+      {
+        "path": "include/bsp/native_texture_2d_owner.hpp",
+        "sha256": "9a4db4ac7413f02d69fe2d7b62709e01b1dfa12a4452483cb34b26e10a1958fc",
+        "review": "existing concrete provider source/header contract; no new full-body credit",
+        "anchors": [
+          {
+            "line": 43,
+            "text": "void destroy_native_texture_2d_00b3f2e0("
+          },
+          {
+            "line": 49,
+            "text": "void* delete_native_texture_2d_00b3f590(void* actual_owner,"
+          }
+        ]
+      },
+      {
+        "path": "include/bsp/native_viewport_owner.hpp",
+        "sha256": "0fbadd5eab924627e321a7896bd9796c0aaa17062bbf3953de118fbe2b3867d5",
+        "review": "existing concrete provider source/header contract; no new full-body credit",
+        "anchors": [
+          {
+            "line": 104,
+            "text": "NativeViewportOwner* delete_native_viewport_owner_00b1f8f0("
+          }
+        ]
+      },
+      {
+        "path": "include/bsp/render_command_queue.hpp",
+        "sha256": "bc5b28823becf3dbe9628f7393be7f3ba399895d6935829921113a7496fe8f1a",
+        "review": "existing concrete provider source/header contract; no new full-body credit",
+        "anchors": [
+          {
+            "line": 21,
+            "text": "virtual void release_zero_references() noexcept = 0;"
+          },
+          {
+            "line": 42,
+            "text": "void release_zero_references() noexcept override;"
+          },
+          {
+            "line": 51,
+            "text": "void release_zero_references() noexcept override;"
+          },
+          {
+            "line": 109,
+            "text": "void unlink_and_release_render_model_00b6dfa0(RenderCommandModelLifetime&) noexcept;"
+          }
+        ]
+      },
+      {
+        "path": "include/bsp/singleton_lifetime.hpp",
+        "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+        "review": "existing concrete provider source/header contract; no new full-body credit",
+        "anchors": [
+          {
+            "line": 20,
+            "text": "void singleton_lifetime_free(void*) noexcept;"
+          }
+        ]
+      },
+      {
+        "path": "src/generated_model_lifetime.cpp",
+        "sha256": "d8c5990909d169f0f70d9e3320b4e671da6fcb58694cc9ac5f7d621cbdeabd64",
+        "review": "existing concrete provider source/header contract; no new full-body credit",
+        "anchors": [
+          {
+            "line": 114,
+            "text": "GeneratedModelNodeLifetime* GeneratedModelLifetimeRuntime::find_actual_node(std::uint32_t key) const noexcept {"
+          },
+          {
+            "line": 145,
+            "text": "void GeneratedModelGeometryReference::release_zero_references() noexcept { delete this; }"
+          },
+          {
+            "line": 162,
+            "text": "void GeneratedModelLifetime::release_zero_references() noexcept {"
+          }
+        ]
+      },
+      {
+        "path": "src/native_camera_owner.cpp",
+        "sha256": "51f7c97c40027337af8d83b0a35613338a8963ad2664d0d6eaa220be7d22f376",
+        "review": "existing concrete provider source/header contract; no new full-body credit",
+        "anchors": [
+          {
+            "line": 368,
+            "text": "void set_native_camera_viewport_00b71990(NativeCameraOwner& owner, NativeViewportOwner* value) {"
+          }
+        ]
+      },
+      {
+        "path": "src/native_camera_reference.cpp",
+        "sha256": "c877dd80459c1f7ebf2e9e20c4f6fd3f0c349e0ff3b4dbeb8f6553a0fb9badab",
+        "review": "existing concrete provider source/header contract; no new full-body credit",
+        "anchors": [
+          {
+            "line": 76,
+            "text": "void NativeCameraReference::release_zero_references() noexcept {"
+          }
+        ]
+      },
+      {
+        "path": "src/native_frame_target_owner.cpp",
+        "sha256": "60485ba070a77e9de497bff352b16ab664ac4d051e02e671897d2c3082224c60",
+        "review": "existing concrete provider source/header contract; no new full-body credit",
+        "anchors": [
+          {
+            "line": 132,
+            "text": "void destroy_native_frame_target_owner_00b1fc00("
+          },
+          {
+            "line": 144,
+            "text": "singleton_lifetime_free(pointer(word(address(&owner, 0x1c))));"
+          },
+          {
+            "line": 149,
+            "text": "NativeFrameTargetOwnerStorage* delete_native_frame_target_owner_00b1fcf0("
+          },
+          {
+            "line": 153,
+            "text": "destroy_native_frame_target_owner_00b1fc00(owner, context);"
+          },
+          {
+            "line": 154,
+            "text": "if ((flags & 1u) != 0) singleton_lifetime_free(original_address);"
+          }
+        ]
+      },
+      {
+        "path": "src/native_ref_counted.cpp",
+        "sha256": "b56eb6cde8b0aa0c590ecb52500918839723eb61a135578b95cc2ed6e2e695d9",
+        "review": "existing concrete provider source/header contract; no new full-body credit",
+        "anchors": [
+          {
+            "line": 4,
+            "text": "void invoke_native_ref_counted_delete_00bd30e0(void* owner,"
+          },
+          {
+            "line": 14,
+            "text": "__declspec(naked) void __fastcall destroy_native_ref_counted_base_00bd30f0(void*) noexcept {"
+          },
+          {
+            "line": 23,
+            "text": "jmp destroy_native_ref_counted_base_00bd30f0"
+          }
+        ]
+      },
+      {
+        "path": "src/native_texture_2d_owner.cpp",
+        "sha256": "8824e7624fec3faa637aa8ce1a90a7e8eba15b8a203253ccf00e9aafdae54ada",
+        "review": "existing concrete provider source/header contract; no new full-body credit",
+        "anchors": [
+          {
+            "line": 205,
+            "text": "void destroy_native_texture_2d_00b3f2e0(void* owner, NativeTexture2DOwnerContext& context) {"
+          },
+          {
+            "line": 257,
+            "text": "void* delete_native_texture_2d_00b3f590(void* owner,"
+          },
+          {
+            "line": 259,
+            "text": "destroy_native_texture_2d_00b3f2e0(owner, context);"
+          }
+        ]
+      },
+      {
+        "path": "src/native_viewport_owner.cpp",
+        "sha256": "d7f733023f89193a4bbd488a9e925b46ac52f2cc0ee1be04f6df2e663616d2ea",
+        "review": "existing concrete provider source/header contract; no new full-body credit",
+        "anchors": [
+          {
+            "line": 98,
+            "text": "singleton_lifetime_free(storage);"
+          },
+          {
+            "line": 121,
+            "text": "if (owner) (void)delete_native_viewport_owner_00b1f8f0(owner, 1);"
+          },
+          {
+            "line": 123,
+            "text": "NativeViewportOwner* delete_native_viewport_owner_00b1f8f0("
+          },
+          {
+            "line": 130,
+            "text": "if ((flags & 1u) != 0) singleton_lifetime_free(owner);"
+          }
+        ]
+      },
+      {
+        "path": "src/render_command_queue.cpp",
+        "sha256": "5ec78b4d95eef3cb597d789b04ab7bb6f0a44915932b721cb8e2e2a65418cb02",
+        "review": "existing concrete provider source/header contract; no new full-body credit",
+        "anchors": [
+          {
+            "line": 29,
+            "text": "reference.release_zero_references();"
+          },
+          {
+            "line": 41,
+            "text": "void RenderCommandBatch::release_zero_references() noexcept { delete this; }"
+          },
+          {
+            "line": 47,
+            "text": "void RenderCommandContext::release_zero_references() noexcept {"
+          },
+          {
+            "line": 102,
+            "text": "void unlink_and_release_render_model_00b6dfa0(RenderCommandModelLifetime& lifetime) noexcept {"
+          },
+          {
+            "line": 142,
+            "text": "unlink_and_release_render_model_00b6dfa0(lifetimes.for_model(*model));"
+          }
+        ]
+      },
+      {
+        "path": "src/singleton_lifetime.cpp",
+        "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+        "review": "existing concrete provider source/header contract; no new full-body credit",
+        "anchors": [
+          {
+            "line": 65,
+            "text": "void singleton_lifetime_free(void* pointer) noexcept {"
+          },
+          {
+            "line": 99,
+            "text": "singleton_lifetime_free(owned_section_);"
+          },
+          {
+            "line": 101,
+            "text": "singleton_lifetime_free(slots_.begin);"
+          },
+          {
+            "line": 181,
+            "text": "singleton_lifetime_free(slots_.begin);"
+          },
+          {
+            "line": 293,
+            "text": "singleton_lifetime_free(slots_.begin);"
+          },
+          {
+            "line": 307,
+            "text": "singleton_lifetime_free(owned_section_);"
+          },
+          {
+            "line": 330,
+            "text": "singleton_lifetime_free(storage);"
+          },
+          {
+            "line": 339,
+            "text": "singleton_lifetime_free(manager);"
+          }
+        ]
+      }
+    ],
+    "qualification": "All old build, object, review, source hash and annotation evidence below belongs to DU at exact tested commit 42603ccf159dad821d9b51ceca44e5092d7187a3, not the changed EA source/context/dispatcher. Original native metadata and producer discovery remain historical evidence.",
+    "previous_report_sha256": "21314babcee91b5ec28be9cfb9412f466dec1e0243e4dbab44381a987f380048",
+    "previous_report_git_revision": "78931f6d4bc58ee9e40ac777b1f1383eaa0075fc",
+    "evidence": [
+      {
+        "path": "local/dt-shadow-owner-replacement-admission.json",
+        "sha256": "50141818e6f35e402ffa2911c0384d9e04033dc564ecc1237df564fa311b04aa"
+      },
+      {
+        "path": "local/dt-shadow-owner-replacement-admission.md",
+        "sha256": "922ceb49899857b476265f0792b6372a9e75980cdbb3206a8ef16b3ec9f173ad"
+      },
+      {
+        "path": "local/du-native-evidence.json",
+        "sha256": "ab9ad65e8d2bab37258a4b1c304dc52eda2628c78ed10373664a1caf66c34596"
+      },
+      {
+        "path": "local/du-caller-contexts.json",
+        "sha256": "53e5d381b84bb83bd1096045fb3c2b7eb4fa13a841681ff2ce1d20bbaa3a81be"
+      },
+      {
+        "path": "local/du-a8dec0-disasm.txt",
+        "sha256": "083ed6ee3ab29e96df97dfddb727b265baa0c9ca9eceed303279f6b2f82dfc60"
+      },
+      {
+        "path": "local/du-seeds.json",
+        "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+      },
+      {
+        "path": "local/du-capture-evidence.py",
+        "sha256": "2aee26d60e95405c3acb2ba9ecf1c174c18140b6ca85befa90b889a92a775822"
+      },
+      {
+        "path": "local/du-capture-callers.py",
+        "sha256": "835776ad07dbd8dd5cfb29dfd9d8c67e27855c7964545a7515e9d9ed499a0c86"
+      },
+      {
+        "path": "local/du-build-input-pins.json",
+        "sha256": "355f604dee97a12788909abff1c937d481c70092648cb0fb78757803f4a46a52"
+      },
+      {
+        "path": "local/du-build-attempt1-input-pins.json",
+        "sha256": "665343c58c22211c8ada9e4ed52c9c4b48d4d79e8ba060249faa2ffbe7c301b5"
+      },
+      {
+        "path": "local/du-build-attempt1.log",
+        "sha256": "65bbb3d03671721c59a05f75a53f87c2f770fe9d01eea6d40ca6dac8b9227bc4"
+      },
+      {
+        "path": "local/du-build.log",
+        "sha256": "56b9cf99ba675780fa541bebbffa7cd1266796a655fe5eb24ae7d56305375b49"
+      },
+      {
+        "path": "local/du-report-calls.log",
+        "sha256": "546c54c2f4684b1d51526350ba97b040dd4c9b969d713e87d9ba06c956ce4795"
+      },
+      {
+        "path": "local/du-import-call-evidence.json",
+        "sha256": "7c6f3e6eb89a782ab419073514c449e5098832a04c001b7fbea0d9df5a0e1896"
+      },
+      {
+        "path": "local/du-object-disassembly.txt",
+        "sha256": "ca0bafce513c39911ca99286de81f1fef4008d515760e502ff5b38dfd0fc5608"
+      },
+      {
+        "path": "local/du-generated-tools.json",
+        "sha256": "8724baefcbc7e0b7ead6f1fdb44e8cf270b30696808af4ca603e9a44ccb8dde4"
+      },
+      {
+        "path": "local/du-generated-order.json",
+        "sha256": "176232d20b8b9f2a3ba12ff5fe61d3f185ceb41c71563c27c445c1666c58ec0f"
+      },
+      {
+        "path": "local/du-generated-evidence.py",
+        "sha256": "880391729d3b43433c975f7b3a12fbb18025193b6186aa357f46de6a075f6a0d"
+      },
+      {
+        "path": "local/du-write-report.py",
+        "sha256": "6f4418f27db7959231451d1b23ab6251240280be364c22acd005cb1f778edc4a"
+      }
+    ],
+    "fresh_live_pe_evidence_bytes": 1021
+  },
+  "packet": "orch3_shadow_base_terminal_impl_ea",
+  "base_commit": "78931f6d4bc58ee9e40ac777b1f1383eaa0075fc",
+  "status": "exact_source_build_passed_current_generated_scheduling_reviewed_ghidra_saved",
+  "incremental_native_body_credit": 30,
+  "ea_contract": {
+    "wrapper": "Capture owner identity, call existing A8DEC0, only after normal return read low byte of borrowed flags slot; bit0 invokes existing shared CRT free; return original identity. No own EH state/cleanup and no free if destruction throws.",
+    "optional_binding": "Append const volatile std::uint32_t* const table_00d5b574 = nullptr to existing context; no universal DZ preflight requirement and no constructor/block API change. Direct wrapper needs no table lookup.",
+    "dispatch": "Existing shadow lookup accepts final profile or explicitly bound base profile. Existing slot0 check and BD30E0 provider preserve current read timing; slot4 dispatch accepts only corresponding final/A8FCD0 or base/A8E160 pair. No extra decrement/retain/allocation, synthesized registry or successful fallback.",
+    "callers": "Existing final-profile aggregate initializers omit new optional field. Rebuild coupled source due to changed source struct size; do not claim binary layout ABI compatibility.",
+    "existing_body_changes": "Only table()/ConcreteDelete host dispatcher branches change for existing B7BDF0; A8DEC0/A8FCD0/CB63D0 bodies remain unchanged.",
+    "followup_domains": "Retain original canonical child companions, actual provider contexts, current IAT/table bindings and persistent DY block across callbacks and queued camera lifetimes. A8E160 does not own or retire the host block. Reset remains separate and only after real terminals, cache settlement and explicit host borrow quiescence. Native owner deallocation alone is insufficient."
+  },
+  "ea_evidence": {
+    "admission": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-shadow-owner-construction-dz\\local\\ea-shadow-base-terminal-admission.json",
+      "sha256": "efabf341a3f433a680d689b8a31130d9da0fbaa32f459494ffd0823f20ace141"
+    },
+    "native_body_and_tables": [
+      {
+        "address": "00a8e160",
+        "length": 30,
+        "original_pe_offset": 6873440,
+        "section": ".text",
+        "section_characteristics": "60000020",
+        "hex": "568bf1e858fdfffff644240801740956e83784160083c4048bc65ec20400",
+        "sha256": "d5afdf935492e6d411307a853b722ee9dbe2d9197f1aeba604ef2eddf3045f39",
+        "live_matches_original_pe": true
+      },
+      {
+        "address": "00d5b574",
+        "length": 8,
+        "original_pe_offset": 9811316,
+        "section": ".rdata",
+        "section_characteristics": "40000040",
+        "hex": "e030bd0060e1a800",
+        "sha256": "f2de8a15e239a93f9d861b62c374a4aab4ceb5a458ffddc9a7226e009c1b042f",
+        "live_matches_original_pe": true
+      },
+      {
+        "address": "00d5b5d8",
+        "length": 8,
+        "original_pe_offset": 9811416,
+        "section": ".rdata",
+        "section_characteristics": "40000040",
+        "hex": "e030bd00d0fca800",
+        "sha256": "99a885a27076a45ff0e86b231274041d9fc97110bc1f21efd81ddb65faa1b6c8",
+        "live_matches_original_pe": true
+      }
+    ],
+    "original_pe": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+    },
+    "flow_repair": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\ea-listing-flow-repair.json",
+      "sha256": "f353ba845bc615ac5d6cbb67c6055ea46893463e6f0ca1cbe6a5d215904a8d46",
+      "performed_by": "primary",
+      "saved_and_export_refreshed": true,
+      "result": {
+        "repairs": [
+          {
+            "function": "00a8e160",
+            "owner": "agent/orch3-20260910",
+            "when": "2026-09-15T00:53:22Z",
+            "decompile_lines_before": 14,
+            "gaps": [
+              {
+                "site": "00a8e170",
+                "mnemonic": "CALL",
+                "operands": "0x00bf65ac",
+                "gap_start": "00a8e175",
+                "gap_end_exclusive": "00a8e178",
+                "bytes": 3,
+                "after_call": true,
+                "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+              }
+            ],
+            "events": [
+              {
+                "gap": {
+                  "site": "00a8e170",
+                  "mnemonic": "CALL",
+                  "operands": "0x00bf65ac",
+                  "gap_start": "00a8e175",
+                  "gap_end_exclusive": "00a8e178",
+                  "bytes": 3,
+                  "after_call": true,
+                  "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+                },
+                "clear": "Success: Cleared flow override at 00a8e170 (was: CALL_RETURN, now: NONE)",
+                "disassemble": "Successfully disassembled 3 byte(s)"
+              }
+            ],
+            "decompile_lines_after": 11,
+            "gaps_remaining": 0
+          }
+        ]
+      }
+    },
+    "fresh_normal_body_bytes": 30
+  },
+  "source_sha256": {
+    "include/bsp/native_directional_shadow_owner_lifetime.hpp": "3b7fa2d2124617916e2a761e350fbec5e0a04a437eeae443b73e8feee0aeb6fe",
+    "src/native_directional_shadow_owner_lifetime.cpp": "a7deff4578e34749e9bd0dcbc70ae45aac3eba53d304278ca3dad297e14f33ed"
+  },
+  "current_provider_pins": [
+    {
+      "path": "include/bsp/native_directional_shadow_owner_lifetime.hpp",
+      "sha256": "3b7fa2d2124617916e2a761e350fbec5e0a04a437eeae443b73e8feee0aeb6fe"
+    },
+    {
+      "path": "src/native_directional_shadow_owner_lifetime.cpp",
+      "sha256": "a7deff4578e34749e9bd0dcbc70ae45aac3eba53d304278ca3dad297e14f33ed"
+    },
+    {
+      "path": "include/bsp/native_ref_counted.hpp",
+      "sha256": "3012884c86aac66804d98ebb7453f3cc6f4b42580a85731d7eca0b3868ddca82"
+    },
+    {
+      "path": "src/native_ref_counted.cpp",
+      "sha256": "b56eb6cde8b0aa0c590ecb52500918839723eb61a135578b95cc2ed6e2e695d9"
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+    },
+    {
+      "path": "include/bsp/native_directional_shadow_construction_block.hpp",
+      "sha256": "551fa038c5471f30ef01871347c476b928c8411827fe98d334535f63f4187084"
+    },
+    {
+      "path": "src/native_directional_shadow_construction_block.cpp",
+      "sha256": "5775d7078b76cbc2ac116c0d764d457f95968504b51ff367351f426f652c2fba"
+    },
+    {
+      "path": "include/bsp/native_directional_shadow_owner_construction.hpp",
+      "sha256": "0adb386972154ee445c141ad69f90aed2ed994bc841ac63cf2529a86f9c2d41e"
+    },
+    {
+      "path": "src/native_directional_shadow_owner_construction.cpp",
+      "sha256": "62e3c24a85dd3db0f80756fbfef408733e6fc1b65f7ea5310929d272dc070154"
+    },
+    {
+      "path": "include/bsp/native_viewport_owner.hpp",
+      "sha256": "0fbadd5eab924627e321a7896bd9796c0aaa17062bbf3953de118fbe2b3867d5"
+    },
+    {
+      "path": "src/native_viewport_owner.cpp",
+      "sha256": "d7f733023f89193a4bbd488a9e925b46ac52f2cc0ee1be04f6df2e663616d2ea"
+    },
+    {
+      "path": "include/bsp/native_camera_owner.hpp",
+      "sha256": "527c605fcc55eedd421271a5c4b27d45947e325c391838f14f3cab6d75e1f808"
+    },
+    {
+      "path": "src/native_camera_owner.cpp",
+      "sha256": "51f7c97c40027337af8d83b0a35613338a8963ad2664d0d6eaa220be7d22f376"
+    },
+    {
+      "path": "include/bsp/native_camera_reference.hpp",
+      "sha256": "5920175404a18b464c3ce826162c8279b98c12405ac28d52363241cd2d79415e"
+    },
+    {
+      "path": "src/native_camera_reference.cpp",
+      "sha256": "c877dd80459c1f7ebf2e9e20c4f6fd3f0c349e0ff3b4dbeb8f6553a0fb9badab"
+    },
+    {
+      "path": "include/bsp/native_texture_2d_owner.hpp",
+      "sha256": "9a4db4ac7413f02d69fe2d7b62709e01b1dfa12a4452483cb34b26e10a1958fc"
+    },
+    {
+      "path": "src/native_texture_2d_owner.cpp",
+      "sha256": "8824e7624fec3faa637aa8ce1a90a7e8eba15b8a203253ccf00e9aafdae54ada"
+    },
+    {
+      "path": "include/bsp/native_frame_target_owner.hpp",
+      "sha256": "5bcab0e6bf05a51b8e8a215117ca5621f3c5a51a1aec131eb4b7f86b33246ca8"
+    },
+    {
+      "path": "src/native_frame_target_owner.cpp",
+      "sha256": "60485ba070a77e9de497bff352b16ab664ac4d051e02e671897d2c3082224c60"
+    },
+    {
+      "path": "cmake/startup.cmake",
+      "sha256": "384925bec2de4cd1609295d13a71af874222742d02d92b936d33ff28df0eb3d0"
+    },
+    {
+      "path": "config/target.json",
+      "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+    },
+    {
+      "path": "tools/bsp.py",
+      "sha256": "8219d46d80f1f8d80ed63e83075e9d3e37cd3994187f53820b2c0c4182445116"
+    },
+    {
+      "path": "tools/ghidra_export.py",
+      "sha256": "f94c057376298ef4e97fd9f5f98eec20a5fcdad886a777373977a90a09179eee"
+    },
+    {
+      "path": "tools/verify_report_calls.py",
+      "sha256": "396e6d544dece7c9551ff10ee15ab234a0ad1c4a339fd118ddec20de1bb7a8cd"
+    },
+    {
+      "path": "docs/WORKER_VERIFICATION_CHECKLIST.md",
+      "sha256": "13a49a6784b1621bbde4191a9360d18bb703adfc60cf0884761801dcd07151fe"
+    }
+  ],
+  "source_anchors": {
+    "include/bsp/native_directional_shadow_owner_lifetime.hpp": [
+      27,
+      49,
+      58
+    ],
+    "src/native_directional_shadow_owner_lifetime.cpp": [
+      52,
+      81,
+      191,
+      200,
+      209
+    ]
+  },
+  "validation": {
+    "source_review": {
+      "status": "accepted_complete_source_delta",
+      "tested_commit": "5611325fa323373f94baa935574f296a21bea794",
+      "findings": [],
+      "artifact": "local/ea-primary-source-review.json",
+      "sha256": "6ef61b7f04799e1c6363dc498d955a1f284c8e952c0e97be091ac535598fd6f6"
+    },
+    "build": {
+      "commit": "5611325fa323373f94baa935574f296a21bea794",
+      "started_utc": "2026-09-15T01:00:17.796839+00:00",
+      "passed": true,
+      "pending": false,
+      "command": [
+        "C:/Windows/System32/WindowsPowerShell/v1.0/powershell.exe",
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "scripts/build.ps1"
+      ],
+      "runner_sha256": "57a403a09ecf6e02de89b80f0e12ce525e708a54d17e9fd1a5986cac82b049bf",
+      "tracked_build_input_count": 2631,
+      "verified_seed_header_included": true,
+      "finished_utc": "2026-09-15T01:09:26.505012+00:00",
+      "exit_code": 0,
+      "clean_tree_before_and_after": true,
+      "same_commit_after": "5611325fa323373f94baa935574f296a21bea794",
+      "all_build_inputs_unchanged": true,
+      "changed_inputs": [],
+      "libraries": {
+        "build/win32/Release/bsp_core.lib": "1feaad47d4b0b76683f5f8d87081ece3dc27221560b5ad68dca7f0c387f5c700",
+        "build/win32/Release/bsp_lua511.lib": "0ef66d86d10ce15b7704cd6007a25aa4e1b7d32565337a655393614013d46c9b",
+        "build/win32/Release/bsp_zlib121.lib": "42ee2cb10e4127f036e51f7f17b4f08f79dc955709622835801ef2f5718d59b2",
+        "build/win32/Release/xlive_stub.lib": "6dfcb5bf13947ffb6883edfde9d189c4c7ae0d702ec8bd81daebf3749e5f1c67"
+      },
+      "log_sha256": "f9bf82141432bd16f57288549a1b4ed5eaf7edca6429484a06fdac0f80cacd94",
+      "existing_ctest_summary": [
+        "1/2 Test #1: reconstructed_math ...............   Passed    0.04 sec",
+        "2/2 Test #2: native_math_differential .........   Passed    0.04 sec",
+        "100% tests passed, 0 tests failed out of 2"
+      ],
+      "generated_object": {
+        "path": "build/win32/bsp_core.dir/Release/native_directional_shadow_owner_lifetime.obj",
+        "sha256": "615150741787e98af4696f69ba8ff37af24088a3c0859ee5b0fd9dffe7edc1ca"
+      },
+      "stamp": {
+        "path": "local/ea-final-build-stamp.json",
+        "sha256": "f45e3b791b803d742f4dbd9f37a754eb3651c35de90f4ec860d74e219b82cf34"
+      },
+      "schema_qualification": "Frozen runner/stamp records actual after-HEAD string in same_commit_after rather than a boolean. Before metadata edits, an independent read verified actual HEAD equals that string and commit, clean status, and all 2632 current input hashes equal the retained before/after maps. The original stamp and runner are preserved unchanged; no build repeated.",
+      "independent_after_head_equality_verified": true,
+      "independent_clean_status_before_metadata": true,
+      "compiler_warnings_or_errors": 0,
+      "seed_verification": {
+        "command": "python tools/ghidra_export.py verify-seeds",
+        "ranges": 8,
+        "all_matched": true,
+        "header_sha256": "26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c"
+      }
+    },
+    "generated_review": {
+      "status": "accepted_exact_current_object_generated_scheduling",
+      "tested_commit": "5611325fa323373f94baa935574f296a21bea794",
+      "object_sha256": "615150741787e98af4696f69ba8ff37af24088a3c0859ee5b0fd9dffe7edc1ca",
+      "findings": [],
+      "reviewed_code_sections": [
+        6,
+        15,
+        17,
+        27,
+        35,
+        38,
+        39,
+        40,
+        41,
+        42,
+        46,
+        48,
+        49,
+        50,
+        51,
+        52
+      ],
+      "reviewed_metadata_sections": [
+        58,
+        59,
+        74
+      ],
+      "coff_sha256": "d232cbc3e44cdac00e6c78d3f0aa8ec32c4647725cc15d8a2771e87e6b135be2",
+      "listing_sha256": "182bf9f91c8d37b07ff6c70d6464ccf42ebdb96f232a3e35c3cf19da47fab678",
+      "source_review_sha256": "6ef61b7f04799e1c6363dc498d955a1f284c8e952c0e97be091ac535598fd6f6",
+      "checks": [
+        "S38/S39 complete53-byte new base/final wrapper sections are identical with identical relocation targets. Each calls destruction+0B, then reads flags pointer+10 and low byte+1C, tests bit0+21, optionally frees+28, returns saved owner+30. No wrapper cleanup/free on destruction exception.",
+        "S40 fresh table+14 then slot4+1C; exact final profile+32/terminal+3A or base profile+70/terminal+7C. MSVC inlines each wrapper: destruction+4C/+8E precedes low-byte+5D/+9F, with shared free+AB only after bit tests. Other domains and diagnostics retain their providers.",
+        "S51 final binding stays context+14, new optional base binding is+24. Unknown profile and null bindings converge on diagnostics. S48 reads current owner profile+2A, obtains actual table, reads slot0+42 and checks BD30E0+44 before existing provider call+66, which reloads the current profile.",
+        "S50 captures old174+15, equal test+20, publishes incoming+2E before fresh increment IAT read/call+3A/+40, then fresh decrement IAT+49/+4F on captured old, zero dispatch+58. No second decrement or later owner-field clear.",
+        "S41 complete destructor retains D5B574 store, captured504 before decrement-cell capture, clears after callbacks, camera viewport clear before independent field reload/canonical reference release, captured fallback decrement, fresh target-group IAT reads and base-only final cleanup.",
+        "S46 captured-field helper clears after zero callback; S35 canonical camera lookup, runtime type and actual-owner identity guards preserved. S15 conditional saved-owner base cleanup and S42 compiler EH funclet remain base-only; S52 is a direct base tail.",
+        "Compiler removes source disarm before known-noexcept final BD30F0 as in prior DU. Current two44-byte FuncInfo/unwind sections and42-byte handler/funclet sections were checked separately; no raw native private EH-frame identity.",
+        "Embedded switch tables in S40+13C..14B and S51+90..9F are data/relocations, not executable ADD instructions suggested by linear disassembly. RTTI/host vtable metadata and shared labels receive no native body credit."
+      ],
+      "build_stamp_sha256": "f45e3b791b803d742f4dbd9f37a754eb3651c35de90f4ec860d74e219b82cf34",
+      "stamp_schema_qualification": "same_commit_after is the frozen actual HEAD string, not a bool; explicitly equals commit5611325f. Worker/root independently verify exact source, clean state and unchanged inputs; stamp was not rewritten.",
+      "abi_compatible": false,
+      "fixture_tested": false,
+      "game_validated": false,
+      "whole_native_code_identity": false,
+      "artifact_sha256": "9dce079d75265bf6cb530b9d7e8804810478fd1c2bbd4cd082e4c55a26224690"
+    },
+    "fixture_tested": false,
+    "game_validated": false,
+    "call_rows": {
+      "command": "python tools/verify_report_calls.py reports/native_directional_shadow_owner_lifetime.json",
+      "checked": 35,
+      "failed": 0,
+      "qualification": "Numeric direct/tail rows checked; current IAT/slot resolutions remain separately profile-qualified and are not validated runtime targets."
+    },
+    "sealed_attempt": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\ea-validated-attempt.zip",
+      "sha256": "b3c1bc38243987e9bac423fbfca66325772aa5c04a80c7de4f486e94685169a4",
+      "bytes": 19677130,
+      "payload_count": 2678,
+      "all_payload_hashes_reread": true,
+      "tested_commit": "5611325fa323373f94baa935574f296a21bea794",
+      "tracked_inputs": 2631,
+      "verified_seed_headers": 1,
+      "root_raw_identical_inputs": 2622,
+      "root_newline_only_variants": 9,
+      "seed": {
+        "tested_sha256": "26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c",
+        "root_sha256": "26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c",
+        "ignored": true
+      },
+      "stamp_qualification": "Frozen same_commit_after is actual HEAD string and explicitly equals commit; independently verified. Raw stamp not rewritten.",
+      "export_metadata_qualification": "Exporter name metadata retains its previous inventory name; fresh code and separate live prototype/comment readback record the current reviewed Ghidra name.",
+      "qualification": "One clean worker Win32 build and both existing math CTests; current object scheduling review. Native ABI, lifetime runtime and game validation remain open."
+    },
+    "root_inputs": {
+      "artifact": "local/ea-build-input-variants.json",
+      "sha256": "569daa3e46b870cd4df9cad13ae3d7955d32f82b5955e7f7483603202ce7598a",
+      "tracked_inputs": 2631,
+      "raw_identical": 2622,
+      "newline_only": 9,
+      "ignored_seed_identical": true,
+      "root_rebuild": false,
+      "qualification": "Exact worker Git build inputs retained; actual tested worker bytes and separate root checkout variants archived."
+    }
+  },
+  "coordination": {
+    "owner": "agent/orch3-shadow-base-terminal-ea",
+    "packet": "orch3_shadow_base_terminal_impl_ea",
+    "addresses": [
+      "00a8e160",
+      "00b7bdf0"
+    ],
+    "owned_files": [
+      "include/bsp/native_directional_shadow_owner_lifetime.hpp",
+      "src/native_directional_shadow_owner_lifetime.cpp",
+      "docs/NATIVE_DIRECTIONAL_SHADOW_OWNER_LIFETIME.md",
+      "reports/native_directional_shadow_owner_lifetime.json"
+    ],
+    "no_new_cmake_or_tests": true,
+    "Ghidra_and_ledgers": "primary only"
+  },
+  "no_ghidra_function": [],
+  "tested_commit": "5611325fa323373f94baa935574f296a21bea794",
+  "evidence": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-shadow-base-terminal-ea\\local\\ea-final-build-stamp.json",
+      "sha256": "f45e3b791b803d742f4dbd9f37a754eb3651c35de90f4ec860d74e219b82cf34",
+      "kind": "current exact build stamp"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-shadow-base-terminal-ea\\local\\ea-final-build.log",
+      "sha256": "f9bf82141432bd16f57288549a1b4ed5eaf7edca6429484a06fdac0f80cacd94",
+      "kind": "current complete stdout/stderr log"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-shadow-base-terminal-ea\\local\\build_final_ea.py",
+      "sha256": "57a403a09ecf6e02de89b80f0e12ce525e708a54d17e9fd1a5986cac82b049bf",
+      "kind": "frozen build runner"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-shadow-base-terminal-ea\\build\\win32\\bsp_core.dir\\Release\\native_directional_shadow_owner_lifetime.obj",
+      "sha256": "615150741787e98af4696f69ba8ff37af24088a3c0859ee5b0fd9dffe7edc1ca",
+      "kind": "current exact generated object"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\ea-primary-source-review.json",
+      "sha256": "6ef61b7f04799e1c6363dc498d955a1f284c8e952c0e97be091ac535598fd6f6",
+      "kind": "primary current source review"
+    }
+  ],
+  "current_ea_annotation": {
+    "address": "00a8e160",
+    "name": "BSP_DirectionalShadowBase_DeletingDestructor",
+    "prototype": "void* __thiscall BSP_DirectionalShadowBase_DeletingDestructor(void* this, uint flags)",
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "saved": true,
+    "comments_preserved": true,
+    "body": "00a8e160..00a8e17d",
+    "instructions": 11,
+    "export_refreshed": true,
+    "before_sha256": "1dd183320517acc886a04bb3cb7a4ed97d6bb9d8df28102993cbedad057d9b1f",
+    "after_sha256": "601893e5d2407cda5810c592c4c47aa12feda5a9bb36cd43eeddcbf6d1ec01d9",
+    "prototype_log_sha256": "9317da2c32827fa5b0d29e55b07ce5c621453fc9b9f99871956ca151ddffd8cd",
+    "export_metadata_qualification": "Exporter name metadata retains its previous inventory name; fresh code and separate live prototype/comment readback record the current reviewed Ghidra name."
+  }
+}

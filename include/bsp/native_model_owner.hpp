@@ -64,6 +64,16 @@ public:
 // at +18/+1C/+20. On failure the caller still owns the physical pool slot.
 void* construct_native_model_00b75030(NativeModelOwner&, const NativeString&);
 
+// Forward the actual 8-byte name header to the raw node constructor unchanged.
+// The persistent node runtime must select its raw pool and actual_names must
+// remain null through destruction, so neither construction nor later direct
+// cleanup crosses NativeStringStorage::release's noexcept adapter. Node/model
+// bounds must borrow the same actual CE4970/CE4ADC cells. Mode/identity rejection
+// leaves the owner prepared. Raw-node materialization/FH3 limits still apply;
+// canonical reference callbacks retain their existing noexcept boundary.
+void* construct_native_model_00b75030(NativeModelOwner&, const void* actual_name_header,
+    const NativeNodeRawConstants&);
+
 // Native ECX=model+178, RET. This new C++ interface receives the containing
 // four-word tail. Release CURRENT raw+180 through actual+04/current virtual0,
 // then clear it; preserve +174/+178/+17C. Complete member cleanup, including

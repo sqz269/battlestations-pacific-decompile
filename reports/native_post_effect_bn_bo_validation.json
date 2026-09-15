@@ -1,0 +1,276 @@
+{
+  "packet": "orch3_draw_record_integration_bn",
+  "created_utc": "2026-09-14T05:35:23.541911+00:00",
+  "status": "combined_source_build_and_evidence_validated_sealed",
+  "tested_commit": "afee0acdebab4e3b8152159b83e13de51fb8068c",
+  "upstream_main_merged": "f6d65fd8e450039d575b1bff7379b17a95e743b1",
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "bridge": "http://127.0.0.1:8089",
+    "image_base": "00400000",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "verification": "Every live BSP CLI batch verifies configured project/program/language/image base; read-only. Disk PE/span hash recorded during final audit.",
+    "disk_and_live_span_equal": true,
+    "native_image_sha256_rechecked": true
+  },
+  "body_count": 3,
+  "native_bytes": 284,
+  "functions": [
+    {
+      "address": "00b4e1f0",
+      "name": "destroy_native_post_effect_owner_00b4e1f0",
+      "ghidra_name": "BSP_PostEffect20Owner_Destroy",
+      "cpp_symbol": "destroy_native_post_effect_owner_00b4e1f0",
+      "source": "src/native_post_effect_owner_20h.cpp",
+      "header": "include/bsp/native_post_effect_owner_20h.hpp",
+      "doc": "docs/NATIVE_POST_EFFECT_OWNER_20H_BO.md",
+      "report": "reports/native_post_effect_owner_20h_bo.json",
+      "status": "reconstructed_build_tested_concrete_provider_domain",
+      "original_abi": "ECX actual20h owner; no stack arguments; RET; no semantic EAX",
+      "native_prototype": "void BSP_PostEffect20Owner_Destroy(void)",
+      "native_calling_convention": "__thiscall",
+      "native_end_exclusive": "00b4e2ad",
+      "end_inclusive": "00b4e2ac",
+      "native_bytes": 189,
+      "native_sha256": "35e8540ec16ea29238accd0f93035843839276c42d3c2ae04dceb132881aa2fb",
+      "evidence": "Descriptive hypothesis, not recovered symbol. Complete native body 00b4e1f0..00b4e2ac; ECX actual20h owner; no stack arguments; RET; no semantic EAX. 20h D61EC0 owner: material captured before IAT, material/nodes/raw28h draw-record/frame release in order, null skip and post-return clear, base-only cleanup; canonical same-counter binding does not reset/retain. MSVC Win32 build and both existing math CTests passed at afee0acdebab4e3b8152159b83e13de51fb8068c. Evidence: docs/NATIVE_POST_EFFECT_OWNER_20H_BO.md; reports/native_post_effect_owner_20h_bo.json; docs/NATIVE_POST_EFFECT_BN_BO_INTEGRATION.md. No new native fixture, drop-in ABI, unrestricted FH3/SEH, parent-construction closure or gameplay validation.",
+      "abi_compatible": false,
+      "game_validated": false,
+      "fixture_tested": false,
+      "tested_commit": "afee0acdebab4e3b8152159b83e13de51fb8068c"
+    },
+    {
+      "address": "00b4e430",
+      "name": "delete_native_post_effect_owner_00b4e430",
+      "ghidra_name": "BSP_PostEffect20Owner_ScalarDeletingDestructor",
+      "cpp_symbol": "delete_native_post_effect_owner_00b4e430",
+      "source": "src/native_post_effect_owner_20h.cpp",
+      "header": "include/bsp/native_post_effect_owner_20h.hpp",
+      "doc": "docs/NATIVE_POST_EFFECT_OWNER_20H_BO.md",
+      "report": "reports/native_post_effect_owner_20h_bo.json",
+      "status": "reconstructed_build_tested_concrete_provider_domain",
+      "original_abi": "ECX actual20h owner; stackDWORDflags; EAX original allocation; RET4",
+      "native_prototype": "void * BSP_PostEffect20Owner_ScalarDeletingDestructor(unsigned int flags)",
+      "native_calling_convention": "__thiscall",
+      "native_end_exclusive": "00b4e44e",
+      "end_inclusive": "00b4e44d",
+      "native_bytes": 30,
+      "native_sha256": "a38fd7bc339ae6a2217a05f876d2f15feee8856a9130ff46c0aaa03d3b17e9ee",
+      "evidence": "Descriptive hypothesis, not recovered symbol. Complete native body 00b4e430..00b4e44d; ECX actual20h owner; stackDWORDflags; EAX original allocation; RET4. 20h D61EC0 owner: material captured before IAT, material/nodes/raw28h draw-record/frame release in order, null skip and post-return clear, base-only cleanup; canonical same-counter binding does not reset/retain. MSVC Win32 build and both existing math CTests passed at afee0acdebab4e3b8152159b83e13de51fb8068c. Evidence: docs/NATIVE_POST_EFFECT_OWNER_20H_BO.md; reports/native_post_effect_owner_20h_bo.json; docs/NATIVE_POST_EFFECT_BN_BO_INTEGRATION.md. No new native fixture, drop-in ABI, unrestricted FH3/SEH, parent-construction closure or gameplay validation.",
+      "abi_compatible": false,
+      "game_validated": false,
+      "fixture_tested": false,
+      "tested_commit": "afee0acdebab4e3b8152159b83e13de51fb8068c"
+    },
+    {
+      "address": "00b51bd0",
+      "name": "construct_native_post_effect_draw_record_00b51bd0",
+      "ghidra_name": "BSP_PostEffectDrawRecord_Construct",
+      "cpp_symbol": "construct_native_post_effect_draw_record_00b51bd0",
+      "source": "src/native_post_effect_draw_record.cpp",
+      "header": "include/bsp/native_post_effect_draw_record.hpp",
+      "doc": "docs/NATIVE_POST_EFFECT_DRAW_RECORD_BN.md",
+      "report": "reports/native_post_effect_draw_record_bn.json",
+      "status": "reconstructed_build_tested_concrete_provider_domain",
+      "original_abi": "ECX actual28h record; stack leading(float),section,geometry,model,camera,visibility(float); EAX same captured allocation; RET18h; ESI saved/restored",
+      "native_prototype": "void * BSP_PostEffectDrawRecord_Construct(float leading, void * section, void * geometry, void * model, void * camera, float visibility)",
+      "native_calling_convention": "__thiscall",
+      "native_end_exclusive": "00b51c11",
+      "end_inclusive": "00b51c10",
+      "native_bytes": 65,
+      "native_sha256": "5b5aad1351e13c160568d2797829346fcf62a14d5da7a516994200c6cc93c34e",
+      "evidence": "Descriptive hypothesis, not recovered symbol. Complete native body 00b51bd0..00b51c10; ECX actual28h record; stack leading(float),section,geometry,model,camera,visibility(float); EAX same captured allocation; RET18h; ESI saved/restored. Raw28h caller allocation, leading/visibility float x87 spill order, flags555h and zero depth passed to B51A20; returns captured allocation with RET18h; no count/allocation/key-field stores. Source adds borrowed EDX access context. MSVC Win32 build and both existing math CTests passed at afee0acdebab4e3b8152159b83e13de51fb8068c. Evidence: docs/NATIVE_POST_EFFECT_DRAW_RECORD_BN.md; reports/native_post_effect_draw_record_bn.json; docs/NATIVE_POST_EFFECT_BN_BO_INTEGRATION.md. No new native fixture, drop-in ABI, unrestricted FH3/SEH, parent-construction closure or gameplay validation.",
+      "abi_compatible": false,
+      "game_validated": false,
+      "fixture_tested": false,
+      "tested_commit": "afee0acdebab4e3b8152159b83e13de51fb8068c"
+    }
+  ],
+  "source_review": {
+    "created_utc": "2026-09-14T05:32:47.471262+00:00",
+    "tested_commit": "afee0acdebab4e3b8152159b83e13de51fb8068c",
+    "native_spans": [
+      {
+        "address": "00b4e1f0",
+        "bytes": 189,
+        "sha256": "35e8540ec16ea29238accd0f93035843839276c42d3c2ae04dceb132881aa2fb",
+        "live_PE_equal": true
+      },
+      {
+        "address": "00b4e430",
+        "bytes": 30,
+        "sha256": "a38fd7bc339ae6a2217a05f876d2f15feee8856a9130ff46c0aaa03d3b17e9ee",
+        "live_PE_equal": true
+      },
+      {
+        "address": "00b51bd0",
+        "bytes": 65,
+        "sha256": "5b5aad1351e13c160568d2797829346fcf62a14d5da7a516994200c6cc93c34e",
+        "live_PE_equal": true
+      }
+    ],
+    "source_pin_checks": {
+      "reports/native_post_effect_draw_record_bn.json": {
+        "pins": 10,
+        "all_match": true
+      },
+      "reports/native_post_effect_owner_20h_bo.json": {
+        "pins": 14,
+        "all_match": true
+      }
+    },
+    "child_review": {
+      "address": "00b51bd0",
+      "reviewer": "primary integrator, independent of worker author",
+      "worker_commit": "ac498c87d80598ba7dc682e22b3b52b0be7a044a",
+      "root_commit": "afee0acdebab4e3b8152159b83e13de51fb8068c",
+      "complete_24_instruction_listing_reviewed": true,
+      "header_and_source_reviewed": true,
+      "generated_code": {
+        "object_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\bsp_core.dir\\Release\\native_post_effect_draw_record.obj",
+        "object_sha256": "d33e75bc088c94684d3ee9610fb169c414885ee21a17e4f4cf543793724ba79f",
+        "function": "?construct_native_post_effect_draw_record_00b51bd0@bsp@@YIPAXPAXPBUNativeTracelineRenderAccess@1@M0000M@Z",
+        "section_bytes": 71,
+        "section_sha256": "28c8de86cbc028f3f3dad97f4229f9755681199362c3c2543ff946578e55f37c",
+        "section_hex": "52 d9 ee 8b 44 24 18 8b 54 24 10 56 68 55 05 00 00 83 ec 08 d9 5c 24 04 8b f1 d9 44 24 2c 8b 4c 24 24 d9 1c 24 50 8b 44 24 20 d9 44 24 1c 51 52 50 51 8b ce d9 1c 24 8b 54 24 24 e8 00 00 00 00 8b c6 5e 5a c2 18 00",
+        "relocations": [
+          {
+            "offset": 60,
+            "type": 20,
+            "symbol": "?initialize_native_render_entry_00b51a20@bsp@@YIXPAXPBUNativeTracelineRenderAccess@1@M0000MMI@Z"
+          }
+        ],
+        "native_bytes": 65,
+        "native_sha256": "5b5aad1351e13c160568d2797829346fcf62a14d5da7a516994200c6cc93c34e",
+        "comparison": "Exact native instruction bytes after only six input-displacement+4 adjustments, added PUSH EDX, access reload MOV EDX,[ESP+24h], added POP EDX, and normalized existing CALL relocation",
+        "native_input_displacement_offsets": [
+          5,
+          9,
+          28,
+          32,
+          40,
+          44
+        ],
+        "source_call_relocation_offset": 60,
+        "all_native_x87_bytes_unchanged": true,
+        "extra_record_writes": false,
+        "extra_native_calls": false,
+        "source_ret_18h": true,
+        "original_key_writes_absent": true,
+        "limitation": "Static generated-code evidence, not executable fixture, ABI or hardware-exception proof"
+      },
+      "findings": [
+        "Only six original input displacements grow by four for saved EDX. Reload at ESP+24h follows all eight outgoing stores.",
+        "ESI and captured allocation survive; original RET18h and x87 bytes remain. One symbolic B51A20 call, no extra native writes/calls.",
+        "Actual record+04 is section pointer, not refcount. Key bytes+20/+24 are untouched.",
+        "Nonthrowing concrete NativeTracelineRenderAccess domain is inherited; static comparison does not establish unrestricted ABI/SEH parity."
+      ]
+    },
+    "primary_authored_review": {
+      "addresses": [
+        "00b4e1f0",
+        "00b4e430"
+      ],
+      "independent_peer_review": false,
+      "complete_listing_and_saved_EH_map_reviewed": true,
+      "findings": [
+        "20h D61EC0 owner and raw28h draw record are distinct from 24h D61EC8 stream-owning owner.",
+        "Material capture precedes captured decrement IAT; member releases observe fresh fields and clear only after non-null returning calls.",
+        "Current material/frame profiles and node bindings use existing real providers; base profile alone is written on C++ unwind.",
+        "Canonical references borrow existing atomic lifetime/count, bind transactionally, and retire captured identity without reading freed native storage."
+      ]
+    },
+    "new_native_fixture": false,
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "validation": {
+    "configuration": "MSVC Win32 Release",
+    "build_passed": true,
+    "ctests_passed": 2,
+    "ctests": [
+      "reconstructed_math",
+      "native_math_differential"
+    ],
+    "unchanged_tracked_build_inputs": 2553,
+    "original_bodies_live_PE_equal": true,
+    "call_audit_numeric_rows": 14,
+    "call_audit_failures": 0,
+    "indirect_rows_explicitly_unchecked": 5,
+    "names_prototypes_saved_read_back": true,
+    "prior_comments_preserved": true,
+    "force_exports": 3,
+    "primary_reviewed_worker_wrapper": true,
+    "primary_authored_lifetime_peer_reviewed": false,
+    "new_native_fixture": false,
+    "drop_in_ABI": false,
+    "native_FH3_SEH": false,
+    "game_validated": false
+  },
+  "libraries": {
+    "bsp_core.lib": "7ac4a62d13055b6b2636480ce332d7f1392705fe4480b2c8a8a091353bb903be",
+    "bsp_lua511.lib": "71e114b0ff6244852d678a5779fcbf28589bdcecbad811aff228ffd5007fe8c7",
+    "bsp_zlib121.lib": "f3f934925213a2ffb81f3aec2afbb065c1733cf43b28dddf31db6a69185c4102"
+  },
+  "artifact_sha256": {
+    "local/bnbo-final-build-stamp.json": "00c61400aa3b6f5ffb4b05b3f7f0b6e275b55c6f0e62c3c1be68e96e881e54ea",
+    "local/bnbo-final-combined-build.log": "788a7a4b604433a20b3b6944cf7fbe6500b189d7a637e6899399bc5a4e88afb7",
+    "local/bnbo-source-review.json": "43d39b77e13749ec5eed916532ceb2ad8ee54f4b524ee4d532e72eb3f7671fa6",
+    "local/bn-object-review.json": "e88dc91e673b5e88cf19d1a6ca9db51fef3cb3cf6ba8e456c2231d1a412812c0",
+    "local/bn_object_review.py": "f942294b69a9aee25e4601bcb4361ba4b3c33962b645927b4ab4366561e8e16a",
+    "local/bnbo-ghidra-annotation-record.json": "476ec4d6c8733c83bb80c5f88bfefdf28016d529a48a8dc7229cdbe77e9a27a2",
+    "local/bnbo-comments-before.json": "3054b14439fda4b27dc32d2074cd07f80380cb3c06f82c8ae7dadbacdaa4ff5f",
+    "local/bnbo-comments-after.json": "1c5aac067b8256bf6b3bf6a5f8585554f552759bdffbdc4f8373760a7ca9dace",
+    "local/bnbo-annotation.log": "a75bc9895367f9a7f3a431c6c8508719e0658b40d53bc6a2c34bbb6ab34231f2",
+    "local/bnbo-export-refresh.log": "beacacda3eb8b88f0c9628651d343e62f4039a85d025f80403c42e91cf1a148d",
+    "local/bnbo-final-call-audit.log": "96577fa06dfb7485ea765f83a615b17442c934f4cbf105f66390176ff84d2e19",
+    "local/bnbo-function-records.json": "f63689fd39182f7acf8cd2cb1179768c9dbd0950ddd5e3009fd6f355d58b8638",
+    "local/bnbo-ledger-before.json": "b912479549b1670a8af5edd5bd345141a02fd8256e1a1c69767e2eae2d8f37aa",
+    "local/bn-build.log": "405fce7d5a8ebb7b9c491dd0ebf798e6b90aa515901c08f60d7d61b64765e143",
+    "local/bn-build-retry.log": "e942e87b03e0243be80bb408b91eb85f38d26c6cc46fbc63d0f06b819b8eb0e7",
+    "local/build_final_bnbo.py": "03b96b5be9bb2af10df7d22903868a3e28e5de91df3afda4394aa750773f985f",
+    "local/prepare_bnbo_batch.py": "557f9ba3af8e5b1486839a159ed38ed729ec3e03e88be5f2f0b2f9ddd2934f02",
+    "local/annotate_bnbo.py": "603087b238d7390ca43bc3c672f515e43d70dc82c869cbeef5e73c68824ca95c",
+    "local/record_bnbo_validation.py": "406f36b45ba4e0733392225e9289d987307053d1a8e09d2a16f449946eb2149d",
+    "local/create_post20_bo.py": "e9562997f3a903bf85d6cc609a0590b9138cd6026a5f811279b6ed30d733eebf",
+    "local/record_post20_bo.py": "5ca6c1bbad621734276f1d0279ae1972706bf4ae815fb13300d73c07ce1b40c5",
+    "local/bnbo-live-00b4e1f0.txt": "5cf0dbed8ca9ede51cc36a6b8ef4b8018598fe02e24377ab00248c1da6e1d2cd",
+    "local/bnbo-live-00b4e430.txt": "0cf7171ca0ee3cf4dfc13d1ca9c4e1badcf80e5f83a9ea35c7ca8968cf957383",
+    "local/bnbo-live-00b51bd0.txt": "2732ff43d7060b214ec4fc6cb18957cfa5e39b0f2a612f5dbeef1eff47d5a7d0",
+    "build/win32/bsp_core.dir/Release/native_post_effect_draw_record.obj": "d33e75bc088c94684d3ee9610fb169c414885ee21a17e4f4cf543793724ba79f",
+    "build/win32/bsp_core.dir/Release/native_post_effect_owner_20h.obj": "0c689ae750806006b7a38fde3674715cc39cd3a486d724ce104050cce69cccd0"
+  },
+  "saved_analysis_repairs": [
+    "reports/native_post_effect_owner20_flow_repair_bo.json",
+    "reports/native_post_effect_owner20_eh_bo.json"
+  ],
+  "saved_analysis_credit": "Two caller cleanup gaps restored; CBFAF8 EH handler defined. No new body credit for the handler.",
+  "boundaries": [
+    "B4E470 20h producer and end-to-end parent construction/binding remain open.",
+    "B4E840 24h constructor is a separate active worker packet, excluded from this tested batch.",
+    "Canonical registration can allocate host metadata; providers must share actual lifetime and registry domains.",
+    "The naked draw-record wrapper inherits a nonthrowing concrete model/camera access domain.",
+    "The direct C++ destructor catch projects base-only cleanup; canonical terminal remains noexcept.",
+    "Two math CTests do not constitute a native fixture for these three routines or gameplay validation."
+  ],
+  "publication": {
+    "destination": "agent/orch3-20260910",
+    "main_integration_pending": true
+  },
+  "sealed_attempt": {
+    "tested_commit": "afee0acdebab4e3b8152159b83e13de51fb8068c",
+    "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\bnbo-validated-attempt-afee0acd.zip",
+    "sha256": "480c9518b56ef2f5d2544aa624b0edd4ff5a96191eebfaec2608e71f4b188e0c",
+    "payload_members": 2606,
+    "manifest_members": 1,
+    "all_member_hashes_rechecked": true,
+    "libraries": {
+      "bsp_core.lib": "7ac4a62d13055b6b2636480ce332d7f1392705fe4480b2c8a8a091353bb903be",
+      "bsp_lua511.lib": "71e114b0ff6244852d678a5779fcbf28589bdcecbad811aff228ffd5007fe8c7",
+      "bsp_zlib121.lib": "f3f934925213a2ffb81f3aec2afbb065c1733cf43b28dddf31db6a69185c4102"
+    },
+    "tracked_build_inputs": 2553
+  }
+}

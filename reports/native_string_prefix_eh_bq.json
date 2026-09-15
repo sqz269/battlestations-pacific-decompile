@@ -1,0 +1,132 @@
+{
+  "packet": "orch3_string_prefix_integration_bq",
+  "status": "defined_saved_force_exported",
+  "project_file": "C:/Users/sqz269/bsp.gpr",
+  "program": "battlestationspacific.exe",
+  "definitions": [
+    {
+      "address": "00c5e849",
+      "end_inclusive": "00c5e852",
+      "bytes": 10,
+      "info": "00d84d50",
+      "sha256": "323449801bb1c04860446420147499ba33bc9180fbf3e66cc895c72d008f3351",
+      "live_PE_equal": true,
+      "original_name_retained": "FUN_00c5e849",
+      "definition_record": {
+        "events": [
+          {
+            "endpoint": "disassemble_bytes",
+            "body": {
+              "start_address": "00c5e849",
+              "end_address": "00c5e853"
+            },
+            "result": {
+              "success": true,
+              "start_address": "00c5e849",
+              "end_address": "00c5e852",
+              "bytes_disassembled": 10,
+              "message": "Successfully disassembled 10 byte(s)"
+            }
+          },
+          {
+            "endpoint": "create_function",
+            "body": {
+              "address": "00c5e849",
+              "disassemble_first": false
+            },
+            "result": {
+              "success": true,
+              "address": "00c5e849",
+              "function_name": "FUN_00c5e849",
+              "entry_point": "00c5e849",
+              "body_size": 10,
+              "message": "Function created successfully at 00c5e849"
+            }
+          },
+          {
+            "defined": "00c5e849",
+            "end": "00c5e853",
+            "name": null,
+            "after": "Function: FUN_00c5e849 at 00c5e849\nSignature: undefined FUN_00c5e849(void)\nEntry: 00c5e849\nBody: 00c5e849 - 00c5e852"
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "error": "Unable to lock due to active transaction"
+            }
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "success": true,
+              "program": "battlestationspacific.exe",
+              "message": "Program saved successfully"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "address": "00c5f371",
+      "end_inclusive": "00c5f37a",
+      "bytes": 10,
+      "info": "00d85bdc",
+      "sha256": "f5534d51fa216a1d752ee442e7eebeca2f7c8d28f38f4c938bd2945a858a00d9",
+      "live_PE_equal": true,
+      "original_name_retained": "FUN_00c5f371",
+      "definition_record": {
+        "events": [
+          {
+            "endpoint": "disassemble_bytes",
+            "body": {
+              "start_address": "00c5f371",
+              "end_address": "00c5f37b"
+            },
+            "result": {
+              "success": true,
+              "start_address": "00c5f371",
+              "end_address": "00c5f37a",
+              "bytes_disassembled": 10,
+              "message": "Successfully disassembled 10 byte(s)"
+            }
+          },
+          {
+            "endpoint": "create_function",
+            "body": {
+              "address": "00c5f371",
+              "disassemble_first": false
+            },
+            "result": {
+              "success": true,
+              "address": "00c5f371",
+              "function_name": "FUN_00c5f371",
+              "entry_point": "00c5f371",
+              "body_size": 10,
+              "message": "Function created successfully at 00c5f371"
+            }
+          },
+          {
+            "defined": "00c5f371",
+            "end": "00c5f37b",
+            "name": null,
+            "after": "Function: FUN_00c5f371 at 00c5f371\nSignature: undefined FUN_00c5f371(void)\nEntry: 00c5f371\nBody: 00c5f371 - 00c5f37a"
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "success": true,
+              "program": "battlestationspacific.exe",
+              "message": "Program saved successfully"
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "evidence": "Each handler MOV EAX with its original FH3 info address then JMP BF6B43. Defined with existing locked helper, saved, original default names retained, exports force-refreshed.",
+  "native_body_credit": 0,
+  "native_exception_execution_verified": false
+}

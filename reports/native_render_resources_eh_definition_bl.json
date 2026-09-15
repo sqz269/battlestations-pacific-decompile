@@ -1,0 +1,90 @@
+{
+ "events": [
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00cbc432",
+    "end_address": "00cbc43c"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00cbc432",
+    "end_address": "00cbc43b",
+    "bytes_disassembled": 10,
+    "message": "Successfully disassembled 10 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00cbc432",
+    "disassemble_first": false
+   },
+   "result": {
+    "success": true,
+    "address": "00cbc432",
+    "function_name": "FUN_00cbc432",
+    "entry_point": "00cbc432",
+    "body_size": 10,
+    "message": "Function created successfully at 00cbc432"
+   }
+  },
+  {
+   "defined": "00cbc432",
+   "end": "00cbc43c",
+   "name": null,
+   "after": "Function: FUN_00cbc432 at 00cbc432\nSignature: undefined FUN_00cbc432(void)\nEntry: 00cbc432\nBody: 00cbc432 - 00cbc43b"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00cbff6a",
+    "end_address": "00cbff74"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00cbff6a",
+    "end_address": "00cbff73",
+    "bytes_disassembled": 10,
+    "message": "Successfully disassembled 10 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00cbff6a",
+    "disassemble_first": false
+   },
+   "result": {
+    "success": true,
+    "address": "00cbff6a",
+    "function_name": "FUN_00cbff6a",
+    "entry_point": "00cbff6a",
+    "body_size": 10,
+    "message": "Function created successfully at 00cbff6a"
+   }
+  },
+  {
+   "defined": "00cbff6a",
+   "end": "00cbff74",
+   "name": null,
+   "after": "Function: FUN_00cbff6a at 00cbff6a\nSignature: undefined FUN_00cbff6a(void)\nEntry: 00cbff6a\nBody: 00cbff6a - 00cbff73"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}

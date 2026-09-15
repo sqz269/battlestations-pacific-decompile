@@ -1,0 +1,359 @@
+{
+  "packet": "orch3_render_resources_integration_bk",
+  "updated_utc": "2026-09-14T04:56:16.460805+00:00",
+  "status": "combined_source_build_and_evidence_validated_sealed",
+  "tested_commit": "86c8afba9953eadfbab78e89d619cc67c454f7fc",
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "native_body_credit": 6,
+  "native_bytes_credit": 2100,
+  "functions": [
+    {
+      "address": "00b14a10",
+      "name": "BSP_RenderResources_Construct",
+      "cpp_symbol": "construct_native_render_resources_00b14a10",
+      "bytes": 1356,
+      "native_sha256": "9b21a074166bd55ea23814ebd1e0780b72b2f409a9b80f3113546a426277021b",
+      "source": "src/native_render_resources_construction.cpp",
+      "header": "include/bsp/native_render_resources_construction.hpp"
+    },
+    {
+      "address": "00b4e2f0",
+      "name": "BSP_PostEffectOwner_Destroy",
+      "cpp_symbol": "destroy_native_post_effect_owner_00b4e2f0",
+      "bytes": 217,
+      "native_sha256": "c706f77c2dd98b3a445aeb7103f9d40d4a69946441bd18ceb23cec25bf830d23",
+      "source": "src/native_post_effect_owner.cpp",
+      "header": "include/bsp/native_post_effect_owner.hpp"
+    },
+    {
+      "address": "00b4e450",
+      "name": "BSP_PostEffectOwner_ScalarDeletingDestructor",
+      "cpp_symbol": "delete_native_post_effect_owner_00b4e450",
+      "bytes": 30,
+      "native_sha256": "e467f2e7744686977093e44d20435b05e2a7a52b45ba7288b9c1180eb4023a5a",
+      "source": "src/native_post_effect_owner.cpp",
+      "header": "include/bsp/native_post_effect_owner.hpp"
+    },
+    {
+      "address": "00b52270",
+      "name": "BSP_RenderServiceTextureHelper_ReleaseAuxiliaries",
+      "cpp_symbol": "release_native_render_service_texture_auxiliaries_00b52270",
+      "bytes": 143,
+      "native_sha256": "c9fdc73b9f6facc30fb90836e6fe00a7e3d773b917471767ec2e22b56bf89fd0",
+      "source": "src/native_render_service_texture_lifetime.cpp",
+      "header": "include/bsp/native_render_service_texture_lifetime.hpp"
+    },
+    {
+      "address": "00b52400",
+      "name": "BSP_RenderServiceTextureHelper_Destroy",
+      "cpp_symbol": "destroy_native_render_service_textures_00b52400",
+      "bytes": 324,
+      "native_sha256": "82506c5d90f36aded021ac436cb21df815837ab4164674ed9c7e451e8675f310",
+      "source": "src/native_render_service_texture_lifetime.cpp",
+      "header": "include/bsp/native_render_service_texture_lifetime.hpp"
+    },
+    {
+      "address": "00b52840",
+      "name": "BSP_RenderServiceTextureHelper_ScalarDeletingDestructor",
+      "cpp_symbol": "delete_native_render_service_textures_00b52840",
+      "bytes": 30,
+      "native_sha256": "91cff2503f5b485107b2914ebc3d54551f367e1ee1c7ff2dc8b9aac8c3c9e1f2",
+      "source": "src/native_render_service_texture_lifetime.cpp",
+      "header": "include/bsp/native_render_service_texture_lifetime.hpp"
+    }
+  ],
+  "previously_reconstructed_correction": {
+    "address": "00b52550",
+    "new_native_body_credit": 0,
+    "kind": "begin actual counter atomic lifetime at original count1 store",
+    "coff_review": {
+      "function_symbol": "?construct_native_render_service_textures_00b52550@bsp@@YAPAXPAXAAUNativeRenderServiceTextureConstructionContext@1@AAUNativeRenderServiceTextureConstructionAcquired@1@@Z",
+      "before": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-render-child-lifetime-bl\\local\\bl-construction-before.obj",
+        "object_sha256": "2b483c35467c46950593d8841afe6244f345e600e38cb897373770c96273d3f7",
+        "function_section_bytes": 1141,
+        "function_section_sha256": "69dd90f332a930da6cf6c1af2f486a701c2c83dddf00425a1b88f446ececec87",
+        "relocation_count": 35
+      },
+      "worker_after": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-render-child-lifetime-bl\\build\\win32\\bsp_core.dir\\Release\\native_render_service_texture_construction.obj",
+        "object_sha256": "ab1e471f52d62addd9f0766358c3c38dee2c144aabb382a4fa435aa9d7209755",
+        "function_section_bytes": 1141,
+        "function_section_sha256": "69dd90f332a930da6cf6c1af2f486a701c2c83dddf00425a1b88f446ececec87",
+        "relocation_count": 35
+      },
+      "current": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\bsp_core.dir\\Release\\native_render_service_texture_construction.obj",
+        "object_sha256": "878c40e0f53cdcc96f1252cdb6b835410a703a384933ba31a14bad2e8e8b6d60",
+        "function_section_bytes": 1141,
+        "function_section_sha256": "69dd90f332a930da6cf6c1af2f486a701c2c83dddf00425a1b88f446ececec87",
+        "relocation_count": 35
+      },
+      "function_section_equal": true,
+      "worker_before_after_symbolic_relocations_exactly_equal": true,
+      "current_relocations_equal_after_anonymous_namespace_hash_normalization": true,
+      "current_raw_symbol_differences": 8,
+      "normalization": "Only MSVC ?A0xHEX@ anonymous-namespace identity differs across worktree paths; symbol spelling/type, relocation kind and offsets otherwise identical. Raw relocation lists preserved.",
+      "count1_store_offset": 120,
+      "count1_store_count": 1,
+      "count0_store_count": 0,
+      "independent_review": "Primary re-parsed worker pre/post-correction COFF and current combined-build COFF; exact worker comparison and explicitly normalized cross-worktree comparison.",
+      "boundary": "Whole object identity and new native fixture are not claimed. Other standard-library COMDATs differ."
+    }
+  },
+  "validation": {
+    "command": "./scripts/build.ps1",
+    "configuration": "MSVC Win32 Release",
+    "passed": true,
+    "tracked_build_inputs": 2547,
+    "existing_ctests": [
+      "reconstructed_math",
+      "native_math_differential"
+    ],
+    "ctests_passed": 2,
+    "libraries": {
+      "bsp_core.lib": "22c4b2a7d096eba366c142bfc084e884a85d899c1765c1b7fc513991b28f626a",
+      "bsp_lua511.lib": "71e114b0ff6244852d678a5779fcbf28589bdcecbad811aff228ffd5007fe8c7",
+      "bsp_zlib121.lib": "f3f934925213a2ffb81f3aec2afbb065c1733cf43b28dddf31db6a69185c4102"
+    },
+    "new_native_fixture": false,
+    "drop_in_abi_compatible": false,
+    "native_FH3_SEH_validated": false,
+    "gameplay_validated": false
+  },
+  "independent_reviews": {
+    "constructor": {
+      "candidate_commit": "2eea9361f82614818242f31f518b3d24ca4285a9",
+      "base_commit": "59e84616a3bc5ccc065fdf094738319e88d41004",
+      "reviewed_files": {
+        "include/bsp/native_render_resources_construction.hpp": "6dab58d13e683dd54eec5aff275004c3b85179a164bd95d1df0431a5d5980298",
+        "src/native_render_resources_construction.cpp": "477b7699cd9781cc78ade9b89ecd8c1e0e4e9ce59aeeb40f6c07593ff3d8a7c9",
+        "docs/NATIVE_RENDER_RESOURCES_CONSTRUCTION_BK.md": "e52479a1b47ec8a5a42ff683619bcad8e967b31b048d9135b3a02aecf21fbc19",
+        "reports/native_render_resources_construction_bk.json": "56a23497b74affb82ce7719cd38f7adb6338747904bea8afe508d2f784064840"
+      },
+      "source_dependency_pins_verified": 29,
+      "initializer_accounting": "135 listing rows; 131 tagged source operations; EBX zero, two LEA values and pushed40h allocation size are represented by direct zero/offset/size operands instead of separate source temporaries.",
+      "native_spans": [
+        {
+          "address": "00b14a10",
+          "bytes": 1356,
+          "sha256": "9b21a074166bd55ea23814ebd1e0780b72b2f409a9b80f3113546a426277021b",
+          "live_PE_equal": true
+        },
+        {
+          "address": "00cbc390",
+          "bytes": 99,
+          "sha256": "fb6a76527991cf1c9a720a0cd12d8c90ff7009410a63c44e7d6eda8754245e17",
+          "live_PE_equal": true
+        },
+        {
+          "address": "00df45b4",
+          "bytes": 36,
+          "sha256": "c5c7a65d7ab38c59b7dbde97e1c2b34cbe7a202bd63da329a6d6f79e4f3486f8",
+          "live_PE_equal": true
+        },
+        {
+          "address": "00df45d8",
+          "bytes": 72,
+          "sha256": "0cc213814f78775cd5faa43f2c4957e4fe75a73d3d68df876e377ea14637de50",
+          "live_PE_equal": true
+        },
+        {
+          "address": "00d5e474",
+          "bytes": 10,
+          "sha256": "3c7fbdd7d27ebb940ddef85b816fadf7cd123872ee9adb1c140056be996c5a59",
+          "live_PE_equal": true
+        },
+        {
+          "address": "00d5e468",
+          "bytes": 10,
+          "sha256": "e52fb88fd7211e1e0f6b38030dc553cba2a7988ac6ea3485f9fe8f3ca2e7f775",
+          "live_PE_equal": true
+        },
+        {
+          "address": "00d5e460",
+          "bytes": 5,
+          "sha256": "8d8fe72b350b6c87da9732bd9dfd4f1942db74443d07ade1b168a068dd55f11e",
+          "live_PE_equal": true
+        }
+      ],
+      "direct_call_verifier": "36 rows, zero failures",
+      "indirect_calls": "Four dispatch sites: current D5F0A8+128 B24DC0, +12C B20090 and two +64 B319B0 calls; source uses their existing concrete providers.",
+      "primary_review": [
+        "Read full 302-instruction native listing and candidate header/source/document. Stale pseudocode removes reachable B14E69 copy and is not the authority.",
+        "All 131 tagged initializer operations preserve original volatile cell loads, retained XMM DWORD bits, exact store widths/offsets and original order; no floating arithmetic is introduced.",
+        "ESI retains original ECX, EBX remains zero, and EDI retains embedded header identity until final count load. Both return paths return the original receiver.",
+        "Read all nine cleanup funclets live. States 4/7/8 free exact shared allocation spill; 5/6 destroy shared temporary header; all continue through vector/vector/string/base states3..0.",
+        "Native allocation/null branches, current renderer slots, callback-time owner field reloads, current literal count+1/count copies, disarmed normal string return and complete-helper publication follow the native sequence.",
+        "Post-completion companion validation errors are outside native EH and preserve helper allocation/block. No new derived destructor or release of previously published resources is invented."
+      ],
+      "findings": [],
+      "source_composition_audit": "Primary independently reviewed worker source, all original constructor instructions and cleanup funclets. Three affected source modules are now in the combined build; no separate second review of the whole constructor is claimed.",
+      "build_tested": true,
+      "fixture_tested": false,
+      "abi_compatible": false,
+      "game_validated": false,
+      "new_candidate_native_bodies": 1,
+      "new_candidate_native_bytes": 1356,
+      "tested_commit": "86c8afba9953eadfbab78e89d619cc67c454f7fc"
+    },
+    "child_lifetime": {
+      "tested_commit": "86c8afba9953eadfbab78e89d619cc67c454f7fc",
+      "reviewer": "primary integrator independent of child source author",
+      "source_sha256": {
+        "include/bsp/native_render_service_texture_lifetime.hpp": "3870f9d60bb4343198af56a624a8c73b5125855df41286cfe2aec48fb6baa41c",
+        "src/native_render_service_texture_lifetime.cpp": "cc4859375d7cf743f4d48baf60d3dacf9d36184142ea035875375212580ec597"
+      },
+      "native_spans": [
+        {
+          "address": "00b52270",
+          "bytes": 143,
+          "sha256": "c9fdc73b9f6facc30fb90836e6fe00a7e3d773b917471767ec2e22b56bf89fd0",
+          "live_PE_equal": true
+        },
+        {
+          "address": "00b52400",
+          "bytes": 324,
+          "sha256": "82506c5d90f36aded021ac436cb21df815837ab4164674ed9c7e451e8675f310",
+          "live_PE_equal": true
+        },
+        {
+          "address": "00b52840",
+          "bytes": 30,
+          "sha256": "91cff2503f5b485107b2914ebc3d54551f367e1ee1c7ff2dc8b9aac8c3c9e1f2",
+          "live_PE_equal": true
+        }
+      ],
+      "reviewed_control_flow": [
+        "B52270: IAT captured before first member; +30,+68,+88,+B0; fresh profiles only after zero; null skip and post-return clear.",
+        "B52400: derived profile, auxiliary call, +18 capture before IAT; +18,+3C,+70,+98; vectors +A4,+8C,+7C,+24; state4..0 and base cleanup.",
+        "B52840: destroy before flags&1 free; captured return allocation; RET4.",
+        "Same canonical registry/live count; no extra decrement/reset; current concrete profile/slot checks; retirement and quiescent companion ownership.",
+        "B52550 source correction starts atomic lifetime at native count1 store; code generation proof separately retained."
+      ],
+      "findings": [],
+      "fixture_tested": false,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    "post_effect_registered_terminal": {
+      "header": "include/bsp/native_post_effect_owner.hpp",
+      "source": "src/native_post_effect_owner.cpp",
+      "worktree": "J:/PROG/battlestations-pacific-decompile-orch3-20260910",
+      "scope": "Read-only review of prepared concrete registered member/zero-terminal/retirement path. Same canonical registry/count and post-free unbind/disposal ordering agree.",
+      "findings": [],
+      "reviewed_source_sha256": {
+        "include/bsp/native_post_effect_owner.hpp": "b23ead881361ba39679b0418f52ffd32e69bdee59932afb6f47399e3c1095e3a",
+        "src/native_post_effect_owner.cpp": "4243e1ed5e55858bf1df2d741d9d8989b0a3bc9599834816211d7f1c9d10053d"
+      },
+      "resolved_findings": [
+        {
+          "was": "int32_t stdcall IAT pointer could not borrow the same typed Win32 LONG cell as BL/cockpit",
+          "is": "long (__stdcall*)(volatile long*) in alias and both call-site casts",
+          "verified": "Final header and source inspected; actual std::atomic<int32_t> storage unchanged"
+        }
+      ],
+      "owner_size_bytes": 36,
+      "registered_members": "D61D6C logical stream -> NativeLogicalVertexReference; D5E520 material -> NativeMaterialReference; exact canonical actual+04 checked before terminal. +08 frame uses real B1FCF0 directly.",
+      "retirement": "Captured native identity; real B4E450 flags1; host dead/retired metadata; unbind preserves companions; final disposal notification may destroy both, with no access afterward.",
+      "limits": [
+        "Canonical terminal inherits noexcept; no native exception/FH3 equivalence through it.",
+        "Transactional canonical bind can allocate; no blanket allocation-free registry guarantee.",
+        "Future B4E840 source producer must begin atomic lifetime at its count1 write; this lifetime provider does not manufacture a missing constructor.",
+        "Separately prepared root provider is not present or linked/tested in this worker checkout."
+      ]
+    }
+  },
+  "dependency_pin_checks": {
+    "reports/native_render_resources_construction_bk.json": {
+      "pins": 29,
+      "mismatches": {
+        "src/native_render_service_texture_construction.cpp": {
+          "recorded": "44e74e84fdde75716988b5fe70f6ca63e793c355efd8608a1b5cffa8b80585df",
+          "current": "4912ea61621f1045be49a5a116c2aff669f5578f40b0fa3701076623ec429d6b"
+        }
+      },
+      "explanation": "Only BK historical B52550 dependency pin changed by the documented atomic lifetime correction."
+    },
+    "reports/native_post_effect_owner_bl.json": {
+      "pins": 19,
+      "mismatches": {},
+      "explanation": "All pins match current sources."
+    },
+    "reports/native_render_service_texture_lifetime_bl.json": {
+      "pins": 19,
+      "mismatches": {},
+      "explanation": "All pins match current sources."
+    }
+  },
+  "call_verifier": [
+    "reports/native_render_resources_construction_bk.json: 36 call rows checked, 0 failed",
+    "reports/native_post_effect_owner_bl.json: 14 call rows checked, 0 failed",
+    "reports/native_render_service_texture_lifetime_bl.json: 25 call rows checked, 0 failed",
+    "reports/native_render_service_texture_construction.json: 39 call rows checked, 0 failed"
+  ],
+  "ghidra": {
+    "saved": true,
+    "prior_comments_preserved": true,
+    "original_names_and_prototypes_recorded": true,
+    "thiscall_signatures_read_back": true,
+    "force_refreshed_exports": 7,
+    "record": "local/bk-ghidra-annotation-record.json",
+    "b52550_existing_prototype_preserved": true,
+    "listing_repairs": [
+      "reports/native_render_resources_listing_repair_bl.json",
+      "reports/native_post_effect_flow_repair_bl.json"
+    ],
+    "raw_EH_definitions": [
+      "reports/native_render_resources_eh_definition_bl.json",
+      "reports/native_post_effect_eh_bl.json"
+    ],
+    "analysis_only": [
+      "00b14f60",
+      "00b151c0",
+      "00b0f6e0",
+      "00b4e840"
+    ],
+    "analysis_and_EH_definition_body_credit": 0
+  },
+  "boundaries": [
+    "No new differential fixture for these six bodies; existing math tests exercise their own scope.",
+    "Source interfaces and explicit contexts are not drop-in original binary ABIs. Native FH3/SEH behavior through noexcept terminals is unvalidated.",
+    "Canonical companions require live atomic counts, actual identity/profile checks, transactional registry binding and explicit retirement/quiescence. Registry metadata can allocate.",
+    "B4E840 and its child producers remain source work. Lifetime provider integration does not establish construction-to-binding or startup closure.",
+    "Parent render-service release and startup failure admission remain open, including uninitialized +70 before its later producer and the retained +67C texture consumers.",
+    "The rebuilt game has not been gameplay validated."
+  ],
+  "artifacts": {
+    "local/bk-source-independent-review.json": "ce8de5e42157f55d988a75ee2918ec77d2515622a467fe07a969801a45ae7f43",
+    "local/bk-child-independent-review.json": "c7a536d7040fa5363ab481af041b8332ef6a83197574278b62601082a32b804a",
+    "local/bk-b52550-independent-coff.json": "fe6bc53274b55d42c621b1d2c704c478592e2414f978aa4b43f7a5f8a84637ca",
+    "local/bk-ghidra-annotation-record.json": "9b8b973ae5ef7396082fe2cc2f7e149ba9f7920929ce7bdaf52bb41053cab89d",
+    "local/bk-comments-before.json": "1794824b0be90374891a94941451be44d614d2e5597f09a9eaf6d30c93c7ebd4",
+    "local/bk-comments-after.json": "8173a57691c171525514fb804d3ddb303b9f127bf1e1ca439d8ae4546499fa53",
+    "local/bk-annotation.log": "1d4e4fccbcfcf75992dac73283373d00ac78e4c738460bf872fe28bc8e9ff475",
+    "local/bk-export-refresh.log": "bc6093a8873fc1be4ca83eb86136cf2b52f7e05be0530d075a81f0345a06383a",
+    "local/bk-final-call-audit.log": "c44d39f8acd939f33675be4d4badb3d75b2c3d4adc79ac32cce5218ee85b7d8f",
+    "local/bk-final-combined-build.log": "4f510a716d337b6ce79f5576254bcfd6ab545424539fb6a9f39e1445333134b0",
+    "local/bk-final-build-stamp.json": "b178485d2a1e9bf11fe53728fa4432b58c57c3da4a5e525ede011af8b21f4499"
+  },
+  "sealed_attempt": {
+    "tested_commit": "86c8afba9953eadfbab78e89d619cc67c454f7fc",
+    "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\bk-validated-attempt-86c8afba.zip",
+    "sha256": "7a0abbee7d99dc3a9126ff065849340247de367cadf9e2362970d8da949df44d",
+    "payload_members": 2614,
+    "manifest_members": 1,
+    "all_member_hashes_rechecked": true,
+    "libraries": {
+      "bsp_core.lib": "22c4b2a7d096eba366c142bfc084e884a85d899c1765c1b7fc513991b28f626a",
+      "bsp_lua511.lib": "71e114b0ff6244852d678a5779fcbf28589bdcecbad811aff228ffd5007fe8c7",
+      "bsp_zlib121.lib": "f3f934925213a2ffb81f3aec2afbb065c1733cf43b28dddf31db6a69185c4102"
+    },
+    "tracked_build_inputs": 2547
+  }
+}
