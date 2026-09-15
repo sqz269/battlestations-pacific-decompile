@@ -5,6 +5,7 @@ incoming side wins for records it changed), and any text file where both sides i
 spot relative to the merge base (independent test cases added before the same closing line, appends).
 Usage as CLI: python tools/merge_resolve.py <worktree>  -> resolves and stages what it can, reports the rest.
 """
+import collections
 import json
 import re
 import subprocess
@@ -128,11 +129,15 @@ def union_reconstruction_shard(worktree, path, base, ours, theirs):
     distinct addresses, and 649 (shard, address) groups hold two or more, mostly a fragment beside
     a function. No field separates them reliably, so an address-keyed union silently drops records.
 
-    Only the safe case is resolved: both sides kept every base line and appended. Anything else is
-    refused so the conflict stays staged for a human, specifically
-      - a base line deleted or rewritten on either side, which is an in-place record edit,
-      - both sides adding records for an address the base did not have, which is two competing
-        reconstructions of the same function,
+    Two cases resolve. Both sides kept every base line and only appended, so the appends union. Or
+    exactly one side rewrote base records while the other left them untouched, which is not a
+    disagreement: that side is kept whole and the other's appends replay onto it.
+
+    Everything else is refused so the conflict stays staged for a human, specifically
+      - both sides rewrote base records in place, which only the evidence can settle,
+      - an append landing on an address the other side was rewriting,
+      - both sides adding different records for an address the base did not have, which is two
+        competing reconstructions of the same function,
       - any line that is not JSON carrying an address.
     """
     def rows(text):
@@ -157,8 +162,25 @@ def union_reconstruction_shard(worktree, path, base, ours, theirs):
     base_keys = {k for k, _ in base_rows}
     our_keys = {k for k, _ in our_rows}
     their_keys = {k for k, _ in their_rows}
-    if not base_keys <= our_keys or not base_keys <= their_keys:
-        return None  # a base record was deleted or edited in place on one side
+    our_edits, their_edits = base_keys - our_keys, base_keys - their_keys
+    if our_edits and their_edits:
+        return None  # both sides rewrote base records in place; only evidence can settle that
+    if our_edits or their_edits:
+        # exactly one side rewrote base records and the other left them untouched, so there is no
+        # competing opinion: keep the editing side whole and replay the other side's appends onto it.
+        editor, appender = (our_rows, their_rows) if our_edits else (their_rows, our_rows)
+        editor_keys = {k for k, _ in editor}
+        base_addrs = {r['address'].lower() for _, r in base_rows}
+        new_addrs = {r['address'].lower() for k, r in appender if k not in base_keys} - base_addrs
+        editor_new = {r['address'].lower() for k, r in editor if k not in base_keys} - base_addrs
+        edited_addrs = {json.loads(k)['address'].lower() for k in (our_edits or their_edits)}
+        if new_addrs & edited_addrs:
+            return None  # the appends land on an address the other side was rewriting
+        if new_addrs & editor_new:
+            return None  # both sides reconstructed the same new address; only evidence settles which
+        merged = [r for _, r in editor] + [r for k, r in appender if k not in base_keys and k not in editor_keys]
+        merged.sort(key=lambda r: (int(r['address'], 16), r.get('kind') or '', r.get('name') or ''))
+        return ''.join(json.dumps(r, ensure_ascii=False) + '\n' for r in merged)
     our_new = [(k, r) for k, r in our_rows if k not in base_keys]
     their_new = [(k, r) for k, r in their_rows if k not in base_keys]
     base_addrs = {r['address'].lower() for _, r in base_rows}
