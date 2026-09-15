@@ -12,6 +12,8 @@
 // branch-free but is a representation detail, not a layout claim. The offset
 // constants below are the layout claim.
 namespace bsp {
+// Shared null-safe original fastcall comparison rule, with a new source ABI.
+int compare_insensitive_00438e10(const char* left, const char* right);
 
 // ---------------------------------------------------------------------------
 // Layout (00951660 allocates 10h per slot; 00951560 builds the lists)

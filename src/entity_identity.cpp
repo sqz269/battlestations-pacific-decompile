@@ -13,7 +13,6 @@
 // no bounds check this file returns a failure instead; every such divergence is
 // commented with the instruction that differs.
 namespace bsp {
-namespace {
 
 // 00438E10 BSP_CString_CompareInsensitive: equal pointers are equal, a null left
 // sorts first, a null right sorts last, otherwise the CRT _stricmp.
@@ -31,6 +30,7 @@ int compare_insensitive_00438e10(const char* left, const char* right)
     return _stricmp(left, right);
 }
 
+namespace {
 bool slot_index_for_id(const EntityIdTable& table, std::uint16_t id, std::uint32_t& index)
 {
     // 009517E0 / 009516D5 / 00521E3B: (id - first_id) * 10h + slots. The native

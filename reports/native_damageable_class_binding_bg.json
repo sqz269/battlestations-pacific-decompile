@@ -1,0 +1,733 @@
+{
+  "packet": "orch6_damageable_class_binding_bg",
+  "status": "complete_borrowed_source_with_native_matrix_schedule_build_and_bounded_differential_tested",
+  "worker_dispatches": 0,
+  "native": {
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "spans": [
+      {
+        "entry": "00879ad0",
+        "end": "0087a401",
+        "bytes": 2354,
+        "sha256": "9590b694071941f5353ef628bc1f9defea8e00c27a68767811d24e52cd412b32",
+        "role": "implemented",
+        "live_disk_equal": true
+      },
+      {
+        "entry": "00879a70",
+        "end": "00879a9d",
+        "bytes": 46,
+        "sha256": "98932791000de940f9bb33628d2288f70cb909836ee5e8caa6d76adfa875e4ac",
+        "role": "implemented",
+        "live_disk_equal": true
+      },
+      {
+        "entry": "00876da0",
+        "end": "00876e1a",
+        "bytes": 123,
+        "sha256": "18429678ddb2bdbd356ed8808169f40d4ad91d037f35b0aaef4ce8f76791435c",
+        "role": "implemented",
+        "live_disk_equal": true
+      },
+      {
+        "entry": "008772b0",
+        "end": "00877312",
+        "bytes": 99,
+        "sha256": "0c0e01c4b1432bddea3ab787349f2d5bab032a2ab066e9f50e9fe4924be459ee",
+        "role": "implemented",
+        "live_disk_equal": true
+      },
+      {
+        "entry": "0074d190",
+        "end": "0074d203",
+        "bytes": 116,
+        "sha256": "bbc3f8902704adbd0561a99860ac89458e51a8b2ca06f633583d9603f617fb10",
+        "role": "implemented",
+        "live_disk_equal": true
+      },
+      {
+        "entry": "0085dc80",
+        "end": "0085de93",
+        "bytes": 532,
+        "sha256": "8a764150a5c56d5ab6684bacc582167fa2682fd55bcedd5310a3fb52c750eace",
+        "role": "implemented",
+        "live_disk_equal": true
+      },
+      {
+        "entry": "004b3fc0",
+        "end": "004b404d",
+        "bytes": 142,
+        "sha256": "d00e8df894b984b21f9260ff4a12f18533073ddc1c61ed9566fef372c6ab0bd8",
+        "role": "original_library_oracle",
+        "live_disk_equal": true
+      },
+      {
+        "entry": "0095f500",
+        "end": "0095fed5",
+        "bytes": 2518,
+        "sha256": "e5f9b9fb5e78051d3476e9887f257cd909dcabca80c6407d37c8145aa09d2a29",
+        "role": "flow_repaired_reference",
+        "live_disk_equal": true
+      },
+      {
+        "entry": "00877fe0",
+        "end": "00878021",
+        "bytes": 66,
+        "sha256": "d1e25e0c147dfcb81133cdab3eef1a9c907eccd4f9e1d733a937d195ea223cf0",
+        "role": "audited_tree_node_producer",
+        "live_disk_equal": true
+      }
+    ],
+    "auxiliary_spans": [
+      {
+        "entry": "00c96660",
+        "bytes": 40,
+        "sha256": "626a0ab7848f43c60a10c9bc71e4fdd428bbf6f216567351a465036ace264e1f"
+      },
+      {
+        "entry": "00dc88e8",
+        "bytes": 60,
+        "sha256": "963ccd62312b1d5f15d6b4b1d156c1a04784c7bf4d4686c0b2a94289ebbcaaca"
+      },
+      {
+        "entry": "00e08138",
+        "bytes": 64,
+        "sha256": "1b31faa8aee31df298fae0a385b4d38a7a10d091a57cd56fec97f72eabed49bc"
+      },
+      {
+        "entry": "00ce43cc",
+        "bytes": 144,
+        "sha256": "038ca788f72a6d37856007935ba666970acf26b1802d19dffa0c23896bafdb7e"
+      },
+      {
+        "entry": "00d7a24c",
+        "bytes": 4,
+        "sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c"
+      },
+      {
+        "entry": "00d7a208",
+        "bytes": 4,
+        "sha256": "6d58692645c9d1cfaf13541cbd258f86193ef63c2f1d38f6bbca9617372d7bd6"
+      },
+      {
+        "entry": "00d0d0a0",
+        "bytes": 8,
+        "sha256": "d501102e4a5cabcd928fefa226135be9bff35ec77a5733cf024ef5a81a03fa6d"
+      },
+      {
+        "entry": "00d0df20",
+        "bytes": 8,
+        "sha256": "c6070c120b593b6fae7a8a84d0d72fdce0c1b637ac9d4be93ea15542058b74d4"
+      },
+      {
+        "entry": "00d0df10",
+        "bytes": 14,
+        "sha256": "c6c9a4164363c53e72d97668dafc665e21696f9fda3667659256b1554e7f8410"
+      },
+      {
+        "entry": "00d05a18",
+        "bytes": 10,
+        "sha256": "a8cebff092bbca36b295f810ab767838aba8cc51162258a71bcc51e49e320f98"
+      },
+      {
+        "entry": "0087ce00",
+        "bytes": 77,
+        "sha256": "855a377ad32bae0e0193292ba4e3db2512b8b9041c2477d2912c0edaec40e266"
+      },
+      {
+        "entry": "0087ced3",
+        "bytes": 190,
+        "sha256": "70046d96118323b693458a9ba0df5d907881c645cd5f1e31e9d3baef98879394"
+      }
+    ]
+  },
+  "calls": [
+    {
+      "function": "00879ad0",
+      "address": "00879b13",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00879ad0",
+      "address": "00879b28",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00879ad0",
+      "address": "00879b36",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00879ad0",
+      "address": "00879b63",
+      "native": "00408720"
+    },
+    {
+      "function": "00879ad0",
+      "address": "00879b78",
+      "native": "00718870"
+    },
+    {
+      "function": "00879ad0",
+      "address": "00879b99",
+      "native": "00bf65ac"
+    },
+    {
+      "function": "00879ad0",
+      "address": "00879c41",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00879ad0",
+      "address": "00879c87",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00879ad0",
+      "address": "00879cd6",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00879ad0",
+      "address": "00879d6b",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00879ad0",
+      "address": "00879dba",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00879ad0",
+      "address": "00879e40",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00879ad0",
+      "address": "00879e8f",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00879ad0",
+      "address": "00879f71",
+      "native": "0085dc80"
+    },
+    {
+      "function": "00879ad0",
+      "address": "00879f7f",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00879ad0",
+      "address": "0087a038",
+      "native": "008772b0"
+    },
+    {
+      "function": "00879ad0",
+      "address": "0087a05c",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00879ad0",
+      "address": "0087a073",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00879ad0",
+      "address": "0087a07c",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00879ad0",
+      "address": "0087a092",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00879ad0",
+      "address": "0087a0a4",
+      "native": "00879a70"
+    },
+    {
+      "function": "00879ad0",
+      "address": "0087a0bc",
+      "native": "00bf65ac"
+    },
+    {
+      "function": "00879ad0",
+      "address": "0087a0ee",
+      "native": "004b3fc0"
+    },
+    {
+      "function": "00879ad0",
+      "address": "0087a11c",
+      "native": "00879a70"
+    },
+    {
+      "function": "00879ad0",
+      "address": "0087a154",
+      "native": "00438e10"
+    },
+    {
+      "function": "00879ad0",
+      "address": "0087a18e",
+      "native": "00bf65ac"
+    },
+    {
+      "function": "00879ad0",
+      "address": "0087a19d",
+      "native": "00876da0"
+    },
+    {
+      "function": "00879ad0",
+      "address": "0087a1c6",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00879ad0",
+      "address": "0087a1f8",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00879ad0",
+      "address": "0087a23a",
+      "native": "00408720"
+    },
+    {
+      "function": "00879ad0",
+      "address": "0087a256",
+      "native": "00718870"
+    },
+    {
+      "function": "00879ad0",
+      "address": "0087a27a",
+      "native": "00bf65ac"
+    },
+    {
+      "function": "00879ad0",
+      "address": "0087a2c2",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00879ad0",
+      "address": "0087a304",
+      "native": "0074d190"
+    },
+    {
+      "function": "00879ad0",
+      "address": "0087a396",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00879ad0",
+      "address": "0087a3c1",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00879a70",
+      "address": "00879a92",
+      "native": "00408120"
+    },
+    {
+      "function": "00876da0",
+      "address": "00876df2",
+      "native": "00bf6713"
+    },
+    {
+      "function": "008772b0",
+      "address": "008772b8",
+      "native": "00bf6713"
+    },
+    {
+      "function": "008772b0",
+      "address": "008772c7",
+      "native": "00bf6713",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "0074d190",
+      "address": "0074d1b1",
+      "native": "00bf55be"
+    },
+    {
+      "function": "0074d190",
+      "address": "0074d1f0",
+      "native": "00bf6989"
+    },
+    {
+      "function": "0085dc80",
+      "address": "0085dc8d",
+      "native": "00419440"
+    },
+    {
+      "function": "0085dc80",
+      "address": "0085dd82",
+      "native": "00419510"
+    },
+    {
+      "function": "0085dc80",
+      "address": "0085dd9e",
+      "native": "004f9b30"
+    },
+    {
+      "function": "0085dc80",
+      "address": "0085dddf",
+      "native": "00419510"
+    },
+    {
+      "function": "0085dc80",
+      "address": "0085de35",
+      "native": "00419510"
+    },
+    {
+      "function": "0085dc80",
+      "address": "0085de51",
+      "native": "004f9b30"
+    },
+    {
+      "function": "0085dc80",
+      "address": "0085de78",
+      "native": "00419510"
+    },
+    {
+      "function": "0095f500",
+      "address": "0095f525",
+      "native": "00879ad0"
+    },
+    {
+      "function": "0095f500",
+      "address": "0095f544",
+      "native": "00bf6713"
+    },
+    {
+      "function": "0095f500",
+      "address": "0095f55e",
+      "native": "00bf6713"
+    },
+    {
+      "function": "0095f500",
+      "address": "0095f569",
+      "native": "00bf6713"
+    },
+    {
+      "function": "0095f500",
+      "address": "0095f583",
+      "native": "00bf6713"
+    },
+    {
+      "function": "0095f500",
+      "address": "0095f5b9",
+      "native": "004b3fc0"
+    },
+    {
+      "function": "0095f500",
+      "address": "0095f6d4",
+      "native": "00bf6713"
+    },
+    {
+      "function": "0095f500",
+      "address": "0095f720",
+      "native": "00bf6713"
+    },
+    {
+      "function": "0095f500",
+      "address": "0095f76f",
+      "native": "00bf6713"
+    },
+    {
+      "function": "0095f500",
+      "address": "0095f81f",
+      "native": "00bf6713"
+    },
+    {
+      "function": "0095f500",
+      "address": "0095f865",
+      "native": "00bf6713"
+    },
+    {
+      "function": "0095f500",
+      "address": "0095f8d0",
+      "native": "00bf6713"
+    },
+    {
+      "function": "0095f500",
+      "address": "0095f916",
+      "native": "00bf6713"
+    },
+    {
+      "function": "0095f500",
+      "address": "0095f979",
+      "native": "004f9b30"
+    },
+    {
+      "function": "0095f500",
+      "address": "0095f9ae",
+      "native": "0085dc80"
+    },
+    {
+      "function": "0095f500",
+      "address": "0095f9d3",
+      "native": "004134f0"
+    },
+    {
+      "function": "0095f500",
+      "address": "0095f9e5",
+      "native": "00bf6713"
+    },
+    {
+      "function": "0095f500",
+      "address": "0095fa1f",
+      "native": "0095db40"
+    },
+    {
+      "function": "0095f500",
+      "address": "0095fa25",
+      "native": "00bf65ac"
+    },
+    {
+      "function": "0095f500",
+      "address": "0095fa54",
+      "native": "005471b0"
+    },
+    {
+      "function": "0095f500",
+      "address": "0095fa80",
+      "native": "005471b0"
+    },
+    {
+      "function": "0095f500",
+      "address": "0095fabb",
+      "native": "00408720"
+    },
+    {
+      "function": "0095f500",
+      "address": "0095fad3",
+      "native": "00718000"
+    },
+    {
+      "function": "0095f500",
+      "address": "0095faf7",
+      "native": "00bf65ac"
+    },
+    {
+      "function": "0095f500",
+      "address": "0095fbe9",
+      "native": "00bf6713"
+    },
+    {
+      "function": "0095f500",
+      "address": "0095fc35",
+      "native": "00bf6713"
+    },
+    {
+      "function": "0095f500",
+      "address": "0095fc5d",
+      "native": "00bf6713"
+    },
+    {
+      "function": "0095f500",
+      "address": "0095fcb8",
+      "native": "00bf6713"
+    },
+    {
+      "function": "0095f500",
+      "address": "0095fce0",
+      "native": "00bf6713"
+    },
+    {
+      "function": "0095f500",
+      "address": "0095fd20",
+      "native": "00bf6713"
+    },
+    {
+      "function": "0095f500",
+      "address": "0095fd46",
+      "native": "00bf6713"
+    },
+    {
+      "function": "0095f500",
+      "address": "0095fdde",
+      "native": "0085dc80"
+    },
+    {
+      "function": "00877fe0",
+      "address": "00877fe2",
+      "native": "00bf681b"
+    },
+    {
+      "function": "00c96660",
+      "address": "00c96666",
+      "native": "004072d0",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "00c9666b",
+      "address": "00c96671",
+      "native": "004072d0",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "00c96676",
+      "address": "00c96679",
+      "native": "004072d0",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "00c9667e",
+      "address": "00c96683",
+      "native": "00bf6b43",
+      "kind": "tail_jump"
+    }
+  ],
+  "producer_evidence": {
+    "tree_node": "00877fe0 alloc58/copy18DWORDs at+C/color54/nil55",
+    "effect_rows": "0087ce00 zeros30h,87ce3a selectsclass18,87ce48 append;87cf60 writesindex8;87cf8e writescategory4",
+    "point_records": "0071abb0 and0071b3e0, retained BF evidence"
+  },
+  "validation": {
+    "strict_win32": true,
+    "existing_ctests": 2,
+    "binder_pairs": 3,
+    "matrix_pairs": 3,
+    "implemented_bodies": 6,
+    "implemented_bytes": 3270,
+    "new_binder_helper_bytes": 2738,
+    "matrix_schedule_bytes": 532,
+    "call_rows": 86,
+    "call_failures": 0,
+    "compiled_pose_fp_sse_instructions": 134,
+    "source_sha256": {
+      "cmake/startup.cmake": "5f1bf8819789dfc112e8bd258994e3113609ab3ffb33fa727abc827f607dd1fe",
+      "include/bsp/native_damageable_class_binding.hpp": "95aa4cf1765e543746fee84710ad1f9970386044542a55b0ab5b7eb92f50541c",
+      "src/native_damageable_class_binding.cpp": "9f6803d39eebc32b55716bc0eb66254a9557abc74b1b1bc7a559c6fb8769e2f2",
+      "include/bsp/plane_pose_commit.hpp": "0e66f6b97075e4e1123020d2bc67ae5067138984ffe584006e216ae6c4b5c8a5",
+      "src/plane_pose_commit.cpp": "60d4f3bb65fd9e2866bb6a9dddd7504572db7b8e604374c89bf96326ab7a4fd2",
+      "include/bsp/native_input_keyboard_iterators.hpp": "4f7da41e38c8f4fedec43fc83b463e66b4f0e0aeb1cf4f2fd8e8419c6bbaebef",
+      "src/native_input_keyboard_iterators.cpp": "39d826e01ea1afb98bf0acab5e257e8f29999ae2c53ee53730659d7abafcd3e4",
+      "include/bsp/entity_identity.hpp": "c157a3f7098d39d9a8e6e3ad5a6269db5fe1425c80c9870dcf16cf4f98ed0b87",
+      "src/entity_identity.cpp": "886aef959411a02bae273bb3dcb541eaded80a3fce27a8184e7882afe6bfd0a9"
+    },
+    "output_sha256": {
+      "binder_original_0.bin": "1ebed50385cd74f29b38a5191382284047dabe4c71c374c7a476c8e97cf3bb1f",
+      "binder_original_1.bin": "c783c1e2bd711ba6e013eb9b06c385d0707ade29bad7d2b234c5c98bba60dfce",
+      "binder_original_2.bin": "37839cc9acadcd2c603bbeb1c52a80ee1d469caf6f6426fbf72b0032243e8ccf",
+      "matrix_original_0.bin": "64e22e1d93a13494d7e61f06478eb031dc2dcb3c23206b28235e2ddd7fc8854a",
+      "matrix_original_1.bin": "b80acbc8a5296d44619589bc033f06698c155f32b27c66b549501963c3003aad",
+      "matrix_original_2.bin": "a485d2a838533227d97623035b72946d60a1d1b2fa8e506e42093d1303c99309",
+      "binder_source_0.bin": "1ebed50385cd74f29b38a5191382284047dabe4c71c374c7a476c8e97cf3bb1f",
+      "binder_source_1.bin": "c783c1e2bd711ba6e013eb9b06c385d0707ade29bad7d2b234c5c98bba60dfce",
+      "binder_source_2.bin": "37839cc9acadcd2c603bbeb1c52a80ee1d469caf6f6426fbf72b0032243e8ccf",
+      "matrix_source_0.bin": "64e22e1d93a13494d7e61f06478eb031dc2dcb3c23206b28235e2ddd7fc8854a",
+      "matrix_source_1.bin": "b80acbc8a5296d44619589bc033f06698c155f32b27c66b549501963c3003aad",
+      "matrix_source_2.bin": "a485d2a838533227d97623035b72946d60a1d1b2fa8e506e42093d1303c99309",
+      "probe_run.txt": "ae2bb83b177c73ab1481b9fa8459b1f670ecee71b49890e883a036067031816c"
+    },
+    "scope": "Complete 2354-byte damageable model binder plus four helpers and full532-byte native matrix schedule,3270bytes total. Three populated/empty/repair binder pairs and three matrix pairs execute copied originals with canonical shared lookup/string/allocator/vector/CRT dependencies and a finite-record fixture sqrt handler. Seven returning-free gaps repaired; vehicle95F500 only a repaired reference. No native FH3, throwing cleanup, unmasked FP exceptions, actual parsing/host admission or gameplay claim.",
+    "saved_annotations": 8
+  },
+  "unwind": {
+    "handler": "00c9667e",
+    "func_info": "00dc8900",
+    "map": "00dc88e8",
+    "states": [
+      {
+        "state": 0,
+        "previous": -1,
+        "action": "00c96660",
+        "temporary": "EBP-A4"
+      },
+      {
+        "state": 1,
+        "previous": -1,
+        "action": "00c9666b",
+        "temporary": "EBP-A4"
+      },
+      {
+        "state": 2,
+        "previous": -1,
+        "action": "00c96676",
+        "temporary": "EBP-28"
+      }
+    ]
+  },
+  "fixture_corrections": [
+    "Bound the one cell as volatile actual storage to satisfy the raw-reference interface.",
+    "Finite sqrt diagnostics can invoke the CRT handler; retain and compare its complete finite argument/result/control-word records instead of assuming no callbacks."
+  ],
+  "functions": [
+    {
+      "address": "00879ad0",
+      "ghidra_name": "BSP_DamageableClass_BindModelPoints",
+      "name": "bind_native_damageable_class_model_00879ad0",
+      "source": "src/native_damageable_class_binding.cpp",
+      "bytes": 2354,
+      "status": "complete_borrowed_source_with_native_matrix_schedule_build_and_bounded_differential_tested",
+      "evidence": "Complete class+50 resource binder: crew emberke markers into class+60 checked tree matrices; counted explosion names, current15 category table and first class+18 effect row; fakeexplosion indices1 upward until first gap with counted point-array growth; final ordered x87 position copies. Node877FE0 and partial Lua87CA80 producer spans establish fields. Four returning-free gaps repaired; six unreachable alignment bytes retained undefined. Hypothesis, not a recovered symbol. BG: strict Win32 and both CTests pass; three complete binder pairs and three matrix pairs compare outputs, x87/SSE state and finite CRT callback records. Six complete bodies3270B;86 direct/tail evidence rows. Shared canonical dependencies and fixture CRT policy are explicit. No native FH3, throwing cleanup, unmasked hardware exceptions, real parsing, binary replacement or gameplay claim. docs/NATIVE_DAMAGEABLE_CLASS_BINDING_BG.md; reports/native_damageable_class_binding_bg.json."
+    },
+    {
+      "address": "00879a70",
+      "ghidra_name": "BSP_PointGroup_CopyCategoryString",
+      "name": "copy_native_point_group_category_00879a70",
+      "source": "src/native_damageable_class_binding.cpp",
+      "bytes": 46,
+      "status": "complete_borrowed_source_with_native_matrix_schedule_build_and_bounded_differential_tested",
+      "evidence": "ECX point item, stacked output SBO string, RET4/EAX output. Construct the current counted category at item+28h with canonical SBO helpers; actual54h item producer evidence from BF. Hypothesis, not a recovered symbol. BG: strict Win32 and both CTests pass; three complete binder pairs and three matrix pairs compare outputs, x87/SSE state and finite CRT callback records. Six complete bodies3270B;86 direct/tail evidence rows. Shared canonical dependencies and fixture CRT policy are explicit. No native FH3, throwing cleanup, unmasked hardware exceptions, real parsing, binary replacement or gameplay claim. docs/NATIVE_DAMAGEABLE_CLASS_BINDING_BG.md; reports/native_damageable_class_binding_bg.json."
+    },
+    {
+      "address": "00876da0",
+      "ghidra_name": "BSP_DamageableClass_FindFirstEffectRow",
+      "name": "find_native_damageable_effect_row_00876da0",
+      "source": "src/native_damageable_class_binding.cpp",
+      "bytes": 123,
+      "status": "complete_borrowed_source_with_native_matrix_schedule_build_and_bounded_differential_tested",
+      "evidence": "ECX class, stacked category/index, RET8. Validate captured cursor against current class+18 vector, retain returning CRT validation semantics, scan30h effect rows and return FIRST +4 category/+8 index match. Hypothesis, not a recovered symbol. BG: strict Win32 and both CTests pass; three complete binder pairs and three matrix pairs compare outputs, x87/SSE state and finite CRT callback records. Six complete bodies3270B;86 direct/tail evidence rows. Shared canonical dependencies and fixture CRT policy are explicit. No native FH3, throwing cleanup, unmasked hardware exceptions, real parsing, binary replacement or gameplay claim. docs/NATIVE_DAMAGEABLE_CLASS_BINDING_BG.md; reports/native_damageable_class_binding_bg.json."
+    },
+    {
+      "address": "008772b0",
+      "ghidra_name": "STL_DamageableFrameTree_Advance_008772b0",
+      "name": "advance_native_class_frame_008772b0",
+      "source": "src/native_damageable_class_binding.cpp",
+      "bytes": 99,
+      "status": "complete_borrowed_source_with_native_matrix_schedule_build_and_bounded_differential_tested",
+      "evidence": "Library checked-tree successor adapter: reuse canonical existing successor with nil byte+55h, actual owner/node iterator storage and returning CRT callbacks. Native node producer877FE0 allocates58h, publishes18 DWORD payload at+C and color54/nil55. Hypothesis, not a recovered symbol. BG: strict Win32 and both CTests pass; three complete binder pairs and three matrix pairs compare outputs, x87/SSE state and finite CRT callback records. Six complete bodies3270B;86 direct/tail evidence rows. Shared canonical dependencies and fixture CRT policy are explicit. No native FH3, throwing cleanup, unmasked hardware exceptions, real parsing, binary replacement or gameplay claim. docs/NATIVE_DAMAGEABLE_CLASS_BINDING_BG.md; reports/native_damageable_class_binding_bg.json."
+    },
+    {
+      "address": "0074d190",
+      "ghidra_name": "BSP_PointsArray_ReserveCapacity",
+      "name": "reserve_native_class_point_array_0074d190",
+      "source": "src/native_damageable_class_binding.cpp",
+      "bytes": 116,
+      "status": "complete_borrowed_source_with_native_matrix_schedule_build_and_bounded_differential_tested",
+      "evidence": "ECX counted point-array header, stacked signed capacity, RET4. Clamp requested capacity to at least1, grow only; allocate wrapped capacity*12, copy current counted points using ordered x87 transfers, free old storage then publish begin and capacity. Returning-free fallthrough repaired. Hypothesis, not a recovered symbol. BG: strict Win32 and both CTests pass; three complete binder pairs and three matrix pairs compare outputs, x87/SSE state and finite CRT callback records. Six complete bodies3270B;86 direct/tail evidence rows. Shared canonical dependencies and fixture CRT policy are explicit. No native FH3, throwing cleanup, unmasked hardware exceptions, real parsing, binary replacement or gameplay claim. docs/NATIVE_DAMAGEABLE_CLASS_BINDING_BG.md; reports/native_damageable_class_binding_bg.json."
+    },
+    {
+      "address": "0085dc80",
+      "ghidra_name": "BSP_Matrix_OrthonormalizeBasisRows",
+      "name": "orthonormalize_native_pose_matrix_0085dc80",
+      "source": "src/plane_pose_commit.cpp",
+      "bytes": 532,
+      "status": "complete_borrowed_source_with_native_matrix_schedule_build_and_bounded_differential_tested",
+      "evidence": "New full native in-place interface beside existing pure arithmetic API. Preserve original x87/SSE instruction and spill schedule, actual constant cells and canonical camera length/normalize/cross/CRT dependencies, including arithmetic SUBSS with negative zero.134 compiled FP/SSE mnemonics match the native sequence; normal, parallel-reference and zero-forward fixture paths agree. Hypothesis, not a recovered symbol. BG: strict Win32 and both CTests pass; three complete binder pairs and three matrix pairs compare outputs, x87/SSE state and finite CRT callback records. Six complete bodies3270B;86 direct/tail evidence rows. Shared canonical dependencies and fixture CRT policy are explicit. No native FH3, throwing cleanup, unmasked hardware exceptions, real parsing, binary replacement or gameplay claim. docs/NATIVE_DAMAGEABLE_CLASS_BINDING_BG.md; reports/native_damageable_class_binding_bg.json."
+    }
+  ],
+  "proof": {
+    "manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\damageable_binding_bg\\manifest.json",
+      "bytes": 160489,
+      "sha256": "e1d91c1651ce8a79b0dc488cc15795e13d06a747d97fb93c348180ada0d43cb8"
+    },
+    "source_commit": "33c7b47e264e9dac23de4d2bda922b01936fd8b3",
+    "implementation_commit": "33c7b47e264e9dac23de4d2bda922b01936fd8b3",
+    "build_checkout_head": "62ee237fa31508697bc00ca0c0b837b6a79a91a0",
+    "build_had_owned_source_changes": true,
+    "inputs": 324,
+    "artifacts": 141,
+    "fixture_production_objects": 10,
+    "implemented_bodies": 6,
+    "implemented_bytes": 3270,
+    "library_oracle_bytes": 142,
+    "flow_repaired_vehicle_reference_bytes": 2518,
+    "tree_producer_reference_bytes": 66,
+    "saved_annotations": 8
+  }
+}

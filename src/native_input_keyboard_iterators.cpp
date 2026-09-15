@@ -17,11 +17,16 @@ void* link(const void* p, Word offset = 0) noexcept { return pointer(read(p, off
 bool nil(const void* p, Word offset) noexcept {
     return static_cast<const unsigned char*>(p)[offset] != 0;
 }
-void advance(NativeKeyboardTreeIterator* iterator, Word nil_offset) {
-    if (!iterator->owner) _invalid_parameter_noinfo();
+void invalid(const SingletonLifetimeCallbacks& callbacks) {
+    if (callbacks.invalid_parameter) callbacks.invalid_parameter(callbacks.context);
+    else _invalid_parameter_noinfo();
+}
+void advance(NativeKeyboardTreeIterator* iterator, Word nil_offset,
+             const SingletonLifetimeCallbacks& callbacks) {
+    if (!iterator->owner) invalid(callbacks);
     void* node = iterator->node;
     if (nil(node, nil_offset)) {
-        _invalid_parameter_noinfo();
+        invalid(callbacks);
         return;
     }
     void* right = link(node, 8);
@@ -61,9 +66,13 @@ NativeKeyboardTreeIterator* find_native_input_hack_00546840(void* tree,
     return output;
 }
 
-void advance_native_input_sensitivity_00552770(NativeKeyboardTreeIterator* p) { advance(p, 0x29); }
-void advance_native_input_codes_00552d40(NativeKeyboardTreeIterator* p) { advance(p, 0x25); }
-void advance_native_input_device_005540c0(NativeKeyboardTreeIterator* p) { advance(p, 0x99); }
+void advance_native_input_sensitivity_00552770(NativeKeyboardTreeIterator* p) { advance(p, 0x29, {}); }
+void advance_native_input_codes_00552d40(NativeKeyboardTreeIterator* p) { advance(p, 0x25, {}); }
+void advance_native_input_device_005540c0(NativeKeyboardTreeIterator* p) { advance(p, 0x99, {}); }
+void advance_native_checked_tree_iterator(NativeKeyboardTreeIterator* p, Word offset,
+                                          const SingletonLifetimeCallbacks& callbacks) {
+    advance(p, offset, callbacks);
+}
 
 NativeKeyboardBitIterator* advance_native_input_bit_0048d3b0(
     NativeKeyboardBitIterator* iterator, std::int32_t distance) {

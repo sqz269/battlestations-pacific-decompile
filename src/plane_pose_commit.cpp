@@ -1,4 +1,5 @@
 #include "bsp/plane_pose_commit.hpp"
+#include "bsp/system_camera_axes.hpp"
 
 #include <cmath>
 
@@ -165,3 +166,205 @@ void orthonormalize_pose_matrix_0085dc80(float m[16]) {
 }
 
 }  // namespace bsp
+
+namespace bsp {
+
+// Complete native in-place schedule. EBP retains the borrowed bindings while
+// the original stack temporaries and x87/SSE instruction order stay intact.
+__declspec(naked) void __fastcall orthonormalize_native_pose_matrix_0085dc80(
+    float*, const NativePoseOrthonormalizationAccess*) {
+    __asm {
+        push ebp
+        mov ebp, edx
+        sub esp, 0x10 // 0085dc80
+        push ebx // 0085dc83
+        push esi // 0085dc84
+        mov esi, ecx // 0085dc85
+        lea ebx, [esi + 0x20] // 0085dc87
+        push edi // 0085dc8a
+        mov ecx, ebx // 0085dc8b
+        mov edx, dword ptr [ebp]
+        call camera_vector_length_00419440 // 0085dc8d
+        fstp dword ptr [esp + 0xc] // 0085dc92
+        fldz // 0085dc96
+        fld dword ptr [esp + 0xc] // 0085dc98
+        fcomi st(0), st(1) // 0085dc9c
+        fstp st(1) // 0085dc9e
+        jbe native_pose_0085dcac // 0085dca0
+        fld1 // 0085dca2
+        fdivrp st(1), st(0) // 0085dca4
+        fstp dword ptr [esp + 0xc] // 0085dca6
+        jmp native_pose_0085dcb7 // 0085dcaa
+    native_pose_0085dcac:
+        xorps xmm0, xmm0 // 0085dcac
+        fstp st(0) // 0085dcaf
+        movss dword ptr [esp + 0xc], xmm0 // 0085dcb1
+    native_pose_0085dcb7:
+        fld dword ptr [ebx] // 0085dcb7
+        lea edi, [esi + 0x10] // 0085dcb9
+        fld dword ptr [esp + 0xc] // 0085dcbc
+        fld st(0) // 0085dcc0
+        fmulp st(2), st(0) // 0085dcc2
+        fxch st(1) // 0085dcc4
+        fstp dword ptr [esp + 0x10] // 0085dcc6
+        fld dword ptr [ebx + 4] // 0085dcca
+        fmul st(0), st(1) // 0085dccd
+        fstp dword ptr [esp + 0x14] // 0085dccf
+        fmul dword ptr [ebx + 8] // 0085dcd3
+        fstp dword ptr [esp + 0x18] // 0085dcd6
+        fld dword ptr [esp + 0x10] // 0085dcda
+        fstp dword ptr [ebx] // 0085dcde
+        fld dword ptr [esp + 0x14] // 0085dce0
+        fstp dword ptr [ebx + 4] // 0085dce4
+        fld dword ptr [esp + 0x18] // 0085dce7
+        fstp dword ptr [ebx + 8] // 0085dceb
+        fld dword ptr [edi + 4] // 0085dcee
+        fmul dword ptr [ebx + 4] // 0085dcf1
+        fld dword ptr [edi] // 0085dcf4
+        fmul dword ptr [ebx] // 0085dcf6
+        faddp st(1), st(0) // 0085dcf8
+        fld dword ptr [edi + 8] // 0085dcfa
+        fmul dword ptr [ebx + 8] // 0085dcfd
+        faddp st(1), st(0) // 0085dd00
+        fstp dword ptr [esp + 0xc] // 0085dd02
+        fld dword ptr [esp + 0xc] // 0085dd06
+        fld st(0) // 0085dd0a
+        fabs // 0085dd0c
+        fstp dword ptr [esp + 0xc] // 0085dd0e
+        mov eax, dword ptr [ebp+4]
+        fld qword ptr [eax] // 0085dd12
+        fld dword ptr [esp + 0xc] // 0085dd18
+        fcomip st(0), st(1) // 0085dd1c
+        fstp st(0) // 0085dd1e
+        jbe native_pose_0085ddfb // 0085dd20
+        fstp st(0) // 0085dd26
+        mov edx, esi // 0085dd28
+        fld dword ptr [ebx + 4] // 0085dd2a
+        lea ecx, [esp + 0x10] // 0085dd2d
+        fmul dword ptr [esi + 4] // 0085dd31
+        fld dword ptr [ebx] // 0085dd34
+        fmul dword ptr [esi] // 0085dd36
+        faddp st(1), st(0) // 0085dd38
+        fld dword ptr [ebx + 8] // 0085dd3a
+        fmul dword ptr [esi + 8] // 0085dd3d
+        faddp st(1), st(0) // 0085dd40
+        fstp dword ptr [esp + 0xc] // 0085dd42
+        fld dword ptr [ebx] // 0085dd46
+        fld dword ptr [esp + 0xc] // 0085dd48
+        fld st(0) // 0085dd4c
+        fmulp st(2), st(0) // 0085dd4e
+        fxch st(1) // 0085dd50
+        fstp dword ptr [esp + 0x10] // 0085dd52
+        fld dword ptr [ebx + 4] // 0085dd56
+        fmul st(0), st(1) // 0085dd59
+        fstp dword ptr [esp + 0x14] // 0085dd5b
+        fmul dword ptr [ebx + 8] // 0085dd5f
+        fstp dword ptr [esp + 0x18] // 0085dd62
+        fld dword ptr [esi] // 0085dd66
+        fsub dword ptr [esp + 0x10] // 0085dd68
+        fstp dword ptr [esi] // 0085dd6c
+        fld dword ptr [esi + 4] // 0085dd6e
+        fsub dword ptr [esp + 0x14] // 0085dd71
+        fstp dword ptr [esi + 4] // 0085dd75
+        fld dword ptr [esi + 8] // 0085dd78
+        fsub dword ptr [esp + 0x18] // 0085dd7b
+        fstp dword ptr [esi + 8] // 0085dd7f
+        push dword ptr [ebp]
+        call camera_vector_normalize_00419510 // 0085dd82
+        fld dword ptr [eax] // 0085dd87
+        push ebx // 0085dd89
+        fstp dword ptr [esi] // 0085dd8a
+        mov edx, esi // 0085dd8c
+        fld dword ptr [eax + 4] // 0085dd8e
+        lea ecx, [esp + 0x14] // 0085dd91
+        fstp dword ptr [esi + 4] // 0085dd95
+        fld dword ptr [eax + 8] // 0085dd98
+        fstp dword ptr [esi + 8] // 0085dd9b
+        call camera_vector_cross_004f9b30 // 0085dd9e
+        movss xmm2, dword ptr [eax] // 0085dda3
+        mov ecx, dword ptr [ebp+8]
+        movss xmm0, dword ptr [ecx] // 0085dda7
+        movss xmm3, dword ptr [eax + 4] // 0085ddaf
+        movss xmm4, dword ptr [eax + 8] // 0085ddb4
+        movaps xmm1, xmm0 // 0085ddb9
+        subss xmm1, xmm2 // 0085ddbc
+        movaps xmm2, xmm0 // 0085ddc0
+        subss xmm2, xmm3 // 0085ddc3
+        subss xmm0, xmm4 // 0085ddc7
+        mov edx, edi // 0085ddcb
+        lea ecx, [esp + 0x10] // 0085ddcd
+        movss dword ptr [edi], xmm1 // 0085ddd1
+        movss dword ptr [edi + 4], xmm2 // 0085ddd5
+        movss dword ptr [edi + 8], xmm0 // 0085ddda
+        push dword ptr [ebp]
+        call camera_vector_normalize_00419510 // 0085dddf
+        fld dword ptr [eax] // 0085dde4
+        fstp dword ptr [edi] // 0085dde6
+        fld dword ptr [eax + 4] // 0085dde8
+        fstp dword ptr [edi + 4] // 0085ddeb
+        fld dword ptr [eax + 8] // 0085ddee
+        fstp dword ptr [edi + 8] // 0085ddf1
+        pop edi // 0085ddf4
+        pop esi // 0085ddf5
+        pop ebx // 0085ddf6
+        add esp, 0x10 // 0085ddf7
+        pop ebp
+        ret // 0085ddfa
+    native_pose_0085ddfb:
+        fld st(0) // 0085ddfb
+        mov edx, edi // 0085ddfd
+        fmul dword ptr [ebx] // 0085ddff
+        lea ecx, [esp + 0x10] // 0085de01
+        fstp dword ptr [esp + 0x10] // 0085de05
+        fld dword ptr [ebx + 4] // 0085de09
+        fmul st(0), st(1) // 0085de0c
+        fstp dword ptr [esp + 0x14] // 0085de0e
+        fmul dword ptr [ebx + 8] // 0085de12
+        fstp dword ptr [esp + 0x18] // 0085de15
+        fld dword ptr [edi] // 0085de19
+        fsub dword ptr [esp + 0x10] // 0085de1b
+        fstp dword ptr [edi] // 0085de1f
+        fld dword ptr [edi + 4] // 0085de21
+        fsub dword ptr [esp + 0x14] // 0085de24
+        fstp dword ptr [edi + 4] // 0085de28
+        fld dword ptr [edi + 8] // 0085de2b
+        fsub dword ptr [esp + 0x18] // 0085de2e
+        fstp dword ptr [edi + 8] // 0085de32
+        push dword ptr [ebp]
+        call camera_vector_normalize_00419510 // 0085de35
+        fld dword ptr [eax] // 0085de3a
+        push ebx // 0085de3c
+        fstp dword ptr [edi] // 0085de3d
+        mov edx, edi // 0085de3f
+        fld dword ptr [eax + 4] // 0085de41
+        lea ecx, [esp + 0x14] // 0085de44
+        fstp dword ptr [edi + 4] // 0085de48
+        fld dword ptr [eax + 8] // 0085de4b
+        fstp dword ptr [edi + 8] // 0085de4e
+        call camera_vector_cross_004f9b30 // 0085de51
+        movss xmm0, dword ptr [eax] // 0085de56
+        movss xmm1, dword ptr [eax + 4] // 0085de5a
+        movss xmm2, dword ptr [eax + 8] // 0085de5f
+        mov edx, esi // 0085de64
+        lea ecx, [esp + 0x10] // 0085de66
+        movss dword ptr [esi], xmm0 // 0085de6a
+        movss dword ptr [esi + 4], xmm1 // 0085de6e
+        movss dword ptr [esi + 8], xmm2 // 0085de73
+        push dword ptr [ebp]
+        call camera_vector_normalize_00419510 // 0085de78
+        fld dword ptr [eax] // 0085de7d
+        fstp dword ptr [esi] // 0085de7f
+        pop edi // 0085de81
+        fld dword ptr [eax + 4] // 0085de82
+        fstp dword ptr [esi + 4] // 0085de85
+        fld dword ptr [eax + 8] // 0085de88
+        fstp dword ptr [esi + 8] // 0085de8b
+        pop esi // 0085de8e
+        pop ebx // 0085de8f
+        add esp, 0x10 // 0085de90
+        pop ebp
+        ret // 0085de93
+    }
+}
+
+} // namespace bsp

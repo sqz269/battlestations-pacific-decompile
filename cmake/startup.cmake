@@ -63,6 +63,7 @@ cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/main_menu_objectiv
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/mission_picture_owner.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_animation_registry.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_checked_string_storage.cpp)
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_damageable_class_binding.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_damageable_class_model.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_debug_feature_owner.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_file_access_log_owner.cpp)
