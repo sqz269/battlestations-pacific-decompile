@@ -67,3 +67,7 @@ destructor or exception runtime. The supported companion projection and raw-node
 materialization limits remain. Populated scene attachment, arbitrary item
 providers, the complete executable resource graph, and gameplay validation are
 still outside this packet. No workers were dispatched.
+
+## Retained evidence
+
+The immutable manifest `local/resource_group_ownership_bc/manifest.json` retains 398 exact inputs and 55 artifacts, including 36 linked production objects, original bytes, paired images, unwind metadata, source/header/compiler/library inputs and saved Ghidra comments/exports. Source commit `395c538eaea69eaaa570f610c6becaccfb29b868` contains the tested source bytes. The build began at `d27cd068dec478b34721ca456d6c7a41a5d6cf64` with the owned source edits present; the retained source hashes and dependency records identify those inputs. No production changes followed verification.
