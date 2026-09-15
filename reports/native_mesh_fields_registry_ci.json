@@ -1,0 +1,195 @@
+{
+  "packet": "orch4_native_mesh_registry_ci",
+  "state": "five_sources_registered_default_configuration_build_and_relinked_original_hal_fixture_passed",
+  "base_revision": "9c3250350695ed91404cada5b3f211a51d77e055",
+  "documentation": "docs/NATIVE_MESH_FIELDS_REGISTRY_CI.md",
+  "modules": [
+    "native_camera_group_resource",
+    "native_resource_container_lifetime",
+    "native_mesh_scalar_fields",
+    "native_mesh_buffer_fields",
+    "native_mesh_remaining_fields"
+  ],
+  "registry_change": {
+    "claim": "leased agent/orch4-20260910:orch4_startup_registry_edit_ci: 0 addresses, 0 ranges, 1 files until 2026-09-15T01:13:02+00:00\n",
+    "release": "released ['agent/orch4-20260910:orch4_startup_registry_edit_ci']\n",
+    "seconds_held": 0.3288186999998288,
+    "modules": [
+      "native_camera_group_resource",
+      "native_resource_container_lifetime",
+      "native_mesh_scalar_fields",
+      "native_mesh_buffer_fields",
+      "native_mesh_remaining_fields"
+    ],
+    "before_sha256": "258319ccecb3f08b146178892a052c2a7d7ecba1842a199e9fd7f104f7e6ada9",
+    "after_sha256": "e71913ee485ca391c611e321c3b5f4d0008a4ff931fddbe877f19dfca456c871",
+    "change": "Exactly five deferred target_sources registrations inserted before native_data_placement; all other bytes unchanged; shared lease released before configure/build."
+  },
+  "configuration": {
+    "base_revision": "9c3250350695ed91404cada5b3f211a51d77e055",
+    "override_absent": true,
+    "configure": "cmake -S . -B build/win32 -U CMAKE_PROJECT_INCLUDE_BEFORE",
+    "build": "scripts/build.ps1 with MSBUILDDISABLENODEREUSE=1 and CMAKE_BUILD_PARALLEL_LEVEL=3",
+    "build_scope": "Regenerated tracked configuration and incremental Win32 build; not a fresh empty-build-directory claim",
+    "source_inputs": 2679,
+    "source_manifest": {
+      "path": "local/native_mesh_fields_registry_ci/registered/source_manifest.json",
+      "sha256": "7001843b1c7c3dfa831533479c2ce3e774f08babfc5f851df0476bd7b2f367c6",
+      "bytes": 290228
+    },
+    "binary": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+    }
+  },
+  "source_changes_from_ch_manifest": [
+    "cmake/startup.cmake"
+  ],
+  "source_manifest": {
+    "path": "local/native_mesh_fields_registry_ci/registered/source_manifest.json",
+    "sha256": "7001843b1c7c3dfa831533479c2ce3e774f08babfc5f851df0476bd7b2f367c6",
+    "bytes": 290228
+  },
+  "validation": {
+    "existing_ctests": "2/2 passed",
+    "generated_sources": "Each of five modules exactly once in generated bsp_core.vcxproj; no cached project-include override",
+    "fixture": "Frozen CH fixture relinked to current default-configured core; only log path changed; copied-original metadata/lighting, source failure observations and actual HAL/mesh/cache cleanup passed",
+    "production_sources_unchanged": true
+  },
+  "previous_proof_preserved": [
+    "reports/native_camera_group_resource_cc.json",
+    "reports/native_resource_container_lifetime_ce.json",
+    "reports/native_mesh_scalar_fields_cf.json",
+    "reports/native_mesh_buffer_fields_cg.json",
+    "reports/native_mesh_remaining_fields_ch.json"
+  ],
+  "publication": "Agent branch only. Main not merged: CD plane-control findings and unreviewed incoming deltas remain.",
+  "evidence_limits": [
+    "Incremental Win32 rebuild, not a fresh empty-directory build.",
+    "CH copied-code checks share source reader/CRT boundaries and do not execute original exception paths.",
+    "CG/CH fixture preconstructed raw-pool/cache/platform boundaries remain; no cold decode, device-loss, full pool/renderer startup or XLive claim.",
+    "No complete subset/material/aggregate admission, binary ABI or gameplay validation."
+  ],
+  "artifacts": [
+    {
+      "path": "local/native_mesh_fields_registry_ci/registered/before.cmake",
+      "sha256": "258319ccecb3f08b146178892a052c2a7d7ecba1842a199e9fd7f104f7e6ada9",
+      "bytes": 121442
+    },
+    {
+      "path": "local/native_mesh_fields_registry_ci/registered/after.cmake",
+      "sha256": "e71913ee485ca391c611e321c3b5f4d0008a4ff931fddbe877f19dfca456c871",
+      "bytes": 122082
+    },
+    {
+      "path": "local/native_mesh_fields_registry_ci/registered/registry_edit.json",
+      "sha256": "674767f42ded9f55f21432caa2827975652712781f1c2cf4375d7016c0ecb57e",
+      "bytes": 813
+    },
+    {
+      "path": "local/native_mesh_fields_registry_ci/registered/configure.log",
+      "sha256": "3578e4314da6706eabdc54e3599c24675b077c6ae359144ba5014f26479cd9a5",
+      "bytes": 238
+    },
+    {
+      "path": "local/native_mesh_fields_registry_ci/registered/build.log",
+      "sha256": "f7638d1a7585e3e8d5784e8e49bfa8364ec1c45a2a5814cf3fb3d1e2c97093f2",
+      "bytes": 3912
+    },
+    {
+      "path": "local/native_mesh_fields_registry_ci/registered/compile.log",
+      "sha256": "25d4f66c7c01d5b35c220cb97ffdd1608405f4ab45160497e6cc7ea3079676cf",
+      "bytes": 11
+    },
+    {
+      "path": "local/native_mesh_fields_registry_ci/registered/probe.log",
+      "sha256": "5cc030566472cd33991046ec9e8b6af58972e063b2f9239e26a2486a37cd6854",
+      "bytes": 1656
+    },
+    {
+      "path": "local/native_mesh_fields_registry_ci/registered/child_probe.log",
+      "sha256": "82533604df9f1218d9e2d2ebcae3d5820619c3c5ca12c5614c6acfea770c9a6c",
+      "bytes": 1605
+    },
+    {
+      "path": "local/native_mesh_fields_registry_ci/registered/generated_sources.json",
+      "sha256": "0043144fbb2fae2f857b2965f40907565e681c820c7b6c219b631e19988192a1",
+      "bytes": 810
+    },
+    {
+      "path": "local/native_mesh_fields_registry_ci/registered/probe.cpp",
+      "sha256": "682368b93597f98fc0a9f0cb282080132346d562ff6f57a77596be6a4d014094",
+      "bytes": 38374
+    },
+    {
+      "path": "local/native_mesh_fields_registry_ci/registered/probe.exe",
+      "sha256": "300b97b785d36e03673475c09ec74dabbfd2765ecb1902de465f1e6b8d8c99b3",
+      "bytes": 236544
+    },
+    {
+      "path": "local/native_mesh_fields_registry_ci/registered/probe.obj",
+      "sha256": "2e2d2fcbb360428281b51e9bbda247c5a80e3b5099c5ba609663267261e17e6b",
+      "bytes": 416757
+    },
+    {
+      "path": "local/native_mesh_fields_registry_ci/registered/probe.map",
+      "sha256": "b23e86c18c03adef7126c5a80df42f9a07090080c175b99746f63c93c978d06b",
+      "bytes": 425270
+    },
+    {
+      "path": "local/native_mesh_fields_registry_ci/registered/compile.cmd",
+      "sha256": "d6ec460ece0e2f320770f381366df2d52cd4e989357175ae6315918283a154e0",
+      "bytes": 699
+    },
+    {
+      "path": "local/native_mesh_fields_registry_ci/registered/original_bodies.hpp",
+      "sha256": "113db931316cef64e0a6379172c40b4ed0926f4e120cd06c3fa094d9defd52f7",
+      "bytes": 4000
+    },
+    {
+      "path": "local/native_mesh_fields_registry_ci/registered/original_bodies.json",
+      "sha256": "28c5d5442326af1758ed5f2eebc8b74ca58f726c7c4847d1776374de544b4bc4",
+      "bytes": 2944
+    },
+    {
+      "path": "local/native_mesh_fields_registry_ci/registered/bsp_core.lib",
+      "sha256": "6be8736dd4a790b92be7d44c9a96708b8825329a4a224436697c0ff2fa5dd929",
+      "bytes": 58834216
+    },
+    {
+      "path": "local/native_mesh_fields_registry_ci/registered/bsp_lua511.lib",
+      "sha256": "00315ac717aac3d2b2161fefefe71b36a974335ff9c95d48c137423eb4e2f4b2",
+      "bytes": 455244
+    },
+    {
+      "path": "local/native_mesh_fields_registry_ci/registered/bsp_zlib121.lib",
+      "sha256": "73ae30b8adc3adfe5b33285bac533f8e7df7e8ab8d9e44789e6a030fd8a06ad9",
+      "bytes": 71906
+    },
+    {
+      "path": "local/native_mesh_fields_registry_ci/registered/CMakeCache.txt",
+      "sha256": "2ab657bd06bb97731372c10fc883040590ccedec539b0406ba2554bab45f7835",
+      "bytes": 18839
+    },
+    {
+      "path": "local/native_mesh_fields_registry_ci/registered/bsp_core.vcxproj",
+      "sha256": "e9ec4cb3b579d2f910dab3e1aebd3a468377431a64c4e4a0909c9624bbbe0afd",
+      "bytes": 199694
+    },
+    {
+      "path": "local/native_mesh_fields_registry_ci/registered/bsp_game.exe",
+      "sha256": "154ea7adab57e2ed7a7acf2c7c28125ef076dd4bb9a033539b5d56b7c5be4418",
+      "bytes": 2168832
+    },
+    {
+      "path": "local/native_mesh_fields_registry_ci/registered/source_manifest.json",
+      "sha256": "7001843b1c7c3dfa831533479c2ce3e774f08babfc5f851df0476bd7b2f367c6",
+      "bytes": 290228
+    },
+    {
+      "path": "local/native_mesh_fields_registry_ci/registered/configuration.json",
+      "sha256": "7818c01709c7897f9baf83f78ada2308de4be760750e12b6b479e0ac40487255",
+      "bytes": 829
+    }
+  ]
+}
