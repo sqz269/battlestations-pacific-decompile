@@ -1031,3 +1031,4 @@ cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/pilot_plan_slots.c
 
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_resource_instance_bones.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_resource_instance_postprocess.cpp)
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_animation_registry.cpp)
