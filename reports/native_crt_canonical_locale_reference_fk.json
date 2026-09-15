@@ -1,0 +1,404 @@
+{
+  "packet": "orch2_canonical_locale_reference_fk",
+  "source_pin": "15cc82222fe06a3081ccf5c5baad78e8a47c0fba",
+  "status": "complete_original_one_word_canonical_entry_static_body_abi_and_archive_verified",
+  "source": "src/native_crt_canonical_locale_reference.cpp",
+  "header": "include/bsp/native_crt_canonical_locale_reference.hpp",
+  "doc": "docs/NATIVE_CRT_CANONICAL_LOCALE_REFERENCE_FK.md",
+  "evidence_directory": "local/canonical_locale_reference_fk",
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_home": "J:/tools/ghidra_12.0.4_PUBLIC",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "ghidra": {
+    "read_only": true,
+    "verification": "Every live capture CLI invokes bsp.client -> Client.verify; verifies bsp/project name, active program path, x86 language and image base; configured bsp.gpr path retained",
+    "function_mutations": false,
+    "export_refresh": false,
+    "annotation_applied": false
+  },
+  "routines": [
+    {
+      "entry": "00c0190b",
+      "end_exclusive": "00c01991",
+      "bytes": 134,
+      "name": "___addlocaleref",
+      "coverage": "complete",
+      "source_symbol": "bsp::acquire_native_crt_canonical_locale_references_00c0190b",
+      "original_abi": "one pointer at entry ESP+4; cdecl; EBX/EBP/ESI/EDI saved; plain RET",
+      "source_abi": "same original single-pointer cdecl entry, immediate E161D0 identity, actual Win32 stdcall import",
+      "entry_abi_compatible_static": true,
+      "original_image_placement": false,
+      "source_executed": false
+    }
+  ],
+  "general_body": {
+    "root": "unconditional actual record count increment",
+    "optional_pointer_load_order": [
+      "b0",
+      "b8",
+      "b4",
+      "c0"
+    ],
+    "categories": {
+      "iterations": 6,
+      "q": "50h+10h*i",
+      "narrow": "[q-8] != E161D0 then nonnull [q] increment",
+      "wide": "nonnull [q-4] then nonnull [q+4] increment"
+    },
+    "time": "reload [record+D4h]; unconditional increment at pointer+B4h",
+    "import_capture": "once in EDI before root increment",
+    "aliases": "preserve all later reloads and repeated targets",
+    "added_guards_or_error_policies": false,
+    "default_path_specialization": false,
+    "private_state_or_provider_bindings": false
+  },
+  "host_steps": [
+    {
+      "address": "00c01a38",
+      "native": "00c0190b",
+      "function": "00c01a1d",
+      "contract": "copy destination after D8-byte copy and root reset; one PUSH, POP ECX at C01A3D"
+    },
+    {
+      "address": "00c01a53",
+      "native": "00c0190b",
+      "function": "00c01a41",
+      "contract": "acquire newly published replacement; one PUSH, POP ECX at C01A5A"
+    },
+    {
+      "address": "00c05196",
+      "native": "00c0190b",
+      "function": "00c050f8",
+      "contract": "actual supplied/current locale; one PUSH, POP ECX at C0519B"
+    },
+    {
+      "address": "00c05177",
+      "native": "00c11c21",
+      "function": "00c050f8",
+      "contract": "native lock 12 before locale publication"
+    },
+    {
+      "address": "00c051b0",
+      "native": "00c11b31",
+      "function": "00c051ae",
+      "contract": "native unlock 12 in original cleanup"
+    },
+    {
+      "address": "00c01ac0",
+      "native": "00c11c21",
+      "function": "00c01a7f",
+      "contract": "native lock 12 before update helper"
+    },
+    {
+      "address": "00c01ad3",
+      "native": "00c01a41",
+      "function": "00c01a7f",
+      "contract": "update actual PTD locale under native lock 12"
+    },
+    {
+      "address": "00c01aeb",
+      "native": "00c11b31",
+      "function": "00c01ae9",
+      "contract": "native unlock 12 in original updater cleanup"
+    },
+    {
+      "address": "00c02815",
+      "native": "00c11c21",
+      "function": "00c027ac",
+      "contract": "native lock 12 before copying caller-owned locale"
+    },
+    {
+      "address": "00c02827",
+      "native": "00c01a1d",
+      "function": "00c027ac",
+      "contract": "actual D8-byte copy producer; temporary locale from native allocation"
+    },
+    {
+      "address": "00c02871",
+      "native": "00c11c21",
+      "function": "00c027ac",
+      "contract": "native lock 12 before both update-helper calls"
+    },
+    {
+      "address": "00c02883",
+      "native": "00c01a41",
+      "function": "00c027ac",
+      "contract": "publish actual PTD locale under native lock 12"
+    },
+    {
+      "address": "00c028a5",
+      "native": "00c01a41",
+      "function": "00c027ac",
+      "contract": "publish actual global locale under same native lock 12"
+    }
+  ],
+  "dependency_contract": {
+    "fixed_sentinel": "00e161d0 immediate identity; no sentinel dereference",
+    "canonical_data_owner": "GameNativeCanonicalDataOwner/GameNativeMutableCrtData admits E15000/E16000 initialized mutable PE pages",
+    "actual_api": "KERNEL32.dll!InterlockedIncrement, imported LONG(volatile LONG*) stdcall",
+    "general_locale_owner": "original caller supplies actual D8-byte locale record and all selected live writable LONG counts; no manufactured nondefault storage",
+    "synchronization": "all observed caller owner paths acquire native lock 12; no lock is acquired inside C0190B",
+    "readiness": "C0190B original entry supplied; nondefault locale producers/releases, PTD init, locks, codecs and SEH owners are not supplied by this primitive"
+  },
+  "corrections": [
+    {
+      "was": "Existing two-argument source interface could satisfy the original C050F8 call",
+      "evidence": [
+        "src/native_crt_canonical_locale_reference.cpp",
+        "raw/caller_ptd.txt",
+        "compiler/body.asm"
+      ],
+      "is": "Separate original single-word canonical entry now supplied; old qualified source interface unchanged"
+    },
+    {
+      "was": "Local snapshot callers includes C01B5B sync_legacy_variables_lk",
+      "evidence": [
+        "raw/xrefs.txt",
+        "raw/caller_sync.txt"
+      ],
+      "is": "Current xrefs have three direct callers and complete C01B5B..C01BAD has no calls; no snapshot or analysis repaired"
+    }
+  ],
+  "artifact_inspection": {
+    "installed_pe": {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "size": 12223752,
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "sha512": "7b545a4c47fae14af6c50a1d4d0d2904c1b85f84b9a24d1516b95d77945693fc36b1f6bb9effb7fa29b22b06ebcafc230cdf97f5c332266a3de8dd83bdc29a97"
+    },
+    "spans": {
+      "bytes": {
+        "entry": "00c0190b",
+        "length": 134,
+        "live_analysis_equals_pe": true,
+        "size": 134,
+        "sha256": "4b74a738b889b9e8e8ed2d27869ef7bdf53860e9f7cae006de98919ab0cb6b05",
+        "sha512": "325d2d1b8946067505ee4ca118c83197d68675048f0bce07705b3fd7fb6bd9d575276fb57f2471a2d29782b039f4d8cd50aeb4c7e307097c0d2d2bbc75c1741d"
+      },
+      "sentinel": {
+        "entry": "00e161d0",
+        "length": 8,
+        "live_analysis_equals_pe": true,
+        "size": 8,
+        "sha256": "d17053f62f3264b3a99a5d2180d4c3abcc0eb49c86d997963cbec3d60007f833",
+        "sha512": "c8a30bdcd22035d9fe2df0de992fb4b803ad6391d94c415680969d0bf2c62f8666ca4815aced3b1b76515cd3ebb01e57cd0d2d99b806879ecb17d1f86962eef4"
+      },
+      "initial_locale": {
+        "entry": "00e161d8",
+        "length": 220,
+        "live_analysis_equals_pe": true,
+        "size": 220,
+        "sha256": "ed9c7f17fcd1c3a0ad5ff1e7079eb360a6eae46f7a46561e57d48b4399e916c3",
+        "sha512": "7b2ce434af7ee12f764d8ae2fa995431179fb8979e99e763b1cf17d41f90638ec3a28f304fa0d119a019d8eb23b9c0a9275e736a8f795fe390e0d76f499fc0af"
+      },
+      "initial_time_count": {
+        "entry": "00e15aa4",
+        "length": 4,
+        "live_analysis_equals_pe": true,
+        "size": 4,
+        "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+        "sha512": "ec2d57691d9b2d40182ac565032054b7d784ba96b18bcb5be0bb4e70e3fb041eff582c8af66ee50256539f2181d7f9e53627c0189da7e75a4d5ef10ea93b20b3"
+      },
+      "default_pointer": {
+        "entry": "00e162b0",
+        "length": 4,
+        "live_analysis_equals_pe": true,
+        "size": 4,
+        "sha256": "66754af05722b2f881e346b4c134ff8c668ad5ec24816b5cb7e3e2312fef4df7",
+        "sha512": "6a66b5e056139effa5740bb5960c0cd9f3776eaf5d89af178bec6d06e0c27c844c815380bac97377afeede9e44cecaa6c7ea000f0cdc6ba809b9ad377fc22a11"
+      }
+    },
+    "import_owner": {
+      "iat": "00ce221c",
+      "dll": "KERNEL32.dll",
+      "symbol": "InterlockedIncrement"
+    },
+    "object": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-canonical-locale-reference-fk\\local\\canonical_locale_reference_fk\\compiler\\native_crt_canonical_locale_reference.obj",
+      "size": 956,
+      "sha256": "fde4cedb086f2a286e490a1eb3230ce93f6796a05b2b28909fe90d5bf17315f7",
+      "sha512": "1dbe99e1e15d9483a43ac48fb46b31184acfb6aa397ee3386f00a9b1298996e561d823dc909c6459ab9d5009bbe3c0ac64c660e7fa530c79217f677d9f43d74f",
+      "symbol": {
+        "name": "?acquire_native_crt_canonical_locale_references_00c0190b@bsp@@YAXPAX@Z",
+        "value": 0,
+        "section": 3,
+        "type": 32,
+        "storage": 2
+      },
+      "section": ".text$mn",
+      "body": {
+        "size": 134,
+        "sha256": "1cd3f714cb064c29bff44bfd22ec69bad2b589c74e71ba226866729620077966",
+        "sha512": "8c3bd112370161f92ca5d82ee003b1224611fd578ce3198d73279056622dfeb2e086601d1671c10bfea3fe39f7d23e3b84fbf947a2241efcf7f371abd1ec941d"
+      },
+      "relocations": [
+        {
+          "offset": 10,
+          "type": 6,
+          "symbol": "__imp__InterlockedIncrement@4"
+        }
+      ],
+      "full_body_equal_except_import_operand": true,
+      "sentinel_immediate_exact": true,
+      "static_call_offsets": [
+        15,
+        28,
+        41,
+        54,
+        67,
+        91,
+        107,
+        127
+      ],
+      "abi": "cdecl single pointer; four callee saves; plain RET; eight real stdcall import sites"
+    },
+    "archive": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-canonical-locale-reference-fk\\build\\win32\\Release\\bsp_core.lib",
+      "size": 58838394,
+      "sha256": "dc184cbff521779206b4a7f4837f41cea931d9ba564c5f277a0834e20613d476",
+      "sha512": "d99b659d49d3e41ed67868d58bc599fb1043a4da2305037ce8df62303b41c3c84854671bf65486f4f09155a124a3041f139ddf5f2ecc8f8b192ce7e73c67bb25",
+      "member_count": 1292,
+      "matching_object_count": 1,
+      "member_offset": 12734858,
+      "member_name": "/0",
+      "matching_symbol_rows": [
+        {
+          "symbol": "?acquire_native_crt_canonical_locale_references_00c0190b@bsp@@YAXPAX@Z",
+          "member_offset": 12734858
+        }
+      ],
+      "retained_member": {
+        "size": 956,
+        "sha256": "fde4cedb086f2a286e490a1eb3230ce93f6796a05b2b28909fe90d5bf17315f7",
+        "sha512": "1dbe99e1e15d9483a43ac48fb46b31184acfb6aa397ee3386f00a9b1298996e561d823dc909c6459ab9d5009bbe3c0ac64c660e7fa530c79217f677d9f43d74f"
+      }
+    },
+    "default_initial_state": {
+      "record": "00e161d8",
+      "root_count": 1,
+      "time_locale": "00e159f0",
+      "time_count": "00e15aa4",
+      "optional_counts": {
+        "b0": 0,
+        "b8": 0,
+        "b4": 0,
+        "c0": 0
+      },
+      "categories": [
+        {
+          "narrow": 0,
+          "wide": 0,
+          "narrow_count": 0,
+          "wide_count": 0
+        },
+        {
+          "narrow": 14770640,
+          "wide": 0,
+          "narrow_count": 0,
+          "wide_count": 0
+        },
+        {
+          "narrow": 14770640,
+          "wide": 0,
+          "narrow_count": 0,
+          "wide_count": 0
+        },
+        {
+          "narrow": 14770640,
+          "wide": 0,
+          "narrow_count": 0,
+          "wide_count": 0
+        },
+        {
+          "narrow": 14770640,
+          "wide": 0,
+          "narrow_count": 0,
+          "wide_count": 0
+        },
+        {
+          "narrow": 14770640,
+          "wide": 0,
+          "narrow_count": 0,
+          "wide_count": 0
+        }
+      ]
+    },
+    "runtime_executed": false
+  },
+  "build": {
+    "command": "./scripts/build.ps1",
+    "invocations": 1,
+    "configuration": "Release Win32",
+    "exit": 0,
+    "strict_flags": [
+      "/W4",
+      "/WX",
+      "/fp:strict"
+    ],
+    "seed_spans_matched": 8,
+    "existing_tests_passed": [
+      "reconstructed_math",
+      "native_math_differential"
+    ],
+    "new_tests": 0,
+    "test_scope": "existing math tests only; no locale body or initialization exercise",
+    "prebuild_guard": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-canonical-locale-reference-fk\\local\\canonical_locale_reference_fk\\prebuild_guard.json",
+      "size": 5369,
+      "sha256": "c6fdd837eebcb0c3b436a1a63f1ccded432b0a4186320702035eaaa5562b8917",
+      "sha512": "d6e1422c1aec9d7dd03f1d3ee199e209e16087675d436f72e22ff56f7a7027b99efe498d43570e9b97b77354dc0b7d9e4251773c30078bf1278ed602cc2d7e43"
+    },
+    "postbuild_guard": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-canonical-locale-reference-fk\\local\\canonical_locale_reference_fk\\postbuild_guard.json",
+      "size": 8648,
+      "sha256": "9a5ae6f1120e37bbdc375cdd373178f51b09a0eb5d0489809a56609be5f9678a",
+      "sha512": "094c051e40aefd77d9f78dbf738bdaf24a4e3265c9376f0353b3243f32ebc390c299d2dd94edc6d4dc59a0dafd66fbdb27e0a41c110e4cfa3e85e4b4ec51b060"
+    },
+    "inputs_unchanged": true,
+    "retained_tracking_blocks": [
+      "compiler/CL.command.1.tlog",
+      "compiler/CL.read.1.tlog",
+      "compiler/CL.write.owned.json"
+    ],
+    "build_log": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-canonical-locale-reference-fk\\local\\canonical_locale_reference_fk\\build.txt",
+      "size": 50528,
+      "sha256": "5efea168eb76fad4dcb0e8830507694be406a4366c8aa2d794a6f78c63b8cc19",
+      "sha512": "f91bfc9e582f2bbe2625a56e980ccbe6f429aa4a29683782f6fa03948227c8f1f66a1455f6770ca2d663add9531e44e1c537da07010c2fa7fb395e703217ab59"
+    }
+  },
+  "annotation_plan": {
+    "address": "00c0190b",
+    "preserve_name": "___addlocaleref",
+    "old_values": "local/canonical_locale_reference_fk/previous_ledger.json",
+    "current_comments": "local/canonical_locale_reference_fk/raw/comments.json",
+    "apply": "primary only; append evidence while retaining correct library name and existing comments"
+  },
+  "evidence_levels": {
+    "reconstructed": true,
+    "build_tested": true,
+    "fixture_tested": false,
+    "original_argument_and_register_abi_static": true,
+    "complete_body_equal_modulo_real_import_relocation": true,
+    "source_body_executed": false,
+    "original_locale_body_executed": false,
+    "native_initialization_executed": false,
+    "forced_dll_executed": false,
+    "game_executed": false,
+    "fault_unwind_validated": false
+  },
+  "remaining": [
+    "Full C050F8 PTD field initialization and cleanup still need native module/codec, lock and matching SEH owners",
+    "No original allocator/release/lifetime owner is reconstructed for arbitrary supplied nondefault locales",
+    "New source code and IAT locations do not reproduce original fault/return PCs or prove unwind/game parity"
+  ]
+}
