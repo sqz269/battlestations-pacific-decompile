@@ -1,0 +1,329 @@
+{
+  "packet": "orch4_render_resources_composition_cs",
+  "state": "consolidated_prior_source_build_tested_hot_cache_constructor_and_explicit_child_retirement_fixture",
+  "base_revision": "a2cbacf27807905ca1c0ca2491697c83cefdd1a0",
+  "project": {
+    "project_name": "bsp",
+    "current_folder": "/",
+    "folders": [],
+    "files": [
+      {
+        "name": "battlestationspacific.exe",
+        "path": "/battlestationspacific.exe",
+        "content_type": "Program",
+        "version": 2787,
+        "is_read_only": false,
+        "is_versioned": false
+      }
+    ]
+  },
+  "program": {
+    "name": "battlestationspacific.exe",
+    "path": "/battlestationspacific.exe",
+    "executable_path": "/I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "executable_format": "Portable Executable (PE)",
+    "language": "x86:LE:32:default",
+    "compiler": "windows",
+    "address_size": 32,
+    "image_base": "00400000",
+    "min_address": "00400000",
+    "max_address": "ffdfffff",
+    "memory_size": 14876380,
+    "function_count": 64118,
+    "symbol_count": 144529,
+    "data_type_count": 795,
+    "creation_date": "Mon May 04 16:56:25 PDT 2026",
+    "memory_block_count": 6,
+    "address_spaces": [
+      {
+        "name": "ram",
+        "start": "00000000",
+        "end": "ffffffff",
+        "size": 4294967296,
+        "addressable_unit_size": 1,
+        "size_bytes": 4294967296,
+        "address_size_bits": 32,
+        "is_default": true
+      }
+    ],
+    "has_multiple_address_spaces": false
+  },
+  "ordinary_bytes": 2605,
+  "support_bytes": 177,
+  "instruction_owners": 783,
+  "preserved_comments": 5,
+  "new_unique_functions": 0,
+  "new_unique_native_bytes": 0,
+  "source_manifest": {
+    "path": "local/render_resources_composition_cs/registered/source_manifest.json",
+    "sha256": "3524044b15973033506a62ccda36459a4b7f53d8b2ef39f488b3386c37bffdd2",
+    "bytes": 291400
+  },
+  "source_inputs": 2689,
+  "changed_existing_source": [
+    "cmake/startup.cmake",
+    "include/bsp/native_render_resources_construction.hpp",
+    "src/native_render_resources_construction.cpp",
+    "src/native_render_service_texture_construction.cpp"
+  ],
+  "added_source": [
+    "include/bsp/native_render_service_texture_lifetime.hpp",
+    "src/native_render_service_texture_lifetime.cpp"
+  ],
+  "build": "Tracked incremental MSVC Win32 scripts/build.ps1; both existing CTests; no CMake override",
+  "fixture_child_pid": 86268,
+  "validation": {
+    "build": "Tracked MSVC Win32 scripts/build.ps1 and both existing CTests passed; no CMake override",
+    "fixture": "Current tracked libraries; actual D3D9 HAL surfaces and six explicit cache hits; complete normal source constructor and explicit child retirement; existing three full mesh parsers; all64 canonical companions retired; controlled child exit0 (PID in sealed log)",
+    "full_constructor_normal_execution": true,
+    "explicit_child_retirement": true,
+    "texture_helper_nonzero_auxiliaries": false,
+    "cold_texture_resolution": false,
+    "shader_compilation": false,
+    "full_parent_destructor": false,
+    "application_wired": false,
+    "new_application_execution": false,
+    "original_machine_code_differential": false,
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "evidence_limits": [
+    "This is source composition with six explicit native hot-cache entries, not cold archive/texture loading or pixel-content validation.",
+    "BL auxiliary fields30/68/88/B0 are zero from actual B52550. Nonzero D61EC8 post-effect producer/terminal composition remains separate.",
+    "Caller explicitly retires completed children and member/base storage. B0F6E0/B14F60/B151C0 are unexecuted; B14A10 leaves70 untouched while parent cleanup visits70, and parent cleanup omits67C noise ownership.",
+    "Original register ABI, native FH3/SEH, canonical noexcept exception behavior and post-success host binding failures are not proven equivalent.",
+    "No new application run or native renderer startup wiring. This fixture is not game or gameplay validation.",
+    "Historical CR sources and receipts are immutable but superseded for the current B14A10 API; CR first-allocation exception execution does not validate the consolidated API. Historical BL COFF comparison was not rerun in CS."
+  ],
+  "remaining": "Recover complete parent initialization/destruction and ownership, then wire application startup to the admitted native renderer domain; full reconstruction goal remains active.",
+  "startup_registry_leases": [
+    {
+      "id": "agent/orch5-20260911:orch5_native_effect_reload_cmake",
+      "owner": "agent/orch5-20260911",
+      "packet": "orch5_native_effect_reload_cmake",
+      "addresses": [],
+      "ranges": [],
+      "files": [
+        "cmake/startup.cmake"
+      ],
+      "claimed": "2026-09-15T04:15:44+00:00",
+      "expires": "2026-09-15T05:15:44+00:00",
+      "status": "active",
+      "worktree": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911",
+      "note": ""
+    }
+  ],
+  "main_integration": "Agent branch only; moving main unreviewed",
+  "artifacts": [
+    {
+      "path": "local/render_resources_composition_cs/registered/audit.json",
+      "sha256": "c331db980f47a7b6db9d63fefd1f3018181c9194743594f11316abdec22d60a3",
+      "bytes": 102927
+    },
+    {
+      "path": "local/render_resources_composition_cs/registered/import_receipt.json",
+      "sha256": "a8e10ac5a7d61df6c02ed9d5a495655b79ff0c2f2a7343c44b8cdf97d1eb5146",
+      "bytes": 1938
+    },
+    {
+      "path": "local/render_resources_composition_cs/registered/probe.cpp",
+      "sha256": "783396c5ebf08058784fc02895850fb1beb675db0ad71d097d0acf0b426681a6",
+      "bytes": 65352
+    },
+    {
+      "path": "local/render_resources_composition_cs/registered/probe.exe",
+      "sha256": "226016ce02beefa504f85417e06dac2ec161779ff1d99acca96c2d7324896f3c",
+      "bytes": 654848
+    },
+    {
+      "path": "local/render_resources_composition_cs/registered/probe.obj",
+      "sha256": "7b67cf6c0f0dd9559d339dd301c42176e12a40764ec584cad392abc92166d6ff",
+      "bytes": 576457
+    },
+    {
+      "path": "local/render_resources_composition_cs/registered/probe.map",
+      "sha256": "7e2bcf7aa3e538775b94ed97eb907b23b003c7f068a49d03ebc9a46a2da52a0d",
+      "bytes": 1155672
+    },
+    {
+      "path": "local/render_resources_composition_cs/registered/compile.cmd",
+      "sha256": "23b6e6155004da67b39dbf6b3ac8b6e68c1f27d793f341ed1c5e3dc2494dba4f",
+      "bytes": 711
+    },
+    {
+      "path": "local/render_resources_composition_cs/registered/compile.log",
+      "sha256": "25d4f66c7c01d5b35c220cb97ffdd1608405f4ab45160497e6cc7ea3079676cf",
+      "bytes": 11
+    },
+    {
+      "path": "local/render_resources_composition_cs/registered/probe.log",
+      "sha256": "99a8574ecb9732c1c312207d9214ce1d9eab5b0bd48ea8fa25325cd08726b839",
+      "bytes": 2133
+    },
+    {
+      "path": "local/render_resources_composition_cs/registered/child_probe.log",
+      "sha256": "59a18cbcb2c65725e50a8b2c931fa1357726140455079c58c045b964858cebe9",
+      "bytes": 2075
+    },
+    {
+      "path": "local/render_resources_composition_cs/registered/build.log",
+      "sha256": "7a07e38bfb14aa0fcf004147cc30bcc2febb4e82e94aa89af4518e4ec3d416d4",
+      "bytes": 2504
+    },
+    {
+      "path": "local/render_resources_composition_cs/registered/call_check.log",
+      "sha256": "592508ec4541352019d03c4d574bd65a8f6123cc21fb651e663126fc374c0825",
+      "bytes": 85
+    },
+    {
+      "path": "local/render_resources_composition_cs/registered/annotation.log",
+      "sha256": "1c223e8630ad8d982227dbd00971ed41c179189b9384e7f97291d09a82198a00",
+      "bytes": 100
+    },
+    {
+      "path": "local/render_resources_composition_cs/registered/bsp_core.lib",
+      "sha256": "b343c53afdae1a77289bef336a4889fedfca2d8c48037f72176b48dcaa104141",
+      "bytes": 59581736
+    },
+    {
+      "path": "local/render_resources_composition_cs/registered/bsp_lua511.lib",
+      "sha256": "00315ac717aac3d2b2161fefefe71b36a974335ff9c95d48c137423eb4e2f4b2",
+      "bytes": 455244
+    },
+    {
+      "path": "local/render_resources_composition_cs/registered/bsp_zlib121.lib",
+      "sha256": "73ae30b8adc3adfe5b33285bac533f8e7df7e8ab8d9e44789e6a030fd8a06ad9",
+      "bytes": 71906
+    },
+    {
+      "path": "local/render_resources_composition_cs/registered/sources/cmake/startup.cmake",
+      "sha256": "581db360847beee972e4a3eaa18c2212c3a312ac4863e6aac77ed3821d4021fa",
+      "bytes": 122738
+    },
+    {
+      "path": "local/render_resources_composition_cs/registered/sources/include/bsp/native_render_resources_construction.hpp",
+      "sha256": "f005e33d5b00ad2e99f9850101a666ca8487657015306a56b52add252e9950a0",
+      "bytes": 6137
+    },
+    {
+      "path": "local/render_resources_composition_cs/registered/sources/src/native_render_resources_construction.cpp",
+      "sha256": "4d9873d82ea416ac56f9356fb725997f7f00497021343bb33d7b6f4c087e6308",
+      "bytes": 19983
+    },
+    {
+      "path": "local/render_resources_composition_cs/registered/sources/src/native_render_service_texture_construction.cpp",
+      "sha256": "4912ea61621f1045be49a5a116c2aff669f5578f40b0fa3701076623ec429d6b",
+      "bytes": 9438
+    },
+    {
+      "path": "local/render_resources_composition_cs/registered/sources/include/bsp/native_render_service_texture_lifetime.hpp",
+      "sha256": "cdf4f43902ec7e9a647f5e6b155950d9cc4889ad56bc34e5eb91cab454d5d239",
+      "bytes": 4528
+    },
+    {
+      "path": "local/render_resources_composition_cs/registered/sources/src/native_render_service_texture_lifetime.cpp",
+      "sha256": "cc4859375d7cf743f4d48baf60d3dacf9d36184142ea035875375212580ec597",
+      "bytes": 8047
+    },
+    {
+      "path": "local/render_resources_composition_cs/registered/CMakeCache.txt",
+      "sha256": "2ab657bd06bb97731372c10fc883040590ccedec539b0406ba2554bab45f7835",
+      "bytes": 18839
+    },
+    {
+      "path": "local/render_resources_composition_cs/registered/bsp_core.vcxproj",
+      "sha256": "ccfd843ef9642495385b6a30ed1a19604ba8aede29ad90c4f8940ba65fb1d18d",
+      "bytes": 200320
+    },
+    {
+      "path": "local/render_resources_composition_cs/registered/prepare_render_resources_cs.py",
+      "sha256": "bec7ee9e5bcd3e0752bc9d04db07d7faf8b79157a0347435f1303eea0d48c2f9",
+      "bytes": 18425
+    },
+    {
+      "path": "local/render_resources_composition_cs/registered/audit_render_resources_cs.py",
+      "sha256": "0d39f6e69d7cade1443e0d926bb44935fc6b8c20285b8f612178cb6ee6973780",
+      "bytes": 3223
+    },
+    {
+      "path": "local/render_resources_composition_cs/registered/record_render_resources_cs.py",
+      "sha256": "e7d479a1128999d53f6f24c7f450c678d66264e8ac95f1256cf15869a81a1259",
+      "bytes": 6341
+    },
+    {
+      "path": "local/render_resources_composition_cs/registered/annotate_render_resources_cs.py",
+      "sha256": "7c524533bf7b06ac1f030d3f08162ce59eec5b74d2272b3c3cad5e927bbd7eac",
+      "bytes": 3903
+    },
+    {
+      "path": "local/render_resources_composition_cs/registered/repair_render_resources_cs.py",
+      "sha256": "ed70b385532b9ec64a58e2447d3409f80dd25a2e500e0fef55bfa81942ec36db",
+      "bytes": 930
+    },
+    {
+      "path": "local/render_resources_composition_cs/registered/repair_mesh_resource_co.py",
+      "sha256": "65e10c6912f83f1e96ac1655b2c282c11072127954d2c4ee64faf2e42c46eb20",
+      "bytes": 3301
+    },
+    {
+      "path": "local/render_resources_composition_cs/registered/seal_render_resources_cs.py",
+      "sha256": "c87f4801ce2ca5c0c1dfee19af1dc2c3f6ecbf64df7bfaf323971ee3e8ec5e52",
+      "bytes": 6953
+    },
+    {
+      "path": "local/render_resources_composition_cs/registered/check_render_resources_cs.py",
+      "sha256": "fa525348309402302f6d3e8eab48ab8a00ffbb9c6d7ce2e39deb36d675990a0e",
+      "bytes": 1325
+    },
+    {
+      "path": "local/render_resources_composition_cs/registered/imported/include/bsp/native_render_resources_construction.hpp",
+      "sha256": "6dab58d13e683dd54eec5aff275004c3b85179a164bd95d1df0431a5d5980298",
+      "bytes": 5893
+    },
+    {
+      "path": "local/render_resources_composition_cs/registered/imported/src/native_render_resources_construction.cpp",
+      "sha256": "477b7699cd9781cc78ade9b89ecd8c1e0e4e9ce59aeeb40f6c07593ff3d8a7c9",
+      "bytes": 19495
+    },
+    {
+      "path": "local/render_resources_composition_cs/registered/imported/include/bsp/native_render_service_texture_lifetime.hpp",
+      "sha256": "cdf4f43902ec7e9a647f5e6b155950d9cc4889ad56bc34e5eb91cab454d5d239",
+      "bytes": 4528
+    },
+    {
+      "path": "local/render_resources_composition_cs/registered/imported/src/native_render_service_texture_lifetime.cpp",
+      "sha256": "cc4859375d7cf743f4d48baf60d3dacf9d36184142ea035875375212580ec597",
+      "bytes": 8047
+    },
+    {
+      "path": "local/render_resources_composition_cs/registered/imported/src/native_render_service_texture_construction.cpp",
+      "sha256": "4912ea61621f1045be49a5a116c2aff669f5578f40b0fa3701076623ec429d6b",
+      "bytes": 9438
+    },
+    {
+      "path": "local/render_resources_composition_cs/registered/imported/docs/NATIVE_RENDER_SERVICE_TEXTURE_LIFETIME_BL.md",
+      "sha256": "77dd671d46ec20e6a07a1edf3daa0fa1ef3120739983571943b359865e379df4",
+      "bytes": 8137
+    },
+    {
+      "path": "local/render_resources_composition_cs/registered/imported/reports/native_render_service_texture_lifetime_bl.json",
+      "sha256": "d59336a9a2aa81e28193feba4bf10047a020344be7463cf3eb9b40e08e7bcdfd",
+      "bytes": 24292
+    },
+    {
+      "path": "reports/native_render_resources_composition_cs.json",
+      "sha256": "32eea6668531bd23ff74c7108e2ee06c77d8cd45fbcfcef824fcd6a6bd67cf07",
+      "bytes": 123635
+    },
+    {
+      "path": "reports/native_render_resources_flow_cs.json",
+      "sha256": "cbe116310fa731af68575d2e20625912bd6d8431d497b31adb4ce9d79ccdc0ee",
+      "bytes": 8049
+    },
+    {
+      "path": "reports/native_render_resources_annotations_cs.json",
+      "sha256": "563c4f9f8f95310cd0a7264c7324eaf4d72daad066263c04f1bb87ef78bba780",
+      "bytes": 93419
+    }
+  ]
+}

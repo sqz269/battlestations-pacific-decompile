@@ -5,8 +5,10 @@
 #include "bsp/native_string.hpp"
 #include "bsp/native_string_pool_storage.hpp"
 #include "bsp/native_texture_saved_dimensions.hpp"
+#include <atomic>
 #include <cstring>
 #include <exception>
+#include <new>
 #include <stdexcept>
 
 #if !defined(_MSC_VER) || !defined(_M_IX86)
@@ -16,6 +18,8 @@
 namespace bsp {
 namespace {
 static_assert(sizeof(void*)==4,"Native pointer words require Win32");
+static_assert(sizeof(std::atomic<std::int32_t>)==4);
+static_assert(alignof(std::atomic<std::int32_t>)==4);
 void* at(void* base,std::uint32_t offset) noexcept {
     return reinterpret_cast<void*>(reinterpret_cast<std::uintptr_t>(base)+offset);
 }
@@ -140,7 +144,7 @@ void* construct_native_render_service_textures_00b52550(void* owner,
     a.owner=owner;
     put(owner,0x00ceb130);                         // B5256D
     put(a.native_locals_10_33+8,pointer_word(owner)); // B52574
-    put(at(owner,4),1);                           // B52578
+    ::new(at(owner,4)) std::atomic<std::int32_t>(1); // B52578: begin actual count lifetime here.
     put(owner,0x00d62074);                         // B52581
     a.unwind_state=0;
     Cleanup cleanup{c,a};

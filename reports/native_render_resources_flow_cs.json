@@ -1,0 +1,106 @@
+{
+  "packet": "orch4_render_resources_composition_cs",
+  "entries": [
+    {
+      "address": "00b52840",
+      "before_documentation": {
+        "hash": "bb43afd0ab614ecb9dd8355da8b4779dc46d512be1303eb0c885096d8ad31633",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b52840",
+        "function_name": "BSP_RenderServiceTextureHelper_ScalarDeletingDestructor",
+        "return_type": "void *",
+        "calling_convention": "__thiscall",
+        "plate_comment": "[BSP reconstruction 00b52840]\nDescriptive hypothesis, not a recovered symbol. Complete 00b52840..00b5285d native body reconstructed against the original assembly, register/stack ABI and live/original-PE bytes. ECX actual allocation; stack DWORD flags; EAX captured allocation; RET4; destroy before flags&1 free. Source preserves captured identities/IAT values, current concrete profiles, ordered stores and recovered cleanup states within its documented provider domain. Evidence: docs/NATIVE_RENDER_SERVICE_TEXTURE_LIFETIME_BL.md; reports/native_render_service_texture_lifetime_bl.json; docs/NATIVE_RENDER_RESOURCES_BK_INTEGRATION.md. Combined Win32 build and both existing math CTests passed; no new native differential fixture, drop-in ABI, unrestricted FH3/SEH, startup closure or gameplay validation.",
+        "parameters": [
+          {
+            "ordinal": 0,
+            "name": "this",
+            "type": "void *"
+          },
+          {
+            "ordinal": 1,
+            "name": "flags",
+            "type": "uint"
+          }
+        ],
+        "local_variables": [],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 24,
+            "name": "LAB_00b52858"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "before_comment": {
+        "address": "00b52840",
+        "function_name": "BSP_RenderServiceTextureHelper_ScalarDeletingDestructor",
+        "comment": "[BSP reconstruction 00b52840]\nDescriptive hypothesis, not a recovered symbol. Complete 00b52840..00b5285d native body reconstructed against the original assembly, register/stack ABI and live/original-PE bytes. ECX actual allocation; stack DWORD flags; EAX captured allocation; RET4; destroy before flags&1 free. Source preserves captured identities/IAT values, current concrete profiles, ordered stores and recovered cleanup states within its documented provider domain. Evidence: docs/NATIVE_RENDER_SERVICE_TEXTURE_LIFETIME_BL.md; reports/native_render_service_texture_lifetime_bl.json; docs/NATIVE_RENDER_RESOURCES_BK_INTEGRATION.md. Combined Win32 build and both existing math CTests passed; no new native differential fixture, drop-in ABI, unrestricted FH3/SEH, startup closure or gameplay validation."
+      },
+      "complete": true,
+      "after_comment": {
+        "address": "00b52840",
+        "function_name": "BSP_RenderServiceTextureHelper_ScalarDeletingDestructor",
+        "comment": "[BSP reconstruction 00b52840]\nDescriptive hypothesis, not a recovered symbol. Complete 00b52840..00b5285d native body reconstructed against the original assembly, register/stack ABI and live/original-PE bytes. ECX actual allocation; stack DWORD flags; EAX captured allocation; RET4; destroy before flags&1 free. Source preserves captured identities/IAT values, current concrete profiles, ordered stores and recovered cleanup states within its documented provider domain. Evidence: docs/NATIVE_RENDER_SERVICE_TEXTURE_LIFETIME_BL.md; reports/native_render_service_texture_lifetime_bl.json; docs/NATIVE_RENDER_RESOURCES_BK_INTEGRATION.md. Combined Win32 build and both existing math CTests passed; no new native differential fixture, drop-in ABI, unrestricted FH3/SEH, startup closure or gameplay validation."
+      },
+      "prior_comment_preserved": true,
+      "all_instruction_owners_verified": true
+    }
+  ],
+  "actions": [
+    {
+      "endpoint": "clear_instruction_flow_override",
+      "body": {
+        "address": "00b52850"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Cleared flow override at 00b52850 (was: NONE, now: NONE)\"}"
+    },
+    {
+      "endpoint": "delete_function",
+      "body": {
+        "address": "00b52840"
+      },
+      "result": "{\"success\": true, \"address\": \"00b52840\", \"deleted_function\": \"BSP_RenderServiceTextureHelper_ScalarDeletingDestructor\", \"body_size\": 27, \"message\": \"Function 'BSP_RenderServiceTextureHelper_ScalarDeletingDestructor' deleted at 00b52840\"}"
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00b52840",
+        "end_address": "00b5285e"
+      },
+      "result": "{\"success\": true, \"start_address\": \"00b52840\", \"end_address\": \"00b5285d\", \"bytes_disassembled\": 30, \"message\": \"Successfully disassembled 30 byte(s)\"}"
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00b52840",
+        "name": "BSP_RenderServiceTextureHelper_ScalarDeletingDestructor",
+        "disassemble_first": false
+      },
+      "result": "{\"success\": true, \"address\": \"00b52840\", \"function_name\": \"BSP_RenderServiceTextureHelper_ScalarDeletingDestructor\", \"entry_point\": \"00b52840\", \"body_size\": 30, \"message\": \"Function created successfully at 00b52840\", \"warnings\": [\"Function name 'BSP_RenderServiceTextureHelper_ScalarDeletingDestructor' \\u2014 main part 'RenderServiceTextureHelper_ScalarDeletingDestructor' is not PascalCase. Expected: RenderservicetexturehelperScalardeletingdestructor\", \"Function name 'BSP_RenderServiceTextureHelper_ScalarDeletingDestructor' \\u2014 main part 'RenderServiceTextureHelper_ScalarDeletingDestructor' contains underscores. Use PascalCase after the module prefix.\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b52840",
+        "new_name": "BSP_RenderServiceTextureHelper_ScalarDeletingDestructor"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b52840 from 'BSP_RenderServiceTextureHelper_ScalarDeletingDestructor' to 'BSP_RenderServiceTextureHelper_ScalarDeletingDestructor'\", \"warnings\": [\"Function name 'BSP_RenderServiceTextureHelper_ScalarDeletingDestructor' \\u2014 main part 'RenderServiceTextureHelper_ScalarDeletingDestructor' is not PascalCase. Expected: RenderservicetexturehelperScalardeletingdestructor\", \"Function name 'BSP_RenderServiceTextureHelper_ScalarDeletingDestructor' \\u2014 main part 'RenderServiceTextureHelper_ScalarDeletingDestructor' contains underscores. Use PascalCase after the module prefix.\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00b52840",
+        "comment": "[BSP reconstruction 00b52840]\nDescriptive hypothesis, not a recovered symbol. Complete 00b52840..00b5285d native body reconstructed against the original assembly, register/stack ABI and live/original-PE bytes. ECX actual allocation; stack DWORD flags; EAX captured allocation; RET4; destroy before flags&1 free. Source preserves captured identities/IAT values, current concrete profiles, ordered stores and recovered cleanup states within its documented provider domain. Evidence: docs/NATIVE_RENDER_SERVICE_TEXTURE_LIFETIME_BL.md; reports/native_render_service_texture_lifetime_bl.json; docs/NATIVE_RENDER_RESOURCES_BK_INTEGRATION.md. Combined Win32 build and both existing math CTests passed; no new native differential fixture, drop-in ABI, unrestricted FH3/SEH, startup closure or gameplay validation."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00b52840\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": "{\"success\": true, \"program\": \"battlestationspacific.exe\", \"message\": \"Program saved successfully\"}"
+    }
+  ],
+  "saved": true
+}

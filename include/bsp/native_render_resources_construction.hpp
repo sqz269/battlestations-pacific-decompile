@@ -1,16 +1,17 @@
 #pragma once
-
 #include "bsp/native_cockpit_helper_construction.hpp"
+#include "bsp/native_cockpit_helper_lifetime.hpp"
 #include "bsp/native_frame_target_owner.hpp"
 #include "bsp/native_render_service_base.hpp"
 #include "bsp/native_render_service_parameters.hpp"
 #include "bsp/native_render_service_texture_construction.hpp"
+#include <optional>
 
 namespace bsp {
 
-// Current raw MOVSS inputs. Bindings stay fixed and outside the actual6ACh
-// receiver; referents may alias its fields. No float conversions or defaults.
-struct NativeRenderResourcesConstants {
+// Stable bindings to the actual current DWORD cells, not float defaults.
+// Their values may alias owner bytes and are read at the original MOVSS sites.
+struct NativeRenderResourcesInitialCells {
     const volatile std::uint32_t& actual_00ce54a0;
     const volatile std::uint32_t& actual_00ce3804;
     const volatile std::uint32_t& actual_00ce4bc4;
@@ -33,34 +34,33 @@ struct NativeRenderResourcesConstants {
     const volatile std::uint32_t& actual_00ce6a04;
 };
 
-// One actual manager/publication/string/cache/camera domain. All providers and
-// profile/literal/constant storage outlive the attempt and surviving resources.
-// Surface and texture services must borrow the same renderer cell/string adapter;
-// base publication and raw string operations share the manager cell.
-// Texture context borrows the current renderer at00F8D394 and D5F0A8 profile.
-// Allocator pair supplies the original BF681B/BF65AC allocation family, including
-// its nullable result and exception policy. No allocation-size substitution.
+// One actual renderer/publication/string domain, borrowed through the existing
+// texture context; profiles/literals remain current borrowed storage. The node
+// and texture contexts must share the raw string-pool/manager/gate bindings.
+// Surface/texture contexts also share the renderer publication cell and actual
+// string adapter. These source-domain requirements are checked before admission.
 struct NativeRenderResourcesConstructionContext {
     NativeRenderServiceBaseContext& base;
-    const NativeRenderResourcesConstants& constants;
-    const NativeRenderServiceParameterConstants& parameters;
-    NativeFrameTargetOwnerContext& frame_targets;
     NativeRenderServiceTextureConstructionContext& textures;
-    const void* black_00d5e474;
-    const void* noise_00d5e468;
-    const void* marker_00d5e460;
-    const volatile std::uint32_t& cockpit_near_00d7a2f0;
-    const NativeCockpitViewportReleaseContext& cockpit_release;
-    NativeCockpitConstructionBlock::Admission& cockpit_admission;
-    void* (*allocate_00bf681b)(std::size_t);
-    void (*free_00bf65ac)(void*) noexcept;
+    NativeFrameTargetOwnerContext& frame_targets;
+    const NativeRenderResourcesInitialCells& cells;
+    const NativeRenderServiceParameterConstants& parameters;
+    NativeCameraEnvironment& camera;
+    const NativeNodeRawConstants& node_constants;
+    NativeViewportRegistry& viewport_registry;
+    const NativeCockpitViewportReleaseContext& viewport_release;
+    const volatile std::uint32_t* actual_helper_table_00d61854;
+    const void* actual_literal_00d5e474;
+    const void* actual_literal_00d5e468;
+    const void* actual_literal_00d5e460;
 };
 
-// Persistent operation, not another native owner. Only reached stores initialize
-// the raw local8h name/allocation region. Child cache frames and the cockpit
-// construction block must survive failures according to their own contracts.
-struct NativeRenderResourcesConstructionAcquired {
-    enum class Phase { fresh, running, complete, failed };
+// Persistent caller-owned host storage, prepared before the first native event.
+// Not a native owner/refcount; never move, reset, replay, or destroy unresolved
+// child cache/VFS attempts. The block and optional companions survive failure.
+class NativeRenderResourcesConstructionAcquired final {
+public:
+    enum class Phase { fresh, preparing, running, failed, helper_binding_failed, complete };
     NativeRenderResourcesConstructionAcquired() = default;
     NativeRenderResourcesConstructionAcquired(const NativeRenderResourcesConstructionAcquired&) = delete;
     NativeRenderResourcesConstructionAcquired& operator=(const NativeRenderResourcesConstructionAcquired&) = delete;
@@ -68,23 +68,46 @@ struct NativeRenderResourcesConstructionAcquired {
     void* owner{};
     int unwind_state{-1};
     std::uint32_t native_site{};
-    std::uint32_t failure_site{};
-    alignas(4) unsigned char native_local_14[8];
-    NativeTextureCacheAcquired black;
-    NativeTextureCacheAcquired noise;
-    NativeRenderServiceTextureConstructionAcquired texture_helper;
+    // Native ESP+10/+14 alias allocation spill and reusable raw8h string.
+    alignas(4) unsigned char native_locals_10_17[8];
+    NativeTextureCacheAcquired default_loads[2];
+    NativeRenderServiceTextureConstructionAcquired texture_construction;
+    NativeCockpitConstructionBlock cockpit;
+    void* helper_allocation{}; // identity only after a native free
+    bool helper_completed{};  // HOST fact, never a new native EH state
+    bool helper_allocation_freed{};
+    bool helper_retired{};
+    NativeCockpitHelperOwner* helper_owner() noexcept;
+    NativeCockpitHelperReference* helper_reference() noexcept;
+    // After native final-zero retirement and every semantic borrow has ended.
+    // Disposes host companions only; no native release, free, or retry.
+    void forget_retired_helper_after_host_quiescence() noexcept;
+private:
+    friend void* construct_native_render_resources_00b14a10(void*,
+        NativeRenderResourcesConstructionContext&, NativeRenderResourcesConstructionAcquired&);
+    static void record_helper_retirement(void*, NativeCockpitHelperReference&) noexcept;
+    std::optional<NativeCockpitHelperOwner> helper_owner_;
+    std::optional<NativeCockpitHelperReference> helper_reference_;
 };
 
-// Full B14A10..B14F5B,1356 bytes: ECX actual6ACh allocation, no arguments,
-// EAX original receiver, RET. Publish/register base before initializing fields.
-// Preserve interleaved raw constant reads, untouched bytes, current renderer
-// reloads, frame-target setters, texture publications BEFORE name cleanup,
-// helper allocations and the nine-state compiler cleanup schedule.
-// Numeric D5F0A8 slots128/12C/64 dispatch B24DC0/B20090/B319B0 only.
-// New source API; original calling ABI/FH3/SEH and full game are not replaced.
-// Completed resource fields are NOT rolled back by constructor unwind. A
-// failed child's unresolved metadata remains caller-owned; never retry/reset.
-void* construct_native_render_resources_00b14a10(void* actual_owner,
-    NativeRenderResourcesConstructionContext&,
-    NativeRenderResourcesConstructionAcquired&);
+// Complete B14A10..B14F5B normal body and nine-state C++ exception projection
+// in the existing concrete provider domain. Original ECX actual6ACh receiver,
+// zero stacked arguments, EAX original receiver, RET. New explicit context ABI.
+// Leaves every unmentioned receiver byte as its preimage. Allocations request
+// exactly40h/CCh/24h through the existing CRT domain. Null branches are retained;
+// the ordinary allocator either returns nonnull or throws.
+//
+// Block admission and helper-companion storage precede B0F020 publication.
+// Successful B3C800 binds owner/reference without allocation/retain, then writes
+// receiver+0C. Post-success host binding failure preserves the completed helper
+// and block, reports helper_binding_failed, and is NOT native state8 unwind.
+// No automatic recovery for that unsupported boundary is claimed. Native
+// helper failure frees its exact raw allocation while retaining surviving block
+// records. Callers must explicitly retire them and establish host quiescence.
+// Startup wiring, derived destruction, native FH3/SEH identity and gameplay
+// remain separate integration dependencies. See docs/NATIVE_RENDER_RESOURCES_CS.md
+// for BK source provenance, the current composition fixture and its limits.
+void* construct_native_render_resources_00b14a10(void* actual_receiver,
+    NativeRenderResourcesConstructionContext&, NativeRenderResourcesConstructionAcquired&);
+
 } // namespace bsp

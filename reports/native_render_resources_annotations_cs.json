@@ -1,0 +1,645 @@
+{
+  "packet": "orch4_render_resources_composition_cs",
+  "entries": [
+    {
+      "address": "00b14a10",
+      "name": "BSP_RenderResources_Construct",
+      "before_comment": {
+        "address": "00b14a10",
+        "function_name": "BSP_RenderResources_Construct",
+        "comment": "[BSP reconstruction 00b14a10]\nHypothesis, not a recovered symbol. Direct callee of BSP_Application_Initialize (0073d410); analysis-only packet app_initialize_map, no reconstruction. Called at 0073df01 in the renderer resource run. References noise.dds and black.tga, the two fallback textures. Ghidra reports an unreachable block at 00b14e69 and unaffected EBX/ESI/EDI inputs, so the body is only partially recovered. Evidence: docs/APP_INITIALIZE_MAP.md; reports/app_initialize_map.json.\n\n[BSP reconstruction 00b14a10] update\nHypothesis, not a recovered symbol. Direct callee of BSP_Application_Initialize (0073d410); analysis-only packet app_initialize_map, no reconstruction. Called at 0073df01 in the renderer resource run. References noise.dds and black.tga, the two fallback textures. Ghidra reports an unreachable block at 00b14e69 and unaffected EBX/ESI/EDI inputs, so the body is only partially recovered. Evidence: docs/APP_INITIALIZE_MAP.md; reports/app_initialize_map.json. | Packet app_init_renderer_device, read from the listing 00b14a10-00b14f5b because the pseudocode is truncated. thiscall(this), plain RET at 00b14f44 with a second RET at 00b14f5b on the failed-allocation tail, returns this; object 6ACh allocated at 0073dedf and constructed at 0073df01 (phase 9 step 50). Base 00b0f020 installs vtable 00d5e158, publishes this into DAT_00f8d39c at 00b0f076 and registers it with the lifetime manager (00415350 singleton 01090aa0, then 00bd0c30); 00b14a36 installs derived vtable 00d5e480. Load-bearing steps: 00b0cd80 on this+2ACh at 00b14bef; operator new(40h) -> 00b1fbb0 into this+1D4h at 00b14d89; renderer virtual +128h (00b24dc0, returns renderer+197Ch) fed to 00b1fab0(this+1D4h,0,value) at 00b14dac; renderer virtual +12Ch (00b20090, returns renderer+198Ch) fed to 00b1fb00(this+1D4h,value) at 00b14dc9; renderer virtual +64h (00b319b0 BSP_Renderer_LoadTextureByName, RET 8) with ('noise.dds' at 00d5e474, flag 0) into this+668h at 00b14e20 and ('black.tga' at 00d5e468, flag 0) into this+67Ch at 00b14e95; operator new(0CCh) -> 00b52550 into this+34h; the 4-byte string 'XXXX' (00d5e460) into this+684h; operator new(24h) -> 00b3c800 into this+0Ch, else 0. Both textures are loaded unconditionally, with no command-line or settings gate. The rest of the body is float and pointer field initialisation. Evidence: docs/APP_INIT_RENDERER.md; reports/app_init_renderer.json.\n\n[BSP reconstruction 00b14a10] update\nHypothesis, not a recovered symbol. Direct callee of BSP_Application_Initialize (0073d410); analysis-only packet app_initialize_map, no reconstruction. Called at 0073df01 in the renderer resource run. References noise.dds and black.tga, the two fallback textures. Ghidra reports an unreachable block at 00b14e69 and unaffected EBX/ESI/EDI inputs, so the body is only partially recovered. Evidence: docs/APP_INITIALIZE_MAP.md; reports/app_initialize_map.json. | Packet app_init_renderer_device, read from the listing 00b14a10-00b14f5b because the pseudocode is truncated. thiscall(this), plain RET at 00b14f44 with a second RET at 00b14f5b on the failed-allocation tail, returns this; object 6ACh allocated at 0073dedf and constructed at 0073df01 (phase 9 step 50). Base 00b0f020 installs vtable 00d5e158, publishes this into DAT_00f8d39c at 00b0f076 and registers it with the lifetime manager (00415350 singleton 01090aa0, then 00bd0c30); 00b14a36 installs derived vtable 00d5e480. Load-bearing steps: 00b0cd80 on this+2ACh at 00b14bef; operator new(40h) -> 00b1fbb0 into this+1D4h at 00b14d89; renderer virtual +128h (00b24dc0, returns renderer+197Ch) fed to 00b1fab0(this+1D4h,0,value) at 00b14dac; renderer virtual +12Ch (00b20090, returns renderer+198Ch) fed to 00b1fb00(this+1D4h,value) at 00b14dc9; renderer virtual +64h (00b319b0 BSP_Renderer_LoadTextureByName, RET 8) with ('noise.dds' at 00d5e474, flag 0) into this+668h at 00b14e20 and ('black.tga' at 00d5e468, flag 0) into this+67Ch at 00b14e95; operator new(0CCh) -> 00b52550 into this+34h; the 4-byte string 'XXXX' (00d5e460) into this+684h; operator new(24h) -> 00b3c800 into this+0Ch, else 0. Both textures are loaded unconditionally, with no command-line or settings gate. The rest of the body is float and pointer field initialisation. Evidence: docs/APP_INIT_RENDERER.md; reports/app_init_renderer.json. | Descriptive hypothesis, not a recovered symbol. Complete 00b14a10..00b14f5b native body reconstructed against the original assembly, register/stack ABI and live/original-PE bytes. ECX actual6ACh receiver; no stacked arguments; EAX original ECX; RET at B14F44/B14F5B. Source preserves captured identities/IAT values, current concrete profiles, ordered stores and recovered cleanup states within its documented provider domain. Evidence: docs/NATIVE_RENDER_RESOURCES_CONSTRUCTION_BK.md; reports/native_render_resources_construction_bk.json; docs/NATIVE_RENDER_RESOURCES_BK_INTEGRATION.md. Combined Win32 build and both existing math CTests passed; no new native differential fixture, drop-in ABI, unrestricted FH3/SEH, startup closure or gameplay validation.\n\n[BSP reconstruction 00b14a10] CR update\nCR full B14A10..B14F5B1356B and ten compiler supports109B, all live/installed-PE equal and instruction ownership complete. Actual6ACh service; ECX receiver/no stack args/EAX same/RET. Base B0F020 publication precedes derived initialization; raw MOVSS loads/stores and untouched preimages preserved; B0CD80 member2AC; actual frame40h/B1FBB0 and current D5F0A8 slots128=B24DC0,12C=B20090 with retaining setters; current64=B319B0 black/noise publications precede captured current-pool returns; CCh/B52550 helper; four-byte unterminated member marker;24h/B3C800 cockpit consumes persistent admission. Nine-state compiler map preserves member/base cleanup and raw allocation/name unwind without rollback of completed resource fields. Tracked Win32 build/both CTests pass. One current-library first-allocation failure fixture verifies early publication, aliased constant timing, untouched bytes, member headers, native state3 vector/string/base unwind and manager removal; later constructor calls are unexecuted. Existing actualD3D9 three-parser mesh fixture passes with57canonicalcompanions retired. Full successful B14A10 execution, original ABI/FH3/SEH, application wiring/rendering/gameplay remain unvalidated. See docs/NATIVE_RENDER_RESOURCES_CR.md. Complete 1356B. ECX actual6ACh receiver; no stack arguments; EAX original receiver; RET. Source construct_native_render_resources_00b14a10."
+      },
+      "before_documentation": {
+        "hash": "0351249dc25c383239bebe2d8bbedcb486dc97792cc618b54355486e9e6411ad",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b14a10",
+        "function_name": "BSP_RenderResources_Construct",
+        "return_type": "void *",
+        "calling_convention": "__thiscall",
+        "plate_comment": "[BSP reconstruction 00b14a10]\nHypothesis, not a recovered symbol. Direct callee of BSP_Application_Initialize (0073d410); analysis-only packet app_initialize_map, no reconstruction. Called at 0073df01 in the renderer resource run. References noise.dds and black.tga, the two fallback textures. Ghidra reports an unreachable block at 00b14e69 and unaffected EBX/ESI/EDI inputs, so the body is only partially recovered. Evidence: docs/APP_INITIALIZE_MAP.md; reports/app_initialize_map.json.\n\n[BSP reconstruction 00b14a10] update\nHypothesis, not a recovered symbol. Direct callee of BSP_Application_Initialize (0073d410); analysis-only packet app_initialize_map, no reconstruction. Called at 0073df01 in the renderer resource run. References noise.dds and black.tga, the two fallback textures. Ghidra reports an unreachable block at 00b14e69 and unaffected EBX/ESI/EDI inputs, so the body is only partially recovered. Evidence: docs/APP_INITIALIZE_MAP.md; reports/app_initialize_map.json. | Packet app_init_renderer_device, read from the listing 00b14a10-00b14f5b because the pseudocode is truncated. thiscall(this), plain RET at 00b14f44 with a second RET at 00b14f5b on the failed-allocation tail, returns this; object 6ACh allocated at 0073dedf and constructed at 0073df01 (phase 9 step 50). Base 00b0f020 installs vtable 00d5e158, publishes this into DAT_00f8d39c at 00b0f076 and registers it with the lifetime manager (00415350 singleton 01090aa0, then 00bd0c30); 00b14a36 installs derived vtable 00d5e480. Load-bearing steps: 00b0cd80 on this+2ACh at 00b14bef; operator new(40h) -> 00b1fbb0 into this+1D4h at 00b14d89; renderer virtual +128h (00b24dc0, returns renderer+197Ch) fed to 00b1fab0(this+1D4h,0,value) at 00b14dac; renderer virtual +12Ch (00b20090, returns renderer+198Ch) fed to 00b1fb00(this+1D4h,value) at 00b14dc9; renderer virtual +64h (00b319b0 BSP_Renderer_LoadTextureByName, RET 8) with ('noise.dds' at 00d5e474, flag 0) into this+668h at 00b14e20 and ('black.tga' at 00d5e468, flag 0) into this+67Ch at 00b14e95; operator new(0CCh) -> 00b52550 into this+34h; the 4-byte string 'XXXX' (00d5e460) into this+684h; operator new(24h) -> 00b3c800 into this+0Ch, else 0. Both textures are loaded unconditionally, with no command-line or settings gate. The rest of the body is float and pointer field initialisation. Evidence: docs/APP_INIT_RENDERER.md; reports/app_init_renderer.json.\n\n[BSP reconstruction 00b14a10] update\nHypothesis, not a recovered symbol. Direct callee of BSP_Application_Initialize (0073d410); analysis-only packet app_initialize_map, no reconstruction. Called at 0073df01 in the renderer resource run. References noise.dds and black.tga, the two fallback textures. Ghidra reports an unreachable block at 00b14e69 and unaffected EBX/ESI/EDI inputs, so the body is only partially recovered. Evidence: docs/APP_INITIALIZE_MAP.md; reports/app_initialize_map.json. | Packet app_init_renderer_device, read from the listing 00b14a10-00b14f5b because the pseudocode is truncated. thiscall(this), plain RET at 00b14f44 with a second RET at 00b14f5b on the failed-allocation tail, returns this; object 6ACh allocated at 0073dedf and constructed at 0073df01 (phase 9 step 50). Base 00b0f020 installs vtable 00d5e158, publishes this into DAT_00f8d39c at 00b0f076 and registers it with the lifetime manager (00415350 singleton 01090aa0, then 00bd0c30); 00b14a36 installs derived vtable 00d5e480. Load-bearing steps: 00b0cd80 on this+2ACh at 00b14bef; operator new(40h) -> 00b1fbb0 into this+1D4h at 00b14d89; renderer virtual +128h (00b24dc0, returns renderer+197Ch) fed to 00b1fab0(this+1D4h,0,value) at 00b14dac; renderer virtual +12Ch (00b20090, returns renderer+198Ch) fed to 00b1fb00(this+1D4h,value) at 00b14dc9; renderer virtual +64h (00b319b0 BSP_Renderer_LoadTextureByName, RET 8) with ('noise.dds' at 00d5e474, flag 0) into this+668h at 00b14e20 and ('black.tga' at 00d5e468, flag 0) into this+67Ch at 00b14e95; operator new(0CCh) -> 00b52550 into this+34h; the 4-byte string 'XXXX' (00d5e460) into this+684h; operator new(24h) -> 00b3c800 into this+0Ch, else 0. Both textures are loaded unconditionally, with no command-line or settings gate. The rest of the body is float and pointer field initialisation. Evidence: docs/APP_INIT_RENDERER.md; reports/app_init_renderer.json. | Descriptive hypothesis, not a recovered symbol. Complete 00b14a10..00b14f5b native body reconstructed against the original assembly, register/stack ABI and live/original-PE bytes. ECX actual6ACh receiver; no stacked arguments; EAX original ECX; RET at B14F44/B14F5B. Source preserves captured identities/IAT values, current concrete profiles, ordered stores and recovered cleanup states within its documented provider domain. Evidence: docs/NATIVE_RENDER_RESOURCES_CONSTRUCTION_BK.md; reports/native_render_resources_construction_bk.json; docs/NATIVE_RENDER_RESOURCES_BK_INTEGRATION.md. Combined Win32 build and both existing math CTests passed; no new native differential fixture, drop-in ABI, unrestricted FH3/SEH, startup closure or gameplay validation.\n\n[BSP reconstruction 00b14a10] CR update\nCR full B14A10..B14F5B1356B and ten compiler supports109B, all live/installed-PE equal and instruction ownership complete. Actual6ACh service; ECX receiver/no stack args/EAX same/RET. Base B0F020 publication precedes derived initialization; raw MOVSS loads/stores and untouched preimages preserved; B0CD80 member2AC; actual frame40h/B1FBB0 and current D5F0A8 slots128=B24DC0,12C=B20090 with retaining setters; current64=B319B0 black/noise publications precede captured current-pool returns; CCh/B52550 helper; four-byte unterminated member marker;24h/B3C800 cockpit consumes persistent admission. Nine-state compiler map preserves member/base cleanup and raw allocation/name unwind without rollback of completed resource fields. Tracked Win32 build/both CTests pass. One current-library first-allocation failure fixture verifies early publication, aliased constant timing, untouched bytes, member headers, native state3 vector/string/base unwind and manager removal; later constructor calls are unexecuted. Existing actualD3D9 three-parser mesh fixture passes with57canonicalcompanions retired. Full successful B14A10 execution, original ABI/FH3/SEH, application wiring/rendering/gameplay remain unvalidated. See docs/NATIVE_RENDER_RESOURCES_CR.md. Complete 1356B. ECX actual6ACh receiver; no stack arguments; EAX original receiver; RET. Source construct_native_render_resources_00b14a10.",
+        "parameters": [
+          {
+            "ordinal": 0,
+            "name": "this",
+            "type": "void *"
+          }
+        ],
+        "local_variables": [
+          {
+            "name": "unaff_EDI",
+            "type": "int",
+            "storage": "(register, 0x1c, 4)"
+          },
+          {
+            "name": "unaff_ESI",
+            "type": "int",
+            "storage": "(register, 0x18, 4)"
+          },
+          {
+            "name": "unaff_EBX",
+            "type": "int",
+            "storage": "(register, 0xc, 4)"
+          },
+          {
+            "name": "iVar6",
+            "type": "int",
+            "storage": "(register, 0x4, 4)"
+          },
+          {
+            "name": "pvVar5",
+            "type": "void *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "uVar4",
+            "type": "undefined4",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "uVar3",
+            "type": "undefined4",
+            "storage": "(unique, 0x1000024d, 4)"
+          },
+          {
+            "name": "uVar2",
+            "type": "undefined4",
+            "storage": "(unique, 0x10000231, 4)"
+          },
+          {
+            "name": "uVar1",
+            "type": "undefined4",
+            "storage": "(unique, 0x10000229, 4)"
+          },
+          {
+            "name": "this_00",
+            "type": "size_t *",
+            "storage": "(unique, 0x6800, 4)"
+          },
+          {
+            "name": "pcStack_8",
+            "type": "undefined *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "local_14",
+            "type": "void *",
+            "storage": "(stack, 0xffffffffffffffec, 4)"
+          },
+          {
+            "name": "pvStack_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "local_4",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "uStack_10",
+            "type": "undefined1",
+            "storage": "(stack, 0xfffffffffffffff0, 1)"
+          },
+          {
+            "name": "local_18",
+            "type": "void *",
+            "storage": "(stack, 0xffffffffffffffe8, 4)"
+          },
+          {
+            "name": "iVar7",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffd8, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 896,
+            "name": "LAB_00b14d90"
+          },
+          {
+            "relative_offset": 898,
+            "name": "LAB_00b14d92"
+          },
+          {
+            "relative_offset": 1018,
+            "name": "LAB_00b14e0a"
+          },
+          {
+            "relative_offset": 1084,
+            "name": "LAB_00b14e4c"
+          },
+          {
+            "relative_offset": 1135,
+            "name": "LAB_00b14e7f"
+          },
+          {
+            "relative_offset": 1201,
+            "name": "LAB_00b14ec1"
+          },
+          {
+            "relative_offset": 1236,
+            "name": "LAB_00b14ee4"
+          },
+          {
+            "relative_offset": 1238,
+            "name": "LAB_00b14ee6"
+          },
+          {
+            "relative_offset": 1280,
+            "name": "LAB_00b14f10"
+          },
+          {
+            "relative_offset": 1333,
+            "name": "LAB_00b14f45"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "prior_source_record": {
+        "address": "00b14a10",
+        "name": "construct_native_render_resources_00b14a10",
+        "source": "src/native_render_resources_construction.cpp",
+        "status": "complete_native_schedule_build_and_first_allocation_failure_fixture_only",
+        "original_abi": "ECX actual6ACh receiver; no stack arguments; EAX original receiver; RET",
+        "documentation": "docs/NATIVE_RENDER_RESOURCES_CR.md",
+        "report": "reports/native_render_resources_cr.json",
+        "abi_compatible": false,
+        "game_validated": false,
+        "evidence": "CR full B14A10..B14F5B1356B and ten compiler supports109B, all live/installed-PE equal and instruction ownership complete. Actual6ACh service; ECX receiver/no stack args/EAX same/RET. Base B0F020 publication precedes derived initialization; raw MOVSS loads/stores and untouched preimages preserved; B0CD80 member2AC; actual frame40h/B1FBB0 and current D5F0A8 slots128=B24DC0,12C=B20090 with retaining setters; current64=B319B0 black/noise publications precede captured current-pool returns; CCh/B52550 helper; four-byte unterminated member marker;24h/B3C800 cockpit consumes persistent admission. Nine-state compiler map preserves member/base cleanup and raw allocation/name unwind without rollback of completed resource fields. Tracked Win32 build/both CTests pass. One current-library first-allocation failure fixture verifies early publication, aliased constant timing, untouched bytes, member headers, native state3 vector/string/base unwind and manager removal; later constructor calls are unexecuted. Existing actualD3D9 three-parser mesh fixture passes with57canonicalcompanions retired. Full successful B14A10 execution, original ABI/FH3/SEH, application wiring/rendering/gameplay remain unvalidated. See docs/NATIVE_RENDER_RESOURCES_CR.md. Complete 1356B. ECX actual6ACh receiver; no stack arguments; EAX original receiver; RET. Source construct_native_render_resources_00b14a10.",
+        "kind": "function"
+      },
+      "evidence": "CS consolidates the earlier orch3 BK B14A10 implementation at 7142a2f142eaf8991eff9533bcb5b5a7fc26123c, replacing duplicate orch4 CR source, and imports orch3 BL texture-helper lifetime at 9335da3246f979e042a4286c8f4ad42b19ca69b5. No new unique function credit. Retains the additional shared surface/texture renderer and string-domain admission check. Five native bodies2605B and sixteen compiler supports177B match live Ghidra and the installed PE; all783 instruction owners verified. Tracked MSVC Win32 build and both existing CTests passed. One full B14A10 source constructor case uses actual retained D3D9 frame surfaces, six explicitly seeded native texture cache hits, shared-counter camera and live64x64 viewport; marker, aliased constant and untouched preimages checked. Explicit caller-owned child retirement exercises the canonical BL texture-helper terminal with zero auxiliaries, cockpit/camera/viewport, frame/surfaces and cache creators; all64 canonical mesh/texture companions retired. Full parent destructor, cold texture resolution, application wiring, original machine-code differential/FH3/SEH and gameplay remain unvalidated. Historical CR fixture and BL report retain their original scope. See docs/NATIVE_RENDER_RESOURCES_CS.md. Original ABI: ECX actual6ACh receiver; no stacked arguments; EAX original receiver; RET.",
+      "ledger_name_output": "00b14a10 -> BSP_RenderResources_Construct\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00b14a10\", \"name\": \"BSP_RenderResources_Construct\", \"evidence\": \"Hypothesis, not a recovered symbol. Direct callee of BSP_Application_Initialize (0073d410); analysis-only packet app_initialize_map, no reconstruction. Called at 0073df01 in the renderer resource run. References noise.dds and black.tga, the two fallback textures. Ghidra reports an unreachable block at 00b14e69 and unaffected EBX/ESI/EDI inputs, so the body is only partially recovered. Evidence: docs/APP_INITIALIZE_MAP.md; reports/app_initialize_map.json. | Packet app_init_renderer_device, read from the listing 00b14a10-00b14f5b because the pseudocode is truncated. thiscall(this), plain RET at 00b14f44 with a second RET at 00b14f5b on the failed-allocation tail, returns this; object 6ACh allocated at 0073dedf and constructed at 0073df01 (phase 9 step 50). Base 00b0f020 installs vtable 00d5e158, publishes this into DAT_00f8d39c at 00b0f076 and registers it with the lifetime manager (00415350 singleton 01090aa0, then 00bd0c30); 00b14a36 installs derived vtable 00d5e480. Load-bearing steps: 00b0cd80 on this+2ACh at 00b14bef; operator new(40h) -> 00b1fbb0 into this+1D4h at 00b14d89; renderer virtual +128h (00b24dc0, returns renderer+197Ch) fed to 00b1fab0(this+1D4h,0,value) at 00b14dac; renderer virtual +12Ch (00b20090, returns renderer+198Ch) fed to 00b1fb00(this+1D4h,value) at 00b14dc9; renderer virtual +64h (00b319b0 BSP_Renderer_LoadTextureByName, RET 8) with ('noise.dds' at 00d5e474, flag 0) into this+668h at 00b14e20 and ('black.tga' at 00d5e468, flag 0) into this+67Ch at 00b14e95; operator new(0CCh) -> 00b52550 into this+34h; the 4-byte string 'XXXX' (00d5e460) into this+684h; operator new(24h) -> 00b3c800 into this+0Ch, else 0. Both textures are loaded unconditionally, with no command-line or settings gate. The rest of the body is float and pointer field initialisation. Evidence: docs/APP_INIT_RENDERER.md; reports/app_init_renderer.json. | CR full B14A10..B14F5B1356B and ten compiler supports109B, all live/installed-PE equal and instruction ownership complete. Actual6ACh service; ECX receiver/no stack args/EAX same/RET. Base B0F020 publication precedes derived initialization; raw MOVSS loads/stores and untouched preimages preserved; B0CD80 member2AC; actual frame40h/B1FBB0 and current D5F0A8 slots128=B24DC0,12C=B20090 with retaining setters; current64=B319B0 black/noise publications precede captured current-pool returns; CCh/B52550 helper; four-byte unterminated member marker;24h/B3C800 cockpit consumes persistent admission. Nine-state compiler map preserves member/base cleanup and raw allocation/name unwind without rollback of completed resource fields. Tracked Win32 build/both CTests pass. One current-library first-allocation failure fixture verifies early publication, aliased constant timing, untouched bytes, member headers, native state3 vector/string/base unwind and manager removal; later constructor calls are unexecuted. Existing actualD3D9 three-parser mesh fixture passes with57canonicalcompanions retired. Full successful B14A10 execution, original ABI/FH3/SEH, application wiring/rendering/gameplay remain unvalidated. See docs/NATIVE_RENDER_RESOURCES_CR.md. Complete 1356B. ECX actual6ACh receiver; no stack arguments; EAX original receiver; RET. Source construct_native_render_resources_00b14a10.\"})\n",
+      "ledger_function_output": "00b14a10 function construct_native_render_resources_00b14a10\nreplaced (previous record stays in git history): {\"address\": \"00b14a10\", \"name\": \"construct_native_render_resources_00b14a10\", \"source\": \"src/native_render_resources_construction.cpp\", \"status\": \"complete_native_schedule_build_and_first_allocation_failure_fixture_only\", \"original_abi\": \"ECX actual6ACh receiver; no stack arguments; EAX original receiver; RET\", \"documentation\": \"docs/NATIVE_RENDER_RESOURCES_CR.md\", \"report\": \"reports/native_render_resources_cr.json\", \"abi_compatible\": false, \"game_validated\": false, \"evidence\": \"CR full B14A10..B14F5B1356B and ten compiler supports109B, all live/installed-PE equal and instruction ownership complete. Actual6ACh service; ECX receiver/no stack args/EAX same/RET. Base B0F020 publication precedes derived initialization; raw MOVSS loads/stores and untouched preimages preserved; B0CD80 member2AC; actual frame40h/B1FBB0 and current D5F0A8 slots128=B24DC0,12C=B20090 with retaining setters; current64=B319B0 black/noise publications precede captured current-pool returns; CCh/B52550 helper; four-byte unterminated member marker;24h/B3C800 cockpit consumes persistent admission. Nine-state compiler map preserves member/base cleanup and raw allocation/name unwind without rollback of completed resource fields. Tracked Win32 build/both CTests pass. One current-library first-allocation failure fixture verifies early publication, aliased constant timing, untouched bytes, member headers, native state3 vector/string/base unwind and manager removal; later constructor calls are unexecuted. Existing actualD3D9 three-parser mesh fixture passes with57canonicalcompanions retired. Full successful B14A10 execution, original ABI/FH3/SEH, application wiring/rendering/gameplay remain unvalidated. See docs/NATIVE_RENDER_RESOURCES_CR.md. Complete 1356B. ECX actual6ACh receiver; no stack arguments; EAX original receiver; RET. Source construct_native_render_resources_00b14a10.\", \"kind\": \"function\"}\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00b14a10",
+        "function_name": "BSP_RenderResources_Construct",
+        "comment": "[BSP reconstruction 00b14a10]\nHypothesis, not a recovered symbol. Direct callee of BSP_Application_Initialize (0073d410); analysis-only packet app_initialize_map, no reconstruction. Called at 0073df01 in the renderer resource run. References noise.dds and black.tga, the two fallback textures. Ghidra reports an unreachable block at 00b14e69 and unaffected EBX/ESI/EDI inputs, so the body is only partially recovered. Evidence: docs/APP_INITIALIZE_MAP.md; reports/app_initialize_map.json.\n\n[BSP reconstruction 00b14a10] update\nHypothesis, not a recovered symbol. Direct callee of BSP_Application_Initialize (0073d410); analysis-only packet app_initialize_map, no reconstruction. Called at 0073df01 in the renderer resource run. References noise.dds and black.tga, the two fallback textures. Ghidra reports an unreachable block at 00b14e69 and unaffected EBX/ESI/EDI inputs, so the body is only partially recovered. Evidence: docs/APP_INITIALIZE_MAP.md; reports/app_initialize_map.json. | Packet app_init_renderer_device, read from the listing 00b14a10-00b14f5b because the pseudocode is truncated. thiscall(this), plain RET at 00b14f44 with a second RET at 00b14f5b on the failed-allocation tail, returns this; object 6ACh allocated at 0073dedf and constructed at 0073df01 (phase 9 step 50). Base 00b0f020 installs vtable 00d5e158, publishes this into DAT_00f8d39c at 00b0f076 and registers it with the lifetime manager (00415350 singleton 01090aa0, then 00bd0c30); 00b14a36 installs derived vtable 00d5e480. Load-bearing steps: 00b0cd80 on this+2ACh at 00b14bef; operator new(40h) -> 00b1fbb0 into this+1D4h at 00b14d89; renderer virtual +128h (00b24dc0, returns renderer+197Ch) fed to 00b1fab0(this+1D4h,0,value) at 00b14dac; renderer virtual +12Ch (00b20090, returns renderer+198Ch) fed to 00b1fb00(this+1D4h,value) at 00b14dc9; renderer virtual +64h (00b319b0 BSP_Renderer_LoadTextureByName, RET 8) with ('noise.dds' at 00d5e474, flag 0) into this+668h at 00b14e20 and ('black.tga' at 00d5e468, flag 0) into this+67Ch at 00b14e95; operator new(0CCh) -> 00b52550 into this+34h; the 4-byte string 'XXXX' (00d5e460) into this+684h; operator new(24h) -> 00b3c800 into this+0Ch, else 0. Both textures are loaded unconditionally, with no command-line or settings gate. The rest of the body is float and pointer field initialisation. Evidence: docs/APP_INIT_RENDERER.md; reports/app_init_renderer.json.\n\n[BSP reconstruction 00b14a10] update\nHypothesis, not a recovered symbol. Direct callee of BSP_Application_Initialize (0073d410); analysis-only packet app_initialize_map, no reconstruction. Called at 0073df01 in the renderer resource run. References noise.dds and black.tga, the two fallback textures. Ghidra reports an unreachable block at 00b14e69 and unaffected EBX/ESI/EDI inputs, so the body is only partially recovered. Evidence: docs/APP_INITIALIZE_MAP.md; reports/app_initialize_map.json. | Packet app_init_renderer_device, read from the listing 00b14a10-00b14f5b because the pseudocode is truncated. thiscall(this), plain RET at 00b14f44 with a second RET at 00b14f5b on the failed-allocation tail, returns this; object 6ACh allocated at 0073dedf and constructed at 0073df01 (phase 9 step 50). Base 00b0f020 installs vtable 00d5e158, publishes this into DAT_00f8d39c at 00b0f076 and registers it with the lifetime manager (00415350 singleton 01090aa0, then 00bd0c30); 00b14a36 installs derived vtable 00d5e480. Load-bearing steps: 00b0cd80 on this+2ACh at 00b14bef; operator new(40h) -> 00b1fbb0 into this+1D4h at 00b14d89; renderer virtual +128h (00b24dc0, returns renderer+197Ch) fed to 00b1fab0(this+1D4h,0,value) at 00b14dac; renderer virtual +12Ch (00b20090, returns renderer+198Ch) fed to 00b1fb00(this+1D4h,value) at 00b14dc9; renderer virtual +64h (00b319b0 BSP_Renderer_LoadTextureByName, RET 8) with ('noise.dds' at 00d5e474, flag 0) into this+668h at 00b14e20 and ('black.tga' at 00d5e468, flag 0) into this+67Ch at 00b14e95; operator new(0CCh) -> 00b52550 into this+34h; the 4-byte string 'XXXX' (00d5e460) into this+684h; operator new(24h) -> 00b3c800 into this+0Ch, else 0. Both textures are loaded unconditionally, with no command-line or settings gate. The rest of the body is float and pointer field initialisation. Evidence: docs/APP_INIT_RENDERER.md; reports/app_init_renderer.json. | Descriptive hypothesis, not a recovered symbol. Complete 00b14a10..00b14f5b native body reconstructed against the original assembly, register/stack ABI and live/original-PE bytes. ECX actual6ACh receiver; no stacked arguments; EAX original ECX; RET at B14F44/B14F5B. Source preserves captured identities/IAT values, current concrete profiles, ordered stores and recovered cleanup states within its documented provider domain. Evidence: docs/NATIVE_RENDER_RESOURCES_CONSTRUCTION_BK.md; reports/native_render_resources_construction_bk.json; docs/NATIVE_RENDER_RESOURCES_BK_INTEGRATION.md. Combined Win32 build and both existing math CTests passed; no new native differential fixture, drop-in ABI, unrestricted FH3/SEH, startup closure or gameplay validation.\n\n[BSP reconstruction 00b14a10] CR update\nCR full B14A10..B14F5B1356B and ten compiler supports109B, all live/installed-PE equal and instruction ownership complete. Actual6ACh service; ECX receiver/no stack args/EAX same/RET. Base B0F020 publication precedes derived initialization; raw MOVSS loads/stores and untouched preimages preserved; B0CD80 member2AC; actual frame40h/B1FBB0 and current D5F0A8 slots128=B24DC0,12C=B20090 with retaining setters; current64=B319B0 black/noise publications precede captured current-pool returns; CCh/B52550 helper; four-byte unterminated member marker;24h/B3C800 cockpit consumes persistent admission. Nine-state compiler map preserves member/base cleanup and raw allocation/name unwind without rollback of completed resource fields. Tracked Win32 build/both CTests pass. One current-library first-allocation failure fixture verifies early publication, aliased constant timing, untouched bytes, member headers, native state3 vector/string/base unwind and manager removal; later constructor calls are unexecuted. Existing actualD3D9 three-parser mesh fixture passes with57canonicalcompanions retired. Full successful B14A10 execution, original ABI/FH3/SEH, application wiring/rendering/gameplay remain unvalidated. See docs/NATIVE_RENDER_RESOURCES_CR.md. Complete 1356B. ECX actual6ACh receiver; no stack arguments; EAX original receiver; RET. Source construct_native_render_resources_00b14a10.\n\n[BSP reconstruction 00b14a10] CS consolidation update\nCS consolidates the earlier orch3 BK B14A10 implementation at 7142a2f142eaf8991eff9533bcb5b5a7fc26123c, replacing duplicate orch4 CR source, and imports orch3 BL texture-helper lifetime at 9335da3246f979e042a4286c8f4ad42b19ca69b5. No new unique function credit. Retains the additional shared surface/texture renderer and string-domain admission check. Five native bodies2605B and sixteen compiler supports177B match live Ghidra and the installed PE; all783 instruction owners verified. Tracked MSVC Win32 build and both existing CTests passed. One full B14A10 source constructor case uses actual retained D3D9 frame surfaces, six explicitly seeded native texture cache hits, shared-counter camera and live64x64 viewport; marker, aliased constant and untouched preimages checked. Explicit caller-owned child retirement exercises the canonical BL texture-helper terminal with zero auxiliaries, cockpit/camera/viewport, frame/surfaces and cache creators; all64 canonical mesh/texture companions retired. Full parent destructor, cold texture resolution, application wiring, original machine-code differential/FH3/SEH and gameplay remain unvalidated. Historical CR fixture and BL report retain their original scope. See docs/NATIVE_RENDER_RESOURCES_CS.md. Original ABI: ECX actual6ACh receiver; no stacked arguments; EAX original receiver; RET."
+      }
+    },
+    {
+      "address": "00b52550",
+      "name": "BSP_RenderServiceTextureHelper_Construct",
+      "before_comment": {
+        "address": "00b52550",
+        "function_name": "BSP_RenderServiceTextureHelper_Construct",
+        "comment": "[BSP reconstruction 00b52550]\nDescriptive hypothesis, not a recovered symbol. Complete native 00b52550..00b5283f reviewed against current assembly, original register/stack ABI, live/PE bytes and actual producer/provider contracts. Preserve current raw reads, ordered stores and bit/copy/cleanup behavior. Added C++ interfaces remain distinct from original binary ABI, unrestricted FH3/SEH, concurrency and gameplay. New complete normal-body implementation over actual storage. Evidence: docs/NATIVE_RENDER_SERVICE_TEXTURE_CONSTRUCTION.md; reports/native_render_service_texture_construction.json.\n\n[BSP reconstruction 00b52550] update\nDescriptive hypothesis, not a recovered symbol. Complete native 00b52550..00b5283f reviewed against current assembly, original register/stack ABI, live/PE bytes and actual producer/provider contracts. Preserve current raw reads, ordered stores and bit/copy/cleanup behavior. Added C++ interfaces remain distinct from original binary ABI, unrestricted FH3/SEH, concurrency and gameplay. New complete normal-body implementation over actual storage. Evidence: docs/NATIVE_RENDER_SERVICE_TEXTURE_CONSTRUCTION.md; reports/native_render_service_texture_construction.json. | BL lifetime correction: begin std::atomic<int32_t> lifetime at the original B52578 count1 store, without a prior zero store or binding-time reset. Worker COFF comparison reports identical 1141-byte function section and 35 symbolic relocations before/after; whole objects differ due to standard-library COMDATs. Current combined build: b4f36b1b405b659e5b17da00cc11c7424a902e68. No new body credit or new native fixture; prior BC fixture remains historical. Evidence: reports/native_render_service_texture_lifetime_bl.json; reports/native_render_resources_bk_validation.json."
+      },
+      "before_documentation": {
+        "hash": "ca2f2f13432cd03c242f2c771835c2ffee5f9e2fc0192f90eff6c1795db08dec",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b52550",
+        "function_name": "BSP_RenderServiceTextureHelper_Construct",
+        "return_type": "void *",
+        "calling_convention": "__thiscall",
+        "plate_comment": "[BSP reconstruction 00b52550]\nDescriptive hypothesis, not a recovered symbol. Complete native 00b52550..00b5283f reviewed against current assembly, original register/stack ABI, live/PE bytes and actual producer/provider contracts. Preserve current raw reads, ordered stores and bit/copy/cleanup behavior. Added C++ interfaces remain distinct from original binary ABI, unrestricted FH3/SEH, concurrency and gameplay. New complete normal-body implementation over actual storage. Evidence: docs/NATIVE_RENDER_SERVICE_TEXTURE_CONSTRUCTION.md; reports/native_render_service_texture_construction.json.\n\n[BSP reconstruction 00b52550] update\nDescriptive hypothesis, not a recovered symbol. Complete native 00b52550..00b5283f reviewed against current assembly, original register/stack ABI, live/PE bytes and actual producer/provider contracts. Preserve current raw reads, ordered stores and bit/copy/cleanup behavior. Added C++ interfaces remain distinct from original binary ABI, unrestricted FH3/SEH, concurrency and gameplay. New complete normal-body implementation over actual storage. Evidence: docs/NATIVE_RENDER_SERVICE_TEXTURE_CONSTRUCTION.md; reports/native_render_service_texture_construction.json. | BL lifetime correction: begin std::atomic<int32_t> lifetime at the original B52578 count1 store, without a prior zero store or binding-time reset. Worker COFF comparison reports identical 1141-byte function section and 35 symbolic relocations before/after; whole objects differ due to standard-library COMDATs. Current combined build: b4f36b1b405b659e5b17da00cc11c7424a902e68. No new body credit or new native fixture; prior BC fixture remains historical. Evidence: reports/native_render_service_texture_lifetime_bl.json; reports/native_render_resources_bk_validation.json.",
+        "parameters": [
+          {
+            "ordinal": 0,
+            "name": "this",
+            "type": "void *"
+          }
+        ],
+        "local_variables": [
+          {
+            "name": "local_30",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffd0, 4)"
+          },
+          {
+            "name": "uVar4",
+            "type": "uint",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "iVar5",
+            "type": "int",
+            "storage": "(register, 0x4, 4)"
+          },
+          {
+            "name": "local_28",
+            "type": "void *",
+            "storage": "(stack, 0xffffffffffffffd8, 4)"
+          },
+          {
+            "name": "unaff_EBX",
+            "type": "int",
+            "storage": "(register, 0xc, 4)"
+          },
+          {
+            "name": "local_2c",
+            "type": "void *",
+            "storage": "(stack, 0xffffffffffffffd4, 4)"
+          },
+          {
+            "name": "unaff_EBP",
+            "type": "int",
+            "storage": "(register, 0x14, 4)"
+          },
+          {
+            "name": "iVar6",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffff94, 4)"
+          },
+          {
+            "name": "local_4",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "uStack_24",
+            "type": "undefined1",
+            "storage": "(stack, 0xffffffffffffffdc, 1)"
+          },
+          {
+            "name": "uStack_1c",
+            "type": "undefined1",
+            "storage": "(stack, 0xffffffffffffffe4, 1)"
+          },
+          {
+            "name": "uStack_14",
+            "type": "undefined1",
+            "storage": "(stack, 0xffffffffffffffec, 1)"
+          },
+          {
+            "name": "pvStack_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "pcStack_8",
+            "type": "undefined *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "piVar1",
+            "type": "int *",
+            "storage": "(unique, 0x17200, 4)"
+          },
+          {
+            "name": "uVar2",
+            "type": "undefined4",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "uVar3",
+            "type": "uint",
+            "storage": "(register, 0x0, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 176,
+            "name": "LAB_00b52600"
+          },
+          {
+            "relative_offset": 238,
+            "name": "LAB_00b5263e"
+          },
+          {
+            "relative_offset": 332,
+            "name": "LAB_00b5269c"
+          },
+          {
+            "relative_offset": 394,
+            "name": "LAB_00b526da"
+          },
+          {
+            "relative_offset": 488,
+            "name": "LAB_00b52738"
+          },
+          {
+            "relative_offset": 550,
+            "name": "LAB_00b52776"
+          },
+          {
+            "relative_offset": 622,
+            "name": "LAB_00b527be"
+          },
+          {
+            "relative_offset": 687,
+            "name": "LAB_00b527ff"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "prior_source_record": {
+        "address": "00b52550",
+        "name": "construct_native_render_service_textures_00b52550",
+        "cpp_symbol": "construct_native_render_service_textures_00b52550",
+        "source": "src/native_render_service_texture_construction.cpp",
+        "header": "include/bsp/native_render_service_texture_construction.hpp",
+        "status": "reconstructed_build_tested_bounded_fixture_coverage",
+        "original_abi": "ECX actual CCh allocation from B14EC6; no stack arguments; EAX same owner; RET at B5283F",
+        "native_end_exclusive": "00b52840",
+        "evidence": "Descriptive hypothesis, not a recovered symbol. Complete native 00b52550..00b5283f reviewed against current assembly, original register/stack ABI, live/PE bytes and actual producer/provider contracts. Preserve current raw reads, ordered stores and bit/copy/cleanup behavior. Added C++ interfaces remain distinct from original binary ABI, unrestricted FH3/SEH, concurrency and gameplay. New complete normal-body implementation over actual storage. Evidence: docs/NATIVE_RENDER_SERVICE_TEXTURE_CONSTRUCTION.md; reports/native_render_service_texture_construction.json.",
+        "abi_compatible": false,
+        "game_validated": false,
+        "existing_body_raw_extension": false,
+        "kind": "function",
+        "exact_combined_validation_bc": {
+          "report": "reports/native_render_service_construction_bc_validation.json",
+          "tested_commit": "175cf8f60ab6b54dbf227b9b645b9734871cde89",
+          "new_native_body": true,
+          "existing_body_raw_extension": false,
+          "validation_kind": "bounded_original_byte_fixture"
+        }
+      },
+      "evidence": "CS consolidates the earlier orch3 BK B14A10 implementation at 7142a2f142eaf8991eff9533bcb5b5a7fc26123c, replacing duplicate orch4 CR source, and imports orch3 BL texture-helper lifetime at 9335da3246f979e042a4286c8f4ad42b19ca69b5. No new unique function credit. Retains the additional shared surface/texture renderer and string-domain admission check. Five native bodies2605B and sixteen compiler supports177B match live Ghidra and the installed PE; all783 instruction owners verified. Tracked MSVC Win32 build and both existing CTests passed. One full B14A10 source constructor case uses actual retained D3D9 frame surfaces, six explicitly seeded native texture cache hits, shared-counter camera and live64x64 viewport; marker, aliased constant and untouched preimages checked. Explicit caller-owned child retirement exercises the canonical BL texture-helper terminal with zero auxiliaries, cockpit/camera/viewport, frame/surfaces and cache creators; all64 canonical mesh/texture companions retired. Full parent destructor, cold texture resolution, application wiring, original machine-code differential/FH3/SEH and gameplay remain unvalidated. Historical CR fixture and BL report retain their original scope. See docs/NATIVE_RENDER_RESOURCES_CS.md. Original ABI: ECX actualCCh receiver; no stacked arguments; EAX original receiver; RET.",
+      "ledger_name_output": "00b52550 -> BSP_RenderServiceTextureHelper_Construct\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00b52550\", \"name\": \"BSP_RenderServiceTextureHelper_Construct\", \"evidence\": \"Descriptive hypothesis, not a recovered symbol. Complete native 00b52550..00b5283f reviewed against current assembly, original register/stack ABI, live/PE bytes and actual producer/provider contracts. Preserve current raw reads, ordered stores and bit/copy/cleanup behavior. Added C++ interfaces remain distinct from original binary ABI, unrestricted FH3/SEH, concurrency and gameplay. New complete normal-body implementation over actual storage. Evidence: docs/NATIVE_RENDER_SERVICE_TEXTURE_CONSTRUCTION.md; reports/native_render_service_texture_construction.json.\"})\n",
+      "ledger_function_output": "00b52550 function construct_native_render_service_textures_00b52550\nreplaced (previous record stays in git history): {\"address\": \"00b52550\", \"name\": \"construct_native_render_service_textures_00b52550\", \"cpp_symbol\": \"construct_native_render_service_textures_00b52550\", \"source\": \"src/native_render_service_texture_construction.cpp\", \"header\": \"include/bsp/native_render_service_texture_construction.hpp\", \"status\": \"reconstructed_build_tested_bounded_fixture_coverage\", \"original_abi\": \"ECX actual CCh allocation from B14EC6; no stack arguments; EAX same owner; RET at B5283F\", \"native_end_exclusive\": \"00b52840\", \"evidence\": \"Descriptive hypothesis, not a recovered symbol. Complete native 00b52550..00b5283f reviewed against current assembly, original register/stack ABI, live/PE bytes and actual producer/provider contracts. Preserve current raw reads, ordered stores and bit/copy/cleanup behavior. Added C++ interfaces remain distinct from original binary ABI, unrestricted FH3/SEH, concurrency and gameplay. New complete normal-body implementation over actual storage. Evidence: docs/NATIVE_RENDER_SERVICE_TEXTURE_CONSTRUCTION.md; reports/native_render_service_texture_construction.json.\", \"abi_compatible\": false, \"game_validated\": false, \"existing_body_raw_extension\": false, \"kind\": \"function\", \"exact_combined_validation_bc\": {\"report\": \"reports/native_render_service_construction_bc_validation.json\", \"tested_commit\": \"175cf8f60ab6b54dbf227b9b645b9734871cde89\", \"new_native_body\": true, \"existing_body_raw_extension\": false, \"validation_kind\": \"bounded_original_byte_fixture\"}}\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00b52550",
+        "function_name": "BSP_RenderServiceTextureHelper_Construct",
+        "comment": "[BSP reconstruction 00b52550]\nDescriptive hypothesis, not a recovered symbol. Complete native 00b52550..00b5283f reviewed against current assembly, original register/stack ABI, live/PE bytes and actual producer/provider contracts. Preserve current raw reads, ordered stores and bit/copy/cleanup behavior. Added C++ interfaces remain distinct from original binary ABI, unrestricted FH3/SEH, concurrency and gameplay. New complete normal-body implementation over actual storage. Evidence: docs/NATIVE_RENDER_SERVICE_TEXTURE_CONSTRUCTION.md; reports/native_render_service_texture_construction.json.\n\n[BSP reconstruction 00b52550] update\nDescriptive hypothesis, not a recovered symbol. Complete native 00b52550..00b5283f reviewed against current assembly, original register/stack ABI, live/PE bytes and actual producer/provider contracts. Preserve current raw reads, ordered stores and bit/copy/cleanup behavior. Added C++ interfaces remain distinct from original binary ABI, unrestricted FH3/SEH, concurrency and gameplay. New complete normal-body implementation over actual storage. Evidence: docs/NATIVE_RENDER_SERVICE_TEXTURE_CONSTRUCTION.md; reports/native_render_service_texture_construction.json. | BL lifetime correction: begin std::atomic<int32_t> lifetime at the original B52578 count1 store, without a prior zero store or binding-time reset. Worker COFF comparison reports identical 1141-byte function section and 35 symbolic relocations before/after; whole objects differ due to standard-library COMDATs. Current combined build: b4f36b1b405b659e5b17da00cc11c7424a902e68. No new body credit or new native fixture; prior BC fixture remains historical. Evidence: reports/native_render_service_texture_lifetime_bl.json; reports/native_render_resources_bk_validation.json.\n\n[BSP reconstruction 00b52550] CS consolidation update\nCS consolidates the earlier orch3 BK B14A10 implementation at 7142a2f142eaf8991eff9533bcb5b5a7fc26123c, replacing duplicate orch4 CR source, and imports orch3 BL texture-helper lifetime at 9335da3246f979e042a4286c8f4ad42b19ca69b5. No new unique function credit. Retains the additional shared surface/texture renderer and string-domain admission check. Five native bodies2605B and sixteen compiler supports177B match live Ghidra and the installed PE; all783 instruction owners verified. Tracked MSVC Win32 build and both existing CTests passed. One full B14A10 source constructor case uses actual retained D3D9 frame surfaces, six explicitly seeded native texture cache hits, shared-counter camera and live64x64 viewport; marker, aliased constant and untouched preimages checked. Explicit caller-owned child retirement exercises the canonical BL texture-helper terminal with zero auxiliaries, cockpit/camera/viewport, frame/surfaces and cache creators; all64 canonical mesh/texture companions retired. Full parent destructor, cold texture resolution, application wiring, original machine-code differential/FH3/SEH and gameplay remain unvalidated. Historical CR fixture and BL report retain their original scope. See docs/NATIVE_RENDER_RESOURCES_CS.md. Original ABI: ECX actualCCh receiver; no stacked arguments; EAX original receiver; RET."
+      }
+    },
+    {
+      "address": "00b52270",
+      "name": "BSP_RenderServiceTextureHelper_ReleaseAuxiliaries",
+      "before_comment": {
+        "address": "00b52270",
+        "function_name": "BSP_RenderServiceTextureHelper_ReleaseAuxiliaries",
+        "comment": "[BSP reconstruction 00b52270]\nDescriptive hypothesis, not a recovered symbol. Complete 00b52270..00b522fe native body reconstructed against the original assembly, register/stack ABI and live/original-PE bytes. ECX actual receiver; no stacked arguments; RET; no semantic EAX established. Source preserves captured identities/IAT values, current concrete profiles, ordered stores and recovered cleanup states within its documented provider domain. Evidence: docs/NATIVE_RENDER_SERVICE_TEXTURE_LIFETIME_BL.md; reports/native_render_service_texture_lifetime_bl.json; docs/NATIVE_RENDER_RESOURCES_BK_INTEGRATION.md. Combined Win32 build and both existing math CTests passed; no new native differential fixture, drop-in ABI, unrestricted FH3/SEH, startup closure or gameplay validation."
+      },
+      "before_documentation": {
+        "hash": "a5cdcd878dc6c84b4ee0194bcb466a2cfffb4a20239f44a2367e9fda9afd95eb",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b52270",
+        "function_name": "BSP_RenderServiceTextureHelper_ReleaseAuxiliaries",
+        "return_type": "void",
+        "calling_convention": "__thiscall",
+        "plate_comment": "[BSP reconstruction 00b52270]\nDescriptive hypothesis, not a recovered symbol. Complete 00b52270..00b522fe native body reconstructed against the original assembly, register/stack ABI and live/original-PE bytes. ECX actual receiver; no stacked arguments; RET; no semantic EAX established. Source preserves captured identities/IAT values, current concrete profiles, ordered stores and recovered cleanup states within its documented provider domain. Evidence: docs/NATIVE_RENDER_SERVICE_TEXTURE_LIFETIME_BL.md; reports/native_render_service_texture_lifetime_bl.json; docs/NATIVE_RENDER_RESOURCES_BK_INTEGRATION.md. Combined Win32 build and both existing math CTests passed; no new native differential fixture, drop-in ABI, unrestricted FH3/SEH, startup closure or gameplay validation.",
+        "parameters": [
+          {
+            "ordinal": 0,
+            "name": "this",
+            "type": "void *"
+          }
+        ],
+        "local_variables": [
+          {
+            "name": "puVar1",
+            "type": "undefined4 *",
+            "storage": "(unique, 0x17200, 4)"
+          },
+          {
+            "name": "LVar2",
+            "type": "LONG",
+            "storage": "(register, 0x0, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 39,
+            "name": "LAB_00b52297"
+          },
+          {
+            "relative_offset": 42,
+            "name": "LAB_00b5229a"
+          },
+          {
+            "relative_offset": 67,
+            "name": "LAB_00b522b3"
+          },
+          {
+            "relative_offset": 70,
+            "name": "LAB_00b522b6"
+          },
+          {
+            "relative_offset": 98,
+            "name": "LAB_00b522d2"
+          },
+          {
+            "relative_offset": 104,
+            "name": "LAB_00b522d8"
+          },
+          {
+            "relative_offset": 132,
+            "name": "LAB_00b522f4"
+          },
+          {
+            "relative_offset": 138,
+            "name": "LAB_00b522fa"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "prior_source_record": null,
+      "evidence": "CS consolidates the earlier orch3 BK B14A10 implementation at 7142a2f142eaf8991eff9533bcb5b5a7fc26123c, replacing duplicate orch4 CR source, and imports orch3 BL texture-helper lifetime at 9335da3246f979e042a4286c8f4ad42b19ca69b5. No new unique function credit. Retains the additional shared surface/texture renderer and string-domain admission check. Five native bodies2605B and sixteen compiler supports177B match live Ghidra and the installed PE; all783 instruction owners verified. Tracked MSVC Win32 build and both existing CTests passed. One full B14A10 source constructor case uses actual retained D3D9 frame surfaces, six explicitly seeded native texture cache hits, shared-counter camera and live64x64 viewport; marker, aliased constant and untouched preimages checked. Explicit caller-owned child retirement exercises the canonical BL texture-helper terminal with zero auxiliaries, cockpit/camera/viewport, frame/surfaces and cache creators; all64 canonical mesh/texture companions retired. Full parent destructor, cold texture resolution, application wiring, original machine-code differential/FH3/SEH and gameplay remain unvalidated. Historical CR fixture and BL report retain their original scope. See docs/NATIVE_RENDER_RESOURCES_CS.md. Original ABI: ECX actualCCh receiver; no stacked arguments; RET; no semantic EAX established.",
+      "ledger_name_output": "00b52270 -> BSP_RenderServiceTextureHelper_ReleaseAuxiliaries\n",
+      "ledger_function_output": "00b52270 function release_native_render_service_texture_auxiliaries_00b52270\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00b52270",
+        "function_name": "BSP_RenderServiceTextureHelper_ReleaseAuxiliaries",
+        "comment": "[BSP reconstruction 00b52270]\nDescriptive hypothesis, not a recovered symbol. Complete 00b52270..00b522fe native body reconstructed against the original assembly, register/stack ABI and live/original-PE bytes. ECX actual receiver; no stacked arguments; RET; no semantic EAX established. Source preserves captured identities/IAT values, current concrete profiles, ordered stores and recovered cleanup states within its documented provider domain. Evidence: docs/NATIVE_RENDER_SERVICE_TEXTURE_LIFETIME_BL.md; reports/native_render_service_texture_lifetime_bl.json; docs/NATIVE_RENDER_RESOURCES_BK_INTEGRATION.md. Combined Win32 build and both existing math CTests passed; no new native differential fixture, drop-in ABI, unrestricted FH3/SEH, startup closure or gameplay validation.\n\n[BSP reconstruction 00b52270] CS consolidation update\nCS consolidates the earlier orch3 BK B14A10 implementation at 7142a2f142eaf8991eff9533bcb5b5a7fc26123c, replacing duplicate orch4 CR source, and imports orch3 BL texture-helper lifetime at 9335da3246f979e042a4286c8f4ad42b19ca69b5. No new unique function credit. Retains the additional shared surface/texture renderer and string-domain admission check. Five native bodies2605B and sixteen compiler supports177B match live Ghidra and the installed PE; all783 instruction owners verified. Tracked MSVC Win32 build and both existing CTests passed. One full B14A10 source constructor case uses actual retained D3D9 frame surfaces, six explicitly seeded native texture cache hits, shared-counter camera and live64x64 viewport; marker, aliased constant and untouched preimages checked. Explicit caller-owned child retirement exercises the canonical BL texture-helper terminal with zero auxiliaries, cockpit/camera/viewport, frame/surfaces and cache creators; all64 canonical mesh/texture companions retired. Full parent destructor, cold texture resolution, application wiring, original machine-code differential/FH3/SEH and gameplay remain unvalidated. Historical CR fixture and BL report retain their original scope. See docs/NATIVE_RENDER_RESOURCES_CS.md. Original ABI: ECX actualCCh receiver; no stacked arguments; RET; no semantic EAX established."
+      }
+    },
+    {
+      "address": "00b52400",
+      "name": "BSP_RenderServiceTextureHelper_Destroy",
+      "before_comment": {
+        "address": "00b52400",
+        "function_name": "BSP_RenderServiceTextureHelper_Destroy",
+        "comment": "[BSP reconstruction 00b52400]\nDescriptive hypothesis, not a recovered symbol. Complete 00b52400..00b52543 native body reconstructed against the original assembly, register/stack ABI and live/original-PE bytes. ECX actual receiver; no stacked arguments; RET; no semantic EAX established. Source preserves captured identities/IAT values, current concrete profiles, ordered stores and recovered cleanup states within its documented provider domain. Evidence: docs/NATIVE_RENDER_SERVICE_TEXTURE_LIFETIME_BL.md; reports/native_render_service_texture_lifetime_bl.json; docs/NATIVE_RENDER_RESOURCES_BK_INTEGRATION.md. Combined Win32 build and both existing math CTests passed; no new native differential fixture, drop-in ABI, unrestricted FH3/SEH, startup closure or gameplay validation."
+      },
+      "before_documentation": {
+        "hash": "326b7067b9ea60e15025cce37cce48c5f85e68d88509c4859080a468de8f9428",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b52400",
+        "function_name": "BSP_RenderServiceTextureHelper_Destroy",
+        "return_type": "void",
+        "calling_convention": "__thiscall",
+        "plate_comment": "[BSP reconstruction 00b52400]\nDescriptive hypothesis, not a recovered symbol. Complete 00b52400..00b52543 native body reconstructed against the original assembly, register/stack ABI and live/original-PE bytes. ECX actual receiver; no stacked arguments; RET; no semantic EAX established. Source preserves captured identities/IAT values, current concrete profiles, ordered stores and recovered cleanup states within its documented provider domain. Evidence: docs/NATIVE_RENDER_SERVICE_TEXTURE_LIFETIME_BL.md; reports/native_render_service_texture_lifetime_bl.json; docs/NATIVE_RENDER_RESOURCES_BK_INTEGRATION.md. Combined Win32 build and both existing math CTests passed; no new native differential fixture, drop-in ABI, unrestricted FH3/SEH, startup closure or gameplay validation.",
+        "parameters": [
+          {
+            "ordinal": 0,
+            "name": "this",
+            "type": "void *"
+          }
+        ],
+        "local_variables": [
+          {
+            "name": "LVar2",
+            "type": "LONG",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "puVar1",
+            "type": "undefined4 *",
+            "storage": "(unique, 0x17200, 4)"
+          },
+          {
+            "name": "pvStack_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "local_4",
+            "type": "int",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "pcStack_8",
+            "type": "undefined *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 84,
+            "name": "LAB_00b52454"
+          },
+          {
+            "relative_offset": 87,
+            "name": "LAB_00b52457"
+          },
+          {
+            "relative_offset": 112,
+            "name": "LAB_00b52470"
+          },
+          {
+            "relative_offset": 115,
+            "name": "LAB_00b52473"
+          },
+          {
+            "relative_offset": 140,
+            "name": "LAB_00b5248c"
+          },
+          {
+            "relative_offset": 143,
+            "name": "LAB_00b5248f"
+          },
+          {
+            "relative_offset": 171,
+            "name": "LAB_00b524ab"
+          },
+          {
+            "relative_offset": 177,
+            "name": "LAB_00b524b1"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "prior_source_record": null,
+      "evidence": "CS consolidates the earlier orch3 BK B14A10 implementation at 7142a2f142eaf8991eff9533bcb5b5a7fc26123c, replacing duplicate orch4 CR source, and imports orch3 BL texture-helper lifetime at 9335da3246f979e042a4286c8f4ad42b19ca69b5. No new unique function credit. Retains the additional shared surface/texture renderer and string-domain admission check. Five native bodies2605B and sixteen compiler supports177B match live Ghidra and the installed PE; all783 instruction owners verified. Tracked MSVC Win32 build and both existing CTests passed. One full B14A10 source constructor case uses actual retained D3D9 frame surfaces, six explicitly seeded native texture cache hits, shared-counter camera and live64x64 viewport; marker, aliased constant and untouched preimages checked. Explicit caller-owned child retirement exercises the canonical BL texture-helper terminal with zero auxiliaries, cockpit/camera/viewport, frame/surfaces and cache creators; all64 canonical mesh/texture companions retired. Full parent destructor, cold texture resolution, application wiring, original machine-code differential/FH3/SEH and gameplay remain unvalidated. Historical CR fixture and BL report retain their original scope. See docs/NATIVE_RENDER_RESOURCES_CS.md. Original ABI: ECX actualCCh receiver; no stacked arguments; RET; no semantic EAX established.",
+      "ledger_name_output": "00b52400 -> BSP_RenderServiceTextureHelper_Destroy\n",
+      "ledger_function_output": "00b52400 function destroy_native_render_service_textures_00b52400\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00b52400",
+        "function_name": "BSP_RenderServiceTextureHelper_Destroy",
+        "comment": "[BSP reconstruction 00b52400]\nDescriptive hypothesis, not a recovered symbol. Complete 00b52400..00b52543 native body reconstructed against the original assembly, register/stack ABI and live/original-PE bytes. ECX actual receiver; no stacked arguments; RET; no semantic EAX established. Source preserves captured identities/IAT values, current concrete profiles, ordered stores and recovered cleanup states within its documented provider domain. Evidence: docs/NATIVE_RENDER_SERVICE_TEXTURE_LIFETIME_BL.md; reports/native_render_service_texture_lifetime_bl.json; docs/NATIVE_RENDER_RESOURCES_BK_INTEGRATION.md. Combined Win32 build and both existing math CTests passed; no new native differential fixture, drop-in ABI, unrestricted FH3/SEH, startup closure or gameplay validation.\n\n[BSP reconstruction 00b52400] CS consolidation update\nCS consolidates the earlier orch3 BK B14A10 implementation at 7142a2f142eaf8991eff9533bcb5b5a7fc26123c, replacing duplicate orch4 CR source, and imports orch3 BL texture-helper lifetime at 9335da3246f979e042a4286c8f4ad42b19ca69b5. No new unique function credit. Retains the additional shared surface/texture renderer and string-domain admission check. Five native bodies2605B and sixteen compiler supports177B match live Ghidra and the installed PE; all783 instruction owners verified. Tracked MSVC Win32 build and both existing CTests passed. One full B14A10 source constructor case uses actual retained D3D9 frame surfaces, six explicitly seeded native texture cache hits, shared-counter camera and live64x64 viewport; marker, aliased constant and untouched preimages checked. Explicit caller-owned child retirement exercises the canonical BL texture-helper terminal with zero auxiliaries, cockpit/camera/viewport, frame/surfaces and cache creators; all64 canonical mesh/texture companions retired. Full parent destructor, cold texture resolution, application wiring, original machine-code differential/FH3/SEH and gameplay remain unvalidated. Historical CR fixture and BL report retain their original scope. See docs/NATIVE_RENDER_RESOURCES_CS.md. Original ABI: ECX actualCCh receiver; no stacked arguments; RET; no semantic EAX established."
+      }
+    },
+    {
+      "address": "00b52840",
+      "name": "BSP_RenderServiceTextureHelper_ScalarDeletingDestructor",
+      "before_comment": {
+        "address": "00b52840",
+        "function_name": "BSP_RenderServiceTextureHelper_ScalarDeletingDestructor",
+        "comment": "[BSP reconstruction 00b52840]\nDescriptive hypothesis, not a recovered symbol. Complete 00b52840..00b5285d native body reconstructed against the original assembly, register/stack ABI and live/original-PE bytes. ECX actual allocation; stack DWORD flags; EAX captured allocation; RET4; destroy before flags&1 free. Source preserves captured identities/IAT values, current concrete profiles, ordered stores and recovered cleanup states within its documented provider domain. Evidence: docs/NATIVE_RENDER_SERVICE_TEXTURE_LIFETIME_BL.md; reports/native_render_service_texture_lifetime_bl.json; docs/NATIVE_RENDER_RESOURCES_BK_INTEGRATION.md. Combined Win32 build and both existing math CTests passed; no new native differential fixture, drop-in ABI, unrestricted FH3/SEH, startup closure or gameplay validation."
+      },
+      "before_documentation": {
+        "hash": "91e4718dbb451d97dd06d7f5283b45bb8ef330cbc9947aadbab0bee635159320",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b52840",
+        "function_name": "BSP_RenderServiceTextureHelper_ScalarDeletingDestructor",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00b52840]\nDescriptive hypothesis, not a recovered symbol. Complete 00b52840..00b5285d native body reconstructed against the original assembly, register/stack ABI and live/original-PE bytes. ECX actual allocation; stack DWORD flags; EAX captured allocation; RET4; destroy before flags&1 free. Source preserves captured identities/IAT values, current concrete profiles, ordered stores and recovered cleanup states within its documented provider domain. Evidence: docs/NATIVE_RENDER_SERVICE_TEXTURE_LIFETIME_BL.md; reports/native_render_service_texture_lifetime_bl.json; docs/NATIVE_RENDER_RESOURCES_BK_INTEGRATION.md. Combined Win32 build and both existing math CTests passed; no new native differential fixture, drop-in ABI, unrestricted FH3/SEH, startup closure or gameplay validation.",
+        "parameters": [],
+        "local_variables": [],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 24,
+            "name": "LAB_00b52858"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "prior_source_record": null,
+      "evidence": "CS consolidates the earlier orch3 BK B14A10 implementation at 7142a2f142eaf8991eff9533bcb5b5a7fc26123c, replacing duplicate orch4 CR source, and imports orch3 BL texture-helper lifetime at 9335da3246f979e042a4286c8f4ad42b19ca69b5. No new unique function credit. Retains the additional shared surface/texture renderer and string-domain admission check. Five native bodies2605B and sixteen compiler supports177B match live Ghidra and the installed PE; all783 instruction owners verified. Tracked MSVC Win32 build and both existing CTests passed. One full B14A10 source constructor case uses actual retained D3D9 frame surfaces, six explicitly seeded native texture cache hits, shared-counter camera and live64x64 viewport; marker, aliased constant and untouched preimages checked. Explicit caller-owned child retirement exercises the canonical BL texture-helper terminal with zero auxiliaries, cockpit/camera/viewport, frame/surfaces and cache creators; all64 canonical mesh/texture companions retired. Full parent destructor, cold texture resolution, application wiring, original machine-code differential/FH3/SEH and gameplay remain unvalidated. Historical CR fixture and BL report retain their original scope. See docs/NATIVE_RENDER_RESOURCES_CS.md. Original ABI: ECX actualCCh allocation; stack DWORD flags; EAX captured allocation; RET4; destroy before flags1 free.",
+      "prototype_result": "Successfully set prototype for function at 00b52840 with __thiscall calling convention",
+      "ledger_name_output": "00b52840 -> BSP_RenderServiceTextureHelper_ScalarDeletingDestructor\n",
+      "ledger_function_output": "00b52840 function delete_native_render_service_textures_00b52840\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00b52840",
+        "function_name": "BSP_RenderServiceTextureHelper_ScalarDeletingDestructor",
+        "comment": "[BSP reconstruction 00b52840]\nDescriptive hypothesis, not a recovered symbol. Complete 00b52840..00b5285d native body reconstructed against the original assembly, register/stack ABI and live/original-PE bytes. ECX actual allocation; stack DWORD flags; EAX captured allocation; RET4; destroy before flags&1 free. Source preserves captured identities/IAT values, current concrete profiles, ordered stores and recovered cleanup states within its documented provider domain. Evidence: docs/NATIVE_RENDER_SERVICE_TEXTURE_LIFETIME_BL.md; reports/native_render_service_texture_lifetime_bl.json; docs/NATIVE_RENDER_RESOURCES_BK_INTEGRATION.md. Combined Win32 build and both existing math CTests passed; no new native differential fixture, drop-in ABI, unrestricted FH3/SEH, startup closure or gameplay validation.\n\n[BSP reconstruction 00b52840] CS consolidation update\nCS consolidates the earlier orch3 BK B14A10 implementation at 7142a2f142eaf8991eff9533bcb5b5a7fc26123c, replacing duplicate orch4 CR source, and imports orch3 BL texture-helper lifetime at 9335da3246f979e042a4286c8f4ad42b19ca69b5. No new unique function credit. Retains the additional shared surface/texture renderer and string-domain admission check. Five native bodies2605B and sixteen compiler supports177B match live Ghidra and the installed PE; all783 instruction owners verified. Tracked MSVC Win32 build and both existing CTests passed. One full B14A10 source constructor case uses actual retained D3D9 frame surfaces, six explicitly seeded native texture cache hits, shared-counter camera and live64x64 viewport; marker, aliased constant and untouched preimages checked. Explicit caller-owned child retirement exercises the canonical BL texture-helper terminal with zero auxiliaries, cockpit/camera/viewport, frame/surfaces and cache creators; all64 canonical mesh/texture companions retired. Full parent destructor, cold texture resolution, application wiring, original machine-code differential/FH3/SEH and gameplay remain unvalidated. Historical CR fixture and BL report retain their original scope. See docs/NATIVE_RENDER_RESOURCES_CS.md. Original ABI: ECX actualCCh allocation; stack DWORD flags; EAX captured allocation; RET4; destroy before flags1 free."
+      }
+    }
+  ],
+  "actions": [
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00b14a10",
+        "comment": "[BSP reconstruction 00b14a10]\nHypothesis, not a recovered symbol. Direct callee of BSP_Application_Initialize (0073d410); analysis-only packet app_initialize_map, no reconstruction. Called at 0073df01 in the renderer resource run. References noise.dds and black.tga, the two fallback textures. Ghidra reports an unreachable block at 00b14e69 and unaffected EBX/ESI/EDI inputs, so the body is only partially recovered. Evidence: docs/APP_INITIALIZE_MAP.md; reports/app_initialize_map.json.\n\n[BSP reconstruction 00b14a10] update\nHypothesis, not a recovered symbol. Direct callee of BSP_Application_Initialize (0073d410); analysis-only packet app_initialize_map, no reconstruction. Called at 0073df01 in the renderer resource run. References noise.dds and black.tga, the two fallback textures. Ghidra reports an unreachable block at 00b14e69 and unaffected EBX/ESI/EDI inputs, so the body is only partially recovered. Evidence: docs/APP_INITIALIZE_MAP.md; reports/app_initialize_map.json. | Packet app_init_renderer_device, read from the listing 00b14a10-00b14f5b because the pseudocode is truncated. thiscall(this), plain RET at 00b14f44 with a second RET at 00b14f5b on the failed-allocation tail, returns this; object 6ACh allocated at 0073dedf and constructed at 0073df01 (phase 9 step 50). Base 00b0f020 installs vtable 00d5e158, publishes this into DAT_00f8d39c at 00b0f076 and registers it with the lifetime manager (00415350 singleton 01090aa0, then 00bd0c30); 00b14a36 installs derived vtable 00d5e480. Load-bearing steps: 00b0cd80 on this+2ACh at 00b14bef; operator new(40h) -> 00b1fbb0 into this+1D4h at 00b14d89; renderer virtual +128h (00b24dc0, returns renderer+197Ch) fed to 00b1fab0(this+1D4h,0,value) at 00b14dac; renderer virtual +12Ch (00b20090, returns renderer+198Ch) fed to 00b1fb00(this+1D4h,value) at 00b14dc9; renderer virtual +64h (00b319b0 BSP_Renderer_LoadTextureByName, RET 8) with ('noise.dds' at 00d5e474, flag 0) into this+668h at 00b14e20 and ('black.tga' at 00d5e468, flag 0) into this+67Ch at 00b14e95; operator new(0CCh) -> 00b52550 into this+34h; the 4-byte string 'XXXX' (00d5e460) into this+684h; operator new(24h) -> 00b3c800 into this+0Ch, else 0. Both textures are loaded unconditionally, with no command-line or settings gate. The rest of the body is float and pointer field initialisation. Evidence: docs/APP_INIT_RENDERER.md; reports/app_init_renderer.json.\n\n[BSP reconstruction 00b14a10] update\nHypothesis, not a recovered symbol. Direct callee of BSP_Application_Initialize (0073d410); analysis-only packet app_initialize_map, no reconstruction. Called at 0073df01 in the renderer resource run. References noise.dds and black.tga, the two fallback textures. Ghidra reports an unreachable block at 00b14e69 and unaffected EBX/ESI/EDI inputs, so the body is only partially recovered. Evidence: docs/APP_INITIALIZE_MAP.md; reports/app_initialize_map.json. | Packet app_init_renderer_device, read from the listing 00b14a10-00b14f5b because the pseudocode is truncated. thiscall(this), plain RET at 00b14f44 with a second RET at 00b14f5b on the failed-allocation tail, returns this; object 6ACh allocated at 0073dedf and constructed at 0073df01 (phase 9 step 50). Base 00b0f020 installs vtable 00d5e158, publishes this into DAT_00f8d39c at 00b0f076 and registers it with the lifetime manager (00415350 singleton 01090aa0, then 00bd0c30); 00b14a36 installs derived vtable 00d5e480. Load-bearing steps: 00b0cd80 on this+2ACh at 00b14bef; operator new(40h) -> 00b1fbb0 into this+1D4h at 00b14d89; renderer virtual +128h (00b24dc0, returns renderer+197Ch) fed to 00b1fab0(this+1D4h,0,value) at 00b14dac; renderer virtual +12Ch (00b20090, returns renderer+198Ch) fed to 00b1fb00(this+1D4h,value) at 00b14dc9; renderer virtual +64h (00b319b0 BSP_Renderer_LoadTextureByName, RET 8) with ('noise.dds' at 00d5e474, flag 0) into this+668h at 00b14e20 and ('black.tga' at 00d5e468, flag 0) into this+67Ch at 00b14e95; operator new(0CCh) -> 00b52550 into this+34h; the 4-byte string 'XXXX' (00d5e460) into this+684h; operator new(24h) -> 00b3c800 into this+0Ch, else 0. Both textures are loaded unconditionally, with no command-line or settings gate. The rest of the body is float and pointer field initialisation. Evidence: docs/APP_INIT_RENDERER.md; reports/app_init_renderer.json. | Descriptive hypothesis, not a recovered symbol. Complete 00b14a10..00b14f5b native body reconstructed against the original assembly, register/stack ABI and live/original-PE bytes. ECX actual6ACh receiver; no stacked arguments; EAX original ECX; RET at B14F44/B14F5B. Source preserves captured identities/IAT values, current concrete profiles, ordered stores and recovered cleanup states within its documented provider domain. Evidence: docs/NATIVE_RENDER_RESOURCES_CONSTRUCTION_BK.md; reports/native_render_resources_construction_bk.json; docs/NATIVE_RENDER_RESOURCES_BK_INTEGRATION.md. Combined Win32 build and both existing math CTests passed; no new native differential fixture, drop-in ABI, unrestricted FH3/SEH, startup closure or gameplay validation.\n\n[BSP reconstruction 00b14a10] CR update\nCR full B14A10..B14F5B1356B and ten compiler supports109B, all live/installed-PE equal and instruction ownership complete. Actual6ACh service; ECX receiver/no stack args/EAX same/RET. Base B0F020 publication precedes derived initialization; raw MOVSS loads/stores and untouched preimages preserved; B0CD80 member2AC; actual frame40h/B1FBB0 and current D5F0A8 slots128=B24DC0,12C=B20090 with retaining setters; current64=B319B0 black/noise publications precede captured current-pool returns; CCh/B52550 helper; four-byte unterminated member marker;24h/B3C800 cockpit consumes persistent admission. Nine-state compiler map preserves member/base cleanup and raw allocation/name unwind without rollback of completed resource fields. Tracked Win32 build/both CTests pass. One current-library first-allocation failure fixture verifies early publication, aliased constant timing, untouched bytes, member headers, native state3 vector/string/base unwind and manager removal; later constructor calls are unexecuted. Existing actualD3D9 three-parser mesh fixture passes with57canonicalcompanions retired. Full successful B14A10 execution, original ABI/FH3/SEH, application wiring/rendering/gameplay remain unvalidated. See docs/NATIVE_RENDER_RESOURCES_CR.md. Complete 1356B. ECX actual6ACh receiver; no stack arguments; EAX original receiver; RET. Source construct_native_render_resources_00b14a10.\n\n[BSP reconstruction 00b14a10] CS consolidation update\nCS consolidates the earlier orch3 BK B14A10 implementation at 7142a2f142eaf8991eff9533bcb5b5a7fc26123c, replacing duplicate orch4 CR source, and imports orch3 BL texture-helper lifetime at 9335da3246f979e042a4286c8f4ad42b19ca69b5. No new unique function credit. Retains the additional shared surface/texture renderer and string-domain admission check. Five native bodies2605B and sixteen compiler supports177B match live Ghidra and the installed PE; all783 instruction owners verified. Tracked MSVC Win32 build and both existing CTests passed. One full B14A10 source constructor case uses actual retained D3D9 frame surfaces, six explicitly seeded native texture cache hits, shared-counter camera and live64x64 viewport; marker, aliased constant and untouched preimages checked. Explicit caller-owned child retirement exercises the canonical BL texture-helper terminal with zero auxiliaries, cockpit/camera/viewport, frame/surfaces and cache creators; all64 canonical mesh/texture companions retired. Full parent destructor, cold texture resolution, application wiring, original machine-code differential/FH3/SEH and gameplay remain unvalidated. Historical CR fixture and BL report retain their original scope. See docs/NATIVE_RENDER_RESOURCES_CS.md. Original ABI: ECX actual6ACh receiver; no stacked arguments; EAX original receiver; RET."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00b14a10\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00b52550",
+        "comment": "[BSP reconstruction 00b52550]\nDescriptive hypothesis, not a recovered symbol. Complete native 00b52550..00b5283f reviewed against current assembly, original register/stack ABI, live/PE bytes and actual producer/provider contracts. Preserve current raw reads, ordered stores and bit/copy/cleanup behavior. Added C++ interfaces remain distinct from original binary ABI, unrestricted FH3/SEH, concurrency and gameplay. New complete normal-body implementation over actual storage. Evidence: docs/NATIVE_RENDER_SERVICE_TEXTURE_CONSTRUCTION.md; reports/native_render_service_texture_construction.json.\n\n[BSP reconstruction 00b52550] update\nDescriptive hypothesis, not a recovered symbol. Complete native 00b52550..00b5283f reviewed against current assembly, original register/stack ABI, live/PE bytes and actual producer/provider contracts. Preserve current raw reads, ordered stores and bit/copy/cleanup behavior. Added C++ interfaces remain distinct from original binary ABI, unrestricted FH3/SEH, concurrency and gameplay. New complete normal-body implementation over actual storage. Evidence: docs/NATIVE_RENDER_SERVICE_TEXTURE_CONSTRUCTION.md; reports/native_render_service_texture_construction.json. | BL lifetime correction: begin std::atomic<int32_t> lifetime at the original B52578 count1 store, without a prior zero store or binding-time reset. Worker COFF comparison reports identical 1141-byte function section and 35 symbolic relocations before/after; whole objects differ due to standard-library COMDATs. Current combined build: b4f36b1b405b659e5b17da00cc11c7424a902e68. No new body credit or new native fixture; prior BC fixture remains historical. Evidence: reports/native_render_service_texture_lifetime_bl.json; reports/native_render_resources_bk_validation.json.\n\n[BSP reconstruction 00b52550] CS consolidation update\nCS consolidates the earlier orch3 BK B14A10 implementation at 7142a2f142eaf8991eff9533bcb5b5a7fc26123c, replacing duplicate orch4 CR source, and imports orch3 BL texture-helper lifetime at 9335da3246f979e042a4286c8f4ad42b19ca69b5. No new unique function credit. Retains the additional shared surface/texture renderer and string-domain admission check. Five native bodies2605B and sixteen compiler supports177B match live Ghidra and the installed PE; all783 instruction owners verified. Tracked MSVC Win32 build and both existing CTests passed. One full B14A10 source constructor case uses actual retained D3D9 frame surfaces, six explicitly seeded native texture cache hits, shared-counter camera and live64x64 viewport; marker, aliased constant and untouched preimages checked. Explicit caller-owned child retirement exercises the canonical BL texture-helper terminal with zero auxiliaries, cockpit/camera/viewport, frame/surfaces and cache creators; all64 canonical mesh/texture companions retired. Full parent destructor, cold texture resolution, application wiring, original machine-code differential/FH3/SEH and gameplay remain unvalidated. Historical CR fixture and BL report retain their original scope. See docs/NATIVE_RENDER_RESOURCES_CS.md. Original ABI: ECX actualCCh receiver; no stacked arguments; EAX original receiver; RET."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00b52550\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00b52270",
+        "comment": "[BSP reconstruction 00b52270]\nDescriptive hypothesis, not a recovered symbol. Complete 00b52270..00b522fe native body reconstructed against the original assembly, register/stack ABI and live/original-PE bytes. ECX actual receiver; no stacked arguments; RET; no semantic EAX established. Source preserves captured identities/IAT values, current concrete profiles, ordered stores and recovered cleanup states within its documented provider domain. Evidence: docs/NATIVE_RENDER_SERVICE_TEXTURE_LIFETIME_BL.md; reports/native_render_service_texture_lifetime_bl.json; docs/NATIVE_RENDER_RESOURCES_BK_INTEGRATION.md. Combined Win32 build and both existing math CTests passed; no new native differential fixture, drop-in ABI, unrestricted FH3/SEH, startup closure or gameplay validation.\n\n[BSP reconstruction 00b52270] CS consolidation update\nCS consolidates the earlier orch3 BK B14A10 implementation at 7142a2f142eaf8991eff9533bcb5b5a7fc26123c, replacing duplicate orch4 CR source, and imports orch3 BL texture-helper lifetime at 9335da3246f979e042a4286c8f4ad42b19ca69b5. No new unique function credit. Retains the additional shared surface/texture renderer and string-domain admission check. Five native bodies2605B and sixteen compiler supports177B match live Ghidra and the installed PE; all783 instruction owners verified. Tracked MSVC Win32 build and both existing CTests passed. One full B14A10 source constructor case uses actual retained D3D9 frame surfaces, six explicitly seeded native texture cache hits, shared-counter camera and live64x64 viewport; marker, aliased constant and untouched preimages checked. Explicit caller-owned child retirement exercises the canonical BL texture-helper terminal with zero auxiliaries, cockpit/camera/viewport, frame/surfaces and cache creators; all64 canonical mesh/texture companions retired. Full parent destructor, cold texture resolution, application wiring, original machine-code differential/FH3/SEH and gameplay remain unvalidated. Historical CR fixture and BL report retain their original scope. See docs/NATIVE_RENDER_RESOURCES_CS.md. Original ABI: ECX actualCCh receiver; no stacked arguments; RET; no semantic EAX established."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00b52270\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00b52400",
+        "comment": "[BSP reconstruction 00b52400]\nDescriptive hypothesis, not a recovered symbol. Complete 00b52400..00b52543 native body reconstructed against the original assembly, register/stack ABI and live/original-PE bytes. ECX actual receiver; no stacked arguments; RET; no semantic EAX established. Source preserves captured identities/IAT values, current concrete profiles, ordered stores and recovered cleanup states within its documented provider domain. Evidence: docs/NATIVE_RENDER_SERVICE_TEXTURE_LIFETIME_BL.md; reports/native_render_service_texture_lifetime_bl.json; docs/NATIVE_RENDER_RESOURCES_BK_INTEGRATION.md. Combined Win32 build and both existing math CTests passed; no new native differential fixture, drop-in ABI, unrestricted FH3/SEH, startup closure or gameplay validation.\n\n[BSP reconstruction 00b52400] CS consolidation update\nCS consolidates the earlier orch3 BK B14A10 implementation at 7142a2f142eaf8991eff9533bcb5b5a7fc26123c, replacing duplicate orch4 CR source, and imports orch3 BL texture-helper lifetime at 9335da3246f979e042a4286c8f4ad42b19ca69b5. No new unique function credit. Retains the additional shared surface/texture renderer and string-domain admission check. Five native bodies2605B and sixteen compiler supports177B match live Ghidra and the installed PE; all783 instruction owners verified. Tracked MSVC Win32 build and both existing CTests passed. One full B14A10 source constructor case uses actual retained D3D9 frame surfaces, six explicitly seeded native texture cache hits, shared-counter camera and live64x64 viewport; marker, aliased constant and untouched preimages checked. Explicit caller-owned child retirement exercises the canonical BL texture-helper terminal with zero auxiliaries, cockpit/camera/viewport, frame/surfaces and cache creators; all64 canonical mesh/texture companions retired. Full parent destructor, cold texture resolution, application wiring, original machine-code differential/FH3/SEH and gameplay remain unvalidated. Historical CR fixture and BL report retain their original scope. See docs/NATIVE_RENDER_RESOURCES_CS.md. Original ABI: ECX actualCCh receiver; no stacked arguments; RET; no semantic EAX established."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00b52400\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00b52840",
+        "prototype": "void * __thiscall BSP_RenderServiceTextureHelper_ScalarDeletingDestructor(void * this, uint flags)",
+        "calling_convention": "__thiscall"
+      },
+      "result": "Successfully set prototype for function at 00b52840 with __thiscall calling convention"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00b52840",
+        "comment": "[BSP reconstruction 00b52840]\nDescriptive hypothesis, not a recovered symbol. Complete 00b52840..00b5285d native body reconstructed against the original assembly, register/stack ABI and live/original-PE bytes. ECX actual allocation; stack DWORD flags; EAX captured allocation; RET4; destroy before flags&1 free. Source preserves captured identities/IAT values, current concrete profiles, ordered stores and recovered cleanup states within its documented provider domain. Evidence: docs/NATIVE_RENDER_SERVICE_TEXTURE_LIFETIME_BL.md; reports/native_render_service_texture_lifetime_bl.json; docs/NATIVE_RENDER_RESOURCES_BK_INTEGRATION.md. Combined Win32 build and both existing math CTests passed; no new native differential fixture, drop-in ABI, unrestricted FH3/SEH, startup closure or gameplay validation.\n\n[BSP reconstruction 00b52840] CS consolidation update\nCS consolidates the earlier orch3 BK B14A10 implementation at 7142a2f142eaf8991eff9533bcb5b5a7fc26123c, replacing duplicate orch4 CR source, and imports orch3 BL texture-helper lifetime at 9335da3246f979e042a4286c8f4ad42b19ca69b5. No new unique function credit. Retains the additional shared surface/texture renderer and string-domain admission check. Five native bodies2605B and sixteen compiler supports177B match live Ghidra and the installed PE; all783 instruction owners verified. Tracked MSVC Win32 build and both existing CTests passed. One full B14A10 source constructor case uses actual retained D3D9 frame surfaces, six explicitly seeded native texture cache hits, shared-counter camera and live64x64 viewport; marker, aliased constant and untouched preimages checked. Explicit caller-owned child retirement exercises the canonical BL texture-helper terminal with zero auxiliaries, cockpit/camera/viewport, frame/surfaces and cache creators; all64 canonical mesh/texture companions retired. Full parent destructor, cold texture resolution, application wiring, original machine-code differential/FH3/SEH and gameplay remain unvalidated. Historical CR fixture and BL report retain their original scope. See docs/NATIVE_RENDER_RESOURCES_CS.md. Original ABI: ECX actualCCh allocation; stack DWORD flags; EAX captured allocation; RET4; destroy before flags1 free."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00b52840\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": "{\"success\": true, \"program\": \"battlestationspacific.exe\", \"message\": \"Program saved successfully\"}"
+    }
+  ],
+  "saved": true,
+  "exports_refreshed": true
+}
