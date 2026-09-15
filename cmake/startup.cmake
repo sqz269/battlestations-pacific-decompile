@@ -1021,3 +1021,4 @@ cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_platform_co
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_render_entry_cache.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_platform_focus_owners.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_window_focus_dispatch.cpp)
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_render_service_focus.cpp)
