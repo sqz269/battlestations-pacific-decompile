@@ -101,3 +101,7 @@ existing group projection limits apply. The explicit providers and fixtures
 are not an executable admission layer or proof of arbitrary item contracts.
 Current class+50 population, graph admission, original exception integration
 and gameplay validation remain open. No workers were dispatched.
+
+## Retained evidence
+
+Implementation commit `06891b527bdd0315725786efde13d7de4c6fcf0b` is integrated in `f9c2873031b81d2314f4918aee97500c27051f2c`, which was built as a clean checkout. The immutable local manifest retains 822 exact inputs and 124 artifacts, including 112 linked production objects, source/header/compiler/library inputs, eight original spans, paired comparison images, unwind records and saved Ghidra annotations/exports. The provider and game-validation boundaries above remain unchanged.
