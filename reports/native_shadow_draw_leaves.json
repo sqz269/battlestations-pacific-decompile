@@ -1,0 +1,236 @@
+{
+  "packet": "orch3_shadow_draw_precursors_eu",
+  "module": "native_shadow_draw_leaves",
+  "kind": "complete_source_candidate_build_pending",
+  "base_commit": "56e246e1295d967c5128fbc78caccf27728708fe",
+  "source_files": [
+    {
+      "path": "include/bsp/native_shadow_draw_leaves.hpp",
+      "sha256": "a0920df773ddf0e9f5e464b86dd674e5a85f37dd794fea5f809f0fd7a8b0f3c7"
+    },
+    {
+      "path": "src/native_shadow_draw_leaves.cpp",
+      "sha256": "f45d57d02c412e0d9e87dd0820d561ecfbd5ba30e1ad5355b3f817e1b7ab7e9b"
+    }
+  ],
+  "documentation": "docs/NATIVE_SHADOW_DRAW_LEAVES.md",
+  "addresses": [
+    "00b48d00",
+    "00b6fdc0"
+  ],
+  "native_body_bytes": 15,
+  "implementation_coverage": "complete normal native bodies in the documented source-provider domain",
+  "new_ledger_rows_written": 0,
+  "new_ghidra_names_written": 0,
+  "native_bodies": [
+    {
+      "address": "00b48d00",
+      "end_inclusive": "00b48d03",
+      "size": 4,
+      "role": "ready leaf",
+      "sha256": "d4d3079e1e2bc80c23488a3e2c1e4850449f45e35fbe39efe7e920ba8e97f0f8",
+      "disk_hex": "8b4158c3",
+      "live_hex": "8b4158c3",
+      "live_equals_PE": true,
+      "section": ".text",
+      "section_characteristics": "60000020",
+      "section_writable": false,
+      "instructions": [
+        {
+          "address": "00b48d00",
+          "bytes": "8b4158",
+          "text": "mov eax, dword ptr [ecx + 0x58]"
+        },
+        {
+          "address": "00b48d03",
+          "bytes": "c3",
+          "text": "ret "
+        }
+      ]
+    },
+    {
+      "address": "00b6fdc0",
+      "end_inclusive": "00b6fdca",
+      "size": 11,
+      "role": "ready leaf",
+      "sha256": "203fe52afe60df1d8abea356699774fb614bb929412f2faef50a7c4a3fd20711",
+      "disk_hex": "81c1f4020000e92559ffff",
+      "live_hex": "81c1f4020000e92559ffff",
+      "live_equals_PE": true,
+      "section": ".text",
+      "section_characteristics": "60000020",
+      "section_writable": false,
+      "instructions": [
+        {
+          "address": "00b6fdc0",
+          "bytes": "81c1f4020000",
+          "text": "add ecx, 0x2f4"
+        },
+        {
+          "address": "00b6fdc6",
+          "bytes": "e92559ffff",
+          "text": "jmp 0xb656f0"
+        }
+      ]
+    }
+  ],
+  "source_symbols": [
+    "native_logical_vertex_physical_00b48d00",
+    "native_camera_plane_00b6fdc0"
+  ],
+  "original_names": {
+    "00b48d00": "TRIV_body_00b48d00",
+    "00b6fdc0": "CG_adjustor_thunk_00b6fdc0"
+  },
+  "native_names_and_comments_snapshot": "local/eu-native-evidence.json queries: fresh proto/comments; no annotation changed",
+  "native_evidence": {
+    "path": "local/eu-native-evidence.json",
+    "sha256": "2ba1fabdc95c219ac75c5298a1a8650b195ec6e289fdacd6a65bda7d9fb03b1c"
+  },
+  "accepted_admission": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-shadow-child-cleanup-admission-et\\local\\et-child-cleanup-admission.json",
+    "sha256": "9e8a71af95858c7ca614be697dedd1a1e1bfd47e1ab048881d120e538cd8caea"
+  },
+  "primary_admission_review": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\et-primary-admission-review.json",
+    "sha256": "decef0e75ae5a246605c55c087ee85c07af9ca56d4727979dcf081692acc197e"
+  },
+  "source_contract": [
+    "B48D00: current raw stream+58 DWORD in EAX; original ECX/no stack input; explicit C3; no retain.",
+    "AE492F/AE4A6F previous PUSH carries later B4A9B0 offset; no getter cleanup of that word.",
+    "B6FDC0: ECX camera+2F4 then full existing B656F0 tail JMP; unusedEDX retains index at originalS+4, RET4 consumes only index.",
+    "AE4838 retains a lower node word for AE2FE0; B91AA5 supplies its own clamped descending index; no clamp inside this entry."
+  ],
+  "source_anchors": [
+    {
+      "path": "include/bsp/native_shadow_draw_leaves.hpp",
+      "line": 10,
+      "text": "void* __fastcall native_logical_vertex_physical_00b48d00(const void* actual_stream);"
+    },
+    {
+      "path": "include/bsp/native_shadow_draw_leaves.hpp",
+      "line": 17,
+      "text": "const NativePlaneRecord* __fastcall native_camera_plane_00b6fdc0("
+    },
+    {
+      "path": "src/native_shadow_draw_leaves.cpp",
+      "line": 11,
+      "text": "__declspec(naked) void* __fastcall native_logical_vertex_physical_00b48d00(const void*) {"
+    },
+    {
+      "path": "src/native_shadow_draw_leaves.cpp",
+      "line": 18,
+      "text": "__declspec(naked) const NativePlaneRecord* __fastcall native_camera_plane_00b6fdc0("
+    },
+    {
+      "path": "src/native_shadow_draw_leaves.cpp",
+      "line": 14,
+      "text": "_emit 0c3h // B48D03: exact RET, not RET0."
+    },
+    {
+      "path": "src/native_shadow_draw_leaves.cpp",
+      "line": 22,
+      "text": "jmp native_plane_set_plane_00b656f0 // B6FDC6; existing RET4."
+    },
+    {
+      "path": "cmake/startup.cmake",
+      "line": 1013,
+      "text": "cmake_language(DEFER DIRECTORY \"${CMAKE_SOURCE_DIR}\" CALL target_sources bsp_core PRIVATE src/native_shadow_draw_leaves.cpp)"
+    }
+  ],
+  "provider_pins": [
+    {
+      "path": "include/bsp/native_plane_set.hpp",
+      "sha256": "1beb43b3906690ad5e2e9741beaf938e9ff14c157d9acddda1fef806f1d41246",
+      "git_blob_sha256": "1beb43b3906690ad5e2e9741beaf938e9ff14c157d9acddda1fef806f1d41246",
+      "commit": "56e246e1295d967c5128fbc78caccf27728708fe",
+      "raw_equals_git": true
+    },
+    {
+      "path": "src/native_plane_set.cpp",
+      "sha256": "8edc64d02739e7614be984dfd2a7bcfe65c756b76d6307e3201e0b9e293a8ca8",
+      "git_blob_sha256": "8edc64d02739e7614be984dfd2a7bcfe65c756b76d6307e3201e0b9e293a8ca8",
+      "commit": "56e246e1295d967c5128fbc78caccf27728708fe",
+      "raw_equals_git": true
+    },
+    {
+      "path": "CMakeLists.txt",
+      "sha256": "0bad51a21cd02eb4d8b196a345a3f86418d0dab144d66912f0ad8db06881c5a8",
+      "git_blob_sha256": "0bad51a21cd02eb4d8b196a345a3f86418d0dab144d66912f0ad8db06881c5a8",
+      "commit": "56e246e1295d967c5128fbc78caccf27728708fe",
+      "raw_equals_git": true
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00ae4838",
+      "native": "00b6fdc0",
+      "function": "00ae47e0",
+      "evidence": "Complete guarded native/PE span; no body credit."
+    },
+    {
+      "address": "00ae492f",
+      "native": "00b48d00",
+      "function": "00ae47e0",
+      "evidence": "Complete guarded native/PE span; no body credit."
+    },
+    {
+      "address": "00ae4a6f",
+      "native": "00b48d00",
+      "function": "00ae47e0",
+      "evidence": "Complete guarded native/PE span; no body credit."
+    },
+    {
+      "address": "00b91aa5",
+      "native": "00b6fdc0",
+      "function": "00b91a50",
+      "evidence": "Fresh bounded caller listing, original camera ECX and stacked index."
+    }
+  ],
+  "no_ghidra_function": [],
+  "generated_expectations": {
+    "00b48d00": {
+      "size": 4,
+      "hex": "8b4158c3",
+      "relocations": []
+    },
+    "00b6fdc0": {
+      "size": 11,
+      "normalized_operand_offsets": [
+        7
+      ],
+      "transfer": "JMP rel32 to actual native_plane_set_plane_00b656f0"
+    }
+  },
+  "validation": {
+    "source_review": "candidate pending primary acceptance",
+    "call_verification": {
+      "command": [
+        "python",
+        "tools/verify_report_calls.py",
+        "reports\\native_shadow_draw_leaves.json"
+      ],
+      "exit_code": 0,
+      "stdout": "reports\\native_shadow_draw_leaves.json: 4 call rows checked, 0 failed\n",
+      "stderr": "",
+      "verifier_sha256": "396e6d544dece7c9551ff10ee15ab234a0ad1c4a339fd118ddec20de1bb7a8cd"
+    },
+    "build": "pending single parent-coordinated ES+EU build",
+    "generated_code": "pending complete object and adapters inspection",
+    "tests": "not run; no new tests",
+    "runtime": "not run",
+    "game_validated": false
+  },
+  "partial_limits": [
+    "No original caller integration, classifier, construction, owner lifetime or runtime/game proof.",
+    "Existing B656F0 code and any compiler bytes receive no new native-body credit."
+  ],
+  "coordination": "Own module paths and addresses only; exactly two unleased append-only DEFER registrations. No ledger/Ghidra/build/test edits.",
+  "tail_transfer": {
+    "instruction_site": "00b6fdc6",
+    "target": "00b656f0",
+    "owner": "00b6fdc0",
+    "kind": "JMP rel32; not a CALL row",
+    "existing_provider": "native_plane_set_plane_00b656f0"
+  }
+}
