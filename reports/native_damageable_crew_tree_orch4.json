@@ -21,7 +21,11 @@
     "tree_head": "+04h",
     "tree_count": "+08h unsigned",
     "node_size": "58h",
-    "left_parent_right": ["+00h", "+04h", "+08h"],
+    "left_parent_right": [
+      "+00h",
+      "+04h",
+      "+08h"
+    ],
     "key": "+0Ch signed int32",
     "mapped": "+10h..+53h (44h)",
     "color": "+54h",
@@ -108,7 +112,17 @@
     }
   ],
   "direct_dependency_closure": {
-    "new_source": ["00876340", "00876630", "008767a0", "008773a0", "00877fe0", "0087a5f0", "0087adb0", "0087b260", "0087b750"],
+    "new_source": [
+      "00876340",
+      "00876630",
+      "008767a0",
+      "008773a0",
+      "00877fe0",
+      "0087a5f0",
+      "0087adb0",
+      "0087b260",
+      "0087b750"
+    ],
     "borrowed_complete": [
       "008772b0 checked successor",
       "00408720 native legacy counted string assignment",
@@ -146,5 +160,148 @@
     "The source-level length error owns native-shaped D69260 storage but uses host RTTI/catch ABI rather than original D83F98 FH3 ABI.",
     "Uninitialized mapped bytes are intentionally indeterminate and are not suitable for deterministic byte comparison.",
     "Hardware faults, malformed-tree continuation after returning validation callbacks, concurrent mutation, binary ABI compatibility and gameplay behavior are unvalidated."
-  ]
+  ],
+  "direct_call_sites": [
+    {
+      "address": "00876352",
+      "native": "00bf6713",
+      "function": "00876340"
+    },
+    {
+      "address": "008767a8",
+      "native": "00bf6713",
+      "function": "008767a0"
+    },
+    {
+      "address": "00877fe2",
+      "native": "00bf681b",
+      "function": "00877fe0"
+    },
+    {
+      "address": "0087a633",
+      "native": "00408720",
+      "function": "0087a5f0"
+    },
+    {
+      "address": "0087a645",
+      "native": "00411700",
+      "function": "0087a5f0"
+    },
+    {
+      "address": "0087a65c",
+      "native": "00bf6885",
+      "function": "0087a5f0"
+    },
+    {
+      "address": "0087a674",
+      "native": "00877fe0",
+      "function": "0087a5f0"
+    },
+    {
+      "address": "0087a705",
+      "native": "008773a0",
+      "function": "0087a5f0"
+    },
+    {
+      "address": "0087a723",
+      "native": "00876630",
+      "function": "0087a5f0"
+    },
+    {
+      "address": "0087a751",
+      "native": "00876630",
+      "function": "0087a5f0"
+    },
+    {
+      "address": "0087ae0e",
+      "native": "0087a5f0",
+      "function": "0087adb0"
+    },
+    {
+      "address": "0087ae30",
+      "native": "008767a0",
+      "function": "0087adb0"
+    },
+    {
+      "address": "0087b27f",
+      "native": "0087a5f0",
+      "function": "0087b260"
+    },
+    {
+      "address": "0087b2a0",
+      "native": "00bf6713",
+      "function": "0087b260"
+    },
+    {
+      "address": "0087b2c8",
+      "native": "0087a5f0",
+      "function": "0087b260"
+    },
+    {
+      "address": "0087b2e4",
+      "native": "00bf6713",
+      "function": "0087b260"
+    },
+    {
+      "address": "0087b30d",
+      "native": "0087a5f0",
+      "function": "0087b260"
+    },
+    {
+      "address": "0087b331",
+      "native": "008767a0",
+      "function": "0087b260"
+    },
+    {
+      "address": "0087b355",
+      "native": "0087a5f0",
+      "function": "0087b260"
+    },
+    {
+      "address": "0087b36c",
+      "native": "0087a5f0",
+      "function": "0087b260"
+    },
+    {
+      "address": "0087b399",
+      "native": "008772b0",
+      "function": "0087b260"
+    },
+    {
+      "address": "0087b3a7",
+      "native": "00876340",
+      "function": "0087b260"
+    },
+    {
+      "address": "0087b3cf",
+      "native": "0087a5f0",
+      "function": "0087b260"
+    },
+    {
+      "address": "0087b3e4",
+      "native": "0087a5f0",
+      "function": "0087b260"
+    },
+    {
+      "address": "0087b3fd",
+      "native": "0087adb0",
+      "function": "0087b260"
+    },
+    {
+      "address": "0087b7b6",
+      "native": "0087b260",
+      "function": "0087b750"
+    },
+    {
+      "address": "0087b7c5",
+      "native": "00bf6713",
+      "function": "0087b750"
+    },
+    {
+      "address": "0087b7cf",
+      "native": "00bf6713",
+      "function": "0087b750"
+    }
+  ],
+  "call_site_evidence": "Exact CALL instructions from refreshed saved exports; checked against live function ownership and instruction target by tools/verify_report_calls.py. Indirect virtual/IAT calls remain separately bounded by source evidence."
 }

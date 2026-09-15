@@ -253,3 +253,47 @@ CTest tests. The live verifier checked168 call rows with0 failures:131 reader
 calls,1 category-lookup call and36 EH cleanup jumps. The compiled Win32 object
 exports the new lookup and references the existing00438E10 comparison symbol.
 No new tests were added and no original-reader execution is claimed.
+
+## Correction from the f6 dependency closure
+
+The following prerequisites are now integrated; the original assessment above is
+retained as the audit history. This wave adds 47 complete source bodies across
+four packets, with raw-storage semantics and actual existing dependencies:
+
+- `docs/NATIVE_DAMAGEABLE_SECTION_VECTOR_ORCH4.md`: fourteen section-vector
+  providers, including resize, insertion, assignment, backward copy and checked
+  length failure. Eight ordinary copied-original scenarios and overlap/x87 checks
+  passed; explicit catch cleanup is distinguished from terminating outer unwind.
+- `docs/NATIVE_DAMAGEABLE_FAKE_EFFECT_VECTOR_ORCH4.md`: sixteen fake-effect
+  providers. Eight ordinary copied-original scenarios passed, including aliasing,
+  current owner publication and x87 state. The bitwise temporary snapshot remains
+  distinct from FLD/FSTP row transfers.
+- `docs/NATIVE_DAMAGEABLE_CREW_TREE_ORCH4.md`: nine signed-key tree providers.
+  They preserve the uninitialized mapped-value preimage. Independent review found
+  and corrected the second head capture around a returning invalid-parameter
+  callback; the focused source probe passes. 0087A5F0 is a full link/rebalance
+  routine, correcting its former length-throw-only label.
+- `docs/NATIVE_SOLDIER_CLASS_RESOLUTION_ORCH4.md`: eight construction/base-cleanup
+  prerequisites. Actual slot+Ch is 004AF520, a constant-true predicate with no
+  retain; this resolves the earlier ownership uncertainty. Factory, cache tree,
+  registry teardown and reader remain source-absent.
+
+The combined strict Win32 build passes all three existing CTests. Focused probes
+remain ignored local evidence; no permanent test cases or CMakeLists changes were
+added. Direct-call checks cover 7 SoldierClass, 41 section-vector, 38 fake-effect
+and 28 crew-tree sites, all with zero failures. Eight listing/body repairs and one
+new function definition are recorded in
+`docs/NATIVE_CONTAINER_FLOW_REPAIRS_ORCH4_F6.md`; annotations are saved and exports
+refreshed. Original FH3/SEH, binary replacement and gameplay remain unvalidated.
+
+### Follow-up packets after f6
+
+1. Close SoldierClass string-key registry insertion and lifecycle, then its actual
+   Lua reader and 004B1400 factory; the precise remaining addresses and dependency
+   boundaries are listed in the SoldierClass prerequisite document.
+2. Close real effect manager/component services required by 00870CD0/00871BA0.
+   Existing ownership cleanup and vector providers do not substitute for those
+   services.
+3. Once both genuine service closures are available, implement the already-audited
+   0087CA80 reader with its actual Lua temporaries, virtual targets and unwind map.
+   The full reader still has no source body, fixture execution or game validation.
