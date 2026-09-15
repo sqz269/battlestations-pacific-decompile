@@ -82,6 +82,13 @@
   Exports are shared through `tools/workspace.py` (the main checkout's `exports/bsp`); never create
   a junction or symlink to them inside a worktree, and remove worktrees only with
   `python tools/bsp.py worktree remove <name>` (git's own remove/clean traverse reparse points).
+- Integrate into `main` as each packet closes, not at the end of a run. Merge the worker branch into
+  your own branch, then merge your branch into `main` and push `main`. Your own long-lived branch is
+  a staging area, never the destination, and pushing it to `origin` is not integration. Never carry
+  more than about 20 unmerged patches or four hours of unmerged work: `bsp.py brief` prints the count,
+  and when it is non-zero at the start of a turn, integrate before taking new work. Resolve ledger
+  shard and `cmake/startup.cmake` conflicts with `python tools/merge_resolve.py <worktree>`, which
+  unions appended records; escalate anything it cannot resolve rather than leaving the branch behind.
 - Target MSVC Win32. Run `./scripts/build.ps1` after C++ changes.
   Native differential tests are enabled after `python tools/ghidra_export.py verify-seeds`.
 - Ad hoc probe executables (anything compiled with `cl` outside the CMake build) must link with

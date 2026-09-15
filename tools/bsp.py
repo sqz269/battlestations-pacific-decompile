@@ -1067,6 +1067,18 @@ def brief(args):
               + (f" ... {len(dirty) - args.limit} more" if len(dirty) > args.limit else ''))
     else:
         print('dirty: clean')
+    branch = subprocess.run(['git', 'rev-parse', '--abbrev-ref', 'HEAD'], cwd=ROOT, capture_output=True, text=True).stdout.strip()
+    if branch and branch != 'main':
+        cherry = subprocess.run(['git', 'cherry', 'main', branch], cwd=ROOT, capture_output=True, text=True).stdout
+        pending = sum(1 for l in cherry.splitlines() if l.startswith('+'))
+        if pending:
+            oldest = next((l.split()[1] for l in cherry.splitlines() if l.startswith('+')), None)
+            when = subprocess.run(['git', 'log', '-1', '--format=%ad', '--date=format:%m-%d %H:%M', oldest],
+                                  cwd=ROOT, capture_output=True, text=True).stdout.strip() if oldest else '?'
+            flag = '  INTEGRATE NOW' if pending > 20 else ''
+            print(f"unmerged: {pending} patches on {branch} not in main, oldest {when}{flag}")
+        else:
+            print(f"unmerged: none ({branch} fully in main)")
     packets, _ = load_packets()
     leased = {l['packet'] for l in coordination.active_leases()}
     ready = [pid for pid, p in (packets or {}).items()
