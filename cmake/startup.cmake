@@ -1040,3 +1040,4 @@ cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_node_animat
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_postprocess_pose.cpp)
 
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_postprocess_storage.cpp)
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_resource_postprocess_full.cpp)
