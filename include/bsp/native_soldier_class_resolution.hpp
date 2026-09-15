@@ -53,6 +53,7 @@ void* construct_native_soldier_class_004b12a0(
 bool native_soldier_class_true_004af520() noexcept;
 
 // These are new source interfaces, not original ABI/FH3 replacements. The
-// factory, cache insertion, registry teardown and reader still need their full
-// source closures; storing actual table identities does not implement them.
+// factory and reader still need their full source closures. The separate raw
+// registry tree/lifetime and class lifetime modules now provide those genuine
+// dependencies; storing table identities alone does not implement dispatch.
 } // namespace bsp

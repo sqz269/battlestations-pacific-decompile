@@ -1,0 +1,1102 @@
+{
+  "packet": "orch4_soldier_loop_lengths_g7",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "source": "src/native_soldier_loop_lengths.cpp",
+  "header": "include/bsp/native_soldier_loop_lengths.hpp",
+  "documentation": "docs/NATIVE_SOLDIER_LOOP_LENGTHS_ORCH4.md",
+  "functions": [
+    {
+      "address": "00443d60",
+      "end_exclusive": "00443db3",
+      "bytes": 83,
+      "sha256": "e0328d6beca8530d04c2bac118253617a4109ed8c412d940dfee6d45577e7e0e",
+      "live_disk_match": true,
+      "instructions": 36,
+      "name": "lower_bound_native_soldier_loop_lengths_00443d60",
+      "proposed_name": "BSP_WeatherFloatMap_LowerBound",
+      "original_abi": "ECX tree; key-header stack; EAX selected node; RET4",
+      "coverage": "complete",
+      "status": "complete_source_strict_win32_build_checked",
+      "source": "src/native_soldier_loop_lengths.cpp",
+      "old_name": "BSP_WeatherFloatMap_LowerBound",
+      "old_plate_comment": "[BSP reconstruction 00443d60]\nDescriptive role hypothesis, not recovered symbol. ECX=map; name* stack; EAX=node; RET4. Semantic lower-bound preserving native empty-length gates and CRT case-insensitive comparison through existing00443D00. Native tree shape/checked-iterator ABI excluded. docs/WEATHER_CONFIG.md; reports/weather_config.json; src/weather_config.cpp. Worker Ghidra read-only; new C++ interfaces, not native ABI.\n\n[BSP reconstruction 00443d60] update\nHypothesis, not a recovered symbol. AX: docs/NATIVE_INPUT_KEYBOARD_STORAGE_AX.md and reports/native_input_keyboard_storage_ax_validation.json. NativeInputKeyboardStorage now provides all fourteen operations as source over actual owned headers. Device/vector map roots cover fresh empty default copies only; populated scale-map copy/destruction, checked iterators and scale erasure retain typed node/color/nil layouts. Five map/destructor bodies and partial scale eraser repaired; 00552E20 iterator ABI restores the two-child erase branch. 40 live/disk envelopes and241 owned CALLs verified. Strict Win32 and2 CTests passed; native/source122545 lifetime,309711 range,168378 insertion,1448 vector,335 string,372 keyboard values and9409 bit-position pairs matched. Existing interface retained; source string lifetime explicit. No original FH3/CRT ABI, malformed/private-alias behavior, general populated device/vector copy, production host wiring or gameplay claim. Prior comments preserved.",
+      "old_ledger_name": {
+        "address": "00443d60",
+        "name": "BSP_WeatherFloatMap_LowerBound",
+        "evidence": "Descriptive role hypothesis, not recovered symbol. ECX=map; name* stack; EAX=node; RET4. Semantic lower-bound preserving native empty-length gates and CRT case-insensitive comparison through existing00443D00. Native tree shape/checked-iterator ABI excluded. docs/WEATHER_CONFIG.md; reports/weather_config.json; src/weather_config.cpp. Worker Ghidra read-only; new C++ interfaces, not native ABI. | Hypothesis, not a recovered symbol. AX: docs/NATIVE_INPUT_KEYBOARD_STORAGE_AX.md and reports/native_input_keyboard_storage_ax_validation.json. NativeInputKeyboardStorage now provides all fourteen operations as source over actual owned headers. Device/vector map roots cover fresh empty default copies only; populated scale-map copy/destruction, checked iterators and scale erasure retain typed node/color/nil layouts. Five map/destructor bodies and partial scale eraser repaired; 00552E20 iterator ABI restores the two-child erase branch. 40 live/disk envelopes and241 owned CALLs verified. Strict Win32 and2 CTests passed; native/source122545 lifetime,309711 range,168378 insertion,1448 vector,335 string,372 keyboard values and9409 bit-position pairs matched. Existing interface retained; source string lifetime explicit. No original FH3/CRT ABI, malformed/private-alias behavior, general populated device/vector copy, production host wiring or gameplay claim. Prior comments preserved."
+      },
+      "native_differential_checked": false,
+      "original_runtime_abi": false,
+      "gameplay_validated": false,
+      "evidence": "Complete 83B source lower_bound_native_soldier_loop_lengths_00443d60; full live/disk SHA256 e0328d6beca8530d04c2bac118253617a4109ed8c412d940dfee6d45577e7e0e. ECX tree; key-header stack; EAX selected node; RET4. Raw1Ch string/float nodes; field/load/call schedules proven against Soldier registry specialization, x87 FLD32/FSTP32 mapped copy, actual raw-string pool and owning exception transports. See docs/NATIVE_SOLDIER_LOOP_LENGTHS_ORCH4.md and reports/native_soldier_loop_lengths_orch4.json. New C++ interface; original ABI/FH3/SEH/gameplay unvalidated."
+    },
+    {
+      "address": "00444be0",
+      "end_exclusive": "00444cd9",
+      "bytes": 249,
+      "sha256": "da9a7a7dbce2cabf27ced8810d223f63b3e6f2239939843dfa2c466b2877350c",
+      "live_disk_match": true,
+      "instructions": 86,
+      "name": "get_or_insert_native_soldier_loop_length_00444be0",
+      "proposed_name": "BSP_WeatherFloatMap_LookupOrInsert",
+      "original_abi": "ECX tree; key-header stack; EAX mapped-float-cell pointer; RET4",
+      "coverage": "complete",
+      "status": "complete_source_strict_win32_build_checked",
+      "source": "src/native_soldier_loop_lengths.cpp",
+      "old_name": "BSP_WeatherFloatMap_LookupOrInsert",
+      "old_plate_comment": "[BSP reconstruction 00444be0]\nDescriptive role hypothesis, not recovered symbol. ECX=map; name* stack; EAX=borrowed node+14 float; RET4. Existing case-insensitive match keeps identity/value. Missing pair explicitly initializes+0 via XORPS/MOVSS; preserve two key deep copies and captured temporary data-pointer release after insertion. Generic tree allocation/linking/rebalance uses standard containers. docs/WEATHER_CONFIG.md; reports/weather_config.json; src/weather_config.cpp. Worker Ghidra read-only; new C++ interfaces, not native ABI.\n\n[BSP reconstruction 00444be0] update\nHypothesis, not a recovered symbol. AX: docs/NATIVE_INPUT_KEYBOARD_STORAGE_AX.md and reports/native_input_keyboard_storage_ax_validation.json. NativeInputKeyboardStorage now provides all fourteen operations as source over actual owned headers. Device/vector map roots cover fresh empty default copies only; populated scale-map copy/destruction, checked iterators and scale erasure retain typed node/color/nil layouts. Five map/destructor bodies and partial scale eraser repaired; 00552E20 iterator ABI restores the two-child erase branch. 40 live/disk envelopes and241 owned CALLs verified. Strict Win32 and2 CTests passed; native/source122545 lifetime,309711 range,168378 insertion,1448 vector,335 string,372 keyboard values and9409 bit-position pairs matched. Existing interface retained; source string lifetime explicit. No original FH3/CRT ABI, malformed/private-alias behavior, general populated device/vector copy, production host wiring or gameplay claim. Prior comments preserved.",
+      "old_ledger_name": {
+        "address": "00444be0",
+        "name": "BSP_WeatherFloatMap_LookupOrInsert",
+        "evidence": "Descriptive role hypothesis, not recovered symbol. ECX=map; name* stack; EAX=borrowed node+14 float; RET4. Existing case-insensitive match keeps identity/value. Missing pair explicitly initializes+0 via XORPS/MOVSS; preserve two key deep copies and captured temporary data-pointer release after insertion. Generic tree allocation/linking/rebalance uses standard containers. docs/WEATHER_CONFIG.md; reports/weather_config.json; src/weather_config.cpp. Worker Ghidra read-only; new C++ interfaces, not native ABI. | Hypothesis, not a recovered symbol. AX: docs/NATIVE_INPUT_KEYBOARD_STORAGE_AX.md and reports/native_input_keyboard_storage_ax_validation.json. NativeInputKeyboardStorage now provides all fourteen operations as source over actual owned headers. Device/vector map roots cover fresh empty default copies only; populated scale-map copy/destruction, checked iterators and scale erasure retain typed node/color/nil layouts. Five map/destructor bodies and partial scale eraser repaired; 00552E20 iterator ABI restores the two-child erase branch. 40 live/disk envelopes and241 owned CALLs verified. Strict Win32 and2 CTests passed; native/source122545 lifetime,309711 range,168378 insertion,1448 vector,335 string,372 keyboard values and9409 bit-position pairs matched. Existing interface retained; source string lifetime explicit. No original FH3/CRT ABI, malformed/private-alias behavior, general populated device/vector copy, production host wiring or gameplay claim. Prior comments preserved."
+      },
+      "native_differential_checked": false,
+      "original_runtime_abi": false,
+      "gameplay_validated": false,
+      "evidence": "Complete 249B source get_or_insert_native_soldier_loop_length_00444be0; full live/disk SHA256 da9a7a7dbce2cabf27ced8810d223f63b3e6f2239939843dfa2c466b2877350c. ECX tree; key-header stack; EAX mapped-float-cell pointer; RET4. Raw1Ch string/float nodes; field/load/call schedules proven against Soldier registry specialization, x87 FLD32/FSTP32 mapped copy, actual raw-string pool and owning exception transports. See docs/NATIVE_SOLDIER_LOOP_LENGTHS_ORCH4.md and reports/native_soldier_loop_lengths_orch4.json. New C++ interface; original ABI/FH3/SEH/gameplay unvalidated."
+    },
+    {
+      "address": "00444910",
+      "end_exclusive": "00444b0c",
+      "bytes": 508,
+      "sha256": "2d70f450e254d0a6283e6434e228a5f16d568f98bcf430459c4f795a25ad4a15",
+      "live_disk_match": true,
+      "instructions": 210,
+      "name": "insert_hint_native_soldier_loop_pair_00444910",
+      "proposed_name": "STL_StringFloatMap_InsertHint_00444910",
+      "original_abi": "ECX tree; stack output,hint-owner,hint-node,pair; EAX output; RET10h",
+      "coverage": "complete",
+      "status": "complete_source_strict_win32_build_checked",
+      "source": "src/native_soldier_loop_lengths.cpp",
+      "old_name": "STL_StringFloatMap_InsertHint_00444910",
+      "old_plate_comment": "[BSP reconstruction 00444910]\nProvisional descriptive library specialization, not recovered symbol. ECX=map; output*,hint owner/node,pair* stack; EAX=output; RET10h. Checked hinted unique insertion with fallback004447C0; library behavior represented by standard map. No full STL port or native iterator diagnostic equivalence claimed. See docs/WEATHER_CONFIG.md and reports/weather_config.json.\n\n[BSP reconstruction 00444910] update\nHypothesis, not a recovered symbol. AX: docs/NATIVE_INPUT_KEYBOARD_STORAGE_AX.md and reports/native_input_keyboard_storage_ax_validation.json. NativeInputKeyboardStorage now provides all fourteen operations as source over actual owned headers. Device/vector map roots cover fresh empty default copies only; populated scale-map copy/destruction, checked iterators and scale erasure retain typed node/color/nil layouts. Five map/destructor bodies and partial scale eraser repaired; 00552E20 iterator ABI restores the two-child erase branch. 40 live/disk envelopes and241 owned CALLs verified. Strict Win32 and2 CTests passed; native/source122545 lifetime,309711 range,168378 insertion,1448 vector,335 string,372 keyboard values and9409 bit-position pairs matched. Existing interface retained; source string lifetime explicit. No original FH3/CRT ABI, malformed/private-alias behavior, general populated device/vector copy, production host wiring or gameplay claim. Prior comments preserved.",
+      "old_ledger_name": {
+        "address": "00444910",
+        "name": "STL_StringFloatMap_InsertHint_00444910",
+        "evidence": "Provisional descriptive library specialization, not recovered symbol. ECX=map; output*,hint owner/node,pair* stack; EAX=output; RET10h. Checked hinted unique insertion with fallback004447C0; library behavior represented by standard map. No full STL port or native iterator diagnostic equivalence claimed. See docs/WEATHER_CONFIG.md and reports/weather_config.json. | Hypothesis, not a recovered symbol. AX: docs/NATIVE_INPUT_KEYBOARD_STORAGE_AX.md and reports/native_input_keyboard_storage_ax_validation.json. NativeInputKeyboardStorage now provides all fourteen operations as source over actual owned headers. Device/vector map roots cover fresh empty default copies only; populated scale-map copy/destruction, checked iterators and scale erasure retain typed node/color/nil layouts. Five map/destructor bodies and partial scale eraser repaired; 00552E20 iterator ABI restores the two-child erase branch. 40 live/disk envelopes and241 owned CALLs verified. Strict Win32 and2 CTests passed; native/source122545 lifetime,309711 range,168378 insertion,1448 vector,335 string,372 keyboard values and9409 bit-position pairs matched. Existing interface retained; source string lifetime explicit. No original FH3/CRT ABI, malformed/private-alias behavior, general populated device/vector copy, production host wiring or gameplay claim. Prior comments preserved."
+      },
+      "native_differential_checked": false,
+      "original_runtime_abi": false,
+      "gameplay_validated": false,
+      "evidence": "Complete 508B source insert_hint_native_soldier_loop_pair_00444910; full live/disk SHA256 2d70f450e254d0a6283e6434e228a5f16d568f98bcf430459c4f795a25ad4a15. ECX tree; stack output,hint-owner,hint-node,pair; EAX output; RET10h. Raw1Ch string/float nodes; field/load/call schedules proven against Soldier registry specialization, x87 FLD32/FSTP32 mapped copy, actual raw-string pool and owning exception transports. See docs/NATIVE_SOLDIER_LOOP_LENGTHS_ORCH4.md and reports/native_soldier_loop_lengths_orch4.json. New C++ interface; original ABI/FH3/SEH/gameplay unvalidated."
+    },
+    {
+      "address": "004442a0",
+      "end_exclusive": "0044448c",
+      "bytes": 492,
+      "sha256": "2690a7f5c5cf8f69e4efd98c5dfa519e77c02be9b141c57039b014ff70c5bbef",
+      "live_disk_match": true,
+      "instructions": 167,
+      "name": "link_native_soldier_loop_node_004442a0",
+      "proposed_name": "STL_StringFloatMap_LinkAndRebalance_004442a0",
+      "original_abi": "ECX tree; stack output,left-byte,parent,pair; EAX output; RET10h",
+      "coverage": "complete",
+      "status": "complete_source_strict_win32_build_checked",
+      "source": "src/native_soldier_loop_lengths.cpp",
+      "old_name": "STL_StringFloatMap_LinkAndRebalance_004442a0",
+      "old_plate_comment": "[BSP reconstruction 004442a0]\nProvisional descriptive library specialization, not recovered symbol. ECX=map; output*,side,parent,pair* stack; EAX=output; RET10h. Length guard, allocation004441E0, count increment, root/min/max linking and red-black fixup. Existing STL_xlen_throw role tag covers only its exceptional branch; complete library routine is not a throw-only helper. Analyzed dependency, not ported. See docs/WEATHER_CONFIG.md and reports/weather_config.json.",
+      "old_ledger_name": {
+        "address": "004442a0",
+        "name": "STL_StringFloatMap_LinkAndRebalance_004442a0",
+        "evidence": "Provisional descriptive library specialization, not recovered symbol. ECX=map; output*,side,parent,pair* stack; EAX=output; RET10h. Length guard, allocation004441E0, count increment, root/min/max linking and red-black fixup. Existing STL_xlen_throw role tag covers only its exceptional branch; complete library routine is not a throw-only helper. Analyzed dependency, not ported. See docs/WEATHER_CONFIG.md and reports/weather_config.json."
+      },
+      "native_differential_checked": false,
+      "original_runtime_abi": false,
+      "gameplay_validated": false,
+      "evidence": "Complete 492B source link_native_soldier_loop_node_004442a0; full live/disk SHA256 2690a7f5c5cf8f69e4efd98c5dfa519e77c02be9b141c57039b014ff70c5bbef. ECX tree; stack output,left-byte,parent,pair; EAX output; RET10h. Raw1Ch string/float nodes; field/load/call schedules proven against Soldier registry specialization, x87 FLD32/FSTP32 mapped copy, actual raw-string pool and owning exception transports. See docs/NATIVE_SOLDIER_LOOP_LENGTHS_ORCH4.md and reports/native_soldier_loop_lengths_orch4.json. New C++ interface; original ABI/FH3/SEH/gameplay unvalidated."
+    },
+    {
+      "address": "004447c0",
+      "end_exclusive": "004448d4",
+      "bytes": 276,
+      "sha256": "eb2a02532415aa70d46dcc058932ac3f290d981e8697ed02faa49dc82aeee489",
+      "live_disk_match": true,
+      "instructions": 111,
+      "name": "insert_native_soldier_loop_pair_004447c0",
+      "proposed_name": "BSP_insert_native_soldier_loop_pair_004447c0",
+      "original_abi": "ECX tree; stack output,pair; EAX output; RET8",
+      "coverage": "complete",
+      "status": "complete_source_strict_win32_build_checked",
+      "source": "src/native_soldier_loop_lengths.cpp",
+      "old_name": "FUN_004447c0",
+      "old_plate_comment": null,
+      "old_ledger_name": null,
+      "native_differential_checked": false,
+      "original_runtime_abi": false,
+      "gameplay_validated": false,
+      "evidence": "Complete 276B source insert_native_soldier_loop_pair_004447c0; full live/disk SHA256 eb2a02532415aa70d46dcc058932ac3f290d981e8697ed02faa49dc82aeee489. ECX tree; stack output,pair; EAX output; RET8. Raw1Ch string/float nodes; field/load/call schedules proven against Soldier registry specialization, x87 FLD32/FSTP32 mapped copy, actual raw-string pool and owning exception transports. See docs/NATIVE_SOLDIER_LOOP_LENGTHS_ORCH4.md and reports/native_soldier_loop_lengths_orch4.json. New C++ interface; original ABI/FH3/SEH/gameplay unvalidated."
+    },
+    {
+      "address": "004435a0",
+      "end_exclusive": "004435c9",
+      "bytes": 41,
+      "sha256": "7cbad31a70c1e2443c23a7c01046756c610cad8a4c5b0066e3c4739e2ddd4699",
+      "live_disk_match": true,
+      "instructions": 18,
+      "name": "equal_native_soldier_loop_iterators_004435a0",
+      "proposed_name": "STL_StringFloatMap_IteratorEqual_004435A0",
+      "original_abi": "ECX left iterator; right iterator stack; AL bool; RET4",
+      "coverage": "complete",
+      "status": "complete_source_strict_win32_build_checked",
+      "source": "src/native_soldier_loop_lengths.cpp",
+      "old_name": "STL_inst_004435a0",
+      "old_plate_comment": null,
+      "old_ledger_name": null,
+      "native_differential_checked": false,
+      "original_runtime_abi": false,
+      "gameplay_validated": false,
+      "evidence": "Complete 41B source equal_native_soldier_loop_iterators_004435a0; full live/disk SHA256 7cbad31a70c1e2443c23a7c01046756c610cad8a4c5b0066e3c4739e2ddd4699. ECX left iterator; right iterator stack; AL bool; RET4. Raw1Ch string/float nodes; field/load/call schedules proven against Soldier registry specialization, x87 FLD32/FSTP32 mapped copy, actual raw-string pool and owning exception transports. See docs/NATIVE_SOLDIER_LOOP_LENGTHS_ORCH4.md and reports/native_soldier_loop_lengths_orch4.json. New C++ interface; original ABI/FH3/SEH/gameplay unvalidated."
+    },
+    {
+      "address": "00443880",
+      "end_exclusive": "004438e3",
+      "bytes": 99,
+      "sha256": "f79ac330ac6cd6ff9a70cf17df8345b7368208b9649438bcf56c9be93f43e810",
+      "live_disk_match": true,
+      "instructions": 38,
+      "name": "increment_native_soldier_loop_iterator_00443880",
+      "proposed_name": "BSP_increment_native_soldier_loop_iterator_00443880",
+      "original_abi": "ECX iterator; RET or invalid-parameter tail",
+      "coverage": "complete",
+      "status": "complete_source_strict_win32_build_checked",
+      "source": "src/native_soldier_loop_lengths.cpp",
+      "old_name": "FUN_00443880",
+      "old_plate_comment": null,
+      "old_ledger_name": null,
+      "native_differential_checked": false,
+      "original_runtime_abi": false,
+      "gameplay_validated": false,
+      "evidence": "Complete 99B source increment_native_soldier_loop_iterator_00443880; full live/disk SHA256 f79ac330ac6cd6ff9a70cf17df8345b7368208b9649438bcf56c9be93f43e810. ECX iterator; RET or invalid-parameter tail. Raw1Ch string/float nodes; field/load/call schedules proven against Soldier registry specialization, x87 FLD32/FSTP32 mapped copy, actual raw-string pool and owning exception transports. See docs/NATIVE_SOLDIER_LOOP_LENGTHS_ORCH4.md and reports/native_soldier_loop_lengths_orch4.json. New C++ interface; original ABI/FH3/SEH/gameplay unvalidated."
+    },
+    {
+      "address": "004437f0",
+      "end_exclusive": "00443879",
+      "bytes": 137,
+      "sha256": "08c68b401aa84e2c2cf2cd52ef4783a8983a3244980723e208d03856563d4d86",
+      "live_disk_match": true,
+      "instructions": 48,
+      "name": "decrement_native_soldier_loop_iterator_004437f0",
+      "proposed_name": "BSP_decrement_native_soldier_loop_iterator_004437f0",
+      "original_abi": "ECX iterator; RET or invalid-parameter tail",
+      "coverage": "complete",
+      "status": "complete_source_strict_win32_build_checked",
+      "source": "src/native_soldier_loop_lengths.cpp",
+      "old_name": "FUN_004437f0",
+      "old_plate_comment": null,
+      "old_ledger_name": null,
+      "native_differential_checked": false,
+      "original_runtime_abi": false,
+      "gameplay_validated": false,
+      "evidence": "Complete 137B source decrement_native_soldier_loop_iterator_004437f0; full live/disk SHA256 08c68b401aa84e2c2cf2cd52ef4783a8983a3244980723e208d03856563d4d86. ECX iterator; RET or invalid-parameter tail. Raw1Ch string/float nodes; field/load/call schedules proven against Soldier registry specialization, x87 FLD32/FSTP32 mapped copy, actual raw-string pool and owning exception transports. See docs/NATIVE_SOLDIER_LOOP_LENGTHS_ORCH4.md and reports/native_soldier_loop_lengths_orch4.json. New C++ interface; original ABI/FH3/SEH/gameplay unvalidated."
+    },
+    {
+      "address": "00443ba0",
+      "end_exclusive": "00443bee",
+      "bytes": 78,
+      "sha256": "0439f0befe0245fd4352ce96b0a1925cf906071c3d97d0d6b31232037d4a02b4",
+      "live_disk_match": true,
+      "instructions": 30,
+      "name": "rotate_native_soldier_loop_left_00443ba0",
+      "proposed_name": "BSP_rotate_native_soldier_loop_left_00443ba0",
+      "original_abi": "ECX tree; node stack; RET4",
+      "coverage": "complete",
+      "status": "complete_source_strict_win32_build_checked",
+      "source": "src/native_soldier_loop_lengths.cpp",
+      "old_name": "FUN_00443ba0",
+      "old_plate_comment": null,
+      "old_ledger_name": null,
+      "native_differential_checked": false,
+      "original_runtime_abi": false,
+      "gameplay_validated": false,
+      "evidence": "Complete 78B source rotate_native_soldier_loop_left_00443ba0; full live/disk SHA256 0439f0befe0245fd4352ce96b0a1925cf906071c3d97d0d6b31232037d4a02b4. ECX tree; node stack; RET4. Raw1Ch string/float nodes; field/load/call schedules proven against Soldier registry specialization, x87 FLD32/FSTP32 mapped copy, actual raw-string pool and owning exception transports. See docs/NATIVE_SOLDIER_LOOP_LENGTHS_ORCH4.md and reports/native_soldier_loop_lengths_orch4.json. New C++ interface; original ABI/FH3/SEH/gameplay unvalidated."
+    },
+    {
+      "address": "004436e0",
+      "end_exclusive": "00443732",
+      "bytes": 82,
+      "sha256": "e42b0897d23d00413aefba0f2366246f1aae06cad9b22bfcdbe23fa0d8ffe502",
+      "live_disk_match": true,
+      "instructions": 30,
+      "name": "rotate_native_soldier_loop_right_004436e0",
+      "proposed_name": "BSP_rotate_native_soldier_loop_right_004436e0",
+      "original_abi": "ECX tree; node stack; RET4",
+      "coverage": "complete",
+      "status": "complete_source_strict_win32_build_checked",
+      "source": "src/native_soldier_loop_lengths.cpp",
+      "old_name": "FUN_004436e0",
+      "old_plate_comment": null,
+      "old_ledger_name": null,
+      "native_differential_checked": false,
+      "original_runtime_abi": false,
+      "gameplay_validated": false,
+      "evidence": "Complete 82B source rotate_native_soldier_loop_right_004436e0; full live/disk SHA256 e42b0897d23d00413aefba0f2366246f1aae06cad9b22bfcdbe23fa0d8ffe502. ECX tree; node stack; RET4. Raw1Ch string/float nodes; field/load/call schedules proven against Soldier registry specialization, x87 FLD32/FSTP32 mapped copy, actual raw-string pool and owning exception transports. See docs/NATIVE_SOLDIER_LOOP_LENGTHS_ORCH4.md and reports/native_soldier_loop_lengths_orch4.json. New C++ interface; original ABI/FH3/SEH/gameplay unvalidated."
+    },
+    {
+      "address": "004437c0",
+      "end_exclusive": "004437db",
+      "bytes": 27,
+      "sha256": "b9b972cb8e9c9c854d087b568d5dc0f6cfa90558c3ce70ab4726e69ddef04613",
+      "live_disk_match": true,
+      "instructions": 10,
+      "name": "minimum_native_soldier_loop_node_004437c0",
+      "proposed_name": "BSP_minimum_native_soldier_loop_node_004437c0",
+      "original_abi": "ECX node; EAX minimum; RET",
+      "coverage": "complete",
+      "status": "complete_source_strict_win32_build_checked",
+      "source": "src/native_soldier_loop_lengths.cpp",
+      "old_name": "FUN_004437c0",
+      "old_plate_comment": null,
+      "old_ledger_name": null,
+      "native_differential_checked": false,
+      "original_runtime_abi": false,
+      "gameplay_validated": false,
+      "evidence": "Complete 27B source minimum_native_soldier_loop_node_004437c0; full live/disk SHA256 b9b972cb8e9c9c854d087b568d5dc0f6cfa90558c3ce70ab4726e69ddef04613. ECX node; EAX minimum; RET. Raw1Ch string/float nodes; field/load/call schedules proven against Soldier registry specialization, x87 FLD32/FSTP32 mapped copy, actual raw-string pool and owning exception transports. See docs/NATIVE_SOLDIER_LOOP_LENGTHS_ORCH4.md and reports/native_soldier_loop_lengths_orch4.json. New C++ interface; original ABI/FH3/SEH/gameplay unvalidated."
+    },
+    {
+      "address": "004437a0",
+      "end_exclusive": "004437bc",
+      "bytes": 28,
+      "sha256": "6f640fcf9f202b2fd9542a1da5578933f953aefd242bd1af3a0d59f1f5c5c5c8",
+      "live_disk_match": true,
+      "instructions": 10,
+      "name": "maximum_native_soldier_loop_node_004437a0",
+      "proposed_name": "BSP_maximum_native_soldier_loop_node_004437a0",
+      "original_abi": "ECX node; EAX maximum; RET",
+      "coverage": "complete",
+      "status": "complete_source_strict_win32_build_checked",
+      "source": "src/native_soldier_loop_lengths.cpp",
+      "old_name": "FUN_004437a0",
+      "old_plate_comment": null,
+      "old_ledger_name": null,
+      "native_differential_checked": false,
+      "original_runtime_abi": false,
+      "gameplay_validated": false,
+      "evidence": "Complete 28B source maximum_native_soldier_loop_node_004437a0; full live/disk SHA256 6f640fcf9f202b2fd9542a1da5578933f953aefd242bd1af3a0d59f1f5c5c5c8. ECX node; EAX maximum; RET. Raw1Ch string/float nodes; field/load/call schedules proven against Soldier registry specialization, x87 FLD32/FSTP32 mapped copy, actual raw-string pool and owning exception transports. See docs/NATIVE_SOLDIER_LOOP_LENGTHS_ORCH4.md and reports/native_soldier_loop_lengths_orch4.json. New C++ interface; original ABI/FH3/SEH/gameplay unvalidated."
+    },
+    {
+      "address": "00444490",
+      "end_exclusive": "0044475c",
+      "bytes": 716,
+      "sha256": "2ef9a06cc923f3cb8f5dc99972697c8eac1f21dc4fcc7950e4a4d53c9b7b598a",
+      "live_disk_match": true,
+      "instructions": 241,
+      "name": "erase_native_soldier_loop_iterator_00444490",
+      "proposed_name": "STL_StringFloatMap_EraseIterator_00444490",
+      "original_abi": "ECX tree; stack output/owner/node; EAX output; RET0Ch",
+      "coverage": "complete",
+      "status": "complete_source_strict_win32_build_checked",
+      "source": "src/native_soldier_loop_lengths.cpp",
+      "old_name": "STL_xlen_throw_00444490",
+      "old_plate_comment": null,
+      "old_ledger_name": null,
+      "native_differential_checked": false,
+      "original_runtime_abi": false,
+      "gameplay_validated": false,
+      "evidence": "Complete 716B source erase_native_soldier_loop_iterator_00444490; full live/disk SHA256 2ef9a06cc923f3cb8f5dc99972697c8eac1f21dc4fcc7950e4a4d53c9b7b598a. ECX tree; stack output/owner/node; EAX output; RET0Ch. Raw1Ch string/float nodes; field/load/call schedules proven against Soldier registry specialization, x87 FLD32/FSTP32 mapped copy, actual raw-string pool and owning exception transports. See docs/NATIVE_SOLDIER_LOOP_LENGTHS_ORCH4.md and reports/native_soldier_loop_lengths_orch4.json. New C++ interface; original ABI/FH3/SEH/gameplay unvalidated."
+    },
+    {
+      "address": "00444760",
+      "end_exclusive": "004447b2",
+      "bytes": 82,
+      "sha256": "abaf03bb4fae93e22287976e8e4b6bbecdcd5f7098d0e2523d666c97b29db051",
+      "live_disk_match": true,
+      "instructions": 34,
+      "name": "destroy_native_soldier_loop_subtree_00444760",
+      "proposed_name": "STL_StringScalarTree_DestroySubtree_N1C_00444760",
+      "original_abi": "ECX tree; stack node; RET4",
+      "coverage": "complete",
+      "status": "complete_source_strict_win32_build_checked",
+      "source": "src/native_soldier_loop_lengths.cpp",
+      "old_name": "STL_StringScalarTree_DestroySubtree_N1C_00444760",
+      "old_plate_comment": "[BSP reconstruction 00444760]\nHypothesis, not a recovered symbol. AV evidence: docs/NATIVE_INPUT_SETTINGS_TREE_CLEANUP.md; reports/native_input_settings_tree_cleanup.json. Actual populated device/controller/default/preset cleanup now supplies source subtree/payload destruction and complete four range-erasure contracts including successor transplant, extrema and red-black fixup. Removes five required callbacks and the entire settings destruction provider interface. Nested device50h tree nil byte15h differs from device78h nil11h. Right-recursive/captured-left cleanup; current backing/head free then pointer reset; keys released after mapped ownership. Strict Win32 and2 CTests; native/source309711 partial/full tree values,122545 lifetime,1448 vector,335 string values matched with zero pooled leaks and successful constructor-failure/manager cleanup.33 live/disk byte envelopes and211 owned CALLs passed. Seven saved bodies repaired with all decoded instruction owners verified; prior annotations retained and actual ABIs restored. Supporting device range helpers are analyzed; source payloads consume their actual full-range cleanup uses. Original STL/CRT/exception ABI, FH3/private-stack aliases, malformed trees, structurally mutating release callbacks, remaining lookup/insertion providers, application wiring and gameplay are unvalidated.",
+      "old_ledger_name": {
+        "address": "00444760",
+        "name": "STL_StringScalarTree_DestroySubtree_N1C_00444760",
+        "evidence": "Hypothesis, not a recovered symbol. AV evidence: docs/NATIVE_INPUT_SETTINGS_TREE_CLEANUP.md; reports/native_input_settings_tree_cleanup.json. Actual populated device/controller/default/preset cleanup now supplies source subtree/payload destruction and complete four range-erasure contracts including successor transplant, extrema and red-black fixup. Removes five required callbacks and the entire settings destruction provider interface. Nested device50h tree nil byte15h differs from device78h nil11h. Right-recursive/captured-left cleanup; current backing/head free then pointer reset; keys released after mapped ownership. Strict Win32 and2 CTests; native/source309711 partial/full tree values,122545 lifetime,1448 vector,335 string values matched with zero pooled leaks and successful constructor-failure/manager cleanup.33 live/disk byte envelopes and211 owned CALLs passed. Seven saved bodies repaired with all decoded instruction owners verified; prior annotations retained and actual ABIs restored. Supporting device range helpers are analyzed; source payloads consume their actual full-range cleanup uses. Original STL/CRT/exception ABI, FH3/private-stack aliases, malformed trees, structurally mutating release callbacks, remaining lookup/insertion providers, application wiring and gameplay are unvalidated."
+      },
+      "native_differential_checked": false,
+      "original_runtime_abi": false,
+      "gameplay_validated": false,
+      "evidence": "Complete 82B source destroy_native_soldier_loop_subtree_00444760; full live/disk SHA256 abaf03bb4fae93e22287976e8e4b6bbecdcd5f7098d0e2523d666c97b29db051. ECX tree; stack node; RET4. Raw1Ch string/float nodes; field/load/call schedules proven against Soldier registry specialization, x87 FLD32/FSTP32 mapped copy, actual raw-string pool and owning exception transports. See docs/NATIVE_SOLDIER_LOOP_LENGTHS_ORCH4.md and reports/native_soldier_loop_lengths_orch4.json. New C++ interface; original ABI/FH3/SEH/gameplay unvalidated."
+    },
+    {
+      "address": "00444b10",
+      "end_exclusive": "00444bd9",
+      "bytes": 201,
+      "sha256": "60905a62ce144c491c8cf7ff2c042950651568cf55626daba23be4fdf36b5954",
+      "live_disk_match": true,
+      "instructions": 76,
+      "name": "erase_native_soldier_loop_range_00444b10",
+      "proposed_name": "STL_StringScalarTree_EraseRange_N1C_00444B10",
+      "original_abi": "ECX tree; stack output/first owner/node/last owner/node; EAX output; RET14h",
+      "coverage": "complete",
+      "status": "complete_source_strict_win32_build_checked",
+      "source": "src/native_soldier_loop_lengths.cpp",
+      "old_name": "STL_StringScalarTree_EraseRange_N1C_00444B10",
+      "old_plate_comment": "[BSP reconstruction 00444b10]\nHypothesis, not a recovered symbol. AV evidence: docs/NATIVE_INPUT_SETTINGS_TREE_CLEANUP.md; reports/native_input_settings_tree_cleanup.json. Actual populated device/controller/default/preset cleanup now supplies source subtree/payload destruction and complete four range-erasure contracts including successor transplant, extrema and red-black fixup. Removes five required callbacks and the entire settings destruction provider interface. Nested device50h tree nil byte15h differs from device78h nil11h. Right-recursive/captured-left cleanup; current backing/head free then pointer reset; keys released after mapped ownership. Strict Win32 and2 CTests; native/source309711 partial/full tree values,122545 lifetime,1448 vector,335 string values matched with zero pooled leaks and successful constructor-failure/manager cleanup.33 live/disk byte envelopes and211 owned CALLs passed. Seven saved bodies repaired with all decoded instruction owners verified; prior annotations retained and actual ABIs restored. Supporting device range helpers are analyzed; source payloads consume their actual full-range cleanup uses. Original STL/CRT/exception ABI, FH3/private-stack aliases, malformed trees, structurally mutating release callbacks, remaining lookup/insertion providers, application wiring and gameplay are unvalidated.",
+      "old_ledger_name": {
+        "address": "00444b10",
+        "name": "STL_StringScalarTree_EraseRange_N1C_00444B10",
+        "evidence": "Hypothesis, not a recovered symbol. AV evidence: docs/NATIVE_INPUT_SETTINGS_TREE_CLEANUP.md; reports/native_input_settings_tree_cleanup.json. Actual populated device/controller/default/preset cleanup now supplies source subtree/payload destruction and complete four range-erasure contracts including successor transplant, extrema and red-black fixup. Removes five required callbacks and the entire settings destruction provider interface. Nested device50h tree nil byte15h differs from device78h nil11h. Right-recursive/captured-left cleanup; current backing/head free then pointer reset; keys released after mapped ownership. Strict Win32 and2 CTests; native/source309711 partial/full tree values,122545 lifetime,1448 vector,335 string values matched with zero pooled leaks and successful constructor-failure/manager cleanup.33 live/disk byte envelopes and211 owned CALLs passed. Seven saved bodies repaired with all decoded instruction owners verified; prior annotations retained and actual ABIs restored. Supporting device range helpers are analyzed; source payloads consume their actual full-range cleanup uses. Original STL/CRT/exception ABI, FH3/private-stack aliases, malformed trees, structurally mutating release callbacks, remaining lookup/insertion providers, application wiring and gameplay are unvalidated."
+      },
+      "native_differential_checked": false,
+      "original_runtime_abi": false,
+      "gameplay_validated": false,
+      "evidence": "Complete 201B source erase_native_soldier_loop_range_00444b10; full live/disk SHA256 60905a62ce144c491c8cf7ff2c042950651568cf55626daba23be4fdf36b5954. ECX tree; stack output/first owner/node/last owner/node; EAX output; RET14h. Raw1Ch string/float nodes; field/load/call schedules proven against Soldier registry specialization, x87 FLD32/FSTP32 mapped copy, actual raw-string pool and owning exception transports. See docs/NATIVE_SOLDIER_LOOP_LENGTHS_ORCH4.md and reports/native_soldier_loop_lengths_orch4.json. New C++ interface; original ABI/FH3/SEH/gameplay unvalidated."
+    },
+    {
+      "address": "004441e0",
+      "end_exclusive": "00444252",
+      "bytes": 114,
+      "sha256": "7e0049cd04e82326c77c2230e00acc7cbe2cfa22375accdf95f6b9e271c285cf",
+      "live_disk_match": true,
+      "instructions": 43,
+      "name": "allocate_native_soldier_loop_node_004441e0",
+      "proposed_name": "STL_StringFloatMap_AllocateCopyNode_004441e0",
+      "original_abi": "five stack arguments; EAX allocated node; RET14h; detached FH3 catch",
+      "coverage": "complete",
+      "status": "complete_source_strict_win32_build_checked",
+      "source": "src/native_soldier_loop_lengths.cpp",
+      "old_name": "STL_StringFloatMap_AllocateCopyNode_004441e0",
+      "old_plate_comment": "[BSP reconstruction 004441e0]\nProvisional descriptive library specialization, not recovered symbol. ECX unused; left,parent,right,pair*,color stack; EAX=node; RET14h. Allocate1Ch and construct node through00444150; native allocation/SEH ABI remains a library boundary. See docs/WEATHER_CONFIG.md and reports/weather_config.json.",
+      "old_ledger_name": {
+        "address": "004441e0",
+        "name": "STL_StringFloatMap_AllocateCopyNode_004441e0",
+        "evidence": "Provisional descriptive library specialization, not recovered symbol. ECX unused; left,parent,right,pair*,color stack; EAX=node; RET14h. Allocate1Ch and construct node through00444150; native allocation/SEH ABI remains a library boundary. See docs/WEATHER_CONFIG.md and reports/weather_config.json."
+      },
+      "native_differential_checked": false,
+      "original_runtime_abi": false,
+      "gameplay_validated": false,
+      "evidence": "Complete 114B source allocate_native_soldier_loop_node_004441e0; full live/disk SHA256 7e0049cd04e82326c77c2230e00acc7cbe2cfa22375accdf95f6b9e271c285cf. five stack arguments; EAX allocated node; RET14h; detached FH3 catch. Raw1Ch string/float nodes; field/load/call schedules proven against Soldier registry specialization, x87 FLD32/FSTP32 mapped copy, actual raw-string pool and owning exception transports. See docs/NATIVE_SOLDIER_LOOP_LENGTHS_ORCH4.md and reports/native_soldier_loop_lengths_orch4.json. New C++ interface; original ABI/FH3/SEH/gameplay unvalidated."
+    },
+    {
+      "address": "00444150",
+      "end_exclusive": "004441c0",
+      "bytes": 112,
+      "sha256": "2a2f08ddff77aa82495154fd8dda2e0400edd60c46f0b0da9a4202ccb304c0eb",
+      "live_disk_match": true,
+      "instructions": 41,
+      "name": "initialize_native_soldier_loop_node_00444150",
+      "proposed_name": "STL_StringFloatMap_ConstructNode_00444150",
+      "original_abi": "ECX node; stack left,parent,right,pair,color; EAX node; RET14h",
+      "coverage": "complete",
+      "status": "complete_source_strict_win32_build_checked",
+      "source": "src/native_soldier_loop_lengths.cpp",
+      "old_name": "STL_StringFloatMap_ConstructNode_00444150",
+      "old_plate_comment": "[BSP reconstruction 00444150]\nProvisional descriptive library specialization, not recovered symbol. ECX=fresh node; left,parent,right,pair*,color stack; EAX=this; RET14h. Node links0/4/8; NativeString deep copy at+C; FLD/FSTP pair float+8 to node+14; color18 and sentinel19=0. Proves second key copy and float value payload. See docs/WEATHER_CONFIG.md and reports/weather_config.json.",
+      "old_ledger_name": {
+        "address": "00444150",
+        "name": "STL_StringFloatMap_ConstructNode_00444150",
+        "evidence": "Provisional descriptive library specialization, not recovered symbol. ECX=fresh node; left,parent,right,pair*,color stack; EAX=this; RET14h. Node links0/4/8; NativeString deep copy at+C; FLD/FSTP pair float+8 to node+14; color18 and sentinel19=0. Proves second key copy and float value payload. See docs/WEATHER_CONFIG.md and reports/weather_config.json."
+      },
+      "native_differential_checked": true,
+      "original_runtime_abi": false,
+      "gameplay_validated": false,
+      "evidence": "Complete 112B source initialize_native_soldier_loop_node_00444150; full live/disk SHA256 2a2f08ddff77aa82495154fd8dda2e0400edd60c46f0b0da9a4202ccb304c0eb. ECX node; stack left,parent,right,pair,color; EAX node; RET14h. Raw1Ch string/float nodes; field/load/call schedules proven against Soldier registry specialization, x87 FLD32/FSTP32 mapped copy, actual raw-string pool and owning exception transports. See docs/NATIVE_SOLDIER_LOOP_LENGTHS_ORCH4.md and reports/native_soldier_loop_lengths_orch4.json. New C++ interface; original ABI/FH3/SEH/gameplay unvalidated."
+    },
+    {
+      "address": "00443fb0",
+      "end_exclusive": "00443fcd",
+      "bytes": 29,
+      "sha256": "cb2bb3cfdfadd16909a62708e115958cd4025807649b5c9ed2a326187ea96c13",
+      "live_disk_match": true,
+      "instructions": 12,
+      "name": "destroy_native_soldier_loop_pair_00443fb0",
+      "proposed_name": "BSP_destroy_native_soldier_loop_pair_00443fb0",
+      "original_abi": "ECX pair; RET",
+      "coverage": "complete",
+      "status": "complete_source_strict_win32_build_checked",
+      "source": "src/native_soldier_loop_lengths.cpp",
+      "old_name": "FUN_00443fb0",
+      "old_plate_comment": null,
+      "old_ledger_name": null,
+      "native_differential_checked": false,
+      "original_runtime_abi": false,
+      "gameplay_validated": false,
+      "evidence": "Complete 29B source destroy_native_soldier_loop_pair_00443fb0; full live/disk SHA256 cb2bb3cfdfadd16909a62708e115958cd4025807649b5c9ed2a326187ea96c13. ECX pair; RET. Raw1Ch string/float nodes; field/load/call schedules proven against Soldier registry specialization, x87 FLD32/FSTP32 mapped copy, actual raw-string pool and owning exception transports. See docs/NATIVE_SOLDIER_LOOP_LENGTHS_ORCH4.md and reports/native_soldier_loop_lengths_orch4.json. New C++ interface; original ABI/FH3/SEH/gameplay unvalidated."
+    }
+  ],
+  "call_sites": [
+    {
+      "address": "00443d90",
+      "native": "00bf7fbf",
+      "function": "00443d60"
+    },
+    {
+      "address": "00444c02",
+      "native": "00443d60",
+      "function": "00444be0"
+    },
+    {
+      "address": "00444c0d",
+      "native": "00bf6713",
+      "function": "00444be0"
+    },
+    {
+      "address": "00444c1e",
+      "native": "00443d00",
+      "function": "00444be0"
+    },
+    {
+      "address": "00444c43",
+      "native": "0041dd40",
+      "function": "00444be0"
+    },
+    {
+      "address": "00444c5a",
+      "native": "00bf7680",
+      "function": "00444be0"
+    },
+    {
+      "address": "00444c81",
+      "native": "00444910",
+      "function": "00444be0"
+    },
+    {
+      "address": "00444ca2",
+      "native": "00419cc0",
+      "function": "00444be0"
+    },
+    {
+      "address": "00444ca9",
+      "native": "00bd1510",
+      "function": "00444be0"
+    },
+    {
+      "address": "00444cb3",
+      "native": "00bf6713",
+      "function": "00444be0"
+    },
+    {
+      "address": "00444cbd",
+      "native": "00bf6713",
+      "function": "00444be0"
+    },
+    {
+      "address": "0044492f",
+      "native": "004442a0",
+      "function": "00444910"
+    },
+    {
+      "address": "00444950",
+      "native": "00bf6713",
+      "function": "00444910"
+    },
+    {
+      "address": "00444969",
+      "native": "00443d00",
+      "function": "00444910"
+    },
+    {
+      "address": "00444981",
+      "native": "004442a0",
+      "function": "00444910"
+    },
+    {
+      "address": "0044499d",
+      "native": "00bf6713",
+      "function": "00444910"
+    },
+    {
+      "address": "004449b7",
+      "native": "00443d00",
+      "function": "00444910"
+    },
+    {
+      "address": "004449d5",
+      "native": "004442a0",
+      "function": "00444910"
+    },
+    {
+      "address": "004449ed",
+      "native": "00443d00",
+      "function": "00444910"
+    },
+    {
+      "address": "00444a02",
+      "native": "004437f0",
+      "function": "00444910"
+    },
+    {
+      "address": "00444a12",
+      "native": "00443d00",
+      "function": "00444910"
+    },
+    {
+      "address": "00444a33",
+      "native": "004442a0",
+      "function": "00444910"
+    },
+    {
+      "address": "00444a48",
+      "native": "004442a0",
+      "function": "00444910"
+    },
+    {
+      "address": "00444a60",
+      "native": "00443d00",
+      "function": "00444910"
+    },
+    {
+      "address": "00444a80",
+      "native": "00443880",
+      "function": "00444910"
+    },
+    {
+      "address": "00444a8e",
+      "native": "004435a0",
+      "function": "00444910"
+    },
+    {
+      "address": "00444aa2",
+      "native": "00443d00",
+      "function": "00444910"
+    },
+    {
+      "address": "00444abf",
+      "native": "004442a0",
+      "function": "00444910"
+    },
+    {
+      "address": "00444ad4",
+      "native": "004442a0",
+      "function": "00444910"
+    },
+    {
+      "address": "00444aed",
+      "native": "004447c0",
+      "function": "00444910"
+    },
+    {
+      "address": "004442e3",
+      "native": "00408720",
+      "function": "004442a0"
+    },
+    {
+      "address": "004442f5",
+      "native": "00411700",
+      "function": "004442a0"
+    },
+    {
+      "address": "0044430c",
+      "native": "00bf6885",
+      "function": "004442a0"
+    },
+    {
+      "address": "00444324",
+      "native": "004441e0",
+      "function": "004442a0"
+    },
+    {
+      "address": "004443b5",
+      "native": "00443ba0",
+      "function": "004442a0"
+    },
+    {
+      "address": "004443d3",
+      "native": "004436e0",
+      "function": "004442a0"
+    },
+    {
+      "address": "00444401",
+      "native": "004436e0",
+      "function": "004442a0"
+    },
+    {
+      "address": "00444806",
+      "native": "00bf7fbf",
+      "function": "004447c0"
+    },
+    {
+      "address": "00444848",
+      "native": "004442a0",
+      "function": "004447c0"
+    },
+    {
+      "address": "0044486f",
+      "native": "004437f0",
+      "function": "004447c0"
+    },
+    {
+      "address": "0044487f",
+      "native": "00443d00",
+      "function": "004447c0"
+    },
+    {
+      "address": "00444896",
+      "native": "004442a0",
+      "function": "004447c0"
+    },
+    {
+      "address": "004435b2",
+      "native": "00bf6713",
+      "function": "004435a0"
+    },
+    {
+      "address": "00443888",
+      "native": "00bf6713",
+      "function": "00443880"
+    },
+    {
+      "address": "00443897",
+      "native": "00bf6713",
+      "function": "00443880",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "004437f8",
+      "native": "00bf6713",
+      "function": "004437f0"
+    },
+    {
+      "address": "00443813",
+      "native": "00bf6713",
+      "function": "004437f0",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "0044386f",
+      "native": "00bf6713",
+      "function": "004437f0",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "004444d8",
+      "native": "00408720",
+      "function": "00444490"
+    },
+    {
+      "address": "004444ea",
+      "native": "00411700",
+      "function": "00444490"
+    },
+    {
+      "address": "00444501",
+      "native": "00bf6885",
+      "function": "00444490"
+    },
+    {
+      "address": "0044450e",
+      "native": "00443880",
+      "function": "00444490"
+    },
+    {
+      "address": "00444570",
+      "native": "004437c0",
+      "function": "00444490"
+    },
+    {
+      "address": "00444592",
+      "native": "004437a0",
+      "function": "00444490"
+    },
+    {
+      "address": "00444632",
+      "native": "00443ba0",
+      "function": "00444490"
+    },
+    {
+      "address": "00444665",
+      "native": "004436e0",
+      "function": "00444490"
+    },
+    {
+      "address": "00444681",
+      "native": "00443ba0",
+      "function": "00444490"
+    },
+    {
+      "address": "00444696",
+      "native": "004436e0",
+      "function": "00444490"
+    },
+    {
+      "address": "004446df",
+      "native": "00443ba0",
+      "function": "00444490"
+    },
+    {
+      "address": "004446f9",
+      "native": "004436e0",
+      "function": "00444490"
+    },
+    {
+      "address": "00444710",
+      "native": "00419cc0",
+      "function": "00444490"
+    },
+    {
+      "address": "00444717",
+      "native": "00bd1510",
+      "function": "00444490"
+    },
+    {
+      "address": "0044471d",
+      "native": "00bf65ac",
+      "function": "00444490"
+    },
+    {
+      "address": "00444777",
+      "native": "00444760",
+      "function": "00444760"
+    },
+    {
+      "address": "0044478f",
+      "native": "00419cc0",
+      "function": "00444760"
+    },
+    {
+      "address": "00444796",
+      "native": "00bd1510",
+      "function": "00444760"
+    },
+    {
+      "address": "0044479c",
+      "native": "00bf65ac",
+      "function": "00444760"
+    },
+    {
+      "address": "00444b2a",
+      "native": "00bf6713",
+      "function": "00444b10"
+    },
+    {
+      "address": "00444b46",
+      "native": "00bf6713",
+      "function": "00444b10"
+    },
+    {
+      "address": "00444b5a",
+      "native": "00444760",
+      "function": "00444b10"
+    },
+    {
+      "address": "00444b9a",
+      "native": "00bf6713",
+      "function": "00444b10"
+    },
+    {
+      "address": "00444ba9",
+      "native": "00443880",
+      "function": "00444b10"
+    },
+    {
+      "address": "00444bb7",
+      "native": "00444490",
+      "function": "00444b10"
+    },
+    {
+      "address": "00444203",
+      "native": "00bf681b",
+      "function": "004441e0"
+    },
+    {
+      "address": "00444238",
+      "native": "00444150",
+      "function": "004441e0"
+    },
+    {
+      "address": "00444189",
+      "native": "0041dd40",
+      "function": "00444150"
+    },
+    {
+      "address": "0044419f",
+      "native": "00bf7680",
+      "function": "00444150"
+    },
+    {
+      "address": "00443fc0",
+      "native": "00419cc0",
+      "function": "00443fb0"
+    },
+    {
+      "address": "00443fc7",
+      "native": "00bd1510",
+      "function": "00443fb0"
+    }
+  ],
+  "validation": {
+    "strict_msvc_win32_build": "passed; local/soldier_loop_build_g7.log",
+    "existing_ctests": "3/3 passed",
+    "direct_calls": "81 exact call rows checked;0 failed",
+    "focused_float_probe": {
+      "command": "cl /O2 /W4 /WX /MD; link /MANIFEST:EMBED against genuine bsp_core.lib",
+      "exit_code": 0,
+      "output": "PASS 20 original/source float-copy comparisons: full node bytes, x87 exception flags, self-alias and return pointers. Empty keys only.\n",
+      "original_address": "00444150",
+      "original_bytes": 112,
+      "original_sha256": "2a2f08ddff77aa82495154fd8dda2e0400edd60c46f0b0da9a4202ccb304c0eb",
+      "scope": "Copied original complete initializer; original resize call bridged to genuine source; no nonempty key allocation, FH3 or gameplay proof."
+    },
+    "independent_review": "Registry worker found no behavior/layout defect; additional pair/catch comparisons added; original color load interleaving excluded explicitly."
+  },
+  "result": "complete_source_strict_win32_build_checked",
+  "boundaries": [
+    "New C++ interfaces, not original binary ABI replacements.",
+    "No original FH3/SEH or gameplay validation.",
+    "SoldierClass reader4B0DE0 and factory4B1400 remain source-absent pending genuine effect component closure."
+  ],
+  "instruction_comparison": {
+    "normalization": "Corresponding helper targets, internal jump instruction indices, and EH-handler push immediates only. EH metadata separately checked.",
+    "pairs": [
+      {
+        "float_entry": "00443d60",
+        "registry_entry": "004afe50",
+        "float_instructions": 36,
+        "registry_instructions": 36,
+        "equal": true,
+        "differences": []
+      },
+      {
+        "float_entry": "00444be0",
+        "registry_entry": "004b0cb0",
+        "float_instructions": 86,
+        "registry_instructions": 86,
+        "equal": false,
+        "differences": [
+          "--- 00444be0\n",
+          "+++ 004b0cb0\n",
+          "@@ -46,6 +46,6 @@\n",
+          " CALL 0x00bf7680",
+          " ADD ESP,0xc",
+          "-XORPS XMM0,XMM0",
+          "-MOVSS dword ptr [ESP + 0x20],XMM0",
+          "+XOR EAX,EAX",
+          "+MOV dword ptr [ESP + 0x20],EAX",
+          " LEA ECX,[ESP + 0x18]",
+          " PUSH ECX",
+          "@@ -55,5 +55,5 @@\n",
+          " PUSH EDX",
+          " MOV ECX,ESI",
+          "-MOV dword ptr [ESP + 0x3c],0x0",
+          "+MOV dword ptr [ESP + 0x3c],EAX",
+          " CALL FAMILY_2",
+          " TEST EBP,EBP"
+        ]
+      },
+      {
+        "float_entry": "00444910",
+        "registry_entry": "004b0a70",
+        "float_instructions": 210,
+        "registry_instructions": 210,
+        "equal": true,
+        "differences": []
+      },
+      {
+        "float_entry": "004442a0",
+        "registry_entry": "004b0660",
+        "float_instructions": 167,
+        "registry_instructions": 167,
+        "equal": true,
+        "differences": []
+      },
+      {
+        "float_entry": "004447c0",
+        "registry_entry": "004b0880",
+        "float_instructions": 111,
+        "registry_instructions": 111,
+        "equal": true,
+        "differences": []
+      },
+      {
+        "float_entry": "004435a0",
+        "registry_entry": "004af530",
+        "float_instructions": 18,
+        "registry_instructions": 18,
+        "equal": true,
+        "differences": []
+      },
+      {
+        "float_entry": "00443880",
+        "registry_entry": "004afb50",
+        "float_instructions": 38,
+        "registry_instructions": 38,
+        "equal": true,
+        "differences": []
+      },
+      {
+        "float_entry": "004437f0",
+        "registry_entry": "004afbe0",
+        "float_instructions": 48,
+        "registry_instructions": 48,
+        "equal": true,
+        "differences": []
+      },
+      {
+        "float_entry": "00443ba0",
+        "registry_entry": "004afaa0",
+        "float_instructions": 30,
+        "registry_instructions": 30,
+        "equal": true,
+        "differences": []
+      },
+      {
+        "float_entry": "004436e0",
+        "registry_entry": "004afaf0",
+        "float_instructions": 30,
+        "registry_instructions": 30,
+        "equal": true,
+        "differences": []
+      },
+      {
+        "float_entry": "004437c0",
+        "registry_entry": "004af680",
+        "float_instructions": 10,
+        "registry_instructions": 10,
+        "equal": true,
+        "differences": []
+      },
+      {
+        "float_entry": "004437a0",
+        "registry_entry": "004af6c0",
+        "float_instructions": 10,
+        "registry_instructions": 10,
+        "equal": true,
+        "differences": []
+      },
+      {
+        "float_entry": "00444490",
+        "registry_entry": "004b0330",
+        "float_instructions": 241,
+        "registry_instructions": 241,
+        "equal": true,
+        "differences": []
+      },
+      {
+        "float_entry": "00444760",
+        "registry_entry": "004b0600",
+        "float_instructions": 34,
+        "registry_instructions": 34,
+        "equal": true,
+        "differences": []
+      },
+      {
+        "float_entry": "00444b10",
+        "registry_entry": "004b09a0",
+        "float_instructions": 76,
+        "registry_instructions": 76,
+        "equal": true,
+        "differences": []
+      },
+      {
+        "float_entry": "004441e0",
+        "registry_entry": "004b02a0",
+        "float_instructions": 43,
+        "registry_instructions": 43,
+        "equal": true,
+        "differences": []
+      },
+      {
+        "float_entry": "00444150",
+        "registry_entry": "004b01e0",
+        "float_instructions": 41,
+        "registry_instructions": 41,
+        "equal": false,
+        "differences": [
+          "--- 00444150\n",
+          "+++ 004b01e0\n",
+          "@@ -30,9 +30,9 @@\n",
+          " CALL 0x00bf7680",
+          " ADD ESP,0xc",
+          "-FLD float ptr [EBP + 0x8]",
+          "-MOV CL,byte ptr [ESP + 0x20]",
+          "-FSTP float ptr [EDI + 0x8]",
+          "+MOV ECX,dword ptr [EBP + 0x8]",
+          "+MOV DL,byte ptr [ESP + 0x20]",
+          "+MOV dword ptr [EDI + 0x8],ECX",
+          " POP EDI",
+          "-MOV byte ptr [ESI + 0x18],CL",
+          "+MOV byte ptr [ESI + 0x18],DL",
+          " MOV byte ptr [ESI + 0x19],0x0",
+          " MOV EAX,ESI"
+        ]
+      },
+      {
+        "float_entry": "00443fb0",
+        "registry_entry": "004b0090",
+        "float_instructions": 12,
+        "registry_instructions": 12,
+        "equal": true,
+        "differences": []
+      },
+      {
+        "float_entry": "00444252",
+        "registry_entry": "004b0312",
+        "float_instructions": 7,
+        "registry_instructions": 7,
+        "equal": true,
+        "differences": []
+      }
+    ],
+    "equal_pairs": 17,
+    "float_differences": "00444BE0 positive-zero initialization after key copy;00444150 FLD32/FSTP32 instead of pointer DWORD copy. Color stack load interleaving and exact zeroing opcodes not claimed."
+  },
+  "detached_catch": {
+    "address": "00444252",
+    "end_exclusive": "00444267",
+    "bytes": 21,
+    "sha256": "fc009c8ca2c7bcaf0f1b2d406169714c70891fd0a9ce8330fb59d74c7791ff44",
+    "live_disk_match": true,
+    "instructions": 7,
+    "call_sites": [
+      {
+        "address": "00444256",
+        "native": "00bf65ac",
+        "function": "00444252"
+      },
+      {
+        "address": "00444262",
+        "native": "00bf6885",
+        "function": "00444252"
+      }
+    ]
+  },
+  "eh_bytes": [
+    {
+      "address": "00c5fbe0",
+      "end_exclusive": "00c5fc52",
+      "bytes": 114,
+      "sha256": "2b93eada62da6cb7aa16d1060787ae9f50b11fed416aaface4d5fc75f481a943",
+      "live_disk_match": true
+    },
+    {
+      "address": "00d86840",
+      "end_exclusive": "00d86924",
+      "bytes": 228,
+      "sha256": "1dc6c240b9300f8ecd1e7b7ce06144cb54e56c3b084f75f4c6cfffdf4d5f216f",
+      "live_disk_match": true
+    }
+  ],
+  "exception_evidence": [
+    {
+      "function": "004441e0",
+      "handler": "00c5fbf1",
+      "funcinfo": "00d8687c",
+      "unwind_map": "00d86864",
+      "contract": "Three states; state1 placement cleanup C5FBE0 calls no-op401130; detached catch444252 free then BF6885 rethrow."
+    },
+    {
+      "function": "004442a0",
+      "handler": "00c5fc08",
+      "funcinfo": "00d868a8",
+      "unwind_map": "00d868a0",
+      "contract": "State0 completed length-message temporary; C5FC00 tails4072D0."
+    },
+    {
+      "function": "00444490",
+      "handler": "00c5fc28",
+      "funcinfo": "00d868d4",
+      "unwind_map": "00d868cc",
+      "contract": "State0 completed invalid-iterator temporary; C5FC20 tails4072D0."
+    },
+    {
+      "function": "00444be0",
+      "handler": "00c5fc48",
+      "funcinfo": "00d86900",
+      "unwind_map": "00d868f8",
+      "contract": "State0 current pair header at EBP-18; C5FC40 tails443FB0. Normal cleanup uses captured data and current length."
+    }
+  ]
+}

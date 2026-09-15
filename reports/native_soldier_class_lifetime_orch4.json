@@ -1,0 +1,117 @@
+{
+  "packet": "orch4_soldier_class_lifetime_g7",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "source": "src/native_soldier_class_lifetime.cpp",
+  "header": "include/bsp/native_soldier_class_lifetime.hpp",
+  "documentation": "docs/NATIVE_SOLDIER_CLASS_LIFETIME_ORCH4.md",
+  "functions": [
+    {
+      "address": "004b1120",
+      "end_exclusive": "004b11a0",
+      "bytes": 128,
+      "sha256": "0078e15c61c4420f5fb5190090c7fae7ebbd56890393255be029e93fb783ad61",
+      "live_disk_match": true,
+      "instructions": 38,
+      "name": "destroy_native_soldier_class_004b1120",
+      "proposed_name": "SoldierClass_Destroy_004B1120",
+      "original_abi": "ECX actual class; RET; derived tree destruction then base cleanup, FH3 state0 base unwind",
+      "coverage": "complete",
+      "status": "complete_source_strict_win32_build_checked",
+      "source": "src/native_soldier_class_lifetime.cpp",
+      "old_name": "FUN_004b1120",
+      "old_plate_comment": null,
+      "old_ledger_name": null,
+      "native_differential_checked": false,
+      "original_runtime_abi": false,
+      "gameplay_validated": false,
+      "evidence": "Complete 128B source destroy_native_soldier_class_004b1120; full live/disk SHA256 0078e15c61c4420f5fb5190090c7fae7ebbd56890393255be029e93fb783ad61. ECX actual class; RET; derived tree destruction then base cleanup, FH3 state0 base unwind. Actual derived table, current-head free, zero head/count, genuine489E80 base cleanup; state0 base unwind terminates on a second exception. See docs/NATIVE_SOLDIER_CLASS_LIFETIME_ORCH4.md and reports/native_soldier_class_lifetime_orch4.json. New C++ interface; original ABI/FH3/SEH/gameplay unvalidated."
+    },
+    {
+      "address": "004b1310",
+      "end_exclusive": "004b132e",
+      "bytes": 30,
+      "sha256": "5a1b8651f64d01be619ba482f7c0c2c753f29954c3a713aa6e574d129acc0429",
+      "live_disk_match": true,
+      "instructions": 11,
+      "name": "delete_native_soldier_class_004b1310",
+      "proposed_name": "CG_scalar_deleting_dtor_004b1310",
+      "original_abi": "ECX class; stack flags; EAX original class; RET4",
+      "coverage": "complete",
+      "status": "complete_source_strict_win32_build_checked",
+      "source": "src/native_soldier_class_lifetime.cpp",
+      "old_name": "CG_scalar_deleting_dtor_004b1310",
+      "old_plate_comment": null,
+      "old_ledger_name": null,
+      "native_differential_checked": false,
+      "original_runtime_abi": false,
+      "gameplay_validated": false,
+      "evidence": "Complete 30B source delete_native_soldier_class_004b1310; full live/disk SHA256 5a1b8651f64d01be619ba482f7c0c2c753f29954c3a713aa6e574d129acc0429. ECX class; stack flags; EAX original class; RET4. Actual derived table, current-head free, zero head/count, genuine489E80 base cleanup; state0 base unwind terminates on a second exception. See docs/NATIVE_SOLDIER_CLASS_LIFETIME_ORCH4.md and reports/native_soldier_class_lifetime_orch4.json. New C++ interface; original ABI/FH3/SEH/gameplay unvalidated."
+    }
+  ],
+  "call_sites": [
+    {
+      "address": "004b1161",
+      "native": "00444b10",
+      "function": "004b1120"
+    },
+    {
+      "address": "004b116a",
+      "native": "00bf65ac",
+      "function": "004b1120"
+    },
+    {
+      "address": "004b118a",
+      "native": "00489e80",
+      "function": "004b1120"
+    },
+    {
+      "address": "004b1313",
+      "native": "004b1120",
+      "function": "004b1310"
+    },
+    {
+      "address": "004b1320",
+      "native": "00bf65ac",
+      "function": "004b1310"
+    }
+  ],
+  "validation": {
+    "strict_msvc_win32_build": "passed; local/soldier_loop_build_g7.log",
+    "existing_ctests": "3/3 passed",
+    "direct_calls": "5 exact call rows checked;0 failed",
+    "native_destructor_differential": "not performed",
+    "independent_class_lifetime_review": "No correctness findings: assembly head/count schedule, FH3 base unwind and scalar delete order matched."
+  },
+  "result": "complete_source_strict_win32_build_checked",
+  "boundaries": [
+    "New C++ interfaces, not original binary ABI replacements.",
+    "No original FH3/SEH or gameplay validation.",
+    "SoldierClass reader4B0DE0 and factory4B1400 remain source-absent pending genuine effect component closure."
+  ],
+  "eh_bytes": [
+    {
+      "address": "00c649d0",
+      "end_exclusive": "00c649e2",
+      "bytes": 18,
+      "sha256": "cfb941a7c33b10be5a9523d52ec9a92b833f09dd6309ff61158f50e78286ecec",
+      "live_disk_match": true
+    },
+    {
+      "address": "00d8cdc8",
+      "end_exclusive": "00d8cdf4",
+      "bytes": 44,
+      "sha256": "ed553d529ec12ad631443b7f771b3b6b383c8c0b940ff31069307d399fc70dd9",
+      "live_disk_match": true
+    }
+  ],
+  "exception_evidence": [
+    {
+      "function": "004b1120",
+      "handler": "00c649d8",
+      "funcinfo": "00d8cdd0",
+      "unwind_map": "00d8cdc8",
+      "contract": "State0 -> -1 action C649D0 loads saved owner EBP-18 then tails489E80; ordinary base call disarms state first."
+    }
+  ]
+}

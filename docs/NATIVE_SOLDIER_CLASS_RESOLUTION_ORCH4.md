@@ -95,3 +95,20 @@ Original FH3 was not executed. The original base-cleanup comparison used an empt
 name, so raw string-pool behavior is established by its existing provider, not
 that comparison. Independent source review found no concrete field/order defect.
 No binary replacement, game startup or gameplay validation is claimed.
+
+## G7 dependency closure
+
+The raw registry lookup/insertion and lifetime groups above are now complete
+source in `native_soldier_registry_tree.cpp` and
+`native_soldier_registry_lifetime.cpp`. The actual string/float LoopLengths
+tree and class destruction are complete in `native_soldier_loop_lengths.cpp`
+and `native_soldier_class_lifetime.cpp`. Their reports distinguish the build,
+focused original/source comparisons, byte evidence and remaining ABI boundaries.
+
+The full4B1400 factory,4B0DE0 reader and48F670 base reader remain source-absent.
+The audited base reader needs actual870CD0/8700E0 effect acquisition, whose raw
+cache mechanics are now complete but whose component virtual readers still
+need reconstruction. The older `GameplayEffectManager` and `GuiLua51Host`
+projections cannot be substituted for native owner and14h Lua object storage.
+See `NATIVE_EFFECT_HANDLE_ACQUISITION_ORCH4.md` for the remaining component
+families and `NATIVE_SOLDIER_REGISTRY_FLOW_ORCH4_G7.md` for listing repairs.
