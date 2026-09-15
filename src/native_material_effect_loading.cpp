@@ -1,6 +1,7 @@
 #include "bsp/native_material_effect_loading.hpp"
 #include "bsp/native_material_effect_cache.hpp"
 #include "bsp/native_material_effect_programs.hpp"
+#include "bsp/native_texture_loading_cache.hpp"
 #include "bsp/native_string_pool_storage.hpp"
 #include "bsp/native_particle_type_property.hpp"
 #include "bsp/native_instance_collection.hpp"
@@ -165,7 +166,7 @@ void* load_native_material_effect_00b2ebb0(const void* name, std::uint32_t ignor
     NativeMaterialEffectLoadingContext& c, NativeMaterialEffectLoadAcquired& a) {
     (void)ignored;
     require(a.phase == NativeMaterialEffectLoadPhase::not_started && !a.creator &&
-        !a.raw_slot && !a.programs && !a.fallback,
+        !a.raw_slot && !a.programs && !a.fallback && !a.constructor_texture,
         "effect load requires a fresh retained caller frame");
     auto& strings = require_domain(c);
     a.phase = NativeMaterialEffectLoadPhase::names;
@@ -189,13 +190,18 @@ void* load_native_material_effect_00b2ebb0(const void* name, std::uint32_t ignor
             // Host continuation allocation precedes acquiring native storage;
             // its failure therefore cannot hide an already-created effect.
             a.programs = std::make_unique<NativeMaterialEffectProgramOperation>();
+            require(c.texture_cache != nullptr,
+                "native effect construction requires its actual texture cache");
+            a.constructor_texture = std::make_unique<NativeTextureCacheAcquired>();
             a.phase = NativeMaterialEffectLoadPhase::allocation;
             a.native_site = 0x00b2ed2c;
             a.raw_slot = ::operator new(sizeof(NativeMaterialEffectStorage));
             a.phase = NativeMaterialEffectLoadPhase::constructor;
             a.native_site = 0x00b2ed43;
             try {
-                a.creator = initialize_native_material_effect_00b407a0(a.raw_slot, c.construction);
+                a.creator = initialize_native_material_effect_with_texture_cache_00b407a0(
+                    a.raw_slot, c.construction, *c.texture_cache, *a.constructor_texture,
+                    c.renderer_profile_00d5f0a8);
             } catch (...) {
                 // Native state4 raw allocation cleanup only. The constructor
                 // owns its member-name/base unwind; no completed effect exists.

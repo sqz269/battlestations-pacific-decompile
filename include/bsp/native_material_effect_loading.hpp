@@ -7,6 +7,8 @@ namespace bsp {
 struct NativeMaterialEffectProgramsContext;
 class NativeMaterialEffectProgramOperation;
 struct NativeMaterialEffectCacheContext;
+struct NativeTextureCacheContext;
+struct NativeTextureCacheAcquired;
 
 enum class NativeMaterialEffectLoadPhase {
     not_started, names, resolution, allocation, constructor, programs,
@@ -42,6 +44,9 @@ struct NativeMaterialEffectLoadAcquired final {
     // The fallback call can recursively create another real effect. Its cache
     // acquisition must also survive a nested exception; never a stack scratch.
     std::unique_ptr<struct NativeMaterialEffectCacheAcquired> fallback;
+    // Stable per-call B18D60 -> B319B0 texture continuation. Completed +98 owns
+    // the returned reference; failed provider state is never discarded/reset.
+    std::unique_ptr<NativeTextureCacheAcquired> constructor_texture;
 };
 
 class NativeMaterialEffectLoadOwners final {
@@ -76,6 +81,9 @@ struct NativeMaterialEffectLoadingContext {
     // Set to the SAME cache context after constructing the mutually borrowing
     // contexts. It must point back to this effects context before any load.
     NativeMaterialEffectCacheContext* cache{};
+    // Required at the found-path constructor arm. SAME renderer/string and
+    // canonical texture owner domain. No callable-table substitute is supplied.
+    NativeTextureCacheContext* texture_cache{};
 };
 
 bool resolve_native_material_effect_name(void* actual_mutable_name,

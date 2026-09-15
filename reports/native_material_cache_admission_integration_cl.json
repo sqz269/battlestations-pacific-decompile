@@ -1,0 +1,231 @@
+{
+  "packet": "orch4_native_material_cache_admission_cl",
+  "state": "numeric_material_cache_admission_build_and_actual_hot_cache_fixture_passed_cold_effect_unvalidated",
+  "base_revision": "72f5e7a46a1680322626a1708451af0aefdc11fc",
+  "project": {
+    "project_name": "bsp",
+    "current_folder": "/",
+    "folders": [],
+    "files": [
+      {
+        "name": "battlestationspacific.exe",
+        "path": "/battlestationspacific.exe",
+        "content_type": "Program",
+        "version": 2734,
+        "is_read_only": false,
+        "is_versioned": false
+      }
+    ]
+  },
+  "program": {
+    "name": "battlestationspacific.exe",
+    "path": "/battlestationspacific.exe",
+    "executable_path": "/I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "executable_format": "Portable Executable (PE)",
+    "language": "x86:LE:32:default",
+    "compiler": "windows",
+    "address_size": 32,
+    "image_base": "00400000",
+    "min_address": "00400000",
+    "max_address": "ffdfffff",
+    "memory_size": 14876380,
+    "function_count": 64091,
+    "symbol_count": 144429,
+    "data_type_count": 795,
+    "creation_date": "Mon May 04 16:56:25 PDT 2026",
+    "memory_block_count": 6,
+    "address_spaces": [
+      {
+        "name": "ram",
+        "start": "00000000",
+        "end": "ffffffff",
+        "size": 4294967296,
+        "addressable_unit_size": 1,
+        "size_bytes": 4294967296,
+        "address_size_bits": 32,
+        "is_default": true
+      }
+    ],
+    "has_multiple_address_spaces": false
+  },
+  "ordinary_bodies": 4,
+  "ordinary_bytes": 1353,
+  "support_bytes": 154,
+  "verified_instruction_owners": 457,
+  "preserved_comments": 21,
+  "source_manifest": {
+    "path": "local/native_material_cache_admission_cl/registered/source_manifest.json",
+    "sha256": "a47740b536bc7de2f5436df68dce153215a4a0ade20e49ac6864a913ab309e8d",
+    "bytes": 290684
+  },
+  "configuration": {
+    "base_revision": "72f5e7a46a1680322626a1708451af0aefdc11fc",
+    "override_absent": true,
+    "build": "scripts/build.ps1 with MSBUILDDISABLENODEREUSE=1 and CMAKE_BUILD_PARALLEL_LEVEL=3",
+    "build_scope": "Tracked default Win32 CMake incremental rebuild; not a fresh empty directory",
+    "source_inputs": 2683,
+    "source_manifest": {
+      "path": "local/native_material_cache_admission_cl/registered/source_manifest.json",
+      "sha256": "a47740b536bc7de2f5436df68dce153215a4a0ade20e49ac6864a913ab309e8d",
+      "bytes": 290684
+    },
+    "changed_source_files": [
+      "include/bsp/gui_native_geometry.hpp",
+      "include/bsp/native_material_effect_loading.hpp",
+      "include/bsp/native_material_effect_owner.hpp",
+      "include/bsp/native_material_factory.hpp",
+      "src/gui_native_geometry.cpp",
+      "src/native_material_effect_loading.cpp",
+      "src/native_material_effect_owner.cpp",
+      "src/native_material_factory.cpp"
+    ],
+    "registry_unchanged": true,
+    "binary": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+    }
+  },
+  "validation": {
+    "build": "scripts/build.ps1; tracked default CMake MSVC Win32; both existing CTests passed",
+    "constructor": "Numeric renderer64 B319B0 actual texture-cache hit; actual pooled error.tga temporary; fallback reference consumed without extra retain; full DWORD serial wrap; untouched fields and derived pass slots preserved",
+    "factory": "Numeric renderer48 B318B0 hot alias; actual B18780 pool and B18900 initializer; effect temp released once; material owns one effect reference and sets dirty+B4",
+    "failure": "Transactional metadata bind throws before publication: actual material+4 and effect+4 unchanged; stable unbound companion and creator retained; explicit fixture retirement only afterward",
+    "cleanup": "Three successful canonical binds/retirements; fourth attempted bind rejected. Both material slots returned; actual allocator list, texture cache and canonical owners empty; final D3D9 device/API refs zero",
+    "cold_loader": "Constructor wiring and persistent child frame build-checked only; full cold effect loading not validated",
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "startup_registry_leases": [],
+  "main_integration": "Not performed; agent branch only. Later main deltas remain unreviewed.",
+  "remaining": {
+    "cold_effect": "Actual B43B00 descriptor, B3C3A0 compiler and state/pass-cache children plus canonical texture domain integration before claiming B2EBB0/B46950 runtime closure",
+    "subset": "Audit complete B941D0 material/subset control flow and cleanup before using CL through that parent",
+    "aggregate": "B944E0/B94710 and registered parser wrappers after subset dependencies",
+    "main": "Agent-only publication; moving main deltas not adopted or validated"
+  },
+  "evidence_limits": [
+    "Four ordinary functions were previously reconstructed; CL adds numeric-cache composition and metadata admission, not four newly recovered bodies.",
+    "Hot effect-cache fixture uses a complete base effect constructed through B18D60. It does not claim that B2EBB0 or B46950 constructed a derived shader effect.",
+    "Derived constructor fixture proves preserved poison at C8..137; explicit base-only retirement avoids inventing pass initialization.",
+    "No successful stand-in for missing descriptor/compiler/state-cache children. The found-path loader wiring is build-checked; cold composition is not executed.",
+    "Actual C++ exceptions and canonical bind failure are covered; native FH3/SEH equivalence and original full-parent execution are not.",
+    "One compiled current-source probe run covers both admission outcomes. No in-game or render-parity claim."
+  ],
+  "artifacts": [
+    {
+      "path": "local/native_material_cache_admission_cl/registered/annotation.log",
+      "sha256": "a34a73e7c5f2886c5780e157eaab74992efb32eb19b4daac7572127e0ff69d28",
+      "bytes": 105
+    },
+    {
+      "path": "local/native_material_cache_admission_cl/registered/bsp_core.lib",
+      "sha256": "3353b0e34fc4a01fc743e43023925e01b6eae4269cb5b8f2e479bdfb52b954c9",
+      "bytes": 59074006
+    },
+    {
+      "path": "local/native_material_cache_admission_cl/registered/bsp_core.vcxproj",
+      "sha256": "67c2c62eaa93580ace444a7d7070aa6f758b321bd9c5be8e9c28cdf106341ca3",
+      "bytes": 199938
+    },
+    {
+      "path": "local/native_material_cache_admission_cl/registered/bsp_game.exe",
+      "sha256": "d1484262b14d00d891ce58d6132ef5f02d4efc2a209ae71e22e9c8b46368e732",
+      "bytes": 2168832
+    },
+    {
+      "path": "local/native_material_cache_admission_cl/registered/bsp_lua511.lib",
+      "sha256": "00315ac717aac3d2b2161fefefe71b36a974335ff9c95d48c137423eb4e2f4b2",
+      "bytes": 455244
+    },
+    {
+      "path": "local/native_material_cache_admission_cl/registered/bsp_zlib121.lib",
+      "sha256": "73ae30b8adc3adfe5b33285bac533f8e7df7e8ab8d9e44789e6a030fd8a06ad9",
+      "bytes": 71906
+    },
+    {
+      "path": "local/native_material_cache_admission_cl/registered/build.log",
+      "sha256": "d619dd134ab615a7715f006693b386b12dc76e12c6b4abe12b3e8649176628b4",
+      "bytes": 2491
+    },
+    {
+      "path": "local/native_material_cache_admission_cl/registered/call_check.log",
+      "sha256": "8f38391c4d653c5e693edd9abdaee4e31a59a2a79811db86fd92505b0a8d42b4",
+      "bytes": 81
+    },
+    {
+      "path": "local/native_material_cache_admission_cl/registered/child_probe.log",
+      "sha256": "1d48fd65b80af1b978d5374c6f628d06753b9e76fb1a7d478e913b4adb94ef5b",
+      "bytes": 681
+    },
+    {
+      "path": "local/native_material_cache_admission_cl/registered/CMakeCache.txt",
+      "sha256": "2ab657bd06bb97731372c10fc883040590ccedec539b0406ba2554bab45f7835",
+      "bytes": 18839
+    },
+    {
+      "path": "local/native_material_cache_admission_cl/registered/compile.cmd",
+      "sha256": "ca2ed65fbff05f98812f129f30545db47045226cbeff9ca1527c8403b51c51ed",
+      "bytes": 727
+    },
+    {
+      "path": "local/native_material_cache_admission_cl/registered/compile.log",
+      "sha256": "25d4f66c7c01d5b35c220cb97ffdd1608405f4ab45160497e6cc7ea3079676cf",
+      "bytes": 11
+    },
+    {
+      "path": "local/native_material_cache_admission_cl/registered/configuration.json",
+      "sha256": "17da1c6c9fbdac6c33af5fe75ba238f09c7a9723640f14e552af8788ca773a50",
+      "bytes": 1153
+    },
+    {
+      "path": "local/native_material_cache_admission_cl/registered/final_audit.json",
+      "sha256": "f7ed36c61ce2bd814ebb34fa9854aad80549881d9ed15eb3e604d720cc4d18d2",
+      "bytes": 61192
+    },
+    {
+      "path": "local/native_material_cache_admission_cl/registered/initial_audit.json",
+      "sha256": "7d38617c0589370c3710b791e09fa05f892d3d8f9da437a433951b1b2a9dbbf1",
+      "bytes": 62154
+    },
+    {
+      "path": "local/native_material_cache_admission_cl/registered/probe.cpp",
+      "sha256": "c2788ae8596ad553583d468c780b3d03043337ea33a5371bc09271b37a486384",
+      "bytes": 32190
+    },
+    {
+      "path": "local/native_material_cache_admission_cl/registered/probe.exe",
+      "sha256": "76edd3d3f6915f79c5907497fe727bb8489d6e915730715d66995e86603645fa",
+      "bytes": 406528
+    },
+    {
+      "path": "local/native_material_cache_admission_cl/registered/probe.log",
+      "sha256": "fc311e4dbc312a46cf0d9764492be5fd091e16921dd8adc26d6491fff0b81ba4",
+      "bytes": 722
+    },
+    {
+      "path": "local/native_material_cache_admission_cl/registered/probe.map",
+      "sha256": "035e17b1dba9e479fded01983862647315af2dc0fa30dfc70b740e078c26261d",
+      "bytes": 690279
+    },
+    {
+      "path": "local/native_material_cache_admission_cl/registered/probe.obj",
+      "sha256": "5ba1450869ee02d80854b481cbb2fe1f0a97e9a92c2542bb4cb6d95ac05c1f49",
+      "bytes": 337205
+    },
+    {
+      "path": "local/native_material_cache_admission_cl/registered/source_manifest.json",
+      "sha256": "a47740b536bc7de2f5436df68dce153215a4a0ade20e49ac6864a913ab309e8d",
+      "bytes": 290684
+    },
+    {
+      "path": "reports/native_material_cache_admission_flow_cl.json",
+      "sha256": "0e292a0a652c2cb2804254514a7fe7360c47c4942faaeac5c67abe8c6ac3bff0",
+      "bytes": 13345
+    },
+    {
+      "path": "reports/native_material_cache_admission_annotations_cl.json",
+      "sha256": "a59a18125cee02d11775f30973632548e2de76e0fa9cecf98e4a6753f1de3de4",
+      "bytes": 227434
+    }
+  ]
+}

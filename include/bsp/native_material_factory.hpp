@@ -1,7 +1,35 @@
 #pragma once
 #include "bsp/native_material_pools.hpp"
+#include <memory>
 
 namespace bsp {
+struct NativeMaterialEffectCacheContext;
+struct NativeMaterialEffectCacheAcquired;
+struct NativeMaterialFactoryAcquired {
+    enum class Phase { empty, effect, allocation, construction, effect_release, complete };
+    NativeMaterialFactoryAcquired();
+    ~NativeMaterialFactoryAcquired();
+    NativeMaterialFactoryAcquired(const NativeMaterialFactoryAcquired&) = delete;
+    NativeMaterialFactoryAcquired& operator=(const NativeMaterialFactoryAcquired&) = delete;
+    Phase phase{Phase::empty};
+    std::uint32_t native_site{};
+    std::unique_ptr<NativeMaterialEffectCacheAcquired> cache;
+    void* effect{};
+    void* raw_slot{};
+    NativeMaterialStorage* material{};
+    RenderCommandReference* companion{};
+    void* owner_record{};
+    bool registered{};
+};
+
+// Complete 535320 through actual numeric D5F0A8/slot48 B318B0. One persistent
+// cache/loader frame per call; canonical cache owners and material owners must
+// be identical. Same allocation, raw-slot-only constructor unwind and normal
+// effect release as the callable interface below. Acquired fields preserve
+// outstanding effects on failure. A completed material is NOT registered here.
+NativeMaterialStorage* create_native_material_from_effect_cache_00535320(
+    NativeString&, NativeMaterialSlotPool&, NativeRenderActualOwners&,
+    NativeMaterialEffectCacheContext&, NativeMaterialFactoryAcquired&);
 
 // Original ECX=actual8h effect-name header, EAX=material, RET. Capture the
 // current F8D394 renderer once and invoke its CURRENT callable virtual+48

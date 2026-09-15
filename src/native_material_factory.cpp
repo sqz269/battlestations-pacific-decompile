@@ -1,4 +1,6 @@
 #include "bsp/native_material_factory.hpp"
+#include "bsp/native_material_effect_cache.hpp"
+#include <stdexcept>
 #include <cstdlib>
 
 namespace bsp {
@@ -6,6 +8,37 @@ namespace {
 NativeMaterialPool* canonical_material_pool;
 NativeMaterialParameterPool* canonical_parameter_pool;
 } // namespace
+
+NativeMaterialFactoryAcquired::NativeMaterialFactoryAcquired() = default;
+NativeMaterialFactoryAcquired::~NativeMaterialFactoryAcquired() = default;
+NativeMaterialStorage* create_native_material_from_effect_cache_00535320(
+    NativeString& name, NativeMaterialSlotPool& pool, NativeRenderActualOwners& owners,
+    NativeMaterialEffectCacheContext& cache, NativeMaterialFactoryAcquired& a) {
+    if (a.phase != NativeMaterialFactoryAcquired::Phase::empty || a.cache || a.effect || a.material ||
+        a.raw_slot || a.companion || a.owner_record || a.registered ||
+        &cache.effects.owners.actual_owners() != &owners)
+        throw std::invalid_argument("native material factory requires a fresh frame and shared effect owners");
+    a.cache=std::make_unique<NativeMaterialEffectCacheAcquired>();
+    a.phase=NativeMaterialFactoryAcquired::Phase::effect; a.native_site=0x00535345;
+    void* renderer=cache.effects.construction.current_renderer_00f8d394;
+    const auto* profile=cache.effects.renderer_profile_00d5f0a8;
+    if (!renderer || *static_cast<const volatile std::uint32_t*>(renderer)!=0x00d5f0a8u ||
+        !profile || profile[0x48/4]!=0x00b318b0u)
+        throw std::logic_error("native material factory requires current renderer48 B318B0");
+    a.effect=load_native_renderer_material_effect_00b318b0(renderer,&name,cache,a.cache.get());
+    a.phase=NativeMaterialFactoryAcquired::Phase::allocation; a.native_site=0x0053534e;
+    a.raw_slot=allocate_native_material_slot_00b18780(pool);
+    if (a.raw_slot) {
+        a.phase=NativeMaterialFactoryAcquired::Phase::construction; a.native_site=0x00535364;
+        try { a.material=initialize_native_material_00b18900(a.raw_slot,a.effect,owners); }
+        catch (...) { return_native_material_raw_slot_00b17d70(a.raw_slot,pool); a.raw_slot=nullptr; throw; }
+    }
+    a.raw_slot=nullptr;
+    a.phase=NativeMaterialFactoryAcquired::Phase::effect_release; a.native_site=0x00535377;
+    void* effect=a.effect; a.effect=nullptr; a.cache->caller_acquired=false;
+    release_native_render_actual_owner(owners,effect);
+    a.phase=NativeMaterialFactoryAcquired::Phase::complete; return a.material;
+}
 
 NativeMaterialStorage* create_native_material_for_effect_00535320(
     NativeString& name, void* const volatile& current_renderer,

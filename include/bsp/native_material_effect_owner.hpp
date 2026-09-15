@@ -6,6 +6,8 @@
 #include <type_traits>
 
 namespace bsp {
+struct NativeTextureCacheContext;
+struct NativeTextureCacheAcquired;
 
 // Exact C4h base and178h derived storage. No semantic effect/cache copy.
 // Unwritten bytes and fields intentionally have no default initializers.
@@ -83,6 +85,19 @@ NativeMaterialEffectBaseStorage* initialize_native_material_effect_base_00b18d60
     void* actual_storage, NativeMaterialEffectConstructionAccess&);
 NativeMaterialEffectStorage* initialize_native_material_effect_00b407a0(
     void* actual_storage, NativeMaterialEffectConstructionAccess&);
+
+// Same complete native bodies through numeric D5F0A8/slot64 B319B0. The cache
+// and construction access borrow the SAME actual string/renderer publications.
+// Each invocation supplies its own fresh persistent texture acquisition frame;
+// keep failed provider frames alive. Successful fallback publication consumes
+// its native returned reference without an additional retain. Legacy callable
+// overloads above remain for callers that already bind actual relocated code.
+NativeMaterialEffectBaseStorage* initialize_native_material_effect_base_with_texture_cache_00b18d60(
+    void*, NativeMaterialEffectConstructionAccess&, NativeTextureCacheContext&,
+    NativeTextureCacheAcquired&, const volatile std::uint32_t* renderer_profile_00d5f0a8);
+NativeMaterialEffectStorage* initialize_native_material_effect_with_texture_cache_00b407a0(
+    void*, NativeMaterialEffectConstructionAccess&, NativeTextureCacheContext&,
+    NativeTextureCacheAcquired&, const volatile std::uint32_t* renderer_profile_00d5f0a8);
 
 // Full B18D50 helper: ECX first of eleven actual8h headers, RET. Destroy in
 // reverse order, leaving headers as the underlying0041DD20 release leaves them.

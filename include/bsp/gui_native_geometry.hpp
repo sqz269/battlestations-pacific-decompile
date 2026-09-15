@@ -97,6 +97,13 @@ public:
         NativeMaterialDestructionAccess&,
         const volatile std::uint32_t* current_vtable_00d5e520);
 
+    // Metadata-only admission of a completed native-cache factory creator.
+    // No retain or destructor rollback. Failed bind leaves the raw creator,
+    // stable entry and unbound companion in acquired for explicit resolution.
+    void register_native_material_creator(NativeMaterialFactoryAcquired&,
+        NativeMaterialDestructionAccess&,
+        const volatile std::uint32_t* current_vtable_00d5e520);
+
     // Common +74 fragment AB2563..AB25C3 / ACF913..ACF973. Caller has
     // already tested widget+74==0 and selected its SAME widget+4C model.
     // Allocate BC payload, read actual D7A260 once, B75170(0,raw,s,s),

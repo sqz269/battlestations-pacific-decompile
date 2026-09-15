@@ -1,5 +1,7 @@
 #include "bsp/native_material_effect_owner.hpp"
 #include "bsp/singleton_lifetime.hpp"
+#include "bsp/native_texture_loading_cache.hpp"
+#include "bsp/native_string_pool_storage.hpp"
 #include <cstring>
 #include <exception>
 #include <new>
@@ -44,7 +46,9 @@ std::size_t retained_end(const NativeMaterialEffectBaseStorage& storage) {
     if(count<0 || count>3)throw std::logic_error("native effect retained extent outside0..3");
     return static_cast<std::size_t>(count);
 }
-void initialize_base(NativeMaterialEffectBaseStorage& storage,NativeMaterialEffectConstructionAccess& access) {
+void initialize_base(NativeMaterialEffectBaseStorage& storage,NativeMaterialEffectConstructionAccess& access,
+    NativeTextureCacheContext* cache = nullptr, NativeTextureCacheAcquired* acquired = nullptr,
+    const volatile std::uint32_t* renderer_profile = nullptr) {
     storage.vtable_00=reference_table;
     storage.references_04.store(1,std::memory_order_relaxed);
     storage.vtable_00=base_table;
@@ -64,9 +68,17 @@ void initialize_base(NativeMaterialEffectBaseStorage& storage,NativeMaterialEffe
             // Native state3 begins only AFTER resize/copy, before virtual+64.
             const NameCleanup cleanup{temporary,access.strings};
             void* const renderer=access.current_renderer_00f8d394;
-            const auto* const table=*static_cast<const std::uintptr_t* const*>(renderer);
-            using Acquire=void* (__thiscall*)(void*,NativeString*,std::uint32_t);
-            storage.fallback_98=reinterpret_cast<Acquire>(table[0x64/4])(renderer,&temporary,0);
+            if (cache) {
+                if (!renderer || *static_cast<const volatile std::uint32_t*>(renderer) != 0x00d5f0a8u ||
+                    !renderer_profile || renderer_profile[0x64/4] != 0x00b319b0u)
+                    throw std::logic_error("native effect construction requires current renderer64 B319B0");
+                storage.fallback_98=load_native_renderer_texture_00b319b0(renderer,&temporary,0,*cache,acquired);
+                acquired->caller_acquired=false; // Transferred to +98; no reference operation.
+            } else {
+                const auto* const table=*static_cast<const std::uintptr_t* const*>(renderer);
+                using Acquire=void* (__thiscall*)(void*,NativeString*,std::uint32_t);
+                storage.fallback_98=reinterpret_cast<Acquire>(table[0x64/4])(renderer,&temporary,0);
+            }
         }
         const auto serial=access.next_serial_00f8d3a8;
         storage.serial_c0=serial;
@@ -82,6 +94,23 @@ void initialize_base(NativeMaterialEffectBaseStorage& storage,NativeMaterialEffe
         throw;
     }
 }
+void require_texture_construction_domain(NativeMaterialEffectConstructionAccess& access,
+    NativeTextureCacheContext& cache, NativeTextureCacheAcquired& acquired) {
+    if (&access.strings != &cache.strings ||
+        static_cast<const volatile void*>(&access.current_renderer_00f8d394) !=
+            static_cast<const volatile void*>(&cache.textures.current_renderer_00f8d394) ||
+        cache.textures.cache != &cache ||
+        acquired.phase != NativeTextureCacheAcquired::Phase::not_started || acquired.wrapper_started)
+        throw std::invalid_argument("native effect texture construction requires one fresh frame and shared actual domains");
+}
+NativeMaterialEffectStorage* finish_derived(NativeMaterialEffectStorage* storage) {
+    storage->descriptor_c4=nullptr;
+    storage->retained_138=nullptr;
+    storage->byte_13c=0;
+    storage->base.vtable_00=effect_table;
+    storage->words_140.fill(0);
+    return storage;
+}
 } // namespace
 
 NativeMaterialEffectBaseStorage* initialize_native_material_effect_base_00b18d60(
@@ -95,12 +124,21 @@ NativeMaterialEffectStorage* initialize_native_material_effect_00b407a0(
     require_storage(slot);
     auto* storage=::new(slot) NativeMaterialEffectStorage;
     initialize_base(storage->base,access);
-    storage->descriptor_c4=nullptr;
-    storage->retained_138=nullptr;
-    storage->byte_13c=0;
-    storage->base.vtable_00=effect_table;
-    storage->words_140.fill(0);
-    return storage;
+    return finish_derived(storage);
+}
+NativeMaterialEffectBaseStorage* initialize_native_material_effect_base_with_texture_cache_00b18d60(
+    void* slot, NativeMaterialEffectConstructionAccess& access, NativeTextureCacheContext& cache,
+    NativeTextureCacheAcquired& acquired, const volatile std::uint32_t* profile) {
+    require_storage(slot); require_texture_construction_domain(access,cache,acquired);
+    auto* storage=::new(slot) NativeMaterialEffectBaseStorage;
+    initialize_base(*storage,access,&cache,&acquired,profile); return storage;
+}
+NativeMaterialEffectStorage* initialize_native_material_effect_with_texture_cache_00b407a0(
+    void* slot, NativeMaterialEffectConstructionAccess& access, NativeTextureCacheContext& cache,
+    NativeTextureCacheAcquired& acquired, const volatile std::uint32_t* profile) {
+    require_storage(slot); require_texture_construction_domain(access,cache,acquired);
+    auto* storage=::new(slot) NativeMaterialEffectStorage;
+    initialize_base(storage->base,access,&cache,&acquired,profile); return finish_derived(storage);
 }
 void destroy_native_material_effect_names_00b18d50(NativeString* names,NativeStringStorage& strings) noexcept {
     for(std::size_t i=11;i!=0;--i)destroy_native_string_header_0041dd20(names+i-1,strings);

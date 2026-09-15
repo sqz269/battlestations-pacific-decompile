@@ -299,6 +299,29 @@ struct GuiNativeGeometryOwners::Impl {
             throw;
         }
     }
+    void register_material_creator(NativeMaterialFactoryAcquired& acquired,
+        NativeMaterialDestructionAccess& access, const volatile std::uint32_t* profile) {
+        require(acquired.phase == NativeMaterialFactoryAcquired::Phase::complete &&
+            acquired.material && !acquired.companion && !acquired.owner_record && !acquired.registered &&
+            &access.retained_owners == &registration.owners && registration.find &&
+            !registration.find(registration.context, acquired.material),
+            "Native material admission requires one completed unregistered creator");
+        auto it = material_entries.emplace(material_entries.end(), *this);
+        it->raw = acquired.material;
+        try {
+            it->reference = std::make_unique<NativeMaterialReference>(*it->raw,
+                access, profile, NativeMaterialCompanionDisposal{&*it, retire_material});
+        } catch (...) {
+            // Erase only unconstructed host metadata; raw native creator stays.
+            material_entries.erase(it);
+            throw;
+        }
+        acquired.owner_record = &*it;
+        acquired.companion = it->reference.get();
+        registration.bind(registration.context, it->raw, *it->reference);
+        it->registered = true;
+        acquired.registered = true;
+    }
     NativeMaterialStorage* create_material(NativeString& name,
         void* const volatile& renderer, NativeMaterialDestructionAccess& access,
         const volatile std::uint32_t* profile) {
@@ -383,6 +406,10 @@ NativeMaterialStorage* GuiNativeGeometryOwners::create_material_for_effect_00535
     NativeString& name, void* const volatile& renderer,
     NativeMaterialDestructionAccess& access, const volatile std::uint32_t* profile) {
     return impl_->create_material(name, renderer, access, profile);
+}
+void GuiNativeGeometryOwners::register_native_material_creator(NativeMaterialFactoryAcquired& acquired,
+    NativeMaterialDestructionAccess& access, const volatile std::uint32_t* profile) {
+    impl_->register_material_creator(acquired, access, profile);
 }
 NativeRenderActualOwners& GuiNativeGeometryOwners::actual_owners() noexcept {
     return impl_->registration.owners;

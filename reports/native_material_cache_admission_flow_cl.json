@@ -1,0 +1,247 @@
+{
+  "packet": "orch4_native_material_cache_admission_cl",
+  "entries": [
+    {
+      "address": "00cbd760",
+      "before_documentation": {
+        "hash": "489cbcd573e5601942206516f7677f855e834f57722e7581c317f4e3be6f72e1",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00cbd760",
+        "function_name": "Unwind@00cbd760",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "unaff_EBP",
+            "type": "int",
+            "storage": "(register, 0x14, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 80.0
+      },
+      "before_comment": {
+        "address": "00cbd760",
+        "function_name": "Unwind@00cbd760"
+      },
+      "complete": true,
+      "after_comment": {
+        "address": "00cbd760",
+        "function_name": "Unwind@00cbd760",
+        "comment": ""
+      },
+      "prior_comment_preserved": true,
+      "all_instruction_owners_verified": true
+    },
+    {
+      "address": "00cbc599",
+      "before_documentation": {
+        "no_function": true
+      },
+      "before_comment": {
+        "no_function": true,
+        "comment": ""
+      },
+      "complete": true,
+      "after_comment": {
+        "address": "00cbc599",
+        "function_name": "BSP_MaterialEffect_BaseConstructorHandler_00cbc599",
+        "comment": ""
+      },
+      "prior_comment_preserved": true,
+      "all_instruction_owners_verified": true
+    },
+    {
+      "address": "00c6c248",
+      "before_documentation": {
+        "no_function": true
+      },
+      "before_comment": {
+        "no_function": true,
+        "comment": ""
+      },
+      "complete": true,
+      "after_comment": {
+        "address": "00c6c248",
+        "function_name": "BSP_Material_CreateForEffectHandler_00c6c248",
+        "comment": ""
+      },
+      "prior_comment_preserved": true,
+      "all_instruction_owners_verified": true
+    },
+    {
+      "address": "00cbd78b",
+      "before_documentation": {
+        "no_function": true
+      },
+      "before_comment": {
+        "no_function": true,
+        "comment": ""
+      },
+      "complete": true,
+      "after_comment": {
+        "address": "00cbd78b",
+        "function_name": "BSP_MaterialEffect_RegistryLoadHandler_00cbd78b",
+        "comment": ""
+      },
+      "prior_comment_preserved": true,
+      "all_instruction_owners_verified": true
+    }
+  ],
+  "actions": [
+    {
+      "endpoint": "clear_instruction_flow_override",
+      "body": {
+        "address": "00cbd764"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Cleared flow override at 00cbd764 (was: CALL_RETURN, now: NONE)\"}"
+    },
+    {
+      "endpoint": "delete_function",
+      "body": {
+        "address": "00cbd760"
+      },
+      "result": "{\"success\": true, \"address\": \"00cbd760\", \"deleted_function\": \"Unwind@00cbd760\", \"body_size\": 9, \"message\": \"Function 'Unwind@00cbd760' deleted at 00cbd760\"}"
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00cbd760",
+        "end_address": "00cbd76b"
+      },
+      "result": "{\"success\": true, \"start_address\": \"00cbd760\", \"end_address\": \"00cbd76a\", \"bytes_disassembled\": 11, \"message\": \"Successfully disassembled 11 byte(s)\"}"
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00cbd760",
+        "name": "Unwind@00cbd760",
+        "disassemble_first": false
+      },
+      "result": "{\"success\": true, \"address\": \"00cbd760\", \"function_name\": \"Unwind@00cbd760\", \"entry_point\": \"00cbd760\", \"body_size\": 11, \"message\": \"Function created successfully at 00cbd760\", \"warnings\": [\"Function name 'Unwind@00cbd760' \\u2014 main part 'Unwind@00cbd760' is not PascalCase. Expected: Unwind@00cbd760\", \"Function name 'Unwind@00cbd760' does not start with a recognized verb. First word 'Unwind@00cbd760' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00cbd760",
+        "new_name": "Unwind@00cbd760"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00cbd760 from 'Unwind@00cbd760' to 'Unwind@00cbd760'\", \"warnings\": [\"Function name 'Unwind@00cbd760' \\u2014 main part 'Unwind@00cbd760' is not PascalCase. Expected: Unwind@00cbd760\", \"Function name 'Unwind@00cbd760' does not start with a recognized verb. First word 'Unwind@00cbd760' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00cbd760",
+        "comment": ""
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00cbd760\"}"
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00cbc599",
+        "end_address": "00cbc5a3"
+      },
+      "result": "{\"success\": true, \"start_address\": \"00cbc599\", \"end_address\": \"00cbc5a2\", \"bytes_disassembled\": 10, \"message\": \"Successfully disassembled 10 byte(s)\"}"
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00cbc599",
+        "name": "BSP_MaterialEffect_BaseConstructorHandler_00cbc599",
+        "disassemble_first": false
+      },
+      "result": "{\"success\": true, \"address\": \"00cbc599\", \"function_name\": \"BSP_MaterialEffect_BaseConstructorHandler_00cbc599\", \"entry_point\": \"00cbc599\", \"body_size\": 10, \"message\": \"Function created successfully at 00cbc599\", \"warnings\": [\"Function name 'BSP_MaterialEffect_BaseConstructorHandler_00cbc599' \\u2014 main part 'MaterialEffect_BaseConstructorHandler_00cbc599' is not PascalCase. Expected: MaterialeffectBaseconstructorhandler00cbc599\", \"Function name 'BSP_MaterialEffect_BaseConstructorHandler_00cbc599' \\u2014 main part 'MaterialEffect_BaseConstructorHandler_00cbc599' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_MaterialEffect_BaseConstructorHandler_00cbc599' does not start with a recognized verb. First word 'Material' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00cbc599",
+        "new_name": "BSP_MaterialEffect_BaseConstructorHandler_00cbc599"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00cbc599 from 'BSP_MaterialEffect_BaseConstructorHandler_00cbc599' to 'BSP_MaterialEffect_BaseConstructorHandler_00cbc599'\", \"warnings\": [\"Function name 'BSP_MaterialEffect_BaseConstructorHandler_00cbc599' \\u2014 main part 'MaterialEffect_BaseConstructorHandler_00cbc599' is not PascalCase. Expected: MaterialeffectBaseconstructorhandler00cbc599\", \"Function name 'BSP_MaterialEffect_BaseConstructorHandler_00cbc599' \\u2014 main part 'MaterialEffect_BaseConstructorHandler_00cbc599' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_MaterialEffect_BaseConstructorHandler_00cbc599' does not start with a recognized verb. First word 'Material' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00cbc599",
+        "comment": ""
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00cbc599\"}"
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00c6c248",
+        "end_address": "00c6c252"
+      },
+      "result": "{\"success\": true, \"start_address\": \"00c6c248\", \"end_address\": \"00c6c251\", \"bytes_disassembled\": 10, \"message\": \"Successfully disassembled 10 byte(s)\"}"
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00c6c248",
+        "name": "BSP_Material_CreateForEffectHandler_00c6c248",
+        "disassemble_first": false
+      },
+      "result": "{\"success\": true, \"address\": \"00c6c248\", \"function_name\": \"BSP_Material_CreateForEffectHandler_00c6c248\", \"entry_point\": \"00c6c248\", \"body_size\": 10, \"message\": \"Function created successfully at 00c6c248\", \"warnings\": [\"Function name 'BSP_Material_CreateForEffectHandler_00c6c248' \\u2014 main part 'Material_CreateForEffectHandler_00c6c248' is not PascalCase. Expected: MaterialCreateforeffecthandler00c6c248\", \"Function name 'BSP_Material_CreateForEffectHandler_00c6c248' \\u2014 main part 'Material_CreateForEffectHandler_00c6c248' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_Material_CreateForEffectHandler_00c6c248' does not start with a recognized verb. First word 'Material_' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00c6c248",
+        "new_name": "BSP_Material_CreateForEffectHandler_00c6c248"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00c6c248 from 'BSP_Material_CreateForEffectHandler_00c6c248' to 'BSP_Material_CreateForEffectHandler_00c6c248'\", \"warnings\": [\"Function name 'BSP_Material_CreateForEffectHandler_00c6c248' \\u2014 main part 'Material_CreateForEffectHandler_00c6c248' is not PascalCase. Expected: MaterialCreateforeffecthandler00c6c248\", \"Function name 'BSP_Material_CreateForEffectHandler_00c6c248' \\u2014 main part 'Material_CreateForEffectHandler_00c6c248' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_Material_CreateForEffectHandler_00c6c248' does not start with a recognized verb. First word 'Material_' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00c6c248",
+        "comment": ""
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00c6c248\"}"
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00cbd78b",
+        "end_address": "00cbd795"
+      },
+      "result": "{\"success\": true, \"start_address\": \"00cbd78b\", \"end_address\": \"00cbd794\", \"bytes_disassembled\": 10, \"message\": \"Successfully disassembled 10 byte(s)\"}"
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00cbd78b",
+        "name": "BSP_MaterialEffect_RegistryLoadHandler_00cbd78b",
+        "disassemble_first": false
+      },
+      "result": "{\"success\": true, \"address\": \"00cbd78b\", \"function_name\": \"BSP_MaterialEffect_RegistryLoadHandler_00cbd78b\", \"entry_point\": \"00cbd78b\", \"body_size\": 10, \"message\": \"Function created successfully at 00cbd78b\", \"warnings\": [\"Function name 'BSP_MaterialEffect_RegistryLoadHandler_00cbd78b' \\u2014 main part 'MaterialEffect_RegistryLoadHandler_00cbd78b' is not PascalCase. Expected: MaterialeffectRegistryloadhandler00cbd78b\", \"Function name 'BSP_MaterialEffect_RegistryLoadHandler_00cbd78b' \\u2014 main part 'MaterialEffect_RegistryLoadHandler_00cbd78b' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_MaterialEffect_RegistryLoadHandler_00cbd78b' does not start with a recognized verb. First word 'Material' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00cbd78b",
+        "new_name": "BSP_MaterialEffect_RegistryLoadHandler_00cbd78b"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00cbd78b from 'BSP_MaterialEffect_RegistryLoadHandler_00cbd78b' to 'BSP_MaterialEffect_RegistryLoadHandler_00cbd78b'\", \"warnings\": [\"Function name 'BSP_MaterialEffect_RegistryLoadHandler_00cbd78b' \\u2014 main part 'MaterialEffect_RegistryLoadHandler_00cbd78b' is not PascalCase. Expected: MaterialeffectRegistryloadhandler00cbd78b\", \"Function name 'BSP_MaterialEffect_RegistryLoadHandler_00cbd78b' \\u2014 main part 'MaterialEffect_RegistryLoadHandler_00cbd78b' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_MaterialEffect_RegistryLoadHandler_00cbd78b' does not start with a recognized verb. First word 'Material' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00cbd78b",
+        "comment": ""
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00cbd78b\"}"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": "{\"success\": true, \"program\": \"battlestationspacific.exe\", \"message\": \"Program saved successfully\"}"
+    }
+  ],
+  "saved": true
+}
