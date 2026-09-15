@@ -3,7 +3,7 @@
   "module": "native_directional_shadow_construction_block",
   "packet": "orch3_shadow_construction_block_dy",
   "source_baseline": "d68f8770ce5ee5108dbd636badf515e610a1b47e",
-  "status": "build_tested_host_storage_prerequisite",
+  "status": "exact_clean_build_primary_review_sealed_host_prerequisite",
   "coverage": "complete host storage/admission prerequisite; no native function implementation",
   "native_functions": [],
   "native_calls": [],
@@ -424,5 +424,169 @@
     "tracked_build_input_count": 2629,
     "build_stamp_sha256": "eff34759dc3f63b00671b6e46a54a5818e6da0613c53a5a919c150719ba62ecc"
   },
-  "tested_source_commit": "d9c0f13e81b2bd1872b9cb20cd6fb5c15a744143"
+  "tested_source_commit": "d9c0f13e81b2bd1872b9cb20cd6fb5c15a744143",
+  "sealed_attempt": {
+    "tested_commit": "d9c0f13e81b2bd1872b9cb20cd6fb5c15a744143",
+    "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\dy-validated-attempt-d9c0f13e.zip",
+    "sha256": "61ed329d1a369896b8a269e73bd65df5aa834b1b748e2e0ad8eff8ad361a0e73",
+    "payload_members": 2657,
+    "manifest_members": 1,
+    "all_member_hashes_rechecked": true,
+    "libraries": {
+      "bsp_core.lib": "3ca021c52bd61a17594b2b204bfd0a186789e9cd9fbe2494b1d633b94c2d818f",
+      "bsp_lua511.lib": "713e1c4cde87ef94799672653cae285bc989d0612f3289cef622e46ba70c809b",
+      "bsp_zlib121.lib": "a22e460f740ac03cd370936d5e574271756d8ffe7bf4482964e92567aa609c9d",
+      "xlive_stub.lib": "6dfcb5bf13947ffb6883edfde9d189c4c7ae0d702ec8bd81daebf3749e5f1c67"
+    },
+    "tracked_build_inputs": 2629,
+    "validation_origin": "J:\\PROG\\battlestations-pacific-decompile-orch3-shadow-construction-block-dy",
+    "ctest_passed": [
+      "reconstructed_math"
+    ],
+    "ctest_count": 1,
+    "native_differential_ctest_run": false,
+    "root_git_build_input_diff_from_tested_commit": [],
+    "root_checkout_input_variants": {
+      "tested_commit": "d9c0f13e81b2bd1872b9cb20cd6fb5c15a744143",
+      "tested_worktree": "J:\\PROG\\battlestations-pacific-decompile-orch3-shadow-construction-block-dy",
+      "root_head": "40df150c24d70b81d90608966a8eb31784201aee",
+      "tracked_input_count": 2629,
+      "raw_identical_count": 2620,
+      "variants": [
+        {
+          "path": "include/bsp/native_particle_model_construction.hpp",
+          "root_sha256": "7f5bd53cb3fed8ecdc0bdf678f766105e082bdef949d79cb5f3c4a40ab8721e8",
+          "worker_sha256": "224d95392e8fe949a0059e6428528bdeadfbc7cffc8e02201459521b769befc6",
+          "root_bytes": 7609,
+          "worker_bytes": 7466,
+          "crlf_to_lf_identical": true,
+          "root_crlf_count": 143,
+          "worker_crlf_count": 0
+        },
+        {
+          "path": "include/bsp/native_particle_model_update.hpp",
+          "root_sha256": "7578f73927ae1d7214e9a0ee285fabcf7797597e4b1d26f5dfbb87d0a889485d",
+          "worker_sha256": "261cafbe182db8cd55636eb1c47732b5a7acc40235d733cb9801a8c8b8befac4",
+          "root_bytes": 3559,
+          "worker_bytes": 3494,
+          "crlf_to_lf_identical": true,
+          "root_crlf_count": 65,
+          "worker_crlf_count": 0
+        },
+        {
+          "path": "include/bsp/native_particle_record_update.hpp",
+          "root_sha256": "8a2e359c9453f479f6afcb8fd51669138202349f6619616d32dadad04e1b4c0b",
+          "worker_sha256": "93ad6d88437eb448bead0b14e6697b2fb24c111adfe166eecdb6860bd3d8d3f6",
+          "root_bytes": 3091,
+          "worker_bytes": 3039,
+          "crlf_to_lf_identical": true,
+          "root_crlf_count": 52,
+          "worker_crlf_count": 0
+        },
+        {
+          "path": "include/bsp/native_post_effect_owner_20h.hpp",
+          "root_sha256": "a05e7bf9f16f2fca5ee3976d6ed5199df98b881951f2f18218862f58caed450a",
+          "worker_sha256": "d1175b7041aa203a35b9e04a3d18a38759e646a73fa7b4d0b55a75b2dbed80ad",
+          "root_bytes": 4199,
+          "worker_bytes": 4115,
+          "crlf_to_lf_identical": true,
+          "root_crlf_count": 84,
+          "worker_crlf_count": 0
+        },
+        {
+          "path": "src/native_particle_model_construction.cpp",
+          "root_sha256": "1081e0cdf6470efa389ac8f1abf96863c02ad66f2caa9a6e7ac01adeea89bccc",
+          "worker_sha256": "b14939017920fa5def99fe21bee763b7258acc25277024b74c611c7086fc415c",
+          "root_bytes": 17607,
+          "worker_bytes": 17269,
+          "crlf_to_lf_identical": true,
+          "root_crlf_count": 338,
+          "worker_crlf_count": 0
+        },
+        {
+          "path": "src/native_particle_model_update.cpp",
+          "root_sha256": "9db5e5aed36166bfe0384a70c33005fc626b4a2a3ab74f2214d95a230fa718c1",
+          "worker_sha256": "284118adc64ece074bb472396795a3811371801fa470f3ac7e647158e40b94f7",
+          "root_bytes": 26930,
+          "worker_bytes": 26303,
+          "crlf_to_lf_identical": true,
+          "root_crlf_count": 627,
+          "worker_crlf_count": 0
+        },
+        {
+          "path": "src/native_particle_record_update.cpp",
+          "root_sha256": "c09d90371c1adde6cc169b06f79f65780aa9a1db67efcd93c74e0ea7f6dfeb1d",
+          "worker_sha256": "ff80442280c3cdfe4ca918fa10a7288577a8c7e0c1de704431c25a0bde1fb057",
+          "root_bytes": 41231,
+          "worker_bytes": 40274,
+          "crlf_to_lf_identical": true,
+          "root_crlf_count": 957,
+          "worker_crlf_count": 0
+        },
+        {
+          "path": "src/native_particle_type_loading.cpp",
+          "root_sha256": "87840100602a06d5656692631430b2ada665a75ae4dc99aad99b467a4ea7d1ac",
+          "worker_sha256": "8426d5312eb51ef1a6075cada010c57d256fbddfc9061e5e61719be847f3b375",
+          "root_bytes": 22018,
+          "worker_bytes": 21517,
+          "crlf_to_lf_identical": true,
+          "root_crlf_count": 501,
+          "worker_crlf_count": 0
+        },
+        {
+          "path": "src/native_post_effect_owner_20h.cpp",
+          "root_sha256": "a9060716c813ecdec58c1556f1c76bb807b76a82340ebf0c9109601ac448aa07",
+          "worker_sha256": "330fe02662fbd32650c17ff35c8217880dbcca3425e4212c079dca3e5838fc1c",
+          "root_bytes": 7830,
+          "worker_bytes": 7675,
+          "crlf_to_lf_identical": true,
+          "root_crlf_count": 155,
+          "worker_crlf_count": 0
+        }
+      ],
+      "only_checkout_line_endings_differ": true,
+      "note": "Archive the actual tested worker inputs. Root Git source matches tested commit; existing checkout newline differences are recorded explicitly rather than called raw-byte equality."
+    },
+    "native_function_credit": 0,
+    "native_byte_credit": 0
+  },
+  "primary_review": {
+    "packet": "DY",
+    "status": "primary_source_review_no_concrete_findings",
+    "native_body_credit": 0,
+    "reviewed_source_sha256": {
+      "include/bsp/native_directional_shadow_construction_block.hpp": "551fa038c5471f30ef01871347c476b928c8411827fe98d334535f63f4187084",
+      "src/native_directional_shadow_construction_block.cpp": "5775d7078b76cbc2ac116c0d764d457f95968504b51ff367351f426f652c2fba"
+    },
+    "provider_sha256": {
+      "src/native_cockpit_construction_block.cpp": "82b94ea93e18ed2a1bb765d37daab6a48ce501c4ce0ced8b612a3cf95a3c6ca1",
+      "src/scene_attachment.cpp": "58fa851ddc57a0910f4903da4d08fa74cf56b41af352b8d9b8ba8f4ff7715719",
+      "src/generated_model_lifetime.cpp": "d8c5990909d169f0f70d9e3320b4e671da6fcb58694cc9ac5f7d621cbdeabd64",
+      "src/native_viewport_registry.cpp": "cf63de25d9e107f83f361db4d4fa7c2a922119fa62584dd3688b8588d201a289",
+      "include/bsp/native_texture_loading_cache.hpp": "dc142e19b3565df24bd6a88b7e495a56c9c1e47dd67512824e34ca1b2f63773d",
+      "src/native_texture_loading_cache.cpp": "708020170abaf5a9bc22f522843dd766a97e67617f4716227d852fdd1a63e03c",
+      "include/bsp/native_named_special_textures.hpp": "e45d4b6240621387599ecf4e0d27d65e1f3abe4d6528d761d58db5df4e6f043e"
+    },
+    "admission_contract_sha256": {
+      "dx-shadow-owner-construction-contract.json": "77675f12e46af94ccdf6cdb9099cd685d2825efe89737f85e249e2f28179d05c",
+      "dx-shadow-owner-construction-contract.md": "31bbb897e801724abd3f6e16cbe1223785d43586333a2c790003ff1c40dede11"
+    },
+    "inspected_contracts": [
+      "Block is noncopyable/nonmovable; four camera owner/reference optionals, nine stable viewport records and persistent optional cache frame remain outside native allocation.",
+      "User-provided constructor leaves aligned base4C/derived60/factory4 raw lanes unwritten; documented aliases agree with retained DX contract.",
+      "Four scene and four lifetime reservations account for all outstanding credits through existing providers; nine viewport admissions bind stable records in the installed registry.",
+      "Admission validation precedes native execution; partial preparation unwinds all obtained credits, forgets only unused/cancelled records and destroys only fresh cache metadata.",
+      "Admission move rejects executing tokens; nested constructor helpers share the single executing record through the accepted friend interface.",
+      "Executing settlement cancels only unused admissions and preserves owners, references, viewport records, cache failures and native scratch preimages.",
+      "Indexed camera retirement verifies matching block/slot/reference/dead owner and records retirement without native reads or resets.",
+      "Reset checks settled state, absent/dead camera owners, retired references, quiescent viewport records and complete/not-started cache-loader-fallback-resolution trees before any disposal.",
+      "Reset destroys references before owners; viewport forget discards only inert host views; cache metadata disposal neither releases a native reference nor forges completion.",
+      "Existing native cache/loader destructors reject running/failed phases; persistent failed resolution frames remain pinned, as required by the provider contract."
+    ],
+    "limits": [
+      "Source review only at this stage; clean Win32 build and existing CTests pending.",
+      "No admission runtime fixture, native constructor execution, original ABI or gameplay validation.",
+      "Caller must establish host quiescence and resolve native obligations before reset; cache failure and orphan viewport retirement remain intentionally without fabricated recovery."
+    ]
+  }
 }
