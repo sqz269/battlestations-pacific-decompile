@@ -1,0 +1,282 @@
+{
+  "schema_version": 1,
+  "packet": "orch5_raw_diagnostic_domain",
+  "utc": "2026-09-15T00:57:46.874798+00:00",
+  "status": "raw_lifetime_and_terminal_profile_extension_strict_win32_and_focused_source_lifecycle_passed",
+  "base_commit": "a3e3a4fb69eb78ce40018fb1ca201cbb51b188c8",
+  "owned_addresses": [
+    "004c14c0",
+    "004bbca0",
+    "00b4b850",
+    "00b4ba00",
+    "00bd0400"
+  ],
+  "owned_files": [
+    "include/bsp/native_diagnostic_sink_lifetime.hpp",
+    "include/bsp/native_physical_buffer_lock.hpp",
+    "include/bsp/native_singleton_destruction.hpp",
+    "include/bsp/sound_lifetime_access.hpp",
+    "src/native_diagnostic_sink_lifetime.cpp",
+    "src/native_singleton_destruction.cpp",
+    "src/sound_lifetime_access.cpp"
+  ],
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "original_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "identity_guard": "bsp.py ghidra verifies project/program/x86/base before every batch",
+    "ghidra_mutated": true,
+    "mutation_scope": [
+      "004c14c0",
+      "004bbca0",
+      "00b4b850",
+      "00b4ba00",
+      "00bd0400"
+    ],
+    "saved": true
+  },
+  "scope": "Extend existing diagnostic getter and physical-buffer Lock contexts to borrow SoundLifetimeAccess, and admit CE752C in actual singleton drain through its SAME caller publication. No second semantic manager or diagnostic owner is fabricated.",
+  "native_contracts": [
+    {
+      "address": "004c14c0",
+      "native_abi": "No inputs, EAX publication, RET",
+      "behavior": "Capture first manager+10; Enter then raw section+18 increment; recheck; allocate4/profileCE752C/publish; second manager getter before current-publication argument; register; decrement and Leave captured section; final publication reload. Existing C++ exceptional guard schedule retained."
+    },
+    {
+      "address": "004bbca0",
+      "native_abi": "ECX four-byte owner, stack flags, EAX original owner, RET4",
+      "behavior": "Flags bit0 selected before writes; clear actual109CF14 regardless current identity; installCE3818; free when selected. Existing implementation unchanged."
+    },
+    {
+      "address": "00b4b850",
+      "native_abi": "ECX owner, five stack slots, EAX mapping, RET14h",
+      "behavior": "Existing index Lock algorithm unchanged; diagnostic context now borrows raw or semantic caller lifetime."
+    },
+    {
+      "address": "00b4ba00",
+      "native_abi": "ECX owner, five stack slots, EAX mapping, RET14h",
+      "behavior": "Existing vertex Lock algorithm unchanged; diagnostic context now borrows raw or semantic caller lifetime."
+    },
+    {
+      "address": "00bd0400",
+      "native_abi": "ECX raw14h manager, RET",
+      "behavior": "Existing pop-before-virtual0(1)/recount drain retains its order; CE752C slot0 maps to004BBCA0 using same0109CF14 cell, with no publication-identity gate."
+    }
+  ],
+  "source_interface": {
+    "SoundLifetimeManagerView": "native_system_section_10 returns the captured manager native section without re-fetch or entry",
+    "NativePhysicalBufferLockContext_bytes": 16,
+    "NativeSingletonDeletionBindings_bytes": 108,
+    "compatibility": "Existing semantic-domain source calls use implicit SoundLifetimeAccess conversion. All context users must be rebuilt; this is not native ABI compatibility."
+  },
+  "evidence": {
+    "spans": [
+      {
+        "address": "004c14c0",
+        "length": 170,
+        "sha256": "d1ed3a68f63885476351cadb135979cb5433c62f21ddc2778425c5b4a103b505",
+        "live_matches_disk": true
+      },
+      {
+        "address": "004bbca0",
+        "length": 41,
+        "sha256": "f462bb0027b9bfdceed4ade23ced0707acf58aa56d643492b1984d21f4da9c58",
+        "live_matches_disk": true
+      },
+      {
+        "address": "00b4b850",
+        "length": 172,
+        "sha256": "edaadda7b10dd54d8f91cb34bb6fdfb1905e028532642ba5e2fb24a15815542c",
+        "live_matches_disk": true
+      },
+      {
+        "address": "00b4ba00",
+        "length": 172,
+        "sha256": "87189e6531e1e1825214ba9459615786a4eef618c5f5020aab1ce8f276115b61",
+        "live_matches_disk": true
+      },
+      {
+        "address": "00bd0400",
+        "length": 197,
+        "sha256": "6e73798d0366545ebbf2ebe6aa005e4630fd95238cdae48df6bc9f20240a3c36",
+        "live_matches_disk": true
+      },
+      {
+        "address": "00ce752c",
+        "length": 4,
+        "sha256": "b3542deaae74443b0e3a4e9381c557f5a13e86c64ace23dd7546f66478aa9fa5",
+        "live_matches_disk": true
+      }
+    ],
+    "total_bytes": 756,
+    "calls": [
+      {
+        "address": "004c14e2",
+        "function": "004c14c0",
+        "native": "00415350"
+      },
+      {
+        "address": "004c1518",
+        "function": "004c14c0",
+        "native": "00bf681b"
+      },
+      {
+        "address": "004c1533",
+        "function": "004c14c0",
+        "native": "00415350"
+      },
+      {
+        "address": "004c1541",
+        "function": "004c14c0",
+        "native": "00bd0c30"
+      },
+      {
+        "address": "004bbcbb",
+        "function": "004bbca0",
+        "native": "00bf65ac"
+      },
+      {
+        "address": "00b4b863",
+        "function": "00b4b850",
+        "native": "004c14c0"
+      },
+      {
+        "address": "00b4b89f",
+        "function": "00b4b850",
+        "native": "004c14c0"
+      },
+      {
+        "address": "00b4ba13",
+        "function": "00b4ba00",
+        "native": "004c14c0"
+      },
+      {
+        "address": "00b4ba4f",
+        "function": "00b4ba00",
+        "native": "004c14c0"
+      },
+      {
+        "address": "00bd0426",
+        "function": "00bd0400",
+        "native": "00bcf910"
+      },
+      {
+        "address": "00bd0438",
+        "function": "00bd0400",
+        "native": "00bf6713"
+      },
+      {
+        "address": "00bd044e",
+        "function": "00bd0400",
+        "native": "00bf6713"
+      },
+      {
+        "address": "00bd045b",
+        "function": "00bd0400",
+        "native": "00bf6713"
+      },
+      {
+        "address": "00bd0489",
+        "function": "00bd0400",
+        "native": "00bcf910"
+      },
+      {
+        "address": "00bd0496",
+        "function": "00bd0400",
+        "native": "0041cc80"
+      },
+      {
+        "address": "00bd04a3",
+        "function": "00bd0400",
+        "native": "00bf65ac"
+      }
+    ],
+    "profile": "00ce752c -> 004bbca0",
+    "original_executed": false,
+    "indirect_calls": [
+      {
+        "address": "004c14fb",
+        "function": "004c14c0",
+        "operand": "dword ptr [0xce2218]",
+        "kind": "indirect"
+      },
+      {
+        "address": "004c154f",
+        "function": "004c14c0",
+        "operand": "dword ptr [0xce2210]",
+        "kind": "indirect"
+      },
+      {
+        "address": "00b4b8c6",
+        "function": "00b4b850",
+        "operand": "eax",
+        "kind": "indirect"
+      },
+      {
+        "address": "00b4ba76",
+        "function": "00b4ba00",
+        "operand": "eax",
+        "kind": "indirect"
+      },
+      {
+        "address": "00bd0485",
+        "function": "00bd0400",
+        "operand": "edx",
+        "kind": "indirect"
+      }
+    ]
+  },
+  "primary_library_providers": {
+    "native_physical_buffer_lock": true,
+    "native_diagnostic_sink_lifetime": true,
+    "sound_lifetime_access": true,
+    "native_singleton_publication": true,
+    "native_singleton_vector_reserve_construct": true,
+    "native_singleton_vector_registration_wrappers": true,
+    "native_singleton_destruction": true
+  },
+  "validation": {
+    "build": "./scripts/build.ps1; strict MSVC Win32 Release; local/raw-diagnostic-build-final.log",
+    "ctests": "2/2 passed",
+    "native_seeds": "8/8 live Ghidra spans equal installed PE",
+    "probe": {
+      "attempt": 1,
+      "libraries": {
+        "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\build\\win32\\Release\\bsp_core.lib": "adb2371e736c8572f57a91051316fb8cdb3fece56bfe4209fcfd4597d0ab250c",
+        "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\build\\win32\\Release\\bsp_lua511.lib": "b6c19dd56bce2c86dcf1abf5c3044d48ddc2ac2c33ef04e3dc87f022413ee193",
+        "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\build\\win32\\Release\\bsp_zlib121.lib": "2c89bd9ae83d791564ea847c75e8e5ee025e40810c1df8d55e5799e0c7b8c471"
+      },
+      "exe_sha256": "221831294b139c4619ae880d902312db559897aaff7160c041fad1fd8ea5aade",
+      "passed": true
+    },
+    "probe_scope": "One source lifecycle: cold bounds diagnostic through index Lock, warm dynamic diagnostic through vertex Lock, direct warm getter, one shared raw registration, actual native section RecursionCount and +18 both zero, actual raw manager drain clearing diagnostic and vector. Null COM follows the actual sentinel branch; no fake COM implementation.",
+    "new_permanent_tests": 0
+  },
+  "limitations": [
+    "Original function bodies freshly compared with PE, not executed in this probe.",
+    "No D3D Lock, device startup, Reset, render frame or gameplay executed.",
+    "No new allocation-failure, second-getter mutation, concurrency, hardware-fault/SEH or FH3/native-ABI coverage; previous semantic fixture claims remain historical.",
+    "The finite raw deletion map requires the caller to supply the diagnostic publication binding."
+  ],
+  "ghidra_annotations": {
+    "prior_values": "local/ghidra-annotations-20260915T005843Z.json",
+    "existing_names_retained": true,
+    "full_prior_comments_preserved_and_readback_checked": true,
+    "exports_forcibly_refreshed": [
+      "004c14c0",
+      "004bbca0",
+      "00b4b850",
+      "00b4ba00",
+      "00bd0400"
+    ]
+  },
+  "immutable_capture": {
+    "path": "local/checkpoints/a3e3a4fb/raw-diagnostic-lifetime/validation.json",
+    "sha256": "e7cbcab7ca8e13a51e069f056811951dea8be4a6e991744715a6e0f3cc74bdca",
+    "artifacts": 4554,
+    "runtime_modules": 8,
+    "root_provider_source_count": 119,
+    "source_manifest_sha256": "65edbee91b7734db25ba36522086175dd8bdcbe3f320b836f85e925cc31b4989",
+    "metadata_note": "Frozen report/doc are the review state before this closure pointer was appended. Runtime/source artifacts are unchanged."
+  }
+}

@@ -13,6 +13,15 @@ SoundLifetimeManagerView SoundLifetimeAccess::get_manager_00415350() const {
     if (actual_) return {nullptr, get_native_singleton_manager_00415350(*actual_)};
     return {semantic_->get_manager_00415350(), nullptr};
 }
+void* SoundLifetimeManagerView::native_system_section_10() const noexcept {
+    if (semantic_) {
+        auto* const projection = semantic_->system_owner().section_10;
+        return projection ? projection->native_section : nullptr;
+    }
+    void* section;
+    std::memcpy(&section, static_cast<const std::byte*>(actual_) + 0x10, sizeof section);
+    return section;
+}
 void SoundLifetimeManagerView::register_object(void* object) {
     if (semantic_) semantic_->register_object(object);
     else register_native_singleton_object_00bd0c30(actual_, nullptr, object);

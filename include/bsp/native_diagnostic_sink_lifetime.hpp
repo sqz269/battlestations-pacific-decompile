@@ -1,6 +1,6 @@
 #pragma once
 
-#include "bsp/singleton_lifetime.hpp"
+#include "bsp/sound_lifetime_access.hpp"
 
 #include <cstdint>
 
@@ -13,10 +13,11 @@ static_assert(sizeof(NativeDiagnosticSinkStorage) == 4);
 
 // 004C14C0: cdecl, no native inputs, EAX current publication, RET. Both
 // references identify the application's actual publication and shared domain.
-// The domain's destroy_registered callback dispatches this owner's deleter.
+// Borrows the caller's semantic domain or actual 01090AA0 publication cell;
+// creates no alternate manager. The caller's shutdown dispatch owns deletion.
 NativeDiagnosticSinkStorage* native_diagnostic_sink_get_or_create_004c14c0(
     NativeDiagnosticSinkStorage* volatile& actual_published_0109cf14,
-    SingletonLifetimeDomain& actual_lifetime);
+    SoundLifetimeAccess actual_lifetime);
 
 // 004BBCA0: ECX four-byte owner, stack flags, EAX original address, RET 4.
 // Clears publication and installs the base profile; flag bit 0 also frees.

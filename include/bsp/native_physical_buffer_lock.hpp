@@ -7,7 +7,7 @@
 namespace bsp {
 struct NativePhysicalBufferLockContext {
     NativeDiagnosticSinkStorage* volatile& actual_diagnostic_0109cf14;
-    SingletonLifetimeDomain& actual_lifetime_01090aa0;
+    SoundLifetimeAccess actual_lifetime_01090aa0;
     // ADDRESS of the actual sentinel bytes, not a pointer loaded from them.
     void* const actual_null_buffer_sentinel_00f8d4b8;
 };

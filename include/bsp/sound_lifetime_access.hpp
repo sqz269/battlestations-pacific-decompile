@@ -11,6 +11,10 @@ class CapturedSoundLifetimeSection;
 class SoundLifetimeManagerView final {
 public:
     SoundLifetimeManagerView* operator->() noexcept { return this; }
+    // Capture this resolved manager's native +10h critical-section pointer.
+    // This neither re-fetches the manager nor enters the section. A semantic
+    // domain supplies its existing native_section; actual storage reads +10h.
+    void* native_system_section_10() const noexcept;
     void register_object(void*);
     void unregister_object(void*);
     void move_object_after_00bd0d70(void*, void* anchor);

@@ -1,4 +1,5 @@
 #include "bsp/native_singleton_destruction.hpp"
+#include "bsp/native_diagnostic_sink_lifetime.hpp"
 #include "bsp/observer_lifetime.hpp"
 #include "bsp/observer_dispatch_owner.hpp"
 #include "bsp/native_pending_entity_lock.hpp"
@@ -50,6 +51,14 @@ __declspec(noinline) void __fastcall delete_current_profile(void* owner,
     case 0x00ce3818:
         delete_native_singleton_base_00412440(owner, nullptr, flags);
         return;
+    case 0x00ce752c:
+        if (bindings.actual_diagnostic_publication_0109cf14 != nullptr) {
+            delete_native_diagnostic_sink_004bbca0(
+                *static_cast<NativeDiagnosticSinkStorage*>(owner), flags,
+                *bindings.actual_diagnostic_publication_0109cf14);
+            return;
+        }
+        break;
     case 0x00d62b64:
         if (bindings.actual_resource_support_publication_0108fedc != nullptr) {
             delete_native_resource_support_00b61d60(
