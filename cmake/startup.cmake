@@ -1038,3 +1038,5 @@ cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_skin_model_
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_node_animator_lifetime.cpp)
 
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_postprocess_pose.cpp)
+
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_postprocess_storage.cpp)

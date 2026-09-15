@@ -1,0 +1,407 @@
+{
+  "packet": "orch6_postprocess_storage_ay",
+  "status": "complete_storage_helpers_and_canonical_reuses_build_and_original_byte_fixture_tested",
+  "worker_dispatches": 0,
+  "native": {
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "spans": [
+      {
+        "entry": "00b78a90",
+        "end": "00b78c1a",
+        "bytes": 395,
+        "sha256": "bdc8b93bb20e32f5d798b3c937854b28aedd392d30d14853cd2bddebd51e9c07",
+        "live_disk_equal": true
+      },
+      {
+        "entry": "00b78d70",
+        "end": "00b78e6a",
+        "bytes": 251,
+        "sha256": "17858c022361aea5e63e07859eaac808daac3285fbb4457e5a1a4636d8f4b072",
+        "live_disk_equal": true
+      },
+      {
+        "entry": "00b77790",
+        "end": "00b777f9",
+        "bytes": 106,
+        "sha256": "34d25b78e81d5534141e3d73d5c9957968af74f6969f8272fa9df57d40d84014",
+        "live_disk_equal": true
+      },
+      {
+        "entry": "00b76830",
+        "end": "00b7688e",
+        "bytes": 95,
+        "sha256": "4765fe61321712922effa775ad8691be45c692a61315454ceeebb8c9632ca1be",
+        "live_disk_equal": true
+      },
+      {
+        "entry": "00b76c40",
+        "end": "00b76c8f",
+        "bytes": 80,
+        "sha256": "b137b8980260e2efa222b5fb0991c2dcc8ce31a47791d881eab4507d22492d04",
+        "live_disk_equal": true
+      },
+      {
+        "entry": "00b76890",
+        "end": "00b768f7",
+        "bytes": 104,
+        "sha256": "fc2461e691370045cde5308917fedd76440971c374802ebbf319442fa14e3ae6",
+        "live_disk_equal": true
+      },
+      {
+        "entry": "00b8a2d0",
+        "end": "00b8a2d3",
+        "bytes": 4,
+        "sha256": "2e339cdc5de837ec151dbde90057caeabba18ac3ea32e7c2cffc8f95df41a6ff",
+        "live_disk_equal": true
+      },
+      {
+        "entry": "00b8a370",
+        "end": "00b8a37c",
+        "bytes": 13,
+        "sha256": "188ec59c87fc5416e3584efd01b423387daee964b1bcc0b87e6557faefa4fa6a",
+        "live_disk_equal": true
+      },
+      {
+        "entry": "00b1c500",
+        "end": "00b1c55e",
+        "bytes": 95,
+        "sha256": "26fbb8c002375c4f2b460b6a1aa3b25a9c50ffc8969eef774195d5a803086485",
+        "live_disk_equal": true
+      },
+      {
+        "entry": "00b1c770",
+        "end": "00b1c7bf",
+        "bytes": 80,
+        "sha256": "a1d2f4b216c00662361c78f24bf309aced250f8890a19bf6157068fd6d5c3a94",
+        "live_disk_equal": true
+      },
+      {
+        "entry": "00b40c80",
+        "end": "00b40ce7",
+        "bytes": 104,
+        "sha256": "d10f0b3f05e892371be03729f01f1bb009795f4f617c506a5918f4a066a7f58c",
+        "live_disk_equal": true
+      }
+    ],
+    "reference_bytes": 1327,
+    "unwind_evidence": [
+      {
+        "address": "00cc1ce0",
+        "bytes": 33,
+        "sha256": "61f09ceafa8e3ab90a25975ec822a337a3b0294e4f46ec4d8f5a3754ae7f4821",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00dfad10",
+        "bytes": 44,
+        "sha256": "3523494ddfdb12f478bef3059835b6fceea74dec1f7332473260e8d60b0cacea",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00401130",
+        "bytes": 1,
+        "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+        "live_disk_equal": true
+      }
+    ]
+  },
+  "calls": [
+    {
+      "function": "00b78a90",
+      "address": "00b78ad0",
+      "native": "00bf55be"
+    },
+    {
+      "function": "00b78a90",
+      "address": "00b78b1b",
+      "native": "00b77790"
+    },
+    {
+      "function": "00b78a90",
+      "address": "00b78b5d",
+      "native": "00bf55be"
+    },
+    {
+      "function": "00b78a90",
+      "address": "00b78b89",
+      "native": "00bf6989"
+    },
+    {
+      "function": "00b78a90",
+      "address": "00b78bd1",
+      "native": "00bf6989"
+    },
+    {
+      "function": "00b78a90",
+      "address": "00b78bf5",
+      "native": "00bf6989"
+    },
+    {
+      "function": "00b78d70",
+      "address": "00b78d7f",
+      "native": "00b78a90"
+    },
+    {
+      "function": "00b78d70",
+      "address": "00b78dd7",
+      "native": "00bf55be"
+    },
+    {
+      "function": "00b78d70",
+      "address": "00b78e09",
+      "native": "00bf6989"
+    },
+    {
+      "function": "00b78d70",
+      "address": "00b78e50",
+      "native": "00bf6989"
+    },
+    {
+      "function": "00b77790",
+      "address": "00b77797",
+      "native": "00b76c40"
+    },
+    {
+      "function": "00b77790",
+      "address": "00b777a6",
+      "native": "00b76830"
+    },
+    {
+      "function": "00b77790",
+      "address": "00b777cf",
+      "native": "00b76830"
+    },
+    {
+      "function": "00b76830",
+      "address": "00b76850",
+      "native": "00bf55be"
+    },
+    {
+      "function": "00b76830",
+      "address": "00b7687c",
+      "native": "00bf6989"
+    },
+    {
+      "function": "00b76c40",
+      "address": "00b76c4e",
+      "native": "00b76830"
+    },
+    {
+      "function": "00b76890",
+      "address": "00b768b0",
+      "native": "00bf55be"
+    },
+    {
+      "function": "00b76890",
+      "address": "00b768e5",
+      "native": "00bf6989"
+    },
+    {
+      "function": "00b1c500",
+      "address": "00b1c520",
+      "native": "00bf55be"
+    },
+    {
+      "function": "00b1c500",
+      "address": "00b1c54c",
+      "native": "00bf6989"
+    },
+    {
+      "function": "00b1c770",
+      "address": "00b1c77e",
+      "native": "00b1c500"
+    },
+    {
+      "function": "00b40c80",
+      "address": "00b40ca0",
+      "native": "00bf55be"
+    },
+    {
+      "function": "00b40c80",
+      "address": "00b40cd5",
+      "native": "00bf6989"
+    }
+  ],
+  "reuses": [
+    {
+      "address": "00b76830",
+      "canonical": "00b1c500",
+      "bytes": 95,
+      "normalized_identity": true,
+      "original_targets": [
+        "00bf55be",
+        "00bf6989"
+      ],
+      "canonical_targets": [
+        "00bf55be",
+        "00bf6989"
+      ]
+    },
+    {
+      "address": "00b76c40",
+      "canonical": "00b1c770",
+      "bytes": 80,
+      "normalized_identity": true,
+      "original_targets": [
+        "00b76830"
+      ],
+      "canonical_targets": [
+        "00b1c500"
+      ]
+    },
+    {
+      "address": "00b76890",
+      "canonical": "00b40c80",
+      "bytes": 104,
+      "normalized_identity": true,
+      "original_targets": [
+        "00bf55be",
+        "00bf6989"
+      ],
+      "canonical_targets": [
+        "00bf55be",
+        "00bf6989"
+      ]
+    }
+  ],
+  "boundaries": [
+    "Eight complete physical functions: five new source bodies and three verified canonical array reuses. Same current headers and shared allocation/free domain; no substitute containers.",
+    "B76890 reuses the existing B40C80/B40AC0 valid-extent reserve. That canonical provider rejects corrupt extents and overflow; those original out-of-bounds behaviors are not claimed.",
+    "B78A90 state0 unwind calls placement delete401130, whose body is RET. No speculative cleanup of partial copies or outer allocation is introduced. Native FH3 remains unproved.",
+    "Full B79BC0 postprocessor, B891A0 graph admission and gameplay remain open."
+  ],
+  "validation": {
+    "summary": {
+      "passed": true,
+      "paired_storage_cases": 5,
+      "source_failure_cases": 2,
+      "byte_identical_leaves": 2
+    },
+    "comparisons": [
+      {
+        "index": 0,
+        "words": 354,
+        "sha256": "ee703f88095bb84d1e25009cf3c1e58b7e24c4dbb2df803a43adb47f1198b8d4",
+        "equal": true
+      },
+      {
+        "index": 1,
+        "words": 146,
+        "sha256": "44c55399eaedb510554a4937ff0bfbe074c7d269f2fcda744a6e038d0e8f7d28",
+        "equal": true
+      },
+      {
+        "index": 2,
+        "words": 259,
+        "sha256": "f001f968de178568bd098daac887e025411ccdce479a964cfafe415ad86fc934",
+        "equal": true
+      },
+      {
+        "index": 3,
+        "words": 172,
+        "sha256": "ef11b4f6d97150880b791fe3f6efab4a9ba96feebbce2aad6d8a9e4399971f36",
+        "equal": true
+      },
+      {
+        "index": 4,
+        "words": 138,
+        "sha256": "22cf6087b64b61d0b9355ca5490d940c574e86a905a663088a286ad6b3ef9f0b",
+        "equal": true
+      }
+    ],
+    "output_sha256": {
+      "results.bin": "f0879177beb618ad0fdde319705ae451335cb55f8e11daacd45275aa16a51181",
+      "source_failure.bin": "760aa26d97e020bdc442fa1d22ed778daa33a0c6e5b24490c15760388a0304da"
+    },
+    "repeat_stable": true,
+    "win32_build": true,
+    "existing_ctests_passed": 2,
+    "call_rows": 23,
+    "source_sha256": {
+      "src/native_postprocess_storage.cpp": "af2c50deb2c2cc635c316c76e42fb9c9e845ea59a4aa595a4000f766f551fe54",
+      "include/bsp/native_postprocess_storage.hpp": "5b086128606fd1ca07ca6e48b42fc22738407822ab2f3ed381f777539b48be83"
+    },
+    "scope": "Five complete paired storage cases cover deep copies, untouched node words, ascending old cleanup and descending shrink, captured source cells across allocation, callback replacement of current outer backing/count, negative-capacity cleanup, self-copy, pair reserve, signed count and DWORD-scaled unchecked index. Two separate source failures preserve partial states without invented rollback. Eleven original bodies and three canonical reuse equivalences are checked; both leaves have instruction identity. Original FH3/SEH, corrupt pair extents, full postprocessor, graph admission and gameplay remain unproved.",
+    "saved_annotations": 9,
+    "complete_helper_or_reuse_bytes": 1048
+  },
+  "entries": [
+    {
+      "address": "00b78a90",
+      "ghidra_name": "BSP_PostprocessNodeTracks_Reserve",
+      "name": "reserve_native_postprocess_node_tracks_00b78a90",
+      "source": "src/native_postprocess_storage.cpp",
+      "bytes": 395,
+      "status": "complete_storage_helpers_and_canonical_reuses_build_and_original_byte_fixture_tested",
+      "evidence": "Complete395-byte ECX outer0Ch header/stack signed capacity/RET4. Minimum1; deep-copy current10h node+pointer-array records; destroy current old nested buffers ascending; free current outer backing then publish pointer/capacity. Single unwind action is placement delete401130 (RET), so do not invent partial-copy rollback. Hypothesis, not a recovered symbol. AY: five new complete bodies769 bytes plus three canonical reuses279 bytes; strict Win32 and both CTests pass. Five repeated paired storage cases and two source failures,11 reference bodies1327 bytes,23 call rows pass. Seven saved free-flow gaps109 bytes repaired; three-byte unreachable alignment gap retained. Native FH3/full B79BC0/B891A0 admission/gameplay unproved. docs/NATIVE_POSTPROCESS_STORAGE_AY.md; reports/native_postprocess_storage_ay.json."
+    },
+    {
+      "address": "00b78d70",
+      "ghidra_name": "BSP_PostprocessNodeTracks_Resize",
+      "name": "resize_native_postprocess_node_tracks_00b78d70",
+      "source": "src/native_postprocess_storage.cpp",
+      "bytes": 251,
+      "status": "complete_storage_helpers_and_canonical_reuses_build_and_original_byte_fixture_tested",
+      "evidence": "Complete251-byte ECX outer header/stack signed count/RET4. Grow via reserve; clear only4/8/C of new10h records, node0 unwritten. Shrink decrements current count before descending nested resize0/free, rereading current outer storage/count after callbacks. Hypothesis, not a recovered symbol. AY: five new complete bodies769 bytes plus three canonical reuses279 bytes; strict Win32 and both CTests pass. Five repeated paired storage cases and two source failures,11 reference bodies1327 bytes,23 call rows pass. Seven saved free-flow gaps109 bytes repaired; three-byte unreachable alignment gap retained. Native FH3/full B79BC0/B891A0 admission/gameplay unproved. docs/NATIVE_POSTPROCESS_STORAGE_AY.md; reports/native_postprocess_storage_ay.json."
+    },
+    {
+      "address": "00b77790",
+      "ghidra_name": "BSP_PostprocessItemPointers_Copy",
+      "name": "copy_native_postprocess_item_pointers_00b77790",
+      "source": "src/native_postprocess_storage.cpp",
+      "bytes": 106,
+      "status": "complete_storage_helpers_and_canonical_reuses_build_and_original_byte_fixture_tested",
+      "evidence": "Complete106-byte ECX destination/stack source/RET4/EAX same destination. Resize destination0, reserve current source count (even0). Capture each source cell address before possible destination growth, then read its current value. Current source count/backing each iteration; ordinary self-copy empties. Hypothesis, not a recovered symbol. AY: five new complete bodies769 bytes plus three canonical reuses279 bytes; strict Win32 and both CTests pass. Five repeated paired storage cases and two source failures,11 reference bodies1327 bytes,23 call rows pass. Seven saved free-flow gaps109 bytes repaired; three-byte unreachable alignment gap retained. Native FH3/full B79BC0/B891A0 admission/gameplay unproved. docs/NATIVE_POSTPROCESS_STORAGE_AY.md; reports/native_postprocess_storage_ay.json."
+    },
+    {
+      "address": "00b76830",
+      "ghidra_name": "BSP_PostprocessItemPointers_Reserve",
+      "name": "reserve_native_instance_entry_pointers_00b1c500",
+      "source": "src/native_render_pointer_arrays.cpp",
+      "bytes": 95,
+      "status": "complete_storage_helpers_and_canonical_reuses_build_and_original_byte_fixture_tested",
+      "evidence": "Complete95-byte pointer reserve matches B1C500 after CALL relocation with same BF55BE/BF6989 targets. Reuse canonical algorithm on actual0Ch header, borrowed item pointers, shared heap. Hypothesis, not a recovered symbol. AY: five new complete bodies769 bytes plus three canonical reuses279 bytes; strict Win32 and both CTests pass. Five repeated paired storage cases and two source failures,11 reference bodies1327 bytes,23 call rows pass. Seven saved free-flow gaps109 bytes repaired; three-byte unreachable alignment gap retained. Native FH3/full B79BC0/B891A0 admission/gameplay unproved. docs/NATIVE_POSTPROCESS_STORAGE_AY.md; reports/native_postprocess_storage_ay.json."
+    },
+    {
+      "address": "00b76c40",
+      "ghidra_name": "BSP_PostprocessItemPointers_Resize",
+      "name": "resize_native_instance_entry_pointers_00b1c770",
+      "source": "src/native_render_pointer_arrays.cpp",
+      "bytes": 80,
+      "status": "complete_storage_helpers_and_canonical_reuses_build_and_original_byte_fixture_tested",
+      "evidence": "Complete80-byte pointer resize matches B1C770 after replacing the sole reserve target with verified equivalent B76830/B1C500. Reuse canonical same-header resize; no item destruction. Hypothesis, not a recovered symbol. AY: five new complete bodies769 bytes plus three canonical reuses279 bytes; strict Win32 and both CTests pass. Five repeated paired storage cases and two source failures,11 reference bodies1327 bytes,23 call rows pass. Seven saved free-flow gaps109 bytes repaired; three-byte unreachable alignment gap retained. Native FH3/full B79BC0/B891A0 admission/gameplay unproved. docs/NATIVE_POSTPROCESS_STORAGE_AY.md; reports/native_postprocess_storage_ay.json."
+    },
+    {
+      "address": "00b76890",
+      "ghidra_name": "BSP_PostprocessPairs_Reserve",
+      "name": "reserve_native_material_pass_pairs_00b40c80",
+      "source": "src/native_material_pass_base.cpp",
+      "bytes": 104,
+      "status": "complete_storage_helpers_and_canonical_reuses_build_and_original_byte_fixture_tested",
+      "evidence": "Complete104-byte two-word reserve matches B40C80 after same-target CALL relocation. Reuse B40C80/B40AC0 actual0Ch header/8-byte rows, minimum1, live count/backing, free before publication. Existing canonical source rejects corrupt extents/overflow; those out-of-bounds paths remain outside source contract. Hypothesis, not a recovered symbol. AY: five new complete bodies769 bytes plus three canonical reuses279 bytes; strict Win32 and both CTests pass. Five repeated paired storage cases and two source failures,11 reference bodies1327 bytes,23 call rows pass. Seven saved free-flow gaps109 bytes repaired; three-byte unreachable alignment gap retained. Native FH3/full B79BC0/B891A0 admission/gameplay unproved. docs/NATIVE_POSTPROCESS_STORAGE_AY.md; reports/native_postprocess_storage_ay.json."
+    },
+    {
+      "address": "00b8a2d0",
+      "ghidra_name": "BSP_TrackItem_GetTrackCount",
+      "name": "native_track_item_count_00b8a2d0",
+      "source": "src/native_postprocess_storage.cpp",
+      "bytes": 4,
+      "status": "complete_storage_helpers_and_canonical_reuses_build_and_original_byte_fixture_tested",
+      "evidence": "Complete4-byte ECX item/EAX current signed count+C/plain RET; compiled leaf byte identity. Hypothesis, not a recovered symbol. AY: five new complete bodies769 bytes plus three canonical reuses279 bytes; strict Win32 and both CTests pass. Five repeated paired storage cases and two source failures,11 reference bodies1327 bytes,23 call rows pass. Seven saved free-flow gaps109 bytes repaired; three-byte unreachable alignment gap retained. Native FH3/full B79BC0/B891A0 admission/gameplay unproved. docs/NATIVE_POSTPROCESS_STORAGE_AY.md; reports/native_postprocess_storage_ay.json."
+    },
+    {
+      "address": "00b8a370",
+      "ghidra_name": "BSP_TrackItem_GetTrackUnchecked",
+      "name": "native_track_item_at_00b8a370",
+      "source": "src/native_postprocess_storage.cpp",
+      "bytes": 13,
+      "status": "complete_storage_helpers_and_canonical_reuses_build_and_original_byte_fixture_tested",
+      "evidence": "Complete13-byte ECX item/stack raw index/RET4/EAX current backing8[index*4]. DWORD scaling; no bounds or invalid-parameter call; compiled leaf byte identity. Hypothesis, not a recovered symbol. AY: five new complete bodies769 bytes plus three canonical reuses279 bytes; strict Win32 and both CTests pass. Five repeated paired storage cases and two source failures,11 reference bodies1327 bytes,23 call rows pass. Seven saved free-flow gaps109 bytes repaired; three-byte unreachable alignment gap retained. Native FH3/full B79BC0/B891A0 admission/gameplay unproved. docs/NATIVE_POSTPROCESS_STORAGE_AY.md; reports/native_postprocess_storage_ay.json."
+    }
+  ],
+  "parent_annotation": {
+    "address": "00b79bc0",
+    "evidence": "AY update: B78A90/B78D70 temporary10h node-to-track records, B77790 pointer copy, B76830/B76C40/B76890 canonical array reuses and B8A2D0/B8A370 track access are now reconstructed with stated native extent/exception boundaries. Full B79BC0 remains ANALYZED ONLY; camera target ownership sequence and complete phase orchestration/virtual services remain required. docs/NATIVE_POSTPROCESS_STORAGE_AY.md; reports/native_postprocess_storage_ay.json."
+  }
+}
