@@ -1,0 +1,426 @@
+{
+  "packet": "orch3_shadow_pointer_vector_ep",
+  "base_commit": "d854e0f04072cc7ccd455af91639394fb5a16fdf",
+  "status": "complete_source_pending_primary_candidate_review_and_coupled_build",
+  "coverage": {
+    "native_bodies": 2,
+    "native_bytes": 175,
+    "additional_allocator_body_credit": 0,
+    "parent_or_missing_child_credit": 0,
+    "ledger_credit_applied_by_worker": 0
+  },
+  "routines": [
+    {
+      "address": "00ae1440",
+      "end_inclusive": "00ae149e",
+      "native_bytes": 95,
+      "native_sha256": "8f555c5340d81b5e4f2fb84669ddafcfc85d4682eaf3950b2c54f11294e61623",
+      "native_instruction_count": 38,
+      "source_name": "reserve_native_shadow_pointer_vector_00ae1440",
+      "current_Ghidra_name": "FUN_00ae1440",
+      "current_Ghidra_prototype": "undefined FUN_00ae1440(void)",
+      "proposed_Ghidra_name": "BSP_Shadow_ReservePointerVector",
+      "name_status": "Descriptive hypothesis; primary owns annotation and preservation of old values.",
+      "observed_ABI": {
+        "receiver": "actual raw3DWORD header in ECX",
+        "public_argument": "signed32 requested at entryESP+4",
+        "return_stack_pop": 4,
+        "semantic_return": "No result is consumed at the observed caller preparations; source interface is void.",
+        "source_interface": "void __fastcall (void* actual_header, void* unused_edx, std::int32_t requested)"
+      },
+      "behavior": "Capture signed requested, clamp EDI minimum4 without public slot rewrite, signed capacity gate; modulo32 *4 allocate; current count/data forward copy with computed-null skip; current old data free; ADD ESP4, publish data then capacity, POP EBX. Count unchanged.",
+      "proposed_Ghidra_comment": "Capture signed requested, clamp EDI minimum4 without public slot rewrite, signed capacity gate; modulo32 *4 allocate; current count/data forward copy with computed-null skip; current old data free; ADD ESP4, publish data then capacity, POP EBX. Count unchanged. ECX actual data/count/capacity header, signed stack+4 requested, RET4. Source allocator/free use current CRT; no original OOM/fault/EH or parent/node lifetime proof."
+    },
+    {
+      "address": "00ae19b0",
+      "end_inclusive": "00ae19ff",
+      "native_bytes": 80,
+      "native_sha256": "1fcee55d63c996e45412b56751763f59c8cf8c5058f5fb36280612beebcef1c7",
+      "native_instruction_count": 31,
+      "source_name": "resize_native_shadow_pointer_vector_00ae19b0",
+      "current_Ghidra_name": "FUN_00ae19b0",
+      "current_Ghidra_prototype": "undefined FUN_00ae19b0(void)",
+      "proposed_Ghidra_name": "BSP_Shadow_ResizePointerVector",
+      "name_status": "Descriptive hypothesis; primary owns annotation and preservation of old values.",
+      "observed_ABI": {
+        "receiver": "actual raw3DWORD header in ECX",
+        "public_argument": "signed32 requested at entryESP+4",
+        "return_stack_pop": 4,
+        "semantic_return": "No result is consumed at the observed caller preparations; source interface is void.",
+        "source_interface": "void __fastcall (void* actual_header, void* unused_edx, std::int32_t requested)"
+      },
+      "behavior": "Capture signed requested; reserve if >current capacity; capture count and zero each freshly computed data+index*4 except computed null; shrink current count via repeated stores; final requested count store. All native comparisons/aliases/order retained.",
+      "proposed_Ghidra_comment": "Capture signed requested; reserve if >current capacity; capture count and zero each freshly computed data+index*4 except computed null; shrink current count via repeated stores; final requested count store. All native comparisons/aliases/order retained. ECX actual data/count/capacity header, signed stack+4 requested, RET4. Source allocator/free use current CRT; no original OOM/fault/EH or parent/node lifetime proof."
+    }
+  ],
+  "storage": {
+    "header": "Actual3DWORDs: data+0, signed count+4, signed capacity+8.",
+    "elements": "Opaque32-bit words; no invented node or ownership type.",
+    "arithmetic": "Native signed branches and modulo32 address/size arithmetic, including abnormal requested/count/capacity paths.",
+    "caller_obligation": "Valid actual header and backing at every reached read/write/free across concrete provider effects."
+  },
+  "allocation_provider": {
+    "allocate": "singleton_lifetime_allocate({SingletonAllocationKind::object, wrapped_bytes, wrapped_bytes})",
+    "free": "singleton_lifetime_free(pointer)",
+    "source_adapter": "private cdecl allocate_shadow_vector_bytes(uint32_t)",
+    "concrete_behavior": "Existing malloc/_callnewh retry/bad_alloc and matching free. Adapter adds no other allocation/framework.",
+    "native_boundary": "BF55BE/BF681B/BF6989 are represented by the established source CRT providers. Original CRT binary/hooks/incidental registers/OOM/fault/EH equivalence is not claimed."
+  },
+  "native_evidence": {
+    "path": "local/ep-native-evidence.json",
+    "sha256": "0b9fb654e86d398e7ce611657225c19f7bd7f4f4dacadc9065e3f17631238b29",
+    "helper": "local/ep-capture-evidence.py",
+    "helper_sha256": "2f4accd1c6fa6af3d2a77067ab932b2fc667f9a6abcf1f65547bb161e6716d38",
+    "target": {
+      "project_file": "C:/Users/sqz269/bsp.gpr",
+      "program_path": "/battlestationspacific.exe",
+      "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "guard": "Every live query uses bsp.client -> Client.verify before endpoint access; project/program/language/imagebase checked."
+    },
+    "primary_admission_snapshot": "local/ep-primary-admission-review.json",
+    "primary_admission_snapshot_sha256": "10bb77b1eb13f99ec58af52500ec74f51ab444f06e5ceaa4aaa15b8428d1abab"
+  },
+  "admission_inputs": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\eo-primary-admission-review.json",
+      "sha256": "10bb77b1eb13f99ec58af52500ec74f51ab444f06e5ceaa4aaa15b8428d1abab",
+      "bytes": 16202
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-shadow-small-dependencies-admission-eo\\local\\eo-shadow-small-dependencies-admission.json",
+      "sha256": "1b2ad8f5ac9a50bd842973777f4807d547dba8be42e37855989554deff52c9a6",
+      "bytes": 16351
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-shadow-small-dependencies-admission-eo\\local\\eo-shadow-small-dependencies-admission.md",
+      "sha256": "b851f5cb8d3346a44fa113ef75e3dc5540b65524982a7fbae146bfe9fee9beed",
+      "bytes": 7782
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-shadow-small-dependencies-admission-eo\\local\\eo-native-evidence.json",
+      "sha256": "2b9b0c2e65e69c18ceaa3661a3d87c63ad44be1945087dce55eaa3f5ae29f386",
+      "bytes": 54680
+    }
+  ],
+  "provider_pins": [
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "matches_accepted_EO_pin": true
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "matches_accepted_EO_pin": true
+    },
+    {
+      "path": "include/bsp/native_render_service_texture_vectors.hpp",
+      "sha256": "87a991b960d1ab4e8d6dd9ad8450a69fe7e6f7a00fba9cfe8ef1718cf3091471",
+      "matches_accepted_EO_pin": true
+    },
+    {
+      "path": "src/native_render_service_texture_vectors.cpp",
+      "sha256": "a9a028939d9cced314d111549c79d772b1aefde1f1e6c8d8fa6cb85d3ec81934",
+      "matches_accepted_EO_pin": true
+    }
+  ],
+  "primary_owned_flow_repair": {
+    "actual_old_override": "CALL_RETURN",
+    "current_override": "NONE",
+    "site": "00ae148c",
+    "restored_gap": "00ae1491..00ae1499",
+    "first_repair_listing_gap_zero_but_stored_function_instruction_count_remained": 34,
+    "recreated_full_body": "00ae1440..00ae149e",
+    "final_instruction_count": 38,
+    "old_name_and_comments_preserved_by_definition_tool": true,
+    "saved": true,
+    "both_exports_refreshed": true,
+    "artifacts": {
+      "local/eo-before-flow-repair.json": "93284ebb4ab878a644317ce8fdf7ad7fe8cc4e4d59cabd3416999854eb69f396",
+      "local/eo-flow-repair.json": "026c14b81c5f36c2ad35de9614116e2b4995cd81d68240a243da6949e8234ac6",
+      "local/eo-defined-function.json": "c1c41ab51c3ac3b4e439b830bc5c087f74b55a70b0991d4671be6b239b472a29"
+    }
+  },
+  "host_steps": [
+    {
+      "address": "00ae19be",
+      "native": "00ae1440",
+      "function": "00ae19b0",
+      "kind": "direct_call",
+      "note": "Captured signed requested count; ECX same header; RET4.",
+      "disk_call_hex": "e87dfaffff"
+    },
+    {
+      "address": "00ae1460",
+      "native": "00bf55be",
+      "function": "00ae1440",
+      "kind": "direct_call",
+      "note": "Wrapped DWORD EDI*4, cdecl ADD ESP4; source actual allocator adapter.",
+      "disk_call_hex": "e859411100"
+    },
+    {
+      "address": "00ae148c",
+      "native": "00bf6989",
+      "function": "00ae1440",
+      "kind": "direct_call",
+      "note": "Current old data captured after copy; free returns before ADD ESP4 and publication. Primary repaired the complete95-byte function.",
+      "disk_call_hex": "e8f8541100"
+    },
+    {
+      "address": "00ae1c56",
+      "native": "00ae19b0",
+      "function": "00ae1c20",
+      "kind": "direct_call",
+      "note": "Current raw header, requested0; no growth-only shortcut permitted in fullbody.",
+      "disk_call_hex": "e855fdffff"
+    },
+    {
+      "address": "00ae1c65",
+      "native": "00ae19b0",
+      "function": "00ae1c60",
+      "kind": "direct_call",
+      "note": "Current raw header, requested0; no growth-only shortcut permitted in fullbody.",
+      "disk_call_hex": "e846fdffff"
+    },
+    {
+      "address": "00ae1d91",
+      "native": "00ae19b0",
+      "function": "00ae1c80",
+      "kind": "direct_call",
+      "note": "Current raw header, requested0; no growth-only shortcut permitted in fullbody.",
+      "disk_call_hex": "e81afcffff"
+    },
+    {
+      "address": "00ae16c8",
+      "native": "00ae1440",
+      "function": "00ae16b0",
+      "kind": "direct_call",
+      "note": "When count==capacity, DWORD double capacity then signed max4; same header ECX.",
+      "disk_call_hex": "e873fdffff"
+    },
+    {
+      "address": "00ae225e",
+      "native": "00ae1440",
+      "function": "00ae1fb0",
+      "kind": "direct_call",
+      "note": "Owner+44 header; current count==capacity then DWORD double capacity and signed max4.",
+      "disk_call_hex": "e8ddf1ffff"
+    }
+  ],
+  "observed_callers": {
+    "reserve": [
+      "00ae19be",
+      "00ae16c8",
+      "00ae225e"
+    ],
+    "resize": [
+      "00ae1c56",
+      "00ae1c65",
+      "00ae1d91"
+    ],
+    "provenance": "Eight actual CALL sites pinned against PE; fresh xrefs show exactly3 per entry. Caller preparations and immutable EO query hashes are in the native evidence.",
+    "snapshot_limit": "Earlier AE1870 snapshot edge is not a CALL in complete AE19B0; no credit or implementation is assigned to it."
+  },
+  "source_anchors": [
+    {
+      "path": "include/bsp/native_shadow_pointer_vector.hpp",
+      "sha256": "8b64c25b62a36c930ae655f69fe964e77b18d8abe0f58b2cfec1c1a0cf6cd10d",
+      "anchors": {
+        "11": {
+          "label": "ABI",
+          "text": "// Complete AE1440[95] / AE19B0[80]. Native ECX is the actual three-DWORD"
+        },
+        "16": {
+          "label": "reserve declaration",
+          "text": "void __fastcall reserve_native_shadow_pointer_vector_00ae1440("
+        },
+        "18": {
+          "label": "resize declaration",
+          "text": "void __fastcall resize_native_shadow_pointer_vector_00ae19b0("
+        },
+        "21": {
+          "label": "CRT boundary",
+          "text": "// Reserve uses the existing real source-CRT allocation/free domain, with"
+        }
+      }
+    },
+    {
+      "path": "src/native_shadow_pointer_vector.cpp",
+      "sha256": "878ae45df4ec0fc9fc2591e6a235dc07a8c60589caa6bcca3ebf5025490ccd1c",
+      "anchors": {
+        "13": {
+          "label": "actual allocator adapter",
+          "text": "__declspec(noinline) void* __cdecl allocate_shadow_vector_bytes("
+        },
+        "21": {
+          "label": "reserve body",
+          "text": "__declspec(naked) void __fastcall reserve_native_shadow_pointer_vector_00ae1440("
+        },
+        "37": {
+          "label": "allocate call",
+          "text": "        call allocate_shadow_vector_bytes // AE1460 -> original BF55BE"
+        },
+        "58": {
+          "label": "free before publication",
+          "text": "        call singleton_lifetime_free // AE148C -> original BF6989"
+        },
+        "70": {
+          "label": "resize body",
+          "text": "__declspec(naked) void __fastcall resize_native_shadow_pointer_vector_00ae19b0("
+        },
+        "80": {
+          "label": "reserve call",
+          "text": "        call reserve_native_shadow_pointer_vector_00ae1440 // AE19BE"
+        },
+        "85": {
+          "label": "six-byte alignment",
+          "text": "        // AE19CA: exact six-byte LEA EBX,[EBX+disp32 zero]."
+        },
+        "106": {
+          "label": "two-byte alignment",
+          "text": "        // AE19EE: exact MOV EDI,EDI alignment bytes."
+        }
+      }
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "anchors": {
+        "13": {
+          "label": "request kind",
+          "text": "enum class SingletonAllocationKind { manager, pointer_slots, critical_section, object };"
+        },
+        "14": {
+          "label": "request sizes",
+          "text": "struct SingletonAllocationRequest {"
+        },
+        "19": {
+          "label": "allocate declaration",
+          "text": "void* singleton_lifetime_allocate(const SingletonAllocationRequest&);"
+        },
+        "20": {
+          "label": "free declaration",
+          "text": "void singleton_lifetime_free(void*) noexcept;"
+        }
+      }
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "anchors": {
+        "51": {
+          "label": "allocate body",
+          "text": "void* singleton_lifetime_allocate(const SingletonAllocationRequest& request) {"
+        },
+        "56": {
+          "label": "malloc",
+          "text": "        if (void* result = std::malloc(request.host_bytes)) {"
+        },
+        "59": {
+          "label": "new-handler retry",
+          "text": "        if (_callnewh(request.host_bytes) == 0) {"
+        },
+        "65": {
+          "label": "free body",
+          "text": "void singleton_lifetime_free(void* pointer) noexcept {"
+        },
+        "66": {
+          "label": "matching CRT free",
+          "text": "    std::free(pointer);"
+        }
+      }
+    },
+    {
+      "path": "src/native_render_service_texture_vectors.cpp",
+      "sha256": "a9a028939d9cced314d111549c79d772b1aefde1f1e6c8d8fa6cb85d3ec81934",
+      "anchors": {
+        "14": {
+          "label": "existing raw allocator pattern",
+          "text": "__declspec(noinline) void* __cdecl allocate_vector_bytes(std::uint32_t bytes) {"
+        }
+      }
+    },
+    {
+      "path": "cmake/startup.cmake",
+      "sha256": "d8803a460576d51b6c55aafaa669247cd68bf50b5aa45aebc972229ec3dbfbb0",
+      "anchors": {
+        "1011": {
+          "label": "isolated append",
+          "text": "cmake_language(DEFER DIRECTORY \"${CMAKE_SOURCE_DIR}\" CALL target_sources bsp_core PRIVATE src/native_shadow_pointer_vector.cpp)"
+        }
+      }
+    },
+    {
+      "path": "docs/COORDINATION.md",
+      "sha256": "78855253c7aed405a9c72cc8491abe063820c2976590852dc644117807e2bbc3",
+      "anchors": {
+        "72": {
+          "label": "no shared registry lease",
+          "text": "Do not lease shared append-only registries: never lease `cmake/startup.cmake` (every worker appends"
+        }
+      }
+    }
+  ],
+  "generated_expectations": {
+    "reserve": "Complete95-byte section; exactly2CALL rel32 operands normalized, every other byte equal native.",
+    "resize": "Complete80-byte section; exactly1CALL rel32 operand normalized, every other byte equal native.",
+    "alignment": {
+      "00ae19ca": "8d9b00000000",
+      "00ae19ee": "8bff"
+    },
+    "returns": "Both exact c20400 RET4 instructions; no changed public stack convention.",
+    "relocations": "Reserve alloc->actual cdecl provider adapter; reserve free->existing singleton_lifetime_free; resize->complete raw reserve. Inspect full source adapter/provider call and current library membership.",
+    "qualification": "No generated-byte or build claim before the coupled exact-commit build."
+  },
+  "build_validation": {
+    "status": "pending_combined_EP_EQ_source_acceptance",
+    "build_run": false,
+    "seed_verification_run": false,
+    "new_tests": 0,
+    "new_runtime_fixture": false,
+    "instruction": "No standalone candidate build. Primary supplies published metadata and accepted EQ candidate for isolated integration, then approves the exact combined source pin."
+  },
+  "primary_draft_source_review": {
+    "findings": [],
+    "scope": "Primary read complete current header/CPP: full95/80 operations and alignment preserved; clean candidate/evidence review and coupled build remain pending."
+  },
+  "no_ghidra_function": [],
+  "partial_limits": [
+    "Only AE1440/AE19B0 normal bodies are supplied; enclosing caller/destructor/EH body credit is zero.",
+    "No header constructor, owning host array, element destructor, guessed node lifecycle, callback-only gap or overflow sanitizer.",
+    "Source exceptions escape; no added EH frame/rollback. Provider effects and original fault/unwind equivalence remain qualified.",
+    "AE15E0/AE0A50, AE1C20 actual node release domain, AD7A30 and larger shadow update remain incomplete.",
+    "Base/provider pins are explicit. Immutable main/orch5 absence evidence is inherited from EO, not a new tip query.",
+    "No Ghidra mutation, ledger edit, build, test, runtime fixture, push, renderer/game or concurrency proof in this candidate."
+  ],
+  "call_verification": {
+    "command": [
+      "python",
+      "tools/verify_report_calls.py",
+      "reports/native_shadow_pointer_vector.json"
+    ],
+    "exit_code": 0,
+    "checked": 8,
+    "failed": 0,
+    "scope": "Three internal direct rows plus five external preparation callers."
+  },
+  "base_source_numeric_search": {
+    "commit": "d854e0f04072cc7ccd455af91639394fb5a16fdf",
+    "command": [
+      "git",
+      "grep",
+      "-n",
+      "-i",
+      "-E",
+      "00ae1440|00ae19b0",
+      "d854e0f04072cc7ccd455af91639394fb5a16fdf",
+      "--",
+      "src",
+      "include/bsp"
+    ],
+    "exit_code": 1,
+    "stdout": "",
+    "qualification": "No numeric hits at the explicit base; accepted EO full provider/readiness evidence remains separately pinned."
+  }
+}
