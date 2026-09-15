@@ -69,3 +69,27 @@ signatures. `local/ee-generated-review.json` retains full section bytes,
 disassembly, object/source hashes and the verifier hash. This is static emitted
 body/ABI evidence; no new fixture, test, original-caller execution, FP-fault
 delivery or runtime/game validation is claimed.
+
+Primary independently checked both complete emitted bodies against a fresh live
+Ghidra read and the pinned original executable, and verified each exact object
+as a member of the current `bsp_core.lib`. The minimum's existing ledger entry
+now points to this raw provider; its earlier backfill record is preserved verbatim
+in history. Existing name evidence is retained with corrected inclusive bounds.
+No second address or maximum body is credited.
+
+Ghidra saves `BSP_Math_MinFloatByRef` as a float-returning fastcall with exactly
+two float-pointer parameters, unchanged 62-byte bounds and twenty instructions.
+Previous comments are preserved and the export refreshed. An initial prototype
+attempt that retained thiscall failed readback; its intermediate values and the
+corrected, saved fastcall result are retained in the annotation log. The original
+incomplete prototype is preserved separately.
+
+The exact tested attempt is sealed at `local/ee-validated-attempt.zip`, SHA256
+`d5e4c0fc04abda86200b951e14a047b5643385f60bd65b5c0cd07ee66ac95c29`.
+All 2,682 payload hashes were reread. This includes the tested inputs, four
+libraries, both current objects, existing test executables/configuration and
+logs, admission/source/generated and Ghidra evidence. Root Git inputs match:
+2,626 raw tracked inputs match, nine CRLF/LF-only variants are retained separately,
+and the ignored seed matches. No redundant root build was needed. These static
+body and ABI checks do not establish exceptional-FP hardware-fault delivery,
+original-caller execution or gameplay validation.
