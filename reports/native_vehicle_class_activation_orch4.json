@@ -1,0 +1,163 @@
+{
+  "packet": "orch4_vehicle_activation_20260915",
+  "status": "complete_owned_ordinary_source_with_required_device_class_terminal",
+  "worker_dispatches": 0,
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "function_count": 64122,
+    "snapshot_function_count": 64122,
+    "access": "read_only"
+  },
+  "routines": [
+    {
+      "address": "009598d0",
+      "end_inclusive": "0095993f",
+      "bytes": 112,
+      "name": "BSP_VehicleClass_ActivateModelResourceAndEntries",
+      "source": "src/native_vehicle_class_activation.cpp",
+      "coverage": "complete ordinary body with volatile current data/count/slot reloads and DWORD-wrapping index under signed comparisons",
+      "original_abi": "ECX actual vehicle class; stacked enemy flag; RET4"
+    },
+    {
+      "address": "007f6e50",
+      "end_inclusive": "007f6f78",
+      "bytes": 297,
+      "name": "BSP_GunPlatform_ActivateDeviceClassesAndPruneArcs",
+      "source": "src/native_vehicle_class_activation.cpp",
+      "coverage": "complete ordinary body including returning validation calls and exact x87 assembly tail",
+      "original_abi": "ECX actual platform descriptor; no stacked arguments; RET"
+    }
+  ],
+  "calls": [
+    {
+      "function": "009598d0",
+      "address": "009598df",
+      "native": "00879aa0"
+    },
+    {
+      "function": "009598d0",
+      "address": "00959900",
+      "native": "005471b0"
+    },
+    {
+      "function": "009598d0",
+      "address": "00959920",
+      "native": "005471b0"
+    },
+    {
+      "function": "009598d0",
+      "address": "0095992a",
+      "native": "007f6e50"
+    },
+    {
+      "function": "007f6e50",
+      "address": "007f6e6e",
+      "native": "00bf6713"
+    },
+    {
+      "function": "007f6e50",
+      "address": "007f6e7d",
+      "native": "00bf6713"
+    },
+    {
+      "function": "007f6e50",
+      "address": "007f6e87",
+      "native": "00bf6713"
+    },
+    {
+      "function": "007f6e50",
+      "address": "007f6e94",
+      "native": "00443490"
+    },
+    {
+      "function": "007f6e50",
+      "address": "007f6e9e",
+      "native": "00bf6713"
+    }
+  ],
+  "producer_evidence": [
+    {
+      "function": "00960230",
+      "range": "009614ba-009615f9",
+      "finding": "platform+10 authored ids are resolved by 00443090 with DL=1 and retained references are inserted into platform+1c"
+    },
+    {
+      "function": "007f7110",
+      "range": "007f717a-007f72fe",
+      "finding": "platform+3c/+40/+44 is a 14h-record arc vector seeded with one full-span zero-flag record"
+    },
+    {
+      "function": "007f6b10",
+      "finding": "existing recovered producer fixes GunFiringArc as flags,+4 min_horz,+8 max_horz,+c min_vert,+10 max_vert"
+    }
+  ],
+  "required_boundaries": [
+    {
+      "native": "00879aa0",
+      "status": "existing source implementation",
+      "source": "src/native_damageable_class_model.cpp"
+    },
+    {
+      "native": "005471b0",
+      "status": "shared source implementation supplied by parent packet",
+      "source": "src/native_vehicle_pointer_array.cpp"
+    },
+    {
+      "native": "00443490",
+      "status": "required address-named terminal with no default or source implementation",
+      "body_contract": "forward ECX id and DL selector to 00443090; if result nonnull and byte44 zero, call current slot10(0) then slot14"
+    }
+  ],
+  "source_interface": {
+    "abi_boundary": "typed MSVC Win32 source interface; not the original thiscall/fastcall ABI bridge",
+    "call_00443490": "mandatory pure virtual call with ECX device-class id and explicit zero DL selector; no fallback or fabricated result",
+    "model_context_ownership": "caller retains NativeDamageableClassModelContext and supplies one fresh NativeDamageableClassModelAcquired frame; an already-set class+44 leaves it fresh, otherwise the existing model API owns phase/unwind transitions",
+    "validation": "caller supplies SingletonLifetimeCallbacks; all four 00BF6713 sites may return and current sentinel reads occur on both sides of call00443490"
+  },
+  "x87_schedule": {
+    "range": "007f6ea7-007f6f70",
+    "implementation": "single bounded MSVC x86 assembly helper",
+    "threshold": "00d08b88 bytes 00 00 00 a0 46 df 81 3f",
+    "behavior": "one resident FLD64 threshold; flagged rows skip FP; zero rows use FLD32, FSUB32, FXCH, FCOMI, FSTP ST1; JBE keeps equal and unordered",
+    "counterexample": "under x87 PC64, max=threshold float and min=2^-65 gives extended span below threshold and removal; binary64 subtraction rounds to threshold and would keep",
+    "record_transfer": "five ordered DWORD pairs with current data/count reload after every row; no memmove",
+    "final_scan": "assembly retains all reached bit0 reads and first-record access even when count is zero"
+  },
+  "corrections": [
+    {
+      "was": "007f6e50 contract and body were not reconstructed",
+      "is": "complete 297-byte body recovered, including returning validations, resident-x87 arc prune and raw final discarded transition scan",
+      "evidence": "complete live decompile and disassembly 007f6e50-007f6f78 plus producers 00960230 and 007f7110"
+    },
+    {
+      "was": "009598d0 later entry loop was only audited",
+      "is": "complete source loop reloads current array/count around both 005471b0 checks and invokes full 007f6e50 for nonnull entries",
+      "evidence": "complete listing 009598d0-0095993f"
+    }
+  ],
+  "verification": {
+    "report_call_check": "pending",
+    "msvc_win32_build": "passed after exact x87, validation and volatile-reload correction",
+    "ctest": "2 of 2 registered tests passed after correction: reconstructed_math and tool_tests",
+    "native_differential": false,
+    "runtime_reachable_log": false,
+    "gameplay_validated": false
+  },
+  "continuation": {
+    "addresses": [
+      "00443090",
+      "00443490"
+    ],
+    "requirements": "audit every DL-selector call site, all resolver construction branches, and concrete current slot10/slot14 bodies; implement a real NativeVehicleEntryActivationCalls terminal",
+    "separate_owners": [
+      "0095f500",
+      "0082fe30"
+    ]
+  },
+  "uncertainty": [
+    "00443090 and 00443490 have no source implementation, so actual end-to-end entry activation is not established",
+    "raw list/arc storage must remain readable at every reached native access; returning validation calls do not invent repairs",
+    "source interfaces are not binary-compatible ABI or native FH3 replacements"
+  ]
+}
