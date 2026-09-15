@@ -352,3 +352,7 @@ edge remains the producer of `class+50h`.
 | `debarkation_ring_corners` | `00830A9C`-`00830DA7` | the sign pattern of the eleven unread synthetic points, and which of `+A4h`/`+A8h` is beam and which is height |
 | `class_camera_pass` | `0095F500` past `0095F5E2`, and `00879AD0` | the `camera` node pass and the `explosion`/`fakeexplosion`/`emberke` pass, both of which run before this body's first lookup and both of which also read `class+50h` |
 | `path_record_shape` | `0082E990`, `004215D0`, `0082F4E0` | the `10h`-byte `path` record's own layout, and what `0082F4E0` does to `class+6DCh` on the no-path branch |
+
+## Correction from docs/NATIVE_SHIP_CLASS_BINDING_AUDIT_ORCH4.md
+
+2026-09-15 complete-listing correction: 0082FE30 spans 6,610 bytes (1,732 current listed instructions). Both orrhullam branches difference against p0; before 85DC80 row+10 is p2-p0 and row+20 is (p2-p0) x (p1-p0). The idle tail truncates the longer vector to the smaller count, as proved by JNC at 831748/8317A9 and the resize helpers. 82E990 resizes an outer vector of 10h-byte vector headers to the current index; it does not store the index in a path record. The complete fallback point ordering and outstanding native cleanup dependencies are retained in NATIVE_SHIP_CLASS_BINDING_AUDIT_ORCH4.md and its JSON report. No reconstruction or game validation is implied.
