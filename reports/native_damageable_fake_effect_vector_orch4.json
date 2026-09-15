@@ -338,5 +338,120 @@
     "Original FH3 catch/unwind propagation, asynchronous faults, double exceptions and longjmp unvalidated",
     "Native comparison shares canonical allocation/free and instrumented actual owner vslot0; allocation overflow, length throw and EH-only adapters not independently native-compared",
     "No game-runtime or gameplay validation"
-  ]
+  ],
+  "naming_review": [
+    {
+      "address": "0087c920",
+      "old_name": "FUN_0087c920",
+      "old_plate_comment": null,
+      "old_ledger": null,
+      "reviewed_name": "resize_native_damageable_fake_effect_vector_0087c920"
+    },
+    {
+      "address": "0087c380",
+      "old_name": "FUN_0087c380",
+      "old_plate_comment": null,
+      "old_ledger": null,
+      "reviewed_name": "insert_native_damageable_fake_effect_vector_0087c380"
+    },
+    {
+      "address": "0087b8f0",
+      "old_name": "STL_inst_0087b8f0",
+      "old_plate_comment": null,
+      "old_ledger": null,
+      "reviewed_name": "STL_DamageableFakeEffectVector_Erase_0087B8F0"
+    },
+    {
+      "address": "008769b0",
+      "old_name": "FUN_008769b0",
+      "old_plate_comment": null,
+      "old_ledger": null,
+      "reviewed_name": "allocate_native_damageable_fake_effect_rows_008769b0"
+    },
+    {
+      "address": "00878c40",
+      "old_name": "FUN_00878c40",
+      "old_plate_comment": null,
+      "old_ledger": null,
+      "reviewed_name": "fill_native_damageable_fake_effect_rows_00878c40"
+    },
+    {
+      "address": "00879330",
+      "old_name": "FUN_00879330",
+      "old_plate_comment": null,
+      "old_ledger": null,
+      "reviewed_name": "copy_native_damageable_fake_effect_rows_00879330"
+    },
+    {
+      "address": "00878820",
+      "old_name": "FUN_00878820",
+      "old_plate_comment": null,
+      "old_ledger": null,
+      "reviewed_name": "copy_native_damageable_fake_effect_rows_00878820"
+    },
+    {
+      "address": "00879870",
+      "old_name": "FUN_00879870",
+      "old_plate_comment": null,
+      "old_ledger": null,
+      "reviewed_name": "copy_backward_native_damageable_fake_effect_rows_00879870"
+    },
+    {
+      "address": "008788d0",
+      "old_name": "FUN_008788d0",
+      "old_plate_comment": null,
+      "old_ledger": null,
+      "reviewed_name": "copy_backward_native_damageable_fake_effect_rows_008788d0"
+    },
+    {
+      "address": "008799f0",
+      "old_name": "FUN_008799f0",
+      "old_plate_comment": null,
+      "old_ledger": null,
+      "reviewed_name": "uninitialized_copy_native_damageable_fake_effect_rows_008799f0"
+    },
+    {
+      "address": "0087ab80",
+      "old_name": "FUN_0087ab80",
+      "old_plate_comment": null,
+      "old_ledger": null,
+      "reviewed_name": "uninitialized_fill_native_damageable_fake_effect_rows_0087ab80"
+    },
+    {
+      "address": "0087b5b0",
+      "old_name": "FUN_0087b5b0",
+      "old_plate_comment": null,
+      "old_ledger": null,
+      "reviewed_name": "destroy_native_damageable_fake_effect_rows_0087b5b0"
+    },
+    {
+      "address": "0087b5d0",
+      "old_name": "FUN_0087b5d0",
+      "old_plate_comment": null,
+      "old_ledger": null,
+      "reviewed_name": "uninitialized_fill_native_damageable_fake_effect_rows_0087b5d0"
+    },
+    {
+      "address": "0087bc50",
+      "old_name": "FUN_0087bc50",
+      "old_plate_comment": null,
+      "old_ledger": null,
+      "reviewed_name": "uninitialized_copy_native_damageable_fake_effect_rows_0087bc50"
+    },
+    {
+      "address": "00878a60",
+      "old_name": "FUN_00878a60",
+      "old_plate_comment": null,
+      "old_ledger": null,
+      "reviewed_name": "destroy_native_damageable_fake_effect_row_00878a60"
+    },
+    {
+      "address": "0087a510",
+      "old_name": "STL_xlen_throw_0087a510",
+      "old_plate_comment": null,
+      "old_ledger": null,
+      "reviewed_name": "STL_xlen_throw_0087a510"
+    }
+  ],
+  "independent_review": "Read-only section-vector worker reviewed complete listings, EH metadata, aliasing/current fields and x87/MOVSS distinction; no concrete defect found after outer unwind correction."
 }
