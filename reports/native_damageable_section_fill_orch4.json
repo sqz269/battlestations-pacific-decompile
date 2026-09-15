@@ -1,0 +1,218 @@
+{
+  "packet": "orch4_section_fill_e5",
+  "schema_version": 1,
+  "name": "fill_native_damageable_sections_008798f0",
+  "source": "src/native_damageable_section_fill.cpp",
+  "header": "include/bsp/native_damageable_section_fill.hpp",
+  "documentation": "docs/NATIVE_DAMAGEABLE_SECTION_FILL_ORCH4.md",
+  "result": "Complete ordinary and catch source over borrowed actual records; original runtime/virtual boundaries explicit",
+  "evidence": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "ghidra_mutations": false,
+    "target_verification": "bsp.py ghidra client verifies bsp project, current program path, language and image base before live batch",
+    "original_interval": [
+      "008798f0",
+      "0087998c"
+    ],
+    "bytes": 157,
+    "sha256": "c0dbc084ac24cee6196e84527debdaac5465f38ecc8330fadafd5d8a2f9d82a3",
+    "decoded_instructions_including_padding": 59,
+    "live_listed_instructions": 58,
+    "unlisted_alignment_padding": {
+      "start": "0087995d",
+      "bytes": "8d4900",
+      "size": 3,
+      "instruction": "LEA ECX,[ECX]",
+      "reachable": false
+    },
+    "feature_summary_is_incomplete": {
+      "instructions": 42,
+      "direct_calls": 1,
+      "omission": "catch path"
+    },
+    "catch_function_owner": "00879951 Catch_All@00879951",
+    "copy_provider_commit": "513b7b098199dca83326d31e8c3fff0072c44f81",
+    "integrated_main_commit": "9b75b849d"
+  },
+  "original_abi": {
+    "ECX": "first destination address",
+    "EDX": "unsigned32 count",
+    "stack_arg_1": "source record pointer atEBP+8",
+    "stack_arg_2_to_4": "three ignored DWORDs",
+    "return_value": "unspecified; source void",
+    "return_instruction": "RET10h at0087998A",
+    "preserved_registers": [
+      "EBP",
+      "EBX",
+      "ESI",
+      "EDI"
+    ],
+    "new_source_parameter": "borrowed actual D0DF04-equivalent vtable identity; used by real source copy constructor"
+  },
+  "ordinary_contract": [
+    "Capture begin and current/completed end from incoming ECX.",
+    "Each nonzero count enters state1 and captures current placement address.",
+    "If current is null, skip copy; otherwise call real00878B40 on current with source.",
+    "After copy/skip, decrement unsigned count; add30h modulo32 to current; state0; publish completed end.",
+    "No bounds checks, allocation, free, source snapshot, vector header, or implicit record initialization.",
+    "Zero count reads no record; null first/count1 skips copy and advances private end to30h."
+  ],
+  "source_dependency": {
+    "entry": "00878b40",
+    "symbol": "copy_construct_native_damageable_section_00878b40",
+    "source": "src/native_damageable_section.cpp",
+    "contract": "Genuine provider: two integer fields, eight ordered x87 transfers, publish vptr, zero destination handle before source handle reload/retain; self-alias drops handle.",
+    "provider_stubbed": false
+  },
+  "call_sites": [
+    {
+      "address": "0087993e",
+      "native": "00878b40",
+      "function": "008798f0"
+    },
+    {
+      "address": "00879975",
+      "native": "00bf6885",
+      "function": "00879951"
+    },
+    {
+      "address": "00c96628",
+      "native": "00401130",
+      "function": "00c96620"
+    }
+  ],
+  "indirect_call_sites": [
+    {
+      "site": "00879968",
+      "instruction": "CALL EAX",
+      "contract": "Current record actual vtable[0], ECX record, stack flags0",
+      "original_table": "00d0df04",
+      "original_slot_target": "00878f30",
+      "source": "actual current virtual dispatch; no fabricated production table",
+      "family_closure_claimed": false
+    }
+  ],
+  "eh": {
+    "handler": "00c96631",
+    "personality": "00bf6b43",
+    "info": "00dc8888",
+    "magic": "19930522",
+    "max_state": 3,
+    "unwind_map": "00dc8870",
+    "try_block_count": 1,
+    "try_map": "00dc885c",
+    "ip_map_count": 0,
+    "flags": 1,
+    "states": [
+      {
+        "state": 0,
+        "parent": -1,
+        "action": null
+      },
+      {
+        "state": 1,
+        "parent": 0,
+        "action": "00c96620",
+        "contract": "Push frame-1C and frame-20, call00401130 bareRET, discard8bytes; no destruction or free"
+      },
+      {
+        "state": 2,
+        "parent": -1,
+        "action": null
+      }
+    ],
+    "catch": {
+      "record": "00dc884c",
+      "flags": 64,
+      "type": null,
+      "object_displacement": 0,
+      "handler": "00879951",
+      "try_low": 0,
+      "try_high": 1,
+      "catch_high": 2
+    },
+    "catch_schedule": [
+      "Capture first from frame-18 and completed end from frame-14.",
+      "For each completed row, load current actual vptr and slot0, call(flags0), advance30h.",
+      "Exclude partial current row, do not free or clear records/header, preserve completed-end bound.",
+      "If cleanup succeeds, BF6885(0,0) rethrows. If cleanup throws, that new exception escapes catch."
+    ],
+    "source_runtime_mapping": "C++ catch(...), actual virtual calls, bare throw; no terminate handler",
+    "unproven": [
+      "Original FH3 personality/SEH compatibility",
+      "private stack aliases",
+      "hardware faults",
+      "translated SEH and double-exception runtime details"
+    ]
+  },
+  "focused_fixture": {
+    "status": "passed",
+    "source": "local/section_fill_probe.cpp",
+    "command": "./local/run_section_fill_probe.ps1",
+    "log": "local/section_fill_probe.log",
+    "compiler": "MSVC Win32 /std:c++17 /EHsc /W4 /WX /O2",
+    "manifest": "/link /MANIFEST:EMBED",
+    "original_code": "Whole157-byte body copied to executable allocation",
+    "only_call_relocation": {
+      "site": "0087993e",
+      "to": "fastcall bridge directly calling genuine00878B40 source",
+      "operand_offset": 79
+    },
+    "guarded_out": [
+      "original FH3 handler pointer",
+      "native rethrow target",
+      "catch cleanup dispatch"
+    ],
+    "cases": [
+      {
+        "name": "count0",
+        "first": null,
+        "source": "invalid pointer1",
+        "result": "no record access; original/source return"
+      },
+      {
+        "name": "null_current_count1",
+        "first": null,
+        "source": "invalid pointer1",
+        "result": "copy skipped; original/source return"
+      },
+      {
+        "name": "count3_middle_source_alias",
+        "result": "all144 record bytes compare after owner-pointer normalization",
+        "initial_owner_references": 5,
+        "final_owner_references": 6,
+        "nonzero_handles": [
+          1,
+          0,
+          0
+        ],
+        "meaning": "First copy retains; middle self-copy drops handle; last copy observes mutated source."
+      }
+    ],
+    "limits": "Original-fill normal path compared with actual source copy provider, not original whole dependency graph or native EH execution. No copy mocks."
+  },
+  "review": {
+    "reviewer": "/root/damageable_construction",
+    "method": "Read-only full PE/live body and FH3 map versus source/header/docs",
+    "result": "No correctness defects found; no review edits or additional tests"
+  },
+  "validation": {
+    "strict_win32_build": "passed scripts/build.ps1 default strict Release",
+    "live_call_verifier": "passed3 rows with0 failures",
+    "original_native_EH_executed": false,
+    "game_validated": false,
+    "binary_ABI_compatible": false,
+    "permanent_tests_added": 0,
+    "build_log": "local/section_fill_build.log",
+    "existing_ctests_passed": 2,
+    "verifier_log": "local/section_fill_call_verifier.log"
+  },
+  "annotation_proposal_for_integrator": {
+    "entry": "008798f0",
+    "old_name": "FUN_008798f0",
+    "proposed_name": "BSP_DamageableSection_UninitializedFill",
+    "comment": "Hypothesis, not recovered symbol. Complete157-byte body incl catch879951 and NOP padding87995D. ECX first,EDX uint32 count,stacksource+3ignoredDWORDs,RET10h. Calls genuine878B40 for nonnull current then advances30h/publishes completed end. FH3 states0/1/2 atDC8888; state1 calls RET-only401130 placement cleanup. Catch forward-calls current record vslot0(flags0), then rethrows; failed current row excluded, cleanup exception escapes. Native storage source in native_damageable_section_fill.cpp; borrowed virtual and current C++ exception runtime boundaries; docs/NATIVE_DAMAGEABLE_SECTION_FILL_ORCH4.md."
+  }
+}
