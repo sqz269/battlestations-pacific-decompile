@@ -1,0 +1,1004 @@
+{
+  "status": "reconstructed_build_tested_original_sound_type_differentials_and_real_bink_focus_fixture",
+  "created_utc": "2026-09-15T03:33:44.094917+00:00",
+  "source": "src/native_window_focus_dispatch.cpp",
+  "header": "include/bsp/native_window_focus_dispatch.hpp",
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "installed_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "ghidra_mutated": true,
+    "saved": true,
+    "mutation_scope": [
+      "00aa33a0",
+      "00aa8e40",
+      "00aac8a0",
+      "00a9e110",
+      "00a4cb60",
+      "00a7a3f0",
+      "00a7a480",
+      "00a7a4a0"
+    ]
+  },
+  "functions": [
+    {
+      "address": "00aa33a0",
+      "bytes": 90,
+      "source_symbol": "pause_native_gui_movie_pages_00aa33a0",
+      "ghidra_name": "BSP_GuiManager_PauseMovieDescendants",
+      "original_abi": "ECX actual88h GUI manager; full DWORD pause stack slot; RET4.",
+      "behavior": "Traverse raw+18/+1C vector. Capture cursor before initial validation and loop end BEFORE returning validation; reread live bounds before dereference/after AA8E40. Two returning CRT repairs demonstrate captured cursor/end behavior. CMP ESI,ESI validation path dead. Supersedes incorrect STL_inst inventory classification: this is game-specific movie focus propagation.",
+      "build_tested": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00aa8e40",
+      "bytes": 116,
+      "source_symbol": "pause_native_gui_movie_children_00aa8e40",
+      "ghidra_name": "BSP_GuiWidget_PauseMovieDescendants",
+      "original_abi": "ECX widget; full DWORD pause stack slot; RET4.",
+      "behavior": "Circular list+68,next0,child8. Current virtual5C=A9E110 reads actual+60; type10 pauses current decoder then every child recurses. Reload child/sentinel after calls; retain returning validation. CMP EDI,EDI validation path dead. Populated nested source traversal and null-decoder path exercised.",
+      "build_tested": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00aac8a0",
+      "bytes": 25,
+      "source_symbol": "pause_native_gui_movie_decoder_00aac8a0",
+      "ghidra_name": "BSP_GuiMovie_PauseDecoder",
+      "original_abi": "ECX widget; DWORD pause stack slot; null RET4 or indirect tail JMP retaining slot.",
+      "behavior": "Test+F0 then reload+F0 and current virtual14. Four reviewed decoder profiles point to A4CB60. Source dispatches concrete leaf; unknown targets explicitly unsupported.",
+      "build_tested": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00a9e110",
+      "bytes": 4,
+      "source_symbol": "read_native_gui_widget_type_00a9e110",
+      "ghidra_name": "BSP_GuiWidget_GetTypeId",
+      "original_abi": "ECX actual widget; EAX raw+60; RET.",
+      "behavior": "Exact MOV EAX,[ECX+60];RET.19 current vtable5C slots freshly checked. AA9390 argument-to-field store and AAFE20 type10/profile producer slices retained. Complete original4byte leaf/source equality passes.",
+      "build_tested": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00a4cb60",
+      "bytes": 42,
+      "source_symbol": "pause_native_movie_decoder_00a4cb60",
+      "ghidra_name": "BSP_MovieDecoder_Pause",
+      "original_abi": "ECX decoder shared state (complete allocation+10); DWORD pause stack slot; RET4.",
+      "behavior": "Capture handle+4; null returns. Low byte zero captures CE3800=0.5 and writes+14 before shipped _BinkPause@8(captured handle,zero-extended byte); return ignored. Real installed Bink movie source path passes; no original leaf replay.",
+      "build_tested": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00a7a3f0",
+      "bytes": 68,
+      "source_symbol": "dirty_native_sound_classes_00a7a3f0",
+      "ghidra_name": "BSP_SoundManager_DirtyClassEntries",
+      "original_abi": "ECX raw sound manager; DWORD class mask stack slot; RET4.",
+      "behavior": "Capture array+8C and count+90, wrapping end once. Descriptor entry+44/class+8; shift uses class&31; mask match sets only entry byte+14. Complete original body/source differential over raw storage passes.",
+      "build_tested": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00a7a480",
+      "bytes": 21,
+      "source_symbol": "pause_native_sound_manager_00a7a480",
+      "ghidra_name": "BSP_SoundManager_PauseForFocus",
+      "original_abi": "ECX actual sound manager; no consumed stack args; RET.",
+      "behavior": "If byte+50 zero, store1 BEFORE A7A3F0(maskFFFF); otherwise no-op. Complete original body with unchanged relative call displacement matches source.",
+      "build_tested": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00a7a4a0",
+      "bytes": 21,
+      "source_symbol": "resume_native_sound_manager_00a7a4a0",
+      "ghidra_name": "BSP_SoundManager_ResumeForFocus",
+      "original_abi": "ECX actual sound manager; no consumed stack args; RET.",
+      "behavior": "If byte+50 nonzero, store0 BEFORE A7A3F0(maskFFFF); otherwise no-op. Preserve noncanonical incoming byte handling. Complete original body/source differential passes.",
+      "build_tested": true,
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "evidence": {
+    "fresh_functions": [
+      {
+        "bytes": 90,
+        "sha256": "6bee79bafcc24742716d2c5b39965d6999fb5cf70aecfa20e38911594020d098",
+        "live_equals_installed_pe": true,
+        "entry": "00aa33a0",
+        "original_executed": false
+      },
+      {
+        "bytes": 116,
+        "sha256": "d9ebcb123ba55fff61a655f2629475acbe4798dc9549752af0faf020cc885a4b",
+        "live_equals_installed_pe": true,
+        "entry": "00aa8e40",
+        "original_executed": false
+      },
+      {
+        "bytes": 25,
+        "sha256": "5ebfc5c33614aaf720301d003984d8778bfa4a31fabb3ec23b57fc4032181ee2",
+        "live_equals_installed_pe": true,
+        "entry": "00aac8a0",
+        "original_executed": false
+      },
+      {
+        "bytes": 21,
+        "sha256": "27ddec7d5ac0a037f1c79582c773008299f139dcfdfca0eba0c587ad1b5bced5",
+        "live_equals_installed_pe": true,
+        "entry": "00a7a480",
+        "original_executed": true
+      },
+      {
+        "bytes": 21,
+        "sha256": "003d782bb8ea9f28eadb991c93c8fa29348a147f5ebfaec31c2aa7b6055002fc",
+        "live_equals_installed_pe": true,
+        "entry": "00a7a4a0",
+        "original_executed": true
+      },
+      {
+        "bytes": 68,
+        "sha256": "3da8a7a364949f83ddadd4d2da1c1d12feffea537e21ded6bae0658f14cbe9ce",
+        "live_equals_installed_pe": true,
+        "entry": "00a7a3f0",
+        "original_executed": true
+      },
+      {
+        "bytes": 42,
+        "sha256": "4e6156698b6baae3f3ef4d6be60cf716dfa50a990a3b0330f99310459c7ab136",
+        "live_equals_installed_pe": true,
+        "entry": "00a4cb60",
+        "original_executed": false
+      },
+      {
+        "bytes": 4,
+        "sha256": "e6001fd7c43d35f244e418688ebe47d7777d15c557f62267ef4f2fb6c3bf7a74",
+        "live_equals_installed_pe": true,
+        "entry": "00a9e110",
+        "original_executed": true
+      }
+    ],
+    "function_bytes": 387,
+    "calls": [
+      {
+        "address": "00aa33af",
+        "function": "00aa33a0",
+        "native": "00bf6713",
+        "reachable": true
+      },
+      {
+        "address": "00aa33c0",
+        "function": "00aa33a0",
+        "native": "00bf6713",
+        "reachable": true
+      },
+      {
+        "address": "00aa33c9",
+        "function": "00aa33a0",
+        "native": "00bf6713",
+        "reachable": false
+      },
+      {
+        "address": "00aa33d7",
+        "function": "00aa33a0",
+        "native": "00bf6713",
+        "reachable": true
+      },
+      {
+        "address": "00aa33df",
+        "function": "00aa33a0",
+        "native": "00aa8e40",
+        "reachable": true
+      },
+      {
+        "address": "00aa33e9",
+        "function": "00aa33a0",
+        "native": "00bf6713",
+        "reachable": true
+      },
+      {
+        "address": "00aa8e57",
+        "function": "00aa8e40",
+        "native": "00bf6713",
+        "reachable": false
+      },
+      {
+        "address": "00aa8e65",
+        "function": "00aa8e40",
+        "native": "00bf6713",
+        "reachable": true
+      },
+      {
+        "address": "00aa8e7e",
+        "function": "00aa8e40",
+        "native": "00bf6713",
+        "reachable": true
+      },
+      {
+        "address": "00aa8e87",
+        "function": "00aa8e40",
+        "native": "00aac8a0",
+        "reachable": true
+      },
+      {
+        "address": "00aa8e91",
+        "function": "00aa8e40",
+        "native": "00bf6713",
+        "reachable": true
+      },
+      {
+        "address": "00aa8e9a",
+        "function": "00aa8e40",
+        "native": "00aa8e40",
+        "reachable": true
+      },
+      {
+        "address": "00aa8ea4",
+        "function": "00aa8e40",
+        "native": "00bf6713",
+        "reachable": true
+      },
+      {
+        "address": "00a7a48f",
+        "function": "00a7a480",
+        "native": "00a7a3f0",
+        "reachable": true
+      },
+      {
+        "address": "00a7a4af",
+        "function": "00a7a4a0",
+        "native": "00a7a3f0",
+        "reachable": true
+      }
+    ],
+    "indirect_calls": [
+      {
+        "address": "00aa8e72",
+        "function": "00aa8e40",
+        "kind": "indirect",
+        "operand": "eax"
+      },
+      {
+        "address": "00aac8b4",
+        "function": "00aac8a0",
+        "kind": "indirect_tail_jump",
+        "operand": "eax",
+        "retained_argument": "full incoming DWORD slot; decoder leaf consumes low byte"
+      },
+      {
+        "address": "00a4cb81",
+        "function": "00a4cb60",
+        "kind": "indirect",
+        "operand": "dword ptr [0xce23bc]"
+      }
+    ],
+    "current_numeric_virtual_slots": [
+      {
+        "start": "00d5bc54",
+        "bytes": 4,
+        "sha256": "b85dcb41da945b7e6317bc4d0a75058e2e383526f734ac13c12254d0eae91b40",
+        "live_equals_installed_pe": true,
+        "profile": "00d5bbf8",
+        "slot": "5c",
+        "target": "00a9e110"
+      },
+      {
+        "start": "00d5bd3c",
+        "bytes": 4,
+        "sha256": "b85dcb41da945b7e6317bc4d0a75058e2e383526f734ac13c12254d0eae91b40",
+        "live_equals_installed_pe": true,
+        "profile": "00d5bce0",
+        "slot": "5c",
+        "target": "00a9e110"
+      },
+      {
+        "start": "00d5bf2c",
+        "bytes": 4,
+        "sha256": "b85dcb41da945b7e6317bc4d0a75058e2e383526f734ac13c12254d0eae91b40",
+        "live_equals_installed_pe": true,
+        "profile": "00d5bed0",
+        "slot": "5c",
+        "target": "00a9e110"
+      },
+      {
+        "start": "00d5c18c",
+        "bytes": 4,
+        "sha256": "b85dcb41da945b7e6317bc4d0a75058e2e383526f734ac13c12254d0eae91b40",
+        "live_equals_installed_pe": true,
+        "profile": "00d5c130",
+        "slot": "5c",
+        "target": "00a9e110"
+      },
+      {
+        "start": "00d5c2cc",
+        "bytes": 4,
+        "sha256": "b85dcb41da945b7e6317bc4d0a75058e2e383526f734ac13c12254d0eae91b40",
+        "live_equals_installed_pe": true,
+        "profile": "00d5c270",
+        "slot": "5c",
+        "target": "00a9e110"
+      },
+      {
+        "start": "00d5c51c",
+        "bytes": 4,
+        "sha256": "b85dcb41da945b7e6317bc4d0a75058e2e383526f734ac13c12254d0eae91b40",
+        "live_equals_installed_pe": true,
+        "profile": "00d5c4c0",
+        "slot": "5c",
+        "target": "00a9e110"
+      },
+      {
+        "start": "00d5c724",
+        "bytes": 4,
+        "sha256": "b85dcb41da945b7e6317bc4d0a75058e2e383526f734ac13c12254d0eae91b40",
+        "live_equals_installed_pe": true,
+        "profile": "00d5c6c8",
+        "slot": "5c",
+        "target": "00a9e110"
+      },
+      {
+        "start": "00d5c854",
+        "bytes": 4,
+        "sha256": "b85dcb41da945b7e6317bc4d0a75058e2e383526f734ac13c12254d0eae91b40",
+        "live_equals_installed_pe": true,
+        "profile": "00d5c7f8",
+        "slot": "5c",
+        "target": "00a9e110"
+      },
+      {
+        "start": "00d5c944",
+        "bytes": 4,
+        "sha256": "b85dcb41da945b7e6317bc4d0a75058e2e383526f734ac13c12254d0eae91b40",
+        "live_equals_installed_pe": true,
+        "profile": "00d5c8e8",
+        "slot": "5c",
+        "target": "00a9e110"
+      },
+      {
+        "start": "00d5ca44",
+        "bytes": 4,
+        "sha256": "b85dcb41da945b7e6317bc4d0a75058e2e383526f734ac13c12254d0eae91b40",
+        "live_equals_installed_pe": true,
+        "profile": "00d5c9e8",
+        "slot": "5c",
+        "target": "00a9e110"
+      },
+      {
+        "start": "00d5be94",
+        "bytes": 4,
+        "sha256": "b85dcb41da945b7e6317bc4d0a75058e2e383526f734ac13c12254d0eae91b40",
+        "live_equals_installed_pe": true,
+        "profile": "00d5be38",
+        "slot": "5c",
+        "target": "00a9e110"
+      },
+      {
+        "start": "00d5cbdc",
+        "bytes": 4,
+        "sha256": "b85dcb41da945b7e6317bc4d0a75058e2e383526f734ac13c12254d0eae91b40",
+        "live_equals_installed_pe": true,
+        "profile": "00d5cb80",
+        "slot": "5c",
+        "target": "00a9e110"
+      },
+      {
+        "start": "00d5cc74",
+        "bytes": 4,
+        "sha256": "b85dcb41da945b7e6317bc4d0a75058e2e383526f734ac13c12254d0eae91b40",
+        "live_equals_installed_pe": true,
+        "profile": "00d5cc18",
+        "slot": "5c",
+        "target": "00a9e110"
+      },
+      {
+        "start": "00d5cd54",
+        "bytes": 4,
+        "sha256": "b85dcb41da945b7e6317bc4d0a75058e2e383526f734ac13c12254d0eae91b40",
+        "live_equals_installed_pe": true,
+        "profile": "00d5ccf8",
+        "slot": "5c",
+        "target": "00a9e110"
+      },
+      {
+        "start": "00d5cebc",
+        "bytes": 4,
+        "sha256": "b85dcb41da945b7e6317bc4d0a75058e2e383526f734ac13c12254d0eae91b40",
+        "live_equals_installed_pe": true,
+        "profile": "00d5ce60",
+        "slot": "5c",
+        "target": "00a9e110"
+      },
+      {
+        "start": "00d5cf94",
+        "bytes": 4,
+        "sha256": "b85dcb41da945b7e6317bc4d0a75058e2e383526f734ac13c12254d0eae91b40",
+        "live_equals_installed_pe": true,
+        "profile": "00d5cf38",
+        "slot": "5c",
+        "target": "00a9e110"
+      },
+      {
+        "start": "00d5d02c",
+        "bytes": 4,
+        "sha256": "b85dcb41da945b7e6317bc4d0a75058e2e383526f734ac13c12254d0eae91b40",
+        "live_equals_installed_pe": true,
+        "profile": "00d5cfd0",
+        "slot": "5c",
+        "target": "00a9e110"
+      },
+      {
+        "start": "00d5d0b4",
+        "bytes": 4,
+        "sha256": "b85dcb41da945b7e6317bc4d0a75058e2e383526f734ac13c12254d0eae91b40",
+        "live_equals_installed_pe": true,
+        "profile": "00d5d058",
+        "slot": "5c",
+        "target": "00a9e110"
+      },
+      {
+        "start": "00d5d18c",
+        "bytes": 4,
+        "sha256": "b85dcb41da945b7e6317bc4d0a75058e2e383526f734ac13c12254d0eae91b40",
+        "live_equals_installed_pe": true,
+        "profile": "00d5d130",
+        "slot": "5c",
+        "target": "00a9e110"
+      },
+      {
+        "start": "00d24dac",
+        "bytes": 4,
+        "sha256": "cd3aecb919d08596b868dcbb4176e3e74c5ac610797ffaf13cbf68310703b35c",
+        "live_equals_installed_pe": true,
+        "profile": "00d24d98",
+        "slot": "14",
+        "target": "00a4cb60"
+      },
+      {
+        "start": "00d24e04",
+        "bytes": 4,
+        "sha256": "cd3aecb919d08596b868dcbb4176e3e74c5ac610797ffaf13cbf68310703b35c",
+        "live_equals_installed_pe": true,
+        "profile": "00d24df0",
+        "slot": "14",
+        "target": "00a4cb60"
+      },
+      {
+        "start": "00d24e8c",
+        "bytes": 4,
+        "sha256": "cd3aecb919d08596b868dcbb4176e3e74c5ac610797ffaf13cbf68310703b35c",
+        "live_equals_installed_pe": true,
+        "profile": "00d24e78",
+        "slot": "14",
+        "target": "00a4cb60"
+      },
+      {
+        "start": "00d24eec",
+        "bytes": 4,
+        "sha256": "cd3aecb919d08596b868dcbb4176e3e74c5ac610797ffaf13cbf68310703b35c",
+        "live_equals_installed_pe": true,
+        "profile": "00d24ed8",
+        "slot": "14",
+        "target": "00a4cb60"
+      }
+    ],
+    "fresh_support": [
+      {
+        "start": "00ce3800",
+        "bytes": 4,
+        "sha256": "d99e58435243d9fef9c88273b8d553b4fba4d0baf8009d29eae74fa99e0d9f57",
+        "live_equals_installed_pe": true
+      },
+      {
+        "start": "00aafe37",
+        "bytes": 17,
+        "sha256": "a2c70e7274487a39a3a92530f98ad834ad953b601f7311492ade86a142d44b59",
+        "live_equals_installed_pe": true
+      },
+      {
+        "start": "00a4c660",
+        "bytes": 154,
+        "sha256": "b806449021027104a2210bb8fb9a1c4c90d25893f40b15857211553891b48d36",
+        "live_equals_installed_pe": true
+      },
+      {
+        "start": "00a4cee0",
+        "bytes": 68,
+        "sha256": "f2aea661431a9204dfa30df2754eccb3ba533befe3b3fe75f0551be7b57e91e0",
+        "live_equals_installed_pe": true
+      },
+      {
+        "start": "00aa93c7",
+        "bytes": 127,
+        "sha256": "9ad2daf82dd7dcb02df0f35be588dbb631aa01f4d6fc2239c6e77ec3ce790415",
+        "live_equals_installed_pe": true
+      },
+      {
+        "start": "00aa9456",
+        "bytes": 6,
+        "sha256": "03e985de78110e46e896633ea9d9a4022c2533c400246efd3e70e4ad76e49487",
+        "live_equals_installed_pe": true
+      }
+    ],
+    "support_bytes": 468,
+    "explicit_units": {
+      "native_material_descriptor_samplers": {
+        "compiled": true,
+        "linked": true,
+        "symbol_rows": [
+          "0001:00003ef0       ??1logic_error@std@@UAE@XZ 00404ef0 f i native_material_descriptor_samplers.obj",
+          "0001:00004140       ??_Elogic_error@std@@UAEPAXI@Z 00405140 f i native_material_descriptor_samplers.obj"
+        ]
+      },
+      "native_material_effect_loading": {
+        "compiled": true,
+        "linked": true,
+        "symbol_rows": [
+          "0001:0000b060       ??0NativeMaterialEffectLoadAcquired@bsp@@QAE@XZ 0040c060 f   native_material_effect_loading.obj",
+          "0001:0000b0d0       ??0NativeMaterialEffectLoadOwners@bsp@@QAE@AAVGuiNativeGeometryOwners@1@AAUNativeMaterialEffectDestructionAccess@1@PDI@Z 0040c0d0 f   native_material_effect_loading.obj"
+        ]
+      },
+      "native_material_effect_programs": {
+        "compiled": true,
+        "linked": true,
+        "symbol_rows": [
+          "0001:0000c070       ??0?$optional@VNativeShaderDescriptorCallableBinding@bsp@@@std@@QAE@XZ 0040d070 f i native_material_effect_programs.obj",
+          "0001:0000c1c0       ??0NativeMaterialEffectProgramOperation@bsp@@QAE@XZ 0040d1c0 f   native_material_effect_programs.obj"
+        ]
+      },
+      "native_material_effect_runtime": {
+        "compiled": true,
+        "linked": true,
+        "symbol_rows": [
+          "0001:000039e0       ??1NativeMaterialProgramChildFrame@bsp@@UAE@XZ 004049e0 f i native_material_effect_runtime.obj",
+          "0001:000039e0       ??1NativeTextureNameResolutionOperation@bsp@@UAE@XZ 004049e0 f i native_material_effect_runtime.obj"
+        ]
+      },
+      "native_material_program_compiler": {
+        "compiled": true,
+        "linked": true,
+        "symbol_rows": [
+          "0001:0000e280       ??0NativeMaterialProgramCompileOperation@bsp@@QAE@XZ 0040f280 f   native_material_program_compiler.obj",
+          "0001:0000e420       ??1NativeMaterialProgramCompileOperation@bsp@@UAE@XZ 0040f420 f   native_material_program_compiler.obj"
+        ]
+      },
+      "native_material_program_compiler_actual": {
+        "compiled": true,
+        "linked": true,
+        "symbol_rows": [
+          "0001:0000ed20       ??$?0U?$default_delete@UNativeMaterialDescriptorSamplersOperation@bsp@@@std@@$0A@@?$unique_ptr@UNativeMaterialDescriptorSamplersOperation@bsp@@U?$default_delete@UNativeMaterialDescriptorSamplersOperation@bsp@@@std@@@std@@QAE@XZ 0040fd20 f i native_material_program_compiler_actual.obj",
+          "0001:0000ed20       ??$?0U?$default_delete@UNativeMaterialPassShaderSlotsOperation@bsp@@@std@@$0A@@?$unique_ptr@UNativeMaterialPassShaderSlotsOperation@bsp@@U?$default_delete@UNativeMaterialPassShaderSlotsOperation@bsp@@@std@@@std@@QAE@XZ 0040fd20 f i native_material_program_compiler_actual.obj"
+        ]
+      },
+      "native_material_secondary_pass_actual": {
+        "compiled": true,
+        "linked": true,
+        "symbol_rows": [
+          "0001:00011750       ??1?$unique_ptr@VNativeMaterialSecondaryPassFrame@bsp@@U?$default_delete@VNativeMaterialSecondaryPassFrame@bsp@@@std@@@std@@QAE@XZ 00412750 f i native_material_secondary_pass_actual.obj",
+          "0001:00011790       ??_ENativeMaterialSecondaryPassFrame@bsp@@UAEPAXI@Z 00412790 f i native_material_secondary_pass_actual.obj"
+        ]
+      },
+      "native_render_service_texture_construction": {
+        "compiled": true,
+        "linked": false,
+        "symbol_rows": []
+      },
+      "native_shader_binary_cache_load": {
+        "compiled": true,
+        "linked": true,
+        "symbol_rows": [
+          "0001:00004850       ?_Xlength@?$vector@V?$unique_ptr@UNativeShaderBinaryCacheRowLoadFrame@bsp@@U?$default_delete@UNativeShaderBinaryCacheRowLoadFrame@bsp@@@std@@@std@@V?$allocator@V?$unique_ptr@UNativeShaderBinaryCacheRowLoadFrame@bsp@@U?$default_delete@UNativeShaderBinaryCacheRowLoadFrame@bsp@@@std@@@std@@@2@@std@@CAXXZ 00405850 f i native_shader_binary_cache_load.obj",
+          "0001:00011bd0       ??$_Emplace_reallocate@V?$unique_ptr@UNativeShaderBinaryCacheRowLoadFrame@bsp@@U?$default_delete@UNativeShaderBinaryCacheRowLoadFrame@bsp@@@std@@@std@@@?$vector@V?$unique_ptr@UNativeShaderBinaryCacheRowLoadFrame@bsp@@U?$default_delete@UNativeShaderBinaryCacheRowLoadFrame@bsp@@@std@@@std@@V?$allocator@V?$unique_ptr@UNativeShaderBinaryCacheRowLoadFrame@bsp@@U?$default_delete@UNativeShaderBinaryCacheRowLoadFrame@bsp@@@std@@@std@@@2@@std@@AAEPAV?$unique_ptr@UNativeShaderBinaryCacheRowLoadFrame@bsp@@U?$default_delete@UNativeShaderBinaryCacheRowLoadFrame@bsp@@@std@@@1@QAV21@$$QAV21@@Z 00412bd0 f i native_shader_binary_cache_load.obj"
+        ]
+      },
+      "native_shader_binary_cache_stream": {
+        "compiled": true,
+        "linked": true,
+        "symbol_rows": [
+          "0001:00012720       ??1NativeShaderBinaryCacheFrameState@bsp@@QAE@XZ 00413720 f   native_shader_binary_cache_stream.obj",
+          "0001:00012740       ?capture_slot@NativeShaderBinaryCacheStreamContext@bsp@@QBEIPAXIAAI@Z 00413740 f   native_shader_binary_cache_stream.obj"
+        ]
+      },
+      "native_shader_constant_header": {
+        "compiled": true,
+        "linked": true,
+        "symbol_rows": [
+          "0001:00012720       ??1NativeShaderConstantHeaderOperation@bsp@@QAE@XZ 00413720 f   native_shader_constant_header.obj",
+          "0001:00012c00       ?append_native_shader_line_00b35110@bsp@@YAXAAVNativeString@1@AAUNativeShaderConstantHeaderContext@1@AAUNativeShaderConstantHeaderOperation@1@PBDZZ 00413c00 f   native_shader_constant_header.obj"
+        ]
+      },
+      "native_shader_descriptor_reader": {
+        "compiled": true,
+        "linked": true,
+        "symbol_rows": [
+          "0001:000135f0       ??0NativeShaderDescriptorReadOperation@bsp@@QAE@XZ 004145f0 f   native_shader_descriptor_reader.obj",
+          "0001:000136d0       ??1NativeShaderDescriptorReadOperation@bsp@@UAE@XZ 004146d0 f   native_shader_descriptor_reader.obj"
+        ]
+      },
+      "native_shader_field_initialization": {
+        "compiled": true,
+        "linked": true,
+        "symbol_rows": [
+          "0001:000142c0       ??$make_unique@UNativeShaderConstantHeaderOperation@bsp@@$$V$0A@@std@@YA?AV?$unique_ptr@UNativeShaderConstantHeaderOperation@bsp@@U?$default_delete@UNativeShaderConstantHeaderOperation@bsp@@@std@@@0@XZ 004152c0 f i native_shader_field_initialization.obj",
+          "0001:000143a0       ??0NativeShaderConstantHeaderOperation@bsp@@QAE@XZ 004153a0 f i native_shader_field_initialization.obj"
+        ]
+      },
+      "native_shader_interpolator_source": {
+        "compiled": true,
+        "linked": true,
+        "symbol_rows": [
+          "0001:000149a0       ??$make_unique@UNativeShaderStructDeclarationOperation@bsp@@$$V$0A@@std@@YA?AV?$unique_ptr@UNativeShaderStructDeclarationOperation@bsp@@U?$default_delete@UNativeShaderStructDeclarationOperation@bsp@@@std@@@0@XZ 004159a0 f i native_shader_interpolator_source.obj",
+          "0001:00014a30       ??0NativeShaderStructDeclarationOperation@bsp@@QAE@XZ 00415a30 f i native_shader_interpolator_source.obj"
+        ]
+      },
+      "native_shader_interpolators": {
+        "compiled": true,
+        "linked": true,
+        "symbol_rows": [
+          "0001:00015580       ??1NativeShaderInterpolatorOperation@bsp@@QAE@XZ 00416580 f   native_shader_interpolators.obj",
+          "0001:000155a0       ?append_native_shader_interpolator_mapping_00b34aa0@bsp@@YAXAAUNativeMaterialProgramBuilderStorage@1@AAUNativeShaderDescriptorArray@1@AAUNativeShaderInterpolatorOperation@1@@Z 004165a0 f   native_shader_interpolators.obj"
+        ]
+      },
+      "native_shader_pixel_source": {
+        "compiled": true,
+        "linked": true,
+        "symbol_rows": [
+          "0001:00015e10       ??$make_unique@UNativeShaderFieldInitializationOperation@bsp@@$$V$0A@@std@@YA?AV?$unique_ptr@UNativeShaderFieldInitializationOperation@bsp@@U?$default_delete@UNativeShaderFieldInitializationOperation@bsp@@@std@@@0@XZ 00416e10 f i native_shader_pixel_source.obj",
+          "0001:00015ee0       ??$make_unique@UNativeShaderInterpolatorSourceOperation@bsp@@$$V$0A@@std@@YA?AV?$unique_ptr@UNativeShaderInterpolatorSourceOperation@bsp@@U?$default_delete@UNativeShaderInterpolatorSourceOperation@bsp@@@std@@@0@XZ 00416ee0 f i native_shader_pixel_source.obj"
+        ]
+      },
+      "native_shader_sampler_declarations": {
+        "compiled": true,
+        "linked": true,
+        "symbol_rows": [
+          "0001:000173d0       ??1NativeShaderSamplerDeclarationsOperation@bsp@@QAE@XZ 004183d0 f   native_shader_sampler_declarations.obj",
+          "0001:00017630       ?append_native_pixel_sampler_declarations_00b37ef0@bsp@@YAXAAUNativeMaterialProgramBuilderStorage@1@AAUNativeShaderConstantHeaderContext@1@AAUNativeShaderSamplerDeclarationsOperation@1@@Z 00418630 f   native_shader_sampler_declarations.obj"
+        ]
+      },
+      "native_shader_shadow_source": {
+        "compiled": true,
+        "linked": true,
+        "symbol_rows": [
+          "0001:00017670       ??1NativeShaderShadowSourceOperation@bsp@@QAE@XZ 00418670 f   native_shader_shadow_source.obj",
+          "0001:00017800       ?append_native_map_shadow_helper_00b382b0@bsp@@YAXAAUNativeMaterialProgramBuilderStorage@1@AAUNativeShaderConstantHeaderContext@1@AAUNativeShaderShadowSourceOperation@1@@Z 00418800 f   native_shader_shadow_source.obj"
+        ]
+      },
+      "native_shader_struct_declarations": {
+        "compiled": true,
+        "linked": true,
+        "symbol_rows": [
+          "0001:00017940       ??1NativeShaderStructDeclarationOperation@bsp@@QAE@XZ 00418940 f   native_shader_struct_declarations.obj",
+          "0001:00017980       ?append_native_shader_cstring_line_00b34f20@bsp@@YAXAAVNativeString@1@PBDAAUNativeShaderConstantHeaderContext@1@AAUNativeShaderStructDeclarationOperation@1@@Z 00418980 f   native_shader_struct_declarations.obj"
+        ]
+      },
+      "native_shader_system_fields": {
+        "compiled": true,
+        "linked": true,
+        "symbol_rows": [
+          "0001:00018490       ??1NativeShaderSystemFieldsOperation@bsp@@QAE@XZ 00419490 f   native_shader_system_fields.obj",
+          "0001:00018760       ?append_native_shader_pixel_system_fields_00b372d0@bsp@@YAXAAUNativeMaterialProgramBuilderStorage@1@AAVNativeStringStorage@1@AAUNativeShaderSystemFieldsOperation@1@@Z 00419760 f   native_shader_system_fields.obj"
+        ]
+      },
+      "native_shader_vertex_source": {
+        "compiled": true,
+        "linked": true,
+        "symbol_rows": [
+          "0001:000187f0       ??1NativeShaderVertexSourceOperation@bsp@@QAE@XZ 004197f0 f   native_shader_vertex_source.obj",
+          "0001:00018940       ?generate_native_shader_vertex_source_00b39110@bsp@@YAXAAUNativeMaterialProgramBuilderStorage@1@AAUNativeShaderFieldInitializationContext@1@AAUNativeShaderVertexSourceOperation@1@@Z 00419940 f   native_shader_vertex_source.obj"
+        ]
+      },
+      "native_vfs_extension_prefix": {
+        "compiled": true,
+        "linked": true,
+        "symbol_rows": [
+          "0001:00003ef0       ??1length_error@std@@UAE@XZ 00404ef0 f i native_vfs_extension_prefix.obj",
+          "0001:00004140       ??_Elength_error@std@@UAEPAXI@Z 00405140 f i native_vfs_extension_prefix.obj"
+        ]
+      },
+      "native_vfs_search_defaults": {
+        "compiled": true,
+        "linked": true,
+        "symbol_rows": [
+          "0001:00019d40       ?register_native_vfs_search_defaults_00738360@bsp@@YAXACRAXAAVActualNativeStringPoolStorage@1@ABUSingletonLifetimeCallbacks@1@@Z 0041ad40 f   native_vfs_search_defaults.obj",
+          "0002:00007a18       ??_C@_03CBDDAJHO@dds@      00489a18     native_vfs_search_defaults.obj"
+        ]
+      },
+      "native_vfs_search_groups": {
+        "compiled": true,
+        "linked": true,
+        "symbol_rows": [
+          "0001:0001d4d0       ?register_native_vfs_search_directory_00be2600@bsp@@YAXPAXPBX1AAVActualNativeStringPoolStorage@1@ABUSingletonLifetimeCallbacks@1@@Z 0041e4d0 f   native_vfs_search_groups.obj",
+          "0001:0001d570       ?register_native_vfs_search_extension_00be25e0@bsp@@YAXPAXPBX1AAVActualNativeStringPoolStorage@1@ABUSingletonLifetimeCallbacks@1@@Z 0041e570 f   native_vfs_search_groups.obj"
+        ]
+      }
+    },
+    "production_providers_linked": {
+      "native_window_focus_dispatch": true,
+      "movie_decoder": true,
+      "native_platform_focus_owners": true,
+      "native_render_entry_cache": true,
+      "native_platform_construction": true,
+      "native_renderer_device_startup_actual": true,
+      "native_renderer_reset_process": true,
+      "native_renderer_default_surfaces": true,
+      "native_renderer_resource_release": true,
+      "native_renderer_resource_restore": true,
+      "native_dynamic_buffer_device_release": true,
+      "native_renderer_reset_readiness": true,
+      "native_graphics_pool_lifetime": true,
+      "native_renderer_constructor": true,
+      "native_hardware_layout_tree_static": true,
+      "native_hardware_layout_pool_static": true,
+      "native_cube_texture_pool_static": true
+    },
+    "source_context_rebuild": [
+      "native_material_descriptor_samplers.cpp",
+      "native_material_effect_loading.cpp",
+      "native_material_effect_programs.cpp",
+      "native_material_effect_runtime.cpp",
+      "native_material_program_compiler.cpp",
+      "native_material_program_compiler_actual.cpp",
+      "native_render_service_texture_construction.cpp",
+      "native_shader_constant_header.cpp",
+      "native_shader_descriptor_reader.cpp",
+      "native_shader_field_initialization.cpp",
+      "native_shader_interpolators.cpp",
+      "native_shader_interpolator_source.cpp",
+      "native_shader_pixel_source.cpp",
+      "native_shader_sampler_declarations.cpp",
+      "native_shader_shadow_source.cpp",
+      "native_shader_struct_declarations.cpp",
+      "native_shader_system_fields.cpp",
+      "native_shader_vertex_source.cpp"
+    ],
+    "foreign_commit": "2cccac2e3ab42c6cd9f2b91262da71509c1699b0",
+    "prior_closed_focus_evidence": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_platform_focus_owners\\evidence.json",
+      "sha256": "d4cb887d2d93640dfcd73687ecd51f24658a45d077eb8cd5d8d7fbeb567fa900"
+    },
+    "original_execution": "Complete A7A3F0/A7A480/A7A4A0(110 bytes) retain relative call displacement in one RX buffer; gaps filled CC, body bytes unchanged. Complete A9E110(4 bytes) also unchanged. Five sound scenarios compare all raw manager and entry bytes. GUI traversal and movie pause execute production source using actual shipped Bink import and explicit raw widget/sound preimages; previous original leaf/fragments and source unwind checks remain."
+  },
+  "fixture": {
+    "utc": "2026-09-15T03:27:31.048928+00:00",
+    "exit": 0,
+    "executable_sha256": "01d26f6c562deaf70274d303140f05714a54ccd3c2b2959c5f2a9f8d8379300d",
+    "command": [
+      "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_window_focus_dispatch\\device_effect_probe.exe"
+    ],
+    "cwd": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_window_focus_dispatch",
+    "libraries_before_after": {
+      "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\build\\win32\\Release\\bsp_core.lib": "06dac51d04748c4b39462def7629e64c543d24ee80d39bfbd244fa7863664abe",
+      "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\build\\win32\\Release\\bsp_lua511.lib": "b6c19dd56bce2c86dcf1abf5c3044d48ddc2ac2c33ef04e3dc87f022413ee193",
+      "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\build\\win32\\Release\\bsp_zlib121.lib": "2c89bd9ae83d791564ea847c75e8e5ee025e40810c1df8d55e5799e0c7b8c471"
+    },
+    "installed_assets_before_after": {
+      "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\shaders.bin": "dcc65686e26e0b7b4f4179b45b153aaa353696b0b1b08c32251fbc7c97c0ecf8",
+      "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\common\\debugshader.shfx": "d45e91ef1a3f11c654b97ac3a9d293b9a24b597b68fb315d611638d3b6933476",
+      "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\lights\\dummy.shfx": "3768df78e6a57ee28563ab40cfb9cf223569c12eb62e8576458365deb0866c5b",
+      "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\dx9_lua.inc": "7766adc9c116a9e396b3dd77e9d97b3ea6d55c84601cb2a5a49a64362605b11f",
+      "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\scripts\\fundamentals.lua": "20e128ebe9a1cb7678e3324b0baae93adab4f34f4d96bd081fb7b86505f63526",
+      "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\models\\textures\\error.dds": "9b4666225274f51cfc1d6e964070be76f2a3a4997bec69748d1a81ba86359162",
+      "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\effects\\white.dds": "d98f8d618cfbb3840198fb54e8065446b5a249760b1a8f4bf2dd47f332d28d95",
+      "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\binkw32.dll": "7f22055e8f62e228eb90f09846f9b668e0a0b1d29057af6e3b7bff1e08c0d724",
+      "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\movies\\fe_eidos.bik": "a4fb60063d18dc97ce6e8867ddbdaee3505cd70a5ff9394162e7be528e21f6ee"
+    },
+    "check_lines": [
+      "STAGE controlled child: seven native input bands reserved before initial thread",
+      "PLATFORM actual184h=1 publication=1 registration=1 raw_queue=1 preimage_aspect=C2FFFFFE x87_cw=0C7F x87_sw=0020 title_return=1",
+      "PASS raw platform construction and title/base cleanup; original x87 fragment all-byte/CW/SW differential",
+      "PASS graphics pools and hardware tree initialized in shared allocator-list domain with real CRT callback registration",
+      "PASS full 78 startup search registrations and installed 1628-row cache acquisition",
+      "RENDERER constructed=0071BFC0 factory=03275400 lua=0338E940 definitions=03A82118 constants=032E0040 maxtexture=16384x16384 ps=0300 vs=0300 atoc=1 control_thread=32000",
+      "PASS full B32410 renderer construction with real capability gather and native singleton children",
+      "DEVICE native_startup=1 real_focus=1 reset_success=1 thread=64420 behavior=00000044 elapsed_ms=406 vb_bytes=16777216 ib_bytes=1048576 color=0CFCB840 depth=0CFCB878",
+      "PASS full B2AEB0 device startup and B2ABD0 focused Reset; actual default surfaces and 16MiB/1MiB dynamic buffers restored",
+      "ENTRY_CACHE actual14h=1 registered=1 records=10000 record_bytes=40 requested_bytes=400000 used=0 original_record_equal=1 stale_pointer=1 old_capacity=1 owner=0CF2A278",
+      "PASS actual startup render-entry cache; original full record differential and count-based resize edge",
+      "FOCUS actual_gui88h=1 actual_media18h=1 registered=2 untouched_gui_bytes=71 untouched_media_bytes=8 injected_constructor_failures=2 reentry_publication_clear=1 ordered_free=1 guard_depth=0",
+      "PASS actual GUI/media constructors and getters; untouched bytes; source C++ allocation-failure cleanup ordering",
+      "LIMIT focus owners remain live; full GUI/media normal destruction, populated GUI activation and original FH3/SEH execution not claimed",
+      "WINDOW_FOCUS original_sound_bodies=3 original_sound_bytes=110 sound_scenarios=5 original_type_bytes=4 populated_gui_depth=2 null_decoder=1 returning_validation_calls=2 real_bink=1 movie_width=1280 movie_height=720 movie_frames=90 movie_closed=1",
+      "PASS raw GUI focus traversal and captured-bound validation; real installed Bink pause/resume; complete original sound/type differentials",
+      "LIMIT widget graph and sound entry storage are explicit raw fixture preimages; full GUI/sound producers and window handler remain unintegrated; no decoded/displayed movie or gameplay proof",
+      "READY cold texture cache=0 canonical=0 installed_shader_rows=1628",
+      "TEXTURE models/textures/error.dds bytes=22000 refs=3 width=128 height=128 mips=8 format=35545844 source_refs=1 backing_refs=1 aliases=2",
+      "TEXTURE effects/white.dds bytes=11064 refs=5 width=128 height=128 mips=8 format=31545844 source_refs=1 backing_refs=1 aliases=2",
+      "PASS cold native VFS DDS loads, canonical owners, retained bytes and cache aliases",
+      "PASS state caches render2/third1/sampler1; refs primary-render5 secondary-render2 third6 sampler6; white5 error3; pass refs2/1; canonical28",
+      "PASS B2EBB0/B407A0/B46950/B45EE0 canonical effect; resolved basenames and native generated keys; primary4 secondary1 retained1; cachecursor=164 canonical=28 reads=14 bytes=2301268",
+      "LIMIT actual source normal admission with real Lua/VFS/HAL and constructed native renderer and cold error/white DDS textures, complete native device startup and focused Reset, explicit material-policy cells and PC/USA inputs; no original FH3/ABI, archive startup, variants writes, teardown, draw or game proof",
+      "PASS actual control worker destruction and OS-observed thread exit0; parent and remaining owners retained",
+      "PASS probe focus restored and native timeBeginPeriod balanced; renderer/device/resource owners retained until process exit",
+      "PASS render-entry cache real section/buffer/owner release and publication/registration removal; explicit scalar route"
+    ],
+    "actual_com_matches_installed_cache": [
+      {
+        "row": 156,
+        "name": "debugshader0F3.vso",
+        "mode": 0,
+        "stage": "vs",
+        "bytes": 432,
+        "sha256": "cbc4d11e94dfd24513e4d433bebb1c6a4926f47146509c6643ea32ca027d586a"
+      },
+      {
+        "row": 157,
+        "name": "debugshader0F3.pso",
+        "mode": 0,
+        "stage": "ps",
+        "bytes": 444,
+        "sha256": "1010de3ba58511098c5d1800239975d09175cf3b1ceb010b82688b388840033a"
+      },
+      {
+        "row": 158,
+        "name": "debugshader1F3.vso",
+        "mode": 1,
+        "stage": "vs",
+        "bytes": 432,
+        "sha256": "cbc4d11e94dfd24513e4d433bebb1c6a4926f47146509c6643ea32ca027d586a"
+      },
+      {
+        "row": 159,
+        "name": "debugshader1F3.pso",
+        "mode": 1,
+        "stage": "ps",
+        "bytes": 200,
+        "sha256": "3751a656ab27ea7c382e92625f76615abcbbbfca409f7d4c453f60b6c8686ae0"
+      },
+      {
+        "row": 160,
+        "name": "debugshader3F3.vso",
+        "mode": 3,
+        "stage": "vs",
+        "bytes": 432,
+        "sha256": "cbc4d11e94dfd24513e4d433bebb1c6a4926f47146509c6643ea32ca027d586a"
+      },
+      {
+        "row": 161,
+        "name": "debugshader3F3.pso",
+        "mode": 3,
+        "stage": "ps",
+        "bytes": 348,
+        "sha256": "909be267fb068b24571d8dc13d45796515d274d82d95dbaa57047adcd1c46205"
+      },
+      {
+        "row": 162,
+        "name": "debugshader4F3.vso",
+        "mode": 4,
+        "stage": "vs",
+        "bytes": 432,
+        "sha256": "cbc4d11e94dfd24513e4d433bebb1c6a4926f47146509c6643ea32ca027d586a"
+      },
+      {
+        "row": 163,
+        "name": "debugshader4F3.pso",
+        "mode": 4,
+        "stage": "ps",
+        "bytes": 200,
+        "sha256": "3751a656ab27ea7c382e92625f76615abcbbbfca409f7d4c453f60b6c8686ae0"
+      }
+    ],
+    "cold_retained_textures": [
+      {
+        "asset": "models/textures/error.dds",
+        "bytes": 22000,
+        "sha256": "9b4666225274f51cfc1d6e964070be76f2a3a4997bec69748d1a81ba86359162",
+        "exact_retained_source": true
+      },
+      {
+        "asset": "effects/white.dds",
+        "bytes": 11064,
+        "sha256": "d98f8d618cfbb3840198fb54e8065446b5a249760b1a8f4bf2dd47f332d28d95",
+        "exact_retained_source": true
+      }
+    ]
+  },
+  "build": {
+    "commit": "f9e68cc138cd0e998e9ad1ce014ec2d5de41635a",
+    "libraries": {
+      "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\build\\win32\\Release\\bsp_core.lib": "06dac51d04748c4b39462def7629e64c543d24ee80d39bfbd244fa7863664abe",
+      "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\build\\win32\\Release\\bsp_lua511.lib": "b6c19dd56bce2c86dcf1abf5c3044d48ddc2ac2c33ef04e3dc87f022413ee193",
+      "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\build\\win32\\Release\\bsp_zlib121.lib": "2c89bd9ae83d791564ea847c75e8e5ee025e40810c1df8d55e5799e0c7b8c471"
+    },
+    "build_log": "local/native-window-focus-dispatch-build.log",
+    "build_log_sha256": "72288248fd7797f89a117b98ac9478b2ca1b638c352606a834415ba3980ec790",
+    "prior_root_closure": "local/checkpoints/9ed3a6de/native-platform-focus-owners/validation.json"
+  },
+  "tag_correction": {
+    "before": {
+      "address": "00aa33a0",
+      "name": "STL_inst_00aa33a0",
+      "category": "stl_instantiation",
+      "confidence": "high",
+      "action": "rename",
+      "create": false,
+      "source": "reports/library_inventory/templates_and_generated.json",
+      "evidence_id": "e0028"
+    },
+    "after": {
+      "address": "00aa33a0",
+      "name": "BSP_GuiManager_PauseMovieDescendants",
+      "category": "reconstructed_game_logic",
+      "confidence": "high",
+      "action": "bookmark",
+      "create": false,
+      "source": "reports/native_window_focus_dispatch.json",
+      "evidence": "Supersedes STL_inst inventory classification: the full body traverses GUI pages and calls AA8E40 to pause movie descendants. STL iterator checks are inlined; the function is game behavior. Existing Ghidra inventory history is retained; the reviewed function name/comment supersede it."
+    },
+    "ghidra_inventory_history_retained": true
+  },
+  "validation": {
+    "production_build": "scripts/build.ps1;2/2 existing CTests passed",
+    "explicit_compiled_units": 24,
+    "explicit_linked_units": 23,
+    "fixture_compile_attempt": 1,
+    "fixture_capture": 1,
+    "new_permanent_tests": 0,
+    "original_sound_bodies": 3,
+    "original_sound_bytes": 110,
+    "original_type_bytes": 4,
+    "sound_scenarios": 5,
+    "returning_crt_validation_calls": 2,
+    "installed_bink_handle": {
+      "width": 1280,
+      "height": 720,
+      "frames": 90,
+      "closed": true
+    },
+    "decoded_or_displayed_movie": false,
+    "fixture_raw_gui_and_sound_preimages": true
+  },
+  "limits": [
+    "New source contexts/numeric profiles are not original register/FH3/SEH ABI or callable vtables.",
+    "Actual GUI manager and decoder source constructor, but explicit raw widget/sound-entry fixture preimages; full producers not claimed.",
+    "Original sound/type bodies replayed; GUI traversal and movie pause execute source, not original GUI code.",
+    "No nested callback mutation, invalid pointer, concurrency, cyclic tree, throwing validation or unsupported virtual-target runtime validation.",
+    "Existing decoder constructor complete-object flag1 path only; no further-derived layout claim.",
+    "No movie frame decoded/displayed, full window handler/activation, active frame/draw, full shutdown or gameplay proof."
+  ],
+  "ghidra_annotations": {
+    "prior_values": "local/ghidra-annotations-20260915T033449Z.json",
+    "existing_reviewed_names_retained": true,
+    "misleading_stl_inventory_name_corrected": "00aa33a0",
+    "reviewed_names": {
+      "00aa33a0": "BSP_GuiManager_PauseMovieDescendants",
+      "00aa8e40": "BSP_GuiWidget_PauseMovieDescendants",
+      "00aac8a0": "BSP_GuiMovie_PauseDecoder",
+      "00a9e110": "BSP_GuiWidget_GetTypeId",
+      "00a4cb60": "BSP_MovieDecoder_Pause",
+      "00a7a3f0": "BSP_SoundManager_DirtyClassEntries",
+      "00a7a480": "BSP_SoundManager_PauseForFocus",
+      "00a7a4a0": "BSP_SoundManager_ResumeForFocus"
+    },
+    "full_prior_comments_preserved_and_readback_checked": true,
+    "exports_forcibly_refreshed": [
+      "00aa33a0",
+      "00aa8e40",
+      "00aac8a0",
+      "00a9e110",
+      "00a4cb60",
+      "00a7a3f0",
+      "00a7a480",
+      "00a7a4a0"
+    ]
+  },
+  "immutable_capture": {
+    "path": "local/checkpoints/f9e68cc1/native-window-focus-dispatch/validation.json",
+    "sha256": "57fd9ea79bb21e9b59593170624bcfad98e638a5c4d7bb4370349ba189e53d68",
+    "artifacts": 4958,
+    "runtime_modules": 82,
+    "root_provider_source_count": 308,
+    "source_manifest_sha256": "7f34c8eedb0d4c5c629a7609912609dc2d4d2396583ede8ed4e2c0607f862a4c"
+  },
+  "immutable_capture_note": "Complete production/compiler/link/runtime inputs and docs/report before this closure metadata addition. Source/header, CMake and all owned name/reconstruction/tag shards match the frozen closure."
+}
