@@ -1,0 +1,172 @@
+{
+ "events": [
+  {
+   "recreate": "00aa22c0",
+   "previous": "Function: FUN_00aa22c0 at 00aa22c0\nSignature: undefined FUN_00aa22c0(void)\nEntry: 00aa22c0\nBody: 00aa22c0 - 00aa22f4",
+   "plate": null
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "00aa22c0"
+   },
+   "result": {
+    "success": true,
+    "address": "00aa22c0",
+    "deleted_function": "FUN_00aa22c0",
+    "body_size": 42,
+    "message": "Function 'FUN_00aa22c0' deleted at 00aa22c0"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00aa22c0",
+    "end_address": "00aa22f5"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00aa22c0",
+    "end_address": "00aa22f4",
+    "bytes_disassembled": 53,
+    "message": "Successfully disassembled 53 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00aa22c0",
+    "disassemble_first": false
+   },
+   "result": {
+    "success": true,
+    "address": "00aa22c0",
+    "function_name": "FUN_00aa22c0",
+    "entry_point": "00aa22c0",
+    "body_size": 53,
+    "message": "Function created successfully at 00aa22c0"
+   }
+  },
+  {
+   "defined": "00aa22c0",
+   "end": "00aa22f5",
+   "name": null,
+   "after": "Function: FUN_00aa22c0 at 00aa22c0\nSignature: undefined FUN_00aa22c0(void)\nEntry: 00aa22c0\nBody: 00aa22c0 - 00aa22f4"
+  },
+  {
+   "recreate": "004c8020",
+   "previous": "Function: FUN_004c8020 at 004c8020\nSignature: undefined FUN_004c8020(void)\nEntry: 004c8020\nBody: 004c8020 - 004c8049",
+   "plate": null
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "004c8020"
+   },
+   "result": {
+    "success": true,
+    "address": "004c8020",
+    "deleted_function": "FUN_004c8020",
+    "body_size": 39,
+    "message": "Function 'FUN_004c8020' deleted at 004c8020"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "004c8020",
+    "end_address": "004c804a"
+   },
+   "result": {
+    "success": true,
+    "start_address": "004c8020",
+    "end_address": "004c8049",
+    "bytes_disassembled": 42,
+    "message": "Successfully disassembled 42 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "004c8020",
+    "disassemble_first": false
+   },
+   "result": {
+    "success": true,
+    "address": "004c8020",
+    "function_name": "FUN_004c8020",
+    "entry_point": "004c8020",
+    "body_size": 42,
+    "message": "Function created successfully at 004c8020"
+   }
+  },
+  {
+   "defined": "004c8020",
+   "end": "004c804a",
+   "name": null,
+   "after": "Function: FUN_004c8020 at 004c8020\nSignature: undefined FUN_004c8020(void)\nEntry: 004c8020\nBody: 004c8020 - 004c8049"
+  },
+  {
+   "recreate": "00aa5260",
+   "previous": "Function: FUN_00aa5260 at 00aa5260\nSignature: undefined FUN_00aa5260(void)\nEntry: 00aa5260\nBody: 00aa5260 - 00aa5283",
+   "plate": null
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "00aa5260"
+   },
+   "result": {
+    "success": true,
+    "address": "00aa5260",
+    "deleted_function": "FUN_00aa5260",
+    "body_size": 36,
+    "message": "Function 'FUN_00aa5260' deleted at 00aa5260"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00aa5260",
+    "end_address": "00aa5294"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00aa5260",
+    "end_address": "00aa5293",
+    "bytes_disassembled": 52,
+    "message": "Successfully disassembled 52 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00aa5260",
+    "disassemble_first": false
+   },
+   "result": {
+    "success": true,
+    "address": "00aa5260",
+    "function_name": "FUN_00aa5260",
+    "entry_point": "00aa5260",
+    "body_size": 52,
+    "message": "Function created successfully at 00aa5260"
+   }
+  },
+  {
+   "defined": "00aa5260",
+   "end": "00aa5294",
+   "name": null,
+   "after": "Function: FUN_00aa5260 at 00aa5260\nSignature: undefined FUN_00aa5260(void)\nEntry: 00aa5260\nBody: 00aa5260 - 00aa5293"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}

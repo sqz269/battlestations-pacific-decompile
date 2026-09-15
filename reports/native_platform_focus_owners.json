@@ -1,0 +1,1012 @@
+{
+  "status": "reconstructed_build_tested_actual_focus_owner_and_cpp_failure_fixture",
+  "created_utc": "2026-09-15T03:09:42.155576+00:00",
+  "source": "src/native_platform_focus_owners.cpp",
+  "header": "include/bsp/native_platform_focus_owners.hpp",
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "installed_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "ghidra_mutated": true,
+    "saved": true,
+    "mutation_scope": [
+      "004c12b0",
+      "004c1710",
+      "00aa5d70",
+      "00aa2820",
+      "00aa2920",
+      "00a4c5a0",
+      "00a4c4a0",
+      "00a4c2d0",
+      "00aa0ff0",
+      "00a4c3f0",
+      "0041da80",
+      "004c8020",
+      "00aa5260",
+      "00aa22c0"
+    ]
+  },
+  "functions": [
+    {
+      "address": "004c12b0",
+      "bytes": 192,
+      "source_symbol": "get_native_gui_manager_004c12b0",
+      "ghidra_name": "BSP_GuiManager_GetOrCreate",
+      "original_abi": "No consumed args; EAX current publication; RET.",
+      "behavior": "Actual F8BC5C getter: first capture fast return; first manager/section guard; recheck;88h allocation/AA5D70; disarm owner-free before publication; second manager getter before current publication registration; Leave still guarded; final publication reread.",
+      "build_tested": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "004c1710",
+      "bytes": 189,
+      "source_symbol": "get_native_media_manager_004c1710",
+      "ghidra_name": "BSP_MediaManager_GetOrCreate",
+      "original_abi": "No consumed args; EAX current publication; RET.",
+      "behavior": "Actual F8AEF8 getter: same reviewed schedule as GUI,18h owner/A4C5A0; media class name provisional. Constructor failure clears current publication, frees captured owner, then releases captured guard.",
+      "build_tested": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00aa5d70",
+      "bytes": 169,
+      "source_symbol": "construct_native_gui_manager_00aa5d70",
+      "ghidra_name": "BSP_GuiManager_Construct",
+      "original_abi": "ECX raw88h owner; EAX original owner; RET.",
+      "behavior": "D5BFCC,18h tree sentinel, vector/references zero,14h list sentinel, actualCE3800=0.5 captured before +38/+3C/+40/+48/+5C/+60/+6C stores.71 untouched bytes. State3 unwind+2C reference,+14 vector,+8 tree,base current-publication clear.",
+      "build_tested": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00aa2820",
+      "bytes": 26,
+      "source_symbol": "allocate_native_gui_list_sentinel_00aa2820",
+      "ghidra_name": "STL_GuiManagerList_AllocateSentinel",
+      "original_abi": "No consumed args; EAX allocation; RET.",
+      "behavior": "Allocate14h and independently test/store next=self and previous=self; payload untouched; null still attempts low address4 write. Existing provisional template name retained.",
+      "build_tested": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00aa2920",
+      "bytes": 55,
+      "source_symbol": "allocate_native_gui_tree_node_00aa2920",
+      "ghidra_name": "STL_GuiManagerTree_AllocateNode",
+      "original_abi": "No consumed args; EAX allocation; RET.",
+      "behavior": "Allocate18h; three independent pointer tests/zero links; byte14=1,15=0; untouched payload+C/+10. Existing provisional template name retained.",
+      "build_tested": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00a4c5a0",
+      "bytes": 96,
+      "source_symbol": "construct_native_media_manager_00a4c5a0",
+      "ghidra_name": "BSP_MediaManager_Construct",
+      "original_abi": "ECX raw18h owner; EAX original owner; RET.",
+      "behavior": "Provisional media identity. D24D94,0Ch list allocation, D7A24C=1 capture before+8sentinel/+Czero/+10one; preserve+4..7/+14..17. State0 cleanup A4C3F0 clears current publication before original profile reset.",
+      "build_tested": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00a4c4a0",
+      "bytes": 26,
+      "source_symbol": "allocate_native_media_list_sentinel_00a4c4a0",
+      "ghidra_name": "STL_MediaList_AllocateSentinel",
+      "original_abi": "No consumed args; EAX allocation; RET.",
+      "behavior": "Allocate0Ch, next/previous=self with independent original pointer tests; payload+8 untouched. Template/media names provisional.",
+      "build_tested": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00a4c2d0",
+      "bytes": 3,
+      "source_symbol": "ignore_native_media_pause_00a4c2d0",
+      "ghidra_name": "TRIV_body_00a4c2d0",
+      "original_abi": "One ignored DWORD stack argument; no ECX read; RET4.",
+      "behavior": "Exact native RET4 no-op. Preserve prior trivial name. Window caller pushes pause before media getter; do not elide that preceding getter.",
+      "build_tested": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00aa0ff0",
+      "bytes": 17,
+      "source_symbol": "destroy_native_gui_base_00aa0ff0",
+      "ghidra_name": "BSP_GuiManagerBase_ClearPublication",
+      "original_abi": "ECX original owner; RET.",
+      "behavior": "Clear current F8BC5C unconditionally, then write original ownerCE3818; no unregister/free. Replaced publication clear exercised in source bad_alloc cleanup.",
+      "build_tested": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00a4c3f0",
+      "bytes": 17,
+      "source_symbol": "destroy_native_media_base_00a4c3f0",
+      "ghidra_name": "BSP_MediaManagerBase_ClearPublication",
+      "original_abi": "ECX original owner; RET.",
+      "behavior": "Clear current F8AEF8 unconditionally, then write original ownerCE3818; no unregister/free. Replaced publication clear exercised in source bad_alloc cleanup.",
+      "build_tested": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "0041da80",
+      "bytes": 41,
+      "source_symbol": "release_native_gui_resource_slot_0041da80",
+      "ghidra_name": "BSP_GuiResourceSlot_Release",
+      "original_abi": "ECX raw pointer slot; RET.",
+      "behavior": "Capture reference, InterlockedDecrement actual+4; only zero dispatches CURRENT virtual0 with captured ECX and NO flags argument; then clear slot. Null initial slot untouched. Source uses canonical actual owners; terminal callback nonthrowing.",
+      "build_tested": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "004c8020",
+      "bytes": 42,
+      "source_symbol": "destroy_native_gui_page_vector_004c8020",
+      "ghidra_name": "BSP_GuiPageVector_Destroy",
+      "original_abi": "ECX raw10h vector header; RET.",
+      "behavior": "Capture+4, free if nonnull; zero current+4/+8/+C; preserve+0. Free fallthrough/body range restored.",
+      "build_tested": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00aa5260",
+      "bytes": 52,
+      "source_symbol": "destroy_native_gui_tree_00aa5260",
+      "ghidra_name": "BSP_GuiTree_Destroy",
+      "original_abi": "ECX actual tree header; RET.",
+      "behavior": "AA49E0 fixed whole-range composition for valid nonconcurrent storage: erase root, reset links/count with original reloads, free current head, clear header head/count. Private output iterator omitted. Arbitrary iterator/validation/single-node branch not implemented. Body repaired.",
+      "build_tested": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00aa22c0",
+      "bytes": 53,
+      "source_symbol": "erase_native_gui_tree_subtree_00aa22c0",
+      "ghidra_name": "BSP_GuiTree_EraseSubtree",
+      "original_abi": "ECX tree forwarded; stack node; RET4.",
+      "behavior": "Right subtree recursion, read left after recursion, free old node, iterate left; byte15 sentinel ends walk. No key/value destructor. Free fallthrough/body range restored.",
+      "build_tested": true,
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "evidence": {
+    "fresh_functions": [
+      {
+        "bytes": 192,
+        "sha256": "7d2554e9a125d67a8f18cc6a652e6914189ce00982f3c08f2f1dc9b72a892a6a",
+        "live_equals_installed_pe": true,
+        "entry": "004c12b0"
+      },
+      {
+        "bytes": 189,
+        "sha256": "4fb2c903043171089b79293dacbcea00fe6651c6f10e148705c88fabe71a661c",
+        "live_equals_installed_pe": true,
+        "entry": "004c1710"
+      },
+      {
+        "bytes": 169,
+        "sha256": "5343e5b7be77fa95c33c97a324bf886dcdc1563604656dd2949c5deb574ef2ff",
+        "live_equals_installed_pe": true,
+        "entry": "00aa5d70"
+      },
+      {
+        "bytes": 26,
+        "sha256": "6c773e1a884f5800a43d116a58e664a355a56f73aa957e29f409ff65bd3af01b",
+        "live_equals_installed_pe": true,
+        "entry": "00aa2820"
+      },
+      {
+        "bytes": 55,
+        "sha256": "39db00ace271389eceed0b4e7edc00526489169701825ea0765b44db0874a07f",
+        "live_equals_installed_pe": true,
+        "entry": "00aa2920"
+      },
+      {
+        "bytes": 96,
+        "sha256": "e4c5cddeca0d6fd90c23ddb53644fe77aea98a46913a12d38d593d860031fb27",
+        "live_equals_installed_pe": true,
+        "entry": "00a4c5a0"
+      },
+      {
+        "bytes": 26,
+        "sha256": "4f5ec5212d3f41ce28e21ea92e56b17f7acf82baf8afb16c7fe8afbb5ec3b470",
+        "live_equals_installed_pe": true,
+        "entry": "00a4c4a0"
+      },
+      {
+        "bytes": 3,
+        "sha256": "e598d0c3ba86d917b177d7adde0556aa99bc355543c57aee0a3e50b684dd7e99",
+        "live_equals_installed_pe": true,
+        "entry": "00a4c2d0"
+      },
+      {
+        "bytes": 17,
+        "sha256": "3ca44671ba89ce480f95b4660ff0b1b7ad6604ec6a6aa7c30f51e542352cdc78",
+        "live_equals_installed_pe": true,
+        "entry": "00aa0ff0"
+      },
+      {
+        "bytes": 17,
+        "sha256": "f14f2886f29226df66705e82c8c96b0923058d09bc7985d1139b0efb451dcad6",
+        "live_equals_installed_pe": true,
+        "entry": "00a4c3f0"
+      },
+      {
+        "bytes": 41,
+        "sha256": "6da47eb4546ed6edfd547bfb7cc08840ea3f31b89f985f07267f5b4b3e74fb21",
+        "live_equals_installed_pe": true,
+        "entry": "0041da80"
+      },
+      {
+        "bytes": 42,
+        "sha256": "07a104985ea3b2ae4c533aaa62b43bf238e5e4df4c531817abbd6ace06664d6d",
+        "live_equals_installed_pe": true,
+        "entry": "004c8020"
+      },
+      {
+        "bytes": 52,
+        "sha256": "dda1305817b6feecff88b12b11d25d2c3ff240537802edb1347aff297cf8e20d",
+        "live_equals_installed_pe": true,
+        "entry": "00aa5260"
+      },
+      {
+        "bytes": 53,
+        "sha256": "a1f16cf639671d4bd799c952015594e3d896207e8f94580c63dc279717b87c7e",
+        "live_equals_installed_pe": true,
+        "entry": "00aa22c0"
+      }
+    ],
+    "function_bytes": 978,
+    "calls": [
+      {
+        "address": "004c12d6",
+        "function": "004c12b0",
+        "native": "00415350"
+      },
+      {
+        "address": "004c130f",
+        "function": "004c12b0",
+        "native": "00bf681b"
+      },
+      {
+        "address": "004c1326",
+        "function": "004c12b0",
+        "native": "00aa5d70"
+      },
+      {
+        "address": "004c1339",
+        "function": "004c12b0",
+        "native": "00415350"
+      },
+      {
+        "address": "004c1347",
+        "function": "004c12b0",
+        "native": "00bd0c30"
+      },
+      {
+        "address": "004c1736",
+        "function": "004c1710",
+        "native": "00415350"
+      },
+      {
+        "address": "004c176c",
+        "function": "004c1710",
+        "native": "00bf681b"
+      },
+      {
+        "address": "004c1783",
+        "function": "004c1710",
+        "native": "00a4c5a0"
+      },
+      {
+        "address": "004c1796",
+        "function": "004c1710",
+        "native": "00415350"
+      },
+      {
+        "address": "004c17a4",
+        "function": "004c1710",
+        "native": "00bd0c30"
+      },
+      {
+        "address": "00aa5da0",
+        "function": "00aa5d70",
+        "native": "00aa2920"
+      },
+      {
+        "address": "00aa5ddf",
+        "function": "00aa5d70",
+        "native": "00aa2820"
+      },
+      {
+        "address": "00aa2822",
+        "function": "00aa2820",
+        "native": "00bf681b"
+      },
+      {
+        "address": "00aa2922",
+        "function": "00aa2920",
+        "native": "00bf681b"
+      },
+      {
+        "address": "00a4c5d1",
+        "function": "00a4c5a0",
+        "native": "00a4c4a0"
+      },
+      {
+        "address": "00a4c4a2",
+        "function": "00a4c4a0",
+        "native": "00bf681b"
+      },
+      {
+        "address": "004c802b",
+        "function": "004c8020",
+        "native": "00bf65ac"
+      },
+      {
+        "address": "00aa5276",
+        "function": "00aa5260",
+        "native": "00aa49e0"
+      },
+      {
+        "address": "00aa527f",
+        "function": "00aa5260",
+        "native": "00bf65ac"
+      },
+      {
+        "address": "00aa22d7",
+        "function": "00aa22c0",
+        "native": "00aa22c0"
+      },
+      {
+        "address": "00aa22df",
+        "function": "00aa22c0",
+        "native": "00bf65ac"
+      },
+      {
+        "address": "00aa4a2a",
+        "function": "00aa49e0",
+        "native": "00aa22c0",
+        "coverage": "fixed whole-range branch"
+      }
+    ],
+    "indirect_calls": [
+      {
+        "address": "004c12ef",
+        "function": "004c12b0",
+        "kind": "indirect",
+        "operand": "dword ptr [0xce2218]"
+      },
+      {
+        "address": "004c1355",
+        "function": "004c12b0",
+        "kind": "indirect",
+        "operand": "dword ptr [0xce2210]"
+      },
+      {
+        "address": "004c174f",
+        "function": "004c1710",
+        "kind": "indirect",
+        "operand": "dword ptr [0xce2218]"
+      },
+      {
+        "address": "004c17b2",
+        "function": "004c1710",
+        "kind": "indirect",
+        "operand": "dword ptr [0xce2210]"
+      },
+      {
+        "address": "0041da8e",
+        "function": "0041da80",
+        "kind": "indirect",
+        "operand": "dword ptr [0xce2220]"
+      },
+      {
+        "address": "0041da9e",
+        "function": "0041da80",
+        "kind": "indirect",
+        "operand": "eax"
+      }
+    ],
+    "fixed_whole_range_specialization": {
+      "start": "00aa49e0",
+      "bytes": 201,
+      "sha256": "00a2688721c028c55a98f45b3aec32d4050fd186c4a079aeea3fa598afb0cd96",
+      "live_equals_installed_pe": true,
+      "coverage": "AA5260 fixed valid whole-range composition only; arbitrary AA49E0 not reconstructed",
+      "branch_start": "00aa4a21",
+      "branch_end_exclusive": "00aa4a5f"
+    },
+    "fresh_eh_and_profiles": [
+      {
+        "start": "00c64f33",
+        "bytes": 10,
+        "sha256": "dcef8ed97bb82d295818c4e95a0f9bbb3ee56bdb8853549afe3cd8605a651795",
+        "live_equals_installed_pe": true
+      },
+      {
+        "start": "00d8d558",
+        "bytes": 36,
+        "sha256": "6afe578072120f4f1d7f1fd0e7a0b9a20ddef5fd7d957ecb50db27800c2d69d3",
+        "live_equals_installed_pe": true
+      },
+      {
+        "start": "00d8d548",
+        "bytes": 16,
+        "sha256": "15aa94fa624b35b001e79b64d69a5862f713d0f8abc590add897ed5495037c67",
+        "live_equals_installed_pe": true
+      },
+      {
+        "start": "00c64f20",
+        "bytes": 19,
+        "sha256": "ee5b2ff1f85be9dc7dbf369cfcb1ebad72e35818797255093e560547125a73fc",
+        "live_equals_installed_pe": true
+      },
+      {
+        "start": "00c64fd3",
+        "bytes": 10,
+        "sha256": "ec81fdf291f66a192abacc31725f46a1de8c74ed4531b608680b50482f4c1693",
+        "live_equals_installed_pe": true
+      },
+      {
+        "start": "00d8d654",
+        "bytes": 36,
+        "sha256": "3a0e9686ba35c376e19780324f2b97daa0f1aa2c07e70b126f638d21a46f975a",
+        "live_equals_installed_pe": true
+      },
+      {
+        "start": "00d8d644",
+        "bytes": 16,
+        "sha256": "90b49d76098bf20c56eec8c2728170ef17096a60309560c36ac7c31a3b27a5c7",
+        "live_equals_installed_pe": true
+      },
+      {
+        "start": "00c64fc0",
+        "bytes": 19,
+        "sha256": "c14d46aef60bc37c4b45ec0e5a6c9caa257293901f7be0e2d0b86e0327b8ce46",
+        "live_equals_installed_pe": true
+      },
+      {
+        "start": "00cb7289",
+        "bytes": 10,
+        "sha256": "17a536e9e8770b614aa444231839a96dc1d1adbed40881a8ab484bb42a83f75b",
+        "live_equals_installed_pe": true
+      },
+      {
+        "start": "00dedaa0",
+        "bytes": 36,
+        "sha256": "15183cb934137fcb06bbdd0669bfa57a3636a14487f849f9e760c47f8a7d4518",
+        "live_equals_installed_pe": true
+      },
+      {
+        "start": "00deda80",
+        "bytes": 32,
+        "sha256": "435912ddd775a20e1f2e5a4bf85f37d1885546b3e8f0e2225f3053214a536293",
+        "live_equals_installed_pe": true
+      },
+      {
+        "start": "00cb7260",
+        "bytes": 41,
+        "sha256": "c8245a616894e6c29d9664f6aa0666e096d8da9821d489bb9cac99aa434859a0",
+        "live_equals_installed_pe": true
+      },
+      {
+        "start": "00cb4c08",
+        "bytes": 10,
+        "sha256": "d140f5eee631f1a6453c3e20e35d060d9b884ffd3c7eb9481c6e35875d0b4130",
+        "live_equals_installed_pe": true
+      },
+      {
+        "start": "00deaa50",
+        "bytes": 36,
+        "sha256": "d8edaac6389f71829347cfa45bb3997c364e928d38942b2392f5d0f747c66d3c",
+        "live_equals_installed_pe": true
+      },
+      {
+        "start": "00deaa48",
+        "bytes": 8,
+        "sha256": "f619b4bb5c38064c7c6b99e242a3ff4fe14c50d7ed0401761e674e3dd77bed2b",
+        "live_equals_installed_pe": true
+      },
+      {
+        "start": "00cb4c00",
+        "bytes": 8,
+        "sha256": "1d58fc99deca871144a8ff7a4fcfbdd09cc7e5d17dcd27e494206130b4010db1",
+        "live_equals_installed_pe": true
+      },
+      {
+        "start": "00d5bfcc",
+        "bytes": 4,
+        "sha256": "6a8b3632f5b363df44baffc55411eed5a450c3ef0bdd7671cbf952c4fe031b10",
+        "live_equals_installed_pe": true
+      },
+      {
+        "start": "00d24d94",
+        "bytes": 4,
+        "sha256": "1976e76c65b0f9747c06d8988495aaec63224b9d2bfe075e53e7c74a1ee5f7cf",
+        "live_equals_installed_pe": true
+      },
+      {
+        "start": "00ce3818",
+        "bytes": 4,
+        "sha256": "9b438ce3feae2fd62d0e9bbaf623d6c8501a0d858c6da7d06cc04ccc29ebd57f",
+        "live_equals_installed_pe": true
+      },
+      {
+        "start": "00ce37fc",
+        "bytes": 4,
+        "sha256": "8b12438c84805d12f163f8d7b8976a71222f4b4cc6a4be870696607611839f82",
+        "live_equals_installed_pe": true
+      },
+      {
+        "start": "00ce3800",
+        "bytes": 4,
+        "sha256": "d99e58435243d9fef9c88273b8d553b4fba4d0baf8009d29eae74fa99e0d9f57",
+        "live_equals_installed_pe": true
+      },
+      {
+        "start": "00d7a24c",
+        "bytes": 4,
+        "sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c",
+        "live_equals_installed_pe": true
+      }
+    ],
+    "fresh_eh_and_profile_bytes": 367,
+    "explicit_units": {
+      "native_material_descriptor_samplers": {
+        "compiled": true,
+        "linked": true,
+        "symbol_rows": [
+          "0001:00003ec0       ??1logic_error@std@@UAE@XZ 00404ec0 f i native_material_descriptor_samplers.obj",
+          "0001:00004110       ??_Elogic_error@std@@UAEPAXI@Z 00405110 f i native_material_descriptor_samplers.obj"
+        ]
+      },
+      "native_material_effect_loading": {
+        "compiled": true,
+        "linked": true,
+        "symbol_rows": [
+          "0001:0000a460       ??0NativeMaterialEffectLoadAcquired@bsp@@QAE@XZ 0040b460 f   native_material_effect_loading.obj",
+          "0001:0000a4d0       ??0NativeMaterialEffectLoadOwners@bsp@@QAE@AAVGuiNativeGeometryOwners@1@AAUNativeMaterialEffectDestructionAccess@1@PDI@Z 0040b4d0 f   native_material_effect_loading.obj"
+        ]
+      },
+      "native_material_effect_programs": {
+        "compiled": true,
+        "linked": true,
+        "symbol_rows": [
+          "0001:0000b470       ??0?$optional@VNativeShaderDescriptorCallableBinding@bsp@@@std@@QAE@XZ 0040c470 f i native_material_effect_programs.obj",
+          "0001:0000b5c0       ??0NativeMaterialEffectProgramOperation@bsp@@QAE@XZ 0040c5c0 f   native_material_effect_programs.obj"
+        ]
+      },
+      "native_material_effect_runtime": {
+        "compiled": true,
+        "linked": true,
+        "symbol_rows": [
+          "0001:000039b0       ??1NativeMaterialProgramChildFrame@bsp@@UAE@XZ 004049b0 f i native_material_effect_runtime.obj",
+          "0001:000039b0       ??1NativeTextureNameResolutionOperation@bsp@@UAE@XZ 004049b0 f i native_material_effect_runtime.obj"
+        ]
+      },
+      "native_material_program_compiler": {
+        "compiled": true,
+        "linked": true,
+        "symbol_rows": [
+          "0001:0000d680       ??0NativeMaterialProgramCompileOperation@bsp@@QAE@XZ 0040e680 f   native_material_program_compiler.obj",
+          "0001:0000d820       ??1NativeMaterialProgramCompileOperation@bsp@@UAE@XZ 0040e820 f   native_material_program_compiler.obj"
+        ]
+      },
+      "native_material_program_compiler_actual": {
+        "compiled": true,
+        "linked": true,
+        "symbol_rows": [
+          "0001:0000e120       ??$?0U?$default_delete@UNativeMaterialDescriptorSamplersOperation@bsp@@@std@@$0A@@?$unique_ptr@UNativeMaterialDescriptorSamplersOperation@bsp@@U?$default_delete@UNativeMaterialDescriptorSamplersOperation@bsp@@@std@@@std@@QAE@XZ 0040f120 f i native_material_program_compiler_actual.obj",
+          "0001:0000e120       ??$?0U?$default_delete@UNativeMaterialPassShaderSlotsOperation@bsp@@@std@@$0A@@?$unique_ptr@UNativeMaterialPassShaderSlotsOperation@bsp@@U?$default_delete@UNativeMaterialPassShaderSlotsOperation@bsp@@@std@@@std@@QAE@XZ 0040f120 f i native_material_program_compiler_actual.obj"
+        ]
+      },
+      "native_material_secondary_pass_actual": {
+        "compiled": true,
+        "linked": true,
+        "symbol_rows": [
+          "0001:00010b50       ??1?$unique_ptr@VNativeMaterialSecondaryPassFrame@bsp@@U?$default_delete@VNativeMaterialSecondaryPassFrame@bsp@@@std@@@std@@QAE@XZ 00411b50 f i native_material_secondary_pass_actual.obj",
+          "0001:00010b90       ??_ENativeMaterialSecondaryPassFrame@bsp@@UAEPAXI@Z 00411b90 f i native_material_secondary_pass_actual.obj"
+        ]
+      },
+      "native_render_service_texture_construction": {
+        "compiled": true,
+        "linked": false,
+        "symbol_rows": []
+      },
+      "native_shader_binary_cache_load": {
+        "compiled": true,
+        "linked": true,
+        "symbol_rows": [
+          "0001:00004820       ?_Xlength@?$vector@V?$unique_ptr@UNativeShaderBinaryCacheRowLoadFrame@bsp@@U?$default_delete@UNativeShaderBinaryCacheRowLoadFrame@bsp@@@std@@@std@@V?$allocator@V?$unique_ptr@UNativeShaderBinaryCacheRowLoadFrame@bsp@@U?$default_delete@UNativeShaderBinaryCacheRowLoadFrame@bsp@@@std@@@std@@@2@@std@@CAXXZ 00405820 f i native_shader_binary_cache_load.obj",
+          "0001:00010fd0       ??$_Emplace_reallocate@V?$unique_ptr@UNativeShaderBinaryCacheRowLoadFrame@bsp@@U?$default_delete@UNativeShaderBinaryCacheRowLoadFrame@bsp@@@std@@@std@@@?$vector@V?$unique_ptr@UNativeShaderBinaryCacheRowLoadFrame@bsp@@U?$default_delete@UNativeShaderBinaryCacheRowLoadFrame@bsp@@@std@@@std@@V?$allocator@V?$unique_ptr@UNativeShaderBinaryCacheRowLoadFrame@bsp@@U?$default_delete@UNativeShaderBinaryCacheRowLoadFrame@bsp@@@std@@@std@@@2@@std@@AAEPAV?$unique_ptr@UNativeShaderBinaryCacheRowLoadFrame@bsp@@U?$default_delete@UNativeShaderBinaryCacheRowLoadFrame@bsp@@@std@@@1@QAV21@$$QAV21@@Z 00411fd0 f i native_shader_binary_cache_load.obj"
+        ]
+      },
+      "native_shader_binary_cache_stream": {
+        "compiled": true,
+        "linked": true,
+        "symbol_rows": [
+          "0001:00011b20       ??1NativeShaderBinaryCacheFrameState@bsp@@QAE@XZ 00412b20 f   native_shader_binary_cache_stream.obj",
+          "0001:00011b40       ?capture_slot@NativeShaderBinaryCacheStreamContext@bsp@@QBEIPAXIAAI@Z 00412b40 f   native_shader_binary_cache_stream.obj"
+        ]
+      },
+      "native_shader_constant_header": {
+        "compiled": true,
+        "linked": true,
+        "symbol_rows": [
+          "0001:00011b20       ??1NativeShaderConstantHeaderOperation@bsp@@QAE@XZ 00412b20 f   native_shader_constant_header.obj",
+          "0001:00012000       ?append_native_shader_line_00b35110@bsp@@YAXAAVNativeString@1@AAUNativeShaderConstantHeaderContext@1@AAUNativeShaderConstantHeaderOperation@1@PBDZZ 00413000 f   native_shader_constant_header.obj"
+        ]
+      },
+      "native_shader_descriptor_reader": {
+        "compiled": true,
+        "linked": true,
+        "symbol_rows": [
+          "0001:000129f0       ??0NativeShaderDescriptorReadOperation@bsp@@QAE@XZ 004139f0 f   native_shader_descriptor_reader.obj",
+          "0001:00012ad0       ??1NativeShaderDescriptorReadOperation@bsp@@UAE@XZ 00413ad0 f   native_shader_descriptor_reader.obj"
+        ]
+      },
+      "native_shader_field_initialization": {
+        "compiled": true,
+        "linked": true,
+        "symbol_rows": [
+          "0001:000136c0       ??$make_unique@UNativeShaderConstantHeaderOperation@bsp@@$$V$0A@@std@@YA?AV?$unique_ptr@UNativeShaderConstantHeaderOperation@bsp@@U?$default_delete@UNativeShaderConstantHeaderOperation@bsp@@@std@@@0@XZ 004146c0 f i native_shader_field_initialization.obj",
+          "0001:000137a0       ??0NativeShaderConstantHeaderOperation@bsp@@QAE@XZ 004147a0 f i native_shader_field_initialization.obj"
+        ]
+      },
+      "native_shader_interpolator_source": {
+        "compiled": true,
+        "linked": true,
+        "symbol_rows": [
+          "0001:00013da0       ??$make_unique@UNativeShaderStructDeclarationOperation@bsp@@$$V$0A@@std@@YA?AV?$unique_ptr@UNativeShaderStructDeclarationOperation@bsp@@U?$default_delete@UNativeShaderStructDeclarationOperation@bsp@@@std@@@0@XZ 00414da0 f i native_shader_interpolator_source.obj",
+          "0001:00013e30       ??0NativeShaderStructDeclarationOperation@bsp@@QAE@XZ 00414e30 f i native_shader_interpolator_source.obj"
+        ]
+      },
+      "native_shader_interpolators": {
+        "compiled": true,
+        "linked": true,
+        "symbol_rows": [
+          "0001:00014980       ??1NativeShaderInterpolatorOperation@bsp@@QAE@XZ 00415980 f   native_shader_interpolators.obj",
+          "0001:000149a0       ?append_native_shader_interpolator_mapping_00b34aa0@bsp@@YAXAAUNativeMaterialProgramBuilderStorage@1@AAUNativeShaderDescriptorArray@1@AAUNativeShaderInterpolatorOperation@1@@Z 004159a0 f   native_shader_interpolators.obj"
+        ]
+      },
+      "native_shader_pixel_source": {
+        "compiled": true,
+        "linked": true,
+        "symbol_rows": [
+          "0001:00015210       ??$make_unique@UNativeShaderFieldInitializationOperation@bsp@@$$V$0A@@std@@YA?AV?$unique_ptr@UNativeShaderFieldInitializationOperation@bsp@@U?$default_delete@UNativeShaderFieldInitializationOperation@bsp@@@std@@@0@XZ 00416210 f i native_shader_pixel_source.obj",
+          "0001:000152e0       ??$make_unique@UNativeShaderInterpolatorSourceOperation@bsp@@$$V$0A@@std@@YA?AV?$unique_ptr@UNativeShaderInterpolatorSourceOperation@bsp@@U?$default_delete@UNativeShaderInterpolatorSourceOperation@bsp@@@std@@@0@XZ 004162e0 f i native_shader_pixel_source.obj"
+        ]
+      },
+      "native_shader_sampler_declarations": {
+        "compiled": true,
+        "linked": true,
+        "symbol_rows": [
+          "0001:000167d0       ??1NativeShaderSamplerDeclarationsOperation@bsp@@QAE@XZ 004177d0 f   native_shader_sampler_declarations.obj",
+          "0001:00016a30       ?append_native_pixel_sampler_declarations_00b37ef0@bsp@@YAXAAUNativeMaterialProgramBuilderStorage@1@AAUNativeShaderConstantHeaderContext@1@AAUNativeShaderSamplerDeclarationsOperation@1@@Z 00417a30 f   native_shader_sampler_declarations.obj"
+        ]
+      },
+      "native_shader_shadow_source": {
+        "compiled": true,
+        "linked": true,
+        "symbol_rows": [
+          "0001:00016a70       ??1NativeShaderShadowSourceOperation@bsp@@QAE@XZ 00417a70 f   native_shader_shadow_source.obj",
+          "0001:00016c00       ?append_native_map_shadow_helper_00b382b0@bsp@@YAXAAUNativeMaterialProgramBuilderStorage@1@AAUNativeShaderConstantHeaderContext@1@AAUNativeShaderShadowSourceOperation@1@@Z 00417c00 f   native_shader_shadow_source.obj"
+        ]
+      },
+      "native_shader_struct_declarations": {
+        "compiled": true,
+        "linked": true,
+        "symbol_rows": [
+          "0001:00016d40       ??1NativeShaderStructDeclarationOperation@bsp@@QAE@XZ 00417d40 f   native_shader_struct_declarations.obj",
+          "0001:00016d80       ?append_native_shader_cstring_line_00b34f20@bsp@@YAXAAVNativeString@1@PBDAAUNativeShaderConstantHeaderContext@1@AAUNativeShaderStructDeclarationOperation@1@@Z 00417d80 f   native_shader_struct_declarations.obj"
+        ]
+      },
+      "native_shader_system_fields": {
+        "compiled": true,
+        "linked": true,
+        "symbol_rows": [
+          "0001:00017890       ??1NativeShaderSystemFieldsOperation@bsp@@QAE@XZ 00418890 f   native_shader_system_fields.obj",
+          "0001:00017b60       ?append_native_shader_pixel_system_fields_00b372d0@bsp@@YAXAAUNativeMaterialProgramBuilderStorage@1@AAVNativeStringStorage@1@AAUNativeShaderSystemFieldsOperation@1@@Z 00418b60 f   native_shader_system_fields.obj"
+        ]
+      },
+      "native_shader_vertex_source": {
+        "compiled": true,
+        "linked": true,
+        "symbol_rows": [
+          "0001:00017bf0       ??1NativeShaderVertexSourceOperation@bsp@@QAE@XZ 00418bf0 f   native_shader_vertex_source.obj",
+          "0001:00017d40       ?generate_native_shader_vertex_source_00b39110@bsp@@YAXAAUNativeMaterialProgramBuilderStorage@1@AAUNativeShaderFieldInitializationContext@1@AAUNativeShaderVertexSourceOperation@1@@Z 00418d40 f   native_shader_vertex_source.obj"
+        ]
+      },
+      "native_vfs_extension_prefix": {
+        "compiled": true,
+        "linked": true,
+        "symbol_rows": [
+          "0001:00003ec0       ??1length_error@std@@UAE@XZ 00404ec0 f i native_vfs_extension_prefix.obj",
+          "0001:00004110       ??_Elength_error@std@@UAEPAXI@Z 00405110 f i native_vfs_extension_prefix.obj"
+        ]
+      },
+      "native_vfs_search_defaults": {
+        "compiled": true,
+        "linked": true,
+        "symbol_rows": [
+          "0001:00019140       ?register_native_vfs_search_defaults_00738360@bsp@@YAXACRAXAAVActualNativeStringPoolStorage@1@ABUSingletonLifetimeCallbacks@1@@Z 0041a140 f   native_vfs_search_defaults.obj",
+          "0002:00007368       ??_C@_03CBDDAJHO@dds@      00488368     native_vfs_search_defaults.obj"
+        ]
+      },
+      "native_vfs_search_groups": {
+        "compiled": true,
+        "linked": true,
+        "symbol_rows": [
+          "0001:0001c8d0       ?register_native_vfs_search_directory_00be2600@bsp@@YAXPAXPBX1AAVActualNativeStringPoolStorage@1@ABUSingletonLifetimeCallbacks@1@@Z 0041d8d0 f   native_vfs_search_groups.obj",
+          "0001:0001c970       ?register_native_vfs_search_extension_00be25e0@bsp@@YAXPAXPBX1AAVActualNativeStringPoolStorage@1@ABUSingletonLifetimeCallbacks@1@@Z 0041d970 f   native_vfs_search_groups.obj"
+        ]
+      }
+    },
+    "production_providers_linked": {
+      "native_platform_focus_owners": true,
+      "native_render_entry_cache": true,
+      "native_platform_construction": true,
+      "native_renderer_device_startup_actual": true,
+      "native_renderer_reset_process": true,
+      "native_renderer_default_surfaces": true,
+      "native_renderer_resource_release": true,
+      "native_renderer_resource_restore": true,
+      "native_dynamic_buffer_device_release": true,
+      "native_renderer_reset_readiness": true,
+      "native_graphics_pool_lifetime": true,
+      "native_renderer_constructor": true,
+      "native_hardware_layout_tree_static": true,
+      "native_hardware_layout_pool_static": true,
+      "native_cube_texture_pool_static": true
+    },
+    "source_context_rebuild": [
+      "native_material_descriptor_samplers.cpp",
+      "native_material_effect_loading.cpp",
+      "native_material_effect_programs.cpp",
+      "native_material_effect_runtime.cpp",
+      "native_material_program_compiler.cpp",
+      "native_material_program_compiler_actual.cpp",
+      "native_render_service_texture_construction.cpp",
+      "native_shader_constant_header.cpp",
+      "native_shader_descriptor_reader.cpp",
+      "native_shader_field_initialization.cpp",
+      "native_shader_interpolators.cpp",
+      "native_shader_interpolator_source.cpp",
+      "native_shader_pixel_source.cpp",
+      "native_shader_sampler_declarations.cpp",
+      "native_shader_shadow_source.cpp",
+      "native_shader_struct_declarations.cpp",
+      "native_shader_system_fields.cpp",
+      "native_shader_vertex_source.cpp"
+    ],
+    "foreign_commit": "2cccac2e3ab42c6cd9f2b91262da71509c1699b0",
+    "prior_closed_cache_evidence": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_render_entry_cache\\evidence.json",
+      "sha256": "67920db920e178ce37cf79bf5f79697063a54298cdf514435bb7929d19c56644"
+    },
+    "original_execution": "No new focus original-body replay; prior record39/x87_64/empty-sampler306 original fragments remain. Focus constructors/getters and C++ unwind execute production source. Probe-only malloc/free IAT instrumentation injects two bad_alloc failures and is restored before renderer/asset work."
+  },
+  "fixture": {
+    "utc": "2026-09-15T03:06:32.501638+00:00",
+    "exit": 0,
+    "executable_sha256": "cb89a4e5e1bac581032a80ef07b8cbda001bbb2022da0f41183fc787b0213a90",
+    "command": [
+      "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_platform_focus_owners\\device_effect_probe.exe"
+    ],
+    "cwd": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_platform_focus_owners",
+    "libraries_before_after": {
+      "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\build\\win32\\Release\\bsp_core.lib": "3a610e570be51268cae2346143afd259bd182b410e76bede4d4bebe5356cc189",
+      "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\build\\win32\\Release\\bsp_lua511.lib": "b6c19dd56bce2c86dcf1abf5c3044d48ddc2ac2c33ef04e3dc87f022413ee193",
+      "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\build\\win32\\Release\\bsp_zlib121.lib": "2c89bd9ae83d791564ea847c75e8e5ee025e40810c1df8d55e5799e0c7b8c471"
+    },
+    "installed_assets_before_after": {
+      "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\shaders.bin": "dcc65686e26e0b7b4f4179b45b153aaa353696b0b1b08c32251fbc7c97c0ecf8",
+      "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\common\\debugshader.shfx": "d45e91ef1a3f11c654b97ac3a9d293b9a24b597b68fb315d611638d3b6933476",
+      "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\lights\\dummy.shfx": "3768df78e6a57ee28563ab40cfb9cf223569c12eb62e8576458365deb0866c5b",
+      "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\dx9_lua.inc": "7766adc9c116a9e396b3dd77e9d97b3ea6d55c84601cb2a5a49a64362605b11f",
+      "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\scripts\\fundamentals.lua": "20e128ebe9a1cb7678e3324b0baae93adab4f34f4d96bd081fb7b86505f63526",
+      "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\models\\textures\\error.dds": "9b4666225274f51cfc1d6e964070be76f2a3a4997bec69748d1a81ba86359162",
+      "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\effects\\white.dds": "d98f8d618cfbb3840198fb54e8065446b5a249760b1a8f4bf2dd47f332d28d95"
+    },
+    "check_lines": [
+      "STAGE controlled child: six native input bands reserved before initial thread",
+      "PLATFORM actual184h=1 publication=1 registration=1 raw_queue=1 preimage_aspect=C2FFFFFE x87_cw=0C7F x87_sw=0020 title_return=1",
+      "PASS raw platform construction and title/base cleanup; original x87 fragment all-byte/CW/SW differential",
+      "PASS graphics pools and hardware tree initialized in shared allocator-list domain with real CRT callback registration",
+      "PASS full 78 startup search registrations and installed 1628-row cache acquisition",
+      "RENDERER constructed=00818FE0 factory=03471A40 lua=03580810 definitions=03C321F8 constants=03551168 maxtexture=16384x16384 ps=0300 vs=0300 atoc=1 control_thread=62940",
+      "PASS full B32410 renderer construction with real capability gather and native singleton children",
+      "DEVICE native_startup=1 real_focus=1 reset_success=1 thread=65508 behavior=00000044 elapsed_ms=453 vb_bytes=16777216 ib_bytes=1048576 color=03F0BFD8 depth=03F0C010",
+      "PASS full B2AEB0 device startup and B2ABD0 focused Reset; actual default surfaces and 16MiB/1MiB dynamic buffers restored",
+      "ENTRY_CACHE actual14h=1 registered=1 records=10000 record_bytes=40 requested_bytes=400000 used=0 original_record_equal=1 stale_pointer=1 old_capacity=1 owner=0CF0E520",
+      "PASS actual startup render-entry cache; original full record differential and count-based resize edge",
+      "FOCUS actual_gui88h=1 actual_media18h=1 registered=2 untouched_gui_bytes=71 untouched_media_bytes=8 injected_constructor_failures=2 reentry_publication_clear=1 ordered_free=1 guard_depth=0",
+      "PASS actual GUI/media constructors and getters; untouched bytes; source C++ allocation-failure cleanup ordering",
+      "LIMIT focus owners remain live; full GUI/media normal destruction, populated GUI activation and original FH3/SEH execution not claimed",
+      "READY cold texture cache=0 canonical=0 installed_shader_rows=1628",
+      "TEXTURE models/textures/error.dds bytes=22000 refs=3 width=128 height=128 mips=8 format=35545844 source_refs=1 backing_refs=1 aliases=2",
+      "TEXTURE effects/white.dds bytes=11064 refs=5 width=128 height=128 mips=8 format=31545844 source_refs=1 backing_refs=1 aliases=2",
+      "PASS cold native VFS DDS loads, canonical owners, retained bytes and cache aliases",
+      "PASS state caches render2/third1/sampler1; refs primary-render5 secondary-render2 third6 sampler6; white5 error3; pass refs2/1; canonical28",
+      "PASS B2EBB0/B407A0/B46950/B45EE0 canonical effect; resolved basenames and native generated keys; primary4 secondary1 retained1; cachecursor=164 canonical=28 reads=14 bytes=2301268",
+      "LIMIT actual source normal admission with real Lua/VFS/HAL and constructed native renderer and cold error/white DDS textures, complete native device startup and focused Reset, explicit material-policy cells and PC/USA inputs; no original FH3/ABI, archive startup, variants writes, teardown, draw or game proof",
+      "PASS actual control worker destruction and OS-observed thread exit0; parent and remaining owners retained",
+      "PASS probe focus restored and native timeBeginPeriod balanced; renderer/device/resource owners retained until process exit",
+      "PASS render-entry cache real section/buffer/owner release and publication/registration removal; explicit scalar route"
+    ],
+    "actual_com_matches_installed_cache": [
+      {
+        "row": 156,
+        "name": "debugshader0F3.vso",
+        "mode": 0,
+        "stage": "vs",
+        "bytes": 432,
+        "sha256": "cbc4d11e94dfd24513e4d433bebb1c6a4926f47146509c6643ea32ca027d586a"
+      },
+      {
+        "row": 157,
+        "name": "debugshader0F3.pso",
+        "mode": 0,
+        "stage": "ps",
+        "bytes": 444,
+        "sha256": "1010de3ba58511098c5d1800239975d09175cf3b1ceb010b82688b388840033a"
+      },
+      {
+        "row": 158,
+        "name": "debugshader1F3.vso",
+        "mode": 1,
+        "stage": "vs",
+        "bytes": 432,
+        "sha256": "cbc4d11e94dfd24513e4d433bebb1c6a4926f47146509c6643ea32ca027d586a"
+      },
+      {
+        "row": 159,
+        "name": "debugshader1F3.pso",
+        "mode": 1,
+        "stage": "ps",
+        "bytes": 200,
+        "sha256": "3751a656ab27ea7c382e92625f76615abcbbbfca409f7d4c453f60b6c8686ae0"
+      },
+      {
+        "row": 160,
+        "name": "debugshader3F3.vso",
+        "mode": 3,
+        "stage": "vs",
+        "bytes": 432,
+        "sha256": "cbc4d11e94dfd24513e4d433bebb1c6a4926f47146509c6643ea32ca027d586a"
+      },
+      {
+        "row": 161,
+        "name": "debugshader3F3.pso",
+        "mode": 3,
+        "stage": "ps",
+        "bytes": 348,
+        "sha256": "909be267fb068b24571d8dc13d45796515d274d82d95dbaa57047adcd1c46205"
+      },
+      {
+        "row": 162,
+        "name": "debugshader4F3.vso",
+        "mode": 4,
+        "stage": "vs",
+        "bytes": 432,
+        "sha256": "cbc4d11e94dfd24513e4d433bebb1c6a4926f47146509c6643ea32ca027d586a"
+      },
+      {
+        "row": 163,
+        "name": "debugshader4F3.pso",
+        "mode": 4,
+        "stage": "ps",
+        "bytes": 200,
+        "sha256": "3751a656ab27ea7c382e92625f76615abcbbbfca409f7d4c453f60b6c8686ae0"
+      }
+    ],
+    "cold_retained_textures": [
+      {
+        "asset": "models/textures/error.dds",
+        "bytes": 22000,
+        "sha256": "9b4666225274f51cfc1d6e964070be76f2a3a4997bec69748d1a81ba86359162",
+        "exact_retained_source": true
+      },
+      {
+        "asset": "effects/white.dds",
+        "bytes": 11064,
+        "sha256": "d98f8d618cfbb3840198fb54e8065446b5a249760b1a8f4bf2dd47f332d28d95",
+        "exact_retained_source": true
+      }
+    ]
+  },
+  "build": {
+    "commit": "9ed3a6de77995315a41980b6941cdcee4fb4e22b",
+    "libraries": {
+      "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\build\\win32\\Release\\bsp_core.lib": "3a610e570be51268cae2346143afd259bd182b410e76bede4d4bebe5356cc189",
+      "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\build\\win32\\Release\\bsp_lua511.lib": "b6c19dd56bce2c86dcf1abf5c3044d48ddc2ac2c33ef04e3dc87f022413ee193",
+      "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\build\\win32\\Release\\bsp_zlib121.lib": "2c89bd9ae83d791564ea847c75e8e5ee025e40810c1df8d55e5799e0c7b8c471"
+    },
+    "build_log": "local/native-platform-focus-owners-build.log",
+    "build_log_sha256": "d7217e5884372717746b3cfdb9885f9bbd49f4fc32b7d574862823f3bad2f97f",
+    "prior_root_closure": "local/checkpoints/0ca920c7/native-render-entry-cache/validation.json"
+  },
+  "validation": {
+    "production_build": "scripts/build.ps1;2/2 existing CTests passed",
+    "explicit_compiled_units": 24,
+    "explicit_linked_units": 23,
+    "fixture_compile_attempt": 2,
+    "fixture_capture": 1,
+    "new_permanent_tests": 0,
+    "untouched_gui_bytes": 71,
+    "untouched_media_bytes": 8,
+    "injected_constructor_failures": 2,
+    "fault_method": "Probe-only actual malloc/free import hooks, restored protection and CRT new handler; no production source or game byte changes.",
+    "source_cpp_unwind_order_exercised": true,
+    "original_focus_execution": false
+  },
+  "limits": [
+    "New source contexts and numeric profiles are not original ABI/FH3/SEH or callable vtables.",
+    "Whole-range AA49E0 fixed composition only; arbitrary iterator inputs not implemented.",
+    "No hardware fault, second cleanup exception, concurrent mutation, invalid storage, registration failure or populated cleanup runtime validation.",
+    "Canonical resource terminal callback is nonthrowing; only null reference cleanup exercised here.",
+    "Actual focus owners remain live; detached empty fixture storage has explicit disposal, not full normal destruction.",
+    "Full window/message handler, actual sound producer, populated GUI activation, renderer refresh, active frame/draw, full shutdown and gameplay remain outstanding."
+  ],
+  "ghidra_annotations": {
+    "prior_values": "local/ghidra-annotations-20260915T031052Z.json",
+    "existing_reviewed_and_trivial_names_retained": true,
+    "reviewed_names": {
+      "004c12b0": "BSP_GuiManager_GetOrCreate",
+      "004c1710": "BSP_MediaManager_GetOrCreate",
+      "00aa5d70": "BSP_GuiManager_Construct",
+      "00aa2820": "STL_GuiManagerList_AllocateSentinel",
+      "00aa2920": "STL_GuiManagerTree_AllocateNode",
+      "00a4c5a0": "BSP_MediaManager_Construct",
+      "00a4c4a0": "STL_MediaList_AllocateSentinel",
+      "00a4c2d0": "TRIV_body_00a4c2d0",
+      "00aa0ff0": "BSP_GuiManagerBase_ClearPublication",
+      "00a4c3f0": "BSP_MediaManagerBase_ClearPublication",
+      "0041da80": "BSP_GuiResourceSlot_Release",
+      "004c8020": "BSP_GuiPageVector_Destroy",
+      "00aa5260": "BSP_GuiTree_Destroy",
+      "00aa22c0": "BSP_GuiTree_EraseSubtree"
+    },
+    "full_prior_comments_preserved_and_readback_checked": true,
+    "exports_forcibly_refreshed": [
+      "004c12b0",
+      "004c1710",
+      "00aa5d70",
+      "00aa2820",
+      "00aa2920",
+      "00a4c5a0",
+      "00a4c4a0",
+      "00a4c2d0",
+      "00aa0ff0",
+      "00a4c3f0",
+      "0041da80",
+      "004c8020",
+      "00aa5260",
+      "00aa22c0"
+    ]
+  },
+  "immutable_capture": {
+    "path": "local/checkpoints/9ed3a6de/native-platform-focus-owners/validation.json",
+    "sha256": "5328da4539e2a7cb51b09f8ac5e27716089701c3cd67241d0d5d298ed81ec870",
+    "artifacts": 4975,
+    "runtime_modules": 81,
+    "root_provider_source_count": 307,
+    "source_manifest_sha256": "bb2e62666f399f517ff398cce9aab9e125818f7fdde53a307a6fba55430819cc"
+  },
+  "immutable_capture_note": "Complete production/compiler/link/runtime inputs and docs/report before this closure metadata addition. Source/header, CMake, all owned shards and flow/body repair reports match the frozen closure."
+}
