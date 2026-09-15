@@ -29,16 +29,18 @@ class ExporterTests(unittest.TestCase):
 
     def test_partial_export_is_retried_then_complete_export_is_skipped(self):
         client = Mock(config=self.config)
-        client.get.side_effect = ['void f(void) { return; }', '00401130: RET']
+        # decompile() now refreshes the name from live Ghidra before exporting, so the first call is
+        # get_function_by_address and its reply must parse as "Function: <name> at 0x<address>".
+        client.get.side_effect = ['Function: f at 0x00401130', 'void f(void) { return; }', '00401130: RET']
         with tempfile.TemporaryDirectory() as temp:
             output = Path(temp)
             write(output / 'functions.json', [{'address': '00401130', 'name': 'f'}])
             write(output / 'functions/00401130/decompiled.c', 'partial')
             decompile(client, output, ['00401130'])
-            self.assertEqual(client.get.call_count, 2)
+            self.assertEqual(client.get.call_count, 3)
             self.assertTrue((output / 'functions/00401130/metadata.json').exists())
             decompile(client, output, ['00401130'])
-            self.assertEqual(client.get.call_count, 2)
+            self.assertEqual(client.get.call_count, 3)
 
     def test_rejects_non_pe_input(self):
         with tempfile.TemporaryDirectory() as temp:
