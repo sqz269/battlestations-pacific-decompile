@@ -1,6 +1,6 @@
 {
   "packet": "orch3_shadow_update_leaves_ei",
-  "status": "complete_source_pending_primary_review_and_joint_build",
+  "status": "complete_source_build_tested_generated_byte_verified",
   "base_commit": "96907b532a143c218af01812a78a0332659b877f",
   "coverage": {
     "native_bodies": 3,
@@ -85,7 +85,7 @@
     "getter": "One current volatile DWORD read through explicit borrowed address; original6-byte identity not expected"
   },
   "joint_build": {
-    "status": "pending_primary_source_approval",
+    "status": "passed_exact_combined_source",
     "eh_base_source": "96907b532a143c218af01812a78a0332659b877f",
     "required_objects": [
       "build/win32/bsp_core.dir/Release/native_shadow_update_leaves.obj",
@@ -114,11 +114,40 @@
         "sha256": "77008dbc9c277520f9cd9dcaac8395a25cf1d8ca764021e3a2d966af1d6de409",
         "same_as_retained_eh": true
       }
-    ]
+    ],
+    "tested_commit": "3c584d0b28e40ff1f15ddb7b42ba47dfc1ec97d7",
+    "started_utc": "2026-09-15T02:19:25.207388+00:00",
+    "finished_utc": "2026-09-15T02:27:39.706692+00:00",
+    "exit_code": 0,
+    "tracked_build_input_count": 2639,
+    "total_build_input_count": 2640,
+    "all_build_inputs_unchanged": true,
+    "clean_tree_before_and_after": true,
+    "same_commit_after": true,
+    "head_after": "3c584d0b28e40ff1f15ddb7b42ba47dfc1ec97d7",
+    "existing_ctest_summary": [
+      "1/2 Test #1: reconstructed_math ...............   Passed    0.05 sec",
+      "2/2 Test #2: native_math_differential .........   Passed    0.04 sec",
+      "100% tests passed, 0 tests failed out of 2"
+    ],
+    "verified_seed_ranges": 8,
+    "libraries": {
+      "build/win32/Release/bsp_core.lib": "fc0f87e79285f753346216679b83be1445b6f67f57980b6a7372021e56fce8dd",
+      "build/win32/Release/bsp_lua511.lib": "3aa4febc12327b737b4828a6ccfaf1f31ccc1a3f9fd6108da93d558f00ee403a",
+      "build/win32/Release/bsp_zlib121.lib": "d7e8e874e5e8166e2388d00ab484ef57c0771a2dd9e8e23c564493dc76ee7365",
+      "build/win32/Release/xlive_stub.lib": "6dfcb5bf13947ffb6883edfde9d189c4c7ae0d702ec8bd81daebf3749e5f1c67"
+    },
+    "generated_objects": {
+      "build/win32/bsp_core.dir/Release/native_shadow_update_leaves.obj": "d418853f49a568b1f6d7486ab4bd651034116a73bd4f1bdf1741fbb30b741380",
+      "build/win32/bsp_core.dir/Release/native_shadow_job_lifetime.obj": "521fcd5bbd9ac5fa21fd58949918279a9a0dcfeca8231023c65bfa1b17cb277b",
+      "build/win32/bsp_core.dir/Release/native_singleton_destruction.obj": "a4bd82546d39ce6fd6dfc3af04dd5520a47b38d382917997fa8b555a5ca4490a"
+    },
+    "frozen_artifacts": true,
+    "eh_historical_limit": "EH draft source/report at96907b53 predates primary live listing repairs and final8/0 call verification. Its old diagnostic is preserved as historical. This manifest contains the actual new combined-build objects; separate EH generated/provider review is owned by primary/EH reviewer."
   },
   "partial_limits": [
-    "Source implemented but build/generated/runtime proof pending at this draft revision.",
-    "Getter is an explicit borrowed-cell C++ ABI; setter literal identity is an expectation until actual COFF inspection.",
+    "Complete source, one clean coupled Win32 build and static generated checks passed; no runtime leaf fixture or game execution.",
+    "Getter is an explicit borrowed-cell C++ ABI with a ten-byte framed body; both setters have complete native13/22-byte COFF identity and zero relocations.",
     "No AD7A30 parent, missing AD7360/AD7440/AD72A0 children, generic lifetime framework or typed actual-object surrogate.",
     "No new tests, native/game fixture, visual rendering or unmasked FPU-fault proof.",
     "No Ghidra or ledger mutation; preserve existing getter name and delegate final annotation/credit to primary."
@@ -288,5 +317,206 @@
     "stdout": "J:\\PROG\\battlestations-pacific-decompile-orch3-shadow-update-leaves-ei\\reports\\native_shadow_update_leaves.json: 5 call rows checked, 0 failed\n",
     "stderr": "",
     "scope": "Five original direct leaf call sites; no new calls in leaf implementations"
+  },
+  "source_commit": "3c584d0b28e40ff1f15ddb7b42ba47dfc1ec97d7",
+  "generated_validation": {
+    "status": "passed",
+    "tested_commit": "3c584d0b28e40ff1f15ddb7b42ba47dfc1ec97d7",
+    "findings": [],
+    "rows": [
+      {
+        "native_address": "00b400c0",
+        "native_length": 13,
+        "symbol": {
+          "name": "?set_native_material_effect_byte_00b400c0@bsp@@YIXPAX0I@Z",
+          "value": 0,
+          "section": 4,
+          "type": 32,
+          "storage_class": 2
+        },
+        "section": {
+          "index": 4,
+          "name": ".text$mn",
+          "size": 13,
+          "raw_at": 533,
+          "relocation_count": 0,
+          "characteristics": "60501020"
+        },
+        "source_hex": "8a44240488813c010000c20400",
+        "source_sha256": "70946b1c143595bd0b6bbde95c841671836d10acbc07d2c467544b26a485c469",
+        "native_hex": "8a44240488813c010000c20400",
+        "native_sha256": "70946b1c143595bd0b6bbde95c841671836d10acbc07d2c467544b26a485c469",
+        "complete_native_byte_identity": true,
+        "full_instructions": [
+          {
+            "offset": 0,
+            "bytes": "8a442404",
+            "text": "mov al, byte ptr [esp + 4]"
+          },
+          {
+            "offset": 4,
+            "bytes": "88813c010000",
+            "text": "mov byte ptr [ecx + 0x13c], al"
+          },
+          {
+            "offset": 10,
+            "bytes": "c20400",
+            "text": "ret 4"
+          }
+        ]
+      },
+      {
+        "native_address": "00b40820",
+        "native_length": 22,
+        "symbol": {
+          "name": "?set_native_material_effect_float_bits_00b40820@bsp@@YIXPAX0II@Z",
+          "value": 0,
+          "section": 5,
+          "type": 32,
+          "storage_class": 2
+        },
+        "section": {
+          "index": 5,
+          "name": ".text$mn",
+          "size": 22,
+          "raw_at": 546,
+          "relocation_count": 0,
+          "characteristics": "60501020"
+        },
+        "source_hex": "8b442404f30f10442408f30f11848140010000c20800",
+        "source_sha256": "a00913eac55b683f5cfa2f7f95c5872ef64a04e67f152ff56c19e54b47f8e57f",
+        "native_hex": "8b442404f30f10442408f30f11848140010000c20800",
+        "native_sha256": "a00913eac55b683f5cfa2f7f95c5872ef64a04e67f152ff56c19e54b47f8e57f",
+        "complete_native_byte_identity": true,
+        "full_instructions": [
+          {
+            "offset": 0,
+            "bytes": "8b442404",
+            "text": "mov eax, dword ptr [esp + 4]"
+          },
+          {
+            "offset": 4,
+            "bytes": "f30f10442408",
+            "text": "movss xmm0, dword ptr [esp + 8]"
+          },
+          {
+            "offset": 10,
+            "bytes": "f30f11848140010000",
+            "text": "movss dword ptr [ecx + eax*4 + 0x140], xmm0"
+          },
+          {
+            "offset": 19,
+            "bytes": "c20800",
+            "text": "ret 8"
+          }
+        ]
+      },
+      {
+        "native_address": "00b7aae0",
+        "native_length": 6,
+        "symbol": {
+          "name": "?get_native_override_context_word_00b7aae0@bsp@@YAIADI@Z",
+          "value": 0,
+          "section": 3,
+          "type": 32,
+          "storage_class": 2
+        },
+        "section": {
+          "index": 3,
+          "name": ".text$mn",
+          "size": 10,
+          "raw_at": 523,
+          "relocation_count": 0,
+          "characteristics": "60501020"
+        },
+        "source_hex": "558bec8b45088b005dc3",
+        "source_sha256": "2246c2c753eab0352c11de33f3694e58f3791bda511313fe11bacdca6b59777d",
+        "native_hex": "a19c010901c3",
+        "native_sha256": "1fd7c5b1649c49e88c0890a04663dd3d92480c34f886fe031c3aa1938f2a6b98",
+        "complete_native_byte_identity": false,
+        "full_instructions": [
+          {
+            "offset": 0,
+            "bytes": "55",
+            "text": "push ebp"
+          },
+          {
+            "offset": 1,
+            "bytes": "8bec",
+            "text": "mov ebp, esp"
+          },
+          {
+            "offset": 3,
+            "bytes": "8b4508",
+            "text": "mov eax, dword ptr [ebp + 8]"
+          },
+          {
+            "offset": 6,
+            "bytes": "8b00",
+            "text": "mov eax, dword ptr [eax]"
+          },
+          {
+            "offset": 8,
+            "bytes": "5d",
+            "text": "pop ebp"
+          },
+          {
+            "offset": 9,
+            "bytes": "c3",
+            "text": "ret"
+          }
+        ],
+        "explicit_context_proof": "10 bytes: PUSH EBP; MOV EBP,ESP; MOV EAX,[EBP+8]; MOV EAX,[EAX]; POP EBP; RET. One pointer argument fetch and exactly one current DWORD cell read; no initializer, default, call or cache."
+      }
+    ],
+    "exact_whole_object_library_membership": {
+      "library": "J:\\PROG\\battlestations-pacific-decompile-orch3-shadow-update-leaves-ei\\build\\win32\\Release\\bsp_core.lib",
+      "sha256": "fc0f87e79285f753346216679b83be1445b6f67f57980b6a7372021e56fce8dd",
+      "matches": [
+        {
+          "archive_offset": 12691476,
+          "name": "/0",
+          "size": 1106
+        }
+      ]
+    },
+    "verification_history": [
+      {
+        "first_attempt": "Harness assertion expected a frameless seven-byte getter.",
+        "observed_hex": "558bec8b45088b005dc3",
+        "stderr": "AssertionError: 558bec8b45088b005dc3",
+        "resolution": "Current compiler keeps EBP: PUSH EBP; MOV EBP,ESP; MOV EAX,[EBP+8]; MOV EAX,[EAX]; POP EBP; RET. Corrected verifier to the observed complete ten-byte body. Source and build artifacts were unchanged; no rebuild."
+      }
+    ]
+  },
+  "validation_artifacts": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-shadow-update-leaves-ei\\local\\ei-final-build-stamp.json",
+      "sha256": "6ba07923ccdfbf714baefcf3e920ea5fe8f518df503d7b77e3ce46c6996281c9"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-shadow-update-leaves-ei\\local\\ei-final-build.log",
+      "sha256": "1f8fb3ff25528b27a2a22b882db4bb6fc52e4aefad6d90db5c6c06dbe8c404a3"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-shadow-update-leaves-ei\\local\\ei-seed-verification.json",
+      "sha256": "1364cb4813ef2ff27432a3285cfc1c43c26dc0a4aea3cb84bbe66d84f2634702"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-shadow-update-leaves-ei\\local\\build_final_ei.py",
+      "sha256": "8e31ab7bbd65827c8200e7b61d0242edf6986ab41592d70cdd5bdd6c4fbf4520"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-shadow-update-leaves-ei\\local\\ei-generated-review.json",
+      "sha256": "b5bf88f4121085e48511d8d9860c112fb5a1617524cc2b421eaf812cd4004fef"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-shadow-update-leaves-ei\\local\\ei-review-object.py",
+      "sha256": "555e9aa75424040660b0969db5650291f44c7850ffdd5ce3119bcc7d863957d1"
+    }
+  ],
+  "documentation_pin": {
+    "path": "docs/NATIVE_SHADOW_UPDATE_LEAVES.md",
+    "sha256": "c5e7055490f42c53b779574d04ba7e57da81b91c598e34d3046cea209ee395a8"
   }
 }
