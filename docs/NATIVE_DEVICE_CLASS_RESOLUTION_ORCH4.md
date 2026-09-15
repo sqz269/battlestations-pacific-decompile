@@ -261,6 +261,7 @@ remain evidence-only.
 | `0087C640/00877FA0` damageable base and five cleanup helpers | [Native damageable construction](NATIVE_DAMAGEABLE_CLASS_CONSTRUCTION_ORCH4.md) | Strict Win32 build, combined 3 CTests, eight call/tail rows; ordinary original/source object and sentinel comparison plus source failure-order fixture |
 | `00442B90` and seven derived constructors | [Native device constructors](NATIVE_DEVICE_CLASS_CONSTRUCTION_ORCH4.md) | All 260 bytes matched disk/live, 15 direct call rows, strict Win32 build and 3 CTests; genuine base composition and partial ordered stores |
 | `007149D0` borrowed category-table lookup | [Damageable Lua reader audit](NATIVE_DAMAGEABLE_CLASS_LUA_ORCH4.md) | Strict Win32 build and 3 CTests; repeated actual-table loads through existing comparison provider with explicit host CRT/locale boundary |
+| `00878B40/00878EF0/0041DE40` section copy and handle cleanup | [Native damageable section](NATIVE_DAMAGEABLE_SECTION_ORCH4.md) | All 198 bytes matched disk/live; original/source comparison covers x87 state, signaling NaNs, aliases, retain and actual virtual cleanup ordering; strict Win32 and 3 CTests |
 
 Native class readers, complete class destruction, bullet resolution,
 vslot+10h activation and final `00443090/00443490` composition remain open.
@@ -270,3 +271,9 @@ the reader itself remains source absent. The repaired factory EH listings
 improve evidence coverage and do not implement the factory.
 Source/helper checks do not establish original ABI/FH3 compatibility,
 fresh resource loading, complete native vehicle activation or gameplay.
+
+The primary integration worktree archives the ignored construction and section
+probe source, original-byte includes, build logs and results under
+`local/worker_evidence/damageable-construction-d4/` and
+`local/worker_evidence/damageable-section-e5/`. The corresponding worker
+worktrees can be removed without losing that local validation evidence.
