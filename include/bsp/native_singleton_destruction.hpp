@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cstddef>
 #include <cstdint>
 
 namespace bsp {
@@ -11,6 +12,7 @@ struct NativeInputSettingsLifetimeContext;
 struct NativeLuaFundamentalsView;
 struct NativeDebugFeatureOwnerContext;
 struct NativeGameResourceFactoryContext;
+struct NativeShadowJobContext;
 struct NativeStringPoolStorage;
 struct NativePhysicalFactoryContext;
 struct NativeVfsManagerLifetimeContext;
@@ -30,7 +32,7 @@ namespace game { class GameSoundRuntime; }
 // D0DA64, D5E594, D5E59C, D5B44C, D5B460, D5B478, D58F78, D24138,
 // D2413C, D5B5F4, D5B5F8, D5B72C, D5B630, D68200, D68CF8, D68D04 or
 // D688B0, CFEA1C, D6418C, CF7E70, CF7E74, CE7548, D190C4, CF81CC, D68B94,
-// CFD84C, D62C18, D68EC0, D5E5DC, D5E5D4, CFB6C4 or CFEA10. D0DA64
+// CFD84C, D62C18, D68EC0, D5E5DC, D5E5D4, CFB6C4, CFEA10 or D5B56C. D0DA64
 // requires its actual publication cell; registry and sound profiles require
 // their concrete borrowed bindings. Sound and XLive owners retain C++ projected
 // storage; XLive additionally requires the exact allocation identity. Input
@@ -103,8 +105,15 @@ struct NativeSingletonDeletionBindings {
     // CFEA10 is the registered MPKG secondary at primary+4. Its existing
     // thunk adjusts the popped pointer and clears the same 010904F4 cell.
     NativeMpkgFactoryContext* mpkg_factory{};
+    // D5B56C is the final shadow-job secondary at primary+4. A8DDB0 adjusts
+    // -4 before A8DDE0 clears the SAME E18AD4 cell and frees actual primary.
+    // Borrow the construction context through drain; transient D5B568 is not
+    // admitted. Appended/default-null so all previous member offsets remain.
+    NativeShadowJobContext* shadow_job{};
 };
-static_assert(sizeof(NativeSingletonDeletionBindings) == 92);
+static_assert(offsetof(NativeSingletonDeletionBindings, mpkg_factory) == 88);
+static_assert(offsetof(NativeSingletonDeletionBindings, shadow_job) == 92);
+static_assert(sizeof(NativeSingletonDeletionBindings) == 96);
 
 // Full BD0400[197] normal schedule over raw14h manager storage. Native ECX
 // owner, RET; new EDX reference to stable bindings above. Pop before deleting

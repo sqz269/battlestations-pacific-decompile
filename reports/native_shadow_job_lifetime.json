@@ -1,0 +1,472 @@
+{
+  "schema": "bsp.native_shadow_job_lifetime.v1",
+  "packet": "orch3_native_shadow_job_lifetime_eh",
+  "base_commit": "af212ef31f008889ada610a07b9f29e4f0e9996e",
+  "status": "source_complete_primary_source_logic_accepted_joint_build_pending",
+  "native_normal_bytes": 266,
+  "routine_count": 3,
+  "newly_defined_function_credit": 0,
+  "standalone_eh_credit": 0,
+  "functions": [
+    {
+      "address": "00a8e090",
+      "end_inclusive": "00a8e15d",
+      "native_bytes": 206,
+      "sha256": "f051cdbc17296f9e1b6165992f72b01d3daa8257786c71d944392041de4f6f23",
+      "live_equals_installed": true,
+      "current_function_status": "existing",
+      "original_abi": "no input; EAX primary; RET",
+      "source": "get_native_shadow_job_00a8e090",
+      "coverage": "complete normal body",
+      "source_file": "src/native_shadow_job_lifetime.cpp"
+    },
+    {
+      "address": "00a8dde0",
+      "end_inclusive": "00a8de13",
+      "native_bytes": 52,
+      "sha256": "6a0884d3a3c0a372dfdc1a3a3dcb18db8249ec345cd458964c9c1a90b5461af7",
+      "live_equals_installed": true,
+      "current_function_status": "existing",
+      "original_abi": "ECX primary; stack flags; EAX primary; RET4",
+      "source": "delete_native_shadow_job_00a8dde0",
+      "coverage": "complete normal body",
+      "source_file": "src/native_shadow_job_lifetime.cpp"
+    },
+    {
+      "address": "00a8ddb0",
+      "end_inclusive": "00a8ddb7",
+      "native_bytes": 8,
+      "sha256": "9d16783b9649f14f2aadbcb7e8e497774fdfd650cc3a294d71f1002fd560a73b",
+      "live_equals_installed": true,
+      "current_function_status": "undefined",
+      "original_abi": "ECX secondary; subtract4 then tail A8DDE0; same stack flags",
+      "source": "delete_native_shadow_job_secondary_00a8ddb0",
+      "coverage": "complete normal body",
+      "source_file": "src/native_shadow_job_lifetime.cpp"
+    }
+  ],
+  "native_calls": [
+    {
+      "address": "00a8e0b6",
+      "native": "00415350",
+      "function": "00a8e090",
+      "kind": "direct_call",
+      "contract": "first actual manager"
+    },
+    {
+      "address": "00a8e0ec",
+      "native": "00bf681b",
+      "function": "00a8e090",
+      "kind": "direct_call",
+      "contract": "actual8-byte allocation; ADD ESP,4"
+    },
+    {
+      "address": "00a8e12e",
+      "native": "00415350",
+      "function": "00a8e090",
+      "kind": "direct_call",
+      "contract": "second manager after captured secondary"
+    },
+    {
+      "address": "00a8e135",
+      "native": "00bd0c30",
+      "function": "00a8e090",
+      "kind": "direct_call",
+      "contract": "register captured nullable secondary; provider RET4"
+    },
+    {
+      "address": "00a8de06",
+      "native": "00bf65ac",
+      "function": "00a8dde0",
+      "kind": "direct_call",
+      "contract": "free original primary; ADD ESP,4 at A8DE0B"
+    },
+    {
+      "address": "00a8ddb3",
+      "native": "00a8dde0",
+      "function": "00a8ddb0",
+      "kind": "tail_jump",
+      "contract": "SUB ECX,4; original flags through tail; current caller function undefined"
+    },
+    {
+      "address": "00cb63f3",
+      "native": "00411ee0",
+      "function": "00cb63f0",
+      "kind": "tail_jump",
+      "contract": "existing unwind action only, not standalone source credit"
+    },
+    {
+      "address": "00a8ec5d",
+      "native": "00a8e090",
+      "function": "00a8ea20",
+      "kind": "direct_call",
+      "contract": "caller prepares borrowed job for frame enqueue"
+    }
+  ],
+  "native_import_calls": [
+    {
+      "callsite": "00a8e0cf",
+      "iat_cell": "00ce2218",
+      "import": "EnterCriticalSection",
+      "function": "00a8e090"
+    },
+    {
+      "callsite": "00a8e143",
+      "iat_cell": "00ce2210",
+      "import": "LeaveCriticalSection",
+      "function": "00a8e090"
+    }
+  ],
+  "evidence": {
+    "admission": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-shadow-job-queue-admission-ef\\local\\ef-shadow-job-queue-admission.json",
+      "sha256": "9601e1af7ea4ae114d634fc929dd5888302d8a6fbd5b584e1ae1c8b05c281c37"
+    },
+    "native_capture": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-shadow-job-lifetime-eh\\local\\eh-native-evidence.json",
+      "sha256": "e3a85d4732e22f1abb1af035db776c4007f8fe64bbefde7d3ce171f0ff65c771"
+    },
+    "installed_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "fresh_live_spans": [
+      {
+        "address": "00a8e090",
+        "length": 206,
+        "sha256": "f051cdbc17296f9e1b6165992f72b01d3daa8257786c71d944392041de4f6f23",
+        "disk_hex": "64a1000000006aff68f863cb005064892500000000a1d48ae10083ec0885c00f859a00000056e8957298ff8b701085f6c7442404fc37ce0089742408740b56ff151822ce0083461801c744241400000000833dd48ae1000075506a08e82a87160083c40485c0741bc7400468b5d500c70070b5d500c740046cb5d500a3d48ae100eb0ac705d48ae10000000000a1d48ae10085c0740583c004eb0233c050e81d7298ff8bc8e8f62a140085f6740b834618ff56ff151022ce00a1d48ae1005e8b4c240864890d0000000083c414c3",
+        "live_hex": "64a1000000006aff68f863cb005064892500000000a1d48ae10083ec0885c00f859a00000056e8957298ff8b701085f6c7442404fc37ce0089742408740b56ff151822ce0083461801c744241400000000833dd48ae1000075506a08e82a87160083c40485c0741bc7400468b5d500c70070b5d500c740046cb5d500a3d48ae100eb0ac705d48ae10000000000a1d48ae10085c0740583c004eb0233c050e81d7298ff8bc8e8f62a140085f6740b834618ff56ff151022ce00a1d48ae1005e8b4c240864890d0000000083c414c3",
+        "matches": true
+      },
+      {
+        "address": "00a8dde0",
+        "length": 52,
+        "sha256": "6a0884d3a3c0a372dfdc1a3a3dcb18db8249ec345cd458964c9c1a90b5461af7",
+        "disk_hex": "568bf185f674058d4604eb0233c0f644240801c705d48ae10000000000c7001838ce00740956e8a187160083c4048bc65ec20400",
+        "live_hex": "568bf185f674058d4604eb0233c0f644240801c705d48ae10000000000c7001838ce00740956e8a187160083c4048bc65ec20400",
+        "matches": true
+      },
+      {
+        "address": "00a8ddb0",
+        "length": 8,
+        "sha256": "9d16783b9649f14f2aadbcb7e8e497774fdfd650cc3a294d71f1002fd560a73b",
+        "disk_hex": "83e904e928000000",
+        "live_hex": "83e904e928000000",
+        "matches": true
+      }
+    ],
+    "provider_base_pins": [
+      {
+        "path": "include/bsp/native_render_pointer_arrays.hpp",
+        "disk_sha256": "d9cf406a178986114205fe9a154a2b74c0f8dd857b6186d7d840d8fe398ae881",
+        "git_base_blob_sha256": "d9cf406a178986114205fe9a154a2b74c0f8dd857b6186d7d840d8fe398ae881",
+        "published_root_blob_sha256": "d9cf406a178986114205fe9a154a2b74c0f8dd857b6186d7d840d8fe398ae881",
+        "published_root_same_blob": true
+      },
+      {
+        "path": "src/native_render_pointer_arrays.cpp",
+        "disk_sha256": "ac16b7251f6df37193b88d5d92e8288044872bc2df39b71f29ed83c7291b193c",
+        "git_base_blob_sha256": "ac16b7251f6df37193b88d5d92e8288044872bc2df39b71f29ed83c7291b193c",
+        "published_root_blob_sha256": "ac16b7251f6df37193b88d5d92e8288044872bc2df39b71f29ed83c7291b193c",
+        "published_root_same_blob": true
+      },
+      {
+        "path": "include/bsp/native_instance_group_upload.hpp",
+        "disk_sha256": "e4cf00546eafd12d49f5b8d4b3b15f6c9ad0c8868be3da4acf76a470117a2d99",
+        "git_base_blob_sha256": "e4cf00546eafd12d49f5b8d4b3b15f6c9ad0c8868be3da4acf76a470117a2d99",
+        "published_root_blob_sha256": "e4cf00546eafd12d49f5b8d4b3b15f6c9ad0c8868be3da4acf76a470117a2d99",
+        "published_root_same_blob": true
+      },
+      {
+        "path": "src/native_instance_group_upload.cpp",
+        "disk_sha256": "d233b97b78404568d75e0a7e56f8337d921e1b67c0de75929d237377a1e8c651",
+        "git_base_blob_sha256": "d233b97b78404568d75e0a7e56f8337d921e1b67c0de75929d237377a1e8c651",
+        "published_root_blob_sha256": "d233b97b78404568d75e0a7e56f8337d921e1b67c0de75929d237377a1e8c651",
+        "published_root_same_blob": true
+      },
+      {
+        "path": "include/bsp/native_traceline_render.hpp",
+        "disk_sha256": "71c88e0aa16eacc035ddeec264b9cba33aacef845ba10cf549409a66473085f3",
+        "git_base_blob_sha256": "71c88e0aa16eacc035ddeec264b9cba33aacef845ba10cf549409a66473085f3",
+        "published_root_blob_sha256": "71c88e0aa16eacc035ddeec264b9cba33aacef845ba10cf549409a66473085f3",
+        "published_root_same_blob": true
+      },
+      {
+        "path": "src/native_traceline_render.cpp",
+        "disk_sha256": "409f4c679ff1aa635b9d347c8049600079e822649e3ec751b32ed9d5100fa627",
+        "git_base_blob_sha256": "409f4c679ff1aa635b9d347c8049600079e822649e3ec751b32ed9d5100fa627",
+        "published_root_blob_sha256": "409f4c679ff1aa635b9d347c8049600079e822649e3ec751b32ed9d5100fa627",
+        "published_root_same_blob": true
+      },
+      {
+        "path": "include/bsp/native_instance_collection.hpp",
+        "disk_sha256": "6c60d147f14ca210aa96529e9c45d523053fbf13a103e6dfd705caec54fc2f54",
+        "git_base_blob_sha256": "6c60d147f14ca210aa96529e9c45d523053fbf13a103e6dfd705caec54fc2f54",
+        "published_root_blob_sha256": "6c60d147f14ca210aa96529e9c45d523053fbf13a103e6dfd705caec54fc2f54",
+        "published_root_same_blob": true
+      },
+      {
+        "path": "src/native_instance_collection.cpp",
+        "disk_sha256": "794ea4aa0f5e93d55047b8bd24c6b5207a5c0a0af50569fd13a1c708b210bc2f",
+        "git_base_blob_sha256": "794ea4aa0f5e93d55047b8bd24c6b5207a5c0a0af50569fd13a1c708b210bc2f",
+        "published_root_blob_sha256": "794ea4aa0f5e93d55047b8bd24c6b5207a5c0a0af50569fd13a1c708b210bc2f",
+        "published_root_same_blob": true
+      },
+      {
+        "path": "include/bsp/native_singleton_publication.hpp",
+        "disk_sha256": "0ba3bb843ec6048790eb768f46e6cfeb99c8fae8c3e3f3ae59a0e14cca1e72f5",
+        "git_base_blob_sha256": "0ba3bb843ec6048790eb768f46e6cfeb99c8fae8c3e3f3ae59a0e14cca1e72f5",
+        "published_root_blob_sha256": "0ba3bb843ec6048790eb768f46e6cfeb99c8fae8c3e3f3ae59a0e14cca1e72f5",
+        "published_root_same_blob": true
+      },
+      {
+        "path": "src/native_singleton_publication.cpp",
+        "disk_sha256": "db69108414a5aa844b80b04ca82819139f1dccc422d6f3a954512a4375d07c8a",
+        "git_base_blob_sha256": "db69108414a5aa844b80b04ca82819139f1dccc422d6f3a954512a4375d07c8a",
+        "published_root_blob_sha256": "db69108414a5aa844b80b04ca82819139f1dccc422d6f3a954512a4375d07c8a",
+        "published_root_same_blob": true
+      },
+      {
+        "path": "include/bsp/native_singleton_vector_registration_wrappers.hpp",
+        "disk_sha256": "04d669c9167de50ba74557cc6651ab4dbdc753b8c6f40fdb3a743f65948eab35",
+        "git_base_blob_sha256": "04d669c9167de50ba74557cc6651ab4dbdc753b8c6f40fdb3a743f65948eab35",
+        "published_root_blob_sha256": "04d669c9167de50ba74557cc6651ab4dbdc753b8c6f40fdb3a743f65948eab35",
+        "published_root_same_blob": true
+      },
+      {
+        "path": "src/native_singleton_vector_registration_wrappers.cpp",
+        "disk_sha256": "cd191614f5de77becc8a0a9a73f9c3ebfc1cfd86bb87fdf10a7965d0a5839a90",
+        "git_base_blob_sha256": "cd191614f5de77becc8a0a9a73f9c3ebfc1cfd86bb87fdf10a7965d0a5839a90",
+        "published_root_blob_sha256": "cd191614f5de77becc8a0a9a73f9c3ebfc1cfd86bb87fdf10a7965d0a5839a90",
+        "published_root_same_blob": true
+      },
+      {
+        "path": "include/bsp/native_diagnostic_sink_lifetime.hpp",
+        "disk_sha256": "17bf59a7aee1bda0ceb66989c177ed8e32f207c55087f10b5ecfaaa275791af6",
+        "git_base_blob_sha256": "17bf59a7aee1bda0ceb66989c177ed8e32f207c55087f10b5ecfaaa275791af6",
+        "published_root_blob_sha256": "17bf59a7aee1bda0ceb66989c177ed8e32f207c55087f10b5ecfaaa275791af6",
+        "published_root_same_blob": true
+      },
+      {
+        "path": "src/native_diagnostic_sink_lifetime.cpp",
+        "disk_sha256": "c74781854e773ffdf76f46b823b6751ca795709f277fefc874a2bdfdefd63131",
+        "git_base_blob_sha256": "c74781854e773ffdf76f46b823b6751ca795709f277fefc874a2bdfdefd63131",
+        "published_root_blob_sha256": "c74781854e773ffdf76f46b823b6751ca795709f277fefc874a2bdfdefd63131",
+        "published_root_same_blob": true
+      },
+      {
+        "path": "include/bsp/native_singleton_destruction.hpp",
+        "disk_sha256": "8b16b6514d1cea625520377c7ce38114b30f7be76ed0577a84011814b2b6c60d",
+        "git_base_blob_sha256": "8b16b6514d1cea625520377c7ce38114b30f7be76ed0577a84011814b2b6c60d",
+        "published_root_blob_sha256": "8b16b6514d1cea625520377c7ce38114b30f7be76ed0577a84011814b2b6c60d",
+        "published_root_same_blob": true
+      },
+      {
+        "path": "src/native_singleton_destruction.cpp",
+        "disk_sha256": "97a91e06f17730a88b0ab06af96ea5ac1fcb296538981f3785dc2a2c991be6f8",
+        "git_base_blob_sha256": "97a91e06f17730a88b0ab06af96ea5ac1fcb296538981f3785dc2a2c991be6f8",
+        "published_root_blob_sha256": "97a91e06f17730a88b0ab06af96ea5ac1fcb296538981f3785dc2a2c991be6f8",
+        "published_root_same_blob": true
+      },
+      {
+        "path": "include/bsp/singleton_lifetime.hpp",
+        "disk_sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+        "git_base_blob_sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+        "published_root_blob_sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+        "published_root_same_blob": true
+      },
+      {
+        "path": "src/singleton_lifetime.cpp",
+        "disk_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+        "git_base_blob_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+        "published_root_blob_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+        "published_root_same_blob": true
+      },
+      {
+        "path": "include/bsp/native_game_resource_factory.hpp",
+        "disk_sha256": "27af016f519be76ea85b7fcb81a5fb7372c6b99dc257e30e43ef1c56ea8505e5",
+        "git_base_blob_sha256": "27af016f519be76ea85b7fcb81a5fb7372c6b99dc257e30e43ef1c56ea8505e5",
+        "published_root_blob_sha256": "27af016f519be76ea85b7fcb81a5fb7372c6b99dc257e30e43ef1c56ea8505e5",
+        "published_root_same_blob": true
+      },
+      {
+        "path": "src/native_game_resource_factory.cpp",
+        "disk_sha256": "ab31c1170968de9fad743eb5a0151f79b57057d4881cf3d050946bac86a1e022",
+        "git_base_blob_sha256": "ab31c1170968de9fad743eb5a0151f79b57057d4881cf3d050946bac86a1e022",
+        "published_root_blob_sha256": "ab31c1170968de9fad743eb5a0151f79b57057d4881cf3d050946bac86a1e022",
+        "published_root_same_blob": true
+      },
+      {
+        "path": "include/bsp/native_frame_job_execution.hpp",
+        "disk_sha256": "e90dc5ccead03c5a20f5d9436396dbddd9ee8b2244f25f0c8bca6f57d9bb2f97",
+        "git_base_blob_sha256": "e90dc5ccead03c5a20f5d9436396dbddd9ee8b2244f25f0c8bca6f57d9bb2f97",
+        "published_root_blob_sha256": "e90dc5ccead03c5a20f5d9436396dbddd9ee8b2244f25f0c8bca6f57d9bb2f97",
+        "published_root_same_blob": true
+      },
+      {
+        "path": "src/native_frame_job_execution.cpp",
+        "disk_sha256": "2731bd4ad4a2a1e1a96cc90e5b64b819065db7c45b5f29d5c34b5c27625d4354",
+        "git_base_blob_sha256": "2731bd4ad4a2a1e1a96cc90e5b64b819065db7c45b5f29d5c34b5c27625d4354",
+        "published_root_blob_sha256": "2731bd4ad4a2a1e1a96cc90e5b64b819065db7c45b5f29d5c34b5c27625d4354",
+        "published_root_same_blob": true
+      },
+      {
+        "path": "include/bsp/native_render_command_preparation.hpp",
+        "disk_sha256": "f9d8315d474faf725493ab57827bccac911befc4b568267b1dadded2fa6a4bc0",
+        "git_base_blob_sha256": "f9d8315d474faf725493ab57827bccac911befc4b568267b1dadded2fa6a4bc0",
+        "published_root_blob_sha256": "f9d8315d474faf725493ab57827bccac911befc4b568267b1dadded2fa6a4bc0",
+        "published_root_same_blob": true
+      },
+      {
+        "path": "src/native_render_command_preparation.cpp",
+        "disk_sha256": "866357004ff1cee4058b8be6ccf2a36583b72c66d35d7d52cdf7819355c5205b",
+        "git_base_blob_sha256": "866357004ff1cee4058b8be6ccf2a36583b72c66d35d7d52cdf7819355c5205b",
+        "published_root_blob_sha256": "866357004ff1cee4058b8be6ccf2a36583b72c66d35d7d52cdf7819355c5205b",
+        "published_root_same_blob": true
+      },
+      {
+        "path": "include/bsp/render_command_queue.hpp",
+        "disk_sha256": "bc5b28823becf3dbe9628f7393be7f3ba399895d6935829921113a7496fe8f1a",
+        "git_base_blob_sha256": "bc5b28823becf3dbe9628f7393be7f3ba399895d6935829921113a7496fe8f1a",
+        "published_root_blob_sha256": "bc5b28823becf3dbe9628f7393be7f3ba399895d6935829921113a7496fe8f1a",
+        "published_root_same_blob": true
+      },
+      {
+        "path": "src/render_command_queue.cpp",
+        "disk_sha256": "5ec78b4d95eef3cb597d789b04ab7bb6f0a44915932b721cb8e2e2a65418cb02",
+        "git_base_blob_sha256": "5ec78b4d95eef3cb597d789b04ab7bb6f0a44915932b721cb8e2e2a65418cb02",
+        "published_root_blob_sha256": "5ec78b4d95eef3cb597d789b04ab7bb6f0a44915932b721cb8e2e2a65418cb02",
+        "published_root_same_blob": true
+      },
+      {
+        "path": "src/native_camera_probe.cpp",
+        "disk_sha256": "93754513f93a00a97f775035023b8d2dea1bf28b5e8b99f04c5110a74315b9f5",
+        "git_base_blob_sha256": "93754513f93a00a97f775035023b8d2dea1bf28b5e8b99f04c5110a74315b9f5",
+        "published_root_blob_sha256": "93754513f93a00a97f775035023b8d2dea1bf28b5e8b99f04c5110a74315b9f5",
+        "published_root_same_blob": true
+      }
+    ],
+    "source_pins": [
+      {
+        "path": "include/bsp/native_shadow_job_lifetime.hpp",
+        "sha256": "ce7c1d07105aaeb0acccc5eddbe019f9da398dfd9a9fb545b43c352692b682a3"
+      },
+      {
+        "path": "src/native_shadow_job_lifetime.cpp",
+        "sha256": "43fe79a30d999e53a03ada17f828391a01a16e2dd8c572460aed00f00c90486e"
+      },
+      {
+        "path": "include/bsp/native_singleton_destruction.hpp",
+        "sha256": "31490c096a63c178ed68eaeb0b3525eaaa6b468ae32ff81aeeb9665c5c9a81c5"
+      },
+      {
+        "path": "src/native_singleton_destruction.cpp",
+        "sha256": "77008dbc9c277520f9cd9dcaac8395a25cf1d8ca764021e3a2d966af1d6de409"
+      },
+      {
+        "path": "cmake/startup.cmake",
+        "sha256": "41de40554b865f93591f1e7bec0ed122a8f58329c7ea8ee89f3ea25bb0e5594b"
+      }
+    ]
+  },
+  "contracts": {
+    "context": "Borrow volatile void*& manager01090AA0 and jobE18AD4 through singleton drain; no private registry/owner/callback.",
+    "getter": "Captured fast publication, guarded second read; real8-byte allocation; D5B568/D5B570/D5B56C store order; publication; captured nullable secondary before second manager getter; real BD0C30 registration; captured-section release; fresh post-leave result.",
+    "guard": "State0 after Enter and section+18 increment; catch calls411EE0 only and rethrows; no allocation/publication rollback. Original FH3 installed before fast-path load, unlike explicit source C++ frame.",
+    "terminal": "Public fastcall context wrapper may copy flags. Private naked body TESTs lowbit before unconditional actualpublication clear and nullable secondaryCE3818 stamp, frees actualprimary only on captured bit, returns primary. No normal destructor callback/null success/identity check.",
+    "adjustor": "Naked source SUB ECX,4 and tail JMP to public source terminal wrapper, not numeric game address. Context in EDX and flags stack pass through this shim.",
+    "map": "Current popped D5B56C routes via actual adjustor with same retained context. New default-null pointer at92; prior final member88; total96. All previous members remain in order. Missing binding/unknown profile retain source logic_error and existing manager cleanup behavior.",
+    "producer": "Getter inline stores establish raw8-byte layout. Native tables are D5B568:A8DD60, D5B56C:A8DDB0, D5B570:A8AE50. Transient D5B568 and primary execution not deleting substitutes.",
+    "caller": "Only getter caller A8EC5D inA8EA20, after queueappend/framegetter and before fresh frame-table load/virtual04 enqueue. Raw job/command/pool borrowed through execution; no extra retain/rollback."
+  },
+  "eh": {
+    "function": "00a8e090",
+    "handler": "00cb63f8",
+    "handler_size": 10,
+    "handler_defined": false,
+    "func_info": "00dec650",
+    "unwind_map": "00dec648",
+    "states": [
+      {
+        "state": 0,
+        "next_state": -1,
+        "action": "00cb63f0",
+        "action_size": 8,
+        "body": "LEA ECX,[EBP-14h]; JMP 00411ee0"
+      }
+    ],
+    "arming": "after actual EnterCriticalSection and section+18 increment",
+    "cleanup": "captured local guard only, no allocation/publication/queue rollback",
+    "other_candidate_entries_have_local_eh": false
+  },
+  "analysis_gaps": [
+    {
+      "function": "00a8dde0",
+      "callsite": "00a8de06",
+      "target": "00bf65ac",
+      "gap_start": "00a8de0b",
+      "gap_end_inclusive": "00a8de0d",
+      "next_listed": "00a8de0e",
+      "bytes": "83c404",
+      "instruction": "ADD ESP,4",
+      "old_override": null,
+      "expected_old_override": "CALL_RETURN",
+      "old_override_verified": false,
+      "reason": "Safe BSP flow query is listing/disk comparison; read-only endpoint does not return enum. Supposed dry-run clear endpoint mutates. Later owned repair must retain actual old enum before mutation."
+    },
+    {
+      "address": "00a8ddb0",
+      "size": 8,
+      "kind": "undefined adjustor definition; source implementation credit separate"
+    }
+  ],
+  "changes_to_existing": {
+    "files": [
+      "include/bsp/native_singleton_destruction.hpp",
+      "src/native_singleton_destruction.cpp"
+    ],
+    "binding_size_was": 92,
+    "binding_size_is": 96,
+    "old_last_member_offset": 88,
+    "appended_member_offset": 92,
+    "new_profile": "00d5b56c",
+    "new_binding": "NativeShadowJobContext* shadow_job{}",
+    "native_BD0400_credit_added": false,
+    "existing_unknown_profile_diagnostic_preserved": true
+  },
+  "validation": {
+    "source_review": "primary full header/source/dispatcher/registry logic accepted; final clean source pin and draft evidence review pending",
+    "native_call_verifier": {
+      "checked": 8,
+      "failed": 1,
+      "passed": false,
+      "failure": "00a8ddb3 is in no Ghidra function; original8-byte adjustor currently undefined",
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-shadow-job-lifetime-eh\\local\\eh-call-verification.txt",
+      "sha256": "53372de606ecf9427d39b74cedea693cbb3014e5b60f1b3c1dc071040b5ab00b",
+      "bytes_and_tail_target_independently_pinned": true
+    },
+    "build": "pending single coupled EH+EI exact clean Win32 build in EI worktree after primary combined source acceptance; no standalone EH build",
+    "tests_added": 0,
+    "runtime_fixture": "none",
+    "generated_review": "pending joint build; both EH objects plus EI object and full singleton dispatcher",
+    "build_worker": "EI worker; exact worktree/source commit and build artifact pins to be supplied after joint validation"
+  },
+  "limits": [
+    "Explicit context C++ ABI, not original no-input getter or whole52-byte/native public-stack alias identity.",
+    "Source wrapper may capture/copy flags before private naked terminal. Private terminal ordering is explicit; generated target must be checked.",
+    "No standalone EH body credit or Ghidra definition/annotation by worker; primary owns actual override repair and adjustor definition.",
+    "No arbitrary original IAT replacement, SEH/hardware-fault/nativeFH3 parity, foreign longjmp or concurrent teardown proof.",
+    "Current CRT and raw manager/guard/registration providers retain their established restrictions.",
+    "No primary job execution, transient base-profile admission, A8EA20/queue/A8BD20 implementation or game/render validation."
+  ],
+  "worker_rules": {
+    "callee_before_contract": "current actual source providers plus pinned native EF/EH evidence",
+    "boundary_before_attribution": "fresh containing-function proto; undefined adjustor remains explicit pending definition",
+    "all_callsites": "fresh xrefs for all3; caller preparations retained inEF",
+    "producer_before_layout": "actual getter stores and pinned3-word table",
+    "coverage": "3 complete normal bodies,266bytes, explicit-context ABI",
+    "runtime_claim": "none",
+    "argument_count": "native getterRET, terminalRET4, adjustortail; cdeclfreeADDESP4 retained",
+    "register_provenance": "full54-instruction getter and17-instruction installed terminal plus2-instruction adjustor",
+    "lease_scope": "only3 reconstructed addresses and owned/coordinated files; no registry lease",
+    "numeric_call_rows": "all6 direct and2 tail rows; imports separately identified by numeric IAT cell"
+  }
+}
