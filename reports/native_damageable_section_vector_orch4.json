@@ -495,7 +495,8 @@
       "catches": [
         "state1/catch2 87BB02: completed new range destruction, free captured new_begin, rethrow87BB1F",
         "state3/catch4 87BBAC: destroy position+count to current_header.end+count, rethrow87BBCD"
-      ]
+      ],
+      "outer_unwind_policy": "C967B0 state0 temporary destruction terminates if it throws during source C++ unwind; explicit inner catch cleanup unchanged"
     },
     "0087a580": {
       "handler": "00c966d8",
@@ -515,7 +516,7 @@
       "exit_code": 0,
       "warnings": 0,
       "errors": 0,
-      "log": "local/section-vector-build.log"
+      "log": "local/section-vector-build-unwind.log"
     },
     "existing_ctest": {
       "result": "passed",
@@ -525,7 +526,7 @@
       ],
       "passed": 2,
       "failed": 0,
-      "seconds": 4.28
+      "seconds": 4.25
     },
     "native_instruction_probe": {
       "result": "passed",
@@ -567,6 +568,15 @@
       "exit_code": 0,
       "linked_library": "build/win32/Release/bsp_core.lib from this worktree strict build",
       "stdout": "PASS original/source: 8 vector scenarios, overlapping assignment/x87, source length-error payload"
+    },
+    "source_unwind_second_exception": {
+      "result": "passed",
+      "command": "local/section_vector_probe.exe unwind",
+      "expected_terminate_exit": 73,
+      "actual_exit": 73,
+      "escaped_exception_exit": 74,
+      "fixture": "zero-starting owner refcount forces temporary zero-transition; length failure is original exception, owner deletion throws second",
+      "scope": "source C++ policy only, not native FH3 nor valid game owner proof"
     }
   },
   "limitations": [
@@ -579,9 +589,9 @@
     "not game validated"
   ],
   "artifact_sha256": {
-    "src/native_damageable_section_vector.cpp": "1980a9de71bb9a56e9499a4ddfe11729d7111316bfcb3797513fe529269b22ac",
-    "local/section_vector_probe.cpp": "4b08536cb304ffd4926b10aca298927b91732947969e7bd038be202ba4646a9c",
+    "src/native_damageable_section_vector.cpp": "e3202147ce96f15887e4d0f5462a06471a9f507b940b0c9d61ce0d7a40e0e35d",
+    "local/section_vector_probe.cpp": "2ac18f308b050bb5055ccf46a80f690ffb12ca75ec76b1d62db48d3803ec225f",
     "local/section_vector_original.inc": "c5194805bfc7fd9d1bd72bbcb5181179bde058c4ff6caa1537596aca8184ab0b",
-    "local/section_vector_probe.exe": "debc2737c3835d85a4d5fd5570958847e8f6befe4bfd9dac26d71510d9afe429"
+    "local/section_vector_probe.exe": "ce956dd627665e5950ae30517318e6030592245b17a208b7b04d27b8de5d811b"
   }
 }

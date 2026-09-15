@@ -4,6 +4,7 @@
 #include "bsp/native_alias_count_growth.hpp"
 
 #include <intrin.h>
+#include <exception>
 #include <new>
 
 #if !defined(_MSC_VER) || !defined(_M_IX86)
@@ -238,7 +239,10 @@ void insert_native_damageable_sections_0087b950(void* header,
             }
         }
     } catch (...) {
-        destroy_native_damageable_section_00878ef0(temporary, actual_vtable);
+        // C967B0 is a state0 unwind action, not an explicit catch body.
+        // A second exception from its destruction terminates the C++ unwind.
+        try { destroy_native_damageable_section_00878ef0(temporary, actual_vtable); }
+        catch (...) { std::terminate(); }
         throw;
     }
     // Normal state is -1 before this inline release. Unlike the unwind helper,

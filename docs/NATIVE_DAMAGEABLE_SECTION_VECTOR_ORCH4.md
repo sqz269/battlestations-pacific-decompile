@@ -104,6 +104,9 @@ catch87BBAC; each catch transitions through its corresponding catch state2/4.
   cleanup. It does not roll back the header or old records.
 - The outer temporary is armed only after copy construction completes. Its
   normal inline release is outside the try scope after disarming state0.
+  Its exceptional destruction is a genuine unwind action: a second C++
+  exception terminates. The explicit inner catch cleanup remains distinct;
+  an exception there can replace the original before outer unwinding resumes.
 
 `0087A580`: handlerC966D8/DC8984 has only state0->-1/C966D0, whose tail calls
 4072D0 on the completed temporary SBO string. String assignment occurs before
@@ -115,7 +118,7 @@ Allocation overflow similarly uses the canonical source std::bad_alloc boundary.
 
 The C++ catch bodies preserve the observed ordinary cleanup actions and order.
 Original FH3 personality, exception metadata/catch-type compatibility, SEH faults,
-longjmp, destructor double-exception behavior and allocation-failure equivalence
+longjmp, native double-exception behavior and allocation-failure equivalence
 are not validated by this source port.
 
 ## Validation and limits
@@ -136,6 +139,13 @@ size/capacity, iterator result, refcounts, destructor callbacks, header+0, and x
 status. Inputs include signaling NaNs, signed zero, subnormal and quiet NaN words.
 A separate overlapping-assignment comparison also matches bytes and x87 status.
 The source length-error payload is verified as D69260 with the exact18-byte text.
+
+A focused source-domain subprocess sets a terminate handler, triggers length
+failure while a private temporary is armed, and makes its owner destruction
+throw. The subprocess reaches the terminate handler (exit73); the replacement
+exception does not escape. A deliberately zero-starting fixture refcount forces
+that callback after the temporary retain. This verifies the C++ unwind policy,
+not original FH3 behavior or validity of such an owner in the game.
 
 `scripts/build.ps1` passed in strict Release Win32 mode with no compiler warnings
 or errors. Existing CTest checks `reconstructed_math` and `tool_tests` both passed.
