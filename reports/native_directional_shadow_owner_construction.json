@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "packet": "orch3_shadow_owner_construction_dz",
-  "status": "reconstructed_build_tested_generated_review_pending",
+  "status": "reconstructed_build_tested_source_and_generated_composition_reviewed",
   "native_body_credit": 2145,
   "source_base": "d68f8770ce5ee5108dbd636badf515e610a1b47e",
   "created_utc": "2026-09-15T00:15:02.933435+00:00",
@@ -1943,9 +1943,103 @@
       ]
     },
     "generated_review": {
-      "status": "pending separate primary and independent COFF review",
+      "status": "accepted_primary_and_independent_exact_object",
+      "findings": [],
       "object_sha256": "ee97de0ccc55eec87fbf0f1b46fc84f220880bae88dea699a53383ad85abf277",
-      "code_and_build_artifacts_frozen": true
+      "primary_scope": "Complete source/native review plus targeted generated scheduling inspection",
+      "independent_scope": "29 complete code sections and 24 data sections; 146 instruction anchors",
+      "artifacts": [
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\dz-primary-generated-review.json",
+          "sha256": "c6b8d873a32f66f47d802d0847c1e9153bb5a2a61503bb7a1bf9522a2328da65"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-shadow-construction-block-dy\\local\\dz-independent-generated-review.json",
+          "sha256": "d62e1a8a6998da38bdf768fafbfe831228ac97cd125a4b3af5e08875415b5da7"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-shadow-construction-block-dy\\local\\dz-independent-generated-review.md",
+          "sha256": "41123d17b0f92d2a2e9653849668a8a4f8b942e294fe1c119c535622cb1f819b"
+        }
+      ],
+      "qualifications": [
+        "S75/S80 capture length before current pool getter; generated unsigned INC may follow getter without rereading the header. Original EFLAGS and instruction placement are not claimed.",
+        "Generated compiler FH3 tables differ from the explicit native 19/3/1 cleanup projections; no original private EH/SEH frame equivalence.",
+        "Source scheduling and provider composition only; no constructor runtime fixture, native ABI replacement, whole native-body byte identity or game validation."
+      ]
+    },
+    "primary_native_bytes": {
+      "verified_bytes": 2145,
+      "all_live_bytes_equal_original_pe": true,
+      "evidence_path": "local/dz-native-live-bytes.json",
+      "evidence_sha256": "e7ad55a7fae4c83310f408bbc78e0b8a97ff94a6ac31f3dab88f99630226d0a9",
+      "skipped_alignment": "A8FBFD..A8FBFF contains unreachable LEA ECX,[ECX] padding; no listing repair required."
+    },
+    "sealed_attempt": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\dz-validated-attempt-c6ea046e.zip",
+      "sha256": "a12abdbf02d77403b4732077b2da3ef639fc658d59ec604754680b37d80e8935",
+      "bytes": 19700008,
+      "payload_count": 2695,
+      "all_archived_payload_hashes_reread": true,
+      "tested_commit": "c6ea046ecdde8a4bc6cc892e2c0787e5f9987dcb",
+      "tracked_inputs": 2631,
+      "ignored_seed_headers": 1,
+      "root_raw_identical_tracked_inputs": 2622,
+      "root_newline_only_variants": 9,
+      "seed": {
+        "path": "local/seed_reference.hpp",
+        "tested_sha256": "26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c",
+        "root_exists": true,
+        "root_sha256": "26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c",
+        "qualification": "Ignored verified seed header from the tested worker is archived; not a tracked Git input."
+      },
+      "ghidra_exports": [
+        "functions/00a8e2e0/decompiled.c",
+        "functions/00a8e2e0/assembly.txt",
+        "functions/00a8e2e0/metadata.json",
+        "functions/00a8fa30/decompiled.c",
+        "functions/00a8fa30/assembly.txt",
+        "functions/00a8fa30/metadata.json",
+        "functions/00a8fd30/decompiled.c",
+        "functions/00a8fd30/assembly.txt",
+        "functions/00a8fd30/metadata.json"
+      ],
+      "export_metadata_qualification": "The exporter retains the name from its earlier inventory in metadata.json; fresh code and separate live prototype/comment readback record the current reviewed Ghidra names.",
+      "validation": "One clean worker Win32 build;2/2 existing CTests; primary and independent source/generated reviews;2145 live bytes equal PE."
+    },
+    "root_checkout_input_qualification": {
+      "path": "local/dz-input-variants.json",
+      "sha256": "b5b0625e7cd9208f2b17fed0058221c1050b4f94849aa7858a17fc8924e7ae1d",
+      "tracked_inputs": 2631,
+      "raw_identical": 2622,
+      "newline_only": 9,
+      "ignored_seed_header_identical": true,
+      "root_rebuild": false,
+      "reason": "Exact tested tracked Git inputs preserved; worker actual bytes and separate root newline variants are archived."
+    },
+    "ghidra": {
+      "saved": true,
+      "project": "C:/Users/sqz269/bsp.gpr",
+      "program": "/battlestationspacific.exe",
+      "addresses": [
+        "00a8e2e0",
+        "00a8fa30",
+        "00a8fd30"
+      ],
+      "names": [
+        "BSP_DirectionalShadowBase_Construct",
+        "BSP_DirectionalShadowOwner_Construct",
+        "BSP_DirectionalLight_CreateShadowOwner"
+      ],
+      "native_calling_convention": "__thiscall",
+      "implicit_this_count": 1,
+      "body_bounds_unchanged": true,
+      "comments_preserved": true,
+      "before_sha256": "c2c0b66b7d5794e8b59586be9394398ae62231412fd7bd495f47304f41626099",
+      "after_sha256": "a058305f31ca15490ecb252985904d2fec412fff68ec1e127ca6ce32c2df7144",
+      "prototype_log_sha256": "c5ebeb7a434bdc197551ca0f3a91bb2ab37166cbc96988c17560b92448308f2d",
+      "exports_refreshed": true,
+      "export_metadata_qualification": "The exporter retains the name from its earlier inventory in metadata.json; fresh code and separate live prototype/comment readback record the current reviewed Ghidra names."
     }
   },
   "integration_base": "08361fdef464acbd44490cd4e495a5b2f7d124ec",
