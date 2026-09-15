@@ -1,4 +1,7 @@
-param([ValidateSet('Debug','Release')][string]$Configuration = 'Release')
+param(
+    [ValidateSet('Debug','Release')][string]$Configuration = 'Release',
+    [switch]$Diagnostic
+)
 $ErrorActionPreference = 'Stop'
 $repoRoot = Split-Path $PSScriptRoot -Parent
 $vswhere = Join-Path ${env:ProgramFiles(x86)} 'Microsoft Visual Studio\Installer\vswhere.exe'
@@ -18,7 +21,11 @@ $buildPath = Join-Path $repoRoot 'build\win32'
 $startupRegistry = Join-Path $repoRoot 'cmake\startup.cmake'
 & $cmakeExe -S $repoRoot -B $buildPath -G $generator -A Win32 "-DCMAKE_GENERATOR_INSTANCE=$vsPath" "-DCMAKE_PROJECT_INCLUDE=$startupRegistry"
 if ($LASTEXITCODE) { throw 'CMake configure failed.' }
-& $cmakeExe --build $buildPath --config $Configuration --parallel
+if ($Diagnostic) {
+    & $cmakeExe --build $buildPath --config $Configuration --parallel -- /v:diag /nodeReuse:false
+} else {
+    & $cmakeExe --build $buildPath --config $Configuration --parallel
+}
 if ($LASTEXITCODE) { throw 'C++ build failed.' }
 & $ctestExe --test-dir $buildPath -C $Configuration --output-on-failure
 if ($LASTEXITCODE) { throw 'Tests failed.' }
