@@ -1,4 +1,5 @@
 #include "bsp/warning_owner.hpp"
+#include "bsp/native_soldier_class_resolution.hpp"
 
 #include <cstring>
 #include <new>
@@ -35,7 +36,7 @@ void* blank_tree_node(std::size_t bytes, std::size_t color_offset) {
 void* allocate_node_0096b960() { return blank_tree_node(0x18, 0x14); }
 void* allocate_node_0096b9b0() { return blank_tree_node(0x24, 0x20); }
 void* allocate_node_005826b0() { return blank_tree_node(0x1c, 0x18); }
-void* allocate_node_00443e20() { return blank_tree_node(0x1c, 0x18); }
+void* allocate_node_00443e20() { return allocate_native_string_value_tree_node_00443e20(); }
 void* allocate_node_0096baf0() { return blank_tree_node(0x18, 0x14); }
 void* allocate_node_0096bb80() { return blank_tree_node(0x20, 0x1c); }
 void* allocate_node_0096bbd0() { return blank_tree_node(0x20, 0x1c); }

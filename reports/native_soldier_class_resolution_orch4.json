@@ -1,0 +1,277 @@
+{
+  "packet": "orch4_soldier_resolution_f6",
+  "result": "eight_complete_prerequisite_bodies_factory_and_reader_source_absent",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "source": "src/native_soldier_class_resolution.cpp",
+  "header": "include/bsp/native_soldier_class_resolution.hpp",
+  "documentation": "docs/NATIVE_SOLDIER_CLASS_RESOLUTION_ORCH4.md",
+  "functions": [
+    {
+      "address": "00443e20",
+      "end_exclusive": "00443e57",
+      "bytes": 55,
+      "sha256": "0bf0fe0bff8ceafd374af8af7ef22d2ae38507e7e1cbde3adb09860edbb0b015",
+      "live_disk_match": true,
+      "name": "allocate_native_string_value_tree_node_00443e20",
+      "proposed_name": "STL_StringFloatMap_AllocateBlankNode_00443e20",
+      "original_abi": "No meaningful input; EAX=node; RET",
+      "contract": "Allocate1Ch; independent guarded link clears0/4/8; color18=1,nil19=0; leave payload/padding untouched. Warning-owner fragment now delegates here.",
+      "status": "complete_source_build_and_focused_fixture_checked",
+      "source": "src/native_soldier_class_resolution.cpp",
+      "original_runtime_abi": false,
+      "gameplay_validated": false,
+      "old_name": "STL_StringFloatMap_AllocateBlankNode_00443e20",
+      "old_plate_comment": "[BSP reconstruction 00443e20]\nProvisional descriptive library specialization, not recovered symbol. ECX unused; EAX=node; RET. operator new1Ch; zero links0/4/8, color18=1,sentinel19=0; leave key/value/padding untouched. Caller constructor converts it to a self-linked sentinel. Not a safe null-return constructor. Analyzed library primitive, not separately ported. See docs/WEATHER_CONFIG.md and reports/weather_config.json.\n\n[BSP reconstruction 00443e20] update\nProvisional descriptive library specialization, not recovered symbol. ECX unused; EAX=node; RET. operator new1Ch; zero links0/4/8, color18=1,sentinel19=0; leave key/value/padding untouched. Caller constructor converts it to a self-linked sentinel. Not a safe null-return constructor. Analyzed library primitive, not separately ported. See docs/WEATHER_CONFIG.md and reports/weather_config.json. | Hypothesis, not a recovered symbol. Complete saved listing through 00443e56 (ret ); matching full-span live/disk bytes SHA256 0bf0fe0bff8ceafd374af8af7ef22d2ae38507e7e1cbde3adb09860edbb0b015. integrated_allocation_primitive. See docs/WARNING_OWNER.md and src/warning_owner.cpp. Native ABI, SEH and gameplay remain unvalidated.",
+      "old_ledger_name": {
+        "address": "00443e20",
+        "name": "STL_StringFloatMap_AllocateBlankNode_00443e20",
+        "evidence": "Provisional descriptive library specialization, not recovered symbol. ECX unused; EAX=node; RET. operator new1Ch; zero links0/4/8, color18=1,sentinel19=0; leave key/value/padding untouched. Caller constructor converts it to a self-linked sentinel. Not a safe null-return constructor. Analyzed library primitive, not separately ported. See docs/WEATHER_CONFIG.md and reports/weather_config.json. | Hypothesis, not a recovered symbol. Complete saved listing through 00443e56 (ret ); matching full-span live/disk bytes SHA256 0bf0fe0bff8ceafd374af8af7ef22d2ae38507e7e1cbde3adb09860edbb0b015. integrated_allocation_primitive. See docs/WARNING_OWNER.md and src/warning_owner.cpp. Native ABI, SEH and gameplay remain unvalidated."
+      }
+    },
+    {
+      "address": "004afed0",
+      "end_exclusive": "004aff07",
+      "bytes": 55,
+      "sha256": "026fbd482480e0c61e3cbfb761f60b93a214a15bbba4d595fe83acd38511a8a1",
+      "live_disk_match": true,
+      "name": "allocate_native_soldier_registry_node_004afed0",
+      "proposed_name": "STL_SoldierRegistry_AllocateBlankNode_004AFED0",
+      "original_abi": "No meaningful input; EAX=node; RET",
+      "contract": "Allocate1Ch; independent guarded link clears0/4/8; color18=1,nil19=0; preserve payload/padding.",
+      "status": "complete_source_build_and_focused_fixture_checked",
+      "source": "src/native_soldier_class_resolution.cpp",
+      "original_runtime_abi": false,
+      "gameplay_validated": false,
+      "old_name": "FUN_004afed0",
+      "old_plate_comment": null,
+      "old_ledger_name": null
+    },
+    {
+      "address": "00489e60",
+      "end_exclusive": "00489e7a",
+      "bytes": 26,
+      "sha256": "78966d94979ac195799beb291e499ee4fce350610e5863698153e45f5650a4bf",
+      "live_disk_match": true,
+      "name": "construct_native_named_class_base_00489e60",
+      "proposed_name": "NamedClassBase_Construct_00489E60",
+      "original_abi": "ECX=object; EAX=same object; RET",
+      "contract": "WriteCE660C; zero name+4/+8,byte+C,distinct intrusive handles+10/+14; preserve other bytes.",
+      "status": "complete_source_build_and_focused_fixture_checked",
+      "source": "src/native_soldier_class_resolution.cpp",
+      "original_runtime_abi": false,
+      "gameplay_validated": false,
+      "old_name": "FUN_00489e60",
+      "old_plate_comment": null,
+      "old_ledger_name": null
+    },
+    {
+      "address": "00489e80",
+      "end_exclusive": "00489f2f",
+      "bytes": 175,
+      "sha256": "1b59c487dea881ad818e0d9811a3fcf80c7e70dd217d880bd6fb49556feff02c",
+      "live_disk_match": true,
+      "name": "destroy_native_named_class_base_00489e80",
+      "proposed_name": "NamedClassBase_Destroy_00489E80",
+      "original_abi": "ECX=object; return unspecified; RET",
+      "contract": "WriteCE660C; release current+10 then current+14, destroy current name+4. D8A4F8 states1/0/-1 preserve remaining cleanup; second unwind exception terminates. No owner free.",
+      "status": "complete_source_build_and_focused_fixture_checked",
+      "source": "src/native_soldier_class_resolution.cpp",
+      "original_runtime_abi": false,
+      "gameplay_validated": false,
+      "old_name": "FUN_00489e80",
+      "old_plate_comment": null,
+      "old_ledger_name": null
+    },
+    {
+      "address": "004af950",
+      "end_exclusive": "004af961",
+      "bytes": 17,
+      "sha256": "b5caff72a33882f8538e53316d3dbb41bdce2479feb4915c576630444a8ed4a5",
+      "live_disk_match": true,
+      "name": "unwind_native_soldier_registry_004af950",
+      "proposed_name": "SoldierRegistry_UnpublishAndBaseTail_004AF950",
+      "original_abi": "ECX=owner; return unspecified; RET",
+      "contract": "Clear currentE187F0 then stampCE3818; no free or node destruction.",
+      "status": "complete_source_build_and_focused_fixture_checked",
+      "source": "src/native_soldier_class_resolution.cpp",
+      "original_runtime_abi": false,
+      "gameplay_validated": false,
+      "old_name": "FUN_004af950",
+      "old_plate_comment": null,
+      "old_ledger_name": null
+    },
+    {
+      "address": "004b11a0",
+      "end_exclusive": "004b1208",
+      "bytes": 104,
+      "sha256": "46433b32d1fd6de4ae1f6ff66851d44f9135cd23e6940e4cd0a7f88944e33451",
+      "live_disk_match": true,
+      "name": "construct_native_soldier_registry_004b11a0",
+      "proposed_name": "SoldierRegistry_Construct_004B11A0",
+      "original_abi": "ECX=owner; EAX=same owner; RET",
+      "contract": "WriteCE7160; genuine4AFED0 sentinel at+8 with per-store head reloads; count+C=0; preserve+4. D8CDF4 allocation unwind invokes4AF950.",
+      "status": "complete_source_build_and_focused_fixture_checked",
+      "source": "src/native_soldier_class_resolution.cpp",
+      "original_runtime_abi": false,
+      "gameplay_validated": false,
+      "old_name": "FUN_004b11a0",
+      "old_plate_comment": null,
+      "old_ledger_name": null
+    },
+    {
+      "address": "004b12a0",
+      "end_exclusive": "004b130d",
+      "bytes": 109,
+      "sha256": "a3d96b9321113a52893205fba9c53b952e35150eb67f166c59661e7d11dc7894",
+      "live_disk_match": true,
+      "name": "construct_native_soldier_class_004b12a0",
+      "proposed_name": "SoldierClass_Construct_004B12A0",
+      "original_abi": "ECX=class; EAX=same class; RET",
+      "contract": "Real489E60 base; CE7150; genuine443E20 sentinel+2C,count+30; preserve+18..2B. D8CE4C allocation unwind invokes real489E80; second exception terminates.",
+      "status": "complete_source_build_and_focused_fixture_checked",
+      "source": "src/native_soldier_class_resolution.cpp",
+      "original_runtime_abi": false,
+      "gameplay_validated": false,
+      "old_name": "FUN_004b12a0",
+      "old_plate_comment": null,
+      "old_ledger_name": null
+    },
+    {
+      "address": "004af520",
+      "end_exclusive": "004af523",
+      "bytes": 3,
+      "sha256": "e18aacce29affcdddaa5f641ac1ec12552e0fe9d066e6408941b1792818b8619",
+      "live_disk_match": true,
+      "name": "native_soldier_class_true_004af520",
+      "proposed_name": "SoldierClass_ReturnTrue_004AF520",
+      "original_abi": "Receiver ignored; AL=1; upper EAX preserved by original; RET",
+      "contract": "MOV AL,1;RET. CE7150 slot+Ch used by4B1400 is a constant predicate, not an ownership operation. New bool source does not retain upperEAX.",
+      "status": "complete_source_build_and_focused_fixture_checked",
+      "source": "src/native_soldier_class_resolution.cpp",
+      "original_runtime_abi": false,
+      "gameplay_validated": false,
+      "old_name": "FUN_004af520",
+      "old_plate_comment": null,
+      "old_ledger_name": null
+    }
+  ],
+  "original_bytes": 544,
+  "call_sites": [
+    {
+      "address": "00443e22",
+      "native": "00bf681b",
+      "function": "00443e20"
+    },
+    {
+      "address": "004afed2",
+      "native": "00bf681b",
+      "function": "004afed0"
+    },
+    {
+      "address": "00489f11",
+      "native": "00419cc0",
+      "function": "00489e80"
+    },
+    {
+      "address": "00489f18",
+      "native": "00bd1510",
+      "function": "00489e80"
+    },
+    {
+      "address": "004b11d1",
+      "native": "004afed0",
+      "function": "004b11a0"
+    },
+    {
+      "address": "004b12be",
+      "native": "00489e60",
+      "function": "004b12a0"
+    },
+    {
+      "address": "004b12d6",
+      "native": "00443e20",
+      "function": "004b12a0"
+    }
+  ],
+  "eh": [
+    {
+      "function": "00489e80",
+      "handler": "00c629d6",
+      "info": "00d8a508",
+      "unwind_map": "00d8a4f8",
+      "actions": [
+        "state1->0 C629CB release current+14",
+        "state0->-1 C629C0 destroy current name+4"
+      ]
+    },
+    {
+      "function": "004b11a0",
+      "handler": "00c649f8",
+      "info": "00d8cdfc",
+      "unwind_map": "00d8cdf4",
+      "actions": [
+        "state0->-1 C649F0 ->004AF950"
+      ]
+    },
+    {
+      "function": "004b12a0",
+      "handler": "00c64a38",
+      "info": "00d8ce54",
+      "unwind_map": "00d8ce4c",
+      "actions": [
+        "state0->-1 C64A30 ->00489E80"
+      ]
+    }
+  ],
+  "audited_source_absent": [
+    "004b1400",
+    "004b1330",
+    "004b0cb0",
+    "004afe50",
+    "004b0a70",
+    "004b0660",
+    "004b0880",
+    "004af530",
+    "004afb50",
+    "004afbe0",
+    "004b1210",
+    "004b1120",
+    "004b1280",
+    "004b1310",
+    "004b0de0",
+    "004af890"
+  ],
+  "factory_virtual_calls": [
+    {
+      "site": "004b14dc",
+      "table": "00ce7150",
+      "slot": "04",
+      "target": "004b0de0",
+      "behavior": "actual reader, source absent"
+    },
+    {
+      "site": "004b1523",
+      "table": "00ce7150",
+      "slot": "0c",
+      "target": "004af520",
+      "behavior": "return true, ignored; no retain"
+    }
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 strict MSVC Win32 passed",
+    "ctest": "3/3 passed",
+    "original_instruction_fixture": "PASS: original/source constructors and callback-mutated base cleanup; source allocation/unwind partial-state checks. Native FH3 not executed.",
+    "fixture_boundaries": "Allocator/raw string pool adapters explicit; genuine source41DE40 compiled; native base cleanup compared with empty name. Callback changes second handle; observed order1,3.",
+    "source_only_failures": "New-handler member changes, registry unpublication, remaining-member cleanup and first C++ exception propagation.",
+    "independent_review": "section_vector_f6 read-only review found no concrete field/order/allocation defect",
+    "native_fh3_executed": false,
+    "hardware_faults": false,
+    "binary_abi": false,
+    "gameplay": false
+  },
+  "artifact_sha256": {
+    "src/native_soldier_class_resolution.cpp": "c7d16e332cb754c350934454c8575bcde44f8d2f795467da41d84bb134d3cd57",
+    "include/bsp/native_soldier_class_resolution.hpp": "f8a14d41d32584fa803a5929931b283741b1a8ebea425216c5e3e1bc8a09b5b7"
+  }
+}

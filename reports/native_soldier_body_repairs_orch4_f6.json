@@ -1,0 +1,146 @@
+{
+  "events": [
+    {
+      "recreate": "004b1210",
+      "previous": "Function: FUN_004b1210 at 004b1210\nSignature: undefined FUN_004b1210(void)\nEntry: 004b1210\nBody: 004b1210 - 004b1257",
+      "plate": null
+    },
+    {
+      "endpoint": "delete_function",
+      "body": {
+        "address": "004b1210"
+      },
+      "result": {
+        "success": true,
+        "address": "004b1210",
+        "deleted_function": "FUN_004b1210",
+        "body_size": 72,
+        "message": "Function 'FUN_004b1210' deleted at 004b1210"
+      }
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "004b1210",
+        "end_address": "004b127f"
+      },
+      "result": {
+        "success": true,
+        "start_address": "004b1210",
+        "end_address": "004b127e",
+        "bytes_disassembled": 111,
+        "message": "Successfully disassembled 111 byte(s)"
+      }
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "004b1210",
+        "disassemble_first": false
+      },
+      "result": {
+        "success": true,
+        "address": "004b1210",
+        "function_name": "FUN_004b1210",
+        "entry_point": "004b1210",
+        "body_size": 111,
+        "message": "Function created successfully at 004b1210"
+      }
+    },
+    {
+      "defined": "004b1210",
+      "end": "004b127f",
+      "name": null,
+      "after": "Function: FUN_004b1210 at 004b1210\nSignature: undefined FUN_004b1210(void)\nEntry: 004b1210\nBody: 004b1210 - 004b127e"
+    },
+    {
+      "recreate": "004b1120",
+      "previous": "Function: FUN_004b1120 at 004b1120\nSignature: undefined FUN_004b1120(void)\nEntry: 004b1120\nBody: 004b1120 - 004b116e",
+      "plate": null
+    },
+    {
+      "endpoint": "delete_function",
+      "body": {
+        "address": "004b1120"
+      },
+      "result": {
+        "success": true,
+        "address": "004b1120",
+        "deleted_function": "FUN_004b1120",
+        "body_size": 79,
+        "message": "Function 'FUN_004b1120' deleted at 004b1120"
+      }
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "004b1120",
+        "end_address": "004b11a0"
+      },
+      "result": {
+        "success": true,
+        "start_address": "004b1120",
+        "end_address": "004b119f",
+        "bytes_disassembled": 128,
+        "message": "Successfully disassembled 128 byte(s)"
+      }
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "004b1120",
+        "disassemble_first": false
+      },
+      "result": {
+        "success": true,
+        "address": "004b1120",
+        "function_name": "FUN_004b1120",
+        "entry_point": "004b1120",
+        "body_size": 128,
+        "message": "Function created successfully at 004b1120"
+      }
+    },
+    {
+      "defined": "004b1120",
+      "end": "004b11a0",
+      "name": null,
+      "after": "Function: FUN_004b1120 at 004b1120\nSignature: undefined FUN_004b1120(void)\nEntry: 004b1120\nBody: 004b1120 - 004b119f"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": {
+        "error": "Unable to lock due to active transaction"
+      }
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": {
+        "success": true,
+        "program": "battlestationspacific.exe",
+        "message": "Program saved successfully"
+      }
+    }
+  ],
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "whole_body_preflight": [
+    {
+      "address": "004b1210",
+      "end_exclusive": "004b127f",
+      "bytes": 111,
+      "sha256": "cfbaaf5ea4596f3e9ba36fbef0492a8b520a63406cb52f780f6dc6ac6de401ee",
+      "live_disk_match": true
+    },
+    {
+      "address": "004b1120",
+      "end_exclusive": "004b11a0",
+      "bytes": 128,
+      "sha256": "0078e15c61c4420f5fb5190090c7fae7ebbd56890393255be029e93fb783ad61",
+      "live_disk_match": true
+    }
+  ],
+  "documentation": "docs/NATIVE_CONTAINER_FLOW_REPAIRS_ORCH4_F6.md",
+  "saved_and_exported": true
+}

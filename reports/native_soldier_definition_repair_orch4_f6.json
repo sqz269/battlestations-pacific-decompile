@@ -1,0 +1,68 @@
+{
+  "events": [
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "004af520",
+        "end_address": "004af523"
+      },
+      "result": {
+        "success": true,
+        "start_address": "004af520",
+        "end_address": "004af522",
+        "bytes_disassembled": 3,
+        "message": "Successfully disassembled 3 byte(s)"
+      }
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "004af520",
+        "disassemble_first": false
+      },
+      "result": {
+        "success": true,
+        "address": "004af520",
+        "function_name": "FUN_004af520",
+        "entry_point": "004af520",
+        "body_size": 3,
+        "message": "Function created successfully at 004af520"
+      }
+    },
+    {
+      "defined": "004af520",
+      "end": "004af523",
+      "name": null,
+      "after": "Function: FUN_004af520 at 004af520\nSignature: undefined FUN_004af520(void)\nEntry: 004af520\nBody: 004af520 - 004af522"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": {
+        "error": "Unable to lock due to active transaction"
+      }
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": {
+        "success": true,
+        "program": "battlestationspacific.exe",
+        "message": "Program saved successfully"
+      }
+    }
+  ],
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "whole_body_preflight": [
+    {
+      "address": "004af520",
+      "end_exclusive": "004af523",
+      "bytes": 3,
+      "sha256": "e18aacce29affcdddaa5f641ac1ec12552e0fe9d066e6408941b1792818b8619",
+      "live_disk_match": true
+    }
+  ],
+  "documentation": "docs/NATIVE_CONTAINER_FLOW_REPAIRS_ORCH4_F6.md",
+  "saved_and_exported": true
+}
