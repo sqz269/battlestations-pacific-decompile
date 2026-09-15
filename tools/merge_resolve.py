@@ -222,9 +222,18 @@ def union_reconstruction_shard(worktree, path, base, ours, theirs):
 
 def keep_both_pure_insertions(worktree, path, base, ours, theirs):
     """Use git merge-file --diff3 to see each conflict block's base region; when every block's base
-    region is empty (both sides inserted new text at the same place), keep ours followed by theirs."""
+    region is empty (both sides inserted new text at the same place), keep ours followed by theirs.
+
+    Refuses add/add, where the file is new on both sides and there is no base at all. Every block's
+    base region is empty there, so the rule above would concatenate two whole files: two copies of
+    the same C++ definitions, or two JSON objects in one document. Integrating orch3 produced exactly
+    that on four files before it was caught by hand. Two independent versions of a new file are a
+    judgement about which reconstruction to keep, not an insertion.
+    """
     import re
     import tempfile
+    if not base.strip():
+        return None
     with tempfile.TemporaryDirectory() as tmp:
         names = []
         for label, text in (('ours', ours), ('base', base), ('theirs', theirs)):
