@@ -1,0 +1,397 @@
+{
+  "schema_version": 1,
+  "packet": "orch3_native_render_command_preparation_ec",
+  "status": "complete_source_primary_reviewed_exact_single_win32_build_and_two_existing_ctests_passed",
+  "base_commit": "e5306c0408443046433942f5827a3915e1f792db",
+  "normal_body_count": 2,
+  "normal_body_bytes": 78,
+  "functions": [
+    {
+      "address": "00b1bf50",
+      "end_inclusive": "00b1bf67",
+      "bytes": 24,
+      "instructions": 8,
+      "sha256": "cf390856fca8f1387ad9b719d4db36a09ee56230b1bdde6ee6473d792641c683",
+      "full_bytes": "8b4424048b1089511c8b50048951208b4008894124c20400",
+      "native_abi": {
+        "ecx": "actual command",
+        "stack": [
+          "actual three-DWORD source pointer"
+        ],
+        "return": "RET4; EAX incidentally third DWORD; EDX second DWORD",
+        "saved_registers": "No callee-saved register touched",
+        "eh": "none"
+      },
+      "schedule": [
+        "Load public source pointer once into EAX",
+        "Read source+0; write command+1C",
+        "Read current source+4; write command+20",
+        "Read current source+8; write command+24"
+      ],
+      "alias": "Preserve interleaving; source=command+18 propagates first word through later reads. No upfront triple copy.",
+      "native_calls": [],
+      "callers": [
+        {
+          "site": "00a8ebd5",
+          "owner": "00a8ea20",
+          "preparation_span": "00a8ebaf..00a8ebd9",
+          "receiver": "EDI = returned B1F1F0 actual44h command or native null outcome",
+          "argument": "actual local three DWORDs at body-SP+24: 0,62h,1Eh",
+          "caller_state": "state0 disarmed before call"
+        }
+      ],
+      "source": "src/native_render_command_preparation.cpp",
+      "source_function": "set_native_render_command_metadata_00b1bf50",
+      "coverage": "complete normal-body source with explicit ABI/provider qualifications"
+    },
+    {
+      "address": "00b1d910",
+      "end_inclusive": "00b1d945",
+      "bytes": 54,
+      "instructions": 24,
+      "sha256": "c1f090a8c6ab43a9286b8477f5d8f3a51210c3114b7c98e2e270e3e0b0f7c178",
+      "full_bytes": "56578b7c240c8d71143bf774248b076a01508bcee8170490ff833f0074138b0e8b57048b4604515250e8429d0d0083c40c5f5ec20400",
+      "native_abi": {
+        "ecx": "actual command",
+        "stack": [
+          "actual source 8-byte length/data header pointer"
+        ],
+        "return": "RET4; void semantic result; incidental EAX path-dependent",
+        "saved_registers": [
+          "ESI",
+          "EDI"
+        ],
+        "eh": "none"
+      },
+      "schedule": [
+        "Compute ESI=command+14; capture public source in EDI",
+        "Compare header addresses and skip all reads/calls if equal",
+        "Capture source length; resize actual destination using captured length and preserve=true",
+        "Re-read current source length; zero skips copy reads",
+        "Load current destination length, current source data, current destination data in that order",
+        "Copy exactly current captured destination length; do not add terminator"
+      ],
+      "alias": "Partial header/buffer overlap is admitted in valid backing; never snapshot headers across provider calls. BF7680 is backward-overlap aware, so use memmove semantics. Capture pointers even when count becomes zero; omit only a zero-byte standard-library call under existing policy.",
+      "native_calls": [
+        {
+          "site": "00b1d924",
+          "target": "0041dd40",
+          "native": "ECX=actual command+14, stack captured source length then 1, RET8",
+          "source": "resize_native_string_header_0041dd40(void*, NativeStringRawPoolContext&, uint32_t, bool)"
+        },
+        {
+          "site": "00b1d939",
+          "target": "00bf7680",
+          "native": "cdecl destination data, source data, destination length; ADD ESP,0C",
+          "source": "overlap-capable memmove; no unsupported invalid-buffer/native-fault claim"
+        }
+      ],
+      "callers": [
+        {
+          "site": "00a8ec1e",
+          "owner": "00a8ea20",
+          "preparation_span": "00a8ebda..00a8ec22",
+          "receiver": "EDI = same returned actual command",
+          "argument": "actual local8h header at body-SP+1C; 41DD40(4,1), current length+1 copy of D5B5D0 SHBU NUL",
+          "caller_state": "state1 armed before call, disarmed after return; only local string cleanup on exception"
+        }
+      ],
+      "source": "src/native_render_command_preparation.cpp",
+      "source_function": "set_native_render_command_diagnostic_00b1d910",
+      "coverage": "complete normal-body source with explicit ABI/provider qualifications"
+    }
+  ],
+  "source_pins": [
+    {
+      "path": "include/bsp/native_render_command_preparation.hpp",
+      "sha256": "f9d8315d474faf725493ab57827bccac911befc4b568267b1dadded2fa6a4bc0"
+    },
+    {
+      "path": "src/native_render_command_preparation.cpp",
+      "sha256": "866357004ff1cee4058b8be6ccf2a36583b72c66d35d7d52cdf7819355c5205b"
+    }
+  ],
+  "provider_pins": [
+    {
+      "path": "include/bsp/native_render_command_owner.hpp",
+      "sha256": "a4c5397ff2764c14dfa1890ad68530046ecbb0b4b3789be97c677e30cdc59c30",
+      "review_scope": "Relevant declarations/implementation excerpts or exact guard; not an independent full provider behavior re-review."
+    },
+    {
+      "path": "src/native_render_command_owner.cpp",
+      "sha256": "5d97fb0c22f2f6d79062bb4a8a6fee5ad897e41f6c96988c63e439a3c080298d",
+      "review_scope": "Relevant declarations/implementation excerpts or exact guard; not an independent full provider behavior re-review."
+    },
+    {
+      "path": "include/bsp/native_string.hpp",
+      "sha256": "80013e5a7350120f32fcad1ce54db9b0923ad5b49cc2152823d858534331378f",
+      "review_scope": "Relevant declarations/implementation excerpts or exact guard; not an independent full provider behavior re-review."
+    },
+    {
+      "path": "src/native_string.cpp",
+      "sha256": "0e8819d3a6442fc48c879e85c00899a72beabdc51b3e94a11836ab5314d5e60c",
+      "review_scope": "Relevant declarations/implementation excerpts or exact guard; not an independent full provider behavior re-review."
+    },
+    {
+      "path": "include/bsp/native_string_pool_storage.hpp",
+      "sha256": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d",
+      "review_scope": "Relevant declarations/implementation excerpts or exact guard; not an independent full provider behavior re-review."
+    },
+    {
+      "path": "src/native_string_pool_storage.cpp",
+      "sha256": "5cb79a6ce240205b3f1c81f1fbd6edd49cc1c05f8a20ee8dca8913f44c9095d5",
+      "review_scope": "Relevant declarations/implementation excerpts or exact guard; not an independent full provider behavior re-review."
+    },
+    {
+      "path": "include/bsp/native_string_pool_owner.hpp",
+      "sha256": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff",
+      "review_scope": "Relevant declarations/implementation excerpts or exact guard; not an independent full provider behavior re-review."
+    },
+    {
+      "path": "src/native_string_pool_owner.cpp",
+      "sha256": "cb52fde795918995689a26567d513e9f3cf75eeb27600eb60c431c37fdd21d6e",
+      "review_scope": "Relevant declarations/implementation excerpts or exact guard; not an independent full provider behavior re-review."
+    }
+  ],
+  "provider_chain": [
+    {
+      "native": "0041dd40",
+      "source": "src/native_string.cpp",
+      "function": "resize_native_string_header_0041dd40 raw-context overload",
+      "behavior": "captured initial length; equal length early exit; current headers after allocation/return; memmove preserve; native terminator on resize"
+    },
+    {
+      "native": "00419cc0",
+      "source": "src/native_string_pool_owner.cpp",
+      "function": "native_string_pool_get_or_create_00419cc0 raw-manager overload",
+      "behavior": "current pool/manager publication, actual section and existing raw lifetime registration; no cached facade"
+    },
+    {
+      "native": "00bd1120",
+      "source": "src/native_string_pool_storage.cpp",
+      "function": "allocate_native_string_pool_00bd1120",
+      "behavior": "real size-class or CRT allocation; existing null/unchecked-native limits"
+    },
+    {
+      "native": "00bd1510",
+      "source": "src/native_string_pool_storage.cpp",
+      "function": "return_native_string_pool_00bd1510",
+      "behavior": "current shutdown gate and actual small ring/free; raw getter runs before reached return"
+    },
+    {
+      "native": "00bf7680",
+      "source": "existing native BF7694..769A and BF785F..7862",
+      "function": "CRT named _memcpy with backward-overlap implementation",
+      "behavior": "source standard copy must use memmove for supported valid overlap"
+    }
+  ],
+  "storage_and_lifetime": {
+    "type": "NativeRenderCommandStorage",
+    "extent": 68,
+    "diagnostic_length": 20,
+    "diagnostic_data": 24,
+    "metadata": [
+      28,
+      32,
+      36
+    ],
+    "constructor": "Existing construct_native_render_command_00b1f1f0 actual-environment overload initializes actual storage before both leaves; no new construction/lifetime.",
+    "pool_identity": "Same actual01090AA8 publication,01090AA4 gate,01090AA0 manager cells as command construction/destruction. Bind raw context externally; no dummy SizedStoragePool.",
+    "ownership": "Caller/queue own command and native name; leaves perform no retain, registration, disposal or rollback."
+  },
+  "caller_eh_evidence": {
+    "function": "00a8ea20",
+    "normal_body_bytes": 641,
+    "handler": "00cb6523",
+    "funcinfo": "00dec76c",
+    "unwind_map": "00dec75c",
+    "states": [
+      {
+        "state": 0,
+        "next": -1,
+        "action": "00cb6510",
+        "behavior": "free raw local[EBP-38], CALL BF65AC then POP ECX/RET"
+      },
+      {
+        "state": 1,
+        "next": -1,
+        "action": "00cb651b",
+        "behavior": "LEA ECX,[EBP-34]; JMP41DD20; only temporary string"
+      }
+    ],
+    "scope": "Leaves have no EH state. No command rollback/free/name cleanup added to leaf. Caller state1 only owns its own string; source/raw-provider exception limits are explicit."
+  },
+  "evidence": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-shadow-update-admission-eb\\local\\eb-shadow-update-admission.json",
+      "sha256": "2636989b3748926c487be283869897ce3e9f43bcccd427b82b6b70b55f986d38"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-shadow-update-admission-eb\\local\\eb-shadow-update-admission.md",
+      "sha256": "afba205a2af0a40ff62a9b40b756dc23834d17ef5c46aab29cd4e91c42d8c207"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-shadow-update-admission-eb\\local\\eb-shadow-update-native.json",
+      "sha256": "1ca517727c592f6419981f9dee2fbdc21e2bd74f40397207ab9ec507d7095039"
+    }
+  ],
+  "retained_local_evidence": [
+    {
+      "path": "local/ec-eb-admission.json",
+      "sha256": "2636989b3748926c487be283869897ce3e9f43bcccd427b82b6b70b55f986d38"
+    },
+    {
+      "path": "local/ec-eb-native.json",
+      "sha256": "1ca517727c592f6419981f9dee2fbdc21e2bd74f40397207ab9ec507d7095039"
+    }
+  ],
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "guard": "Every live query uses bsp.client -> Client.verify before endpoint access; project/program/language/imagebase checked."
+  },
+  "evidence_scope": "Complete native bytes/listings/PE equality reused from sealed EB; fresh canonical numeric-call verification and seed verification use guarded read-only Ghidra access. No analysis mutation.",
+  "source_abi": {
+    "metadata": "Naked Win32 fastcall ECX actual command, ignored EDX, public stack source pointer, RET4, interleaved DWORD reads/stores and incidental EAX/EDX. Generated identity pending.",
+    "diagnostic": "New C++ ABI adds NativeStringRawPoolContext. Actual header at command+14; self-header identity skips all reads and calls; captures source resize count preserve1; reloads source length gate; captures destination count/source data/destination data in order using explicit inline x86 MOV reads without typed alias/alignment assumptions. Memmove count is destination length without terminator.",
+    "zero_count": "If source gate is nonzero, all three copy argument reads remain even for destination count0. Only the standard-library zero-byte call is omitted.",
+    "overlap": "Interleaved metadata permits actual alias propagation. Raw resize and final memmove support valid header/buffer overlap without upfront snapshots. BF7680 original name remains _memcpy but body handles backward overlap."
+  },
+  "validation": {
+    "primary_source_review": "Accepted exact source/helper/header/native schedules at64df24fe; verified metadata-only descendant d0481c6812af58a399d5759c33c0a8492346ef64 has identical source/build inputs.",
+    "source_commit": "d0481c6812af58a399d5759c33c0a8492346ef64",
+    "build": {
+      "passed": true,
+      "command": [
+        "C:/Windows/System32/WindowsPowerShell/v1.0/powershell.exe",
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "scripts/build.ps1"
+      ],
+      "count": 1,
+      "manifest": "local/ec-final-build-stamp.json",
+      "manifest_sha256": "06d371cb5870d41c21c2f7b2833674f261534b6d47cbfdf1c9ceca730676d0e4",
+      "log": "local/ec-final-build.log",
+      "log_sha256": "450d6c3c7b7b7b3601a4fa154317e1b89db2c8a943a81fe3effc446eeab154ad",
+      "tracked_build_input_count": 2633,
+      "build_input_count": 2634,
+      "all_build_inputs_unchanged": true,
+      "clean_tree_before_and_after": true,
+      "same_commit_after": true,
+      "head_after": "d0481c6812af58a399d5759c33c0a8492346ef64",
+      "libraries": {
+        "build/win32/Release/bsp_core.lib": "4fa54598b557f94ac3c1506261b570a3d8fc1bd9bf3b4c1e42f1aa26c711ce24",
+        "build/win32/Release/bsp_lua511.lib": "fb20b965a5dd7d2f44568a36dc30c9136d5fda6e0b0201d0bccb19b563b6dd1a",
+        "build/win32/Release/bsp_zlib121.lib": "1b66ef7d5d20ca13b985cbad0e30e12b9612b0b9bc9a3bba2195f306f726c4bb",
+        "build/win32/Release/xlive_stub.lib": "6dfcb5bf13947ffb6883edfde9d189c4c7ae0d702ec8bd81daebf3749e5f1c67"
+      },
+      "compiler_linker_warnings_errors": 0
+    },
+    "verified_seeds": {
+      "matched": 8,
+      "path": "local/ec-seeds/seed_byte_comparison.json",
+      "sha256": "32f6c78b0dd1b73bb1023c82831731b40e88e5e57d023bffda0b872c8cf2d298",
+      "log_sha256": "a28c998abc835df38ca4dd01282c56047b92d0b3c4f0a08272c87fc07e97f4c0"
+    },
+    "existing_ctests": {
+      "passed": 2,
+      "failed": 0,
+      "summary": [
+        "1/2 Test #1: reconstructed_math ...............   Passed    0.04 sec",
+        "2/2 Test #2: native_math_differential .........   Passed    0.04 sec",
+        "100% tests passed, 0 tests failed out of 2"
+      ],
+      "scope": "Existing math tests; not runtime execution of EC preparation entries."
+    },
+    "generated_object": {
+      "path": "build/win32/bsp_core.dir/Release/native_render_command_preparation.obj",
+      "sha256": "d8f4f8bc9970284ae3e9acb09cd988dfcf4218bca85e3decce9009acfe70be70",
+      "bytes": 1911,
+      "review": "Primary independently reviewed all seven COFF sections and all three code sections; accepted exact metadata bytes and diagnostic/helper schedule."
+    },
+    "new_tests": 0,
+    "native_runtime_fixture": "not run",
+    "game_validation": "not run",
+    "native_call_verification": {
+      "command": [
+        "python",
+        "tools/verify_report_calls.py",
+        "reports/native_render_command_preparation.json"
+      ],
+      "checked": 4,
+      "failed": 0,
+      "log": "local/ec-call-verification.log",
+      "sha256": "ac979eb5949baaaf6b7526efe1405dc1be2192dc04cae7c5c4ddaad0f3ce3629"
+    },
+    "primary_generated_review": {
+      "object_sha256": "d8f4f8bc9970284ae3e9acb09cd988dfcf4218bca85e3decce9009acfe70be70",
+      "provenance": "Primary integrator complete object review reported after exact build; no duplicate worker extraction/runtime test.",
+      "coff_sections": 7,
+      "code_sections_reviewed": 3,
+      "metadata": {
+        "section": 6,
+        "bytes": 24,
+        "relocations": 0,
+        "native_byte_identity": true
+      },
+      "raw_read_helper": {
+        "section": 4,
+        "bytes": 22,
+        "behavior": "standalone raw DWORD MOV"
+      },
+      "diagnostic": {
+        "section": 5,
+        "section_relative_anchors": {
+          "header_identity_branch": "0x11",
+          "raw_resize_call": "0x27",
+          "current_source_length": "0x35",
+          "destination_length": "0x46",
+          "source_data": "0x57",
+          "destination_data": "0x65",
+          "zero_count_branch": "0x6a",
+          "memmove_call": "0x75"
+        },
+        "cleanup_eh": false,
+        "native_body_byte_identity_claim": false
+      }
+    }
+  },
+  "limits": [
+    "No new owner/framework/pool/registry/typed convenience/test/rollback/terminator/cleanup.",
+    "Raw context must use same01090AA8/AA4/AA0 cells as command diagnostic construction/destruction. Existing actual command cleanup adapter retains its noexcept returning-getter limit; raw-context getter exceptions propagate.",
+    "Original private stack/FH3/SEH/fault/concurrent-memory identity unproved. Valid actual command/header/buffer storage required; wrapping nonzero buffer ranges unsupported.",
+    "Caller EH and A8EA20/A8F3B0/B1EB80 job/queue paths are evidence only, no implementation credit.",
+    "One exact clean Win32 build and both existing math CTests passed; no new tests, EC runtime/native fixture, queue/shadow/renderer or gameplay proof."
+  ],
+  "native_calls": [
+    {
+      "address": "00b1d924",
+      "native": "0041dd40",
+      "function": "00b1d910",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00b1d939",
+      "native": "00bf7680",
+      "function": "00b1d910",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00a8ebd5",
+      "native": "00b1bf50",
+      "function": "00a8ea20",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00a8ec1e",
+      "native": "00b1d910",
+      "function": "00a8ea20",
+      "kind": "direct_call"
+    }
+  ],
+  "final_metadata_scope": "Documentation/report validation only; tested source and all build inputs remain unchanged."
+}
