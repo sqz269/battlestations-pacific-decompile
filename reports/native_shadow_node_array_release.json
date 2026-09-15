@@ -1,0 +1,289 @@
+{
+  "schema": 1,
+  "packet": "orch3_shadow_node_array_release_es",
+  "status": "complete_source_candidate_pending_primary_review_and_coupled_build",
+  "base_commit": "4d0a0cbd5a27bceec34d39576228dc2b309397e6",
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "guard": "Every live query uses bsp.client -> Client.verify before endpoint access; project/program/language/imagebase checked."
+  },
+  "native_handler_credit": 0,
+  "new_ghidra_definition_credit": 0,
+  "new_native_credit_before_validation": 0,
+  "provider_pins": [
+    {
+      "path": "include/bsp/generated_model_lifetime.hpp",
+      "sha256": "370ddaedd31013c97fc41b2774020f75dddae9d5d6f546d3a2063ccc49088b64",
+      "same_raw_bytes_as_ER": true
+    },
+    {
+      "path": "src/generated_model_lifetime.cpp",
+      "sha256": "d8c5990909d169f0f70d9e3320b4e671da6fcb58694cc9ac5f7d621cbdeabd64",
+      "same_raw_bytes_as_ER": true
+    },
+    {
+      "path": "include/bsp/render_command_queue.hpp",
+      "sha256": "bc5b28823becf3dbe9628f7393be7f3ba399895d6935829921113a7496fe8f1a",
+      "same_raw_bytes_as_ER": true
+    },
+    {
+      "path": "src/render_command_queue.cpp",
+      "sha256": "5ec78b4d95eef3cb597d789b04ab7bb6f0a44915932b721cb8e2e2a65418cb02",
+      "same_raw_bytes_as_ER": true
+    },
+    {
+      "path": "include/bsp/native_model_owner.hpp",
+      "sha256": "7bb75bca29ed440709040ce34b217bb9a760741d971d8b6b2fdeb8b77201f47e",
+      "same_raw_bytes_as_ER": true
+    },
+    {
+      "path": "src/native_model_owner.cpp",
+      "sha256": "abe4817fd6ca9049f720a50e5c5c9a2041112f634dee73b2c4f2a94d4077886a",
+      "same_raw_bytes_as_ER": true
+    },
+    {
+      "path": "include/bsp/native_node_construction.hpp",
+      "sha256": "977424218edef9f6eefdafb9463b1ef5be11a4f61554eecca37a7d823b3c7098",
+      "same_raw_bytes_as_ER": true
+    },
+    {
+      "path": "src/native_node_construction.cpp",
+      "sha256": "87a73019511d3575aa0887a4964a2a8703a5248106fdcff2eddfbb424918dd35",
+      "same_raw_bytes_as_ER": true
+    },
+    {
+      "path": "include/bsp/camera_transform.hpp",
+      "sha256": "1f2de265a3479686c68e74802cca45038374bf9be1f882aa8ccbee0086e2635d",
+      "same_raw_bytes_as_ER": true
+    },
+    {
+      "path": "src/native_particle_emitter_update.cpp",
+      "sha256": "825de63b883ab450846af0140c0012a249267e98d9f4f234754a1be9d1ef2710",
+      "same_raw_bytes_as_ER": true
+    },
+    {
+      "path": "src/camera_transform.cpp",
+      "sha256": "55d1ab50deaf9d3eca0812aecf3c1079f38798f2d7a55e7aa525575b1147cf97",
+      "same_raw_bytes_as_ER": true
+    },
+    {
+      "path": "docs/NATIVE_NODE_RAW_HIERARCHY.md",
+      "sha256": "82402aec8c502f127eeb8d778f07209b0476f8de9a662b9effb4469c6d7bdf99",
+      "same_raw_bytes_as_ER": true
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "same_raw_bytes_as_ER": true
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "same_raw_bytes_as_ER": true
+    },
+    {
+      "path": "include/bsp/native_shadow_pointer_vector.hpp",
+      "sha256": "8b64c25b62a36c930ae655f69fe964e77b18d8abe0f58b2cfec1c1a0cf6cd10d",
+      "prior_ER_sha256": "8b64c25b62a36c930ae655f69fe964e77b18d8abe0f58b2cfec1c1a0cf6cd10d",
+      "same_raw_bytes_as_ER": true,
+      "same_content_after_newline_normalization": true,
+      "note": "Only EP report checkout LF/CRLF differs when raw hashes differ; source/header unchanged."
+    },
+    {
+      "path": "src/native_shadow_pointer_vector.cpp",
+      "sha256": "878ae45df4ec0fc9fc2591e6a235dc07a8c60589caa6bcca3ebf5025490ccd1c",
+      "prior_ER_sha256": "878ae45df4ec0fc9fc2591e6a235dc07a8c60589caa6bcca3ebf5025490ccd1c",
+      "same_raw_bytes_as_ER": true,
+      "same_content_after_newline_normalization": true,
+      "note": "Only EP report checkout LF/CRLF differs when raw hashes differ; source/header unchanged."
+    },
+    {
+      "path": "docs/NATIVE_SHADOW_POINTER_VECTOR.md",
+      "sha256": "29fffd76f3c46bd610f366e99f6b1f7f4b9a702339da9d1de0452a4a61b00886",
+      "prior_ER_sha256": "29fffd76f3c46bd610f366e99f6b1f7f4b9a702339da9d1de0452a4a61b00886",
+      "same_raw_bytes_as_ER": true,
+      "same_content_after_newline_normalization": true,
+      "note": "Only EP report checkout LF/CRLF differs when raw hashes differ; source/header unchanged."
+    },
+    {
+      "path": "reports/native_shadow_pointer_vector.json",
+      "sha256": "8e9056be23a26d0a6b4277db0d92345e127cea36a285fe4ee665948f3b668c3d",
+      "prior_ER_sha256": "3b1f42835e5c351f26c7e0422936c2ea65105265817fb0bb04e6f7f64cd8db3b",
+      "same_raw_bytes_as_ER": false,
+      "same_content_after_newline_normalization": true,
+      "note": "Only EP report checkout LF/CRLF differs when raw hashes differ; source/header unchanged."
+    }
+  ],
+  "ER_admission": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-shadow-node-array-admission-er\\local\\er-node-array-admission.json",
+    "sha256": "797f8c11dbc0e2f8b4ba2cfb2a57913475536d67d8f3c63c67db90d448ccfb83"
+  },
+  "ER_native_evidence": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-shadow-node-array-admission-er\\local\\er-native-evidence.json",
+    "sha256": "a90f751e26170e17893b3f698ab2f7158618b0792b4a42024456fa99d29c0b8a"
+  },
+  "primary_admission": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\er-primary-admission-review.json",
+    "sha256": "2403cb7037de2b22d9502d5d522080fe08651e90995599259500ec22128ffc7f"
+  },
+  "fresh_native_evidence": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-shadow-node-array-release-es\\local\\es-native-evidence.json",
+    "sha256": "11977ef2710319b0c2d472cb8a3b903ecbc5f397994f2b439aa6ab732209b234"
+  },
+  "validation": {
+    "source_compile": "not_run; source candidate only requested",
+    "build": "not_run",
+    "tests": "not_run",
+    "new_tests": 0,
+    "native_fixture": "not_run",
+    "native_call_audit": {
+      "checked_rows": 4,
+      "failed_rows": 0,
+      "read_only_Ghidra": true,
+      "log": {
+        "path": "local/es-call-audit.log",
+        "sha256": "f901e90d4050facf2adcb6208b86f723232e3bda10d71c6727a7d99afe28d24f"
+      }
+    },
+    "generated_code": "pending",
+    "game_validated": false,
+    "dependency_EP": "Accepted source4d0a0cbd. First coupled build failed only CMake generate.stamp timestamp Access denied,0CTests; primary-coordinated same-source serial retry pending."
+  },
+  "metadata": {
+    "worker_ghidra_writes": false,
+    "worker_ledger_writes": false,
+    "startup": "one target_sources line per module, exactlytwo appended lines total; registry not leased"
+  },
+  "checklist": {
+    "1_callee_before_contract": "Full EP resize and real shared CRT free; existing typed B6DFA0 with concrete canonical Model domain, not a guessed native callback.",
+    "2_boundary_before_attribution": "Fresh fullbody proto/listing; canonical numeric rows get live report audit.",
+    "3_all_callsites": "Both incoming xrefs per entry match sealedER; all original preparation spans and actual JMP-vs-xref discrepancy retained there.",
+    "4_producer_before_layout": "No new owner/header type; physical layout from full EP provider. ActualAE0A50 contents/producer remain unproved.",
+    "5_coverage": "Complete normal schedule within explicit finite source-provider domain. No parent/EH credit.",
+    "6_runtime_evidence": "No runtime/game behavior claim or authorized execution in this packet.",
+    "7_argument_counts": "Both original entriesRET/noargs; resizeRET4; freecdeclADDESP4.",
+    "8_register_provenance": "Complete listings; entry/headerEBX/ESI,indexEDI,capturedslotESI and private source runtime separated.",
+    "9_lease": "Only two owned nativeentries/eightfiles/ignored evidence, no callee/registry/shard lease.",
+    "10_report_rows": "Every incoming/outgoing native CALL or JMP is numeric address/native/function/kind."
+  },
+  "module": "native_shadow_node_array_release",
+  "native_body_count": 1,
+  "normal_native_bytes": 62,
+  "routines": [
+    {
+      "address": "00ae1c20",
+      "end_inclusive": "00ae1c5d",
+      "native_size": 62,
+      "native_instructions": 25,
+      "name": "release_native_shadow_entry_nodes_00ae1c20",
+      "coverage": "complete normal body within the explicitly admitted source-provider domain",
+      "source": "src/native_shadow_node_array_release.cpp",
+      "native_span": {
+        "address": "00ae1c20",
+        "length": 62,
+        "sha256": "2c384c3171ad5ca466667a5f4fe62e786649bd8ae539e7f45d00df894923b6d8",
+        "disk_hex": "53578bd933ff397b487e26568d6424008b43448b0cb885c98d34b8740be85ec30800c7060000000083c7013b7b487ce05e6a008d4b44e855fdffff5f5bc3",
+        "live_hex": "53578bd933ff397b487e26568d6424008b43448b0cb885c98d34b8740be85ec30800c7060000000083c7013b7b487ce05e6a008d4b44e855fdffff5f5bc3",
+        "matches": true
+      }
+    }
+  ],
+  "original_abi": {
+    "ecx": "actual entry; header at +44 data/+48 signed count/+4C signed capacity",
+    "public_stack_words": 0,
+    "return": "RET, no meaningful scalar return established",
+    "preserved": "EBX/EDI; ESI only on positive-count loop path",
+    "fp": "no FP instructions or local EH"
+  },
+  "schedule": [
+    "Signed initial count test, index=0; no data/slot/node read if count<=0.",
+    "Each iteration reloads entry+44, reads node at data+index*4, TESTs node, computes/captures ESI slot before null branch. LEA preserves test flags.",
+    "For nonnull key, resolve existing canonical lifetime through SAME GeneratedModelLifetimeRuntime.find_actual_node. Enforce finite NativeModelReference domain; do not fabricate a companion/registry or use a generic successful fallback.",
+    "Invoke actual existing unlink_and_release_render_model_00b6dfa0. Its NativeModelReference virtual18 checks the CURRENT model table slot18 at the release point AFTER native hierarchy unlink, not via an earlier profile snapshot.",
+    "Only after normal release return write zero to the CAPTURED slot. Release may end model storage and retire the companion: never inspect either afterward.",
+    "Increment index; reload CURRENT entry+48 signed count for next iteration; reload CURRENT data next iteration. Preserve original captured array slot validity across callbacks.",
+    "After loop, concrete full EP resize_native_shadow_pointer_vector_00ae19b0(entry+44,unused_edx,0); do not replace with an upfront count=0 shortcut."
+  ],
+  "native_calls": [
+    {
+      "address": "00ae1c3d",
+      "native": "00b6dfa0",
+      "function": "00ae1c20",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00ae1c56",
+      "native": "00ae19b0",
+      "function": "00ae1c20",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00ad7423",
+      "native": "00ae1c20",
+      "function": "00ad7360",
+      "kind": "direct_call",
+      "preparation": "MOV ECX,[EDI] at AD7421; iterator-validated entry pointer, surrounding producer incomplete"
+    },
+    {
+      "address": "00ae1e00",
+      "native": "00ae1c20",
+      "function": "00ae1e00",
+      "kind": "direct_call",
+      "preparation": "entry ECX unchanged; wrapper CALL then RET4; ignored public word not propagated"
+    }
+  ],
+  "limits": [
+    "No unrestricted native binary ABI, incidental volatile-register or arbitrary stack-alias claim for explicit source interfaces.",
+    "No native fault/SEH/FH3, exception traversal across naked frames, rollback or invented failure cleanup.",
+    "Existing actual storage/allocator/child/resource/terminal provider preconditions remain.",
+    "No AE0A50 producer/generic-node/gameplay closure, new owner/registry/retention or successful fallback.",
+    "Actual array slot/backing and entry must stay valid through callback and subsequent captured-slot clear; data may change only consistently with that lifetime obligation.",
+    "Finite NativeModelReference actual owners only; current slot18 B6F310 and terminal routes must be supported by existing model environment. Returned generic lifetime base pointer alone is not proof of this domain.",
+    "Parent/sibling/child raw links must identify stable same-runtime bindings. Recursive child release and resources require their existing concrete provider domains.",
+    "For parentless nodes, +A4 must be null or an already-supported C++ RenderNodeRootList view. RenderNodeRootList contains reference members/companion heads; no arbitrary raw native root pointer can be cast into it. Parented paths do not dereference +A4 before logical release clears it.",
+    "AE0A50 and broader actual array construction are not reconstructed here. Actual game arrays have not been proven to contain this finite domain.",
+    "Typed unlink/release is noexcept; invalid link resolution or provider violation can terminate. No rollback, native hardware-fault, SEH/FH3, arbitrary callback or game equivalence claim."
+  ],
+  "source_pins": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-shadow-node-array-release-es\\include\\bsp\\native_shadow_node_array_release.hpp",
+      "sha256": "dfc866cd69f1bacf9545e3249241d0c403513235b95ab6f82d733ae42781ef7d"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-shadow-node-array-release-es\\src\\native_shadow_node_array_release.cpp",
+      "sha256": "d0deae2135ba378c0d19c81e37a6fab7a9d7f69a61bcebd0a58bec2f5f6210cf"
+    }
+  ],
+  "source_abi": {
+    "signature": "void __fastcall release_native_shadow_entry_nodes_00ae1c20(void*, GeneratedModelLifetimeRuntime*)",
+    "ECX": "actual entry",
+    "EDX": "borrowed SAME canonical lifetime runtime",
+    "private_stack": "EntryS: runtimeS-4, savedEBXS-8, savedEDIS-12; positive path savedESIS-16; bridge reload runtime viaESP+C. Final restore optionalESI/EDI/EBX, discard private4, explicitC3. No public argument slot exists."
+  },
+  "source_bridge": {
+    "helper": "release_actual_model; zero native credit",
+    "binding": "same runtime.find_actual_node(actualkey), checked dynamic_cast<NativeModelReference*>; owner hostphase mustlive before address formation, same actual owner.storage.node key and same environment.nodes.attachments",
+    "provider": "Real unlink_and_release_render_model_00b6dfa0(*reference). CURRENT native slot18 remains checked by NativeModelReference AFTER native unlink; no profile/root/native field prevalidation added.",
+    "terminal": "After provider return no access to model/owner/reference/storage. Outer body clears only captured array cell.",
+    "failure": "Null/missing/wrong/dead/cross-runtime binding throws source-only logic_error; invalid reached hierarchy/provider input may terminate in existing noexcept provider; native failure parity not inferred."
+  },
+  "provider_contracts": [
+    "GeneratedModelLifetimeRuntime.find_actual_node uses already-registered pointer_key and returns no new object.",
+    "NativeModelReference binds owner.storage.node actual key into owner.environment.nodes.attachments and uses reference count at raw node+4.",
+    "NativeNodeBinding backs hierarchy DWORDs +30/+34/+38/+3C/+40, and +A4 directly through its CameraTransformBacking. Same SceneAttachmentRuntime must resolve every reached raw hierarchy link.",
+    "Existing typed B6DFA0 performs unlink then concrete NativeModelReference B6F310 release; retained ownership, point-light backlinks, attached resources, recursive child lifetimes and final current terminal slot checks retain existing provider preconditions.",
+    "A source helper may reject null/missing/wrong-type lifetime before invocation, but this is source-only failure and never native fault/FH3 parity. Do not prevalidate slot18 in a way that moves its current read ahead of unlink."
+  ],
+  "root_list_boundary": "Parentless+A4 is null or existing supported reference-bearing C++ RenderNodeRootList view, not arbitrary native root-table storage. Parented path does not dereference+A4 before logical release clears it; all reached raw hierarchy links use same canonical scene runtime.",
+  "missing_generic_prerequisites": [
+    "Actual producer and slot ownership proof for AE0A50-created arrays, including complete current model/profile/recursive-resource membership.",
+    "For arbitrary nonnull raw root+ A4: actual root-head/storage mapping and existing provider composition are not established by the C++ RenderNodeRootList view. Do not invent a successful raw-root facade."
+  ],
+  "documentation": {
+    "path": "docs/NATIVE_SHADOW_NODE_ARRAY_RELEASE.md",
+    "sha256": "7290e960a9ecf5b17d9f82d3def0b137495d6ec6ba96252f221a1dacce4822e1"
+  }
+}

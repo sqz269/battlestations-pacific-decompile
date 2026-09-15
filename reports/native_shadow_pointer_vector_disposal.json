@@ -1,0 +1,308 @@
+{
+  "schema": 1,
+  "packet": "orch3_shadow_node_array_release_es",
+  "status": "complete_source_candidate_pending_primary_review_and_coupled_build",
+  "base_commit": "4d0a0cbd5a27bceec34d39576228dc2b309397e6",
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "guard": "Every live query uses bsp.client -> Client.verify before endpoint access; project/program/language/imagebase checked."
+  },
+  "native_handler_credit": 0,
+  "new_ghidra_definition_credit": 0,
+  "new_native_credit_before_validation": 0,
+  "provider_pins": [
+    {
+      "path": "include/bsp/generated_model_lifetime.hpp",
+      "sha256": "370ddaedd31013c97fc41b2774020f75dddae9d5d6f546d3a2063ccc49088b64",
+      "same_raw_bytes_as_ER": true
+    },
+    {
+      "path": "src/generated_model_lifetime.cpp",
+      "sha256": "d8c5990909d169f0f70d9e3320b4e671da6fcb58694cc9ac5f7d621cbdeabd64",
+      "same_raw_bytes_as_ER": true
+    },
+    {
+      "path": "include/bsp/render_command_queue.hpp",
+      "sha256": "bc5b28823becf3dbe9628f7393be7f3ba399895d6935829921113a7496fe8f1a",
+      "same_raw_bytes_as_ER": true
+    },
+    {
+      "path": "src/render_command_queue.cpp",
+      "sha256": "5ec78b4d95eef3cb597d789b04ab7bb6f0a44915932b721cb8e2e2a65418cb02",
+      "same_raw_bytes_as_ER": true
+    },
+    {
+      "path": "include/bsp/native_model_owner.hpp",
+      "sha256": "7bb75bca29ed440709040ce34b217bb9a760741d971d8b6b2fdeb8b77201f47e",
+      "same_raw_bytes_as_ER": true
+    },
+    {
+      "path": "src/native_model_owner.cpp",
+      "sha256": "abe4817fd6ca9049f720a50e5c5c9a2041112f634dee73b2c4f2a94d4077886a",
+      "same_raw_bytes_as_ER": true
+    },
+    {
+      "path": "include/bsp/native_node_construction.hpp",
+      "sha256": "977424218edef9f6eefdafb9463b1ef5be11a4f61554eecca37a7d823b3c7098",
+      "same_raw_bytes_as_ER": true
+    },
+    {
+      "path": "src/native_node_construction.cpp",
+      "sha256": "87a73019511d3575aa0887a4964a2a8703a5248106fdcff2eddfbb424918dd35",
+      "same_raw_bytes_as_ER": true
+    },
+    {
+      "path": "include/bsp/camera_transform.hpp",
+      "sha256": "1f2de265a3479686c68e74802cca45038374bf9be1f882aa8ccbee0086e2635d",
+      "same_raw_bytes_as_ER": true
+    },
+    {
+      "path": "src/native_particle_emitter_update.cpp",
+      "sha256": "825de63b883ab450846af0140c0012a249267e98d9f4f234754a1be9d1ef2710",
+      "same_raw_bytes_as_ER": true
+    },
+    {
+      "path": "src/camera_transform.cpp",
+      "sha256": "55d1ab50deaf9d3eca0812aecf3c1079f38798f2d7a55e7aa525575b1147cf97",
+      "same_raw_bytes_as_ER": true
+    },
+    {
+      "path": "docs/NATIVE_NODE_RAW_HIERARCHY.md",
+      "sha256": "82402aec8c502f127eeb8d778f07209b0476f8de9a662b9effb4469c6d7bdf99",
+      "same_raw_bytes_as_ER": true
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "same_raw_bytes_as_ER": true
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "same_raw_bytes_as_ER": true
+    },
+    {
+      "path": "include/bsp/native_shadow_pointer_vector.hpp",
+      "sha256": "8b64c25b62a36c930ae655f69fe964e77b18d8abe0f58b2cfec1c1a0cf6cd10d",
+      "prior_ER_sha256": "8b64c25b62a36c930ae655f69fe964e77b18d8abe0f58b2cfec1c1a0cf6cd10d",
+      "same_raw_bytes_as_ER": true,
+      "same_content_after_newline_normalization": true,
+      "note": "Only EP report checkout LF/CRLF differs when raw hashes differ; source/header unchanged."
+    },
+    {
+      "path": "src/native_shadow_pointer_vector.cpp",
+      "sha256": "878ae45df4ec0fc9fc2591e6a235dc07a8c60589caa6bcca3ebf5025490ccd1c",
+      "prior_ER_sha256": "878ae45df4ec0fc9fc2591e6a235dc07a8c60589caa6bcca3ebf5025490ccd1c",
+      "same_raw_bytes_as_ER": true,
+      "same_content_after_newline_normalization": true,
+      "note": "Only EP report checkout LF/CRLF differs when raw hashes differ; source/header unchanged."
+    },
+    {
+      "path": "docs/NATIVE_SHADOW_POINTER_VECTOR.md",
+      "sha256": "29fffd76f3c46bd610f366e99f6b1f7f4b9a702339da9d1de0452a4a61b00886",
+      "prior_ER_sha256": "29fffd76f3c46bd610f366e99f6b1f7f4b9a702339da9d1de0452a4a61b00886",
+      "same_raw_bytes_as_ER": true,
+      "same_content_after_newline_normalization": true,
+      "note": "Only EP report checkout LF/CRLF differs when raw hashes differ; source/header unchanged."
+    },
+    {
+      "path": "reports/native_shadow_pointer_vector.json",
+      "sha256": "8e9056be23a26d0a6b4277db0d92345e127cea36a285fe4ee665948f3b668c3d",
+      "prior_ER_sha256": "3b1f42835e5c351f26c7e0422936c2ea65105265817fb0bb04e6f7f64cd8db3b",
+      "same_raw_bytes_as_ER": false,
+      "same_content_after_newline_normalization": true,
+      "note": "Only EP report checkout LF/CRLF differs when raw hashes differ; source/header unchanged."
+    }
+  ],
+  "ER_admission": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-shadow-node-array-admission-er\\local\\er-node-array-admission.json",
+    "sha256": "797f8c11dbc0e2f8b4ba2cfb2a57913475536d67d8f3c63c67db90d448ccfb83"
+  },
+  "ER_native_evidence": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-shadow-node-array-admission-er\\local\\er-native-evidence.json",
+    "sha256": "a90f751e26170e17893b3f698ab2f7158618b0792b4a42024456fa99d29c0b8a"
+  },
+  "primary_admission": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\er-primary-admission-review.json",
+    "sha256": "2403cb7037de2b22d9502d5d522080fe08651e90995599259500ec22128ffc7f"
+  },
+  "fresh_native_evidence": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-shadow-node-array-release-es\\local\\es-native-evidence.json",
+    "sha256": "11977ef2710319b0c2d472cb8a3b903ecbc5f397994f2b439aa6ab732209b234"
+  },
+  "validation": {
+    "source_compile": "not_run; source candidate only requested",
+    "build": "not_run",
+    "tests": "not_run",
+    "new_tests": 0,
+    "native_fixture": "not_run",
+    "native_call_audit": {
+      "checked_rows": 4,
+      "failed_rows": 0,
+      "read_only_Ghidra": true,
+      "log": {
+        "path": "local/es-call-audit.log",
+        "sha256": "f901e90d4050facf2adcb6208b86f723232e3bda10d71c6727a7d99afe28d24f"
+      }
+    },
+    "generated_code": "pending; expectedexact23bytes aftertwo CALL rel32 bindings",
+    "game_validated": false,
+    "dependency_EP": "Accepted source4d0a0cbd. First coupled build failed only CMake generate.stamp timestamp Access denied,0CTests; primary-coordinated same-source serial retry pending."
+  },
+  "metadata": {
+    "worker_ghidra_writes": false,
+    "worker_ledger_writes": false,
+    "startup": "one target_sources line per module, exactlytwo appended lines total; registry not leased"
+  },
+  "checklist": {
+    "1_callee_before_contract": "Full EP resize and real shared CRT free; existing typed B6DFA0 with concrete canonical Model domain, not a guessed native callback.",
+    "2_boundary_before_attribution": "Fresh fullbody proto/listing; canonical numeric rows get live report audit.",
+    "3_all_callsites": "Both incoming xrefs per entry match sealedER; all original preparation spans and actual JMP-vs-xref discrepancy retained there.",
+    "4_producer_before_layout": "No new owner/header type; physical layout from full EP provider. ActualAE0A50 contents/producer remain unproved.",
+    "5_coverage": "Complete normal schedule within explicit finite source-provider domain. No parent/EH credit.",
+    "6_runtime_evidence": "No runtime/game behavior claim or authorized execution in this packet.",
+    "7_argument_counts": "Both original entriesRET/noargs; resizeRET4; freecdeclADDESP4.",
+    "8_register_provenance": "Complete listings; entry/headerEBX/ESI,indexEDI,capturedslotESI and private source runtime separated.",
+    "9_lease": "Only two owned nativeentries/eightfiles/ignored evidence, no callee/registry/shard lease.",
+    "10_report_rows": "Every incoming/outgoing native CALL or JMP is numeric address/native/function/kind."
+  },
+  "module": "native_shadow_pointer_vector_disposal",
+  "native_body_count": 1,
+  "normal_native_bytes": 23,
+  "routines": [
+    {
+      "address": "00ae1c60",
+      "end_inclusive": "00ae1c76",
+      "native_size": 23,
+      "native_instructions": 10,
+      "name": "destroy_native_shadow_pointer_vector_00ae1c60",
+      "coverage": "complete normal body within the explicitly admitted source-provider domain",
+      "source": "src/native_shadow_pointer_vector_disposal.cpp",
+      "native_span": {
+        "address": "00ae1c60",
+        "length": 23,
+        "sha256": "2afb19451d819c2bacd934f90330d8b28b8c22204d951e2fa106a69656e9cd89",
+        "disk_hex": "566a008bf1e846fdffff8b0650e8174d110083c4045ec3",
+        "live_hex": "566a008bf1e846fdffff8b0650e8174d110083c4045ec3",
+        "matches": true
+      }
+    }
+  ],
+  "original_abi": {
+    "ecx": "actual 12-byte pointer-array header itself, not enclosing entry",
+    "public_stack_words": 0,
+    "return": "RET; no scalar value established",
+    "preserved": "ESI",
+    "fp": "none",
+    "eh": "no local EH frame; reached from two native unwind JMP actions"
+  },
+  "schedule": [
+    "PUSH ESI; PUSH 0; MOV ESI,ECX; call full EP AE19B0 resize.",
+    "After successful return reload CURRENT [ESI] data pointer; PUSH that pointer; call existing singleton_lifetime_free corresponding to BF6989.",
+    "ADD ESP,4; POP ESI; RET. Do not clear pointer/capacity, free the header, walk/release nodes, skip null free or add failure cleanup."
+  ],
+  "native_calls": [
+    {
+      "address": "00ae1c65",
+      "native": "00ae19b0",
+      "function": "00ae1c60",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00ae1c6d",
+      "native": "00bf6989",
+      "function": "00ae1c60",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00cb9e1c",
+      "native": "00ae1c60",
+      "function": "00cb9e16",
+      "kind": "tail_jump",
+      "preparation": "MOV ECX,[EBP-10]; ADD ECX,44; JMP; xref reports UNCONDITIONAL_CALL despite actual JMP"
+    },
+    {
+      "address": "00cb9e6c",
+      "native": "00ae1c60",
+      "function": "00cb9e66",
+      "kind": "tail_jump",
+      "preparation": "MOV ECX,[EBP-18]; ADD ECX,44; JMP; xref reports UNCONDITIONAL_CALL despite actual JMP"
+    }
+  ],
+  "limits": [
+    "No unrestricted native binary ABI, incidental volatile-register or arbitrary stack-alias claim for explicit source interfaces.",
+    "No native fault/SEH/FH3, exception traversal across naked frames, rollback or invented failure cleanup.",
+    "Existing actual storage/allocator/child/resource/terminal provider preconditions remain.",
+    "No AE0A50 producer/generic-node/gameplay closure, new owner/registry/retention or successful fallback.",
+    "Array header and current data pointer must be valid for reached providers; dispose only in the same allocator domain.",
+    "A zero requested count still calls full EP body; negative/current capacity unusual paths retain that body semantics rather than guessed no-allocation behavior.",
+    "The two native unwind callers prove subobject offset +44 only. Their whole constructors/destructors and unwind maps receive no source credit or full closure from this audit.",
+    "Source exception or invalid data parity with native unwinding is not established; no additional cleanup on failed resize/free."
+  ],
+  "source_pins": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-shadow-node-array-release-es\\include\\bsp\\native_shadow_pointer_vector_disposal.hpp",
+      "sha256": "28c9ab388bb87299ca43203e3786d35cdb803de97505beb662e145084dfc72d2"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-shadow-node-array-release-es\\src\\native_shadow_pointer_vector_disposal.cpp",
+      "sha256": "cf5aa566a45df6282a5cb2acfe52613b3b69ea324492850b82a3cee2c3117f9b"
+    }
+  ],
+  "source_abi": {
+    "signature": "void __fastcall destroy_native_shadow_pointer_vector_00ae1c60(void*, void*)",
+    "ECX": "actual12-byte header, not entry",
+    "EDX": "explicitly unused",
+    "stack": "saveESI; push0/fullresizeRET4; fresh[ESI]data push/freecdecl/ADDESP4; popESI; explicitC3"
+  },
+  "provider_contracts": [
+    "EP resize(actual_header,unused_edx,0) + singleton_lifetime_free(void*) noexcept -> std::free in same source CRT allocation/free domain used by EP. Native allocator identity/OOM/hardware faults remain unproved.",
+    "No pointer/capacity clear, node/element release, header free, null-free skip or failure cleanup. Requested0 still executes full EP resize, including unusual negative-capacity paths."
+  ],
+  "analysis_corrections": [
+    {
+      "was": "AE1C6D actualCALL_RETURN; stored bodythroughAE1C71",
+      "is": "Primary changedoverrideNONE, repairedlistingtail then separatelyrecreated full23-byte10-instruction bodythroughAE1C76; preservedname/plate,saved/exported",
+      "evidence": {
+        "function": "00ae1c60",
+        "actual_old_override": "CALL_RETURN",
+        "new_override": "NONE",
+        "call_site": "00ae1c6d",
+        "listed_tail_repaired_first": true,
+        "stored_body_still_incomplete_after_listing_repair": true,
+        "stored_body_recreated_separately": true,
+        "final_proto": "Function: FUN_00ae1c60 at 00ae1c60\nSignature: undefined FUN_00ae1c60(void)\nEntry: 00ae1c60\nBody: 00ae1c60 - 00ae1c76\n{\n \"function_name\": \"FUN_00ae1c60\",\n \"address\": \"00ae1c60\",\n \"program\": \"battlestationspacific.exe\",\n \"instruction_count\": 10,\n \"basic_block_count\": 1,\n \"edge_count\": 0,\n \"call_count\": 2,\n \"string_ref_count\": 0,\n \"param_count\": 0,\n \"cyclomatic_complexity\": 1,\n \"prologue_stripped\": false,\n \"epilogue_stripped\": false,\n \"callee_names\": [\n  \"_free\",\n  \"FUN_00ae19b0\"\n ],\n \"string_constants\": [],\n \"immediate_values\": [\n  4\n ],\n \"basic_block_hashes\": [\n  \"1e832abd27186d5fe89918efe917eac9c665d740028700f0c2fb16d8725ffa4f\"\n ]\n}\n",
+        "final_disassembly": "00ae1c60: PUSH ESI \n00ae1c61: PUSH 0x0 \n00ae1c63: MOV ESI,ECX \n00ae1c65: CALL 0x00ae19b0 \n00ae1c6a: MOV EAX,dword ptr [ESI] \n00ae1c6c: PUSH EAX \n00ae1c6d: CALL 0x00bf6989 \n00ae1c72: ADD ESP,0x4 \n00ae1c75: POP ESI \n00ae1c76: RET \n",
+        "source_bytes_unchanged": true,
+        "old_name_and_plate_preserved": true,
+        "saved": true,
+        "refreshed_exports": [
+          "00ae1c20",
+          "00ae1c60"
+        ],
+        "records": [
+          {
+            "path": "local/er-before-tail-repair.json",
+            "sha256": "4966e5674a0e969af7e49dc9d6730c87133e7c72bdb1afc3f7641f3eee57cfe9"
+          },
+          {
+            "path": "local/er-tail-repair.json",
+            "sha256": "4aa23de034f0c832c096478dc137e3c556e5e0dfee7aa2e68a2ac5b48b106be9"
+          },
+          {
+            "path": "local/er-defined-function.json",
+            "sha256": "ca956ea323db3767715638e063f0d20e1c9ae9b1605bd9d38334435e6e8e04e1"
+          }
+        ]
+      },
+      "worker_change": false
+    }
+  ],
+  "documentation": {
+    "path": "docs/NATIVE_SHADOW_POINTER_VECTOR_DISPOSAL.md",
+    "sha256": "d3bc9f93115980b77a652283f50dbb103aad03a87396d81a11c0b2aa8fcfa87b"
+  }
+}
