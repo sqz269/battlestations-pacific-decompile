@@ -1,0 +1,198 @@
+{
+  "events": [
+    {
+      "recreate": "0095db40",
+      "previous": "Function: FUN_0095db40 at 0095db40\nSignature: undefined FUN_0095db40(void)\nEntry: 0095db40\nBody: 0095db40 - 0095db88",
+      "plate": null
+    },
+    {
+      "endpoint": "delete_function",
+      "body": {
+        "address": "0095db40"
+      },
+      "result": {
+        "success": true,
+        "address": "0095db40",
+        "deleted_function": "FUN_0095db40",
+        "body_size": 73,
+        "message": "Function 'FUN_0095db40' deleted at 0095db40"
+      }
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "0095db40",
+        "end_address": "0095dbc7"
+      },
+      "result": {
+        "success": true,
+        "start_address": "0095db40",
+        "end_address": "0095dbc6",
+        "bytes_disassembled": 135,
+        "message": "Successfully disassembled 135 byte(s)"
+      }
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "0095db40",
+        "disassemble_first": false
+      },
+      "result": {
+        "success": true,
+        "address": "0095db40",
+        "function_name": "FUN_0095db40",
+        "entry_point": "0095db40",
+        "body_size": 135,
+        "message": "Function created successfully at 0095db40"
+      }
+    },
+    {
+      "defined": "0095db40",
+      "end": "0095dbc7",
+      "name": null,
+      "after": "Function: FUN_0095db40 at 0095db40\nSignature: undefined FUN_0095db40(void)\nEntry: 0095db40\nBody: 0095db40 - 0095dbc6"
+    },
+    {
+      "recreate": "0082e280",
+      "previous": "Function: FUN_0082e280 at 0082e280\nSignature: undefined FUN_0082e280(void)\nEntry: 0082e280\nBody: 0082e280 - 0082e2c7",
+      "plate": null
+    },
+    {
+      "endpoint": "delete_function",
+      "body": {
+        "address": "0082e280"
+      },
+      "result": {
+        "success": true,
+        "address": "0082e280",
+        "deleted_function": "FUN_0082e280",
+        "body_size": 72,
+        "message": "Function 'FUN_0082e280' deleted at 0082e280"
+      }
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "0082e280",
+        "end_address": "0082e312"
+      },
+      "result": {
+        "success": true,
+        "start_address": "0082e280",
+        "end_address": "0082e311",
+        "bytes_disassembled": 146,
+        "message": "Successfully disassembled 146 byte(s)"
+      }
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "0082e280",
+        "disassemble_first": false
+      },
+      "result": {
+        "success": true,
+        "address": "0082e280",
+        "function_name": "FUN_0082e280",
+        "entry_point": "0082e280",
+        "body_size": 146,
+        "message": "Function created successfully at 0082e280"
+      }
+    },
+    {
+      "defined": "0082e280",
+      "end": "0082e312",
+      "name": null,
+      "after": "Function: FUN_0082e280 at 0082e280\nSignature: undefined FUN_0082e280(void)\nEntry: 0082e280\nBody: 0082e280 - 0082e311"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": {
+        "success": true,
+        "program": "battlestationspacific.exe",
+        "message": "Program saved successfully"
+      }
+    }
+  ],
+  "preflight": [
+    {
+      "address": "0095db40",
+      "end_exclusive": "0095dbc7",
+      "bytes": 135,
+      "sha256": "e4c426282125dac52a7ac1ae0f5186c5255fff8909b38cc7666061d2583ba867",
+      "live_disk_match": true
+    },
+    {
+      "address": "0082e280",
+      "end_exclusive": "0082e312",
+      "bytes": 146,
+      "sha256": "437d741fd06ef0cec1a37e7ee0ee146e2ba71fcc584294ab0447ff515e09bc32",
+      "live_disk_match": true
+    }
+  ],
+  "documentation_before": "local/cleanup_body_documentation_before_b2.json",
+  "documentation_after": "local/cleanup_body_documentation_after_b2.json",
+  "coverage": "metadata ownership repair; no source reconstruction",
+  "verification": {
+    "saved_project": true,
+    "exports_refreshed": true,
+    "snapshot_refreshed": true,
+    "remaining_flow_gaps": 0,
+    "bodies": [
+      {
+        "address": "0095db40",
+        "end_inclusive": "0095dbc6",
+        "instructions": 42
+      },
+      {
+        "address": "0082e280",
+        "end_inclusive": "0082e311",
+        "instructions": 54
+      }
+    ]
+  },
+  "calls": [
+    {
+      "address": "0095db7b",
+      "native": "0095d2c0",
+      "function": "0095db40"
+    },
+    {
+      "address": "0095db84",
+      "native": "00bf65ac",
+      "function": "0095db40"
+    },
+    {
+      "address": "0095dba6",
+      "native": "005cd640",
+      "function": "0095db40"
+    },
+    {
+      "address": "0095dbae",
+      "native": "00bf6989",
+      "function": "0095db40"
+    },
+    {
+      "address": "0082e2ba",
+      "native": "00444b10",
+      "function": "0082e280"
+    },
+    {
+      "address": "0082e2c3",
+      "native": "00bf65ac",
+      "function": "0082e280"
+    },
+    {
+      "address": "0082e2e9",
+      "native": "00492a00",
+      "function": "0082e280"
+    },
+    {
+      "address": "0082e2f2",
+      "native": "00bf65ac",
+      "function": "0082e280"
+    }
+  ]
+}
