@@ -311,7 +311,7 @@
       "path": "build/win32/bsp_core.dir/Release/native_render_command_preparation.obj",
       "sha256": "d8f4f8bc9970284ae3e9acb09cd988dfcf4218bca85e3decce9009acfe70be70",
       "bytes": 1911,
-      "review": "Frozen for primary generated schedule/byte review; worker made no generated-body identity claim."
+      "review": "Primary independently reviewed all seven COFF sections and all three code sections; accepted exact metadata bytes and diagnostic/helper schedule."
     },
     "new_tests": 0,
     "native_runtime_fixture": "not run",
@@ -326,6 +326,38 @@
       "failed": 0,
       "log": "local/ec-call-verification.log",
       "sha256": "ac979eb5949baaaf6b7526efe1405dc1be2192dc04cae7c5c4ddaad0f3ce3629"
+    },
+    "primary_generated_review": {
+      "object_sha256": "d8f4f8bc9970284ae3e9acb09cd988dfcf4218bca85e3decce9009acfe70be70",
+      "provenance": "Primary integrator complete object review reported after exact build; no duplicate worker extraction/runtime test.",
+      "coff_sections": 7,
+      "code_sections_reviewed": 3,
+      "metadata": {
+        "section": 6,
+        "bytes": 24,
+        "relocations": 0,
+        "native_byte_identity": true
+      },
+      "raw_read_helper": {
+        "section": 4,
+        "bytes": 22,
+        "behavior": "standalone raw DWORD MOV"
+      },
+      "diagnostic": {
+        "section": 5,
+        "section_relative_anchors": {
+          "header_identity_branch": "0x11",
+          "raw_resize_call": "0x27",
+          "current_source_length": "0x35",
+          "destination_length": "0x46",
+          "source_data": "0x57",
+          "destination_data": "0x65",
+          "zero_count_branch": "0x6a",
+          "memmove_call": "0x75"
+        },
+        "cleanup_eh": false,
+        "native_body_byte_identity_claim": false
+      }
     }
   },
   "limits": [

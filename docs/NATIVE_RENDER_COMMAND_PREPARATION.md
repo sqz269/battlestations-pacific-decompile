@@ -107,8 +107,13 @@ linker warnings/errors were reported.
 Retained `local/ec-final-build-stamp.json` pins all inputs, four libraries,
 the exact1911-byte object and `local/ec-final-build.log`. Object SHA256:
 `d8f4f8bc9970284ae3e9acb09cd988dfcf4218bca85e3decce9009acfe70be70`.
-Final generated schedule/byte review is reserved for primary integration; this
-worker does not claim completed generated-body identity review.
+Primary independently reviewed all three code sections in the seven-section
+COFF object. The metadata entry is exactly the native24 bytes with no
+relocations. The diagnostic entry preserves identity-before-read, raw resize,
+fresh source gate and all three ordered copy captures before its zero-count
+branch and memmove call; it has no cleanup/EH. The standalone raw MOV helper is
+22 bytes. Diagnostic/helper code uses the documented source ABI; it is not a
+claim of native body-byte equality or original private-frame equivalence.
 
 No new test, native fixture, queue/shadow execution or game validation was
 performed. New C++ ABI, raw-provider exception restrictions, native FH3/SEH and
