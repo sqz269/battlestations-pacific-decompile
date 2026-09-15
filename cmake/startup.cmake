@@ -1046,3 +1046,4 @@ cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_resource_bu
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_resource_graph_builtin_dispatch.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_damageable_class_model.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_game_resource_named_groups.cpp)
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_damageable_class_binding.cpp)

@@ -46,7 +46,8 @@ inline constexpr int kBytes = 0x40;           // 007D9F74 MOV ECX,10h
 inline constexpr float kBasisParallelLimit_00d0d0a0 = 0.999f;
 
 // 00D7A208, the float 80000000h = -0.0f. 0085DDB9..0085DDC7 subtract each cross
-// component from it, which is a sign flip, not an arithmetic operation.
+// component from it with SUBSS. This is arithmetic: its signed-zero, NaN and
+// status behavior cannot in general be replaced with a sign-bit flip.
 inline constexpr float kNegativeZero_00d7a208 = -0.0f;
 
 // The three basis rows of the 4x4, in the storage order 0085DC80 assumes. Row 3,
@@ -98,3 +99,18 @@ PoseOrthonormalizeResult orthonormalize_basis_rows_0085dc80(const PoseBasis& in)
 void orthonormalize_pose_matrix_0085dc80(float m[16]);
 
 }  // namespace bsp
+
+namespace bsp {
+struct CameraAxesCrtAccess;
+// Borrow actual CRT and constant cells; this source entry performs the complete
+// in-place native x87/SSE schedule, with no basis snapshot or extra FP spill.
+struct NativePoseOrthonormalizationAccess {
+    const CameraAxesCrtAccess* crt;
+    const volatile double* parallel_limit_00d0d0a0;
+    const volatile float* negative_zero_00d7a208;
+};
+static_assert(sizeof(NativePoseOrthonormalizationAccess) == 12);
+// Original ECX matrix / RET; the new source ABI adds bindings in EDX.
+void __fastcall orthonormalize_native_pose_matrix_0085dc80(
+    float*, const NativePoseOrthonormalizationAccess*);
+} // namespace bsp
