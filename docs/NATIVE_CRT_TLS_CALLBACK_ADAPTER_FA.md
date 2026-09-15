@@ -90,3 +90,45 @@ is retained in `local/native_crt_tls_callback_adapter_fa`. Two SHA256/SHA512
 inventories cover the complete local payload and each declared external raw
 path spelling. Only explicitly listed seal paths are excluded from self-hash
 recursion; nested seal-like basenames remain covered.
+
+
+## Provenance clarification from independent review FD
+
+This appended qualification applies to the preceding wording "consumed
+headers" and "exact tools and import library used", and to report fields
+`static_evidence.consumed_read_inputs` and
+`validation.compiler_tracker_validation`. The original text and report
+properties are preserved as the historical FA record.
+
+The CL command/read/write logs establish recorded source/header names,
+compiler options and output attribution for the owned translation unit.
+The count 96 describes the header paths in its CL.read record; it is not a
+compiler-time content guarantee or complete full-build dependency coverage.
+The source, all 96 header copies and selected compiler/tool copies were
+captured after the strict build. FA has no prebuild content inventory and
+no validator comparing all inputs before and after that build. Clean Git
+state, copied paths and later retention seals do not establish the exact
+contents at compiler read time or stability across the full build.
+
+The recorded strict build, eight seed comparisons and two existing CTests
+remain prior author results. The complete nine-byte source, original
+stdcall ABI, static instruction/relocation comparison and real TlsAlloc
+import proof stand; this is an interpretation correction, not a source fix.
+No build, test, linker, native helper, adapter, fault harness or game was
+run for this correction, and Ghidra and build artifacts remain unchanged.
+
+There is narrower positive evidence for the forced static link. The
+retained method copies/hashes its object/archive and selected tools and
+kernel32.lib before the recorded linker invocation; later sealing matches
+those values. This is method-ordered equality from before the static link
+to later sealing, not prebuild stability or proof against transient
+restoration. The eventual combined candidate requires its own fresh,
+guarded build at the exact final HEAD before claiming full-build input
+content binding. This correction does not perform or satisfy that step.
+
+The original sealed 388-file FA payload is preserved unchanged. The current
+external documentation and report paths legitimately change through this
+two-file correction; their historical copies and pins remain retained.
+No assertion that all original external paths remain unchanged is made.
+Full before/after files, actual diff, FD report and separate correction
+seals are in `local/native_crt_tls_callback_adapter_fa_correction`.

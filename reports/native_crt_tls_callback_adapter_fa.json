@@ -385,5 +385,25 @@
     "No original-address installation, original IAT mapping, __mtinit adoption, callback teardown or CRT termination closure.",
     "No decoder bridge/context; DD reserved page state unchanged.",
     "Ghidra function definition and annotation deferred to primary; worker leaves all live saved analysis unchanged."
-  ]
+  ],
+  "provenance_correction": {
+    "kind": "append_only_interpretation_correction_no_source_fix",
+    "review": "FD independent REVIEW.md",
+    "qualifies": [
+      "original documentation lines 73-75: consumed headers / exact tools and import library used",
+      "static_evidence.consumed_read_inputs",
+      "validation.compiler_tracker_validation"
+    ],
+    "original_properties_preserved": true,
+    "logs_establish": "Recorded names, options and output attribution for the owned TU; 96 is its CL.read header-path count, not full-build dependency coverage or compiler-time content equality.",
+    "capture_timing": "Source, all 96 header copies and selected compiler/tool copies were captured AFTER the strict build.",
+    "missing_guard": "No prebuild content inventory or pre/post full-build content guard/validator is present in FA. Clean Git and after-build seals do not establish exact contents at compiler read time or full-build content stability.",
+    "retained_prior_results": "Recorded strict build, eight seed comparisons and two existing CTests remain prior author outcomes; this correction runs none of them.",
+    "retained_static_result": "Complete nine-byte source, original stdcall ABI, static bytes/relocation and real KERNEL32.dll!TlsAlloc import proof stand; no source correction.",
+    "narrower_link_evidence": "By static_evidence_02.py method order, object/archive and selected tool/kernel32.lib copies and hashes precede commands/forced_static_link_02.json; later sealing matches those hashes. This is before-static-link to later-sealing equality, not prebuild content stability or proof against transient restoration.",
+    "remaining_requirement": "The root eventual combined candidate needs a fresh guarded exact-HEAD build for full-build input-content binding. This correction does not perform that verification.",
+    "mutation_scope": "Only append this documentation section and this report property. No source/header/startup/shard change, no original sealed-payload/build-artifact/Ghidra change, and no build/test/link/native/helper/game execution.",
+    "historical_external_paths": "The original sealed 388-file local FA payload remains unchanged. Exactly the original declared external documentation and report paths legitimately change; historical copies and pins remain retained. Other declared stable external paths are separately checked.",
+    "correction_packet": "local/native_crt_tls_callback_adapter_fa_correction"
+  }
 }
