@@ -17,6 +17,9 @@
 #include "bsp/plane_angular_velocity.hpp"
 #include "bsp/plane_control_rate.hpp"
 #include "bsp/pilot_plan_slots.hpp"
+#include "bsp/plane_attitude_angles.hpp"
+#include "bsp/plane_ai_control.hpp"
+#include "bsp/unit_rudder.hpp"
 
 #include "bsp/game_hosts.hpp"
 #include "bsp/game_observer_runtime.hpp"
@@ -278,6 +281,28 @@ struct GameUnitSlot {
     float plane_live_controls[3]{0.0f, 0.0f, 0.0f};
     // unit+9F0h and +9F4h. 007CFEB0 sets the throttle to 1.0f at construction
     // and 007CFEA4 zeroes the air brake.
+    // unit+C64h pitch, +C68h bank, +C6Ch heading, all from 007C1900 over the
+    // live pose. Slot state rather than locals because the native leaves the
+    // heading and bank untouched when the forward axis is near vertical.
+    float plane_pitch_angle_c64{0.0f};
+    float plane_bank_angle_c68{0.0f};
+    float plane_heading_c6c{0.0f};
+    float plane_class_turn_roll_spd{0.0f};   // desc+1C8h TurnRollSpd
+    float plane_class_turn_roll{0.0f};       // desc+25Ch TurnRoll
+    // The plan's non-slot fields, reset by 0099B450 on every think.
+    bsp::PilotPlanState plan_state;
+    // The range to the commanded target the first time the yaw arm planned for
+    // this unit, and the last. Two numbers, so the run can say whether an
+    // ordered aircraft actually closed on what it was ordered at.
+    float attack_range_first{-1.0f};
+    float attack_range_last{-1.0f};
+    // The absolute heading error at the first plan and the last. This is the
+    // measurement that says whether the yaw law steers: the range can grow for
+    // reasons the yaw arm does not control, but the heading error is exactly
+    // what it is trying to shrink.
+    float attack_hdg_err_first{-1.0f};
+    float attack_hdg_err_last{-1.0f};
+    float attack_pitch_last{0.0f};
     float plane_live_throttle{1.0f};
     float plane_live_air_brake{0.0f};
     float plane_latched_controls[3]{0.0f, 0.0f, 0.0f};
@@ -1511,6 +1536,8 @@ void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entit
             slot->plane_class.pitch_accel = lua_row.pitch_accel;
             slot->plane_class.yaw_accel = lua_row.yaw_accel;
             slot->plane_class.negative_pitch_ratio = lua_row.negative_pitch_ratio;
+            slot->plane_class_turn_roll_spd = lua_row.turn_roll_spd;
+            slot->plane_class_turn_roll = lua_row.turn_roll;
             if (lua_row.plane_stall_spd > 0.0f) {
                 // desc+184h. PlaneFreeFlightClass keeps 17.5f as its fallback;
                 // an authored row wins.
@@ -2144,6 +2171,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // 007B9770 at 007CE96F, in that address order with the
                         // motion arm between, so the think and commit run first
                         // and control_step_007da710's latch runs last.
+                        refresh_attitude_007c1900();
                         pilot_think_and_commit(step);
                         // The class field the law actually depends on. StallSpd
                         // is the only authored one; everything else is a
@@ -2202,8 +2230,29 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             bsp::accumulate_free_flight_007db680(state, cls, tuning, step);
                         const bsp::PlaneBodyAcceleration body =
                             bsp::fold_world_into_body_007d8470(acc, state.world_to_body);
+                        // 007D8470 returns a BODY-frame acceleration - its own
+                        // name says so, and free_flight_world_up_acceleration in
+                        // the same header rotates the result back "through the
+                        // transpose of ctl+0B0h" to get a world quantity. This
+                        // loop used to add it straight to a world velocity.
+                        //
+                        // That was invisible for the whole history of this
+                        // reconstruction, because nothing ever rotated a plane
+                        // and the two frames agree at the identity. The first
+                        // run in which a bot actually turned showed it at once:
+                        // the planes accelerated to 636 m/s and flew off. A
+                        // frame error that only a working control law can
+                        // expose is worth the note.
+                        //
+                        // world = M^T * body, with M's rows the pose rows.
+                        float world_accel[3] = {0.0f, 0.0f, 0.0f};
+                        for (int c = 0; c < 3; ++c) {
+                            for (int r = 0; r < 3; ++r) {
+                                world_accel[c] += rows[r][c] * body.total[r];
+                            }
+                        }
                         for (int i = 0; i < 3; ++i) {
-                            unit_.plane_world_velocity[i] += body.total[i] * step;
+                            unit_.plane_world_velocity[i] += world_accel[i] * step;
                             unit_.motion.position[i] += unit_.plane_world_velocity[i] * step;
                         }
                         // The 3D step length. The seed no longer lies along
@@ -2283,9 +2332,19 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             live[bsp::kPilotSlotRoll] = unit_.plane_live_controls[2];
                             live[bsp::kPilotSlotThrottle] = unit_.plane_live_throttle;
                             live[bsp::kPilotSlotAirBrake] = unit_.plane_live_air_brake;
-                            bsp::pilot_seed_plan_slots_0099b450(unit_.plan_slots, live);
+                            // The full plan reset, not just the slots: plan+2BCh
+                            // is zeroed every think, which is what keeps the
+                            // pitch floor from ratcheting.
+                            bsp::pilot_reset_plan_0099b450(unit_.plan_state,
+                                unit_.plan_slots, live);
 
-                            // 0099D300 would run here.
+                            // 0099D300's yaw arm. It writes `desired` only when
+                            // the unit has a commanded target; every other slot
+                            // keeps desired == current from the seed, so the
+                            // other four axes stay bit-exact no-ops.
+                            if (plan_yaw_0099d300()) {
+                                ++owner_.summary.pilot_yaw_plans;
+                            }
 
                             // 0099BEE0 -> 0099BC00.
                             bsp::pilot_evaluate_plan_slots_0099bc00(
@@ -2320,6 +2379,166 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         unit_.pilot_command_pending_a14 = false;   // 007BB990
                         ++owner_.summary.pilot_commits;
                         owner_.record("Plane::commit_pilot_command", 0x007bb920u);
+                    }
+
+                    // 007C1900's three attitude angles, from the live pose.
+                    // They feed both the control targets (sin(bank), cos(pitch))
+                    // and the planner's yaw arm (cos(bank), |bank|, heading), so
+                    // they are computed once per step and cached on the slot.
+                    void refresh_attitude_007c1900() {
+                        bsp::AdvanceMatrix pose{};
+                        const float* const rows[3] = {unit_.motion.pose_row0,
+                            unit_.motion.pose_row1, unit_.motion.pose_row2};
+                        for (int r = 0; r < 3; ++r) {
+                            for (int c = 0; c < 3; ++c) {
+                                pose.m[r * 4 + c] = rows[r][c];
+                            }
+                            pose.m[r * 4 + 3] = 0.0f;
+                        }
+                        pose.m[15] = 1.0f;
+                        bsp::NativeAdvanceMatrixOps ops;
+                        const bsp::PlaneAttitudeAngles a =
+                            bsp::plane_attitude_angles_007c1900(pose, ops);
+                        unit_.plane_pitch_angle_c64 = a.pitch;
+                        // The native leaves the previous heading and bank in
+                        // place when the forward axis is too near vertical, and
+                        // so does this - which is why they are slot state rather
+                        // than locals.
+                        if (a.heading_and_bank_written) {
+                            unit_.plane_heading_c6c = a.heading;
+                            unit_.plane_bank_angle_c68 = a.bank;
+                        }
+                    }
+
+                    // 009AC190's bearing into plan+2C0h, then 0099D300's yaw arm
+                    // into the yaw slot's `desired`.
+                    //
+                    // The bearing is to the commanded target's position. The
+                    // native latches that position once at task construction and
+                    // never re-reads the entity; this host re-reads it each
+                    // think, which is a DIVERGENCE and is flagged rather than
+                    // hidden - against a stationary or slow target the two agree,
+                    // and against a manoeuvring one the native's bot would aim at
+                    // where the target was when the order was given.
+                    //
+                    // Everything downstream of the slot is the recovered
+                    // reconstruction in plane_ai_control.hpp: the base numerator
+                    // 0099DE8A, the bank fade 0099DFFB, and the arm 0099E81A.
+                    // The turn numerator stays 0 - its producers at
+                    // 0099E6D2/E6E8/E729 are in the pitch arm, which is unread -
+                    // so the turn term is off and the plane holds heading with
+                    // what the law calls its rudder.
+                    bool plan_yaw_0099d300() {
+                        if (unit_.command_target_plus_one == 0) return false;
+                        const std::size_t target_index =
+                            unit_.command_target_plus_one - 1;
+                        if (target_index >= owner_.slots.size()) return false;
+
+                        const float* const target_pos =
+                            owner_.slots[target_index]->motion.position;
+                        const float desired_heading =
+                            bsp::plane_bearing_to_target_009ac190(
+                                unit_.motion.position, target_pos);
+                        {
+                            const double dx = target_pos[0] - unit_.motion.position[0];
+                            const double dy = target_pos[1] - unit_.motion.position[1];
+                            const double dz = target_pos[2] - unit_.motion.position[2];
+                            const float range =
+                                static_cast<float>(std::sqrt(dx * dx + dy * dy + dz * dz));
+                            if (unit_.attack_range_first < 0.0f) {
+                                unit_.attack_range_first = range;
+                            }
+                            unit_.attack_range_last = range;
+                        }
+
+                        bsp::PilotBotHeadingTerm term;
+                        term.heading_error = bsp::wrapped_angle_subtract_00438b10(
+                            desired_heading, unit_.plane_heading_c6c);
+                        // 1 / max(unit+340h * 0.4, 1.0). The time scale is 0 in
+                        // this host, so the divisor is 1.
+                        term.speed_scale = 1.0f;
+                        bsp::PilotBotTuning tuning;
+                        if (owner_.lua.plane_globals_loaded()) {
+                            const bsp::GameTuningBlock& g = owner_.lua.plane_globals();
+                            term.deadband = g.pilot_general_soft_hdg_zone;
+                            term.rate_scale = g.pilot_general_soft_hdg_limit;
+                            term.keep = g.pilot_general_soft_hdg_mul;
+                            tuning.blend_x0 = g.pilot_general_yaw_turn_roll_range_1;
+                            tuning.blend_x1 = g.pilot_general_yaw_turn_roll_range_2;
+                            tuning.rate = g.pilot_general_yaw_ctrl_set_time_mul;
+                        }
+                        term.rate_a = unit_.plane_class_turn_roll_spd;  // class+1C8h
+                        term.rate_b = unit_.plane_class.pitch_spd;  // class+1ACh
+
+                        {
+                            const float e = std::fabs(term.heading_error);
+                            if (unit_.attack_hdg_err_first < 0.0f) {
+                                unit_.attack_hdg_err_first = e;
+                            }
+                            unit_.attack_hdg_err_last = e;
+                            unit_.attack_pitch_last = unit_.plane_pitch_angle_c64;
+                        }
+
+                        bsp::PilotBotFrame frame;
+                        frame.pitch = unit_.plane_pitch_angle_c64;
+                        frame.sin_bank = std::sin(unit_.plane_bank_angle_c68);
+                        frame.cos_bank = std::cos(unit_.plane_bank_angle_c68);
+                        frame.cos_pitch = std::cos(unit_.plane_pitch_angle_c64);
+                        frame.abs_bank = std::fabs(unit_.plane_bank_angle_c68);
+
+                        bsp::PilotBotYawScratch scratch;
+                        scratch.base_num = bsp::yaw_base_numerator_0099de8a(term);
+                        scratch.base_gain =
+                            bsp::yaw_base_gain_0099dffb(tuning, frame.abs_bank);
+                        scratch.turn_num = 0.0f;
+
+                        const float desired = bsp::plan_yaw_0099e81a(
+                            frame, tuning, scratch, unit_.plane_class.yaw_spd);
+                        unit_.plan_slots[bsp::kPilotSlotYaw].desired = desired;
+                        unit_.plan_slots[bsp::kPilotSlotYaw].active = 1;  // 0099EA46
+
+                        // 0099E490-0099E739, the pitch arm. Without it a planned
+                        // bot follows whatever plan+2BCh was last set to, which
+                        // is downward: a measured run with only the yaw arm
+                        // wired turned correctly toward its target and reached
+                        // a 63-degree dive doing it. The floor inside
+                        // pilot_pitch_demand_0099e490 is the whole of what stops
+                        // that, and it is an ATTITUDE floor - nothing in this
+                        // chain reads an altitude.
+                        bsp::PilotBotPitchInputs pin;
+                        pin.bank = unit_.plane_bank_angle_c68;
+                        pin.pitch = unit_.plane_pitch_angle_c64;
+                        // Mode 2 holds unit+C84h; this host does not model that
+                        // arm, so the measured angle is the live pitch, which is
+                        // what the native's own `else` branch at 0099DD54 uses.
+                        pin.held_pitch = unit_.plane_pitch_angle_c64;
+                        pin.pitch_target = unit_.plan_state.pitch_target_2bc;
+                        pin.heading_error = term.heading_error;
+                        pin.control_authority = control_authority(
+                            unit_.plane_world_velocity[0] * unit_.motion.pose_row2[0] +
+                            unit_.plane_world_velocity[1] * unit_.motion.pose_row2[1] +
+                            unit_.plane_world_velocity[2] * unit_.motion.pose_row2[2]);
+                        pin.dt_scale = 1.0f;
+                        pin.turn_roll = unit_.plane_class_turn_roll;
+                        pin.pitch_spd = unit_.plane_class.pitch_spd;
+                        pin.yaw_spd = unit_.plane_class.yaw_spd;
+                        pin.slide_ratio = unit_.plane_class.slide_ratio;
+                        pin.negative_pitch_ratio = unit_.plane_class.negative_pitch_ratio;
+                        if (owner_.lua.plane_globals_loaded()) {
+                            const bsp::GameTuningBlock& g = owner_.lua.plane_globals();
+                            pin.pitch_turn_max_pitch = g.pilot_general_pitch_turn_max_pitch;
+                            pin.pitch_turn_hdg_range_1 = g.pilot_general_pitch_turn_hdg_range_1;
+                            pin.pitch_turn_hdg_range_2 = g.pilot_general_pitch_turn_hdg_range_2;
+                            pin.pitch_ctrl_set_time_mul = g.pilot_general_pitch_ctrl_set_time_mul;
+                        }
+                        const bsp::PilotBotPitchResult pitch =
+                            bsp::pilot_pitch_demand_0099e490(pin);
+                        unit_.plan_state.pitch_target_2bc = pitch.floored_target;
+                        unit_.plan_slots[bsp::kPilotSlotPitch].desired =
+                            bsp::plan_pitch_0099e68d(pitch.demand);
+                        unit_.plan_slots[bsp::kPilotSlotPitch].active = 1;  // 0099E741
+                        owner_.record("PilotBot::plan_controls", 0x0099d300u);
+                        return true;
                     }
 
                     void advance_pose_0085e4d0(float step) {
@@ -3465,14 +3684,56 @@ void GameUnitsHost::report() {
         host.summary.plane_arm_none);
     host.log.notef("summary mission plane motion: distance_moved=%.2f m "
         "pose_right_reference=%llu pose_collapsed=%llu "
-        "pose_rotations=%llu heading_change=%.3f rad thinks=%llu commits=%llu",
+        "pose_rotations=%llu heading_change=%.3f rad thinks=%llu commits=%llu yaw_plans=%llu",
         host.summary.plane_distance_moved,
         host.summary.plane_pose_right_reference,
         host.summary.plane_pose_collapsed,
         host.summary.plane_pose_rotations,
         host.summary.plane_heading_change,
         host.summary.pilot_thinks,
-        host.summary.pilot_commits);
+        host.summary.pilot_commits,
+        host.summary.pilot_yaw_plans);
+    {
+        // What an ordered aircraft actually did about the order. The range is
+        // measured at the first think that planned for it and at the last, so a
+        // plane that flew straight past shows a small closure and one that
+        // turned in shows a large one.
+        std::size_t ordered = 0;
+        double first_total = 0.0;
+        double last_total = 0.0;
+        double worst_closure = 0.0;
+        for (const auto& slot : host.slots) {
+            if (slot->attack_range_first < 0.0f) continue;
+            ++ordered;
+            first_total += slot->attack_range_first;
+            last_total += slot->attack_range_last;
+            const double closed = static_cast<double>(slot->attack_range_first) -
+                                  static_cast<double>(slot->attack_range_last);
+            if (ordered == 1 || closed < worst_closure) worst_closure = closed;
+        }
+        if (ordered > 0) {
+            double err_first = 0.0;
+            double err_last = 0.0;
+            double pitch_last = 0.0;
+            for (const auto& slot : host.slots) {
+                if (slot->attack_range_first < 0.0f) continue;
+                err_first += slot->attack_hdg_err_first;
+                err_last += slot->attack_hdg_err_last;
+                pitch_last += slot->attack_pitch_last;
+            }
+            const double n = static_cast<double>(ordered);
+            host.log.notef("summary mission pilot attack: ordered=%zu "
+                "range_first_mean=%.1f m range_last_mean=%.1f m closed_mean=%.1f m "
+                "worst_closed=%.1f m | heading_error_first_mean=%.3f rad "
+                "heading_error_last_mean=%.3f rad final_pitch_mean=%.3f rad",
+                ordered, first_total / n, last_total / n,
+                (first_total - last_total) / n, worst_closure,
+                err_first / n, err_last / n, pitch_last / n);
+        } else {
+            host.log.notef("summary mission pilot attack: no unit was ever ordered "
+                "at a target the yaw arm could plan for");
+        }
+    }
     host.commands.report();
 }
 

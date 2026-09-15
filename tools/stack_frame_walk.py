@@ -76,6 +76,12 @@ def main():
     parser.add_argument('address')
     parser.add_argument('--limit', type=int, default=700)
     parser.add_argument('--filter', default='', help='only print lines containing this')
+    parser.add_argument('--indirect-pops', type=int, default=None,
+                        help='assume every indirect CALL pops this many bytes instead of '
+                             'marking the rest of the walk unknown. There is no safe '
+                             'default: use the pushed-since-last-call figure the walker '
+                             'reports at each indirect call, and only when you have '
+                             'established the callee convention.')
     args = parser.parse_args()
 
     text = run(['ghidra', 'disasm', args.address, '--limit', str(args.limit)])
@@ -108,6 +114,11 @@ def main():
     depth = 0
     unknown = False
     cache = {}
+    # Bytes pushed since the last CALL of any kind. At an indirect call this is
+    # the argument block a __stdcall or __thiscall callee would pop, which is the
+    # number the analyst needs in order to correct the walk.
+    pushed_since_call = 0
+    indirect_pops = args.indirect_pops
     for address, text_ in lines:
         note = ''
         upper = text_.upper()
@@ -122,10 +133,12 @@ def main():
 
         if upper.startswith('PUSH'):
             depth += 4
+            pushed_since_call += 4
         elif upper.startswith('POP'):
             depth -= 4
         elif upper.startswith('SUB ESP,'):
             depth += imm(text_.split(',')[1].strip())
+            pushed_since_call += imm(text_.split(',')[1].strip())
         elif upper.startswith('ADD ESP,'):
             depth -= imm(text_.split(',')[1].strip())
         else:
@@ -139,9 +152,26 @@ def main():
                     depth -= cleanup
                     if cleanup:
                         note += '  [callee pops %d]' % cleanup
+                pushed_since_call = 0
             elif 'CALL' in upper:
-                unknown = True
-                note += '  [INDIRECT CALL - cleanup unknown, frame unknown after this]'
+                # An indirect call's callee cannot be resolved, so its cleanup is
+                # unknowable and everything after it is marked frame=?. That is
+                # safe but unhelpful, and two packets have had to correct the
+                # walk by hand here - so report the pushes standing since the
+                # last call, which is what the cleanup will be if the callee is
+                # __stdcall or __thiscall. The analyst supplies the answer with
+                # --indirect-pops; the walker never guesses it.
+                if indirect_pops is None:
+                    unknown = True
+                    note += ('  [INDIRECT CALL - %d bytes pushed since the last call; '
+                             'cleanup unknown, frame unknown after this. Re-run with '
+                             '--indirect-pops N to assume a cleanup]' % pushed_since_call)
+                else:
+                    depth -= indirect_pops
+                    note += ('  [INDIRECT CALL - assuming it pops %d (--indirect-pops); '
+                             '%d bytes had been pushed since the last call]'
+                             % (indirect_pops, pushed_since_call))
+                pushed_since_call = 0
 
         if args.filter and args.filter.upper() not in upper:
             continue

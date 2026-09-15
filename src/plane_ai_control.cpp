@@ -1,5 +1,9 @@
 #include "bsp/plane_ai_control.hpp"
 
+#include <cmath>
+
+#include "bsp/unit_rudder.hpp"
+
 #include <cstring>
 
 // Reconstruction of the plane AI's control-writing step. docs/PLANE_AI_CONTROL.md carries the
@@ -306,6 +310,68 @@ float bomb_load_fraction_006e4130(const BombLoadFraction& in) {
     const int numerator = in.single ? in.remaining + in.pending : in.remaining;  // 006E414E
     // 006E415C / 006E3720 FIDIV: an integer divide of an integer-converted numerator.
     return static_cast<float>(numerator) / static_cast<float>(in.capacity);
+}
+
+
+
+PilotBotPitchResult pilot_pitch_demand_0099e490(const PilotBotPitchInputs& in) {
+    PilotBotPitchResult out;
+
+    // 0099E496-0099E4CC. The bank fraction and the heading ramp, multiplied.
+    // hdgRamp is path-dependent in the native - it holds this interpolation only
+    // on the pass that re-planned the bank target, and 0.0f otherwise - so a
+    // caller that never re-plans the bank gets the lowest floor. That coupling
+    // between the two arms is deliberate in the original and is preserved by
+    // making the ramp an explicit input rather than recomputing it here from
+    // whatever is to hand.
+    float bank_fraction = 0.0f;
+    if (in.turn_roll != 0.0f) {
+        bank_fraction = std::fabs(in.bank) / in.turn_roll;
+    }
+    if (bank_fraction > 1.0f) {
+        bank_fraction = 1.0f;                                  // 0099E4AA
+    }
+    const float hdg_ramp = interpolate_clamped(
+        in.pitch_turn_hdg_range_1, 0.0f, in.pitch_turn_hdg_range_2, 1.0f,
+        std::fabs(in.heading_error));                          // 0099E07E
+    const float q = bank_fraction * hdg_ramp;                  // 0099E4CC
+
+    // 0099E4DC-0099E512. The floor: PitchTurnMaxPitch when the turn is hard,
+    // 2.5 radians below it when the plane is level and on heading. It is applied
+    // unconditionally on every pass of the law, and it can only RAISE the
+    // target - which is the whole of what stops a bot flying into the sea.
+    const float floor_target = in.pitch_turn_max_pitch -
+        static_cast<float>(2.5 * (1.0 - static_cast<double>(q)));
+    out.floored_target = (floor_target > in.pitch_target) ? floor_target : in.pitch_target;
+
+    // 0099E51A-0099E554. The measured angle has a sideslip correction taken off
+    // it - note the sin(bank) is SQUARED, and note it is subtracted from the
+    // measurement rather than from the target.
+    const float sin_bank = std::sin(in.bank);
+    const float cos_bank = std::cos(in.bank);
+    const float correction = sin_bank * sin_bank * std::cos(in.pitch) *
+        in.slide_ratio * in.yaw_spd * in.pitch_ctrl_set_time_mul;
+    const float measured = in.held_pitch - correction;
+    const float error = wrapped_angle_subtract_00438b10(out.floored_target, measured);
+
+    // 0099E5D7-0099E689. The demand is the required pitch rate divided by the
+    // rate one unit of elevator buys, so it collapses toward knife-edge where
+    // cos(bank) goes to zero - which is what the 0.001f guard and its
+    // hundred-fold fallback exist for.
+    const float authority = in.control_authority * 0.9f + 0.1f;   // 0099E5FC
+    const bool inverted = cos_bank < 0.0f;                        // 0099E5EB
+    const float k = inverted ? in.negative_pitch_ratio : 1.0f;    // 0099E61C
+    const float n = (in.dt_scale != 0.0f) ? error / in.dt_scale : error;
+    const float x = in.pitch_spd * authority * cos_bank;          // 0099E63A
+    const float d = x * k * in.pitch_ctrl_set_time_mul;           // 0099E644
+    if (std::fabs(d) > 0.001f) {
+        out.demand = n / d;
+    } else {
+        const float sign = (cos_bank > 0.0f) ? 1.0f : ((cos_bank < 0.0f) ? -1.0f : 0.0f);
+        out.demand = static_cast<float>(static_cast<double>(n) * 100.0 *
+                                        static_cast<double>(sign));
+    }
+    return out;
 }
 
 }  // namespace bsp
