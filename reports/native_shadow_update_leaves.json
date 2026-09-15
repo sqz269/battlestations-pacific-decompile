@@ -1,0 +1,292 @@
+{
+  "packet": "orch3_shadow_update_leaves_ei",
+  "status": "complete_source_pending_primary_review_and_joint_build",
+  "base_commit": "96907b532a143c218af01812a78a0332659b877f",
+  "coverage": {
+    "native_bodies": 3,
+    "native_bytes": 41,
+    "new_reviewed_name_candidates": 2,
+    "preserved_name": "BSP_Render_GetOverrideContextWord"
+  },
+  "routines": [
+    {
+      "entry": "00b7aae0",
+      "end": "00b7aae5",
+      "size": 6,
+      "coverage": "complete native current-word behavior through new explicit-cell C++ ABI",
+      "native_abi": "No receiver or public stack inputs. MOV EAX,[0109019C]; RET.",
+      "source": "get_native_override_context_word_00b7aae0(const volatile std::uint32_t&) noexcept",
+      "contract": "Read exactly once from the caller's existing current volatile DirectionalLightTypeDescriptor own_id cell, without initialization, cache, default or new global.",
+      "name_action": "Preserve BSP_Render_GetOverrideContextWord",
+      "identity_limit": "Explicit borrowed-cell source ABI; no original no-argument or six-byte instruction identity claim."
+    },
+    {
+      "entry": "00b400c0",
+      "end": "00b400cc",
+      "size": 13,
+      "coverage": "complete literal naked MSVC Win32 body",
+      "native_abi": "ECX receiver; public DWORD low byte at entryESP+4; RET4; upper EAX bits retained by AL-only load.",
+      "source": "void __fastcall set_native_material_effect_byte_00b400c0(void*, void* unused_edx, std::uint32_t)",
+      "contract": "Unchecked store of the original low byte to actual receiver+13C; no bool normalization.",
+      "name_action": "New descriptive name candidate for primary review"
+    },
+    {
+      "entry": "00b40820",
+      "end": "00b40835",
+      "size": 22,
+      "coverage": "complete literal naked MSVC Win32 body",
+      "native_abi": "ECX receiver; DWORD index at entryESP+4 and binary32 bits at entryESP+8; RET8.",
+      "source": "void __fastcall set_native_material_effect_float_bits_00b40820(void*, void* unused_edx, std::uint32_t index, std::uint32_t value_bits)",
+      "contract": "MOVSS raw bits through XMM0 to unchecked x86 DWORD address receiver+index*4+140; no x87 operation or float argument conversion.",
+      "name_action": "New descriptive name candidate for primary review"
+    }
+  ],
+  "storage": {
+    "getter": "LightTypeBootstrapStorage::directional_0109019c.own_id; GameNativeTypeStorage::light_types() exposes the same stable volatile descriptor.",
+    "setter": "Caller-owned valid writable actual effect storage. No typed MaterialEntryEffect substitute, ownership transfer, allocation, retain, callback or validation.",
+    "source_abi": "Unused source EDX parameter keeps the original setter public words on the stack. Getter adds explicit context independently."
+  },
+  "host_steps": [
+    {
+      "address": "00a8f81a",
+      "native": "00b7aae0",
+      "function": "00a8f3b0",
+      "contract": "Current global word read between captured light profile and reloaded receiver"
+    },
+    {
+      "address": "00ad7ac8",
+      "native": "00b40820",
+      "function": "00ad7a30",
+      "contract": "Raw binary32 index0, caller FLD/FSTP"
+    },
+    {
+      "address": "00ad7ae1",
+      "native": "00b40820",
+      "function": "00ad7a30",
+      "contract": "Raw binary32 index6, fresh current global read"
+    },
+    {
+      "address": "00ad7b09",
+      "native": "00b40820",
+      "function": "00ad7a30",
+      "contract": "Raw binary32 index2, caller half multiply and exact spill/reload"
+    },
+    {
+      "address": "00ad7b16",
+      "native": "00b400c0",
+      "function": "00ad7a30",
+      "contract": "Low byte1 to receiver+13C"
+    }
+  ],
+  "caller_limit": "Only AD7A30 directly calls the setters; A8F3B0 is upstream. AD7A30's third spill overwrites first camera argument backing S+4 while EDI preserves the camera; second incoming slot S+8 is unused. No parent implementation is included.",
+  "generated_expectations": {
+    "byte_setter": "Complete13-byte section equal native PE/live, zero relocations, AL-only load and RET4",
+    "indexed_setter": "Complete22-byte section equal native PE/live, zero relocations, MOVSS raw copy and RET8",
+    "getter": "One current volatile DWORD read through explicit borrowed address; original6-byte identity not expected"
+  },
+  "joint_build": {
+    "status": "pending_primary_source_approval",
+    "eh_base_source": "96907b532a143c218af01812a78a0332659b877f",
+    "required_objects": [
+      "build/win32/bsp_core.dir/Release/native_shadow_update_leaves.obj",
+      "build/win32/bsp_core.dir/Release/native_shadow_job_lifetime.obj",
+      "build/win32/bsp_core.dir/Release/native_singleton_destruction.obj"
+    ],
+    "required_evidence": "One exact clean source commit, verify-seeds, one build.ps1, all tracked input hashes plus actual ignored seed before/after, four libraries, merged stdout/stderr log, actual existing CTest count, bool same_commit_after and separate head_after",
+    "frozen_eh_source_pins": [
+      {
+        "path": "include/bsp/native_shadow_job_lifetime.hpp",
+        "sha256": "ce7c1d07105aaeb0acccc5eddbe019f9da398dfd9a9fb545b43c352692b682a3",
+        "same_as_retained_eh": true
+      },
+      {
+        "path": "src/native_shadow_job_lifetime.cpp",
+        "sha256": "43fe79a30d999e53a03ada17f828391a01a16e2dd8c572460aed00f00c90486e",
+        "same_as_retained_eh": true
+      },
+      {
+        "path": "include/bsp/native_singleton_destruction.hpp",
+        "sha256": "31490c096a63c178ed68eaeb0b3525eaaa6b468ae32ff81aeeb9665c5c9a81c5",
+        "same_as_retained_eh": true
+      },
+      {
+        "path": "src/native_singleton_destruction.cpp",
+        "sha256": "77008dbc9c277520f9cd9dcaac8395a25cf1d8ca764021e3a2d966af1d6de409",
+        "same_as_retained_eh": true
+      }
+    ]
+  },
+  "partial_limits": [
+    "Source implemented but build/generated/runtime proof pending at this draft revision.",
+    "Getter is an explicit borrowed-cell C++ ABI; setter literal identity is an expectation until actual COFF inspection.",
+    "No AD7A30 parent, missing AD7360/AD7440/AD72A0 children, generic lifetime framework or typed actual-object surrogate.",
+    "No new tests, native/game fixture, visual rendering or unmasked FPU-fault proof.",
+    "No Ghidra or ledger mutation; preserve existing getter name and delegate final annotation/credit to primary."
+  ],
+  "no_ghidra_function": [],
+  "admission_inputs": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-shadow-update-tail-admission-eg\\local\\eg-shadow-update-tail-admission.json",
+      "sha256": "a2a464ab0f29ee27ab306a962f20c621071aca91f0b6e9b3d1db5d368c86afa4"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-shadow-update-tail-admission-eg\\local\\eg-shadow-update-tail-admission.md",
+      "sha256": "832fe07cca0f55b076d6e05b9f45b4bc82103da0e70304c545d381fba95e7ee3"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-shadow-update-tail-admission-eg\\local\\eg-shadow-update-tail-native.json",
+      "sha256": "6ac7d0b0e09eaaac31e98b63dd5fa96035b84847281aaca8b1926b453019547a"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-shadow-update-tail-admission-eg\\local\\eg-capture-shadow-update-tail.py",
+      "sha256": "b8fbbbe7b090ff4744fb6026d528ace2795c34f4a56b2022fd6022d20654750e"
+    }
+  ],
+  "native_pins": {
+    "00b7aae0": {
+      "address": "00b7aae0",
+      "end": "00b7aae5",
+      "length": 6,
+      "pe_hex": "a19c010901c3",
+      "pe_sha256": "1fd7c5b1649c49e88c0890a04663dd3d92480c34f886fe031c3aa1938f2a6b98",
+      "live_sha256": "1fd7c5b1649c49e88c0890a04663dd3d92480c34f886fe031c3aa1938f2a6b98",
+      "instruction_count": 2,
+      "live_equals_original_pe": true
+    },
+    "00b400c0": {
+      "address": "00b400c0",
+      "end": "00b400cc",
+      "length": 13,
+      "pe_hex": "8a44240488813c010000c20400",
+      "pe_sha256": "70946b1c143595bd0b6bbde95c841671836d10acbc07d2c467544b26a485c469",
+      "live_sha256": "70946b1c143595bd0b6bbde95c841671836d10acbc07d2c467544b26a485c469",
+      "instruction_count": 3,
+      "live_equals_original_pe": true
+    },
+    "00b40820": {
+      "address": "00b40820",
+      "end": "00b40835",
+      "length": 22,
+      "pe_hex": "8b442404f30f10442408f30f11848140010000c20800",
+      "pe_sha256": "a00913eac55b683f5cfa2f7f95c5872ef64a04e67f152ff56c19e54b47f8e57f",
+      "live_sha256": "a00913eac55b683f5cfa2f7f95c5872ef64a04e67f152ff56c19e54b47f8e57f",
+      "instruction_count": 4,
+      "live_equals_original_pe": true
+    }
+  },
+  "original_pe": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "imagebase": "00400000"
+  },
+  "source_anchors": [
+    {
+      "path": "include/bsp/native_shadow_update_leaves.hpp",
+      "sha256": "ec12b818c6c057c52a1e4b9ef1819846f6cce0bbf6c3e8a6811bd73ac784628d",
+      "lines": [
+        12,
+        19,
+        27
+      ],
+      "anchor_text": {
+        "12": "std::uint32_t get_native_override_context_word_00b7aae0(",
+        "19": "void __fastcall set_native_material_effect_byte_00b400c0(",
+        "27": "    void* actual_effect, void* unused_edx,"
+      }
+    },
+    {
+      "path": "src/native_shadow_update_leaves.cpp",
+      "sha256": "1dc349dcb6e3826c15061f15247b67a0ba1809d6f751aedeef0944662c463363",
+      "lines": [
+        9,
+        14,
+        24
+      ],
+      "anchor_text": {
+        "9": "std::uint32_t get_native_override_context_word_00b7aae0(",
+        "14": "__declspec(naked) void __fastcall set_native_material_effect_byte_00b400c0(",
+        "24": "    void*, void*, std::uint32_t, std::uint32_t) {"
+      }
+    },
+    {
+      "path": "include/bsp/light_type_bootstrap.hpp",
+      "sha256": "7856c5bbb320d6d5e1dd0df2f4969314cd2d7365134741702e187a901456333f",
+      "lines": [
+        48,
+        66
+      ],
+      "anchor_text": {
+        "48": "struct DirectionalLightTypeDescriptor {",
+        "66": "    volatile DirectionalLightTypeDescriptor& directional_0109019c;"
+      }
+    },
+    {
+      "path": "src/light_type_bootstrap.cpp",
+      "sha256": "6384bd3d557e9c9378e9ea54994d3defcccf2814d9918f371fd461cbeed0e6ef",
+      "lines": [
+        117
+      ],
+      "anchor_text": {
+        "117": "        storage_.directional_0109019c.own_id = consume_type_id();"
+      }
+    },
+    {
+      "path": "include/bsp/game_native_type_storage.hpp",
+      "sha256": "4139b3a246190507205499b8a1f324aca34e10e0c7024bf822d1aea16870998a",
+      "lines": [
+        24,
+        44
+      ],
+      "anchor_text": {
+        "24": "    LightTypeBootstrapStorage& light_types() noexcept { return light_types_; }",
+        "44": "    volatile DirectionalLightTypeDescriptor directional_0109019c_{};"
+      }
+    },
+    {
+      "path": "src/game_native_type_storage.cpp",
+      "sha256": "daa1243b41dec88232fd2d57a12cae61ad98cc16f5d1073680dd674373ffee9f",
+      "lines": [
+        7,
+        26
+      ],
+      "anchor_text": {
+        "7": "GameNativeTypeStorage::GameNativeTypeStorage() noexcept",
+        "26": "        &actual.directional_0109019c != &light_types_.directional_0109019c) {"
+      }
+    },
+    {
+      "path": "include/bsp/material_entry_dispatch.hpp",
+      "sha256": "8bf3e1e3d799c65e2153f4b9f768a4c260f8ba1ce46b3da7076370fd5e3d4769",
+      "lines": [
+        122
+      ],
+      "anchor_text": {
+        "122": "    const std::uint32_t& override_context; // actual global0109019C"
+      }
+    },
+    {
+      "path": "docs/COORDINATION.md",
+      "sha256": "78855253c7aed405a9c72cc8491abe063820c2976590852dc644117807e2bbc3",
+      "lines": [
+        72,
+        73
+      ],
+      "anchor_text": {
+        "72": "Do not lease shared append-only registries: never lease `cmake/startup.cmake` (every worker appends",
+        "73": "one deferred `target_sources` or `add_executable` line and the integration resolver unions the lines),"
+      }
+    },
+    {
+      "path": "cmake/startup.cmake",
+      "sha256": "f41874a927852f62bfe310ed57fd0cbe36f9b58cc2d801b6208a5055f58015a1",
+      "lines": [],
+      "anchor_text": {}
+    }
+  ],
+  "call_verification": {
+    "returncode": 0,
+    "stdout": "J:\\PROG\\battlestations-pacific-decompile-orch3-shadow-update-leaves-ei\\reports\\native_shadow_update_leaves.json: 5 call rows checked, 0 failed\n",
+    "stderr": "",
+    "scope": "Five original direct leaf call sites; no new calls in leaf implementations"
+  }
+}
