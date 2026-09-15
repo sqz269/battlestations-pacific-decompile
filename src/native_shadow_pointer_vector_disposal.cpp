@@ -21,7 +21,7 @@ __declspec(naked) void __fastcall destroy_native_shadow_pointer_vector_00ae1c60(
         call singleton_lifetime_free // AE1C6D -> actual BF6989 source CRT domain
         add esp, 4 // AE1C72
         pop esi // AE1C75
-        _emit 0c3 // AE1C76; preserve exact single-byte RET
+        _emit 0c3h // AE1C76; preserve exact single-byte RET
     }
 }
 } // namespace bsp

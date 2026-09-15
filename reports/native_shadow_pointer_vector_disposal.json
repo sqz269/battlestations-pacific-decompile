@@ -249,7 +249,7 @@
     },
     {
       "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-shadow-node-array-release-es\\src\\native_shadow_pointer_vector_disposal.cpp",
-      "sha256": "cf5aa566a45df6282a5cb2acfe52613b3b69ea324492850b82a3cee2c3117f9b"
+      "sha256": "e8a83bf06a25e7e0b17827256079e882404c3e0ec3e210fdc981e5da2e9b88cd"
     }
   ],
   "source_abi": {
@@ -304,5 +304,17 @@
   "documentation": {
     "path": "docs/NATIVE_SHADOW_POINTER_VECTOR_DISPOSAL.md",
     "sha256": "d3bc9f93115980b77a652283f50dbb103aad03a87396d81a11c0b2aa8fcfa87b"
-  }
+  },
+  "source_corrections": [
+    {
+      "was": "_emit 0c3",
+      "is": "_emit 0c3h",
+      "reason": "MSVC inline assembly requires the hexadecimal suffix; the old spelling fails C2041. Exactly one final RET literal changed in this module.",
+      "evidence": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\es-emit-syntax.json",
+        "sha256": "b890d19e4b77c55350935b31321c345069dc8f4526f02e3939196500d6c63042"
+      },
+      "scope": "Syntax correction only; no build, tests or native behavior validation added."
+    }
+  ]
 }

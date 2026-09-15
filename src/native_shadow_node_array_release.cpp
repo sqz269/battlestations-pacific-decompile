@@ -74,7 +74,7 @@ __declspec(naked) void __fastcall release_native_shadow_entry_nodes_00ae1c20(
         pop edi // AE1C5B
         pop ebx // AE1C5C
         add esp, 4 // Remove source runtime only.
-        _emit 0c3 // AE1C5D; exact no-public-argument RET encoding
+        _emit 0c3h // AE1C5D; exact no-public-argument RET encoding
     }
 }
 } // namespace bsp

@@ -254,7 +254,7 @@
     },
     {
       "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-shadow-node-array-release-es\\src\\native_shadow_node_array_release.cpp",
-      "sha256": "d0deae2135ba378c0d19c81e37a6fab7a9d7f69a61bcebd0a58bec2f5f6210cf"
+      "sha256": "f46d852141f65bcc05375bf07de0bcb41e20a9180d4491e74b91c0b219ee0f60"
     }
   ],
   "source_abi": {
@@ -285,5 +285,17 @@
   "documentation": {
     "path": "docs/NATIVE_SHADOW_NODE_ARRAY_RELEASE.md",
     "sha256": "7290e960a9ecf5b17d9f82d3def0b137495d6ec6ba96252f221a1dacce4822e1"
-  }
+  },
+  "source_corrections": [
+    {
+      "was": "_emit 0c3",
+      "is": "_emit 0c3h",
+      "reason": "MSVC inline assembly requires the hexadecimal suffix; the old spelling fails C2041. Exactly one final RET literal changed in this module.",
+      "evidence": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\es-emit-syntax.json",
+        "sha256": "b890d19e4b77c55350935b31321c345069dc8f4526f02e3939196500d6c63042"
+      },
+      "scope": "Syntax correction only; no build, tests or native behavior validation added."
+    }
+  ]
 }
