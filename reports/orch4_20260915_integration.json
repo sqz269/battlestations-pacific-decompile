@@ -1,0 +1,158 @@
+{
+  "packet": "orch4_20260915_vehicle_class_wave",
+  "worktree": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915",
+  "branch": "agent/orch4-20260915",
+  "base": "92944135b",
+  "source_validation_commit": "2ccb560998fa3bd3c672df06ad5b309a1f8bf5db",
+  "initial_batch_published": "c290f489ecb22d13c1ec3a78d42f224680491df5",
+  "historical_correction_published": "2170661d38f50f37518e83ac7a1ea0d0ec653a17",
+  "reconstructed": [
+    {
+      "address": "00546630",
+      "bytes": 244,
+      "coverage": "complete ordinary body, source ABI and explicit terminal boundary"
+    },
+    {
+      "address": "005471b0",
+      "bytes": 126,
+      "coverage": "complete ordinary body, source ABI and explicit terminal boundary"
+    },
+    {
+      "address": "007f6e50",
+      "bytes": 297,
+      "coverage": "complete ordinary body, exact x87 tail, required device and validation calls"
+    },
+    {
+      "address": "009598d0",
+      "bytes": 112,
+      "coverage": "complete ordinary body over canonical model/array source and required model binder"
+    }
+  ],
+  "analyzed_only": [
+    {
+      "address": "0095f500",
+      "bytes": 2518,
+      "report": "reports/native_vehicle_class_binding_orch4.json"
+    },
+    {
+      "address": "0082fe30",
+      "span_bytes": 6610,
+      "listed_instructions": 1732,
+      "report": "reports/native_ship_class_binding_audit_orch4.json"
+    }
+  ],
+  "source_pins": [
+    {
+      "path": "src/native_vehicle_pointer_array.cpp",
+      "sha256": "618fbfbcf1cac6007ff7707b68b221b090d72bb3210587f978ffb63bf25f1198"
+    },
+    {
+      "path": "include/bsp/native_vehicle_pointer_array.hpp",
+      "sha256": "cc437787cfbb327ded7dfd32f97c31a0a12e429bd8c4ea160d8d64ac5501e945"
+    },
+    {
+      "path": "src/native_vehicle_class_activation.cpp",
+      "sha256": "2ee253a22479097d11660ec79ab8d14bf567029206b826d0939a4b87820e6eeb"
+    },
+    {
+      "path": "include/bsp/native_vehicle_class_activation.hpp",
+      "sha256": "829d5f01a957abc119264570506ec2fc6a1213ccfff1f406cd9c5a0982a5da7a"
+    }
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 Release MSVC Win32 passed",
+    "build_log": "local/activation_combined_build.txt",
+    "ctests": {
+      "passed": 3,
+      "failed": 0,
+      "names": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ]
+    },
+    "native_seed_spans": 8,
+    "report_call_rows": {
+      "native_vehicle_pointer_array_orch4": 3,
+      "native_vehicle_class_binding_orch4": 34,
+      "native_ship_class_binding_audit_orch4": 192,
+      "native_vehicle_class_activation_orch4": 9
+    },
+    "indirect_array_calls": "five indirect rows manually checked against listing; mechanical verifier skips them",
+    "array_fixture": {
+      "paired_scenarios": 1,
+      "snapshots_per_side": 5,
+      "result": "original/source match",
+      "original_routine_bytes": 370,
+      "manifest": "local/vehicle_array_probe_manifest.json"
+    },
+    "platform_fixture": {
+      "paired_scenarios": 1,
+      "result": "original/source arc image, callback repair, x87 status/control match",
+      "original_routine_bytes": 297,
+      "manifest": "local/vehicle_platform_probe_manifest.json",
+      "outer009598d0_runtime_compared": false
+    }
+  },
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "complete_internal_flow_repairs": [
+      "00546630",
+      "0095b860",
+      "00829180",
+      "0082e990"
+    ],
+    "partial_body_tail_repair": {
+      "function": "0095db40",
+      "stored_body_end": "0095db88",
+      "decoded_end_inclusive": "0095dbc6",
+      "status": "free overrides cleared and bytes decoded, stored body extension remains open"
+    },
+    "repair_reports": [
+      "reports/native_vehicle_pointer_array_orch4_flow_repair.json",
+      "reports/vehicle_binding_dependency_flow_repairs_orch4.json"
+    ]
+  },
+  "retired_worker_evidence": [
+    {
+      "path": "local/worker_evidence/battlestations-pacific-decompile-orch4-20260915-ship-binding/output/ghidra-disasm-0082fe30-lines-1800-start-90-123921.txt",
+      "sha256": "b73bef643081a5857ae99831b3d7d609fc3b0410973dc4642e7b951212970832"
+    },
+    {
+      "path": "local/worker_evidence/battlestations-pacific-decompile-orch4-20260915-ship-binding/ship-audit-commit-message.txt",
+      "sha256": "662bc36f65e661154d256c336048fec1ca3d7acb5c8507adf91f724274cc2aef"
+    },
+    {
+      "path": "local/worker_evidence/battlestations-pacific-decompile-orch4-20260915-ship-binding/ship-binding-flow-properties.json",
+      "sha256": "90879c2cef7db7897ed2361e0f6b270cadfec0edae877b48d7a69e0c3cb8e695"
+    },
+    {
+      "path": "local/worker_evidence/battlestations-pacific-decompile-orch4-20260915-ship-binding/write_ship_audit_report.py",
+      "sha256": "847495693723ac19af904e62221bab6095dec5856385ebc74cfc303a5c561a77"
+    },
+    {
+      "path": "local/worker_evidence/battlestations-pacific-decompile-orch4-20260915-vehicle-binding/create_vehicle_binding_report.py",
+      "sha256": "72a5e12df82d6a28133dbfffe802a4e1d4d53b1ce5b0a85923f52969d5bb2a1c"
+    },
+    {
+      "path": "local/worker_evidence/battlestations-pacific-decompile-orch4-20260915-vehicle-binding/output/ghidra-bytes-0095f500-length-2518-124319.txt",
+      "sha256": "27e5b2bdb2382a608a6d49cecde042a6514996e2fd2c71cbe8c11cfaadce7bf7"
+    },
+    {
+      "path": "local/worker_evidence/battlestations-pacific-decompile-orch4-20260915-vehicle-binding/vehicle_binding_commit.txt",
+      "sha256": "2468c47937978382945c5196b3dcee3eee5c833acfcd077c7b5a0ad4936d255e"
+    }
+  ],
+  "boundaries": [
+    "No game installation changes",
+    "No gameplay validation or binary drop-in claim",
+    "Device class443490/443090 and real class binders remain required",
+    "Full vehicle/ship binders analyzed only",
+    "Shared source CRT and fixture callbacks are not independent original dependency oracles",
+    "Native FH3/SEH and unmasked hardware faults unvalidated"
+  ],
+  "preserved_main_untracked": [
+    "reports/native_light_shadow_view_build.txt"
+  ]
+}
