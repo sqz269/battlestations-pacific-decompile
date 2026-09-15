@@ -142,6 +142,29 @@ and current lifetime object are pinned in `local/ea-final-build-stamp.json`.
 The frozen runner records the actual after-HEAD string in `same_commit_after`;
 independent equality, clean status and input-hash checks confirmed the exact
 built revision before metadata edits. The original runner/stamp remain intact.
-Current generated-order review is pending primary inspection of that new object;
-old DU object/build/annotation records remain historical. No runtime fixture or
-new repository test was added.
+Primary accepted the complete EA source delta and current generated scheduling
+at this exact object. The two emitted 53-byte base/final wrapper sections have
+identical bytes and relocations: destruction precedes the low-byte flags load,
+bit test and optional free. The reached dispatcher inlines both wrappers after
+their exact profile/slot checks and preserves the same late load. The current
+setter and destructor retain publication, IAT capture, callback and clear order.
+Sixteen code sections, two EH metadata sections and the concrete host vtable
+were inspected. Switch tables embedded in code sections remain data, and all
+prior DU bytes retain their original credit. This is generated scheduling proof,
+not original code/ABI/private EH-frame identity or runtime lifetime validation.
+
+Ghidra now saves A8E160 as `BSP_DirectionalShadowBase_DeletingDestructor` with
+native __thiscall, one implicit this and one unsigned flags argument. The bounds
+and complete 11-instruction return path are unchanged after the recorded repair;
+previous comments are preserved and exports refreshed. The exporter's inventory
+name metadata is historical; live prototype/comment readback carries the current
+reviewed name. Old DU annotation/build/object records remain explicitly historical.
+
+The exact tested attempt is sealed at `local/ea-validated-attempt.zip`, SHA256
+`b3c1bc38243987e9bac423fbfca66325772aa5c04a80c7de4f486e94685169a4`.
+All 2,678 payload hashes were reread. It retains all tested inputs, four libraries,
+current object, two existing math test executables, build/test configuration and
+logs, native/source/generated reviews and Ghidra evidence. Root Git inputs match;
+2,622 raw tracked files match and nine differ only in CRLF/LF, archived separately.
+The additional ignored seed header matches. No redundant root build was run.
+No shadow lifetime fixture, native ABI/private EH or gameplay validation is claimed.

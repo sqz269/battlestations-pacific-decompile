@@ -1659,7 +1659,7 @@
   },
   "packet": "orch3_shadow_base_terminal_impl_ea",
   "base_commit": "78931f6d4bc58ee9e40ac777b1f1383eaa0075fc",
-  "status": "exact_source_build_passed_generated_review_pending",
+  "status": "exact_source_build_passed_current_generated_scheduling_reviewed_ghidra_saved",
   "incremental_native_body_credit": 30,
   "ea_contract": {
     "wrapper": "Capture owner identity, call existing A8DEC0, only after normal return read low byte of borrowed flags slot; bit0 invokes existing shared CRT free; return original identity. No own EH state/cleanup and no free if destruction throws.",
@@ -1884,10 +1884,11 @@
   },
   "validation": {
     "source_review": {
-      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\ea-primary-source-review.json",
-      "sha256": "6ef61b7f04799e1c6363dc498d955a1f284c8e952c0e97be091ac535598fd6f6",
-      "source_commit": "5611325fa323373f94baa935574f296a21bea794",
-      "findings": []
+      "status": "accepted_complete_source_delta",
+      "tested_commit": "5611325fa323373f94baa935574f296a21bea794",
+      "findings": [],
+      "artifact": "local/ea-primary-source-review.json",
+      "sha256": "6ef61b7f04799e1c6363dc498d955a1f284c8e952c0e97be091ac535598fd6f6"
     },
     "build": {
       "commit": "5611325fa323373f94baa935574f296a21bea794",
@@ -1942,7 +1943,55 @@
         "header_sha256": "26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c"
       }
     },
-    "generated_review": "Current 5611325f object is retained and frozen; primary full generated-order review pending. Prior 42603ccf object evidence remains historical only.",
+    "generated_review": {
+      "status": "accepted_exact_current_object_generated_scheduling",
+      "tested_commit": "5611325fa323373f94baa935574f296a21bea794",
+      "object_sha256": "615150741787e98af4696f69ba8ff37af24088a3c0859ee5b0fd9dffe7edc1ca",
+      "findings": [],
+      "reviewed_code_sections": [
+        6,
+        15,
+        17,
+        27,
+        35,
+        38,
+        39,
+        40,
+        41,
+        42,
+        46,
+        48,
+        49,
+        50,
+        51,
+        52
+      ],
+      "reviewed_metadata_sections": [
+        58,
+        59,
+        74
+      ],
+      "coff_sha256": "d232cbc3e44cdac00e6c78d3f0aa8ec32c4647725cc15d8a2771e87e6b135be2",
+      "listing_sha256": "182bf9f91c8d37b07ff6c70d6464ccf42ebdb96f232a3e35c3cf19da47fab678",
+      "source_review_sha256": "6ef61b7f04799e1c6363dc498d955a1f284c8e952c0e97be091ac535598fd6f6",
+      "checks": [
+        "S38/S39 complete53-byte new base/final wrapper sections are identical with identical relocation targets. Each calls destruction+0B, then reads flags pointer+10 and low byte+1C, tests bit0+21, optionally frees+28, returns saved owner+30. No wrapper cleanup/free on destruction exception.",
+        "S40 fresh table+14 then slot4+1C; exact final profile+32/terminal+3A or base profile+70/terminal+7C. MSVC inlines each wrapper: destruction+4C/+8E precedes low-byte+5D/+9F, with shared free+AB only after bit tests. Other domains and diagnostics retain their providers.",
+        "S51 final binding stays context+14, new optional base binding is+24. Unknown profile and null bindings converge on diagnostics. S48 reads current owner profile+2A, obtains actual table, reads slot0+42 and checks BD30E0+44 before existing provider call+66, which reloads the current profile.",
+        "S50 captures old174+15, equal test+20, publishes incoming+2E before fresh increment IAT read/call+3A/+40, then fresh decrement IAT+49/+4F on captured old, zero dispatch+58. No second decrement or later owner-field clear.",
+        "S41 complete destructor retains D5B574 store, captured504 before decrement-cell capture, clears after callbacks, camera viewport clear before independent field reload/canonical reference release, captured fallback decrement, fresh target-group IAT reads and base-only final cleanup.",
+        "S46 captured-field helper clears after zero callback; S35 canonical camera lookup, runtime type and actual-owner identity guards preserved. S15 conditional saved-owner base cleanup and S42 compiler EH funclet remain base-only; S52 is a direct base tail.",
+        "Compiler removes source disarm before known-noexcept final BD30F0 as in prior DU. Current two44-byte FuncInfo/unwind sections and42-byte handler/funclet sections were checked separately; no raw native private EH-frame identity.",
+        "Embedded switch tables in S40+13C..14B and S51+90..9F are data/relocations, not executable ADD instructions suggested by linear disassembly. RTTI/host vtable metadata and shared labels receive no native body credit."
+      ],
+      "build_stamp_sha256": "f45e3b791b803d742f4dbd9f37a754eb3651c35de90f4ec860d74e219b82cf34",
+      "stamp_schema_qualification": "same_commit_after is the frozen actual HEAD string, not a bool; explicitly equals commit5611325f. Worker/root independently verify exact source, clean state and unchanged inputs; stamp was not rewritten.",
+      "abi_compatible": false,
+      "fixture_tested": false,
+      "game_validated": false,
+      "whole_native_code_identity": false,
+      "artifact_sha256": "9dce079d75265bf6cb530b9d7e8804810478fd1c2bbd4cd082e4c55a26224690"
+    },
     "fixture_tested": false,
     "game_validated": false,
     "call_rows": {
@@ -1950,6 +1999,36 @@
       "checked": 35,
       "failed": 0,
       "qualification": "Numeric direct/tail rows checked; current IAT/slot resolutions remain separately profile-qualified and are not validated runtime targets."
+    },
+    "sealed_attempt": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\ea-validated-attempt.zip",
+      "sha256": "b3c1bc38243987e9bac423fbfca66325772aa5c04a80c7de4f486e94685169a4",
+      "bytes": 19677130,
+      "payload_count": 2678,
+      "all_payload_hashes_reread": true,
+      "tested_commit": "5611325fa323373f94baa935574f296a21bea794",
+      "tracked_inputs": 2631,
+      "verified_seed_headers": 1,
+      "root_raw_identical_inputs": 2622,
+      "root_newline_only_variants": 9,
+      "seed": {
+        "tested_sha256": "26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c",
+        "root_sha256": "26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c",
+        "ignored": true
+      },
+      "stamp_qualification": "Frozen same_commit_after is actual HEAD string and explicitly equals commit; independently verified. Raw stamp not rewritten.",
+      "export_metadata_qualification": "Exporter name metadata retains its previous inventory name; fresh code and separate live prototype/comment readback record the current reviewed Ghidra name.",
+      "qualification": "One clean worker Win32 build and both existing math CTests; current object scheduling review. Native ABI, lifetime runtime and game validation remain open."
+    },
+    "root_inputs": {
+      "artifact": "local/ea-build-input-variants.json",
+      "sha256": "569daa3e46b870cd4df9cad13ae3d7955d32f82b5955e7f7483603202ce7598a",
+      "tracked_inputs": 2631,
+      "raw_identical": 2622,
+      "newline_only": 9,
+      "ignored_seed_identical": true,
+      "root_rebuild": false,
+      "qualification": "Exact worker Git build inputs retained; actual tested worker bytes and separate root checkout variants archived."
     }
   },
   "coordination": {
@@ -1996,5 +2075,21 @@
       "sha256": "6ef61b7f04799e1c6363dc498d955a1f284c8e952c0e97be091ac535598fd6f6",
       "kind": "primary current source review"
     }
-  ]
+  ],
+  "current_ea_annotation": {
+    "address": "00a8e160",
+    "name": "BSP_DirectionalShadowBase_DeletingDestructor",
+    "prototype": "void* __thiscall BSP_DirectionalShadowBase_DeletingDestructor(void* this, uint flags)",
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "saved": true,
+    "comments_preserved": true,
+    "body": "00a8e160..00a8e17d",
+    "instructions": 11,
+    "export_refreshed": true,
+    "before_sha256": "1dd183320517acc886a04bb3cb7a4ed97d6bb9d8df28102993cbedad057d9b1f",
+    "after_sha256": "601893e5d2407cda5810c592c4c47aa12feda5a9bb36cd43eeddcbf6d1ec01d9",
+    "prototype_log_sha256": "9317da2c32827fa5b0d29e55b07ce5c621453fc9b9f99871956ca151ddffd8cd",
+    "export_metadata_qualification": "Exporter name metadata retains its previous inventory name; fresh code and separate live prototype/comment readback record the current reviewed Ghidra name."
+  }
 }
