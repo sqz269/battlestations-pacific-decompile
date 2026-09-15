@@ -374,4 +374,137 @@ PilotBotPitchResult pilot_pitch_demand_0099e490(const PilotBotPitchInputs& in) {
     return out;
 }
 
+
+
+float pilot_heading_diff_0099d0a0(const PilotHeadingDiffInputs& in) {
+    // 0099D0A6: no unit, no answer. 00CE3800 = 0.5f.
+    if (in.unit_is_null) {
+        return 0.5f;
+    }
+    const float w = in.bank_request;
+    const float magnitude = std::fabs(w);           // 0099D0C2-0099D0DF, the -0.0f idiom
+    // 0099D0E9: below 0.1 the roll-out sweep is not worth computing and the
+    // function answers with the request negated. 00D7A3A0 is the float 0.1
+    // widened to a double.
+    if (0.1 > static_cast<double>(magnitude)) {
+        return -w;                                  // 0099D0F5-0099D0FF, FCHS
+    }
+
+    // 0099D181: the magnitude is clamped IN PLACE into [HdgDiffCalcMinRoll, 1.5].
+    float clamped = magnitude;
+    if (clamped < in.hdg_diff_calc_min_roll) clamped = in.hdg_diff_calc_min_roll;
+    if (clamped > 1.5f) clamped = 1.5f;             // 00CE380C
+
+    // 0099D14D-0099D165: the pitch command, floored.
+    float pitch_command = in.pitch_command;
+    if (in.hdg_diff_calc_min_pitch > pitch_command) {
+        pitch_command = in.hdg_diff_calc_min_pitch;
+    }
+
+    // 0099D1B4, and the cap at 0099D1C2-0099D1EA for the two entity kinds.
+    float rate = interpolate_clamped(0.0f, in.hdg_diff_calc_limit_1,
+                                     in.turn_roll, in.hdg_diff_calc_limit_2, clamped);
+    if (in.caps_rate_at_one && rate >= 1.0f) {
+        rate = 1.0f;
+    }
+
+    // 0099D1F6-0099D210: the roll-out time. Bank over roll rate, plus a
+    // 1/RollAccel allowance for starting the roll.
+    const float roll_out_time =
+        (in.roll_spd != 0.0f && rate != 0.0f ? clamped / in.roll_spd / rate : 0.0f) +
+        (in.roll_accel != 0.0f ? 1.0f / in.roll_accel : 0.0f);
+
+    // 0099D25B-0099D2AB: the turn rate the airframe holds at that bank, summed
+    // over its turn-roll, elevator, sideslip-yaw and a constant yaw floor. The
+    // 0.8 at 0099D2A3 is a double.
+    const float cos_pitch = std::cos(in.pitch_angle);
+    const float cos_bank = std::cos(clamped);
+    float turn_rate = in.turn_roll_spd * cos_bank;
+    turn_rate += in.pitch_spd * pitch_command;
+    turn_rate += in.yaw_spd * in.slide_ratio * cos_pitch * cos_bank;
+    turn_rate = static_cast<float>(static_cast<double>(turn_rate) +
+                                   0.8 * static_cast<double>(in.yaw_spd));
+
+    // 0099D2AF-0099D2BD, then the sign from the ORIGINAL argument at 0099D244.
+    const float sweep = turn_rate * std::sin(clamped) * roll_out_time;
+    return (w >= 0.0f) ? -sweep : sweep;            // 0099D2C1
+}
+
+PilotBotRollResult pilot_plan_roll_0099e2ba(const PilotBotRollInputs& in) {
+    PilotBotRollResult out;
+    const float h = in.heading_error;
+    const float abs_bank = std::fabs(in.bank);
+
+    // 0099DFAA-0099DFF3: how far the plane is allowed to bank for this turn.
+    const float cap = in.small_turn_roll_limit ? in.turn_roll_limit_small
+                                               : in.turn_roll_limit_large;
+    float max_bank = in.turn_scale_2e8 * in.scale.turn_roll;
+    if (cap < max_bank) max_bank = cap;
+
+    // 0099E07E. This ramp is shared with the PITCH arm's floor, which is why it
+    // comes back in the result: the two arms read the same slot on purpose, and
+    // a pass that does not re-plan the bank leaves the pitch floor at its lowest.
+    out.hdg_ramp = interpolate_clamped(in.pitch_turn_hdg_range_1, 0.0f,
+                                       in.pitch_turn_hdg_range_2, 1.0f, std::fabs(h));
+
+    // 0099E087-0099E0CA: the heading sweep a roll-out from this bank would add,
+    // with a floor so the division below cannot blow up.
+    float w = static_cast<float>(1.5 * static_cast<double>(abs_bank));
+    if (w > max_bank) w = max_bank;
+    PilotHeadingDiffInputs scale = in.scale;
+    scale.bank_request = w;
+    const float raw_scale = pilot_heading_diff_0099d0a0(scale);
+    float c = raw_scale;
+    if (!(std::fabs(raw_scale) > 0.01f)) {
+        c = (raw_scale < 0.0f) ? -0.1f : 0.01f;     // 00CE3CB4, 00D7A238
+    }
+
+    // 0099E17B-0099E19E: a deadband of 30 percent of the scale, then the bank
+    // the remaining error asks for, capped at max_bank.
+    const float s = interpolate_clamped(-c, static_cast<float>(-0.3 * static_cast<double>(c)),
+                                        c, static_cast<float>(0.3 * static_cast<double>(c)), h);
+    float raw = (c != 0.0f) ? (h - s) / c : 0.0f;
+    if (raw < -1.0f) raw = -1.0f;
+    if (raw > 1.0f) raw = 1.0f;
+    raw *= max_bank;
+
+    // 0099E1CC-0099E23E: the bank limit is scheduled on the PITCH error, which
+    // is what the tuning key name TurnRollPitchLimit says it should be.
+    float limit = interpolate_clamped(in.turn_roll_pitch_limit_pitch_1,
+                                      in.turn_roll_pitch_limit_roll_1,
+                                      in.turn_roll_pitch_limit_pitch_2,
+                                      in.turn_roll_pitch_limit_roll_2, in.pitch_error);
+    if (abs_bank > limit) limit = abs_bank;
+    if (limit < -2.0f) limit = -2.0f;
+    if (limit > 2.0f) limit = 2.0f;
+    out.bank_target = raw;
+    if (out.bank_target < -limit) out.bank_target = -limit;
+    if (out.bank_target > limit) out.bank_target = limit;
+
+    // 0099E27B: and the per-task bank limit, when it is tighter than pi.
+    if (static_cast<double>(in.bank_limit_2c8) < 3.14159274) {
+        if (out.bank_target < -in.bank_limit_2c8) out.bank_target = -in.bank_limit_2c8;
+        if (out.bank_target > in.bank_limit_2c8) out.bank_target = in.bank_limit_2c8;
+    }
+
+    // 0099E2CE-0099E390, the servo. The sign is INVERTED: a positive bank error
+    // yields a negative roll command.
+    float v = wrapped_angle_subtract_00438b10(out.bank_target, in.bank);
+    if (in.dt_scale != 0.0f) v /= in.dt_scale;
+    const float a_mag = std::fabs(v);
+    float a = 0.0f;
+    if (in.soft_roll_ctrl > a_mag) {
+        a = v * in.soft_roll_mul;                   // 0099E30E
+    } else {
+        a = (v > 0.0f) ? v - in.soft_roll_offset : v + in.soft_roll_offset;   // 0099E332
+    }
+    // 0099E357: the servo's own scale, a pure class/tuning product with no
+    // runtime guard - so the t == 0 case really can happen and really does
+    // return the interpolation's y0 of +1.0f.
+    const float denom = in.roll_accel * in.waggle_limit;
+    const float t = (denom != 0.0f) ? in.roll_spd * in.roll_spd / denom : 0.0f;
+    out.desired = interpolate_clamped(-t, 1.0f, t, -1.0f, a);   // 0099E390
+    return out;
+}
+
 }  // namespace bsp

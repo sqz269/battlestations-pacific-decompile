@@ -2497,6 +2497,73 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         unit_.plan_slots[bsp::kPilotSlotYaw].desired = desired;
                         unit_.plan_slots[bsp::kPilotSlotYaw].active = 1;  // 0099EA46
 
+                        // 0099DE93-0099E39D, the roll arm. Without it the plane
+                        // banks unopposed under 007DA710's own yaw-roll coupling
+                        // and never rolls level again - a measured run held two
+                        // aircraft at 59 degrees of bank for two and a half
+                        // minutes, which is a state the game's own bot would
+                        // never leave them in.
+                        bsp::PilotBotRollInputs rin;
+                        rin.heading_error = term.heading_error;
+                        rin.bank = unit_.plane_bank_angle_c68;
+                        rin.dt_scale = 1.0f;
+                        rin.turn_scale_2e8 = unit_.plan_state.turn_scale_2e8;
+                        rin.bank_limit_2c8 = unit_.plan_state.bank_limit_2c8;
+                        // 0047B880's predicate is unidentified. false takes the
+                        // Large cap, and since the cap enters as min(maxBank,
+                        // cap) that is the weaker limit - the choice is stated
+                        // rather than reasoned, because nothing establishes it.
+                        rin.small_turn_roll_limit = false;
+                        rin.roll_spd = unit_.plane_class.roll_spd;
+                        rin.roll_accel = unit_.plane_class.roll_accel;
+                        rin.scale.pitch_angle = unit_.plane_pitch_angle_c64;
+                        rin.scale.pitch_command =
+                            unit_.plan_slots[bsp::kPilotSlotPitch].active != 0
+                                ? unit_.plan_slots[bsp::kPilotSlotPitch].desired
+                                : unit_.plan_slots[bsp::kPilotSlotPitch].current;
+                        rin.scale.roll_spd = unit_.plane_class.roll_spd;
+                        rin.scale.pitch_spd = unit_.plane_class.pitch_spd;
+                        rin.scale.yaw_spd = unit_.plane_class.yaw_spd;
+                        rin.scale.slide_ratio = unit_.plane_class.slide_ratio;
+                        rin.scale.roll_accel = unit_.plane_class.roll_accel;
+                        rin.scale.turn_roll_spd = unit_.plane_class_turn_roll_spd;
+                        rin.scale.turn_roll = unit_.plane_class_turn_roll;
+                        if (owner_.lua.plane_globals_loaded()) {
+                            const bsp::GameTuningBlock& g = owner_.lua.plane_globals();
+                            rin.turn_roll_limit_small = g.pilot_general_turn_roll_limit_small;
+                            rin.turn_roll_limit_large = g.pilot_general_turn_roll_limit_large;
+                            rin.turn_roll_pitch_limit_pitch_1 =
+                                g.pilot_general_turn_roll_pitch_limit_pitch_1;
+                            rin.turn_roll_pitch_limit_pitch_2 =
+                                g.pilot_general_turn_roll_pitch_limit_pitch_2;
+                            rin.turn_roll_pitch_limit_roll_1 =
+                                g.pilot_general_turn_roll_pitch_limit_roll_1;
+                            rin.turn_roll_pitch_limit_roll_2 =
+                                g.pilot_general_turn_roll_pitch_limit_roll_2;
+                            rin.pitch_turn_hdg_range_1 = g.pilot_general_pitch_turn_hdg_range_1;
+                            rin.pitch_turn_hdg_range_2 = g.pilot_general_pitch_turn_hdg_range_2;
+                            rin.soft_roll_ctrl = g.pilot_general_soft_roll_ctrl;
+                            rin.soft_roll_mul = g.pilot_general_soft_roll_mul;
+                            rin.soft_roll_offset = g.derived_580;
+                            rin.waggle_limit = g.pilot_general_waggle_limit;
+                            rin.scale.hdg_diff_calc_limit_1 =
+                                g.pilot_general_hdg_diff_calc_limit_1;
+                            rin.scale.hdg_diff_calc_limit_2 =
+                                g.pilot_general_hdg_diff_calc_limit_2;
+                            rin.scale.hdg_diff_calc_min_pitch =
+                                g.pilot_general_hdg_diff_calc_min_pitch;
+                            rin.scale.hdg_diff_calc_min_roll =
+                                g.pilot_general_hdg_diff_calc_min_roll;
+                        }
+                        // The pitch error the bank limit is scheduled on.
+                        rin.pitch_error = bsp::wrapped_angle_subtract_00438b10(
+                            unit_.plane_pitch_angle_c64, unit_.plan_state.pitch_target_2bc);
+                        const bsp::PilotBotRollResult roll =
+                            bsp::pilot_plan_roll_0099e2ba(rin);
+                        unit_.plan_state.bank_target_2c4 = roll.bank_target;
+                        unit_.plan_slots[bsp::kPilotSlotRoll].desired = roll.desired;
+                        unit_.plan_slots[bsp::kPilotSlotRoll].active = 1;  // 0099E3AE
+
                         // 0099E490-0099E739, the pitch arm. Without it a planned
                         // bot follows whatever plan+2BCh was last set to, which
                         // is downward: a measured run with only the yaw arm
