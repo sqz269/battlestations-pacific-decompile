@@ -1,0 +1,1019 @@
+{
+  "packet": "orch2_seh4_dispatch_scope_closure_ft",
+  "base": "c8010d8fa964667a58d9cec6144d3fc9b97e7a49",
+  "status": "bounded metadata relocation design proved; native source closure blocked by exact original PTD and termination providers",
+  "doc": "docs/NATIVE_CRT_SEH4_DISPATCH_SCOPE_CLOSURE_FT.md",
+  "evidence_directory": "local/seh4_dispatch_scope_closure_ft",
+  "routines": [
+    {
+      "entry": "00c07c00",
+      "name": "prolog",
+      "end_inclusive": "00c07c44",
+      "physical_bytes": 69,
+      "coverage": "complete original physical evidence; no reconstructed source",
+      "assigned_implementation_address": true
+    },
+    {
+      "entry": "00c07c90",
+      "name": "dispatcher",
+      "end_inclusive": "00c07e25",
+      "physical_bytes": 406,
+      "coverage": "complete original physical evidence; no reconstructed source",
+      "assigned_implementation_address": true
+    },
+    {
+      "entry": "00c16dd0",
+      "name": "guard",
+      "end_inclusive": "00c16e8a",
+      "physical_bytes": 187,
+      "coverage": "complete original physical evidence; no reconstructed source",
+      "assigned_implementation_address": true
+    },
+    {
+      "entry": "00c06ac8",
+      "name": "destructor",
+      "end_inclusive": "00c06b1b",
+      "physical_bytes": 84,
+      "coverage": "complete original physical evidence; no reconstructed source",
+      "assigned_implementation_address": true
+    },
+    {
+      "entry": "00c07a75",
+      "name": "terminate",
+      "end_inclusive": "00c07aa7",
+      "physical_bytes": 51,
+      "coverage": "complete original physical evidence; no reconstructed source",
+      "assigned_implementation_address": false
+    },
+    {
+      "entry": "00c0522e",
+      "name": "getptd",
+      "end_inclusive": "00c05245",
+      "physical_bytes": 24,
+      "coverage": "complete original physical evidence; no reconstructed source",
+      "assigned_implementation_address": false
+    },
+    {
+      "entry": "00c051b7",
+      "name": "ptd_producer",
+      "end_inclusive": "00c0522d",
+      "physical_bytes": 119,
+      "coverage": "complete original physical evidence; no reconstructed source",
+      "assigned_implementation_address": false
+    },
+    {
+      "entry": "00c050f8",
+      "name": "ptd_initialize",
+      "end_inclusive": "00c051ad",
+      "physical_bytes": 182,
+      "coverage": "complete original physical evidence; no reconstructed source",
+      "assigned_implementation_address": false
+    },
+    {
+      "entry": "00c05070",
+      "name": "ptd_getter",
+      "end_inclusive": "00c050a1",
+      "physical_bytes": 50,
+      "coverage": "complete original physical evidence; no reconstructed source",
+      "assigned_implementation_address": false
+    },
+    {
+      "entry": "00c053dc",
+      "name": "mtinit",
+      "end_inclusive": "00c0555f",
+      "physical_bytes": 388,
+      "coverage": "complete original physical evidence; no reconstructed source",
+      "assigned_implementation_address": false
+    },
+    {
+      "entry": "00c04de2",
+      "name": "abort",
+      "end_inclusive": "00c04ed4",
+      "physical_bytes": 243,
+      "coverage": "complete original physical evidence; no reconstructed source",
+      "assigned_implementation_address": false
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00c07cc3",
+      "native": "00bfe120",
+      "function": "00c07c90",
+      "kind": "call",
+      "bytes": "e85864ffff",
+      "contract": "original edge only; no source provider inferred from this call site"
+    },
+    {
+      "address": "00c07cd3",
+      "native": "00bfe120",
+      "function": "00c07c90",
+      "kind": "call",
+      "bytes": "e84864ffff",
+      "contract": "original edge only; no source provider inferred from this call site"
+    },
+    {
+      "address": "00c07d19",
+      "native": "00c0dcb6",
+      "function": "00c07c90",
+      "kind": "call",
+      "bytes": "e8985f0000",
+      "contract": "original edge only; no source provider inferred from this call site"
+    },
+    {
+      "address": "00c07d4a",
+      "native": "00bfe120",
+      "function": "00c07c90",
+      "kind": "call",
+      "bytes": "e8d163ffff",
+      "contract": "original edge only; no source provider inferred from this call site"
+    },
+    {
+      "address": "00c07d5a",
+      "native": "00bfe120",
+      "function": "00c07c90",
+      "kind": "call",
+      "bytes": "e8c163ffff",
+      "contract": "original edge only; no source provider inferred from this call site"
+    },
+    {
+      "address": "00c07d8f",
+      "native": "00c16dd0",
+      "function": "00c07c90",
+      "kind": "call",
+      "bytes": "e83cf00000",
+      "contract": "original edge only; no source provider inferred from this call site"
+    },
+    {
+      "address": "00c07da2",
+      "native": "indirect dword ptr [0xd6a618]",
+      "function": "00c07c90",
+      "kind": "call",
+      "bytes": "ff1518a6d600",
+      "contract": "original edge only; no source provider inferred from this call site"
+    },
+    {
+      "address": "00c07daf",
+      "native": "00c0dce6",
+      "function": "00c07c90",
+      "kind": "call",
+      "bytes": "e8325f0000",
+      "contract": "original edge only; no source provider inferred from this call site"
+    },
+    {
+      "address": "00c07dc7",
+      "native": "00c0dd00",
+      "function": "00c07c90",
+      "kind": "call",
+      "bytes": "e8345f0000",
+      "contract": "original edge only; no source provider inferred from this call site"
+    },
+    {
+      "address": "00c07de6",
+      "native": "00bfe120",
+      "function": "00c07c90",
+      "kind": "call",
+      "bytes": "e83563ffff",
+      "contract": "original edge only; no source provider inferred from this call site"
+    },
+    {
+      "address": "00c07df6",
+      "native": "00bfe120",
+      "function": "00c07c90",
+      "kind": "call",
+      "bytes": "e82563ffff",
+      "contract": "original edge only; no source provider inferred from this call site"
+    },
+    {
+      "address": "00c07e00",
+      "native": "00c0dccd",
+      "function": "00c07c90",
+      "kind": "tail_jump",
+      "bytes": "e9c85e0000",
+      "contract": "original edge only; no source provider inferred from this call site"
+    },
+    {
+      "address": "00c07e1c",
+      "native": "00c0dd00",
+      "function": "00c07c90",
+      "kind": "call",
+      "bytes": "e8df5e0000",
+      "contract": "original edge only; no source provider inferred from this call site"
+    },
+    {
+      "address": "00c16e0f",
+      "native": "00c16d50",
+      "function": "00c16dd0",
+      "kind": "call",
+      "bytes": "e83cffffff",
+      "contract": "original edge only; no source provider inferred from this call site"
+    },
+    {
+      "address": "00c16e29",
+      "native": "00c16d80",
+      "function": "00c16dd0",
+      "kind": "call",
+      "bytes": "e852ffffff",
+      "contract": "original edge only; no source provider inferred from this call site"
+    },
+    {
+      "address": "00c06acf",
+      "native": "00c07c00",
+      "function": "00c06ac8",
+      "kind": "call",
+      "bytes": "e82c110000",
+      "contract": "original edge only; no source provider inferred from this call site"
+    },
+    {
+      "address": "00c06af9",
+      "native": "00bf6aa6",
+      "function": "00c06ac8",
+      "kind": "call",
+      "bytes": "e8a8fffeff",
+      "contract": "original edge only; no source provider inferred from this call site"
+    },
+    {
+      "address": "00c06b05",
+      "native": "00c07c45",
+      "function": "00c06ac8",
+      "kind": "call",
+      "bytes": "e83b110000",
+      "contract": "original edge only; no source provider inferred from this call site"
+    },
+    {
+      "address": "00c07a7c",
+      "native": "00c07c00",
+      "function": "00c07a75",
+      "kind": "call",
+      "bytes": "e87f010000",
+      "contract": "original edge only; no source provider inferred from this call site"
+    },
+    {
+      "address": "00c07a81",
+      "native": "00c0522e",
+      "function": "00c07a75",
+      "kind": "call",
+      "bytes": "e8a8d7ffff",
+      "contract": "original edge only; no source provider inferred from this call site"
+    },
+    {
+      "address": "00c07a91",
+      "native": "indirect eax",
+      "function": "00c07a75",
+      "kind": "call",
+      "bytes": "ffd0",
+      "contract": "original edge only; no source provider inferred from this call site"
+    },
+    {
+      "address": "00c07aa3",
+      "native": "00c04de2",
+      "function": "00c07a75",
+      "kind": "call",
+      "bytes": "e83ad3ffff",
+      "contract": "original edge only; no source provider inferred from this call site"
+    },
+    {
+      "address": "00c0522f",
+      "native": "00c051b7",
+      "function": "00c0522e",
+      "kind": "call",
+      "bytes": "e883ffffff",
+      "contract": "original edge only; no source provider inferred from this call site"
+    },
+    {
+      "address": "00c0523c",
+      "native": "00bfba09",
+      "function": "00c0522e",
+      "kind": "call",
+      "bytes": "e8c867ffff",
+      "contract": "original edge only; no source provider inferred from this call site"
+    },
+    {
+      "address": "00c051b9",
+      "native": "indirect dword ptr [0xce2258]",
+      "function": "00c051b7",
+      "kind": "call",
+      "bytes": "ff155822ce00",
+      "contract": "original edge only; no source provider inferred from this call site"
+    },
+    {
+      "address": "00c051c7",
+      "native": "00c05070",
+      "function": "00c051b7",
+      "kind": "call",
+      "bytes": "e8a4feffff",
+      "contract": "original edge only; no source provider inferred from this call site"
+    },
+    {
+      "address": "00c051cc",
+      "native": "indirect eax",
+      "function": "00c051b7",
+      "kind": "call",
+      "bytes": "ffd0",
+      "contract": "original edge only; no source provider inferred from this call site"
+    },
+    {
+      "address": "00c051db",
+      "native": "00c0485a",
+      "function": "00c051b7",
+      "kind": "call",
+      "bytes": "e87af6ffff",
+      "contract": "original edge only; no source provider inferred from this call site"
+    },
+    {
+      "address": "00c051f5",
+      "native": "00c04fde",
+      "function": "00c051b7",
+      "kind": "call",
+      "bytes": "e8e4fdffff",
+      "contract": "original edge only; no source provider inferred from this call site"
+    },
+    {
+      "address": "00c051fb",
+      "native": "indirect eax",
+      "function": "00c051b7",
+      "kind": "call",
+      "bytes": "ffd0",
+      "contract": "original edge only; no source provider inferred from this call site"
+    },
+    {
+      "address": "00c05204",
+      "native": "00c050f8",
+      "function": "00c051b7",
+      "kind": "call",
+      "bytes": "e8effeffff",
+      "contract": "original edge only; no source provider inferred from this call site"
+    },
+    {
+      "address": "00c0520b",
+      "native": "indirect dword ptr [0xce223c]",
+      "function": "00c051b7",
+      "kind": "call",
+      "bytes": "ff153c22ce00",
+      "contract": "original edge only; no source provider inferred from this call site"
+    },
+    {
+      "address": "00c0521a",
+      "native": "00bf9dc8",
+      "function": "00c051b7",
+      "kind": "call",
+      "bytes": "e8a94bffff",
+      "contract": "original edge only; no source provider inferred from this call site"
+    },
+    {
+      "address": "00c05223",
+      "native": "indirect dword ptr [0xce22bc]",
+      "function": "00c051b7",
+      "kind": "call",
+      "bytes": "ff15bc22ce00",
+      "contract": "original edge only; no source provider inferred from this call site"
+    },
+    {
+      "address": "00c050ff",
+      "native": "00c07c00",
+      "function": "00c050f8",
+      "kind": "call",
+      "bytes": "e8fc2a0000",
+      "contract": "original edge only; no source provider inferred from this call site"
+    },
+    {
+      "address": "00c05109",
+      "native": "indirect dword ptr [0xce215c]",
+      "function": "00c050f8",
+      "kind": "call",
+      "bytes": "ff155c21ce00",
+      "contract": "original edge only; no source provider inferred from this call site"
+    },
+    {
+      "address": "00c05126",
+      "native": "00c04efb",
+      "function": "00c050f8",
+      "kind": "call",
+      "bytes": "e8d0fdffff",
+      "contract": "original edge only; no source provider inferred from this call site"
+    },
+    {
+      "address": "00c0513d",
+      "native": "indirect ebx",
+      "function": "00c050f8",
+      "kind": "call",
+      "bytes": "ffd3",
+      "contract": "original edge only; no source provider inferred from this call site"
+    },
+    {
+      "address": "00c0514d",
+      "native": "indirect ebx",
+      "function": "00c050f8",
+      "kind": "call",
+      "bytes": "ffd3",
+      "contract": "original edge only; no source provider inferred from this call site"
+    },
+    {
+      "address": "00c0516f",
+      "native": "indirect dword ptr [0xce221c]",
+      "function": "00c050f8",
+      "kind": "call",
+      "bytes": "ff151c22ce00",
+      "contract": "original edge only; no source provider inferred from this call site"
+    },
+    {
+      "address": "00c05177",
+      "native": "00c11c21",
+      "function": "00c050f8",
+      "kind": "call",
+      "bytes": "e8a5ca0000",
+      "contract": "original edge only; no source provider inferred from this call site"
+    },
+    {
+      "address": "00c05196",
+      "native": "00c0190b",
+      "function": "00c050f8",
+      "kind": "call",
+      "bytes": "e870c7ffff",
+      "contract": "original edge only; no source provider inferred from this call site"
+    },
+    {
+      "address": "00c051a3",
+      "native": "00c051ae",
+      "function": "00c050f8",
+      "kind": "call",
+      "bytes": "e806000000",
+      "contract": "original edge only; no source provider inferred from this call site"
+    },
+    {
+      "address": "00c051a8",
+      "native": "00c07c45",
+      "function": "00c050f8",
+      "kind": "call",
+      "bytes": "e8982a0000",
+      "contract": "original edge only; no source provider inferred from this call site"
+    },
+    {
+      "address": "00c05077",
+      "native": "indirect dword ptr [0xce20bc]",
+      "function": "00c05070",
+      "kind": "call",
+      "bytes": "ff15bc20ce00",
+      "contract": "original edge only; no source provider inferred from this call site"
+    },
+    {
+      "address": "00c05089",
+      "native": "00c04fde",
+      "function": "00c05070",
+      "kind": "call",
+      "bytes": "e850ffffff",
+      "contract": "original edge only; no source provider inferred from this call site"
+    },
+    {
+      "address": "00c05098",
+      "native": "indirect dword ptr [0xce20b4]",
+      "function": "00c05070",
+      "kind": "call",
+      "bytes": "ff15b420ce00",
+      "contract": "original edge only; no source provider inferred from this call site"
+    },
+    {
+      "address": "00c053e2",
+      "native": "indirect dword ptr [0xce215c]",
+      "function": "00c053dc",
+      "kind": "call",
+      "bytes": "ff155c21ce00",
+      "contract": "original edge only; no source provider inferred from this call site"
+    },
+    {
+      "address": "00c053ee",
+      "native": "00c050bb",
+      "function": "00c053dc",
+      "kind": "call",
+      "bytes": "e8c8fcffff",
+      "contract": "original edge only; no source provider inferred from this call site"
+    },
+    {
+      "address": "00c05404",
+      "native": "indirect esi",
+      "function": "00c053dc",
+      "kind": "call",
+      "bytes": "ffd6",
+      "contract": "original edge only; no source provider inferred from this call site"
+    },
+    {
+      "address": "00c05411",
+      "native": "indirect esi",
+      "function": "00c053dc",
+      "kind": "call",
+      "bytes": "ffd6",
+      "contract": "original edge only; no source provider inferred from this call site"
+    },
+    {
+      "address": "00c0541e",
+      "native": "indirect esi",
+      "function": "00c053dc",
+      "kind": "call",
+      "bytes": "ffd6",
+      "contract": "original edge only; no source provider inferred from this call site"
+    },
+    {
+      "address": "00c0542b",
+      "native": "indirect esi",
+      "function": "00c053dc",
+      "kind": "call",
+      "bytes": "ffd6",
+      "contract": "original edge only; no source provider inferred from this call site"
+    },
+    {
+      "address": "00c0547b",
+      "native": "indirect dword ptr [0xce20b8]",
+      "function": "00c053dc",
+      "kind": "call",
+      "bytes": "ff15b820ce00",
+      "contract": "original edge only; no source provider inferred from this call site"
+    },
+    {
+      "address": "00c05496",
+      "native": "indirect esi",
+      "function": "00c053dc",
+      "kind": "call",
+      "bytes": "ffd6",
+      "contract": "original edge only; no source provider inferred from this call site"
+    },
+    {
+      "address": "00c054a0",
+      "native": "00bfbdfb",
+      "function": "00c053dc",
+      "kind": "call",
+      "bytes": "e85669ffff",
+      "contract": "original edge only; no source provider inferred from this call site"
+    },
+    {
+      "address": "00c054ab",
+      "native": "00c04f67",
+      "function": "00c053dc",
+      "kind": "call",
+      "bytes": "e8b7faffff",
+      "contract": "original edge only; no source provider inferred from this call site"
+    },
+    {
+      "address": "00c054bb",
+      "native": "00c04f67",
+      "function": "00c053dc",
+      "kind": "call",
+      "bytes": "e8a7faffff",
+      "contract": "original edge only; no source provider inferred from this call site"
+    },
+    {
+      "address": "00c054cb",
+      "native": "00c04f67",
+      "function": "00c053dc",
+      "kind": "call",
+      "bytes": "e897faffff",
+      "contract": "original edge only; no source provider inferred from this call site"
+    },
+    {
+      "address": "00c054db",
+      "native": "00c04f67",
+      "function": "00c053dc",
+      "kind": "call",
+      "bytes": "e887faffff",
+      "contract": "original edge only; no source provider inferred from this call site"
+    },
+    {
+      "address": "00c054e8",
+      "native": "00c11a93",
+      "function": "00c053dc",
+      "kind": "call",
+      "bytes": "e8a6c50000",
+      "contract": "original edge only; no source provider inferred from this call site"
+    },
+    {
+      "address": "00c054fc",
+      "native": "00c04fde",
+      "function": "00c053dc",
+      "kind": "call",
+      "bytes": "e8ddfaffff",
+      "contract": "original edge only; no source provider inferred from this call site"
+    },
+    {
+      "address": "00c05502",
+      "native": "indirect eax",
+      "function": "00c053dc",
+      "kind": "call",
+      "bytes": "ffd0",
+      "contract": "original edge only; no source provider inferred from this call site"
+    },
+    {
+      "address": "00c05515",
+      "native": "00c0485a",
+      "function": "00c053dc",
+      "kind": "call",
+      "bytes": "e840f3ffff",
+      "contract": "original edge only; no source provider inferred from this call site"
+    },
+    {
+      "address": "00c0552f",
+      "native": "00c04fde",
+      "function": "00c053dc",
+      "kind": "call",
+      "bytes": "e8aafaffff",
+      "contract": "original edge only; no source provider inferred from this call site"
+    },
+    {
+      "address": "00c05535",
+      "native": "indirect eax",
+      "function": "00c053dc",
+      "kind": "call",
+      "bytes": "ffd0",
+      "contract": "original edge only; no source provider inferred from this call site"
+    },
+    {
+      "address": "00c0553e",
+      "native": "00c050f8",
+      "function": "00c053dc",
+      "kind": "call",
+      "bytes": "e8b5fbffff",
+      "contract": "original edge only; no source provider inferred from this call site"
+    },
+    {
+      "address": "00c05545",
+      "native": "indirect dword ptr [0xce223c]",
+      "function": "00c053dc",
+      "kind": "call",
+      "bytes": "ff153c22ce00",
+      "contract": "original edge only; no source provider inferred from this call site"
+    },
+    {
+      "address": "00c05556",
+      "native": "00c050bb",
+      "function": "00c053dc",
+      "kind": "call",
+      "bytes": "e860fbffff",
+      "contract": "original edge only; no source provider inferred from this call site"
+    },
+    {
+      "address": "00c04e09",
+      "native": "00c059a8",
+      "function": "00c04de2",
+      "kind": "call",
+      "bytes": "e89a0b0000",
+      "contract": "original edge only; no source provider inferred from this call site"
+    },
+    {
+      "address": "00c04e0f",
+      "native": "00c1711f",
+      "function": "00c04de2",
+      "kind": "call",
+      "bytes": "e80b230100",
+      "contract": "original edge only; no source provider inferred from this call site"
+    },
+    {
+      "address": "00c04e1a",
+      "native": "00c1737b",
+      "function": "00c04de2",
+      "kind": "call",
+      "bytes": "e85c250100",
+      "contract": "original edge only; no source provider inferred from this call site"
+    },
+    {
+      "address": "00c04e9d",
+      "native": "00bf79f0",
+      "function": "00c04de2",
+      "kind": "call",
+      "bytes": "e84e2bffff",
+      "contract": "original edge only; no source provider inferred from this call site"
+    },
+    {
+      "address": "00c04ebd",
+      "native": "indirect dword ptr [0xce222c]",
+      "function": "00c04de2",
+      "kind": "call",
+      "bytes": "ff152c22ce00",
+      "contract": "original edge only; no source provider inferred from this call site"
+    },
+    {
+      "address": "00c04ec7",
+      "native": "indirect dword ptr [0xce210c]",
+      "function": "00c04de2",
+      "kind": "call",
+      "bytes": "ff150c21ce00",
+      "contract": "original edge only; no source provider inferred from this call site"
+    },
+    {
+      "address": "00c04ecf",
+      "native": "00bfbdcc",
+      "function": "00c04de2",
+      "kind": "call",
+      "bytes": "e8f86effff",
+      "contract": "original edge only; no source provider inferred from this call site"
+    }
+  ],
+  "unlisted_tail": [
+    {
+      "site": "00c06b17",
+      "target": "00c07a75",
+      "end_inclusive": "00c06b1b",
+      "bytes": "e9590f0000",
+      "ghidra_function": "no_ghidra_function",
+      "kind": "physical tail jump; excluded from ordinary call checker"
+    }
+  ],
+  "scope_funclets": [
+    {
+      "entry": "00c16e59",
+      "end_inclusive": "00c16e6c",
+      "ghidra_function": "no_ghidra_function",
+      "coverage": "complete physical bytes only"
+    },
+    {
+      "entry": "00c16e6d",
+      "end_inclusive": "00c16e6f",
+      "ghidra_function": "no_ghidra_function",
+      "coverage": "complete physical bytes only"
+    },
+    {
+      "entry": "00c06b0b",
+      "end_inclusive": "00c06b13",
+      "ghidra_function": "no_ghidra_function",
+      "coverage": "complete physical bytes only"
+    },
+    {
+      "entry": "00c06b14",
+      "end_inclusive": "00c06b16",
+      "ghidra_function": "no_ghidra_function",
+      "coverage": "complete physical bytes only"
+    },
+    {
+      "entry": "00c06b17",
+      "end_inclusive": "00c06b1b",
+      "ghidra_function": "no_ghidra_function",
+      "coverage": "complete physical bytes only"
+    },
+    {
+      "entry": "00c07a95",
+      "end_inclusive": "00c07a98",
+      "ghidra_function": "no_ghidra_function",
+      "coverage": "complete physical bytes only"
+    },
+    {
+      "entry": "00c07a99",
+      "end_inclusive": "00c07a9b",
+      "ghidra_function": "no_ghidra_function",
+      "coverage": "complete physical bytes only"
+    }
+  ],
+  "metadata_relocation": {
+    "original_relocations": "stripped: characteristics 0x123, directory RVA/size 0/0; zero relocation records; no original COFF symbol proof",
+    "image_base": "linker __ImageBase of the PE containing this statically linked implementation; corroborated by installed pesect.c and matching original three 00400000 operands",
+    "scope_tables": "compiler-owned constant EH4 records in nonwritable image storage with actual relocated filter/handler code addresses; preserve header -2,0,-40,0 and enclosing level -2",
+    "destructor_pointer": "linker-selected const cdecl code pointer: original .rdata D6A618=C06AC8; installed chandler4.c/ehhelpers.cpp corroborate owner; instantiate once as immutable image storage pointing to complete source destructor",
+    "canonical_cookie": "E15590 and existing native cookie checker remain actual canonical data; no host __security_cookie or shadow words",
+    "guard_policy": "test address of the constant pointer word with original AV-only guarded PE/section walk; do not test its code target or short-circuit based on readonly allocation",
+    "safeseh": "separate actual dispatcher .sxdata symbol registration, real linker input and /INCLUDE extraction root; scope records alone prove no SafeSEH admission",
+    "implementation": "none: relocation design is corroborated semantics, not recovered original relocations or a linked object claim"
+  },
+  "blocked_native_providers": {
+    "terminate": "C07A75 calls C0522E, reads actual PTD+78, invokes callback, catches any callback exception using E03558/C07A95/C07A99, then C04DE2 abort",
+    "getptd": "C0522E -> C051B7; zero PTD calls BFBA09(16); no extra context words",
+    "ptd_owner": "C053DC resolves all four FLS exports or switches entire set to TLS, publishes raw getter in TLS cache before encoding, creates actual PTD index and publishes actual calloc(1,214h) record before C050F8",
+    "state": "E15AFC/E15B00 initially FFFFFFFF; 109DE34..43 are loader zero-fill, not callable providers; 109D000 is not committed by current canonical owner",
+    "abort": "C04DE2 reads actual E15AF8 policy and C1711F/C1737B signal path, captures native context for its exception filter, then BFBDCC(3); no imported host abort/terminate substitution",
+    "remaining_original_abi": "C04FDE/C04F67/module gate still expose context APIs; original locks, startup OS state, heap/callback lifetime remain required per FH",
+    "already_closed_since_fh": "Current canonical one-word C0190B locale reference and C11B31 unlock sources now exist; this supersedes FH missing-entry findings, not their required lifetime/preconditions"
+  },
+  "fh_crosscheck": {
+    "commit": "1e1ddcdf1285e25b5538638c2b6de617ed72807a",
+    "inputs": [
+      {
+        "path": "docs/NATIVE_CRT_THREAD_INIT_CLOSURE_FH.md",
+        "bytes": 16539,
+        "sha256": "b3feb201e70645467e23a0fff778b8354c689f6f74161eae2d57c6f354559858"
+      },
+      {
+        "path": "reports/native_crt_thread_init_closure_fh.json",
+        "bytes": 6507,
+        "sha256": "9e9ae1bdad33ceb93ceedf9a2bcdcc31715ea2f0622828beeeef58da99079a6e"
+      }
+    ],
+    "rows": [
+      {
+        "site": "00c050ff",
+        "target": "00c07c00",
+        "status": "revalidated from full disk bytes matched to fresh Ghidra memory"
+      },
+      {
+        "site": "00c05126",
+        "target": "00c04efb",
+        "status": "revalidated from full disk bytes matched to fresh Ghidra memory"
+      },
+      {
+        "site": "00c05177",
+        "target": "00c11c21",
+        "status": "revalidated from full disk bytes matched to fresh Ghidra memory"
+      },
+      {
+        "site": "00c05196",
+        "target": "00c0190b",
+        "status": "revalidated from full disk bytes matched to fresh Ghidra memory"
+      },
+      {
+        "site": "00c051a3",
+        "target": "00c051ae",
+        "status": "revalidated from full disk bytes matched to fresh Ghidra memory"
+      },
+      {
+        "site": "00c051a8",
+        "target": "00c07c45",
+        "status": "revalidated from full disk bytes matched to fresh Ghidra memory"
+      },
+      {
+        "site": "00c051b0",
+        "target": "00c11b31",
+        "status": "inherited FH cleanup edge; current canonical unlock exists; cleanup not rescanned by FT"
+      },
+      {
+        "site": "00c053ee",
+        "target": "00c050bb",
+        "status": "revalidated from full disk bytes matched to fresh Ghidra memory"
+      },
+      {
+        "site": "00c054a0",
+        "target": "00bfbdfb",
+        "status": "revalidated from full disk bytes matched to fresh Ghidra memory"
+      },
+      {
+        "site": "00c054ab",
+        "target": "00c04f67",
+        "status": "revalidated from full disk bytes matched to fresh Ghidra memory"
+      },
+      {
+        "site": "00c054e8",
+        "target": "00c11a93",
+        "status": "revalidated from full disk bytes matched to fresh Ghidra memory"
+      },
+      {
+        "site": "00c054fc",
+        "target": "00c04fde",
+        "status": "revalidated from full disk bytes matched to fresh Ghidra memory"
+      },
+      {
+        "site": "00c05515",
+        "target": "00c0485a",
+        "status": "revalidated from full disk bytes matched to fresh Ghidra memory"
+      },
+      {
+        "site": "00c0552f",
+        "target": "00c04fde",
+        "status": "revalidated from full disk bytes matched to fresh Ghidra memory"
+      },
+      {
+        "site": "00c0553e",
+        "target": "00c050f8",
+        "status": "revalidated from full disk bytes matched to fresh Ghidra memory"
+      },
+      {
+        "site": "00c05556",
+        "target": "00c050bb",
+        "status": "revalidated from full disk bytes matched to fresh Ghidra memory"
+      }
+    ]
+  },
+  "smallest_next_packet": {
+    "name": "native_crt_termination_original_abi_boundary",
+    "owned_entries_to_coordinate": [
+      "00c07a75",
+      "00c0522e",
+      "00c07a95",
+      "00c07a99"
+    ],
+    "scope": "E03558 compiler metadata with real funclets, 51-byte terminate body and 24-byte getptd wrapper",
+    "ready": false,
+    "prerequisites": [
+      "complete original C051B7 PTD producer supported by FH canonical initialization/lifetime contract",
+      "complete original C04DE2 abort plus actual signal/exit policy",
+      "this SEH4 cluster admitted jointly, because terminate itself calls C07C00",
+      "original BFBA09 fatal-null-PTD path; zero cannot be translated into success or a host policy"
+    ],
+    "integration": "Once prerequisites exist, integrate termination and FT SEH4 metadata/source cycle together. Emit no partial linkable cluster or fallback while these edges remain missing."
+  },
+  "verification": {
+    "fq_seal": "3bca81d8068b0b1087387808b77c3c17bfe4ae8297a4feb5cf87c3252ea34e2f",
+    "code_bytes": 1803,
+    "raw_initialized_data_bytes": 100,
+    "pe_virtual_zero_bytes": 16,
+    "ghidra_mutations": false,
+    "new_source_files": [],
+    "new_objects": [],
+    "build": "not run; no C++/ASM/registration change",
+    "native_execution": false,
+    "tests": "not run; no tests added",
+    "live_direct_call_checker": {
+      "checked": 51,
+      "failed": 0,
+      "indirect_rows": 25,
+      "log": "report-calls-attempt01.txt"
+    }
+  },
+  "native_call_contracts": [
+    {
+      "sites": [
+        "00c07cc3",
+        "00c07cd3",
+        "00c07d4a",
+        "00c07d5a",
+        "00c07de6",
+        "00c07df6"
+      ],
+      "callee": "00bfe120",
+      "stack_words": 0,
+      "registers": "ECX cookie value; original entry has no cdecl value/context word"
+    },
+    {
+      "sites": [
+        "00c07d19"
+      ],
+      "callee": "00c0dcb6",
+      "stack_words": 0,
+      "registers": "ECX actual filter, EDX native EBP frame"
+    },
+    {
+      "sites": [
+        "00c07d8f"
+      ],
+      "callee": "00c16dd0",
+      "stack_words": 1,
+      "cleanup": "00c07d94 ADD ESP,4; argument is address of const destructor pointer word"
+    },
+    {
+      "sites": [
+        "00c07da2"
+      ],
+      "callee": "indirect D6A618",
+      "stack_words": 2,
+      "cleanup": "00c07da8 ADD ESP,8; exception record, then flag=1"
+    },
+    {
+      "sites": [
+        "00c07daf"
+      ],
+      "callee": "00c0dce6",
+      "stack_words": 0,
+      "registers": "ECX registration"
+    },
+    {
+      "sites": [
+        "00c07dc7",
+        "00c07e1c"
+      ],
+      "callee": "00c0dd00",
+      "stack_words": 2,
+      "registers": "ECX registration, EDX target level",
+      "cleanup": "callee 00c0dd14 RET8; actual frame and pointer to actual E15590 are the two stack words"
+    },
+    {
+      "sites": [
+        "00c07e00"
+      ],
+      "callee": "00c0dccd",
+      "stack_words": 0,
+      "kind": "tail jump",
+      "registers": "ECX actual handler, EDX native frame; preserve current dispatcher ESP"
+    },
+    {
+      "sites": [
+        "00c16e0f"
+      ],
+      "callee": "00c16d50",
+      "stack_words": 1,
+      "cleanup": "00c16e14 ADD ESP,4"
+    },
+    {
+      "sites": [
+        "00c16e29"
+      ],
+      "callee": "00c16d80",
+      "stack_words": 2,
+      "cleanup": "00c16e2e ADD ESP,8"
+    },
+    {
+      "sites": [
+        "00c06acf"
+      ],
+      "callee": "00c07c00",
+      "stack_words": 2,
+      "cleanup": "compiler-frame helper; rewrites stack containing scope and local-byte-count, not ordinary cdecl cleanup"
+    },
+    {
+      "sites": [
+        "00c06af9"
+      ],
+      "callee": "00bf6aa6",
+      "stack_words": 2,
+      "cleanup": "POP continuation; POP ECX(this); XCHG [ESP],EAX; JMP EAX; destructor consumes ordinary member continuation"
+    },
+    {
+      "sites": [
+        "00c06b05"
+      ],
+      "callee": "00c07c45",
+      "stack_words": 0,
+      "cleanup": "native SEH4 frame teardown, including discarded cookie and copied helper continuation"
+    }
+  ]
+}
