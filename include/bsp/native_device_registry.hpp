@@ -29,6 +29,11 @@ inline constexpr std::uint32_t kNativeSingletonBaseProfile = 0x00ce3818u;
 // and exceptional exits release the first captured section; registration
 // failure deliberately retains the published owner. The slow return reloads
 // publication after release, while the fast return preserves its first read.
+// If that registration will be drained by the canonical CE44DC dispatcher,
+// actual_registry_publication_00e17bf4 MUST be the reference returned by
+// process_native_device_registry_00e17bf4(). An alternate borrowed cell is
+// supported only when its owner is explicitly deleted against that same cell;
+// canonical manager-drain composition for alternate cells is not established.
 NativeDeviceRegistryStorage* get_native_device_registry_00441780(
     void* volatile& actual_manager_publication_01090aa0,
     NativeDeviceRegistryStorage* volatile& actual_registry_publication_00e17bf4);
@@ -54,7 +59,8 @@ NativeDeviceRegistryStorage* delete_native_device_registry_00441840(
 
 // One process-static E17BF4 cell with explicit lifetime. The getter wrapper
 // still receives the application's SAME actual manager publication. Canonical
-// manager drain dispatches CE44DC owners through this cell.
+// manager drain dispatches CE44DC owners through this cell, so registered
+// owners intended for that drain must have been published through this cell.
 NativeDeviceRegistryStorage* volatile& process_native_device_registry_00e17bf4() noexcept;
 NativeDeviceRegistryStorage* get_process_native_device_registry_00441780(
     void* volatile& actual_manager_publication_01090aa0);

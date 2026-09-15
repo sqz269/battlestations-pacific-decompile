@@ -15,8 +15,13 @@ name already identified at `00441840`.
 The source uses the existing raw singleton manager, raw registration wrappers,
 CRT allocation boundary, guard destructor and device registry array. Its only
 registry owner is the actual 10h-byte shape `{profile,data,count,capacity}`.
-The process wrapper exposes one canonical `E17BF4` publication cell; the generic
-entry accepts a stable reference to the same actual cell for composed runtimes.
+The process wrapper exposes one canonical `E17BF4` publication cell. The generic
+entry accepts a stable publication-cell reference, but an owner registered for
+the canonical `CE44DC` manager drain must use the cell returned by
+`process_native_device_registry_00e17bf4()`: that dispatcher clears this process
+cell. An alternate borrowed cell is valid only with explicit deletion against
+that same alternate cell. No canonical manager-drain composition for an
+alternate cell is established by this packet.
 
 ## Getter `00441780`
 
@@ -62,7 +67,9 @@ owner before scalar deletion during `00BD0400` drain.
 `CE44DC` is a one-entry profile: its sole DWORD points to `00441840`; the bytes
 at `CE44E0` begin an unrelated string. The canonical source manager dispatcher
 now recognizes `CE44DC` and calls this deleter against the process `E17BF4` cell.
-It adds no callback, binding, private manager, or alternate owning registry.
+Consequently, only owners published through the process-cell wrapper belong in
+that canonical drain. It adds no callback, binding, private manager, or alternate
+owning registry.
 
 ## Repaired listing boundaries
 
