@@ -1,0 +1,262 @@
+{
+  "packet": "orch4_native_instance_generator_ck",
+  "state": "complete_ordinary_source_tracked_build_and_actual_generator_layout_fixture_passed",
+  "base_revision": "9bb2c1fe22fd684ac6fc2fd14838b5c1e05426dd",
+  "project": {
+    "project_name": "bsp",
+    "current_folder": "/",
+    "folders": [],
+    "files": [
+      {
+        "name": "battlestationspacific.exe",
+        "path": "/battlestationspacific.exe",
+        "content_type": "Program",
+        "version": 2726,
+        "is_read_only": false,
+        "is_versioned": false
+      }
+    ]
+  },
+  "program": {
+    "name": "battlestationspacific.exe",
+    "path": "/battlestationspacific.exe",
+    "executable_path": "/I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "executable_format": "Portable Executable (PE)",
+    "language": "x86:LE:32:default",
+    "compiler": "windows",
+    "address_size": 32,
+    "image_base": "00400000",
+    "min_address": "00400000",
+    "max_address": "ffdfffff",
+    "memory_size": 14876380,
+    "function_count": 64088,
+    "symbol_count": 144413,
+    "data_type_count": 795,
+    "creation_date": "Mon May 04 16:56:25 PDT 2026",
+    "memory_block_count": 6,
+    "address_spaces": [
+      {
+        "name": "ram",
+        "start": "00000000",
+        "end": "ffffffff",
+        "size": 4294967296,
+        "addressable_unit_size": 1,
+        "size_bytes": 4294967296,
+        "address_size_bits": 32,
+        "is_default": true
+      }
+    ],
+    "has_multiple_address_spaces": false
+  },
+  "ordinary_bodies": 12,
+  "ordinary_bytes": 1430,
+  "support_bytes": 160,
+  "verified_instruction_owners": 513,
+  "preserved_comments": 29,
+  "source_manifest": {
+    "path": "local/native_instance_generator_ck/registered/source_manifest.json",
+    "sha256": "cb459198d42fa43a1232981b7c17967130c718f2cc576a51d68b1f4bfffc350e",
+    "bytes": 290684
+  },
+  "configuration": {
+    "base_revision": "9bb2c1fe22fd684ac6fc2fd14838b5c1e05426dd",
+    "override_absent": true,
+    "build": "scripts/build.ps1 with MSBUILDDISABLENODEREUSE=1 and CMAKE_BUILD_PARALLEL_LEVEL=3",
+    "build_scope": "Tracked default Win32 CMake incremental rebuild; not a fresh empty directory",
+    "source_inputs": 2683,
+    "source_manifest": {
+      "path": "local/native_instance_generator_ck/registered/source_manifest.json",
+      "sha256": "cb459198d42fa43a1232981b7c17967130c718f2cc576a51d68b1f4bfffc350e",
+      "bytes": 290684
+    },
+    "registry_edit": {
+      "whole_file_lease": false,
+      "before_sha256": "2cb9ef86b41f64ec39c926438088208d14c76bdf5555a20f06a146e5569a2baa",
+      "after_sha256": "3ea2e95434bb3878bcc391273a0e46eedc3a05dfc77d0e5cfc51181d07f8a6ff",
+      "change": "One deferred source registration; shared registry not leased, following docs/COORDINATION.md"
+    },
+    "binary": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+    }
+  },
+  "validation": {
+    "build": "Default tracked scripts/build.ps1 MSVC Win32;2/2 existing CTests; no project-include override",
+    "source_composition": "Actual retained-memory mesh stream, declaration aliases/canonical owners, B317E0/B2F710, live hardware tree and D3D9 COM layout; generic and building attachment through B85610/B451D0; shared-layout hit and replacement",
+    "gpu_readback": "Generic: first stream FLOAT3 POSITION then3 FLOAT4 TEXCOORD elements at offsets0,16,32; building9 FLOAT4 TEXCOORD at0..128; exact usage indices and END; strides60/156 including12-byte first stream",
+    "failure": "Canonical stream lookup throws after actual generic cache acquisition: raw generator freed, temporary name returned, declaration ref retained and old section binding unchanged; explicit fixture release only afterward",
+    "cleanup": "15 binds/15 retirements, all canonical owners gone, declaration-cache stride0, hardware tree empty, all raw slab slots free, actual allocator list empty, final device/API COM counts0",
+    "repeat_runs": 2,
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "startup_registry_leases": [],
+  "main_integration": "Not performed; agent branch only. Later main deltas remain unreviewed.",
+  "remaining": {
+    "material_admission": "535320 callable renderer48 and B18D60 callable renderer64 still need numeric-profile effect/cold-texture cache composition and canonical admission; no fabricated callable tables",
+    "subset": "B941D0 requires material-admission dependency plus assembly/EH-tail audit; B85610/B451D0 generator closure now implemented",
+    "aggregate": "B944E0, B94710 and registered parser wrappers after subset contract"
+  },
+  "evidence_limits": [
+    "New explicit-context Win32 source interfaces; original stack aliases, binary ABI, hardware SEH and gameplay are not established.",
+    "No copied-original parent or original exception execution in this packet. Evidence is byte/listing/FH3 audit plus focused actual-source composition.",
+    "Existing NativeStringStorage release is noexcept; native temporary-name return failure is outside this source exception domain. Derived FH3 states0/1/2 remain recorded as evidence.",
+    "Source fixture has preconstructed material/effect/descriptor prefixes and declaration-cache records, raw initialized pools/tree sentinel and an explicit platform callback; native material parsing, pool/renderer startup and XLive are not covered.",
+    "Declaration cache hits and a real cold hardware-layout factory/tree/COM path were exercised; vertex-format cold decoding, device-loss/retry and arbitrary profiles were not.",
+    "The injected canonical lookup exception is a source metadata boundary, not a native B48CE0 exception oracle. Failed provider/metadata frames and unbound companions must be retained until resolved.",
+    "Initial D3D9 device creation returned8876086C; the prior frozen CJ fixture passed. Two final CK runs passed after display-mode/client-window diagnostic queries; root cause is unproven.",
+    "Whole material/effect cold admission, B941D0 subset/EH-tail composition, B944E0 aggregate and gameplay remain unfinished. Main not integrated."
+  ],
+  "artifacts": [
+    {
+      "path": "local/native_instance_generator_ck/registered/after.cmake",
+      "sha256": "3ea2e95434bb3878bcc391273a0e46eedc3a05dfc77d0e5cfc51181d07f8a6ff",
+      "bytes": 122338
+    },
+    {
+      "path": "local/native_instance_generator_ck/registered/annotation.log",
+      "sha256": "e13465f86ce182ed52eae4c733f446a9bca4738dde981a52ea26d47fbc334522",
+      "bytes": 108
+    },
+    {
+      "path": "local/native_instance_generator_ck/registered/before.cmake",
+      "sha256": "2cb9ef86b41f64ec39c926438088208d14c76bdf5555a20f06a146e5569a2baa",
+      "bytes": 122207
+    },
+    {
+      "path": "local/native_instance_generator_ck/registered/bsp_core.lib",
+      "sha256": "fefc789b868d6eec446cd68df262a404811fa63047b3a0d4594560f17bd47c04",
+      "bytes": 59035322
+    },
+    {
+      "path": "local/native_instance_generator_ck/registered/bsp_core.vcxproj",
+      "sha256": "67c2c62eaa93580ace444a7d7070aa6f758b321bd9c5be8e9c28cdf106341ca3",
+      "bytes": 199938
+    },
+    {
+      "path": "local/native_instance_generator_ck/registered/bsp_game.exe",
+      "sha256": "91453b839292ef46bb708cee442d6825866acf3b8f8971fa21c43bd99bed30f7",
+      "bytes": 2168832
+    },
+    {
+      "path": "local/native_instance_generator_ck/registered/bsp_lua511.lib",
+      "sha256": "00315ac717aac3d2b2161fefefe71b36a974335ff9c95d48c137423eb4e2f4b2",
+      "bytes": 455244
+    },
+    {
+      "path": "local/native_instance_generator_ck/registered/bsp_zlib121.lib",
+      "sha256": "73ae30b8adc3adfe5b33285bac533f8e7df7e8ab8d9e44789e6a030fd8a06ad9",
+      "bytes": 71906
+    },
+    {
+      "path": "local/native_instance_generator_ck/registered/build.log",
+      "sha256": "44a2f2449fb30eb5edcd6c832efd5beab758b3c7cb55a57a19e5aa7f3799057a",
+      "bytes": 2499
+    },
+    {
+      "path": "local/native_instance_generator_ck/registered/call_check.log",
+      "sha256": "3a3f4e541374e1c305010a68d4c35c2c64d49ec8d0e402ec9a88aa3c6c0c4395",
+      "bytes": 75
+    },
+    {
+      "path": "local/native_instance_generator_ck/registered/child_probe.log",
+      "sha256": "48c6948040c11089635a283917e7f804a429cc802034759d03a634d479e5f0d6",
+      "bytes": 854
+    },
+    {
+      "path": "local/native_instance_generator_ck/registered/CMakeCache.txt",
+      "sha256": "2ab657bd06bb97731372c10fc883040590ccedec539b0406ba2554bab45f7835",
+      "bytes": 18839
+    },
+    {
+      "path": "local/native_instance_generator_ck/registered/compile.cmd",
+      "sha256": "008c620bc3f60a4a230a7f47b2d70da556112be6914adbb4bf9d9a79ddee1040",
+      "bytes": 685
+    },
+    {
+      "path": "local/native_instance_generator_ck/registered/compile.log",
+      "sha256": "25d4f66c7c01d5b35c220cb97ffdd1608405f4ab45160497e6cc7ea3079676cf",
+      "bytes": 11
+    },
+    {
+      "path": "local/native_instance_generator_ck/registered/configuration.json",
+      "sha256": "e26aa304a56a2b5577af845f56ae55d6261ccc3992c3f0bbec5be1fd22fd51a4",
+      "bytes": 1068
+    },
+    {
+      "path": "local/native_instance_generator_ck/registered/device_creation_failure.log",
+      "sha256": "bb6b1bf5c1740e40db3eb459b89bdbba1d4588001f6cc8fd304902f87a9a34e3",
+      "bytes": 74
+    },
+    {
+      "path": "local/native_instance_generator_ck/registered/final_audit.json",
+      "sha256": "47182538516ab03617ec7a7c6e26b1bce0279482dbc15dd1f0eed73063095d55",
+      "bytes": 69259
+    },
+    {
+      "path": "local/native_instance_generator_ck/registered/initial_audit.json",
+      "sha256": "3aaccd6c1993d23d73e4677441810603dcac08c17bfbaf223496b31b664731cc",
+      "bytes": 71661
+    },
+    {
+      "path": "local/native_instance_generator_ck/registered/prior_cj_device_check.log",
+      "sha256": "38afe005a4d3642d7c1b2f29f639a609cebf98e3445e0b354bd006d90d033378",
+      "bytes": 663
+    },
+    {
+      "path": "local/native_instance_generator_ck/registered/probe.cpp",
+      "sha256": "76ca3c2e84afafb162d447c6f0ff5060d648de18e319d3cbdcca88a20c31ace8",
+      "bytes": 31323
+    },
+    {
+      "path": "local/native_instance_generator_ck/registered/probe.exe",
+      "sha256": "8b0bc93fd547a6d0c093cabcbcb1fa3b631c88e3c1917fdc90655bb9425ff59c",
+      "bytes": 239104
+    },
+    {
+      "path": "local/native_instance_generator_ck/registered/probe.log",
+      "sha256": "6ca6ab37e4973662a9bfb4734f8ab7583fafc9f45015ab8dc320ccda682b20f1",
+      "bytes": 895
+    },
+    {
+      "path": "local/native_instance_generator_ck/registered/probe.map",
+      "sha256": "4c18f00c4ab4297669845cc9b99186908d2601fe922bb0a06e8d7bbd32c30adf",
+      "bytes": 446918
+    },
+    {
+      "path": "local/native_instance_generator_ck/registered/probe.obj",
+      "sha256": "84bc4348b9c0adb7449e56fb77076049b5b258d798bb3c5d9eb08efd1fe25a07",
+      "bytes": 334132
+    },
+    {
+      "path": "local/native_instance_generator_ck/registered/probe_repeat.log",
+      "sha256": "ef71430d7ceca2494348feb2f850049fd7b848c7e03bec0d5c697d70692336e4",
+      "bytes": 896
+    },
+    {
+      "path": "local/native_instance_generator_ck/registered/registry_edit.json",
+      "sha256": "0007dce9f5ee41b70680b06831de15119da7a9ae90228e9c77255bc3a92be422",
+      "bytes": 313
+    },
+    {
+      "path": "local/native_instance_generator_ck/registered/repair.log",
+      "sha256": "44ed94af97072804c08137fac43bfc94fdfdd8e234348adb2779b085e12a09c2",
+      "bytes": 116
+    },
+    {
+      "path": "local/native_instance_generator_ck/registered/source_manifest.json",
+      "sha256": "cb459198d42fa43a1232981b7c17967130c718f2cc576a51d68b1f4bfffc350e",
+      "bytes": 290684
+    },
+    {
+      "path": "reports/native_instance_generator_flow_ck.json",
+      "sha256": "6c326cc145941a5e524e997f92e919347b981a160d41e5f553d63d65eef651a3",
+      "bytes": 42232
+    },
+    {
+      "path": "reports/native_instance_generator_annotations_ck.json",
+      "sha256": "cfb4082f9b4b6c6ec0890e590018b84893ffe0fce69ba5b698259bb960d3bd11",
+      "bytes": 292085
+    }
+  ]
+}
