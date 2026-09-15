@@ -257,6 +257,20 @@ if(BUILD_TESTING)
     target_compile_options(bsp_native_math_tests PRIVATE /W4 /WX /fp:strict)
     add_test(NAME native_math_differential COMMAND bsp_native_math_tests)
   endif()
+  # The Python tool tests were outside CTest, so a green build said nothing about them and a broken
+  # exporter test rode on main unnoticed. Registered only when pytest is importable, so a machine
+  # without it still configures; the test itself fails loudly if the suite regresses.
+  find_package(Python3 COMPONENTS Interpreter QUIET)
+  if(Python3_Interpreter_FOUND)
+    execute_process(COMMAND "${Python3_EXECUTABLE}" -c "import pytest"
+                    RESULT_VARIABLE BSP_PYTEST_MISSING OUTPUT_QUIET ERROR_QUIET)
+    if(BSP_PYTEST_MISSING EQUAL 0)
+      add_test(NAME tool_tests COMMAND "${Python3_EXECUTABLE}" -m pytest tests -q
+               WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}")
+    else()
+      message(STATUS "pytest not importable; the tool_tests CTest entry is skipped")
+    endif()
+  endif()
 endif()
 
 if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/local/gui_geometry_reference.hpp")
