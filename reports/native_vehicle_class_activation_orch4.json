@@ -9,6 +9,20 @@
     "snapshot_function_count": 64122,
     "access": "read_only"
   },
+  "original_spans": [
+    {
+      "address": "007f6e50",
+      "bytes": 297,
+      "sha256": "b591ae4bc496e4d0d476596e4a2f63d290ac09b30d4293d5524e252dbcb94c82",
+      "live_disk_match": true
+    },
+    {
+      "address": "00d08b88",
+      "bytes": 8,
+      "sha256": "b8ae6633c93899b397f0a5e12a2a0943adf7639f4ea8b834a72c38bbcedd7a4f",
+      "live_disk_match": true
+    }
+  ],
   "routines": [
     {
       "address": "009598d0",
@@ -137,12 +151,39 @@
     }
   ],
   "verification": {
-    "report_call_check": "pending",
+    "report_call_check": "9 call rows checked, 0 failed after fixture evidence update",
     "msvc_win32_build": "passed after exact x87, validation and volatile-reload correction",
     "ctest": "2 of 2 registered tests passed after correction: reconstructed_math and tool_tests",
-    "native_differential": false,
+    "combined_candidate": "2ccb5609",
+    "combined_msvc_win32_build": "passed",
+    "combined_ctest": "3 of 3 passed: reconstructed_math, native_math_differential, tool_tests",
+    "native_differential": "007f6e50 platform body only passed; 009598d0 wrapper not runtime compared",
     "runtime_reachable_log": false,
     "gameplay_validated": false
+  },
+  "platform_fixture": {
+    "scope": "one paired original/source execution of complete 297-byte 007f6e50 only",
+    "source_sha256": "2ee253a22479097d11660ec79ab8d14bf567029206b826d0939a4b87820e6eeb",
+    "header_sha256": "829d5f01a957abc119264570506ec2fc6a1213ccfff1f406cd9c5a0982a5da7a",
+    "bsp_core_lib_sha256": "a0f847ccbabdda758100b9ddf077da4396c98872e197eedc50f4807b1ed3c035",
+    "bsp_zlib121_lib_sha256": "ed4a21e7a6a61ccaa28a08133dcc8da9fbd3b45d5c47d5066eec00f4f7c972f5",
+    "probe_source_sha256": "b8301c48d0262c9024842355fbd826de736a64bca1adc8371444145f80abaa21",
+    "original_bytes_header_sha256": "e9a02c8e4ce97ec050b0b0252e9d588a67e47d5f8723fd757da2ac83f888b12a",
+    "probe_exe_sha256": "a0eda1db49e52747d9da584e9e211d4972d2460c20a20806dbfd737117b5eadb",
+    "fixture": "returning current-sentinel repair; PC64 threshold-minus-2^-65 zero arc; flagged signaling-NaN arc; exact-threshold survivor; final scan",
+    "outcome": {
+      "original_source_identical": true,
+      "count": 3,
+      "activation_calls": 1,
+      "invalid_calls": 1,
+      "sentinel_restored": true,
+      "x87_status": 0,
+      "x87_control": 895,
+      "precision_sensitive_arc_removed": true,
+      "flagged_signaling_nan_kept_without_fp_invalid": true,
+      "exact_threshold_arc_retained": true
+    },
+    "boundaries": "actual bsp_core and pinned zlib linked; device call and returning validator fixture-provided; no real 00443490/00443090/model path"
   },
   "continuation": {
     "addresses": [

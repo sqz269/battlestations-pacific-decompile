@@ -118,9 +118,31 @@ than assigning it a broader semantic contract.
 The strict MSVC Win32 build passes with the exact x87 tail and volatile outer
 reloads compiled into `bsp_core`. Both registered CTests pass:
 `reconstructed_math` and `tool_tests`. The report call verifier checks nine
-fixed native call rows with zero failures. No new test suite was added. A
-separate original/source platform comparison, native host run and gameplay
-validation are not claimed here.
+fixed native call rows with zero failures. No new test suite was added.
+
+The parent then linked the exact source/header bytes from this packet into a
+combined candidate at `2ccb5609` and ran one ignored paired original/source
+fixture for **the 297-byte `007F6E50` platform body only**. The original span
+hash was `b591ae4bc496e4d0d476596e4a2f63d290ac09b30d4293d5524e252dbcb94c82`;
+the eight-byte `00D08B88` input hash was
+`b8ae6633c93899b397f0a5e12a2a0943adf7639f4ea8b834a72c38bbcedd7a4f`.
+Both spans matched live Ghidra and disk.
+
+Original and source outcomes were identical: remaining arc count 3, one
+fixture device call, one returning validator call, repaired sentinel true,
+x87 status 0 and control word 895 (`037Fh`). Under precision-control 64, the
+`max=threshold, min=2^-65` zero-flag arc was removed. A flagged signaling-NaN
+payload was retained without setting FP invalid, and an exact-threshold arc was
+retained. The source and header pins were respectively
+`2ee253a22479097d11660ec79ab8d14bf567029206b826d0939a4b87820e6eeb` and
+`829d5f01a957abc119264570506ec2fc6a1213ccfff1f406cd9c5a0982a5da7a`.
+The fixture linked the actual `bsp_core.lib` and pinned `bsp_zlib121.lib`;
+the device call and returning validator were fixture-provided boundaries.
+
+The combined strict Win32 build and all three registered CTests passed,
+including `native_math_differential`. This does not dynamically compare the
+112-byte `009598D0` wrapper, exercise real `00443490`/`00443090`, reach the
+model-admission path or validate gameplay.
 
 ## Continuation scope
 
