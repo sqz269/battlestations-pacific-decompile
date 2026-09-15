@@ -223,6 +223,30 @@ struct GuiNativeGeometryOwners::Impl {
             throw;
         }
     }
+    NativeMeshSectionStorage* create_native_section(GuiNativeSectionAcquired& acquired) {
+        require(!acquired.started && !acquired.creator && !acquired.companion &&
+            !acquired.owner_record && !acquired.registered,
+            "Native section admission requires one fresh acquired frame");
+        acquired.started = true;
+        auto it = section_entries.emplace(section_entries.end(), *this);
+        try {
+            it->raw = create_native_mesh_section_00533fa0(
+                sections.pool_010901d4, constants.maximum_00ce4970);
+        } catch (...) {
+            section_entries.erase(it); // No completed native creator exists.
+            throw;
+        }
+        if (!it->raw) { section_entries.erase(it); return nullptr; }
+        acquired.creator = it->raw;
+        acquired.owner_record = &*it;
+        it->reference = std::make_unique<NativeMeshSectionReference>(*it->raw, sections,
+            NativeMeshSectionCompanionDisposal{&*it, retire_section});
+        acquired.companion = it->reference.get();
+        registration.bind(registration.context, it->raw, *it->reference);
+        it->registered = true;
+        acquired.registered = true;
+        return it->raw;
+    }
     NativeMeshSectionStorage* create_section() {
         auto it = section_entries.emplace(section_entries.end(), *this);
         try {
@@ -356,6 +380,8 @@ GuiNativeGeometryOwners::GuiNativeGeometryOwners(NativeMeshEnvironment& meshes,
 GuiNativeGeometryOwners::~GuiNativeGeometryOwners() = default;
 NativeMeshStorage* GuiNativeGeometryOwners::create_mesh() { return impl_->create_mesh(); }
 NativeMeshSectionStorage* GuiNativeGeometryOwners::create_section() { return impl_->create_section(); }
+NativeMeshSectionStorage* GuiNativeGeometryOwners::create_native_section_00533fa0(
+    GuiNativeSectionAcquired& acquired) { return impl_->create_native_section(acquired); }
 NativeMeshStorage* GuiNativeGeometryOwners::clone_mesh_for_text_00b742a0(
     NativeMeshStorage& source, const volatile std::uint32_t* mesh_profile,
     NativeMaterialDestructionAccess& materials,

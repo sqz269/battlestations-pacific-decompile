@@ -1,0 +1,516 @@
+{
+  "packet": "orch4_native_mesh_subset_loading_cm",
+  "entries": [
+    {
+      "address": "00b941d0",
+      "name": "BSP_Mesh_ReadSubsetField",
+      "before_comment": {
+        "address": "00b941d0",
+        "function_name": "BSP_Mesh_ReadSubsetField",
+        "comment": "[BSP reconstruction 00b941d0]\nFive DWORD prefix, primitive remap, counted effect-name alias, ordered Texture/LightingSettings/BoundingSphere/VertexStreamIndex children; finalize section and release temporaries. Original ABI: ECX output-pair context; stack mesh,child handle; RET8. Evidence: docs/MESH_SUBSET_LOD_FIELDS.md; reports/mesh_subset_lod_fields_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation."
+      },
+      "before_documentation": {
+        "hash": "93d687c229abade23b47ca7dc32d4f5080ac8c391dd5e3f6e63eda1eb4b9b4c0",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b941d0",
+        "function_name": "BSP_Mesh_ReadSubsetField",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00b941d0]\nFive DWORD prefix, primitive remap, counted effect-name alias, ordered Texture/LightingSettings/BoundingSphere/VertexStreamIndex children; finalize section and release temporaries. Original ABI: ECX output-pair context; stack mesh,child handle; RET8. Evidence: docs/MESH_SUBSET_LOD_FIELDS.md; reports/mesh_subset_lod_fields_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation.",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "uVar8",
+            "type": "undefined8",
+            "storage": "(VARIABLE, 0x0, 8)"
+          },
+          {
+            "name": "extraout_EDX_08",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "unused_edx_11",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "extraout_EDX_09",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "unused_edx_12",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "extraout_EDX_06",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "unused_edx_09",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "unused_edx_10",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "extraout_EDX_07",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "unused_edx_05",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "unused_edx_06",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "unused_edx_07",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "unused_edx_08",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "local_4",
+            "type": "uint",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "uVar2",
+            "type": "uint",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "uVar3",
+            "type": "undefined4",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "iVar4",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "local_14",
+            "type": "size_t",
+            "storage": "(stack, 0xffffffffffffffec, 4)"
+          },
+          {
+            "name": "actual_material",
+            "type": "undefined4 *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "local_10",
+            "type": "char *",
+            "storage": "(stack, 0xfffffffffffffff0, 4)"
+          },
+          {
+            "name": "cVar1",
+            "type": "char",
+            "storage": "(register, 0x0, 1)"
+          },
+          {
+            "name": "section",
+            "type": "undefined4 *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "pvStack_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "pcStack_8",
+            "type": "undefined *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "unused_edx_04",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "extraout_EDX_03",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "extraout_EDX_04",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "extraout_EDX_05",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "extraout_EDX",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "extraout_EDX_00",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "extraout_EDX_01",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "extraout_EDX_02",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "unused_edx_00",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "unused_edx_01",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "unused_edx_02",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "unused_edx_03",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "LVar5",
+            "type": "LONG",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "pvVar6",
+            "type": "void *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "pvVar7",
+            "type": "void *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "unused_edx",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 53,
+            "name": "switchD"
+          },
+          {
+            "relative_offset": 60,
+            "name": "caseD_1"
+          },
+          {
+            "relative_offset": 67,
+            "name": "caseD_2"
+          },
+          {
+            "relative_offset": 74,
+            "name": "caseD_3"
+          },
+          {
+            "relative_offset": 81,
+            "name": "caseD_4"
+          },
+          {
+            "relative_offset": 88,
+            "name": "caseD_5"
+          },
+          {
+            "relative_offset": 95,
+            "name": "caseD_0"
+          },
+          {
+            "relative_offset": 100,
+            "name": "LAB_00b94234"
+          },
+          {
+            "relative_offset": 234,
+            "name": "LAB_00b942ba"
+          },
+          {
+            "relative_offset": 281,
+            "name": "LAB_00b942e9"
+          },
+          {
+            "relative_offset": 307,
+            "name": "LAB_00b94303"
+          },
+          {
+            "relative_offset": 382,
+            "name": "LAB_00b9434e"
+          },
+          {
+            "relative_offset": 440,
+            "name": "LAB_00b94388"
+          },
+          {
+            "relative_offset": 520,
+            "name": "LAB_00b943d8"
+          },
+          {
+            "relative_offset": 581,
+            "name": "LAB_00b94415"
+          },
+          {
+            "relative_offset": 590,
+            "name": "LAB_00b9441e"
+          },
+          {
+            "relative_offset": 619,
+            "name": "LAB_00b9443b"
+          },
+          {
+            "relative_offset": 642,
+            "name": "LAB_00b94452"
+          },
+          {
+            "relative_offset": 692,
+            "name": "LAB_00b94484"
+          },
+          {
+            "relative_offset": 733,
+            "name": "LAB_00b944ad"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "evidence": "CM complete B941D0 native subset source750B plus three compiler supports26B, 244 instruction owners,41 direct and4 indirect transfers, saved Ghidra/disk equal. Full five-word primitive/range prefix, soldiers.mshd alias, numeric material/cache factory and canonical admission, ordered Texture/LightingSettings/BoundingSphere/VertexStreamIndex/unknown children, x87 direct-discard scalar reads, actual layout, mesh publication BEFORE instance-generator finalization, section creator release then temporary-name return. Native EH owns only name/current child; section/material/texture acquisitions and mesh publications remain on failure. New GuiNativeGeometryOwners section admission preserves completed creator/companion on host bind failure. Missing CC2EA0 handler created under lock; no byte clear/no-return changes. Actual RTX5090 D3D9 hot-cache fixture passes full subset, generic generator/layout readback, transactional section-bind failure and second sphere-read failure;15 canonical owners retired. Fixture cached effect uses actual B407A0/B43700 constructors with explicit zero pass preimage and descriptor generic name, not a fake B46950 result. Cold shader/program loading, native ABI/FH3/SEH and gameplay remain unvalidated. Complete 750B. ECX output-pair context forwarded only to unused child receivers; stack actual mesh and parent handle; RET8. Source read_native_mesh_subset_00b941d0.",
+      "prototype": "void __fastcall BSP_Mesh_ReadSubsetField(void* unused_pair, void* unused_edx, void* mesh, void* parent_handle)",
+      "prototype_result": "Successfully set prototype for function at 00b941d0 with __fastcall calling convention",
+      "ledger_name_output": "00b941d0 -> BSP_Mesh_ReadSubsetField\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00b941d0\", \"name\": \"BSP_Mesh_ReadSubsetField\", \"evidence\": \"Five DWORD prefix, primitive remap, counted effect-name alias, ordered Texture/LightingSettings/BoundingSphere/VertexStreamIndex children; finalize section and release temporaries. Original ABI: ECX output-pair context; stack mesh,child handle; RET8. Evidence: docs/MESH_SUBSET_LOD_FIELDS.md; reports/mesh_subset_lod_fields_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation.\"})\n",
+      "ledger_function_output": "00b941d0 function read_native_mesh_subset_00b941d0\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00b941d0",
+        "function_name": "BSP_Mesh_ReadSubsetField",
+        "comment": "[BSP reconstruction 00b941d0]\nFive DWORD prefix, primitive remap, counted effect-name alias, ordered Texture/LightingSettings/BoundingSphere/VertexStreamIndex children; finalize section and release temporaries. Original ABI: ECX output-pair context; stack mesh,child handle; RET8. Evidence: docs/MESH_SUBSET_LOD_FIELDS.md; reports/mesh_subset_lod_fields_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation.\n\n[BSP reconstruction 00b941d0] CM update\nCM complete B941D0 native subset source750B plus three compiler supports26B, 244 instruction owners,41 direct and4 indirect transfers, saved Ghidra/disk equal. Full five-word primitive/range prefix, soldiers.mshd alias, numeric material/cache factory and canonical admission, ordered Texture/LightingSettings/BoundingSphere/VertexStreamIndex/unknown children, x87 direct-discard scalar reads, actual layout, mesh publication BEFORE instance-generator finalization, section creator release then temporary-name return. Native EH owns only name/current child; section/material/texture acquisitions and mesh publications remain on failure. New GuiNativeGeometryOwners section admission preserves completed creator/companion on host bind failure. Missing CC2EA0 handler created under lock; no byte clear/no-return changes. Actual RTX5090 D3D9 hot-cache fixture passes full subset, generic generator/layout readback, transactional section-bind failure and second sphere-read failure;15 canonical owners retired. Fixture cached effect uses actual B407A0/B43700 constructors with explicit zero pass preimage and descriptor generic name, not a fake B46950 result. Cold shader/program loading, native ABI/FH3/SEH and gameplay remain unvalidated. Complete 750B. ECX output-pair context forwarded only to unused child receivers; stack actual mesh and parent handle; RET8. Source read_native_mesh_subset_00b941d0."
+      }
+    },
+    {
+      "address": "00cc2e90",
+      "name": "Unwind@00cc2e90",
+      "before_comment": {
+        "address": "00cc2e90",
+        "function_name": "Unwind@00cc2e90"
+      },
+      "before_documentation": {
+        "hash": "5160a80448bef202077805e7b60dba17ba6bee56bd919d0f4086d51e5634aef7",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00cc2e90",
+        "function_name": "Unwind@00cc2e90",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "unaff_EBP",
+            "type": "int",
+            "storage": "(register, 0x14, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 80.0
+      },
+      "evidence": "CM complete B941D0 native subset source750B plus three compiler supports26B, 244 instruction owners,41 direct and4 indirect transfers, saved Ghidra/disk equal. Full five-word primitive/range prefix, soldiers.mshd alias, numeric material/cache factory and canonical admission, ordered Texture/LightingSettings/BoundingSphere/VertexStreamIndex/unknown children, x87 direct-discard scalar reads, actual layout, mesh publication BEFORE instance-generator finalization, section creator release then temporary-name return. Native EH owns only name/current child; section/material/texture acquisitions and mesh publications remain on failure. New GuiNativeGeometryOwners section admission preserves completed creator/companion on host bind failure. Missing CC2EA0 handler created under lock; no byte clear/no-return changes. Actual RTX5090 D3D9 hot-cache fixture passes full subset, generic generator/layout readback, transactional section-bind failure and second sphere-read failure;15 canonical owners retired. Fixture cached effect uses actual B407A0/B43700 constructors with explicit zero pass preimage and descriptor generic name, not a fake B46950 result. Cold shader/program loading, native ABI/FH3/SEH and gameplay remain unvalidated. Complete unwind or dispatch handler; support evidence only.",
+      "ledger_name_output": "00cc2e90 -> Unwind@00cc2e90\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00cc2e90",
+        "function_name": "Unwind@00cc2e90",
+        "comment": "\n\n[BSP reconstruction 00cc2e90] CM update\nCM complete B941D0 native subset source750B plus three compiler supports26B, 244 instruction owners,41 direct and4 indirect transfers, saved Ghidra/disk equal. Full five-word primitive/range prefix, soldiers.mshd alias, numeric material/cache factory and canonical admission, ordered Texture/LightingSettings/BoundingSphere/VertexStreamIndex/unknown children, x87 direct-discard scalar reads, actual layout, mesh publication BEFORE instance-generator finalization, section creator release then temporary-name return. Native EH owns only name/current child; section/material/texture acquisitions and mesh publications remain on failure. New GuiNativeGeometryOwners section admission preserves completed creator/companion on host bind failure. Missing CC2EA0 handler created under lock; no byte clear/no-return changes. Actual RTX5090 D3D9 hot-cache fixture passes full subset, generic generator/layout readback, transactional section-bind failure and second sphere-read failure;15 canonical owners retired. Fixture cached effect uses actual B407A0/B43700 constructors with explicit zero pass preimage and descriptor generic name, not a fake B46950 result. Cold shader/program loading, native ABI/FH3/SEH and gameplay remain unvalidated. Complete unwind or dispatch handler; support evidence only."
+      }
+    },
+    {
+      "address": "00cc2e98",
+      "name": "Unwind@00cc2e98",
+      "before_comment": {
+        "address": "00cc2e98",
+        "function_name": "Unwind@00cc2e98"
+      },
+      "before_documentation": {
+        "hash": "77adfd4d6704ee694fcad8b10f6345ea3b73559232315bbcbd4c9cf6369af352",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00cc2e98",
+        "function_name": "Unwind@00cc2e98",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "unaff_EBP",
+            "type": "int",
+            "storage": "(register, 0x14, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 80.0
+      },
+      "evidence": "CM complete B941D0 native subset source750B plus three compiler supports26B, 244 instruction owners,41 direct and4 indirect transfers, saved Ghidra/disk equal. Full five-word primitive/range prefix, soldiers.mshd alias, numeric material/cache factory and canonical admission, ordered Texture/LightingSettings/BoundingSphere/VertexStreamIndex/unknown children, x87 direct-discard scalar reads, actual layout, mesh publication BEFORE instance-generator finalization, section creator release then temporary-name return. Native EH owns only name/current child; section/material/texture acquisitions and mesh publications remain on failure. New GuiNativeGeometryOwners section admission preserves completed creator/companion on host bind failure. Missing CC2EA0 handler created under lock; no byte clear/no-return changes. Actual RTX5090 D3D9 hot-cache fixture passes full subset, generic generator/layout readback, transactional section-bind failure and second sphere-read failure;15 canonical owners retired. Fixture cached effect uses actual B407A0/B43700 constructors with explicit zero pass preimage and descriptor generic name, not a fake B46950 result. Cold shader/program loading, native ABI/FH3/SEH and gameplay remain unvalidated. Complete unwind or dispatch handler; support evidence only.",
+      "ledger_name_output": "00cc2e98 -> Unwind@00cc2e98\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00cc2e98",
+        "function_name": "Unwind@00cc2e98",
+        "comment": "\n\n[BSP reconstruction 00cc2e98] CM update\nCM complete B941D0 native subset source750B plus three compiler supports26B, 244 instruction owners,41 direct and4 indirect transfers, saved Ghidra/disk equal. Full five-word primitive/range prefix, soldiers.mshd alias, numeric material/cache factory and canonical admission, ordered Texture/LightingSettings/BoundingSphere/VertexStreamIndex/unknown children, x87 direct-discard scalar reads, actual layout, mesh publication BEFORE instance-generator finalization, section creator release then temporary-name return. Native EH owns only name/current child; section/material/texture acquisitions and mesh publications remain on failure. New GuiNativeGeometryOwners section admission preserves completed creator/companion on host bind failure. Missing CC2EA0 handler created under lock; no byte clear/no-return changes. Actual RTX5090 D3D9 hot-cache fixture passes full subset, generic generator/layout readback, transactional section-bind failure and second sphere-read failure;15 canonical owners retired. Fixture cached effect uses actual B407A0/B43700 constructors with explicit zero pass preimage and descriptor generic name, not a fake B46950 result. Cold shader/program loading, native ABI/FH3/SEH and gameplay remain unvalidated. Complete unwind or dispatch handler; support evidence only."
+      }
+    },
+    {
+      "address": "00cc2ea0",
+      "name": "BSP_Mesh_SubsetFieldHandler_00cc2ea0",
+      "before_comment": {
+        "address": "00cc2ea0",
+        "function_name": "BSP_Mesh_SubsetFieldHandler_00cc2ea0",
+        "comment": ""
+      },
+      "before_documentation": {
+        "hash": "f0f2f68cf1132ae80dae34c6f69542164e987ef3beaddd17388b21e68e3a2bc1",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00cc2ea0",
+        "function_name": "BSP_Mesh_SubsetFieldHandler_00cc2ea0",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "",
+        "parameters": [],
+        "local_variables": [],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 100.0
+      },
+      "evidence": "CM complete B941D0 native subset source750B plus three compiler supports26B, 244 instruction owners,41 direct and4 indirect transfers, saved Ghidra/disk equal. Full five-word primitive/range prefix, soldiers.mshd alias, numeric material/cache factory and canonical admission, ordered Texture/LightingSettings/BoundingSphere/VertexStreamIndex/unknown children, x87 direct-discard scalar reads, actual layout, mesh publication BEFORE instance-generator finalization, section creator release then temporary-name return. Native EH owns only name/current child; section/material/texture acquisitions and mesh publications remain on failure. New GuiNativeGeometryOwners section admission preserves completed creator/companion on host bind failure. Missing CC2EA0 handler created under lock; no byte clear/no-return changes. Actual RTX5090 D3D9 hot-cache fixture passes full subset, generic generator/layout readback, transactional section-bind failure and second sphere-read failure;15 canonical owners retired. Fixture cached effect uses actual B407A0/B43700 constructors with explicit zero pass preimage and descriptor generic name, not a fake B46950 result. Cold shader/program loading, native ABI/FH3/SEH and gameplay remain unvalidated. Complete unwind or dispatch handler; support evidence only.",
+      "ledger_name_output": "00cc2ea0 -> BSP_Mesh_SubsetFieldHandler_00cc2ea0\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00cc2ea0",
+        "function_name": "BSP_Mesh_SubsetFieldHandler_00cc2ea0",
+        "comment": "\n\n[BSP reconstruction 00cc2ea0] CM update\nCM complete B941D0 native subset source750B plus three compiler supports26B, 244 instruction owners,41 direct and4 indirect transfers, saved Ghidra/disk equal. Full five-word primitive/range prefix, soldiers.mshd alias, numeric material/cache factory and canonical admission, ordered Texture/LightingSettings/BoundingSphere/VertexStreamIndex/unknown children, x87 direct-discard scalar reads, actual layout, mesh publication BEFORE instance-generator finalization, section creator release then temporary-name return. Native EH owns only name/current child; section/material/texture acquisitions and mesh publications remain on failure. New GuiNativeGeometryOwners section admission preserves completed creator/companion on host bind failure. Missing CC2EA0 handler created under lock; no byte clear/no-return changes. Actual RTX5090 D3D9 hot-cache fixture passes full subset, generic generator/layout readback, transactional section-bind failure and second sphere-read failure;15 canonical owners retired. Fixture cached effect uses actual B407A0/B43700 constructors with explicit zero pass preimage and descriptor generic name, not a fake B46950 result. Cold shader/program loading, native ABI/FH3/SEH and gameplay remain unvalidated. Complete unwind or dispatch handler; support evidence only."
+      }
+    }
+  ],
+  "actions": [
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00b941d0",
+        "prototype": "void __fastcall BSP_Mesh_ReadSubsetField(void* unused_pair, void* unused_edx, void* mesh, void* parent_handle)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00b941d0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b941d0",
+        "new_name": "BSP_Mesh_ReadSubsetField"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b941d0 from 'BSP_Mesh_ReadSubsetField' to 'BSP_Mesh_ReadSubsetField'\", \"warnings\": [\"Function name 'BSP_Mesh_ReadSubsetField' \\u2014 main part 'Mesh_ReadSubsetField' is not PascalCase. Expected: MeshReadsubsetfield\", \"Function name 'BSP_Mesh_ReadSubsetField' \\u2014 main part 'Mesh_ReadSubsetField' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_Mesh_ReadSubsetField' does not start with a recognized verb. First word 'Mesh_' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b941d0",
+        "new_name": "BSP_Mesh_ReadSubsetField"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b941d0 from 'BSP_Mesh_ReadSubsetField' to 'BSP_Mesh_ReadSubsetField'\", \"warnings\": [\"Function name 'BSP_Mesh_ReadSubsetField' \\u2014 main part 'Mesh_ReadSubsetField' is not PascalCase. Expected: MeshReadsubsetfield\", \"Function name 'BSP_Mesh_ReadSubsetField' \\u2014 main part 'Mesh_ReadSubsetField' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_Mesh_ReadSubsetField' does not start with a recognized verb. First word 'Mesh_' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00b941d0",
+        "comment": "[BSP reconstruction 00b941d0]\nFive DWORD prefix, primitive remap, counted effect-name alias, ordered Texture/LightingSettings/BoundingSphere/VertexStreamIndex children; finalize section and release temporaries. Original ABI: ECX output-pair context; stack mesh,child handle; RET8. Evidence: docs/MESH_SUBSET_LOD_FIELDS.md; reports/mesh_subset_lod_fields_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation.\n\n[BSP reconstruction 00b941d0] CM update\nCM complete B941D0 native subset source750B plus three compiler supports26B, 244 instruction owners,41 direct and4 indirect transfers, saved Ghidra/disk equal. Full five-word primitive/range prefix, soldiers.mshd alias, numeric material/cache factory and canonical admission, ordered Texture/LightingSettings/BoundingSphere/VertexStreamIndex/unknown children, x87 direct-discard scalar reads, actual layout, mesh publication BEFORE instance-generator finalization, section creator release then temporary-name return. Native EH owns only name/current child; section/material/texture acquisitions and mesh publications remain on failure. New GuiNativeGeometryOwners section admission preserves completed creator/companion on host bind failure. Missing CC2EA0 handler created under lock; no byte clear/no-return changes. Actual RTX5090 D3D9 hot-cache fixture passes full subset, generic generator/layout readback, transactional section-bind failure and second sphere-read failure;15 canonical owners retired. Fixture cached effect uses actual B407A0/B43700 constructors with explicit zero pass preimage and descriptor generic name, not a fake B46950 result. Cold shader/program loading, native ABI/FH3/SEH and gameplay remain unvalidated. Complete 750B. ECX output-pair context forwarded only to unused child receivers; stack actual mesh and parent handle; RET8. Source read_native_mesh_subset_00b941d0."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00b941d0\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00cc2e90",
+        "new_name": "Unwind@00cc2e90"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00cc2e90 from 'Unwind@00cc2e90' to 'Unwind@00cc2e90'\", \"warnings\": [\"Function name 'Unwind@00cc2e90' \\u2014 main part 'Unwind@00cc2e90' is not PascalCase. Expected: Unwind@00cc2e90\", \"Function name 'Unwind@00cc2e90' does not start with a recognized verb. First word 'Unwind@00cc2e90' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00cc2e90",
+        "comment": "\n\n[BSP reconstruction 00cc2e90] CM update\nCM complete B941D0 native subset source750B plus three compiler supports26B, 244 instruction owners,41 direct and4 indirect transfers, saved Ghidra/disk equal. Full five-word primitive/range prefix, soldiers.mshd alias, numeric material/cache factory and canonical admission, ordered Texture/LightingSettings/BoundingSphere/VertexStreamIndex/unknown children, x87 direct-discard scalar reads, actual layout, mesh publication BEFORE instance-generator finalization, section creator release then temporary-name return. Native EH owns only name/current child; section/material/texture acquisitions and mesh publications remain on failure. New GuiNativeGeometryOwners section admission preserves completed creator/companion on host bind failure. Missing CC2EA0 handler created under lock; no byte clear/no-return changes. Actual RTX5090 D3D9 hot-cache fixture passes full subset, generic generator/layout readback, transactional section-bind failure and second sphere-read failure;15 canonical owners retired. Fixture cached effect uses actual B407A0/B43700 constructors with explicit zero pass preimage and descriptor generic name, not a fake B46950 result. Cold shader/program loading, native ABI/FH3/SEH and gameplay remain unvalidated. Complete unwind or dispatch handler; support evidence only."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00cc2e90\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00cc2e98",
+        "new_name": "Unwind@00cc2e98"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00cc2e98 from 'Unwind@00cc2e98' to 'Unwind@00cc2e98'\", \"warnings\": [\"Function name 'Unwind@00cc2e98' \\u2014 main part 'Unwind@00cc2e98' is not PascalCase. Expected: Unwind@00cc2e98\", \"Function name 'Unwind@00cc2e98' does not start with a recognized verb. First word 'Unwind@00cc2e98' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00cc2e98",
+        "comment": "\n\n[BSP reconstruction 00cc2e98] CM update\nCM complete B941D0 native subset source750B plus three compiler supports26B, 244 instruction owners,41 direct and4 indirect transfers, saved Ghidra/disk equal. Full five-word primitive/range prefix, soldiers.mshd alias, numeric material/cache factory and canonical admission, ordered Texture/LightingSettings/BoundingSphere/VertexStreamIndex/unknown children, x87 direct-discard scalar reads, actual layout, mesh publication BEFORE instance-generator finalization, section creator release then temporary-name return. Native EH owns only name/current child; section/material/texture acquisitions and mesh publications remain on failure. New GuiNativeGeometryOwners section admission preserves completed creator/companion on host bind failure. Missing CC2EA0 handler created under lock; no byte clear/no-return changes. Actual RTX5090 D3D9 hot-cache fixture passes full subset, generic generator/layout readback, transactional section-bind failure and second sphere-read failure;15 canonical owners retired. Fixture cached effect uses actual B407A0/B43700 constructors with explicit zero pass preimage and descriptor generic name, not a fake B46950 result. Cold shader/program loading, native ABI/FH3/SEH and gameplay remain unvalidated. Complete unwind or dispatch handler; support evidence only."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00cc2e98\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00cc2ea0",
+        "new_name": "BSP_Mesh_SubsetFieldHandler_00cc2ea0"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00cc2ea0 from 'BSP_Mesh_SubsetFieldHandler_00cc2ea0' to 'BSP_Mesh_SubsetFieldHandler_00cc2ea0'\", \"warnings\": [\"Function name 'BSP_Mesh_SubsetFieldHandler_00cc2ea0' \\u2014 main part 'Mesh_SubsetFieldHandler_00cc2ea0' is not PascalCase. Expected: MeshSubsetfieldhandler00cc2ea0\", \"Function name 'BSP_Mesh_SubsetFieldHandler_00cc2ea0' \\u2014 main part 'Mesh_SubsetFieldHandler_00cc2ea0' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_Mesh_SubsetFieldHandler_00cc2ea0' does not start with a recognized verb. First word 'Mesh_' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00cc2ea0",
+        "comment": "\n\n[BSP reconstruction 00cc2ea0] CM update\nCM complete B941D0 native subset source750B plus three compiler supports26B, 244 instruction owners,41 direct and4 indirect transfers, saved Ghidra/disk equal. Full five-word primitive/range prefix, soldiers.mshd alias, numeric material/cache factory and canonical admission, ordered Texture/LightingSettings/BoundingSphere/VertexStreamIndex/unknown children, x87 direct-discard scalar reads, actual layout, mesh publication BEFORE instance-generator finalization, section creator release then temporary-name return. Native EH owns only name/current child; section/material/texture acquisitions and mesh publications remain on failure. New GuiNativeGeometryOwners section admission preserves completed creator/companion on host bind failure. Missing CC2EA0 handler created under lock; no byte clear/no-return changes. Actual RTX5090 D3D9 hot-cache fixture passes full subset, generic generator/layout readback, transactional section-bind failure and second sphere-read failure;15 canonical owners retired. Fixture cached effect uses actual B407A0/B43700 constructors with explicit zero pass preimage and descriptor generic name, not a fake B46950 result. Cold shader/program loading, native ABI/FH3/SEH and gameplay remain unvalidated. Complete unwind or dispatch handler; support evidence only."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00cc2ea0\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": "{\"success\": true, \"program\": \"battlestationspacific.exe\", \"message\": \"Program saved successfully\"}"
+    }
+  ],
+  "saved": true,
+  "exports_refreshed": true
+}

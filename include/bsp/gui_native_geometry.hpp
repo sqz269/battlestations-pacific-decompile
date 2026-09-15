@@ -8,6 +8,12 @@
 
 namespace bsp {
 struct NativeVertexDeclarationLoadingContext;
+struct GuiNativeSectionAcquired {
+    NativeMeshSectionStorage* creator{};
+    RenderCommandReference* companion{};
+    void* owner_record{};
+    bool started{}, registered{};
+};
 struct GuiNativeDeclarationAcquired {
     void* reference{}; // Caller reference returned by the actual cache.
     RenderCommandReference* companion{}; // Borrows SAME actual+04.
@@ -47,6 +53,11 @@ public:
     // return ONE creator reference. Release through the canonical owners.
     NativeMeshStorage* create_mesh();
     NativeMeshSectionStorage* create_section();
+
+    // Actual533FA0 followed by metadata-only canonical admission. A completed
+    // native creator/companion remains in acquired on host allocation/bind
+    // failure; no destructor rollback or extra reference. One fresh call only.
+    NativeMeshSectionStorage* create_native_section_00533fa0(GuiNativeSectionAcquired&);
 
     // B742A0 -> B73F50, Text flags26h or exactly3E when streams is supplied.
     // Source is a registered actual

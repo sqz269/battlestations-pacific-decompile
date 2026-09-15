@@ -1,0 +1,64 @@
+{
+  "packet": "orch4_native_mesh_subset_loading_cm",
+  "entries": [
+    {
+      "address": "00cc2ea0",
+      "before_documentation": {
+        "no_function": true
+      },
+      "before_comment": {
+        "no_function": true,
+        "comment": ""
+      },
+      "complete": true,
+      "after_comment": {
+        "address": "00cc2ea0",
+        "function_name": "BSP_Mesh_SubsetFieldHandler_00cc2ea0",
+        "comment": ""
+      },
+      "prior_comment_preserved": true,
+      "all_instruction_owners_verified": true
+    }
+  ],
+  "actions": [
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00cc2ea0",
+        "end_address": "00cc2eaa"
+      },
+      "result": "{\"success\": true, \"start_address\": \"00cc2ea0\", \"end_address\": \"00cc2ea9\", \"bytes_disassembled\": 10, \"message\": \"Successfully disassembled 10 byte(s)\"}"
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00cc2ea0",
+        "name": "BSP_Mesh_SubsetFieldHandler_00cc2ea0",
+        "disassemble_first": false
+      },
+      "result": "{\"success\": true, \"address\": \"00cc2ea0\", \"function_name\": \"BSP_Mesh_SubsetFieldHandler_00cc2ea0\", \"entry_point\": \"00cc2ea0\", \"body_size\": 10, \"message\": \"Function created successfully at 00cc2ea0\", \"warnings\": [\"Function name 'BSP_Mesh_SubsetFieldHandler_00cc2ea0' \\u2014 main part 'Mesh_SubsetFieldHandler_00cc2ea0' is not PascalCase. Expected: MeshSubsetfieldhandler00cc2ea0\", \"Function name 'BSP_Mesh_SubsetFieldHandler_00cc2ea0' \\u2014 main part 'Mesh_SubsetFieldHandler_00cc2ea0' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_Mesh_SubsetFieldHandler_00cc2ea0' does not start with a recognized verb. First word 'Mesh_' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00cc2ea0",
+        "new_name": "BSP_Mesh_SubsetFieldHandler_00cc2ea0"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00cc2ea0 from 'BSP_Mesh_SubsetFieldHandler_00cc2ea0' to 'BSP_Mesh_SubsetFieldHandler_00cc2ea0'\", \"warnings\": [\"Function name 'BSP_Mesh_SubsetFieldHandler_00cc2ea0' \\u2014 main part 'Mesh_SubsetFieldHandler_00cc2ea0' is not PascalCase. Expected: MeshSubsetfieldhandler00cc2ea0\", \"Function name 'BSP_Mesh_SubsetFieldHandler_00cc2ea0' \\u2014 main part 'Mesh_SubsetFieldHandler_00cc2ea0' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_Mesh_SubsetFieldHandler_00cc2ea0' does not start with a recognized verb. First word 'Mesh_' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00cc2ea0",
+        "comment": ""
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00cc2ea0\"}"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": "{\"success\": true, \"program\": \"battlestationspacific.exe\", \"message\": \"Program saved successfully\"}"
+    }
+  ],
+  "saved": true
+}

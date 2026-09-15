@@ -1031,3 +1031,4 @@ cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_spatial_att
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_unit_part_attachment.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_spatial_lifecycle.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_unit_part_destruction.cpp)
+cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE src/native_mesh_subset_loading.cpp)
