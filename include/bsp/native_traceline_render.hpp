@@ -9,6 +9,7 @@ struct FrameClock;
 struct ClockTimestamp;
 class SystemTimeTimerVirtuals;
 struct NativeTracelineRenderAccess;
+struct NativeRender20Profiles;
 
 // Borrow the application's canonical native profile and render-command domains.
 // profile() resolves the CURRENT raw +00 table without changing the owner.
@@ -49,6 +50,11 @@ struct NativeTracelineRenderAccess {
     // +14 service on the SAME current FrameClock, returning its real signed
     // int64 pair. The source performs FILD/FILD/FDIVP/FSTP32 itself.
     const ClockTimestamp* (__fastcall* clock_current_14)(FrameClock&, SystemTimeTimerVirtuals&);
+    // Appended borrowed canonical table views for direct raw scene traversal.
+    // Keep pointer/backing identity stable through calls/reentry; words stay live.
+    // Null preserves the older model/Traceline bridge's application fallback
+    // for node/camera targets. New B72190/B6D990/B6FB80 entries require binding.
+    const NativeRender20Profiles* render20_profiles = nullptr;
 };
 
 // Complete AF26A0..AF3168. Original ECX actual1BCh Traceline, four stack
