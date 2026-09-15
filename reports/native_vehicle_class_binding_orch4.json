@@ -1,0 +1,383 @@
+{
+  "packet": "orch4_vehicle_binding_20260915",
+  "status": "evidence_only_complete_binder_static_schedule_source_closure_open",
+  "created_utc": "2026-09-15T19:47:29.959620+00:00",
+  "project": {
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "ghidra_mutations": false
+  },
+  "routines": [
+    {
+      "address": "0095f500",
+      "name": "BSP_VehicleClass_BindModelData",
+      "previous_name": "FUN_0095f500",
+      "name_kind": "descriptive hypothesis",
+      "body": "0095f500-0095fed5",
+      "native_bytes": 2518,
+      "listed_instructions": 633,
+      "coverage": "complete static listing and pseudocode review; no source reconstruction",
+      "source_bytes": 0,
+      "source_files": [],
+      "abi": "ECX class, no stacked arguments, RET; no useful return contract established"
+    }
+  ],
+  "steps": [
+    {
+      "address": "0095f525",
+      "native": "00879ad0",
+      "function": "0095f500",
+      "coverage": "complete static call-site inspection; no new source",
+      "contract_status": "canonical dependency",
+      "contract": "Incoming ECX class; no stack arguments; complete damageable model binding is external to this packet."
+    },
+    {
+      "address": "0095f544",
+      "native": "00bf6713",
+      "function": "0095f500",
+      "coverage": "complete static call-site inspection; no new source",
+      "contract_status": "canonical validation boundary",
+      "contract": "Returning invalid-parameter call; preserve captured values and reload only at native sites."
+    },
+    {
+      "address": "0095f55e",
+      "native": "00bf6713",
+      "function": "0095f500",
+      "coverage": "complete static call-site inspection; no new source",
+      "contract_status": "canonical validation boundary",
+      "contract": "Returning invalid-parameter call; preserve captured values and reload only at native sites."
+    },
+    {
+      "address": "0095f569",
+      "native": "00bf6713",
+      "function": "0095f500",
+      "coverage": "complete static call-site inspection; no new source",
+      "contract_status": "canonical validation boundary",
+      "contract": "Returning invalid-parameter call; preserve captured values and reload only at native sites."
+    },
+    {
+      "address": "0095f583",
+      "native": "00bf6713",
+      "function": "0095f500",
+      "coverage": "complete static call-site inspection; no new source",
+      "contract_status": "canonical validation boundary",
+      "contract": "Returning invalid-parameter call; preserve captured values and reload only at native sites."
+    },
+    {
+      "address": "0095f5b9",
+      "native": "004b3fc0",
+      "function": "0095f500",
+      "coverage": "complete static call-site inspection; no new source",
+      "contract_status": "canonical comparison boundary",
+      "contract": "Counted case-sensitive comparison of name and camera, min(length,6); ADD ESP,0Ch at0095F5BE."
+    },
+    {
+      "address": "0095f6d4",
+      "native": "00bf6713",
+      "function": "0095f500",
+      "coverage": "complete static call-site inspection; no new source",
+      "contract_status": "canonical validation boundary",
+      "contract": "Returning invalid-parameter call; preserve captured values and reload only at native sites."
+    },
+    {
+      "address": "0095f720",
+      "native": "00bf6713",
+      "function": "0095f500",
+      "coverage": "complete static call-site inspection; no new source",
+      "contract_status": "canonical validation boundary",
+      "contract": "Returning invalid-parameter call; preserve captured values and reload only at native sites."
+    },
+    {
+      "address": "0095f76f",
+      "native": "00bf6713",
+      "function": "0095f500",
+      "coverage": "complete static call-site inspection; no new source",
+      "contract_status": "canonical validation boundary",
+      "contract": "Returning invalid-parameter call; preserve captured values and reload only at native sites."
+    },
+    {
+      "address": "0095f81f",
+      "native": "00bf6713",
+      "function": "0095f500",
+      "coverage": "complete static call-site inspection; no new source",
+      "contract_status": "canonical validation boundary",
+      "contract": "Returning invalid-parameter call; preserve captured values and reload only at native sites."
+    },
+    {
+      "address": "0095f865",
+      "native": "00bf6713",
+      "function": "0095f500",
+      "coverage": "complete static call-site inspection; no new source",
+      "contract_status": "canonical validation boundary",
+      "contract": "Returning invalid-parameter call; preserve captured values and reload only at native sites."
+    },
+    {
+      "address": "0095f8d0",
+      "native": "00bf6713",
+      "function": "0095f500",
+      "coverage": "complete static call-site inspection; no new source",
+      "contract_status": "canonical validation boundary",
+      "contract": "Returning invalid-parameter call; preserve captured values and reload only at native sites."
+    },
+    {
+      "address": "0095f916",
+      "native": "00bf6713",
+      "function": "0095f500",
+      "coverage": "complete static call-site inspection; no new source",
+      "contract_status": "canonical validation boundary",
+      "contract": "Returning invalid-parameter call; preserve captured values and reload only at native sites."
+    },
+    {
+      "address": "0095f979",
+      "native": "004f9b30",
+      "function": "0095f500",
+      "coverage": "complete static call-site inspection; no new source",
+      "contract_status": "body and assembly read",
+      "contract": "ECX output; EDX point2-point0; stack point1-point0; callee RET4 at004F9BA6."
+    },
+    {
+      "address": "0095f9ae",
+      "native": "0085dc80",
+      "function": "0095f500",
+      "coverage": "complete static call-site inspection; no new source",
+      "contract_status": "canonical native matrix dependency",
+      "contract": "ECX actual 16-word local matrix; no stack arguments; in-place x87/SSE schedule."
+    },
+    {
+      "address": "0095f9d3",
+      "native": "004134f0",
+      "function": "0095f500",
+      "coverage": "complete static call-site inspection; no new source",
+      "contract_status": "canonical native matrix dependency",
+      "contract": "ECX camera row+8; stack local matrix; RET4. Ordered x87 loads/stores."
+    },
+    {
+      "address": "0095f9e5",
+      "native": "00bf6713",
+      "function": "0095f500",
+      "coverage": "complete static call-site inspection; no new source",
+      "contract_status": "canonical validation boundary",
+      "contract": "Returning invalid-parameter call; preserve captured values and reload only at native sites."
+    },
+    {
+      "address": "0095fa1f",
+      "native": "0095db40",
+      "function": "0095f500",
+      "coverage": "complete static call-site inspection; no new source",
+      "contract_status": "partial callee listing; closure unresolved",
+      "contract": "ECX captured camera container; no stack arguments. Initial body stopped at0095DB88; reported continuation through0095DBC6."
+    },
+    {
+      "address": "0095fa25",
+      "native": "00bf65ac",
+      "function": "0095f500",
+      "coverage": "complete static call-site inspection; no new source",
+      "contract_status": "CRT free boundary",
+      "contract": "One stacked heap pointer; caller ADD ESP,4 at0095FA2A or0095FAFC."
+    },
+    {
+      "address": "0095fa54",
+      "native": "005471b0",
+      "function": "0095f500",
+      "coverage": "complete static call-site inspection; no new source",
+      "contract_status": "callee pseudocode read; parent owns source contract",
+      "contract": "ECX class+94 pointer-array header; stacked EBX+1; do not substitute success-only growth."
+    },
+    {
+      "address": "0095fa80",
+      "native": "005471b0",
+      "function": "0095f500",
+      "coverage": "complete static call-site inspection; no new source",
+      "contract_status": "callee pseudocode read; parent owns source contract",
+      "contract": "ECX class+94 pointer-array header; stacked EBX+1; do not substitute success-only growth."
+    },
+    {
+      "address": "0095fabb",
+      "native": "00408720",
+      "function": "0095f500",
+      "coverage": "complete static call-site inspection; no new source",
+      "contract_status": "canonical SBO dependency",
+      "contract": "ECX local SBO string; stacked CEB728/4; arm unwind state0 only after return."
+    },
+    {
+      "address": "0095fad3",
+      "native": "00718000",
+      "function": "0095f500",
+      "coverage": "complete static call-site inspection; no new source",
+      "contract_status": "callee body and canonical source contract read",
+      "contract": "ECX current class+50 resource; stacked local SBO name and EBX; RET8; retain last exact slot/index match."
+    },
+    {
+      "address": "0095faf7",
+      "native": "00bf65ac",
+      "function": "0095f500",
+      "coverage": "complete static call-site inspection; no new source",
+      "contract_status": "CRT free boundary",
+      "contract": "One stacked heap pointer; caller ADD ESP,4 at0095FA2A or0095FAFC."
+    },
+    {
+      "address": "0095fbe9",
+      "native": "00bf6713",
+      "function": "0095f500",
+      "coverage": "complete static call-site inspection; no new source",
+      "contract_status": "canonical validation boundary",
+      "contract": "Returning invalid-parameter call; preserve captured values and reload only at native sites."
+    },
+    {
+      "address": "0095fc35",
+      "native": "00bf6713",
+      "function": "0095f500",
+      "coverage": "complete static call-site inspection; no new source",
+      "contract_status": "canonical validation boundary",
+      "contract": "Returning invalid-parameter call; preserve captured values and reload only at native sites."
+    },
+    {
+      "address": "0095fc5d",
+      "native": "00bf6713",
+      "function": "0095f500",
+      "coverage": "complete static call-site inspection; no new source",
+      "contract_status": "canonical validation boundary",
+      "contract": "Returning invalid-parameter call; preserve captured values and reload only at native sites."
+    },
+    {
+      "address": "0095fcb8",
+      "native": "00bf6713",
+      "function": "0095f500",
+      "coverage": "complete static call-site inspection; no new source",
+      "contract_status": "canonical validation boundary",
+      "contract": "Returning invalid-parameter call; preserve captured values and reload only at native sites."
+    },
+    {
+      "address": "0095fce0",
+      "native": "00bf6713",
+      "function": "0095f500",
+      "coverage": "complete static call-site inspection; no new source",
+      "contract_status": "canonical validation boundary",
+      "contract": "Returning invalid-parameter call; preserve captured values and reload only at native sites."
+    },
+    {
+      "address": "0095fd20",
+      "native": "00bf6713",
+      "function": "0095f500",
+      "coverage": "complete static call-site inspection; no new source",
+      "contract_status": "canonical validation boundary",
+      "contract": "Returning invalid-parameter call; preserve captured values and reload only at native sites."
+    },
+    {
+      "address": "0095fd46",
+      "native": "00bf6713",
+      "function": "0095f500",
+      "coverage": "complete static call-site inspection; no new source",
+      "contract_status": "canonical validation boundary",
+      "contract": "Returning invalid-parameter call; preserve captured values and reload only at native sites."
+    },
+    {
+      "address": "0095fdde",
+      "native": "0085dc80",
+      "function": "0095f500",
+      "coverage": "complete static call-site inspection; no new source",
+      "contract_status": "canonical native matrix dependency",
+      "contract": "ECX actual 16-word local matrix; no stack arguments; in-place x87/SSE schedule."
+    }
+  ],
+  "verified_caller_rows": [
+    {
+      "address": "007d3e81",
+      "native": "0095f500",
+      "function": "007d3e60",
+      "coverage": "call setup only; full caller not reviewed",
+      "contract": "incoming ECX preserved; MOV EBP,ECX before call"
+    },
+    {
+      "address": "0082fe51",
+      "native": "0095f500",
+      "function": "0082fe30",
+      "coverage": "call setup only; full caller not reviewed",
+      "contract": "incoming ECX preserved; MOV EDI,ECX before call"
+    }
+  ],
+  "schedule": [
+    {
+      "range": "0095f500-0095f54f",
+      "behavior": "EH frame; base damageable bind; capture resource iterator owner/begin; camera max=-1 and EBX=0"
+    },
+    {
+      "range": "0095f550-0095f60a",
+      "behavior": "checked vector scan; exact counted camera name; at least three points"
+    },
+    {
+      "range": "0095f60b-0095f9d7",
+      "behavior": "signed index-1; camera frame deltas/cross/native orthonormalization; signed upper-bound-only camera row write"
+    },
+    {
+      "range": "0095f9d8-0095fa32",
+      "behavior": "checked advance; min(max_index,count-1); destroy/free/null camera container if resulting index<=-1"
+    },
+    {
+      "range": "0095fa33-0095fb4d",
+      "behavior": "signed pointer-array loop; optional005471B0; nonnull pointer check; construct/find-last/destroy slot string; require three points"
+    },
+    {
+      "range": "0095fb4e-0095fea9",
+      "behavior": "slot frame with captured origin pointers and direct x87 differences; inline cross; orthonormalize; sixteen raw MOVSS publications"
+    },
+    {
+      "range": "0095feaa-0095fed5",
+      "behavior": "restore class EBP; increment EBX/reload count; EH/register restoration and RET"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "Pseudocode can suggest a single common frame builder and a stale pre-call result in slot stores.",
+      "is": "Camera and slot schedules differ; slot publication reads the modified local matrix after0085DC80.",
+      "evidence": "0095F725-0095F979 versus0095FC3A-0095FDDE; raw MOVSS publication0095FDE3-0095FEA5."
+    },
+    {
+      "was": "F8A0BC might be interpreted as a type/global test.",
+      "is": "NEG/SBB yields zero or all bits set, so TEST with nonzero literal F8A0BC is a nonnull pointer test.",
+      "evidence": "0095FA62-0095FA6F; no memory dereference of F8A0BC."
+    },
+    {
+      "was": "A matching camera index might be assumed nonnegative before publication.",
+      "is": "Native publication checks signed index<count without a lower-bound guard.",
+      "evidence": "0095F60B-0095F611 subtract one;0095F9BD-0095F9D3 signed JGE, then IMUL5Ch."
+    }
+  ],
+  "remaining_closure": [
+    "0095DB40 initial live body ended0095DB88. Disk continuation0095DB89-0095DBC6 includes005CD640 at0095DBA6 and00BF6989 at0095DBAE. Parent cleared both returning-call overrides and decoded the tail, but stored function-body metadata still ends0095DB88; ownership repair remains required. See parent reports/vehicle_binding_dependency_flow_repairs_orch4.json.",
+    "0095D2C0 full-range path calls0095B860; fallback references007931C0 and0095B5A0. Do not collapse returning-validation branches.",
+    "0095B860 internal gap0095B88C-0095B896 after returning _free at0095B887 was repaired, saved and exported by the parent under a separate lease. Source remains open;0079D220 is a remaining cleanup dependency.",
+    "Parent owns005471B0/00546630; no source or name changes here.",
+    "No complete camera-row lifetime producer, cleanup family, native FH3 mapping or complete binder source in this packet."
+  ],
+  "unresolved_boundary_evidence": [
+    "0074DA2E is a live listed CALL0095F500 after MOV EDI,ECX at0074DA2C; proto reports no containing function. It is not a verified caller row and is not attributed to guessed0074DA10.",
+    "CA95A8 is a listed EH handler selecting DDD650, but has no containing function; DDD648 one unwind row is state0->-1 viaCA95A0. No handler definition or annotation here."
+  ],
+  "verification": {
+    "binder_live_bytes_match_configured_disk": true,
+    "compared_native_bytes": 2518,
+    "native_span_sha256": "e5f9b9fb5e78051d3476e9887f257cd909dcabca80c6407d37c8145aa09d2a29",
+    "configured_disk_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "export_listing_sha256": "9ab2962a6b85aa19341b4b2d9ef531d3d8845bcbf1a4f0a724b6d794fd2dcdde",
+    "export_metadata": {
+      "address": "0095f500",
+      "name": "FUN_0095f500",
+      "isThunk": false,
+      "isExternal": false,
+      "project": "bsp",
+      "program_path": "/battlestationspacific.exe",
+      "utc": "2026-09-15T04:50:31.751934+00:00"
+    },
+    "byte_evidence_local": "local/output/ghidra-bytes-0095f500-length-2518-124319.txt",
+    "live_flow": "633 listed instructions, zero internal gaps at inspection",
+    "call_rows_expected": 34,
+    "call_verifier": "passed:34 call rows checked,0 failed; python tools/verify_report_calls.py reports/native_vehicle_class_binding_orch4.json",
+    "build": "not run; no source or build files changed",
+    "ctest": "not run; no source or build files changed",
+    "differential_test": "not run",
+    "game_validated": false,
+    "limits": "Whole-binder static review and matched2518 bytes do not establish source equivalence, EH correctness, runtime behavior or whole-image identity."
+  }
+}
