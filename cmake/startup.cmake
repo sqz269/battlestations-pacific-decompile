@@ -1043,3 +1043,4 @@ cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_postprocess
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_resource_postprocess_full.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_resource_graph_builder.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_resource_builtin_factories.cpp)
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_resource_graph_builtin_dispatch.cpp)

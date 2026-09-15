@@ -5,6 +5,7 @@
 #include <limits>
 #include <new>
 #include <stdexcept>
+#include <utility>
 
 #if !defined(_MSC_VER) || !defined(_M_IX86)
 #error Native group ownership requires MSVC Win32.
@@ -201,6 +202,19 @@ NativeGroupOwner::NativeGroupOwner(NativeGroupStorageView constructed, NativeGro
     node.scene_attachment.remove_scene = group_remove_scene;
     access.nodes.scenes.bind(node.scene_attachment);
     try { access.nodes.attachments.bind_attachment(attached_nodes); }
+    catch (...) { access.nodes.scenes.forget_destroyed_binding(node.scene_attachment); throw; }
+    phase = Phase::live;
+}
+NativeGroupOwner::NativeGroupOwner(NativeGroupStorageView constructed, NativeGroupEnvironment& access,
+    SceneAttachmentRuntime::BindingAdmission&& scene_admission,
+    GeneratedModelLifetimeRuntime::BindingAdmission&& attachment_admission)
+    : storage(adopt_storage(constructed, access)), environment(access),
+      node(storage.node, group_is_type, group_attach_scene, nullptr, this),
+      attached_nodes{&storage.node, {}, {this, append_actual, erase_actual}} {
+    node.scene_attachment.world_changed = native_group_world_changed_00b8e6b0;
+    node.scene_attachment.remove_scene = group_remove_scene;
+    access.nodes.scenes.bind(node.scene_attachment, std::move(scene_admission));
+    try { access.nodes.attachments.bind_attachment(attached_nodes, std::move(attachment_admission)); }
     catch (...) { access.nodes.scenes.forget_destroyed_binding(node.scene_attachment); throw; }
     phase = Phase::live;
 }

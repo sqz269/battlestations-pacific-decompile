@@ -51,6 +51,11 @@ public:
     // copying or changing native storage. Binding failure leaves the constructed
     // owner alive for its caller; the supplied name domain must match construction.
     NativeGroupOwner(NativeGroupStorageView actual_constructed, NativeGroupEnvironment&);
+    // Caller reserves both host associations before invoking a native factory.
+    // Successful adoption consumes the credits without allocating after it.
+    NativeGroupOwner(NativeGroupStorageView actual_constructed, NativeGroupEnvironment&,
+        SceneAttachmentRuntime::BindingAdmission&&,
+        GeneratedModelLifetimeRuntime::BindingAdmission&& attachment_admission);
     ~NativeGroupOwner();
     NativeGroupOwner(const NativeGroupOwner&) = delete;
     NativeGroupOwner& operator=(const NativeGroupOwner&) = delete;
