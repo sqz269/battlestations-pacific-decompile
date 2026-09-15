@@ -1,0 +1,389 @@
+{
+  "packet": "native_crt_tls_callback_adapter_fa",
+  "base": "700564653f19b80db9d30f81897d483352e5ea21",
+  "worktree": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-tls-callback-adapter-fa",
+  "branch": "agent/orch2-native-crt-tls-callback-adapter-fa",
+  "status": "complete_original_stdcall_leaf_build_static_validated_not_runtime_validated",
+  "source": "src/native_crt_tls_callback_adapter.cpp",
+  "header": "include/bsp/native_crt_tls_callback_adapter.hpp",
+  "documentation": "docs/NATIVE_CRT_TLS_CALLBACK_ADAPTER_FA.md",
+  "routines": [
+    {
+      "address": "00c0504c",
+      "end_inclusive": "00c05054",
+      "coverage": "complete",
+      "size": 9,
+      "instructions": 2,
+      "name": "BSP_CRT_TlsAllocIgnoringFlsCallback",
+      "name_status": "descriptive hypothesis, not recovered symbol",
+      "original_hex": "ff15b820ce00c20400",
+      "abi": "DWORD __stdcall(PFLS_CALLBACK_FUNCTION)",
+      "source_interface": "native_crt_tls_alloc_ignoring_callback_00c0504c",
+      "stack": "one ignored callback word at entry ESP+4; real no-argument TlsAlloc CALL; RET 4 at C05052",
+      "effects": "no argument read/callback invocation/provider replacement; provider EAX/register/flags/LastError effects preserved by CALL/RET schedule"
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "address": "00c0504c",
+      "end": "00c05054",
+      "end_inclusive": "00c05054",
+      "end_exclusive": "00c05055",
+      "reason": "fresh proto has no function; C04FDE ends C0504B; C05055 starts next body",
+      "primary_plan": "Only primary under write lock may define [C0504C,C05055), if permitted typed mechanism preserves existing instruction definitions; no disassemble_first; preserve names/comments and save/refresh affected export after reviewed annotation."
+    }
+  ],
+  "original": {
+    "binary": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "size": 12223752,
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "sha512": "7b545a4c47fae14af6c50a1d4d0d2904c1b85f84b9a24d1516b95d77945693fc36b1f6bb9effb7fa29b22b06ebcafc230cdf97f5c332266a3de8dd83bdc29a97"
+    },
+    "identity": {
+      "project": "bsp",
+      "program": "battlestationspacific.exe",
+      "program_path": "/battlestationspacific.exe",
+      "language": "x86:LE:32:default",
+      "image_base": "00400000",
+      "ghidra_home": "J:/tools/ghidra_12.0.4_PUBLIC",
+      "ghidra_url": "http://127.0.0.1:8089",
+      "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "project_file": "C:/Users/sqz269/bsp.gpr",
+      "coordination_dir": "C:/Users/sqz269/.bsp"
+    },
+    "identity_qualification": "CLI verifies live project name, program path, language, base. project_file is configured filesystem path, not an extra live server path assertion.",
+    "sections": [
+      {
+        "name": ".text",
+        "va": 4096,
+        "virtual_size": 9306422,
+        "raw_size": 9310208,
+        "raw_offset": 4096,
+        "characteristics": 1610612768
+      },
+      {
+        "name": ".rdata",
+        "va": 9314304,
+        "virtual_size": 1202980,
+        "raw_size": 1204224,
+        "raw_offset": 9314304,
+        "characteristics": 1073741888
+      },
+      {
+        "name": ".data",
+        "va": 10518528,
+        "virtual_size": 2719452,
+        "raw_size": 65536,
+        "raw_offset": 10518528,
+        "characteristics": 3221225536
+      },
+      {
+        "name": ".rsrc",
+        "va": 13238272,
+        "virtual_size": 1630400,
+        "raw_size": 1634304,
+        "raw_offset": 10584064,
+        "characteristics": 1073741888
+      }
+    ],
+    "spans": [
+      {
+        "name": "adapter",
+        "address": "00c0504c",
+        "end_inclusive": "00c05054",
+        "file_offset": 8409164,
+        "live_equals_disk": true,
+        "size": 9,
+        "sha256": "c69b52e39161efaccaf0097ea73f7137eecef23239bcc0b418a42dddfe145204",
+        "sha512": "1a630e64f6c158968c04297fcf694757b5f7ec32245534c2783b7a67c2cbe440f446b796ab31c150da106f7e76f4c9a1775a167af79db55c610aa99a974fc639",
+        "instructions": 2
+      },
+      {
+        "name": "producer",
+        "address": "00c053dc",
+        "end_inclusive": "00c0555f",
+        "file_offset": 8410076,
+        "live_equals_disk": true,
+        "size": 388,
+        "sha256": "ea65c846b07e4839813a118c77401c03e6393be26912dbcbc179cf3536270244",
+        "sha512": "54b9b91e3348398f30e5dda7bbe176f0f7b97b2d1ae51e7b6585aaae2fd0af7a35e6c0988b0585f420a1472539b33edba8097f1bdf8a879eefcd2a1425ae0f27",
+        "instructions": 109
+      },
+      {
+        "name": "strings",
+        "address": "00d69fd0",
+        "end_inclusive": "00d6a01f",
+        "file_offset": 9871312,
+        "live_equals_disk": true,
+        "size": 80,
+        "sha256": "3d9747769b5273bf5df84058c4b21d8a5b00b5cd2f3de96167e397d17d6a8d7c",
+        "sha512": "9fc28b166b09e3f05f818f52ac4abe7a21877eb4c916d349a385028cc839e3377189b60c9f3b7989b21ed90f959e75b4c9045b089704a1400e3626019c67945a",
+        "hex": "4b45524e454c33322e444c4c000000004465636f6465506f696e746572000000466c734672656500466c7353657456616c756500466c7347657456616c756500466c73416c6c6f630000000072756e74"
+      },
+      {
+        "name": "imports",
+        "address": "00ce20b0",
+        "end_inclusive": "00ce20bf",
+        "file_offset": 9314480,
+        "live_equals_disk": true,
+        "size": 16,
+        "sha256": "a0c8e9eb848cb6c3895683dd286f53558020db831363dff888bf98ee4adee066",
+        "sha512": "40a1c892d58959b3090a0c6883b28969fef50b6a4ef440a09ae33b10b125f0393cc515cdea11e409cb171608cde2c8e9ffed024d94bcfcdff5f763e528f31ef0",
+        "hex": "3678a0002878a0001c78a0000e78a000"
+      }
+    ],
+    "imports": [
+      {
+        "address": "00ce20b0",
+        "dll": "KERNEL32.dll",
+        "name": "TlsFree",
+        "ordinal": null
+      },
+      {
+        "address": "00ce20b4",
+        "dll": "KERNEL32.dll",
+        "name": "TlsSetValue",
+        "ordinal": null
+      },
+      {
+        "address": "00ce20b8",
+        "dll": "KERNEL32.dll",
+        "name": "TlsAlloc",
+        "ordinal": null
+      },
+      {
+        "address": "00ce20bc",
+        "dll": "KERNEL32.dll",
+        "name": "TlsGetValue",
+        "ordinal": null
+      },
+      {
+        "address": "00ce20f4",
+        "dll": "KERNEL32.dll",
+        "name": "GetProcAddress",
+        "ordinal": null
+      },
+      {
+        "address": "00ce215c",
+        "dll": "KERNEL32.dll",
+        "name": "GetModuleHandleA",
+        "ordinal": null
+      }
+    ]
+  },
+  "native_calls": [
+    {
+      "address": "00c0504c",
+      "native": "KERNEL32.dll!TlsAlloc via IAT 00CE20B8",
+      "function": "00c0504c",
+      "kind": "indirect_iat",
+      "coverage": "complete",
+      "evidence": "fresh live/disk FF15B820CE00; exact PE import; COFF __imp__TlsAlloc@0 and forced-image import/relocation",
+      "mechanical_qualification": "unassigned original body and indirect IAT are outside verifier direct-call scope; independently checked from full bytes and import table"
+    }
+  ],
+  "producer": {
+    "address": "00c053dc",
+    "end_inclusive": "00c0555f",
+    "coverage": "analyzed complete 388 bytes/109 instructions; no producer reconstruction",
+    "publication_site": "00c05466",
+    "allocation_cell": "0109de34",
+    "condition": "any missing FlsAlloc/FlsGetValue/FlsSetValue/FlsFree selects whole actual TLS quartet",
+    "publication": "C0504C; current CE20BC TlsGetValue; current CE20B4 TlsSetValue; current CE20B0 TlsFree",
+    "all_current_static_xrefs": "commands/adapter_xrefs_01.stdout.txt; commands/alloc_slot_xrefs_01.stdout.txt; dynamic refs not exhaustively knowable",
+    "caller_stack": "C054F1 PUSH C05246; C054F6 PUSH [109DE34]; C054FC CALL C04FDE; C05501 POP ECX; C05502 CALL EAX retains original callback word"
+  },
+  "producer_calls": [
+    {
+      "address": "00c053e2",
+      "native": "KERNEL32.dll!GetModuleHandleA via IAT 00CE215C",
+      "function": "00c053dc",
+      "argument": "KERNEL32.DLL at D69FD0"
+    },
+    {
+      "address": "00c05404",
+      "native": "KERNEL32.dll!GetProcAddress via ESI loaded from IAT 00CE20F4",
+      "function": "00c053dc",
+      "argument": "FlsAlloc at D6A010"
+    },
+    {
+      "address": "00c05411",
+      "native": "KERNEL32.dll!GetProcAddress via ESI loaded from IAT 00CE20F4",
+      "function": "00c053dc",
+      "argument": "FlsGetValue at D6A004"
+    },
+    {
+      "address": "00c0541e",
+      "native": "KERNEL32.dll!GetProcAddress via ESI loaded from IAT 00CE20F4",
+      "function": "00c053dc",
+      "argument": "FlsSetValue at D69FF8"
+    },
+    {
+      "address": "00c0542b",
+      "native": "KERNEL32.dll!GetProcAddress via ESI loaded from IAT 00CE20F4",
+      "function": "00c053dc",
+      "argument": "FlsFree at D69FF0"
+    },
+    {
+      "address": "00c0547b",
+      "native": "KERNEL32.dll!TlsAlloc via IAT 00CE20B8",
+      "function": "00c053dc",
+      "purpose": "getter-cache index E15B00"
+    },
+    {
+      "address": "00c05496",
+      "native": "KERNEL32.dll!TlsSetValue via ESI loaded from IAT 00CE20B4",
+      "function": "00c053dc",
+      "purpose": "stores actual raw getter in getter-cache TLS"
+    },
+    {
+      "address": "00c054ab",
+      "native": "00c04f67",
+      "function": "00c053dc",
+      "stack": "one cdecl word each; shared ADD ESP,10h at C054E0"
+    },
+    {
+      "address": "00c054bb",
+      "native": "00c04f67",
+      "function": "00c053dc",
+      "stack": "one cdecl word each; shared ADD ESP,10h at C054E0"
+    },
+    {
+      "address": "00c054cb",
+      "native": "00c04f67",
+      "function": "00c053dc",
+      "stack": "one cdecl word each; shared ADD ESP,10h at C054E0"
+    },
+    {
+      "address": "00c054db",
+      "native": "00c04f67",
+      "function": "00c053dc",
+      "stack": "one cdecl word each; shared ADD ESP,10h at C054E0"
+    },
+    {
+      "address": "00c054fc",
+      "native": "00c04fde",
+      "function": "00c053dc",
+      "stack": "one cdecl provider-pointer word; POP ECX at C05501"
+    },
+    {
+      "address": "00c05502",
+      "native": "EAX: actual selected FlsAlloc or TLS adapter 00C0504C",
+      "function": "00c053dc",
+      "stack": "one PFLS_CALLBACK_FUNCTION word C05246; stdcall cleanup"
+    }
+  ],
+  "static_evidence": {
+    "object": {
+      "size": 817,
+      "sha256": "62a5662a35dd059154aac3b3613caf12045b9fae27955ec0f4518565061b7523",
+      "sha512": "c835ac1ed64ce393a1c640b305fd44c58ecb41dd28a7546af62ceb84e5271542f30c67030808f9ac7de8cd1a6a6e9bc0f3da64e5ee02b1ea4582aadbcad5e0de"
+    },
+    "archive": {
+      "size": 58840352,
+      "sha256": "1605dfe1fba34d03c143b60b49252cafe45dab77c9cf40aa6b10fc95dbc1d5ca",
+      "sha512": "3e79c5149f223b50bc27d49779567eadc19268ce011600563688cf3a2a23b73b0eb3da9d50e3ef54327ffdce42856b48abdc8ba35500fe517af9292c5bd44c58"
+    },
+    "archive_member_equal": true,
+    "coff_section": {
+      "number": 3,
+      "name": ".text$mn",
+      "size": 9,
+      "hex": "ff1500000000c20400",
+      "relocations": [
+        {
+          "offset": 2,
+          "symbol": "__imp__TlsAlloc@0",
+          "type": 6
+        }
+      ],
+      "characteristics": 1615859744
+    },
+    "symbol": "?native_crt_tls_alloc_ignoring_callback_00c0504c@bsp@@YGKP6GXPAX@Z@Z",
+    "consumed_read_inputs": 96,
+    "compiler_command_groups": 1,
+    "compiler_read_groups": 1,
+    "compiler_write_groups": 1,
+    "sdk": "10.0.26100.0",
+    "forced_image": {
+      "size": 3072,
+      "sha256": "6e3023a48338e187ed6e181934e74b1a5605613cd542118676340b2ca6ed90e7",
+      "sha512": "a2644ea5f2ee35341621e5b22c06abd327ca67503f736bd9cdfc59b1194fcbee16904933fe14f4005376aeb6904bc046df4924c9fc21b46bd30d073ed4c321a1",
+      "kind": "DLL /NOENTRY, never loaded or executed",
+      "base": 268435456,
+      "entrypoint": 0,
+      "body_va": 268439552,
+      "body_hex": "ff1500200010c20400",
+      "imports": [
+        {
+          "dll": "KERNEL32.dll",
+          "name": "TlsAlloc",
+          "iat_va": 268443648
+        }
+      ],
+      "relocation_va": 268439554,
+      "normalized_original_equal": true
+    },
+    "normal_game": {
+      "size": 2169344,
+      "sha256": "256b7552f102cd89f0b7f4fbe036b644b240240583b6fd8fe1d54ee199f97e3e",
+      "sha512": "d5d2995056e983756ac8617bc77bbe09543e4194d6047900244365bd32e6e2b5448350fb7d901b2348641c8851bb65aadddabbf671c1a5c5542b54a2abaa1f37",
+      "tls_imports": [],
+      "exact_adapter_patterns": [],
+      "symbol_and_member_absent_from_complete_map": true,
+      "adopted": false
+    },
+    "static_link_limit": "Forced DLL proves archive extraction, import binding and relocated instruction shape only. No TLS call or callback/native helper/game ran."
+  },
+  "validation": {
+    "strict_build": "scripts/build.ps1 Release PASS; /W4 /WX /fp:strict; complete build_01.log",
+    "seeds": "all 8 original seeds match fresh Ghidra/disk; commands/verify_seeds_01.*",
+    "tests": "both existing CTests PASS; no new test; existing tests do not invoke FA",
+    "call_verifier": "PASS: 5 direct call rows checked, 0 failures; indirect IAT/selected EAX rows explicitly skipped by tool and independently checked from listing/bytes/imports",
+    "native_helper_executed": false,
+    "forced_image_loaded_or_executed": false,
+    "fault_harness_executed": false,
+    "game_executed": false,
+    "ghidra_mutated": false,
+    "installed_image_changed": false,
+    "normal_game_contains_adapter": false,
+    "compiler_tracker_validation": {
+      "status": "PASS",
+      "source": "J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-ORCH2-NATIVE-CRT-TLS-CALLBACK-ADAPTER-FA\\SRC\\NATIVE_CRT_TLS_CALLBACK_ADAPTER.CPP",
+      "header": "J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-ORCH2-NATIVE-CRT-TLS-CALLBACK-ADAPTER-FA\\INCLUDE\\BSP\\NATIVE_CRT_TLS_CALLBACK_ADAPTER.HPP",
+      "object": "J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-ORCH2-NATIVE-CRT-TLS-CALLBACK-ADAPTER-FA\\BUILD\\WIN32\\BSP_CORE.DIR\\RELEASE\\NATIVE_CRT_TLS_CALLBACK_ADAPTER.OBJ",
+      "compiler_command": "/c /I\"J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-ORCH2-NATIVE-CRT-TLS-CALLBACK-ADAPTER-FA\\INCLUDE\" /I\"J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-ORCH2-NATIVE-CRT-TLS-CALLBACK-ADAPTER-FA\\BUILD\\WIN32\\_DEPS\\LUA511-SRC\\SRC\" /I\"J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-ORCH2-NATIVE-CRT-TLS-CALLBACK-ADAPTER-FA\\BUILD\\WIN32\\_DEPS\\ZLIB121-SRC\" /nologo /W4 /WX /diagnostics:column /O2 /Ob2 /Oy- /D _MBCS /D WIN32 /D _WINDOWS /D NDEBUG /D \"CMAKE_INTDIR=\\\"Release\\\"\" /EHsc /MD /fp:strict /std:c++17 /Fo\"BSP_CORE.DIR\\RELEASE\\\\\" /Fd\"J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-ORCH2-NATIVE-CRT-TLS-CALLBACK-ADAPTER-FA\\BUILD\\WIN32\\RELEASE\\BSP_CORE.PDB\" /external:W0 /TP /analyze-  /external:I \"J:/PROG/battlestations-pacific-decompile-orch2-native-crt-tls-callback-adapter-fa/build/win32/_deps/dxsdk_d3dx-src/build/native/include\" J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-ORCH2-NATIVE-CRT-TLS-CALLBACK-ADAPTER-FA\\SRC\\NATIVE_CRT_TLS_CALLBACK_ADAPTER.CPP",
+      "command_keys": 1,
+      "read_keys": 1,
+      "write_keys": 1285,
+      "own_source_exactly_once_in_command_read_write": true,
+      "owned_object_exactly_once_in_write": true,
+      "readinputs": 96,
+      "seeds": 8,
+      "ctests": 2,
+      "archive_member_is_current_object": true,
+      "forced_map_identifies_member": true,
+      "warnings": "Static archive-only forced DLL link emits LNK4001 (no explicitly passed object files; libraries used); include-forced member and real import proven in full map/image. Strict prescribed build has no error.",
+      "link_failure_retention": "failures/forced_static_link_01 and commands/forced_static_link_01.*; original script, response, partial artifacts and retry diff preserved"
+    },
+    "static_link_warning": "LNK4001: only libraries supplied; /INCLUDE forces the actual archive member. Complete forced map and nine-byte body/import/relocation checked."
+  },
+  "retention": {
+    "payload": "local/native_crt_tls_callback_adapter_fa",
+    "inventory_paths": [
+      "retention_inventory_pass1.json",
+      "retention_inventory_pass2.json"
+    ],
+    "seal": "seal_summary.json",
+    "scope": "recursive whole files, SHA256 and SHA512, every declared external raw spelling; only exact top-level seal paths excluded",
+    "failed_attempts": "rejected_attempts.json; failures/forced_static_link_01; validation_attempt_01.json; original scripts, command records and correction diffs retained"
+  },
+  "limitations": [
+    "Static source/ABI/instruction/import proof; no native runtime or gameplay claim.",
+    "Ordinary bsp_game.exe omits this leaf; forced DLL is never loaded or executed.",
+    "No original-address installation, original IAT mapping, __mtinit adoption, callback teardown or CRT termination closure.",
+    "No decoder bridge/context; DD reserved page state unchanged.",
+    "Ghidra function definition and annotation deferred to primary; worker leaves all live saved analysis unchanged."
+  ]
+}
