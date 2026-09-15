@@ -480,5 +480,24 @@
       "source": "src/native_skin_model_bindings.cpp",
       "evidence": "Complete ECX model / five stacked arguments index,node,translation,angles,scalar / RET14h. Same node skips ownership. Otherwise publish/retain incoming before releasing old through current slot0. Reacquire current model184 after callback; two ordered x87 float3 copies, raw MOVSS scalar at1C. Source borrows the existing actual slot-zero lifetime protocol."
     }
-  ]
+  ],
+  "proof": {
+    "manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\skin_bindings_av\\manifest.json",
+      "bytes": 115100,
+      "sha256": "ea7a9a3f30b4873a31463c9eb2baf4afc466062c7fe7ce951c39ddd8e61b41a3"
+    },
+    "source_commit": "ed9831e6dd8bdc0d1c22463391c0ad3612200af7",
+    "build_checkout_head": "9467196ab2e673a9ee4a9d33c85342d7e453eeff",
+    "build_had_owned_source_changes": true,
+    "inputs": 251,
+    "artifacts": 77,
+    "fixture_production_objects": 4,
+    "complete_bodies": 9,
+    "complete_source_bytes": 2178,
+    "saved_annotations": 9,
+    "paired_lifetimes_and_finalizers": 5,
+    "paired_math_variants": 24,
+    "source_allocation_failures": 1
+  }
 }
