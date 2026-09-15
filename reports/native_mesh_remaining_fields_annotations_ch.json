@@ -1,0 +1,762 @@
+{
+  "packet": "orch4_native_mesh_remaining_fields_ch",
+  "entries": [
+    {
+      "address": "00b17840",
+      "name": "BSP_LightingRecord_Initialize",
+      "before_comment": {
+        "address": "00b17840",
+        "function_name": "BSP_LightingRecord_Initialize",
+        "comment": "[BSP reconstruction 00b17840]\nFirst4float components1; next12components0; final component10. All overwritten by full reads. Original ABI: ECX68-byte output; EAX output; plain RET. Evidence: docs/MESH_SUBSET_LOD_FIELDS.md; reports/mesh_subset_lod_fields_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation.\n\n[BSP reconstruction 00b17840] update\nStore four float1 values at record+0..Ch; twelve positive zero values at+10h..3Ch; final float10 at+40h. No semantic labels inferred for components4..16. Original ABI: ECX68-byte output; EAX output; plain RET. Evidence: docs/MATERIAL_LIGHTING.md; reports/material_lighting_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation."
+      },
+      "before_documentation": {
+        "hash": "2263de9468f8198a1348d6711cddcf6c7ebd431339dd32c361e39cf7f8a148d8",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b17840",
+        "function_name": "BSP_LightingRecord_Initialize",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00b17840]\nFirst4float components1; next12components0; final component10. All overwritten by full reads. Original ABI: ECX68-byte output; EAX output; plain RET. Evidence: docs/MESH_SUBSET_LOD_FIELDS.md; reports/mesh_subset_lod_fields_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation.\n\n[BSP reconstruction 00b17840] update\nStore four float1 values at record+0..Ch; twelve positive zero values at+10h..3Ch; final float10 at+40h. No semantic labels inferred for components4..16. Original ABI: ECX68-byte output; EAX output; plain RET. Evidence: docs/MATERIAL_LIGHTING.md; reports/material_lighting_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation.",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "uVar1",
+            "type": "undefined4",
+            "storage": "(unique, 0x10000044, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 100.0
+      },
+      "evidence": "CH actual mesh metadata/lighting dependencies: eight complete ordinary bodies666bytes,210 executable instruction owners,30 direct and one indirect transfer; saved/disk byte equality, no flow repairs or EH supports. B93800 saturates allocation product but wraps read bytes; captures source declaration, rereads current last stream after raw read, and stores+50 without freeing old allocation. Full unchecked B73260 pointer arithmetic replaces only the address-ledger primary entry; older checked GUI interface remains. B17840 preserves live constant capture/store order; B179D0 sets+10C then forward-copies17DWORDs with native overlap behavior. B93390 performs17 BE99D0-to-FSTP32 stores; B937A0 unsigned count loop publishes only complete records and keeps prior records on later failure. Strict five-source worktree CMake override build passed both CTests. One controlled child passed eight copied-original body comparisons/shared raw-reader-CRT boundaries, exact-address original B48CE0 getter, metadata callback destination change, lighting special-value/zero cases and raw overlap/wrapped-getter cases; two new source read failures preserve native effects. Real HAL CG composition/readbacks and eight canonical owner retirements pass with actual metadata attached until stream teardown. Fixture-only asm/lifetime-reservation corrections; production unchanged. No original native exception/ABI, overflow-allocation, full renderer/pool startup, cold decode, device loss, subset/material admission, tracked registration/main integration or gameplay claim. Prior comments retained, descriptive names hypotheses. docs/NATIVE_MESH_REMAINING_FIELDS_CH.md; reports/native_mesh_remaining_fields_ch.json. Complete 232B. ECX record; EAX same record; RET. Source initialize_native_mesh_lighting_record_00b17840.",
+      "prototype": "void* __fastcall BSP_LightingRecord_Initialize(void* actual_record, void* unused_edx)",
+      "prototype_result": "Successfully set prototype for function at 00b17840 with __fastcall calling convention",
+      "ledger_name_output": "00b17840 -> BSP_LightingRecord_Initialize\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00b17840\", \"name\": \"BSP_LightingRecord_Initialize\", \"evidence\": \"Store four float1 values at record+0..Ch; twelve positive zero values at+10h..3Ch; final float10 at+40h. No semantic labels inferred for components4..16. Original ABI: ECX68-byte output; EAX output; plain RET. Evidence: docs/MATERIAL_LIGHTING.md; reports/material_lighting_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation.\"})\n",
+      "ledger_function_output": "00b17840 function initialize_native_mesh_lighting_record_00b17840\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00b17840",
+        "function_name": "BSP_LightingRecord_Initialize",
+        "comment": "[BSP reconstruction 00b17840]\nFirst4float components1; next12components0; final component10. All overwritten by full reads. Original ABI: ECX68-byte output; EAX output; plain RET. Evidence: docs/MESH_SUBSET_LOD_FIELDS.md; reports/mesh_subset_lod_fields_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation.\n\n[BSP reconstruction 00b17840] update\nStore four float1 values at record+0..Ch; twelve positive zero values at+10h..3Ch; final float10 at+40h. No semantic labels inferred for components4..16. Original ABI: ECX68-byte output; EAX output; plain RET. Evidence: docs/MATERIAL_LIGHTING.md; reports/material_lighting_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation.\n\n[BSP reconstruction 00b17840] CH update\nCH actual mesh metadata/lighting dependencies: eight complete ordinary bodies666bytes,210 executable instruction owners,30 direct and one indirect transfer; saved/disk byte equality, no flow repairs or EH supports. B93800 saturates allocation product but wraps read bytes; captures source declaration, rereads current last stream after raw read, and stores+50 without freeing old allocation. Full unchecked B73260 pointer arithmetic replaces only the address-ledger primary entry; older checked GUI interface remains. B17840 preserves live constant capture/store order; B179D0 sets+10C then forward-copies17DWORDs with native overlap behavior. B93390 performs17 BE99D0-to-FSTP32 stores; B937A0 unsigned count loop publishes only complete records and keeps prior records on later failure. Strict five-source worktree CMake override build passed both CTests. One controlled child passed eight copied-original body comparisons/shared raw-reader-CRT boundaries, exact-address original B48CE0 getter, metadata callback destination change, lighting special-value/zero cases and raw overlap/wrapped-getter cases; two new source read failures preserve native effects. Real HAL CG composition/readbacks and eight canonical owner retirements pass with actual metadata attached until stream teardown. Fixture-only asm/lifetime-reservation corrections; production unchanged. No original native exception/ABI, overflow-allocation, full renderer/pool startup, cold decode, device loss, subset/material admission, tracked registration/main integration or gameplay claim. Prior comments retained, descriptive names hypotheses. docs/NATIVE_MESH_REMAINING_FIELDS_CH.md; reports/native_mesh_remaining_fields_ch.json. Complete 232B. ECX record; EAX same record; RET. Source initialize_native_mesh_lighting_record_00b17840."
+      }
+    },
+    {
+      "address": "00b179d0",
+      "name": "BSP_Material_SetLightingRecord",
+      "before_comment": {
+        "address": "00b179d0",
+        "function_name": "BSP_Material_SetLightingRecord",
+        "comment": "[BSP reconstruction 00b179d0]\nSet material+0x10c byte1; REP MOVSD17DWORDs to material+0x38; serialized slot never read. Original ABI: ECX material; stack ignored slot,68-byte source; RET8. Evidence: docs/MESH_SUBSET_LOD_FIELDS.md; reports/mesh_subset_lod_fields_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation.\n\n[BSP reconstruction 00b179d0] update\nSet material byte+10Ch to1; copy17DWORDs from source into material+38h using REP MOVSD. Serialized slot is never loaded. Last call replaces all record bits; no clamping or conversion. Original ABI: ECX material; stack ignored slot, source68-byte record; RET8. Evidence: docs/MATERIAL_LIGHTING.md; reports/material_lighting_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation."
+      },
+      "before_documentation": {
+        "hash": "3829170c8e624947e8705036a32d52c49806e1fd74d8143108cb8f14f78f5585",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b179d0",
+        "function_name": "BSP_Material_SetLightingRecord",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00b179d0]\nSet material+0x10c byte1; REP MOVSD17DWORDs to material+0x38; serialized slot never read. Original ABI: ECX material; stack ignored slot,68-byte source; RET8. Evidence: docs/MESH_SUBSET_LOD_FIELDS.md; reports/mesh_subset_lod_fields_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation.\n\n[BSP reconstruction 00b179d0] update\nSet material byte+10Ch to1; copy17DWORDs from source into material+38h using REP MOVSD. Serialized slot is never loaded. Last call replaces all record bits; no clamping or conversion. Original ABI: ECX material; stack ignored slot, source68-byte record; RET8. Evidence: docs/MATERIAL_LIGHTING.md; reports/material_lighting_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation.",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "puVar2",
+            "type": "undefined4 *",
+            "storage": "(register, 0x1c, 4)"
+          },
+          {
+            "name": "iVar1",
+            "type": "int",
+            "storage": "(register, 0x4, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 100.0
+      },
+      "evidence": "CH actual mesh metadata/lighting dependencies: eight complete ordinary bodies666bytes,210 executable instruction owners,30 direct and one indirect transfer; saved/disk byte equality, no flow repairs or EH supports. B93800 saturates allocation product but wraps read bytes; captures source declaration, rereads current last stream after raw read, and stores+50 without freeing old allocation. Full unchecked B73260 pointer arithmetic replaces only the address-ledger primary entry; older checked GUI interface remains. B17840 preserves live constant capture/store order; B179D0 sets+10C then forward-copies17DWORDs with native overlap behavior. B93390 performs17 BE99D0-to-FSTP32 stores; B937A0 unsigned count loop publishes only complete records and keeps prior records on later failure. Strict five-source worktree CMake override build passed both CTests. One controlled child passed eight copied-original body comparisons/shared raw-reader-CRT boundaries, exact-address original B48CE0 getter, metadata callback destination change, lighting special-value/zero cases and raw overlap/wrapped-getter cases; two new source read failures preserve native effects. Real HAL CG composition/readbacks and eight canonical owner retirements pass with actual metadata attached until stream teardown. Fixture-only asm/lifetime-reservation corrections; production unchanged. No original native exception/ABI, overflow-allocation, full renderer/pool startup, cold decode, device loss, subset/material admission, tracked registration/main integration or gameplay claim. Prior comments retained, descriptive names hypotheses. docs/NATIVE_MESH_REMAINING_FIELDS_CH.md; reports/native_mesh_remaining_fields_ch.json. Complete 28B. ECX material; stacked ignored slot and source68-byte record; RET8. Source set_native_material_lighting_record_00b179d0.",
+      "prototype": "void __fastcall BSP_Material_SetLightingRecord(void* actual_material, void* unused_edx, uint ignored_slot, void* actual_record)",
+      "prototype_result": "Successfully set prototype for function at 00b179d0 with __fastcall calling convention",
+      "ledger_name_output": "00b179d0 -> BSP_Material_SetLightingRecord\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00b179d0\", \"name\": \"BSP_Material_SetLightingRecord\", \"evidence\": \"Set material byte+10Ch to1; copy17DWORDs from source into material+38h using REP MOVSD. Serialized slot is never loaded. Last call replaces all record bits; no clamping or conversion. Original ABI: ECX material; stack ignored slot, source68-byte record; RET8. Evidence: docs/MATERIAL_LIGHTING.md; reports/material_lighting_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation.\"})\n",
+      "ledger_function_output": "00b179d0 function set_native_material_lighting_record_00b179d0\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00b179d0",
+        "function_name": "BSP_Material_SetLightingRecord",
+        "comment": "[BSP reconstruction 00b179d0]\nSet material+0x10c byte1; REP MOVSD17DWORDs to material+0x38; serialized slot never read. Original ABI: ECX material; stack ignored slot,68-byte source; RET8. Evidence: docs/MESH_SUBSET_LOD_FIELDS.md; reports/mesh_subset_lod_fields_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation.\n\n[BSP reconstruction 00b179d0] update\nSet material byte+10Ch to1; copy17DWORDs from source into material+38h using REP MOVSD. Serialized slot is never loaded. Last call replaces all record bits; no clamping or conversion. Original ABI: ECX material; stack ignored slot, source68-byte record; RET8. Evidence: docs/MATERIAL_LIGHTING.md; reports/material_lighting_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation.\n\n[BSP reconstruction 00b179d0] CH update\nCH actual mesh metadata/lighting dependencies: eight complete ordinary bodies666bytes,210 executable instruction owners,30 direct and one indirect transfer; saved/disk byte equality, no flow repairs or EH supports. B93800 saturates allocation product but wraps read bytes; captures source declaration, rereads current last stream after raw read, and stores+50 without freeing old allocation. Full unchecked B73260 pointer arithmetic replaces only the address-ledger primary entry; older checked GUI interface remains. B17840 preserves live constant capture/store order; B179D0 sets+10C then forward-copies17DWORDs with native overlap behavior. B93390 performs17 BE99D0-to-FSTP32 stores; B937A0 unsigned count loop publishes only complete records and keeps prior records on later failure. Strict five-source worktree CMake override build passed both CTests. One controlled child passed eight copied-original body comparisons/shared raw-reader-CRT boundaries, exact-address original B48CE0 getter, metadata callback destination change, lighting special-value/zero cases and raw overlap/wrapped-getter cases; two new source read failures preserve native effects. Real HAL CG composition/readbacks and eight canonical owner retirements pass with actual metadata attached until stream teardown. Fixture-only asm/lifetime-reservation corrections; production unchanged. No original native exception/ABI, overflow-allocation, full renderer/pool startup, cold decode, device loss, subset/material admission, tracked registration/main integration or gameplay claim. Prior comments retained, descriptive names hypotheses. docs/NATIVE_MESH_REMAINING_FIELDS_CH.md; reports/native_mesh_remaining_fields_ch.json. Complete 28B. ECX material; stacked ignored slot and source68-byte record; RET8. Source set_native_material_lighting_record_00b179d0."
+      }
+    },
+    {
+      "address": "00b47900",
+      "name": "BSP_VertexDeclaration_GetElementCount",
+      "before_comment": {
+        "address": "00b47900",
+        "function_name": "BSP_VertexDeclaration_GetElementCount",
+        "comment": "[BSP reconstruction 00b47900]\nBSP reconstruction hypothesis: Return declaration+10h, flat element-array count. The concrete stream+24h getter returns its retained declaration; compressed data uses count*20h. ABI: ECX declaration; EAX DWORD count; no stack arguments; plain RET. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Host payload projection is not native ABI or game-validation. Original ABI: ECX declaration; EAX DWORD count; no stack arguments; plain RET. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation.\n\n[BSP reconstruction 00b47900] update\nBSP reconstruction hypothesis: Return declaration+10h, flat element-array count. The concrete stream+24h getter returns its retained declaration; compressed data uses count*20h. ABI: ECX declaration; EAX DWORD count; no stack arguments; plain RET. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Host payload projection is not native ABI or game-validation. Original ABI: ECX declaration; EAX DWORD count; no stack arguments; plain RET. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation. | Native declaration element count [ECX+10] feeds the actual stream overload of00B428C0; signed clamp and independent DWORD remaining-count wrap are preserved. Complete444-byte native fragment plus three actual getters fixture checked. Evidence: docs/MATERIAL_CONSTANT_BUILDER.md; reports/material_constant_builder_audit.json. Descriptive names are hypotheses; typed host interfaces are not native ABI or gameplay validation.\n\n[BSP reconstruction 00b47900] update\nBSP reconstruction hypothesis: Return declaration+10h, flat element-array count. The concrete stream+24h getter returns its retained declaration; compressed data uses count*20h. ABI: ECX declaration; EAX DWORD count; no stack arguments; plain RET. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Host payload projection is not native ABI or game-validation. Original ABI: ECX declaration; EAX DWORD count; no stack arguments; plain RET. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation. | Native declaration element count [ECX+10] feeds the actual stream overload of00B428C0; signed clamp and independent DWORD remaining-count wrap are preserved. Complete444-byte native fragment plus three actual getters fixture checked. Evidence: docs/MATERIAL_CONSTANT_BUILDER.md; reports/material_constant_builder_audit.json. Descriptive names are hypotheses; typed host interfaces are not native ABI or gameplay validation. | Descriptive hypothesis, not recovered symbol. Current actual vertex declaration DWORD+10h; no validation. Original ABI: ECX actual vertex declaration; EAX DWORD+10h; plain RET Primary reviewed whole native/source/generated code; source COMDAT equals complete native span with zero relocations. Exact MSVC Win32 Release and both existing math CTests passed at e54b51afb7a0bcc6ef6eacd41a30603711c2eec2. Evidence docs/NATIVE_MATERIAL_CONSTANT_METADATA_CE.md; reports/native_material_constant_metadata_ce.json. No new native execution, completed actual constants builder, drop-in module or gameplay validation.\n\n[BSP reconstruction 00b47900] update\nBSP reconstruction hypothesis: Return declaration+10h, flat element-array count. The concrete stream+24h getter returns its retained declaration; compressed data uses count*20h. ABI: ECX declaration; EAX DWORD count; no stack arguments; plain RET. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Host payload projection is not native ABI or game-validation. Original ABI: ECX declaration; EAX DWORD count; no stack arguments; plain RET. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation. | Native declaration element count [ECX+10] feeds the actual stream overload of00B428C0; signed clamp and independent DWORD remaining-count wrap are preserved. Complete444-byte native fragment plus three actual getters fixture checked. Evidence: docs/MATERIAL_CONSTANT_BUILDER.md; reports/material_constant_builder_audit.json. Descriptive names are hypotheses; typed host interfaces are not native ABI or gameplay validation. | Hypothesis, not a recovered symbol. Raw vertex declaration element count is DWORD receiver+10. Integrated code 8b2e79df passed strict MSVC Win32 build, eight native seeds, both CTests,32 numeric call rows and52 live/PE spans totaling12295 bytes; fixture scope belongs to full builder and reached concrete providers only. docs/NATIVE_MATERIAL_CONSTANT_BUILD.md; reports/native_material_constant_build.json. Original private stack/register ABI, native FH3/SEH, full parent and gameplay are not claimed.\n\n[BSP reconstruction 00b47900] update\nBSP reconstruction hypothesis: Return declaration+10h, flat element-array count. The concrete stream+24h getter returns its retained declaration; compressed data uses count*20h. ABI: ECX declaration; EAX DWORD count; no stack arguments; plain RET. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Host payload projection is not native ABI or game-validation. Original ABI: ECX declaration; EAX DWORD count; no stack arguments; plain RET. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation. | Native declaration element count [ECX+10] feeds the actual stream overload of00B428C0; signed clamp and independent DWORD remaining-count wrap are preserved. Complete444-byte native fragment plus three actual getters fixture checked. Evidence: docs/MATERIAL_CONSTANT_BUILDER.md; reports/material_constant_builder_audit.json. Descriptive names are hypotheses; typed host interfaces are not native ABI or gameplay validation. | Hypothesis, not a recovered symbol. Raw vertex declaration element count is DWORD receiver+10. Integrated code 8b2e79df passed strict MSVC Win32 build, eight native seeds, both CTests,32 numeric call rows and52 live/PE spans totaling12295 bytes; fixture scope belongs to full builder and reached concrete providers only. docs/NATIVE_MATERIAL_CONSTANT_BUILD.md; reports/native_material_constant_build.json. Original private stack/register ABI, native FH3/SEH, full parent and gameplay are not claimed. | Hypothesis, not a recovered symbol. Raw vertex declaration element count is DWORD receiver+10. Integrated code 7da09ce9 passed strict MSVC Win32 build, eight native seeds, both CTests,32 numeric call rows and52 live/PE spans totaling12295 bytes; fixture scope belongs to full builder and reached concrete providers only. docs/NATIVE_MATERIAL_CONSTANT_BUILD.md; reports/native_material_constant_build.json. Original private stack/register ABI, native FH3/SEH, full parent and gameplay are not claimed."
+      },
+      "before_documentation": {
+        "hash": "fa296d477ddf417fbd548d067060b0ee70f0318f1ffcac68a320073298c2ca5b",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b47900",
+        "function_name": "BSP_VertexDeclaration_GetElementCount",
+        "return_type": "uint",
+        "calling_convention": "__thiscall",
+        "plate_comment": "[BSP reconstruction 00b47900]\nBSP reconstruction hypothesis: Return declaration+10h, flat element-array count. The concrete stream+24h getter returns its retained declaration; compressed data uses count*20h. ABI: ECX declaration; EAX DWORD count; no stack arguments; plain RET. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Host payload projection is not native ABI or game-validation. Original ABI: ECX declaration; EAX DWORD count; no stack arguments; plain RET. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation.\n\n[BSP reconstruction 00b47900] update\nBSP reconstruction hypothesis: Return declaration+10h, flat element-array count. The concrete stream+24h getter returns its retained declaration; compressed data uses count*20h. ABI: ECX declaration; EAX DWORD count; no stack arguments; plain RET. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Host payload projection is not native ABI or game-validation. Original ABI: ECX declaration; EAX DWORD count; no stack arguments; plain RET. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation. | Native declaration element count [ECX+10] feeds the actual stream overload of00B428C0; signed clamp and independent DWORD remaining-count wrap are preserved. Complete444-byte native fragment plus three actual getters fixture checked. Evidence: docs/MATERIAL_CONSTANT_BUILDER.md; reports/material_constant_builder_audit.json. Descriptive names are hypotheses; typed host interfaces are not native ABI or gameplay validation.\n\n[BSP reconstruction 00b47900] update\nBSP reconstruction hypothesis: Return declaration+10h, flat element-array count. The concrete stream+24h getter returns its retained declaration; compressed data uses count*20h. ABI: ECX declaration; EAX DWORD count; no stack arguments; plain RET. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Host payload projection is not native ABI or game-validation. Original ABI: ECX declaration; EAX DWORD count; no stack arguments; plain RET. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation. | Native declaration element count [ECX+10] feeds the actual stream overload of00B428C0; signed clamp and independent DWORD remaining-count wrap are preserved. Complete444-byte native fragment plus three actual getters fixture checked. Evidence: docs/MATERIAL_CONSTANT_BUILDER.md; reports/material_constant_builder_audit.json. Descriptive names are hypotheses; typed host interfaces are not native ABI or gameplay validation. | Descriptive hypothesis, not recovered symbol. Current actual vertex declaration DWORD+10h; no validation. Original ABI: ECX actual vertex declaration; EAX DWORD+10h; plain RET Primary reviewed whole native/source/generated code; source COMDAT equals complete native span with zero relocations. Exact MSVC Win32 Release and both existing math CTests passed at e54b51afb7a0bcc6ef6eacd41a30603711c2eec2. Evidence docs/NATIVE_MATERIAL_CONSTANT_METADATA_CE.md; reports/native_material_constant_metadata_ce.json. No new native execution, completed actual constants builder, drop-in module or gameplay validation.\n\n[BSP reconstruction 00b47900] update\nBSP reconstruction hypothesis: Return declaration+10h, flat element-array count. The concrete stream+24h getter returns its retained declaration; compressed data uses count*20h. ABI: ECX declaration; EAX DWORD count; no stack arguments; plain RET. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Host payload projection is not native ABI or game-validation. Original ABI: ECX declaration; EAX DWORD count; no stack arguments; plain RET. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation. | Native declaration element count [ECX+10] feeds the actual stream overload of00B428C0; signed clamp and independent DWORD remaining-count wrap are preserved. Complete444-byte native fragment plus three actual getters fixture checked. Evidence: docs/MATERIAL_CONSTANT_BUILDER.md; reports/material_constant_builder_audit.json. Descriptive names are hypotheses; typed host interfaces are not native ABI or gameplay validation. | Hypothesis, not a recovered symbol. Raw vertex declaration element count is DWORD receiver+10. Integrated code 8b2e79df passed strict MSVC Win32 build, eight native seeds, both CTests,32 numeric call rows and52 live/PE spans totaling12295 bytes; fixture scope belongs to full builder and reached concrete providers only. docs/NATIVE_MATERIAL_CONSTANT_BUILD.md; reports/native_material_constant_build.json. Original private stack/register ABI, native FH3/SEH, full parent and gameplay are not claimed.\n\n[BSP reconstruction 00b47900] update\nBSP reconstruction hypothesis: Return declaration+10h, flat element-array count. The concrete stream+24h getter returns its retained declaration; compressed data uses count*20h. ABI: ECX declaration; EAX DWORD count; no stack arguments; plain RET. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Host payload projection is not native ABI or game-validation. Original ABI: ECX declaration; EAX DWORD count; no stack arguments; plain RET. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation. | Native declaration element count [ECX+10] feeds the actual stream overload of00B428C0; signed clamp and independent DWORD remaining-count wrap are preserved. Complete444-byte native fragment plus three actual getters fixture checked. Evidence: docs/MATERIAL_CONSTANT_BUILDER.md; reports/material_constant_builder_audit.json. Descriptive names are hypotheses; typed host interfaces are not native ABI or gameplay validation. | Hypothesis, not a recovered symbol. Raw vertex declaration element count is DWORD receiver+10. Integrated code 8b2e79df passed strict MSVC Win32 build, eight native seeds, both CTests,32 numeric call rows and52 live/PE spans totaling12295 bytes; fixture scope belongs to full builder and reached concrete providers only. docs/NATIVE_MATERIAL_CONSTANT_BUILD.md; reports/native_material_constant_build.json. Original private stack/register ABI, native FH3/SEH, full parent and gameplay are not claimed. | Hypothesis, not a recovered symbol. Raw vertex declaration element count is DWORD receiver+10. Integrated code 7da09ce9 passed strict MSVC Win32 build, eight native seeds, both CTests,32 numeric call rows and52 live/PE spans totaling12295 bytes; fixture scope belongs to full builder and reached concrete providers only. docs/NATIVE_MATERIAL_CONSTANT_BUILD.md; reports/native_material_constant_build.json. Original private stack/register ABI, native FH3/SEH, full parent and gameplay are not claimed.",
+        "parameters": [
+          {
+            "ordinal": 0,
+            "name": "this",
+            "type": "void *"
+          }
+        ],
+        "local_variables": [],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 100.0
+      },
+      "evidence": "CH actual mesh metadata/lighting dependencies: eight complete ordinary bodies666bytes,210 executable instruction owners,30 direct and one indirect transfer; saved/disk byte equality, no flow repairs or EH supports. B93800 saturates allocation product but wraps read bytes; captures source declaration, rereads current last stream after raw read, and stores+50 without freeing old allocation. Full unchecked B73260 pointer arithmetic replaces only the address-ledger primary entry; older checked GUI interface remains. B17840 preserves live constant capture/store order; B179D0 sets+10C then forward-copies17DWORDs with native overlap behavior. B93390 performs17 BE99D0-to-FSTP32 stores; B937A0 unsigned count loop publishes only complete records and keeps prior records on later failure. Strict five-source worktree CMake override build passed both CTests. One controlled child passed eight copied-original body comparisons/shared raw-reader-CRT boundaries, exact-address original B48CE0 getter, metadata callback destination change, lighting special-value/zero cases and raw overlap/wrapped-getter cases; two new source read failures preserve native effects. Real HAL CG composition/readbacks and eight canonical owner retirements pass with actual metadata attached until stream teardown. Fixture-only asm/lifetime-reservation corrections; production unchanged. No original native exception/ABI, overflow-allocation, full renderer/pool startup, cold decode, device loss, subset/material admission, tracked registration/main integration or gameplay claim. Prior comments retained, descriptive names hypotheses. docs/NATIVE_MESH_REMAINING_FIELDS_CH.md; reports/native_mesh_remaining_fields_ch.json. Complete 4B. ECX declaration; EAX DWORD declaration+10; RET. Source native_vertex_declaration_element_count_00b47900.",
+      "prototype": "uint __fastcall BSP_VertexDeclaration_GetElementCount(void* actual_declaration, void* unused_edx)",
+      "prototype_result": "Successfully set prototype for function at 00b47900 with __fastcall calling convention",
+      "ledger_name_output": "00b47900 -> BSP_VertexDeclaration_GetElementCount\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00b47900\", \"name\": \"BSP_VertexDeclaration_GetElementCount\", \"evidence\": \"BSP reconstruction hypothesis: Return declaration+10h, flat element-array count. The concrete stream+24h getter returns its retained declaration; compressed data uses count*20h. ABI: ECX declaration; EAX DWORD count; no stack arguments; plain RET. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Host payload projection is not native ABI or game-validation. Original ABI: ECX declaration; EAX DWORD count; no stack arguments; plain RET. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation. | Native declaration element count [ECX+10] feeds the actual stream overload of00B428C0; signed clamp and independent DWORD remaining-count wrap are preserved. Complete444-byte native fragment plus three actual getters fixture checked. Evidence: docs/MATERIAL_CONSTANT_BUILDER.md; reports/material_constant_builder_audit.json. Descriptive names are hypotheses; typed host interfaces are not native ABI or gameplay validation.\"})\n",
+      "ledger_function_output": "00b47900 function native_vertex_declaration_element_count_00b47900\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00b47900",
+        "function_name": "BSP_VertexDeclaration_GetElementCount",
+        "comment": "[BSP reconstruction 00b47900]\nBSP reconstruction hypothesis: Return declaration+10h, flat element-array count. The concrete stream+24h getter returns its retained declaration; compressed data uses count*20h. ABI: ECX declaration; EAX DWORD count; no stack arguments; plain RET. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Host payload projection is not native ABI or game-validation. Original ABI: ECX declaration; EAX DWORD count; no stack arguments; plain RET. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation.\n\n[BSP reconstruction 00b47900] update\nBSP reconstruction hypothesis: Return declaration+10h, flat element-array count. The concrete stream+24h getter returns its retained declaration; compressed data uses count*20h. ABI: ECX declaration; EAX DWORD count; no stack arguments; plain RET. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Host payload projection is not native ABI or game-validation. Original ABI: ECX declaration; EAX DWORD count; no stack arguments; plain RET. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation. | Native declaration element count [ECX+10] feeds the actual stream overload of00B428C0; signed clamp and independent DWORD remaining-count wrap are preserved. Complete444-byte native fragment plus three actual getters fixture checked. Evidence: docs/MATERIAL_CONSTANT_BUILDER.md; reports/material_constant_builder_audit.json. Descriptive names are hypotheses; typed host interfaces are not native ABI or gameplay validation.\n\n[BSP reconstruction 00b47900] update\nBSP reconstruction hypothesis: Return declaration+10h, flat element-array count. The concrete stream+24h getter returns its retained declaration; compressed data uses count*20h. ABI: ECX declaration; EAX DWORD count; no stack arguments; plain RET. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Host payload projection is not native ABI or game-validation. Original ABI: ECX declaration; EAX DWORD count; no stack arguments; plain RET. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation. | Native declaration element count [ECX+10] feeds the actual stream overload of00B428C0; signed clamp and independent DWORD remaining-count wrap are preserved. Complete444-byte native fragment plus three actual getters fixture checked. Evidence: docs/MATERIAL_CONSTANT_BUILDER.md; reports/material_constant_builder_audit.json. Descriptive names are hypotheses; typed host interfaces are not native ABI or gameplay validation. | Descriptive hypothesis, not recovered symbol. Current actual vertex declaration DWORD+10h; no validation. Original ABI: ECX actual vertex declaration; EAX DWORD+10h; plain RET Primary reviewed whole native/source/generated code; source COMDAT equals complete native span with zero relocations. Exact MSVC Win32 Release and both existing math CTests passed at e54b51afb7a0bcc6ef6eacd41a30603711c2eec2. Evidence docs/NATIVE_MATERIAL_CONSTANT_METADATA_CE.md; reports/native_material_constant_metadata_ce.json. No new native execution, completed actual constants builder, drop-in module or gameplay validation.\n\n[BSP reconstruction 00b47900] update\nBSP reconstruction hypothesis: Return declaration+10h, flat element-array count. The concrete stream+24h getter returns its retained declaration; compressed data uses count*20h. ABI: ECX declaration; EAX DWORD count; no stack arguments; plain RET. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Host payload projection is not native ABI or game-validation. Original ABI: ECX declaration; EAX DWORD count; no stack arguments; plain RET. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation. | Native declaration element count [ECX+10] feeds the actual stream overload of00B428C0; signed clamp and independent DWORD remaining-count wrap are preserved. Complete444-byte native fragment plus three actual getters fixture checked. Evidence: docs/MATERIAL_CONSTANT_BUILDER.md; reports/material_constant_builder_audit.json. Descriptive names are hypotheses; typed host interfaces are not native ABI or gameplay validation. | Hypothesis, not a recovered symbol. Raw vertex declaration element count is DWORD receiver+10. Integrated code 8b2e79df passed strict MSVC Win32 build, eight native seeds, both CTests,32 numeric call rows and52 live/PE spans totaling12295 bytes; fixture scope belongs to full builder and reached concrete providers only. docs/NATIVE_MATERIAL_CONSTANT_BUILD.md; reports/native_material_constant_build.json. Original private stack/register ABI, native FH3/SEH, full parent and gameplay are not claimed.\n\n[BSP reconstruction 00b47900] update\nBSP reconstruction hypothesis: Return declaration+10h, flat element-array count. The concrete stream+24h getter returns its retained declaration; compressed data uses count*20h. ABI: ECX declaration; EAX DWORD count; no stack arguments; plain RET. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Host payload projection is not native ABI or game-validation. Original ABI: ECX declaration; EAX DWORD count; no stack arguments; plain RET. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation. | Native declaration element count [ECX+10] feeds the actual stream overload of00B428C0; signed clamp and independent DWORD remaining-count wrap are preserved. Complete444-byte native fragment plus three actual getters fixture checked. Evidence: docs/MATERIAL_CONSTANT_BUILDER.md; reports/material_constant_builder_audit.json. Descriptive names are hypotheses; typed host interfaces are not native ABI or gameplay validation. | Hypothesis, not a recovered symbol. Raw vertex declaration element count is DWORD receiver+10. Integrated code 8b2e79df passed strict MSVC Win32 build, eight native seeds, both CTests,32 numeric call rows and52 live/PE spans totaling12295 bytes; fixture scope belongs to full builder and reached concrete providers only. docs/NATIVE_MATERIAL_CONSTANT_BUILD.md; reports/native_material_constant_build.json. Original private stack/register ABI, native FH3/SEH, full parent and gameplay are not claimed. | Hypothesis, not a recovered symbol. Raw vertex declaration element count is DWORD receiver+10. Integrated code 7da09ce9 passed strict MSVC Win32 build, eight native seeds, both CTests,32 numeric call rows and52 live/PE spans totaling12295 bytes; fixture scope belongs to full builder and reached concrete providers only. docs/NATIVE_MATERIAL_CONSTANT_BUILD.md; reports/native_material_constant_build.json. Original private stack/register ABI, native FH3/SEH, full parent and gameplay are not claimed.\n\n[BSP reconstruction 00b47900] CH update\nCH actual mesh metadata/lighting dependencies: eight complete ordinary bodies666bytes,210 executable instruction owners,30 direct and one indirect transfer; saved/disk byte equality, no flow repairs or EH supports. B93800 saturates allocation product but wraps read bytes; captures source declaration, rereads current last stream after raw read, and stores+50 without freeing old allocation. Full unchecked B73260 pointer arithmetic replaces only the address-ledger primary entry; older checked GUI interface remains. B17840 preserves live constant capture/store order; B179D0 sets+10C then forward-copies17DWORDs with native overlap behavior. B93390 performs17 BE99D0-to-FSTP32 stores; B937A0 unsigned count loop publishes only complete records and keeps prior records on later failure. Strict five-source worktree CMake override build passed both CTests. One controlled child passed eight copied-original body comparisons/shared raw-reader-CRT boundaries, exact-address original B48CE0 getter, metadata callback destination change, lighting special-value/zero cases and raw overlap/wrapped-getter cases; two new source read failures preserve native effects. Real HAL CG composition/readbacks and eight canonical owner retirements pass with actual metadata attached until stream teardown. Fixture-only asm/lifetime-reservation corrections; production unchanged. No original native exception/ABI, overflow-allocation, full renderer/pool startup, cold decode, device loss, subset/material admission, tracked registration/main integration or gameplay claim. Prior comments retained, descriptive names hypotheses. docs/NATIVE_MESH_REMAINING_FIELDS_CH.md; reports/native_mesh_remaining_fields_ch.json. Complete 4B. ECX declaration; EAX DWORD declaration+10; RET. Source native_vertex_declaration_element_count_00b47900."
+      }
+    },
+    {
+      "address": "00b61d90",
+      "name": "BSP_LogicalVertexStream_SetCompressedFormatData",
+      "before_comment": {
+        "address": "00b61d90",
+        "function_name": "BSP_LogicalVertexStream_SetCompressedFormatData",
+        "comment": "[BSP reconstruction 00b61d90]\nBSP reconstruction hypothesis: Store pointer at stream+50h only. Does not free prior pointer or decode records; ownership lifecycle beyond setter remains separate. ABI: ECX logical vertex stream; stack raw allocation pointer; RET4; EAX incidental argument value. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Host payload projection is not native ABI or game-validation. Original ABI: ECX logical vertex stream; stack raw allocation pointer; RET4; EAX incidental argument value. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation."
+      },
+      "before_documentation": {
+        "hash": "44bc8de894af654445c026ece7c9b5f25063907846994a5f68c1addcc8661ef3",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b61d90",
+        "function_name": "BSP_LogicalVertexStream_SetCompressedFormatData",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00b61d90]\nBSP reconstruction hypothesis: Store pointer at stream+50h only. Does not free prior pointer or decode records; ownership lifecycle beyond setter remains separate. ABI: ECX logical vertex stream; stack raw allocation pointer; RET4; EAX incidental argument value. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Host payload projection is not native ABI or game-validation. Original ABI: ECX logical vertex stream; stack raw allocation pointer; RET4; EAX incidental argument value. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation.",
+        "parameters": [],
+        "local_variables": [],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 100.0
+      },
+      "evidence": "CH actual mesh metadata/lighting dependencies: eight complete ordinary bodies666bytes,210 executable instruction owners,30 direct and one indirect transfer; saved/disk byte equality, no flow repairs or EH supports. B93800 saturates allocation product but wraps read bytes; captures source declaration, rereads current last stream after raw read, and stores+50 without freeing old allocation. Full unchecked B73260 pointer arithmetic replaces only the address-ledger primary entry; older checked GUI interface remains. B17840 preserves live constant capture/store order; B179D0 sets+10C then forward-copies17DWORDs with native overlap behavior. B93390 performs17 BE99D0-to-FSTP32 stores; B937A0 unsigned count loop publishes only complete records and keeps prior records on later failure. Strict five-source worktree CMake override build passed both CTests. One controlled child passed eight copied-original body comparisons/shared raw-reader-CRT boundaries, exact-address original B48CE0 getter, metadata callback destination change, lighting special-value/zero cases and raw overlap/wrapped-getter cases; two new source read failures preserve native effects. Real HAL CG composition/readbacks and eight canonical owner retirements pass with actual metadata attached until stream teardown. Fixture-only asm/lifetime-reservation corrections; production unchanged. No original native exception/ABI, overflow-allocation, full renderer/pool startup, cold decode, device loss, subset/material admission, tracked registration/main integration or gameplay claim. Prior comments retained, descriptive names hypotheses. docs/NATIVE_MESH_REMAINING_FIELDS_CH.md; reports/native_mesh_remaining_fields_ch.json. Complete 10B. ECX stream; stacked raw allocation; RET4; EAX incidental allocation bits. Source set_native_vertex_compressed_format_00b61d90.",
+      "prototype": "void __fastcall BSP_LogicalVertexStream_SetCompressedFormatData(void* actual_stream, void* unused_edx, void* actual_allocation)",
+      "prototype_result": "Successfully set prototype for function at 00b61d90 with __fastcall calling convention",
+      "ledger_name_output": "00b61d90 -> BSP_LogicalVertexStream_SetCompressedFormatData\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00b61d90\", \"name\": \"BSP_LogicalVertexStream_SetCompressedFormatData\", \"evidence\": \"BSP reconstruction hypothesis: Store pointer at stream+50h only. Does not free prior pointer or decode records; ownership lifecycle beyond setter remains separate. ABI: ECX logical vertex stream; stack raw allocation pointer; RET4; EAX incidental argument value. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Host payload projection is not native ABI or game-validation. Original ABI: ECX logical vertex stream; stack raw allocation pointer; RET4; EAX incidental argument value. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation.\"})\n",
+      "ledger_function_output": "00b61d90 function set_native_vertex_compressed_format_00b61d90\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00b61d90",
+        "function_name": "BSP_LogicalVertexStream_SetCompressedFormatData",
+        "comment": "[BSP reconstruction 00b61d90]\nBSP reconstruction hypothesis: Store pointer at stream+50h only. Does not free prior pointer or decode records; ownership lifecycle beyond setter remains separate. ABI: ECX logical vertex stream; stack raw allocation pointer; RET4; EAX incidental argument value. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Host payload projection is not native ABI or game-validation. Original ABI: ECX logical vertex stream; stack raw allocation pointer; RET4; EAX incidental argument value. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation.\n\n[BSP reconstruction 00b61d90] CH update\nCH actual mesh metadata/lighting dependencies: eight complete ordinary bodies666bytes,210 executable instruction owners,30 direct and one indirect transfer; saved/disk byte equality, no flow repairs or EH supports. B93800 saturates allocation product but wraps read bytes; captures source declaration, rereads current last stream after raw read, and stores+50 without freeing old allocation. Full unchecked B73260 pointer arithmetic replaces only the address-ledger primary entry; older checked GUI interface remains. B17840 preserves live constant capture/store order; B179D0 sets+10C then forward-copies17DWORDs with native overlap behavior. B93390 performs17 BE99D0-to-FSTP32 stores; B937A0 unsigned count loop publishes only complete records and keeps prior records on later failure. Strict five-source worktree CMake override build passed both CTests. One controlled child passed eight copied-original body comparisons/shared raw-reader-CRT boundaries, exact-address original B48CE0 getter, metadata callback destination change, lighting special-value/zero cases and raw overlap/wrapped-getter cases; two new source read failures preserve native effects. Real HAL CG composition/readbacks and eight canonical owner retirements pass with actual metadata attached until stream teardown. Fixture-only asm/lifetime-reservation corrections; production unchanged. No original native exception/ABI, overflow-allocation, full renderer/pool startup, cold decode, device loss, subset/material admission, tracked registration/main integration or gameplay claim. Prior comments retained, descriptive names hypotheses. docs/NATIVE_MESH_REMAINING_FIELDS_CH.md; reports/native_mesh_remaining_fields_ch.json. Complete 10B. ECX stream; stacked raw allocation; RET4; EAX incidental allocation bits. Source set_native_vertex_compressed_format_00b61d90."
+      }
+    },
+    {
+      "address": "00b73260",
+      "name": "BSP_Geometry_GetVertexStream",
+      "before_comment": {
+        "address": "00b73260",
+        "function_name": "BSP_Geometry_GetVertexStream",
+        "comment": "[BSP reconstruction 00b73260]\nBSP reconstruction hypothesis: Unchecked pointer load from geometry+64h+4*index; used with last stream index by compressed-data handler. ABI: ECX geometry; stack stream index; EAX stream pointer; RET4. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Host payload projection is not native ABI or game-validation. Original ABI: ECX geometry; stack stream index; EAX stream pointer; RET4. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation.\n\n[BSP reconstruction 00b73260] update\nBSP reconstruction hypothesis: Unchecked pointer load from geometry+64h+4*index; used with last stream index by compressed-data handler. ABI: ECX geometry; stack stream index; EAX stream pointer; RET4. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Host payload projection is not native ABI or game-validation. Original ABI: ECX geometry; stack stream index; EAX stream pointer; RET4. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation. | ECX actual mesh/index stack/RET4; full three-instruction actual+64[index] getter, valid array indices0..5. No current-count test.58 live-call sites plus11 raw orphan xref setups read; orphans not attributed to preceding candidates. Strict MSVC Win32 compiled; no executable wiring/game/ABI claim. reports/gui_text_content.json"
+      },
+      "before_documentation": {
+        "hash": "7395be7e215db112290512e18ca3bc0d24ddcc7152e90f1f1ad3b25851a3b90b",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b73260",
+        "function_name": "BSP_Geometry_GetVertexStream",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00b73260]\nBSP reconstruction hypothesis: Unchecked pointer load from geometry+64h+4*index; used with last stream index by compressed-data handler. ABI: ECX geometry; stack stream index; EAX stream pointer; RET4. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Host payload projection is not native ABI or game-validation. Original ABI: ECX geometry; stack stream index; EAX stream pointer; RET4. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation.\n\n[BSP reconstruction 00b73260] update\nBSP reconstruction hypothesis: Unchecked pointer load from geometry+64h+4*index; used with last stream index by compressed-data handler. ABI: ECX geometry; stack stream index; EAX stream pointer; RET4. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Host payload projection is not native ABI or game-validation. Original ABI: ECX geometry; stack stream index; EAX stream pointer; RET4. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation. | ECX actual mesh/index stack/RET4; full three-instruction actual+64[index] getter, valid array indices0..5. No current-count test.58 live-call sites plus11 raw orphan xref setups read; orphans not attributed to preceding candidates. Strict MSVC Win32 compiled; no executable wiring/game/ABI claim. reports/gui_text_content.json",
+        "parameters": [],
+        "local_variables": [],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 100.0
+      },
+      "evidence": "CH actual mesh metadata/lighting dependencies: eight complete ordinary bodies666bytes,210 executable instruction owners,30 direct and one indirect transfer; saved/disk byte equality, no flow repairs or EH supports. B93800 saturates allocation product but wraps read bytes; captures source declaration, rereads current last stream after raw read, and stores+50 without freeing old allocation. Full unchecked B73260 pointer arithmetic replaces only the address-ledger primary entry; older checked GUI interface remains. B17840 preserves live constant capture/store order; B179D0 sets+10C then forward-copies17DWORDs with native overlap behavior. B93390 performs17 BE99D0-to-FSTP32 stores; B937A0 unsigned count loop publishes only complete records and keeps prior records on later failure. Strict five-source worktree CMake override build passed both CTests. One controlled child passed eight copied-original body comparisons/shared raw-reader-CRT boundaries, exact-address original B48CE0 getter, metadata callback destination change, lighting special-value/zero cases and raw overlap/wrapped-getter cases; two new source read failures preserve native effects. Real HAL CG composition/readbacks and eight canonical owner retirements pass with actual metadata attached until stream teardown. Fixture-only asm/lifetime-reservation corrections; production unchanged. No original native exception/ABI, overflow-allocation, full renderer/pool startup, cold decode, device loss, subset/material admission, tracked registration/main integration or gameplay claim. Prior comments retained, descriptive names hypotheses. docs/NATIVE_MESH_REMAINING_FIELDS_CH.md; reports/native_mesh_remaining_fields_ch.json. Complete 11B. ECX mesh; stacked index; EAX unchecked pointer load mesh+64+4*index; RET4. Source native_mesh_vertex_stream_unchecked_00b73260.",
+      "prototype": "void* __fastcall BSP_Geometry_GetVertexStream(void* actual_mesh, void* unused_edx, uint index)",
+      "prototype_result": "Successfully set prototype for function at 00b73260 with __fastcall calling convention",
+      "ledger_name_output": "00b73260 -> BSP_Geometry_GetVertexStream\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00b73260\", \"name\": \"BSP_Geometry_GetVertexStream\", \"evidence\": \"BSP reconstruction hypothesis: Unchecked pointer load from geometry+64h+4*index; used with last stream index by compressed-data handler. ABI: ECX geometry; stack stream index; EAX stream pointer; RET4. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Host payload projection is not native ABI or game-validation. Original ABI: ECX geometry; stack stream index; EAX stream pointer; RET4. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation. | ECX actual mesh/index stack/RET4; full three-instruction actual+64[index] getter, valid array indices0..5. No current-count test.58 live-call sites plus11 raw orphan xref setups read; orphans not attributed to preceding candidates. Strict MSVC Win32 compiled; no executable wiring/game/ABI claim. reports/gui_text_content.json\"})\n",
+      "ledger_function_output": "00b73260 function native_mesh_vertex_stream_unchecked_00b73260\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00b73260",
+        "function_name": "BSP_Geometry_GetVertexStream",
+        "comment": "[BSP reconstruction 00b73260]\nBSP reconstruction hypothesis: Unchecked pointer load from geometry+64h+4*index; used with last stream index by compressed-data handler. ABI: ECX geometry; stack stream index; EAX stream pointer; RET4. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Host payload projection is not native ABI or game-validation. Original ABI: ECX geometry; stack stream index; EAX stream pointer; RET4. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation.\n\n[BSP reconstruction 00b73260] update\nBSP reconstruction hypothesis: Unchecked pointer load from geometry+64h+4*index; used with last stream index by compressed-data handler. ABI: ECX geometry; stack stream index; EAX stream pointer; RET4. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Host payload projection is not native ABI or game-validation. Original ABI: ECX geometry; stack stream index; EAX stream pointer; RET4. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation. | ECX actual mesh/index stack/RET4; full three-instruction actual+64[index] getter, valid array indices0..5. No current-count test.58 live-call sites plus11 raw orphan xref setups read; orphans not attributed to preceding candidates. Strict MSVC Win32 compiled; no executable wiring/game/ABI claim. reports/gui_text_content.json\n\n[BSP reconstruction 00b73260] CH update\nCH actual mesh metadata/lighting dependencies: eight complete ordinary bodies666bytes,210 executable instruction owners,30 direct and one indirect transfer; saved/disk byte equality, no flow repairs or EH supports. B93800 saturates allocation product but wraps read bytes; captures source declaration, rereads current last stream after raw read, and stores+50 without freeing old allocation. Full unchecked B73260 pointer arithmetic replaces only the address-ledger primary entry; older checked GUI interface remains. B17840 preserves live constant capture/store order; B179D0 sets+10C then forward-copies17DWORDs with native overlap behavior. B93390 performs17 BE99D0-to-FSTP32 stores; B937A0 unsigned count loop publishes only complete records and keeps prior records on later failure. Strict five-source worktree CMake override build passed both CTests. One controlled child passed eight copied-original body comparisons/shared raw-reader-CRT boundaries, exact-address original B48CE0 getter, metadata callback destination change, lighting special-value/zero cases and raw overlap/wrapped-getter cases; two new source read failures preserve native effects. Real HAL CG composition/readbacks and eight canonical owner retirements pass with actual metadata attached until stream teardown. Fixture-only asm/lifetime-reservation corrections; production unchanged. No original native exception/ABI, overflow-allocation, full renderer/pool startup, cold decode, device loss, subset/material admission, tracked registration/main integration or gameplay claim. Prior comments retained, descriptive names hypotheses. docs/NATIVE_MESH_REMAINING_FIELDS_CH.md; reports/native_mesh_remaining_fields_ch.json. Complete 11B. ECX mesh; stacked index; EAX unchecked pointer load mesh+64+4*index; RET4. Source native_mesh_vertex_stream_unchecked_00b73260."
+      }
+    },
+    {
+      "address": "00b93390",
+      "name": "BSP_StructuredReader_ReadLightingRecord",
+      "before_comment": {
+        "address": "00b93390",
+        "function_name": "BSP_StructuredReader_ReadLightingRecord",
+        "comment": "[BSP reconstruction 00b93390]\nExactly17ReadFloat calls and x87 float32 stores at sequential offsets0..0x40. Original ABI: ECX reader handle; EDX68-byte output; plain RET. Evidence: docs/MESH_SUBSET_LOD_FIELDS.md; reports/mesh_subset_lod_fields_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation."
+      },
+      "before_documentation": {
+        "hash": "daa59a5a85ca155902ef550042d4e742741542ecaf9f0d083f8da45bb58b59f4",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b93390",
+        "function_name": "BSP_StructuredReader_ReadLightingRecord",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00b93390]\nExactly17ReadFloat calls and x87 float32 stores at sequential offsets0..0x40. Original ABI: ECX reader handle; EDX68-byte output; plain RET. Evidence: docs/MESH_SUBSET_LOD_FIELDS.md; reports/mesh_subset_lod_fields_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation.",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "unused_edx_05",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "unused_edx_06",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "unused_edx_07",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "unused_edx_08",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "unused_edx_01",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "unused_edx_02",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "unused_edx_03",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "unused_edx_04",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "unused_edx",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "unused_edx_00",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "unused_edx_13",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "unused_edx_14",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "fVar1",
+            "type": "float",
+            "storage": "(VARIABLE, 0x0, 4)"
+          },
+          {
+            "name": "unused_edx_09",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "unused_edx_10",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "unused_edx_11",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "unused_edx_12",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 100.0
+      },
+      "evidence": "CH actual mesh metadata/lighting dependencies: eight complete ordinary bodies666bytes,210 executable instruction owners,30 direct and one indirect transfer; saved/disk byte equality, no flow repairs or EH supports. B93800 saturates allocation product but wraps read bytes; captures source declaration, rereads current last stream after raw read, and stores+50 without freeing old allocation. Full unchecked B73260 pointer arithmetic replaces only the address-ledger primary entry; older checked GUI interface remains. B17840 preserves live constant capture/store order; B179D0 sets+10C then forward-copies17DWORDs with native overlap behavior. B93390 performs17 BE99D0-to-FSTP32 stores; B937A0 unsigned count loop publishes only complete records and keeps prior records on later failure. Strict five-source worktree CMake override build passed both CTests. One controlled child passed eight copied-original body comparisons/shared raw-reader-CRT boundaries, exact-address original B48CE0 getter, metadata callback destination change, lighting special-value/zero cases and raw overlap/wrapped-getter cases; two new source read failures preserve native effects. Real HAL CG composition/readbacks and eight canonical owner retirements pass with actual metadata attached until stream teardown. Fixture-only asm/lifetime-reservation corrections; production unchanged. No original native exception/ABI, overflow-allocation, full renderer/pool startup, cold decode, device loss, subset/material admission, tracked registration/main integration or gameplay claim. Prior comments retained, descriptive names hypotheses. docs/NATIVE_MESH_REMAINING_FIELDS_CH.md; reports/native_mesh_remaining_fields_ch.json. Complete 176B. ECX handle; EDX68-byte output; RET. Source read_native_mesh_lighting_record_00b93390.",
+      "prototype": "void __fastcall BSP_StructuredReader_ReadLightingRecord(void* actual_handle, void* actual_output)",
+      "prototype_result": "Successfully set prototype for function at 00b93390 with __fastcall calling convention",
+      "ledger_name_output": "00b93390 -> BSP_StructuredReader_ReadLightingRecord\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00b93390\", \"name\": \"BSP_StructuredReader_ReadLightingRecord\", \"evidence\": \"Exactly17ReadFloat calls and x87 float32 stores at sequential offsets0..0x40. Original ABI: ECX reader handle; EDX68-byte output; plain RET. Evidence: docs/MESH_SUBSET_LOD_FIELDS.md; reports/mesh_subset_lod_fields_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation.\"})\n",
+      "ledger_function_output": "00b93390 function read_native_mesh_lighting_record_00b93390\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00b93390",
+        "function_name": "BSP_StructuredReader_ReadLightingRecord",
+        "comment": "[BSP reconstruction 00b93390]\nExactly17ReadFloat calls and x87 float32 stores at sequential offsets0..0x40. Original ABI: ECX reader handle; EDX68-byte output; plain RET. Evidence: docs/MESH_SUBSET_LOD_FIELDS.md; reports/mesh_subset_lod_fields_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation.\n\n[BSP reconstruction 00b93390] CH update\nCH actual mesh metadata/lighting dependencies: eight complete ordinary bodies666bytes,210 executable instruction owners,30 direct and one indirect transfer; saved/disk byte equality, no flow repairs or EH supports. B93800 saturates allocation product but wraps read bytes; captures source declaration, rereads current last stream after raw read, and stores+50 without freeing old allocation. Full unchecked B73260 pointer arithmetic replaces only the address-ledger primary entry; older checked GUI interface remains. B17840 preserves live constant capture/store order; B179D0 sets+10C then forward-copies17DWORDs with native overlap behavior. B93390 performs17 BE99D0-to-FSTP32 stores; B937A0 unsigned count loop publishes only complete records and keeps prior records on later failure. Strict five-source worktree CMake override build passed both CTests. One controlled child passed eight copied-original body comparisons/shared raw-reader-CRT boundaries, exact-address original B48CE0 getter, metadata callback destination change, lighting special-value/zero cases and raw overlap/wrapped-getter cases; two new source read failures preserve native effects. Real HAL CG composition/readbacks and eight canonical owner retirements pass with actual metadata attached until stream teardown. Fixture-only asm/lifetime-reservation corrections; production unchanged. No original native exception/ABI, overflow-allocation, full renderer/pool startup, cold decode, device loss, subset/material admission, tracked registration/main integration or gameplay claim. Prior comments retained, descriptive names hypotheses. docs/NATIVE_MESH_REMAINING_FIELDS_CH.md; reports/native_mesh_remaining_fields_ch.json. Complete 176B. ECX handle; EDX68-byte output; RET. Source read_native_mesh_lighting_record_00b93390."
+      }
+    },
+    {
+      "address": "00b937a0",
+      "name": "BSP_Material_ReadLightingSettingsField",
+      "before_comment": {
+        "address": "00b937a0",
+        "function_name": "BSP_Material_ReadLightingSettingsField",
+        "comment": "[BSP reconstruction 00b937a0]\nCount then repeated ignored slot DWORD and17floats; final record overwrites material settings. Original ABI: Stack material,child handle; incoming ECX context unused; RET8. Evidence: docs/MESH_SUBSET_LOD_FIELDS.md; reports/mesh_subset_lod_fields_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation."
+      },
+      "before_documentation": {
+        "hash": "b7fa3eb3c31cd3fbe9080f70a4ae26e2910216c7b59c13fb4c4f0441428128aa",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b937a0",
+        "function_name": "BSP_Material_ReadLightingSettingsField",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00b937a0]\nCount then repeated ignored slot DWORD and17floats; final record overwrites material settings. Original ABI: Stack material,child handle; incoming ECX context unused; RET8. Evidence: docs/MESH_SUBSET_LOD_FIELDS.md; reports/mesh_subset_lod_fields_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation.",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "uVar1",
+            "type": "uint",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "ignored_slot",
+            "type": "uint",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "extraout_EDX",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "unused_edx_00",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "unused_edx",
+            "type": "void *",
+            "storage": "(unique, 0x1000006a, 4)"
+          },
+          {
+            "name": "local_44",
+            "type": "undefined1[68]"
+          },
+          {
+            "name": "unused_edx_01",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "extraout_EDX_00",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 32,
+            "name": "LAB_00b937c0"
+          },
+          {
+            "relative_offset": 82,
+            "name": "LAB_00b937f2"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "evidence": "CH actual mesh metadata/lighting dependencies: eight complete ordinary bodies666bytes,210 executable instruction owners,30 direct and one indirect transfer; saved/disk byte equality, no flow repairs or EH supports. B93800 saturates allocation product but wraps read bytes; captures source declaration, rereads current last stream after raw read, and stores+50 without freeing old allocation. Full unchecked B73260 pointer arithmetic replaces only the address-ledger primary entry; older checked GUI interface remains. B17840 preserves live constant capture/store order; B179D0 sets+10C then forward-copies17DWORDs with native overlap behavior. B93390 performs17 BE99D0-to-FSTP32 stores; B937A0 unsigned count loop publishes only complete records and keeps prior records on later failure. Strict five-source worktree CMake override build passed both CTests. One controlled child passed eight copied-original body comparisons/shared raw-reader-CRT boundaries, exact-address original B48CE0 getter, metadata callback destination change, lighting special-value/zero cases and raw overlap/wrapped-getter cases; two new source read failures preserve native effects. Real HAL CG composition/readbacks and eight canonical owner retirements pass with actual metadata attached until stream teardown. Fixture-only asm/lifetime-reservation corrections; production unchanged. No original native exception/ABI, overflow-allocation, full renderer/pool startup, cold decode, device loss, subset/material admission, tracked registration/main integration or gameplay claim. Prior comments retained, descriptive names hypotheses. docs/NATIVE_MESH_REMAINING_FIELDS_CH.md; reports/native_mesh_remaining_fields_ch.json. Complete 89B. ECX unused; stacked material and handle; RET8. Source read_native_material_lighting_field_00b937a0.",
+      "prototype": "void __fastcall BSP_Material_ReadLightingSettingsField(void* unused_ecx, void* unused_edx, void* actual_material, void* actual_handle)",
+      "prototype_result": "Successfully set prototype for function at 00b937a0 with __fastcall calling convention",
+      "ledger_name_output": "00b937a0 -> BSP_Material_ReadLightingSettingsField\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00b937a0\", \"name\": \"BSP_Material_ReadLightingSettingsField\", \"evidence\": \"Count then repeated ignored slot DWORD and17floats; final record overwrites material settings. Original ABI: Stack material,child handle; incoming ECX context unused; RET8. Evidence: docs/MESH_SUBSET_LOD_FIELDS.md; reports/mesh_subset_lod_fields_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation.\"})\n",
+      "ledger_function_output": "00b937a0 function read_native_material_lighting_field_00b937a0\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00b937a0",
+        "function_name": "BSP_Material_ReadLightingSettingsField",
+        "comment": "[BSP reconstruction 00b937a0]\nCount then repeated ignored slot DWORD and17floats; final record overwrites material settings. Original ABI: Stack material,child handle; incoming ECX context unused; RET8. Evidence: docs/MESH_SUBSET_LOD_FIELDS.md; reports/mesh_subset_lod_fields_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation.\n\n[BSP reconstruction 00b937a0] CH update\nCH actual mesh metadata/lighting dependencies: eight complete ordinary bodies666bytes,210 executable instruction owners,30 direct and one indirect transfer; saved/disk byte equality, no flow repairs or EH supports. B93800 saturates allocation product but wraps read bytes; captures source declaration, rereads current last stream after raw read, and stores+50 without freeing old allocation. Full unchecked B73260 pointer arithmetic replaces only the address-ledger primary entry; older checked GUI interface remains. B17840 preserves live constant capture/store order; B179D0 sets+10C then forward-copies17DWORDs with native overlap behavior. B93390 performs17 BE99D0-to-FSTP32 stores; B937A0 unsigned count loop publishes only complete records and keeps prior records on later failure. Strict five-source worktree CMake override build passed both CTests. One controlled child passed eight copied-original body comparisons/shared raw-reader-CRT boundaries, exact-address original B48CE0 getter, metadata callback destination change, lighting special-value/zero cases and raw overlap/wrapped-getter cases; two new source read failures preserve native effects. Real HAL CG composition/readbacks and eight canonical owner retirements pass with actual metadata attached until stream teardown. Fixture-only asm/lifetime-reservation corrections; production unchanged. No original native exception/ABI, overflow-allocation, full renderer/pool startup, cold decode, device loss, subset/material admission, tracked registration/main integration or gameplay claim. Prior comments retained, descriptive names hypotheses. docs/NATIVE_MESH_REMAINING_FIELDS_CH.md; reports/native_mesh_remaining_fields_ch.json. Complete 89B. ECX unused; stacked material and handle; RET8. Source read_native_material_lighting_field_00b937a0."
+      }
+    },
+    {
+      "address": "00b93800",
+      "name": "BSP_Mesh_ReadCompressedVertexFormatData",
+      "before_comment": {
+        "address": "00b93800",
+        "function_name": "BSP_Mesh_ReadCompressedVertexFormatData",
+        "comment": "[BSP reconstruction 00b93800]\nBSP reconstruction hypothesis: Select last stream using mesh+7Ch minus1 and+64h array; stream+24h returns declaration; declaration+10h element count times20h raw bytes; allocate and attach at stream+50h. No inline count or decompression; native multiplication/empty-stream behavior unchecked. ABI: Incoming ECX unused; stack mesh object,node wrapper; RET8; no stable return value. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Host payload projection is not native ABI or game-validation. Original ABI: Incoming ECX unused; stack mesh object,node wrapper; RET8; no stable return value. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation."
+      },
+      "before_documentation": {
+        "hash": "9234c1e955a36b58fa92f9286986be05e0546e57d0d4807c227d7247262320ea",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b93800",
+        "function_name": "BSP_Mesh_ReadCompressedVertexFormatData",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00b93800]\nBSP reconstruction hypothesis: Select last stream using mesh+7Ch minus1 and+64h array; stream+24h returns declaration; declaration+10h element count times20h raw bytes; allocate and attach at stream+50h. No inline count or decompression; native multiplication/empty-stream behavior unchecked. ABI: Incoming ECX unused; stack mesh object,node wrapper; RET8; no stable return value. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Host payload projection is not native ABI or game-validation. Original ABI: Incoming ECX unused; stack mesh object,node wrapper; RET8; no stable return value. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation.",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "destination",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff0, 4)"
+          },
+          {
+            "name": "unused_edx_00",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "unused_edx_01",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "unused_edx_02",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "uVar3",
+            "type": "undefined8",
+            "storage": "(VARIABLE, 0x0, 8)"
+          },
+          {
+            "name": "uVar1",
+            "type": "uint",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "piVar2",
+            "type": "int *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "actual_stream",
+            "type": "void *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "unused_edx",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 100.0
+      },
+      "evidence": "CH actual mesh metadata/lighting dependencies: eight complete ordinary bodies666bytes,210 executable instruction owners,30 direct and one indirect transfer; saved/disk byte equality, no flow repairs or EH supports. B93800 saturates allocation product but wraps read bytes; captures source declaration, rereads current last stream after raw read, and stores+50 without freeing old allocation. Full unchecked B73260 pointer arithmetic replaces only the address-ledger primary entry; older checked GUI interface remains. B17840 preserves live constant capture/store order; B179D0 sets+10C then forward-copies17DWORDs with native overlap behavior. B93390 performs17 BE99D0-to-FSTP32 stores; B937A0 unsigned count loop publishes only complete records and keeps prior records on later failure. Strict five-source worktree CMake override build passed both CTests. One controlled child passed eight copied-original body comparisons/shared raw-reader-CRT boundaries, exact-address original B48CE0 getter, metadata callback destination change, lighting special-value/zero cases and raw overlap/wrapped-getter cases; two new source read failures preserve native effects. Real HAL CG composition/readbacks and eight canonical owner retirements pass with actual metadata attached until stream teardown. Fixture-only asm/lifetime-reservation corrections; production unchanged. No original native exception/ABI, overflow-allocation, full renderer/pool startup, cold decode, device loss, subset/material admission, tracked registration/main integration or gameplay claim. Prior comments retained, descriptive names hypotheses. docs/NATIVE_MESH_REMAINING_FIELDS_CH.md; reports/native_mesh_remaining_fields_ch.json. Complete 116B. ECX unused; stacked mesh and handle; RET8. Source read_native_mesh_compressed_format_00b93800.",
+      "prototype": "void __fastcall BSP_Mesh_ReadCompressedVertexFormatData(void* unused_ecx, void* unused_edx, void* actual_mesh, void* actual_handle)",
+      "prototype_result": "Successfully set prototype for function at 00b93800 with __fastcall calling convention",
+      "ledger_name_output": "00b93800 -> BSP_Mesh_ReadCompressedVertexFormatData\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00b93800\", \"name\": \"BSP_Mesh_ReadCompressedVertexFormatData\", \"evidence\": \"BSP reconstruction hypothesis: Select last stream using mesh+7Ch minus1 and+64h array; stream+24h returns declaration; declaration+10h element count times20h raw bytes; allocate and attach at stream+50h. No inline count or decompression; native multiplication/empty-stream behavior unchecked. ABI: Incoming ECX unused; stack mesh object,node wrapper; RET8; no stable return value. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Host payload projection is not native ABI or game-validation. Original ABI: Incoming ECX unused; stack mesh object,node wrapper; RET8; no stable return value. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation.\"})\n",
+      "ledger_function_output": "00b93800 function read_native_mesh_compressed_format_00b93800\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00b93800",
+        "function_name": "BSP_Mesh_ReadCompressedVertexFormatData",
+        "comment": "[BSP reconstruction 00b93800]\nBSP reconstruction hypothesis: Select last stream using mesh+7Ch minus1 and+64h array; stream+24h returns declaration; declaration+10h element count times20h raw bytes; allocate and attach at stream+50h. No inline count or decompression; native multiplication/empty-stream behavior unchecked. ABI: Incoming ECX unused; stack mesh object,node wrapper; RET8; no stable return value. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Host payload projection is not native ABI or game-validation. Original ABI: Incoming ECX unused; stack mesh object,node wrapper; RET8; no stable return value. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation.\n\n[BSP reconstruction 00b93800] CH update\nCH actual mesh metadata/lighting dependencies: eight complete ordinary bodies666bytes,210 executable instruction owners,30 direct and one indirect transfer; saved/disk byte equality, no flow repairs or EH supports. B93800 saturates allocation product but wraps read bytes; captures source declaration, rereads current last stream after raw read, and stores+50 without freeing old allocation. Full unchecked B73260 pointer arithmetic replaces only the address-ledger primary entry; older checked GUI interface remains. B17840 preserves live constant capture/store order; B179D0 sets+10C then forward-copies17DWORDs with native overlap behavior. B93390 performs17 BE99D0-to-FSTP32 stores; B937A0 unsigned count loop publishes only complete records and keeps prior records on later failure. Strict five-source worktree CMake override build passed both CTests. One controlled child passed eight copied-original body comparisons/shared raw-reader-CRT boundaries, exact-address original B48CE0 getter, metadata callback destination change, lighting special-value/zero cases and raw overlap/wrapped-getter cases; two new source read failures preserve native effects. Real HAL CG composition/readbacks and eight canonical owner retirements pass with actual metadata attached until stream teardown. Fixture-only asm/lifetime-reservation corrections; production unchanged. No original native exception/ABI, overflow-allocation, full renderer/pool startup, cold decode, device loss, subset/material admission, tracked registration/main integration or gameplay claim. Prior comments retained, descriptive names hypotheses. docs/NATIVE_MESH_REMAINING_FIELDS_CH.md; reports/native_mesh_remaining_fields_ch.json. Complete 116B. ECX unused; stacked mesh and handle; RET8. Source read_native_mesh_compressed_format_00b93800."
+      }
+    }
+  ],
+  "actions": [
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00b17840",
+        "prototype": "void* __fastcall BSP_LightingRecord_Initialize(void* actual_record, void* unused_edx)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00b17840 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b17840",
+        "new_name": "BSP_LightingRecord_Initialize"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b17840 from 'BSP_LightingRecord_Initialize' to 'BSP_LightingRecord_Initialize'\", \"warnings\": [\"Function name 'BSP_LightingRecord_Initialize' \\u2014 main part 'LightingRecord_Initialize' is not PascalCase. Expected: LightingrecordInitialize\", \"Function name 'BSP_LightingRecord_Initialize' \\u2014 main part 'LightingRecord_Initialize' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_LightingRecord_Initialize' does not start with a recognized verb. First word 'Lighting' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b17840",
+        "new_name": "BSP_LightingRecord_Initialize"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b17840 from 'BSP_LightingRecord_Initialize' to 'BSP_LightingRecord_Initialize'\", \"warnings\": [\"Function name 'BSP_LightingRecord_Initialize' \\u2014 main part 'LightingRecord_Initialize' is not PascalCase. Expected: LightingrecordInitialize\", \"Function name 'BSP_LightingRecord_Initialize' \\u2014 main part 'LightingRecord_Initialize' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_LightingRecord_Initialize' does not start with a recognized verb. First word 'Lighting' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00b17840",
+        "comment": "[BSP reconstruction 00b17840]\nFirst4float components1; next12components0; final component10. All overwritten by full reads. Original ABI: ECX68-byte output; EAX output; plain RET. Evidence: docs/MESH_SUBSET_LOD_FIELDS.md; reports/mesh_subset_lod_fields_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation.\n\n[BSP reconstruction 00b17840] update\nStore four float1 values at record+0..Ch; twelve positive zero values at+10h..3Ch; final float10 at+40h. No semantic labels inferred for components4..16. Original ABI: ECX68-byte output; EAX output; plain RET. Evidence: docs/MATERIAL_LIGHTING.md; reports/material_lighting_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation.\n\n[BSP reconstruction 00b17840] CH update\nCH actual mesh metadata/lighting dependencies: eight complete ordinary bodies666bytes,210 executable instruction owners,30 direct and one indirect transfer; saved/disk byte equality, no flow repairs or EH supports. B93800 saturates allocation product but wraps read bytes; captures source declaration, rereads current last stream after raw read, and stores+50 without freeing old allocation. Full unchecked B73260 pointer arithmetic replaces only the address-ledger primary entry; older checked GUI interface remains. B17840 preserves live constant capture/store order; B179D0 sets+10C then forward-copies17DWORDs with native overlap behavior. B93390 performs17 BE99D0-to-FSTP32 stores; B937A0 unsigned count loop publishes only complete records and keeps prior records on later failure. Strict five-source worktree CMake override build passed both CTests. One controlled child passed eight copied-original body comparisons/shared raw-reader-CRT boundaries, exact-address original B48CE0 getter, metadata callback destination change, lighting special-value/zero cases and raw overlap/wrapped-getter cases; two new source read failures preserve native effects. Real HAL CG composition/readbacks and eight canonical owner retirements pass with actual metadata attached until stream teardown. Fixture-only asm/lifetime-reservation corrections; production unchanged. No original native exception/ABI, overflow-allocation, full renderer/pool startup, cold decode, device loss, subset/material admission, tracked registration/main integration or gameplay claim. Prior comments retained, descriptive names hypotheses. docs/NATIVE_MESH_REMAINING_FIELDS_CH.md; reports/native_mesh_remaining_fields_ch.json. Complete 232B. ECX record; EAX same record; RET. Source initialize_native_mesh_lighting_record_00b17840."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00b17840\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00b179d0",
+        "prototype": "void __fastcall BSP_Material_SetLightingRecord(void* actual_material, void* unused_edx, uint ignored_slot, void* actual_record)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00b179d0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b179d0",
+        "new_name": "BSP_Material_SetLightingRecord"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b179d0 from 'BSP_Material_SetLightingRecord' to 'BSP_Material_SetLightingRecord'\", \"warnings\": [\"Function name 'BSP_Material_SetLightingRecord' \\u2014 main part 'Material_SetLightingRecord' is not PascalCase. Expected: MaterialSetlightingrecord\", \"Function name 'BSP_Material_SetLightingRecord' \\u2014 main part 'Material_SetLightingRecord' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_Material_SetLightingRecord' does not start with a recognized verb. First word 'Material_' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b179d0",
+        "new_name": "BSP_Material_SetLightingRecord"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b179d0 from 'BSP_Material_SetLightingRecord' to 'BSP_Material_SetLightingRecord'\", \"warnings\": [\"Function name 'BSP_Material_SetLightingRecord' \\u2014 main part 'Material_SetLightingRecord' is not PascalCase. Expected: MaterialSetlightingrecord\", \"Function name 'BSP_Material_SetLightingRecord' \\u2014 main part 'Material_SetLightingRecord' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_Material_SetLightingRecord' does not start with a recognized verb. First word 'Material_' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00b179d0",
+        "comment": "[BSP reconstruction 00b179d0]\nSet material+0x10c byte1; REP MOVSD17DWORDs to material+0x38; serialized slot never read. Original ABI: ECX material; stack ignored slot,68-byte source; RET8. Evidence: docs/MESH_SUBSET_LOD_FIELDS.md; reports/mesh_subset_lod_fields_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation.\n\n[BSP reconstruction 00b179d0] update\nSet material byte+10Ch to1; copy17DWORDs from source into material+38h using REP MOVSD. Serialized slot is never loaded. Last call replaces all record bits; no clamping or conversion. Original ABI: ECX material; stack ignored slot, source68-byte record; RET8. Evidence: docs/MATERIAL_LIGHTING.md; reports/material_lighting_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation.\n\n[BSP reconstruction 00b179d0] CH update\nCH actual mesh metadata/lighting dependencies: eight complete ordinary bodies666bytes,210 executable instruction owners,30 direct and one indirect transfer; saved/disk byte equality, no flow repairs or EH supports. B93800 saturates allocation product but wraps read bytes; captures source declaration, rereads current last stream after raw read, and stores+50 without freeing old allocation. Full unchecked B73260 pointer arithmetic replaces only the address-ledger primary entry; older checked GUI interface remains. B17840 preserves live constant capture/store order; B179D0 sets+10C then forward-copies17DWORDs with native overlap behavior. B93390 performs17 BE99D0-to-FSTP32 stores; B937A0 unsigned count loop publishes only complete records and keeps prior records on later failure. Strict five-source worktree CMake override build passed both CTests. One controlled child passed eight copied-original body comparisons/shared raw-reader-CRT boundaries, exact-address original B48CE0 getter, metadata callback destination change, lighting special-value/zero cases and raw overlap/wrapped-getter cases; two new source read failures preserve native effects. Real HAL CG composition/readbacks and eight canonical owner retirements pass with actual metadata attached until stream teardown. Fixture-only asm/lifetime-reservation corrections; production unchanged. No original native exception/ABI, overflow-allocation, full renderer/pool startup, cold decode, device loss, subset/material admission, tracked registration/main integration or gameplay claim. Prior comments retained, descriptive names hypotheses. docs/NATIVE_MESH_REMAINING_FIELDS_CH.md; reports/native_mesh_remaining_fields_ch.json. Complete 28B. ECX material; stacked ignored slot and source68-byte record; RET8. Source set_native_material_lighting_record_00b179d0."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00b179d0\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00b47900",
+        "prototype": "uint __fastcall BSP_VertexDeclaration_GetElementCount(void* actual_declaration, void* unused_edx)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00b47900 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b47900",
+        "new_name": "BSP_VertexDeclaration_GetElementCount"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b47900 from 'BSP_VertexDeclaration_GetElementCount' to 'BSP_VertexDeclaration_GetElementCount'\", \"warnings\": [\"Function name 'BSP_VertexDeclaration_GetElementCount' \\u2014 main part 'VertexDeclaration_GetElementCount' is not PascalCase. Expected: VertexdeclarationGetelementcount\", \"Function name 'BSP_VertexDeclaration_GetElementCount' \\u2014 main part 'VertexDeclaration_GetElementCount' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_VertexDeclaration_GetElementCount' does not start with a recognized verb. First word 'Vertex' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b47900",
+        "new_name": "BSP_VertexDeclaration_GetElementCount"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b47900 from 'BSP_VertexDeclaration_GetElementCount' to 'BSP_VertexDeclaration_GetElementCount'\", \"warnings\": [\"Function name 'BSP_VertexDeclaration_GetElementCount' \\u2014 main part 'VertexDeclaration_GetElementCount' is not PascalCase. Expected: VertexdeclarationGetelementcount\", \"Function name 'BSP_VertexDeclaration_GetElementCount' \\u2014 main part 'VertexDeclaration_GetElementCount' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_VertexDeclaration_GetElementCount' does not start with a recognized verb. First word 'Vertex' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00b47900",
+        "comment": "[BSP reconstruction 00b47900]\nBSP reconstruction hypothesis: Return declaration+10h, flat element-array count. The concrete stream+24h getter returns its retained declaration; compressed data uses count*20h. ABI: ECX declaration; EAX DWORD count; no stack arguments; plain RET. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Host payload projection is not native ABI or game-validation. Original ABI: ECX declaration; EAX DWORD count; no stack arguments; plain RET. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation.\n\n[BSP reconstruction 00b47900] update\nBSP reconstruction hypothesis: Return declaration+10h, flat element-array count. The concrete stream+24h getter returns its retained declaration; compressed data uses count*20h. ABI: ECX declaration; EAX DWORD count; no stack arguments; plain RET. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Host payload projection is not native ABI or game-validation. Original ABI: ECX declaration; EAX DWORD count; no stack arguments; plain RET. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation. | Native declaration element count [ECX+10] feeds the actual stream overload of00B428C0; signed clamp and independent DWORD remaining-count wrap are preserved. Complete444-byte native fragment plus three actual getters fixture checked. Evidence: docs/MATERIAL_CONSTANT_BUILDER.md; reports/material_constant_builder_audit.json. Descriptive names are hypotheses; typed host interfaces are not native ABI or gameplay validation.\n\n[BSP reconstruction 00b47900] update\nBSP reconstruction hypothesis: Return declaration+10h, flat element-array count. The concrete stream+24h getter returns its retained declaration; compressed data uses count*20h. ABI: ECX declaration; EAX DWORD count; no stack arguments; plain RET. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Host payload projection is not native ABI or game-validation. Original ABI: ECX declaration; EAX DWORD count; no stack arguments; plain RET. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation. | Native declaration element count [ECX+10] feeds the actual stream overload of00B428C0; signed clamp and independent DWORD remaining-count wrap are preserved. Complete444-byte native fragment plus three actual getters fixture checked. Evidence: docs/MATERIAL_CONSTANT_BUILDER.md; reports/material_constant_builder_audit.json. Descriptive names are hypotheses; typed host interfaces are not native ABI or gameplay validation. | Descriptive hypothesis, not recovered symbol. Current actual vertex declaration DWORD+10h; no validation. Original ABI: ECX actual vertex declaration; EAX DWORD+10h; plain RET Primary reviewed whole native/source/generated code; source COMDAT equals complete native span with zero relocations. Exact MSVC Win32 Release and both existing math CTests passed at e54b51afb7a0bcc6ef6eacd41a30603711c2eec2. Evidence docs/NATIVE_MATERIAL_CONSTANT_METADATA_CE.md; reports/native_material_constant_metadata_ce.json. No new native execution, completed actual constants builder, drop-in module or gameplay validation.\n\n[BSP reconstruction 00b47900] update\nBSP reconstruction hypothesis: Return declaration+10h, flat element-array count. The concrete stream+24h getter returns its retained declaration; compressed data uses count*20h. ABI: ECX declaration; EAX DWORD count; no stack arguments; plain RET. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Host payload projection is not native ABI or game-validation. Original ABI: ECX declaration; EAX DWORD count; no stack arguments; plain RET. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation. | Native declaration element count [ECX+10] feeds the actual stream overload of00B428C0; signed clamp and independent DWORD remaining-count wrap are preserved. Complete444-byte native fragment plus three actual getters fixture checked. Evidence: docs/MATERIAL_CONSTANT_BUILDER.md; reports/material_constant_builder_audit.json. Descriptive names are hypotheses; typed host interfaces are not native ABI or gameplay validation. | Hypothesis, not a recovered symbol. Raw vertex declaration element count is DWORD receiver+10. Integrated code 8b2e79df passed strict MSVC Win32 build, eight native seeds, both CTests,32 numeric call rows and52 live/PE spans totaling12295 bytes; fixture scope belongs to full builder and reached concrete providers only. docs/NATIVE_MATERIAL_CONSTANT_BUILD.md; reports/native_material_constant_build.json. Original private stack/register ABI, native FH3/SEH, full parent and gameplay are not claimed.\n\n[BSP reconstruction 00b47900] update\nBSP reconstruction hypothesis: Return declaration+10h, flat element-array count. The concrete stream+24h getter returns its retained declaration; compressed data uses count*20h. ABI: ECX declaration; EAX DWORD count; no stack arguments; plain RET. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Host payload projection is not native ABI or game-validation. Original ABI: ECX declaration; EAX DWORD count; no stack arguments; plain RET. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation. | Native declaration element count [ECX+10] feeds the actual stream overload of00B428C0; signed clamp and independent DWORD remaining-count wrap are preserved. Complete444-byte native fragment plus three actual getters fixture checked. Evidence: docs/MATERIAL_CONSTANT_BUILDER.md; reports/material_constant_builder_audit.json. Descriptive names are hypotheses; typed host interfaces are not native ABI or gameplay validation. | Hypothesis, not a recovered symbol. Raw vertex declaration element count is DWORD receiver+10. Integrated code 8b2e79df passed strict MSVC Win32 build, eight native seeds, both CTests,32 numeric call rows and52 live/PE spans totaling12295 bytes; fixture scope belongs to full builder and reached concrete providers only. docs/NATIVE_MATERIAL_CONSTANT_BUILD.md; reports/native_material_constant_build.json. Original private stack/register ABI, native FH3/SEH, full parent and gameplay are not claimed. | Hypothesis, not a recovered symbol. Raw vertex declaration element count is DWORD receiver+10. Integrated code 7da09ce9 passed strict MSVC Win32 build, eight native seeds, both CTests,32 numeric call rows and52 live/PE spans totaling12295 bytes; fixture scope belongs to full builder and reached concrete providers only. docs/NATIVE_MATERIAL_CONSTANT_BUILD.md; reports/native_material_constant_build.json. Original private stack/register ABI, native FH3/SEH, full parent and gameplay are not claimed.\n\n[BSP reconstruction 00b47900] CH update\nCH actual mesh metadata/lighting dependencies: eight complete ordinary bodies666bytes,210 executable instruction owners,30 direct and one indirect transfer; saved/disk byte equality, no flow repairs or EH supports. B93800 saturates allocation product but wraps read bytes; captures source declaration, rereads current last stream after raw read, and stores+50 without freeing old allocation. Full unchecked B73260 pointer arithmetic replaces only the address-ledger primary entry; older checked GUI interface remains. B17840 preserves live constant capture/store order; B179D0 sets+10C then forward-copies17DWORDs with native overlap behavior. B93390 performs17 BE99D0-to-FSTP32 stores; B937A0 unsigned count loop publishes only complete records and keeps prior records on later failure. Strict five-source worktree CMake override build passed both CTests. One controlled child passed eight copied-original body comparisons/shared raw-reader-CRT boundaries, exact-address original B48CE0 getter, metadata callback destination change, lighting special-value/zero cases and raw overlap/wrapped-getter cases; two new source read failures preserve native effects. Real HAL CG composition/readbacks and eight canonical owner retirements pass with actual metadata attached until stream teardown. Fixture-only asm/lifetime-reservation corrections; production unchanged. No original native exception/ABI, overflow-allocation, full renderer/pool startup, cold decode, device loss, subset/material admission, tracked registration/main integration or gameplay claim. Prior comments retained, descriptive names hypotheses. docs/NATIVE_MESH_REMAINING_FIELDS_CH.md; reports/native_mesh_remaining_fields_ch.json. Complete 4B. ECX declaration; EAX DWORD declaration+10; RET. Source native_vertex_declaration_element_count_00b47900."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00b47900\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00b61d90",
+        "prototype": "void __fastcall BSP_LogicalVertexStream_SetCompressedFormatData(void* actual_stream, void* unused_edx, void* actual_allocation)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00b61d90 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b61d90",
+        "new_name": "BSP_LogicalVertexStream_SetCompressedFormatData"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b61d90 from 'BSP_LogicalVertexStream_SetCompressedFormatData' to 'BSP_LogicalVertexStream_SetCompressedFormatData'\", \"warnings\": [\"Function name 'BSP_LogicalVertexStream_SetCompressedFormatData' \\u2014 main part 'LogicalVertexStream_SetCompressedFormatData' is not PascalCase. Expected: LogicalvertexstreamSetcompressedformatdata\", \"Function name 'BSP_LogicalVertexStream_SetCompressedFormatData' \\u2014 main part 'LogicalVertexStream_SetCompressedFormatData' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_LogicalVertexStream_SetCompressedFormatData' does not start with a recognized verb. First word 'Logical' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b61d90",
+        "new_name": "BSP_LogicalVertexStream_SetCompressedFormatData"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b61d90 from 'BSP_LogicalVertexStream_SetCompressedFormatData' to 'BSP_LogicalVertexStream_SetCompressedFormatData'\", \"warnings\": [\"Function name 'BSP_LogicalVertexStream_SetCompressedFormatData' \\u2014 main part 'LogicalVertexStream_SetCompressedFormatData' is not PascalCase. Expected: LogicalvertexstreamSetcompressedformatdata\", \"Function name 'BSP_LogicalVertexStream_SetCompressedFormatData' \\u2014 main part 'LogicalVertexStream_SetCompressedFormatData' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_LogicalVertexStream_SetCompressedFormatData' does not start with a recognized verb. First word 'Logical' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00b61d90",
+        "comment": "[BSP reconstruction 00b61d90]\nBSP reconstruction hypothesis: Store pointer at stream+50h only. Does not free prior pointer or decode records; ownership lifecycle beyond setter remains separate. ABI: ECX logical vertex stream; stack raw allocation pointer; RET4; EAX incidental argument value. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Host payload projection is not native ABI or game-validation. Original ABI: ECX logical vertex stream; stack raw allocation pointer; RET4; EAX incidental argument value. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation.\n\n[BSP reconstruction 00b61d90] CH update\nCH actual mesh metadata/lighting dependencies: eight complete ordinary bodies666bytes,210 executable instruction owners,30 direct and one indirect transfer; saved/disk byte equality, no flow repairs or EH supports. B93800 saturates allocation product but wraps read bytes; captures source declaration, rereads current last stream after raw read, and stores+50 without freeing old allocation. Full unchecked B73260 pointer arithmetic replaces only the address-ledger primary entry; older checked GUI interface remains. B17840 preserves live constant capture/store order; B179D0 sets+10C then forward-copies17DWORDs with native overlap behavior. B93390 performs17 BE99D0-to-FSTP32 stores; B937A0 unsigned count loop publishes only complete records and keeps prior records on later failure. Strict five-source worktree CMake override build passed both CTests. One controlled child passed eight copied-original body comparisons/shared raw-reader-CRT boundaries, exact-address original B48CE0 getter, metadata callback destination change, lighting special-value/zero cases and raw overlap/wrapped-getter cases; two new source read failures preserve native effects. Real HAL CG composition/readbacks and eight canonical owner retirements pass with actual metadata attached until stream teardown. Fixture-only asm/lifetime-reservation corrections; production unchanged. No original native exception/ABI, overflow-allocation, full renderer/pool startup, cold decode, device loss, subset/material admission, tracked registration/main integration or gameplay claim. Prior comments retained, descriptive names hypotheses. docs/NATIVE_MESH_REMAINING_FIELDS_CH.md; reports/native_mesh_remaining_fields_ch.json. Complete 10B. ECX stream; stacked raw allocation; RET4; EAX incidental allocation bits. Source set_native_vertex_compressed_format_00b61d90."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00b61d90\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00b73260",
+        "prototype": "void* __fastcall BSP_Geometry_GetVertexStream(void* actual_mesh, void* unused_edx, uint index)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00b73260 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b73260",
+        "new_name": "BSP_Geometry_GetVertexStream"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b73260 from 'BSP_Geometry_GetVertexStream' to 'BSP_Geometry_GetVertexStream'\", \"warnings\": [\"Function name 'BSP_Geometry_GetVertexStream' \\u2014 main part 'Geometry_GetVertexStream' is not PascalCase. Expected: GeometryGetvertexstream\", \"Function name 'BSP_Geometry_GetVertexStream' \\u2014 main part 'Geometry_GetVertexStream' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_Geometry_GetVertexStream' does not start with a recognized verb. First word 'Geometry_' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b73260",
+        "new_name": "BSP_Geometry_GetVertexStream"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b73260 from 'BSP_Geometry_GetVertexStream' to 'BSP_Geometry_GetVertexStream'\", \"warnings\": [\"Function name 'BSP_Geometry_GetVertexStream' \\u2014 main part 'Geometry_GetVertexStream' is not PascalCase. Expected: GeometryGetvertexstream\", \"Function name 'BSP_Geometry_GetVertexStream' \\u2014 main part 'Geometry_GetVertexStream' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_Geometry_GetVertexStream' does not start with a recognized verb. First word 'Geometry_' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00b73260",
+        "comment": "[BSP reconstruction 00b73260]\nBSP reconstruction hypothesis: Unchecked pointer load from geometry+64h+4*index; used with last stream index by compressed-data handler. ABI: ECX geometry; stack stream index; EAX stream pointer; RET4. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Host payload projection is not native ABI or game-validation. Original ABI: ECX geometry; stack stream index; EAX stream pointer; RET4. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation.\n\n[BSP reconstruction 00b73260] update\nBSP reconstruction hypothesis: Unchecked pointer load from geometry+64h+4*index; used with last stream index by compressed-data handler. ABI: ECX geometry; stack stream index; EAX stream pointer; RET4. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Host payload projection is not native ABI or game-validation. Original ABI: ECX geometry; stack stream index; EAX stream pointer; RET4. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation. | ECX actual mesh/index stack/RET4; full three-instruction actual+64[index] getter, valid array indices0..5. No current-count test.58 live-call sites plus11 raw orphan xref setups read; orphans not attributed to preceding candidates. Strict MSVC Win32 compiled; no executable wiring/game/ABI claim. reports/gui_text_content.json\n\n[BSP reconstruction 00b73260] CH update\nCH actual mesh metadata/lighting dependencies: eight complete ordinary bodies666bytes,210 executable instruction owners,30 direct and one indirect transfer; saved/disk byte equality, no flow repairs or EH supports. B93800 saturates allocation product but wraps read bytes; captures source declaration, rereads current last stream after raw read, and stores+50 without freeing old allocation. Full unchecked B73260 pointer arithmetic replaces only the address-ledger primary entry; older checked GUI interface remains. B17840 preserves live constant capture/store order; B179D0 sets+10C then forward-copies17DWORDs with native overlap behavior. B93390 performs17 BE99D0-to-FSTP32 stores; B937A0 unsigned count loop publishes only complete records and keeps prior records on later failure. Strict five-source worktree CMake override build passed both CTests. One controlled child passed eight copied-original body comparisons/shared raw-reader-CRT boundaries, exact-address original B48CE0 getter, metadata callback destination change, lighting special-value/zero cases and raw overlap/wrapped-getter cases; two new source read failures preserve native effects. Real HAL CG composition/readbacks and eight canonical owner retirements pass with actual metadata attached until stream teardown. Fixture-only asm/lifetime-reservation corrections; production unchanged. No original native exception/ABI, overflow-allocation, full renderer/pool startup, cold decode, device loss, subset/material admission, tracked registration/main integration or gameplay claim. Prior comments retained, descriptive names hypotheses. docs/NATIVE_MESH_REMAINING_FIELDS_CH.md; reports/native_mesh_remaining_fields_ch.json. Complete 11B. ECX mesh; stacked index; EAX unchecked pointer load mesh+64+4*index; RET4. Source native_mesh_vertex_stream_unchecked_00b73260."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00b73260\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00b93390",
+        "prototype": "void __fastcall BSP_StructuredReader_ReadLightingRecord(void* actual_handle, void* actual_output)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00b93390 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b93390",
+        "new_name": "BSP_StructuredReader_ReadLightingRecord"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b93390 from 'BSP_StructuredReader_ReadLightingRecord' to 'BSP_StructuredReader_ReadLightingRecord'\", \"warnings\": [\"Function name 'BSP_StructuredReader_ReadLightingRecord' \\u2014 main part 'StructuredReader_ReadLightingRecord' is not PascalCase. Expected: StructuredreaderReadlightingrecord\", \"Function name 'BSP_StructuredReader_ReadLightingRecord' \\u2014 main part 'StructuredReader_ReadLightingRecord' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_StructuredReader_ReadLightingRecord' does not start with a recognized verb. First word 'Structured' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b93390",
+        "new_name": "BSP_StructuredReader_ReadLightingRecord"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b93390 from 'BSP_StructuredReader_ReadLightingRecord' to 'BSP_StructuredReader_ReadLightingRecord'\", \"warnings\": [\"Function name 'BSP_StructuredReader_ReadLightingRecord' \\u2014 main part 'StructuredReader_ReadLightingRecord' is not PascalCase. Expected: StructuredreaderReadlightingrecord\", \"Function name 'BSP_StructuredReader_ReadLightingRecord' \\u2014 main part 'StructuredReader_ReadLightingRecord' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_StructuredReader_ReadLightingRecord' does not start with a recognized verb. First word 'Structured' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00b93390",
+        "comment": "[BSP reconstruction 00b93390]\nExactly17ReadFloat calls and x87 float32 stores at sequential offsets0..0x40. Original ABI: ECX reader handle; EDX68-byte output; plain RET. Evidence: docs/MESH_SUBSET_LOD_FIELDS.md; reports/mesh_subset_lod_fields_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation.\n\n[BSP reconstruction 00b93390] CH update\nCH actual mesh metadata/lighting dependencies: eight complete ordinary bodies666bytes,210 executable instruction owners,30 direct and one indirect transfer; saved/disk byte equality, no flow repairs or EH supports. B93800 saturates allocation product but wraps read bytes; captures source declaration, rereads current last stream after raw read, and stores+50 without freeing old allocation. Full unchecked B73260 pointer arithmetic replaces only the address-ledger primary entry; older checked GUI interface remains. B17840 preserves live constant capture/store order; B179D0 sets+10C then forward-copies17DWORDs with native overlap behavior. B93390 performs17 BE99D0-to-FSTP32 stores; B937A0 unsigned count loop publishes only complete records and keeps prior records on later failure. Strict five-source worktree CMake override build passed both CTests. One controlled child passed eight copied-original body comparisons/shared raw-reader-CRT boundaries, exact-address original B48CE0 getter, metadata callback destination change, lighting special-value/zero cases and raw overlap/wrapped-getter cases; two new source read failures preserve native effects. Real HAL CG composition/readbacks and eight canonical owner retirements pass with actual metadata attached until stream teardown. Fixture-only asm/lifetime-reservation corrections; production unchanged. No original native exception/ABI, overflow-allocation, full renderer/pool startup, cold decode, device loss, subset/material admission, tracked registration/main integration or gameplay claim. Prior comments retained, descriptive names hypotheses. docs/NATIVE_MESH_REMAINING_FIELDS_CH.md; reports/native_mesh_remaining_fields_ch.json. Complete 176B. ECX handle; EDX68-byte output; RET. Source read_native_mesh_lighting_record_00b93390."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00b93390\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00b937a0",
+        "prototype": "void __fastcall BSP_Material_ReadLightingSettingsField(void* unused_ecx, void* unused_edx, void* actual_material, void* actual_handle)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00b937a0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b937a0",
+        "new_name": "BSP_Material_ReadLightingSettingsField"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b937a0 from 'BSP_Material_ReadLightingSettingsField' to 'BSP_Material_ReadLightingSettingsField'\", \"warnings\": [\"Function name 'BSP_Material_ReadLightingSettingsField' \\u2014 main part 'Material_ReadLightingSettingsField' is not PascalCase. Expected: MaterialReadlightingsettingsfield\", \"Function name 'BSP_Material_ReadLightingSettingsField' \\u2014 main part 'Material_ReadLightingSettingsField' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_Material_ReadLightingSettingsField' does not start with a recognized verb. First word 'Material_' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b937a0",
+        "new_name": "BSP_Material_ReadLightingSettingsField"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b937a0 from 'BSP_Material_ReadLightingSettingsField' to 'BSP_Material_ReadLightingSettingsField'\", \"warnings\": [\"Function name 'BSP_Material_ReadLightingSettingsField' \\u2014 main part 'Material_ReadLightingSettingsField' is not PascalCase. Expected: MaterialReadlightingsettingsfield\", \"Function name 'BSP_Material_ReadLightingSettingsField' \\u2014 main part 'Material_ReadLightingSettingsField' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_Material_ReadLightingSettingsField' does not start with a recognized verb. First word 'Material_' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00b937a0",
+        "comment": "[BSP reconstruction 00b937a0]\nCount then repeated ignored slot DWORD and17floats; final record overwrites material settings. Original ABI: Stack material,child handle; incoming ECX context unused; RET8. Evidence: docs/MESH_SUBSET_LOD_FIELDS.md; reports/mesh_subset_lod_fields_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation.\n\n[BSP reconstruction 00b937a0] CH update\nCH actual mesh metadata/lighting dependencies: eight complete ordinary bodies666bytes,210 executable instruction owners,30 direct and one indirect transfer; saved/disk byte equality, no flow repairs or EH supports. B93800 saturates allocation product but wraps read bytes; captures source declaration, rereads current last stream after raw read, and stores+50 without freeing old allocation. Full unchecked B73260 pointer arithmetic replaces only the address-ledger primary entry; older checked GUI interface remains. B17840 preserves live constant capture/store order; B179D0 sets+10C then forward-copies17DWORDs with native overlap behavior. B93390 performs17 BE99D0-to-FSTP32 stores; B937A0 unsigned count loop publishes only complete records and keeps prior records on later failure. Strict five-source worktree CMake override build passed both CTests. One controlled child passed eight copied-original body comparisons/shared raw-reader-CRT boundaries, exact-address original B48CE0 getter, metadata callback destination change, lighting special-value/zero cases and raw overlap/wrapped-getter cases; two new source read failures preserve native effects. Real HAL CG composition/readbacks and eight canonical owner retirements pass with actual metadata attached until stream teardown. Fixture-only asm/lifetime-reservation corrections; production unchanged. No original native exception/ABI, overflow-allocation, full renderer/pool startup, cold decode, device loss, subset/material admission, tracked registration/main integration or gameplay claim. Prior comments retained, descriptive names hypotheses. docs/NATIVE_MESH_REMAINING_FIELDS_CH.md; reports/native_mesh_remaining_fields_ch.json. Complete 89B. ECX unused; stacked material and handle; RET8. Source read_native_material_lighting_field_00b937a0."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00b937a0\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00b93800",
+        "prototype": "void __fastcall BSP_Mesh_ReadCompressedVertexFormatData(void* unused_ecx, void* unused_edx, void* actual_mesh, void* actual_handle)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00b93800 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b93800",
+        "new_name": "BSP_Mesh_ReadCompressedVertexFormatData"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b93800 from 'BSP_Mesh_ReadCompressedVertexFormatData' to 'BSP_Mesh_ReadCompressedVertexFormatData'\", \"warnings\": [\"Function name 'BSP_Mesh_ReadCompressedVertexFormatData' \\u2014 main part 'Mesh_ReadCompressedVertexFormatData' is not PascalCase. Expected: MeshReadcompressedvertexformatdata\", \"Function name 'BSP_Mesh_ReadCompressedVertexFormatData' \\u2014 main part 'Mesh_ReadCompressedVertexFormatData' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_Mesh_ReadCompressedVertexFormatData' does not start with a recognized verb. First word 'Mesh_' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b93800",
+        "new_name": "BSP_Mesh_ReadCompressedVertexFormatData"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b93800 from 'BSP_Mesh_ReadCompressedVertexFormatData' to 'BSP_Mesh_ReadCompressedVertexFormatData'\", \"warnings\": [\"Function name 'BSP_Mesh_ReadCompressedVertexFormatData' \\u2014 main part 'Mesh_ReadCompressedVertexFormatData' is not PascalCase. Expected: MeshReadcompressedvertexformatdata\", \"Function name 'BSP_Mesh_ReadCompressedVertexFormatData' \\u2014 main part 'Mesh_ReadCompressedVertexFormatData' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_Mesh_ReadCompressedVertexFormatData' does not start with a recognized verb. First word 'Mesh_' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00b93800",
+        "comment": "[BSP reconstruction 00b93800]\nBSP reconstruction hypothesis: Select last stream using mesh+7Ch minus1 and+64h array; stream+24h returns declaration; declaration+10h element count times20h raw bytes; allocate and attach at stream+50h. No inline count or decompression; native multiplication/empty-stream behavior unchecked. ABI: Incoming ECX unused; stack mesh object,node wrapper; RET8; no stable return value. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Host payload projection is not native ABI or game-validation. Original ABI: Incoming ECX unused; stack mesh object,node wrapper; RET8; no stable return value. Evidence: docs/MESH_VERTEX_INDEX_PAYLOADS.md; reports/mesh_vertex_index_payloads_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation.\n\n[BSP reconstruction 00b93800] CH update\nCH actual mesh metadata/lighting dependencies: eight complete ordinary bodies666bytes,210 executable instruction owners,30 direct and one indirect transfer; saved/disk byte equality, no flow repairs or EH supports. B93800 saturates allocation product but wraps read bytes; captures source declaration, rereads current last stream after raw read, and stores+50 without freeing old allocation. Full unchecked B73260 pointer arithmetic replaces only the address-ledger primary entry; older checked GUI interface remains. B17840 preserves live constant capture/store order; B179D0 sets+10C then forward-copies17DWORDs with native overlap behavior. B93390 performs17 BE99D0-to-FSTP32 stores; B937A0 unsigned count loop publishes only complete records and keeps prior records on later failure. Strict five-source worktree CMake override build passed both CTests. One controlled child passed eight copied-original body comparisons/shared raw-reader-CRT boundaries, exact-address original B48CE0 getter, metadata callback destination change, lighting special-value/zero cases and raw overlap/wrapped-getter cases; two new source read failures preserve native effects. Real HAL CG composition/readbacks and eight canonical owner retirements pass with actual metadata attached until stream teardown. Fixture-only asm/lifetime-reservation corrections; production unchanged. No original native exception/ABI, overflow-allocation, full renderer/pool startup, cold decode, device loss, subset/material admission, tracked registration/main integration or gameplay claim. Prior comments retained, descriptive names hypotheses. docs/NATIVE_MESH_REMAINING_FIELDS_CH.md; reports/native_mesh_remaining_fields_ch.json. Complete 116B. ECX unused; stacked mesh and handle; RET8. Source read_native_mesh_compressed_format_00b93800."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00b93800\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": "{\"success\": true, \"program\": \"battlestationspacific.exe\", \"message\": \"Program saved successfully\"}"
+    }
+  ],
+  "saved": true,
+  "exports_refreshed": true
+}

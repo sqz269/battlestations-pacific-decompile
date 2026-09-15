@@ -1,0 +1,61 @@
+{
+  "packet": "orch4_native_mesh_remaining_fields_ch",
+  "project": {
+    "project_name": "bsp",
+    "current_folder": "/",
+    "folders": [],
+    "files": [
+      {
+        "name": "battlestationspacific.exe",
+        "path": "/battlestationspacific.exe",
+        "content_type": "Program",
+        "version": 2704,
+        "is_read_only": false,
+        "is_versioned": false
+      }
+    ]
+  },
+  "program": {
+    "name": "battlestationspacific.exe",
+    "path": "/battlestationspacific.exe",
+    "executable_path": "/I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "executable_format": "Portable Executable (PE)",
+    "language": "x86:LE:32:default",
+    "compiler": "windows",
+    "address_size": 32,
+    "image_base": "00400000",
+    "min_address": "00400000",
+    "max_address": "ffdfffff",
+    "memory_size": 14876380,
+    "function_count": 64080,
+    "symbol_count": 144332,
+    "data_type_count": 795,
+    "creation_date": "Mon May 04 16:56:25 PDT 2026",
+    "memory_block_count": 6,
+    "address_spaces": [
+      {
+        "name": "ram",
+        "start": "00000000",
+        "end": "ffffffff",
+        "size": 4294967296,
+        "addressable_unit_size": 1,
+        "size_bytes": 4294967296,
+        "address_size_bits": 32,
+        "is_default": true
+      }
+    ],
+    "has_multiple_address_spaces": false
+  },
+  "state": "complete_existing_flow_verified_no_mutation",
+  "ordinary_bytes": 666,
+  "verified_instruction_owners": 210,
+  "repairs": [],
+  "missing_owners": [],
+  "excluded_alignment": [],
+  "eh_supports": [],
+  "audit": {
+    "path": "local/native_mesh_remaining_fields_ch/initial_audit.json",
+    "sha256": "901630a13a3e6a02473a0d7001e270a4932694485196f006292a7552e8387314",
+    "bytes": 28773
+  }
+}
