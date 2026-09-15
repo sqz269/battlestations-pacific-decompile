@@ -1,0 +1,104 @@
+{
+  "packet": "orch4_ship_pointer_binding_b2",
+  "addresses": [
+    "0082d700"
+  ],
+  "source": [
+    "include/bsp/native_ship_model_pointer_binding.hpp",
+    "src/native_ship_model_pointer_binding.cpp"
+  ],
+  "evidence": "docs/NATIVE_SHIP_MODEL_POINTER_BINDING_ORCH4.md",
+  "routines": [
+    {
+      "address": "0082d700",
+      "end_inclusive": "0082d7d1",
+      "native_bytes": 210,
+      "coverage": "complete ordinary body"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "0082d71b",
+      "native": "00bf6713",
+      "function": "0082d700",
+      "contract": "returning invalid-parameter service for captured source begin greater than end"
+    },
+    {
+      "address": "0082d730",
+      "native": "00bf6713",
+      "function": "0082d700",
+      "contract": "returning invalid-parameter service for current source begin greater than captured current end"
+    },
+    {
+      "address": "0082d73b",
+      "native": "00bf6713",
+      "function": "0082d700",
+      "contract": "returning invalid-parameter service for captured/current source-header mismatch"
+    },
+    {
+      "address": "0082d751",
+      "native": "00bf6713",
+      "function": "0082d700",
+      "contract": "returning invalid-parameter service before source dereference"
+    },
+    {
+      "address": "0082d79c",
+      "native": "00bf6713",
+      "function": "0082d700",
+      "contract": "returning invalid-parameter service for captured destination begin greater than current position"
+    },
+    {
+      "address": "0082d7af",
+      "native": "0071b2c0",
+      "function": "0082d700",
+      "contract": "established type54 insert-one; ECX list, stack output owner position value, RET16"
+    },
+    {
+      "address": "0082d7bd",
+      "native": "00bf6713",
+      "function": "0082d700",
+      "contract": "returning invalid-parameter service after destination append and before iterator advance"
+    },
+    {
+      "address": "0082fe58",
+      "native": "0082d700",
+      "function": "0082fe30",
+      "contract": "only live caller; ECX ship class restored at0082FE56, no stack arguments"
+    }
+  ],
+  "dependency_review": {
+    "insert_one": {
+      "address": "0071b2c0",
+      "body": "0071b2c0-0071b348",
+      "coverage": "existing complete source reconstruction",
+      "live_call_sites": [
+        "0071b99c",
+        "0082d7af",
+        "0093915a"
+      ],
+      "call_site_argument_setup": "inspected at all three current live xrefs"
+    },
+    "producer": "0071bb40 classifies matching borrowed items and appends through0071B940 into resource+54h",
+    "element_semantics": "raw borrowed pointer; pointee type and ownership policy unassigned"
+  },
+  "validation": {
+    "msvc_win32": "passed scripts/build.ps1, Release /W4 /WX",
+    "existing_ctests": {
+      "passed": 2,
+      "failed": 0,
+      "names": [
+        "reconstructed_math",
+        "tool_tests"
+      ]
+    },
+    "report_calls": "8 call rows checked, 0 failed",
+    "fixture": "not added; compilation and evidence review only"
+  },
+  "boundaries": [
+    "new source ABI",
+    "required supplied returning invalid-parameter callback",
+    "native fault and exception delivery unvalidated",
+    "no native differential fixture",
+    "no full ship binder or gameplay validation"
+  ]
+}
