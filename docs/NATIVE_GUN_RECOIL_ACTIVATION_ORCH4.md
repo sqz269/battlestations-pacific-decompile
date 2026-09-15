@@ -56,8 +56,9 @@ profile layout. These are raw accesses to the caller's actual class storage.
    Its `JBE` includes unordered values. No iteration cap, finite-value gate or
    NaN replacement is added; the original can fail to terminate for some inputs.
 4. Both normal and initial-exit paths pop exactly the native temporary stack
-   values before the integer gate. The implementation does not reset x87,
-   change its control word, clear status flags, or alter MXCSR.
+   values before the integer gate. The implementation does not explicitly
+   reset the x87 unit or write its control word/MXCSR; native instructions
+   retain their natural status effects.
 
 The two constants are local copies of verified bits, not reads through native
 addresses: `00D7A218` is `00000000` float +0 and `00D7A258` is
