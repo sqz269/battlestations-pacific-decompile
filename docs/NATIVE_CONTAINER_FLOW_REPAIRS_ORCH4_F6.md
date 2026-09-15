@@ -1,7 +1,7 @@
 # Container and SoldierClass listing repairs
 
 Addresses: 0087B950, 0087C380, 004B1210, 004B1120, 004B1280, 004B1310,
-and new definition 004AF520.
+0087BB02, 0087C518, and new definition 004AF520.
 
 Complete live bytes matched the installed image before mutation. Every change
 used the owning worktree's lease and the shared Ghidra write lock in the existing
@@ -17,6 +17,7 @@ refreshed. Reports retain tool events and whole-span SHA256 preflight evidence.
 | 004B1120 | Restore destructor tail through 004B119F and recreate body preserving comments. | 128 bytes, 38 instructions, no gaps. |
 | 004B1280 / 004B1310 | Restore each three-byte ADD ESP after free. | 30 bytes, 11 instructions each, no gaps. |
 | 004AF520 | Define previously missing MOV AL,1; RET after byte preflight. | 3 bytes, 2 instructions. |
+| 0087BB02 / 0087C518 | Extend separate catch-function bodies through their already-restored rethrow calls. | 34 bytes each; full prefix cleanup, free and rethrow. |
 
 The restored registry destructor clears its head/count, clears E187F0 and writes
 the singleton-base profile after node release. The restored SoldierClass
@@ -28,6 +29,12 @@ packet; recovered listings are evidence for their next dependency closure.
 Records: `reports/native_container_flow_repairs_orch4_f6.json`,
 `reports/native_soldier_body_repairs_orch4_f6.json` and
 `reports/native_soldier_definition_repair_orch4_f6.json`.
+The final direct-call audit exposed two remaining truncated catch-body extents,
+even though their containing listings already showed the rethrow instructions.
+Those bodies are separately repaired and recorded in
+`reports/native_vector_catch_repairs_orch4_f6.json`; exact call rows now attribute
+instructions to their actual catch functions. These are explicit catch scopes
+inside the reconstructed vector operations, not two additional source functions.
 Related source evidence: `docs/NATIVE_SOLDIER_CLASS_RESOLUTION_ORCH4.md`,
 `docs/NATIVE_DAMAGEABLE_SECTION_VECTOR_ORCH4.md` and
 `docs/NATIVE_DAMAGEABLE_FAKE_EFFECT_VECTOR_ORCH4.md`.

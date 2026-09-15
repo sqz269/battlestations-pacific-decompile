@@ -453,5 +453,198 @@
       "reviewed_name": "STL_xlen_throw_0087a510"
     }
   ],
-  "independent_review": "Read-only section-vector worker reviewed complete listings, EH metadata, aliasing/current fields and x87/MOVSS distinction; no concrete defect found after outer unwind correction."
+  "independent_review": "Read-only section-vector worker reviewed complete listings, EH metadata, aliasing/current fields and x87/MOVSS distinction; no concrete defect found after outer unwind correction.",
+  "direct_call_sites": [
+    {
+      "address": "0087c972",
+      "native": "00bf6713",
+      "function": "0087c920"
+    },
+    {
+      "address": "0087c983",
+      "native": "0087c380",
+      "function": "0087c920"
+    },
+    {
+      "address": "0087c9a0",
+      "native": "00bf6713",
+      "function": "0087c920"
+    },
+    {
+      "address": "0087c9ad",
+      "native": "00bf6713",
+      "function": "0087c920"
+    },
+    {
+      "address": "0087c9c5",
+      "native": "00bf6713",
+      "function": "0087c920"
+    },
+    {
+      "address": "0087c9d5",
+      "native": "0087b8f0",
+      "function": "0087c920"
+    },
+    {
+      "address": "0087c40f",
+      "native": "0087a510",
+      "function": "0087c380"
+    },
+    {
+      "address": "0087c470",
+      "native": "008769b0",
+      "function": "0087c380"
+    },
+    {
+      "address": "0087c493",
+      "native": "008799f0",
+      "function": "0087c380"
+    },
+    {
+      "address": "0087c4a3",
+      "native": "0087b5d0",
+      "function": "0087c380"
+    },
+    {
+      "address": "0087c4bf",
+      "native": "008799f0",
+      "function": "0087c380"
+    },
+    {
+      "address": "0087c4ec",
+      "native": "0087ab30",
+      "function": "0087c380"
+    },
+    {
+      "address": "0087c4f5",
+      "native": "00bf65ac",
+      "function": "0087c380"
+    },
+    {
+      "address": "0087c523",
+      "native": "0087b5b0",
+      "function": "0087c518"
+    },
+    {
+      "address": "0087c529",
+      "native": "00bf65ac",
+      "function": "0087c518"
+    },
+    {
+      "address": "0087c535",
+      "native": "00bf6885",
+      "function": "0087c518"
+    },
+    {
+      "address": "0087c55d",
+      "native": "0087bc50",
+      "function": "0087c380"
+    },
+    {
+      "address": "0087c57a",
+      "native": "0087b5d0",
+      "function": "0087c380"
+    },
+    {
+      "address": "0087c597",
+      "native": "00878c40",
+      "function": "0087c380"
+    },
+    {
+      "address": "0087c5b6",
+      "native": "0087b5b0",
+      "function": "0087c5a1"
+    },
+    {
+      "address": "0087c5bf",
+      "native": "00bf6885",
+      "function": "0087c5a1"
+    },
+    {
+      "address": "0087c5d5",
+      "native": "0087bc50",
+      "function": "0087c380"
+    },
+    {
+      "address": "0087c5e3",
+      "native": "00879870",
+      "function": "0087c380"
+    },
+    {
+      "address": "0087c5f4",
+      "native": "00878c40",
+      "function": "0087c380"
+    },
+    {
+      "address": "0087b903",
+      "native": "00bf6713",
+      "function": "0087b8f0"
+    },
+    {
+      "address": "0087b91b",
+      "native": "00879330",
+      "function": "0087b8f0"
+    },
+    {
+      "address": "0087b930",
+      "native": "0087ab30",
+      "function": "0087b8f0"
+    },
+    {
+      "address": "008769bd",
+      "native": "00bf681b",
+      "function": "008769b0"
+    },
+    {
+      "address": "008769e5",
+      "native": "00bf6340",
+      "function": "008769b0"
+    },
+    {
+      "address": "008769fc",
+      "native": "00bf6885",
+      "function": "008769b0"
+    },
+    {
+      "address": "0087935e",
+      "native": "00878820",
+      "function": "00879330"
+    },
+    {
+      "address": "0087989e",
+      "native": "008788d0",
+      "function": "00879870"
+    },
+    {
+      "address": "0087b5be",
+      "native": "0087ab30",
+      "function": "0087b5b0"
+    },
+    {
+      "address": "0087b5f4",
+      "native": "0087ab80",
+      "function": "0087b5d0"
+    },
+    {
+      "address": "0087bc6c",
+      "native": "008799f0",
+      "function": "0087bc50"
+    },
+    {
+      "address": "0087a548",
+      "native": "00408720",
+      "function": "0087a510"
+    },
+    {
+      "address": "0087a55d",
+      "native": "00411700",
+      "function": "0087a510"
+    },
+    {
+      "address": "0087a574",
+      "native": "00bf6885",
+      "function": "0087a510"
+    }
+  ],
+  "call_site_evidence": "Exact CALL instructions from refreshed saved exports; checked against live function ownership and instruction target by tools/verify_report_calls.py. Indirect virtual/IAT calls remain separately bounded by source evidence."
 }

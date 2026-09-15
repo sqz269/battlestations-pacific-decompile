@@ -593,5 +593,213 @@
     "local/section_vector_probe.cpp": "2ac18f308b050bb5055ccf46a80f690ffb12ca75ec76b1d62db48d3803ec225f",
     "local/section_vector_original.inc": "c5194805bfc7fd9d1bd72bbcb5181179bde058c4ff6caa1537596aca8184ab0b",
     "local/section_vector_probe.exe": "ce956dd627665e5950ae30517318e6030592245b17a208b7b04d27b8de5d811b"
-  }
+  },
+  "direct_call_sites": [
+    {
+      "address": "00876a20",
+      "native": "00bf681b",
+      "function": "00876a10"
+    },
+    {
+      "address": "00876a48",
+      "native": "00bf6340",
+      "function": "00876a10"
+    },
+    {
+      "address": "00876a5f",
+      "native": "00bf6885",
+      "function": "00876a10"
+    },
+    {
+      "address": "00878d9c",
+      "native": "00878790",
+      "function": "00878d60"
+    },
+    {
+      "address": "008793a6",
+      "native": "00878790",
+      "function": "00879390"
+    },
+    {
+      "address": "00879537",
+      "native": "00878b40",
+      "function": "008794f0"
+    },
+    {
+      "address": "0087956a",
+      "native": "00bf6885",
+      "function": "0087954b"
+    },
+    {
+      "address": "008798e2",
+      "native": "00878d60",
+      "function": "008798c0"
+    },
+    {
+      "address": "0087a5b8",
+      "native": "00408720",
+      "function": "0087a580"
+    },
+    {
+      "address": "0087a5cd",
+      "native": "00411700",
+      "function": "0087a580"
+    },
+    {
+      "address": "0087a5e4",
+      "native": "00bf6885",
+      "function": "0087a580"
+    },
+    {
+      "address": "0087ad44",
+      "native": "008798f0",
+      "function": "0087ad20"
+    },
+    {
+      "address": "0087b62c",
+      "native": "008794f0",
+      "function": "0087b610"
+    },
+    {
+      "address": "0087b97d",
+      "native": "00878b40",
+      "function": "0087b950"
+    },
+    {
+      "address": "0087b9d8",
+      "native": "0087a580",
+      "function": "0087b950"
+    },
+    {
+      "address": "0087ba40",
+      "native": "00744070",
+      "function": "0087b950"
+    },
+    {
+      "address": "0087ba4d",
+      "native": "00876a10",
+      "function": "0087b950"
+    },
+    {
+      "address": "0087ba70",
+      "native": "008794f0",
+      "function": "0087b950"
+    },
+    {
+      "address": "0087ba80",
+      "native": "0087ad20",
+      "function": "0087b950"
+    },
+    {
+      "address": "0087ba9c",
+      "native": "008794f0",
+      "function": "0087b950"
+    },
+    {
+      "address": "0087bad0",
+      "native": "00878ac0",
+      "function": "0087b950"
+    },
+    {
+      "address": "0087bad9",
+      "native": "00bf65ac",
+      "function": "0087b950"
+    },
+    {
+      "address": "0087bb0d",
+      "native": "00878ac0",
+      "function": "0087bb02"
+    },
+    {
+      "address": "0087bb13",
+      "native": "00bf65ac",
+      "function": "0087bb02"
+    },
+    {
+      "address": "0087bb1f",
+      "native": "00bf6885",
+      "function": "0087bb02"
+    },
+    {
+      "address": "0087bb5a",
+      "native": "0087b610",
+      "function": "0087b950"
+    },
+    {
+      "address": "0087bb85",
+      "native": "0087ad20",
+      "function": "0087b950"
+    },
+    {
+      "address": "0087bba2",
+      "native": "00879390",
+      "function": "0087b950"
+    },
+    {
+      "address": "0087bbc4",
+      "native": "00878ac0",
+      "function": "0087bbac"
+    },
+    {
+      "address": "0087bbcd",
+      "native": "00bf6885",
+      "function": "0087bbac"
+    },
+    {
+      "address": "0087bbe4",
+      "native": "0087b610",
+      "function": "0087b950"
+    },
+    {
+      "address": "0087bbf5",
+      "native": "008798c0",
+      "function": "0087b950"
+    },
+    {
+      "address": "0087bc02",
+      "native": "00879390",
+      "function": "0087b950"
+    },
+    {
+      "address": "0087c308",
+      "native": "00bf6713",
+      "function": "0087c2d0"
+    },
+    {
+      "address": "0087c319",
+      "native": "00bf6713",
+      "function": "0087c2d0"
+    },
+    {
+      "address": "0087c33e",
+      "native": "0087b950",
+      "function": "0087c2d0"
+    },
+    {
+      "address": "0087c34b",
+      "native": "00bf6713",
+      "function": "0087c2d0"
+    },
+    {
+      "address": "0087c367",
+      "native": "00bf6713",
+      "function": "0087c2d0"
+    },
+    {
+      "address": "0087c8d5",
+      "native": "008798f0",
+      "function": "0087c870"
+    },
+    {
+      "address": "0087c8f0",
+      "native": "00bf6713",
+      "function": "0087c870"
+    },
+    {
+      "address": "0087c903",
+      "native": "0087c2d0",
+      "function": "0087c870"
+    }
+  ],
+  "call_site_evidence": "Exact CALL instructions from refreshed saved exports; checked against live function ownership and instruction target by tools/verify_report_calls.py. Indirect virtual/IAT calls remain separately bounded by source evidence."
 }

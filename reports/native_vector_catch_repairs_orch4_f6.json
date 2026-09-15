@@ -1,0 +1,150 @@
+{
+  "events": [
+    {
+      "recreate": "0087bb02",
+      "previous": "Function: Catch_All@0087bb02 at 0087bb02\nSignature: undefined Catch_All@0087bb02(void)\nEntry: 0087bb02\nBody: 0087bb02 - 0087bb17",
+      "plate": null
+    },
+    {
+      "endpoint": "delete_function",
+      "body": {
+        "address": "0087bb02"
+      },
+      "result": {
+        "success": true,
+        "address": "0087bb02",
+        "deleted_function": "Catch_All@0087bb02",
+        "body_size": 22,
+        "message": "Function 'Catch_All@0087bb02' deleted at 0087bb02"
+      }
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "0087bb02",
+        "end_address": "0087bb24"
+      },
+      "result": {
+        "success": true,
+        "start_address": "0087bb02",
+        "end_address": "0087bb23",
+        "bytes_disassembled": 34,
+        "message": "Successfully disassembled 34 byte(s)"
+      }
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "0087bb02",
+        "disassemble_first": false,
+        "name": "DamageableSectionVector_GrowthCatch_0087BB02"
+      },
+      "result": {
+        "success": true,
+        "address": "0087bb02",
+        "function_name": "DamageableSectionVector_GrowthCatch_0087BB02",
+        "entry_point": "0087bb02",
+        "body_size": 34,
+        "message": "Function created successfully at 0087bb02",
+        "warnings": [
+          "Function name 'DamageableSectionVector_GrowthCatch_0087BB02' — main part 'DamageableSectionVector_GrowthCatch_0087BB02' is not PascalCase. Expected: DamageablesectionvectorGrowthcatch0087bb02",
+          "Function name 'DamageableSectionVector_GrowthCatch_0087BB02' — main part 'DamageableSectionVector_GrowthCatch_0087BB02' contains underscores. Use PascalCase after the module prefix.",
+          "Function name 'DamageableSectionVector_GrowthCatch_0087BB02' does not start with a recognized verb. First word 'Damageable' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+        ]
+      }
+    },
+    {
+      "defined": "0087bb02",
+      "end": "0087bb24",
+      "name": "DamageableSectionVector_GrowthCatch_0087BB02",
+      "after": "Function: DamageableSectionVector_GrowthCatch_0087BB02 at 0087bb02\nSignature: undefined DamageableSectionVector_GrowthCatch_0087BB02(void)\nEntry: 0087bb02\nBody: 0087bb02 - 0087bb23"
+    },
+    {
+      "recreate": "0087c518",
+      "previous": "Function: Catch_All@0087c518 at 0087c518\nSignature: undefined Catch_All@0087c518(void)\nEntry: 0087c518\nBody: 0087c518 - 0087c52d",
+      "plate": null
+    },
+    {
+      "endpoint": "delete_function",
+      "body": {
+        "address": "0087c518"
+      },
+      "result": {
+        "success": true,
+        "address": "0087c518",
+        "deleted_function": "Catch_All@0087c518",
+        "body_size": 22,
+        "message": "Function 'Catch_All@0087c518' deleted at 0087c518"
+      }
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "0087c518",
+        "end_address": "0087c53a"
+      },
+      "result": {
+        "success": true,
+        "start_address": "0087c518",
+        "end_address": "0087c539",
+        "bytes_disassembled": 34,
+        "message": "Successfully disassembled 34 byte(s)"
+      }
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "0087c518",
+        "disassemble_first": false,
+        "name": "DamageableFakeEffectVector_GrowthCatch_0087C518"
+      },
+      "result": {
+        "success": true,
+        "address": "0087c518",
+        "function_name": "DamageableFakeEffectVector_GrowthCatch_0087C518",
+        "entry_point": "0087c518",
+        "body_size": 34,
+        "message": "Function created successfully at 0087c518",
+        "warnings": [
+          "Function name 'DamageableFakeEffectVector_GrowthCatch_0087C518' — main part 'DamageableFakeEffectVector_GrowthCatch_0087C518' is not PascalCase. Expected: DamageablefakeeffectvectorGrowthcatch0087c518",
+          "Function name 'DamageableFakeEffectVector_GrowthCatch_0087C518' — main part 'DamageableFakeEffectVector_GrowthCatch_0087C518' contains underscores. Use PascalCase after the module prefix.",
+          "Function name 'DamageableFakeEffectVector_GrowthCatch_0087C518' does not start with a recognized verb. First word 'Damageable' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+        ]
+      }
+    },
+    {
+      "defined": "0087c518",
+      "end": "0087c53a",
+      "name": "DamageableFakeEffectVector_GrowthCatch_0087C518",
+      "after": "Function: DamageableFakeEffectVector_GrowthCatch_0087C518 at 0087c518\nSignature: undefined DamageableFakeEffectVector_GrowthCatch_0087C518(void)\nEntry: 0087c518\nBody: 0087c518 - 0087c539"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": {
+        "success": true,
+        "program": "battlestationspacific.exe",
+        "message": "Program saved successfully"
+      }
+    }
+  ],
+  "whole_body_preflight": [
+    {
+      "address": "0087bb02",
+      "end_exclusive": "0087bb24",
+      "bytes": 34,
+      "sha256": "a6a706e217bff26ca319a12f3797a0bec45cb1223884d4cef13a78a4d504c7e7",
+      "live_disk_match": true
+    },
+    {
+      "address": "0087c518",
+      "end_exclusive": "0087c53a",
+      "bytes": 34,
+      "sha256": "fcadee55bd79a0236c332829c83efa690211765b79396bb7a092d8923e9d46c5",
+      "live_disk_match": true
+    }
+  ],
+  "program": "/battlestationspacific.exe",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "verification": "Restored34-byte function extents; live direct-call ownership/instruction check passes for all79 vector call rows; saved project and refreshed exports."
+}
