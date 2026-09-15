@@ -196,10 +196,11 @@ Its `+A8h/+ACh/+B0h` producer is `007327B0`, reading `BackSpeedStart`,
 Its SSE unordered test and x87 comparisons, stack permutations and forced
 float stores must be retained; decompiled binary32 arithmetic is insufficient.
 
-## Smallest next source packets
+## Dependency packets identified by this audit
 
 These are dependency work units, not claims that every transitive leaf is
 already closed. Claim only the addresses actually implemented in each unit.
+The subsequent source-closure table below supersedes this initial work list.
 
 1. **Registry storage**: `00441780`, `00440180`, `0043FA60`, plus inspect the
    `00441840` deleting destructor for singleton lifetime. Preserve raw 10h
@@ -238,3 +239,23 @@ C++ changes, so no new build or CTest run is claimed. No fixture, original-body
 differential, ABI bridge, original FH3, executable reachability or gameplay
 validation is claimed. In particular, semantic gunnery logs cannot establish
 that this missing native factory executes in `bsp_game.exe`.
+
+## Subsequent source closures, 2026-09-15
+
+The following helpers were reconstructed after the evidence-only factory
+audit above. Each has its own complete ordinary-body record and explicit
+source ABI/provider boundary. The factory and activation wrapper themselves
+remain evidence-only.
+
+| Helper | Current source evidence | Verification |
+| --- | --- | --- |
+| `0043FA60/00440180` registry array reserve/resize | [Native device registry array](NATIVE_DEVICE_REGISTRY_ARRAY_ORCH4.md) | Strict Win32 build, combined 3 CTests, ten live call rows; count-only shrink and free-before-publication reviewed against both complete listings |
+| `00B673A0` native-string-key boolean setter | [Native Lua boolean setter](NATIVE_LUA_OBJECT_BOOLEAN_ORCH4.md) | Strict Win32 build, combined 3 CTests, 20 live call rows; the additional undefined-region caller is retained as raw-byte evidence |
+| `00730CB0` device vslot+14h recoil and conditional model load | [Native gun recoil activation](NATIVE_GUN_RECOIL_ACTIVATION_ORCH4.md) | Strict Win32 build, combined 3 CTests, nine original/source pairs including selected floating invalid-operation traps; model path covers the existing-model guard |
+
+Registry lifecycle, native class construction/readers, bullet resolution,
+vslot+10h activation and final `00443090/00443490` composition remain open.
+The seven factory EH funclets' final two bytes are still absent from their
+stored Ghidra bodies, with complete action bytes recorded in this audit.
+Source/helper checks do not establish original ABI/FH3 compatibility,
+fresh resource loading, complete native vehicle activation or gameplay.
