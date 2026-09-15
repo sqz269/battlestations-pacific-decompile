@@ -620,3 +620,40 @@ predicate on `unit+72Ch` holds, and `007D902F` decays it by one `step` per tick 
 zero. There are six writers, not the three previously recorded, and `007DC6C5` only ever stores
 zero. The pure rules are `arm_timed_direction_hold_007d83d0`, `gate_direction_hold_007d81c7`,
 `commit_direction_hold_007dc6c5` and `decay_direction_hold_007d902f` in `src/plane_flight.cpp`.
+
+## Open: the host's integration frame, and what changed when it was corrected
+
+`007D8470` returns a **body-frame** acceleration. The host's free-flight arm added it directly to a
+**world-frame** velocity, which is correct only at the identity, and nothing in this reconstruction
+had ever rotated a plane until the pilot bot's yaw arm was wired. The integration now rotates back
+through the transpose of the same matrix, `world = M^T * body`, which is what
+`free_flight_world_up_acceleration` in `include/bsp/plane_flight.hpp` already did for its own
+acceptance quantity.
+
+**What the correction is worth, and what it leaves open.**
+
+It behaves like a frame fix should: where the two frames agree it is a no-op, and where they do not
+it changes the answer. USN01's planes spawn with `forward = (0,0,1)` and near-identity placements,
+and their 500-step path length moved 70832 m to 70810 m - 0.03 percent, which is float noise. It
+also removed a runaway that only appeared once a bot turned: 636 m/s and a hundred kilometres in the
+wrong direction, down to roughly cruise at twenty-five seconds.
+
+But IJN01's planes carry rotated authored placements, and their 3000-step path length moved from
+**699762 m to 1178402 m** - the same 33 aircraft, no commands, no rotation during the run, purely
+the change of frame. That is 141 m/s of mean speed before and 238 m/s after. **Which of the two is
+right is not established here.** The argument for the new one is textual and structural: the fold's
+own name, the transpose in the sibling function, and the no-op at identity. The argument against is
+that 141.67 m/s is the spawn airspeed and the old number sat on it exactly, in both missions.
+
+Two readings fit and this doc does not choose between them:
+
+* The plane's equilibrium airspeed genuinely is near the spawn value in level flight, and IJN01's
+  aircraft are pitched in their placements, so the corrected frame lets gravity do work on them that
+  the old one misdirected. The new number is then right and the old agreement was an artefact of
+  applying a non-zero acceleration along the wrong axis.
+* Or `body.total` is not in the body frame after all, somewhere between the accumulators and the
+  sum, and the old code was accidentally right for a reason not yet found.
+
+Settling it needs a single plane's speed traced against its authored pitch, which is a measurement
+nobody has taken. Combat outcomes are unaffected either way: USN02 still gives 2 kills and 18525.6
+damage and IJN01 still gives 1 kill and 300.0 with the correction in place.

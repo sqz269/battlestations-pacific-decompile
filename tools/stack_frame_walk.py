@@ -119,10 +119,21 @@ def main():
     # number the analyst needs in order to correct the walk.
     pushed_since_call = 0
     indirect_pops = args.indirect_pops
+    crossed_return = False
+    warned_return = False
+    last_ret = ''
     for address, text_ in lines:
         note = ''
         upper = text_.upper()
         before = depth
+        if crossed_return and not warned_return:
+            warned_return = True
+            print('*** the walk has crossed a RET at %s. This is a LINEAR walk: the '
+                  'epilogue it just stepped through popped a depth that belongs to a '
+                  'different path, so every depth and frame below here is offset by '
+                  'that epilogue. Add back the POPs and ADD ESP of every epilogue '
+                  'crossed (4 bytes per POP) to recover the true frame. Relative '
+                  'comparisons within one basic block are still sound.' % last_ret)
 
         for operand in ESP_OPERAND.finditer(text_):
             if unknown:
@@ -131,6 +142,13 @@ def main():
             note += '  frame=%d(0x%x)' % (imm(operand.group(1)) - depth,
                                           (imm(operand.group(1)) - depth) & 0xffffffff)
 
+        # A RET ends a path, and the walk is LINEAR - the next instruction belongs
+        # to some other basic block that a jump reaches from above the epilogue.
+        # So every epilogue the walk crosses subtracts its own POPs and ADD ESP
+        # from a depth that was never theirs. 0099D0A0's two early returns put
+        # its whole main body 64 bytes out, which is enough to make the wrong
+        # stack slot look like the right one. The walk cannot fix this without a
+        # control-flow graph, so it says so, loudly, once per crossing.
         if upper.startswith('PUSH'):
             depth += 4
             pushed_since_call += 4
@@ -172,6 +190,10 @@ def main():
                              '%d bytes had been pushed since the last call]'
                              % (indirect_pops, pushed_since_call))
                 pushed_since_call = 0
+
+        if upper.startswith('RET'):
+            crossed_return = True
+            last_ret = address
 
         if args.filter and args.filter.upper() not in upper:
             continue
