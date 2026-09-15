@@ -1,0 +1,378 @@
+{
+  "schema": "bsp.worker.native_shadow_command_queue.v1",
+  "packet": "orch3_native_shadow_command_queue_eq",
+  "status": "complete_normal_source_candidate_pending_primary_review_and_coupled_build",
+  "base_commit": "d854e0f04072cc7ccd455af91639394fb5a16fdf",
+  "native_body_count": 4,
+  "normal_native_bytes": 132,
+  "native_handler_credit": 0,
+  "new_ghidra_definition_credit": 0,
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "guard": "Every live query uses bsp.client -> Client.verify before endpoint access; project/program/language/imagebase checked."
+  },
+  "routines": [
+    {
+      "address": "00b1eb80",
+      "name": "append_native_shadow_command_00b1eb80",
+      "end": "00b1ebd5",
+      "native_bytes": 86,
+      "native_sha256": "a8a1d877daf1073bdb59261209410257e71aa5556394e626f6aac17874c1a198",
+      "native_hex": "8b411c394118568d711457751403c083f8017f05b801000000508bcee81fdbffff8b46048b0e8b7c240c8d048185c07402893883460401807c24100074138b57288b4f0452e8c63505008bcfe8bffdffff5f5ec20800",
+      "instruction_count": 32,
+      "live_equals_PE": true,
+      "coverage": "complete normal body in explicit existing provider domain"
+    },
+    {
+      "address": "00a8ae50",
+      "name": "execute_native_shadow_frame_job_00a8ae50",
+      "end": "00a8ae75",
+      "native_bytes": 38,
+      "native_sha256": "2ccaa820c0c29fc8deb005fc7f4aae43b7483004461054ca42cce22dc8e6e67c",
+      "native_hex": "568b7424088bcee8d4100900508bcee8bc1009008bc8e825730e008bcee81e3b09005ec20400",
+      "instruction_count": 13,
+      "live_equals_PE": true,
+      "coverage": "complete normal body in explicit existing provider domain"
+    },
+    {
+      "address": "00b1bf20",
+      "name": "native_shadow_command_scene_00b1bf20",
+      "end": "00b1bf23",
+      "native_bytes": 4,
+      "native_sha256": "f7e0208f5e988ae39c7a45dfddbd12921d02f9c3deb5695d4c534c8ab0ccdb0f",
+      "native_hex": "8b4104c3",
+      "instruction_count": 2,
+      "live_equals_PE": true,
+      "coverage": "complete normal body in explicit existing provider domain"
+    },
+    {
+      "address": "00b1bf30",
+      "name": "native_shadow_command_context_00b1bf30",
+      "end": "00b1bf33",
+      "native_bytes": 4,
+      "native_sha256": "f9ab56c764100f6de974a6afa5ca5ea00146ab6bd602328393ec5e4228c34b90",
+      "native_hex": "8b4128c3",
+      "instruction_count": 2,
+      "live_equals_PE": true,
+      "coverage": "complete normal body in explicit existing provider domain"
+    }
+  ],
+  "original_abi": {
+    "00b1eb80": {
+      "receiver": "ECX actual queue",
+      "public_stack": [
+        "S+4 command DWORD",
+        "S+8 flags DWORD, late lowbyte"
+      ],
+      "return": "RET8; void source API, no incidental EAX promise",
+      "saved": [
+        "ESI",
+        "EDI"
+      ],
+      "eh": "No FH3 frame/state/cleanup in native body."
+    },
+    "00a8ae50": {
+      "receiver": "Original ECX job unused",
+      "public_stack": [
+        "S+4 command DWORD, captured once"
+      ],
+      "return": "RET4; void source API",
+      "saved": [
+        "ESI"
+      ],
+      "eh": "No native FH3/cleanup."
+    },
+    "00b1bf20": {
+      "receiver": "ECX actual command",
+      "public_stack": [],
+      "return": "EAX=current[ECX+4], RET",
+      "native_bytes": "8b4104c3"
+    },
+    "00b1bf30": {
+      "receiver": "ECX actual command",
+      "public_stack": [],
+      "return": "EAX=current[ECX+28h], RET",
+      "native_bytes": "8b4128c3"
+    }
+  },
+  "source_abi": {
+    "platform": "MSVC Win32 only",
+    "main_entries": "Naked fastcall; ECX retains original role, EDX NativeInstanceGroupUploadAccess*. Original public words remain S+4/S+8. Source saves only access at S-4.",
+    "queue_stack": "After original ESI/EDI saves ESP=S-12: commandESP+10h, flagsESP+14h, accessESP+8. After PUSHcontext accessESP+0Ch. Concrete traversal RET4 restores S-12; upload gets accessESP+8. Native pops/private4 removal precede RET8.",
+    "job_stack": "After private access/ESI saves commandESP+0Ch=S+4; after PUSHgettercontext accessESP+8. Second getter runs with context already pushed. Traversal RET4, accessESP+4 for upload, POPESI/private4/RET4.",
+    "reserve_adapter": "Private fastcall ECX actual header, unused EDX, public int32 requested/RET4; invokes existing cdecl B1C6C0 source. Zero new native credit.",
+    "upload_adapter": "Private fastcall ECX captured command, EDX SAME upload access, no public words; invokes existing B1E990 C++ API. Zero new native credit.",
+    "getters": "Literal MOV and emitted C3; full generated4-byte identity pending build.",
+    "current_word": "Source-only naked integer MOV EAX,[ECX], emitted C3, accepts raw const volatile void* to avoid typed owner/profile alias assumptions."
+  },
+  "queue_schedule": [
+    "Current queue+1C capacity MOV and current+18 count CMP, equality-only growth; original pushes/LEA preserve CMP flags.",
+    "DWORD double capacity, signed max1; actual queue+14 header to B1C6C0 reserve adapter.",
+    "After reserve current count then data then ORIGINAL public command load, before destination LEA/null test.",
+    "Conditional raw command store; increment CURRENT count after store; LATE original public low flags byte.",
+    "If nonzero, current captured-command+28 context then+4scene; same render access to EL; upload SAME captured command with SAME upload access.",
+    "If zero, no command/access dereference, retain appended state including permitted null command. No retain, rollback or removal."
+  ],
+  "job_schedule": [
+    "Capture original command once into ESI.",
+    "B1BF30 current context getter; PUSH EAX before B1BF20 current scene getter.",
+    "ECX returned scene with same access.render; traversal consumes pushed context, including its native slot reuse.",
+    "B1E990 uploader on captured command; no ownership or cleanup."
+  ],
+  "dispatch": {
+    "source_type": "NativeShadowFrameJobDispatch : NativeFrameJobDispatch",
+    "binding": "Borrow SAME NativeInstanceGroupUploadAccess&, actual fixed D5B570 table backing with current contents, actual remaining dispatcher; no registry/owner or successful fallback.",
+    "preflight": "Nonnull actual table/current slot0A8AE50; invalid binding throws source invalid_argument.",
+    "execution": "Raw current owner profile read every call. Other profiles delegate unchanged owner/argument to actual remaining. D5B570 reads current table[0], rejects changed target, calls concrete A8AE50 with argument bits and same access.",
+    "argument_alias_limit": "C++ scheduler composition creates new public command slot; original scheduler-frame aliases/incidental register/exception identity unproved.",
+    "native_table_evidence": {
+      "address": "00d5b570",
+      "length": 4,
+      "sha256": "09bba625c7844d8928761a0581aaf7bbb0186710a92a892dad545f77f05a4c59",
+      "disk_hex": "50aea800",
+      "live_hex": "50aea800",
+      "matches": true
+    }
+  },
+  "provider_contracts": [
+    {
+      "native": "00b1c6c0",
+      "source": "reserve_native_render_command_pointers_00b1c6c0(NativeRenderPointerArrayStorage&, int32_t)",
+      "actual_use": "Existing actual pointer/count/capacity storage and shared CRT malloc/new-handler/free; signed min1. Typed valid backing and allocation domain preserved, not extended to malformed/wrapped invalid buffers or arbitrary native callback/alias/fault behavior."
+    },
+    {
+      "native": "00b72190",
+      "source": "traverse_native_scene_00b72190(void*, const NativeTracelineRenderAccess*, void*)",
+      "actual_use": "Accepted complete EL source with canonical actual four-table bindings, raw original outgoing context word, real known/remaining target domain. Same access.render object, no snapshots."
+    },
+    {
+      "native": "00b1e990",
+      "source": "upload_native_instance_groups_00b1e990(void*, NativeInstanceGroupUploadAccess&)",
+      "actual_use": "Actual live command/group/model/scene/mapping/collection domains, finite B556F0/B55780 generator targets, nonthrowing canonical services. No substitute uploaded result or unmap-on-exception."
+    }
+  ],
+  "native_calls": [
+    {
+      "address": "00b1eb9c",
+      "native": "00b1c6c0",
+      "function": "00b1eb80",
+      "kind": "direct_call",
+      "instruction": "CALL 0xb1c6c0"
+    },
+    {
+      "address": "00b1ebc5",
+      "native": "00b72190",
+      "function": "00b1eb80",
+      "kind": "direct_call",
+      "instruction": "CALL 0xb72190"
+    },
+    {
+      "address": "00b1ebcc",
+      "native": "00b1e990",
+      "function": "00b1eb80",
+      "kind": "direct_call",
+      "instruction": "CALL 0xb1e990"
+    },
+    {
+      "address": "00a8ae57",
+      "native": "00b1bf30",
+      "function": "00a8ae50",
+      "kind": "direct_call",
+      "instruction": "CALL 0xb1bf30"
+    },
+    {
+      "address": "00a8ae5f",
+      "native": "00b1bf20",
+      "function": "00a8ae50",
+      "kind": "direct_call",
+      "instruction": "CALL 0xb1bf20"
+    },
+    {
+      "address": "00a8ae66",
+      "native": "00b72190",
+      "function": "00a8ae50",
+      "kind": "direct_call",
+      "instruction": "CALL 0xb72190"
+    },
+    {
+      "address": "00a8ae6d",
+      "native": "00b1e990",
+      "function": "00a8ae50",
+      "kind": "direct_call",
+      "instruction": "CALL 0xb1e990"
+    },
+    {
+      "address": "00a8ec50",
+      "native": "00b1eb80",
+      "function": "00a8ea20",
+      "kind": "direct_call",
+      "preparation": "PUSH0, PUSH captured EDI command, CALL4C11F0, MOV ECX,EAX; B1EB80 RET8 consumes command/flag. Later native scheduling retains same command; no parent credit."
+    },
+    {
+      "address": "00b1047e",
+      "native": "00b1eb80",
+      "function": "00b101c0",
+      "kind": "direct_call",
+      "preparation": "PUSH1, PUSH captured EDI command, CALL4C11F0, MOV ECX,EAX; B1EB80 RET8. Complete saved listing and EDI producer history retained; no parent credit."
+    }
+  ],
+  "native_evidence": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-shadow-command-queue-eq\\local\\eq-native-evidence.json",
+    "sha256": "4991e3a9e4d921f43610d1d9063b4a63814cfbdc2fb289deaf6a3896eda1d325",
+    "bytes": 89976
+  },
+  "EM_admission": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\em-command-queue-admission.json",
+    "sha256": "38d4e06adc186774bd99ec76cb3602658118e340d9f83b3da6ab5434d051b074"
+  },
+  "source_candidate_pins": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-shadow-command-queue-eq\\include\\bsp\\native_shadow_command_queue.hpp",
+      "sha256": "7a4ff5f3559156fe8b2e077f018ae0b691d31a4cecc0e0f2ba045aebe9a4f948",
+      "bytes": 3241
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-shadow-command-queue-eq\\src\\native_shadow_command_queue.cpp",
+      "sha256": "3832692afb6d63eadf7c628488b77b3881d047869c280d1998382b7b2cc338e1",
+      "bytes": 5936
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-shadow-command-queue-eq\\cmake\\startup.cmake",
+      "sha256": "9483bc8e41b31083844008859d8aedbfd75311a0ade72a37caae9a772481bb95",
+      "bytes": 120156
+    }
+  ],
+  "provider_base_pins": [
+    {
+      "path": "include/bsp/native_render_pointer_arrays.hpp",
+      "sha256": "d9cf406a178986114205fe9a154a2b74c0f8dd857b6186d7d840d8fe398ae881",
+      "unchanged_from_EM": true
+    },
+    {
+      "path": "src/native_render_pointer_arrays.cpp",
+      "sha256": "ac16b7251f6df37193b88d5d92e8288044872bc2df39b71f29ed83c7291b193c",
+      "unchanged_from_EM": true
+    },
+    {
+      "path": "include/bsp/native_instance_group_upload.hpp",
+      "sha256": "e4cf00546eafd12d49f5b8d4b3b15f6c9ad0c8868be3da4acf76a470117a2d99",
+      "unchanged_from_EM": true
+    },
+    {
+      "path": "src/native_instance_group_upload.cpp",
+      "sha256": "d233b97b78404568d75e0a7e56f8337d921e1b67c0de75929d237377a1e8c651",
+      "unchanged_from_EM": true
+    },
+    {
+      "path": "include/bsp/native_frame_job_execution.hpp",
+      "sha256": "e90dc5ccead03c5a20f5d9436396dbddd9ee8b2244f25f0c8bca6f57d9bb2f97",
+      "unchanged_from_EM": true
+    },
+    {
+      "path": "src/native_frame_job_execution.cpp",
+      "sha256": "2731bd4ad4a2a1e1a96cc90e5b64b819065db7c45b5f29d5c34b5c27625d4354",
+      "unchanged_from_EM": true
+    },
+    {
+      "path": "include/bsp/native_render_batch_preparation_actual.hpp",
+      "sha256": "2101510ff44c4e47bb6fc3fb179239647b9dfb63758fa01fae66ffe651162c5a",
+      "unchanged_from_EM": true
+    },
+    {
+      "path": "src/native_render_batch_preparation_actual.cpp",
+      "sha256": "fa948f79b8a0dc1cdbc01f6b5a802515e3629ae4db088174b51d30ea3abe81aa",
+      "unchanged_from_EM": true
+    },
+    {
+      "path": "include/bsp/native_effect_jobs.hpp",
+      "sha256": "d227bde27d109aa955738aef48fcc465918b1a38fd7628e26993ed23e67d4bd2",
+      "unchanged_from_EM": true
+    },
+    {
+      "path": "src/native_effect_jobs.cpp",
+      "sha256": "56b1b4f681131db5f42b3524c5176b8e52b954d5cf8b8ca13181ac54449f1600",
+      "unchanged_from_EM": true
+    },
+    {
+      "path": "include/bsp/native_shadow_job_lifetime.hpp",
+      "sha256": "ce7c1d07105aaeb0acccc5eddbe019f9da398dfd9a9fb545b43c352692b682a3",
+      "unchanged_from_EM": true
+    },
+    {
+      "path": "src/native_shadow_job_lifetime.cpp",
+      "sha256": "43fe79a30d999e53a03ada17f828391a01a16e2dd8c572460aed00f00c90486e",
+      "unchanged_from_EM": true
+    }
+  ],
+  "additional_provider_pins": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-shadow-command-queue-eq\\include\\bsp\\native_scene_render_traversal.hpp",
+      "sha256": "67947f3295aabffcf24117f135f59f13e7255bf104d6e7536219f4dad24857cc",
+      "bytes": 3465
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-shadow-command-queue-eq\\src\\native_scene_render_traversal.cpp",
+      "sha256": "d83e490271dc8e3df2176851d747509f84ebb5cf3a129a305e91f83146652180",
+      "bytes": 10339
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-shadow-command-queue-eq\\include\\bsp\\native_traceline_render.hpp",
+      "sha256": "eec43d439a9ddcf4d5aa96954434c469b607c4ac198f54b6cb55339a0365caf4",
+      "bytes": 7210
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-shadow-command-queue-eq\\src\\native_traceline_render.cpp",
+      "sha256": "b791db0734c33fe6c8c12b3caa40c81b76ebfb5915ecdd80b9ae590605160eb6",
+      "bytes": 73470
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-shadow-command-queue-eq\\include\\bsp\\singleton_lifetime.hpp",
+      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "bytes": 4372
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-shadow-command-queue-eq\\src\\singleton_lifetime.cpp",
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "bytes": 13257
+    }
+  ],
+  "accepted_EL_generated_review": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-scene-render-traversal-el\\local\\el-independent-generated-review.json",
+    "sha256": "4263f86619494f2e9373c4ab9a22f51c9ef920de8f7f8e7370a352cac865b041",
+    "bytes": 50800
+  },
+  "documentation": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-shadow-command-queue-eq\\docs\\NATIVE_SHADOW_COMMAND_QUEUE.md",
+    "sha256": "4e4cdfa2244cb6ef543eb14f6e73e45d79299af83df2ffa17f11b588684a2ab5",
+    "bytes": 8349
+  },
+  "analysis_corrections": [],
+  "metadata": "Original placeholder names/prototypes/comments preserved in native artifact; no Ghidra mutation. Byte/listing/caller evidence establishes ABI.",
+  "validation": {
+    "source_review": "candidate pending primary review",
+    "call_verifier": {
+      "command": "python tools/verify_report_calls.py reports/native_shadow_command_queue.json",
+      "checked": 9,
+      "failed": 0,
+      "exit_code": 0,
+      "log_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-shadow-command-queue-eq\\local\\eq-call-audit.log",
+      "log_sha256": "56837821768e013c05eb9539ecdbbead5085cafbd23cc8fa5043b573c7aece11"
+    },
+    "build": "NOT RUN; root coordinates EQ+EP after source acceptance",
+    "seed_verification": "NOT RUN here",
+    "new_tests": 0,
+    "runtime_fixture": "none",
+    "game_validation": "none",
+    "generated_required": "Complete new object, both main naked bodies/all exits, exact4-byte getters, both provider adapter ABIs, current-word helper and both real dispatcher paths."
+  },
+  "limits": [
+    "Source explicit EDX/private frame and C++ provider adapters are not whole native ABI/argument-alias or incidental-register equality.",
+    "No native FH3/SEH or exception unwinding through naked frames proven; valid storage/nonthrowing traversal-upload services bound the path.",
+    "B1C6C0 existing typed/CRT provider limitations retained; no B1CC20 reuse or broad array implementation replacement.",
+    "No fake owner, provider, retention, automatic rollback or successful unknown-profile/changed-target callback.",
+    "A8EA20/A8BD20/B101C0 and complete scheduling/lifetime/gameplay remain outside132-byte credit."
+  ]
+}
