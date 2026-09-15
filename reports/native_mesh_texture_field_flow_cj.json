@@ -1,0 +1,64 @@
+{
+  "packet": "orch4_native_mesh_texture_field_cj",
+  "entries": [
+    {
+      "address": "00cc2e20",
+      "before_documentation": {
+        "no_function": true
+      },
+      "before_comment": {
+        "no_function": true,
+        "comment": ""
+      },
+      "complete": true,
+      "after_comment": {
+        "address": "00cc2e20",
+        "function_name": "BSP_MeshTextureFieldRead_CompilerExceptionHandler_00cc2e20",
+        "comment": ""
+      },
+      "prior_comment_preserved": true,
+      "all_instruction_owners_verified": true
+    }
+  ],
+  "actions": [
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00cc2e20",
+        "end_address": "00cc2e2a"
+      },
+      "result": "{\"success\": true, \"start_address\": \"00cc2e20\", \"end_address\": \"00cc2e29\", \"bytes_disassembled\": 10, \"message\": \"Successfully disassembled 10 byte(s)\"}"
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00cc2e20",
+        "name": "BSP_MeshTextureFieldRead_CompilerExceptionHandler_00cc2e20",
+        "disassemble_first": false
+      },
+      "result": "{\"success\": true, \"address\": \"00cc2e20\", \"function_name\": \"BSP_MeshTextureFieldRead_CompilerExceptionHandler_00cc2e20\", \"entry_point\": \"00cc2e20\", \"body_size\": 10, \"message\": \"Function created successfully at 00cc2e20\", \"warnings\": [\"Function name 'BSP_MeshTextureFieldRead_CompilerExceptionHandler_00cc2e20' \\u2014 main part 'MeshTextureFieldRead_CompilerExceptionHandler_00cc2e20' is not PascalCase. Expected: MeshtexturefieldreadCompilerexceptionhandler00cc2e20\", \"Function name 'BSP_MeshTextureFieldRead_CompilerExceptionHandler_00cc2e20' \\u2014 main part 'MeshTextureFieldRead_CompilerExceptionHandler_00cc2e20' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_MeshTextureFieldRead_CompilerExceptionHandler_00cc2e20' does not start with a recognized verb. First word 'Mesh' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00cc2e20",
+        "new_name": "BSP_MeshTextureFieldRead_CompilerExceptionHandler_00cc2e20"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00cc2e20 from 'BSP_MeshTextureFieldRead_CompilerExceptionHandler_00cc2e20' to 'BSP_MeshTextureFieldRead_CompilerExceptionHandler_00cc2e20'\", \"warnings\": [\"Function name 'BSP_MeshTextureFieldRead_CompilerExceptionHandler_00cc2e20' \\u2014 main part 'MeshTextureFieldRead_CompilerExceptionHandler_00cc2e20' is not PascalCase. Expected: MeshtexturefieldreadCompilerexceptionhandler00cc2e20\", \"Function name 'BSP_MeshTextureFieldRead_CompilerExceptionHandler_00cc2e20' \\u2014 main part 'MeshTextureFieldRead_CompilerExceptionHandler_00cc2e20' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_MeshTextureFieldRead_CompilerExceptionHandler_00cc2e20' does not start with a recognized verb. First word 'Mesh' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00cc2e20",
+        "comment": ""
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00cc2e20\"}"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": "{\"success\": true, \"program\": \"battlestationspacific.exe\", \"message\": \"Program saved successfully\"}"
+    }
+  ],
+  "saved": true
+}

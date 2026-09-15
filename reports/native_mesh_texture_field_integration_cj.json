@@ -1,0 +1,279 @@
+{
+  "packet": "orch4_native_mesh_texture_field_cj",
+  "state": "complete_ordinary_source_tracked_build_and_focused_original_setter_real_texture_fixture_passed",
+  "base_revision": "b2f296a90d08ee3516926eff52ee28ef886021ee",
+  "project": {
+    "project_name": "bsp",
+    "current_folder": "/",
+    "folders": [],
+    "files": [
+      {
+        "name": "battlestationspacific.exe",
+        "path": "/battlestationspacific.exe",
+        "content_type": "Program",
+        "version": 2719,
+        "is_read_only": false,
+        "is_versioned": false
+      }
+    ]
+  },
+  "program": {
+    "name": "battlestationspacific.exe",
+    "path": "/battlestationspacific.exe",
+    "executable_path": "/I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "executable_format": "Portable Executable (PE)",
+    "language": "x86:LE:32:default",
+    "compiler": "windows",
+    "address_size": 32,
+    "image_base": "00400000",
+    "min_address": "00400000",
+    "max_address": "ffdfffff",
+    "memory_size": 14876380,
+    "function_count": 64082,
+    "symbol_count": 144368,
+    "data_type_count": 795,
+    "creation_date": "Mon May 04 16:56:25 PDT 2026",
+    "memory_block_count": 6,
+    "address_spaces": [
+      {
+        "name": "ram",
+        "start": "00000000",
+        "end": "ffffffff",
+        "size": 4294967296,
+        "addressable_unit_size": 1,
+        "size_bytes": 4294967296,
+        "address_size_bits": 32,
+        "is_default": true
+      }
+    ],
+    "has_multiple_address_spaces": false
+  },
+  "ordinary_bodies": 2,
+  "ordinary_bytes": 374,
+  "support_bytes": 26,
+  "verified_instruction_owners": 128,
+  "preserved_comments": 5,
+  "source_manifest": {
+    "path": "local/native_mesh_texture_field_cj/registered/source_manifest.json",
+    "sha256": "2a8b395200c988c561599833d7dcf9a8fb13b95b5bc65d6292d207d22284c435",
+    "bytes": 290450
+  },
+  "configuration": {
+    "base_revision": "b2f296a90d08ee3516926eff52ee28ef886021ee",
+    "override_absent": true,
+    "build": "scripts/build.ps1 with MSBUILDDISABLENODEREUSE=1 and CMAKE_BUILD_PARALLEL_LEVEL=3",
+    "build_scope": "Tracked default Win32 CMake incremental rebuild; not a fresh empty directory",
+    "source_inputs": 2681,
+    "source_manifest": {
+      "path": "local/native_mesh_texture_field_cj/registered/source_manifest.json",
+      "sha256": "2a8b395200c988c561599833d7dcf9a8fb13b95b5bc65d6292d207d22284c435",
+      "bytes": 290450
+    },
+    "registry_edit": {
+      "claim": "leased agent/orch4-20260910:orch4_startup_registry_edit_cj: 0 addresses, 0 ranges, 1 files until 2026-09-15T01:28:44+00:00\n",
+      "release": "released ['agent/orch4-20260910:orch4_startup_registry_edit_cj']\n",
+      "seconds_held": 0.2609461999963969,
+      "modules": [
+        "native_mesh_texture_field"
+      ],
+      "before_sha256": "e71913ee485ca391c611e321c3b5f4d0008a4ff931fddbe877f19dfca456c871",
+      "after_sha256": "2cb9ef86b41f64ec39c926438088208d14c76bdf5555a20f06a146e5569a2baa",
+      "change": "Exactly one deferred target_sources registrations inserted before native_data_placement; all other bytes unchanged; shared lease released before configure/build."
+    },
+    "binary": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+    }
+  },
+  "validation": {
+    "build": "scripts/build.ps1: default tracked MSVC Win32 core; 2/2 existing CTests passed; no CMAKE_PROJECT_INCLUDE_BEFORE override",
+    "original_setter": {
+      "bodies": 1,
+      "bytes": 80,
+      "import_relocations": 2,
+      "pairs": 4,
+      "observations": [
+        "count before identity",
+        "unsigned comparison of negative SHORT",
+        "32-bit wrapping slot/index arithmetic",
+        "publish and retain new before old zero terminal"
+      ]
+    },
+    "source_parent": {
+      "success": "12 reads; mixed-case TextureAddress discards three DWORDs, unknown child skipped; slot0, count1, texture ref2; parent budget0/depth1",
+      "failure": "Injected second TextureAddress DWORD failure; completed child/name cleaned; slot publication and texture temporary retained, texture ref3; explicit fixture cleanup restores ref1"
+    },
+    "composition": "One real RTX5090 HAL 4x4 managed D3D9 texture; actual B3F930/B3F590/B3F2E0, canonical registration, hot B319B0/B30B40, alias-record removal B32250/B31DC0, pool teardown; one bind/retirement, empty cache and allocator list, device/API COM refs0",
+    "fixture_corrections": "Corrected an initial depth0 expectation: completed child cleanup retains root depth1. Surface and notification contexts alias the same renderer publication cell. Fixture-only header/macro/qualification fixes; current fixture compiled after all edits.",
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "startup_registry_leases": [],
+  "main_integration": "Not performed; agent branch only. Later main deltas remain unreviewed.",
+  "remaining": {
+    "section_finalizer": "B85610 requires B451D0 effect-selected instance generator and binding constructors/retained attachment",
+    "material_factory": "535320 callable renderer48 and B18D60 callable renderer64 require complete numeric-profile cold cache admission and canonical registration; no fake callable tables",
+    "subset": "B941D0 requires finalizer/admission dependencies plus assembly/EH-tail audit",
+    "aggregate": "B944E0 and B94710 plus registered parser wrappers"
+  },
+  "evidence_limits": [
+    "New explicit-context source, not a drop-in native ABI, private stack alias, FH3/SEH or hardware-fault implementation.",
+    "Copied-original evidence covers B189F0 only, with actual Windows Interlocked imports and a shared terminal observation callback. B93D30 parent and its exception paths were not executed as original machine code.",
+    "Source parent fixture uses a preconstructed material prefix, renderer and cache record, actual retained-memory reader/string pool, actual D3D9 texture/cache/owner/pool routines, and an explicit platform observation callback. Renderer startup/XLive are not covered.",
+    "Only an existing hot texture alias was admitted. Cold D3DX decoding, name-resolution/provider failures, fresh-acquire ownership, device loss/retry and surfaces are not exercised. Unused cold providers remain absent.",
+    "Failed persistent cache/provider frames must remain alive until their own obligations resolve. This parser never adds texture or material rollback.",
+    "Complete material/effect/subset/instance-generator/aggregate loading and gameplay remain unfinished; main is not integrated in this packet."
+  ],
+  "artifacts": [
+    {
+      "path": "local/native_mesh_texture_field_cj/registered/after.cmake",
+      "sha256": "2cb9ef86b41f64ec39c926438088208d14c76bdf5555a20f06a146e5569a2baa",
+      "bytes": 122207
+    },
+    {
+      "path": "local/native_mesh_texture_field_cj/registered/annotation.log",
+      "sha256": "005b0d383f4f5984bddf79dc0be0af8dac5f31f196ad212f2cb749bc5ad698a7",
+      "bytes": 98
+    },
+    {
+      "path": "local/native_mesh_texture_field_cj/registered/before.cmake",
+      "sha256": "e71913ee485ca391c611e321c3b5f4d0008a4ff931fddbe877f19dfca456c871",
+      "bytes": 122082
+    },
+    {
+      "path": "local/native_mesh_texture_field_cj/registered/boolean_mask_build_failure.log",
+      "sha256": "3ff865ac321392597cb6f3d759e5189009180eee7a2e13bd73ab72c9400661f4",
+      "bytes": 1233
+    },
+    {
+      "path": "local/native_mesh_texture_field_cj/registered/bsp_core.lib",
+      "sha256": "22092d969ed554f996caa2a5eefff11ddf5c67200996f28c6619251ff505857a",
+      "bytes": 58851084
+    },
+    {
+      "path": "local/native_mesh_texture_field_cj/registered/bsp_core.vcxproj",
+      "sha256": "72e9193e956433014313ecf351ce29de2d2fdc7f510c2dc2d1cf4fde3f38a812",
+      "bytes": 199813
+    },
+    {
+      "path": "local/native_mesh_texture_field_cj/registered/bsp_game.exe",
+      "sha256": "6baac5dd09c10cd0eb93463fddab2cab7a8e80e0c53d8c412dc231233b9bf6d2",
+      "bytes": 2168832
+    },
+    {
+      "path": "local/native_mesh_texture_field_cj/registered/bsp_lua511.lib",
+      "sha256": "00315ac717aac3d2b2161fefefe71b36a974335ff9c95d48c137423eb4e2f4b2",
+      "bytes": 455244
+    },
+    {
+      "path": "local/native_mesh_texture_field_cj/registered/bsp_zlib121.lib",
+      "sha256": "73ae30b8adc3adfe5b33285bac533f8e7df7e8ab8d9e44789e6a030fd8a06ad9",
+      "bytes": 71906
+    },
+    {
+      "path": "local/native_mesh_texture_field_cj/registered/build.log",
+      "sha256": "21e829609109fa2d020808dd7c72d2e6ade2989d5202068fe5ce8d631b823246",
+      "bytes": 2493
+    },
+    {
+      "path": "local/native_mesh_texture_field_cj/registered/call_check.log",
+      "sha256": "2f18dc2db9dd7d4200150004993e37f74c5d7ce74e7086fec05e99f132ea38cf",
+      "bytes": 75
+    },
+    {
+      "path": "local/native_mesh_texture_field_cj/registered/child_probe.log",
+      "sha256": "4fd09c24a0ecc791189085686d47211d01e0e877cc2542e8db5e28a8a2a4dd05",
+      "bytes": 623
+    },
+    {
+      "path": "local/native_mesh_texture_field_cj/registered/CMakeCache.txt",
+      "sha256": "2ab657bd06bb97731372c10fc883040590ccedec539b0406ba2554bab45f7835",
+      "bytes": 18839
+    },
+    {
+      "path": "local/native_mesh_texture_field_cj/registered/compile.cmd",
+      "sha256": "0d384acec13c1e24b46d1a9b2b946e73a71e6478f08399c2b1f09d5ead6bc8ad",
+      "bytes": 685
+    },
+    {
+      "path": "local/native_mesh_texture_field_cj/registered/compile.log",
+      "sha256": "25d4f66c7c01d5b35c220cb97ffdd1608405f4ab45160497e6cc7ea3079676cf",
+      "bytes": 11
+    },
+    {
+      "path": "local/native_mesh_texture_field_cj/registered/configuration.json",
+      "sha256": "2796f97afeb1a74ae95e84cfd1ca8b729e4c1a476b8bad793a21334b083398d6",
+      "bytes": 1430
+    },
+    {
+      "path": "local/native_mesh_texture_field_cj/registered/final_audit.json",
+      "sha256": "7a20ec5f4274eef2acdd5bb7baedc2d76769f5a7cbf84c3609949172c188c292",
+      "bytes": 18552
+    },
+    {
+      "path": "local/native_mesh_texture_field_cj/registered/fixture_depth_expectation_failure.log",
+      "sha256": "f3a43e897f28187809aabd08715390ec5001cbab5bf271d126235f94b40ae2da",
+      "bytes": 275
+    },
+    {
+      "path": "local/native_mesh_texture_field_cj/registered/initial_audit.json",
+      "sha256": "7bbe8109148704a58792cdaabf1d4ba4b0fa38f536218954240cf3a736b31d41",
+      "bytes": 18794
+    },
+    {
+      "path": "local/native_mesh_texture_field_cj/registered/original_setter.hpp",
+      "sha256": "1582467ad655bf17b6cda39c3439f574b4627e620849e151ac271ec1defe5716",
+      "bytes": 524
+    },
+    {
+      "path": "local/native_mesh_texture_field_cj/registered/original_setter.json",
+      "sha256": "d91160cb75787fd2ac9c5df707396991085505ccbe038fc9ffd4a0c6348639a6",
+      "bytes": 331
+    },
+    {
+      "path": "local/native_mesh_texture_field_cj/registered/probe.cpp",
+      "sha256": "9256313004977cf76ed858bd538d516d41ab28f6f1d5fb1cc1b6b953f80973a1",
+      "bytes": 28074
+    },
+    {
+      "path": "local/native_mesh_texture_field_cj/registered/probe.exe",
+      "sha256": "3e1b16961d2a3bca0047ae679af21c605f4b756d3c8260a51abc3839177bb298",
+      "bytes": 229888
+    },
+    {
+      "path": "local/native_mesh_texture_field_cj/registered/probe.log",
+      "sha256": "0805fd4c7ffd626d45cb70b3374343b976624997ab7ce0fb41653c537698de93",
+      "bytes": 663
+    },
+    {
+      "path": "local/native_mesh_texture_field_cj/registered/probe.map",
+      "sha256": "471170795f380802e35e81dd28db579b8f635c9d1d200c2c8e52fa0c066af7fc",
+      "bytes": 426673
+    },
+    {
+      "path": "local/native_mesh_texture_field_cj/registered/probe.obj",
+      "sha256": "b8b26bfd6aaa18f1621b430687f3dd428010b3a16679bb9001fc32b7c66e3e16",
+      "bytes": 357535
+    },
+    {
+      "path": "local/native_mesh_texture_field_cj/registered/registry_edit.json",
+      "sha256": "eca453892cef2f182229dd3aa716429f225d8a865d46a5535fb426c92c97956a",
+      "bytes": 665
+    },
+    {
+      "path": "local/native_mesh_texture_field_cj/registered/source_manifest.json",
+      "sha256": "2a8b395200c988c561599833d7dcf9a8fb13b95b5bc65d6292d207d22284c435",
+      "bytes": 290450
+    },
+    {
+      "path": "reports/native_mesh_texture_field_flow_cj.json",
+      "sha256": "ac975253839cd15479d9d6b40f053160f45c341e4557cc5a37dc568a28644ea9",
+      "bytes": 3670
+    },
+    {
+      "path": "reports/native_mesh_texture_field_annotations_cj.json",
+      "sha256": "938dfa80550b4c08dfdc45d3de5ee9b275936e7878305fbb1527cd5a32bfdc73",
+      "bytes": 51877
+    }
+  ]
+}

@@ -1,0 +1,482 @@
+{
+  "packet": "orch4_native_mesh_texture_field_cj",
+  "entries": [
+    {
+      "address": "00b189f0",
+      "name": "BSP_Material_SetTextureSlot",
+      "before_comment": {
+        "address": "00b189f0",
+        "function_name": "BSP_Material_SetTextureSlot",
+        "comment": "[BSP reconstruction 00b189f0]\nECX material; unsigned slot and resource pointer stack, RET8. Slots at +10+4*index; signed16 +34 high-water count compared as unsigned and raised to low16(index+1) before identity skip. Changed pointer stores/retains new before releasing old. No native bounds guard. Text geometry binds glyph+18 to slot0, +1C to slot1 once on initial binding block; docs/FONT_MATERIAL_BINDINGS.md.\n\n[BSP reconstruction 00b189f0] update\nECX material; unsigned slot/resource stack, RET8. Constructor proves nine slots+10..+30, signed16count+34. Count increases before pointer-identity skip; changed slot retains new before releasing old. Typed MaterialTextureSlots validcount0..9 with host bounds guard; source snapshot supports vector aliasing. LogicalTexture COM remains borrowed; actual font bindings checked. docs/MATERIAL_TEXTURE_SLOTS.md.\n\n[BSP reconstruction 00b189f0] update\nECX material; unsigned slot/resource stack, RET8. Constructor proves nine slots+10..+30, signed16count+34. Count increases before pointer-identity skip; changed slot retains new before releasing old. Typed MaterialTextureSlots validcount0..9 with host bounds guard; source snapshot supports vector aliasing. LogicalTexture COM remains borrowed; actual font bindings checked. docs/MATERIAL_TEXTURE_SLOTS.md. | ECX actual material/index,texture stack/RET8. Complete slots0..8/count0..9; count growth before equality; publish/retain new then release captured old through canonical actual owner; no gap clearing. Strict MSVC Win32 compiled; no executable wiring/game/ABI claim. reports/gui_text_material.json"
+      },
+      "before_documentation": {
+        "hash": "25712d882bf0b8bf832805632a2c83f3e6ad91bc70738379b758f76c2093df97",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b189f0",
+        "function_name": "BSP_Material_SetTextureSlot",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00b189f0]\nECX material; unsigned slot and resource pointer stack, RET8. Slots at +10+4*index; signed16 +34 high-water count compared as unsigned and raised to low16(index+1) before identity skip. Changed pointer stores/retains new before releasing old. No native bounds guard. Text geometry binds glyph+18 to slot0, +1C to slot1 once on initial binding block; docs/FONT_MATERIAL_BINDINGS.md.\n\n[BSP reconstruction 00b189f0] update\nECX material; unsigned slot/resource stack, RET8. Constructor proves nine slots+10..+30, signed16count+34. Count increases before pointer-identity skip; changed slot retains new before releasing old. Typed MaterialTextureSlots validcount0..9 with host bounds guard; source snapshot supports vector aliasing. LogicalTexture COM remains borrowed; actual font bindings checked. docs/MATERIAL_TEXTURE_SLOTS.md.\n\n[BSP reconstruction 00b189f0] update\nECX material; unsigned slot/resource stack, RET8. Constructor proves nine slots+10..+30, signed16count+34. Count increases before pointer-identity skip; changed slot retains new before releasing old. Typed MaterialTextureSlots validcount0..9 with host bounds guard; source snapshot supports vector aliasing. LogicalTexture COM remains borrowed; actual font bindings checked. docs/MATERIAL_TEXTURE_SLOTS.md. | ECX actual material/index,texture stack/RET8. Complete slots0..8/count0..9; count growth before equality; publish/retain new then release captured old through canonical actual owner; no gap clearing. Strict MSVC Win32 compiled; no executable wiring/game/ABI claim. reports/gui_text_material.json",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "LVar2",
+            "type": "LONG",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "puVar1",
+            "type": "undefined4 *",
+            "storage": "(unique, 0x17200, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 19,
+            "name": "LAB_00b18a03"
+          },
+          {
+            "relative_offset": 50,
+            "name": "LAB_00b18a22"
+          },
+          {
+            "relative_offset": 76,
+            "name": "LAB_00b18a3c"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "evidence": "CJ native mesh texture field: two complete ordinary bodies374bytes plus three EH supports26bytes, 128 instruction owners,17 direct and6 indirect transfers; saved Ghidra/disk bytes equal. B189F0 compares sign-extended SHORT count as unsigned and writes low16(index+1) before identity; wrapping slot arithmetic, publish/retain new before old zero terminal. Existing checked GUI convenience retained. B93D30 uses actual B319B0 cache and canonical texture owners, reads counted name/slot, discards three TextureAddress DWORDs and skips unknown children. EH owns completed local name and child only; normal child release disarms first; no texture/material rollback on failure. Missing CC2E20 restored without ordinary-body edits, byte clears or no-return changes; existing Unwind names retained. Default tracked Win32 build and both CTests passed. Four copied-original B189F0 pairs match identity/high-water, negative count, wrapping index and retain-before-terminal observations. Source parent success/failure passed actual RTX5090 D3D9 texture construction, hot alias-cache lookup, canonical owner terminal/cache removal and real pool teardown. Not an original parent, cold decode, binary ABI/FH3/SEH, full renderer startup or game claim. Preserved old comments; descriptive names are hypotheses. docs/NATIVE_MESH_TEXTURE_FIELD_CJ.md; reports/native_mesh_texture_field_cj.json. Complete 80B. ECX actual material; stacked unsigned index/actual texture; RET8. Source set_native_material_texture_unchecked_00b189f0.",
+      "prototype": "void __fastcall BSP_Material_SetTextureSlot(void* material, void* unused_edx, uint index, void* texture)",
+      "prototype_result": "Successfully set prototype for function at 00b189f0 with __fastcall calling convention",
+      "ledger_name_output": "00b189f0 -> BSP_Material_SetTextureSlot\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00b189f0\", \"name\": \"BSP_Material_SetTextureSlot\", \"evidence\": \"ECX material; unsigned slot/resource stack, RET8. Constructor proves nine slots+10..+30, signed16count+34. Count increases before pointer-identity skip; changed slot retains new before releasing old. Typed MaterialTextureSlots validcount0..9 with host bounds guard; source snapshot supports vector aliasing. LogicalTexture COM remains borrowed; actual font bindings checked. docs/MATERIAL_TEXTURE_SLOTS.md. | ECX actual material/index,texture stack/RET8. Complete slots0..8/count0..9; count growth before equality; publish/retain new then release captured old through canonical actual owner; no gap clearing. Strict MSVC Win32 compiled; no executable wiring/game/ABI claim. reports/gui_text_material.json\"})\n",
+      "ledger_function_output": "00b189f0 function set_native_material_texture_unchecked_00b189f0\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00b189f0",
+        "function_name": "BSP_Material_SetTextureSlot",
+        "comment": "[BSP reconstruction 00b189f0]\nECX material; unsigned slot and resource pointer stack, RET8. Slots at +10+4*index; signed16 +34 high-water count compared as unsigned and raised to low16(index+1) before identity skip. Changed pointer stores/retains new before releasing old. No native bounds guard. Text geometry binds glyph+18 to slot0, +1C to slot1 once on initial binding block; docs/FONT_MATERIAL_BINDINGS.md.\n\n[BSP reconstruction 00b189f0] update\nECX material; unsigned slot/resource stack, RET8. Constructor proves nine slots+10..+30, signed16count+34. Count increases before pointer-identity skip; changed slot retains new before releasing old. Typed MaterialTextureSlots validcount0..9 with host bounds guard; source snapshot supports vector aliasing. LogicalTexture COM remains borrowed; actual font bindings checked. docs/MATERIAL_TEXTURE_SLOTS.md.\n\n[BSP reconstruction 00b189f0] update\nECX material; unsigned slot/resource stack, RET8. Constructor proves nine slots+10..+30, signed16count+34. Count increases before pointer-identity skip; changed slot retains new before releasing old. Typed MaterialTextureSlots validcount0..9 with host bounds guard; source snapshot supports vector aliasing. LogicalTexture COM remains borrowed; actual font bindings checked. docs/MATERIAL_TEXTURE_SLOTS.md. | ECX actual material/index,texture stack/RET8. Complete slots0..8/count0..9; count growth before equality; publish/retain new then release captured old through canonical actual owner; no gap clearing. Strict MSVC Win32 compiled; no executable wiring/game/ABI claim. reports/gui_text_material.json\n\n[BSP reconstruction 00b189f0] CJ update\nCJ native mesh texture field: two complete ordinary bodies374bytes plus three EH supports26bytes, 128 instruction owners,17 direct and6 indirect transfers; saved Ghidra/disk bytes equal. B189F0 compares sign-extended SHORT count as unsigned and writes low16(index+1) before identity; wrapping slot arithmetic, publish/retain new before old zero terminal. Existing checked GUI convenience retained. B93D30 uses actual B319B0 cache and canonical texture owners, reads counted name/slot, discards three TextureAddress DWORDs and skips unknown children. EH owns completed local name and child only; normal child release disarms first; no texture/material rollback on failure. Missing CC2E20 restored without ordinary-body edits, byte clears or no-return changes; existing Unwind names retained. Default tracked Win32 build and both CTests passed. Four copied-original B189F0 pairs match identity/high-water, negative count, wrapping index and retain-before-terminal observations. Source parent success/failure passed actual RTX5090 D3D9 texture construction, hot alias-cache lookup, canonical owner terminal/cache removal and real pool teardown. Not an original parent, cold decode, binary ABI/FH3/SEH, full renderer startup or game claim. Preserved old comments; descriptive names are hypotheses. docs/NATIVE_MESH_TEXTURE_FIELD_CJ.md; reports/native_mesh_texture_field_cj.json. Complete 80B. ECX actual material; stacked unsigned index/actual texture; RET8. Source set_native_material_texture_unchecked_00b189f0."
+      }
+    },
+    {
+      "address": "00b93d30",
+      "name": "BSP_Material_ReadTextureField",
+      "before_comment": {
+        "address": "00b93d30",
+        "function_name": "BSP_Material_ReadTextureField",
+        "comment": "[BSP reconstruction 00b93d30]\nCounted name; resolve global manager+0x64(name,0); DWORD slot; assign00b189f0. TextureAddress discards3DWORDs; unknown children skip; temp texture released. Original ABI: Stack material,child handle; incoming ECX context unused; RET8. Evidence: docs/MESH_SUBSET_LOD_FIELDS.md; reports/mesh_subset_lod_fields_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation."
+      },
+      "before_documentation": {
+        "hash": "2cc94a50a37d7c908da316ff235875d45dd01efa792a4aa2dc9a54a1fc3487f9",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b93d30",
+        "function_name": "BSP_Material_ReadTextureField",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00b93d30]\nCounted name; resolve global manager+0x64(name,0); DWORD slot; assign00b189f0. TextureAddress discards3DWORDs; unknown children skip; temp texture released. Original ABI: Stack material,child handle; incoming ECX context unused; RET8. Evidence: docs/MESH_SUBSET_LOD_FIELDS.md; reports/mesh_subset_lod_fields_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation.",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "cVar1",
+            "type": "char",
+            "storage": "(register, 0x0, 1)"
+          },
+          {
+            "name": "texture",
+            "type": "undefined4 *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "uVar2",
+            "type": "uint",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "iVar3",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "pvStack_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "pcStack_8",
+            "type": "undefined *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "local_4",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "local_14",
+            "type": "void *[2]",
+            "storage": "(stack, 0xffffffffffffffec, 4)"
+          },
+          {
+            "name": "extraout_EDX_03",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "unaff_ESI",
+            "type": "int",
+            "storage": "(register, 0x18, 4)"
+          },
+          {
+            "name": "unaff_EDI",
+            "type": "int",
+            "storage": "(register, 0x1c, 4)"
+          },
+          {
+            "name": "uVar6",
+            "type": "undefined8",
+            "storage": "(VARIABLE, 0x0, 8)"
+          },
+          {
+            "name": "extraout_EDX_01",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "extraout_EDX_02",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "pvVar5",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "unused_edx_04",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "extraout_EDX_00",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "unused_edx_01",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "unused_edx_02",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "unused_edx_03",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "LVar4",
+            "type": "LONG",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "unused_edx",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "unused_edx_00",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "extraout_EDX",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "unaff_retaddr",
+            "type": "int",
+            "storage": "(stack, 0x0, 4)"
+          },
+          {
+            "name": "uVar7",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffe0, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 101,
+            "name": "LAB_00b93d95"
+          },
+          {
+            "relative_offset": 181,
+            "name": "LAB_00b93de5"
+          },
+          {
+            "relative_offset": 190,
+            "name": "LAB_00b93dee"
+          },
+          {
+            "relative_offset": 215,
+            "name": "LAB_00b93e07"
+          },
+          {
+            "relative_offset": 237,
+            "name": "LAB_00b93e1d"
+          },
+          {
+            "relative_offset": 277,
+            "name": "LAB_00b93e45"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "evidence": "CJ native mesh texture field: two complete ordinary bodies374bytes plus three EH supports26bytes, 128 instruction owners,17 direct and6 indirect transfers; saved Ghidra/disk bytes equal. B189F0 compares sign-extended SHORT count as unsigned and writes low16(index+1) before identity; wrapping slot arithmetic, publish/retain new before old zero terminal. Existing checked GUI convenience retained. B93D30 uses actual B319B0 cache and canonical texture owners, reads counted name/slot, discards three TextureAddress DWORDs and skips unknown children. EH owns completed local name and child only; normal child release disarms first; no texture/material rollback on failure. Missing CC2E20 restored without ordinary-body edits, byte clears or no-return changes; existing Unwind names retained. Default tracked Win32 build and both CTests passed. Four copied-original B189F0 pairs match identity/high-water, negative count, wrapping index and retain-before-terminal observations. Source parent success/failure passed actual RTX5090 D3D9 texture construction, hot alias-cache lookup, canonical owner terminal/cache removal and real pool teardown. Not an original parent, cold decode, binary ABI/FH3/SEH, full renderer startup or game claim. Preserved old comments; descriptive names are hypotheses. docs/NATIVE_MESH_TEXTURE_FIELD_CJ.md; reports/native_mesh_texture_field_cj.json. Complete 294B. ECX unused; stacked material and actual parent handle; RET8. Source read_native_mesh_texture_field_00b93d30.",
+      "prototype": "void __fastcall BSP_Material_ReadTextureField(void* unused_ecx, void* unused_edx, void* material, void* parent_handle)",
+      "prototype_result": "Successfully set prototype for function at 00b93d30 with __fastcall calling convention",
+      "ledger_name_output": "00b93d30 -> BSP_Material_ReadTextureField\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00b93d30\", \"name\": \"BSP_Material_ReadTextureField\", \"evidence\": \"Counted name; resolve global manager+0x64(name,0); DWORD slot; assign00b189f0. TextureAddress discards3DWORDs; unknown children skip; temp texture released. Original ABI: Stack material,child handle; incoming ECX context unused; RET8. Evidence: docs/MESH_SUBSET_LOD_FIELDS.md; reports/mesh_subset_lod_fields_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation.\"})\n",
+      "ledger_function_output": "00b93d30 function read_native_mesh_texture_field_00b93d30\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00b93d30",
+        "function_name": "BSP_Material_ReadTextureField",
+        "comment": "[BSP reconstruction 00b93d30]\nCounted name; resolve global manager+0x64(name,0); DWORD slot; assign00b189f0. TextureAddress discards3DWORDs; unknown children skip; temp texture released. Original ABI: Stack material,child handle; incoming ECX context unused; RET8. Evidence: docs/MESH_SUBSET_LOD_FIELDS.md; reports/mesh_subset_lod_fields_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation.\n\n[BSP reconstruction 00b93d30] CJ update\nCJ native mesh texture field: two complete ordinary bodies374bytes plus three EH supports26bytes, 128 instruction owners,17 direct and6 indirect transfers; saved Ghidra/disk bytes equal. B189F0 compares sign-extended SHORT count as unsigned and writes low16(index+1) before identity; wrapping slot arithmetic, publish/retain new before old zero terminal. Existing checked GUI convenience retained. B93D30 uses actual B319B0 cache and canonical texture owners, reads counted name/slot, discards three TextureAddress DWORDs and skips unknown children. EH owns completed local name and child only; normal child release disarms first; no texture/material rollback on failure. Missing CC2E20 restored without ordinary-body edits, byte clears or no-return changes; existing Unwind names retained. Default tracked Win32 build and both CTests passed. Four copied-original B189F0 pairs match identity/high-water, negative count, wrapping index and retain-before-terminal observations. Source parent success/failure passed actual RTX5090 D3D9 texture construction, hot alias-cache lookup, canonical owner terminal/cache removal and real pool teardown. Not an original parent, cold decode, binary ABI/FH3/SEH, full renderer startup or game claim. Preserved old comments; descriptive names are hypotheses. docs/NATIVE_MESH_TEXTURE_FIELD_CJ.md; reports/native_mesh_texture_field_cj.json. Complete 294B. ECX unused; stacked material and actual parent handle; RET8. Source read_native_mesh_texture_field_00b93d30."
+      }
+    },
+    {
+      "address": "00cc2e10",
+      "name": "Unwind@00cc2e10",
+      "before_comment": {
+        "address": "00cc2e10",
+        "function_name": "Unwind@00cc2e10"
+      },
+      "before_documentation": {
+        "hash": "5160a80448bef202077805e7b60dba17ba6bee56bd919d0f4086d51e5634aef7",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00cc2e10",
+        "function_name": "Unwind@00cc2e10",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "unaff_EBP",
+            "type": "int",
+            "storage": "(register, 0x14, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 80.0
+      },
+      "evidence": "CJ native mesh texture field: two complete ordinary bodies374bytes plus three EH supports26bytes, 128 instruction owners,17 direct and6 indirect transfers; saved Ghidra/disk bytes equal. B189F0 compares sign-extended SHORT count as unsigned and writes low16(index+1) before identity; wrapping slot arithmetic, publish/retain new before old zero terminal. Existing checked GUI convenience retained. B93D30 uses actual B319B0 cache and canonical texture owners, reads counted name/slot, discards three TextureAddress DWORDs and skips unknown children. EH owns completed local name and child only; normal child release disarms first; no texture/material rollback on failure. Missing CC2E20 restored without ordinary-body edits, byte clears or no-return changes; existing Unwind names retained. Default tracked Win32 build and both CTests passed. Four copied-original B189F0 pairs match identity/high-water, negative count, wrapping index and retain-before-terminal observations. Source parent success/failure passed actual RTX5090 D3D9 texture construction, hot alias-cache lookup, canonical owner terminal/cache removal and real pool teardown. Not an original parent, cold decode, binary ABI/FH3/SEH, full renderer startup or game claim. Preserved old comments; descriptive names are hypotheses. docs/NATIVE_MESH_TEXTURE_FIELD_CJ.md; reports/native_mesh_texture_field_cj.json. Complete unwind or dispatch handler; support evidence only.",
+      "ledger_name_output": "00cc2e10 -> Unwind@00cc2e10\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00cc2e10",
+        "function_name": "Unwind@00cc2e10",
+        "comment": "\n\n[BSP reconstruction 00cc2e10] CJ update\nCJ native mesh texture field: two complete ordinary bodies374bytes plus three EH supports26bytes, 128 instruction owners,17 direct and6 indirect transfers; saved Ghidra/disk bytes equal. B189F0 compares sign-extended SHORT count as unsigned and writes low16(index+1) before identity; wrapping slot arithmetic, publish/retain new before old zero terminal. Existing checked GUI convenience retained. B93D30 uses actual B319B0 cache and canonical texture owners, reads counted name/slot, discards three TextureAddress DWORDs and skips unknown children. EH owns completed local name and child only; normal child release disarms first; no texture/material rollback on failure. Missing CC2E20 restored without ordinary-body edits, byte clears or no-return changes; existing Unwind names retained. Default tracked Win32 build and both CTests passed. Four copied-original B189F0 pairs match identity/high-water, negative count, wrapping index and retain-before-terminal observations. Source parent success/failure passed actual RTX5090 D3D9 texture construction, hot alias-cache lookup, canonical owner terminal/cache removal and real pool teardown. Not an original parent, cold decode, binary ABI/FH3/SEH, full renderer startup or game claim. Preserved old comments; descriptive names are hypotheses. docs/NATIVE_MESH_TEXTURE_FIELD_CJ.md; reports/native_mesh_texture_field_cj.json. Complete unwind or dispatch handler; support evidence only."
+      }
+    },
+    {
+      "address": "00cc2e18",
+      "name": "Unwind@00cc2e18",
+      "before_comment": {
+        "address": "00cc2e18",
+        "function_name": "Unwind@00cc2e18"
+      },
+      "before_documentation": {
+        "hash": "77adfd4d6704ee694fcad8b10f6345ea3b73559232315bbcbd4c9cf6369af352",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00cc2e18",
+        "function_name": "Unwind@00cc2e18",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "unaff_EBP",
+            "type": "int",
+            "storage": "(register, 0x14, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 80.0
+      },
+      "evidence": "CJ native mesh texture field: two complete ordinary bodies374bytes plus three EH supports26bytes, 128 instruction owners,17 direct and6 indirect transfers; saved Ghidra/disk bytes equal. B189F0 compares sign-extended SHORT count as unsigned and writes low16(index+1) before identity; wrapping slot arithmetic, publish/retain new before old zero terminal. Existing checked GUI convenience retained. B93D30 uses actual B319B0 cache and canonical texture owners, reads counted name/slot, discards three TextureAddress DWORDs and skips unknown children. EH owns completed local name and child only; normal child release disarms first; no texture/material rollback on failure. Missing CC2E20 restored without ordinary-body edits, byte clears or no-return changes; existing Unwind names retained. Default tracked Win32 build and both CTests passed. Four copied-original B189F0 pairs match identity/high-water, negative count, wrapping index and retain-before-terminal observations. Source parent success/failure passed actual RTX5090 D3D9 texture construction, hot alias-cache lookup, canonical owner terminal/cache removal and real pool teardown. Not an original parent, cold decode, binary ABI/FH3/SEH, full renderer startup or game claim. Preserved old comments; descriptive names are hypotheses. docs/NATIVE_MESH_TEXTURE_FIELD_CJ.md; reports/native_mesh_texture_field_cj.json. Complete unwind or dispatch handler; support evidence only.",
+      "ledger_name_output": "00cc2e18 -> Unwind@00cc2e18\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00cc2e18",
+        "function_name": "Unwind@00cc2e18",
+        "comment": "\n\n[BSP reconstruction 00cc2e18] CJ update\nCJ native mesh texture field: two complete ordinary bodies374bytes plus three EH supports26bytes, 128 instruction owners,17 direct and6 indirect transfers; saved Ghidra/disk bytes equal. B189F0 compares sign-extended SHORT count as unsigned and writes low16(index+1) before identity; wrapping slot arithmetic, publish/retain new before old zero terminal. Existing checked GUI convenience retained. B93D30 uses actual B319B0 cache and canonical texture owners, reads counted name/slot, discards three TextureAddress DWORDs and skips unknown children. EH owns completed local name and child only; normal child release disarms first; no texture/material rollback on failure. Missing CC2E20 restored without ordinary-body edits, byte clears or no-return changes; existing Unwind names retained. Default tracked Win32 build and both CTests passed. Four copied-original B189F0 pairs match identity/high-water, negative count, wrapping index and retain-before-terminal observations. Source parent success/failure passed actual RTX5090 D3D9 texture construction, hot alias-cache lookup, canonical owner terminal/cache removal and real pool teardown. Not an original parent, cold decode, binary ABI/FH3/SEH, full renderer startup or game claim. Preserved old comments; descriptive names are hypotheses. docs/NATIVE_MESH_TEXTURE_FIELD_CJ.md; reports/native_mesh_texture_field_cj.json. Complete unwind or dispatch handler; support evidence only."
+      }
+    },
+    {
+      "address": "00cc2e20",
+      "name": "BSP_MeshTextureFieldRead_CompilerExceptionHandler_00cc2e20",
+      "before_comment": {
+        "address": "00cc2e20",
+        "function_name": "BSP_MeshTextureFieldRead_CompilerExceptionHandler_00cc2e20",
+        "comment": ""
+      },
+      "before_documentation": {
+        "hash": "f0f2f68cf1132ae80dae34c6f69542164e987ef3beaddd17388b21e68e3a2bc1",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00cc2e20",
+        "function_name": "BSP_MeshTextureFieldRead_CompilerExceptionHandler_00cc2e20",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "",
+        "parameters": [],
+        "local_variables": [],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 100.0
+      },
+      "evidence": "CJ native mesh texture field: two complete ordinary bodies374bytes plus three EH supports26bytes, 128 instruction owners,17 direct and6 indirect transfers; saved Ghidra/disk bytes equal. B189F0 compares sign-extended SHORT count as unsigned and writes low16(index+1) before identity; wrapping slot arithmetic, publish/retain new before old zero terminal. Existing checked GUI convenience retained. B93D30 uses actual B319B0 cache and canonical texture owners, reads counted name/slot, discards three TextureAddress DWORDs and skips unknown children. EH owns completed local name and child only; normal child release disarms first; no texture/material rollback on failure. Missing CC2E20 restored without ordinary-body edits, byte clears or no-return changes; existing Unwind names retained. Default tracked Win32 build and both CTests passed. Four copied-original B189F0 pairs match identity/high-water, negative count, wrapping index and retain-before-terminal observations. Source parent success/failure passed actual RTX5090 D3D9 texture construction, hot alias-cache lookup, canonical owner terminal/cache removal and real pool teardown. Not an original parent, cold decode, binary ABI/FH3/SEH, full renderer startup or game claim. Preserved old comments; descriptive names are hypotheses. docs/NATIVE_MESH_TEXTURE_FIELD_CJ.md; reports/native_mesh_texture_field_cj.json. Complete unwind or dispatch handler; support evidence only.",
+      "ledger_name_output": "00cc2e20 -> BSP_MeshTextureFieldRead_CompilerExceptionHandler_00cc2e20\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00cc2e20",
+        "function_name": "BSP_MeshTextureFieldRead_CompilerExceptionHandler_00cc2e20",
+        "comment": "\n\n[BSP reconstruction 00cc2e20] CJ update\nCJ native mesh texture field: two complete ordinary bodies374bytes plus three EH supports26bytes, 128 instruction owners,17 direct and6 indirect transfers; saved Ghidra/disk bytes equal. B189F0 compares sign-extended SHORT count as unsigned and writes low16(index+1) before identity; wrapping slot arithmetic, publish/retain new before old zero terminal. Existing checked GUI convenience retained. B93D30 uses actual B319B0 cache and canonical texture owners, reads counted name/slot, discards three TextureAddress DWORDs and skips unknown children. EH owns completed local name and child only; normal child release disarms first; no texture/material rollback on failure. Missing CC2E20 restored without ordinary-body edits, byte clears or no-return changes; existing Unwind names retained. Default tracked Win32 build and both CTests passed. Four copied-original B189F0 pairs match identity/high-water, negative count, wrapping index and retain-before-terminal observations. Source parent success/failure passed actual RTX5090 D3D9 texture construction, hot alias-cache lookup, canonical owner terminal/cache removal and real pool teardown. Not an original parent, cold decode, binary ABI/FH3/SEH, full renderer startup or game claim. Preserved old comments; descriptive names are hypotheses. docs/NATIVE_MESH_TEXTURE_FIELD_CJ.md; reports/native_mesh_texture_field_cj.json. Complete unwind or dispatch handler; support evidence only."
+      }
+    }
+  ],
+  "actions": [
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00b189f0",
+        "prototype": "void __fastcall BSP_Material_SetTextureSlot(void* material, void* unused_edx, uint index, void* texture)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00b189f0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b189f0",
+        "new_name": "BSP_Material_SetTextureSlot"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b189f0 from 'BSP_Material_SetTextureSlot' to 'BSP_Material_SetTextureSlot'\", \"warnings\": [\"Function name 'BSP_Material_SetTextureSlot' \\u2014 main part 'Material_SetTextureSlot' is not PascalCase. Expected: MaterialSettextureslot\", \"Function name 'BSP_Material_SetTextureSlot' \\u2014 main part 'Material_SetTextureSlot' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_Material_SetTextureSlot' does not start with a recognized verb. First word 'Material_' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b189f0",
+        "new_name": "BSP_Material_SetTextureSlot"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b189f0 from 'BSP_Material_SetTextureSlot' to 'BSP_Material_SetTextureSlot'\", \"warnings\": [\"Function name 'BSP_Material_SetTextureSlot' \\u2014 main part 'Material_SetTextureSlot' is not PascalCase. Expected: MaterialSettextureslot\", \"Function name 'BSP_Material_SetTextureSlot' \\u2014 main part 'Material_SetTextureSlot' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_Material_SetTextureSlot' does not start with a recognized verb. First word 'Material_' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00b189f0",
+        "comment": "[BSP reconstruction 00b189f0]\nECX material; unsigned slot and resource pointer stack, RET8. Slots at +10+4*index; signed16 +34 high-water count compared as unsigned and raised to low16(index+1) before identity skip. Changed pointer stores/retains new before releasing old. No native bounds guard. Text geometry binds glyph+18 to slot0, +1C to slot1 once on initial binding block; docs/FONT_MATERIAL_BINDINGS.md.\n\n[BSP reconstruction 00b189f0] update\nECX material; unsigned slot/resource stack, RET8. Constructor proves nine slots+10..+30, signed16count+34. Count increases before pointer-identity skip; changed slot retains new before releasing old. Typed MaterialTextureSlots validcount0..9 with host bounds guard; source snapshot supports vector aliasing. LogicalTexture COM remains borrowed; actual font bindings checked. docs/MATERIAL_TEXTURE_SLOTS.md.\n\n[BSP reconstruction 00b189f0] update\nECX material; unsigned slot/resource stack, RET8. Constructor proves nine slots+10..+30, signed16count+34. Count increases before pointer-identity skip; changed slot retains new before releasing old. Typed MaterialTextureSlots validcount0..9 with host bounds guard; source snapshot supports vector aliasing. LogicalTexture COM remains borrowed; actual font bindings checked. docs/MATERIAL_TEXTURE_SLOTS.md. | ECX actual material/index,texture stack/RET8. Complete slots0..8/count0..9; count growth before equality; publish/retain new then release captured old through canonical actual owner; no gap clearing. Strict MSVC Win32 compiled; no executable wiring/game/ABI claim. reports/gui_text_material.json\n\n[BSP reconstruction 00b189f0] CJ update\nCJ native mesh texture field: two complete ordinary bodies374bytes plus three EH supports26bytes, 128 instruction owners,17 direct and6 indirect transfers; saved Ghidra/disk bytes equal. B189F0 compares sign-extended SHORT count as unsigned and writes low16(index+1) before identity; wrapping slot arithmetic, publish/retain new before old zero terminal. Existing checked GUI convenience retained. B93D30 uses actual B319B0 cache and canonical texture owners, reads counted name/slot, discards three TextureAddress DWORDs and skips unknown children. EH owns completed local name and child only; normal child release disarms first; no texture/material rollback on failure. Missing CC2E20 restored without ordinary-body edits, byte clears or no-return changes; existing Unwind names retained. Default tracked Win32 build and both CTests passed. Four copied-original B189F0 pairs match identity/high-water, negative count, wrapping index and retain-before-terminal observations. Source parent success/failure passed actual RTX5090 D3D9 texture construction, hot alias-cache lookup, canonical owner terminal/cache removal and real pool teardown. Not an original parent, cold decode, binary ABI/FH3/SEH, full renderer startup or game claim. Preserved old comments; descriptive names are hypotheses. docs/NATIVE_MESH_TEXTURE_FIELD_CJ.md; reports/native_mesh_texture_field_cj.json. Complete 80B. ECX actual material; stacked unsigned index/actual texture; RET8. Source set_native_material_texture_unchecked_00b189f0."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00b189f0\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00b93d30",
+        "prototype": "void __fastcall BSP_Material_ReadTextureField(void* unused_ecx, void* unused_edx, void* material, void* parent_handle)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00b93d30 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b93d30",
+        "new_name": "BSP_Material_ReadTextureField"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b93d30 from 'BSP_Material_ReadTextureField' to 'BSP_Material_ReadTextureField'\", \"warnings\": [\"Function name 'BSP_Material_ReadTextureField' \\u2014 main part 'Material_ReadTextureField' is not PascalCase. Expected: MaterialReadtexturefield\", \"Function name 'BSP_Material_ReadTextureField' \\u2014 main part 'Material_ReadTextureField' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_Material_ReadTextureField' does not start with a recognized verb. First word 'Material_' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b93d30",
+        "new_name": "BSP_Material_ReadTextureField"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b93d30 from 'BSP_Material_ReadTextureField' to 'BSP_Material_ReadTextureField'\", \"warnings\": [\"Function name 'BSP_Material_ReadTextureField' \\u2014 main part 'Material_ReadTextureField' is not PascalCase. Expected: MaterialReadtexturefield\", \"Function name 'BSP_Material_ReadTextureField' \\u2014 main part 'Material_ReadTextureField' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_Material_ReadTextureField' does not start with a recognized verb. First word 'Material_' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00b93d30",
+        "comment": "[BSP reconstruction 00b93d30]\nCounted name; resolve global manager+0x64(name,0); DWORD slot; assign00b189f0. TextureAddress discards3DWORDs; unknown children skip; temp texture released. Original ABI: Stack material,child handle; incoming ECX context unused; RET8. Evidence: docs/MESH_SUBSET_LOD_FIELDS.md; reports/mesh_subset_lod_fields_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation.\n\n[BSP reconstruction 00b93d30] CJ update\nCJ native mesh texture field: two complete ordinary bodies374bytes plus three EH supports26bytes, 128 instruction owners,17 direct and6 indirect transfers; saved Ghidra/disk bytes equal. B189F0 compares sign-extended SHORT count as unsigned and writes low16(index+1) before identity; wrapping slot arithmetic, publish/retain new before old zero terminal. Existing checked GUI convenience retained. B93D30 uses actual B319B0 cache and canonical texture owners, reads counted name/slot, discards three TextureAddress DWORDs and skips unknown children. EH owns completed local name and child only; normal child release disarms first; no texture/material rollback on failure. Missing CC2E20 restored without ordinary-body edits, byte clears or no-return changes; existing Unwind names retained. Default tracked Win32 build and both CTests passed. Four copied-original B189F0 pairs match identity/high-water, negative count, wrapping index and retain-before-terminal observations. Source parent success/failure passed actual RTX5090 D3D9 texture construction, hot alias-cache lookup, canonical owner terminal/cache removal and real pool teardown. Not an original parent, cold decode, binary ABI/FH3/SEH, full renderer startup or game claim. Preserved old comments; descriptive names are hypotheses. docs/NATIVE_MESH_TEXTURE_FIELD_CJ.md; reports/native_mesh_texture_field_cj.json. Complete 294B. ECX unused; stacked material and actual parent handle; RET8. Source read_native_mesh_texture_field_00b93d30."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00b93d30\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00cc2e10",
+        "new_name": "Unwind@00cc2e10"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00cc2e10 from 'Unwind@00cc2e10' to 'Unwind@00cc2e10'\", \"warnings\": [\"Function name 'Unwind@00cc2e10' \\u2014 main part 'Unwind@00cc2e10' is not PascalCase. Expected: Unwind@00cc2e10\", \"Function name 'Unwind@00cc2e10' does not start with a recognized verb. First word 'Unwind@00cc2e10' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00cc2e10",
+        "comment": "\n\n[BSP reconstruction 00cc2e10] CJ update\nCJ native mesh texture field: two complete ordinary bodies374bytes plus three EH supports26bytes, 128 instruction owners,17 direct and6 indirect transfers; saved Ghidra/disk bytes equal. B189F0 compares sign-extended SHORT count as unsigned and writes low16(index+1) before identity; wrapping slot arithmetic, publish/retain new before old zero terminal. Existing checked GUI convenience retained. B93D30 uses actual B319B0 cache and canonical texture owners, reads counted name/slot, discards three TextureAddress DWORDs and skips unknown children. EH owns completed local name and child only; normal child release disarms first; no texture/material rollback on failure. Missing CC2E20 restored without ordinary-body edits, byte clears or no-return changes; existing Unwind names retained. Default tracked Win32 build and both CTests passed. Four copied-original B189F0 pairs match identity/high-water, negative count, wrapping index and retain-before-terminal observations. Source parent success/failure passed actual RTX5090 D3D9 texture construction, hot alias-cache lookup, canonical owner terminal/cache removal and real pool teardown. Not an original parent, cold decode, binary ABI/FH3/SEH, full renderer startup or game claim. Preserved old comments; descriptive names are hypotheses. docs/NATIVE_MESH_TEXTURE_FIELD_CJ.md; reports/native_mesh_texture_field_cj.json. Complete unwind or dispatch handler; support evidence only."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00cc2e10\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00cc2e18",
+        "new_name": "Unwind@00cc2e18"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00cc2e18 from 'Unwind@00cc2e18' to 'Unwind@00cc2e18'\", \"warnings\": [\"Function name 'Unwind@00cc2e18' \\u2014 main part 'Unwind@00cc2e18' is not PascalCase. Expected: Unwind@00cc2e18\", \"Function name 'Unwind@00cc2e18' does not start with a recognized verb. First word 'Unwind@00cc2e18' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00cc2e18",
+        "comment": "\n\n[BSP reconstruction 00cc2e18] CJ update\nCJ native mesh texture field: two complete ordinary bodies374bytes plus three EH supports26bytes, 128 instruction owners,17 direct and6 indirect transfers; saved Ghidra/disk bytes equal. B189F0 compares sign-extended SHORT count as unsigned and writes low16(index+1) before identity; wrapping slot arithmetic, publish/retain new before old zero terminal. Existing checked GUI convenience retained. B93D30 uses actual B319B0 cache and canonical texture owners, reads counted name/slot, discards three TextureAddress DWORDs and skips unknown children. EH owns completed local name and child only; normal child release disarms first; no texture/material rollback on failure. Missing CC2E20 restored without ordinary-body edits, byte clears or no-return changes; existing Unwind names retained. Default tracked Win32 build and both CTests passed. Four copied-original B189F0 pairs match identity/high-water, negative count, wrapping index and retain-before-terminal observations. Source parent success/failure passed actual RTX5090 D3D9 texture construction, hot alias-cache lookup, canonical owner terminal/cache removal and real pool teardown. Not an original parent, cold decode, binary ABI/FH3/SEH, full renderer startup or game claim. Preserved old comments; descriptive names are hypotheses. docs/NATIVE_MESH_TEXTURE_FIELD_CJ.md; reports/native_mesh_texture_field_cj.json. Complete unwind or dispatch handler; support evidence only."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00cc2e18\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00cc2e20",
+        "new_name": "BSP_MeshTextureFieldRead_CompilerExceptionHandler_00cc2e20"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00cc2e20 from 'BSP_MeshTextureFieldRead_CompilerExceptionHandler_00cc2e20' to 'BSP_MeshTextureFieldRead_CompilerExceptionHandler_00cc2e20'\", \"warnings\": [\"Function name 'BSP_MeshTextureFieldRead_CompilerExceptionHandler_00cc2e20' \\u2014 main part 'MeshTextureFieldRead_CompilerExceptionHandler_00cc2e20' is not PascalCase. Expected: MeshtexturefieldreadCompilerexceptionhandler00cc2e20\", \"Function name 'BSP_MeshTextureFieldRead_CompilerExceptionHandler_00cc2e20' \\u2014 main part 'MeshTextureFieldRead_CompilerExceptionHandler_00cc2e20' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_MeshTextureFieldRead_CompilerExceptionHandler_00cc2e20' does not start with a recognized verb. First word 'Mesh' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00cc2e20",
+        "comment": "\n\n[BSP reconstruction 00cc2e20] CJ update\nCJ native mesh texture field: two complete ordinary bodies374bytes plus three EH supports26bytes, 128 instruction owners,17 direct and6 indirect transfers; saved Ghidra/disk bytes equal. B189F0 compares sign-extended SHORT count as unsigned and writes low16(index+1) before identity; wrapping slot arithmetic, publish/retain new before old zero terminal. Existing checked GUI convenience retained. B93D30 uses actual B319B0 cache and canonical texture owners, reads counted name/slot, discards three TextureAddress DWORDs and skips unknown children. EH owns completed local name and child only; normal child release disarms first; no texture/material rollback on failure. Missing CC2E20 restored without ordinary-body edits, byte clears or no-return changes; existing Unwind names retained. Default tracked Win32 build and both CTests passed. Four copied-original B189F0 pairs match identity/high-water, negative count, wrapping index and retain-before-terminal observations. Source parent success/failure passed actual RTX5090 D3D9 texture construction, hot alias-cache lookup, canonical owner terminal/cache removal and real pool teardown. Not an original parent, cold decode, binary ABI/FH3/SEH, full renderer startup or game claim. Preserved old comments; descriptive names are hypotheses. docs/NATIVE_MESH_TEXTURE_FIELD_CJ.md; reports/native_mesh_texture_field_cj.json. Complete unwind or dispatch handler; support evidence only."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00cc2e20\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": "{\"success\": true, \"program\": \"battlestationspacific.exe\", \"message\": \"Program saved successfully\"}"
+    }
+  ],
+  "saved": true,
+  "exports_refreshed": true
+}
