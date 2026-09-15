@@ -386,7 +386,7 @@ float pilot_heading_diff_0099d0a0(const PilotHeadingDiffInputs& in) {
     // 0099D0E9: below 0.1 the roll-out sweep is not worth computing and the
     // function answers with the request negated. 00D7A3A0 is the float 0.1
     // widened to a double.
-    if (0.1 > static_cast<double>(magnitude)) {
+    if (static_cast<double>(0.1f) > static_cast<double>(magnitude)) {
         return -w;                                  // 0099D0F5-0099D0FF, FCHS
     }
 
@@ -417,13 +417,23 @@ float pilot_heading_diff_0099d0a0(const PilotHeadingDiffInputs& in) {
     // 0099D25B-0099D2AB: the turn rate the airframe holds at that bank, summed
     // over its turn-roll, elevator, sideslip-yaw and a constant yaw floor. The
     // 0.8 at 0099D2A3 is a double.
+    // CORRECTED. The first term takes cos of the PITCH angle, not of the roll.
+    // 0099D255's POP EDI shifts every later [ESP+n] by four, so 0099D256's
+    // [ESP+0x10] is the slot 0099D22E wrote - cos(pitch) - and not the one
+    // 0099D224 wrote. Reading the literal offset across a POP is the trap this
+    // project has tools and memory entries about, and it still caught me here.
+    // Only the pitch COMMAND enters linearly; both trig terms below are angles.
     const float cos_pitch = std::cos(in.pitch_angle);
     const float cos_bank = std::cos(clamped);
-    float turn_rate = in.turn_roll_spd * cos_bank;
+    float turn_rate = in.turn_roll_spd * cos_pitch;
     turn_rate += in.pitch_spd * pitch_command;
     turn_rate += in.yaw_spd * in.slide_ratio * cos_pitch * cos_bank;
+    // 00CE3D40 is 3FE99999A0000000h - the exact widening of the FLOAT 0.8f, not
+    // the nearest double to 0.8. Same for the 0.1 threshold above (00D7A3A0).
+    // Writing the decimal literal loses bit-identity.
     turn_rate = static_cast<float>(static_cast<double>(turn_rate) +
-                                   0.8 * static_cast<double>(in.yaw_spd));
+                                   static_cast<double>(0.8f) *
+                                       static_cast<double>(in.yaw_spd));
 
     // 0099D2AF-0099D2BD, then the sign from the ORIGINAL argument at 0099D244.
     const float sweep = turn_rate * std::sin(clamped) * roll_out_time;
