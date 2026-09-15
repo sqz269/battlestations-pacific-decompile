@@ -92,8 +92,25 @@ Native B1D910 SHA256:
 
 ## Validation status
 
-Source and draft evidence are prepared for primary review. The single clean
-Win32 build, verified seed input, generated object and existing CTests are
-pending. No new test, native fixture, queue/shadow execution or game validation
-has been performed. New C++ ABI, raw-provider exception restrictions, native
-FH3/SEH and hardware-fault boundaries remain explicit.
+Primary source review accepted the exact source and raw x86 read helper.
+The canonical live call verifier checked all four numeric rows, with zero
+failures. All eight native seed spans matched the installed image.
+
+One clean MSVC Win32 build passed at exact commit
+`d0481c6812af58a399d5759c33c0a8492346ef64`. Its 2,633 tracked build inputs plus
+the verified seed header (2,634 total) stayed unchanged; HEAD and tracked tree
+were unchanged/clean before and after. Both existing CTests passed:
+`reconstructed_math` and `native_math_differential`. They are existing math
+checks, not execution coverage of these preparation entries. No compiler or
+linker warnings/errors were reported.
+
+Retained `local/ec-final-build-stamp.json` pins all inputs, four libraries,
+the exact1911-byte object and `local/ec-final-build.log`. Object SHA256:
+`d8f4f8bc9970284ae3e9acb09cd988dfcf4218bca85e3decce9009acfe70be70`.
+Final generated schedule/byte review is reserved for primary integration; this
+worker does not claim completed generated-body identity review.
+
+No new test, native fixture, queue/shadow execution or game validation was
+performed. New C++ ABI, raw-provider exception restrictions, native FH3/SEH and
+hardware-fault boundaries remain explicit. Final documentation/report changes
+only record validation; the tested source and build artifacts remain frozen.

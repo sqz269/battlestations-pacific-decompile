@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "packet": "orch3_native_render_command_preparation_ec",
-  "status": "source_complete_primary_review_and_single_build_pending",
+  "status": "complete_source_primary_reviewed_exact_single_win32_build_and_two_existing_ctests_passed",
   "base_commit": "e5306c0408443046433942f5827a3915e1f792db",
   "normal_body_count": 2,
   "normal_body_bytes": 78,
@@ -260,12 +260,59 @@
     "overlap": "Interleaved metadata permits actual alias propagation. Raw resize and final memmove support valid header/buffer overlap without upfront snapshots. BF7680 original name remains _memcpy but body handles backward overlap."
   },
   "validation": {
-    "primary_source_review": "Accepted at64df24fe, source866357004ff1cee4058b8be6ccf2a36583b72c66d35d7d52cdf7819355c5205b/headerf9d8315d474faf725493ab57827bccac911befc4b568267b1dadded2fa6a4bc0; source remains unchanged.",
-    "source_commit": null,
-    "build": "pending",
-    "verified_seeds": "pending after primary acceptance",
-    "existing_ctests": "pending single Win32 build",
-    "generated_object": "pending",
+    "primary_source_review": "Accepted exact source/helper/header/native schedules at64df24fe; verified metadata-only descendant d0481c6812af58a399d5759c33c0a8492346ef64 has identical source/build inputs.",
+    "source_commit": "d0481c6812af58a399d5759c33c0a8492346ef64",
+    "build": {
+      "passed": true,
+      "command": [
+        "C:/Windows/System32/WindowsPowerShell/v1.0/powershell.exe",
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "scripts/build.ps1"
+      ],
+      "count": 1,
+      "manifest": "local/ec-final-build-stamp.json",
+      "manifest_sha256": "06d371cb5870d41c21c2f7b2833674f261534b6d47cbfdf1c9ceca730676d0e4",
+      "log": "local/ec-final-build.log",
+      "log_sha256": "450d6c3c7b7b7b3601a4fa154317e1b89db2c8a943a81fe3effc446eeab154ad",
+      "tracked_build_input_count": 2633,
+      "build_input_count": 2634,
+      "all_build_inputs_unchanged": true,
+      "clean_tree_before_and_after": true,
+      "same_commit_after": true,
+      "head_after": "d0481c6812af58a399d5759c33c0a8492346ef64",
+      "libraries": {
+        "build/win32/Release/bsp_core.lib": "4fa54598b557f94ac3c1506261b570a3d8fc1bd9bf3b4c1e42f1aa26c711ce24",
+        "build/win32/Release/bsp_lua511.lib": "fb20b965a5dd7d2f44568a36dc30c9136d5fda6e0b0201d0bccb19b563b6dd1a",
+        "build/win32/Release/bsp_zlib121.lib": "1b66ef7d5d20ca13b985cbad0e30e12b9612b0b9bc9a3bba2195f306f726c4bb",
+        "build/win32/Release/xlive_stub.lib": "6dfcb5bf13947ffb6883edfde9d189c4c7ae0d702ec8bd81daebf3749e5f1c67"
+      },
+      "compiler_linker_warnings_errors": 0
+    },
+    "verified_seeds": {
+      "matched": 8,
+      "path": "local/ec-seeds/seed_byte_comparison.json",
+      "sha256": "32f6c78b0dd1b73bb1023c82831731b40e88e5e57d023bffda0b872c8cf2d298",
+      "log_sha256": "a28c998abc835df38ca4dd01282c56047b92d0b3c4f0a08272c87fc07e97f4c0"
+    },
+    "existing_ctests": {
+      "passed": 2,
+      "failed": 0,
+      "summary": [
+        "1/2 Test #1: reconstructed_math ...............   Passed    0.04 sec",
+        "2/2 Test #2: native_math_differential .........   Passed    0.04 sec",
+        "100% tests passed, 0 tests failed out of 2"
+      ],
+      "scope": "Existing math tests; not runtime execution of EC preparation entries."
+    },
+    "generated_object": {
+      "path": "build/win32/bsp_core.dir/Release/native_render_command_preparation.obj",
+      "sha256": "d8f4f8bc9970284ae3e9acb09cd988dfcf4218bca85e3decce9009acfe70be70",
+      "bytes": 1911,
+      "review": "Frozen for primary generated schedule/byte review; worker made no generated-body identity claim."
+    },
     "new_tests": 0,
     "native_runtime_fixture": "not run",
     "game_validation": "not run",
@@ -286,7 +333,7 @@
     "Raw context must use same01090AA8/AA4/AA0 cells as command diagnostic construction/destruction. Existing actual command cleanup adapter retains its noexcept returning-getter limit; raw-context getter exceptions propagate.",
     "Original private stack/FH3/SEH/fault/concurrent-memory identity unproved. Valid actual command/header/buffer storage required; wrapping nonzero buffer ranges unsupported.",
     "Caller EH and A8EA20/A8F3B0/B1EB80 job/queue paths are evidence only, no implementation credit.",
-    "No build/test/native fixture/runtime/render/gameplay proof at source commit."
+    "One exact clean Win32 build and both existing math CTests passed; no new tests, EC runtime/native fixture, queue/shadow/renderer or gameplay proof."
   ],
   "native_calls": [
     {
@@ -313,5 +360,6 @@
       "function": "00a8ea20",
       "kind": "direct_call"
     }
-  ]
+  ],
+  "final_metadata_scope": "Documentation/report validation only; tested source and all build inputs remain unchanged."
 }
