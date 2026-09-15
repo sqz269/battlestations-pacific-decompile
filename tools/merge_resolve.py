@@ -103,6 +103,12 @@ def resolve(worktree, path):
         rows = sorted(merged.values(), key=lambda r: int(r['address'], 16))
         (worktree / path).write_text(''.join(json.dumps(r, ensure_ascii=False) + '\n' for r in rows), encoding='utf-8', newline='\n')
         return 'address union'
+    if path.startswith('config/reconstruction/') and path.endswith('.jsonl'):
+        text = union_reconstruction_shard(worktree, path, base, ours, theirs)
+        if text is not None:
+            (worktree / path).write_text(text, encoding='utf-8', newline='\n')
+            return 'reconstruction append union'
+        return None  # refused on purpose; see the docstring
     text = same_spot_insertions(base, ours, theirs)
     if text is not None:
         (worktree / path).write_text(text, encoding='utf-8', newline='')
@@ -112,6 +118,65 @@ def resolve(worktree, path):
         (worktree / path).write_text(text, encoding='utf-8', newline='')
         return 'pure insertions on both sides kept (ours then theirs)'
     return None
+
+
+def union_reconstruction_shard(worktree, path, base, ours, theirs):
+    """Union appended records in a config/reconstruction shard, or refuse.
+
+    Line-level, deliberately not keyed by address the way config/names is. A reconstruction shard
+    legitimately holds several records for one address: main currently has 6322 records over 5564
+    distinct addresses, and 649 (shard, address) groups hold two or more, mostly a fragment beside
+    a function. No field separates them reliably, so an address-keyed union silently drops records.
+
+    Only the safe case is resolved: both sides kept every base line and appended. Anything else is
+    refused so the conflict stays staged for a human, specifically
+      - a base line deleted or rewritten on either side, which is an in-place record edit,
+      - both sides adding records for an address the base did not have, which is two competing
+        reconstructions of the same function,
+      - any line that is not JSON carrying an address.
+    """
+    def rows(text):
+        out = []
+        for line in text.splitlines():
+            line = line.strip()
+            if not line:
+                continue
+            try:
+                record = json.loads(line)
+            except ValueError:
+                return None
+            if not isinstance(record, dict) or 'address' not in record:
+                return None
+            out.append((json.dumps(record, ensure_ascii=False, sort_keys=True), record))
+        return out
+
+    parsed = [rows(t) for t in (base, ours, theirs)]
+    if any(p is None for p in parsed):
+        return None
+    base_rows, our_rows, their_rows = parsed
+    base_keys = {k for k, _ in base_rows}
+    our_keys = {k for k, _ in our_rows}
+    their_keys = {k for k, _ in their_rows}
+    if not base_keys <= our_keys or not base_keys <= their_keys:
+        return None  # a base record was deleted or edited in place on one side
+    our_new = [(k, r) for k, r in our_rows if k not in base_keys]
+    their_new = [(k, r) for k, r in their_rows if k not in base_keys]
+    base_addrs = {r['address'].lower() for _, r in base_rows}
+    # a record both sides added byte for byte is the same finding reached twice, not a conflict
+    agreed = {k for k, _ in our_new} & {k for k, _ in their_new}
+    our_addrs = {r['address'].lower() for k, r in our_new if k not in agreed} - base_addrs
+    their_addrs = {r['address'].lower() for k, r in their_new if k not in agreed} - base_addrs
+    contested = our_addrs & their_addrs
+    if contested:
+        return None  # competing reconstructions of the same new address
+    seen, merged = set(), []
+    for k, r in base_rows + our_new + their_new:
+        if k in seen:
+            continue  # byte-identical duplicate, safe to collapse
+        seen.add(k)
+        merged.append(r)
+    merged.sort(key=lambda r: (int(r['address'], 16), r.get('kind') or '', r.get('name') or ''))
+    return ''.join(json.dumps(r, ensure_ascii=False) + '\n' for r in merged)
 
 
 def keep_both_pure_insertions(worktree, path, base, ours, theirs):
