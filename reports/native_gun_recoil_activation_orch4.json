@@ -1,0 +1,276 @@
+{
+  "packet": "orch4_gun_recoil_c3",
+  "status": "complete_ordinary_source_strict_win32_and_bounded_original_body_fixture_checked",
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "worker_access": "read_only",
+    "definition_repair_owner": "parent orch4_device_body_repairs_b2"
+  },
+  "routines": [
+    {
+      "address": "00730cb0",
+      "end_inclusive": "00730d4a",
+      "bytes": 155,
+      "name": "BSP_GunClass_RunRecoilLoopAndLoadModelResource",
+      "source": "src/native_gun_recoil_activation.cpp",
+      "interface": "finalise_native_gun_class_00730cb0",
+      "coverage": "complete ordinary body, every native FP opcode/branch/store, reachableD47 cleanup tail, conditional existing879590 source call and byte1 return",
+      "original_abi": "ECX actual class; no stacked arguments; AL1; RET",
+      "source_abi": "explicit MSVC Win32 C++ interface with borrowed canonical context and caller-owned acquired frame"
+    }
+  ],
+  "calls": [
+    {
+      "function": "00730cb0",
+      "address": "00730d3c",
+      "native": "00879590",
+      "coverage": "existing complete canonical ordinary source reused unchanged",
+      "arguments": "ECX actual class; one stacked DWORD0, calleeRET4",
+      "source": "load_native_damageable_class_model_00879590(actual_class,0,context,acquired)"
+    }
+  ],
+  "vtable_references": [
+    "00ce4548",
+    "00ce4574",
+    "00ce45b0",
+    "00ce45f4",
+    "00ce4628",
+    "00ce465c",
+    "00ce4690",
+    "00ce46d4"
+  ],
+  "caller_contract": {
+    "function": "00443490",
+    "site": "004434b4",
+    "evidence": "full previously audited listing reloads currentvtable+14 afterslot10; ECXclass and no stacked argument"
+  },
+  "field_producer": {
+    "function": "007327b0",
+    "fields": {
+      "a8": "BarrelRecoil.BackSpeedStart",
+      "ac": "BarrelRecoil.BackSpeedFact",
+      "b0": "BarrelRecoil.DistMax"
+    }
+  },
+  "implementation": {
+    "floating_prefix": "private naked fastcall helper has the exact SSE/x87 schedule and all native branches; integer-only wrapper composes existing model body",
+    "constants": "local copies of verifiedpositivezero bits00d7a218/00d7a258, not live-address bindings",
+    "sse_gate": "MOVSS,UCOMISS,LAHF,TEST AH44,JNP: skip only ordered zero, not unordered",
+    "initial_cleanup": "FCOMI;JA at730cee targets reachableFSTP ST2 at730d47; JMP730d49 backto730d30",
+    "loop": "exact FXCH/FLD/FMULP/FADDP/FSTP32 schedule; JBE includes unordered; no iterationlimit",
+    "status": "no FNINIT, statusclear, controlword change or MXCSR write in production body",
+    "ownership": "no new class writes or frame ownership; model frame untouched when+38zero, existingcanonical fresh/samecontext and failure rules otherwise",
+    "model_call": "full879590 receives original actualclass and enemy0; it may publish+50, while wrapper never writes+44"
+  },
+  "validation": {
+    "build": {
+      "command": "./scripts/build.ps1",
+      "log": "local/gun_recoil_c3/build.txt",
+      "configuration": "Release MSVCWin32 /W4 /WX /fp:strict",
+      "status": "passed",
+      "existing_ctests": [
+        "reconstructed_math",
+        "tool_tests"
+      ],
+      "log_sha256": "823d98d5aa08d2dcd5cef99d05032633891bb302cdb3f68b7ae1737d29924a0a"
+    },
+    "call_gate": {
+      "command": "python tools/verify_report_calls.py reports/native_gun_recoil_activation_orch4.json",
+      "status": "passed:1 directcall row,0 failures"
+    },
+    "fixture": {
+      "command": "python local/gun_recoil_c3/run_probe.py",
+      "status": "passed",
+      "paired_cases": 9,
+      "outcomes": [
+        {
+          "case": "zero-skips-signaling-inputs",
+          "pair_equal": true,
+          "class_unchanged": true,
+          "exception": 0,
+          "x87_status": 14336,
+          "x87_control": 895,
+          "mxcsr": 8064,
+          "model_phase": 0
+        },
+        {
+          "case": "negative-zero-load-gate",
+          "pair_equal": true,
+          "class_unchanged": true,
+          "exception": 0,
+          "x87_status": 14336,
+          "x87_control": 895,
+          "mxcsr": 8064,
+          "model_phase": 2
+        },
+        {
+          "case": "forward-cleanup-tail",
+          "pair_equal": true,
+          "class_unchanged": true,
+          "exception": 0,
+          "x87_status": 14336,
+          "x87_control": 895,
+          "mxcsr": 8064,
+          "model_phase": 0
+        },
+        {
+          "case": "two-loop-equality",
+          "pair_equal": true,
+          "class_unchanged": true,
+          "exception": 0,
+          "x87_status": 14336,
+          "x87_control": 895,
+          "mxcsr": 8064,
+          "model_phase": 2
+        },
+        {
+          "case": "fraction-pc24",
+          "pair_equal": true,
+          "class_unchanged": true,
+          "exception": 0,
+          "x87_status": 14368,
+          "x87_control": 127,
+          "mxcsr": 8064,
+          "model_phase": 0
+        },
+        {
+          "case": "fraction-pc53-down",
+          "pair_equal": true,
+          "class_unchanged": true,
+          "exception": 0,
+          "x87_status": 14368,
+          "x87_control": 1663,
+          "mxcsr": 16256,
+          "model_phase": 2
+        },
+        {
+          "case": "fraction-pc64-up",
+          "pair_equal": true,
+          "class_unchanged": true,
+          "exception": 0,
+          "x87_status": 14368,
+          "x87_control": 2943,
+          "mxcsr": 24448,
+          "model_phase": 0
+        },
+        {
+          "case": "sse-signaling-invalid",
+          "pair_equal": true,
+          "class_unchanged": true,
+          "exception": 3221225616,
+          "x87_status": 14336,
+          "x87_control": 895,
+          "mxcsr": 7937,
+          "model_phase": 0
+        },
+        {
+          "case": "x87-unordered-invalid",
+          "pair_equal": true,
+          "class_unchanged": true,
+          "exception": 3221225616,
+          "x87_status": 41089,
+          "x87_control": 894,
+          "mxcsr": 8064,
+          "model_phase": 0
+        }
+      ],
+      "checks": [
+        "return byte1 for ordinary completion",
+        "full unchanged class image on guardedmodel path",
+        "x87status/control andMXCSR",
+        "one preserved existingx87sentinel on ordinary return",
+        "model acquiredfresh vscomplete gate",
+        "matching two hardwareinvalid exceptioncodes andselected savedFPcontext"
+      ],
+      "original_relocations": [
+        "original+0e -> float positivezero",
+        "original+2c -> double positivezero",
+        "original+8d -> genuine canonical879590 adapter"
+      ],
+      "model_boundary": "shared canonical00879590 with nonzero name and already populated model; all unused external methods abort if reached",
+      "manifest": "local/gun_recoil_c3/manifest.json",
+      "manifest_sha256": "0594210441263dccd48ff2c737cbee58d2d354fdd4802229008537ff871b693e",
+      "limits": [
+        "No fresh model/resource parsing path exercised",
+        "Original hardware exceptions caught by fixture only; source does not implement SEH translation",
+        "No masked unordered nontermination run",
+        "No game/ABI/FH3 integration claim"
+      ]
+    },
+    "original_spans": [
+      {
+        "address": "00730cb0",
+        "bytes": 155,
+        "sha256": "261545cf07e0347b5b75a63ada603fbc90a91716277ecadfab53e431fd79fbbb",
+        "live_disk_match": true
+      },
+      {
+        "address": "00d7a218",
+        "bytes": 4,
+        "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+        "live_disk_match": true
+      },
+      {
+        "address": "00d7a258",
+        "bytes": 8,
+        "sha256": "af5570f5a1810b7af78caf4bc70a660f0df51e42baf91d4de5b2328de0e83dfc",
+        "live_disk_match": true
+      }
+    ],
+    "inputs": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915-gun-recoil-c3\\src\\native_gun_recoil_activation.cpp",
+        "sha256": "ccc0bf464f53e7a57cdbf3f44b708a19acdb9e20b02475ad7fc85ec978abce37"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915-gun-recoil-c3\\include\\bsp\\native_gun_recoil_activation.hpp",
+        "sha256": "5bc64aaad2a27b5b52946f95ef47a73553782ba73a4bb5302c3e6be91fe218e0"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915-gun-recoil-c3\\src\\native_damageable_class_model.cpp",
+        "sha256": "46d5e4fc52e1aac77f96a14d68dda84848e49d1c9311f503ec3f0f3381f6f7ae"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915-gun-recoil-c3\\build\\win32\\Release\\bsp_core.lib",
+        "sha256": "13aee33ba9c2497fb579187f75e4d6975998bdda9369785c0d20698886949128"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915-gun-recoil-c3\\build\\win32\\Release\\bsp_lua511.lib",
+        "sha256": "b41d582f1437c89f1909754af9bc70de52ab5c0770c94ef780cd0a36e010dac6"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915-gun-recoil-c3\\build\\win32\\Release\\bsp_zlib121.lib",
+        "sha256": "e41df7616219f30773a8e6ae03d2cb80b9d36337be069e64262cc53d935ae858"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915-gun-recoil-c3\\local\\gun_recoil_c3\\probe.cpp",
+        "sha256": "a850e12ad304fc65d5224a249607271af4f789d871d1acc8879660e92b92c21b"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915-gun-recoil-c3\\local\\gun_recoil_c3\\original.hpp",
+        "sha256": "fbb4ce6b37416a1b46d1f2124755b6d50bc07814d51b871ac4988be40fb2e784"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915-gun-recoil-c3\\local\\gun_recoil_c3\\probe.exe",
+        "sha256": "aca1c642fdf68cad40e7f6743b7da1fe50f378dd5d2e94fa4503b9d463247531"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915-gun-recoil-c3\\local\\gun_recoil_c3\\probe.map",
+        "sha256": "f745be4aa1a432ffb4e96fea2216993433bc8218d342d18d071cdacd4dab17af"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915-gun-recoil-c3\\local\\gun_recoil_c3\\outcomes.jsonl",
+        "sha256": "ff0247eb2851002cac1a6b50e8bcb6b8be3a04158392147779be7662f5dae36a"
+      }
+    ]
+  },
+  "uncertainty": [
+    "No original callable ABI or FH3/SEH recovery equivalence",
+    "One sentinel and selected floatingcontext do not establish full original register/private stack identity",
+    "Fresh model/resource creation and parsing were not exercised; existingmodel guard only",
+    "Maskedunordered nontermination not dynamically exercised",
+    "Native devicefactory/slot10/bulletfamily closure and game/executable integration remain open"
+  ],
+  "documentation": "docs/NATIVE_GUN_RECOIL_ACTIVATION_ORCH4.md"
+}
