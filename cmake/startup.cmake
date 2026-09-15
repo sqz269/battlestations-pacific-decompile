@@ -1036,3 +1036,5 @@ cmake_language(DEFER CALL include "${CMAKE_SOURCE_DIR}/cmake/native_data_placeme
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_skin_model_bindings.cpp)
 
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_node_animator_lifetime.cpp)
+
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_postprocess_pose.cpp)
