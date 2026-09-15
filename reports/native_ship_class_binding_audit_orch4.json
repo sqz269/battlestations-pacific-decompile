@@ -1,0 +1,2319 @@
+{
+  "packet": "orch4_ship_binding_20260915",
+  "main_function": "0082fe30",
+  "status": "complete_main_body_evidence_audit_not_reconstructed",
+  "utc_date": "2026-09-15",
+  "project": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "verification": "bsp.py live facade verifies project/program before analysis queries; retained flow-properties response records before/after identity"
+  },
+  "ownership": {
+    "addresses": [
+      "0082fe30"
+    ],
+    "files": [
+      "docs/NATIVE_SHIP_CLASS_BINDING_AUDIT_ORCH4.md",
+      "reports/native_ship_class_binding_audit_orch4.json"
+    ],
+    "ghidra_mutations_by_worker": false,
+    "source_changes": false,
+    "ledger_changes": false,
+    "name_promotions": []
+  },
+  "coverage": {
+    "body": "0082fe30-00831801",
+    "enclosing_bytes": 6610,
+    "listed_instruction_count": 1732,
+    "call_sites": 111,
+    "unique_immediate_callees": 22,
+    "read_instruction_ranges": [
+      "0082fe30-00831059",
+      "00831060-00831801"
+    ],
+    "unread_executable_ranges": [],
+    "excluded_padding": "0083105a-0083105f: skipped by 00831058 JMP 00831060; not treated as executable instructions",
+    "transitive_closure": "partial; unread callee contracts explicitly retained"
+  },
+  "routines": [
+    {
+      "entry": "0082fe30",
+      "coverage": "complete listed executable body; dependency contracts incomplete",
+      "native_span": "0082fe30-00831801"
+    },
+    {
+      "entry": "0082d700",
+      "native_span": "0082d700-0082d7d1",
+      "coverage": "complete",
+      "contract": "ECX actual class, RET. Append model+54 pointer list to class+6bc using existing 71b2c0 and validation."
+    },
+    {
+      "entry": "00829180",
+      "native_span": "00829180-00829203",
+      "coverage": "complete after parent repair independently verified",
+      "contract": "ECX raw {data,count,capacity}, signed requested capacity stacked, RET4; clamp >=1, grow only, count unchanged, ordered x87 first three words plus integer fourth word."
+    },
+    {
+      "entry": "0082e990",
+      "native_span": "0082e990-0082ea6f",
+      "coverage": "complete after parent repair independently verified",
+      "contract": "ECX 10h-stride outer vector, count plus by-value 10h vector prototype, RET14. Resize dispatch and prototype cleanup; nested insert/erase contracts unread."
+    },
+    {
+      "entry": "0082ca40",
+      "native_span": "0082ca40-0082cac2",
+      "coverage": "complete",
+      "contract": "ECX 40h-stride vector, value pointer stacked, RET4. One-element append wrapper; construction/insertion bodies unread."
+    },
+    {
+      "entry": "0082c560",
+      "native_span": "0082c560-0082c60b",
+      "coverage": "complete",
+      "contract": "ECX 40h-stride vector, count plus by-value 40h matrix, RET44. Grow/shrink dispatch, nested insert/copy contract unread."
+    },
+    {
+      "entry": "0082f4e0",
+      "native_span": "0082f4e0-0082f55a",
+      "coverage": "complete",
+      "contract": "ECX 50h-stride vector, output and two owner/position iterator pairs, RET14. Range operation then per-record 49f910 and end publication. 82eab0/49f910 contracts unread."
+    },
+    {
+      "entry": "0082e1f0",
+      "native_span": "0082e1f0-0082e275",
+      "coverage": "complete",
+      "contract": "ECX 1ch destination, EAX same destination, RET. Two tree headers at +0 and +c; allocators 4858d0/443e20 unread."
+    },
+    {
+      "entry": "0082f8e0",
+      "native_span": "0082f8e0-0082f9fe",
+      "coverage": "complete",
+      "contract": "ECX 1ch-stride vector, count plus by-value 1ch record, RET20. Resize dispatch then 82e280 prototype cleanup; complete native cleanup remains blocked."
+    },
+    {
+      "entry": "004d1510",
+      "native_span": "004d1510-004d15e4",
+      "coverage": "complete",
+      "contract": "ECX 0ch-stride vector, count plus by-value 0ch prototype, RET10. Resize dispatch; 41fa40/4c82b0 unread."
+    },
+    {
+      "entry": "004215d0",
+      "native_span": "004215d0-0042166e",
+      "coverage": "complete",
+      "contract": "ECX 0ch-stride vector, value pointer stacked, RET4. Append dispatch; 41c7b0/4206a0 unread."
+    },
+    {
+      "entry": "004f9b30",
+      "native_span": "004f9b30-004f9ba8",
+      "coverage": "complete",
+      "contract": "ECX output, EDX first operand, stacked second operand, RET4. Ordered x87 cross product first x second."
+    },
+    {
+      "entry": "004072d0",
+      "native_span": "004072d0-004072f5",
+      "coverage": "complete",
+      "contract": "ECX raw SBO string, RET. Free heap storage when capacity>=10h, reset size/capacity/first byte."
+    },
+    {
+      "entry": "00718870",
+      "native_span": "00718870-0071889e",
+      "coverage": "complete",
+      "contract": "ECX resource, stacked name/index, RET8. Invoke 717f20, then 718000 only when nonzero."
+    },
+    {
+      "entry": "0071b2c0",
+      "native_span": "0071b2c0-0071b348",
+      "coverage": "complete",
+      "contract": "ECX native pointer vector, output/owner/position/value pointer, RET10. Reuse canonical type54 insertion interface."
+    },
+    {
+      "entry": "0082b220",
+      "native_span": "0082b220-0082b263",
+      "coverage": "complete",
+      "contract": "ECX matrix vector; iterator-range wrapper delegates copy to 82a1b0, publishes returned end."
+    },
+    {
+      "entry": "0082f3c0",
+      "native_span": "0082f3c0-0082f43a",
+      "coverage": "complete",
+      "contract": "ECX Idle vector; range wrapper delegates copy to 82e600, calls 82e280 for trailing 1ch records, publishes end."
+    },
+    {
+      "entry": "0082a1b0",
+      "native_span": "0082a1b0-0082a1f8",
+      "coverage": "complete",
+      "contract": "cdecl three stacked pointers; six-argument 828c30 call, ADD ESP,18h. Returns adjusted 40h-stride pointer; 828c30 unread."
+    },
+    {
+      "entry": "0082e600",
+      "native_span": "0082e600-0082e65d",
+      "coverage": "complete",
+      "contract": "cdecl adapter; six-argument 82dfc0 call, ADD ESP,18h. Returns adjusted 1ch-stride pointer; 82dfc0 unread."
+    },
+    {
+      "entry": "0082e280",
+      "native_span": "0082e280-0082e2c7",
+      "coverage": "partial: live body ends after free; candidate unowned continuation 0082e2c8-0082e311",
+      "contract": "Live prefix performs first tree cleanup/free. Full destructor contract not established with current function ownership."
+    }
+  ],
+  "abi": {
+    "entry": "ECX actual class; no stacked inputs; RET at 00831801",
+    "steady_esp": "entry ESP minus 0x128",
+    "register_provenance": "whole listing read: EDI class until ADD EDI,6fc at 831724, then EDI=ESP at 8317d1; EBX/EBP repeatedly reassigned",
+    "by_value_arguments": [
+      {
+        "callee": "004d1510",
+        "stack_bytes": 16,
+        "shape": "count plus 12-byte prototype",
+        "cleanup": "004d157c and 004d15e2 RET 10h",
+        "sites": [
+          "0082ffee",
+          "00830a02"
+        ],
+        "note": "caller SUB ESP,0ch leaves prototype bytes uninitialized"
+      },
+      {
+        "callee": "0082e990",
+        "stack_bytes": 20,
+        "shape": "count plus 16-byte vector prototype",
+        "cleanup": "0082ea6d RET 14h",
+        "sites": [
+          "0083136a"
+        ],
+        "note": "prototype words +4,+8,+c zero, leading word untouched"
+      },
+      {
+        "callee": "0082f8e0",
+        "stack_bytes": 32,
+        "shape": "count plus 28-byte constructed Idle prototype",
+        "cleanup": "0082f9fc RET 20h",
+        "sites": [
+          "0083176e"
+        ]
+      },
+      {
+        "callee": "0082c560",
+        "stack_bytes": 68,
+        "shape": "count plus 64-byte matrix copy",
+        "cleanup": "0082c5b2 and 0082c609 RET 44h",
+        "sites": [
+          "008317e4"
+        ],
+        "copy": "008317ce-008317df SUB ESP,40h / ECX=10h / REP MOVSD"
+      }
+    ]
+  },
+  "direct_calls": [
+    {
+      "address": "0082fe51",
+      "native": "0095f500",
+      "function": "0082fe30",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "0082fe58",
+      "native": "0082d700",
+      "function": "0082fe30",
+      "contract": "ECX actual class, RET. Append model+54 pointer list to class+6bc using existing 71b2c0 and validation.",
+      "callee_body_coverage": "complete"
+    },
+    {
+      "address": "0082fe7b",
+      "native": "00408720",
+      "function": "0082fe30",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit",
+      "source_reference": [
+        "include/bsp/native_legacy_sbo_string.hpp",
+        "native_legacy_sbo_string_assign_counted_00408720"
+      ]
+    },
+    {
+      "address": "0082fea4",
+      "native": "00408720",
+      "function": "0082fe30",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit",
+      "source_reference": [
+        "include/bsp/native_legacy_sbo_string.hpp",
+        "native_legacy_sbo_string_assign_counted_00408720"
+      ]
+    },
+    {
+      "address": "0082feba",
+      "native": "00718000",
+      "function": "0082fe30",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit",
+      "source_reference": [
+        "src/native_game_resource_named_groups.cpp",
+        "find_native_game_group_00718000"
+      ]
+    },
+    {
+      "address": "0082feca",
+      "native": "00718000",
+      "function": "0082fe30",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit",
+      "source_reference": [
+        "src/native_game_resource_named_groups.cpp",
+        "find_native_game_group_00718000"
+      ]
+    },
+    {
+      "address": "0082fee3",
+      "native": "0082d040",
+      "function": "0082fe30",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "0082fefb",
+      "native": "00bf65ac",
+      "function": "0082fe30",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "0082ff2c",
+      "native": "00bf65ac",
+      "function": "0082fe30",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "0082ff57",
+      "native": "00408720",
+      "function": "0082fe30",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit",
+      "source_reference": [
+        "include/bsp/native_legacy_sbo_string.hpp",
+        "native_legacy_sbo_string_assign_counted_00408720"
+      ]
+    },
+    {
+      "address": "0082ff70",
+      "native": "00718870",
+      "function": "0082fe30",
+      "contract": "ECX resource, stacked name/index, RET8. Invoke 717f20, then 718000 only when nonzero.",
+      "callee_body_coverage": "complete",
+      "source_reference": [
+        "src/native_game_resource_named_groups.cpp",
+        "lookup_native_game_group_00718870"
+      ]
+    },
+    {
+      "address": "0082ff91",
+      "native": "00bf65ac",
+      "function": "0082fe30",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "0082ffee",
+      "native": "004d1510",
+      "function": "0082fe30",
+      "contract": "ECX 0ch-stride vector, count plus by-value 0ch prototype, RET10. Resize dispatch; 41fa40/4c82b0 unread.",
+      "callee_body_coverage": "complete"
+    },
+    {
+      "address": "00830023",
+      "native": "00bf6713",
+      "function": "0082fe30",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "0083006f",
+      "native": "00bf6713",
+      "function": "0082fe30",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "008300d5",
+      "native": "00408720",
+      "function": "0082fe30",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit",
+      "source_reference": [
+        "include/bsp/native_legacy_sbo_string.hpp",
+        "native_legacy_sbo_string_assign_counted_00408720"
+      ]
+    },
+    {
+      "address": "008300ef",
+      "native": "00718870",
+      "function": "0082fe30",
+      "contract": "ECX resource, stacked name/index, RET8. Invoke 717f20, then 718000 only when nonzero.",
+      "callee_body_coverage": "complete",
+      "source_reference": [
+        "src/native_game_resource_named_groups.cpp",
+        "lookup_native_game_group_00718870"
+      ]
+    },
+    {
+      "address": "00830110",
+      "native": "00bf65ac",
+      "function": "0082fe30",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "00830148",
+      "native": "00408720",
+      "function": "0082fe30",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit",
+      "source_reference": [
+        "include/bsp/native_legacy_sbo_string.hpp",
+        "native_legacy_sbo_string_assign_counted_00408720"
+      ]
+    },
+    {
+      "address": "00830162",
+      "native": "00718870",
+      "function": "0082fe30",
+      "contract": "ECX resource, stacked name/index, RET8. Invoke 717f20, then 718000 only when nonzero.",
+      "callee_body_coverage": "complete",
+      "source_reference": [
+        "src/native_game_resource_named_groups.cpp",
+        "lookup_native_game_group_00718870"
+      ]
+    },
+    {
+      "address": "00830180",
+      "native": "00bf65ac",
+      "function": "0082fe30",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "008302a3",
+      "native": "00bf6713",
+      "function": "0082fe30",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "008302ef",
+      "native": "00bf6713",
+      "function": "0082fe30",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "00830335",
+      "native": "00bf6713",
+      "function": "0082fe30",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "008303b5",
+      "native": "00bf6713",
+      "function": "0082fe30",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "008303fb",
+      "native": "00bf6713",
+      "function": "0082fe30",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "00830475",
+      "native": "00bf6713",
+      "function": "0082fe30",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "008304bb",
+      "native": "00bf6713",
+      "function": "0082fe30",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "00830524",
+      "native": "004f9b30",
+      "function": "0082fe30",
+      "contract": "ECX output, EDX first operand, stacked second operand, RET4. Ordered x87 cross product first x second.",
+      "callee_body_coverage": "complete",
+      "source_reference": [
+        "src/system_camera_axes.cpp",
+        "camera_vector_cross_004f9b30"
+      ]
+    },
+    {
+      "address": "00830551",
+      "native": "0085dc80",
+      "function": "0082fe30",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit",
+      "source_reference": [
+        "src/plane_pose_commit.cpp",
+        "orthonormalize_native_pose_matrix_0085dc80"
+      ]
+    },
+    {
+      "address": "0083057c",
+      "native": "00bf6713",
+      "function": "0082fe30",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "008305c8",
+      "native": "00bf6713",
+      "function": "0082fe30",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "0083060e",
+      "native": "00bf6713",
+      "function": "0082fe30",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "0083068e",
+      "native": "00bf6713",
+      "function": "0082fe30",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "008306d4",
+      "native": "00bf6713",
+      "function": "0082fe30",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "0083074e",
+      "native": "00bf6713",
+      "function": "0082fe30",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "00830794",
+      "native": "00bf6713",
+      "function": "0082fe30",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "008307fd",
+      "native": "004f9b30",
+      "function": "0082fe30",
+      "contract": "ECX output, EDX first operand, stacked second operand, RET4. Ordered x87 cross product first x second.",
+      "callee_body_coverage": "complete",
+      "source_reference": [
+        "src/system_camera_axes.cpp",
+        "camera_vector_cross_004f9b30"
+      ]
+    },
+    {
+      "address": "0083082e",
+      "native": "0085dc80",
+      "function": "0082fe30",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit",
+      "source_reference": [
+        "src/plane_pose_commit.cpp",
+        "orthonormalize_native_pose_matrix_0085dc80"
+      ]
+    },
+    {
+      "address": "00830851",
+      "native": "00408720",
+      "function": "0082fe30",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit",
+      "source_reference": [
+        "include/bsp/native_legacy_sbo_string.hpp",
+        "native_legacy_sbo_string_assign_counted_00408720"
+      ]
+    },
+    {
+      "address": "0083086a",
+      "native": "00718870",
+      "function": "0082fe30",
+      "contract": "ECX resource, stacked name/index, RET8. Invoke 717f20, then 718000 only when nonzero.",
+      "callee_body_coverage": "complete",
+      "source_reference": [
+        "src/native_game_resource_named_groups.cpp",
+        "lookup_native_game_group_00718870"
+      ]
+    },
+    {
+      "address": "00830888",
+      "native": "00bf65ac",
+      "function": "0082fe30",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "008308bb",
+      "native": "00bf6713",
+      "function": "0082fe30",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "0083090a",
+      "native": "00bf6713",
+      "function": "0082fe30",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "00830954",
+      "native": "00408720",
+      "function": "0082fe30",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit",
+      "source_reference": [
+        "include/bsp/native_legacy_sbo_string.hpp",
+        "native_legacy_sbo_string_assign_counted_00408720"
+      ]
+    },
+    {
+      "address": "0083096d",
+      "native": "00718870",
+      "function": "0082fe30",
+      "contract": "ECX resource, stacked name/index, RET8. Invoke 717f20, then 718000 only when nonzero.",
+      "callee_body_coverage": "complete",
+      "source_reference": [
+        "src/native_game_resource_named_groups.cpp",
+        "lookup_native_game_group_00718870"
+      ]
+    },
+    {
+      "address": "0083098b",
+      "native": "00bf65ac",
+      "function": "0082fe30",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "008309c6",
+      "native": "00bf6713",
+      "function": "0082fe30",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "00830a02",
+      "native": "004d1510",
+      "function": "0082fe30",
+      "contract": "ECX 0ch-stride vector, count plus by-value 0ch prototype, RET10. Resize dispatch; 41fa40/4c82b0 unread.",
+      "callee_body_coverage": "complete"
+    },
+    {
+      "address": "00830a4f",
+      "native": "00bf6713",
+      "function": "0082fe30",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "00830ab8",
+      "native": "00bf6713",
+      "function": "0082fe30",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "00830b04",
+      "native": "00bf6713",
+      "function": "0082fe30",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "00830b50",
+      "native": "00bf6713",
+      "function": "0082fe30",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "00830b9c",
+      "native": "00bf6713",
+      "function": "0082fe30",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "00830be8",
+      "native": "00bf6713",
+      "function": "0082fe30",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "00830c34",
+      "native": "00bf6713",
+      "function": "0082fe30",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "00830c80",
+      "native": "00bf6713",
+      "function": "0082fe30",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "00830ccc",
+      "native": "00bf6713",
+      "function": "0082fe30",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "00830d15",
+      "native": "00bf6713",
+      "function": "0082fe30",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "00830d5e",
+      "native": "00bf6713",
+      "function": "0082fe30",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "00830da7",
+      "native": "00bf6713",
+      "function": "0082fe30",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "00830e0a",
+      "native": "00408720",
+      "function": "0082fe30",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit",
+      "source_reference": [
+        "include/bsp/native_legacy_sbo_string.hpp",
+        "native_legacy_sbo_string_assign_counted_00408720"
+      ]
+    },
+    {
+      "address": "00830e23",
+      "native": "00718870",
+      "function": "0082fe30",
+      "contract": "ECX resource, stacked name/index, RET8. Invoke 717f20, then 718000 only when nonzero.",
+      "callee_body_coverage": "complete",
+      "source_reference": [
+        "src/native_game_resource_named_groups.cpp",
+        "lookup_native_game_group_00718870"
+      ]
+    },
+    {
+      "address": "00830e41",
+      "native": "00bf65ac",
+      "function": "0082fe30",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "00830e7c",
+      "native": "00bf6713",
+      "function": "0082fe30",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "00830ecb",
+      "native": "00bf6713",
+      "function": "0082fe30",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "00830f52",
+      "native": "00408720",
+      "function": "0082fe30",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit",
+      "source_reference": [
+        "include/bsp/native_legacy_sbo_string.hpp",
+        "native_legacy_sbo_string_assign_counted_00408720"
+      ]
+    },
+    {
+      "address": "00830f67",
+      "native": "00718870",
+      "function": "0082fe30",
+      "contract": "ECX resource, stacked name/index, RET8. Invoke 717f20, then 718000 only when nonzero.",
+      "callee_body_coverage": "complete",
+      "source_reference": [
+        "src/native_game_resource_named_groups.cpp",
+        "lookup_native_game_group_00718870"
+      ]
+    },
+    {
+      "address": "00830f85",
+      "native": "00bf65ac",
+      "function": "0082fe30",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "00830fc8",
+      "native": "00bf6713",
+      "function": "0082fe30",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "00831013",
+      "native": "00829180",
+      "function": "0082fe30",
+      "contract": "ECX raw {data,count,capacity}, signed requested capacity stacked, RET4; clamp >=1, grow only, count unchanged, ordered x87 first three words plus integer fourth word.",
+      "callee_body_coverage": "complete after parent repair independently verified"
+    },
+    {
+      "address": "0083107c",
+      "native": "00408720",
+      "function": "0082fe30",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit",
+      "source_reference": [
+        "include/bsp/native_legacy_sbo_string.hpp",
+        "native_legacy_sbo_string_assign_counted_00408720"
+      ]
+    },
+    {
+      "address": "00831095",
+      "native": "00718870",
+      "function": "0082fe30",
+      "contract": "ECX resource, stacked name/index, RET8. Invoke 717f20, then 718000 only when nonzero.",
+      "callee_body_coverage": "complete",
+      "source_reference": [
+        "src/native_game_resource_named_groups.cpp",
+        "lookup_native_game_group_00718870"
+      ]
+    },
+    {
+      "address": "008310b3",
+      "native": "00bf65ac",
+      "function": "0082fe30",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "008310f2",
+      "native": "00bf6713",
+      "function": "0082fe30",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "0083113d",
+      "native": "0074d190",
+      "function": "0082fe30",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit",
+      "source_reference": [
+        "src/native_damageable_class_binding.cpp",
+        "reserve_native_class_point_array_0074d190"
+      ]
+    },
+    {
+      "address": "0083119e",
+      "native": "00408720",
+      "function": "0082fe30",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit",
+      "source_reference": [
+        "include/bsp/native_legacy_sbo_string.hpp",
+        "native_legacy_sbo_string_assign_counted_00408720"
+      ]
+    },
+    {
+      "address": "008311b7",
+      "native": "00718870",
+      "function": "0082fe30",
+      "contract": "ECX resource, stacked name/index, RET8. Invoke 717f20, then 718000 only when nonzero.",
+      "callee_body_coverage": "complete",
+      "source_reference": [
+        "src/native_game_resource_named_groups.cpp",
+        "lookup_native_game_group_00718870"
+      ]
+    },
+    {
+      "address": "008311d5",
+      "native": "00bf65ac",
+      "function": "0082fe30",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "00831214",
+      "native": "00bf6713",
+      "function": "0082fe30",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "0083125f",
+      "native": "0074d190",
+      "function": "0082fe30",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit",
+      "source_reference": [
+        "src/native_damageable_class_binding.cpp",
+        "reserve_native_class_point_array_0074d190"
+      ]
+    },
+    {
+      "address": "008312c8",
+      "native": "00408720",
+      "function": "0082fe30",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit",
+      "source_reference": [
+        "include/bsp/native_legacy_sbo_string.hpp",
+        "native_legacy_sbo_string_assign_counted_00408720"
+      ]
+    },
+    {
+      "address": "008312e5",
+      "native": "00718870",
+      "function": "0082fe30",
+      "contract": "ECX resource, stacked name/index, RET8. Invoke 717f20, then 718000 only when nonzero.",
+      "callee_body_coverage": "complete",
+      "source_reference": [
+        "src/native_game_resource_named_groups.cpp",
+        "lookup_native_game_group_00718870"
+      ]
+    },
+    {
+      "address": "00831303",
+      "native": "00bf65ac",
+      "function": "0082fe30",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "0083136a",
+      "native": "0082e990",
+      "function": "0082fe30",
+      "contract": "ECX 10h-stride outer vector, count plus by-value 10h vector prototype, RET14. Resize dispatch and prototype cleanup; nested insert/erase contracts unread.",
+      "callee_body_coverage": "complete after parent repair independently verified"
+    },
+    {
+      "address": "00831377",
+      "native": "00bf6713",
+      "function": "0082fe30",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "0083138d",
+      "native": "00bf6713",
+      "function": "0082fe30",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "0083139a",
+      "native": "00bf6713",
+      "function": "0082fe30",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "008313a3",
+      "native": "004fba10",
+      "function": "0082fe30",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit",
+      "source_reference": [
+        "include/bsp/native_game_resource_named_groups.hpp",
+        "count_native_named_group_points_004fba10"
+      ]
+    },
+    {
+      "address": "008313b8",
+      "native": "00484270",
+      "function": "0082fe30",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit",
+      "source_reference": [
+        "src/native_game_resource_named_groups.cpp",
+        "copy_native_named_group_point_00484270"
+      ]
+    },
+    {
+      "address": "008313c0",
+      "native": "004215d0",
+      "function": "0082fe30",
+      "contract": "ECX 0ch-stride vector, value pointer stacked, RET4. Append dispatch; 41c7b0/4206a0 unread.",
+      "callee_body_coverage": "complete"
+    },
+    {
+      "address": "008313ca",
+      "native": "004fba10",
+      "function": "0082fe30",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit",
+      "source_reference": [
+        "include/bsp/native_game_resource_named_groups.hpp",
+        "count_native_named_group_points_004fba10"
+      ]
+    },
+    {
+      "address": "00831401",
+      "native": "00bf6713",
+      "function": "0082fe30",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "0083140e",
+      "native": "00bf6713",
+      "function": "0082fe30",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "0083141e",
+      "native": "0082f4e0",
+      "function": "0082fe30",
+      "contract": "ECX 50h-stride vector, output and two owner/position iterator pairs, RET14. Range operation then per-record 49f910 and end publication. 82eab0/49f910 contracts unread.",
+      "callee_body_coverage": "complete"
+    },
+    {
+      "address": "0083144c",
+      "native": "00408720",
+      "function": "0082fe30",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit",
+      "source_reference": [
+        "include/bsp/native_legacy_sbo_string.hpp",
+        "native_legacy_sbo_string_assign_counted_00408720"
+      ]
+    },
+    {
+      "address": "00831465",
+      "native": "00718870",
+      "function": "0082fe30",
+      "contract": "ECX resource, stacked name/index, RET8. Invoke 717f20, then 718000 only when nonzero.",
+      "callee_body_coverage": "complete",
+      "source_reference": [
+        "src/native_game_resource_named_groups.cpp",
+        "lookup_native_game_group_00718870"
+      ]
+    },
+    {
+      "address": "00831483",
+      "native": "00bf65ac",
+      "function": "0082fe30",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "00831586",
+      "native": "00bf6713",
+      "function": "0082fe30",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "008315c3",
+      "native": "00484270",
+      "function": "0082fe30",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit",
+      "source_reference": [
+        "src/native_game_resource_named_groups.cpp",
+        "copy_native_named_group_point_00484270"
+      ]
+    },
+    {
+      "address": "008315d6",
+      "native": "00484270",
+      "function": "0082fe30",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit",
+      "source_reference": [
+        "src/native_game_resource_named_groups.cpp",
+        "copy_native_named_group_point_00484270"
+      ]
+    },
+    {
+      "address": "00831625",
+      "native": "00484270",
+      "function": "0082fe30",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit",
+      "source_reference": [
+        "src/native_game_resource_named_groups.cpp",
+        "copy_native_named_group_point_00484270"
+      ]
+    },
+    {
+      "address": "00831638",
+      "native": "00484270",
+      "function": "0082fe30",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit",
+      "source_reference": [
+        "src/native_game_resource_named_groups.cpp",
+        "copy_native_named_group_point_00484270"
+      ]
+    },
+    {
+      "address": "00831666",
+      "native": "00484270",
+      "function": "0082fe30",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit",
+      "source_reference": [
+        "src/native_game_resource_named_groups.cpp",
+        "copy_native_named_group_point_00484270"
+      ]
+    },
+    {
+      "address": "00831679",
+      "native": "00484270",
+      "function": "0082fe30",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit",
+      "source_reference": [
+        "src/native_game_resource_named_groups.cpp",
+        "copy_native_named_group_point_00484270"
+      ]
+    },
+    {
+      "address": "008316ab",
+      "native": "004f9b30",
+      "function": "0082fe30",
+      "contract": "ECX output, EDX first operand, stacked second operand, RET4. Ordered x87 cross product first x second.",
+      "callee_body_coverage": "complete",
+      "source_reference": [
+        "src/system_camera_axes.cpp",
+        "camera_vector_cross_004f9b30"
+      ]
+    },
+    {
+      "address": "008316e0",
+      "native": "0085dc80",
+      "function": "0082fe30",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit",
+      "source_reference": [
+        "src/plane_pose_commit.cpp",
+        "orthonormalize_native_pose_matrix_0085dc80"
+      ]
+    },
+    {
+      "address": "008316f3",
+      "native": "0082ca40",
+      "function": "0082fe30",
+      "contract": "ECX 40h-stride vector, value pointer stacked, RET4. One-element append wrapper; construction/insertion bodies unread.",
+      "callee_body_coverage": "complete"
+    },
+    {
+      "address": "00831766",
+      "native": "0082e1f0",
+      "function": "0082fe30",
+      "contract": "ECX 1ch destination, EAX same destination, RET. Two tree headers at +0 and +c; allocators 4858d0/443e20 unread.",
+      "callee_body_coverage": "complete"
+    },
+    {
+      "address": "0083176e",
+      "native": "0082f8e0",
+      "function": "0082fe30",
+      "contract": "ECX 1ch-stride vector, count plus by-value 1ch record, RET20. Resize dispatch then 82e280 prototype cleanup; complete native cleanup remains blocked.",
+      "callee_body_coverage": "complete"
+    },
+    {
+      "address": "008317e4",
+      "native": "0082c560",
+      "function": "0082fe30",
+      "contract": "ECX 40h-stride vector, count plus by-value 40h matrix, RET44. Grow/shrink dispatch, nested insert/copy contract unread.",
+      "callee_body_coverage": "complete"
+    }
+  ],
+  "direct_callee_counts": {
+    "00408720": 13,
+    "004215d0": 1,
+    "00484270": 7,
+    "004d1510": 2,
+    "004f9b30": 3,
+    "004fba10": 2,
+    "00718000": 2,
+    "00718870": 11,
+    "0074d190": 2,
+    "00829180": 1,
+    "0082c560": 1,
+    "0082ca40": 1,
+    "0082d040": 1,
+    "0082d700": 1,
+    "0082e1f0": 1,
+    "0082e990": 1,
+    "0082f4e0": 1,
+    "0082f8e0": 1,
+    "0085dc80": 3,
+    "0095f500": 1,
+    "00bf65ac": 13,
+    "00bf6713": 42
+  },
+  "audited_helper_calls": [
+    {
+      "address": "0082d71b",
+      "native": "00bf6713",
+      "function": "0082d700",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "0082d730",
+      "native": "00bf6713",
+      "function": "0082d700",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "0082d73b",
+      "native": "00bf6713",
+      "function": "0082d700",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "0082d751",
+      "native": "00bf6713",
+      "function": "0082d700",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "0082d79c",
+      "native": "00bf6713",
+      "function": "0082d700",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "0082d7af",
+      "native": "0071b2c0",
+      "function": "0082d700",
+      "contract": "ECX native pointer vector, output/owner/position/value pointer, RET10. Reuse canonical type54 insertion interface.",
+      "callee_body_coverage": "complete",
+      "source_reference": [
+        "src/native_game_resource_lists.cpp",
+        "insert_native_game_type54_one_0071b2c0"
+      ]
+    },
+    {
+      "address": "0082d7bd",
+      "native": "00bf6713",
+      "function": "0082d700",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "0082919e",
+      "native": "00bf55be",
+      "function": "00829180",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "008291f1",
+      "native": "00bf6989",
+      "function": "00829180",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "0082e9e2",
+      "native": "00bf6713",
+      "function": "0082e990",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "0082e9f3",
+      "native": "0082e320",
+      "function": "0082e990",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "0082ea10",
+      "native": "00bf6713",
+      "function": "0082e990",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "0082ea1d",
+      "native": "00bf6713",
+      "function": "0082e990",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "0082ea35",
+      "native": "00bf6713",
+      "function": "0082e990",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "0082ea45",
+      "native": "0082dd80",
+      "function": "0082e990",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "0082ea57",
+      "native": "00bf65ac",
+      "function": "0082e990",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "0082ca89",
+      "native": "0082a2e0",
+      "function": "0082ca40",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "0082caa3",
+      "native": "00bf6713",
+      "function": "0082ca40",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "0082cab6",
+      "native": "0082c610",
+      "function": "0082ca40",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "0082c598",
+      "native": "00bf6713",
+      "function": "0082c560",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "0082c5a9",
+      "native": "0082bff0",
+      "function": "0082c560",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "0082c5cb",
+      "native": "00bf6713",
+      "function": "0082c560",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "0082c5d8",
+      "native": "00bf6713",
+      "function": "0082c560",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "0082c5f0",
+      "native": "00bf6713",
+      "function": "0082c560",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "0082c600",
+      "native": "0082b220",
+      "function": "0082c560",
+      "contract": "ECX matrix vector; iterator-range wrapper delegates copy to 82a1b0, publishes returned end.",
+      "callee_body_coverage": "complete"
+    },
+    {
+      "address": "0082f4f2",
+      "native": "00bf6713",
+      "function": "0082f4e0",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "0082f51f",
+      "native": "0082eab0",
+      "function": "0082f4e0",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "0082f534",
+      "native": "0049f910",
+      "function": "0082f4e0",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "0082e20e",
+      "native": "004858d0",
+      "function": "0082e1f0",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "0082e23f",
+      "native": "00443e20",
+      "function": "0082e1f0",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "0082f956",
+      "native": "00bf6713",
+      "function": "0082f8e0",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "0082f96b",
+      "native": "0082f560",
+      "function": "0082f8e0",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "0082f998",
+      "native": "00bf6713",
+      "function": "0082f8e0",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "0082f9a5",
+      "native": "00bf6713",
+      "function": "0082f8e0",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "0082f9c4",
+      "native": "00bf6713",
+      "function": "0082f8e0",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "0082f9d4",
+      "native": "0082f3c0",
+      "function": "0082f8e0",
+      "contract": "ECX Idle vector; range wrapper delegates copy to 82e600, calls 82e280 for trailing 1ch records, publishes end.",
+      "callee_body_coverage": "complete"
+    },
+    {
+      "address": "0082f9e5",
+      "native": "0082e280",
+      "function": "0082f8e0",
+      "contract": "Live prefix performs first tree cleanup/free. Full destructor contract not established with current function ownership.",
+      "callee_body_coverage": "partial: live body ends after free; candidate unowned continuation 0082e2c8-0082e311"
+    },
+    {
+      "address": "004d1562",
+      "native": "00bf6713",
+      "function": "004d1510",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "004d1573",
+      "native": "0041fa40",
+      "function": "004d1510",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "004d15a2",
+      "native": "00bf6713",
+      "function": "004d1510",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "004d15af",
+      "native": "00bf6713",
+      "function": "004d1510",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "004d15c9",
+      "native": "00bf6713",
+      "function": "004d1510",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "004d15d9",
+      "native": "004c82b0",
+      "function": "004d1510",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "00421633",
+      "native": "0041c7b0",
+      "function": "004215d0",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "0042164e",
+      "native": "00bf6713",
+      "function": "004215d0",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "00421661",
+      "native": "004206a0",
+      "function": "004215d0",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "0082b233",
+      "native": "00bf6713",
+      "function": "0082b220",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "0082b24a",
+      "native": "0082a1b0",
+      "function": "0082b220",
+      "contract": "cdecl three stacked pointers; six-argument 828c30 call, ADD ESP,18h. Returns adjusted 40h-stride pointer; 828c30 unread.",
+      "callee_body_coverage": "complete"
+    },
+    {
+      "address": "0082f3d2",
+      "native": "00bf6713",
+      "function": "0082f3c0",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "0082f3ff",
+      "native": "0082e600",
+      "function": "0082f3c0",
+      "contract": "cdecl adapter; six-argument 82dfc0 call, ADD ESP,18h. Returns adjusted 1ch-stride pointer; 82dfc0 unread.",
+      "callee_body_coverage": "complete"
+    },
+    {
+      "address": "0082f414",
+      "native": "0082e280",
+      "function": "0082f3c0",
+      "contract": "Live prefix performs first tree cleanup/free. Full destructor contract not established with current function ownership.",
+      "callee_body_coverage": "partial: live body ends after free; candidate unowned continuation 0082e2c8-0082e311"
+    },
+    {
+      "address": "0082a1de",
+      "native": "00828c30",
+      "function": "0082a1b0",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "0082e62e",
+      "native": "0082dfc0",
+      "function": "0082e600",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "0082e2ba",
+      "native": "00444b10",
+      "function": "0082e280",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "0082e2c3",
+      "native": "00bf65ac",
+      "function": "0082e280",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "004072dd",
+      "native": "00bf65ac",
+      "function": "004072d0",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "0071887f",
+      "native": "00717f20",
+      "function": "00718870",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "0071888c",
+      "native": "00718000",
+      "function": "00718870",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit",
+      "source_reference": [
+        "src/native_game_resource_named_groups.cpp",
+        "find_native_game_group_00718000"
+      ]
+    },
+    {
+      "address": "0071b2e6",
+      "native": "00bf6713",
+      "function": "0071b2c0",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "0071b2f3",
+      "native": "00bf6713",
+      "function": "0071b2c0",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "0071b310",
+      "native": "0071a760",
+      "function": "0071b2c0",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "0071b31d",
+      "native": "00bf6713",
+      "function": "0071b2c0",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    },
+    {
+      "address": "0071b333",
+      "native": "00bf6713",
+      "function": "0071b2c0",
+      "contract": "unread in this audit; consume existing canonical contract where source_reference is provided",
+      "callee_body_coverage": "unread in this audit"
+    }
+  ],
+  "reserve_all_call_sites": [
+    {
+      "address": "00831013",
+      "native": "00829180",
+      "function": "0082fe30",
+      "contract": "ECX raw {data,count,capacity}, signed requested capacity stacked, RET4; clamp >=1, grow only, count unchanged, ordered x87 first three words plus integer fourth word.",
+      "callee_body_coverage": "complete after parent repair independently verified",
+      "argument": "max(1,signed wrapping capacity*2)"
+    },
+    {
+      "address": "00829ce8",
+      "native": "00829180",
+      "function": "00829cd0",
+      "contract": "ECX raw {data,count,capacity}, signed requested capacity stacked, RET4; clamp >=1, grow only, count unchanged, ordered x87 first three words plus integer fourth word.",
+      "callee_body_coverage": "complete after parent repair independently verified",
+      "argument": "max(1,signed wrapping capacity*2)",
+      "caller_coverage": "complete listing"
+    },
+    {
+      "address": "0082a5a8",
+      "native": "00829180",
+      "function": "0082a590",
+      "contract": "ECX raw {data,count,capacity}, signed requested capacity stacked, RET4; clamp >=1, grow only, count unchanged, ordered x87 first three words plus integer fourth word.",
+      "callee_body_coverage": "complete after parent repair independently verified",
+      "argument": "max(1,signed wrapping capacity*2)",
+      "caller_coverage": "complete listing"
+    },
+    {
+      "address": "0095709b",
+      "native": "00829180",
+      "function": "00957090",
+      "contract": "ECX raw {data,count,capacity}, signed requested capacity stacked, RET4; clamp >=1, grow only, count unchanged, ordered x87 first three words plus integer fourth word.",
+      "callee_body_coverage": "complete after parent repair independently verified",
+      "argument": "0 only when signed capacity<0",
+      "caller_coverage": "complete listing"
+    },
+    {
+      "address": "0095863b",
+      "native": "00829180",
+      "function": "00958630",
+      "contract": "ECX raw {data,count,capacity}, signed requested capacity stacked, RET4; clamp >=1, grow only, count unchanged, ordered x87 first three words plus integer fourth word.",
+      "callee_body_coverage": "complete after parent repair independently verified",
+      "argument": "0 only when signed capacity<0",
+      "caller_coverage": "complete argument setup; caller ends at returning-free boundary and is not reconstructed here"
+    }
+  ],
+  "exception_cleanup": {
+    "handler": "00c91fef",
+    "handler_instructions": [
+      "00c91fef MOV EAX,00dc377c",
+      "00c91ff4 JMP 00bf6b43"
+    ],
+    "handler_definition": "absent in live Ghidra; metadata follow-up",
+    "func_info": "00dc377c",
+    "func_info_words": [
+      "19930522",
+      "0000000d",
+      "00dc37a0",
+      "00000000",
+      "00000000",
+      "00000000",
+      "00000000",
+      "00000000",
+      "00000001"
+    ],
+    "unwind_map": "00dc37a0-00dc3807",
+    "states": [
+      {
+        "state": 0,
+        "previous_state": -1,
+        "stub": "00c91f60",
+        "temporary": "EBP-0xf0",
+        "coverage": "complete raw bytes; live function boundaries checked",
+        "step": {
+          "address": "00c91f66",
+          "native": "004072d0",
+          "function": "00c91f60",
+          "contract": "ECX raw SBO string, RET. Free heap storage when capacity>=10h, reset size/capacity/first byte.",
+          "callee_body_coverage": "complete",
+          "source_reference": [
+            "include/bsp/native_legacy_sbo_string.hpp",
+            "native_legacy_sbo_string_destroy_004072d0"
+          ],
+          "kind": "tail_jump"
+        }
+      },
+      {
+        "state": 1,
+        "previous_state": 0,
+        "stub": "00c91f6b",
+        "temporary": "EBP-0xbc",
+        "coverage": "complete raw bytes; live function boundaries checked",
+        "step": {
+          "address": "00c91f71",
+          "native": "004072d0",
+          "function": "00c91f6b",
+          "contract": "ECX raw SBO string, RET. Free heap storage when capacity>=10h, reset size/capacity/first byte.",
+          "callee_body_coverage": "complete",
+          "source_reference": [
+            "include/bsp/native_legacy_sbo_string.hpp",
+            "native_legacy_sbo_string_destroy_004072d0"
+          ],
+          "kind": "tail_jump"
+        }
+      },
+      {
+        "state": 2,
+        "previous_state": -1,
+        "stub": "00c91f76",
+        "temporary": "EBP-0xbc",
+        "coverage": "complete raw bytes; live function boundaries checked",
+        "step": {
+          "address": "00c91f7c",
+          "native": "004072d0",
+          "function": "00c91f76",
+          "contract": "ECX raw SBO string, RET. Free heap storage when capacity>=10h, reset size/capacity/first byte.",
+          "callee_body_coverage": "complete",
+          "source_reference": [
+            "include/bsp/native_legacy_sbo_string.hpp",
+            "native_legacy_sbo_string_destroy_004072d0"
+          ],
+          "kind": "tail_jump"
+        }
+      },
+      {
+        "state": 3,
+        "previous_state": -1,
+        "stub": "00c91f81",
+        "temporary": "EBP-0xbc",
+        "coverage": "complete raw bytes; live function boundaries checked",
+        "step": {
+          "address": "00c91f87",
+          "native": "004072d0",
+          "function": "00c91f81",
+          "contract": "ECX raw SBO string, RET. Free heap storage when capacity>=10h, reset size/capacity/first byte.",
+          "callee_body_coverage": "complete",
+          "source_reference": [
+            "include/bsp/native_legacy_sbo_string.hpp",
+            "native_legacy_sbo_string_destroy_004072d0"
+          ],
+          "kind": "tail_jump"
+        }
+      },
+      {
+        "state": 4,
+        "previous_state": -1,
+        "stub": "00c91f8c",
+        "temporary": "EBP-0xf0",
+        "coverage": "complete raw bytes; live function boundaries checked",
+        "step": {
+          "address": "00c91f92",
+          "native": "004072d0",
+          "function": "00c91f8c",
+          "contract": "ECX raw SBO string, RET. Free heap storage when capacity>=10h, reset size/capacity/first byte.",
+          "callee_body_coverage": "complete",
+          "source_reference": [
+            "include/bsp/native_legacy_sbo_string.hpp",
+            "native_legacy_sbo_string_destroy_004072d0"
+          ],
+          "kind": "tail_jump"
+        }
+      },
+      {
+        "state": 5,
+        "previous_state": -1,
+        "stub": "00c91f97",
+        "temporary": "EBP-0xf0",
+        "coverage": "complete raw bytes; live function boundaries checked",
+        "step": {
+          "address": "00c91f9d",
+          "native": "004072d0",
+          "function": "00c91f97",
+          "contract": "ECX raw SBO string, RET. Free heap storage when capacity>=10h, reset size/capacity/first byte.",
+          "callee_body_coverage": "complete",
+          "source_reference": [
+            "include/bsp/native_legacy_sbo_string.hpp",
+            "native_legacy_sbo_string_destroy_004072d0"
+          ],
+          "kind": "tail_jump"
+        }
+      },
+      {
+        "state": 6,
+        "previous_state": -1,
+        "stub": "00c91fa2",
+        "temporary": "EBP-0xf0",
+        "coverage": "complete raw bytes; live function boundaries checked",
+        "step": {
+          "address": "00c91fa8",
+          "native": "004072d0",
+          "function": "00c91fa2",
+          "contract": "ECX raw SBO string, RET. Free heap storage when capacity>=10h, reset size/capacity/first byte.",
+          "callee_body_coverage": "complete",
+          "source_reference": [
+            "include/bsp/native_legacy_sbo_string.hpp",
+            "native_legacy_sbo_string_destroy_004072d0"
+          ],
+          "kind": "tail_jump"
+        }
+      },
+      {
+        "state": 7,
+        "previous_state": -1,
+        "stub": "00c91fad",
+        "temporary": "EBP-0xf0",
+        "coverage": "complete raw bytes; live function boundaries checked",
+        "step": {
+          "address": "00c91fb3",
+          "native": "004072d0",
+          "function": "00c91fad",
+          "contract": "ECX raw SBO string, RET. Free heap storage when capacity>=10h, reset size/capacity/first byte.",
+          "callee_body_coverage": "complete",
+          "source_reference": [
+            "include/bsp/native_legacy_sbo_string.hpp",
+            "native_legacy_sbo_string_destroy_004072d0"
+          ],
+          "kind": "tail_jump"
+        }
+      },
+      {
+        "state": 8,
+        "previous_state": -1,
+        "stub": "00c91fb8",
+        "temporary": "EBP-0xf0",
+        "coverage": "complete raw bytes; live function boundaries checked",
+        "step": {
+          "address": "00c91fbe",
+          "native": "004072d0",
+          "function": "00c91fb8",
+          "contract": "ECX raw SBO string, RET. Free heap storage when capacity>=10h, reset size/capacity/first byte.",
+          "callee_body_coverage": "complete",
+          "source_reference": [
+            "include/bsp/native_legacy_sbo_string.hpp",
+            "native_legacy_sbo_string_destroy_004072d0"
+          ],
+          "kind": "tail_jump"
+        }
+      },
+      {
+        "state": 9,
+        "previous_state": -1,
+        "stub": "00c91fc3",
+        "temporary": "EBP-0xf0",
+        "coverage": "complete raw bytes; live function boundaries checked",
+        "step": {
+          "address": "00c91fc9",
+          "native": "004072d0",
+          "function": "00c91fc3",
+          "contract": "ECX raw SBO string, RET. Free heap storage when capacity>=10h, reset size/capacity/first byte.",
+          "callee_body_coverage": "complete",
+          "source_reference": [
+            "include/bsp/native_legacy_sbo_string.hpp",
+            "native_legacy_sbo_string_destroy_004072d0"
+          ],
+          "kind": "tail_jump"
+        }
+      },
+      {
+        "state": 10,
+        "previous_state": -1,
+        "stub": "00c91fce",
+        "temporary": "EBP-0xf0",
+        "coverage": "complete raw bytes; live function boundaries checked",
+        "step": {
+          "address": "00c91fd4",
+          "native": "004072d0",
+          "function": "00c91fce",
+          "contract": "ECX raw SBO string, RET. Free heap storage when capacity>=10h, reset size/capacity/first byte.",
+          "callee_body_coverage": "complete",
+          "source_reference": [
+            "include/bsp/native_legacy_sbo_string.hpp",
+            "native_legacy_sbo_string_destroy_004072d0"
+          ],
+          "kind": "tail_jump"
+        }
+      },
+      {
+        "state": 11,
+        "previous_state": -1,
+        "stub": "00c91fd9",
+        "temporary": "EBP-0xf0",
+        "coverage": "complete raw bytes; live function boundaries checked",
+        "step": {
+          "address": "00c91fdf",
+          "native": "004072d0",
+          "function": "00c91fd9",
+          "contract": "ECX raw SBO string, RET. Free heap storage when capacity>=10h, reset size/capacity/first byte.",
+          "callee_body_coverage": "complete",
+          "source_reference": [
+            "include/bsp/native_legacy_sbo_string.hpp",
+            "native_legacy_sbo_string_destroy_004072d0"
+          ],
+          "kind": "tail_jump"
+        }
+      },
+      {
+        "state": 12,
+        "previous_state": -1,
+        "stub": "00c91fe4",
+        "temporary": "EBP-0xf0",
+        "coverage": "complete raw bytes; live function boundaries checked",
+        "step": {
+          "address": "00c91fea",
+          "native": "004072d0",
+          "function": "00c91fe4",
+          "contract": "ECX raw SBO string, RET. Free heap storage when capacity>=10h, reset size/capacity/first byte.",
+          "callee_body_coverage": "complete",
+          "source_reference": [
+            "include/bsp/native_legacy_sbo_string.hpp",
+            "native_legacy_sbo_string_destroy_004072d0"
+          ],
+          "kind": "tail_jump"
+        }
+      }
+    ],
+    "helper_cleanup_coverage": "partial; nested record EH handlers/tables remain unread"
+  },
+  "listing_repairs": [
+    {
+      "function": "00829180",
+      "range": "008291f6-008291fe",
+      "was": "9 unlisted bytes after free at 008291f1",
+      "is": "parent repaired; independent live flow shows 52 instructions and zero gaps",
+      "bytes": "83 c4 04 89 1e 89 6e 08 5b",
+      "evidence": "live instruction-context and bytes match earlier disk continuation; parent-owned reports/vehicle_binding_dependency_flow_repairs_orch4.json"
+    },
+    {
+      "function": "0082e990",
+      "range": "0082ea5c-0082ea5e",
+      "was": "3 unlisted bytes after free at 0082ea57",
+      "is": "parent repaired; independent live flow shows 87 instructions and zero gaps",
+      "bytes": "83 c4 04",
+      "evidence": "live instruction-context and bytes match earlier disk continuation; parent-owned repair report"
+    },
+    {
+      "function": "0082e280",
+      "range": "0082e2c8-0082e311",
+      "was": "live body stops at 0082e2c7 after 00bf65ac call",
+      "is": "outstanding candidate body extension; continuation unowned",
+      "evidence": "proto 0082e2c8/0082e300 returns no function; disk listing through RET 0082e311",
+      "unowned_candidate_calls": [
+        {
+          "site": "0082e2e9",
+          "candidate_callee": "00492a00"
+        },
+        {
+          "site": "0082e2f2",
+          "candidate_callee": "00bf65ac"
+        }
+      ]
+    }
+  ],
+  "corrections": [
+    {
+      "was": "9938-byte body and 1719 instructions",
+      "is": "6610-byte enclosing span and 1732 current listed instructions",
+      "evidence": "live proto 0082fe30-00831801, hex subtraction +1, live flow instruction count"
+    },
+    {
+      "was": "orrhullam uses p2-p1",
+      "is": "both bow-frame edges use p0 as origin; row10=p2-p0, row20=cross(p2-p0,p1-p0) before normalization",
+      "evidence": "008302f4 loads begin then MOVSS [EAX] at 008302f9; 0083033a loads begin and FLD [EAX+18h]; 00830359 FSUB [ESP+14h]; complete second branch 0083055e-00830832",
+      "byte_checks": [
+        {
+          "start": "008302f4",
+          "bytes": "8b 46 48 85 c0 f3 0f 10 00"
+        },
+        {
+          "start": "0083033a",
+          "bytes": "8b 46 48 d9 40 18 83 c0 18"
+        }
+      ]
+    },
+    {
+      "was": "tail grows the shorter Idle/matrix list",
+      "is": "for valid stable storage, tail truncates longer list to the smaller count",
+      "evidence": "00831746 CMP ESI,EAX / JNC 00831775; 008317a7 CMP EAX,ECX / JNC 008317e9; complete 82f8e0/82c560 shrink branches read",
+      "byte_checks": [
+        {
+          "start": "00831746",
+          "bytes": "3b f0 73 2b"
+        },
+        {
+          "start": "008317a7",
+          "bytes": "3b c1 73 3e"
+        }
+      ]
+    },
+    {
+      "was": "82e990 appends path record storing index",
+      "is": "resize outer vector to requested count using a 10h by-value vector prototype, then select its last element",
+      "evidence": "0082e9c7/0082e9cb load/compare requested count, grow/shrink dispatch, RET14; 0083134d SUB ESP,10h and three zero words; 00831392 last=old_end-10h"
+    },
+    {
+      "was": "four indexed name families",
+      "is": "five: kemeny/farviz/explosion/path/idle; path and idle terminate at fewer than two points",
+      "evidence": "all five backedges and 00831343/008314c7 JL conditions read"
+    },
+    {
+      "was": "fallback remaining eleven points unread",
+      "is": "all twelve points read, exact order retained",
+      "evidence": "008309f1-00830dd6 complete listing and fresh begin loads at each checked access"
+    },
+    {
+      "was": "EDI descriptor for the whole body",
+      "is": "EDI advances to class+6fc at 831724 and becomes stack destination at 8317d1",
+      "evidence": "whole-function register provenance"
+    }
+  ],
+  "fallback_points": {
+    "range": "008309f1-00830dd6",
+    "half_extents": {
+      "x": "x87 round32(class+a4 times double0.5)",
+      "y": "x87 round32(class+a8 times double0.5)",
+      "z": "x87 round32(class+a0 times double0.5)"
+    },
+    "negative": "SUBSS -0.0,half_extent; preserve arithmetic",
+    "points": [
+      [
+        "nx",
+        "ny",
+        "nz"
+      ],
+      [
+        "x",
+        "ny",
+        "nz"
+      ],
+      [
+        "nx",
+        "y",
+        "nz"
+      ],
+      [
+        "x",
+        "y",
+        "nz"
+      ],
+      [
+        "nx",
+        "ny",
+        "z"
+      ],
+      [
+        "x",
+        "ny",
+        "z"
+      ],
+      [
+        "nx",
+        "y",
+        "z"
+      ],
+      [
+        "x",
+        "y",
+        "z"
+      ],
+      [
+        "nx",
+        "ny",
+        "+0"
+      ],
+      [
+        "x",
+        "ny",
+        "+0"
+      ],
+      [
+        "nx",
+        "y",
+        "+0"
+      ],
+      [
+        "x",
+        "y",
+        "+0"
+      ]
+    ]
+  },
+  "implementation_availability": {
+    "canonical": {
+      "00408720": [
+        "include/bsp/native_legacy_sbo_string.hpp",
+        "native_legacy_sbo_string_assign_counted_00408720"
+      ],
+      "004072d0": [
+        "include/bsp/native_legacy_sbo_string.hpp",
+        "native_legacy_sbo_string_destroy_004072d0"
+      ],
+      "00718000": [
+        "src/native_game_resource_named_groups.cpp",
+        "find_native_game_group_00718000"
+      ],
+      "00718870": [
+        "src/native_game_resource_named_groups.cpp",
+        "lookup_native_game_group_00718870"
+      ],
+      "00484270": [
+        "src/native_game_resource_named_groups.cpp",
+        "copy_native_named_group_point_00484270"
+      ],
+      "004fba10": [
+        "include/bsp/native_game_resource_named_groups.hpp",
+        "count_native_named_group_points_004fba10"
+      ],
+      "0074d190": [
+        "src/native_damageable_class_binding.cpp",
+        "reserve_native_class_point_array_0074d190"
+      ],
+      "0085dc80": [
+        "src/plane_pose_commit.cpp",
+        "orthonormalize_native_pose_matrix_0085dc80"
+      ],
+      "004f9b30": [
+        "src/system_camera_axes.cpp",
+        "camera_vector_cross_004f9b30"
+      ],
+      "0071b2c0": [
+        "src/native_game_resource_lists.cpp",
+        "insert_native_game_type54_one_0071b2c0"
+      ],
+      "00879ad0": [
+        "src/native_damageable_class_binding.cpp",
+        "bind_native_damageable_class_model_00879ad0"
+      ]
+    },
+    "partial_projection": {
+      "0082d040": [
+        "src/ship_buoyancy_elements.cpp",
+        "pure rules/std::vector interfaces; not native actual-class body closure"
+      ]
+    },
+    "search": "case-insensitive address search in include/bsp and src; exact absence is not a transitive reconstruction proof"
+  },
+  "minimal_packets": [
+    {
+      "id": "ship_native_model_pointer_append",
+      "readiness": "ready",
+      "owned_entries": [
+        "0082d700"
+      ],
+      "proposed_files": [
+        "include/bsp/native_ship_model_pointer_binding.hpp",
+        "src/native_ship_model_pointer_binding.cpp"
+      ],
+      "dependencies": [
+        "0071b2c0 canonical type54 insertion",
+        "existing invalid-parameter callbacks"
+      ],
+      "scope": "complete 210-byte body; files require parent ownership approval"
+    },
+    {
+      "id": "ship_native_indexed_point_reserve",
+      "readiness": "ready after parent repair, five live call-site argument setups all read",
+      "owned_entries": [
+        "00829180"
+      ],
+      "proposed_files": [
+        "include/bsp/native_ship_indexed_point_array.hpp",
+        "src/native_ship_indexed_point_array.cpp"
+      ],
+      "dependencies": [
+        "canonical allocation/free",
+        "ordered x87 three-float copy plus integer fourth word"
+      ],
+      "scope": "complete 132-byte body; do not include callers"
+    },
+    {
+      "id": "ship_native_vec12",
+      "readiness": "audit required: transitive closure unread",
+      "owned_entries": [
+        "004d1510",
+        "004215d0"
+      ],
+      "dependencies": [
+        "0041fa40",
+        "004c82b0",
+        "0041c7b0",
+        "004206a0"
+      ]
+    },
+    {
+      "id": "ship_native_matrix_vector",
+      "readiness": "audit required: transitive closure unread",
+      "owned_entries": [
+        "0082ca40",
+        "0082c560"
+      ],
+      "dependencies": [
+        "0082a2e0",
+        "0082c610",
+        "0082bff0",
+        "0082b220",
+        "0082a1b0",
+        "00828c30"
+      ]
+    },
+    {
+      "id": "ship_native_path_vector",
+      "readiness": "audit required despite repaired wrapper",
+      "owned_entries": [
+        "0082e990"
+      ],
+      "dependencies": [
+        "0082e320",
+        "0082dd80",
+        "nested vector cleanup"
+      ]
+    },
+    {
+      "id": "ship_native_idle_lifetime",
+      "readiness": "blocked on body-extension evidence and unread dependency closure",
+      "owned_entries": [
+        "0082e1f0",
+        "0082e280",
+        "0082f8e0"
+      ],
+      "dependencies": [
+        "004858d0",
+        "00443e20",
+        "00444b10",
+        "00492a00 candidate unowned-tail call",
+        "0082f560",
+        "0082f3c0",
+        "0082e600",
+        "0082dfc0",
+        "helper FH3 tables"
+      ]
+    },
+    {
+      "id": "ship_native_traffic_fallback",
+      "readiness": "audit required",
+      "owned_entries": [
+        "0082f4e0"
+      ],
+      "dependencies": [
+        "0082eab0",
+        "0049f910"
+      ]
+    },
+    {
+      "id": "ship_native_buoyancy",
+      "readiness": "full native audit required; existing pure projection is insufficient",
+      "owned_entries": [
+        "0082d040"
+      ],
+      "dependencies": [
+        "unread full native call and cleanup closure"
+      ]
+    },
+    {
+      "id": "ship_native_full_binding",
+      "readiness": "blocked on helper packets and sibling vehicle binder",
+      "owned_entries": [
+        "0082fe30"
+      ],
+      "dependencies": [
+        "0095f500 external sibling contract",
+        "all above packets",
+        "handler 00c91fef metadata definition"
+      ]
+    }
+  ],
+  "external_vehicle_contract": {
+    "callee": "0095f500",
+    "contract": "unread by this worker; sibling owns complete behavior",
+    "required_call_shape": "same actual-class ECX, no stacked inputs, return before 82d700/ship-specific work",
+    "damageable_dependency": "canonical 00879ad0 is a dependency of vehicle binding, not a replacement for it"
+  },
+  "append_only_correction_text": "2026-09-15 complete-listing correction: 0082FE30 spans 6,610 bytes (1,732 current listed instructions). Both orrhullam branches difference against p0; before 85DC80 row+10 is p2-p0 and row+20 is (p2-p0) x (p1-p0). The idle tail truncates the longer vector to the smaller count, as proved by JNC at 831748/8317A9 and the resize helpers. 82E990 resizes an outer vector of 10h-byte vector headers to the current index; it does not store the index in a path record. The complete fallback point ordering and outstanding native cleanup dependencies are retained in NATIVE_SHIP_CLASS_BINDING_AUDIT_ORCH4.md and its JSON report. No reconstruction or game validation is implied.",
+  "retained_local_evidence": {
+    "main_listing_tail": "local/output/ghidra-disasm-0082fe30-lines-1800-start-90-123921.txt",
+    "main_listing_tail_sha256": "b73bef643081a5857ae99831b3d7d609fc3b0410973dc4642e7b951212970832",
+    "tail_starts": "0082ff96",
+    "prefix_calls": "first 90 live instructions independently read; 12 direct calls transcribed above",
+    "flow_property_response": "local/ship-binding-flow-properties.json",
+    "flow_property_failure": "Script execution disabled by bridge; no setting change or mutation fallback attempted"
+  },
+  "validation": {
+    "report_calls": "passed: 192 call rows checked, 0 failed",
+    "build": "not run: documentation only",
+    "runtime": "not run; no reachability/frame/game claim",
+    "differential": "not run",
+    "binary_abi_compatibility": "not established",
+    "transitive_contracts": "incomplete; no source or stubs added"
+  }
+}
