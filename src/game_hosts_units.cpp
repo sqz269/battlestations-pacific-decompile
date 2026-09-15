@@ -3789,6 +3789,20 @@ void GameUnitsHost::report() {
                 pitch_last += slot->attack_pitch_last;
             }
             const double n = static_cast<double>(ordered);
+            // Per aircraft, because the mean hides the case that matters: a
+            // plane pointing at its target and still losing ground because the
+            // target is faster than it is.
+            for (const auto& slot : host.slots) {
+                if (slot->attack_range_first < 0.0f) continue;
+                host.log.notef("  ordered %-12s range %8.1f -> %8.1f m  closed %8.1f m  "
+                    "heading error %.3f -> %.3f rad",
+                    slot->row.name.c_str(),
+                    static_cast<double>(slot->attack_range_first),
+                    static_cast<double>(slot->attack_range_last),
+                    static_cast<double>(slot->attack_range_first - slot->attack_range_last),
+                    static_cast<double>(slot->attack_hdg_err_first),
+                    static_cast<double>(slot->attack_hdg_err_last));
+            }
             host.log.notef("summary mission pilot attack: ordered=%zu "
                 "range_first_mean=%.1f m range_last_mean=%.1f m closed_mean=%.1f m "
                 "worst_closed=%.1f m | heading_error_first_mean=%.3f rad "
