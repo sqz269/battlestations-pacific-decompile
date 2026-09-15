@@ -9,7 +9,7 @@ from the snapshot, sharded ledgers, tags, call graph, partition, PE strings and 
   python tools/bsp.py show 00ab9fd0 [--asm] [--lines 80] [--start 0]   capped export excerpt
   python tools/bsp.py range 00ab0000 00ac0000 --only FUN_
   python tools/bsp.py callers|callees|docs-for 00ab9fd0 / segment 12 / find GuiManager
-  python tools/bsp.py ghidra count|proto|flow|xrefs|callers|callees|bytes|comments|decompile|disasm|export ...
+  python tools/bsp.py ghidra count|proto|flow|instruction-context|xrefs|callers|callees|bytes|comments|decompile|disasm|export ...
   python tools/bsp.py ghidra ensure [--status]     start Ghidra when nothing answers (autostart --install: at logon)
   python tools/bsp.py snapshot [--force]         snapshot + index only if Ghidra's function count changed
   python tools/bsp.py index [--if-stale]
@@ -699,6 +699,59 @@ def first_int(text):
     return int(m.group()) if m else None
 
 
+def instruction_address(text):
+    value = str(text).strip()
+    if not re.fullmatch(r'(?:0[xX])?[0-9a-fA-F]{1,8}', value):
+        raise argparse.ArgumentTypeError('address must be a 32-bit hexadecimal value')
+    return f'{int(value, 16):08x}'
+
+
+def instruction_context_count(text):
+    try:
+        value = int(text, 10)
+    except ValueError as exc:
+        raise argparse.ArgumentTypeError('context must be an integer from 0 through 64') from exc
+    if not 0 <= value <= 64:
+        raise argparse.ArgumentTypeError('context must be an integer from 0 through 64')
+    return value
+
+
+def ghidra_instruction_context(c, addresses, context):
+    """Read exact listing starts through the bridge's typed POST endpoint."""
+    import time
+    from urllib.parse import urlencode
+    from urllib.request import Request, urlopen
+
+    endpoint = 'get_assembly_context'
+    body = {
+        'xref_sources': addresses,
+        'context_instructions': context,
+        'include_patterns': [],
+    }
+    url = c.config['ghidra_url'].rstrip('/') + '/' + endpoint + '?' + urlencode({'program': c.config['program']})
+    request = Request(url, data=json.dumps(body).encode('utf-8'),
+                      headers={'Content-Type': 'application/json'}, method='POST')
+    for attempt in range(3):
+        try:
+            with urlopen(request, timeout=90) as response:
+                raw = response.read()
+            break
+        except (TimeoutError, OSError):
+            if attempt == 2:
+                raise
+            time.sleep(1 + attempt)
+    text = raw.decode('utf-8')
+    try:
+        result = json.loads(text)
+    except json.JSONDecodeError:
+        result = text
+    if isinstance(result, dict) and (result.get('error') or result.get('success') is False):
+        raise RuntimeError(f'{endpoint}: {result}')
+    if isinstance(result, str) and result.lstrip().lower().startswith(('error', 'failed', 'no program')):
+        raise RuntimeError(f'{endpoint}: {result}')
+    return result, raw
+
+
 def ghidra_cmd(args):
     sub = args.ghidra_command
     if sub in ('ensure', 'autostart'):
@@ -743,6 +796,17 @@ def ghidra_cmd(args):
         cap((run.stdout + run.stderr).strip(), args.lines)
         if run.returncode:
             raise SystemExit(run.returncode)
+    elif sub == 'instruction-context':
+        result, raw = ghidra_instruction_context(c, args.addresses, args.context)
+        if args.output:
+            path = (ROOT / args.output).resolve()
+            if not path.is_relative_to((ROOT / 'local').resolve()) or path.suffix != '.json':
+                sys.exit('Instruction-context output must be a JSON file under local/.')
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_bytes(raw)
+            print(f'Saved the full instruction-context response for {len(args.addresses)} addresses to {path.relative_to(ROOT).as_posix()}')
+        else:
+            cap(as_text(result), args.lines)
     elif sub in ('comments', 'documentation'):
         # Annotation readback often spans a batch. Persist complete records in
         # ignored local storage while keeping the interactive view bounded.
@@ -1040,11 +1104,12 @@ local/output/ and prints the path. --full or BSP_OUTPUT_BUDGET=0 lifts the cap.
   disasm-raw <addr> [--length N] Capstone over disk bytes, works where Ghidra has no function
   scan-bytes '<pat ?? pat>'      byte pattern search, with the enclosing function
 
-  ghidra count|proto|flow|xrefs|callers|callees|bytes|comments|decompile|disasm|documentation|export
+  ghidra count|proto|flow|instruction-context|xrefs|callers|callees|bytes|comments|decompile|disasm|documentation|export
   ghidra ensure [--status] [--restart] [--wait 300]   start Ghidra when nothing answers on ghidra_url
   ghidra autostart [--remove]                        do that at every logon (Startup folder, no elevation)
       proto/flow/comments take several addresses; decompile/disasm take one plus --lines
       flow-properties <addresses> --output local/response.json reads exact flow flags; needs bridge script capability
+      instruction-context <addresses> [--context 0..64] [--output local/response.json] reads exact listing starts
       bytes <addr> --length N (NOT --limit)
 
   snapshot [--force]             re-export only if Ghidra's function count moved
@@ -1127,6 +1192,9 @@ def main():
     q = gs.add_parser('proto'); q.add_argument('addresses', nargs='+'); q.add_argument('--lines', '--limit', dest='lines', type=int, default=20); q.add_argument('--brief', action='store_true', help='one line per address: name, signature, body span')
     q = gs.add_parser('flow'); q.add_argument('addresses', nargs='+'); q.add_argument('--lines', '--limit', dest='lines', type=int, default=40)
     q = gs.add_parser('flow-properties', help='read exact current flow/no-return/thunk properties without analysis changes'); q.add_argument('addresses', nargs='+'); q.add_argument('--output', required=True); q.add_argument('--lines', '--limit', dest='lines', type=int, default=40)
+    q = gs.add_parser('instruction-context', help='read instructions at exact addresses plus bounded listing neighbors; does not infer function flow')
+    q.add_argument('addresses', nargs='+', type=instruction_address); q.add_argument('--context', type=instruction_context_count, default=0)
+    q.add_argument('--output'); q.add_argument('--lines', '--limit', dest='lines', type=int, default=80)
     q = gs.add_parser('comments'); q.add_argument('addresses', nargs='+'); q.add_argument('--lines', '--limit', dest='lines', type=int, default=40); q.add_argument('--start', type=int, default=0); q.add_argument('--output')
     q = gs.add_parser('documentation', help='archive full function documentation before body repairs'); q.add_argument('addresses', nargs='+'); q.add_argument('--lines', '--limit', dest='lines', type=int, default=40); q.add_argument('--start', type=int, default=0); q.add_argument('--output')
     for name in ('xrefs', 'callers', 'callees'):
