@@ -434,6 +434,20 @@
       "bytes": 80,
       "sha256": "a2d8e92661cfa49769f037f80005ce91ec53e4cec67f530b784f364392218171",
       "live_disk_match": true
+    },
+    {
+      "address": "00af5620",
+      "end_exclusive": "00af5652",
+      "bytes": 50,
+      "sha256": "e61eca001b94cbabea79480bc35cf3b3b6c425ca5310f222db6b7d346e7e8de8",
+      "live_disk_match": true
+    },
+    {
+      "address": "00af5850",
+      "end_exclusive": "00af592d",
+      "bytes": 221,
+      "sha256": "bc317e80fcf735d91974dbb5a4424e6a0ce21dac8cb4c6ba2c713d401791900f",
+      "live_disk_match": true
     }
   ],
   "prior_documentation": [
@@ -747,8 +761,137 @@
         "labels": [],
         "completeness_score": 50.0
       }
+    },
+    {
+      "address": "00af5620",
+      "documentation": {
+        "hash": "d75c372ae734234720bf05eca828d0e457e57abb2e9d4d63e714c175498334ae",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00af5620",
+        "function_name": "FUN_00af5620",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "iVar1",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "iVar2",
+            "type": "int",
+            "storage": "(stack, 0xfffffffffffffff0, 4)"
+          },
+          {
+            "name": "uVar3",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 19,
+            "name": "LAB_00af5633"
+          },
+          {
+            "relative_offset": 48,
+            "name": "LAB_00af5650"
+          }
+        ],
+        "completeness_score": 50.0
+      }
+    },
+    {
+      "address": "00af5850",
+      "documentation": {
+        "hash": "fd1baee883da4f5056739596b3f2b446c7c388cecb9a46b6833b417c4829d713",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00af5850",
+        "function_name": "FUN_00af5850",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "this",
+            "type": "size_t *",
+            "storage": "(unique, 0x6600, 4)"
+          },
+          {
+            "name": "iVar6",
+            "type": "int",
+            "storage": "(stack, 0xfffffffffffffff0, 4)"
+          },
+          {
+            "name": "LVar5",
+            "type": "LONG",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "extraout_EAX",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "iVar4",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "piVar3",
+            "type": "int *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "length",
+            "type": "uint",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "pcVar2",
+            "type": "char *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "cVar1",
+            "type": "char",
+            "storage": "(unique, 0x17000, 1)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 21,
+            "name": "LAB_00af5865"
+          },
+          {
+            "relative_offset": 34,
+            "name": "LAB_00af5872"
+          },
+          {
+            "relative_offset": 36,
+            "name": "LAB_00af5874"
+          },
+          {
+            "relative_offset": 66,
+            "name": "LAB_00af5892"
+          },
+          {
+            "relative_offset": 189,
+            "name": "LAB_00af590d"
+          },
+          {
+            "relative_offset": 211,
+            "name": "LAB_00af5923"
+          }
+        ],
+        "completeness_score": 50.0
+      }
     }
   ],
   "documentation": "docs/NATIVE_PARTICLE_FLOW_ORCH4_H8.md",
-  "final_readback": "All intended full spans restored and saved, exports refreshed; zero call-fallthrough gaps.870000 retains three-byte LEA ECX,[ECX] padding after unconditional jump.86BA10 newly defined80B with30instructions."
+  "final_readback": "All intended full spans restored and saved, exports refreshed; zero call-fallthrough gaps.870000 retains three-byte LEA ECX,[ECX] padding after unconditional jump.86BA10 newly defined80B with30instructions.",
+  "additional_text_buffer_repairs": "AF5620 free fallthrough3B andAF5850 short-read failure cleanup18B restored; full live/disk spans matched before mutation, saved/exported, zero call gaps."
 }

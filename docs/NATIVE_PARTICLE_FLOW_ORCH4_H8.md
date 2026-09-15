@@ -1,6 +1,6 @@
 # Particle lifetime and cache listing repairs
 
-Eight functions contained omitted fallthrough after CRT free calls. The live
+Ten functions contained omitted fallthrough after CRT free calls. The live
 bytes matched the installed image over every complete intended body before
 mutation. The coordinator used the owning worker worktrees and the shared
 Ghidra write lock, clearing only call-site flow overrides. No callee no-return
@@ -17,6 +17,8 @@ independent whole-body byte check; previous names/comments were preserved.
 | 870000 | 221 | 8700C0..C9 | 73 instructions, no call gaps |
 | 871370 | 23 | 871382..386 | 10 instructions, no gaps |
 | 871480 | 95 | 8714CC..DE | 26 instructions, no gaps |
+| AF5620 | 50 | AF5630..32 | 21 instructions, no gaps |
+| AF5850 | 221 | AF58FB..590C | Restored failure cleanup; no call gaps |
 
 The three bytes87005D..5F remain unlisted after an unconditional jump to870060.
 They are `8D 49 00` (`LEA ECX,[ECX]`) alignment padding; this is separate from

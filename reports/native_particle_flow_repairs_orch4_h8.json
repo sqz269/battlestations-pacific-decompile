@@ -357,6 +357,78 @@
       "body_after": "Function: FUN_00871480 at 00871480\nSignature: undefined FUN_00871480(void)\nEntry: 00871480\nBody: 00871480 - 008714cb",
       "stored_body_tail_complete": false,
       "body_extension_limit": "Explicit tail decoding/CRT overrides do not extend stored function-body metadata; the body still requires a separate supported repair."
+    },
+    {
+      "function": "00af5620",
+      "owner": "agent/orch4-20260915",
+      "when": "2026-09-15T23:47:55Z",
+      "decompile_lines_before": 22,
+      "gaps": [
+        {
+          "site": "00af562b",
+          "mnemonic": "CALL",
+          "operands": "0x00bf6989",
+          "gap_start": "00af5630",
+          "gap_end_exclusive": "00af5633",
+          "bytes": 3,
+          "after_call": true,
+          "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+        }
+      ],
+      "events": [
+        {
+          "gap": {
+            "site": "00af562b",
+            "mnemonic": "CALL",
+            "operands": "0x00bf6989",
+            "gap_start": "00af5630",
+            "gap_end_exclusive": "00af5633",
+            "bytes": 3,
+            "after_call": true,
+            "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+          },
+          "clear": "Success: Cleared flow override at 00af562b (was: CALL_RETURN, now: NONE)",
+          "disassemble": "Successfully disassembled 3 byte(s)"
+        }
+      ],
+      "decompile_lines_after": 21,
+      "gaps_remaining": 0
+    },
+    {
+      "function": "00af5850",
+      "owner": "agent/orch4-20260915",
+      "when": "2026-09-15T23:47:56Z",
+      "decompile_lines_before": 52,
+      "gaps": [
+        {
+          "site": "00af58f6",
+          "mnemonic": "CALL",
+          "operands": "0x00bf6989",
+          "gap_start": "00af58fb",
+          "gap_end_exclusive": "00af590d",
+          "bytes": 18,
+          "after_call": true,
+          "sha256": "9c54c541970c3888faf7571d1b7e434efde5b69cb59b108714795fa443083e8f"
+        }
+      ],
+      "events": [
+        {
+          "gap": {
+            "site": "00af58f6",
+            "mnemonic": "CALL",
+            "operands": "0x00bf6989",
+            "gap_start": "00af58fb",
+            "gap_end_exclusive": "00af590d",
+            "bytes": 18,
+            "after_call": true,
+            "sha256": "9c54c541970c3888faf7571d1b7e434efde5b69cb59b108714795fa443083e8f"
+          },
+          "clear": "Success: Cleared flow override at 00af58f6 (was: CALL_RETURN, now: NONE)",
+          "disassemble": "Successfully disassembled 18 byte(s)"
+        }
+      ],
+      "decompile_lines_after": 52,
+      "gaps_remaining": 0
     }
   ],
   "project": "C:/Users/sqz269/bsp.gpr",
@@ -423,6 +495,20 @@
       "end_exclusive": "0086ba60",
       "bytes": 80,
       "sha256": "a2d8e92661cfa49769f037f80005ce91ec53e4cec67f530b784f364392218171",
+      "live_disk_match": true
+    },
+    {
+      "address": "00af5620",
+      "end_exclusive": "00af5652",
+      "bytes": 50,
+      "sha256": "e61eca001b94cbabea79480bc35cf3b3b6c425ca5310f222db6b7d346e7e8de8",
+      "live_disk_match": true
+    },
+    {
+      "address": "00af5850",
+      "end_exclusive": "00af592d",
+      "bytes": 221,
+      "sha256": "bc317e80fcf735d91974dbb5a4424e6a0ce21dac8cb4c6ba2c713d401791900f",
       "live_disk_match": true
     }
   ],
@@ -737,8 +823,137 @@
         "labels": [],
         "completeness_score": 50.0
       }
+    },
+    {
+      "address": "00af5620",
+      "documentation": {
+        "hash": "d75c372ae734234720bf05eca828d0e457e57abb2e9d4d63e714c175498334ae",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00af5620",
+        "function_name": "FUN_00af5620",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "iVar1",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "iVar2",
+            "type": "int",
+            "storage": "(stack, 0xfffffffffffffff0, 4)"
+          },
+          {
+            "name": "uVar3",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 19,
+            "name": "LAB_00af5633"
+          },
+          {
+            "relative_offset": 48,
+            "name": "LAB_00af5650"
+          }
+        ],
+        "completeness_score": 50.0
+      }
+    },
+    {
+      "address": "00af5850",
+      "documentation": {
+        "hash": "fd1baee883da4f5056739596b3f2b446c7c388cecb9a46b6833b417c4829d713",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00af5850",
+        "function_name": "FUN_00af5850",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "this",
+            "type": "size_t *",
+            "storage": "(unique, 0x6600, 4)"
+          },
+          {
+            "name": "iVar6",
+            "type": "int",
+            "storage": "(stack, 0xfffffffffffffff0, 4)"
+          },
+          {
+            "name": "LVar5",
+            "type": "LONG",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "extraout_EAX",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "iVar4",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "piVar3",
+            "type": "int *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "length",
+            "type": "uint",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "pcVar2",
+            "type": "char *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "cVar1",
+            "type": "char",
+            "storage": "(unique, 0x17000, 1)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 21,
+            "name": "LAB_00af5865"
+          },
+          {
+            "relative_offset": 34,
+            "name": "LAB_00af5872"
+          },
+          {
+            "relative_offset": 36,
+            "name": "LAB_00af5874"
+          },
+          {
+            "relative_offset": 66,
+            "name": "LAB_00af5892"
+          },
+          {
+            "relative_offset": 189,
+            "name": "LAB_00af590d"
+          },
+          {
+            "relative_offset": 211,
+            "name": "LAB_00af5923"
+          }
+        ],
+        "completeness_score": 50.0
+      }
     }
   ],
   "documentation": "docs/NATIVE_PARTICLE_FLOW_ORCH4_H8.md",
-  "final_readback": "All intended full spans restored and saved, exports refreshed; zero call-fallthrough gaps.870000 retains three-byte LEA ECX,[ECX] padding after unconditional jump.86BA10 newly defined80B with30instructions."
+  "final_readback": "All intended full spans restored and saved, exports refreshed; zero call-fallthrough gaps.870000 retains three-byte LEA ECX,[ECX] padding after unconditional jump.86BA10 newly defined80B with30instructions.",
+  "additional_text_buffer_repairs": "AF5620 free fallthrough3B andAF5850 short-read failure cleanup18B restored; full live/disk spans matched before mutation, saved/exported, zero call gaps."
 }
