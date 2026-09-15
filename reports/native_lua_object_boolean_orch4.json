@@ -1,0 +1,211 @@
+{
+  "packet": "orch4_lua_boolean_c3",
+  "module": "native_lua_object_boolean",
+  "functions": [
+    {
+      "address": "00b673a0",
+      "name": "BSP_LuaObject_SetBoolean",
+      "original_name": "FUN_00b673a0",
+      "name_status": "descriptive hypothesis",
+      "coverage": "complete",
+      "body_inclusive": [
+        "00b673a0",
+        "00b673f0"
+      ],
+      "bytes": 81,
+      "native_abi": "__thiscall; ECX actual 14h NativeLuaObjectStorage; stack NativeString pointer then four-byte value slot; low byte consumed; RET8",
+      "source_api": "void native_lua_set_boolean_00b673a0(NativeLuaObjectStorage&, const NativeString&, uint32_t)",
+      "source": "src/native_lua_object_boolean.cpp"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00b673ad",
+      "native": "00a672f0",
+      "function": "00b673a0",
+      "operation": "lua_checkstack(current state, 2); return ignored"
+    },
+    {
+      "address": "00b673cc",
+      "native": "00a67a10",
+      "function": "00b673a0",
+      "operation": "lua_pushlstring(reloaded state, captured key data, captured key length)"
+    },
+    {
+      "address": "00b673db",
+      "native": "00a67bc0",
+      "function": "00b673a0",
+      "operation": "lua_pushboolean(reloaded state, zero-extended low byte)"
+    },
+    {
+      "address": "00b673e8",
+      "native": "00a67e10",
+      "function": "00b673a0",
+      "operation": "lua_settable(reloaded state, current object index)"
+    }
+  ],
+  "incoming_calls": [
+    {
+      "address": "004368b2",
+      "native": "00b673a0",
+      "function": "00436730",
+      "key": "dynamic Lua string",
+      "value": "00b66250 boolean result"
+    },
+    {
+      "address": "00436e61",
+      "native": "00b673a0",
+      "function": "00436c50",
+      "key": "dynamic Lua string",
+      "value": "00b66250 boolean result"
+    },
+    {
+      "address": "0044316c",
+      "native": "00b673a0",
+      "function": "00443090",
+      "key": "Got",
+      "value": "1"
+    },
+    {
+      "address": "006b0120",
+      "native": "00b673a0",
+      "function": "006b0020",
+      "key": "_R_",
+      "value": "1"
+    },
+    {
+      "address": "006b0c92",
+      "native": "00b673a0",
+      "function": "006b0be0",
+      "key": "_R_",
+      "value": "1"
+    },
+    {
+      "address": "006eaa24",
+      "native": "00b673a0",
+      "function": "006ea910",
+      "key": "Got",
+      "value": "1"
+    },
+    {
+      "address": "007012f2",
+      "native": "00b673a0",
+      "function": "00701250",
+      "key": "HitOnTheFly",
+      "value": "1"
+    },
+    {
+      "address": "0074ae33",
+      "native": "00b673a0",
+      "function": "0074ad90",
+      "key": "LandingFinished",
+      "value": "1"
+    },
+    {
+      "address": "007ceff3",
+      "native": "00b673a0",
+      "function": "007ce040",
+      "key": "Collided",
+      "value": "1"
+    },
+    {
+      "address": "008090c9",
+      "native": "00b673a0",
+      "function": "00808f90",
+      "key": "Got",
+      "value": "1"
+    },
+    {
+      "address": "008bd125",
+      "native": "00b673a0",
+      "function": "008bcf10",
+      "key": "ai",
+      "value": "player record byte +09h"
+    },
+    {
+      "address": "00928bc7",
+      "native": "00b673a0",
+      "function": "00928a00",
+      "key": "Dead",
+      "value": "0"
+    },
+    {
+      "address": "00929896",
+      "native": "00b673a0",
+      "function": "00929800",
+      "key": "Dead",
+      "value": "1"
+    },
+    {
+      "address": "00964959",
+      "native": "00b673a0",
+      "function": "00964790",
+      "key": "Got",
+      "value": "1"
+    },
+    {
+      "address": "00a2f0da",
+      "native": "00b673a0",
+      "function": "00a2eee0",
+      "key": "autoGrouping",
+      "value": "group byte +5648h"
+    },
+    {
+      "address": "00bd73f2",
+      "native": "00b673a0",
+      "function": "00bd7180",
+      "key": "caller-supplied NativeString",
+      "value": "caller-supplied value slot"
+    }
+  ],
+  "uncontained_incoming_calls": [
+    {
+      "address": "0074b2b1",
+      "callee": "00b673a0",
+      "key": "LandingStarted",
+      "value": "1",
+      "evidence": "Raw bytes at 0074b2a0 decode push 1, key pointer, receiver from 00927b40, then CALL 00b673a0. Ghidra reports no containing function; candidate 0074af20 ends at 0074af42."
+    }
+  ],
+  "providers": [
+    {
+      "type": "NativeLuaObjectStorage and NativeLuaStateStorage",
+      "path": "include/bsp/native_lua_objects.hpp",
+      "contract": "actual 14h object and 4C8h owner storage"
+    },
+    {
+      "type": "NativeString",
+      "path": "include/bsp/native_string.hpp",
+      "contract": "actual 8h length/data header"
+    },
+    {
+      "type": "Lua 5.1.1",
+      "path": "linked dependency",
+      "contract": "real lua_checkstack, lua_pushlstring, lua_pushboolean and lua_settable"
+    }
+  ],
+  "behavior": {
+    "checkstack_failure": "return value ignored; execution continues",
+    "key": "length then data captured after checkstack; null data selects empty byte without changing length",
+    "boolean": "only uint8_t(value) reaches lua_pushboolean",
+    "reload_schedule": "owner/state before every Lua call; current index loaded only before lua_settable",
+    "normal_stack_delta": 0,
+    "object_metadata_writes": 0,
+    "failure_continuation": "Lua errors and metamethod behavior remain in the real Lua API; no local recovery or rollback"
+  },
+  "evidence": {
+    "ghidra_project": "C:/Users/sqz269/bsp.gpr",
+    "ghidra_program": "/battlestationspacific.exe",
+    "live_function_count": 64124,
+    "ghidra_mutated": false,
+    "body_sha256": "3cf2cdcbdf92594e9af9ed9fb4e9ca16ef7460c8dc3df827fd10708a44d38df5",
+    "body_hex": "568bf18b068b4804ba02000000e83effefff8b4424088b088b400485c07505b82cff0801518b0e8b49048bd0e83f06f0ff8b060fb654240c8b4804e8e007f0ff8b0e8b56088b4904e8230af0ff5ec20800"
+  },
+  "limitations": [
+    "The C++ API is source-compatible with repository storage and providers, not original-call ABI compatible.",
+    "The null-key fallback is a local static empty byte; it preserves Lua input bytes but not the original 0108FF2C address identity.",
+    "Build and live call verification do not establish gameplay execution.",
+    "Invalid pointers, invalid Lua indices, Lua longjmp behavior and deliberate cross-interpreter callback mutation are untested native caller domains.",
+    "0074b2b1 remains outside a defined Ghidra function and is retained as raw-byte evidence rather than a verifier call row."
+  ]
+}
