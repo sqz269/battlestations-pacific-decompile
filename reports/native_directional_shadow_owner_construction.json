@@ -1,0 +1,1901 @@
+{
+  "schema_version": 1,
+  "packet": "orch3_shadow_owner_construction_dz",
+  "status": "source_drafted_validation_pending",
+  "native_body_credit": 2145,
+  "source_base": "d68f8770ce5ee5108dbd636badf515e610a1b47e",
+  "created_utc": "2026-09-15T00:15:02.933435+00:00",
+  "routines": [
+    {
+      "address": "00a8e2e0",
+      "end_inclusive": "00a8e85f",
+      "bytes": 1408,
+      "coverage": "complete supported source normal body and stated EH composition"
+    },
+    {
+      "address": "00a8fa30",
+      "end_inclusive": "00a8fcb0",
+      "bytes": 641,
+      "coverage": "complete supported source normal body and stated EH composition"
+    },
+    {
+      "address": "00a8fd30",
+      "end_inclusive": "00a8fd8f",
+      "bytes": 96,
+      "coverage": "complete supported source normal body and stated EH composition"
+    }
+  ],
+  "original_abi": "Factory ECX borrowed light, no public stack args, EAX owner/null, RET. Each constructor ECX actual508h storage, stacked borrowed light, EAX original storage, RET4. Native argument slots are reused as scratch as detailed below.",
+  "source_interface": "Three explicit-context/admission C++ APIs. Not native ABI replacements or executable private FH3 frames.",
+  "source_anchors": [
+    {
+      "file": "src/native_directional_shadow_owner_construction.cpp",
+      "line": 49,
+      "anchor": "std::uint32_t zero_depth() noexcept {"
+    },
+    {
+      "file": "src/native_directional_shadow_owner_construction.cpp",
+      "line": 57,
+      "anchor": "std::uint32_t one_depth() noexcept {"
+    },
+    {
+      "file": "src/native_directional_shadow_owner_construction.cpp",
+      "line": 65,
+      "anchor": "void finish_base_fields(void* owner, const volatile std::uint32_t& one,"
+    },
+    {
+      "file": "src/native_directional_shadow_owner_construction.cpp",
+      "line": 99,
+      "anchor": "static void validate(void* storage, bool factory, void* light,"
+    },
+    {
+      "file": "src/native_directional_shadow_owner_construction.cpp",
+      "line": 136,
+      "anchor": "void release_captured_name(void* header, void* data, std::uint32_t getter_site,"
+    },
+    {
+      "file": "src/native_directional_shadow_owner_construction.cpp",
+      "line": 158,
+      "anchor": "void unwind_base() {"
+    },
+    {
+      "file": "src/native_directional_shadow_owner_construction.cpp",
+      "line": 193,
+      "anchor": "void* make_viewport(std::size_t record, int state, std::uint32_t alloc_site,"
+    },
+    {
+      "file": "src/native_directional_shadow_owner_construction.cpp",
+      "line": 207,
+      "anchor": "void make_camera(void* owner, unsigned index) {"
+    },
+    {
+      "file": "src/native_directional_shadow_owner_construction.cpp",
+      "line": 251,
+      "anchor": "void* NativeDirectionalShadowConstructionExecution::base(void* owner, void* light) {"
+    },
+    {
+      "file": "src/native_directional_shadow_owner_construction.cpp",
+      "line": 377,
+      "anchor": "void* NativeDirectionalShadowConstructionExecution::derived(void* owner, void* light) {"
+    },
+    {
+      "file": "src/native_directional_shadow_owner_construction.cpp",
+      "line": 485,
+      "anchor": "void* NativeDirectionalShadowConstructionExecution::factory(void* light) {"
+    }
+  ],
+  "source_pins": [
+    {
+      "path": "include/bsp/native_directional_shadow_owner_construction.hpp",
+      "sha256": "0adb386972154ee445c141ad69f90aed2ed994bc841ac63cf2529a86f9c2d41e",
+      "bytes": 2827,
+      "role": "owned source interface"
+    },
+    {
+      "path": "src/native_directional_shadow_owner_construction.cpp",
+      "sha256": "62e3c24a85dd3db0f80756fbfef408733e6fc1b65f7ea5310929d272dc070154",
+      "bytes": 27409,
+      "role": "owned normal/EH composition"
+    }
+  ],
+  "native_calls": [
+    {
+      "address": "00a8e3a3",
+      "native": "0041dd40",
+      "function": "00a8e2e0",
+      "evidence": "Pinned DV full original body and DX provider contract",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00a8e3be",
+      "native": "00bf7680",
+      "function": "00a8e2e0",
+      "evidence": "Pinned DV full original body and DX provider contract",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00a8e3d8",
+      "function": "00a8e2e0",
+      "kind": "indirect_call",
+      "instruction": "CALL EDX",
+      "current_target": "00b319b0",
+      "provenance": "captured renderer F8D394 atA8E38B; current profile/slot64 atA8E3C6/C8; D5F0A8+64 table word pinnedD5F10C"
+    },
+    {
+      "address": "00a8e3f7",
+      "native": "00419cc0",
+      "function": "00a8e2e0",
+      "evidence": "Pinned DV full original body and DX provider contract",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00a8fa57",
+      "native": "00a8e2e0",
+      "function": "00a8fa30",
+      "evidence": "Pinned DV full original body and DX provider contract",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00a8fa78",
+      "native": "00b1f920",
+      "function": "00a8fa30",
+      "evidence": "Pinned DV full original body and DX provider contract",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00a8fa9d",
+      "native": "00b1f940",
+      "function": "00a8fa30",
+      "evidence": "Pinned DV full original body and DX provider contract",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00a8faad",
+      "native": "00a8aaa0",
+      "function": "00a8fa30",
+      "evidence": "Pinned DV full original body and DX provider contract",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00a8fd4e",
+      "native": "00bf681b",
+      "function": "00a8fd30",
+      "evidence": "Pinned DV full original body and DX provider contract",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00a8fd69",
+      "native": "00a8fa30",
+      "function": "00a8fd30",
+      "evidence": "Pinned DV full original body and DX provider contract",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00a8e3fe",
+      "native": "00bd1510",
+      "function": "00a8e2e0",
+      "evidence": "Pinned DV full original body and DX provider contract",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00a8e405",
+      "native": "00bf681b",
+      "function": "00a8e2e0",
+      "evidence": "Pinned DV full original body and DX provider contract",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00a8e41c",
+      "native": "00b1f850",
+      "function": "00a8e2e0",
+      "evidence": "Pinned DV full original body and DX provider contract",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00a8e434",
+      "native": "00b71930",
+      "function": "00a8e2e0",
+      "evidence": "Pinned DV full original body and DX provider contract",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00a8e451",
+      "native": "0041e870",
+      "function": "00a8e2e0",
+      "evidence": "Pinned DV full original body and DX provider contract",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00a8e46a",
+      "native": "00b71a80",
+      "function": "00a8e2e0",
+      "evidence": "Pinned DV full original body and DX provider contract",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00a8e499",
+      "native": "00419cc0",
+      "function": "00a8e2e0",
+      "evidence": "Pinned DV full original body and DX provider contract",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00a8e4a0",
+      "native": "00bd1510",
+      "function": "00a8e2e0",
+      "evidence": "Pinned DV full original body and DX provider contract",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00a8e4aa",
+      "native": "00b71930",
+      "function": "00a8e2e0",
+      "evidence": "Pinned DV full original body and DX provider contract",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00a8e4c7",
+      "native": "0041e870",
+      "function": "00a8e2e0",
+      "evidence": "Pinned DV full original body and DX provider contract",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00a8e4dd",
+      "native": "00b71a80",
+      "function": "00a8e2e0",
+      "evidence": "Pinned DV full original body and DX provider contract",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00a8e50c",
+      "native": "00419cc0",
+      "function": "00a8e2e0",
+      "evidence": "Pinned DV full original body and DX provider contract",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00a8e513",
+      "native": "00bd1510",
+      "function": "00a8e2e0",
+      "evidence": "Pinned DV full original body and DX provider contract",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00a8e51d",
+      "native": "00b71930",
+      "function": "00a8e2e0",
+      "evidence": "Pinned DV full original body and DX provider contract",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00a8e53a",
+      "native": "0041e870",
+      "function": "00a8e2e0",
+      "evidence": "Pinned DV full original body and DX provider contract",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00a8e550",
+      "native": "00b71a80",
+      "function": "00a8e2e0",
+      "evidence": "Pinned DV full original body and DX provider contract",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00a8e57f",
+      "native": "00419cc0",
+      "function": "00a8e2e0",
+      "evidence": "Pinned DV full original body and DX provider contract",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00a8e586",
+      "native": "00bd1510",
+      "function": "00a8e2e0",
+      "evidence": "Pinned DV full original body and DX provider contract",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00a8e590",
+      "native": "00b71930",
+      "function": "00a8e2e0",
+      "evidence": "Pinned DV full original body and DX provider contract",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00a8e5ad",
+      "native": "0041e870",
+      "function": "00a8e2e0",
+      "evidence": "Pinned DV full original body and DX provider contract",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00a8e5c3",
+      "native": "00b71a80",
+      "function": "00a8e2e0",
+      "evidence": "Pinned DV full original body and DX provider contract",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00a8e5ed",
+      "native": "00419cc0",
+      "function": "00a8e2e0",
+      "evidence": "Pinned DV full original body and DX provider contract",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00a8e5f4",
+      "native": "00bd1510",
+      "function": "00a8e2e0",
+      "evidence": "Pinned DV full original body and DX provider contract",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00a8e5fe",
+      "native": "00b6fdf0",
+      "function": "00a8e2e0",
+      "evidence": "Pinned DV full original body and DX provider contract",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00a8e608",
+      "native": "00b6fdf0",
+      "function": "00a8e2e0",
+      "evidence": "Pinned DV full original body and DX provider contract",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00a8e612",
+      "native": "00b6fdf0",
+      "function": "00a8e2e0",
+      "evidence": "Pinned DV full original body and DX provider contract",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00a8e61c",
+      "native": "00b6fdf0",
+      "function": "00a8e2e0",
+      "evidence": "Pinned DV full original body and DX provider contract",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00a8e626",
+      "native": "00b6fe10",
+      "function": "00a8e2e0",
+      "evidence": "Pinned DV full original body and DX provider contract",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00a8e630",
+      "native": "00b6fe10",
+      "function": "00a8e2e0",
+      "evidence": "Pinned DV full original body and DX provider contract",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00a8e63a",
+      "native": "00b6fe10",
+      "function": "00a8e2e0",
+      "evidence": "Pinned DV full original body and DX provider contract",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00a8e644",
+      "native": "00b6fe10",
+      "function": "00a8e2e0",
+      "evidence": "Pinned DV full original body and DX provider contract",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00a8e650",
+      "native": "00b6fe50",
+      "function": "00a8e2e0",
+      "evidence": "Pinned DV full original body and DX provider contract",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00a8e65c",
+      "native": "00b6fe50",
+      "function": "00a8e2e0",
+      "evidence": "Pinned DV full original body and DX provider contract",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00a8e668",
+      "native": "00b6fe50",
+      "function": "00a8e2e0",
+      "evidence": "Pinned DV full original body and DX provider contract",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00a8e674",
+      "native": "00b6fe50",
+      "function": "00a8e2e0",
+      "evidence": "Pinned DV full original body and DX provider contract",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00a8e67b",
+      "native": "00bf681b",
+      "function": "00a8e2e0",
+      "evidence": "Pinned DV full original body and DX provider contract",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00a8e692",
+      "native": "00b1f850",
+      "function": "00a8e2e0",
+      "evidence": "Pinned DV full original body and DX provider contract",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00a8e6a4",
+      "native": "00bf681b",
+      "function": "00a8e2e0",
+      "evidence": "Pinned DV full original body and DX provider contract",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00a8e6bb",
+      "native": "00b1f850",
+      "function": "00a8e2e0",
+      "evidence": "Pinned DV full original body and DX provider contract",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00a8e6cd",
+      "native": "00bf681b",
+      "function": "00a8e2e0",
+      "evidence": "Pinned DV full original body and DX provider contract",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00a8e6e4",
+      "native": "00b1f850",
+      "function": "00a8e2e0",
+      "evidence": "Pinned DV full original body and DX provider contract",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00a8e6f6",
+      "native": "00bf681b",
+      "function": "00a8e2e0",
+      "evidence": "Pinned DV full original body and DX provider contract",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00a8e70d",
+      "native": "00b1f850",
+      "function": "00a8e2e0",
+      "evidence": "Pinned DV full original body and DX provider contract",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00a8e724",
+      "native": "00b71990",
+      "function": "00a8e2e0",
+      "evidence": "Pinned DV full original body and DX provider contract",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00a8e730",
+      "native": "00b71990",
+      "function": "00a8e2e0",
+      "evidence": "Pinned DV full original body and DX provider contract",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00a8e73c",
+      "native": "00b71990",
+      "function": "00a8e2e0",
+      "evidence": "Pinned DV full original body and DX provider contract",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00a8e748",
+      "native": "00b71990",
+      "function": "00a8e2e0",
+      "evidence": "Pinned DV full original body and DX provider contract",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00a8e756",
+      "native": "00b1f750",
+      "function": "00a8e2e0",
+      "evidence": "Pinned DV full original body and DX provider contract",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00a8e764",
+      "native": "00b1f750",
+      "function": "00a8e2e0",
+      "evidence": "Pinned DV full original body and DX provider contract",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00a8e772",
+      "native": "00b1f750",
+      "function": "00a8e2e0",
+      "evidence": "Pinned DV full original body and DX provider contract",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00a8e780",
+      "native": "00b1f750",
+      "function": "00a8e2e0",
+      "evidence": "Pinned DV full original body and DX provider contract",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00a8e78e",
+      "native": "00b1f760",
+      "function": "00a8e2e0",
+      "evidence": "Pinned DV full original body and DX provider contract",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00a8e79c",
+      "native": "00b1f760",
+      "function": "00a8e2e0",
+      "evidence": "Pinned DV full original body and DX provider contract",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00a8e7aa",
+      "native": "00b1f760",
+      "function": "00a8e2e0",
+      "evidence": "Pinned DV full original body and DX provider contract",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00a8e7b8",
+      "native": "00b1f760",
+      "function": "00a8e2e0",
+      "evidence": "Pinned DV full original body and DX provider contract",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00a8e7c9",
+      "native": "00b1f750",
+      "function": "00a8e2e0",
+      "evidence": "Pinned DV full original body and DX provider contract",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00a8e7da",
+      "native": "00b1f760",
+      "function": "00a8e2e0",
+      "evidence": "Pinned DV full original body and DX provider contract",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00a8e7fe",
+      "native": "00b1f940",
+      "function": "00a8e2e0",
+      "evidence": "Pinned DV full original body and DX provider contract",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00a8fab9",
+      "native": "004134f0",
+      "function": "00a8fa30",
+      "evidence": "Pinned DV full original body and DX provider contract",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00a8fad6",
+      "native": "00b1f920",
+      "function": "00a8fa30",
+      "evidence": "Pinned DV full original body and DX provider contract",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00a8fafb",
+      "native": "00b1f940",
+      "function": "00a8fa30",
+      "evidence": "Pinned DV full original body and DX provider contract",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00a8fb0b",
+      "native": "00a8aaa0",
+      "function": "00a8fa30",
+      "evidence": "Pinned DV full original body and DX provider contract",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00a8fb17",
+      "native": "004134f0",
+      "function": "00a8fa30",
+      "evidence": "Pinned DV full original body and DX provider contract",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00a8fb34",
+      "native": "00b1f920",
+      "function": "00a8fa30",
+      "evidence": "Pinned DV full original body and DX provider contract",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00a8fb59",
+      "native": "00b1f940",
+      "function": "00a8fa30",
+      "evidence": "Pinned DV full original body and DX provider contract",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00a8fb69",
+      "native": "00a8aaa0",
+      "function": "00a8fa30",
+      "evidence": "Pinned DV full original body and DX provider contract",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00a8fb75",
+      "native": "004134f0",
+      "function": "00a8fa30",
+      "evidence": "Pinned DV full original body and DX provider contract",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00a8fb9a",
+      "native": "00b1f920",
+      "function": "00a8fa30",
+      "evidence": "Pinned DV full original body and DX provider contract",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00a8fbbf",
+      "native": "00b1f940",
+      "function": "00a8fa30",
+      "evidence": "Pinned DV full original body and DX provider contract",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00a8fbcf",
+      "native": "00a8aaa0",
+      "function": "00a8fa30",
+      "evidence": "Pinned DV full original body and DX provider contract",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00a8fbdb",
+      "native": "004134f0",
+      "function": "00a8fa30",
+      "evidence": "Pinned DV full original body and DX provider contract",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00a8fbe6",
+      "native": "00a8fda0",
+      "function": "00a8fa30",
+      "evidence": "Pinned DV full original body and DX provider contract",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00a8fc02",
+      "native": "00bf681b",
+      "function": "00a8fa30",
+      "evidence": "Pinned DV full original body and DX provider contract",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00a8fc19",
+      "native": "00b1fbb0",
+      "function": "00a8fa30",
+      "evidence": "Pinned DV full original body and DX provider contract",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00a8fc2c",
+      "native": "00b1fab0",
+      "function": "00a8fa30",
+      "evidence": "Pinned DV full original body and DX provider contract",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00a8fc37",
+      "native": "00a8fdc0",
+      "function": "00a8fa30",
+      "evidence": "Pinned DV full original body and DX provider contract",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00a8fc3f",
+      "native": "00b1fb00",
+      "function": "00a8fa30",
+      "evidence": "Pinned DV full original body and DX provider contract",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00a8fc50",
+      "native": "00bf681b",
+      "function": "00a8fa30",
+      "evidence": "Pinned DV full original body and DX provider contract",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00a8fc67",
+      "native": "00b1fbb0",
+      "function": "00a8fa30",
+      "evidence": "Pinned DV full original body and DX provider contract",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00a8fc7e",
+      "native": "00b1fab0",
+      "function": "00a8fa30",
+      "evidence": "Pinned DV full original body and DX provider contract",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00a8fc89",
+      "native": "00a8fdc0",
+      "function": "00a8fa30",
+      "evidence": "Pinned DV full original body and DX provider contract",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00a8fc95",
+      "native": "00b1fb00",
+      "function": "00a8fa30",
+      "evidence": "Pinned DV full original body and DX provider contract",
+      "kind": "direct_call"
+    }
+  ],
+  "native_eh": {
+    "base": {
+      "handler": "00cb64db",
+      "funcinfo": "00dec674",
+      "map": "00dec698",
+      "entries": [
+        [
+          0,
+          -1,
+          "00cb6410"
+        ],
+        [
+          1,
+          0,
+          "00cb6418"
+        ],
+        [
+          2,
+          0,
+          "00cb6420"
+        ],
+        [
+          3,
+          0,
+          "00cb642b"
+        ],
+        [
+          4,
+          3,
+          "00cb6433"
+        ],
+        [
+          5,
+          0,
+          "00cb6433"
+        ],
+        [
+          6,
+          0,
+          "00cb644c"
+        ],
+        [
+          7,
+          6,
+          "00cb6454"
+        ],
+        [
+          8,
+          0,
+          "00cb6454"
+        ],
+        [
+          9,
+          0,
+          "00cb646d"
+        ],
+        [
+          10,
+          9,
+          "00cb6475"
+        ],
+        [
+          11,
+          0,
+          "00cb6475"
+        ],
+        [
+          12,
+          0,
+          "00cb648e"
+        ],
+        [
+          13,
+          12,
+          "00cb6496"
+        ],
+        [
+          14,
+          0,
+          "00cb6496"
+        ],
+        [
+          15,
+          0,
+          "00cb64af"
+        ],
+        [
+          16,
+          0,
+          "00cb64ba"
+        ],
+        [
+          17,
+          0,
+          "00cb64c5"
+        ],
+        [
+          18,
+          0,
+          "00cb64d0"
+        ]
+      ],
+      "actions": {
+        "00cb6410": "ECX=[EBP-40]; JMP existingBD30F0 only",
+        "00cb6418": "ECX=&[EBP-3C]; JMP41DD20 white temporary",
+        "00cb6420": "free current[EBP+04] viewport allocation; POP ECX; RET",
+        "00cb642b": "return current[EBP+04] camera slot via B71350",
+        "00cb6433": "if flag bit1 at[EBP-44], clear it then41DD20(&[EBP-34])",
+        "00cb644c": "return current[EBP+04] camera slot viaB71350",
+        "00cb6454": "if bit2, clear then41DD20(&[EBP-2C])",
+        "00cb646d": "return current[EBP+04] camera slot viaB71350",
+        "00cb6475": "if bit4, clear then41DD20(&[EBP-24])",
+        "00cb648e": "return current[EBP+04] camera slot viaB71350",
+        "00cb6496": "if bit8, clear then41DD20(&[EBP-1C])",
+        "00cb64af": "free current[EBP+04] viewport; POP ECX; RET",
+        "00cb64ba": "same raw viewport free",
+        "00cb64c5": "same raw viewport free",
+        "00cb64d0": "same raw viewport free"
+      },
+      "arm_sites": {
+        "0": [
+          "00a8e397",
+          "00a8e3e6",
+          "00a8e42a",
+          "00a8e47b",
+          "00a8e4ee",
+          "00a8e561",
+          "00a8e5d4",
+          "00a8e69d",
+          "00a8e6c6",
+          "00a8e6ef",
+          "00a8e71d"
+        ],
+        "1": [
+          "00a8e3d3"
+        ],
+        "2": [
+          "00a8e413"
+        ],
+        "3": [
+          "00a8e441"
+        ],
+        "4": [
+          "00a8e45d"
+        ],
+        "6": [
+          "00a8e4b7"
+        ],
+        "7": [
+          "00a8e4d8"
+        ],
+        "9": [
+          "00a8e52a"
+        ],
+        "10": [
+          "00a8e54b"
+        ],
+        "12": [
+          "00a8e59d"
+        ],
+        "13": [
+          "00a8e5be"
+        ],
+        "15": [
+          "00a8e689"
+        ],
+        "16": [
+          "00a8e6b2"
+        ],
+        "17": [
+          "00a8e6db"
+        ],
+        "18": [
+          "00a8e704"
+        ]
+      },
+      "map_only_states": [
+        5,
+        8,
+        11,
+        14
+      ]
+    },
+    "derived": {
+      "handler": "00cb656e",
+      "funcinfo": "00dec7d4",
+      "map": "00dec7bc",
+      "entries": [
+        {
+          "state": 0,
+          "next": -1,
+          "action": "00cb6550 -> A8DEC0([EBP-58])"
+        },
+        {
+          "state": 1,
+          "next": 0,
+          "action": "00cb6558 frees[EBP-54], POP ECX; RET"
+        },
+        {
+          "state": 2,
+          "next": 0,
+          "action": "00cb6563 frees[EBP+04], POP ECX; RET"
+        }
+      ],
+      "arm_sites": {
+        "0": [
+          "00a8fa66",
+          "00a8fc26",
+          "00a8fc74"
+        ],
+        "1": [
+          "00a8fc10"
+        ],
+        "2": [
+          "00a8fc5e"
+        ]
+      },
+      "ownership": "State0 is armed only after base returns. After each target constructor succeeds, disarm raw free before publishing/using target; later failure calls completeA8DEC0 exactly once and leaves outer allocation for factory cleanup."
+    },
+    "factory": {
+      "handler": "00cb658b",
+      "funcinfo": "00dec800",
+      "map": "00dec7f8",
+      "entries": [
+        {
+          "state": 0,
+          "next": -1,
+          "action": "00cb6580 free[EBP-10], POP ECX; RET"
+        }
+      ],
+      "arm_site": "00a8fd5c",
+      "ownership": "Allocate508h, then arm raw free before null test/derived constructor. Constructor exception frees only the508h allocation after inner cleanup; it must not reclaim host companion storage holding native survivors."
+    }
+  },
+  "native_local_lanes": {
+    "base": {
+      "bytes": "0x4c",
+      "mapping": "EBP-44..EBP+7",
+      "flags": "-44",
+      "saved_owner": "-40",
+      "white_header": "-3c",
+      "camera_headers": [
+        "-34",
+        "-2c",
+        "-24",
+        "-1c"
+      ],
+      "late_size_pair": [
+        "-14",
+        "-10"
+      ],
+      "mutable_public_word": "+4"
+    },
+    "derived": {
+      "bytes": "0x60",
+      "mapping": "EBP-58..EBP+7",
+      "saved_owner": "-58",
+      "pair_then_loop_raw_slot": "-54/-50, later -54 raw pointer",
+      "matrix_40h": "-4c..-0d",
+      "mutable_public_word": "+4: light -> loop count4 -> fifth raw target",
+      "evidence": "DV saved A8FB03 PUSH ECX precedes A8FB04 LEA EDX,[ESP+20]; baseline ESP=entryESP-68, so matrix starts EBP-4C, not -48."
+    },
+    "factory": "persistent current raw allocation cell corresponding to EBP-10",
+    "rules": "Stable raw8h headers and scratch lanes; initialize only reached native stores, preserve scratch overlap/current cleanup reads. Separate host phase/state/site bookkeeping is not an executable FH3 frame."
+  },
+  "normal_byte_evidence": [
+    {
+      "address": "00a8e2e0",
+      "length": 1408,
+      "hex": "6aff68db64cb0064a100000000506489250000000083ec3853568bf133db895c2408c70630b1ce005789742410c7460401000000895e34c70674b5d500895e30899ef0040000899ef4040000899ef8040000899efc040000899e00050000895e10895e14895e18895e1c895e20895e24895e28895e2c899e04050000a1f0bbf8008b40048986880300008b0df0bbf8008b410889868c0300008b44245489460c8b90a40000006a018956348b3d94d3f8006a098d4c241c895c2454895c241c895c2420e898f998ff8b4424183bc374168b4c241483c1015168a477ce0050e8bd92160083c40c8b178b5264538d442418508bcfc644245401ffd28986840300008b4424183bc3885c244c74178b4c24146a0183c1015150e8c4b898ff8bc8e80d3114006a34e81184160083c404894424543bc3c644244c0274098bc8e82f140900eb0233c0b958040000885c244c898604050000e8f7340e008bf8897c24543bfbc644244c03742968bcb5d5008d4c2420e81a0499ff8d44241c508bcfc644245004c744241001000000e811360e00eb0233c0f644240c01894620895c244c74248b4c24208364240cfe3bcb74178b44241c6a0183c0015051e822b898ff8bc8e86b301400b958040000e881340e008bf8897c24543bfbc644244c06742668a8b5d5008d4c2428e8a40399ff834c240c028d4c2424518bcfc644245007e89e350e00eb0233c0f644240c02894624895c244c74248b4c24288364240cfd3bcb74178b4424246a0183c0015051e8afb798ff8bc8e8f82f1400b958040000e80e340e008bf8897c24543bfbc644244c0974266894b5d5008d4c2430e8310399ff834c240c048d54242c528bcfc64424500ae82b350e00eb0233c0f644240c04894628895c244c74248b4c24308364240cfb3bcb74178b44242c6a0183c0015051e83cb798ff8bc8e8852f1400b958040000e89b330e008bf8897c24543bfbc644244c0c74266880b5d5008d4c2438e8be0299ff834c240c088d442434508bcfc64424500de8b8340e00eb0233c0f644240c0889462c895c244c741f8b4c24383bcb74178b4424346a0183c0015051e8ceb698ff8bc8e8172f14008b4e206a02e8ed170e008b4e246a02e8e3170e008b4e286a02e8d9170e008b4e2c6a02e8cf170e008b4e206a02e8e5170e008b4e246a02e8db170e008b4e286a02e8d1170e008b4e2c6a02e8c7170e008b4e2083c8ff50e8fb170e008b4e2483c8ff50e8ef170e008b4e2883c8ff50e8e3170e008b4e2c83c8ff50e8d7170e006a34e89b81160083c404894424543bc3c644244c0f74098bc8e8b9110900eb0233c06a34885c2450894610e87281160083c404894424543bc3c644244c1074098bc8e890110900eb0233c06a34885c2450894614e84981160083c404894424543bc3c644244c1174098bc8e867110900eb0233c06a34885c2450894618e82081160083c404894424543bc3c644244c1274098bc8e83e110900eb0233c08b4e10518b4e20885c245089461ce867320e008b56148b4e2452e85b320e008b46188b4e2850e84f320e008b4e1c518b4e2ce843320e00d9ee51d91c248b4e10e8f50f0900d9ee51d91c248b4e14e8e70f0900d9ee51d91c248b4e18e8d90f0900d9ee51d91c248b4e1ce8cb0f0900d9e851d91c248b4e10e8cd0f0900d9e851d91c248b4e14e8bf0f0900d9e851d91c248b4e18e8b10f0900d9e851d91c248b4e1ce8a30f0900d9ee51d91c248b8e04050000e8820f0900d9e851d91c248b8e04050000e8810f09008b96880300008b868c0300008d4c243c518b8e040500008954244089442444e83d1109000f57c0f30f100d4ca2d700f30f114638f30f114e3cf30f1146408b4c2444f30f118690030000f30f118694030000f30f118698030000f30f11869c030000f30f1005fc77ce005ff30f1146088bc65e5b64890d0000000083c444c20400",
+      "sha256": "39a4b3adac8668151352b64903aa5346d6acf9cff8d3b0043dba3a05fa82879c",
+      "original_pe_offset": "0x68e2e0",
+      "section": ".text",
+      "section_characteristics": "0x60000020",
+      "matches_original_pe": true
+    },
+    {
+      "address": "00a8fa30",
+      "length": 641,
+      "hex": "6aff686e65cb0064a100000000506489250000000083ec4c8b44245c535556578bf15089742414e884e8ffff8d4c241433db518b4e10895c2468c706d8b5d500895c2418895c241ce8a3fe08008b868c0300008b96880300008b4e10d1e8894424188d442414d1ea5089542418e89efe08008b4e10518d542420528bcee8eeafffff508d8e44020000e8323a98ff8b86880300008d4c2414d1e8518b4e1489442418895c241ce845fe08008b868c0300008b96880300008b4e14d1e8894424188d442414d1ea5089542418e840fe08008b4e14518d542420528bcee890afffff508d8e84020000e8d43998ff8b868c0300008b4e18d1e8894424188d44241450895c2418e8e7fd08008b868c0300008b8e88030000d1e8d1e98d542414894c241489442418528b4e18e8e2fd08008b4618508d4c2420518bcee832afffff508d8ec4020000e8763998ff8b868c0300008b96880300008b4e1cd1e8894424188d442414d1ea5089542418e881fd08008b8e880300008b868c030000d1e98d542414d1e8894c24148b4e1c528944241ce87cfd08008b461c508d4c2420518bcee8ccaeffff508d8e04030000e8103998ff8b0df0bbf800e8b50100008be88dbef0040000c744246c04000000eb038d49006a40e8146c160083c404894424143bc3c64424640174098bc8e892ff0800eb0233c055538bc8885c246c8907e87ffe08008b0df0bbf800e8840100008b0f50e8bcfe080083c704836c246c0175b26a40e8c66b160083c4048944246c3bc3c64424640274098bc8e844ff0800eb0233c055538bc8885c246c898600050000e82dfe08008b0df0bbf800e8320100008b8e0005000050e866fe08008b4c245c5f8bc65e5d5b64890d0000000083c458c20400",
+      "sha256": "ff4f370202840315d08ef22f9ec9becb9f9b2d2b75c7425931dbb1ecfd551af3",
+      "original_pe_offset": "0x68fa30",
+      "section": ".text",
+      "section_characteristics": "0x60000020",
+      "matches_original_pe": true
+    },
+    {
+      "address": "00a8fd30",
+      "length": 96,
+      "hex": "6aff688b65cb0064a1000000005064892500000000515668080500008bf1e8c86a160083c4048944240485c0c7442410000000007418568bc8e8c2fcffff5e8b4c240464890d0000000083c410c38b4c240833c05e64890d0000000083c410c3",
+      "sha256": "b0f13e7a09c0ba24673b83b345da028efa8789ddb8564f77bbdf48179f47b6e8",
+      "original_pe_file_offset": "0x68fd30",
+      "matches_original_pe": true,
+      "reuse": "unchanged full factory pin fromDT",
+      "original_pe_offset": "0x68fd30",
+      "section": ".text",
+      "section_characteristics": "0x60000020"
+    }
+  ],
+  "input_pins": [
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-orch3-20260910/local/dx-shadow-owner-construction-contract.json",
+      "sha256": "77675f12e46af94ccdf6cdb9099cd685d2825efe89737f85e249e2f28179d05c",
+      "bytes": 38298,
+      "role": "accepted complete construction contract"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-orch3-20260910/local/dw-dv-shadow-owner-producer-admission.json",
+      "sha256": "750b0355bd81eff0c8bd128bb5898df56a973169161661eec4b240c529331fe1",
+      "bytes": 109550,
+      "role": "retained full native bytes/listings/maps/call rows"
+    },
+    {
+      "path": "src/scene_attachment.cpp",
+      "revision": "37b47a7eae7bafd0d4487655d870ac6c022f24c1",
+      "sha256": "58fa851ddc57a0910f4903da4d08fa74cf56b41af352b8d9b8ba8f4ff7715719",
+      "anchors": [
+        {
+          "symbol_or_anchor": "SceneAttachmentRuntime::reserve_binding()",
+          "lines": [
+            300
+          ]
+        },
+        {
+          "symbol_or_anchor": "SceneAttachmentRuntime::bind(SceneNodeAttachment& node, BindingAdmission&&",
+          "lines": [
+            325
+          ]
+        },
+        {
+          "symbol_or_anchor": "BindingAdmission::cancel()",
+          "lines": [
+            284
+          ]
+        }
+      ],
+      "review": "existing source/provider contract; unchanged from DX"
+    },
+    {
+      "path": "src/generated_model_lifetime.cpp",
+      "revision": "37b47a7eae7bafd0d4487655d870ac6c022f24c1",
+      "sha256": "d8c5990909d169f0f70d9e3320b4e671da6fcb58694cc9ac5f7d621cbdeabd64",
+      "anchors": [
+        {
+          "symbol_or_anchor": "GeneratedModelLifetimeRuntime::reserve_binding()",
+          "lines": [
+            71
+          ]
+        },
+        {
+          "symbol_or_anchor": "GeneratedModelLifetimeRuntime::bind(GeneratedModelNodeLifetime& node, BindingAdmission&&",
+          "lines": [
+            89
+          ]
+        },
+        {
+          "symbol_or_anchor": "GeneratedModelLifetimeRuntime::find_actual_node",
+          "lines": [
+            114
+          ]
+        }
+      ],
+      "review": "existing source/provider contract; unchanged from DX"
+    },
+    {
+      "path": "include/bsp/native_viewport_registry.hpp",
+      "revision": "37b47a7eae7bafd0d4487655d870ac6c022f24c1",
+      "sha256": "250decc6520abb9d3085670129d0884b087465f4eec1027cb210375619e8d486",
+      "anchors": [
+        {
+          "symbol_or_anchor": "class Storage final",
+          "lines": [
+            21
+          ]
+        },
+        {
+          "symbol_or_anchor": "class Admission final",
+          "lines": [
+            38
+          ]
+        },
+        {
+          "symbol_or_anchor": "void constructed",
+          "lines": [
+            63
+          ]
+        },
+        {
+          "symbol_or_anchor": "void forget_quiescent",
+          "lines": [
+            69
+          ]
+        }
+      ],
+      "review": "existing source/provider contract; unchanged from DX"
+    },
+    {
+      "path": "src/native_viewport_registry.cpp",
+      "revision": "37b47a7eae7bafd0d4487655d870ac6c022f24c1",
+      "sha256": "cf63de25d9e107f83f361db4d4fa7c2a922119fa62584dd3688b8588d201a289",
+      "anchors": [
+        {
+          "symbol_or_anchor": "NativeViewportRegistry::admit(",
+          "lines": [
+            46
+          ]
+        },
+        {
+          "symbol_or_anchor": "NativeViewportRegistry::constructed(",
+          "lines": [
+            66
+          ]
+        },
+        {
+          "symbol_or_anchor": "NativeViewportRegistry::retire_before_destroy(",
+          "lines": [
+            93
+          ]
+        },
+        {
+          "symbol_or_anchor": "NativeViewportRegistry::forget_quiescent(",
+          "lines": [
+            103
+          ]
+        }
+      ],
+      "review": "existing source/provider contract; unchanged from DX"
+    },
+    {
+      "path": "include/bsp/native_camera_owner.hpp",
+      "revision": "37b47a7eae7bafd0d4487655d870ac6c022f24c1",
+      "sha256": "527c605fcc55eedd421271a5c4b27d45947e325c391838f14f3cab6d75e1f808",
+      "anchors": [
+        {
+          "symbol_or_anchor": "class NativeCameraOwner final",
+          "lines": [
+            66
+          ]
+        },
+        {
+          "symbol_or_anchor": "void* construct_native_camera_00b71a80",
+          "lines": [
+            101,
+            107,
+            113
+          ]
+        }
+      ],
+      "review": "existing source/provider contract; unchanged from DX"
+    },
+    {
+      "path": "src/native_camera_owner.cpp",
+      "revision": "37b47a7eae7bafd0d4487655d870ac6c022f24c1",
+      "sha256": "51f7c97c40027337af8d83b0a35613338a8963ad2664d0d6eaa220be7d22f376",
+      "anchors": [
+        {
+          "symbol_or_anchor": "NativeCameraOwner::NativeCameraOwner(void* slot",
+          "lines": [
+            149,
+            151,
+            154
+          ]
+        },
+        {
+          "symbol_or_anchor": "void* construct_native_camera_raw(",
+          "lines": [
+            266
+          ]
+        },
+        {
+          "symbol_or_anchor": "void* construct_native_camera_00b71a80",
+          "lines": [
+            184,
+            359,
+            363
+          ]
+        },
+        {
+          "symbol_or_anchor": "void finish_node(",
+          "lines": [
+            123
+          ]
+        },
+        {
+          "symbol_or_anchor": "NativeCameraOwner::~NativeCameraOwner()",
+          "lines": [
+            176
+          ]
+        }
+      ],
+      "review": "existing source/provider contract; unchanged from DX"
+    },
+    {
+      "path": "include/bsp/native_camera_reference.hpp",
+      "revision": "37b47a7eae7bafd0d4487655d870ac6c022f24c1",
+      "sha256": "5920175404a18b464c3ce826162c8279b98c12405ac28d52363241cd2d79415e",
+      "anchors": [
+        {
+          "symbol_or_anchor": "class NativeCameraReference final",
+          "lines": [
+            24
+          ]
+        },
+        {
+          "symbol_or_anchor": "NativeCameraReference(NativeCameraOwner&",
+          "lines": [
+            27,
+            30,
+            44
+          ]
+        }
+      ],
+      "review": "existing source/provider contract; unchanged from DX"
+    },
+    {
+      "path": "src/native_camera_reference.cpp",
+      "revision": "37b47a7eae7bafd0d4487655d870ac6c022f24c1",
+      "sha256": "c877dd80459c1f7ebf2e9e20c4f6fd3f0c349e0ff3b4dbeb8f6553a0fb9badab",
+      "anchors": [
+        {
+          "symbol_or_anchor": "NativeCameraReference::NativeCameraReference",
+          "lines": [
+            19,
+            22,
+            25
+          ]
+        },
+        {
+          "symbol_or_anchor": "NativeCameraReference::release_zero_references()",
+          "lines": [
+            76
+          ]
+        },
+        {
+          "symbol_or_anchor": "NativeCameraReference::~NativeCameraReference()",
+          "lines": [
+            38
+          ]
+        }
+      ],
+      "review": "existing source/provider contract; unchanged from DX"
+    },
+    {
+      "path": "include/bsp/native_camera_pool.hpp",
+      "revision": "37b47a7eae7bafd0d4487655d870ac6c022f24c1",
+      "sha256": "1e084ad1aefc6df32be13fec3ff9fdc94d727378173fd1a24e9324727c630038",
+      "anchors": [
+        {
+          "symbol_or_anchor": "slot_bytes =",
+          "lines": [
+            29
+          ]
+        },
+        {
+          "symbol_or_anchor": "bind_static_native_camera_pool_0108ffb0",
+          "lines": [
+            60
+          ]
+        },
+        {
+          "symbol_or_anchor": "allocate_native_camera_slot_00b71930",
+          "lines": [
+            64
+          ]
+        },
+        {
+          "symbol_or_anchor": "return_native_camera_slot_00b71350",
+          "lines": [
+            67
+          ]
+        }
+      ],
+      "review": "existing source/provider contract; unchanged from DX"
+    },
+    {
+      "path": "src/native_camera_pool.cpp",
+      "revision": "37b47a7eae7bafd0d4487655d870ac6c022f24c1",
+      "sha256": "15dafb3a90dcb2dd5dccea1147f2cd4e198f0cd760b8baad5e02e02876d772a3",
+      "anchors": [
+        {
+          "symbol_or_anchor": "void bind_static_native_camera_pool_0108ffb0",
+          "lines": [
+            226
+          ]
+        },
+        {
+          "symbol_or_anchor": "void* allocate_native_camera_slot_00b71930",
+          "lines": [
+            242
+          ]
+        },
+        {
+          "symbol_or_anchor": "void return_native_camera_slot_00b71350",
+          "lines": [
+            245
+          ]
+        }
+      ],
+      "review": "existing source/provider contract; unchanged from DX"
+    },
+    {
+      "path": "src/native_viewport_owner.cpp",
+      "revision": "37b47a7eae7bafd0d4487655d870ac6c022f24c1",
+      "sha256": "d7f733023f89193a4bbd488a9e925b46ac52f2cc0ee1be04f6df2e663616d2ea",
+      "anchors": [
+        {
+          "symbol_or_anchor": "NativeViewportOwner* initialize_native_viewport_owner_00b1f850",
+          "lines": [
+            58
+          ]
+        },
+        {
+          "symbol_or_anchor": "NativeViewportOwner* allocate_native_viewport_owner",
+          "lines": [
+            92,
+            103
+          ]
+        },
+        {
+          "symbol_or_anchor": "NativeViewportOwner* delete_native_viewport_owner_00b1f8f0",
+          "lines": [
+            123
+          ]
+        }
+      ],
+      "review": "existing source/provider contract; unchanged from DX"
+    },
+    {
+      "path": "src/native_cockpit_construction_block.cpp",
+      "revision": "37b47a7eae7bafd0d4487655d870ac6c022f24c1",
+      "sha256": "82b94ea93e18ed2a1bb765d37daab6a48ce501c4ce0ced8b612a3cf95a3c6ca1",
+      "anchors": [
+        {
+          "symbol_or_anchor": "NativeCockpitConstructionBlock::admit(",
+          "lines": [
+            87
+          ]
+        },
+        {
+          "symbol_or_anchor": "NativeCockpitConstructionBlock::Admission::cancel()",
+          "lines": [
+            36
+          ]
+        },
+        {
+          "symbol_or_anchor": "NativeCockpitConstructionBlock::record_camera_retirement(",
+          "lines": [
+            124
+          ]
+        },
+        {
+          "symbol_or_anchor": "NativeCockpitConstructionBlock::reset_after_host_quiescence()",
+          "lines": [
+            136
+          ]
+        }
+      ],
+      "review": "existing source/provider contract; unchanged from DX"
+    },
+    {
+      "path": "src/native_cockpit_helper_construction.cpp",
+      "revision": "37b47a7eae7bafd0d4487655d870ac6c022f24c1",
+      "sha256": "a72d1f60a8cda7b68cbb5fe3b9fcf6f87b60bbb36e528d34448d3d0157d752da",
+      "anchors": [
+        {
+          "symbol_or_anchor": "bool camera_completed",
+          "lines": [
+            116
+          ]
+        },
+        {
+          "symbol_or_anchor": "camera_reference_.emplace",
+          "lines": [
+            134
+          ]
+        },
+        {
+          "symbol_or_anchor": "&& !camera_completed",
+          "lines": [
+            207
+          ]
+        }
+      ],
+      "review": "existing source/provider contract; unchanged from DX"
+    },
+    {
+      "path": "include/bsp/native_texture_loading_cache.hpp",
+      "revision": "37b47a7eae7bafd0d4487655d870ac6c022f24c1",
+      "sha256": "dc142e19b3565df24bd6a88b7e495a56c9c1e47dd67512824e34ca1b2f63773d",
+      "anchors": [
+        {
+          "symbol_or_anchor": "struct NativeTextureCacheAcquired final",
+          "lines": [
+            163
+          ]
+        },
+        {
+          "symbol_or_anchor": "struct NativeTextureCacheContext",
+          "lines": [
+            17,
+            152
+          ]
+        },
+        {
+          "symbol_or_anchor": "void* load_native_renderer_texture_00b319b0",
+          "lines": [
+            208
+          ]
+        }
+      ],
+      "review": "existing source/provider contract; unchanged from DX"
+    },
+    {
+      "path": "src/native_texture_loading_cache.cpp",
+      "revision": "37b47a7eae7bafd0d4487655d870ac6c022f24c1",
+      "sha256": "708020170abaf5a9bc22f522843dd766a97e67617f4716227d852fdd1a63e03c",
+      "anchors": [
+        {
+          "symbol_or_anchor": "NativeTextureCacheAcquired::~NativeTextureCacheAcquired()",
+          "lines": [
+            234
+          ]
+        },
+        {
+          "symbol_or_anchor": "NativeTextureLoadAcquired::~NativeTextureLoadAcquired()",
+          "lines": [
+            230
+          ]
+        },
+        {
+          "symbol_or_anchor": "void* load_native_renderer_texture_00b319b0",
+          "lines": [
+            835
+          ]
+        }
+      ],
+      "review": "existing source/provider contract; unchanged from DX"
+    },
+    {
+      "path": "include/bsp/native_string_pool_storage.hpp",
+      "revision": "37b47a7eae7bafd0d4487655d870ac6c022f24c1",
+      "sha256": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d",
+      "anchors": [
+        {
+          "symbol_or_anchor": "class ActualNativeStringPoolStorage final",
+          "lines": [
+            37
+          ]
+        },
+        {
+          "symbol_or_anchor": "ActualNativeStringPoolStorage(NativeStringPoolStorage* volatile&",
+          "lines": [
+            39,
+            42
+          ]
+        }
+      ],
+      "review": "existing source/provider contract; unchanged from DX"
+    },
+    {
+      "path": "src/native_material_effect_runtime.cpp",
+      "revision": "37b47a7eae7bafd0d4487655d870ac6c022f24c1",
+      "sha256": "8487121fd202fa3ad647daeef793db74b17993a706f26a67c04e01db2f30ebe4",
+      "anchors": [
+        {
+          "symbol_or_anchor": "void bind_native_texture_vfs_name_resolution",
+          "lines": [
+            71
+          ]
+        }
+      ],
+      "review": "existing source/provider contract; unchanged from DX"
+    },
+    {
+      "path": "src/native_string.cpp",
+      "revision": "37b47a7eae7bafd0d4487655d870ac6c022f24c1",
+      "sha256": "0e8819d3a6442fc48c879e85c00899a72beabdc51b3e94a11836ab5314d5e60c",
+      "anchors": [
+        {
+          "symbol_or_anchor": "void destroy_native_string_header_0041dd20",
+          "lines": [
+            122,
+            129
+          ]
+        },
+        {
+          "symbol_or_anchor": "void resize_native_string_header_0041dd40",
+          "lines": [
+            111,
+            116
+          ]
+        }
+      ],
+      "review": "existing source/provider contract; unchanged from DX"
+    },
+    {
+      "path": "src/native_physical_file_date.cpp",
+      "revision": "37b47a7eae7bafd0d4487655d870ac6c022f24c1",
+      "sha256": "6ad9b3bff2280f3c27889ba13ef785a236a2f34e2d733b83bcc92ad20a8a55d0",
+      "anchors": [
+        {
+          "symbol_or_anchor": "void* construct_native_string_cstring_0041e870",
+          "lines": [
+            199,
+            213
+          ]
+        }
+      ],
+      "review": "existing source/provider contract; unchanged from DX"
+    },
+    {
+      "path": "src/native_frame_target_owner.cpp",
+      "revision": "37b47a7eae7bafd0d4487655d870ac6c022f24c1",
+      "sha256": "60485ba070a77e9de497bff352b16ab664ac4d051e02e671897d2c3082224c60",
+      "anchors": [
+        {
+          "symbol_or_anchor": "NativeFrameTargetOwnerStorage* construct_native_frame_target_owner_00b1fbb0",
+          "lines": [
+            109
+          ]
+        },
+        {
+          "symbol_or_anchor": "void set_native_frame_target_color_00b1fab0",
+          "lines": [
+            158
+          ]
+        },
+        {
+          "symbol_or_anchor": "void set_native_frame_target_depth_00b1fb00",
+          "lines": [
+            164
+          ]
+        }
+      ],
+      "review": "existing source/provider contract; unchanged from DX"
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "revision": "37b47a7eae7bafd0d4487655d870ac6c022f24c1",
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "anchors": [
+        {
+          "symbol_or_anchor": "void* singleton_lifetime_allocate",
+          "lines": [
+            51
+          ]
+        },
+        {
+          "symbol_or_anchor": "void singleton_lifetime_free",
+          "lines": [
+            65
+          ]
+        }
+      ],
+      "review": "existing source/provider contract; unchanged from DX"
+    },
+    {
+      "path": "src/camera_configuration.cpp",
+      "revision": "37b47a7eae7bafd0d4487655d870ac6c022f24c1",
+      "sha256": "f7de30b2c88f66b6a5d9c67030eb59e98600db72759c92500d97a2101b528250",
+      "anchors": [
+        {
+          "symbol_or_anchor": "CameraFrameState& set_camera_render_mode_00b6fdf0",
+          "lines": [
+            24
+          ]
+        },
+        {
+          "symbol_or_anchor": "DWORD set_camera_clear_flags_00b6fe10",
+          "lines": [
+            32
+          ]
+        }
+      ],
+      "review": "existing source/provider contract; unchanged from DX"
+    },
+    {
+      "path": "src/native_world_configuration_leaves.cpp",
+      "revision": "37b47a7eae7bafd0d4487655d870ac6c022f24c1",
+      "sha256": "5b72aab0c947362d9bb90b350a0c4eed7419e57b10c43fd35037b5664f5b625a",
+      "anchors": [
+        {
+          "symbol_or_anchor": "set_native_camera_clear_color_00b6fe50",
+          "lines": [
+            9
+          ]
+        }
+      ],
+      "review": "existing source/provider contract; unchanged from DX"
+    },
+    {
+      "path": "src/native_shadow_viewport_matrix.cpp",
+      "revision": "37b47a7eae7bafd0d4487655d870ac6c022f24c1",
+      "sha256": "ef05b080dafe917631799f23465b6683e358dcc531a96e108aae5c87d93769dd",
+      "anchors": [
+        {
+          "symbol_or_anchor": "build_native_shadow_viewport_matrix_00a8aaa0",
+          "lines": [
+            19
+          ]
+        },
+        {
+          "symbol_or_anchor": "native_shadow_target_field14_00a8fda0",
+          "lines": [
+            127
+          ]
+        },
+        {
+          "symbol_or_anchor": "native_shadow_target_field1c_00a8fdc0",
+          "lines": [
+            133
+          ]
+        }
+      ],
+      "review": "existing source/provider contract; unchanged from DX"
+    },
+    {
+      "path": "include/bsp/native_shadow_viewport_matrix.hpp",
+      "revision": "37b47a7eae7bafd0d4487655d870ac6c022f24c1",
+      "sha256": "b0a9779a576a025b70d69908301f27af4c5e5f976949b91b90ab35cd41183dac",
+      "anchors": [
+        {
+          "symbol_or_anchor": "build_native_shadow_viewport_matrix_00a8aaa0",
+          "lines": [
+            12
+          ]
+        },
+        {
+          "symbol_or_anchor": "native_shadow_target_field14_00a8fda0",
+          "lines": [
+            18
+          ]
+        }
+      ],
+      "review": "existing source/provider contract; unchanged from DX"
+    },
+    {
+      "path": "src/native_camera_matrix_copy.cpp",
+      "revision": "37b47a7eae7bafd0d4487655d870ac6c022f24c1",
+      "sha256": "31840777adef31ac0717e7bc4cb148ecd9aa45be8e5d2d52eb79f3c8a00a708d",
+      "anchors": [
+        {
+          "symbol_or_anchor": "copy",
+          "lines": [
+            1,
+            4,
+            10
+          ]
+        },
+        {
+          "symbol_or_anchor": "004134f0",
+          "lines": [
+            10
+          ]
+        }
+      ],
+      "review": "existing source/provider contract; unchanged from DX"
+    },
+    {
+      "path": "include/bsp/native_directional_shadow_owner_lifetime.hpp",
+      "revision": "792596eba77e23b62b61810efbb1cb8021ad7f32",
+      "sha256": "a544ff94b8f8f37797e5c8f416db80e327847108b76ba841774ae853b541e9ee",
+      "review": "existing source/provider contract; unchanged from DX"
+    },
+    {
+      "path": "src/native_directional_shadow_owner_lifetime.cpp",
+      "revision": "792596eba77e23b62b61810efbb1cb8021ad7f32",
+      "sha256": "624869089b172d8ddc15774e36b0730dfeb52e6d6897b373fbb03a8db21ad7f2",
+      "review": "existing source/provider contract; unchanged from DX"
+    },
+    {
+      "path": "include/bsp/native_camera_configuration_leaves.hpp",
+      "sha256": "4f7b909b3e879c5691b03b61d8ca99cfbeb7a16e98ad8c91b84e7bc5a2912892",
+      "bytes": 1802,
+      "role": "narrow concrete provider/interface verification"
+    },
+    {
+      "path": "src/native_camera_configuration_leaves.cpp",
+      "sha256": "ee7c3048ec9b41077a3a9c71730330415efe00c9840c4f73626c0d38f355864d",
+      "bytes": 1499,
+      "role": "narrow concrete provider/interface verification"
+    },
+    {
+      "path": "include/bsp/native_world_configuration_leaves.hpp",
+      "sha256": "272cb727d70940e40cebeaf31122709f83f244c95cee4cc09afc4654420eb92a",
+      "bytes": 1055,
+      "role": "narrow concrete provider/interface verification"
+    },
+    {
+      "path": "include/bsp/native_frame_target_owner.hpp",
+      "sha256": "5bcab0e6bf05a51b8e8a215117ca5621f3c5a51a1aec131eb4b7f86b33246ca8",
+      "bytes": 3495,
+      "role": "narrow concrete provider/interface verification"
+    },
+    {
+      "path": "include/bsp/native_material_effect_runtime.hpp",
+      "sha256": "405fea0c8ae9ad74407b148198ba7c77f3a748eb8566b624bfc3f1b90eed4ab5",
+      "bytes": 3467,
+      "role": "narrow concrete provider/interface verification"
+    },
+    {
+      "path": "include/bsp/native_renderer_texture_name_notification.hpp",
+      "sha256": "5157ead757f9082a87a57fe9f06694025ac2bc5888b244156b6e2526aa9407a4",
+      "bytes": 2292,
+      "role": "narrow concrete provider/interface verification"
+    },
+    {
+      "path": "include/bsp/native_texture_2d_owner.hpp",
+      "sha256": "9a4db4ac7413f02d69fe2d7b62709e01b1dfa12a4452483cb34b26e10a1958fc",
+      "bytes": 3247,
+      "role": "narrow concrete provider/interface verification"
+    },
+    {
+      "path": "include/bsp/native_surface_owner.hpp",
+      "sha256": "be315e0675574dfefe39c9200e4a3bc47824aa27376839950e733c294545eafb",
+      "bytes": 4977,
+      "role": "narrow concrete provider/interface verification"
+    },
+    {
+      "path": "include/bsp/native_physical_file_date.hpp",
+      "sha256": "158161430fea02951e7449c8c5d1c8ae2fb5f75df70d4b0b0606cf6abcf5ad2f",
+      "bytes": 5969,
+      "role": "narrow concrete provider/interface verification"
+    },
+    {
+      "path": "include/bsp/native_string_pool_storage.hpp",
+      "sha256": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d",
+      "bytes": 2805,
+      "role": "narrow concrete provider/interface verification"
+    },
+    {
+      "path": "include/bsp/native_string_pool_owner.hpp",
+      "sha256": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff",
+      "bytes": 5893,
+      "role": "narrow concrete provider/interface verification"
+    },
+    {
+      "path": "src/native_string_pool_owner.cpp",
+      "sha256": "cb52fde795918995689a26567d513e9f3cf75eeb27600eb60c431c37fdd21d6e",
+      "bytes": 8443,
+      "role": "narrow concrete provider/interface verification"
+    },
+    {
+      "path": "src/native_string_pool_storage.cpp",
+      "sha256": "5cb79a6ce240205b3f1c81f1fbd6edd49cc1c05f8a20ee8dca8913f44c9095d5",
+      "bytes": 5103,
+      "role": "narrow concrete provider/interface verification"
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "bytes": 4372,
+      "role": "narrow concrete provider/interface verification"
+    },
+    {
+      "path": "include/bsp/native_node_construction.hpp",
+      "sha256": "977424218edef9f6eefdafb9463b1ef5be11a4f61554eecca37a7d823b3c7098",
+      "bytes": 6451,
+      "role": "narrow concrete provider/interface verification"
+    },
+    {
+      "path": "include/bsp/native_camera_matrix_copy.hpp",
+      "sha256": "70e741350edb66be14fc9d1b981181fe5ecf8c536f33eab47221469d8d3f1a7a",
+      "bytes": 606,
+      "role": "narrow concrete provider/interface verification"
+    },
+    {
+      "path": "include/bsp/native_directional_shadow_construction_block.hpp",
+      "sha256": "551fa038c5471f30ef01871347c476b928c8411827fe98d334535f63f4187084",
+      "bytes": 7578,
+      "role": "integrated concrete dependency, required before compilation"
+    },
+    {
+      "path": "src/native_directional_shadow_construction_block.cpp",
+      "sha256": "5775d7078b76cbc2ac116c0d764d457f95968504b51ff367351f426f652c2fba",
+      "bytes": 11210,
+      "role": "integrated concrete dependency, required before compilation"
+    },
+    {
+      "path": "include/bsp/native_vfs_date_route.hpp",
+      "sha256": "22bd52024880018152e4ce93cccdcfecb5bd097cfb228f63c9f0538d706d99b2",
+      "bytes": 2805,
+      "role": "integrated concrete dependency, required before compilation"
+    }
+  ],
+  "dependency": {
+    "block": "NativeDirectionalShadowConstructionBlock",
+    "worker_commit": "d9c0f13e81b2bd1872b9cb20cd6fb5c15a744143",
+    "final_commit": "40df150c24d70b81d90608966a8eb31784201aee",
+    "status": "published DY integrated before DZ validation",
+    "camera_companions": 4,
+    "viewport_records": 9,
+    "credits": 17,
+    "new_registry_or_provider_stub": false,
+    "publication": "08361fdef464acbd44490cd4e495a5b2f7d124ec"
+  },
+  "corrections": [
+    {
+      "was": "DX wording treats every normal camera-name cleanup as consuming its bit.",
+      "is": "Only the first three normal name cleanups consume bits1/2/4. Fourth normal A8E5DA..A8E5F4 leaves bit8 set; CB6496 EH cleanup still clears it.",
+      "evidence": "Retained DV listing and independently confirmed primary live A8E5CA..A8E610 readback; source make_camera explicitly preserves index3 flag."
+    }
+  ],
+  "ownership": [
+    "Direct base/derived entries never free caller508h allocation. Factory owns its exact shared allocation/state0 raw free.",
+    "Parent owns five standalone viewport allocation states; B71A80 owns the four first-viewport inner allocation states. Exact admissions route to nine persistent records.",
+    "Name/raw/base cleanup follows the19-state map, consuming edges before actions; map-only5/8/11/14 are not published normally.",
+    "Prepared camera owner is abandoned before its parent raw pool return. A callee-unwound dead owner remains persistent; post-camera host binding failure preserves live companion/slot using camera_completed.",
+    "Derived state1/2 frees only current corresponding raw target then state0 A8DEC0; factory cleanup follows inner unwind.",
+    "Executing token settles only after native cleanup, cancelling unused credits. Block reset requires separate actual retirement and host quiescence; native survivors and failed cache trees can pin it indefinitely."
+  ],
+  "supported_domain": [
+    "Actual unused aligned writable508h caller storage, actual light and current publication/table/literal storage valid for all reached accesses.",
+    "One canonical node/scene/lifetime/viewport runtime and exact prepared block; independent nested attempts use distinct blocks/tokens.",
+    "Exposed cache/texture/notification/string/renderer and frame-target/surface domain identities checked before token consumption. Private cache bridge raw-pool cells remain caller wiring obligations.",
+    "Existing actual VFS-name binding and static camera-pool binding installed before native effects; no preflight allocator or renderer invocation.",
+    "Ordinary C++ provider exceptions use explicit source cleanup; nested cleanup exceptions terminate. No native hardware-fault/FH3/private-frame equivalence claimed."
+  ],
+  "partial_limits": [
+    "Complete source normal bodies within qualified existing provider domains; no new Ghidra/ledger names or metadata are written by this worker.",
+    "No source-only allocation added inside native sequence, but inherited cache/VFS/texture providers may allocate persistent child metadata or diagnostics. No whole-call no-allocation claim.",
+    "Original raw public/private stack ABI is not exposed; typed source interfaces and separate host phase/state/site facts add implementation details.",
+    "Raw string getter failures and child callback/noexcept/COM/pool/current-profile restrictions remain. Unsupported diagnostics are outside native operation equivalence.",
+    "D5B574/A8E160 deleting dispatch remains deferred; direct base construction does not supply it.",
+    "No automatic orphan viewport recovery or failed-cache-phase reset. No concurrent invalidation, gameplay/GPU/runtime/native ABI claim.",
+    "Generated x87 sequences require object review independently of source arithmetic transcription."
+  ],
+  "no_ghidra_function": [],
+  "validation": {
+    "all_28_dx_input_pins_match": true,
+    "build": "pending single clean exact-source-commit build",
+    "existing_tests": "pending; no new repository tests",
+    "verify_seeds": {
+      "ran_once": true,
+      "ranges": 8,
+      "all_match_disk": true,
+      "header_path": "local/seed_reference.hpp",
+      "header_sha256": "26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c"
+    },
+    "verify_report_calls": {
+      "owner": "primary",
+      "checked_direct_rows": 91,
+      "failed": 0,
+      "indirect_slot64": "separately current-profile-qualified; not a resolved runtime call target"
+    },
+    "native_or_game_fixture": "not run",
+    "source_review": {
+      "primary": "no remaining source/header finding",
+      "independent": "no remaining normal/EH finding after direct includes",
+      "source_sha256": "62e3c24a85dd3db0f80756fbfef408733e6fc1b65f7ea5310929d272dc070154"
+    }
+  },
+  "integration_base": "08361fdef464acbd44490cd4e495a5b2f7d124ec"
+}
