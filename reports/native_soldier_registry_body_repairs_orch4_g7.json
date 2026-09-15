@@ -1,0 +1,362 @@
+{
+  "events": [
+    {
+      "recreate": "004b0330",
+      "previous": "Function: STL_xlen_throw_004b0330 at 004b0330\nSignature: undefined STL_xlen_throw_004b0330(void)\nEntry: 004b0330\nBody: 004b0330 - 004b05c1",
+      "plate": null
+    },
+    {
+      "endpoint": "delete_function",
+      "body": {
+        "address": "004b0330"
+      },
+      "result": {
+        "success": true,
+        "address": "004b0330",
+        "deleted_function": "STL_xlen_throw_004b0330",
+        "body_size": 658,
+        "message": "Function 'STL_xlen_throw_004b0330' deleted at 004b0330"
+      }
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "004b0330",
+        "end_address": "004b05fc"
+      },
+      "result": {
+        "success": true,
+        "start_address": "004b0330",
+        "end_address": "004b05fb",
+        "bytes_disassembled": 716,
+        "message": "Successfully disassembled 716 byte(s)"
+      }
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "004b0330",
+        "disassemble_first": false
+      },
+      "result": {
+        "success": true,
+        "address": "004b0330",
+        "function_name": "STL_xlen_throw_004b0330",
+        "entry_point": "004b0330",
+        "body_size": 716,
+        "message": "Function created successfully at 004b0330"
+      }
+    },
+    {
+      "defined": "004b0330",
+      "end": "004b05fc",
+      "name": null,
+      "after": "Function: STL_xlen_throw_004b0330 at 004b0330\nSignature: undefined STL_xlen_throw_004b0330(void)\nEntry: 004b0330\nBody: 004b0330 - 004b05fb"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": {
+        "success": true,
+        "program": "battlestationspacific.exe",
+        "message": "Program saved successfully"
+      }
+    },
+    {
+      "recreate": "00444490",
+      "previous": "Function: STL_xlen_throw_00444490 at 00444490\nSignature: undefined STL_xlen_throw_00444490(void)\nEntry: 00444490\nBody: 00444490 - 00444721",
+      "plate": null
+    },
+    {
+      "endpoint": "delete_function",
+      "body": {
+        "address": "00444490"
+      },
+      "result": {
+        "success": true,
+        "address": "00444490",
+        "deleted_function": "STL_xlen_throw_00444490",
+        "body_size": 658,
+        "message": "Function 'STL_xlen_throw_00444490' deleted at 00444490"
+      }
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00444490",
+        "end_address": "0044475c"
+      },
+      "result": {
+        "success": true,
+        "start_address": "00444490",
+        "end_address": "0044475b",
+        "bytes_disassembled": 716,
+        "message": "Successfully disassembled 716 byte(s)"
+      }
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00444490",
+        "disassemble_first": false
+      },
+      "result": {
+        "success": true,
+        "address": "00444490",
+        "function_name": "STL_xlen_throw_00444490",
+        "entry_point": "00444490",
+        "body_size": 716,
+        "message": "Function created successfully at 00444490"
+      }
+    },
+    {
+      "defined": "00444490",
+      "end": "0044475c",
+      "name": null,
+      "after": "Function: STL_xlen_throw_00444490 at 00444490\nSignature: undefined STL_xlen_throw_00444490(void)\nEntry: 00444490\nBody: 00444490 - 0044475b"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": {
+        "error": "Unable to lock due to active transaction"
+      }
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": {
+        "success": true,
+        "program": "battlestationspacific.exe",
+        "message": "Program saved successfully"
+      }
+    },
+    {
+      "recreate": "00444252",
+      "previous": "Function: Catch_All@00444252 at 00444252\nSignature: undefined Catch_All@00444252(void)\nEntry: 00444252\nBody: 00444252 - 0044425a",
+      "plate": null
+    },
+    {
+      "endpoint": "delete_function",
+      "body": {
+        "address": "00444252"
+      },
+      "result": {
+        "success": true,
+        "address": "00444252",
+        "deleted_function": "Catch_All@00444252",
+        "body_size": 9,
+        "message": "Function 'Catch_All@00444252' deleted at 00444252"
+      }
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00444252",
+        "end_address": "00444267"
+      },
+      "result": {
+        "success": true,
+        "start_address": "00444252",
+        "end_address": "00444266",
+        "bytes_disassembled": 21,
+        "message": "Successfully disassembled 21 byte(s)"
+      }
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00444252",
+        "disassemble_first": false
+      },
+      "result": {
+        "success": true,
+        "address": "00444252",
+        "function_name": "Catch_All@00444252",
+        "entry_point": "00444252",
+        "body_size": 9,
+        "message": "Function created successfully at 00444252"
+      }
+    },
+    {
+      "defined": "00444252",
+      "end": "00444267",
+      "name": null,
+      "after": "Function: Catch_All@00444252 at 00444252\nSignature: undefined Catch_All@00444252(void)\nEntry: 00444252\nBody: 00444252 - 0044425a"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": {
+        "error": "Unable to lock due to active transaction"
+      }
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": {
+        "success": true,
+        "program": "battlestationspacific.exe",
+        "message": "Program saved successfully"
+      }
+    },
+    {
+      "recreate": "00444252",
+      "previous": "Function: Catch_All@00444252 at 00444252\nSignature: undefined Catch_All@00444252(void)\nEntry: 00444252\nBody: 00444252 - 0044425a",
+      "plate": null
+    },
+    {
+      "endpoint": "delete_function",
+      "body": {
+        "address": "00444252"
+      },
+      "result": {
+        "success": true,
+        "address": "00444252",
+        "deleted_function": "Catch_All@00444252",
+        "body_size": 9,
+        "message": "Function 'Catch_All@00444252' deleted at 00444252"
+      }
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00444252",
+        "end_address": "00444267"
+      },
+      "result": {
+        "success": true,
+        "start_address": "00444252",
+        "end_address": "00444266",
+        "bytes_disassembled": 21,
+        "message": "Successfully disassembled 21 byte(s)"
+      }
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00444252",
+        "disassemble_first": false
+      },
+      "result": {
+        "success": true,
+        "address": "00444252",
+        "function_name": "Catch_All@00444252",
+        "entry_point": "00444252",
+        "body_size": 21,
+        "message": "Function created successfully at 00444252"
+      }
+    },
+    {
+      "defined": "00444252",
+      "end": "00444267",
+      "name": null,
+      "after": "Function: Catch_All@00444252 at 00444252\nSignature: undefined Catch_All@00444252(void)\nEntry: 00444252\nBody: 00444252 - 00444266"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": {
+        "success": true,
+        "program": "battlestationspacific.exe",
+        "message": "Program saved successfully"
+      }
+    },
+    {
+      "recreate": "004b0312",
+      "previous": "Function: Catch_All@004b0312 at 004b0312\nSignature: undefined Catch_All@004b0312(void)\nEntry: 004b0312\nBody: 004b0312 - 004b031a",
+      "plate": null
+    },
+    {
+      "endpoint": "delete_function",
+      "body": {
+        "address": "004b0312"
+      },
+      "result": {
+        "success": true,
+        "address": "004b0312",
+        "deleted_function": "Catch_All@004b0312",
+        "body_size": 9,
+        "message": "Function 'Catch_All@004b0312' deleted at 004b0312"
+      }
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "004b0312",
+        "end_address": "004b0327"
+      },
+      "result": {
+        "success": true,
+        "start_address": "004b0312",
+        "end_address": "004b0326",
+        "bytes_disassembled": 21,
+        "message": "Successfully disassembled 21 byte(s)"
+      }
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "004b0312",
+        "disassemble_first": false
+      },
+      "result": {
+        "success": true,
+        "address": "004b0312",
+        "function_name": "Catch_All@004b0312",
+        "entry_point": "004b0312",
+        "body_size": 21,
+        "message": "Function created successfully at 004b0312"
+      }
+    },
+    {
+      "defined": "004b0312",
+      "end": "004b0327",
+      "name": null,
+      "after": "Function: Catch_All@004b0312 at 004b0312\nSignature: undefined Catch_All@004b0312(void)\nEntry: 004b0312\nBody: 004b0312 - 004b0326"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": {
+        "success": true,
+        "program": "battlestationspacific.exe",
+        "message": "Program saved successfully"
+      }
+    }
+  ],
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "whole_body_preflight": [
+    {
+      "address": "004b0330",
+      "end_exclusive": "004b05fc",
+      "bytes": 716,
+      "sha256": "3ac8a7a2a124b2d1f55407b4cae33a33b026b9d04a3b47ea0ee0981f54efa253",
+      "live_disk_match": true
+    },
+    {
+      "address": "00444490",
+      "end_exclusive": "0044475c",
+      "bytes": 716,
+      "sha256": "2ef9a06cc923f3cb8f5dc99972697c8eac1f21dc4fcc7950e4a4d53c9b7b598a",
+      "live_disk_match": true
+    },
+    {
+      "address": "00444252",
+      "end_exclusive": "00444267",
+      "bytes": 21,
+      "sha256": "fc009c8ca2c7bcaf0f1b2d406169714c70891fd0a9ce8330fb59d74c7791ff44",
+      "live_disk_match": true
+    },
+    {
+      "address": "004b0312",
+      "end_exclusive": "004b0327",
+      "bytes": 21,
+      "sha256": "3655097cb2c3c5d17bafd2f70e2aec3f1371c4d4e2ca4bc8304320cd1f27b303",
+      "live_disk_match": true
+    }
+  ],
+  "documentation": "docs/NATIVE_SOLDIER_REGISTRY_FLOW_ORCH4_G7.md",
+  "final_readback": "Zero listing gaps; intended full spans restored; project saved and affected exports refreshed."
+}

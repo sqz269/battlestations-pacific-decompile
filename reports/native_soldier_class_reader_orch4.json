@@ -1,0 +1,359 @@
+{
+  "packet": "orch4_soldier_reader_g7",
+  "result": "verified_reader_and_factory_audit_source_absent_genuine_dependencies_in_progress",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "functions": [
+    {
+      "address": "0048f670",
+      "name": "NamedClassBase_ReadLua_0048F670",
+      "original_abi": "ECX class; stack LuaObject pointer; RET4; unspecified return",
+      "evidence": "Complete509B ordinary schedule: Mesh raw string ->7188A0 result published+10; nonzero FakeFireEfx ->870CD0, publish new+14 before retain/release, release temporary; lookup fire point group index1, ordered x87 coordinates+18/+1C/+20 and validity+24. Reader source absent; real effect component closure remains required.",
+      "old_name": "FUN_0048f670",
+      "old_plate_comment": null,
+      "old_ledger": null,
+      "end_exclusive": "0048f86d",
+      "bytes": 509,
+      "sha256": "edcc5d9afca03c820e1377212352dd6a9d8c441e1ffb1fb3d409863efe6774fb",
+      "live_disk_match": true
+    },
+    {
+      "address": "004b0de0",
+      "name": "SoldierClass_ReadLua_004B0DE0",
+      "original_abi": "ECX class; stack LuaObject pointer; RET4; unspecified return",
+      "evidence": "Complete407B listing: real48F670 then LoopLengths iteration into string-CI float tree+28 via444BE0; FSTP32 number at0EEF. Normal key cleanup uses captured pointer AND captured length; state3 unwind destroys current header. D8CDA4 max4/mapD8CD84. Source absent pending base/effect closure.",
+      "old_name": "FUN_004b0de0",
+      "old_plate_comment": null,
+      "old_ledger": null,
+      "end_exclusive": "004b0f77",
+      "bytes": 407,
+      "sha256": "ee8113b1bf4ccd8b611cddd3d21a21df6c652307bcdbe1b605ae5bde56770829",
+      "live_disk_match": true
+    },
+    {
+      "address": "004b1400",
+      "name": "SoldierClass_GetOrLoad_004B1400",
+      "original_abi": "ECX NativeString name; EAX class; RET",
+      "evidence": "Complete312B factory audit in docs/NATIVE_SOLDIER_CLASS_RESOLUTION_ORCH4.md: get registry/cell, hit or Lua SoldierClass named-row miss, allocate34h/construct, copy name, invoke actual slot4 reader, reacquire cell and publish, clean Lua temporaries. Both paths call slotC target4AF520 constant true, no retain. Source absent; no fabricated unresolved callback.",
+      "old_name": "FUN_004b1400",
+      "old_plate_comment": null,
+      "old_ledger": null,
+      "end_exclusive": "004b1538",
+      "bytes": 312,
+      "sha256": "5d2dd5f5937a9cd5ad3eeb0a7b92f660c9e561fe9af7aeaa740edc4abc181623",
+      "live_disk_match": true
+    },
+    {
+      "address": "00444252",
+      "name": "StringFloatNode_AllocationCatch_00444252",
+      "original_abi": "FH3 catch funclet; EBP parent frame; no ordinary return",
+      "evidence": "Complete21B repaired detached catch for4441E0: free captured raw node [EBP-14], push0/push0 and rethrow BF6885. Placement unwind401130 is no-op. Explicit catch, not a second-exception-terminating unwind action.",
+      "old_name": "Catch_All@00444252",
+      "old_plate_comment": null,
+      "old_ledger": null,
+      "end_exclusive": "00444267",
+      "bytes": 21,
+      "sha256": "fc009c8ca2c7bcaf0f1b2d406169714c70891fd0a9ce8330fb59d74c7791ff44",
+      "live_disk_match": true
+    },
+    {
+      "address": "004b0312",
+      "name": "SoldierRegistryNode_AllocationCatch_004B0312",
+      "original_abi": "FH3 catch funclet; EBP parent frame; no ordinary return",
+      "evidence": "Complete21B repaired detached catch for4B02A0: free captured raw node [EBP-14], push0/push0 and rethrow BF6885. Placement unwind401130 is no-op. Explicit catch, not a second-exception-terminating unwind action.",
+      "old_name": "Catch_All@004b0312",
+      "old_plate_comment": null,
+      "old_ledger": null,
+      "end_exclusive": "004b0327",
+      "bytes": 21,
+      "sha256": "3655097cb2c3c5d17bafd2f70e2aec3f1371c4d4e2ca4bc8304320cd1f27b303",
+      "live_disk_match": true
+    }
+  ],
+  "call_sites": [
+    {
+      "address": "0048f69d",
+      "native": "00b67800",
+      "function": "0048f670"
+    },
+    {
+      "address": "0048f6aa",
+      "native": "00b662b0",
+      "function": "0048f670"
+    },
+    {
+      "address": "0048f6b4",
+      "native": "0041e870",
+      "function": "0048f670"
+    },
+    {
+      "address": "0048f6c2",
+      "native": "00b67700",
+      "function": "0048f670"
+    },
+    {
+      "address": "0048f6d9",
+      "native": "0041e870",
+      "function": "0048f670"
+    },
+    {
+      "address": "0048f6e7",
+      "native": "007188a0",
+      "function": "0048f670"
+    },
+    {
+      "address": "0048f707",
+      "native": "00419cc0",
+      "function": "0048f670"
+    },
+    {
+      "address": "0048f70e",
+      "native": "00bd1510",
+      "function": "0048f670"
+    },
+    {
+      "address": "0048f720",
+      "native": "00b67800",
+      "function": "0048f670"
+    },
+    {
+      "address": "0048f72d",
+      "native": "00b66380",
+      "function": "0048f670"
+    },
+    {
+      "address": "0048f73d",
+      "native": "00b67700",
+      "function": "0048f670"
+    },
+    {
+      "address": "0048f74e",
+      "native": "00870cd0",
+      "function": "0048f670"
+    },
+    {
+      "address": "0048f7cb",
+      "native": "00408720",
+      "function": "0048f670"
+    },
+    {
+      "address": "0048f7df",
+      "native": "00718870",
+      "function": "0048f670"
+    },
+    {
+      "address": "0048f7f2",
+      "native": "00bf65ac",
+      "function": "0048f670"
+    },
+    {
+      "address": "0048f813",
+      "native": "00484270",
+      "function": "0048f670"
+    },
+    {
+      "address": "0048f850",
+      "native": "00419cc0",
+      "function": "0048f670"
+    },
+    {
+      "address": "0048f857",
+      "native": "00bd1510",
+      "function": "0048f670"
+    },
+    {
+      "address": "004b0e07",
+      "native": "0048f670",
+      "function": "004b0de0"
+    },
+    {
+      "address": "004b0e18",
+      "native": "00b67800",
+      "function": "004b0de0"
+    },
+    {
+      "address": "004b0e27",
+      "native": "00b65fb0",
+      "function": "004b0de0"
+    },
+    {
+      "address": "004b0e38",
+      "native": "00b65f50",
+      "function": "004b0de0"
+    },
+    {
+      "address": "004b0e46",
+      "native": "00b65f50",
+      "function": "004b0de0"
+    },
+    {
+      "address": "004b0e5e",
+      "native": "00b67080",
+      "function": "004b0de0"
+    },
+    {
+      "address": "004b0e6c",
+      "native": "00b66420",
+      "function": "004b0de0"
+    },
+    {
+      "address": "004b0e88",
+      "native": "00b662b0",
+      "function": "004b0de0"
+    },
+    {
+      "address": "004b0eb2",
+      "native": "0041dd40",
+      "function": "004b0de0"
+    },
+    {
+      "address": "004b0ec9",
+      "native": "00bf7680",
+      "function": "004b0de0"
+    },
+    {
+      "address": "004b0edf",
+      "native": "00444be0",
+      "function": "004b0de0"
+    },
+    {
+      "address": "004b0eea",
+      "native": "00b66270",
+      "function": "004b0de0"
+    },
+    {
+      "address": "004b0f01",
+      "native": "00419cc0",
+      "function": "004b0de0"
+    },
+    {
+      "address": "004b0f08",
+      "native": "00bd1510",
+      "function": "004b0de0"
+    },
+    {
+      "address": "004b0f1b",
+      "native": "00b67190",
+      "function": "004b0de0"
+    },
+    {
+      "address": "004b0f29",
+      "native": "00b66420",
+      "function": "004b0de0"
+    },
+    {
+      "address": "004b0f3f",
+      "native": "00b67700",
+      "function": "004b0de0"
+    },
+    {
+      "address": "004b0f4d",
+      "native": "00b67700",
+      "function": "004b0de0"
+    },
+    {
+      "address": "004b0f5e",
+      "native": "00b67700",
+      "function": "004b0de0"
+    },
+    {
+      "address": "004b141c",
+      "native": "004b1330",
+      "function": "004b1400"
+    },
+    {
+      "address": "004b1425",
+      "native": "004b0cb0",
+      "function": "004b1400"
+    },
+    {
+      "address": "004b1445",
+      "native": "00b67980",
+      "function": "004b1400"
+    },
+    {
+      "address": "004b145c",
+      "native": "00b67800",
+      "function": "004b1400"
+    },
+    {
+      "address": "004b1470",
+      "native": "00b68100",
+      "function": "004b1400"
+    },
+    {
+      "address": "004b147c",
+      "native": "00bf681b",
+      "function": "004b1400"
+    },
+    {
+      "address": "004b1493",
+      "native": "004b12a0",
+      "function": "004b1400"
+    },
+    {
+      "address": "004b14b2",
+      "native": "0041dd40",
+      "function": "004b1400"
+    },
+    {
+      "address": "004b14c8",
+      "native": "00bf7680",
+      "function": "004b1400"
+    },
+    {
+      "address": "004b14de",
+      "native": "004b1330",
+      "function": "004b1400"
+    },
+    {
+      "address": "004b14e7",
+      "native": "004b0cb0",
+      "function": "004b1400"
+    },
+    {
+      "address": "004b14f7",
+      "native": "00b67700",
+      "function": "004b1400"
+    },
+    {
+      "address": "004b1505",
+      "native": "00b67700",
+      "function": "004b1400"
+    },
+    {
+      "address": "004b1516",
+      "native": "00b67700",
+      "function": "004b1400"
+    },
+    {
+      "address": "00444256",
+      "native": "00bf65ac",
+      "function": "00444252"
+    },
+    {
+      "address": "00444262",
+      "native": "00bf6885",
+      "function": "00444252"
+    },
+    {
+      "address": "004b0316",
+      "native": "00bf65ac",
+      "function": "004b0312"
+    },
+    {
+      "address": "004b0322",
+      "native": "00bf6885",
+      "function": "004b0312"
+    }
+  ],
+  "full_reader_source_present": false,
+  "factory_source_present": false,
+  "ghidra_repairs": "docs/NATIVE_SOLDIER_REGISTRY_FLOW_ORCH4_G7.md",
+  "boundaries": [
+    "No partial cache-hit helper or callback stand-in for missing effect/component miss path.",
+    "4B0DE0 normal key cleanup captures both pointer and length before insertion; its state3 unwind uses current header.",
+    "4B1400 disarms raw allocation cleanup before name copy/virtual reader; do not invent rollback deletion.",
+    "Original runtime/FH3/SEH/gameplay not executed."
+  ]
+}
