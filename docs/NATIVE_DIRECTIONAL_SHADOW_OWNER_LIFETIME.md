@@ -1,23 +1,25 @@
 # Directional shadow owner lifetime
 
-This module reconstructs three complete normal bodies and their base-only unwind
+This module reconstructs four complete normal bodies and their base-only unwind
 action in the existing actual-storage provider domain. It does not construct a
 shadow owner or make an arbitrary original object callable through a host vtable.
 
 | Native entry | Inclusive extent | Bytes | Coverage | Original ABI |
 |---|---|---:|---|---|
 | A8DEC0 | A8DEC0–A8E086 | 455 | complete | ECX actual 508h owner; no public stack arguments; RET |
+| A8E160 | A8E160–A8E17D | 30 | complete | ECX owner; stacked DWORD flags; EAX original identity; RET4 |
 | A8FCD0 | A8FCD0–A8FCED | 30 | complete | ECX owner; stacked DWORD flags; EAX original identity; RET4 |
 | B7BDF0 | B7BDF0–B7BE30 | 65 | complete | ECX actual light; stacked replacement pointer; RET4 |
 | CB63D0 | CB63D0–CB63D7 | 8 | complete action | ECX loaded from original frame EBP-10h; JMP BD30F0 |
 
-The total is 550 normal-body bytes plus the eight-byte unwind action. Source
+EA adds only A8E160's 30 bytes: the total is 580 normal-body bytes plus the
+eight-byte unwind action, 588 bytes. The prior 558 bytes receive no new credit. Source
 interfaces add the borrowed context; the unwind entry receives its captured owner
 explicitly. These are not drop-in original-ABI replacements. A8DEC0 preserves
 EBX/EBP/ESI/EDI, and the setter/deleting wrapper preserve ESI. No semantic setter
-return value is established. The installed A8FCE5 `ADD ESP,4` is omitted from the
-live listing; its three bytes and the complete returning free tail are retained
-in the byte evidence. This worker does not repair Ghidra metadata.
+return value is established. Primary repaired the saved A8FCE5 and A8E175
+`ADD ESP,4` listing gaps using their verified original bytes. This worker does
+not mutate Ghidra; the prior overrides and repair evidence remain recorded.
 
 ## Destruction and cleanup
 
@@ -51,7 +53,7 @@ no retry, unvisited field cleanup, slot clear, or allocation free. Unsupported
 profile/slot/companion diagnostics also take this source cleanup; this does not
 establish native hardware-fault, arbitrary FH3/SEH or foreign-unwind parity.
 
-A8FCD0 calls the complete destructor first. Only normal return reads the low byte
+A8FCD0 and A8E160 call the complete destructor first. Only normal return reads the low byte
 of the caller-borrowed actual flags word and, for bit0, calls the established
 `singleton_lifetime_free` shared CRT provider. It returns the captured original
 address, possibly freed. The flags slot must remain valid through destruction;
@@ -71,6 +73,7 @@ as the callback published it; unsynchronized concurrent mutation is not covered.
 | Field/route | Supported actual profile | Current slot0 | Current slot4 and concrete provider |
 |---|---|---|---|
 | Captured old shadow | D5B5D8 | BD30E0 | A8FCD0 in this module |
+| Captured old base shadow | D5B574, explicitly bound | BD30E0 | A8E160 in this module |
 | +504/+10/+14/+18/+1C | D5E5F8 | BD30E0 | B1F8F0, existing viewport retirement/shared CRT |
 | +384 | D61948 | BD30E0 | B3F590/B3F2E0, existing texture2D context/pool |
 | +4F0..+500 | D5E600 | BD30E0 | B1FCF0/B1FC00, existing frame-target/surface context/shared CRT |
@@ -78,8 +81,13 @@ as the callback published it; unsynchronized concurrent mutation is not covered.
 The actual table bindings stay fixed while their words are read live. After the
 slot0 check, the real source BD30E0 provider reloads the current owner profile and
 the concrete dispatcher reads its current slot4. There is no second decrement or
-arbitrary user terminal callback. Unknown profiles/targets diagnose. D5B574 is the
-destruction stamp, not an alias for a supported A8E160 deleting entry. Texture,
+arbitrary user terminal callback. Unknown profiles/targets or absent bindings
+diagnose. Each shadow profile accepts only its corresponding deleting entry.
+The context appends optional `table_00d5b574 = nullptr`, preserving existing
+aggregate initializers at source level. Base dispatch requires the actual table
+binding; direct A8E160 calls need no table lookup. The source context's size
+changes, so coupled code must rebuild; binary layout compatibility is not claimed.
+The base binding is not a universal constructor preflight requirement. Texture,
 surface, viewport, node, queue and camera providers retain their own raw-storage,
 profile, pool, registration and noexcept restrictions. In particular B6DFA0 and
 canonical camera terminal callbacks retain the existing nonthrowing boundary.
@@ -97,9 +105,20 @@ direct A8DEC0 callers were checked: A8E163, A8FCD3, and CB6553 (JMP with ECX fro
 EBP-58h). A8FCD0 is referenced by D5B5D8+4; CB63D0 by the unwind map.
 
 The producer evidence establishes a 508h allocation, original count1, borrowed
-light+0C and final D5B5D8 profile. A8FD30/A8FA30/A8E2E0 construction, allocation
-failure and their complete EH states remain separate work; no factory or dummy
-initialized owner is supplied. Caller algorithm names remain hypotheses.
+light+0C and final D5B5D8 profile. A8FD30/A8FA30/A8E2E0 construction is supplied by
+the existing directional shadow construction module and DY persistent block.
+Its direct base entry can return initialized D5B574 storage. The observed native
+derived constructor instead stamps D5B5D8 after base return; a native game
+publication of a standalone completed base has not been established. The
+destructor's D5B574 stamp alone does not establish a separately releasable owner.
+Caller algorithm names remain hypotheses.
+
+A8E160 adds no registry, count operation, cleanup state, or block disposal.
+Flags0 ends native lifetime without freeing storage; flags1 requires compatible
+shared CRT backing. Native owner deletion does not prove that queued camera
+companions, viewport records, cache operations or semantic borrows are quiescent.
+The existing persistent block must survive them, and its explicit host-quiescent
+reset remains separate. Constructor unwind still directly calls A8DEC0.
 
 The report pins the installed PE, fresh guarded live bytes, prior metadata, all
 numeric transfer rows, provider/source inputs, build and generated-code evidence.
@@ -107,6 +126,12 @@ There are no new tests or shadow-owner runtime fixtures. Compilation and source 
 review do not prove real-game integration, GPU effects, arbitrary callback faults,
 or gameplay. Root owns later combined validation and metadata integration.
 
-Primary integration at exact clean source `42603ccf159dad821d9b51ceca44e5092d7187a3` passed Win32 Release and both existing CTests with 2627 unchanged tracked build inputs. All14 reviewed COFF symbol rows have the same complete section bytes and relocation targets/types/offsets as the worker, normalizing only anonymous-namespace path hashes. The shared44-byte unwindtable/FuncInfo section and42-byte funclet/handler section are not independent function bodies. The21 instruction checks retain callback scheduling and late flag loads. The compiler removes the source disarm store before the known-noexcept base call; ordinary C++ cleanup remains base-only, with no raw FH3/SEH identity claim. No shadow-owner fixture was run.
+Historical DU validation at exact clean source `42603ccf159dad821d9b51ceca44e5092d7187a3` passed Win32 Release and both existing CTests with 2627 unchanged tracked build inputs. Its 14 reviewed COFF symbol rows and 21 instruction checks belong to that previous source revision, not EA. The shared 44-byte unwindtable/FuncInfo section and 42-byte funclet/handler section are not independent function bodies. The compiler removed the source disarm store before the known-noexcept base call; ordinary C++ cleanup remained base-only, with no raw FH3/SEH identity claim. No shadow-owner fixture was run.
 
 Primary also cleared the erroneous CALL_RETURN override at A8FCE0 under the Ghidra write lock, decoded the verified three-byte ADD ESP,4 at A8FCE5, and saved the project. There are no remaining call-site listing gaps in A8FCD0. The record preserves the original override value, native byte hash and readback; the shared CRT callee was not edited.
+
+For EA, primary likewise cleared A8E170's CALL_RETURN override to NONE, restored
+the three-byte ADD ESP,4 at A8E175, and saved/refreshed the complete 11-instruction
+body. The report pins that repair and the read-only EA admission. Current EA
+source review, exact coupled build and generated-order validation are pending;
+the prior DU object/build/annotation records are retained as historical evidence.

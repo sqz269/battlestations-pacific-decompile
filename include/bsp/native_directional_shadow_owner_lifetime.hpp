@@ -23,6 +23,8 @@ struct NativeDirectionalShadowOwnerContext {
     const volatile std::uint32_t* const table_00d5e5f8;
     const volatile std::uint32_t* const table_00d61948;
     const volatile std::uint32_t* const table_00d5e600;
+    // Optional actual base table; existing final-profile callers need not bind it.
+    const volatile std::uint32_t* const table_00d5b574 = nullptr;
 };
 
 // Complete A8DEC0 (455 bytes): native ECX=actual 508h owner, RET. New source
@@ -41,10 +43,18 @@ void* delete_native_directional_shadow_owner_00a8fcd0(void* actual_owner,
     const volatile std::uint32_t& actual_public_flags_slot,
     NativeDirectionalShadowOwnerContext&);
 
+// Complete A8E160 (30 bytes): base-profile deleting entry, with the same native
+// ECX/stack flags/EAX/RET4 contract and late borrowed LOW BYTE flags read above.
+// A direct call needs no table lookup; the flags1 allocation domain still applies.
+void* delete_native_directional_shadow_base_00a8e160(void* actual_owner,
+    const volatile std::uint32_t& actual_public_flags_slot,
+    NativeDirectionalShadowOwnerContext&);
+
 // Complete B7BDF0 (65 bytes): ECX=actual light, stack replacement, RET4.
 // Capture old +174, skip equal, publish/retain incoming, decrement captured old,
 // then dispatch its CURRENT profile/slot0 on zero. No rollback or later clear.
-// Final old-owner domain is D5B5D8/BD30E0/A8FCD0; unknown targets diagnose.
+// Old-owner domains are D5B5D8/BD30E0/A8FCD0 and explicitly bound
+// D5B574/BD30E0/A8E160; unknown profiles/targets or missing bindings diagnose.
 void set_native_directional_light_shadow_owner_00b7bdf0(void* actual_light,
     void* incoming_owner, NativeDirectionalShadowOwnerContext&);
 
@@ -55,7 +65,8 @@ void __fastcall unwind_native_directional_shadow_base_00cb63d0(
     void* actual_owner) noexcept;
 
 // Caller provides real initialized storage and compatible disposal domains.
-// A8FD30/A8FA30/A8E2E0 construction and base-profile A8E160 terminal are absent.
+// A8FD30/A8FA30/A8E2E0 construction uses the separate existing construction
+// module and persistent construction block; this lifetime context creates none.
 // Child providers retain their explicit supported-profile and noexcept limits.
 // Source diagnostics/C++ cleanup are not arbitrary native FH3/SEH, ABI or game
 // proof. Unsupported bindings never receive a fabricated successful callback.

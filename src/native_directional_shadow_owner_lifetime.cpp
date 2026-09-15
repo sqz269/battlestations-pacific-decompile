@@ -49,6 +49,7 @@ const volatile std::uint32_t* table(std::uint32_t current_profile,
     switch (domain) {
     case Terminal::shadow:
         if (current_profile == 0x00d5b5d8) result = context.table_00d5b5d8;
+        else if (current_profile == 0x00d5b574) result = context.table_00d5b574;
         break;
     case Terminal::viewport:
         if (current_profile == 0x00d5e5f8) result = context.table_00d5e5f8;
@@ -73,9 +74,15 @@ public:
         const auto target = table(current_profile, domain_, context_)[1];
         switch (domain_) {
         case Terminal::shadow:
-            if (target != 0x00a8fcd0) break;
-            (void)delete_native_directional_shadow_owner_00a8fcd0(owner, flags, context_);
-            return;
+            if (current_profile == 0x00d5b5d8 && target == 0x00a8fcd0) {
+                (void)delete_native_directional_shadow_owner_00a8fcd0(owner, flags, context_);
+                return;
+            }
+            if (current_profile == 0x00d5b574 && target == 0x00a8e160) {
+                (void)delete_native_directional_shadow_base_00a8e160(owner, flags, context_);
+                return;
+            }
+            break;
         case Terminal::viewport:
             if (target != 0x00b1f8f0) break;
             (void)delete_native_viewport_owner_00b1f8f0(
@@ -182,6 +189,15 @@ void destroy_native_directional_shadow_owner_00a8dec0(void* owner,
 }
 
 void* delete_native_directional_shadow_owner_00a8fcd0(void* owner,
+    const volatile std::uint32_t& actual_public_flags_slot,
+    NativeDirectionalShadowOwnerContext& context) {
+    auto* const original = owner;
+    destroy_native_directional_shadow_owner_00a8dec0(original, context);
+    if ((byte(actual_public_flags_slot) & 1u) != 0) singleton_lifetime_free(original);
+    return original;
+}
+
+void* delete_native_directional_shadow_base_00a8e160(void* owner,
     const volatile std::uint32_t& actual_public_flags_slot,
     NativeDirectionalShadowOwnerContext& context) {
     auto* const original = owner;
