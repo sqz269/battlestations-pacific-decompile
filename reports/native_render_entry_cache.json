@@ -1,0 +1,1378 @@
+{
+  "status": "reconstructed_build_tested_actual_window_render_entry_cache_fixture",
+  "created_utc": "2026-09-15T02:29:41.875663+00:00",
+  "source": "src/native_render_entry_cache.cpp",
+  "header": "include/bsp/native_render_entry_cache.hpp",
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "installed_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "ghidra_mutated": true,
+    "saved": true,
+    "mutation_scope": [
+      "00bebf00",
+      "00bec240",
+      "00bec3e0",
+      "00bec590",
+      "00bec630",
+      "00bec6f0",
+      "00bec870",
+      "00bec8e0",
+      "00bec910",
+      "00becee0"
+    ]
+  },
+  "functions": [
+    {
+      "address": "00bebf00",
+      "bytes": 39,
+      "source_symbol": "initialize_native_render_entry_00bebf00",
+      "ghidra_name": "BSP_RenderEntry_Initialize",
+      "original_abi": "ECX actual28h record; EAX same record; no stack args; RET.",
+      "behavior": "SSE +0/+14 zero stores, current D7A24C capture, +8/+C/+10 zero stores, +18 captured one. Preserve +4/+1C/+20/+24. Full original39byte leaf/40outputbyte/source differential passed.",
+      "build_tested": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00bec240",
+      "bytes": 10,
+      "source_symbol": "destroy_native_render_entry_array_00bec240",
+      "ghidra_name": "BSP_RenderEntryArray_Destroy",
+      "original_abi": "ECX actual0Ch header; no stack args; RET.",
+      "behavior": "Free current data throughBF6989; leave all header words stale. Truncated body repaired throughBEC249.",
+      "build_tested": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00bec3e0",
+      "bytes": 154,
+      "source_symbol": "resize_native_render_entry_array_00bec3e0",
+      "ghidra_name": "BSP_RenderEntryArray_ReallocateUnlessUsedCountMatches",
+      "original_abi": "ECX actual0Ch header; requested DWORD stack slot; RET4.",
+      "behavior": "Compare request to used count+4, not capacity+8. On inequality clear count/capacity, free current data, allocate saturated unsigned request*28h and initialize through signed403560 schedule; data/capacity published, count remains0. Zero request retains stale freed pointer. State0 frees captured allocation on unwind.",
+      "build_tested": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00bec590",
+      "bytes": 145,
+      "source_symbol": "publish_native_render_entry_cache_base_00bec590",
+      "ghidra_name": "BSP_RenderEntryCacheBase_RegisterSingleton",
+      "original_abi": "ECX actual owner; EAX original owner; no stack args; RET.",
+      "behavior": "State0 beforeD68CBC; same actual manager/first captured section. Enter/depth then state1; publish108FE88, second getter then current-publication registration; normal Leave still inside state1. Original owner returned.",
+      "build_tested": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00bec630",
+      "bytes": 153,
+      "source_symbol": "destroy_native_render_entry_cache_base_00bec630",
+      "ghidra_name": "BSP_RenderEntryCacheBase_UnregisterSingleton",
+      "original_abi": "ECX actual owner; no stack args; RET.",
+      "behavior": "D68CBC beforestate0. Second getter before current108FE88 read; unregister and clear only on success; captured section retained; reset original ownerCE3818. FH3 state1 guard411EE0 thenstate0 base412430.",
+      "build_tested": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00bec6f0",
+      "bytes": 30,
+      "source_symbol": "delete_native_render_entry_cache_base_00bec6f0",
+      "ghidra_name": "BSP_RenderEntryCacheBase_ScalarDelete",
+      "original_abi": "ECX owner; flags stack slot; EAX original owner; RET4.",
+      "behavior": "BEC630 thenflags&1 free original owner viaBF65AC; return original pointer. Free fallthrough and complete body restored.",
+      "build_tested": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00bec870",
+      "bytes": 110,
+      "source_symbol": "construct_native_render_entry_cache_00bec870",
+      "ghidra_name": "BSP_RenderEntryCache_Construct",
+      "original_abi": "ECX raw14h owner; EAX original owner; no stack args; RET.",
+      "behavior": "Base publication thenD68CC0, capture oldcount08, state0, data04=0. Nonzero oldcount clears08/0C, frees current data and repeats capacity0; zero count preserves oldcapacity. State2 then actualBD1860 section. E01F68/E01F50 cleanup headerBEC240 thenbaseBEC630.",
+      "build_tested": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00bec8e0",
+      "bytes": 37,
+      "source_symbol": "destroy_native_render_entry_cache_00bec8e0",
+      "ghidra_name": "BSP_RenderEntryCache_Destroy",
+      "original_abi": "ECX owner; no stack args; tailJMP BEC630 returns through base.",
+      "behavior": "D68CC0, current section+10 release41CC80, current data+4 freeBF6989, tailJMP BEC630. Full native tail and stored body restored; no new rollback.",
+      "build_tested": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00bec910",
+      "bytes": 58,
+      "source_symbol": "delete_native_render_entry_cache_00bec910",
+      "ghidra_name": "BSP_RenderEntryCache_ScalarDelete",
+      "original_abi": "ECX owner; flags stack slot; EAX original owner; RET4.",
+      "behavior": "D68CC0, current section41CC80 and current array release, baseBEC630, flags&1 ownerfreeBF65AC. Concrete flags0/1 fixture routes pass actual section/buffer/publication/registration cleanup.",
+      "build_tested": true,
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "window_fragment": {
+    "function": "00becee0",
+    "start": "00bed1e8",
+    "end_exclusive": "00bed223",
+    "bytes": 59,
+    "source_symbol": "initialize_native_window_render_entry_cache_00bed1e8_fragment",
+    "behavior": "After device startup: BED1EA allocate14h, BED203 construct whennonnull, BED208 reload108FE88, deriveheader+4, disarm captured-owner cleanup beforeBED21E resize10000. E01FC0/E01FB8/CC7480 frees capturedowner only on constructor unwind. Actual cache uses40byte render entries, confirmed consumersB1DFF0/B2BB90/B72F80 and endframeB2DB8A. Source helper now executes in composed platform/renderer/device/cold-effect fixture."
+  },
+  "evidence": {
+    "fresh_functions": [
+      {
+        "entry": "00bebf00",
+        "bytes": 39,
+        "sha256": "4824475a24b6d8b067f066d519320f11ce64ca22567cd307430518200122c58c",
+        "parts": [
+          {
+            "start": "00bebf00",
+            "bytes": 39,
+            "sha256": "4824475a24b6d8b067f066d519320f11ce64ca22567cd307430518200122c58c",
+            "live_equals_installed_pe": true
+          }
+        ],
+        "original_executed": true
+      },
+      {
+        "entry": "00bec240",
+        "bytes": 10,
+        "sha256": "e74511a9ae745a98c66be3eda107a3f202c02e3527ae663903e9bd0cb60e6def",
+        "parts": [
+          {
+            "start": "00bec240",
+            "bytes": 10,
+            "sha256": "e74511a9ae745a98c66be3eda107a3f202c02e3527ae663903e9bd0cb60e6def",
+            "live_equals_installed_pe": true
+          }
+        ],
+        "original_executed": false
+      },
+      {
+        "entry": "00bec3e0",
+        "bytes": 154,
+        "sha256": "888ec947b5c396015b66687b838f4dd50b5c2262e51c9e86cf67b235e4ca5cbc",
+        "parts": [
+          {
+            "start": "00bec3e0",
+            "bytes": 154,
+            "sha256": "888ec947b5c396015b66687b838f4dd50b5c2262e51c9e86cf67b235e4ca5cbc",
+            "live_equals_installed_pe": true
+          }
+        ],
+        "original_executed": false
+      },
+      {
+        "entry": "00bec590",
+        "bytes": 145,
+        "sha256": "46bb43b73455a8b62cfafafe6b7af6c56f9cc088adbac62e0f02ac62ee40ef3c",
+        "parts": [
+          {
+            "start": "00bec590",
+            "bytes": 145,
+            "sha256": "46bb43b73455a8b62cfafafe6b7af6c56f9cc088adbac62e0f02ac62ee40ef3c",
+            "live_equals_installed_pe": true
+          }
+        ],
+        "original_executed": false
+      },
+      {
+        "entry": "00bec630",
+        "bytes": 153,
+        "sha256": "0aa6d03a277e63853289c6654c4a81861c2e1c93bd289f13a09d186411945fd9",
+        "parts": [
+          {
+            "start": "00bec630",
+            "bytes": 153,
+            "sha256": "0aa6d03a277e63853289c6654c4a81861c2e1c93bd289f13a09d186411945fd9",
+            "live_equals_installed_pe": true
+          }
+        ],
+        "original_executed": false
+      },
+      {
+        "entry": "00bec6f0",
+        "bytes": 30,
+        "sha256": "9457543553a38722ca67cdc17fe2db921681c5195381ffe9a2ebb91c74881317",
+        "parts": [
+          {
+            "start": "00bec6f0",
+            "bytes": 30,
+            "sha256": "9457543553a38722ca67cdc17fe2db921681c5195381ffe9a2ebb91c74881317",
+            "live_equals_installed_pe": true
+          }
+        ],
+        "original_executed": false
+      },
+      {
+        "entry": "00bec870",
+        "bytes": 110,
+        "sha256": "3b9fbbaa28ff660c0678b5cd5bac7cf8fba931a91016cc551aa1bedbd8cbbe34",
+        "parts": [
+          {
+            "start": "00bec870",
+            "bytes": 110,
+            "sha256": "3b9fbbaa28ff660c0678b5cd5bac7cf8fba931a91016cc551aa1bedbd8cbbe34",
+            "live_equals_installed_pe": true
+          }
+        ],
+        "original_executed": false
+      },
+      {
+        "entry": "00bec8e0",
+        "bytes": 37,
+        "sha256": "25a3b7c4228adb3219e27d08767abe7ced61aaf323ae0164aac0d664efe436fd",
+        "parts": [
+          {
+            "start": "00bec8e0",
+            "bytes": 37,
+            "sha256": "25a3b7c4228adb3219e27d08767abe7ced61aaf323ae0164aac0d664efe436fd",
+            "live_equals_installed_pe": true
+          }
+        ],
+        "original_executed": false
+      },
+      {
+        "entry": "00bec910",
+        "bytes": 58,
+        "sha256": "da0de365558953df99d7496403df7175a6492619ca1ff1dede9599bb088f2db4",
+        "parts": [
+          {
+            "start": "00bec910",
+            "bytes": 58,
+            "sha256": "da0de365558953df99d7496403df7175a6492619ca1ff1dede9599bb088f2db4",
+            "live_equals_installed_pe": true
+          }
+        ],
+        "original_executed": false
+      }
+    ],
+    "function_bytes": 736,
+    "calls": [
+      {
+        "address": "00bec243",
+        "function": "00bec240",
+        "native": "00bf6989"
+      },
+      {
+        "address": "00bec416",
+        "function": "00bec3e0",
+        "native": "00bf6989"
+      },
+      {
+        "address": "00bec435",
+        "function": "00bec3e0",
+        "native": "00bf55be"
+      },
+      {
+        "address": "00bec458",
+        "function": "00bec3e0",
+        "native": "00403560"
+      },
+      {
+        "address": "00bec5be",
+        "function": "00bec590",
+        "native": "00415350"
+      },
+      {
+        "address": "00bec5ec",
+        "function": "00bec590",
+        "native": "00415350"
+      },
+      {
+        "address": "00bec5fa",
+        "function": "00bec590",
+        "native": "00bd0c30"
+      },
+      {
+        "address": "00bec65e",
+        "function": "00bec630",
+        "native": "00415350"
+      },
+      {
+        "address": "00bec686",
+        "function": "00bec630",
+        "native": "00415350"
+      },
+      {
+        "address": "00bec694",
+        "function": "00bec630",
+        "native": "00bcfca0"
+      },
+      {
+        "address": "00bec6f3",
+        "function": "00bec6f0",
+        "native": "00bec630"
+      },
+      {
+        "address": "00bec700",
+        "function": "00bec6f0",
+        "native": "00bf65ac"
+      },
+      {
+        "address": "00bec88e",
+        "function": "00bec870",
+        "native": "00bec590"
+      },
+      {
+        "address": "00bec8b3",
+        "function": "00bec870",
+        "native": "00bf6989"
+      },
+      {
+        "address": "00bec8c3",
+        "function": "00bec870",
+        "native": "00bd1860"
+      },
+      {
+        "address": "00bec8ec",
+        "function": "00bec8e0",
+        "native": "0041cc80"
+      },
+      {
+        "address": "00bec8f5",
+        "function": "00bec8e0",
+        "native": "00bf6989"
+      },
+      {
+        "address": "00bec91c",
+        "function": "00bec910",
+        "native": "0041cc80"
+      },
+      {
+        "address": "00bec925",
+        "function": "00bec910",
+        "native": "00bf6989"
+      },
+      {
+        "address": "00bec92f",
+        "function": "00bec910",
+        "native": "00bec630"
+      },
+      {
+        "address": "00bec93c",
+        "function": "00bec910",
+        "native": "00bf65ac"
+      },
+      {
+        "address": "00bed1ea",
+        "function": "00becee0",
+        "native": "00bf681b"
+      },
+      {
+        "address": "00bed203",
+        "function": "00becee0",
+        "native": "00bec870"
+      },
+      {
+        "address": "00bed21e",
+        "function": "00becee0",
+        "native": "00bec3e0"
+      },
+      {
+        "address": "00bec900",
+        "function": "00bec8e0",
+        "native": "00bec630",
+        "kind": "tail_jump"
+      }
+    ],
+    "indirect_calls": [
+      {
+        "address": "00bec5d7",
+        "function": "00bec590",
+        "kind": "indirect",
+        "operand": "dword ptr [0xce2218]"
+      },
+      {
+        "address": "00bec608",
+        "function": "00bec590",
+        "kind": "indirect",
+        "operand": "dword ptr [0xce2210]"
+      },
+      {
+        "address": "00bec677",
+        "function": "00bec630",
+        "kind": "indirect",
+        "operand": "dword ptr [0xce2218]"
+      },
+      {
+        "address": "00bec6ac",
+        "function": "00bec630",
+        "kind": "indirect",
+        "operand": "dword ptr [0xce2210]"
+      }
+    ],
+    "fresh_profile_views": [
+      {
+        "start": "00ce3978",
+        "bytes": 4,
+        "sha256": "9d459b445179d46efc315fd7ef9a5c8185bd7f3e2860dc6d325ab1b85acf6a96",
+        "live_equals_installed_pe": true
+      },
+      {
+        "start": "00ce3d88",
+        "bytes": 8,
+        "sha256": "055e7dd5bc7591c950c5683cab13f99a935400b719798b39b6152f8c1bf71555",
+        "live_equals_installed_pe": true
+      },
+      {
+        "start": "00ce3dc0",
+        "bytes": 8,
+        "sha256": "24b1f4ef66b650ff816e519b01742ff1753733d36e1b4c3e3b52743168915b1f",
+        "live_equals_installed_pe": true
+      },
+      {
+        "start": "00ce4b48",
+        "bytes": 8,
+        "sha256": "729bef532e854760af95391c84e7ba32d372f3384227e6d952a809b8b7f35eb5",
+        "live_equals_installed_pe": true
+      },
+      {
+        "start": "00ce5f90",
+        "bytes": 8,
+        "sha256": "568946b73185be9212f78a92db515c48fc38a91b32e7afc953f7e8e4acdb4a0e",
+        "live_equals_installed_pe": true
+      },
+      {
+        "start": "00cf5750",
+        "bytes": 8,
+        "sha256": "a07746c196bc8a6e12e36432458eac0bd2ab52e23da1a4d3f1140146c4026825",
+        "live_equals_installed_pe": true
+      },
+      {
+        "start": "00d5e600",
+        "bytes": 8,
+        "sha256": "b1ecc67d201a3405d2c2382c329b4233e9c30bd2c6da012c61e444134bb6cd9b",
+        "live_equals_installed_pe": true
+      },
+      {
+        "start": "00d5f0a8",
+        "bytes": 256,
+        "sha256": "57b458dad689e7ad8c6f0eb5b0de3bc4fe3b58860d7b492d8968afe1cfb34e49",
+        "live_equals_installed_pe": true
+      },
+      {
+        "start": "00d5f1a8",
+        "bytes": 64,
+        "sha256": "8f0e440037a63624687b09213ca95dea924b4fc10420dea08f35faa5ae13af48",
+        "live_equals_installed_pe": true
+      },
+      {
+        "start": "00d61870",
+        "bytes": 48,
+        "sha256": "67eb81d8c8d65b457567c8630765cc63bed6ce7ce5ca00b4468dab30cfd312e2",
+        "live_equals_installed_pe": true
+      },
+      {
+        "start": "00d618b0",
+        "bytes": 48,
+        "sha256": "aba2031da698177d20ce472833c85b5a633bd2f517c3cdcfb06e2888459b3632",
+        "live_equals_installed_pe": true
+      },
+      {
+        "start": "00d61948",
+        "bytes": 48,
+        "sha256": "da172f4cfec213fd950f49b8e79547fe13d185cb910bd8c9c04a0225f54a9fdc",
+        "live_equals_installed_pe": true
+      },
+      {
+        "start": "00d619a0",
+        "bytes": 68,
+        "sha256": "2cba1e5d818cce8ebfb970f1fa638da2f61c2dba957fe54eac4f8efe8e6b2ff1",
+        "live_equals_installed_pe": true
+      },
+      {
+        "start": "00d61a2c",
+        "bytes": 8,
+        "sha256": "8d053b4cf583d47a429a27df255a623c097330cbd498643526ac67924232eff0",
+        "live_equals_installed_pe": true
+      },
+      {
+        "start": "00d61a34",
+        "bytes": 8,
+        "sha256": "a364048a513ebab6baaeaeb57a16ce16c717cc46c85875c6c83613f6df2103a7",
+        "live_equals_installed_pe": true
+      },
+      {
+        "start": "00d61a3c",
+        "bytes": 8,
+        "sha256": "2d84241226425b91ffbc4bb9bf0c448b72a22c5381d78dab5fd8fbb954affc00",
+        "live_equals_installed_pe": true
+      },
+      {
+        "start": "00d61cc0",
+        "bytes": 72,
+        "sha256": "2e971703e69970aff164f8b135d0213c2b6019d9d18b2768c9ce2749496d5c6e",
+        "live_equals_installed_pe": true
+      },
+      {
+        "start": "00d61d1c",
+        "bytes": 12,
+        "sha256": "64cde7f82ed2673083aeea7cbc7e753ad5338e8ba188f0c63a048e39c697b478",
+        "live_equals_installed_pe": true
+      },
+      {
+        "start": "00d61d6c",
+        "bytes": 48,
+        "sha256": "a805cc75a6a31a849987d7cb0b47d255324d14aecea650897153021d8d00591a",
+        "live_equals_installed_pe": true
+      },
+      {
+        "start": "00d61de0",
+        "bytes": 44,
+        "sha256": "94759e67f346471cd1dace5cc8e7e77b1d0736d4abc62c6fe220387ac398b8ec",
+        "live_equals_installed_pe": true
+      },
+      {
+        "start": "00d61e10",
+        "bytes": 36,
+        "sha256": "797cffe6e5a5f88fd251f853006ced781f96229c71934604a2c5a83014ff9ba6",
+        "live_equals_installed_pe": true
+      },
+      {
+        "start": "00d61e34",
+        "bytes": 36,
+        "sha256": "0ce96f1496942ff87525bc114a4ba34656127d397a8e80aaf35b1bebc26234ad",
+        "live_equals_installed_pe": true
+      },
+      {
+        "start": "00d61e58",
+        "bytes": 36,
+        "sha256": "b7737afa19564b630838be9c056951ebc45167662dac96e8ae54d925414e8050",
+        "live_equals_installed_pe": true
+      },
+      {
+        "start": "00d61e7c",
+        "bytes": 36,
+        "sha256": "d74f853720d97ef5f568b327d488040b9a2cb5924c65cdc72197ae3f31597be1",
+        "live_equals_installed_pe": true
+      },
+      {
+        "start": "00d62ad0",
+        "bytes": 32,
+        "sha256": "a30b2ff83902dc151ecf13b91fde3cc5ea8af297cd98a50488e62891c2ef24ad",
+        "live_equals_installed_pe": true
+      },
+      {
+        "start": "00d62af4",
+        "bytes": 12,
+        "sha256": "9de1be15d202d1eaf11f78ef55501c98426ca679b0acb46d3cee8a63b310c4a9",
+        "live_equals_installed_pe": true
+      },
+      {
+        "start": "00d7a24c",
+        "bytes": 4,
+        "sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c",
+        "live_equals_installed_pe": true
+      }
+    ],
+    "profile_bytes": 976,
+    "copied_input_profiles_rechecked_against_pe": [
+      {
+        "name": "renderer",
+        "address": "00D5F0A8",
+        "bytes": 324,
+        "sha256": "5fcfa2badc5e5416ad763aafed0b9ab8d17ea1b2e30afb7e3e1adaf051ec6573",
+        "live_equals_pe": true
+      },
+      {
+        "name": "physical",
+        "address": "00D691B0",
+        "bytes": 104,
+        "sha256": "36ecdfe82292725bddca54aee4e9730228381f3c721cafc2619fe5dacfd29fde",
+        "live_equals_pe": true
+      },
+      {
+        "name": "texture",
+        "address": "00D61948",
+        "bytes": 64,
+        "sha256": "09d9f4bb95106b475519c558ee9d58307a2408c7cc2a263d812364d5af1ba930",
+        "live_equals_pe": true
+      },
+      {
+        "name": "surface",
+        "address": "00D619A0",
+        "bytes": 32,
+        "sha256": "7db2ee0d5b1106b2d3ba4592b1802c0d26bcc75cd9986170cdeb5a38db93069b",
+        "live_equals_pe": true
+      },
+      {
+        "name": "states",
+        "address": "00D61A2C",
+        "bytes": 24,
+        "sha256": "ea0cff40b28c4ceac32f7bf0dbe6f92d507870deef9b3be13bc2f49347301813",
+        "live_equals_pe": true
+      },
+      {
+        "name": "pass",
+        "address": "00D61BE8",
+        "bytes": 20,
+        "sha256": "8e487df2a8ed25f970a956066db075cbb5760250fc63436183a5ed4d4ae5b43a",
+        "live_equals_pe": true
+      },
+      {
+        "name": "shaders",
+        "address": "00D62A60",
+        "bytes": 32,
+        "sha256": "54c8f8d0c4187359598abaf986fb4a9a709696b281d4f62f6966d9eb68e7a8bd",
+        "live_equals_pe": true
+      },
+      {
+        "name": "reflection",
+        "address": "00D61810",
+        "bytes": 16,
+        "sha256": "1f9662a6387649697ffae3f2bdf0dc07e8578c514ca1277f04b5a545b0d3e480",
+        "live_equals_pe": true
+      },
+      {
+        "name": "batch",
+        "address": "00D5E5AC",
+        "bytes": 16,
+        "sha256": "9c2ccfe40604062125fec5fdef0e43142b1ed2d15a5f6dcc1ba679f9a5f45819",
+        "live_equals_pe": true
+      },
+      {
+        "name": "backing",
+        "address": "00D15AD8",
+        "bytes": 8,
+        "sha256": "4961e9832015a124713cd4e85d58bfc0ab3700c1bb84d137d4cee67ebfdfc319",
+        "live_equals_pe": true
+      },
+      {
+        "name": "memory",
+        "address": "00D642C0",
+        "bytes": 32,
+        "sha256": "18d686f1b5f06ee2390bd8ab9716522ad8b6610aac1573109fc0ae0e46680f54",
+        "live_equals_pe": true
+      },
+      {
+        "name": "mesh",
+        "address": "00D62D60",
+        "bytes": 8,
+        "sha256": "688e02fc0f53defa3864cd479930562f606e2c41753a04e16dc10a133a98d745",
+        "live_equals_pe": true
+      },
+      {
+        "name": "section",
+        "address": "00D63194",
+        "bytes": 8,
+        "sha256": "a8b374e12296ca89e49db6719e48333bf1ec30ca60b6910c2da6f9fabb2124da",
+        "live_equals_pe": true
+      },
+      {
+        "name": "date",
+        "address": "00D683B0",
+        "bytes": 12,
+        "sha256": "b68b8ef46d77cf713d6836ad9c8b4bf81dec10d0998c7f6c1238063b63906d8b",
+        "live_equals_pe": true
+      },
+      {
+        "name": "open",
+        "address": "00D6838C",
+        "bytes": 12,
+        "sha256": "1fffca665242207f66f0be08fa14b97fce903b3ae9e361f2bf92c2f4b79fbb43",
+        "live_equals_pe": true
+      },
+      {
+        "name": "exists",
+        "address": "00D68398",
+        "bytes": 12,
+        "sha256": "0703f71503cbe18b931e1da3187d5fce5c2807cb030cd0ff5dc03bbb638bb33a",
+        "live_equals_pe": true
+      },
+      {
+        "name": "name_probe",
+        "address": "00D683E8",
+        "bytes": 12,
+        "sha256": "1b9578b85e08f1cb9e4f85c3f5b1cb7dbd64daa75839adc5bf833767656da9e8",
+        "live_equals_pe": true
+      },
+      {
+        "name": "secondary",
+        "address": "00CE7D24",
+        "bytes": 16,
+        "sha256": "ca319ead624f18b92ed6e9a4399c36d33435d78e2afe010d8e5ce814aa1a2738",
+        "live_equals_pe": true
+      },
+      {
+        "name": "default",
+        "address": "00CE3C5C",
+        "bytes": 8,
+        "sha256": "7670cf4ceda3b9a04325d9e243935446f8064a15b60b5d91e03d6450344e89c8",
+        "live_equals_pe": true
+      },
+      {
+        "name": "registry",
+        "address": "00D5F088",
+        "bytes": 20,
+        "sha256": "744d4f63ee4562f3ec7aaf2fd4fa4495edc15a5f3092e6ad6d52363645069566",
+        "live_equals_pe": true
+      },
+      {
+        "name": "descriptor_append",
+        "address": "00B3B280",
+        "bytes": 306,
+        "sha256": "cdf241047d8ec93b39fa9058ac6b15b71c386832dfb4170b2dc7c0fcce6e28d9",
+        "live_equals_pe": true
+      }
+    ],
+    "prior_constructed_evidence": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_constructed_renderer_effect\\evidence.json",
+      "sha256": "0c7f8aeabd162ef43197f7b072dab1592097f9f7303e51c08f84ed1fb39f179a"
+    },
+    "explicit_units": {
+      "native_material_descriptor_samplers": {
+        "compiled": true,
+        "linked": true,
+        "symbol_rows": [
+          "0001:00003e60       ??1logic_error@std@@UAE@XZ 00404e60 f i native_material_descriptor_samplers.obj",
+          "0001:000040b0       ??_Elogic_error@std@@UAEPAXI@Z 004050b0 f i native_material_descriptor_samplers.obj"
+        ]
+      },
+      "native_material_effect_loading": {
+        "compiled": true,
+        "linked": true,
+        "symbol_rows": [
+          "0001:00009750       ??0NativeMaterialEffectLoadAcquired@bsp@@QAE@XZ 0040a750 f   native_material_effect_loading.obj",
+          "0001:000097c0       ??0NativeMaterialEffectLoadOwners@bsp@@QAE@AAVGuiNativeGeometryOwners@1@AAUNativeMaterialEffectDestructionAccess@1@PDI@Z 0040a7c0 f   native_material_effect_loading.obj"
+        ]
+      },
+      "native_material_effect_programs": {
+        "compiled": true,
+        "linked": true,
+        "symbol_rows": [
+          "0001:0000a760       ??0?$optional@VNativeShaderDescriptorCallableBinding@bsp@@@std@@QAE@XZ 0040b760 f i native_material_effect_programs.obj",
+          "0001:0000a8b0       ??0NativeMaterialEffectProgramOperation@bsp@@QAE@XZ 0040b8b0 f   native_material_effect_programs.obj"
+        ]
+      },
+      "native_material_effect_runtime": {
+        "compiled": true,
+        "linked": true,
+        "symbol_rows": [
+          "0001:00003950       ??1NativeMaterialProgramChildFrame@bsp@@UAE@XZ 00404950 f i native_material_effect_runtime.obj",
+          "0001:00003950       ??1NativeTextureNameResolutionOperation@bsp@@UAE@XZ 00404950 f i native_material_effect_runtime.obj"
+        ]
+      },
+      "native_material_program_compiler": {
+        "compiled": true,
+        "linked": true,
+        "symbol_rows": [
+          "0001:0000c970       ??0NativeMaterialProgramCompileOperation@bsp@@QAE@XZ 0040d970 f   native_material_program_compiler.obj",
+          "0001:0000cb10       ??1NativeMaterialProgramCompileOperation@bsp@@UAE@XZ 0040db10 f   native_material_program_compiler.obj"
+        ]
+      },
+      "native_material_program_compiler_actual": {
+        "compiled": true,
+        "linked": true,
+        "symbol_rows": [
+          "0001:0000d410       ??$?0U?$default_delete@UNativeMaterialDescriptorSamplersOperation@bsp@@@std@@$0A@@?$unique_ptr@UNativeMaterialDescriptorSamplersOperation@bsp@@U?$default_delete@UNativeMaterialDescriptorSamplersOperation@bsp@@@std@@@std@@QAE@XZ 0040e410 f i native_material_program_compiler_actual.obj",
+          "0001:0000d410       ??$?0U?$default_delete@UNativeMaterialPassShaderSlotsOperation@bsp@@@std@@$0A@@?$unique_ptr@UNativeMaterialPassShaderSlotsOperation@bsp@@U?$default_delete@UNativeMaterialPassShaderSlotsOperation@bsp@@@std@@@std@@QAE@XZ 0040e410 f i native_material_program_compiler_actual.obj"
+        ]
+      },
+      "native_material_secondary_pass_actual": {
+        "compiled": true,
+        "linked": true,
+        "symbol_rows": [
+          "0001:0000fe40       ??1?$unique_ptr@VNativeMaterialSecondaryPassFrame@bsp@@U?$default_delete@VNativeMaterialSecondaryPassFrame@bsp@@@std@@@std@@QAE@XZ 00410e40 f i native_material_secondary_pass_actual.obj",
+          "0001:0000fe80       ??_ENativeMaterialSecondaryPassFrame@bsp@@UAEPAXI@Z 00410e80 f i native_material_secondary_pass_actual.obj"
+        ]
+      },
+      "native_render_service_texture_construction": {
+        "compiled": true,
+        "linked": false,
+        "symbol_rows": []
+      },
+      "native_shader_binary_cache_load": {
+        "compiled": true,
+        "linked": true,
+        "symbol_rows": [
+          "0001:000047c0       ?_Xlength@?$vector@V?$unique_ptr@UNativeShaderBinaryCacheRowLoadFrame@bsp@@U?$default_delete@UNativeShaderBinaryCacheRowLoadFrame@bsp@@@std@@@std@@V?$allocator@V?$unique_ptr@UNativeShaderBinaryCacheRowLoadFrame@bsp@@U?$default_delete@UNativeShaderBinaryCacheRowLoadFrame@bsp@@@std@@@std@@@2@@std@@CAXXZ 004057c0 f i native_shader_binary_cache_load.obj",
+          "0001:000102c0       ??$_Emplace_reallocate@V?$unique_ptr@UNativeShaderBinaryCacheRowLoadFrame@bsp@@U?$default_delete@UNativeShaderBinaryCacheRowLoadFrame@bsp@@@std@@@std@@@?$vector@V?$unique_ptr@UNativeShaderBinaryCacheRowLoadFrame@bsp@@U?$default_delete@UNativeShaderBinaryCacheRowLoadFrame@bsp@@@std@@@std@@V?$allocator@V?$unique_ptr@UNativeShaderBinaryCacheRowLoadFrame@bsp@@U?$default_delete@UNativeShaderBinaryCacheRowLoadFrame@bsp@@@std@@@std@@@2@@std@@AAEPAV?$unique_ptr@UNativeShaderBinaryCacheRowLoadFrame@bsp@@U?$default_delete@UNativeShaderBinaryCacheRowLoadFrame@bsp@@@std@@@1@QAV21@$$QAV21@@Z 004112c0 f i native_shader_binary_cache_load.obj"
+        ]
+      },
+      "native_shader_binary_cache_stream": {
+        "compiled": true,
+        "linked": true,
+        "symbol_rows": [
+          "0001:00010e10       ??1NativeShaderBinaryCacheFrameState@bsp@@QAE@XZ 00411e10 f   native_shader_binary_cache_stream.obj",
+          "0001:00010e30       ?capture_slot@NativeShaderBinaryCacheStreamContext@bsp@@QBEIPAXIAAI@Z 00411e30 f   native_shader_binary_cache_stream.obj"
+        ]
+      },
+      "native_shader_constant_header": {
+        "compiled": true,
+        "linked": true,
+        "symbol_rows": [
+          "0001:00010e10       ??1NativeShaderConstantHeaderOperation@bsp@@QAE@XZ 00411e10 f   native_shader_constant_header.obj",
+          "0001:000112f0       ?append_native_shader_line_00b35110@bsp@@YAXAAVNativeString@1@AAUNativeShaderConstantHeaderContext@1@AAUNativeShaderConstantHeaderOperation@1@PBDZZ 004122f0 f   native_shader_constant_header.obj"
+        ]
+      },
+      "native_shader_descriptor_reader": {
+        "compiled": true,
+        "linked": true,
+        "symbol_rows": [
+          "0001:00011ce0       ??0NativeShaderDescriptorReadOperation@bsp@@QAE@XZ 00412ce0 f   native_shader_descriptor_reader.obj",
+          "0001:00011dc0       ??1NativeShaderDescriptorReadOperation@bsp@@UAE@XZ 00412dc0 f   native_shader_descriptor_reader.obj"
+        ]
+      },
+      "native_shader_field_initialization": {
+        "compiled": true,
+        "linked": true,
+        "symbol_rows": [
+          "0001:000129b0       ??$make_unique@UNativeShaderConstantHeaderOperation@bsp@@$$V$0A@@std@@YA?AV?$unique_ptr@UNativeShaderConstantHeaderOperation@bsp@@U?$default_delete@UNativeShaderConstantHeaderOperation@bsp@@@std@@@0@XZ 004139b0 f i native_shader_field_initialization.obj",
+          "0001:00012a90       ??0NativeShaderConstantHeaderOperation@bsp@@QAE@XZ 00413a90 f i native_shader_field_initialization.obj"
+        ]
+      },
+      "native_shader_interpolator_source": {
+        "compiled": true,
+        "linked": true,
+        "symbol_rows": [
+          "0001:00013090       ??$make_unique@UNativeShaderStructDeclarationOperation@bsp@@$$V$0A@@std@@YA?AV?$unique_ptr@UNativeShaderStructDeclarationOperation@bsp@@U?$default_delete@UNativeShaderStructDeclarationOperation@bsp@@@std@@@0@XZ 00414090 f i native_shader_interpolator_source.obj",
+          "0001:00013120       ??0NativeShaderStructDeclarationOperation@bsp@@QAE@XZ 00414120 f i native_shader_interpolator_source.obj"
+        ]
+      },
+      "native_shader_interpolators": {
+        "compiled": true,
+        "linked": true,
+        "symbol_rows": [
+          "0001:00013c70       ??1NativeShaderInterpolatorOperation@bsp@@QAE@XZ 00414c70 f   native_shader_interpolators.obj",
+          "0001:00013c90       ?append_native_shader_interpolator_mapping_00b34aa0@bsp@@YAXAAUNativeMaterialProgramBuilderStorage@1@AAUNativeShaderDescriptorArray@1@AAUNativeShaderInterpolatorOperation@1@@Z 00414c90 f   native_shader_interpolators.obj"
+        ]
+      },
+      "native_shader_pixel_source": {
+        "compiled": true,
+        "linked": true,
+        "symbol_rows": [
+          "0001:00014500       ??$make_unique@UNativeShaderFieldInitializationOperation@bsp@@$$V$0A@@std@@YA?AV?$unique_ptr@UNativeShaderFieldInitializationOperation@bsp@@U?$default_delete@UNativeShaderFieldInitializationOperation@bsp@@@std@@@0@XZ 00415500 f i native_shader_pixel_source.obj",
+          "0001:000145d0       ??$make_unique@UNativeShaderInterpolatorSourceOperation@bsp@@$$V$0A@@std@@YA?AV?$unique_ptr@UNativeShaderInterpolatorSourceOperation@bsp@@U?$default_delete@UNativeShaderInterpolatorSourceOperation@bsp@@@std@@@0@XZ 004155d0 f i native_shader_pixel_source.obj"
+        ]
+      },
+      "native_shader_sampler_declarations": {
+        "compiled": true,
+        "linked": true,
+        "symbol_rows": [
+          "0001:00015ac0       ??1NativeShaderSamplerDeclarationsOperation@bsp@@QAE@XZ 00416ac0 f   native_shader_sampler_declarations.obj",
+          "0001:00015d20       ?append_native_pixel_sampler_declarations_00b37ef0@bsp@@YAXAAUNativeMaterialProgramBuilderStorage@1@AAUNativeShaderConstantHeaderContext@1@AAUNativeShaderSamplerDeclarationsOperation@1@@Z 00416d20 f   native_shader_sampler_declarations.obj"
+        ]
+      },
+      "native_shader_shadow_source": {
+        "compiled": true,
+        "linked": true,
+        "symbol_rows": [
+          "0001:00015d60       ??1NativeShaderShadowSourceOperation@bsp@@QAE@XZ 00416d60 f   native_shader_shadow_source.obj",
+          "0001:00015ef0       ?append_native_map_shadow_helper_00b382b0@bsp@@YAXAAUNativeMaterialProgramBuilderStorage@1@AAUNativeShaderConstantHeaderContext@1@AAUNativeShaderShadowSourceOperation@1@@Z 00416ef0 f   native_shader_shadow_source.obj"
+        ]
+      },
+      "native_shader_struct_declarations": {
+        "compiled": true,
+        "linked": true,
+        "symbol_rows": [
+          "0001:00016030       ??1NativeShaderStructDeclarationOperation@bsp@@QAE@XZ 00417030 f   native_shader_struct_declarations.obj",
+          "0001:00016070       ?append_native_shader_cstring_line_00b34f20@bsp@@YAXAAVNativeString@1@PBDAAUNativeShaderConstantHeaderContext@1@AAUNativeShaderStructDeclarationOperation@1@@Z 00417070 f   native_shader_struct_declarations.obj"
+        ]
+      },
+      "native_shader_system_fields": {
+        "compiled": true,
+        "linked": true,
+        "symbol_rows": [
+          "0001:00016b80       ??1NativeShaderSystemFieldsOperation@bsp@@QAE@XZ 00417b80 f   native_shader_system_fields.obj",
+          "0001:00016e50       ?append_native_shader_pixel_system_fields_00b372d0@bsp@@YAXAAUNativeMaterialProgramBuilderStorage@1@AAVNativeStringStorage@1@AAUNativeShaderSystemFieldsOperation@1@@Z 00417e50 f   native_shader_system_fields.obj"
+        ]
+      },
+      "native_shader_vertex_source": {
+        "compiled": true,
+        "linked": true,
+        "symbol_rows": [
+          "0001:00016ee0       ??1NativeShaderVertexSourceOperation@bsp@@QAE@XZ 00417ee0 f   native_shader_vertex_source.obj",
+          "0001:00017030       ?generate_native_shader_vertex_source_00b39110@bsp@@YAXAAUNativeMaterialProgramBuilderStorage@1@AAUNativeShaderFieldInitializationContext@1@AAUNativeShaderVertexSourceOperation@1@@Z 00418030 f   native_shader_vertex_source.obj"
+        ]
+      },
+      "native_vfs_extension_prefix": {
+        "compiled": true,
+        "linked": true,
+        "symbol_rows": [
+          "0001:00003e60       ??1length_error@std@@UAE@XZ 00404e60 f i native_vfs_extension_prefix.obj",
+          "0001:000040b0       ??_Elength_error@std@@UAEPAXI@Z 004050b0 f i native_vfs_extension_prefix.obj"
+        ]
+      },
+      "native_vfs_search_defaults": {
+        "compiled": true,
+        "linked": true,
+        "symbol_rows": [
+          "0001:00018430       ?register_native_vfs_search_defaults_00738360@bsp@@YAXACRAXAAVActualNativeStringPoolStorage@1@ABUSingletonLifetimeCallbacks@1@@Z 00419430 f   native_vfs_search_defaults.obj",
+          "0002:00006e58       ??_C@_03CBDDAJHO@dds@      00486e58     native_vfs_search_defaults.obj"
+        ]
+      },
+      "native_vfs_search_groups": {
+        "compiled": true,
+        "linked": true,
+        "symbol_rows": [
+          "0001:0001bbc0       ?register_native_vfs_search_directory_00be2600@bsp@@YAXPAXPBX1AAVActualNativeStringPoolStorage@1@ABUSingletonLifetimeCallbacks@1@@Z 0041cbc0 f   native_vfs_search_groups.obj",
+          "0001:0001bc60       ?register_native_vfs_search_extension_00be25e0@bsp@@YAXPAXPBX1AAVActualNativeStringPoolStorage@1@ABUSingletonLifetimeCallbacks@1@@Z 0041cc60 f   native_vfs_search_groups.obj"
+        ]
+      }
+    },
+    "production_providers_linked": {
+      "native_render_entry_cache": true,
+      "native_platform_construction": true,
+      "native_renderer_device_startup_actual": true,
+      "native_renderer_reset_process": true,
+      "native_renderer_default_surfaces": true,
+      "native_renderer_resource_release": true,
+      "native_renderer_resource_restore": true,
+      "native_dynamic_buffer_device_release": true,
+      "native_renderer_reset_readiness": true,
+      "native_graphics_pool_lifetime": true,
+      "native_renderer_constructor": true,
+      "native_hardware_layout_tree_static": true,
+      "native_hardware_layout_pool_static": true,
+      "native_cube_texture_pool_static": true
+    },
+    "source_context_rebuild": [
+      "native_material_descriptor_samplers.cpp",
+      "native_material_effect_loading.cpp",
+      "native_material_effect_programs.cpp",
+      "native_material_effect_runtime.cpp",
+      "native_material_program_compiler.cpp",
+      "native_material_program_compiler_actual.cpp",
+      "native_render_service_texture_construction.cpp",
+      "native_shader_constant_header.cpp",
+      "native_shader_descriptor_reader.cpp",
+      "native_shader_field_initialization.cpp",
+      "native_shader_interpolators.cpp",
+      "native_shader_interpolator_source.cpp",
+      "native_shader_pixel_source.cpp",
+      "native_shader_sampler_declarations.cpp",
+      "native_shader_shadow_source.cpp",
+      "native_shader_struct_declarations.cpp",
+      "native_shader_system_fields.cpp",
+      "native_shader_vertex_source.cpp"
+    ],
+    "foreign_commit": "2cccac2e3ab42c6cd9f2b91262da71509c1699b0",
+    "original_execution": "Full unmodified BEBF00[39] record initializer against mapped original one literal; unchanged prior BE2AC8[64] x87 fragment and B3B280[306] empty branch twice. Cache constructor/resize/destruction/window fragment and renderer/device/asset composition execute production source.",
+    "fresh_eh_and_profiles": [
+      {
+        "start": "00cc73eb",
+        "bytes": 10,
+        "sha256": "077e64a2ff8c3440e2e9cce1e1f15632be70121384af551efc705c2d0bab24bb",
+        "live_equals_installed_pe": true
+      },
+      {
+        "start": "00e01ec4",
+        "bytes": 36,
+        "sha256": "000bee518aba1c25836739910701ac460d37e2d119e9862c81383dee91fe8696",
+        "live_equals_installed_pe": true
+      },
+      {
+        "start": "00e01ebc",
+        "bytes": 8,
+        "sha256": "a2d14d49e9ebcde02635a3c5e6e03713bff17981d63ee928059e2c41e996e777",
+        "live_equals_installed_pe": true
+      },
+      {
+        "start": "00cc73e0",
+        "bytes": 11,
+        "sha256": "ff8c6bb9a32c5d7ddc401fcbd7d18021f786dd4c5c423ee74289b9a2ae761d85",
+        "live_equals_installed_pe": true
+      },
+      {
+        "start": "00cc7410",
+        "bytes": 10,
+        "sha256": "7817485b636c974e9723d95abf6d738061b20c9b9349b0063133285cd3b056a7",
+        "live_equals_installed_pe": true
+      },
+      {
+        "start": "00e01ef8",
+        "bytes": 36,
+        "sha256": "c473b5b9608e999b75afa16cd01bfecc52fc1d893aae1108b9fb4ef384651857",
+        "live_equals_installed_pe": true
+      },
+      {
+        "start": "00e01ee8",
+        "bytes": 16,
+        "sha256": "492f861782f2e23cd60b4d4d3f9979fb23e57b885e67f53726f4cf82199a527f",
+        "live_equals_installed_pe": true
+      },
+      {
+        "start": "00cc7400",
+        "bytes": 16,
+        "sha256": "82c6dc2ad73b13f2775e99c9a16e70b83bf60047be01b4adf99812ce8f7f55c3",
+        "live_equals_installed_pe": true
+      },
+      {
+        "start": "00cc7430",
+        "bytes": 10,
+        "sha256": "d377e900aadaca1506ef7ab1f508e4139b5239fb27f195fa1ef2cd833455c6b3",
+        "live_equals_installed_pe": true
+      },
+      {
+        "start": "00e01f2c",
+        "bytes": 36,
+        "sha256": "baf72e26b4d4ca7ac9e7b2649cee5352bf3cd4575afc354973293240a7fe77b3",
+        "live_equals_installed_pe": true
+      },
+      {
+        "start": "00e01f1c",
+        "bytes": 16,
+        "sha256": "aa9344b826bb3112f636d4003f4e4237317da8c779da1d389ff4d39e4b3736dc",
+        "live_equals_installed_pe": true
+      },
+      {
+        "start": "00cc7420",
+        "bytes": 16,
+        "sha256": "dcdc72974e4334848dda11ee89185a184c5642be25fbf59a96725e0dd41a8cff",
+        "live_equals_installed_pe": true
+      },
+      {
+        "start": "00cc7453",
+        "bytes": 10,
+        "sha256": "52facf43e03f741549fc84cf2547834bbf0c860163d51480c00532e6655a7eeb",
+        "live_equals_installed_pe": true
+      },
+      {
+        "start": "00e01f68",
+        "bytes": 36,
+        "sha256": "0dd403197235da494abcfa07aa48b9f7028ebccfd07beac4613a4742aa44b648",
+        "live_equals_installed_pe": true
+      },
+      {
+        "start": "00e01f50",
+        "bytes": 24,
+        "sha256": "a8bcae9ea6dcdbcfcb771296cd9d2ade113457c5a480117a89dc0038f3d03e8c",
+        "live_equals_installed_pe": true
+      },
+      {
+        "start": "00cc7440",
+        "bytes": 19,
+        "sha256": "245eba1b54bcc1a0ab800c1a3550f3847e341871af401b600aae732886fd46ec",
+        "live_equals_installed_pe": true
+      },
+      {
+        "start": "00d68cbc",
+        "bytes": 4,
+        "sha256": "91ab8b5227735fcf2a1bc02187bc2db6511a1b150956352cc07e81fa57eadae4",
+        "live_equals_installed_pe": true
+      },
+      {
+        "start": "00d68cc0",
+        "bytes": 4,
+        "sha256": "6942bf48121e589286bd172e6f09fb093d77f7a5449bf21dfab8e80719fe39de",
+        "live_equals_installed_pe": true
+      },
+      {
+        "start": "00ce3818",
+        "bytes": 4,
+        "sha256": "9b438ce3feae2fd62d0e9bbaf623d6c8501a0d858c6da7d06cc04ccc29ebd57f",
+        "live_equals_installed_pe": true
+      },
+      {
+        "start": "00ce37fc",
+        "bytes": 4,
+        "sha256": "8b12438c84805d12f163f8d7b8976a71222f4b4cc6a4be870696607611839f82",
+        "live_equals_installed_pe": true
+      },
+      {
+        "start": "00d7a24c",
+        "bytes": 4,
+        "sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c",
+        "live_equals_installed_pe": true
+      },
+      {
+        "start": "00bf55be",
+        "bytes": 5,
+        "sha256": "1a1c5ac8daef760366aa45f2877b739d5fc503454ccccf7cce90f1613619b406",
+        "live_equals_installed_pe": true
+      },
+      {
+        "start": "00bf6989",
+        "bytes": 5,
+        "sha256": "4d311098ca9ce6d6a11d6bd70234374b80fb61e695812ad0801ce7176cbfa9f9",
+        "live_equals_installed_pe": true
+      },
+      {
+        "start": "00403560",
+        "bytes": 50,
+        "sha256": "51dc337b96022e62bb4e503f32bd34ccdd7bc831d1377c96108344b59065c616",
+        "live_equals_installed_pe": true
+      },
+      {
+        "start": "00cc748b",
+        "bytes": 10,
+        "sha256": "32ab519e3064197b953f919837ce1948c6982f63f99e4fe31b018572a9eb20f4",
+        "live_equals_installed_pe": true
+      },
+      {
+        "start": "00e01fc0",
+        "bytes": 36,
+        "sha256": "59127aba674babda5886f5c303a8554c21d3274cb1019dda453d867b16780c3b",
+        "live_equals_installed_pe": true
+      },
+      {
+        "start": "00e01fb8",
+        "bytes": 8,
+        "sha256": "d220aaa47381dc821586aa2e59bb8300c0b43016d1b40aa93033e0c4a63788f7",
+        "live_equals_installed_pe": true
+      },
+      {
+        "start": "00cc7480",
+        "bytes": 11,
+        "sha256": "d26cedf3e96b14d4f3beb249a3581b7fd4c3bb0f59cda01ac7c1b4916ce97d5d",
+        "live_equals_installed_pe": true
+      }
+    ],
+    "fresh_eh_and_profile_bytes": 455,
+    "compiled_original_x87_schedule": {
+      "address": "00be2ac8",
+      "bytes": 64,
+      "sha256": "5ffd2b5eeb9662ca3669f8a850e5f6cb9a5884daee792f0f965bbb318f4e7baa",
+      "exact_occurrences_in_linked_fixture_executable": [
+        {
+          "linked_address": "0041db28",
+          "owner_entry": "0041da70",
+          "symbol": "?construct_native_win32_platform_00becda0@bsp@@YAPAXPAXAAUNativePlatformConstructionContext@1@@Z",
+          "object": "bsp_core:native_platform_construction.obj"
+        },
+        {
+          "linked_address": "0041dce2",
+          "owner_entry": "0041dc30",
+          "symbol": "?construct_native_window_platform_base_00be2ac0@bsp@@YAPAXPAXAAUNativePlatformConstructionContext@1@@Z",
+          "object": "bsp_core:native_platform_construction.obj"
+        }
+      ],
+      "purpose": "Full original XOR/stores/FILD/FIDIV/FSTP instruction sequence preserved in production code."
+    },
+    "prior_device_evidence": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_device_effect_startup\\evidence.json",
+      "sha256": "c6d14e8993feea418fa25471b90e8afbf3fa68a6a07a3d9bc77e311e819f4509"
+    },
+    "window_startup_fragment": {
+      "start": "00bed1e8",
+      "bytes": 59,
+      "sha256": "9f477e2b48557a26c845296d7f1db86330f520215fad06c8bf36ffe657d05780",
+      "live_equals_installed_pe": true
+    },
+    "prior_platform_evidence": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_platform_construction\\evidence.json",
+      "sha256": "c21a82069d3cb3daf2145c02e48facd8a99fbb9f56516b4657547ebde1b1a86f"
+    },
+    "flow_repairs": {
+      "path": "reports/native_render_entry_cache_flow.json",
+      "sha256": "87123045e7a3bac2b5f0ce7b18fd1d4d3af28d6fb2a9226f9285f8143802ffc2"
+    },
+    "function_body_repairs": {
+      "path": "reports/native_render_entry_cache_definitions.json",
+      "sha256": "5df53f69f642f8464e629af3b0a630733325f9395842369d7f55cb76ed420925"
+    },
+    "final_flow": "Six repaired functions have zero listing gaps after bounded body recreation where required."
+  },
+  "fixture": {
+    "utc": "2026-09-15T02:23:11.622354+00:00",
+    "exit": 0,
+    "executable_sha256": "75e35be078b887223c9575f28eff91bf9f7f8b4a51315e4be5f0eb2daff99033",
+    "command": [
+      "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_render_entry_cache\\device_effect_probe.exe"
+    ],
+    "cwd": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_render_entry_cache",
+    "libraries_before_after": {
+      "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\build\\win32\\Release\\bsp_core.lib": "aaf209ec1c0328db0ff035ae7d27e75f4c903a5af5643d9e702c8ff5573a1154",
+      "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\build\\win32\\Release\\bsp_lua511.lib": "b6c19dd56bce2c86dcf1abf5c3044d48ddc2ac2c33ef04e3dc87f022413ee193",
+      "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\build\\win32\\Release\\bsp_zlib121.lib": "2c89bd9ae83d791564ea847c75e8e5ee025e40810c1df8d55e5799e0c7b8c471"
+    },
+    "installed_assets_before_after": {
+      "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\shaders.bin": "dcc65686e26e0b7b4f4179b45b153aaa353696b0b1b08c32251fbc7c97c0ecf8",
+      "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\common\\debugshader.shfx": "d45e91ef1a3f11c654b97ac3a9d293b9a24b597b68fb315d611638d3b6933476",
+      "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\lights\\dummy.shfx": "3768df78e6a57ee28563ab40cfb9cf223569c12eb62e8576458365deb0866c5b",
+      "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\dx9_lua.inc": "7766adc9c116a9e396b3dd77e9d97b3ea6d55c84601cb2a5a49a64362605b11f",
+      "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\scripts\\fundamentals.lua": "20e128ebe9a1cb7678e3324b0baae93adab4f34f4d96bd081fb7b86505f63526",
+      "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\models\\textures\\error.dds": "9b4666225274f51cfc1d6e964070be76f2a3a4997bec69748d1a81ba86359162",
+      "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\effects\\white.dds": "d98f8d618cfbb3840198fb54e8065446b5a249760b1a8f4bf2dd47f332d28d95"
+    },
+    "check_lines": [
+      "STAGE controlled child: six native input bands reserved before initial thread",
+      "PLATFORM actual184h=1 publication=1 registration=1 raw_queue=1 preimage_aspect=C2FFFFFE x87_cw=0C7F x87_sw=0020 title_return=1",
+      "PASS raw platform construction and title/base cleanup; original x87 fragment all-byte/CW/SW differential",
+      "PASS graphics pools and hardware tree initialized in shared allocator-list domain with real CRT callback registration",
+      "PASS full 78 startup search registrations and installed 1628-row cache acquisition",
+      "RENDERER constructed=006E8DD0 factory=03772C00 lua=03C47AE8 definitions=03856118 constants=037DFD00 maxtexture=16384x16384 ps=0300 vs=0300 atoc=1 control_thread=64092",
+      "PASS full B32410 renderer construction with real capability gather and native singleton children",
+      "DEVICE native_startup=1 real_focus=1 reset_success=1 thread=84132 behavior=00000044 elapsed_ms=391 vb_bytes=16777216 ib_bytes=1048576 color=03FD3C18 depth=03FD3C50",
+      "PASS full B2AEB0 device startup and B2ABD0 focused Reset; actual default surfaces and 16MiB/1MiB dynamic buffers restored",
+      "ENTRY_CACHE actual14h=1 registered=1 records=10000 record_bytes=40 requested_bytes=400000 used=0 original_record_equal=1 stale_pointer=1 old_capacity=1 owner=03F1E108",
+      "PASS actual startup render-entry cache; original full record differential and count-based resize edge",
+      "READY cold texture cache=0 canonical=0 installed_shader_rows=1628",
+      "TEXTURE models/textures/error.dds bytes=22000 refs=3 width=128 height=128 mips=8 format=35545844 source_refs=1 backing_refs=1 aliases=2",
+      "TEXTURE effects/white.dds bytes=11064 refs=5 width=128 height=128 mips=8 format=31545844 source_refs=1 backing_refs=1 aliases=2",
+      "PASS cold native VFS DDS loads, canonical owners, retained bytes and cache aliases",
+      "PASS state caches render2/third1/sampler1; refs primary-render5 secondary-render2 third6 sampler6; white5 error3; pass refs2/1; canonical28",
+      "PASS B2EBB0/B407A0/B46950/B45EE0 canonical effect; resolved basenames and native generated keys; primary4 secondary1 retained1; cachecursor=164 canonical=28 reads=14 bytes=2301268",
+      "LIMIT actual source normal admission with real Lua/VFS/HAL and constructed native renderer and cold error/white DDS textures, complete native device startup and focused Reset, explicit material-policy cells and PC/USA inputs; no original FH3/ABI, archive startup, variants writes, teardown, draw or game proof",
+      "PASS actual control worker destruction and OS-observed thread exit0; parent and remaining owners retained",
+      "PASS probe focus restored and native timeBeginPeriod balanced; renderer/device/resource owners retained until process exit",
+      "PASS render-entry cache real section/buffer/owner release and publication/registration removal; explicit scalar route"
+    ],
+    "actual_com_matches_installed_cache": [
+      {
+        "row": 156,
+        "name": "debugshader0F3.vso",
+        "mode": 0,
+        "stage": "vs",
+        "bytes": 432,
+        "sha256": "cbc4d11e94dfd24513e4d433bebb1c6a4926f47146509c6643ea32ca027d586a"
+      },
+      {
+        "row": 157,
+        "name": "debugshader0F3.pso",
+        "mode": 0,
+        "stage": "ps",
+        "bytes": 444,
+        "sha256": "1010de3ba58511098c5d1800239975d09175cf3b1ceb010b82688b388840033a"
+      },
+      {
+        "row": 158,
+        "name": "debugshader1F3.vso",
+        "mode": 1,
+        "stage": "vs",
+        "bytes": 432,
+        "sha256": "cbc4d11e94dfd24513e4d433bebb1c6a4926f47146509c6643ea32ca027d586a"
+      },
+      {
+        "row": 159,
+        "name": "debugshader1F3.pso",
+        "mode": 1,
+        "stage": "ps",
+        "bytes": 200,
+        "sha256": "3751a656ab27ea7c382e92625f76615abcbbbfca409f7d4c453f60b6c8686ae0"
+      },
+      {
+        "row": 160,
+        "name": "debugshader3F3.vso",
+        "mode": 3,
+        "stage": "vs",
+        "bytes": 432,
+        "sha256": "cbc4d11e94dfd24513e4d433bebb1c6a4926f47146509c6643ea32ca027d586a"
+      },
+      {
+        "row": 161,
+        "name": "debugshader3F3.pso",
+        "mode": 3,
+        "stage": "ps",
+        "bytes": 348,
+        "sha256": "909be267fb068b24571d8dc13d45796515d274d82d95dbaa57047adcd1c46205"
+      },
+      {
+        "row": 162,
+        "name": "debugshader4F3.vso",
+        "mode": 4,
+        "stage": "vs",
+        "bytes": 432,
+        "sha256": "cbc4d11e94dfd24513e4d433bebb1c6a4926f47146509c6643ea32ca027d586a"
+      },
+      {
+        "row": 163,
+        "name": "debugshader4F3.pso",
+        "mode": 4,
+        "stage": "ps",
+        "bytes": 200,
+        "sha256": "3751a656ab27ea7c382e92625f76615abcbbbfca409f7d4c453f60b6c8686ae0"
+      }
+    ],
+    "cold_retained_textures": [
+      {
+        "asset": "models/textures/error.dds",
+        "bytes": 22000,
+        "sha256": "9b4666225274f51cfc1d6e964070be76f2a3a4997bec69748d1a81ba86359162",
+        "exact_retained_source": true
+      },
+      {
+        "asset": "effects/white.dds",
+        "bytes": 11064,
+        "sha256": "d98f8d618cfbb3840198fb54e8065446b5a249760b1a8f4bf2dd47f332d28d95",
+        "exact_retained_source": true
+      }
+    ]
+  },
+  "build": {
+    "commit": "0ca920c74f87df949340d01fbb66025973cd9959",
+    "libraries": {
+      "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\build\\win32\\Release\\bsp_core.lib": "aaf209ec1c0328db0ff035ae7d27e75f4c903a5af5643d9e702c8ff5573a1154",
+      "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\build\\win32\\Release\\bsp_lua511.lib": "b6c19dd56bce2c86dcf1abf5c3044d48ddc2ac2c33ef04e3dc87f022413ee193",
+      "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\build\\win32\\Release\\bsp_zlib121.lib": "2c89bd9ae83d791564ea847c75e8e5ee025e40810c1df8d55e5799e0c7b8c471"
+    },
+    "build_log": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native-render-entry-cache-build-final.log",
+    "build_log_sha256": "8273d73436c01a6a47d7b5a67fc1a2a2d65d03c96974b2d2cff0d573f053391c",
+    "prior_root_closure": "local/checkpoints/78f2d717/native-platform-construction/validation.json"
+  },
+  "validation": {
+    "production_build": "scripts/build.ps1 final; 2/2 existing CTests passed",
+    "explicit_compiled_units": 24,
+    "explicit_linked_units": 23,
+    "fixture_compile_attempt": 3,
+    "fixture_capture": 2,
+    "new_permanent_tests": 0,
+    "actual_startup_records": 10000,
+    "record_bytes": 40,
+    "requested_array_bytes": 400000,
+    "used_count": 0,
+    "original_leaf_bytes": 39,
+    "compared_record_bytes": 40,
+    "fault_injection": false,
+    "concrete_scalar_destruction": true
+  },
+  "limits": [
+    "New context interfaces and numeric profiles are not original register/stack/FH3/SEH ABI or callable host vtables.",
+    "Only originalBEBF00 leaf and prior x87/empty-sampler fragments execute original code. Constructor/resize/unwind/whole window original bodies are not replayed.",
+    "No injected failures, invalid storage, successful overflow allocation or concurrency validation.",
+    "Shared generic singleton dispatcher integration remains pending another owner lease; concrete scalar route is tested.",
+    "FullBECEE0/WndProc/power startup, cache-consuming active frame/draw/gameplay and full application shutdown remain outstanding; fixture STATIC window/activity, renderer scratch, material-policy, PC/USA and loose-file inputs persist."
+  ],
+  "ghidra_annotations": {
+    "prior_values": "local/ghidra-annotations-20260915T023052Z.json",
+    "existing_window_name_retained": true,
+    "new_names": {
+      "00bebf00": "BSP_RenderEntry_Initialize",
+      "00bec240": "BSP_RenderEntryArray_Destroy",
+      "00bec3e0": "BSP_RenderEntryArray_ReallocateUnlessUsedCountMatches",
+      "00bec590": "BSP_RenderEntryCacheBase_RegisterSingleton",
+      "00bec630": "BSP_RenderEntryCacheBase_UnregisterSingleton",
+      "00bec6f0": "BSP_RenderEntryCacheBase_ScalarDelete",
+      "00bec870": "BSP_RenderEntryCache_Construct",
+      "00bec8e0": "BSP_RenderEntryCache_Destroy",
+      "00bec910": "BSP_RenderEntryCache_ScalarDelete"
+    },
+    "full_prior_comments_preserved_and_readback_checked": true,
+    "exports_forcibly_refreshed": [
+      "00bebf00",
+      "00bec240",
+      "00bec3e0",
+      "00bec590",
+      "00bec630",
+      "00bec6f0",
+      "00bec870",
+      "00bec8e0",
+      "00bec910",
+      "00becee0"
+    ]
+  },
+  "immutable_capture": {
+    "path": "local/checkpoints/0ca920c7/native-render-entry-cache/validation.json",
+    "sha256": "1a2fd0c640d113df03ddf7c8c133126809b76cf903c71c07f2a002ea37079895",
+    "artifacts": 5049,
+    "runtime_modules": 81,
+    "root_provider_source_count": 306,
+    "source_manifest_sha256": "63845c7f7f1bedfd264449b741fa108d13fe4b0db99f3a214d37c26d88e4bb76"
+  },
+  "immutable_capture_note": "Complete production/compiler/link/runtime inputs and docs/report before this closure metadata addition. Source/header, CMake, both owned shards and flow/body repair reports match the frozen closure."
+}
