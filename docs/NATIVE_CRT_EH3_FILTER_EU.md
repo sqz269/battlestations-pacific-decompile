@@ -95,3 +95,68 @@ caller integration, and gameplay remain unvalidated.
 The machine-readable report is `reports/native_crt_eh3_filter_eu.json`. The local
 packet has two complete path-set inventories with SHA256 and SHA512, explicit
 case-alias checks, external input pins, and a handoff pinning the clean commit.
+
+## Correction following EW independent review
+
+This section corrects the historical process and evidence interpretation of EU
+commit `3e93bae1f96e08dc337d6c897ac5ca1c2586d2bd`. Earlier sections are preserved
+as the original author's record; the qualifications below supersede any reading
+that the worker's Ghidra process was compliant or that unchanged bytes/function
+membership proved complete historical listing preservation.
+
+**EW-P1 — worker write-role deviation.** The worker created the function,
+annotated it, and saved Ghidra despite the workers-read-only policy in
+`docs/ORCHESTRATOR_PROMPT.md`. The root's earlier brief was also too permissive;
+it did not override that policy. The write lock and address lease did not cure
+the role violation. Future Ghidra writes belong to the primary under the lock.
+
+**EW-P2 — prohibited disassembly option and historical proof limit.** The worker
+explicitly passed `disassemble_first=True`, contrary to the same prompt's
+prohibition. No override was authorized. The typed endpoint conditionally calls
+flow-following disassembly when no instruction exists at the start, then creates
+the function. Its success/body-size-20 response does not say whether that branch
+ran. The earlier byte and function-membership checks did not record the complete
+pre-creation instruction definitions or flow properties and cannot establish
+their historical preservation.
+
+EW found all 1,407 checked native bytes equal to the original, all 930 current
+envelope membership values equal to the author's after-state, the parent's
+892-byte membership and four normalized documentation snapshots unchanged, and
+the 35 retained pre-creation listing lines identical. The current full envelope
+has 283 defined instruction starts spanning 912 bytes, aligned with the original
+linear decode's 287 instructions/930 bytes, with no misaligned or extra starts.
+The current gaps are `C16ACA` (6 bytes), `C16B17` (7 bytes), `C16B1E` (2 bytes),
+and `C16B60` (3 bytes). These observations establish current state, not when the
+gaps arose or whether historical instruction-definition side effects occurred.
+No concrete current damage was identified; no timing attribution or speculative
+rollback is asserted or performed.
+
+**EW-R1 — historical inventory-helper omission, subsequently recovered.** EW
+correctly found that the original final packet did not contain the 5,634-byte
+`inventory.py` referenced by its superseded seals, so the historical helper diff
+was not reviewable from that packet. The original final inventories/current
+helper and methods remain fully reviewable; the `pre_identity` seals are
+historical records rather than assertions about today's files at those paths.
+
+During this correction the exact old helper was recovered from its original
+local session-history creation patch. Its size, SHA256
+`9072501c18ff4c0b7bd3c4fa48ed99930259e7f2b8cf85dfdfb6a7211bb61cc2`, and SHA512
+all match EW's missing historical pin. Applying the separately retained logged
+edit to those recovered bytes reproduces the final sealed helper exactly. The
+creation/edit records, recovered old method, final method, and complete diff are
+preserved only in `local/native_crt_eh3_filter_eu_correction/history/`; neither
+helper was executed. This repairs review availability in the correction packet
+without rewriting the original packet or claiming it originally retained them.
+
+EW passed the current source, ABI, compiler, and static artifact evidence. That
+result stands with the procedural and historical qualifications above. No source,
+header, startup registration, ledger shard, build, compiler run, Ghidra mutation,
+helper execution, forced-image execution, native exception execution, or game
+execution was performed for this correction. Source/artifact pins remain equal
+to the frozen EU evidence. The source and runtime claims are not expanded.
+
+The mechanical report-call verifier checks `{address, native}` call-site rows.
+EU contains no such rows: its filter makes no calls; original supporting code is
+represented by instruction records with `address`, `mnemonic`, and `operands`,
+plus narrative ABI evidence. A zero-row result is a schema/scope observation,
+not additional call-chain validation.

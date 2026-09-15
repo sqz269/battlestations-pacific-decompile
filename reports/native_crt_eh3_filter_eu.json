@@ -4563,5 +4563,175 @@
     "passes": 2,
     "case_aliases": "Every distinct requested path spelling is independently opened and hashed, grouped by physical file identity.",
     "handoff": "handoff.json pins inventories, clean author commit, exact parent, report and complete tracked delivery. Its own SHA256/SHA512 pins are returned to the integrator."
+  },
+  "correction": {
+    "kind": "APPEND_ONLY_EW_CORRECTION",
+    "original_author_commit": "3e93bae1f96e08dc337d6c897ac5ca1c2586d2bd",
+    "original_report_sha256": "f8c5cf77713479a4dc5550376349c743d2477d5eafdc57d9394b5f5c62b4aa70",
+    "ew_report": {
+      "requested_path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-eh3-filter-review-ew\\local\\native_crt_eh3_filter_review_ew\\review_report.json",
+      "resolved_path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-eh3-filter-review-ew\\local\\native_crt_eh3_filter_review_ew\\review_report.json",
+      "physical_identity": [
+        16434406700183562694,
+        562949961272113
+      ],
+      "size": 31294,
+      "sha256": "61043deb7f57bfe7f3a3a5b90dbec6cec0c1a9b2116764ee77c9933ccfbecd1b",
+      "sha512": "533f37eb38ee6e1c88a42d460171c13c327a374358abf0946bad50ffef467f932b8bd37d03decde232018d4c1086f3f6c096d21403f4b4c50d02f6c0f8082b07"
+    },
+    "retained_ew_report": {
+      "requested_path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-eh3-filter-eu\\local\\native_crt_eh3_filter_eu_correction\\ew_review_report.json",
+      "resolved_path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-eh3-filter-eu\\local\\native_crt_eh3_filter_eu_correction\\ew_review_report.json",
+      "physical_identity": [
+        16434406700183562694,
+        281474984565509
+      ],
+      "size": 31294,
+      "sha256": "61043deb7f57bfe7f3a3a5b90dbec6cec0c1a9b2116764ee77c9933ccfbecd1b",
+      "sha512": "533f37eb38ee6e1c88a42d460171c13c327a374358abf0946bad50ffef467f932b8bd37d03decde232018d4c1086f3f6c096d21403f4b4c50d02f6c0f8082b07"
+    },
+    "original_keys_and_claims_preserved": true,
+    "superseded_interpretation": "Earlier author wording must not be read as full worker process compliance or proof that byte/function-membership identity established historical instruction-definition/flow preservation.",
+    "ew_p1": {
+      "status": "ACKNOWLEDGED_PROCEDURAL_DEVIATION",
+      "worker_actions": [
+        "function creation",
+        "annotation",
+        "save"
+      ],
+      "policy": "docs/ORCHESTRATOR_PROMPT.md workers read only; primary performs writes under lock",
+      "root_brief": "Earlier root brief was too permissive and did not override policy",
+      "authorization_override": false
+    },
+    "ew_p2": {
+      "status": "ACKNOWLEDGED_FORBIDDEN_OPTION_AND_MISSING_HISTORICAL_PROOF",
+      "option": "disassemble_first=True",
+      "authorization_override": false,
+      "reason_used": "Author incorrectly treated unassigned native-returning span and parent membership guard as sufficient; did not honor the explicit prohibition.",
+      "response_limit": "Success and body_size=20 do not identify whether the conditional flow-following disassembly branch executed.",
+      "current_observation": {
+        "native_bytes_equal_original": 1407,
+        "envelope_membership_equal_author_after": 930,
+        "parent_membership_bytes_unchanged": 892,
+        "normalized_documentation_snapshots_unchanged": 4,
+        "retained_precreation_listing_lines_equal": 35,
+        "defined_instruction_starts": 283,
+        "defined_bytes": 912,
+        "original_linear_instructions": 287,
+        "original_linear_bytes": 930,
+        "no_extra_or_misaligned_starts": true,
+        "gaps": [
+          {
+            "start": "00c16aca",
+            "bytes": 6
+          },
+          {
+            "start": "00c16b17",
+            "bytes": 7
+          },
+          {
+            "start": "00c16b1e",
+            "bytes": 2
+          },
+          {
+            "start": "00c16b60",
+            "bytes": 3
+          }
+        ]
+      },
+      "historical_limit": "No complete precreation instruction-definition or flow-property snapshot; no certification of historical absence of listing side effects.",
+      "timing_attribution": null,
+      "speculative_rollback": false,
+      "concrete_current_damage_identified": false
+    },
+    "ew_r1": {
+      "original_packet_status": "Historical 5634-byte helper absent; EW finding remains correct for that frozen packet",
+      "superseded_seals": "Retained historical seals; old paths are not current-file assertions",
+      "current_final_methods_reviewable": true,
+      "correction_status": "EXACT_OLD_METHOD_RECOVERED_FROM_EXISTING_LOCAL_HISTORY",
+      "recovery": {
+        "status": "EXACT_HISTORICAL_METHOD_RECOVERED_AFTER_EW_REVIEW",
+        "expected": {
+          "size": 5634,
+          "sha256": "9072501c18ff4c0b7bd3c4fa48ed99930259e7f2b8cf85dfdfb6a7211bb61cc2",
+          "sha512": "8e8a0ee9fb1fb6f8e7c1b5b2a9dea70a3f031f5f68f35cb2a29029871701c4f48bfcbe16cd891f08686bb76d2fa09684b50a60c3d251f504db153c89e7d83cd8"
+        },
+        "recovered": {
+          "requested_path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-eh3-filter-eu\\local\\native_crt_eh3_filter_eu_correction\\history\\recovered_inventory_5634.py",
+          "resolved_path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-eh3-filter-eu\\local\\native_crt_eh3_filter_eu_correction\\history\\recovered_inventory_5634.py",
+          "physical_identity": [
+            16434406700183562694,
+            281474984565516
+          ],
+          "size": 5634,
+          "sha256": "9072501c18ff4c0b7bd3c4fa48ed99930259e7f2b8cf85dfdfb6a7211bb61cc2",
+          "sha512": "8e8a0ee9fb1fb6f8e7c1b5b2a9dea70a3f031f5f68f35cb2a29029871701c4f48bfcbe16cd891f08686bb76d2fa09684b50a60c3d251f504db153c89e7d83cd8"
+        },
+        "final": {
+          "requested_path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-eh3-filter-eu\\local\\native_crt_eh3_filter_eu_correction\\history\\final_inventory_copy.py",
+          "resolved_path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-eh3-filter-eu\\local\\native_crt_eh3_filter_eu_correction\\history\\final_inventory_copy.py",
+          "physical_identity": [
+            16434406700183562694,
+            281474984565517
+          ],
+          "size": 6049,
+          "sha256": "61b698aa9354b33dfbccc0e08c0fa929c4171bd8fc57484b80f992fc9e1a04f8",
+          "sha512": "87c9472bc57426067bd4a7089105cefe006ef348214b926cc1db1d6a5990b3ad947ab9da24c1b4c395c986839e9eb165bad566663ae543abd00ebae55be075d4"
+        },
+        "recorded_edit_reproduces_final_exactly": true,
+        "source_session": "C:\\Users\\sqz269\\.codex\\sessions\\2026\\09\\14\\rollout-2026-09-14T16-24-50-01a0a23c-d463-76c0-a346-f982a0f27d3f.jsonl",
+        "session_id": "01a0a23c-d463-76c0-a346-f982a0f27d3f",
+        "retained_records": [
+          {
+            "line": 1,
+            "offset": 0,
+            "length": 22589,
+            "size": 22589,
+            "sha256": "7586dba463653cef6f13faf70d701ef7ee79f0c2976881eaf66ba92cd526dbdb",
+            "sha512": "e09bb2d40734e6d87a622445e26ac3bab3cac8ff419b5a4864e5465d9aec51189608345e907ee000d38dc706ed81244b2de5548c27cbfd8f77326256c31736f1"
+          },
+          {
+            "line": 312,
+            "offset": 1140382,
+            "length": 7759,
+            "size": 7759,
+            "sha256": "e49474ad9e90cd23e91e975b83bfd851822ad7934a4fbea08761a3dc808ec38c",
+            "sha512": "bc5db49006f23df4544adfe6671d7618679c31a653662246c3a1697a0d8276a64c0bad080e7b78fc2c346e05d87381d06c6d46420d0a85b7e77c52f1138b6047"
+          },
+          {
+            "line": 357,
+            "offset": 1238761,
+            "length": 2085,
+            "size": 2085,
+            "sha256": "19350b380828aa7bf4a2dc104f366d61c056f3ff12254ad5ed1ec532d9e1f9d2",
+            "sha512": "05e2effa325d6ffea634f59a185b209f9be43a071a540f0c63123b9b4191a7bb7e20541f65d44c27a6ca88a6e3cf6c8e26ddf5882fe754cda448ddfab355ac70"
+          }
+        ],
+        "qualification": "Exact text extracted from the original logged Add File patch, checked against size and BOTH historical digests, then the logged edit reproduces the sealed final file. No guessed reconstruction or helper execution. The original final EU packet lacked these old bytes; it remains unchanged.",
+        "live_log_scope": "The source session is an actively appended log. Only the explicitly bounded retained record bytes are claimed; no whole current live-log identity is claimed."
+      },
+      "scope": "Complete recovered-old to sealed-final helper diff is now reviewable in the separate correction; original packet untouched"
+    },
+    "unchanged_source_static_compiler_verdict": "PASS",
+    "no_source_or_runtime_claim_expansion": true,
+    "report_call_representation": "No address+native rows; supporting instruction records carry address/mnemonic/operands and narrative ABI. Owned filter makes no calls. Zero rows is not added call-chain validation.",
+    "original_packet_preserved": true,
+    "correction_packet": "local/native_crt_eh3_filter_eu_correction",
+    "root_retention_attestations": {
+      "qualification": "Parent-supplied retention digests; these assertions are recorded, not independently opened paths",
+      "original_eu": "bf8dd817bb3da85db50c9ad4071300413569904faa7df049bd4f024f9344a6f7",
+      "ew_140_files": "b8a6bcf9110e37cfe751e30594857dcda8df9653b8220b1e601bdafde5691689"
+    },
+    "execution": {
+      "source_or_header_change": false,
+      "startup_or_shard_change": false,
+      "build": false,
+      "compiler": false,
+      "ghidra_mutation": false,
+      "helper": false,
+      "forced_image": false,
+      "native": false,
+      "game": false
+    }
   }
 }
