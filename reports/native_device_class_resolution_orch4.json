@@ -1,0 +1,1814 @@
+{
+  "packet": "orch4_device_resolution_b2",
+  "status": "complete_owned_factory_and_wrapper_analysis_native_source_not_implemented",
+  "source_changes": false,
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "initial_function_count": 64122,
+    "revalidated_function_count": 64124,
+    "worker_access": "read_only",
+    "parent_repair_activity": "Parent repaired731A50,730CB0,43FA60 under its own lease and write lock; fresh complete exports reviewed"
+  },
+  "routines": [
+    {
+      "address": "00443090",
+      "end_inclusive": "0044348d",
+      "bytes": 1022,
+      "name": "BSP_DeviceClass_ResolveFromLua",
+      "coverage": "complete ordinary listing and 13-state factory EH analysis; no C++ implementation",
+      "original_abi": "ECX signed class id, DL retain cached reference, EAX class pointer, RET"
+    },
+    {
+      "address": "00443490",
+      "end_inclusive": "004434b9",
+      "bytes": 42,
+      "name": "BSP_DeviceClass_ResolveAndActivate",
+      "coverage": "complete ordinary listing analysis; no C++ implementation",
+      "original_abi": "ECX id and DL forwarded unchanged, EAX original returned class pointer, RET"
+    }
+  ],
+  "calls": [
+    {
+      "function": "00443090",
+      "address": "004430af",
+      "native": "00441780",
+      "coverage": "owned ordinary direct call; analysis only"
+    },
+    {
+      "function": "00443090",
+      "address": "004430c2",
+      "native": "00440180",
+      "coverage": "owned ordinary direct call; analysis only"
+    },
+    {
+      "function": "00443090",
+      "address": "004430e4",
+      "native": "00b67980",
+      "coverage": "owned ordinary direct call; analysis only"
+    },
+    {
+      "function": "00443090",
+      "address": "004430ff",
+      "native": "00b67800",
+      "coverage": "owned ordinary direct call; analysis only"
+    },
+    {
+      "function": "00443090",
+      "address": "00443113",
+      "native": "00b67720",
+      "coverage": "owned ordinary direct call; analysis only"
+    },
+    {
+      "function": "00443090",
+      "address": "0044312b",
+      "native": "00b67800",
+      "coverage": "owned ordinary direct call; analysis only"
+    },
+    {
+      "function": "00443090",
+      "address": "0044313a",
+      "native": "00b662b0",
+      "coverage": "owned ordinary direct call; analysis only"
+    },
+    {
+      "function": "00443090",
+      "address": "00443144",
+      "native": "0041e870",
+      "coverage": "owned ordinary direct call; analysis only"
+    },
+    {
+      "function": "00443090",
+      "address": "00443157",
+      "native": "0041e870",
+      "coverage": "owned ordinary direct call; analysis only"
+    },
+    {
+      "function": "00443090",
+      "address": "0044316c",
+      "native": "00b673a0",
+      "coverage": "owned ordinary direct call; analysis only"
+    },
+    {
+      "function": "00443090",
+      "address": "00443189",
+      "native": "00419cc0",
+      "coverage": "owned ordinary direct call; analysis only"
+    },
+    {
+      "function": "00443090",
+      "address": "00443190",
+      "native": "00bd1510",
+      "coverage": "owned ordinary direct call; analysis only"
+    },
+    {
+      "function": "00443090",
+      "address": "0044319e",
+      "native": "00425850",
+      "coverage": "owned ordinary direct call; analysis only"
+    },
+    {
+      "function": "00443090",
+      "address": "004431ac",
+      "native": "00bf681b",
+      "coverage": "owned ordinary direct call; analysis only"
+    },
+    {
+      "function": "00443090",
+      "address": "004431c5",
+      "native": "00442b90",
+      "coverage": "owned ordinary direct call; analysis only"
+    },
+    {
+      "function": "00443090",
+      "address": "004431e5",
+      "native": "00425850",
+      "coverage": "owned ordinary direct call; analysis only"
+    },
+    {
+      "function": "00443090",
+      "address": "004431f3",
+      "native": "00bf681b",
+      "coverage": "owned ordinary direct call; analysis only"
+    },
+    {
+      "function": "00443090",
+      "address": "0044320c",
+      "native": "00442b90",
+      "coverage": "owned ordinary direct call; analysis only"
+    },
+    {
+      "function": "00443090",
+      "address": "00443225",
+      "native": "00425850",
+      "coverage": "owned ordinary direct call; analysis only"
+    },
+    {
+      "function": "00443090",
+      "address": "00443233",
+      "native": "00bf681b",
+      "coverage": "owned ordinary direct call; analysis only"
+    },
+    {
+      "function": "00443090",
+      "address": "0044324e",
+      "native": "00442ec0",
+      "coverage": "owned ordinary direct call; analysis only"
+    },
+    {
+      "function": "00443090",
+      "address": "00443261",
+      "native": "00425850",
+      "coverage": "owned ordinary direct call; analysis only"
+    },
+    {
+      "function": "00443090",
+      "address": "0044326f",
+      "native": "00bf681b",
+      "coverage": "owned ordinary direct call; analysis only"
+    },
+    {
+      "function": "00443090",
+      "address": "0044328a",
+      "native": "00442c50",
+      "coverage": "owned ordinary direct call; analysis only"
+    },
+    {
+      "function": "00443090",
+      "address": "0044329d",
+      "native": "00425850",
+      "coverage": "owned ordinary direct call; analysis only"
+    },
+    {
+      "function": "00443090",
+      "address": "004432ab",
+      "native": "00bf681b",
+      "coverage": "owned ordinary direct call; analysis only"
+    },
+    {
+      "function": "00443090",
+      "address": "004432c2",
+      "native": "00442ce0",
+      "coverage": "owned ordinary direct call; analysis only"
+    },
+    {
+      "function": "00443090",
+      "address": "004432d2",
+      "native": "00425850",
+      "coverage": "owned ordinary direct call; analysis only"
+    },
+    {
+      "function": "00443090",
+      "address": "004432e0",
+      "native": "00bf681b",
+      "coverage": "owned ordinary direct call; analysis only"
+    },
+    {
+      "function": "00443090",
+      "address": "004432f7",
+      "native": "00442f50",
+      "coverage": "owned ordinary direct call; analysis only"
+    },
+    {
+      "function": "00443090",
+      "address": "00443307",
+      "native": "00425850",
+      "coverage": "owned ordinary direct call; analysis only"
+    },
+    {
+      "function": "00443090",
+      "address": "00443319",
+      "native": "00bf681b",
+      "coverage": "owned ordinary direct call; analysis only"
+    },
+    {
+      "function": "00443090",
+      "address": "00443330",
+      "native": "00442ff0",
+      "coverage": "owned ordinary direct call; analysis only"
+    },
+    {
+      "function": "00443090",
+      "address": "00443352",
+      "native": "00441780",
+      "coverage": "owned ordinary direct call; analysis only"
+    },
+    {
+      "function": "00443090",
+      "address": "00443365",
+      "native": "00440180",
+      "coverage": "owned ordinary direct call; analysis only"
+    },
+    {
+      "function": "00443090",
+      "address": "00443388",
+      "native": "00419cc0",
+      "coverage": "owned ordinary direct call; analysis only"
+    },
+    {
+      "function": "00443090",
+      "address": "0044338f",
+      "native": "00bd1510",
+      "coverage": "owned ordinary direct call; analysis only"
+    },
+    {
+      "function": "00443090",
+      "address": "0044339d",
+      "native": "00b67700",
+      "coverage": "owned ordinary direct call; analysis only"
+    },
+    {
+      "function": "00443090",
+      "address": "004433ab",
+      "native": "00b67700",
+      "coverage": "owned ordinary direct call; analysis only"
+    },
+    {
+      "function": "00443090",
+      "address": "004433b9",
+      "native": "00b67700",
+      "coverage": "owned ordinary direct call; analysis only"
+    },
+    {
+      "function": "00443090",
+      "address": "004433ca",
+      "native": "00b67700",
+      "coverage": "owned ordinary direct call; analysis only"
+    },
+    {
+      "function": "00443090",
+      "address": "004433dc",
+      "native": "0041dd20",
+      "coverage": "owned ordinary direct call; analysis only"
+    },
+    {
+      "function": "00443090",
+      "address": "004433ea",
+      "native": "00b67700",
+      "coverage": "owned ordinary direct call; analysis only"
+    },
+    {
+      "function": "00443090",
+      "address": "004433f8",
+      "native": "00b67700",
+      "coverage": "owned ordinary direct call; analysis only"
+    },
+    {
+      "function": "00443090",
+      "address": "00443406",
+      "native": "00b67700",
+      "coverage": "owned ordinary direct call; analysis only"
+    },
+    {
+      "function": "00443090",
+      "address": "00443417",
+      "native": "00b67700",
+      "coverage": "owned ordinary direct call; analysis only"
+    },
+    {
+      "function": "00443090",
+      "address": "00443434",
+      "native": "00441780",
+      "coverage": "owned ordinary direct call; analysis only"
+    },
+    {
+      "function": "00443090",
+      "address": "00443449",
+      "native": "00440180",
+      "coverage": "owned ordinary direct call; analysis only"
+    },
+    {
+      "function": "00443090",
+      "address": "0044345d",
+      "native": "00441780",
+      "coverage": "owned ordinary direct call; analysis only"
+    },
+    {
+      "function": "00443090",
+      "address": "00443472",
+      "native": "00440180",
+      "coverage": "owned ordinary direct call; analysis only"
+    },
+    {
+      "function": "00443490",
+      "address": "00443491",
+      "native": "00443090",
+      "coverage": "owned ordinary direct call; analysis only"
+    },
+    {
+      "function": "00443090",
+      "address": "0044334d",
+      "native": "00443090+vtable08",
+      "contract": "ECX actual newly constructed class; stacked pointer to actual row LuaObject; EH state4 before call"
+    },
+    {
+      "function": "00443490",
+      "address": "004434ab",
+      "native": "00443490+vtable10",
+      "contract": "ECX returned class; stacked zero"
+    },
+    {
+      "function": "00443490",
+      "address": "004434b4",
+      "native": "00443490+vtable14",
+      "contract": "reload current class vtable; ECX same class; no stacked argument"
+    },
+    {
+      "function": "00731a50",
+      "address": "00731a60",
+      "native": "0043ebd0",
+      "contract": "referenced repaired terminal; ECX same class and original stacked enemy"
+    },
+    {
+      "function": "00731a50",
+      "address": "00731a9c",
+      "native": "006eafe0",
+      "contract": "referenced repaired terminal; ECX temporary output holder and EDX=[entry+34]+0c id"
+    },
+    {
+      "function": "00730cb0",
+      "address": "00730d3c",
+      "native": "00879590",
+      "contract": "referenced repaired terminal; ECX same class and stacked zero"
+    }
+  ],
+  "caller_audit": [
+    {
+      "function": "00619c50",
+      "address": "00619f5f",
+      "native": "00443490",
+      "selector": 0,
+      "selector_evidence": "00619f5d: XOR DL,DL",
+      "ecx_evidence": "00619f5a: MOV ECX,dword ptr [ECX + 0x4]",
+      "context_before": [
+        "00619f45: JZ 0x0061a029",
+        "00619f4b: MOV ECX,dword ptr [ESI + 0x20]",
+        "00619f4e: PUSH EAX",
+        "00619f4f: CALL 0x009552e0",
+        "00619f54: MOV EAX,dword ptr [EAX + 0x4]",
+        "00619f57: MOV ECX,dword ptr [EAX + 0x8]",
+        "00619f5a: MOV ECX,dword ptr [ECX + 0x4]",
+        "00619f5d: XOR DL,DL"
+      ],
+      "coverage": "all currently reported direct caller sites"
+    },
+    {
+      "function": "00619c50",
+      "address": "00619f87",
+      "native": "00443490",
+      "selector": 0,
+      "selector_evidence": "00619f85: XOR DL,DL",
+      "ecx_evidence": "00619f82: MOV ECX,dword ptr [EAX + 0x4]",
+      "context_before": [
+        "00619f70: MOV EDI,dword ptr [EAX + 0x7c]",
+        "00619f73: PUSH ECX",
+        "00619f74: MOV ECX,dword ptr [ESI + 0x20]",
+        "00619f77: CALL 0x009552e0",
+        "00619f7c: MOV EDX,dword ptr [EAX + 0x4]",
+        "00619f7f: MOV EAX,dword ptr [EDX + 0x8]",
+        "00619f82: MOV ECX,dword ptr [EAX + 0x4]",
+        "00619f85: XOR DL,DL"
+      ],
+      "coverage": "all currently reported direct caller sites"
+    },
+    {
+      "function": "0061a6c0",
+      "address": "0061ab2c",
+      "native": "00443490",
+      "selector": 0,
+      "selector_evidence": "0061ab2a: XOR DL,DL",
+      "ecx_evidence": "0061ab27: MOV ECX,dword ptr [ECX + 0x4]",
+      "context_before": [
+        "0061ab12: JZ 0x0061abf6",
+        "0061ab18: MOV ECX,dword ptr [ESI + 0x20]",
+        "0061ab1b: PUSH EAX",
+        "0061ab1c: CALL 0x009552e0",
+        "0061ab21: MOV EAX,dword ptr [EAX + 0x4]",
+        "0061ab24: MOV ECX,dword ptr [EAX + 0x8]",
+        "0061ab27: MOV ECX,dword ptr [ECX + 0x4]",
+        "0061ab2a: XOR DL,DL"
+      ],
+      "coverage": "all currently reported direct caller sites"
+    },
+    {
+      "function": "0061a6c0",
+      "address": "0061ab54",
+      "native": "00443490",
+      "selector": 0,
+      "selector_evidence": "0061ab52: XOR DL,DL",
+      "ecx_evidence": "0061ab4f: MOV ECX,dword ptr [EAX + 0x4]",
+      "context_before": [
+        "0061ab3d: MOV EDI,dword ptr [EAX + 0x7c]",
+        "0061ab40: PUSH ECX",
+        "0061ab41: MOV ECX,dword ptr [ESI + 0x20]",
+        "0061ab44: CALL 0x009552e0",
+        "0061ab49: MOV EDX,dword ptr [EAX + 0x4]",
+        "0061ab4c: MOV EAX,dword ptr [EDX + 0x8]",
+        "0061ab4f: MOV ECX,dword ptr [EAX + 0x4]",
+        "0061ab52: XOR DL,DL"
+      ],
+      "coverage": "all currently reported direct caller sites"
+    },
+    {
+      "function": "00665f30",
+      "address": "006662eb",
+      "native": "00443490",
+      "selector": 0,
+      "selector_evidence": "006662e9: XOR DL,DL",
+      "ecx_evidence": "006662e6: MOV ECX,dword ptr [EAX + 0x4]",
+      "context_before": [
+        "006662d1: MOV dword ptr [EAX],EBX",
+        "006662d3: MOV ECX,dword ptr [EBP + 0x3a4]",
+        "006662d9: PUSH 0x1",
+        "006662db: CALL 0x009552e0",
+        "006662e0: MOV ECX,dword ptr [EAX + 0x4]",
+        "006662e3: MOV EAX,dword ptr [ECX + 0x8]",
+        "006662e6: MOV ECX,dword ptr [EAX + 0x4]",
+        "006662e9: XOR DL,DL"
+      ],
+      "coverage": "all currently reported direct caller sites"
+    },
+    {
+      "function": "00665f30",
+      "address": "00666314",
+      "native": "00443490",
+      "selector": 0,
+      "selector_evidence": "00666312: XOR DL,DL",
+      "ecx_evidence": "0066630f: MOV ECX,dword ptr [EAX + 0x4]",
+      "context_before": [
+        "006662f9: MOV ECX,dword ptr [EBP + 0x3a4]",
+        "006662ff: MOV EBX,dword ptr [EAX + 0x78]",
+        "00666302: PUSH 0x1",
+        "00666304: CALL 0x009552e0",
+        "00666309: MOV EDX,dword ptr [EAX + 0x4]",
+        "0066630c: MOV EAX,dword ptr [EDX + 0x8]",
+        "0066630f: MOV ECX,dword ptr [EAX + 0x4]",
+        "00666312: XOR DL,DL"
+      ],
+      "coverage": "all currently reported direct caller sites"
+    },
+    {
+      "function": "00665f30",
+      "address": "0066677f",
+      "native": "00443490",
+      "selector": 0,
+      "selector_evidence": "0066677d: XOR DL,DL",
+      "ecx_evidence": "0066677a: MOV ECX,dword ptr [EAX + 0x4]",
+      "context_before": [
+        "00666764: MOV ECX,dword ptr [ESP + 0x20]",
+        "00666768: PUSH ECX",
+        "00666769: MOV ECX,dword ptr [EBP + 0x3a4]",
+        "0066676f: CALL 0x009552e0",
+        "00666774: MOV EDX,dword ptr [EAX + 0x4]",
+        "00666777: MOV EAX,dword ptr [EDX + 0x8]",
+        "0066677a: MOV ECX,dword ptr [EAX + 0x4]",
+        "0066677d: XOR DL,DL"
+      ],
+      "coverage": "all currently reported direct caller sites"
+    },
+    {
+      "function": "00665f30",
+      "address": "006667ab",
+      "native": "00443490",
+      "selector": 0,
+      "selector_evidence": "006667a9: XOR DL,DL",
+      "ecx_evidence": "006667a6: MOV ECX,dword ptr [ECX + 0x4]",
+      "context_before": [
+        "00666791: MOV ECX,dword ptr [EBP + 0x3a4]",
+        "00666797: MOV EBX,dword ptr [EAX + 0x78]",
+        "0066679a: PUSH EDX",
+        "0066679b: CALL 0x009552e0",
+        "006667a0: MOV EAX,dword ptr [EAX + 0x4]",
+        "006667a3: MOV ECX,dword ptr [EAX + 0x8]",
+        "006667a6: MOV ECX,dword ptr [ECX + 0x4]",
+        "006667a9: XOR DL,DL"
+      ],
+      "coverage": "all currently reported direct caller sites"
+    },
+    {
+      "function": "00666dc0",
+      "address": "0066717b",
+      "native": "00443490",
+      "selector": 0,
+      "selector_evidence": "00667179: XOR DL,DL",
+      "ecx_evidence": "00667176: MOV ECX,dword ptr [EAX + 0x4]",
+      "context_before": [
+        "00667161: MOV dword ptr [EAX],EDI",
+        "00667163: MOV ECX,dword ptr [EBP + 0x2a0]",
+        "00667169: PUSH 0x1",
+        "0066716b: CALL 0x009552e0",
+        "00667170: MOV ECX,dword ptr [EAX + 0x4]",
+        "00667173: MOV EAX,dword ptr [ECX + 0x8]",
+        "00667176: MOV ECX,dword ptr [EAX + 0x4]",
+        "00667179: XOR DL,DL"
+      ],
+      "coverage": "all currently reported direct caller sites"
+    },
+    {
+      "function": "00666dc0",
+      "address": "006671a4",
+      "native": "00443490",
+      "selector": 0,
+      "selector_evidence": "006671a2: XOR DL,DL",
+      "ecx_evidence": "0066719f: MOV ECX,dword ptr [EAX + 0x4]",
+      "context_before": [
+        "00667189: MOV ECX,dword ptr [EBP + 0x2a0]",
+        "0066718f: MOV EDI,dword ptr [EAX + 0x78]",
+        "00667192: PUSH 0x1",
+        "00667194: CALL 0x009552e0",
+        "00667199: MOV EDX,dword ptr [EAX + 0x4]",
+        "0066719c: MOV EAX,dword ptr [EDX + 0x8]",
+        "0066719f: MOV ECX,dword ptr [EAX + 0x4]",
+        "006671a2: XOR DL,DL"
+      ],
+      "coverage": "all currently reported direct caller sites"
+    },
+    {
+      "function": "00666dc0",
+      "address": "006675ae",
+      "native": "00443490",
+      "selector": 0,
+      "selector_evidence": "006675ac: XOR DL,DL",
+      "ecx_evidence": "006675a9: MOV ECX,dword ptr [EAX + 0x4]",
+      "context_before": [
+        "00667593: MOV EAX,dword ptr [ESP + 0x28]",
+        "00667597: MOV ECX,dword ptr [EBP + 0x2a0]",
+        "0066759d: PUSH EAX",
+        "0066759e: CALL 0x009552e0",
+        "006675a3: MOV ECX,dword ptr [EAX + 0x4]",
+        "006675a6: MOV EAX,dword ptr [ECX + 0x8]",
+        "006675a9: MOV ECX,dword ptr [EAX + 0x4]",
+        "006675ac: XOR DL,DL"
+      ],
+      "coverage": "all currently reported direct caller sites"
+    },
+    {
+      "function": "00666dc0",
+      "address": "006675da",
+      "native": "00443490",
+      "selector": 0,
+      "selector_evidence": "006675d8: XOR DL,DL",
+      "ecx_evidence": "006675d5: MOV ECX,dword ptr [ECX + 0x4]",
+      "context_before": [
+        "006675c0: MOV ECX,dword ptr [EBP + 0x2a0]",
+        "006675c6: MOV EDI,dword ptr [EAX + 0x78]",
+        "006675c9: PUSH EDX",
+        "006675ca: CALL 0x009552e0",
+        "006675cf: MOV EAX,dword ptr [EAX + 0x4]",
+        "006675d2: MOV ECX,dword ptr [EAX + 0x8]",
+        "006675d5: MOV ECX,dword ptr [ECX + 0x4]",
+        "006675d8: XOR DL,DL"
+      ],
+      "coverage": "all currently reported direct caller sites"
+    },
+    {
+      "function": "0066b6c0",
+      "address": "0066b975",
+      "native": "00443490",
+      "selector": 0,
+      "selector_evidence": "0066b973: XOR DL,DL",
+      "ecx_evidence": "0066b970: MOV ECX,dword ptr [EAX + 0x4]",
+      "context_before": [
+        "0066b958: JZ 0x0066ba1b",
+        "0066b95e: MOV ECX,dword ptr [EDI + 0x538]",
+        "0066b964: PUSH EAX",
+        "0066b965: CALL 0x009552e0",
+        "0066b96a: MOV ECX,dword ptr [EAX + 0x4]",
+        "0066b96d: MOV EAX,dword ptr [ECX + 0x8]",
+        "0066b970: MOV ECX,dword ptr [EAX + 0x4]",
+        "0066b973: XOR DL,DL"
+      ],
+      "coverage": "all currently reported direct caller sites"
+    },
+    {
+      "function": "0066b6c0",
+      "address": "0066b9a3",
+      "native": "00443490",
+      "selector": 0,
+      "selector_evidence": "0066b9a1: XOR DL,DL",
+      "ecx_evidence": "0066b99e: MOV ECX,dword ptr [EAX + 0x4]",
+      "context_before": [
+        "0066b986: MOV EAX,dword ptr [EDI + 0xc54]",
+        "0066b98c: MOV ECX,dword ptr [EDI + 0x538]",
+        "0066b992: PUSH EAX",
+        "0066b993: CALL 0x009552e0",
+        "0066b998: MOV EDX,dword ptr [EAX + 0x4]",
+        "0066b99b: MOV EAX,dword ptr [EDX + 0x8]",
+        "0066b99e: MOV ECX,dword ptr [EAX + 0x4]",
+        "0066b9a1: XOR DL,DL"
+      ],
+      "coverage": "all currently reported direct caller sites"
+    },
+    {
+      "function": "0066b6c0",
+      "address": "0066bc17",
+      "native": "00443490",
+      "selector": 0,
+      "selector_evidence": "0066bc15: XOR DL,DL",
+      "ecx_evidence": "0066bc12: MOV ECX,dword ptr [EAX + 0x4]",
+      "context_before": [
+        "0066bc01: MOV ECX,dword ptr [EAX + 0x4]",
+        "0066bc04: PUSH ECX",
+        "0066bc05: MOV ECX,EDI",
+        "0066bc07: CALL 0x009552e0",
+        "0066bc0c: MOV EDX,dword ptr [EAX + 0x4]",
+        "0066bc0f: MOV EAX,dword ptr [EDX + 0x8]",
+        "0066bc12: MOV ECX,dword ptr [EAX + 0x4]",
+        "0066bc15: XOR DL,DL"
+      ],
+      "coverage": "all currently reported direct caller sites"
+    },
+    {
+      "function": "0066b6c0",
+      "address": "0066bc47",
+      "native": "00443490",
+      "selector": 0,
+      "selector_evidence": "0066bc45: XOR DL,DL",
+      "ecx_evidence": "0066bc42: MOV ECX,dword ptr [ECX + 0x4]",
+      "context_before": [
+        "0066bc31: MOV EDX,dword ptr [EAX + 0x4]",
+        "0066bc34: PUSH EDX",
+        "0066bc35: MOV ECX,EDI",
+        "0066bc37: CALL 0x009552e0",
+        "0066bc3c: MOV EAX,dword ptr [EAX + 0x4]",
+        "0066bc3f: MOV ECX,dword ptr [EAX + 0x8]",
+        "0066bc42: MOV ECX,dword ptr [ECX + 0x4]",
+        "0066bc45: XOR DL,DL"
+      ],
+      "coverage": "all currently reported direct caller sites"
+    },
+    {
+      "function": "0066b6c0",
+      "address": "0066be44",
+      "native": "00443490",
+      "selector": 0,
+      "selector_evidence": "0066be42: XOR DL,DL",
+      "ecx_evidence": "0066be3f: MOV ECX,dword ptr [EAX + 0x4]",
+      "context_before": [
+        "0066be26: JZ 0x0066bef3",
+        "0066be2c: MOV ECX,dword ptr [ESP + 0x88]",
+        "0066be33: PUSH EAX",
+        "0066be34: CALL 0x009552e0",
+        "0066be39: MOV ECX,dword ptr [EAX + 0x4]",
+        "0066be3c: MOV EAX,dword ptr [ECX + 0x8]",
+        "0066be3f: MOV ECX,dword ptr [EAX + 0x4]",
+        "0066be42: XOR DL,DL"
+      ],
+      "coverage": "all currently reported direct caller sites"
+    },
+    {
+      "function": "0066b6c0",
+      "address": "0066be74",
+      "native": "00443490",
+      "selector": 0,
+      "selector_evidence": "0066be72: XOR DL,DL",
+      "ecx_evidence": "0066be6f: MOV ECX,dword ptr [ECX + 0x4]",
+      "context_before": [
+        "0066be59: MOV ECX,dword ptr [ESP + 0x88]",
+        "0066be60: MOV EDI,dword ptr [EAX + 0x7c]",
+        "0066be63: PUSH EDX",
+        "0066be64: CALL 0x009552e0",
+        "0066be69: MOV EAX,dword ptr [EAX + 0x4]",
+        "0066be6c: MOV ECX,dword ptr [EAX + 0x8]",
+        "0066be6f: MOV ECX,dword ptr [ECX + 0x4]",
+        "0066be72: XOR DL,DL"
+      ],
+      "coverage": "all currently reported direct caller sites"
+    },
+    {
+      "function": "0066b6c0",
+      "address": "0066c0eb",
+      "native": "00443490",
+      "selector": 0,
+      "selector_evidence": "0066c0e9: XOR DL,DL",
+      "ecx_evidence": "0066c0e6: MOV ECX,dword ptr [ECX + 0x4]",
+      "context_before": [
+        "0066c0d1: JZ 0x0066c1a8",
+        "0066c0d7: MOV ECX,dword ptr [EDI + 0x4]",
+        "0066c0da: PUSH EAX",
+        "0066c0db: CALL 0x009552e0",
+        "0066c0e0: MOV EAX,dword ptr [EAX + 0x4]",
+        "0066c0e3: MOV ECX,dword ptr [EAX + 0x8]",
+        "0066c0e6: MOV ECX,dword ptr [ECX + 0x4]",
+        "0066c0e9: XOR DL,DL"
+      ],
+      "coverage": "all currently reported direct caller sites"
+    },
+    {
+      "function": "0066b6c0",
+      "address": "0066c115",
+      "native": "00443490",
+      "selector": 0,
+      "selector_evidence": "0066c113: XOR DL,DL",
+      "ecx_evidence": "0066c110: MOV ECX,dword ptr [EAX + 0x4]",
+      "context_before": [
+        "0066c0ff: MOV EDI,dword ptr [EDI + 0x4]",
+        "0066c102: PUSH EAX",
+        "0066c103: MOV ECX,EDI",
+        "0066c105: CALL 0x009552e0",
+        "0066c10a: MOV ECX,dword ptr [EAX + 0x4]",
+        "0066c10d: MOV EAX,dword ptr [ECX + 0x8]",
+        "0066c110: MOV ECX,dword ptr [EAX + 0x4]",
+        "0066c113: XOR DL,DL"
+      ],
+      "coverage": "all currently reported direct caller sites"
+    },
+    {
+      "function": "0066d020",
+      "address": "0066d1a9",
+      "native": "00443490",
+      "selector": 0,
+      "selector_evidence": "0066d1a7: XOR DL,DL",
+      "ecx_evidence": "0066d1a4: MOV ECX,dword ptr [EAX + 0x4]",
+      "context_before": [
+        "0066d18c: JZ 0x0066d249",
+        "0066d192: MOV ECX,dword ptr [ESI + 0x2a0]",
+        "0066d198: PUSH EAX",
+        "0066d199: CALL 0x009552e0",
+        "0066d19e: MOV ECX,dword ptr [EAX + 0x4]",
+        "0066d1a1: MOV EAX,dword ptr [ECX + 0x8]",
+        "0066d1a4: MOV ECX,dword ptr [EAX + 0x4]",
+        "0066d1a7: XOR DL,DL"
+      ],
+      "coverage": "all currently reported direct caller sites"
+    },
+    {
+      "function": "0066d020",
+      "address": "0066d1d7",
+      "native": "00443490",
+      "selector": 0,
+      "selector_evidence": "0066d1d5: XOR DL,DL",
+      "ecx_evidence": "0066d1d2: MOV ECX,dword ptr [EAX + 0x4]",
+      "context_before": [
+        "0066d1bd: ADD EAX,0x74",
+        "0066d1c0: MOV EAX,dword ptr [ESI + 0x334]",
+        "0066d1c6: PUSH EAX",
+        "0066d1c7: CALL 0x009552e0",
+        "0066d1cc: MOV ECX,dword ptr [EAX + 0x4]",
+        "0066d1cf: MOV EAX,dword ptr [ECX + 0x8]",
+        "0066d1d2: MOV ECX,dword ptr [EAX + 0x4]",
+        "0066d1d5: XOR DL,DL"
+      ],
+      "coverage": "all currently reported direct caller sites"
+    },
+    {
+      "function": "0066d020",
+      "address": "0066d3ac",
+      "native": "00443490",
+      "selector": 0,
+      "selector_evidence": "0066d3aa: XOR DL,DL",
+      "ecx_evidence": "0066d3a7: MOV ECX,dword ptr [EAX + 0x4]",
+      "context_before": [
+        "0066d393: MOV ECX,dword ptr [ESI + 0x3a4]",
+        "0066d399: JZ 0x0066d419",
+        "0066d39b: PUSH EAX",
+        "0066d39c: CALL 0x009552e0",
+        "0066d3a1: MOV ECX,dword ptr [EAX + 0x4]",
+        "0066d3a4: MOV EAX,dword ptr [ECX + 0x8]",
+        "0066d3a7: MOV ECX,dword ptr [EAX + 0x4]",
+        "0066d3aa: XOR DL,DL"
+      ],
+      "coverage": "all currently reported direct caller sites"
+    },
+    {
+      "function": "0066d020",
+      "address": "0066d3da",
+      "native": "00443490",
+      "selector": 0,
+      "selector_evidence": "0066d3d8: XOR DL,DL",
+      "ecx_evidence": "0066d3d5: MOV ECX,dword ptr [EAX + 0x4]",
+      "context_before": [
+        "0066d3c0: ADD EAX,0x74",
+        "0066d3c3: MOV EAX,dword ptr [ESI + 0x334]",
+        "0066d3c9: PUSH EAX",
+        "0066d3ca: CALL 0x009552e0",
+        "0066d3cf: MOV ECX,dword ptr [EAX + 0x4]",
+        "0066d3d2: MOV EAX,dword ptr [ECX + 0x8]",
+        "0066d3d5: MOV ECX,dword ptr [EAX + 0x4]",
+        "0066d3d8: XOR DL,DL"
+      ],
+      "coverage": "all currently reported direct caller sites"
+    },
+    {
+      "function": "00674b80",
+      "address": "0067536b",
+      "native": "00443490",
+      "selector": 0,
+      "selector_evidence": "00675369: XOR DL,DL",
+      "ecx_evidence": "00675366: MOV ECX,dword ptr [EAX + 0x4]",
+      "context_before": [
+        "00675352: MOV ECX,EDI",
+        "00675354: JZ 0x0067540a",
+        "0067535a: PUSH EAX",
+        "0067535b: CALL 0x009552e0",
+        "00675360: MOV ECX,dword ptr [EAX + 0x4]",
+        "00675363: MOV EAX,dword ptr [ECX + 0x8]",
+        "00675366: MOV ECX,dword ptr [EAX + 0x4]",
+        "00675369: XOR DL,DL"
+      ],
+      "coverage": "all currently reported direct caller sites"
+    },
+    {
+      "function": "00674b80",
+      "address": "00675395",
+      "native": "00443490",
+      "selector": 0,
+      "selector_evidence": "00675393: XOR DL,DL",
+      "ecx_evidence": "00675390: MOV ECX,dword ptr [ECX + 0x4]",
+      "context_before": [
+        "0067537f: MOV EBX,dword ptr [EAX + 0x7c]",
+        "00675382: PUSH EDX",
+        "00675383: MOV ECX,EDI",
+        "00675385: CALL 0x009552e0",
+        "0067538a: MOV EAX,dword ptr [EAX + 0x4]",
+        "0067538d: MOV ECX,dword ptr [EAX + 0x8]",
+        "00675390: MOV ECX,dword ptr [ECX + 0x4]",
+        "00675393: XOR DL,DL"
+      ],
+      "coverage": "all currently reported direct caller sites"
+    },
+    {
+      "function": "00674b80",
+      "address": "006754ae",
+      "native": "00443490",
+      "selector": 0,
+      "selector_evidence": "006754ac: XOR DL,DL",
+      "ecx_evidence": "006754a9: MOV ECX,dword ptr [EAX + 0x4]",
+      "context_before": [
+        "00675495: MOV EAX,dword ptr [EDI + 0x134]",
+        "0067549b: PUSH EAX",
+        "0067549c: MOV ECX,EDI",
+        "0067549e: CALL 0x009552e0",
+        "006754a3: MOV ECX,dword ptr [EAX + 0x4]",
+        "006754a6: MOV EAX,dword ptr [ECX + 0x8]",
+        "006754a9: MOV ECX,dword ptr [EAX + 0x4]",
+        "006754ac: XOR DL,DL"
+      ],
+      "coverage": "all currently reported direct caller sites"
+    },
+    {
+      "function": "00674b80",
+      "address": "006754d8",
+      "native": "00443490",
+      "selector": 0,
+      "selector_evidence": "006754d6: XOR DL,DL",
+      "ecx_evidence": "006754d3: MOV ECX,dword ptr [EAX + 0x4]",
+      "context_before": [
+        "006754bf: MOV EAX,dword ptr [EDI + 0x134]",
+        "006754c5: PUSH EAX",
+        "006754c6: MOV ECX,EDI",
+        "006754c8: CALL 0x009552e0",
+        "006754cd: MOV EDX,dword ptr [EAX + 0x4]",
+        "006754d0: MOV EAX,dword ptr [EDX + 0x8]",
+        "006754d3: MOV ECX,dword ptr [EAX + 0x4]",
+        "006754d6: XOR DL,DL"
+      ],
+      "coverage": "all currently reported direct caller sites"
+    },
+    {
+      "function": "00675c40",
+      "address": "00677d90",
+      "native": "00443490",
+      "selector": 0,
+      "selector_evidence": "00677d8e: XOR DL,DL",
+      "ecx_evidence": "00677d8b: MOV ECX,dword ptr [EAX + 0x4]",
+      "context_before": [
+        "00677d73: JZ 0x00677e30",
+        "00677d79: MOV ECX,dword ptr [ESI + 0x3a4]",
+        "00677d7f: PUSH EAX",
+        "00677d80: CALL 0x009552e0",
+        "00677d85: MOV EDX,dword ptr [EAX + 0x4]",
+        "00677d88: MOV EAX,dword ptr [EDX + 0x8]",
+        "00677d8b: MOV ECX,dword ptr [EAX + 0x4]",
+        "00677d8e: XOR DL,DL"
+      ],
+      "coverage": "all currently reported direct caller sites"
+    },
+    {
+      "function": "00675c40",
+      "address": "00677dbe",
+      "native": "00443490",
+      "selector": 0,
+      "selector_evidence": "00677dbc: XOR DL,DL",
+      "ecx_evidence": "00677db9: MOV ECX,dword ptr [ECX + 0x4]",
+      "context_before": [
+        "00677da4: MOV ECX,dword ptr [ESI + 0x3a4]",
+        "00677daa: MOV EBX,dword ptr [EAX + 0x7c]",
+        "00677dad: PUSH EDX",
+        "00677dae: CALL 0x009552e0",
+        "00677db3: MOV EAX,dword ptr [EAX + 0x4]",
+        "00677db6: MOV ECX,dword ptr [EAX + 0x8]",
+        "00677db9: MOV ECX,dword ptr [ECX + 0x4]",
+        "00677dbc: XOR DL,DL"
+      ],
+      "coverage": "all currently reported direct caller sites"
+    },
+    {
+      "function": "00675c40",
+      "address": "00678096",
+      "native": "00443490",
+      "selector": 0,
+      "selector_evidence": "00678094: XOR DL,DL",
+      "ecx_evidence": "00678091: MOV ECX,dword ptr [EAX + 0x4]",
+      "context_before": [
+        "00678079: JZ 0x00678139",
+        "0067807f: MOV ECX,dword ptr [ESI + 0x2a0]",
+        "00678085: PUSH EAX",
+        "00678086: CALL 0x009552e0",
+        "0067808b: MOV ECX,dword ptr [EAX + 0x4]",
+        "0067808e: MOV EAX,dword ptr [ECX + 0x8]",
+        "00678091: MOV ECX,dword ptr [EAX + 0x4]",
+        "00678094: XOR DL,DL"
+      ],
+      "coverage": "all currently reported direct caller sites"
+    },
+    {
+      "function": "00675c40",
+      "address": "006780c4",
+      "native": "00443490",
+      "selector": 0,
+      "selector_evidence": "006780c2: XOR DL,DL",
+      "ecx_evidence": "006780bf: MOV ECX,dword ptr [ECX + 0x4]",
+      "context_before": [
+        "006780aa: MOV ECX,dword ptr [ESI + 0x2a0]",
+        "006780b0: MOV EDI,dword ptr [EAX + 0x7c]",
+        "006780b3: PUSH EDX",
+        "006780b4: CALL 0x009552e0",
+        "006780b9: MOV EAX,dword ptr [EAX + 0x4]",
+        "006780bc: MOV ECX,dword ptr [EAX + 0x8]",
+        "006780bf: MOV ECX,dword ptr [ECX + 0x4]",
+        "006780c2: XOR DL,DL"
+      ],
+      "coverage": "all currently reported direct caller sites"
+    },
+    {
+      "function": "00675c40",
+      "address": "00678e15",
+      "native": "00443490",
+      "selector": 0,
+      "selector_evidence": "00678e13: XOR DL,DL",
+      "ecx_evidence": "00678e10: MOV ECX,dword ptr [EAX + 0x4]",
+      "context_before": [
+        "00678df8: JZ 0x00678eb5",
+        "00678dfe: MOV ECX,dword ptr [ESI + 0x3a4]",
+        "00678e04: PUSH EAX",
+        "00678e05: CALL 0x009552e0",
+        "00678e0a: MOV EDX,dword ptr [EAX + 0x4]",
+        "00678e0d: MOV EAX,dword ptr [EDX + 0x8]",
+        "00678e10: MOV ECX,dword ptr [EAX + 0x4]",
+        "00678e13: XOR DL,DL"
+      ],
+      "coverage": "all currently reported direct caller sites"
+    },
+    {
+      "function": "00675c40",
+      "address": "00678e43",
+      "native": "00443490",
+      "selector": 0,
+      "selector_evidence": "00678e41: XOR DL,DL",
+      "ecx_evidence": "00678e3e: MOV ECX,dword ptr [ECX + 0x4]",
+      "context_before": [
+        "00678e29: MOV ECX,dword ptr [ESI + 0x3a4]",
+        "00678e2f: MOV EBX,dword ptr [EAX + 0x7c]",
+        "00678e32: PUSH EDX",
+        "00678e33: CALL 0x009552e0",
+        "00678e38: MOV EAX,dword ptr [EAX + 0x4]",
+        "00678e3b: MOV ECX,dword ptr [EAX + 0x8]",
+        "00678e3e: MOV ECX,dword ptr [ECX + 0x4]",
+        "00678e41: XOR DL,DL"
+      ],
+      "coverage": "all currently reported direct caller sites"
+    },
+    {
+      "function": "00675c40",
+      "address": "00679174",
+      "native": "00443490",
+      "selector": 0,
+      "selector_evidence": "00679172: XOR DL,DL",
+      "ecx_evidence": "0067916f: MOV ECX,dword ptr [EAX + 0x4]",
+      "context_before": [
+        "00679157: JZ 0x00679214",
+        "0067915d: MOV ECX,dword ptr [ESI + 0x2a0]",
+        "00679163: PUSH EAX",
+        "00679164: CALL 0x009552e0",
+        "00679169: MOV ECX,dword ptr [EAX + 0x4]",
+        "0067916c: MOV EAX,dword ptr [ECX + 0x8]",
+        "0067916f: MOV ECX,dword ptr [EAX + 0x4]",
+        "00679172: XOR DL,DL"
+      ],
+      "coverage": "all currently reported direct caller sites"
+    },
+    {
+      "function": "00675c40",
+      "address": "006791a2",
+      "native": "00443490",
+      "selector": 0,
+      "selector_evidence": "006791a0: XOR DL,DL",
+      "ecx_evidence": "0067919d: MOV ECX,dword ptr [ECX + 0x4]",
+      "context_before": [
+        "00679188: MOV ECX,dword ptr [ESI + 0x2a0]",
+        "0067918e: MOV EBX,dword ptr [EAX + 0x7c]",
+        "00679191: PUSH EDX",
+        "00679192: CALL 0x009552e0",
+        "00679197: MOV EAX,dword ptr [EAX + 0x4]",
+        "0067919a: MOV ECX,dword ptr [EAX + 0x8]",
+        "0067919d: MOV ECX,dword ptr [ECX + 0x4]",
+        "006791a0: XOR DL,DL"
+      ],
+      "coverage": "all currently reported direct caller sites"
+    },
+    {
+      "function": "00675c40",
+      "address": "00679d9a",
+      "native": "00443490",
+      "selector": 0,
+      "selector_evidence": "00679d98: XOR DL,DL",
+      "ecx_evidence": "00679d95: MOV ECX,dword ptr [EAX + 0x4]",
+      "context_before": [
+        "00679d7d: MOV ECX,dword ptr [ESI + 0x3a4]",
+        "00679d83: JZ 0x00679e3d",
+        "00679d89: PUSH EAX",
+        "00679d8a: CALL 0x009552e0",
+        "00679d8f: MOV ECX,dword ptr [EAX + 0x4]",
+        "00679d92: MOV EAX,dword ptr [ECX + 0x8]",
+        "00679d95: MOV ECX,dword ptr [EAX + 0x4]",
+        "00679d98: XOR DL,DL"
+      ],
+      "coverage": "all currently reported direct caller sites"
+    },
+    {
+      "function": "00675c40",
+      "address": "00679dc8",
+      "native": "00443490",
+      "selector": 0,
+      "selector_evidence": "00679dc6: XOR DL,DL",
+      "ecx_evidence": "00679dc3: MOV ECX,dword ptr [ECX + 0x4]",
+      "context_before": [
+        "00679dae: MOV ECX,dword ptr [ESI + 0x3a4]",
+        "00679db4: MOV EBX,dword ptr [EAX + 0x7c]",
+        "00679db7: PUSH EDX",
+        "00679db8: CALL 0x009552e0",
+        "00679dbd: MOV EAX,dword ptr [EAX + 0x4]",
+        "00679dc0: MOV ECX,dword ptr [EAX + 0x8]",
+        "00679dc3: MOV ECX,dword ptr [ECX + 0x4]",
+        "00679dc6: XOR DL,DL"
+      ],
+      "coverage": "all currently reported direct caller sites"
+    },
+    {
+      "function": "00675c40",
+      "address": "00679ee5",
+      "native": "00443490",
+      "selector": 0,
+      "selector_evidence": "00679ee3: XOR DL,DL",
+      "ecx_evidence": "00679ee0: MOV ECX,dword ptr [EAX + 0x4]",
+      "context_before": [
+        "00679ec8: MOV ECX,dword ptr [ESI + 0x2a0]",
+        "00679ece: JZ 0x00679f85",
+        "00679ed4: PUSH EAX",
+        "00679ed5: CALL 0x009552e0",
+        "00679eda: MOV ECX,dword ptr [EAX + 0x4]",
+        "00679edd: MOV EAX,dword ptr [ECX + 0x8]",
+        "00679ee0: MOV ECX,dword ptr [EAX + 0x4]",
+        "00679ee3: XOR DL,DL"
+      ],
+      "coverage": "all currently reported direct caller sites"
+    },
+    {
+      "function": "00675c40",
+      "address": "00679f13",
+      "native": "00443490",
+      "selector": 0,
+      "selector_evidence": "00679f11: XOR DL,DL",
+      "ecx_evidence": "00679f0e: MOV ECX,dword ptr [ECX + 0x4]",
+      "context_before": [
+        "00679ef9: MOV ECX,dword ptr [ESI + 0x2a0]",
+        "00679eff: MOV EBX,dword ptr [EAX + 0x7c]",
+        "00679f02: PUSH EDX",
+        "00679f03: CALL 0x009552e0",
+        "00679f08: MOV EAX,dword ptr [EAX + 0x4]",
+        "00679f0b: MOV ECX,dword ptr [EAX + 0x8]",
+        "00679f0e: MOV ECX,dword ptr [ECX + 0x4]",
+        "00679f11: XOR DL,DL"
+      ],
+      "coverage": "all currently reported direct caller sites"
+    },
+    {
+      "function": "0095a880",
+      "address": "0095a901",
+      "native": "00443490",
+      "selector": 0,
+      "selector_evidence": "0095a8ff: XOR DL,DL",
+      "ecx_evidence": "0095a8fc: MOV ECX,dword ptr [ECX + 0x4]",
+      "context_before": [
+        "0095a8e3: JZ 0x0095a9d4",
+        "0095a8e9: LEA ECX,[EBP + 0x10]",
+        "0095a8ec: CALL 0x009596a0",
+        "0095a8f1: TEST AL,AL",
+        "0095a8f3: JZ 0x0095a9df",
+        "0095a8f9: MOV ECX,dword ptr [EBX + 0x8]",
+        "0095a8fc: MOV ECX,dword ptr [ECX + 0x4]",
+        "0095a8ff: XOR DL,DL"
+      ],
+      "coverage": "all currently reported direct caller sites"
+    },
+    {
+      "function": "0095a880",
+      "address": "0095aae0",
+      "native": "00443490",
+      "selector": 0,
+      "selector_evidence": "0095aade: XOR DL,DL",
+      "ecx_evidence": "0095aad3: MOV ECX,dword ptr [EAX + 0x38]",
+      "context_before": [
+        "0095aac6: JNZ 0x0095aaa0",
+        "0095aac8: TEST BL,BL",
+        "0095aaca: JZ 0x0095aba1",
+        "0095aad0: MOV EAX,dword ptr [EBP]",
+        "0095aad3: MOV ECX,dword ptr [EAX + 0x38]",
+        "0095aad6: TEST ECX,ECX",
+        "0095aad8: JL 0x0095aba1",
+        "0095aade: XOR DL,DL"
+      ],
+      "coverage": "all currently reported direct caller sites"
+    },
+    {
+      "function": "0072a190",
+      "address": "0072a199",
+      "native": "00443490",
+      "selector": 0,
+      "selector_evidence": "0072a197: XOR DL,DL",
+      "ecx_evidence": "0072a193: MOVZX ECX,word ptr [ESI + 0x1e]",
+      "context_before": [
+        "0072a175: POP EBX",
+        "0072a176: MOV dword ptr FS:[0x0],ECX",
+        "0072a17d: ADD ESP,0x30",
+        "0072a180: RET 0x8",
+        "0072a190: PUSH ESI",
+        "0072a191: MOV ESI,ECX",
+        "0072a193: MOVZX ECX,word ptr [ESI + 0x1e]",
+        "0072a197: XOR DL,DL"
+      ],
+      "coverage": "all currently reported direct caller sites"
+    },
+    {
+      "function": "0072c170",
+      "address": "0072c17d",
+      "native": "00443490",
+      "selector": 0,
+      "selector_evidence": "0072c179: XOR DL,DL",
+      "ecx_evidence": "0072c17b: MOV ECX,EAX",
+      "context_before": [
+        "0072c160: RET 0xc",
+        "0072c170: SUB ESP,0x4c",
+        "0072c173: PUSH EBP",
+        "0072c174: MOV EAX,EDX",
+        "0072c176: PUSH EDI",
+        "0072c177: MOV EDI,ECX",
+        "0072c179: XOR DL,DL",
+        "0072c17b: MOV ECX,EAX"
+      ],
+      "coverage": "all currently reported direct caller sites"
+    },
+    {
+      "function": "007f6e50",
+      "address": "007f6e94",
+      "native": "00443490",
+      "selector": 0,
+      "selector_evidence": "007f6e92: XOR DL,DL",
+      "ecx_evidence": "007f6e8f: MOV ECX,dword ptr [EAX + 0x6c]",
+      "context_before": [
+        "007f6e7b: JNZ 0x007f6e82",
+        "007f6e7d: CALL 0x00bf6713",
+        "007f6e82: CMP EBX,dword ptr [EDI + 0x4]",
+        "007f6e85: JNZ 0x007f6e8c",
+        "007f6e87: CALL 0x00bf6713",
+        "007f6e8c: MOV EAX,dword ptr [EBX + 0x8]",
+        "007f6e8f: MOV ECX,dword ptr [EAX + 0x6c]",
+        "007f6e92: XOR DL,DL"
+      ],
+      "coverage": "all currently reported direct caller sites"
+    },
+    {
+      "function": "00959230",
+      "address": "00959285",
+      "native": "00443490",
+      "selector": 0,
+      "selector_evidence": "00959283: XOR DL,DL",
+      "ecx_evidence": "00959280: MOV ECX,dword ptr [ECX + 0x4]",
+      "context_before": [
+        "00959264: MOV dword ptr [ESP + 0xc],0x1",
+        "0095926c: JZ 0x00959419",
+        "00959272: CMP dword ptr [EDI],EBX",
+        "00959274: JZ 0x00959419",
+        "0095927a: MOV EAX,dword ptr [EDI + 0x4]",
+        "0095927d: MOV ECX,dword ptr [EAX + 0x8]",
+        "00959280: MOV ECX,dword ptr [ECX + 0x4]",
+        "00959283: XOR DL,DL"
+      ],
+      "coverage": "all currently reported direct caller sites"
+    },
+    {
+      "function": "00a04050",
+      "address": "00a04093",
+      "native": "00443490",
+      "selector": 0,
+      "selector_evidence": "00a04091: XOR DL,DL",
+      "ecx_evidence": "00a0408e: MOV ECX,dword ptr [ECX + 0x4]",
+      "context_before": [
+        "00a0407e: JZ 0x00a040f5",
+        "00a04080: PUSH EAX",
+        "00a04081: MOV ECX,EDI",
+        "00a04083: CALL 0x009552e0",
+        "00a04088: MOV EAX,dword ptr [EAX + 0x4]",
+        "00a0408b: MOV ECX,dword ptr [EAX + 0x8]",
+        "00a0408e: MOV ECX,dword ptr [ECX + 0x4]",
+        "00a04091: XOR DL,DL"
+      ],
+      "coverage": "all currently reported direct caller sites"
+    },
+    {
+      "function": "00a08460",
+      "address": "00a08692",
+      "native": "00443490",
+      "selector": 0,
+      "selector_evidence": "00a0868c: XOR DL,DL",
+      "ecx_evidence": "00a08689: MOV ECX,dword ptr [EAX + 0x4]",
+      "context_before": [
+        "00a08672: MOV dword ptr [ESP + 0x44],ECX",
+        "00a08676: MOVSS dword ptr [ESP + 0x20],XMM0",
+        "00a0867c: MOV dword ptr [ESP + 0x18],ECX",
+        "00a08680: JZ 0x00a08b21",
+        "00a08686: MOV EAX,dword ptr [EBP + 0x8]",
+        "00a08689: MOV ECX,dword ptr [EAX + 0x4]",
+        "00a0868c: XOR DL,DL",
+        "00a0868e: MOV dword ptr [ESP + 0x14],EAX"
+      ],
+      "coverage": "all currently reported direct caller sites"
+    },
+    {
+      "function": "00a0a280",
+      "address": "00a0aba7",
+      "native": "00443490",
+      "selector": 0,
+      "selector_evidence": "00a0aba5: XOR DL,DL",
+      "ecx_evidence": "00a0aba2: MOV ECX,dword ptr [EAX + 0x4]",
+      "context_before": [
+        "00a0ab90: JZ 0x00a0abda",
+        "00a0ab92: MOV ECX,dword ptr [ESP + 0x2c]",
+        "00a0ab96: PUSH EAX",
+        "00a0ab97: CALL 0x009552e0",
+        "00a0ab9c: MOV EDX,dword ptr [EAX + 0x4]",
+        "00a0ab9f: MOV EAX,dword ptr [EDX + 0x8]",
+        "00a0aba2: MOV ECX,dword ptr [EAX + 0x4]",
+        "00a0aba5: XOR DL,DL"
+      ],
+      "coverage": "all currently reported direct caller sites"
+    },
+    {
+      "function": "00960230",
+      "address": "009614f9",
+      "native": "00443090",
+      "selector": 1,
+      "selector_evidence": "009614f7: MOV DL,0x1",
+      "ecx_evidence": "009614f4: MOV ECX,dword ptr [EAX + 0x8]",
+      "context_before": [
+        "009614d9: CMP EDI,dword ptr [ESP + 0x200]",
+        "009614e0: JZ 0x00961587",
+        "009614e6: CMP EDI,dword ptr [ESI + 0x4]",
+        "009614e9: JNZ 0x009614f0",
+        "009614eb: CALL 0x00bf6713",
+        "009614f0: MOV EAX,dword ptr [ESP + 0x2c]",
+        "009614f4: MOV ECX,dword ptr [EAX + 0x8]",
+        "009614f7: MOV DL,0x1"
+      ],
+      "coverage": "all currently reported direct caller sites"
+    },
+    {
+      "function": "00960230",
+      "address": "00961591",
+      "native": "00443090",
+      "selector": 1,
+      "selector_evidence": "0096158f: MOV DL,0x1",
+      "ecx_evidence": "00961587: MOV ECX,dword ptr [EBX + 0x38]",
+      "context_before": [
+        "00961578: MOV EBX,dword ptr [ESP + 0x30]",
+        "0096157c: MOV dword ptr [ESP + 0x2c],ECX",
+        "00961580: MOV EDI,ECX",
+        "00961582: JMP 0x009614c3",
+        "00961587: MOV ECX,dword ptr [EBX + 0x38]",
+        "0096158a: CMP ECX,-0x1",
+        "0096158d: JLE 0x009615f9",
+        "0096158f: MOV DL,0x1"
+      ],
+      "coverage": "all currently reported direct caller sites"
+    }
+  ],
+  "caller_audit_summary": {
+    "wrapper_direct_sites": 49,
+    "wrapper_dl_values": [
+      0
+    ],
+    "factory_other_direct_sites": 2,
+    "factory_other_dl_values": [
+      1
+    ],
+    "wrapper_forward_site": "00443491"
+  },
+  "factory_branches": [
+    {
+      "type": "Rapid_Fixed_Slave_Gun",
+      "comparison_site": "0044319e",
+      "allocation_site": "004431ac",
+      "allocation_bytes": 220,
+      "allocation_stack_cleanup": "ADD ESP,4",
+      "constructor_site": "004431c5",
+      "constructor": "00442b90",
+      "final_vtable": "00ce45e0",
+      "eh_state": 6,
+      "slot08": "007327b0",
+      "slot10": "00731a50",
+      "slot14": "00730cb0"
+    },
+    {
+      "type": "Rapid_Turning_Gun",
+      "comparison_site": "004431e5",
+      "allocation_site": "004431f3",
+      "allocation_bytes": 220,
+      "allocation_stack_cleanup": "ADD ESP,4",
+      "constructor_site": "0044320c",
+      "constructor": "00442b90",
+      "final_vtable": "00ce4614",
+      "eh_state": 7,
+      "slot08": "007327b0",
+      "slot10": "00731a50",
+      "slot14": "00730cb0"
+    },
+    {
+      "type": "Single_Turning_Gun",
+      "comparison_site": "00443225",
+      "allocation_site": "00443233",
+      "allocation_bytes": 220,
+      "allocation_stack_cleanup": "ADD ESP,4",
+      "constructor_site": "0044324e",
+      "constructor": "00442ec0",
+      "final_vtable": "00ce4648",
+      "eh_state": 8,
+      "slot08": "007327b0",
+      "slot10": "00731a50",
+      "slot14": "00730cb0"
+    },
+    {
+      "type": "BombPlatform",
+      "comparison_site": "00443261",
+      "allocation_site": "0044326f",
+      "allocation_bytes": 232,
+      "allocation_stack_cleanup": "ADD ESP,4",
+      "constructor_site": "0044328a",
+      "constructor": "00442c50",
+      "final_vtable": "00ce4560",
+      "eh_state": 9,
+      "slot08": "006e01c0",
+      "slot10": "00731a50",
+      "slot14": "00730cb0"
+    },
+    {
+      "type": "MultiBombPlatform",
+      "comparison_site": "0044329d",
+      "allocation_site": "004432ab",
+      "allocation_bytes": 396,
+      "allocation_stack_cleanup": "ADD ESP,4",
+      "constructor_site": "004432c2",
+      "constructor": "00442ce0",
+      "final_vtable": "00ce459c",
+      "eh_state": 10,
+      "slot08": "006e02c0",
+      "slot10": "00731a50",
+      "slot14": "00730cb0"
+    },
+    {
+      "type": "Depth_Charge_Launcher",
+      "comparison_site": "004432d2",
+      "allocation_site": "004432e0",
+      "allocation_bytes": 220,
+      "allocation_stack_cleanup": "ADD ESP,4",
+      "constructor_site": "004432f7",
+      "constructor": "00442f50",
+      "final_vtable": "00ce467c",
+      "eh_state": 11,
+      "slot08": "007327b0",
+      "slot10": "00731a50",
+      "slot14": "00730cb0"
+    },
+    {
+      "type": "Catapult",
+      "comparison_site": "00443307",
+      "allocation_site": "00443319",
+      "allocation_bytes": 236,
+      "allocation_stack_cleanup": "ADD ESP,4",
+      "constructor_site": "00443330",
+      "constructor": "00442ff0",
+      "final_vtable": "00ce46c0",
+      "eh_state": 12,
+      "slot08": "006eb6b0",
+      "slot10": "00731a50",
+      "slot14": "00730cb0"
+    }
+  ],
+  "imported_call": {
+    "function": "00443090",
+    "address": "00443457",
+    "iat": "00ce221c",
+    "symbol": "InterlockedIncrement",
+    "argument": "current cached class +4; one pointer argument"
+  },
+  "register_provenance": {
+    "edi": [
+      "004430ad MOV EDI,ECX; no further writes"
+    ],
+    "bl": [
+      "004430ab MOV BL,DL",
+      "00443130 MOV BL,3 on fresh path only"
+    ],
+    "listings_read": [
+      "00443090: all289 instruction rows",
+      "00443490: all19 instruction rows"
+    ]
+  },
+  "ownership": {
+    "cached": "DL!=0 reacquires registry, rechecks count and atomically increments current class+4; final slot reloaded again",
+    "fresh": "constructor supplies refcount1; no additional increment for either input DL",
+    "id": "class+6c written at44334f, unlike vehicle-family secondary vptr at same offset",
+    "published": "443373 stores actual pointer before Type/native Lua cleanup; final registry slot is reread",
+    "unknown_type": "row.Got=true already written; cleanup Type string and four LuaObjects then return0",
+    "null_allocation": "converges to ESI=0 then dereferences[ESI] at44333b; no success fallback",
+    "reader_exception": "state4 before slot08 call; no factory deletion of constructed object",
+    "rollback": "no Got, slot or cached-retain rollback in factory"
+  },
+  "eh": {
+    "handler": "00c5fbcd",
+    "funcinfo": "00d867b4",
+    "magic": "19930522",
+    "max_state": 13,
+    "unwind_table": "00d867d8",
+    "entries": [
+      {
+        "state": 0,
+        "next_state": -1,
+        "action": "00c5fb50",
+        "cleanup_target": "00b67700",
+        "object": "globals LuaObject frame-20"
+      },
+      {
+        "state": 1,
+        "next_state": 0,
+        "action": "00c5fb58",
+        "cleanup_target": "00b67700",
+        "object": "DeviceClass LuaObject frame-34"
+      },
+      {
+        "state": 2,
+        "next_state": 1,
+        "action": "00c5fb60",
+        "cleanup_target": "00b67700",
+        "object": "row LuaObject frame-5c"
+      },
+      {
+        "state": 3,
+        "next_state": 2,
+        "action": "00c5fb68",
+        "cleanup_target": "00b67700",
+        "object": "Type LuaObject frame-48"
+      },
+      {
+        "state": 4,
+        "next_state": 3,
+        "action": "00c5fb70",
+        "cleanup_target": "0041dd20",
+        "object": "Type NativeString frame-64"
+      },
+      {
+        "state": 5,
+        "next_state": 4,
+        "action": "00c5fb78",
+        "cleanup_target": "0041dd20",
+        "object": "Got NativeString frame-6c"
+      },
+      {
+        "state": 6,
+        "next_state": 4,
+        "action": "00c5fb80",
+        "cleanup_target": "00bf65ac",
+        "object": "raw allocation frame-6c; only construction state"
+      },
+      {
+        "state": 7,
+        "next_state": 4,
+        "action": "00c5fb8b",
+        "cleanup_target": "00bf65ac",
+        "object": "raw allocation frame-6c; only construction state"
+      },
+      {
+        "state": 8,
+        "next_state": 4,
+        "action": "00c5fb96",
+        "cleanup_target": "00bf65ac",
+        "object": "raw allocation frame-6c; only construction state"
+      },
+      {
+        "state": 9,
+        "next_state": 4,
+        "action": "00c5fba1",
+        "cleanup_target": "00bf65ac",
+        "object": "raw allocation frame-6c; only construction state"
+      },
+      {
+        "state": 10,
+        "next_state": 4,
+        "action": "00c5fbac",
+        "cleanup_target": "00bf65ac",
+        "object": "raw allocation frame-6c; only construction state"
+      },
+      {
+        "state": 11,
+        "next_state": 4,
+        "action": "00c5fbb7",
+        "cleanup_target": "00bf65ac",
+        "object": "raw allocation frame-6c; only construction state"
+      },
+      {
+        "state": 12,
+        "next_state": 4,
+        "action": "00c5fbc2",
+        "cleanup_target": "00bf65ac",
+        "object": "raw allocation frame-6c; only construction state"
+      }
+    ],
+    "coverage": "all13 unwind map pairs and action instructions read; constructor internal EH not covered"
+  },
+  "existing_source": [
+    {
+      "addresses": [
+        "00419cc0",
+        "00bd1510"
+      ],
+      "source": [
+        "src/native_string_pool_owner.cpp",
+        "src/native_string_pool_storage.cpp"
+      ],
+      "coverage": "canonical native sized pool API already reconstructed; factory composition absent"
+    },
+    {
+      "addresses": [
+        "0041dd20",
+        "0041e870",
+        "00425850"
+      ],
+      "source": "native string modules",
+      "coverage": "canonical actual-header APIs already reconstructed"
+    },
+    {
+      "addresses": [
+        "00b67980",
+        "00b67800",
+        "00b67720",
+        "00b662b0",
+        "00b67700"
+      ],
+      "source": "src/native_lua_objects.cpp",
+      "coverage": "canonical actual LuaObject storage API already reconstructed"
+    },
+    {
+      "addresses": [
+        "0043ebd0",
+        "00879590"
+      ],
+      "source": "src/native_damageable_class_model.cpp",
+      "coverage": "complete ordinary source with explicit model binding terminal contracts"
+    },
+    {
+      "addresses": [
+        "0087c640"
+      ],
+      "source": "src/vehicle_class_lua_load.cpp",
+      "coverage": "offset metadata only; not actual native constructor"
+    },
+    {
+      "addresses": [
+        "007327b0"
+      ],
+      "source": "src/game_hosts_gunnery.cpp",
+      "coverage": "semantic Function-key subset and copied GameDeviceClassRow vectors; not actual class reader"
+    }
+  ],
+  "missing_source_packets": [
+    {
+      "packet": "device_registry_actual_storage",
+      "addresses": [
+        "00441780",
+        "00440180",
+        "0043fa60"
+      ],
+      "inspect": [
+        "00441840"
+      ],
+      "contract": "raw10h registry, actual pointer array, singleton lock/register/destructor lifetime"
+    },
+    {
+      "packet": "damageable_device_actual_constructors",
+      "addresses": [
+        "00877fa0",
+        "0087c640",
+        "00442b90",
+        "00442c50",
+        "00442ce0",
+        "00442ec0",
+        "00442f50",
+        "00442ff0"
+      ],
+      "contract": "raw tree sentinel, untouched bytes, refcount1, vtable publication and constructor EH"
+    },
+    {
+      "packet": "lua_native_boolean_setter",
+      "addresses": [
+        "00b673a0"
+      ],
+      "contract": "actual row/key/low-byte boolean, Lua checkstack/pushlstring/pushboolean/settable;RET8"
+    },
+    {
+      "packet": "device_shared_lua_readers",
+      "addresses": [
+        "0087ca80",
+        "00440ac0",
+        "007313e0",
+        "007327b0"
+      ],
+      "container_leaf_candidates": [
+        "00442a30",
+        "004427a0",
+        "00442940"
+      ],
+      "required_class_resolver": [
+        "006ea910"
+      ],
+      "contract": "actual fields,48h bullet entries, raw ownership and effects; do not substitute semantic profiles"
+    },
+    {
+      "packet": "device_leaf_lua_readers",
+      "addresses": [
+        "006e01c0",
+        "006e02c0",
+        "006eb6b0"
+      ],
+      "depends_on": "device_shared_lua_readers",
+      "contract": "read complete leaf bodies into their original storage"
+    },
+    {
+      "packet": "device_recoil_activation_x87",
+      "addresses": [
+        "00730cb0"
+      ],
+      "contract": "complete x87/SSE branch behavior after stored-listing repair; compose existing00879590"
+    },
+    {
+      "packet": "device_bullet_activation",
+      "addresses": [
+        "00731a50"
+      ],
+      "required_class_resolvers": [
+        "006eafe0",
+        "006ea910"
+      ],
+      "contract": "actual48h entry traversal and temporary retained bullet references; compose existing0043ebd0"
+    },
+    {
+      "packet": "device_factory_integration",
+      "addresses": [
+        "00443090",
+        "00443490"
+      ],
+      "depends_on": "all preceding required bodies and real vtables",
+      "contract": "this report full branch/EH/retain/publication schedule, then vehiclecall00443490"
+    }
+  ],
+  "repairs_reported": [
+    {
+      "address": "00731a50",
+      "was": "no live function",
+      "proposed_end_inclusive": "00731ad2",
+      "evidence": "all branch targets inside; RET4 at731ad0, INT3 until next known731ae0",
+      "is": "parent defined full span through 00731ad2; saved and exported; full stored listing reviewed by worker"
+    },
+    {
+      "address": "00730cb0",
+      "was": "no live function",
+      "proposed_end_inclusive": "00730d4a",
+      "evidence": "730cee branch to730d47 extends past firstRET730d46; tailjmp730d49 returns to730d30",
+      "is": "parent defined full span through 00730d4a; saved and exported; full stored listing reviewed by worker"
+    },
+    {
+      "address": "0043fa60",
+      "was": "gap43fab1..43fab9 after returning free despite declared body ending43fabe",
+      "is": "parent repaired stored listing; refreshed export includes ADD ESP4; publish[ESI]=EBX; capacity[ESI+8]=EDI; POP EBX",
+      "evidence": "disk disasm from exact instruction boundary0043fab1"
+    },
+    {
+      "address": "00c5fb80",
+      "was": "seven allocation cleanup funclets omit POP ECX;RET following delete",
+      "proposed_spans": [
+        "00c5fb80-00c5fb8a",
+        "00c5fb8b-00c5fb95",
+        "00c5fb96-00c5fba0",
+        "00c5fba1-00c5fbab",
+        "00c5fbac-00c5fbb6",
+        "00c5fbb7-00c5fbc1",
+        "00c5fbc2-00c5fbcc"
+      ],
+      "evidence": "13-state unwind table00d867d8 and disk instruction window00c5fb50..00c5fbcc",
+      "is": "metadata extents remain unrepaired; full original action bytes reviewed and documented"
+    }
+  ],
+  "referenced_terminal_evidence": [
+    {
+      "entry": "00731a50",
+      "end_inclusive": "00731ad2",
+      "bytes": 131,
+      "proposed_name": "BSP_GunClass_ActivateModelAndBulletClasses",
+      "coverage": "full repaired decompile and stored listing read; no worker annotation or source",
+      "original_abi": "ECX class, stacked enemy, RET4",
+      "behavior": "class44 gate;43ebd0; fixed captured48h entry span;6eafe0 holder; atomic release and deleting slot0 when count reaches0; clear holder; no own EH frame"
+    },
+    {
+      "entry": "00730cb0",
+      "end_inclusive": "00730d4a",
+      "bytes": 155,
+      "proposed_name": "BSP_GunClass_RunRecoilLoopAndLoadModelResource",
+      "coverage": "full repaired decompile and stored listing read; no worker annotation or source",
+      "original_abi": "ECX class, noargs, AL1, RET",
+      "behavior": "SSE compare againstfloat0 followed by x87 recoil loop withfloat stores and no class-field writes; ifclass38nonzero call879590(class,0)",
+      "producer": "7327b0:BackSpeedStart+a8,BackSpeedFact+ac,DistMax+b0",
+      "constants": [
+        {
+          "address": "00d7a218",
+          "bytes": "00000000",
+          "type": "float+0"
+        },
+        {
+          "address": "00d7a258",
+          "bytes": "0000000000000000",
+          "type": "double+0"
+        }
+      ]
+    }
+  ],
+  "validation": {
+    "call_gate": "passed tools/verify_report_calls.py:105 direct call rows;0 failures;3 indirect rows skipped",
+    "build": "not run; no C++ change",
+    "ctest": "not run; no C++ change",
+    "native_fixture": false,
+    "original_body_differential": false,
+    "abi_bridge": false,
+    "original_fh3": false,
+    "gameplay": false
+  },
+  "documentation": "docs/NATIVE_DEVICE_CLASS_RESOLUTION_ORCH4.md"
+}
