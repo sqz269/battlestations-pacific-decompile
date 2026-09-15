@@ -1,0 +1,431 @@
+{
+  "packet": "orch4_soldier_lifetime_g7",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "source": "src/native_soldier_registry_lifetime.cpp",
+  "header": "include/bsp/native_soldier_registry_lifetime.hpp",
+  "documentation": "docs/NATIVE_SOLDIER_REGISTRY_LIFETIME_ORCH4.md",
+  "functions": [
+    {
+      "address": "004af680",
+      "end_exclusive": "004af69b",
+      "bytes": 27,
+      "sha256": "b9b972cb8e9c9c854d087b568d5dc0f6cfa90558c3ce70ab4726e69ddef04613",
+      "live_disk_match": true,
+      "name": "minimum_native_soldier_registry_node_004af680",
+      "proposed_name": "STL_SoldierRegistry_Minimum_004AF680",
+      "original_abi": "ECX node; EAX minimum; RET",
+      "coverage": "complete",
+      "contract": "Follow left links while reached child nil19 is zero.",
+      "status": "complete_source_build_checked",
+      "source": "src/native_soldier_registry_lifetime.cpp",
+      "original_runtime_abi": false,
+      "gameplay_validated": false,
+      "old_name": "FUN_004af680",
+      "old_plate_comment": null,
+      "old_ledger_name": null,
+      "evidence": "Hypothesis, not recovered symbol. Complete 27B saved listing; matching live/disk SHA256 b9b972cb8e9c9c854d087b568d5dc0f6cfa90558c3ce70ab4726e69ddef04613. ECX node; EAX minimum; RET. Follow left links while reached child nil19 is zero. See docs/NATIVE_SOLDIER_REGISTRY_LIFETIME_ORCH4.md. New C++ interface; native ABI/FH3/SEH/game remain unvalidated."
+    },
+    {
+      "address": "004af6c0",
+      "end_exclusive": "004af6dc",
+      "bytes": 28,
+      "sha256": "6f640fcf9f202b2fd9542a1da5578933f953aefd242bd1af3a0d59f1f5c5c5c8",
+      "live_disk_match": true,
+      "name": "maximum_native_soldier_registry_node_004af6c0",
+      "proposed_name": "STL_SoldierRegistry_Maximum_004AF6C0",
+      "original_abi": "ECX node; EAX maximum; RET",
+      "coverage": "complete",
+      "contract": "Follow right links while reached child nil19 is zero; skipped alignment included in span.",
+      "status": "complete_source_build_checked",
+      "source": "src/native_soldier_registry_lifetime.cpp",
+      "original_runtime_abi": false,
+      "gameplay_validated": false,
+      "old_name": "FUN_004af6c0",
+      "old_plate_comment": null,
+      "old_ledger_name": null,
+      "evidence": "Hypothesis, not recovered symbol. Complete 28B saved listing; matching live/disk SHA256 6f640fcf9f202b2fd9542a1da5578933f953aefd242bd1af3a0d59f1f5c5c5c8. ECX node; EAX maximum; RET. Follow right links while reached child nil19 is zero; skipped alignment included in span. See docs/NATIVE_SOLDIER_REGISTRY_LIFETIME_ORCH4.md. New C++ interface; native ABI/FH3/SEH/game remain unvalidated."
+    },
+    {
+      "address": "004b0330",
+      "end_exclusive": "004b05fc",
+      "bytes": 716,
+      "sha256": "3ac8a7a2a124b2d1f55407b4cae33a33b026b9d04a3b47ea0ee0981f54efa253",
+      "live_disk_match": true,
+      "name": "erase_native_soldier_registry_iterator_004b0330",
+      "proposed_name": "STL_SoldierRegistry_EraseIterator_004B0330",
+      "original_abi": "ECX tree; stack output/owner/node; EAX output; RET0Ch",
+      "coverage": "complete",
+      "contract": "Nil owning out_of_range; successor, two-child transplant, red-black fixup, raw key pool return, node free, current nonzero-count decrement, owner/node output.",
+      "status": "complete_source_build_checked",
+      "source": "src/native_soldier_registry_lifetime.cpp",
+      "original_runtime_abi": false,
+      "gameplay_validated": false,
+      "old_name": "STL_xlen_throw_004b0330",
+      "old_plate_comment": null,
+      "old_ledger_name": null,
+      "evidence": "Hypothesis, not recovered symbol. Complete 716B saved listing; matching live/disk SHA256 3ac8a7a2a124b2d1f55407b4cae33a33b026b9d04a3b47ea0ee0981f54efa253. ECX tree; stack output/owner/node; EAX output; RET0Ch. Nil owning out_of_range; successor, two-child transplant, red-black fixup, raw key pool return, node free, current nonzero-count decrement, owner/node output. See docs/NATIVE_SOLDIER_REGISTRY_LIFETIME_ORCH4.md. New C++ interface; native ABI/FH3/SEH/game remain unvalidated."
+    },
+    {
+      "address": "004b0600",
+      "end_exclusive": "004b0652",
+      "bytes": 82,
+      "sha256": "2395dce5a67a7eec65662e01941c0db215ff5c91f0cad0b5c936b7ecc465aac5",
+      "live_disk_match": true,
+      "name": "destroy_native_soldier_registry_subtree_004b0600",
+      "proposed_name": "STL_SoldierRegistry_DestroySubtree_004B0600",
+      "original_abi": "ECX tree; stack node; RET4",
+      "coverage": "complete",
+      "contract": "Right-recursive left-iterative drain. Capture data then left then length; actual pool return then node free. No mapped-pointer deletion.",
+      "status": "complete_source_build_checked",
+      "source": "src/native_soldier_registry_lifetime.cpp",
+      "original_runtime_abi": false,
+      "gameplay_validated": false,
+      "old_name": "FUN_004b0600",
+      "old_plate_comment": null,
+      "old_ledger_name": null,
+      "evidence": "Hypothesis, not recovered symbol. Complete 82B saved listing; matching live/disk SHA256 2395dce5a67a7eec65662e01941c0db215ff5c91f0cad0b5c936b7ecc465aac5. ECX tree; stack node; RET4. Right-recursive left-iterative drain. Capture data then left then length; actual pool return then node free. No mapped-pointer deletion. See docs/NATIVE_SOLDIER_REGISTRY_LIFETIME_ORCH4.md. New C++ interface; native ABI/FH3/SEH/game remain unvalidated."
+    },
+    {
+      "address": "004b09a0",
+      "end_exclusive": "004b0a69",
+      "bytes": 201,
+      "sha256": "4e9f89305f3f9301546038e768c87a3d7aec4264195a95faf6a96152f099faaf",
+      "live_disk_match": true,
+      "name": "erase_native_soldier_registry_range_004b09a0",
+      "proposed_name": "STL_SoldierRegistry_EraseRange_004B09A0",
+      "original_abi": "ECX tree; stack output/first owner/node/last owner/node; EAX output; RET14h",
+      "coverage": "complete",
+      "contract": "Returning validation preserves captured/current reads. Full range drains and self-links current head; partial advance then erase.",
+      "status": "complete_source_build_checked",
+      "source": "src/native_soldier_registry_lifetime.cpp",
+      "original_runtime_abi": false,
+      "gameplay_validated": false,
+      "old_name": "FUN_004b09a0",
+      "old_plate_comment": null,
+      "old_ledger_name": null,
+      "evidence": "Hypothesis, not recovered symbol. Complete 201B saved listing; matching live/disk SHA256 4e9f89305f3f9301546038e768c87a3d7aec4264195a95faf6a96152f099faaf. ECX tree; stack output/first owner/node/last owner/node; EAX output; RET14h. Returning validation preserves captured/current reads. Full range drains and self-links current head; partial advance then erase. See docs/NATIVE_SOLDIER_REGISTRY_LIFETIME_ORCH4.md. New C++ interface; native ABI/FH3/SEH/game remain unvalidated."
+    },
+    {
+      "address": "004b1210",
+      "end_exclusive": "004b127f",
+      "bytes": 111,
+      "sha256": "cfbaaf5ea4596f3e9ba36fbef0492a8b520a63406cb52f780f6dc6ac6de401ee",
+      "live_disk_match": true,
+      "name": "destroy_native_soldier_registry_004b1210",
+      "proposed_name": "SoldierRegistry_Destroy_004B1210",
+      "original_abi": "ECX owner; RET",
+      "coverage": "complete",
+      "contract": "Real range drain; free current sentinel; clear head/count; clear current E187F0 then stamp CE3818. True unwind only4AF950.",
+      "status": "complete_source_build_checked",
+      "source": "src/native_soldier_registry_lifetime.cpp",
+      "original_runtime_abi": false,
+      "gameplay_validated": false,
+      "old_name": "FUN_004b1210",
+      "old_plate_comment": null,
+      "old_ledger_name": null,
+      "evidence": "Hypothesis, not recovered symbol. Complete 111B saved listing; matching live/disk SHA256 cfbaaf5ea4596f3e9ba36fbef0492a8b520a63406cb52f780f6dc6ac6de401ee. ECX owner; RET. Real range drain; free current sentinel; clear head/count; clear current E187F0 then stamp CE3818. True unwind only4AF950. See docs/NATIVE_SOLDIER_REGISTRY_LIFETIME_ORCH4.md. New C++ interface; native ABI/FH3/SEH/game remain unvalidated."
+    },
+    {
+      "address": "004b1280",
+      "end_exclusive": "004b129e",
+      "bytes": 30,
+      "sha256": "0780d16fb201bcb04f26833311f6393fdedcd78166a51ad7dcaa98db18f5f128",
+      "live_disk_match": true,
+      "name": "delete_native_soldier_registry_004b1280",
+      "proposed_name": "CG_scalar_deleting_dtor_004b1280",
+      "original_abi": "ECX owner; stack flags; EAX captured owner; RET4",
+      "coverage": "complete",
+      "contract": "Call complete destructor, free iff flags bit0, return captured owner; preserve existing correct library classification.",
+      "status": "complete_source_build_checked",
+      "source": "src/native_soldier_registry_lifetime.cpp",
+      "original_runtime_abi": false,
+      "gameplay_validated": false,
+      "old_name": "CG_scalar_deleting_dtor_004b1280",
+      "old_plate_comment": null,
+      "old_ledger_name": null,
+      "evidence": "Hypothesis, not recovered symbol. Complete 30B saved listing; matching live/disk SHA256 0780d16fb201bcb04f26833311f6393fdedcd78166a51ad7dcaa98db18f5f128. ECX owner; stack flags; EAX captured owner; RET4. Call complete destructor, free iff flags bit0, return captured owner; preserve existing correct library classification. See docs/NATIVE_SOLDIER_REGISTRY_LIFETIME_ORCH4.md. New C++ interface; native ABI/FH3/SEH/game remain unvalidated."
+    },
+    {
+      "address": "004b1330",
+      "end_exclusive": "004b13ed",
+      "bytes": 189,
+      "sha256": "47c2138f290a3d2ae0dc70badc0e6b74776653e95975e5156aa1aaf52d878f55",
+      "live_disk_match": true,
+      "name": "get_native_soldier_registry_004b1330",
+      "proposed_name": "SoldierRegistry_GetSingleton_004B1330",
+      "original_abi": "No input; EAX registry; RET",
+      "coverage": "complete",
+      "contract": "Fast captured publication. Real415350; captured section+10 enter/depth+18; recheck; allocate10h/construct; publish; reacquire manager; register current publication; release captured guard; slow reload.",
+      "status": "complete_source_build_checked",
+      "source": "src/native_soldier_registry_lifetime.cpp",
+      "original_runtime_abi": false,
+      "gameplay_validated": false,
+      "old_name": "FUN_004b1330",
+      "old_plate_comment": null,
+      "old_ledger_name": null,
+      "evidence": "Hypothesis, not recovered symbol. Complete 189B saved listing; matching live/disk SHA256 47c2138f290a3d2ae0dc70badc0e6b74776653e95975e5156aa1aaf52d878f55. No input; EAX registry; RET. Fast captured publication. Real415350; captured section+10 enter/depth+18; recheck; allocate10h/construct; publish; reacquire manager; register current publication; release captured guard; slow reload. See docs/NATIVE_SOLDIER_REGISTRY_LIFETIME_ORCH4.md. New C++ interface; native ABI/FH3/SEH/game remain unvalidated."
+    }
+  ],
+  "calls": [
+    {
+      "address": "004b0378",
+      "native": "00408720",
+      "function": "004b0330"
+    },
+    {
+      "address": "004b038a",
+      "native": "00411700",
+      "function": "004b0330"
+    },
+    {
+      "address": "004b03a1",
+      "native": "00bf6885",
+      "function": "004b0330"
+    },
+    {
+      "address": "004b03ae",
+      "native": "004afb50",
+      "function": "004b0330"
+    },
+    {
+      "address": "004b0410",
+      "native": "004af680",
+      "function": "004b0330"
+    },
+    {
+      "address": "004b0432",
+      "native": "004af6c0",
+      "function": "004b0330"
+    },
+    {
+      "address": "004b04d2",
+      "native": "004afaa0",
+      "function": "004b0330"
+    },
+    {
+      "address": "004b0505",
+      "native": "004afaf0",
+      "function": "004b0330"
+    },
+    {
+      "address": "004b0521",
+      "native": "004afaa0",
+      "function": "004b0330"
+    },
+    {
+      "address": "004b0536",
+      "native": "004afaf0",
+      "function": "004b0330"
+    },
+    {
+      "address": "004b057f",
+      "native": "004afaa0",
+      "function": "004b0330"
+    },
+    {
+      "address": "004b0599",
+      "native": "004afaf0",
+      "function": "004b0330"
+    },
+    {
+      "address": "004b05b0",
+      "native": "00419cc0",
+      "function": "004b0330"
+    },
+    {
+      "address": "004b05b7",
+      "native": "00bd1510",
+      "function": "004b0330"
+    },
+    {
+      "address": "004b05bd",
+      "native": "00bf65ac",
+      "function": "004b0330"
+    },
+    {
+      "address": "004b0617",
+      "native": "004b0600",
+      "function": "004b0600"
+    },
+    {
+      "address": "004b062f",
+      "native": "00419cc0",
+      "function": "004b0600"
+    },
+    {
+      "address": "004b0636",
+      "native": "00bd1510",
+      "function": "004b0600"
+    },
+    {
+      "address": "004b063c",
+      "native": "00bf65ac",
+      "function": "004b0600"
+    },
+    {
+      "address": "004b09ba",
+      "native": "00bf6713",
+      "function": "004b09a0"
+    },
+    {
+      "address": "004b09d6",
+      "native": "00bf6713",
+      "function": "004b09a0"
+    },
+    {
+      "address": "004b09ea",
+      "native": "004b0600",
+      "function": "004b09a0"
+    },
+    {
+      "address": "004b0a2a",
+      "native": "00bf6713",
+      "function": "004b09a0"
+    },
+    {
+      "address": "004b0a39",
+      "native": "004afb50",
+      "function": "004b09a0"
+    },
+    {
+      "address": "004b0a47",
+      "native": "004b0330",
+      "function": "004b09a0"
+    },
+    {
+      "address": "004b124a",
+      "native": "004b09a0",
+      "function": "004b1210"
+    },
+    {
+      "address": "004b1253",
+      "native": "00bf65ac",
+      "function": "004b1210"
+    },
+    {
+      "address": "004b1283",
+      "native": "004b1210",
+      "function": "004b1280"
+    },
+    {
+      "address": "004b1290",
+      "native": "00bf65ac",
+      "function": "004b1280"
+    },
+    {
+      "address": "004b1356",
+      "native": "00415350",
+      "function": "004b1330"
+    },
+    {
+      "address": "004b138c",
+      "native": "00bf681b",
+      "function": "004b1330"
+    },
+    {
+      "address": "004b13a3",
+      "native": "004b11a0",
+      "function": "004b1330"
+    },
+    {
+      "address": "004b13b6",
+      "native": "00415350",
+      "function": "004b1330"
+    },
+    {
+      "address": "004b13c4",
+      "native": "00bd0c30",
+      "function": "004b1330"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "004B0330 named STL_xlen_throw, truncated at free05BD and pseudocode omitted043C..0493 transplant",
+      "is": "Complete716B iterator erase including two-child transplant, fixup, current count and output tail",
+      "evidence": "Full repaired saved listing0330..05FB; parent repair reports; full live/disk match."
+    },
+    {
+      "was": "004B0600 gap0641..064B after free063C",
+      "is": "82B complete right-recursive left-iterative drain",
+      "evidence": "Parent repair restores ADD ESP4/CMP nil/MOV EDI,ESI/JE0611."
+    }
+  ],
+  "boundaries": [
+    "New C++ interfaces, not original register ABI/FH3/SEH replacement.",
+    "Actual table DWORD identities do not implement mixed-owner manager drain profile dispatch.",
+    "Original allocator/CRT/OS and source exception transport remain existing boundaries.",
+    "No gameplay or game startup validation."
+  ],
+  "exception_evidence": [
+    {
+      "function": "004b0330",
+      "handler": "00c64948",
+      "funcinfo": "00d8cd08",
+      "unwind_map": "00d8cd00",
+      "unwind_action": "00c64940 ->004072d0",
+      "contract": "State0 only after successful counted assignment; owning out_of_range transport; no tree rollback."
+    },
+    {
+      "function": "004b1210",
+      "handler": "00c64a18",
+      "funcinfo": "00d8ce28",
+      "unwind_map": "00d8ce20",
+      "unwind_action": "00c64a10 ->004af950",
+      "contract": "State0 clears publication and stamps base; does not free current head after failed drain."
+    },
+    {
+      "function": "004b1330",
+      "handler": "00c64a63",
+      "funcinfo": "00d8ce88",
+      "unwind_map": "00d8ce78",
+      "unwind_action": "state1 raw free00c64a58 ->state0 guard00c64a50 ->00411ee0",
+      "contract": "Allocation cleanup armed after allocator; disarmed before publication/registration; second exception in true unwind terminates."
+    }
+  ],
+  "validation": {
+    "live_disk_bytes": "8 complete spans, 1384 bytes matched",
+    "call_rows": "34 live direct call rows checked, zero failures",
+    "source_compilation": "MSVC x86 /W4 /WX passed in focused linked probe",
+    "focused_probe": {
+      "path": "local/soldier_lifetime_probe.cpp",
+      "command": "local/run_soldier_lifetime_probe.cmd",
+      "result": "PASS copied original/source transplant, rebalance, partial/full range/drain, destructor tail and returning canonical CRT-handler head schedule",
+      "source_dependencies": "Integrated genuine Soldier registry tree, SoldierClass constructor/base source and bsp_core providers; no stub teardown, host map or fake raw-pool provider.",
+      "limits": "Tree fixture keys are null. Original allocator/free call is redirected to source CRT; copied original exception handlers are not entered. Raw pool getter failure/FH3/SEH and gameplay are not covered.",
+      "log": "local/soldier_lifetime_integrated_probe.log",
+      "directly_exercised_packet_entries": [
+        "004b0330",
+        "004b0600",
+        "004b09a0",
+        "004b1210"
+      ],
+      "not_native_differentially_exercised": [
+        "004b1330 getter",
+        "004b1280 scalar deleter",
+        "004af680/004af6c0 min/max leaves not independently compared",
+        "Raw string-pool paths with nonnull keys",
+        "Original C++ unwind handlers and SEH"
+      ]
+    },
+    "strict_build": {
+      "command": "./scripts/build.ps1",
+      "result": "PASS; 2/2 existing CTests",
+      "log": "local/soldier_lifetime_integrated_build.log",
+      "dependency_commit": "9f1eb132c",
+      "main_merged_into_worker": "d0734e116",
+      "external_include_path_required": false
+    },
+    "ignored_evidence": [
+      "local/soldier_lifetime_g7/*.live.txt",
+      "local/soldier_lifetime_g7/*.bin",
+      "local/soldier_lifetime_probe.cpp",
+      "local/make_soldier_probe_data.py",
+      "local/soldier_probe_bytes.hpp",
+      "local/run_soldier_lifetime_probe.cmd",
+      "local/soldier_lifetime_integrated_build.log",
+      "local/soldier_lifetime_integrated_probe.log"
+    ]
+  },
+  "result": "eight_complete_source_bodies_integrated_dependency_build_checked"
+}
