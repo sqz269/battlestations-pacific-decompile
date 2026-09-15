@@ -15,7 +15,8 @@ or `0087B950`.
 The original interval is 157 bytes: 59 decoded instructions including a
 three-byte alignment NOP at `0087995D`. The live listing has 58 instructions;
 that unreachable padding is not currently defined in Ghidra. The feature
-summary reports only 42 instructions and one call, omitting the catch path.
+summary reports only 42 instructions and one call, excluding the separately
+owned `Catch_All@00879951` funclet.
 The report derives its complete counts and call rows from installed bytes and
 the current listing, not the feature summary. No listing repair is required.
 
@@ -101,3 +102,12 @@ the original fill instructions against the reconstruction for the normal path,
 including source aliasing. Catch behavior is established by full assembly and
 FH3 metadata; no injected-copy mock is treated as provider or native-EH proof.
 No game validation or original binary-ABI replacement is claimed.
+
+`scripts/build.ps1` passed in default strict Win32 Release mode; both tests
+enabled in this fresh worktree passed. The focused probe compiled with
+`/EHsc /W4 /WX /O2` and `/link /MANIFEST:EMBED`, then passed count0,
+null/count1 and the count3 middle-source-alias case. Final references were6
+from an initial5, and the nonnull handle pattern was `[1,0,0]` in both versions.
+All three live call rows passed, including the rethrow attributed to its actual
+Ghidra owner `Catch_All@00879951`. A separate read-only worker review found no
+source/header/metadata discrepancy. No permanent test suite was added.
