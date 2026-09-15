@@ -1,0 +1,391 @@
+{
+  "packet": "orch4_particle_lifetime_h8",
+  "status": "reconstructed_complete_raw_source_win32_build_and_focused_original_byte_probe_passed",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "image_base": "00400000",
+  "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "source": "src/native_particle_component_lifetime.cpp",
+  "header": "include/bsp/native_particle_component_lifetime.hpp",
+  "evidence": "docs/NATIVE_PARTICLE_COMPONENT_LIFETIME_ORCH4.md",
+  "byte_spans": [
+    {
+      "address": "0086a4d0",
+      "end": "0086a52e",
+      "size": 95,
+      "role": "reserve",
+      "live_sha256": "80ac6ff8c1d29ba02074e13e65d7c8de3f7681e9dad747816ea4b8f0ca927dcf",
+      "disk_sha256": "80ac6ff8c1d29ba02074e13e65d7c8de3f7681e9dad747816ea4b8f0ca927dcf",
+      "disk_live_equal": true,
+      "hex": "56578b7c240c83ff018bf17d05bf01000000397e087d438d04bd000000005350e8c9b038008bd833c083c4043946047e188bcb85c974078b168b1482891183c00183c1043b46047cea8b0650e868c4380083c404891e897e085b5f5ec20400"
+    },
+    {
+      "address": "0086abb0",
+      "end": "0086abff",
+      "size": 80,
+      "role": "resize",
+      "live_sha256": "c3b0273d1a1166195a0cae334f54c44bf1f82098adcd80f06db3dc7e29d6b90b",
+      "disk_sha256": "c3b0273d1a1166195a0cae334f54c44bf1f82098adcd80f06db3dc7e29d6b90b",
+      "disk_live_equal": true,
+      "hex": "56578b7c240c8bf13b7e087e0657e80df9ffff8b46043bc77d1c8d9b000000008b0e8d0c8185c97406c7010000000083c0013bc77cea3b7e047d0d83c8ff8bff0146043b7e047cf8897e045f5ec20400"
+    },
+    {
+      "address": "0086b6c0",
+      "end": "0086b6d6",
+      "size": 23,
+      "role": "vector_destructor",
+      "live_sha256": "4409d213d6922e0827f988c0bb819124b3d14ab044a6769bca5e5897923bd3dd",
+      "disk_sha256": "4409d213d6922e0827f988c0bb819124b3d14ab044a6769bca5e5897923bd3dd",
+      "disk_live_equal": true,
+      "hex": "566a008bf1e8e6f4ffff8b0650e8b7b2380083c4045ec3"
+    },
+    {
+      "address": "0086b7e0",
+      "end": "0086b846",
+      "size": 103,
+      "role": "base_destructor",
+      "live_sha256": "defd96217184042e32705e2cb0a7ff3e35dbb92f45f2989b2e6816cee05a62e5",
+      "disk_sha256": "defd96217184042e32705e2cb0a7ff3e35dbb92f45f2989b2e6816cee05a62e5",
+      "disk_live_equal": true,
+      "hex": "6aff683855c90064a100000000506489250000000051568bf189742404c70670d5d0008b460c85c0c74424100000000074168b4e086a0183c1015150e89fe4baff8bc8e8e85c36008bcec7442410ffffffffe8b97836008b4c24085e64890d0000000083c410c3"
+    },
+    {
+      "address": "0086bb80",
+      "end": "0086bc4d",
+      "size": 206,
+      "role": "particle_destructor",
+      "live_sha256": "99a7ffa0a7c75104061a59c4e2e2ae290ff47366ca2ccd2a4b802498d37f2e19",
+      "disk_sha256": "99a7ffa0a7c75104061a59c4e2e2ae290ff47366ca2ccd2a4b802498d37f2e19",
+      "disk_live_equal": true,
+      "hex": "6aff68be55c90064a100000000506489250000000051568bf15789742408c706b4d5d0008b462c85c0c744241402000000743d538b1d2022ce008d9b000000008b462c8b4e288b7c81fc8d570452ffd385c075088b078b108bcfffd28b462c85c0740683c0ff89462c837e2c0075d15b8d7e286a008bcfc644241801e8afefffff8b3f57e880ad38008b462483c40485c0c64424140074168b4e206a0183c1015150e899e0baff8bc8e8e25836008bcec7442414ffffffffe8a3fbffff8b4c240c5f5e64890d0000000083c410c3"
+    },
+    {
+      "address": "0086bc60",
+      "end": "0086bc7d",
+      "size": 30,
+      "role": "scalar_destructor",
+      "live_sha256": "986662a7160a4d532d8970b6b91c745aaad41dbb306f43a01c6e53be45bcbf5b",
+      "disk_sha256": "986662a7160a4d532d8970b6b91c745aaad41dbb306f43a01c6e53be45bcbf5b",
+      "disk_live_equal": true,
+      "hex": "568bf1e818fffffff644240801740956e837a9380083c4048bc65ec20400"
+    },
+    {
+      "address": "00c95530",
+      "end": "00c95541",
+      "size": 18,
+      "role": "base_unwind",
+      "live_sha256": "f128493f237cb3908f5f7b66a78c8a4810e4032fee5564a832adbd8400ab7ca1",
+      "disk_sha256": "f128493f237cb3908f5f7b66a78c8a4810e4032fee5564a832adbd8400ab7ca1",
+      "disk_live_equal": true,
+      "hex": "8b4df0e9b8dbf3ffb81075dc00e90116f6ff"
+    },
+    {
+      "address": "00c955a0",
+      "end": "00c955c7",
+      "size": 40,
+      "role": "particle_unwind",
+      "live_sha256": "c0021cc02cc2c4779e378659f5cd685aaacad0ad65543bb7b82fd18f6769888f",
+      "disk_sha256": "c0021cc02cc2c4779e378659f5cd685aaacad0ad65543bb7b82fd18f6769888f",
+      "disk_live_equal": true,
+      "hex": "8b4df0e93862bdff8b4df083c120e96d8778ff8b4df083c128e90261bdffb8b475dc00e97b15f6ff"
+    },
+    {
+      "address": "00dc7508",
+      "end": "00dc7533",
+      "size": 44,
+      "role": "base_fh3",
+      "live_sha256": "ed09ec539f9694cc0281d99f571d3a66af7b55c21c7900320b9250e879811b5d",
+      "disk_sha256": "ed09ec539f9694cc0281d99f571d3a66af7b55c21c7900320b9250e879811b5d",
+      "disk_live_equal": true,
+      "hex": "ffffffff3055c90022059319010000000875dc00000000000000000000000000000000000000000001000000"
+    },
+    {
+      "address": "00dc759c",
+      "end": "00dc75d7",
+      "size": 60,
+      "role": "particle_fh3",
+      "live_sha256": "5739455234fea8ced20cb931930cce3273702913256abeae0252272ea7cdb2eb",
+      "disk_sha256": "5739455234fea8ced20cb931930cce3273702913256abeae0252272ea7cdb2eb",
+      "disk_live_equal": true,
+      "hex": "ffffffffa055c90000000000a855c90001000000b355c90022059319030000009c75dc00000000000000000000000000000000000000000001000000"
+    },
+    {
+      "address": "00d0d5b4",
+      "end": "00d0d5cb",
+      "size": 24,
+      "role": "particle_vtable",
+      "live_sha256": "ff436a2d7ae3b0971aa3449fda83e5eeda7497dac73918763329988477ed08ac",
+      "disk_sha256": "ff436a2d7ae3b0971aa3449fda83e5eeda7497dac73918763329988477ed08ac",
+      "disk_live_equal": true,
+      "hex": "e030bd0060bc8600b0b78600c0b7860050bc8600001d8700"
+    }
+  ],
+  "prior_ghidra_metadata": [
+    {
+      "address": "0086a4d0",
+      "annotation": {
+        "address": "0086a4d0",
+        "function_name": "FUN_0086a4d0"
+      }
+    },
+    {
+      "address": "0086abb0",
+      "annotation": {
+        "address": "0086abb0",
+        "function_name": "FUN_0086abb0"
+      }
+    },
+    {
+      "address": "0086b6c0",
+      "annotation": {
+        "address": "0086b6c0",
+        "function_name": "FUN_0086b6c0"
+      }
+    },
+    {
+      "address": "0086bb80",
+      "annotation": {
+        "address": "0086bb80",
+        "function_name": "FUN_0086bb80"
+      }
+    },
+    {
+      "address": "0086bc60",
+      "annotation": {
+        "address": "0086bc60",
+        "function_name": "CG_scalar_deleting_dtor_0086bc60"
+      }
+    },
+    {
+      "address": "0086b7e0",
+      "annotation": {
+        "address": "0086b7e0",
+        "function_name": "BSP_EffectComponent_Destruct",
+        "comment": "[BSP reconstruction 0086b7e0]\nHypothesis, not a recovered symbol. ECX actual component; RET. Write D0D570, destroy actual name8/C through pool, preserve dangling header and callback mutations, then base00BD30F0 writes CEB130. Full-span disk/live SHA256 defd96217184042e32705e2cb0a7ff3e35dbb92f45f2989b2e6816cee05a62e5. See docs/GAMEPLAY_EFFECT_SCALAR_COMPONENTS.md. Win32 and real-Lua acquisition/lifetime fixture passed; native reader/destructor differential, ABI/SEH and gameplay remain unvalidated.\n\n[BSP reconstruction 0086b7e0] update\nHypothesis, not a recovered symbol. ECX actual component; RET. Write D0D570, destroy actual name8/C through pool, preserve dangling header and callback mutations, then base00BD30F0 writes CEB130. Full-span disk/live SHA256 defd96217184042e32705e2cb0a7ff3e35dbb92f45f2989b2e6816cee05a62e5. See docs/GAMEPLAY_EFFECT_SCALAR_COMPONENTS.md. Win32 and real-Lua acquisition/lifetime fixture passed; native reader/destructor differential, ABI/SEH and gameplay remain unvalidated. | Packet orch3_plain_component_terminals_ae. Existing actual raw component normal cleanup now exposed through string-only scalar overloads and current-table BD30E0 -> slot4(1) lifetime, without a second decrement, count, retain, owner or unrelated services. Original103-byte base and six30-byte scalar bodies/ESP/full normalized owner images verified against actual shared string pool; full point chain releases all4 named final component refs through real terminals before rumble rows, with no manual component free. docs/GAMEPLAY_EFFECT_PLAIN_TERMINALS.md; reports/gameplay_effect_plain_terminals.json. Descriptive names are hypotheses; compiler scalar labels preserved. Complete 103-byte range 0086b7e0..0086b846; disk/live SHA256 defd96217184042e32705e2cb0a7ff3e35dbb92f45f2989b2e6816cee05a62e5."
+      }
+    }
+  ],
+  "call_rows": [
+    {
+      "function": "0086a4d0",
+      "address": "0086a4f0",
+      "native": "00bf55be",
+      "purpose": "allocate DWORD-wrapped capacity*4"
+    },
+    {
+      "function": "0086a4d0",
+      "address": "0086a51c",
+      "native": "00bf6989",
+      "purpose": "free previous data before publishing replacement"
+    },
+    {
+      "function": "0086abb0",
+      "address": "0086abbe",
+      "native": "0086a4d0",
+      "purpose": "reserve when signed capacity below request"
+    },
+    {
+      "function": "0086b6c0",
+      "address": "0086b6c5",
+      "native": "0086abb0",
+      "purpose": "resize header to zero"
+    },
+    {
+      "function": "0086b6c0",
+      "address": "0086b6cd",
+      "native": "00bf6989",
+      "purpose": "free current vector data"
+    },
+    {
+      "function": "0086b7e0",
+      "address": "0086b81c",
+      "native": "00419cc0",
+      "purpose": "resolve actual raw string pool"
+    },
+    {
+      "function": "0086b7e0",
+      "address": "0086b823",
+      "native": "00bd1510",
+      "purpose": "return captured base name"
+    },
+    {
+      "function": "0086b7e0",
+      "address": "0086b832",
+      "native": "00bd30f0",
+      "purpose": "base profile write"
+    },
+    {
+      "function": "0086bb80",
+      "address": "0086bbce",
+      "native": "00ce2220+IAT",
+      "purpose": "InterlockedDecrement(resource+4)"
+    },
+    {
+      "function": "0086bb80",
+      "address": "0086bbda",
+      "native": "resource+vtable00",
+      "purpose": "current resource slot0 only when decrement returns zero"
+    },
+    {
+      "function": "0086bb80",
+      "address": "0086bbfc",
+      "native": "0086abb0",
+      "purpose": "resize vector to zero"
+    },
+    {
+      "function": "0086bb80",
+      "address": "0086bc04",
+      "native": "00bf6989",
+      "purpose": "free current vector data"
+    },
+    {
+      "function": "0086bb80",
+      "address": "0086bc22",
+      "native": "00419cc0",
+      "purpose": "resolve actual pool for captured name+20"
+    },
+    {
+      "function": "0086bb80",
+      "address": "0086bc29",
+      "native": "00bd1510",
+      "purpose": "return captured name+20"
+    },
+    {
+      "function": "0086bb80",
+      "address": "0086bc38",
+      "native": "0086b7e0",
+      "purpose": "base component destruction"
+    },
+    {
+      "function": "0086bc60",
+      "address": "0086bc63",
+      "native": "0086bb80",
+      "purpose": "full Particle component destruction"
+    },
+    {
+      "function": "0086bc60",
+      "address": "0086bc70",
+      "native": "00bf65ac",
+      "purpose": "free component if flags bit0"
+    }
+  ],
+  "unwind": {
+    "particle_handler": "00c955be",
+    "particle_info": "00dc75b4",
+    "particle_map": "00dc759c",
+    "particle_actions": [
+      {
+        "state": 2,
+        "next": 1,
+        "action": "00c955b3",
+        "target": "0086b6c0",
+        "owner_offset": "28"
+      },
+      {
+        "state": 1,
+        "next": 0,
+        "action": "00c955a8",
+        "target": "0041dd20",
+        "owner_offset": "20"
+      },
+      {
+        "state": 0,
+        "next": -1,
+        "action": "00c955a0",
+        "target": "0086b7e0",
+        "owner_offset": "00"
+      }
+    ],
+    "base_handler": "00c95538",
+    "base_info": "00dc7510",
+    "base_map": "00dc7508",
+    "base_actions": [
+      {
+        "state": 0,
+        "next": -1,
+        "action": "00c95530",
+        "target": "00bd30f0",
+        "owner_offset": "00"
+      }
+    ]
+  },
+  "limitations": [
+    "Owning source C++ interfaces; not original thiscall entry points or FH3 frame identity.",
+    "Normal original-byte differential and focused source C++ exception checks do not prove original SEH or CRT/OOM/fault equivalence.",
+    "Direct resource slot0 requires executable current Win32 __thiscall table entries; no automatic source relocation of game vtables.",
+    "No gameplay or rebuilt-game claim."
+  ],
+  "validation": {
+    "build": {
+      "command": "./scripts/build.ps1",
+      "result": "PASS",
+      "configuration": "Release Win32",
+      "compiler": "/W4 /WX /fp:strict",
+      "ctest": "2/2 PASS: reconstructed_math, tool_tests",
+      "log": "local/particle_lifetime_build.log"
+    },
+    "call_verification": {
+      "command": "python tools/verify_report_calls.py reports/native_particle_component_lifetime_orch4.json",
+      "direct_rows": 15,
+      "indirect_rows": 2,
+      "failed": 0
+    },
+    "focused_probe": {
+      "command": "./local/particle_lifetime_probe_build.ps1",
+      "result": "PASS",
+      "source": "local/particle_lifetime_probe.cpp",
+      "manifest": "/link /MANIFEST:EMBED",
+      "normal_original_body_bytes": 537,
+      "rebinding": "External CALL displacements only plus InterlockedDecrement IAT operand; recovered normal body branches and field operations unchanged. Concrete heap/raw string pool/base providers and stdcall atomic wrapper.",
+      "checks": [
+        "Reserve signed clamp/copy; resize grow zeroes and signed negative shrink; vector destructor stale header.",
+        "Full normalized 34h owner image equality after original/source Particle destruction; all six original bodies execute across the probe.",
+        "Resource reference count behavior, reverse virtual order, live count mutation, and replacement vector pointer observed by subsequent iterations.",
+        "Two actual raw-pool name returns per full destruction; dangling header preservation.",
+        "Scalar flags2 and3 preserve return address and select allocation free by bit0.",
+        "Source C++ resource exception unwinds vector, current Particle name and base, returns both names to actual pool."
+      ],
+      "unproved": [
+        "Original FH3/SEH exceptional execution; probe executes original normal paths only.",
+        "Raw getter allocation failure and second-exception termination are source-inspected, not fault-injected.",
+        "Memory faults, CRT/OOM identity, binary drop-in ABI and gameplay."
+      ]
+    }
+  },
+  "listing_repairs": [
+    {
+      "address": "0086a4d0",
+      "range": "0086a521..0086a529",
+      "bytes": 9,
+      "instructions_after": 38
+    },
+    {
+      "address": "0086b6c0",
+      "range": "0086b6d2..0086b6d6",
+      "bytes": 5,
+      "instructions_after": 10
+    },
+    {
+      "address": "0086bb80",
+      "range": "0086bc09..0086bc4d",
+      "bytes": 69,
+      "instructions_after": 68
+    },
+    {
+      "address": "0086bc60",
+      "range": "0086bc75..0086bc77",
+      "bytes": 3,
+      "instructions_after": 11
+    }
+  ],
+  "listing_repair_owner": "Parent integrator serialized saved Ghidra repairs and refreshed exports; this worker made no live mutations. Parent receipts: reports/native_particle_flow_repairs_orch4_h8.json and reports/native_particle_body_repairs_orch4_h8.json.",
+  "artifact_sha256": {
+    "src/native_particle_component_lifetime.cpp": "da2c642ef51e2d39bb0563c79b822472c4df173489199f5cf776c4b5230a0297",
+    "include/bsp/native_particle_component_lifetime.hpp": "6e5e183f532e30c752685c55db602f9fdbac01f74f0078bd146edff319f3e5d2",
+    "local/particle_lifetime_probe.cpp": "47091e48ce8fc15fed05a91b3841d678d820f1b5af8a76d24b3a8604a635ca76",
+    "local/particle_lifetime_probe.exe": "6c1c6398722bd4e7aecebb98eb85a8a40887cffd0643afa9ebe811b6ab97d81c",
+    "local/particle_lifetime_build.log": "17e91f4c1f8990d8abfa49a79bea0cd8351ff99811b93903e1bbb4c5d98b5564",
+    "local/particle_lifetime_probe_build.log": "fac18c3c39f4c8d7e7092330b21759ed0f452cbdfbd5f2f15ebeaf9925847fa6"
+  }
+}
