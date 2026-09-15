@@ -1,5 +1,7 @@
 #include "bsp/native_render_alias_insertion.hpp"
 #include "bsp/native_string_pool_storage.hpp"
+#include <cstdlib>
+#include <type_traits>
 
 #include "bsp/native_alias_count_growth.hpp"
 #include "bsp/native_render_resource_alias_nodes.hpp"
@@ -92,8 +94,13 @@ static void insert_alias_range_with_pool(void* actual_destination_owner,
                     position, callbacks);
                 auto* const erase_node = previous->node_04;
                 void* const erase_owner = previous->owner_00;
-                erase_native_render_alias_node_004d0990(actual_destination_owner,
-                    source_end, {erase_owner, erase_node}, actual_string_pool, callbacks);
+                if constexpr (std::is_same_v<Pool, NativeStringRawPoolContext>) {
+                    erase_native_render_alias_node_004d0990(actual_destination_owner,
+                        source_end, {erase_owner, erase_node}, actual_string_pool);
+                } else {
+                    erase_native_render_alias_node_004d0990(actual_destination_owner,
+                        source_end, {erase_owner, erase_node}, actual_string_pool, callbacks);
+                }
                 native_render_alias_iterator_next_004b9ff0(initial_source, callbacks);
             } while (native_render_alias_iterator_not_equal_004be820(
                 initial_source, source, callbacks));
@@ -114,6 +121,15 @@ void insert_native_render_alias_range_004d26a0(void* actual_destination_owner,
     NativeRenderAliasIterator source_by_value, NativeRenderAliasIterator end_by_value,
     ActualNativeStringPoolStorage& actual_string_pool, const SingletonLifetimeCallbacks& callbacks) {
     insert_alias_range_with_pool(actual_destination_owner, insertion_position_by_value, source_by_value, end_by_value, actual_string_pool, callbacks);
+}
+
+
+void insert_native_render_alias_range_004d26a0(void* owner,
+    NativeRenderAliasIterator position, NativeRenderAliasIterator source,
+    NativeRenderAliasIterator end, NativeStringRawPoolContext& strings) {
+    const SingletonLifetimeCallbacks validation{nullptr, nullptr,
+        [](void*) { _invalid_parameter_noinfo(); }};
+    insert_alias_range_with_pool(owner, position, source, end, strings, validation);
 }
 
 } // namespace bsp

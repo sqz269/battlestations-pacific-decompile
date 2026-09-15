@@ -51,4 +51,10 @@ volatile NativeRenderAliasIterator* erase_native_render_alias_node_004d0990(
 // replacement header is made, and unsafe unrepaired continuations remain unsafe.
 // These C++ interfaces do not reproduce register/stack or native exception ABI.
 
+
+// Raw publication variant uses the current source CRT invalid-parameter
+// service, which may return. Pool getter failures propagate through real catches.
+volatile NativeRenderAliasIterator* erase_native_render_alias_node_004d0990(
+    void*, volatile NativeRenderAliasIterator&, NativeRenderAliasIterator, NativeStringRawPoolContext&);
+
 }

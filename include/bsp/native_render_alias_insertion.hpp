@@ -39,4 +39,10 @@ void insert_native_render_alias_range_004d26a0(void* actual_destination_owner,
 // domains are required. These new C++ entries use the owning host exception
 // transport from native_alias_count_growth, not the original native throw ABI.
 
+
+// Raw publication variant: fixed current CRT validation, throwing pool getter,
+// and the same owning catch/rollback schedule. No external callback contract.
+void insert_native_render_alias_range_004d26a0(void*, NativeRenderAliasIterator,
+    NativeRenderAliasIterator, NativeRenderAliasIterator, NativeStringRawPoolContext&);
+
 } // namespace bsp
