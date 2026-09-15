@@ -231,14 +231,22 @@
       "path": "include/bsp/native_shadow_entry_iteration.hpp",
       "sha256": "46453dce9c5ec66abfd2ceba03055aae1389486223a7f677c42761ed64f6f16a",
       "lines": [
-        8,
+        9,
         15,
-        18
+        18,
+        22
       ],
       "anchor_text": {
-        "8": "",
+        "9": "// Complete AD7440[188]. Native ECX actual owner, no public stack arguments,",
         "15": "void __fastcall dispatch_native_entry_pass_00ad7440(",
-        "18": "// Validation calls use the real SDK _invalid_parameter_noinfo service through"
+        "18": "// Validation calls use the real SDK _invalid_parameter_noinfo service through",
+        "22": "// Original BF6713/BF66EF encoded-handler globals, Watson and service exception/"
+      },
+      "anchor_labels": {
+        "9": "complete original body/ABI contract",
+        "15": "public declaration",
+        "18": "concrete SDK validation contract",
+        "22": "original CRT identity limit"
       }
     },
     {
@@ -249,14 +257,33 @@
         16,
         20,
         26,
-        75
+        29,
+        76,
+        77,
+        78,
+        79
       ],
       "anchor_text": {
         "10": "__declspec(noinline) void __cdecl current_crt_invalid_parameter() {",
         "16": "__declspec(naked) void __fastcall native_entry_return_00ae2ca0(void*, void*) {",
         "20": "__declspec(naked) void __fastcall native_entry_return_00ae0750(void*, void*) {",
         "26": "__declspec(naked) void __fastcall dispatch_native_entry_pass_00ad7440(",
-        "75": "        call current_crt_invalid_parameter"
+        "29": "        push ebx",
+        "76": "        // AD74AD: preserve the three-byte LEA ECX,[ECX+0] alignment form.",
+        "77": "        _emit 08dh",
+        "78": "        _emit 049h",
+        "79": "        _emit 000h"
+      },
+      "anchor_labels": {
+        "10": "concrete current CRT shim",
+        "16": "AE2CA0 exact RET definition",
+        "20": "AE0750 exact RET definition",
+        "26": "AD7440 definition",
+        "29": "first literal body instruction",
+        "76": "AD74AD alignment comment",
+        "77": "LEA opcode byte",
+        "78": "LEA modrm byte",
+        "79": "explicit zero displacement byte"
       }
     },
     {
@@ -314,5 +341,10 @@
     "returncode": 0,
     "stdout": "J:\\PROG\\battlestations-pacific-decompile-orch3-shadow-entry-iteration-en\\reports\\native_shadow_entry_iteration.json: 15 call rows checked, 0 failed\n",
     "stderr": ""
+  },
+  "primary_source_acceptance": {
+    "source_commit": "c44ccb401148204ba584ffa4cd3b249a739e8052",
+    "logic_findings": [],
+    "scope": "Complete header/source/doc/report and69 native operations,15 original call rows. Refreshed report line references only; header/source bytes unchanged. Joint source integration/build still pending."
   }
 }
