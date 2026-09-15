@@ -1,0 +1,464 @@
+{
+  "packet": "orch2_canonical_cookie_initialization_fu",
+  "baseline_commit": "c8010d8fa964667a58d9cec6144d3fc9b97e7a49",
+  "branch": "agent/orch2-canonical-cookie-initialization-fu",
+  "session": "01a08db7-951a-7110-a1fc-c27ce3f611af",
+  "status": "complete_original_no_argument_canonical_entry_static_body_abi_and_archive_verified",
+  "source": "src/native_crt_canonical_cookie_initialization.cpp",
+  "header": "include/bsp/native_crt_canonical_cookie_initialization.hpp",
+  "doc": "docs/NATIVE_CRT_CANONICAL_COOKIE_INITIALIZATION_FU.md",
+  "evidence_directory": "local/canonical_cookie_initialization_fu",
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_home": "J:/tools/ghidra_12.0.4_PUBLIC",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "installed_pe": {
+    "size": 12223752,
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "sha512": "7b545a4c47fae14af6c50a1d4d0d2904c1b85f84b9a24d1516b95d77945693fc36b1f6bb9effb7fa29b22b06ebcafc230cdf97f5c332266a3de8dd83bdc29a97"
+  },
+  "routines": [
+    {
+      "address": "00c1815e",
+      "end_inclusive": "00c181f1",
+      "length": 148,
+      "instructions": 52,
+      "coverage": "complete",
+      "original_name": "___security_init_cookie",
+      "source_symbol": "bsp::initialize_native_crt_canonical_security_cookie_00c1815e",
+      "original_abi": "No arguments; cdecl void; original EBP/16-byte local frame; EBP/EBX/EDI and conditional ESI preservation; plain RET",
+      "flags": "Original complete instruction schedule and genuine import effects; no added operations",
+      "ordering": "Current cookie read before FILETIME clearing; fast complement-only or ordered import/reseed/publication path",
+      "global_operands": [
+        "00e15590 current read",
+        "00e15594 fast-path write",
+        "00e15590 reseed write",
+        "00e15594 reseed complement write"
+      ]
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00c18193",
+      "native": "00ce2100+iat",
+      "function": "00c1815e",
+      "dll": "KERNEL32.dll",
+      "name": "GetSystemTimeAsFileTime",
+      "stdcall_argument_bytes": 4,
+      "coff_symbol": "__imp__GetSystemTimeAsFileTime@4",
+      "operand_offset": 55
+    },
+    {
+      "address": "00c1819f",
+      "native": "00ce21dc+iat",
+      "function": "00c1815e",
+      "dll": "KERNEL32.dll",
+      "name": "GetCurrentProcessId",
+      "stdcall_argument_bytes": 0,
+      "coff_symbol": "__imp__GetCurrentProcessId@0",
+      "operand_offset": 67
+    },
+    {
+      "address": "00c181a7",
+      "native": "00ce223c+iat",
+      "function": "00c1815e",
+      "dll": "KERNEL32.dll",
+      "name": "GetCurrentThreadId",
+      "stdcall_argument_bytes": 0,
+      "coff_symbol": "__imp__GetCurrentThreadId@0",
+      "operand_offset": 75
+    },
+    {
+      "address": "00c181af",
+      "native": "00ce22ac+iat",
+      "function": "00c1815e",
+      "dll": "KERNEL32.dll",
+      "name": "GetTickCount",
+      "stdcall_argument_bytes": 0,
+      "coff_symbol": "__imp__GetTickCount@0",
+      "operand_offset": 83
+    },
+    {
+      "address": "00c181bb",
+      "native": "00ce2270+iat",
+      "function": "00c1815e",
+      "dll": "KERNEL32.dll",
+      "name": "QueryPerformanceCounter",
+      "stdcall_argument_bytes": 4,
+      "coff_symbol": "__imp__QueryPerformanceCounter@4",
+      "operand_offset": 95
+    }
+  ],
+  "caller_steps": [
+    {
+      "address": "00bfd2bd",
+      "native": "00c1815e",
+      "function": "00bfd2bd",
+      "argument_count": 0
+    },
+    {
+      "address": "00bfd2c2",
+      "native": "00bfd0dd",
+      "function": "00bfd2bd",
+      "kind": "tail_jump"
+    }
+  ],
+  "spans": {
+    "bytes": {
+      "address": "00c1815e",
+      "live_equals_pe": true,
+      "size": 148,
+      "sha256": "ab5ce5744b96a3fec31d2ae40dfab40805079070fc159e2fc7d153efc280e861",
+      "sha512": "ab4e527f05b6f70cb5a9a84860bee9dacc58028e65925b19467554d5ea28973b488878fd28f9129bc2abd39a597b0b46ba88fd1ee59c687d77fc7512d9a329f3"
+    },
+    "cookie": {
+      "address": "00e15590",
+      "live_equals_pe": true,
+      "size": 8,
+      "sha256": "29b5066f8e977a643aebc158d86968765fbcdec85d9c5fcff28cc9f68782d5e4",
+      "sha512": "40e2bd5a6b3a1a52d333dc5bfc7555994772ed5eece72f302e65d5cfe1ddc4d39b65f2c3c053be26b03635d62a8c00d8ebd126132b8a665bf5fca051f9fe9398"
+    },
+    "entry": {
+      "address": "00bfd2bd",
+      "live_equals_pe": true,
+      "size": 10,
+      "sha256": "e83d9f5b5bb5a5688a2418d83e43541a76b46f6eabe05d26fcafe779423c2d7d",
+      "sha512": "911c01d543b22178478f01ad8a7007a5dcb6991e4810e0bf4f5057c5860aeaa0c61887aef9f1bbccab4cde575ebeb56538a922aff1dbb129562e1dd6c5d80ffc"
+    },
+    "iat_00CE2100": {
+      "address": "00ce2100",
+      "live_equals_pe": true,
+      "size": 4,
+      "sha256": "d010dfe865bda7bd4d57fa375c343f91693f192ef4ef5325d79bf105eaa033da",
+      "sha512": "e8c0cf6a3c5b670084ec83e03f14ed589d814883a59b1fcbfa41e5dc9e4a6ae8e83bc6413bbc041076e7c9cdab2bf49c770803e48231ce1d7da85bb0f30b50eb"
+    },
+    "iat_00CE21DC": {
+      "address": "00ce21dc",
+      "live_equals_pe": true,
+      "size": 4,
+      "sha256": "4c1be0be94301a4aed6b2af33ceb40107be2d7d066596a578a84c46a00e26583",
+      "sha512": "9bbea962e2bc4aeeabbc59f049012dd4c66025977f4599285e4f2b5fc61b118141f689d65bb6fd2784340e2052d397351f3141a153537900413a7bcc4c00a48f"
+    },
+    "iat_00CE223C": {
+      "address": "00ce223c",
+      "live_equals_pe": true,
+      "size": 4,
+      "sha256": "8313ff565762f8dc934724835bd0b2eeac44ebbb4d9c215e603f8f177c4645fb",
+      "sha512": "5b845938eba3ca2a6a6f1dadc78c48e4dd40c02f217372c36b51d5bb250b5e92c29f407a2630f8430f8d226eb8bd77a583450498531a0b177bdb832897e7adea"
+    },
+    "iat_00CE22AC": {
+      "address": "00ce22ac",
+      "live_equals_pe": true,
+      "size": 4,
+      "sha256": "5562507f6faa7fd1dcf002948d1c5bda6892572dd92b97659d01499638b70e6d",
+      "sha512": "8f720892b2234eab7abf3d9db94751004209883e9312b48f652727ddc93cff194e95c28ed6c47730738c734ce44fb893ea3dfd6e81d822e40c43ceb539e35fae"
+    },
+    "iat_00CE2270": {
+      "address": "00ce2270",
+      "live_equals_pe": true,
+      "size": 4,
+      "sha256": "6675d4b164d918ccf46714248e47c673d6ccfb5d03ed1bde13769887b8080510",
+      "sha512": "f50d8cf3156f6de55e4e9158d6d2814d005007ae2faf5daed6ec1b2485d53cf6182c912e9dc54d4e6d9a81cdb3a298febdabeff68f47208cfb11faeaa7422673"
+    }
+  },
+  "seed_count": 8,
+  "compiler_guard": {
+    "pre": "local/canonical_cookie_initialization_fu/attempt2/prebuild_guard.json",
+    "post": "local/canonical_cookie_initialization_fu/attempt2/postbuild_guard.json",
+    "input_count": 28,
+    "both_compiler_candidates_unchanged": true,
+    "owned_object_absent_before_build": true
+  },
+  "build": {
+    "started": "2026-09-15T04:07:52.9570193Z",
+    "finished": "2026-09-15T04:08:02.5227889Z",
+    "exit_code": 0,
+    "command": "./scripts/build.ps1 -Diagnostic",
+    "reason": "Two explicit original TEST opcode corrections after failed exact-byte acceptance of first build",
+    "diagnostic_log": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-canonical-cookie-initialization-fu\\local\\cookie_fu_build_diagnostic_2.log",
+      "size": 70622525,
+      "sha256": "cfe06f788eed1317c9c5471b122ccc9b522b4e6b21d6067f326af69ac52c03b0",
+      "sha512": "6a9f05dae213b3e7e10daa024abf8f841f7df37891e121fe0beef8d21b92fc46723071669de46e472d43dc1fe6d765d4d8ff80a7c0c58863a4f16e1ba678505e",
+      "retention": "bounded actual CL lines and final completion excerpt; full diagnostic log remains outside the delivery"
+    },
+    "actual_compiler": {
+      "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\cl.exe",
+      "size": 891752,
+      "sha256": "95db52a9c9bd300131474769df7d32b342725b1e1574e0fc83a266479b196938",
+      "sha512": "390e9a478e6e3dd08f08b4a5d76a32d7d77239ff17f67bb0bf069d103ce1ee991d801353ef843b93b41fe2dd6dd9eff32f78b80dcc439f4eb61aba675394a6ec"
+    },
+    "source_specific_command": "attempt2/compiler/CL.command.1.tlog",
+    "source_specific_reads": "attempt2/compiler/CL.read.1.tlog",
+    "source_specific_writes": "attempt2/compiler/CL.write.owned.json",
+    "ctests": [
+      "reconstructed_math",
+      "native_math_differential"
+    ],
+    "ctests_passed": 2,
+    "strict_flags": [
+      "/W4",
+      "/WX",
+      "/fp:strict"
+    ],
+    "new_tests": 0
+  },
+  "object_and_archive": {
+    "object": {
+      "hash": {
+        "size": 1207,
+        "sha256": "fd2e72762d2aba7a1bc824c8e92d13aeabc8fff52518f589a9782e7877b2e380",
+        "sha512": "79b9f70eb351d5d1af98307aed223683997e894e1ce27dc050f4073c824723f6ff885a9aaae8e63fa85731537386667842f685c9a988f122ec12b142ddcc4c06"
+      },
+      "symbol": {
+        "name": "?initialize_native_crt_canonical_security_cookie_00c1815e@bsp@@YAXXZ",
+        "value": 0,
+        "section": 3,
+        "type": 32,
+        "storage": 2,
+        "aux_count": 0
+      },
+      "sections": [
+        {
+          "index": 1,
+          "name": ".drectve",
+          "size": 47,
+          "raw_offset": 180,
+          "relocation_offset": 0,
+          "characteristics": 1051136,
+          "raw": {
+            "size": 47,
+            "sha256": "76f6abfb5648dec7620f01bab90d05b2f12009fdd2084740e3feedfdb4bad2ab",
+            "sha512": "bcf5d8e2c45b3de83d69456425d2fe9f334ab54992704228b5ee28c7b23395d21bce304df71277ac4f482ef3bdace1ea04b88262f9d32cc714c3630dd7ab51bf"
+          },
+          "relocations": [],
+          "purpose": "compiler/linker metadata or empty data"
+        },
+        {
+          "index": 2,
+          "name": ".debug$S",
+          "size": 244,
+          "raw_offset": 227,
+          "relocation_offset": 0,
+          "characteristics": 1108344896,
+          "raw": {
+            "size": 244,
+            "sha256": "93930c8916f56d1299e895d93a7a89359f7dc411d4cecc9daf2e180c2f106ca5",
+            "sha512": "091a0af536933130ce5030f770d4df2c3420d4056e73220dac043c4610a056f66527ce3da081f887657afa1934b05901b5a0b9c25882e01093db15e268e800fd"
+          },
+          "relocations": [],
+          "purpose": "debug metadata"
+        },
+        {
+          "index": 3,
+          "name": ".text$mn",
+          "size": 148,
+          "raw_offset": 471,
+          "relocation_offset": 619,
+          "characteristics": 1615859744,
+          "raw": {
+            "size": 148,
+            "sha256": "7f9012efefaa618835a05dad819e4b908e3112cf171b6ac966cf41438db2ae8e",
+            "sha512": "0b0ac0cb03f39b905e1bb561dd1422bee0ea80b1bd247480ea6a97c584adc3cb22e0cbe33001d027f3afc38c6c75d2faae60e755b41d1310ddf294ef6b31d9d7"
+          },
+          "relocations": [
+            {
+              "offset": 55,
+              "symbol": "__imp__GetSystemTimeAsFileTime@4",
+              "type": 6
+            },
+            {
+              "offset": 67,
+              "symbol": "__imp__GetCurrentProcessId@0",
+              "type": 6
+            },
+            {
+              "offset": 75,
+              "symbol": "__imp__GetCurrentThreadId@0",
+              "type": 6
+            },
+            {
+              "offset": 83,
+              "symbol": "__imp__GetTickCount@0",
+              "type": 6
+            },
+            {
+              "offset": 95,
+              "symbol": "__imp__QueryPerformanceCounter@4",
+              "type": 6
+            }
+          ],
+          "purpose": "code"
+        },
+        {
+          "index": 4,
+          "name": ".chks64",
+          "size": 32,
+          "raw_offset": 669,
+          "relocation_offset": 0,
+          "characteristics": 2560,
+          "raw": {
+            "size": 32,
+            "sha256": "4b77b3419ed756e48f9e18b4f4de166a6a1546b2001297e4dd7fab2e1e74aebc",
+            "sha512": "50f8fbd9b82dfbd8201cd14bd91420f3904a280dcffba9176daa6d385032faebe1ce8d629a535cd52e19a4e066e646476533808e8a2b1f0f5c866d2859d18ee3"
+          },
+          "relocations": [],
+          "purpose": "compiler/linker metadata or empty data"
+        }
+      ],
+      "all_nonempty_code_sections_accounted": true,
+      "body": {
+        "size": 148,
+        "sha256": "7f9012efefaa618835a05dad819e4b908e3112cf171b6ac966cf41438db2ae8e",
+        "sha512": "0b0ac0cb03f39b905e1bb561dd1422bee0ea80b1bd247480ea6a97c584adc3cb22e0cbe33001d027f3afc38c6c75d2faae60e755b41d1310ddf294ef6b31d9d7"
+      },
+      "body_all148_bytes_match_after_only_five_genuine_import_relocations": true,
+      "relocations": [
+        {
+          "offset": 55,
+          "symbol": "__imp__GetSystemTimeAsFileTime@4",
+          "type": 6
+        },
+        {
+          "offset": 67,
+          "symbol": "__imp__GetCurrentProcessId@0",
+          "type": 6
+        },
+        {
+          "offset": 75,
+          "symbol": "__imp__GetCurrentThreadId@0",
+          "type": 6
+        },
+        {
+          "offset": 83,
+          "symbol": "__imp__GetTickCount@0",
+          "type": 6
+        },
+        {
+          "offset": 95,
+          "symbol": "__imp__QueryPerformanceCounter@4",
+          "type": 6
+        }
+      ],
+      "absolute_word_operands_exact": true,
+      "abi": "Original no-argument cdecl void entry, original EBP/16-byte frame and conditional ESI preservation, plain RET"
+    },
+    "archive": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-canonical-cookie-initialization-fu\\build\\win32\\Release\\bsp_core.lib",
+      "hash": {
+        "size": 58847360,
+        "sha256": "6c4179421dd3e467ea65e9831cf3a3e4ec0f26e389474be7eb569474fcc04086",
+        "sha512": "7fe8a51b5d117963f94c016ada0820c1d025ba521c88ea62efec9e7c7cac1639973d6694cf5d0477d66bd3d6efc1da25eef74ff3e1ab282949be978301e26e37"
+      },
+      "member_count": 1294,
+      "matching_name_count": 1,
+      "unique_identical_member": true,
+      "member_offset": 12735234,
+      "member_name": "bsp_core.dir\\Release\\native_crt_canonical_cookie_initialization.obj",
+      "linker_tables": [
+        {
+          "index": 1,
+          "header_offset": 8,
+          "table": {
+            "size": 6384124,
+            "sha256": "5584874345c392bcab11ed8ef4b7e776a7611e9ecc2919f1b11b7065e0971c10",
+            "sha512": "160ff8ecec474bf903fd13d31b9a4df414f53f1c22dd5b7aef297658909d96719caa2863b99d3fa79645619e5c9fc5b96ca48e9c920718658c1319522456f52f"
+          },
+          "symbol_count": 50605,
+          "rows": [
+            {
+              "symbol": "?initialize_native_crt_canonical_security_cookie_00c1815e@bsp@@YAXXZ",
+              "member_offset": 12735234
+            }
+          ]
+        },
+        {
+          "index": 2,
+          "header_offset": 6384192,
+          "table": {
+            "size": 6288082,
+            "sha256": "cf6dd110071b23573a8e6d10ccd4452c8b68d42007c8d4acf481df0ece364726",
+            "sha512": "31f4b4c32782356da9d4c366cdbba540276803db86b1f5dff4240e21119f4c5bb74ecae23514624d5beddad672791a6a1a06d040a0e25535606de691de5c694c"
+          },
+          "symbol_count": 50605,
+          "rows": [
+            {
+              "symbol": "?initialize_native_crt_canonical_security_cookie_00c1815e@bsp@@YAXXZ",
+              "member_offset": 12735234
+            }
+          ]
+        }
+      ]
+    },
+    "runtime_executed": false
+  },
+  "integration": {
+    "source": "src/game_native_mutable_crt_data.cpp",
+    "admission": "Both subsets transferred; RO initialize; mutable exact-PE page initialize and verify; verify_joint; existing borrowed initializer at155-157",
+    "proposed_integration": "Replace existing borrowed initializer call at155-157 with canonical entry after verify_joint, retaining subsequent validations and ACK-before-publication. No owner change in this packet.",
+    "once": "Existing atomic process claim gates initialization; constructor failure rolls back before publication. Canonical entry itself has no synchronization/once policy; invoke before native cookie frames capture actual cookie.",
+    "current_entry_called_by_owner": false,
+    "host_binding": false,
+    "private_storage": false
+  },
+  "retention": {
+    "top_level_seal": "local/canonical_cookie_initialization_fu/seal.json",
+    "exact_full_relative_inventory": true,
+    "exclude_only_top_level_seal": true,
+    "physical_files_and_git_blobs_distinct": true
+  },
+  "ghidra_mutation": false,
+  "borrowed_api_unchanged": true,
+  "initializer_or_target_or_probe_or_game_execution": false,
+  "limitations": [
+    "Only static native entry ABI and whole-body/import-relocation identity established; relocated instruction/IAT addresses and fault continuations differ.",
+    "Existing math CTests do not call this initializer. No SEH/unwind/OS failure runtime validation.",
+    "New archive entry is not a replacement of the owner invocation yet; other CRT owner/service/startup/gameplay readiness remains separate."
+  ],
+  "sdk_guard": {
+    "pre": "local/canonical_cookie_initialization_fu/attempt2/sdk_pre_guard.json",
+    "post": "local/canonical_cookie_initialization_fu/attempt2/sdk_post_guard.json",
+    "sdk_version": "10.0.26100.0",
+    "input_count": 7,
+    "actual_import_headers_and_kernel32_provider_unchanged": true
+  },
+  "call_verifier": {
+    "result": "local/canonical_cookie_initialization_fu/raw/report_calls.txt",
+    "direct_rows": 2,
+    "indirect_import_rows": 5,
+    "indirect_policy": "Standard verifier skips IAT rows; complete PE/live body and PE import table verified separately in original_audit.json"
+  },
+  "build_attempts": [
+    {
+      "attempt": 1,
+      "result": "build_and_two_ctests_passed_but_exact_body_rejected_for_two_TEST_ModRM_bytes",
+      "build": "local/canonical_cookie_initialization_fu/build_result.json",
+      "guards": [
+        "prebuild_guard.json",
+        "postbuild_guard.json"
+      ],
+      "object_audit": "object_audit_attempt1_review.json",
+      "source_snapshot": "inputs/src/native_crt_canonical_cookie_initialization.cpp"
+    },
+    {
+      "attempt": 2,
+      "result": "final_all148_bytes_pass_after_only_five_genuine_import_relocations",
+      "build": "local/canonical_cookie_initialization_fu/build_result_2.json",
+      "guards": [
+        "attempt2/prebuild_guard.json",
+        "attempt2/postbuild_guard.json"
+      ],
+      "object_audit": "attempt2/object_audit.json",
+      "source_snapshot": "attempt2/inputs/src/native_crt_canonical_cookie_initialization.cpp"
+    }
+  ],
+  "tracking_reader_note": "Second CL.write retains stale first aggregate plus fresh singleton. Both bounded groups retained; final guard selects unique singleton. Initial failed reader and dependent missing-object audit retained; no rebuild was needed for this read-only correction."
+}
