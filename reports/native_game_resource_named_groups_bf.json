@@ -1,0 +1,329 @@
+{
+  "packet": "orch6_game_resource_named_groups_bf",
+  "status": "complete_borrowed_source_build_and_bounded_differential_tested",
+  "worker_dispatches": 0,
+  "native": {
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "spans": [
+      {
+        "entry": "00717f20",
+        "end": "00717ffc",
+        "bytes": 221,
+        "sha256": "b9aa60ff3caebb446bdc1aad2c41f71bf6c22527d1f8c784a3217e5b5b5b27e9",
+        "role": "implemented",
+        "live_disk_equal": true
+      },
+      {
+        "entry": "00718000",
+        "end": "007180d5",
+        "bytes": 214,
+        "sha256": "120056c2ef43770f035beb7895b0e73f3948649213fc711c69424d7bc2317429",
+        "role": "implemented",
+        "live_disk_equal": true
+      },
+      {
+        "entry": "00718870",
+        "end": "0071889e",
+        "bytes": 47,
+        "sha256": "ad3db4cbf4ddcba06c0325f1f0a9032846705675e1fb395eef17ce73fbfaf856",
+        "role": "implemented",
+        "live_disk_equal": true
+      },
+      {
+        "entry": "00484270",
+        "end": "004842bf",
+        "bytes": 80,
+        "sha256": "2c8f5777e91336da834acd03ce53933bb04cb0ec34c29327740029fa844de8e8",
+        "role": "implemented",
+        "live_disk_equal": true
+      },
+      {
+        "entry": "004fba10",
+        "end": "004fba2d",
+        "bytes": 30,
+        "sha256": "8e3f6cd48e02462dab0342a7a4b2882e48e807e55dfcd9ccf9b69bf63d01228c",
+        "role": "implemented",
+        "live_disk_equal": true
+      },
+      {
+        "entry": "004b3fc0",
+        "end": "004b404d",
+        "bytes": 142,
+        "sha256": "d00e8df894b984b21f9260ff4a12f18533073ddc1c61ed9566fef372c6ab0bd8",
+        "role": "original_library_oracle",
+        "live_disk_equal": true
+      },
+      {
+        "entry": "0071abb0",
+        "end": "0071ac0e",
+        "bytes": 95,
+        "sha256": "88167cf08eacc8e6005357b07dcedaf5af3ca81140da1e335c7ce3ceb2693f1d",
+        "role": "audited_producer_reference",
+        "live_disk_equal": true
+      },
+      {
+        "entry": "0071b3e0",
+        "end": "0071b532",
+        "bytes": 339,
+        "sha256": "6d1b5751421dc6970dccbca8818c22b7b765d891dc95f67d1813fd68b4bf7c91",
+        "role": "audited_producer_reference",
+        "live_disk_equal": true
+      }
+    ]
+  },
+  "calls": [
+    {
+      "function": "00717f20",
+      "address": "00717f3e",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00717f20",
+      "address": "00717f4d",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00717f20",
+      "address": "00717f56",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00717f20",
+      "address": "00717f68",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00717f20",
+      "address": "00717fa8",
+      "native": "004b3fc0"
+    },
+    {
+      "function": "00717f20",
+      "address": "00717fd8",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00718000",
+      "address": "0071801e",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00718000",
+      "address": "0071802d",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00718000",
+      "address": "00718036",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00718000",
+      "address": "00718048",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00718000",
+      "address": "00718088",
+      "native": "004b3fc0"
+    },
+    {
+      "function": "00718000",
+      "address": "007180b7",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00718870",
+      "address": "0071887f",
+      "native": "00717f20"
+    },
+    {
+      "function": "00718870",
+      "address": "0071888c",
+      "native": "00718000"
+    },
+    {
+      "function": "00484270",
+      "address": "00484298",
+      "native": "00bf6713"
+    },
+    {
+      "function": "0071abb0",
+      "address": "0071abc9",
+      "native": "00b868b0"
+    },
+    {
+      "function": "0071b3e0",
+      "address": "0071b402",
+      "native": "00715bf0"
+    },
+    {
+      "function": "0071b3e0",
+      "address": "0071b417",
+      "native": "00bea680"
+    },
+    {
+      "function": "0071b3e0",
+      "address": "0071b435",
+      "native": "00bf7fbf"
+    },
+    {
+      "function": "0071b3e0",
+      "address": "0071b451",
+      "native": "00718f50"
+    },
+    {
+      "function": "0071b3e0",
+      "address": "0071b458",
+      "native": "00be9a80"
+    },
+    {
+      "function": "0071b3e0",
+      "address": "0071b473",
+      "native": "00bf7fbf"
+    },
+    {
+      "function": "0071b3e0",
+      "address": "0071b48b",
+      "native": "00718f50"
+    },
+    {
+      "function": "0071b3e0",
+      "address": "0071b4a3",
+      "native": "00bf7fbf"
+    },
+    {
+      "function": "0071b3e0",
+      "address": "0071b4d5",
+      "native": "00be9a60"
+    },
+    {
+      "function": "0071b3e0",
+      "address": "0071b4dc",
+      "native": "00be9a60"
+    },
+    {
+      "function": "0071b3e0",
+      "address": "0071b4e3",
+      "native": "00be9a60"
+    },
+    {
+      "function": "0071b3e0",
+      "address": "0071b4f0",
+      "native": "004215d0"
+    },
+    {
+      "function": "0071b3e0",
+      "address": "0071b4fb",
+      "native": "00be9c40"
+    },
+    {
+      "function": "0071b3e0",
+      "address": "0071b50c",
+      "native": "00be9ed0"
+    },
+    {
+      "function": "0071b3e0",
+      "address": "0071b513",
+      "native": "00715bf0"
+    }
+  ],
+  "producer_evidence": {
+    "constructor": "0071abb0",
+    "reader": "0071b3e0",
+    "name_output": "0071b44a",
+    "index_output": "0071b446",
+    "point_vector": "0071b4ed",
+    "point_append": "0071b4f0",
+    "profile": "00cfd8fc"
+  },
+  "validation": {
+    "strict_win32": true,
+    "existing_ctests": 2,
+    "group_sequences": 5,
+    "group_entry_comparisons": 15,
+    "point_sequences": 3,
+    "count_pairs": 6,
+    "implemented_bodies": 5,
+    "implemented_bytes": 592,
+    "library_oracle_bytes": 142,
+    "producer_reference_bytes": 434,
+    "call_rows": 31,
+    "call_failures": 0,
+    "compiled_x87_operations": [
+      "fld",
+      "fstp",
+      "fld",
+      "fstp",
+      "fld",
+      "fstp"
+    ],
+    "source_sha256": {
+      "cmake/startup.cmake": "007139168bc16f71749a093ca3d6432b1308962f6f12186d6d12f0cec03369a8",
+      "include/bsp/native_game_resource_named_groups.hpp": "121d19d2038f4c20ab0dd178bb686fbae2bebbdcb4a4bab17061aa3daa17bba1",
+      "src/native_game_resource_named_groups.cpp": "841e83a243b8fe4f9a16f42d6417c7ce8bf347e1059ab64495c94a28c6795efa"
+    },
+    "output_sha256": {
+      "count_pairs.bin": "1bbe31dd834b63edc6471143c4c2b23c99e7fe08afcf3113d7e449591f6e5f30",
+      "group_pair_0.bin": "58bb1a73493a7da0636860ad1b291951d3d69162bf6c2b7fac67f8f75e624ff2",
+      "group_pair_1.bin": "58bb1a73493a7da0636860ad1b291951d3d69162bf6c2b7fac67f8f75e624ff2",
+      "group_pair_2.bin": "58bb1a73493a7da0636860ad1b291951d3d69162bf6c2b7fac67f8f75e624ff2",
+      "group_pair_3.bin": "9d908ecfb6b256def8b49a7c504e6c889c4b0e41fe6ce3e01863dd7b61a20aa0",
+      "group_pair_4.bin": "87c32763c7358c5a29496cae4d959c02758d23ce37036cc67647f588b1c02e72",
+      "point_pair_0.bin": "fd526b3dbc0ed71c4fa4dd574dc6aa355835be6705eaa6a0532773f6b561f0e3",
+      "point_pair_1.bin": "233083a602ba399de0a445368faed53849fefc26172554429c86046c091063aa",
+      "point_pair_2.bin": "81073d82a290feedd98ba4f76e133e9fce9b800e37edd5993dc9c69275b4a82d",
+      "probe_run.txt": "3bbad46ad7ea495e1eaa1205949b4398403ea344bd19abeba731e0ea9a640cd8"
+    },
+    "scope": "Five complete borrowed source bodies: three named-group lookups and two point-access adapters. Original five bodies and original library comparison execute in a controlled raw-storage fixture; canonical source SBO strings construct counted names. Two producer bodies audited only. No item parser, actual class binder, full resource admission, native ABI/FH3/unmasked FP exception equivalence or gameplay claim.",
+    "saved_annotations": 5
+  },
+  "functions": [
+    {
+      "address": "00717f20",
+      "ghidra_name": "BSP_GameResource_ContainsNamedPointGroup",
+      "name": "contains_native_game_group_00717f20",
+      "source": "src/native_game_resource_named_groups.cpp",
+      "bytes": 221,
+      "status": "complete_borrowed_source_build_and_bounded_differential_tested",
+      "evidence": "ECX resource, stacked actual SBO name/index, RET8. Scan every pointer in resource+64h vector; counted case-sensitive name equality and current item24h index. Return wrapping match count !=0. Captured iterator/end and returning CRT validation order preserved. Hypothesis, not a recovered symbol. BF: strict Win32/two CTests; five group sequences, three x87 point sequences, six count pairs;31 direct/tail rows. Complete source over borrowed raw storage. Constructor71ABB0 and reader71B3E0 establish actual54h Points item fields. 4B3FC0 remains CRT comparison contract. No full parser/class binder, binary replacement, unmasked FP exception or gameplay claim. docs/NATIVE_GAME_RESOURCE_NAMED_GROUPS_BF.md; reports/native_game_resource_named_groups_bf.json."
+    },
+    {
+      "address": "00718000",
+      "ghidra_name": "BSP_GameResource_FindLastNamedPointGroup",
+      "name": "find_native_game_group_00718000",
+      "source": "src/native_game_resource_named_groups.cpp",
+      "bytes": 214,
+      "status": "complete_borrowed_source_build_and_bounded_differential_tested",
+      "evidence": "ECX resource, stacked actual SBO name/index, RET8. Same counted name/index scan, retaining LAST matching item pointer. No ownership acquisition or early exit. Current vector and captured iterator semantics retained. Hypothesis, not a recovered symbol. BF: strict Win32/two CTests; five group sequences, three x87 point sequences, six count pairs;31 direct/tail rows. Complete source over borrowed raw storage. Constructor71ABB0 and reader71B3E0 establish actual54h Points item fields. 4B3FC0 remains CRT comparison contract. No full parser/class binder, binary replacement, unmasked FP exception or gameplay claim. docs/NATIVE_GAME_RESOURCE_NAMED_GROUPS_BF.md; reports/native_game_resource_named_groups_bf.json."
+    },
+    {
+      "address": "00718870",
+      "ghidra_name": "BSP_GameResource_LookupNamedPointGroup",
+      "name": "lookup_native_game_group_00718870",
+      "source": "src/native_game_resource_named_groups.cpp",
+      "bytes": 47,
+      "status": "complete_borrowed_source_build_and_bounded_differential_tested",
+      "evidence": "ECX resource, stacked name/index, RET8. First full717F20 contains scan, then full718000 find scan with same captured arguments if AL true. The second scan observes current storage and can return null after the first matched. Hypothesis, not a recovered symbol. BF: strict Win32/two CTests; five group sequences, three x87 point sequences, six count pairs;31 direct/tail rows. Complete source over borrowed raw storage. Constructor71ABB0 and reader71B3E0 establish actual54h Points item fields. 4B3FC0 remains CRT comparison contract. No full parser/class binder, binary replacement, unmasked FP exception or gameplay claim. docs/NATIVE_GAME_RESOURCE_NAMED_GROUPS_BF.md; reports/native_game_resource_named_groups_bf.json."
+    },
+    {
+      "address": "004fba10",
+      "ghidra_name": "BSP_PointGroup_CountPoints",
+      "name": "count_native_named_group_points_004fba10",
+      "source": "src/native_game_resource_named_groups.cpp",
+      "bytes": 30,
+      "status": "complete_borrowed_source_build_and_bounded_differential_tested",
+      "evidence": "ECX item, EAX count, RET. Capture begin48; null returns0 without end load. Otherwise interpret wrapped(end4C-begin) as signed32 and divide12 truncating toward zero, preserving native IMUL quotient. Hypothesis, not a recovered symbol. BF: strict Win32/two CTests; five group sequences, three x87 point sequences, six count pairs;31 direct/tail rows. Complete source over borrowed raw storage. Constructor71ABB0 and reader71B3E0 establish actual54h Points item fields. 4B3FC0 remains CRT comparison contract. No full parser/class binder, binary replacement, unmasked FP exception or gameplay claim. docs/NATIVE_GAME_RESOURCE_NAMED_GROUPS_BF.md; reports/native_game_resource_named_groups_bf.json."
+    },
+    {
+      "address": "00484270",
+      "ghidra_name": "STL_inst_00484270",
+      "name": "copy_native_named_group_point_00484270",
+      "source": "src/native_game_resource_named_groups.cpp",
+      "bytes": 80,
+      "status": "complete_borrowed_source_build_and_bounded_differential_tested",
+      "evidence": "Correct library name retained. ECX item, stacked destination/index, RET8/EAX destination. Check captured index against unsigned bits of signed wrapped point count; returning BF6713 followed by current begin reload. Three ordered FLD32/FSTP32 pairs preserve overlap and x87 special-value/status behavior in the tested masked environment. Hypothesis, not a recovered symbol. BF: strict Win32/two CTests; five group sequences, three x87 point sequences, six count pairs;31 direct/tail rows. Complete source over borrowed raw storage. Constructor71ABB0 and reader71B3E0 establish actual54h Points item fields. 4B3FC0 remains CRT comparison contract. No full parser/class binder, binary replacement, unmasked FP exception or gameplay claim. docs/NATIVE_GAME_RESOURCE_NAMED_GROUPS_BF.md; reports/native_game_resource_named_groups_bf.json."
+    }
+  ]
+}
