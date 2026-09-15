@@ -1,0 +1,427 @@
+{
+  "schema_version": 1,
+  "packet": "orch4_damageable_ctor_d4",
+  "utc": "2026-09-15T21:24:35.571299+00:00",
+  "base_commit": "f37fdcff9267df03fc3c62311a1ff69845d868e6",
+  "status": "complete_borrowed_source_build_and_bounded_fixture_tested_cpp_eh_domain",
+  "owned_addresses": [
+    "0087c640",
+    "00877fa0",
+    "0081b0a0",
+    "00879830",
+    "00879240",
+    "0087c260",
+    "0087ab30"
+  ],
+  "files": [
+    "include/bsp/native_damageable_class_construction.hpp",
+    "src/native_damageable_class_construction.cpp",
+    "docs/NATIVE_DAMAGEABLE_CLASS_CONSTRUCTION_ORCH4.md",
+    "reports/native_damageable_class_construction_orch4.json"
+  ],
+  "interfaces": [
+    {
+      "address": "0087c640",
+      "length": 170,
+      "end_exclusive": "0087c6ea",
+      "sha256": "220af02dc8b4db673814fd3ac4415be08e302c7b6238a21cdb80d8b51234d883",
+      "disk_equals_live": true,
+      "name": "construct_native_damageable_class_0087c640",
+      "proposed_name": "BSP_DamageableClass_ConstructBase",
+      "previous_ghidra_name": "BSP_DamageableClass_ConstructBase",
+      "original_abi": "ECX class; EAX same class; RET"
+    },
+    {
+      "address": "00877fa0",
+      "length": 55,
+      "end_exclusive": "00877fd7",
+      "sha256": "0c5cdced236e0af4cff2c1422115494cf2e8542fa19d824da6b0571ccef8fb94",
+      "disk_equals_live": true,
+      "name": "allocate_native_damageable_tree_node_00877fa0",
+      "proposed_name": "std_Tree_Buynode",
+      "previous_ghidra_name": "std_Tree_Buynode",
+      "original_abi": "No used register or stack input; EAX node; RET"
+    },
+    {
+      "address": "0081b0a0",
+      "length": 61,
+      "end_exclusive": "0081b0dd",
+      "sha256": "b4946d4c0b0ce5ce2744e9e5027fd54803369398fb8067188b24bace79182e1c",
+      "disk_equals_live": true,
+      "name": "destroy_native_class_point_array_0081b0a0",
+      "proposed_name": "BSP_PointsArray_Destroy",
+      "previous_ghidra_name": "FUN_0081b0a0",
+      "original_abi": "ECX point-array header; RET"
+    },
+    {
+      "address": "00879830",
+      "length": 5,
+      "end_exclusive": "00879835",
+      "sha256": "f3394ae2c134adde003a071a7346004f514a85a471e38d260a36086e14bb3c15",
+      "disk_equals_live": true,
+      "name": "destroy_native_damageable_effect_vector_00879830",
+      "proposed_name": "BSP_DamageableClass_DestroyEffectVectorThunk",
+      "previous_ghidra_name": "thunk_FUN_00879240",
+      "original_abi": "ECX vector header; tail JMP879240"
+    },
+    {
+      "address": "00879240",
+      "length": 73,
+      "end_exclusive": "00879289",
+      "sha256": "e3b7b5139929073c639f38f56b7659b1712ebc4160dc888e73d686b7e0c86d36",
+      "disk_equals_live": true,
+      "name": "destroy_native_damageable_effect_vector_00879240",
+      "proposed_name": "BSP_DamageableClass_DestroyEffectVector",
+      "previous_ghidra_name": "FUN_00879240",
+      "original_abi": "ECX vector header; RET"
+    },
+    {
+      "address": "0087c260",
+      "length": 61,
+      "end_exclusive": "0087c29d",
+      "sha256": "1250c144218cbff9c35d75741a8a42d2487edae1e048874502b39ab27707ecb7",
+      "disk_equals_live": true,
+      "name": "destroy_native_damageable_owner_vector_0087c260",
+      "proposed_name": "BSP_DamageableClass_DestroyOwnerVector",
+      "previous_ghidra_name": "FUN_0087c260",
+      "original_abi": "ECX vector header; RET"
+    },
+    {
+      "address": "0087ab30",
+      "length": 65,
+      "end_exclusive": "0087ab71",
+      "sha256": "1beab14b338f3bf30aa9eb226f1ef838fe57a8f45b8c36e50bb1a6f615dcdae8",
+      "disk_equals_live": true,
+      "name": "release_native_damageable_owner_rows_0087ab30",
+      "proposed_name": "BSP_DamageableClass_ReleaseOwnerRows",
+      "previous_ghidra_name": "FUN_0087ab30",
+      "original_abi": "ECX first, EDX end, two ignored stack words; RET8"
+    }
+  ],
+  "body_byte_total": 490,
+  "byte_parity": [
+    {
+      "address": "0087c640",
+      "length": 170,
+      "end_exclusive": "0087c6ea",
+      "sha256": "220af02dc8b4db673814fd3ac4415be08e302c7b6238a21cdb80d8b51234d883",
+      "disk_equals_live": true
+    },
+    {
+      "address": "00877fa0",
+      "length": 55,
+      "end_exclusive": "00877fd7",
+      "sha256": "0c5cdced236e0af4cff2c1422115494cf2e8542fa19d824da6b0571ccef8fb94",
+      "disk_equals_live": true
+    },
+    {
+      "address": "0081b0a0",
+      "length": 61,
+      "end_exclusive": "0081b0dd",
+      "sha256": "b4946d4c0b0ce5ce2744e9e5027fd54803369398fb8067188b24bace79182e1c",
+      "disk_equals_live": true
+    },
+    {
+      "address": "00879830",
+      "length": 5,
+      "end_exclusive": "00879835",
+      "sha256": "f3394ae2c134adde003a071a7346004f514a85a471e38d260a36086e14bb3c15",
+      "disk_equals_live": true
+    },
+    {
+      "address": "00879240",
+      "length": 73,
+      "end_exclusive": "00879289",
+      "sha256": "e3b7b5139929073c639f38f56b7659b1712ebc4160dc888e73d686b7e0c86d36",
+      "disk_equals_live": true
+    },
+    {
+      "address": "0087c260",
+      "length": 61,
+      "end_exclusive": "0087c29d",
+      "sha256": "1250c144218cbff9c35d75741a8a42d2487edae1e048874502b39ab27707ecb7",
+      "disk_equals_live": true
+    },
+    {
+      "address": "0087ab30",
+      "length": 65,
+      "end_exclusive": "0087ab71",
+      "sha256": "1beab14b338f3bf30aa9eb226f1ef838fe57a8f45b8c36e50bb1a6f615dcdae8",
+      "disk_equals_live": true
+    },
+    {
+      "address": "00c96830",
+      "length": 73,
+      "end_exclusive": "00c96879",
+      "sha256": "017bef7f3516b7ee128b7e82b7d0e512cf258dc9e00b505d5a20283c89750467",
+      "disk_equals_live": true
+    },
+    {
+      "address": "00dc8cc0",
+      "length": 84,
+      "end_exclusive": "00dc8d14",
+      "sha256": "8ed0935dd815617af0cd521d0abf17f4172c1fef0cc513ffb75828422b2d3861",
+      "disk_equals_live": true
+    },
+    {
+      "address": "00bd30f0",
+      "length": 7,
+      "end_exclusive": "00bd30f7",
+      "sha256": "8daac2aa1112cc210d755933c76c5b27923094750190fdb37502dbc648eb7d16",
+      "disk_equals_live": true
+    }
+  ],
+  "byte_parity_total": 654,
+  "target": {
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "verification": "Every bsp.py ghidra byte/listing batch verifies project name, program path, language and image base using Client.verify before reads"
+  },
+  "direct_calls": [
+    {
+      "function": "0087c640",
+      "address": "0087c6b6",
+      "native": "00877fa0",
+      "kind": "call"
+    },
+    {
+      "function": "00877fa0",
+      "address": "00877fa2",
+      "native": "00bf681b",
+      "kind": "call"
+    },
+    {
+      "function": "0081b0a0",
+      "address": "0081b0ab",
+      "native": "0074d190",
+      "kind": "call"
+    },
+    {
+      "function": "0081b0a0",
+      "address": "0081b0d3",
+      "native": "00bf6989",
+      "kind": "call"
+    },
+    {
+      "function": "00879830",
+      "address": "00879830",
+      "native": "00879240",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "00879240",
+      "address": "00879268",
+      "native": "00bf65ac",
+      "kind": "call"
+    },
+    {
+      "function": "0087c260",
+      "address": "0087c274",
+      "native": "0087ab30",
+      "kind": "call"
+    },
+    {
+      "function": "0087c260",
+      "address": "0087c27d",
+      "native": "00bf65ac",
+      "kind": "call"
+    }
+  ],
+  "indirect_calls": [
+    {
+      "function": "0087ab30",
+      "address": "0087ab4b",
+      "native": "IAT[00ce2220]",
+      "operation": "InterlockedDecrement(owner+4); Win32 imported atomic decrement"
+    },
+    {
+      "function": "0087ab30",
+      "address": "0087ab5b",
+      "native": "owner+vtable00",
+      "operation": "ECX captured owner; no stack args; only if atomic result zero"
+    },
+    {
+      "function": "00879240",
+      "address": "0087925b",
+      "native": "inline_record+vtable00",
+      "operation": "ECX inline30h record; stack flags0; captured end, current vtable"
+    }
+  ],
+  "eh": {
+    "handler": "00c9686f",
+    "metadata": "00dc8cc0",
+    "max_state": 6,
+    "unwind_map": "00dc8ce4",
+    "state_before_only_call": 5,
+    "try_blocks": 0,
+    "actions": [
+      {
+        "state": 5,
+        "next": 4,
+        "funclet": "00c96864",
+        "jump_site": "00c9686a",
+        "target": "0041dd20",
+        "receiver_offset": "58"
+      },
+      {
+        "state": 4,
+        "next": 3,
+        "funclet": "00c96859",
+        "jump_site": "00c9685f",
+        "target": "0041dd20",
+        "receiver_offset": "38"
+      },
+      {
+        "state": 3,
+        "next": 2,
+        "funclet": "00c9684e",
+        "jump_site": "00c96854",
+        "target": "0081b0a0",
+        "receiver_offset": "28"
+      },
+      {
+        "state": 2,
+        "next": 1,
+        "funclet": "00c96843",
+        "jump_site": "00c96849",
+        "target": "00879830",
+        "receiver_offset": "18"
+      },
+      {
+        "state": 1,
+        "next": 0,
+        "funclet": "00c96838",
+        "jump_site": "00c9683e",
+        "target": "0087c260",
+        "receiver_offset": "08"
+      },
+      {
+        "state": 0,
+        "next": -1,
+        "funclet": "00c96830",
+        "jump_site": "00c96833",
+        "target": "00bd30f0",
+        "receiver_offset": "00"
+      }
+    ],
+    "source_domain": "C++ allocation exceptions only, explicit ordered cleanup/rethrow; secondary cleanup exception terminates; no source RAII owner"
+  },
+  "preserved_class_dwords": [
+    "08",
+    "18",
+    "34",
+    "48",
+    "4c",
+    "54",
+    "60"
+  ],
+  "preserved_class_padding": "45..47 and all unlisted bytes",
+  "constructor_zero_dwords": [
+    "0c",
+    "10",
+    "14",
+    "1c",
+    "20",
+    "24",
+    "28",
+    "2c",
+    "30",
+    "38",
+    "3c",
+    "50",
+    "58",
+    "5c"
+  ],
+  "sentinel": {
+    "bytes": 88,
+    "clear_links": [
+      "00",
+      "04",
+      "08"
+    ],
+    "color_54": 1,
+    "isnil_55_before_parent": 0,
+    "isnil_55_after_parent": 1,
+    "parent_link_order": [
+      "04",
+      "00",
+      "08"
+    ],
+    "preserved_node_bytes": [
+      "0c..53",
+      "56..57"
+    ]
+  },
+  "canonical_dependencies": [
+    "singleton_lifetime_allocate/free",
+    "destroy_native_string_header_0041dd20(raw pool context)",
+    "reserve_native_class_point_array_0074d190",
+    "InterlockedDecrement",
+    "actual reached record vtables"
+  ],
+  "vtable_boundary": "Borrow actual stable DWORD identities for grandparent and damageable class; unwind preserves exact BD30F0 single-store behavior using actual refcount identity; no fake vtables",
+  "listing_repairs": [
+    {
+      "entry": "0081b0a0",
+      "site": "0081b0d8",
+      "length": 5,
+      "action": "Own and disassemble ADD ESP,4; POP ESI; RET through0081B0DC"
+    },
+    {
+      "entry": "0087c260",
+      "site": "0087c282",
+      "length": 3,
+      "action": "Disassemble ADD ESP,4"
+    },
+    {
+      "entry": "00879240",
+      "site": "0087926d",
+      "length": 4,
+      "action": "Disassemble ADD ESP,4; POP EDI"
+    }
+  ],
+  "listing_repair_status": "Parent applied under lock, saved, refreshed exports; worker verified repaired listing/context. Worker made no Ghidra writes.",
+  "verification": {
+    "build": {
+      "command": "./scripts/build.ps1",
+      "configuration": "Release Win32",
+      "status": "passed",
+      "ctest_passed": 2,
+      "log": "local/damageable_ctor_build.log"
+    },
+    "report_calls": {
+      "status": "passed",
+      "direct_or_tail_checked": 8,
+      "failed": 0,
+      "indirect_documented_not_machine_target_verified": 3
+    },
+    "fixture": {
+      "status": "passed",
+      "ignored_path": "local/damageable_ctor_probe.cpp",
+      "result": "PASS: original/source ordinary bytes and sentinel; source injected failure cleanup order/partial state",
+      "ordinary": "Copied original helper/base vs source; normalize only allocated head addresses; full object/node comparison with nonzero prefill",
+      "failure": "Source injected allocation exception after changing embedded string, point and empty-vector headers; check 5 cleanup calls, restored vptr, preserved partial fields, original exception rethrow",
+      "substitutions": [
+        "Generic allocator/free",
+        "Raw string destroy boundary",
+        "Unused negative-capacity reserve branch abort sentinel"
+      ],
+      "not_covered": [
+        "Original FH3 on exception",
+        "Actual string pool during failure",
+        "Nonempty virtual record cleanup",
+        "Negative-capacity point reserve branch",
+        "Arbitrary SEH or hardware exception",
+        "Gameplay"
+      ],
+      "sha256": "9641a1564b45c31a07f139f657c773ba9bb6b062b6c55fb00ece2dc2e65c31ea",
+      "compile_flags": "/EHsc /std:c++17 /O2 /W4; /link /MANIFEST:EMBED /INCREMENTAL:NO"
+    },
+    "verify_seeds": {
+      "status": "passed",
+      "seed_spans": 8,
+      "all_match_disk": true
+    }
+  }
+}
