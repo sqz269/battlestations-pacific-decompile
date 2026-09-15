@@ -192,9 +192,9 @@ __declspec(naked) void __fastcall traverse_native_scene_00b72190(
         fstp dword ptr [esp]
         push edi
         cmp dword ptr [esp + 14h], 0 // private table, not target value
-        jne bound
+        jne scene_profile_ready
         call missing_render_profile // FP spills complete; source-only error
-    bound:
+    scene_profile_ready:
         mov edx, dword ptr [esp + 10h]
         call dispatch_captured_target // B721D5; captured EAX and4words
     advance:
@@ -251,9 +251,9 @@ __declspec(naked) void __fastcall render_native_node_children_00b6d990(
         fstp dword ptr [esp]
         push ebp
         cmp dword ptr [esp + 24h], 0 // private table, not target value
-        jne bound
+        jne node_profile_ready
         call missing_render_profile // original flags spill already occurred
-    bound:
+    node_profile_ready:
         mov edx, dword ptr [esp + 20h]
         call dispatch_captured_target // B6D9E9, no late profile lookup
         mov esi, dword ptr [esi + 3ch] // B6D9EB, AFTER callback

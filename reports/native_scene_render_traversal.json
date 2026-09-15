@@ -125,29 +125,29 @@
   },
   "source_pins": [
     {
-      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-scene-render-traversal-el\\include\\bsp\\native_scene_render_traversal.hpp",
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-shadow-entry-iteration-en\\include\\bsp\\native_scene_render_traversal.hpp",
       "sha256": "67947f3295aabffcf24117f135f59f13e7255bf104d6e7536219f4dad24857cc",
       "bytes": 3465
     },
     {
-      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-scene-render-traversal-el\\src\\native_scene_render_traversal.cpp",
-      "sha256": "5629a1c4d303614d45421b2aa7dfbd428554bfc8b6e7141faee35b7e274b8156",
-      "bytes": 10285
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-shadow-entry-iteration-en\\src\\native_scene_render_traversal.cpp",
+      "sha256": "d83e490271dc8e3df2176851d747509f84ebb5cf3a129a305e91f83146652180",
+      "bytes": 10339
     },
     {
-      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-scene-render-traversal-el\\include\\bsp\\native_traceline_render.hpp",
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-shadow-entry-iteration-en\\include\\bsp\\native_traceline_render.hpp",
       "sha256": "eec43d439a9ddcf4d5aa96954434c469b607c4ac198f54b6cb55339a0365caf4",
       "bytes": 7210
     },
     {
-      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-scene-render-traversal-el\\src\\native_traceline_render.cpp",
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-shadow-entry-iteration-en\\src\\native_traceline_render.cpp",
       "sha256": "b791db0734c33fe6c8c12b3caa40c81b76ebfb5915ecdd80b9ae590605160eb6",
       "bytes": 73470
     },
     {
-      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-scene-render-traversal-el\\cmake\\startup.cmake",
-      "sha256": "12f726b10ccf16d7ab45c0d3b6e0dc1e3f77fabfa9a5e0816604993855c00c5d",
-      "bytes": 119900
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-shadow-entry-iteration-en\\cmake\\startup.cmake",
+      "sha256": "fdd2c795bf0e1ddd6a8e3d6abe807dc6245a2450c80729ad72dc24a1f4902f32",
+      "bytes": 120029
     }
   ],
   "provider_base_pins": [
@@ -456,9 +456,54 @@
     "Existing B748E0/AF26A0 and application service contracts retain their qualification; no new proof of child completeness or game behavior."
   ],
   "lease": "release after clean candidate commit; parent owns integration and later metadata",
-  "corrections": [],
+  "corrections": [
+    {
+      "kind": "MSVC_reserved_inline_assembly_label",
+      "failed_source_commit": "cd637cb1e8e841b790d33abaceb2d5a061ae2c12",
+      "diagnostic": "C4405 bound identifier is reserved; /WX C2220 and cascading C2414/C2400 at scene195/197 and node254/256.",
+      "change": "Only four label/reference tokens: bound -> scene_profile_ready in scene, bound -> node_profile_ready in node. Native operations, operands, calls, public/private stack layouts and source interfaces unchanged.",
+      "old_source_sha256": "5629a1c4d303614d45421b2aa7dfbd428554bfc8b6e7141faee35b7e274b8156",
+      "new_source_sha256": "d83e490271dc8e3df2176851d747509f84ebb5cf3a129a305e91f83146652180",
+      "failed_stamp_sha256": "7d91cb8ee2d8f31f381208cf376068aae472a637b24eed0fb7d22f529f727a54",
+      "failed_log_sha256": "0e6bda33a6483c3b06296d617b28536611128948e687639fb4e19f9253cf8f8b",
+      "failed_inputs_unchanged": 2644,
+      "failed_ctests_run": 0,
+      "failed_archives": {
+        "local/en-failed-attempt-cd637cb1.zip": "c242cc5ea0e44f1de1793a2dca7b7a532ff34e22065fb977322eae63c258c0ca",
+        "local/en-failed-build-tree-cd637cb1.zip": "fb0e96ef6916216d27566aea0b720eae717217376b1f9905450c76914435ef71"
+      },
+      "followup": "Fresh en2 runner/stamp/log at corrected clean source commit; pending build and full generated proof."
+    }
+  ],
   "documentation": {
     "path": "docs/NATIVE_SCENE_RENDER_TRAVERSAL.md",
-    "sha256": "fe86a7cd471d0901a86ac5c7fb9fe148c3cc20f4862f1a11dc1b6005b8491a97"
-  }
+    "sha256": "49b374913bdfe247a44078eefced54809b038bb67c6c6fec0a02a27aa71cbe2a"
+  },
+  "historical_source_pins_before_label_correction": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-scene-render-traversal-el\\include\\bsp\\native_scene_render_traversal.hpp",
+      "sha256": "67947f3295aabffcf24117f135f59f13e7255bf104d6e7536219f4dad24857cc",
+      "bytes": 3465
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-scene-render-traversal-el\\src\\native_scene_render_traversal.cpp",
+      "sha256": "5629a1c4d303614d45421b2aa7dfbd428554bfc8b6e7141faee35b7e274b8156",
+      "bytes": 10285
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-scene-render-traversal-el\\include\\bsp\\native_traceline_render.hpp",
+      "sha256": "eec43d439a9ddcf4d5aa96954434c469b607c4ac198f54b6cb55339a0365caf4",
+      "bytes": 7210
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-scene-render-traversal-el\\src\\native_traceline_render.cpp",
+      "sha256": "b791db0734c33fe6c8c12b3caa40c81b76ebfb5915ecdd80b9ae590605160eb6",
+      "bytes": 73470
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-scene-render-traversal-el\\cmake\\startup.cmake",
+      "sha256": "12f726b10ccf16d7ab45c0d3b6e0dc1e3f77fabfa9a5e0816604993855c00c5d",
+      "bytes": 119900
+    }
+  ]
 }

@@ -158,3 +158,5 @@ must cover every new code section, integer-only helpers, all stack exits, emitte
 application-fallback FP moves, preflight, and the complete affected old renderer
 object. Source reconstruction and PE evidence do not establish game validation,
 complete queue/job closure, or a runnable renderer.
+
+The initial coupled build at `cd637cb1e8e841b790d33abaceb2d5a061ae2c12` failed because `bound` is a reserved MSVC assembly instruction name; no CTests ran. The primary changed only its four label/reference tokens to `scene_profile_ready` and `node_profile_ready`, preserving every operation and stack offset. The failed inputs, logs, partial artifacts and complete build tree are archived with hashes in the report. The corrected source will use a separate en2 attempt; generated and runtime claims remain pending.
