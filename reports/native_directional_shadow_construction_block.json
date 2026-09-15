@@ -1,0 +1,407 @@
+{
+  "schema_version": 1,
+  "module": "native_directional_shadow_construction_block",
+  "packet": "orch3_shadow_construction_block_dy",
+  "source_baseline": "d68f8770ce5ee5108dbd636badf515e610a1b47e",
+  "status": "source_reviewed_build_pending",
+  "coverage": "complete host storage/admission prerequisite; no native function implementation",
+  "native_functions": [],
+  "native_calls": [],
+  "native_function_credit": 0,
+  "native_byte_credit": 0,
+  "original_abi": "No original ABI implemented. Explicit host block and admission API; three constructor declarations remain separate body work.",
+  "new_cpp_api": [
+    "NativeDirectionalShadowConstructionBlock::admit",
+    "NativeDirectionalShadowConstructionBlock::Admission move/cancel/validation/begin_execution",
+    "NativeDirectionalShadowConstructionBlock::reset_after_host_quiescence",
+    "indexed NativeCameraCompanionDisposal retirement callback"
+  ],
+  "planned_consumers": [
+    {
+      "function": "00a8e2e0",
+      "normal_body_bytes": 1408,
+      "implemented_here": false
+    },
+    {
+      "function": "00a8fa30",
+      "normal_body_bytes": 641,
+      "implemented_here": false
+    },
+    {
+      "function": "00a8fd30",
+      "normal_body_bytes": 96,
+      "implemented_here": false
+    }
+  ],
+  "admission": {
+    "scene_credits": 4,
+    "lifetime_credits": 4,
+    "viewport_credits": 9,
+    "total": 17,
+    "ordering": "validate raw domain/canonical identities, emplace fresh cache metadata, reserve4 scenes, reserve4 lifetimes, admit9 installed viewport records; all before native events",
+    "execution": "outer source entry validates before move/native writes; moves once then begins once; private nested bodies share executing token",
+    "rollback": "preparing/prepared cancellation cancels acquired credits, forgets unused/cancelled records and discards only fresh cache metadata",
+    "settlement": "executing cancellation cancels only unused credits after outer native normal/EH actions and marks settled without cleanup"
+  },
+  "stable_storage": {
+    "camera_pairs": 4,
+    "camera_pair_fields": [
+      "owner",
+      "reference",
+      "retirement cookie/index",
+      "camera_completed",
+      "retired"
+    ],
+    "viewport_records": 9,
+    "viewport_mapping": {
+      "camera_pair_count": 4,
+      "camera_pair_types": [
+        "std::optional<NativeCameraOwner>",
+        "std::optional<NativeCameraReference>",
+        "stable indexed retirement cookie/flag",
+        "host-only camera_completed fact"
+      ],
+      "viewport_records": [
+        {
+          "record": "V0",
+          "role": "standalone",
+          "allocation_site": "00a8e405",
+          "constructor_site": "00a8e41c",
+          "parent_field": "504",
+          "camera_pair": null
+        },
+        {
+          "record": "V1",
+          "role": "camera_first",
+          "allocation_site": "00a8e434",
+          "constructor_site": "00a8e46a",
+          "parent_field": "20",
+          "camera_pair": 0
+        },
+        {
+          "record": "V2",
+          "role": "camera_first",
+          "allocation_site": "00a8e4aa",
+          "constructor_site": "00a8e4dd",
+          "parent_field": "24",
+          "camera_pair": 1
+        },
+        {
+          "record": "V3",
+          "role": "camera_first",
+          "allocation_site": "00a8e51d",
+          "constructor_site": "00a8e550",
+          "parent_field": "28",
+          "camera_pair": 2
+        },
+        {
+          "record": "V4",
+          "role": "camera_first",
+          "allocation_site": "00a8e590",
+          "constructor_site": "00a8e5c3",
+          "parent_field": "2c",
+          "camera_pair": 3
+        },
+        {
+          "record": "V5",
+          "role": "standalone",
+          "allocation_site": "00a8e67b",
+          "constructor_site": "00a8e692",
+          "parent_field": "10",
+          "camera_pair": 0
+        },
+        {
+          "record": "V6",
+          "role": "standalone",
+          "allocation_site": "00a8e6a4",
+          "constructor_site": "00a8e6bb",
+          "parent_field": "14",
+          "camera_pair": 1
+        },
+        {
+          "record": "V7",
+          "role": "standalone",
+          "allocation_site": "00a8e6cd",
+          "constructor_site": "00a8e6e4",
+          "parent_field": "18",
+          "camera_pair": 2
+        },
+        {
+          "record": "V8",
+          "role": "standalone",
+          "allocation_site": "00a8e6f6",
+          "constructor_site": "00a8e70d",
+          "parent_field": "1c",
+          "camera_pair": 3
+        }
+      ],
+      "scene_credits": 4,
+      "lifetime_credits": 4,
+      "viewport_credits": 9,
+      "total_credits": 17,
+      "cache": "one std::optional<NativeTextureCacheAcquired>, emplaced during preparation, single-use and retained on unresolved failure",
+      "ownership": "Caller-owned, noncopyable/nonmovable block predates all native events and outlives native survivors/semantic borrows; never embedded in or owned by raw508h owner. Publication facts are historical, not a second registry."
+    },
+    "cache_acquisition": "one optional NativeTextureCacheAcquired emplaced during preparation and retained through settlement",
+    "native_lane_map": {
+      "base": {
+        "bytes": "0x4c",
+        "mapping": "EBP-44..EBP+7",
+        "flags": "-44",
+        "saved_owner": "-40",
+        "white_header": "-3c",
+        "camera_headers": [
+          "-34",
+          "-2c",
+          "-24",
+          "-1c"
+        ],
+        "late_size_pair": [
+          "-14",
+          "-10"
+        ],
+        "mutable_public_word": "+4"
+      },
+      "derived": {
+        "bytes": "0x60",
+        "mapping": "EBP-58..EBP+7",
+        "saved_owner": "-58",
+        "pair_then_loop_raw_slot": "-54/-50, later -54 raw pointer",
+        "matrix_40h": "-4c..-0d",
+        "mutable_public_word": "+4: light -> loop count4 -> fifth raw target",
+        "evidence": "DV saved A8FB03 PUSH ECX precedes A8FB04 LEA EDX,[ESP+20]; baseline ESP=entryESP-68, so matrix starts EBP-4C, not -48."
+      },
+      "factory": "persistent current raw allocation cell corresponding to EBP-10",
+      "rules": "Stable raw8h headers and scratch lanes; initialize only reached native stores, preserve scratch overlap/current cleanup reads. Separate host phase/state/site bookkeeping is not an executable FH3 frame."
+    },
+    "diagnostic_states": "separate base_state_, derived_state_, factory_state_: phase, unwind_state(-1), native_site; no automatic native state transitions"
+  },
+  "retirement": "exact slot/reference/owner identity; after actual destruction/pool-return/unbinding, owner dead and camera_completed; set retired only; no ended-native read",
+  "reset": {
+    "requires": [
+      "settled phase",
+      "every present camera owner dead",
+      "every present reference retired",
+      "all viewport records unused/cancelled/retired",
+      "cache/fallback phases not_started or complete",
+      "all loader phases not_started or complete",
+      "no failed or started-but-unreturned resolver child",
+      "caller guarantees all native obligations resolved and all host borrows ended"
+    ],
+    "order": [
+      "validate every condition before any disposal",
+      "reset all references before owners",
+      "forget quiescent records",
+      "destroy only safe acquisition metadata",
+      "reset host diagnostics and return idle"
+    ],
+    "prohibited": [
+      "automatic native cleanup",
+      "forged cache completion",
+      "second native identity registry",
+      "recovery from ended camera storage",
+      "forgetting live orphan viewport records"
+    ]
+  },
+  "provider_domains": [
+    "actual scene and generated-model pending-credit reservations; no duplicate maps",
+    "already-installed NativeViewportRegistry; exact caller-owned stable records",
+    "real NativeCameraOwner/Reference admitted APIs with matching static actual0108FFB0 pool",
+    "actual raw name pool cells shared by node/cache/VFS providers; caller wiring obligation",
+    "existing concrete NativeTextureCacheAcquired, loader and owned VFS-name operations"
+  ],
+  "limits": [
+    "Storage/admission only; no runtime admission or original/source constructor fixture was run.",
+    "No Ghidra queries/mutations, new native recovery, ledger edits or native function/byte credit.",
+    "Native constructors/destructors/factory and their EH actions remain a separate consuming module.",
+    "Late camera failure can retain a live orphan first viewport with no public storage identity accessor; block stays pinned until real retirement.",
+    "Failed/running cache operation has no generic recovery API; block stays pinned and never forges complete.",
+    "Host reference binding rejection after B71A80 success leaves a live owner that cannot reset.",
+    "Unrestricted native ABI/private-frame aliasing/FH3/SEH/hardware faults, concurrency, GPU/rendering and gameplay equivalence remain unproved.",
+    "Reset/retirement/destruction are noexcept and unsupported lifetime use terminates. Existing child provider limits apply."
+  ],
+  "verification_checklist": {
+    "callee_before_contract": "existing source definitions and DX pins reused",
+    "boundary_before_attribution": "not applicable: no native calls attributed to this host module",
+    "all_call_sites": "deferred constructor call-site contract preserved from DX/DV; no new recovery",
+    "producer_before_layout": "DX/DV exact raw lane and slot mapping retained",
+    "coverage": "explicit zero native bodies/bytes",
+    "runtime": "no runtime fixture or game claim",
+    "stack_abi": "explicit source interface only",
+    "register_provenance": "not applicable to this host module",
+    "lease": "four files, zero addresses; shared registry line not leased",
+    "numeric_rows": "zero native call rows; no fabricated native transfer for host admission steps"
+  },
+  "review": {
+    "primary": "complete header/source and existing admission/cache contracts reviewed with no concrete source finding before build",
+    "consumer": "DZ worker accepted friend name, all three signatures, exact fields/lanes and shared executing admission"
+  },
+  "evidence": {
+    "dx_json_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-shadow-owner-lifetime-du\\local\\dx-shadow-owner-construction-contract.json",
+    "dx_json_sha256": "77675f12e46af94ccdf6cdb9099cd685d2825efe89737f85e249e2f28179d05c",
+    "dx_md_sha256": "31bbb897e801724abd3f6e16cbe1223785d43586333a2c790003ff1c40dede11",
+    "provider_pins": [
+      {
+        "path": "src/scene_attachment.cpp",
+        "revision": "d68f8770ce5ee5108dbd636badf515e610a1b47e",
+        "sha256": "58fa851ddc57a0910f4903da4d08fa74cf56b41af352b8d9b8ba8f4ff7715719"
+      },
+      {
+        "path": "src/generated_model_lifetime.cpp",
+        "revision": "d68f8770ce5ee5108dbd636badf515e610a1b47e",
+        "sha256": "d8c5990909d169f0f70d9e3320b4e671da6fcb58694cc9ac5f7d621cbdeabd64"
+      },
+      {
+        "path": "include/bsp/native_viewport_registry.hpp",
+        "revision": "d68f8770ce5ee5108dbd636badf515e610a1b47e",
+        "sha256": "250decc6520abb9d3085670129d0884b087465f4eec1027cb210375619e8d486"
+      },
+      {
+        "path": "src/native_viewport_registry.cpp",
+        "revision": "d68f8770ce5ee5108dbd636badf515e610a1b47e",
+        "sha256": "cf63de25d9e107f83f361db4d4fa7c2a922119fa62584dd3688b8588d201a289"
+      },
+      {
+        "path": "include/bsp/native_camera_owner.hpp",
+        "revision": "d68f8770ce5ee5108dbd636badf515e610a1b47e",
+        "sha256": "527c605fcc55eedd421271a5c4b27d45947e325c391838f14f3cab6d75e1f808"
+      },
+      {
+        "path": "src/native_camera_owner.cpp",
+        "revision": "d68f8770ce5ee5108dbd636badf515e610a1b47e",
+        "sha256": "51f7c97c40027337af8d83b0a35613338a8963ad2664d0d6eaa220be7d22f376"
+      },
+      {
+        "path": "include/bsp/native_camera_reference.hpp",
+        "revision": "d68f8770ce5ee5108dbd636badf515e610a1b47e",
+        "sha256": "5920175404a18b464c3ce826162c8279b98c12405ac28d52363241cd2d79415e"
+      },
+      {
+        "path": "src/native_camera_reference.cpp",
+        "revision": "d68f8770ce5ee5108dbd636badf515e610a1b47e",
+        "sha256": "c877dd80459c1f7ebf2e9e20c4f6fd3f0c349e0ff3b4dbeb8f6553a0fb9badab"
+      },
+      {
+        "path": "include/bsp/native_camera_pool.hpp",
+        "revision": "d68f8770ce5ee5108dbd636badf515e610a1b47e",
+        "sha256": "1e084ad1aefc6df32be13fec3ff9fdc94d727378173fd1a24e9324727c630038"
+      },
+      {
+        "path": "src/native_camera_pool.cpp",
+        "revision": "d68f8770ce5ee5108dbd636badf515e610a1b47e",
+        "sha256": "15dafb3a90dcb2dd5dccea1147f2cd4e198f0cd760b8baad5e02e02876d772a3"
+      },
+      {
+        "path": "src/native_viewport_owner.cpp",
+        "revision": "d68f8770ce5ee5108dbd636badf515e610a1b47e",
+        "sha256": "d7f733023f89193a4bbd488a9e925b46ac52f2cc0ee1be04f6df2e663616d2ea"
+      },
+      {
+        "path": "src/native_cockpit_construction_block.cpp",
+        "revision": "d68f8770ce5ee5108dbd636badf515e610a1b47e",
+        "sha256": "82b94ea93e18ed2a1bb765d37daab6a48ce501c4ce0ced8b612a3cf95a3c6ca1"
+      },
+      {
+        "path": "src/native_cockpit_helper_construction.cpp",
+        "revision": "d68f8770ce5ee5108dbd636badf515e610a1b47e",
+        "sha256": "a72d1f60a8cda7b68cbb5fe3b9fcf6f87b60bbb36e528d34448d3d0157d752da"
+      },
+      {
+        "path": "include/bsp/native_texture_loading_cache.hpp",
+        "revision": "d68f8770ce5ee5108dbd636badf515e610a1b47e",
+        "sha256": "dc142e19b3565df24bd6a88b7e495a56c9c1e47dd67512824e34ca1b2f63773d"
+      },
+      {
+        "path": "src/native_texture_loading_cache.cpp",
+        "revision": "d68f8770ce5ee5108dbd636badf515e610a1b47e",
+        "sha256": "708020170abaf5a9bc22f522843dd766a97e67617f4716227d852fdd1a63e03c"
+      },
+      {
+        "path": "include/bsp/native_string_pool_storage.hpp",
+        "revision": "d68f8770ce5ee5108dbd636badf515e610a1b47e",
+        "sha256": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d"
+      },
+      {
+        "path": "src/native_material_effect_runtime.cpp",
+        "revision": "d68f8770ce5ee5108dbd636badf515e610a1b47e",
+        "sha256": "8487121fd202fa3ad647daeef793db74b17993a706f26a67c04e01db2f30ebe4"
+      },
+      {
+        "path": "src/native_string.cpp",
+        "revision": "d68f8770ce5ee5108dbd636badf515e610a1b47e",
+        "sha256": "0e8819d3a6442fc48c879e85c00899a72beabdc51b3e94a11836ab5314d5e60c"
+      },
+      {
+        "path": "src/native_physical_file_date.cpp",
+        "revision": "d68f8770ce5ee5108dbd636badf515e610a1b47e",
+        "sha256": "6ad9b3bff2280f3c27889ba13ef785a236a2f34e2d733b83bcc92ad20a8a55d0"
+      },
+      {
+        "path": "src/native_frame_target_owner.cpp",
+        "revision": "d68f8770ce5ee5108dbd636badf515e610a1b47e",
+        "sha256": "60485ba070a77e9de497bff352b16ab664ac4d051e02e671897d2c3082224c60"
+      },
+      {
+        "path": "src/singleton_lifetime.cpp",
+        "revision": "d68f8770ce5ee5108dbd636badf515e610a1b47e",
+        "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+      },
+      {
+        "path": "src/camera_configuration.cpp",
+        "revision": "d68f8770ce5ee5108dbd636badf515e610a1b47e",
+        "sha256": "f7de30b2c88f66b6a5d9c67030eb59e98600db72759c92500d97a2101b528250"
+      },
+      {
+        "path": "src/native_world_configuration_leaves.cpp",
+        "revision": "d68f8770ce5ee5108dbd636badf515e610a1b47e",
+        "sha256": "5b72aab0c947362d9bb90b350a0c4eed7419e57b10c43fd35037b5664f5b625a"
+      },
+      {
+        "path": "src/native_shadow_viewport_matrix.cpp",
+        "revision": "d68f8770ce5ee5108dbd636badf515e610a1b47e",
+        "sha256": "ef05b080dafe917631799f23465b6683e358dcc531a96e108aae5c87d93769dd"
+      },
+      {
+        "path": "include/bsp/native_shadow_viewport_matrix.hpp",
+        "revision": "d68f8770ce5ee5108dbd636badf515e610a1b47e",
+        "sha256": "b0a9779a576a025b70d69908301f27af4c5e5f976949b91b90ab35cd41183dac"
+      },
+      {
+        "path": "src/native_camera_matrix_copy.cpp",
+        "revision": "d68f8770ce5ee5108dbd636badf515e610a1b47e",
+        "sha256": "31840777adef31ac0717e7bc4cb148ecd9aa45be8e5d2d52eb79f3c8a00a708d"
+      },
+      {
+        "path": "include/bsp/native_directional_shadow_owner_lifetime.hpp",
+        "revision": "d68f8770ce5ee5108dbd636badf515e610a1b47e",
+        "sha256": "a544ff94b8f8f37797e5c8f416db80e327847108b76ba841774ae853b541e9ee"
+      },
+      {
+        "path": "src/native_directional_shadow_owner_lifetime.cpp",
+        "revision": "d68f8770ce5ee5108dbd636badf515e610a1b47e",
+        "sha256": "624869089b172d8ddc15774e36b0730dfeb52e6d6897b373fbb03a8db21ad7f2"
+      }
+    ],
+    "owned_pins": [
+      {
+        "path": "include/bsp/native_directional_shadow_construction_block.hpp",
+        "sha256": "551fa038c5471f30ef01871347c476b928c8411827fe98d334535f63f4187084"
+      },
+      {
+        "path": "src/native_directional_shadow_construction_block.cpp",
+        "sha256": "5775d7078b76cbc2ac116c0d764d457f95968504b51ff367351f426f652c2fba"
+      },
+      {
+        "path": "docs/NATIVE_DIRECTIONAL_SHADOW_CONSTRUCTION_BLOCK.md",
+        "sha256": "6e96e75b8fbbef8c65fcf04b8983bda6e068a584af7e5fee4464aedd8de57a2a"
+      }
+    ]
+  },
+  "validation": {
+    "build": "pending, to run once from clean source commit",
+    "tests_added": 0,
+    "runtime_fixture": false,
+    "ghidra_queries": 0,
+    "ghidra_mutations": 0
+  }
+}
