@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "packet": "orch3_native_render_command_preparation_ec",
-  "status": "complete_source_primary_reviewed_exact_single_win32_build_and_two_existing_ctests_passed",
+  "status": "complete_source_exact_build_primary_generated_review_ghidra_saved",
   "base_commit": "e5306c0408443046433942f5827a3915e1f792db",
   "normal_body_count": 2,
   "normal_body_bytes": 78,
@@ -393,5 +393,214 @@
       "kind": "direct_call"
     }
   ],
-  "final_metadata_scope": "Documentation/report validation only; tested source and all build inputs remain unchanged."
+  "final_metadata_scope": "Documentation/report validation only; tested source and all build inputs remain unchanged.",
+  "primary_publication": {
+    "tested_commit": "d0481c6812af58a399d5759c33c0a8492346ef64",
+    "worker_final_commit": "96790eafc3c90781d23e5b6ee8cea882e91ecde4",
+    "sealed_attempt": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\local\\ec-validated-attempt.zip",
+      "sha256": "deb319f96bf8aacd3a53e5f65fb7f4e301ad10c45ddf82c5d3bfbb211859e3f9",
+      "bytes": 19616037,
+      "payload_count": 2688,
+      "all_payload_hashes_reread": true,
+      "tested_commit": "d0481c6812af58a399d5759c33c0a8492346ef64",
+      "tracked_inputs": 2633,
+      "verified_seed_headers": 1,
+      "root_raw_identical_inputs": 2624,
+      "root_newline_only_variants": 9,
+      "seed": {
+        "tested_sha256": "26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c",
+        "root_sha256": "26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c",
+        "ignored": true
+      },
+      "stamp_qualification": "Frozen same_commit_after is boolean true; head_after explicitly equals tested commit; all inputs independently verified.",
+      "export_metadata_qualification": "Exporter name metadata retains its previous inventory name; fresh code and separate live prototype/comment readback record the current reviewed Ghidra name.",
+      "qualification": "One clean worker Win32 build and both existing math CTests. Metadata exact native bytes and call shape; diagnostic explicit C++ ABI with reviewed scheduling. No runtime or gameplay validation."
+    },
+    "source_review": {
+      "status": "accepted_exact_source_and_normalized_call_evidence_build_pending",
+      "source_commit": "64df24fe82c9f4892179a4c19ace56a028c1ee8d",
+      "base_commit": "e5306c0408443046433942f5827a3915e1f792db",
+      "tested_commit": "d0481c6812af58a399d5759c33c0a8492346ef64",
+      "source_sha256": {
+        "include/bsp/native_render_command_preparation.hpp": "f9d8315d474faf725493ab57827bccac911befc4b568267b1dadded2fa6a4bc0",
+        "src/native_render_command_preparation.cpp": "866357004ff1cee4058b8be6ccf2a36583b72c66d35d7d52cdf7819355c5205b"
+      },
+      "remaining_source_findings": [],
+      "resolved_source_finding": "Replaced typed volatile raw-word dereference with explicit MSVC x86 MOV, retaining raw pointer-representation and unaligned-field semantics before build.",
+      "reviewed": [
+        "Complete source/header, full documentation and append-only startup registration; complete B1BF50/B1D910 native assembly and pseudocode, EB ready helper contract and concrete raw string resize overload.",
+        "B1BF50 naked fastcall preserves ECX owner, unused incoming EDX argument placement, original stack source pointer, interleaved raw loads/stores, incidental EAX/EDX and RET4. Exact generated 24-byte identity remains to be checked.",
+        "B1D910 computes actual destination header at command+14 and returns on exact source-header identity before header reads/provider calls.",
+        "Captured source length reaches real raw-context resize with preserve1. Source length is then reread; its zero gate is distinct from the later destination copy count.",
+        "Explicit raw DWORD captures occur in destination-length, source-data, destination-data order. All occur before any documented zero-count library-call omission. Overlap uses memmove with destination count and no added terminator.",
+        "Same caller-supplied actual pool domain, no new command owner, string wrapper, fallback allocator, null-header validation, cleanup, rollback or command lifetime changes.",
+        "Two direct incoming native calls and two B1D910 native outgoing calls were manually checked. Parent A8EA20 EH ownership is retained as evidence only and receives no reconstruction credit."
+      ],
+      "report_normalization": {
+        "initial_verifier_result": "0 rows checked, 0 failed; empty coverage was not accepted as validation",
+        "required_rows": [
+          "00a8ebd5->00b1bf50",
+          "00a8ec1e->00b1d910",
+          "00b1d924->0041dd40",
+          "00b1d939->00bf7680"
+        ],
+        "authorization": "Worker may add canonical metadata rows, verify4/0, commit only metadata and begin one clean build without another source-approval wait if source/header hashes remain exact.",
+        "resolved_commit": "d0481c6812af58a399d5759c33c0a8492346ef64",
+        "checked_rows": 4,
+        "failed_rows": 0,
+        "report_sha256": "5ad5d53ba58d994fee157d34b8c2d653ec52c0b4fe63818bc36f2e7f0c91e092"
+      },
+      "fixture_tested": false,
+      "game_validated": false,
+      "b1d910_native_abi_compatible": false
+    },
+    "generated_review": {
+      "status": "accepted_complete_current_object_review",
+      "tested_commit": "d0481c6812af58a399d5759c33c0a8492346ef64",
+      "object_sha256": "d8f4f8bc9970284ae3e9acb09cd988dfcf4218bca85e3decce9009acfe70be70",
+      "findings": [],
+      "reviewed_code_sections": [
+        4,
+        5,
+        6
+      ],
+      "reviewed_noncode_sections": [
+        1,
+        2,
+        3,
+        7
+      ],
+      "coff_sha256": "79cf1965350f24b8cee7ffa55b3ce8038944f61d6dc2bc5e226019d7db6a55b0",
+      "listing_sha256": "51c34b7c30eb6a416e6b52c3c057e6143560529dccb6cd03c0a9d671869f6540",
+      "source_review_sha256": "e8083a0070e1a26f6b19da54c2b9df331b6cd93963e45404b3d2ef67f15cfdca",
+      "native_review_sha256": "b507f713108ff8eac87c23f782adbc5774c0e67efcd8993b8b7df2ccb26b9186",
+      "build_stamp_sha256": "06d371cb5870d41c21c2f7b2833674f261534b6d47cbfdf1c9ceca730676d0e4",
+      "checks": [
+        "S6 complete24-byte external naked fastcall metadata leaf equals native byte-for-byte, zero relocations and exact interleaved loads/stores, with RET4; caller EDX is unused and stack source slot is preserved.",
+        "S5 identity JE+11 precedes raw source read+19 and raw resize+27. Source length is reloaded+35, then destination length+46, source data+57 and destination data+65, before count-zero test+6A and memmove+75. No terminator increment, cleanup or EH frame.",
+        "S4 complete22-byte standalone helper uses actual-address MOV; its inlined S5 occurrences preserve unaligned raw-word reads and reached order. No typed alias assumptions in field loads.",
+        "All7 sections retained and reviewed; remaining sections are linker directives, compiler/debug provenance, zero-initialized CRT weak binding and section checksums. They receive no native body credit."
+      ],
+      "metadata_whole_native_code_identity": true,
+      "metadata_native_call_shape_preserved": true,
+      "diagnostic_whole_native_code_identity": false,
+      "diagnostic_original_abi": false,
+      "fixture_tested": false,
+      "game_validated": false,
+      "limits": "Exact metadata emitted bytes and original call shape only; no injected caller/fault delivery proof. Diagnostic exposes an explicit raw-pool C++ context, with overlap-capable memmove and qualified zero-count omission."
+    },
+    "root_inputs": {
+      "tested_commit": "d0481c6812af58a399d5759c33c0a8492346ef64",
+      "tracked_inputs": 2633,
+      "raw_identical": 2624,
+      "newline_only_variants": [
+        {
+          "path": "include/bsp/native_particle_model_construction.hpp",
+          "tested_sha256": "224d95392e8fe949a0059e6428528bdeadfbc7cffc8e02201459521b769befc6",
+          "root_sha256": "7f5bd53cb3fed8ecdc0bdf678f766105e082bdef949d79cb5f3c4a40ab8721e8",
+          "tested_bytes": 7466,
+          "root_bytes": 7609,
+          "newline_only": true
+        },
+        {
+          "path": "include/bsp/native_particle_model_update.hpp",
+          "tested_sha256": "261cafbe182db8cd55636eb1c47732b5a7acc40235d733cb9801a8c8b8befac4",
+          "root_sha256": "7578f73927ae1d7214e9a0ee285fabcf7797597e4b1d26f5dfbb87d0a889485d",
+          "tested_bytes": 3494,
+          "root_bytes": 3559,
+          "newline_only": true
+        },
+        {
+          "path": "include/bsp/native_particle_record_update.hpp",
+          "tested_sha256": "93ad6d88437eb448bead0b14e6697b2fb24c111adfe166eecdb6860bd3d8d3f6",
+          "root_sha256": "8a2e359c9453f479f6afcb8fd51669138202349f6619616d32dadad04e1b4c0b",
+          "tested_bytes": 3039,
+          "root_bytes": 3091,
+          "newline_only": true
+        },
+        {
+          "path": "include/bsp/native_post_effect_owner_20h.hpp",
+          "tested_sha256": "d1175b7041aa203a35b9e04a3d18a38759e646a73fa7b4d0b55a75b2dbed80ad",
+          "root_sha256": "a05e7bf9f16f2fca5ee3976d6ed5199df98b881951f2f18218862f58caed450a",
+          "tested_bytes": 4115,
+          "root_bytes": 4199,
+          "newline_only": true
+        },
+        {
+          "path": "src/native_particle_model_construction.cpp",
+          "tested_sha256": "b14939017920fa5def99fe21bee763b7258acc25277024b74c611c7086fc415c",
+          "root_sha256": "1081e0cdf6470efa389ac8f1abf96863c02ad66f2caa9a6e7ac01adeea89bccc",
+          "tested_bytes": 17269,
+          "root_bytes": 17607,
+          "newline_only": true
+        },
+        {
+          "path": "src/native_particle_model_update.cpp",
+          "tested_sha256": "284118adc64ece074bb472396795a3811371801fa470f3ac7e647158e40b94f7",
+          "root_sha256": "9db5e5aed36166bfe0384a70c33005fc626b4a2a3ab74f2214d95a230fa718c1",
+          "tested_bytes": 26303,
+          "root_bytes": 26930,
+          "newline_only": true
+        },
+        {
+          "path": "src/native_particle_record_update.cpp",
+          "tested_sha256": "ff80442280c3cdfe4ca918fa10a7288577a8c7e0c1de704431c25a0bde1fb057",
+          "root_sha256": "c09d90371c1adde6cc169b06f79f65780aa9a1db67efcd93c74e0ea7f6dfeb1d",
+          "tested_bytes": 40274,
+          "root_bytes": 41231,
+          "newline_only": true
+        },
+        {
+          "path": "src/native_particle_type_loading.cpp",
+          "tested_sha256": "8426d5312eb51ef1a6075cada010c57d256fbddfc9061e5e61719be847f3b375",
+          "root_sha256": "87840100602a06d5656692631430b2ada665a75ae4dc99aad99b467a4ea7d1ac",
+          "tested_bytes": 21517,
+          "root_bytes": 22018,
+          "newline_only": true
+        },
+        {
+          "path": "src/native_post_effect_owner_20h.cpp",
+          "tested_sha256": "330fe02662fbd32650c17ff35c8217880dbcca3425e4212c079dca3e5838fc1c",
+          "root_sha256": "a9060716c813ecdec58c1556f1c76bb807b76a82340ebf0c9109601ac448aa07",
+          "tested_bytes": 7675,
+          "root_bytes": 7830,
+          "newline_only": true
+        }
+      ],
+      "seed": {
+        "tested_sha256": "26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c",
+        "root_sha256": "26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c",
+        "ignored": true
+      },
+      "qualification": "Actual worker inputs were tested and are archived; root Git inputs match, while checkout newline variants are retained separately. No redundant root build."
+    },
+    "evidence_artifacts": {
+      "ec-primary-source-review.json": "e8083a0070e1a26f6b19da54c2b9df331b6cd93963e45404b3d2ef67f15cfdca",
+      "ec-primary-generated-review.json": "befda8b37f47f7b577b836f83e9ce6d6e6b3af82ab4d05c7dd934b592cd2f06c",
+      "ec-native-byte-review.json": "b507f713108ff8eac87c23f782adbc5774c0e67efcd8993b8b7df2ccb26b9186",
+      "ec-build-input-variants.json": "df73a1b42739c2045dfd02615b49c08393fd9379a26d1f295efc73ec52743c0e",
+      "ec-ghidra-before.json": "80c72e9bdbc725a5608682b59948a5050a65b36ad775ed508dde0856e2c58a9f",
+      "ec-ghidra-after.json": "54c08b0283d891aed4d5da91dc8f8fb487e4ba525eb0662abf0b57db45b92d73",
+      "ec-ghidra-prototypes.json": "033591d81f6423e625c50a95baa293993dd6c428288710c96244e6d6c5c7e75e"
+    },
+    "ghidra": {
+      "project": "C:/Users/sqz269/bsp.gpr",
+      "program": "/battlestationspacific.exe",
+      "saved": true,
+      "comments_preserved": true,
+      "exports_refreshed": true,
+      "functions": {
+        "00b1bf50": "void __thiscall BSP_RenderCommand_SetMetadata(void* this, void* source)",
+        "00b1d910": "void __thiscall BSP_RenderCommand_SetDiagnosticName(void* this, void* source)"
+      },
+      "export_metadata_qualification": "Exporter name metadata retains its previous inventory name; fresh code and separate live prototype/comment readback record the current reviewed Ghidra name."
+    },
+    "native_credit": {
+      "normal_bodies": 2,
+      "normal_bytes": 78,
+      "parent_and_eh_bytes": 0
+    },
+    "limits": "Metadata exact24-byte native body and call shape; no injected caller/fault proof. Diagnostic uses explicit raw-pool C++ ABI with reviewed scheduling. No new fixture or gameplay validation."
+  }
 }

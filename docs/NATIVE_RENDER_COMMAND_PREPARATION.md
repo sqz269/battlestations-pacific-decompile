@@ -119,3 +119,23 @@ No new test, native fixture, queue/shadow execution or game validation was
 performed. New C++ ABI, raw-provider exception restrictions, native FH3/SEH and
 hardware-fault boundaries remain explicit. Final documentation/report changes
 only record validation; the tested source and build artifacts remain frozen.
+
+Primary integration preserves the tested source and publishes two new ledger
+records: 78 normal-body bytes, with no parent or EH credit. Ghidra saves
+`BSP_RenderCommand_SetMetadata` and `BSP_RenderCommand_SetDiagnosticName`
+with native thiscall, one implicit this and one source pointer; previous
+comments are preserved and both exports refreshed. The export inventory name
+metadata remains historical; separate live prototype/comment readback records
+the current names and unchanged bounds.
+
+The exact attempt is archived at `local/ec-validated-attempt.zip`, SHA256
+`deb319f96bf8aacd3a53e5f65fb7f4e301ad10c45ddf82c5d3bfbb211859e3f9`.
+All 2,688 payload hashes were reread. The archive includes the actual tested
+inputs, four libraries, current object, existing test executables/configuration,
+build/test logs, admission, native/source/generated reviews and Ghidra evidence.
+Root Git inputs match the tested revision: 2,624 raw tracked inputs match, nine
+have only CRLF/LF differences retained separately, and the ignored seed matches.
+No redundant root build was needed. Metadata byte identity and native call shape
+remain separate from runtime injection; diagnostic scheduling is qualified by
+its new explicit raw-pool context. No preparation fixture or game validation is
+claimed.
