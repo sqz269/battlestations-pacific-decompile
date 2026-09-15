@@ -1,0 +1,326 @@
+{
+  "packet": "orch4_vehicle_pointer_array_20260915",
+  "addresses": [
+    "00546630",
+    "005471b0"
+  ],
+  "source": [
+    "include/bsp/native_vehicle_pointer_array.hpp",
+    "src/native_vehicle_pointer_array.cpp"
+  ],
+  "evidence": "docs/NATIVE_VEHICLE_POINTER_ARRAY_ORCH4.md",
+  "routines": [
+    {
+      "address": "00546630",
+      "end_inclusive": "00546723",
+      "native_bytes": 244,
+      "coverage": "complete ordinary body; native EH frame external"
+    },
+    {
+      "address": "005471b0",
+      "end_inclusive": "0054722d",
+      "native_bytes": 126,
+      "coverage": "complete ordinary body"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00546671",
+      "native": "00bf55be",
+      "function": "00546630",
+      "contract": "existing source-CRT object allocation boundary; stack byte count, caller ADD ESP,4 at00546678"
+    },
+    {
+      "address": "005466ab",
+      "native": "00546630+IAT_CE221C",
+      "function": "00546630",
+      "contract": "InterlockedIncrement owner+4; one stdcall stack pointer"
+    },
+    {
+      "address": "005466d7",
+      "native": "00546630+IAT_CE2220",
+      "function": "00546630",
+      "contract": "InterlockedDecrement owner+4; one stdcall stack pointer"
+    },
+    {
+      "address": "005466e7",
+      "native": "00546630+vtable0",
+      "function": "00546630",
+      "contract": "captured current referent/table/target; ECX owner EDX table, no stack arguments"
+    },
+    {
+      "address": "005466fa",
+      "native": "00bf6989",
+      "function": "00546630",
+      "contract": "source CRT free current backing, caller ADD ESP,4 at00546707"
+    },
+    {
+      "address": "005471be",
+      "native": "00546630",
+      "function": "005471b0",
+      "contract": "ECX current header, requested signed count on stack, RET4"
+    },
+    {
+      "address": "00547207",
+      "native": "005471b0+IAT_CE2220",
+      "function": "005471b0",
+      "contract": "InterlockedDecrement owner+4; one stdcall stack pointer"
+    },
+    {
+      "address": "00547217",
+      "native": "005471b0+vtable0",
+      "function": "005471b0",
+      "contract": "captured current referent/table/target; ECX owner EDX table, no stack arguments"
+    }
+  ],
+  "no_ghidra_function": [],
+  "corrections": [
+    {
+      "was": "reserve decompile returned after free without replacement publication",
+      "evidence": "CALL_RETURN cleared at005466FA; disk/live tail matched; reports/native_vehicle_pointer_array_orch4_flow_repair.json",
+      "is": "19-byte publication/register-restoration tail is reachable"
+    }
+  ],
+  "caller_review": {
+    "resize_direct_sites": 25,
+    "scope": "argument setup around all current xrefs; complete caller bodies not audited",
+    "evidence": "local/vehicle_array_call_contexts.json"
+  },
+  "validation": {
+    "msvc_win32": "passed scripts/build.ps1, Release /W4 /WX",
+    "existing_ctests": {
+      "passed": 3,
+      "failed": 0,
+      "names": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ]
+    },
+    "original_source_fixture": {
+      "status": "passed",
+      "paired_scenarios": 1,
+      "snapshots_per_side": 5,
+      "original_bytes": 370,
+      "scope": "minimum reserve, resize allocation, retained populated reserve, zero growth, reverse shrink, terminal-replaced captured slot clear, final empty count",
+      "shared_dependencies": [
+        "source CRT allocation/free",
+        "Windows Interlocked operations",
+        "fixture slot0 terminal"
+      ],
+      "original_outcomes": "local/vehicle_array_original_outcomes.jsonl",
+      "source_outcomes": "local/vehicle_array_source_outcomes.jsonl",
+      "manifest": "local/vehicle_array_probe_manifest.json"
+    },
+    "initial_build_correction": "MSVC treats offset as an inline assembler keyword; parameter renamed byte_offset before passing build",
+    "logs": [
+      "local/vehicle_pointer_array_build_retry.txt",
+      "local/vehicle_array_probe_build.txt",
+      "local/vehicle_array_probe_execution.txt"
+    ],
+    "native_seed_verification": "all eight installed/live seed spans matched"
+  },
+  "boundaries": [
+    "new source ABI",
+    "shared source allocation/free, not an original CRT oracle",
+    "required current-target terminal implementation",
+    "native FH3/SEH and hardware faults unvalidated",
+    "no gameplay validation"
+  ],
+  "original_spans": [
+    {
+      "address": "00546630",
+      "length": 244,
+      "sha256": "41744b6d2a4a59d518ac520c31dd5f59d04dde04febba36ea6abe2f1580d745e",
+      "live_disk_match": true
+    },
+    {
+      "address": "005471b0",
+      "length": 126,
+      "sha256": "f1da5682b241019cfec4384a594e3f558a6665c1fa1573678203ceff795d07cc",
+      "live_disk_match": true
+    }
+  ],
+  "fixture_inputs": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\src\\native_vehicle_pointer_array.cpp",
+      "sha256": "618fbfbcf1cac6007ff7707b68b221b090d72bb3210587f978ffb63bf25f1198"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\include\\bsp\\native_vehicle_pointer_array.hpp",
+      "sha256": "cc437787cfbb327ded7dfd32f97c31a0a12e429bd8c4ea160d8d64ac5501e945"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\src\\singleton_lifetime.cpp",
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\build\\win32\\Release\\bsp_core.lib",
+      "sha256": "2490863c379765788ba0a1ed9d3a0d4398531a79afff5fc1db40ea38d5d324ab"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\vehicle_array_probe.cpp",
+      "sha256": "2bdd6be4d67f1297a3454bde5d4dcf34be20c04c65db54a33eedbc982cf06e4d"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\vehicle_array_original_bytes.hpp",
+      "sha256": "4d45b9018aaac0d998987f9af53abffe3b6c582f7e9c2637b8d8133cfae413f9"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\vehicle_array_probe.exe",
+      "sha256": "8420959eb0a70d172e993395278f67cfe9b9222f892f360df7baa3e709598bed"
+    }
+  ],
+  "fixture_outcomes": {
+    "original": {
+      "sha256": "9a1c609d8eace383a944c0c8a98d2dfbce3aa96237feb0bfd451c85ee3077cf4",
+      "rows": [
+        {
+          "phase": "minimum",
+          "count": 0,
+          "capacity": 1,
+          "refs": [
+            2,
+            1,
+            1
+          ],
+          "events": "",
+          "slots": []
+        },
+        {
+          "phase": "retained",
+          "count": 2,
+          "capacity": 5,
+          "refs": [
+            2,
+            1,
+            1
+          ],
+          "events": "",
+          "slots": [
+            1,
+            2
+          ]
+        },
+        {
+          "phase": "grown",
+          "count": 4,
+          "capacity": 5,
+          "refs": [
+            2,
+            1,
+            1
+          ],
+          "events": "",
+          "slots": [
+            1,
+            2,
+            0,
+            3
+          ]
+        },
+        {
+          "phase": "shrunk",
+          "count": 1,
+          "capacity": 5,
+          "refs": [
+            2,
+            0,
+            0
+          ],
+          "events": "3@3;2@1;",
+          "slots": [
+            1
+          ]
+        },
+        {
+          "phase": "empty",
+          "count": 0,
+          "capacity": 5,
+          "refs": [
+            1,
+            0,
+            0
+          ],
+          "events": "3@3;2@1;",
+          "slots": []
+        }
+      ]
+    },
+    "source": {
+      "sha256": "9a1c609d8eace383a944c0c8a98d2dfbce3aa96237feb0bfd451c85ee3077cf4",
+      "rows": [
+        {
+          "phase": "minimum",
+          "count": 0,
+          "capacity": 1,
+          "refs": [
+            2,
+            1,
+            1
+          ],
+          "events": "",
+          "slots": []
+        },
+        {
+          "phase": "retained",
+          "count": 2,
+          "capacity": 5,
+          "refs": [
+            2,
+            1,
+            1
+          ],
+          "events": "",
+          "slots": [
+            1,
+            2
+          ]
+        },
+        {
+          "phase": "grown",
+          "count": 4,
+          "capacity": 5,
+          "refs": [
+            2,
+            1,
+            1
+          ],
+          "events": "",
+          "slots": [
+            1,
+            2,
+            0,
+            3
+          ]
+        },
+        {
+          "phase": "shrunk",
+          "count": 1,
+          "capacity": 5,
+          "refs": [
+            2,
+            0,
+            0
+          ],
+          "events": "3@3;2@1;",
+          "slots": [
+            1
+          ]
+        },
+        {
+          "phase": "empty",
+          "count": 0,
+          "capacity": 5,
+          "refs": [
+            1,
+            0,
+            0
+          ],
+          "events": "3@3;2@1;",
+          "slots": []
+        }
+      ]
+    }
+  }
+}
