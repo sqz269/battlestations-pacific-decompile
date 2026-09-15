@@ -685,7 +685,7 @@
       "name": "construct_native_animation_registry_00b79a80",
       "bytes": 122,
       "source": "src/native_animation_registry.cpp",
-      "evidence": "Complete ECXself/EAXself/RET20h registry constructor: CEB130/ref1 then D62EF4; allocate/publish1Ch head and self links, clear count/sample header. Leave opaque8/padding untouched.",
+      "evidence": "Complete ECXself/EAXself/RET; actual20h registry constructor: CEB130/ref1 then D62EF4; allocate/publish1Ch head and self links, clear count/sample header. Leave opaque8/padding untouched.",
       "reuse": false
     },
     {
@@ -859,5 +859,30 @@
       "evidence": "Complete82-byte ECXtree/stacknode/RET4 subtree cleanup. Right recursion, capture data then left, release current length+1 then free; follow captured left. Extract/reuse existing4CEC60 algorithm with color18/nil19. Separate original VFS comparison passes.",
       "reuse": true
     }
-  ]
+  ],
+  "proof": {
+    "manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\animation_registry_au\\manifest.json",
+      "bytes": 149303,
+      "sha256": "7ad361a7c8def13981c25d1fc181c7f8558b94b9293ebfc71ae7382daffa2eb7"
+    },
+    "source_commit": "6860d0e11763044eda6b8216b510965d642bbc0b",
+    "build_checkout_head": "6d622cff166837c24eb337a4d554e6517c32148f",
+    "build_had_owned_source_changes": true,
+    "inputs": 291,
+    "artifacts": 140,
+    "fixture_production_objects": 18,
+    "paired_registry_lifetimes": 4,
+    "paired_vfs_subtree": 1,
+    "source_failure_cases": 2,
+    "saved_annotations": 20,
+    "complete_physical_helper_or_reuse_bodies": 20,
+    "complete_physical_helper_or_reuse_bytes": 2663,
+    "known_ghidra_call_attribution_failures": 3,
+    "post_seal_constructor_abi_clarification": {
+      "scope": "AU ABI clarification: B79A80 returns with plain RET (no immediate stack cleanup); 20h is the registry size, not a RET operand. The earlier adjacent text RET20h meant RET followed by the object size. Source and physical listing are unchanged.",
+      "receipt": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\animation_registry_au_closeout\\constructor_annotation_receipt.json",
+      "sha256": "33cea46d132de5eb69f908fc58e8ea3c9a62c32b891a3893ef37e8c5ddaf7378"
+    }
+  }
 }
