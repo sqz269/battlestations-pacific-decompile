@@ -1,0 +1,661 @@
+{
+  "packet": "orch2_canonical_crt_unlock_fn",
+  "baseline_commit": "15cc82222fe06a3081ccf5c5baad78e8a47c0fba",
+  "source": "src/native_crt_canonical_unlock.cpp",
+  "header": "include/bsp/native_crt_canonical_unlock.hpp",
+  "docs": "docs/NATIVE_CRT_CANONICAL_UNLOCK_FN.md",
+  "local_packet": "local/canonical_crt_unlock_fn",
+  "status": "complete_original_one_word_canonical_unlock_static_body_abi_and_archive_verified",
+  "routines": [
+    {
+      "address": "00c11b31",
+      "end_inclusive": "00c11b45",
+      "length": 21,
+      "coverage": "complete",
+      "instructions": 7,
+      "old_name": "LIBCRT_unmatched_00c11b31",
+      "desired_name": "__unlock",
+      "name_confidence": "library-name hypothesis from complete body, real import and neighboring lock owner",
+      "cpp_symbol": "bsp::unlock_native_crt_canonical_00c11b31",
+      "abi": "One raw 32-bit cdecl word at entry ESP+4; PUSH EBP/MOV EBP,ESP; argument read at EBP+8; one genuine stdcall import; POP EBP; plain RET; caller cleanup.",
+      "flags": "No added arithmetic flag changes; original PUSH/MOV/CALL/POP/RET schedule and actual import effects retained.",
+      "index": "Native x86 wrapping E16478+8*word, one unguarded pointer read. No C++ signed multiplication or argument checks.",
+      "return_policy": "void source declaration; no synthesized result or EAX/flags changes after actual import.",
+      "readiness": "Caller must own the actual readable canonical descriptor, valid initialized Win32 critical section, acquired lock and its lifetime."
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00c11b3e",
+      "native": "00ce2210+iat",
+      "function": "00c11b31",
+      "instruction": "CALL DWORD PTR [00CE2210h]",
+      "target": "KERNEL32.dll!LeaveCriticalSection",
+      "verifier_coverage": "Indirect import row is skipped by standard call verifier; independently resolved from supported PE import directory and exact live/PE instruction/IAT bytes."
+    }
+  ],
+  "caller_steps": [
+    {
+      "function": "00c051ae",
+      "address": "00c051b0",
+      "native": "00c11b31",
+      "argument": "12",
+      "argument_setup": "00c051ae",
+      "cleanup": "00c051b5",
+      "cleanup_instruction": "POP ECX",
+      "containing_body": "00c051ae..00c051b6",
+      "boundary_and_listing_verified": true
+    },
+    {
+      "function": "00c01ae9",
+      "address": "00c01aeb",
+      "native": "00c11b31",
+      "argument": "12",
+      "argument_setup": "00c01ae9",
+      "cleanup": "00c01af0",
+      "cleanup_instruction": "POP ECX",
+      "containing_body": "00c01ae9..00c01af4",
+      "boundary_and_listing_verified": true
+    },
+    {
+      "function": "00c028da",
+      "address": "00c028dc",
+      "native": "00c11b31",
+      "argument": "12",
+      "argument_setup": "00c028da",
+      "cleanup": "00c028e1",
+      "cleanup_instruction": "POP ECX",
+      "containing_body": "00c028da..00c028e2",
+      "boundary_and_listing_verified": true
+    },
+    {
+      "function": "00c028e6",
+      "address": "00c028e8",
+      "native": "00c11b31",
+      "argument": "12",
+      "argument_setup": "00c028e6",
+      "cleanup": "00c028ed",
+      "cleanup_instruction": "POP ECX",
+      "containing_body": "00c028e6..00c028ee",
+      "boundary_and_listing_verified": true
+    }
+  ],
+  "caller_coverage": {
+    "live_xref_count": 36,
+    "sampled_count": 4,
+    "coverage": "bounded sample; no exhaustive caller/index claim",
+    "initial_query_limit": 25,
+    "corrected_query_limit": 100
+  },
+  "corrections": [
+    {
+      "was": "First artifact audit matched malformed locale-derived symbol prefix and failed the exact symbol-count assertion.",
+      "evidence": "Unchanged pre/post-guarded artifact_inspect.py and artifact_audit_01.txt retained, alongside artifact_inspect_v2.py and artifact_audit_02.txt; no source/build-input changes or second build.",
+      "is": "Separately retained artifact_inspect_v2.py corrects only matcher to observed actual unlock symbol; all body/relocation/archive checks pass."
+    },
+    {
+      "was": "Initial default-limit xref output and initial local audit contained 25 rows.",
+      "evidence": "raw/xrefs.txt, caller_audit_initial_limited.py/json retained; superseding raw/xrefs_complete.txt and caller_audit.json.",
+      "is": "Complete request with limit100 returns36 live call sites; four sampled bodies remain valid."
+    },
+    {
+      "was": "Indexed snapshot has44 callers and ___crtExitProcess as callee.",
+      "evidence": "raw/previous_lookup.txt, raw/callees.txt, whole original body and independently parsed supported PE IAT.",
+      "is": "Current xrefs show36 sites; live callee is solely LeaveCriticalSection @ EXTERNAL:00000159, with no native direct callee."
+    }
+  ],
+  "canonical_state": {
+    "table": "00e16478",
+    "rows": 36,
+    "stride": 8,
+    "initial_pointer_words_all_zero": true,
+    "lock12": {
+      "row": "00e164d8",
+      "initial_pointer": 0,
+      "initial_flag": 1
+    },
+    "existing_owner": "GameNativeMutableCrtData admits exact E15000/E16000 image pages and zero-filled109E000. Admission alone does not initialize locks.",
+    "original_producer": "C11A93 __mtinitlocks initializes flag1 rows through C17653 with spin4000; C11C21 __lock handles lazy creation through C11B5E and actual acquisition.",
+    "owner_status": "These native lock/init owners are absent in frozen source. C17643 existing no-spin entry is a different primitive. No original initialization/acquisition/SEH owner is claimed by FN."
+  },
+  "original_evidence": {
+    "configured_project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "identity": "Every bsp ghidra CLI read verifies live project name, program path, language and image base. No direct bridge or mutation used.",
+    "installed_pe": {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "size": 12223752,
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "sha512": "7b545a4c47fae14af6c50a1d4d0d2904c1b85f84b9a24d1516b95d77945693fc36b1f6bb9effb7fa29b22b06ebcafc230cdf97f5c332266a3de8dd83bdc29a97"
+    },
+    "spans": {
+      "bytes": {
+        "address": "00c11b31",
+        "length": 21,
+        "sha256": "79a3d82c9ad3f43182f2d65bf6c207f932615a621ab8b35db6fdcc467d324d56",
+        "sha512": "d2156491a51719a19a18d2b6ba1c70298b3e44cafd2ec1d9d7c14d4082987dbbadb49f433b9dc68c3f86d57d266f5a775540b92e49612e1bc1bed70aaa596f86",
+        "live_analysis_equals_pe": true
+      },
+      "table": {
+        "address": "00e16478",
+        "length": 288,
+        "sha256": "2a42b9cd37b5c11ab78cc633ffd65479d77dd8e54eaffb8fe5929630a6801299",
+        "sha512": "31a3b3289f2c821df8825d6fd4a70e63febd14958470483024eba3724a8c03424b2d0ecf7493fefe0e50fe8c3ee3fc3717f7c060710071f7c57450d8f1babc11",
+        "live_analysis_equals_pe": true
+      },
+      "import": {
+        "address": "00ce2210",
+        "length": 4,
+        "sha256": "185a5fca4ac0e7e71b064b7142a7c3e9aff75525c45428d05f8a277255e4f88b",
+        "sha512": "7044621ba0ed070d4aa776ee2a0a651aa01bd34093d50df4fdfdaafbd8809d20c6678d609cf4c61f0695dab1135592915408e280a0c8ef46f7d8500d700fc7dd",
+        "live_analysis_equals_pe": true
+      }
+    },
+    "import_at_ce2210": [
+      "KERNEL32.dll",
+      "LeaveCriticalSection"
+    ],
+    "initial_canonical_table": [
+      {
+        "index": 0,
+        "pointer": 0,
+        "flag": 1
+      },
+      {
+        "index": 1,
+        "pointer": 0,
+        "flag": 1
+      },
+      {
+        "index": 2,
+        "pointer": 0,
+        "flag": 0
+      },
+      {
+        "index": 3,
+        "pointer": 0,
+        "flag": 1
+      },
+      {
+        "index": 4,
+        "pointer": 0,
+        "flag": 1
+      },
+      {
+        "index": 5,
+        "pointer": 0,
+        "flag": 0
+      },
+      {
+        "index": 6,
+        "pointer": 0,
+        "flag": 1
+      },
+      {
+        "index": 7,
+        "pointer": 0,
+        "flag": 1
+      },
+      {
+        "index": 8,
+        "pointer": 0,
+        "flag": 1
+      },
+      {
+        "index": 9,
+        "pointer": 0,
+        "flag": 0
+      },
+      {
+        "index": 10,
+        "pointer": 0,
+        "flag": 1
+      },
+      {
+        "index": 11,
+        "pointer": 0,
+        "flag": 0
+      },
+      {
+        "index": 12,
+        "pointer": 0,
+        "flag": 1
+      },
+      {
+        "index": 13,
+        "pointer": 0,
+        "flag": 1
+      },
+      {
+        "index": 14,
+        "pointer": 0,
+        "flag": 1
+      },
+      {
+        "index": 15,
+        "pointer": 0,
+        "flag": 0
+      },
+      {
+        "index": 16,
+        "pointer": 0,
+        "flag": 1
+      },
+      {
+        "index": 17,
+        "pointer": 0,
+        "flag": 1
+      },
+      {
+        "index": 18,
+        "pointer": 0,
+        "flag": 1
+      },
+      {
+        "index": 19,
+        "pointer": 0,
+        "flag": 0
+      },
+      {
+        "index": 20,
+        "pointer": 0,
+        "flag": 0
+      },
+      {
+        "index": 21,
+        "pointer": 0,
+        "flag": 0
+      },
+      {
+        "index": 22,
+        "pointer": 0,
+        "flag": 0
+      },
+      {
+        "index": 23,
+        "pointer": 0,
+        "flag": 0
+      },
+      {
+        "index": 24,
+        "pointer": 0,
+        "flag": 0
+      },
+      {
+        "index": 25,
+        "pointer": 0,
+        "flag": 0
+      },
+      {
+        "index": 26,
+        "pointer": 0,
+        "flag": 0
+      },
+      {
+        "index": 27,
+        "pointer": 0,
+        "flag": 0
+      },
+      {
+        "index": 28,
+        "pointer": 0,
+        "flag": 0
+      },
+      {
+        "index": 29,
+        "pointer": 0,
+        "flag": 0
+      },
+      {
+        "index": 30,
+        "pointer": 0,
+        "flag": 0
+      },
+      {
+        "index": 31,
+        "pointer": 0,
+        "flag": 0
+      },
+      {
+        "index": 32,
+        "pointer": 0,
+        "flag": 0
+      },
+      {
+        "index": 33,
+        "pointer": 0,
+        "flag": 0
+      },
+      {
+        "index": 34,
+        "pointer": 0,
+        "flag": 0
+      },
+      {
+        "index": 35,
+        "pointer": 0,
+        "flag": 0
+      }
+    ],
+    "runtime_observed": false
+  },
+  "artifact_evidence": {
+    "installed_pe": {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "size": 12223752,
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "sha512": "7b545a4c47fae14af6c50a1d4d0d2904c1b85f84b9a24d1516b95d77945693fc36b1f6bb9effb7fa29b22b06ebcafc230cdf97f5c332266a3de8dd83bdc29a97"
+    },
+    "spans": {
+      "bytes": {
+        "entry": "00c11b31",
+        "length": 21,
+        "live_analysis_equals_pe": true,
+        "size": 21,
+        "sha256": "79a3d82c9ad3f43182f2d65bf6c207f932615a621ab8b35db6fdcc467d324d56",
+        "sha512": "d2156491a51719a19a18d2b6ba1c70298b3e44cafd2ec1d9d7c14d4082987dbbadb49f433b9dc68c3f86d57d266f5a775540b92e49612e1bc1bed70aaa596f86"
+      },
+      "table": {
+        "entry": "00e16478",
+        "length": 288,
+        "live_analysis_equals_pe": true,
+        "size": 288,
+        "sha256": "2a42b9cd37b5c11ab78cc633ffd65479d77dd8e54eaffb8fe5929630a6801299",
+        "sha512": "31a3b3289f2c821df8825d6fd4a70e63febd14958470483024eba3724a8c03424b2d0ecf7493fefe0e50fe8c3ee3fc3717f7c060710071f7c57450d8f1babc11"
+      },
+      "import": {
+        "entry": "00ce2210",
+        "length": 4,
+        "live_analysis_equals_pe": true,
+        "size": 4,
+        "sha256": "185a5fca4ac0e7e71b064b7142a7c3e9aff75525c45428d05f8a277255e4f88b",
+        "sha512": "7044621ba0ed070d4aa776ee2a0a651aa01bd34093d50df4fdfdaafbd8809d20c6678d609cf4c61f0695dab1135592915408e280a0c8ef46f7d8500d700fc7dd"
+      }
+    },
+    "import_owner": {
+      "iat": "00ce2210",
+      "dll": "KERNEL32.dll",
+      "symbol": "LeaveCriticalSection"
+    },
+    "object": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-canonical-crt-unlock-fn\\local\\canonical_crt_unlock_fn\\compiler\\native_crt_canonical_unlock.obj",
+      "size": 806,
+      "sha256": "d83d3c584627fa69a127c041212034aca113bc9c9e464fd347270988b0faf08b",
+      "sha512": "ea37bce4fb6588a8c95b4a0e8f061a73bf45dc9c3de7227f29046aeb1c42bffbf2dbe84b6fe869c3dff211c65de7c0ed871a51851804395a19b3656647aceb0b",
+      "symbol": {
+        "name": "?unlock_native_crt_canonical_00c11b31@bsp@@YAXH@Z",
+        "value": 0,
+        "section": 3,
+        "type": 32,
+        "storage": 2
+      },
+      "section": ".text$mn",
+      "body": {
+        "size": 21,
+        "sha256": "08d601e12a0fd1c90a51c8c9e1541e19264960aa0bb18c8bf7394bda9c11f0a6",
+        "sha512": "afd4741d4e07cae02e68604a06a722e15fbc567f872479fb59082054676e080f87f810e836e29c4e6839a1f24915c01697c5de66757bd188c1244bfdded1e8d6"
+      },
+      "relocations": [
+        {
+          "offset": 15,
+          "type": 6,
+          "symbol": "__imp__LeaveCriticalSection@4"
+        }
+      ],
+      "full_body_equal_except_import_operand": true,
+      "fixed_table_operand_exact": true,
+      "static_call_offsets": [
+        13
+      ],
+      "abi": "cdecl one int32 word; original EBP frame; plain RET; one real stdcall import site"
+    },
+    "archive": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-canonical-crt-unlock-fn\\build\\win32\\Release\\bsp_core.lib",
+      "size": 58830502,
+      "sha256": "5dbed967da63e80ff6d739e8e5ecb7c9a14dad8233e3f1de194974f0e9374a7f",
+      "sha512": "4d7cc9c1a27e52b45d72a55a641cc71d9d348c19ea0962bb4aeda01a04f580c119c656f23fa3420e8d543a0f0d81b3696e8559ca4e7d3b89d0e5a0a0aaedabd5",
+      "member_count": 1292,
+      "matching_object_count": 1,
+      "member_offset": 12734804,
+      "member_name": "/0",
+      "matching_symbol_rows": [
+        {
+          "symbol": "?unlock_native_crt_canonical_00c11b31@bsp@@YAXH@Z",
+          "member_offset": 12734804
+        }
+      ],
+      "retained_member": {
+        "size": 806,
+        "sha256": "d83d3c584627fa69a127c041212034aca113bc9c9e464fd347270988b0faf08b",
+        "sha512": "ea37bce4fb6588a8c95b4a0e8f061a73bf45dc9c3de7227f29046aeb1c42bffbf2dbe84b6fe869c3dff211c65de7c0ed871a51851804395a19b3656647aceb0b"
+      }
+    },
+    "initial_canonical_table": [
+      {
+        "index": 0,
+        "pointer": 0,
+        "flag": 1
+      },
+      {
+        "index": 1,
+        "pointer": 0,
+        "flag": 1
+      },
+      {
+        "index": 2,
+        "pointer": 0,
+        "flag": 0
+      },
+      {
+        "index": 3,
+        "pointer": 0,
+        "flag": 1
+      },
+      {
+        "index": 4,
+        "pointer": 0,
+        "flag": 1
+      },
+      {
+        "index": 5,
+        "pointer": 0,
+        "flag": 0
+      },
+      {
+        "index": 6,
+        "pointer": 0,
+        "flag": 1
+      },
+      {
+        "index": 7,
+        "pointer": 0,
+        "flag": 1
+      },
+      {
+        "index": 8,
+        "pointer": 0,
+        "flag": 1
+      },
+      {
+        "index": 9,
+        "pointer": 0,
+        "flag": 0
+      },
+      {
+        "index": 10,
+        "pointer": 0,
+        "flag": 1
+      },
+      {
+        "index": 11,
+        "pointer": 0,
+        "flag": 0
+      },
+      {
+        "index": 12,
+        "pointer": 0,
+        "flag": 1
+      },
+      {
+        "index": 13,
+        "pointer": 0,
+        "flag": 1
+      },
+      {
+        "index": 14,
+        "pointer": 0,
+        "flag": 1
+      },
+      {
+        "index": 15,
+        "pointer": 0,
+        "flag": 0
+      },
+      {
+        "index": 16,
+        "pointer": 0,
+        "flag": 1
+      },
+      {
+        "index": 17,
+        "pointer": 0,
+        "flag": 1
+      },
+      {
+        "index": 18,
+        "pointer": 0,
+        "flag": 1
+      },
+      {
+        "index": 19,
+        "pointer": 0,
+        "flag": 0
+      },
+      {
+        "index": 20,
+        "pointer": 0,
+        "flag": 0
+      },
+      {
+        "index": 21,
+        "pointer": 0,
+        "flag": 0
+      },
+      {
+        "index": 22,
+        "pointer": 0,
+        "flag": 0
+      },
+      {
+        "index": 23,
+        "pointer": 0,
+        "flag": 0
+      },
+      {
+        "index": 24,
+        "pointer": 0,
+        "flag": 0
+      },
+      {
+        "index": 25,
+        "pointer": 0,
+        "flag": 0
+      },
+      {
+        "index": 26,
+        "pointer": 0,
+        "flag": 0
+      },
+      {
+        "index": 27,
+        "pointer": 0,
+        "flag": 0
+      },
+      {
+        "index": 28,
+        "pointer": 0,
+        "flag": 0
+      },
+      {
+        "index": 29,
+        "pointer": 0,
+        "flag": 0
+      },
+      {
+        "index": 30,
+        "pointer": 0,
+        "flag": 0
+      },
+      {
+        "index": 31,
+        "pointer": 0,
+        "flag": 0
+      },
+      {
+        "index": 32,
+        "pointer": 0,
+        "flag": 0
+      },
+      {
+        "index": 33,
+        "pointer": 0,
+        "flag": 0
+      },
+      {
+        "index": 34,
+        "pointer": 0,
+        "flag": 0
+      },
+      {
+        "index": 35,
+        "pointer": 0,
+        "flag": 0
+      }
+    ],
+    "runtime_executed": false
+  },
+  "build": {
+    "command": "./scripts/build.ps1",
+    "invocations": 1,
+    "configuration": "MSVC Win32 Release",
+    "strict_options": "/W4 /WX /fp:strict",
+    "exit_code": 0,
+    "seed_spans": 8,
+    "seed_matches": true,
+    "existing_ctests_passed": 2,
+    "tests_added": 0,
+    "unlock_fixture_executed": false,
+    "prebuild_guard": {
+      "size": 6891,
+      "sha256": "94a700861b2de15f5b168623f60a4f5600422b9837eb1972463f7fab78c6b675",
+      "sha512": "37549893010bfab3b10350315e7c2ddc78456f70bc975b473040a40327bf2646a7941aa9824aacea6e2bb0671bd412c88c286d16045037478bc944394ae96f45"
+    },
+    "postbuild_guard": {
+      "size": 10130,
+      "sha256": "d1c8ec02603d1b1fd64a6639f72f81d2445d7af958c0e4bab57400fcb9786345",
+      "sha512": "fc3619d5024159c34895d459b58ee75065e415dbd80c7dc499eb5a1bfdcd6b625c8e4828bbe48675818316e39adcc2ef42132d265d9873d8e1c6d8c01431e2a1"
+    },
+    "input_count": 18,
+    "owned_object_absent_before_compile": true,
+    "input_toolchain_hashes_unchanged": true,
+    "owned_source_and_header_in_retained_read_block": true,
+    "log": {
+      "size": 50303,
+      "sha256": "eef9c0f9d936d59b64df67b16345e4ca4ce9452b827b46da3b765e21f8217e6c",
+      "sha512": "1c41e5f93fc56d0c12387cc15d291dd5359ad2e48d476791a0770c920ec0ee08f8867418e6312bde4f8262be1bcb6792ca833ff28dee345e3132f1666df8461b"
+    }
+  },
+  "desired_annotation": {
+    "address": "00c11b31",
+    "name": "__unlock",
+    "apply_by": "primary",
+    "preserve_existing_comments": true,
+    "applied": false
+  },
+  "limitations": [
+    "Source code/import placement differs from original image; original fault/return PCs and unwind continuation identity are not reproduced.",
+    "No unlock body, native initialization/acquisition, probe, PTD/SEH path, forced-DLL path or game executed.",
+    "Full lock/initialization/PTD/SEH/teardown closure and gameplay remain unimplemented or unvalidated outside this leaf.",
+    "Source/object/build and existing math fixtures do not establish runtime or gameplay equivalence."
+  ]
+}
