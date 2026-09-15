@@ -1,0 +1,247 @@
+{
+  "packet": "orch4_device_constructors_d4",
+  "project": "bsp",
+  "program": "battlestationspacific.exe",
+  "source": [
+    "include/bsp/native_device_class_construction.hpp",
+    "src/native_device_class_construction.cpp"
+  ],
+  "evidence": "docs/NATIVE_DEVICE_CLASS_CONSTRUCTION_ORCH4.md",
+  "routines": [
+    {
+      "address": "00442b90",
+      "end_inclusive": "00442bf7",
+      "bytes": 104,
+      "sha256": "fca0b66eb7c26f136aaa5aa93c1bdd513ce37bf936dc680156221843d10bddd4",
+      "live_disk_match": true,
+      "proposed_name": "BSP_ConstructGunClass",
+      "table_identity": "00ce4534",
+      "coverage": "complete ordinary body; genuine damageable base; supplied actual stable table identities",
+      "original_abi": "ECX actual class; no stack arguments; RET; EAX captured class",
+      "previous_name": "FUN_00442b90",
+      "previous_comments": [],
+      "source_entrypoint": "construct_native_gun_class_00442b90"
+    },
+    {
+      "address": "00442c50",
+      "end_inclusive": "00442c6b",
+      "bytes": 28,
+      "sha256": "3e7feaa725b237b0c38ad4335e985d952afe5b4012ee93bbe3ea3e8f38878d5d",
+      "live_disk_match": true,
+      "proposed_name": "BSP_ConstructBombPlatformClass",
+      "table_identity": "00ce4560",
+      "coverage": "complete ordinary body; genuine damageable base; supplied actual stable table identities",
+      "original_abi": "ECX actual class; no stack arguments; RET; EAX captured class",
+      "previous_name": "FUN_00442c50",
+      "previous_comments": [],
+      "source_entrypoint": "construct_native_bomb_platform_00442c50"
+    },
+    {
+      "address": "00442ce0",
+      "end_inclusive": "00442cfb",
+      "bytes": 28,
+      "sha256": "123a78d36a950706c589e0743ea59391304574c6c7cae0ce4a8672d892288fca",
+      "live_disk_match": true,
+      "proposed_name": "BSP_ConstructMultibombPlatformClass",
+      "table_identity": "00ce459c",
+      "coverage": "complete ordinary body; genuine damageable base; supplied actual stable table identities",
+      "original_abi": "ECX actual class; no stack arguments; RET; EAX captured class",
+      "previous_name": "FUN_00442ce0",
+      "previous_comments": [],
+      "source_entrypoint": "construct_native_multibomb_platform_00442ce0"
+    },
+    {
+      "address": "00442d80",
+      "end_inclusive": "00442d91",
+      "bytes": 18,
+      "sha256": "251f8296db36eaa3c93c5fcaaf64785fd1a1334657bc83cb810ceee9286365b7",
+      "live_disk_match": true,
+      "proposed_name": "BSP_ConstructRapidFixedSlaveGunClass",
+      "table_identity": "00ce45e0",
+      "coverage": "complete ordinary body; genuine damageable base; supplied actual stable table identities",
+      "original_abi": "ECX actual class; no stack arguments; RET; EAX captured class",
+      "previous_name": "FUN_00442d80",
+      "previous_comments": [],
+      "source_entrypoint": "construct_native_rapid_fixed_slave_gun_00442d80"
+    },
+    {
+      "address": "00442e20",
+      "end_inclusive": "00442e31",
+      "bytes": 18,
+      "sha256": "65652fca25f358cc21a59cca1e8c9b0cd011f460769e8312853b3e1cfdd47e66",
+      "live_disk_match": true,
+      "proposed_name": "BSP_ConstructRapidTurningGunClass",
+      "table_identity": "00ce4614",
+      "coverage": "complete ordinary body; genuine damageable base; supplied actual stable table identities",
+      "original_abi": "ECX actual class; no stack arguments; RET; EAX captured class",
+      "previous_name": "FUN_00442e20",
+      "previous_comments": [],
+      "source_entrypoint": "construct_native_rapid_turning_gun_00442e20"
+    },
+    {
+      "address": "00442ec0",
+      "end_inclusive": "00442ed1",
+      "bytes": 18,
+      "sha256": "962ad37409622bb29d7d671c9963a488c965ddbb2efa95c08ed9c10b0b4f9311",
+      "live_disk_match": true,
+      "proposed_name": "BSP_ConstructSingleTurningGunClass",
+      "table_identity": "00ce4648",
+      "coverage": "complete ordinary body; genuine damageable base; supplied actual stable table identities",
+      "original_abi": "ECX actual class; no stack arguments; RET; EAX captured class",
+      "previous_name": "FUN_00442ec0",
+      "previous_comments": [],
+      "source_entrypoint": "construct_native_single_turning_gun_00442ec0"
+    },
+    {
+      "address": "00442f50",
+      "end_inclusive": "00442f61",
+      "bytes": 18,
+      "sha256": "d927380e95a7b6286d50792778ffd1513cb88e81b029b96721e8e2d150935c41",
+      "live_disk_match": true,
+      "proposed_name": "BSP_ConstructDepthChargeLauncherClass",
+      "table_identity": "00ce467c",
+      "coverage": "complete ordinary body; genuine damageable base; supplied actual stable table identities",
+      "original_abi": "ECX actual class; no stack arguments; RET; EAX captured class",
+      "previous_name": "FUN_00442f50",
+      "previous_comments": [],
+      "source_entrypoint": "construct_native_depth_charge_launcher_00442f50"
+    },
+    {
+      "address": "00442ff0",
+      "end_inclusive": "0044300b",
+      "bytes": 28,
+      "sha256": "00016036c95cc90d090dc5425bf1d003d44d897e906ba9f93853f900bb1e76f1",
+      "live_disk_match": true,
+      "proposed_name": "BSP_ConstructCatapultClass",
+      "table_identity": "00ce46c0",
+      "coverage": "complete ordinary body; genuine damageable base; supplied actual stable table identities",
+      "original_abi": "ECX actual class; no stack arguments; RET; EAX captured class",
+      "previous_name": "FUN_00442ff0",
+      "previous_comments": [],
+      "source_entrypoint": "construct_native_catapult_00442ff0"
+    }
+  ],
+  "calls": [
+    {
+      "address": "00442ba9",
+      "native": "0087c640",
+      "function": "00442b90"
+    },
+    {
+      "address": "00442c53",
+      "native": "00442b90",
+      "function": "00442c50"
+    },
+    {
+      "address": "00442ce3",
+      "native": "00442b90",
+      "function": "00442ce0"
+    },
+    {
+      "address": "00442d83",
+      "native": "00442b90",
+      "function": "00442d80"
+    },
+    {
+      "address": "00442e23",
+      "native": "00442b90",
+      "function": "00442e20"
+    },
+    {
+      "address": "00442ec3",
+      "native": "00442b90",
+      "function": "00442ec0"
+    },
+    {
+      "address": "00442f53",
+      "native": "00442b90",
+      "function": "00442f50"
+    },
+    {
+      "address": "00442ff3",
+      "native": "00442b90",
+      "function": "00442ff0"
+    },
+    {
+      "address": "004431c5",
+      "native": "00442b90",
+      "function": "00443090",
+      "contract": "actual factory call; rapid paths inline final table override"
+    },
+    {
+      "address": "0044320c",
+      "native": "00442b90",
+      "function": "00443090",
+      "contract": "actual factory call; rapid paths inline final table override"
+    },
+    {
+      "address": "0044324e",
+      "native": "00442ec0",
+      "function": "00443090",
+      "contract": "actual factory call; rapid paths inline final table override"
+    },
+    {
+      "address": "0044328a",
+      "native": "00442c50",
+      "function": "00443090",
+      "contract": "actual factory call; rapid paths inline final table override"
+    },
+    {
+      "address": "004432c2",
+      "native": "00442ce0",
+      "function": "00443090",
+      "contract": "actual factory call; rapid paths inline final table override"
+    },
+    {
+      "address": "004432f7",
+      "native": "00442f50",
+      "function": "00443090",
+      "contract": "actual factory call; rapid paths inline final table override"
+    },
+    {
+      "address": "00443330",
+      "native": "00442ff0",
+      "function": "00443090",
+      "contract": "actual factory call; rapid paths inline final table override"
+    }
+  ],
+  "validation": {
+    "build": "MSVC Win32 Release scripts/build.ps1 passed",
+    "gameplay": false,
+    "original_abi": false,
+    "native_fh3": false,
+    "existing_ctests": "3/3 passed: reconstructed_math, native_math_differential, tool_tests",
+    "call_verifier": "15/15 direct CALL rows passed",
+    "fixture": "Base construction fixture recorded separately; no derived-specific native comparison"
+  },
+  "exception_evidence": {
+    "handler": "00c5fb41",
+    "func_info": "00d86790",
+    "max_state": 3,
+    "unwind_map": "00d86778",
+    "ordinary_state": "-1 throughout; no armed actions",
+    "entries": [
+      {
+        "state": 0,
+        "to_state": -1,
+        "funclet": "00c5fb20",
+        "target": "004420d0",
+        "offset": "0"
+      },
+      {
+        "state": 1,
+        "to_state": 0,
+        "funclet": "00c5fb28",
+        "target": "00442b70",
+        "offset": "74"
+      },
+      {
+        "state": 2,
+        "to_state": 1,
+        "funclet": "00c5fb33",
+        "target": "0041f5d0",
+        "offset": "98"
+      }
+    ]
+  }
+}
