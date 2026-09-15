@@ -28,6 +28,11 @@ static_assert(offsetof(NativeRenderResourceRecord, payload_14_24) == 0x14);
 static_assert(offsetof(NativeRenderResourceRecord, resource_28) == 0x28);
 
 namespace {
+void release_alias_string(NativeStringRawPoolContext& strings, char* data, std::uint32_t size) {
+    auto* const pool = native_string_pool_get_or_create_00419cc0(
+        strings.actual_published_01090aa8, strings.actual_manager_publication_01090aa0);
+    return_native_string_pool_00bd1510(pool, data, size, strings.actual_small_returns_disabled_01090aa4);
+}
 void release_alias_string(SizedStoragePool& pool, char* data, std::uint32_t size) {
     pool.release_00bd1510(data, size);
 }
@@ -221,6 +226,11 @@ void destroy_native_render_resource_record_00b2f990(
     }
     auto* const data = record.name_data_04;
     if (data) strings.release(data, record.name_length_00 + 1u);
+}
+
+
+void clear_native_render_resource_aliases_004d05e0(void* owner, NativeStringRawPoolContext& strings) {
+    clear_aliases_with_pool(owner, strings);
 }
 
 }

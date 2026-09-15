@@ -7,6 +7,7 @@
 
 #include <cstring>
 #include <new>
+#include <type_traits>
 
 #if !defined(_MSC_VER) || !defined(_M_IX86)
 #error Native resource-record construction requires MSVC Win32 pointer widths.
@@ -75,9 +76,15 @@ static void* copy_alias_list_with_pool(void* actual_destination_owner,
     auto* const destination_first = allocated_fields->next_00; // Captured allocation.
     auto* const source_owner = const_cast<void*>(actual_source_owner);
     try { // State 0 at 004D48EB; pointer captures above precede this catch.
-        insert_native_render_alias_range_004d26a0(actual_destination_owner,
-            {actual_destination_owner, destination_first}, {source_owner, source_first},
-            {source_owner, source_end}, actual_string_pool, callbacks);
+        if constexpr (std::is_same_v<Pool, NativeStringRawPoolContext>) {
+            insert_native_render_alias_range_004d26a0(actual_destination_owner,
+                {actual_destination_owner, destination_first}, {source_owner, source_first},
+                {source_owner, source_end}, actual_string_pool);
+        } else {
+            insert_native_render_alias_range_004d26a0(actual_destination_owner,
+                {actual_destination_owner, destination_first}, {source_owner, source_first},
+                {source_owner, source_end}, actual_string_pool, callbacks);
+        }
     } catch (...) {
         // Actual catch004D490C: destroy current list, then native rethrow.
         // Cleanup failure is allowed to supersede the original exception.
@@ -172,6 +179,17 @@ NativeRenderResourceRecord& copy_construct_native_render_resource_record_00b2fc6
         throw;
     }
     return actual_destination;
+}
+
+
+void destroy_native_render_alias_list_004d0a10(void* owner, NativeStringRawPoolContext& strings) {
+    destroy_alias_list_with_pool(owner, strings);
+}
+void* copy_construct_native_render_alias_list_004d48a0(void* destination,
+    const void* source, NativeStringRawPoolContext& strings) {
+    // The raw template selects its fixed CRT provider; these unused host fields
+    // are never consulted or exposed to the raw caller.
+    return copy_alias_list_with_pool(destination, source, strings, {});
 }
 
 } // namespace bsp

@@ -49,4 +49,10 @@ NativeRenderResourceRecord& copy_construct_native_render_resource_record_00b2fc6
     NativeRenderResourceRecord&, const NativeRenderResourceRecord&,
     ActualNativeStringPoolStorage&, const SingletonLifetimeCallbacks&);
 
+
+// Raw publication overloads preserve getter failure propagation. The list-copy
+// catch destroys the current list and may replace the original exception.
+void destroy_native_render_alias_list_004d0a10(void*, NativeStringRawPoolContext&);
+void* copy_construct_native_render_alias_list_004d48a0(void*, const void*, NativeStringRawPoolContext&);
+
 } // namespace bsp
