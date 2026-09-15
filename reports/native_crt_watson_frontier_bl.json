@@ -1,0 +1,2114 @@
+{
+  "packet": "orch2_native_crt_watson_frontier_bl",
+  "base": "eaa1f87cc5594484494824afe5d1fa7f2efb5545",
+  "status": "discovery_only_bounded_watson_cookie_source_packet_ready_error_tls_owner_separate",
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "verification": "Every live query/capture used BSP CLI Client.verify against the existing bsp /battlestationspacific.exe project. No runtime experiments, C++ or Ghidra writes. Current Windows SDK x86 structures inspected locally, not executed.",
+  "routines": [
+    {
+      "address": "00bf65bb",
+      "length": 252,
+      "coverage": "Complete live/PE physical body and listing inspected; raw corrections listed separately."
+    },
+    {
+      "address": "00c04ef3",
+      "length": 8,
+      "coverage": "Complete live/PE physical body and listing inspected; raw corrections listed separately."
+    },
+    {
+      "address": "00bfe120",
+      "length": 15,
+      "coverage": "Complete live/PE physical body and listing inspected; raw corrections listed separately."
+    },
+    {
+      "address": "00bffb8b",
+      "length": 19,
+      "coverage": "Complete live/PE physical body and listing inspected; raw corrections listed separately."
+    },
+    {
+      "address": "00bf66ef",
+      "length": 36,
+      "coverage": "Complete live/PE physical body and listing inspected; raw corrections listed separately."
+    },
+    {
+      "address": "00bf79f0",
+      "length": 122,
+      "coverage": "Complete live/PE physical body and listing inspected; raw corrections listed separately."
+    },
+    {
+      "address": "00c051b7",
+      "length": 119,
+      "coverage": "Complete live/PE physical body and listing inspected; raw corrections listed separately."
+    },
+    {
+      "address": "00c185a4",
+      "length": 260,
+      "coverage": "Complete live/PE physical body and listing inspected; raw corrections listed separately."
+    },
+    {
+      "address": "00c1815e",
+      "length": 148,
+      "coverage": "Complete live/PE physical body and listing inspected; raw corrections listed separately."
+    },
+    {
+      "address": "00c05070",
+      "length": 50,
+      "coverage": "Complete live/PE physical body and listing inspected; raw corrections listed separately."
+    },
+    {
+      "address": "00bf65b1",
+      "length": 10,
+      "coverage": "Complete live/PE physical body and listing inspected; raw corrections listed separately."
+    },
+    {
+      "address": "00bfbdfb",
+      "length": 76,
+      "coverage": "Complete live/PE physical body and listing inspected; raw corrections listed separately."
+    },
+    {
+      "address": "00c04fd5",
+      "length": 9,
+      "coverage": "Complete live/PE physical body and listing inspected; raw corrections listed separately."
+    }
+  ],
+  "calls": [
+    {
+      "address": "00bf6647",
+      "native": "00bf79f0",
+      "function": "00bf65bb",
+      "instruction": "00bf6647: CALL 0x00bf79f0 ",
+      "window": [
+        "00bf6641: LEA EAX,[EBP + -0x80] ",
+        "00bf6644: PUSH 0x0 ",
+        "00bf6646: PUSH EAX ",
+        "00bf6647: CALL 0x00bf79f0 ",
+        "00bf664c: LEA EAX,[EBP + -0x80] "
+      ]
+    },
+    {
+      "address": "00bf6689",
+      "native": "00c04ef3",
+      "function": "00bf65bb",
+      "instruction": "00bf6689: CALL 0x00c04ef3 ",
+      "window": [
+        "00bf6683: TEST ESI,ESI ",
+        "00bf6685: JNZ 0x00bf668f ",
+        "00bf6687: PUSH 0x2 ",
+        "00bf6689: CALL 0x00c04ef3 ",
+        "00bf668e: POP ECX "
+      ]
+    },
+    {
+      "address": "00bf66aa",
+      "native": "00bfe120",
+      "function": "00bf65bb",
+      "instruction": "00bf66aa: CALL 0x00bfe120 ",
+      "window": [
+        "00bf66a1: MOV ECX,dword ptr [EBP + 0x2a4] ",
+        "00bf66a7: XOR ECX,EBP ",
+        "00bf66a9: POP ESI ",
+        "00bf66aa: CALL 0x00bfe120 ",
+        "00bf66af: ADD EBP,0x2a8 "
+      ]
+    },
+    {
+      "address": "00bfe12a",
+      "native": "00c185a4",
+      "function": "00bfe120",
+      "instruction": "00bfe12a: JMP 0x00c185a4 ",
+      "window": [
+        "00bfe120: CMP ECX,dword ptr [0x00e15590] ",
+        "00bfe126: JNZ 0x00bfe12a ",
+        "00bfe128: RET ",
+        "00bfe12a: JMP 0x00c185a4 "
+      ],
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00bffb8b",
+      "native": "00c051b7",
+      "function": "00bffb8b",
+      "instruction": "00bffb8b: CALL 0x00c051b7 ",
+      "window": [
+        "00bffb8b: CALL 0x00c051b7 ",
+        "00bffb90: TEST EAX,EAX "
+      ]
+    },
+    {
+      "address": "00bf66f8",
+      "native": "00c04fde",
+      "function": "00bf66ef",
+      "instruction": "00bf66f8: CALL 0x00c04fde ",
+      "window": [
+        "00bf66ef: PUSH EBP ",
+        "00bf66f0: MOV EBP,ESP ",
+        "00bf66f2: PUSH dword ptr [0x0109dd64] ",
+        "00bf66f8: CALL 0x00c04fde ",
+        "00bf66fd: TEST EAX,EAX "
+      ]
+    },
+    {
+      "address": "00bf6707",
+      "native": "00c04ef3",
+      "function": "00bf66ef",
+      "instruction": "00bf6707: CALL 0x00c04ef3 ",
+      "window": [
+        "00bf6702: POP EBP ",
+        "00bf6703: JMP EAX ",
+        "00bf6705: PUSH 0x2 ",
+        "00bf6707: CALL 0x00c04ef3 ",
+        "00bf670c: POP ECX "
+      ]
+    },
+    {
+      "address": "00bf670e",
+      "native": "00bf65bb",
+      "function": "00bf66ef",
+      "instruction": "00bf670e: JMP 0x00bf65bb ",
+      "window": [
+        "00bf6707: CALL 0x00c04ef3 ",
+        "00bf670c: POP ECX ",
+        "00bf670d: POP EBP ",
+        "00bf670e: JMP 0x00bf65bb "
+      ],
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00bf7a17",
+      "native": "00c0c965",
+      "function": "00bf79f0",
+      "instruction": "00bf7a17: JMP 0x00c0c965 ",
+      "window": [
+        "00bf7a0c: JC 0x00bf7a1c ",
+        "00bf7a0e: CMP dword ptr [0x0109eea4],0x0 ",
+        "00bf7a15: JZ 0x00bf7a1c ",
+        "00bf7a17: JMP 0x00c0c965 ",
+        "00bf7a1c: PUSH EDI "
+      ],
+      "kind": "tail_jump",
+      "qualification": "General memset SSE tail; unreachable for Watson fixed50h size; target body not inspected."
+    },
+    {
+      "address": "00c051c7",
+      "native": "00c05070",
+      "function": "00c051b7",
+      "instruction": "00c051c7: CALL 0x00c05070 ",
+      "window": [
+        "00c051b9: CALL dword ptr [0x00ce2258] ",
+        "00c051bf: PUSH dword ptr [0x00e15afc] ",
+        "00c051c5: MOV EDI,EAX ",
+        "00c051c7: CALL 0x00c05070 ",
+        "00c051cc: CALL EAX "
+      ]
+    },
+    {
+      "address": "00c051db",
+      "native": "00c0485a",
+      "function": "00c051b7",
+      "instruction": "00c051db: CALL 0x00c0485a ",
+      "window": [
+        "00c051d2: JNZ 0x00c05222 ",
+        "00c051d4: PUSH 0x214 ",
+        "00c051d9: PUSH 0x1 ",
+        "00c051db: CALL 0x00c0485a ",
+        "00c051e0: MOV ESI,EAX "
+      ]
+    },
+    {
+      "address": "00c051f5",
+      "native": "00c04fde",
+      "function": "00c051b7",
+      "instruction": "00c051f5: CALL 0x00c04fde ",
+      "window": [
+        "00c051e8: PUSH ESI ",
+        "00c051e9: PUSH dword ptr [0x00e15afc] ",
+        "00c051ef: PUSH dword ptr [0x0109de3c] ",
+        "00c051f5: CALL 0x00c04fde ",
+        "00c051fa: POP ECX "
+      ]
+    },
+    {
+      "address": "00c05204",
+      "native": "00c050f8",
+      "function": "00c051b7",
+      "instruction": "00c05204: CALL 0x00c050f8 ",
+      "window": [
+        "00c051ff: JZ 0x00c05219 ",
+        "00c05201: PUSH 0x0 ",
+        "00c05203: PUSH ESI ",
+        "00c05204: CALL 0x00c050f8 ",
+        "00c05209: POP ECX "
+      ]
+    },
+    {
+      "address": "00c0521a",
+      "native": "00bf9dc8",
+      "function": "00c051b7",
+      "instruction": "00c0521a: CALL 0x00bf9dc8 ",
+      "window": [
+        "00c05215: MOV dword ptr [ESI],EAX ",
+        "00c05217: JMP 0x00c05222 ",
+        "00c05219: PUSH ESI ",
+        "00c0521a: CALL 0x00bf9dc8 ",
+        "00c05222: PUSH EDI "
+      ]
+    },
+    {
+      "address": "00c1866a",
+      "native": "00c04ef3",
+      "function": "00c185a4",
+      "instruction": "00c1866a: CALL 0x00c04ef3 ",
+      "window": [
+        "00c1865d: CALL dword ptr [0x00ce2108] ",
+        "00c18663: MOV [0x0109e5b8],EAX ",
+        "00c18668: PUSH 0x1 ",
+        "00c1866a: CALL 0x00c04ef3 ",
+        "00c1866f: POP ECX "
+      ]
+    },
+    {
+      "address": "00c1868e",
+      "native": "00c04ef3",
+      "function": "00c185a4",
+      "instruction": "00c1868e: CALL 0x00c04ef3 ",
+      "window": [
+        "00c18683: CMP dword ptr [0x0109e5b8],0x0 ",
+        "00c1868a: JNZ 0x00c18694 ",
+        "00c1868c: PUSH 0x1 ",
+        "00c1868e: CALL 0x00c04ef3 ",
+        "00c18693: POP ECX "
+      ]
+    },
+    {
+      "address": "00c05089",
+      "native": "00c04fde",
+      "function": "00c05070",
+      "instruction": "00c05089: CALL 0x00c04fde ",
+      "window": [
+        "00c0507f: TEST ESI,ESI ",
+        "00c05081: JNZ 0x00c0509e ",
+        "00c05083: PUSH dword ptr [0x0109de38] ",
+        "00c05089: CALL 0x00c04fde ",
+        "00c0508e: POP ECX "
+      ]
+    },
+    {
+      "address": "00bfbdfc",
+      "native": "00c04fd5",
+      "function": "00bfbdfb",
+      "instruction": "00bfbdfc: CALL 0x00c04fd5 ",
+      "window": [
+        "00bfbdfb: PUSH ESI ",
+        "00bfbdfc: CALL 0x00c04fd5 ",
+        "00bfbe01: MOV ESI,EAX "
+      ]
+    },
+    {
+      "address": "00bfbe04",
+      "native": "00c05560",
+      "function": "00bfbdfb",
+      "instruction": "00bfbe04: CALL 0x00c05560 ",
+      "window": [
+        "00bfbdfc: CALL 0x00c04fd5 ",
+        "00bfbe01: MOV ESI,EAX ",
+        "00bfbe03: PUSH ESI ",
+        "00bfbe04: CALL 0x00c05560 ",
+        "00bfbe09: PUSH ESI "
+      ]
+    },
+    {
+      "address": "00bfbe0a",
+      "native": "00c17639",
+      "function": "00bfbdfb",
+      "instruction": "00bfbe0a: CALL 0x00c17639 ",
+      "window": [
+        "00bfbe03: PUSH ESI ",
+        "00bfbe04: CALL 0x00c05560 ",
+        "00bfbe09: PUSH ESI ",
+        "00bfbe0a: CALL 0x00c17639 ",
+        "00bfbe0f: PUSH ESI "
+      ]
+    },
+    {
+      "address": "00bfbe10",
+      "native": "00bf65b1",
+      "function": "00bfbdfb",
+      "instruction": "00bfbe10: CALL 0x00bf65b1 ",
+      "window": [
+        "00bfbe09: PUSH ESI ",
+        "00bfbe0a: CALL 0x00c17639 ",
+        "00bfbe0f: PUSH ESI ",
+        "00bfbe10: CALL 0x00bf65b1 ",
+        "00bfbe15: PUSH ESI "
+      ]
+    },
+    {
+      "address": "00bfbe16",
+      "native": "00c05cfb",
+      "function": "00bfbdfb",
+      "instruction": "00bfbe16: CALL 0x00c05cfb ",
+      "window": [
+        "00bfbe0f: PUSH ESI ",
+        "00bfbe10: CALL 0x00bf65b1 ",
+        "00bfbe15: PUSH ESI ",
+        "00bfbe16: CALL 0x00c05cfb ",
+        "00bfbe1b: PUSH ESI "
+      ]
+    },
+    {
+      "address": "00bfbe1c",
+      "native": "00c1752b",
+      "function": "00bfbdfb",
+      "instruction": "00bfbe1c: CALL 0x00c1752b ",
+      "window": [
+        "00bfbe15: PUSH ESI ",
+        "00bfbe16: CALL 0x00c05cfb ",
+        "00bfbe1b: PUSH ESI ",
+        "00bfbe1c: CALL 0x00c1752b ",
+        "00bfbe21: PUSH ESI "
+      ]
+    },
+    {
+      "address": "00bfbe22",
+      "native": "00c17037",
+      "function": "00bfbdfb",
+      "instruction": "00bfbe22: CALL 0x00c17037 ",
+      "window": [
+        "00bfbe1b: PUSH ESI ",
+        "00bfbe1c: CALL 0x00c1752b ",
+        "00bfbe21: PUSH ESI ",
+        "00bfbe22: CALL 0x00c17037 ",
+        "00bfbe27: PUSH ESI "
+      ]
+    },
+    {
+      "address": "00bfbe28",
+      "native": "00c16e8b",
+      "function": "00bfbdfb",
+      "instruction": "00bfbe28: CALL 0x00c16e8b ",
+      "window": [
+        "00bfbe21: PUSH ESI ",
+        "00bfbe22: CALL 0x00c17037 ",
+        "00bfbe27: PUSH ESI ",
+        "00bfbe28: CALL 0x00c16e8b ",
+        "00bfbe2d: PUSH ESI "
+      ]
+    },
+    {
+      "address": "00bfbe2e",
+      "native": "00c07af8",
+      "function": "00bfbdfb",
+      "instruction": "00bfbe2e: CALL 0x00c07af8 ",
+      "window": [
+        "00bfbe27: PUSH ESI ",
+        "00bfbe28: CALL 0x00c16e8b ",
+        "00bfbe2d: PUSH ESI ",
+        "00bfbe2e: CALL 0x00c07af8 ",
+        "00bfbe33: PUSH 0xbfbdcc "
+      ]
+    },
+    {
+      "address": "00bfbe38",
+      "native": "00c04f67",
+      "function": "00bfbdfb",
+      "instruction": "00bfbe38: CALL 0x00c04f67 ",
+      "window": [
+        "00bfbe2d: PUSH ESI ",
+        "00bfbe2e: CALL 0x00c07af8 ",
+        "00bfbe33: PUSH 0xbfbdcc ",
+        "00bfbe38: CALL 0x00c04f67 ",
+        "00bfbe3d: ADD ESP,0x24 "
+      ]
+    },
+    {
+      "address": "00c04fd7",
+      "native": "00c04f67",
+      "function": "00c04fd5",
+      "instruction": "00c04fd7: CALL 0x00c04f67 ",
+      "window": [
+        "00c04fd5: PUSH 0x0 ",
+        "00c04fd7: CALL 0x00c04f67 ",
+        "00c04fdc: POP ECX "
+      ]
+    }
+  ],
+  "indirect_calls": [
+    {
+      "address": "00bf6665",
+      "function": "00bf65bb",
+      "operand": "CALL dword ptr [0x00ce2108] ",
+      "window": [
+        "00bf6658: MOV dword ptr [EBP + -0x80],0xc000000d ",
+        "00bf665f: MOV dword ptr [EBP + -0x74],ESI ",
+        "00bf6662: MOV dword ptr [EBP + -0x2c],EAX ",
+        "00bf6665: CALL dword ptr [0x00ce2108] ",
+        "00bf666b: PUSH 0x0 "
+      ]
+    },
+    {
+      "address": "00bf666f",
+      "function": "00bf65bb",
+      "operand": "CALL dword ptr [0x00ce222c] ",
+      "window": [
+        "00bf6665: CALL dword ptr [0x00ce2108] ",
+        "00bf666b: PUSH 0x0 ",
+        "00bf666d: MOV ESI,EAX ",
+        "00bf666f: CALL dword ptr [0x00ce222c] ",
+        "00bf6675: LEA EAX,[EBP + -0x30] "
+      ]
+    },
+    {
+      "address": "00bf6679",
+      "function": "00bf65bb",
+      "operand": "CALL dword ptr [0x00ce210c] ",
+      "window": [
+        "00bf666f: CALL dword ptr [0x00ce222c] ",
+        "00bf6675: LEA EAX,[EBP + -0x30] ",
+        "00bf6678: PUSH EAX ",
+        "00bf6679: CALL dword ptr [0x00ce210c] ",
+        "00bf667f: TEST EAX,EAX "
+      ]
+    },
+    {
+      "address": "00bf6694",
+      "function": "00bf65bb",
+      "operand": "CALL dword ptr [0x00ce2228] ",
+      "window": [
+        "00bf6689: CALL 0x00c04ef3 ",
+        "00bf668e: POP ECX ",
+        "00bf668f: PUSH 0xc000000d ",
+        "00bf6694: CALL dword ptr [0x00ce2228] ",
+        "00bf669a: PUSH EAX "
+      ]
+    },
+    {
+      "address": "00bf669b",
+      "function": "00bf65bb",
+      "operand": "CALL dword ptr [0x00ce2224] ",
+      "window": [
+        "00bf668f: PUSH 0xc000000d ",
+        "00bf6694: CALL dword ptr [0x00ce2228] ",
+        "00bf669a: PUSH EAX ",
+        "00bf669b: CALL dword ptr [0x00ce2224] ",
+        "00bf66a1: MOV ECX,dword ptr [EBP + 0x2a4] "
+      ]
+    },
+    {
+      "address": "00bf6703",
+      "function": "00bf66ef",
+      "operand": "JMP EAX ",
+      "window": [
+        "00bf66ff: POP ECX ",
+        "00bf6700: JZ 0x00bf6705 ",
+        "00bf6702: POP EBP ",
+        "00bf6703: JMP EAX ",
+        "00bf6705: PUSH 0x2 "
+      ]
+    },
+    {
+      "address": "00c051b9",
+      "function": "00c051b7",
+      "operand": "CALL dword ptr [0x00ce2258] ",
+      "window": [
+        "00c051b7: PUSH ESI ",
+        "00c051b8: PUSH EDI ",
+        "00c051b9: CALL dword ptr [0x00ce2258] ",
+        "00c051bf: PUSH dword ptr [0x00e15afc] "
+      ]
+    },
+    {
+      "address": "00c051cc",
+      "function": "00c051b7",
+      "operand": "CALL EAX ",
+      "window": [
+        "00c051bf: PUSH dword ptr [0x00e15afc] ",
+        "00c051c5: MOV EDI,EAX ",
+        "00c051c7: CALL 0x00c05070 ",
+        "00c051cc: CALL EAX ",
+        "00c051ce: MOV ESI,EAX "
+      ]
+    },
+    {
+      "address": "00c051fb",
+      "function": "00c051b7",
+      "operand": "CALL EAX ",
+      "window": [
+        "00c051ef: PUSH dword ptr [0x0109de3c] ",
+        "00c051f5: CALL 0x00c04fde ",
+        "00c051fa: POP ECX ",
+        "00c051fb: CALL EAX ",
+        "00c051fd: TEST EAX,EAX "
+      ]
+    },
+    {
+      "address": "00c0520b",
+      "function": "00c051b7",
+      "operand": "CALL dword ptr [0x00ce223c] ",
+      "window": [
+        "00c05204: CALL 0x00c050f8 ",
+        "00c05209: POP ECX ",
+        "00c0520a: POP ECX ",
+        "00c0520b: CALL dword ptr [0x00ce223c] ",
+        "00c05211: OR dword ptr [ESI + 0x4],0xffffffff "
+      ]
+    },
+    {
+      "address": "00c05223",
+      "function": "00c051b7",
+      "operand": "CALL dword ptr [0x00ce22bc] ",
+      "window": [
+        "00c05219: PUSH ESI ",
+        "00c0521a: CALL 0x00bf9dc8 ",
+        "00c05222: PUSH EDI ",
+        "00c05223: CALL dword ptr [0x00ce22bc] ",
+        "00c05229: POP EDI "
+      ]
+    },
+    {
+      "address": "00c1865d",
+      "function": "00c185a4",
+      "operand": "CALL dword ptr [0x00ce2108] ",
+      "window": [
+        "00c1864c: MOV dword ptr [EBP + 0xfffffcd8],EAX ",
+        "00c18652: MOV EAX,[0x00e15594] ",
+        "00c18657: MOV dword ptr [EBP + 0xfffffcdc],EAX ",
+        "00c1865d: CALL dword ptr [0x00ce2108] ",
+        "00c18663: MOV [0x0109e5b8],EAX "
+      ]
+    },
+    {
+      "address": "00c18672",
+      "function": "00c185a4",
+      "operand": "CALL dword ptr [0x00ce222c] ",
+      "window": [
+        "00c1866a: CALL 0x00c04ef3 ",
+        "00c1866f: POP ECX ",
+        "00c18670: PUSH 0x0 ",
+        "00c18672: CALL dword ptr [0x00ce222c] ",
+        "00c18678: PUSH 0xd6e1cc "
+      ]
+    },
+    {
+      "address": "00c1867d",
+      "function": "00c185a4",
+      "operand": "CALL dword ptr [0x00ce210c] ",
+      "window": [
+        "00c18670: PUSH 0x0 ",
+        "00c18672: CALL dword ptr [0x00ce222c] ",
+        "00c18678: PUSH 0xd6e1cc ",
+        "00c1867d: CALL dword ptr [0x00ce210c] ",
+        "00c18683: CMP dword ptr [0x0109e5b8],0x0 "
+      ]
+    },
+    {
+      "address": "00c18699",
+      "function": "00c185a4",
+      "operand": "CALL dword ptr [0x00ce2228] ",
+      "window": [
+        "00c1868e: CALL 0x00c04ef3 ",
+        "00c18693: POP ECX ",
+        "00c18694: PUSH 0xc0000409 ",
+        "00c18699: CALL dword ptr [0x00ce2228] ",
+        "00c1869f: PUSH EAX "
+      ]
+    },
+    {
+      "address": "00c186a0",
+      "function": "00c185a4",
+      "operand": "CALL dword ptr [0x00ce2224] ",
+      "window": [
+        "00c18694: PUSH 0xc0000409 ",
+        "00c18699: CALL dword ptr [0x00ce2228] ",
+        "00c1869f: PUSH EAX ",
+        "00c186a0: CALL dword ptr [0x00ce2224] ",
+        "00c186a6: LEAVE "
+      ]
+    },
+    {
+      "address": "00c18193",
+      "function": "00c1815e",
+      "operand": "CALL dword ptr [0x00ce2100] ",
+      "window": [
+        "00c1818e: PUSH ESI ",
+        "00c1818f: LEA EAX,[EBP + -0x8] ",
+        "00c18192: PUSH EAX ",
+        "00c18193: CALL dword ptr [0x00ce2100] ",
+        "00c18199: MOV ESI,dword ptr [EBP + -0x4] "
+      ]
+    },
+    {
+      "address": "00c1819f",
+      "function": "00c1815e",
+      "operand": "CALL dword ptr [0x00ce21dc] ",
+      "window": [
+        "00c18193: CALL dword ptr [0x00ce2100] ",
+        "00c18199: MOV ESI,dword ptr [EBP + -0x4] ",
+        "00c1819c: XOR ESI,dword ptr [EBP + -0x8] ",
+        "00c1819f: CALL dword ptr [0x00ce21dc] ",
+        "00c181a5: XOR ESI,EAX "
+      ]
+    },
+    {
+      "address": "00c181a7",
+      "function": "00c1815e",
+      "operand": "CALL dword ptr [0x00ce223c] ",
+      "window": [
+        "00c1819c: XOR ESI,dword ptr [EBP + -0x8] ",
+        "00c1819f: CALL dword ptr [0x00ce21dc] ",
+        "00c181a5: XOR ESI,EAX ",
+        "00c181a7: CALL dword ptr [0x00ce223c] ",
+        "00c181ad: XOR ESI,EAX "
+      ]
+    },
+    {
+      "address": "00c181af",
+      "function": "00c1815e",
+      "operand": "CALL dword ptr [0x00ce22ac] ",
+      "window": [
+        "00c181a5: XOR ESI,EAX ",
+        "00c181a7: CALL dword ptr [0x00ce223c] ",
+        "00c181ad: XOR ESI,EAX ",
+        "00c181af: CALL dword ptr [0x00ce22ac] ",
+        "00c181b5: XOR ESI,EAX "
+      ]
+    },
+    {
+      "address": "00c181bb",
+      "function": "00c1815e",
+      "operand": "CALL dword ptr [0x00ce2270] ",
+      "window": [
+        "00c181b5: XOR ESI,EAX ",
+        "00c181b7: LEA EAX,[EBP + -0x10] ",
+        "00c181ba: PUSH EAX ",
+        "00c181bb: CALL dword ptr [0x00ce2270] ",
+        "00c181c1: MOV EAX,dword ptr [EBP + -0xc] "
+      ]
+    },
+    {
+      "address": "00c05077",
+      "function": "00c05070",
+      "operand": "CALL dword ptr [0x00ce20bc] ",
+      "window": [
+        "00c05070: PUSH ESI ",
+        "00c05071: PUSH dword ptr [0x00e15b00] ",
+        "00c05077: CALL dword ptr [0x00ce20bc] ",
+        "00c0507d: MOV ESI,EAX "
+      ]
+    },
+    {
+      "address": "00c05098",
+      "function": "00c05070",
+      "operand": "CALL dword ptr [0x00ce20b4] ",
+      "window": [
+        "00c0508f: MOV ESI,EAX ",
+        "00c05091: PUSH ESI ",
+        "00c05092: PUSH dword ptr [0x00e15b00] ",
+        "00c05098: CALL dword ptr [0x00ce20b4] ",
+        "00c0509e: MOV EAX,ESI "
+      ]
+    }
+  ],
+  "watson": {
+    "abi": "BF65BB cdecl five incoming diagnostic arguments, all unused by the body. Plain RET if actual services return and cookie check returns; incoming caller cleans20. Saves EBP/ESI. Native metadata noreturn is not a reason to omit the tail.",
+    "frame": "Let S be entry ESP, holding return PC. After PUSH EBP, EBP=S-2ACh; allocation328h and ESI save follow. Cookie atS-8, exception recordS-32Ch[50h], EXCEPTION_POINTERS atS-2DCh[8], partial CONTEXT atS-2D4h[2CCh].",
+    "construction": [
+      "Capture integer/segment words and prolog-modified EFLAGS into CONTEXT; store10001h ContextFlags. Do not zero the CONTEXT: untouched stack bytes and upper halves of segment DWORDs are not written.",
+      "Capture caller return PC from[S], contextESP=S, contextEBP=[S-4]. EAX context is cookie XOR adjustedEBP, not original incomingEAX.",
+      "BF79F0(record,0,50h) zeroes only exception record; set record.code=C000000D and record.address=returnPC. Other record fields remain zero from that fill. Publish real local record/context pointers."
+    ],
+    "service_schedule": [
+      "IsDebuggerPresent; capture EAX inESI. SetUnhandledExceptionFilter(NULL), with no restoration of old filter.",
+      "UnhandledExceptionFilter(actual local pointer pair). Only if its return is0 AND captured debugger flag is0: C04EF3(2).",
+      "GetCurrentProcess then TerminateProcess(handle,C000000D). If it returns, recover cookieECX, restoreESI, call BFE120, restore frame and plainRET. No extra abort, fastfail, exception translation or loop."
+    ],
+    "direct_ownership": "No errno, TLS/PTD lookup, allocation, encoded invalid-handler lookup, or diagnostic-argument access occurs inside BF65BB. Those belong to callers/providers, not a hidden Watson prerequisite.",
+    "exception_boundary": "No native FH3/SEH cleanup frame. Context-capture/fault sites and volatile register effects need explicit x86 source work; typed zero-initialized CONTEXT or RtlCaptureContext does not reproduce this body."
+  },
+  "context_field_map": [
+    {
+      "offset": "00",
+      "width": 4,
+      "field": "ContextFlags",
+      "watson": "10001h",
+      "gsfailure": "10001h"
+    },
+    {
+      "offset": "8c",
+      "width": 2,
+      "field": "SegGs",
+      "watson": "currentGS",
+      "gsfailure": "currentGS"
+    },
+    {
+      "offset": "90",
+      "width": 2,
+      "field": "SegFs",
+      "watson": "currentFS",
+      "gsfailure": "currentFS"
+    },
+    {
+      "offset": "94",
+      "width": 2,
+      "field": "SegEs",
+      "watson": "currentES",
+      "gsfailure": "currentES"
+    },
+    {
+      "offset": "98",
+      "width": 2,
+      "field": "SegDs",
+      "watson": "currentDS",
+      "gsfailure": "currentDS"
+    },
+    {
+      "offset": "9c",
+      "width": 4,
+      "field": "Edi",
+      "watson": "incomingEDI",
+      "gsfailure": "incomingEDI"
+    },
+    {
+      "offset": "a0",
+      "width": 4,
+      "field": "Esi",
+      "watson": "incomingESI before return-PC capture",
+      "gsfailure": "incomingESI"
+    },
+    {
+      "offset": "a4",
+      "width": 4,
+      "field": "Ebx",
+      "watson": "incomingEBX",
+      "gsfailure": "incomingEBX"
+    },
+    {
+      "offset": "a8",
+      "width": 4,
+      "field": "Edx",
+      "watson": "incomingEDX",
+      "gsfailure": "incomingEDX"
+    },
+    {
+      "offset": "ac",
+      "width": 4,
+      "field": "Ecx",
+      "watson": "incomingECX",
+      "gsfailure": "incomingECX; failed cookie from BFE120 path"
+    },
+    {
+      "offset": "b0",
+      "width": 4,
+      "field": "Eax",
+      "watson": "current E15590 XOR adjusted EBP, not incoming EAX",
+      "gsfailure": "incomingEAX"
+    },
+    {
+      "offset": "b4",
+      "width": 4,
+      "field": "Ebp",
+      "watson": "saved caller EBP at entryESP-4",
+      "gsfailure": "saved caller EBP at entryESP-4"
+    },
+    {
+      "offset": "b8",
+      "width": 4,
+      "field": "Eip",
+      "watson": "return word at entryESP",
+      "gsfailure": "return word at entryESP"
+    },
+    {
+      "offset": "bc",
+      "width": 2,
+      "field": "SegCs",
+      "watson": "currentCS",
+      "gsfailure": "currentCS"
+    },
+    {
+      "offset": "c0",
+      "width": 4,
+      "field": "EFlags",
+      "watson": "flags after cookie XOR/prolog, not original caller flags",
+      "gsfailure": "flags after SUB ESP,328h, not original caller flags"
+    },
+    {
+      "offset": "c4",
+      "width": 4,
+      "field": "Esp",
+      "watson": "entryESP, address of return word",
+      "gsfailure": "entryESP+4"
+    },
+    {
+      "offset": "c8",
+      "width": 2,
+      "field": "SegSs",
+      "watson": "currentSS",
+      "gsfailure": "currentSS"
+    }
+  ],
+  "debugger_hook": {
+    "address": "00c04ef3",
+    "abi": "Observed cdecl reason argument1/2 is ignored; plainRET, no stack pop.",
+    "body": "Single AND dword ptr [109EEA8],0 thenRET. Preserve actual read-modify-write and flags; it is not a fabricated debugger callback or no-op."
+  },
+  "cookie_check": {
+    "address": "00bfe120",
+    "abi": "ECX supplied cookie, no stacked arguments. CMP with actualE15590; equality uses REPZ RET(F3C3); inequality tail-jumpsC185A4 with existing return word.",
+    "body": "Complete15-byte body; current listing renders REPZ RET simply RET."
+  },
+  "gsfailure": {
+    "abi": "C185A4 entered with ordinary return word (including tail from BFE120); preserve original capture order. Physical body has LEAVE/RET after TerminateProcess, despite noreturn metadata.",
+    "storage": "Actual global CONTEXT109E5C0[2CCh], EXCEPTION_RECORD109E568[50h], debugger flag109E5B8; immutable native D6E1CC pair={109E568,109E5C0}. These are canonical process storage, not fresh zeroed local replacements.",
+    "schedule": [
+      "Store incoming integer and segment registers into actual global context; EFLAGS are after own SUB ESP,328h. Store saved callerEBP, returnPC, and contextESP=entryESP+4.",
+      "Retain otherwise unused read[EBP-320h]. Set ContextFlags10001h; record.address=current global EIP, codeC0000409, flags1. Do not clear other context/record fields on entry.",
+      "Copy actual cookieE15590 and complementE15594 into stack locals[EBP-328h]/[EBP-324h].",
+      "IsDebuggerPresent result ->109E5B8; C04EF3(1); SetUnhandledExceptionFilter(NULL); UnhandledExceptionFilter(actual pair). Its return is ignored.",
+      "Reload current109E5B8; if0 C04EF3(1) again. Then GetCurrentProcess/TerminateProcess(handle,C0000409); LEAVE/RET if it returns."
+    ],
+    "ownership": "Initial record/context/debugger bytes are verified PE zero-fill. The pair and original identity are address evidence; source must bind actual source record/context pointers, never call/dereference original address words as host pointers."
+  },
+  "cookie_initializer": {
+    "address": "00c1815e",
+    "length": 148,
+    "abi": "cdecl no args, plainRET; saves EBP/EBX/EDI and ESI only on reseed path. Called from original PE entryBFD2BD before original CRT startup (heap packet provenance).",
+    "initial_words": {
+      "00e15590": "bb40e64e",
+      "00e15594": "44bf19b1"
+    },
+    "schedule": [
+      "Read current cookie; zero local FILETIME low/high. If cookie is notBB40E64E and has a nonzero high16, only publish complementE15594=~cookie and return.",
+      "Otherwise GetSystemTimeAsFileTime; XOR low/high, GetCurrentProcessId, GetCurrentThreadId, GetTickCount, then QueryPerformanceCounter low/high. The QPC BOOL is ignored; its local output is not initialized here.",
+      "If mixed value isBB40E64E useBB40E64F. Otherwise, if high16 is0, OR value with value<<16. No extra nonzero repair or newer-CRT mixing is present.",
+      "Publish cookieE15590 first, then complementE15594=~cookie. No allocation, TLS, CRT errno, generic entropy callback or further internal call."
+    ]
+  },
+  "memset_boundary": {
+    "address": "00bf79f0",
+    "length": 122,
+    "body": "Complete native body includes general zero-size and aligned byte/REP STOSD paths, plus C0C965 SSE tail for zero fills >=100h when109EEA4!=0.",
+    "watson_use": "BF65BB requests exactly50h. Size check bypasses reading109EEA4 and cannot reach the SSE tail. A concrete fixed50h zeroing support path is fully evidenced; full general memset SSE ownership is outside this packet. Preserve only50h writes and native valid x86 calling assumptions."
+  },
+  "errno_boundary": {
+    "bffb8b": "Call C051B7. Nonnull returned PTD ->EAX+8; null ->canonical fallbackE159E8. No new private/thread_local errno variable may be substituted.",
+    "c051b7": [
+      "Save GetLastError inEDI. Push currentE15AFC, get actual index getter throughC05070 and CALL returned pointer without added null check.",
+      "If returned PTD is null, C0485A(1,214h). On nonnull allocation push pointer and currentE15AFC, decode actual setter109DE3C through existingC04FDE, then CALL returned setter.",
+      "Successful setter: C050F8(PTD,0), GetCurrentThreadId, OR PTD+4 withFFFFFFFF then publish thread idPTD+0. Other PTD initialization remains C050F8 ownership.",
+      "Setter failure: BF9DC8(PTD), POP ECX, XOR ESI,ESI. These last three bytes atC0521F..21 are omitted in current listing but present in complete PE/live bytes; return must be null, not freed pointer.",
+      "Every returning path restores captured LastError with SetLastError, then returns currentESI. No own EH cleanup; throws/faults may bypass restoration."
+    ],
+    "c05070": "TlsGetValue(currentE15B00); nonnull returns getter. Null: decode current109DE38 withC04FDE, capture returned getter, TlsSetValue(currentE15B00,getter), ignore BOOL and return getter.",
+    "remaining": "Authentic TLS indices/getter/setter population,214h calloc/free domain,C050F8 PTD initialization, and locale/locking ownership remain unresolved. Those are not dependencies of direct Watson invocation."
+  },
+  "invalid_parameter_boundary": {
+    "bf66ef": "Capture and decode current global encoded109DD64 throughC04FDE. Nonnull decoder result: restore EBP and JMP handler, forwarding the original return word and five original cdecl arguments unchanged. No extra thread-local handler priority.",
+    "null_path": "C04EF3(2), clean that argument, restore EBP, then tail-jumpBF65BB with original five arguments. No new handler fallback/interface.",
+    "bf65b1": "10-byte cdecl publisher of incoming encoded word directly to109DD64, EAX same word, plainRET. No encode/decode or return-old semantics.",
+    "initialization": "__mtinit calls BFBDFB __init_pointers. BFBDFB calls C04FD5, which is PUSH0/C04F67 encode/POP/RET, then passes the captured encoded-null word to eight publishers including BF65B1 atBFBE10. Literal-zero publication is not the established CRT initializer.",
+    "remaining": "Existing C04FDE/C04F67 qualified sources are reusable, but actual encoded-handler word, original callback implementation and owning decoder/TLS state are not supplied. Other BFBDFB publishers and complete __mtinit are external."
+  },
+  "source_availability": [
+    {
+      "paths": [
+        "src/native_crt_pointer_decode.cpp",
+        "include/bsp/native_crt_pointer_decode.hpp",
+        "src/native_crt_libm_callback_registration.cpp",
+        "include/bsp/native_crt_libm_callback_registration.hpp"
+      ],
+      "available": "Qualified native pointer decoder/encoder using actual borrowed TLS/IAT/PTD and module gate state.",
+      "missing": "This does not initialize the CRT owner or resolve arbitrary original decoded callbacks as host functions."
+    },
+    {
+      "paths": [
+        "src/native_crt_pointer_decode_support.cpp",
+        "include/bsp/native_crt_pointer_decode_support.hpp",
+        "include/bsp/legacy_crt_math.hpp"
+      ],
+      "available": "BFBB61 getter uses explicit existing owning errno and invalid-parameter context.",
+      "missing": "Current BFFB8B getter/214h PTD and BF66EF original global-only handler ownership are not supplied by the binding."
+    },
+    {
+      "paths": [
+        "include/bsp/native_singleton_vector_reserve_construct.hpp",
+        "include/bsp/system_lighting_constants.hpp"
+      ],
+      "available": "Existing adapters explicitly describe returning actual invalid-parameter services.",
+      "missing": "Current UCRT uses thread-local then global handlers; this does not prove original109DD64/BF66EF/Watson equivalence."
+    },
+    {
+      "paths": [
+        "src/xlive_ipc.cpp"
+      ],
+      "available": "Concrete real Win32 TerminateProcess adapter exists, explicitly allowing its return.",
+      "missing": "No Watson context/cookie owner follows from that unrelated IPC adapter."
+    },
+    {
+      "missing": "No native source found for BF65BB, C04EF3, BFE120, C185A4, C1815E, BFFB8B, BF66EF or the identified PTD/pointer-word owner bodies by bounded address/name/global searches."
+    }
+  ],
+  "next_smallest_source_packet": {
+    "ready": "Qualified concrete Watson/cookie owner: BF65BB +C04EF3 +BFE120 +C185A4, with C1815E for the actual cookie pair and fixed50h memset support. All internal behavior on these paths is now bounded; providers are real Win32 APIs and established raw storage, with no need for arbitrary error/termination callbacks.",
+    "storage_contract": "One canonical cookie/complement pair, one actual debug-hook word, and stable shared GS exception record/context/debugger flag plus actual pointer pair. Use verified initial contents and explicit initialization/lifetimes; do not mix host __security_cookie with a different report/check domain.",
+    "abi_risk": "Requires x86 register/frame capture preserving partial writes, adjusted EBP, distinct Watson/GS ESP values, original return-PC semantics and return tails. A qualified source interface may add bindings only after preserving original capture inputs. RtlCaptureContext, zero-initializing all CONTEXT storage, current UCRT _invoke_watson, generic abort/fastfail or dropping returned TerminateProcess paths changes behavior.",
+    "not_closed": "General errno/invalid-parameter ownership remains a separate bounded PTD/encoded-handler packet. Do not declare the entire C11964 getter-error chain source-closed merely because direct Watson can now be implemented.",
+    "smallest_leaf": "C04EF3 alone is fully source-ready: actual eight-byte RMW-zero hook, observed ignored reason argument, no provider dependencies."
+  },
+  "listing_corrections": [
+    "BF65BB and C185A4 both retain physical return tails despite noreturn metadata.",
+    "BFE120 equality is F3C3 REPZ RET, rendered RET by live listing.",
+    "C051B7 setter-failure tail has POP ECX/XOR ESI,ESI atC0521F..21. No flow repair or annotation write applied."
+  ],
+  "comparison": {
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "binary_sha512": "7b545a4c47fae14af6c50a1d4d0d2904c1b85f84b9a24d1516b95d77945693fc36b1f6bb9effb7fa29b22b06ebcafc230cdf97f5c332266a3de8dd83bdc29a97",
+    "spans": [
+      {
+        "address": "00bf65bb",
+        "length": 252,
+        "live_length": 252,
+        "equal": true,
+        "pe_zero_fill_bytes": 0,
+        "sha256": "92efaccfa69071e66906b73193d24e30bae7a1963b4f32c8be9698792c054075",
+        "sha512": "08901dd93270f1001494bf06305234995b43373ba20a0cdcbcf838fe4dfae953c685c3b8d3555d0b40f4763e9eecb6dbb2c6d30a2581891b68d292634b6022c7"
+      },
+      {
+        "address": "00c04ef3",
+        "length": 8,
+        "live_length": 8,
+        "equal": true,
+        "pe_zero_fill_bytes": 0,
+        "sha256": "575916c4179889b86e93e4583f8ab1f1b5c5e333c9e773f03932fb1b8beb65e9",
+        "sha512": "e9ad0a43b62bf24e345de9b337a735344db4c9269e2304973aa2c31cf5b703af30cf4ba7e235e28125df1ea2261a2d278311fbeba1d848e4a790246d0024f1b1"
+      },
+      {
+        "address": "00bfe120",
+        "length": 15,
+        "live_length": 15,
+        "equal": true,
+        "pe_zero_fill_bytes": 0,
+        "sha256": "c11cfd7b6d65b917f1cf7bd7140d85e01e61344e84f532f1393dbb10ccf594f8",
+        "sha512": "3506e9a25527caef095512ef77ff1d1fded6e3400ed328ba7a21ae0043100b2fe6a73fd9d34746941e454b5b246001b2ecd56452e79a42121a6df67498ad3bf4"
+      },
+      {
+        "address": "00bffb8b",
+        "length": 19,
+        "live_length": 19,
+        "equal": true,
+        "pe_zero_fill_bytes": 0,
+        "sha256": "84aca6584c13d6f07ced37568fc45be0c65f51583ba9a70f7cc98d62b2d94a5c",
+        "sha512": "f830061596947bd1f07c6ded1e7f62ce3bf4525385591f70331722ec429daebfedd62ffb92526fefaddf26c8df34c8ef0719d39c629ca8d98f45ef2e77cc5ef6"
+      },
+      {
+        "address": "00bf66ef",
+        "length": 36,
+        "live_length": 36,
+        "equal": true,
+        "pe_zero_fill_bytes": 0,
+        "sha256": "0e1f2416d2f25c96b8d07f18d401ef61528110d4b452a1b3a7336bb1cad0e4b3",
+        "sha512": "2cdbf93fc19552e5eb77b027824b8fb969a621ec285d55311d7b5d1a5bd42be4675b8300587fc7d4b5d885e754d5aecc94a932be53bf1b20b295489c06275b50"
+      },
+      {
+        "address": "00bf79f0",
+        "length": 122,
+        "live_length": 122,
+        "equal": true,
+        "pe_zero_fill_bytes": 0,
+        "sha256": "b9e1edde26458c7ed52bb293c2d578ea48c97301ff3c007acccf94e11cd313c5",
+        "sha512": "3287a143d8c6aaac231c268b91b765d90954a846bed3d38596aa70503c75504c32dc014d17c7937e1d8291984725e86a4ebadb27eb85aa02fe610389a94ecb43"
+      },
+      {
+        "address": "00c051b7",
+        "length": 119,
+        "live_length": 119,
+        "equal": true,
+        "pe_zero_fill_bytes": 0,
+        "sha256": "ccbdbe41ce6650660cd55232a4c1dff2445bfafa036dc2d2e3f2c9c2df7d9a1e",
+        "sha512": "49666385af1195dd0477d5b72e3ad3dcd447e5649bc8a2f6894c39f6c8059e695ec62c8ef5923dbcd7c8cb14e05fb9b23f49ef50eb552bbaf66bac97654d3eb7"
+      },
+      {
+        "address": "00c185a4",
+        "length": 260,
+        "live_length": 260,
+        "equal": true,
+        "pe_zero_fill_bytes": 0,
+        "sha256": "685aa7bdbbc2b0cb5d77dd66bc24c7aa380ac1fc205423d95c08664d5ccd891e",
+        "sha512": "d4639e47c013579efd01d09725116a5e787d560a9cfab6f3808fc225a9d79632b561ec6cff270ac6395c208d93874f50c84f30e1f50eed7d2e05ca7de939968d"
+      },
+      {
+        "address": "00c1815e",
+        "length": 148,
+        "live_length": 148,
+        "equal": true,
+        "pe_zero_fill_bytes": 0,
+        "sha256": "ab5ce5744b96a3fec31d2ae40dfab40805079070fc159e2fc7d153efc280e861",
+        "sha512": "ab4e527f05b6f70cb5a9a84860bee9dacc58028e65925b19467554d5ea28973b488878fd28f9129bc2abd39a597b0b46ba88fd1ee59c687d77fc7512d9a329f3"
+      },
+      {
+        "address": "00c05070",
+        "length": 50,
+        "live_length": 50,
+        "equal": true,
+        "pe_zero_fill_bytes": 0,
+        "sha256": "c56216e301258d74d1f73f4e30645d811c2e7a3cda5bef15b09e94735394ba81",
+        "sha512": "12a8542babb1ed2256cf0b44dce9fb028682940b1003673953a8032a657daeaa4c6c4b9cf8c8097840e163f4bbb0be02b369371f6bc2510df66fc51748a6b35e"
+      },
+      {
+        "address": "00bf65b1",
+        "length": 10,
+        "live_length": 10,
+        "equal": true,
+        "pe_zero_fill_bytes": 0,
+        "sha256": "9bba240a59d6182e5ec64da378506ed8f22664b111c66942cf4d48d24623935a",
+        "sha512": "733369a55cd1aaf3a048b324756e8f8df6977d980b62bfcd9d3dd22d6656b3921ee635c868fdb209125f63a3664f1f044393b3cbd379a0b3af26ba61b90a068d"
+      },
+      {
+        "address": "00bfbdfb",
+        "length": 76,
+        "live_length": 76,
+        "equal": true,
+        "pe_zero_fill_bytes": 0,
+        "sha256": "aec0936af4af64b89f90ae8c76f31fbf985dff4822b39f334eb8c9083e388618",
+        "sha512": "5d6403f9e1ea498750806589fc3aae4082c7b358e27bd2664a966853918ae65e86035731a91999e26e3dbee4483be26370ac9088858736d0962ea8adbebf9cc4"
+      },
+      {
+        "address": "00c04fd5",
+        "length": 9,
+        "live_length": 9,
+        "equal": true,
+        "pe_zero_fill_bytes": 0,
+        "sha256": "e58382981c7a36ba3f1066c370748dcc87e583c54e41f0a440673250d39cc7f3",
+        "sha512": "9e8e83cdc1b094a34e4a7fef5f943f9e377b0e267e170a1f750524796c5db62f6aef81619b343c9b000f9e2ddb9f61cf33b995d5d94f589ce2674271f7a31f51"
+      },
+      {
+        "address": "00d6e1cc",
+        "length": 8,
+        "live_length": 8,
+        "equal": true,
+        "pe_zero_fill_bytes": 0,
+        "sha256": "a7b8afc2eb356c8577e0bca58c49d6a4bb52ce9ba1b8f6ea753dafd32e2fb903",
+        "sha512": "9f9e5749d065cf8577215d36f90db29cb9ef4c55e3c7bf894c43bb0a90e1f934a7815684f5253684e04d77aa371c77b7cdfcd3a211c45269b41982312fb97c5c"
+      },
+      {
+        "address": "00e15590",
+        "length": 8,
+        "live_length": 8,
+        "equal": true,
+        "pe_zero_fill_bytes": 0,
+        "sha256": "29b5066f8e977a643aebc158d86968765fbcdec85d9c5fcff28cc9f68782d5e4",
+        "sha512": "40e2bd5a6b3a1a52d333dc5bfc7555994772ed5eece72f302e65d5cfe1ddc4d39b65f2c3c053be26b03635d62a8c00d8ebd126132b8a665bf5fca051f9fe9398"
+      },
+      {
+        "address": "0109e568",
+        "length": 88,
+        "live_length": 88,
+        "equal": true,
+        "pe_zero_fill_bytes": 88,
+        "sha256": "10eef285deef7a4b7c82b22aa53589b7833df29de3814649c772bbd5c832f365",
+        "sha512": "f58cc598fdea5e45261b678570f64e75a64f9faa7e268015a128edeaf1b717ee583b3e2f6690ae31dcb515a95234d3d371148fbc14c26ecfa74e6a51f3d6e5f9"
+      },
+      {
+        "address": "0109e5c0",
+        "length": 716,
+        "live_length": 716,
+        "equal": true,
+        "pe_zero_fill_bytes": 716,
+        "sha256": "9d07d0612ffec02a518f9613569f2b8756d54bfd1e576140d278df39eff347a9",
+        "sha512": "d8558b0ac430e12a47eae58290777e5358064d1ece51a8170b68274ecef9cc580acce9e39eea914ccd337e277f9e4a5c6bb592cd7d1163fcc614a3a84ada6b6a"
+      },
+      {
+        "address": "0109eea8",
+        "length": 4,
+        "live_length": 4,
+        "equal": true,
+        "pe_zero_fill_bytes": 4,
+        "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+        "sha512": "ec2d57691d9b2d40182ac565032054b7d784ba96b18bcb5be0bb4e70e3fb041eff582c8af66ee50256539f2181d7f9e53627c0189da7e75a4d5ef10ea93b20b3"
+      },
+      {
+        "address": "0109dd64",
+        "length": 4,
+        "live_length": 4,
+        "equal": true,
+        "pe_zero_fill_bytes": 4,
+        "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+        "sha512": "ec2d57691d9b2d40182ac565032054b7d784ba96b18bcb5be0bb4e70e3fb041eff582c8af66ee50256539f2181d7f9e53627c0189da7e75a4d5ef10ea93b20b3"
+      },
+      {
+        "address": "00e159e8",
+        "length": 4,
+        "live_length": 4,
+        "equal": true,
+        "pe_zero_fill_bytes": 0,
+        "sha256": "42f4aeb81c1ef81f771f3de8abca9dcf66901c575530e7672e4b1146474ae650",
+        "sha512": "2b504f7dea06c706b789f94ad7bea5b2e65befd005a433b67dddffb1ae849ed1640df27d6dc86f3fd36e058dad41d726ad93ad4bf05432533e8a253afde94a05"
+      },
+      {
+        "address": "00e15afc",
+        "length": 8,
+        "live_length": 8,
+        "equal": true,
+        "pe_zero_fill_bytes": 0,
+        "sha256": "12a3ae445661ce5dee78d0650d33362dec29c4f82af05e7e57fb595bbbacf0ca",
+        "sha512": "d0e784dd6dfb1a1f64da68379c349e5d7b5354d2a7312694b9d736b1410f408f5d5fd50924acef6cc6d78653917972bc0551fa11712de9ccdfbe4ef988962bf0"
+      },
+      {
+        "address": "0109de38",
+        "length": 8,
+        "live_length": 8,
+        "equal": true,
+        "pe_zero_fill_bytes": 8,
+        "sha256": "af5570f5a1810b7af78caf4bc70a660f0df51e42baf91d4de5b2328de0e83dfc",
+        "sha512": "1b7409ccf0d5a34d3a77eaabfa9fe27427655be9297127ee9522aa1bf4046d4f945983678169cb1a7348edcac47ef0d9e2c924130e5bcc5f0d94937852c42f1b"
+      }
+    ]
+  },
+  "imports": [
+    {
+      "iat": "00ce20b4",
+      "dll": "KERNEL32.dll",
+      "name": "TlsSetValue"
+    },
+    {
+      "iat": "00ce20bc",
+      "dll": "KERNEL32.dll",
+      "name": "TlsGetValue"
+    },
+    {
+      "iat": "00ce2100",
+      "dll": "KERNEL32.dll",
+      "name": "GetSystemTimeAsFileTime"
+    },
+    {
+      "iat": "00ce2108",
+      "dll": "KERNEL32.dll",
+      "name": "IsDebuggerPresent"
+    },
+    {
+      "iat": "00ce210c",
+      "dll": "KERNEL32.dll",
+      "name": "UnhandledExceptionFilter"
+    },
+    {
+      "iat": "00ce21dc",
+      "dll": "KERNEL32.dll",
+      "name": "GetCurrentProcessId"
+    },
+    {
+      "iat": "00ce2224",
+      "dll": "KERNEL32.dll",
+      "name": "TerminateProcess"
+    },
+    {
+      "iat": "00ce2228",
+      "dll": "KERNEL32.dll",
+      "name": "GetCurrentProcess"
+    },
+    {
+      "iat": "00ce222c",
+      "dll": "KERNEL32.dll",
+      "name": "SetUnhandledExceptionFilter"
+    },
+    {
+      "iat": "00ce223c",
+      "dll": "KERNEL32.dll",
+      "name": "GetCurrentThreadId"
+    },
+    {
+      "iat": "00ce2258",
+      "dll": "KERNEL32.dll",
+      "name": "GetLastError"
+    },
+    {
+      "iat": "00ce2270",
+      "dll": "KERNEL32.dll",
+      "name": "QueryPerformanceCounter"
+    },
+    {
+      "iat": "00ce22ac",
+      "dll": "KERNEL32.dll",
+      "name": "GetTickCount"
+    },
+    {
+      "iat": "00ce22bc",
+      "dll": "KERNEL32.dll",
+      "name": "SetLastError"
+    }
+  ],
+  "sdk_layout_evidence": {
+    "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\winnt.h",
+    "sha256": "bc603675b330e624fd6f3de9ed3497ed6101e4c56e12cf819a9ef7c41f1c78d8",
+    "sha512": "f601afdb6a9dd3ce915cd13d0146fe2f742ce4805422afe001a049d48d15712775f92d4570da0af3b3497e932f5b0148dbf6470abcd56c8e54223f82faadbecf",
+    "ranges": [
+      [
+        8448,
+        8460
+      ],
+      [
+        8526,
+        8608
+      ],
+      [
+        10097,
+        10119
+      ]
+    ]
+  },
+  "validation": {
+    "source_changed": false,
+    "ghidra_changed": false,
+    "runtime_experiment": false,
+    "build_run": false,
+    "new_tests": false,
+    "game_run": false,
+    "native_drop_in_claim": false,
+    "direct_call_or_tail_rows": 28,
+    "indirect_sites": 23,
+    "report_calls": {
+      "checked": 28,
+      "failed": 0,
+      "indirect_sites_separately_qualified": 23
+    },
+    "local_inventory": {
+      "files": 135,
+      "audit_passes": 2,
+      "algorithms": [
+        "SHA256",
+        "SHA512"
+      ],
+      "current_source_snapshot_parity_files": 10,
+      "whole_installed_pe_and_sdk_two_hash_recheck": true
+    }
+  },
+  "evidence_inventory": [
+    {
+      "path": "local/native_crt_watson_frontier_bl/00bf65b1_asm.txt",
+      "size": 91,
+      "sha256": "1e99694fe3efbacc13513bfde89a253981b91906522e4fdd5929a385bdc9f3a0",
+      "sha512": "254dae453f4db348b922bb01765cae8929b95eca5497db1d887064e99a77fe7bf74c37bd29b48855e384ca1344da82b8a31cae637ead2932937b6cc66593c24c"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/00bf65b1_bytes_0000.txt",
+      "size": 53,
+      "sha256": "a9ed2d24edcd46e91bc9cffca0166f8c1312fa0b3e54dde16176ca64f1511289",
+      "sha512": "427fab64d504c8658fb1e7ebc2593d8900e6da1bf591d705a00b65a89dbe2323993167a57c424431b49e247760848b05644667a2237d30d96bde63d664b98165"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/00bf65b1_live.bin",
+      "size": 10,
+      "sha256": "9bba240a59d6182e5ec64da378506ed8f22664b111c66942cf4d48d24623935a",
+      "sha512": "733369a55cd1aaf3a048b324756e8f8df6977d980b62bfcd9d3dd22d6656b3921ee635c868fdb209125f63a3664f1f044393b3cbd379a0b3af26ba61b90a068d"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/00bf65b1_pe.bin",
+      "size": 10,
+      "sha256": "9bba240a59d6182e5ec64da378506ed8f22664b111c66942cf4d48d24623935a",
+      "sha512": "733369a55cd1aaf3a048b324756e8f8df6977d980b62bfcd9d3dd22d6656b3921ee635c868fdb209125f63a3664f1f044393b3cbd379a0b3af26ba61b90a068d"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/00bf65bb_asm_head.txt",
+      "size": 1819,
+      "sha256": "a376155e000f0ecf8ffde1983d792e4f9f6a22d7f5e1cddf9706cf4d618e4f65",
+      "sha512": "907d53aad2327ccf53cef2d600aefd8906a88f3a9d408274ae359745d649743c29b30ed94b2ae3aa633d9c759aec18533306310ed009927c2ee5c6ba1586f7cb"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/00bf65bb_asm_tail.txt",
+      "size": 401,
+      "sha256": "bac81124c7feccf7a949dc9594215a5949777e20a9d242b1333d8f1bf419b153",
+      "sha512": "4284b66db7c50f2b587352287b717f354c2aefc6abafa64d622ea9411fa67bbfcc72d68fd3dbb45defdb7fd3814409cc0fea3c225fa69d46abd67ef1aecf6bb2"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/00bf65bb_bytes_0000.txt",
+      "size": 1216,
+      "sha256": "d9834cd54df7cdc29a41d39131181a1b845508c381b467eb5d5551cd0bfe857d",
+      "sha512": "27ff4dca48916c2347b0b52c7094f4ff7e0429c3676b16500d9db23923f8123c6fc8cbfef3971b69750c29f2bcf6812dc767dce16320a53e5a9985dff75259e2"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/00bf65bb_live.bin",
+      "size": 252,
+      "sha256": "92efaccfa69071e66906b73193d24e30bae7a1963b4f32c8be9698792c054075",
+      "sha512": "08901dd93270f1001494bf06305234995b43373ba20a0cdcbcf838fe4dfae953c685c3b8d3555d0b40f4763e9eecb6dbb2c6d30a2581891b68d292634b6022c7"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/00bf65bb_pe.bin",
+      "size": 252,
+      "sha256": "92efaccfa69071e66906b73193d24e30bae7a1963b4f32c8be9698792c054075",
+      "sha512": "08901dd93270f1001494bf06305234995b43373ba20a0cdcbcf838fe4dfae953c685c3b8d3555d0b40f4763e9eecb6dbb2c6d30a2581891b68d292634b6022c7"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/00bf66ef_asm.txt",
+      "size": 340,
+      "sha256": "2d4c2f2774ec3cb90f9803b6a12306506b8ab39ebb10d33f8ae2b5c1a809048b",
+      "sha512": "b954fb323a5f3d7ea9a97c5415d1b41250707b20664ae9ae5506e6089852a7ca992bda016ba0ec4ba00a4669285c0f1a6bd2f86143a1cb8e66c910cb5dacc125"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/00bf66ef_bytes_0000.txt",
+      "size": 183,
+      "sha256": "0615b0db5ddd41ecf6e910179b77fa1ba741c83ba07b7c325dee59e53da713ba",
+      "sha512": "55d4c9d2449f934ef51077785433d465eeb0ff5b5a88ddceabda3c8cf7a37fef8aa05fda37c75ee8df29ff1d017e81ad97bcc7109ef0d38773ba6d8758cadaba"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/00bf66ef_live.bin",
+      "size": 36,
+      "sha256": "0e1f2416d2f25c96b8d07f18d401ef61528110d4b452a1b3a7336bb1cad0e4b3",
+      "sha512": "2cdbf93fc19552e5eb77b027824b8fb969a621ec285d55311d7b5d1a5bd42be4675b8300587fc7d4b5d885e754d5aecc94a932be53bf1b20b295489c06275b50"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/00bf66ef_pe.bin",
+      "size": 36,
+      "sha256": "0e1f2416d2f25c96b8d07f18d401ef61528110d4b452a1b3a7336bb1cad0e4b3",
+      "sha512": "2cdbf93fc19552e5eb77b027824b8fb969a621ec285d55311d7b5d1a5bd42be4675b8300587fc7d4b5d885e754d5aecc94a932be53bf1b20b295489c06275b50"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/00bf79f0_asm_head.txt",
+      "size": 1257,
+      "sha256": "9b9acc11579382c29950b3153c492657d0b9a0d9b5059eecace5eeb17ddf6e46",
+      "sha512": "6655252977303aec10b8adc52f3de861e923db3ce39625b8a0ba428749e4c7cd976955b69b60bd21ae0c91fc2d707d3be62a32e8ae1b554ec2a81fb94c76884e"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/00bf79f0_asm_tail.txt",
+      "size": 58,
+      "sha256": "226c458d7d6ef49abf420267f971174d83264a02321bf3549ee7d2f1ee7ab15a",
+      "sha512": "9d1887ecbea0f592f23b7e066b73bd0b453e56640d45bc8f159f63ce124a7b180dfd11e4da2bc6a56dc3641e7b31b7b0b5570c0167db2531029e5312007d6347"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/00bf79f0_bytes_0000.txt",
+      "size": 592,
+      "sha256": "bfd5b03398dee221fbc640fa1f8d640f2bfee623cebc4ff13dfe77234b07fa32",
+      "sha512": "f1b5ffd49263729a6e38c3e44e45a6ca85b2d4735b316233f418e4d64550148f7d38ccbff0d04144cfd57837a2d36bed74e396410e1000c6f4e2540880653eaa"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/00bf79f0_live.bin",
+      "size": 122,
+      "sha256": "b9e1edde26458c7ed52bb293c2d578ea48c97301ff3c007acccf94e11cd313c5",
+      "sha512": "3287a143d8c6aaac231c268b91b765d90954a846bed3d38596aa70503c75504c32dc014d17c7937e1d8291984725e86a4ebadb27eb85aa02fe610389a94ecb43"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/00bf79f0_pe.bin",
+      "size": 122,
+      "sha256": "b9e1edde26458c7ed52bb293c2d578ea48c97301ff3c007acccf94e11cd313c5",
+      "sha512": "3287a143d8c6aaac231c268b91b765d90954a846bed3d38596aa70503c75504c32dc014d17c7937e1d8291984725e86a4ebadb27eb85aa02fe610389a94ecb43"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/00bfbdfb_asm.txt",
+      "size": 613,
+      "sha256": "07ae5652afe57a54377b7100c928dd8dff6983df7b5d231a819e9e4fa645a4f0",
+      "sha512": "6d539eb9bfb7c2e7e07aaf81923d380541ca7e59c6836a937e3ed5fbfe6b285eebb132a7129db84f15b29fe5d77339fffb5e38a7c788ad903d40b3ba3c212aac"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/00bfbdfb_bytes_0000.txt",
+      "size": 369,
+      "sha256": "09016c2783f59401fb1a7b74bf151466d985174a2678f39bcf8392ccc492337d",
+      "sha512": "de54c22f54c1a4add06b318ea8960417ec24672ab0669afdb200fa058d6ab5b9c8bc3729e7a6b0e5c485b343c478e0b5187ff27ab1626d9014d0c6580655f697"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/00bfbdfb_live.bin",
+      "size": 76,
+      "sha256": "aec0936af4af64b89f90ae8c76f31fbf985dff4822b39f334eb8c9083e388618",
+      "sha512": "5d6403f9e1ea498750806589fc3aae4082c7b358e27bd2664a966853918ae65e86035731a91999e26e3dbee4483be26370ac9088858736d0962ea8adbebf9cc4"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/00bfbdfb_pe.bin",
+      "size": 76,
+      "sha256": "aec0936af4af64b89f90ae8c76f31fbf985dff4822b39f334eb8c9083e388618",
+      "sha512": "5d6403f9e1ea498750806589fc3aae4082c7b358e27bd2664a966853918ae65e86035731a91999e26e3dbee4483be26370ac9088858736d0962ea8adbebf9cc4"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/00bfe120_asm.txt",
+      "size": 113,
+      "sha256": "2eccdee49d402162cd3a6d4d210802a084ecda59e430bb0b0354407ed9a1fbd5",
+      "sha512": "3f9fa8e08b08b386659a5b9964c2ea8f7e13bdf070727e67f1043f15ebfaaa8d55766118475fc19ccb8c7a6fc56873124e13f0cc243ffab95dc76f581060f8ad"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/00bfe120_bytes_0000.txt",
+      "size": 73,
+      "sha256": "950886c16217a425a3b6d3e268e661e7c7215cbac24aa7316b36f98f94911e66",
+      "sha512": "99ecba8a45cfff6e25b17c1a8baff64d89c90025e349b93936044a026b7d7a884a971923c1de337a701fe973f14c8bc2868d12cb9a65d2b1325b6ea695446403"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/00bfe120_live.bin",
+      "size": 15,
+      "sha256": "c11cfd7b6d65b917f1cf7bd7140d85e01e61344e84f532f1393dbb10ccf594f8",
+      "sha512": "3506e9a25527caef095512ef77ff1d1fded6e3400ed328ba7a21ae0043100b2fe6a73fd9d34746941e454b5b246001b2ecd56452e79a42121a6df67498ad3bf4"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/00bfe120_pe.bin",
+      "size": 15,
+      "sha256": "c11cfd7b6d65b917f1cf7bd7140d85e01e61344e84f532f1393dbb10ccf594f8",
+      "sha512": "3506e9a25527caef095512ef77ff1d1fded6e3400ed328ba7a21ae0043100b2fe6a73fd9d34746941e454b5b246001b2ecd56452e79a42121a6df67498ad3bf4"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/00bffb8b_asm.txt",
+      "size": 165,
+      "sha256": "1a5fe9df3df70541aef8ea38a2f6173e6e2b8ca836a264f03ed4aa1aa462cb01",
+      "sha512": "db9d39956ddee4458e385a362ab80bf85703e8e2b05455b775de0c8264dbf340b0cc7d578ab752c65142f5e4b2aa0ad96c0e3e709dca251daea9dc1492d0b274"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/00bffb8b_bytes_0000.txt",
+      "size": 102,
+      "sha256": "72d87e59eeb17eb9e2bf786dece5698f1bec49b8e5df364fb09a1b834f107977",
+      "sha512": "9ac2ee0a93014dd53296b1e1f184fdafffd154ad35d99ce27b1cc9d21a4d43560c7ee45052c19f13ba624be3877b75cce92f6d27a19b17c3625ba21d16c4d85f"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/00bffb8b_live.bin",
+      "size": 19,
+      "sha256": "84aca6584c13d6f07ced37568fc45be0c65f51583ba9a70f7cc98d62b2d94a5c",
+      "sha512": "f830061596947bd1f07c6ded1e7f62ce3bf4525385591f70331722ec429daebfedd62ffb92526fefaddf26c8df34c8ef0719d39c629ca8d98f45ef2e77cc5ef6"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/00bffb8b_pe.bin",
+      "size": 19,
+      "sha256": "84aca6584c13d6f07ced37568fc45be0c65f51583ba9a70f7cc98d62b2d94a5c",
+      "sha512": "f830061596947bd1f07c6ded1e7f62ce3bf4525385591f70331722ec429daebfedd62ffb92526fefaddf26c8df34c8ef0719d39c629ca8d98f45ef2e77cc5ef6"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/00c04ef3_asm.txt",
+      "size": 59,
+      "sha256": "a42c0a89be6cdd181241ebd48fd353f4f19567e7a6f5837ca9f22200010d3e6e",
+      "sha512": "ed17b6c58bbdf35c87edb1a131cbe147f3340e0cd1756cf2f4ed70ac2cbc7e7f0fac3dd4534a11a9358ca35f7e63bfb38b9f38cd0d62bcb655513bb3b5c259e0"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/00c04ef3_bytes_0000.txt",
+      "size": 45,
+      "sha256": "38406f0a6bae60d3fb7b84b4ceeaaa66a78970a8c6840eaf7ce45a1e05adf9a5",
+      "sha512": "bb199af96e99efe01547eea0673a4f521ad74ba53d7c49637ca0c45d25a2673cea28ade7862f2b92f5458c1aa0f6b04f30b84b23e10c06a20b769c045c239100"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/00c04ef3_live.bin",
+      "size": 8,
+      "sha256": "575916c4179889b86e93e4583f8ab1f1b5c5e333c9e773f03932fb1b8beb65e9",
+      "sha512": "e9ad0a43b62bf24e345de9b337a735344db4c9269e2304973aa2c31cf5b703af30cf4ba7e235e28125df1ea2261a2d278311fbeba1d848e4a790246d0024f1b1"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/00c04ef3_pe.bin",
+      "size": 8,
+      "sha256": "575916c4179889b86e93e4583f8ab1f1b5c5e333c9e773f03932fb1b8beb65e9",
+      "sha512": "e9ad0a43b62bf24e345de9b337a735344db4c9269e2304973aa2c31cf5b703af30cf4ba7e235e28125df1ea2261a2d278311fbeba1d848e4a790246d0024f1b1"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/00c04fd5_asm.txt",
+      "size": 85,
+      "sha256": "bdf3cb090f967f355258abbcee1cc355830c818505d9389625cfc64ef8909037",
+      "sha512": "99acaad0e10fe1005445034f452855a61477879c6ec3498e5ecba90ecc127273f1e69994dbf94b072c5c8a7daf4444c84c32bedf62758670147c2e962a29ab50"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/00c04fd5_bytes_0000.txt",
+      "size": 49,
+      "sha256": "fbb9dafa2e3945730ef20f509811ae94311d37ab98eaa1b580ea0f042afed125",
+      "sha512": "4cca145967761dadaafedf3cfa0cf648be2516b4ab01d822b7a2dc6075ed09e071b93ad0072d3f30b41c315ebfbe2f43f8b2f702c6419eb5c91c6781f0e13b03"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/00c04fd5_live.bin",
+      "size": 9,
+      "sha256": "e58382981c7a36ba3f1066c370748dcc87e583c54e41f0a440673250d39cc7f3",
+      "sha512": "9e8e83cdc1b094a34e4a7fef5f943f9e377b0e267e170a1f750524796c5db62f6aef81619b343c9b000f9e2ddb9f61cf33b995d5d94f589ce2674271f7a31f51"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/00c04fd5_pe.bin",
+      "size": 9,
+      "sha256": "e58382981c7a36ba3f1066c370748dcc87e583c54e41f0a440673250d39cc7f3",
+      "sha512": "9e8e83cdc1b094a34e4a7fef5f943f9e377b0e267e170a1f750524796c5db62f6aef81619b343c9b000f9e2ddb9f61cf33b995d5d94f589ce2674271f7a31f51"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/00c05070_asm.txt",
+      "size": 450,
+      "sha256": "ccd7aa6b9e4d7da4affbe8133d651775cd5d99d7c7eafb6e1902ae4c91f362e8",
+      "sha512": "339a6559289029927b2e1c0b3834cfcb710e830b0003a86a69d00f6a2c47ced8b109c7758076ac8676bb4ab683361896ee3e2f2c0dac6373c47e427b6303e045"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/00c05070_bytes_0000.txt",
+      "size": 252,
+      "sha256": "2e85a38a8935dc5af1131036e1df0ac48b4c22c6916a5558a8929608e3592b47",
+      "sha512": "318b9b667d63d9bc11853effcac65426ff89487a47fff38cad96744446a7e5e54395347e1682cb6055ddc5b53ab24b7c26f37c2c9561a3f22ca521554ce8acbb"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/00c05070_live.bin",
+      "size": 50,
+      "sha256": "c56216e301258d74d1f73f4e30645d811c2e7a3cda5bef15b09e94735394ba81",
+      "sha512": "12a8542babb1ed2256cf0b44dce9fb028682940b1003673953a8032a657daeaa4c6c4b9cf8c8097840e163f4bbb0be02b369371f6bc2510df66fc51748a6b35e"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/00c05070_pe.bin",
+      "size": 50,
+      "sha256": "c56216e301258d74d1f73f4e30645d811c2e7a3cda5bef15b09e94735394ba81",
+      "sha512": "12a8542babb1ed2256cf0b44dce9fb028682940b1003673953a8032a657daeaa4c6c4b9cf8c8097840e163f4bbb0be02b369371f6bc2510df66fc51748a6b35e"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/00c051b7_asm.txt",
+      "size": 1130,
+      "sha256": "2d92d4e0e25572fe5e7f969e48451e17b7bc99be5cf4a4884773613f5476362b",
+      "sha512": "98acf3696ad282ebe0b6e8e9dbd90c00bd1ad3d72658ad7a92ac6fe06c9706ac99b6fa87b670eea57a1b94e9eaf747432f9bca0e0bc8f6f52f7972432b266a39"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/00c051b7_bytes_0000.txt",
+      "size": 580,
+      "sha256": "1e49b26b517b114e8fce780560e783cc8eb218140a3826adae701e320aa2f0d3",
+      "sha512": "c9b8302459535b83f882928758c5eb50dd6c11636e67d2b9aad32c8fb8dda619c7d50a0c2e936b39bd6560533995700cffda2efc45c7931395c3f19480c09ec2"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/00c051b7_live.bin",
+      "size": 119,
+      "sha256": "ccbdbe41ce6650660cd55232a4c1dff2445bfafa036dc2d2e3f2c9c2df7d9a1e",
+      "sha512": "49666385af1195dd0477d5b72e3ad3dcd447e5649bc8a2f6894c39f6c8059e695ec62c8ef5923dbcd7c8cb14e05fb9b23f49ef50eb552bbaf66bac97654d3eb7"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/00c051b7_pe.bin",
+      "size": 119,
+      "sha256": "ccbdbe41ce6650660cd55232a4c1dff2445bfafa036dc2d2e3f2c9c2df7d9a1e",
+      "sha512": "49666385af1195dd0477d5b72e3ad3dcd447e5649bc8a2f6894c39f6c8059e695ec62c8ef5923dbcd7c8cb14e05fb9b23f49ef50eb552bbaf66bac97654d3eb7"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/00c1815e_asm.txt",
+      "size": 1506,
+      "sha256": "3ba4c7dcf5b8963ff0d71df195eb713ced0cde1161e749328b4e92ae747461bd",
+      "sha512": "913ddf78d8dfb40659aad1a6c700eaf0e8f347497947aa1c0999c00e89f4a4fe434c2fa85a2fe8b5efa29fb313a6945f269f103244679ce0e1c0bbf526e2263a"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/00c1815e_bytes_0000.txt",
+      "size": 722,
+      "sha256": "745fec80bea1272b26de7654bd35d5b20cba78abf6f323af79f8761347867b0d",
+      "sha512": "b67d4957d457ac55e7fc0f39d96ae624c55c8159473f8ddb3d091d0afe9e336bce3a55cdb4f89064c5836b73d9abffbc4d0e745453f7dc296b7075d634c736d8"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/00c1815e_live.bin",
+      "size": 148,
+      "sha256": "ab5ce5744b96a3fec31d2ae40dfab40805079070fc159e2fc7d153efc280e861",
+      "sha512": "ab4e527f05b6f70cb5a9a84860bee9dacc58028e65925b19467554d5ea28973b488878fd28f9129bc2abd39a597b0b46ba88fd1ee59c687d77fc7512d9a329f3"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/00c1815e_pe.bin",
+      "size": 148,
+      "sha256": "ab5ce5744b96a3fec31d2ae40dfab40805079070fc159e2fc7d153efc280e861",
+      "sha512": "ab4e527f05b6f70cb5a9a84860bee9dacc58028e65925b19467554d5ea28973b488878fd28f9129bc2abd39a597b0b46ba88fd1ee59c687d77fc7512d9a329f3"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/00c185a4_asm_head.txt",
+      "size": 1663,
+      "sha256": "57366240584c71fcc815e0e091617db24e9c47cff4b5f78e8a87aa9396cfc0a9",
+      "sha512": "72251cdb4fc506f3e75656335f7e347e6513d4e88ccce41e515ad6e890474cb1de5c7f8b76797c7557c60d1264f15b9d23e6d65e85289b764d006c467129badc"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/00c185a4_asm_tail.txt",
+      "size": 211,
+      "sha256": "e9434bb358f79c5f6f9016be5bfd16d08c3b26de04105b43c6e5146bfa3a689e",
+      "sha512": "db8741b7c195db09ef2f5f6cc1749a4c18b3f497230cc8e8111c05ad00f00895a03834911ffde57995c94bdcab4816e0df5d26965d93a974f52bdf3fbd6554d7"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/00c185a4_bytes_0000.txt",
+      "size": 1232,
+      "sha256": "2ddb1d56d29a134e3073f007042e1eb52c239d63af00a5241a25b81029a1cff6",
+      "sha512": "73896be414918b291a112b63a19788b23e6de05a60fef24816ba2241d94ae67c248b6ddb3ae88ec8c6b64763f53ebfab842fbaaab5983d1293a5421ab2714fe3"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/00c185a4_bytes_0100.txt",
+      "size": 29,
+      "sha256": "b47878b047c8171b5d77ca31669ed736c8fdaa91c980a9323b11c3d4bff35d6a",
+      "sha512": "bcab88581ea38147c72fa1423b7b2f67bf0c09c5e3b8d9a0e2445bbf74a0101672e7d3d4f6a56066c2c63d38d112ea43b0b6434f56b316158b1cd18349cde003"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/00c185a4_live.bin",
+      "size": 260,
+      "sha256": "685aa7bdbbc2b0cb5d77dd66bc24c7aa380ac1fc205423d95c08664d5ccd891e",
+      "sha512": "d4639e47c013579efd01d09725116a5e787d560a9cfab6f3808fc225a9d79632b561ec6cff270ac6395c208d93874f50c84f30e1f50eed7d2e05ca7de939968d"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/00c185a4_pe.bin",
+      "size": 260,
+      "sha256": "685aa7bdbbc2b0cb5d77dd66bc24c7aa380ac1fc205423d95c08664d5ccd891e",
+      "sha512": "d4639e47c013579efd01d09725116a5e787d560a9cfab6f3808fc225a9d79632b561ec6cff270ac6395c208d93874f50c84f30e1f50eed7d2e05ca7de939968d"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/00d6e1cc_bytes_0000.txt",
+      "size": 45,
+      "sha256": "c3d9ee127e8e446da6eddd083be65013c40ebf9690643dc85a4d6ddebc70e8cd",
+      "sha512": "7449b74310bf38204d4aeecc10197ff8e9c6ef8c01363bfee45949e79f616fcb61822a4246a701fad9737681f785c7218e3f7af45e72d34835ab6652bea5b5e4"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/00d6e1cc_live.bin",
+      "size": 8,
+      "sha256": "a7b8afc2eb356c8577e0bca58c49d6a4bb52ce9ba1b8f6ea753dafd32e2fb903",
+      "sha512": "9f9e5749d065cf8577215d36f90db29cb9ef4c55e3c7bf894c43bb0a90e1f934a7815684f5253684e04d77aa371c77b7cdfcd3a211c45269b41982312fb97c5c"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/00d6e1cc_pe.bin",
+      "size": 8,
+      "sha256": "a7b8afc2eb356c8577e0bca58c49d6a4bb52ce9ba1b8f6ea753dafd32e2fb903",
+      "sha512": "9f9e5749d065cf8577215d36f90db29cb9ef4c55e3c7bf894c43bb0a90e1f934a7815684f5253684e04d77aa371c77b7cdfcd3a211c45269b41982312fb97c5c"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/00e15590_bytes_0000.txt",
+      "size": 45,
+      "sha256": "96c8259d56d47d1d905d95d3ef21787fa4f6815f1c9ab529a36365688de4741e",
+      "sha512": "970c69dbfc5cfee9a7dc8fd0b857cd0647eeb1d0c8666e573b9c13f9fffd09daa773cbfde57d72e6859b58b1babfbcfdf4306f9884c6cf3b15247bea5139df49"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/00e15590_live.bin",
+      "size": 8,
+      "sha256": "29b5066f8e977a643aebc158d86968765fbcdec85d9c5fcff28cc9f68782d5e4",
+      "sha512": "40e2bd5a6b3a1a52d333dc5bfc7555994772ed5eece72f302e65d5cfe1ddc4d39b65f2c3c053be26b03635d62a8c00d8ebd126132b8a665bf5fca051f9fe9398"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/00e15590_pe.bin",
+      "size": 8,
+      "sha256": "29b5066f8e977a643aebc158d86968765fbcdec85d9c5fcff28cc9f68782d5e4",
+      "sha512": "40e2bd5a6b3a1a52d333dc5bfc7555994772ed5eece72f302e65d5cfe1ddc4d39b65f2c3c053be26b03635d62a8c00d8ebd126132b8a665bf5fca051f9fe9398"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/00e159e8_bytes_0000.txt",
+      "size": 29,
+      "sha256": "d5c7489b482750f0382687a3618e6f837ae7d60a4010f703aafb5a1b06244143",
+      "sha512": "a486239e66948cb1047695a69d2b7ebf33719256cac06db2590543109c8b1e93f0ef94558ce91afebc9afa1257842e9cde1eb89e317cdd712ba06421ca02e1b2"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/00e159e8_live.bin",
+      "size": 4,
+      "sha256": "42f4aeb81c1ef81f771f3de8abca9dcf66901c575530e7672e4b1146474ae650",
+      "sha512": "2b504f7dea06c706b789f94ad7bea5b2e65befd005a433b67dddffb1ae849ed1640df27d6dc86f3fd36e058dad41d726ad93ad4bf05432533e8a253afde94a05"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/00e159e8_pe.bin",
+      "size": 4,
+      "sha256": "42f4aeb81c1ef81f771f3de8abca9dcf66901c575530e7672e4b1146474ae650",
+      "sha512": "2b504f7dea06c706b789f94ad7bea5b2e65befd005a433b67dddffb1ae849ed1640df27d6dc86f3fd36e058dad41d726ad93ad4bf05432533e8a253afde94a05"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/00e15afc_bytes_0000.txt",
+      "size": 45,
+      "sha256": "eb97a57fbda7d0fcb58cef2213642978cc9cf2c38be204796ca037aabe508089",
+      "sha512": "d598a1b6ad5c20c938eb656ca3265177c12dcd82dd0b65528e4ff6d3a1d3acbe58a9c7b31f32129b0f8b913a957cd0d75bdcc81627c45048bca1a45e0a9d918e"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/00e15afc_live.bin",
+      "size": 8,
+      "sha256": "12a3ae445661ce5dee78d0650d33362dec29c4f82af05e7e57fb595bbbacf0ca",
+      "sha512": "d0e784dd6dfb1a1f64da68379c349e5d7b5354d2a7312694b9d736b1410f408f5d5fd50924acef6cc6d78653917972bc0551fa11712de9ccdfbe4ef988962bf0"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/00e15afc_pe.bin",
+      "size": 8,
+      "sha256": "12a3ae445661ce5dee78d0650d33362dec29c4f82af05e7e57fb595bbbacf0ca",
+      "sha512": "d0e784dd6dfb1a1f64da68379c349e5d7b5354d2a7312694b9d736b1410f408f5d5fd50924acef6cc6d78653917972bc0551fa11712de9ccdfbe4ef988962bf0"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/0109dd64_bytes_0000.txt",
+      "size": 29,
+      "sha256": "e2c9679eb6459608bdf82e93f2086383258c35874abe8a3def7cb911157c4a8e",
+      "sha512": "2e632df5dbf8e064e66e2fdd520defe8b1aed06653c1bba36515c320ba91e9ed286374e5c382a4c6d6915229c1f323a3e028845110a711e1a651c383afaa2d77"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/0109dd64_live.bin",
+      "size": 4,
+      "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+      "sha512": "ec2d57691d9b2d40182ac565032054b7d784ba96b18bcb5be0bb4e70e3fb041eff582c8af66ee50256539f2181d7f9e53627c0189da7e75a4d5ef10ea93b20b3"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/0109dd64_pe.bin",
+      "size": 4,
+      "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+      "sha512": "ec2d57691d9b2d40182ac565032054b7d784ba96b18bcb5be0bb4e70e3fb041eff582c8af66ee50256539f2181d7f9e53627c0189da7e75a4d5ef10ea93b20b3"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/0109de38_bytes_0000.txt",
+      "size": 45,
+      "sha256": "7874f46686753c5654f10ebd21c5d8081509ccbc0a24d7142764e35ae500f0e5",
+      "sha512": "6e7dbc70cae23a775828b926f8f492faa3a0ababff1991fcdaa475336125a99a6dcb1740094394d94a0e26ebad8d95f71d3dabd1c14b127b7ded06026d3dcce0"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/0109de38_live.bin",
+      "size": 8,
+      "sha256": "af5570f5a1810b7af78caf4bc70a660f0df51e42baf91d4de5b2328de0e83dfc",
+      "sha512": "1b7409ccf0d5a34d3a77eaabfa9fe27427655be9297127ee9522aa1bf4046d4f945983678169cb1a7348edcac47ef0d9e2c924130e5bcc5f0d94937852c42f1b"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/0109de38_pe.bin",
+      "size": 8,
+      "sha256": "af5570f5a1810b7af78caf4bc70a660f0df51e42baf91d4de5b2328de0e83dfc",
+      "sha512": "1b7409ccf0d5a34d3a77eaabfa9fe27427655be9297127ee9522aa1bf4046d4f945983678169cb1a7348edcac47ef0d9e2c924130e5bcc5f0d94937852c42f1b"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/0109e568_bytes_0000.txt",
+      "size": 430,
+      "sha256": "a99549abcabb65052f1364abbdfc10d92ea1e8b9cb47c4e25c10ab1570039ec3",
+      "sha512": "509be4e4ae13e12d6a053df6495fd783d95379691b7a01251bf3130ef621be2e46730d44556d6fcfa766d4ae669dbd125c98561ac72546bd5164f48e1f26ce70"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/0109e568_live.bin",
+      "size": 88,
+      "sha256": "10eef285deef7a4b7c82b22aa53589b7833df29de3814649c772bbd5c832f365",
+      "sha512": "f58cc598fdea5e45261b678570f64e75a64f9faa7e268015a128edeaf1b717ee583b3e2f6690ae31dcb515a95234d3d371148fbc14c26ecfa74e6a51f3d6e5f9"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/0109e568_pe.bin",
+      "size": 88,
+      "sha256": "10eef285deef7a4b7c82b22aa53589b7833df29de3814649c772bbd5c832f365",
+      "sha512": "f58cc598fdea5e45261b678570f64e75a64f9faa7e268015a128edeaf1b717ee583b3e2f6690ae31dcb515a95234d3d371148fbc14c26ecfa74e6a51f3d6e5f9"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/0109e5c0_bytes_0000.txt",
+      "size": 1232,
+      "sha256": "dcefd02152b39aee859a5b44a478afd60518e2e7a3659eab5d6ac0ec40c9f65d",
+      "sha512": "22aeca39b62e7e75a1b90d4b5f65b02dce821948f6f9c2ca4915fdd4bd22b305da6abc7da13ebe59bdac6bb04483caf8a4c64cadd27c748e36011e9bc2f03fb3"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/0109e5c0_bytes_0100.txt",
+      "size": 1232,
+      "sha256": "6560fc7aed43b358b329a9673f91f06bc4a3e3eed36b90434da4ce821442ee67",
+      "sha512": "7d29f368d11b39e5fcdbb17b2fb138e87a67a38dc775d870b102210463ceb7ba94d664d9aac35a40a55bcc3332085ffdac663930d18e3cee8c4b1a019ba8c858"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/0109e5c0_bytes_0200.txt",
+      "size": 985,
+      "sha256": "340d63944145b9b8ed1c2a64138b44d2d542056b0f24711dac11074ee5fc49d2",
+      "sha512": "dcc4d5feeb39987215646baf67e61eb0d3e34eff4e1a5371e8c02dcceed69fc7d81922772687c9fa6d2e420d9ae87931bdaa9d4c0e310fda894c47677aab7a83"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/0109e5c0_live.bin",
+      "size": 716,
+      "sha256": "9d07d0612ffec02a518f9613569f2b8756d54bfd1e576140d278df39eff347a9",
+      "sha512": "d8558b0ac430e12a47eae58290777e5358064d1ece51a8170b68274ecef9cc580acce9e39eea914ccd337e277f9e4a5c6bb592cd7d1163fcc614a3a84ada6b6a"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/0109e5c0_pe.bin",
+      "size": 716,
+      "sha256": "9d07d0612ffec02a518f9613569f2b8756d54bfd1e576140d278df39eff347a9",
+      "sha512": "d8558b0ac430e12a47eae58290777e5358064d1ece51a8170b68274ecef9cc580acce9e39eea914ccd337e277f9e4a5c6bb592cd7d1163fcc614a3a84ada6b6a"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/0109eea8_bytes_0000.txt",
+      "size": 29,
+      "sha256": "6a96a5811d6ee1e791b99f7cced238d56005da127458f4c1a4463cce83049f5f",
+      "sha512": "3042fec834becae461cf372cf3ca980d640f1b75999da6aa48a4e786aa77afeaba783903b02e5bde856324c0edffd722075f13be897d0e945db73e0cfff2893f"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/0109eea8_live.bin",
+      "size": 4,
+      "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+      "sha512": "ec2d57691d9b2d40182ac565032054b7d784ba96b18bcb5be0bb4e70e3fb041eff582c8af66ee50256539f2181d7f9e53627c0189da7e75a4d5ef10ea93b20b3"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/0109eea8_pe.bin",
+      "size": 4,
+      "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+      "sha512": "ec2d57691d9b2d40182ac565032054b7d784ba96b18bcb5be0bb4e70e3fb041eff582c8af66ee50256539f2181d7f9e53627c0189da7e75a4d5ef10ea93b20b3"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/capture_evidence.py",
+      "size": 5446,
+      "sha256": "8f6bb656c938e681dfc39d7bf67094440d9ea9698ab3adf5aa8ccbede5e77c43",
+      "sha512": "3e53df1456d2f1709b0d8a32d3522931f54b3ed1a6d8f4e13953dff4be7d68b67ba6e3933330a4d3617bbfa3b8bf06d0258bdb634dc2d6959a40f59f4799f69e"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/commit_message.txt",
+      "size": 462,
+      "sha256": "217db2c6085552dee4e4eb7162bff177cd94b1881a538d82934ae4938a4c427c",
+      "sha512": "bd835c2e504c269ceee04ca37667c9475f223e2babde62b608154a753eb1c1c761f667d013bc3b42979984cba9c73e4d9bf09b7c38c848b65c5a5c4332bbaf70"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/comparison.json",
+      "size": 8599,
+      "sha256": "cf24ab10e52366193464ca79795cff79800b1d895d0fb1cf5ad617c0be0dca14",
+      "sha512": "9ff36601ab865696009f5d6187fd9ac99a8ff63b6d315011ae094df0b036148212c2ffbaa59da75973e3b6cedd0ffbb7e24404b54147aaf29484b2605674ecd2"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/cookie_check_raw.txt",
+      "size": 167,
+      "sha256": "c2141b98e6ce753ef732537870ee9dbdc05c43f86b971ae9139604e34c9543ae",
+      "sha512": "9b7077098131d282196d5c9c1d3cd388f65ce5869a7bd096701e97565050f4a8aa0158f4e397342c8aed95cddbd582c050202473eceadc4682d5a4ab71a5465e"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/cookie_complement_xrefs.txt",
+      "size": 145,
+      "sha256": "064bdfce135f02d25fc962b09885aad371a29cc311e624daa243723a1ef722c7",
+      "sha512": "44a6336f1c83f5375c1e6c87e37b9d4d48e1458d275575e469648be05ef8453511b82fb906f9cd9259ec2600aaeaec8e0c050e87ab9fdfad7f8262b471290b2b"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/cookie_init_proto.txt",
+      "size": 104,
+      "sha256": "c508617ea187231c2691fec8ef0c21ea5f0b2a02b4b47e9dbbe8c48ea33db1af",
+      "sha512": "600245fdaac9abd835d31e4a894a85e9b8582508ff37a7e61405b4e1aca10dbe233f6aa6ddb76ae5b216a2618e6a56fd3e73e82ce759b3071d62116b578104d7"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/cookie_initial_bytes.txt",
+      "size": 45,
+      "sha256": "96c8259d56d47d1d905d95d3ef21787fa4f6815f1c9ab529a36365688de4741e",
+      "sha512": "970c69dbfc5cfee9a7dc8fd0b857cd0647eeb1d0c8666e573b9c13f9fffd09daa773cbfde57d72e6859b58b1babfbcfdf4306f9884c6cf3b15247bea5139df49"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/debughook_initial_bytes.txt",
+      "size": 29,
+      "sha256": "6a96a5811d6ee1e791b99f7cced238d56005da127458f4c1a4463cce83049f5f",
+      "sha512": "3042fec834becae461cf372cf3ca980d640f1b75999da6aa48a4e786aa77afeaba783903b02e5bde856324c0edffd722075f13be897d0e945db73e0cfff2893f"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/debughook_xrefs.txt",
+      "size": 57,
+      "sha256": "1403ec3dfacde61b01d888f85946979c989c8fd970db19e681cd40936c661434",
+      "sha512": "947e4bbf37a36a5572967999279c6eadc33d18e81318e5a32017f1c4f93f6b078c836a2d856e4f5bc176c78aaba0ebef062db966f8645d382b6ae823e3cc13b2"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/encode_null_proto.txt",
+      "size": 83,
+      "sha256": "a404268b7266179f03fc039ad6f501a2da0a112d4350bce28ae4d4e4778b5415",
+      "sha512": "9b6a80e5599e0eed991040cbfaa75107e23f5044543c95e204d57275b00c74966a23b5e34f7a939ea104b2d13d2dc4e49b2d3efcbe58f4f1843ce190062004c0"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/external_heap_bk/00bfd2bd_asm.txt",
+      "size": 55,
+      "sha256": "5ea3be617a755c40012ad51acc699a8de39c898b22f920016a46fdbe07662ff2",
+      "sha512": "2f52474cab27bac120d4e9a5638a28081bb4615915c77a310d3bac91e81845aa71af9d03105b3502a3e1a7b39379467e9eb8290bb9c5193cf9a1eb3673e6e857"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/external_heap_bk/00bfd2bd_live.bin",
+      "size": 10,
+      "sha256": "e83d9f5b5bb5a5688a2418d83e43541a76b46f6eabe05d26fcafe779423c2d7d",
+      "sha512": "911c01d543b22178478f01ad8a7007a5dcb6991e4810e0bf4f5057c5860aeaa0c61887aef9f1bbccab4cde575ebeb56538a922aff1dbb129562e1dd6c5d80ffc"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/external_heap_bk/00bfd2bd_pe.bin",
+      "size": 10,
+      "sha256": "e83d9f5b5bb5a5688a2418d83e43541a76b46f6eabe05d26fcafe779423c2d7d",
+      "sha512": "911c01d543b22178478f01ad8a7007a5dcb6991e4810e0bf4f5057c5860aeaa0c61887aef9f1bbccab4cde575ebeb56538a922aff1dbb129562e1dd6c5d80ffc"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/fallback_errno_xrefs.txt",
+      "size": 51,
+      "sha256": "502e1bf14edffb94afe94e224c77056033e4e360e93ebaba2f0752ab9d8087f3",
+      "sha512": "f664c0b1dbe9f1695b0dd7cd29aa123268fcf0498e5a992302fd6f0c566a5008b26d4b135ee6552dfb7336bc821d4cd39ec4e4ef175043f92cd18f63cc500d40"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/finalize_inventory.py",
+      "size": 1904,
+      "sha256": "b7a39faa0421f3953f12b82f79fb0538330f7c8c8e863a86fcab11c84fcb4e78",
+      "sha512": "8661ea8a46266f42fd8f89c52b073c1685d94d261cb9c6636acd8155dcfaa0989fb08b821535922a2e2e39537b41840cf50bf25262eadde8f3fcea621e74b79a"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/gs_exception_pointers_bytes.txt",
+      "size": 45,
+      "sha256": "c3d9ee127e8e446da6eddd083be65013c40ebf9690643dc85a4d6ddebc70e8cd",
+      "sha512": "7449b74310bf38204d4aeecc10197ff8e9c6ef8c01363bfee45949e79f616fcb61822a4246a701fad9737681f785c7218e3f7af45e72d34835ab6652bea5b5e4"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/gs_record_initial_bytes.txt",
+      "size": 430,
+      "sha256": "a99549abcabb65052f1364abbdfc10d92ea1e8b9cb47c4e25c10ab1570039ec3",
+      "sha512": "509be4e4ae13e12d6a053df6495fd783d95379691b7a01251bf3130ef621be2e46730d44556d6fcfa766d4ae669dbd125c98561ac72546bd5164f48e1f26ce70"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/gsfailure_tail_raw.txt",
+      "size": 283,
+      "sha256": "393139f79745090a81d64dae773acdfa7f22c0c2efcd6c79d4b71462dcc6dc06",
+      "sha512": "a01b25145df6ea4e6ea099e1b7dce93ed703bc9d66848a4c9956405dfa5fcfdc86ae3eaa9e24520b898e1974fe9e4296a6f8628da76a43d9c9b643173c3cbc6c"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/handler_setter_callers.txt",
+      "size": 28,
+      "sha256": "ad0565425a511670b7e93e165a0c06cac7a3961f5b701e040840d93dca18dfb2",
+      "sha512": "43bf47ef5191af031286a12bc2abb8fe38256b9bb448c0737a5baa1579b6aad3b4e586470b12e247fa67db23576ae7f4634c48ba65a68534743f86a17e8fb127"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/handler_setter_proto.txt",
+      "size": 105,
+      "sha256": "97aa6542e8a9bb4746c24cf933451c7fa3384a3e5385901cbb77e91a16c7d589",
+      "sha512": "033bcfc5a0f207551b4d401929fefde58cfa92c263c793091a28ba34d64a32b3a1e47b2a8bdafaced94ac84b5d4adf5fcd5d96a4a94883a2592fc937eaa51cc1"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/imports.json",
+      "size": 1353,
+      "sha256": "857d9203fc31cbfd34d4184d3a392171f4aaf4e08018487dc3ac3fad059fe53b",
+      "sha512": "e3cf876a68675a9a6e4d00a2a3cd86a0051c9060bcfa9596de1a6acfe62e3807ea597695963199890c9b9a2ddc39774e6b994c2078f118bde230f54ffd133919"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/installed_pe.json",
+      "size": 1924,
+      "sha256": "bf6907c90f84e78e560d4273a7077b41e41360f16cd9d7cb16f65d755a77cd53",
+      "sha512": "2ccc4edb5dbdd066a33f80076012f6f692a922f45d6129b1ac7eabb0681a6fb828cddba7bf95e5a6e44bf8a9cd1cf7229b098474683dfd649f0e2a9dc43d2a1a"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/invalid_handler_xrefs.txt",
+      "size": 103,
+      "sha256": "29e4ee77910891fd0974274aecb506b421aa46b4920ffee2f5027d262f7d40bb",
+      "sha512": "8c7766de10c8790d8e0912b5b98442f8e8b999adffb18ddd73abf128c6c284789e3bb79f32af5a46be99e9c8db904c6663a25050c9e53e2ec09c90d0f97fde0d"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/next_provider_proto.txt",
+      "size": 210,
+      "sha256": "f4bba8d8839a95432f0ebc47a46663e6d9f85e520488c5cc33afa1434ebf7599",
+      "sha512": "a24238267a2a2682dd8d00cdfd478f914020d6cf98691865ea7f0bfdcaee5a31215f0f6079bdffd07c842eb4f44be5953fdbe4dc5115037e115c4d40275bfc6d"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/pointer_init_callers.txt",
+      "size": 21,
+      "sha256": "35a2545e6ffba4fc4f688df1a6b5618ebb4eedf4c8f8b82a4502842edb539710",
+      "sha512": "c44f16ad471506de30a7f0b49f26c43695fed6465e8a6f12b6881e9198fe69731eb482bfb809ebbf9a4e967ba42a9639fb4ac7efc417403b33e76805761522ba"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/pointer_init_proto.txt",
+      "size": 88,
+      "sha256": "1278dd12c79aaadf3997f5784c89a55efcf2dc29b37df67ef580d5987cae669b",
+      "sha512": "c17a80424b2d7b286451ee40694247f679f09a1a4cd5687853fe2df3e75cb2abe5ef0bff5a3a0e445ef032854dcd3cbe055eee6db7ddcfd5c9c3034d11f834db"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/ptd_free_tail_raw.txt",
+      "size": 280,
+      "sha256": "341f6e9de03c9cd7e49849da448cbebbb4fdb3ab026e696d45c447cea74956d0",
+      "sha512": "622aacdba76d1e7cd89471bf8bc5855a4517a820f96404bb4be511a64735df85467ba76b645642de65286a1cdb67e00e5b253a87d4afb531a16c76586734770f"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/ptd_provider_proto.txt",
+      "size": 340,
+      "sha256": "54914cc7626da919ac36a2d0017494f1c694078d7afbebb76951f0409feacffa",
+      "sha512": "3677db3f5fe35f4201a4f6d871fdd5fbf3d6fd386757b35de35fc33126a43a4526e63bfd01851f3936b87dda397bab02a81a2ab03b98f4900d527ea708ec9d39"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/retain_entry.py",
+      "size": 1545,
+      "sha256": "e8ba57569932df2017b2168c4b4cefdbf272f07f45134b585aee6433077f846b",
+      "sha512": "e247f051509780cf0254b0d273c83cf1c662ec0e0a185ce9360133bda041d662658673ada72ed7ce575ecf9668848071162795f86ed531867f6b8f2dd5f332f9"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/sdk_provenance.json",
+      "size": 465,
+      "sha256": "22b2620a7e62188f06ddd63cf9df0ad158300ca637061c765d6f9802f11f47b1",
+      "sha512": "063cb346351bce50dd4a14b3725526b3349fed3e6ef71c70bc062f43c0dc629911964a397e413c3aa5955937c3fb711c9f82eac1fe66d82d45c396ef7af8e5a2"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/sdk_x86_layout_excerpt.txt",
+      "size": 4376,
+      "sha256": "fe5468512228c7a4d352bba0545c54887f7a992326c0b6b2e5ff4e61e5d49d81",
+      "sha512": "9503ef3f27e0fc5180ed9b38dbdf6de7fa698edb2f7d0cc3c258116bd6760d0a1b882354e971d401817cae9360d26d2d8d4bc4cc86f609b8ecba999b7f3fc2c9"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/source/include/bsp/legacy_crt_math.hpp",
+      "size": 1108,
+      "sha256": "52f6b22f16ee3fda8d8ee6d8a14e3bbabcf24e72393418579fab6204523efe39",
+      "sha512": "f22e83e4a862abdedb8e3fd67ecf367110756276327fd4e1955d7f1898bff1079f53b4da92b65d58160fa35460b5f5a425c381c5dcf691c3dffb4e15bb8d29f9"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/source/include/bsp/native_crt_libm_callback_registration.hpp",
+      "size": 4064,
+      "sha256": "96b1bf767f1b4de73a578f178de025f2c9199082e404ad3bf45e0ff695f58746",
+      "sha512": "e09ab79e0a33f5eee9770d958b286ab732d0670f5cca0d80747ed051d635723420eb4fd4c05e4d84d43e4e73ca293a7f55d0b6cb828bd2b26f48ad5fe761cf14"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/source/include/bsp/native_crt_pointer_decode.hpp",
+      "size": 2327,
+      "sha256": "b1e901d739c07419b55441988bf42177b0e6ace3ef27ef1251ecb3b36fb48a7f",
+      "sha512": "f4ef7cb2e66db39a9a3eb3f762526d49441d2284331191a538650e193474f04c6b746f86386579655f39d78151eb9fe8df9f2a9e79bfaaabeab1cfcf0e15eb15"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/source/include/bsp/native_crt_pointer_decode_support.hpp",
+      "size": 2673,
+      "sha256": "dfc566daa6960a69680ea6897fce1b94127f3df0972cdaf645cf67a9f128e722",
+      "sha512": "3741b65ae831f4b48124d394c923a9d4cb2ec9469c29824a2674d56cca878aa9662a83afeda486bbb1286c9131186262f8c0f6b62e476bc6f76eb959adcf2d96"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/source/include/bsp/native_singleton_vector_reserve_construct.hpp",
+      "size": 1845,
+      "sha256": "0ab5b32557f19fbd2887065378af01a95f2be959855d8de1249a896a9754579d",
+      "sha512": "529efc7fd7420751e3518234b712d03f9c5e80061f8a93f6c125c738631d246d7b504bf3d924fcf17a173d14cabf2839fff825733d570bea2140940c018a9652"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/source/include/bsp/system_lighting_constants.hpp",
+      "size": 8718,
+      "sha256": "9c98d892bac479fdf3d661c98c996333df0821a3daea26a5e36ba40339b722c9",
+      "sha512": "5eee9e1a4bb80080ec078f9bee52f1beba984414fd33306bab4e0dfb68986eccdf2c96bb26a903966c0f2d83c39f7f9ba37e6a311e84f3f931414c017f4fc981"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/source/src/native_crt_libm_callback_registration.cpp",
+      "size": 4120,
+      "sha256": "cacc140a243569c0d0828a309cf84c079fa12e30b1fc5124e703c44ed1716c32",
+      "sha512": "6ba30c69a027cc3c28c750f7aaf3ecc5758b33b80997b8916d14aa222a70049ea66b07380c37f31988eb4369eb735ff465a3f18b16ee9ef57c407a751eb0822f"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/source/src/native_crt_pointer_decode.cpp",
+      "size": 2271,
+      "sha256": "7a689a80bea666aa0941662a1bbde17500c92d1f7fd671c364aa2b3e0bf365c7",
+      "sha512": "99804a9bbd4aed649121531b0b3baaaebad762f6462ae86fc371bacf6042e995645352be3927d6e3afcd3213334693103d000ecf6d2c1630702f113dce855ddd"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/source/src/native_crt_pointer_decode_support.cpp",
+      "size": 4315,
+      "sha256": "ac0eab56cd6a829cecb42157b0b3ff83124725fa0bead4aac2c29bc334fc9f37",
+      "sha512": "8314158c43543e6f136a40536004e45a9da4b79d94a701ebf89fa8948e6d4b7602914d50d5fd78c5f57f5b6c2b9fd2915e939b6d298ae87071fecbda5faa22bb"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/source/src/xlive_ipc.cpp",
+      "size": 10872,
+      "sha256": "a91c4dc646c2e5770c56025950d0893937a61a46779894a165d1c828c2afad95",
+      "sha512": "5e53d831df4972a1d00e1874f08ad8ff011d658278cc36bf9c07aefbf5353dde39b4b53fbf8334c936017fc7e71c9547d69931e42ee656bf1b9549f1af7ab6a6"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/source_closure_search_result.txt",
+      "size": 140,
+      "sha256": "e92ff6acf50fe404dab0b10c5b72c922117aee14e6f26a46d9add40f008806ea",
+      "sha512": "11dd815f9a2f64a67028749afa669085def4e5cd216c3be3a8edf992c2a5f7b9e857c3f976844233ee709601c37f8d7658b7cc3a25010e1c862e2f44d271cb19"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/source_owner_search.txt",
+      "size": 666,
+      "sha256": "5573df6f3664dcc80d134dd91843d82272f87f40b9fecd04502fbe6e5705027a",
+      "sha512": "3c4577b0aa4d20fb6be2870c62b348858b024cc8cc022b9dac539d8636a2e424a33addb3a9bd86a507ac0be6a0b106a86eecfd0d9a0d1f3f597d07573c109482"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/source_support_search.txt",
+      "size": 2008,
+      "sha256": "c3d0d5ebcd2951636659d15432d8c6b868b18e79c881df31794e88f826644f5b",
+      "sha512": "fd2c81e07fa2ca8733ab61469798a954b7524a8751fb8acc0850b46ab4d0f6e5be7b58d53da42eeadbc898dec8c995fbd60b6baa2c0b74ed6a846d22606f533e"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/support_proto.txt",
+      "size": 532,
+      "sha256": "065dc84bcd06a8651738fd7ef1c1cd535429c220a3ab03430552aa389d25e634",
+      "sha512": "1effb72a9122f49347f0d22ce7436b6c11a0bc1deb920289633be08e3602d921f18a63c285974012b884c227a3a157d8b862e2b2b5fcbe17375bc2248d504d03"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/target.json",
+      "size": 416,
+      "sha256": "52af0251bc4836f61f3837c4b3172db40e52ffc531da67cc50547ae3bf15b806",
+      "sha512": "5de0ebadd21d822a186a9d0fb2ac86551be40b08caf1cf2ca7a0007f6218f6872d167fddc94f966cda7c32dec84a0939a8895d64d351d447905cb91dd44abcf4"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/verify_report_calls.txt",
+      "size": 76,
+      "sha256": "3de65205e25250f0ae04a20ba472c4d418752e34a534f2f0cdf5ce86b4464a91",
+      "sha512": "f9b9abc6e52f096c54045792fd5689926bd127b12721f210619c7a4fe72158963969a45af7202eb351db4049a65345808cf63dd894b03e9773b308491a94f870"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/watson_proto.txt",
+      "size": 181,
+      "sha256": "cf1d63c65f05f94133d49d4fbb9dd306c853b705e523f12fd768dbbd798d6c4e",
+      "sha512": "6c48b8f4d710474b7c75c3ea7902a1201595db0a56fdf540875a515d2c8893077ae342e7aea0aa54c9e376b7b5e4657600ef1a9847dba89126a20013fa7c3b69"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/watson_pseudo_head.txt",
+      "size": 1008,
+      "sha256": "9a40f09b929c2aa0027d7561d72a357cef970450ecca47284b5a1c0d8ddc0fb4",
+      "sha512": "d4e72d6a8b6efda6ff5383fc8a0067585fdf7abacb1030ffc4d7ff488ec649fb96e54070aadda0ecdf25c8b627ba6d2c14ddf99176c8709435850a458b1612b0"
+    },
+    {
+      "path": "local/native_crt_watson_frontier_bl/write_report.py",
+      "size": 16317,
+      "sha256": "6871f799aa9606459f59f3219a43c8912bbbc271908919c4a32600247249c33f",
+      "sha512": "4c36c30c8587ff3ec43633b0f05b4d5add9abbd907dda81ff59d2a28edb07e33fdb3860476ec68f08ecb42e570ca9d22b2a49b28a1c9ed28195d525a01701ee8"
+    }
+  ],
+  "external_entry_provenance": {
+    "commit": "c7a9ae6877b711c7a7e196b4039b5ae4b71373ee",
+    "address": "00bfd2bd",
+    "length": 10,
+    "calls_cookie_initializer_at": "00bfd2bd",
+    "native_callee": "00c1815e",
+    "source_sha256_sha512_verified": true,
+    "same_whole_installed_pe": true,
+    "live_capture": "Inherited BK, not re-queried this packet."
+  }
+}

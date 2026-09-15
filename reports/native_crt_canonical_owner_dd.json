@@ -1,0 +1,58 @@
+{
+  "packet": "orch2_native_crt_canonical_owner_dd",
+  "status": "bounded canonical mutable CRT data owner implemented, strict-build-tested, controlled-child-probed; no game validation",
+  "base": "8bde76b19db1169ea26d0e90b878b40a3c9157b6",
+  "branch": "agent/orch2-native-crt-canonical-owner-dd",
+  "predecessor": {
+    "CY_commit": "f5f8c1e83abd45cb26e810b964ad6e55ff49f2c3",
+    "CY_proposal_sha256": "96234c3bfa93fa5a889088db1268953aee74e06e5c2c33bb5a1ca4ccbdc60b4d",
+    "CY_report_sha256": "a1e7e0fcdcc6fcfca998025a284bbc01892e1fd0393f0f61af2dd64c33350da5",
+    "DA_review_sha256": "01a98d00a66c13a151e14cab4ab94d47f419992d224f228528a4c8caeb31a17e",
+    "original_PE_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "frozen_inventory": "local/native_crt_canonical_owner_dd/frozen_provenance.json",
+    "frozen_files_plus_original_PE": 248,
+    "two_independent_sha256_sha512_passes_equal": true
+  },
+  "owner_contract": {
+    "plan_version": 2,
+    "sparse_slot_count": 21,
+    "game_band_mask_hex": "0x18018a",
+    "readonly_slots": ["0x00cf0000", "0x00d10000", "0x00d50000", "0x00d60000"],
+    "mutable_reservations": ["0x00e10000[0x10000]", "0x01090000[0x10000]"],
+    "mutable_committed_pages": ["0x00e15000[0x1000] PE A15000 RW", "0x00e16000[0x1000] PE A16000 RW", "0x0109e000[0x1000] explicit zero-fill RW"],
+    "cells": ["0x00e15590 cookie/complement [8]", "0x00e16830 NLG [16]", "0x0109e568 failure block [804]", "0x0109eea4 feature/hook [8]", "0x00d6e1cc RO pair [8]"],
+    "transaction": "one v2 inherited capability; RO and RW owners receive disjoint bands before any commit; exact roles and identities validated; full PE hashes and page/protection/pair relationships checked; real C1815E cookie init once; mapped ACK CAS checked before nonthrowing unique process publication",
+    "lifetime": "private-destructor, non-destructed process owner retains RO and RW through host, atexit and thread teardown; OS reclaims at exit",
+    "ordinary_v1_readonly_path_preserved": true,
+    "game_link_policy_preserved": "/BASE:0x10000000 /DYNAMICBASE:NO /FIXED:NO /MAP"
+  },
+  "validation": {
+    "compiler": "MSVC 19.51.36244 x86 /W4 /WX /fp:strict",
+    "first_full_build": "passed but source changed while running; local/native_crt_canonical_owner_dd/build_attempt_1.json retained, not final source proof",
+    "settled_full_build": "passed; local/native_crt_canonical_owner_dd/build_final.log",
+    "source_before_final_build": "local/native_crt_canonical_owner_dd/source_before_final_build.json",
+    "seed_verification": "8/8 disk byte matches; local/native_crt_canonical_owner_dd/seed_verification.json",
+    "existing_ctests": {"reconstructed_math": "passed", "native_math_differential": "passed"},
+    "controlled_probe": "passed against final bsp_core.lib; local/native_crt_canonical_owner_dd/probe_final.log",
+    "negative_cases": ["bad image: expected size rejection and six MEM_FREE bands before caller capability destruction", "injected claimed-state cancellation: checked ACK rejection and six MEM_FREE bands before caller capability destruction", "separate pre-claim parent timeout: exact timeout diagnostic"],
+    "positive_case": "three exact RW pages, actual cookie/complement, NLG signature, zero feature/hook, D6 failure/context pair, host atexit callback marker",
+    "linked_provider_and_PE_evidence": "local/native_crt_canonical_owner_dd/provider_placement.json",
+    "artifact_inventory": "local/native_crt_canonical_owner_dd/final_artifact_inventory.json",
+    "frozen_current_delivery": "local/native_crt_canonical_owner_dd/frozen/",
+    "frozen_current_inventory": "local/native_crt_canonical_owner_dd/frozen_delivery_inventory.json",
+    "complete_local_file_set_inventory": "local/native_crt_canonical_owner_dd/local_full_inventory.json (excludes only itself)",
+    "compiler_archive_tlogs": "current bsp_core/bsp_game CL command/read/write/items, core Lib command/read/write and game link command/read/write retained in the frozen delivery",
+    "source_object_archive_chain": "local/native_crt_canonical_owner_dd/compiler_archive_chain.json",
+    "independent_review": "DE final precommit artifact audit ACCEPT, no open findings; exact 59-file frozen set and 152-file whole-local set, current source/object/archive/link chain, 8 seeds, 2 CTests and controlled probe independently checked",
+    "independent_linked_audit": "DE compared 744 linked function rows and 80765 bytes, resolved all 3220 relocations with zero unresolved slots, and identified four unique current archive members; DE will seal its report against the final DD commit"
+  },
+  "limitations": [
+    "No original game code, native failure/Watson, unwind or cleanup execution and no gameplay run.",
+    "The atexit marker observes one host callback, not every thread or CRT teardown.",
+    "Controlled-process address availability does not establish availability in every loader environment; collisions remain guarded failures.",
+    "Native no-extra-argument checker/reporter, NLG31, C0DBC4/C0DCCD and full CRT service readiness remain separate source tasks."
+  ],
+  "ghidra_mutation": false,
+  "installed_game_mutation": false,
+  "push_or_integration": false
+}

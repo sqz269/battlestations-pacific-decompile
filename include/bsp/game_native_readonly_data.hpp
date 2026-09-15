@@ -7,6 +7,7 @@
 
 namespace bsp::game {
 class GameNativeDataReservation;
+class GameNativeCanonicalDataOwner;
 // Source service for original numeric table/literal reads. The input must be
 // the exact supported game executable. Requested spans select 64-KB bands of
 // verified .rdata within CE2000..E07B23; committed pages are read-only/non-executable.
@@ -38,9 +39,16 @@ public:
     static constexpr std::uintptr_t begin_address = 0x00ce2000;
     static constexpr std::size_t byte_count = 0x00125b24;
 private:
+    friend class GameNativeCanonicalDataOwner;
+    // Joint v2 construction transfers RO bands but leaves the handoff ACK to
+    // the coordinator after the mutable owner and cookie are ready.
+    GameNativeReadOnlyData(const std::filesystem::path& original_executable,
+        const GameNativeDataSpan* required_spans, std::size_t span_count,
+        GameNativeDataReservation& reservation, bool defer_ack);
     void initialize(const std::filesystem::path& original_executable,
         const GameNativeDataSpan* required_spans, std::size_t span_count,
-        GameNativeDataReservation* reservation);
+        GameNativeDataReservation* reservation, bool defer_ack,
+        bool already_reserved = false);
     std::array<void*,19> reservations_{};
 };
 } // namespace bsp::game

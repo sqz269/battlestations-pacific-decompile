@@ -1,0 +1,102 @@
+{
+  "packet": "orch2_raw_node_bi_bk_annotations",
+  "status": "nine_reviewed_source_entries_named_commented_saved_and_refreshed",
+  "source_functions": 9,
+  "original_body_bytes": 925,
+  "corrected_candidate_validation": "Fresh combined acceptance is recorded separately; worker builds remain historical source evidence",
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe"
+  },
+  "annotation_log": {
+    "path": "local/ghidra-annotations-20260914T035541Z.json",
+    "sha256": "674e568482df7cf5a294af38d9aafd0e5f607fb6b2f74db3ff96a572d2e269d4"
+  },
+  "before": {
+    "path": "local/bk_integration/comments-before.json",
+    "sha256": "05c6892c950b92f63a1da32a34ec876e8130129e25760a66de5b92dbc153d869"
+  },
+  "after": {
+    "path": "local/bk_integration/comments-after.json",
+    "sha256": "6baaf1296e5d30ce46a05147c026eefe4dac4b7e7ea14fd5cef92528ca57ef99"
+  },
+  "functions": [
+    {
+      "address": "00be4300",
+      "old_name": "BSP_Stream_ReadDword",
+      "name": "BSP_Stream_ReadDword",
+      "evidence": "BI/BK reviewed source evidence: Complete26B: ECX stream, optional actual-count pointer argument, EAX DWORD, RET4. Reuses incoming pointer argument slot as 4-byte read buffer; short tails preserve pointer-address bits. Actual current D642C0/BEF590 memory or D691B0/BF5030 physical provider, explicit source-domain rejection otherwise. Context-bearing C++ interface; native stack-address identity unclaimed. See reports/native_raw_name_reader_bi.json. Worker builds and source probes are retained separately; corrected combined candidate validation is pending. Descriptive names are hypotheses, not recovered symbols."
+    },
+    {
+      "address": "00be4620",
+      "old_name": "BSP_Stream_ReadLengthPrefixedString",
+      "name": "BSP_Stream_ReadLengthPrefixedString",
+      "evidence": "BI/BK reviewed source evidence: Complete327B: raw8h output constructor, not an already-live string assignment. Read prefix and payload; publish actual byte count BEFORE output construction. Zero output header before resizing/copying; preserve captured temporary/current output reloads and result-construction bit. Disarm temporary cleanup before actual captured-data pool return; no retry if getter throws. Actual pool/provider composition, source-only AB plus three-space short-payload probe; native FH3/stack and physical-failure identity unclaimed. See reports/native_raw_name_reader_bi.json. Worker builds and source probes are retained separately; corrected combined candidate validation is pending. Descriptive names are hypotheses, not recovered symbols."
+    },
+    {
+      "address": "00bf0510",
+      "old_name": "BSP_StreamReader_ReadStringAndDebit",
+      "name": "BSP_StreamReader_ReadStringAndDebit",
+      "evidence": "BI/BK reviewed source evidence: Complete46B: seed actual-count local with output pointer, call actual current slot6C raw string provider; only after provider returns subtract actual count from budget modulo DWORD. Return original output pointer. No full-read, readiness or retry guard. New context-bearing source; original ABI and native caller-stack equivalence unclaimed. See reports/native_raw_name_reader_bi.json. Worker builds and source probes are retained separately; corrected combined candidate validation is pending. Descriptive names are hypotheses, not recovered symbols."
+    },
+    {
+      "address": "00be9fe0",
+      "old_name": "BSP_StructuredNode_ReadString",
+      "name": "BSP_StructuredNode_ReadString",
+      "evidence": "BI/BK reviewed source evidence: Complete34B: ECX raw node; stack hidden raw8h output. Reload node reader and node+20h budget, call BF0510, return original output, RET4. No node/attachment guard. Context-bearing source using actual name reader and pool; no native FH3/gameplay claim. See reports/native_raw_name_reader_bi.json. Worker builds and source probes are retained separately; corrected combined candidate validation is pending. Descriptive names are hypotheses, not recovered symbols."
+    },
+    {
+      "address": "00bea010",
+      "old_name": "BSP_StructuredNodeHandle_ReadString",
+      "name": "BSP_StructuredNodeHandle_ReadString",
+      "evidence": "BI/BK reviewed source evidence: Complete29B: ECX valid one-pointer node handle; dereference actual node, forward hidden raw8h output to BE9FE0, return original output, RET4. No null handle/node guard. Context-bearing reconstructed source; descriptive existing name is a hypothesis. See reports/native_raw_name_reader_bi.json. Worker builds and source probes are retained separately; corrected combined candidate validation is pending. Descriptive names are hypotheses, not recovered symbols."
+    },
+    {
+      "address": "00be9c40",
+      "old_name": "BSP_StructuredNode_SkipAndDetach",
+      "name": "BSP_StructuredNode_SkipAndDetach",
+      "evidence": "BI/BK reviewed source evidence: Complete70B: valid node wrapper; debit nonnull parent remaining by FULL declared node+1Ch before testing node remaining. If remaining nonzero, actual BF03E0 seek, ignore result, clear remaining. Reload reader, decrement path index+60h, clear node attachment+8, return reader. No attachment/double-detach/rollback guard. One real-memory source probe checked declared8/remaining3, parent10->2, cursor+3 and detach fields; native ABI/FH3/gameplay unclaimed. See reports/native_raw_node_detach_bi.json. Worker builds and source probes are retained separately; corrected combined candidate validation is pending. Descriptive names are hypotheses, not recovered symbols."
+    },
+    {
+      "address": "00bf03e0",
+      "old_name": "BSP_StreamReader_SkipRelative",
+      "name": "BSP_StreamReader_SkipRelative",
+      "evidence": "BI/BK reviewed source evidence: Complete21B: forward low remaining displacement, high0 and origin1 through actual current stream slot1Ch; second incoming pointer ignored; EAX raw provider result. Existing BEF540 memory provider preserves unsigned wrap and raw EAX/EDX behavior; physical BF4F20 uses real SetFilePointerEx and cached64-bit position. Unsupported profiles/slots explicitly rejected only as source-domain policy; no invented seek success. See reports/native_raw_node_detach_bi.json. Worker builds and source probes are retained separately; corrected combined candidate validation is pending. Descriptive names are hypotheses, not recovered symbols."
+    },
+    {
+      "address": "00bea250",
+      "old_name": "BSP_StructuredNode_ConstructChild",
+      "name": "BSP_StructuredNode_ConstructChild",
+      "evidence": "BI/BK reviewed source evidence: Complete300B: ECX writable24h/36-byte raw node, stacked parent, EAX node, RET4. Base/refcount/profile/reader/parent/name/depth schedule; real BF0510 debit then temporary-to-name copy. Capture temporary fields and disarm state2 before real pool getter/return. BF0280 payload publishes declared then remaining; captured reader path index increments BEFORE path-name resize/copy. Unwind armed temporary then node name then BD30F0; no BE9DF0 or budget/path rollback. Removed invented temporary initialization: BEA296 is EH state0; provider writes both output words before normal return. Caller supplies valid initialized path headers. In-place source only; BEA680 allocation, original heap/error ownership, FH3/native ABI/gameplay remain open. See reports/native_raw_node_construction_bj.json. Worker builds and source probes are retained separately; corrected combined candidate validation is pending. Descriptive names are hypotheses, not recovered symbols."
+    },
+    {
+      "address": "00c11cf5",
+      "old_name": "___sbh_heap_init",
+      "name": "___sbh_heap_init",
+      "evidence": "Complete72B actual HeapAlloc and six output publications; see reports/native_crt_small_block_heap_init_bk.json. Existing library name preserved."
+    }
+  ],
+  "exports": {
+    "log": "local/bk_integration/exports-refresh.log",
+    "sha256": "bd18ed35fc053d0723f4cb68b1717a43548190cef47a93b11c8feb8b67af20b6"
+  },
+  "qualification": "Names are hypotheses; context-bearing Win32 source interfaces. No original ABI/FH3, allocating BEA680 or gameplay claim.",
+  "heap_annotation": {
+    "before": {
+      "path": "local\\bk_integration\\heap-comments-before.json",
+      "sha256": "5fa20967a08c844a0116acbc1242471d20c171cf3b5af0bfa69635047a879bc9"
+    },
+    "after": {
+      "path": "local\\bk_integration\\heap-comments-after.json",
+      "sha256": "a9c550687d7a599d909d2b7124d700fc6ab936d5f6d6ee667fe8159c8d16a18d"
+    },
+    "apply": {
+      "path": "local\\bk_integration\\heap-annotations-apply.log",
+      "sha256": "0f9a5428640e8193a65195ccd0d34f14335611ec457c4b36fd9a96d47279eb05"
+    },
+    "export": {
+      "path": "local\\bk_integration\\heap-export-refresh.log",
+      "sha256": "bbf0258b4c78cd774100127b77c52c6e0a10d6ad82ff1631d903a4b5daad8064"
+    }
+  }
+}

@@ -1,0 +1,45 @@
+# Native CRT memset source packet CL
+
+This packet reconstructs the complete `_memset` BF79F0, `__VEC_memzero` C0C965, and `fastzero_I` C0C90E chain in `src/native_crt_memset.cpp`. All three entries are actual naked MSVC Win32 instruction bodies in one translation unit, including the real engine/self calls and outer tail jump. The outer entry uses a new four-argument C++ interface borrowing the actual canonical feature word; no feature/bootstrap/frame owner is introduced.
+
+The accepted source proposal and full discovery are CK commit `8b39b99576667dd7103f5da25558360f9f118bc3` plus the independent CK review at base `5c80806cc011d29830cde3a87ff46c7dd5bd5c26`. Their entire 48-file and 91-file inventories were reverified twice using SHA256/SHA512 and complete path sets. This packet independently recaptures all 352 bytes from the verified existing BSP program and matches them against the installed original PE, alongside complete bounded listings and prototypes. Existing correct library names remain unchanged. Current Ghidra prototypes for the two inner entries are incomplete; the stack instructions and actual caller cleanup establish their recovered ABIs.
+
+| Native entry | Physical bytes | Executable bytes/instructions | Native padding |
+| --- | --- | --- | --- |
+| BF79F0 `_memset` | 122 | 122 / 47 | none |
+| C0C965 `__VEC_memzero` | 143 | 143 / 60 | none |
+| C0C90E `fastzero_I` | 87 | 79 / 24 | 8 bytes at C0C926..C0C92D |
+
+The source adds exactly five bytes to the outer body for its borrowed reference. The final expected physical sizes are127/143/87 bytes, totaling357, of which349 are executable and8 remain skipped padding. The compiler report proves the actual emitted sizes and all bytes, local targets, and relocation operands. There are no tables, imports, unresolved providers, or private writable sections in this source packet.
+
+BF79F0 originally takes destination/fill/count at entry ESP+4/+8/+Ch, returns destination in EAX, and uses plain RET with twelve-byte caller cleanup. It loads count then destination, and zero count returns after rereading destination without loading fill or feature data or accessing the buffer. For nonzero count, XOR EAX,EAX clears all32 bits and MOV AL reads only the low fill byte. Vector selection requires that byte to be zero, unsigned count>=100h, and actual current DWORD0109EEA4 nonzero, in that order. A fill int such as100h therefore has zero-fill behavior. No signed-count, overflow, or null correction is added.
+
+At BF7A0E, EAX is proven zero and remains live as the scalar fill value. The new fourth reference pointer lies at entry ESP+10h because no prolog or PUSH precedes this gate. The original seven-byte absolute comparison becomes twelve literal bytes:
+
+```asm
+mov eax, dword ptr [esp + 10h]
+cmp dword ptr [eax], 0
+mov eax, 0
+```
+
+Those bytes are `8B 44 24 10 83 38 00 B8 00 00 00 00`. Both MOV instructions preserve EFLAGS, so the original following JE consumes the actual word comparison. The final MOV restores live zero fill; XOR would incorrectly overwrite comparison flags. Neither the fourth pointer nor the cell is read for zero count, nonzero low fill, or unsigned count<256. The binding must identify the actual stable canonical cell; no state value is assumed or copied into a substitute owner. The additional reference access and its potential fault location are qualified source-interface differences.
+
+The actual E9 tail occurs before the scalar PUSH EDI, leaving entry ESP and the original return/D/fill/count slots untouched. The three-argument vector dispatcher ignores the trailing fourth reference word; the original new-interface caller removes16 bytes after its return. No CALL/RET wrapper, fabricated continuation, extra stack write, or RET16 is introduced. This is not the original three-argument ABI, and no drop-in placement claim is made.
+
+The scalar outer path saves EDI. Count1..3 follows the original ascending byte loop. For count>=4, wrapped (-destination)&3 supplies a prefix of at most three bytes; a positive prefix is subtracted and written before pattern replication. The original SHL8/ADD and SHL16/ADD sequence replicates AL throughout EAX. Remaining count is split into DWORD count by logical SHR2 and byte remainder by AND3, followed by the original REP STOSD and positive byte tail. The saved-EDI path reloads original destination from ESP+8 before POP EDI/RET; the zero path uses ESP+4. EBP/EBX/ESI remain untouched and EDI is preserved. All instruction widths, ordering, branch predicates, and scalar access loops remain represented directly.
+
+C0C965's actual ABI is cdecl `(destination, ignored_middle_word, uint32_count)`. It never reads EBP+Ch; destination is EBP+8 and count EBP+10h. The source keeps the middle int slot instead of collapsing the frame. It reserves10h locals and saves/restores EDI and EBP; EBX/ESI are untouched. It returns original destination in EAX with a plain RET. There is no stack realignment, feature read, exception handler, or CPU query.
+
+The signed32 pointer remainder modulo16 remains the exact CDQ/XOR/SUB/AND/XOR/SUB instruction sequence. Aligned destinations split count into tail=count&7Fh and bulk=count-tail. A positive bulk calls the actual two-argument engine through PUSH bulk / PUSH destination / CALL / ADD ESP,8, then reloads destination and tail. Positive tail bytes are zeroed by actual REP STOSB after XOR EAX,EAX. An aligned direct zero call skips both paths and returns destination.
+
+A nonzero signed remainder r creates prefix=16-r:1..15 for positive representations,17..31 for negative ones. The entire prefix is zeroed before subtracting it from count and making the actual three-argument recursive call on destination+prefix, literal0 middle word, and wrapped count-prefix. ADD ESP,0Ch restores that caller frame, and the original destination is reloaded after return. Ordinary bounded direct use requires prefix<=count and sufficient writable nonwrapping extent. Direct misaligned short/zero calls retain their original unguarded prefix store and possible wrapped recursion. The outer count>=256 gate provides enough prefix count in its valid domain. No unsigned-remainder substitute or short-size repair is added.
+
+C0C90E is an actual two-argument cdecl engine `(destination,uint32_count)`, independently established by EBP+8/+Ch and the caller's eight-byte cleanup. It reserves four local bytes to save EDI, sets ECX=count>>7, zeroes XMM0 with PXOR, and unconditionally jumps into the first store iteration. The exact padding `8D A4 24 00 00 00 00 90` is emitted at its original relative positions and skipped by the JMP to loop offset20h; those padding instructions are not claimed to execute.
+
+Each engine iteration performs eight actual aligned MOVDQA stores at destination+0,10h,20h,30h,40h,50h,60h,70h, then LEA advances EDI by80h, DEC ECX/JNE repeats, and EDI/ESP/EBP are restored before RET. EAX/EDX/EBX/ESI remain untouched; ECX reaches zero normally and XMM0 is zero, with XMM1..7 unchanged. The void source declaration does not invent an EAX result. Direct count>=128 performs floor(count/128) iterations; zero/sub128 still writes its first128-byte group and then underflows ECX. The intended dispatcher domain is a positive128-byte multiple with actual16-byte alignment and sufficient writable extent. There is no size, alignment, feature, or fault guard.
+
+DF is never changed by these bodies. DF=0 is required for reached STOS paths; actual CPU/OS SSE2 support is required when the engine executes. Buffer extents must be valid, writable, nonwrapping, and disjoint from active source/provider frames and live argument/return slots, including the new fourth slot. No validation, catch, asynchronous fault recovery, canonical feature/bootstrap owner, or native runtime placement is supplied. Native faults and partial stores remain; new instruction/reference/fault-PC identities and full exception/frame equivalence are unclaimed.
+
+Validation retains the full strict MSVC Win32 build, eight matching seed spans, and both existing CTests. Those math checks do not execute this memset source. No new test or runtime probe is added. Current compiler executable/version, command/read/write tlogs, exact source/header reads, resolved /Fo, current object, full archive, unique equal member, and three sole symbol definitions are retained. Complete compiled comparisons verify the two inner spans outside their actual call relocations, every transformed outer byte, the literal MOV-zero flag behavior, all local branch targets, actual engine/self/tail symbols and zero addends, engine/self cleanup, and skipped padding. No compiler warning suppression or linker-policy change is used.
+
+The canonical0109EEA4 publication, CPU/OS predicate and native startup/frame ownership remain external prerequisites for an original owning domain. This packet closes the complete qualified source composition. It does not establish native binary replacement, original function execution, broad differential coverage, or gameplay validation. The final report contains concrete checks and a frozen whole-local evidence inventory verified twice with SHA256/SHA512.

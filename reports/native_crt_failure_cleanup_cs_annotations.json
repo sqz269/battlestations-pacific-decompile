@@ -1,0 +1,60 @@
+{
+  "packet": "orch2_crt_failure_cleanup_cs_annotations",
+  "status": "four_complete_source_annotations_saved_refreshed_combined_validation_pending",
+  "source_functions": 4,
+  "original_body_bytes": 530,
+  "executable_native_bytes": 530,
+  "skipped_padding_bytes": 0,
+  "table_bytes": 0,
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe"
+  },
+  "annotation_log": {
+    "path": "local/ghidra-annotations-20260914T172920Z.json",
+    "sha256": "5d0009421e8902706555a2d88782416ca641f5da599704279df54473fb2d0ad7"
+  },
+  "before": {
+    "path": "local/cs_integration/ghidra-before.json",
+    "sha256": "0175b5f59fb07bda91a6f1bb6b3e7ec240c2ee62f36873386cc0f334237c0ba4"
+  },
+  "after": {
+    "path": "local/cs_integration/ghidra-after.json",
+    "sha256": "4df88bfc9956e9e6279030f6e0e843b98e097cb4157e7aec460b2f6d9d32e64a"
+  },
+  "exports": {
+    "path": "local/cs_integration/exports-refresh.log",
+    "sha256": "428eb844d894ecb1c6f1b436b2118f7509e3bf52c12fba7975cd9384f1c736b7"
+  },
+  "functions": [
+    {
+      "address": "00bf65bb",
+      "old_name": "__invoke_watson",
+      "name": "__invoke_watson",
+      "original_body_bytes": 252,
+      "added_evidence": "CS/CT complete __invoke_watson reconstruction: all252 native bytes/65 instructions mapped to289 current compiled bytes/74 instructions. Biased EBP and328h allocation, cookie-XOR register/EFLAGS snapshot, WORD segment writes, local record/pair/context offsets, real80-byte CL scalar fill, captured-debugger/filter-result gate, actual hook reason2 and five Win32 import edges retained. Native five ignored arguments gain a sixth stable actual-state binding; caller cleans24. Returned termination path restores ESI, checks raw ECX guard through the actual context-argument checker and retains epilog. DF0 scalar REP domain; no private owner/context initialization, noreturn pruning, stub, new test or termination execution. docs/NATIVE_CRT_WATSON_FAILURE_CT.md; reports/native_crt_watson_failure_ct.json. Primary/CV complete source/compiler/provider review accepted. Original frame/fault-PC/SEH and gameplay identity remain unproved."
+    },
+    {
+      "address": "00bfe120",
+      "old_name": "__security_check_cookie",
+      "name": "__security_check_cookie",
+      "original_body_bytes": 15,
+      "added_evidence": "CS/CT complete __security_check_cookie reconstruction: all15 native bytes/4 instructions mapped to19 compiled bytes/8 instructions, including F3 C3 success return and real tail edge to full reporter. Raw ECX cookie compared against the current actual cookie through stable extra stack binding; scratch PUSH/MOV/CMP/POP preserves original EAX and CMP flags. The same binding remains for the mismatch tail. This is a new explicit binding interface, not the original no-extra-argument checker required at C0DC54; ordinary C++ calls do not supply raw ECX. No owner or failure execution. docs/NATIVE_CRT_WATSON_FAILURE_CT.md; reports/native_crt_watson_failure_ct.json; primary/CV accepted all emitted bytes, real symbolic edge and unique equal archive member."
+    },
+    {
+      "address": "00c185a4",
+      "old_name": "___report_gsfailure",
+      "name": "___report_gsfailure",
+      "original_body_bytes": 260,
+      "added_evidence": "CS/CT complete ___report_gsfailure reconstruction: all260 native bytes/53 instructions mapped to342 compiled bytes/89 instructions. Actual borrowed record/context/cookie/complement/debugger/hook/pair accesses preserve original order and widths; original EAX/ECX snapshot uses one extra scratch word, MOV-only segment capture preserves SUB flags for PUSHFD, and unused local read is retained. Current shared EIP/debugger reloads, exceptionC0000409, both reason1 hook paths, clear-filter, actual pair/filter, GetCurrentProcess/TerminateProcess and returned epilog retained. Eight32-bit reference offsets compile-verified; real CL/hook providers and six direct/tail plus ten import relocations for full CT closure checked. Added binding argument requires valid stable nonalias actual domain. No canonical owner, original no-argument ABI, async/fault-PC/SEH or runtime/gameplay proof. docs/NATIVE_CRT_WATSON_FAILURE_CT.md; reports/native_crt_watson_failure_ct.json; primary/CV accepted."
+    },
+    {
+      "address": "00c16898",
+      "old_name": "LIBCRT_unmatched_00c16898",
+      "name": "BSP_CrtCallCleanupInheritedFrame",
+      "original_body_bytes": 3,
+      "added_evidence": "CS/CU complete cleanup-call entry: installed PE, fresh live bytes and unique current compiler/archive definition are exactly FF D0 C3 (CALL EAX; RET),3 bytes with no relocation or writable state. Descriptive BSP_CrtCallCleanupInheritedFrame is a hypothesis, not a recovered library symbol. Raw EAX target, inherited EBP/ECX and callee register effects are passed without wrapper/setup/save. Real CALL adds a return word; balanced normal callback return permits final RET, while nonlocal effects need not reach it. C0DBC4 supplies ECX1; C167C9 may supply enclosing level. Not an ordinary C++ callback or frame/FS/cookie/NLG owner. docs/NATIVE_CRT_LOCAL_CLEANUP_CU.md; reports/native_crt_local_cleanup_cu.json; primary/CW full byte/compiler/archive review accepted. No callback/native execution, new tests or gameplay proof."
+    }
+  ],
+  "qualification": "Correct library names and all prior comments retained; cleanup descriptive name explicitly provisional. CT new binding ABI and CU raw register/inherited frame contract do not close original no-context checker, canonical state/process lifetime, FS/SEH or native gameplay. Twenty-five-stem exact candidate acceptance is separate."
+}

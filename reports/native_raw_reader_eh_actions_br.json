@@ -1,0 +1,2145 @@
+{
+  "packet": "orch2_raw_reader_eh_actions_br",
+  "base": "27f97f574388ff576d57a25acd213560ec2ad434",
+  "status": "complete_bounded_discovery_only",
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_home": "J:/tools/ghidra_12.0.4_PUBLIC",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "installed_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "owned_spans": [
+    {
+      "address": "00cc70c0",
+      "length": 8,
+      "coverage": "complete",
+      "live_pe_equal": true,
+      "sha256": "70ab751499c12ed11d6f433b2347f5be270a06644148050209632630d39dd570",
+      "sha512": "937f010bc55f4a6fd79f18bf203a976e7622791dd96a40b574e2711c33b1950e83c82fdc146e8e1943c9af7a8cfbb618dfe304cacf6c5893e350a8c12458bef6"
+    },
+    {
+      "address": "00cc70c8",
+      "length": 11,
+      "coverage": "complete",
+      "live_pe_equal": true,
+      "sha256": "3f5bf0fe407bf7ed7d3e973083b28633d46117c8fa7b7413442177ce83ce38b3",
+      "sha512": "d1faec5a7307939f024b78fa9bcc68519961374de85b43c95ff6e26d9115fb9839cecc40ae3d05c569c7d27faa33fc3e6da9af560ce9cbe7ae49b37b63675934"
+    },
+    {
+      "address": "00cc7810",
+      "length": 11,
+      "coverage": "complete",
+      "live_pe_equal": true,
+      "sha256": "a09f609b9b477ad42d1d9a052958e7283c8492eed03a588edab33e455d06ab3f",
+      "sha512": "f8a6441596972f5a2f48b2723502336c5a153671a72f3e444c780223ee84290210d58b4629008711ecc02778e6bfaed364a7f5d3a48b2e51457fcf19d59c9255"
+    },
+    {
+      "address": "00cc7790",
+      "length": 23,
+      "coverage": "complete",
+      "live_pe_equal": true,
+      "sha256": "c543f1fa59124722f8625849fd9ec2e4f858e9536526be07b1207da5a8883fae",
+      "sha512": "08618077f893ae14654556c56cddac4b78b78f1b1a274580d6ea30881fd9db5bd2884c1565bfcdda71ec432ec2ebbecd7263e1c64c612197f1c7f11670c8fac3"
+    },
+    {
+      "address": "00bf7c6e",
+      "length": 75,
+      "coverage": "complete",
+      "live_pe_equal": true,
+      "sha256": "e17d277fcf76c86ca7bbd9efd9cd4320b80da6c94ca29539e6ae9ddc27ad5b59",
+      "sha512": "f2696a75c058f1d80b646078f03e0e512911ef9d988edbb0108c6853e789d85a150d59718e9a24d22045160fdea095747f47558497e294eddad009223bcf5b1e"
+    },
+    {
+      "address": "00bf7cb9",
+      "length": 24,
+      "coverage": "complete",
+      "live_pe_equal": true,
+      "sha256": "517d4263f48e5a86fc4a0b59a1946ed6eb5266a29658d974d9f149196d80cd76",
+      "sha512": "10203f629b36d93afec15b365ccde3a82403045e1a6dfbb41b411c9a8f5f65865012ac606b758a132901cf133b7f6e806f5fa6c0d0192d5b664a5e553ab5bbf5"
+    }
+  ],
+  "read_only_dependency_spans": [
+    {
+      "address": "00be9f00",
+      "length": 16,
+      "coverage": "complete_read_only_dependency",
+      "live_pe_equal": true,
+      "sha256": "6b1a17cb89a83ffeeb26a01590a0050d761995e477cb7bca2911b0a65246108c",
+      "sha512": "21157c8ebefb192d835705b3bd991d6ac9b1e53f047afd50570b11dab74b254113ff3de25f5f894d2ec9c614745375687b50628f742d231e231c58393cb5afbd"
+    },
+    {
+      "address": "00401130",
+      "length": 1,
+      "coverage": "complete_read_only_dependency",
+      "live_pe_equal": true,
+      "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+      "sha512": "60313f8521d3016916d876f7ad11cf42a30dfd4ff9bc557f1e2f90e0d37c56b76ab5e42c8a16db20c18086b0d769c08542429c262cc21ee4fba02bfc689a4797"
+    },
+    {
+      "address": "00bf0980",
+      "length": 23,
+      "coverage": "complete_physical_dependency",
+      "live_pe_equal": true,
+      "sha256": "773283e7cd4f034d0e92d3128a8206892b5828e4489a5df2172c7cc9bb4e7863",
+      "sha512": "a060bd2971c7fee61ad3d8e2ea2e9adaf800100af1bfea454b98e9f39720e62b89b64365dcc80a82f819c2c74c9b703df2a86597db2bcd84a15a38bbbfacd2a0"
+    },
+    {
+      "address": "00bf6989",
+      "length": 5,
+      "coverage": "complete_physical_dependency",
+      "live_pe_equal": true,
+      "sha256": "4d311098ca9ce6d6a11d6bd70234374b80fb61e695812ad0801ce7176cbfa9f9",
+      "sha512": "fb1d2282cc709c206f99b7521432bca7808d1926a7a57aef36978cfb7995b2e9099788678c66d3798ccd064c420cc8666f8967e0b7ba91f60022801db7c21794"
+    }
+  ],
+  "calls": [
+    {
+      "address": "00cc70c3",
+      "native": "00bf09b0",
+      "function": "00cc70c0",
+      "kind": "tail_jump",
+      "abi": "ECX=[actionEBP-10h] saved reader; no stack argument; tail jump returns through BF09B0 plainRET."
+    },
+    {
+      "address": "00cc70ce",
+      "native": "00be9f00",
+      "function": "00cc70c8",
+      "kind": "tail_jump",
+      "abi": "ECX=[actionEBP-10h]+10h path-header base; no stack argument; tail jump."
+    },
+    {
+      "address": "00cc7816",
+      "native": "00bf0980",
+      "function": "00cc7810",
+      "kind": "tail_jump",
+      "abi": "ECX=[actionEBP-10h]+4 raw storage header; no stack argument; tail jump."
+    },
+    {
+      "address": "00cc779e",
+      "native": "00401130",
+      "function": "00cc7790",
+      "kind": "call",
+      "abi": "cdecl two words: arg1=[actionEBP-10h] current candidate, arg2=[actionEBP-18h]+12*[actionEBP-14h] completed boundary; pushed end then begin; ADDESP8. Actual callee RET does not access args."
+    },
+    {
+      "address": "00bf7c75",
+      "native": "00c07c00",
+      "function": "00bf7c6e",
+      "kind": "call",
+      "abi": "Native SEH4 prolog convention: pushed locals size0Ch then scopeE02D30; real parent frame initialization, not normal source callback."
+    },
+    {
+      "address": "00bf7cac",
+      "native": "00bf7cb9",
+      "function": "00bf7c6e",
+      "kind": "call",
+      "abi": "No explicit arguments; inherits iterator EBP; success already1/state-2, normal finally skips."
+    },
+    {
+      "address": "00bf7cb1",
+      "native": "00c07c45",
+      "function": "00bf7c6e",
+      "kind": "call",
+      "abi": "No explicit args; native SEH4 epilog consumes established frame. Iterator thenRET10h for four original words."
+    },
+    {
+      "address": "00bf7ccb",
+      "native": "00bf7c10",
+      "function": "00bf7cb9",
+      "kind": "call",
+      "abi": "Four words: current cursor=[EBP+8],stride=[EBP+C],remaining=[EBP+10],callback=[EBP+14]; pushed reverse order, calleeRET10h; shared parent EBP selects actual values."
+    },
+    {
+      "address": "00be9f0a",
+      "native": "00bf7c6e",
+      "function": "00be9f00",
+      "kind": "call",
+      "abi": "Four words: ECX base,8,10,0041DD20; pushes callback,count,stride,base; calleeRET10h then wrapperRET."
+    },
+    {
+      "address": "00bf0985",
+      "native": "00bf0700",
+      "function": "00bf0980",
+      "kind": "call",
+      "abi": "ECX=header saved toESI; one pushedDWORD0 requested count; calleeRET4."
+    },
+    {
+      "address": "00bf098d",
+      "native": "00bf6989",
+      "function": "00bf0980",
+      "kind": "call",
+      "abi": "cdecl one word reloaded CURRENT[ESI] afterBF0700 returned; ADDESP4 atBF0992 thenPOPESI RET, omitted from live function body."
+    },
+    {
+      "address": "00bf6989",
+      "native": "00bf65ac",
+      "function": "00bf6989",
+      "kind": "tail_jump",
+      "abi": "Native thunk preserves one cdecl pointer stack argument; terminal provider ABI/ownership retained as external CRT boundary."
+    }
+  ],
+  "indirect_calls": [
+    {
+      "address": "00bf7c99",
+      "native": "00bf7c6e+frame_callback_14",
+      "function": "00bf7c6e",
+      "instruction": "CALL dword ptr[EBP+14h]",
+      "abi": "ECX=current cursor after decrement/subtract; no explicit stack argument; actual reader callback0041DD20 has plainRET. Not validated as a direct call.",
+      "scope": "Actual ten raw8h reader headers; arbitrary callback/native-runtime ownership not supplied."
+    }
+  ],
+  "frame_contract": {
+    "action_ebp": "Registration R+0Ch = original parent entry ESP S; supplied by actual C07B10. Not normal caller EBP or BF05D0 loop-index EBP.",
+    "reader_slot": "BE9F10/BF09B0 saved reader at S-10h",
+    "storage_slots": {
+      "S-10h": "current candidate fromBF063B",
+      "S-14h": "completed count fromBF0627/BF0692",
+      "S-18h": "new allocation fromBF0623"
+    },
+    "state_publication": "C06A09 publishes enclosing state before action callC06A19->C07B10."
+  },
+  "state_actions": [
+    {
+      "parent": "00be9f10",
+      "state": 1,
+      "to": 0,
+      "action": "00cc70c8",
+      "operation": "ten path headers; failed separate name not retried"
+    },
+    {
+      "parent": "00be9f10",
+      "state": 0,
+      "to": -1,
+      "action": "00cc70c0",
+      "operation": "base destructor"
+    },
+    {
+      "parent": "00bf09b0",
+      "state": 0,
+      "to": -1,
+      "action": "00cc7810",
+      "operation": "header clear/storage free viaBF0980, no retry of attached-stream terminal"
+    },
+    {
+      "parent": "00bf05d0",
+      "state": 0,
+      "to": -1,
+      "action": "00cc7790",
+      "operation": "range computation and call to1-byteRET401130; no destruction/free/rollback"
+    }
+  ],
+  "iterator": {
+    "scope": "00e02d30",
+    "frame": {
+      "EBP+8": "mutable current cursor",
+      "EBP+C": "stride",
+      "EBP+10": "mutable remaining count",
+      "EBP+14": "destructor callback",
+      "EBP-1C": "success",
+      "EBP-4": "state"
+    },
+    "normal": "End cursor first; decrement remaining before each callback; subtract stride; ECX=current; success1/state-2 only after completion; normal finally skips;RET10h.",
+    "failure": "If header k throws, remaining=k/current=k; BF7CB9 callsBF7C10 on earlier prefix k-1..0. Never retry failingk or higher already completed elements.",
+    "limits": "Valid counts/pointer arithmetic and callback ABI. C++ cleanup throw invokes retained native terminate policy; other SEH continues search. Native frame/runtime ownership not supplied."
+  },
+  "listing_corrections": [
+    {
+      "address": "00bf0980",
+      "was": "Ghidra body[BF0980,BF0991],18 bytes endingCALLBF6989",
+      "evidence": "00bf0980_complete_* retained live/PE; no Ghidra mutation",
+      "is": "Complete physical[BF0980,BF0996],23bytes; ADDESP4 POPESI RET atBF0992..BF0996 beforeINT3 padding"
+    }
+  ],
+  "source_readiness": {
+    "full_BE9F10": false,
+    "full_BF09B0": false,
+    "closed": "Owned action bodies/frame inputs, exact native callback/remaining prefix schedule, no-op401130, corrected BF0980 continuation.",
+    "reusable": "Existing raw NativeStringRawPoolContext destructor preserves nullabledata and potentiallythrowing419CC0 getter; real qualified memory andphysical zero terminals exist but attachment publication order cannot replace base destruction.",
+    "blockers": [
+      "Complete BF0700 storage behavior/source is separately owned by storage discovery worker.",
+      "Actual paired allocation/free domain behindBF6989->BF65AC remains qualified; no invented host free mapping.",
+      "Source exception composition must preserve state-before-action and raw pool cleanup failures; no generic catch-all/host terminate substitute.",
+      "Native FH3/SEH4/cookie/TLS/eligibility/terminate/async-fault identity not closed."
+    ],
+    "no_success_only_projection": true
+  },
+  "reused_evidence": [
+    {
+      "packet": "bo",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-raw-reader-lifetime-bo",
+      "report_sha256": "1b52a2e2aa0fd962eb20a2ee3d982bfb2da1658cc08f5f4884b41650c8a15c6e",
+      "retained": [
+        {
+          "original": "local/raw_reader_lifetime_bo/decoded_00BE9F10.json",
+          "retained": "prior_bo\\decoded_00BE9F10.json",
+          "size": 4293,
+          "sha256": "2de45e1a67bf07935be09b08b3c1e1c14cd92abf16e1b704a81da644beb0da1b",
+          "sha512": "cee9a6849c46be0bd6e8889d83ce3964e08ce76c26497877aa670e39325bd360848d1b960c496e13b6fa8b17c95018d86ff4aaf19e4e32b204ef80f4f3022441"
+        },
+        {
+          "original": "local/raw_reader_lifetime_bo/decoded_00BF05D0.json",
+          "retained": "prior_bo\\decoded_00BF05D0.json",
+          "size": 12675,
+          "sha256": "d2f0a907be4b06a032279637de27bf7fb2e10d5df67416c47c9a6b2cba8612eb",
+          "sha512": "2a40f1ea73d599dc5b94a89c54130592df0bfaa1789902a7cde8d1b9c47228f7c3af8aafc40da84ebe075b09138b9970a373357aeddae14968989fabc1e42203"
+        },
+        {
+          "original": "local/raw_reader_lifetime_bo/decoded_00BF09B0.json",
+          "retained": "prior_bo\\decoded_00BF09B0.json",
+          "size": 4634,
+          "sha256": "5938a13498c6fbcc03692b85cee257c6fbe2b2c4f1d589850cc5dbf2607b84d1",
+          "sha512": "f4113dd6ec9c7c28db5624e87deace23059ec7dfeaaff36fa70e164a6722ff59a0794220aea4bd123a85d17cb82f8cd6e6a251e05bf0ba73367d8c45f6d84d35"
+        },
+        {
+          "original": "local/raw_reader_lifetime_bo/live_bytes_00BE9F10.json",
+          "retained": "prior_bo\\live_bytes_00BE9F10.json",
+          "size": 854,
+          "sha256": "f1322259af07d807d8121fb4d9b324b2247a7a4a661b28e90fa1cccc4e90950e",
+          "sha512": "3946143011a321f977bc66d71539692278234ed7aef9edcf578bed8ff40f011597333c8f051e846c5028025b22961995e476258bfac46ea2f7092956c98bf498"
+        },
+        {
+          "original": "local/raw_reader_lifetime_bo/live_bytes_00BE9F10.txt",
+          "retained": "prior_bo\\live_bytes_00BE9F10.txt",
+          "size": 584,
+          "sha256": "d025830d947fbe52dfce9683c3df145fa77bc0ccb6b6d6a22851a715e018b83f",
+          "sha512": "13b217a2a7569eec01b23a8e66d2729601b307cfe1527519a74b50e53c31533f45b8b104f59a36ef7c3735775dc3fa421e7fc4f4a8ca0d453bbbe1f0f57ac473"
+        },
+        {
+          "original": "local/raw_reader_lifetime_bo/live_bytes_00BF05D0.json",
+          "retained": "prior_bo\\live_bytes_00BF05D0.json",
+          "size": 1709,
+          "sha256": "90d94c69a28b0812abb2b200c7a4f3d8ee2eb40e0b117fa437468f48ef6007ea",
+          "sha512": "e1ee3f2f7c3e5b41d7cde19083f0217779db04400799472a42e94acf3e776672a4b335069760abe27b11a56cc60eb5a379bb89389c70c438c9b1ebdd8a22078d"
+        },
+        {
+          "original": "local/raw_reader_lifetime_bo/live_bytes_00BF05D0.txt",
+          "retained": "prior_bo\\live_bytes_00BF05D0.txt",
+          "size": 1439,
+          "sha256": "dddebc2c86e5cb33e62b62113b4c55ab7edab27fa8ead72e17c52e2ae585b7e1",
+          "sha512": "96fcf330b55f3a452e05cfa044f7127855b939d1f8ba236c3ec5dfcf14b20da2e832e451cc007fcb1c5eaf235f61bf30b1b7a575d30d61877b35b7fae30c2592"
+        },
+        {
+          "original": "local/raw_reader_lifetime_bo/live_bytes_00BF09B0.json",
+          "retained": "prior_bo\\live_bytes_00BF09B0.json",
+          "size": 855,
+          "sha256": "852d956ecae38fc7e0f131abfce36987e48cff9ebd173d332b356817f5a78e73",
+          "sha512": "204464d7b73ccc43c5c76f24860c7559daff2f514b369ea4df4fb52c0cf9d00de38b9f7c4a3ba7cad092cdf8cd5147d80140fae21a6876372b1bca713fa80031"
+        },
+        {
+          "original": "local/raw_reader_lifetime_bo/live_bytes_00BF09B0.txt",
+          "retained": "prior_bo\\live_bytes_00BF09B0.txt",
+          "size": 584,
+          "sha256": "4ae670d14856c0c7a811b64f11092669decfecad41b04d1644fd003a95a20812",
+          "sha512": "82e873be867c2d199126141c316edda218d87474fe2c5b6d02e57f91d99c2df3a83410971efafcba349ca751ca392045ad6aeff9001650adef16de5a4d81367e"
+        },
+        {
+          "original": "local/raw_reader_lifetime_bo/live_bytes_00E01AB4.json",
+          "retained": "prior_bo\\live_bytes_00E01AB4.json",
+          "size": 346,
+          "sha256": "5b8d8b8c9d5d74be2476b4d03d8c205f79f07493ac6a9d7c625dbe028e586a1e",
+          "sha512": "9910a40ebbb9e57e50c4c6ac18750e61659aa6f65edcd317dbbd5ddca7a88b6d2a2580bdb813dc4a0f8b21bbef27d239522f2155d60beee64682b5c7da2faa90"
+        },
+        {
+          "original": "local/raw_reader_lifetime_bo/live_bytes_00E01AB4.txt",
+          "retained": "prior_bo\\live_bytes_00E01AB4.txt",
+          "size": 77,
+          "sha256": "543fbbea885c4d86fc5a5fd4845045fe990facab0b4e2a71f0db7635e77afe87",
+          "sha512": "1e62bffa945d03541eccabc67bb06560e3e84f886f30ea264e66abf6e6c68ff1d6aa08b513f31fee4e52e1eb2faa18332da51fe2605d4eb2d1c8bf88f91a4493"
+        },
+        {
+          "original": "local/raw_reader_lifetime_bo/live_bytes_00E01AC4.json",
+          "retained": "prior_bo\\live_bytes_00E01AC4.json",
+          "size": 453,
+          "sha256": "d56cf2d2e4702b69c7f0e55da7965f65aa6a81eca27e91ac4046592f25f433ec",
+          "sha512": "a73b51fd8346fb3d756a916c9ce0e672132b241b84cdebc6093d97245993b1026c75c5864195924d4247a20378a772570a2ef7c4663430af709331ac51ff5642"
+        },
+        {
+          "original": "local/raw_reader_lifetime_bo/live_bytes_00E01AC4.txt",
+          "retained": "prior_bo\\live_bytes_00E01AC4.txt",
+          "size": 183,
+          "sha256": "e0832c5c92afd434e565b38b88bbf279d9f6d3af8fd20f2abac3db549a1692cf",
+          "sha512": "7557b8153ea16b8b3b8e5a8d2d48308d0aa0df4fb927d0fcb6695ff30b3c3048a1ddcaa5a79efa56a3db2fba44d3766b52bd1d0c585204d7578ae17f33f0b7b4"
+        },
+        {
+          "original": "local/raw_reader_lifetime_bo/live_bytes_00E023D8.json",
+          "retained": "prior_bo\\live_bytes_00E023D8.json",
+          "size": 313,
+          "sha256": "a63bbf6ce432ae001378a36de22908da38ab2a3373ff318c95fda159178c8206",
+          "sha512": "1bf56ae8770025b0234ad8f01c688eef74442bc55dfd28bd31d7550ff5506158cc3d4d9416d5a330ab99876fb318e5031ca8f6a5fd3c7a50eb723892328bd434"
+        },
+        {
+          "original": "local/raw_reader_lifetime_bo/live_bytes_00E023D8.txt",
+          "retained": "prior_bo\\live_bytes_00E023D8.txt",
+          "size": 45,
+          "sha256": "3f5bf5bcb0912f5fcd679a33d780acbe44f009390ff298a4cb218090c05c5f86",
+          "sha512": "3d8504203ae11208d68397ec2a9e56013ee0814b34bb5918f13dcfae99e66e6ba8bb2a6f2ce2be1260ca350ea5fd6cfe94e64e0d93d72bad4a895222fc776a61"
+        },
+        {
+          "original": "local/raw_reader_lifetime_bo/live_bytes_00E023E0.json",
+          "retained": "prior_bo\\live_bytes_00E023E0.json",
+          "size": 453,
+          "sha256": "4abe4f3c5ac200ada4ae9aa8f1423ce9f9250d28609d57029307e9b86afcd877",
+          "sha512": "698276ea95a16ef4115bed677252eca5bdb670df8522de27e6623045d5d095978d6231fda08ac74716509722af150d52b885c0039a0d2607814d7955414fd1a2"
+        },
+        {
+          "original": "local/raw_reader_lifetime_bo/live_bytes_00E023E0.txt",
+          "retained": "prior_bo\\live_bytes_00E023E0.txt",
+          "size": 183,
+          "sha256": "174594c0adc29bedfa8d4ace0798fab5259fb373c3ca9555419017d22bf4857b",
+          "sha512": "16cddf6757b4c06b99cb824ce91d06a9658ab9e0ee4965ab775435e5c8ea44e247eb12bb032c586b36fd94224f343ad9588503d4ac801d891eaf203971af0ebc"
+        },
+        {
+          "original": "local/raw_reader_lifetime_bo/live_bytes_00E0245C.json",
+          "retained": "prior_bo\\live_bytes_00E0245C.json",
+          "size": 313,
+          "sha256": "4e1168773c301793801be8e924734c44187eba840d7f8a3beaa21b04fd5fe42e",
+          "sha512": "6574966483cc5236f81632851e6423b29637af8a0b6d75a56e4de1d01fb224016c48771b50064392bc9f371822388a48ad6dd86ddc9926aac63b3598f20504ff"
+        },
+        {
+          "original": "local/raw_reader_lifetime_bo/live_bytes_00E0245C.txt",
+          "retained": "prior_bo\\live_bytes_00E0245C.txt",
+          "size": 45,
+          "sha256": "19eafc26e9730ec5cfef8b92449498134d290cf49891750798abc7f30c803ec7",
+          "sha512": "466f1c51add3fec505e6b19be1499fda6a6636f03ac5cfe515431504c1757b4c664b4809ac22be6307d24b8bb706740cb22b2dd2a08c06cd8ec714d7dace7752"
+        },
+        {
+          "original": "local/raw_reader_lifetime_bo/live_bytes_00E02464.json",
+          "retained": "prior_bo\\live_bytes_00E02464.json",
+          "size": 454,
+          "sha256": "76b4d170d0ca577620b3356eb5114c599d0be969a440a70857b4695a85fa6f50",
+          "sha512": "98499d74eae2563fe93acc73873762860070d85c529b31ba917162d66fc2fd9118beba188f89b5a4ccd450a1a0a668c74c796416cae2df2ff4b354eb9ca546df"
+        },
+        {
+          "original": "local/raw_reader_lifetime_bo/live_bytes_00E02464.txt",
+          "retained": "prior_bo\\live_bytes_00E02464.txt",
+          "size": 183,
+          "sha256": "2380e619c710e60a66a5d51e87f219a5588899d6486f55f062a6d29bd12df466",
+          "sha512": "8aa2dde23e0dbcd4da3f52c912817002f7ea09840d53c7508859c09887d3626da0b7b44b9d41e19195274ab048942f799a2d2b9f2751c1802c1d968ad1ea7e87"
+        },
+        {
+          "original": "local/raw_reader_lifetime_bo/live_bytes_00E02D30.json",
+          "retained": "prior_bo\\live_bytes_00E02D30.json",
+          "size": 407,
+          "sha256": "67e11e11c7d449c0935e6185526ca8cbc79304771b7aadbece0284a1c783f912",
+          "sha512": "546351ddcc3a2d04daa77b5df2d881db499d7021464c15e7e5374cf7e52fabe0ef310554d534fc6e888190b371cab46f07fab7b9bd3c8f264a4a81804979a36d"
+        },
+        {
+          "original": "local/raw_reader_lifetime_bo/live_bytes_00E02D30.txt",
+          "retained": "prior_bo\\live_bytes_00E02D30.txt",
+          "size": 138,
+          "sha256": "63c880eaef7d1281885db838e1207b6ee770a02b5037e1d8a764d7f7a979dff7",
+          "sha512": "4f454b297fcff0c08e647292fad7e00f2273337d5687b19d131e1208dde9e911090e7e532fe58732dca31e6466b65bcfe2496ab4cf0b178988a5ee64ba164183"
+        },
+        {
+          "original": "local/raw_reader_lifetime_bo/span_00BE9F10.bin",
+          "retained": "prior_bo\\span_00BE9F10.bin",
+          "size": 120,
+          "sha256": "dda7c3627d8b59ce3bb47a0503bbab43366d5cbd0b867145f88e9c73a10defe8",
+          "sha512": "c5f96f3f5a085efd54e094ddc08e10e217a272c0f5f8461fc99836ea766c6d0408df80286a22eeb4cae98f7a4c50cfe7f7200340cdcec045fdf7a6c2b6d5cc65"
+        },
+        {
+          "original": "local/raw_reader_lifetime_bo/span_00BE9F10.json",
+          "retained": "prior_bo\\span_00BE9F10.json",
+          "size": 383,
+          "sha256": "70db147fffeb8b2ffb4179b230509be9a061ba89692aea5929de45aeea24246d",
+          "sha512": "e24dfb07b748bc8a54b1f6a90024fc58364dbf6c5a7aaaa38b9b2c88709fa94a37e17822e8759f51a5f85071281d30d6c85497de5a43ecd3c5761eb3111234a9"
+        },
+        {
+          "original": "local/raw_reader_lifetime_bo/span_00BF05D0.bin",
+          "retained": "prior_bo\\span_00BF05D0.bin",
+          "size": 298,
+          "sha256": "e428a245c48c642567fcf104a552d6a52f217186f9c81345886b8857de378c81",
+          "sha512": "51686d66a4a8b668063d4e4770da1ae498378ed710198e67c11a34136e99a222673b25eaaaf236030704ec30fd6cf1b3565b1af08882d30cceba9a616e5c33c8"
+        },
+        {
+          "original": "local/raw_reader_lifetime_bo/span_00BF05D0.json",
+          "retained": "prior_bo\\span_00BF05D0.json",
+          "size": 383,
+          "sha256": "b8304d60496064486ffbb792a4840d4f2a530cd8d2ccb3802056680fbce45358",
+          "sha512": "e6d981c479b2471eb7ce379069e313196a92810c59d1c82d2ff6c3595ea9661aca241c5cfd345fd04f5fe7eda71af66a3fafa526e8ebce501c122a20bd56d26c"
+        },
+        {
+          "original": "local/raw_reader_lifetime_bo/span_00BF09B0.bin",
+          "retained": "prior_bo\\span_00BF09B0.bin",
+          "size": 120,
+          "sha256": "16d87d896d4c0617d3bc7741929e43c10d51e8c1236d70063b23212dc4fd0da1",
+          "sha512": "5558e0316443d520a0c4c79984d0f6062208f912efa8a44db2f251d01a349ddb48ca1dc5a72427edde954b8248d400da7b838c659317d93499946935af45061f"
+        },
+        {
+          "original": "local/raw_reader_lifetime_bo/span_00BF09B0.json",
+          "retained": "prior_bo\\span_00BF09B0.json",
+          "size": 383,
+          "sha256": "333b817513d67db39180983c5b867cc7ce1275ade28342df3f7a093f0a7e9a7b",
+          "sha512": "958de8136d4884e8afd035d79763974cde9249bda09e70d9c728c1bdb45ac26ce78b9d54e37c61c653c4ac1e4af9e8a1e663edcbccbceea10f88e1158a1fdadf"
+        },
+        {
+          "original": "local/raw_reader_lifetime_bo/span_00E01AB4.bin",
+          "retained": "prior_bo\\span_00E01AB4.bin",
+          "size": 16,
+          "sha256": "4b599b6c2fbf5a3c87db1d7bf8fc49870057d7fc042b419740b27ad52088c327",
+          "sha512": "6aeadfc62d06f0d7af8fe78d8a7cab5a388be968f48e9791d89a7474333ec5aae0471c9a2d99fa3c1c43c03ef33db7a5b0e63bfe069f0913ae13296840e923be"
+        },
+        {
+          "original": "local/raw_reader_lifetime_bo/span_00E01AB4.json",
+          "retained": "prior_bo\\span_00E01AB4.json",
+          "size": 384,
+          "sha256": "746dfdc8c765787c9220d9f6d3cfeda63688ae0654456498634062f46775d634",
+          "sha512": "b2abfe6e23124ff279848d68d924d15e2b11b23445b2f9f0ca279117bd033432dc6e9023a78f19efde452ffaf0e9ea5bda3d2e640d2b288d38ceb5507fa30340"
+        },
+        {
+          "original": "local/raw_reader_lifetime_bo/span_00E01AC4.bin",
+          "retained": "prior_bo\\span_00E01AC4.bin",
+          "size": 36,
+          "sha256": "b69e89d8194b448c9d6d29a7eef7fbf2f12e4e5a33de86aad3d5e976f2a97cab",
+          "sha512": "7727f08ccd025f8cb14968a16f10f44f07dc115efdd15227318a0bf7ed89f50264ee699f6af18ccba59d2cfc0498e821617821f3b6a09be15d2dcef55cd8a2c1"
+        },
+        {
+          "original": "local/raw_reader_lifetime_bo/span_00E01AC4.json",
+          "retained": "prior_bo\\span_00E01AC4.json",
+          "size": 384,
+          "sha256": "63948df6e8402c7067351ce2d9cc01203b2da6aae9a548d559ec8c81178973f0",
+          "sha512": "1c41ead488272eed6897a445af87cac569b00d70292a2d889c9e53c6437f26e708c755f13f7c5b09d4ff837fb8af9cb8b475a1aa00401434813365a3cac58977"
+        },
+        {
+          "original": "local/raw_reader_lifetime_bo/span_00E023D8.bin",
+          "retained": "prior_bo\\span_00E023D8.bin",
+          "size": 8,
+          "sha256": "e2943c0337d3ef00a16c4c99e05ec933f689e9e8fc8995b682439e4edd5adb95",
+          "sha512": "668cdc1049b867b5e42460ead2cd2ed58789a0563254a9112298b8bc3811f6b852fc74a572b3f5704fc517c51a95740416ea6367cb052013331c68c97366522c"
+        },
+        {
+          "original": "local/raw_reader_lifetime_bo/span_00E023D8.json",
+          "retained": "prior_bo\\span_00E023D8.json",
+          "size": 383,
+          "sha256": "90f939a8b8213cbaf8c3b84cce77c770647c24ec18abfaa22c1948fd0f08c622",
+          "sha512": "ef2a1646cc3c7b69e596be8a7e510bcc0b16fc7d61fe7ef7c19308e8b8b2f286953ca23f9489f5e533466267ac866af8aa11b146ff7470dddef0eeaf5b05cdec"
+        },
+        {
+          "original": "local/raw_reader_lifetime_bo/span_00E023E0.bin",
+          "retained": "prior_bo\\span_00E023E0.bin",
+          "size": 36,
+          "sha256": "5276e6b03fef9b7f7aea2b0d7f8fe96440b5a8420359223753bd571be0f5ada7",
+          "sha512": "debc7d7e9582b30335a9cb0bb630bb50a6bc2a06098cfd3d2cae91601e6f35fc81b8baa5eaef48b2151df03e5a9c4849a562ab7c0a63fba12b97987ffcfafd23"
+        },
+        {
+          "original": "local/raw_reader_lifetime_bo/span_00E023E0.json",
+          "retained": "prior_bo\\span_00E023E0.json",
+          "size": 384,
+          "sha256": "86a8f246e61409981ed23bf75bd2f45efc7f48247770c34be938517487590c74",
+          "sha512": "231d2049cccaee49c6d72e35cba0915a01eb918d9d4da0ca279f05ac6a1ff7aa62adce84853459a97dced3d1488ca36ed76d51f8b80eb0c1424d289a5c87a0a8"
+        },
+        {
+          "original": "local/raw_reader_lifetime_bo/span_00E0245C.bin",
+          "retained": "prior_bo\\span_00E0245C.bin",
+          "size": 8,
+          "sha256": "c74a3f86973c4bc1ee7de1103061e128d6aca1c37f870a7b6d751c91a49922da",
+          "sha512": "d0d22721eebbf0aaa5507cd292d26be01f9b0a5bdf53d18c5f740162c63755d0db24f2471d63690f3fb260026a3052c18c5c36f439df2f3b27ec4431470ecafa"
+        },
+        {
+          "original": "local/raw_reader_lifetime_bo/span_00E0245C.json",
+          "retained": "prior_bo\\span_00E0245C.json",
+          "size": 383,
+          "sha256": "812b25787d8d0fe3c7c63a982dbecb99b0be6ba707659643668f1256eff1b3c7",
+          "sha512": "40fb9a0e30bd52f8ab234fef51f60a442f849e54f0228262eef04b517ba53dc6b37577ec3b9b7c316345e24f86f4e1b7c3ba57995a40bd31f80d5fdf090e35aa"
+        },
+        {
+          "original": "local/raw_reader_lifetime_bo/span_00E02464.bin",
+          "retained": "prior_bo\\span_00E02464.bin",
+          "size": 36,
+          "sha256": "932059848a9fbfedb9134b3bf01cb53a33ae81abb96c29c1f06805600a0039d0",
+          "sha512": "0de0b46fec8d84b88350bbdbbeddd3462f6f8f21bfb160ca46f9ab5337e0840117d8c1184828ebf5a717b1ea540b972a185ba7df9a340ae1b5c3f2477d74e331"
+        },
+        {
+          "original": "local/raw_reader_lifetime_bo/span_00E02464.json",
+          "retained": "prior_bo\\span_00E02464.json",
+          "size": 384,
+          "sha256": "c667ea4390e90dcefa39844e2649e0235eb4c63226f6eab751cb2f34a091d2b7",
+          "sha512": "623d9cf05262a009832a1bf7c900302d90137421e00a9f5c037e5566a0284b5430f20ddeab9b657c819b6fec00aac66b699b015f3c3e18df30f28371cc9e7cb5"
+        },
+        {
+          "original": "local/raw_reader_lifetime_bo/span_00E02D30.bin",
+          "retained": "prior_bo\\span_00E02D30.bin",
+          "size": 28,
+          "sha256": "bc5077694dd45d4ccb65de855866ba6d655eb388dc372531a919fb8ca953f490",
+          "sha512": "dc4028df31b2482dde67cbf0a387d197791ca60f0366019401c8f6e639cc2c3baa7799b1e651da6278a132b45f7d816e3cfb6be06e3ec9f2ed1cdb73075cdd91"
+        },
+        {
+          "original": "local/raw_reader_lifetime_bo/span_00E02D30.json",
+          "retained": "prior_bo\\span_00E02D30.json",
+          "size": 384,
+          "sha256": "3bd2b25e3085d63c35d1b9906fa8601f7863dcea7f286e8cfbd1a925f13062b1",
+          "sha512": "07c9efef07c278107d0d7fb70be843abbd79a2326c482cb2219272ee8dd962aaa69a1e750c0c4a4498d81e7d9b0c4ffc39d5ed62d31d870af94cc45ed616b33e"
+        }
+      ]
+    },
+    {
+      "packet": "bm",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-raw-reader-vector-unwind-bm",
+      "report_sha256": "301e1e12d6b46a463fdbb15083e6a8dade848f814785ee57ee003418805cc996",
+      "retained": [
+        {
+          "original": "local/raw_reader_vector_unwind_bm/decoded_0041DD20.json",
+          "retained": "prior_bm\\decoded_0041DD20.json",
+          "size": 1365,
+          "sha256": "8d5d27c4570d42691938a4367a15e5aecbb8b9c44dda0f0f0eea5b4a7ece8cee",
+          "sha512": "f6331ead534ad12f2968b55a1c6b1c1091f4ed608aafc62702ec8aa016c5723cf0c8e3bd04e25a643a8932927e2b99fbf5beed5f6e2590c7cb4b99b103d1540d"
+        },
+        {
+          "original": "local/raw_reader_vector_unwind_bm/decoded_00BF7C10.json",
+          "retained": "prior_bm\\decoded_00BF7C10.json",
+          "size": 3393,
+          "sha256": "33df801af881ba608d705a64bfc2a11faaff4829ef77b301c2e834a5d409270a",
+          "sha512": "c84d390ec021b4bec090a3bf31010bd2e0a2f681c6f3f6392fd4b7c58bc03cc264b6ecfdd245019e86c97699aa08ad418b4a3cc58d5ea9fd9ca48e3d2190e30e"
+        },
+        {
+          "original": "local/raw_reader_vector_unwind_bm/decoded_00C069A2.json",
+          "retained": "prior_bm\\decoded_00C069A2.json",
+          "size": 7103,
+          "sha256": "fb1bdafa59ddb264358f198852e3849193e941fec269fb74acf04c531feed630",
+          "sha512": "c7edea33147dc42d1906f57d92a7b9c45125292656191fd13ee216b9e70e997d5d47433d09939f7a6f1e9f1de78d9f4c6a4c1e9773914aa51bba8cda60f35cbb"
+        },
+        {
+          "original": "local/raw_reader_vector_unwind_bm/decoded_00C07991.json",
+          "retained": "prior_bm\\decoded_00C07991.json",
+          "size": 9966,
+          "sha256": "a75abe6e55b3d0cdf6560decda7aaf604033e0391805cfcaaf70ddc6cba12f3d",
+          "sha512": "a0a9dec74a73850b617ebe36398ccb6eedefcd1523eafc10ee0f1fa6e697c6068d947fc8a53c69b86632c9bb3d942d4d104f372f7dcc971c6e6613dd3be289bd"
+        },
+        {
+          "original": "local/raw_reader_vector_unwind_bm/decoded_00C07B10.json",
+          "retained": "prior_bm\\decoded_00C07B10.json",
+          "size": 3871,
+          "sha256": "3d43c85f30babae4041701746344b1e614d77b02aebba6e9ba2af205989de5c4",
+          "sha512": "58873346dec8e70e7cf3125b9b251d7cbf23819b21d03ec9df70893d8e77504cf4e55bb9593b0be8b781c2ea4888db3c9dfa001c77a16c7ff786a1f17237fe66"
+        },
+        {
+          "original": "local/raw_reader_vector_unwind_bm/decoded_00C07C00.json",
+          "retained": "prior_bm\\decoded_00C07C00.json",
+          "size": 2585,
+          "sha256": "7a1ba949c0104a5c1b7fec62542ec053a10230fc5aedf532dd4cb81b8dcf3755",
+          "sha512": "ded654c27c0c7579003d174f46dbd48c5c3c2700aa7b00618408778cce828656f4cec6f81b6b03fa39436b1056cdfb0e0f8c4e559896a794583f700f41ba8989"
+        },
+        {
+          "original": "local/raw_reader_vector_unwind_bm/decoded_00C07C45.json",
+          "retained": "prior_bm\\decoded_00C07C45.json",
+          "size": 1223,
+          "sha256": "85b3b38bb40220e30660c36276d058345206564c5a4aef5896c8703f1c70d5b5",
+          "sha512": "f29baa04706dcaf5f7ef2809f8f7585f0d0d470360731eb1c9765e1f4dffc56f1c4f97b60126d18b6f2d4dd3b9e06ccbf4455de1c4f365bdd9fc002a092efffb"
+        },
+        {
+          "original": "local/raw_reader_vector_unwind_bm/decoded_00C0DBC4.json",
+          "retained": "prior_bm\\decoded_00C0DBC4.json",
+          "size": 5744,
+          "sha256": "bc15c7a8ce3d560aa106da929b91c12b0d22e83b591f79fb7909245e812efce1",
+          "sha512": "80e5d1b2fa95ecf97e79087dac916a487704ea1c2bdafa4fb734fee6073c7cf84d7eafc89794a32174f7c429b593c5b5ba5173262f9a4c49ac2d1afb0d1aeb25"
+        },
+        {
+          "original": "local/raw_reader_vector_unwind_bm/decoded_00C0DD00.json",
+          "retained": "prior_bm\\decoded_00C0DD00.json",
+          "size": 1031,
+          "sha256": "acea43ced0fc3bedb31952f05bf7c692603bc8baaa099a11c5fdcf1349553991",
+          "sha512": "5c28f1f2c2b6a7953e053cb4c49a366ce85d6f18262a7037982d5871998ba19b04902e5ff06c6473e0741e464e31e7682621b683d25a6143e59e35499c6cc5c3"
+        },
+        {
+          "original": "local/raw_reader_vector_unwind_bm/decoded_00C16898.json",
+          "retained": "prior_bm\\decoded_00C16898.json",
+          "size": 215,
+          "sha256": "10ff2339e7456ad7df99dd062782325beb93ffda037054b6ffdbde40bd126ca2",
+          "sha512": "5e01b773089b4e72d7ec38bd34055bf79afde1c8ad54d4da0e15916b19e0a1fc82e11e73408d26ec640ee9d8a4642848412a0918ede27f83fd8e10c1b0d11878"
+        },
+        {
+          "original": "local/raw_reader_vector_unwind_bm/live_bytes_0041DD20.json",
+          "retained": "prior_bm\\live_bytes_0041DD20.json",
+          "size": 411,
+          "sha256": "150391bb4052c0d725cf9be45a499e86ed349ba0de3019bbb916333fbc039d3c",
+          "sha512": "a1d989b2eafd4775b4c8d661f86011d718f4f12c9eaa49f95abd8956d584e1222cbc0eec9d16c5ad28ade29fe0a1fc3bda27800fbcaef49cf17594196381c3f3"
+        },
+        {
+          "original": "local/raw_reader_vector_unwind_bm/live_bytes_0041DD20.txt",
+          "retained": "prior_bm\\live_bytes_0041DD20.txt",
+          "size": 142,
+          "sha256": "6067ce8f2a1ee404080bab647c771b6ee0d782dc9b8d61b710a9e04b3c4b8850",
+          "sha512": "d3e8f559acd8f1ebad7675d335a26086f41b9b091993c2a006a9075500d6ec17f8d844c250bde411f3939a8aeb68320a4c02f62f9fc945953f4b02219c13f374"
+        },
+        {
+          "original": "local/raw_reader_vector_unwind_bm/live_bytes_00BF7C10.json",
+          "retained": "prior_bm\\live_bytes_00BF7C10.json",
+          "size": 723,
+          "sha256": "23a3bff9eb0c36c816e4f3670db8de0e463a1f14dc9e6b5b9a50b83a5788d578",
+          "sha512": "e2211bb7eaa874f57757c66c93f736dfc593d9835501baca15d47036e57cdb9e4e93417528af3e24699673b6e368fbff21b6acc5cf45fb0e00121ed730d3083d"
+        },
+        {
+          "original": "local/raw_reader_vector_unwind_bm/live_bytes_00BF7C10.txt",
+          "retained": "prior_bm\\live_bytes_00BF7C10.txt",
+          "size": 454,
+          "sha256": "26548f3ef7f10b4c6b2f3e2c11421406808a4e84723469a2ad19cdbb6f3a8afe",
+          "sha512": "94129b722cfc9094ebd5572c3d1ceb8f5e22a1c2c970fa6ace23c9036b94884ae4b1d22d0e6294b4eaf57ae02fc762f23753a5d0635b24d2be48e88be5246a5d"
+        },
+        {
+          "original": "local/raw_reader_vector_unwind_bm/live_bytes_00C069A2.json",
+          "retained": "prior_bm\\live_bytes_00C069A2.json",
+          "size": 1194,
+          "sha256": "d908da4bc36a4bc341e4c09806bb3bc3d9d2515a1fd7bdfbb349744107d70ef0",
+          "sha512": "322224e0bfa419c9b6a2fb85650986520452806786f01a47cecf9d14d3c7f721293b2bed8c25d41f4cc21478d069bfaa7f4c1b6be335249445f522ada8fd1f69"
+        },
+        {
+          "original": "local/raw_reader_vector_unwind_bm/live_bytes_00C069A2.txt",
+          "retained": "prior_bm\\live_bytes_00C069A2.txt",
+          "size": 924,
+          "sha256": "963dfa0d4711195a8093e25f0e2490e839a855a684747426aee4a38a6d396035",
+          "sha512": "3423ef7094eacbd2fa414e57b395496c8fe5cf0712d2d7737b6c0e03dc8400d0dea043146f96c0bf5511e7c575233b4350e564e353a661f6990aa3be55114735"
+        },
+        {
+          "original": "local/raw_reader_vector_unwind_bm/live_bytes_00C07991.json",
+          "retained": "prior_bm\\live_bytes_00C07991.json",
+          "size": 1378,
+          "sha256": "d67fe68ec9e1e9b7e5805cdba59db36f2e71b515dad30e6af7a0ad55f097d146",
+          "sha512": "39f1c30dd25b3400d1c22911a556a8a67026ff31a297de4fcc599e2dae3d3bc540c8cb5d9c4fc902ff91ae9c1678e92334ec46a606025e23443ba935b7d4e9b1"
+        },
+        {
+          "original": "local/raw_reader_vector_unwind_bm/live_bytes_00C07991.txt",
+          "retained": "prior_bm\\live_bytes_00C07991.txt",
+          "size": 1107,
+          "sha256": "617d2e92c0ba2e58be4f51a43685e8ef5e4fc89bcf41a432df4261e5e07c3b8a",
+          "sha512": "eeb925d2bafe7801b495c78fab7494deeb4c3f337a7c9baf6f8698771229c91ad5022670d59ec337e546cdee170f43ced05e96ccf80d86d142f2e3e579513938"
+        },
+        {
+          "original": "local/raw_reader_vector_unwind_bm/live_bytes_00C07B10.json",
+          "retained": "prior_bm\\live_bytes_00C07B10.json",
+          "size": 638,
+          "sha256": "45e27365cb30036015a5f29dc84379531d2dee739817923ad377fcc4410c879a",
+          "sha512": "8c9bb2d527704272eb4ba72ff3b6baf6e815545426dacee333249bd821becc0acb50895d55f43375fe84d9a4eadbf9fb205cc86bc763c51739af552c57603d17"
+        },
+        {
+          "original": "local/raw_reader_vector_unwind_bm/live_bytes_00C07B10.txt",
+          "retained": "prior_bm\\live_bytes_00C07B10.txt",
+          "size": 369,
+          "sha256": "66d316be0ec767771911fa948aaf7ee82953276a81c0b8764016c286886bcf09",
+          "sha512": "316fd9d0f53c3767585a51501af1b4224cc8cf42d27787e850fba867f7eefaa00e2cf2124ba588913d9f87d6196ab0fc5e5b592e5bd9c02aa06cfe8583a8a397"
+        },
+        {
+          "original": "local/raw_reader_vector_unwind_bm/live_bytes_00C07C00.json",
+          "retained": "prior_bm\\live_bytes_00C07C00.json",
+          "size": 610,
+          "sha256": "32a5b813be552761e1290542f0b675fd01d3a79710b4f35c22a1b6a115449587",
+          "sha512": "2f115cfbf36dd14ed7f4f8931002463e934f4644fb2581ba6f9730305921f0a1abfc9705bc6cf66736f091dc79cd2908036b97c77f2c77380b034788ebd0ce77"
+        },
+        {
+          "original": "local/raw_reader_vector_unwind_bm/live_bytes_00C07C00.txt",
+          "retained": "prior_bm\\live_bytes_00C07C00.txt",
+          "size": 341,
+          "sha256": "83c71f0912fab43343fb78099fb665efe99839cddc24118989be5d09cf6e7e6d",
+          "sha512": "a8c0e45b8eba7097ba419bc03114faf49f6ef5d1c657a8477cc5300c2a9e3676f671fa64a6bf496f4fd1a48eb36270bce4476bd0b5f977d07106a432c61d2d04"
+        },
+        {
+          "original": "local/raw_reader_vector_unwind_bm/live_bytes_00C07C45.json",
+          "retained": "prior_bm\\live_bytes_00C07C45.json",
+          "size": 375,
+          "sha256": "b20af783642dd783207a303329571e2c2cdc355691245b285812f1bf40408121",
+          "sha512": "e5a6f9138df684410b24966202505265d34b916b4690a28e09801ca038e24ac7d85936a44149ba2af57ae906e389b38196856126905a0b1bcf9f0f1e0d57cf58"
+        },
+        {
+          "original": "local/raw_reader_vector_unwind_bm/live_bytes_00C07C45.txt",
+          "retained": "prior_bm\\live_bytes_00C07C45.txt",
+          "size": 106,
+          "sha256": "57c35c851e5d4e5f32f7350c46f22763ce9ca0dae9ea5cb767102839b9cfcb35",
+          "sha512": "86ade397d58d400b507ae99477d1549333f3978dfdd89dfa6273ac130ed1ab7a11ad7282eaf63880d68fad16679db974f0490bc3b05a5483052fc2a504762886"
+        },
+        {
+          "original": "local/raw_reader_vector_unwind_bm/live_bytes_00C0DBC4.json",
+          "retained": "prior_bm\\live_bytes_00C0DBC4.json",
+          "size": 964,
+          "sha256": "2eaf9e9c02f433bedc7ab07a7e58a7bff77e4b461818ca3e26354d8bd850e096",
+          "sha512": "e68e061be3b19d0c741c2e1eaad8323a615b808020c603fa5093dd7c0448050310397fea4b4c3860b28a252cc22cad644698254cf9706aaf017d4c282bb1934e"
+        },
+        {
+          "original": "local/raw_reader_vector_unwind_bm/live_bytes_00C0DBC4.txt",
+          "retained": "prior_bm\\live_bytes_00C0DBC4.txt",
+          "size": 693,
+          "sha256": "47c2e05b8c0f21b7c675028482981bc116c4f1c08955afca31d84698aa116394",
+          "sha512": "81e29666c2d44c7780ec1e4d0e6a3743b20e0e8c9622f5243464f108ccd0ae647a2bc5e77edb526db5c435b1848b80dcbb773adf39dc6dc8ff125e05675bae4d"
+        },
+        {
+          "original": "local/raw_reader_vector_unwind_bm/live_bytes_00C0DD00.json",
+          "retained": "prior_bm\\live_bytes_00C0DD00.json",
+          "size": 387,
+          "sha256": "cfcf3dd2ba012575d0306f0cf7a842305f86961f6ad081e524bb450211b4d8f7",
+          "sha512": "ec74d2aa985d0ff01439253734b3baccdb722f068214fdfd46a422dd151f3632ebaf40af56acbffbc24b3e16903a8b1822e892ba7a9ab803fa15330168c66048"
+        },
+        {
+          "original": "local/raw_reader_vector_unwind_bm/live_bytes_00C0DD00.txt",
+          "retained": "prior_bm\\live_bytes_00C0DD00.txt",
+          "size": 118,
+          "sha256": "cdfbb0249fc003c2755cb85281a41b9184408c5dba72ca648d01569c5e48a759",
+          "sha512": "db054090008b956fb251790ee18b605b5a0da9c315c5298ea38c7c99b382a177f30304acec59d83adfe1fc34d1e1e309ea9bed6164c8b3308b02247d5099de74"
+        },
+        {
+          "original": "local/raw_reader_vector_unwind_bm/live_bytes_00C16898.json",
+          "retained": "prior_bm\\live_bytes_00C16898.json",
+          "size": 293,
+          "sha256": "f6d9f160c2db308035e5405ff44783f106981e4446a337c5adb42bfb7eaa622c",
+          "sha512": "16e08f9622cd4cde1ce9c2a66b624c010ec6da0600a46b17a02260b4a3ea98b3df84d75fabe15464426a76e27d8b1a6336990ac903d32bc0adcf61f4f4c102a4"
+        },
+        {
+          "original": "local/raw_reader_vector_unwind_bm/live_bytes_00C16898.txt",
+          "retained": "prior_bm\\live_bytes_00C16898.txt",
+          "size": 25,
+          "sha256": "b8d260d3773f3f9432a1f53e4adf0dc20176aa1bac3c616343456ff5a5789b75",
+          "sha512": "0ba50083bca5560cbfe9a329a64f75d01ea65e951ef49011480ca65ad02cd463f4f50b773384ccd82accb9e8e4787663dae94c39e5fbca9e7e02cc32ea90d34e"
+        },
+        {
+          "original": "local/raw_reader_vector_unwind_bm/live_bytes_00E02D10.json",
+          "retained": "prior_bm\\live_bytes_00E02D10.json",
+          "size": 408,
+          "sha256": "e3828e94e579d2e55fccddcb484c4c533891963ecdccfd6b67fd60d3b5711093",
+          "sha512": "4df1584915f27ab4604a8b7ee078cb83db56f7d13f00cd7506fa9020a56d741a36b877b53438a302cad48908af998a323e18dd62ebb022dbe48315fc73198c60"
+        },
+        {
+          "original": "local/raw_reader_vector_unwind_bm/live_bytes_00E02D10.txt",
+          "retained": "prior_bm\\live_bytes_00E02D10.txt",
+          "size": 138,
+          "sha256": "7d0a4dab315f46da692789e68052761fba337d4e470bbe36df08393cf4d026b2",
+          "sha512": "912216de585a74c9252ea8eef8383825e03f9fc813181a6e14256ee795d3a0838f269a19b3a99993bd507949824e678fdf8a6f6ac36c377a76f547d26cf2b9ae"
+        },
+        {
+          "original": "local/raw_reader_vector_unwind_bm/span_0041DD20.bin",
+          "retained": "prior_bm\\span_0041DD20.bin",
+          "size": 29,
+          "sha256": "d67a4742a33b9e89d42784926feb00cfefac93d212ffb06a281eade38be8a626",
+          "sha512": "60a406cbdf89184353b93618f84d5808a0b78b61429f2c821b21a57be948b682ba864bcb7f959d747266cdebab363cec60648eb8dfdd54bf0528fc36b222f71a"
+        },
+        {
+          "original": "local/raw_reader_vector_unwind_bm/span_0041DD20.json",
+          "retained": "prior_bm\\span_0041DD20.json",
+          "size": 381,
+          "sha256": "0aa9ab483a0a6eba9ae744b7ea4c522d4e116601f69735951ea8a4d1f00caae2",
+          "sha512": "3768eee7e901b0be2b14dfe1d867c745acd7c0be745e34d3f88c7e99b5e2ed38a68c0521301e4032b1f82455511632109762a70e5c8655dc0cbb76b2ff99216e"
+        },
+        {
+          "original": "local/raw_reader_vector_unwind_bm/span_00BF7C10.bin",
+          "retained": "prior_bm\\span_00BF7C10.bin",
+          "size": 94,
+          "sha256": "38f062912d5ab25f59b3575e852e2859060b9ef893cbf4de542a50a72a004da2",
+          "sha512": "8fabbefc46f397998f1fd733846568b218597718949ef426f473c66e7dca25a3eb554a8cb4b8be81386b42da4156971eaac57f42e7fd4faca4571bc693945b07"
+        },
+        {
+          "original": "local/raw_reader_vector_unwind_bm/span_00BF7C10.json",
+          "retained": "prior_bm\\span_00BF7C10.json",
+          "size": 382,
+          "sha256": "e82b750e1f7c39f43304c0011539f794113c95f825e1e692e000c320ea95e9cd",
+          "sha512": "7a1c7a20dd2b50ed1f9cea715232874b701deafb67b915f8e22201f4589b8c58d916f69e68b16c657b388800dd7a3d1528ab529e6621d1012b2c5bdf1a36ef49"
+        },
+        {
+          "original": "local/raw_reader_vector_unwind_bm/span_00C069A2.bin",
+          "retained": "prior_bm\\span_00C069A2.bin",
+          "size": 192,
+          "sha256": "1fec28dd01c0bc6a429f6aabf83fd7d2266beaca51f8ec016d0a7db56ece5973",
+          "sha512": "691ca07f961367b46675e9d330a9e37213d49498952c88f851cad60cb4f6bc81f85211d7badd90f13d97ea1961962ba2a469dfaccb81a14397ec04a3c00cf5a6"
+        },
+        {
+          "original": "local/raw_reader_vector_unwind_bm/span_00C069A2.json",
+          "retained": "prior_bm\\span_00C069A2.json",
+          "size": 383,
+          "sha256": "ef0cfcaaf43b2f27322c6dea06b5972ec946e58c838a4e1682aa66629f7a0336",
+          "sha512": "66fc5f1fd7fb7ffd39c9e202980aee9d1544e057d579632999ecedcf6124476b8ad7824dd35ba513ed497304f0d5966d99814472a24c059ddd12eeffc102e712"
+        },
+        {
+          "original": "local/raw_reader_vector_unwind_bm/span_00C07991.bin",
+          "retained": "prior_bm\\span_00C07991.bin",
+          "size": 228,
+          "sha256": "3b08ba0b3c685e6065f6ce8071ccaadcdf9cbbbe82ff0af45c97f073c4acae60",
+          "sha512": "c53481ed87fb3ea93c2a558910638d85dcf1e684c1dfd1889bc5eaf520702204c4dbe7120be91a7ca0ce7721385fc6fad08af4238abc04237a4a554b1625eb53"
+        },
+        {
+          "original": "local/raw_reader_vector_unwind_bm/span_00C07991.json",
+          "retained": "prior_bm\\span_00C07991.json",
+          "size": 383,
+          "sha256": "def1053db54f266685270b6cbf731ea1260ad750d0e7e4805eb09ef4c0e60c2c",
+          "sha512": "3485a83fe19760d5410999663e71117f2d6a3a874be5dcc646a5ed3e1501edd06c2519626e81c43cdef88be85cd1878a383be2bd2ae0dbd00bec07b009607037"
+        },
+        {
+          "original": "local/raw_reader_vector_unwind_bm/span_00C07B10.bin",
+          "retained": "prior_bm\\span_00C07B10.bin",
+          "size": 76,
+          "sha256": "8a69b2dcb0aacedf644db3fdf3d94edb067e04cea014e8cb35b7e4f7b48de8af",
+          "sha512": "299fef4fa3fcbac2316ff7f12d23d483c784d94ae681fb6048a55a4929af62fd52119c899b2d397ffd509a7ee149061ea9f0325a5dcabbfb9107483e4066ed3d"
+        },
+        {
+          "original": "local/raw_reader_vector_unwind_bm/span_00C07B10.json",
+          "retained": "prior_bm\\span_00C07B10.json",
+          "size": 382,
+          "sha256": "9e327f094a4f7d7f4eca4b0887d4baa16fb8d5e3dff5cc7ae9f17b7a875365b5",
+          "sha512": "a7606e9bb8b72eb5eedc47ea2c45edcf1971166f220468fe211c77afbee2df3cdb016a50ecd9d1428ae7cee9affa91db019b8062e9240f60cae7fc82fb83e2be"
+        },
+        {
+          "original": "local/raw_reader_vector_unwind_bm/span_00C07C00.bin",
+          "retained": "prior_bm\\span_00C07C00.bin",
+          "size": 69,
+          "sha256": "bbff6d17e6e90214ce3f7a96a7240ac47b46dcbba6992960576da81770195dcd",
+          "sha512": "1a798b137906a7205c5dfd53139c35c43a556e2a7f46650530f837bb93a3b7e7a0f4a4785b9d31b1ab5b4c3e19c32a57383d1e51e1ba296c3af6190c574507a9"
+        },
+        {
+          "original": "local/raw_reader_vector_unwind_bm/span_00C07C00.json",
+          "retained": "prior_bm\\span_00C07C00.json",
+          "size": 382,
+          "sha256": "5d0308bbf347c1666da74eaa00133d4e59b21bb1f287772800de7401122f8641",
+          "sha512": "2f6646adac3bbaca15c143090ae5724555bd6f7fe168c2e03aaa1b7bb72012037f13e7cf8df596454a50c8486ef5f7d3cb86f0cd172b9eec0ad56de8f0a94455"
+        },
+        {
+          "original": "local/raw_reader_vector_unwind_bm/span_00C07C45.bin",
+          "retained": "prior_bm\\span_00C07C45.bin",
+          "size": 20,
+          "sha256": "39142b8d79823b8b3c0dd534ee99caf6c8cce4347b7608cfc004a14c873f7411",
+          "sha512": "5ad92ee3d80fa8f5fd1a194bb3b9032a3921b1e5135507abe95c27593d049da0a3a272014e91333969d13822e0979bcab1bdee0f4cbb7392db782e9236b050cc"
+        },
+        {
+          "original": "local/raw_reader_vector_unwind_bm/span_00C07C45.json",
+          "retained": "prior_bm\\span_00C07C45.json",
+          "size": 382,
+          "sha256": "f22bc5625113ed0707fe370e3361190aac8e8eeae0f815200421c509355cfea6",
+          "sha512": "66422b3be0e273cf40e412e28f1857da2d0a3050354a733b36d17fd94d27a9b9448e75d8320dfc35177bbdb94f148fdb72e9ba9be21167fe9c0160f88ab12620"
+        },
+        {
+          "original": "local/raw_reader_vector_unwind_bm/span_00C0DBC4.bin",
+          "retained": "prior_bm\\span_00C0DBC4.bin",
+          "size": 144,
+          "sha256": "cc4b79b99fb3b110db452fb0bd90c3aac9fc2e6f9f898a352ffa5925e007f2a4",
+          "sha512": "239cff0de3659271ee8dfe77b0874e3869a5c5c05b3f513a770b01aeac1c695b55bc4c3ce612ed3cccf4a28ae1a621cf54dbfdcc4a7d7b9515bd2b712f77ab16"
+        },
+        {
+          "original": "local/raw_reader_vector_unwind_bm/span_00C0DBC4.json",
+          "retained": "prior_bm\\span_00C0DBC4.json",
+          "size": 383,
+          "sha256": "4f474b504c7ece087ec8f706c47f8686a84b9d81d7a1af8487654b59baf41a8f",
+          "sha512": "e4e0991db24a7636ef8669990dba3bb167ceb09ef162455c6b42b41a909aa68114d637b043252eea6d9fbda5037e16277312ee0d7b134be065d20a9ab11d9c9e"
+        },
+        {
+          "original": "local/raw_reader_vector_unwind_bm/span_00C0DD00.bin",
+          "retained": "prior_bm\\span_00C0DD00.bin",
+          "size": 23,
+          "sha256": "000f5474b71b38baab1aa4ec673ef765999e4e56bfd268ed068ca39af5d35b64",
+          "sha512": "ca96d3aa62e7b1f45a25b186d9884813d3bf528e304519c99cd67f6891897338e070e7173d13002b86136ed86a9fcfc920f859bc7d153fd30843b209a6f1a37a"
+        },
+        {
+          "original": "local/raw_reader_vector_unwind_bm/span_00C0DD00.json",
+          "retained": "prior_bm\\span_00C0DD00.json",
+          "size": 382,
+          "sha256": "7929ae624e4b1926ce0ad9058518b7078fd40a698d922f8f34f42eb3361c7a1d",
+          "sha512": "9aaac30ede9a723296ecc5c7933328f82c2255ec7c3073061ea517b894c0775c19e95132dfb12b962dae0aeafcebd1a097341eeabe05c9a90a17d3459dca2d06"
+        },
+        {
+          "original": "local/raw_reader_vector_unwind_bm/span_00C16898.bin",
+          "retained": "prior_bm\\span_00C16898.bin",
+          "size": 3,
+          "sha256": "94abb6fadbcdb595e2ba8c9a673e591fec8944a2eb04edee55a9ecc56b893047",
+          "sha512": "356239206cf065c30e1c01a97f0679dfbb358d4e07c9f7f7eb5efde1d87ee93b78c25f2506eb5102032c47c497ae3ddbbc66ecd049d4b434e590485fd8965141"
+        },
+        {
+          "original": "local/raw_reader_vector_unwind_bm/span_00C16898.json",
+          "retained": "prior_bm\\span_00C16898.json",
+          "size": 381,
+          "sha256": "cf476edb95a653f1b532943c5098050132249aa9bf96030402750d7a121904bc",
+          "sha512": "93c80478a0c08f2468e4bda75b06f97b34b0c0c5079fbfc2d71767031f3a3de2009453bbe4eb25c8f04a9c412b00fc22fa9f7d794181d89534cf165ec474d1c6"
+        },
+        {
+          "original": "local/raw_reader_vector_unwind_bm/span_00E02D10.bin",
+          "retained": "prior_bm\\span_00E02D10.bin",
+          "size": 28,
+          "sha256": "13b250649cda11fb96dd4ce8f9fda3173195e2d0550eba9477bec70a0fa688b9",
+          "sha512": "5ed54be969394e3bd19713fdca8803d41aa3f64c97ccc2b58fc97de84b7888cb7550a80539f8747f293ab1929491f06f11a85bfd3e62bbd867da7fbb89061fd4"
+        },
+        {
+          "original": "local/raw_reader_vector_unwind_bm/span_00E02D10.json",
+          "retained": "prior_bm\\span_00E02D10.json",
+          "size": 384,
+          "sha256": "bc59e29aa244c8da604578099a1fe4f9a2952083429878c0551b07b7fe1850c7",
+          "sha512": "3f43af178939805a3abc1436d28ea7b90d5175b67bf36f5ad427beb2c09fed0f5c2071a6859ea63ffe6c298d71900be7a09a58276b5d18e904ff9310890b2e1b"
+        }
+      ]
+    }
+  ],
+  "validation": {
+    "discovery_only": true,
+    "source_changed": false,
+    "ghidra_mutated": false,
+    "build_run": false,
+    "tests_run": false,
+    "runtime_executed": false,
+    "game_validated": false,
+    "call_check": {
+      "direct_rows": 12,
+      "failed": 0,
+      "indirect_rows_separately_qualified": 1,
+      "log": "local/raw_reader_eh_actions_br/verify_report_calls.txt"
+    }
+  },
+  "local_inventory": {
+    "directory": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br",
+    "files": 187,
+    "bytes": 756993,
+    "passes": 2,
+    "algorithms": [
+      "sha256",
+      "sha512"
+    ],
+    "complete_path_set_checked": true,
+    "method": "Whole-file first pass and independent streamed second pass; inventory embedded in report outside local; no self hash.",
+    "artifacts": [
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/00401130_bytes.txt",
+        "size": 17,
+        "sha256": "e2047fc967fda44e95c2166da84c09f7e2cbd6a9d36b76d38e29235712de5fe8",
+        "sha512": "988b2b4ca931f320db09ade77fb15b764fde38d662dc77ec4f4d66052cdbb975e2104d2d07c5ee416a2b33dcb8e3c31637b9573a00ceb741fc16f45cc9c1ae5a"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/00401130_decoded.json",
+        "size": 106,
+        "sha256": "bb18e4af69684800488d157356fb12f571e1f6d24aaa26f9e039514b85c541f4",
+        "sha512": "2fbede7c21d5c1c1ba9ae32d1a29f7324e50af8784319b49026e81649939b3ac5a7988692ff84b2aa329a9a69d4c40050624bbfa677c409eb928ef9676a1a268"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/00401130_disasm.txt",
+        "size": 16,
+        "sha256": "360f0b7542a17e72ef054a02dd6585e52270fcec53274399278d30ec56a408bd",
+        "sha512": "ddc4b820d02dd09a7d3c4b09f901d8fa7b1ce978cc70a2a4142d48e0f3c3bdcf8eb8dd216648b70c4a9326e6c154f8969974f0cee82913795994be7192681bbd"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/00401130_live.bin",
+        "size": 1,
+        "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+        "sha512": "60313f8521d3016916d876f7ad11cf42a30dfd4ff9bc557f1e2f90e0d37c56b76ab5e42c8a16db20c18086b0d769c08542429c262cc21ee4fba02bfc689a4797"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/00401130_pe.bin",
+        "size": 1,
+        "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+        "sha512": "60313f8521d3016916d876f7ad11cf42a30dfd4ff9bc557f1e2f90e0d37c56b76ab5e42c8a16db20c18086b0d769c08542429c262cc21ee4fba02bfc689a4797"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/00401130_proto.txt",
+        "size": 91,
+        "sha256": "6227e4f7c05e8c5e3c1b8ef2a55b5da7e986adb520ab8aa04c300eb500dec15c",
+        "sha512": "9532c258f5894dced4de7170c1ba6aa372fb1b6c44abe487844745fe1bbe3026a53299b32967dc5195d71615a7cca5e8bf95779f22ea4e9209c796392281ac93"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/00be9f00_bytes.txt",
+        "size": 77,
+        "sha256": "6a9aa2c09d277abc1d353fa9de576ebfa217cf3b0bbb66be1dff91dbbd970938",
+        "sha512": "8a295b68f7cb28353e5434d9b1568dd90980726035014b5bd56a881375f6b49794e0ee60bfaa96d012c30cb226d09dc96e378eee07f8378fb3ff312454bb79c1"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/00be9f00_decoded.json",
+        "size": 669,
+        "sha256": "8fbca251dd887693f430496ab5d8e941d73f7707961e0d09c344e15d0e1bed8b",
+        "sha512": "a571ac4f1d9c44d3528da116a98ac699d0e73a995e864614522abd22f14daec6a93575b28a5c636792368ba0973672aa6d2a8e4607dacf15c3948acc20afb0cf"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/00be9f00_disasm.txt",
+        "size": 133,
+        "sha256": "9730c6956da06eeb7741aa4f092d85faa85428043d9b32ebecac9d5756b26660",
+        "sha512": "d3762fe1f3d0d0885f46f9f861fc039b42881baba672fae32dae1a0f488e3d40aa4a4647f004af416ecc916efeed57ca4af0040798b9f562d8ce004e3a0290a7"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/00be9f00_live.bin",
+        "size": 16,
+        "sha256": "6b1a17cb89a83ffeeb26a01590a0050d761995e477cb7bca2911b0a65246108c",
+        "sha512": "21157c8ebefb192d835705b3bd991d6ac9b1e53f047afd50570b11dab74b254113ff3de25f5f894d2ec9c614745375687b50628f742d231e231c58393cb5afbd"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/00be9f00_pe.bin",
+        "size": 16,
+        "sha256": "6b1a17cb89a83ffeeb26a01590a0050d761995e477cb7bca2911b0a65246108c",
+        "sha512": "21157c8ebefb192d835705b3bd991d6ac9b1e53f047afd50570b11dab74b254113ff3de25f5f894d2ec9c614745375687b50628f742d231e231c58393cb5afbd"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/00be9f00_proto.txt",
+        "size": 79,
+        "sha256": "2fb76b524ba11f0c0e9d2b707b713ef08546979d76ee8e29243ede012aa2fdb7",
+        "sha512": "3d4fee53edf36fc77d4857c58263c55d711b9c3ebc7084bb8d03df58d714727aba84ad0cab85b7acd677958d31c248b2a5ad53951ac451e061cf6a645d26c96f"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/00bf0980_bytes.txt",
+        "size": 98,
+        "sha256": "02c76729a85c7cea5c4f13080d197d9cc05240153750567c7e3852c2345e2176",
+        "sha512": "915909e8c765eea8c64da4c1526915e242336ddead051a9d4409e20e0875d13bc9efa728c51ae66af8ed5b5356f240ee511ac475a0bb7d44e8d800c5222b81b8"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/00bf0980_complete_bytes.txt",
+        "size": 118,
+        "sha256": "8f66ea365b5754e363c376ba494b34413d6b745fd1e0636c2219c511b452de5a",
+        "sha512": "c71c8a117fb19acc129783879fee464ec1ffb895f40c0576cd4f6851386999ea52b1064461245a782ed73ecbdeb776b7176637528fa5ea75dc2947d4cc0c7837"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/00bf0980_complete_decoded.json",
+        "size": 1124,
+        "sha256": "d36dd5e714061897014b1543b7cbd3acb93c0d3a7d42bbf335363b78a54234a0",
+        "sha512": "fd6f4e2b38e69bcb09c0740c4fee67204b2d224b9fe5e1dd8fd1ba4f68b078e3bffbeaba34403623148774599f207f0af9538f06ff18babe22b1059a77b61e90"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/00bf0980_complete_live.bin",
+        "size": 23,
+        "sha256": "773283e7cd4f034d0e92d3128a8206892b5828e4489a5df2172c7cc9bb4e7863",
+        "sha512": "a060bd2971c7fee61ad3d8e2ea2e9adaf800100af1bfea454b98e9f39720e62b89b64365dcc80a82f819c2c74c9b703df2a86597db2bcd84a15a38bbbfacd2a0"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/00bf0980_complete_pe.bin",
+        "size": 23,
+        "sha256": "773283e7cd4f034d0e92d3128a8206892b5828e4489a5df2172c7cc9bb4e7863",
+        "sha512": "a060bd2971c7fee61ad3d8e2ea2e9adaf800100af1bfea454b98e9f39720e62b89b64365dcc80a82f819c2c74c9b703df2a86597db2bcd84a15a38bbbfacd2a0"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/00bf0980_decoded.json",
+        "size": 802,
+        "sha256": "cd42c31842fc5db1ee4d4c4ea3b58fe2b170c8d295ca7e8bcd2bbb218a502ff2",
+        "sha512": "922885fd2828fdbd06d5bcc0e5253ae6d53309a2a0feb1feeec2cd9f5a59c775959421249db22f9fc2303c2bf84fb5ac27db3daf580836b69174f15c4dda219f"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/00bf0980_disasm.txt",
+        "size": 179,
+        "sha256": "06829e5a7363619477cedc9a2dd1c25e770dd3a515cbbb84dbe649056556dfc9",
+        "sha512": "5cc6866450d907ba8f5792fce155bb18e0b9b3849354f523629f296cfeec288dd82e482572483226a9aff991dca075e4195833026cb7efde84ccf9ba9bcb3146"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/00bf0980_live.bin",
+        "size": 18,
+        "sha256": "9a13f49b4764c45c1690e43c9882a8acb15453a5972ccc1c5b5b40e9f28c7b4d",
+        "sha512": "de97b728c2ad65b5795005dd33d13bd4e766d50c469b765e4a1690bba2509016fd54245dd7594734bc5bf30f902718a5ae782a76a4c75151c406f25bb3bec076"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/00bf0980_pe.bin",
+        "size": 18,
+        "sha256": "9a13f49b4764c45c1690e43c9882a8acb15453a5972ccc1c5b5b40e9f28c7b4d",
+        "sha512": "de97b728c2ad65b5795005dd33d13bd4e766d50c469b765e4a1690bba2509016fd54245dd7594734bc5bf30f902718a5ae782a76a4c75151c406f25bb3bec076"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/00bf0980_proto.txt",
+        "size": 79,
+        "sha256": "e47b62d7a2010c295fc571e071dc9202ef2c29fa3d6101a64c8ce3dc51b9637e",
+        "sha512": "7c8572bd5a0cac37054e00e160170349486880355feb4621e00a667ac75aedc966ea0910e0bafb5bc1f5f55c404ec8c922679a4a5b928b4e726f2d0cefc57dfa"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/00bf6989_complete_bytes.txt",
+        "size": 33,
+        "sha256": "b138fb7180fd8addcf3fbbf119e0507cbf06e17cc05937cd4e52998f3fb0b5f0",
+        "sha512": "d5e947bbca2b4f9046eeaac60b175f8be78dd7053db34effb775832dd5662031e24c3efd98c3dde9686823a58a90de622a357ec86b8b13af0e62e8fbb80d843a"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/00bf6989_complete_decoded.json",
+        "size": 122,
+        "sha256": "997931ebcbc564e0aa99f4f2af49049a5861bffce2c7aac8757a1ce34492a14e",
+        "sha512": "d948ccb7e58e69c60aa3e244908ac8fe95155784e40792dd61aab4f631f7ea0d2e287e61fd2e36aa509e2dc99c16a5eb1b6d198489bc83f7989cfbca1566a08f"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/00bf6989_complete_live.bin",
+        "size": 5,
+        "sha256": "4d311098ca9ce6d6a11d6bd70234374b80fb61e695812ad0801ce7176cbfa9f9",
+        "sha512": "fb1d2282cc709c206f99b7521432bca7808d1926a7a57aef36978cfb7995b2e9099788678c66d3798ccd064c420cc8666f8967e0b7ba91f60022801db7c21794"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/00bf6989_complete_pe.bin",
+        "size": 5,
+        "sha256": "4d311098ca9ce6d6a11d6bd70234374b80fb61e695812ad0801ce7176cbfa9f9",
+        "sha512": "fb1d2282cc709c206f99b7521432bca7808d1926a7a57aef36978cfb7995b2e9099788678c66d3798ccd064c420cc8666f8967e0b7ba91f60022801db7c21794"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/00bf7c6e_bytes.txt",
+        "size": 365,
+        "sha256": "e43a1d91382cbb66a692cb8ffcb02c0f77365758d49cb21e2b704c53d0660cb4",
+        "sha512": "d3cee808b701a8ca2d696f8c3f522584839b68a73a6ee34503d10b2e60b10a7f3587869e94b1a9f50e774f106b247719ef5586b49bb7e5626e32ca913331e477"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/00bf7c6e_decoded.json",
+        "size": 2514,
+        "sha256": "209a11f4c0954a94416e3f88e286d3e5fd0b9127caba2f8c0d1a90732573edbc",
+        "sha512": "34cda781d4b2914c07f84dd875e677c0c259d7a0df0f0628be64ceeee8d01032145a674af710e59a6306905af55350d43d99b43cb142e0c4601804a6e24147da"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/00bf7c6e_disasm.txt",
+        "size": 701,
+        "sha256": "f37e90f70e05cba673837dfd9a9227f5073e5fe983f8e46fc5440380d08fcfaf",
+        "sha512": "c7b620fe96799d349f65a66855c331ad81babfd773d4a37a9307c0263fb3a5fba2f4d803f7102e5b059dfeb00f781c02df67e9b37dbc27face8375fc522634be"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/00bf7c6e_live.bin",
+        "size": 75,
+        "sha256": "e17d277fcf76c86ca7bbd9efd9cd4320b80da6c94ca29539e6ae9ddc27ad5b59",
+        "sha512": "f2696a75c058f1d80b646078f03e0e512911ef9d988edbb0108c6853e789d85a150d59718e9a24d22045160fdea095747f47558497e294eddad009223bcf5b1e"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/00bf7c6e_pe.bin",
+        "size": 75,
+        "sha256": "e17d277fcf76c86ca7bbd9efd9cd4320b80da6c94ca29539e6ae9ddc27ad5b59",
+        "sha512": "f2696a75c058f1d80b646078f03e0e512911ef9d988edbb0108c6853e789d85a150d59718e9a24d22045160fdea095747f47558497e294eddad009223bcf5b1e"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/00bf7c6e_proto.txt",
+        "size": 190,
+        "sha256": "0f3b0059c467a977b97f75a08152fe1820d1befd1f4e5e21eee585afa2bf4098",
+        "sha512": "005d777716d8a8a0600c4c942e5e07eb0cc2468e7d4727837f47bcbab1aa31798553ee3a7e166293e98f4522dd35190d4995ae3ff6689390e6a105f2c2d6f6ba"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/00bf7cb9_bytes.txt",
+        "size": 122,
+        "sha256": "238b9cd09292d21d513ecabb7c214dd54fb7bb44b9294ec545bb5bd739f9cbb0",
+        "sha512": "eca3b666cb67ebf48443f915aad4c6ac15a99b064dc16505de9ba00f6ed77b00147983360687486c9ca4d298dfad26e36986fee1b877cd2f5db5f843a15a9df7"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/00bf7cb9_decoded.json",
+        "size": 989,
+        "sha256": "48b7f5bc4517f8144f766ec647306cd459beac2847901e60ac191284f6c2cd5d",
+        "sha512": "4fd173a263d3193c0c0260a6b807b177dece624f87d4b73d2f04483ad5a9edb82227d3465e7dc14147862f955d90ccba69ebee4fb39b027483b790e1fd70462a"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/00bf7cb9_disasm.txt",
+        "size": 273,
+        "sha256": "07197d1ffe8c30101a0524d855aeef37078c7a0b83b3e79e5a1c5c3229c30dd3",
+        "sha512": "755f70008010a02ea1617bfbc227e9c8a8722607adea4759e3b8fedd3e523475df93a1178ff472aefdba55a3553f921035a22765c97e14f70d7e6fb17523050b"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/00bf7cb9_live.bin",
+        "size": 24,
+        "sha256": "517d4263f48e5a86fc4a0b59a1946ed6eb5266a29658d974d9f149196d80cd76",
+        "sha512": "10203f629b36d93afec15b365ccde3a82403045e1a6dfbb41b411c9a8f5f65865012ac606b758a132901cf133b7f6e806f5fa6c0d0192d5b664a5e553ab5bbf5"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/00bf7cb9_pe.bin",
+        "size": 24,
+        "sha256": "517d4263f48e5a86fc4a0b59a1946ed6eb5266a29658d974d9f149196d80cd76",
+        "sha512": "10203f629b36d93afec15b365ccde3a82403045e1a6dfbb41b411c9a8f5f65865012ac606b758a132901cf133b7f6e806f5fa6c0d0192d5b664a5e553ab5bbf5"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/00bf7cb9_proto.txt",
+        "size": 105,
+        "sha256": "497d1aae140b7d3c6b2dbaabde7532696e928612e9f7c533f36b46e0881de725",
+        "sha512": "e432ea7d69e2bcbfff46ceea607739652e7f54e23c0fcdfe56dfc89b6e53129420b66cbdc164630e3b6888c00ec85fab4281bf850aaffea05612f0c1f9ae5438"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/00cc70c0_bytes.txt",
+        "size": 45,
+        "sha256": "a551283affb1fc8ff221e8fd444848b71d283481a41aac4f893c9063e50679ae",
+        "sha512": "39683b0bd68c91ffdf0c04fa7a2c2db424d30ea74102485502a6ae2ac091a5e340f211008411904ebb6d795727f830253d272d562744826bf4b1af07ef21ced0"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/00cc70c0_decoded.json",
+        "size": 256,
+        "sha256": "65f5002064afe008cbe02f49b76e0ce2ae14783a752b6c085195f56d4975ef68",
+        "sha512": "b2e892ba8461de8cd2b95b4197fd6dcdd6618d756b288465e48e28764345a2adf21ca0c495ba5274c35a8e93fdac8bd39498df8b89502f0f2addebc4f5472c21"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/00cc70c0_disasm.txt",
+        "size": 71,
+        "sha256": "95a62b84b5d6b80fd57057eeaff765f82b96e68b4c59eca3b6fc319151759aeb",
+        "sha512": "5c84f9ef6d6ceba87dedd3fd48a59d2080ec58b48ba8b6598520b782b51aa838618757f22403d4971a00071cdaac5d6dd68597c7c15792236f44a03643df8b42"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/00cc70c0_live.bin",
+        "size": 8,
+        "sha256": "70ab751499c12ed11d6f433b2347f5be270a06644148050209632630d39dd570",
+        "sha512": "937f010bc55f4a6fd79f18bf203a976e7622791dd96a40b574e2711c33b1950e83c82fdc146e8e1943c9af7a8cfbb618dfe304cacf6c5893e350a8c12458bef6"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/00cc70c0_pe.bin",
+        "size": 8,
+        "sha256": "70ab751499c12ed11d6f433b2347f5be270a06644148050209632630d39dd570",
+        "sha512": "937f010bc55f4a6fd79f18bf203a976e7622791dd96a40b574e2711c33b1950e83c82fdc146e8e1943c9af7a8cfbb618dfe304cacf6c5893e350a8c12458bef6"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/00cc70c0_proto.txt",
+        "size": 85,
+        "sha256": "349d572418ae6824f58e6ea8f0e58bbb86608321f8eb444da41879c2deb5bfc1",
+        "sha512": "561cc9cc3450767b35481372b5d963c92d8b371ad413fda026f4e99bfe650a605f6b27802d3577451ab6de76daef39660bfdc62ddf1b2756e7df13493a2f5b06"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/00cc70c0_xrefs.txt",
+        "size": 22,
+        "sha256": "d75331e5aa310fee22c3438c02ab47b3a0759bcd1dae98bfc2cf2c3f1840e230",
+        "sha512": "efec81242b21b3649c8473eaf8c6d3517d658afefcb404529f0323b2a2ff9d98c2bb7ccda76dfe68aa4a27580e6ce83878728e2e7d617a4f88911d30bd36d44c"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/00cc70c8_bytes.txt",
+        "size": 57,
+        "sha256": "d5cea3c9e2a7fca0d759554b86fcf912b45df88016f1f53552e128d3cb74b402",
+        "sha512": "20b0894f9825025a6bfd9cd28362e02cc68feba9c3a3f1c5a016059bd7b41adff1de32d6199bf402dabc57123418e5b79ed606ab777579ee988ca617f31577d4"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/00cc70c8_decoded.json",
+        "size": 372,
+        "sha256": "2f0398238c7f0d3803e8b39730b8858b69b0e6a4ff813cc5e4f85bbcc80c31a7",
+        "sha512": "3d21c0fdd6b36bef2a1978a9a391a8b4babf90eba6c9b2346336aa8fd572e5583645dc0ec23583b89aae2ab7a43f4c384e4abd9ab8ea00795a6688f8692d0878"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/00cc70c8_disasm.txt",
+        "size": 96,
+        "sha256": "797f40c8608c5e8984c4d4b7f0e1c89a4ec41bcc28b40400c4b3292ac8a8af9c",
+        "sha512": "b44325a5378b806d276005062ae55dd697ff83630a52cf6064b0701bf67fcb3ce7d502c13f8d8dc4e6ff741ca5362a680409f370efeb708927e3762e97f02df3"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/00cc70c8_live.bin",
+        "size": 11,
+        "sha256": "3f5bf0fe407bf7ed7d3e973083b28633d46117c8fa7b7413442177ce83ce38b3",
+        "sha512": "d1faec5a7307939f024b78fa9bcc68519961374de85b43c95ff6e26d9115fb9839cecc40ae3d05c569c7d27faa33fc3e6da9af560ce9cbe7ae49b37b63675934"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/00cc70c8_pe.bin",
+        "size": 11,
+        "sha256": "3f5bf0fe407bf7ed7d3e973083b28633d46117c8fa7b7413442177ce83ce38b3",
+        "sha512": "d1faec5a7307939f024b78fa9bcc68519961374de85b43c95ff6e26d9115fb9839cecc40ae3d05c569c7d27faa33fc3e6da9af560ce9cbe7ae49b37b63675934"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/00cc70c8_proto.txt",
+        "size": 85,
+        "sha256": "0a07e9d1109e58d16cbfc6cca94b0bd14ac9fd5525b96275135ed7bf3983db87",
+        "sha512": "56464907f0ffdd8b5e6f04798771ebabfe4ce05a556e32cd1a78eb386f7fb79629a1b3e6c6c5628116f6f024578b01d5657efb19875f99155bc4920ff4b4bc7c"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/00cc70c8_xrefs.txt",
+        "size": 22,
+        "sha256": "45413a4ee3ebc35938f8e9caab068858574660e01fa7832f2b74414a29272bc0",
+        "sha512": "a6a55854333be1fbb7cc21538a6ffa052d2df23c3cf41500f14fb4c90fe06430eb75540420779c9d76f094c9efcc936777479bfc38b33556d0726fba81e1a2cf"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/00cc7790_bytes.txt",
+        "size": 118,
+        "sha256": "d8f6b08b1ad300283eb9d7856aa28b45f46fbf780bb6b5be7370a21c6bb5c9df",
+        "sha512": "eb1d5b480e40597050c7570267f786280cd717112957d2c44d9e59111691a0cd7e6ea0558a26c49221447444759db51f05076f1e891eda0f330fbd92d7673a63"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/00cc7790_decoded.json",
+        "size": 1076,
+        "sha256": "8790c7bd3751a5df167f045b378d4767ab87e5bf42595bfc0cecfa55bd533678",
+        "sha512": "e2c39851c43a8a7877f027b57efed8cbc13390b967e24c1a8acb0f5a39889dd33c95ae4d7405690ecb86b9562892e4dd7ef00f6d93912ec8d4cf009d06ee927c"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/00cc7790_disasm.txt",
+        "size": 271,
+        "sha256": "db3a72c94840d2594e60ace216c738334b2b973909c7566652f1cb492c061a36",
+        "sha512": "7be5f3193276f46b9376bf58bb68057268229903468acaee54ca40286ef679aec54d23bb55c75c62d9b5335dc2f5bb4dc3aacb75ca2873794940f3c76b3d1f2f"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/00cc7790_live.bin",
+        "size": 23,
+        "sha256": "c543f1fa59124722f8625849fd9ec2e4f858e9536526be07b1207da5a8883fae",
+        "sha512": "08618077f893ae14654556c56cddac4b78b78f1b1a274580d6ea30881fd9db5bd2884c1565bfcdda71ec432ec2ebbecd7263e1c64c612197f1c7f11670c8fac3"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/00cc7790_pe.bin",
+        "size": 23,
+        "sha256": "c543f1fa59124722f8625849fd9ec2e4f858e9536526be07b1207da5a8883fae",
+        "sha512": "08618077f893ae14654556c56cddac4b78b78f1b1a274580d6ea30881fd9db5bd2884c1565bfcdda71ec432ec2ebbecd7263e1c64c612197f1c7f11670c8fac3"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/00cc7790_proto.txt",
+        "size": 85,
+        "sha256": "b8130e89b74b4e750e1b6193d06906efc16e2b911ce56d4f526adcc68686ec3d",
+        "sha512": "58e3888f60f643078011e9134836d376ff37cd65d1999fe249cdbe36760c7ae324c5344725b299fc47100375e0569827984086374414fb41a80e9a972b0ea468"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/00cc7790_xrefs.txt",
+        "size": 22,
+        "sha256": "374e91d64ff2f87ae9191c8921706ec863f69aa93e6e164d0ad837d20a49b297",
+        "sha512": "1ff60abcb64ea480d933d7c58255120e57be3282c3aca17d3ec446a6493d850a057e836a9406d98cd97a3192372894195882028e36d6b7b62c53875fd4ecd3f1"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/00cc7810_bytes.txt",
+        "size": 57,
+        "sha256": "2fbd86e93d615a249391d380dbba5a1c8fed4e708c2f1d0774ba2c0fda874a91",
+        "sha512": "e1f58d733bb041ddb77da62300e2c008ca0bdf9a28adf7d1d2f6ac9633cedc379e12956e33270c3cd6c90bddac99e47e44c874e62fb1cbab484857fd03f4c9d7"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/00cc7810_decoded.json",
+        "size": 369,
+        "sha256": "501cf502f206ba38499a068368db8dd8916a50a9cd22cfb6d6c1eb02aeeb1490",
+        "sha512": "0112cc34a208218057120084b2f2b039e9899bdba6b631a3c65a0be3d0b94af7d51eb525760f232b86f57f5466aeb37eceb36d3410c9836ca7801d1a654fde2b"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/00cc7810_disasm.txt",
+        "size": 95,
+        "sha256": "8b8dd1513b259fed35de1bbc46089e7ba9df18ad5fda21914da8e695ec8577ea",
+        "sha512": "619dd6dd8e5f7cb952da108d11b4a691cf6841beb436e93e6cafbf82e99d89ac98e9ccedd153969622da41e213577d32dbd365e6a540c6884929996c1df5e4dd"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/00cc7810_live.bin",
+        "size": 11,
+        "sha256": "a09f609b9b477ad42d1d9a052958e7283c8492eed03a588edab33e455d06ab3f",
+        "sha512": "f8a6441596972f5a2f48b2723502336c5a153671a72f3e444c780223ee84290210d58b4629008711ecc02778e6bfaed364a7f5d3a48b2e51457fcf19d59c9255"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/00cc7810_pe.bin",
+        "size": 11,
+        "sha256": "a09f609b9b477ad42d1d9a052958e7283c8492eed03a588edab33e455d06ab3f",
+        "sha512": "f8a6441596972f5a2f48b2723502336c5a153671a72f3e444c780223ee84290210d58b4629008711ecc02778e6bfaed364a7f5d3a48b2e51457fcf19d59c9255"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/00cc7810_proto.txt",
+        "size": 85,
+        "sha256": "3ad9b10f3810731fc155c9573980e32ccdc28f320ff4b54834779e05c39f16b5",
+        "sha512": "92537145678e06630a71372c1e95db788271a5d6164f6dc43466bf3e142edc786c451d229ecd74bab6fb8fd3ee486405fef489006fcc107676ed497a906563ec"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/00cc7810_xrefs.txt",
+        "size": 22,
+        "sha256": "3a7bf3926c5841f68e03b1a9b792132646067e20d67ef36a764e70f2877a46b4",
+        "sha512": "660441213b7cdcc316f63eaea6b4a9535b26af2b63a60c159d0c260dfdf0e63d9afdc6658662691eacd2d0deb18e065ee40097d8c6f63a8f93d882c197765673"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/capture_bodies.py",
+        "size": 1563,
+        "sha256": "440fc694b5e60d63556dc53bb27039e68135f8083bd45ac1d9b6ae083fa93649",
+        "sha512": "20941e1c3ab474301e20ed5eab5c98b72d463a823e6adb4051c46404c674bae99db9e0ad276c44e1c9efb292f6fea72af27a365e5ce56d6aafaf9ef8f9e149d3"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/capture_corrected_dependencies.py",
+        "size": 1853,
+        "sha256": "e81072757fabcf809ec9f28fa6b42cc0f9839cf24111251e34177127807243f1",
+        "sha512": "292a646aa51e1d1d686a97eda1d975088bfe93afb99dddb59457585ce6f725cad628a2700b7dcef669f2fd4b958e376567593dadfa74c7b3eb29d75f221d660f"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/capture_dependencies.py",
+        "size": 1326,
+        "sha256": "3838ad282033a4d47e94c55b25c4e8c1e800993315815b44f92f701ddce790e8",
+        "sha512": "9cff77d50b817bf082136e8c383d9f2f1b31bd9b33d3b650d2a197c2936f1bbaf67bf971618231065cda7345855427edaabed7658e60a3291397fdcc137580e4"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/capture_protos.py",
+        "size": 514,
+        "sha256": "c1b6a58eac26b6517e0983bb7f2b04957f1a257993dc6659d91ffe780f22df1b",
+        "sha512": "e63df514e5ce1732aa0eae3ccc4efdc98921060c06ce4efc2744601891b03bacc1d10a21432ec58ada569d6ee6e088db654458a681383a6461afc4ee3a1a6edc"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/capture_xrefs.py",
+        "size": 447,
+        "sha256": "3d310d7b0d4aa422b778bb22bde4028af8aa40e46fdfb607e056e3814f8dc384",
+        "sha512": "451960ee2d02221c4f9c78e33cdbefa93c925e5ed136adc1835c8bc10886993e15acedb1545aa55664178fb14ee8c8ebb4a8966138687884f99f92615cddc7f0"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/commit_message.txt",
+        "size": 529,
+        "sha256": "30fdbce9f1454d1451a45aa8a41e2841218b10bb98555de944001eaad9e74640",
+        "sha512": "975c128246bd8b536c4732bd10f96b4da68f5405fc92a930b6adff54e007ea4c073bbe38c762db528e0cc23f68e99bbd90b54eb16ae6072481c6c37c6bbf74c7"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/corrected_dependency_spans.json",
+        "size": 730,
+        "sha256": "051cc4983faf3a7a001fee2f2ed10d708045fddd30ce121aad8893151138d57a",
+        "sha512": "1d48c57533a1a37b9958880b490ec8aae74d2de2ed0423385155e809c7ffd91f85f6bea90c0ca3bb5c3a8a7fefadc00f5ecc0a7af2333cdb79af58cb267e94b3"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/current_source/include/bsp/native_string.hpp",
+        "size": 8019,
+        "sha256": "80013e5a7350120f32fcad1ce54db9b0923ad5b49cc2152823d858534331378f",
+        "sha512": "5afd168dacc1e8f94a085f1e9354b60febccd9812e8cc0070b4cd8b6c795ec9cd3702d9407f3a730cb79df6adc232fef87e90122e045521562852d78df5e386f"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/current_source/include/bsp/native_string_pool_storage.hpp",
+        "size": 2805,
+        "sha256": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d",
+        "sha512": "3a88595a304e476b03c0b8ad6ea479bde2e21f018b875ba39caabc88b790c1fe58ffe62a8796aec372e5cfa037ec33c6e6be0b9f219be1228cff7b0e93ad936e"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/current_source/src/native_string.cpp",
+        "size": 8311,
+        "sha256": "0e8819d3a6442fc48c879e85c00899a72beabdc51b3e94a11836ab5314d5e60c",
+        "sha512": "cbeb59ed8f5c6cd47787124f9d505aac581eb11f7560753b98cf4275314d0a0dacd365d2fcee8dd0c9bd900f2636c4d3a232e86073f8d3b5b714e5cbd02d3e70"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/current_source/src/native_string_pool_storage.cpp",
+        "size": 5103,
+        "sha256": "5cb79a6ce240205b3f1c81f1fbd6edd49cc1c05f8a20ee8dca8913f44c9095d5",
+        "sha512": "284a405ab690163fba4c7a725fccfcddab806899c65ed8a7f1bc4cb05a2d4ef1add6c2f3385cb41b26a47b93b8e46ded889434a8f18e53e286fcf223b7903cb7"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/dependency_spans.json",
+        "size": 1097,
+        "sha256": "b349b715fc6873883520a89cac5740ff83b78595ff9019b332a7d674136664bb",
+        "sha512": "d368fe9fba7ecbf270861ca312d04c8a8d07334351427d9d0bd2a9947cfe0e7a2226700531d9ea5314a95b6f626cb43060bfe909e1db0f4ccae7cb137bf175cb"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/finalize_inventory.py",
+        "size": 1500,
+        "sha256": "2e2f1f40bcc243844a6d77a5798fd9a13d34e0877e57c854a1f313a351a8679c",
+        "sha512": "aaf808c1c5871f8e2b902458a1a55157706d8dbcae72e89efded128f9cc9f17afcbef2ba1b9c5dc1165121d1f8ee9e421164c79e71706320b125c1ba2255c83a"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/history.txt",
+        "size": 758,
+        "sha256": "8ed88a0ec491180cf7cd022170f8ecfd71ad0220af1dd22321bf5f0d7ffbb38d",
+        "sha512": "51e1875208361db6b6e92227f05ff7aa63d15e43847f28e8916aa4242a3cc3185d493599c037d8d7bb40878448a6fb42f9042fec5aea912f6aa1697d8feeb14f"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/make_report.py",
+        "size": 6527,
+        "sha256": "474649300673df1bb8c2acbf58d5600da5a37683bdcdd7b7e0946407870c6e10",
+        "sha512": "560a2e7042e465f11157319b0ad24b0f6b8588ae58e380c2b3db41ced3dfbd5c1987d155457b575e65befd49432b6d2f523199be3759c58349869875a6d84f9c"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/make_report_v2.py",
+        "size": 6646,
+        "sha256": "b8e6eaf7a0e3ef8ee49ab3f57c1df6f31f60e120e99fda45e5c11a4124d2ac45",
+        "sha512": "0cad334e610c8866135b09d15ad41e62697a8e445e21b93fb7c39e934326389a629b057523d30f018ffe9b124e306d82e807617250c87ecdc150fde4c508f83c"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/owned_spans.json",
+        "size": 2066,
+        "sha256": "42a3b734f958253509b76901fc80ed3b60a743684609ca1c06702633c26b4ad5",
+        "sha512": "38f76a8c27056153414e01751250edfafdd4c4347d96b605daf405d2b3c74fcc2e8736bc9199f28cd7b0915c42b6b00a9a785e25a9b38febc59950c5c3fd778b"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/prior_bm/decoded_0041DD20.json",
+        "size": 1365,
+        "sha256": "8d5d27c4570d42691938a4367a15e5aecbb8b9c44dda0f0f0eea5b4a7ece8cee",
+        "sha512": "f6331ead534ad12f2968b55a1c6b1c1091f4ed608aafc62702ec8aa016c5723cf0c8e3bd04e25a643a8932927e2b99fbf5beed5f6e2590c7cb4b99b103d1540d"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/prior_bm/decoded_00BF7C10.json",
+        "size": 3393,
+        "sha256": "33df801af881ba608d705a64bfc2a11faaff4829ef77b301c2e834a5d409270a",
+        "sha512": "c84d390ec021b4bec090a3bf31010bd2e0a2f681c6f3f6392fd4b7c58bc03cc264b6ecfdd245019e86c97699aa08ad418b4a3cc58d5ea9fd9ca48e3d2190e30e"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/prior_bm/decoded_00C069A2.json",
+        "size": 7103,
+        "sha256": "fb1bdafa59ddb264358f198852e3849193e941fec269fb74acf04c531feed630",
+        "sha512": "c7edea33147dc42d1906f57d92a7b9c45125292656191fd13ee216b9e70e997d5d47433d09939f7a6f1e9f1de78d9f4c6a4c1e9773914aa51bba8cda60f35cbb"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/prior_bm/decoded_00C07991.json",
+        "size": 9966,
+        "sha256": "a75abe6e55b3d0cdf6560decda7aaf604033e0391805cfcaaf70ddc6cba12f3d",
+        "sha512": "a0a9dec74a73850b617ebe36398ccb6eedefcd1523eafc10ee0f1fa6e697c6068d947fc8a53c69b86632c9bb3d942d4d104f372f7dcc971c6e6613dd3be289bd"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/prior_bm/decoded_00C07B10.json",
+        "size": 3871,
+        "sha256": "3d43c85f30babae4041701746344b1e614d77b02aebba6e9ba2af205989de5c4",
+        "sha512": "58873346dec8e70e7cf3125b9b251d7cbf23819b21d03ec9df70893d8e77504cf4e55bb9593b0be8b781c2ea4888db3c9dfa001c77a16c7ff786a1f17237fe66"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/prior_bm/decoded_00C07C00.json",
+        "size": 2585,
+        "sha256": "7a1ba949c0104a5c1b7fec62542ec053a10230fc5aedf532dd4cb81b8dcf3755",
+        "sha512": "ded654c27c0c7579003d174f46dbd48c5c3c2700aa7b00618408778cce828656f4cec6f81b6b03fa39436b1056cdfb0e0f8c4e559896a794583f700f41ba8989"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/prior_bm/decoded_00C07C45.json",
+        "size": 1223,
+        "sha256": "85b3b38bb40220e30660c36276d058345206564c5a4aef5896c8703f1c70d5b5",
+        "sha512": "f29baa04706dcaf5f7ef2809f8f7585f0d0d470360731eb1c9765e1f4dffc56f1c4f97b60126d18b6f2d4dd3b9e06ccbf4455de1c4f365bdd9fc002a092efffb"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/prior_bm/decoded_00C0DBC4.json",
+        "size": 5744,
+        "sha256": "bc15c7a8ce3d560aa106da929b91c12b0d22e83b591f79fb7909245e812efce1",
+        "sha512": "80e5d1b2fa95ecf97e79087dac916a487704ea1c2bdafa4fb734fee6073c7cf84d7eafc89794a32174f7c429b593c5b5ba5173262f9a4c49ac2d1afb0d1aeb25"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/prior_bm/decoded_00C0DD00.json",
+        "size": 1031,
+        "sha256": "acea43ced0fc3bedb31952f05bf7c692603bc8baaa099a11c5fdcf1349553991",
+        "sha512": "5c28f1f2c2b6a7953e053cb4c49a366ce85d6f18262a7037982d5871998ba19b04902e5ff06c6473e0741e464e31e7682621b683d25a6143e59e35499c6cc5c3"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/prior_bm/decoded_00C16898.json",
+        "size": 215,
+        "sha256": "10ff2339e7456ad7df99dd062782325beb93ffda037054b6ffdbde40bd126ca2",
+        "sha512": "5e01b773089b4e72d7ec38bd34055bf79afde1c8ad54d4da0e15916b19e0a1fc82e11e73408d26ec640ee9d8a4642848412a0918ede27f83fd8e10c1b0d11878"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/prior_bm/live_bytes_0041DD20.json",
+        "size": 411,
+        "sha256": "150391bb4052c0d725cf9be45a499e86ed349ba0de3019bbb916333fbc039d3c",
+        "sha512": "a1d989b2eafd4775b4c8d661f86011d718f4f12c9eaa49f95abd8956d584e1222cbc0eec9d16c5ad28ade29fe0a1fc3bda27800fbcaef49cf17594196381c3f3"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/prior_bm/live_bytes_0041DD20.txt",
+        "size": 142,
+        "sha256": "6067ce8f2a1ee404080bab647c771b6ee0d782dc9b8d61b710a9e04b3c4b8850",
+        "sha512": "d3e8f559acd8f1ebad7675d335a26086f41b9b091993c2a006a9075500d6ec17f8d844c250bde411f3939a8aeb68320a4c02f62f9fc945953f4b02219c13f374"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/prior_bm/live_bytes_00BF7C10.json",
+        "size": 723,
+        "sha256": "23a3bff9eb0c36c816e4f3670db8de0e463a1f14dc9e6b5b9a50b83a5788d578",
+        "sha512": "e2211bb7eaa874f57757c66c93f736dfc593d9835501baca15d47036e57cdb9e4e93417528af3e24699673b6e368fbff21b6acc5cf45fb0e00121ed730d3083d"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/prior_bm/live_bytes_00BF7C10.txt",
+        "size": 454,
+        "sha256": "26548f3ef7f10b4c6b2f3e2c11421406808a4e84723469a2ad19cdbb6f3a8afe",
+        "sha512": "94129b722cfc9094ebd5572c3d1ceb8f5e22a1c2c970fa6ace23c9036b94884ae4b1d22d0e6294b4eaf57ae02fc762f23753a5d0635b24d2be48e88be5246a5d"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/prior_bm/live_bytes_00C069A2.json",
+        "size": 1194,
+        "sha256": "d908da4bc36a4bc341e4c09806bb3bc3d9d2515a1fd7bdfbb349744107d70ef0",
+        "sha512": "322224e0bfa419c9b6a2fb85650986520452806786f01a47cecf9d14d3c7f721293b2bed8c25d41f4cc21478d069bfaa7f4c1b6be335249445f522ada8fd1f69"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/prior_bm/live_bytes_00C069A2.txt",
+        "size": 924,
+        "sha256": "963dfa0d4711195a8093e25f0e2490e839a855a684747426aee4a38a6d396035",
+        "sha512": "3423ef7094eacbd2fa414e57b395496c8fe5cf0712d2d7737b6c0e03dc8400d0dea043146f96c0bf5511e7c575233b4350e564e353a661f6990aa3be55114735"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/prior_bm/live_bytes_00C07991.json",
+        "size": 1378,
+        "sha256": "d67fe68ec9e1e9b7e5805cdba59db36f2e71b515dad30e6af7a0ad55f097d146",
+        "sha512": "39f1c30dd25b3400d1c22911a556a8a67026ff31a297de4fcc599e2dae3d3bc540c8cb5d9c4fc902ff91ae9c1678e92334ec46a606025e23443ba935b7d4e9b1"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/prior_bm/live_bytes_00C07991.txt",
+        "size": 1107,
+        "sha256": "617d2e92c0ba2e58be4f51a43685e8ef5e4fc89bcf41a432df4261e5e07c3b8a",
+        "sha512": "eeb925d2bafe7801b495c78fab7494deeb4c3f337a7c9baf6f8698771229c91ad5022670d59ec337e546cdee170f43ced05e96ccf80d86d142f2e3e579513938"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/prior_bm/live_bytes_00C07B10.json",
+        "size": 638,
+        "sha256": "45e27365cb30036015a5f29dc84379531d2dee739817923ad377fcc4410c879a",
+        "sha512": "8c9bb2d527704272eb4ba72ff3b6baf6e815545426dacee333249bd821becc0acb50895d55f43375fe84d9a4eadbf9fb205cc86bc763c51739af552c57603d17"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/prior_bm/live_bytes_00C07B10.txt",
+        "size": 369,
+        "sha256": "66d316be0ec767771911fa948aaf7ee82953276a81c0b8764016c286886bcf09",
+        "sha512": "316fd9d0f53c3767585a51501af1b4224cc8cf42d27787e850fba867f7eefaa00e2cf2124ba588913d9f87d6196ab0fc5e5b592e5bd9c02aa06cfe8583a8a397"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/prior_bm/live_bytes_00C07C00.json",
+        "size": 610,
+        "sha256": "32a5b813be552761e1290542f0b675fd01d3a79710b4f35c22a1b6a115449587",
+        "sha512": "2f115cfbf36dd14ed7f4f8931002463e934f4644fb2581ba6f9730305921f0a1abfc9705bc6cf66736f091dc79cd2908036b97c77f2c77380b034788ebd0ce77"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/prior_bm/live_bytes_00C07C00.txt",
+        "size": 341,
+        "sha256": "83c71f0912fab43343fb78099fb665efe99839cddc24118989be5d09cf6e7e6d",
+        "sha512": "a8c0e45b8eba7097ba419bc03114faf49f6ef5d1c657a8477cc5300c2a9e3676f671fa64a6bf496f4fd1a48eb36270bce4476bd0b5f977d07106a432c61d2d04"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/prior_bm/live_bytes_00C07C45.json",
+        "size": 375,
+        "sha256": "b20af783642dd783207a303329571e2c2cdc355691245b285812f1bf40408121",
+        "sha512": "e5a6f9138df684410b24966202505265d34b916b4690a28e09801ca038e24ac7d85936a44149ba2af57ae906e389b38196856126905a0b1bcf9f0f1e0d57cf58"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/prior_bm/live_bytes_00C07C45.txt",
+        "size": 106,
+        "sha256": "57c35c851e5d4e5f32f7350c46f22763ce9ca0dae9ea5cb767102839b9cfcb35",
+        "sha512": "86ade397d58d400b507ae99477d1549333f3978dfdd89dfa6273ac130ed1ab7a11ad7282eaf63880d68fad16679db974f0490bc3b05a5483052fc2a504762886"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/prior_bm/live_bytes_00C0DBC4.json",
+        "size": 964,
+        "sha256": "2eaf9e9c02f433bedc7ab07a7e58a7bff77e4b461818ca3e26354d8bd850e096",
+        "sha512": "e68e061be3b19d0c741c2e1eaad8323a615b808020c603fa5093dd7c0448050310397fea4b4c3860b28a252cc22cad644698254cf9706aaf017d4c282bb1934e"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/prior_bm/live_bytes_00C0DBC4.txt",
+        "size": 693,
+        "sha256": "47c2e05b8c0f21b7c675028482981bc116c4f1c08955afca31d84698aa116394",
+        "sha512": "81e29666c2d44c7780ec1e4d0e6a3743b20e0e8c9622f5243464f108ccd0ae647a2bc5e77edb526db5c435b1848b80dcbb773adf39dc6dc8ff125e05675bae4d"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/prior_bm/live_bytes_00C0DD00.json",
+        "size": 387,
+        "sha256": "cfcf3dd2ba012575d0306f0cf7a842305f86961f6ad081e524bb450211b4d8f7",
+        "sha512": "ec74d2aa985d0ff01439253734b3baccdb722f068214fdfd46a422dd151f3632ebaf40af56acbffbc24b3e16903a8b1822e892ba7a9ab803fa15330168c66048"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/prior_bm/live_bytes_00C0DD00.txt",
+        "size": 118,
+        "sha256": "cdfbb0249fc003c2755cb85281a41b9184408c5dba72ca648d01569c5e48a759",
+        "sha512": "db054090008b956fb251790ee18b605b5a0da9c315c5298ea38c7c99b382a177f30304acec59d83adfe1fc34d1e1e309ea9bed6164c8b3308b02247d5099de74"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/prior_bm/live_bytes_00C16898.json",
+        "size": 293,
+        "sha256": "f6d9f160c2db308035e5405ff44783f106981e4446a337c5adb42bfb7eaa622c",
+        "sha512": "16e08f9622cd4cde1ce9c2a66b624c010ec6da0600a46b17a02260b4a3ea98b3df84d75fabe15464426a76e27d8b1a6336990ac903d32bc0adcf61f4f4c102a4"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/prior_bm/live_bytes_00C16898.txt",
+        "size": 25,
+        "sha256": "b8d260d3773f3f9432a1f53e4adf0dc20176aa1bac3c616343456ff5a5789b75",
+        "sha512": "0ba50083bca5560cbfe9a329a64f75d01ea65e951ef49011480ca65ad02cd463f4f50b773384ccd82accb9e8e4787663dae94c39e5fbca9e7e02cc32ea90d34e"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/prior_bm/live_bytes_00E02D10.json",
+        "size": 408,
+        "sha256": "e3828e94e579d2e55fccddcb484c4c533891963ecdccfd6b67fd60d3b5711093",
+        "sha512": "4df1584915f27ab4604a8b7ee078cb83db56f7d13f00cd7506fa9020a56d741a36b877b53438a302cad48908af998a323e18dd62ebb022dbe48315fc73198c60"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/prior_bm/live_bytes_00E02D10.txt",
+        "size": 138,
+        "sha256": "7d0a4dab315f46da692789e68052761fba337d4e470bbe36df08393cf4d026b2",
+        "sha512": "912216de585a74c9252ea8eef8383825e03f9fc813181a6e14256ee795d3a0838f269a19b3a99993bd507949824e678fdf8a6f6ac36c377a76f547d26cf2b9ae"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/prior_bm/report.json",
+        "size": 183101,
+        "sha256": "301e1e12d6b46a463fdbb15083e6a8dade848f814785ee57ee003418805cc996",
+        "sha512": "bf77536d3dcee49cd156cb9b236fbc88597ffef60cd7628ab008fa9c4452b18d98af62758954c5bf88ec6e5295ca590afd96ffd4099d03771cf768a270a5466c"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/prior_bm/span_0041DD20.bin",
+        "size": 29,
+        "sha256": "d67a4742a33b9e89d42784926feb00cfefac93d212ffb06a281eade38be8a626",
+        "sha512": "60a406cbdf89184353b93618f84d5808a0b78b61429f2c821b21a57be948b682ba864bcb7f959d747266cdebab363cec60648eb8dfdd54bf0528fc36b222f71a"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/prior_bm/span_0041DD20.json",
+        "size": 381,
+        "sha256": "0aa9ab483a0a6eba9ae744b7ea4c522d4e116601f69735951ea8a4d1f00caae2",
+        "sha512": "3768eee7e901b0be2b14dfe1d867c745acd7c0be745e34d3f88c7e99b5e2ed38a68c0521301e4032b1f82455511632109762a70e5c8655dc0cbb76b2ff99216e"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/prior_bm/span_00BF7C10.bin",
+        "size": 94,
+        "sha256": "38f062912d5ab25f59b3575e852e2859060b9ef893cbf4de542a50a72a004da2",
+        "sha512": "8fabbefc46f397998f1fd733846568b218597718949ef426f473c66e7dca25a3eb554a8cb4b8be81386b42da4156971eaac57f42e7fd4faca4571bc693945b07"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/prior_bm/span_00BF7C10.json",
+        "size": 382,
+        "sha256": "e82b750e1f7c39f43304c0011539f794113c95f825e1e692e000c320ea95e9cd",
+        "sha512": "7a1c7a20dd2b50ed1f9cea715232874b701deafb67b915f8e22201f4589b8c58d916f69e68b16c657b388800dd7a3d1528ab529e6621d1012b2c5bdf1a36ef49"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/prior_bm/span_00C069A2.bin",
+        "size": 192,
+        "sha256": "1fec28dd01c0bc6a429f6aabf83fd7d2266beaca51f8ec016d0a7db56ece5973",
+        "sha512": "691ca07f961367b46675e9d330a9e37213d49498952c88f851cad60cb4f6bc81f85211d7badd90f13d97ea1961962ba2a469dfaccb81a14397ec04a3c00cf5a6"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/prior_bm/span_00C069A2.json",
+        "size": 383,
+        "sha256": "ef0cfcaaf43b2f27322c6dea06b5972ec946e58c838a4e1682aa66629f7a0336",
+        "sha512": "66fc5f1fd7fb7ffd39c9e202980aee9d1544e057d579632999ecedcf6124476b8ad7824dd35ba513ed497304f0d5966d99814472a24c059ddd12eeffc102e712"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/prior_bm/span_00C07991.bin",
+        "size": 228,
+        "sha256": "3b08ba0b3c685e6065f6ce8071ccaadcdf9cbbbe82ff0af45c97f073c4acae60",
+        "sha512": "c53481ed87fb3ea93c2a558910638d85dcf1e684c1dfd1889bc5eaf520702204c4dbe7120be91a7ca0ce7721385fc6fad08af4238abc04237a4a554b1625eb53"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/prior_bm/span_00C07991.json",
+        "size": 383,
+        "sha256": "def1053db54f266685270b6cbf731ea1260ad750d0e7e4805eb09ef4c0e60c2c",
+        "sha512": "3485a83fe19760d5410999663e71117f2d6a3a874be5dcc646a5ed3e1501edd06c2519626e81c43cdef88be85cd1878a383be2bd2ae0dbd00bec07b009607037"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/prior_bm/span_00C07B10.bin",
+        "size": 76,
+        "sha256": "8a69b2dcb0aacedf644db3fdf3d94edb067e04cea014e8cb35b7e4f7b48de8af",
+        "sha512": "299fef4fa3fcbac2316ff7f12d23d483c784d94ae681fb6048a55a4929af62fd52119c899b2d397ffd509a7ee149061ea9f0325a5dcabbfb9107483e4066ed3d"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/prior_bm/span_00C07B10.json",
+        "size": 382,
+        "sha256": "9e327f094a4f7d7f4eca4b0887d4baa16fb8d5e3dff5cc7ae9f17b7a875365b5",
+        "sha512": "a7606e9bb8b72eb5eedc47ea2c45edcf1971166f220468fe211c77afbee2df3cdb016a50ecd9d1428ae7cee9affa91db019b8062e9240f60cae7fc82fb83e2be"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/prior_bm/span_00C07C00.bin",
+        "size": 69,
+        "sha256": "bbff6d17e6e90214ce3f7a96a7240ac47b46dcbba6992960576da81770195dcd",
+        "sha512": "1a798b137906a7205c5dfd53139c35c43a556e2a7f46650530f837bb93a3b7e7a0f4a4785b9d31b1ab5b4c3e19c32a57383d1e51e1ba296c3af6190c574507a9"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/prior_bm/span_00C07C00.json",
+        "size": 382,
+        "sha256": "5d0308bbf347c1666da74eaa00133d4e59b21bb1f287772800de7401122f8641",
+        "sha512": "2f6646adac3bbaca15c143090ae5724555bd6f7fe168c2e03aaa1b7bb72012037f13e7cf8df596454a50c8486ef5f7d3cb86f0cd172b9eec0ad56de8f0a94455"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/prior_bm/span_00C07C45.bin",
+        "size": 20,
+        "sha256": "39142b8d79823b8b3c0dd534ee99caf6c8cce4347b7608cfc004a14c873f7411",
+        "sha512": "5ad92ee3d80fa8f5fd1a194bb3b9032a3921b1e5135507abe95c27593d049da0a3a272014e91333969d13822e0979bcab1bdee0f4cbb7392db782e9236b050cc"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/prior_bm/span_00C07C45.json",
+        "size": 382,
+        "sha256": "f22bc5625113ed0707fe370e3361190aac8e8eeae0f815200421c509355cfea6",
+        "sha512": "66422b3be0e273cf40e412e28f1857da2d0a3050354a733b36d17fd94d27a9b9448e75d8320dfc35177bbdb94f148fdb72e9ba9be21167fe9c0160f88ab12620"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/prior_bm/span_00C0DBC4.bin",
+        "size": 144,
+        "sha256": "cc4b79b99fb3b110db452fb0bd90c3aac9fc2e6f9f898a352ffa5925e007f2a4",
+        "sha512": "239cff0de3659271ee8dfe77b0874e3869a5c5c05b3f513a770b01aeac1c695b55bc4c3ce612ed3cccf4a28ae1a621cf54dbfdcc4a7d7b9515bd2b712f77ab16"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/prior_bm/span_00C0DBC4.json",
+        "size": 383,
+        "sha256": "4f474b504c7ece087ec8f706c47f8686a84b9d81d7a1af8487654b59baf41a8f",
+        "sha512": "e4e0991db24a7636ef8669990dba3bb167ceb09ef162455c6b42b41a909aa68114d637b043252eea6d9fbda5037e16277312ee0d7b134be065d20a9ab11d9c9e"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/prior_bm/span_00C0DD00.bin",
+        "size": 23,
+        "sha256": "000f5474b71b38baab1aa4ec673ef765999e4e56bfd268ed068ca39af5d35b64",
+        "sha512": "ca96d3aa62e7b1f45a25b186d9884813d3bf528e304519c99cd67f6891897338e070e7173d13002b86136ed86a9fcfc920f859bc7d153fd30843b209a6f1a37a"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/prior_bm/span_00C0DD00.json",
+        "size": 382,
+        "sha256": "7929ae624e4b1926ce0ad9058518b7078fd40a698d922f8f34f42eb3361c7a1d",
+        "sha512": "9aaac30ede9a723296ecc5c7933328f82c2255ec7c3073061ea517b894c0775c19e95132dfb12b962dae0aeafcebd1a097341eeabe05c9a90a17d3459dca2d06"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/prior_bm/span_00C16898.bin",
+        "size": 3,
+        "sha256": "94abb6fadbcdb595e2ba8c9a673e591fec8944a2eb04edee55a9ecc56b893047",
+        "sha512": "356239206cf065c30e1c01a97f0679dfbb358d4e07c9f7f7eb5efde1d87ee93b78c25f2506eb5102032c47c497ae3ddbbc66ecd049d4b434e590485fd8965141"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/prior_bm/span_00C16898.json",
+        "size": 381,
+        "sha256": "cf476edb95a653f1b532943c5098050132249aa9bf96030402750d7a121904bc",
+        "sha512": "93c80478a0c08f2468e4bda75b06f97b34b0c0c5079fbfc2d71767031f3a3de2009453bbe4eb25c8f04a9c412b00fc22fa9f7d794181d89534cf165ec474d1c6"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/prior_bm/span_00E02D10.bin",
+        "size": 28,
+        "sha256": "13b250649cda11fb96dd4ce8f9fda3173195e2d0550eba9477bec70a0fa688b9",
+        "sha512": "5ed54be969394e3bd19713fdca8803d41aa3f64c97ccc2b58fc97de84b7888cb7550a80539f8747f293ab1929491f06f11a85bfd3e62bbd867da7fbb89061fd4"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/prior_bm/span_00E02D10.json",
+        "size": 384,
+        "sha256": "bc59e29aa244c8da604578099a1fe4f9a2952083429878c0551b07b7fe1850c7",
+        "sha512": "3f43af178939805a3abc1436d28ea7b90d5175b67bf36f5ad427beb2c09fed0f5c2071a6859ea63ffe6c298d71900be7a09a58276b5d18e904ff9310890b2e1b"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/prior_bo/decoded_00BE9F10.json",
+        "size": 4293,
+        "sha256": "2de45e1a67bf07935be09b08b3c1e1c14cd92abf16e1b704a81da644beb0da1b",
+        "sha512": "cee9a6849c46be0bd6e8889d83ce3964e08ce76c26497877aa670e39325bd360848d1b960c496e13b6fa8b17c95018d86ff4aaf19e4e32b204ef80f4f3022441"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/prior_bo/decoded_00BF05D0.json",
+        "size": 12675,
+        "sha256": "d2f0a907be4b06a032279637de27bf7fb2e10d5df67416c47c9a6b2cba8612eb",
+        "sha512": "2a40f1ea73d599dc5b94a89c54130592df0bfaa1789902a7cde8d1b9c47228f7c3af8aafc40da84ebe075b09138b9970a373357aeddae14968989fabc1e42203"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/prior_bo/decoded_00BF09B0.json",
+        "size": 4634,
+        "sha256": "5938a13498c6fbcc03692b85cee257c6fbe2b2c4f1d589850cc5dbf2607b84d1",
+        "sha512": "f4113dd6ec9c7c28db5624e87deace23059ec7dfeaaff36fa70e164a6722ff59a0794220aea4bd123a85d17cb82f8cd6e6a251e05bf0ba73367d8c45f6d84d35"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/prior_bo/live_bytes_00BE9F10.json",
+        "size": 854,
+        "sha256": "f1322259af07d807d8121fb4d9b324b2247a7a4a661b28e90fa1cccc4e90950e",
+        "sha512": "3946143011a321f977bc66d71539692278234ed7aef9edcf578bed8ff40f011597333c8f051e846c5028025b22961995e476258bfac46ea2f7092956c98bf498"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/prior_bo/live_bytes_00BE9F10.txt",
+        "size": 584,
+        "sha256": "d025830d947fbe52dfce9683c3df145fa77bc0ccb6b6d6a22851a715e018b83f",
+        "sha512": "13b217a2a7569eec01b23a8e66d2729601b307cfe1527519a74b50e53c31533f45b8b104f59a36ef7c3735775dc3fa421e7fc4f4a8ca0d453bbbe1f0f57ac473"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/prior_bo/live_bytes_00BF05D0.json",
+        "size": 1709,
+        "sha256": "90d94c69a28b0812abb2b200c7a4f3d8ee2eb40e0b117fa437468f48ef6007ea",
+        "sha512": "e1ee3f2f7c3e5b41d7cde19083f0217779db04400799472a42e94acf3e776672a4b335069760abe27b11a56cc60eb5a379bb89389c70c438c9b1ebdd8a22078d"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/prior_bo/live_bytes_00BF05D0.txt",
+        "size": 1439,
+        "sha256": "dddebc2c86e5cb33e62b62113b4c55ab7edab27fa8ead72e17c52e2ae585b7e1",
+        "sha512": "96fcf330b55f3a452e05cfa044f7127855b939d1f8ba236c3ec5dfcf14b20da2e832e451cc007fcb1c5eaf235f61bf30b1b7a575d30d61877b35b7fae30c2592"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/prior_bo/live_bytes_00BF09B0.json",
+        "size": 855,
+        "sha256": "852d956ecae38fc7e0f131abfce36987e48cff9ebd173d332b356817f5a78e73",
+        "sha512": "204464d7b73ccc43c5c76f24860c7559daff2f514b369ea4df4fb52c0cf9d00de38b9f7c4a3ba7cad092cdf8cd5147d80140fae21a6876372b1bca713fa80031"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/prior_bo/live_bytes_00BF09B0.txt",
+        "size": 584,
+        "sha256": "4ae670d14856c0c7a811b64f11092669decfecad41b04d1644fd003a95a20812",
+        "sha512": "82e873be867c2d199126141c316edda218d87474fe2c5b6d02e57f91d99c2df3a83410971efafcba349ca751ca392045ad6aeff9001650adef16de5a4d81367e"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/prior_bo/live_bytes_00E01AB4.json",
+        "size": 346,
+        "sha256": "5b8d8b8c9d5d74be2476b4d03d8c205f79f07493ac6a9d7c625dbe028e586a1e",
+        "sha512": "9910a40ebbb9e57e50c4c6ac18750e61659aa6f65edcd317dbbd5ddca7a88b6d2a2580bdb813dc4a0f8b21bbef27d239522f2155d60beee64682b5c7da2faa90"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/prior_bo/live_bytes_00E01AB4.txt",
+        "size": 77,
+        "sha256": "543fbbea885c4d86fc5a5fd4845045fe990facab0b4e2a71f0db7635e77afe87",
+        "sha512": "1e62bffa945d03541eccabc67bb06560e3e84f886f30ea264e66abf6e6c68ff1d6aa08b513f31fee4e52e1eb2faa18332da51fe2605d4eb2d1c8bf88f91a4493"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/prior_bo/live_bytes_00E01AC4.json",
+        "size": 453,
+        "sha256": "d56cf2d2e4702b69c7f0e55da7965f65aa6a81eca27e91ac4046592f25f433ec",
+        "sha512": "a73b51fd8346fb3d756a916c9ce0e672132b241b84cdebc6093d97245993b1026c75c5864195924d4247a20378a772570a2ef7c4663430af709331ac51ff5642"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/prior_bo/live_bytes_00E01AC4.txt",
+        "size": 183,
+        "sha256": "e0832c5c92afd434e565b38b88bbf279d9f6d3af8fd20f2abac3db549a1692cf",
+        "sha512": "7557b8153ea16b8b3b8e5a8d2d48308d0aa0df4fb927d0fcb6695ff30b3c3048a1ddcaa5a79efa56a3db2fba44d3766b52bd1d0c585204d7578ae17f33f0b7b4"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/prior_bo/live_bytes_00E023D8.json",
+        "size": 313,
+        "sha256": "a63bbf6ce432ae001378a36de22908da38ab2a3373ff318c95fda159178c8206",
+        "sha512": "1bf56ae8770025b0234ad8f01c688eef74442bc55dfd28bd31d7550ff5506158cc3d4d9416d5a330ab99876fb318e5031ca8f6a5fd3c7a50eb723892328bd434"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/prior_bo/live_bytes_00E023D8.txt",
+        "size": 45,
+        "sha256": "3f5bf5bcb0912f5fcd679a33d780acbe44f009390ff298a4cb218090c05c5f86",
+        "sha512": "3d8504203ae11208d68397ec2a9e56013ee0814b34bb5918f13dcfae99e66e6ba8bb2a6f2ce2be1260ca350ea5fd6cfe94e64e0d93d72bad4a895222fc776a61"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/prior_bo/live_bytes_00E023E0.json",
+        "size": 453,
+        "sha256": "4abe4f3c5ac200ada4ae9aa8f1423ce9f9250d28609d57029307e9b86afcd877",
+        "sha512": "698276ea95a16ef4115bed677252eca5bdb670df8522de27e6623045d5d095978d6231fda08ac74716509722af150d52b885c0039a0d2607814d7955414fd1a2"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/prior_bo/live_bytes_00E023E0.txt",
+        "size": 183,
+        "sha256": "174594c0adc29bedfa8d4ace0798fab5259fb373c3ca9555419017d22bf4857b",
+        "sha512": "16cddf6757b4c06b99cb824ce91d06a9658ab9e0ee4965ab775435e5c8ea44e247eb12bb032c586b36fd94224f343ad9588503d4ac801d891eaf203971af0ebc"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/prior_bo/live_bytes_00E0245C.json",
+        "size": 313,
+        "sha256": "4e1168773c301793801be8e924734c44187eba840d7f8a3beaa21b04fd5fe42e",
+        "sha512": "6574966483cc5236f81632851e6423b29637af8a0b6d75a56e4de1d01fb224016c48771b50064392bc9f371822388a48ad6dd86ddc9926aac63b3598f20504ff"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/prior_bo/live_bytes_00E0245C.txt",
+        "size": 45,
+        "sha256": "19eafc26e9730ec5cfef8b92449498134d290cf49891750798abc7f30c803ec7",
+        "sha512": "466f1c51add3fec505e6b19be1499fda6a6636f03ac5cfe515431504c1757b4c664b4809ac22be6307d24b8bb706740cb22b2dd2a08c06cd8ec714d7dace7752"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/prior_bo/live_bytes_00E02464.json",
+        "size": 454,
+        "sha256": "76b4d170d0ca577620b3356eb5114c599d0be969a440a70857b4695a85fa6f50",
+        "sha512": "98499d74eae2563fe93acc73873762860070d85c529b31ba917162d66fc2fd9118beba188f89b5a4ccd450a1a0a668c74c796416cae2df2ff4b354eb9ca546df"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/prior_bo/live_bytes_00E02464.txt",
+        "size": 183,
+        "sha256": "2380e619c710e60a66a5d51e87f219a5588899d6486f55f062a6d29bd12df466",
+        "sha512": "8aa2dde23e0dbcd4da3f52c912817002f7ea09840d53c7508859c09887d3626da0b7b44b9d41e19195274ab048942f799a2d2b9f2751c1802c1d968ad1ea7e87"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/prior_bo/live_bytes_00E02D30.json",
+        "size": 407,
+        "sha256": "67e11e11c7d449c0935e6185526ca8cbc79304771b7aadbece0284a1c783f912",
+        "sha512": "546351ddcc3a2d04daa77b5df2d881db499d7021464c15e7e5374cf7e52fabe0ef310554d534fc6e888190b371cab46f07fab7b9bd3c8f264a4a81804979a36d"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/prior_bo/live_bytes_00E02D30.txt",
+        "size": 138,
+        "sha256": "63c880eaef7d1281885db838e1207b6ee770a02b5037e1d8a764d7f7a979dff7",
+        "sha512": "4f454b297fcff0c08e647292fad7e00f2273337d5687b19d131e1208dde9e911090e7e532fe58732dca31e6466b65bcfe2496ab4cf0b178988a5ee64ba164183"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/prior_bo/report.json",
+        "size": 377172,
+        "sha256": "1b52a2e2aa0fd962eb20a2ee3d982bfb2da1658cc08f5f4884b41650c8a15c6e",
+        "sha512": "1ee2ca99ec88dc2e06797bfb0c49b7a0be3567bbc6db7fe548b38b18da5ca8ac173097f8c3ceb5953f6a6f70addfa4dd39264c3caa5f2a16507b833e93098694"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/prior_bo/span_00BE9F10.bin",
+        "size": 120,
+        "sha256": "dda7c3627d8b59ce3bb47a0503bbab43366d5cbd0b867145f88e9c73a10defe8",
+        "sha512": "c5f96f3f5a085efd54e094ddc08e10e217a272c0f5f8461fc99836ea766c6d0408df80286a22eeb4cae98f7a4c50cfe7f7200340cdcec045fdf7a6c2b6d5cc65"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/prior_bo/span_00BE9F10.json",
+        "size": 383,
+        "sha256": "70db147fffeb8b2ffb4179b230509be9a061ba89692aea5929de45aeea24246d",
+        "sha512": "e24dfb07b748bc8a54b1f6a90024fc58364dbf6c5a7aaaa38b9b2c88709fa94a37e17822e8759f51a5f85071281d30d6c85497de5a43ecd3c5761eb3111234a9"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/prior_bo/span_00BF05D0.bin",
+        "size": 298,
+        "sha256": "e428a245c48c642567fcf104a552d6a52f217186f9c81345886b8857de378c81",
+        "sha512": "51686d66a4a8b668063d4e4770da1ae498378ed710198e67c11a34136e99a222673b25eaaaf236030704ec30fd6cf1b3565b1af08882d30cceba9a616e5c33c8"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/prior_bo/span_00BF05D0.json",
+        "size": 383,
+        "sha256": "b8304d60496064486ffbb792a4840d4f2a530cd8d2ccb3802056680fbce45358",
+        "sha512": "e6d981c479b2471eb7ce379069e313196a92810c59d1c82d2ff6c3595ea9661aca241c5cfd345fd04f5fe7eda71af66a3fafa526e8ebce501c122a20bd56d26c"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/prior_bo/span_00BF09B0.bin",
+        "size": 120,
+        "sha256": "16d87d896d4c0617d3bc7741929e43c10d51e8c1236d70063b23212dc4fd0da1",
+        "sha512": "5558e0316443d520a0c4c79984d0f6062208f912efa8a44db2f251d01a349ddb48ca1dc5a72427edde954b8248d400da7b838c659317d93499946935af45061f"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/prior_bo/span_00BF09B0.json",
+        "size": 383,
+        "sha256": "333b817513d67db39180983c5b867cc7ce1275ade28342df3f7a093f0a7e9a7b",
+        "sha512": "958de8136d4884e8afd035d79763974cde9249bda09e70d9c728c1bdb45ac26ce78b9d54e37c61c653c4ac1e4af9e8a1e663edcbccbceea10f88e1158a1fdadf"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/prior_bo/span_00E01AB4.bin",
+        "size": 16,
+        "sha256": "4b599b6c2fbf5a3c87db1d7bf8fc49870057d7fc042b419740b27ad52088c327",
+        "sha512": "6aeadfc62d06f0d7af8fe78d8a7cab5a388be968f48e9791d89a7474333ec5aae0471c9a2d99fa3c1c43c03ef33db7a5b0e63bfe069f0913ae13296840e923be"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/prior_bo/span_00E01AB4.json",
+        "size": 384,
+        "sha256": "746dfdc8c765787c9220d9f6d3cfeda63688ae0654456498634062f46775d634",
+        "sha512": "b2abfe6e23124ff279848d68d924d15e2b11b23445b2f9f0ca279117bd033432dc6e9023a78f19efde452ffaf0e9ea5bda3d2e640d2b288d38ceb5507fa30340"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/prior_bo/span_00E01AC4.bin",
+        "size": 36,
+        "sha256": "b69e89d8194b448c9d6d29a7eef7fbf2f12e4e5a33de86aad3d5e976f2a97cab",
+        "sha512": "7727f08ccd025f8cb14968a16f10f44f07dc115efdd15227318a0bf7ed89f50264ee699f6af18ccba59d2cfc0498e821617821f3b6a09be15d2dcef55cd8a2c1"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/prior_bo/span_00E01AC4.json",
+        "size": 384,
+        "sha256": "63948df6e8402c7067351ce2d9cc01203b2da6aae9a548d559ec8c81178973f0",
+        "sha512": "1c41ead488272eed6897a445af87cac569b00d70292a2d889c9e53c6437f26e708c755f13f7c5b09d4ff837fb8af9cb8b475a1aa00401434813365a3cac58977"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/prior_bo/span_00E023D8.bin",
+        "size": 8,
+        "sha256": "e2943c0337d3ef00a16c4c99e05ec933f689e9e8fc8995b682439e4edd5adb95",
+        "sha512": "668cdc1049b867b5e42460ead2cd2ed58789a0563254a9112298b8bc3811f6b852fc74a572b3f5704fc517c51a95740416ea6367cb052013331c68c97366522c"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/prior_bo/span_00E023D8.json",
+        "size": 383,
+        "sha256": "90f939a8b8213cbaf8c3b84cce77c770647c24ec18abfaa22c1948fd0f08c622",
+        "sha512": "ef2a1646cc3c7b69e596be8a7e510bcc0b16fc7d61fe7ef7c19308e8b8b2f286953ca23f9489f5e533466267ac866af8aa11b146ff7470dddef0eeaf5b05cdec"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/prior_bo/span_00E023E0.bin",
+        "size": 36,
+        "sha256": "5276e6b03fef9b7f7aea2b0d7f8fe96440b5a8420359223753bd571be0f5ada7",
+        "sha512": "debc7d7e9582b30335a9cb0bb630bb50a6bc2a06098cfd3d2cae91601e6f35fc81b8baa5eaef48b2151df03e5a9c4849a562ab7c0a63fba12b97987ffcfafd23"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/prior_bo/span_00E023E0.json",
+        "size": 384,
+        "sha256": "86a8f246e61409981ed23bf75bd2f45efc7f48247770c34be938517487590c74",
+        "sha512": "231d2049cccaee49c6d72e35cba0915a01eb918d9d4da0ca279f05ac6a1ff7aa62adce84853459a97dced3d1488ca36ed76d51f8b80eb0c1424d289a5c87a0a8"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/prior_bo/span_00E0245C.bin",
+        "size": 8,
+        "sha256": "c74a3f86973c4bc1ee7de1103061e128d6aca1c37f870a7b6d751c91a49922da",
+        "sha512": "d0d22721eebbf0aaa5507cd292d26be01f9b0a5bdf53d18c5f740162c63755d0db24f2471d63690f3fb260026a3052c18c5c36f439df2f3b27ec4431470ecafa"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/prior_bo/span_00E0245C.json",
+        "size": 383,
+        "sha256": "812b25787d8d0fe3c7c63a982dbecb99b0be6ba707659643668f1256eff1b3c7",
+        "sha512": "40fb9a0e30bd52f8ab234fef51f60a442f849e54f0228262eef04b517ba53dc6b37577ec3b9b7c316345e24f86f4e1b7c3ba57995a40bd31f80d5fdf090e35aa"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/prior_bo/span_00E02464.bin",
+        "size": 36,
+        "sha256": "932059848a9fbfedb9134b3bf01cb53a33ae81abb96c29c1f06805600a0039d0",
+        "sha512": "0de0b46fec8d84b88350bbdbbeddd3462f6f8f21bfb160ca46f9ab5337e0840117d8c1184828ebf5a717b1ea540b972a185ba7df9a340ae1b5c3f2477d74e331"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/prior_bo/span_00E02464.json",
+        "size": 384,
+        "sha256": "c667ea4390e90dcefa39844e2649e0235eb4c63226f6eab751cb2f34a091d2b7",
+        "sha512": "623d9cf05262a009832a1bf7c900302d90137421e00a9f5c037e5566a0284b5430f20ddeab9b657c819b6fec00aac66b699b015f3c3e18df30f28371cc9e7cb5"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/prior_bo/span_00E02D30.bin",
+        "size": 28,
+        "sha256": "bc5077694dd45d4ccb65de855866ba6d655eb388dc372531a919fb8ca953f490",
+        "sha512": "dc4028df31b2482dde67cbf0a387d197791ca60f0366019401c8f6e639cc2c3baa7799b1e651da6278a132b45f7d816e3cfb6be06e3ec9f2ed1cdb73075cdd91"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/prior_bo/span_00E02D30.json",
+        "size": 384,
+        "sha256": "3bd2b25e3085d63c35d1b9906fa8601f7863dcea7f286e8cfbd1a925f13062b1",
+        "sha512": "07c9efef07c278107d0d7fb70be843abbd79a2326c482cb2219272ee8dd962aaa69a1e750c0c4a4498d81e7d9b0c4ffc39d5ed62d31d870af94cc45ed616b33e"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/protos.json",
+        "size": 1976,
+        "sha256": "5584f2c4771634c9113851a499079a4c07c6a6b2aa6165be9ae920336aed1863",
+        "sha512": "a126926e0272c8c0b6739d0f3b99318a9253a2b9150b408cf11fe8acdaac27625305763871c0eff5da9542427e1134f8f9cb14138374170380cd98157d0f0721"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/retain_dependencies.py",
+        "size": 2082,
+        "sha256": "6a9d7c45cd899d8d3fb60de6c7769808ec026c704bae61179713a14fdb8422d0",
+        "sha512": "3eb04af3a7c6cda88b65d08ca66d4a17d200687501ad28f85b0823510db7be52bf62ea5a6f57f749a8f8712dd1025a7e0bad253f93a69b4a3175d1b0ca957d93"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/reused_evidence.json",
+        "size": 40337,
+        "sha256": "7df8ae33d2545e0ae0ff7faf53b528a1c9e47b94441a156e7fe634c76ab79cb0",
+        "sha512": "d80c250dadca9ebffda05ddfd397319c18f44780fa5720182dacb724ce9c7a61f5a23c1ee03ff79500c765630b6d0449b1cff58fbcc149146bd9532272479061"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/target.json",
+        "size": 455,
+        "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+        "sha512": "4d63e102f408469c1bc103bc636873befeb5b8e7ced9254b7a64b03c91ed378680a0ac2c4f585b4f36bd572aa79a26404ae5595cddd1a1499be16d6188d7545c"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch2-raw-reader-eh-actions-br/local/raw_reader_eh_actions_br/verify_report_calls.txt",
+        "size": 167,
+        "sha256": "60a174e338eeda4415ffa51cf9ef152a1f0494c88ad87cc89e57aae9c3741717",
+        "sha512": "1e2e19ddbb8be8e5ca30ac5c85336a9cb3d1392ef190714b811660522be4e084df670a5b5e2cf6962b809e606885633dd0347bf36efdd841e9684f97b5cb2ad1"
+      }
+    ]
+  },
+  "current_source_evidence": [
+    {
+      "snapshot": "current_source/include/bsp/native_string.hpp",
+      "size": 8019,
+      "sha256": "80013e5a7350120f32fcad1ce54db9b0923ad5b49cc2152823d858534331378f",
+      "sha512": "5afd168dacc1e8f94a085f1e9354b60febccd9812e8cc0070b4cd8b6c795ec9cd3702d9407f3a730cb79df6adc232fef87e90122e045521562852d78df5e386f"
+    },
+    {
+      "snapshot": "current_source/include/bsp/native_string_pool_storage.hpp",
+      "size": 2805,
+      "sha256": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d",
+      "sha512": "3a88595a304e476b03c0b8ad6ea479bde2e21f018b875ba39caabc88b790c1fe58ffe62a8796aec372e5cfa037ec33c6e6be0b9f219be1228cff7b0e93ad936e"
+    },
+    {
+      "snapshot": "current_source/src/native_string.cpp",
+      "size": 8311,
+      "sha256": "0e8819d3a6442fc48c879e85c00899a72beabdc51b3e94a11836ab5314d5e60c",
+      "sha512": "cbeb59ed8f5c6cd47787124f9d505aac581eb11f7560753b98cf4275314d0a0dacd365d2fcee8dd0c9bd900f2636c4d3a232e86073f8d3b5b714e5cbd02d3e70"
+    },
+    {
+      "snapshot": "current_source/src/native_string_pool_storage.cpp",
+      "size": 5103,
+      "sha256": "5cb79a6ce240205b3f1c81f1fbd6edd49cc1c05f8a20ee8dca8913f44c9095d5",
+      "sha512": "284a405ab690163fba4c7a725fccfcddab806899c65ed8a7f1bc4cb05a2d4ef1add6c2f3385cb41b26a47b93b8e46ded889434a8f18e53e286fcf223b7903cb7"
+    }
+  ]
+}

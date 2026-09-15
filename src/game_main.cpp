@@ -36,6 +36,7 @@
 #include "bsp/game_hosts.hpp"
 #include "bsp/game_hosts_vfs.hpp"
 #include "bsp/game_native_data_bootstrap.hpp"
+#include "bsp/game_native_mutable_crt_data.hpp"
 #include "bsp/winmain_startup.hpp"
 
 namespace {
@@ -190,7 +191,8 @@ int run_bootstrap_parent(const bsp::game::GameExecutableOptions& options) {
     check_original_identity(original_executable(options));
     const auto child_path = own_executable();
     bsp::game::GameNativeDataBootstrapChild child(child_path, child_arguments(),
-        native_data_spans.data(), native_data_spans.size());
+        native_data_spans.data(), native_data_spans.size(),
+        bsp::game::GameNativeDataPlan::CanonicalCrtV2);
     child.reserve_and_resume();
     child.wait_for_mapping(30000);
     const HANDLE process = static_cast<HANDLE>(child.process_handle());
@@ -352,12 +354,14 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
         return 2;
     }
 
-    std::unique_ptr<bsp::game::GameNativeReadOnlyData> native_data;
+    bsp::game::GameNativeReadOnlyData* native_data = nullptr;
     try {
         auto reservation = bsp::game::accept_native_data_handoff(
-            native_data_spans.data(), native_data_spans.size());
-        native_data = std::make_unique<bsp::game::GameNativeReadOnlyData>(original_image,
+            native_data_spans.data(), native_data_spans.size(),
+            bsp::game::GameNativeDataPlan::CanonicalCrtV2);
+        const auto& owner = bsp::game::GameNativeCanonicalDataOwner::initialize(original_image,
             native_data_spans.data(), native_data_spans.size(), std::move(reservation));
+        native_data = &owner.read_only_data();
         log.notef("native-data handoff mapped verified original image %s",
             original_image.string().c_str());
     } catch (const std::exception& failure) {
@@ -412,7 +416,7 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
 
     std::unique_ptr<bsp::game::GameStartupHost> host;
     try { host = std::make_unique<bsp::game::GameStartupHost>(
-        log, instance, options, native_data.get()); }
+        log, instance, options, native_data); }
     catch (const std::exception& failure) {
         std::fprintf(stderr, "bsp_game: startup host failed: %s\n", failure.what());
         log.notef("startup host failed: %s", failure.what());
@@ -454,7 +458,7 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
         }
     }
     report_summary(log, summary);
-    host.reset(); // The verified bands remain mapped throughout host teardown.
+    host.reset(); // The canonical RO/RW owner remains mapped through process teardown.
     log.close();
     return summary.exit_code;
 }

@@ -1,0 +1,667 @@
+{
+  "packet": "orch2_canonical_sbh_initialization_fv",
+  "frozen_base": "c8010d8fa964667a58d9cec6144d3fc9b97e7a49",
+  "status": "complete_original_entry_static_bytes_win32_build_two_existing_math_ctests",
+  "routines": [
+    {
+      "address": "00c11cf5",
+      "name": "___sbh_heap_init",
+      "source": "src/native_crt_canonical_sbh_initialization.cpp",
+      "header": "include/bsp/native_crt_canonical_sbh_initialization.hpp",
+      "coverage": "complete",
+      "body_range": "00c11cf5..00c11d3c",
+      "body_bytes": 72,
+      "interface": "bsp::initialize_native_crt_canonical_sbh_00c11cf5(uint32_t)",
+      "original_abi": "One DWORD cdecl threshold; frameless; EAX 0/1; both plain RET; caller POP ECX removes four bytes"
+    }
+  ],
+  "call_rows": [
+    {
+      "address": "00c119f6",
+      "native": "00c11cf5",
+      "function": "00c119bf",
+      "argument": "C119F1 PUSH 0x3f8",
+      "cleanup": "C119FD POP ECX (4 bytes)",
+      "coverage": "complete live xref list; complete caller body inspected"
+    },
+    {
+      "address": "00c11d02",
+      "native": "00ce20f8+IAT",
+      "function": "00c11cf5",
+      "resolved_import": "KERNEL32.dll!HeapAlloc",
+      "arguments": [
+        "current DWORD at 0109E1BC",
+        "0",
+        "0x140"
+      ],
+      "cleanup": "real stdcall import consumes 12 bytes; original cdecl threshold remains"
+    }
+  ],
+  "original_evidence": {
+    "configured_project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "verification": "Each bsp ghidra and verify-seeds client verifies bsp project name, program path, language and image base; autostart disabled.",
+    "installed_pe": {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "size": 12223752,
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "sha512": "7b545a4c47fae14af6c50a1d4d0d2904c1b85f84b9a24d1516b95d77945693fc36b1f6bb9effb7fa29b22b06ebcafc230cdf97f5c332266a3de8dd83bdc29a97"
+    },
+    "imports": {
+      "00ce20f8": {
+        "dll": "KERNEL32.dll",
+        "symbol": "HeapAlloc"
+      },
+      "00ce208c": {
+        "dll": "KERNEL32.dll",
+        "symbol": "HeapCreate"
+      },
+      "00ce2090": {
+        "dll": "KERNEL32.dll",
+        "symbol": "HeapDestroy"
+      }
+    },
+    "spans": {
+      "original_bytes": {
+        "va": "00c11cf5",
+        "length": 72,
+        "section": ".text",
+        "pe_raw_bytes": 72,
+        "loader_zero_fill_bytes": 0,
+        "live_analysis_equals_pe_initial_image": true,
+        "size": 72,
+        "sha256": "b40f758cf3227398a781e6c18edbc7e2366130a0a96949531ca7b7ac5846b9ec",
+        "sha512": "a797936ae5cdc5fea7d0b30f2894a7f25b4acfaff1974ad8a61904560fa03734409b35924b5a6e866661a6224dfe1a917c67a23a87bc3db9ee6df022773b3df9"
+      },
+      "import_bytes": {
+        "va": "00ce20f8",
+        "length": 4,
+        "section": ".rdata",
+        "pe_raw_bytes": 4,
+        "loader_zero_fill_bytes": 0,
+        "live_analysis_equals_pe_initial_image": true,
+        "size": 4,
+        "sha256": "d876b12f2f230548c3b9672a52bc2f2129917faf4c9a9a31362b50838e58b608",
+        "sha512": "198b7933da9b8c9523f03aaec09743e5fcdc46e344d4a8771582b7d9ddd740a54baf058a9dc0e893a055243fe099907d09b1bbfcca545859c99d4830f2791761"
+      },
+      "heap_word": {
+        "va": "0109e1bc",
+        "length": 4,
+        "section": ".data",
+        "pe_raw_bytes": 0,
+        "loader_zero_fill_bytes": 4,
+        "live_analysis_equals_pe_initial_image": true,
+        "size": 4,
+        "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+        "sha512": "ec2d57691d9b2d40182ac565032054b7d784ba96b18bcb5be0bb4e70e3fb041eff582c8af66ee50256539f2181d7f9e53627c0189da7e75a4d5ef10ea93b20b3"
+      },
+      "first_clear_word": {
+        "va": "0109e310",
+        "length": 4,
+        "section": ".data",
+        "pe_raw_bytes": 0,
+        "loader_zero_fill_bytes": 4,
+        "live_analysis_equals_pe_initial_image": true,
+        "size": 4,
+        "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+        "sha512": "ec2d57691d9b2d40182ac565032054b7d784ba96b18bcb5be0bb4e70e3fb041eff582c8af66ee50256539f2181d7f9e53627c0189da7e75a4d5ef10ea93b20b3"
+      },
+      "sbh_words": {
+        "va": "0109ed64",
+        "length": 20,
+        "section": ".data",
+        "pe_raw_bytes": 0,
+        "loader_zero_fill_bytes": 20,
+        "live_analysis_equals_pe_initial_image": true,
+        "size": 20,
+        "sha256": "de47c9b27eb8d300dbb5f2c353e632c393262cf06340c4fa7f1b40c4cbd36f90",
+        "sha512": "d296b892b3a7964bd0cc882fc7c0be948b6bbd8eb1eff8c13942fcaabf1f38772dd56ba4d8ecd0b626ff5cef1cd045a1b0a76910396f3c7430b215a85950e9c3"
+      },
+      "bootstrap_imports": {
+        "va": "00ce208c",
+        "length": 8,
+        "section": ".rdata",
+        "pe_raw_bytes": 8,
+        "loader_zero_fill_bytes": 0,
+        "live_analysis_equals_pe_initial_image": true,
+        "size": 8,
+        "sha256": "0de7909d5644213010534d5f20d0040158f000ceb148efa7f80b183e0b58a1c3",
+        "sha512": "ffa74e6b1b422c91156b98fbfbf4fc96616b7ed9bcaecb3a07ad4acee4381c926dd3710d80f945f8204691b53a135920890e025f2964e4f39252904d859cb096"
+      }
+    },
+    "eight_seed_spans_match": true,
+    "runtime_observed": false
+  },
+  "caller_evidence": {
+    "exact_listing_requirements": [
+      "00c119d0: CALL dword ptr [0x00ce208c]",
+      "00c119d8: MOV [0x0109e1bc],EAX",
+      "00c119e2: CALL 0x00c11964",
+      "00c119e7: CMP EAX,0x3",
+      "00c119ea: MOV [0x0109ed7c],EAX",
+      "00c119f1: PUSH 0x3f8",
+      "00c119f6: CALL 0x00c11cf5",
+      "00c119fb: TEST EAX,EAX",
+      "00c119fd: POP ECX",
+      "00c11a06: CALL dword ptr [0x00ce2090]",
+      "00c11a0c: AND dword ptr [0x0109e1bc],0x0",
+      "00c11a18: RET"
+    ],
+    "current_live_xref_count": 1,
+    "snapshot_heap_check_caller_used": false,
+    "upstream_c11964_contract": "unread; caller compares returned EAX with 3; its behavior and implementation remain separate",
+    "all_rows_static": true
+  },
+  "schedule": [
+    "Push 140h, zero, current DWORD109E1BC; call actual HeapAlloc import CE20F8.",
+    "TEST EAX,EAX, store EAX109ED68, JNZ success; null returns directly with import ECX and TEST flag effects.",
+    "Success only: read incoming threshold at ESP+4; AND current109E310,0; AND current109ED64,0; store saved EAX109ED70.",
+    "XOR EAX,EAX; store saved threshold ECX109ED6C; write10h109ED74; INC EAX; RET."
+  ],
+  "storage_boundary": {
+    "owner": "GameNativeMutableCrtData",
+    "owner_source": "src/game_native_mutable_crt_data.cpp",
+    "admitted_page": "0109e000",
+    "initial_loader_words_zero": true,
+    "initialized_heap_owner": false,
+    "requirements": "Caller supplies valid initialized actual heap handle in109E1BC and owned current canonical writable state; page admission is insufficient.",
+    "borrowed_api_unchanged": "src/native_crt_small_block_heap_init.cpp and include/bsp/native_crt_small_block_heap_init.hpp unchanged under pre/post guard"
+  },
+  "implementation": {
+    "complete_original_instruction_schedule": true,
+    "delayed_threshold_read_and_possible_aliasing_preserved": true,
+    "volatile_current_reads_and_read_modify_writes_preserved": true,
+    "private_heap_or_state": false,
+    "extra_binding_argument": false,
+    "substituted_provider": false,
+    "eager_zeroing": false,
+    "null_repair": false,
+    "rollback": false,
+    "signed_cpp_overflow": false,
+    "original_code_placement": false
+  },
+  "build": {
+    "command": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build.ps1 -Diagnostic",
+    "actual_build_invocations": 3,
+    "failed_prebuild_dispatch": "raw/build.txt: missing run_build.py; no build started",
+    "first_build_failure": {
+      "log": "raw/build_v2.txt",
+      "digest": {
+        "size": 32684698,
+        "sha256": "3380e77c7e7b1bade0596d5039b1fec0b9d16a6e8b74c1749af2c35084c4e926",
+        "sha512": "ce9757986a6178391a3e28618a7b59e8aabd857392e515409cc099cdc9e9efc085bad219534a7ccf6ed54a3581f36aa83924aef46c573bfb4360697aed507ade"
+      },
+      "reason": "Six MSVC C2415 absolute-memory write operands; no owned object or CTests",
+      "correction": "Six exact original instruction encodings emitted with _emit, no DS prefix, actual HeapAlloc dllimport unchanged"
+    },
+    "second_build_rejected": {
+      "log": "raw/build_v3.txt",
+      "digest": {
+        "size": 70268642,
+        "sha256": "ab2df0353a8dc5fc171aca311b010ed25cfa9e732a1ac0cb3c6785d089aa6844",
+        "sha512": "d926ec5a206d8231696eaed445fa87b956b90cc9d31c847fab78b1f262058ddabd293b7c1553829a5dab7d3b4180536fb9ff17afccf5183fddc5c455896174e7"
+      },
+      "build_and_two_math_ctests_passed": true,
+      "reason": "Whole-body audit found71B: MSVC silently encoded numeric memory PUSH as immediate address. Object/member/source retained; accepted behavior was not claimed.",
+      "correction": "Emit original six-byte FF35 BC E1 09 01 memory PUSH; fresh guard before exact-owned-object recompilation; primary explicitly authorized bounded compiler/encoding corrections and verification"
+    },
+    "target": "MSVC Win32 Release",
+    "strict_options": [
+      "/W4",
+      "/WX",
+      "/fp:strict"
+    ],
+    "actual_compiler": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\cl.exe",
+    "actual_compiler_digest": {
+      "size": 891752,
+      "sha256": "95db52a9c9bd300131474769df7d32b342725b1e1574e0fc83a266479b196938",
+      "sha512": "390e9a478e6e3dd08f08b4a5d76a32d7d77239ff17f67bb0bf069d103ce1ee991d801353ef843b93b41fe2dd6dd9eff32f78b80dcc439f4eb61aba675394a6ec"
+    },
+    "log": "local/canonical_sbh_initialization_fv/raw/build_final.txt",
+    "log_digest": {
+      "size": 69866618,
+      "sha256": "05f565f2e3a344083033661d44321e24d919b6ee9eb987077e63567e0648e89c",
+      "sha512": "74b16453c48310da1508858d3a3fd7fc875b109c5abf0faf7509dd2ae061bd7e8b12f5ae9f99f14e7d108eaf87fb88b569986c1ec105fbdc97a691c5154e355a"
+    },
+    "existing_ctests": [
+      {
+        "name": "reconstructed_math",
+        "passed": true
+      },
+      {
+        "name": "native_math_differential",
+        "passed": true
+      }
+    ],
+    "new_tests": 0,
+    "tests_exercise_sbh_initializer": false,
+    "eight_seed_spans_passed_before_build": true
+  },
+  "precompile_guard": {
+    "path": "local/canonical_sbh_initialization_fv/prebuild_guard_final.json",
+    "owned_object_absent": true,
+    "inputs": {
+      "src/native_crt_canonical_sbh_initialization.cpp": {
+        "size": 2443,
+        "sha256": "2de5287b7ed86ab2a21d92985d1fe3c628fc7b570a979436098703f16a87d5c1",
+        "sha512": "60835d100a3fa62148099142a457cebda8d9e16764a4c9c7db75a16e0e7cee14c11a26993833d154ae588d16a752c1277dcd76c0239be0bd3194679c194b28c1"
+      },
+      "include/bsp/native_crt_canonical_sbh_initialization.hpp": {
+        "size": 1030,
+        "sha256": "20770571741fc8d5762b78a27b58476c86db9f5864783193dc489afe1a44ea9a",
+        "sha512": "21b841b4f0a70cfade13290c085496d73e9f2a2fe9e332b0c2891fffa5ce283a0cb090391cab5edb4442ed53ac3f76956b8850e946c4985f821cb07b23602ac9"
+      },
+      "src/native_crt_small_block_heap_init.cpp": {
+        "size": 1067,
+        "sha256": "247cf968d945af420f44ea89f3a2d96ba16a88923fb0d00cfe445cd959c887ca",
+        "sha512": "9bd9b493729554637b3270ca763bca01af7551aff640ddef5e9dd422608a4d0d5c2233cfed9ce173d0885ded4db6dddeb163784a75214f4dcd30c8f407765a11"
+      },
+      "include/bsp/native_crt_small_block_heap_init.hpp": {
+        "size": 1039,
+        "sha256": "00d6988a7ca75d5dc4b3e42e98b233c0da0301359b2b4a4acfa6209ba3d3cea6",
+        "sha512": "ea3c5493b55284ad64feefb3970fe4c17203b318942a13766bd52d97064d2def6dd6d32ac71ca269ce7ffd9f8454ed25a3e318f8c6e53096aca19076c3354461"
+      },
+      "cmake/startup.cmake": {
+        "size": 124901,
+        "sha256": "76c9f160e9675a7a9c9523dec90acef727d94f44098877b4f05b86ec71e71f76",
+        "sha512": "ccd5cf9ce69b609525d5bbe8792ce197f076a7757872048a47a2318a9d2eeb3162f144c6dffb848dd0ed9d885e44b374e31a1adcf12198b5a2f80ed7262d81e1"
+      },
+      "CMakeLists.txt": {
+        "size": 14869,
+        "sha256": "0bad51a21cd02eb4d8b196a345a3f86418d0dab144d66912f0ad8db06881c5a8",
+        "sha512": "3a5f79736fe4eed9455edaefbbe1d8dd23a555a86efa3935827e3068fc3baa2c82f0d9c69246a5ef74a961d41fbd847f5a5c554c5c91a945d55521212d2ec958"
+      },
+      "scripts/build.ps1": {
+        "size": 1820,
+        "sha256": "ba4a34b029718dbd5b1336bb0c99decafa859e42bdc1b9d9811265032a9a4f62",
+        "sha512": "02542b0acb0f0c32a06ad5314d5f83950ff6bce90a053b2181540587f802cbfa5583a59e95d8fa4fb761f3604dcdcd19887a7abfeb0bf876edf1972bd9d696d3"
+      },
+      "config/target.json": {
+        "size": 455,
+        "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+        "sha512": "4d63e102f408469c1bc103bc636873befeb5b8e7ced9254b7a64b03c91ed378680a0ac2c4f585b4f36bd572aa79a26404ae5595cddd1a1499be16d6188d7545c"
+      },
+      "src/game_native_mutable_crt_data.cpp": {
+        "size": 10222,
+        "sha256": "b3b051403470750469b166046530d948e7ed1285368ddaf151ad02bcf982dd2b",
+        "sha512": "bfa96fde1455368cac1f5188b1a192b71948c034c6d91a71fe48c52c3b7692fd2ce67bd794cff0680e6b2aefecdf370b59c06aec1e145f80da2ed23039f60c5b"
+      },
+      "include/bsp/game_native_mutable_crt_data.hpp": {
+        "size": 3200,
+        "sha256": "0a22c29a9b5f876669f7e8c9f9b775822b40a789b225044484175110957429c1",
+        "sha512": "549be6810d0eb815b01126e8c3d2447a678fa717176d35259f5a839ec867f66baa61a03c30bc0802f8929a3953e28fa753f4fa05a3ed70183058d89b586a48c4"
+      },
+      "tools/ghidra_export.py": {
+        "size": 14411,
+        "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+        "sha512": "d94d997404a63db48d77bfadb1fd7e466fc7b9921833358e338a3d3b1fa04816f6072049c3057d283b1f08a14831f3bb02e79a70f5778cf7d93d87a7b3c9c886"
+      },
+      "tools/bsp.py": {
+        "size": 70613,
+        "sha256": "4b439f59dedfdc914f88393d5b6106af7044fcf1a9a6fde5fee8c0cbce63fb81",
+        "sha512": "747fc3df062d053d5479a15bf2fcf690dbfbe8f4d87540d725a534da9aa3b4139432e77d16c0721e82cf41992767a31c95b2a8356b1a1b042b9948e922347ebd"
+      },
+      "tools/workspace.py": {
+        "size": 1371,
+        "sha256": "611a2f0613f2172438bc5cf87161bae9566b31abcfcc334e54af9aba10df8140",
+        "sha512": "1e9e2a9b3e2acadd5f10c06e703baf204a3b9b5147993975977b1189b1d016dca6bcf7cf5bbbff414455e902c123ada64b30e1c772e7fccb7c8a22b67dadb676"
+      },
+      "tools/verify_report_calls.py": {
+        "size": 9233,
+        "sha256": "396e6d544dece7c9551ff10ee15ab234a0ad1c4a339fd118ddec20de1bb7a8cd",
+        "sha512": "898aee0e099e99e7378af9253eb1a11bbcdce2a979fcf34c947a34fe8cdcaa59706b6a7782f594ba71be2b8193f45fbdfb6fda2c75c339f7cfd1f7bf0622d853"
+      },
+      "include/bsp/native_crt_sbh_state.hpp": {
+        "size": 2514,
+        "sha256": "f1885df320b24d5f34da03b5fa527fcdb9b2d5190ccb6889ec2c324d17b30d58",
+        "sha512": "cdc955dea5de834c942dcca6e99427be1b35c9fead165ab00977db2b347324a1242b6e12259717ff1e9a69caf36b60fc4030053b6389eeb8300ae81ae9b2699d"
+      },
+      "config/seed_functions.json": {
+        "size": 201,
+        "sha256": "4e5a5cc88de55e7275cf20fc0c97f5b7ff669fdc01d3ee46dea4922ad8007336",
+        "sha512": "efa56be0ebb011dbdf79dd08d3d16a3fe2cb5731e0ccf42b7f8cf3bc53b239c1f2e9eeefa94819dfb858a41a6c12ce122d09ec21806aae845e60707132c53689"
+      },
+      "docs/NATIVE_CRT_SMALL_BLOCK_HEAP_INIT_BK.md": {
+        "size": 2050,
+        "sha256": "c7c7a98c9f61f17465c547c04513784c5d54ebd80e12cbc61e6d68a4edf62614",
+        "sha512": "d395715afc472b921f1451ba26a4b58928a27d3b24a323b4f52198a66aff6fd2936e2fef3bc105c536a0aa50c050249d2b37e83651805f894a95235b0a8a2166"
+      },
+      "docs/NATIVE_CRT_CANONICAL_OWNER_DD.md": {
+        "size": 5553,
+        "sha256": "598cd32385172851584269181016135ffd0e12126b3a319498af96a75e80603b",
+        "sha512": "58e8e93b50317bab73249b216acd00a1d0d17f4d1db333f1a01839557b7caff0fabb1bcc6d6b9eadc25c9baa270a6a639803046e8a8eeea05e1da3ce362eb671"
+      },
+      "docs/WORKER_VERIFICATION_CHECKLIST.md": {
+        "size": 5240,
+        "sha256": "13a49a6784b1621bbde4191a9360d18bb703adfc60cf0884761801dcd07151fe",
+        "sha512": "c0e794ffabb7c8dd5716f50bb05bdd2489309bfd2b764b2e0257ed754c03535b885a03f149b0afb069c05c4eef96ef194b7066aa53b6313e7f3a58e4839b6768"
+      },
+      "local/canonical_sbh_initialization_fv/guard_final.py": {
+        "size": 7732,
+        "sha256": "b47d0f9c5c8ab4876d618bfc619d4437c9d4d611571a27fb4e8a04c74e6a6c42",
+        "sha512": "191a7d5be528f068fdd71350c6eac548255d95ba1aa55713bf9c8a2c5bf9bdd2ce949d6011894cc87ec849dcb1177d8f98467756b4f9921e9c75266e7050adfd"
+      },
+      "local/canonical_sbh_initialization_fv/capture.py": {
+        "size": 1248,
+        "sha256": "d5002f08909c059c00052268a67a2a9455bfdce1ff14cb845b97063f9639c9e9",
+        "sha512": "fecdd50cee272b497871e854d22867920a32f1a2065556185e57d0728f427c0459129ff0b080f14d3b9796fe6db7f456b4d7958f86e6bb566424be09dd9ce1ac"
+      },
+      "local/canonical_sbh_initialization_fv/artifact_inspect_final.py": {
+        "size": 6698,
+        "sha256": "6bda9218bed435eacfb57ce3e1d65c5780db29dd84c846365d4d6bdac6bdf82a",
+        "sha512": "9dacec52d8d693f4b58ec6ca40bbf7667fa024767b5857deb9f772a3c6ef87d60a38b3fc0848940203e49e3a9c8ab5cc4ad54cb53a83190c10754f21c4762c4e"
+      },
+      "local/seed_reference.hpp": {
+        "size": 2995,
+        "sha256": "26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c",
+        "sha512": "73558474158d529bc96205150b2c52ebc133b1b6bcb743e01ecf14dd4655c2cc594a2b0353e0d2f89977ced7c585fcf9cdd7c00cfe96bfa67eee8a29226d05bf"
+      }
+    },
+    "toolset": {
+      "file": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Auxiliary\\Build\\Microsoft.VCToolsVersion.default.txt",
+      "version": "14.51.36231",
+      "size": 11,
+      "sha256": "2ca998516f8f18b39c28ce022abb90ef5ad711b468494671dd84b74618b569d9",
+      "sha512": "57a7a5308236175e9f0d7880be14d61b186a6d19e22fd592b6b1c90d19ea28886af85637b6eb50fb4435fc67cc1c38b38a55948a27fc9933e0486a8e74428e1e"
+    },
+    "compiler_candidates": {
+      "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\cl.exe": {
+        "size": 891752,
+        "sha256": "95db52a9c9bd300131474769df7d32b342725b1e1574e0fc83a266479b196938",
+        "sha512": "390e9a478e6e3dd08f08b4a5d76a32d7d77239ff17f67bb0bf069d103ce1ee991d801353ef843b93b41fe2dd6dd9eff32f78b80dcc439f4eb61aba675394a6ec"
+      },
+      "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx86\\x86\\cl.exe": {
+        "size": 830824,
+        "sha256": "33ee095d65686e5f4caedd7d52b74fbba8447b2ef4b07019a9dca58c5cb74e5c",
+        "sha512": "8d5361b3cefe1ec60d684b9f7283338ee7d6114a141b855177fb2222cac132021b878636b417ffbc482a267b53a1d64452148b58f67abdaeb0878ae9ef57f27a"
+      }
+    },
+    "provider_inputs": {
+      "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Auxiliary\\Build\\Microsoft.VCToolsVersion.default.txt": {
+        "size": 11,
+        "sha256": "2ca998516f8f18b39c28ce022abb90ef5ad711b468494671dd84b74618b569d9",
+        "sha512": "57a7a5308236175e9f0d7880be14d61b186a6d19e22fd592b6b1c90d19ea28886af85637b6eb50fb4435fc67cc1c38b38a55948a27fc9933e0486a8e74428e1e"
+      },
+      "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\include\\cstdint": {
+        "size": 1697,
+        "sha256": "ce03526f2948c653a2ca8f68b9a8a8f0e13648243ab24068cdd473a52d4774c5",
+        "sha512": "cd003e0e9dcb1b361120588b294aba5a886fee2ce010517a0747530d940908328d37e093dacebf837b6228a0284f2974a969ceed7a618eac61c01d4c1ef88089"
+      },
+      "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\Windows.h": {
+        "size": 7511,
+        "sha256": "b337d661d03a4abefb7b86a2742ce1ad5d19b57cd8b858bd13e7bbcc1dbeeaaa",
+        "sha512": "4ded62c88b6b2de572c5051a33a5755c82eb3e5d23e5da839442ecf0e92b3c9d8e1c4f936139c5043611f801bc72913784e434c15ae36bd7a37e763ff03f3289"
+      },
+      "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\heapapi.h": {
+        "size": 5317,
+        "sha256": "22b606b0a4096295272bcae6fc353c4f159f0cdfc90b5f1a9a712b2fff50b53f",
+        "sha512": "3d84eec1642dcc39fb8e82069d2a1aba5ebdeaa5b40c24aa75d0e49fab7991cf790cfac98c9241e23fbeb4a9dc3c812b47051cc29b50687ce4fb40fd855b6293"
+      },
+      "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\winnt.h": {
+        "size": 876258,
+        "sha256": "bc603675b330e624fd6f3de9ed3497ed6101e4c56e12cf819a9ef7c41f1c78d8",
+        "sha512": "f601afdb6a9dd3ce915cd13d0146fe2f742ce4805422afe001a049d48d15712775f92d4570da0af3b3497e932f5b0148dbf6470abcd56c8e54223f82faadbecf"
+      },
+      "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\minwindef.h": {
+        "size": 6876,
+        "sha256": "a9cf08be8407a196104124d5ade2308e204e47d3252bcd2ad20d0f2137843d62",
+        "sha512": "249ea1af7eda62ebfe7478a060cacf0410b5e80a8dbf4f9f7aa071f37acac28926bc355830e8c4785fbec4dafe5b356e94d6ec01f3a78bce074d5fda777e43a9"
+      }
+    },
+    "earlier_attempt_guards": [
+      "local/canonical_sbh_initialization_fv/prebuild_guard.json",
+      "local/canonical_sbh_initialization_fv/prebuild_guard_v2.json"
+    ],
+    "failed_inputs_immutable": [
+      "local/canonical_sbh_initialization_fv/inputs/",
+      "local/canonical_sbh_initialization_fv/inputs_v2/"
+    ]
+  },
+  "postcompile_guard": {
+    "path": "local/canonical_sbh_initialization_fv/postbuild_guard_final.json",
+    "unchanged": true,
+    "tracking": {
+      "CL.command.1.tlog": {
+        "original": "J:\\PROG\\battlestations-pacific-decompile-orch2-canonical-sbh-initialization-fv\\build\\win32\\bsp_core.dir\\Release\\bsp_core.tlog\\CL.command.1.tlog",
+        "full_tracking_hash": {
+          "size": 2631954,
+          "sha256": "800dd41dc7ebadd52ea58ba3592637758382e600bc64a047f0b83d947bae27c4",
+          "sha512": "20c848a78424762e874fd718b208dedd3ee46d92cd9c382562f1c217efc0b7324754c601936c138718ec3846f282af10e35d82865324670c53ec323fad0c0f8f"
+        },
+        "retained_hash": {
+          "size": 1052,
+          "sha256": "9a157f3bb3677e54b026062368aef119da7816f9c91d92666b53296d0664d206",
+          "sha512": "c1c99c6c6d99b8ca1233811953097185aa1cef2f1c37d3c6f1c809d0e68b83a60a1748dad47ef3cde36c680a3b7000915cd72f7cabf247cc01170fb550598c75"
+        }
+      },
+      "CL.read.1.tlog": {
+        "original": "J:\\PROG\\battlestations-pacific-decompile-orch2-canonical-sbh-initialization-fv\\build\\win32\\bsp_core.dir\\Release\\bsp_core.tlog\\CL.read.1.tlog",
+        "full_tracking_hash": {
+          "size": 39173674,
+          "sha256": "e3c52513083fbb8131486e6ffc01f5e33ff0f87a3d9a7cc1152ea004a8c40857",
+          "sha512": "e1f6c63cc9a17fbb328395c2b6656eb261c88953ddb012c935e8ba4338269d9059cbbd2c76eade6eb6db6fd9d1cbe7552bc8ea39d1462afcc4dd48c99ae2e8ab"
+        },
+        "retained_hash": {
+          "size": 8330,
+          "sha256": "ec14c3c539da212adccd135f6cd148d369d33292ead365144d99ff77c54d9514",
+          "sha512": "2528fb36a8a20440ece78aae2615cd7d9806cbf8f4fce4140ba2a5d605d0725da406a334dfe51a52cb8a2da5d461df1e5055d9b64d8b087d949786998b526b5f"
+        }
+      },
+      "CL.write.1.tlog": {
+        "original": "J:\\PROG\\battlestations-pacific-decompile-orch2-canonical-sbh-initialization-fv\\build\\win32\\bsp_core.dir\\Release\\bsp_core.tlog\\CL.write.1.tlog",
+        "full_tracking_hash": {
+          "size": 1302808,
+          "sha256": "7ee95be16e510fd5c59d1f152c1c175152951d97a93b507ecbdb020a8ebaa905",
+          "sha512": "6af327577aa06d0079be4cc9f0b9a6e7f2a25e1299bc15d0593185772af2f859b1b719d262d6f0fa7b785cd02436f3d999367f1649ae51ebcd2ad7d03e83b8b7"
+        },
+        "retained_hash": {
+          "size": 907,
+          "sha256": "c82c4d546644b478be0ad7b35e2eb90038a3a96b735ba82de44836be42398ecc",
+          "sha512": "3546f67a58747536762abc5fdbb0e9083da47d30111c6526f7029f356e1129b3aef213c34ace6273d8a628c24d6b7952c6f9a0952a57ebf22c25f46eda63f518"
+        }
+      }
+    },
+    "write_root_candidates": [
+      {
+        "root_count": 1291,
+        "full_block_sha256": "d5ca943fe0188f0bc1016f8267408233d2f45119e87d15bb3cabc560bcd99a75",
+        "owned_output_count": 0
+      },
+      {
+        "root_count": 1,
+        "full_block_sha256": "72b2f0fb15a3ed0827439483ca19671eda1133b007318288205e749c6ede85ee",
+        "owned_output_count": 1
+      }
+    ],
+    "earlier_method_failure": "guard_post_v2 failed due stale failed-batch root; retained tracking_block_inspection.json distinguishes1291-source root with no owned output from actual single-source write; guard_v3/final filters actual owned output"
+  },
+  "artifact_evidence": {
+    "object": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-canonical-sbh-initialization-fv\\build\\win32\\bsp_core.dir\\Release\\native_crt_canonical_sbh_initialization.obj",
+      "size": 875,
+      "sha256": "113f28a0ceffaa6d95b1df846723bb6280a659c9a4ac9ac3e53c7ec15c46729e",
+      "sha512": "b7b61927ae641c9ec8b3b2c86a5230a5f2afefb11ad1b8fff667d76b05a0997673b4a005145704373a7f95419713e14c9a4cfe1c396a081fa9344a50573fe2cd",
+      "machine": 332,
+      "defined_symbols": [
+        {
+          "name": "?initialize_native_crt_canonical_sbh_00c11cf5@bsp@@YAII@Z",
+          "value": 0,
+          "section": 3,
+          "type": 32,
+          "storage": 2
+        }
+      ],
+      "undefined_symbols": [
+        "__imp__HeapAlloc@12"
+      ],
+      "body": {
+        "size": 72,
+        "sha256": "63feb36ae16e4d739bc854e563442b90c1034cf0ca10a94e401eee37ad7a82c4",
+        "sha512": "3473ff8cb973c5f76af07274e15db963a9d3b7cca654b44aadb140afe7b1df597a80fb3c8eecd726631fcbfeb8edf9391092282151926f32e8a6ec963eeede87"
+      },
+      "relocations": [
+        {
+          "offset": 15,
+          "type": 6,
+          "symbol": "__imp__HeapAlloc@12"
+        }
+      ],
+      "all_72_bytes_equal_except_real_import_operand": true,
+      "fixed_addresses": [
+        {
+          "offset": 9,
+          "value": "0109e1bc"
+        },
+        {
+          "offset": 22,
+          "value": "0109ed68"
+        },
+        {
+          "offset": 35,
+          "value": "0109e310"
+        },
+        {
+          "offset": 42,
+          "value": "0109ed64"
+        },
+        {
+          "offset": 48,
+          "value": "0109ed70"
+        },
+        {
+          "offset": 56,
+          "value": "0109ed6c"
+        },
+        {
+          "offset": 62,
+          "value": "0109ed74"
+        }
+      ],
+      "instruction_count": 17,
+      "plain_ret_addresses": [
+        "00c11d11",
+        "00c11d3c"
+      ]
+    },
+    "archive": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-canonical-sbh-initialization-fv\\build\\win32\\Release\\bsp_core.lib",
+      "size": 58843178,
+      "sha256": "ef522c348e712c4c52b590f6f1ed0df746ec20492ff9e54d0a3d790691ced0ac",
+      "sha512": "992f802482788d7239d6153ace0235bb8021d887ac5e91750b1821ea98bab1eb337d569f1d03876d9a375015c80bde04c765e4c289e0eff782f48db8d6529ff9",
+      "member_count": 1294,
+      "matching_object_count": 1,
+      "matching_filename_count": 1,
+      "member_offset": 12735212,
+      "member_name": "bsp_core.dir\\Release\\native_crt_canonical_sbh_initialization.obj",
+      "retained_member": {
+        "size": 875,
+        "sha256": "113f28a0ceffaa6d95b1df846723bb6280a659c9a4ac9ac3e53c7ec15c46729e",
+        "sha512": "b7b61927ae641c9ec8b3b2c86a5230a5f2afefb11ad1b8fff667d76b05a0997673b4a005145704373a7f95419713e14c9a4cfe1c396a081fa9344a50573fe2cd"
+      },
+      "linker_tables": [
+        {
+          "index": 1,
+          "symbol_count": 50605,
+          "owned_rows": [
+            {
+              "symbol": "?initialize_native_crt_canonical_sbh_00c11cf5@bsp@@YAII@Z",
+              "member_offset": 12735212
+            }
+          ],
+          "size": 6384113,
+          "sha256": "c3feebddbf1cd5f165051ff5bf8d0268dac7e5b07fcf783c6ba75b51063c1646",
+          "sha512": "807a0bbdefaafa63be512fdd8049919dbdce0033f66fc6db08afe28e209f4a84813f45e2cdb928b352d600fc93e33b9fa6f1f2a7458e4793de13e57d07e5fc99"
+        },
+        {
+          "index": 2,
+          "symbol_count": 50605,
+          "owned_rows": [
+            {
+              "symbol": "?initialize_native_crt_canonical_sbh_00c11cf5@bsp@@YAII@Z",
+              "member_offset": 12735212
+            }
+          ],
+          "size": 6288071,
+          "sha256": "08a1a2563a9c3582d1efcfe827de01840cbc06223b3b5aa64d32010f39dbba10",
+          "sha512": "548b12b25f5b70e047950601670852654a7ad7ddba673713d0604e7abd19e5284f7746b67c0122f084715df682c298bf2a2b25f7a6f12a8331149a3bcad18591"
+        }
+      ],
+      "complete_linker_tables_equal": true,
+      "all_owned_external_symbols_unique": true
+    },
+    "runtime_executed": false
+  },
+  "integration_point": {
+    "proved_original_call": "C119F6 after actual HeapCreate publication C119D8; threshold3F8 and caller cleanup/rollback retained",
+    "current_cpp_replacement_point": null,
+    "evidence": "raw/borrowed_initializer_consumers.txt and raw/current_root_all_initializer_consumers.txt: declaration/definition only; context otherwise feeds already-initialized state binder",
+    "required": "Establish actual initialized heap and owner lifetime before invoking this entry; preserve threshold/publication ordering, caller rollback and once-per-owner publication. No owner/game_main changes."
+  },
+  "corrections": [
+    {
+      "was": "Saved lookup reports ___sbh_heap_check among two callers and current Ghidra signature has void parameters.",
+      "is": "Live bounded xrefs has only C119F6 in __heap_init; complete native body and POP ECX establish one argument. Saved Ghidra prototype left unchanged.",
+      "evidence": "raw/entry_xrefs.txt, raw/identity_proto.txt, raw/heap_bootstrap.txt"
+    },
+    {
+      "was": "Page109E000 admission could be mistaken for initialized heap ownership.",
+      "is": "DD only admits zero-filled storage. C119D0 HeapCreate and C119D8 publication are actual heap ownership dependencies outside this entry.",
+      "evidence": "Guarded DD owner source and raw/heap_bootstrap.txt; PE import resolution"
+    }
+  ],
+  "annotation": {
+    "path": "local/canonical_sbh_initialization_fv/desired_annotation.json",
+    "library_name_preserved": true,
+    "old_comment_preserved": true,
+    "applied": false
+  },
+  "evidence_inventory": {
+    "root": "local/canonical_sbh_initialization_fv",
+    "seal": "local/canonical_sbh_initialization_fv/seal.json",
+    "exclusion": "Only exact top-level seal.json; no basename exclusions",
+    "two_pass_exact_relative_inventory": true,
+    "physical_and_git_blob_hashes_separate": true
+  },
+  "limitations": [
+    "No original/canonical SBH initializer, heap, target, native/probe/game or forced DLL execution.",
+    "Math fixture passes do not exercise this entry.",
+    "Source/COFF is relocatable; original placement, IAT address, return/fault PCs, native fault/unwind behavior are not reproduced or runtime validated.",
+    "Actual heap bootstrap/lifetime, original caller/startup admission and gameplay remain separate.",
+    "Ghidra only read; no prototype/name/comment/flow edits, save, script gate, import or restart.",
+    "Source presence in bsp_core.lib does not establish reachability in a linked game."
+  ],
+  "call_verification": {
+    "tool": "tools/verify_report_calls.py",
+    "first_log": "local/canonical_sbh_initialization_fv/raw/verify_calls.txt",
+    "first_checked_rows": 2,
+    "first_failures": 0,
+    "note": "First report duplicated call rows inside caller evidence; final report deduplicates that list. Both checked rows were the same single real C119F6 caller, not two callers. Final check retained separately as raw/verify_calls_final.txt.",
+    "indirect_import_verified_separately": true
+  },
+  "retained_method_failures": [
+    {
+      "method": "guard_v2.py post",
+      "output": "raw/guard_post_v2.txt",
+      "failure": "Two source-matching CL.write roots; stale failed batch has no owned output. Corrected read-only selection in guard_v3/final.",
+      "resolved": true
+    },
+    {
+      "method": "artifact_inspect.py first invocation",
+      "output": "raw/artifact_audit.txt",
+      "failure": "Dependent audit invoked before failed postguard had retained object; no object copy available.",
+      "resolved": true
+    },
+    {
+      "method": "artifact_inspect.py second invocation",
+      "output": "raw/artifact_audit_v2.txt",
+      "failure": "Rejected71-byte body because numeric memory PUSH assembled immediate. Corrected source followed by final fresh guard/build.",
+      "resolved": true
+    },
+    {
+      "method": "report.py",
+      "output": "raw/create_report.txt",
+      "failure": "Python reserved is keyword in dictionary constructor. Separate report_v2.py fixes dictionary syntax.",
+      "resolved": true
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "packet": "orch2_crt_seh4_bt_annotations",
+  "status": "two_exact_instruction_sources_commented_saved_refreshed_combined_validation_pending",
+  "source_functions": 2,
+  "original_body_bytes": 43,
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe"
+  },
+  "annotation_log": {
+    "path": "local/ghidra-annotations-20260914T064023Z.json",
+    "sha256": "b91f493b99cc4a2f6195cf379dd3460b2a6914726d192c2adf8b7b702babbd50"
+  },
+  "before": {
+    "path": "local/bt_integration/comments-before.json",
+    "sha256": "2de3158dbed1f783f161f63d3db80eae81956e25a7eb3ca402e1007b390e7ea9"
+  },
+  "after": {
+    "path": "local/bt_integration/comments-after.json",
+    "sha256": "24b2d0966a1cf1e5906593117d01f25292b192094e34571427eb9b7a61e8354e"
+  },
+  "exports": {
+    "path": "local/bt_integration/exports-refresh.log",
+    "sha256": "9691bc663528a86c1de0d04c8fd0621366046a8643ebf3b1f4282344b096a7d5"
+  },
+  "functions": [
+    {
+      "address": "00c07c45",
+      "old_name": "__SEH_epilog4",
+      "name": "__SEH_epilog4",
+      "original_body_bytes": 20,
+      "added_evidence": "BT reviewed complete20B instruction primitive. Custom compiler-frame entry, not ordinary cdecl cleanup: EBP=F, entryESP=P-4 holds helper continuation, FS0=F-10h identifies actual current registration; cookie atP then savedEDI/ESI/EBX, incomingEBP atF. First read previous link atF-10h and publish it toFS0, THEN pop continuationECX, discard cookie with firstPOPEDI, restore actualEDI with secondPOPEDI, restoreESI/EBX, MOVESP EBP, POPEBP, PUSHECX, RET. ReturnESP=F+4; preserveEAX/arithmeticflags; ECX holds continuation. No cookie check, catch, compensating relink, handler/frame owner or fault policy. Exact current20 emitted bytes match native PE/live, zero relocations and no writable sections; current compiler/header/object/unique archive and symbol independently verified. Native running-thread/faultPC/SEH/ABI replacement and gameplay unproven. MSVC C4733 suppression scoped only around required existing-FS-link restoration; no new handler or SafeSEH ownership and no global compiler/linker-policy relaxation. Initial failed strict build retained, subsequent full strict build/8seeds/2existingCTests passed without executing primitive. Library name and prior comments retained. See reports/native_crt_seh4_primitives_bt.json and native_crt_seh4_frame_br.json; full prolog/handler/cookie owner and C17653 remain open."
+    },
+    {
+      "address": "00c0dcb6",
+      "old_name": "_EH4_CallFilterFunc",
+      "name": "_EH4_CallFilterFunc",
+      "original_body_bytes": 23,
+      "added_evidence": "BT reviewed complete23B actual native-filter call. Original register ABI: ECX actual funclet entry, EDX actual establisher frame, no stacked arguments, plainRET. Push EBP/ESI/EDI/EBX; setEBP=EDX; XOR EAX/EBX/EDX/ESI/EDI tozero in that order; CALLECX with no stacked argument; restoreEBX/EDI/ESI/EBP andRET. Filter sees EBP frame and originalECX entry; EAX/EBX/EDX/ESI/EDI zero and flags from finalXOR. Balanced native funclet stack required. Normal return preserves rawfilterEAX/flags and incidentalECX/EDX outputs; nonlocal transfer need not run normalrestores. New nakedfastcall int32(uintptr_t,void*) source symbol preserves exact23 emitted nativePE/live bytes with zero relocations; native filter/body/frame/FS/scope/cookie ownership is borrowed, never fabricated. No validation, result normalization, catch or repair. Primary/independent current compiler/source/header/object/unique archive/symbol and exactbytes checks accepted; strict build/8seeds/2existingCTests passed; no primitive/native execution. Original fault/exception/ABI replacement and gameplay remain unproven; full dispatcher/C17653 are not closed. Library name and prior comments retained. See reports/native_crt_seh4_primitives_bt.json and native_crt_seh4_leaves_bs.json."
+    }
+  ],
+  "qualification": "Both CRT library names and prior comments retained; custom actual frame/FS/native filter domain, no new owner or full C17653 closure. Exact compiled instruction bytes and worker build checks do not establish native fault/SEH/ABI replacement or gameplay. Fresh17-stem candidate validation remains separate."
+}

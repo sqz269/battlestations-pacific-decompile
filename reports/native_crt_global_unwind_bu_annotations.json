@@ -1,0 +1,43 @@
+{
+  "packet": "orch2_crt_global_unwind_bu_annotations",
+  "status": "two_instruction_sources_commented_saved_refreshed_combined_validation_pending",
+  "source_functions": 2,
+  "original_body_bytes": 32,
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe"
+  },
+  "annotation_log": {
+    "path": "local/ghidra-annotations-20260914T071454Z.json",
+    "sha256": "43e25287dd15af28bc0289b9b34d67cc2258016ac81f4e6d032ef9c6a04c7396"
+  },
+  "before": {
+    "path": "local/bu_integration/comments-before.json",
+    "sha256": "21183e794e601272de71f98a4eab7f717eaa3d083bdb627031f36ed7ca7cabdf"
+  },
+  "after": {
+    "path": "local/bu_integration/comments-after.json",
+    "sha256": "3feb236ed727bd67c0e807128d4ee79bd0cbc14dd6536a2c046ab6d0988b6f95"
+  },
+  "exports": {
+    "path": "local/bu_integration/exports-refresh.log",
+    "sha256": "e0e0c4c98da82b498b564c9808596ba07faf0e0b05e3f2ccae8c725b14301a78"
+  },
+  "functions": [
+    {
+      "address": "00c0dce6",
+      "old_name": "_EH4_GlobalUnwind",
+      "name": "_EH4_GlobalUnwind",
+      "original_body_bytes": 26,
+      "added_evidence": "BU complete 26-byte native global-unwind instruction interface. ECX supplies the actual target registration, no stacked arguments. Save EBP; establish EBP=ESP; save EBX/ESI/EDI; push ReturnValue0, ExceptionRecord0, own restoration TargetIp, ECX TargetFrame; direct CALL actual RtlUnwind import thunk C2F25C; restore EDI/ESI/EBX/EBP and RET. EntryESP=S; API arguments at S-20h..S-14h and API return at S-24h; restoration expects ESP=S-10h and normal return leaves ESP=S+4. Original TargetIp C0DCFB is first POP EDI and call fallthrough. Compiled source uses its OWN same-section label+15h, verified actual COFF symbol/value and zero addend; never original numeric PE TargetIp. Complete compiled26B equals native PE/live except DIR32 label operand+Bh and REL32 direct thunk operand+11h. Actual Windows service EAX/flags/volatile outputs preserved, no result normalization. Native frame validity and abnormal/nonlocal continuation remain caller/API obligations, without synthetic frames, handlers, cookies, FS owners or unwind callbacks. Primary and independent compiler/source/header/current tlog/object/unique archive and actual SDK import reviews accepted; strict worker Win32 build/8seeds/2existingCTests passed without primitive execution. Exact instruction/import binding is not OS execution, fault-PC identity, native ABI replacement, full C17653/dispatcher or gameplay closure. Preserve existing library name and comments. See reports/native_crt_global_unwind_bu.json."
+    },
+    {
+      "address": "00c2f25c",
+      "old_name": "RtlUnwind",
+      "name": "RtlUnwind",
+      "original_body_bytes": 6,
+      "added_evidence": "BU complete six-byte native import tail thunk FF25 [CE21B8], PE imports KERNEL32.dll!RtlUnwind. Actual four stdcall arguments are TargetFrame, TargetIp, EXCEPTION_RECORD pointer, ReturnValue; preserve existing caller return address/argument stack and tail-jump through the real Windows import, with no frame, argument conversion, catch, validation or return transformation. New naked source thunk compiles to exact FF25 plus a single DIR32 operand+2 to __imp__RtlUnwind@16. Current selected Win32 SDK winnt.h declaration and unique x86 KERNEL32.lib short code-import member independently verified, alongside compiler read/write/Fo/source/header/object/current unique archive membership. Complete six native PE/live bytes compared with relocation qualified; no private writable section or substitute OS service. Worker strict build/8seeds/2existingCTests passed without executing thunk or native unwind. OS implementation/frame/fault/ABI and gameplay behavior remain unproved; complete C17653 and native dispatcher ownership remain separate. Preserve the correct RtlUnwind library name, thunk identity and prior comments. See reports/native_crt_global_unwind_bu.json."
+    }
+  ],
+  "qualification": "Both CRT library names and prior comments retained; actual native frame/unwind continuation and real Windows import domain, no new owner or full C17653 closure. Qualified compiled instruction bytes and worker build checks do not establish native fault/SEH/ABI replacement or gameplay. Fresh18-stem candidate validation remains separate."
+}

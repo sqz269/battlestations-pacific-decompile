@@ -1,0 +1,89 @@
+{
+  "packet": "orch2_crt_reader_bm_annotations",
+  "status": "five_reviewed_source_entries_named_commented_saved_and_refreshed",
+  "source_functions": 5,
+  "original_body_bytes": 328,
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe"
+  },
+  "combined_validation": "Fresh current candidate acceptance recorded separately; original worker builds are retained historical evidence",
+  "batches": [
+    {
+      "kind": "crt",
+      "annotation_log": {
+        "path": "local/ghidra-annotations-20260914T044803Z.json",
+        "sha256": "60b52a5a7e42ee468faa98be1a126c2824adb3ec9fe07f50215e93b7f3f0849f"
+      },
+      "before": {
+        "path": "local/bm_integration/comments-before-crt.json",
+        "sha256": "2c7d68c2b84d0ebee7824a9f3d63ee4b46ab227781d2d7fe7e0b59d0024400bc"
+      },
+      "after": {
+        "path": "local/bm_integration/comments-after-crt.json",
+        "sha256": "7ecd638b188edc593945d9d9cdc2b34f3b10a7c9635aae3f799eb60b428b434e"
+      },
+      "exports": {
+        "path": "local/bm_integration/crt-exports-refresh.log",
+        "sha256": "f84053dcbae96618f2b9943677665a22d0aa4e8c86e4b5187d576b0b191f8a1a"
+      }
+    },
+    {
+      "kind": "reader",
+      "annotation_log": {
+        "path": "local/ghidra-annotations-20260914T045842Z.json",
+        "sha256": "437728429e225604e3b7b25b7cf86e915741d06ef851d8ed2315764ec2011de7"
+      },
+      "before": {
+        "path": "local/bm_integration/comments-before-reader.json",
+        "sha256": "e5d9176f4d9f2fff06b521da98ad7466e00d262c0ec35376ac2b5d8bc8389afe"
+      },
+      "after": {
+        "path": "local/bm_integration/comments-after-reader.json",
+        "sha256": "dfebdc2ad29b30e174cecd3a2b21d2627b8d2e8709673c0c75c322df48b44019"
+      },
+      "exports": {
+        "path": "local/bm_integration/reader-exports-refresh.log",
+        "sha256": "256cab7c642d312b58a6c72cdf8f719ea1f265a9e209a297f42bcdc7e71e16e6"
+      }
+    }
+  ],
+  "functions": [
+    {
+      "address": "00bfbab2",
+      "old_name": "__get_osplatform",
+      "name": "__get_osplatform",
+      "original_body_bytes": 55,
+      "added_evidence": "BL/BM reviewed source evidence: Complete55B: cdecl output pointer, EAX error code, plainRET. Null output short-circuits actual volatile109DD84 read. Otherwise capture that word ONCE, reject zero, publish the same captured value and return0. Failure calls owningCRT BFFB8B errno, writes22, calls actual BF66EF invalid-parameter service with five zero arguments, returns22 if it returns; no output write, reload/retry or synthetic abort. Reuses established pointer-decode support context; actual owningCRT/handler state is required, not created. New C++ context ABI; source/build evidence only. See reports/native_crt_osplatform_getter_bl.json. Primary and independent cookie review retained; combined current candidate validation is recorded separately. Native FH3/SEH, drop-in linkage and gameplay remain unclaimed."
+    },
+    {
+      "address": "00c1815e",
+      "old_name": "___security_init_cookie",
+      "name": "___security_init_cookie",
+      "original_body_bytes": 148,
+      "added_evidence": "BL/BM reviewed source evidence: Complete148B: no native arguments; capture actual E15590 cookie before clearing FILETIME locals. If nondefault with nonzero high16, publish only complement. Else call actual GetSystemTimeAsFileTime, GetCurrentProcessId, GetCurrentThreadId, GetTickCount, QueryPerformanceCounter in order; XOR words/results. QPC BOOL ignored and its two local words remain uninitialized beforehand. BB40E64E becomes BB40E64F; otherwise zero high16 uses v|(v<<16), including zero remaining zero. Publish cookie then complementE15594. Qualified naked Win32 source borrows distinct stable same-domain words through added context; actual canonical owner, original register/frame residual identity, OS fault paths and game integration are not established. See reports/native_crt_cookie_initialization_bm.json. Primary and independent cookie review retained; combined current candidate validation is recorded separately. Native FH3/SEH, drop-in linkage and gameplay remain unclaimed."
+    },
+    {
+      "address": "00c04ef3",
+      "old_name": "LIBCRT_unmatched_00c04ef3",
+      "name": "BSP_Crt_ClearDebuggerHookState",
+      "original_body_bytes": 8,
+      "added_evidence": "BL/BM reviewed source evidence: Complete8B: AND DWORD[109EEA8],0 thenRET; incoming reason is unused. Preserve actual read/modify/write and AND flags (AF undefined). Source naked context-bearing cdecl hook adds a borrowed actual word argument, preserves EAX through PUSH/POP, and has ten code bytes; extra stack access/fault locations and original ABI identity are not equivalent claims. Called by Watson/GS-failure paths with reason values but this body only clears the actual hook state. Descriptive name is a hypothesis, not a recovered library symbol. See reports/native_crt_cookie_initialization_bm.json. Primary and independent cookie review retained; combined current candidate validation is recorded separately. Native FH3/SEH, drop-in linkage and gameplay remain unclaimed."
+    },
+    {
+      "address": "00bea150",
+      "old_name": "BSP_StructuredReader_Construct",
+      "name": "BSP_StructuredReader_Construct",
+      "original_body_bytes": 101,
+      "added_evidence": "BM/BN reviewed source evidence: Complete101B: ECX fresh caller-owned writable70h reader, EAX same, plainRET. Construct BF09A0 base, then ten actual415270 eight-byte path headers at+10h, stride8; only after all complete publish +60=0,+64=FFFFFFFF,+68=0,+6C=0. Base and concrete actual header provider are call-free/no-throw within valid nonfaulting storage, closing this complete construction through a direct ten-call specialization without invented allocator, pool, stream, unwind or terminate callbacks. Native generic BF7CD1/BF7D1E/BF7C10 and outer EHFlags1 fault eligibility remain separately documented; no catch-all replacement or native FH3/SEH claim. Source cdecl entry differs from native ECX ABI; fresh bytes are overwritten without releasing old contents. See reports/native_raw_reader_construction_bn.json and reports/native_raw_reader_vector_unwind_bm.json. Worker strict build, eight PE/live seeds and existing CTests passed; combined current candidate acceptance is recorded separately. Descriptive names remain hypotheses; gameplay unclaimed."
+    },
+    {
+      "address": "00bf09a0",
+      "old_name": "BSP_StreamReader_Construct",
+      "name": "BSP_StreamReader_Construct",
+      "original_body_bytes": 16,
+      "added_evidence": "BM/BN reviewed source evidence: Complete16B call-free primitive: ECX writable raw10h base; MOV EAX,ECX; XOR ECX,ECX; ordered zero stores at+0,+4,+8,+C; plainRET with EAX original pointer and ECX zero. Naked fastcall source emits the exact16 native code bytes, including ordered unaligned DWORD accesses. Does not allocate, release, attach a stream or create provider ownership. Exact leaf bytes do not establish original binary linkage, exception/frame identity or integrated game behavior. See reports/native_raw_reader_construction_bn.json and reports/native_raw_reader_vector_unwind_bm.json. Worker strict build, eight PE/live seeds and existing CTests passed; combined current candidate acceptance is recorded separately. Descriptive names remain hypotheses; gameplay unclaimed."
+    }
+  ],
+  "qualification": "Known library and existing reader names preserved; clear-hook name is descriptive hypothesis. Qualified Win32 source interfaces; reader closes complete valid nonfaulting fresh70h storage operation. Native frame/ABI/FH3/SEH and gameplay remain open."
+}

@@ -1,0 +1,1018 @@
+{
+  "packet": "orch2_native_crt_seh4_primitives_bt",
+  "base": "e9c7792df0bc8a213b6b13c88c206575f2b1eb4d",
+  "status": "complete_two_exact_naked_primitives_win32_build_two_ctests_pe_live_object_and_archive_checked",
+  "source": "src/native_crt_seh4_primitives.cpp",
+  "header": "include/bsp/native_crt_seh4_primitives.hpp",
+  "documentation": "docs/NATIVE_CRT_SEH4_PRIMITIVES_BT.md",
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_home": "J:/tools/ghidra_12.0.4_PUBLIC",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "installed_pe": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "size": 12223752,
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "sha512": "7b545a4c47fae14af6c50a1d4d0d2904c1b85f84b9a24d1516b95d77945693fc36b1f6bb9effb7fa29b22b06ebcafc230cdf97f5c332266a3de8dd83bdc29a97"
+  },
+  "provenance": [
+    {
+      "commit": "062331c340b9d8d19bd77c2ba528f20a2f44197a",
+      "report": "reports/native_crt_seh4_frame_br.json",
+      "whole_inventory_verified": 75,
+      "size_sha256_sha512_and_exact_path_set": true
+    },
+    {
+      "commit": "4b524e551c0f86956ec118e60b4d304a61ab817d",
+      "report": "reports/native_crt_seh4_leaves_bs.json",
+      "whole_inventory_verified": 119,
+      "size_sha256_sha512_and_exact_path_set": true
+    }
+  ],
+  "native_spans": [
+    {
+      "address": "00c07c45",
+      "length": 20,
+      "kind": "complete function",
+      "live_pe_equal": true,
+      "size": 20,
+      "sha256": "39142b8d79823b8b3c0dd534ee99caf6c8cce4347b7608cfc004a14c873f7411",
+      "sha512": "5ad92ee3d80fa8f5fd1a194bb3b9032a3921b1e5135507abe95c27593d049da0a3a272014e91333969d13822e0979bcab1bdee0f4cbb7392db782e9236b050cc"
+    },
+    {
+      "address": "00c0dcb6",
+      "length": 23,
+      "kind": "complete function",
+      "live_pe_equal": true,
+      "size": 23,
+      "sha256": "6e2b3bd553f0ffdd43df815cf3341fce2e76a73e8f9b243867c06b12310701fb",
+      "sha512": "ada9dea27f99abef2a376460cee8a126ca52bd5065de3e6153b0daeef87f3bcfabc436bac51a78b8b4c0c2e74611ac3fd976b2581365cc98c336b4620d113a11"
+    }
+  ],
+  "functions": [
+    {
+      "address": "00c07c45",
+      "name": "__SEH_epilog4",
+      "native_bytes": 20,
+      "native_end_exclusive": "00c07c59",
+      "source_symbol": "bsp::leave_native_crt_seh4_frame_00c07c45",
+      "original_abi": "Custom compiler-frame entry: EBP=F, ESP=P-4 holds helper continuation; FS0=F-10h current registration. Cookie atP then savedEDI/ESI/EBX; incomingEBP atF and enclosing return atF+4. No normal cdecl argument/stack contract.",
+      "source_abi": "Naked MSVC Win32 cdecl void symbol, no arguments. Deliberate compiler-frame entry with identical native instructions; ordinary C++ call usability not supplied.",
+      "schedule": [
+        "MOV ECX,[EBP-10h].",
+        "MOV FS:[0],ECX unlinks before stack restoration.",
+        "POP ECX obtains helper continuation.",
+        "First POP EDI discards cookie; second POP EDI restores actual savedEDI.",
+        "POP ESI; POP EBX; MOV ESP,EBP; POP EBP; PUSH ECX; RET."
+      ],
+      "normal_return": "ESP=F+4; incomingEBP/EDI/ESI/EBX restored; EAX/arithmetic flags unchanged; ECX helper continuation.",
+      "fault_exception_limit": "No cookie check, catch, compensating relink or exception policy. Initial frame read precedes unlink; later stack restoration faults occur after oldFS publication. Original faultPC/running-thread equivalence not proven.",
+      "native_instruction_abi_preserved": true,
+      "ordinary_cpp_call_compatible": false,
+      "abi_compatible": false
+    },
+    {
+      "address": "00c0dcb6",
+      "name": "_EH4_CallFilterFunc",
+      "native_bytes": 23,
+      "native_end_exclusive": "00c0dccd",
+      "source_symbol": "bsp::call_native_crt_eh4_filter_00c0dcb6",
+      "original_abi": "ECX actual native filter entry, EDX actual establisher frame; no stacked args; plainRET and raw filterEAX result.",
+      "source_abi": "Naked MSVC Win32 fastcall int32(uintptr_t actual_native_filter_entry, void* actual_establisher_frame); verified fastcall decorated symbol and exact ECX/EDX body.",
+      "schedule": [
+        "PUSH EBP,ESI,EDI,EBX in order.",
+        "MOV EBP,EDX.",
+        "XOR EAX,EAX; XOR EBX,EBX; XOR EDX,EDX; XOR ESI,ESI; XOR EDI,EDI.",
+        "CALL actualECX without stacked arguments.",
+        "POP EBX,EDI,ESI,EBP; RET."
+      ],
+      "filter_entry": "EBP actual frame; ECX actual entry; EAX/EBX/EDX/ESI/EDI zero; filter return word at helper_entryESP-14h. CF/OF/SF0, ZF/PF1, AF undefined from lastXOR.",
+      "normal_return": "Balanced native funclet stack required. Preserve original four nonvolatiles; retain raw filterEAX/arithmetic flags and incidentalECX/EDX outputs.",
+      "fault_exception_limit": "No null validation, normalization, catch or FS manipulation/repair. Actual filter fault/nonlocal exception transfer need not execute normal POP/RET. No invented restoration or unwind policy.",
+      "native_instruction_abi_preserved": true,
+      "register_entry_abi_preserved": true,
+      "abi_compatible": false
+    }
+  ],
+  "direct_calls": [],
+  "indirect_call_qualification": [
+    {
+      "caller": "00c0dcb6",
+      "site": "00c0dcc6",
+      "instruction": "CALL ECX",
+      "qualification": "Actual native filter entry from source ECX; actual frame enters EDX then EBP. No artificial callback/body/owner; exact register setup and raw return state retained."
+    }
+  ],
+  "direct_call_check_scope": "Zero direct-call instructions/rows; no inferred direct-provider closure. Single actual CALL ECX qualified from complete native bytes, current object and public ECX/EDX contract.",
+  "compiler_evidence": {
+    "compiler": {
+      "binary": {
+        "path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\Hostx64\\x86\\cl.exe",
+        "size": 891752,
+        "sha256": "95db52a9c9bd300131474769df7d32b342725b1e1574e0fc83a266479b196938",
+        "sha512": "390e9a478e6e3dd08f08b4a5d76a32d7d77239ff17f67bb0bf069d103ce1ee991d801353ef843b93b41fe2dd6dd9eff32f78b80dcc439f4eb61aba675394a6ec"
+      },
+      "version": "19.51.36244.0",
+      "architecture": "X86"
+    },
+    "traces": {
+      "command": {
+        "artifact": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-seh4-primitives-bt\\local\\native_crt_seh4_primitives_bt\\CL.command_target.txt",
+          "size": 1012,
+          "sha256": "20e714b6d5966522097f400f2a4005d2412977152398313dd2b864aa713bdf3e",
+          "sha512": "884d1ed21348ff7eba5755f13ba6e1565270956812371652b1153c38a0e75b3395ee5ce7b0c6fa3e7077a8a9e6260c45f740d3a3a918db888ca9d21b1e6d2872"
+        },
+        "lines": 2,
+        "all_matching_source_record_count": 1
+      },
+      "read": {
+        "artifact": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-seh4-primitives-bt\\local\\native_crt_seh4_primitives_bt\\CL.read_target.txt",
+          "size": 1114,
+          "sha256": "2cd7f28a753598c9f5fa75832d26afe1cd20f72bf926474b0885c460dac50d1f",
+          "sha512": "3954f5911e801a7aa10a614f94b48f6b4c84382f646ed1b812c9a6aa26a525e4c7da08c6765cf0fb78ed155906ccfcc9ed3f914fe5e642709c6c819da3a2839c"
+        },
+        "lines": 12,
+        "all_matching_source_record_count": 1
+      },
+      "write": {
+        "artifact": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-seh4-primitives-bt\\local\\native_crt_seh4_primitives_bt\\CL.write_target.txt",
+          "size": 256,
+          "sha256": "3253f54dab1b0ab70a897949628933865be1a4202d6a9e96c8ef067f5ef1cd43",
+          "sha512": "d84b1fb4a9ca70c571c4f8dceb9c1c5ebd90e7d6b0756179ab34b54b4c72914ef547a9124a510d36c1a4b5318ab439523d76df66f09e814f81f5a56e11932814"
+        },
+        "lines": 2,
+        "all_matching_source_record_count": 2,
+        "all_source_records_artifact": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-seh4-primitives-bt\\local\\native_crt_seh4_primitives_bt\\CL.write_all_source_records.txt",
+          "size": 301912,
+          "sha256": "31117821fe0da9c983545094b77be4ed7eeffdc116dec99d2db03c7dfe632648",
+          "sha512": "b0a89ac02af34df496fdf57d0fa3d21f80b911a48de11c222365d3791ad2b81fb36aa38aa05df5ec8ee33b2461007046c68e0bea56071b241c8176cfedb2e52f"
+        },
+        "current_object_output_records": 1,
+        "qualification": "Initial failed batch record includes source among inputs but does not list this object; current successful standalone source record is the sole write binding for the object."
+      }
+    },
+    "object": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-seh4-primitives-bt\\build\\win32\\bsp_core.dir\\Release\\native_crt_seh4_primitives.obj",
+      "size": 931,
+      "sha256": "6903c07851097da9437411a3ede5b565ef8b4d81c078db50e9a13911d6e99d18",
+      "sha512": "fdc7e500083359dee097789ad655d010268261708b787e960a842b9e6c762a4a90278c0fe61952825e3c30e8f96c135e2af1f2f1892c1c003e4a772f908d8121"
+    },
+    "archive": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-seh4-primitives-bt\\build\\win32\\Release\\bsp_core.lib",
+      "size": 57936586,
+      "sha256": "5519298e3a49eac1413558026fb1dfed3f7263e9a8487b2342b63049caa90d8c",
+      "sha512": "5f2965f3b1d9855161f5355b34940dca5acc7dcc023710ad7a8cc4a5d7115b45f22fa842763c70987158887caa2c2a6b7465e02d124cf9b359e91711221b94a4"
+    },
+    "archive_member": "bsp_core.dir\\Release\\native_crt_seh4_primitives.obj",
+    "matching_archive_members": 1,
+    "object_archive_equal": true,
+    "object_writable_sections": [],
+    "functions": [
+      {
+        "address": "00c07c45",
+        "symbol": "?leave_native_crt_seh4_frame_00c07c45@bsp@@YAXXZ",
+        "bytes": 20,
+        "artifact": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-seh4-primitives-bt\\local\\native_crt_seh4_primitives_bt\\00c07c45_compiled.bin",
+          "size": 20,
+          "sha256": "39142b8d79823b8b3c0dd534ee99caf6c8cce4347b7608cfc004a14c873f7411",
+          "sha512": "5ad92ee3d80fa8f5fd1a194bb3b9032a3921b1e5135507abe95c27593d049da0a3a272014e91333969d13822e0979bcab1bdee0f4cbb7392db782e9236b050cc"
+        },
+        "relocations": [],
+        "instructions": [
+          {
+            "offset": 0,
+            "bytes": "8b4df0",
+            "mnemonic": "mov",
+            "operand": "ecx, dword ptr [ebp - 0x10]"
+          },
+          {
+            "offset": 3,
+            "bytes": "64890d00000000",
+            "mnemonic": "mov",
+            "operand": "dword ptr fs:[0], ecx"
+          },
+          {
+            "offset": 10,
+            "bytes": "59",
+            "mnemonic": "pop",
+            "operand": "ecx"
+          },
+          {
+            "offset": 11,
+            "bytes": "5f",
+            "mnemonic": "pop",
+            "operand": "edi"
+          },
+          {
+            "offset": 12,
+            "bytes": "5f",
+            "mnemonic": "pop",
+            "operand": "edi"
+          },
+          {
+            "offset": 13,
+            "bytes": "5e",
+            "mnemonic": "pop",
+            "operand": "esi"
+          },
+          {
+            "offset": 14,
+            "bytes": "5b",
+            "mnemonic": "pop",
+            "operand": "ebx"
+          },
+          {
+            "offset": 15,
+            "bytes": "8be5",
+            "mnemonic": "mov",
+            "operand": "esp, ebp"
+          },
+          {
+            "offset": 17,
+            "bytes": "5d",
+            "mnemonic": "pop",
+            "operand": "ebp"
+          },
+          {
+            "offset": 18,
+            "bytes": "51",
+            "mnemonic": "push",
+            "operand": "ecx"
+          },
+          {
+            "offset": 19,
+            "bytes": "c3",
+            "mnemonic": "ret",
+            "operand": ""
+          }
+        ],
+        "instruction_count": 11,
+        "archive_symbol_definitions": [
+          "bsp_core.dir\\Release\\native_crt_seh4_primitives.obj"
+        ],
+        "native_bytes_identical": true,
+        "substitutions": []
+      },
+      {
+        "address": "00c0dcb6",
+        "symbol": "?call_native_crt_eh4_filter_00c0dcb6@bsp@@YIHIPAX@Z",
+        "bytes": 23,
+        "artifact": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-crt-seh4-primitives-bt\\local\\native_crt_seh4_primitives_bt\\00c0dcb6_compiled.bin",
+          "size": 23,
+          "sha256": "6e2b3bd553f0ffdd43df815cf3341fce2e76a73e8f9b243867c06b12310701fb",
+          "sha512": "ada9dea27f99abef2a376460cee8a126ca52bd5065de3e6153b0daeef87f3bcfabc436bac51a78b8b4c0c2e74611ac3fd976b2581365cc98c336b4620d113a11"
+        },
+        "relocations": [],
+        "instructions": [
+          {
+            "offset": 0,
+            "bytes": "55",
+            "mnemonic": "push",
+            "operand": "ebp"
+          },
+          {
+            "offset": 1,
+            "bytes": "56",
+            "mnemonic": "push",
+            "operand": "esi"
+          },
+          {
+            "offset": 2,
+            "bytes": "57",
+            "mnemonic": "push",
+            "operand": "edi"
+          },
+          {
+            "offset": 3,
+            "bytes": "53",
+            "mnemonic": "push",
+            "operand": "ebx"
+          },
+          {
+            "offset": 4,
+            "bytes": "8bea",
+            "mnemonic": "mov",
+            "operand": "ebp, edx"
+          },
+          {
+            "offset": 6,
+            "bytes": "33c0",
+            "mnemonic": "xor",
+            "operand": "eax, eax"
+          },
+          {
+            "offset": 8,
+            "bytes": "33db",
+            "mnemonic": "xor",
+            "operand": "ebx, ebx"
+          },
+          {
+            "offset": 10,
+            "bytes": "33d2",
+            "mnemonic": "xor",
+            "operand": "edx, edx"
+          },
+          {
+            "offset": 12,
+            "bytes": "33f6",
+            "mnemonic": "xor",
+            "operand": "esi, esi"
+          },
+          {
+            "offset": 14,
+            "bytes": "33ff",
+            "mnemonic": "xor",
+            "operand": "edi, edi"
+          },
+          {
+            "offset": 16,
+            "bytes": "ffd1",
+            "mnemonic": "call",
+            "operand": "ecx"
+          },
+          {
+            "offset": 18,
+            "bytes": "5b",
+            "mnemonic": "pop",
+            "operand": "ebx"
+          },
+          {
+            "offset": 19,
+            "bytes": "5f",
+            "mnemonic": "pop",
+            "operand": "edi"
+          },
+          {
+            "offset": 20,
+            "bytes": "5e",
+            "mnemonic": "pop",
+            "operand": "esi"
+          },
+          {
+            "offset": 21,
+            "bytes": "5d",
+            "mnemonic": "pop",
+            "operand": "ebp"
+          },
+          {
+            "offset": 22,
+            "bytes": "c3",
+            "mnemonic": "ret",
+            "operand": ""
+          }
+        ],
+        "instruction_count": 16,
+        "archive_symbol_definitions": [
+          "bsp_core.dir\\Release\\native_crt_seh4_primitives.obj"
+        ],
+        "native_bytes_identical": true,
+        "substitutions": []
+      }
+    ],
+    "native_comparison": "All43 emitted bytes equal original PE/live bytes; no relocations or substituted instructions.",
+    "abi_qualification": "Filter has actual MSVC fastcall symbol and exact ECX/EDX body; epilog cdecl void symbol is a qualified compiler-frame entry with explicit nonordinary stack/FS preconditions, not ordinary C++ caller usability."
+  },
+  "diagnostic_qualification": {
+    "warning": "MSVC C4733",
+    "scope": "warning(push)/disable4733/pop around naked epilog only",
+    "reason": "Exact native FS0 instruction restores caller-owned previous registration; creates no new handler or SafeSEH owner.",
+    "initial_rejected_build_log": "local/native_crt_seh4_primitives_bt/build_c4733_initial.txt",
+    "initial_build_exit_code": 1,
+    "other_W4_WX_and_linker_policies_preserved": true,
+    "fs_instruction_changed": false,
+    "native_handler_or_fs_validity_established": false
+  },
+  "validation": {
+    "strict_full_msvc_win32_build_exit_code": 0,
+    "native_seeds": 8,
+    "native_seed_matches": 8,
+    "ctests": [
+      "reconstructed_math",
+      "native_math_differential"
+    ],
+    "ctests_passed": 2,
+    "new_tests": 0,
+    "owned_source_runtime_executed": false,
+    "original_owned_body_executed": false,
+    "original_helper_body_executed": false,
+    "ghidra_mutated": false,
+    "game_validated": false,
+    "pushed": false
+  },
+  "open_source_domain": {
+    "original_prolog": "00c07c00",
+    "original_handler": "00c07c90",
+    "original_wrapper": "00c17653",
+    "wrapper_complete_bytes": 197,
+    "source_supplied_here": false,
+    "evidence": "BR75 and BS119 whole inventories verified and retained as provenance. Actual frame/cookie/scope/FS and complete handler ownership remain separate."
+  },
+  "limitations": [
+    "Exact instruction bytes and declared register entry do not establish native frame/FS/exception/fault/unwind/runtime or drop-in binary equivalence.",
+    "Epilog is not usable as ordinary C++ cleanup; caller must provide actual compiler frame, ESP and currentFS registration.",
+    "Filter requires actual executable native funclet and frame in the same domain; numeric PE evidence is not an automatically callable rebuilt-program pointer.",
+    "No synthetic filter, scope, frame, cookie, FS owner, validation, exception policy or missing provider stub.",
+    "No prologC07C00, handlerC07C90, RtlUnwind, NLG or cookie/check/failure-owner source included; C17653 entire197B remains open.",
+    "Neither primitive was executed. Existing math CTests are build checks for this packet, not tests of native frame/exception behavior."
+  ],
+  "local_inventory": {
+    "directory": "local/native_crt_seh4_primitives_bt",
+    "files": 91,
+    "bytes": 58640162,
+    "passes": 2,
+    "algorithms": [
+      "sha256",
+      "sha512"
+    ],
+    "complete_path_set_checked": true,
+    "method": "Whole-file first pass then independent chunked reads; report outside local directory avoids self-reference.",
+    "artifacts": [
+      {
+        "path": "local/native_crt_seh4_primitives_bt/00c07c45_asm.txt",
+        "size": 264,
+        "sha256": "bb3d19186d2325319ade4626956b55c0dc716df01103e651317ed162eeafa85a",
+        "sha512": "c62f01868ffc6e691c300c32a287bb9ff6154f1c4ca7027af5e5e866532b8c5c3b474b607d295dc5fb49989125312b2f37f2d3fba19a553954727766d281b9d8"
+      },
+      {
+        "path": "local/native_crt_seh4_primitives_bt/00c07c45_bytes.txt",
+        "size": 106,
+        "sha256": "57c35c851e5d4e5f32f7350c46f22763ce9ca0dae9ea5cb767102839b9cfcb35",
+        "sha512": "86ade397d58d400b507ae99477d1549333f3978dfdd89dfa6273ac130ed1ab7a11ad7282eaf63880d68fad16679db974f0490bc3b05a5483052fc2a504762886"
+      },
+      {
+        "path": "local/native_crt_seh4_primitives_bt/00c07c45_compiled.bin",
+        "size": 20,
+        "sha256": "39142b8d79823b8b3c0dd534ee99caf6c8cce4347b7608cfc004a14c873f7411",
+        "sha512": "5ad92ee3d80fa8f5fd1a194bb3b9032a3921b1e5135507abe95c27593d049da0a3a272014e91333969d13822e0979bcab1bdee0f4cbb7392db782e9236b050cc"
+      },
+      {
+        "path": "local/native_crt_seh4_primitives_bt/00c07c45_live.bin",
+        "size": 20,
+        "sha256": "39142b8d79823b8b3c0dd534ee99caf6c8cce4347b7608cfc004a14c873f7411",
+        "sha512": "5ad92ee3d80fa8f5fd1a194bb3b9032a3921b1e5135507abe95c27593d049da0a3a272014e91333969d13822e0979bcab1bdee0f4cbb7392db782e9236b050cc"
+      },
+      {
+        "path": "local/native_crt_seh4_primitives_bt/00c07c45_pe.bin",
+        "size": 20,
+        "sha256": "39142b8d79823b8b3c0dd534ee99caf6c8cce4347b7608cfc004a14c873f7411",
+        "sha512": "5ad92ee3d80fa8f5fd1a194bb3b9032a3921b1e5135507abe95c27593d049da0a3a272014e91333969d13822e0979bcab1bdee0f4cbb7392db782e9236b050cc"
+      },
+      {
+        "path": "local/native_crt_seh4_primitives_bt/00c07c45_proto.txt",
+        "size": 281,
+        "sha256": "f0f473eb058ecf8d769b53213e181bb3162c3f07c59438d552e1a71cf0bf7534",
+        "sha512": "49edfeac9023755e8e4b5014b3c70df37ef7dcf4eb5e3c78e7de3dc7572ca918dfbad06c8cb36edbdbd0c3a1cffdac67adbde4ec14d7e688db7bb2e33011e622"
+      },
+      {
+        "path": "local/native_crt_seh4_primitives_bt/00c07c45_raw.txt",
+        "size": 325,
+        "sha256": "5e2bb9fe8f54c406e9e2201912bd3d8bd11b175d2212b8e4f8da640ae37907d1",
+        "sha512": "c65751e3865a231eb27da4f39530d184d7ffaadd4e53a341b35933ad4a9b94b89645e0bace6d4240c66ffa7e56e138344b769d01426b0f5a9ff2955d5152fccf"
+      },
+      {
+        "path": "local/native_crt_seh4_primitives_bt/00c0dcb6_asm.txt",
+        "size": 345,
+        "sha256": "706e6e40031f536e81d2097c3943b7ff9f9497115f0c9c50fea1d2df4849c4aa",
+        "sha512": "3cc8e866b2238e7a0ae5fe7e0822886070705e33622eb8d2204fa349bea1e62742e0bfeb362e2d716b2f1270580a1595a448cdb413437422dc25b3498c1270f3"
+      },
+      {
+        "path": "local/native_crt_seh4_primitives_bt/00c0dcb6_bytes.txt",
+        "size": 118,
+        "sha256": "b94377b62979318ecdf173f8676390e7462d8d1f8cad49480a38f4e8a6d51d9c",
+        "sha512": "2f7c0cf5875c4428d2a2f8a839a36752574eb0f31f9116c22b892d726d0599890f09b6e5096b37408301483010f4f93cd999a2f6dcee5dae4af74665e1fbe523"
+      },
+      {
+        "path": "local/native_crt_seh4_primitives_bt/00c0dcb6_compiled.bin",
+        "size": 23,
+        "sha256": "6e2b3bd553f0ffdd43df815cf3341fce2e76a73e8f9b243867c06b12310701fb",
+        "sha512": "ada9dea27f99abef2a376460cee8a126ca52bd5065de3e6153b0daeef87f3bcfabc436bac51a78b8b4c0c2e74611ac3fd976b2581365cc98c336b4620d113a11"
+      },
+      {
+        "path": "local/native_crt_seh4_primitives_bt/00c0dcb6_live.bin",
+        "size": 23,
+        "sha256": "6e2b3bd553f0ffdd43df815cf3341fce2e76a73e8f9b243867c06b12310701fb",
+        "sha512": "ada9dea27f99abef2a376460cee8a126ca52bd5065de3e6153b0daeef87f3bcfabc436bac51a78b8b4c0c2e74611ac3fd976b2581365cc98c336b4620d113a11"
+      },
+      {
+        "path": "local/native_crt_seh4_primitives_bt/00c0dcb6_pe.bin",
+        "size": 23,
+        "sha256": "6e2b3bd553f0ffdd43df815cf3341fce2e76a73e8f9b243867c06b12310701fb",
+        "sha512": "ada9dea27f99abef2a376460cee8a126ca52bd5065de3e6153b0daeef87f3bcfabc436bac51a78b8b4c0c2e74611ac3fd976b2581365cc98c336b4620d113a11"
+      },
+      {
+        "path": "local/native_crt_seh4_primitives_bt/00c0dcb6_proto.txt",
+        "size": 310,
+        "sha256": "c1d5356d7adec04de1289740d3a304b5ca1d945c08090bc7928aa223aeb113b4",
+        "sha512": "7c7ee2d768bc538b534789385ed729eb51af63a673a9ca49e5a6d4ae53be2bf603cd0a4be93a84a6950e5ffad721b2761e95e9ccb120815926f84a9258350ade"
+      },
+      {
+        "path": "local/native_crt_seh4_primitives_bt/00c0dcb6_raw.txt",
+        "size": 413,
+        "sha256": "b21db012c7eeb5d4118b18bdd558810424723ec8ec2af1618be5e69807b5c083",
+        "sha512": "ba3bfb9a48d63b8f217ea7f5c2a493ff0b4a88882a9924937a3993990880152003149d048caffdf64729e97b5d80d27f9b1a983dc1e5cedd210f39290f595284"
+      },
+      {
+        "path": "local/native_crt_seh4_primitives_bt/bsp_core_build.lib",
+        "size": 57936586,
+        "sha256": "5519298e3a49eac1413558026fb1dfed3f7263e9a8487b2342b63049caa90d8c",
+        "sha512": "5f2965f3b1d9855161f5355b34940dca5acc7dcc023710ad7a8cc4a5d7115b45f22fa842763c70987158887caa2c2a6b7465e02d124cf9b359e91711221b94a4"
+      },
+      {
+        "path": "local/native_crt_seh4_primitives_bt/build.txt",
+        "size": 6335,
+        "sha256": "3cc0440bd91a2d01171b5dcd7d0e95399213edb886820952a6e83aaaf19c7f10",
+        "sha512": "6671d8afbce6b8fe9bab820ad3aee7c86bf85d27999182e61acb77d8791e70cab3517edcc3e70c334a5dbc431b885c4b1efb428f5c86d3c5f7c80c3ee11b4234"
+      },
+      {
+        "path": "local/native_crt_seh4_primitives_bt/build_c4733_initial.txt",
+        "size": 42939,
+        "sha256": "84aea12eb0bc50c4991a3534709df5925753685c047795bf1269ec083271cafe",
+        "sha512": "821ce768fb685f5686b9a333a2441012b00037d85b1fa60411f68b2912f7e3d67c0f9997730210cce19ad4a1f60cf5654e9adb09e3b877510c73748f707a55e9"
+      },
+      {
+        "path": "local/native_crt_seh4_primitives_bt/capture.py",
+        "size": 4449,
+        "sha256": "cb735758777a86eb6ae7527caac65a0c155442f6b6da04cffccbcc55466825e2",
+        "sha512": "fda1b8697eafe432347b749c43f1f594ffd87616868576e779dee0c76a0e726e9ac94e845a14ee08d309eab67ce36dfa1fbb0f0d01e48acdfdb827f42f6617e1"
+      },
+      {
+        "path": "local/native_crt_seh4_primitives_bt/capture_summary.json",
+        "size": 2556,
+        "sha256": "201e761a42334d252da7b3b25424f43103632c5811dc06de0ac7958df2fe2184",
+        "sha512": "dc46b510aea7fd74e9691135caad41c6f4ca829eb5b4036804bd669e10b0d94bb28d437346355f2027cff2549a74f20d50cb96995050d59160c9d13aef64431f"
+      },
+      {
+        "path": "local/native_crt_seh4_primitives_bt/CL.command_target.txt",
+        "size": 1012,
+        "sha256": "20e714b6d5966522097f400f2a4005d2412977152398313dd2b864aa713bdf3e",
+        "sha512": "884d1ed21348ff7eba5755f13ba6e1565270956812371652b1153c38a0e75b3395ee5ce7b0c6fa3e7077a8a9e6260c45f740d3a3a918db888ca9d21b1e6d2872"
+      },
+      {
+        "path": "local/native_crt_seh4_primitives_bt/CL.read_target.txt",
+        "size": 1114,
+        "sha256": "2cd7f28a753598c9f5fa75832d26afe1cd20f72bf926474b0885c460dac50d1f",
+        "sha512": "3954f5911e801a7aa10a614f94b48f6b4c84382f646ed1b812c9a6aa26a525e4c7da08c6765cf0fb78ed155906ccfcc9ed3f914fe5e642709c6c819da3a2839c"
+      },
+      {
+        "path": "local/native_crt_seh4_primitives_bt/CL.write_all_source_records.txt",
+        "size": 301912,
+        "sha256": "31117821fe0da9c983545094b77be4ed7eeffdc116dec99d2db03c7dfe632648",
+        "sha512": "b0a89ac02af34df496fdf57d0fa3d21f80b911a48de11c222365d3791ad2b81fb36aa38aa05df5ec8ee33b2461007046c68e0bea56071b241c8176cfedb2e52f"
+      },
+      {
+        "path": "local/native_crt_seh4_primitives_bt/CL.write_object_line.txt",
+        "size": 142,
+        "sha256": "b0c5097290a9b9ea25df98f5aa91251a6dedf877444688e0296b86645256940f",
+        "sha512": "96139c8035b028ff53fdd90649f541224be82ba09755847b3ccee5095768fe9ad6d53eea3072f41885b34e69d100dbbedda301a2e67035e38f1be73acf95ef21"
+      },
+      {
+        "path": "local/native_crt_seh4_primitives_bt/CL.write_target.txt",
+        "size": 256,
+        "sha256": "3253f54dab1b0ab70a897949628933865be1a4202d6a9e96c8ef067f5ef1cd43",
+        "sha512": "d84b1fb4a9ca70c571c4f8dceb9c1c5ebd90e7d6b0756179ab34b54b4c72914ef547a9124a510d36c1a4b5318ab439523d76df66f09e814f81f5a56e11932814"
+      },
+      {
+        "path": "local/native_crt_seh4_primitives_bt/CMakeCXXCompiler.cmake",
+        "size": 6498,
+        "sha256": "1e335b70d73e508c6038c58b3dee1b26845afbe82697b05b9a0a759c1ae68854",
+        "sha512": "6c66a6c1d55b9d08e5d9146d3f528cdf35f924a22d34e058f3d96ea306fc5923add11ac2d9866e14df89001b24172e45a8eb740b830b547c3f79e8e64aba4ff7"
+      },
+      {
+        "path": "local/native_crt_seh4_primitives_bt/commit_message.txt",
+        "size": 448,
+        "sha256": "194e040a4cd4f83cbb119935fdcde46bb548a7d578b642b2f953156ba82e81fb",
+        "sha512": "441ff355ce4d380e6beee17ac44998b40e643254729f09368fb1f76eebb73324cbfd8c59ad7656f20a355d31efa403978ab88d7d60f126c9be7818cdb8b9785c"
+      },
+      {
+        "path": "local/native_crt_seh4_primitives_bt/compiler.py",
+        "size": 9279,
+        "sha256": "6fc60ab929d2da2fb2587d1e137526863a9db0145589850fb158ac5e96e9801c",
+        "sha512": "fb9777176b554ccea2d86baa7b29460f4a9c50ad9d4e8e231ab1f4bf031501d6d26a28577476ba58ea032a80c49e28407e33883ded5e3d924adb1f7d0b019f52"
+      },
+      {
+        "path": "local/native_crt_seh4_primitives_bt/compiler_evidence.json",
+        "size": 9636,
+        "sha256": "9b8402549799e0fa5c8f4426e97de630d72e38f4cba931c1041da72508fdcc6e",
+        "sha512": "c54fcb5c0123e9a705c11fcdf97abf2aa564dba6a0e06d7add7f816a46c444a9397cb0f292e2987a3d3df23f01fc994f4cdd02861d2fdf3518bfeded0c380c0a"
+      },
+      {
+        "path": "local/native_crt_seh4_primitives_bt/inventory.py",
+        "size": 2777,
+        "sha256": "b4f2041701da52eb5ea776b6eb4f705753a1d73a1e8d8b8496dee604b1e1fa94",
+        "sha512": "76fc3801b2396624b926cde4dae6574f32d951bd593f99463b924cc2291321fb31a41030d7abd053f0a31cc488a84f5de8aee0fcb2aff438f897ed1a87e08972"
+      },
+      {
+        "path": "local/native_crt_seh4_primitives_bt/ledger_records.json",
+        "size": 4597,
+        "sha256": "33d59aca3d2166f02a188ba797eb40ce3af88aa53e44d2cb7a421b2e77d28db5",
+        "sha512": "84bf7021ec257dbca64238725628e681349c17e920951fe1f0082e37ba3ee4019377355eb15d322143b4ae0d5bade4caeab23754f8dc939eba4956ec1371dd5a"
+      },
+      {
+        "path": "local/native_crt_seh4_primitives_bt/native_crt_seh4_primitives_archive.obj",
+        "size": 931,
+        "sha256": "6903c07851097da9437411a3ede5b565ef8b4d81c078db50e9a13911d6e99d18",
+        "sha512": "fdc7e500083359dee097789ad655d010268261708b787e960a842b9e6c762a4a90278c0fe61952825e3c30e8f96c135e2af1f2f1892c1c003e4a772f908d8121"
+      },
+      {
+        "path": "local/native_crt_seh4_primitives_bt/native_crt_seh4_primitives_build.obj",
+        "size": 931,
+        "sha256": "6903c07851097da9437411a3ede5b565ef8b4d81c078db50e9a13911d6e99d18",
+        "sha512": "fdc7e500083359dee097789ad655d010268261708b787e960a842b9e6c762a4a90278c0fe61952825e3c30e8f96c135e2af1f2f1892c1c003e4a772f908d8121"
+      },
+      {
+        "path": "local/native_crt_seh4_primitives_bt/pinned_br/00c07c00_asm.txt",
+        "size": 688,
+        "sha256": "ea847dfc9470fd7c7fbace0afdb29fbc22aeccfea8286fdf5992be460c4df95f",
+        "sha512": "d44bfa829f1f80d45bc5e56b2897df2a0797b533ad342485d57df195a537f9e3490fa4bb28c28ba90149285e8164854291a478eb11f722c355ff8f7c662d3342"
+      },
+      {
+        "path": "local/native_crt_seh4_primitives_bt/pinned_br/00c07c00_asm_0.txt",
+        "size": 688,
+        "sha256": "ea847dfc9470fd7c7fbace0afdb29fbc22aeccfea8286fdf5992be460c4df95f",
+        "sha512": "d44bfa829f1f80d45bc5e56b2897df2a0797b533ad342485d57df195a537f9e3490fa4bb28c28ba90149285e8164854291a478eb11f722c355ff8f7c662d3342"
+      },
+      {
+        "path": "local/native_crt_seh4_primitives_bt/pinned_br/00c07c00_bytes.txt",
+        "size": 341,
+        "sha256": "83c71f0912fab43343fb78099fb665efe99839cddc24118989be5d09cf6e7e6d",
+        "sha512": "a8c0e45b8eba7097ba419bc03114faf49f6ef5d1c657a8477cc5300c2a9e3676f671fa64a6bf496f4fd1a48eb36270bce4476bd0b5f977d07106a432c61d2d04"
+      },
+      {
+        "path": "local/native_crt_seh4_primitives_bt/pinned_br/00c07c00_live.bin",
+        "size": 69,
+        "sha256": "bbff6d17e6e90214ce3f7a96a7240ac47b46dcbba6992960576da81770195dcd",
+        "sha512": "1a798b137906a7205c5dfd53139c35c43a556e2a7f46650530f837bb93a3b7e7a0f4a4785b9d31b1ab5b4c3e19c32a57383d1e51e1ba296c3af6190c574507a9"
+      },
+      {
+        "path": "local/native_crt_seh4_primitives_bt/pinned_br/00c07c00_lookup.txt",
+        "size": 583,
+        "sha256": "ec8c31865d39bbd5b0d80db273e31e02862b8b0a58327bcc6f0cf16454056064",
+        "sha512": "390b56d495d74153830aee5db8def6d2b9d51b1d4158c6b60f0e68cfae688dc9ebf81c0d1787daf686b2fc9da83ff41fc7fae9f2e0021c65f410b31aefc4f2db"
+      },
+      {
+        "path": "local/native_crt_seh4_primitives_bt/pinned_br/00c07c00_pe.bin",
+        "size": 69,
+        "sha256": "bbff6d17e6e90214ce3f7a96a7240ac47b46dcbba6992960576da81770195dcd",
+        "sha512": "1a798b137906a7205c5dfd53139c35c43a556e2a7f46650530f837bb93a3b7e7a0f4a4785b9d31b1ab5b4c3e19c32a57383d1e51e1ba296c3af6190c574507a9"
+      },
+      {
+        "path": "local/native_crt_seh4_primitives_bt/pinned_br/00c07c00_proto.txt",
+        "size": 281,
+        "sha256": "b3ee05af0fb4599fa2ea30464ff3b488cf9bae7ec20090af47ac7c7bf95dc88c",
+        "sha512": "207abb2dfcf091d91fd0a067ec1a5299980103793693f7203a0eb79d6806fa9e9e81d0a7bd3c7c8c0a04a4e2a3f3d0690a1c513254ddf61b3b7f969ffd9b14f3"
+      },
+      {
+        "path": "local/native_crt_seh4_primitives_bt/pinned_br/00c07c00_raw.txt",
+        "size": 749,
+        "sha256": "d4e161c3a08102def5152d6139a81bf02ba4805545efa0dffef5d15b4857d828",
+        "sha512": "87bcf1fd896e92c6a81da6174d14e070258b7a7aa5435c1cb73cad1f9c11bbfad96dd6ed2bec291bd40ddc7e6ce2954dd11b546db3e76921dea41444c756e1ab"
+      },
+      {
+        "path": "local/native_crt_seh4_primitives_bt/pinned_br/00c07c00_raw_complete.txt",
+        "size": 1161,
+        "sha256": "9a49c8900d39e19771872e04a20cfa3800220cd3a72f62952b027db551fb5fb1",
+        "sha512": "2b2c8379e64a10dc06914630ab2e6993854f7c5b2b8e24d2908ef08dd3e05c8cc0aca935bf128dc54ef1cbe058e8755f706e946cb760c4e64f65f60bda5032b6"
+      },
+      {
+        "path": "local/native_crt_seh4_primitives_bt/pinned_br/00c07c45_asm.txt",
+        "size": 264,
+        "sha256": "bb3d19186d2325319ade4626956b55c0dc716df01103e651317ed162eeafa85a",
+        "sha512": "c62f01868ffc6e691c300c32a287bb9ff6154f1c4ca7027af5e5e866532b8c5c3b474b607d295dc5fb49989125312b2f37f2d3fba19a553954727766d281b9d8"
+      },
+      {
+        "path": "local/native_crt_seh4_primitives_bt/pinned_br/00c07c45_asm_0.txt",
+        "size": 264,
+        "sha256": "bb3d19186d2325319ade4626956b55c0dc716df01103e651317ed162eeafa85a",
+        "sha512": "c62f01868ffc6e691c300c32a287bb9ff6154f1c4ca7027af5e5e866532b8c5c3b474b607d295dc5fb49989125312b2f37f2d3fba19a553954727766d281b9d8"
+      },
+      {
+        "path": "local/native_crt_seh4_primitives_bt/pinned_br/00c07c45_bytes.txt",
+        "size": 106,
+        "sha256": "57c35c851e5d4e5f32f7350c46f22763ce9ca0dae9ea5cb767102839b9cfcb35",
+        "sha512": "86ade397d58d400b507ae99477d1549333f3978dfdd89dfa6273ac130ed1ab7a11ad7282eaf63880d68fad16679db974f0490bc3b05a5483052fc2a504762886"
+      },
+      {
+        "path": "local/native_crt_seh4_primitives_bt/pinned_br/00c07c45_live.bin",
+        "size": 20,
+        "sha256": "39142b8d79823b8b3c0dd534ee99caf6c8cce4347b7608cfc004a14c873f7411",
+        "sha512": "5ad92ee3d80fa8f5fd1a194bb3b9032a3921b1e5135507abe95c27593d049da0a3a272014e91333969d13822e0979bcab1bdee0f4cbb7392db782e9236b050cc"
+      },
+      {
+        "path": "local/native_crt_seh4_primitives_bt/pinned_br/00c07c45_lookup.txt",
+        "size": 603,
+        "sha256": "7f24e52ebdecc0eb66b9a506486717a208e1278f93278a3e080c33fff6e8ccaf",
+        "sha512": "b336597084db9ddfa5656077b1bdd3a2fab39f48c13b54eddc4276db12a9a8a62fd995f49ca8fc5e2a622d3222a1c71374e398ea90cb04b30a68f71882616d00"
+      },
+      {
+        "path": "local/native_crt_seh4_primitives_bt/pinned_br/00c07c45_pe.bin",
+        "size": 20,
+        "sha256": "39142b8d79823b8b3c0dd534ee99caf6c8cce4347b7608cfc004a14c873f7411",
+        "sha512": "5ad92ee3d80fa8f5fd1a194bb3b9032a3921b1e5135507abe95c27593d049da0a3a272014e91333969d13822e0979bcab1bdee0f4cbb7392db782e9236b050cc"
+      },
+      {
+        "path": "local/native_crt_seh4_primitives_bt/pinned_br/00c07c45_proto.txt",
+        "size": 281,
+        "sha256": "f0f473eb058ecf8d769b53213e181bb3162c3f07c59438d552e1a71cf0bf7534",
+        "sha512": "49edfeac9023755e8e4b5014b3c70df37ef7dcf4eb5e3c78e7de3dc7572ca918dfbad06c8cb36edbdbd0c3a1cffdac67adbde4ec14d7e688db7bb2e33011e622"
+      },
+      {
+        "path": "local/native_crt_seh4_primitives_bt/pinned_br/00c07c45_raw.txt",
+        "size": 325,
+        "sha256": "5e2bb9fe8f54c406e9e2201912bd3d8bd11b175d2212b8e4f8da640ae37907d1",
+        "sha512": "c65751e3865a231eb27da4f39530d184d7ffaadd4e53a341b35933ad4a9b94b89645e0bace6d4240c66ffa7e56e138344b769d01426b0f5a9ff2955d5152fccf"
+      },
+      {
+        "path": "local/native_crt_seh4_primitives_bt/pinned_br/00c07c45_raw_complete.txt",
+        "size": 507,
+        "sha256": "6fe9b065771fb338a46e75b0ee0b0f0eb28c5b58cc28d3bdd5a9148595e651c4",
+        "sha512": "81fbff9e15db856b7560eeabfebe0111dc720485f98b0f1596b7a6e72c6bc117b265874f8136e073bb8763c937aca5c87f5f3145badd8b0db92e63d2f1754415"
+      },
+      {
+        "path": "local/native_crt_seh4_primitives_bt/pinned_br/00c07c90_asm.txt",
+        "size": 4171,
+        "sha256": "fd884341a75986597dbab7bacb808b74f78c551e9cda943f2e1114c1ab013e03",
+        "sha512": "321c71c6f1182fefa0f5ae95023a2a016901f2caf6621c74feb7491cf1642755352297b3d8aa547ff6cf1bf878bbc2c9683e4518999cb31f6bbf2c253a6e53dc"
+      },
+      {
+        "path": "local/native_crt_seh4_primitives_bt/pinned_br/00c07c90_asm_0.txt",
+        "size": 1610,
+        "sha256": "2453f0fe0b3c80d9609d3ad602ec8c51ea66ef6fd115fcdda40755d599028083",
+        "sha512": "533d408acd7734b0c40ffc3226821230436eadcf1d7c69611437528ed1390214f2cc4f8ebf34ec6b517820533de48b45b77666e342645b37c143c8ec7b110118"
+      },
+      {
+        "path": "local/native_crt_seh4_primitives_bt/pinned_br/00c07c90_asm_45.txt",
+        "size": 1439,
+        "sha256": "dacd38fdfb31ad7f354ba677c309ee0fcc40aa3c83a9721d5b768670b871d8bd",
+        "sha512": "1efea9ec911dcd7dab5ca471dbf69e9963ae6d5df1db5f969b68e69f464ead0aaad77b17d4c50b99c059f5acd048ee12cbee27ac840545bbfdcfd57b76a24831"
+      },
+      {
+        "path": "local/native_crt_seh4_primitives_bt/pinned_br/00c07c90_asm_90.txt",
+        "size": 1118,
+        "sha256": "06d4f7a27f969ef62c86da21e6ab521672ea598baadcc02c73414eea882c1389",
+        "sha512": "b80840c11d35a74d08b9da1fca6b1c210d56fb08e4f9a8b76a4f607c0e53d0a3d94bae2532acc0932652ab4e97c2238ff9195ba2613aa44ad6f3aaed2bfcb435"
+      },
+      {
+        "path": "local/native_crt_seh4_primitives_bt/pinned_br/00c07c90_bytes.txt",
+        "size": 1962,
+        "sha256": "5be1c97b81ca9c57b32cf5096c9830d94583eb55f30360ec78a8c7370d77ddb7",
+        "sha512": "8d3a2e4da54415560518074564222b01d6a0cb8ab13c341b69f5411033dcf24d838f2f3e79225fb3708713644d715a848caa8b7e0abc82fac3e76181cad7ac32"
+      },
+      {
+        "path": "local/native_crt_seh4_primitives_bt/pinned_br/00c07c90_live.bin",
+        "size": 406,
+        "sha256": "65317c11229687c1612e1755f3e9fc5d321024ae01c2e62bbf4083c516847a69",
+        "sha512": "5ff44cfae05f8b28d5bcb01a0b0c8e71fac37b29baa0a8769f8bebdc14cd46e1330d8e13eb8aac40ba592aa8791db605ab76de0c5029e66f40b04c4516aed41b"
+      },
+      {
+        "path": "local/native_crt_seh4_primitives_bt/pinned_br/00c07c90_lookup.txt",
+        "size": 439,
+        "sha256": "25ccfba674baf7568b084e17713e45ac6676864e9ce5db66581b10b6a3c45c18",
+        "sha512": "01d76d399f29bc02f8b1c56563df584cd5ccaef0f74c4c57909a75087704bad9fb5a705f1e157a4e9920facda9600285aff20e6c2a9db86189655b6bb82b4d88"
+      },
+      {
+        "path": "local/native_crt_seh4_primitives_bt/pinned_br/00c07c90_pe.bin",
+        "size": 406,
+        "sha256": "65317c11229687c1612e1755f3e9fc5d321024ae01c2e62bbf4083c516847a69",
+        "sha512": "5ff44cfae05f8b28d5bcb01a0b0c8e71fac37b29baa0a8769f8bebdc14cd46e1330d8e13eb8aac40ba592aa8791db605ab76de0c5029e66f40b04c4516aed41b"
+      },
+      {
+        "path": "local/native_crt_seh4_primitives_bt/pinned_br/00c07c90_proto.txt",
+        "size": 293,
+        "sha256": "500f44866421b5348dd94f8a9539cb4d70209eff2f6dea142d66cc8466cb4852",
+        "sha512": "4ecfb59190843455b2362399df7b76a051605268f70dd506c3296a1563ab8c1c13c28fc07788e9ada2331088148d7d6a16bf73ba70fec726746fc124c2605480"
+      },
+      {
+        "path": "local/native_crt_seh4_primitives_bt/pinned_br/00c07c90_raw_complete.txt",
+        "size": 6744,
+        "sha256": "105d671865c68f45a917cb6526f4c10a4830fb406d4d9d59091a538ee3cad294",
+        "sha512": "463285fc2836ebf2329e0ad2c0db5fbda43d21161e3ebed834ff0fa198d8736f3f5b1e9430c95da74a9e615aaa73f10aa751f8cc251686ee17e7490a7832f359"
+      },
+      {
+        "path": "local/native_crt_seh4_primitives_bt/pinned_br/00c07c90_xrefs.txt",
+        "size": 157,
+        "sha256": "f74fd3beea8a2218c0abb01bde8851439a3dc075c89851efb352246498006523",
+        "sha512": "e3f094212d591792d09bed61931560b00f72368c3ce5be60bbe4e5c362eaf621372fbd1aa1f876c5980c03382f8473a82dc9fa7cff5370cea200b490d526a89c"
+      },
+      {
+        "path": "local/native_crt_seh4_primitives_bt/pinned_br/00c17653_asm.txt",
+        "size": 1423,
+        "sha256": "0a8c74f6d9c33f1ccab7920b468ea78aba0f470176a93d7552337f3803db63c7",
+        "sha512": "4453d4b669a0868450c87705772f6534ccdcd8aaaacc66c23d5bc11fad608d80d2fd834f467231f90c84a4008294d9c5f2d9460f42ea27bc0e5b7906a9faa924"
+      },
+      {
+        "path": "local/native_crt_seh4_primitives_bt/pinned_br/00c17653_bytes.txt",
+        "size": 957,
+        "sha256": "940f1dea04c8318f84ca044076f73e26616da7aa73db46072c3777cf21ae9328",
+        "sha512": "e794efb859c8688fd955040812903c9b03621216ef94f982eed2d70e6ffff3235c2855817d4b9b93941c04ba76dd9a157dea53873b38a24cf225d27e4143180e"
+      },
+      {
+        "path": "local/native_crt_seh4_primitives_bt/pinned_br/00c17653_decompile.txt",
+        "size": 1378,
+        "sha256": "0db823bbf07ed270d1a64d585ea077515985216ef1f81625a152d0761f98531f",
+        "sha512": "7dce977596ff9e016a0799fbbe1da1593beb58555da67e12283daa2eb8e636457f4d7fbf078c956e08c9b6ea0dfa451660bcf0e9840d7c8ec9bde1eb93a8e2de"
+      },
+      {
+        "path": "local/native_crt_seh4_primitives_bt/pinned_br/00c17653_live.bin",
+        "size": 197,
+        "sha256": "60e624dd047a939340de897a25bdd15dd3b6d77b763d873c5459e1d233aa7a1f",
+        "sha512": "0bf9106806cfe2d5392c4a88b0dff02db8b83ef292cb3e0b64a610cfb454d3eee4c3eb6354c422c3346f349c78efe4bda6708502ee3668c971b4bc1e71572696"
+      },
+      {
+        "path": "local/native_crt_seh4_primitives_bt/pinned_br/00c17653_pe.bin",
+        "size": 197,
+        "sha256": "60e624dd047a939340de897a25bdd15dd3b6d77b763d873c5459e1d233aa7a1f",
+        "sha512": "0bf9106806cfe2d5392c4a88b0dff02db8b83ef292cb3e0b64a610cfb454d3eee4c3eb6354c422c3346f349c78efe4bda6708502ee3668c971b4bc1e71572696"
+      },
+      {
+        "path": "local/native_crt_seh4_primitives_bt/pinned_br/00c17653_proto.txt",
+        "size": 329,
+        "sha256": "e17fbbec8256d05e0b93014e043b7172ccd346267deac8e79895e73edee2aeb4",
+        "sha512": "6cb316182b6b54d642006a99d9e3318db46d8afe699cfe9ca375f62dfd6b1ac8e5f0c5fbc1942e240e0e73d42c8b4e0419ea5ff5aff5c24d59dae6a7c0c768b5"
+      },
+      {
+        "path": "local/native_crt_seh4_primitives_bt/pinned_br/00c17653_raw.txt",
+        "size": 1952,
+        "sha256": "1a174293f483efe89d803b95807ca2a5b6dc175e53abb4507735e7d41788f24c",
+        "sha512": "ea846c7e560e73717c70c4c420882e6ed6bb5bd2805c38cf102ff61eafb9cc089541e157263aaf848c36edde7ff29ee23e9cf6e1294a66849e9696fd287ad0ee"
+      },
+      {
+        "path": "local/native_crt_seh4_primitives_bt/pinned_br/00e037b8_bytes.txt",
+        "size": 138,
+        "sha256": "ddb0c1b00186c6e315e0493e6c493f2c0ea4e524391cf662a3575d68b6a05493",
+        "sha512": "adfbbceda4964261e034f8f501c5abd8cb8414a449c6f2a351347600708c7a3a4f762702954faaa856b7de722cc1da6981bebde25b9cab4dbeef81c9eb0d0901"
+      },
+      {
+        "path": "local/native_crt_seh4_primitives_bt/pinned_br/00e037b8_live.bin",
+        "size": 28,
+        "sha256": "e38bb5f2547c493782a0263534c139ab2e2617847258019aa439d331f7f8d4be",
+        "sha512": "0f68c7dbde3976bff755e228c7fd41fd4708c518a7c4f6c47f709fc71e9da8bb885d4b1f845b64309fd3669c653a82d133f784f69e0189a1fddfc86131606d3b"
+      },
+      {
+        "path": "local/native_crt_seh4_primitives_bt/pinned_br/00e037b8_pe.bin",
+        "size": 28,
+        "sha256": "e38bb5f2547c493782a0263534c139ab2e2617847258019aa439d331f7f8d4be",
+        "sha512": "0f68c7dbde3976bff755e228c7fd41fd4708c518a7c4f6c47f709fc71e9da8bb885d4b1f845b64309fd3669c653a82d133f784f69e0189a1fddfc86131606d3b"
+      },
+      {
+        "path": "local/native_crt_seh4_primitives_bt/pinned_br_report.json",
+        "size": 46735,
+        "sha256": "3266648959cb29ee5a58b4230000284f41041c524b696488757d5d350dfa574f",
+        "sha512": "ac39ebd5f0b486c1c0eca479edf3c9c5988cd63171d02cd3cdcbe67c3e56dc9a55771c47230cad649e35fdc91467de971beda0449ad0a250c2e44561eec364d8"
+      },
+      {
+        "path": "local/native_crt_seh4_primitives_bt/pinned_bs/00c0dcb6_asm.txt",
+        "size": 345,
+        "sha256": "706e6e40031f536e81d2097c3943b7ff9f9497115f0c9c50fea1d2df4849c4aa",
+        "sha512": "3cc8e866b2238e7a0ae5fe7e0822886070705e33622eb8d2204fa349bea1e62742e0bfeb362e2d716b2f1270580a1595a448cdb413437422dc25b3498c1270f3"
+      },
+      {
+        "path": "local/native_crt_seh4_primitives_bt/pinned_bs/00c0dcb6_asm_0.txt",
+        "size": 345,
+        "sha256": "706e6e40031f536e81d2097c3943b7ff9f9497115f0c9c50fea1d2df4849c4aa",
+        "sha512": "3cc8e866b2238e7a0ae5fe7e0822886070705e33622eb8d2204fa349bea1e62742e0bfeb362e2d716b2f1270580a1595a448cdb413437422dc25b3498c1270f3"
+      },
+      {
+        "path": "local/native_crt_seh4_primitives_bt/pinned_bs/00c0dcb6_bytes.txt",
+        "size": 118,
+        "sha256": "b94377b62979318ecdf173f8676390e7462d8d1f8cad49480a38f4e8a6d51d9c",
+        "sha512": "2f7c0cf5875c4428d2a2f8a839a36752574eb0f31f9116c22b892d726d0599890f09b6e5096b37408301483010f4f93cd999a2f6dcee5dae4af74665e1fbe523"
+      },
+      {
+        "path": "local/native_crt_seh4_primitives_bt/pinned_bs/00c0dcb6_live.bin",
+        "size": 23,
+        "sha256": "6e2b3bd553f0ffdd43df815cf3341fce2e76a73e8f9b243867c06b12310701fb",
+        "sha512": "ada9dea27f99abef2a376460cee8a126ca52bd5065de3e6153b0daeef87f3bcfabc436bac51a78b8b4c0c2e74611ac3fd976b2581365cc98c336b4620d113a11"
+      },
+      {
+        "path": "local/native_crt_seh4_primitives_bt/pinned_bs/00c0dcb6_lookup.txt",
+        "size": 277,
+        "sha256": "ba60c0a1192421dce1ed2c02b5de27980e66b163b61372570ef63109c698b00f",
+        "sha512": "efc881bd58d28449e225f75b702f1b3bf40b08dcddc4c1bea586708660270af5b83579369a9c741037d2319b24a973529c027d0f0260501622aad5027819390b"
+      },
+      {
+        "path": "local/native_crt_seh4_primitives_bt/pinned_bs/00c0dcb6_pe.bin",
+        "size": 23,
+        "sha256": "6e2b3bd553f0ffdd43df815cf3341fce2e76a73e8f9b243867c06b12310701fb",
+        "sha512": "ada9dea27f99abef2a376460cee8a126ca52bd5065de3e6153b0daeef87f3bcfabc436bac51a78b8b4c0c2e74611ac3fd976b2581365cc98c336b4620d113a11"
+      },
+      {
+        "path": "local/native_crt_seh4_primitives_bt/pinned_bs/00c0dcb6_proto.txt",
+        "size": 661,
+        "sha256": "8888c105137855310b27d56ab250522897b17a89ccda73a57a4d7bef4c1c82e1",
+        "sha512": "aff196b547d0a9bcf96335b023573d6f4da7e8253f377127db14a61b387ceab7157755c4cae4da51f971d43a50decd0246535ee3b7f6cfed4e609ac2ebf90307"
+      },
+      {
+        "path": "local/native_crt_seh4_primitives_bt/pinned_bs/00c0dcb6_raw.txt",
+        "size": 704,
+        "sha256": "8f6267099b8be7071a9a3115549e61510789e00954ee3883c249fdbc049949fd",
+        "sha512": "afa69a9697756fee980a5871a5baeeceb9cae5445b402de411afe3c1b14cacb113ad507d93a316c4e3d0ae7e8c84cb5a8b6cd599ec285486d6909b0fbe0467c0"
+      },
+      {
+        "path": "local/native_crt_seh4_primitives_bt/pinned_bs_report.json",
+        "size": 63527,
+        "sha256": "5abee77670f8bb11fd3790d662a33d7672822fc06a826ee8fbec54989e2d1e0f",
+        "sha512": "bd76df54386887e4bcd8a660ec017f7b65545bfe67bbb12ed9b98c0fb64229833a0a01cb2b8ba32f92a89c298dd3fc8ac87e9f7a2f92ce83fab2dc674f336129"
+      },
+      {
+        "path": "local/native_crt_seh4_primitives_bt/report.py",
+        "size": 7548,
+        "sha256": "8c5e3ee534cb0dea86db70e6d1747a78206b30e24da02bd04aa68996105fa7f6",
+        "sha512": "dbd9b284e8f1ee2a6ab9615af802185c300f3cb25a3387245094481a0979b6c4b96adb61e240847ce7398818c970063484f725545735ff9faf1297e9d1e665c3"
+      },
+      {
+        "path": "local/native_crt_seh4_primitives_bt/seed_reference.hpp",
+        "size": 2995,
+        "sha256": "26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c",
+        "sha512": "73558474158d529bc96205150b2c52ebc133b1b6bcb743e01ecf14dd4655c2cc594a2b0353e0d2f89977ced7c585fcf9cdd7c00cfe96bfa67eee8a29226d05bf"
+      },
+      {
+        "path": "local/native_crt_seh4_primitives_bt/source/cmake/startup.cmake",
+        "size": 116076,
+        "sha256": "37438544f2c053afc4d60e0354a67b6fb68524db9a0f460d8efb42ab13551dd1",
+        "sha512": "a0068a088c91bc63c78f6bc2ff3d54cbd8cd5e162095309b5aeca45681e0021ed51c19c2c361c3ac46c375a7cd5cc837cf65d5ec5d9879a6e2a70e5fa9510194"
+      },
+      {
+        "path": "local/native_crt_seh4_primitives_bt/source/CMakeLists.txt",
+        "size": 14869,
+        "sha256": "0bad51a21cd02eb4d8b196a345a3f86418d0dab144d66912f0ad8db06881c5a8",
+        "sha512": "3a5f79736fe4eed9455edaefbbe1d8dd23a555a86efa3935827e3068fc3baa2c82f0d9c69246a5ef74a961d41fbd847f5a5c554c5c91a945d55521212d2ec958"
+      },
+      {
+        "path": "local/native_crt_seh4_primitives_bt/source/docs/NATIVE_CRT_SEH4_PRIMITIVES_BT.md",
+        "size": 6679,
+        "sha256": "03bb89e998c270880205ae53574d55ca95f6a1c0dd128cf8967969a1a7aa1ddb",
+        "sha512": "b0f160dc4704247363064d2a587a6c228915220625dad7f623b701848270fdadf9c8c1ae385e76494cf309dca5677547eda25380275ef6fb0de5d78e4de1611e"
+      },
+      {
+        "path": "local/native_crt_seh4_primitives_bt/source/include/bsp/native_crt_seh4_primitives.hpp",
+        "size": 1632,
+        "sha256": "def2584ce857931952278696a418e2b62a0d1b8a9f82cc61e82ae784cab28a86",
+        "sha512": "afdb36a7e19416a1c5f44d8a4bb9f87ac99c591662a3dbad13537adc5a0091b3147c69c086d0b89f708a66854e85818824a7da9d37d1fdde4df122efb909a3f8"
+      },
+      {
+        "path": "local/native_crt_seh4_primitives_bt/source/src/native_crt_seh4_primitives.cpp",
+        "size": 1535,
+        "sha256": "2557fbce9dfc10e1deb7a4158bb7e9f31fcd62b5c22a8e1f67e66c836bf4fb95",
+        "sha512": "7223fca2354358b351354fe1333ea97fc3d9929139ca8a1877cf3e25ce3371e80782d51b2b5cb8f7168a65bc23e0d1db093add7078b40fffd952a1ec1d3cd16f"
+      },
+      {
+        "path": "local/native_crt_seh4_primitives_bt/source_object_dump.txt",
+        "size": 5881,
+        "sha256": "ec6e29a78759d7599e87b840db88fb4f76a091811c8212e1892d3cd830ebe868",
+        "sha512": "e7084e96e347faca83a3867a0039f3b176c977662bfed34ec70256358658d393ca7b471700159dfe3e4aa0c5e98a3cd9d9e3204813dbdd09af4c2ddd647ae8d1"
+      },
+      {
+        "path": "local/native_crt_seh4_primitives_bt/verify_calls.txt",
+        "size": 75,
+        "sha256": "217c73ba0068cc33940b8ca1b36738230ef7b25278678478707bae9a12103d1e",
+        "sha512": "4bf9cccc41911e37de8236f0c1bf667a7fff0f81aa7e388b14048210d773d4f59589b2e896dcbec5cd772e2d2e54ea74b9e35b200f1d009ea81af10b1f3c357a"
+      },
+      {
+        "path": "local/native_crt_seh4_primitives_bt/verify_seeds.txt",
+        "size": 3034,
+        "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773",
+        "sha512": "857449ff384d332baa250c7444daa15f5fbd261c5d4a63b9c1a168cab8c367e343c42dbd412ee38f61ea2c148d63c36eee699b58ac02ae28d087e0ef232e56e8"
+      }
+    ]
+  },
+  "current_source_hashes": [
+    {
+      "path": "src/native_crt_seh4_primitives.cpp",
+      "size": 1535,
+      "sha256": "2557fbce9dfc10e1deb7a4158bb7e9f31fcd62b5c22a8e1f67e66c836bf4fb95",
+      "sha512": "7223fca2354358b351354fe1333ea97fc3d9929139ca8a1877cf3e25ce3371e80782d51b2b5cb8f7168a65bc23e0d1db093add7078b40fffd952a1ec1d3cd16f"
+    },
+    {
+      "path": "include/bsp/native_crt_seh4_primitives.hpp",
+      "size": 1632,
+      "sha256": "def2584ce857931952278696a418e2b62a0d1b8a9f82cc61e82ae784cab28a86",
+      "sha512": "afdb36a7e19416a1c5f44d8a4bb9f87ac99c591662a3dbad13537adc5a0091b3147c69c086d0b89f708a66854e85818824a7da9d37d1fdde4df122efb909a3f8"
+    },
+    {
+      "path": "cmake/startup.cmake",
+      "size": 116076,
+      "sha256": "37438544f2c053afc4d60e0354a67b6fb68524db9a0f460d8efb42ab13551dd1",
+      "sha512": "a0068a088c91bc63c78f6bc2ff3d54cbd8cd5e162095309b5aeca45681e0021ed51c19c2c361c3ac46c375a7cd5cc837cf65d5ec5d9879a6e2a70e5fa9510194"
+    },
+    {
+      "path": "docs/NATIVE_CRT_SEH4_PRIMITIVES_BT.md",
+      "size": 6679,
+      "sha256": "03bb89e998c270880205ae53574d55ca95f6a1c0dd128cf8967969a1a7aa1ddb",
+      "sha512": "b0f160dc4704247363064d2a587a6c228915220625dad7f623b701848270fdadf9c8c1ae385e76494cf309dca5677547eda25380275ef6fb0de5d78e4de1611e"
+    }
+  ]
+}

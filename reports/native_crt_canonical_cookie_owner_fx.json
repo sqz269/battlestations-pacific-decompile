@@ -1,0 +1,46 @@
+{
+  "packet": "native_crt_canonical_cookie_owner_fx",
+  "kind": "source_integration",
+  "source": "src/game_native_mutable_crt_data.cpp",
+  "doc": "docs/NATIVE_CRT_CANONICAL_COOKIE_OWNER_FX.md",
+  "baseline_commit": "c8010d8fa964667a58d9cec6144d3fc9b97e7a49",
+  "initializer_address": "00c1815e",
+  "initializer_native_bytes": 148,
+  "initializer_source": "src/native_crt_canonical_cookie_initialization.cpp",
+  "initializer_original_abi": "No-argument cdecl void, original EBP/16-byte local frame and register/flag schedule, plain RET; genuine Win32 import relocations and fixed E15590/E15594 operands.",
+  "owner_api": "Existing rebuilt GameNativeCanonicalDataOwner constructor and initialize API; no original binary address or native frame identity is assigned to this C++ ownership glue.",
+  "source_change": "Replace the borrowed BM context and initializer call with initialize_native_crt_canonical_security_cookie_00c1815e(); change its include only. Preserve every other normalized source byte.",
+  "proposal_sha256": "830d82c432c042a53c916b4240ab3b8c911d9d66f51c67a4668882c7e782edbb",
+  "applied_source_sha256": "d9dabf905fd4acf195f72c14e9ae2c7ef457514f4ff6227efffdcbb1f24a0c39",
+  "independent_review": {
+    "review": "FZ",
+    "seal_sha256": "1f7fc235a5b0d5e3f4b714c48044cc979ea142e7d4c246e5b8cb77b8947fe684",
+    "report_sha256": "158782a5354e8e0ab1355c1b3533277ff1878459fe03138fc5add21268b3ecd5",
+    "acceptance": "Exact static source replacement only; current linked body/callsite and exclusive startup receipt still required."
+  },
+  "canonical_words": ["00e15590", "00e15594"],
+  "ordering": [
+    "Transfer both disjoint reservation subsets to their existing owners.",
+    "Initialize verified original read-only and mutable pages.",
+    "Run verify_joint().",
+    "Call the original no-argument canonical cookie initializer.",
+    "Run the unchanged complement/default predicate and page verification.",
+    "Complete the parent readiness acknowledgment.",
+    "Release and atomically publish the permanent owner."
+  ],
+  "caller_steps": [
+    {"address": "00bfd2bd", "native": "00c1815e", "function": "00bfd2bd", "argument_count": 0},
+    {"address": "00bfd2c2", "native": "00bfd0dd", "function": "00bfd2bd", "kind": "tail_jump"}
+  ],
+  "lifetime": "Existing once-per-process claim, unpublished-owner rollback, claim release on failure and permanent successful domain through process teardown remain unchanged. No native SEH fault-recovery claim.",
+  "verification_receipts": "local/fu_fv_integration: exact candidate full diagnostic build, current native/owner/link proof and exclusive BF startup/drain acceptance must be consulted separately.",
+  "new_tests": 0,
+  "gameplay_validated": false,
+  "limitations": [
+    "Original CRT startup continuation, PTD and SEH closure remain incomplete.",
+    "Code and IAT placement change; original fault/return-address identity is not reproduced.",
+    "The host CRT security cookie is separate; this initializer uses only the actual admitted original cookie domain.",
+    "FV is not called here: its current canonical heap and original startup selection/rollback/lifetime are still prerequisites.",
+    "Source and static author evidence are not evidence of execution of this integrated candidate."
+  ]
+}
