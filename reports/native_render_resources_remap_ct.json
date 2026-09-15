@@ -1,0 +1,1615 @@
+{
+  "packet": "orch4_render_remap_ct",
+  "base_revision": "e3ccc225bb9b87dc485cffe2e58300ed0ad5e9f2",
+  "documentation": "docs/NATIVE_RENDER_RESOURCES_REMAP_CT.md",
+  "project": {
+    "project_name": "bsp",
+    "current_folder": "/",
+    "folders": [],
+    "files": [
+      {
+        "name": "battlestationspacific.exe",
+        "path": "/battlestationspacific.exe",
+        "content_type": "Program",
+        "version": 2787,
+        "is_read_only": false,
+        "is_versioned": false
+      }
+    ]
+  },
+  "program": {
+    "name": "battlestationspacific.exe",
+    "path": "/battlestationspacific.exe",
+    "executable_path": "/I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "executable_format": "Portable Executable (PE)",
+    "language": "x86:LE:32:default",
+    "compiler": "windows",
+    "address_size": 32,
+    "image_base": "00400000",
+    "min_address": "00400000",
+    "max_address": "ffdfffff",
+    "memory_size": 14876380,
+    "function_count": 64118,
+    "symbol_count": 144529,
+    "data_type_count": 795,
+    "creation_date": "Mon May 04 16:56:25 PDT 2026",
+    "memory_block_count": 6,
+    "address_spaces": [
+      {
+        "name": "ram",
+        "start": "00000000",
+        "end": "ffffffff",
+        "size": 4294967296,
+        "addressable_unit_size": 1,
+        "size_bytes": 4294967296,
+        "address_size_bits": 32,
+        "is_default": true
+      }
+    ],
+    "has_multiple_address_spaces": false
+  },
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "routines": [
+    {
+      "address": "00b0fd70",
+      "bytes": 77,
+      "function": "set_native_render_remap_texture0_00b0fd70",
+      "source": "src/native_render_resources_remap.cpp",
+      "status": "complete_source_strict_win32_and_actual_cache_fixture_registration_pending",
+      "original_abi": "ECX actual service; stack actual8h name header; EAX B319B0 result; RET4",
+      "result": "void *",
+      "parameters": "void * this, void * name_header",
+      "convention": "__thiscall",
+      "proposed_name": null,
+      "code": {
+        "address": "00b0fd70",
+        "bytes": 77,
+        "sha256": "876d3ae5c15a05e33106ba2857a2a17acf5dbf818445394ac4ffcfb351da173c",
+        "instructions": [
+          [
+            11599216,
+            1,
+            "push",
+            "esi"
+          ],
+          [
+            11599217,
+            2,
+            "mov",
+            "esi, ecx"
+          ],
+          [
+            11599219,
+            1,
+            "push",
+            "edi"
+          ],
+          [
+            11599220,
+            6,
+            "mov",
+            "edi, dword ptr [esi + 0x66c]"
+          ],
+          [
+            11599226,
+            2,
+            "test",
+            "edi, edi"
+          ],
+          [
+            11599228,
+            2,
+            "je",
+            "0xb0fd9e"
+          ],
+          [
+            11599230,
+            3,
+            "lea",
+            "eax, [edi + 4]"
+          ],
+          [
+            11599233,
+            1,
+            "push",
+            "eax"
+          ],
+          [
+            11599234,
+            6,
+            "call",
+            "dword ptr [0xce2220]"
+          ],
+          [
+            11599240,
+            2,
+            "test",
+            "eax, eax"
+          ],
+          [
+            11599242,
+            2,
+            "jne",
+            "0xb0fd94"
+          ],
+          [
+            11599244,
+            2,
+            "mov",
+            "edx, dword ptr [edi]"
+          ],
+          [
+            11599246,
+            2,
+            "mov",
+            "eax, dword ptr [edx]"
+          ],
+          [
+            11599248,
+            2,
+            "mov",
+            "ecx, edi"
+          ],
+          [
+            11599250,
+            2,
+            "call",
+            "eax"
+          ],
+          [
+            11599252,
+            10,
+            "mov",
+            "dword ptr [esi + 0x66c], 0"
+          ],
+          [
+            11599262,
+            6,
+            "mov",
+            "ecx, dword ptr [0xf8d394]"
+          ],
+          [
+            11599268,
+            2,
+            "mov",
+            "edx, dword ptr [ecx]"
+          ],
+          [
+            11599270,
+            4,
+            "mov",
+            "eax, dword ptr [esp + 0xc]"
+          ],
+          [
+            11599274,
+            3,
+            "mov",
+            "edx, dword ptr [edx + 0x64]"
+          ],
+          [
+            11599277,
+            2,
+            "push",
+            "0"
+          ],
+          [
+            11599279,
+            1,
+            "push",
+            "eax"
+          ],
+          [
+            11599280,
+            2,
+            "call",
+            "edx"
+          ],
+          [
+            11599282,
+            1,
+            "pop",
+            "edi"
+          ],
+          [
+            11599283,
+            6,
+            "mov",
+            "dword ptr [esi + 0x66c], eax"
+          ],
+          [
+            11599289,
+            1,
+            "pop",
+            "esi"
+          ],
+          [
+            11599290,
+            3,
+            "ret",
+            "4"
+          ]
+        ]
+      }
+    },
+    {
+      "address": "00b0fdc0",
+      "bytes": 77,
+      "function": "set_native_render_remap_texture1_00b0fdc0",
+      "source": "src/native_render_resources_remap.cpp",
+      "status": "complete_source_strict_win32_and_actual_cache_fixture_registration_pending",
+      "original_abi": "ECX actual service; stack actual8h name header; EAX B319B0 result; RET4",
+      "result": "void *",
+      "parameters": "void * this, void * name_header",
+      "convention": "__thiscall",
+      "proposed_name": null,
+      "code": {
+        "address": "00b0fdc0",
+        "bytes": 77,
+        "sha256": "d0732a39b6c1622a5aaec7c83bb3b36e37a83fc52cd8194e4012520500a6f403",
+        "instructions": [
+          [
+            11599296,
+            1,
+            "push",
+            "esi"
+          ],
+          [
+            11599297,
+            2,
+            "mov",
+            "esi, ecx"
+          ],
+          [
+            11599299,
+            1,
+            "push",
+            "edi"
+          ],
+          [
+            11599300,
+            6,
+            "mov",
+            "edi, dword ptr [esi + 0x670]"
+          ],
+          [
+            11599306,
+            2,
+            "test",
+            "edi, edi"
+          ],
+          [
+            11599308,
+            2,
+            "je",
+            "0xb0fdee"
+          ],
+          [
+            11599310,
+            3,
+            "lea",
+            "eax, [edi + 4]"
+          ],
+          [
+            11599313,
+            1,
+            "push",
+            "eax"
+          ],
+          [
+            11599314,
+            6,
+            "call",
+            "dword ptr [0xce2220]"
+          ],
+          [
+            11599320,
+            2,
+            "test",
+            "eax, eax"
+          ],
+          [
+            11599322,
+            2,
+            "jne",
+            "0xb0fde4"
+          ],
+          [
+            11599324,
+            2,
+            "mov",
+            "edx, dword ptr [edi]"
+          ],
+          [
+            11599326,
+            2,
+            "mov",
+            "eax, dword ptr [edx]"
+          ],
+          [
+            11599328,
+            2,
+            "mov",
+            "ecx, edi"
+          ],
+          [
+            11599330,
+            2,
+            "call",
+            "eax"
+          ],
+          [
+            11599332,
+            10,
+            "mov",
+            "dword ptr [esi + 0x670], 0"
+          ],
+          [
+            11599342,
+            6,
+            "mov",
+            "ecx, dword ptr [0xf8d394]"
+          ],
+          [
+            11599348,
+            2,
+            "mov",
+            "edx, dword ptr [ecx]"
+          ],
+          [
+            11599350,
+            4,
+            "mov",
+            "eax, dword ptr [esp + 0xc]"
+          ],
+          [
+            11599354,
+            3,
+            "mov",
+            "edx, dword ptr [edx + 0x64]"
+          ],
+          [
+            11599357,
+            2,
+            "push",
+            "0"
+          ],
+          [
+            11599359,
+            1,
+            "push",
+            "eax"
+          ],
+          [
+            11599360,
+            2,
+            "call",
+            "edx"
+          ],
+          [
+            11599362,
+            1,
+            "pop",
+            "edi"
+          ],
+          [
+            11599363,
+            6,
+            "mov",
+            "dword ptr [esi + 0x670], eax"
+          ],
+          [
+            11599369,
+            1,
+            "pop",
+            "esi"
+          ],
+          [
+            11599370,
+            3,
+            "ret",
+            "4"
+          ]
+        ]
+      }
+    },
+    {
+      "address": "00b0fe10",
+      "bytes": 77,
+      "function": "set_native_render_remap_texture2_00b0fe10",
+      "source": "src/native_render_resources_remap.cpp",
+      "status": "complete_source_strict_win32_and_actual_cache_fixture_registration_pending",
+      "original_abi": "ECX actual service; stack actual8h name header; EAX B319B0 result; RET4",
+      "result": "void *",
+      "parameters": "void * this, void * name_header",
+      "convention": "__thiscall",
+      "proposed_name": null,
+      "code": {
+        "address": "00b0fe10",
+        "bytes": 77,
+        "sha256": "f1e1a67ec8d4c033dc291281ef9e8bb4296fb3250368dd400727f0b51f7547ce",
+        "instructions": [
+          [
+            11599376,
+            1,
+            "push",
+            "esi"
+          ],
+          [
+            11599377,
+            2,
+            "mov",
+            "esi, ecx"
+          ],
+          [
+            11599379,
+            1,
+            "push",
+            "edi"
+          ],
+          [
+            11599380,
+            6,
+            "mov",
+            "edi, dword ptr [esi + 0x674]"
+          ],
+          [
+            11599386,
+            2,
+            "test",
+            "edi, edi"
+          ],
+          [
+            11599388,
+            2,
+            "je",
+            "0xb0fe3e"
+          ],
+          [
+            11599390,
+            3,
+            "lea",
+            "eax, [edi + 4]"
+          ],
+          [
+            11599393,
+            1,
+            "push",
+            "eax"
+          ],
+          [
+            11599394,
+            6,
+            "call",
+            "dword ptr [0xce2220]"
+          ],
+          [
+            11599400,
+            2,
+            "test",
+            "eax, eax"
+          ],
+          [
+            11599402,
+            2,
+            "jne",
+            "0xb0fe34"
+          ],
+          [
+            11599404,
+            2,
+            "mov",
+            "edx, dword ptr [edi]"
+          ],
+          [
+            11599406,
+            2,
+            "mov",
+            "eax, dword ptr [edx]"
+          ],
+          [
+            11599408,
+            2,
+            "mov",
+            "ecx, edi"
+          ],
+          [
+            11599410,
+            2,
+            "call",
+            "eax"
+          ],
+          [
+            11599412,
+            10,
+            "mov",
+            "dword ptr [esi + 0x674], 0"
+          ],
+          [
+            11599422,
+            6,
+            "mov",
+            "ecx, dword ptr [0xf8d394]"
+          ],
+          [
+            11599428,
+            2,
+            "mov",
+            "edx, dword ptr [ecx]"
+          ],
+          [
+            11599430,
+            4,
+            "mov",
+            "eax, dword ptr [esp + 0xc]"
+          ],
+          [
+            11599434,
+            3,
+            "mov",
+            "edx, dword ptr [edx + 0x64]"
+          ],
+          [
+            11599437,
+            2,
+            "push",
+            "0"
+          ],
+          [
+            11599439,
+            1,
+            "push",
+            "eax"
+          ],
+          [
+            11599440,
+            2,
+            "call",
+            "edx"
+          ],
+          [
+            11599442,
+            1,
+            "pop",
+            "edi"
+          ],
+          [
+            11599443,
+            6,
+            "mov",
+            "dword ptr [esi + 0x674], eax"
+          ],
+          [
+            11599449,
+            1,
+            "pop",
+            "esi"
+          ],
+          [
+            11599450,
+            3,
+            "ret",
+            "4"
+          ]
+        ]
+      }
+    },
+    {
+      "address": "00b0fe60",
+      "bytes": 77,
+      "function": "set_native_render_remap_texture3_00b0fe60",
+      "source": "src/native_render_resources_remap.cpp",
+      "status": "complete_source_strict_win32_and_actual_cache_fixture_registration_pending",
+      "original_abi": "ECX actual service; stack actual8h name header; EAX B319B0 result; RET4",
+      "result": "void *",
+      "parameters": "void * this, void * name_header",
+      "convention": "__thiscall",
+      "proposed_name": null,
+      "code": {
+        "address": "00b0fe60",
+        "bytes": 77,
+        "sha256": "c3df146a9c64b8937df5523b2484822e3e6fc4e7e0bd3f33adc4cbe1905745c1",
+        "instructions": [
+          [
+            11599456,
+            1,
+            "push",
+            "esi"
+          ],
+          [
+            11599457,
+            2,
+            "mov",
+            "esi, ecx"
+          ],
+          [
+            11599459,
+            1,
+            "push",
+            "edi"
+          ],
+          [
+            11599460,
+            6,
+            "mov",
+            "edi, dword ptr [esi + 0x678]"
+          ],
+          [
+            11599466,
+            2,
+            "test",
+            "edi, edi"
+          ],
+          [
+            11599468,
+            2,
+            "je",
+            "0xb0fe8e"
+          ],
+          [
+            11599470,
+            3,
+            "lea",
+            "eax, [edi + 4]"
+          ],
+          [
+            11599473,
+            1,
+            "push",
+            "eax"
+          ],
+          [
+            11599474,
+            6,
+            "call",
+            "dword ptr [0xce2220]"
+          ],
+          [
+            11599480,
+            2,
+            "test",
+            "eax, eax"
+          ],
+          [
+            11599482,
+            2,
+            "jne",
+            "0xb0fe84"
+          ],
+          [
+            11599484,
+            2,
+            "mov",
+            "edx, dword ptr [edi]"
+          ],
+          [
+            11599486,
+            2,
+            "mov",
+            "eax, dword ptr [edx]"
+          ],
+          [
+            11599488,
+            2,
+            "mov",
+            "ecx, edi"
+          ],
+          [
+            11599490,
+            2,
+            "call",
+            "eax"
+          ],
+          [
+            11599492,
+            10,
+            "mov",
+            "dword ptr [esi + 0x678], 0"
+          ],
+          [
+            11599502,
+            6,
+            "mov",
+            "ecx, dword ptr [0xf8d394]"
+          ],
+          [
+            11599508,
+            2,
+            "mov",
+            "edx, dword ptr [ecx]"
+          ],
+          [
+            11599510,
+            4,
+            "mov",
+            "eax, dword ptr [esp + 0xc]"
+          ],
+          [
+            11599514,
+            3,
+            "mov",
+            "edx, dword ptr [edx + 0x64]"
+          ],
+          [
+            11599517,
+            2,
+            "push",
+            "0"
+          ],
+          [
+            11599519,
+            1,
+            "push",
+            "eax"
+          ],
+          [
+            11599520,
+            2,
+            "call",
+            "edx"
+          ],
+          [
+            11599522,
+            1,
+            "pop",
+            "edi"
+          ],
+          [
+            11599523,
+            6,
+            "mov",
+            "dword ptr [esi + 0x678], eax"
+          ],
+          [
+            11599529,
+            1,
+            "pop",
+            "esi"
+          ],
+          [
+            11599530,
+            3,
+            "ret",
+            "4"
+          ]
+        ]
+      }
+    },
+    {
+      "address": "00b0feb0",
+      "bytes": 255,
+      "function": "reset_native_render_remap_textures_00b0feb0",
+      "source": "src/native_render_resources_remap.cpp",
+      "status": "complete_source_strict_win32_and_actual_cache_fixture_registration_pending",
+      "original_abi": "ECX actual service; no stack arguments; RET; no semantic EAX",
+      "result": "void",
+      "parameters": "void * this",
+      "convention": "__thiscall",
+      "proposed_name": "BSP_RenderResources_ResetRemapTextures",
+      "code": {
+        "address": "00b0feb0",
+        "bytes": 255,
+        "sha256": "31244a5075822e09fc842bfe96fcc3fdb11c17e4001794febbacaa10daefc47d",
+        "instructions": [
+          [
+            11599536,
+            1,
+            "push",
+            "ebx"
+          ],
+          [
+            11599537,
+            1,
+            "push",
+            "ebp"
+          ],
+          [
+            11599538,
+            1,
+            "push",
+            "esi"
+          ],
+          [
+            11599539,
+            2,
+            "mov",
+            "esi, ecx"
+          ],
+          [
+            11599541,
+            6,
+            "mov",
+            "ecx, dword ptr [esi + 0x65c]"
+          ],
+          [
+            11599547,
+            2,
+            "xor",
+            "ebp, ebp"
+          ],
+          [
+            11599549,
+            2,
+            "cmp",
+            "ecx, ebp"
+          ],
+          [
+            11599551,
+            1,
+            "push",
+            "edi"
+          ],
+          [
+            11599552,
+            2,
+            "je",
+            "0xb0fed1"
+          ],
+          [
+            11599554,
+            1,
+            "push",
+            "ebp"
+          ],
+          [
+            11599555,
+            2,
+            "push",
+            "2"
+          ],
+          [
+            11599557,
+            5,
+            "call",
+            "0xb4cba0"
+          ],
+          [
+            11599562,
+            2,
+            "mov",
+            "ecx, eax"
+          ],
+          [
+            11599564,
+            5,
+            "call",
+            "0xb189f0"
+          ],
+          [
+            11599569,
+            6,
+            "mov",
+            "ecx, dword ptr [esi + 0x658]"
+          ],
+          [
+            11599575,
+            2,
+            "cmp",
+            "ecx, ebp"
+          ],
+          [
+            11599577,
+            2,
+            "je",
+            "0xb0feea"
+          ],
+          [
+            11599579,
+            1,
+            "push",
+            "ebp"
+          ],
+          [
+            11599580,
+            2,
+            "push",
+            "2"
+          ],
+          [
+            11599582,
+            5,
+            "call",
+            "0xb4cba0"
+          ],
+          [
+            11599587,
+            2,
+            "mov",
+            "ecx, eax"
+          ],
+          [
+            11599589,
+            5,
+            "call",
+            "0xb189f0"
+          ],
+          [
+            11599594,
+            6,
+            "mov",
+            "ecx, dword ptr [esi + 0x654]"
+          ],
+          [
+            11599600,
+            2,
+            "cmp",
+            "ecx, ebp"
+          ],
+          [
+            11599602,
+            2,
+            "je",
+            "0xb0ff03"
+          ],
+          [
+            11599604,
+            1,
+            "push",
+            "ebp"
+          ],
+          [
+            11599605,
+            2,
+            "push",
+            "2"
+          ],
+          [
+            11599607,
+            5,
+            "call",
+            "0xb4cba0"
+          ],
+          [
+            11599612,
+            2,
+            "mov",
+            "ecx, eax"
+          ],
+          [
+            11599614,
+            5,
+            "call",
+            "0xb189f0"
+          ],
+          [
+            11599619,
+            6,
+            "mov",
+            "ecx, dword ptr [esi + 0x650]"
+          ],
+          [
+            11599625,
+            2,
+            "cmp",
+            "ecx, ebp"
+          ],
+          [
+            11599627,
+            2,
+            "je",
+            "0xb0ff1c"
+          ],
+          [
+            11599629,
+            1,
+            "push",
+            "ebp"
+          ],
+          [
+            11599630,
+            2,
+            "push",
+            "2"
+          ],
+          [
+            11599632,
+            5,
+            "call",
+            "0xb4cba0"
+          ],
+          [
+            11599637,
+            2,
+            "mov",
+            "ecx, eax"
+          ],
+          [
+            11599639,
+            5,
+            "call",
+            "0xb189f0"
+          ],
+          [
+            11599644,
+            6,
+            "mov",
+            "edi, dword ptr [esi + 0x66c]"
+          ],
+          [
+            11599650,
+            2,
+            "cmp",
+            "edi, ebp"
+          ],
+          [
+            11599652,
+            6,
+            "mov",
+            "ebx, dword ptr [0xce2220]"
+          ],
+          [
+            11599658,
+            2,
+            "je",
+            "0xb0ff44"
+          ],
+          [
+            11599660,
+            3,
+            "lea",
+            "eax, [edi + 4]"
+          ],
+          [
+            11599663,
+            1,
+            "push",
+            "eax"
+          ],
+          [
+            11599664,
+            2,
+            "call",
+            "ebx"
+          ],
+          [
+            11599666,
+            2,
+            "test",
+            "eax, eax"
+          ],
+          [
+            11599668,
+            2,
+            "jne",
+            "0xb0ff3e"
+          ],
+          [
+            11599670,
+            2,
+            "mov",
+            "edx, dword ptr [edi]"
+          ],
+          [
+            11599672,
+            2,
+            "mov",
+            "eax, dword ptr [edx]"
+          ],
+          [
+            11599674,
+            2,
+            "mov",
+            "ecx, edi"
+          ],
+          [
+            11599676,
+            2,
+            "call",
+            "eax"
+          ],
+          [
+            11599678,
+            6,
+            "mov",
+            "dword ptr [esi + 0x66c], ebp"
+          ],
+          [
+            11599684,
+            6,
+            "mov",
+            "edi, dword ptr [esi + 0x670]"
+          ],
+          [
+            11599690,
+            2,
+            "cmp",
+            "edi, ebp"
+          ],
+          [
+            11599692,
+            2,
+            "je",
+            "0xb0ff66"
+          ],
+          [
+            11599694,
+            3,
+            "lea",
+            "ecx, [edi + 4]"
+          ],
+          [
+            11599697,
+            1,
+            "push",
+            "ecx"
+          ],
+          [
+            11599698,
+            2,
+            "call",
+            "ebx"
+          ],
+          [
+            11599700,
+            2,
+            "test",
+            "eax, eax"
+          ],
+          [
+            11599702,
+            2,
+            "jne",
+            "0xb0ff60"
+          ],
+          [
+            11599704,
+            2,
+            "mov",
+            "edx, dword ptr [edi]"
+          ],
+          [
+            11599706,
+            2,
+            "mov",
+            "eax, dword ptr [edx]"
+          ],
+          [
+            11599708,
+            2,
+            "mov",
+            "ecx, edi"
+          ],
+          [
+            11599710,
+            2,
+            "call",
+            "eax"
+          ],
+          [
+            11599712,
+            6,
+            "mov",
+            "dword ptr [esi + 0x670], ebp"
+          ],
+          [
+            11599718,
+            6,
+            "mov",
+            "edi, dword ptr [esi + 0x674]"
+          ],
+          [
+            11599724,
+            2,
+            "cmp",
+            "edi, ebp"
+          ],
+          [
+            11599726,
+            2,
+            "je",
+            "0xb0ff88"
+          ],
+          [
+            11599728,
+            3,
+            "lea",
+            "ecx, [edi + 4]"
+          ],
+          [
+            11599731,
+            1,
+            "push",
+            "ecx"
+          ],
+          [
+            11599732,
+            2,
+            "call",
+            "ebx"
+          ],
+          [
+            11599734,
+            2,
+            "test",
+            "eax, eax"
+          ],
+          [
+            11599736,
+            2,
+            "jne",
+            "0xb0ff82"
+          ],
+          [
+            11599738,
+            2,
+            "mov",
+            "edx, dword ptr [edi]"
+          ],
+          [
+            11599740,
+            2,
+            "mov",
+            "eax, dword ptr [edx]"
+          ],
+          [
+            11599742,
+            2,
+            "mov",
+            "ecx, edi"
+          ],
+          [
+            11599744,
+            2,
+            "call",
+            "eax"
+          ],
+          [
+            11599746,
+            6,
+            "mov",
+            "dword ptr [esi + 0x674], ebp"
+          ],
+          [
+            11599752,
+            6,
+            "mov",
+            "edi, dword ptr [esi + 0x678]"
+          ],
+          [
+            11599758,
+            2,
+            "cmp",
+            "edi, ebp"
+          ],
+          [
+            11599760,
+            2,
+            "je",
+            "0xb0ffaa"
+          ],
+          [
+            11599762,
+            3,
+            "lea",
+            "ecx, [edi + 4]"
+          ],
+          [
+            11599765,
+            1,
+            "push",
+            "ecx"
+          ],
+          [
+            11599766,
+            2,
+            "call",
+            "ebx"
+          ],
+          [
+            11599768,
+            2,
+            "test",
+            "eax, eax"
+          ],
+          [
+            11599770,
+            2,
+            "jne",
+            "0xb0ffa4"
+          ],
+          [
+            11599772,
+            2,
+            "mov",
+            "edx, dword ptr [edi]"
+          ],
+          [
+            11599774,
+            2,
+            "mov",
+            "eax, dword ptr [edx]"
+          ],
+          [
+            11599776,
+            2,
+            "mov",
+            "ecx, edi"
+          ],
+          [
+            11599778,
+            2,
+            "call",
+            "eax"
+          ],
+          [
+            11599780,
+            6,
+            "mov",
+            "dword ptr [esi + 0x678], ebp"
+          ],
+          [
+            11599786,
+            1,
+            "pop",
+            "edi"
+          ],
+          [
+            11599787,
+            1,
+            "pop",
+            "esi"
+          ],
+          [
+            11599788,
+            1,
+            "pop",
+            "ebp"
+          ],
+          [
+            11599789,
+            1,
+            "pop",
+            "ebx"
+          ],
+          [
+            11599790,
+            1,
+            "ret",
+            ""
+          ]
+        ]
+      }
+    },
+    {
+      "address": "00b4cba0",
+      "bytes": 4,
+      "function": "native_post_effect_material_00b4cba0",
+      "source": "src/native_render_resources_remap.cpp",
+      "status": "complete_source_strict_win32_and_actual_cache_fixture_registration_pending",
+      "original_abi": "ECX actual owner; no stack arguments; EAX current raw+14; RET",
+      "result": "void *",
+      "parameters": "void * this",
+      "convention": "__thiscall",
+      "proposed_name": "BSP_RenderChild_GetMaterial14",
+      "code": {
+        "address": "00b4cba0",
+        "bytes": 4,
+        "sha256": "01d3abacb68aac3537badfe563d0e21d0244fb61db1d805bcef8f455407fad96",
+        "instructions": [
+          [
+            11848608,
+            3,
+            "mov",
+            "eax, dword ptr [ecx + 0x14]"
+          ],
+          [
+            11848611,
+            1,
+            "ret",
+            ""
+          ]
+        ]
+      }
+    }
+  ],
+  "ordinary_bytes": 567,
+  "verified_instruction_owners": 206,
+  "direct_transfers": [
+    {
+      "address": "00b0fec5",
+      "native": "00b4cba0",
+      "function": "00b0feb0",
+      "kind": "call"
+    },
+    {
+      "address": "00b0fecc",
+      "native": "00b189f0",
+      "function": "00b0feb0",
+      "kind": "call"
+    },
+    {
+      "address": "00b0fede",
+      "native": "00b4cba0",
+      "function": "00b0feb0",
+      "kind": "call"
+    },
+    {
+      "address": "00b0fee5",
+      "native": "00b189f0",
+      "function": "00b0feb0",
+      "kind": "call"
+    },
+    {
+      "address": "00b0fef7",
+      "native": "00b4cba0",
+      "function": "00b0feb0",
+      "kind": "call"
+    },
+    {
+      "address": "00b0fefe",
+      "native": "00b189f0",
+      "function": "00b0feb0",
+      "kind": "call"
+    },
+    {
+      "address": "00b0ff10",
+      "native": "00b4cba0",
+      "function": "00b0feb0",
+      "kind": "call"
+    },
+    {
+      "address": "00b0ff17",
+      "native": "00b189f0",
+      "function": "00b0feb0",
+      "kind": "call"
+    }
+  ],
+  "indirect_transfers": [
+    {
+      "address": "00b0fd82",
+      "function": "00b0fd70",
+      "instruction": "call dword ptr [0xce2220]"
+    },
+    {
+      "address": "00b0fd92",
+      "function": "00b0fd70",
+      "instruction": "call eax"
+    },
+    {
+      "address": "00b0fdb0",
+      "function": "00b0fd70",
+      "instruction": "call edx"
+    },
+    {
+      "address": "00b0fdd2",
+      "function": "00b0fdc0",
+      "instruction": "call dword ptr [0xce2220]"
+    },
+    {
+      "address": "00b0fde2",
+      "function": "00b0fdc0",
+      "instruction": "call eax"
+    },
+    {
+      "address": "00b0fe00",
+      "function": "00b0fdc0",
+      "instruction": "call edx"
+    },
+    {
+      "address": "00b0fe22",
+      "function": "00b0fe10",
+      "instruction": "call dword ptr [0xce2220]"
+    },
+    {
+      "address": "00b0fe32",
+      "function": "00b0fe10",
+      "instruction": "call eax"
+    },
+    {
+      "address": "00b0fe50",
+      "function": "00b0fe10",
+      "instruction": "call edx"
+    },
+    {
+      "address": "00b0fe72",
+      "function": "00b0fe60",
+      "instruction": "call dword ptr [0xce2220]"
+    },
+    {
+      "address": "00b0fe82",
+      "function": "00b0fe60",
+      "instruction": "call eax"
+    },
+    {
+      "address": "00b0fea0",
+      "function": "00b0fe60",
+      "instruction": "call edx"
+    },
+    {
+      "address": "00b0ff30",
+      "function": "00b0feb0",
+      "instruction": "call ebx"
+    },
+    {
+      "address": "00b0ff3c",
+      "function": "00b0feb0",
+      "instruction": "call eax"
+    },
+    {
+      "address": "00b0ff52",
+      "function": "00b0feb0",
+      "instruction": "call ebx"
+    },
+    {
+      "address": "00b0ff5e",
+      "function": "00b0feb0",
+      "instruction": "call eax"
+    },
+    {
+      "address": "00b0ff74",
+      "function": "00b0feb0",
+      "instruction": "call ebx"
+    },
+    {
+      "address": "00b0ff80",
+      "function": "00b0feb0",
+      "instruction": "call eax"
+    },
+    {
+      "address": "00b0ff96",
+      "function": "00b0feb0",
+      "instruction": "call ebx"
+    },
+    {
+      "address": "00b0ffa2",
+      "function": "00b0feb0",
+      "instruction": "call eax"
+    }
+  ],
+  "data": [
+    {
+      "address": "00d5f0a8",
+      "bytes": 104,
+      "hex": "f039b300b0aeb2003014b20000b2b200b0f4b200a0f4b2005084b2006084b20010feb100207cb200f07cb20020feb10060ffb100a064b200e017b3001029b30010f7b200c0f4b200b018b30030feb10040feb1007085b20050feb100c087b200b088b200b019b300",
+      "sha256": "f727cf2ac318f0ef57e5cda026b63583c5c832acc54983ed95512d72955687c8"
+    },
+    {
+      "address": "00d61948",
+      "bytes": 8,
+      "hex": "e030bd0090f5b300",
+      "sha256": "3431d3730534188dda9ee513276a0445b8464b88e87aa76a3b7d5608bc045c5c"
+    },
+    {
+      "address": "00d61870",
+      "bytes": 8,
+      "hex": "e030bd0010f4b300",
+      "sha256": "930f024c1a3a6280d5bef743f72841863f1bdd5ff7c68ea02d37965d1a0bf623"
+    },
+    {
+      "address": "00d618b0",
+      "bytes": 8,
+      "hex": "e030bd0030f4b300",
+      "sha256": "d426b2edd7208a74b3fa5b21fe9c5a26afd19f8cd4cdc5f7f3f4c422053d44fe"
+    }
+  ],
+  "membership_gaps": [],
+  "support": [],
+  "evidence_summary": "CT reconstructs four remap-texture setters B0FD70/B0FDC0/B0FE10/B0FE60[77B each], reset B0FEB0[255B], and raw material accessor B4CBA0[4B]. Six bodies567B; all206 instruction owners and live/installed-PE bytes verified. Setters decrement captured old actual+4 using the current CE2220 target, dispatch the current canonical terminal only at zero, clear after returned release, then capture current F8D394/D5F0A8 slot64 and call complete B319B0(name,0); publish exact result without retain or identity shortcut. Reset visits post-effect65C/658/654/650, raw+14, complete unchecked B189F0(material,2,null), then captures66C before one CE2220 epoch for66C/670/674/678. Existing canonical texture providers support current2D/cube/volume; no forced2D profile or substitute successful loader. Strict Win32 source/object and realD3D9 cache fixture pass: four nonzero loads, same-owner replacement, old-release-before-renderer-admission failure, one captured decrement epoch and four actual zero-count texture terminals; all64 existing canonical companions retire. The instrumented IAT wrappers delegate to real InterlockedDecrement. Nonzero post-effect material reset arms, cube/volume execution, cold loading, original ABI/FH3/SEH, application wiring and gameplay remain unvalidated. CMake registration status is recorded separately; see docs/NATIVE_RENDER_RESOURCES_REMAP_CT.md.",
+  "validation": {
+    "base_build": "Tracked scripts/build.ps1 Win32 and both existing CTests passed",
+    "strict_new_source_compile": true,
+    "new_source_in_tracked_cmake": false,
+    "fixture": "One extension to the realD3D9 constructor/mesh fixture; four actual cache acquisitions/replacements and four current canonical texture terminals; one instrumented CE2220 capture check; all64 companions retired",
+    "remap_setter_execution": true,
+    "remap_reset_texture_execution": true,
+    "post_effect_material_reset_execution": false,
+    "cube_volume_execution": false,
+    "cold_texture_resolution": false,
+    "shader_compilation": false,
+    "full_parent_destructor": false,
+    "application_wired": false,
+    "new_application_execution": false,
+    "original_machine_code_differential": false,
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "evidence_limits": [
+    "New source is strictly compiled and linked into the standalone fixture. Tracked bsp_core registration remains pending while another owner leases cmake/startup.cmake.",
+    "Fixture uses four explicit2D native cache hits with actual D3D9 owners; cube/volume and cold resolver/loading are not executed.",
+    "Four nonnull post-effect/material arms are source-reviewed and compiled, but unexecuted. Existing B189F0 source is invoked with raw material+14,slot2,null; no invented post-effect constructor or successful callback stands in for missing runtime composition.",
+    "The counted IAT wrappers delegate to real InterlockedDecrement; they are focused epoch instrumentation, not an original-machine differential.",
+    "Renderer-admission failure occurs after actual old release and clear, before entering B319B0. It does not establish arbitrary native loader-exception cleanup.",
+    "New context/acquired C++ ABI, canonical noexcept terminals and host diagnostic exceptions do not establish native machine ABI or FH3/SEH equivalence.",
+    "No application startup/scene-host wiring, full render-resource lifetime or gameplay validation. Existing CS constructor and mesh conditions remain explicit."
+  ],
+  "remaining": "Register the source when the shared CMake lease is released; compose nonzero post-effect/material reset and native application renderer/service startup, preserving full parent ownership gaps."
+}

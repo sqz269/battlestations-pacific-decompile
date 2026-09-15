@@ -1,0 +1,545 @@
+{
+  "packet": "orch4_render_remap_ct",
+  "entries": [
+    {
+      "address": "00b0fd70",
+      "name": "BSP_RenderResources_SetRemapTexture0",
+      "before_comment": {
+        "address": "00b0fd70",
+        "function_name": "BSP_RenderResources_SetRemapTexture0",
+        "comment": "[BSP reconstruction 00b0fd70]\nHypothesis, not a recovered symbol. Packet cc_scene_contents, read-only analysis. docs/MISSION_SCENE_CONTENTS.md. __thiscall([00F8D39C], NativeString* name). Releases the reference in slot +66Ch and stores [00F8D394] vtable +64h(name, 0). Colour remap: 00503510 BSP_FrontEndPreview_Draw passes ColourRemap.tga (00CEB588) at 00503EC1/00503EE1. 004D4DF0 passes scene record+C24h at 004D4F78; Ghidra drops the ECX at that site."
+      },
+      "before_documentation": {
+        "hash": "2b5b8e1dbe50790abca0c63c6715b09dcb2058e1d6e431fae9b26a6874ae907a",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b0fd70",
+        "function_name": "BSP_RenderResources_SetRemapTexture0",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00b0fd70]\nHypothesis, not a recovered symbol. Packet cc_scene_contents, read-only analysis. docs/MISSION_SCENE_CONTENTS.md. __thiscall([00F8D39C], NativeString* name). Releases the reference in slot +66Ch and stores [00F8D394] vtable +64h(name, 0). Colour remap: 00503510 BSP_FrontEndPreview_Draw passes ColourRemap.tga (00CEB588) at 00503EC1/00503EE1. 004D4DF0 passes scene record+C24h at 004D4F78; Ghidra drops the ECX at that site.",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "uVar3",
+            "type": "undefined4",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "LVar2",
+            "type": "LONG",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "puVar1",
+            "type": "undefined4 *",
+            "storage": "(unique, 0x17200, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 36,
+            "name": "LAB_00b0fd94"
+          },
+          {
+            "relative_offset": 46,
+            "name": "LAB_00b0fd9e"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "prior_source_record": null,
+      "evidence": "CT reconstructs four remap-texture setters B0FD70/B0FDC0/B0FE10/B0FE60[77B each], reset B0FEB0[255B], and raw material accessor B4CBA0[4B]. Six bodies567B; all206 instruction owners and live/installed-PE bytes verified. Setters decrement captured old actual+4 using the current CE2220 target, dispatch the current canonical terminal only at zero, clear after returned release, then capture current F8D394/D5F0A8 slot64 and call complete B319B0(name,0); publish exact result without retain or identity shortcut. Reset visits post-effect65C/658/654/650, raw+14, complete unchecked B189F0(material,2,null), then captures66C before one CE2220 epoch for66C/670/674/678. Existing canonical texture providers support current2D/cube/volume; no forced2D profile or substitute successful loader. Strict Win32 source/object and realD3D9 cache fixture pass: four nonzero loads, same-owner replacement, old-release-before-renderer-admission failure, one captured decrement epoch and four actual zero-count texture terminals; all64 existing canonical companions retire. The instrumented IAT wrappers delegate to real InterlockedDecrement. Nonzero post-effect material reset arms, cube/volume execution, cold loading, original ABI/FH3/SEH, application wiring and gameplay remain unvalidated. CMake registration status is recorded separately; see docs/NATIVE_RENDER_RESOURCES_REMAP_CT.md. Original ABI: ECX actual service; stack actual8h name header; EAX B319B0 result; RET4.",
+      "prototype_result": "Successfully set prototype for function at 00b0fd70 with __thiscall calling convention",
+      "ledger_name_output": "00b0fd70 -> BSP_RenderResources_SetRemapTexture0\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00b0fd70\", \"name\": \"BSP_RenderResources_SetRemapTexture0\", \"evidence\": \"Hypothesis, not a recovered symbol. Packet cc_scene_contents, read-only analysis. docs/MISSION_SCENE_CONTENTS.md. __thiscall([00F8D39C], NativeString* name). Releases the reference in slot +66Ch and stores [00F8D394] vtable +64h(name, 0). Colour remap: 00503510 BSP_FrontEndPreview_Draw passes ColourRemap.tga (00CEB588) at 00503EC1/00503EE1. 004D4DF0 passes scene record+C24h at 004D4F78; Ghidra drops the ECX at that site.\"})\n",
+      "ledger_function_output": "00b0fd70 function set_native_render_remap_texture0_00b0fd70\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00b0fd70",
+        "function_name": "BSP_RenderResources_SetRemapTexture0",
+        "comment": "[BSP reconstruction 00b0fd70]\nHypothesis, not a recovered symbol. Packet cc_scene_contents, read-only analysis. docs/MISSION_SCENE_CONTENTS.md. __thiscall([00F8D39C], NativeString* name). Releases the reference in slot +66Ch and stores [00F8D394] vtable +64h(name, 0). Colour remap: 00503510 BSP_FrontEndPreview_Draw passes ColourRemap.tga (00CEB588) at 00503EC1/00503EE1. 004D4DF0 passes scene record+C24h at 004D4F78; Ghidra drops the ECX at that site.\n\n[BSP reconstruction 00b0fd70] CT remap update\nCT reconstructs four remap-texture setters B0FD70/B0FDC0/B0FE10/B0FE60[77B each], reset B0FEB0[255B], and raw material accessor B4CBA0[4B]. Six bodies567B; all206 instruction owners and live/installed-PE bytes verified. Setters decrement captured old actual+4 using the current CE2220 target, dispatch the current canonical terminal only at zero, clear after returned release, then capture current F8D394/D5F0A8 slot64 and call complete B319B0(name,0); publish exact result without retain or identity shortcut. Reset visits post-effect65C/658/654/650, raw+14, complete unchecked B189F0(material,2,null), then captures66C before one CE2220 epoch for66C/670/674/678. Existing canonical texture providers support current2D/cube/volume; no forced2D profile or substitute successful loader. Strict Win32 source/object and realD3D9 cache fixture pass: four nonzero loads, same-owner replacement, old-release-before-renderer-admission failure, one captured decrement epoch and four actual zero-count texture terminals; all64 existing canonical companions retire. The instrumented IAT wrappers delegate to real InterlockedDecrement. Nonzero post-effect material reset arms, cube/volume execution, cold loading, original ABI/FH3/SEH, application wiring and gameplay remain unvalidated. CMake registration status is recorded separately; see docs/NATIVE_RENDER_RESOURCES_REMAP_CT.md. Original ABI: ECX actual service; stack actual8h name header; EAX B319B0 result; RET4."
+      }
+    },
+    {
+      "address": "00b0fdc0",
+      "name": "BSP_RenderResources_SetRemapTexture1",
+      "before_comment": {
+        "address": "00b0fdc0",
+        "function_name": "BSP_RenderResources_SetRemapTexture1",
+        "comment": "[BSP reconstruction 00b0fdc0]\nHypothesis, not a recovered symbol. Packet cc_scene_contents, read-only analysis. docs/MISSION_SCENE_CONTENTS.md. __thiscall([00F8D39C], NativeString* name), slot +670h, same body as 00B0FD70. 00503510 passes ColourRemap.tga (00CEB588) at 00503F34/00503F58; 004D4DF0 passes scene record+C2Ch at 004D4F95."
+      },
+      "before_documentation": {
+        "hash": "83d631e0a961b5d4987411220f635289c23a034270fcf5b173152308e4a2eeba",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b0fdc0",
+        "function_name": "BSP_RenderResources_SetRemapTexture1",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00b0fdc0]\nHypothesis, not a recovered symbol. Packet cc_scene_contents, read-only analysis. docs/MISSION_SCENE_CONTENTS.md. __thiscall([00F8D39C], NativeString* name), slot +670h, same body as 00B0FD70. 00503510 passes ColourRemap.tga (00CEB588) at 00503F34/00503F58; 004D4DF0 passes scene record+C2Ch at 004D4F95.",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "uVar3",
+            "type": "undefined4",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "LVar2",
+            "type": "LONG",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "puVar1",
+            "type": "undefined4 *",
+            "storage": "(unique, 0x17200, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 36,
+            "name": "LAB_00b0fde4"
+          },
+          {
+            "relative_offset": 46,
+            "name": "LAB_00b0fdee"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "prior_source_record": null,
+      "evidence": "CT reconstructs four remap-texture setters B0FD70/B0FDC0/B0FE10/B0FE60[77B each], reset B0FEB0[255B], and raw material accessor B4CBA0[4B]. Six bodies567B; all206 instruction owners and live/installed-PE bytes verified. Setters decrement captured old actual+4 using the current CE2220 target, dispatch the current canonical terminal only at zero, clear after returned release, then capture current F8D394/D5F0A8 slot64 and call complete B319B0(name,0); publish exact result without retain or identity shortcut. Reset visits post-effect65C/658/654/650, raw+14, complete unchecked B189F0(material,2,null), then captures66C before one CE2220 epoch for66C/670/674/678. Existing canonical texture providers support current2D/cube/volume; no forced2D profile or substitute successful loader. Strict Win32 source/object and realD3D9 cache fixture pass: four nonzero loads, same-owner replacement, old-release-before-renderer-admission failure, one captured decrement epoch and four actual zero-count texture terminals; all64 existing canonical companions retire. The instrumented IAT wrappers delegate to real InterlockedDecrement. Nonzero post-effect material reset arms, cube/volume execution, cold loading, original ABI/FH3/SEH, application wiring and gameplay remain unvalidated. CMake registration status is recorded separately; see docs/NATIVE_RENDER_RESOURCES_REMAP_CT.md. Original ABI: ECX actual service; stack actual8h name header; EAX B319B0 result; RET4.",
+      "prototype_result": "Successfully set prototype for function at 00b0fdc0 with __thiscall calling convention",
+      "ledger_name_output": "00b0fdc0 -> BSP_RenderResources_SetRemapTexture1\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00b0fdc0\", \"name\": \"BSP_RenderResources_SetRemapTexture1\", \"evidence\": \"Hypothesis, not a recovered symbol. Packet cc_scene_contents, read-only analysis. docs/MISSION_SCENE_CONTENTS.md. __thiscall([00F8D39C], NativeString* name), slot +670h, same body as 00B0FD70. 00503510 passes ColourRemap.tga (00CEB588) at 00503F34/00503F58; 004D4DF0 passes scene record+C2Ch at 004D4F95.\"})\n",
+      "ledger_function_output": "00b0fdc0 function set_native_render_remap_texture1_00b0fdc0\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00b0fdc0",
+        "function_name": "BSP_RenderResources_SetRemapTexture1",
+        "comment": "[BSP reconstruction 00b0fdc0]\nHypothesis, not a recovered symbol. Packet cc_scene_contents, read-only analysis. docs/MISSION_SCENE_CONTENTS.md. __thiscall([00F8D39C], NativeString* name), slot +670h, same body as 00B0FD70. 00503510 passes ColourRemap.tga (00CEB588) at 00503F34/00503F58; 004D4DF0 passes scene record+C2Ch at 004D4F95.\n\n[BSP reconstruction 00b0fdc0] CT remap update\nCT reconstructs four remap-texture setters B0FD70/B0FDC0/B0FE10/B0FE60[77B each], reset B0FEB0[255B], and raw material accessor B4CBA0[4B]. Six bodies567B; all206 instruction owners and live/installed-PE bytes verified. Setters decrement captured old actual+4 using the current CE2220 target, dispatch the current canonical terminal only at zero, clear after returned release, then capture current F8D394/D5F0A8 slot64 and call complete B319B0(name,0); publish exact result without retain or identity shortcut. Reset visits post-effect65C/658/654/650, raw+14, complete unchecked B189F0(material,2,null), then captures66C before one CE2220 epoch for66C/670/674/678. Existing canonical texture providers support current2D/cube/volume; no forced2D profile or substitute successful loader. Strict Win32 source/object and realD3D9 cache fixture pass: four nonzero loads, same-owner replacement, old-release-before-renderer-admission failure, one captured decrement epoch and four actual zero-count texture terminals; all64 existing canonical companions retire. The instrumented IAT wrappers delegate to real InterlockedDecrement. Nonzero post-effect material reset arms, cube/volume execution, cold loading, original ABI/FH3/SEH, application wiring and gameplay remain unvalidated. CMake registration status is recorded separately; see docs/NATIVE_RENDER_RESOURCES_REMAP_CT.md. Original ABI: ECX actual service; stack actual8h name header; EAX B319B0 result; RET4."
+      }
+    },
+    {
+      "address": "00b0fe10",
+      "name": "BSP_RenderResources_SetRemapTexture2",
+      "before_comment": {
+        "address": "00b0fe10",
+        "function_name": "BSP_RenderResources_SetRemapTexture2",
+        "comment": "[BSP reconstruction 00b0fe10]\nHypothesis, not a recovered symbol. Packet cc_scene_contents, read-only analysis. docs/MISSION_SCENE_CONTENTS.md. __thiscall([00F8D39C], NativeString* name), slot +674h, same body as 00B0FD70. 00503510 passes ColourRemap.tga (00CEB588) at 00503FA8/00503FCC; 004D4DF0 passes scene record+C34h at 004D4FB3."
+      },
+      "before_documentation": {
+        "hash": "c40e6c735661a5d366976284178b9874b992cf0ba51544d7a8ecbdd785482172",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b0fe10",
+        "function_name": "BSP_RenderResources_SetRemapTexture2",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00b0fe10]\nHypothesis, not a recovered symbol. Packet cc_scene_contents, read-only analysis. docs/MISSION_SCENE_CONTENTS.md. __thiscall([00F8D39C], NativeString* name), slot +674h, same body as 00B0FD70. 00503510 passes ColourRemap.tga (00CEB588) at 00503FA8/00503FCC; 004D4DF0 passes scene record+C34h at 004D4FB3.",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "uVar3",
+            "type": "undefined4",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "LVar2",
+            "type": "LONG",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "puVar1",
+            "type": "undefined4 *",
+            "storage": "(unique, 0x17200, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 36,
+            "name": "LAB_00b0fe34"
+          },
+          {
+            "relative_offset": 46,
+            "name": "LAB_00b0fe3e"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "prior_source_record": null,
+      "evidence": "CT reconstructs four remap-texture setters B0FD70/B0FDC0/B0FE10/B0FE60[77B each], reset B0FEB0[255B], and raw material accessor B4CBA0[4B]. Six bodies567B; all206 instruction owners and live/installed-PE bytes verified. Setters decrement captured old actual+4 using the current CE2220 target, dispatch the current canonical terminal only at zero, clear after returned release, then capture current F8D394/D5F0A8 slot64 and call complete B319B0(name,0); publish exact result without retain or identity shortcut. Reset visits post-effect65C/658/654/650, raw+14, complete unchecked B189F0(material,2,null), then captures66C before one CE2220 epoch for66C/670/674/678. Existing canonical texture providers support current2D/cube/volume; no forced2D profile or substitute successful loader. Strict Win32 source/object and realD3D9 cache fixture pass: four nonzero loads, same-owner replacement, old-release-before-renderer-admission failure, one captured decrement epoch and four actual zero-count texture terminals; all64 existing canonical companions retire. The instrumented IAT wrappers delegate to real InterlockedDecrement. Nonzero post-effect material reset arms, cube/volume execution, cold loading, original ABI/FH3/SEH, application wiring and gameplay remain unvalidated. CMake registration status is recorded separately; see docs/NATIVE_RENDER_RESOURCES_REMAP_CT.md. Original ABI: ECX actual service; stack actual8h name header; EAX B319B0 result; RET4.",
+      "prototype_result": "Successfully set prototype for function at 00b0fe10 with __thiscall calling convention",
+      "ledger_name_output": "00b0fe10 -> BSP_RenderResources_SetRemapTexture2\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00b0fe10\", \"name\": \"BSP_RenderResources_SetRemapTexture2\", \"evidence\": \"Hypothesis, not a recovered symbol. Packet cc_scene_contents, read-only analysis. docs/MISSION_SCENE_CONTENTS.md. __thiscall([00F8D39C], NativeString* name), slot +674h, same body as 00B0FD70. 00503510 passes ColourRemap.tga (00CEB588) at 00503FA8/00503FCC; 004D4DF0 passes scene record+C34h at 004D4FB3.\"})\n",
+      "ledger_function_output": "00b0fe10 function set_native_render_remap_texture2_00b0fe10\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00b0fe10",
+        "function_name": "BSP_RenderResources_SetRemapTexture2",
+        "comment": "[BSP reconstruction 00b0fe10]\nHypothesis, not a recovered symbol. Packet cc_scene_contents, read-only analysis. docs/MISSION_SCENE_CONTENTS.md. __thiscall([00F8D39C], NativeString* name), slot +674h, same body as 00B0FD70. 00503510 passes ColourRemap.tga (00CEB588) at 00503FA8/00503FCC; 004D4DF0 passes scene record+C34h at 004D4FB3.\n\n[BSP reconstruction 00b0fe10] CT remap update\nCT reconstructs four remap-texture setters B0FD70/B0FDC0/B0FE10/B0FE60[77B each], reset B0FEB0[255B], and raw material accessor B4CBA0[4B]. Six bodies567B; all206 instruction owners and live/installed-PE bytes verified. Setters decrement captured old actual+4 using the current CE2220 target, dispatch the current canonical terminal only at zero, clear after returned release, then capture current F8D394/D5F0A8 slot64 and call complete B319B0(name,0); publish exact result without retain or identity shortcut. Reset visits post-effect65C/658/654/650, raw+14, complete unchecked B189F0(material,2,null), then captures66C before one CE2220 epoch for66C/670/674/678. Existing canonical texture providers support current2D/cube/volume; no forced2D profile or substitute successful loader. Strict Win32 source/object and realD3D9 cache fixture pass: four nonzero loads, same-owner replacement, old-release-before-renderer-admission failure, one captured decrement epoch and four actual zero-count texture terminals; all64 existing canonical companions retire. The instrumented IAT wrappers delegate to real InterlockedDecrement. Nonzero post-effect material reset arms, cube/volume execution, cold loading, original ABI/FH3/SEH, application wiring and gameplay remain unvalidated. CMake registration status is recorded separately; see docs/NATIVE_RENDER_RESOURCES_REMAP_CT.md. Original ABI: ECX actual service; stack actual8h name header; EAX B319B0 result; RET4."
+      }
+    },
+    {
+      "address": "00b0fe60",
+      "name": "BSP_RenderResources_SetRemapTexture3",
+      "before_comment": {
+        "address": "00b0fe60",
+        "function_name": "BSP_RenderResources_SetRemapTexture3",
+        "comment": "[BSP reconstruction 00b0fe60]\nHypothesis, not a recovered symbol. Packet cc_scene_contents, read-only analysis. docs/MISSION_SCENE_CONTENTS.md. __thiscall([00F8D39C], NativeString* name), slot +678h, same body as 00B0FD70. 00503510 passes ColourRemap.tga (00CEB588) at 0050401C/00504040; 004D4DF0 passes scene record+C3Ch at 004D4FD0."
+      },
+      "before_documentation": {
+        "hash": "085aa2e3820967cb42a58b795572e438626ba7dfb56843233a7e4c69065a5aba",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b0fe60",
+        "function_name": "BSP_RenderResources_SetRemapTexture3",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00b0fe60]\nHypothesis, not a recovered symbol. Packet cc_scene_contents, read-only analysis. docs/MISSION_SCENE_CONTENTS.md. __thiscall([00F8D39C], NativeString* name), slot +678h, same body as 00B0FD70. 00503510 passes ColourRemap.tga (00CEB588) at 0050401C/00504040; 004D4DF0 passes scene record+C3Ch at 004D4FD0.",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "uVar3",
+            "type": "undefined4",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "LVar2",
+            "type": "LONG",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "puVar1",
+            "type": "undefined4 *",
+            "storage": "(unique, 0x17200, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 36,
+            "name": "LAB_00b0fe84"
+          },
+          {
+            "relative_offset": 46,
+            "name": "LAB_00b0fe8e"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "prior_source_record": null,
+      "evidence": "CT reconstructs four remap-texture setters B0FD70/B0FDC0/B0FE10/B0FE60[77B each], reset B0FEB0[255B], and raw material accessor B4CBA0[4B]. Six bodies567B; all206 instruction owners and live/installed-PE bytes verified. Setters decrement captured old actual+4 using the current CE2220 target, dispatch the current canonical terminal only at zero, clear after returned release, then capture current F8D394/D5F0A8 slot64 and call complete B319B0(name,0); publish exact result without retain or identity shortcut. Reset visits post-effect65C/658/654/650, raw+14, complete unchecked B189F0(material,2,null), then captures66C before one CE2220 epoch for66C/670/674/678. Existing canonical texture providers support current2D/cube/volume; no forced2D profile or substitute successful loader. Strict Win32 source/object and realD3D9 cache fixture pass: four nonzero loads, same-owner replacement, old-release-before-renderer-admission failure, one captured decrement epoch and four actual zero-count texture terminals; all64 existing canonical companions retire. The instrumented IAT wrappers delegate to real InterlockedDecrement. Nonzero post-effect material reset arms, cube/volume execution, cold loading, original ABI/FH3/SEH, application wiring and gameplay remain unvalidated. CMake registration status is recorded separately; see docs/NATIVE_RENDER_RESOURCES_REMAP_CT.md. Original ABI: ECX actual service; stack actual8h name header; EAX B319B0 result; RET4.",
+      "prototype_result": "Successfully set prototype for function at 00b0fe60 with __thiscall calling convention",
+      "ledger_name_output": "00b0fe60 -> BSP_RenderResources_SetRemapTexture3\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00b0fe60\", \"name\": \"BSP_RenderResources_SetRemapTexture3\", \"evidence\": \"Hypothesis, not a recovered symbol. Packet cc_scene_contents, read-only analysis. docs/MISSION_SCENE_CONTENTS.md. __thiscall([00F8D39C], NativeString* name), slot +678h, same body as 00B0FD70. 00503510 passes ColourRemap.tga (00CEB588) at 0050401C/00504040; 004D4DF0 passes scene record+C3Ch at 004D4FD0.\"})\n",
+      "ledger_function_output": "00b0fe60 function set_native_render_remap_texture3_00b0fe60\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00b0fe60",
+        "function_name": "BSP_RenderResources_SetRemapTexture3",
+        "comment": "[BSP reconstruction 00b0fe60]\nHypothesis, not a recovered symbol. Packet cc_scene_contents, read-only analysis. docs/MISSION_SCENE_CONTENTS.md. __thiscall([00F8D39C], NativeString* name), slot +678h, same body as 00B0FD70. 00503510 passes ColourRemap.tga (00CEB588) at 0050401C/00504040; 004D4DF0 passes scene record+C3Ch at 004D4FD0.\n\n[BSP reconstruction 00b0fe60] CT remap update\nCT reconstructs four remap-texture setters B0FD70/B0FDC0/B0FE10/B0FE60[77B each], reset B0FEB0[255B], and raw material accessor B4CBA0[4B]. Six bodies567B; all206 instruction owners and live/installed-PE bytes verified. Setters decrement captured old actual+4 using the current CE2220 target, dispatch the current canonical terminal only at zero, clear after returned release, then capture current F8D394/D5F0A8 slot64 and call complete B319B0(name,0); publish exact result without retain or identity shortcut. Reset visits post-effect65C/658/654/650, raw+14, complete unchecked B189F0(material,2,null), then captures66C before one CE2220 epoch for66C/670/674/678. Existing canonical texture providers support current2D/cube/volume; no forced2D profile or substitute successful loader. Strict Win32 source/object and realD3D9 cache fixture pass: four nonzero loads, same-owner replacement, old-release-before-renderer-admission failure, one captured decrement epoch and four actual zero-count texture terminals; all64 existing canonical companions retire. The instrumented IAT wrappers delegate to real InterlockedDecrement. Nonzero post-effect material reset arms, cube/volume execution, cold loading, original ABI/FH3/SEH, application wiring and gameplay remain unvalidated. CMake registration status is recorded separately; see docs/NATIVE_RENDER_RESOURCES_REMAP_CT.md. Original ABI: ECX actual service; stack actual8h name header; EAX B319B0 result; RET4."
+      }
+    },
+    {
+      "address": "00b0feb0",
+      "name": "BSP_RenderResources_ResetRemapTextures",
+      "before_comment": {
+        "address": "00b0feb0",
+        "function_name": "FUN_00b0feb0"
+      },
+      "before_documentation": {
+        "hash": "fff8ac267d33bbf54bcb6283bde2e105007b883c6e1b537a7c45141a0775ae71",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b0feb0",
+        "function_name": "FUN_00b0feb0",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "pvVar5",
+            "type": "void *",
+            "storage": "(stack, 0xffffffffffffffec, 4)"
+          },
+          {
+            "name": "uVar4",
+            "type": "uint",
+            "storage": "(stack, 0xffffffffffffffe8, 4)"
+          },
+          {
+            "name": "uVar3",
+            "type": "undefined8",
+            "storage": "(VARIABLE, 0x0, 8)"
+          },
+          {
+            "name": "LVar2",
+            "type": "LONG",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "puVar1",
+            "type": "undefined4 *",
+            "storage": "(unique, 0x17200, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 33,
+            "name": "LAB_00b0fed1"
+          },
+          {
+            "relative_offset": 58,
+            "name": "LAB_00b0feea"
+          },
+          {
+            "relative_offset": 83,
+            "name": "LAB_00b0ff03"
+          },
+          {
+            "relative_offset": 108,
+            "name": "LAB_00b0ff1c"
+          },
+          {
+            "relative_offset": 142,
+            "name": "LAB_00b0ff3e"
+          },
+          {
+            "relative_offset": 148,
+            "name": "LAB_00b0ff44"
+          },
+          {
+            "relative_offset": 176,
+            "name": "LAB_00b0ff60"
+          },
+          {
+            "relative_offset": 182,
+            "name": "LAB_00b0ff66"
+          },
+          {
+            "relative_offset": 210,
+            "name": "LAB_00b0ff82"
+          },
+          {
+            "relative_offset": 216,
+            "name": "LAB_00b0ff88"
+          },
+          {
+            "relative_offset": 244,
+            "name": "LAB_00b0ffa4"
+          },
+          {
+            "relative_offset": 250,
+            "name": "LAB_00b0ffaa"
+          }
+        ],
+        "completeness_score": 50.0
+      },
+      "prior_source_record": null,
+      "evidence": "CT reconstructs four remap-texture setters B0FD70/B0FDC0/B0FE10/B0FE60[77B each], reset B0FEB0[255B], and raw material accessor B4CBA0[4B]. Six bodies567B; all206 instruction owners and live/installed-PE bytes verified. Setters decrement captured old actual+4 using the current CE2220 target, dispatch the current canonical terminal only at zero, clear after returned release, then capture current F8D394/D5F0A8 slot64 and call complete B319B0(name,0); publish exact result without retain or identity shortcut. Reset visits post-effect65C/658/654/650, raw+14, complete unchecked B189F0(material,2,null), then captures66C before one CE2220 epoch for66C/670/674/678. Existing canonical texture providers support current2D/cube/volume; no forced2D profile or substitute successful loader. Strict Win32 source/object and realD3D9 cache fixture pass: four nonzero loads, same-owner replacement, old-release-before-renderer-admission failure, one captured decrement epoch and four actual zero-count texture terminals; all64 existing canonical companions retire. The instrumented IAT wrappers delegate to real InterlockedDecrement. Nonzero post-effect material reset arms, cube/volume execution, cold loading, original ABI/FH3/SEH, application wiring and gameplay remain unvalidated. CMake registration status is recorded separately; see docs/NATIVE_RENDER_RESOURCES_REMAP_CT.md. Original ABI: ECX actual service; no stack arguments; RET; no semantic EAX.",
+      "prototype_result": "Successfully set prototype for function at 00b0feb0 with __thiscall calling convention",
+      "ledger_name_output": "00b0feb0 -> BSP_RenderResources_ResetRemapTextures\n",
+      "ledger_function_output": "00b0feb0 function reset_native_render_remap_textures_00b0feb0\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00b0feb0",
+        "function_name": "BSP_RenderResources_ResetRemapTextures",
+        "comment": "\n\n[BSP reconstruction 00b0feb0] CT remap update\nCT reconstructs four remap-texture setters B0FD70/B0FDC0/B0FE10/B0FE60[77B each], reset B0FEB0[255B], and raw material accessor B4CBA0[4B]. Six bodies567B; all206 instruction owners and live/installed-PE bytes verified. Setters decrement captured old actual+4 using the current CE2220 target, dispatch the current canonical terminal only at zero, clear after returned release, then capture current F8D394/D5F0A8 slot64 and call complete B319B0(name,0); publish exact result without retain or identity shortcut. Reset visits post-effect65C/658/654/650, raw+14, complete unchecked B189F0(material,2,null), then captures66C before one CE2220 epoch for66C/670/674/678. Existing canonical texture providers support current2D/cube/volume; no forced2D profile or substitute successful loader. Strict Win32 source/object and realD3D9 cache fixture pass: four nonzero loads, same-owner replacement, old-release-before-renderer-admission failure, one captured decrement epoch and four actual zero-count texture terminals; all64 existing canonical companions retire. The instrumented IAT wrappers delegate to real InterlockedDecrement. Nonzero post-effect material reset arms, cube/volume execution, cold loading, original ABI/FH3/SEH, application wiring and gameplay remain unvalidated. CMake registration status is recorded separately; see docs/NATIVE_RENDER_RESOURCES_REMAP_CT.md. Original ABI: ECX actual service; no stack arguments; RET; no semantic EAX."
+      }
+    },
+    {
+      "address": "00b4cba0",
+      "name": "BSP_RenderChild_GetMaterial14",
+      "before_comment": {
+        "address": "00b4cba0",
+        "function_name": "TRIV_body_00b4cba0"
+      },
+      "before_documentation": {
+        "hash": "d271140ca1a3325d71c28941c9d627269dccca6e2048c4a3def5d6c750d2bfd5",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b4cba0",
+        "function_name": "TRIV_body_00b4cba0",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 80.0
+      },
+      "prior_source_record": null,
+      "evidence": "CT reconstructs four remap-texture setters B0FD70/B0FDC0/B0FE10/B0FE60[77B each], reset B0FEB0[255B], and raw material accessor B4CBA0[4B]. Six bodies567B; all206 instruction owners and live/installed-PE bytes verified. Setters decrement captured old actual+4 using the current CE2220 target, dispatch the current canonical terminal only at zero, clear after returned release, then capture current F8D394/D5F0A8 slot64 and call complete B319B0(name,0); publish exact result without retain or identity shortcut. Reset visits post-effect65C/658/654/650, raw+14, complete unchecked B189F0(material,2,null), then captures66C before one CE2220 epoch for66C/670/674/678. Existing canonical texture providers support current2D/cube/volume; no forced2D profile or substitute successful loader. Strict Win32 source/object and realD3D9 cache fixture pass: four nonzero loads, same-owner replacement, old-release-before-renderer-admission failure, one captured decrement epoch and four actual zero-count texture terminals; all64 existing canonical companions retire. The instrumented IAT wrappers delegate to real InterlockedDecrement. Nonzero post-effect material reset arms, cube/volume execution, cold loading, original ABI/FH3/SEH, application wiring and gameplay remain unvalidated. CMake registration status is recorded separately; see docs/NATIVE_RENDER_RESOURCES_REMAP_CT.md. Original ABI: ECX actual owner; no stack arguments; EAX current raw+14; RET.",
+      "prototype_result": "Successfully set prototype for function at 00b4cba0 with __thiscall calling convention",
+      "ledger_name_output": "00b4cba0 -> BSP_RenderChild_GetMaterial14\n",
+      "ledger_function_output": "00b4cba0 function native_post_effect_material_00b4cba0\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00b4cba0",
+        "function_name": "BSP_RenderChild_GetMaterial14",
+        "comment": "\n\n[BSP reconstruction 00b4cba0] CT remap update\nCT reconstructs four remap-texture setters B0FD70/B0FDC0/B0FE10/B0FE60[77B each], reset B0FEB0[255B], and raw material accessor B4CBA0[4B]. Six bodies567B; all206 instruction owners and live/installed-PE bytes verified. Setters decrement captured old actual+4 using the current CE2220 target, dispatch the current canonical terminal only at zero, clear after returned release, then capture current F8D394/D5F0A8 slot64 and call complete B319B0(name,0); publish exact result without retain or identity shortcut. Reset visits post-effect65C/658/654/650, raw+14, complete unchecked B189F0(material,2,null), then captures66C before one CE2220 epoch for66C/670/674/678. Existing canonical texture providers support current2D/cube/volume; no forced2D profile or substitute successful loader. Strict Win32 source/object and realD3D9 cache fixture pass: four nonzero loads, same-owner replacement, old-release-before-renderer-admission failure, one captured decrement epoch and four actual zero-count texture terminals; all64 existing canonical companions retire. The instrumented IAT wrappers delegate to real InterlockedDecrement. Nonzero post-effect material reset arms, cube/volume execution, cold loading, original ABI/FH3/SEH, application wiring and gameplay remain unvalidated. CMake registration status is recorded separately; see docs/NATIVE_RENDER_RESOURCES_REMAP_CT.md. Original ABI: ECX actual owner; no stack arguments; EAX current raw+14; RET."
+      }
+    }
+  ],
+  "actions": [
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00b0fd70",
+        "prototype": "void * __thiscall BSP_RenderResources_SetRemapTexture0(void * this, void * name_header)",
+        "calling_convention": "__thiscall"
+      },
+      "result": "Successfully set prototype for function at 00b0fd70 with __thiscall calling convention"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b0fd70",
+        "new_name": "BSP_RenderResources_SetRemapTexture0"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b0fd70 from 'BSP_RenderResources_SetRemapTexture0' to 'BSP_RenderResources_SetRemapTexture0'\", \"warnings\": [\"Function name 'BSP_RenderResources_SetRemapTexture0' \\u2014 main part 'RenderResources_SetRemapTexture0' is not PascalCase. Expected: RenderresourcesSetremaptexture0\", \"Function name 'BSP_RenderResources_SetRemapTexture0' \\u2014 main part 'RenderResources_SetRemapTexture0' contains underscores. Use PascalCase after the module prefix.\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00b0fd70",
+        "comment": "[BSP reconstruction 00b0fd70]\nHypothesis, not a recovered symbol. Packet cc_scene_contents, read-only analysis. docs/MISSION_SCENE_CONTENTS.md. __thiscall([00F8D39C], NativeString* name). Releases the reference in slot +66Ch and stores [00F8D394] vtable +64h(name, 0). Colour remap: 00503510 BSP_FrontEndPreview_Draw passes ColourRemap.tga (00CEB588) at 00503EC1/00503EE1. 004D4DF0 passes scene record+C24h at 004D4F78; Ghidra drops the ECX at that site.\n\n[BSP reconstruction 00b0fd70] CT remap update\nCT reconstructs four remap-texture setters B0FD70/B0FDC0/B0FE10/B0FE60[77B each], reset B0FEB0[255B], and raw material accessor B4CBA0[4B]. Six bodies567B; all206 instruction owners and live/installed-PE bytes verified. Setters decrement captured old actual+4 using the current CE2220 target, dispatch the current canonical terminal only at zero, clear after returned release, then capture current F8D394/D5F0A8 slot64 and call complete B319B0(name,0); publish exact result without retain or identity shortcut. Reset visits post-effect65C/658/654/650, raw+14, complete unchecked B189F0(material,2,null), then captures66C before one CE2220 epoch for66C/670/674/678. Existing canonical texture providers support current2D/cube/volume; no forced2D profile or substitute successful loader. Strict Win32 source/object and realD3D9 cache fixture pass: four nonzero loads, same-owner replacement, old-release-before-renderer-admission failure, one captured decrement epoch and four actual zero-count texture terminals; all64 existing canonical companions retire. The instrumented IAT wrappers delegate to real InterlockedDecrement. Nonzero post-effect material reset arms, cube/volume execution, cold loading, original ABI/FH3/SEH, application wiring and gameplay remain unvalidated. CMake registration status is recorded separately; see docs/NATIVE_RENDER_RESOURCES_REMAP_CT.md. Original ABI: ECX actual service; stack actual8h name header; EAX B319B0 result; RET4."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00b0fd70\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00b0fdc0",
+        "prototype": "void * __thiscall BSP_RenderResources_SetRemapTexture1(void * this, void * name_header)",
+        "calling_convention": "__thiscall"
+      },
+      "result": "Successfully set prototype for function at 00b0fdc0 with __thiscall calling convention"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b0fdc0",
+        "new_name": "BSP_RenderResources_SetRemapTexture1"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b0fdc0 from 'BSP_RenderResources_SetRemapTexture1' to 'BSP_RenderResources_SetRemapTexture1'\", \"warnings\": [\"Function name 'BSP_RenderResources_SetRemapTexture1' \\u2014 main part 'RenderResources_SetRemapTexture1' is not PascalCase. Expected: RenderresourcesSetremaptexture1\", \"Function name 'BSP_RenderResources_SetRemapTexture1' \\u2014 main part 'RenderResources_SetRemapTexture1' contains underscores. Use PascalCase after the module prefix.\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00b0fdc0",
+        "comment": "[BSP reconstruction 00b0fdc0]\nHypothesis, not a recovered symbol. Packet cc_scene_contents, read-only analysis. docs/MISSION_SCENE_CONTENTS.md. __thiscall([00F8D39C], NativeString* name), slot +670h, same body as 00B0FD70. 00503510 passes ColourRemap.tga (00CEB588) at 00503F34/00503F58; 004D4DF0 passes scene record+C2Ch at 004D4F95.\n\n[BSP reconstruction 00b0fdc0] CT remap update\nCT reconstructs four remap-texture setters B0FD70/B0FDC0/B0FE10/B0FE60[77B each], reset B0FEB0[255B], and raw material accessor B4CBA0[4B]. Six bodies567B; all206 instruction owners and live/installed-PE bytes verified. Setters decrement captured old actual+4 using the current CE2220 target, dispatch the current canonical terminal only at zero, clear after returned release, then capture current F8D394/D5F0A8 slot64 and call complete B319B0(name,0); publish exact result without retain or identity shortcut. Reset visits post-effect65C/658/654/650, raw+14, complete unchecked B189F0(material,2,null), then captures66C before one CE2220 epoch for66C/670/674/678. Existing canonical texture providers support current2D/cube/volume; no forced2D profile or substitute successful loader. Strict Win32 source/object and realD3D9 cache fixture pass: four nonzero loads, same-owner replacement, old-release-before-renderer-admission failure, one captured decrement epoch and four actual zero-count texture terminals; all64 existing canonical companions retire. The instrumented IAT wrappers delegate to real InterlockedDecrement. Nonzero post-effect material reset arms, cube/volume execution, cold loading, original ABI/FH3/SEH, application wiring and gameplay remain unvalidated. CMake registration status is recorded separately; see docs/NATIVE_RENDER_RESOURCES_REMAP_CT.md. Original ABI: ECX actual service; stack actual8h name header; EAX B319B0 result; RET4."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00b0fdc0\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00b0fe10",
+        "prototype": "void * __thiscall BSP_RenderResources_SetRemapTexture2(void * this, void * name_header)",
+        "calling_convention": "__thiscall"
+      },
+      "result": "Successfully set prototype for function at 00b0fe10 with __thiscall calling convention"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b0fe10",
+        "new_name": "BSP_RenderResources_SetRemapTexture2"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b0fe10 from 'BSP_RenderResources_SetRemapTexture2' to 'BSP_RenderResources_SetRemapTexture2'\", \"warnings\": [\"Function name 'BSP_RenderResources_SetRemapTexture2' \\u2014 main part 'RenderResources_SetRemapTexture2' is not PascalCase. Expected: RenderresourcesSetremaptexture2\", \"Function name 'BSP_RenderResources_SetRemapTexture2' \\u2014 main part 'RenderResources_SetRemapTexture2' contains underscores. Use PascalCase after the module prefix.\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00b0fe10",
+        "comment": "[BSP reconstruction 00b0fe10]\nHypothesis, not a recovered symbol. Packet cc_scene_contents, read-only analysis. docs/MISSION_SCENE_CONTENTS.md. __thiscall([00F8D39C], NativeString* name), slot +674h, same body as 00B0FD70. 00503510 passes ColourRemap.tga (00CEB588) at 00503FA8/00503FCC; 004D4DF0 passes scene record+C34h at 004D4FB3.\n\n[BSP reconstruction 00b0fe10] CT remap update\nCT reconstructs four remap-texture setters B0FD70/B0FDC0/B0FE10/B0FE60[77B each], reset B0FEB0[255B], and raw material accessor B4CBA0[4B]. Six bodies567B; all206 instruction owners and live/installed-PE bytes verified. Setters decrement captured old actual+4 using the current CE2220 target, dispatch the current canonical terminal only at zero, clear after returned release, then capture current F8D394/D5F0A8 slot64 and call complete B319B0(name,0); publish exact result without retain or identity shortcut. Reset visits post-effect65C/658/654/650, raw+14, complete unchecked B189F0(material,2,null), then captures66C before one CE2220 epoch for66C/670/674/678. Existing canonical texture providers support current2D/cube/volume; no forced2D profile or substitute successful loader. Strict Win32 source/object and realD3D9 cache fixture pass: four nonzero loads, same-owner replacement, old-release-before-renderer-admission failure, one captured decrement epoch and four actual zero-count texture terminals; all64 existing canonical companions retire. The instrumented IAT wrappers delegate to real InterlockedDecrement. Nonzero post-effect material reset arms, cube/volume execution, cold loading, original ABI/FH3/SEH, application wiring and gameplay remain unvalidated. CMake registration status is recorded separately; see docs/NATIVE_RENDER_RESOURCES_REMAP_CT.md. Original ABI: ECX actual service; stack actual8h name header; EAX B319B0 result; RET4."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00b0fe10\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00b0fe60",
+        "prototype": "void * __thiscall BSP_RenderResources_SetRemapTexture3(void * this, void * name_header)",
+        "calling_convention": "__thiscall"
+      },
+      "result": "Successfully set prototype for function at 00b0fe60 with __thiscall calling convention"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b0fe60",
+        "new_name": "BSP_RenderResources_SetRemapTexture3"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b0fe60 from 'BSP_RenderResources_SetRemapTexture3' to 'BSP_RenderResources_SetRemapTexture3'\", \"warnings\": [\"Function name 'BSP_RenderResources_SetRemapTexture3' \\u2014 main part 'RenderResources_SetRemapTexture3' is not PascalCase. Expected: RenderresourcesSetremaptexture3\", \"Function name 'BSP_RenderResources_SetRemapTexture3' \\u2014 main part 'RenderResources_SetRemapTexture3' contains underscores. Use PascalCase after the module prefix.\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00b0fe60",
+        "comment": "[BSP reconstruction 00b0fe60]\nHypothesis, not a recovered symbol. Packet cc_scene_contents, read-only analysis. docs/MISSION_SCENE_CONTENTS.md. __thiscall([00F8D39C], NativeString* name), slot +678h, same body as 00B0FD70. 00503510 passes ColourRemap.tga (00CEB588) at 0050401C/00504040; 004D4DF0 passes scene record+C3Ch at 004D4FD0.\n\n[BSP reconstruction 00b0fe60] CT remap update\nCT reconstructs four remap-texture setters B0FD70/B0FDC0/B0FE10/B0FE60[77B each], reset B0FEB0[255B], and raw material accessor B4CBA0[4B]. Six bodies567B; all206 instruction owners and live/installed-PE bytes verified. Setters decrement captured old actual+4 using the current CE2220 target, dispatch the current canonical terminal only at zero, clear after returned release, then capture current F8D394/D5F0A8 slot64 and call complete B319B0(name,0); publish exact result without retain or identity shortcut. Reset visits post-effect65C/658/654/650, raw+14, complete unchecked B189F0(material,2,null), then captures66C before one CE2220 epoch for66C/670/674/678. Existing canonical texture providers support current2D/cube/volume; no forced2D profile or substitute successful loader. Strict Win32 source/object and realD3D9 cache fixture pass: four nonzero loads, same-owner replacement, old-release-before-renderer-admission failure, one captured decrement epoch and four actual zero-count texture terminals; all64 existing canonical companions retire. The instrumented IAT wrappers delegate to real InterlockedDecrement. Nonzero post-effect material reset arms, cube/volume execution, cold loading, original ABI/FH3/SEH, application wiring and gameplay remain unvalidated. CMake registration status is recorded separately; see docs/NATIVE_RENDER_RESOURCES_REMAP_CT.md. Original ABI: ECX actual service; stack actual8h name header; EAX B319B0 result; RET4."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00b0fe60\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00b0feb0",
+        "prototype": "void __thiscall BSP_RenderResources_ResetRemapTextures(void * this)",
+        "calling_convention": "__thiscall"
+      },
+      "result": "Successfully set prototype for function at 00b0feb0 with __thiscall calling convention"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b0feb0",
+        "new_name": "BSP_RenderResources_ResetRemapTextures"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b0feb0 from 'BSP_RenderResources_ResetRemapTextures' to 'BSP_RenderResources_ResetRemapTextures'\", \"warnings\": [\"Function name 'BSP_RenderResources_ResetRemapTextures' \\u2014 main part 'RenderResources_ResetRemapTextures' is not PascalCase. Expected: RenderresourcesResetremaptextures\", \"Function name 'BSP_RenderResources_ResetRemapTextures' \\u2014 main part 'RenderResources_ResetRemapTextures' contains underscores. Use PascalCase after the module prefix.\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00b0feb0",
+        "comment": "\n\n[BSP reconstruction 00b0feb0] CT remap update\nCT reconstructs four remap-texture setters B0FD70/B0FDC0/B0FE10/B0FE60[77B each], reset B0FEB0[255B], and raw material accessor B4CBA0[4B]. Six bodies567B; all206 instruction owners and live/installed-PE bytes verified. Setters decrement captured old actual+4 using the current CE2220 target, dispatch the current canonical terminal only at zero, clear after returned release, then capture current F8D394/D5F0A8 slot64 and call complete B319B0(name,0); publish exact result without retain or identity shortcut. Reset visits post-effect65C/658/654/650, raw+14, complete unchecked B189F0(material,2,null), then captures66C before one CE2220 epoch for66C/670/674/678. Existing canonical texture providers support current2D/cube/volume; no forced2D profile or substitute successful loader. Strict Win32 source/object and realD3D9 cache fixture pass: four nonzero loads, same-owner replacement, old-release-before-renderer-admission failure, one captured decrement epoch and four actual zero-count texture terminals; all64 existing canonical companions retire. The instrumented IAT wrappers delegate to real InterlockedDecrement. Nonzero post-effect material reset arms, cube/volume execution, cold loading, original ABI/FH3/SEH, application wiring and gameplay remain unvalidated. CMake registration status is recorded separately; see docs/NATIVE_RENDER_RESOURCES_REMAP_CT.md. Original ABI: ECX actual service; no stack arguments; RET; no semantic EAX."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00b0feb0\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00b4cba0",
+        "prototype": "void * __thiscall BSP_RenderChild_GetMaterial14(void * this)",
+        "calling_convention": "__thiscall"
+      },
+      "result": "Successfully set prototype for function at 00b4cba0 with __thiscall calling convention"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b4cba0",
+        "new_name": "BSP_RenderChild_GetMaterial14"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b4cba0 from 'TRIV_body_00b4cba0' to 'BSP_RenderChild_GetMaterial14'\", \"warnings\": [\"Function name 'BSP_RenderChild_GetMaterial14' \\u2014 main part 'RenderChild_GetMaterial14' is not PascalCase. Expected: RenderchildGetmaterial14\", \"Function name 'BSP_RenderChild_GetMaterial14' \\u2014 main part 'RenderChild_GetMaterial14' contains underscores. Use PascalCase after the module prefix.\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00b4cba0",
+        "comment": "\n\n[BSP reconstruction 00b4cba0] CT remap update\nCT reconstructs four remap-texture setters B0FD70/B0FDC0/B0FE10/B0FE60[77B each], reset B0FEB0[255B], and raw material accessor B4CBA0[4B]. Six bodies567B; all206 instruction owners and live/installed-PE bytes verified. Setters decrement captured old actual+4 using the current CE2220 target, dispatch the current canonical terminal only at zero, clear after returned release, then capture current F8D394/D5F0A8 slot64 and call complete B319B0(name,0); publish exact result without retain or identity shortcut. Reset visits post-effect65C/658/654/650, raw+14, complete unchecked B189F0(material,2,null), then captures66C before one CE2220 epoch for66C/670/674/678. Existing canonical texture providers support current2D/cube/volume; no forced2D profile or substitute successful loader. Strict Win32 source/object and realD3D9 cache fixture pass: four nonzero loads, same-owner replacement, old-release-before-renderer-admission failure, one captured decrement epoch and four actual zero-count texture terminals; all64 existing canonical companions retire. The instrumented IAT wrappers delegate to real InterlockedDecrement. Nonzero post-effect material reset arms, cube/volume execution, cold loading, original ABI/FH3/SEH, application wiring and gameplay remain unvalidated. CMake registration status is recorded separately; see docs/NATIVE_RENDER_RESOURCES_REMAP_CT.md. Original ABI: ECX actual owner; no stack arguments; EAX current raw+14; RET."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00b4cba0\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": "{\"success\": true, \"program\": \"battlestationspacific.exe\", \"message\": \"Program saved successfully\"}"
+    }
+  ],
+  "saved": true,
+  "exports_refreshed": true
+}

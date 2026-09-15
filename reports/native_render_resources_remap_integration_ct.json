@@ -1,0 +1,256 @@
+{
+  "packet": "orch4_render_remap_ct",
+  "state": "complete_source_strict_win32_and_actual_cache_fixture_registration_pending",
+  "base_revision": "e3ccc225bb9b87dc485cffe2e58300ed0ad5e9f2",
+  "project": {
+    "project_name": "bsp",
+    "current_folder": "/",
+    "folders": [],
+    "files": [
+      {
+        "name": "battlestationspacific.exe",
+        "path": "/battlestationspacific.exe",
+        "content_type": "Program",
+        "version": 2792,
+        "is_read_only": false,
+        "is_versioned": false
+      }
+    ]
+  },
+  "program": {
+    "name": "battlestationspacific.exe",
+    "path": "/battlestationspacific.exe",
+    "executable_path": "/I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "executable_format": "Portable Executable (PE)",
+    "language": "x86:LE:32:default",
+    "compiler": "windows",
+    "address_size": 32,
+    "image_base": "00400000",
+    "min_address": "00400000",
+    "max_address": "ffdfffff",
+    "memory_size": 14876380,
+    "function_count": 64118,
+    "symbol_count": 144538,
+    "data_type_count": 795,
+    "creation_date": "Mon May 04 16:56:25 PDT 2026",
+    "memory_block_count": 6,
+    "address_spaces": [
+      {
+        "name": "ram",
+        "start": "00000000",
+        "end": "ffffffff",
+        "size": 4294967296,
+        "addressable_unit_size": 1,
+        "size_bytes": 4294967296,
+        "address_size_bits": 32,
+        "is_default": true
+      }
+    ],
+    "has_multiple_address_spaces": false
+  },
+  "ordinary_bytes": 567,
+  "instruction_owners": 206,
+  "preserved_comments": 6,
+  "source_manifest": {
+    "path": "local/render_resources_remap_ct/sealed/source_manifest.json",
+    "sha256": "0d75d11b2e409bb78ea7b223287251cc73664db65036097a7125b0e530e94628",
+    "bytes": 291630
+  },
+  "source_inputs": 2691,
+  "changed_existing_source": [],
+  "added_source": [
+    "include/bsp/native_render_resources_remap.hpp",
+    "src/native_render_resources_remap.cpp"
+  ],
+  "build": "Existing tracked base build and both CTests passed; new source separately compiled/linked strictly, not yet registered in bsp_core",
+  "fixture_child_pid": 82452,
+  "validation": {
+    "base_build": "Tracked scripts/build.ps1 Win32 and both existing CTests passed",
+    "strict_new_source_compile": true,
+    "new_source_in_tracked_cmake": false,
+    "fixture": "One extension to the realD3D9 constructor/mesh fixture; four actual cache acquisitions/replacements and four current canonical texture terminals; one instrumented CE2220 capture check; all64 companions retired",
+    "remap_setter_execution": true,
+    "remap_reset_texture_execution": true,
+    "post_effect_material_reset_execution": false,
+    "cube_volume_execution": false,
+    "cold_texture_resolution": false,
+    "shader_compilation": false,
+    "full_parent_destructor": false,
+    "application_wired": false,
+    "new_application_execution": false,
+    "original_machine_code_differential": false,
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "evidence_limits": [
+    "New source is strictly compiled and linked into the standalone fixture. Tracked bsp_core registration remains pending while another owner leases cmake/startup.cmake.",
+    "Fixture uses four explicit2D native cache hits with actual D3D9 owners; cube/volume and cold resolver/loading are not executed.",
+    "Four nonnull post-effect/material arms are source-reviewed and compiled, but unexecuted. Existing B189F0 source is invoked with raw material+14,slot2,null; no invented post-effect constructor or successful callback stands in for missing runtime composition.",
+    "The counted IAT wrappers delegate to real InterlockedDecrement; they are focused epoch instrumentation, not an original-machine differential.",
+    "Renderer-admission failure occurs after actual old release and clear, before entering B319B0. It does not establish arbitrary native loader-exception cleanup.",
+    "New context/acquired C++ ABI, canonical noexcept terminals and host diagnostic exceptions do not establish native machine ABI or FH3/SEH equivalence.",
+    "No application startup/scene-host wiring, full render-resource lifetime or gameplay validation. Existing CS constructor and mesh conditions remain explicit."
+  ],
+  "remaining": "Register the source when the shared CMake lease is released; compose nonzero post-effect/material reset and native application renderer/service startup, preserving full parent ownership gaps.",
+  "startup_registry_leases": [
+    {
+      "id": "agent/orch5-20260911:orch5_native_effect_reload_cmake",
+      "owner": "agent/orch5-20260911",
+      "packet": "orch5_native_effect_reload_cmake",
+      "addresses": [],
+      "ranges": [],
+      "files": [
+        "cmake/startup.cmake"
+      ],
+      "claimed": "2026-09-15T04:15:44+00:00",
+      "expires": "2026-09-15T05:15:44+00:00",
+      "status": "active",
+      "worktree": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911",
+      "note": ""
+    }
+  ],
+  "registration_line": "cmake_language(DEFER DIRECTORY \"${CMAKE_SOURCE_DIR}\" CALL target_sources bsp_core PRIVATE src/native_render_resources_remap.cpp)",
+  "main_integration": "Agent branch only; new CMake source registration pending live foreign lease release",
+  "artifacts": [
+    {
+      "path": "local/render_resources_remap_ct/sealed/audit.json",
+      "sha256": "764779b1d8ae1bd83a05e84c6689197580dc378fb8ed0d4e9aa9460289d0d851",
+      "bytes": 26865
+    },
+    {
+      "path": "local/render_resources_remap_ct/sealed/probe.cpp",
+      "sha256": "010d3272b6625dd3bb29f25a8c9bbea5b4e9b47bd391c6e173ba9ec08a57600d",
+      "bytes": 69058
+    },
+    {
+      "path": "local/render_resources_remap_ct/sealed/probe_provisional.exe",
+      "sha256": "c981ebf3fc4cb1cb4cb2fc331aa42520881f4a0e50956a313e85bb37c6ac1345",
+      "bytes": 659456
+    },
+    {
+      "path": "local/render_resources_remap_ct/sealed/probe_provisional.obj",
+      "sha256": "baf44f8ba617834a69add5add17fcab44d5c3874da94141bab4a33be2ac66485",
+      "bytes": 585008
+    },
+    {
+      "path": "local/render_resources_remap_ct/sealed/probe_provisional.map",
+      "sha256": "51f6b1490c2c3ff98a7a3ee75a22eae0a6f14650c55c2ab2431887f62d19197a",
+      "bytes": 1170663
+    },
+    {
+      "path": "local/render_resources_remap_ct/sealed/remap_provisional.obj",
+      "sha256": "e3b2345b868ed3f76ff0a58b71a75139d5e1f0c554951be3a8978f4a5e87badc",
+      "bytes": 19629
+    },
+    {
+      "path": "local/render_resources_remap_ct/sealed/compile_provisional.cmd",
+      "sha256": "1d5a2d970f2643eb0e33217b65527fd039a49e8931102a8f04f6531fcc89a814",
+      "bytes": 974
+    },
+    {
+      "path": "local/render_resources_remap_ct/sealed/compile_provisional.log",
+      "sha256": "136f7cb7a6dfe7ccfe0921f91ef1ef66b9865e73008986dd2c57a9e2fd8de310",
+      "bytes": 46
+    },
+    {
+      "path": "local/render_resources_remap_ct/sealed/probe_provisional.log",
+      "sha256": "6ff5dc551a6be209feb1cc93d4e3deaf1648df6a5c41658fc3bb3c8a3212dc0d",
+      "bytes": 2384
+    },
+    {
+      "path": "local/render_resources_remap_ct/sealed/child_probe.log",
+      "sha256": "ba4036157127e1a7d287b7fbfb0cacae9fb6f22a78aafa72312dc9c162f8f8f7",
+      "bytes": 2325
+    },
+    {
+      "path": "local/render_resources_remap_ct/sealed/build.log",
+      "sha256": "ec814f3dec318e6fc44b724a494a223f1d06219dd2f46d0d43eabfbd0c27ae6c",
+      "bytes": 2460
+    },
+    {
+      "path": "local/render_resources_remap_ct/sealed/call_check.log",
+      "sha256": "2b7f1b495ed0246f093a0acfabf9f21c941a48bbbbfede47f2b625ab553a363f",
+      "bytes": 78
+    },
+    {
+      "path": "local/render_resources_remap_ct/sealed/annotation.log",
+      "sha256": "447dc960fca03f4f6b3e16c7231c500c43ecb74117e383a55af9cee9c66c6738",
+      "bytes": 81
+    },
+    {
+      "path": "local/render_resources_remap_ct/sealed/bsp_core.lib",
+      "sha256": "b343c53afdae1a77289bef336a4889fedfca2d8c48037f72176b48dcaa104141",
+      "bytes": 59581736
+    },
+    {
+      "path": "local/render_resources_remap_ct/sealed/bsp_lua511.lib",
+      "sha256": "00315ac717aac3d2b2161fefefe71b36a974335ff9c95d48c137423eb4e2f4b2",
+      "bytes": 455244
+    },
+    {
+      "path": "local/render_resources_remap_ct/sealed/bsp_zlib121.lib",
+      "sha256": "73ae30b8adc3adfe5b33285bac533f8e7df7e8ab8d9e44789e6a030fd8a06ad9",
+      "bytes": 71906
+    },
+    {
+      "path": "local/render_resources_remap_ct/sealed/sources/include/bsp/native_render_resources_remap.hpp",
+      "sha256": "16dafe2fb5b980218f154c978652ecfb486765842562280801931d1ecf458027",
+      "bytes": 3306
+    },
+    {
+      "path": "local/render_resources_remap_ct/sealed/sources/src/native_render_resources_remap.cpp",
+      "sha256": "43d050e2724eac61e0706b361d1622a43553c77b4a9ac1d6c374d89d3d1c3b44",
+      "bytes": 5176
+    },
+    {
+      "path": "local/render_resources_remap_ct/sealed/CMakeCache.txt",
+      "sha256": "2ab657bd06bb97731372c10fc883040590ccedec539b0406ba2554bab45f7835",
+      "bytes": 18839
+    },
+    {
+      "path": "local/render_resources_remap_ct/sealed/bsp_core.vcxproj",
+      "sha256": "ccfd843ef9642495385b6a30ed1a19604ba8aede29ad90c4f8940ba65fb1d18d",
+      "bytes": 200320
+    },
+    {
+      "path": "local/render_resources_remap_ct/sealed/prepare_render_remap_ct.py",
+      "sha256": "a3ae6ede60cfdb2634597a82632795497c227ddc3ad12a64ede5e50aeeefd099",
+      "bytes": 5737
+    },
+    {
+      "path": "local/render_resources_remap_ct/sealed/audit_render_remap_ct.py",
+      "sha256": "cc71388c1163abefc272f05650dc8ae532c5a4e6289b91dbb6ffec194536e570",
+      "bytes": 2614
+    },
+    {
+      "path": "local/render_resources_remap_ct/sealed/record_render_remap_ct.py",
+      "sha256": "1ff972c820a54eb03d7b25a179e8cb9ef04b8fc01b0ccd7ed8a5b8803989d0a1",
+      "bytes": 5617
+    },
+    {
+      "path": "local/render_resources_remap_ct/sealed/annotate_render_remap_ct.py",
+      "sha256": "20d4f555445ff7bc11c01f3d6df0718d519f09ad179e6b467991197438b6c4da",
+      "bytes": 3965
+    },
+    {
+      "path": "local/render_resources_remap_ct/sealed/seal_render_remap_ct.py",
+      "sha256": "a789655e42b27a648ef186b03ab09d4806e4f116eaaf2ee6d8989f52270d53f2",
+      "bytes": 6527
+    },
+    {
+      "path": "local/render_resources_remap_ct/sealed/check_render_remap_ct.py",
+      "sha256": "275c89563973a583f565e2b1b935a4a579de2807b64de0d75143943b93154305",
+      "bytes": 1363
+    },
+    {
+      "path": "reports/native_render_resources_remap_ct.json",
+      "sha256": "916e7c49ec2512c8dd7f4a33e7af41d1e794fc43c45ad71d42b125a58a127f3b",
+      "bytes": 35934
+    },
+    {
+      "path": "reports/native_render_resources_remap_annotations_ct.json",
+      "sha256": "30a69c2cec17061a12b0ccc6bcc1fe60b995f038bfc1c4993870a517d8c7e477",
+      "bytes": 55998
+    }
+  ]
+}
