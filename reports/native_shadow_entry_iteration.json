@@ -1,7 +1,7 @@
 {
   "packet": "orch3_shadow_entry_iteration_en",
   "base_commit": "76ebaeec3c740be11baf39b2c72015b0593e3920",
-  "status": "complete_source_explicit_c3_correction_pending_primary_review_and_build",
+  "status": "complete_source_build_and_generated_verified_pending_primary_integration",
   "coverage": {
     "native_bodies": 3,
     "native_bytes": 190,
@@ -66,13 +66,58 @@
     "service": "Inspect full current SDK shim and concrete _invalid_parameter_noinfo relocation; no original CRT body equivalence claim"
   },
   "build_validation": {
-    "status": "explicit_c3_source_pending_primary_review_and_followup_build",
-    "plan": "Fresh en3 runner/stamp/log will retain both prior attempts and all current inputs/fourlibraries/threeobjects; verify exact1-byte helpers and prove complete EL scene/traceline objects unchanged from passing en2.",
-    "last_build_tested_commit": "07dd326abfdf78a6b80804036af2ce2e180841f6",
-    "last_generated_result": "188-byte traversal,14CALL operands,SDKshim and library membership passed; exact two1-byte helper claims failed."
+    "status": "passed",
+    "commit": "ac3784a5f737fe6b5b384a06901ea033e39d5a5d",
+    "initial_source_commit": "c44ccb401148204ba584ffa4cd3b249a739e8052",
+    "EL_source_commit": "f1ea2f44258381e9abb9161f0d1cb9b24b34d431",
+    "EL_label_correction_commit": "07dd326abfdf78a6b80804036af2ce2e180841f6",
+    "started_utc": "2026-09-15T03:40:56.279596+00:00",
+    "finished_utc": "2026-09-15T03:41:02.643534+00:00",
+    "exit_code": 0,
+    "stamp": "local/en3-final-build-stamp.json",
+    "stamp_sha256": "bbd562168782928d12d906d881374bb63f49cbf7c7880a302d08679ad8acfa20",
+    "runner": "local/build_final_en3.py",
+    "runner_sha256": "0cd6522aaf908de43e90c765c583fd6ab7854cb73f625ce8ef03e3fc34660126",
+    "log": "local/en3-final-build.log",
+    "log_sha256": "b60284af2a740ccd1d0fea3401cafe6631a9d0ff9ff89bbc3c2e7ab31aab7882",
+    "tracked_build_input_count": 2643,
+    "actual_ignored_seed_included": true,
+    "total_input_count": 2644,
+    "seed_verification": {
+      "path": "local/en-seed-verification.json",
+      "sha256": "4dcbeadfa7a398a066588db416de5e823c4363defe60bcc2ebe5ca0d3c1b42a7",
+      "ranges_matched": 8,
+      "seed_header_sha256": "26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c",
+      "reuse": "Original successful verification reused with actual-header equality checked by every runner; no redundant seed query."
+    },
+    "clean_tree_before_and_after": true,
+    "same_commit_after": true,
+    "head_after": "ac3784a5f737fe6b5b384a06901ea033e39d5a5d",
+    "all_build_inputs_unchanged": true,
+    "complete_EL_objects_unchanged_from_en2": true,
+    "previous_failed_attempt_artifacts_unchanged": true,
+    "previous_en2_artifacts_unchanged": true,
+    "libraries": {
+      "build/win32/Release/bsp_core.lib": "4f831abaa586956b5bbe687d7d59aefc274d282348baf31eed590d2a03bbc4c5",
+      "build/win32/Release/bsp_lua511.lib": "992a097f5ba6774e5986512cbdecec8af10f46a6a2fafba6cfd0dd1962468515",
+      "build/win32/Release/bsp_zlib121.lib": "6765f14f69c59cc18762b0bf6f62828742bd9151db1c66adc8c73a36f8826286",
+      "build/win32/Release/xlive_stub.lib": "6dfcb5bf13947ffb6883edfde9d189c4c7ae0d702ec8bd81daebf3749e5f1c67"
+    },
+    "generated_objects": {
+      "build/win32/bsp_core.dir/Release/native_scene_render_traversal.obj": "c7dfd1b867c8dd31a27c733b1c8cea680121de15fd7667ec45aa13bc458dc9ef",
+      "build/win32/bsp_core.dir/Release/native_traceline_render.obj": "5d146bdac11280311d81b3e01a07b7a63a5957e8a6218602c9c6e7280b528ec0",
+      "build/win32/bsp_core.dir/Release/native_shadow_entry_iteration.obj": "f04420e163d84a82af11339013a8f493f0d63719c79ed4a295b739d0c1ddae61"
+    },
+    "existing_ctest_summary": [
+      "1/2 Test #1: reconstructed_math ...............   Passed    0.04 sec",
+      "2/2 Test #2: native_math_differential .........   Passed    0.03 sec",
+      "100% tests passed, 0 tests failed out of 2"
+    ],
+    "new_tests": 0,
+    "runtime_fixture": false
   },
   "partial_limits": [
-    "Passing build/test revision07dd326a has a concrete C20000 versus C3 helper-byte discrepancy; current explicit-C3 source awaits primary review and fresh build/generated verification.",
+    "Exact tested source ac3784a5 passed the coupled build,2existingCTests and complete EN generated proof; parent AD7A30 remains incomplete and primary owns final integration.",
     "Current source CRT replaces the original CRT service domain explicitly; original global/Watson/exception/register identity is not claimed.",
     "Actual one-byte RET functions are proven native bodies, not placeholders for unread callees.",
     "No parent AD7A30, AD7360/AD72A0, missing descendant, owner proxy, callback abstraction or extra lifetime operation.",
@@ -354,7 +399,7 @@
   "primary_source_acceptance": {
     "source_commit": "c44ccb401148204ba584ffa4cd3b249a739e8052",
     "logic_findings": [],
-    "scope": "Complete header/source/doc/report and69 native operations,15 original call rows. Refreshed report line references only; header/source bytes unchanged. Joint source integration/build still pending."
+    "scope": "Historical initial source review: complete header/source/doc/report and69 native operations,15 original call rows. Later build findings and corrections remain recorded separately."
   },
   "build_attempt_history": [
     {
@@ -398,6 +443,22 @@
       "archive": "local/en2-ret0-attempt.zip",
       "archive_sha256": "6591abdef36cce1d90ece21a702314b8dafd5d54f1840e7305c64ef5d4964d7c",
       "reason": "Build and2/2CTests passed; generated review found both private helpers emitted C20000 RET0 instead of native C3."
+    },
+    {
+      "commit": "ac3784a5f737fe6b5b384a06901ea033e39d5a5d",
+      "build_passed": true,
+      "generated_passed": true,
+      "exit_code": 0,
+      "ctest_summary": [
+        "1/2 Test #1: reconstructed_math ...............   Passed    0.04 sec",
+        "2/2 Test #2: native_math_differential .........   Passed    0.03 sec",
+        "100% tests passed, 0 tests failed out of 2"
+      ],
+      "stamp": "local/en3-final-build-stamp.json",
+      "stamp_sha256": "bbd562168782928d12d906d881374bb63f49cbf7c7880a302d08679ad8acfa20",
+      "log": "local/en3-final-build.log",
+      "log_sha256": "b60284af2a740ccd1d0fea3401cafe6631a9d0ff9ff89bbc3c2e7ab31aab7882",
+      "reason": "Explicit C3 correction satisfies both one-byte helper bodies; full traversal/shim/library proof and complete EL object equality passed."
     }
   ],
   "source_correction": {
@@ -413,6 +474,78 @@
         "00ae0750 one-byte RET body mismatch: C20000 versus C3"
       ]
     },
-    "native_credit_change": 0
+    "native_credit_change": 0,
+    "corrected_source_commit": "ac3784a5f737fe6b5b384a06901ea033e39d5a5d",
+    "status": "verified_exact_C3_in_fresh_build"
+  },
+  "tested_source_commit": "ac3784a5f737fe6b5b384a06901ea033e39d5a5d",
+  "initial_source_commit": "c44ccb401148204ba584ffa4cd3b249a739e8052",
+  "generated_validation": {
+    "status": "passed",
+    "tested_commit": "ac3784a5f737fe6b5b384a06901ea033e39d5a5d",
+    "review": "local/en3-generated-review.json",
+    "review_sha256": "5b88ad776019baf2241f97aaed079e55cc69e1bb14cecd8858769e7ce3a81e42",
+    "verifier": "local/en3-review-object.py",
+    "verifier_sha256": "2ead26759e22473a0b4877bed540da8d7171e54d54eac373f24a294ced7cd443",
+    "object": {
+      "path": "build/win32/bsp_core.dir/Release/native_shadow_entry_iteration.obj",
+      "sha256": "f04420e163d84a82af11339013a8f493f0d63719c79ed4a295b739d0c1ddae61"
+    },
+    "findings": [],
+    "main": {
+      "bytes": 188,
+      "instructions": 69,
+      "complete_byte_identity_after_exactly_14_CALL_operands": true,
+      "all14_relocations_match": true,
+      "alignment_8d4900_matches": true,
+      "current_crt_calls": 12,
+      "distinct_literal_ret_calls": 2
+    },
+    "ret_helpers": [
+      {
+        "address": "00ae2ca0",
+        "source_hex": "c3",
+        "size": 1,
+        "relocations": 0,
+        "complete_native_byte_identity": true
+      },
+      {
+        "address": "00ae0750",
+        "source_hex": "c3",
+        "size": 1,
+        "relocations": 0,
+        "complete_native_byte_identity": true
+      }
+    ],
+    "concrete_current_crt_shim": {
+      "bytes": "ff2500000000",
+      "size": 6,
+      "relocation_type": 6,
+      "target": "__imp___invalid_parameter_noinfo",
+      "original_crt_body_credit": 0
+    },
+    "whole_object_current_library_membership": {
+      "path": "build/win32/Release/bsp_core.lib",
+      "sha256": "4f831abaa586956b5bbe687d7d59aefc274d282348baf31eed590d2a03bbc4c5",
+      "matches": [
+        {
+          "offset": 12706582,
+          "size": 1717,
+          "name": "/55"
+        }
+      ]
+    },
+    "live_PE_comparison": "All three complete native spans match fresh BSP-guarded bytes and the original PE; only the main fourteen CALL operands are normalized."
+  },
+  "primary_corrected_source_acceptance": {
+    "commit": "ac3784a5f737fe6b5b384a06901ea033e39d5a5d",
+    "source_sha256": "6a17f2a0ff304ef2b0dfdf72d661e5ec89669baef4d4fb5a807e7146c1819538",
+    "findings": [],
+    "scope": "Primary independently verified exactly two RET-to-explicit-C3 replacements and approved the fresh en3 runner before build."
+  },
+  "primary_generated_acceptance": {
+    "commit": "ac3784a5f737fe6b5b384a06901ea033e39d5a5d",
+    "findings": [],
+    "scope": "Primary independently re-extracted all3 current library members, complete AD7440188bytes with14CALL operands and two distinct C3 zero-relocation leaf sections. Shared integration/annotation evidence remains primary-owned."
   }
 }
