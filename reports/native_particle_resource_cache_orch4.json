@@ -1,0 +1,1587 @@
+{
+  "packet": "orch4_particle_cache_h8",
+  "status": "complete_source_waiting_for_genuine_record_dependency_build",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+  "source": "src/native_particle_resource_cache.cpp",
+  "header": "include/bsp/native_particle_resource_cache.hpp",
+  "document": "docs/NATIVE_PARTICLE_RESOURCE_CACHE_ORCH4.md",
+  "owned_function_bytes": 596,
+  "functions": [
+    {
+      "address": "0086a200",
+      "cpp_symbol": "destroy_native_particle_resource_cache_base_0086a200",
+      "proposed_name": "BSP_ParticleResourceCache_ResetSingletonBase",
+      "original_abi": "ECX outer; RET",
+      "byte_span": {
+        "start": "0086a200",
+        "end_exclusive": "0086a211",
+        "length": 17,
+        "disk_sha256": "b612640b43b6448d6b86563693209d9b8789a4e570c0e2185b3c2acad452e8d9",
+        "live_sha256": "b612640b43b6448d6b86563693209d9b8789a4e570c0e2185b3c2acad452e8d9",
+        "equal": true,
+        "bytes": "c7056876f80000000000c7011838ce00c3",
+        "calls": []
+      },
+      "reconstructed": true,
+      "build_tested": false,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "0086ba10",
+      "cpp_symbol": "construct_native_particle_resource_cache_key_0086ba10",
+      "proposed_name": "BSP_ParticleResourceCache_ConstructKey",
+      "original_abi": "ECX ignored; stack output/source/ignored; EAX output; RET0C",
+      "byte_span": {
+        "start": "0086ba10",
+        "end_exclusive": "0086ba60",
+        "length": 80,
+        "disk_sha256": "a2d8e92661cfa49769f037f80005ce91ec53e4cec67f530b784f364392218171",
+        "live_sha256": "a2d8e92661cfa49769f037f80005ce91ec53e4cec67f530b784f364392218171",
+        "equal": true,
+        "bytes": "51568b74240c578b7c24143bf7c744240800000000c70600000000c746040000000074248b076a01508bcee80023bbff833f0074138b0e8b57048b4604515250e82bbc380083c40c5f8bc65e59c20c00",
+        "calls": [
+          {
+            "function": "0086ba10",
+            "address": "0086ba3b",
+            "native": "0041dd40",
+            "kind": "direct"
+          },
+          {
+            "function": "0086ba10",
+            "address": "0086ba50",
+            "native": "00bf7680",
+            "kind": "direct"
+          }
+        ]
+      },
+      "reconstructed": true,
+      "build_tested": false,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00871370",
+      "cpp_symbol": "destroy_native_particle_resource_records_00871370",
+      "proposed_name": "BSP_ParticleResourceRecords_Destroy",
+      "original_abi": "ECX raw12h vector; RET",
+      "byte_span": {
+        "start": "00871370",
+        "end_exclusive": "00871387",
+        "length": 23,
+        "disk_sha256": "f52cb83034d0d39ffe7caed565d2b4fa1e82c434c710507099f46603656ba4a9",
+        "live_sha256": "f52cb83034d0d39ffe7caed565d2b4fa1e82c434c710507099f46603656ba4a9",
+        "equal": true,
+        "bytes": "566a008bf1e8b6f7ffff8b0650e80756380083c4045ec3",
+        "calls": [
+          {
+            "function": "00871370",
+            "address": "00871375",
+            "native": "00870b30",
+            "kind": "direct"
+          },
+          {
+            "function": "00871370",
+            "address": "0087137d",
+            "native": "00bf6989",
+            "kind": "direct"
+          }
+        ]
+      },
+      "reconstructed": true,
+      "build_tested": false,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00871400",
+      "cpp_symbol": "retain_native_particle_resource_00871400",
+      "proposed_name": "BSP_ParticleResourceCache_RetainResource",
+      "original_abi": "ECX ignored; stack resource; EAX resource; RET4",
+      "byte_span": {
+        "start": "00871400",
+        "end_exclusive": "00871415",
+        "length": 21,
+        "disk_sha256": "984d24bc0617becd91f8537f65986b285467e90f1695f65378b419b70861961c",
+        "live_sha256": "984d24bc0617becd91f8537f65986b285467e90f1695f65378b419b70861961c",
+        "equal": true,
+        "bytes": "568b7424088d460450ff151c22ce008bc65ec20400",
+        "calls": [
+          {
+            "function": "00871400",
+            "address": "00871409",
+            "native": "dword ptr [0xce221c]",
+            "kind": "indirect"
+          }
+        ]
+      },
+      "reconstructed": true,
+      "build_tested": false,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00871420",
+      "cpp_symbol": "release_native_particle_resource_00871420",
+      "proposed_name": "BSP_ParticleResourceCache_ReleaseResource",
+      "original_abi": "ECX ignored; stack resource; RET4",
+      "byte_span": {
+        "start": "00871420",
+        "end_exclusive": "0087143f",
+        "length": 31,
+        "disk_sha256": "1071027371a9ce2f817139cbfde3b2eb3ef9061595d7348715c459167dea677f",
+        "live_sha256": "1071027371a9ce2f817139cbfde3b2eb3ef9061595d7348715c459167dea677f",
+        "equal": true,
+        "bytes": "568b7424088d460450ff152022ce0085c075088b168b028bceffd05ec20400",
+        "calls": [
+          {
+            "function": "00871420",
+            "address": "00871429",
+            "native": "dword ptr [0xce2220]",
+            "kind": "indirect"
+          },
+          {
+            "function": "00871420",
+            "address": "00871439",
+            "native": "eax",
+            "kind": "indirect"
+          }
+        ]
+      },
+      "reconstructed": true,
+      "build_tested": false,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00871480",
+      "cpp_symbol": "destroy_native_particle_resource_cache_00871480",
+      "proposed_name": "BSP_ParticleResourceCache_Destroy",
+      "original_abi": "ECX raw14h inner; RET",
+      "byte_span": {
+        "start": "00871480",
+        "end_exclusive": "008714df",
+        "length": 95,
+        "disk_sha256": "28d5c519f1ed537264227224da463ef5a6cff43e276d6dc9812730faea81bcf9",
+        "live_sha256": "28d5c519f1ed537264227224da463ef5a6cff43e276d6dc9812730faea81bcf9",
+        "equal": true,
+        "bytes": "6aff683b60c90064a100000000506489250000000051568bf189742404c706f0dad000c744241000000000e860feffff83c6046a008bcec7442414ffffffffe86cf6ffff8b0650e8bd5438008b4c240c83c4045e64890d0000000083c410c3",
+        "calls": [
+          {
+            "function": "00871480",
+            "address": "008714ab",
+            "native": "00871310",
+            "kind": "direct"
+          },
+          {
+            "function": "00871480",
+            "address": "008714bf",
+            "native": "00870b30",
+            "kind": "direct"
+          },
+          {
+            "function": "00871480",
+            "address": "008714c7",
+            "native": "00bf6989",
+            "kind": "direct"
+          }
+        ]
+      },
+      "reconstructed": true,
+      "build_tested": false,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00871730",
+      "cpp_symbol": "delete_native_particle_resource_cache_00871730",
+      "proposed_name": "CG_scalar_deleting_dtor_00871730",
+      "original_abi": "ECX inner; stack flags; EAX original; RET4",
+      "byte_span": {
+        "start": "00871730",
+        "end_exclusive": "0087174e",
+        "length": 30,
+        "disk_sha256": "e346084d0757404191d9341edda5f88968005c8f25fbd44241515a4a70b3a2d3",
+        "live_sha256": "e346084d0757404191d9341edda5f88968005c8f25fbd44241515a4a70b3a2d3",
+        "equal": true,
+        "bytes": "568bf1e848fdfffff644240801740956e8674e380083c4048bc65ec20400",
+        "calls": [
+          {
+            "function": "00871730",
+            "address": "00871733",
+            "native": "00871480",
+            "kind": "direct"
+          },
+          {
+            "function": "00871730",
+            "address": "00871740",
+            "native": "00bf65ac",
+            "kind": "direct"
+          }
+        ]
+      },
+      "reconstructed": true,
+      "build_tested": false,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00871ae0",
+      "cpp_symbol": "destroy_native_particle_resource_cache_owner_00871ae0",
+      "proposed_name": "BSP_ParticleResourceCache_DestroySingleton",
+      "original_abi": "ECX raw18h outer; RET",
+      "byte_span": {
+        "start": "00871ae0",
+        "end_exclusive": "00871b2d",
+        "length": 77,
+        "disk_sha256": "8adf5e5d545148cabc3581a02d633586d17050a873a9778fec68624663bdabb4",
+        "live_sha256": "8adf5e5d545148cabc3581a02d633586d17050a873a9778fec68624663bdabb4",
+        "equal": true,
+        "bytes": "6aff68d860c90064a100000000506489250000000051568bf1897424048d4e04c744241000000000e873f9ffff8b4c2408c7056876f80000000000c7061838ce005e64890d0000000083c410c3",
+        "calls": [
+          {
+            "function": "00871ae0",
+            "address": "00871b08",
+            "native": "00871480",
+            "kind": "direct"
+          }
+        ]
+      },
+      "reconstructed": true,
+      "build_tested": false,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00871b30",
+      "cpp_symbol": "delete_native_particle_resource_cache_owner_00871b30",
+      "proposed_name": "CG_scalar_deleting_dtor_00871b30",
+      "original_abi": "ECX outer; stack flags; EAX original; RET4",
+      "byte_span": {
+        "start": "00871b30",
+        "end_exclusive": "00871b4e",
+        "length": 30,
+        "disk_sha256": "8f1b38887095863582604ba4c1ff3f0ed1287d894a8771c7e150974d37d1f784",
+        "live_sha256": "8f1b38887095863582604ba4c1ff3f0ed1287d894a8771c7e150974d37d1f784",
+        "equal": true,
+        "bytes": "568bf1e8a8fffffff644240801740956e8674a380083c4048bc65ec20400",
+        "calls": [
+          {
+            "function": "00871b30",
+            "address": "00871b33",
+            "native": "00871ae0",
+            "kind": "direct"
+          },
+          {
+            "function": "00871b30",
+            "address": "00871b40",
+            "native": "00bf65ac",
+            "kind": "direct"
+          }
+        ]
+      },
+      "reconstructed": true,
+      "build_tested": false,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00871bd0",
+      "cpp_symbol": "get_native_particle_resource_cache_owner_00871bd0",
+      "proposed_name": "BSP_ParticleResourceCache_GetSingleton",
+      "original_abi": "No native arguments; EAX current raw18h outer; RET",
+      "byte_span": {
+        "start": "00871bd0",
+        "end_exclusive": "00871c90",
+        "length": 192,
+        "disk_sha256": "8ab7e1b0256bd5e8be62bac269e57d686e025f6e5e15ee4b6ee67d7e2bb0cf79",
+        "live_sha256": "8ab7e1b0256bd5e8be62bac269e57d686e025f6e5e15ee4b6ee67d7e2bb0cf79",
+        "equal": true,
+        "bytes": "64a1000000006aff68f860c9005064892500000000a16876f80083ec085733ff3bc70f858800000056e85237baff8b70103bf7c7442408fc37ce008974240c740b56ff151822ce0083461801897c2418393d6876f80075436a18e8ec4b380083c4043bc7741bc70054dbd00089780889780c897810897814c7400440dbd000eb0233c0a36876f800e8f336baff8b0d6876f800518bc8e8c5ef35003bf7740b834618ff56ff151022ce00a16876f8005e8b4c240c5f64890d0000000083c414c3",
+        "calls": [
+          {
+            "function": "00871bd0",
+            "address": "00871bf9",
+            "native": "00415350",
+            "kind": "direct"
+          },
+          {
+            "function": "00871bd0",
+            "address": "00871c12",
+            "native": "dword ptr [0xce2218]",
+            "kind": "indirect"
+          },
+          {
+            "function": "00871bd0",
+            "address": "00871c2a",
+            "native": "00bf681b",
+            "kind": "direct"
+          },
+          {
+            "function": "00871bd0",
+            "address": "00871c58",
+            "native": "00415350",
+            "kind": "direct"
+          },
+          {
+            "function": "00871bd0",
+            "address": "00871c66",
+            "native": "00bd0c30",
+            "kind": "direct"
+          },
+          {
+            "function": "00871bd0",
+            "address": "00871c74",
+            "native": "dword ptr [0xce2210]",
+            "kind": "indirect"
+          }
+        ]
+      },
+      "reconstructed": true,
+      "build_tested": false,
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "prior_annotations": [
+    {
+      "address": "00871480",
+      "annotation": {
+        "address": "00871480",
+        "function_name": "FUN_00871480"
+      }
+    },
+    {
+      "address": "00871400",
+      "annotation": {
+        "address": "00871400",
+        "function_name": "FUN_00871400"
+      }
+    },
+    {
+      "address": "00871420",
+      "annotation": {
+        "address": "00871420",
+        "function_name": "FUN_00871420"
+      }
+    },
+    {
+      "address": "00871730",
+      "annotation": {
+        "address": "00871730",
+        "function_name": "CG_scalar_deleting_dtor_00871730"
+      }
+    },
+    {
+      "address": "00871ae0",
+      "annotation": {
+        "address": "00871ae0",
+        "function_name": "FUN_00871ae0"
+      }
+    },
+    {
+      "address": "00871b30",
+      "annotation": {
+        "address": "00871b30",
+        "function_name": "CG_scalar_deleting_dtor_00871b30"
+      }
+    },
+    {
+      "address": "00871bd0",
+      "annotation": {
+        "address": "00871bd0",
+        "function_name": "FUN_00871bd0"
+      }
+    },
+    {
+      "address": "0086ba60",
+      "annotation": {
+        "address": "0086ba60",
+        "function_name": "FUN_0086ba60"
+      }
+    },
+    {
+      "address": "00871370",
+      "annotation": {
+        "address": "00871370",
+        "function_name": "FUN_00871370"
+      }
+    },
+    {
+      "address": "0086a200",
+      "annotation": {
+        "address": "0086a200",
+        "function_name": "FUN_0086a200"
+      }
+    }
+  ],
+  "prior_undefined_function": {
+    "address": "0086ba10",
+    "existing_listing_start": true,
+    "function": null,
+    "comment_unavailable": "get_plate_comment requires a function; no function before parent definition"
+  },
+  "support_byte_spans": [
+    {
+      "start": "0086ba60",
+      "end_exclusive": "0086bb76",
+      "length": 278,
+      "disk_sha256": "97d73fe3268a2474d3029ae6f4139f57935cc8f4db7d95c011bf539df76944a8",
+      "live_sha256": "97d73fe3268a2474d3029ae6f4139f57935cc8f4db7d95c011bf539df76944a8",
+      "equal": true,
+      "bytes": "6aff688b55c90064a100000000506489250000000083ec2453568d4c2410e87d9b28008b74243c33db8d4424083bc6895c2434895c2408895c240c74288b066a01508d4c2410e89522bbff391e74168b4c24088b56048b44240c515250e8bebb380083c40c8d4c2408c644243401e82d11c5ff6890000000e83ead38008bf083c4048974243c3bf3c64424340274148d4c2408518bcee8d58a2800c70618d4d000eb0233f68b44240c3bc3c6442434017505b86c76f800508d4c2414e82f9d28008d542410528bcee8739028008b4c240c3bcb885c243474178b4424086a0183c0015051e877e1baff8bc8e8c05936008d4c2410c7442434ffffffffe8bf9a28008b4c242c8bc65e5b64890d0000000083c430c20800",
+      "calls": [
+        {
+          "function": "0086ba60",
+          "address": "0086ba7e",
+          "native": "00af5600",
+          "kind": "direct"
+        },
+        {
+          "function": "0086ba60",
+          "address": "0086baa6",
+          "native": "0041dd40",
+          "kind": "direct"
+        },
+        {
+          "function": "0086ba60",
+          "address": "0086babd",
+          "native": "00bf7680",
+          "kind": "direct"
+        },
+        {
+          "function": "0086ba60",
+          "address": "0086bace",
+          "native": "004bcc00",
+          "kind": "direct"
+        },
+        {
+          "function": "0086ba60",
+          "address": "0086bad8",
+          "native": "00bf681b",
+          "kind": "direct"
+        },
+        {
+          "function": "0086ba60",
+          "address": "0086baf6",
+          "native": "00af45d0",
+          "kind": "direct"
+        },
+        {
+          "function": "0086ba60",
+          "address": "0086bb1c",
+          "native": "00af5850",
+          "kind": "direct"
+        },
+        {
+          "function": "0086ba60",
+          "address": "0086bb28",
+          "native": "00af4ba0",
+          "kind": "direct"
+        },
+        {
+          "function": "0086ba60",
+          "address": "0086bb44",
+          "native": "00419cc0",
+          "kind": "direct"
+        },
+        {
+          "function": "0086ba60",
+          "address": "0086bb4b",
+          "native": "00bd1510",
+          "kind": "direct"
+        },
+        {
+          "function": "0086ba60",
+          "address": "0086bb5c",
+          "native": "00af5620",
+          "kind": "direct"
+        }
+      ]
+    },
+    {
+      "start": "00c96030",
+      "end_exclusive": "00c96045",
+      "length": 21,
+      "disk_sha256": "67a78c0df7fa966ebe85af94de589a4c68773403e75425b754f1ae83a98babf5",
+      "live_sha256": "67a78c0df7fa966ebe85af94de589a4c68773403e75425b754f1ae83a98babf5",
+      "equal": true,
+      "bytes": "8b4df083c104e935b3bdffb8f47fdc00e9fe0af6ff",
+      "calls": []
+    },
+    {
+      "start": "00c960d0",
+      "end_exclusive": "00c960e2",
+      "length": 18,
+      "disk_sha256": "b316eabc51e9ade9861a5f950e43e64da3a3b7cd42af844b38d464bf22a62026",
+      "live_sha256": "b316eabc51e9ade9861a5f950e43e64da3a3b7cd42af844b38d464bf22a62026",
+      "equal": true,
+      "bytes": "8b4df0e92841bdffb8b880dc00e9610af6ff",
+      "calls": []
+    },
+    {
+      "start": "00c960f0",
+      "end_exclusive": "00c96102",
+      "length": 18,
+      "disk_sha256": "f878ac8038a4a54549e08370e71d3aa96ed613682be9cc55e0e018cd20252d5c",
+      "live_sha256": "f878ac8038a4a54549e08370e71d3aa96ed613682be9cc55e0e018cd20252d5c",
+      "equal": true,
+      "bytes": "8d4dece9e8bd77ffb8e480dc00e9410af6ff",
+      "calls": []
+    },
+    {
+      "start": "00d0daf0",
+      "end_exclusive": "00d0db04",
+      "length": 20,
+      "disk_sha256": "24a14467e57dc968437e38d9b62cdfcff8b4d5b70ddc47e7578c41b088c5ae1a",
+      "live_sha256": "24a14467e57dc968437e38d9b62cdfcff8b4d5b70ddc47e7578c41b088c5ae1a",
+      "equal": true,
+      "bytes": "e01687008e69bf008e69bf000014870020148700"
+    },
+    {
+      "start": "00d0db40",
+      "end_exclusive": "00d0db58",
+      "length": 24,
+      "disk_sha256": "a03299c63f5309d9e1c168bbbefca129667e0e97c054680fe9f1fdbdd155f1c4",
+      "live_sha256": "a03299c63f5309d9e1c168bbbefca129667e0e97c054680fe9f1fdbdd155f1c4",
+      "equal": true,
+      "bytes": "3017870010ba860060ba86000014870020148700301b8700"
+    },
+    {
+      "start": "00dc7ff4",
+      "end_exclusive": "00dc8018",
+      "length": 36,
+      "disk_sha256": "85080ffdec823a641ea526345f1d2aa0c7186041b183df669bc81db0ec416c05",
+      "live_sha256": "85080ffdec823a641ea526345f1d2aa0c7186041b183df669bc81db0ec416c05",
+      "equal": true,
+      "bytes": "2205931901000000ec7fdc00000000000000000000000000000000000000000001000000"
+    },
+    {
+      "start": "00dc80b8",
+      "end_exclusive": "00dc80dc",
+      "length": 36,
+      "disk_sha256": "ad7d08b8a1e3ae8faeba9e8370fdf76cb19fc5b36b0ddd6c62bc0ccba498fe26",
+      "live_sha256": "ad7d08b8a1e3ae8faeba9e8370fdf76cb19fc5b36b0ddd6c62bc0ccba498fe26",
+      "equal": true,
+      "bytes": "2205931901000000b080dc00000000000000000000000000000000000000000001000000"
+    },
+    {
+      "start": "00dc80e4",
+      "end_exclusive": "00dc8108",
+      "length": 36,
+      "disk_sha256": "43ab71c38e42222f3e3e0c1f5f164f46f4e5f9fdef53b7a06b7ae034de44db12",
+      "live_sha256": "43ab71c38e42222f3e3e0c1f5f164f46f4e5f9fdef53b7a06b7ae034de44db12",
+      "equal": true,
+      "bytes": "2205931901000000dc80dc00000000000000000000000000000000000000000001000000"
+    },
+    {
+      "start": "00af45d0",
+      "end_exclusive": "00af46d7",
+      "length": 263,
+      "disk_sha256": "c83c2512ef68e777c7cadd2617486611a800018a42bb4167e2881113512946d3",
+      "live_sha256": "c83c2512ef68e777c7cadd2617486611a800018a42bb4167e2881113512946d3",
+      "equal": true,
+      "bytes": "6aff68f3abcb0064a1000000005064892500000000515355568bf1c70630b1ce005789742410c746040100000033db8d7e08c70658d9d500895c241c891f895f048b6c24243bfd895e30c644241c01895e5474258b45006a01508bcfe80f9792ff395d0074138b0f8b55048b4704515250e83a30100083c40cf30f1005083dce008b4c2414f30f114660f30f100524a4cf00f30f114668f30f11466cf30f1005b0b4ce00f30f1146740f57c0885e65885e64885e66885e70885e78885e79885e7ac7465801000000c7465c1e000000f30f11868c0000005ff30f11467cf30f118680000000f30f118684000000f30f1186880000008bc65e5d5b64890d0000000083c410c20400",
+      "calls": [
+        {
+          "function": "00af45d0",
+          "address": "00af462c",
+          "native": "0041dd40",
+          "kind": "direct"
+        },
+        {
+          "function": "00af45d0",
+          "address": "00af4641",
+          "native": "00bf7680",
+          "kind": "direct"
+        }
+      ]
+    },
+    {
+      "start": "00af5850",
+      "end_exclusive": "00af592d",
+      "length": 221,
+      "disk_sha256": "bc317e80fcf735d91974dbb5a4424e6a0ce21dac8cb4c6ba2c713d401791900f",
+      "live_sha256": "bc317e80fcf735d91974dbb5a4424e6a0ce21dac8cb4c6ba2c713d401791900f",
+      "equal": true,
+      "bytes": "558b6c240885ed568bf1578d7e0c74128bc58d50018a0883c00184c975f72bc2eb0233c06a00508bcfe8c28492ff8b470485c0740d8b0f515550e8f11d100083c40c8b0decce090157e8229c0e008b0decce09018b118b42046a3257ffd08bf88b178b42308bcfffd0508906894608c7460400000000c7461800000000e8ecfc0f0083c4048d4c2410518b0e8946148b178b522451508bcfffd28b4424103b06741b8b4e1451e88e10100083c4045fc74614000000005e33c05dc204008d570452ff152022ce0085c075088b078b108bcfffd28b4424105f5e5dc20400",
+      "calls": [
+        {
+          "function": "00af5850",
+          "address": "00af5879",
+          "native": "0041dd40",
+          "kind": "direct"
+        },
+        {
+          "function": "00af5850",
+          "address": "00af588a",
+          "native": "00bf7680",
+          "kind": "direct"
+        },
+        {
+          "function": "00af5850",
+          "address": "00af5899",
+          "native": "00bdf4c0",
+          "kind": "direct"
+        },
+        {
+          "function": "00af5850",
+          "address": "00af58ac",
+          "native": "eax",
+          "kind": "indirect"
+        },
+        {
+          "function": "00af5850",
+          "address": "00af58b7",
+          "native": "eax",
+          "kind": "indirect"
+        },
+        {
+          "function": "00af5850",
+          "address": "00af58cd",
+          "native": "00bf55be",
+          "kind": "direct"
+        },
+        {
+          "function": "00af5850",
+          "address": "00af58e8",
+          "native": "edx",
+          "kind": "indirect"
+        },
+        {
+          "function": "00af5850",
+          "address": "00af58f6",
+          "native": "00bf6989",
+          "kind": "direct"
+        },
+        {
+          "function": "00af5850",
+          "address": "00af5911",
+          "native": "dword ptr [0xce2220]",
+          "kind": "indirect"
+        },
+        {
+          "function": "00af5850",
+          "address": "00af5921",
+          "native": "edx",
+          "kind": "indirect"
+        }
+      ]
+    },
+    {
+      "start": "00af4ba0",
+      "end_exclusive": "00af55ae",
+      "length": 2574,
+      "disk_sha256": "cd258ef9bbb87b812ba933d806ca71491f41806330cdb1ffa33513321c438b1b",
+      "live_sha256": "cd258ef9bbb87b812ba933d806ca71491f41806330cdb1ffa33513321c438b1b",
+      "equal": true,
+      "bytes": "6aff68dfaccb0064a100000000506489250000000081ec8000000055568bb42498000000578be933ff8bce897c2414e81c0a0000897c240c8d44240c508bce89bc2498000000e8550b000084c0753d8b54240c3bd7c7842494000000ffffffff74238bc28d70018a0883c00184c975f72bc66a0183c0015052e8a25092ff8bc8e8ebc80d0032c0e96809000053578d4c2434518d4c2418e88497ffff8b106820dad50052e8763310008b54243883c40885c00f95c33bd7742c8bc28d70018bff8a0883c00184c975f72bc66a0183c0015052e8495092ff8bc8e892c80d008bb424a000000084db743d8b5424103bd7c7842498000000ffffffff74238bc28d70018a0883c00184c975f72bc66a0183c0015052e8085092ff8bc8e851c80d0032c0e9cd0800008d442410508bcee86e0a000084c074168b4c241068384dce0051e8da32100083c40885c075da8d542410528bcee8480a000084c00f84450800008b44241068d44cce0050e8b032100083c40885c00f842b0800008b4c2410680c3ace0051e89632100083c40885c00f84f6070000578d542420528d4c2418e87d96ffff8b00688cd7d50050e86f3210008b54242483c40885c00f94c33bd774238bc28d70018a0883c00184c975f72bc66a0183c0015052e8444f92ff8bc8e88dc70d0084db897c241c0f84c10400006a018d4c2418518d4c2418e82196ffff8b5424146864d8d00052c68424a000000001e80932100083c40885c00f858e0000006a028d442424508d4c2418e8ef95ffff8b0851e83e3610008b54242483c40485c00f9fc03bd788456474238bc28d70018a0883c00184c975f72bc66a0183c0015052e8b84e92ff8bc8e801c70d008b5424143bd7897c2420c68424980000000074238bc28d70018a0883c00184c975f72bc66a0183c0015052e8814e92ff8bc8e8cac60d00897c2414e9db0600008b5424146810dad50052e86131100083c40885c075426a028d442438508d4c2418e84b95ffff8b0851e89a35100083c40485c00f9fc08d4c2434884565e80f94ffff8d4c2414c684249800000000e8fe93ffffe9830600008b5424146858dbd00052e80931100083c40885c075426a028d44243c508d4c2418e8f394ffff8b0851e84235100083c40485c00f9fc08d4c2438884570e8b793ffff8d4c2414c684249800000000e8a693ffffe92b0600008b5424146804dad50052e8b130100083c40885c075396a028d442440508d4c2418e89b94ffff8bc8e83490ffffd95d748d4c243ce86893ffff8d4c2414c684249800000000e85793ffffe9dc0500008b4c241468f4d9d50051e86230100083c40885c075466a028d542444528d4c2418e84c94ffff8b0050e89b34100083c40485c00f9fc1884d788d4c2440e81093ffff8d4c2414c6457800c684249800000000e8fb92ffffe9800500008b54241468e4d9d50052e80630100083c40885c075426a028d442448508d4c2418e8f093ffff8b0851e83f34100083c40485c00f9fc28d4c2444885579e8b492ffff8d4c2414c684249800000000e8a392ffffe9280500008b44241468d4d9d50050e8ae2f100083c40885c075426a028d4c244c518d4c2418e89893ffff8b1052e8e733100083c40485c00f9fc08d4c244888457ae85c92ffff8d4c2414c684249800000000e84b92ffffe9d00400008b4c241468c4d9d50051e8562f100083c40885c06a028d4c2414753b8d54245452e84093ffff8bc8e8d98effffd95c244cd944244c8d4c2450d95d60e80592ffff8d4c2414c684249800000000e8f491ffffe9790400008d44245c50e805f4ffff578d4c2458518bc8c68424a000000002e8f092ffff8bc8e8898effffddd88d4c2454e8be91ffff8d4c2458c684249800000001e8ad91ffff8d8c2480000000e8d16d0000d9ee83ec08d95424048d8c2488000000d91c24c68424a000000003e8417200006a028d542464528d4c2418e891f3ffff6a018d4c2460518bc8c68424a000000004e87bf3ffff508d8c2484000000c684249c00000005e8167300008d4c245cc684249800000004e83591ffff8d4c2460c684249800000003e82491ffff8b54241468b8d9d50052e8342e100083c40885c075198d8c2480000000e812700000e87d221000894558e9830000008b44241468acd9d50050e8052e100083c40885c075118d8c2480000000e8f36f000089455ceb5c8b4c24146898d9d50051e8de2d100083c40885c075198d8c2480000000e8bc6f0000d95c244cd944244cd95d68eb2d8b5424146884d9d50052e8af2d100083c40885c08d8c24800000007517e88d6f0000d95c244cd944244cd95d6c8d8c2480000000e8d6eeffff8d4c2414c684249800000000e85590ffffe9da020000578d442428508d4c2418e86191ffff8b08687cd9d50051e8532d10008b54242c83c40885c00f94c33bd774238bc28d70018a0883c00184c975f72bc66a0183c0015052e8284a92ff8bc8e871c20d0084db897c24248d4c24100f844c0100006a018d54243052e80591ffff8b00508d4c246cc684249c00000006e8a19592ff8d4c2410c684249800000007e8b0ebffff83e801508d44242c508d4c2418e8ce90ffff8b00508d4c2474c684249c00000008e86a9592ff8b8c24a00000005133db53558d5424748bc8c68424a400000009e88b4c00008bf88b4424743bc3c68424980000000874178b4c24706a0183c1015150e8794992ff8bc8e8c2c10d008b5424283bd3c68424980000000774238bc28d70018a0883c00184c975f72bc66a0183c0015052e8464992ff8bc8e88fc10d008b4c246c3bcb895c2428c68424980000000674178b4424686a0183c0015051e81b4992ff8bc8e864c10d008b54242c3bd3c68424980000000074238bc28d70018a0883c00184c975f72bc66a0183c0015052e8e84892ff8bc8e831c10d003bfb895c242c0f843f0100008b5530897c951083453001e92f010000578d44243450e8ba8fffff8b086874d9d50051e8ac2b10008b54243883c40885c00f94c33bd774238bc28d70018a0883c00184c975f72bc66a0183c0015052e8814892ff8bc8e8cac00d0084db897c24300f84d80000006a40e8c21310008bf083c4048974244c3bf7c68424980000000a74466a018d542468528d4c2418e8428fffff8b00834c241801508d4c247cc684249c0000000be8d99392ff834c24180255508bcec78424a00000000c000000e8e05600008bf0eb0233f68b5c2418f6c302c78424980000000d00000074268b4c247c83e3fd3bcf895c241874178b4424786a0183c0015051e8d74792ff8bc8e820c00d00f6c30189bc2498000000741083e3fe8d4c2464895c2418e8948dffff8b8424a0000000508bcee8e55700003bf7740b8b4d5489748d34834554018b8c24a00000008d54241052e80502000033ff84c00f85bbf7ffff8b8424a0000000508bcde8acf1ffff8bcde885ebffff8b5424103bd7c7842498000000ffffffff74238bc28d70018a0883c00184c975f72bc66a0183c0015052e8364792ff8bc8e87fbf0d00b0015b8b8c248c0000005f5e5d64890d0000000081c48c000000c20400",
+      "calls": [
+        {
+          "function": "00af4ba0",
+          "address": "00af4bcf",
+          "native": "00af55f0",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af4be6",
+          "native": "00af5740",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af4c19",
+          "native": "00419cc0",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af4c20",
+          "native": "00bd1510",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af4c37",
+          "native": "00aee3c0",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af4c44",
+          "native": "00bf7fbf",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af4c72",
+          "native": "00419cc0",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af4c79",
+          "native": "00bd1510",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af4cb3",
+          "native": "00419cc0",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af4cba",
+          "native": "00bd1510",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af4ccd",
+          "native": "00af5740",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af4ce0",
+          "native": "00bf7fbf",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af4cf3",
+          "native": "00af5740",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af4d0a",
+          "native": "00bf7fbf",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af4d24",
+          "native": "00bf7fbf",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af4d3e",
+          "native": "00aee3c0",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af4d4b",
+          "native": "00bf7fbf",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af4d77",
+          "native": "00419cc0",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af4d7e",
+          "native": "00bd1510",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af4d9a",
+          "native": "00aee3c0",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af4db1",
+          "native": "00bf7fbf",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af4dcc",
+          "native": "00aee3c0",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af4dd4",
+          "native": "00bf8417",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af4e03",
+          "native": "00419cc0",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af4e0a",
+          "native": "00bd1510",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af4e3a",
+          "native": "00419cc0",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af4e41",
+          "native": "00bd1510",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af4e59",
+          "native": "00bf7fbf",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af4e70",
+          "native": "00aee3c0",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af4e78",
+          "native": "00bf8417",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af4e8c",
+          "native": "00aee2a0",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af4e9d",
+          "native": "00aee2a0",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af4eb1",
+          "native": "00bf7fbf",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af4ec8",
+          "native": "00aee3c0",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af4ed0",
+          "native": "00bf8417",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af4ee4",
+          "native": "00aee2a0",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af4ef5",
+          "native": "00aee2a0",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af4f09",
+          "native": "00bf7fbf",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af4f20",
+          "native": "00aee3c0",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af4f27",
+          "native": "00aedf60",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af4f33",
+          "native": "00aee2a0",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af4f44",
+          "native": "00aee2a0",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af4f58",
+          "native": "00bf7fbf",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af4f6f",
+          "native": "00aee3c0",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af4f77",
+          "native": "00bf8417",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af4f8b",
+          "native": "00aee2a0",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af4fa0",
+          "native": "00aee2a0",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af4fb4",
+          "native": "00bf7fbf",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af4fcb",
+          "native": "00aee3c0",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af4fd3",
+          "native": "00bf8417",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af4fe7",
+          "native": "00aee2a0",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af4ff8",
+          "native": "00aee2a0",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af500c",
+          "native": "00bf7fbf",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af5023",
+          "native": "00aee3c0",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af502b",
+          "native": "00bf8417",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af503f",
+          "native": "00aee2a0",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af5050",
+          "native": "00aee2a0",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af5064",
+          "native": "00bf7fbf",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af507b",
+          "native": "00aee3c0",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af5082",
+          "native": "00aedf60",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af5096",
+          "native": "00aee2a0",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af50a7",
+          "native": "00aee2a0",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af50b6",
+          "native": "00af44c0",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af50cb",
+          "native": "00aee3c0",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af50d2",
+          "native": "00aedf60",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af50dd",
+          "native": "00aee2a0",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af50ee",
+          "native": "00aee2a0",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af50fa",
+          "native": "00afbed0",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af511a",
+          "native": "00afc360",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af512a",
+          "native": "00af44c0",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af5140",
+          "native": "00af44c0",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af5155",
+          "native": "00afc470",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af5166",
+          "native": "00aee2a0",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af5177",
+          "native": "00aee2a0",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af5186",
+          "native": "00bf7fbf",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af5199",
+          "native": "00afc1b0",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af519e",
+          "native": "00bf7420",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af51b5",
+          "native": "00bf7fbf",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af51c8",
+          "native": "00afc1c0",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af51dc",
+          "native": "00bf7fbf",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af51ef",
+          "native": "00afc1b0",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af520b",
+          "native": "00bf7fbf",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af521e",
+          "native": "00afc1b0",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af5235",
+          "native": "00af4110",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af5246",
+          "native": "00aee2a0",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af525a",
+          "native": "00aee3c0",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af5267",
+          "native": "00bf7fbf",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af5293",
+          "native": "00419cc0",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af529a",
+          "native": "00bd1510",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af52b6",
+          "native": "00aee3c0",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af52ca",
+          "native": "0041e870",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af52db",
+          "native": "00af3e90",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af52ed",
+          "native": "00aee3c0",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af5301",
+          "native": "0041e870",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af5320",
+          "native": "00af9fb0",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af5342",
+          "native": "00419cc0",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af5349",
+          "native": "00bd1510",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af5375",
+          "native": "00419cc0",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af537c",
+          "native": "00bd1510",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af53a0",
+          "native": "00419cc0",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af53a7",
+          "native": "00bd1510",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af53d3",
+          "native": "00419cc0",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af53da",
+          "native": "00bd1510",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af5401",
+          "native": "00aee3c0",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af540e",
+          "native": "00bf7fbf",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af543a",
+          "native": "00419cc0",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af5441",
+          "native": "00bd1510",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af5454",
+          "native": "00bf681b",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af5479",
+          "native": "00aee3c0",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af5492",
+          "native": "0041e870",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af54ab",
+          "native": "00afab90",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af54e4",
+          "native": "00419cc0",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af54eb",
+          "native": "00bd1510",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af5507",
+          "native": "00aee2a0",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af5516",
+          "native": "00afad00",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af5536",
+          "native": "00af5740",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af554f",
+          "native": "00af4700",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af5556",
+          "native": "00af40e0",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af5585",
+          "native": "00419cc0",
+          "kind": "direct"
+        },
+        {
+          "function": "00af4ba0",
+          "address": "00af558c",
+          "native": "00bd1510",
+          "kind": "direct"
+        }
+      ]
+    },
+    {
+      "start": "00af5620",
+      "end_exclusive": "00af5652",
+      "length": 50,
+      "disk_sha256": "e61eca001b94cbabea79480bc35cf3b3b6c425ca5310f222db6b7d346e7e8de8",
+      "live_sha256": "e61eca001b94cbabea79480bc35cf3b3b6c425ca5310f222db6b7d346e7e8de8",
+      "equal": true,
+      "bytes": "568bf18b461485c0740950e85913100083c4048b4e1085c974168b460c6a0183c0015051e8774692ff8bc8e8c0be0d005ec3",
+      "calls": [
+        {
+          "function": "00af5620",
+          "address": "00af562b",
+          "native": "00bf6989",
+          "kind": "direct"
+        },
+        {
+          "function": "00af5620",
+          "address": "00af5644",
+          "native": "00419cc0",
+          "kind": "direct"
+        },
+        {
+          "function": "00af5620",
+          "address": "00af564b",
+          "native": "00bd1510",
+          "kind": "direct"
+        }
+      ]
+    },
+    {
+      "start": "00dc7fec",
+      "end_exclusive": "00dc7ff4",
+      "length": 8,
+      "disk_sha256": "2b5e1aee9ae1eb31d9719b92640ceaa9e4ad208ed18121eb00a11396017bc4e4",
+      "live_sha256": "2b5e1aee9ae1eb31d9719b92640ceaa9e4ad208ed18121eb00a11396017bc4e4",
+      "equal": true,
+      "bytes": "ffffffff3060c900"
+    },
+    {
+      "start": "00dc80b0",
+      "end_exclusive": "00dc80b8",
+      "length": 8,
+      "disk_sha256": "7d7e657ad825198347d6466c8e3297da4cfdb38f7334f6ebe8e4e6c57070324d",
+      "live_sha256": "7d7e657ad825198347d6466c8e3297da4cfdb38f7334f6ebe8e4e6c57070324d",
+      "equal": true,
+      "bytes": "ffffffffd060c900"
+    },
+    {
+      "start": "00dc80dc",
+      "end_exclusive": "00dc80e4",
+      "length": 8,
+      "disk_sha256": "982b692164c42924e46ff37dd2fbfd03170bd546380f5f8959e40db247925694",
+      "live_sha256": "982b692164c42924e46ff37dd2fbfd03170bd546380f5f8959e40db247925694",
+      "equal": true,
+      "bytes": "fffffffff060c900"
+    }
+  ],
+  "unwind_actions": [
+    {
+      "function": "00c96030",
+      "address": "00c96036",
+      "native": "00871370",
+      "kind": "tail_jump",
+      "owner": "00871480",
+      "state": 0,
+      "next_state": -1,
+      "func_info": "00dc7ff4",
+      "unwind_map": "00dc7fec",
+      "explicit_catch": false
+    },
+    {
+      "function": "00c960d0",
+      "address": "00c960d3",
+      "native": "0086a200",
+      "kind": "tail_jump",
+      "owner": "00871ae0",
+      "state": 0,
+      "next_state": -1,
+      "func_info": "00dc80b8",
+      "unwind_map": "00dc80b0",
+      "explicit_catch": false
+    },
+    {
+      "function": "00c960f0",
+      "address": "00c960f3",
+      "native": "00411ee0",
+      "kind": "tail_jump",
+      "owner": "00871bd0",
+      "state": 0,
+      "next_state": -1,
+      "func_info": "00dc80e4",
+      "unwind_map": "00dc80dc",
+      "explicit_catch": false
+    }
+  ],
+  "repairs": {
+    "performed_by": "parent integrator under shared write lock",
+    "defined": "0086ba10..0086ba5f",
+    "tails_completed": [
+      "00871382..00871386",
+      "008714cc..008714de"
+    ],
+    "library_names_preserved": [
+      "00bf6989 _free",
+      "00bf65ac _free"
+    ],
+    "read_only_script_query": "Unavailable: GHIDRA_MCP_ALLOW_SCRIPTS disabled. No mutation fallback attempted."
+  },
+  "loader_audit": {
+    "entry": "0086ba60",
+    "source_absent": true,
+    "no_replacement_interface": true,
+    "missing_complete_providers": [
+      "00af45d0",
+      "00af5850",
+      "00af4ba0",
+      "00af5620"
+    ],
+    "provider_spans": [
+      {
+        "start": "00af45d0",
+        "end_exclusive": "00af46d7",
+        "length": 263,
+        "disk_sha256": "c83c2512ef68e777c7cadd2617486611a800018a42bb4167e2881113512946d3",
+        "live_sha256": "c83c2512ef68e777c7cadd2617486611a800018a42bb4167e2881113512946d3",
+        "equal": true
+      },
+      {
+        "start": "00af5850",
+        "end_exclusive": "00af592d",
+        "length": 221,
+        "disk_sha256": "bc317e80fcf735d91974dbb5a4424e6a0ce21dac8cb4c6ba2c713d401791900f",
+        "live_sha256": "bc317e80fcf735d91974dbb5a4424e6a0ce21dac8cb4c6ba2c713d401791900f",
+        "equal": true
+      },
+      {
+        "start": "00af4ba0",
+        "end_exclusive": "00af55ae",
+        "length": 2574,
+        "disk_sha256": "cd258ef9bbb87b812ba933d806ca71491f41806330cdb1ffa33513321c438b1b",
+        "live_sha256": "cd258ef9bbb87b812ba933d806ca71491f41806330cdb1ffa33513321c438b1b",
+        "equal": true
+      },
+      {
+        "start": "00af5620",
+        "end_exclusive": "00af5652",
+        "length": 50,
+        "disk_sha256": "e61eca001b94cbabea79480bc35cf3b3b6c425ca5310f222db6b7d346e7e8de8",
+        "live_sha256": "e61eca001b94cbabea79480bc35cf3b3b6c425ca5310f222db6b7d346e7e8de8",
+        "equal": true
+      }
+    ],
+    "unrepaired_flow_gaps": [
+      "AF5850 BF6989 return tail AF58FB..AF590C clears TextBuffer+14 and returns0",
+      "AF5620 BF6989 fallthrough AF5630..AF5632 continues name cleanup"
+    ],
+    "remaining_virtual_providers": [
+      "actual109CEEC+vtable04 open",
+      "actual file+vtable30 extent",
+      "actual file+vtable24 read",
+      "actual file/resource+vtable00 release"
+    ]
+  },
+  "validation": {
+    "full_disk_live_hashes": "all26 spans exact",
+    "call_rows": {
+      "direct_or_tail_rows": 160,
+      "failed": 0,
+      "indirect_rows": 10,
+      "indirect_calls": "captured from bytes; verifier deliberately does not prove dynamic target identities"
+    },
+    "strict_win32": "pending real record dependency integration",
+    "focused_probe": "pending",
+    "original_abi": false,
+    "gameplay": false
+  },
+  "boundaries": [
+    "Native profile DWORDs are identities, not relocated callable source vtables",
+    "Actual resource vslot0 must be a callable Win32 no-stack-argument thiscall target",
+    "C++ source uses raw actual manager/publication/string pool and original record provider",
+    "No resource loader, acquire wrapper, host map, alternate Lua owner or unresolved callback interface",
+    "Original FH3/SEH identity, hardware fault cleanup, CRT domain and stack-spill alias behavior are unvalidated"
+  ]
+}
