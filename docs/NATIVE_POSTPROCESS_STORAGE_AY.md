@@ -86,3 +86,7 @@ finalization, AW animator lifetime/finalizers, AX angle extraction, AT range
 helpers and AS bone caller remain available. Full B891A0 graph creation and
 admission, native exception integration and gameplay remain required. No
 worker or repository test suite was added.
+
+## Retained evidence
+
+Source commit `83e682d8a3740ecda3963a4c0fec3e641cd50352` contains the verified implementation. The strict build used the same owned source changes on `78398b75deb7576d490a1080dfdb99a1fec4870d`. The immutable local manifest retains 314 inputs and 105 artifacts, including all 5 linked production objects, exact source/header/compiler/library inputs, eleven original bodies, comparison images and saved Ghidra annotations/exports. These establish the storage and explicit canonical-provider boundaries above, not native FH3, the complete postprocessor or gameplay.
