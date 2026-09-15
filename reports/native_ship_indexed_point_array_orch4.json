@@ -1,0 +1,143 @@
+{
+  "packet": "orch4_ship_indexed_array_b2",
+  "addresses": [
+    "00829180"
+  ],
+  "source": [
+    "include/bsp/native_ship_indexed_point_array.hpp",
+    "src/native_ship_indexed_point_array.cpp"
+  ],
+  "evidence": "docs/NATIVE_SHIP_INDEXED_POINT_ARRAY_ORCH4.md",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_mutations": false,
+  "routines": [
+    {
+      "address": "00829180",
+      "end_inclusive": "00829203",
+      "native_bytes": 132,
+      "listed_instructions": 52,
+      "coverage": "complete ordinary body",
+      "native_abi": "ECX actual DWORD data/count/capacity header, one stacked signed request, RET4, no stable result",
+      "source_abi": "void reserve_native_ship_indexed_point_array_00829180(void*, int32_t); new C++ interface",
+      "proposed_ghidra_name": "BSP_ShipIndexedPointArray_ReserveCapacity",
+      "name_status": "descriptive hypothesis; parent owns Ghidra annotation"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "0082919e",
+      "native": "00bf55be",
+      "function": "00829180",
+      "contract": "one stack DWORD wrapped capacity*16; ADD ESP,4 at008291A5; source canonical singleton allocation"
+    },
+    {
+      "address": "008291f1",
+      "native": "00bf6989",
+      "function": "00829180",
+      "contract": "one stack current data pointer; ADD ESP,4 at008291F6; source canonical free before data/capacity publication"
+    }
+  ],
+  "caller_sites": [
+    {
+      "address": "00829ce8",
+      "native": "00829180",
+      "function": "00829cd0",
+      "contract": "ECX current header; max_signed(wrapped capacity*2,1) pushed only at count==capacity; RET4"
+    },
+    {
+      "address": "0082a5a8",
+      "native": "00829180",
+      "function": "0082a590",
+      "contract": "ECX current header; max_signed(wrapped capacity*2,1) pushed only at count==capacity; RET4"
+    },
+    {
+      "address": "00831013",
+      "native": "00829180",
+      "function": "0082fe30",
+      "contract": "ECX class+678h header; max_signed(wrapped capacity*2,1) pushed only at count==capacity; RET4"
+    },
+    {
+      "address": "0095709b",
+      "native": "00829180",
+      "function": "00957090",
+      "contract": "ECX current header; PUSH0 only when signed capacity<0; RET4"
+    },
+    {
+      "address": "0095863b",
+      "native": "00829180",
+      "function": "00958630",
+      "contract": "ECX current header; PUSH0 only when signed capacity<0; RET4"
+    }
+  ],
+  "caller_review": {
+    "current_direct_sites": 5,
+    "scope": "all current direct call argument setups; complete00829CD0/0082A590/00957090 listings, targeted ship producer plus full-listing EBX/EDI write filtering;00958630 unrelated post-free continuation not reconstructed",
+    "stale_snapshot_caller": "00963600",
+    "stale_edge_evidence": "current live00829180 xrefs and00963600 callees both omit this edge"
+  },
+  "corrections": [
+    {
+      "was": "former008291F6-008291FE gap after free",
+      "is": "current live complete listing contains ADD ESP,4; data/capacity publication; POP EBX",
+      "evidence": "parent reports/vehicle_binding_dependency_flow_repairs_orch4.json; live listing and installed bytes83c404891e896e085b"
+    },
+    {
+      "was": "cached lookup includes00963600 among six callers",
+      "is": "five direct call sites in current live Ghidra; cached extra edge is not used as a contract",
+      "evidence": "ghidra xrefs00829180 and ghidra callees00963600; all five actual call rows checked by proto"
+    }
+  ],
+  "validation": {
+    "verify_seeds": "passed eight seed spans",
+    "routine_bytes": {
+      "matched_live_ghidra_and_installed_pe": true,
+      "length": 132,
+      "sha256": "d320ea7f6a1418ac5ae64f60db7b21bd84f0bb0750938bdca08e8dabd176ff69"
+    },
+    "msvc_win32": "passed scripts/build.ps1 Release",
+    "existing_ctests": "2/2 passed:reconstructed_math,tool_tests",
+    "verify_report_calls": "passed:7 call rows checked,0 failed",
+    "focused_original_source_probe": {
+      "result": "passed",
+      "pairs": 120,
+      "cases": 10,
+      "masked_x87_control_words": 12,
+      "deliberate_overlap_pairs": 12,
+      "compared": [
+        "whole backing buffer",
+        "header",
+        "allocation/free observations",
+        "x87 status/control",
+        "incoming x87 stack sentinel"
+      ],
+      "boundary": "only two original CALL operands rebound to shared fixture allocation/free observers; no original CRT execution",
+      "ignored_artifacts": [
+        {
+          "path": "local/ship_indexed_point_probe.cpp",
+          "sha256": "6e3dc01f1ce3cbec19c51b474a0356c60682115664499df1b92e6560f9d83e14"
+        },
+        {
+          "path": "local/ship_indexed_point_probe.exe",
+          "sha256": "853df1c8e3e81bdf2f26813177802b4b3c0fe8356fd80169fb599de1000b9958"
+        },
+        {
+          "path": "local/ship_indexed_point_probe_result.txt",
+          "sha256": "d16e42d873bbb2801c99bf194e6fe7296ba59b38b9ceff6bb24d7eba0b98cfe3"
+        }
+      ],
+      "rerun": "./local/build_ship_indexed_point_probe.ps1; requires local/original_00829180.bin matching routine hash"
+    },
+    "build_receipt": {
+      "path": "local/ship_indexed_point_array_build.txt",
+      "sha256": "72b331ba4a109c757b776ee97558584141ac5be7f40b69b2b2e354bab35e5bd2"
+    }
+  },
+  "limits": [
+    "new source ABI, not original ABI/FH3 bridge",
+    "canonical source CRT boundary rather than original heap/error-state identity",
+    "no OOM or throwing-cleanup proof",
+    "no unmasked hardware-exception proof",
+    "no live class parsing or game validation"
+  ]
+}
