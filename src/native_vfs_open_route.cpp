@@ -1,5 +1,6 @@
 #include "bsp/native_vfs_open_route.hpp"
 #include "bsp/native_vfs_runtime_bindings.hpp"
+#include "bsp/native_vfs_startup_callbacks.hpp"
 
 #include "bsp/native_physical_file_date.hpp"
 #include "bsp/native_pooled_resource_path.hpp"
@@ -211,7 +212,17 @@ void* open_native_vfs_resource_00bdf310(void* manager, const void* name,
             evaluate_diagnostic_name(name); // Original caller name, not alias.
             auto* current_manager = context.physical.manager_0109ceec;
             auto* selected = pointer(current_manager, 0x90); // field, not vtable
-            reinterpret_cast<Failure>(selected)(current_manager, selected);
+            if (context.native_bindings) {
+                // BDF432 uses the CURRENT manager's captured +90 target,
+                // just like the existing BE18B8 startup failure dispatch.
+                // Native code addresses are identities in this source route.
+                // Only the verified 530620 RET is accepted by this binding.
+                NativeVfsStartupCallbacks callbacks;
+                callbacks.mount_failure_00be18b8(
+                    reinterpret_cast<std::uintptr_t>(selected), current_manager);
+            } else {
+                reinterpret_cast<Failure>(selected)(current_manager, selected);
+            }
         } else if (result) {
             if (flags & 1u) {
                 put(manager, 0x24, word(manager, 0x24) + 1u);

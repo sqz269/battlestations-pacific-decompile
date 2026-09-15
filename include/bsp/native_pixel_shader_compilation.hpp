@@ -24,6 +24,9 @@ struct NativePixelShaderCompilationContext {
 // owner retirement while running/failed. Child string helpers retain their
 // established exception domains, including cleanup of a failed substring's
 // temporary. An unfinished header is a preimage, not proof of buffer ownership.
+// A completed D3DX null-code return bypasses native message-buffer Release.
+// Destruction of completed metadata preserves that native leak; it neither
+// aborts the surrounding material load nor silently repairs it with Release.
 struct NativePixelShaderCompilationOperation final {
     enum class Phase { fresh, running, complete, failed, diagnostic_retired };
     enum Name : std::uint32_t { suffix, prefix, stem, path, text, full, line, index, substring, name_count };

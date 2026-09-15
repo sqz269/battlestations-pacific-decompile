@@ -1,0 +1,2215 @@
+{
+  "created_utc": "2026-09-15T04:47:26.932131+00:00",
+  "status": "complete_reload_body_composed_with_real_source_compilation_and_same_owner_fallback",
+  "source": "src/native_material_effect_reload.cpp",
+  "header": "include/bsp/native_material_effect_reload.hpp",
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "installed_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "ghidra_mutated": true,
+    "saved": true,
+    "mutation_scope": [
+      "00b469a0",
+      "00bdf310",
+      "00b61280"
+    ]
+  },
+  "functions": [
+    {
+      "address": "00b469a0",
+      "bytes": 207,
+      "native_end_exclusive": "00b46a6f",
+      "source_symbol": "reload_native_material_effect_00b469a0",
+      "ghidra_name": "BSP_MaterialEffect_Reload",
+      "original_abi": "ECX effect; no stack arguments; RET. FH3 handler CBF658/info DF8020 has one state whose unwind CBF650 calls 41DD20 on fallback name.",
+      "coverage": "complete normal body; C++ pooled-string exception cleanup, not original FH3 ABI"
+    }
+  ],
+  "corrections": [
+    {
+      "address": "00bdf310",
+      "source": "src/native_vfs_open_route.cpp",
+      "site": "00bdf432",
+      "behavior": "Under explicit NativeVfsRuntimeBindings dispatch captured current-manager+90 through existing NativeVfsStartupCallbacks; preserve callable path otherwise. Only native 530620 is accepted; unknown numeric targets throw."
+    },
+    {
+      "address": "00b61280",
+      "source": "src/native_pixel_shader_compilation.cpp",
+      "behavior": "Completed null-code return B61336->B61AF2 bypasses message Release B61AEC. Source operation metadata may retire without termination or invented Release; running/failed/other-live-state guards remain."
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00b469c8",
+      "native": "00b172d0",
+      "function": "00b469a0"
+    },
+    {
+      "address": "00b469df",
+      "native": "004254b0",
+      "function": "00b469a0"
+    },
+    {
+      "address": "00b469e9",
+      "native": "00b41b10",
+      "function": "00b469a0"
+    },
+    {
+      "address": "00b469f0",
+      "native": "00b187a0",
+      "function": "00b469a0"
+    },
+    {
+      "address": "00b469f7",
+      "native": "00b172d0",
+      "function": "00b469a0"
+    },
+    {
+      "address": "00b469ff",
+      "native": "00b46950",
+      "function": "00b469a0"
+    },
+    {
+      "address": "00b46a0a",
+      "native": "00b41b10",
+      "function": "00b469a0"
+    },
+    {
+      "address": "00b46a11",
+      "native": "00b187a0",
+      "function": "00b469a0"
+    },
+    {
+      "address": "00b46a1f",
+      "native": "0041e870",
+      "function": "00b469a0"
+    },
+    {
+      "address": "00b46a33",
+      "native": "00b46950",
+      "function": "00b469a0"
+    },
+    {
+      "address": "00b46a53",
+      "native": "00419cc0",
+      "function": "00b469a0"
+    },
+    {
+      "address": "00b46a5a",
+      "native": "00bd1510",
+      "function": "00b469a0"
+    }
+  ],
+  "evidence": {
+    "bodies": [
+      {
+        "address": "00b469a0",
+        "bytes": 207,
+        "sha256": "3a115ab85e10724a50e2c8bc15b9df3ab1ffd32f351e6d42392982132bf64d36",
+        "live_equals_installed_pe": true
+      },
+      {
+        "address": "00bdf310",
+        "bytes": 421,
+        "sha256": "e354c379eeae3b582f71333f00c627d34b1d19e8c2c835c861922bda2cd7e748",
+        "live_equals_installed_pe": true
+      },
+      {
+        "address": "00b61280",
+        "bytes": 2183,
+        "sha256": "297918958ccceeb67c13fb7757c46b5e2a6d5a67cfaa57dae08dca2ceae3d537",
+        "live_equals_installed_pe": true
+      }
+    ],
+    "support": [
+      {
+        "address": "00530620",
+        "bytes": 1,
+        "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+        "live_equals_installed_pe": true
+      },
+      {
+        "address": "004254b0",
+        "bytes": 1,
+        "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+        "live_equals_installed_pe": true
+      },
+      {
+        "address": "00d61c88",
+        "bytes": 56,
+        "sha256": "ab10705a47ed6dd17a5ddf451ed1ffe0b1ec2264905a0b216c3e93426df2a97c",
+        "live_equals_installed_pe": true
+      },
+      {
+        "address": "00e13078",
+        "bytes": 4,
+        "sha256": "95e71cbf73f14e32da496e2d12a460fe9f33c385a2f22141088eba28b61c4f09",
+        "live_equals_installed_pe": true
+      },
+      {
+        "address": "00cbf658",
+        "bytes": 10,
+        "sha256": "34f270bd2b600c32ff0e9aee2156a88f83e31760c66e87a47dc1e88803cc2cc8",
+        "live_equals_installed_pe": true
+      },
+      {
+        "address": "00cbf650",
+        "bytes": 8,
+        "sha256": "60ed8438bc7b935c66230418d1d06c46cbdb7c0411ebcca5fbe31a6680af6926",
+        "live_equals_installed_pe": true
+      },
+      {
+        "address": "00df8020",
+        "bytes": 36,
+        "sha256": "bfa0b1a5b1590ab884bc7694c62d60b78dfe79315020c1f27173bc49ca7630ce",
+        "live_equals_installed_pe": true
+      },
+      {
+        "address": "00df8018",
+        "bytes": 8,
+        "sha256": "a888b5f4b8fc55c9c837ff67835a862a12eb7b10d63e0ae3251c614e73eefe2c",
+        "live_equals_installed_pe": true
+      }
+    ],
+    "direct_calls": [
+      {
+        "address": "00b469c8",
+        "native": "00b172d0",
+        "function": "00b469a0"
+      },
+      {
+        "address": "00b469df",
+        "native": "004254b0",
+        "function": "00b469a0"
+      },
+      {
+        "address": "00b469e9",
+        "native": "00b41b10",
+        "function": "00b469a0"
+      },
+      {
+        "address": "00b469f0",
+        "native": "00b187a0",
+        "function": "00b469a0"
+      },
+      {
+        "address": "00b469f7",
+        "native": "00b172d0",
+        "function": "00b469a0"
+      },
+      {
+        "address": "00b469ff",
+        "native": "00b46950",
+        "function": "00b469a0"
+      },
+      {
+        "address": "00b46a0a",
+        "native": "00b41b10",
+        "function": "00b469a0"
+      },
+      {
+        "address": "00b46a11",
+        "native": "00b187a0",
+        "function": "00b469a0"
+      },
+      {
+        "address": "00b46a1f",
+        "native": "0041e870",
+        "function": "00b469a0"
+      },
+      {
+        "address": "00b46a33",
+        "native": "00b46950",
+        "function": "00b469a0"
+      },
+      {
+        "address": "00b46a53",
+        "native": "00419cc0",
+        "function": "00b469a0"
+      },
+      {
+        "address": "00b46a5a",
+        "native": "00bd1510",
+        "function": "00b469a0"
+      }
+    ],
+    "explicit_units": {
+      "native_material_descriptor_samplers": {
+        "compiled": true,
+        "linked": true
+      },
+      "native_material_effect_loading": {
+        "compiled": true,
+        "linked": true
+      },
+      "native_material_effect_programs": {
+        "compiled": true,
+        "linked": true
+      },
+      "native_material_effect_runtime": {
+        "compiled": true,
+        "linked": true
+      },
+      "native_material_program_compiler": {
+        "compiled": true,
+        "linked": true
+      },
+      "native_material_program_compiler_actual": {
+        "compiled": true,
+        "linked": true
+      },
+      "native_material_secondary_pass_actual": {
+        "compiled": true,
+        "linked": true
+      },
+      "native_render_service_texture_construction": {
+        "compiled": true,
+        "linked": false
+      },
+      "native_shader_binary_cache_load": {
+        "compiled": true,
+        "linked": true
+      },
+      "native_shader_binary_cache_stream": {
+        "compiled": true,
+        "linked": true
+      },
+      "native_shader_constant_header": {
+        "compiled": true,
+        "linked": true
+      },
+      "native_shader_descriptor_reader": {
+        "compiled": true,
+        "linked": true
+      },
+      "native_shader_field_initialization": {
+        "compiled": true,
+        "linked": true
+      },
+      "native_shader_interpolator_source": {
+        "compiled": true,
+        "linked": true
+      },
+      "native_shader_interpolators": {
+        "compiled": true,
+        "linked": true
+      },
+      "native_shader_pixel_source": {
+        "compiled": true,
+        "linked": true
+      },
+      "native_shader_sampler_declarations": {
+        "compiled": true,
+        "linked": true
+      },
+      "native_shader_shadow_source": {
+        "compiled": true,
+        "linked": true
+      },
+      "native_shader_struct_declarations": {
+        "compiled": true,
+        "linked": true
+      },
+      "native_shader_system_fields": {
+        "compiled": true,
+        "linked": true
+      },
+      "native_shader_vertex_source": {
+        "compiled": true,
+        "linked": true
+      },
+      "native_vfs_extension_prefix": {
+        "compiled": true,
+        "linked": true
+      },
+      "native_vfs_search_defaults": {
+        "compiled": true,
+        "linked": true
+      },
+      "native_vfs_search_groups": {
+        "compiled": true,
+        "linked": true
+      },
+      "native_material_effect_reload": {
+        "compiled": true,
+        "linked": true,
+        "source": "src/native_material_effect_reload.cpp",
+        "same_extended_programs_header": true
+      }
+    },
+    "production_providers_linked": [
+      "allocator_list",
+      "camera_affine",
+      "camera_frame_state",
+      "camera_inverse",
+      "camera_plane_initialization",
+      "camera_projection",
+      "d3d9_surface_pool",
+      "d3d9_texture2d_pool",
+      "frame_clock",
+      "game_native_readonly_data",
+      "gameplay_effect_components",
+      "gameplay_effect_name_index",
+      "gui_layout_loader",
+      "gui_lua_reader",
+      "gui_native_geometry",
+      "gui_text",
+      "gui_text_properties",
+      "input_device_state",
+      "legacy_crt_math",
+      "light_type_bootstrap",
+      "lua_numeric",
+      "lua_script_runtime",
+      "lua_state_owner",
+      "mission_lua_host",
+      "movie_decoder",
+      "native_adopted_substream",
+      "native_alias_count_growth",
+      "native_camera_matrix_math",
+      "native_compiled_shader_owner",
+      "native_compiled_shader_reflection",
+      "native_crt_double_classification",
+      "native_crt_libm_error_support",
+      "native_crt_pointer_decode",
+      "native_crt_pointer_decode_support",
+      "native_crt_pow_dispatch",
+      "native_crt_pow_fallback",
+      "native_crt_pow_special",
+      "native_crt_sse2_pow",
+      "native_crt_x87_control",
+      "native_crt_x87_double_load",
+      "native_crt_x87_error_dispatch",
+      "native_crt_x87_power_leaves",
+      "native_crt_x87_result_status",
+      "native_cube_texture_base",
+      "native_cube_texture_owner",
+      "native_cube_texture_owner_array_reserve",
+      "native_cube_texture_pool_allocate",
+      "native_cube_texture_pool_lifetime",
+      "native_cube_texture_pool_static",
+      "native_cube_texture_pool_trim",
+      "native_cube_volume_retained_recreation",
+      "native_d3d9_shader_construction",
+      "native_d3d9_shader_construction_actual",
+      "native_d3d9_shader_lifetime",
+      "native_diagnostic_sink_lifetime",
+      "native_dynamic_buffer_device_release",
+      "native_effect_registry_destroy",
+      "native_event_owner",
+      "native_file_access_log_owner",
+      "native_file_provider_base",
+      "native_filestore_container_allocation",
+      "native_filestore_open",
+      "native_filestore_pending_tree",
+      "native_filestore_provider_lifetime",
+      "native_filestore_resident_tree",
+      "native_filestore_subtree",
+      "native_frame_target_getters",
+      "native_frame_target_owner",
+      "native_frame_target_vector",
+      "native_gamepad_xinput",
+      "native_graphics_pool_lifetime",
+      "native_hardware_layout_create_if_missing",
+      "native_hardware_layout_device_release",
+      "native_hardware_layout_fields",
+      "native_hardware_layout_owner",
+      "native_hardware_layout_pool_lifetime",
+      "native_hardware_layout_pool_static",
+      "native_hardware_layout_pool_trim",
+      "native_hardware_layout_tree",
+      "native_hardware_layout_tree_insert",
+      "native_hardware_layout_tree_lifetime",
+      "native_hardware_layout_tree_static",
+      "native_input_action_owner",
+      "native_input_binding_storage",
+      "native_input_cursor",
+      "native_input_enumeration",
+      "native_instance_collection",
+      "native_joystick",
+      "native_legacy_exception_owner",
+      "native_legacy_sbo_string",
+      "native_logical_buffer_device_restore",
+      "native_logical_buffer_device_save",
+      "native_logical_index_owner",
+      "native_logical_texture_named_base",
+      "native_logical_vertex_owner",
+      "native_logical_vertex_pool_return",
+      "native_lua_bootstrap",
+      "native_lua_file_loading",
+      "native_lua_fundamentals",
+      "native_lua_objects",
+      "native_lua_script_overrides",
+      "native_lua_vfs_dispatch",
+      "native_material_compiler_providers",
+      "native_material_effect_cache",
+      "native_material_effect_descriptor",
+      "native_material_effect_owner",
+      "native_material_factory",
+      "native_material_owner",
+      "native_material_parameters",
+      "native_material_pass_base",
+      "native_material_pass_copy",
+      "native_material_pass_owner",
+      "native_material_pass_shader_slots",
+      "native_material_pass_states",
+      "native_material_pools",
+      "native_material_state_cache",
+      "native_memory_stream",
+      "native_mesh_owner",
+      "native_mesh_pool",
+      "native_mesh_section",
+      "native_model_pool",
+      "native_mpak_enumeration",
+      "native_mpak_factory",
+      "native_mpak_open",
+      "native_mpak_provider",
+      "native_mpkg_provider",
+      "native_named_special_textures",
+      "native_node_construction",
+      "native_occlusion_query_device_reset",
+      "native_online_achievements",
+      "native_online_notification_dispatch",
+      "native_online_notification_leaves",
+      "native_online_notifications",
+      "native_online_pump",
+      "native_online_signin",
+      "native_online_signin_ui",
+      "native_online_storage",
+      "native_particle_type_property",
+      "native_path_canonicalizer",
+      "native_physical_buffer_access",
+      "native_physical_buffer_lock",
+      "native_physical_buffer_owner",
+      "native_physical_factory",
+      "native_physical_file_date",
+      "native_physical_index_tree",
+      "native_physical_pending_records",
+      "native_physical_pool_acquire",
+      "native_physical_provider",
+      "native_physical_provider_pool",
+      "native_physical_provider_pool_lifecycle",
+      "native_physical_stream_conversion",
+      "native_physical_stream_open",
+      "native_pixel_shader_compilation",
+      "native_platform_construction",
+      "native_platform_focus_owners",
+      "native_platform_load_messages",
+      "native_pooled_resource_path",
+      "native_pooled_string_substring",
+      "native_procedural_resource_lifetime",
+      "native_raw_inflate_stream",
+      "native_ref_counted",
+      "native_render_alias_checked_ops",
+      "native_render_alias_insertion",
+      "native_render_batch_keys",
+      "native_render_batch_lifetime",
+      "native_render_buffer_unregistration",
+      "native_render_cache_construction",
+      "native_render_context",
+      "native_render_entry_cache",
+      "native_render_resource_alias_nodes",
+      "native_render_resource_container_removal",
+      "native_render_resource_record",
+      "native_render_resource_record_array",
+      "native_render_resource_record_construction",
+      "native_render_service_base",
+      "native_render_service_focus",
+      "native_renderer_base_lifetime",
+      "native_renderer_begin_frame",
+      "native_renderer_binding_getters",
+      "native_renderer_cache_cleanup",
+      "native_renderer_cache_clear",
+      "native_renderer_cached_states",
+      "native_renderer_capability_array_cleanup",
+      "native_renderer_capability_array_reserves",
+      "native_renderer_capability_nested_arrays",
+      "native_renderer_constructor",
+      "native_renderer_container_lifetime",
+      "native_renderer_control_worker",
+      "native_renderer_default_surfaces",
+      "native_renderer_device_recreation_actual",
+      "native_renderer_device_startup_actual",
+      "native_renderer_format_check",
+      "native_renderer_frame_statistics",
+      "native_renderer_frame_targets",
+      "native_renderer_gamma",
+      "native_renderer_gather_capabilities",
+      "native_renderer_index_binding",
+      "native_renderer_lua_owner",
+      "native_renderer_parent_member_cleanup",
+      "native_renderer_pointer_array_destroy",
+      "native_renderer_record_array_cleanup",
+      "native_renderer_record_destroy",
+      "native_renderer_remaining_array_cleanup",
+      "native_renderer_reset_process",
+      "native_renderer_reset_readiness",
+      "native_renderer_resolution_enumeration",
+      "native_renderer_resource_release",
+      "native_renderer_resource_restore",
+      "native_renderer_stream_frequency",
+      "native_renderer_surface_bindings",
+      "native_renderer_synchronization_actual",
+      "native_renderer_texture_binding",
+      "native_renderer_texture_name_notification",
+      "native_renderer_vertex_binding",
+      "native_renderer_vertex_layout_binding",
+      "native_renderer_worker_lifetime",
+      "native_resource_cache_leaves",
+      "native_resource_creation_flags",
+      "native_resource_record_copy",
+      "native_resource_record_vector",
+      "native_resource_registry_construction",
+      "native_resource_registry_destroy",
+      "native_resource_registry_lookup",
+      "native_resource_support",
+      "native_retained_memory_owners",
+      "native_sampler_cache_entry",
+      "native_sampler_cache_operation",
+      "native_sampler_loader_context",
+      "native_shader_combiner_reader",
+      "native_shader_compiler_lookups",
+      "native_shader_descriptor_owner",
+      "native_shader_descriptor_samplers",
+      "native_shader_device_reset",
+      "native_shader_field_reader",
+      "native_shader_sampler_owner",
+      "native_shader_sampler_reader",
+      "native_shader_state_definitions",
+      "native_shader_state_reader",
+      "native_singleton_publication",
+      "native_singleton_removal_reorder",
+      "native_singleton_vector_allocation",
+      "native_singleton_vector_insert_count",
+      "native_singleton_vector_leaves",
+      "native_singleton_vector_registration_wrappers",
+      "native_singleton_vector_reserve_construct",
+      "native_stream_type_ids",
+      "native_string",
+      "native_string_append",
+      "native_string_compare",
+      "native_string_pool_owner",
+      "native_string_pool_storage",
+      "native_string_vector",
+      "native_surface_owner",
+      "native_system_constant_registry",
+      "native_text_tokens",
+      "native_texture_2d_owner",
+      "native_texture_2d_retained_recreation",
+      "native_texture_device_reset",
+      "native_texture_loading_cache",
+      "native_texture_surface_cache_storage",
+      "native_tracked_critical_section_release",
+      "native_tree_out_of_range_exception",
+      "native_vertex_declaration_cache",
+      "native_vertex_declaration_loading",
+      "native_vertex_declaration_owner",
+      "native_vertex_declaration_registry_lifetime",
+      "native_vertex_position_read",
+      "native_vertex_shader_compilation",
+      "native_vfs_container_allocation",
+      "native_vfs_date_leaf_providers",
+      "native_vfs_date_route",
+      "native_vfs_derived_manager",
+      "native_vfs_device_route",
+      "native_vfs_factory_registration",
+      "native_vfs_factory_selection",
+      "native_vfs_lookup_leaves",
+      "native_vfs_lookup_routes",
+      "native_vfs_manager_base",
+      "native_vfs_manager_lifetime",
+      "native_vfs_mount_insert",
+      "native_vfs_mount_records",
+      "native_vfs_mount_registration",
+      "native_vfs_mount_tree",
+      "native_vfs_name_resolution",
+      "native_vfs_open_logging",
+      "native_vfs_open_route",
+      "native_vfs_request_list_lifetime",
+      "native_vfs_runtime_bindings",
+      "native_vfs_sequence_lifetime",
+      "native_vfs_startup_callbacks",
+      "native_vfs_string_tree",
+      "native_volume_texture_owner",
+      "native_weak_owner",
+      "native_wide_string",
+      "native_window_focus_dispatch",
+      "native_xlive_device_adapter",
+      "powerup_config",
+      "random_threads",
+      "resource_load_events",
+      "robot_config",
+      "singleton_lifetime",
+      "sound_lifetime_access",
+      "storage_pool",
+      "system_camera_axes",
+      "unit_motion",
+      "vertex_declaration",
+      "voice_sequence_update",
+      "voice_subtitles",
+      "winmain_startup",
+      "xlive_library",
+      "xlive_updates"
+    ],
+    "source_compile_lines": [
+      "SOURCE_COMPILE sequence=0 mode=0 result=0D02EFE8 phase=2 site=00B3C368 pixel_hr=00000000 profile=ps_3_0",
+      "SOURCE_COMPILE sequence=1 mode=0 result=0D02F218 phase=2 site=00B3C368 pixel_hr=00000000 profile=ps_3_0",
+      "SOURCE_COMPILE sequence=2 mode=0 result=0D02F18C phase=2 site=00B3C368 pixel_hr=00000000 profile=ps_3_0",
+      "SOURCE_COMPILE sequence=3 mode=0 result=0D02F100 phase=2 site=00B3C368 pixel_hr=00000000 profile=ps_3_0",
+      "SOURCE_COMPILE sequence=4 mode=0 result=00000000 phase=2 site=00B3B6EA pixel_hr=80004005 profile=ps_3_0",
+      "SOURCE_COMPILE sequence=5 mode=0 result=0D02F074 phase=2 site=00B3C368 pixel_hr=00000000 profile=ps_3_0"
+    ],
+    "exact_installed_mirror_inputs": [
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\animtextures.lua",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\animtextures.lua",
+        "sha256": "694cffdbae68b6052d0e059aa2c4e1ae6ce17d58c44bf09b0ff36c7de19ab9af"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\dx9_lua.inc",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\dx9_lua.inc",
+        "sha256": "7766adc9c116a9e396b3dd77e9d97b3ea6d55c84601cb2a5a49a64362605b11f"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\shaderpreload.lua",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\shaderpreload.lua",
+        "sha256": "083b751decc24e70b370c9d291baf3b3112f66ad763d5839e6bc47435786bcee"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\shaders.bin",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\shaders.bin",
+        "sha256": "dcc65686e26e0b7b4f4179b45b153aaa353696b0b1b08c32251fbc7c97c0ecf8"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\common\\3dlightning.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\common\\3dlightning.shfx",
+        "sha256": "3d125dcd55940554c94cbdf5df7244a59ae88743c12d0b303fcf586c0864ab8f"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\common\\alphablend.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\common\\alphablend.shfx",
+        "sha256": "37cc55352deb1ea4b9685eb4dd3d0f89cb9958bd7a786d24bb34857ed9747f64"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\common\\alphachannel.mshd",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\common\\alphachannel.mshd",
+        "sha256": "55c1c7333ba4fdd1bbd2989ccea860f47b77c5b8f218e621d4a57263d74876f7"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\common\\alphachannel.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\common\\alphachannel.shfx",
+        "sha256": "41e60a88aadadf6c891d2fae032319c9cf043a375d2b0de3db0dde8068ecd5e0"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\common\\alphatest.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\common\\alphatest.shfx",
+        "sha256": "e24715ceede994f6f8815e8e8ea873bfb10482d9472318f31baf2e87ef638f9d"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\common\\black.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\common\\black.shfx",
+        "sha256": "d7adcdcd76b94bf15cd28801a815d8a359324029dbf2b9528fed59c79f2cd40b"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\common\\building.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\common\\building.shfx",
+        "sha256": "8167385ff29f7432a6f4f61db7424e793e67eb22ba4918793f9cc16a6c56985f"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\common\\building_editor.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\common\\building_editor.shfx",
+        "sha256": "0e7188b574848ff0f93386c8b03c66fda85300147002408aa26d7e82a10d0d62"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\common\\cloud.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\common\\cloud.shfx",
+        "sha256": "179a46de471d33b1947ad975c78d0dff4fd226d6d155e9d771452ecde5904363"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\common\\cloud_barany.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\common\\cloud_barany.shfx",
+        "sha256": "d67445215fe6da7d1bb1fd2668e0192c88f31cbfa8879013ebc7e28eaf2b4934"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\common\\cloud_new.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\common\\cloud_new.shfx",
+        "sha256": "ba47c815931207d173edb4b2b958e03ffee6e6efa9244647dd5501041b4d7677"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\common\\debugshader.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\common\\debugshader.shfx",
+        "sha256": "d45e91ef1a3f11c654b97ac3a9d293b9a24b597b68fb315d611638d3b6933476"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\common\\decal.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\common\\decal.shfx",
+        "sha256": "7ed95b5c4d135200a5023c7b03a5a3ba86b0186d09e70c944b941cd83dcc8eeb"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\common\\dolphin.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\common\\dolphin.shfx",
+        "sha256": "07c1a656105db7e6959aaad07a7ad791f318ee50092ad1623c0286f1818271a8"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\common\\error.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\common\\error.shfx",
+        "sha256": "d8aac844296d6a74ec18aed0fdcb92404c216de0c8d49ebe5ebd0568235f7e3f"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\common\\flag.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\common\\flag.shfx",
+        "sha256": "3b3348617cc1c695dcf3ba67234f6942766154806d2ff1fa9e3dc6141b9a74a5"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\common\\fogsurface.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\common\\fogsurface.shfx",
+        "sha256": "5e3e05d87346537ec6e11b19c4ecbe4a1808493e92e94edc29f38a2f088075d7"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\common\\height.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\common\\height.shfx",
+        "sha256": "5cecf3b109e0e476c3e7f041c2a7ae3b58424054168d9e8b326b44cdc7afd02d"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\common\\invisible.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\common\\invisible.shfx",
+        "sha256": "41d9cdfb74938554a855b3bcd7fa665c6f447a5f76cb4ac3dcdf5ae0ee183871"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\common\\lightning.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\common\\lightning.shfx",
+        "sha256": "bb3d42e621462000cec76a182c43c027ef9a766555e47573ad4a5a041e88b381"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\common\\mapmodel.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\common\\mapmodel.shfx",
+        "sha256": "66a3a8f64ebb1fffb95069cb0c6bf692849a6c43502d6c56b594f7c2c24ff4b1"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\common\\mapmodel_glow.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\common\\mapmodel_glow.shfx",
+        "sha256": "f9c64f9e8d70388760ec5269a77445192735e1be7eadf9ce45ac24a7b2d6541b"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\common\\map_ocean_shadow.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\common\\map_ocean_shadow.shfx",
+        "sha256": "cd5989fbb62c777ef350c1a5ca47af21c9fee7de5f065febc2f43c903b6b46e9"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\common\\map_textured.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\common\\map_textured.shfx",
+        "sha256": "8f129a5813d7f9f44b33e6553e42160afc871c10090bf6cd4611839297e600cf"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\common\\map_texturednonormal_bordergrid.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\common\\map_texturednonormal_bordergrid.shfx",
+        "sha256": "6dcf259bce899d3a84a0cb08bdc3415934dd98385c3bd8c177ef68b48e83da21"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\common\\map_texturednonormal_ocean.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\common\\map_texturednonormal_ocean.shfx",
+        "sha256": "27954a158e293365b93c6888433f57fcb07f0feaba201ad7af116eac2b871c9d"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\common\\nightsimplebuilding.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\common\\nightsimplebuilding.shfx",
+        "sha256": "109fc33b0592c4328bfc1a54109b8bf2617c3addd2f0473545d4684adcb05e38"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\common\\nightsimplebuilding_editor.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\common\\nightsimplebuilding_editor.shfx",
+        "sha256": "6768c9563ae392bd139bcc8bf5ff36ee11a95f4a28d5e90e86645588214e3129"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\common\\particleaxialsprite_dist.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\common\\particleaxialsprite_dist.shfx",
+        "sha256": "b8df3fddd97189e289457459acf5a605357b355bf85d571e989bc926f1eff99c"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\common\\particleaxialsprite_n0s0.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\common\\particleaxialsprite_n0s0.shfx",
+        "sha256": "9fb1b0b533b17ced8f686a679805fedd1e555322188bc640b3ab838dc8e8faa4"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\common\\particleaxialsprite_n0s1.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\common\\particleaxialsprite_n0s1.shfx",
+        "sha256": "392bc89866dd1766680391a45ea73fb15d8d8d268e713b37e4ad512e3ede675f"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\common\\particleaxialsprite_n1s0.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\common\\particleaxialsprite_n1s0.shfx",
+        "sha256": "3b11f64a2b3ef466f94c89f8e6feca5bee97541064e44155040ccd8d68204594"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\common\\particleaxialsprite_n1s1.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\common\\particleaxialsprite_n1s1.shfx",
+        "sha256": "d3397f2b0407e908ee24733b01b6f92a86f98eb5e1dd0497e7b689cd44534afa"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\common\\particlefloating.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\common\\particlefloating.shfx",
+        "sha256": "15c18bce7fa1b45e7b6ff4a8864f5a9166497775abf5376d50906bcf13d3bdd7"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\common\\particlefloating_editor.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\common\\particlefloating_editor.shfx",
+        "sha256": "092bd05f5979acd86741aad0d687e132586a067a1bb5e4b78eec762c087ef2a6"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\common\\rain.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\common\\rain.shfx",
+        "sha256": "2b5cd35c5716ed51e530fc228d522e650bbcc369dec338b65a072fd577d39968"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\common\\shadow_static.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\common\\shadow_static.shfx",
+        "sha256": "fcbbd2c238b5ceaf3a56f9cb9e878673f528fa9fdcf22630f8a3b7d9d09521fc"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\common\\shadow_static_cloud.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\common\\shadow_static_cloud.shfx",
+        "sha256": "4248e58f774fe9e5acb20b76f3432fa777fbb2762da36bf5a96877a4118bc89a"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\common\\simplebuilding.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\common\\simplebuilding.shfx",
+        "sha256": "a884a3b4eb95ec1248a672b2b2019a686d3d4861378826a126ccf93685f335bd"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\common\\simplebuilding_editor.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\common\\simplebuilding_editor.shfx",
+        "sha256": "bce1e301310b9c7718b684f73bfd346451affb368c1386dadf037a36f42e97d6"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\common\\skined.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\common\\skined.shfx",
+        "sha256": "73ddad1bbfc1e4d7d97bc70da9089f434bb4e02c4569e913fa6ad38192f1ec70"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\common\\skybox.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\common\\skybox.shfx",
+        "sha256": "d6a8904f0fe6a2b13e581220f52d987129731c4a690d1b7117083f3ec76bd988"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\common\\soldier.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\common\\soldier.shfx",
+        "sha256": "53fc1454102a1c7ae8f4eceab4efc697852ad84677c6c322764f8f1d842680ae"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\common\\textshader.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\common\\textshader.shfx",
+        "sha256": "34a3c7a75cc7e54577d278833c21039e17b46f5b0c3305bd305bd3e48b1d00fd"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\common\\textured.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\common\\textured.shfx",
+        "sha256": "22470ebc6df0e4d94b175b4317d6283acaa0944a90bd0001d0676f0722253e94"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\common\\texturedalpha.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\common\\texturedalpha.shfx",
+        "sha256": "64356714bf69c18b43a2f95414b1e11f2f9e8b02416e37764a6dc86d3daae366"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\common\\texturedindexed.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\common\\texturedindexed.shfx",
+        "sha256": "e20b998b0a8b628dcb87c1d655e3b92090af28b584b8684898784cf28a079027"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\common\\texturedvc.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\common\\texturedvc.shfx",
+        "sha256": "452cad88559b0fb395d3ffe0217614d34e34e19d7887c459e5c23fdcba4c89c5"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\common\\texturedvcalphatestnomip.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\common\\texturedvcalphatestnomip.shfx",
+        "sha256": "15f7931ecbb4dd9e0a2949ed876d236e5451dfd299e8f43871fa45d4ef8306c5"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\common\\texturedvcindexed.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\common\\texturedvcindexed.shfx",
+        "sha256": "09bbe14bc25947ef4daf23f7a02b53afd2056e8bf5dbabffbb59ea9c85e7341e"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\common\\texturedvc_editor.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\common\\texturedvc_editor.shfx",
+        "sha256": "1cca8d2d777c31fe62ae18c585a3ab931a398acec22b40a21e809a9049222b14"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\common\\textured_editor.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\common\\textured_editor.shfx",
+        "sha256": "c6597907e1910c7e29c417aacd885664a6cd79cb453fab345d0d1be9dd3fae61"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\common\\thunder.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\common\\thunder.shfx",
+        "sha256": "c98eb9a944f3870fc730c21718cd9cc13c5c1bf949cc863c1431ce8e692d40cd"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\common\\traceline.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\common\\traceline.shfx",
+        "sha256": "e6ea5a67b031456a5877a9801a49f65929dea496476b42aa89a0ec86e9ff7a87"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\common\\waterfall.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\common\\waterfall.shfx",
+        "sha256": "edc8c8851463ea6929c0200c18fa6e8c8789d2649e6a8879f17afbc57642575e"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\common\\white.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\common\\white.shfx",
+        "sha256": "9240bc3fc02f37e5736971198afd11ba7f82cbb604bc45dc1a46675ee52b0aa1"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\common\\white_receiver_ocean.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\common\\white_receiver_ocean.shfx",
+        "sha256": "488fe86b299567cc6d744a00be9446640dae4447666f4d1bd1515257deb02ac8"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\gui\\capture_bar.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\gui\\capture_bar.shfx",
+        "sha256": "d70f868205cb5587a6c9cb5192f4e821d85245c91dd8019a348ac31fa5438beb"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\gui\\formation_gui.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\gui\\formation_gui.shfx",
+        "sha256": "9b3228ef9be77f60c269c402bd9f176506327a0ac218f3d03305688f96d1dd91"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\gui\\guialphamul.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\gui\\guialphamul.shfx",
+        "sha256": "5b6bb3c6add6dda559dd30f74a19b6617e09d1d1f7343c3fb770fee183940daf"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\gui\\guialphamulborder.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\gui\\guialphamulborder.shfx",
+        "sha256": "2757f0a569a98a3d63d814a74f192b028740546f3210089af6f47929f29cca3a"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\gui\\guialphamuldarken.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\gui\\guialphamuldarken.shfx",
+        "sha256": "28174dd07abff1f2464fc642201c504e450bb0e633be6f65bcfb0a22efc62b48"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\gui\\guialphastencildiff.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\gui\\guialphastencildiff.shfx",
+        "sha256": "12b63cb4f89b648266df2319ae7c85b0a31b033b2dd7168d5288740e1a5ec37d"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\gui\\guialphawrite.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\gui\\guialphawrite.shfx",
+        "sha256": "92be2110eafee5e3e671f1a99aa5a23895311e41544ff850b58d3b6092cd6482"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\gui\\guialphawritediff.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\gui\\guialphawritediff.shfx",
+        "sha256": "a4de97a2797dd398a9fec41de2aa056e17841a59b3a6a7df0f74383aacfbc95d"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\gui\\guibink.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\gui\\guibink.shfx",
+        "sha256": "52174c5d8eba75c2b95d23153957075275d93d5c1885ff10c5c4b4d363245972"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\gui\\guibw.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\gui\\guibw.shfx",
+        "sha256": "97c3ce217d2318bdd634e60a155531080ca8f9dc53670a06e1d97e6ec0254b2b"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\gui\\guicrosshair.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\gui\\guicrosshair.shfx",
+        "sha256": "c1b023e5c2ed4764a5e16f1813d7c5e5e70f65c38aef447bdd91e887fd516a84"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\gui\\guicursor.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\gui\\guicursor.shfx",
+        "sha256": "0c78aacdd8a8edb9331bc90f5333725fa1aad250bb700b7e5ee0b29d8e52237f"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\gui\\guidefault.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\gui\\guidefault.shfx",
+        "sha256": "94ed46e9d73c83bcca0caba38fadcf725c8bbbefb4e8968080768b9ac409b75f"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\gui\\guidefault_noalpha.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\gui\\guidefault_noalpha.shfx",
+        "sha256": "11c1dac65d2e57b52723c1ee8aa6425d43e5a695e26c5cffe6792a877b4b15bf"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\gui\\guidefault_point.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\gui\\guidefault_point.shfx",
+        "sha256": "f3110f14bf004d73cd4d3402602e34316cfee72b542ee3551b56cf36973e620b"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\gui\\guifade.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\gui\\guifade.shfx",
+        "sha256": "ea2b31288fcae629dc6343fd0770b1cc2c91009a02a1b5602eb65018b84a3f4c"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\gui\\guifont.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\gui\\guifont.shfx",
+        "sha256": "0a9c7265a757c377275b3a04955de00ee59f6531dcb2ce080f464e81ef68470c"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\gui\\guifontbilinear.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\gui\\guifontbilinear.shfx",
+        "sha256": "b587561dc1b3ed48bdd0e18e2c8d17b1785b678a988551d376cd248274bd91cd"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\gui\\guimodel.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\gui\\guimodel.shfx",
+        "sha256": "93a692c3bc953d9ed1ef620d3ad8f357dec458df585f5911556d30569a642f2a"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\gui\\guimultiply.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\gui\\guimultiply.shfx",
+        "sha256": "426518730c21d71d1a949ba0ce99c14545801268a138b41873c192cc1114c0d1"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\gui\\mapzone.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\gui\\mapzone.shfx",
+        "sha256": "6fce0141ec20cdcd426f4f34682b372f9a351231b1943f7f6efa0a72e42f66d8"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\gui\\map_cmd_building.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\gui\\map_cmd_building.shfx",
+        "sha256": "930a72319626f437d369ffdcf0b8a76b9ce40ae41e267012afeefc0b1944d3e8"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\gui\\minimap_terrain.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\gui\\minimap_terrain.shfx",
+        "sha256": "f0b040057f987142ecf69f80f3b9524a9827a37cdd892b40f252482950a36fc1"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\lights\\black_combiner.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\lights\\black_combiner.shfx",
+        "sha256": "19cb8b152c024143f2d2d93e293f391a81466e6475b6335c5464352e2dabcc5d"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\lights\\bush_per_pixel_no_shadow.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\lights\\bush_per_pixel_no_shadow.shfx",
+        "sha256": "a363822dabf769397bcc8cedfb1540b6e1ddd1b720555265c8ad7ad7d329c65e"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\lights\\bush_per_pixel_no_shadow_lores.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\lights\\bush_per_pixel_no_shadow_lores.shfx",
+        "sha256": "8bdf0cd3070efe840cd605b87327a2b5c8c5d1f93e81982c731285491b5439b6"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\lights\\cloud_hires.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\lights\\cloud_hires.shfx",
+        "sha256": "e3b210b3f645f97fac69c4b968af57175b4e8fd395ef9907f3c4d0c4c56b0a62"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\lights\\cloud_lores.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\lights\\cloud_lores.shfx",
+        "sha256": "518f2c045ae9ff02f477b847e413ceee4e2f01d454b79cd9dc8182060ec497d3"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\lights\\draw_depth.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\lights\\draw_depth.shfx",
+        "sha256": "89406c074ba0a9cff687c27c5c4231ea1b8cef2038e414694baba085ecd88f28"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\lights\\draw_depth_alpha.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\lights\\draw_depth_alpha.shfx",
+        "sha256": "20b76e255d9404673726a1daeabdd5d87b0dcff52706023a0f7f504e4fc95bb5"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\lights\\draw_depth_ocean.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\lights\\draw_depth_ocean.shfx",
+        "sha256": "c34c7362dd46fa971a36f32208765415e0f12abc59604d48254bf02a3eee5255"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\lights\\draw_depth_particle.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\lights\\draw_depth_particle.shfx",
+        "sha256": "3c1f24769c8ce197966bde314cda7d2d72f7771bad8d4f92f95e3c1c2c107413"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\lights\\draw_shadow.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\lights\\draw_shadow.shfx",
+        "sha256": "9ec7d6e80bb12a62af2f965ca596cf8ecd8b41eb190d0cd9eca628b4054de8c8"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\lights\\draw_shadow_alpha.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\lights\\draw_shadow_alpha.shfx",
+        "sha256": "7932bb67e41529acd6aae9fdfe3d1f1771b2cd8b5354bab3af809041064392e6"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\lights\\draw_shadow_terrain.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\lights\\draw_shadow_terrain.shfx",
+        "sha256": "1e4f4371e31399967e5f01d41726eb6f5918f56d55a2c40fd0df80ea0f423302"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\lights\\dummy.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\lights\\dummy.shfx",
+        "sha256": "3768df78e6a57ee28563ab40cfb9cf223569c12eb62e8576458365deb0866c5b"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\lights\\dummy2targets.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\lights\\dummy2targets.shfx",
+        "sha256": "81bc44d1419a03fc8987bb51e18368229a9a55ebbae9a4b8198f217fde99ca40"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\lights\\dummy_shadow.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\lights\\dummy_shadow.shfx",
+        "sha256": "e078f04f839f44bffe0ef2eaec62e097ab507c248a3150f8ceb4825add024cbe"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\lights\\fog_shadow_uw.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\lights\\fog_shadow_uw.shfx",
+        "sha256": "0f6afd9362d4ce3769607528cad936e2c63c9d1b91728f2d67b6982191da3420"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\lights\\particle_n0_s0.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\lights\\particle_n0_s0.shfx",
+        "sha256": "13a1ee943e3aea3d5cf25dc0f03dc449ef2873260c60c44d32e90d5a3952e5a8"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\lights\\particle_n0_s0_hires.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\lights\\particle_n0_s0_hires.shfx",
+        "sha256": "dca3cfa16f6df1e2fa3a62610f58ad64845174ea0751781398c33cbd8d2254b0"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\lights\\particle_n0_s0_uw.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\lights\\particle_n0_s0_uw.shfx",
+        "sha256": "1cc2bd166cd14faef5f3a443c848912f19590c30cc232fab44223f7f58d06f3d"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\lights\\particle_n0_s0_uw_hires.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\lights\\particle_n0_s0_uw_hires.shfx",
+        "sha256": "0f4afe1c729e03e1e2505226b1a66d6bd139f117c6be8669e859bc3cc5ddcebe"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\lights\\particle_n0_s1.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\lights\\particle_n0_s1.shfx",
+        "sha256": "8ce330eb4844b179ea9abc5e011c161be2a1e916b8c2735a8d2794cdde8fdff8"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\lights\\particle_n0_s1_hires.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\lights\\particle_n0_s1_hires.shfx",
+        "sha256": "f79c31efae95c2612847bcbb959965ff7d351b45a03bef89a550c21849780f16"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\lights\\particle_n0_s1_uw.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\lights\\particle_n0_s1_uw.shfx",
+        "sha256": "3c0b89f0fd6f60e32be8f553a081636a13937f194ac5d846e7b3d77753f7b940"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\lights\\particle_n0_s1_uw_hires.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\lights\\particle_n0_s1_uw_hires.shfx",
+        "sha256": "88ea86602201e1514ae6578aaa33196f0b03a7de6218f7445879497b6bfc4ef6"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\lights\\particle_n1_s0.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\lights\\particle_n1_s0.shfx",
+        "sha256": "5b2ddb611383937554d76bf21e15bdd00aab1d75b1289cd11aeb1088cef046ce"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\lights\\particle_n1_s0_uw.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\lights\\particle_n1_s0_uw.shfx",
+        "sha256": "b2c489560ac8771457b137991905bb51cce26f2cd5b0cef76673e9a903ab863c"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\lights\\particle_n1_s1.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\lights\\particle_n1_s1.shfx",
+        "sha256": "e67446db03824d04be2a6feec942f0676d7ee85fd47c339b6d62dec3f9e36d23"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\lights\\particle_n1_s1_uw.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\lights\\particle_n1_s1_uw.shfx",
+        "sha256": "b225a88504900e54f9f50c110df08f9d550d9a2f79a58b29e8f46402df600214"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\lights\\per_pixel_shadow.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\lights\\per_pixel_shadow.shfx",
+        "sha256": "552d9655bfc11657391de337721ac3174d9b65f7a5ae9840d0ae015a9771d2c9"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\lights\\per_pixel_shadow_cockpit.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\lights\\per_pixel_shadow_cockpit.shfx",
+        "sha256": "b8124c5888ba07fb6dab4245f732476d4863095ff3094b0d920949727409e9d8"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\lights\\per_pixel_shadow_reflect.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\lights\\per_pixel_shadow_reflect.shfx",
+        "sha256": "f05eb3d05e30e22f2e665a1782a9d4442bae2cabae8fae4c26f7d84c3cceed8e"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\lights\\per_pixel_shadow_reflect1.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\lights\\per_pixel_shadow_reflect1.shfx",
+        "sha256": "c84a4d661104472ef4c9ef20c5a0551fa541ff3bb654c02760aba13f1e3ec496"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\lights\\per_pixel_shadow_reflect1_cockpit.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\lights\\per_pixel_shadow_reflect1_cockpit.shfx",
+        "sha256": "385da7698dcd5aaa3a565df9f83d5adb9a58e540752300e92eee8dd6e0730d23"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\lights\\per_pixel_shadow_reflect_cockpit.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\lights\\per_pixel_shadow_reflect_cockpit.shfx",
+        "sha256": "c3843ccb7b10d317c45710efcf4f729bfca6321d121b445e3aebb450fdd54b99"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\lights\\per_pixel_shadow_window.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\lights\\per_pixel_shadow_window.shfx",
+        "sha256": "f8c7da77120dcdb02b3231d0043811d2b620f414f107ec8e781d18414c4d31b9"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\lights\\per_pixel_terrain_shadow.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\lights\\per_pixel_terrain_shadow.shfx",
+        "sha256": "ceda06dfc0cb1b51aa94e07d2e3cdca1e59871b39e8247ec79f60ddaa9b38988"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\lights\\per_vertex_ambient_no_shadow.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\lights\\per_vertex_ambient_no_shadow.shfx",
+        "sha256": "184d179d69d94383b63d1ef80035a80c83d1948b19a720a7117e1f6b2a5fe967"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\lights\\per_vertex_mapterrainshadow.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\lights\\per_vertex_mapterrainshadow.shfx",
+        "sha256": "7318b69ed38436ae11ce5a38d8e2e2d6a70814ad5f63703cb1a02b39b463d78a"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\lights\\per_vertex_mapunitshadow.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\lights\\per_vertex_mapunitshadow.shfx",
+        "sha256": "1e59c84746a1f905483e8c3b8cddcd6532e4d749bd11593ff4dfd350e2692f7d"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\lights\\per_vertex_no_shadow.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\lights\\per_vertex_no_shadow.shfx",
+        "sha256": "9ca3821fcfcdf35ac36429c44af6589395f0960d5493ac97fcbb2da4e166c057"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\lights\\per_vertex_shadow.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\lights\\per_vertex_shadow.shfx",
+        "sha256": "7b927284a27dab401aff3d1481df390256f4807ae6ec6924fb57bf2c0215ff4e"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\lights\\per_vertex_shadow_uw.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\lights\\per_vertex_shadow_uw.shfx",
+        "sha256": "f95150b0ddfce64c6eaa58fbee1c10f4ae60b588ff95e45a65aab9150ab41715"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\lights\\per_vertex_shadow_uw_terrain.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\lights\\per_vertex_shadow_uw_terrain.shfx",
+        "sha256": "1496ca53c99658ee39ac2c841f0219950790665f093d00fbde4e305858cf262c"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\lights\\render_height.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\lights\\render_height.shfx",
+        "sha256": "2abdeb2aeae16692eeb90b577f18178c7fd666633b73d305528d0239af75d80c"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\lights\\render_oceanshadow.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\lights\\render_oceanshadow.shfx",
+        "sha256": "6c571eb2a592517e954fa097520f8dd6085226e8cd5bbd8a2de2d1b42599e2d2"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\lights\\shadowship_indexed_noalpha.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\lights\\shadowship_indexed_noalpha.shfx",
+        "sha256": "9e12caa630725a066da44a538c54f631b22625abe4224e447c0faad4d277a191"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\lights\\shadowvc_indexed_noalpha.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\lights\\shadowvc_indexed_noalpha.shfx",
+        "sha256": "e6122468a86c8c247332696afafeddacae6ec74de800c207e98a0fb6ccdbcc2c"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\lights\\shadow_alpha.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\lights\\shadow_alpha.shfx",
+        "sha256": "2fd1c86d82fbaf87b028b8b26424c85338e855f88e2a8e9b1e4def781782eb8a"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\lights\\shadow_bush.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\lights\\shadow_bush.shfx",
+        "sha256": "893e2b5b6d5f9fda3047c0d1db2e24e4cdc8f97deab70b9c3cf276d59c52f442"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\lights\\shadow_foliage.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\lights\\shadow_foliage.shfx",
+        "sha256": "bc0c896ddf0175e0a5281d8240af61d8ff51c257873df30c923e8e3ddbf1129b"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\lights\\shadow_indexed_noalpha.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\lights\\shadow_indexed_noalpha.shfx",
+        "sha256": "cf8d5f1787465a05221b4cde581a2204da014b11e946d9c7e15f57c7e5950656"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\lights\\shadow_noalpha.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\lights\\shadow_noalpha.shfx",
+        "sha256": "36dae2a6dac95a8ec150e0e394ee1540f2f7d551d04b938407afbcc581e7617e"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\lights\\shadow_noalpha_instanced.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\lights\\shadow_noalpha_instanced.shfx",
+        "sha256": "e74fa63277f90cba26bc02f349113298e62505804fa06c385de7896c4ce0a41f"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\lights\\shadow_passtrough.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\lights\\shadow_passtrough.shfx",
+        "sha256": "e308028ef8e2ade08dfbe1c9da99e6dcb04bbc54eae7b421826b87e44d39463f"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\lights\\shadow_skined.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\lights\\shadow_skined.shfx",
+        "sha256": "b03a95bcf7c77b3d6b82a4f5f85234765f060722821fe4c0c7e8927a4be5b76b"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\lights\\shadow_tree.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\lights\\shadow_tree.shfx",
+        "sha256": "34ec4a9bb3d49913c96314e66a9a2c57dfae25e1e0baeff33e4c2d9267a08c43"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\lights\\shore_map.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\lights\\shore_map.shfx",
+        "sha256": "6b9abdfab5578b43319d818a159cbdef1128da937b14f5cd26e5382f3c4aeb6b"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\lights\\white_combiner.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\lights\\white_combiner.shfx",
+        "sha256": "e008260f31db3e364a380b9072591ddad9e4d67a3d5f6017667a1a7e0ca6269f"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\ocean\\beam.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\ocean\\beam.shfx",
+        "sha256": "cd430ac6a6eaa429bcd4c6931efb2b82900c8ae61f33825082de69573ab04a7e"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\ocean\\ocean.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\ocean\\ocean.shfx",
+        "sha256": "a7c872cb6996993beb6c4416250fcbc2462dad6f1d72e3c35b28cd6ce4c5dca8"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\ocean\\oceancolor.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\ocean\\oceancolor.shfx",
+        "sha256": "6a24dd3274732f10949cb9e57db6b2eeb42dbed83bdc022575e06de93f63c5c1"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\ocean\\oceanfoam.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\ocean\\oceanfoam.shfx",
+        "sha256": "fda5bccc7152b0186cfd26272d95a8b9bfa9e70c0dd07d1761d208f5e30e0488"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\ocean\\oceanheightmapgen.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\ocean\\oceanheightmapgen.shfx",
+        "sha256": "c40d99a2e81f1d089172970ec4fb834406bcbfbbf8faae3f4157d59be2bf4466"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\ocean\\oceanheightscale.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\ocean\\oceanheightscale.shfx",
+        "sha256": "f2abb9cd40f7c5e8620f17ad8cd1d02103a04dad9dd6304fffcf87f6d33cde19"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\ocean\\oceannormalgen.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\ocean\\oceannormalgen.shfx",
+        "sha256": "feb390fce18506ac39982eec930abcec196dd755ec26e94987b2b1d317c3fbd0"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\ocean\\oceanshadow.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\ocean\\oceanshadow.shfx",
+        "sha256": "9267252b943a13d8e2ccfdd6d9d900939e367e82bd0aefe7ce33350463ab2f40"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\ocean\\oceanshadow_vsampler.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\ocean\\oceanshadow_vsampler.shfx",
+        "sha256": "200e4bc9e3bdd78d69df15e57ae8f8fa3d2523f9291d61b5d47d144021202bcd"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\ocean\\oceansplash.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\ocean\\oceansplash.shfx",
+        "sha256": "47018c9d936219f90a68d1ef3fc3dad0bf9ba8e0b35f531b3cb7ae5f61f1bc96"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\ocean\\oceanunderwater.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\ocean\\oceanunderwater.shfx",
+        "sha256": "d201e619a687b457ec563f4f764b9ede305506d62ef2b0a95d1819b87dc80c80"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\ocean\\oceanunderwater_vertexsampler.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\ocean\\oceanunderwater_vertexsampler.shfx",
+        "sha256": "f60671d6407f7fa91a9eba6d37938d19b4727d3af71abdfeee29eb048cf9eff5"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\ocean\\oceanwavedamp.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\ocean\\oceanwavedamp.shfx",
+        "sha256": "46be65d923d791daf9246c9f6d8bff6c7f661f1521b7e03099f47067b067018c"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\ocean\\ocean_simple.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\ocean\\ocean_simple.shfx",
+        "sha256": "7b57d1b2f0228ef2cb0c6e7e3c9e11c741c62cf6b481c2e6bdd245e7b5caca08"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\ocean\\ocean_vel_and_depth.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\ocean\\ocean_vel_and_depth.shfx",
+        "sha256": "ebb3d5793a946f5c072221cf55d63c4f616807752736c2c2fcaa4f264f3bfdc3"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\ocean\\ocean_vertexsampler.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\ocean\\ocean_vertexsampler.shfx",
+        "sha256": "0de79005f5c6025002a2c9920b166caa65f3a763e98b24e66c0707a371f681b8"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\ocean\\shore.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\ocean\\shore.shfx",
+        "sha256": "7e724802b88ee0f1aed73efd19b61f9c9b61155d8d6f3890257beda02a3993ca"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\ocean\\waterdrops.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\ocean\\waterdrops.shfx",
+        "sha256": "fa6a20b832b7ea29106f5acf7648c0eef2a43de14915b45b145dc15abac365fb"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\ocean\\waterparticle.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\ocean\\waterparticle.shfx",
+        "sha256": "ce4f2b4245a5b14d4e6de5dcef09aba96f23cdeaedf1aca7e2343793def801af"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\ocean\\waterspray.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\ocean\\waterspray.shfx",
+        "sha256": "84ffc39d3bd7f087d32e0d27f7b10a14157822bf54a84a902734e2818163d85d"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\ocean\\watertracerdisp.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\ocean\\watertracerdisp.shfx",
+        "sha256": "cc89b7b3619b604d91ee081de6e1bf5dc8eb812aa9fa9ec54f4c5c8237ef901a"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\ocean\\watertracerskined.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\ocean\\watertracerskined.shfx",
+        "sha256": "5deeb89521fcd4fd3c7677e30c50280fcf939ebab21ac0838d58372194a0528a"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\ocean\\watertracerstatic.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\ocean\\watertracerstatic.shfx",
+        "sha256": "62e325a1caa54e95bcbe25db9cf886a0c74cc4d5bca62ad0ddf65e542bf6fc24"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\plane\\airplane.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\plane\\airplane.shfx",
+        "sha256": "682b2c235c52053e24c35e32e30208b0e0071ebe8fb2a41f78418cafe55c427a"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\plane\\airplaner.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\plane\\airplaner.shfx",
+        "sha256": "e55d83bb2146a1035d12ebc19c9ca1d7117b0d6c4b355761498ce5dee97e6f20"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\plane\\airplanerindexed.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\plane\\airplanerindexed.shfx",
+        "sha256": "209e0e95cbe892a8fdb86c69a70b81469e2670774fd7d221ab6e0a0fcea9f5d2"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\plane\\airplanerp.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\plane\\airplanerp.shfx",
+        "sha256": "1804501de54b472be6bce9150679d4074a0d4f2acfb2e275e89a5f84e24131be"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\plane\\airplanerpindexed.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\plane\\airplanerpindexed.shfx",
+        "sha256": "f5a4ab422b06ea2467b6850410fb49ffd50e428173f61901b5a842e203e1e4ca"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\plane\\cockpit.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\plane\\cockpit.shfx",
+        "sha256": "43b72330ce4a2777f9a0353d9c6d4d765d44d6c29ef653f1203f2521dc8f321c"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\plane\\cockpitwin.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\plane\\cockpitwin.shfx",
+        "sha256": "bf47929b96d56ddb43b2b895e0d89cdc353ca6b4054fcdc45ff28d533455ed6a"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\plane\\cockpitwinobjspace.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\plane\\cockpitwinobjspace.shfx",
+        "sha256": "2ca7695112d6d1416d0c91de5cf8ecaad780bae9d995feb4210589842d9e0a20"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\plane\\noshadow.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\plane\\noshadow.shfx",
+        "sha256": "58d539a2255481f7505004cb5a034eb160e5ec7d44e0b3bb118c12c59a5d4ff8"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\plane\\noshadowindexed.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\plane\\noshadowindexed.shfx",
+        "sha256": "7832c400d7eb151eb017098bfe51c457597f35c1150f73d31cd7a19c0c11f6d1"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\plane\\pimpdecal.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\plane\\pimpdecal.shfx",
+        "sha256": "aa84521b4b1c4d7c6fe877903bbfbc7a33043af185cf46e811d2d76098fa50d1"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\plane\\planealpha.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\plane\\planealpha.shfx",
+        "sha256": "945646ebb89bb4ebd12dc05214c66a05d84c3454dc6b98788bb4692a88f6661d"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\plane\\rotoralpha.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\plane\\rotoralpha.shfx",
+        "sha256": "4c12537f3e0b81c5dd5c3dad813baebe911bc000f94e0884383492be9381d858"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\plane\\rotoralphaindexed.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\plane\\rotoralphaindexed.shfx",
+        "sha256": "143201f4d751a7ced46da27dfd513e3dfbf7aa065faa04e875f444c327ef1493"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\postprocess\\blendparticles.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\postprocess\\blendparticles.shfx",
+        "sha256": "8520e110c4191a9e8d218303b458b4517be40bedc2c477a159705e333943adb8"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\postprocess\\bloom.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\postprocess\\bloom.shfx",
+        "sha256": "5953cfa4449490318e2209b96b0038cab13dea9f9716d7a7dcb1c9d5f771b89e"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\postprocess\\blur5x5.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\postprocess\\blur5x5.shfx",
+        "sha256": "3d144eb8a73ade1b363f5e6ba9ad6460e877e13e1c41d2b199af3f5ad1114a3b"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\postprocess\\brightpassfilter.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\postprocess\\brightpassfilter.shfx",
+        "sha256": "3d3bd0a7a2ce0af91407ae4c844b733140769bbd0a6260c4721b1a547c594cc9"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\postprocess\\calculateadaptedlum.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\postprocess\\calculateadaptedlum.shfx",
+        "sha256": "05cc5a942584fb9eab220724c30eb567cc1348ae554a4fd358dbd89f659df010"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\postprocess\\cleartargets.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\postprocess\\cleartargets.shfx",
+        "sha256": "99689c7cdd80808a0d32eed47fd8aff42fbff21ddd089c00f9e27934cb7933f9"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\postprocess\\cloudshadow.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\postprocess\\cloudshadow.shfx",
+        "sha256": "9c87d1b70d2f8762494d4e0c5bc4c9deac7bcc1ab12b3549e811b4873c9bf382"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\postprocess\\displace_bump_to_disp.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\postprocess\\displace_bump_to_disp.shfx",
+        "sha256": "451a227733d302ef4c52926d51a4833037aba149163f09ce952152b865219b31"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\postprocess\\displace_damp.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\postprocess\\displace_damp.shfx",
+        "sha256": "cbfa4240ed6a014937501bc0dd12e33531f66a5bdd2b6b907e45276f335e7544"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\postprocess\\downscale2x2.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\postprocess\\downscale2x2.shfx",
+        "sha256": "e31843df10bb468e9b12cd84a0aadf352f7a70e76b97896ba64022f123bf6d90"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\postprocess\\downscale4x4.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\postprocess\\downscale4x4.shfx",
+        "sha256": "c0ab8d74d6a9892a718e0aa7ea5bce005eb54e6cc7417de4fe081ce9b91bdb03"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\postprocess\\downscale_depth.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\postprocess\\downscale_depth.shfx",
+        "sha256": "4ec6842550923fc3805772b97297eb32d25a935ed4a77d63e99b657128b0c3da"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\postprocess\\dummy_passtrough.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\postprocess\\dummy_passtrough.shfx",
+        "sha256": "3484c285ab78c37725f15b8364944391f1c1ec40b6f936fe9e0e406b765ef29e"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\postprocess\\fakemotionblur.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\postprocess\\fakemotionblur.shfx",
+        "sha256": "2c4aa1651c2d6db9f0b5365d982389f8c14ea9a23a54304e05e6e895d7ef1971"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\postprocess\\hdrfinalpass.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\postprocess\\hdrfinalpass.shfx",
+        "sha256": "16591bfc22747e7ddccd7edb08963868d6217680662ea68ecd055a37ca193bc5"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\postprocess\\hdrfinalpass_dof.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\postprocess\\hdrfinalpass_dof.shfx",
+        "sha256": "3e897134cd50017d28b237a47b95366b92a0febb4582cb71f53bf1c18988a2cd"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\postprocess\\intpasstrough_dof.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\postprocess\\intpasstrough_dof.shfx",
+        "sha256": "034e2baa748390d0a9116538be5324b734e03f26e4643612a7186b547dd38494"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\postprocess\\oldfilm_dust.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\postprocess\\oldfilm_dust.shfx",
+        "sha256": "d4ccbac65f43e655a7025bb372a30ab072ce87478d047f62a45ab5bbde5ef22e"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\postprocess\\passtrough.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\postprocess\\passtrough.shfx",
+        "sha256": "fd98525a7c1b457fdbb187abcf821c23937c7d2ccb0475ebaf60aff9bb28a7bc"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\postprocess\\passtrough_dof.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\postprocess\\passtrough_dof.shfx",
+        "sha256": "2d6cf865e7ca10e6f6d9a382a01cd07f0fd8c4d7da259bf8ae32b50335b3c51b"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\postprocess\\passtrough_dof_wave.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\postprocess\\passtrough_dof_wave.shfx",
+        "sha256": "1a333626fe231d4305cb6f3fb8b5c0056f64af97e1bf72dceda8e6cca0c51b91"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\postprocess\\passtrough_oldfilm.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\postprocess\\passtrough_oldfilm.shfx",
+        "sha256": "8f9c80ee58306f7d59bb3da0f6a846ca9549f6c186759ed7a2790aff77fc8695"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\postprocess\\passtrough_oldfilm_wave.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\postprocess\\passtrough_oldfilm_wave.shfx",
+        "sha256": "617a80968c61d916a66c5d299f80bed9d3b5b2b0c94c84083355f15ff3033e87"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\postprocess\\passtrough_wave.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\postprocess\\passtrough_wave.shfx",
+        "sha256": "df7f7e09cb3855e741686a9a9a23949532183ccf5b929d32e3b3ba04632e1a4a"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\postprocess\\pipesight.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\postprocess\\pipesight.shfx",
+        "sha256": "5756fca9b109e7ee813a3c41f51b18bb33de4de2eb726e01d055f9a742b619ab"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\postprocess\\resampleavglum.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\postprocess\\resampleavglum.shfx",
+        "sha256": "e16a6a960234e91a874c502ea43e5779bd04f8e655b6bc7b768f1021acebd563"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\postprocess\\resampleavglumexp.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\postprocess\\resampleavglumexp.shfx",
+        "sha256": "bc0e218f7328c0a351a384ca99427dccebc6a0f9568e054329b84d5c635e101d"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\postprocess\\sampleavglum.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\postprocess\\sampleavglum.shfx",
+        "sha256": "7c8dd9cea4b56326bbb71f9be05d50c7155872c4d7c0e9815132a2bd160adf97"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\ship\\gun.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\ship\\gun.shfx",
+        "sha256": "8a1541c5c5153ed527fe24c32f025f657225d7f8f5b0d946cbc2bfa3bc34ad1a"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\ship\\gunindexed.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\ship\\gunindexed.shfx",
+        "sha256": "a8fd457f01ea526750d781df0f3f8bdeef7b4260a5aceb22b94f0441c5d881f7"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\ship\\gunvc.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\ship\\gunvc.shfx",
+        "sha256": "6db40664db67fce13c57527b5023028371052ef7cb08fbab2d14f3084474ea8e"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\ship\\gunvcindexed.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\ship\\gunvcindexed.shfx",
+        "sha256": "6bfc04e44e6e924ccafe1c433d16733b28e742abf61177261a5230694d67f6e2"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\ship\\rope.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\ship\\rope.shfx",
+        "sha256": "9f98c8a80c5278cd1757c5535d56f01f6f805c7e0c47f787a7258ec38b76583a"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\ship\\ropeindexed.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\ship\\ropeindexed.shfx",
+        "sha256": "18a645f054d06211993d9310c5e648dc693f99a07cedadd5eb2c939d43b69329"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\ship\\ship.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\ship\\ship.shfx",
+        "sha256": "df746e83c511e3bd9b2ff068a79d01a3c04220ef1ba833e65e44bb4bbc8204bc"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\ship\\shipalphatest.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\ship\\shipalphatest.shfx",
+        "sha256": "a19c827d638c60ad9865fa8c51e6d5989d9344dea9c9c468c6ff2cec961eccdd"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\ship\\shipalphatestindexed.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\ship\\shipalphatestindexed.shfx",
+        "sha256": "40594e0b78af30f6ae63d6a00f834156c9ccfb7064c57f115bb4e6d01c17110d"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\ship\\shipnumber.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\ship\\shipnumber.shfx",
+        "sha256": "8bbd97811de24042ecbedd8eb2462f0f0fa9c1f9e7dd727778e3e214ec657bf3"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\ship\\shipnumberindexed.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\ship\\shipnumberindexed.shfx",
+        "sha256": "d835e5db4b12e78b3cfd88013a15bd77671b87a6eb1a1dba596812941e465eab"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\ship\\shipvcindexed.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\ship\\shipvcindexed.shfx",
+        "sha256": "9bda5f8511b1bd912dea5107646c9ef94ccef23a355f2fc3027d962a970d9748"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\ship\\shipwindow.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\ship\\shipwindow.shfx",
+        "sha256": "7ab2b7922487fe8dbf96145daf369c7f20e9ceac17c54b8b6c095fb8ad24c520"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\ship\\shipwindowindexed.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\ship\\shipwindowindexed.shfx",
+        "sha256": "9e2ff36c3d627d5165238559c42d055a5600d97b49646afbd92a2c57d8adcbdb"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\ship\\waterclip.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\ship\\waterclip.shfx",
+        "sha256": "05bc955b79dce3edbc74d68ef49dd6279e426e9469b0895082bab8755fec1aab"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\ship\\waterflow.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\ship\\waterflow.shfx",
+        "sha256": "c0c72eb833a473e9fd4117af3135af4149220e44ffaf078cd36461e07e65d672"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\ship\\waterflowdist.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\ship\\waterflowdist.shfx",
+        "sha256": "b0eef1fa44d0c6f895e9d7adc0f91b3ff59b17353fa5cb5fecbc029e402a39d6"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\terrain\\airfield.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\terrain\\airfield.shfx",
+        "sha256": "6ef4e043a8cb088e3fc4cdd8f64eef852024bd7e111121e2ffd5f9bab9b9f628"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\terrain\\alphatestnomip.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\terrain\\alphatestnomip.shfx",
+        "sha256": "05182fdde713621e35aad9dc47204e79f5b22cb39d88fa27e397617470e610e5"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\terrain\\bterrain.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\terrain\\bterrain.shfx",
+        "sha256": "dea329ba597f88e93534eb43f08d10df853f1f4bf53d8fed6f1826f3f4587e95"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\terrain\\bterrain2b.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\terrain\\bterrain2b.shfx",
+        "sha256": "d3d8e6405309dd51af1d164231fe2d7124ed30b15103bbc59d0121f76035d86c"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\terrain\\bterrain2c.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\terrain\\bterrain2c.shfx",
+        "sha256": "01a1db052fa294007155ae5e2deb3ab694751406e50336c205a99e7ca91f8341"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\terrain\\bterrain_underwater_test.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\terrain\\bterrain_underwater_test.shfx",
+        "sha256": "5717180dfa64a201f3fe2948373f772101d6feacd0e47ab1e1a62f2ef66549d2"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\terrain\\bush.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\terrain\\bush.shfx",
+        "sha256": "18d5ab5aec37f3e947d0a1ab7e112b121aace6121c750e620e280a744e2c95da"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\terrain\\bush_editor.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\terrain\\bush_editor.shfx",
+        "sha256": "37588c5940b1bc4385fb5d0f141ffae3f1a85b4d00691dbc5ba7ac8b15364c52"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\terrain\\bush_lores.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\terrain\\bush_lores.shfx",
+        "sha256": "e2cc0d8f408e091cb823af06d700521e9681f4283b7452a8feeb612273134fa3"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\terrain\\coral.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\terrain\\coral.shfx",
+        "sha256": "d16d7db32027ad33d7f034a6ff776c4136cdad401178e95740887884f526c1a7"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\terrain\\coral_editor.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\terrain\\coral_editor.shfx",
+        "sha256": "57f4ffc59a00b9fa76109577782524c65dfd5d4db13a8c629ac032f7a935a9a9"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\terrain\\foliage.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\terrain\\foliage.shfx",
+        "sha256": "1dc9780aa47609a0a23d6f680c561d4ede9edbdd1dfe01d643ad94cec4fc66a5"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\terrain\\foliagenomip.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\terrain\\foliagenomip.shfx",
+        "sha256": "397856dcda0347c811e66a0101fe0e1324b493a870cc4d3220f7a09a98e67c46"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\terrain\\instanced.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\terrain\\instanced.shfx",
+        "sha256": "203edf40de13e267f300d2bb12f408d7160c7b14317e4b1b41b255e08da0ca23"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\terrain\\seaweed.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\terrain\\seaweed.shfx",
+        "sha256": "e9aaa1848d9d595faa23262d6e6b8d82c5878ff8a08af74f0823e179236d12da"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\terrain\\seaweed_editor.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\terrain\\seaweed_editor.shfx",
+        "sha256": "a62dfc53edcb8325f328da574a4bd9f72049f111a57de317d199235c735a7832"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\terrain\\terrain_ao.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\terrain\\terrain_ao.shfx",
+        "sha256": "55eb5518ecd88da7184effa44a80ce925d3e5fa9114937da678e2993d5eac450"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\terrain\\tree.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\terrain\\tree.shfx",
+        "sha256": "08f433ce9c568d69edb7a07b2b56cb4aa6a2bcf39bcd9298436c21521264e094"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\ocean\\Nova mapa\\beam.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\ocean\\Nova mapa\\beam.shfx",
+        "sha256": "cd430ac6a6eaa429bcd4c6931efb2b82900c8ae61f33825082de69573ab04a7e"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\ocean\\Nova mapa\\ocean \u2013 kopija.mshd",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\ocean\\Nova mapa\\ocean \u2013 kopija.mshd",
+        "sha256": "a7c872cb6996993beb6c4416250fcbc2462dad6f1d72e3c35b28cd6ce4c5dca8"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\ocean\\Nova mapa\\ocean.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\ocean\\Nova mapa\\ocean.shfx",
+        "sha256": "a7c872cb6996993beb6c4416250fcbc2462dad6f1d72e3c35b28cd6ce4c5dca8"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\ocean\\Nova mapa\\oceancolor.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\ocean\\Nova mapa\\oceancolor.shfx",
+        "sha256": "6a24dd3274732f10949cb9e57db6b2eeb42dbed83bdc022575e06de93f63c5c1"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\ocean\\Nova mapa\\oceanfoam.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\ocean\\Nova mapa\\oceanfoam.shfx",
+        "sha256": "fda5bccc7152b0186cfd26272d95a8b9bfa9e70c0dd07d1761d208f5e30e0488"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\ocean\\Nova mapa\\oceanheightmapgen.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\ocean\\Nova mapa\\oceanheightmapgen.shfx",
+        "sha256": "c40d99a2e81f1d089172970ec4fb834406bcbfbbf8faae3f4157d59be2bf4466"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\ocean\\Nova mapa\\oceanheightscale.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\ocean\\Nova mapa\\oceanheightscale.shfx",
+        "sha256": "f2abb9cd40f7c5e8620f17ad8cd1d02103a04dad9dd6304fffcf87f6d33cde19"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\ocean\\Nova mapa\\oceannormalgen.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\ocean\\Nova mapa\\oceannormalgen.shfx",
+        "sha256": "feb390fce18506ac39982eec930abcec196dd755ec26e94987b2b1d317c3fbd0"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\ocean\\Nova mapa\\oceanshadow.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\ocean\\Nova mapa\\oceanshadow.shfx",
+        "sha256": "9267252b943a13d8e2ccfdd6d9d900939e367e82bd0aefe7ce33350463ab2f40"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\ocean\\Nova mapa\\oceanshadow_vsampler.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\ocean\\Nova mapa\\oceanshadow_vsampler.shfx",
+        "sha256": "200e4bc9e3bdd78d69df15e57ae8f8fa3d2523f9291d61b5d47d144021202bcd"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\ocean\\Nova mapa\\oceansplash.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\ocean\\Nova mapa\\oceansplash.shfx",
+        "sha256": "47018c9d936219f90a68d1ef3fc3dad0bf9ba8e0b35f531b3cb7ae5f61f1bc96"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\ocean\\Nova mapa\\oceanunderwater.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\ocean\\Nova mapa\\oceanunderwater.shfx",
+        "sha256": "d201e619a687b457ec563f4f764b9ede305506d62ef2b0a95d1819b87dc80c80"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\ocean\\Nova mapa\\oceanunderwater_vertexsampler.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\ocean\\Nova mapa\\oceanunderwater_vertexsampler.shfx",
+        "sha256": "f60671d6407f7fa91a9eba6d37938d19b4727d3af71abdfeee29eb048cf9eff5"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\ocean\\Nova mapa\\oceanwavedamp.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\ocean\\Nova mapa\\oceanwavedamp.shfx",
+        "sha256": "46be65d923d791daf9246c9f6d8bff6c7f661f1521b7e03099f47067b067018c"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\ocean\\Nova mapa\\ocean_simple.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\ocean\\Nova mapa\\ocean_simple.shfx",
+        "sha256": "7b57d1b2f0228ef2cb0c6e7e3c9e11c741c62cf6b481c2e6bdd245e7b5caca08"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\ocean\\Nova mapa\\ocean_vel_and_depth.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\ocean\\Nova mapa\\ocean_vel_and_depth.shfx",
+        "sha256": "ebb3d5793a946f5c072221cf55d63c4f616807752736c2c2fcaa4f264f3bfdc3"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\ocean\\Nova mapa\\ocean_vertexsampler.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\ocean\\Nova mapa\\ocean_vertexsampler.shfx",
+        "sha256": "0de79005f5c6025002a2c9920b166caa65f3a763e98b24e66c0707a371f681b8"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\ocean\\Nova mapa\\shore.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\ocean\\Nova mapa\\shore.shfx",
+        "sha256": "7e724802b88ee0f1aed73efd19b61f9c9b61155d8d6f3890257beda02a3993ca"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\ocean\\Nova mapa\\waterdrops.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\ocean\\Nova mapa\\waterdrops.shfx",
+        "sha256": "fa6a20b832b7ea29106f5acf7648c0eef2a43de14915b45b145dc15abac365fb"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\ocean\\Nova mapa\\waterparticle.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\ocean\\Nova mapa\\waterparticle.shfx",
+        "sha256": "ce4f2b4245a5b14d4e6de5dcef09aba96f23cdeaedf1aca7e2343793def801af"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\ocean\\Nova mapa\\waterspray.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\ocean\\Nova mapa\\waterspray.shfx",
+        "sha256": "84ffc39d3bd7f087d32e0d27f7b10a14157822bf54a84a902734e2818163d85d"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\ocean\\Nova mapa\\watertracerdisp.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\ocean\\Nova mapa\\watertracerdisp.shfx",
+        "sha256": "cc89b7b3619b604d91ee081de6e1bf5dc8eb812aa9fa9ec54f4c5c8237ef901a"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\ocean\\Nova mapa\\watertracerskined.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\ocean\\Nova mapa\\watertracerskined.shfx",
+        "sha256": "5deeb89521fcd4fd3c7677e30c50280fcf939ebab21ac0838d58372194a0528a"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\ocean\\Nova mapa\\watertracerstatic.shfx",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\ocean\\Nova mapa\\watertracerstatic.shfx",
+        "sha256": "62e325a1caa54e95bcbe25db9cf886a0c74cc4d5bca62ad0ddf65e542bf6fc24"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\scripts\\fundamentals.lua",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\scripts\\fundamentals.lua",
+        "sha256": "20e128ebe9a1cb7678e3324b0baae93adab4f34f4d96bd081fb7b86505f63526"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\models\\textures\\error.dds",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\models\\textures\\error.dds",
+        "sha256": "9b4666225274f51cfc1d6e964070be76f2a3a4997bec69748d1a81ba86359162"
+      },
+      {
+        "installed": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\effects\\white.dds",
+        "mirror": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\effects\\white.dds",
+        "sha256": "d98f8d618cfbb3840198fb54e8065446b5a249760b1a8f4bf2dd47f332d28d95"
+      }
+    ],
+    "debug_outputs": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\debug\\shaderfx\\common\\debugshader0f3.psa1",
+        "sha256": "9ffa93360469d816306095e844fa13870c81fa6da08c4ba29b9af84cbe2ca7ad",
+        "bytes": 750
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\debug\\shaderfx\\common\\debugshader0f3.psa2",
+        "sha256": "9ffa93360469d816306095e844fa13870c81fa6da08c4ba29b9af84cbe2ca7ad",
+        "bytes": 750
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\debug\\shaderfx\\common\\debugshader0f3.vsa",
+        "sha256": "ed7702256075f1b423a6d13f6bed527b96ddc3afb50658aeec08874d450e6494",
+        "bytes": 656
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\debug\\shaderfx\\common\\debugshader1f3.psa1",
+        "sha256": "fca0c7374b982d232abbb1e5f07c87be8396624901a5aa0b269668dec6e78ffe",
+        "bytes": 368
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\debug\\shaderfx\\common\\debugshader1f3.psa2",
+        "sha256": "fca0c7374b982d232abbb1e5f07c87be8396624901a5aa0b269668dec6e78ffe",
+        "bytes": 368
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\debug\\shaderfx\\common\\debugshader1f3.vsa",
+        "sha256": "ed7702256075f1b423a6d13f6bed527b96ddc3afb50658aeec08874d450e6494",
+        "bytes": 656
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\debug\\shaderfx\\common\\debugshader3f3.psa1",
+        "sha256": "924f72e182d4ac54749eb9c9e1974fb6e20e3c49a8ad2a747a0b8775fcb9de2d",
+        "bytes": 591
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\debug\\shaderfx\\common\\debugshader3f3.psa2",
+        "sha256": "924f72e182d4ac54749eb9c9e1974fb6e20e3c49a8ad2a747a0b8775fcb9de2d",
+        "bytes": 591
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\debug\\shaderfx\\common\\debugshader3f3.vsa",
+        "sha256": "ed7702256075f1b423a6d13f6bed527b96ddc3afb50658aeec08874d450e6494",
+        "bytes": 656
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\debug\\shaderfx\\common\\debugshader4f3.psa1",
+        "sha256": "fca0c7374b982d232abbb1e5f07c87be8396624901a5aa0b269668dec6e78ffe",
+        "bytes": 368
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\debug\\shaderfx\\common\\debugshader4f3.psa2",
+        "sha256": "fca0c7374b982d232abbb1e5f07c87be8396624901a5aa0b269668dec6e78ffe",
+        "bytes": 368
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\debug\\shaderfx\\common\\debugshader4f3.vsa",
+        "sha256": "ed7702256075f1b423a6d13f6bed527b96ddc3afb50658aeec08874d450e6494",
+        "bytes": 656
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\debug\\shaderfx\\common\\error0f3.psa1",
+        "sha256": "9ffa93360469d816306095e844fa13870c81fa6da08c4ba29b9af84cbe2ca7ad",
+        "bytes": 750
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\debug\\shaderfx\\common\\error0f3.psa2",
+        "sha256": "9ffa93360469d816306095e844fa13870c81fa6da08c4ba29b9af84cbe2ca7ad",
+        "bytes": 750
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\native_material_effect_reload\\asset_mirror\\shaderfx\\debug\\shaderfx\\common\\error0f3.vsa",
+        "sha256": "9ce0ac81ddced37017711a854eab8c63371c7335276b5079effbe907fe1844c8",
+        "bytes": 858
+      }
+    ]
+  },
+  "native_body_replay": false,
+  "validation": {
+    "strict_win32_build": "local/native-material-effect-reload-build.log",
+    "existing_ctests": 2,
+    "fixture": "local/native_material_effect_reload/fixture_result_11.json",
+    "fixture_exit": 0,
+    "compile_fixture_log": "compile_fixture_10.log",
+    "link_fixture_log": "link_fixture_12.log",
+    "explicit_extension_compile": "included in compile_all_final.log",
+    "production_libraries": {
+      "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\build\\win32\\Release\\bsp_core.lib": "964393f4cd7cc60fc2cc795aea4e2552e7ddeef4228af2efcbd8467e7f38e434",
+      "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\build\\win32\\Release\\bsp_lua511.lib": "b6c19dd56bce2c86dcf1abf5c3044d48ddc2ac2c33ef04e3dc87f022413ee193",
+      "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\build\\win32\\Release\\bsp_zlib121.lib": "2c89bd9ae83d791564ea847c75e8e5ee025e40810c1df8d55e5799e0c7b8c471"
+    },
+    "real_renderer_cache_producer": "B318B0/B31090 -> B2EBB0; resolved shaderfx/common/debugshader.shfx, two aliases, one registry row, two effect references",
+    "disabled": "all178h effect bytes and owner/read counts unchanged",
+    "reload": "shared actual108D6F1 source gate; actual E13078=77 from live/installed bytes; four source-built primary modes and one secondary; canonical28; reads14->25; same effect, name, serial and registry record",
+    "fallback": "local mirrored Lua file edited to invalid HLSL then exactly restored; real D3DX E_FAIL and diagnostics; same-owner shaderfx/common/error.shfx builds one primary/secondary; canonical21 includes native compiler-orphan state",
+    "source_compilations": [
+      "SOURCE_COMPILE sequence=0 mode=0 result=0D02EFE8 phase=2 site=00B3C368 pixel_hr=00000000 profile=ps_3_0",
+      "SOURCE_COMPILE sequence=1 mode=0 result=0D02F218 phase=2 site=00B3C368 pixel_hr=00000000 profile=ps_3_0",
+      "SOURCE_COMPILE sequence=2 mode=0 result=0D02F18C phase=2 site=00B3C368 pixel_hr=00000000 profile=ps_3_0",
+      "SOURCE_COMPILE sequence=3 mode=0 result=0D02F100 phase=2 site=00B3C368 pixel_hr=00000000 profile=ps_3_0",
+      "SOURCE_COMPILE sequence=4 mode=0 result=00000000 phase=2 site=00B3B6EA pixel_hr=80004005 profile=ps_3_0",
+      "SOURCE_COMPILE sequence=5 mode=0 result=0D02F074 phase=2 site=00B3C368 pixel_hr=00000000 profile=ps_3_0"
+    ],
+    "vfs_failure": "actual missing-file flags2 returns null through unchanged installed numeric530620 callback without increasing successful-read count",
+    "asset_mirror_files_unchanged_after": 269,
+    "prior_composition": "platform/renderer/device/Reset/cache/focus/movie/service fixture retained; worker exited and timer/focus restored",
+    "explicit_source_compile": "compile_all_final.log",
+    "call_check": "24 rows, 12 unique direct call sites, 0 failures",
+    "final_artifacts": {
+      "run": "fixture_result_11.json",
+      "source_program_lines": [
+        "SOURCE_COMPILE sequence=0 mode=0 result=0D02EFE8 phase=2 site=00B3C368 pixel_hr=00000000 profile=ps_3_0",
+        "SOURCE_COMPILE sequence=1 mode=0 result=0D02F218 phase=2 site=00B3C368 pixel_hr=00000000 profile=ps_3_0",
+        "SOURCE_COMPILE sequence=2 mode=0 result=0D02F18C phase=2 site=00B3C368 pixel_hr=00000000 profile=ps_3_0",
+        "SOURCE_COMPILE sequence=3 mode=0 result=0D02F100 phase=2 site=00B3C368 pixel_hr=00000000 profile=ps_3_0",
+        "SOURCE_COMPILE sequence=4 mode=0 result=00000000 phase=2 site=00B3B6EA pixel_hr=80004005 profile=ps_3_0",
+        "SOURCE_COMPILE sequence=5 mode=0 result=0D02F074 phase=2 site=00B3C368 pixel_hr=00000000 profile=ps_3_0"
+      ],
+      "deliberate_error": {
+        "file": "source_4_messages.txt",
+        "sha256": "2ac53164a251edc5aed8162b92148a8b2376931a8ef996c1a63d4340254a311d"
+      },
+      "stale_root_messages": {
+        "source_0_messages.txt": "retained diagnostics from failed register-limit256 attempt; not final sequence0 output",
+        "source_1_messages.txt": "retained diagnostics from failed register-limit256 attempt; not final sequence1 output"
+      },
+      "note": "Native debug outputs and generated HLSL are retained; cached admission byte comparisons do not establish regenerated shader byte equality."
+    }
+  },
+  "fixture_corrections": [
+    "Use full renderer cache producer; bypassing it with a bare shader basename reaches native Lua panic on reload.",
+    "Share reload/source-mode108D6F1; separate cells incorrectly enter one-way cached lookup after cursor164.",
+    "Read register limit E13078=77; the prior cached-only fixture256 was unexercised and produces invalid HLSL.",
+    "Initial admission transfers its program operation into canonical owner metadata; inspect retained descriptor binding, not emptied loader.programs."
+  ],
+  "failed_attempts_retained": "failed_configuration.log; failed_link_1; failed_run_1 through failed_run_9; native code, logs, probe sources/objects/maps/executables and relevant changed production inputs retained.",
+  "remaining": [
+    "No renderer hot-reload registry scans B22030/B21F70, texture reload B3FA90 or B19000 texture rebinding yet.",
+    "Reload operation frames must outlive their actual descriptors and retained native failures; full application frame ownership/shutdown integration remains.",
+    "Native compiler failure and preliminary compile leaks are preserved, not fixed.",
+    "No original whole-function binary/FH3 differential, full window activation/frame/draw/shutdown or gameplay validation.",
+    "Private original image/fixture/compiler artifacts are local; tracked report stores hashes and bounded findings."
+  ],
+  "ghidra_annotations": {
+    "prior_values": "local/ghidra-annotations-20260915T044918Z.json",
+    "names": {
+      "00b469a0": "BSP_MaterialEffect_Reload",
+      "00bdf310": "BSP_VFS_OpenResource",
+      "00b61280": "BSP_PixelShader_CompileAndCollectInputUsage"
+    },
+    "existing_comments_preserved_and_readback_checked": true,
+    "new_function_definition": "local/native_material_effect_reload/function_definition.json",
+    "exports_forcibly_refreshed": [
+      "00b469a0",
+      "00bdf310",
+      "00b61280"
+    ]
+  },
+  "ledger_scope_review": [
+    {
+      "path": "config/names/00b40000.jsonl",
+      "semantic_changed_addresses": [
+        "00b469a0"
+      ]
+    },
+    {
+      "path": "config/names/00b60000.jsonl",
+      "semantic_changed_addresses": [
+        "00b61280"
+      ]
+    },
+    {
+      "path": "config/names/00bd0000.jsonl",
+      "semantic_changed_addresses": [
+        "00bdf310"
+      ]
+    },
+    {
+      "path": "config/reconstruction/00b40000.jsonl",
+      "semantic_changed_addresses": [
+        "00b469a0"
+      ]
+    },
+    {
+      "path": "config/reconstruction/00b60000.jsonl",
+      "semantic_changed_addresses": [
+        "00b61280"
+      ]
+    },
+    {
+      "path": "config/reconstruction/00bd0000.jsonl",
+      "semantic_changed_addresses": [
+        "00bdf310"
+      ]
+    }
+  ],
+  "immutable_capture": {
+    "path": "local/checkpoints/84c6fe88/native-material-effect-reload/validation.json",
+    "sha256": "1ea8a4152186e00f8fb8d6953d298db091f51ed898ea3363a95528bfc141fd76",
+    "artifacts": 6875,
+    "runtime_modules": 82,
+    "root_provider_source_count": 311,
+    "source_manifest_sha256": "a6180c5f174a5b2ed24a2e344c9bac6f0f9f3adfe651cc0c93ccb732819b3838"
+  },
+  "immutable_capture_note": "All stable production sources, headers, CMake and six owned ledger shards match the immutable closure. Report/docs were captured before adding this closure pointer. freeze.log receives the capture completion line afterward."
+}

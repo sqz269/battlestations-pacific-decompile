@@ -134,7 +134,14 @@ HRESULT NativePixelShaderD3dxImports::disassemble(const DWORD* code, ID3DXBuffer
     return import_function<decltype(&D3DXDisassembleShader)>(disassemble_)(code, FALSE, nullptr, out);
 }
 NativePixelShaderCompilationOperation::~NativePixelShaderCompilationOperation() {
-    if (phase == Phase::running || phase == Phase::failed || code || messages || disassembly || stream || active_names)
+    // B61336 jumps directly to the epilogue when D3DX returned no code,
+    // bypassing the B61AEC message-buffer release. This is a completed native
+    // return, including its leaked diagnostics. Metadata retirement must not
+    // terminate the caller or introduce a Release absent from that path.
+    const bool native_null_code_return = phase == Phase::complete &&
+        native_site == 0x00b6132b && !code && !shader_creation_returned;
+    if (phase == Phase::running || phase == Phase::failed || code ||
+        (messages && !native_null_code_return) || disassembly || stream || active_names)
         std::terminate();
 }
 void NativePixelShaderCompilationOperation::acknowledge_diagnostic_cleanup() noexcept {

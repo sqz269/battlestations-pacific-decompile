@@ -9,7 +9,9 @@ class NativeVfsRuntimeBindings;
 
 // Borrow initialized actual storage. Without an explicit native binding,
 // provider/stream tables contain CALLABLE original-ABI functions. The manager
-// failure field+90 retains its required callable original-ABI contract.
+// failure field+90 is callable without native_bindings. The explicit native
+// route accepts the verified 530620 startup callback identity through the
+// existing NativeVfsStartupCallbacks service; other targets fail explicitly.
 // This context creates no provider, stream, table, manager or pool owner.
 // The visitor profile is the actual three-word D6838C identity table, whose
 // numeric +04/+08 targets select the reconstructed BDA690/BD9040 bodies.
