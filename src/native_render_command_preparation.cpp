@@ -14,8 +14,14 @@ namespace {
 static_assert(sizeof(void*) == 4);
 
 std::uint32_t current_word(const void* actual, std::size_t offset) noexcept {
-    return *reinterpret_cast<const volatile std::uint32_t*>(
-        static_cast<const std::byte*>(actual) + offset);
+    const auto* address = static_cast<const std::byte*>(actual) + offset;
+    std::uint32_t value;
+    __asm {
+        mov eax, address
+        mov eax, dword ptr [eax]
+        mov value, eax
+    }
+    return value;
 }
 } // namespace
 

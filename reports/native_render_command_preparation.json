@@ -108,7 +108,7 @@
     },
     {
       "path": "src/native_render_command_preparation.cpp",
-      "sha256": "22c011176734c44c1d48b2966b6134b010bd58cd689b311d0c4363f211a76776"
+      "sha256": "866357004ff1cee4058b8be6ccf2a36583b72c66d35d7d52cdf7819355c5205b"
     }
   ],
   "provider_pins": [
@@ -255,12 +255,12 @@
   "evidence_scope": "Native bytes/listings/target guard/PE equality reused from sealed EB. This implementation does not query or mutate Ghidra.",
   "source_abi": {
     "metadata": "Naked Win32 fastcall ECX actual command, ignored EDX, public stack source pointer, RET4, interleaved DWORD reads/stores and incidental EAX/EDX. Generated identity pending.",
-    "diagnostic": "New C++ ABI adds NativeStringRawPoolContext. Actual header at command+14; self-header identity skips all reads and calls; captures source resize count preserve1; reloads source length gate; captures destination count/source data/destination data in order using volatile DWORD reads. Memmove count is destination length without terminator.",
+    "diagnostic": "New C++ ABI adds NativeStringRawPoolContext. Actual header at command+14; self-header identity skips all reads and calls; captures source resize count preserve1; reloads source length gate; captures destination count/source data/destination data in order using explicit inline x86 MOV reads without typed alias/alignment assumptions. Memmove count is destination length without terminator.",
     "zero_count": "If source gate is nonzero, all three copy argument reads remain even for destination count0. Only the standard-library zero-byte call is omitted.",
     "overlap": "Interleaved metadata permits actual alias propagation. Raw resize and final memmove support valid header/buffer overlap without upfront snapshots. BF7680 original name remains _memcpy but body handles backward overlap."
   },
   "validation": {
-    "primary_source_review": "pending",
+    "primary_source_review": "Metadata body and diagnostic schedule accepted; raw-read helper adjusted to explicit x86 MOV per primary review; final delta review pending.",
     "source_commit": null,
     "build": "pending",
     "verified_seeds": "pending after primary acceptance",

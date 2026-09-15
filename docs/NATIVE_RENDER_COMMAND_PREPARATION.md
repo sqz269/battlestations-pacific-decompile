@@ -34,7 +34,9 @@ raw `resize_native_string_header_0041dd40` with preserve1. It then reloads sourc
 length; zero returns. Otherwise it reads current destination length, current
 source data, and current destination data **in that order**. The copy uses the
 captured destination length, not source length or length+1. A zero-count standard
-library call is omitted only after all three volatile argument reads. No extra
+library call is omitted only after all three explicit x86 DWORD argument reads.
+The read helper uses MOV on a byte-computed address, admitting unaligned raw
+storage and pointer representations without typed C++ aliasing assumptions. No extra
 header/null guard, terminator copy, default value, rollback or cleanup is added.
 
 The raw resize already preserves current header reads across allocation/return
