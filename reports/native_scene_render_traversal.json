@@ -1,0 +1,464 @@
+{
+  "schema": "bsp.worker.native_scene_render_traversal.v1",
+  "packet": "orch3_native_scene_render_traversal_el",
+  "status": "complete_normal_source_candidate_build_and_generated_review_pending",
+  "base_commit": "9cdfda75261de1e03c4d0da59006b1dbc035eb0a",
+  "source_commit": "candidate commit contains this report; exact hash supplied in handoff",
+  "native_body_count": 3,
+  "native_normal_bytes": 225,
+  "native_handlers_reconstructed": 0,
+  "new_ghidra_definitions_by_worker": 0,
+  "native_credit_boundary": "Three complete normal bodies within explicit finite source domain; no parent/job/application bodies or existing renderer bytes newly credited.",
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "guard": "Every live query uses bsp.client -> Client.verify before endpoint access; project/program/language/imagebase checked."
+  },
+  "native_evidence": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-scene-render-traversal-el\\local\\el-native-evidence.json",
+    "sha256": "f9d3c034cf1e4a7bf34dd88201925b530efcdd4f1bdea0ad98d9cf3e4bedb6fb",
+    "bytes": 47889
+  },
+  "retained_evidence": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-shadow-job-queue-admission-ef\\local\\ef-shadow-job-queue-admission.json",
+      "sha256": "9601e1af7ea4ae114d634fc929dd5888302d8a6fbd5b584e1ae1c8b05c281c37",
+      "bytes": 35726
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-shadow-job-queue-admission-ef\\local\\ef-shadow-job-queue-native.json",
+      "sha256": "bc553f47219cfe6ffe651d52d48c2855da421bf5869cfb4eda335fd45bd06dc0",
+      "bytes": 148857
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-scene-traversal-admission-ej\\local\\ej-scene-traversal-contract.json",
+      "sha256": "06bd15c93518002e24ed6601ff4d4b50567c4013a4b70597a0a2b10bd893ba45",
+      "bytes": 35115
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-scene-traversal-admission-ej\\local\\ej-scene-traversal-contract.md",
+      "sha256": "09bca1274b1e1f6be0412e2fdfad5242af1057c8752f0c4e105004a3c171818e",
+      "bytes": 13758
+    }
+  ],
+  "native_bodies": [
+    {
+      "address": "00b72190",
+      "end": "00b721e3",
+      "native_bytes": 84,
+      "sha256": "4a8ec54f7dbd7d3284e01fdf8c96dbeaedfaac075d7f0bdf64d49ae3752e1371",
+      "instruction_count": 32,
+      "live_equals_installed": true,
+      "coverage": "complete normal body within explicit finite four-table source domain"
+    },
+    {
+      "address": "00b6d990",
+      "end": "00b6d9f8",
+      "native_bytes": 105,
+      "sha256": "d9197342cf13f13271be07da0dd8e7d79d29a7bac81257ea6ff7dbd79c6773ef",
+      "instruction_count": 38,
+      "live_equals_installed": true,
+      "coverage": "complete normal body within explicit finite four-table source domain"
+    },
+    {
+      "address": "00b6fb80",
+      "end": "00b6fba3",
+      "native_bytes": 36,
+      "sha256": "3bba1aee56a36d4c1cd8cebb62884c713392cf39f52a56fdb1fceaa376513a9a",
+      "instruction_count": 11,
+      "live_equals_installed": true,
+      "coverage": "complete normal body within explicit finite four-table source domain"
+    }
+  ],
+  "original_abi": {
+    "00b72190": {
+      "receiver": "ECX actual scene",
+      "stack": [
+        "S+4 actual context, overwritten with captured scene+18 scalar"
+      ],
+      "return": "RET4; void result, no promised EAX",
+      "saved": [
+        "EBX",
+        "ESI",
+        "EDI"
+      ],
+      "eh": "none"
+    },
+    "00b6d990": {
+      "receiver": "ECX actual node",
+      "stack": [
+        "S+4 context",
+        "S+8 float LOD",
+        "S+0C float original visibility",
+        "S+10 flags, overwritten each accepted iteration by rounded visibility product"
+      ],
+      "return": "RET10h; void result, no promised EAX",
+      "saved": [
+        "EBX",
+        "EBP",
+        "ESI",
+        "EDI"
+      ],
+      "eh": "none"
+    },
+    "00b6fb80": {
+      "receiver": "ECX actual camera",
+      "stack": [
+        "S+4 context",
+        "S+8 float LOD",
+        "S+0C float visibility",
+        "S+10 flags"
+      ],
+      "return": "RET10h; no native nonvolatile push",
+      "eh": "none"
+    }
+  },
+  "source_abi": {
+    "platform": "MSVC Win32",
+    "public": "Naked fastcall, ECX actual receiver, EDX explicit NativeTracelineRenderAccess, original public words remain at their entry S-relative locations.",
+    "profile_translate": "Private naked: captured numeric profile EAX, access EDX; table/zero EAX. Only EAX/EDX/EFLAGS clobbered. ECX, nonvolatiles, net ESP, FP/SSE preserved by integer-only call-free source; emitted verification pending.",
+    "captured_dispatch": "Private naked: captured target EAX, receiver ECX, access EDX, original four outgoing words. Three private saves removed before known-body tail JMP; no profile/slot reread.",
+    "application_fallback": "Copies four outgoing words plus captured target for existing C++ fastcall service adapter, then RET10h. Explicit new C++ stack/FP/exception boundary; no original stack alias identity through fallback.",
+    "whole_native_byte_or_binary_abi_identity": false
+  },
+  "source_pins": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-scene-render-traversal-el\\include\\bsp\\native_scene_render_traversal.hpp",
+      "sha256": "67947f3295aabffcf24117f135f59f13e7255bf104d6e7536219f4dad24857cc",
+      "bytes": 3465
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-scene-render-traversal-el\\src\\native_scene_render_traversal.cpp",
+      "sha256": "5629a1c4d303614d45421b2aa7dfbd428554bfc8b6e7141faee35b7e274b8156",
+      "bytes": 10285
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-scene-render-traversal-el\\include\\bsp\\native_traceline_render.hpp",
+      "sha256": "eec43d439a9ddcf4d5aa96954434c469b607c4ac198f54b6cb55339a0365caf4",
+      "bytes": 7210
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-scene-render-traversal-el\\src\\native_traceline_render.cpp",
+      "sha256": "b791db0734c33fe6c8c12b3caa40c81b76ebfb5915ecdd80b9ae590605160eb6",
+      "bytes": 73470
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-scene-render-traversal-el\\cmake\\startup.cmake",
+      "sha256": "12f726b10ccf16d7ab45c0d3b6e0dc1e3f77fabfa9a5e0816604993855c00c5d",
+      "bytes": 119900
+    }
+  ],
+  "provider_base_pins": [
+    {
+      "path": "include/bsp/native_traceline_render.hpp",
+      "disk_sha256": "71c88e0aa16eacc035ddeec264b9cba33aacef845ba10cf549409a66473085f3",
+      "base_git_blob_sha256": "71c88e0aa16eacc035ddeec264b9cba33aacef845ba10cf549409a66473085f3",
+      "disk_equals_base_git_blob": true
+    },
+    {
+      "path": "src/native_traceline_render.cpp",
+      "disk_sha256": "409f4c679ff1aa635b9d347c8049600079e822649e3ec751b32ed9d5100fa627",
+      "base_git_blob_sha256": "409f4c679ff1aa635b9d347c8049600079e822649e3ec751b32ed9d5100fa627",
+      "disk_equals_base_git_blob": true
+    },
+    {
+      "path": "include/bsp/native_camera_owner.hpp",
+      "disk_sha256": "527c605fcc55eedd421271a5c4b27d45947e325c391838f14f3cab6d75e1f808",
+      "base_git_blob_sha256": "527c605fcc55eedd421271a5c4b27d45947e325c391838f14f3cab6d75e1f808",
+      "disk_equals_base_git_blob": true
+    },
+    {
+      "path": "src/native_camera_owner.cpp",
+      "disk_sha256": "51f7c97c40027337af8d83b0a35613338a8963ad2664d0d6eaa220be7d22f376",
+      "base_git_blob_sha256": "51f7c97c40027337af8d83b0a35613338a8963ad2664d0d6eaa220be7d22f376",
+      "disk_equals_base_git_blob": true
+    },
+    {
+      "path": "include/bsp/native_model_owner.hpp",
+      "disk_sha256": "7bb75bca29ed440709040ce34b217bb9a760741d971d8b6b2fdeb8b77201f47e",
+      "base_git_blob_sha256": "7bb75bca29ed440709040ce34b217bb9a760741d971d8b6b2fdeb8b77201f47e",
+      "disk_equals_base_git_blob": true
+    },
+    {
+      "path": "src/native_model_owner.cpp",
+      "disk_sha256": "abe4817fd6ca9049f720a50e5c5c9a2041112f634dee73b2c4f2a94d4077886a",
+      "base_git_blob_sha256": "abe4817fd6ca9049f720a50e5c5c9a2041112f634dee73b2c4f2a94d4077886a",
+      "disk_equals_base_git_blob": true
+    },
+    {
+      "path": "include/bsp/native_traceline_lifetime.hpp",
+      "disk_sha256": "11fd02ac45e8522edf107ddc9125f1c2ae666f9b8db47e1a99b31d04acecef84",
+      "base_git_blob_sha256": "11fd02ac45e8522edf107ddc9125f1c2ae666f9b8db47e1a99b31d04acecef84",
+      "disk_equals_base_git_blob": true
+    },
+    {
+      "path": "src/native_traceline_lifetime.cpp",
+      "disk_sha256": "74f0983114965bdbfd6475cb0978a3ed5f9dbc0aacc2da41f79af935a7e61e9e",
+      "base_git_blob_sha256": "74f0983114965bdbfd6475cb0978a3ed5f9dbc0aacc2da41f79af935a7e61e9e",
+      "disk_equals_base_git_blob": true
+    },
+    {
+      "path": "include/bsp/native_instance_collection.hpp",
+      "disk_sha256": "6c60d147f14ca210aa96529e9c45d523053fbf13a103e6dfd705caec54fc2f54",
+      "base_git_blob_sha256": "6c60d147f14ca210aa96529e9c45d523053fbf13a103e6dfd705caec54fc2f54",
+      "disk_equals_base_git_blob": true
+    },
+    {
+      "path": "src/native_instance_collection.cpp",
+      "disk_sha256": "794ea4aa0f5e93d55047b8bd24c6b5207a5c0a0af50569fd13a1c708b210bc2f",
+      "base_git_blob_sha256": "794ea4aa0f5e93d55047b8bd24c6b5207a5c0a0af50569fd13a1c708b210bc2f",
+      "disk_equals_base_git_blob": true
+    },
+    {
+      "path": "include/bsp/native_model_base_lifetime.hpp",
+      "disk_sha256": "2a5e11608fda564a7a252b9d2058580ea3d8aa0d4e15b4398efe67535ad45dff",
+      "base_git_blob_sha256": "2a5e11608fda564a7a252b9d2058580ea3d8aa0d4e15b4398efe67535ad45dff",
+      "disk_equals_base_git_blob": true
+    },
+    {
+      "path": "include/bsp/native_render_context.hpp",
+      "disk_sha256": "eb4ace9d59bdc3b8b393927206aafd98f835b6b9cf2d7f0337ccd96f1c8c168f",
+      "base_git_blob_sha256": "eb4ace9d59bdc3b8b393927206aafd98f835b6b9cf2d7f0337ccd96f1c8c168f",
+      "disk_equals_base_git_blob": true
+    },
+    {
+      "path": "src/native_camera_probe.cpp",
+      "disk_sha256": "93754513f93a00a97f775035023b8d2dea1bf28b5e8b99f04c5110a74315b9f5",
+      "base_git_blob_sha256": "93754513f93a00a97f775035023b8d2dea1bf28b5e8b99f04c5110a74315b9f5",
+      "disk_equals_base_git_blob": true
+    }
+  ],
+  "unchanged_provider_checks": [
+    {
+      "path": "include/bsp/native_camera_owner.hpp",
+      "sha256": "527c605fcc55eedd421271a5c4b27d45947e325c391838f14f3cab6d75e1f808",
+      "same_as_base": true
+    },
+    {
+      "path": "src/native_camera_owner.cpp",
+      "sha256": "51f7c97c40027337af8d83b0a35613338a8963ad2664d0d6eaa220be7d22f376",
+      "same_as_base": true
+    },
+    {
+      "path": "include/bsp/native_model_owner.hpp",
+      "sha256": "7bb75bca29ed440709040ce34b217bb9a760741d971d8b6b2fdeb8b77201f47e",
+      "same_as_base": true
+    },
+    {
+      "path": "src/native_model_owner.cpp",
+      "sha256": "abe4817fd6ca9049f720a50e5c5c9a2041112f634dee73b2c4f2a94d4077886a",
+      "same_as_base": true
+    },
+    {
+      "path": "include/bsp/native_traceline_lifetime.hpp",
+      "sha256": "11fd02ac45e8522edf107ddc9125f1c2ae666f9b8db47e1a99b31d04acecef84",
+      "same_as_base": true
+    },
+    {
+      "path": "src/native_traceline_lifetime.cpp",
+      "sha256": "74f0983114965bdbfd6475cb0978a3ed5f9dbc0aacc2da41f79af935a7e61e9e",
+      "same_as_base": true
+    },
+    {
+      "path": "include/bsp/native_instance_collection.hpp",
+      "sha256": "6c60d147f14ca210aa96529e9c45d523053fbf13a103e6dfd705caec54fc2f54",
+      "same_as_base": true
+    },
+    {
+      "path": "src/native_instance_collection.cpp",
+      "sha256": "794ea4aa0f5e93d55047b8bd24c6b5207a5c0a0af50569fd13a1c708b210bc2f",
+      "same_as_base": true
+    },
+    {
+      "path": "include/bsp/native_model_base_lifetime.hpp",
+      "sha256": "2a5e11608fda564a7a252b9d2058580ea3d8aa0d4e15b4398efe67535ad45dff",
+      "same_as_base": true
+    },
+    {
+      "path": "include/bsp/native_render_context.hpp",
+      "sha256": "eb4ace9d59bdc3b8b393927206aafd98f835b6b9cf2d7f0337ccd96f1c8c168f",
+      "same_as_base": true
+    },
+    {
+      "path": "src/native_camera_probe.cpp",
+      "sha256": "93754513f93a00a97f775035023b8d2dea1bf28b5e8b99f04c5110a74315b9f5",
+      "same_as_base": true
+    }
+  ],
+  "canonical_profiles": [
+    {
+      "native_profile": "00d62c88",
+      "actual_slot20": "00b6d990",
+      "pointer_provenance": "SAME pointer NativeCameraEnvironment.vtable_00d62c88 == NativeModelEnvironment.vtable_00d62c88 including Traceline model environment",
+      "admitted": true
+    },
+    {
+      "native_profile": "00d62cf0",
+      "actual_slot20": "00b6fb80",
+      "pointer_provenance": "NativeCameraEnvironment.vtable_00d62cf0",
+      "admitted": true
+    },
+    {
+      "native_profile": "00d62de8",
+      "actual_slot20": "00b748e0",
+      "pointer_provenance": "NativeModelEnvironment.vtable_00d62de8, canonical across ordinary/Traceline model environments",
+      "admitted": true
+    },
+    {
+      "native_profile": "00d0c928",
+      "actual_slot20": "00af26a0",
+      "pointer_provenance": "NativeTracelineLifetimeAccess.vtable_00d0c928 used by actual live NativeTracelineReference",
+      "admitted": true
+    }
+  ],
+  "excluded_profile": {
+    "native_profile": "00d0c8c8",
+    "slot20": "00bf698e",
+    "current_name": "__purecall",
+    "pointer_exists_at": "NativeTracelineLifetimeAccess.vtable_00d0c8c8",
+    "reason": "Actual base-phase abstract target, not B748E0 or a successful fallback."
+  },
+  "storage_and_identity": {
+    "access_old_size": 56,
+    "access_new_size": 60,
+    "appended_binding_offset": 56,
+    "old_fields_unchanged": true,
+    "profile_binding_size": 16,
+    "profile_field_offsets": [
+      0,
+      4,
+      8,
+      12
+    ],
+    "preflight": "Borrow actual CameraEnvironment node/camera, ModelEnvironment node/model, TracelineLifetimeAccess table, and actual Traceline ModelEnvironment node/model. Require all four nonnull and canonical node/model pointer equality; no table-content snapshots or virtual profile calls.",
+    "lifetime": "Caller retains fixed binding/backing identities and canonical reachable environments through traversal/reentry; actual current table words remain borrowed and volatile.",
+    "private_scene": "S-20 access, S-16 table; LEA allocation preserves first-node TEST flags; original S+4 scalar.",
+    "private_node": "S-8 access, S-4 table; loop S-24, outgoing12 => original FLAGS at ESP+34h, LOD at ESP+2Ch; outgoing16 => table/access ESP+24h/+20h.",
+    "private_camera": "S-4 access; outgoing16 => access ESP+10h; remove private4 before RET10h."
+  },
+  "normal_order": {
+    "scene": "MOVSS scene+18 before first-node+0C; context and context+8 even empty; store original public context slot; current node flags/current captured camera mask; FLD1 then current profile/translated table/current slot20; outgoing FP spills; captured call; next+3C after return.",
+    "node": "MOVSS current parent+AC and COMISS current actual zero; JBE includes unordered; firstchild before context/flags captures; each iteration original visibility FLD32 -> current profile -> integer table translation -> current parent FMUL -> current slot20 -> original public FLAGS FSTP32 -> same-word FLD32/FSTP32 outgoing visibility -> separate LOD spill -> captured target call -> next+3C. Original visibility is not accumulated.",
+    "camera": "Preserve flag/visibility/context/LOD load and outgoing spill sequence; source-only access save/restore; direct actual node-body call."
+  },
+  "native_calls": [
+    {
+      "address": "00a8ae66",
+      "native": "00b72190",
+      "function": "00a8ae50",
+      "kind": "direct_call",
+      "preparation": "Captured public command in ESI; B1BF30 result pushed as context BEFORE later B1BF20 result moves to ECX scene; RET4 then same command B1E990."
+    },
+    {
+      "address": "00b1ebc5",
+      "native": "00b72190",
+      "function": "00b1eb80",
+      "kind": "direct_call",
+      "preparation": "After reserve/append/count increment and current flag-byte gate: MOV EDX,[EDI+28h]; MOV ECX,[EDI+4]; PUSH EDX; CALL; same captured command to B1E990."
+    },
+    {
+      "address": "00b1f488",
+      "native": "00b72190",
+      "function": "00b1f3c0",
+      "kind": "direct_call",
+      "preparation": "After append/count: MOV EAX,[EDI+28h]; MOV ECX,[ESP+24h] (original first public scene argument); PUSH EAX; CALL; same captured command to B1E990. Full caller preparation retained, no caller implementation credit."
+    },
+    {
+      "address": "00b1f593",
+      "native": "00b72190",
+      "function": "00b1f4d0",
+      "kind": "direct_call",
+      "preparation": "After append/count: MOV EAX,[EDI+28h]; MOV ECX,[ESP+24h] (original first public scene argument); PUSH EAX; CALL; same captured command to B1E990. Full caller preparation retained, no caller implementation credit."
+    },
+    {
+      "address": "00b91b07",
+      "native": "00b6d990",
+      "function": "00b91a50",
+      "kind": "direct_call",
+      "preparation": "Actual caller flag selection retained; B91AE9 loads current selected flags, FLD32 public visibility, captures context, pushes/spills visibility, ECX=captured parent, FLD32/spills LOD, pushes context. No broad caller semantics or credit."
+    },
+    {
+      "address": "00b6fb9c",
+      "native": "00b6d990",
+      "function": "00b6fb80",
+      "kind": "direct_call",
+      "preparation": "Current flags load, FLD32 public visibility, current context load, PUSH flags/SUB ESP8/FSTP32 visibility, FLD32 LOD/FSTP32 LOD/PUSH context; actual ECX unchanged; RET10h."
+    },
+    {
+      "address": "00b721d5",
+      "native": "00d62c88+20",
+      "function": "00b72190",
+      "kind": "indirect_call",
+      "instruction": "CALL EAX",
+      "target_scope": "Current slot20 from captured child profile; one of four actual bound tables or source domain rejection; notation is slot evidence, not a fixed D62C88 receiver."
+    },
+    {
+      "address": "00b6d9e9",
+      "native": "00d62c88+20",
+      "function": "00b6d990",
+      "kind": "indirect_call",
+      "instruction": "CALL EDX",
+      "target_scope": "Profile captured after FLD32, current parent FMUL before current target load, flags spill/reload and arguments before CALL; any admitted four-table profile."
+    },
+    {
+      "address": "00b74b48",
+      "native": "00d62de8+20",
+      "function": "00b748e0",
+      "kind": "indirect_call",
+      "instruction": "CALL EDX",
+      "target_scope": "Existing source bridge retains its later current profile callback after outgoing FP spills. Shared selector only; zero new native bytes credited here."
+    }
+  ],
+  "source_dispatch": {
+    "known_targets": [
+      "00b6d990",
+      "00b6fb80",
+      "00b748e0",
+      "00af26a0"
+    ],
+    "unknown_mapped_target": "Actual existing services.call_virtual20, including target0/BF698E; no successful no-op or default target. Application must preserve its established failure/terminal domain.",
+    "unavailable_profile": "Separate saved table pointer is zero; balances native FP spills before source-only logic_error. No native hardware fault/FH3 or naked-frame unwind parity claimed.",
+    "old_bridge": "Retains current services.profile(actual) late after caller FP spills; null new binding retains application route for node/camera, and existing model/Traceline selection remains. Only include and selector composition changed."
+  },
+  "metadata": {
+    "original_prototypes": "B72190/B6D990: undefined FUN(void); placeholders not trusted for ABI. B6FB80 undefined at capture.",
+    "camera_definition": "Primary-owned pending; actual full36-byte installed/live span exists. Worker made no Ghidra writes or new definition credit.",
+    "call_audit": {
+      "command": "python tools/verify_report_calls.py reports/native_scene_render_traversal.json",
+      "exit_code": 1,
+      "direct_rows_checked": 6,
+      "direct_rows_passed": 5,
+      "direct_rows_failed": 1,
+      "indirect_rows_skipped": 3,
+      "failure": "B6FB9C has no containing Ghidra function because B6FB80 remains undefined; primary-owned definition pending. Full36-byte body independently live/PE verified.",
+      "log_path": "J:\\PROG\\battlestations-pacific-decompile-orch3-scene-render-traversal-el\\local\\el-report-calls.log",
+      "log_sha256": "ab7282cfcd15cb215173b289350501b554d7894fc4e9750c113b7b40daa89ad9"
+    }
+  },
+  "validation": {
+    "primary_source_review": "Accepted complete frozen source/header/shared diff and S-relative normal stack paths; final metadata/pins pending.",
+    "build": "NOT RUN; parent coordinates one coupled EL+EN build in EN tree after source/append union acceptance.",
+    "generated": "PENDING: complete new object helpers/selector/dispatcher, every stack exit, actual fallback FP moves, preflight and complete affected old renderer object.",
+    "tests": "NOT RUN in EL; no new repository tests. Joint existing tests owned by EN.",
+    "runtime_fixture": "none",
+    "game_validation": "none",
+    "live_native_spans": 8,
+    "live_native_span_bytes": 405
+  },
+  "limits": [
+    "Finite four-table source provider domain, not arbitrary profiles or complete application/queue/job rendering.",
+    "Extra access/private frames and helper calls prevent whole-body byte, incidental volatile register/EFLAGS and unrestricted stack-alias equivalence claims.",
+    "Integer-only translation preserves live FP values in source; generated code review and actual FP-capacity/exception boundaries remain explicit.",
+    "Source profile diagnostics and real application fallback do not prove native hardware-fault/FH3 behavior or C++ unwinding across naked frames.",
+    "No synthetic allocation, registry, table snapshot, owner, successful unknown callback, rollback or cleanup added.",
+    "Existing B748E0/AF26A0 and application service contracts retain their qualification; no new proof of child completeness or game behavior."
+  ],
+  "lease": "release after clean candidate commit; parent owns integration and later metadata",
+  "corrections": [],
+  "documentation": {
+    "path": "docs/NATIVE_SCENE_RENDER_TRAVERSAL.md",
+    "sha256": "fe86a7cd471d0901a86ac5c7fb9fe148c3cc20f4862f1a11dc1b6005b8491a97"
+  }
+}

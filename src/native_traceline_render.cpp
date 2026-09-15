@@ -1,4 +1,5 @@
 #include "bsp/native_traceline_render.hpp"
+#include "bsp/native_scene_render_traversal.hpp"
 #include "bsp/native_camera_cache_getters.hpp"
 #include "bsp/native_camera_world.hpp"
 #include "bsp/native_logical_buffer_mapping.hpp"
@@ -58,8 +59,7 @@ std::uint32_t __fastcall visibility_bridge(void* actual,const NativeTracelineRen
 void __fastcall render_child_bridge(void* actual,const NativeTracelineRenderAccess* a,
     void* context,float lod,float visibility,std::uint32_t flags) {
     const auto target=a->services->profile(actual)[0x20/4];
-    if(target==0x00af26a0u) render_native_traceline_00af26a0(actual,a,context,lod,visibility,flags);
-    else if(target==0x00b748e0u) render_native_generated_model_00b748e0(actual,a,context,lod,visibility,flags);
+    if(const auto body=select_native_render20_body(target,a)) body(actual,a,context,lod,visibility,flags);
     else a->services->call_virtual20(actual,target,context,lod,visibility,flags);
 }
 void* __fastcall map_bridge(void* actual,const NativeTracelineRenderAccess* a,
