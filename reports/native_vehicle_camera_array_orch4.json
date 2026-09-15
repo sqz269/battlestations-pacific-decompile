@@ -1,0 +1,176 @@
+{
+  "packet": "orch4_camera_array_lifetime_b2",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "coverage": "four complete ordinary bodies; new C++ source ABI",
+  "source": "src/native_vehicle_camera_array.cpp",
+  "documentation": "docs/NATIVE_VEHICLE_CAMERA_ARRAY_ORCH4.md",
+  "bodies": [
+    {
+      "address": "005cd070",
+      "end_inclusive": "005cd0e2",
+      "bytes": 115,
+      "sha256": "95f6c011137aa79cc348f64dd173066026a1fdc277a50f5be322921a762e0527",
+      "live_disk_match": true
+    },
+    {
+      "address": "005cd260",
+      "end_inclusive": "005cd354",
+      "bytes": 245,
+      "sha256": "aadfffa06f865366b52743d55ea5abdb558a4f1715e08e1bcb8a93254e56386a",
+      "live_disk_match": true
+    },
+    {
+      "address": "005cd640",
+      "end_inclusive": "005cd703",
+      "bytes": 196,
+      "sha256": "9e54d03febc8533fa7b8be3d6abff5811bbbd8358979c74cef32c5db46cf34be",
+      "live_disk_match": true
+    },
+    {
+      "address": "0078e230",
+      "end_inclusive": "0078e265",
+      "bytes": 54,
+      "sha256": "8c8e0242630bd32b86aa5b6d045942fad4838a418200930d6938bf1bdd3bd163",
+      "live_disk_match": true
+    }
+  ],
+  "calls": [
+    {
+      "address": "005cd091",
+      "native": "0041dd40",
+      "function": "005cd070"
+    },
+    {
+      "address": "005cd0a7",
+      "native": "00bf7680",
+      "function": "005cd070"
+    },
+    {
+      "address": "005cd2a0",
+      "native": "00bf55be",
+      "function": "005cd260"
+    },
+    {
+      "address": "005cd2dd",
+      "native": "005cd070",
+      "function": "005cd260"
+    },
+    {
+      "address": "005cd315",
+      "native": "00419cc0",
+      "function": "005cd260"
+    },
+    {
+      "address": "005cd31c",
+      "native": "00bd1510",
+      "function": "005cd260"
+    },
+    {
+      "address": "005cd32f",
+      "native": "00bf6989",
+      "function": "005cd260"
+    },
+    {
+      "address": "005cd66c",
+      "native": "005cd260",
+      "function": "005cd640"
+    },
+    {
+      "address": "005cd6a3",
+      "native": "0078e230",
+      "function": "005cd640"
+    },
+    {
+      "address": "005cd6db",
+      "native": "00419cc0",
+      "function": "005cd640"
+    },
+    {
+      "address": "005cd6e2",
+      "native": "00bd1510",
+      "function": "005cd640"
+    },
+    {
+      "address": "009625cb",
+      "native": "0078e230",
+      "function": "00960230"
+    },
+    {
+      "address": "00962840",
+      "native": "005cd640",
+      "function": "00960230"
+    },
+    {
+      "address": "0095dba6",
+      "native": "005cd640",
+      "function": "0095db40"
+    }
+  ],
+  "unwind": [
+    {
+      "function": "005cd260",
+      "handler": "00c736c7",
+      "func_info": "00d9f65c",
+      "map": "00d9f654",
+      "states": [
+        {
+          "next": -1,
+          "action": "00c736b0",
+          "effect": "calls RET-only00401130; no cleanup"
+        }
+      ]
+    },
+    {
+      "function": "005cd640",
+      "handler": "00c73721",
+      "func_info": "00d9f6bc",
+      "map": "00d9f6ac",
+      "states": [
+        {
+          "next": -1,
+          "action": "00c73700",
+          "effect": "calls RET-only00401130"
+        },
+        {
+          "next": 0,
+          "action": "00c73719",
+          "effect": "tail calls0041DD20; armed around nonthrowing0078E230"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "independent_source_review": "passed all four ordinary bodies, raw-pool reuse and EH maps",
+    "saved_flow_repair": "reports/native_vehicle_camera_array_flow_orch4.json",
+    "exports_refreshed": true,
+    "build": {
+      "result": "passed",
+      "configuration": "MSVC Win32 Release /W4 /WX",
+      "ctests_passed": 3,
+      "log": "local/camera_array_build_b2.log",
+      "base_commit": "7360a86e0",
+      "sources": "includes camera source in the built bsp_core.vcxproj"
+    },
+    "call_check": {
+      "checked": 14,
+      "failed": 0
+    },
+    "fixture": {
+      "result": "passed",
+      "paired_lifecycles": 1,
+      "snapshots": 7,
+      "original_enclosing_bytes": 610,
+      "manifest": "local/worker_evidence/ship-indexed-and-camera-b2/camera_array_probe_manifest.json",
+      "manifest_sha256": "8c2b900d1fff1d783e00f1e68b885be33afe59f192a701b25c0f8314a1da060d",
+      "source_sha256": "3d0b21d60041631a7c46e51a507dc9bda9a369e05fc834ffe89fc89d6986911c",
+      "boundary": "Real prepublished string pool; original internal calls preserved; external CRT/pool dependencies use actual source operations with pass-through observers. No original CRT/FH3/lazy-registration/throwing/hardware-fault/game proof."
+    }
+  },
+  "limitations": [
+    "new source ABI, not original register/FH3 bridge",
+    "canonical host CRT allocation/memmove boundary, no original CRT fault or OOM equivalence",
+    "valid reached storage and DF=0; no asynchronous/hardware-fault recovery",
+    "not full vehicle binder or gameplay validation"
+  ]
+}
