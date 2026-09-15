@@ -1,0 +1,150 @@
+{
+  "packet": "orch4_crew_tree_f6",
+  "result": "complete_source_reconstruction_build_and_repository_tests_passed",
+  "program": "/battlestationspacific.exe",
+  "ghidra_project": "C:/Users/sqz269/bsp.gpr",
+  "source": [
+    "include/bsp/native_damageable_crew_tree.hpp",
+    "src/native_damageable_crew_tree.cpp"
+  ],
+  "consumer": {
+    "address": "0087ca80",
+    "status": "source_absent",
+    "path": "Emberkek",
+    "key_conversion": "0087d645 Lua integer to signed int32",
+    "class_resolution": "004b1400 called at 0087d652",
+    "tree_lookup": "0087b750",
+    "store": "0087d665 writes returned SoldierClass pointer at mapped+40h (node+50h)",
+    "ownership": "no old-pointer release or extra retain at the store"
+  },
+  "layout": {
+    "tree_head": "+04h",
+    "tree_count": "+08h unsigned",
+    "node_size": "58h",
+    "left_parent_right": ["+00h", "+04h", "+08h"],
+    "key": "+0Ch signed int32",
+    "mapped": "+10h..+53h (44h)",
+    "color": "+54h",
+    "nil": "+55h"
+  },
+  "functions": [
+    {
+      "address": "00876340",
+      "old_name": "STL_inst_00876340",
+      "proposed_name": "STL_DamageableCrewTreeIterator_Equals_00876340",
+      "abi": "ECX left iterator; stack right iterator; EAX bool; RET4",
+      "size_bytes": 41,
+      "listing_instructions": 18,
+      "evidence": "validate left owner nonnull and equal to right owner through returning 00BF6713, then compare node words"
+    },
+    {
+      "address": "00876630",
+      "old_name": "FUN_00876630",
+      "proposed_name": "STL_DamageableCrewTree_RotateRight_00876630",
+      "abi": "ECX tree; stack node; RET4",
+      "listing_instructions": 30,
+      "evidence": "promote left child, repair moved subtree parent, root/parent child publication, node becomes right child"
+    },
+    {
+      "address": "008767a0",
+      "old_name": "FUN_008767a0",
+      "proposed_name": "STL_DamageableCrewTreeIterator_Decrement_008767A0",
+      "abi": "ECX two-word iterator; RET",
+      "size_bytes": 137,
+      "listing_instructions": 48,
+      "evidence": "end-to-maximum, left-subtree maximum, or ancestor ascent using nil+55h with returning invalid-parameter calls"
+    },
+    {
+      "address": "008773a0",
+      "old_name": "FUN_008773a0",
+      "proposed_name": "STL_DamageableCrewTree_RotateLeft_008773A0",
+      "abi": "ECX tree; stack node; RET4",
+      "listing_instructions": 30,
+      "evidence": "promote right child, repair moved subtree parent, root/parent child publication, node becomes left child"
+    },
+    {
+      "address": "00877fe0",
+      "old_name": "FUN_00877fe0",
+      "proposed_name": "STL_DamageableCrewTree_BuyNode_00877FE0",
+      "abi": "stack left,parent,right,pair,color; EAX node; RET14h",
+      "listing_instructions": 23,
+      "evidence": "00BF681B allocation of 58h, link writes, eighteen-DWORD payload copy, color+54h, nil+55h zero"
+    },
+    {
+      "address": "0087a5f0",
+      "old_name": "STL_xlen_throw_0087a5f0",
+      "proposed_name": "STL_DamageableCrewTree_LinkNode_0087A5F0",
+      "abi": "ECX tree; stack output,left,parent,pair; EAX output; RET10h; FH3 00C966F8",
+      "size_bytes": 492,
+      "listing_instructions": 167,
+      "evidence": "unsigned count guard 038E38E2h, native owning length error, 00877FE0 allocation, extrema updates, recolor/rotations, root black, node-before-owner output"
+    },
+    {
+      "address": "0087adb0",
+      "old_name": "FUN_0087adb0",
+      "proposed_name": "STL_DamageableCrewTree_InsertUnique_0087ADB0",
+      "abi": "ECX tree; stack output,pair; EAX output; RET8",
+      "size_bytes": 185,
+      "listing_instructions": 73,
+      "evidence": "signed search, predecessor duplicate check, 0087A5F0 miss path, owner/node/inserted-byte independent stores"
+    },
+    {
+      "address": "0087b260",
+      "old_name": "FUN_0087b260",
+      "proposed_name": "STL_DamageableCrewTree_InsertHint_0087B260",
+      "abi": "ECX tree; stack output,hint owner,hint node,pair; EAX output; RET10h",
+      "size_bytes": 444,
+      "listing_instructions": 183,
+      "evidence": "empty/min/end/interior hint paths, duplicate-safe signed comparisons, checked predecessor/successor/equality, unique fallback"
+    },
+    {
+      "address": "0087b750",
+      "old_name": "FUN_0087b750",
+      "proposed_name": "STL_DamageableCrewTree_Subscript_0087B750",
+      "abi": "ECX tree; stack int32 pointer; EAX mapped pointer; RET4",
+      "size_bytes": 147,
+      "listing_instructions": 55,
+      "evidence": "signed lower bound, seventeen-DWORD uninitialized mapped preimage on miss, checked hint insertion, separate owner/end validation, return node+10h"
+    }
+  ],
+  "direct_dependency_closure": {
+    "new_source": ["00876340", "00876630", "008767a0", "008773a0", "00877fe0", "0087a5f0", "0087adb0", "0087b260", "0087b750"],
+    "borrowed_complete": [
+      "008772b0 checked successor",
+      "00408720 native legacy counted string assignment",
+      "00411700 native legacy logic-error construction",
+      "00411940 native legacy length-error copy through existing transport",
+      "004072d0 native legacy string destruction",
+      "00bf681b canonical allocation domain through singleton_lifetime_allocate"
+    ],
+    "stubs": []
+  },
+  "semantic_checks": {
+    "signed_comparisons": true,
+    "mapped_value_zero_initialized": false,
+    "mapped_preimage_dwords": 17,
+    "pair_copy_dwords": 18,
+    "duplicate_copies_value": false,
+    "result_padding_written": false,
+    "returning_invalid_parameter_preserved": true,
+    "second_hint_end_captured_before_validation": true,
+    "maximum_head_reloaded_after_validation": true,
+    "root_minimum_maximum_updates": true,
+    "red_black_repair": true,
+    "count_guard": "unsigned count >= 038E38E2h"
+  },
+  "validation": {
+    "ghidra_flow": "all nine functions complete, zero listing gaps",
+    "source_review": "complete against field offsets, signed comparisons, callback-relative head loads, output ordering, count predicate, rotation/recolor schedule and explicit REP MOVSD copies",
+    "msvc_win32_build": "passed via scripts/build.ps1 after compiling native_damageable_crew_tree.cpp",
+    "repository_tests": "2 of 2 passed: reconstructed_math and tool_tests",
+    "focused_fixture": "ignored source-only Win32 probe with embedded manifest passes: second returning invalid callback replaces tree+4; source compares hint to the captured old end, reloads the replacement head for maximum, and inserts beside that maximum",
+    "game_runtime": "not_run"
+  },
+  "uncertainties": [
+    "Descriptive names are hypotheses, not recovered symbols.",
+    "The source-level length error owns native-shaped D69260 storage but uses host RTTI/catch ABI rather than original D83F98 FH3 ABI.",
+    "Uninitialized mapped bytes are intentionally indeterminate and are not suitable for deterministic byte comparison.",
+    "Hardware faults, malformed-tree continuation after returning validation callbacks, concurrent mutation, binary ABI compatibility and gameplay behavior are unvalidated."
+  ]
+}
