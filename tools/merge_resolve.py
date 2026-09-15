@@ -249,8 +249,28 @@ def keep_both_pure_insertions(worktree, path, base, ours, theirs):
     return pattern.sub(lambda m: m.group(1) + m.group(3), out)
 
 
+def in_merge(worktree):
+    """True only during a real merge, when index stage 1 is the merge base.
+
+    Every handler here reads stage 1 as the common ancestor. During a cherry-pick, rebase or revert
+    stage 1 is the picked commit's parent instead, so "what the base said" is a different question
+    and the answers are wrong: the startup.cmake union mis-identified which side had changed a target
+    that way while the stragglers were being integrated.
+    """
+    for marker in ('MERGE_HEAD', 'CHERRY_PICK_HEAD', 'REVERT_HEAD', 'REBASE_HEAD'):
+        path = subprocess.run(['git', 'rev-parse', '--git-path', marker], cwd=worktree,
+                              capture_output=True, text=True).stdout.strip()
+        if path and (Path(worktree) / path).exists() or (path and Path(path).exists()):
+            return marker == 'MERGE_HEAD'
+    return False
+
+
 def resolve_all(worktree):
     worktree = Path(worktree)
+    if not in_merge(worktree):
+        print('refusing: not in a merge, so index stage 1 is not the merge base. '
+              'Resolve a cherry-pick, rebase or revert by hand.', file=sys.stderr)
+        return [], ['<not a merge>']
     conflicted = subprocess.run(['git', 'diff', '--name-only', '--diff-filter=U'], cwd=worktree,
                                 capture_output=True, text=True).stdout.split()
     unresolved = []
