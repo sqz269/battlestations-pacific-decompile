@@ -1,0 +1,60 @@
+{
+  "packet": "orch4_device_array_c3",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "coverage": "two complete ordinary bodies; new actual-header C++ interfaces",
+  "source": "src/native_device_registry_array.cpp",
+  "documentation": "docs/NATIVE_DEVICE_REGISTRY_ARRAY_ORCH4.md",
+  "bodies": [
+    {
+      "address": "0043fa60",
+      "end_inclusive": "0043fabe",
+      "bytes": 95,
+      "original_abi": "thiscall ECX actual header, signed stack capacity, RET4",
+      "status": "complete repaired listing; zero gaps"
+    },
+    {
+      "address": "00440180",
+      "end_inclusive": "004401cf",
+      "bytes": 80,
+      "original_abi": "thiscall ECX actual header, signed stack count, RET4",
+      "status": "complete listing"
+    }
+  ],
+  "calls": [
+    {"address": "0043fa80", "native": "00bf55be", "function": "0043fa60", "contract": "wrapped DWORD(request*4) array allocation"},
+    {"address": "0043faac", "native": "00bf6989", "function": "0043fa60", "contract": "free current data before publication"},
+    {"address": "0044018e", "native": "0043fa60", "function": "00440180", "contract": "reserve exact requested count when signed request exceeds capacity"}
+  ],
+  "live_resize_callers": [
+    {"address": "0044138d", "native": "00440180", "function": "00441360", "contract": "ECX owner+4 header; request 0 before backing free"},
+    {"address": "00442113", "native": "00440180", "function": "004420d0", "contract": "ECX current registry+4; request class id+1"},
+    {"address": "0044217c", "native": "00440180", "function": "00442170", "contract": "ECX current registry+4; request 0"},
+    {"address": "004430c2", "native": "00440180", "function": "00443090", "contract": "ECX current registry+4; request class id+1 before initial lookup"},
+    {"address": "00443365", "native": "00440180", "function": "00443090", "contract": "ECX reacquired registry+4; request class id+1 before fresh publication"},
+    {"address": "00443449", "native": "00440180", "function": "00443090", "contract": "ECX reacquired registry+4; request class id+1 before cached retain"},
+    {"address": "00443472", "native": "00440180", "function": "00443090", "contract": "ECX reacquired registry+4; request class id+1 before return reload"}
+  ],
+  "rejected_cached_edge": {
+    "caller": "00440c70",
+    "reason": "cached index edge is absent from the live Ghidra xref set"
+  },
+  "semantics": {
+    "header": "actual DWORD data, signed count, signed capacity at registry+4",
+    "reserve": "signed minimum one and capacity check; wrapped byte count; reload source/count; free then publish data/capacity",
+    "resize": "zero growth slots; count-only decrement on shrink; final requested-count write",
+    "ownership": "borrowed DWORD entries; no retain, release, callback, or competing container"
+  },
+  "verification": {
+    "live_function_count": 64124,
+    "independent_listing_comparison": "passed",
+    "report_call_verifier": "10 call rows checked, 0 failed",
+    "strict_msvc_win32_build": "passed /W4 /WX; 2 of 2 existing CTests passed",
+    "runtime_game_validation": false
+  },
+  "limitations": [
+    "00441780 singleton provider, constructors/destructors and 00443090 factory remain source-open",
+    "new C++ interfaces are not original binary ABI shims",
+    "host CRT exception identity, invalid storage faults and gameplay behavior are not validated"
+  ]
+}
