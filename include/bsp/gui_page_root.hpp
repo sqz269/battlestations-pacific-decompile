@@ -31,4 +31,11 @@ struct NativeGroupConstants {
 NativeGroupStorageView construct_native_group_00b8f5e0(void* actual_slot,
     std::size_t slot_bytes, const NativeString&, SizedStoragePool&, NativeGroupConstants);
 
+// Same complete106-byte constructor for the resource factory's actual8h name
+// header and current raw string pool. The base and tail read the same current
+// constant cells in native order. No name copy or companion is synthesized.
+NativeGroupStorageView construct_native_group_00b8f5e0(void* actual_slot,
+    std::size_t slot_bytes, const void* actual_name_header,
+    NativeStringRawPoolContext&, const NativeNodeRawConstants&);
+
 } // namespace bsp

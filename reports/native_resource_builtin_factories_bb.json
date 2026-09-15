@@ -1,0 +1,197 @@
+{
+  "packet": "orch6_resource_builtin_factories_bb",
+  "status": "complete_factories_and_raw_group_constructor_strict_win32_and_bounded_differential_tested",
+  "worker_dispatches": 0,
+  "native": {
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "spans": [
+      {
+        "entry": "00b866c0",
+        "end": "00b8671e",
+        "bytes": 95,
+        "sha256": "7e4d00f0bced562cd3f1142edbd4ce0530fbcf18c4eee402839d5233ad278e30",
+        "live_disk_equal": true
+      },
+      {
+        "entry": "00b86780",
+        "end": "00b867de",
+        "bytes": 95,
+        "sha256": "efd950f157e814ceeb7b4925cd114c6dedab9dacbc3484122c9833718a458e84",
+        "live_disk_equal": true
+      },
+      {
+        "entry": "00b8f5e0",
+        "end": "00b8f649",
+        "bytes": 106,
+        "sha256": "cfb05cb7bd93745c4ebc723cf9b5efc84bb10db1f07bacf4710a3057e441d705",
+        "live_disk_equal": true
+      },
+      {
+        "entry": "00b6f5a0",
+        "end": "00b6f8cd",
+        "bytes": 814,
+        "sha256": "d9b929f57edd4f21b44623a5c2cf5988db47e9d42142b30e46b44029d98bb86b",
+        "live_disk_equal": true
+      }
+    ],
+    "unwind_and_constants": [
+      {
+        "entry": "00cc2510",
+        "bytes": 18,
+        "sha256": "8eb116236d51eccc0588e317c538239d9944f102faaef2636d6e0354351d0844"
+      },
+      {
+        "entry": "00cc2550",
+        "bytes": 18,
+        "sha256": "23598c6907c458ed1afca68560a1556ae775dcab1ed96a74a66e7d32b4f3138e"
+      },
+      {
+        "entry": "00dfb93c",
+        "bytes": 44,
+        "sha256": "d6ed327c43d9a61231521163e724b11c46ad23e0ecc6bd3ce5573fcefb3fde46"
+      },
+      {
+        "entry": "00dfb994",
+        "bytes": 44,
+        "sha256": "abd7661921deeec4cd5defcc19727f26061c1a23bc269ef4bfacd9d7b154851a"
+      },
+      {
+        "entry": "00d63210",
+        "bytes": 24,
+        "sha256": "2ed9b8263c5cf9959aee2cf337d07bfe223984d39dc5b6a4e672be4ade5b6f05"
+      }
+    ]
+  },
+  "calls": [
+    {
+      "function": "00b866c0",
+      "address": "00b866db",
+      "native": "00b6ed70"
+    },
+    {
+      "function": "00b866c0",
+      "address": "00b866f6",
+      "native": "00b6f5a0"
+    },
+    {
+      "function": "00b86780",
+      "address": "00b8679b",
+      "native": "00b8f450"
+    },
+    {
+      "function": "00b86780",
+      "address": "00b867b6",
+      "native": "00b8f5e0"
+    },
+    {
+      "function": "00b8f5e0",
+      "address": "00b8f5e8",
+      "native": "00b6f5a0"
+    },
+    {
+      "function": "00b6f5a0",
+      "address": "00b6f656",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00b6f5a0",
+      "address": "00b6f66b",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00b6f5a0",
+      "address": "00b6f6f9",
+      "native": "004134f0"
+    },
+    {
+      "function": "00b6f5a0",
+      "address": "00b6f783",
+      "native": "004134f0"
+    },
+    {
+      "function": "00b6f5a0",
+      "address": "00b6f82e",
+      "native": "004134f0"
+    },
+    {
+      "function": "00cc2510",
+      "address": "00cc2513",
+      "native": "00b6e670",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "00cc2550",
+      "address": "00cc2553",
+      "native": "00b8eeb0",
+      "kind": "tail_jump"
+    }
+  ],
+  "boundaries": [
+    "Original FH3 is guarded in the copied-code fixture; source exception cleanup is separately checked.",
+    "Allocation uses the complete existing canonical node/group pools; no replacement slot allocator or string service.",
+    "No group companion or executable graph admission is fabricated; gameplay remains unproved."
+  ],
+  "validation": {
+    "strict_win32": true,
+    "existing_ctests": 2,
+    "paired_factory_sequences": 2,
+    "paired_constructed_owners": 6,
+    "source_failure_cases": 2,
+    "call_rows": 12,
+    "call_failures": 0,
+    "complete_new_factory_bodies": 2,
+    "complete_new_factory_bytes": 190,
+    "canonical_group_constructor_bytes": 106,
+    "canonical_node_constructor_bytes": 814,
+    "source_sha256": {
+      "include/bsp/native_resource_builtin_factories.hpp": "6b88296e6f4ea8fc6887881613bfcd3c1af784e6573a396d1ca438ef48c63ad7",
+      "src/native_resource_builtin_factories.cpp": "2a88b95441444f97ff9911e4f860c734e63faad218e85e24e65b56baa96834dc",
+      "include/bsp/gui_page_root.hpp": "73a8399381a53554da3c8a581aee37f656baa5a9d6fdeb6281aeef37f5a38e4f",
+      "src/gui_page_root.cpp": "2ddf108eaf9c6ae91b2b9c16b6a21f4f9f3210625bd507866b310922d35eddbb"
+    },
+    "output_sha256": {
+      "factory_0_original.bin": "c206fbaeb831b42e468f30b491257e378be0319c1e7784e04bc3f9011f85bf78",
+      "factory_0_source.bin": "c206fbaeb831b42e468f30b491257e378be0319c1e7784e04bc3f9011f85bf78",
+      "factory_0_source_failure.bin": "b35d9c69b0ebdc5feb9d14b6efb73e92d2610a08b8cee6ff91558aaf6c0a284b",
+      "factory_1_original.bin": "c4554491a223021de0883a342fff23cf23ae7052c4acfb8f4272df5382791848",
+      "factory_1_source.bin": "c4554491a223021de0883a342fff23cf23ae7052c4acfb8f4272df5382791848",
+      "factory_1_source_failure.bin": "35fbf2a8b5833fde5106c03ca173a310a6501785ebe086b27279a4275a6cd3e0"
+    },
+    "scope": "Two complete95-byte graph factories and raw-header interface to the complete106-byte group constructor; paired original factory/group/node bodies with canonical pools and raw strings. Source failure returns captured slot after base cleanup. Original FH3, null allocator return, canonical live companions, executable populated graph admission and gameplay remain unproved.",
+    "saved_annotations": 3
+  },
+  "fixture_corrections": [
+    "Initial reversed string header produced access violations; corrected to length+00/data+04 from native listing without production changes.",
+    "An empty name may have null data; the diagnostic now preserves that representation without dereferencing it."
+  ],
+  "functions": [
+    {
+      "address": "00b866c0",
+      "ghidra_name": "BSP_ResourceNodeFactory_CreatePlainNode",
+      "name": "create_native_plain_node_00b866c0",
+      "source": "src/native_resource_builtin_factories.cpp",
+      "bytes": 95,
+      "status": "complete_factories_and_raw_group_constructor_strict_win32_and_bounded_differential_tested",
+      "evidence": "Complete95-byte factory D63210 slot04. Incoming ECX ignored; stack actual8h name length0/data4; EAX actual node/RET4. B6ED70 selects actual0108FF58 and178h slot; full raw B6F5A0; null returns null. FH3 CC2518/DFB944, single map predecessor-1/actionCC2510 returns captured [EBP-10] slot through B6E670 after constructor failure. No substituted pool, owner retention or companion construction. Hypothesis, not a recovered symbol. Strict Win32/two CTests, two paired original factory sequences/six owners, two source allocation failures and12 call/tail rows pass. Original FH3/null-allocation execution, live canonical companions, executable graph admission and gameplay remain unproved. docs/NATIVE_RESOURCE_BUILTIN_FACTORIES_BB.md; reports/native_resource_builtin_factories_bb.json."
+    },
+    {
+      "address": "00b86780",
+      "ghidra_name": "BSP_ResourceNodeFactory_CreateGroup",
+      "name": "create_native_resource_group_00b86780",
+      "source": "src/native_resource_builtin_factories.cpp",
+      "bytes": 95,
+      "status": "complete_factories_and_raw_group_constructor_strict_win32_and_bounded_differential_tested",
+      "evidence": "Complete95-byte factory D63220 slot04. Incoming ECX ignored; stack actual8h name length0/data4; EAX actual group/RET4. B8F450 selects bound actual010902F4 and18Ch slot; full raw B8F5E0; null returns null. FH3 CC2558/DFB99C, single map predecessor-1/actionCC2550 returns captured [EBP-10] slot through B8EEB0 after constructor failure. No replacement pool/type registry or synthesized group companion. Hypothesis, not a recovered symbol. Strict Win32/two CTests, two paired original factory sequences/six owners, two source allocation failures and12 call/tail rows pass. Original FH3/null-allocation execution, live canonical companions, executable graph admission and gameplay remain unproved. docs/NATIVE_RESOURCE_BUILTIN_FACTORIES_BB.md; reports/native_resource_builtin_factories_bb.json."
+    },
+    {
+      "address": "00b8f5e0",
+      "ghidra_name": "BSP_Group_Construct",
+      "name": "BSP_Group_Construct",
+      "source": "src/gui_page_root.cpp",
+      "bytes": 106,
+      "status": "complete_factories_and_raw_group_constructor_strict_win32_and_bounded_differential_tested",
+      "evidence": "BB adds actual-name-header/current-raw-pool interface to the same complete106-byte constructor. Full canonical raw B6F5A0 then shared derived tail. Current oneD7A24C read after base; profileD634F8; actual178/17C/180 zero; flags138 OR2; scalar184 captured one bits; byte175=1;08..10 zero; current boundCE4970 to14. Preserve174,176..177 and pool index188. SSE transfers preserve signaling NaN bits; no new floating conversion. Existing semantic interface preserved. Hypothesis, not a recovered symbol. Strict Win32/two CTests, two paired original factory sequences/six owners, two source allocation failures and12 call/tail rows pass. Original FH3/null-allocation execution, live canonical companions, executable graph admission and gameplay remain unproved. docs/NATIVE_RESOURCE_BUILTIN_FACTORIES_BB.md; reports/native_resource_builtin_factories_bb.json."
+    }
+  ]
+}
