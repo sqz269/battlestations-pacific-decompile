@@ -601,5 +601,27 @@
   "parent_annotation": {
     "address": "00b79bc0",
     "evidence": "AW update: B79BC0 remains ANALYZED ONLY as a complete caller. Object writes at B79D44..B79DA9 and B7A0BA..B7A116 now have bounded source fragments; the allocation/type predicate and caller scratch-vector writes are not standalone constructors. AU registry, AV skin finalizer, and AW two animator slot20 finalizers/destructors are implemented with their stated provider/metadata limits. Temporary arrays, B630F0, camera sequencing and populated caller/admission remain required."
+  },
+  "proof": {
+    "manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\node_animator_aw\\manifest.json",
+      "bytes": 138433,
+      "sha256": "efd96eaee0542f92d2a9bffc5a35b8e0071b4703279c0aad7e3c3adeaae45b56"
+    },
+    "source_commit": "d3bb4d4fd6e465f951220a71726b322563df5ef8",
+    "build_checkout_head": "5de02dec4cd0b7e54d788c91ac5ad782dd253707",
+    "build_had_owned_source_changes": true,
+    "inputs": 295,
+    "artifacts": 96,
+    "fixture_production_objects": 19,
+    "complete_or_reused_bodies": 9,
+    "complete_helper_or_reuse_bytes": 662,
+    "source_fragments": 2,
+    "saved_annotations": 10,
+    "paired_constructor_fragments": 3,
+    "paired_lifetimes": 6,
+    "paired_maximum_variants": 16,
+    "source_exception_cases": 1,
+    "known_metadata_failures": 1
   }
 }
