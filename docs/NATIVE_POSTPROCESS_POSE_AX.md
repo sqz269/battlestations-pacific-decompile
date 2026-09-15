@@ -77,3 +77,7 @@ No repository test suite or worker was added. Remaining work includes the
 postprocessor's temporary arrays and camera ownership sequence, full B79BC0,
 full B891A0 graph creation/admission, original exception integration and
 gameplay validation. Prior Ghidra destructor-body attribution limits remain.
+
+## Retained evidence
+
+Source commit `227d233e57e33c63e876b96ed4663dc6dbe3cf0a` contains the verified implementation. The strict build used the same owned source changes on `ee5086e940d942ff806d41f57a968d3b81545dd2`. The immutable local manifest retains 290 inputs and 43 artifacts, including all 5 linked production objects, exact source/header/compiler/library inputs, both original bodies, comparison images and saved Ghidra annotations/exports. These establish the caller and explicit provider boundaries above, not complete original CRT behavior or gameplay.
