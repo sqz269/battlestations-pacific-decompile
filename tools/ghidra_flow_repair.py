@@ -13,12 +13,16 @@ Usage:
   python tools/ghidra_flow_repair.py <function> [<function> ...]            # report only
   python tools/ghidra_flow_repair.py <function> --apply [--record reports/x.json]
   python tools/ghidra_flow_repair.py <function> --tail-end <end_exclusive> [--apply]
+  python tools/ghidra_flow_repair.py <catch> --tail-end <end_exclusive> --tail-rethrow [--apply]
 
 The optional tail bound is explicit evidence from the native listing, not an
 inferred function boundary. It detects a final CALL_RETURN that truncated the
 stored body and otherwise has no following instruction against which to find a gap.
 Decoding the tail does not necessarily extend Ghidra's stored function body;
 the report records that distinction and warns when its listing remains truncated.
+By default an explicit tail must end in RET. --tail-rethrow instead requires the
+exact native PUSH 0; PUSH 0; CALL 00BF6885 C++ rethrow terminator. It does not
+accept an arbitrary non-returning call or change any function's no-return flag.
 """
 import hashlib
 import json
@@ -75,9 +79,23 @@ def find_gaps(rows, text_lo, code, tail_end=None):
     return gaps
 
 
+def tail_terminator(decoded, end, rethrow=False):
+    """Require a fully decoded, explicitly selected native exit sequence."""
+    if not decoded or decoded[-1][0] + decoded[-1][1] != end:
+        raise ValueError('explicit tail must end exactly after a decoded instruction')
+    if not rethrow and decoded[-1][2] == 'ret':
+        return 'ret'
+    suffix = [(row[2], row[3]) for row in decoded[-3:]]
+    if rethrow and suffix == [('push', '0'), ('push', '0'), ('call', '0xbf6885')]:
+        return 'cxx_rethrow_00bf6885'
+    expected = 'PUSH 0; PUSH 0; CALL 00BF6885' if rethrow else 'RET'
+    raise ValueError(f'explicit tail must follow a fully decoded {expected}')
+
+
 def main(argv):
     argv = list(argv)
     apply = '--apply' in argv
+    tail_rethrow = '--tail-rethrow' in argv
     record_path = ROOT / 'reports/flow_repairs.json'
     if '--record' in argv:
         i = argv.index('--record')
@@ -88,6 +106,8 @@ def main(argv):
         i = argv.index('--tail-end')
         tail_end = int(argv[i + 1], 16)
         del argv[i:i + 2]
+    if tail_rethrow and tail_end is None:
+        sys.exit('--tail-rethrow requires --tail-end')
     functions = [a.lower().replace('0x', '').zfill(8) for a in argv if not a.startswith('--')]
     if not functions:
         sys.exit(__doc__)
@@ -145,8 +165,10 @@ def main(argv):
                     raise RuntimeError(f'{function}: explicit body bytes differ from disk')
                 from capstone import CS_ARCH_X86, CS_MODE_32, Cs
                 decoded_body = list(Cs(CS_ARCH_X86, CS_MODE_32).disasm_lite(native_body, start))
-                if not decoded_body or decoded_body[-1][0] + decoded_body[-1][1] != tail_end or decoded_body[-1][2] != 'ret':
-                    raise RuntimeError(f'{function}: explicit tail must follow a fully decoded RET')
+                try:
+                    entry['explicit_tail_terminator'] = tail_terminator(decoded_body, tail_end, tail_rethrow)
+                except ValueError as error:
+                    raise RuntimeError(f'{function}: {error}') from error
                 entry['explicit_body_sha256'] = hashlib.sha256(native_body).hexdigest()
             for g in todo:
                 lo, hi = int(g['gap_start'], 16), int(g['gap_end_exclusive'], 16)

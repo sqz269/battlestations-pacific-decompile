@@ -1,0 +1,166 @@
+{
+  "repairs": [
+    {
+      "function": "004b0330",
+      "owner": "agent/orch4-20260915-soldier-lifetime-g7",
+      "when": "2026-09-15T22:44:30Z",
+      "decompile_lines_before": 162,
+      "gaps": [
+        {
+          "site": "004b05bd",
+          "mnemonic": "CALL",
+          "operands": "0x00bf65ac",
+          "gap_start": "004b05c2",
+          "gap_end_exclusive": "004b05fc",
+          "bytes": 58,
+          "after_call": true,
+          "sha256": "89d22cd7d8f77f3803c39105473942b0e1241b0a7c9f2e4de42d164d3b9fe45c"
+        }
+      ],
+      "events": [
+        {
+          "gap": {
+            "site": "004b05bd",
+            "mnemonic": "CALL",
+            "operands": "0x00bf65ac",
+            "gap_start": "004b05c2",
+            "gap_end_exclusive": "004b05fc",
+            "bytes": 58,
+            "after_call": true,
+            "sha256": "89d22cd7d8f77f3803c39105473942b0e1241b0a7c9f2e4de42d164d3b9fe45c"
+          },
+          "clear": "Success: Cleared flow override at 004b05bd (was: CALL_RETURN, now: NONE)",
+          "disassemble": "Successfully disassembled 58 byte(s)"
+        },
+        {
+          "explicit_tail_call": "004b05bd",
+          "clear": {
+            "status": "success",
+            "message": "Success: Cleared flow override at 004b05bd (was: NONE, now: NONE)"
+          }
+        }
+      ],
+      "explicit_tail_end_exclusive": "004b05fc",
+      "explicit_body_sha256": "3ac8a7a2a124b2d1f55407b4cae33a33b026b9d04a3b47ea0ee0981f54efa253",
+      "body_before": "Function: STL_xlen_throw_004b0330 at 004b0330\nSignature: undefined STL_xlen_throw_004b0330(void)\nEntry: 004b0330\nBody: 004b0330 - 004b05c1",
+      "decompile_lines_after": 168,
+      "gaps_remaining": 1,
+      "body_after": "Function: STL_xlen_throw_004b0330 at 004b0330\nSignature: undefined STL_xlen_throw_004b0330(void)\nEntry: 004b0330\nBody: 004b0330 - 004b05c1",
+      "stored_body_tail_complete": false,
+      "body_extension_limit": "Explicit tail decoding/CRT overrides do not extend stored function-body metadata; the body still requires a separate supported repair."
+    },
+    {
+      "function": "004b0600",
+      "owner": "agent/orch4-20260915-soldier-lifetime-g7",
+      "when": "2026-09-15T22:44:36Z",
+      "decompile_lines_before": 23,
+      "gaps": [
+        {
+          "site": "004b063c",
+          "mnemonic": "CALL",
+          "operands": "0x00bf65ac",
+          "gap_start": "004b0641",
+          "gap_end_exclusive": "004b064c",
+          "bytes": 11,
+          "after_call": true,
+          "sha256": "e42a50ba1e90951f0dea82c7b8abc1b87ecf966650c76d2a067aafee5b574839"
+        }
+      ],
+      "events": [
+        {
+          "gap": {
+            "site": "004b063c",
+            "mnemonic": "CALL",
+            "operands": "0x00bf65ac",
+            "gap_start": "004b0641",
+            "gap_end_exclusive": "004b064c",
+            "bytes": 11,
+            "after_call": true,
+            "sha256": "e42a50ba1e90951f0dea82c7b8abc1b87ecf966650c76d2a067aafee5b574839"
+          },
+          "clear": "Success: Cleared flow override at 004b063c (was: CALL_RETURN, now: NONE)",
+          "disassemble": "Successfully disassembled 11 byte(s)"
+        }
+      ],
+      "decompile_lines_after": 28,
+      "gaps_remaining": 0
+    },
+    {
+      "function": "004b0312",
+      "owner": "agent/orch4-20260915",
+      "when": "2026-09-15T22:54:55Z",
+      "decompile_lines_before": 10,
+      "gaps": [
+        {
+          "site": "004b0316",
+          "mnemonic": "CALL",
+          "operands": "0x00bf65ac",
+          "gap_start": "004b031b",
+          "gap_end_exclusive": "004b0327",
+          "bytes": 12,
+          "after_call": true,
+          "sha256": "9c75dafb2a9b6057412a3043d7414c6946850c9999b4d2d557587ef6c8d996a4"
+        }
+      ],
+      "events": [
+        {
+          "gap": {
+            "site": "004b0316",
+            "mnemonic": "CALL",
+            "operands": "0x00bf65ac",
+            "gap_start": "004b031b",
+            "gap_end_exclusive": "004b0327",
+            "bytes": 12,
+            "after_call": true,
+            "sha256": "9c75dafb2a9b6057412a3043d7414c6946850c9999b4d2d557587ef6c8d996a4"
+          },
+          "clear": "Success: Cleared flow override at 004b0316 (was: CALL_RETURN, now: NONE)",
+          "disassemble": "Successfully disassembled 12 byte(s)"
+        },
+        {
+          "explicit_tail_call": "004b0316",
+          "clear": {
+            "status": "success",
+            "message": "Success: Cleared flow override at 004b0316 (was: NONE, now: NONE)"
+          }
+        }
+      ],
+      "explicit_tail_end_exclusive": "004b0327",
+      "explicit_tail_terminator": "cxx_rethrow_00bf6885",
+      "explicit_body_sha256": "3655097cb2c3c5d17bafd2f70e2aec3f1371c4d4e2ca4bc8304320cd1f27b303",
+      "body_before": "Function: Catch_All@004b0312 at 004b0312\nSignature: undefined Catch_All@004b0312(void)\nEntry: 004b0312\nBody: 004b0312 - 004b031a",
+      "decompile_lines_after": 11,
+      "gaps_remaining": 1,
+      "body_after": "Function: Catch_All@004b0312 at 004b0312\nSignature: undefined Catch_All@004b0312(void)\nEntry: 004b0312\nBody: 004b0312 - 004b031a",
+      "stored_body_tail_complete": false,
+      "body_extension_limit": "Explicit tail decoding/CRT overrides do not extend stored function-body metadata; the body still requires a separate supported repair."
+    }
+  ],
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "whole_body_preflight": [
+    {
+      "address": "004b0330",
+      "end_exclusive": "004b05fc",
+      "bytes": 716,
+      "sha256": "3ac8a7a2a124b2d1f55407b4cae33a33b026b9d04a3b47ea0ee0981f54efa253",
+      "live_disk_match": true
+    },
+    {
+      "address": "004b0600",
+      "end_exclusive": "004b0652",
+      "bytes": 82,
+      "sha256": "2395dce5a67a7eec65662e01941c0db215ff5c91f0cad0b5c936b7ecc465aac5",
+      "live_disk_match": true
+    },
+    {
+      "address": "004b0312",
+      "end_exclusive": "004b0327",
+      "bytes": 21,
+      "sha256": "3655097cb2c3c5d17bafd2f70e2aec3f1371c4d4e2ca4bc8304320cd1f27b303",
+      "live_disk_match": true
+    }
+  ],
+  "documentation": "docs/NATIVE_SOLDIER_REGISTRY_FLOW_ORCH4_G7.md",
+  "final_readback": "Zero listing gaps; intended full spans restored; project saved and affected exports refreshed."
+}
