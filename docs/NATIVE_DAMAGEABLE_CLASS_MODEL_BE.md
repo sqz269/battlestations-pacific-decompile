@@ -50,3 +50,7 @@ Two source-only failures verify that a real loader metric exception returns the 
 The initial enemy fixture lacked the extension-tree and group-list sentinels required by full VFS resolution. Supplying those actual empty structures fixed the fixture without production changes. `F878E0` is a loader-zeroed byte beyond its PE section's raw data; it is compared as initialized-image data, not claimed as an on-disk byte.
 
 Evidence: `reports/native_damageable_class_model_be.json` and immutable inputs under ignored `local/damageable_class_model_be/`. Actual host class admission, the full class model-data binder, vehicle entry activation and gameplay remain open.
+
+## Retained evidence
+
+The immutable manifest `local/damageable_class_model_be/manifest.json` retains 525 exact inputs and 101 artifacts, including 64 linked production objects, original caller/reference bytes, compared class images and failure results, source/header/compiler/library inputs and saved Ghidra comments/exports. Source commit `81a64b58188a7c3d490bd3a504599b23bcec94af` contains the tested source bytes. The build began at `f0e11bd07a2caeb19518781342ec0df56c827de5` with the owned source edits present; the retained source hashes and dependency records identify those inputs. No production changes followed verification.
