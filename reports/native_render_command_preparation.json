@@ -252,7 +252,7 @@
     "pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
     "guard": "Every live query uses bsp.client -> Client.verify before endpoint access; project/program/language/imagebase checked."
   },
-  "evidence_scope": "Native bytes/listings/target guard/PE equality reused from sealed EB. This implementation does not query or mutate Ghidra.",
+  "evidence_scope": "Complete native bytes/listings/PE equality reused from sealed EB; fresh canonical numeric-call verification and seed verification use guarded read-only Ghidra access. No analysis mutation.",
   "source_abi": {
     "metadata": "Naked Win32 fastcall ECX actual command, ignored EDX, public stack source pointer, RET4, interleaved DWORD reads/stores and incidental EAX/EDX. Generated identity pending.",
     "diagnostic": "New C++ ABI adds NativeStringRawPoolContext. Actual header at command+14; self-header identity skips all reads and calls; captures source resize count preserve1; reloads source length gate; captures destination count/source data/destination data in order using explicit inline x86 MOV reads without typed alias/alignment assumptions. Memmove count is destination length without terminator.",
@@ -260,7 +260,7 @@
     "overlap": "Interleaved metadata permits actual alias propagation. Raw resize and final memmove support valid header/buffer overlap without upfront snapshots. BF7680 original name remains _memcpy but body handles backward overlap."
   },
   "validation": {
-    "primary_source_review": "Metadata body and diagnostic schedule accepted; raw-read helper adjusted to explicit x86 MOV per primary review; final delta review pending.",
+    "primary_source_review": "Accepted at64df24fe, source866357004ff1cee4058b8be6ccf2a36583b72c66d35d7d52cdf7819355c5205b/headerf9d8315d474faf725493ab57827bccac911befc4b568267b1dadded2fa6a4bc0; source remains unchanged.",
     "source_commit": null,
     "build": "pending",
     "verified_seeds": "pending after primary acceptance",
@@ -268,7 +268,18 @@
     "generated_object": "pending",
     "new_tests": 0,
     "native_runtime_fixture": "not run",
-    "game_validation": "not run"
+    "game_validation": "not run",
+    "native_call_verification": {
+      "command": [
+        "python",
+        "tools/verify_report_calls.py",
+        "reports/native_render_command_preparation.json"
+      ],
+      "checked": 4,
+      "failed": 0,
+      "log": "local/ec-call-verification.log",
+      "sha256": "ac979eb5949baaaf6b7526efe1405dc1be2192dc04cae7c5c4ddaad0f3ce3629"
+    }
   },
   "limits": [
     "No new owner/framework/pool/registry/typed convenience/test/rollback/terminator/cleanup.",
@@ -276,5 +287,31 @@
     "Original private stack/FH3/SEH/fault/concurrent-memory identity unproved. Valid actual command/header/buffer storage required; wrapping nonzero buffer ranges unsupported.",
     "Caller EH and A8EA20/A8F3B0/B1EB80 job/queue paths are evidence only, no implementation credit.",
     "No build/test/native fixture/runtime/render/gameplay proof at source commit."
+  ],
+  "native_calls": [
+    {
+      "address": "00b1d924",
+      "native": "0041dd40",
+      "function": "00b1d910",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00b1d939",
+      "native": "00bf7680",
+      "function": "00b1d910",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00a8ebd5",
+      "native": "00b1bf50",
+      "function": "00a8ea20",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00a8ec1e",
+      "native": "00b1d910",
+      "function": "00a8ea20",
+      "kind": "direct_call"
+    }
   ]
 }
