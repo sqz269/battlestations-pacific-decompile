@@ -354,4 +354,85 @@ struct SpeedHoldResult {
 };
 SpeedHoldResult speed_hold_0099d8c1(int speed_mode, float speed_target);
 
+
+// ---------------------------------------------------------------------------
+// The roll arm (packets cc7-pitchroll and cc7-hdgdiff).
+// docs/PILOT_PLANNER_PITCH_ROLL.md and docs/PILOT_HEADING_DIFF_SCALE.md.
+
+// 0099D0A0, `float __thiscall(plan, float w)`, RET 4. The four tuning keys it
+// reads are all `Pilot/General/HdgDiffCalc*`, and they name it: it answers **how
+// much further the plane would turn while rolling back to level from bank `w`**.
+// That is the scale the bank target divides the heading error by, so the whole
+// magnitude of a coordinated turn rests on it.
+//
+// Read as physics: `T` is a roll-out time - bank over roll rate, plus a
+// 1/RollAccel allowance for getting the roll started - and `Q * sin(W)` is the
+// turn rate the airframe holds at that bank. Their product is an angle.
+struct PilotHeadingDiffInputs {
+    float bank_request = 0.0f;   // the argument; the caller passes min(|bank|*1.5, maxBank)
+    float pitch_angle = 0.0f;    // unit+C64h
+    float pitch_command = 0.0f;  // plan+29Ch when the pitch slot is active, else plan+298h
+    bool unit_is_null = false;   // plan+2F0h == 0 -> the 0.5f early return
+    // unit->vtable[5Ch](10h) || (16h). Caps the rate multiplier at 1.0.
+    bool caps_rate_at_one = false;
+    float roll_spd = 0.0f;        // class+1A8h
+    float pitch_spd = 0.0f;       // class+1ACh
+    float yaw_spd = 0.0f;         // class+1B0h
+    float slide_ratio = 0.0f;     // class+1B8h
+    float roll_accel = 0.0f;      // class+1BCh
+    float turn_roll_spd = 0.0f;   // class+1C8h
+    float turn_roll = 0.0f;       // class+25Ch
+    float hdg_diff_calc_limit_1 = 0.0f;    // tuning+4Ch, singleton +584h
+    float hdg_diff_calc_limit_2 = 0.0f;    // tuning+50h, +588h
+    float hdg_diff_calc_min_pitch = 0.0f;  // tuning+54h, +58Ch
+    float hdg_diff_calc_min_roll = 0.0f;   // tuning+58h, +590h
+};
+
+float pilot_heading_diff_0099d0a0(const PilotHeadingDiffInputs& in);
+
+// 0099DE93-0099E25C, the bank target `plan+2C4h`, and 0099E2BA-0099E39D, the
+// roll command that servos onto it.
+struct PilotBotRollInputs {
+    float heading_error = 0.0f;  // the yaw arm's base numerator, the same [ESP+6Ch]
+    float bank = 0.0f;           // unit+C68h
+    float pitch_error = 0.0f;    // wrap(measured pitch - plan+2BCh), the roll limit's schedule
+    float dt_scale = 1.0f;       // 1 / max(unit+340h * 0.4, 1.0)
+    float turn_scale_2e8 = 1.0f; // plan+2E8h, 1.0f out of the plan reset
+    float bank_limit_2c8 = 20.0f;  // plan+2C8h, 20.0f out of the plan reset
+    // 0047B880(unit) picks TurnRollLimitSmall over Large. The predicate is NOT
+    // identified, so the caller says which cap it wants and this header does not
+    // pretend to know: `false` takes Large, and since the cap enters as
+    // min(maxBank, cap) the larger value is the weaker limit.
+    bool small_turn_roll_limit = false;
+    PilotHeadingDiffInputs scale;   // the 0099D0A0 call at 0099E0C1
+    // Tuning.
+    float turn_roll_limit_small = 0.0f;   // tuning+64h, singleton +59Ch
+    float turn_roll_limit_large = 0.0f;   // tuning+68h, +5A0h
+    float turn_roll_pitch_limit_pitch_1 = 0.0f;  // tuning+6Ch, +5A4h
+    float turn_roll_pitch_limit_pitch_2 = 0.0f;  // tuning+70h, +5A8h
+    float turn_roll_pitch_limit_roll_1 = 0.0f;   // tuning+74h, +5ACh
+    float turn_roll_pitch_limit_roll_2 = 0.0f;   // tuning+78h, +5B0h
+    float pitch_turn_hdg_range_1 = 0.0f;  // tuning+8Ch, +5C4h
+    float pitch_turn_hdg_range_2 = 0.0f;  // tuning+90h, +5C8h
+    float soft_roll_ctrl = 0.0f;   // tuning+40h, +578h
+    float soft_roll_mul = 0.0f;    // tuning+44h, +57Ch
+    // tuning+48h, singleton +580h. The singleton records it as derived by
+    // 007E6FD4 as (1 - SoftRollMul) * SoftRollCtrl - which is exactly the value
+    // that makes the soft zone join the outside branch continuously. The two
+    // were recovered in different packets and they agree, so the join is a
+    // property of the data rather than a coincidence.
+    float soft_roll_offset = 0.0f;
+    float roll_spd = 0.0f;        // class+1A8h
+    float roll_accel = 0.0f;      // class+1BCh
+    float waggle_limit = 0.0f;    // tuning+0h, singleton +538h
+};
+
+struct PilotBotRollResult {
+    float bank_target = 0.0f;   // plan+2C4h
+    float desired = 0.0f;       // the roll slot's desired, clamped to [-1, +1]
+    float hdg_ramp = 0.0f;      // the slot the PITCH arm's floor also reads
+};
+
+PilotBotRollResult pilot_plan_roll_0099e2ba(const PilotBotRollInputs& in);
+
 }  // namespace bsp
