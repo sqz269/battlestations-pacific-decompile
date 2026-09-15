@@ -6,6 +6,9 @@
 #include "bsp/native_string_pool_owner.hpp"
 #include "bsp/native_string_pool_storage.hpp"
 #include "bsp/native_string_compare.hpp"
+#include "bsp/native_camera_group_resource.hpp"
+#include "bsp/singleton_lifetime.hpp"
+#include <atomic>
 #include <cstring>
 #include <stdexcept>
 
@@ -305,5 +308,128 @@ void* construct_native_mesh_from_node_00b94710(void* pair, void* parent,
     }
     a.phase = LoadPhase::complete;
     return ptr(word(pair));
+}
+namespace {
+using ResourcePhase = NativeMeshResourceAcquired::Phase;
+void unwind_mesh_resource(NativeMeshResourceAcquired& a, int state,
+    NativeRenderActualOwners& owners) noexcept {
+    if (state == 1 && a.item) {
+        singleton_lifetime_free(a.item); a.item = nullptr;
+    }
+    if (state >= 0) {
+        // Native state0 is armed before B94710 writes the stack pair. Host
+        // metadata failures may also leave a completed unregistered creator.
+        // Neither case licenses dereferencing an uninitialized/stale identity
+        // or retrying canonical admission as though it were native behavior.
+        if (!a.loading.mesh.published ||
+            (word(a.pair) && !a.loading.mesh.registered)) {
+            a.cleanup_deferred = true;
+            return;
+        }
+        release_native_mesh_handle_00b93ba0(a.pair, owners);
+        a.mesh_creator_consumed = true;
+    }
+}
+void* parse_mesh_resource(void* handle, NativeMeshLoadingContext& c,
+    NativeMeshResourceAcquired& a, U entry, U profile) {
+    if (a.phase != ResourcePhase::empty || a.loading.mesh.started || a.item)
+        throw std::logic_error("Native mesh resource parsing requires one fresh frame");
+    require_loading_domain(c);
+    auto& owners = c.subsets.geometry.actual_owners();
+    const U extra = profile == 0x00d63738 ? 0u : 6u;
+    int state = 0;
+    try {
+        a.phase = ResourcePhase::mesh; a.native_site = entry + 0x2b;
+        (void)construct_native_mesh_from_node_00b94710(a.pair, handle, c, a.loading);
+        a.phase = ResourcePhase::allocation; a.native_site = entry + 0x32;
+        a.item = singleton_lifetime_allocate({SingletonAllocationKind::object, 0x10, 0x10});
+        a.captured_mesh = ptr(word(a.pair));
+        state = 1;
+        if (a.item) {
+            a.phase = ResourcePhase::construction; a.native_site = entry + 0x4f;
+            construct_native_resource_item_base_00b868b0(a.item);
+            put(a.item, 0, 0x00d63738);
+            put(a.item, 8, bits(a.captured_mesh)); put(a.item, 0xc, word(a.pair, 4));
+            a.native_site = entry + 0x68;
+            static_cast<std::atomic<std::int32_t>*>(at(a.captured_mesh, 4))->fetch_add(
+                1, std::memory_order_seq_cst);
+            a.item_retained_mesh = true;
+            if (extra) put(a.item, 0, profile);
+        }
+        state = -1;
+    } catch (...) { unwind_mesh_resource(a, state, owners); throw; }
+    void* const result = a.item; // Native ESI survives terminal callbacks.
+    a.phase = ResourcePhase::mesh_release; a.native_site = entry + 0x82 + extra;
+    // Native disarmed normal release uses captured EDI and does not clear the
+    // local pair. A throwing terminal is not retried by an enclosing cleanup.
+    a.mesh_creator_consumed = true;
+    if (a.captured_mesh) release_native_render_actual_owner(owners, a.captured_mesh);
+    a.phase = ResourcePhase::complete;
+    return result;
+}
+void* delete_mesh_resource(void* item, U flags, NativeRenderActualOwners& owners) {
+    destroy_native_mesh_item_00b93910(item, owners);
+    if ((flags & 1u) != 0) singleton_lifetime_free(item);
+    return item;
+}
+}
+void* parse_native_mesh_item_00b947a0(void* h, NativeMeshLoadingContext& c, NativeMeshResourceAcquired& a) {
+    return parse_mesh_resource(h, c, a, 0x00b947a0, 0x00d63738);
+}
+void* parse_native_mesh_item_00b94850(void* h, NativeMeshLoadingContext& c, NativeMeshResourceAcquired& a) {
+    return parse_mesh_resource(h, c, a, 0x00b94850, 0x00d6375c);
+}
+void* parse_native_mesh_item_00b94900(void* h, NativeMeshLoadingContext& c, NativeMeshResourceAcquired& a) {
+    return parse_mesh_resource(h, c, a, 0x00b94900, 0x00d63780);
+}
+void release_native_mesh_handle_00b93ba0(void* handle, NativeRenderActualOwners& owners) {
+    if (void* mesh = ptr(word(handle))) {
+        release_native_render_actual_owner(owners, mesh);
+        put(handle, 0, 0);
+    }
+}
+void destroy_native_mesh_item_00b93910(void* item, NativeRenderActualOwners& owners) {
+    put(item, 0, 0x00d63738);
+    try { release_native_render_actual_owner(owners, ptr(word(item, 8))); }
+    catch (...) { destroy_native_resource_item_base_00b86890(item); throw; }
+    destroy_native_resource_item_base_00b86890(item);
+}
+void* delete_native_mesh_item_00b93b40(void* p, U f, NativeRenderActualOwners& o) { return delete_mesh_resource(p, f, o); }
+void* delete_native_mesh_item_00b93b60(void* p, U f, NativeRenderActualOwners& o) { return delete_mesh_resource(p, f, o); }
+void* delete_native_mesh_item_00b93b80(void* p, U f, NativeRenderActualOwners& o) { return delete_mesh_resource(p, f, o); }
+NativeMeshResourceCalls::NativeMeshResourceCalls(NativeResourceDispatchCalls& other, NativeMeshLoadingContext& loading)
+    : other_(other), loading_(loading) {}
+void NativeMeshResourceCalls::renderer_hook(std::uintptr_t e, void* r) { other_.renderer_hook(e, r); }
+void* NativeMeshResourceCalls::parse_item(std::uintptr_t e, void* parser, void* handle) {
+    if (e != 0x00b947a0 && e != 0x00b94850 && e != 0x00b94900)
+        return other_.parse_item(e, parser, handle);
+    auto a = std::make_unique<NativeMeshResourceAcquired>();
+    acquisitions_.push_back(std::move(a));
+    auto& frame = *acquisitions_.back();
+    if (e == 0x00b947a0) return parse_native_mesh_item_00b947a0(handle, loading_, frame);
+    if (e == 0x00b94850) return parse_native_mesh_item_00b94850(handle, loading_, frame);
+    return parse_native_mesh_item_00b94900(handle, loading_, frame);
+}
+void NativeMeshResourceCalls::append_item(std::uintptr_t e, void* r, void* i) { other_.append_item(e, r, i); }
+const std::vector<std::unique_ptr<NativeMeshResourceAcquired>>& NativeMeshResourceCalls::acquisitions() const noexcept {
+    return acquisitions_;
+}
+NativeMeshResourceReferences::NativeMeshResourceReferences(NativeAdoptedSubstreamDispatch& other,
+    NativeRenderActualOwners& owners) : other_(other), owners_(owners) {}
+std::uint8_t NativeMeshResourceReferences::source_is_open(std::uintptr_t e, void* p) { return other_.source_is_open(e, p); }
+U NativeMeshResourceReferences::source_seek(std::uintptr_t e, void* p, U lo, U hi, U origin) { return other_.source_seek(e, p, lo, hi, origin); }
+void NativeMeshResourceReferences::source_read(std::uintptr_t e, void* p, void* d, U n, U* a) { other_.source_read(e, p, d, n, a); }
+void NativeMeshResourceReferences::source_write(std::uintptr_t e, void* p, const void* d, U n, U* a) { other_.source_write(e, p, d, n, a); }
+void NativeMeshResourceReferences::source_zero_reference(std::uintptr_t e, void* p, std::uintptr_t table) {
+    if (e == 0x00bd30e0 && (table == 0x00d63738 || table == 0x00d6375c || table == 0x00d63780)) {
+        if (!p) return;
+        const U target = word(ptr(word(p)), 4);
+        if (target == 0x00b93b40) delete_native_mesh_item_00b93b40(p, 1, owners_);
+        else if (target == 0x00b93b60) delete_native_mesh_item_00b93b60(p, 1, owners_);
+        else if (target == 0x00b93b80) delete_native_mesh_item_00b93b80(p, 1, owners_);
+        else throw std::runtime_error("Reached mesh resource scalar deletion target is not reconstructed");
+        return;
+    }
+    other_.source_zero_reference(e, p, table);
 }
 } // namespace bsp

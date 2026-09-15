@@ -1,0 +1,2418 @@
+{
+  "packet": "orch4_native_mesh_resource_co",
+  "base_revision": "7b3905a904d173a4f7b6273bbf822d9587476c69",
+  "documentation": "docs/NATIVE_MESH_RESOURCE_CO.md",
+  "project": {
+    "project_name": "bsp",
+    "current_folder": "/",
+    "folders": [],
+    "files": [
+      {
+        "name": "battlestationspacific.exe",
+        "path": "/battlestationspacific.exe",
+        "content_type": "Program",
+        "version": 2757,
+        "is_read_only": false,
+        "is_versioned": false
+      }
+    ]
+  },
+  "program": {
+    "name": "battlestationspacific.exe",
+    "path": "/battlestationspacific.exe",
+    "executable_path": "/I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "executable_format": "Portable Executable (PE)",
+    "language": "x86:LE:32:default",
+    "compiler": "windows",
+    "address_size": 32,
+    "image_base": "00400000",
+    "min_address": "00400000",
+    "max_address": "ffdfffff",
+    "memory_size": 14876380,
+    "function_count": 64100,
+    "symbol_count": 144453,
+    "data_type_count": 795,
+    "creation_date": "Mon May 04 16:56:25 PDT 2026",
+    "memory_block_count": 6,
+    "address_spaces": [
+      {
+        "name": "ram",
+        "start": "00000000",
+        "end": "ffffffff",
+        "size": 4294967296,
+        "addressable_unit_size": 1,
+        "size_bytes": 4294967296,
+        "address_size_bits": 32,
+        "is_default": true
+      }
+    ],
+    "has_multiple_address_spaces": false
+  },
+  "routines": [
+    {
+      "address": "00b947a0",
+      "bytes": 169,
+      "function": "parse_native_mesh_item_00b947a0",
+      "source": "src/native_mesh_subset_loading.cpp",
+      "result": "void*",
+      "convention": "__fastcall",
+      "parameters": "void* unused_parser, void* unused_edx, void* parent_handle",
+      "original_abi": "ECX parser unused; one stacked parent node handle; EAX item or null; RET4",
+      "status": "complete_native_mesh_resource_source_tracked_build_and_actual_hot_cache_fixture_checked",
+      "code": {
+        "address": "00b947a0",
+        "bytes": 169,
+        "sha256": "85c378ad242a531f08f3190f9e1b1c73fc23684d2e22cc88b98c288f2a7736bd",
+        "instructions": [
+          [
+            12142496,
+            2,
+            "push",
+            "-1"
+          ],
+          [
+            12142498,
+            5,
+            "push",
+            "0xcc2f03"
+          ],
+          [
+            12142503,
+            6,
+            "mov",
+            "eax, dword ptr fs:[0]"
+          ],
+          [
+            12142509,
+            1,
+            "push",
+            "eax"
+          ],
+          [
+            12142510,
+            7,
+            "mov",
+            "dword ptr fs:[0], esp"
+          ],
+          [
+            12142517,
+            3,
+            "sub",
+            "esp, 8"
+          ],
+          [
+            12142520,
+            1,
+            "push",
+            "esi"
+          ],
+          [
+            12142521,
+            1,
+            "push",
+            "edi"
+          ],
+          [
+            12142522,
+            4,
+            "mov",
+            "eax, dword ptr [esp + 0x20]"
+          ],
+          [
+            12142526,
+            1,
+            "push",
+            "eax"
+          ],
+          [
+            12142527,
+            4,
+            "lea",
+            "ecx, [esp + 0xc]"
+          ],
+          [
+            12142531,
+            8,
+            "mov",
+            "dword ptr [esp + 0x1c], 0"
+          ],
+          [
+            12142539,
+            5,
+            "call",
+            "0xb94710"
+          ],
+          [
+            12142544,
+            2,
+            "push",
+            "0x10"
+          ],
+          [
+            12142546,
+            5,
+            "call",
+            "0xbf681b"
+          ],
+          [
+            12142551,
+            2,
+            "mov",
+            "esi, eax"
+          ],
+          [
+            12142553,
+            3,
+            "add",
+            "esp, 4"
+          ],
+          [
+            12142556,
+            4,
+            "mov",
+            "dword ptr [esp + 0x20], esi"
+          ],
+          [
+            12142560,
+            2,
+            "test",
+            "esi, esi"
+          ],
+          [
+            12142562,
+            4,
+            "mov",
+            "edi, dword ptr [esp + 8]"
+          ],
+          [
+            12142566,
+            5,
+            "mov",
+            "byte ptr [esp + 0x18], 1"
+          ],
+          [
+            12142571,
+            2,
+            "je",
+            "0xb94810"
+          ],
+          [
+            12142573,
+            2,
+            "mov",
+            "ecx, esi"
+          ],
+          [
+            12142575,
+            5,
+            "call",
+            "0xb868b0"
+          ],
+          [
+            12142580,
+            4,
+            "mov",
+            "ecx, dword ptr [esp + 0xc]"
+          ],
+          [
+            12142584,
+            3,
+            "lea",
+            "edx, [edi + 4]"
+          ],
+          [
+            12142587,
+            1,
+            "push",
+            "edx"
+          ],
+          [
+            12142588,
+            6,
+            "mov",
+            "dword ptr [esi], 0xd63738"
+          ],
+          [
+            12142594,
+            3,
+            "mov",
+            "dword ptr [esi + 8], edi"
+          ],
+          [
+            12142597,
+            3,
+            "mov",
+            "dword ptr [esi + 0xc], ecx"
+          ],
+          [
+            12142600,
+            6,
+            "call",
+            "dword ptr [0xce221c]"
+          ],
+          [
+            12142606,
+            2,
+            "jmp",
+            "0xb94812"
+          ],
+          [
+            12142608,
+            2,
+            "xor",
+            "esi, esi"
+          ],
+          [
+            12142610,
+            2,
+            "test",
+            "edi, edi"
+          ],
+          [
+            12142612,
+            8,
+            "mov",
+            "dword ptr [esp + 0x18], 0xffffffff"
+          ],
+          [
+            12142620,
+            2,
+            "je",
+            "0xb94834"
+          ],
+          [
+            12142622,
+            3,
+            "lea",
+            "eax, [edi + 4]"
+          ],
+          [
+            12142625,
+            1,
+            "push",
+            "eax"
+          ],
+          [
+            12142626,
+            6,
+            "call",
+            "dword ptr [0xce2220]"
+          ],
+          [
+            12142632,
+            2,
+            "test",
+            "eax, eax"
+          ],
+          [
+            12142634,
+            2,
+            "jne",
+            "0xb94834"
+          ],
+          [
+            12142636,
+            2,
+            "mov",
+            "edx, dword ptr [edi]"
+          ],
+          [
+            12142638,
+            2,
+            "mov",
+            "eax, dword ptr [edx]"
+          ],
+          [
+            12142640,
+            2,
+            "mov",
+            "ecx, edi"
+          ],
+          [
+            12142642,
+            2,
+            "call",
+            "eax"
+          ],
+          [
+            12142644,
+            4,
+            "mov",
+            "ecx, dword ptr [esp + 0x10]"
+          ],
+          [
+            12142648,
+            1,
+            "pop",
+            "edi"
+          ],
+          [
+            12142649,
+            2,
+            "mov",
+            "eax, esi"
+          ],
+          [
+            12142651,
+            1,
+            "pop",
+            "esi"
+          ],
+          [
+            12142652,
+            7,
+            "mov",
+            "dword ptr fs:[0], ecx"
+          ],
+          [
+            12142659,
+            3,
+            "add",
+            "esp, 0x14"
+          ],
+          [
+            12142662,
+            3,
+            "ret",
+            "4"
+          ]
+        ]
+      }
+    },
+    {
+      "address": "00b94850",
+      "bytes": 175,
+      "function": "parse_native_mesh_item_00b94850",
+      "source": "src/native_mesh_subset_loading.cpp",
+      "result": "void*",
+      "convention": "__fastcall",
+      "parameters": "void* unused_parser, void* unused_edx, void* parent_handle",
+      "original_abi": "ECX parser unused; one stacked parent node handle; EAX item or null; RET4",
+      "status": "complete_native_mesh_resource_source_tracked_build_and_actual_hot_cache_fixture_checked",
+      "code": {
+        "address": "00b94850",
+        "bytes": 175,
+        "sha256": "5be7694e018725684e50cecd52791505083a722752ea1541e0d2ff58c0f2d330",
+        "instructions": [
+          [
+            12142672,
+            2,
+            "push",
+            "-1"
+          ],
+          [
+            12142674,
+            5,
+            "push",
+            "0xcc2f23"
+          ],
+          [
+            12142679,
+            6,
+            "mov",
+            "eax, dword ptr fs:[0]"
+          ],
+          [
+            12142685,
+            1,
+            "push",
+            "eax"
+          ],
+          [
+            12142686,
+            7,
+            "mov",
+            "dword ptr fs:[0], esp"
+          ],
+          [
+            12142693,
+            3,
+            "sub",
+            "esp, 8"
+          ],
+          [
+            12142696,
+            1,
+            "push",
+            "esi"
+          ],
+          [
+            12142697,
+            1,
+            "push",
+            "edi"
+          ],
+          [
+            12142698,
+            4,
+            "mov",
+            "eax, dword ptr [esp + 0x20]"
+          ],
+          [
+            12142702,
+            1,
+            "push",
+            "eax"
+          ],
+          [
+            12142703,
+            4,
+            "lea",
+            "ecx, [esp + 0xc]"
+          ],
+          [
+            12142707,
+            8,
+            "mov",
+            "dword ptr [esp + 0x1c], 0"
+          ],
+          [
+            12142715,
+            5,
+            "call",
+            "0xb94710"
+          ],
+          [
+            12142720,
+            2,
+            "push",
+            "0x10"
+          ],
+          [
+            12142722,
+            5,
+            "call",
+            "0xbf681b"
+          ],
+          [
+            12142727,
+            2,
+            "mov",
+            "esi, eax"
+          ],
+          [
+            12142729,
+            3,
+            "add",
+            "esp, 4"
+          ],
+          [
+            12142732,
+            4,
+            "mov",
+            "dword ptr [esp + 0x20], esi"
+          ],
+          [
+            12142736,
+            2,
+            "test",
+            "esi, esi"
+          ],
+          [
+            12142738,
+            4,
+            "mov",
+            "edi, dword ptr [esp + 8]"
+          ],
+          [
+            12142742,
+            5,
+            "mov",
+            "byte ptr [esp + 0x18], 1"
+          ],
+          [
+            12142747,
+            2,
+            "je",
+            "0xb948c6"
+          ],
+          [
+            12142749,
+            2,
+            "mov",
+            "ecx, esi"
+          ],
+          [
+            12142751,
+            5,
+            "call",
+            "0xb868b0"
+          ],
+          [
+            12142756,
+            4,
+            "mov",
+            "ecx, dword ptr [esp + 0xc]"
+          ],
+          [
+            12142760,
+            3,
+            "lea",
+            "edx, [edi + 4]"
+          ],
+          [
+            12142763,
+            1,
+            "push",
+            "edx"
+          ],
+          [
+            12142764,
+            6,
+            "mov",
+            "dword ptr [esi], 0xd63738"
+          ],
+          [
+            12142770,
+            3,
+            "mov",
+            "dword ptr [esi + 8], edi"
+          ],
+          [
+            12142773,
+            3,
+            "mov",
+            "dword ptr [esi + 0xc], ecx"
+          ],
+          [
+            12142776,
+            6,
+            "call",
+            "dword ptr [0xce221c]"
+          ],
+          [
+            12142782,
+            6,
+            "mov",
+            "dword ptr [esi], 0xd6375c"
+          ],
+          [
+            12142788,
+            2,
+            "jmp",
+            "0xb948c8"
+          ],
+          [
+            12142790,
+            2,
+            "xor",
+            "esi, esi"
+          ],
+          [
+            12142792,
+            2,
+            "test",
+            "edi, edi"
+          ],
+          [
+            12142794,
+            8,
+            "mov",
+            "dword ptr [esp + 0x18], 0xffffffff"
+          ],
+          [
+            12142802,
+            2,
+            "je",
+            "0xb948ea"
+          ],
+          [
+            12142804,
+            3,
+            "lea",
+            "eax, [edi + 4]"
+          ],
+          [
+            12142807,
+            1,
+            "push",
+            "eax"
+          ],
+          [
+            12142808,
+            6,
+            "call",
+            "dword ptr [0xce2220]"
+          ],
+          [
+            12142814,
+            2,
+            "test",
+            "eax, eax"
+          ],
+          [
+            12142816,
+            2,
+            "jne",
+            "0xb948ea"
+          ],
+          [
+            12142818,
+            2,
+            "mov",
+            "edx, dword ptr [edi]"
+          ],
+          [
+            12142820,
+            2,
+            "mov",
+            "eax, dword ptr [edx]"
+          ],
+          [
+            12142822,
+            2,
+            "mov",
+            "ecx, edi"
+          ],
+          [
+            12142824,
+            2,
+            "call",
+            "eax"
+          ],
+          [
+            12142826,
+            4,
+            "mov",
+            "ecx, dword ptr [esp + 0x10]"
+          ],
+          [
+            12142830,
+            1,
+            "pop",
+            "edi"
+          ],
+          [
+            12142831,
+            2,
+            "mov",
+            "eax, esi"
+          ],
+          [
+            12142833,
+            1,
+            "pop",
+            "esi"
+          ],
+          [
+            12142834,
+            7,
+            "mov",
+            "dword ptr fs:[0], ecx"
+          ],
+          [
+            12142841,
+            3,
+            "add",
+            "esp, 0x14"
+          ],
+          [
+            12142844,
+            3,
+            "ret",
+            "4"
+          ]
+        ]
+      }
+    },
+    {
+      "address": "00b94900",
+      "bytes": 175,
+      "function": "parse_native_mesh_item_00b94900",
+      "source": "src/native_mesh_subset_loading.cpp",
+      "result": "void*",
+      "convention": "__fastcall",
+      "parameters": "void* unused_parser, void* unused_edx, void* parent_handle",
+      "original_abi": "ECX parser unused; one stacked parent node handle; EAX item or null; RET4",
+      "status": "complete_native_mesh_resource_source_tracked_build_and_actual_hot_cache_fixture_checked",
+      "code": {
+        "address": "00b94900",
+        "bytes": 175,
+        "sha256": "67265bd5ee69ef95f4ca08e9ae5171b40c5e2834f31abea73721a440797e45ec",
+        "instructions": [
+          [
+            12142848,
+            2,
+            "push",
+            "-1"
+          ],
+          [
+            12142850,
+            5,
+            "push",
+            "0xcc2f43"
+          ],
+          [
+            12142855,
+            6,
+            "mov",
+            "eax, dword ptr fs:[0]"
+          ],
+          [
+            12142861,
+            1,
+            "push",
+            "eax"
+          ],
+          [
+            12142862,
+            7,
+            "mov",
+            "dword ptr fs:[0], esp"
+          ],
+          [
+            12142869,
+            3,
+            "sub",
+            "esp, 8"
+          ],
+          [
+            12142872,
+            1,
+            "push",
+            "esi"
+          ],
+          [
+            12142873,
+            1,
+            "push",
+            "edi"
+          ],
+          [
+            12142874,
+            4,
+            "mov",
+            "eax, dword ptr [esp + 0x20]"
+          ],
+          [
+            12142878,
+            1,
+            "push",
+            "eax"
+          ],
+          [
+            12142879,
+            4,
+            "lea",
+            "ecx, [esp + 0xc]"
+          ],
+          [
+            12142883,
+            8,
+            "mov",
+            "dword ptr [esp + 0x1c], 0"
+          ],
+          [
+            12142891,
+            5,
+            "call",
+            "0xb94710"
+          ],
+          [
+            12142896,
+            2,
+            "push",
+            "0x10"
+          ],
+          [
+            12142898,
+            5,
+            "call",
+            "0xbf681b"
+          ],
+          [
+            12142903,
+            2,
+            "mov",
+            "esi, eax"
+          ],
+          [
+            12142905,
+            3,
+            "add",
+            "esp, 4"
+          ],
+          [
+            12142908,
+            4,
+            "mov",
+            "dword ptr [esp + 0x20], esi"
+          ],
+          [
+            12142912,
+            2,
+            "test",
+            "esi, esi"
+          ],
+          [
+            12142914,
+            4,
+            "mov",
+            "edi, dword ptr [esp + 8]"
+          ],
+          [
+            12142918,
+            5,
+            "mov",
+            "byte ptr [esp + 0x18], 1"
+          ],
+          [
+            12142923,
+            2,
+            "je",
+            "0xb94976"
+          ],
+          [
+            12142925,
+            2,
+            "mov",
+            "ecx, esi"
+          ],
+          [
+            12142927,
+            5,
+            "call",
+            "0xb868b0"
+          ],
+          [
+            12142932,
+            4,
+            "mov",
+            "ecx, dword ptr [esp + 0xc]"
+          ],
+          [
+            12142936,
+            3,
+            "lea",
+            "edx, [edi + 4]"
+          ],
+          [
+            12142939,
+            1,
+            "push",
+            "edx"
+          ],
+          [
+            12142940,
+            6,
+            "mov",
+            "dword ptr [esi], 0xd63738"
+          ],
+          [
+            12142946,
+            3,
+            "mov",
+            "dword ptr [esi + 8], edi"
+          ],
+          [
+            12142949,
+            3,
+            "mov",
+            "dword ptr [esi + 0xc], ecx"
+          ],
+          [
+            12142952,
+            6,
+            "call",
+            "dword ptr [0xce221c]"
+          ],
+          [
+            12142958,
+            6,
+            "mov",
+            "dword ptr [esi], 0xd63780"
+          ],
+          [
+            12142964,
+            2,
+            "jmp",
+            "0xb94978"
+          ],
+          [
+            12142966,
+            2,
+            "xor",
+            "esi, esi"
+          ],
+          [
+            12142968,
+            2,
+            "test",
+            "edi, edi"
+          ],
+          [
+            12142970,
+            8,
+            "mov",
+            "dword ptr [esp + 0x18], 0xffffffff"
+          ],
+          [
+            12142978,
+            2,
+            "je",
+            "0xb9499a"
+          ],
+          [
+            12142980,
+            3,
+            "lea",
+            "eax, [edi + 4]"
+          ],
+          [
+            12142983,
+            1,
+            "push",
+            "eax"
+          ],
+          [
+            12142984,
+            6,
+            "call",
+            "dword ptr [0xce2220]"
+          ],
+          [
+            12142990,
+            2,
+            "test",
+            "eax, eax"
+          ],
+          [
+            12142992,
+            2,
+            "jne",
+            "0xb9499a"
+          ],
+          [
+            12142994,
+            2,
+            "mov",
+            "edx, dword ptr [edi]"
+          ],
+          [
+            12142996,
+            2,
+            "mov",
+            "eax, dword ptr [edx]"
+          ],
+          [
+            12142998,
+            2,
+            "mov",
+            "ecx, edi"
+          ],
+          [
+            12143000,
+            2,
+            "call",
+            "eax"
+          ],
+          [
+            12143002,
+            4,
+            "mov",
+            "ecx, dword ptr [esp + 0x10]"
+          ],
+          [
+            12143006,
+            1,
+            "pop",
+            "edi"
+          ],
+          [
+            12143007,
+            2,
+            "mov",
+            "eax, esi"
+          ],
+          [
+            12143009,
+            1,
+            "pop",
+            "esi"
+          ],
+          [
+            12143010,
+            7,
+            "mov",
+            "dword ptr fs:[0], ecx"
+          ],
+          [
+            12143017,
+            3,
+            "add",
+            "esp, 0x14"
+          ],
+          [
+            12143020,
+            3,
+            "ret",
+            "4"
+          ]
+        ]
+      }
+    },
+    {
+      "address": "00b93910",
+      "bytes": 101,
+      "function": "destroy_native_mesh_item_00b93910",
+      "source": "src/native_mesh_subset_loading.cpp",
+      "result": "void",
+      "convention": "__fastcall",
+      "parameters": "void* item, void* unused_edx",
+      "original_abi": "ECX actual10h item; RET; no stable return contract",
+      "status": "complete_native_mesh_resource_source_tracked_build_and_actual_hot_cache_fixture_checked",
+      "code": {
+        "address": "00b93910",
+        "bytes": 101,
+        "sha256": "df4bdd5478202c9c4213f5cb19f55eeb226b28701e1e6fd6731fbb1518e344c4",
+        "instructions": [
+          [
+            12138768,
+            2,
+            "push",
+            "-1"
+          ],
+          [
+            12138770,
+            5,
+            "push",
+            "0xcc2df8"
+          ],
+          [
+            12138775,
+            6,
+            "mov",
+            "eax, dword ptr fs:[0]"
+          ],
+          [
+            12138781,
+            1,
+            "push",
+            "eax"
+          ],
+          [
+            12138782,
+            7,
+            "mov",
+            "dword ptr fs:[0], esp"
+          ],
+          [
+            12138789,
+            1,
+            "push",
+            "ecx"
+          ],
+          [
+            12138790,
+            1,
+            "push",
+            "esi"
+          ],
+          [
+            12138791,
+            2,
+            "mov",
+            "esi, ecx"
+          ],
+          [
+            12138793,
+            1,
+            "push",
+            "edi"
+          ],
+          [
+            12138794,
+            4,
+            "mov",
+            "dword ptr [esp + 8], esi"
+          ],
+          [
+            12138798,
+            6,
+            "mov",
+            "dword ptr [esi], 0xd63738"
+          ],
+          [
+            12138804,
+            3,
+            "mov",
+            "edi, dword ptr [esi + 8]"
+          ],
+          [
+            12138807,
+            3,
+            "lea",
+            "eax, [edi + 4]"
+          ],
+          [
+            12138810,
+            1,
+            "push",
+            "eax"
+          ],
+          [
+            12138811,
+            8,
+            "mov",
+            "dword ptr [esp + 0x18], 0"
+          ],
+          [
+            12138819,
+            6,
+            "call",
+            "dword ptr [0xce2220]"
+          ],
+          [
+            12138825,
+            2,
+            "test",
+            "eax, eax"
+          ],
+          [
+            12138827,
+            2,
+            "jne",
+            "0xb93955"
+          ],
+          [
+            12138829,
+            2,
+            "mov",
+            "edx, dword ptr [edi]"
+          ],
+          [
+            12138831,
+            2,
+            "mov",
+            "eax, dword ptr [edx]"
+          ],
+          [
+            12138833,
+            2,
+            "mov",
+            "ecx, edi"
+          ],
+          [
+            12138835,
+            2,
+            "call",
+            "eax"
+          ],
+          [
+            12138837,
+            2,
+            "mov",
+            "ecx, esi"
+          ],
+          [
+            12138839,
+            8,
+            "mov",
+            "dword ptr [esp + 0x14], 0xffffffff"
+          ],
+          [
+            12138847,
+            5,
+            "call",
+            "0xb86890"
+          ],
+          [
+            12138852,
+            4,
+            "mov",
+            "ecx, dword ptr [esp + 0xc]"
+          ],
+          [
+            12138856,
+            1,
+            "pop",
+            "edi"
+          ],
+          [
+            12138857,
+            1,
+            "pop",
+            "esi"
+          ],
+          [
+            12138858,
+            7,
+            "mov",
+            "dword ptr fs:[0], ecx"
+          ],
+          [
+            12138865,
+            3,
+            "add",
+            "esp, 0x10"
+          ],
+          [
+            12138868,
+            1,
+            "ret",
+            ""
+          ]
+        ]
+      }
+    },
+    {
+      "address": "00b93b40",
+      "bytes": 30,
+      "function": "delete_native_mesh_item_00b93b40",
+      "source": "src/native_mesh_subset_loading.cpp",
+      "result": "void*",
+      "convention": "__fastcall",
+      "parameters": "void* item, void* unused_edx, uint flags",
+      "original_abi": "ECX item; stacked flags DWORD, test bit0 only; EAX captured item even after free; RET4",
+      "status": "complete_native_mesh_resource_source_tracked_build_and_actual_hot_cache_fixture_checked",
+      "code": {
+        "address": "00b93b40",
+        "bytes": 30,
+        "sha256": "69275ae587c949768e84b7961079d4f1e1401c63c2ed6313597f4510a6928c9e",
+        "instructions": [
+          [
+            12139328,
+            1,
+            "push",
+            "esi"
+          ],
+          [
+            12139329,
+            2,
+            "mov",
+            "esi, ecx"
+          ],
+          [
+            12139331,
+            5,
+            "call",
+            "0xb93910"
+          ],
+          [
+            12139336,
+            5,
+            "test",
+            "byte ptr [esp + 8], 1"
+          ],
+          [
+            12139341,
+            2,
+            "je",
+            "0xb93b58"
+          ],
+          [
+            12139343,
+            1,
+            "push",
+            "esi"
+          ],
+          [
+            12139344,
+            5,
+            "call",
+            "0xbf65ac"
+          ],
+          [
+            12139349,
+            3,
+            "add",
+            "esp, 4"
+          ],
+          [
+            12139352,
+            2,
+            "mov",
+            "eax, esi"
+          ],
+          [
+            12139354,
+            1,
+            "pop",
+            "esi"
+          ],
+          [
+            12139355,
+            3,
+            "ret",
+            "4"
+          ]
+        ]
+      }
+    },
+    {
+      "address": "00b93b60",
+      "bytes": 30,
+      "function": "delete_native_mesh_item_00b93b60",
+      "source": "src/native_mesh_subset_loading.cpp",
+      "result": "void*",
+      "convention": "__fastcall",
+      "parameters": "void* item, void* unused_edx, uint flags",
+      "original_abi": "ECX item; stacked flags DWORD, test bit0 only; EAX captured item even after free; RET4",
+      "status": "complete_native_mesh_resource_source_tracked_build_and_actual_hot_cache_fixture_checked",
+      "code": {
+        "address": "00b93b60",
+        "bytes": 30,
+        "sha256": "cedbd527a9f64709a5e1b332edb96db8e519bf4402ce5a487f311d41c7a37b91",
+        "instructions": [
+          [
+            12139360,
+            1,
+            "push",
+            "esi"
+          ],
+          [
+            12139361,
+            2,
+            "mov",
+            "esi, ecx"
+          ],
+          [
+            12139363,
+            5,
+            "call",
+            "0xb93910"
+          ],
+          [
+            12139368,
+            5,
+            "test",
+            "byte ptr [esp + 8], 1"
+          ],
+          [
+            12139373,
+            2,
+            "je",
+            "0xb93b78"
+          ],
+          [
+            12139375,
+            1,
+            "push",
+            "esi"
+          ],
+          [
+            12139376,
+            5,
+            "call",
+            "0xbf65ac"
+          ],
+          [
+            12139381,
+            3,
+            "add",
+            "esp, 4"
+          ],
+          [
+            12139384,
+            2,
+            "mov",
+            "eax, esi"
+          ],
+          [
+            12139386,
+            1,
+            "pop",
+            "esi"
+          ],
+          [
+            12139387,
+            3,
+            "ret",
+            "4"
+          ]
+        ]
+      }
+    },
+    {
+      "address": "00b93b80",
+      "bytes": 30,
+      "function": "delete_native_mesh_item_00b93b80",
+      "source": "src/native_mesh_subset_loading.cpp",
+      "result": "void*",
+      "convention": "__fastcall",
+      "parameters": "void* item, void* unused_edx, uint flags",
+      "original_abi": "ECX item; stacked flags DWORD, test bit0 only; EAX captured item even after free; RET4",
+      "status": "complete_native_mesh_resource_source_tracked_build_and_actual_hot_cache_fixture_checked",
+      "code": {
+        "address": "00b93b80",
+        "bytes": 30,
+        "sha256": "f4bd36fd05c46d4aa6bd3e128335674be90e6255d3678040535fdfcead7432cd",
+        "instructions": [
+          [
+            12139392,
+            1,
+            "push",
+            "esi"
+          ],
+          [
+            12139393,
+            2,
+            "mov",
+            "esi, ecx"
+          ],
+          [
+            12139395,
+            5,
+            "call",
+            "0xb93910"
+          ],
+          [
+            12139400,
+            5,
+            "test",
+            "byte ptr [esp + 8], 1"
+          ],
+          [
+            12139405,
+            2,
+            "je",
+            "0xb93b98"
+          ],
+          [
+            12139407,
+            1,
+            "push",
+            "esi"
+          ],
+          [
+            12139408,
+            5,
+            "call",
+            "0xbf65ac"
+          ],
+          [
+            12139413,
+            3,
+            "add",
+            "esp, 4"
+          ],
+          [
+            12139416,
+            2,
+            "mov",
+            "eax, esi"
+          ],
+          [
+            12139418,
+            1,
+            "pop",
+            "esi"
+          ],
+          [
+            12139419,
+            3,
+            "ret",
+            "4"
+          ]
+        ]
+      }
+    },
+    {
+      "address": "00b93ba0",
+      "bytes": 41,
+      "function": "release_native_mesh_handle_00b93ba0",
+      "source": "src/native_mesh_subset_loading.cpp",
+      "result": "void",
+      "convention": "__fastcall",
+      "parameters": "void* handle, void* unused_edx",
+      "original_abi": "ECX actual4h handle; RET; no stable return contract",
+      "status": "complete_native_mesh_resource_source_tracked_build_and_actual_hot_cache_fixture_checked",
+      "code": {
+        "address": "00b93ba0",
+        "bytes": 41,
+        "sha256": "6da47eb4546ed6edfd547bfb7cc08840ea3f31b89f985f07267f5b4b3e74fb21",
+        "instructions": [
+          [
+            12139424,
+            1,
+            "push",
+            "esi"
+          ],
+          [
+            12139425,
+            1,
+            "push",
+            "edi"
+          ],
+          [
+            12139426,
+            2,
+            "mov",
+            "edi, ecx"
+          ],
+          [
+            12139428,
+            2,
+            "mov",
+            "esi, dword ptr [edi]"
+          ],
+          [
+            12139430,
+            2,
+            "test",
+            "esi, esi"
+          ],
+          [
+            12139432,
+            2,
+            "je",
+            "0xb93bc6"
+          ],
+          [
+            12139434,
+            3,
+            "lea",
+            "eax, [esi + 4]"
+          ],
+          [
+            12139437,
+            1,
+            "push",
+            "eax"
+          ],
+          [
+            12139438,
+            6,
+            "call",
+            "dword ptr [0xce2220]"
+          ],
+          [
+            12139444,
+            2,
+            "test",
+            "eax, eax"
+          ],
+          [
+            12139446,
+            2,
+            "jne",
+            "0xb93bc0"
+          ],
+          [
+            12139448,
+            2,
+            "mov",
+            "edx, dword ptr [esi]"
+          ],
+          [
+            12139450,
+            2,
+            "mov",
+            "eax, dword ptr [edx]"
+          ],
+          [
+            12139452,
+            2,
+            "mov",
+            "ecx, esi"
+          ],
+          [
+            12139454,
+            2,
+            "call",
+            "eax"
+          ],
+          [
+            12139456,
+            6,
+            "mov",
+            "dword ptr [edi], 0"
+          ],
+          [
+            12139462,
+            1,
+            "pop",
+            "edi"
+          ],
+          [
+            12139463,
+            1,
+            "pop",
+            "esi"
+          ],
+          [
+            12139464,
+            1,
+            "ret",
+            ""
+          ]
+        ]
+      }
+    }
+  ],
+  "support": [
+    {
+      "address": "00cc2df0",
+      "bytes": 8,
+      "code": {
+        "address": "00cc2df0",
+        "bytes": 8,
+        "sha256": "3e65a9cb40c67feb893392ab9406fe65f5042f37b664cbbdec44ab00fbf7cf0b",
+        "instructions": [
+          [
+            13381104,
+            3,
+            "mov",
+            "ecx, dword ptr [ebp - 0x10]"
+          ],
+          [
+            13381107,
+            5,
+            "jmp",
+            "0xb86890"
+          ]
+        ]
+      }
+    },
+    {
+      "address": "00cc2df8",
+      "bytes": 10,
+      "code": {
+        "address": "00cc2df8",
+        "bytes": 10,
+        "sha256": "7001e67cd421c3cdf1dcfa51bf090d2a41f6221ef6009e5d97debcffe841f08c",
+        "instructions": [
+          [
+            13381112,
+            5,
+            "mov",
+            "eax, 0xdfc59c"
+          ],
+          [
+            13381117,
+            5,
+            "jmp",
+            "0xbf6b43"
+          ]
+        ]
+      }
+    },
+    {
+      "address": "00cc2ef0",
+      "bytes": 8,
+      "code": {
+        "address": "00cc2ef0",
+        "bytes": 8,
+        "sha256": "d126da6a60e637187e848a27c1e28ba974949e3f06eedfac2c3c749da7ca9479",
+        "instructions": [
+          [
+            13381360,
+            3,
+            "lea",
+            "ecx, [ebp - 0x14]"
+          ],
+          [
+            13381363,
+            5,
+            "jmp",
+            "0xb93ba0"
+          ]
+        ]
+      }
+    },
+    {
+      "address": "00cc2ef8",
+      "bytes": 11,
+      "code": {
+        "address": "00cc2ef8",
+        "bytes": 11,
+        "sha256": "d703ddc7f2adaba499881de1b955dc670c90bda70127537a9b81ac7abd223bda",
+        "instructions": [
+          [
+            13381368,
+            3,
+            "mov",
+            "eax, dword ptr [ebp + 4]"
+          ],
+          [
+            13381371,
+            1,
+            "push",
+            "eax"
+          ],
+          [
+            13381372,
+            5,
+            "call",
+            "0xbf65ac"
+          ],
+          [
+            13381377,
+            1,
+            "pop",
+            "ecx"
+          ],
+          [
+            13381378,
+            1,
+            "ret",
+            ""
+          ]
+        ]
+      }
+    },
+    {
+      "address": "00cc2f03",
+      "bytes": 10,
+      "code": {
+        "address": "00cc2f03",
+        "bytes": 10,
+        "sha256": "36acaf4787fe215989016d9d7f1b03f17ce8fb75f248aeb314770305c4f09c27",
+        "instructions": [
+          [
+            13381379,
+            5,
+            "mov",
+            "eax, 0xdfc714"
+          ],
+          [
+            13381384,
+            5,
+            "jmp",
+            "0xbf6b43"
+          ]
+        ]
+      }
+    },
+    {
+      "address": "00cc2f10",
+      "bytes": 8,
+      "code": {
+        "address": "00cc2f10",
+        "bytes": 8,
+        "sha256": "726193209b840ff3c102761cf513079dea07eb7002e674d03a249a5a05b94e67",
+        "instructions": [
+          [
+            13381392,
+            3,
+            "lea",
+            "ecx, [ebp - 0x14]"
+          ],
+          [
+            13381395,
+            5,
+            "jmp",
+            "0xb93ba0"
+          ]
+        ]
+      }
+    },
+    {
+      "address": "00cc2f18",
+      "bytes": 11,
+      "code": {
+        "address": "00cc2f18",
+        "bytes": 11,
+        "sha256": "28ee8ac25e93a36dce5ea22dac4c860e6a161a411c2733f87e3fe970fa17c9bb",
+        "instructions": [
+          [
+            13381400,
+            3,
+            "mov",
+            "eax, dword ptr [ebp + 4]"
+          ],
+          [
+            13381403,
+            1,
+            "push",
+            "eax"
+          ],
+          [
+            13381404,
+            5,
+            "call",
+            "0xbf65ac"
+          ],
+          [
+            13381409,
+            1,
+            "pop",
+            "ecx"
+          ],
+          [
+            13381410,
+            1,
+            "ret",
+            ""
+          ]
+        ]
+      }
+    },
+    {
+      "address": "00cc2f23",
+      "bytes": 10,
+      "code": {
+        "address": "00cc2f23",
+        "bytes": 10,
+        "sha256": "fb814660adb66686d6d80af902d7d7add193fa813c798cd0ac5ffff7124a4e3b",
+        "instructions": [
+          [
+            13381411,
+            5,
+            "mov",
+            "eax, 0xdfc748"
+          ],
+          [
+            13381416,
+            5,
+            "jmp",
+            "0xbf6b43"
+          ]
+        ]
+      }
+    },
+    {
+      "address": "00cc2f30",
+      "bytes": 8,
+      "code": {
+        "address": "00cc2f30",
+        "bytes": 8,
+        "sha256": "b87bc0dfd531df536a6b21d353b99debe5892fc676e99efc98afc85ddaa7bc6f",
+        "instructions": [
+          [
+            13381424,
+            3,
+            "lea",
+            "ecx, [ebp - 0x14]"
+          ],
+          [
+            13381427,
+            5,
+            "jmp",
+            "0xb93ba0"
+          ]
+        ]
+      }
+    },
+    {
+      "address": "00cc2f38",
+      "bytes": 11,
+      "code": {
+        "address": "00cc2f38",
+        "bytes": 11,
+        "sha256": "345a13aea33c20a396d1026bae73a3762478307e4cb21a025b382316bff69242",
+        "instructions": [
+          [
+            13381432,
+            3,
+            "mov",
+            "eax, dword ptr [ebp + 4]"
+          ],
+          [
+            13381435,
+            1,
+            "push",
+            "eax"
+          ],
+          [
+            13381436,
+            5,
+            "call",
+            "0xbf65ac"
+          ],
+          [
+            13381441,
+            1,
+            "pop",
+            "ecx"
+          ],
+          [
+            13381442,
+            1,
+            "ret",
+            ""
+          ]
+        ]
+      }
+    },
+    {
+      "address": "00cc2f43",
+      "bytes": 10,
+      "code": {
+        "address": "00cc2f43",
+        "bytes": 10,
+        "sha256": "41b7661e78eafded32ab22f34db6aa162d8e2725216b357d48791118b61b106a",
+        "instructions": [
+          [
+            13381443,
+            5,
+            "mov",
+            "eax, 0xdfc77c"
+          ],
+          [
+            13381448,
+            5,
+            "jmp",
+            "0xbf6b43"
+          ]
+        ]
+      }
+    }
+  ],
+  "ordinary_bytes": 751,
+  "support_bytes": 105,
+  "verified_instruction_owners": 272,
+  "direct_transfers": [
+    {
+      "address": "00b947cb",
+      "native": "00b94710",
+      "function": "00b947a0",
+      "kind": "call"
+    },
+    {
+      "address": "00b947d2",
+      "native": "00bf681b",
+      "function": "00b947a0",
+      "kind": "call"
+    },
+    {
+      "address": "00b947ef",
+      "native": "00b868b0",
+      "function": "00b947a0",
+      "kind": "call"
+    },
+    {
+      "address": "00b9487b",
+      "native": "00b94710",
+      "function": "00b94850",
+      "kind": "call"
+    },
+    {
+      "address": "00b94882",
+      "native": "00bf681b",
+      "function": "00b94850",
+      "kind": "call"
+    },
+    {
+      "address": "00b9489f",
+      "native": "00b868b0",
+      "function": "00b94850",
+      "kind": "call"
+    },
+    {
+      "address": "00b9492b",
+      "native": "00b94710",
+      "function": "00b94900",
+      "kind": "call"
+    },
+    {
+      "address": "00b94932",
+      "native": "00bf681b",
+      "function": "00b94900",
+      "kind": "call"
+    },
+    {
+      "address": "00b9494f",
+      "native": "00b868b0",
+      "function": "00b94900",
+      "kind": "call"
+    },
+    {
+      "address": "00b9395f",
+      "native": "00b86890",
+      "function": "00b93910",
+      "kind": "call"
+    },
+    {
+      "address": "00b93b43",
+      "native": "00b93910",
+      "function": "00b93b40",
+      "kind": "call"
+    },
+    {
+      "address": "00b93b50",
+      "native": "00bf65ac",
+      "function": "00b93b40",
+      "kind": "call"
+    },
+    {
+      "address": "00b93b63",
+      "native": "00b93910",
+      "function": "00b93b60",
+      "kind": "call"
+    },
+    {
+      "address": "00b93b70",
+      "native": "00bf65ac",
+      "function": "00b93b60",
+      "kind": "call"
+    },
+    {
+      "address": "00b93b83",
+      "native": "00b93910",
+      "function": "00b93b80",
+      "kind": "call"
+    },
+    {
+      "address": "00b93b90",
+      "native": "00bf65ac",
+      "function": "00b93b80",
+      "kind": "call"
+    },
+    {
+      "address": "00cc2df3",
+      "native": "00b86890",
+      "function": "00cc2df0",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00cc2dfd",
+      "native": "00bf6b43",
+      "function": "00cc2df8",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00cc2ef3",
+      "native": "00b93ba0",
+      "function": "00cc2ef0",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00cc2efc",
+      "native": "00bf65ac",
+      "function": "00cc2ef8",
+      "kind": "call"
+    },
+    {
+      "address": "00cc2f08",
+      "native": "00bf6b43",
+      "function": "00cc2f03",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00cc2f13",
+      "native": "00b93ba0",
+      "function": "00cc2f10",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00cc2f1c",
+      "native": "00bf65ac",
+      "function": "00cc2f18",
+      "kind": "call"
+    },
+    {
+      "address": "00cc2f28",
+      "native": "00bf6b43",
+      "function": "00cc2f23",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00cc2f33",
+      "native": "00b93ba0",
+      "function": "00cc2f30",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00cc2f3c",
+      "native": "00bf65ac",
+      "function": "00cc2f38",
+      "kind": "call"
+    },
+    {
+      "address": "00cc2f48",
+      "native": "00bf6b43",
+      "function": "00cc2f43",
+      "kind": "tail_jump"
+    }
+  ],
+  "indirect_transfers": [
+    {
+      "address": "00b94808",
+      "function": "00b947a0",
+      "instruction": "call dword ptr [0xce221c]"
+    },
+    {
+      "address": "00b94822",
+      "function": "00b947a0",
+      "instruction": "call dword ptr [0xce2220]"
+    },
+    {
+      "address": "00b94832",
+      "function": "00b947a0",
+      "instruction": "call eax"
+    },
+    {
+      "address": "00b948b8",
+      "function": "00b94850",
+      "instruction": "call dword ptr [0xce221c]"
+    },
+    {
+      "address": "00b948d8",
+      "function": "00b94850",
+      "instruction": "call dword ptr [0xce2220]"
+    },
+    {
+      "address": "00b948e8",
+      "function": "00b94850",
+      "instruction": "call eax"
+    },
+    {
+      "address": "00b94968",
+      "function": "00b94900",
+      "instruction": "call dword ptr [0xce221c]"
+    },
+    {
+      "address": "00b94988",
+      "function": "00b94900",
+      "instruction": "call dword ptr [0xce2220]"
+    },
+    {
+      "address": "00b94998",
+      "function": "00b94900",
+      "instruction": "call eax"
+    },
+    {
+      "address": "00b93943",
+      "function": "00b93910",
+      "instruction": "call dword ptr [0xce2220]"
+    },
+    {
+      "address": "00b93953",
+      "function": "00b93910",
+      "instruction": "call eax"
+    },
+    {
+      "address": "00b93bae",
+      "function": "00b93ba0",
+      "instruction": "call dword ptr [0xce2220]"
+    },
+    {
+      "address": "00b93bbe",
+      "function": "00b93ba0",
+      "instruction": "call eax"
+    }
+  ],
+  "data": [
+    {
+      "address": "00dfc594",
+      "bytes": 44,
+      "hex": "fffffffff02dcc00220593190100000094c5df00000000000000000000000000000000000000000001000000",
+      "sha256": "d8fe8e0f6fae357889e793072f2690080ca3a409a069fa78098513b61631299e"
+    },
+    {
+      "address": "00dfc704",
+      "bytes": 156,
+      "hex": "fffffffff02ecc0000000000f82ecc00220593190200000004c7df00000000000000000000000000000000000000000001000000ffffffff102fcc0000000000182fcc00220593190200000038c7df00000000000000000000000000000000000000000001000000ffffffff302fcc0000000000382fcc0022059319020000006cc7df00000000000000000000000000000000000000000001000000",
+      "sha256": "b2873156eb6d8f43ca6d8e4f3748449a3baddece2a4b670265a66999ac46ad78"
+    },
+    {
+      "address": "00d63738",
+      "bytes": 108,
+      "hex": "e030bd00403bb9000030b900b036b900209d6f001030b9002040b900a030b9008030b900e030bd00603bb900d030b900c039b900209d6f00e030b9002040b900a031b9005031b900e030bd00803bb900d031b900403ab900209d6f00e031b9002040b900a032b9005032b900",
+      "sha256": "147ac36ea051f50fb9867b05e871860d91329e4f4dd4fb94e4fee8b37b040db9"
+    },
+    {
+      "address": "00ce221c",
+      "bytes": 8,
+      "hex": "d056a000e856a000",
+      "sha256": "09187bdb757191189ccc4a5ac7c2ef0cdefd40f24673be20f5effccda6731258"
+    }
+  ],
+  "eh_maps": {
+    "00dfc59c": [
+      {
+        "state": 0,
+        "next": -1,
+        "action": "00cc2df0",
+        "owns": "item base only"
+      }
+    ],
+    "00dfc714": [
+      {
+        "state": 0,
+        "next": -1,
+        "action": "00cc2ef0",
+        "owns": "temporary mesh handle; B93BA0 clear after successful release"
+      },
+      {
+        "state": 1,
+        "next": 0,
+        "action": "00cc2ef8",
+        "owns": "raw item allocation; then state0"
+      }
+    ],
+    "00dfc748": [
+      {
+        "state": 0,
+        "next": -1,
+        "action": "00cc2f10",
+        "owns": "temporary mesh handle; B93BA0 clear after successful release"
+      },
+      {
+        "state": 1,
+        "next": 0,
+        "action": "00cc2f18",
+        "owns": "raw item allocation; then state0"
+      }
+    ],
+    "00dfc77c": [
+      {
+        "state": 0,
+        "next": -1,
+        "action": "00cc2f30",
+        "owns": "temporary mesh handle; B93BA0 clear after successful release"
+      },
+      {
+        "state": 1,
+        "next": 0,
+        "action": "00cc2f38",
+        "owns": "raw item allocation; then state0"
+      }
+    ]
+  },
+  "membership_gaps": [],
+  "evidence_summary": "CO complete eight native mesh resource routines751B and eleven supports105B: 272 instruction owners,27 direct/13 indirect transfers, saved Ghidra and installed PE equal. B947A0/B94850/B94900 call actual B94710 into local pair, allocate10h/base ref1, publish D63738/mesh+8/prefix+C, retain mesh, optionally stamp D6375C/D63780, then disarm cleanup and release captured creator. Native state0 releases/clears temporary mesh on loader or allocation failure; state1 frees raw item then state0. B93910 stamps D63738, unconditionally releases mesh+8, destroys item base on normal or unwind. Three scalar deletes free only flags bit0 and return captured item; B93BA0 clears only after release. Source numeric parser and current-profile deletion adapters compose existing raw resource dispatch and SAME canonical mesh domain. Failed host metadata admission explicitly defers cleanup; pre-publication native stack/SEH remains unproven. Five returning-free continuations repaired, four handlers defined under lock with prior comments preserved. Actual RTX5090 D3D9 fixture runs all three parsers with nine fields/two complete subsets, actual pointer-array append and current-profile deletion, read-failure parent cleanup and deferred metadata bind failure;57 canonical owners retire. Explicit cached effect zero-pass preimage; no cold shader, full-parent native oracle, ABI/FH3/SEH or game claim.",
+  "validation": {
+    "build": "Tracked default scripts/build.ps1 MSVC Win32; both existing CTests pass; CMake unchanged",
+    "normal": "All three native parsers create actual10h items with correct profiles/ref1/mesh+8/prefix+C; full constructor/nine fields/two subsets, actual D3D9 vertex/index buffers and generic layout readback; mesh count polling2",
+    "resource": "Actual B87AA0 pointer-array append transfers item without retain;483850 raw-slot release through BD30E0/current slot4 reaches corresponding scalar delete and canonical mesh destruction",
+    "read_failure": "Second outer sphere read throws after both subsets: current child cleaned; parser state0 consumes mesh creator and clears pair[0] while preserving prefix; dependent resources/tree retire",
+    "metadata_failure": "Added canonical bind rejection defers native cleanup explicitly; completed mesh remains ref1/unbound in persistent acquired frame until explicit fixture retirement",
+    "cleanup": "57 successful canonical binds and retirements plus one rejected mesh bind; all pools/caches/tree/allocator list empty and D3D9 device/API refs zero",
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "evidence_limits": [
+    "Reconstructed Win32 C++ interfaces are not native ABI replacements or FH3/SEH/hardware-fault proof.",
+    "Native state0 precedes uninitialized local pair publication. Source initializes bookkeeping only; pre-publication faults defer cleanup and are not native-stack parity. Failed added canonical admission retains the unbound creator and frame for explicit resolution.",
+    "Allocation-null and allocation-throw wrapper branches, scalar-delete flags with bit0 clear, and terminal lookup failure are listing-checked but not newly executed by this fixture.",
+    "The reached effect is actual B407A0 constructed on an explicit zero-pass C8..137 preimage, with an actual B43700 descriptor whose fixture name28 is generic. This is a hot-cache fixture, not a successful substitute for B46950/B43B00 or cold shader/compiler/state-cache execution.",
+    "Resource raw item append and deletion are exercised; full B7E970 root traversal, game-resource type classification, item clone/accessor methods and native full-parent machine-code differential execution are not newly validated.",
+    "No concurrent mutation, original private stack-frame aliases, gameplay or rendered-image parity claim."
+  ],
+  "remaining": {
+    "classification": "Actual resource item vtable+8 predicates B93000/B930D0/B931D0 and companion type data need complete evidence/implementation in NativeResourceItemTypeCalls before game classification.",
+    "item_methods": "Current item slotC targets B936B0/B939C0/B93A40 and shared B94020 plus remaining per-profile accessors remain separate bounded work.",
+    "cold_effect": "Cold B43B00/B3C3A0 and state/pass cache children remain required for general material/resource admission.",
+    "main": "Agent branch only; moving main deltas remain unreviewed."
+  },
+  "evidence": [
+    {
+      "path": "local/native_mesh_resource_co/registered/annotation.log",
+      "sha256": "39fb9653956abf91d4b19716bec46913b4df41eacacd7d1962972d67865b74fa",
+      "bytes": 101
+    },
+    {
+      "path": "local/native_mesh_resource_co/registered/bsp_core.lib",
+      "sha256": "0356809c7dde942f9c56643d66e44ec65819d2ba620ba8621152cbe67dcacf6d",
+      "bytes": 59488684
+    },
+    {
+      "path": "local/native_mesh_resource_co/registered/bsp_core.vcxproj",
+      "sha256": "1e55c5d486d29e9c0e2f17e73b489630f62e7859faacb6bc5c60a781ed7d7705",
+      "bytes": 200058
+    },
+    {
+      "path": "local/native_mesh_resource_co/registered/bsp_game.exe",
+      "sha256": "60f65787dd3118e5578a641d7571837941e27544cde34b92f2594ec40b8286c6",
+      "bytes": 2168832
+    },
+    {
+      "path": "local/native_mesh_resource_co/registered/bsp_lua511.lib",
+      "sha256": "00315ac717aac3d2b2161fefefe71b36a974335ff9c95d48c137423eb4e2f4b2",
+      "bytes": 455244
+    },
+    {
+      "path": "local/native_mesh_resource_co/registered/bsp_zlib121.lib",
+      "sha256": "73ae30b8adc3adfe5b33285bac533f8e7df7e8ab8d9e44789e6a030fd8a06ad9",
+      "bytes": 71906
+    },
+    {
+      "path": "local/native_mesh_resource_co/registered/build.log",
+      "sha256": "72777db756f2b59ce1eaf2e6e4604e8594d3b136de1cf70880914c8f2e2cedab",
+      "bytes": 2494
+    },
+    {
+      "path": "local/native_mesh_resource_co/registered/call_check.log",
+      "sha256": "c7f13f9735ab85ef5c184e9b11f14ed30a0009da33119bbcc08354647c125dce",
+      "bytes": 70
+    },
+    {
+      "path": "local/native_mesh_resource_co/registered/child_probe.log",
+      "sha256": "24868256b890d2dd8a0cbaf66bae24ed20ddd34eaed67c75098349411ca5d29b",
+      "bytes": 1072
+    },
+    {
+      "path": "local/native_mesh_resource_co/registered/CMakeCache.txt",
+      "sha256": "2ab657bd06bb97731372c10fc883040590ccedec539b0406ba2554bab45f7835",
+      "bytes": 18839
+    },
+    {
+      "path": "local/native_mesh_resource_co/registered/compile.cmd",
+      "sha256": "4f699b499bff34f69affc7c2a1fbc5f3c39c87fdf2f53eeb9cb1015a2c1ec419",
+      "bytes": 655
+    },
+    {
+      "path": "local/native_mesh_resource_co/registered/compile.log",
+      "sha256": "25d4f66c7c01d5b35c220cb97ffdd1608405f4ab45160497e6cc7ea3079676cf",
+      "bytes": 11
+    },
+    {
+      "path": "local/native_mesh_resource_co/registered/configuration.json",
+      "sha256": "1b53f1e9886c71514ad1605303c2c35494d24596750b11960b84b4578891310e",
+      "bytes": 874
+    },
+    {
+      "path": "local/native_mesh_resource_co/registered/final_audit.json",
+      "sha256": "e4f053bb4a697d021fe7d7482dcaa0b4c09bdfb404a559a0c76d1d23c74a46b8",
+      "bytes": 38107
+    },
+    {
+      "path": "local/native_mesh_resource_co/registered/probe.cpp",
+      "sha256": "b0310403d0164558696b08f16017b31dfe7c3c5f21c9b4ef4b128bd26d301ee5",
+      "bytes": 45978
+    },
+    {
+      "path": "local/native_mesh_resource_co/registered/probe.exe",
+      "sha256": "8b52035b6c9dbd8d0ccb4e5d65a8dfc11a0952ec1b4c24bc8df9028d46fe188e",
+      "bytes": 499200
+    },
+    {
+      "path": "local/native_mesh_resource_co/registered/probe.log",
+      "sha256": "d3ecbff04d9cd6e916092794b455440e004b120f13632fdc80c584cea674646d",
+      "bytes": 1118
+    },
+    {
+      "path": "local/native_mesh_resource_co/registered/probe.map",
+      "sha256": "30731767de7a6429165a7ff93d80fb66e9345cb2467f2299af60a408e55aac89",
+      "bytes": 891015
+    },
+    {
+      "path": "local/native_mesh_resource_co/registered/probe.obj",
+      "sha256": "58f882c7158398324eeb75e4f5201c4a077536e55d60c34d63eca2e3232c19a4",
+      "bytes": 454948
+    },
+    {
+      "path": "local/native_mesh_resource_co/registered/source_manifest.json",
+      "sha256": "c094fd66ec1e4eeeea95735ef2bfd393bda850543cb424579283ab446bd02b5c",
+      "bytes": 290908
+    },
+    {
+      "path": "reports/native_mesh_resource_annotations_co.json",
+      "sha256": "15abeeb32f68751708841c1c4ff11e96c95ed75118985f42025a6f2bf898c6ae",
+      "bytes": 158518
+    }
+  ],
+  "configuration": {
+    "base_revision": "7b3905a904d173a4f7b6273bbf822d9587476c69",
+    "override_absent": true,
+    "build": "scripts/build.ps1 with MSBUILDDISABLENODEREUSE=1 and CMAKE_BUILD_PARALLEL_LEVEL=3",
+    "build_scope": "Tracked default Win32 CMake incremental rebuild; not a fresh empty directory",
+    "source_inputs": 2685,
+    "source_manifest": {
+      "path": "local/native_mesh_resource_co/registered/source_manifest.json",
+      "sha256": "c094fd66ec1e4eeeea95735ef2bfd393bda850543cb424579283ab446bd02b5c",
+      "bytes": 290908
+    },
+    "changed_source_files": [
+      "include/bsp/native_mesh_subset_loading.hpp",
+      "src/native_mesh_subset_loading.cpp"
+    ],
+    "registry_unchanged": true,
+    "binary": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+    }
+  }
+}

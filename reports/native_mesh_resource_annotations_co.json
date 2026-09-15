@@ -1,0 +1,1357 @@
+{
+  "packet": "orch4_native_mesh_resource_co",
+  "entries": [
+    {
+      "address": "00b947a0",
+      "name": "BSP_ResourceMeshParser_Parse",
+      "before_comment": {
+        "address": "00b947a0",
+        "function_name": "BSP_ResourceMeshParser_Parse",
+        "comment": "[BSP reconstruction 00b947a0]\nBSP reconstruction hypothesis: Call00b94710 into local pair; allocate10h resource item/base ref1; write vtable00d63738, object at+8 and serialized prefix at+C; retain underlying object then release local reference. Wrapper allocation-null still releases temporary object. ABI: Incoming ECX parser object unused; one node-wrapper pointer stack argument; EAX resource item or null; RET4. Full native span matches installed PE. Field decode/renderer dependencies remain explicit; not a loaded-mesh or native ABI claim. Evidence: docs/RESOURCE_MESH_PARSER_BOUNDARY.md; reports/resource_mesh_parser_boundary_audit.json. Original ABI: Incoming ECX parser object unused; one node-wrapper pointer stack argument; EAX resource item or null; RET4.. Evidence: docs/RESOURCE_MESH_PARSER_BOUNDARY.md; reports/resource_mesh_parser_boundary_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation."
+      },
+      "before_documentation": {
+        "hash": "8da8fb97b7f20257e7d2342ef3760929643f528698dac6c32c6f81af3bdedc04",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b947a0",
+        "function_name": "BSP_ResourceMeshParser_Parse",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00b947a0]\nBSP reconstruction hypothesis: Call00b94710 into local pair; allocate10h resource item/base ref1; write vtable00d63738, object at+8 and serialized prefix at+C; retain underlying object then release local reference. Wrapper allocation-null still releases temporary object. ABI: Incoming ECX parser object unused; one node-wrapper pointer stack argument; EAX resource item or null; RET4. Full native span matches installed PE. Field decode/renderer dependencies remain explicit; not a loaded-mesh or native ABI claim. Evidence: docs/RESOURCE_MESH_PARSER_BOUNDARY.md; reports/resource_mesh_parser_boundary_audit.json. Original ABI: Incoming ECX parser object unused; one node-wrapper pointer stack argument; EAX resource item or null; RET4.. Evidence: docs/RESOURCE_MESH_PARSER_BOUNDARY.md; reports/resource_mesh_parser_boundary_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "local_14",
+            "type": "undefined4 *",
+            "storage": "(stack, 0xffffffffffffffec, 4)"
+          },
+          {
+            "name": "local_10",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffff0, 4)"
+          },
+          {
+            "name": "uVar2",
+            "type": "undefined8",
+            "storage": "(VARIABLE, 0x0, 8)"
+          },
+          {
+            "name": "actual_item",
+            "type": "undefined4 *",
+            "storage": "(register, 0x18, 4)"
+          },
+          {
+            "name": "LVar1",
+            "type": "LONG",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "local_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "local_4",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "pcStack_8",
+            "type": "undefined *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 112,
+            "name": "LAB_00b94810"
+          },
+          {
+            "relative_offset": 114,
+            "name": "LAB_00b94812"
+          },
+          {
+            "relative_offset": 148,
+            "name": "LAB_00b94834"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "evidence": "CO complete eight native mesh resource routines751B and eleven supports105B: 272 instruction owners,27 direct/13 indirect transfers, saved Ghidra and installed PE equal. B947A0/B94850/B94900 call actual B94710 into local pair, allocate10h/base ref1, publish D63738/mesh+8/prefix+C, retain mesh, optionally stamp D6375C/D63780, then disarm cleanup and release captured creator. Native state0 releases/clears temporary mesh on loader or allocation failure; state1 frees raw item then state0. B93910 stamps D63738, unconditionally releases mesh+8, destroys item base on normal or unwind. Three scalar deletes free only flags bit0 and return captured item; B93BA0 clears only after release. Source numeric parser and current-profile deletion adapters compose existing raw resource dispatch and SAME canonical mesh domain. Failed host metadata admission explicitly defers cleanup; pre-publication native stack/SEH remains unproven. Five returning-free continuations repaired, four handlers defined under lock with prior comments preserved. Actual RTX5090 D3D9 fixture runs all three parsers with nine fields/two complete subsets, actual pointer-array append and current-profile deletion, read-failure parent cleanup and deferred metadata bind failure;57 canonical owners retire. Explicit cached effect zero-pass preimage; no cold shader, full-parent native oracle, ABI/FH3/SEH or game claim. Complete 169B. ECX parser unused; one stacked parent node handle; EAX item or null; RET4. Source parse_native_mesh_item_00b947a0.",
+      "prototype": "void* __fastcall BSP_ResourceMeshParser_Parse(void* unused_parser, void* unused_edx, void* parent_handle)",
+      "prototype_result": "Successfully set prototype for function at 00b947a0 with __fastcall calling convention",
+      "ledger_name_output": "00b947a0 -> BSP_ResourceMeshParser_Parse\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00b947a0\", \"name\": \"BSP_ResourceMeshParser_Parse\", \"evidence\": \"BSP reconstruction hypothesis: Call00b94710 into local pair; allocate10h resource item/base ref1; write vtable00d63738, object at+8 and serialized prefix at+C; retain underlying object then release local reference. Wrapper allocation-null still releases temporary object. ABI: Incoming ECX parser object unused; one node-wrapper pointer stack argument; EAX resource item or null; RET4. Full native span matches installed PE. Field decode/renderer dependencies remain explicit; not a loaded-mesh or native ABI claim. Evidence: docs/RESOURCE_MESH_PARSER_BOUNDARY.md; reports/resource_mesh_parser_boundary_audit.json. Original ABI: Incoming ECX parser object unused; one node-wrapper pointer stack argument; EAX resource item or null; RET4.. Evidence: docs/RESOURCE_MESH_PARSER_BOUNDARY.md; reports/resource_mesh_parser_boundary_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\"})\n",
+      "ledger_function_output": "00b947a0 function parse_native_mesh_item_00b947a0\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00b947a0",
+        "function_name": "BSP_ResourceMeshParser_Parse",
+        "comment": "[BSP reconstruction 00b947a0]\nBSP reconstruction hypothesis: Call00b94710 into local pair; allocate10h resource item/base ref1; write vtable00d63738, object at+8 and serialized prefix at+C; retain underlying object then release local reference. Wrapper allocation-null still releases temporary object. ABI: Incoming ECX parser object unused; one node-wrapper pointer stack argument; EAX resource item or null; RET4. Full native span matches installed PE. Field decode/renderer dependencies remain explicit; not a loaded-mesh or native ABI claim. Evidence: docs/RESOURCE_MESH_PARSER_BOUNDARY.md; reports/resource_mesh_parser_boundary_audit.json. Original ABI: Incoming ECX parser object unused; one node-wrapper pointer stack argument; EAX resource item or null; RET4.. Evidence: docs/RESOURCE_MESH_PARSER_BOUNDARY.md; reports/resource_mesh_parser_boundary_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\n\n[BSP reconstruction 00b947a0] CO update\nCO complete eight native mesh resource routines751B and eleven supports105B: 272 instruction owners,27 direct/13 indirect transfers, saved Ghidra and installed PE equal. B947A0/B94850/B94900 call actual B94710 into local pair, allocate10h/base ref1, publish D63738/mesh+8/prefix+C, retain mesh, optionally stamp D6375C/D63780, then disarm cleanup and release captured creator. Native state0 releases/clears temporary mesh on loader or allocation failure; state1 frees raw item then state0. B93910 stamps D63738, unconditionally releases mesh+8, destroys item base on normal or unwind. Three scalar deletes free only flags bit0 and return captured item; B93BA0 clears only after release. Source numeric parser and current-profile deletion adapters compose existing raw resource dispatch and SAME canonical mesh domain. Failed host metadata admission explicitly defers cleanup; pre-publication native stack/SEH remains unproven. Five returning-free continuations repaired, four handlers defined under lock with prior comments preserved. Actual RTX5090 D3D9 fixture runs all three parsers with nine fields/two complete subsets, actual pointer-array append and current-profile deletion, read-failure parent cleanup and deferred metadata bind failure;57 canonical owners retire. Explicit cached effect zero-pass preimage; no cold shader, full-parent native oracle, ABI/FH3/SEH or game claim. Complete 169B. ECX parser unused; one stacked parent node handle; EAX item or null; RET4. Source parse_native_mesh_item_00b947a0."
+      }
+    },
+    {
+      "address": "00b94850",
+      "name": "BSP_ParseNativeMeshItem_00b94850",
+      "before_comment": {
+        "address": "00b94850",
+        "function_name": "FUN_00b94850"
+      },
+      "before_documentation": {
+        "hash": "b774f2ac33b868fc2240160fdc337d6a2af83a7d19330231a8ead167440f4c97",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b94850",
+        "function_name": "FUN_00b94850",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "uVar2",
+            "type": "undefined8",
+            "storage": "(VARIABLE, 0x0, 8)"
+          },
+          {
+            "name": "actual_item",
+            "type": "undefined4 *",
+            "storage": "(register, 0x18, 4)"
+          },
+          {
+            "name": "LVar1",
+            "type": "LONG",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "local_14",
+            "type": "undefined4 *",
+            "storage": "(stack, 0xffffffffffffffec, 4)"
+          },
+          {
+            "name": "local_4",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "local_10",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffff0, 4)"
+          },
+          {
+            "name": "pcStack_8",
+            "type": "undefined *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "local_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 118,
+            "name": "LAB_00b948c6"
+          },
+          {
+            "relative_offset": 120,
+            "name": "LAB_00b948c8"
+          },
+          {
+            "relative_offset": 154,
+            "name": "LAB_00b948ea"
+          }
+        ],
+        "completeness_score": 50.0
+      },
+      "evidence": "CO complete eight native mesh resource routines751B and eleven supports105B: 272 instruction owners,27 direct/13 indirect transfers, saved Ghidra and installed PE equal. B947A0/B94850/B94900 call actual B94710 into local pair, allocate10h/base ref1, publish D63738/mesh+8/prefix+C, retain mesh, optionally stamp D6375C/D63780, then disarm cleanup and release captured creator. Native state0 releases/clears temporary mesh on loader or allocation failure; state1 frees raw item then state0. B93910 stamps D63738, unconditionally releases mesh+8, destroys item base on normal or unwind. Three scalar deletes free only flags bit0 and return captured item; B93BA0 clears only after release. Source numeric parser and current-profile deletion adapters compose existing raw resource dispatch and SAME canonical mesh domain. Failed host metadata admission explicitly defers cleanup; pre-publication native stack/SEH remains unproven. Five returning-free continuations repaired, four handlers defined under lock with prior comments preserved. Actual RTX5090 D3D9 fixture runs all three parsers with nine fields/two complete subsets, actual pointer-array append and current-profile deletion, read-failure parent cleanup and deferred metadata bind failure;57 canonical owners retire. Explicit cached effect zero-pass preimage; no cold shader, full-parent native oracle, ABI/FH3/SEH or game claim. Complete 175B. ECX parser unused; one stacked parent node handle; EAX item or null; RET4. Source parse_native_mesh_item_00b94850.",
+      "prototype": "void* __fastcall BSP_ParseNativeMeshItem_00b94850(void* unused_parser, void* unused_edx, void* parent_handle)",
+      "prototype_result": "Successfully set prototype for function at 00b94850 with __fastcall calling convention",
+      "ledger_name_output": "00b94850 -> BSP_ParseNativeMeshItem_00b94850\n",
+      "ledger_function_output": "00b94850 function parse_native_mesh_item_00b94850\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00b94850",
+        "function_name": "BSP_ParseNativeMeshItem_00b94850",
+        "comment": "\n\n[BSP reconstruction 00b94850] CO update\nCO complete eight native mesh resource routines751B and eleven supports105B: 272 instruction owners,27 direct/13 indirect transfers, saved Ghidra and installed PE equal. B947A0/B94850/B94900 call actual B94710 into local pair, allocate10h/base ref1, publish D63738/mesh+8/prefix+C, retain mesh, optionally stamp D6375C/D63780, then disarm cleanup and release captured creator. Native state0 releases/clears temporary mesh on loader or allocation failure; state1 frees raw item then state0. B93910 stamps D63738, unconditionally releases mesh+8, destroys item base on normal or unwind. Three scalar deletes free only flags bit0 and return captured item; B93BA0 clears only after release. Source numeric parser and current-profile deletion adapters compose existing raw resource dispatch and SAME canonical mesh domain. Failed host metadata admission explicitly defers cleanup; pre-publication native stack/SEH remains unproven. Five returning-free continuations repaired, four handlers defined under lock with prior comments preserved. Actual RTX5090 D3D9 fixture runs all three parsers with nine fields/two complete subsets, actual pointer-array append and current-profile deletion, read-failure parent cleanup and deferred metadata bind failure;57 canonical owners retire. Explicit cached effect zero-pass preimage; no cold shader, full-parent native oracle, ABI/FH3/SEH or game claim. Complete 175B. ECX parser unused; one stacked parent node handle; EAX item or null; RET4. Source parse_native_mesh_item_00b94850."
+      }
+    },
+    {
+      "address": "00b94900",
+      "name": "BSP_ParseNativeMeshItem_00b94900",
+      "before_comment": {
+        "address": "00b94900",
+        "function_name": "FUN_00b94900"
+      },
+      "before_documentation": {
+        "hash": "b774f2ac33b868fc2240160fdc337d6a2af83a7d19330231a8ead167440f4c97",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b94900",
+        "function_name": "FUN_00b94900",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "uVar2",
+            "type": "undefined8",
+            "storage": "(VARIABLE, 0x0, 8)"
+          },
+          {
+            "name": "actual_item",
+            "type": "undefined4 *",
+            "storage": "(register, 0x18, 4)"
+          },
+          {
+            "name": "LVar1",
+            "type": "LONG",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "pcStack_8",
+            "type": "undefined *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "local_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "local_4",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "local_14",
+            "type": "undefined4 *",
+            "storage": "(stack, 0xffffffffffffffec, 4)"
+          },
+          {
+            "name": "local_10",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffff0, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 118,
+            "name": "LAB_00b94976"
+          },
+          {
+            "relative_offset": 120,
+            "name": "LAB_00b94978"
+          },
+          {
+            "relative_offset": 154,
+            "name": "LAB_00b9499a"
+          }
+        ],
+        "completeness_score": 50.0
+      },
+      "evidence": "CO complete eight native mesh resource routines751B and eleven supports105B: 272 instruction owners,27 direct/13 indirect transfers, saved Ghidra and installed PE equal. B947A0/B94850/B94900 call actual B94710 into local pair, allocate10h/base ref1, publish D63738/mesh+8/prefix+C, retain mesh, optionally stamp D6375C/D63780, then disarm cleanup and release captured creator. Native state0 releases/clears temporary mesh on loader or allocation failure; state1 frees raw item then state0. B93910 stamps D63738, unconditionally releases mesh+8, destroys item base on normal or unwind. Three scalar deletes free only flags bit0 and return captured item; B93BA0 clears only after release. Source numeric parser and current-profile deletion adapters compose existing raw resource dispatch and SAME canonical mesh domain. Failed host metadata admission explicitly defers cleanup; pre-publication native stack/SEH remains unproven. Five returning-free continuations repaired, four handlers defined under lock with prior comments preserved. Actual RTX5090 D3D9 fixture runs all three parsers with nine fields/two complete subsets, actual pointer-array append and current-profile deletion, read-failure parent cleanup and deferred metadata bind failure;57 canonical owners retire. Explicit cached effect zero-pass preimage; no cold shader, full-parent native oracle, ABI/FH3/SEH or game claim. Complete 175B. ECX parser unused; one stacked parent node handle; EAX item or null; RET4. Source parse_native_mesh_item_00b94900.",
+      "prototype": "void* __fastcall BSP_ParseNativeMeshItem_00b94900(void* unused_parser, void* unused_edx, void* parent_handle)",
+      "prototype_result": "Successfully set prototype for function at 00b94900 with __fastcall calling convention",
+      "ledger_name_output": "00b94900 -> BSP_ParseNativeMeshItem_00b94900\n",
+      "ledger_function_output": "00b94900 function parse_native_mesh_item_00b94900\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00b94900",
+        "function_name": "BSP_ParseNativeMeshItem_00b94900",
+        "comment": "\n\n[BSP reconstruction 00b94900] CO update\nCO complete eight native mesh resource routines751B and eleven supports105B: 272 instruction owners,27 direct/13 indirect transfers, saved Ghidra and installed PE equal. B947A0/B94850/B94900 call actual B94710 into local pair, allocate10h/base ref1, publish D63738/mesh+8/prefix+C, retain mesh, optionally stamp D6375C/D63780, then disarm cleanup and release captured creator. Native state0 releases/clears temporary mesh on loader or allocation failure; state1 frees raw item then state0. B93910 stamps D63738, unconditionally releases mesh+8, destroys item base on normal or unwind. Three scalar deletes free only flags bit0 and return captured item; B93BA0 clears only after release. Source numeric parser and current-profile deletion adapters compose existing raw resource dispatch and SAME canonical mesh domain. Failed host metadata admission explicitly defers cleanup; pre-publication native stack/SEH remains unproven. Five returning-free continuations repaired, four handlers defined under lock with prior comments preserved. Actual RTX5090 D3D9 fixture runs all three parsers with nine fields/two complete subsets, actual pointer-array append and current-profile deletion, read-failure parent cleanup and deferred metadata bind failure;57 canonical owners retire. Explicit cached effect zero-pass preimage; no cold shader, full-parent native oracle, ABI/FH3/SEH or game claim. Complete 175B. ECX parser unused; one stacked parent node handle; EAX item or null; RET4. Source parse_native_mesh_item_00b94900."
+      }
+    },
+    {
+      "address": "00b93910",
+      "name": "BSP_ResourceMeshItem_Destroy",
+      "before_comment": {
+        "address": "00b93910",
+        "function_name": "BSP_ResourceMeshItem_Destroy",
+        "comment": "[BSP reconstruction 00b93910]\nSet wrapper vtable00d63738; unconditionally InterlockedDecrement(mesh+4) for mesh at+8; invoke mesh vtable0 withECXmesh iff count0; then00b86890 base destruction. Prefix+C is not released. Original ABI: ECX wrapper; no explicit stack arguments; RET; EAX not specified. Evidence: docs/MESH_OBJECT_LIFETIME.md; reports/mesh_object_lifetime_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation."
+      },
+      "before_documentation": {
+        "hash": "57b77194bda3c504dcadc57a76f08c04759d8945479ec68a36ddbc3091b0dc79",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b93910",
+        "function_name": "BSP_ResourceMeshItem_Destroy",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00b93910]\nSet wrapper vtable00d63738; unconditionally InterlockedDecrement(mesh+4) for mesh at+8; invoke mesh vtable0 withECXmesh iff count0; then00b86890 base destruction. Prefix+C is not released. Original ABI: ECX wrapper; no explicit stack arguments; RET; EAX not specified. Evidence: docs/MESH_OBJECT_LIFETIME.md; reports/mesh_object_lifetime_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation.",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "extraout_EDX",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "extraout_EDX_00",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "unused_edx",
+            "type": "void *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "local_4",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "puVar1",
+            "type": "undefined4 *",
+            "storage": "(unique, 0x17200, 4)"
+          },
+          {
+            "name": "LVar2",
+            "type": "LONG",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "pvStack_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "pcStack_8",
+            "type": "undefined *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 69,
+            "name": "LAB_00b93955"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "evidence": "CO complete eight native mesh resource routines751B and eleven supports105B: 272 instruction owners,27 direct/13 indirect transfers, saved Ghidra and installed PE equal. B947A0/B94850/B94900 call actual B94710 into local pair, allocate10h/base ref1, publish D63738/mesh+8/prefix+C, retain mesh, optionally stamp D6375C/D63780, then disarm cleanup and release captured creator. Native state0 releases/clears temporary mesh on loader or allocation failure; state1 frees raw item then state0. B93910 stamps D63738, unconditionally releases mesh+8, destroys item base on normal or unwind. Three scalar deletes free only flags bit0 and return captured item; B93BA0 clears only after release. Source numeric parser and current-profile deletion adapters compose existing raw resource dispatch and SAME canonical mesh domain. Failed host metadata admission explicitly defers cleanup; pre-publication native stack/SEH remains unproven. Five returning-free continuations repaired, four handlers defined under lock with prior comments preserved. Actual RTX5090 D3D9 fixture runs all three parsers with nine fields/two complete subsets, actual pointer-array append and current-profile deletion, read-failure parent cleanup and deferred metadata bind failure;57 canonical owners retire. Explicit cached effect zero-pass preimage; no cold shader, full-parent native oracle, ABI/FH3/SEH or game claim. Complete 101B. ECX actual10h item; RET; no stable return contract. Source destroy_native_mesh_item_00b93910.",
+      "prototype": "void __fastcall BSP_ResourceMeshItem_Destroy(void* item, void* unused_edx)",
+      "prototype_result": "Successfully set prototype for function at 00b93910 with __fastcall calling convention",
+      "ledger_name_output": "00b93910 -> BSP_ResourceMeshItem_Destroy\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00b93910\", \"name\": \"BSP_ResourceMeshItem_Destroy\", \"evidence\": \"Set wrapper vtable00d63738; unconditionally InterlockedDecrement(mesh+4) for mesh at+8; invoke mesh vtable0 withECXmesh iff count0; then00b86890 base destruction. Prefix+C is not released. Original ABI: ECX wrapper; no explicit stack arguments; RET; EAX not specified. Evidence: docs/MESH_OBJECT_LIFETIME.md; reports/mesh_object_lifetime_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation.\"})\n",
+      "ledger_function_output": "00b93910 function destroy_native_mesh_item_00b93910\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00b93910",
+        "function_name": "BSP_ResourceMeshItem_Destroy",
+        "comment": "[BSP reconstruction 00b93910]\nSet wrapper vtable00d63738; unconditionally InterlockedDecrement(mesh+4) for mesh at+8; invoke mesh vtable0 withECXmesh iff count0; then00b86890 base destruction. Prefix+C is not released. Original ABI: ECX wrapper; no explicit stack arguments; RET; EAX not specified. Evidence: docs/MESH_OBJECT_LIFETIME.md; reports/mesh_object_lifetime_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation.\n\n[BSP reconstruction 00b93910] CO update\nCO complete eight native mesh resource routines751B and eleven supports105B: 272 instruction owners,27 direct/13 indirect transfers, saved Ghidra and installed PE equal. B947A0/B94850/B94900 call actual B94710 into local pair, allocate10h/base ref1, publish D63738/mesh+8/prefix+C, retain mesh, optionally stamp D6375C/D63780, then disarm cleanup and release captured creator. Native state0 releases/clears temporary mesh on loader or allocation failure; state1 frees raw item then state0. B93910 stamps D63738, unconditionally releases mesh+8, destroys item base on normal or unwind. Three scalar deletes free only flags bit0 and return captured item; B93BA0 clears only after release. Source numeric parser and current-profile deletion adapters compose existing raw resource dispatch and SAME canonical mesh domain. Failed host metadata admission explicitly defers cleanup; pre-publication native stack/SEH remains unproven. Five returning-free continuations repaired, four handlers defined under lock with prior comments preserved. Actual RTX5090 D3D9 fixture runs all three parsers with nine fields/two complete subsets, actual pointer-array append and current-profile deletion, read-failure parent cleanup and deferred metadata bind failure;57 canonical owners retire. Explicit cached effect zero-pass preimage; no cold shader, full-parent native oracle, ABI/FH3/SEH or game claim. Complete 101B. ECX actual10h item; RET; no stable return contract. Source destroy_native_mesh_item_00b93910."
+      }
+    },
+    {
+      "address": "00b93b40",
+      "name": "BSP_ResourceMeshItem_ScalarDeletingDestructor",
+      "before_comment": {
+        "address": "00b93b40",
+        "function_name": "BSP_ResourceMeshItem_ScalarDeletingDestructor",
+        "comment": "[BSP reconstruction 00b93b40]\nCall00b93910; if flags bit0 set, CRT free wrapper through00bf65ac; always return original wrapper after native continuation. Original ABI: ECX wrapper; one stack flags DWORD (low byte tested); EAX original wrapper; RET4. Evidence: docs/MESH_OBJECT_LIFETIME.md; reports/mesh_object_lifetime_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation."
+      },
+      "before_documentation": {
+        "hash": "91e4718dbb451d97dd06d7f5283b45bb8ef330cbc9947aadbab0bee635159320",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b93b40",
+        "function_name": "BSP_ResourceMeshItem_ScalarDeletingDestructor",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00b93b40]\nCall00b93910; if flags bit0 set, CRT free wrapper through00bf65ac; always return original wrapper after native continuation. Original ABI: ECX wrapper; one stack flags DWORD (low byte tested); EAX original wrapper; RET4. Evidence: docs/MESH_OBJECT_LIFETIME.md; reports/mesh_object_lifetime_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation.",
+        "parameters": [],
+        "local_variables": [],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 24,
+            "name": "LAB_00b93b58"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "evidence": "CO complete eight native mesh resource routines751B and eleven supports105B: 272 instruction owners,27 direct/13 indirect transfers, saved Ghidra and installed PE equal. B947A0/B94850/B94900 call actual B94710 into local pair, allocate10h/base ref1, publish D63738/mesh+8/prefix+C, retain mesh, optionally stamp D6375C/D63780, then disarm cleanup and release captured creator. Native state0 releases/clears temporary mesh on loader or allocation failure; state1 frees raw item then state0. B93910 stamps D63738, unconditionally releases mesh+8, destroys item base on normal or unwind. Three scalar deletes free only flags bit0 and return captured item; B93BA0 clears only after release. Source numeric parser and current-profile deletion adapters compose existing raw resource dispatch and SAME canonical mesh domain. Failed host metadata admission explicitly defers cleanup; pre-publication native stack/SEH remains unproven. Five returning-free continuations repaired, four handlers defined under lock with prior comments preserved. Actual RTX5090 D3D9 fixture runs all three parsers with nine fields/two complete subsets, actual pointer-array append and current-profile deletion, read-failure parent cleanup and deferred metadata bind failure;57 canonical owners retire. Explicit cached effect zero-pass preimage; no cold shader, full-parent native oracle, ABI/FH3/SEH or game claim. Complete 30B. ECX item; stacked flags DWORD, test bit0 only; EAX captured item even after free; RET4. Source delete_native_mesh_item_00b93b40.",
+      "prototype": "void* __fastcall BSP_ResourceMeshItem_ScalarDeletingDestructor(void* item, void* unused_edx, uint flags)",
+      "prototype_result": "Successfully set prototype for function at 00b93b40 with __fastcall calling convention",
+      "ledger_name_output": "00b93b40 -> BSP_ResourceMeshItem_ScalarDeletingDestructor\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00b93b40\", \"name\": \"BSP_ResourceMeshItem_ScalarDeletingDestructor\", \"evidence\": \"Call00b93910; if flags bit0 set, CRT free wrapper through00bf65ac; always return original wrapper after native continuation. Original ABI: ECX wrapper; one stack flags DWORD (low byte tested); EAX original wrapper; RET4. Evidence: docs/MESH_OBJECT_LIFETIME.md; reports/mesh_object_lifetime_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation.\"})\n",
+      "ledger_function_output": "00b93b40 function delete_native_mesh_item_00b93b40\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00b93b40",
+        "function_name": "BSP_ResourceMeshItem_ScalarDeletingDestructor",
+        "comment": "[BSP reconstruction 00b93b40]\nCall00b93910; if flags bit0 set, CRT free wrapper through00bf65ac; always return original wrapper after native continuation. Original ABI: ECX wrapper; one stack flags DWORD (low byte tested); EAX original wrapper; RET4. Evidence: docs/MESH_OBJECT_LIFETIME.md; reports/mesh_object_lifetime_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation.\n\n[BSP reconstruction 00b93b40] CO update\nCO complete eight native mesh resource routines751B and eleven supports105B: 272 instruction owners,27 direct/13 indirect transfers, saved Ghidra and installed PE equal. B947A0/B94850/B94900 call actual B94710 into local pair, allocate10h/base ref1, publish D63738/mesh+8/prefix+C, retain mesh, optionally stamp D6375C/D63780, then disarm cleanup and release captured creator. Native state0 releases/clears temporary mesh on loader or allocation failure; state1 frees raw item then state0. B93910 stamps D63738, unconditionally releases mesh+8, destroys item base on normal or unwind. Three scalar deletes free only flags bit0 and return captured item; B93BA0 clears only after release. Source numeric parser and current-profile deletion adapters compose existing raw resource dispatch and SAME canonical mesh domain. Failed host metadata admission explicitly defers cleanup; pre-publication native stack/SEH remains unproven. Five returning-free continuations repaired, four handlers defined under lock with prior comments preserved. Actual RTX5090 D3D9 fixture runs all three parsers with nine fields/two complete subsets, actual pointer-array append and current-profile deletion, read-failure parent cleanup and deferred metadata bind failure;57 canonical owners retire. Explicit cached effect zero-pass preimage; no cold shader, full-parent native oracle, ABI/FH3/SEH or game claim. Complete 30B. ECX item; stacked flags DWORD, test bit0 only; EAX captured item even after free; RET4. Source delete_native_mesh_item_00b93b40."
+      }
+    },
+    {
+      "address": "00b93b60",
+      "name": "BSP_DeleteNativeMeshItem_00b93b60",
+      "before_comment": {
+        "address": "00b93b60",
+        "function_name": "CG_scalar_deleting_dtor_00b93b60",
+        "comment": ""
+      },
+      "before_documentation": {
+        "hash": "91e4718dbb451d97dd06d7f5283b45bb8ef330cbc9947aadbab0bee635159320",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b93b60",
+        "function_name": "CG_scalar_deleting_dtor_00b93b60",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "",
+        "parameters": [],
+        "local_variables": [],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 24,
+            "name": "LAB_00b93b78"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "evidence": "CO complete eight native mesh resource routines751B and eleven supports105B: 272 instruction owners,27 direct/13 indirect transfers, saved Ghidra and installed PE equal. B947A0/B94850/B94900 call actual B94710 into local pair, allocate10h/base ref1, publish D63738/mesh+8/prefix+C, retain mesh, optionally stamp D6375C/D63780, then disarm cleanup and release captured creator. Native state0 releases/clears temporary mesh on loader or allocation failure; state1 frees raw item then state0. B93910 stamps D63738, unconditionally releases mesh+8, destroys item base on normal or unwind. Three scalar deletes free only flags bit0 and return captured item; B93BA0 clears only after release. Source numeric parser and current-profile deletion adapters compose existing raw resource dispatch and SAME canonical mesh domain. Failed host metadata admission explicitly defers cleanup; pre-publication native stack/SEH remains unproven. Five returning-free continuations repaired, four handlers defined under lock with prior comments preserved. Actual RTX5090 D3D9 fixture runs all three parsers with nine fields/two complete subsets, actual pointer-array append and current-profile deletion, read-failure parent cleanup and deferred metadata bind failure;57 canonical owners retire. Explicit cached effect zero-pass preimage; no cold shader, full-parent native oracle, ABI/FH3/SEH or game claim. Complete 30B. ECX item; stacked flags DWORD, test bit0 only; EAX captured item even after free; RET4. Source delete_native_mesh_item_00b93b60.",
+      "prototype": "void* __fastcall BSP_DeleteNativeMeshItem_00b93b60(void* item, void* unused_edx, uint flags)",
+      "prototype_result": "Successfully set prototype for function at 00b93b60 with __fastcall calling convention",
+      "ledger_name_output": "00b93b60 -> BSP_DeleteNativeMeshItem_00b93b60\n",
+      "ledger_function_output": "00b93b60 function delete_native_mesh_item_00b93b60\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00b93b60",
+        "function_name": "BSP_DeleteNativeMeshItem_00b93b60",
+        "comment": "\n\n[BSP reconstruction 00b93b60] CO update\nCO complete eight native mesh resource routines751B and eleven supports105B: 272 instruction owners,27 direct/13 indirect transfers, saved Ghidra and installed PE equal. B947A0/B94850/B94900 call actual B94710 into local pair, allocate10h/base ref1, publish D63738/mesh+8/prefix+C, retain mesh, optionally stamp D6375C/D63780, then disarm cleanup and release captured creator. Native state0 releases/clears temporary mesh on loader or allocation failure; state1 frees raw item then state0. B93910 stamps D63738, unconditionally releases mesh+8, destroys item base on normal or unwind. Three scalar deletes free only flags bit0 and return captured item; B93BA0 clears only after release. Source numeric parser and current-profile deletion adapters compose existing raw resource dispatch and SAME canonical mesh domain. Failed host metadata admission explicitly defers cleanup; pre-publication native stack/SEH remains unproven. Five returning-free continuations repaired, four handlers defined under lock with prior comments preserved. Actual RTX5090 D3D9 fixture runs all three parsers with nine fields/two complete subsets, actual pointer-array append and current-profile deletion, read-failure parent cleanup and deferred metadata bind failure;57 canonical owners retire. Explicit cached effect zero-pass preimage; no cold shader, full-parent native oracle, ABI/FH3/SEH or game claim. Complete 30B. ECX item; stacked flags DWORD, test bit0 only; EAX captured item even after free; RET4. Source delete_native_mesh_item_00b93b60."
+      }
+    },
+    {
+      "address": "00b93b80",
+      "name": "BSP_DeleteNativeMeshItem_00b93b80",
+      "before_comment": {
+        "address": "00b93b80",
+        "function_name": "CG_scalar_deleting_dtor_00b93b80",
+        "comment": ""
+      },
+      "before_documentation": {
+        "hash": "91e4718dbb451d97dd06d7f5283b45bb8ef330cbc9947aadbab0bee635159320",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b93b80",
+        "function_name": "CG_scalar_deleting_dtor_00b93b80",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "",
+        "parameters": [],
+        "local_variables": [],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 24,
+            "name": "LAB_00b93b98"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "evidence": "CO complete eight native mesh resource routines751B and eleven supports105B: 272 instruction owners,27 direct/13 indirect transfers, saved Ghidra and installed PE equal. B947A0/B94850/B94900 call actual B94710 into local pair, allocate10h/base ref1, publish D63738/mesh+8/prefix+C, retain mesh, optionally stamp D6375C/D63780, then disarm cleanup and release captured creator. Native state0 releases/clears temporary mesh on loader or allocation failure; state1 frees raw item then state0. B93910 stamps D63738, unconditionally releases mesh+8, destroys item base on normal or unwind. Three scalar deletes free only flags bit0 and return captured item; B93BA0 clears only after release. Source numeric parser and current-profile deletion adapters compose existing raw resource dispatch and SAME canonical mesh domain. Failed host metadata admission explicitly defers cleanup; pre-publication native stack/SEH remains unproven. Five returning-free continuations repaired, four handlers defined under lock with prior comments preserved. Actual RTX5090 D3D9 fixture runs all three parsers with nine fields/two complete subsets, actual pointer-array append and current-profile deletion, read-failure parent cleanup and deferred metadata bind failure;57 canonical owners retire. Explicit cached effect zero-pass preimage; no cold shader, full-parent native oracle, ABI/FH3/SEH or game claim. Complete 30B. ECX item; stacked flags DWORD, test bit0 only; EAX captured item even after free; RET4. Source delete_native_mesh_item_00b93b80.",
+      "prototype": "void* __fastcall BSP_DeleteNativeMeshItem_00b93b80(void* item, void* unused_edx, uint flags)",
+      "prototype_result": "Successfully set prototype for function at 00b93b80 with __fastcall calling convention",
+      "ledger_name_output": "00b93b80 -> BSP_DeleteNativeMeshItem_00b93b80\n",
+      "ledger_function_output": "00b93b80 function delete_native_mesh_item_00b93b80\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00b93b80",
+        "function_name": "BSP_DeleteNativeMeshItem_00b93b80",
+        "comment": "\n\n[BSP reconstruction 00b93b80] CO update\nCO complete eight native mesh resource routines751B and eleven supports105B: 272 instruction owners,27 direct/13 indirect transfers, saved Ghidra and installed PE equal. B947A0/B94850/B94900 call actual B94710 into local pair, allocate10h/base ref1, publish D63738/mesh+8/prefix+C, retain mesh, optionally stamp D6375C/D63780, then disarm cleanup and release captured creator. Native state0 releases/clears temporary mesh on loader or allocation failure; state1 frees raw item then state0. B93910 stamps D63738, unconditionally releases mesh+8, destroys item base on normal or unwind. Three scalar deletes free only flags bit0 and return captured item; B93BA0 clears only after release. Source numeric parser and current-profile deletion adapters compose existing raw resource dispatch and SAME canonical mesh domain. Failed host metadata admission explicitly defers cleanup; pre-publication native stack/SEH remains unproven. Five returning-free continuations repaired, four handlers defined under lock with prior comments preserved. Actual RTX5090 D3D9 fixture runs all three parsers with nine fields/two complete subsets, actual pointer-array append and current-profile deletion, read-failure parent cleanup and deferred metadata bind failure;57 canonical owners retire. Explicit cached effect zero-pass preimage; no cold shader, full-parent native oracle, ABI/FH3/SEH or game claim. Complete 30B. ECX item; stacked flags DWORD, test bit0 only; EAX captured item even after free; RET4. Source delete_native_mesh_item_00b93b80."
+      }
+    },
+    {
+      "address": "00b93ba0",
+      "name": "BSP_ReleaseNativeMeshHandle_00b93ba0",
+      "before_comment": {
+        "address": "00b93ba0",
+        "function_name": "FUN_00b93ba0"
+      },
+      "before_documentation": {
+        "hash": "52dfba14b99e9ae4bf1a5d389376192f8878035c9f472ca4649e3404760fa103",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b93ba0",
+        "function_name": "FUN_00b93ba0",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "LVar2",
+            "type": "LONG",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "puVar1",
+            "type": "undefined4 *",
+            "storage": "(unique, 0x17200, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 32,
+            "name": "LAB_00b93bc0"
+          },
+          {
+            "relative_offset": 38,
+            "name": "LAB_00b93bc6"
+          }
+        ],
+        "completeness_score": 50.0
+      },
+      "evidence": "CO complete eight native mesh resource routines751B and eleven supports105B: 272 instruction owners,27 direct/13 indirect transfers, saved Ghidra and installed PE equal. B947A0/B94850/B94900 call actual B94710 into local pair, allocate10h/base ref1, publish D63738/mesh+8/prefix+C, retain mesh, optionally stamp D6375C/D63780, then disarm cleanup and release captured creator. Native state0 releases/clears temporary mesh on loader or allocation failure; state1 frees raw item then state0. B93910 stamps D63738, unconditionally releases mesh+8, destroys item base on normal or unwind. Three scalar deletes free only flags bit0 and return captured item; B93BA0 clears only after release. Source numeric parser and current-profile deletion adapters compose existing raw resource dispatch and SAME canonical mesh domain. Failed host metadata admission explicitly defers cleanup; pre-publication native stack/SEH remains unproven. Five returning-free continuations repaired, four handlers defined under lock with prior comments preserved. Actual RTX5090 D3D9 fixture runs all three parsers with nine fields/two complete subsets, actual pointer-array append and current-profile deletion, read-failure parent cleanup and deferred metadata bind failure;57 canonical owners retire. Explicit cached effect zero-pass preimage; no cold shader, full-parent native oracle, ABI/FH3/SEH or game claim. Complete 41B. ECX actual4h handle; RET; no stable return contract. Source release_native_mesh_handle_00b93ba0.",
+      "prototype": "void __fastcall BSP_ReleaseNativeMeshHandle_00b93ba0(void* handle, void* unused_edx)",
+      "prototype_result": "Successfully set prototype for function at 00b93ba0 with __fastcall calling convention",
+      "ledger_name_output": "00b93ba0 -> BSP_ReleaseNativeMeshHandle_00b93ba0\n",
+      "ledger_function_output": "00b93ba0 function release_native_mesh_handle_00b93ba0\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00b93ba0",
+        "function_name": "BSP_ReleaseNativeMeshHandle_00b93ba0",
+        "comment": "\n\n[BSP reconstruction 00b93ba0] CO update\nCO complete eight native mesh resource routines751B and eleven supports105B: 272 instruction owners,27 direct/13 indirect transfers, saved Ghidra and installed PE equal. B947A0/B94850/B94900 call actual B94710 into local pair, allocate10h/base ref1, publish D63738/mesh+8/prefix+C, retain mesh, optionally stamp D6375C/D63780, then disarm cleanup and release captured creator. Native state0 releases/clears temporary mesh on loader or allocation failure; state1 frees raw item then state0. B93910 stamps D63738, unconditionally releases mesh+8, destroys item base on normal or unwind. Three scalar deletes free only flags bit0 and return captured item; B93BA0 clears only after release. Source numeric parser and current-profile deletion adapters compose existing raw resource dispatch and SAME canonical mesh domain. Failed host metadata admission explicitly defers cleanup; pre-publication native stack/SEH remains unproven. Five returning-free continuations repaired, four handlers defined under lock with prior comments preserved. Actual RTX5090 D3D9 fixture runs all three parsers with nine fields/two complete subsets, actual pointer-array append and current-profile deletion, read-failure parent cleanup and deferred metadata bind failure;57 canonical owners retire. Explicit cached effect zero-pass preimage; no cold shader, full-parent native oracle, ABI/FH3/SEH or game claim. Complete 41B. ECX actual4h handle; RET; no stable return contract. Source release_native_mesh_handle_00b93ba0."
+      }
+    },
+    {
+      "address": "00cc2df0",
+      "name": "BSP_MeshResource_Support_00cc2df0",
+      "before_comment": {
+        "address": "00cc2df0",
+        "function_name": "Unwind@00cc2df0"
+      },
+      "before_documentation": {
+        "hash": "ceb09f5d0998ca7550e96f747eb1510ddd7fa64d0dd3b26c0f52e63402e8e0d3",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00cc2df0",
+        "function_name": "Unwind@00cc2df0",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "unaff_EBP",
+            "type": "int",
+            "storage": "(register, 0x14, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 80.0
+      },
+      "evidence": "CO complete eight native mesh resource routines751B and eleven supports105B: 272 instruction owners,27 direct/13 indirect transfers, saved Ghidra and installed PE equal. B947A0/B94850/B94900 call actual B94710 into local pair, allocate10h/base ref1, publish D63738/mesh+8/prefix+C, retain mesh, optionally stamp D6375C/D63780, then disarm cleanup and release captured creator. Native state0 releases/clears temporary mesh on loader or allocation failure; state1 frees raw item then state0. B93910 stamps D63738, unconditionally releases mesh+8, destroys item base on normal or unwind. Three scalar deletes free only flags bit0 and return captured item; B93BA0 clears only after release. Source numeric parser and current-profile deletion adapters compose existing raw resource dispatch and SAME canonical mesh domain. Failed host metadata admission explicitly defers cleanup; pre-publication native stack/SEH remains unproven. Five returning-free continuations repaired, four handlers defined under lock with prior comments preserved. Actual RTX5090 D3D9 fixture runs all three parsers with nine fields/two complete subsets, actual pointer-array append and current-profile deletion, read-failure parent cleanup and deferred metadata bind failure;57 canonical owners retire. Explicit cached effect zero-pass preimage; no cold shader, full-parent native oracle, ABI/FH3/SEH or game claim. Complete unwind or dispatch handler; support evidence only.",
+      "ledger_name_output": "00cc2df0 -> BSP_MeshResource_Support_00cc2df0\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00cc2df0",
+        "function_name": "BSP_MeshResource_Support_00cc2df0",
+        "comment": "\n\n[BSP reconstruction 00cc2df0] CO update\nCO complete eight native mesh resource routines751B and eleven supports105B: 272 instruction owners,27 direct/13 indirect transfers, saved Ghidra and installed PE equal. B947A0/B94850/B94900 call actual B94710 into local pair, allocate10h/base ref1, publish D63738/mesh+8/prefix+C, retain mesh, optionally stamp D6375C/D63780, then disarm cleanup and release captured creator. Native state0 releases/clears temporary mesh on loader or allocation failure; state1 frees raw item then state0. B93910 stamps D63738, unconditionally releases mesh+8, destroys item base on normal or unwind. Three scalar deletes free only flags bit0 and return captured item; B93BA0 clears only after release. Source numeric parser and current-profile deletion adapters compose existing raw resource dispatch and SAME canonical mesh domain. Failed host metadata admission explicitly defers cleanup; pre-publication native stack/SEH remains unproven. Five returning-free continuations repaired, four handlers defined under lock with prior comments preserved. Actual RTX5090 D3D9 fixture runs all three parsers with nine fields/two complete subsets, actual pointer-array append and current-profile deletion, read-failure parent cleanup and deferred metadata bind failure;57 canonical owners retire. Explicit cached effect zero-pass preimage; no cold shader, full-parent native oracle, ABI/FH3/SEH or game claim. Complete unwind or dispatch handler; support evidence only."
+      }
+    },
+    {
+      "address": "00cc2df8",
+      "name": "BSP_MeshResource_Support_00cc2df8",
+      "before_comment": {
+        "address": "00cc2df8",
+        "function_name": "BSP_MeshResource_Handler_00cc2df8",
+        "comment": ""
+      },
+      "before_documentation": {
+        "hash": "f0f2f68cf1132ae80dae34c6f69542164e987ef3beaddd17388b21e68e3a2bc1",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00cc2df8",
+        "function_name": "BSP_MeshResource_Handler_00cc2df8",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "",
+        "parameters": [],
+        "local_variables": [],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 100.0
+      },
+      "evidence": "CO complete eight native mesh resource routines751B and eleven supports105B: 272 instruction owners,27 direct/13 indirect transfers, saved Ghidra and installed PE equal. B947A0/B94850/B94900 call actual B94710 into local pair, allocate10h/base ref1, publish D63738/mesh+8/prefix+C, retain mesh, optionally stamp D6375C/D63780, then disarm cleanup and release captured creator. Native state0 releases/clears temporary mesh on loader or allocation failure; state1 frees raw item then state0. B93910 stamps D63738, unconditionally releases mesh+8, destroys item base on normal or unwind. Three scalar deletes free only flags bit0 and return captured item; B93BA0 clears only after release. Source numeric parser and current-profile deletion adapters compose existing raw resource dispatch and SAME canonical mesh domain. Failed host metadata admission explicitly defers cleanup; pre-publication native stack/SEH remains unproven. Five returning-free continuations repaired, four handlers defined under lock with prior comments preserved. Actual RTX5090 D3D9 fixture runs all three parsers with nine fields/two complete subsets, actual pointer-array append and current-profile deletion, read-failure parent cleanup and deferred metadata bind failure;57 canonical owners retire. Explicit cached effect zero-pass preimage; no cold shader, full-parent native oracle, ABI/FH3/SEH or game claim. Complete unwind or dispatch handler; support evidence only.",
+      "ledger_name_output": "00cc2df8 -> BSP_MeshResource_Support_00cc2df8\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00cc2df8",
+        "function_name": "BSP_MeshResource_Support_00cc2df8",
+        "comment": "\n\n[BSP reconstruction 00cc2df8] CO update\nCO complete eight native mesh resource routines751B and eleven supports105B: 272 instruction owners,27 direct/13 indirect transfers, saved Ghidra and installed PE equal. B947A0/B94850/B94900 call actual B94710 into local pair, allocate10h/base ref1, publish D63738/mesh+8/prefix+C, retain mesh, optionally stamp D6375C/D63780, then disarm cleanup and release captured creator. Native state0 releases/clears temporary mesh on loader or allocation failure; state1 frees raw item then state0. B93910 stamps D63738, unconditionally releases mesh+8, destroys item base on normal or unwind. Three scalar deletes free only flags bit0 and return captured item; B93BA0 clears only after release. Source numeric parser and current-profile deletion adapters compose existing raw resource dispatch and SAME canonical mesh domain. Failed host metadata admission explicitly defers cleanup; pre-publication native stack/SEH remains unproven. Five returning-free continuations repaired, four handlers defined under lock with prior comments preserved. Actual RTX5090 D3D9 fixture runs all three parsers with nine fields/two complete subsets, actual pointer-array append and current-profile deletion, read-failure parent cleanup and deferred metadata bind failure;57 canonical owners retire. Explicit cached effect zero-pass preimage; no cold shader, full-parent native oracle, ABI/FH3/SEH or game claim. Complete unwind or dispatch handler; support evidence only."
+      }
+    },
+    {
+      "address": "00cc2ef0",
+      "name": "BSP_MeshResource_Support_00cc2ef0",
+      "before_comment": {
+        "address": "00cc2ef0",
+        "function_name": "Unwind@00cc2ef0"
+      },
+      "before_documentation": {
+        "hash": "5160a80448bef202077805e7b60dba17ba6bee56bd919d0f4086d51e5634aef7",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00cc2ef0",
+        "function_name": "Unwind@00cc2ef0",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "unaff_EBP",
+            "type": "int",
+            "storage": "(register, 0x14, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 80.0
+      },
+      "evidence": "CO complete eight native mesh resource routines751B and eleven supports105B: 272 instruction owners,27 direct/13 indirect transfers, saved Ghidra and installed PE equal. B947A0/B94850/B94900 call actual B94710 into local pair, allocate10h/base ref1, publish D63738/mesh+8/prefix+C, retain mesh, optionally stamp D6375C/D63780, then disarm cleanup and release captured creator. Native state0 releases/clears temporary mesh on loader or allocation failure; state1 frees raw item then state0. B93910 stamps D63738, unconditionally releases mesh+8, destroys item base on normal or unwind. Three scalar deletes free only flags bit0 and return captured item; B93BA0 clears only after release. Source numeric parser and current-profile deletion adapters compose existing raw resource dispatch and SAME canonical mesh domain. Failed host metadata admission explicitly defers cleanup; pre-publication native stack/SEH remains unproven. Five returning-free continuations repaired, four handlers defined under lock with prior comments preserved. Actual RTX5090 D3D9 fixture runs all three parsers with nine fields/two complete subsets, actual pointer-array append and current-profile deletion, read-failure parent cleanup and deferred metadata bind failure;57 canonical owners retire. Explicit cached effect zero-pass preimage; no cold shader, full-parent native oracle, ABI/FH3/SEH or game claim. Complete unwind or dispatch handler; support evidence only.",
+      "ledger_name_output": "00cc2ef0 -> BSP_MeshResource_Support_00cc2ef0\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00cc2ef0",
+        "function_name": "BSP_MeshResource_Support_00cc2ef0",
+        "comment": "\n\n[BSP reconstruction 00cc2ef0] CO update\nCO complete eight native mesh resource routines751B and eleven supports105B: 272 instruction owners,27 direct/13 indirect transfers, saved Ghidra and installed PE equal. B947A0/B94850/B94900 call actual B94710 into local pair, allocate10h/base ref1, publish D63738/mesh+8/prefix+C, retain mesh, optionally stamp D6375C/D63780, then disarm cleanup and release captured creator. Native state0 releases/clears temporary mesh on loader or allocation failure; state1 frees raw item then state0. B93910 stamps D63738, unconditionally releases mesh+8, destroys item base on normal or unwind. Three scalar deletes free only flags bit0 and return captured item; B93BA0 clears only after release. Source numeric parser and current-profile deletion adapters compose existing raw resource dispatch and SAME canonical mesh domain. Failed host metadata admission explicitly defers cleanup; pre-publication native stack/SEH remains unproven. Five returning-free continuations repaired, four handlers defined under lock with prior comments preserved. Actual RTX5090 D3D9 fixture runs all three parsers with nine fields/two complete subsets, actual pointer-array append and current-profile deletion, read-failure parent cleanup and deferred metadata bind failure;57 canonical owners retire. Explicit cached effect zero-pass preimage; no cold shader, full-parent native oracle, ABI/FH3/SEH or game claim. Complete unwind or dispatch handler; support evidence only."
+      }
+    },
+    {
+      "address": "00cc2ef8",
+      "name": "BSP_MeshResource_Support_00cc2ef8",
+      "before_comment": {
+        "address": "00cc2ef8",
+        "function_name": "Unwind@00cc2ef8",
+        "comment": ""
+      },
+      "before_documentation": {
+        "hash": "7a7b6daf1cc3b5593ffe582065146da107fb70863c42ed44b6f9d995903c5a9d",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00cc2ef8",
+        "function_name": "Unwind@00cc2ef8",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "unaff_EBP",
+            "type": "int",
+            "storage": "(register, 0x14, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 100.0
+      },
+      "evidence": "CO complete eight native mesh resource routines751B and eleven supports105B: 272 instruction owners,27 direct/13 indirect transfers, saved Ghidra and installed PE equal. B947A0/B94850/B94900 call actual B94710 into local pair, allocate10h/base ref1, publish D63738/mesh+8/prefix+C, retain mesh, optionally stamp D6375C/D63780, then disarm cleanup and release captured creator. Native state0 releases/clears temporary mesh on loader or allocation failure; state1 frees raw item then state0. B93910 stamps D63738, unconditionally releases mesh+8, destroys item base on normal or unwind. Three scalar deletes free only flags bit0 and return captured item; B93BA0 clears only after release. Source numeric parser and current-profile deletion adapters compose existing raw resource dispatch and SAME canonical mesh domain. Failed host metadata admission explicitly defers cleanup; pre-publication native stack/SEH remains unproven. Five returning-free continuations repaired, four handlers defined under lock with prior comments preserved. Actual RTX5090 D3D9 fixture runs all three parsers with nine fields/two complete subsets, actual pointer-array append and current-profile deletion, read-failure parent cleanup and deferred metadata bind failure;57 canonical owners retire. Explicit cached effect zero-pass preimage; no cold shader, full-parent native oracle, ABI/FH3/SEH or game claim. Complete unwind or dispatch handler; support evidence only.",
+      "ledger_name_output": "00cc2ef8 -> BSP_MeshResource_Support_00cc2ef8\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00cc2ef8",
+        "function_name": "BSP_MeshResource_Support_00cc2ef8",
+        "comment": "\n\n[BSP reconstruction 00cc2ef8] CO update\nCO complete eight native mesh resource routines751B and eleven supports105B: 272 instruction owners,27 direct/13 indirect transfers, saved Ghidra and installed PE equal. B947A0/B94850/B94900 call actual B94710 into local pair, allocate10h/base ref1, publish D63738/mesh+8/prefix+C, retain mesh, optionally stamp D6375C/D63780, then disarm cleanup and release captured creator. Native state0 releases/clears temporary mesh on loader or allocation failure; state1 frees raw item then state0. B93910 stamps D63738, unconditionally releases mesh+8, destroys item base on normal or unwind. Three scalar deletes free only flags bit0 and return captured item; B93BA0 clears only after release. Source numeric parser and current-profile deletion adapters compose existing raw resource dispatch and SAME canonical mesh domain. Failed host metadata admission explicitly defers cleanup; pre-publication native stack/SEH remains unproven. Five returning-free continuations repaired, four handlers defined under lock with prior comments preserved. Actual RTX5090 D3D9 fixture runs all three parsers with nine fields/two complete subsets, actual pointer-array append and current-profile deletion, read-failure parent cleanup and deferred metadata bind failure;57 canonical owners retire. Explicit cached effect zero-pass preimage; no cold shader, full-parent native oracle, ABI/FH3/SEH or game claim. Complete unwind or dispatch handler; support evidence only."
+      }
+    },
+    {
+      "address": "00cc2f03",
+      "name": "BSP_MeshResource_Support_00cc2f03",
+      "before_comment": {
+        "address": "00cc2f03",
+        "function_name": "BSP_MeshResource_Handler_00cc2f03",
+        "comment": ""
+      },
+      "before_documentation": {
+        "hash": "f0f2f68cf1132ae80dae34c6f69542164e987ef3beaddd17388b21e68e3a2bc1",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00cc2f03",
+        "function_name": "BSP_MeshResource_Handler_00cc2f03",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "",
+        "parameters": [],
+        "local_variables": [],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 100.0
+      },
+      "evidence": "CO complete eight native mesh resource routines751B and eleven supports105B: 272 instruction owners,27 direct/13 indirect transfers, saved Ghidra and installed PE equal. B947A0/B94850/B94900 call actual B94710 into local pair, allocate10h/base ref1, publish D63738/mesh+8/prefix+C, retain mesh, optionally stamp D6375C/D63780, then disarm cleanup and release captured creator. Native state0 releases/clears temporary mesh on loader or allocation failure; state1 frees raw item then state0. B93910 stamps D63738, unconditionally releases mesh+8, destroys item base on normal or unwind. Three scalar deletes free only flags bit0 and return captured item; B93BA0 clears only after release. Source numeric parser and current-profile deletion adapters compose existing raw resource dispatch and SAME canonical mesh domain. Failed host metadata admission explicitly defers cleanup; pre-publication native stack/SEH remains unproven. Five returning-free continuations repaired, four handlers defined under lock with prior comments preserved. Actual RTX5090 D3D9 fixture runs all three parsers with nine fields/two complete subsets, actual pointer-array append and current-profile deletion, read-failure parent cleanup and deferred metadata bind failure;57 canonical owners retire. Explicit cached effect zero-pass preimage; no cold shader, full-parent native oracle, ABI/FH3/SEH or game claim. Complete unwind or dispatch handler; support evidence only.",
+      "ledger_name_output": "00cc2f03 -> BSP_MeshResource_Support_00cc2f03\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00cc2f03",
+        "function_name": "BSP_MeshResource_Support_00cc2f03",
+        "comment": "\n\n[BSP reconstruction 00cc2f03] CO update\nCO complete eight native mesh resource routines751B and eleven supports105B: 272 instruction owners,27 direct/13 indirect transfers, saved Ghidra and installed PE equal. B947A0/B94850/B94900 call actual B94710 into local pair, allocate10h/base ref1, publish D63738/mesh+8/prefix+C, retain mesh, optionally stamp D6375C/D63780, then disarm cleanup and release captured creator. Native state0 releases/clears temporary mesh on loader or allocation failure; state1 frees raw item then state0. B93910 stamps D63738, unconditionally releases mesh+8, destroys item base on normal or unwind. Three scalar deletes free only flags bit0 and return captured item; B93BA0 clears only after release. Source numeric parser and current-profile deletion adapters compose existing raw resource dispatch and SAME canonical mesh domain. Failed host metadata admission explicitly defers cleanup; pre-publication native stack/SEH remains unproven. Five returning-free continuations repaired, four handlers defined under lock with prior comments preserved. Actual RTX5090 D3D9 fixture runs all three parsers with nine fields/two complete subsets, actual pointer-array append and current-profile deletion, read-failure parent cleanup and deferred metadata bind failure;57 canonical owners retire. Explicit cached effect zero-pass preimage; no cold shader, full-parent native oracle, ABI/FH3/SEH or game claim. Complete unwind or dispatch handler; support evidence only."
+      }
+    },
+    {
+      "address": "00cc2f10",
+      "name": "BSP_MeshResource_Support_00cc2f10",
+      "before_comment": {
+        "address": "00cc2f10",
+        "function_name": "Unwind@00cc2f10"
+      },
+      "before_documentation": {
+        "hash": "5160a80448bef202077805e7b60dba17ba6bee56bd919d0f4086d51e5634aef7",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00cc2f10",
+        "function_name": "Unwind@00cc2f10",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "unaff_EBP",
+            "type": "int",
+            "storage": "(register, 0x14, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 80.0
+      },
+      "evidence": "CO complete eight native mesh resource routines751B and eleven supports105B: 272 instruction owners,27 direct/13 indirect transfers, saved Ghidra and installed PE equal. B947A0/B94850/B94900 call actual B94710 into local pair, allocate10h/base ref1, publish D63738/mesh+8/prefix+C, retain mesh, optionally stamp D6375C/D63780, then disarm cleanup and release captured creator. Native state0 releases/clears temporary mesh on loader or allocation failure; state1 frees raw item then state0. B93910 stamps D63738, unconditionally releases mesh+8, destroys item base on normal or unwind. Three scalar deletes free only flags bit0 and return captured item; B93BA0 clears only after release. Source numeric parser and current-profile deletion adapters compose existing raw resource dispatch and SAME canonical mesh domain. Failed host metadata admission explicitly defers cleanup; pre-publication native stack/SEH remains unproven. Five returning-free continuations repaired, four handlers defined under lock with prior comments preserved. Actual RTX5090 D3D9 fixture runs all three parsers with nine fields/two complete subsets, actual pointer-array append and current-profile deletion, read-failure parent cleanup and deferred metadata bind failure;57 canonical owners retire. Explicit cached effect zero-pass preimage; no cold shader, full-parent native oracle, ABI/FH3/SEH or game claim. Complete unwind or dispatch handler; support evidence only.",
+      "ledger_name_output": "00cc2f10 -> BSP_MeshResource_Support_00cc2f10\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00cc2f10",
+        "function_name": "BSP_MeshResource_Support_00cc2f10",
+        "comment": "\n\n[BSP reconstruction 00cc2f10] CO update\nCO complete eight native mesh resource routines751B and eleven supports105B: 272 instruction owners,27 direct/13 indirect transfers, saved Ghidra and installed PE equal. B947A0/B94850/B94900 call actual B94710 into local pair, allocate10h/base ref1, publish D63738/mesh+8/prefix+C, retain mesh, optionally stamp D6375C/D63780, then disarm cleanup and release captured creator. Native state0 releases/clears temporary mesh on loader or allocation failure; state1 frees raw item then state0. B93910 stamps D63738, unconditionally releases mesh+8, destroys item base on normal or unwind. Three scalar deletes free only flags bit0 and return captured item; B93BA0 clears only after release. Source numeric parser and current-profile deletion adapters compose existing raw resource dispatch and SAME canonical mesh domain. Failed host metadata admission explicitly defers cleanup; pre-publication native stack/SEH remains unproven. Five returning-free continuations repaired, four handlers defined under lock with prior comments preserved. Actual RTX5090 D3D9 fixture runs all three parsers with nine fields/two complete subsets, actual pointer-array append and current-profile deletion, read-failure parent cleanup and deferred metadata bind failure;57 canonical owners retire. Explicit cached effect zero-pass preimage; no cold shader, full-parent native oracle, ABI/FH3/SEH or game claim. Complete unwind or dispatch handler; support evidence only."
+      }
+    },
+    {
+      "address": "00cc2f18",
+      "name": "BSP_MeshResource_Support_00cc2f18",
+      "before_comment": {
+        "address": "00cc2f18",
+        "function_name": "Unwind@00cc2f18",
+        "comment": ""
+      },
+      "before_documentation": {
+        "hash": "7a7b6daf1cc3b5593ffe582065146da107fb70863c42ed44b6f9d995903c5a9d",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00cc2f18",
+        "function_name": "Unwind@00cc2f18",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "unaff_EBP",
+            "type": "int",
+            "storage": "(register, 0x14, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 100.0
+      },
+      "evidence": "CO complete eight native mesh resource routines751B and eleven supports105B: 272 instruction owners,27 direct/13 indirect transfers, saved Ghidra and installed PE equal. B947A0/B94850/B94900 call actual B94710 into local pair, allocate10h/base ref1, publish D63738/mesh+8/prefix+C, retain mesh, optionally stamp D6375C/D63780, then disarm cleanup and release captured creator. Native state0 releases/clears temporary mesh on loader or allocation failure; state1 frees raw item then state0. B93910 stamps D63738, unconditionally releases mesh+8, destroys item base on normal or unwind. Three scalar deletes free only flags bit0 and return captured item; B93BA0 clears only after release. Source numeric parser and current-profile deletion adapters compose existing raw resource dispatch and SAME canonical mesh domain. Failed host metadata admission explicitly defers cleanup; pre-publication native stack/SEH remains unproven. Five returning-free continuations repaired, four handlers defined under lock with prior comments preserved. Actual RTX5090 D3D9 fixture runs all three parsers with nine fields/two complete subsets, actual pointer-array append and current-profile deletion, read-failure parent cleanup and deferred metadata bind failure;57 canonical owners retire. Explicit cached effect zero-pass preimage; no cold shader, full-parent native oracle, ABI/FH3/SEH or game claim. Complete unwind or dispatch handler; support evidence only.",
+      "ledger_name_output": "00cc2f18 -> BSP_MeshResource_Support_00cc2f18\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00cc2f18",
+        "function_name": "BSP_MeshResource_Support_00cc2f18",
+        "comment": "\n\n[BSP reconstruction 00cc2f18] CO update\nCO complete eight native mesh resource routines751B and eleven supports105B: 272 instruction owners,27 direct/13 indirect transfers, saved Ghidra and installed PE equal. B947A0/B94850/B94900 call actual B94710 into local pair, allocate10h/base ref1, publish D63738/mesh+8/prefix+C, retain mesh, optionally stamp D6375C/D63780, then disarm cleanup and release captured creator. Native state0 releases/clears temporary mesh on loader or allocation failure; state1 frees raw item then state0. B93910 stamps D63738, unconditionally releases mesh+8, destroys item base on normal or unwind. Three scalar deletes free only flags bit0 and return captured item; B93BA0 clears only after release. Source numeric parser and current-profile deletion adapters compose existing raw resource dispatch and SAME canonical mesh domain. Failed host metadata admission explicitly defers cleanup; pre-publication native stack/SEH remains unproven. Five returning-free continuations repaired, four handlers defined under lock with prior comments preserved. Actual RTX5090 D3D9 fixture runs all three parsers with nine fields/two complete subsets, actual pointer-array append and current-profile deletion, read-failure parent cleanup and deferred metadata bind failure;57 canonical owners retire. Explicit cached effect zero-pass preimage; no cold shader, full-parent native oracle, ABI/FH3/SEH or game claim. Complete unwind or dispatch handler; support evidence only."
+      }
+    },
+    {
+      "address": "00cc2f23",
+      "name": "BSP_MeshResource_Support_00cc2f23",
+      "before_comment": {
+        "address": "00cc2f23",
+        "function_name": "BSP_MeshResource_Handler_00cc2f23",
+        "comment": ""
+      },
+      "before_documentation": {
+        "hash": "f0f2f68cf1132ae80dae34c6f69542164e987ef3beaddd17388b21e68e3a2bc1",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00cc2f23",
+        "function_name": "BSP_MeshResource_Handler_00cc2f23",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "",
+        "parameters": [],
+        "local_variables": [],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 100.0
+      },
+      "evidence": "CO complete eight native mesh resource routines751B and eleven supports105B: 272 instruction owners,27 direct/13 indirect transfers, saved Ghidra and installed PE equal. B947A0/B94850/B94900 call actual B94710 into local pair, allocate10h/base ref1, publish D63738/mesh+8/prefix+C, retain mesh, optionally stamp D6375C/D63780, then disarm cleanup and release captured creator. Native state0 releases/clears temporary mesh on loader or allocation failure; state1 frees raw item then state0. B93910 stamps D63738, unconditionally releases mesh+8, destroys item base on normal or unwind. Three scalar deletes free only flags bit0 and return captured item; B93BA0 clears only after release. Source numeric parser and current-profile deletion adapters compose existing raw resource dispatch and SAME canonical mesh domain. Failed host metadata admission explicitly defers cleanup; pre-publication native stack/SEH remains unproven. Five returning-free continuations repaired, four handlers defined under lock with prior comments preserved. Actual RTX5090 D3D9 fixture runs all three parsers with nine fields/two complete subsets, actual pointer-array append and current-profile deletion, read-failure parent cleanup and deferred metadata bind failure;57 canonical owners retire. Explicit cached effect zero-pass preimage; no cold shader, full-parent native oracle, ABI/FH3/SEH or game claim. Complete unwind or dispatch handler; support evidence only.",
+      "ledger_name_output": "00cc2f23 -> BSP_MeshResource_Support_00cc2f23\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00cc2f23",
+        "function_name": "BSP_MeshResource_Support_00cc2f23",
+        "comment": "\n\n[BSP reconstruction 00cc2f23] CO update\nCO complete eight native mesh resource routines751B and eleven supports105B: 272 instruction owners,27 direct/13 indirect transfers, saved Ghidra and installed PE equal. B947A0/B94850/B94900 call actual B94710 into local pair, allocate10h/base ref1, publish D63738/mesh+8/prefix+C, retain mesh, optionally stamp D6375C/D63780, then disarm cleanup and release captured creator. Native state0 releases/clears temporary mesh on loader or allocation failure; state1 frees raw item then state0. B93910 stamps D63738, unconditionally releases mesh+8, destroys item base on normal or unwind. Three scalar deletes free only flags bit0 and return captured item; B93BA0 clears only after release. Source numeric parser and current-profile deletion adapters compose existing raw resource dispatch and SAME canonical mesh domain. Failed host metadata admission explicitly defers cleanup; pre-publication native stack/SEH remains unproven. Five returning-free continuations repaired, four handlers defined under lock with prior comments preserved. Actual RTX5090 D3D9 fixture runs all three parsers with nine fields/two complete subsets, actual pointer-array append and current-profile deletion, read-failure parent cleanup and deferred metadata bind failure;57 canonical owners retire. Explicit cached effect zero-pass preimage; no cold shader, full-parent native oracle, ABI/FH3/SEH or game claim. Complete unwind or dispatch handler; support evidence only."
+      }
+    },
+    {
+      "address": "00cc2f30",
+      "name": "BSP_MeshResource_Support_00cc2f30",
+      "before_comment": {
+        "address": "00cc2f30",
+        "function_name": "Unwind@00cc2f30"
+      },
+      "before_documentation": {
+        "hash": "5160a80448bef202077805e7b60dba17ba6bee56bd919d0f4086d51e5634aef7",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00cc2f30",
+        "function_name": "Unwind@00cc2f30",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "unaff_EBP",
+            "type": "int",
+            "storage": "(register, 0x14, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 80.0
+      },
+      "evidence": "CO complete eight native mesh resource routines751B and eleven supports105B: 272 instruction owners,27 direct/13 indirect transfers, saved Ghidra and installed PE equal. B947A0/B94850/B94900 call actual B94710 into local pair, allocate10h/base ref1, publish D63738/mesh+8/prefix+C, retain mesh, optionally stamp D6375C/D63780, then disarm cleanup and release captured creator. Native state0 releases/clears temporary mesh on loader or allocation failure; state1 frees raw item then state0. B93910 stamps D63738, unconditionally releases mesh+8, destroys item base on normal or unwind. Three scalar deletes free only flags bit0 and return captured item; B93BA0 clears only after release. Source numeric parser and current-profile deletion adapters compose existing raw resource dispatch and SAME canonical mesh domain. Failed host metadata admission explicitly defers cleanup; pre-publication native stack/SEH remains unproven. Five returning-free continuations repaired, four handlers defined under lock with prior comments preserved. Actual RTX5090 D3D9 fixture runs all three parsers with nine fields/two complete subsets, actual pointer-array append and current-profile deletion, read-failure parent cleanup and deferred metadata bind failure;57 canonical owners retire. Explicit cached effect zero-pass preimage; no cold shader, full-parent native oracle, ABI/FH3/SEH or game claim. Complete unwind or dispatch handler; support evidence only.",
+      "ledger_name_output": "00cc2f30 -> BSP_MeshResource_Support_00cc2f30\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00cc2f30",
+        "function_name": "BSP_MeshResource_Support_00cc2f30",
+        "comment": "\n\n[BSP reconstruction 00cc2f30] CO update\nCO complete eight native mesh resource routines751B and eleven supports105B: 272 instruction owners,27 direct/13 indirect transfers, saved Ghidra and installed PE equal. B947A0/B94850/B94900 call actual B94710 into local pair, allocate10h/base ref1, publish D63738/mesh+8/prefix+C, retain mesh, optionally stamp D6375C/D63780, then disarm cleanup and release captured creator. Native state0 releases/clears temporary mesh on loader or allocation failure; state1 frees raw item then state0. B93910 stamps D63738, unconditionally releases mesh+8, destroys item base on normal or unwind. Three scalar deletes free only flags bit0 and return captured item; B93BA0 clears only after release. Source numeric parser and current-profile deletion adapters compose existing raw resource dispatch and SAME canonical mesh domain. Failed host metadata admission explicitly defers cleanup; pre-publication native stack/SEH remains unproven. Five returning-free continuations repaired, four handlers defined under lock with prior comments preserved. Actual RTX5090 D3D9 fixture runs all three parsers with nine fields/two complete subsets, actual pointer-array append and current-profile deletion, read-failure parent cleanup and deferred metadata bind failure;57 canonical owners retire. Explicit cached effect zero-pass preimage; no cold shader, full-parent native oracle, ABI/FH3/SEH or game claim. Complete unwind or dispatch handler; support evidence only."
+      }
+    },
+    {
+      "address": "00cc2f38",
+      "name": "BSP_MeshResource_Support_00cc2f38",
+      "before_comment": {
+        "address": "00cc2f38",
+        "function_name": "Unwind@00cc2f38",
+        "comment": ""
+      },
+      "before_documentation": {
+        "hash": "7a7b6daf1cc3b5593ffe582065146da107fb70863c42ed44b6f9d995903c5a9d",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00cc2f38",
+        "function_name": "Unwind@00cc2f38",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "unaff_EBP",
+            "type": "int",
+            "storage": "(register, 0x14, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 100.0
+      },
+      "evidence": "CO complete eight native mesh resource routines751B and eleven supports105B: 272 instruction owners,27 direct/13 indirect transfers, saved Ghidra and installed PE equal. B947A0/B94850/B94900 call actual B94710 into local pair, allocate10h/base ref1, publish D63738/mesh+8/prefix+C, retain mesh, optionally stamp D6375C/D63780, then disarm cleanup and release captured creator. Native state0 releases/clears temporary mesh on loader or allocation failure; state1 frees raw item then state0. B93910 stamps D63738, unconditionally releases mesh+8, destroys item base on normal or unwind. Three scalar deletes free only flags bit0 and return captured item; B93BA0 clears only after release. Source numeric parser and current-profile deletion adapters compose existing raw resource dispatch and SAME canonical mesh domain. Failed host metadata admission explicitly defers cleanup; pre-publication native stack/SEH remains unproven. Five returning-free continuations repaired, four handlers defined under lock with prior comments preserved. Actual RTX5090 D3D9 fixture runs all three parsers with nine fields/two complete subsets, actual pointer-array append and current-profile deletion, read-failure parent cleanup and deferred metadata bind failure;57 canonical owners retire. Explicit cached effect zero-pass preimage; no cold shader, full-parent native oracle, ABI/FH3/SEH or game claim. Complete unwind or dispatch handler; support evidence only.",
+      "ledger_name_output": "00cc2f38 -> BSP_MeshResource_Support_00cc2f38\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00cc2f38",
+        "function_name": "BSP_MeshResource_Support_00cc2f38",
+        "comment": "\n\n[BSP reconstruction 00cc2f38] CO update\nCO complete eight native mesh resource routines751B and eleven supports105B: 272 instruction owners,27 direct/13 indirect transfers, saved Ghidra and installed PE equal. B947A0/B94850/B94900 call actual B94710 into local pair, allocate10h/base ref1, publish D63738/mesh+8/prefix+C, retain mesh, optionally stamp D6375C/D63780, then disarm cleanup and release captured creator. Native state0 releases/clears temporary mesh on loader or allocation failure; state1 frees raw item then state0. B93910 stamps D63738, unconditionally releases mesh+8, destroys item base on normal or unwind. Three scalar deletes free only flags bit0 and return captured item; B93BA0 clears only after release. Source numeric parser and current-profile deletion adapters compose existing raw resource dispatch and SAME canonical mesh domain. Failed host metadata admission explicitly defers cleanup; pre-publication native stack/SEH remains unproven. Five returning-free continuations repaired, four handlers defined under lock with prior comments preserved. Actual RTX5090 D3D9 fixture runs all three parsers with nine fields/two complete subsets, actual pointer-array append and current-profile deletion, read-failure parent cleanup and deferred metadata bind failure;57 canonical owners retire. Explicit cached effect zero-pass preimage; no cold shader, full-parent native oracle, ABI/FH3/SEH or game claim. Complete unwind or dispatch handler; support evidence only."
+      }
+    },
+    {
+      "address": "00cc2f43",
+      "name": "BSP_MeshResource_Support_00cc2f43",
+      "before_comment": {
+        "address": "00cc2f43",
+        "function_name": "BSP_MeshResource_Handler_00cc2f43",
+        "comment": ""
+      },
+      "before_documentation": {
+        "hash": "f0f2f68cf1132ae80dae34c6f69542164e987ef3beaddd17388b21e68e3a2bc1",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00cc2f43",
+        "function_name": "BSP_MeshResource_Handler_00cc2f43",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "",
+        "parameters": [],
+        "local_variables": [],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 100.0
+      },
+      "evidence": "CO complete eight native mesh resource routines751B and eleven supports105B: 272 instruction owners,27 direct/13 indirect transfers, saved Ghidra and installed PE equal. B947A0/B94850/B94900 call actual B94710 into local pair, allocate10h/base ref1, publish D63738/mesh+8/prefix+C, retain mesh, optionally stamp D6375C/D63780, then disarm cleanup and release captured creator. Native state0 releases/clears temporary mesh on loader or allocation failure; state1 frees raw item then state0. B93910 stamps D63738, unconditionally releases mesh+8, destroys item base on normal or unwind. Three scalar deletes free only flags bit0 and return captured item; B93BA0 clears only after release. Source numeric parser and current-profile deletion adapters compose existing raw resource dispatch and SAME canonical mesh domain. Failed host metadata admission explicitly defers cleanup; pre-publication native stack/SEH remains unproven. Five returning-free continuations repaired, four handlers defined under lock with prior comments preserved. Actual RTX5090 D3D9 fixture runs all three parsers with nine fields/two complete subsets, actual pointer-array append and current-profile deletion, read-failure parent cleanup and deferred metadata bind failure;57 canonical owners retire. Explicit cached effect zero-pass preimage; no cold shader, full-parent native oracle, ABI/FH3/SEH or game claim. Complete unwind or dispatch handler; support evidence only.",
+      "ledger_name_output": "00cc2f43 -> BSP_MeshResource_Support_00cc2f43\n",
+      "comment_saved": true,
+      "prior_comment_preserved": true,
+      "after_comment": {
+        "address": "00cc2f43",
+        "function_name": "BSP_MeshResource_Support_00cc2f43",
+        "comment": "\n\n[BSP reconstruction 00cc2f43] CO update\nCO complete eight native mesh resource routines751B and eleven supports105B: 272 instruction owners,27 direct/13 indirect transfers, saved Ghidra and installed PE equal. B947A0/B94850/B94900 call actual B94710 into local pair, allocate10h/base ref1, publish D63738/mesh+8/prefix+C, retain mesh, optionally stamp D6375C/D63780, then disarm cleanup and release captured creator. Native state0 releases/clears temporary mesh on loader or allocation failure; state1 frees raw item then state0. B93910 stamps D63738, unconditionally releases mesh+8, destroys item base on normal or unwind. Three scalar deletes free only flags bit0 and return captured item; B93BA0 clears only after release. Source numeric parser and current-profile deletion adapters compose existing raw resource dispatch and SAME canonical mesh domain. Failed host metadata admission explicitly defers cleanup; pre-publication native stack/SEH remains unproven. Five returning-free continuations repaired, four handlers defined under lock with prior comments preserved. Actual RTX5090 D3D9 fixture runs all three parsers with nine fields/two complete subsets, actual pointer-array append and current-profile deletion, read-failure parent cleanup and deferred metadata bind failure;57 canonical owners retire. Explicit cached effect zero-pass preimage; no cold shader, full-parent native oracle, ABI/FH3/SEH or game claim. Complete unwind or dispatch handler; support evidence only."
+      }
+    }
+  ],
+  "actions": [
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00b947a0",
+        "prototype": "void* __fastcall BSP_ResourceMeshParser_Parse(void* unused_parser, void* unused_edx, void* parent_handle)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00b947a0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b947a0",
+        "new_name": "BSP_ResourceMeshParser_Parse"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b947a0 from 'BSP_ResourceMeshParser_Parse' to 'BSP_ResourceMeshParser_Parse'\", \"warnings\": [\"Function name 'BSP_ResourceMeshParser_Parse' \\u2014 main part 'ResourceMeshParser_Parse' is not PascalCase. Expected: ResourcemeshparserParse\", \"Function name 'BSP_ResourceMeshParser_Parse' \\u2014 main part 'ResourceMeshParser_Parse' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_ResourceMeshParser_Parse' does not start with a recognized verb. First word 'Resource' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b947a0",
+        "new_name": "BSP_ResourceMeshParser_Parse"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b947a0 from 'BSP_ResourceMeshParser_Parse' to 'BSP_ResourceMeshParser_Parse'\", \"warnings\": [\"Function name 'BSP_ResourceMeshParser_Parse' \\u2014 main part 'ResourceMeshParser_Parse' is not PascalCase. Expected: ResourcemeshparserParse\", \"Function name 'BSP_ResourceMeshParser_Parse' \\u2014 main part 'ResourceMeshParser_Parse' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_ResourceMeshParser_Parse' does not start with a recognized verb. First word 'Resource' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00b947a0",
+        "comment": "[BSP reconstruction 00b947a0]\nBSP reconstruction hypothesis: Call00b94710 into local pair; allocate10h resource item/base ref1; write vtable00d63738, object at+8 and serialized prefix at+C; retain underlying object then release local reference. Wrapper allocation-null still releases temporary object. ABI: Incoming ECX parser object unused; one node-wrapper pointer stack argument; EAX resource item or null; RET4. Full native span matches installed PE. Field decode/renderer dependencies remain explicit; not a loaded-mesh or native ABI claim. Evidence: docs/RESOURCE_MESH_PARSER_BOUNDARY.md; reports/resource_mesh_parser_boundary_audit.json. Original ABI: Incoming ECX parser object unused; one node-wrapper pointer stack argument; EAX resource item or null; RET4.. Evidence: docs/RESOURCE_MESH_PARSER_BOUNDARY.md; reports/resource_mesh_parser_boundary_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation.\n\n[BSP reconstruction 00b947a0] CO update\nCO complete eight native mesh resource routines751B and eleven supports105B: 272 instruction owners,27 direct/13 indirect transfers, saved Ghidra and installed PE equal. B947A0/B94850/B94900 call actual B94710 into local pair, allocate10h/base ref1, publish D63738/mesh+8/prefix+C, retain mesh, optionally stamp D6375C/D63780, then disarm cleanup and release captured creator. Native state0 releases/clears temporary mesh on loader or allocation failure; state1 frees raw item then state0. B93910 stamps D63738, unconditionally releases mesh+8, destroys item base on normal or unwind. Three scalar deletes free only flags bit0 and return captured item; B93BA0 clears only after release. Source numeric parser and current-profile deletion adapters compose existing raw resource dispatch and SAME canonical mesh domain. Failed host metadata admission explicitly defers cleanup; pre-publication native stack/SEH remains unproven. Five returning-free continuations repaired, four handlers defined under lock with prior comments preserved. Actual RTX5090 D3D9 fixture runs all three parsers with nine fields/two complete subsets, actual pointer-array append and current-profile deletion, read-failure parent cleanup and deferred metadata bind failure;57 canonical owners retire. Explicit cached effect zero-pass preimage; no cold shader, full-parent native oracle, ABI/FH3/SEH or game claim. Complete 169B. ECX parser unused; one stacked parent node handle; EAX item or null; RET4. Source parse_native_mesh_item_00b947a0."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00b947a0\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00b94850",
+        "prototype": "void* __fastcall BSP_ParseNativeMeshItem_00b94850(void* unused_parser, void* unused_edx, void* parent_handle)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00b94850 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b94850",
+        "new_name": "BSP_ParseNativeMeshItem_00b94850"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b94850 from 'BSP_ParseNativeMeshItem_00b94850' to 'BSP_ParseNativeMeshItem_00b94850'\", \"warnings\": [\"Function name 'BSP_ParseNativeMeshItem_00b94850' \\u2014 main part 'ParseNativeMeshItem_00b94850' is not PascalCase. Expected: Parsenativemeshitem00b94850\", \"Function name 'BSP_ParseNativeMeshItem_00b94850' \\u2014 main part 'ParseNativeMeshItem_00b94850' contains underscores. Use PascalCase after the module prefix.\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b94850",
+        "new_name": "BSP_ParseNativeMeshItem_00b94850"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b94850 from 'BSP_ParseNativeMeshItem_00b94850' to 'BSP_ParseNativeMeshItem_00b94850'\", \"warnings\": [\"Function name 'BSP_ParseNativeMeshItem_00b94850' \\u2014 main part 'ParseNativeMeshItem_00b94850' is not PascalCase. Expected: Parsenativemeshitem00b94850\", \"Function name 'BSP_ParseNativeMeshItem_00b94850' \\u2014 main part 'ParseNativeMeshItem_00b94850' contains underscores. Use PascalCase after the module prefix.\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00b94850",
+        "comment": "\n\n[BSP reconstruction 00b94850] CO update\nCO complete eight native mesh resource routines751B and eleven supports105B: 272 instruction owners,27 direct/13 indirect transfers, saved Ghidra and installed PE equal. B947A0/B94850/B94900 call actual B94710 into local pair, allocate10h/base ref1, publish D63738/mesh+8/prefix+C, retain mesh, optionally stamp D6375C/D63780, then disarm cleanup and release captured creator. Native state0 releases/clears temporary mesh on loader or allocation failure; state1 frees raw item then state0. B93910 stamps D63738, unconditionally releases mesh+8, destroys item base on normal or unwind. Three scalar deletes free only flags bit0 and return captured item; B93BA0 clears only after release. Source numeric parser and current-profile deletion adapters compose existing raw resource dispatch and SAME canonical mesh domain. Failed host metadata admission explicitly defers cleanup; pre-publication native stack/SEH remains unproven. Five returning-free continuations repaired, four handlers defined under lock with prior comments preserved. Actual RTX5090 D3D9 fixture runs all three parsers with nine fields/two complete subsets, actual pointer-array append and current-profile deletion, read-failure parent cleanup and deferred metadata bind failure;57 canonical owners retire. Explicit cached effect zero-pass preimage; no cold shader, full-parent native oracle, ABI/FH3/SEH or game claim. Complete 175B. ECX parser unused; one stacked parent node handle; EAX item or null; RET4. Source parse_native_mesh_item_00b94850."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00b94850\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00b94900",
+        "prototype": "void* __fastcall BSP_ParseNativeMeshItem_00b94900(void* unused_parser, void* unused_edx, void* parent_handle)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00b94900 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b94900",
+        "new_name": "BSP_ParseNativeMeshItem_00b94900"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b94900 from 'BSP_ParseNativeMeshItem_00b94900' to 'BSP_ParseNativeMeshItem_00b94900'\", \"warnings\": [\"Function name 'BSP_ParseNativeMeshItem_00b94900' \\u2014 main part 'ParseNativeMeshItem_00b94900' is not PascalCase. Expected: Parsenativemeshitem00b94900\", \"Function name 'BSP_ParseNativeMeshItem_00b94900' \\u2014 main part 'ParseNativeMeshItem_00b94900' contains underscores. Use PascalCase after the module prefix.\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b94900",
+        "new_name": "BSP_ParseNativeMeshItem_00b94900"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b94900 from 'BSP_ParseNativeMeshItem_00b94900' to 'BSP_ParseNativeMeshItem_00b94900'\", \"warnings\": [\"Function name 'BSP_ParseNativeMeshItem_00b94900' \\u2014 main part 'ParseNativeMeshItem_00b94900' is not PascalCase. Expected: Parsenativemeshitem00b94900\", \"Function name 'BSP_ParseNativeMeshItem_00b94900' \\u2014 main part 'ParseNativeMeshItem_00b94900' contains underscores. Use PascalCase after the module prefix.\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00b94900",
+        "comment": "\n\n[BSP reconstruction 00b94900] CO update\nCO complete eight native mesh resource routines751B and eleven supports105B: 272 instruction owners,27 direct/13 indirect transfers, saved Ghidra and installed PE equal. B947A0/B94850/B94900 call actual B94710 into local pair, allocate10h/base ref1, publish D63738/mesh+8/prefix+C, retain mesh, optionally stamp D6375C/D63780, then disarm cleanup and release captured creator. Native state0 releases/clears temporary mesh on loader or allocation failure; state1 frees raw item then state0. B93910 stamps D63738, unconditionally releases mesh+8, destroys item base on normal or unwind. Three scalar deletes free only flags bit0 and return captured item; B93BA0 clears only after release. Source numeric parser and current-profile deletion adapters compose existing raw resource dispatch and SAME canonical mesh domain. Failed host metadata admission explicitly defers cleanup; pre-publication native stack/SEH remains unproven. Five returning-free continuations repaired, four handlers defined under lock with prior comments preserved. Actual RTX5090 D3D9 fixture runs all three parsers with nine fields/two complete subsets, actual pointer-array append and current-profile deletion, read-failure parent cleanup and deferred metadata bind failure;57 canonical owners retire. Explicit cached effect zero-pass preimage; no cold shader, full-parent native oracle, ABI/FH3/SEH or game claim. Complete 175B. ECX parser unused; one stacked parent node handle; EAX item or null; RET4. Source parse_native_mesh_item_00b94900."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00b94900\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00b93910",
+        "prototype": "void __fastcall BSP_ResourceMeshItem_Destroy(void* item, void* unused_edx)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00b93910 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b93910",
+        "new_name": "BSP_ResourceMeshItem_Destroy"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b93910 from 'BSP_ResourceMeshItem_Destroy' to 'BSP_ResourceMeshItem_Destroy'\", \"warnings\": [\"Function name 'BSP_ResourceMeshItem_Destroy' \\u2014 main part 'ResourceMeshItem_Destroy' is not PascalCase. Expected: ResourcemeshitemDestroy\", \"Function name 'BSP_ResourceMeshItem_Destroy' \\u2014 main part 'ResourceMeshItem_Destroy' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_ResourceMeshItem_Destroy' does not start with a recognized verb. First word 'Resource' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b93910",
+        "new_name": "BSP_ResourceMeshItem_Destroy"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b93910 from 'BSP_ResourceMeshItem_Destroy' to 'BSP_ResourceMeshItem_Destroy'\", \"warnings\": [\"Function name 'BSP_ResourceMeshItem_Destroy' \\u2014 main part 'ResourceMeshItem_Destroy' is not PascalCase. Expected: ResourcemeshitemDestroy\", \"Function name 'BSP_ResourceMeshItem_Destroy' \\u2014 main part 'ResourceMeshItem_Destroy' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_ResourceMeshItem_Destroy' does not start with a recognized verb. First word 'Resource' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00b93910",
+        "comment": "[BSP reconstruction 00b93910]\nSet wrapper vtable00d63738; unconditionally InterlockedDecrement(mesh+4) for mesh at+8; invoke mesh vtable0 withECXmesh iff count0; then00b86890 base destruction. Prefix+C is not released. Original ABI: ECX wrapper; no explicit stack arguments; RET; EAX not specified. Evidence: docs/MESH_OBJECT_LIFETIME.md; reports/mesh_object_lifetime_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation.\n\n[BSP reconstruction 00b93910] CO update\nCO complete eight native mesh resource routines751B and eleven supports105B: 272 instruction owners,27 direct/13 indirect transfers, saved Ghidra and installed PE equal. B947A0/B94850/B94900 call actual B94710 into local pair, allocate10h/base ref1, publish D63738/mesh+8/prefix+C, retain mesh, optionally stamp D6375C/D63780, then disarm cleanup and release captured creator. Native state0 releases/clears temporary mesh on loader or allocation failure; state1 frees raw item then state0. B93910 stamps D63738, unconditionally releases mesh+8, destroys item base on normal or unwind. Three scalar deletes free only flags bit0 and return captured item; B93BA0 clears only after release. Source numeric parser and current-profile deletion adapters compose existing raw resource dispatch and SAME canonical mesh domain. Failed host metadata admission explicitly defers cleanup; pre-publication native stack/SEH remains unproven. Five returning-free continuations repaired, four handlers defined under lock with prior comments preserved. Actual RTX5090 D3D9 fixture runs all three parsers with nine fields/two complete subsets, actual pointer-array append and current-profile deletion, read-failure parent cleanup and deferred metadata bind failure;57 canonical owners retire. Explicit cached effect zero-pass preimage; no cold shader, full-parent native oracle, ABI/FH3/SEH or game claim. Complete 101B. ECX actual10h item; RET; no stable return contract. Source destroy_native_mesh_item_00b93910."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00b93910\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00b93b40",
+        "prototype": "void* __fastcall BSP_ResourceMeshItem_ScalarDeletingDestructor(void* item, void* unused_edx, uint flags)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00b93b40 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b93b40",
+        "new_name": "BSP_ResourceMeshItem_ScalarDeletingDestructor"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b93b40 from 'BSP_ResourceMeshItem_ScalarDeletingDestructor' to 'BSP_ResourceMeshItem_ScalarDeletingDestructor'\", \"warnings\": [\"Function name 'BSP_ResourceMeshItem_ScalarDeletingDestructor' \\u2014 main part 'ResourceMeshItem_ScalarDeletingDestructor' is not PascalCase. Expected: ResourcemeshitemScalardeletingdestructor\", \"Function name 'BSP_ResourceMeshItem_ScalarDeletingDestructor' \\u2014 main part 'ResourceMeshItem_ScalarDeletingDestructor' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_ResourceMeshItem_ScalarDeletingDestructor' does not start with a recognized verb. First word 'Resource' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b93b40",
+        "new_name": "BSP_ResourceMeshItem_ScalarDeletingDestructor"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b93b40 from 'BSP_ResourceMeshItem_ScalarDeletingDestructor' to 'BSP_ResourceMeshItem_ScalarDeletingDestructor'\", \"warnings\": [\"Function name 'BSP_ResourceMeshItem_ScalarDeletingDestructor' \\u2014 main part 'ResourceMeshItem_ScalarDeletingDestructor' is not PascalCase. Expected: ResourcemeshitemScalardeletingdestructor\", \"Function name 'BSP_ResourceMeshItem_ScalarDeletingDestructor' \\u2014 main part 'ResourceMeshItem_ScalarDeletingDestructor' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_ResourceMeshItem_ScalarDeletingDestructor' does not start with a recognized verb. First word 'Resource' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00b93b40",
+        "comment": "[BSP reconstruction 00b93b40]\nCall00b93910; if flags bit0 set, CRT free wrapper through00bf65ac; always return original wrapper after native continuation. Original ABI: ECX wrapper; one stack flags DWORD (low byte tested); EAX original wrapper; RET4. Evidence: docs/MESH_OBJECT_LIFETIME.md; reports/mesh_object_lifetime_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation.\n\n[BSP reconstruction 00b93b40] CO update\nCO complete eight native mesh resource routines751B and eleven supports105B: 272 instruction owners,27 direct/13 indirect transfers, saved Ghidra and installed PE equal. B947A0/B94850/B94900 call actual B94710 into local pair, allocate10h/base ref1, publish D63738/mesh+8/prefix+C, retain mesh, optionally stamp D6375C/D63780, then disarm cleanup and release captured creator. Native state0 releases/clears temporary mesh on loader or allocation failure; state1 frees raw item then state0. B93910 stamps D63738, unconditionally releases mesh+8, destroys item base on normal or unwind. Three scalar deletes free only flags bit0 and return captured item; B93BA0 clears only after release. Source numeric parser and current-profile deletion adapters compose existing raw resource dispatch and SAME canonical mesh domain. Failed host metadata admission explicitly defers cleanup; pre-publication native stack/SEH remains unproven. Five returning-free continuations repaired, four handlers defined under lock with prior comments preserved. Actual RTX5090 D3D9 fixture runs all three parsers with nine fields/two complete subsets, actual pointer-array append and current-profile deletion, read-failure parent cleanup and deferred metadata bind failure;57 canonical owners retire. Explicit cached effect zero-pass preimage; no cold shader, full-parent native oracle, ABI/FH3/SEH or game claim. Complete 30B. ECX item; stacked flags DWORD, test bit0 only; EAX captured item even after free; RET4. Source delete_native_mesh_item_00b93b40."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00b93b40\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00b93b60",
+        "prototype": "void* __fastcall BSP_DeleteNativeMeshItem_00b93b60(void* item, void* unused_edx, uint flags)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00b93b60 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b93b60",
+        "new_name": "BSP_DeleteNativeMeshItem_00b93b60"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b93b60 from 'CG_scalar_deleting_dtor_00b93b60' to 'BSP_DeleteNativeMeshItem_00b93b60'\", \"warnings\": [\"Function name 'BSP_DeleteNativeMeshItem_00b93b60' \\u2014 main part 'DeleteNativeMeshItem_00b93b60' is not PascalCase. Expected: Deletenativemeshitem00b93b60\", \"Function name 'BSP_DeleteNativeMeshItem_00b93b60' \\u2014 main part 'DeleteNativeMeshItem_00b93b60' contains underscores. Use PascalCase after the module prefix.\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b93b60",
+        "new_name": "BSP_DeleteNativeMeshItem_00b93b60"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b93b60 from 'BSP_DeleteNativeMeshItem_00b93b60' to 'BSP_DeleteNativeMeshItem_00b93b60'\", \"warnings\": [\"Function name 'BSP_DeleteNativeMeshItem_00b93b60' \\u2014 main part 'DeleteNativeMeshItem_00b93b60' is not PascalCase. Expected: Deletenativemeshitem00b93b60\", \"Function name 'BSP_DeleteNativeMeshItem_00b93b60' \\u2014 main part 'DeleteNativeMeshItem_00b93b60' contains underscores. Use PascalCase after the module prefix.\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00b93b60",
+        "comment": "\n\n[BSP reconstruction 00b93b60] CO update\nCO complete eight native mesh resource routines751B and eleven supports105B: 272 instruction owners,27 direct/13 indirect transfers, saved Ghidra and installed PE equal. B947A0/B94850/B94900 call actual B94710 into local pair, allocate10h/base ref1, publish D63738/mesh+8/prefix+C, retain mesh, optionally stamp D6375C/D63780, then disarm cleanup and release captured creator. Native state0 releases/clears temporary mesh on loader or allocation failure; state1 frees raw item then state0. B93910 stamps D63738, unconditionally releases mesh+8, destroys item base on normal or unwind. Three scalar deletes free only flags bit0 and return captured item; B93BA0 clears only after release. Source numeric parser and current-profile deletion adapters compose existing raw resource dispatch and SAME canonical mesh domain. Failed host metadata admission explicitly defers cleanup; pre-publication native stack/SEH remains unproven. Five returning-free continuations repaired, four handlers defined under lock with prior comments preserved. Actual RTX5090 D3D9 fixture runs all three parsers with nine fields/two complete subsets, actual pointer-array append and current-profile deletion, read-failure parent cleanup and deferred metadata bind failure;57 canonical owners retire. Explicit cached effect zero-pass preimage; no cold shader, full-parent native oracle, ABI/FH3/SEH or game claim. Complete 30B. ECX item; stacked flags DWORD, test bit0 only; EAX captured item even after free; RET4. Source delete_native_mesh_item_00b93b60."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00b93b60\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00b93b80",
+        "prototype": "void* __fastcall BSP_DeleteNativeMeshItem_00b93b80(void* item, void* unused_edx, uint flags)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00b93b80 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b93b80",
+        "new_name": "BSP_DeleteNativeMeshItem_00b93b80"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b93b80 from 'CG_scalar_deleting_dtor_00b93b80' to 'BSP_DeleteNativeMeshItem_00b93b80'\", \"warnings\": [\"Function name 'BSP_DeleteNativeMeshItem_00b93b80' \\u2014 main part 'DeleteNativeMeshItem_00b93b80' is not PascalCase. Expected: Deletenativemeshitem00b93b80\", \"Function name 'BSP_DeleteNativeMeshItem_00b93b80' \\u2014 main part 'DeleteNativeMeshItem_00b93b80' contains underscores. Use PascalCase after the module prefix.\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b93b80",
+        "new_name": "BSP_DeleteNativeMeshItem_00b93b80"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b93b80 from 'BSP_DeleteNativeMeshItem_00b93b80' to 'BSP_DeleteNativeMeshItem_00b93b80'\", \"warnings\": [\"Function name 'BSP_DeleteNativeMeshItem_00b93b80' \\u2014 main part 'DeleteNativeMeshItem_00b93b80' is not PascalCase. Expected: Deletenativemeshitem00b93b80\", \"Function name 'BSP_DeleteNativeMeshItem_00b93b80' \\u2014 main part 'DeleteNativeMeshItem_00b93b80' contains underscores. Use PascalCase after the module prefix.\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00b93b80",
+        "comment": "\n\n[BSP reconstruction 00b93b80] CO update\nCO complete eight native mesh resource routines751B and eleven supports105B: 272 instruction owners,27 direct/13 indirect transfers, saved Ghidra and installed PE equal. B947A0/B94850/B94900 call actual B94710 into local pair, allocate10h/base ref1, publish D63738/mesh+8/prefix+C, retain mesh, optionally stamp D6375C/D63780, then disarm cleanup and release captured creator. Native state0 releases/clears temporary mesh on loader or allocation failure; state1 frees raw item then state0. B93910 stamps D63738, unconditionally releases mesh+8, destroys item base on normal or unwind. Three scalar deletes free only flags bit0 and return captured item; B93BA0 clears only after release. Source numeric parser and current-profile deletion adapters compose existing raw resource dispatch and SAME canonical mesh domain. Failed host metadata admission explicitly defers cleanup; pre-publication native stack/SEH remains unproven. Five returning-free continuations repaired, four handlers defined under lock with prior comments preserved. Actual RTX5090 D3D9 fixture runs all three parsers with nine fields/two complete subsets, actual pointer-array append and current-profile deletion, read-failure parent cleanup and deferred metadata bind failure;57 canonical owners retire. Explicit cached effect zero-pass preimage; no cold shader, full-parent native oracle, ABI/FH3/SEH or game claim. Complete 30B. ECX item; stacked flags DWORD, test bit0 only; EAX captured item even after free; RET4. Source delete_native_mesh_item_00b93b80."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00b93b80\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00b93ba0",
+        "prototype": "void __fastcall BSP_ReleaseNativeMeshHandle_00b93ba0(void* handle, void* unused_edx)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00b93ba0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b93ba0",
+        "new_name": "BSP_ReleaseNativeMeshHandle_00b93ba0"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b93ba0 from 'BSP_ReleaseNativeMeshHandle_00b93ba0' to 'BSP_ReleaseNativeMeshHandle_00b93ba0'\", \"warnings\": [\"Function name 'BSP_ReleaseNativeMeshHandle_00b93ba0' \\u2014 main part 'ReleaseNativeMeshHandle_00b93ba0' is not PascalCase. Expected: Releasenativemeshhandle00b93ba0\", \"Function name 'BSP_ReleaseNativeMeshHandle_00b93ba0' \\u2014 main part 'ReleaseNativeMeshHandle_00b93ba0' contains underscores. Use PascalCase after the module prefix.\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00b93ba0",
+        "new_name": "BSP_ReleaseNativeMeshHandle_00b93ba0"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00b93ba0 from 'BSP_ReleaseNativeMeshHandle_00b93ba0' to 'BSP_ReleaseNativeMeshHandle_00b93ba0'\", \"warnings\": [\"Function name 'BSP_ReleaseNativeMeshHandle_00b93ba0' \\u2014 main part 'ReleaseNativeMeshHandle_00b93ba0' is not PascalCase. Expected: Releasenativemeshhandle00b93ba0\", \"Function name 'BSP_ReleaseNativeMeshHandle_00b93ba0' \\u2014 main part 'ReleaseNativeMeshHandle_00b93ba0' contains underscores. Use PascalCase after the module prefix.\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00b93ba0",
+        "comment": "\n\n[BSP reconstruction 00b93ba0] CO update\nCO complete eight native mesh resource routines751B and eleven supports105B: 272 instruction owners,27 direct/13 indirect transfers, saved Ghidra and installed PE equal. B947A0/B94850/B94900 call actual B94710 into local pair, allocate10h/base ref1, publish D63738/mesh+8/prefix+C, retain mesh, optionally stamp D6375C/D63780, then disarm cleanup and release captured creator. Native state0 releases/clears temporary mesh on loader or allocation failure; state1 frees raw item then state0. B93910 stamps D63738, unconditionally releases mesh+8, destroys item base on normal or unwind. Three scalar deletes free only flags bit0 and return captured item; B93BA0 clears only after release. Source numeric parser and current-profile deletion adapters compose existing raw resource dispatch and SAME canonical mesh domain. Failed host metadata admission explicitly defers cleanup; pre-publication native stack/SEH remains unproven. Five returning-free continuations repaired, four handlers defined under lock with prior comments preserved. Actual RTX5090 D3D9 fixture runs all three parsers with nine fields/two complete subsets, actual pointer-array append and current-profile deletion, read-failure parent cleanup and deferred metadata bind failure;57 canonical owners retire. Explicit cached effect zero-pass preimage; no cold shader, full-parent native oracle, ABI/FH3/SEH or game claim. Complete 41B. ECX actual4h handle; RET; no stable return contract. Source release_native_mesh_handle_00b93ba0."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00b93ba0\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00cc2df0",
+        "new_name": "BSP_MeshResource_Support_00cc2df0"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00cc2df0 from 'Unwind@00cc2df0' to 'BSP_MeshResource_Support_00cc2df0'\", \"warnings\": [\"Function name 'BSP_MeshResource_Support_00cc2df0' \\u2014 main part 'MeshResource_Support_00cc2df0' is not PascalCase. Expected: MeshresourceSupport00cc2df0\", \"Function name 'BSP_MeshResource_Support_00cc2df0' \\u2014 main part 'MeshResource_Support_00cc2df0' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_MeshResource_Support_00cc2df0' does not start with a recognized verb. First word 'Mesh' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00cc2df0",
+        "comment": "\n\n[BSP reconstruction 00cc2df0] CO update\nCO complete eight native mesh resource routines751B and eleven supports105B: 272 instruction owners,27 direct/13 indirect transfers, saved Ghidra and installed PE equal. B947A0/B94850/B94900 call actual B94710 into local pair, allocate10h/base ref1, publish D63738/mesh+8/prefix+C, retain mesh, optionally stamp D6375C/D63780, then disarm cleanup and release captured creator. Native state0 releases/clears temporary mesh on loader or allocation failure; state1 frees raw item then state0. B93910 stamps D63738, unconditionally releases mesh+8, destroys item base on normal or unwind. Three scalar deletes free only flags bit0 and return captured item; B93BA0 clears only after release. Source numeric parser and current-profile deletion adapters compose existing raw resource dispatch and SAME canonical mesh domain. Failed host metadata admission explicitly defers cleanup; pre-publication native stack/SEH remains unproven. Five returning-free continuations repaired, four handlers defined under lock with prior comments preserved. Actual RTX5090 D3D9 fixture runs all three parsers with nine fields/two complete subsets, actual pointer-array append and current-profile deletion, read-failure parent cleanup and deferred metadata bind failure;57 canonical owners retire. Explicit cached effect zero-pass preimage; no cold shader, full-parent native oracle, ABI/FH3/SEH or game claim. Complete unwind or dispatch handler; support evidence only."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00cc2df0\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00cc2df8",
+        "new_name": "BSP_MeshResource_Support_00cc2df8"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00cc2df8 from 'BSP_MeshResource_Handler_00cc2df8' to 'BSP_MeshResource_Support_00cc2df8'\", \"warnings\": [\"Function name 'BSP_MeshResource_Support_00cc2df8' \\u2014 main part 'MeshResource_Support_00cc2df8' is not PascalCase. Expected: MeshresourceSupport00cc2df8\", \"Function name 'BSP_MeshResource_Support_00cc2df8' \\u2014 main part 'MeshResource_Support_00cc2df8' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_MeshResource_Support_00cc2df8' does not start with a recognized verb. First word 'Mesh' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00cc2df8",
+        "comment": "\n\n[BSP reconstruction 00cc2df8] CO update\nCO complete eight native mesh resource routines751B and eleven supports105B: 272 instruction owners,27 direct/13 indirect transfers, saved Ghidra and installed PE equal. B947A0/B94850/B94900 call actual B94710 into local pair, allocate10h/base ref1, publish D63738/mesh+8/prefix+C, retain mesh, optionally stamp D6375C/D63780, then disarm cleanup and release captured creator. Native state0 releases/clears temporary mesh on loader or allocation failure; state1 frees raw item then state0. B93910 stamps D63738, unconditionally releases mesh+8, destroys item base on normal or unwind. Three scalar deletes free only flags bit0 and return captured item; B93BA0 clears only after release. Source numeric parser and current-profile deletion adapters compose existing raw resource dispatch and SAME canonical mesh domain. Failed host metadata admission explicitly defers cleanup; pre-publication native stack/SEH remains unproven. Five returning-free continuations repaired, four handlers defined under lock with prior comments preserved. Actual RTX5090 D3D9 fixture runs all three parsers with nine fields/two complete subsets, actual pointer-array append and current-profile deletion, read-failure parent cleanup and deferred metadata bind failure;57 canonical owners retire. Explicit cached effect zero-pass preimage; no cold shader, full-parent native oracle, ABI/FH3/SEH or game claim. Complete unwind or dispatch handler; support evidence only."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00cc2df8\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00cc2ef0",
+        "new_name": "BSP_MeshResource_Support_00cc2ef0"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00cc2ef0 from 'Unwind@00cc2ef0' to 'BSP_MeshResource_Support_00cc2ef0'\", \"warnings\": [\"Function name 'BSP_MeshResource_Support_00cc2ef0' \\u2014 main part 'MeshResource_Support_00cc2ef0' is not PascalCase. Expected: MeshresourceSupport00cc2ef0\", \"Function name 'BSP_MeshResource_Support_00cc2ef0' \\u2014 main part 'MeshResource_Support_00cc2ef0' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_MeshResource_Support_00cc2ef0' does not start with a recognized verb. First word 'Mesh' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00cc2ef0",
+        "comment": "\n\n[BSP reconstruction 00cc2ef0] CO update\nCO complete eight native mesh resource routines751B and eleven supports105B: 272 instruction owners,27 direct/13 indirect transfers, saved Ghidra and installed PE equal. B947A0/B94850/B94900 call actual B94710 into local pair, allocate10h/base ref1, publish D63738/mesh+8/prefix+C, retain mesh, optionally stamp D6375C/D63780, then disarm cleanup and release captured creator. Native state0 releases/clears temporary mesh on loader or allocation failure; state1 frees raw item then state0. B93910 stamps D63738, unconditionally releases mesh+8, destroys item base on normal or unwind. Three scalar deletes free only flags bit0 and return captured item; B93BA0 clears only after release. Source numeric parser and current-profile deletion adapters compose existing raw resource dispatch and SAME canonical mesh domain. Failed host metadata admission explicitly defers cleanup; pre-publication native stack/SEH remains unproven. Five returning-free continuations repaired, four handlers defined under lock with prior comments preserved. Actual RTX5090 D3D9 fixture runs all three parsers with nine fields/two complete subsets, actual pointer-array append and current-profile deletion, read-failure parent cleanup and deferred metadata bind failure;57 canonical owners retire. Explicit cached effect zero-pass preimage; no cold shader, full-parent native oracle, ABI/FH3/SEH or game claim. Complete unwind or dispatch handler; support evidence only."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00cc2ef0\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00cc2ef8",
+        "new_name": "BSP_MeshResource_Support_00cc2ef8"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00cc2ef8 from 'Unwind@00cc2ef8' to 'BSP_MeshResource_Support_00cc2ef8'\", \"warnings\": [\"Function name 'BSP_MeshResource_Support_00cc2ef8' \\u2014 main part 'MeshResource_Support_00cc2ef8' is not PascalCase. Expected: MeshresourceSupport00cc2ef8\", \"Function name 'BSP_MeshResource_Support_00cc2ef8' \\u2014 main part 'MeshResource_Support_00cc2ef8' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_MeshResource_Support_00cc2ef8' does not start with a recognized verb. First word 'Mesh' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00cc2ef8",
+        "comment": "\n\n[BSP reconstruction 00cc2ef8] CO update\nCO complete eight native mesh resource routines751B and eleven supports105B: 272 instruction owners,27 direct/13 indirect transfers, saved Ghidra and installed PE equal. B947A0/B94850/B94900 call actual B94710 into local pair, allocate10h/base ref1, publish D63738/mesh+8/prefix+C, retain mesh, optionally stamp D6375C/D63780, then disarm cleanup and release captured creator. Native state0 releases/clears temporary mesh on loader or allocation failure; state1 frees raw item then state0. B93910 stamps D63738, unconditionally releases mesh+8, destroys item base on normal or unwind. Three scalar deletes free only flags bit0 and return captured item; B93BA0 clears only after release. Source numeric parser and current-profile deletion adapters compose existing raw resource dispatch and SAME canonical mesh domain. Failed host metadata admission explicitly defers cleanup; pre-publication native stack/SEH remains unproven. Five returning-free continuations repaired, four handlers defined under lock with prior comments preserved. Actual RTX5090 D3D9 fixture runs all three parsers with nine fields/two complete subsets, actual pointer-array append and current-profile deletion, read-failure parent cleanup and deferred metadata bind failure;57 canonical owners retire. Explicit cached effect zero-pass preimage; no cold shader, full-parent native oracle, ABI/FH3/SEH or game claim. Complete unwind or dispatch handler; support evidence only."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00cc2ef8\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00cc2f03",
+        "new_name": "BSP_MeshResource_Support_00cc2f03"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00cc2f03 from 'BSP_MeshResource_Handler_00cc2f03' to 'BSP_MeshResource_Support_00cc2f03'\", \"warnings\": [\"Function name 'BSP_MeshResource_Support_00cc2f03' \\u2014 main part 'MeshResource_Support_00cc2f03' is not PascalCase. Expected: MeshresourceSupport00cc2f03\", \"Function name 'BSP_MeshResource_Support_00cc2f03' \\u2014 main part 'MeshResource_Support_00cc2f03' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_MeshResource_Support_00cc2f03' does not start with a recognized verb. First word 'Mesh' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00cc2f03",
+        "comment": "\n\n[BSP reconstruction 00cc2f03] CO update\nCO complete eight native mesh resource routines751B and eleven supports105B: 272 instruction owners,27 direct/13 indirect transfers, saved Ghidra and installed PE equal. B947A0/B94850/B94900 call actual B94710 into local pair, allocate10h/base ref1, publish D63738/mesh+8/prefix+C, retain mesh, optionally stamp D6375C/D63780, then disarm cleanup and release captured creator. Native state0 releases/clears temporary mesh on loader or allocation failure; state1 frees raw item then state0. B93910 stamps D63738, unconditionally releases mesh+8, destroys item base on normal or unwind. Three scalar deletes free only flags bit0 and return captured item; B93BA0 clears only after release. Source numeric parser and current-profile deletion adapters compose existing raw resource dispatch and SAME canonical mesh domain. Failed host metadata admission explicitly defers cleanup; pre-publication native stack/SEH remains unproven. Five returning-free continuations repaired, four handlers defined under lock with prior comments preserved. Actual RTX5090 D3D9 fixture runs all three parsers with nine fields/two complete subsets, actual pointer-array append and current-profile deletion, read-failure parent cleanup and deferred metadata bind failure;57 canonical owners retire. Explicit cached effect zero-pass preimage; no cold shader, full-parent native oracle, ABI/FH3/SEH or game claim. Complete unwind or dispatch handler; support evidence only."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00cc2f03\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00cc2f10",
+        "new_name": "BSP_MeshResource_Support_00cc2f10"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00cc2f10 from 'Unwind@00cc2f10' to 'BSP_MeshResource_Support_00cc2f10'\", \"warnings\": [\"Function name 'BSP_MeshResource_Support_00cc2f10' \\u2014 main part 'MeshResource_Support_00cc2f10' is not PascalCase. Expected: MeshresourceSupport00cc2f10\", \"Function name 'BSP_MeshResource_Support_00cc2f10' \\u2014 main part 'MeshResource_Support_00cc2f10' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_MeshResource_Support_00cc2f10' does not start with a recognized verb. First word 'Mesh' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00cc2f10",
+        "comment": "\n\n[BSP reconstruction 00cc2f10] CO update\nCO complete eight native mesh resource routines751B and eleven supports105B: 272 instruction owners,27 direct/13 indirect transfers, saved Ghidra and installed PE equal. B947A0/B94850/B94900 call actual B94710 into local pair, allocate10h/base ref1, publish D63738/mesh+8/prefix+C, retain mesh, optionally stamp D6375C/D63780, then disarm cleanup and release captured creator. Native state0 releases/clears temporary mesh on loader or allocation failure; state1 frees raw item then state0. B93910 stamps D63738, unconditionally releases mesh+8, destroys item base on normal or unwind. Three scalar deletes free only flags bit0 and return captured item; B93BA0 clears only after release. Source numeric parser and current-profile deletion adapters compose existing raw resource dispatch and SAME canonical mesh domain. Failed host metadata admission explicitly defers cleanup; pre-publication native stack/SEH remains unproven. Five returning-free continuations repaired, four handlers defined under lock with prior comments preserved. Actual RTX5090 D3D9 fixture runs all three parsers with nine fields/two complete subsets, actual pointer-array append and current-profile deletion, read-failure parent cleanup and deferred metadata bind failure;57 canonical owners retire. Explicit cached effect zero-pass preimage; no cold shader, full-parent native oracle, ABI/FH3/SEH or game claim. Complete unwind or dispatch handler; support evidence only."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00cc2f10\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00cc2f18",
+        "new_name": "BSP_MeshResource_Support_00cc2f18"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00cc2f18 from 'Unwind@00cc2f18' to 'BSP_MeshResource_Support_00cc2f18'\", \"warnings\": [\"Function name 'BSP_MeshResource_Support_00cc2f18' \\u2014 main part 'MeshResource_Support_00cc2f18' is not PascalCase. Expected: MeshresourceSupport00cc2f18\", \"Function name 'BSP_MeshResource_Support_00cc2f18' \\u2014 main part 'MeshResource_Support_00cc2f18' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_MeshResource_Support_00cc2f18' does not start with a recognized verb. First word 'Mesh' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00cc2f18",
+        "comment": "\n\n[BSP reconstruction 00cc2f18] CO update\nCO complete eight native mesh resource routines751B and eleven supports105B: 272 instruction owners,27 direct/13 indirect transfers, saved Ghidra and installed PE equal. B947A0/B94850/B94900 call actual B94710 into local pair, allocate10h/base ref1, publish D63738/mesh+8/prefix+C, retain mesh, optionally stamp D6375C/D63780, then disarm cleanup and release captured creator. Native state0 releases/clears temporary mesh on loader or allocation failure; state1 frees raw item then state0. B93910 stamps D63738, unconditionally releases mesh+8, destroys item base on normal or unwind. Three scalar deletes free only flags bit0 and return captured item; B93BA0 clears only after release. Source numeric parser and current-profile deletion adapters compose existing raw resource dispatch and SAME canonical mesh domain. Failed host metadata admission explicitly defers cleanup; pre-publication native stack/SEH remains unproven. Five returning-free continuations repaired, four handlers defined under lock with prior comments preserved. Actual RTX5090 D3D9 fixture runs all three parsers with nine fields/two complete subsets, actual pointer-array append and current-profile deletion, read-failure parent cleanup and deferred metadata bind failure;57 canonical owners retire. Explicit cached effect zero-pass preimage; no cold shader, full-parent native oracle, ABI/FH3/SEH or game claim. Complete unwind or dispatch handler; support evidence only."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00cc2f18\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00cc2f23",
+        "new_name": "BSP_MeshResource_Support_00cc2f23"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00cc2f23 from 'BSP_MeshResource_Handler_00cc2f23' to 'BSP_MeshResource_Support_00cc2f23'\", \"warnings\": [\"Function name 'BSP_MeshResource_Support_00cc2f23' \\u2014 main part 'MeshResource_Support_00cc2f23' is not PascalCase. Expected: MeshresourceSupport00cc2f23\", \"Function name 'BSP_MeshResource_Support_00cc2f23' \\u2014 main part 'MeshResource_Support_00cc2f23' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_MeshResource_Support_00cc2f23' does not start with a recognized verb. First word 'Mesh' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00cc2f23",
+        "comment": "\n\n[BSP reconstruction 00cc2f23] CO update\nCO complete eight native mesh resource routines751B and eleven supports105B: 272 instruction owners,27 direct/13 indirect transfers, saved Ghidra and installed PE equal. B947A0/B94850/B94900 call actual B94710 into local pair, allocate10h/base ref1, publish D63738/mesh+8/prefix+C, retain mesh, optionally stamp D6375C/D63780, then disarm cleanup and release captured creator. Native state0 releases/clears temporary mesh on loader or allocation failure; state1 frees raw item then state0. B93910 stamps D63738, unconditionally releases mesh+8, destroys item base on normal or unwind. Three scalar deletes free only flags bit0 and return captured item; B93BA0 clears only after release. Source numeric parser and current-profile deletion adapters compose existing raw resource dispatch and SAME canonical mesh domain. Failed host metadata admission explicitly defers cleanup; pre-publication native stack/SEH remains unproven. Five returning-free continuations repaired, four handlers defined under lock with prior comments preserved. Actual RTX5090 D3D9 fixture runs all three parsers with nine fields/two complete subsets, actual pointer-array append and current-profile deletion, read-failure parent cleanup and deferred metadata bind failure;57 canonical owners retire. Explicit cached effect zero-pass preimage; no cold shader, full-parent native oracle, ABI/FH3/SEH or game claim. Complete unwind or dispatch handler; support evidence only."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00cc2f23\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00cc2f30",
+        "new_name": "BSP_MeshResource_Support_00cc2f30"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00cc2f30 from 'Unwind@00cc2f30' to 'BSP_MeshResource_Support_00cc2f30'\", \"warnings\": [\"Function name 'BSP_MeshResource_Support_00cc2f30' \\u2014 main part 'MeshResource_Support_00cc2f30' is not PascalCase. Expected: MeshresourceSupport00cc2f30\", \"Function name 'BSP_MeshResource_Support_00cc2f30' \\u2014 main part 'MeshResource_Support_00cc2f30' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_MeshResource_Support_00cc2f30' does not start with a recognized verb. First word 'Mesh' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00cc2f30",
+        "comment": "\n\n[BSP reconstruction 00cc2f30] CO update\nCO complete eight native mesh resource routines751B and eleven supports105B: 272 instruction owners,27 direct/13 indirect transfers, saved Ghidra and installed PE equal. B947A0/B94850/B94900 call actual B94710 into local pair, allocate10h/base ref1, publish D63738/mesh+8/prefix+C, retain mesh, optionally stamp D6375C/D63780, then disarm cleanup and release captured creator. Native state0 releases/clears temporary mesh on loader or allocation failure; state1 frees raw item then state0. B93910 stamps D63738, unconditionally releases mesh+8, destroys item base on normal or unwind. Three scalar deletes free only flags bit0 and return captured item; B93BA0 clears only after release. Source numeric parser and current-profile deletion adapters compose existing raw resource dispatch and SAME canonical mesh domain. Failed host metadata admission explicitly defers cleanup; pre-publication native stack/SEH remains unproven. Five returning-free continuations repaired, four handlers defined under lock with prior comments preserved. Actual RTX5090 D3D9 fixture runs all three parsers with nine fields/two complete subsets, actual pointer-array append and current-profile deletion, read-failure parent cleanup and deferred metadata bind failure;57 canonical owners retire. Explicit cached effect zero-pass preimage; no cold shader, full-parent native oracle, ABI/FH3/SEH or game claim. Complete unwind or dispatch handler; support evidence only."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00cc2f30\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00cc2f38",
+        "new_name": "BSP_MeshResource_Support_00cc2f38"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00cc2f38 from 'Unwind@00cc2f38' to 'BSP_MeshResource_Support_00cc2f38'\", \"warnings\": [\"Function name 'BSP_MeshResource_Support_00cc2f38' \\u2014 main part 'MeshResource_Support_00cc2f38' is not PascalCase. Expected: MeshresourceSupport00cc2f38\", \"Function name 'BSP_MeshResource_Support_00cc2f38' \\u2014 main part 'MeshResource_Support_00cc2f38' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_MeshResource_Support_00cc2f38' does not start with a recognized verb. First word 'Mesh' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00cc2f38",
+        "comment": "\n\n[BSP reconstruction 00cc2f38] CO update\nCO complete eight native mesh resource routines751B and eleven supports105B: 272 instruction owners,27 direct/13 indirect transfers, saved Ghidra and installed PE equal. B947A0/B94850/B94900 call actual B94710 into local pair, allocate10h/base ref1, publish D63738/mesh+8/prefix+C, retain mesh, optionally stamp D6375C/D63780, then disarm cleanup and release captured creator. Native state0 releases/clears temporary mesh on loader or allocation failure; state1 frees raw item then state0. B93910 stamps D63738, unconditionally releases mesh+8, destroys item base on normal or unwind. Three scalar deletes free only flags bit0 and return captured item; B93BA0 clears only after release. Source numeric parser and current-profile deletion adapters compose existing raw resource dispatch and SAME canonical mesh domain. Failed host metadata admission explicitly defers cleanup; pre-publication native stack/SEH remains unproven. Five returning-free continuations repaired, four handlers defined under lock with prior comments preserved. Actual RTX5090 D3D9 fixture runs all three parsers with nine fields/two complete subsets, actual pointer-array append and current-profile deletion, read-failure parent cleanup and deferred metadata bind failure;57 canonical owners retire. Explicit cached effect zero-pass preimage; no cold shader, full-parent native oracle, ABI/FH3/SEH or game claim. Complete unwind or dispatch handler; support evidence only."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00cc2f38\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "rename_function_by_address",
+      "body": {
+        "function_address": "00cc2f43",
+        "new_name": "BSP_MeshResource_Support_00cc2f43"
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Success: Renamed function at 00cc2f43 from 'BSP_MeshResource_Handler_00cc2f43' to 'BSP_MeshResource_Support_00cc2f43'\", \"warnings\": [\"Function name 'BSP_MeshResource_Support_00cc2f43' \\u2014 main part 'MeshResource_Support_00cc2f43' is not PascalCase. Expected: MeshresourceSupport00cc2f43\", \"Function name 'BSP_MeshResource_Support_00cc2f43' \\u2014 main part 'MeshResource_Support_00cc2f43' contains underscores. Use PascalCase after the module prefix.\", \"Function name 'BSP_MeshResource_Support_00cc2f43' does not start with a recognized verb. First word 'Mesh' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle\"]}"
+    },
+    {
+      "endpoint": "set_plate_comment",
+      "body": {
+        "address": "00cc2f43",
+        "comment": "\n\n[BSP reconstruction 00cc2f43] CO update\nCO complete eight native mesh resource routines751B and eleven supports105B: 272 instruction owners,27 direct/13 indirect transfers, saved Ghidra and installed PE equal. B947A0/B94850/B94900 call actual B94710 into local pair, allocate10h/base ref1, publish D63738/mesh+8/prefix+C, retain mesh, optionally stamp D6375C/D63780, then disarm cleanup and release captured creator. Native state0 releases/clears temporary mesh on loader or allocation failure; state1 frees raw item then state0. B93910 stamps D63738, unconditionally releases mesh+8, destroys item base on normal or unwind. Three scalar deletes free only flags bit0 and return captured item; B93BA0 clears only after release. Source numeric parser and current-profile deletion adapters compose existing raw resource dispatch and SAME canonical mesh domain. Failed host metadata admission explicitly defers cleanup; pre-publication native stack/SEH remains unproven. Five returning-free continuations repaired, four handlers defined under lock with prior comments preserved. Actual RTX5090 D3D9 fixture runs all three parsers with nine fields/two complete subsets, actual pointer-array append and current-profile deletion, read-failure parent cleanup and deferred metadata bind failure;57 canonical owners retire. Explicit cached effect zero-pass preimage; no cold shader, full-parent native oracle, ABI/FH3/SEH or game claim. Complete unwind or dispatch handler; support evidence only."
+      },
+      "result": "{\"status\": \"success\", \"message\": \"Set plate comment for function at 00cc2f43\", \"warnings\": [\"Plate comment missing Algorithm section\", \"Plate comment missing Parameters section\", \"Plate comment missing Returns section\"]}"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": "{\"success\": true, \"program\": \"battlestationspacific.exe\", \"message\": \"Program saved successfully\"}"
+    }
+  ],
+  "saved": true,
+  "exports_refreshed": true
+}
