@@ -93,14 +93,33 @@ def resolve(worktree, path):
         (worktree / path).write_text('\n'.join(header + sortable + pinned) + '\n', encoding='utf-8', newline='\n')
         return 'registry union'
     if path.startswith('config/names/') and path.endswith('.jsonl'):
-        base_by = {json.loads(l)['address']: json.loads(l) for l in base.splitlines() if l.strip()}
-        merged = {json.loads(l)['address']: json.loads(l) for l in ours.splitlines() if l.strip()}
-        for l in theirs.splitlines():
-            if not l.strip():
+        def by_address(text):
+            out = {}
+            for line in text.splitlines():
+                if line.strip():
+                    record = json.loads(line)
+                    out[record['address']] = record
+            return out
+        base_by, our_by, their_by = (by_address(t) for t in (base, ours, theirs))
+        merged, contested = {}, []
+        for address in set(base_by) | set(our_by) | set(their_by):
+            b, o, t = base_by.get(address), our_by.get(address), their_by.get(address)
+            if o == t:
+                keep = o
+            elif o == b:
+                keep = t          # only the incoming side changed it
+            elif t == b:
+                keep = o          # only our side changed it
+            else:
+                contested.append(address)
                 continue
-            r = json.loads(l)
-            if base_by.get(r['address']) != r:
-                merged[r['address']] = r
+            if keep is not None:
+                merged[address] = keep
+        if contested:
+            # Both sides renamed or re-evidenced the same address differently. Taking the incoming
+            # side here silently discarded the other's work, which is how main's records were lost
+            # during the orch5 integration. Refuse and let a reader compare the evidence.
+            return None
         rows = sorted(merged.values(), key=lambda r: int(r['address'], 16))
         (worktree / path).write_text(''.join(json.dumps(r, ensure_ascii=False) + '\n' for r in rows), encoding='utf-8', newline='\n')
         return 'address union'
