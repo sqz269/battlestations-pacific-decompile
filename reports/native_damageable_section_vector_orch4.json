@@ -1,0 +1,597 @@
+{
+  "schema_version": 1,
+  "packet": "orch4_section_vector_f6",
+  "result": "Complete ordinary14-entry source plus observed C++ catch cleanup; original runtime boundaries explicit",
+  "source": "src/native_damageable_section_vector.cpp",
+  "header": "include/bsp/native_damageable_section_vector.hpp",
+  "documentation": "docs/NATIVE_DAMAGEABLE_SECTION_VECTOR_ORCH4.md",
+  "project_file": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+  "worker_ghidra_mutations": false,
+  "parent_flow_repair_receipt": "reports/native_container_flow_repairs_orch4_f6.json (integrator tree)",
+  "target_verification": "bsp.py ghidra verifies configured project/program/language/image base before live batch",
+  "entries": [
+    {
+      "address": "00744070",
+      "old_name": "FUN_00744070",
+      "end": "0074408e",
+      "bytes": 31,
+      "sha256": "cd795c67b4b38b8d1c611775e41fc68413ffbd448bbdfcbb6125a1637e2e001f",
+      "live_instructions": 13,
+      "decoded_instructions": 13,
+      "direct_calls": [],
+      "indirect_calls": [],
+      "source_symbol": "size_native_damageable_section_vector_00744070",
+      "proposed_ghidra_name": "BSP_Vector30_Size",
+      "original_abi": "ECX header; EAX uint32 signed-distance/30h; RET"
+    },
+    {
+      "address": "00876a10",
+      "old_name": "FUN_00876a10",
+      "end": "00876a63",
+      "bytes": 84,
+      "sha256": "8bdb1e0d001fa7cd199c4162e4eb1e1fc61b7f7578c9b0f49f3cea5418e21d48",
+      "live_instructions": 26,
+      "decoded_instructions": 26,
+      "direct_calls": [
+        {
+          "site": "00876a20",
+          "target": "00bf681b"
+        },
+        {
+          "site": "00876a48",
+          "target": "00bf6340"
+        },
+        {
+          "site": "00876a5f",
+          "target": "00bf6885"
+        }
+      ],
+      "indirect_calls": [],
+      "source_symbol": "allocate_native_damageable_sections_00876a10",
+      "proposed_ghidra_name": "BSP_DamageableSection_Allocate",
+      "original_abi": "ECX uint32 count; EAX raw allocation; RET"
+    },
+    {
+      "address": "00878790",
+      "old_name": "FUN_00878790",
+      "end": "00878811",
+      "bytes": 130,
+      "sha256": "82993b9c25db4ac8a5cdc551309e2d8c3f95c2b2b43aa5f913bf78a6c7fb05ba",
+      "live_instructions": 51,
+      "decoded_instructions": 51,
+      "direct_calls": [],
+      "indirect_calls": [
+        {
+          "site": "008787de",
+          "operand": "dword ptr [0xce221c]"
+        },
+        {
+          "site": "008787ec",
+          "operand": "dword ptr [0xce2220]"
+        },
+        {
+          "site": "008787fc",
+          "operand": "edx"
+        }
+      ],
+      "source_symbol": "assign_native_damageable_section_00878790",
+      "proposed_ghidra_name": "BSP_DamageableSection_Assign",
+      "original_abi": "ECX destination; stack source; EAX destination; RET4"
+    },
+    {
+      "address": "00878ac0",
+      "old_name": "FUN_00878ac0",
+      "end": "00878ae5",
+      "bytes": 38,
+      "sha256": "cb5d9e32ed9996264056ccefbf8a96de60295e6350eebbc8d379c1a2352c7c6d",
+      "live_instructions": 18,
+      "decoded_instructions": 18,
+      "direct_calls": [],
+      "indirect_calls": [
+        {
+          "site": "00878ad8",
+          "operand": "edx"
+        }
+      ],
+      "source_symbol": "destroy_native_damageable_section_range_00878ac0",
+      "proposed_ghidra_name": "BSP_DamageableSection_DestroyRange",
+      "original_abi": "stack first/end; RET8; actual current row vslot0(flags0)"
+    },
+    {
+      "address": "00878d60",
+      "old_name": "FUN_00878d60",
+      "end": "00878dab",
+      "bytes": 76,
+      "sha256": "e66281a4df2fc99f4de34b86cf3b2031b8eb3bacfcbb05be0d4473f0b8b0e393",
+      "live_instructions": 34,
+      "decoded_instructions": 34,
+      "direct_calls": [
+        {
+          "site": "00878d9c",
+          "target": "00878790"
+        }
+      ],
+      "indirect_calls": [],
+      "source_symbol": "copy_backward_native_damageable_sections_00878d60",
+      "proposed_ghidra_name": "BSP_DamageableSection_CopyBackward",
+      "original_abi": "stack first/end/destination_end; RET; EAX destination_begin; ignores extra wrapper words"
+    },
+    {
+      "address": "00879390",
+      "old_name": "FUN_00879390",
+      "end": "008793b5",
+      "bytes": 38,
+      "sha256": "cf87a340438a25d4c8a533abee0bdff1d8724998d5f6b8f662aef2f62e4eed7b",
+      "live_instructions": 18,
+      "decoded_instructions": 18,
+      "direct_calls": [
+        {
+          "site": "008793a6",
+          "target": "00878790"
+        }
+      ],
+      "indirect_calls": [],
+      "source_symbol": "assign_fill_native_damageable_sections_00879390",
+      "proposed_ghidra_name": "BSP_DamageableSection_AssignFill",
+      "original_abi": "stack first/end/source; RET"
+    },
+    {
+      "address": "008794f0",
+      "old_name": "FUN_008794f0",
+      "end": "00879583",
+      "bytes": 148,
+      "sha256": "517a1fe18c97d635c55ce68e47d08a1cc03c1279a1bb9c283cbcff4141b11ed2",
+      "live_instructions": 56,
+      "decoded_instructions": 56,
+      "direct_calls": [
+        {
+          "site": "00879537",
+          "target": "00878b40"
+        },
+        {
+          "site": "0087956a",
+          "target": "00bf6885"
+        }
+      ],
+      "indirect_calls": [
+        {
+          "site": "0087955d",
+          "operand": "edx"
+        }
+      ],
+      "source_symbol": "uninitialized_copy_native_damageable_sections_008794f0",
+      "proposed_ghidra_name": "BSP_DamageableSection_UninitializedCopy",
+      "original_abi": "ECX first EDX end; stack destination+3ignored; RET10h; EAX completed_end"
+    },
+    {
+      "address": "008798c0",
+      "old_name": "FUN_008798c0",
+      "end": "008798ea",
+      "bytes": 43,
+      "sha256": "d4af4551c3c58aa556329a4286f5cb940f9ef284c8178adf6b3c155015852aee",
+      "live_instructions": 17,
+      "decoded_instructions": 17,
+      "direct_calls": [
+        {
+          "site": "008798e2",
+          "target": "00878d60"
+        }
+      ],
+      "indirect_calls": [],
+      "source_symbol": "copy_backward_native_damageable_sections_008798c0",
+      "proposed_ghidra_name": "BSP_DamageableSection_CopyBackwardWrapper",
+      "original_abi": "stack first/end/destination_end; RET; EAX destination_begin"
+    },
+    {
+      "address": "0087a580",
+      "old_name": "STL_xlen_throw_0087a580",
+      "end": "0087a5e8",
+      "bytes": 105,
+      "sha256": "fe5bf125f855e1f65bdd08aec7cd27c37e59af6fa1be803e9e6650d747b52051",
+      "live_instructions": 23,
+      "decoded_instructions": 23,
+      "direct_calls": [
+        {
+          "site": "0087a5b8",
+          "target": "00408720"
+        },
+        {
+          "site": "0087a5cd",
+          "target": "00411700"
+        },
+        {
+          "site": "0087a5e4",
+          "target": "00bf6885"
+        }
+      ],
+      "indirect_calls": [],
+      "source_symbol": "throw_native_damageable_section_length_0087a580",
+      "proposed_ghidra_name": "STL_xlen_throw_0087a580",
+      "original_abi": "no inputs; no return; D83F98 length-error throw metadata"
+    },
+    {
+      "address": "0087ad20",
+      "old_name": "FUN_0087ad20",
+      "end": "0087ad56",
+      "bytes": 55,
+      "sha256": "575bcea6fe9dc9b358a00f2ce1e976fa9962deb4cb6ec1ee64a43ac8f6414870",
+      "live_instructions": 23,
+      "decoded_instructions": 23,
+      "direct_calls": [
+        {
+          "site": "0087ad44",
+          "target": "008798f0"
+        }
+      ],
+      "indirect_calls": [],
+      "source_symbol": "uninitialized_fill_native_damageable_sections_0087ad20",
+      "proposed_ghidra_name": "BSP_DamageableSection_UninitializedFillWrapper",
+      "original_abi": "stack first/count/source; ECX ignored header; RETCh; EAX first+30h*count"
+    },
+    {
+      "address": "0087b610",
+      "old_name": "FUN_0087b610",
+      "end": "0087b634",
+      "bytes": 37,
+      "sha256": "602a8c9db65d0ea7d5ad6e5b0be27661b51498b9640b5f252049c01d38f8a685",
+      "live_instructions": 14,
+      "decoded_instructions": 14,
+      "direct_calls": [
+        {
+          "site": "0087b62c",
+          "target": "008794f0"
+        }
+      ],
+      "indirect_calls": [],
+      "source_symbol": "uninitialized_copy_native_damageable_sections_0087b610",
+      "proposed_ghidra_name": "BSP_DamageableSection_UninitializedCopyWrapper",
+      "original_abi": "stack first/end/destination; ECX ignored header; RETCh; EAX completed_end"
+    },
+    {
+      "address": "0087b950",
+      "old_name": "FUN_0087b950",
+      "end": "0087bc40",
+      "bytes": 753,
+      "sha256": "6eb0198f920b397a2782c08ca9e8f25ed3ff087a3a937496e7c2dddf9ab5f748",
+      "live_instructions": 286,
+      "decoded_instructions": 286,
+      "direct_calls": [
+        {
+          "site": "0087b97d",
+          "target": "00878b40"
+        },
+        {
+          "site": "0087b9d8",
+          "target": "0087a580"
+        },
+        {
+          "site": "0087ba40",
+          "target": "00744070"
+        },
+        {
+          "site": "0087ba4d",
+          "target": "00876a10"
+        },
+        {
+          "site": "0087ba70",
+          "target": "008794f0"
+        },
+        {
+          "site": "0087ba80",
+          "target": "0087ad20"
+        },
+        {
+          "site": "0087ba9c",
+          "target": "008794f0"
+        },
+        {
+          "site": "0087bad0",
+          "target": "00878ac0"
+        },
+        {
+          "site": "0087bad9",
+          "target": "00bf65ac"
+        },
+        {
+          "site": "0087bb0d",
+          "target": "00878ac0"
+        },
+        {
+          "site": "0087bb13",
+          "target": "00bf65ac"
+        },
+        {
+          "site": "0087bb1f",
+          "target": "00bf6885"
+        },
+        {
+          "site": "0087bb5a",
+          "target": "0087b610"
+        },
+        {
+          "site": "0087bb85",
+          "target": "0087ad20"
+        },
+        {
+          "site": "0087bba2",
+          "target": "00879390"
+        },
+        {
+          "site": "0087bbc4",
+          "target": "00878ac0"
+        },
+        {
+          "site": "0087bbcd",
+          "target": "00bf6885"
+        },
+        {
+          "site": "0087bbe4",
+          "target": "0087b610"
+        },
+        {
+          "site": "0087bbf5",
+          "target": "008798c0"
+        },
+        {
+          "site": "0087bc02",
+          "target": "00879390"
+        }
+      ],
+      "indirect_calls": [
+        {
+          "site": "0087bc1c",
+          "operand": "dword ptr [0xce2220]"
+        },
+        {
+          "site": "0087bc2c",
+          "operand": "eax"
+        }
+      ],
+      "source_symbol": "insert_native_damageable_sections_0087b950",
+      "proposed_ghidra_name": "BSP_DamageableSectionVector_InsertCount",
+      "original_abi": "ECX header; stack ignored_iterator_owner/position/count/source; RET10h"
+    },
+    {
+      "address": "0087c2d0",
+      "old_name": "FUN_0087c2d0",
+      "end": "0087c37c",
+      "bytes": 173,
+      "sha256": "22aebbf035bff89d031d6647f40cd02b54342e145743e44fb21651d340558598",
+      "live_instructions": 69,
+      "decoded_instructions": 69,
+      "direct_calls": [
+        {
+          "site": "0087c308",
+          "target": "00bf6713"
+        },
+        {
+          "site": "0087c319",
+          "target": "00bf6713"
+        },
+        {
+          "site": "0087c33e",
+          "target": "0087b950"
+        },
+        {
+          "site": "0087c34b",
+          "target": "00bf6713"
+        },
+        {
+          "site": "0087c367",
+          "target": "00bf6713"
+        }
+      ],
+      "indirect_calls": [],
+      "source_symbol": "insert_checked_native_damageable_section_0087c2d0",
+      "proposed_ghidra_name": "BSP_DamageableSectionVector_InsertChecked",
+      "original_abi": "ECX header; stack result_iterator/owner/position/source; RET10h; EAX result_iterator"
+    },
+    {
+      "address": "0087c870",
+      "old_name": "FUN_0087c870",
+      "end": "0087c910",
+      "bytes": 161,
+      "sha256": "c263969aeb29cb3f5c15ff7e933953b47c04687c774313a88dee13ac8de3a32d",
+      "live_instructions": 65,
+      "decoded_instructions": 65,
+      "direct_calls": [
+        {
+          "site": "0087c8d5",
+          "target": "008798f0"
+        },
+        {
+          "site": "0087c8f0",
+          "target": "00bf6713"
+        },
+        {
+          "site": "0087c903",
+          "target": "0087c2d0"
+        }
+      ],
+      "indirect_calls": [],
+      "source_symbol": "append_native_damageable_section_0087c870",
+      "proposed_ghidra_name": "BSP_DamageableSectionVector_Append",
+      "original_abi": "ECX header; stack source; RET4"
+    }
+  ],
+  "reused_original_instruction_fixture_bodies": [
+    {
+      "address": "00878b40",
+      "old_name": "BSP_DamageableSection_CopyConstruct",
+      "end": "00878bab",
+      "bytes": 108,
+      "sha256": "81ef3219b16655b9286256ddcccb2a50a6b750f23b4cf8616d5ec09369c0ec21",
+      "live_instructions": 37,
+      "decoded_instructions": 37,
+      "direct_calls": [],
+      "indirect_calls": [
+        {
+          "site": "00878b93",
+          "operand": "dword ptr [0xce221c]"
+        }
+      ]
+    },
+    {
+      "address": "008798f0",
+      "old_name": "BSP_DamageableSection_UninitializedFill",
+      "end": "0087998c",
+      "bytes": 157,
+      "sha256": "c0dbc084ac24cee6196e84527debdaac5465f38ecc8330fadafd5d8a2f9d82a3",
+      "live_instructions": 58,
+      "decoded_instructions": 59,
+      "direct_calls": [
+        {
+          "site": "0087993e",
+          "target": "00878b40"
+        },
+        {
+          "site": "00879975",
+          "target": "00bf6885"
+        }
+      ],
+      "indirect_calls": [
+        {
+          "site": "00879968",
+          "operand": "eax"
+        }
+      ]
+    }
+  ],
+  "real_source_dependencies": [
+    "copy_construct_native_damageable_section_00878b40",
+    "fill_native_damageable_sections_008798f0",
+    "destroy_native_damageable_section_00878ef0",
+    "native_legacy_sbo_string_assign_counted_00408720",
+    "native_legacy_sbo_string_destroy_004072d0",
+    "NativeAliasListLengthError: genuine411700/411940/411780 payload owner",
+    "singleton_lifetime_allocate/free; SingletonLifetimeCallbacks.invalid_parameter"
+  ],
+  "eh": {
+    "008794f0": {
+      "handler": "00c965d1",
+      "metadata": "00dc87b4",
+      "unwind_map": "00dc879c",
+      "states": [
+        "0->-1:no action",
+        "1->0:C965C0 placement no-op401130",
+        "2->-1:no action"
+      ],
+      "catch": "87954B(states0..1): forward current-vslot0 cleanup completed prefix; BF6885 rethrow"
+    },
+    "0087b950": {
+      "handler": "00c967b8",
+      "metadata": "00dc8b50",
+      "unwind_map": "00dc8b9c",
+      "try_map": "00dc8b74",
+      "states": [
+        "0->-1:C967B0 temporary878EF0",
+        "1->0:none",
+        "2->0:none",
+        "3->0:none",
+        "4->0:none"
+      ],
+      "catches": [
+        "state1/catch2 87BB02: completed new range destruction, free captured new_begin, rethrow87BB1F",
+        "state3/catch4 87BBAC: destroy position+count to current_header.end+count, rethrow87BBCD"
+      ],
+      "outer_unwind_policy": "C967B0 state0 temporary destruction terminates if it throws during source C++ unwind; explicit inner catch cleanup unchanged"
+    },
+    "0087a580": {
+      "handler": "00c966d8",
+      "metadata": "00dc8984",
+      "unwind_map": "00dc897c",
+      "states": [
+        "0->-1:C966D0 ->4072D0 completed temporary string"
+      ]
+    }
+  },
+  "validation": {
+    "strict_release_win32_build": {
+      "result": "passed",
+      "command": "./scripts/build.ps1",
+      "configuration": "Release",
+      "platform": "Win32",
+      "exit_code": 0,
+      "warnings": 0,
+      "errors": 0,
+      "log": "local/section-vector-build-unwind.log"
+    },
+    "existing_ctest": {
+      "result": "passed",
+      "tests": [
+        "reconstructed_math",
+        "tool_tests"
+      ],
+      "passed": 2,
+      "failed": 0,
+      "seconds": 4.25
+    },
+    "native_instruction_probe": {
+      "result": "passed",
+      "vector_scenarios": 8,
+      "cases": [
+        "empty_append",
+        "spare_append",
+        "growing_append",
+        "middle_reallocation",
+        "tail_shorter_than_count",
+        "tail_at_least_count",
+        "zero_count",
+        "checked_returning_invalid_owner"
+      ],
+      "comparison": [
+        "normalized_all_row_words",
+        "header+0",
+        "size",
+        "capacity",
+        "iterator_result",
+        "reference_counts",
+        "destructor_trace",
+        "invalid_callback_count",
+        "x87_status"
+      ],
+      "additional": [
+        "overlapping_assignment_original_vs_source",
+        "source_length_error28h_payload_and18byte_message"
+      ],
+      "boundary_relocations": [
+        "canonical allocate/free",
+        "returning invalid parameter",
+        "Interlocked IAT slots",
+        "actual row table identity"
+      ],
+      "native_throw_policy": "unexpected native throw/unsupported call aborts; original FH3 addresses retained and never invoked",
+      "command": "cmd /c local\\section_vector_probe_build.cmd; local\\section_vector_probe.exe",
+      "manifest": "/link /MANIFEST:EMBED",
+      "exit_code": 0,
+      "linked_library": "build/win32/Release/bsp_core.lib from this worktree strict build",
+      "stdout": "PASS original/source: 8 vector scenarios, overlapping assignment/x87, source length-error payload"
+    },
+    "source_unwind_second_exception": {
+      "result": "passed",
+      "command": "local/section_vector_probe.exe unwind",
+      "expected_terminate_exit": 73,
+      "actual_exit": 73,
+      "escaped_exception_exit": 74,
+      "fixture": "zero-starting owner refcount forces temporary zero-transition; length failure is original exception, owner deletion throws second",
+      "scope": "source C++ policy only, not native FH3 nor valid game owner proof"
+    }
+  },
+  "limitations": [
+    "new C++ interfaces, not original binary ABI",
+    "host CRT allocation/new handler and std::bad_alloc",
+    "existing NativeAliasListLengthError host catch type and RTTI, not original D83F98 metadata",
+    "original FH3/SEH/longjmp/double exceptions and allocation failure not differential-tested",
+    "actual vtables required; no invented virtual providers",
+    "reader87CA80 remains separate",
+    "not game validated"
+  ],
+  "artifact_sha256": {
+    "src/native_damageable_section_vector.cpp": "e3202147ce96f15887e4d0f5462a06471a9f507b940b0c9d61ce0d7a40e0e35d",
+    "local/section_vector_probe.cpp": "2ac18f308b050bb5055ccf46a80f690ffb12ca75ec76b1d62db48d3803ec225f",
+    "local/section_vector_original.inc": "c5194805bfc7fd9d1bd72bbcb5181179bde058c4ff6caa1537596aca8184ab0b",
+    "local/section_vector_probe.exe": "ce956dd627665e5950ae30517318e6030592245b17a208b7b04d27b8de5d811b"
+  }
+}
