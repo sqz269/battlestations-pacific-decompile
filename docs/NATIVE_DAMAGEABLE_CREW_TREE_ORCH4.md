@@ -75,9 +75,12 @@ parameter boundary, then returns the mapped-value pointer.
 
 1. An empty tree inserts left under the head without validating the hint.
 2. A nonempty tree validates hint owner before the minimum case, then validates
-   it again on the remaining path.
+   it again on the remaining path. On that second path, it captures the current
+   end/head before invoking the callback and compares the hint node with that
+   captured pointer after the callback returns.
 3. Minimum and end hints take their direct boundary insertions only for strict
-   signed ordering.
+   signed ordering. After the captured-end comparison succeeds, maximum lookup
+   reloads the current head; a returning callback may have replaced tree `+4`.
 4. An interior predecessor/successor gap inserts beside the available nil
    child. Successor traversal uses the existing complete `008772B0` provider;
    `00876340` checks the resulting iterator against end.
@@ -121,11 +124,14 @@ The reconstruction reuses only reviewed providers:
 
 No host `std::map` owns or shadows the tree. No unresolved callee was stubbed.
 The strict MSVC Win32 repository build passed after compiling the new source,
-and both existing CTests passed (`reconstructed_math`, `tool_tests`). No new
-fixture was added: the shared raw-tree mechanics already have independent
-coverage, while this packet's specialization was checked against all nine
-complete current listings, including field offsets, signed comparisons, output
-order, count predicate and the two explicit `REP MOVSD` schedules. This static
-and build evidence does not establish the original FH3 personality, fault
-behavior, binary ABI compatibility, concurrent mutation safety, or
-gameplay/runtime validation.
+and both existing CTests passed (`reconstructed_math`, `tool_tests`). A focused
+ignored source-only probe invokes the second checked-hint validation with an
+invalid owner; its returning callback replaces tree `+4`, then verifies
+comparison against the captured old end and insertion beside the maximum loaded
+from the replacement head. The probe was compiled as a Win32 executable with an
+embedded manifest and passed. The specialization was also checked against all
+nine complete current listings, including field offsets, signed comparisons,
+output order, count predicate and the two explicit `REP MOVSD` schedules. This
+static, source-probe and build evidence does not establish the original FH3
+personality, fault behavior, binary ABI compatibility, concurrent mutation
+safety, or gameplay/runtime validation.

@@ -168,8 +168,9 @@ NativeKeyboardTreeIterator* insert_hint_native_damageable_crew_tree_pair_0087b26
                 tree, output, 1, position.node, pair);
         }
     } else {
+        void* const end_before_validation = Access::head(tree);
         if (position.owner == nullptr || position.owner != tree) invalid(callbacks);
-        if (position.node == Access::head(tree)) {
+        if (position.node == end_before_validation) {
             void* const maximum = Access::right(Access::head(tree));
             if (key(maximum, 0x0c) < key(pair)) {
                 return link_native_damageable_crew_tree_node_0087a5f0(

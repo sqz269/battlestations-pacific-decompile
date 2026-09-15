@@ -127,16 +127,18 @@
     "duplicate_copies_value": false,
     "result_padding_written": false,
     "returning_invalid_parameter_preserved": true,
+    "second_hint_end_captured_before_validation": true,
+    "maximum_head_reloaded_after_validation": true,
     "root_minimum_maximum_updates": true,
     "red_black_repair": true,
     "count_guard": "unsigned count >= 038E38E2h"
   },
   "validation": {
     "ghidra_flow": "all nine functions complete, zero listing gaps",
-    "source_review": "complete against field offsets, signed comparisons, output ordering, count predicate, rotation/recolor schedule and explicit REP MOVSD copies",
+    "source_review": "complete against field offsets, signed comparisons, callback-relative head loads, output ordering, count predicate, rotation/recolor schedule and explicit REP MOVSD copies",
     "msvc_win32_build": "passed via scripts/build.ps1 after compiling native_damageable_crew_tree.cpp",
     "repository_tests": "2 of 2 passed: reconstructed_math and tool_tests",
-    "focused_fixture": "not added; shared raw-tree mechanics already have independent coverage and packet guidance defaults to no routine new tests",
+    "focused_fixture": "ignored source-only Win32 probe with embedded manifest passes: second returning invalid callback replaces tree+4; source compares hint to the captured old end, reloads the replacement head for maximum, and inserts beside that maximum",
     "game_runtime": "not_run"
   },
   "uncertainties": [
