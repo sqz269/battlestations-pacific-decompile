@@ -2,6 +2,7 @@
 #include "bsp/native_diagnostic_sink_lifetime.hpp"
 #include "bsp/native_singleton_publication.hpp"
 #include "bsp/native_singleton_vector_registration_wrappers.hpp"
+#include "bsp/sound_lifetime_access.hpp"
 
 #include <new>
 #include <stdexcept>
@@ -137,6 +138,13 @@ NativeResourceSupportStorage* NativeResourceSupportLifetime::get(
         return resource_support_singleton_00b3e730(*raw_);
     }
     return resource_support_singleton_00b3e730(publication, *semantic_);
+}
+
+bool NativeResourceSupportLifetime::borrows_same_domain(
+    const SoundLifetimeAccess& lifetime) const noexcept {
+    if (semantic_) return lifetime.borrows_same_domain(*semantic_);
+    return raw_ && lifetime.borrows_same_domain(
+        raw_->actual_manager_publication_01090aa0);
 }
 
 NativeResourceSupportStorage* resource_support_singleton_00b3e730(
