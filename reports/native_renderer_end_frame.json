@@ -1,0 +1,877 @@
+{
+  "packet": "orch5_native_renderer_end_frame",
+  "status": "complete_source_call_schedule_required_frontier_strict_build_and_bounded_fixture_passed",
+  "source_base": "8f73fbf754bc47dfac527e898c3cf7a4cc6ebfa4",
+  "owned_addresses": [
+    "00b2d8e0",
+    "00b2f4a0",
+    "00b2f4b0",
+    "00b232b0",
+    "00b231c0",
+    "00b48d40",
+    "00b48dd0"
+  ],
+  "owned_files": [
+    "include/bsp/native_renderer_end_frame.hpp",
+    "src/native_renderer_end_frame.cpp",
+    "docs/NATIVE_RENDERER_END_FRAME.md",
+    "reports/native_renderer_end_frame.json"
+  ],
+  "functions": [
+    {
+      "address": "00b2d8e0",
+      "end_inclusive": "00b2dbcc",
+      "length": 749,
+      "coverage": "complete_body_with_explicit_required_frontier",
+      "cpp_symbol": "end_native_renderer_frame_00b2d8e0",
+      "source": "src/native_renderer_end_frame.cpp",
+      "header": "include/bsp/native_renderer_end_frame.hpp",
+      "old_name": "BSP_D3D9Renderer_EndFrameAndPresent",
+      "ghidra_name": "BSP_D3D9Renderer_EndFrameAndPresent",
+      "original_abi": "ECX actual renderer; one stack save-header word; RET4; FH3 state0 guard",
+      "new_native_body": true,
+      "ledger_kind": "function",
+      "module": "native_renderer_end_frame",
+      "name_is_hypothesis": true
+    },
+    {
+      "address": "00b2f4a0",
+      "end_inclusive": "00b2f4a7",
+      "length": 8,
+      "coverage": "complete_body_with_explicit_required_frontier",
+      "cpp_symbol": "end_native_renderer_frame_default_00b2f4a0",
+      "source": "src/native_renderer_end_frame.cpp",
+      "header": "include/bsp/native_renderer_end_frame.hpp",
+      "old_name": "BSP_D3D9Renderer_EndFrameDefault",
+      "ghidra_name": "BSP_D3D9Renderer_EndFrameDefault",
+      "original_abi": "ECX renderer; PUSH0/CALL B2D8E0/RET",
+      "new_native_body": true,
+      "ledger_kind": "function",
+      "module": "native_renderer_end_frame",
+      "name_is_hypothesis": true
+    },
+    {
+      "address": "00b2f4b0",
+      "end_inclusive": "00b2f4b4",
+      "length": 5,
+      "coverage": "complete_body_with_explicit_required_frontier",
+      "cpp_symbol": "end_native_renderer_frame_with_save_00b2f4b0",
+      "source": "src/native_renderer_end_frame.cpp",
+      "header": "include/bsp/native_renderer_end_frame.hpp",
+      "old_name": "BSP_D3D9Renderer_EndFrameAndPresentThunk",
+      "ghidra_name": "BSP_D3D9Renderer_EndFrameAndPresentThunk",
+      "original_abi": "ECX renderer; original stack save-header word; JMP B2D8E0",
+      "new_native_body": true,
+      "ledger_kind": "function",
+      "module": "native_renderer_end_frame",
+      "name_is_hypothesis": true
+    },
+    {
+      "address": "00b232b0",
+      "end_inclusive": "00b23351",
+      "length": 162,
+      "coverage": "complete_observed_actual_profile_domain",
+      "cpp_symbol": "rewind_native_physical_vertex_00b232b0",
+      "source": "src/native_renderer_end_frame.cpp",
+      "header": "include/bsp/native_renderer_end_frame.hpp",
+      "old_name": "BSP_PhysicalVertexBuffer_Rewind",
+      "ghidra_name": "BSP_PhysicalVertexBuffer_Rewind",
+      "original_abi": "ECX physical vertex owner; RET; FH3 state0 guard",
+      "new_native_body": true,
+      "ledger_kind": "function",
+      "module": "native_renderer_end_frame",
+      "name_is_hypothesis": true
+    },
+    {
+      "address": "00b231c0",
+      "end_inclusive": "00b23261",
+      "length": 162,
+      "coverage": "complete_observed_actual_profile_domain",
+      "cpp_symbol": "rewind_native_physical_index_00b231c0",
+      "source": "src/native_renderer_end_frame.cpp",
+      "header": "include/bsp/native_renderer_end_frame.hpp",
+      "old_name": "BSP_PhysicalIndexBuffer_Rewind",
+      "ghidra_name": "BSP_PhysicalIndexBuffer_Rewind",
+      "original_abi": "ECX physical index owner; RET; FH3 state0 guard",
+      "new_native_body": true,
+      "ledger_kind": "function",
+      "module": "native_renderer_end_frame",
+      "name_is_hypothesis": true
+    },
+    {
+      "address": "00b48d40",
+      "end_inclusive": "00b48d47",
+      "length": 8,
+      "coverage": "complete_observed_actual_profile_domain",
+      "cpp_symbol": "rewind_native_logical_vertex_00b48d40",
+      "source": "src/native_renderer_end_frame.cpp",
+      "header": "include/bsp/native_renderer_end_frame.hpp",
+      "old_name": "BSP_LogicalVertexStream_InvalidateOffset",
+      "ghidra_name": "BSP_LogicalVertexStream_InvalidateOffset",
+      "original_abi": "ECX logical vertex owner; RET; writes only DWORD +5C",
+      "new_native_body": true,
+      "ledger_kind": "function",
+      "module": "native_renderer_end_frame",
+      "name_is_hypothesis": true
+    },
+    {
+      "address": "00b48dd0",
+      "end_inclusive": "00b48dd7",
+      "length": 8,
+      "coverage": "complete_observed_actual_profile_domain",
+      "cpp_symbol": "rewind_native_logical_index_00b48dd0",
+      "source": "src/native_renderer_end_frame.cpp",
+      "header": "include/bsp/native_renderer_end_frame.hpp",
+      "old_name": "BSP_LogicalIndexStream_InvalidateOffset",
+      "ghidra_name": "BSP_LogicalIndexStream_InvalidateOffset",
+      "original_abi": "ECX logical index owner; RET; writes only DWORD +0C",
+      "new_native_body": true,
+      "ledger_kind": "function",
+      "module": "native_renderer_end_frame",
+      "name_is_hypothesis": true
+    }
+  ],
+  "call_sites": [
+    {
+      "address": "00b2d912",
+      "native": "dword ptr [0xce2148]",
+      "function": "00b2d8e0",
+      "binding": "IAT CE2148 DebugBreak"
+    },
+    {
+      "address": "00b2d92d",
+      "native": "00b33ad0",
+      "function": "00b2d8e0"
+    },
+    {
+      "address": "00b2d93b",
+      "native": "004c11f0",
+      "function": "00b2d8e0"
+    },
+    {
+      "address": "00b2d942",
+      "native": "00b1ebe0",
+      "function": "00b2d8e0"
+    },
+    {
+      "address": "00b2d95c",
+      "native": "edx",
+      "function": "00b2d8e0",
+      "binding": "renderer D5F0A8+130 => B24710"
+    },
+    {
+      "address": "00b2d97c",
+      "native": "edx",
+      "function": "00b2d8e0",
+      "binding": "renderer D5F0A8+134 => B24840"
+    },
+    {
+      "address": "00b2d992",
+      "native": "edx",
+      "function": "00b2d8e0",
+      "binding": "renderer D5F0A8+138 => B24B00"
+    },
+    {
+      "address": "00b2d99b",
+      "native": "dword ptr [0xce2218]",
+      "function": "00b2d8e0",
+      "binding": "IAT CE2218 EnterCriticalSection"
+    },
+    {
+      "address": "00b2d9ab",
+      "native": "00b232b0",
+      "function": "00b2d8e0"
+    },
+    {
+      "address": "00b2d9b5",
+      "native": "dword ptr [0xce2210]",
+      "function": "00b2d8e0",
+      "binding": "IAT CE2210 LeaveCriticalSection"
+    },
+    {
+      "address": "00b2d9c1",
+      "native": "00b231c0",
+      "function": "00b2d8e0"
+    },
+    {
+      "address": "00b2d9d9",
+      "native": "eax",
+      "function": "00b2d8e0",
+      "binding": "renderer D5F0A8+110 => B23C50"
+    },
+    {
+      "address": "00b2d9dd",
+      "native": "00b2bb90",
+      "function": "00b2d8e0"
+    },
+    {
+      "address": "00b2d9ec",
+      "native": "eax",
+      "function": "00b2d8e0",
+      "binding": "renderer D5F0A8+C4 => B28D00 required"
+    },
+    {
+      "address": "00b2d9f0",
+      "native": "00b2b580",
+      "function": "00b2d8e0"
+    },
+    {
+      "address": "00b2d9fa",
+      "native": "00b24460",
+      "function": "00b2d8e0"
+    },
+    {
+      "address": "00b2da04",
+      "native": "00b24460",
+      "function": "00b2d8e0"
+    },
+    {
+      "address": "00b2da0e",
+      "native": "00b24460",
+      "function": "00b2d8e0"
+    },
+    {
+      "address": "00b2da18",
+      "native": "00b24460",
+      "function": "00b2d8e0"
+    },
+    {
+      "address": "00b2da22",
+      "native": "00b24460",
+      "function": "00b2d8e0"
+    },
+    {
+      "address": "00b2da2d",
+      "native": "00b24460",
+      "function": "00b2d8e0"
+    },
+    {
+      "address": "00b2da37",
+      "native": "00b24460",
+      "function": "00b2d8e0"
+    },
+    {
+      "address": "00b2da41",
+      "native": "00b24460",
+      "function": "00b2d8e0"
+    },
+    {
+      "address": "00b2da4b",
+      "native": "00b24460",
+      "function": "00b2d8e0"
+    },
+    {
+      "address": "00b2da56",
+      "native": "00b24460",
+      "function": "00b2d8e0"
+    },
+    {
+      "address": "00b2da60",
+      "native": "00b24460",
+      "function": "00b2d8e0"
+    },
+    {
+      "address": "00b2da6b",
+      "native": "00b24460",
+      "function": "00b2d8e0"
+    },
+    {
+      "address": "00b2da79",
+      "native": "00b24460",
+      "function": "00b2d8e0"
+    },
+    {
+      "address": "00b2da83",
+      "native": "00b24460",
+      "function": "00b2d8e0"
+    },
+    {
+      "address": "00b2da90",
+      "native": "00b24460",
+      "function": "00b2d8e0"
+    },
+    {
+      "address": "00b2da9d",
+      "native": "00b24460",
+      "function": "00b2d8e0"
+    },
+    {
+      "address": "00b2daa2",
+      "native": "00c2f1cc",
+      "function": "00b2d8e0"
+    },
+    {
+      "address": "00b2dac6",
+      "native": "edx",
+      "function": "00b2d8e0",
+      "binding": "current real device+A8 EndScene"
+    },
+    {
+      "address": "00b2dacb",
+      "native": "00b241c0",
+      "function": "00b2d8e0"
+    },
+    {
+      "address": "00b2dad6",
+      "native": "00b0ccb0",
+      "function": "00b2d8e0"
+    },
+    {
+      "address": "00b2db08",
+      "native": "eax",
+      "function": "00b2d8e0",
+      "binding": "current query+10; D62AD0/B5FCA0 required"
+    },
+    {
+      "address": "00b2db45",
+      "native": "edx",
+      "function": "00b2d8e0",
+      "binding": "renderer D5F0A8+08 => B21430"
+    },
+    {
+      "address": "00b2db64",
+      "native": "edx",
+      "function": "00b2d8e0",
+      "binding": "renderer D5F0A8+2C => B1FE20"
+    },
+    {
+      "address": "00b2db7a",
+      "native": "edx",
+      "function": "00b2d8e0",
+      "binding": "current real device+44 Present"
+    },
+    {
+      "address": "00b2dbb5",
+      "native": "00b33b00",
+      "function": "00b2d8e0"
+    },
+    {
+      "address": "00b2f4a2",
+      "native": "00b2d8e0",
+      "function": "00b2f4a0"
+    },
+    {
+      "address": "00b2f4b0",
+      "native": "00b2d8e0",
+      "function": "00b2f4b0",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00b232e1",
+      "native": "00b33ad0",
+      "function": "00b232b0"
+    },
+    {
+      "address": "00b2330b",
+      "native": "eax",
+      "function": "00b232b0",
+      "binding": "logical D61D6C+08 => B48D40"
+    },
+    {
+      "address": "00b2333c",
+      "native": "00b33b00",
+      "function": "00b232b0"
+    },
+    {
+      "address": "00b231f1",
+      "native": "00b33ad0",
+      "function": "00b231c0"
+    },
+    {
+      "address": "00b2321b",
+      "native": "eax",
+      "function": "00b231c0",
+      "binding": "logical D61DE0+08 => B48DD0"
+    },
+    {
+      "address": "00b2324c",
+      "native": "00b33b00",
+      "function": "00b231c0"
+    }
+  ],
+  "live_disk_spans": [
+    {
+      "address": "00b2d8e0",
+      "length": 749,
+      "sha256": "a1d5427e2a7c23cfd1b66bbdf7f0620da2ec877b1934dad51ab57bc292dcaee1",
+      "live_equals_disk": true,
+      "pe_raw_offset": 7526624
+    },
+    {
+      "address": "00b2f4a0",
+      "length": 8,
+      "sha256": "1a016c4cac15d2174c80632094372e0c315f7b36696c85bb522dd4dcb918a4f7",
+      "live_equals_disk": true,
+      "pe_raw_offset": 7533728
+    },
+    {
+      "address": "00b2f4b0",
+      "length": 5,
+      "sha256": "ca024f26c69033c58a58a8592b1c05202275ca6b3af844c9c688737f7f20dc39",
+      "live_equals_disk": true,
+      "pe_raw_offset": 7533744
+    },
+    {
+      "address": "00b232b0",
+      "length": 162,
+      "sha256": "1d929ea60ded156ddd69d4c82b7b4112b883c53bce00d896a52da0cc00151c62",
+      "live_equals_disk": true,
+      "pe_raw_offset": 7484080
+    },
+    {
+      "address": "00b231c0",
+      "length": 162,
+      "sha256": "900e2e06215880732ad7ce7a6a7d2315a9018d52cce99ba8a2068c9504cbb0b5",
+      "live_equals_disk": true,
+      "pe_raw_offset": 7483840
+    },
+    {
+      "address": "00b48d40",
+      "length": 8,
+      "sha256": "43c39d6b1d54208013457a1207a70b9131b42a8b01b23455a0c05c722a6543ae",
+      "live_equals_disk": true,
+      "pe_raw_offset": 7638336
+    },
+    {
+      "address": "00b48dd0",
+      "length": 8,
+      "sha256": "67aab7ebb9932963cd5e56d7a86cee99288023badf825bd1afb922c9610f9763",
+      "live_equals_disk": true,
+      "pe_raw_offset": 7638480
+    },
+    {
+      "address": "00d5f0a8",
+      "length": 316,
+      "sha256": "bd602fc1258e6ea0848d349d6bc04a86bd86246765fdb62f12b739bf9ac0c92f",
+      "live_equals_disk": true,
+      "pe_raw_offset": 9826472
+    },
+    {
+      "address": "00d61d6c",
+      "length": 16,
+      "sha256": "1026b3e813ab3be4aac6161dd1b3b9053ba182bbfe0775b1a67c592ea30344d4",
+      "live_equals_disk": true,
+      "pe_raw_offset": 9837932
+    },
+    {
+      "address": "00d61de0",
+      "length": 16,
+      "sha256": "7a1af7fe0b312c1d3b95834fc934a8c9bc1ae2ec56323c0757f842498d737158",
+      "live_equals_disk": true,
+      "pe_raw_offset": 9838048
+    },
+    {
+      "address": "00c2f1cc",
+      "length": 6,
+      "sha256": "8b4c30ce765e65fe1ecca1b942e9c6f6a99fea6c384363abbf670540db1a3439",
+      "live_equals_disk": true,
+      "pe_raw_offset": 8581580
+    },
+    {
+      "address": "00cbd580",
+      "length": 18,
+      "sha256": "e58bdeb1fb5df3d9efed799dc19ed353d5c94e331553496f3d33a6ac3bd04dd6",
+      "live_equals_disk": true,
+      "pe_raw_offset": 9164160
+    },
+    {
+      "address": "00cbce90",
+      "length": 18,
+      "sha256": "10aa013dca3cdfad5bb4b4db9d36bb32aad44a670d7c273abbd61a2536e12a18",
+      "live_equals_disk": true,
+      "pe_raw_offset": 9162384
+    },
+    {
+      "address": "00cbce70",
+      "length": 18,
+      "sha256": "725ba04694154a55e5144a2caabb464f6c0f0ffe917a119da26d449761d023f7",
+      "live_equals_disk": true,
+      "pe_raw_offset": 9162352
+    },
+    {
+      "address": "00df5e1c",
+      "length": 44,
+      "sha256": "7fb2e6644b76c023ab462039d01ecbb3cfa75399fb037800857ad73a9c667548",
+      "live_equals_disk": true,
+      "pe_raw_offset": 10444316
+    },
+    {
+      "address": "00df5474",
+      "length": 44,
+      "sha256": "8e25562e0adcf678da099143e42667bd7074a91ff718b06c8ea3162111fc3989",
+      "live_equals_disk": true,
+      "pe_raw_offset": 10441844
+    },
+    {
+      "address": "00df5448",
+      "length": 44,
+      "sha256": "a884c53eb764c5fd6d5dd3aaf0dd514dabdea2e03efad8636c16060c609fbc76",
+      "live_equals_disk": true,
+      "pe_raw_offset": 10441800
+    }
+  ],
+  "saved_evidence": [
+    {
+      "original": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b2d8e0\\assembly.txt",
+      "copy": "local\\end_frame_saved_00b2d8e0_assembly.txt",
+      "sha256": "5d9adbe5b8d6e22609a990d49f822e811a8c8af5706d63763cfe8bcd39ae5683"
+    },
+    {
+      "original": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b2d8e0\\decompiled.c",
+      "copy": "local\\end_frame_saved_00b2d8e0_decompiled.c",
+      "sha256": "6f7262c30992fa50c64ca1b9f21cd13510bdc6f33a46f7cbfa6d69695dfd7e7d"
+    },
+    {
+      "original": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b2d8e0\\metadata.json",
+      "copy": "local\\end_frame_saved_00b2d8e0_metadata.json",
+      "sha256": "e24c0fdfb116312451d957f8976d994cff363e1e82b71d0f7499ca1cef2be823"
+    },
+    {
+      "original": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b2f4a0\\assembly.txt",
+      "copy": "local\\end_frame_saved_00b2f4a0_assembly.txt",
+      "sha256": "754f5300852f7dab30cbbae0af7412a570cabd872c287c596f1a0bb4ae50ed54"
+    },
+    {
+      "original": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b2f4a0\\decompiled.c",
+      "copy": "local\\end_frame_saved_00b2f4a0_decompiled.c",
+      "sha256": "301b3c5342e0de8de7c8ddf83596f1de08a86e5277ac3d6a1234d1cb503f15e0"
+    },
+    {
+      "original": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b2f4a0\\metadata.json",
+      "copy": "local\\end_frame_saved_00b2f4a0_metadata.json",
+      "sha256": "1d913e7519918dd741928d96b6846eba2c5ae5a2a1e71d872d31b08f627ff1d6"
+    },
+    {
+      "original": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b2f4b0\\assembly.txt",
+      "copy": "local\\end_frame_saved_00b2f4b0_assembly.txt",
+      "sha256": "77f68165f1160580a38cda77eaf7877260b46eaa97b46506f9af3319b1b92fa3"
+    },
+    {
+      "original": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b2f4b0\\decompiled.c",
+      "copy": "local\\end_frame_saved_00b2f4b0_decompiled.c",
+      "sha256": "f1da27ca647550bfe6c806824e9689283da15c7bad39cdc5900f4b530000e752"
+    },
+    {
+      "original": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b2f4b0\\metadata.json",
+      "copy": "local\\end_frame_saved_00b2f4b0_metadata.json",
+      "sha256": "74d381b361bf19926667c716ea12e744850ccf157cfaaf80bef22d88ead38dff"
+    },
+    {
+      "original": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b232b0\\assembly.txt",
+      "copy": "local\\end_frame_saved_00b232b0_assembly.txt",
+      "sha256": "89188963e5750f57d3a17c20f12d042c66577d60f9fde231f49f1e1b04a801ba"
+    },
+    {
+      "original": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b232b0\\decompiled.c",
+      "copy": "local\\end_frame_saved_00b232b0_decompiled.c",
+      "sha256": "6cd6dce09afcd4af5de88e646fe1f79464a89df2c0f0fc442f01697b0e3bd93f"
+    },
+    {
+      "original": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b232b0\\metadata.json",
+      "copy": "local\\end_frame_saved_00b232b0_metadata.json",
+      "sha256": "00fa47a8ad3f46ace14fb0571ed1a030c490ed695b7b32f413eb802e0a81f3ad"
+    },
+    {
+      "original": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b231c0\\assembly.txt",
+      "copy": "local\\end_frame_saved_00b231c0_assembly.txt",
+      "sha256": "35604f8ddd671222169f49a636dcbfa6c50f96d92fcaf4f43f7a78ad682c7675"
+    },
+    {
+      "original": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b231c0\\decompiled.c",
+      "copy": "local\\end_frame_saved_00b231c0_decompiled.c",
+      "sha256": "4369a692eb584ec895fe14af3776b88439cd426e4353630871244ed9e7008ab0"
+    },
+    {
+      "original": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b231c0\\metadata.json",
+      "copy": "local\\end_frame_saved_00b231c0_metadata.json",
+      "sha256": "c6da43427e510f63d217be68bebca2e07719549b23259e54547b21999466e75e"
+    },
+    {
+      "original": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b48d40\\assembly.txt",
+      "copy": "local\\end_frame_saved_00b48d40_assembly.txt",
+      "sha256": "e4288f04f13934eb03c28e8f3e998e65c4fc65776e4378c87127098acec2c1c0"
+    },
+    {
+      "original": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b48d40\\decompiled.c",
+      "copy": "local\\end_frame_saved_00b48d40_decompiled.c",
+      "sha256": "393173178bab23cc0b25d2387e63529bf5e4e44994505fa6980097e183a13143"
+    },
+    {
+      "original": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b48d40\\metadata.json",
+      "copy": "local\\end_frame_saved_00b48d40_metadata.json",
+      "sha256": "fba5708143690522ca59ec638e4fc1e1b313739490aed0058e1dc00ec3df075c"
+    },
+    {
+      "original": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b48dd0\\assembly.txt",
+      "copy": "local\\end_frame_saved_00b48dd0_assembly.txt",
+      "sha256": "3841217775acc385096ab6fac68a87f52800fa553c603fe3f980f3de69468667"
+    },
+    {
+      "original": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b48dd0\\decompiled.c",
+      "copy": "local\\end_frame_saved_00b48dd0_decompiled.c",
+      "sha256": "e4a5c9a473acebc4b90e7270262a7c3cef026b2606d97e4349abd1a99890ec05"
+    },
+    {
+      "original": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b48dd0\\metadata.json",
+      "copy": "local\\end_frame_saved_00b48dd0_metadata.json",
+      "sha256": "eaf67d6637db708a2f85b2e9cd96f535ab89de9900ac1989dd6f805943257a9a"
+    }
+  ],
+  "xlive_import": [
+    {
+      "dll": "xlive.dll",
+      "iat": "00ce25d8",
+      "ordinal": 5002
+    }
+  ],
+  "required_frontier": [
+    "actual queue B1EBE0 (existing source is a projection)",
+    "B2BB90 overlay 1765 bytes",
+    "B2B580 overlay 1549 bytes"
+  ],
+  "seh_evidence": [
+    {
+      "function": "00b2d8e0",
+      "handler": "00cbd588",
+      "func_info": "00df5e24",
+      "map": "00df5e1c",
+      "cleanup": "00cbd580"
+    },
+    {
+      "function": "00b232b0",
+      "handler": "00cbce98",
+      "func_info": "00df547c",
+      "map": "00df5474",
+      "cleanup": "00cbce90"
+    },
+    {
+      "function": "00b231c0",
+      "handler": "00cbce78",
+      "func_info": "00df5450",
+      "map": "00df5448",
+      "cleanup": "00cbce70"
+    }
+  ],
+  "limits": [
+    "No active full-frame fixture or closed EndFrame dependency graph",
+    "No loaded XLiveRender execution",
+    "New parent/rewind C++ ABI; only two leaves retain original bytes/ECX/RET",
+    "Native FH3 frame, caller stack aliasing, x87 stack/status faults and asynchronous SEH not proved",
+    "Inner renderer+19F4 lock has no exception cleanup; preceding writes retained",
+    "Borrowed actual canonical manager/publications/owner/provider lifetimes must match",
+    "No arbitrary profile dispatch, fallback, owner map, gameplay or rendering parity claim"
+  ],
+  "validation": {
+    "seeds": {
+      "count": 8,
+      "all_live_equals_disk": true,
+      "log": "local/native_renderer_end_frame_seeds.log"
+    },
+    "build": {
+      "command": "./scripts/build.ps1",
+      "configuration": "Release Win32",
+      "passed": true,
+      "log": "local/native_renderer_end_frame_build.log",
+      "ctests": [
+        "reconstructed_math",
+        "native_math_differential"
+      ],
+      "ctests_passed": 2
+    },
+    "call_verification": {
+      "command": "python tools/verify_report_calls.py reports/native_renderer_end_frame.json",
+      "direct_and_tail_checked": 33,
+      "failed": 0,
+      "indirect_recorded": 15,
+      "indirect_verifier_does_not_check": true,
+      "log": "local/native_renderer_end_frame_calls.log"
+    },
+    "fixture": {
+      "program": "local/native_renderer_end_frame_probe.cpp",
+      "build_command_file": "local/native_renderer_end_frame_probe.cmd",
+      "compiler": "MSVC x86 19.51.36244.0",
+      "flags": "/std:c++17 /EHsc /MD /O2 /W4 /WX /MANIFEST:EMBED",
+      "linked_library": "build/win32/Release/bsp_core.lib",
+      "passed": true,
+      "result": "PASS: original/source vertex+index rewind; exact leaf bytes; real recursive guards; retained partial failure; signed count; inactive EndFrame wrappers",
+      "build_log": "local/native_renderer_end_frame_probe_build.log",
+      "run_log": "local/native_renderer_end_frame_probe_run.log",
+      "limits": "Original rewinds execute only normal guarded paths; source failure cleanup and inactive source wrappers checked. No original EH dispatch, active EndFrame or XLiveRender call."
+    }
+  },
+  "no_return_and_listing_review": {
+    "no_repair_performed": true,
+    "end_frame_reaches_ret4": "00b2dbca",
+    "unreachable_padding": [
+      [
+        "00b2d96a",
+        "00b2d96f"
+      ],
+      [
+        "00b2daed",
+        "00b2daef"
+      ]
+    ],
+    "saved_default_prototype_incomplete": true,
+    "save_header_stack_read": "00b2d9c6",
+    "not_inferred_from_truncated_b32920": true
+  },
+  "x87_review": {
+    "instructions": [
+      "00b2db1e FLD1",
+      "00b2db27 FSTP float ptr [ESP]"
+    ],
+    "source_depth_bits": "3f800000",
+    "x87_stack_status_and_original_scratch_alias_not_claimed": true
+  },
+  "shared_storage_contract": [
+    "All contexts borrow the SAME actual manager, F8D440 queue, F8D394 renderer, D5F0A8 profile, current device/cache, string/lifetime domains and 0108D6DC synchronization storage",
+    "D4CC, E1306C, D4B9 and 0108FE88 are actual shared cells; no alternate publications",
+    "B2D8E0 itself does not read 01090AB0 or 0108D4B8; dependencies must preserve their existing actual shared bindings",
+    "Contexts, loaded XLive module, owner graph, profiles and providers outlive the operation; no implicit owner map"
+  ],
+  "immutable_evidence": {
+    "directory": "local/immutable/native_renderer_end_frame_20260914T065816Z",
+    "manifest": "local/immutable/native_renderer_end_frame_20260914T065816Z/manifest.json",
+    "manifest_sha256": "6316e2940db437481ff202baa142380afac42d32cb1c9dea20c532fded3a016c",
+    "artifact_count": 529,
+    "all_frozen_hashes_reverified": true
+  },
+  "integrated_validation": {
+    "code_commit": "33ac99a202f5630d2fe4e706609cb84fc7ffb7f9",
+    "checkpoint": {
+      "path": "local/checkpoints/33ac99a2/native-renderer-cleanup-refreshed/validation.json",
+      "sha256": "9e496724999d084f197d606cf7351cc861f75a14050c0e5ad85c1ca145bef4c0",
+      "code_commit": "33ac99a202f5630d2fe4e706609cb84fc7ffb7f9",
+      "artifacts": 3390
+    },
+    "strict_win32_build": true,
+    "ctests_passed": 2,
+    "new_entry_bodies_including_thunks": 7,
+    "existing_body_pool_overloads": 0,
+    "direct_call_rows": 33,
+    "direct_call_failures": 0,
+    "fixture_scope": "Original/source two physical rewinds with real recursive guards, exact eight-byte leaves, source partial failure and negative count; inactive parent/wrappers only.",
+    "per_entry_scope": {
+      "00b2d8e0": {
+        "module": "native_renderer_end_frame",
+        "scope": "Full call schedule now binds current D62AD0 query+10 to actual B5FCA0. Queue and three overlay bodies remain required substantive providers. Only inactive parent return is fixture-tested; active frame and loaded XLiveRender remain unvalidated.",
+        "status": "call_schedule_reconstructed_build_inactive_only_required_frontier"
+      },
+      "00b2f4a0": {
+        "module": "native_renderer_end_frame",
+        "scope": "Default null-save wrapper. Inactive raw owner with null context fixture passed; active frame remains unvalidated.",
+        "status": "call_schedule_reconstructed_build_inactive_only_required_frontier"
+      },
+      "00b2f4b0": {
+        "module": "native_renderer_end_frame",
+        "scope": "Five-byte tail thunk to EndFrame with existing save argument. Inactive wrapper fixture passed; active frame remains unvalidated.",
+        "status": "call_schedule_reconstructed_build_inactive_only_required_frontier"
+      },
+      "00b232b0": {
+        "module": "native_renderer_end_frame",
+        "scope": "Actual signed-count/current-child traversal and final counters; sole optional-guard unwind. Original/source comparison with real recursive sections and source partial-failure fixture passed.",
+        "status": "actual_body_reconstructed_integrated_build_scoped_fixture_evidence"
+      },
+      "00b231c0": {
+        "module": "native_renderer_end_frame",
+        "scope": "Actual signed-count/current-child traversal and final counters; sole optional-guard unwind. Original/source comparison with real recursive sections and source partial-failure fixture passed.",
+        "status": "actual_body_reconstructed_integrated_build_scoped_fixture_evidence"
+      },
+      "00b48d40": {
+        "module": "native_renderer_end_frame",
+        "scope": "Actual logical owner+5C=-1. Linked eight-byte entry matches original and participates in original/source physical rewind fixture.",
+        "status": "actual_body_reconstructed_integrated_build_static_evidence"
+      },
+      "00b48dd0": {
+        "module": "native_renderer_end_frame",
+        "scope": "Actual logical owner+C=-1. Linked eight-byte entry matches original and participates in original/source physical rewind fixture.",
+        "status": "actual_body_reconstructed_integrated_build_static_evidence"
+      }
+    },
+    "annotation_journal": "local/ghidra-annotations-20260914T073358Z.json",
+    "annotations_saved_and_read_back_preserving_previous_comments": true,
+    "exports_forced_after_snapshot_refresh": true,
+    "worker_artifacts_retained": {
+      "label": "endframe",
+      "commit": "0c6c37b82daa15d54b0585c6c9d40cc742506d17",
+      "path": "local/compiler-path-workers/renderer-cleanup-endframe/manifest.json",
+      "sha256": "6b19bd6d33c7175ce7389909aaf1c19419c2490809afb281dc9f68545ee955dd",
+      "artifacts": 529
+    },
+    "game_validated": false,
+    "limits": [
+      "EndFrame still requires queue and three overlay bodies; active parent and XLiveRender execution unvalidated",
+      "Effect registry destruction and B30410 currently have build/static evidence only",
+      "Full renderer lifetime, canonical application adoption, original exception ABI and gameplay remain incomplete"
+    ],
+    "query_binding": {
+      "source_commit": "33ac99a202f5630d2fe4e706609cb84fc7ffb7f9",
+      "source": "src/native_renderer_end_frame.cpp",
+      "query_entry": "00b5fca0",
+      "current_owner_profile": "00d62ad0",
+      "current_slot": "10",
+      "predicate": "current actual query+8 == 0",
+      "effect": "execute the byte-identical raw poll and ignore AL; loop reloads current renderer array and unsigned count",
+      "remaining_required_bodies": [
+        "00b1ebe0",
+        "00b2bb90",
+        "00b28d00",
+        "00b2b580"
+      ],
+      "active_endframe_runtime_validated": false,
+      "review": "raw poll standalone differential and byte identity passed; this parent wiring is build/static evidence only"
+    }
+  },
+  "worker_required_frontier_before_raw_query_integration": [
+    "actual queue B1EBE0 (existing source is a projection)",
+    "B2BB90 overlay 1765 bytes",
+    "current renderer+C4 B28D00 overlay 966 bytes",
+    "B2B580 overlay 1549 bytes",
+    "current pending query+10 D62AD0/B5FCA0 (existing source is a projection)"
+  ],
+  "required_frontier_before_debug_line_integration": [
+    "actual queue B1EBE0 (existing source is a projection)",
+    "B2BB90 overlay 1765 bytes",
+    "current renderer+C4 B28D00 overlay 966 bytes",
+    "B2B580 overlay 1549 bytes"
+  ],
+  "debug_line_binding": {
+    "native_entry": "00b28d00",
+    "source": "src/native_renderer_debug_lines.cpp",
+    "cpp_symbol": "draw_native_renderer_debug_lines_00b28d00",
+    "dispatch": "current renderer profile and numeric +C4 gate retained before substantive provider call",
+    "borrowed_context": "NativeRendererEndFrameContext.actual_debug_lines; same current renderer/synchronization/vertex/index/profile domains; null admitted only by the callee empty-count return",
+    "unresolved_transitive_adoption": "Raw resource-support AA0 migration is still needed for nonempty physical/surface/layout/shader terminal domains; full active EndFrame and gameplay remain unvalidated",
+    "callback_removed": "NativeRendererEndFrameRemaining.renderer_virtual_c4_00b28d00"
+  },
+  "orch5_constructor_wave_integration": {
+    "code_commit": "425b3b4843efe2a3f7032340461002fb83798fc9",
+    "checkpoint": {
+      "path": "local/checkpoints/425b3b48/native-renderer-constructor-wave/validation.json",
+      "sha256": "64c19259048ada5f8868750e99c793c0b95674ea7f391b124b8ed2e613ae8fe0",
+      "code_commit": "425b3b4843efe2a3f7032340461002fb83798fc9",
+      "artifacts": 3439
+    },
+    "strict_msvc_win32_build": true,
+    "verified_native_seeds": 8,
+    "ctests_passed": 2,
+    "fixture_program": "local/native_renderer_constructor_integration/renderer_endframe_probe.exe",
+    "fixture_scope": "The current +C4 gate calls substantive B28D00 directly. Existing rewind comparisons and inactive context-free wrappers passed against the final library. Actual queue B1EBE0, B2BB90 and B2B580 remain required outer providers; active EndFrame remains unproved.",
+    "saved_annotation_journal": "local/ghidra-annotations-20260914T170148Z.json",
+    "native_byte_review": {
+      "spans": 38,
+      "bytes": 5535,
+      "scope": "combined packet and explicit dependency/context spans; includes overlaps"
+    },
+    "call_site_review": {
+      "rows_checked": 118,
+      "failures": 0,
+      "scope": "combined numeric direct/tail rows; indirect dispatch and original exception execution excluded"
+    },
+    "constructor_executed": false,
+    "full_renderer_lifetime_validated": false,
+    "original_fh3_seh_abi_validated": false,
+    "game_validated": false
+  }
+}
