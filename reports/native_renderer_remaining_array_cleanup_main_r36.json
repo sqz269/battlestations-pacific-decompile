@@ -820,5 +820,156 @@
     "Valid raw extents, lifetimes, allocator ownership, nonconcurrent access, and wrapping-address reachability remain caller preconditions.",
     "The fixture proves the retained raw-header scenarios after rebinding direct calls; it does not prove every original caller or parent EH dispatcher.",
     "No renderer owner, renderer construction, referenced resource behavior, game runtime, or gameplay validation is claimed."
-  ]
+  ],
+  "primary_integration": {
+    "source_merge": "6a0c65625",
+    "combined_strict_build": true,
+    "ctests_passed": 3,
+    "log": "local/r36_remaining_array_integration.log",
+    "review": "Full source/header and provider ABI reviewed; all29 immutable worker files verified; all22 native byte/hash spans independently match installed PE.",
+    "worker_archive_retained": "local/evidence-r36/renderer-remaining-array-r36-final.zip",
+    "archive_sha256": "88e7033ea7eb7abc596266b357d00ade4abe808ded53814670df389941a30356",
+    "fixture_scope": "Fresh worker fixture retained; primary combined build/CTests rerun, no primary fixture re-execution."
+  },
+  "primary_archive": {
+    "path": "local/evidence-r36/renderer-remaining-array-main-r36.zip",
+    "sha256": "a837c6ead33877158fc191003076ab0d14e4e85f757264546f4af40a72fc42ab",
+    "files": [
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "sha256": "57f185c08042cf720ce9216ffcec1973487d1221b879da46bd838a3cff01aa83"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_renderer_remaining_array_cleanup.obj",
+        "sha256": "e796907c395e4054fd7101b965d546ff3c7398265ba78af7ffa503d38ca0a8ed"
+      },
+      {
+        "path": "local/r36_remaining_array_integration.log",
+        "sha256": "e7952aa91b95a800f3006733943de38e1a3ce2c08fb8200d988a4963415f93a5"
+      },
+      {
+        "path": "local/r36_remaining_array_annotations.log",
+        "sha256": "7a2dc094125b1e0ce011b1932d3aa1a3c1b6c4dc7f028a27caf59365758dd524"
+      },
+      {
+        "path": "local/r36_remaining_array_exports.log",
+        "sha256": "f4884cc633d70681ad5ea63597d2cf2c25e32d312f16adda26b5cdd512e0eddf"
+      },
+      {
+        "path": "local/ghidra-annotations-20260916T110334Z.json",
+        "sha256": "b687f65ea75240b17403c713bba8726e5f5f3e5e2da3a8914d211bd843aadd02"
+      },
+      {
+        "path": "include/bsp/native_renderer_remaining_array_cleanup.hpp",
+        "sha256": "f6faf74aa1ee90201e122bfa3680d7289a0751af777d75742338ab8a66f40ea2"
+      },
+      {
+        "path": "src/native_renderer_remaining_array_cleanup.cpp",
+        "sha256": "b633a5927acad4b85d1f4aaa392a7d1bc58f539f72ef1f4ad33cd941ebede620"
+      }
+    ]
+  },
+  "annotation_status": {
+    "status": "Primary retained existing live names, extended ledger evidence, preserved prior annotations, saved project and refreshed seven exports.",
+    "prior_annotations": [
+      {
+        "address": "00737bf0",
+        "before": {
+          "address": "00737bf0",
+          "function_name": "BSP_RendererDwordArray_00737BF0_Destroy",
+          "comment": "[BSP reconstruction 00737bf0]\nHypothesis, not a recovered symbol. Original/source signed resize and all four negative-capacity destruction paths; full instruction equivalence supports shared providers. Integrated code aa836cdd passed strict MSVC Win32 build, eight native seeds and both CTests. docs/NATIVE_RENDERER_REMAINING_ARRAY_CLEANUP.md; reports/native_renderer_remaining_array_cleanup.json. Raw valid extents and borrowed current cells/providers are caller requirements. New source interfaces; original CRT/FH3/SEH/private-frame identity, full renderer adoption and gameplay unvalidated."
+        },
+        "after": {
+          "address": "00737bf0",
+          "name": "BSP_RendererDwordArray_00737BF0_Destroy",
+          "evidence": "R36 unchanged seven-entry source reuse from2bed1615e, using current main procedural resize00737390 and genuine allocation/free. Raw0Ch headers, signed bounds, current data/count reloads, null-slot-skipped zero growth, poison retention, resize0-before-current-data-free, negative-capacity replacement and stale headers retained. Twenty-two fresh live/PE/historical spans980B, normalized resize/reserve equivalence and28 call/tail rows pass; parent independently verified all22 report byte/hash spans against installed PE. Parent reviewed full source/header and provider ABI and verified all29 frozen worker artifacts. Unchanged retained fixture freshly passes raw growth, signed shrink and four negative-capacity destructor replacement tails. Worker and combined main strict MSVC Win32 /MD builds and three CTests pass. Original FH3/SEH, binary replacement and gameplay unproved. reports/native_renderer_remaining_array_cleanup_main_r36.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b22ee0",
+        "before": {
+          "address": "00b22ee0",
+          "function_name": "BSP_RendererDwordArray_00B22EE0_Resize",
+          "comment": "[BSP reconstruction 00b22ee0]\nHypothesis, not a recovered symbol. Original/source signed resize and all four negative-capacity destruction paths; full instruction equivalence supports shared providers. Integrated code aa836cdd passed strict MSVC Win32 build, eight native seeds and both CTests. docs/NATIVE_RENDERER_REMAINING_ARRAY_CLEANUP.md; reports/native_renderer_remaining_array_cleanup.json. Raw valid extents and borrowed current cells/providers are caller requirements. New source interfaces; original CRT/FH3/SEH/private-frame identity, full renderer adoption and gameplay unvalidated."
+        },
+        "after": {
+          "address": "00b22ee0",
+          "name": "BSP_RendererDwordArray_00B22EE0_Resize",
+          "evidence": "R36 unchanged seven-entry source reuse from2bed1615e, using current main procedural resize00737390 and genuine allocation/free. Raw0Ch headers, signed bounds, current data/count reloads, null-slot-skipped zero growth, poison retention, resize0-before-current-data-free, negative-capacity replacement and stale headers retained. Twenty-two fresh live/PE/historical spans980B, normalized resize/reserve equivalence and28 call/tail rows pass; parent independently verified all22 report byte/hash spans against installed PE. Parent reviewed full source/header and provider ABI and verified all29 frozen worker artifacts. Unchanged retained fixture freshly passes raw growth, signed shrink and four negative-capacity destructor replacement tails. Worker and combined main strict MSVC Win32 /MD builds and three CTests pass. Original FH3/SEH, binary replacement and gameplay unproved. reports/native_renderer_remaining_array_cleanup_main_r36.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b22f30",
+        "before": {
+          "address": "00b22f30",
+          "function_name": "BSP_RendererDwordArray_00B22F30_Resize",
+          "comment": "[BSP reconstruction 00b22f30]\nHypothesis, not a recovered symbol. Original/source signed resize and all four negative-capacity destruction paths; full instruction equivalence supports shared providers. Integrated code aa836cdd passed strict MSVC Win32 build, eight native seeds and both CTests. docs/NATIVE_RENDERER_REMAINING_ARRAY_CLEANUP.md; reports/native_renderer_remaining_array_cleanup.json. Raw valid extents and borrowed current cells/providers are caller requirements. New source interfaces; original CRT/FH3/SEH/private-frame identity, full renderer adoption and gameplay unvalidated."
+        },
+        "after": {
+          "address": "00b22f30",
+          "name": "BSP_RendererDwordArray_00B22F30_Resize",
+          "evidence": "R36 unchanged seven-entry source reuse from2bed1615e, using current main procedural resize00737390 and genuine allocation/free. Raw0Ch headers, signed bounds, current data/count reloads, null-slot-skipped zero growth, poison retention, resize0-before-current-data-free, negative-capacity replacement and stale headers retained. Twenty-two fresh live/PE/historical spans980B, normalized resize/reserve equivalence and28 call/tail rows pass; parent independently verified all22 report byte/hash spans against installed PE. Parent reviewed full source/header and provider ABI and verified all29 frozen worker artifacts. Unchanged retained fixture freshly passes raw growth, signed shrink and four negative-capacity destructor replacement tails. Worker and combined main strict MSVC Win32 /MD builds and three CTests pass. Original FH3/SEH, binary replacement and gameplay unproved. reports/native_renderer_remaining_array_cleanup_main_r36.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b22f80",
+        "before": {
+          "address": "00b22f80",
+          "function_name": "BSP_RendererDwordArray_00B22F80_Resize",
+          "comment": "[BSP reconstruction 00b22f80]\nHypothesis, not a recovered symbol. Original/source signed resize and all four negative-capacity destruction paths; full instruction equivalence supports shared providers. Integrated code aa836cdd passed strict MSVC Win32 build, eight native seeds and both CTests. docs/NATIVE_RENDERER_REMAINING_ARRAY_CLEANUP.md; reports/native_renderer_remaining_array_cleanup.json. Raw valid extents and borrowed current cells/providers are caller requirements. New source interfaces; original CRT/FH3/SEH/private-frame identity, full renderer adoption and gameplay unvalidated."
+        },
+        "after": {
+          "address": "00b22f80",
+          "name": "BSP_RendererDwordArray_00B22F80_Resize",
+          "evidence": "R36 unchanged seven-entry source reuse from2bed1615e, using current main procedural resize00737390 and genuine allocation/free. Raw0Ch headers, signed bounds, current data/count reloads, null-slot-skipped zero growth, poison retention, resize0-before-current-data-free, negative-capacity replacement and stale headers retained. Twenty-two fresh live/PE/historical spans980B, normalized resize/reserve equivalence and28 call/tail rows pass; parent independently verified all22 report byte/hash spans against installed PE. Parent reviewed full source/header and provider ABI and verified all29 frozen worker artifacts. Unchanged retained fixture freshly passes raw growth, signed shrink and four negative-capacity destructor replacement tails. Worker and combined main strict MSVC Win32 /MD builds and three CTests pass. Original FH3/SEH, binary replacement and gameplay unproved. reports/native_renderer_remaining_array_cleanup_main_r36.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b280b0",
+        "before": {
+          "address": "00b280b0",
+          "function_name": "BSP_RendererDwordArray_00B280B0_Destroy",
+          "comment": "[BSP reconstruction 00b280b0]\nHypothesis, not a recovered symbol. Original/source signed resize and all four negative-capacity destruction paths; full instruction equivalence supports shared providers. Integrated code aa836cdd passed strict MSVC Win32 build, eight native seeds and both CTests. docs/NATIVE_RENDERER_REMAINING_ARRAY_CLEANUP.md; reports/native_renderer_remaining_array_cleanup.json. Raw valid extents and borrowed current cells/providers are caller requirements. New source interfaces; original CRT/FH3/SEH/private-frame identity, full renderer adoption and gameplay unvalidated."
+        },
+        "after": {
+          "address": "00b280b0",
+          "name": "BSP_RendererDwordArray_00B280B0_Destroy",
+          "evidence": "R36 unchanged seven-entry source reuse from2bed1615e, using current main procedural resize00737390 and genuine allocation/free. Raw0Ch headers, signed bounds, current data/count reloads, null-slot-skipped zero growth, poison retention, resize0-before-current-data-free, negative-capacity replacement and stale headers retained. Twenty-two fresh live/PE/historical spans980B, normalized resize/reserve equivalence and28 call/tail rows pass; parent independently verified all22 report byte/hash spans against installed PE. Parent reviewed full source/header and provider ABI and verified all29 frozen worker artifacts. Unchanged retained fixture freshly passes raw growth, signed shrink and four negative-capacity destructor replacement tails. Worker and combined main strict MSVC Win32 /MD builds and three CTests pass. Original FH3/SEH, binary replacement and gameplay unproved. reports/native_renderer_remaining_array_cleanup_main_r36.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b280d0",
+        "before": {
+          "address": "00b280d0",
+          "function_name": "BSP_RendererDwordArray_00B280D0_Destroy",
+          "comment": "[BSP reconstruction 00b280d0]\nHypothesis, not a recovered symbol. Original/source signed resize and all four negative-capacity destruction paths; full instruction equivalence supports shared providers. Integrated code aa836cdd passed strict MSVC Win32 build, eight native seeds and both CTests. docs/NATIVE_RENDERER_REMAINING_ARRAY_CLEANUP.md; reports/native_renderer_remaining_array_cleanup.json. Raw valid extents and borrowed current cells/providers are caller requirements. New source interfaces; original CRT/FH3/SEH/private-frame identity, full renderer adoption and gameplay unvalidated."
+        },
+        "after": {
+          "address": "00b280d0",
+          "name": "BSP_RendererDwordArray_00B280D0_Destroy",
+          "evidence": "R36 unchanged seven-entry source reuse from2bed1615e, using current main procedural resize00737390 and genuine allocation/free. Raw0Ch headers, signed bounds, current data/count reloads, null-slot-skipped zero growth, poison retention, resize0-before-current-data-free, negative-capacity replacement and stale headers retained. Twenty-two fresh live/PE/historical spans980B, normalized resize/reserve equivalence and28 call/tail rows pass; parent independently verified all22 report byte/hash spans against installed PE. Parent reviewed full source/header and provider ABI and verified all29 frozen worker artifacts. Unchanged retained fixture freshly passes raw growth, signed shrink and four negative-capacity destructor replacement tails. Worker and combined main strict MSVC Win32 /MD builds and three CTests pass. Original FH3/SEH, binary replacement and gameplay unproved. reports/native_renderer_remaining_array_cleanup_main_r36.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b280f0",
+        "before": {
+          "address": "00b280f0",
+          "function_name": "BSP_RendererDwordArray_00B280F0_Destroy",
+          "comment": "[BSP reconstruction 00b280f0]\nHypothesis, not a recovered symbol. Original/source signed resize and all four negative-capacity destruction paths; full instruction equivalence supports shared providers. Integrated code aa836cdd passed strict MSVC Win32 build, eight native seeds and both CTests. docs/NATIVE_RENDERER_REMAINING_ARRAY_CLEANUP.md; reports/native_renderer_remaining_array_cleanup.json. Raw valid extents and borrowed current cells/providers are caller requirements. New source interfaces; original CRT/FH3/SEH/private-frame identity, full renderer adoption and gameplay unvalidated."
+        },
+        "after": {
+          "address": "00b280f0",
+          "name": "BSP_RendererDwordArray_00B280F0_Destroy",
+          "evidence": "R36 unchanged seven-entry source reuse from2bed1615e, using current main procedural resize00737390 and genuine allocation/free. Raw0Ch headers, signed bounds, current data/count reloads, null-slot-skipped zero growth, poison retention, resize0-before-current-data-free, negative-capacity replacement and stale headers retained. Twenty-two fresh live/PE/historical spans980B, normalized resize/reserve equivalence and28 call/tail rows pass; parent independently verified all22 report byte/hash spans against installed PE. Parent reviewed full source/header and provider ABI and verified all29 frozen worker artifacts. Unchanged retained fixture freshly passes raw growth, signed shrink and four negative-capacity destructor replacement tails. Worker and combined main strict MSVC Win32 /MD builds and three CTests pass. Original FH3/SEH, binary replacement and gameplay unproved. reports/native_renderer_remaining_array_cleanup_main_r36.json."
+        },
+        "status": "applied"
+      }
+    ]
+  }
 }
