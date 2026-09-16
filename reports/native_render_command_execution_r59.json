@@ -1,0 +1,2796 @@
+{
+  "schema_version": 1,
+  "packet": "native_render_command_execution_r59",
+  "status": "raw_source_composition_strict_build_bounded_original_caller_and_raw_pool_fixture_checked",
+  "baseline_commit": "4401ce8db8c059c29776751798f7107c16ec2b35",
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "prior_annotations_path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\ghidra-annotations-20260916T174340Z.json",
+    "prior_annotations": [
+      {
+        "address": "00b13030",
+        "before": {
+          "address": "00b13030",
+          "function_name": "BSP_RenderDiagnostics_SetCommandLabel",
+          "comment": "[BSP reconstruction 00b13030]\nIf source view differs from owner+684, resize destination to source length then memcpy nonempty payload using resulting destination length. Native pooled string ABI separate from typed diagnostic value storage. Original ABI: ECX diagnostics owner; stack native string view; RET4. Evidence docs/RENDER_COMMAND_EXECUTION.md; reports/render_command_execution_audit.json. Descriptive names are hypotheses; typed interfaces are not original ABI or gameplay validation. Original ABI: ECX diagnostics owner; stack native string view; RET4. Evidence: docs/RENDER_COMMAND_EXECUTION.md; reports/render_command_execution_audit.json. Descriptive names are hypotheses; typed C++ interfaces are not native ABI or game validation.\n\n[BSP reconstruction 00b13030] update\nCompute actual service+684 destination; exact header identity returns before memory/storage access. Read initial source length, actual41DD40 destination resize preserve=true. Reread source length for nonzero gate. Read current destination length, source data, destination data; copy destination-length bytes. No terminator copy, no source initialization/ownership transfer, no local cleanup guard. Full actual borrowed-service/header/global implementation. Original ABI: ECX actual service, stack actual8h source header, RET4; no error-return contract. Evidence docs/NATIVE_RENDER_DIAGNOSTIC_LABELS.md; reports/native_render_diagnostic_labels_audit.json. Primary library fixture7096words/8scenarios/13pool getters plus original reset state0/-1 search/unwind; strictWin32build/2existingCTests. Host release noexcept limits native throwing boundary coverage; no original exception ABI or game validation claim."
+        },
+        "after": {
+          "address": "00b13030",
+          "name": "BSP_RenderDiagnostics_SetCommandLabel",
+          "evidence": "If source view differs from owner+684, resize destination to source length then memcpy nonempty payload using resulting destination length. Native pooled string ABI separate from typed diagnostic value storage. Original ABI: ECX diagnostics owner; stack native string view; RET4. Evidence docs/RENDER_COMMAND_EXECUTION.md; reports/render_command_execution_audit.json. Descriptive names are hypotheses; typed interfaces are not original ABI or gameplay validation. Original ABI: ECX diagnostics owner; stack native string view; RET4. Evidence: docs/RENDER_COMMAND_EXECUTION.md; reports/render_command_execution_audit.json. Descriptive names are hypotheses; typed C++ interfaces are not native ABI or game validation. | Compute actual service+684 destination; exact header identity returns before memory/storage access. Read initial source length, actual41DD40 destination resize preserve=true. Reread source length for nonzero gate. Read current destination length, source data, destination data; copy destination-length bytes. No terminator copy, no source initialization/ownership transfer, no local cleanup guard. Full actual borrowed-service/header/global implementation. Original ABI: ECX actual service, stack actual8h source header, RET4; no error-return contract. Evidence docs/NATIVE_RENDER_DIAGNOSTIC_LABELS.md; reports/native_render_diagnostic_labels_audit.json. Primary library fixture7096words/8scenarios/13pool getters plus original reset state0/-1 search/unwind; strictWin32build/2existingCTests. Host release noexcept limits native throwing boundary coverage; no original exception ABI or game validation claim. | R59 full rawB1D950[369] source composition in src/native_render_command_execution.cpp. Native ECXactual44hcommand/RET; genuineB20240; context+8 camera captured after currentrenderer+98 slot and before targetcallback; genuineB24E70, B71360, currentcommand+4 scene B46A70/persistentframe; currentservicelabel via rawpoolB13030. Metadata+114 B20210 RET4, then freshcurrentrenderer activegate. GuardarmsB1D9D6 onlybeforemetadata anddisarmsB1DAA2 before normalB13510. Current syncbyte0 andboth signedcounts>50 select genuinejobs: modewrite before raw4C1130, reloadbatch aftergetter, capturepool+4 before rawB0FFB0, currentenqueueBE3020; freshpool/currentwaitBE3150(1). Else currentbatch/currentprofile+0C B51DF0 serial withoutmodewrite. Then both currentbatch+8 B55550 using capturedcamera andpersistentframes. Actual serial/worker preparation identities verified. Same rawrenderer/service/sync/pool/manager/provider graph, no callback-only implementation, ownerreset or rollback. B13030[57]/B13510[165] new rawAA8/AA4/AA0 overloads retain alias/current-header/overlap and X reset; tempconstruct beforeguard, capturednormalbuffer/length, currentheader cleanup, disarmed normalrawpool return allows getterfailure propagation. Secondcleanup exception terminates. Fresh28native spans1156B/25livecall-or-tail rows; strictWin32/MD/W4/WX/fp:strict+3CTests. Four fullnative/source parentreadiness exits and complete native/source rawpool label cases (alias/null/grow/overlap/empty/X) pass. Genuine linked target/camera/system/rawlabels/serial/job/batch providers confirmedinorder, notactive runtime. Native fixture calls sourcehelper providers; fullactive command/ownergraph/jobs/draws, exceptioninjection, originalFH3/SEH/register/privateframe/fault andgameplay unproved. B1DA6D 8D4900 is unreferenced unreachablealignment, retained. reports/native_render_command_execution_r59.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b13510",
+        "before": {
+          "address": "00b13510",
+          "function_name": "BSP_RenderDiagnostics_ResetCommandLabel",
+          "comment": "[BSP reconstruction 00b13510]\nReload optional global00F8D39C; if present construct native temporary from literal00CE9A38 bytes58 00 (X), copy to owner+684, then return temporary length+1 bytes to size-class pool. Exit value is X, NOT empty string. Native allocator and SEH ABI unported. Original ABI: No meaningful ECX input; no stack arguments; RET. Evidence docs/RENDER_COMMAND_EXECUTION.md; reports/render_command_execution_audit.json. Descriptive names are hypotheses; typed interfaces are not original ABI or gameplay validation. Original ABI: No meaningful ECX input; no stack arguments; RET. Evidence: docs/RENDER_COMMAND_EXECUTION.md; reports/render_command_execution_audit.json. Descriptive names are hypotheses; typed C++ interfaces are not native ABI or game validation.\n\n[BSP reconstruction 00b13510] update\nRead supplied actual F8D39C slot; initially null returns. Construct one fresh actual8h NativeString from fixed literal X through41E870, before arm. Reload current global service, capture temporary data, capture temporary length, then form destination+684 and alias comparison. Arm only copy region; if not aliased, resize from captured temporary length. Captured nonzero length gates current destination-length copy from captured temporary data. On guarded exception use actual41DD20 on CURRENT temporary header and rethrow. On normal path disarm, then release CAPTURED temporary data with CAPTURED length+1 DWORD wrap. No automatic second release, temporary header clearing, second global null check, retry or empty-string substitution. Full actual borrowed-service/header/global implementation. Original ABI: No inputs, ECX unused, RET; no error-return contract. Evidence docs/NATIVE_RENDER_DIAGNOSTIC_LABELS.md; reports/native_render_diagnostic_labels_audit.json. Primary library fixture7096words/8scenarios/13pool getters plus original reset state0/-1 search/unwind; strictWin32build/2existingCTests. Host release noexcept limits native throwing boundary coverage; no original exception ABI or game validation claim."
+        },
+        "after": {
+          "address": "00b13510",
+          "name": "BSP_RenderDiagnostics_ResetCommandLabel",
+          "evidence": "Reload optional global00F8D39C; if present construct native temporary from literal00CE9A38 bytes58 00 (X), copy to owner+684, then return temporary length+1 bytes to size-class pool. Exit value is X, NOT empty string. Native allocator and SEH ABI unported. Original ABI: No meaningful ECX input; no stack arguments; RET. Evidence docs/RENDER_COMMAND_EXECUTION.md; reports/render_command_execution_audit.json. Descriptive names are hypotheses; typed interfaces are not original ABI or gameplay validation. Original ABI: No meaningful ECX input; no stack arguments; RET. Evidence: docs/RENDER_COMMAND_EXECUTION.md; reports/render_command_execution_audit.json. Descriptive names are hypotheses; typed C++ interfaces are not native ABI or game validation. | Read supplied actual F8D39C slot; initially null returns. Construct one fresh actual8h NativeString from fixed literal X through41E870, before arm. Reload current global service, capture temporary data, capture temporary length, then form destination+684 and alias comparison. Arm only copy region; if not aliased, resize from captured temporary length. Captured nonzero length gates current destination-length copy from captured temporary data. On guarded exception use actual41DD20 on CURRENT temporary header and rethrow. On normal path disarm, then release CAPTURED temporary data with CAPTURED length+1 DWORD wrap. No automatic second release, temporary header clearing, second global null check, retry or empty-string substitution. Full actual borrowed-service/header/global implementation. Original ABI: No inputs, ECX unused, RET; no error-return contract. Evidence docs/NATIVE_RENDER_DIAGNOSTIC_LABELS.md; reports/native_render_diagnostic_labels_audit.json. Primary library fixture7096words/8scenarios/13pool getters plus original reset state0/-1 search/unwind; strictWin32build/2existingCTests. Host release noexcept limits native throwing boundary coverage; no original exception ABI or game validation claim. | R59 full rawB1D950[369] source composition in src/native_render_command_execution.cpp. Native ECXactual44hcommand/RET; genuineB20240; context+8 camera captured after currentrenderer+98 slot and before targetcallback; genuineB24E70, B71360, currentcommand+4 scene B46A70/persistentframe; currentservicelabel via rawpoolB13030. Metadata+114 B20210 RET4, then freshcurrentrenderer activegate. GuardarmsB1D9D6 onlybeforemetadata anddisarmsB1DAA2 before normalB13510. Current syncbyte0 andboth signedcounts>50 select genuinejobs: modewrite before raw4C1130, reloadbatch aftergetter, capturepool+4 before rawB0FFB0, currentenqueueBE3020; freshpool/currentwaitBE3150(1). Else currentbatch/currentprofile+0C B51DF0 serial withoutmodewrite. Then both currentbatch+8 B55550 using capturedcamera andpersistentframes. Actual serial/worker preparation identities verified. Same rawrenderer/service/sync/pool/manager/provider graph, no callback-only implementation, ownerreset or rollback. B13030[57]/B13510[165] new rawAA8/AA4/AA0 overloads retain alias/current-header/overlap and X reset; tempconstruct beforeguard, capturednormalbuffer/length, currentheader cleanup, disarmed normalrawpool return allows getterfailure propagation. Secondcleanup exception terminates. Fresh28native spans1156B/25livecall-or-tail rows; strictWin32/MD/W4/WX/fp:strict+3CTests. Four fullnative/source parentreadiness exits and complete native/source rawpool label cases (alias/null/grow/overlap/empty/X) pass. Genuine linked target/camera/system/rawlabels/serial/job/batch providers confirmedinorder, notactive runtime. Native fixture calls sourcehelper providers; fullactive command/ownergraph/jobs/draws, exceptioninjection, originalFH3/SEH/register/privateframe/fault andgameplay unproved. B1DA6D 8D4900 is unreferenced unreachablealignment, retained. reports/native_render_command_execution_r59.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b1d950",
+        "before": {
+          "address": "00b1d950",
+          "function_name": "BSP_RenderCommand_ExecuteBatches",
+          "comment": "[BSP reconstruction 00b1d950]\nVtable00d5e5e0+0, recovered missing function. Gate00b20240 requires inhibit0/notlost; set context state; gate renderer+2Ch activeframe. Two batch pointers+C/+10h prepared serially unless optional syncdisabled and bothcounts>50, then jobservice dispatch. Executes both via virtual+8h with index/context. Full state/job/material dependencies unported.\n\n[BSP reconstruction 00b1d950] update\nRead inhibit/lost; capture context+8 camera before target bind; prepare camera00b71360 and scene/systemprefix00b46a70; copy optional diagnostic label, concrete renderer+114 RET4 no-op, then gate activeframe. Both counts>50 with synchronization disabled select actual two preparation jobs and wait1; otherwise prepare index0/1 serially. Execute both batches in order. Scope exit reloads optional diagnostics and resets to literal X, not empty. Typed orchestration requires actual camera/system/material/job operations; no default no-ops or full-game claim. Original ABI: ECX command; no stack arguments; RET. Evidence docs/RENDER_COMMAND_EXECUTION.md; reports/render_command_execution_audit.json. Descriptive names are hypotheses; typed interfaces are not original ABI or gameplay validation. Original ABI: ECX command; no stack arguments; RET. Evidence: docs/RENDER_COMMAND_EXECUTION.md; reports/render_command_execution_audit.json. Descriptive names are hypotheses; typed C++ interfaces are not native ABI or game validation."
+        },
+        "after": {
+          "address": "00b1d950",
+          "name": "BSP_RenderCommand_ExecuteBatches",
+          "evidence": "Read inhibit/lost; capture context+8 camera before target bind; prepare camera00b71360 and scene/systemprefix00b46a70; copy optional diagnostic label, concrete renderer+114 RET4 no-op, then gate activeframe. Both counts>50 with synchronization disabled select actual two preparation jobs and wait1; otherwise prepare index0/1 serially. Execute both batches in order. Scope exit reloads optional diagnostics and resets to literal X, not empty. Typed orchestration requires actual camera/system/material/job operations; no default no-ops or full-game claim. Original ABI: ECX command; no stack arguments; RET. Evidence docs/RENDER_COMMAND_EXECUTION.md; reports/render_command_execution_audit.json. Descriptive names are hypotheses; typed interfaces are not original ABI or gameplay validation. Original ABI: ECX command; no stack arguments; RET. Evidence: docs/RENDER_COMMAND_EXECUTION.md; reports/render_command_execution_audit.json. Descriptive names are hypotheses; typed C++ interfaces are not native ABI or game validation. | R59 full rawB1D950[369] source composition in src/native_render_command_execution.cpp. Native ECXactual44hcommand/RET; genuineB20240; context+8 camera captured after currentrenderer+98 slot and before targetcallback; genuineB24E70, B71360, currentcommand+4 scene B46A70/persistentframe; currentservicelabel via rawpoolB13030. Metadata+114 B20210 RET4, then freshcurrentrenderer activegate. GuardarmsB1D9D6 onlybeforemetadata anddisarmsB1DAA2 before normalB13510. Current syncbyte0 andboth signedcounts>50 select genuinejobs: modewrite before raw4C1130, reloadbatch aftergetter, capturepool+4 before rawB0FFB0, currentenqueueBE3020; freshpool/currentwaitBE3150(1). Else currentbatch/currentprofile+0C B51DF0 serial withoutmodewrite. Then both currentbatch+8 B55550 using capturedcamera andpersistentframes. Actual serial/worker preparation identities verified. Same rawrenderer/service/sync/pool/manager/provider graph, no callback-only implementation, ownerreset or rollback. B13030[57]/B13510[165] new rawAA8/AA4/AA0 overloads retain alias/current-header/overlap and X reset; tempconstruct beforeguard, capturednormalbuffer/length, currentheader cleanup, disarmed normalrawpool return allows getterfailure propagation. Secondcleanup exception terminates. Fresh28native spans1156B/25livecall-or-tail rows; strictWin32/MD/W4/WX/fp:strict+3CTests. Four fullnative/source parentreadiness exits and complete native/source rawpool label cases (alias/null/grow/overlap/empty/X) pass. Genuine linked target/camera/system/rawlabels/serial/job/batch providers confirmedinorder, notactive runtime. Native fixture calls sourcehelper providers; fullactive command/ownergraph/jobs/draws, exceptioninjection, originalFH3/SEH/register/privateframe/fault andgameplay unproved. B1DA6D 8D4900 is unreferenced unreachablealignment, retained. reports/native_render_command_execution_r59.json."
+        },
+        "status": "applied"
+      }
+    ],
+    "status": "New raw parent source row; two diagnostic rows superseded with raw-pool overload evidence. Existing typed fragments and legacy source overloads retained; three names/comments saved preserving history; exports force-refreshed."
+  },
+  "evidence": {
+    "pe": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "spans": [
+      {
+        "address": "00b1d950",
+        "kind": "function",
+        "length": 369,
+        "end_exclusive": "00b1dac1",
+        "pe_offset": 7461200,
+        "sha256": "f8344c0414061b024861c969979e423f999eff4d35e6b3ca0dbd1b283771625f",
+        "hex": "64a1000000006aff6868cacb00506489250000000083ec0c538bd98b0d94d3f800e8ca28000084c00f84330100008b43288b0d94d3f8008b118b9298000000558b68088b40145650896c2414ffd28bcde8bb3905008b4b048bd5e8c19002008b0d9cd3f80033f63bce74098d431450e86c56ffff8b0d94d3f8008b118b92140100008d431c5089742424ffd28b0d94d3f8008b018b502cffd284c00f84ad000000803ddcd608010057756b8b4b0c8d7b0c897c2418e81641030083f8327e578b4b10e80941030083f8327e4a8d6424008b07897008e806379aff8b2f8d5804e87c25ffff8b1355508b42048bcbffd083c60183c70483fe027cd6e8e1369aff8b50048d48048b42086a01ffd08b6c24148b7c2418eb1f8d7b0c8bdfeb038d49008b0b8b118b420c56ffd083c60183c30483fe027ceb33f68b0f8b118b42085556ffd083c60183c70483fe027cea5f8d4c240fc7442420ffffffffe8615affff5e5d8b4c24105b64890d0000000083c418c3",
+        "relocations": [
+          [
+            34,
+            11665984
+          ],
+          [
+            81,
+            11998048
+          ],
+          [
+            91,
+            11823728
+          ],
+          [
+            112,
+            11612208
+          ],
+          [
+            182,
+            11868960
+          ],
+          [
+            195,
+            11868960
+          ],
+          [
+            214,
+            4985136
+          ],
+          [
+            224,
+            11599792
+          ],
+          [
+            251,
+            4985136
+          ],
+          [
+            347,
+            11613456
+          ]
+        ],
+        "instructions": [
+          {
+            "address": "00b1d950",
+            "hex": "64a100000000",
+            "text": "mov eax, dword ptr fs:[0]"
+          },
+          {
+            "address": "00b1d956",
+            "hex": "6aff",
+            "text": "push -1"
+          },
+          {
+            "address": "00b1d958",
+            "hex": "6868cacb00",
+            "text": "push 0xcbca68"
+          },
+          {
+            "address": "00b1d95d",
+            "hex": "50",
+            "text": "push eax"
+          },
+          {
+            "address": "00b1d95e",
+            "hex": "64892500000000",
+            "text": "mov dword ptr fs:[0], esp"
+          },
+          {
+            "address": "00b1d965",
+            "hex": "83ec0c",
+            "text": "sub esp, 0xc"
+          },
+          {
+            "address": "00b1d968",
+            "hex": "53",
+            "text": "push ebx"
+          },
+          {
+            "address": "00b1d969",
+            "hex": "8bd9",
+            "text": "mov ebx, ecx"
+          },
+          {
+            "address": "00b1d96b",
+            "hex": "8b0d94d3f800",
+            "text": "mov ecx, dword ptr [0xf8d394]"
+          },
+          {
+            "address": "00b1d971",
+            "hex": "e8ca280000",
+            "text": "call 0xb20240"
+          },
+          {
+            "address": "00b1d976",
+            "hex": "84c0",
+            "text": "test al, al"
+          },
+          {
+            "address": "00b1d978",
+            "hex": "0f8433010000",
+            "text": "je 0xb1dab1"
+          },
+          {
+            "address": "00b1d97e",
+            "hex": "8b4328",
+            "text": "mov eax, dword ptr [ebx + 0x28]"
+          },
+          {
+            "address": "00b1d981",
+            "hex": "8b0d94d3f800",
+            "text": "mov ecx, dword ptr [0xf8d394]"
+          },
+          {
+            "address": "00b1d987",
+            "hex": "8b11",
+            "text": "mov edx, dword ptr [ecx]"
+          },
+          {
+            "address": "00b1d989",
+            "hex": "8b9298000000",
+            "text": "mov edx, dword ptr [edx + 0x98]"
+          },
+          {
+            "address": "00b1d98f",
+            "hex": "55",
+            "text": "push ebp"
+          },
+          {
+            "address": "00b1d990",
+            "hex": "8b6808",
+            "text": "mov ebp, dword ptr [eax + 8]"
+          },
+          {
+            "address": "00b1d993",
+            "hex": "8b4014",
+            "text": "mov eax, dword ptr [eax + 0x14]"
+          },
+          {
+            "address": "00b1d996",
+            "hex": "56",
+            "text": "push esi"
+          },
+          {
+            "address": "00b1d997",
+            "hex": "50",
+            "text": "push eax"
+          },
+          {
+            "address": "00b1d998",
+            "hex": "896c2414",
+            "text": "mov dword ptr [esp + 0x14], ebp"
+          },
+          {
+            "address": "00b1d99c",
+            "hex": "ffd2",
+            "text": "call edx"
+          },
+          {
+            "address": "00b1d99e",
+            "hex": "8bcd",
+            "text": "mov ecx, ebp"
+          },
+          {
+            "address": "00b1d9a0",
+            "hex": "e8bb390500",
+            "text": "call 0xb71360"
+          },
+          {
+            "address": "00b1d9a5",
+            "hex": "8b4b04",
+            "text": "mov ecx, dword ptr [ebx + 4]"
+          },
+          {
+            "address": "00b1d9a8",
+            "hex": "8bd5",
+            "text": "mov edx, ebp"
+          },
+          {
+            "address": "00b1d9aa",
+            "hex": "e8c1900200",
+            "text": "call 0xb46a70"
+          },
+          {
+            "address": "00b1d9af",
+            "hex": "8b0d9cd3f800",
+            "text": "mov ecx, dword ptr [0xf8d39c]"
+          },
+          {
+            "address": "00b1d9b5",
+            "hex": "33f6",
+            "text": "xor esi, esi"
+          },
+          {
+            "address": "00b1d9b7",
+            "hex": "3bce",
+            "text": "cmp ecx, esi"
+          },
+          {
+            "address": "00b1d9b9",
+            "hex": "7409",
+            "text": "je 0xb1d9c4"
+          },
+          {
+            "address": "00b1d9bb",
+            "hex": "8d4314",
+            "text": "lea eax, [ebx + 0x14]"
+          },
+          {
+            "address": "00b1d9be",
+            "hex": "50",
+            "text": "push eax"
+          },
+          {
+            "address": "00b1d9bf",
+            "hex": "e86c56ffff",
+            "text": "call 0xb13030"
+          },
+          {
+            "address": "00b1d9c4",
+            "hex": "8b0d94d3f800",
+            "text": "mov ecx, dword ptr [0xf8d394]"
+          },
+          {
+            "address": "00b1d9ca",
+            "hex": "8b11",
+            "text": "mov edx, dword ptr [ecx]"
+          },
+          {
+            "address": "00b1d9cc",
+            "hex": "8b9214010000",
+            "text": "mov edx, dword ptr [edx + 0x114]"
+          },
+          {
+            "address": "00b1d9d2",
+            "hex": "8d431c",
+            "text": "lea eax, [ebx + 0x1c]"
+          },
+          {
+            "address": "00b1d9d5",
+            "hex": "50",
+            "text": "push eax"
+          },
+          {
+            "address": "00b1d9d6",
+            "hex": "89742424",
+            "text": "mov dword ptr [esp + 0x24], esi"
+          },
+          {
+            "address": "00b1d9da",
+            "hex": "ffd2",
+            "text": "call edx"
+          },
+          {
+            "address": "00b1d9dc",
+            "hex": "8b0d94d3f800",
+            "text": "mov ecx, dword ptr [0xf8d394]"
+          },
+          {
+            "address": "00b1d9e2",
+            "hex": "8b01",
+            "text": "mov eax, dword ptr [ecx]"
+          },
+          {
+            "address": "00b1d9e4",
+            "hex": "8b502c",
+            "text": "mov edx, dword ptr [eax + 0x2c]"
+          },
+          {
+            "address": "00b1d9e7",
+            "hex": "ffd2",
+            "text": "call edx"
+          },
+          {
+            "address": "00b1d9e9",
+            "hex": "84c0",
+            "text": "test al, al"
+          },
+          {
+            "address": "00b1d9eb",
+            "hex": "0f84ad000000",
+            "text": "je 0xb1da9e"
+          },
+          {
+            "address": "00b1d9f1",
+            "hex": "803ddcd6080100",
+            "text": "cmp byte ptr [0x108d6dc], 0"
+          },
+          {
+            "address": "00b1d9f8",
+            "hex": "57",
+            "text": "push edi"
+          },
+          {
+            "address": "00b1d9f9",
+            "hex": "756b",
+            "text": "jne 0xb1da66"
+          },
+          {
+            "address": "00b1d9fb",
+            "hex": "8b4b0c",
+            "text": "mov ecx, dword ptr [ebx + 0xc]"
+          },
+          {
+            "address": "00b1d9fe",
+            "hex": "8d7b0c",
+            "text": "lea edi, [ebx + 0xc]"
+          },
+          {
+            "address": "00b1da01",
+            "hex": "897c2418",
+            "text": "mov dword ptr [esp + 0x18], edi"
+          },
+          {
+            "address": "00b1da05",
+            "hex": "e816410300",
+            "text": "call 0xb51b20"
+          },
+          {
+            "address": "00b1da0a",
+            "hex": "83f832",
+            "text": "cmp eax, 0x32"
+          },
+          {
+            "address": "00b1da0d",
+            "hex": "7e57",
+            "text": "jle 0xb1da66"
+          },
+          {
+            "address": "00b1da0f",
+            "hex": "8b4b10",
+            "text": "mov ecx, dword ptr [ebx + 0x10]"
+          },
+          {
+            "address": "00b1da12",
+            "hex": "e809410300",
+            "text": "call 0xb51b20"
+          },
+          {
+            "address": "00b1da17",
+            "hex": "83f832",
+            "text": "cmp eax, 0x32"
+          },
+          {
+            "address": "00b1da1a",
+            "hex": "7e4a",
+            "text": "jle 0xb1da66"
+          },
+          {
+            "address": "00b1da1c",
+            "hex": "8d642400",
+            "text": "lea esp, [esp]"
+          },
+          {
+            "address": "00b1da20",
+            "hex": "8b07",
+            "text": "mov eax, dword ptr [edi]"
+          },
+          {
+            "address": "00b1da22",
+            "hex": "897008",
+            "text": "mov dword ptr [eax + 8], esi"
+          },
+          {
+            "address": "00b1da25",
+            "hex": "e806379aff",
+            "text": "call 0x4c1130"
+          },
+          {
+            "address": "00b1da2a",
+            "hex": "8b2f",
+            "text": "mov ebp, dword ptr [edi]"
+          },
+          {
+            "address": "00b1da2c",
+            "hex": "8d5804",
+            "text": "lea ebx, [eax + 4]"
+          },
+          {
+            "address": "00b1da2f",
+            "hex": "e87c25ffff",
+            "text": "call 0xb0ffb0"
+          },
+          {
+            "address": "00b1da34",
+            "hex": "8b13",
+            "text": "mov edx, dword ptr [ebx]"
+          },
+          {
+            "address": "00b1da36",
+            "hex": "55",
+            "text": "push ebp"
+          },
+          {
+            "address": "00b1da37",
+            "hex": "50",
+            "text": "push eax"
+          },
+          {
+            "address": "00b1da38",
+            "hex": "8b4204",
+            "text": "mov eax, dword ptr [edx + 4]"
+          },
+          {
+            "address": "00b1da3b",
+            "hex": "8bcb",
+            "text": "mov ecx, ebx"
+          },
+          {
+            "address": "00b1da3d",
+            "hex": "ffd0",
+            "text": "call eax"
+          },
+          {
+            "address": "00b1da3f",
+            "hex": "83c601",
+            "text": "add esi, 1"
+          },
+          {
+            "address": "00b1da42",
+            "hex": "83c704",
+            "text": "add edi, 4"
+          },
+          {
+            "address": "00b1da45",
+            "hex": "83fe02",
+            "text": "cmp esi, 2"
+          },
+          {
+            "address": "00b1da48",
+            "hex": "7cd6",
+            "text": "jl 0xb1da20"
+          },
+          {
+            "address": "00b1da4a",
+            "hex": "e8e1369aff",
+            "text": "call 0x4c1130"
+          },
+          {
+            "address": "00b1da4f",
+            "hex": "8b5004",
+            "text": "mov edx, dword ptr [eax + 4]"
+          },
+          {
+            "address": "00b1da52",
+            "hex": "8d4804",
+            "text": "lea ecx, [eax + 4]"
+          },
+          {
+            "address": "00b1da55",
+            "hex": "8b4208",
+            "text": "mov eax, dword ptr [edx + 8]"
+          },
+          {
+            "address": "00b1da58",
+            "hex": "6a01",
+            "text": "push 1"
+          },
+          {
+            "address": "00b1da5a",
+            "hex": "ffd0",
+            "text": "call eax"
+          },
+          {
+            "address": "00b1da5c",
+            "hex": "8b6c2414",
+            "text": "mov ebp, dword ptr [esp + 0x14]"
+          },
+          {
+            "address": "00b1da60",
+            "hex": "8b7c2418",
+            "text": "mov edi, dword ptr [esp + 0x18]"
+          },
+          {
+            "address": "00b1da64",
+            "hex": "eb1f",
+            "text": "jmp 0xb1da85"
+          },
+          {
+            "address": "00b1da66",
+            "hex": "8d7b0c",
+            "text": "lea edi, [ebx + 0xc]"
+          },
+          {
+            "address": "00b1da69",
+            "hex": "8bdf",
+            "text": "mov ebx, edi"
+          },
+          {
+            "address": "00b1da6b",
+            "hex": "eb03",
+            "text": "jmp 0xb1da70"
+          },
+          {
+            "address": "00b1da6d",
+            "hex": "8d4900",
+            "text": "lea ecx, [ecx]"
+          },
+          {
+            "address": "00b1da70",
+            "hex": "8b0b",
+            "text": "mov ecx, dword ptr [ebx]"
+          },
+          {
+            "address": "00b1da72",
+            "hex": "8b11",
+            "text": "mov edx, dword ptr [ecx]"
+          },
+          {
+            "address": "00b1da74",
+            "hex": "8b420c",
+            "text": "mov eax, dword ptr [edx + 0xc]"
+          },
+          {
+            "address": "00b1da77",
+            "hex": "56",
+            "text": "push esi"
+          },
+          {
+            "address": "00b1da78",
+            "hex": "ffd0",
+            "text": "call eax"
+          },
+          {
+            "address": "00b1da7a",
+            "hex": "83c601",
+            "text": "add esi, 1"
+          },
+          {
+            "address": "00b1da7d",
+            "hex": "83c304",
+            "text": "add ebx, 4"
+          },
+          {
+            "address": "00b1da80",
+            "hex": "83fe02",
+            "text": "cmp esi, 2"
+          },
+          {
+            "address": "00b1da83",
+            "hex": "7ceb",
+            "text": "jl 0xb1da70"
+          },
+          {
+            "address": "00b1da85",
+            "hex": "33f6",
+            "text": "xor esi, esi"
+          },
+          {
+            "address": "00b1da87",
+            "hex": "8b0f",
+            "text": "mov ecx, dword ptr [edi]"
+          },
+          {
+            "address": "00b1da89",
+            "hex": "8b11",
+            "text": "mov edx, dword ptr [ecx]"
+          },
+          {
+            "address": "00b1da8b",
+            "hex": "8b4208",
+            "text": "mov eax, dword ptr [edx + 8]"
+          },
+          {
+            "address": "00b1da8e",
+            "hex": "55",
+            "text": "push ebp"
+          },
+          {
+            "address": "00b1da8f",
+            "hex": "56",
+            "text": "push esi"
+          },
+          {
+            "address": "00b1da90",
+            "hex": "ffd0",
+            "text": "call eax"
+          },
+          {
+            "address": "00b1da92",
+            "hex": "83c601",
+            "text": "add esi, 1"
+          },
+          {
+            "address": "00b1da95",
+            "hex": "83c704",
+            "text": "add edi, 4"
+          },
+          {
+            "address": "00b1da98",
+            "hex": "83fe02",
+            "text": "cmp esi, 2"
+          },
+          {
+            "address": "00b1da9b",
+            "hex": "7cea",
+            "text": "jl 0xb1da87"
+          },
+          {
+            "address": "00b1da9d",
+            "hex": "5f",
+            "text": "pop edi"
+          },
+          {
+            "address": "00b1da9e",
+            "hex": "8d4c240f",
+            "text": "lea ecx, [esp + 0xf]"
+          },
+          {
+            "address": "00b1daa2",
+            "hex": "c7442420ffffffff",
+            "text": "mov dword ptr [esp + 0x20], 0xffffffff"
+          },
+          {
+            "address": "00b1daaa",
+            "hex": "e8615affff",
+            "text": "call 0xb13510"
+          },
+          {
+            "address": "00b1daaf",
+            "hex": "5e",
+            "text": "pop esi"
+          },
+          {
+            "address": "00b1dab0",
+            "hex": "5d",
+            "text": "pop ebp"
+          },
+          {
+            "address": "00b1dab1",
+            "hex": "8b4c2410",
+            "text": "mov ecx, dword ptr [esp + 0x10]"
+          },
+          {
+            "address": "00b1dab5",
+            "hex": "5b",
+            "text": "pop ebx"
+          },
+          {
+            "address": "00b1dab6",
+            "hex": "64890d00000000",
+            "text": "mov dword ptr fs:[0], ecx"
+          },
+          {
+            "address": "00b1dabd",
+            "hex": "83c418",
+            "text": "add esp, 0x18"
+          },
+          {
+            "address": "00b1dac0",
+            "hex": "c3",
+            "text": "ret"
+          }
+        ],
+        "calls": [
+          {
+            "address": "00b1d971",
+            "hex": "e8ca280000",
+            "text": "call 0xb20240"
+          },
+          {
+            "address": "00b1d99c",
+            "hex": "ffd2",
+            "text": "call edx"
+          },
+          {
+            "address": "00b1d9a0",
+            "hex": "e8bb390500",
+            "text": "call 0xb71360"
+          },
+          {
+            "address": "00b1d9aa",
+            "hex": "e8c1900200",
+            "text": "call 0xb46a70"
+          },
+          {
+            "address": "00b1d9bf",
+            "hex": "e86c56ffff",
+            "text": "call 0xb13030"
+          },
+          {
+            "address": "00b1d9da",
+            "hex": "ffd2",
+            "text": "call edx"
+          },
+          {
+            "address": "00b1d9e7",
+            "hex": "ffd2",
+            "text": "call edx"
+          },
+          {
+            "address": "00b1da05",
+            "hex": "e816410300",
+            "text": "call 0xb51b20"
+          },
+          {
+            "address": "00b1da12",
+            "hex": "e809410300",
+            "text": "call 0xb51b20"
+          },
+          {
+            "address": "00b1da25",
+            "hex": "e806379aff",
+            "text": "call 0x4c1130"
+          },
+          {
+            "address": "00b1da2f",
+            "hex": "e87c25ffff",
+            "text": "call 0xb0ffb0"
+          },
+          {
+            "address": "00b1da3d",
+            "hex": "ffd0",
+            "text": "call eax"
+          },
+          {
+            "address": "00b1da4a",
+            "hex": "e8e1369aff",
+            "text": "call 0x4c1130"
+          },
+          {
+            "address": "00b1da5a",
+            "hex": "ffd0",
+            "text": "call eax"
+          },
+          {
+            "address": "00b1da78",
+            "hex": "ffd0",
+            "text": "call eax"
+          },
+          {
+            "address": "00b1da90",
+            "hex": "ffd0",
+            "text": "call eax"
+          },
+          {
+            "address": "00b1daaa",
+            "hex": "e8615affff",
+            "text": "call 0xb13510"
+          }
+        ],
+        "live_equals_pe": true,
+        "listing_missing_instruction_starts": [
+          "00b1da6d"
+        ]
+      },
+      {
+        "address": "00b13030",
+        "kind": "function",
+        "length": 57,
+        "end_exclusive": "00b13069",
+        "pe_offset": 7417904,
+        "sha256": "2f49afcb4c57b6cdde832faabafa48619d1a802f87a466b7bc0e6d0b092e9090",
+        "hex": "56578b7c240c8db1840600003bf774248b076a01508bcee8f4ac90ff833f0074138b0e8b57048b4604515250e81f460e0083c40c5f5ec20400",
+        "relocations": [
+          [
+            24,
+            4316480
+          ],
+          [
+            45,
+            12547712
+          ]
+        ],
+        "instructions": [
+          {
+            "address": "00b13030",
+            "hex": "56",
+            "text": "push esi"
+          },
+          {
+            "address": "00b13031",
+            "hex": "57",
+            "text": "push edi"
+          },
+          {
+            "address": "00b13032",
+            "hex": "8b7c240c",
+            "text": "mov edi, dword ptr [esp + 0xc]"
+          },
+          {
+            "address": "00b13036",
+            "hex": "8db184060000",
+            "text": "lea esi, [ecx + 0x684]"
+          },
+          {
+            "address": "00b1303c",
+            "hex": "3bf7",
+            "text": "cmp esi, edi"
+          },
+          {
+            "address": "00b1303e",
+            "hex": "7424",
+            "text": "je 0xb13064"
+          },
+          {
+            "address": "00b13040",
+            "hex": "8b07",
+            "text": "mov eax, dword ptr [edi]"
+          },
+          {
+            "address": "00b13042",
+            "hex": "6a01",
+            "text": "push 1"
+          },
+          {
+            "address": "00b13044",
+            "hex": "50",
+            "text": "push eax"
+          },
+          {
+            "address": "00b13045",
+            "hex": "8bce",
+            "text": "mov ecx, esi"
+          },
+          {
+            "address": "00b13047",
+            "hex": "e8f4ac90ff",
+            "text": "call 0x41dd40"
+          },
+          {
+            "address": "00b1304c",
+            "hex": "833f00",
+            "text": "cmp dword ptr [edi], 0"
+          },
+          {
+            "address": "00b1304f",
+            "hex": "7413",
+            "text": "je 0xb13064"
+          },
+          {
+            "address": "00b13051",
+            "hex": "8b0e",
+            "text": "mov ecx, dword ptr [esi]"
+          },
+          {
+            "address": "00b13053",
+            "hex": "8b5704",
+            "text": "mov edx, dword ptr [edi + 4]"
+          },
+          {
+            "address": "00b13056",
+            "hex": "8b4604",
+            "text": "mov eax, dword ptr [esi + 4]"
+          },
+          {
+            "address": "00b13059",
+            "hex": "51",
+            "text": "push ecx"
+          },
+          {
+            "address": "00b1305a",
+            "hex": "52",
+            "text": "push edx"
+          },
+          {
+            "address": "00b1305b",
+            "hex": "50",
+            "text": "push eax"
+          },
+          {
+            "address": "00b1305c",
+            "hex": "e81f460e00",
+            "text": "call 0xbf7680"
+          },
+          {
+            "address": "00b13061",
+            "hex": "83c40c",
+            "text": "add esp, 0xc"
+          },
+          {
+            "address": "00b13064",
+            "hex": "5f",
+            "text": "pop edi"
+          },
+          {
+            "address": "00b13065",
+            "hex": "5e",
+            "text": "pop esi"
+          },
+          {
+            "address": "00b13066",
+            "hex": "c20400",
+            "text": "ret 4"
+          }
+        ],
+        "calls": [
+          {
+            "address": "00b13047",
+            "hex": "e8f4ac90ff",
+            "text": "call 0x41dd40"
+          },
+          {
+            "address": "00b1305c",
+            "hex": "e81f460e00",
+            "text": "call 0xbf7680"
+          }
+        ],
+        "live_equals_pe": true,
+        "listing_missing_instruction_starts": []
+      },
+      {
+        "address": "00b13510",
+        "kind": "function",
+        "length": 165,
+        "end_exclusive": "00b135b5",
+        "pe_offset": 7419152,
+        "sha256": "a05fe8017c36100e82cf5c93e42058337cfe2465f180a4df4263c8db1a0288ba",
+        "hex": "64a1000000006aff6878c2cb00506489250000000083ec08833d9cd3f80000747553565768389ace008d4c2410e82eb390ff8b359cd3f8008b5c24108b7c240c81c6840600008d44240c3bf0c744241c00000000741e6a01578bcee8d0a790ff85ff74108b068b4e04505351e8ff400e0083c40c85dbc744241cffffffff74136a0183c7015753e8246790ff8bc8e86ddf0b005f5e5b8b4c240864890d0000000083c414c3",
+        "relocations": [
+          [
+            46,
+            4319344
+          ],
+          [
+            92,
+            4316480
+          ],
+          [
+            109,
+            12547712
+          ],
+          [
+            136,
+            4299968
+          ],
+          [
+            143,
+            12391696
+          ]
+        ],
+        "instructions": [
+          {
+            "address": "00b13510",
+            "hex": "64a100000000",
+            "text": "mov eax, dword ptr fs:[0]"
+          },
+          {
+            "address": "00b13516",
+            "hex": "6aff",
+            "text": "push -1"
+          },
+          {
+            "address": "00b13518",
+            "hex": "6878c2cb00",
+            "text": "push 0xcbc278"
+          },
+          {
+            "address": "00b1351d",
+            "hex": "50",
+            "text": "push eax"
+          },
+          {
+            "address": "00b1351e",
+            "hex": "64892500000000",
+            "text": "mov dword ptr fs:[0], esp"
+          },
+          {
+            "address": "00b13525",
+            "hex": "83ec08",
+            "text": "sub esp, 8"
+          },
+          {
+            "address": "00b13528",
+            "hex": "833d9cd3f80000",
+            "text": "cmp dword ptr [0xf8d39c], 0"
+          },
+          {
+            "address": "00b1352f",
+            "hex": "7475",
+            "text": "je 0xb135a6"
+          },
+          {
+            "address": "00b13531",
+            "hex": "53",
+            "text": "push ebx"
+          },
+          {
+            "address": "00b13532",
+            "hex": "56",
+            "text": "push esi"
+          },
+          {
+            "address": "00b13533",
+            "hex": "57",
+            "text": "push edi"
+          },
+          {
+            "address": "00b13534",
+            "hex": "68389ace00",
+            "text": "push 0xce9a38"
+          },
+          {
+            "address": "00b13539",
+            "hex": "8d4c2410",
+            "text": "lea ecx, [esp + 0x10]"
+          },
+          {
+            "address": "00b1353d",
+            "hex": "e82eb390ff",
+            "text": "call 0x41e870"
+          },
+          {
+            "address": "00b13542",
+            "hex": "8b359cd3f800",
+            "text": "mov esi, dword ptr [0xf8d39c]"
+          },
+          {
+            "address": "00b13548",
+            "hex": "8b5c2410",
+            "text": "mov ebx, dword ptr [esp + 0x10]"
+          },
+          {
+            "address": "00b1354c",
+            "hex": "8b7c240c",
+            "text": "mov edi, dword ptr [esp + 0xc]"
+          },
+          {
+            "address": "00b13550",
+            "hex": "81c684060000",
+            "text": "add esi, 0x684"
+          },
+          {
+            "address": "00b13556",
+            "hex": "8d44240c",
+            "text": "lea eax, [esp + 0xc]"
+          },
+          {
+            "address": "00b1355a",
+            "hex": "3bf0",
+            "text": "cmp esi, eax"
+          },
+          {
+            "address": "00b1355c",
+            "hex": "c744241c00000000",
+            "text": "mov dword ptr [esp + 0x1c], 0"
+          },
+          {
+            "address": "00b13564",
+            "hex": "741e",
+            "text": "je 0xb13584"
+          },
+          {
+            "address": "00b13566",
+            "hex": "6a01",
+            "text": "push 1"
+          },
+          {
+            "address": "00b13568",
+            "hex": "57",
+            "text": "push edi"
+          },
+          {
+            "address": "00b13569",
+            "hex": "8bce",
+            "text": "mov ecx, esi"
+          },
+          {
+            "address": "00b1356b",
+            "hex": "e8d0a790ff",
+            "text": "call 0x41dd40"
+          },
+          {
+            "address": "00b13570",
+            "hex": "85ff",
+            "text": "test edi, edi"
+          },
+          {
+            "address": "00b13572",
+            "hex": "7410",
+            "text": "je 0xb13584"
+          },
+          {
+            "address": "00b13574",
+            "hex": "8b06",
+            "text": "mov eax, dword ptr [esi]"
+          },
+          {
+            "address": "00b13576",
+            "hex": "8b4e04",
+            "text": "mov ecx, dword ptr [esi + 4]"
+          },
+          {
+            "address": "00b13579",
+            "hex": "50",
+            "text": "push eax"
+          },
+          {
+            "address": "00b1357a",
+            "hex": "53",
+            "text": "push ebx"
+          },
+          {
+            "address": "00b1357b",
+            "hex": "51",
+            "text": "push ecx"
+          },
+          {
+            "address": "00b1357c",
+            "hex": "e8ff400e00",
+            "text": "call 0xbf7680"
+          },
+          {
+            "address": "00b13581",
+            "hex": "83c40c",
+            "text": "add esp, 0xc"
+          },
+          {
+            "address": "00b13584",
+            "hex": "85db",
+            "text": "test ebx, ebx"
+          },
+          {
+            "address": "00b13586",
+            "hex": "c744241cffffffff",
+            "text": "mov dword ptr [esp + 0x1c], 0xffffffff"
+          },
+          {
+            "address": "00b1358e",
+            "hex": "7413",
+            "text": "je 0xb135a3"
+          },
+          {
+            "address": "00b13590",
+            "hex": "6a01",
+            "text": "push 1"
+          },
+          {
+            "address": "00b13592",
+            "hex": "83c701",
+            "text": "add edi, 1"
+          },
+          {
+            "address": "00b13595",
+            "hex": "57",
+            "text": "push edi"
+          },
+          {
+            "address": "00b13596",
+            "hex": "53",
+            "text": "push ebx"
+          },
+          {
+            "address": "00b13597",
+            "hex": "e8246790ff",
+            "text": "call 0x419cc0"
+          },
+          {
+            "address": "00b1359c",
+            "hex": "8bc8",
+            "text": "mov ecx, eax"
+          },
+          {
+            "address": "00b1359e",
+            "hex": "e86ddf0b00",
+            "text": "call 0xbd1510"
+          },
+          {
+            "address": "00b135a3",
+            "hex": "5f",
+            "text": "pop edi"
+          },
+          {
+            "address": "00b135a4",
+            "hex": "5e",
+            "text": "pop esi"
+          },
+          {
+            "address": "00b135a5",
+            "hex": "5b",
+            "text": "pop ebx"
+          },
+          {
+            "address": "00b135a6",
+            "hex": "8b4c2408",
+            "text": "mov ecx, dword ptr [esp + 8]"
+          },
+          {
+            "address": "00b135aa",
+            "hex": "64890d00000000",
+            "text": "mov dword ptr fs:[0], ecx"
+          },
+          {
+            "address": "00b135b1",
+            "hex": "83c414",
+            "text": "add esp, 0x14"
+          },
+          {
+            "address": "00b135b4",
+            "hex": "c3",
+            "text": "ret"
+          }
+        ],
+        "calls": [
+          {
+            "address": "00b1353d",
+            "hex": "e82eb390ff",
+            "text": "call 0x41e870"
+          },
+          {
+            "address": "00b1356b",
+            "hex": "e8d0a790ff",
+            "text": "call 0x41dd40"
+          },
+          {
+            "address": "00b1357c",
+            "hex": "e8ff400e00",
+            "text": "call 0xbf7680"
+          },
+          {
+            "address": "00b13597",
+            "hex": "e8246790ff",
+            "text": "call 0x419cc0"
+          },
+          {
+            "address": "00b1359e",
+            "hex": "e86ddf0b00",
+            "text": "call 0xbd1510"
+          }
+        ],
+        "live_equals_pe": true,
+        "listing_missing_instruction_starts": []
+      },
+      {
+        "address": "00b20240",
+        "kind": "function",
+        "length": 27,
+        "end_exclusive": "00b2025b",
+        "pe_offset": 7471680,
+        "sha256": "d2dd10ffb518501973d2bcf287eb18d1bf888ae5bf69c0bdb852d99c0b8f82a0",
+        "hex": "83b9901d000000750f80b98a1d0000007506b801000000c333c0c3",
+        "relocations": [],
+        "instructions": [
+          {
+            "address": "00b20240",
+            "hex": "83b9901d000000",
+            "text": "cmp dword ptr [ecx + 0x1d90], 0"
+          },
+          {
+            "address": "00b20247",
+            "hex": "750f",
+            "text": "jne 0xb20258"
+          },
+          {
+            "address": "00b20249",
+            "hex": "80b98a1d000000",
+            "text": "cmp byte ptr [ecx + 0x1d8a], 0"
+          },
+          {
+            "address": "00b20250",
+            "hex": "7506",
+            "text": "jne 0xb20258"
+          },
+          {
+            "address": "00b20252",
+            "hex": "b801000000",
+            "text": "mov eax, 1"
+          },
+          {
+            "address": "00b20257",
+            "hex": "c3",
+            "text": "ret"
+          },
+          {
+            "address": "00b20258",
+            "hex": "33c0",
+            "text": "xor eax, eax"
+          },
+          {
+            "address": "00b2025a",
+            "hex": "c3",
+            "text": "ret"
+          }
+        ],
+        "calls": [],
+        "live_equals_pe": true,
+        "listing_missing_instruction_starts": []
+      },
+      {
+        "address": "00b20210",
+        "kind": "function",
+        "length": 3,
+        "end_exclusive": "00b20213",
+        "pe_offset": 7471632,
+        "sha256": "e598d0c3ba86d917b177d7adde0556aa99bc355543c57aee0a3e50b684dd7e99",
+        "hex": "c20400",
+        "relocations": [],
+        "instructions": [
+          {
+            "address": "00b20210",
+            "hex": "c20400",
+            "text": "ret 4"
+          }
+        ],
+        "calls": [],
+        "live_equals_pe": true,
+        "listing_missing_instruction_starts": []
+      },
+      {
+        "address": "00b1fe20",
+        "kind": "function",
+        "length": 11,
+        "end_exclusive": "00b1fe2b",
+        "pe_offset": 7470624,
+        "sha256": "fc66797b0caf47ea47d00b192bcdf5c7fb0768188f4a024777d52ba88b23aae1",
+        "hex": "83b998190000000f95c0c3",
+        "relocations": [],
+        "instructions": [
+          {
+            "address": "00b1fe20",
+            "hex": "83b99819000000",
+            "text": "cmp dword ptr [ecx + 0x1998], 0"
+          },
+          {
+            "address": "00b1fe27",
+            "hex": "0f95c0",
+            "text": "setne al"
+          },
+          {
+            "address": "00b1fe2a",
+            "hex": "c3",
+            "text": "ret"
+          }
+        ],
+        "calls": [],
+        "live_equals_pe": true,
+        "listing_missing_instruction_starts": []
+      },
+      {
+        "address": "00b51b20",
+        "kind": "function",
+        "length": 4,
+        "end_exclusive": "00b51b24",
+        "pe_offset": 7674656,
+        "sha256": "74032ad0e931f3c4730df99da43479f9f5315cc898c7c8614278631cb2c16a62",
+        "hex": "8b4110c3",
+        "relocations": [],
+        "instructions": [
+          {
+            "address": "00b51b20",
+            "hex": "8b4110",
+            "text": "mov eax, dword ptr [ecx + 0x10]"
+          },
+          {
+            "address": "00b51b23",
+            "hex": "c3",
+            "text": "ret"
+          }
+        ],
+        "calls": [],
+        "live_equals_pe": true,
+        "listing_missing_instruction_starts": []
+      },
+      {
+        "address": "00b55550",
+        "kind": "function",
+        "length": 70,
+        "end_exclusive": "00b55596",
+        "pe_offset": 7689552,
+        "sha256": "d545ef37f3bf96408435ceea2340a0344515d64cf444a2d3a35e947fab42e0fd",
+        "hex": "578bf98b0d94d3f8008b018b502cffd284c0742e5633f68935f4fb08013977107e1f8b470c8b04b08b48048b51208b4a7c8b11508b4214ffd083c6013b77107ce15e5fc20800",
+        "relocations": [],
+        "instructions": [
+          {
+            "address": "00b55550",
+            "hex": "57",
+            "text": "push edi"
+          },
+          {
+            "address": "00b55551",
+            "hex": "8bf9",
+            "text": "mov edi, ecx"
+          },
+          {
+            "address": "00b55553",
+            "hex": "8b0d94d3f800",
+            "text": "mov ecx, dword ptr [0xf8d394]"
+          },
+          {
+            "address": "00b55559",
+            "hex": "8b01",
+            "text": "mov eax, dword ptr [ecx]"
+          },
+          {
+            "address": "00b5555b",
+            "hex": "8b502c",
+            "text": "mov edx, dword ptr [eax + 0x2c]"
+          },
+          {
+            "address": "00b5555e",
+            "hex": "ffd2",
+            "text": "call edx"
+          },
+          {
+            "address": "00b55560",
+            "hex": "84c0",
+            "text": "test al, al"
+          },
+          {
+            "address": "00b55562",
+            "hex": "742e",
+            "text": "je 0xb55592"
+          },
+          {
+            "address": "00b55564",
+            "hex": "56",
+            "text": "push esi"
+          },
+          {
+            "address": "00b55565",
+            "hex": "33f6",
+            "text": "xor esi, esi"
+          },
+          {
+            "address": "00b55567",
+            "hex": "8935f4fb0801",
+            "text": "mov dword ptr [0x108fbf4], esi"
+          },
+          {
+            "address": "00b5556d",
+            "hex": "397710",
+            "text": "cmp dword ptr [edi + 0x10], esi"
+          },
+          {
+            "address": "00b55570",
+            "hex": "7e1f",
+            "text": "jle 0xb55591"
+          },
+          {
+            "address": "00b55572",
+            "hex": "8b470c",
+            "text": "mov eax, dword ptr [edi + 0xc]"
+          },
+          {
+            "address": "00b55575",
+            "hex": "8b04b0",
+            "text": "mov eax, dword ptr [eax + esi*4]"
+          },
+          {
+            "address": "00b55578",
+            "hex": "8b4804",
+            "text": "mov ecx, dword ptr [eax + 4]"
+          },
+          {
+            "address": "00b5557b",
+            "hex": "8b5120",
+            "text": "mov edx, dword ptr [ecx + 0x20]"
+          },
+          {
+            "address": "00b5557e",
+            "hex": "8b4a7c",
+            "text": "mov ecx, dword ptr [edx + 0x7c]"
+          },
+          {
+            "address": "00b55581",
+            "hex": "8b11",
+            "text": "mov edx, dword ptr [ecx]"
+          },
+          {
+            "address": "00b55583",
+            "hex": "50",
+            "text": "push eax"
+          },
+          {
+            "address": "00b55584",
+            "hex": "8b4214",
+            "text": "mov eax, dword ptr [edx + 0x14]"
+          },
+          {
+            "address": "00b55587",
+            "hex": "ffd0",
+            "text": "call eax"
+          },
+          {
+            "address": "00b55589",
+            "hex": "83c601",
+            "text": "add esi, 1"
+          },
+          {
+            "address": "00b5558c",
+            "hex": "3b7710",
+            "text": "cmp esi, dword ptr [edi + 0x10]"
+          },
+          {
+            "address": "00b5558f",
+            "hex": "7ce1",
+            "text": "jl 0xb55572"
+          },
+          {
+            "address": "00b55591",
+            "hex": "5e",
+            "text": "pop esi"
+          },
+          {
+            "address": "00b55592",
+            "hex": "5f",
+            "text": "pop edi"
+          },
+          {
+            "address": "00b55593",
+            "hex": "c20800",
+            "text": "ret 8"
+          }
+        ],
+        "calls": [
+          {
+            "address": "00b5555e",
+            "hex": "ffd2",
+            "text": "call edx"
+          },
+          {
+            "address": "00b55587",
+            "hex": "ffd0",
+            "text": "call eax"
+          }
+        ],
+        "live_equals_pe": true,
+        "listing_missing_instruction_starts": []
+      },
+      {
+        "address": "00b51df0",
+        "kind": "function",
+        "length": 284,
+        "end_exclusive": "00b51f0c",
+        "pe_offset": 7675376,
+        "sha256": "84a50d1875727f15b19baf912841cf44d95f05478c9edb0d49b4ba8ac7b0c0b2",
+        "hex": "83ec1056578b7c241c8bf18d44241c508d4c240f515789742418c644241700e8dcf396ff8bc8e815adfcff807c240b000f84de00000085ff0f85b8000000397e100f8e9d00000053558da424000000008b560c8b34ba8b46048b482066837934008b597c8b83b0000000998954241c7e0c8b491085c974058b4920eb0233c983e03fba00100000f7e281e1ff0f00006a0033ed03c8680001000013ea5551e85d5f0a000fb68bc000000033db6a2003c15313d35250e8465f0a008bd8d946148beae8a0550a0033d203d813ea895e20896e248b74241483c7013b7e100f8c6effffff5d5b8b460c8b56108d14908bc868001bb500eb118b4e108b560c8d148a8b4e0c68b01ab5008bc22bc1c1f80250e8dcbdfcff5f5e83c410c20400",
+        "relocations": [
+          [
+            32,
+            4985328
+          ],
+          [
+            39,
+            11651888
+          ],
+          [
+            159,
+            12549616
+          ],
+          [
+            182,
+            12549616
+          ],
+          [
+            194,
+            12547158
+          ],
+          [
+            272,
+            11656416
+          ]
+        ],
+        "instructions": [
+          {
+            "address": "00b51df0",
+            "hex": "83ec10",
+            "text": "sub esp, 0x10"
+          },
+          {
+            "address": "00b51df3",
+            "hex": "56",
+            "text": "push esi"
+          },
+          {
+            "address": "00b51df4",
+            "hex": "57",
+            "text": "push edi"
+          },
+          {
+            "address": "00b51df5",
+            "hex": "8b7c241c",
+            "text": "mov edi, dword ptr [esp + 0x1c]"
+          },
+          {
+            "address": "00b51df9",
+            "hex": "8bf1",
+            "text": "mov esi, ecx"
+          },
+          {
+            "address": "00b51dfb",
+            "hex": "8d44241c",
+            "text": "lea eax, [esp + 0x1c]"
+          },
+          {
+            "address": "00b51dff",
+            "hex": "50",
+            "text": "push eax"
+          },
+          {
+            "address": "00b51e00",
+            "hex": "8d4c240f",
+            "text": "lea ecx, [esp + 0xf]"
+          },
+          {
+            "address": "00b51e04",
+            "hex": "51",
+            "text": "push ecx"
+          },
+          {
+            "address": "00b51e05",
+            "hex": "57",
+            "text": "push edi"
+          },
+          {
+            "address": "00b51e06",
+            "hex": "89742418",
+            "text": "mov dword ptr [esp + 0x18], esi"
+          },
+          {
+            "address": "00b51e0a",
+            "hex": "c644241700",
+            "text": "mov byte ptr [esp + 0x17], 0"
+          },
+          {
+            "address": "00b51e0f",
+            "hex": "e8dcf396ff",
+            "text": "call 0x4c11f0"
+          },
+          {
+            "address": "00b51e14",
+            "hex": "8bc8",
+            "text": "mov ecx, eax"
+          },
+          {
+            "address": "00b51e16",
+            "hex": "e815adfcff",
+            "text": "call 0xb1cb30"
+          },
+          {
+            "address": "00b51e1b",
+            "hex": "807c240b00",
+            "text": "cmp byte ptr [esp + 0xb], 0"
+          },
+          {
+            "address": "00b51e20",
+            "hex": "0f84de000000",
+            "text": "je 0xb51f04"
+          },
+          {
+            "address": "00b51e26",
+            "hex": "85ff",
+            "text": "test edi, edi"
+          },
+          {
+            "address": "00b51e28",
+            "hex": "0f85b8000000",
+            "text": "jne 0xb51ee6"
+          },
+          {
+            "address": "00b51e2e",
+            "hex": "397e10",
+            "text": "cmp dword ptr [esi + 0x10], edi"
+          },
+          {
+            "address": "00b51e31",
+            "hex": "0f8e9d000000",
+            "text": "jle 0xb51ed4"
+          },
+          {
+            "address": "00b51e37",
+            "hex": "53",
+            "text": "push ebx"
+          },
+          {
+            "address": "00b51e38",
+            "hex": "55",
+            "text": "push ebp"
+          },
+          {
+            "address": "00b51e39",
+            "hex": "8da42400000000",
+            "text": "lea esp, [esp]"
+          },
+          {
+            "address": "00b51e40",
+            "hex": "8b560c",
+            "text": "mov edx, dword ptr [esi + 0xc]"
+          },
+          {
+            "address": "00b51e43",
+            "hex": "8b34ba",
+            "text": "mov esi, dword ptr [edx + edi*4]"
+          },
+          {
+            "address": "00b51e46",
+            "hex": "8b4604",
+            "text": "mov eax, dword ptr [esi + 4]"
+          },
+          {
+            "address": "00b51e49",
+            "hex": "8b4820",
+            "text": "mov ecx, dword ptr [eax + 0x20]"
+          },
+          {
+            "address": "00b51e4c",
+            "hex": "6683793400",
+            "text": "cmp word ptr [ecx + 0x34], 0"
+          },
+          {
+            "address": "00b51e51",
+            "hex": "8b597c",
+            "text": "mov ebx, dword ptr [ecx + 0x7c]"
+          },
+          {
+            "address": "00b51e54",
+            "hex": "8b83b0000000",
+            "text": "mov eax, dword ptr [ebx + 0xb0]"
+          },
+          {
+            "address": "00b51e5a",
+            "hex": "99",
+            "text": "cdq"
+          },
+          {
+            "address": "00b51e5b",
+            "hex": "8954241c",
+            "text": "mov dword ptr [esp + 0x1c], edx"
+          },
+          {
+            "address": "00b51e5f",
+            "hex": "7e0c",
+            "text": "jle 0xb51e6d"
+          },
+          {
+            "address": "00b51e61",
+            "hex": "8b4910",
+            "text": "mov ecx, dword ptr [ecx + 0x10]"
+          },
+          {
+            "address": "00b51e64",
+            "hex": "85c9",
+            "text": "test ecx, ecx"
+          },
+          {
+            "address": "00b51e66",
+            "hex": "7405",
+            "text": "je 0xb51e6d"
+          },
+          {
+            "address": "00b51e68",
+            "hex": "8b4920",
+            "text": "mov ecx, dword ptr [ecx + 0x20]"
+          },
+          {
+            "address": "00b51e6b",
+            "hex": "eb02",
+            "text": "jmp 0xb51e6f"
+          },
+          {
+            "address": "00b51e6d",
+            "hex": "33c9",
+            "text": "xor ecx, ecx"
+          },
+          {
+            "address": "00b51e6f",
+            "hex": "83e03f",
+            "text": "and eax, 0x3f"
+          },
+          {
+            "address": "00b51e72",
+            "hex": "ba00100000",
+            "text": "mov edx, 0x1000"
+          },
+          {
+            "address": "00b51e77",
+            "hex": "f7e2",
+            "text": "mul edx"
+          },
+          {
+            "address": "00b51e79",
+            "hex": "81e1ff0f0000",
+            "text": "and ecx, 0xfff"
+          },
+          {
+            "address": "00b51e7f",
+            "hex": "6a00",
+            "text": "push 0"
+          },
+          {
+            "address": "00b51e81",
+            "hex": "33ed",
+            "text": "xor ebp, ebp"
+          },
+          {
+            "address": "00b51e83",
+            "hex": "03c8",
+            "text": "add ecx, eax"
+          },
+          {
+            "address": "00b51e85",
+            "hex": "6800010000",
+            "text": "push 0x100"
+          },
+          {
+            "address": "00b51e8a",
+            "hex": "13ea",
+            "text": "adc ebp, edx"
+          },
+          {
+            "address": "00b51e8c",
+            "hex": "55",
+            "text": "push ebp"
+          },
+          {
+            "address": "00b51e8d",
+            "hex": "51",
+            "text": "push ecx"
+          },
+          {
+            "address": "00b51e8e",
+            "hex": "e85d5f0a00",
+            "text": "call 0xbf7df0"
+          },
+          {
+            "address": "00b51e93",
+            "hex": "0fb68bc0000000",
+            "text": "movzx ecx, byte ptr [ebx + 0xc0]"
+          },
+          {
+            "address": "00b51e9a",
+            "hex": "33db",
+            "text": "xor ebx, ebx"
+          },
+          {
+            "address": "00b51e9c",
+            "hex": "6a20",
+            "text": "push 0x20"
+          },
+          {
+            "address": "00b51e9e",
+            "hex": "03c1",
+            "text": "add eax, ecx"
+          },
+          {
+            "address": "00b51ea0",
+            "hex": "53",
+            "text": "push ebx"
+          },
+          {
+            "address": "00b51ea1",
+            "hex": "13d3",
+            "text": "adc edx, ebx"
+          },
+          {
+            "address": "00b51ea3",
+            "hex": "52",
+            "text": "push edx"
+          },
+          {
+            "address": "00b51ea4",
+            "hex": "50",
+            "text": "push eax"
+          },
+          {
+            "address": "00b51ea5",
+            "hex": "e8465f0a00",
+            "text": "call 0xbf7df0"
+          },
+          {
+            "address": "00b51eaa",
+            "hex": "8bd8",
+            "text": "mov ebx, eax"
+          },
+          {
+            "address": "00b51eac",
+            "hex": "d94614",
+            "text": "fld dword ptr [esi + 0x14]"
+          },
+          {
+            "address": "00b51eaf",
+            "hex": "8bea",
+            "text": "mov ebp, edx"
+          },
+          {
+            "address": "00b51eb1",
+            "hex": "e8a0550a00",
+            "text": "call 0xbf7456"
+          },
+          {
+            "address": "00b51eb6",
+            "hex": "33d2",
+            "text": "xor edx, edx"
+          },
+          {
+            "address": "00b51eb8",
+            "hex": "03d8",
+            "text": "add ebx, eax"
+          },
+          {
+            "address": "00b51eba",
+            "hex": "13ea",
+            "text": "adc ebp, edx"
+          },
+          {
+            "address": "00b51ebc",
+            "hex": "895e20",
+            "text": "mov dword ptr [esi + 0x20], ebx"
+          },
+          {
+            "address": "00b51ebf",
+            "hex": "896e24",
+            "text": "mov dword ptr [esi + 0x24], ebp"
+          },
+          {
+            "address": "00b51ec2",
+            "hex": "8b742414",
+            "text": "mov esi, dword ptr [esp + 0x14]"
+          },
+          {
+            "address": "00b51ec6",
+            "hex": "83c701",
+            "text": "add edi, 1"
+          },
+          {
+            "address": "00b51ec9",
+            "hex": "3b7e10",
+            "text": "cmp edi, dword ptr [esi + 0x10]"
+          },
+          {
+            "address": "00b51ecc",
+            "hex": "0f8c6effffff",
+            "text": "jl 0xb51e40"
+          },
+          {
+            "address": "00b51ed2",
+            "hex": "5d",
+            "text": "pop ebp"
+          },
+          {
+            "address": "00b51ed3",
+            "hex": "5b",
+            "text": "pop ebx"
+          },
+          {
+            "address": "00b51ed4",
+            "hex": "8b460c",
+            "text": "mov eax, dword ptr [esi + 0xc]"
+          },
+          {
+            "address": "00b51ed7",
+            "hex": "8b5610",
+            "text": "mov edx, dword ptr [esi + 0x10]"
+          },
+          {
+            "address": "00b51eda",
+            "hex": "8d1490",
+            "text": "lea edx, [eax + edx*4]"
+          },
+          {
+            "address": "00b51edd",
+            "hex": "8bc8",
+            "text": "mov ecx, eax"
+          },
+          {
+            "address": "00b51edf",
+            "hex": "68001bb500",
+            "text": "push 0xb51b00"
+          },
+          {
+            "address": "00b51ee4",
+            "hex": "eb11",
+            "text": "jmp 0xb51ef7"
+          },
+          {
+            "address": "00b51ee6",
+            "hex": "8b4e10",
+            "text": "mov ecx, dword ptr [esi + 0x10]"
+          },
+          {
+            "address": "00b51ee9",
+            "hex": "8b560c",
+            "text": "mov edx, dword ptr [esi + 0xc]"
+          },
+          {
+            "address": "00b51eec",
+            "hex": "8d148a",
+            "text": "lea edx, [edx + ecx*4]"
+          },
+          {
+            "address": "00b51eef",
+            "hex": "8b4e0c",
+            "text": "mov ecx, dword ptr [esi + 0xc]"
+          },
+          {
+            "address": "00b51ef2",
+            "hex": "68b01ab500",
+            "text": "push 0xb51ab0"
+          },
+          {
+            "address": "00b51ef7",
+            "hex": "8bc2",
+            "text": "mov eax, edx"
+          },
+          {
+            "address": "00b51ef9",
+            "hex": "2bc1",
+            "text": "sub eax, ecx"
+          },
+          {
+            "address": "00b51efb",
+            "hex": "c1f802",
+            "text": "sar eax, 2"
+          },
+          {
+            "address": "00b51efe",
+            "hex": "50",
+            "text": "push eax"
+          },
+          {
+            "address": "00b51eff",
+            "hex": "e8dcbdfcff",
+            "text": "call 0xb1dce0"
+          },
+          {
+            "address": "00b51f04",
+            "hex": "5f",
+            "text": "pop edi"
+          },
+          {
+            "address": "00b51f05",
+            "hex": "5e",
+            "text": "pop esi"
+          },
+          {
+            "address": "00b51f06",
+            "hex": "83c410",
+            "text": "add esp, 0x10"
+          },
+          {
+            "address": "00b51f09",
+            "hex": "c20400",
+            "text": "ret 4"
+          }
+        ],
+        "calls": [
+          {
+            "address": "00b51e0f",
+            "hex": "e8dcf396ff",
+            "text": "call 0x4c11f0"
+          },
+          {
+            "address": "00b51e16",
+            "hex": "e815adfcff",
+            "text": "call 0xb1cb30"
+          },
+          {
+            "address": "00b51e8e",
+            "hex": "e85d5f0a00",
+            "text": "call 0xbf7df0"
+          },
+          {
+            "address": "00b51ea5",
+            "hex": "e8465f0a00",
+            "text": "call 0xbf7df0"
+          },
+          {
+            "address": "00b51eb1",
+            "hex": "e8a0550a00",
+            "text": "call 0xbf7456"
+          },
+          {
+            "address": "00b51eff",
+            "hex": "e8dcbdfcff",
+            "text": "call 0xb1dce0"
+          }
+        ],
+        "live_equals_pe": true,
+        "listing_missing_instruction_starts": []
+      },
+      {
+        "address": "00cbca60",
+        "kind": "function",
+        "length": 8,
+        "end_exclusive": "00cbca68",
+        "pe_offset": 9161312,
+        "sha256": "ed5e73fc4f8f8260fd247e9ae891e7604a1fee86fada70663c954e3605a27d63",
+        "hex": "8d4debe9a86ae5ff",
+        "relocations": [
+          [
+            4,
+            11613456
+          ]
+        ],
+        "instructions": [
+          {
+            "address": "00cbca60",
+            "hex": "8d4deb",
+            "text": "lea ecx, [ebp - 0x15]"
+          },
+          {
+            "address": "00cbca63",
+            "hex": "e9a86ae5ff",
+            "text": "jmp 0xb13510"
+          }
+        ],
+        "calls": [],
+        "live_equals_pe": true,
+        "listing_missing_instruction_starts": []
+      },
+      {
+        "address": "00cbc270",
+        "kind": "function",
+        "length": 8,
+        "end_exclusive": "00cbc278",
+        "pe_offset": 9159280,
+        "sha256": "301790e225eaeca3d3785c4bc1ed0f85b98c941a3d39733fa55591e9596476e1",
+        "hex": "8d4dece9a81a76ff",
+        "relocations": [
+          [
+            4,
+            4316448
+          ]
+        ],
+        "instructions": [
+          {
+            "address": "00cbc270",
+            "hex": "8d4dec",
+            "text": "lea ecx, [ebp - 0x14]"
+          },
+          {
+            "address": "00cbc273",
+            "hex": "e9a81a76ff",
+            "text": "jmp 0x41dd20"
+          }
+        ],
+        "calls": [],
+        "live_equals_pe": true,
+        "listing_missing_instruction_starts": []
+      },
+      {
+        "address": "00d5f140",
+        "kind": "context",
+        "length": 4,
+        "end_exclusive": "00d5f144",
+        "pe_offset": 9826624,
+        "sha256": "2c3c2fb780030a8f21e0d33270ccda46e9bff87f5272a62dab47aab4f47e1da9",
+        "hex": "704eb200",
+        "live_equals_pe": true
+      },
+      {
+        "address": "00d5f1bc",
+        "kind": "context",
+        "length": 4,
+        "end_exclusive": "00d5f1c0",
+        "pe_offset": 9826748,
+        "sha256": "265f95ec80277ef281e49901c3476ffde1d75d08d309512a2e1792d5dd4b8847",
+        "hex": "1002b200",
+        "live_equals_pe": true
+      },
+      {
+        "address": "00d5f0d4",
+        "kind": "context",
+        "length": 4,
+        "end_exclusive": "00d5f0d8",
+        "pe_offset": 9826516,
+        "sha256": "c0bf51fe1d811d1f9b351b9fba458a42c50e494424ab8fbdc82d75de771f0247",
+        "hex": "20feb100",
+        "live_equals_pe": true
+      },
+      {
+        "address": "00d5e5b4",
+        "kind": "context",
+        "length": 4,
+        "end_exclusive": "00d5e5b8",
+        "pe_offset": 9823668,
+        "sha256": "05af62e815b673e149bbb786be417e4f2c3cc52cf83deeed255ce92f656eab15",
+        "hex": "5055b500",
+        "live_equals_pe": true
+      },
+      {
+        "address": "00d5e5b8",
+        "kind": "context",
+        "length": 4,
+        "end_exclusive": "00d5e5bc",
+        "pe_offset": 9823672,
+        "sha256": "eb880d5cbc6958adce5a4fabfd786070c9717c9bb766ff92b199656b33f1fb66",
+        "hex": "f01db500",
+        "live_equals_pe": true
+      },
+      {
+        "address": "00d6206c",
+        "kind": "context",
+        "length": 4,
+        "end_exclusive": "00d62070",
+        "pe_offset": 9838700,
+        "sha256": "02b0d2f98cdca124036199ae8e499b047ce80fb4c504cc3ab2f3b30da8cfb500",
+        "hex": "8e69bf00",
+        "live_equals_pe": true
+      },
+      {
+        "address": "00d62070",
+        "kind": "context",
+        "length": 4,
+        "end_exclusive": "00d62074",
+        "pe_offset": 9838704,
+        "sha256": "eb880d5cbc6958adce5a4fabfd786070c9717c9bb766ff92b199656b33f1fb66",
+        "hex": "f01db500",
+        "live_equals_pe": true
+      },
+      {
+        "address": "00ce7558",
+        "kind": "context",
+        "length": 4,
+        "end_exclusive": "00ce755c",
+        "pe_offset": 9336152,
+        "sha256": "d608ee4752365e40bb84e13e7d8db1ab3e1b3d882eb96e2b0478c44d39b9a680",
+        "hex": "2030be00",
+        "live_equals_pe": true
+      },
+      {
+        "address": "00ce755c",
+        "kind": "context",
+        "length": 4,
+        "end_exclusive": "00ce7560",
+        "pe_offset": 9336156,
+        "sha256": "6a410aaf0a1ada11b7c7c4a2e8d52dd68c8ffdd445b2a3ab5293f51ad693a33e",
+        "hex": "5031be00",
+        "live_equals_pe": true
+      },
+      {
+        "address": "00d5e160",
+        "kind": "context",
+        "length": 4,
+        "end_exclusive": "00d5e164",
+        "pe_offset": 9822560,
+        "sha256": "e7d6d1986e421f13415a2d46a278cdb507889b3a53ee52ca1e19db31e5219af0",
+        "hex": "70bfb100",
+        "live_equals_pe": true
+      },
+      {
+        "address": "00cbca68",
+        "kind": "context",
+        "length": 10,
+        "end_exclusive": "00cbca72",
+        "pe_offset": 9161320,
+        "sha256": "ce33f2057a8fa1504fef6fc08bc4f833032f89c47aa5ccbc1247140fa00f09af",
+        "hex": "b8f04edf00e9d1a0f3ff",
+        "live_equals_pe": true
+      },
+      {
+        "address": "00df4ee8",
+        "kind": "context",
+        "length": 8,
+        "end_exclusive": "00df4ef0",
+        "pe_offset": 10440424,
+        "sha256": "f06187e52571cca5ef057c2e20bf2c74d0aa619230b90785809d5cc8702e9462",
+        "hex": "ffffffff60cacb00",
+        "live_equals_pe": true
+      },
+      {
+        "address": "00df4ef0",
+        "kind": "context",
+        "length": 36,
+        "end_exclusive": "00df4f14",
+        "pe_offset": 10440432,
+        "sha256": "0adcee9d38ce4f2727673be76a7c8dc8123f3dfaadf21128507a9835860955bb",
+        "hex": "2205931901000000e84edf00000000000000000000000000000000000000000001000000",
+        "live_equals_pe": true
+      },
+      {
+        "address": "00cbc278",
+        "kind": "context",
+        "length": 10,
+        "end_exclusive": "00cbc282",
+        "pe_offset": 9159288,
+        "sha256": "4bf8b4bc175a6dc5257ff750987f1fbb9ce1e003e8359b3b5e95e999d5b1be5a",
+        "hex": "b86043df00e9c1a8f3ff",
+        "live_equals_pe": true
+      },
+      {
+        "address": "00df4358",
+        "kind": "context",
+        "length": 8,
+        "end_exclusive": "00df4360",
+        "pe_offset": 10437464,
+        "sha256": "c112ec8b0aacf63e00e22031a9059843220d831e9204196870f2304f219584ab",
+        "hex": "ffffffff70c2cb00",
+        "live_equals_pe": true
+      },
+      {
+        "address": "00df4360",
+        "kind": "context",
+        "length": 36,
+        "end_exclusive": "00df4384",
+        "pe_offset": 10437472,
+        "sha256": "1d6031ab5a9ad227f35f92d7fbf2fc3ae4beeb099362fe85bee9eb22dc0d1f60",
+        "hex": "22059319010000005843df00000000000000000000000000000000000000000001000000",
+        "live_equals_pe": true
+      },
+      {
+        "address": "00ce9a38",
+        "kind": "context",
+        "length": 2,
+        "end_exclusive": "00ce9a3a",
+        "pe_offset": 9345592,
+        "sha256": "a6083775b471cc24c0a1fd922bf996fcffad2259b6796da72a38837b4a530027",
+        "hex": "5800",
+        "live_equals_pe": true
+      }
+    ]
+  },
+  "calls": [
+    {
+      "address": "00b1d971",
+      "function": "00b1d950",
+      "native": "00b20240"
+    },
+    {
+      "address": "00b1d99c",
+      "function": "00b1d950",
+      "indirect": "edx"
+    },
+    {
+      "address": "00b1d9a0",
+      "function": "00b1d950",
+      "native": "00b71360"
+    },
+    {
+      "address": "00b1d9aa",
+      "function": "00b1d950",
+      "native": "00b46a70"
+    },
+    {
+      "address": "00b1d9bf",
+      "function": "00b1d950",
+      "native": "00b13030"
+    },
+    {
+      "address": "00b1d9da",
+      "function": "00b1d950",
+      "indirect": "edx"
+    },
+    {
+      "address": "00b1d9e7",
+      "function": "00b1d950",
+      "indirect": "edx"
+    },
+    {
+      "address": "00b1da05",
+      "function": "00b1d950",
+      "native": "00b51b20"
+    },
+    {
+      "address": "00b1da12",
+      "function": "00b1d950",
+      "native": "00b51b20"
+    },
+    {
+      "address": "00b1da25",
+      "function": "00b1d950",
+      "native": "004c1130"
+    },
+    {
+      "address": "00b1da2f",
+      "function": "00b1d950",
+      "native": "00b0ffb0"
+    },
+    {
+      "address": "00b1da3d",
+      "function": "00b1d950",
+      "indirect": "eax"
+    },
+    {
+      "address": "00b1da4a",
+      "function": "00b1d950",
+      "native": "004c1130"
+    },
+    {
+      "address": "00b1da5a",
+      "function": "00b1d950",
+      "indirect": "eax"
+    },
+    {
+      "address": "00b1da78",
+      "function": "00b1d950",
+      "indirect": "eax"
+    },
+    {
+      "address": "00b1da90",
+      "function": "00b1d950",
+      "indirect": "eax"
+    },
+    {
+      "address": "00b1daaa",
+      "function": "00b1d950",
+      "native": "00b13510"
+    },
+    {
+      "address": "00b13047",
+      "function": "00b13030",
+      "native": "0041dd40"
+    },
+    {
+      "address": "00b1305c",
+      "function": "00b13030",
+      "native": "00bf7680"
+    },
+    {
+      "address": "00b1353d",
+      "function": "00b13510",
+      "native": "0041e870"
+    },
+    {
+      "address": "00b1356b",
+      "function": "00b13510",
+      "native": "0041dd40"
+    },
+    {
+      "address": "00b1357c",
+      "function": "00b13510",
+      "native": "00bf7680"
+    },
+    {
+      "address": "00b13597",
+      "function": "00b13510",
+      "native": "00419cc0"
+    },
+    {
+      "address": "00b1359e",
+      "function": "00b13510",
+      "native": "00bd1510"
+    },
+    {
+      "address": "00b5555e",
+      "function": "00b55550",
+      "indirect": "edx"
+    },
+    {
+      "address": "00b55587",
+      "function": "00b55550",
+      "indirect": "eax"
+    },
+    {
+      "address": "00b51e0f",
+      "function": "00b51df0",
+      "native": "004c11f0"
+    },
+    {
+      "address": "00b51e16",
+      "function": "00b51df0",
+      "native": "00b1cb30"
+    },
+    {
+      "address": "00b51e8e",
+      "function": "00b51df0",
+      "native": "00bf7df0"
+    },
+    {
+      "address": "00b51ea5",
+      "function": "00b51df0",
+      "native": "00bf7df0"
+    },
+    {
+      "address": "00b51eb1",
+      "function": "00b51df0",
+      "native": "00bf7456"
+    },
+    {
+      "address": "00b51eff",
+      "function": "00b51df0",
+      "native": "00b1dce0"
+    },
+    {
+      "address": "00cbca63",
+      "function": "00cbca60",
+      "native": "00b13510",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00cbc273",
+      "function": "00cbc270",
+      "native": "0041dd20",
+      "kind": "tail_jump"
+    }
+  ],
+  "contracts": {
+    "00b1d950": "Full369B native ECX actual44h command/no stackargs/RET. Genuine current-renderer B20240 gate. Capture command+28 context, currentrenderer/profile+98, context+8 camera, context+14 target; genuineB24E70 then capturedcameraB71360; CURRENT command+4 scene and capturedcamera -> B46A70 with persistent fresh prefix/sampler frame. Current service nonnull -> rawpoolB13030(command+14). Capture currentmetadata renderer/profile+114; state0 only immediately before genuineRET4 B20210(command+1C). Fresh currentrenderer/profile+2C B1FE20 AL gate. Current synchronizationbyte0 and both signedcounts>50 selectjobs, else serialB51DF0. Jobs write currentbatch+8 mode BEFORE raw4C1130; reloadbatch AFTER framegetter, capture returnedpool+4, then rawB0FFB0; current capturedpool+4 slot -> genuineBE3020(job,capturedbatch). Repeat2; fresh4C1130/currentpool+8 -> genuineBE3150(1). Serial reloads currentbatch/profile+0C and genuineB51DF0(index), no prior modewrite. Then currentbatch/profile+8 -> genuineB55550(index,capturedcamera), each in indexorder. State0 exceptions rawresetcurrentservice, terminate secondcleanup exception, rethrow; disarm before normalrawB13510, no recursive reset on normalreset failure.",
+    "00b13030": "Full57B native ECXservice/stacksourceheader/RET4. Added actual AA8/AA4/AA0 rawpool overload. Exact source=service+684 identity returns before pool access. Resize current destination with original source length; reread source length, then current destinationlength/sourcebuffer/destinationbuffer in native order; overlap-capable BF7680 copy via memmove. Zero-byte library copy omitted after all captures.",
+    "00b13510": "Full165B native noinputs/RET. Added actual rawpool overload: initiallynullcurrentservice returns; genuine41E870 constructs actual8Btemporary from fixedCE9A38 X beforestate0. Reloadcurrentservice, capture normalbuffer thenlength, compare destinationalias, armstate0 beforecopy. Rawresize and overlapcopy use capturednormaldata/length and currentdestinationheader. On copyfailure cleanup CURRENT temporaryheader through raw41DD20 andterminate secondexception. Disarm before normalrelease; resolve currentraw419CC0 even for return, then genuineBD1510(capturedbuffer,capturedlength+1). Returning-getter failures propagate normally outsideguard instead of crossing NativeStringStorage::release noexcept.",
+    "ownership": "Context borrows same renderer/service/synchronization/stringpool/rawmanager cells, genuine target/camera/system/batch/entry providers, R58 job publications and existing persistent system/pass frames. Worker execution must use the same final NativeRenderPreparationJobDispatch and preparation context as serial path; added read-only identity accessors enforce this without a second dispatcher. Unsupported profiles/targets or missing reached providers are source contract errors. No allocation/cleanup/replay of persistent childframes and no rollback.",
+    "exception_maps": "Parent CBCA68/infoDF4EF0/mapDF4EE8 state0->-1 CBCA60 -> B13510; armedB1D9D6, disarmedB1DAA2. Label reset CBC278/infoDF4360/mapDF4358 state0->-1 CBC270 ->41DD20; temporary constructed beforestate0, normalbuffer release afterdisarm.",
+    "listing_gap": "B1DA6D[3] 8D4900 LEA ECX,[ECX] unreachable alignment before serial loop; previous JMPB1DA70 skips it and loop targetsB1DA70; live xrefs empty. Retained, not repaired.",
+    "source_abi": "New explicit borrowed context/persistent frame interfaces; no original register/FH3/SEH/private-stack/hardware-fault ABI or binary drop-in claim."
+  },
+  "validation": {
+    "strict_win32_build": true,
+    "flags": "/MD /W4 /WX /fp:strict",
+    "ctests_passed": 3,
+    "probe_pass_lines": 14,
+    "probe_output": [
+      "PASS command readiness0 full369B/whole renderer",
+      "PASS command readiness1 full369B/whole renderer",
+      "PASS command readiness2 full369B/whole renderer",
+      "PASS command readiness3 full369B/whole renderer",
+      "PASS label exact-header alias before pool access",
+      "PASS null service reset before pool access",
+      "PASS raw pool label variant0 lane0 length9",
+      "PASS raw pool label variant1 lane0 length6",
+      "PASS raw pool label variant2 lane0 length0",
+      "PASS raw pool label variant3 lane0 length1",
+      "PASS raw pool label variant0 lane1 length9",
+      "PASS raw pool label variant1 lane1 length6",
+      "PASS raw pool label variant2 lane1 length0",
+      "PASS raw pool label variant3 lane1 length1",
+      "LOADED_RESOLVED 014c \\\\?\\J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\render_command_r59\\command_probe.exe",
+      "LOADED_RESOLVED 014c \\\\?\\C:\\Windows\\SysWOW64\\ntdll.dll",
+      "LOADED_RESOLVED 014c \\\\?\\C:\\Windows\\SysWOW64\\kernel32.dll",
+      "LOADED_RESOLVED 014c \\\\?\\C:\\Windows\\SysWOW64\\KernelBase.dll",
+      "LOADED_RESOLVED 014c \\\\?\\C:\\Windows\\SysWOW64\\apphelp.dll",
+      "LOADED_RESOLVED 014c \\\\?\\C:\\Windows\\SysWOW64\\ucrtbase.dll",
+      "LOADED_RESOLVED 014c \\\\?\\C:\\Windows\\SysWOW64\\vcruntime140.dll",
+      "LOADED_RESOLVED 014c \\\\?\\C:\\Windows\\SysWOW64\\msvcp140.dll",
+      "RESULT PASS four complete native/source command readiness exits and raw-pool label operations; active command/renderer/jobs/EH paths unexecuted"
+    ],
+    "command_fixture": "Four copied-full369B/source readiness exits with nonzero inhibit or lost byte. Inaccessible command/service/manager and null persistent/provider pointers prove unneeded paths remain untouched; whole renderer buffer compared. Both lanes use genuine compiled B20240; no original readiness helper execution.",
+    "label_fixture": "Copied full57B/165B versus rawsource. Exact-header alias and initialnullservice skip inaccessiblepool. Both lanes run actual rawpool/manager allocation, growing copy, equal-length overlapping copy including embeddedNUL, emptycopy and resettoX; compare length/payload and serviceprefix/tail. Release labels and genuine rawmanagerdrain; same pool publication/returngate and one registration verified.",
+    "native_adaptation": "Original global/literal addresses patched to same cells/literal. Native readiness targets genuine compiled leaf. Native labels call ABI bridges to genuine rawresize/construct/getter/return; BF7680 targets overlap-capable memmove. Other native parent external calls and FH3 handlers remain unrelocated and unexecuted. No fake successful provider or constructed application owner graph.",
+    "linked_machine": {
+      "exe": "local\\render_command_r59\\command_probe.exe",
+      "sha256": "108c0da8874496af81da164faf6f30b87ddf685caa41bac5170fa5086a636f9e",
+      "receipt": "local/render_command_r59/machine_receipts.json",
+      "receipt_sha256": "478c22b748272c6cfd6060bc28d97ffd731285ca2f4901e65a0b92c895c3e89b",
+      "intervals": [
+        {
+          "symbol": "??1logic_error@std@@UAE@XZ",
+          "length": 32,
+          "sha256": "172d9c720f7c503bdcd8b825fdd3e59827680a410bdcb7247da939d0f069004c"
+        },
+        {
+          "symbol": "??0logic_error@std@@QAE@ABV01@@Z",
+          "length": 64,
+          "sha256": "e5fdaf3fe44d38a0c2ed2d1d0fabe0cbd09799bb981cd976f8a020bc48633476"
+        },
+        {
+          "symbol": "??0logic_error@std@@QAE@PBD@Z",
+          "length": 80,
+          "sha256": "ad79c8b518e84882131a5767d9e3878fcbef259601e1d11d9b2a2587cff94307"
+        },
+        {
+          "symbol": "??_Elogic_error@std@@UAEPAXI@Z",
+          "length": 48,
+          "sha256": "41196ebaf979a5097dc184285e6e3d4bfac9b80e90798350035ef9417431f4e0"
+        },
+        {
+          "symbol": "??_Glogic_error@std@@UAEPAXI@Z",
+          "length": 48,
+          "sha256": "41196ebaf979a5097dc184285e6e3d4bfac9b80e90798350035ef9417431f4e0"
+        },
+        {
+          "symbol": "?execute_native_render_command_00b1d950@bsp@@YAXPAXAAUNativeRenderCommandExecutionContext@1@PAUNativeRenderCommandExecutionFrame@1@@Z",
+          "length": 748,
+          "sha256": "5667d73d8917882d099f75d90e91e430401aa453bf5daa7b7da4610ea9a5707e"
+        },
+        {
+          "symbol": "__catch$?execute_native_render_command_00b1d950@bsp@@YAXPAXAAUNativeRenderCommandExecutionContext@1@PAUNativeRenderCommandExecutionFrame@1@@Z$1",
+          "length": 201,
+          "sha256": "0a00657a9003df8fc57eb837769194f3e1a179565c196534c6387c4f1691fad3"
+        },
+        {
+          "symbol": "__catch$?execute_native_render_command_00b1d950@bsp@@YAXPAXAAUNativeRenderCommandExecutionContext@1@PAUNativeRenderCommandExecutionFrame@1@@Z$0",
+          "length": 171,
+          "sha256": "01f044c0da3bd733b4eefcfe61079da0fb9472520084a3764f48cc70aa9eab5d"
+        },
+        {
+          "symbol": "?job_bindings@?A0x451a8557@bsp@@YAAAVNativeFrameJobLifetimeBindings@2@AAUNativeRenderCommandExecutionContext@2@@Z",
+          "length": 128,
+          "sha256": "4ce87f0fe502728b6d76a3b89aa8e8dbc2f3a14cf1222000f6d494fde8ff1b93"
+        },
+        {
+          "symbol": "?prepare_batches@?A0x451a8557@bsp@@YAXPAXAAUNativeRenderCommandExecutionContext@2@@Z",
+          "length": 432,
+          "sha256": "13ed57815cfcf2fa2abe943f37ad3c9af3eff1735406ca6610c0ba66a7f8cf4f"
+        },
+        {
+          "symbol": "?word@?A0x451a8557@bsp@@YAIPBXI@Z",
+          "length": 16,
+          "sha256": "2352bbb63a768117eadaf02ac661e1160978d2438d1ff56e364b139a5aeef938"
+        },
+        {
+          "symbol": "?reset_native_render_diagnostic_label_00b13510@bsp@@YAXADSAXAAUNativeStringRawPoolContext@1@@Z",
+          "length": 203,
+          "sha256": "944ae9a29feea3d7a9d0107b98686aa74b02d236f224641f79a971b9acea747a"
+        },
+        {
+          "symbol": "__catch$?reset_native_render_diagnostic_label_00b13510@bsp@@YAXADSAXAAUNativeStringRawPoolContext@1@@Z$1",
+          "length": 6,
+          "sha256": "76b2d3de2e5374c77bd2becd0fc6b5c18d421e5d22bc22aaa220f11a7734d36d"
+        },
+        {
+          "symbol": "__catch$?reset_native_render_diagnostic_label_00b13510@bsp@@YAXADSAXAAUNativeStringRawPoolContext@1@@Z$0",
+          "length": 47,
+          "sha256": "a52d2c6060c21bc71b3ba7e392226274668f741d1f1adc81d848a49c339806b4"
+        },
+        {
+          "symbol": "?set_native_render_diagnostic_label_00b13030@bsp@@YAXPAXPBXAAUNativeStringRawPoolContext@1@@Z",
+          "length": 80,
+          "sha256": "085517bf0ac107756fbea03ce76bdf408631441cbaf5203c6035026697bbfb9d"
+        },
+        {
+          "symbol": "__ehhandler$?execute_native_render_command_00b1d950@bsp@@YAXPAXAAUNativeRenderCommandExecutionContext@1@PAUNativeRenderCommandExecutionFrame@1@@Z",
+          "length": 32,
+          "sha256": "ee1cc1baa950a0b5944a9ed2f67fffcf982c98857d505e979d1be3e02d3f3b4c"
+        },
+        {
+          "symbol": "__ehhandler$?reset_native_render_diagnostic_label_00b13510@bsp@@YAXADSAXAAUNativeStringRawPoolContext@1@@Z",
+          "length": 32,
+          "sha256": "204827347214cd565d914ab9a98954668f8753fd7315e685ff7dfd7603766fc2"
+        }
+      ],
+      "parent_edges_in_native_order": [
+        "native_render_can_execute_command_00b20240",
+        "bind_native_renderer_frame_targets_00b24e70",
+        "execute_native_camera_frame_command_00b71360",
+        "gather_native_system_constants_00b46a70",
+        "set_native_render_diagnostic_label_00b13030",
+        "native_render_command_hook_no_op_00b20210",
+        "native_render_is_frame_active_00b1fe20",
+        "prepare_batches",
+        "execute_native_render_batch_entries_00b55550",
+        "reset_native_render_diagnostic_label_00b13510"
+      ],
+      "count_getter_icf_aliases": [
+        "0001:00001e70       ?native_render_batch_count_00b51b20@bsp@@YIHPBUNativeRenderBatchStorage@1@@Z 00402e70 f   bsp_core:native_render_state_leaves.obj",
+        "0001:00001e70       ?native_volume_texture_get_com_00b3d0c0@bsp@@YIPAXPBX@Z 00402e70 f   bsp_core:native_renderer_texture_binding.obj"
+      ],
+      "scope": "Map intervals may include padding/auxiliary code. Parent direct provider order, rawpool overload selection, serial preparation and genuine get/enqueue/wait providers verified. Link evidence is not active runtime execution."
+    },
+    "physical_i386_modules": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\render_command_r59\\command_probe.exe",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 364032,
+        "sha256": "108c0da8874496af81da164faf6f30b87ddf685caa41bac5170fa5086a636f9e",
+        "resolution": "GetFinalPathNameByHandleW on file opened in same Win32 probe; loaded-memory and resolved disk PE Machine both verified I386"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\ntdll.dll",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 1822400,
+        "sha256": "7e15bd30890e9bf93b47fc894a68b2445618ee7528eb39584a263b21e112f9df",
+        "resolution": "GetFinalPathNameByHandleW on file opened in same Win32 probe; loaded-memory and resolved disk PE Machine both verified I386"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\kernel32.dll",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 687472,
+        "sha256": "bafd9e061964642802d62f1eb694e7e4af60de739a8df1a492f90006dc5680f3",
+        "resolution": "GetFinalPathNameByHandleW on file opened in same Win32 probe; loaded-memory and resolved disk PE Machine both verified I386"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\KernelBase.dll",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 2974168,
+        "sha256": "85ad413ff860898f9e511f2e63c0e30f7aed1275fd1fd44fa90801211d328253",
+        "resolution": "GetFinalPathNameByHandleW on file opened in same Win32 probe; loaded-memory and resolved disk PE Machine both verified I386"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\apphelp.dll",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 710832,
+        "sha256": "a8109618c3bf3623be23e8e18f1e7184538600c953169297fd0009ed77564c6e",
+        "resolution": "GetFinalPathNameByHandleW on file opened in same Win32 probe; loaded-memory and resolved disk PE Machine both verified I386"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\ucrtbase.dll",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 1114240,
+        "sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+        "resolution": "GetFinalPathNameByHandleW on file opened in same Win32 probe; loaded-memory and resolved disk PE Machine both verified I386"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\vcruntime140.dll",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 123328,
+        "sha256": "2fa6efc053203460a23d3a25158f227d895d2dadc63acc1a372da97c3a4281c3",
+        "resolution": "GetFinalPathNameByHandleW on file opened in same Win32 probe; loaded-memory and resolved disk PE Machine both verified I386"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\msvcp140.dll",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 618944,
+        "sha256": "f0cda2a0cf1fe6fbbf579b9098462329d3aaa7513a207af2e0f33b01456e388a",
+        "resolution": "GetFinalPathNameByHandleW on file opened in same Win32 probe; loaded-memory and resolved disk PE Machine both verified I386"
+      }
+    ],
+    "native_spans": 28,
+    "native_bytes": 1156,
+    "direct_call_or_tail_rows": 25
+  },
+  "boundaries": [
+    "Full active command path, target/camera/system composition, serial or parallel batch preparation and material draw execution unexecuted in this fixture",
+    "No constructed application renderer/camera/command/queue owner graph; queue execution not yet wired",
+    "Original helper/provider bodies replaced by genuine source where reached, not original-provider execution",
+    "No allocation/registration/normal-return/cleanup failure injection or native EH/register/privateframe/hardware-fault ABI proof",
+    "No active application, visual or gameplay validation"
+  ],
+  "prior_ledger_receipts": [
+    {
+      "address": "00b1d950",
+      "ledger_receipt": "00b1d950 function execute_native_render_command_00b1d950\n"
+    },
+    {
+      "address": "00b13030",
+      "ledger_receipt": "00b13030 function set_native_render_diagnostic_label_00b13030\nreplaced (previous record stays in git history): {\"address\": \"00b13030\", \"name\": \"set_native_render_diagnostic_label_00b13030\", \"cpp_symbol\": \"set_native_render_diagnostic_label_00b13030\", \"source\": \"src/native_render_diagnostic_labels.cpp\", \"native_end_exclusive\": \"00b13069\", \"original_abi\": \"ECX actual service, stack actual8h source header, RET4; no error-return contract\", \"evidence\": \"reports/native_render_diagnostic_labels_audit.json\", \"status\": \"complete_actual_storage_original_caller_fixture_and_strict_win32_build_checked\", \"native_differential_fixture\": true, \"abi_compatible\": false, \"game_validated\": false, \"kind\": \"function\"}\n"
+    },
+    {
+      "address": "00b13510",
+      "ledger_receipt": "00b13510 function reset_native_render_diagnostic_label_00b13510\nreplaced (previous record stays in git history): {\"address\": \"00b13510\", \"name\": \"reset_native_render_diagnostic_label_00b13510\", \"cpp_symbol\": \"reset_native_render_diagnostic_label_00b13510\", \"source\": \"src/native_render_diagnostic_labels.cpp\", \"native_end_exclusive\": \"00b135b5\", \"original_abi\": \"No inputs, ECX unused, RET; no error-return contract\", \"evidence\": \"reports/native_render_diagnostic_labels_audit.json\", \"status\": \"complete_actual_storage_original_caller_fixture_and_strict_win32_build_checked\", \"native_differential_fixture\": true, \"abi_compatible\": false, \"game_validated\": false, \"kind\": \"function\"}\n"
+    }
+  ],
+  "archive": {
+    "path": "local/evidence-r59/render-command-original-r59.zip",
+    "sha256": "bfc4ce4cacaf3f6738eab3126907f075db4d39c782d24d679eb4cf145d8dbd75",
+    "manifest_sha256": "33a19571f33042fd8ac27385bf64f3402dd940fdd05b5145a0adba67ec3e0d5f",
+    "artifact_count": 5743,
+    "bytes": 358141682,
+    "all_entries_rehashed": true,
+    "scope": "Full current source/build compiler input/output closure and focused fixture/native/link evidence. Eight same-process physical I386 modules; no active command runtime proof."
+  }
+}

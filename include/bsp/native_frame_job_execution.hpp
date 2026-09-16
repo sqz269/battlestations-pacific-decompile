@@ -63,6 +63,7 @@ public:
     bool is_dispatching_current_10(const NativeFrameJobPoolStorage&) const;
     void require_worker_virtual_0c(const NativeFrameJobPoolStorage&) const;
     RandomThreads& random_threads() noexcept { return random_; }
+    NativeFrameJobDispatch& job_dispatch() noexcept { return jobs_; }
 private:
     void require_event(const NativeEventOwnerStorage&, std::size_t slot,
         std::uint32_t expected) const;

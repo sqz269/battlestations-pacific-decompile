@@ -48,6 +48,7 @@ public:
         const volatile std::uint32_t* actual_job_profile_00d5e160,
         NativeFrameJobDispatch& remaining);
     void execute_current_00(void* actual_job_owner, std::uint32_t argument) override;
+    NativeRenderBatchPreparationContext& preparation_context() noexcept { return context_; }
 private:
     NativeRenderBatchPreparationContext& context_;
     const volatile std::uint32_t* job_profile_;

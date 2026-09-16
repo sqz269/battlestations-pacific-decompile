@@ -23,6 +23,17 @@ void set_native_render_diagnostic_label_00b13030(void* actual_service,
 void reset_native_render_diagnostic_label_00b13510(
     void* const volatile& actual_global_00f8d39c, NativeStringStorage&);
 
+// Same complete bodies through the actual AA8/AA4/AA0 pool domain. Unlike
+// NativeStringStorage's noexcept return interface, raw getter failures escape
+// normal release. Reset constructs its native8B temporary before state0,
+// captures normal data/length, cleans the CURRENT temporary header on unwind,
+// and disarms before returning the captured normal buffer. A second cleanup
+// exception terminates. No projected pool or replacement service is created.
+void set_native_render_diagnostic_label_00b13030(void* actual_service,
+    const void* actual_source_header, NativeStringRawPoolContext&);
+void reset_native_render_diagnostic_label_00b13510(
+    void* const volatile& actual_global_00f8d39c, NativeStringRawPoolContext&);
+
 // New C++ entry interfaces, not drop-in thiscall/register replacements. The
 // only owned temporary is the reset's native string; the full diagnostic
 // service/singleton, statistics and system-time owners are not implemented.
