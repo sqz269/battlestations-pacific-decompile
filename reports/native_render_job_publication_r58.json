@@ -1,0 +1,2036 @@
+{
+  "schema_version": 1,
+  "packet": "native_render_job_publication_r58",
+  "status": "raw_manager_source_composition_strict_build_and_bounded_original_code_fixture_checked",
+  "baseline_commit": "3e8569cef1fd177012240917119ae11bb674ed56",
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "prior_annotations_path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\ghidra-annotations-20260916T172250Z.json",
+    "prior_annotations": [
+      {
+        "address": "004c1130",
+        "before": {
+          "address": "004c1130",
+          "function_name": "BSP_FrameJobPool_GetSingleton",
+          "comment": "[BSP reconstruction 004c1130]\nHypothesis, not a recovered symbol. __cdecl(void) -> 0109cf08, plain RET. Double-checked lazy singleton under BSP_SingletonLifetime_GetManager()+10h; allocates 0x138A8 bytes through 00bf681b, constructs with 004bfa40 and registers with BSP_SingletonLifetime_Register. The base subobject at +4 is built by 00be3040 with a thread count of -1 that 00be4800 resolves, and holds worker handles at +4h, worker objects at +10h, the worker count at +14h, a running flag at +18h, a job count at +20h and 10000 unchecked two-word job slots from +24h. BSP_Game_Render 004ca569 uses vtable +4h (00be3020 enqueue, RET 8) twice and +8h (00be3150 dispatch, RET 4) once. docs/GAME_RENDER_FRAME.md\n\n[BSP reconstruction 004c1130] update\nHypothesis, not a recovered symbol. __cdecl(void) -> 0109cf08, plain RET. Double-checked lazy singleton under BSP_SingletonLifetime_GetManager()+10h; allocates 0x138A8 bytes through 00bf681b, constructs with 004bfa40 and registers with BSP_SingletonLifetime_Register. The base subobject at +4 is built by 00be3040 with a thread count of -1 that 00be4800 resolves, and holds worker handles at +4h, worker objects at +10h, the worker count at +14h, a running flag at +18h, a job count at +20h and 10000 unchecked two-word job slots from +24h. BSP_Game_Render 004ca569 uses vtable +4h (00be3020 enqueue, RET 8) twice and +8h (00be3150 dispatch, RET 4) once. docs/GAME_RENDER_FRAME.md | Packet orch3_native_frame_job_lifetime_x. Descriptive names are hypotheses, not recovered symbols. Complete138A8h actualframeowner getter: shared01090AA0domain capturedlock/recheck/alloc/construct4BFA40/publish/getmanageragain/registerCURRENTglobal/unlock/reload. Construction rawfree precedesunlock; no registrationrollback. Correct+10 secondaryarray is doneevents, not workerobjects. Actualpool/event/thread ownership and sharedlifetime domain; required applicationentry/job/scalar routes. Fulloriginalnormal-path fixture with realWin32 suspendedworker passed. docs/NATIVE_FRAME_JOB_LIFETIME.md; reports/native_frame_job_lifetime.json. NewC++ABI; originalEH/gameplay unvalidated."
+        },
+        "after": {
+          "address": "004c1130",
+          "name": "BSP_FrameJobPool_GetSingleton",
+          "evidence": "Hypothesis, not a recovered symbol. __cdecl(void) -> 0109cf08, plain RET. Double-checked lazy singleton under BSP_SingletonLifetime_GetManager()+10h; allocates 0x138A8 bytes through 00bf681b, constructs with 004bfa40 and registers with BSP_SingletonLifetime_Register. The base subobject at +4 is built by 00be3040 with a thread count of -1 that 00be4800 resolves, and holds worker handles at +4h, worker objects at +10h, the worker count at +14h, a running flag at +18h, a job count at +20h and 10000 unchecked two-word job slots from +24h. BSP_Game_Render 004ca569 uses vtable +4h (00be3020 enqueue, RET 8) twice and +8h (00be3150 dispatch, RET 4) once. docs/GAME_RENDER_FRAME.md | Packet orch3_native_frame_job_lifetime_x. Descriptive names are hypotheses, not recovered symbols. Complete138A8h actualframeowner getter: shared01090AA0domain capturedlock/recheck/alloc/construct4BFA40/publish/getmanageragain/registerCURRENTglobal/unlock/reload. Construction rawfree precedesunlock; no registrationrollback. Correct+10 secondaryarray is doneevents, not workerobjects. Actualpool/event/thread ownership and sharedlifetime domain; required applicationentry/job/scalar routes. Fulloriginalnormal-path fixture with realWin32 suspendedworker passed. docs/NATIVE_FRAME_JOB_LIFETIME.md; reports/native_frame_job_lifetime.json. NewC++ABI; originalEH/gameplay unvalidated. | R58 raw-manager source compositions in src/native_render_job_publication.cpp replace projected SingletonLifetimeDomain dependencies for full4C1130[192] andB0FFB0[206], with same actualAA0/109CF08/F8D444. Genuine raw415350/captured manager+10 guard/allocator/BD0C30; frame genuine4BFA40 construction and existing4BFB30 destruction. Frame publication registration reloads after second manager getter; preparation captures secondary+4 before second getter. Constructor failure savedrawfree then guard; registration failure retains publication; normalleave stays armed. Full prep destructor26B/primary52B/secondary8B/base41B preserve unconditional samepublication clear, secondaryCE3818, flags1 ordinaryfree and correct primary adjustment; no unregister. RawBD0400 adds CE7550 frame PRIMARY andD5E15C prep SECONDARY with same borrowedcontext. Binding appendedoffset120 size124. C64EE8 cleanup repaired9->11bytes: realPOP ECX;RET tail59C3 atC64EF1 restored after local_free CALL_RETURN override; prior definition/comment journal saved, function rebound throughC64EF2 and export refreshed. Actual frameEH D8D4F0/mapD8D4E0 state1->0 allocationfree andstate0->-1 guard; prepDF3EB8/mapDF3EB0 onlyguard. StrictWin32/MD/W4/WX/fp:strict+3CTests; fullnative/source hotgetters, actual rawprep cold allocation/registration/reuse/drain; body+six nonfree scalar full8B comparisons, three freeing scalar kinds bothlanes return/publication checked. Native fixture routes manager/allocator/registration/free to genuine source providers; originalEH unexecuted. Frame cold construction/destruction/jobs/workerthreads andmanagerframe route linked butunexecuted. Newexplicitcontext ABI, no originalFH3/SEH/register/privateframe/fault or app/visual/gameplay proof. reports/native_render_job_publication_r58.json; reports/native_render_job_publication_flow_r58.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b0d930",
+        "before": {
+          "address": "00b0d930",
+          "function_name": "BSP_RenderBatchPreparationJobBase_ScalarDeletingDestructor",
+          "comment": "[BSP reconstruction 00b0d930]\nComplete native[00b0d930,00b0d959); ECX construction-base pointer; stack DWORD flags; RET4; EAX same base. Unconditional F8D444 clear, reset CE3818 at supplied base, free same base iff flags&1; distinct from final secondary adjustment Evidence reports/native_job_string_count_integration_audit.json; reports/native_render_preparation_job_owner_audit.json. Primary strict MSVC Win32 build and two existing CTests passed; original-code focused fixture passed with declared host boundaries. Descriptive hypothesis/new C++ ABI; not game validated."
+        },
+        "after": {
+          "address": "00b0d930",
+          "name": "BSP_RenderBatchPreparationJobBase_ScalarDeletingDestructor",
+          "evidence": "Complete native[00b0d930,00b0d959); ECX construction-base pointer; stack DWORD flags; RET4; EAX same base. Unconditional F8D444 clear, reset CE3818 at supplied base, free same base iff flags&1; distinct from final secondary adjustment Evidence reports/native_job_string_count_integration_audit.json; reports/native_render_preparation_job_owner_audit.json. Primary strict MSVC Win32 build and two existing CTests passed; original-code focused fixture passed with declared host boundaries. Descriptive hypothesis/new C++ ABI; not game validated. | R58 raw-manager source compositions in src/native_render_job_publication.cpp replace projected SingletonLifetimeDomain dependencies for full4C1130[192] andB0FFB0[206], with same actualAA0/109CF08/F8D444. Genuine raw415350/captured manager+10 guard/allocator/BD0C30; frame genuine4BFA40 construction and existing4BFB30 destruction. Frame publication registration reloads after second manager getter; preparation captures secondary+4 before second getter. Constructor failure savedrawfree then guard; registration failure retains publication; normalleave stays armed. Full prep destructor26B/primary52B/secondary8B/base41B preserve unconditional samepublication clear, secondaryCE3818, flags1 ordinaryfree and correct primary adjustment; no unregister. RawBD0400 adds CE7550 frame PRIMARY andD5E15C prep SECONDARY with same borrowedcontext. Binding appendedoffset120 size124. C64EE8 cleanup repaired9->11bytes: realPOP ECX;RET tail59C3 atC64EF1 restored after local_free CALL_RETURN override; prior definition/comment journal saved, function rebound throughC64EF2 and export refreshed. Actual frameEH D8D4F0/mapD8D4E0 state1->0 allocationfree andstate0->-1 guard; prepDF3EB8/mapDF3EB0 onlyguard. StrictWin32/MD/W4/WX/fp:strict+3CTests; fullnative/source hotgetters, actual rawprep cold allocation/registration/reuse/drain; body+six nonfree scalar full8B comparisons, three freeing scalar kinds bothlanes return/publication checked. Native fixture routes manager/allocator/registration/free to genuine source providers; originalEH unexecuted. Frame cold construction/destruction/jobs/workerthreads andmanagerframe route linked butunexecuted. Newexplicitcontext ABI, no originalFH3/SEH/register/privateframe/fault or app/visual/gameplay proof. reports/native_render_job_publication_r58.json; reports/native_render_job_publication_flow_r58.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b0f1c0",
+        "before": {
+          "address": "00b0f1c0",
+          "function_name": "BSP_RenderBatchPreparationJob_SecondaryDeletingThunk",
+          "comment": "[BSP reconstruction 00b0f1c0]\nComplete native[00b0f1c0,00b0f1c8); ECX secondary; subtract4; tailcall B0F210 with original flags/RET4; EAX primary. Actual pointer-minus4 dispatch to reconstructed primary deletion Evidence reports/native_job_string_count_integration_audit.json; reports/native_render_preparation_job_owner_audit.json. Primary strict MSVC Win32 build and two existing CTests passed; original-code focused fixture passed with declared host boundaries. Descriptive hypothesis/new C++ ABI; not game validated."
+        },
+        "after": {
+          "address": "00b0f1c0",
+          "name": "BSP_RenderBatchPreparationJob_SecondaryDeletingThunk",
+          "evidence": "Complete native[00b0f1c0,00b0f1c8); ECX secondary; subtract4; tailcall B0F210 with original flags/RET4; EAX primary. Actual pointer-minus4 dispatch to reconstructed primary deletion Evidence reports/native_job_string_count_integration_audit.json; reports/native_render_preparation_job_owner_audit.json. Primary strict MSVC Win32 build and two existing CTests passed; original-code focused fixture passed with declared host boundaries. Descriptive hypothesis/new C++ ABI; not game validated. | R58 raw-manager source compositions in src/native_render_job_publication.cpp replace projected SingletonLifetimeDomain dependencies for full4C1130[192] andB0FFB0[206], with same actualAA0/109CF08/F8D444. Genuine raw415350/captured manager+10 guard/allocator/BD0C30; frame genuine4BFA40 construction and existing4BFB30 destruction. Frame publication registration reloads after second manager getter; preparation captures secondary+4 before second getter. Constructor failure savedrawfree then guard; registration failure retains publication; normalleave stays armed. Full prep destructor26B/primary52B/secondary8B/base41B preserve unconditional samepublication clear, secondaryCE3818, flags1 ordinaryfree and correct primary adjustment; no unregister. RawBD0400 adds CE7550 frame PRIMARY andD5E15C prep SECONDARY with same borrowedcontext. Binding appendedoffset120 size124. C64EE8 cleanup repaired9->11bytes: realPOP ECX;RET tail59C3 atC64EF1 restored after local_free CALL_RETURN override; prior definition/comment journal saved, function rebound throughC64EF2 and export refreshed. Actual frameEH D8D4F0/mapD8D4E0 state1->0 allocationfree andstate0->-1 guard; prepDF3EB8/mapDF3EB0 onlyguard. StrictWin32/MD/W4/WX/fp:strict+3CTests; fullnative/source hotgetters, actual rawprep cold allocation/registration/reuse/drain; body+six nonfree scalar full8B comparisons, three freeing scalar kinds bothlanes return/publication checked. Native fixture routes manager/allocator/registration/free to genuine source providers; originalEH unexecuted. Frame cold construction/destruction/jobs/workerthreads andmanagerframe route linked butunexecuted. Newexplicitcontext ABI, no originalFH3/SEH/register/privateframe/fault or app/visual/gameplay proof. reports/native_render_job_publication_r58.json; reports/native_render_job_publication_flow_r58.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b0f1d0",
+        "before": {
+          "address": "00b0f1d0",
+          "function_name": "BSP_RenderBatchPreparationJob_DestroyBody",
+          "comment": "[BSP reconstruction 00b0f1d0]\nComplete native[00b0f1d0,00b0f1ea); ECX actual primary owner; RET; no meaningful return. Unconditional F8D444 clear then only secondary04=CE3818; no unregister/free/primary reset Evidence reports/native_job_string_count_integration_audit.json; reports/native_render_preparation_job_owner_audit.json. Primary strict MSVC Win32 build and two existing CTests passed; original-code focused fixture passed with declared host boundaries. Descriptive hypothesis/new C++ ABI; not game validated."
+        },
+        "after": {
+          "address": "00b0f1d0",
+          "name": "BSP_RenderBatchPreparationJob_DestroyBody",
+          "evidence": "Complete native[00b0f1d0,00b0f1ea); ECX actual primary owner; RET; no meaningful return. Unconditional F8D444 clear then only secondary04=CE3818; no unregister/free/primary reset Evidence reports/native_job_string_count_integration_audit.json; reports/native_render_preparation_job_owner_audit.json. Primary strict MSVC Win32 build and two existing CTests passed; original-code focused fixture passed with declared host boundaries. Descriptive hypothesis/new C++ ABI; not game validated. | R58 raw-manager source compositions in src/native_render_job_publication.cpp replace projected SingletonLifetimeDomain dependencies for full4C1130[192] andB0FFB0[206], with same actualAA0/109CF08/F8D444. Genuine raw415350/captured manager+10 guard/allocator/BD0C30; frame genuine4BFA40 construction and existing4BFB30 destruction. Frame publication registration reloads after second manager getter; preparation captures secondary+4 before second getter. Constructor failure savedrawfree then guard; registration failure retains publication; normalleave stays armed. Full prep destructor26B/primary52B/secondary8B/base41B preserve unconditional samepublication clear, secondaryCE3818, flags1 ordinaryfree and correct primary adjustment; no unregister. RawBD0400 adds CE7550 frame PRIMARY andD5E15C prep SECONDARY with same borrowedcontext. Binding appendedoffset120 size124. C64EE8 cleanup repaired9->11bytes: realPOP ECX;RET tail59C3 atC64EF1 restored after local_free CALL_RETURN override; prior definition/comment journal saved, function rebound throughC64EF2 and export refreshed. Actual frameEH D8D4F0/mapD8D4E0 state1->0 allocationfree andstate0->-1 guard; prepDF3EB8/mapDF3EB0 onlyguard. StrictWin32/MD/W4/WX/fp:strict+3CTests; fullnative/source hotgetters, actual rawprep cold allocation/registration/reuse/drain; body+six nonfree scalar full8B comparisons, three freeing scalar kinds bothlanes return/publication checked. Native fixture routes manager/allocator/registration/free to genuine source providers; originalEH unexecuted. Frame cold construction/destruction/jobs/workerthreads andmanagerframe route linked butunexecuted. Newexplicitcontext ABI, no originalFH3/SEH/register/privateframe/fault or app/visual/gameplay proof. reports/native_render_job_publication_r58.json; reports/native_render_job_publication_flow_r58.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b0f210",
+        "before": {
+          "address": "00b0f210",
+          "function_name": "BSP_RenderBatchPreparationJob_ScalarDeletingDestructor",
+          "comment": "[BSP reconstruction 00b0f210]\nComplete native[00b0f210,00b0f244); ECX primary; stack DWORD flags; RET4; EAX original primary. Unconditional clear/secondary reset, free original primary iff flags&1, return original address including free continuation Evidence reports/native_job_string_count_integration_audit.json; reports/native_render_preparation_job_owner_audit.json. Primary strict MSVC Win32 build and two existing CTests passed; original-code focused fixture passed with declared host boundaries. Descriptive hypothesis/new C++ ABI; not game validated."
+        },
+        "after": {
+          "address": "00b0f210",
+          "name": "BSP_RenderBatchPreparationJob_ScalarDeletingDestructor",
+          "evidence": "Complete native[00b0f210,00b0f244); ECX primary; stack DWORD flags; RET4; EAX original primary. Unconditional clear/secondary reset, free original primary iff flags&1, return original address including free continuation Evidence reports/native_job_string_count_integration_audit.json; reports/native_render_preparation_job_owner_audit.json. Primary strict MSVC Win32 build and two existing CTests passed; original-code focused fixture passed with declared host boundaries. Descriptive hypothesis/new C++ ABI; not game validated. | R58 raw-manager source compositions in src/native_render_job_publication.cpp replace projected SingletonLifetimeDomain dependencies for full4C1130[192] andB0FFB0[206], with same actualAA0/109CF08/F8D444. Genuine raw415350/captured manager+10 guard/allocator/BD0C30; frame genuine4BFA40 construction and existing4BFB30 destruction. Frame publication registration reloads after second manager getter; preparation captures secondary+4 before second getter. Constructor failure savedrawfree then guard; registration failure retains publication; normalleave stays armed. Full prep destructor26B/primary52B/secondary8B/base41B preserve unconditional samepublication clear, secondaryCE3818, flags1 ordinaryfree and correct primary adjustment; no unregister. RawBD0400 adds CE7550 frame PRIMARY andD5E15C prep SECONDARY with same borrowedcontext. Binding appendedoffset120 size124. C64EE8 cleanup repaired9->11bytes: realPOP ECX;RET tail59C3 atC64EF1 restored after local_free CALL_RETURN override; prior definition/comment journal saved, function rebound throughC64EF2 and export refreshed. Actual frameEH D8D4F0/mapD8D4E0 state1->0 allocationfree andstate0->-1 guard; prepDF3EB8/mapDF3EB0 onlyguard. StrictWin32/MD/W4/WX/fp:strict+3CTests; fullnative/source hotgetters, actual rawprep cold allocation/registration/reuse/drain; body+six nonfree scalar full8B comparisons, three freeing scalar kinds bothlanes return/publication checked. Native fixture routes manager/allocator/registration/free to genuine source providers; originalEH unexecuted. Frame cold construction/destruction/jobs/workerthreads andmanagerframe route linked butunexecuted. Newexplicitcontext ABI, no originalFH3/SEH/register/privateframe/fault or app/visual/gameplay proof. reports/native_render_job_publication_r58.json; reports/native_render_job_publication_flow_r58.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b0ffb0",
+        "before": {
+          "address": "00b0ffb0",
+          "function_name": "BSP_RenderBatchPreparationJob_GetSingleton",
+          "comment": "[BSP reconstruction 00b0ffb0]\nLazily obtains8-byte singleton global00F8D444 with lifetime-manager synchronization/registration. Its primary vtable00D5E160+0 is00B1BF70. Allocation/registration implementation remains unported; typed execution requires actual job scheduling and wait, not a singleton stub. Original ABI: No stack arguments; EAX job singleton; RET. Evidence docs/RENDER_COMMAND_EXECUTION.md; reports/render_command_execution_audit.json. Descriptive names are hypotheses; typed interfaces are not original ABI or gameplay validation. Original ABI: No stack arguments; EAX job singleton; RET. Evidence: docs/RENDER_COMMAND_EXECUTION.md; reports/render_command_execution_audit.json. Descriptive names are hypotheses; typed C++ interfaces are not native ABI or game validation.\n\n[BSP reconstruction 00b0ffb0] update\nComplete native[00b0ffb0,00b1007e); No input; EAX current actual8h singleton; RET. Actual8h allocation/table transitions, captured manager section, recheck/publication, capture secondary before second manager lookup, real registration, release then final reload Evidence reports/native_job_string_count_integration_audit.json; reports/native_render_preparation_job_owner_audit.json. Primary strict MSVC Win32 build and two existing CTests passed; original-code focused fixture passed with declared host boundaries. Descriptive hypothesis/new C++ ABI; not game validated."
+        },
+        "after": {
+          "address": "00b0ffb0",
+          "name": "BSP_RenderBatchPreparationJob_GetSingleton",
+          "evidence": "Lazily obtains8-byte singleton global00F8D444 with lifetime-manager synchronization/registration. Its primary vtable00D5E160+0 is00B1BF70. Allocation/registration implementation remains unported; typed execution requires actual job scheduling and wait, not a singleton stub. Original ABI: No stack arguments; EAX job singleton; RET. Evidence docs/RENDER_COMMAND_EXECUTION.md; reports/render_command_execution_audit.json. Descriptive names are hypotheses; typed interfaces are not original ABI or gameplay validation. Original ABI: No stack arguments; EAX job singleton; RET. Evidence: docs/RENDER_COMMAND_EXECUTION.md; reports/render_command_execution_audit.json. Descriptive names are hypotheses; typed C++ interfaces are not native ABI or game validation. | Complete native[00b0ffb0,00b1007e); No input; EAX current actual8h singleton; RET. Actual8h allocation/table transitions, captured manager section, recheck/publication, capture secondary before second manager lookup, real registration, release then final reload Evidence reports/native_job_string_count_integration_audit.json; reports/native_render_preparation_job_owner_audit.json. Primary strict MSVC Win32 build and two existing CTests passed; original-code focused fixture passed with declared host boundaries. Descriptive hypothesis/new C++ ABI; not game validated. | R58 raw-manager source compositions in src/native_render_job_publication.cpp replace projected SingletonLifetimeDomain dependencies for full4C1130[192] andB0FFB0[206], with same actualAA0/109CF08/F8D444. Genuine raw415350/captured manager+10 guard/allocator/BD0C30; frame genuine4BFA40 construction and existing4BFB30 destruction. Frame publication registration reloads after second manager getter; preparation captures secondary+4 before second getter. Constructor failure savedrawfree then guard; registration failure retains publication; normalleave stays armed. Full prep destructor26B/primary52B/secondary8B/base41B preserve unconditional samepublication clear, secondaryCE3818, flags1 ordinaryfree and correct primary adjustment; no unregister. RawBD0400 adds CE7550 frame PRIMARY andD5E15C prep SECONDARY with same borrowedcontext. Binding appendedoffset120 size124. C64EE8 cleanup repaired9->11bytes: realPOP ECX;RET tail59C3 atC64EF1 restored after local_free CALL_RETURN override; prior definition/comment journal saved, function rebound throughC64EF2 and export refreshed. Actual frameEH D8D4F0/mapD8D4E0 state1->0 allocationfree andstate0->-1 guard; prepDF3EB8/mapDF3EB0 onlyguard. StrictWin32/MD/W4/WX/fp:strict+3CTests; fullnative/source hotgetters, actual rawprep cold allocation/registration/reuse/drain; body+six nonfree scalar full8B comparisons, three freeing scalar kinds bothlanes return/publication checked. Native fixture routes manager/allocator/registration/free to genuine source providers; originalEH unexecuted. Frame cold construction/destruction/jobs/workerthreads andmanagerframe route linked butunexecuted. Newexplicitcontext ABI, no originalFH3/SEH/register/privateframe/fault or app/visual/gameplay proof. reports/native_render_job_publication_r58.json; reports/native_render_job_publication_flow_r58.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00c64ee8",
+        "before": {
+          "address": "00c64ee8",
+          "function_name": "EH_FrameJobPool_FreeFailedAllocation"
+        },
+        "after": {
+          "address": "00c64ee8",
+          "name": "EH_FrameJobPool_FreeFailedAllocation",
+          "evidence": "R58 native saved-allocation cleanup is 11 bytes C64EE8..C64EF3, not the truncated 9-byte stored body: MOV EAX,[EBP-18]; PUSH EAX; CALL BF65AC _free; POP ECX; RET. Actual PE/live tail59C3 atC64EF1. Local CALL_RETURN override cleared; explicit boundary restored under Ghidra write lock. D8D4E0 state1->0 uses this funclet; state0->-1 C64EE0 releases captured manager guard. Source raw frame getter frees saved allocation then releases guard. Native FH3/exception execution unproven. reports/native_render_job_publication_flow_r58.json; reports/native_render_job_publication_r58.json. | R58 raw-manager source compositions in src/native_render_job_publication.cpp replace projected SingletonLifetimeDomain dependencies for full4C1130[192] andB0FFB0[206], with same actualAA0/109CF08/F8D444. Genuine raw415350/captured manager+10 guard/allocator/BD0C30; frame genuine4BFA40 construction and existing4BFB30 destruction. Frame publication registration reloads after second manager getter; preparation captures secondary+4 before second getter. Constructor failure savedrawfree then guard; registration failure retains publication; normalleave stays armed. Full prep destructor26B/primary52B/secondary8B/base41B preserve unconditional samepublication clear, secondaryCE3818, flags1 ordinaryfree and correct primary adjustment; no unregister. RawBD0400 adds CE7550 frame PRIMARY andD5E15C prep SECONDARY with same borrowedcontext. Binding appendedoffset120 size124. C64EE8 cleanup repaired9->11bytes: realPOP ECX;RET tail59C3 atC64EF1 restored after local_free CALL_RETURN override; prior definition/comment journal saved, function rebound throughC64EF2 and export refreshed. Actual frameEH D8D4F0/mapD8D4E0 state1->0 allocationfree andstate0->-1 guard; prepDF3EB8/mapDF3EB0 onlyguard. StrictWin32/MD/W4/WX/fp:strict+3CTests; fullnative/source hotgetters, actual rawprep cold allocation/registration/reuse/drain; body+six nonfree scalar full8B comparisons, three freeing scalar kinds bothlanes return/publication checked. Native fixture routes manager/allocator/registration/free to genuine source providers; originalEH unexecuted. Frame cold construction/destruction/jobs/workerthreads andmanagerframe route linked butunexecuted. Newexplicitcontext ABI, no originalFH3/SEH/register/privateframe/fault or app/visual/gameplay proof. reports/native_render_job_publication_r58.json; reports/native_render_job_publication_flow_r58.json."
+        },
+        "status": "applied"
+      }
+    ],
+    "status": "Six source rows superseded with raw-manager compositions; prior ledger receipts retained. Seven evidence annotations saved preserving comments; repaired cleanup fullbody verified; all affected exports force-refreshed."
+  },
+  "evidence": {
+    "pe": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "spans": [
+      {
+        "address": "004c1130",
+        "kind": "function",
+        "length": 192,
+        "end_exclusive": "004c11f0",
+        "pe_offset": 790832,
+        "sha256": "19aa7a680afae3e573f631bf6652e260ae2d511049352f83e6416d516bf11de6",
+        "hex": "64a1000000006aff68f34ec6005064892500000000a108cf090183ec0c85c00f858c00000056e8f541f5ff8b701085f6c7442408fc37ce008974240c740b56ff151822ce0083461801c744241800000000833d08cf090100754268a8380100e88756730083c4048944240485c0c64424180174098bc8e895e8ffffeb0233c0c644241800a308cf0901e89241f5ff8b0d08cf0901518bc8e864fa700085f6740b834618ff56ff151022ce00a108cf09015e8b4c240c64890d0000000083c418c3",
+        "relocations": [
+          [
+            39,
+            4281168
+          ],
+          [
+            96,
+            12544027
+          ],
+          [
+            119,
+            4979264
+          ],
+          [
+            138,
+            4281168
+          ],
+          [
+            152,
+            12389424
+          ]
+        ],
+        "instructions": [
+          {
+            "address": "004c1130",
+            "hex": "64a100000000",
+            "text": "mov eax, dword ptr fs:[0]"
+          },
+          {
+            "address": "004c1136",
+            "hex": "6aff",
+            "text": "push -1"
+          },
+          {
+            "address": "004c1138",
+            "hex": "68f34ec600",
+            "text": "push 0xc64ef3"
+          },
+          {
+            "address": "004c113d",
+            "hex": "50",
+            "text": "push eax"
+          },
+          {
+            "address": "004c113e",
+            "hex": "64892500000000",
+            "text": "mov dword ptr fs:[0], esp"
+          },
+          {
+            "address": "004c1145",
+            "hex": "a108cf0901",
+            "text": "mov eax, dword ptr [0x109cf08]"
+          },
+          {
+            "address": "004c114a",
+            "hex": "83ec0c",
+            "text": "sub esp, 0xc"
+          },
+          {
+            "address": "004c114d",
+            "hex": "85c0",
+            "text": "test eax, eax"
+          },
+          {
+            "address": "004c114f",
+            "hex": "0f858c000000",
+            "text": "jne 0x4c11e1"
+          },
+          {
+            "address": "004c1155",
+            "hex": "56",
+            "text": "push esi"
+          },
+          {
+            "address": "004c1156",
+            "hex": "e8f541f5ff",
+            "text": "call 0x415350"
+          },
+          {
+            "address": "004c115b",
+            "hex": "8b7010",
+            "text": "mov esi, dword ptr [eax + 0x10]"
+          },
+          {
+            "address": "004c115e",
+            "hex": "85f6",
+            "text": "test esi, esi"
+          },
+          {
+            "address": "004c1160",
+            "hex": "c7442408fc37ce00",
+            "text": "mov dword ptr [esp + 8], 0xce37fc"
+          },
+          {
+            "address": "004c1168",
+            "hex": "8974240c",
+            "text": "mov dword ptr [esp + 0xc], esi"
+          },
+          {
+            "address": "004c116c",
+            "hex": "740b",
+            "text": "je 0x4c1179"
+          },
+          {
+            "address": "004c116e",
+            "hex": "56",
+            "text": "push esi"
+          },
+          {
+            "address": "004c116f",
+            "hex": "ff151822ce00",
+            "text": "call dword ptr [0xce2218]"
+          },
+          {
+            "address": "004c1175",
+            "hex": "83461801",
+            "text": "add dword ptr [esi + 0x18], 1"
+          },
+          {
+            "address": "004c1179",
+            "hex": "c744241800000000",
+            "text": "mov dword ptr [esp + 0x18], 0"
+          },
+          {
+            "address": "004c1181",
+            "hex": "833d08cf090100",
+            "text": "cmp dword ptr [0x109cf08], 0"
+          },
+          {
+            "address": "004c1188",
+            "hex": "7542",
+            "text": "jne 0x4c11cc"
+          },
+          {
+            "address": "004c118a",
+            "hex": "68a8380100",
+            "text": "push 0x138a8"
+          },
+          {
+            "address": "004c118f",
+            "hex": "e887567300",
+            "text": "call 0xbf681b"
+          },
+          {
+            "address": "004c1194",
+            "hex": "83c404",
+            "text": "add esp, 4"
+          },
+          {
+            "address": "004c1197",
+            "hex": "89442404",
+            "text": "mov dword ptr [esp + 4], eax"
+          },
+          {
+            "address": "004c119b",
+            "hex": "85c0",
+            "text": "test eax, eax"
+          },
+          {
+            "address": "004c119d",
+            "hex": "c644241801",
+            "text": "mov byte ptr [esp + 0x18], 1"
+          },
+          {
+            "address": "004c11a2",
+            "hex": "7409",
+            "text": "je 0x4c11ad"
+          },
+          {
+            "address": "004c11a4",
+            "hex": "8bc8",
+            "text": "mov ecx, eax"
+          },
+          {
+            "address": "004c11a6",
+            "hex": "e895e8ffff",
+            "text": "call 0x4bfa40"
+          },
+          {
+            "address": "004c11ab",
+            "hex": "eb02",
+            "text": "jmp 0x4c11af"
+          },
+          {
+            "address": "004c11ad",
+            "hex": "33c0",
+            "text": "xor eax, eax"
+          },
+          {
+            "address": "004c11af",
+            "hex": "c644241800",
+            "text": "mov byte ptr [esp + 0x18], 0"
+          },
+          {
+            "address": "004c11b4",
+            "hex": "a308cf0901",
+            "text": "mov dword ptr [0x109cf08], eax"
+          },
+          {
+            "address": "004c11b9",
+            "hex": "e89241f5ff",
+            "text": "call 0x415350"
+          },
+          {
+            "address": "004c11be",
+            "hex": "8b0d08cf0901",
+            "text": "mov ecx, dword ptr [0x109cf08]"
+          },
+          {
+            "address": "004c11c4",
+            "hex": "51",
+            "text": "push ecx"
+          },
+          {
+            "address": "004c11c5",
+            "hex": "8bc8",
+            "text": "mov ecx, eax"
+          },
+          {
+            "address": "004c11c7",
+            "hex": "e864fa7000",
+            "text": "call 0xbd0c30"
+          },
+          {
+            "address": "004c11cc",
+            "hex": "85f6",
+            "text": "test esi, esi"
+          },
+          {
+            "address": "004c11ce",
+            "hex": "740b",
+            "text": "je 0x4c11db"
+          },
+          {
+            "address": "004c11d0",
+            "hex": "834618ff",
+            "text": "add dword ptr [esi + 0x18], -1"
+          },
+          {
+            "address": "004c11d4",
+            "hex": "56",
+            "text": "push esi"
+          },
+          {
+            "address": "004c11d5",
+            "hex": "ff151022ce00",
+            "text": "call dword ptr [0xce2210]"
+          },
+          {
+            "address": "004c11db",
+            "hex": "a108cf0901",
+            "text": "mov eax, dword ptr [0x109cf08]"
+          },
+          {
+            "address": "004c11e0",
+            "hex": "5e",
+            "text": "pop esi"
+          },
+          {
+            "address": "004c11e1",
+            "hex": "8b4c240c",
+            "text": "mov ecx, dword ptr [esp + 0xc]"
+          },
+          {
+            "address": "004c11e5",
+            "hex": "64890d00000000",
+            "text": "mov dword ptr fs:[0], ecx"
+          },
+          {
+            "address": "004c11ec",
+            "hex": "83c418",
+            "text": "add esp, 0x18"
+          },
+          {
+            "address": "004c11ef",
+            "hex": "c3",
+            "text": "ret"
+          }
+        ],
+        "calls": [
+          {
+            "address": "004c1156",
+            "hex": "e8f541f5ff",
+            "text": "call 0x415350"
+          },
+          {
+            "address": "004c116f",
+            "hex": "ff151822ce00",
+            "text": "call dword ptr [0xce2218]"
+          },
+          {
+            "address": "004c118f",
+            "hex": "e887567300",
+            "text": "call 0xbf681b"
+          },
+          {
+            "address": "004c11a6",
+            "hex": "e895e8ffff",
+            "text": "call 0x4bfa40"
+          },
+          {
+            "address": "004c11b9",
+            "hex": "e89241f5ff",
+            "text": "call 0x415350"
+          },
+          {
+            "address": "004c11c7",
+            "hex": "e864fa7000",
+            "text": "call 0xbd0c30"
+          },
+          {
+            "address": "004c11d5",
+            "hex": "ff151022ce00",
+            "text": "call dword ptr [0xce2210]"
+          }
+        ],
+        "live_equals_pe": true,
+        "listing_missing_instruction_starts": []
+      },
+      {
+        "address": "00b0ffb0",
+        "kind": "function",
+        "length": 206,
+        "end_exclusive": "00b1007e",
+        "pe_offset": 7405488,
+        "sha256": "eb340826f27e52a681052714fcf74879c3f703844b1ce095e220922ceedf08c2",
+        "hex": "64a1000000006aff6848bccb005064892500000000a144d4f80083ec0885c00f859a00000056e8755390ff8b701085f6c7442404fc37ce0089742408740b56ff151822ce0083461801c744241400000000833d44d4f8000075506a08e80a680e0083c40485c0741bc7400454e1d500c70060e1d500c740045ce1d500a344d4f800eb0ac70544d4f80000000000a144d4f80085c0740583c004eb0233c050e8fd5290ff8bc8e8d60b0c0085f6740b834618ff56ff151022ce00a144d4f8005e8b4c240864890d0000000083c414c3",
+        "relocations": [
+          [
+            39,
+            4281168
+          ],
+          [
+            93,
+            12544027
+          ],
+          [
+            159,
+            4281168
+          ],
+          [
+            166,
+            12389424
+          ]
+        ],
+        "instructions": [
+          {
+            "address": "00b0ffb0",
+            "hex": "64a100000000",
+            "text": "mov eax, dword ptr fs:[0]"
+          },
+          {
+            "address": "00b0ffb6",
+            "hex": "6aff",
+            "text": "push -1"
+          },
+          {
+            "address": "00b0ffb8",
+            "hex": "6848bccb00",
+            "text": "push 0xcbbc48"
+          },
+          {
+            "address": "00b0ffbd",
+            "hex": "50",
+            "text": "push eax"
+          },
+          {
+            "address": "00b0ffbe",
+            "hex": "64892500000000",
+            "text": "mov dword ptr fs:[0], esp"
+          },
+          {
+            "address": "00b0ffc5",
+            "hex": "a144d4f800",
+            "text": "mov eax, dword ptr [0xf8d444]"
+          },
+          {
+            "address": "00b0ffca",
+            "hex": "83ec08",
+            "text": "sub esp, 8"
+          },
+          {
+            "address": "00b0ffcd",
+            "hex": "85c0",
+            "text": "test eax, eax"
+          },
+          {
+            "address": "00b0ffcf",
+            "hex": "0f859a000000",
+            "text": "jne 0xb1006f"
+          },
+          {
+            "address": "00b0ffd5",
+            "hex": "56",
+            "text": "push esi"
+          },
+          {
+            "address": "00b0ffd6",
+            "hex": "e8755390ff",
+            "text": "call 0x415350"
+          },
+          {
+            "address": "00b0ffdb",
+            "hex": "8b7010",
+            "text": "mov esi, dword ptr [eax + 0x10]"
+          },
+          {
+            "address": "00b0ffde",
+            "hex": "85f6",
+            "text": "test esi, esi"
+          },
+          {
+            "address": "00b0ffe0",
+            "hex": "c7442404fc37ce00",
+            "text": "mov dword ptr [esp + 4], 0xce37fc"
+          },
+          {
+            "address": "00b0ffe8",
+            "hex": "89742408",
+            "text": "mov dword ptr [esp + 8], esi"
+          },
+          {
+            "address": "00b0ffec",
+            "hex": "740b",
+            "text": "je 0xb0fff9"
+          },
+          {
+            "address": "00b0ffee",
+            "hex": "56",
+            "text": "push esi"
+          },
+          {
+            "address": "00b0ffef",
+            "hex": "ff151822ce00",
+            "text": "call dword ptr [0xce2218]"
+          },
+          {
+            "address": "00b0fff5",
+            "hex": "83461801",
+            "text": "add dword ptr [esi + 0x18], 1"
+          },
+          {
+            "address": "00b0fff9",
+            "hex": "c744241400000000",
+            "text": "mov dword ptr [esp + 0x14], 0"
+          },
+          {
+            "address": "00b10001",
+            "hex": "833d44d4f80000",
+            "text": "cmp dword ptr [0xf8d444], 0"
+          },
+          {
+            "address": "00b10008",
+            "hex": "7550",
+            "text": "jne 0xb1005a"
+          },
+          {
+            "address": "00b1000a",
+            "hex": "6a08",
+            "text": "push 8"
+          },
+          {
+            "address": "00b1000c",
+            "hex": "e80a680e00",
+            "text": "call 0xbf681b"
+          },
+          {
+            "address": "00b10011",
+            "hex": "83c404",
+            "text": "add esp, 4"
+          },
+          {
+            "address": "00b10014",
+            "hex": "85c0",
+            "text": "test eax, eax"
+          },
+          {
+            "address": "00b10016",
+            "hex": "741b",
+            "text": "je 0xb10033"
+          },
+          {
+            "address": "00b10018",
+            "hex": "c7400454e1d500",
+            "text": "mov dword ptr [eax + 4], 0xd5e154"
+          },
+          {
+            "address": "00b1001f",
+            "hex": "c70060e1d500",
+            "text": "mov dword ptr [eax], 0xd5e160"
+          },
+          {
+            "address": "00b10025",
+            "hex": "c740045ce1d500",
+            "text": "mov dword ptr [eax + 4], 0xd5e15c"
+          },
+          {
+            "address": "00b1002c",
+            "hex": "a344d4f800",
+            "text": "mov dword ptr [0xf8d444], eax"
+          },
+          {
+            "address": "00b10031",
+            "hex": "eb0a",
+            "text": "jmp 0xb1003d"
+          },
+          {
+            "address": "00b10033",
+            "hex": "c70544d4f80000000000",
+            "text": "mov dword ptr [0xf8d444], 0"
+          },
+          {
+            "address": "00b1003d",
+            "hex": "a144d4f800",
+            "text": "mov eax, dword ptr [0xf8d444]"
+          },
+          {
+            "address": "00b10042",
+            "hex": "85c0",
+            "text": "test eax, eax"
+          },
+          {
+            "address": "00b10044",
+            "hex": "7405",
+            "text": "je 0xb1004b"
+          },
+          {
+            "address": "00b10046",
+            "hex": "83c004",
+            "text": "add eax, 4"
+          },
+          {
+            "address": "00b10049",
+            "hex": "eb02",
+            "text": "jmp 0xb1004d"
+          },
+          {
+            "address": "00b1004b",
+            "hex": "33c0",
+            "text": "xor eax, eax"
+          },
+          {
+            "address": "00b1004d",
+            "hex": "50",
+            "text": "push eax"
+          },
+          {
+            "address": "00b1004e",
+            "hex": "e8fd5290ff",
+            "text": "call 0x415350"
+          },
+          {
+            "address": "00b10053",
+            "hex": "8bc8",
+            "text": "mov ecx, eax"
+          },
+          {
+            "address": "00b10055",
+            "hex": "e8d60b0c00",
+            "text": "call 0xbd0c30"
+          },
+          {
+            "address": "00b1005a",
+            "hex": "85f6",
+            "text": "test esi, esi"
+          },
+          {
+            "address": "00b1005c",
+            "hex": "740b",
+            "text": "je 0xb10069"
+          },
+          {
+            "address": "00b1005e",
+            "hex": "834618ff",
+            "text": "add dword ptr [esi + 0x18], -1"
+          },
+          {
+            "address": "00b10062",
+            "hex": "56",
+            "text": "push esi"
+          },
+          {
+            "address": "00b10063",
+            "hex": "ff151022ce00",
+            "text": "call dword ptr [0xce2210]"
+          },
+          {
+            "address": "00b10069",
+            "hex": "a144d4f800",
+            "text": "mov eax, dword ptr [0xf8d444]"
+          },
+          {
+            "address": "00b1006e",
+            "hex": "5e",
+            "text": "pop esi"
+          },
+          {
+            "address": "00b1006f",
+            "hex": "8b4c2408",
+            "text": "mov ecx, dword ptr [esp + 8]"
+          },
+          {
+            "address": "00b10073",
+            "hex": "64890d00000000",
+            "text": "mov dword ptr fs:[0], ecx"
+          },
+          {
+            "address": "00b1007a",
+            "hex": "83c414",
+            "text": "add esp, 0x14"
+          },
+          {
+            "address": "00b1007d",
+            "hex": "c3",
+            "text": "ret"
+          }
+        ],
+        "calls": [
+          {
+            "address": "00b0ffd6",
+            "hex": "e8755390ff",
+            "text": "call 0x415350"
+          },
+          {
+            "address": "00b0ffef",
+            "hex": "ff151822ce00",
+            "text": "call dword ptr [0xce2218]"
+          },
+          {
+            "address": "00b1000c",
+            "hex": "e80a680e00",
+            "text": "call 0xbf681b"
+          },
+          {
+            "address": "00b1004e",
+            "hex": "e8fd5290ff",
+            "text": "call 0x415350"
+          },
+          {
+            "address": "00b10055",
+            "hex": "e8d60b0c00",
+            "text": "call 0xbd0c30"
+          },
+          {
+            "address": "00b10063",
+            "hex": "ff151022ce00",
+            "text": "call dword ptr [0xce2210]"
+          }
+        ],
+        "live_equals_pe": true,
+        "listing_missing_instruction_starts": []
+      },
+      {
+        "address": "00b0f1d0",
+        "kind": "function",
+        "length": 26,
+        "end_exclusive": "00b0f1ea",
+        "pe_offset": 7401936,
+        "sha256": "5cd6c7045a05cf438fbc7240014a1b0f8d33d6145b32804bf0fc11bac262c7b5",
+        "hex": "33c03bc8a344d4f8007408c741041838ce00c3c7001838ce00c3",
+        "relocations": [],
+        "instructions": [
+          {
+            "address": "00b0f1d0",
+            "hex": "33c0",
+            "text": "xor eax, eax"
+          },
+          {
+            "address": "00b0f1d2",
+            "hex": "3bc8",
+            "text": "cmp ecx, eax"
+          },
+          {
+            "address": "00b0f1d4",
+            "hex": "a344d4f800",
+            "text": "mov dword ptr [0xf8d444], eax"
+          },
+          {
+            "address": "00b0f1d9",
+            "hex": "7408",
+            "text": "je 0xb0f1e3"
+          },
+          {
+            "address": "00b0f1db",
+            "hex": "c741041838ce00",
+            "text": "mov dword ptr [ecx + 4], 0xce3818"
+          },
+          {
+            "address": "00b0f1e2",
+            "hex": "c3",
+            "text": "ret"
+          },
+          {
+            "address": "00b0f1e3",
+            "hex": "c7001838ce00",
+            "text": "mov dword ptr [eax], 0xce3818"
+          },
+          {
+            "address": "00b0f1e9",
+            "hex": "c3",
+            "text": "ret"
+          }
+        ],
+        "calls": [],
+        "live_equals_pe": true,
+        "listing_missing_instruction_starts": []
+      },
+      {
+        "address": "00b0f210",
+        "kind": "function",
+        "length": 52,
+        "end_exclusive": "00b0f244",
+        "pe_offset": 7402000,
+        "sha256": "3e32a6448ed0a1124d44d55c6bbfac48a23ba89270f25b117a4b0e288f4349c2",
+        "hex": "568bf185f674058d4604eb0233c0f644240801c70544d4f80000000000c7001838ce00740956e871730e0083c4048bc65ec20400",
+        "relocations": [
+          [
+            39,
+            12543404
+          ]
+        ],
+        "instructions": [
+          {
+            "address": "00b0f210",
+            "hex": "56",
+            "text": "push esi"
+          },
+          {
+            "address": "00b0f211",
+            "hex": "8bf1",
+            "text": "mov esi, ecx"
+          },
+          {
+            "address": "00b0f213",
+            "hex": "85f6",
+            "text": "test esi, esi"
+          },
+          {
+            "address": "00b0f215",
+            "hex": "7405",
+            "text": "je 0xb0f21c"
+          },
+          {
+            "address": "00b0f217",
+            "hex": "8d4604",
+            "text": "lea eax, [esi + 4]"
+          },
+          {
+            "address": "00b0f21a",
+            "hex": "eb02",
+            "text": "jmp 0xb0f21e"
+          },
+          {
+            "address": "00b0f21c",
+            "hex": "33c0",
+            "text": "xor eax, eax"
+          },
+          {
+            "address": "00b0f21e",
+            "hex": "f644240801",
+            "text": "test byte ptr [esp + 8], 1"
+          },
+          {
+            "address": "00b0f223",
+            "hex": "c70544d4f80000000000",
+            "text": "mov dword ptr [0xf8d444], 0"
+          },
+          {
+            "address": "00b0f22d",
+            "hex": "c7001838ce00",
+            "text": "mov dword ptr [eax], 0xce3818"
+          },
+          {
+            "address": "00b0f233",
+            "hex": "7409",
+            "text": "je 0xb0f23e"
+          },
+          {
+            "address": "00b0f235",
+            "hex": "56",
+            "text": "push esi"
+          },
+          {
+            "address": "00b0f236",
+            "hex": "e871730e00",
+            "text": "call 0xbf65ac"
+          },
+          {
+            "address": "00b0f23b",
+            "hex": "83c404",
+            "text": "add esp, 4"
+          },
+          {
+            "address": "00b0f23e",
+            "hex": "8bc6",
+            "text": "mov eax, esi"
+          },
+          {
+            "address": "00b0f240",
+            "hex": "5e",
+            "text": "pop esi"
+          },
+          {
+            "address": "00b0f241",
+            "hex": "c20400",
+            "text": "ret 4"
+          }
+        ],
+        "calls": [
+          {
+            "address": "00b0f236",
+            "hex": "e871730e00",
+            "text": "call 0xbf65ac"
+          }
+        ],
+        "live_equals_pe": true,
+        "listing_missing_instruction_starts": []
+      },
+      {
+        "address": "00b0f1c0",
+        "kind": "function",
+        "length": 8,
+        "end_exclusive": "00b0f1c8",
+        "pe_offset": 7401920,
+        "sha256": "8a9a0e18ceb0afe4b5c25d13ce74f72d5f2df5104f944174cb5e3c8cc1e7f10a",
+        "hex": "83e904e948000000",
+        "relocations": [
+          [
+            4,
+            11596304
+          ]
+        ],
+        "instructions": [
+          {
+            "address": "00b0f1c0",
+            "hex": "83e904",
+            "text": "sub ecx, 4"
+          },
+          {
+            "address": "00b0f1c3",
+            "hex": "e948000000",
+            "text": "jmp 0xb0f210"
+          }
+        ],
+        "calls": [],
+        "live_equals_pe": true,
+        "listing_missing_instruction_starts": []
+      },
+      {
+        "address": "00b0d930",
+        "kind": "function",
+        "length": 41,
+        "end_exclusive": "00b0d959",
+        "pe_offset": 7395632,
+        "sha256": "8ffb8e115f1c181f1d4ed483cd97bec7ebfe1f3b0c9adb36119258a46d026f36",
+        "hex": "f644240401568bf1c70544d4f80000000000c7061838ce00740956e85c8c0e0083c4048bc65ec20400",
+        "relocations": [
+          [
+            28,
+            12543404
+          ]
+        ],
+        "instructions": [
+          {
+            "address": "00b0d930",
+            "hex": "f644240401",
+            "text": "test byte ptr [esp + 4], 1"
+          },
+          {
+            "address": "00b0d935",
+            "hex": "56",
+            "text": "push esi"
+          },
+          {
+            "address": "00b0d936",
+            "hex": "8bf1",
+            "text": "mov esi, ecx"
+          },
+          {
+            "address": "00b0d938",
+            "hex": "c70544d4f80000000000",
+            "text": "mov dword ptr [0xf8d444], 0"
+          },
+          {
+            "address": "00b0d942",
+            "hex": "c7061838ce00",
+            "text": "mov dword ptr [esi], 0xce3818"
+          },
+          {
+            "address": "00b0d948",
+            "hex": "7409",
+            "text": "je 0xb0d953"
+          },
+          {
+            "address": "00b0d94a",
+            "hex": "56",
+            "text": "push esi"
+          },
+          {
+            "address": "00b0d94b",
+            "hex": "e85c8c0e00",
+            "text": "call 0xbf65ac"
+          },
+          {
+            "address": "00b0d950",
+            "hex": "83c404",
+            "text": "add esp, 4"
+          },
+          {
+            "address": "00b0d953",
+            "hex": "8bc6",
+            "text": "mov eax, esi"
+          },
+          {
+            "address": "00b0d955",
+            "hex": "5e",
+            "text": "pop esi"
+          },
+          {
+            "address": "00b0d956",
+            "hex": "c20400",
+            "text": "ret 4"
+          }
+        ],
+        "calls": [
+          {
+            "address": "00b0d94b",
+            "hex": "e85c8c0e00",
+            "text": "call 0xbf65ac"
+          }
+        ],
+        "live_equals_pe": true,
+        "listing_missing_instruction_starts": []
+      },
+      {
+        "address": "004bfa40",
+        "kind": "function",
+        "length": 87,
+        "end_exclusive": "004bfa97",
+        "pe_offset": 784960,
+        "sha256": "04738b6b8acef7e9b12f2eb76b042857eaf0a979fb1b94e27b1da01b7307f96d",
+        "hex": "6aff68a84dc60064a100000000506489250000000051568bf15789742408c7062075ce008d7e046aff8bcfc744241800000000e8c83572008b4c240cc7075475ce00c7065075ce005f8bc65e64890d0000000083c410c3",
+        "relocations": [
+          [
+            52,
+            12464192
+          ]
+        ],
+        "instructions": [
+          {
+            "address": "004bfa40",
+            "hex": "6aff",
+            "text": "push -1"
+          },
+          {
+            "address": "004bfa42",
+            "hex": "68a84dc600",
+            "text": "push 0xc64da8"
+          },
+          {
+            "address": "004bfa47",
+            "hex": "64a100000000",
+            "text": "mov eax, dword ptr fs:[0]"
+          },
+          {
+            "address": "004bfa4d",
+            "hex": "50",
+            "text": "push eax"
+          },
+          {
+            "address": "004bfa4e",
+            "hex": "64892500000000",
+            "text": "mov dword ptr fs:[0], esp"
+          },
+          {
+            "address": "004bfa55",
+            "hex": "51",
+            "text": "push ecx"
+          },
+          {
+            "address": "004bfa56",
+            "hex": "56",
+            "text": "push esi"
+          },
+          {
+            "address": "004bfa57",
+            "hex": "8bf1",
+            "text": "mov esi, ecx"
+          },
+          {
+            "address": "004bfa59",
+            "hex": "57",
+            "text": "push edi"
+          },
+          {
+            "address": "004bfa5a",
+            "hex": "89742408",
+            "text": "mov dword ptr [esp + 8], esi"
+          },
+          {
+            "address": "004bfa5e",
+            "hex": "c7062075ce00",
+            "text": "mov dword ptr [esi], 0xce7520"
+          },
+          {
+            "address": "004bfa64",
+            "hex": "8d7e04",
+            "text": "lea edi, [esi + 4]"
+          },
+          {
+            "address": "004bfa67",
+            "hex": "6aff",
+            "text": "push -1"
+          },
+          {
+            "address": "004bfa69",
+            "hex": "8bcf",
+            "text": "mov ecx, edi"
+          },
+          {
+            "address": "004bfa6b",
+            "hex": "c744241800000000",
+            "text": "mov dword ptr [esp + 0x18], 0"
+          },
+          {
+            "address": "004bfa73",
+            "hex": "e8c8357200",
+            "text": "call 0xbe3040"
+          },
+          {
+            "address": "004bfa78",
+            "hex": "8b4c240c",
+            "text": "mov ecx, dword ptr [esp + 0xc]"
+          },
+          {
+            "address": "004bfa7c",
+            "hex": "c7075475ce00",
+            "text": "mov dword ptr [edi], 0xce7554"
+          },
+          {
+            "address": "004bfa82",
+            "hex": "c7065075ce00",
+            "text": "mov dword ptr [esi], 0xce7550"
+          },
+          {
+            "address": "004bfa88",
+            "hex": "5f",
+            "text": "pop edi"
+          },
+          {
+            "address": "004bfa89",
+            "hex": "8bc6",
+            "text": "mov eax, esi"
+          },
+          {
+            "address": "004bfa8b",
+            "hex": "5e",
+            "text": "pop esi"
+          },
+          {
+            "address": "004bfa8c",
+            "hex": "64890d00000000",
+            "text": "mov dword ptr fs:[0], ecx"
+          },
+          {
+            "address": "004bfa93",
+            "hex": "83c410",
+            "text": "add esp, 0x10"
+          },
+          {
+            "address": "004bfa96",
+            "hex": "c3",
+            "text": "ret"
+          }
+        ],
+        "calls": [
+          {
+            "address": "004bfa73",
+            "hex": "e8c8357200",
+            "text": "call 0xbe3040"
+          }
+        ],
+        "live_equals_pe": true,
+        "listing_missing_instruction_starts": []
+      },
+      {
+        "address": "004bfb30",
+        "kind": "function",
+        "length": 30,
+        "end_exclusive": "004bfb4e",
+        "pe_offset": 785200,
+        "sha256": "c2bbfa5174f6cb684baf56cfb2183249bbf8e7cac46e5a9153eb08c4e468b36b",
+        "hex": "568bf1e898fffffff644240801740956e8676a730083c4048bc65ec20400",
+        "relocations": [
+          [
+            4,
+            4979408
+          ],
+          [
+            17,
+            12543404
+          ]
+        ],
+        "instructions": [
+          {
+            "address": "004bfb30",
+            "hex": "56",
+            "text": "push esi"
+          },
+          {
+            "address": "004bfb31",
+            "hex": "8bf1",
+            "text": "mov esi, ecx"
+          },
+          {
+            "address": "004bfb33",
+            "hex": "e898ffffff",
+            "text": "call 0x4bfad0"
+          },
+          {
+            "address": "004bfb38",
+            "hex": "f644240801",
+            "text": "test byte ptr [esp + 8], 1"
+          },
+          {
+            "address": "004bfb3d",
+            "hex": "7409",
+            "text": "je 0x4bfb48"
+          },
+          {
+            "address": "004bfb3f",
+            "hex": "56",
+            "text": "push esi"
+          },
+          {
+            "address": "004bfb40",
+            "hex": "e8676a7300",
+            "text": "call 0xbf65ac"
+          },
+          {
+            "address": "004bfb45",
+            "hex": "83c404",
+            "text": "add esp, 4"
+          },
+          {
+            "address": "004bfb48",
+            "hex": "8bc6",
+            "text": "mov eax, esi"
+          },
+          {
+            "address": "004bfb4a",
+            "hex": "5e",
+            "text": "pop esi"
+          },
+          {
+            "address": "004bfb4b",
+            "hex": "c20400",
+            "text": "ret 4"
+          }
+        ],
+        "calls": [
+          {
+            "address": "004bfb33",
+            "hex": "e898ffffff",
+            "text": "call 0x4bfad0"
+          },
+          {
+            "address": "004bfb40",
+            "hex": "e8676a7300",
+            "text": "call 0xbf65ac"
+          }
+        ],
+        "live_equals_pe": true,
+        "listing_missing_instruction_starts": []
+      },
+      {
+        "address": "004bfac0",
+        "kind": "function",
+        "length": 8,
+        "end_exclusive": "004bfac8",
+        "pe_offset": 785088,
+        "sha256": "52a4b4ed3645ec7930b09d04c0af2190dbc5dafc538df75001e7f632af293264",
+        "hex": "83e904e968000000",
+        "relocations": [
+          [
+            4,
+            4979504
+          ]
+        ],
+        "instructions": [
+          {
+            "address": "004bfac0",
+            "hex": "83e904",
+            "text": "sub ecx, 4"
+          },
+          {
+            "address": "004bfac3",
+            "hex": "e968000000",
+            "text": "jmp 0x4bfb30"
+          }
+        ],
+        "calls": [],
+        "live_equals_pe": true,
+        "listing_missing_instruction_starts": []
+      },
+      {
+        "address": "00c64ee0",
+        "kind": "function",
+        "length": 8,
+        "end_exclusive": "00c64ee8",
+        "pe_offset": 8802016,
+        "sha256": "c1338bc979cda3eb9a07ea12a879ba53f65cb0a9115c113df67ddae0d823ef3d",
+        "hex": "8d4dece9f8cf7aff",
+        "relocations": [
+          [
+            4,
+            4267744
+          ]
+        ],
+        "instructions": [
+          {
+            "address": "00c64ee0",
+            "hex": "8d4dec",
+            "text": "lea ecx, [ebp - 0x14]"
+          },
+          {
+            "address": "00c64ee3",
+            "hex": "e9f8cf7aff",
+            "text": "jmp 0x411ee0"
+          }
+        ],
+        "calls": [],
+        "live_equals_pe": true,
+        "listing_missing_instruction_starts": []
+      },
+      {
+        "address": "00c64ee8",
+        "kind": "function",
+        "length": 11,
+        "end_exclusive": "00c64ef3",
+        "pe_offset": 8802024,
+        "sha256": "14c740d82333d234e039218da7a4dddc9558330d22c2a3c8b141b6e05f04bbe0",
+        "hex": "8b45e850e8bb16f9ff59c3",
+        "relocations": [
+          [
+            5,
+            12543404
+          ]
+        ],
+        "instructions": [
+          {
+            "address": "00c64ee8",
+            "hex": "8b45e8",
+            "text": "mov eax, dword ptr [ebp - 0x18]"
+          },
+          {
+            "address": "00c64eeb",
+            "hex": "50",
+            "text": "push eax"
+          },
+          {
+            "address": "00c64eec",
+            "hex": "e8bb16f9ff",
+            "text": "call 0xbf65ac"
+          },
+          {
+            "address": "00c64ef1",
+            "hex": "59",
+            "text": "pop ecx"
+          },
+          {
+            "address": "00c64ef2",
+            "hex": "c3",
+            "text": "ret"
+          }
+        ],
+        "calls": [
+          {
+            "address": "00c64eec",
+            "hex": "e8bb16f9ff",
+            "text": "call 0xbf65ac"
+          }
+        ],
+        "live_equals_pe": true,
+        "listing_missing_instruction_starts": []
+      },
+      {
+        "address": "00cbbc40",
+        "kind": "function",
+        "length": 8,
+        "end_exclusive": "00cbbc48",
+        "pe_offset": 9157696,
+        "sha256": "de2c27caced7fec10965b23ae3d608bca1fbc4fc58e2f46476242aafe180eba2",
+        "hex": "8d4dece9986275ff",
+        "relocations": [
+          [
+            4,
+            4267744
+          ]
+        ],
+        "instructions": [
+          {
+            "address": "00cbbc40",
+            "hex": "8d4dec",
+            "text": "lea ecx, [ebp - 0x14]"
+          },
+          {
+            "address": "00cbbc43",
+            "hex": "e9986275ff",
+            "text": "jmp 0x411ee0"
+          }
+        ],
+        "calls": [],
+        "live_equals_pe": true,
+        "listing_missing_instruction_starts": []
+      },
+      {
+        "address": "00ce7550",
+        "kind": "context",
+        "length": 4,
+        "end_exclusive": "00ce7554",
+        "pe_offset": 9336144,
+        "sha256": "01ee756639ff0aead06d1a17829a77da9f1d379eee6c5ecad983fe794a4bb6c8",
+        "hex": "30fb4b00",
+        "live_equals_pe": true
+      },
+      {
+        "address": "00ce7554",
+        "kind": "context",
+        "length": 4,
+        "end_exclusive": "00ce7558",
+        "pe_offset": 9336148,
+        "sha256": "67e1fbdb1cc359f82955ab8a6c0d1e430d15a319592f08f5e8b27b9916731c33",
+        "hex": "c0fa4b00",
+        "live_equals_pe": true
+      },
+      {
+        "address": "00d5e154",
+        "kind": "context",
+        "length": 4,
+        "end_exclusive": "00d5e158",
+        "pe_offset": 9822548,
+        "sha256": "4b03eae9b798413e1d5e8dd97dfe88d1fa92567d336a4ae209efa1d4578b75b8",
+        "hex": "30d9b000",
+        "live_equals_pe": true
+      },
+      {
+        "address": "00d5e15c",
+        "kind": "context",
+        "length": 4,
+        "end_exclusive": "00d5e160",
+        "pe_offset": 9822556,
+        "sha256": "d7c87f198344636b4b71aca6405045e8d9d2b49ee9ca24a4efaead12c9357f08",
+        "hex": "c0f1b000",
+        "live_equals_pe": true
+      },
+      {
+        "address": "00d5e160",
+        "kind": "context",
+        "length": 4,
+        "end_exclusive": "00d5e164",
+        "pe_offset": 9822560,
+        "sha256": "e7d6d1986e421f13415a2d46a278cdb507889b3a53ee52ca1e19db31e5219af0",
+        "hex": "70bfb100",
+        "live_equals_pe": true
+      },
+      {
+        "address": "00c64ef3",
+        "kind": "context",
+        "length": 10,
+        "end_exclusive": "00c64efd",
+        "pe_offset": 8802035,
+        "sha256": "18dda597868b9771ab621d7d010a2e069696d248e83f2c34573eee0160b95744",
+        "hex": "b8f0d4d800e9461cf9ff",
+        "live_equals_pe": true
+      },
+      {
+        "address": "00d8d4e0",
+        "kind": "context",
+        "length": 16,
+        "end_exclusive": "00d8d4f0",
+        "pe_offset": 10015968,
+        "sha256": "5ebedf33d03d5f56a7910cb95a77b798b1e1d8e329eaedd7459c6a8b13230952",
+        "hex": "ffffffffe04ec60000000000e84ec600",
+        "live_equals_pe": true
+      },
+      {
+        "address": "00d8d4f0",
+        "kind": "context",
+        "length": 36,
+        "end_exclusive": "00d8d514",
+        "pe_offset": 10015984,
+        "sha256": "fc63493ec5200f01f59e73154c7e21a5334ae036cdf2ef32b263afeea5d875cb",
+        "hex": "2205931902000000e0d4d800000000000000000000000000000000000000000001000000",
+        "live_equals_pe": true
+      },
+      {
+        "address": "00cbbc48",
+        "kind": "context",
+        "length": 10,
+        "end_exclusive": "00cbbc52",
+        "pe_offset": 9157704,
+        "sha256": "c685c25b63b7502011e95d91d84d4d640d053cb678151d9e57b67ac2b4eb3249",
+        "hex": "b8b83edf00e9f1aef3ff",
+        "live_equals_pe": true
+      },
+      {
+        "address": "00df3eb0",
+        "kind": "context",
+        "length": 8,
+        "end_exclusive": "00df3eb8",
+        "pe_offset": 10436272,
+        "sha256": "ef8b635e6c44b18c107d5a32943ab0da12515be7a27bb93727f72ae46b3f04a3",
+        "hex": "ffffffff40bccb00",
+        "live_equals_pe": true
+      },
+      {
+        "address": "00df3eb8",
+        "kind": "context",
+        "length": 36,
+        "end_exclusive": "00df3edc",
+        "pe_offset": 10436280,
+        "sha256": "a5ee52d385c1e164dd4488d757fd0b6470527f4dce95543b2b1c830b33c6ee5a",
+        "hex": "2205931901000000b03edf00000000000000000000000000000000000000000001000000",
+        "live_equals_pe": true
+      },
+      {
+        "address": "00ce2218",
+        "kind": "context",
+        "length": 4,
+        "end_exclusive": "00ce221c",
+        "pe_offset": 9314840,
+        "sha256": "f03bc111c216b8f67ab58aa8c77f775b1f4b8a20478a48d4be563ff51efa186b",
+        "hex": "b856a000",
+        "live_equals_pe": true
+      },
+      {
+        "address": "00ce2210",
+        "kind": "context",
+        "length": 4,
+        "end_exclusive": "00ce2214",
+        "pe_offset": 9314832,
+        "sha256": "185a5fca4ac0e7e71b064b7142a7c3e9aff75525c45428d05f8a277255e4f88b",
+        "hex": "8856a000",
+        "live_equals_pe": true
+      }
+    ]
+  },
+  "calls": [
+    {
+      "address": "004c1156",
+      "function": "004c1130",
+      "native": "00415350"
+    },
+    {
+      "address": "004c116f",
+      "function": "004c1130",
+      "indirect": "dword ptr [0xce2218]"
+    },
+    {
+      "address": "004c118f",
+      "function": "004c1130",
+      "native": "00bf681b"
+    },
+    {
+      "address": "004c11a6",
+      "function": "004c1130",
+      "native": "004bfa40"
+    },
+    {
+      "address": "004c11b9",
+      "function": "004c1130",
+      "native": "00415350"
+    },
+    {
+      "address": "004c11c7",
+      "function": "004c1130",
+      "native": "00bd0c30"
+    },
+    {
+      "address": "004c11d5",
+      "function": "004c1130",
+      "indirect": "dword ptr [0xce2210]"
+    },
+    {
+      "address": "00b0ffd6",
+      "function": "00b0ffb0",
+      "native": "00415350"
+    },
+    {
+      "address": "00b0ffef",
+      "function": "00b0ffb0",
+      "indirect": "dword ptr [0xce2218]"
+    },
+    {
+      "address": "00b1000c",
+      "function": "00b0ffb0",
+      "native": "00bf681b"
+    },
+    {
+      "address": "00b1004e",
+      "function": "00b0ffb0",
+      "native": "00415350"
+    },
+    {
+      "address": "00b10055",
+      "function": "00b0ffb0",
+      "native": "00bd0c30"
+    },
+    {
+      "address": "00b10063",
+      "function": "00b0ffb0",
+      "indirect": "dword ptr [0xce2210]"
+    },
+    {
+      "address": "00b0f236",
+      "function": "00b0f210",
+      "native": "00bf65ac"
+    },
+    {
+      "address": "00b0f1c3",
+      "function": "00b0f1c0",
+      "native": "00b0f210",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00b0d94b",
+      "function": "00b0d930",
+      "native": "00bf65ac"
+    },
+    {
+      "address": "004bfa73",
+      "function": "004bfa40",
+      "native": "00be3040"
+    },
+    {
+      "address": "004bfb33",
+      "function": "004bfb30",
+      "native": "004bfad0"
+    },
+    {
+      "address": "004bfb40",
+      "function": "004bfb30",
+      "native": "00bf65ac"
+    },
+    {
+      "address": "004bfac3",
+      "function": "004bfac0",
+      "native": "004bfb30",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00c64ee3",
+      "function": "00c64ee0",
+      "native": "00411ee0",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00c64eec",
+      "function": "00c64ee8",
+      "native": "00bf65ac"
+    },
+    {
+      "address": "00cbbc43",
+      "function": "00cbbc40",
+      "native": "00411ee0",
+      "kind": "tail_jump"
+    }
+  ],
+  "contracts": {
+    "004c1130": "Full192B cdecl/no inputs/EAX current frame primary/RET. Capture initial109CF08 fastreturn. Cold genuine raw415350 manager, captured+10 actual tracked section enter/increment, state0, recheck; allocate138A8/state1/genuine4BFA40; constructor failure savedrawfree after constructor cleanup; state0 publication; second rawmanager getter then CURRENT109CF08 registration; normal captured leave whilearmed; fresh publication return. Registration failure retains publication/allocation.",
+    "00b0ffb0": "Full206B cdecl/no inputs/EAX current preparation primary/RET. Capture initialF8D444 fastreturn; same actualAA0 rawmanager/captured guard. Allocate8, volatile secondaryD5E154/primaryD5E160/secondaryD5E15C stores; publish. Capture current secondary+4 ornull BEFORE second rawmanager lookup, register captured argument; normalleavearmed and fresh finalpublication. Onlystate0 cleanup, no unregister or rollback.",
+    "00b0f1d0": "Full26B ECXprimary/RET. Clear sameactualF8D444 unconditionally, then CE3818 at primary+4; null primary writes addresszero, not+4. No unregister/free/primary profile reset.",
+    "00b0f210": "Full52B ECXprimary/stackflags/RET4/EAXoriginalprimary. Clearpublication and resetsecondary, then genuine ordinaryfree(originalprimary) iff flags&1. No unregister.",
+    "00b0f1c0": "Full8B ECXsecondary-=4 then taildispatchB0F210; flags/RET4/EAXprimary inherited.",
+    "00b0d930": "Full41B ECXconstructionbase/stackflags/RET4/EAXoriginalbase. ClearF8D444, CE3818 at suppliedbase, free SAME suppliedbase iff flags&1; no secondary-to-primary adjustment.",
+    "manager_deletion": "Existing rawBD0400 finite dispatcher adds CE7550 registered frame PRIMARY -> genuine4BFB30 with same frame publication/lifetime; D5E15C registered preparation SECONDARY -> new rawB0F1C0 -> B0F210 using same F8D444. New borrowed context appended at offset120; previous offsets unchanged; size124. Unknown/missing context remains source contract error.",
+    "exception_maps": "Frame handlerC64EF3/infoD8D4F0/mapD8D4E0 state1->0 C64EE8 savedallocationfree and state0->-1 C64EE0 ->411EE0. Prep handlerCBBC48/infoDF3EB8/mapDF3EB0 state0->-1 CBBC40 ->411EE0. Normal leave remains armed; a second escaping source C++ cleanup exception terminates.",
+    "source_domain": "Same borrowed actual AA0/109CF08/F8D444; genuine source allocation/rawmanager/registration/guard and existing raw frame constructor/destructor. No projected SingletonLifetimeDomain. Frame binding provides existing scope/executor/real thread entry when reached, not an empty fallback. Source APIs add explicit context, not native drop-in ABI."
+  },
+  "validation": {
+    "strict_win32_build": true,
+    "flags": "/MD /W4 /WX /fp:strict",
+    "ctests_passed": 3,
+    "probe_pass_lines": 16,
+    "probe_output": [
+      "PASS native/source complete getter hot paths with inaccessible manager",
+      "PASS cold preparation lane0 genuine raw manager/constructor/registration/drain",
+      "PASS cold preparation lane1 genuine raw manager/constructor/registration/drain",
+      "PASS native/source destructor body whole8B",
+      "PASS native/source scalar kind0 flags0 whole8B",
+      "PASS native/source scalar kind1 flags0 whole8B",
+      "PASS native/source scalar kind2 flags0 whole8B",
+      "PASS native/source scalar kind0 flags2 whole8B",
+      "PASS native/source scalar kind1 flags2 whole8B",
+      "PASS native/source scalar kind2 flags2 whole8B",
+      "PASS scalar free kind0 lane0 return/publication only",
+      "PASS scalar free kind0 lane1 return/publication only",
+      "PASS scalar free kind1 lane0 return/publication only",
+      "PASS scalar free kind1 lane1 return/publication only",
+      "PASS scalar free kind2 lane0 return/publication only",
+      "PASS scalar free kind2 lane1 return/publication only",
+      "LOADED_RESOLVED 014c \\\\?\\J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\render_job_publication_r58\\job_owner_probe.exe",
+      "LOADED_RESOLVED 014c \\\\?\\C:\\Windows\\SysWOW64\\ntdll.dll",
+      "LOADED_RESOLVED 014c \\\\?\\C:\\Windows\\SysWOW64\\kernel32.dll",
+      "LOADED_RESOLVED 014c \\\\?\\C:\\Windows\\SysWOW64\\KernelBase.dll",
+      "LOADED_RESOLVED 014c \\\\?\\C:\\Windows\\SysWOW64\\ucrtbase.dll",
+      "LOADED_RESOLVED 014c \\\\?\\C:\\Windows\\SysWOW64\\msvcp140.dll",
+      "LOADED_RESOLVED 014c \\\\?\\C:\\Windows\\SysWOW64\\vcruntime140.dll",
+      "RESULT PASS raw preparation lifetime and bounded native/source getter/destructor paths; frame cold construction/destruction, jobs, worker threads and native EH failures unexecuted"
+    ],
+    "fixture_scope": "Both complete getter hot paths with inaccessible manager; full copied native preparation getter cold path and new source cold path each create genuine rawmanager/section/8Bowner, verify profiles/secondary registration and no duplicate hot registration, then drain via genuine rawBD0400/new finite secondary route. Complete native/source destructor body plus six nonfree scalar variants compare whole8B and return/publication. Three flags1 scalar kinds in both lanes check original returned address and cleared publication only; freed storage is not inspected.",
+    "native_adaptation": "Copied full192B framegetter,206B prepgetter,26Bbody,52Bprimary,8Bsecondary,41Bbase. Original globals/import addresses adapted to same cells and real Win32 imports. Native rawmanager and allocator/free calls use ABI bridges to genuine same source providers; native registration calls genuine source rawBD0C30. Secondary native tailjump relocated to copied full primary. Native frame cold calls/handlers remain unexecuted; original FH3 handler immediates are retained but never invoked.",
+    "linked_machine": {
+      "exe": "local\\render_job_publication_r58\\job_owner_probe.exe",
+      "sha256": "ffe9f6300f288693b3820b0c16da243a32bb1934f685db891e210e43e590d975",
+      "receipt": "local/render_job_publication_r58/machine_receipts.json",
+      "receipt_sha256": "982e8cde2b10d2ef8d430f3fbe70e19ad2ef7e16089724a352d61cd48e6c83b6",
+      "intervals": [
+        {
+          "symbol": "??1logic_error@std@@UAE@XZ",
+          "length": 32,
+          "sha256": "1df154da1bbb1dda4022e866ce860ada779b2121236061d55c896609e967f8ec"
+        },
+        {
+          "symbol": "??0logic_error@std@@QAE@ABV01@@Z",
+          "length": 64,
+          "sha256": "931a5ca706caa999aa4e513e17c2dde687a4e49ca7878eec5bb748d782d2b1a3"
+        },
+        {
+          "symbol": "??0logic_error@std@@QAE@PBD@Z",
+          "length": 80,
+          "sha256": "739f659b3adc9f605035f583010661c59cd0c2e77d836eb8a29c4df89dc730df"
+        },
+        {
+          "symbol": "??_Elogic_error@std@@UAEPAXI@Z",
+          "length": 48,
+          "sha256": "934c21b402fc88588d751306775082162c83b26029d8d8b0346cf8c0cfd66618"
+        },
+        {
+          "symbol": "??_Glogic_error@std@@UAEPAXI@Z",
+          "length": 48,
+          "sha256": "934c21b402fc88588d751306775082162c83b26029d8d8b0346cf8c0cfd66618"
+        },
+        {
+          "symbol": "?delete_native_preparation_job_actual_00b0f210@bsp@@YAPAUNativeRenderPreparationJobStorage@1@PAU21@IAAUNativeRenderJobPublicationContext@1@@Z",
+          "length": 64,
+          "sha256": "00b9af71a5846a8ba2825c25d590bc9518b8de8a04b12250fe3396a612cd04fa"
+        },
+        {
+          "symbol": "?delete_native_preparation_job_base_actual_00b0d930@bsp@@YAPAUNativeRenderPreparationJobSecondary@1@PAU21@IAAUNativeRenderJobPublicationContext@1@@Z",
+          "length": 48,
+          "sha256": "48fa00233d641fb26403238f4d820194f5a03608acfd079c1e190d4130e83259"
+        },
+        {
+          "symbol": "?delete_native_preparation_job_secondary_actual_00b0f1c0@bsp@@YAPAUNativeRenderPreparationJobStorage@1@PAUNativeRenderPreparationJobSecondary@1@IAAUNativeRenderJobPublicationContext@1@@Z",
+          "length": 64,
+          "sha256": "4f6733595a0250c15df39fd04c697e0824a60315e09f333a38f2b123ac9054e7"
+        },
+        {
+          "symbol": "?destroy_native_preparation_job_actual_00b0f1d0@bsp@@YAXPAUNativeRenderPreparationJobStorage@1@AAUNativeRenderJobPublicationContext@1@@Z",
+          "length": 48,
+          "sha256": "b398795156429548e69ba581b835b76e728786babf89c6ddb2885d38b316816b"
+        },
+        {
+          "symbol": "?get_native_frame_jobs_actual_004c1130@bsp@@YAPAUNativeFrameJobOwnerStorage@1@AAUNativeRenderJobPublicationContext@1@@Z",
+          "length": 295,
+          "sha256": "63ccc34e0fe2da227c54fd830fece8d12c7af8f9080822387a7f15c605e4fd1f"
+        },
+        {
+          "symbol": "__catch$?get_native_frame_jobs_actual_004c1130@bsp@@YAPAUNativeFrameJobOwnerStorage@1@AAUNativeRenderJobPublicationContext@1@@Z$4",
+          "length": 48,
+          "sha256": "760662eb0d50f07cbc9ecdcc1298f123b4f1504e4ef73deb3fde3c462873c7cf"
+        },
+        {
+          "symbol": "__catch$?get_native_frame_jobs_actual_004c1130@bsp@@YAPAUNativeFrameJobOwnerStorage@1@AAUNativeRenderJobPublicationContext@1@@Z$2",
+          "length": 11,
+          "sha256": "ea9af2dbb4f6491a6a4d7c330963c987a0398478a9fc3e5ce3c08fbdd31c9a5f"
+        },
+        {
+          "symbol": "__catch$?get_native_frame_jobs_actual_004c1130@bsp@@YAPAUNativeFrameJobOwnerStorage@1@AAUNativeRenderJobPublicationContext@1@@Z$0",
+          "length": 30,
+          "sha256": "a198bd49c32a54a0200a046a651c4c3d27d4f2fb3f1674ab7985260487246939"
+        },
+        {
+          "symbol": "?get_native_preparation_job_actual_00b0ffb0@bsp@@YAPAUNativeRenderPreparationJobStorage@1@AAUNativeRenderJobPublicationContext@1@@Z",
+          "length": 278,
+          "sha256": "d888008411b1ac0881e4f59d40db39a9a67da0627741885489e6df9874693aa6"
+        },
+        {
+          "symbol": "__catch$?get_native_preparation_job_actual_00b0ffb0@bsp@@YAPAUNativeRenderPreparationJobStorage@1@AAUNativeRenderJobPublicationContext@1@@Z$0",
+          "length": 42,
+          "sha256": "4097cc9dffacf739f08e6d385fccc41babd60e31fdd181d5cec8cc0f117b69ef"
+        },
+        {
+          "symbol": "?unwind@?A0xcad27ae9@bsp@@YAXAAUNativeGuard@12@@Z",
+          "length": 77,
+          "sha256": "d6bcbe97cefe0a887724d80fc0f3e90714b183f41badda5715942724fbfe1b85"
+        },
+        {
+          "symbol": "__catch$?unwind@?A0xcad27ae9@bsp@@YAXAAUNativeGuard@12@@Z$0",
+          "length": 19,
+          "sha256": "88dc857174241d2468c8cdca4df02e1b89388d2cf3f4d6dab91cf53bd3954ad6"
+        },
+        {
+          "symbol": "__ehhandler$?get_native_frame_jobs_actual_004c1130@bsp@@YAPAUNativeFrameJobOwnerStorage@1@AAUNativeRenderJobPublicationContext@1@@Z",
+          "length": 48,
+          "sha256": "aaaf7b5dbe7a1fa2c486b19f8f59f89d8b4205c815236200e3f35ba0f8937113"
+        },
+        {
+          "symbol": "__ehhandler$?get_native_preparation_job_actual_00b0ffb0@bsp@@YAPAUNativeRenderPreparationJobStorage@1@AAUNativeRenderJobPublicationContext@1@@Z",
+          "length": 48,
+          "sha256": "5265ea2edbd9302561181fc87cd36981bdc35d465cb4e84d3e999e7c58af0359"
+        },
+        {
+          "symbol": "__ehhandler$?unwind@?A0xcad27ae9@bsp@@YAXAAUNativeGuard@12@@Z",
+          "length": 32,
+          "sha256": "9c94e14e3ce67b6fb6d130064c7b0f8175b70a6e43456e8710dfb4be77ec2115"
+        }
+      ],
+      "scope": "Map intervals may include padding/auxiliary code; genuine constructor, raw registration and free direct edges verified. Full machine receipt archived locally."
+    },
+    "physical_i386_modules": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\render_job_publication_r58\\job_owner_probe.exe",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 263168,
+        "sha256": "ffe9f6300f288693b3820b0c16da243a32bb1934f685db891e210e43e590d975",
+        "resolution": "GetFinalPathNameByHandleW on file opened in same Win32 probe; loaded-memory and resolved disk PE Machine both verified I386"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\ntdll.dll",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 1822400,
+        "sha256": "7e15bd30890e9bf93b47fc894a68b2445618ee7528eb39584a263b21e112f9df",
+        "resolution": "GetFinalPathNameByHandleW on file opened in same Win32 probe; loaded-memory and resolved disk PE Machine both verified I386"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\kernel32.dll",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 687472,
+        "sha256": "bafd9e061964642802d62f1eb694e7e4af60de739a8df1a492f90006dc5680f3",
+        "resolution": "GetFinalPathNameByHandleW on file opened in same Win32 probe; loaded-memory and resolved disk PE Machine both verified I386"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\KernelBase.dll",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 2974168,
+        "sha256": "85ad413ff860898f9e511f2e63c0e30f7aed1275fd1fd44fa90801211d328253",
+        "resolution": "GetFinalPathNameByHandleW on file opened in same Win32 probe; loaded-memory and resolved disk PE Machine both verified I386"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\ucrtbase.dll",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 1114240,
+        "sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+        "resolution": "GetFinalPathNameByHandleW on file opened in same Win32 probe; loaded-memory and resolved disk PE Machine both verified I386"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\msvcp140.dll",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 618944,
+        "sha256": "f0cda2a0cf1fe6fbbf579b9098462329d3aaa7513a207af2e0f33b01456e388a",
+        "resolution": "GetFinalPathNameByHandleW on file opened in same Win32 probe; loaded-memory and resolved disk PE Machine both verified I386"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\vcruntime140.dll",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 123328,
+        "sha256": "2fa6efc053203460a23d3a25158f227d895d2dadc63acc1a372da97c3a4281c3",
+        "resolution": "GetFinalPathNameByHandleW on file opened in same Win32 probe; loaded-memory and resolved disk PE Machine both verified I386"
+      }
+    ],
+    "native_spans": 25,
+    "native_bytes": 821,
+    "direct_call_or_tail_rows": 19
+  },
+  "flow_repair": {
+    "address": "00c64ee8",
+    "old_body_bytes": 9,
+    "new_body_bytes": 11,
+    "restored_tail": "59c3 at00c64ef1",
+    "report": "reports/native_render_job_publication_flow_r58.json",
+    "complete_current_listing": true,
+    "prior_definition_and_plate": {
+      "events": [
+        {
+          "recreate": "00c64ee8",
+          "previous": "Function: Unwind@00c64ee8 at 00c64ee8\nSignature: undefined Unwind@00c64ee8(void)\nEntry: 00c64ee8\nBody: 00c64ee8 - 00c64ef0",
+          "plate": null
+        },
+        {
+          "endpoint": "delete_function",
+          "body": {
+            "address": "00c64ee8"
+          },
+          "result": {
+            "success": true,
+            "address": "00c64ee8",
+            "deleted_function": "Unwind@00c64ee8",
+            "body_size": 9,
+            "message": "Function 'Unwind@00c64ee8' deleted at 00c64ee8"
+          }
+        },
+        {
+          "endpoint": "disassemble_bytes",
+          "body": {
+            "start_address": "00c64ee8",
+            "end_address": "00c64ef3"
+          },
+          "result": {
+            "success": true,
+            "start_address": "00c64ee8",
+            "end_address": "00c64ef2",
+            "bytes_disassembled": 11,
+            "message": "Successfully disassembled 11 byte(s)"
+          }
+        },
+        {
+          "endpoint": "create_function",
+          "body": {
+            "address": "00c64ee8",
+            "disassemble_first": false,
+            "name": "EH_FrameJobPool_FreeFailedAllocation"
+          },
+          "result": {
+            "success": true,
+            "address": "00c64ee8",
+            "function_name": "EH_FrameJobPool_FreeFailedAllocation",
+            "entry_point": "00c64ee8",
+            "body_size": 11,
+            "message": "Function created successfully at 00c64ee8",
+            "warnings": [
+              "Function name 'EH_FrameJobPool_FreeFailedAllocation' \u2014 main part 'FrameJobPool_FreeFailedAllocation' is not PascalCase. Expected: FramejobpoolFreefailedallocation",
+              "Function name 'EH_FrameJobPool_FreeFailedAllocation' \u2014 main part 'FrameJobPool_FreeFailedAllocation' contains underscores. Use PascalCase after the module prefix.",
+              "Function name 'EH_FrameJobPool_FreeFailedAllocation' does not start with a recognized verb. First word 'Frame' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+            ]
+          }
+        },
+        {
+          "defined": "00c64ee8",
+          "end": "00c64ef3",
+          "name": "EH_FrameJobPool_FreeFailedAllocation",
+          "after": "Function: EH_FrameJobPool_FreeFailedAllocation at 00c64ee8\nSignature: undefined EH_FrameJobPool_FreeFailedAllocation(void)\nEntry: 00c64ee8\nBody: 00c64ee8 - 00c64ef2"
+        },
+        {
+          "endpoint": "save_program",
+          "body": {},
+          "result": {
+            "error": "Unable to lock due to active transaction"
+          }
+        },
+        {
+          "endpoint": "save_program",
+          "body": {},
+          "result": {
+            "success": true,
+            "program": "battlestationspacific.exe",
+            "message": "Program saved successfully"
+          }
+        }
+      ]
+    }
+  },
+  "boundaries": [
+    "Frame cold construction/destruction and its raw manager deletion route linked but unexecuted",
+    "No scheduled jobs, real worker-thread execution, application owner graph or command execution",
+    "Native provider bodies replaced by genuine source providers where reached, not original-provider binary execution",
+    "No allocation/registration/cleanup exception injection or original FH3/SEH/private-stack/register/hardware-fault ABI proof",
+    "No active application, visual or gameplay validation"
+  ],
+  "prior_ledger_replacement_receipts": [
+    {
+      "address": "004c1130",
+      "replacement_receipt": "004c1130 function get_native_frame_jobs_actual_004c1130\n"
+    },
+    {
+      "address": "00b0ffb0",
+      "replacement_receipt": "00b0ffb0 function get_native_preparation_job_actual_00b0ffb0\n"
+    },
+    {
+      "address": "00b0f1d0",
+      "replacement_receipt": "00b0f1d0 function destroy_native_preparation_job_actual_00b0f1d0\n"
+    },
+    {
+      "address": "00b0f210",
+      "replacement_receipt": "00b0f210 function delete_native_preparation_job_actual_00b0f210\n"
+    },
+    {
+      "address": "00b0f1c0",
+      "replacement_receipt": "00b0f1c0 function delete_native_preparation_job_secondary_actual_00b0f1c0\n"
+    },
+    {
+      "address": "00b0d930",
+      "replacement_receipt": "00b0d930 function delete_native_preparation_job_base_actual_00b0d930\n"
+    }
+  ],
+  "archive": {
+    "path": "local/evidence-r58/render-jobs-original-r58.zip",
+    "sha256": "e8acc29af601eee7f1ca734011c8f2b6bb0d6ff2395f9d5d181f0f58e0433489",
+    "manifest_sha256": "2badf6aa51765795e7022f19205c1aa0cdb97faf1c0a6c4d5b9a7fd04fe4f155",
+    "artifact_count": 5742,
+    "bytes": 356883253,
+    "all_entries_rehashed": true,
+    "scope": "Full current source/build compiler input/output closure and focused fixture/native/link evidence. Seven same-process physical I386 modules; no frame cold or job runtime proof."
+  }
+}

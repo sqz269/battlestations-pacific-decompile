@@ -1,0 +1,141 @@
+{
+  "repairs": [
+    {
+      "function": "00c64ee8",
+      "owner": "agent/orch4-20260915",
+      "when": "2026-09-16T17:17:26Z",
+      "decompile_lines_before": 10,
+      "gaps": [
+        {
+          "site": "00c64eec",
+          "mnemonic": "CALL",
+          "operands": "0x00bf65ac",
+          "gap_start": "00c64ef1",
+          "gap_end_exclusive": "00c64ef3",
+          "bytes": 2,
+          "after_call": true,
+          "sha256": "1f59811a465fb09b61196131fe0491445d618c6f82a85a293e2af63c6a1e8a5d"
+        }
+      ],
+      "events": [
+        {
+          "gap": {
+            "site": "00c64eec",
+            "mnemonic": "CALL",
+            "operands": "0x00bf65ac",
+            "gap_start": "00c64ef1",
+            "gap_end_exclusive": "00c64ef3",
+            "bytes": 2,
+            "after_call": true,
+            "sha256": "1f59811a465fb09b61196131fe0491445d618c6f82a85a293e2af63c6a1e8a5d"
+          },
+          "clear": "Success: Cleared flow override at 00c64eec (was: CALL_RETURN, now: NONE)",
+          "disassemble": "Successfully disassembled 2 byte(s)"
+        },
+        {
+          "explicit_tail_call": "00c64eec",
+          "clear": {
+            "status": "success",
+            "message": "Success: Cleared flow override at 00c64eec (was: NONE, now: NONE)"
+          }
+        }
+      ],
+      "explicit_tail_end_exclusive": "00c64ef3",
+      "explicit_tail_terminator": "ret",
+      "explicit_body_sha256": "14c740d82333d234e039218da7a4dddc9558330d22c2a3c8b141b6e05f04bbe0",
+      "body_before": "Function: Unwind@00c64ee8 at 00c64ee8\nSignature: undefined Unwind@00c64ee8(void)\nEntry: 00c64ee8\nBody: 00c64ee8 - 00c64ef0",
+      "decompile_lines_after": 10,
+      "gaps_remaining": 1,
+      "body_after": "Function: Unwind@00c64ee8 at 00c64ee8\nSignature: undefined Unwind@00c64ee8(void)\nEntry: 00c64ee8\nBody: 00c64ee8 - 00c64ef0",
+      "stored_body_tail_complete": false,
+      "body_extension_limit": "Explicit tail decoding/CRT overrides do not extend stored function-body metadata; the body still requires a separate supported repair."
+    }
+  ],
+  "completion": {
+    "stored_body": "00c64ee8..00c64ef2 inclusive",
+    "length": 11,
+    "instructions": 5,
+    "verified_live_equals_pe": true,
+    "listing_complete": true,
+    "method": "Cleared local call override, then recreated truncated function with supported locked definition tool; prior function/name/plate recorded; project saved and export refreshed.",
+    "definition_receipt": {
+      "events": [
+        {
+          "recreate": "00c64ee8",
+          "previous": "Function: Unwind@00c64ee8 at 00c64ee8\nSignature: undefined Unwind@00c64ee8(void)\nEntry: 00c64ee8\nBody: 00c64ee8 - 00c64ef0",
+          "plate": null
+        },
+        {
+          "endpoint": "delete_function",
+          "body": {
+            "address": "00c64ee8"
+          },
+          "result": {
+            "success": true,
+            "address": "00c64ee8",
+            "deleted_function": "Unwind@00c64ee8",
+            "body_size": 9,
+            "message": "Function 'Unwind@00c64ee8' deleted at 00c64ee8"
+          }
+        },
+        {
+          "endpoint": "disassemble_bytes",
+          "body": {
+            "start_address": "00c64ee8",
+            "end_address": "00c64ef3"
+          },
+          "result": {
+            "success": true,
+            "start_address": "00c64ee8",
+            "end_address": "00c64ef2",
+            "bytes_disassembled": 11,
+            "message": "Successfully disassembled 11 byte(s)"
+          }
+        },
+        {
+          "endpoint": "create_function",
+          "body": {
+            "address": "00c64ee8",
+            "disassemble_first": false,
+            "name": "EH_FrameJobPool_FreeFailedAllocation"
+          },
+          "result": {
+            "success": true,
+            "address": "00c64ee8",
+            "function_name": "EH_FrameJobPool_FreeFailedAllocation",
+            "entry_point": "00c64ee8",
+            "body_size": 11,
+            "message": "Function created successfully at 00c64ee8",
+            "warnings": [
+              "Function name 'EH_FrameJobPool_FreeFailedAllocation' \u2014 main part 'FrameJobPool_FreeFailedAllocation' is not PascalCase. Expected: FramejobpoolFreefailedallocation",
+              "Function name 'EH_FrameJobPool_FreeFailedAllocation' \u2014 main part 'FrameJobPool_FreeFailedAllocation' contains underscores. Use PascalCase after the module prefix.",
+              "Function name 'EH_FrameJobPool_FreeFailedAllocation' does not start with a recognized verb. First word 'Frame' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+            ]
+          }
+        },
+        {
+          "defined": "00c64ee8",
+          "end": "00c64ef3",
+          "name": "EH_FrameJobPool_FreeFailedAllocation",
+          "after": "Function: EH_FrameJobPool_FreeFailedAllocation at 00c64ee8\nSignature: undefined EH_FrameJobPool_FreeFailedAllocation(void)\nEntry: 00c64ee8\nBody: 00c64ee8 - 00c64ef2"
+        },
+        {
+          "endpoint": "save_program",
+          "body": {},
+          "result": {
+            "error": "Unable to lock due to active transaction"
+          }
+        },
+        {
+          "endpoint": "save_program",
+          "body": {},
+          "result": {
+            "success": true,
+            "program": "battlestationspacific.exe",
+            "message": "Program saved successfully"
+          }
+        }
+      ]
+    }
+  }
+}
