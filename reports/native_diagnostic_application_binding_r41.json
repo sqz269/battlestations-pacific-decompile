@@ -154,5 +154,125 @@
     "runtime": "Compilation, object references, link success, and component evidence do not establish full GameStartupHost execution, renderer/device runtime, game execution, or gameplay.",
     "metadata": "Ghidra was read-only. No name, ledger, tag, or export mutation was performed."
   },
-  "hash_provenance": "Native hashes come from the R40 machine-generated installed-PE receipts that the parent independently verified. R41 source, log, object, library, and executable hashes were generated programmatically from the exact retained files after rebuilding the 6d3757320 baseline."
+  "hash_provenance": "Native hashes come from the R40 machine-generated installed-PE receipts that the parent independently verified. R41 source, log, object, library, and executable hashes were generated programmatically from the exact retained files after rebuilding the 6d3757320 baseline.",
+  "primary_integration": {
+    "source_merge": "cdb60c49f",
+    "source_reviewed": true,
+    "native_spans_independently_verified": 4,
+    "worker_artifacts_verified": 29,
+    "combined_strict_build": true,
+    "ctests_passed": 3,
+    "worker_archive": "local/evidence-r41/diagnostic-application-original-r41.zip",
+    "worker_archive_sha256": "9e2589383c5863448d86528a3b2ac65a6f1206c086958c2b1236c75ee815108a",
+    "application_runtime_executed": false
+  },
+  "primary_archive": {
+    "path": "local/evidence-r41/diagnostic-application-main-r41.zip",
+    "sha256": "5243c5ec42c23b29b9da55971f77ef4d46660edc071ad884d1a0af819c4d1952",
+    "files": [
+      {
+        "path": "src/game_hosts.cpp",
+        "bytes": 87627,
+        "sha256": "ec6b1c99001b5d242a92df07ad600fd281b3a495ab89422a11ab9eed23ca131a"
+      },
+      {
+        "path": "include/bsp/game_hosts_singletons.hpp",
+        "bytes": 5652,
+        "sha256": "cafbc94c64d7d2e42f9bba286fd9bddab836e934f6e5b37c599cd28fc6bb60b8"
+      },
+      {
+        "path": "src/native_diagnostic_sink_lifetime.cpp",
+        "bytes": 5460,
+        "sha256": "20a6882497154be780e6783a0591ce5e49876c2e94dd5e681b5c3fa7f54fdbf4"
+      },
+      {
+        "path": "docs/NATIVE_DIAGNOSTIC_APPLICATION_BINDING_R41.md",
+        "bytes": 6889,
+        "sha256": "9747a2b4f38d6fa3034da3544b9f123e612ea51c255d24e4601491c6c70ab755"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts.obj",
+        "bytes": 692832,
+        "sha256": "85df4fac919c62f867da09196122778fbbff3966cc1b88b0bfb1bf644e380d99"
+      },
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "bytes": 63444656,
+        "sha256": "0a5d50078ad84d43bee4eb0af62389c19438cce88c7a6380f0312408981c6864"
+      },
+      {
+        "path": "build/win32/Release/bsp_game.exe",
+        "bytes": 2263552,
+        "sha256": "e92078eda22f7cc33d8411baed2231b898c14932692c8146dca503a65f5e723e"
+      },
+      {
+        "path": "build/win32/bsp_game.vcxproj",
+        "bytes": 63405,
+        "sha256": "86f4f9e0d55e75c56a4b8b1e08cae5f97ef4c26e072a8e826ecdccbbd43b39bc"
+      },
+      {
+        "path": "local/r41_diagnostic_application_integration.log",
+        "bytes": 829,
+        "sha256": "715bd6df614b64f33798a7b8999549f54578249dc8fa4646cfd499be9990a0a4"
+      },
+      {
+        "path": "local/r41_diagnostic_application_proto.txt",
+        "bytes": 1562,
+        "sha256": "b2bfb30c5fee9494bd06f62830029371f0e644c843b78667460dc96414996edf"
+      },
+      {
+        "path": "local/r41_diagnostic_application_annotations.log",
+        "bytes": 227,
+        "sha256": "09ce38bedacdcfcab4b7f7110c0bc2d886043117f7a49603c0854c4bee5fcaa0"
+      },
+      {
+        "path": "local/r41_diagnostic_application_exports.log",
+        "bytes": 206,
+        "sha256": "0b652683e6bc7fc44fc0807602ce81b69acbaac7e9366d2a7f6f0b9ac931cae5"
+      },
+      {
+        "path": "local/r41_diagnostic_application_native_spans.json",
+        "bytes": 1389,
+        "sha256": "08574db83944b4ff6194446458cb2ed637f0cb0808e619ac005159de86dc516e"
+      },
+      {
+        "path": "local/ghidra-annotations-20260916T121354Z.json",
+        "bytes": 13467,
+        "sha256": "1ad51d31921e3bc830b22d6ec43d7b1a932d4518a43990e67022a27e48f3df07"
+      }
+    ]
+  },
+  "primary_annotations": {
+    "status": "Enclosing names retained and two bounded fragment records appended; full routine not claimed. Prior annotations preserved, project saved, exports refreshed.",
+    "prior_annotations": [
+      {
+        "address": "00737f30",
+        "before": {
+          "address": "00737f30",
+          "function_name": "BSP_Application_Shutdown",
+          "comment": "[BSP reconstruction 00737f30]\nWinMain calls after platform loop. Releases references, destroys systems, calls XLiveUninitialize and unloads input datatables."
+        },
+        "after": {
+          "address": "00737f30",
+          "name": "BSP_Application_Shutdown",
+          "evidence": "WinMain calls after platform loop. Releases references, destroys systems, calls XLiveUninitialize and unloads input datatables. | R41 actual GameStartupHost binding uses same GameSingletonHost CF14 cell and raw AA0 SoundLifetimeAccess. Getter004C14C0 immediately follows font/GUI startup0073BAE0 at native73E14B; return discarded and failure propagated. Shutdown7363B0 is explicit at current application-shutdown tail after frontend/device effects, before application destruction/shared raw drain. Full42step teardown adjacency remains unbound; unimplemented marker retained. No null assertion, retry, exception swallowing, publication repair or new manager. Parent complete source diff reviewed,4native call/context spans50B independently PE verified, all29frozen artifacts+manifest verified. Worker and combined strict /MD Win32 builds/3CTests pass. Application placement has not been executed; R38/R39 component fixture evidence is not a full host runtime claim. reports/native_diagnostic_application_binding_r41.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "0073d410",
+        "before": {
+          "address": "0073d410",
+          "function_name": "BSP_Application_Initialize",
+          "comment": "[BSP reconstruction 0073d410]\nWinMain passes this in ECX and stack arguments 0 and cachedload. Initializes resources, audio, window, Lua datatables and game systems; observed behavior, original class name unknown.\n\n[BSP reconstruction 0073d410] update\nWinMain passes this in ECX and stack arguments 0 and cachedload. Initializes resources, audio, window, Lua datatables and game systems; observed behavior, original class name unknown. Startup block0073e1e2..0073e45b preloads inputs.lua, keyboardsetup.lua, controllerinputnames.lua, controlpresets.lua, scoring.lua under scripts/datatables/ in this order, each flags32h. Native caller ignores incidental return. Bounded host policy in src/resource_preload.cpp opens via existing mounted/FileStore path and stops on first host failure. Installed fixture verifies all five request names/flags and140625 bytes against disk; script execution/full initializer remain unreconstructed. docs/STARTUP_SCRIPT_PRELOAD.md.\n\n[BSP reconstruction 0073d410] update\nWinMain passes this in ECX and stack arguments 0 and cachedload. Initializes resources, audio, window, Lua datatables and game systems; observed behavior, original class name unknown. Startup block0073e1e2..0073e45b preloads inputs.lua, keyboardsetup.lua, controllerinputnames.lua, controlpresets.lua, scoring.lua under scripts/datatables/ in this order, each flags32h. Native caller ignores incidental return. Bounded host policy in src/resource_preload.cpp opens via existing mounted/FileStore path and stops on first host failure. Installed fixture verifies all five request names/flags and140625 bytes against disk; script execution/full initializer remain unreconstructed. docs/STARTUP_SCRIPT_PRELOAD.md. Startup mount/scan fragment0073d68d onward now uses actual providers: root->dot priority0 ownership1, root->persistent_data priority99 ownership1, FileStore->dot priority300 ownership0, all device-1; two fresh package scans precede search defaults. Explicit installed root replaces process-current directory. Does not reconstruct complete application initializer. docs/VFS_PROVIDER_MANAGER.md; reports/startup_manager_validation.json.\n\n[BSP reconstruction 0073d410] update\nWinMain passes this in ECX and stack arguments 0 and cachedload. Initializes resources, audio, window, Lua datatables and game systems; observed behavior, original class name unknown. Startup block0073e1e2..0073e45b preloads inputs.lua, keyboardsetup.lua, controllerinputnames.lua, controlpresets.lua, scoring.lua under scripts/datatables/ in this order, each flags32h. Native caller ignores incidental return. Bounded host policy in src/resource_preload.cpp opens via existing mounted/FileStore path and stops on first host failure. Installed fixture verifies all five request names/flags and140625 bytes against disk; script execution/full initializer remain unreconstructed. docs/STARTUP_SCRIPT_PRELOAD.md. Startup mount/scan fragment0073d68d onward now uses actual providers: root->dot priority0 ownership1, root->persistent_data priority99 ownership1, FileStore->dot priority300 ownership0, all device-1; two fresh package scans precede search defaults. Explicit installed root replaces process-current directory. Does not reconstruct complete application initializer. docs/VFS_PROVIDER_MANAGER.md; reports/startup_manager_validation.json. | Hypothesis, not a recovered symbol. Runtime owner integration follows renderer0073da88, input getter/guarded reload0073da94/da9b, settings0073daa5; locale constructor0073e057, selected catalog lanfile0073e06a/e08f, register globals0073e103, reloadfalse0073e135. Existing platform/save/factory/parser operations reordered to their native relative sites. New C++ ownership and failure cleanup; full application remains incomplete. docs/RUNTIME_STARTUP_OWNERS.md; reports/runtime_startup_owners.json. Win32 and focused installed-owner fixture passed; source interfaces are not native ABI or gameplay proof.\n\n[BSP reconstruction 0073d410] update\nWinMain passes this in ECX and stack arguments 0 and cachedload. Initializes resources, audio, window, Lua datatables and game systems; observed behavior, original class name unknown. Startup block0073e1e2..0073e45b preloads inputs.lua, keyboardsetup.lua, controllerinputnames.lua, controlpresets.lua, scoring.lua under scripts/datatables/ in this order, each flags32h. Native caller ignores incidental return. Bounded host policy in src/resource_preload.cpp opens via existing mounted/FileStore path and stops on first host failure. Installed fixture verifies all five request names/flags and140625 bytes against disk; script execution/full initializer remain unreconstructed. docs/STARTUP_SCRIPT_PRELOAD.md. Startup mount/scan fragment0073d68d onward now uses actual providers: root->dot priority0 ownership1, root->persistent_data priority99 ownership1, FileStore->dot priority300 ownership0, all device-1; two fresh package scans precede search defaults. Explicit installed root replaces process-current directory. Does not reconstruct complete application initializer. docs/VFS_PROVIDER_MANAGER.md; reports/startup_manager_validation.json. | Hypothesis, not a recovered symbol. Runtime owner integration follows renderer0073da88, input getter/guarded reload0073da94/da9b, settings0073daa5; locale constructor0073e057, selected catalog lanfile0073e06a/e08f, register globals0073e103, reloadfalse0073e135. Existing platform/save/factory/parser operations reordered to their native relative sites. New C++ ownership and failure cleanup; full application remains incomplete. docs/RUNTIME_STARTUP_OWNERS.md; reports/runtime_startup_owners.json. Win32 and focused installed-owner fixture passed; source interfaces are not native ABI or gameplay proof. | Configured native argument path: WinMain8F841E pushes fixed cachedload and8F8423 pushes0; app ESP-=148h,73D4C2 reads second argument atESP+150h intoEBP,73D933/73D93C duplicate it,73D945 storesE1AE78,73D94A parses. GameStartupHost now forwards that borrowed mode through its phases instead of parsing GetCommandLineA; separate bsp_game executable options remain separate. This corrects a composed fragment only, not the complete initializer or native string/global ABI. docs/NATIVE_STARTUP_ARGUMENT.md; reports/native_startup_argument.json; docs/NATIVE_ENTRY_BOOTSTRAP.md.\n\n[BSP reconstruction 0073d410] update\nWinMain passes this in ECX and stack arguments 0 and cachedload. Initializes resources, audio, window, Lua datatables and game systems; observed behavior, original class name unknown. Startup block0073e1e2..0073e45b preloads inputs.lua, keyboardsetup.lua, controllerinputnames.lua, controlpresets.lua, scoring.lua under scripts/datatables/ in this order, each flags32h. Native caller ignores incidental return. Bounded host policy in src/resource_preload.cpp opens via existing mounted/FileStore path and stops on first host failure. Installed fixture verifies all five request names/flags and140625 bytes against disk; script execution/full initializer remain unreconstructed. docs/STARTUP_SCRIPT_PRELOAD.md. Startup mount/scan fragment0073d68d onward now uses actual providers: root->dot priority0 ownership1, root->persistent_data priority99 ownership1, FileStore->dot priority300 ownership0, all device-1; two fresh package scans precede search defaults. Explicit installed root replaces process-current directory. Does not reconstruct complete application initializer. docs/VFS_PROVIDER_MANAGER.md; reports/startup_manager_validation.json. | Hypothesis, not a recovered symbol. Runtime owner integration follows renderer0073da88, input getter/guarded reload0073da94/da9b, settings0073daa5; locale constructor0073e057, selected catalog lanfile0073e06a/e08f, register globals0073e103, reloadfalse0073e135. Existing platform/save/factory/parser operations reordered to their native relative sites. New C++ ownership and failure cleanup; full application remains incomplete. docs/RUNTIME_STARTUP_OWNERS.md; reports/runtime_startup_owners.json. Win32 and focused installed-owner fixture passed; source interfaces are not native ABI or gameplay proof. | Configured native argument path: WinMain8F841E pushes fixed cachedload and8F8423 pushes0; app ESP-=148h,73D4C2 reads second argument atESP+150h intoEBP,73D933/73D93C duplicate it,73D945 storesE1AE78,73D94A parses. GameStartupHost now forwards that borrowed mode through its phases instead of parsing GetCommandLineA; separate bsp_game executable options remain separate. This corrects a composed fragment only, not the complete initializer or native string/global ABI. docs/NATIVE_STARTUP_ARGUMENT.md; reports/native_startup_argument.json; docs/NATIVE_ENTRY_BOOTSTRAP.md. | Hypothesis, not a recovered symbol. Sound application composition and native pre-window ordering documented in docs/SOUND_APPLICATION_WIRING.md; actual two-frame run verified, full application/gameplay incomplete.\n\n[BSP reconstruction 0073d410] update\nR24 application binding: original 40-byte phase-6 schedule at 0073DB41..0073DB68 matches installed PE/live Ghidra; all six call sites verified. GameVfsHost now calls actual raw 004C1400/B81040 resource-manager construction and B80A50 registration with actual 736DD0/736EA0 parser owners, using the same 01090AA0 lifetime manager and 01090AA8 raw string domain. GameNativeResourceApplication owns actual 010901C4 and eight parser publication cells. Full strict Win32 build and three CTests passed; linked production-object children exercised phase6 before core and phase2 then phase6, eight names/profiles, duplicate registration, ten/fifteen shared-owner drains, and production host destruction order. This is source application lifetime evidence, not complete resource loading, native ABI/FH3 or gameplay. docs/NATIVE_RESOURCE_APPLICATION_ORCH4.md; reports/native_resource_application_orch4.json. Existing function name retained."
+        },
+        "after": {
+          "address": "0073d410",
+          "name": "BSP_Application_Initialize",
+          "evidence": "R24 application binding: original 40-byte phase-6 schedule at 0073DB41..0073DB68 matches installed PE/live Ghidra; all six call sites verified. GameVfsHost now calls actual raw 004C1400/B81040 resource-manager construction and B80A50 registration with actual 736DD0/736EA0 parser owners, using the same 01090AA0 lifetime manager and 01090AA8 raw string domain. GameNativeResourceApplication owns actual 010901C4 and eight parser publication cells. Full strict Win32 build and three CTests passed; linked production-object children exercised phase6 before core and phase2 then phase6, eight names/profiles, duplicate registration, ten/fifteen shared-owner drains, and production host destruction order. This is source application lifetime evidence, not complete resource loading, native ABI/FH3 or gameplay. docs/NATIVE_RESOURCE_APPLICATION_ORCH4.md; reports/native_resource_application_orch4.json. Existing function name retained. | R41 actual GameStartupHost binding uses same GameSingletonHost CF14 cell and raw AA0 SoundLifetimeAccess. Getter004C14C0 immediately follows font/GUI startup0073BAE0 at native73E14B; return discarded and failure propagated. Shutdown7363B0 is explicit at current application-shutdown tail after frontend/device effects, before application destruction/shared raw drain. Full42step teardown adjacency remains unbound; unimplemented marker retained. No null assertion, retry, exception swallowing, publication repair or new manager. Parent complete source diff reviewed,4native call/context spans50B independently PE verified, all29frozen artifacts+manifest verified. Worker and combined strict /MD Win32 builds/3CTests pass. Application placement has not been executed; R38/R39 component fixture evidence is not a full host runtime claim. reports/native_diagnostic_application_binding_r41.json."
+        },
+        "status": "applied"
+      }
+    ]
+  }
 }
