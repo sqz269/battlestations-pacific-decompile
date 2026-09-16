@@ -18,6 +18,7 @@ struct NativeParticleConeRawContext {
     NativeParticleParameterRuntimeRawContext& parameters;
     const volatile double* percentage_scale_00d7a358;
     char* actual_text_scratch_00f8c2c8;
+    std::int32_t child_builder_kind; // Explicit incoming residue for reached child parser frames.
     NativeParticleEmitterFactoryRawContext* emitters{};
     NativeParticleTypeFactoryRawContext* particles{};
 };
